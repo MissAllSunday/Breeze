@@ -3,7 +3,7 @@
 
 /* Css/Jquery tabs courtesy of Soh Tanaka at <http://www.sohtanaka.com/web-design/simple-tabs-w-css-jquery/> */
 
-ul.CMYK_tabs {
+ul.breeze_tabs {
 	margin: 0;
 	padding: 0;
 	float: left;
@@ -13,7 +13,7 @@ ul.CMYK_tabs {
 	border-left: 1px solid #999;
 	width: 100%;
 }
-ul.CMYK_tabs li {
+ul.breeze_tabs li {
 	float: left;
 	margin: 0;
 	padding: 0;
@@ -26,7 +26,7 @@ ul.CMYK_tabs li {
 	position: relative;
 	background: #e0e0e0;
 }
-ul.CMYK_tabs li a {
+ul.breeze_tabs li a {
 	text-decoration: none;
 	color: #000;
 	display: block;
@@ -35,14 +35,14 @@ ul.CMYK_tabs li a {
 	border: 1px solid #fff; /*--Gives the bevel look with a 1px white border inside the list item--*/
 	outline: none;
 }
-ul.CMYK_tabs li a:hover {
+ul.breeze_tabs li a:hover {
 	background: #ccc;
 }
-html ul.CMYK_tabs li.active, html ul.CMYK_tabs li.active a:hover  { /*--Makes sure that the active tab does not listen to the hover properties--*/
+html ul.breeze_tabs li.active, html ul.breeze_tabs li.active a:hover  { /*--Makes sure that the active tab does not listen to the hover properties--*/
 	background: #fff;
 	border-bottom: 1px solid #fff; /*--Makes the active tab look like it's connected with its content--*/
 }
-.CMYK_tabs_container {
+.breeze_tabs_container {
 	border: 1px solid #999;
 	border-top: none;
 	overflow: hidden;
@@ -50,7 +50,7 @@ html ul.CMYK_tabs li.active, html ul.CMYK_tabs li.active a:hover  { /*--Makes su
 	float: left; width: 100%;
 	background: #fff;
 }
-.CMYK_tabs_content {
+.breeze_tabs_content {
 	padding: 20px;
 	font-size: 1.2em;
 }
