@@ -11,4 +11,27 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
+class Breeze_General extends Breeze
+{
+	function __construct()
+	{
+	
+		/* We need the settings */
+		parent::__construct();
+	}
+
+	/* Get the latest entries of your buddies */
+	public static function Get_Entries()
+	{
+	}
+
+	/* Get the latest comments */
+	public static function Get_Comments()
+	{
+	}
+	
+	public static function Get_Logs()
+	{
+	}
+}
 ?>

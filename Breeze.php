@@ -86,7 +86,7 @@ class Breeze
 
 		/* User individual settings goes right here... */
 		$profile_areas['breeze_profile'] = array(
-			'CMKYsettings' => array(
+			'breezesettings' => array(
 				'label' => $txt['breeze_user_settings_name'],
 				'file' => 'Breeze_User.php',
 				'function' => 'Breeze_User::Settings',
@@ -95,7 +95,8 @@ class Breeze
 					'any' => 'profile_view_any',
 					),
 				),
-			'CMKYpermissions' => array(
+			'breezepermissions' => array(
+			'breezepermissions' => array(
 				'label' => $txt['breeze_user_permissions_name',
 				'file' => 'Breeze_User.php',
 				'function' => 'Breeze_User::Permissions',
@@ -142,12 +143,12 @@ class Breeze
 					'sub_buttons' => array(
 						'my_wall_settings' => array(
 							'title' => $txt['breeze_user_settings_name'],
-							'href' => $scripturl . '?action=profile;area=CMKYsettings',
+							'href' => $scripturl . '?action=profile;area=breezesettings',
 							'show' => allowedTo('profile_view_own'),
 						),
 						'my_wall_permissions' => array(
 							'title' => $txt['breeze_user_permissions_name',
-							'href' => $scripturl . '?action=profile;area=CMKYpermissions',
+							'href' => $scripturl . '?action=profile;area=breezepermissions',
 							'show' => allowedTo('profile_view_own'),
 						),
 					),

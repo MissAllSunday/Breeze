@@ -63,7 +63,7 @@ if (!defined('SMF'))
 		if (Breeze_Globals::Is_Set('save'))
 		{
 			checkSession();
-			redirectexit('action=admin;area=autorespond');
+			redirectexit('action=admin;area=breezesettings');
 
 			$data = array(
 				'enable' => 'int',
@@ -80,7 +80,6 @@ if (!defined('SMF'))
 			);
 			$insert = new BreezeDB('breeze_logs');
 			$insert->InsertData($data, $values, $indexes);
-
 		}
 	}
 

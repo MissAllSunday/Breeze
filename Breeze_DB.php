@@ -11,7 +11,7 @@
 if (!class_exists('BreezeDB')):
 	class BreezeDB
 	{
-		public static function __construct($table)
+		function __construct($table)
 		{
 			$this->table = isset($table) ? '{db_prefix}'.$table : null;
 			$this->data_result = array();
