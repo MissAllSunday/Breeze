@@ -11,14 +11,14 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
- class Breeze_Admin extends Breeze
+ class Breeze_Admin
  {
 	public static function Main()
 	{
 		global $txt, $scripturl, $context;
 
-		loadLanguage('BreezeAdmin');
-		loadtemplate('BreezeAdmin');
+		loadLanguage('Breeze');
+		loadtemplate('Breeze');
 
 		/* Set all the page stuff */
 		$context['page_title'] = $txt['breeze_admin_settings_main'];
@@ -29,7 +29,7 @@ if (!defined('SMF'))
 		);
 
 		/* Headers */
-		Breeze_Subs::Admin_Headers();
+		Breeze_Subs::Headers(true);
 
 		/* Tell them if their server is up to the challange*/
 		$context['breeze']['versions'] = Breeze_Subs::Check_Versions();
@@ -78,7 +78,7 @@ if (!defined('SMF'))
 			$indexes = array(
 				'id'
 			);
-			$insert = new BreezeDB('breeze_logs');
+			$insert = new Breeze_DB('breeze_logs');
 			$insert->InsertData($data, $values, $indexes);
 		}
 	}

@@ -23,30 +23,31 @@ if (!defined('SMF'))
 
 class Breeze
 {
-	/* Load all settings from the database */
 	public function __construct()
 	{
+		global $context, $sourcedir;
 
-		$this->breeze['global_settings'] = array();
+		$context['breeze']['global_settings'] = array();
 
 		$params = array(
 				'rows' => 'enable, menu_position, enable_general_wall',
 		);
 
-		$query = new BreezeDB('breeze_Settings');
+		$query = new Breeze_DB('breeze_Settings');
 		$query->Params($params);
 		$query->GetData();
 
 		if (!empty($query->data_result))
-			$this->breeze['global_settings'] = $query->data_result;
+			$context['breeze']['global_settings'] = $query->data_result;
 
 		/* Define all settings as empty, me wantz no problems */
 		else
-			$this->breeze['global_settings'] = array(
+			$context['breeze']['global_settings'] = array(
 				'enable' => '',
 				'menu_position' => '',
 				'enable_general_wall' => ''
 			);
+			
 	}
 
 	/* Who can use this stuff? */
@@ -73,7 +74,7 @@ class Breeze
 
 		loadLanguage('Breeze');
 
-		if (!empty($this->breeze['global_settings']['enable']))
+		if (!empty($context['breeze']['global_settings']['enable']))
 			$profile_areas['info']['summary'] = array(
 				'label' => $txt['breeze_general_wall'],
 				'file' => 'Breeze_User.php',
@@ -96,8 +97,7 @@ class Breeze
 					),
 				),
 			'breezepermissions' => array(
-			'breezepermissions' => array(
-				'label' => $txt['breeze_user_permissions_name',
+				'label' => $txt['breeze_user_permissions_name'],
 				'file' => 'Breeze_User.php',
 				'function' => 'Breeze_User::Permissions',
 				'permission' => array(
@@ -112,14 +112,14 @@ class Breeze
 	/* The almighty Wall button */
 	public static function Wall_Menu(&$menu_buttons){
 
-		global $scripturl, $txt;
+		global $scripturl, $txt, $context;
 
 		loadLanguage('Breeze');
 
-		$insert = empty($this->breeze['global_settings']['menu_position']) ? 'home' : $this->breeze['global_settings']['menu_position'];
+		$insert = empty($context['breeze']['global_settings']['menu_position']) ? 'home' : $context['breeze']['global_settings']['menu_position'];
 
 		/* Does the General Wall is enable? */
-		if (empty($this->breeze['global_settings']['enable_general_wall']))
+		if (empty($context['breeze']['global_settings']['enable_general_wall']))
 			return;
 
 		/* Let's add our button next to the admin's selection...
@@ -147,7 +147,7 @@ class Breeze
 							'show' => allowedTo('profile_view_own'),
 						),
 						'my_wall_permissions' => array(
-							'title' => $txt['breeze_user_permissions_name',
+							'title' => $txt['breeze_user_permissions_name'],
 							'href' => $scripturl . '?action=profile;area=breezepermissions',
 							'show' => allowedTo('profile_view_own'),
 						),
@@ -171,33 +171,33 @@ class Breeze
 	}
 
 	/* It's all about Admin settings from now on */
-	public static function Admin_Button(&$admin_areas){
-
-		global $txt, $context, $sourcedir;
+	public static function Admin_Button(&$admin_menu)
+	{
+		global $txt;
 
 		loadLanguage('Breeze');
 
-		$admin_areas['breezeadmin']= array(
+		$admin_menu['breezeadmin']= array(
 			'title' => $txt['breeze_admin_settings_admin_panel'],
 			'permission' => array('breeze_edit_general_settings'),
 			'areas' => array(
 				'breezeindex' => array(
 					'label' => $txt['breeze_admin_settings_main'],
-					'file' => 'Breeze_Admin',
+					'file' => 'Breeze/Breeze_Admin.php',
 					'function' => 'Breeze_Admin::Main',
 					'icon' => 'administration.gif',
 					'permission' => array('breeze_edit_general_settings'),
 				),
 				'breezesettings' => array(
 					'label' => $txt['breeze_admin_settings_settings'],
-					'file' => 'Breeze_Admin.php',
+					'file' => 'Breeze/Breeze_Admin.php',
 					'function' => 'Breeze_Admin::Settings',
 					'icon' => 'corefeatures.gif',
 					'permission' => array('breeze_edit_general_settings'),
 				),
 				'breezedonate' => array(
 					'label' => $txt['breeze_admin_settings_donate'],
-					'file' => 'Breeze_Admin.php',
+					'file' => 'Breeze/Breeze_Admin.php',
 					'function' => 'Breeze_Admin::Donate',
 					'icon' => 'support.gif',
 					'permission' => array('breeze_edit_general_settings'),

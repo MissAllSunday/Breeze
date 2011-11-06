@@ -39,36 +39,22 @@ class Breeze_Subs {
 		return $versions;
 	}
 
-	/* Admin headers */
-	public static function Admin_Headers()
+	/* Headers */
+	public static function Headers($admin = false)
 	{
 		global $context, $settings;
 
-		if($context['current_action'] == 'admin' && isset($_REQUEST['area']) && $_REQUEST['area'] == 'breezeadmin')
+		if($context['current_action'] == 'admin' && $admin == true && Breeze_Globals::Is_Set('breezeindex') && Breeze_Globals::Is_Set('breezesettings') || Breeze_Globals::Is_Set('breezedonate'))
+		{
 			$context['html_headers'] .= '
-			<script type="text/javascript">
-				if (typeof jQuery == \'undefined\'){
-					var meta = document.getElementsByTagName(\'meta\')[0];
-					var script = document.createElement(\'script\');
-					script.setAttribute("type","text/javascript");
-					script.setAttribute("src","http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js");
-					script.setAttribute("charset","utf-8");
-					document.getElementsByTagName(\'head\')[0].insertBefore(script,meta);
-				}
-			</script>
+			<link href="'. $settings['theme_url']. '/css/breezeAdmin.css" rel="stylesheet" type="text/css" />
+			<script src="'. $settings['theme_url']. '/scripts/jquery.zrssfeed.min.js" type="text/javascript"></script>';
+		}
 
-			<script src="', $settings['theme_url'], '/scripts/breeze.js" type="text/javascript"></script>
-			<link href="', $settings['theme_url'], '/css/breezeAdmin.css" rel="stylesheet" type="text/css" />';
-	}
-
-	/* General headers */
-	public static function General_Headers()
-	{
-		global $context, $settings;
 
 		if($context['current_action'] == 'wall' && $context['current_action'] == 'profile')
-			$context['html_headers'] .= '
-			<script type="text/javascript">
+		{
+			$context['html_headers'] .= 'script type="text/javascript">
 				if (typeof jQuery == \'undefined\'){
 					var meta = document.getElementsByTagName(\'meta\')[0];
 					var script = document.createElement(\'script\');
@@ -78,8 +64,9 @@ class Breeze_Subs {
 					document.getElementsByTagName(\'head\')[0].insertBefore(script,meta);
 				}
 			</script>
-			<script src="', $settings['theme_url'], '/scripts/breeze.js" type="text/javascript"></script>
-			<script src="', $settings['theme_url'], '/scripts/jquery.zrssfeed.min.js" type="text/javascript"></script>';
+			<script src="'. $settings['theme_url']. '/scripts/breeze.js" type="text/javascript"></script>
+			<link href="'. $settings['theme_url']. '/css/breeze.css" rel="stylesheet" type="text/css" />';
+		}
 	}
 
 	/* Relative dates  <http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html> */

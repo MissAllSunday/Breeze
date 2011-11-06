@@ -9,7 +9,7 @@
  */
 
 if (!class_exists('BreezeDB')):
-	class BreezeDB
+	class Breeze_DB
 	{
 		function __construct($table)
 		{
@@ -17,7 +17,7 @@ if (!class_exists('BreezeDB')):
 			$this->data_result = array();
 		}
 
-		public static function Params($params, $data = null, $values = null)
+		function Params($params, $data = null, $values = null)
 		{
 			if(is_null($params))
 				return false;
@@ -31,7 +31,7 @@ if (!class_exists('BreezeDB')):
 			$this->data = !is_array($data) ? array($data) : $data;
 		}
 
-		public static function GetData($key = null, $single = false)
+		function GetData($key = null, $single = false)
 		{
 			global $smcFunc;
 
@@ -69,7 +69,7 @@ if (!class_exists('BreezeDB')):
 			/* return $this->data_result; */
 		}
 
-		public static function UpdateData()
+		function UpdateData()
 		{
 			global $smcFunc;
 
@@ -84,7 +84,7 @@ if (!class_exists('BreezeDB')):
 			);
 		}
 
-		public static function DeleteData()
+		function DeleteData()
 		{
 			global $smcFunc;
 
@@ -98,7 +98,7 @@ if (!class_exists('BreezeDB')):
 			);
 		}
 
-		public static function InsertData($data, $values, $indexes)
+		function InsertData($data, $values, $indexes)
 		{
 			if(is_null($values) || is_null($indexes) || is_null($data))
 				return false;
@@ -117,7 +117,7 @@ if (!class_exists('BreezeDB')):
 			);
 		}
 
-		public static function Count($params = null, $data = null)
+		function Count($params = null, $data = null)
 		{
 			global $smcFunc;
 

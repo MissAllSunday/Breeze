@@ -29,7 +29,7 @@ class Breeze_Logs
 			'limit' => $limit ? $limit : 0
 		);
 
-		$query = new BreezeDB('breeze_Logs');
+		$query = new Breeze_DB('breeze_Logs');
 		$query->Params($params, $data);
 		$query->GetData();
 
@@ -62,12 +62,12 @@ class Breeze_Logs
 			empty($params['date']) ? time() : $params['date'],
 			empty($params['user']) ? $user_info['id'] : $params['user'],
 			empty($params['name']) ? 'null' : $params['name'],
-			empty($params['action'] ? 'null' : $params['action']
+			empty($params['action']) ? 'null' : $params['action']
 		);
 		$indexes = array(
 			'id'
 		);
-		$insert = new BreezeDB('breeze_logs');
+		$insert = new Breeze_DB('breeze_logs');
 		$insert->InsertData($data, $values, $indexes);
 	}
 }
