@@ -21,9 +21,8 @@ class Breeze_Globals extends Breeze
 
 	public function Get($index)
 	{
-		$this->get[$index] = '';
 
-		if (isset($this->get[$index]) && !empty($this->get[$index]))
+		if (self::Is_Set($this->get[$index]))
 			$this->get[$index] = self::Sanitize($this->get[$index]);
 
 		return $this->get[$index];
