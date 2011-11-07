@@ -25,29 +25,6 @@ class Breeze
 {
 	public function __construct()
 	{
-		global $context, $sourcedir;
-
-		$context['breeze']['global_settings'] = array();
-
-		$params = array(
-				'rows' => 'enable, menu_position, enable_general_wall',
-		);
-
-		$query = new Breeze_DB('breeze_Settings');
-		$query->Params($params);
-		$query->GetData();
-
-		if (!empty($query->data_result))
-			$context['breeze']['global_settings'] = $query->data_result;
-
-		/* Define all settings as empty, me wantz no problems */
-		else
-			$context['breeze']['global_settings'] = array(
-				'enable' => '',
-				'menu_position' => '',
-				'enable_general_wall' => ''
-			);
-			
 	}
 
 	/* Who can use this stuff? */
@@ -184,21 +161,21 @@ class Breeze
 				'breezeindex' => array(
 					'label' => $txt['breeze_admin_settings_main'],
 					'file' => 'Breeze/Breeze_Admin.php',
-					'function' => 'Breeze_Admin::Main',
+					'function' => 'Breeze_Admin_Main',
 					'icon' => 'administration.gif',
 					'permission' => array('breeze_edit_general_settings'),
 				),
 				'breezesettings' => array(
 					'label' => $txt['breeze_admin_settings_settings'],
 					'file' => 'Breeze/Breeze_Admin.php',
-					'function' => 'Breeze_Admin::Settings',
+					'function' => 'Breeze_Admin:_Settings',
 					'icon' => 'corefeatures.gif',
 					'permission' => array('breeze_edit_general_settings'),
 				),
 				'breezedonate' => array(
 					'label' => $txt['breeze_admin_settings_donate'],
 					'file' => 'Breeze/Breeze_Admin.php',
-					'function' => 'Breeze_Admin::Donate',
+					'function' => 'Breeze_Admin_Donate',
 					'icon' => 'support.gif',
 					'permission' => array('breeze_edit_general_settings'),
 				),

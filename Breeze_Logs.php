@@ -19,7 +19,7 @@ class Breeze_Logs
 		/* Get the lastest logs from $type */
 
 		$params = array(
-			'rows' =>'id, id_entry, id_comment, type, date, user, name, action',
+			'rows' => 'id, id_entry, date, id_user, action',
 			'where' => 'type = {string:type}',
 			'limit' => $limit ? '{int:limit}' : ''
 		);

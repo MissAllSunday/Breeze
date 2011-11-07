@@ -11,9 +11,8 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
- class Breeze_Admin
- {
-	public static function Main()
+	/* We can't call a static method from a string... let's do this the old way instead... */
+	function Breeze_Admin_Main()
 	{
 		global $txt, $scripturl, $context;
 
@@ -35,13 +34,13 @@ if (!defined('SMF'))
 		$context['breeze']['versions'] = Breeze_Subs::Check_Versions();
 
 		/* Load all admin logs */
-		$context['breeze']['logs']['admin'] = Breeze_Logs::Get('admin');
+		$context['breeze']['logs']['admin'] = Breeze_Logs::Get('admin', 5);
 
 		/* Get the relative date */
 		$context['breeze']['logs']['admin']['date'] = Breeze_Subs::Time_Elapsed($context['breeze']['logs']['admin']['date']);
 	}
 
-	public static function Settings()
+	function Breeze_Admin_Settings()
 	{
 		global $txt, $context;
 
@@ -84,7 +83,7 @@ if (!defined('SMF'))
 	}
 
 	/* Pay no attention to the girl behind the curtain */
-	public static function Donate()
+	function Breeze_Admin_Donate()
 	{
 		global $txt, $context;
 
@@ -99,5 +98,5 @@ if (!defined('SMF'))
 			'name' => $txt['breeze_admin_settings_donate']
 		);
 	}
-}
+
 ?>

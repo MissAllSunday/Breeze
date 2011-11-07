@@ -50,8 +50,9 @@
 				),
 				array(
 					'name' => 'likes',
-					'type' => 'text',
-					'size' => '',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
 				),
 				array(
 					'name' => 'date',
@@ -107,8 +108,9 @@
 				),
 				array(
 					'name' => 'likes',
-					'type' => 'text',
-					'size' => '',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
 				),
 			),
 			'indexes' => array(
@@ -123,28 +125,52 @@
 		);
 
 		$tables[] = array(
-			'table_name' => '{db_prefix}breeze_settings',
+			'table_name' => '{db_prefix}breeze_logs',
 			'columns' => array(
 				array(
-					'name' => 'enable',
+					'name' => 'id',
 					'type' => 'int',
-					'size' => 1,
+					'size' => 5,
 					'null' => false
 				),
 				array(
-					'name' => 'menu_position',
+					'name' => 'id_entry',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
+				array(
+					'name' => 'id_comment',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
+				array(
+					'name' => 'type',
 					'type' => 'varchar',
 					'size' => 255,
 					'null' => false
 				),
 				array(
-					'name' => 'enable_general_wall',
-					'type' => 'int',
-					'size' => 1,
+					'name' => 'date',
+					'type' => 'varchar',
+					'size' => 255,
 					'null' => false
 				),
 				array(
-					'name' => 'rss_url',
+					'name' => 'id_user',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
+				array(
+					'name' => 'user_name',
+					'type' => 'varchar',
+					'size' => 255,
+					'null' => false
+				),
+				array(
+					'name' => 'action',
 					'type' => 'varchar',
 					'size' => 255,
 					'null' => false
@@ -153,7 +179,7 @@
 			'indexes' => array(
 				array(
 					'type' => 'primary',
-					'columns' => array('enable')
+					'columns' => array('id')
 				),
 			),
 			'if_exists' => 'ignore',

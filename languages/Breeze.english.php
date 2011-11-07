@@ -45,4 +45,24 @@ $txt['breeze_time_hour'] = 'hour';
 $txt['breeze_time_day'] = 'day';
 $txt['breeze_time_month'] = 'month';
 $txt['breeze_time_year'] = 'year';
+
+/* Permissions strings */
+$txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to view the Wall.';
+$txt['permissiongroup_breeze_per'] = 'Breeze mod permissions';
+$txt['permissiongroup_simple_breeze_per'] = 'Breeze mod permissions';
+$txt['permissionname_breeze_view_general_wall'] = 'View the general Wall';
+$txt['permissionname_breeze_edit_general_settings'] = 'Edit the general Breeze settings';
+$txt['permissionname_breeze_delete_entries_own_wall'] = 'Delete all entries posted on his/her own wall.';
+$txt['permissionname_breeze_delete_entries_any_wall'] = 'Delete all entries on any wall';
+$txt['permissionname_breeze_delete_comments_own_wall'] = 'Delete all comments posted on his/her own wall.';
+$txt['permissionname_breeze_delete_entries_made_by_me'] = 'Delete all entries made by this user, regarding on what wall he/she posted on.';
+$txt['permissionname_breeze_delete_comments_made_by_me'] = 'Delete all comments made by this user, regarding on what wall he/she posted on.';
+$txt['permissionname_breeze_edit_settings_any'] = 'Edit the user settings of any profile';
+$txt[''] = '';
+$txt[''] = '';
+$txt[''] = '';
+$txt[''] = '';
+$txt[''] = '';
+$txt[''] = '';
+
 ?>
