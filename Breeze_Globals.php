@@ -11,33 +11,37 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class Breeze_Globals extends Breeze
+class Globals
 {
-	public function __construct()
+	private static $instances = array();
+ 
+	public static function factory($var)
 	{
-		$this->get = $_GET;
-		$this->post = $_POST;
-    }
-
-	public function Get($index)
-	{
-
-		if (self::Is_Set($this->get[$index]))
-			$this->get[$index] = self::Sanitize($this->get[$index]);
-
-		return $this->get[$index];
+		if (array_key_exists($var, self::$instances))
+		{
+			return self::$instances[$var];
+		}
+		return self::$instances[$var] = new Globals($var);
 	}
 
-	public function Post($index)
+	function __construct($var)
 	{
-		if (self::Is_Set($this->post[$index]) == true)
-			return self::Sanitize($this->post[$index]);
+		if ($var == 'get')
+			$this->request = $_GET;
+
+		elseif ($var == 'post')
+			$this->request = $_POST;
 	}
 
-	public static function Is_Set($var)
+	function see($value)
 	{
-		if (isset($var) && !empty($var))
-		return true;
+		return self::Sanitize($this->request[$value]);
+	}
+
+	public static function validate($var)
+	{
+		if (isset($var) && !empty($var) && in_array($var, $_GET) || in_array($var, $_POST))
+			return true;
 
 		else
 			return false;
@@ -45,17 +49,16 @@ class Breeze_Globals extends Breeze
 
 	public static function Sanitize($var)
 	{
-		global $smcFunc;
+		if (get_magic_quotes_gpc())
+			$var = stripslashes($var);
 
-		if (is_string($var) == true)
-		{
-			$var = $smcFunc['htmlspecialchars']($var, ENT_QUOTES);
-			$var = $smcFunc['htmltrim']($var, ENT_QUOTES);
-		}
-		if (is_int($var) == true)
-			 $var = (int) $var;
+		if (is_string($var))
+			$var = trim(htmlspecialchars($var, ENT_QUOTES));
+		
+		elseif (is_int($var))
+			$var = (int) $var;
 
-			 return $var;
+		return $var;
 	}
 }
 ?>
