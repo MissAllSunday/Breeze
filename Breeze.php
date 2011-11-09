@@ -22,12 +22,11 @@ if (!defined('SMF'))
 		{
 			foreach($method as $m)
 			{
-				return include_once($sourcedir.'/Breeze/'.$m.'.php');
+				 include_once($sourcedir.'/Breeze/'.$m.'.php');
 			}
 		}
-
 		else
-			return include_once($sourcedir.'/Breeze/'.$method.'.php');
+			 include_once($sourcedir.'/Breeze/'.$method.'.php');
 	}
 
 class Breeze
@@ -59,8 +58,12 @@ class Breeze
 		global $txt;
 
 		loadLanguage('Breeze');
+		LoadBreezeMethod('Breeze_Settings');
 
-		if (!empty($context['breeze']['global_settings']['enable']))
+		/* Settings are required here */
+		$s = Breeze_Settings::getInstance();
+
+		if ($s->enable('breeze_admin_settings_enable'))
 			$profile_areas['info']['summary'] = array(
 				'label' => $txt['breeze_general_wall'],
 				'file' => 'Breeze_User.php',
@@ -101,12 +104,16 @@ class Breeze
 		global $scripturl, $txt, $context;
 
 		loadLanguage('Breeze');
+		LoadBreezeMethod('Breeze_Settings');
 
-		$insert = empty($context['breeze']['global_settings']['menu_position']) ? 'home' : $context['breeze']['global_settings']['menu_position'];
+		/* Settings are required here */
+		$s = Breeze_Settings::getInstance();
 
 		/* Does the General Wall is enable? */
-		if (empty($context['breeze']['global_settings']['enable_general_wall']))
+		if ($s->enable('breeze_admin_settings_enablegeneralwall') == false)
 			return;
+
+		$insert = $s->get('breeze_admin_settings_menuposition') == 'home' ? 'home' : $s->get('breeze_admin_settings_menuposition');
 
 		/* Let's add our button next to the admin's selection...
 		Thanks to SlammedDime <http://mattzuba.com> for the example */
@@ -141,7 +148,7 @@ class Breeze
 				),
 				'breeze_admin_panel' => array(
 					'title' => $txt['breeze_admin_settings_admin_panel'],
-					'href' => $scripturl . '?action=admin;area=breezeadmin',
+					'href' => $scripturl . '?action=admin;area=breezeindex',
 					'show' => allowedTo('breeze_edit_general_settings'),
 				),
 			),

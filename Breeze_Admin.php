@@ -18,7 +18,7 @@ if (!defined('SMF'))
 
 		loadLanguage('Breeze');
 		loadtemplate('Breeze');
-		LoadBreezeMethod(array('Breeze_Subs', 'Breeze_Logs'));
+		LoadBreezeMethod(array('Breeze_Settings','Breeze_Subs'));
 
 		/* Set all the page stuff */
 		$context['page_title'] = $txt['breeze_admin_settings_main'];
@@ -33,6 +33,10 @@ if (!defined('SMF'))
 
 		/* Tell them if their server is up to the challange*/
 		$context['breeze']['versions'] = Breeze_Subs::Check_Versions();
+		
+		/* Load the rss url from the database */
+		$rss = Breeze_Settings::getInstance();
+		$context['breeze']['rss_url'] = $rss->get('breeze_admin_settings_rss_url');
 
 	}
 
@@ -46,7 +50,7 @@ if (!defined('SMF'))
 		require_once($sourcedir . '/ManageServer.php');
 
 		$config_vars = array(
-				array('check', 'breeze_admin_settings_eneble', 'subtext' => $txt['breeze_admin_settings_eneble_sub']),
+				array('check', 'breeze_admin_settings_enable', 'subtext' => $txt['breeze_admin_settings_enable_sub']),
 				array('select', 'breeze_admin_settings_menuposition', array('home' => $txt['home'], 'help' => $txt['help'], 'profile' => $txt['profile']), 'subtext' => $txt['breeze_admin_settings_menuposition_sub']),
 				array('check', 'breeze_admin_settings_enablegeneralwall', 'subtext' => $txt['breeze_admin_settings_enablegeneralwall_sub']),
 		);
@@ -67,10 +71,14 @@ if (!defined('SMF'))
 	/* Pay no attention to the girl behind the curtain */
 	function Breeze_Admin_Donate()
 	{
-		global $txt, $context;
+		global $txt, $context, $scripturl;
 
-		loadLanguage('BreezeAdmin');
-		loadtemplate('BreezeAdmin');
+		loadLanguage('Breeze');
+		loadtemplate('Breeze');
+		LoadBreezeMethod('Breeze_Subs');
+
+		/* Headers */
+		Breeze_Subs::Headers(true);
 
 		/* Page stuff */
 		$context['page_title'] = $txt['breeze_admin_settings_donate'];
@@ -80,5 +88,4 @@ if (!defined('SMF'))
 			'name' => $txt['breeze_admin_settings_donate']
 		);
 	}
-
 ?>

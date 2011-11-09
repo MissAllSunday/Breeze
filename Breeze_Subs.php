@@ -48,32 +48,51 @@ class Breeze_Subs {
 	{
 		global $context, $settings;
 
-		LoadBreezeMethod('Breeze_Globals');
+		/* Let's load jquery from google or microsoft CDN only if it hasn't been loaded yet */
+			$context['html_headers'] .= '
+			<script type="text/javascript">
+	function loadScript(src, callback) {
+		var head=document.getElementsByTagName(\'head\')[0];
+		var script= document.createElement(\'script\');
+		script.type= \'text/javascript\';
+		script.onreadystatechange = function () {
+			if (this.readyState == \'complete\' || this.readyState == \'loaded\') {
+				callback();
+			}
+		}
+		script.onload = callback;
+		script.src = src;
+		head.appendChild(script);
+	}
 
-		$header = Breeze_Globals::factory('get');
+	function isjQueryLoaded() {
+		return (typeof jQuery !== \'undefined\');
+	}
 
-		if($context['current_action'] == 'admin' && $admin == true && $header->validate('breezeindex') && $header->validate('breezesettings') || $header->validate('breezedonate'))
+	function tryLoadChain() {
+		var chain = arguments;
+		if (!isjQueryLoaded()) {
+			if (chain.length) {
+				loadScript(
+					chain[0],
+					function() {
+						tryLoadChain.apply(this, Array.prototype.slice.call(chain, 1));
+					}
+				);
+			}
+		}
+	}
+tryLoadChain(
+		\'https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js\',
+		\'http://ajax.microsoft.com/ajax/jQuery/jquery-1.6.4.min.js\');
+	</script>
+			<script src="'. $settings['theme_url']. '/js/breeze.js" type="text/javascript"></script>
+			<link href="'. $settings['theme_url']. '/css/breeze.css" rel="stylesheet" type="text/css" />';
+
+		if($admin)
 		{
 			$context['html_headers'] .= '
-			<link href="'. $settings['theme_url']. '/css/breezeAdmin.css" rel="stylesheet" type="text/css" />
-			<script src="'. $settings['theme_url']. '/scripts/jquery.zrssfeed.min.js" type="text/javascript"></script>';
-		}
-
-
-		if($context['current_action'] == 'wall' && $context['current_action'] == 'profile')
-		{
-			$context['html_headers'] .= 'script type="text/javascript">
-				if (typeof jQuery == \'undefined\'){
-					var meta = document.getElementsByTagName(\'meta\')[0];
-					var script = document.createElement(\'script\');
-					script.setAttribute("type","text/javascript");
-					script.setAttribute("src","http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js");
-					script.setAttribute("charset","utf-8");
-					document.getElementsByTagName(\'head\')[0].insertBefore(script,meta);
-				}
-			</script>
-			<script src="'. $settings['theme_url']. '/scripts/breeze.js" type="text/javascript"></script>
-			<link href="'. $settings['theme_url']. '/css/breeze.css" rel="stylesheet" type="text/css" />';
+			<script src="'. $settings['theme_url']. '/js/jquery.zrssfeed.min.js" type="text/javascript"></script>';
 		}
 	}
 
