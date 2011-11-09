@@ -34,6 +34,16 @@ $txt['breeze_admin_settings_php'] = '<span style="color: red;">Your PHP version:
 $txt['breeze_admin_settings_tab_server_specs'] = 'Server Requirements';
 $txt['breeze_admin_settings_tab_admin_logs'] = 'Admin Logs';
 $txt['breeze_admin_settings_donate'] = 'Donate';
+$txt['breeze_admin_settings_enablegeneralwall'] = 'Enable General Wall';
+$txt['breeze_admin_settings_enablegeneralwall_sub'] = 'If enable, a generai wall will apear, in this general wall the user will be able to see his/her buddie\'s status and recent activity';
+$txt['breeze_admin_settings_menuposition'] = 'Select the position for the general Wall button.';
+$txt['breeze_admin_settings_menuposition_sub'] = 'By default is next to the home button.';
+$txt['breeze_admin_settings_eneble'] = 'Enable the Breeze mod';
+$txt['breeze_admin_settings_eneble_sub'] = 'The master setting, this must be enable for the mod to work properly.';
+$txt['breeze_admin_settings_'] = '';
+$txt['breeze_admin_settings_'] = '';
+$txt['breeze_admin_settings_'] = '';
+$txt['breeze_admin_settings_'] = '';
 $txt['breeze_admin_settings_'] = '';
 $txt['breeze_admin_settings_'] = '';
 $txt['breeze_admin_settings_'] = '';

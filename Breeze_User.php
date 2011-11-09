@@ -10,15 +10,23 @@
 
 if (!defined('SMF'))
 	die('Hacking attempt...');
+	
+	/* A bunch of wrapper functions so static methods can be callable with a string by SMF */
+	function Breeze_Wrapper_Wall(){Breeze_User::Wall();}
+	function Breeze_Wrapper_Settings(){Breeze_User::Settings();}
+	function Breeze_Wrapper_Permissions(){Breeze_User::Permissions();}
 
-class Breeze_User extends Breeze
+class Breeze_User
 {
 	/* Handle the actions and set the proper files to handle all */
 	public function  __construct()
 	{
-		/* Is this thing even enable? */
-		if (empty($this->breeze['global_settings']['enable']))
-			return;
+	
+	LoadBreezeMethod(array('Breeze_Subs', 'Breeze_Globals'));
+	
+		/* I comment this until I find a better way to get the settings */
+/* 		if (empty($this->breeze['global_settings']['enable']))
+			return; */
 
 		/* Declare all subactions we are gonna need */
 		$sub_actions = array(
@@ -33,10 +41,17 @@ class Breeze_User extends Breeze
 	);
 
 		Breeze_Subs::General_Headers();
+		
+		$sa = Breeze_Globals::factory('get');
 
-		call_user_func($subActions[$_REQUEST['sa']]);
+		/* Does the page even exist? */
+		if ($sa->validate('sa') && in_array($sa->see('sa'), $sub_actions))
+			call_user_func($subActions[$sa->see('sa')]);
+			
+		/* By default we call the user's wall */
+		else
+			call_user_func($subActions['wall']);
 
-		parent:: __construct();
 		/* Done here, lets move on */
 	}
 

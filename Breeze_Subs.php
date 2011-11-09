@@ -13,6 +13,10 @@ if (!defined('SMF'))
 
 class Breeze_Subs {
 
+	function __construct()
+	{
+	}
+
 	/* I can has fun? */
 	public static function Check_Versions()
 	{
@@ -44,7 +48,11 @@ class Breeze_Subs {
 	{
 		global $context, $settings;
 
-		if($context['current_action'] == 'admin' && $admin == true && Breeze_Globals::Is_Set('breezeindex') && Breeze_Globals::Is_Set('breezesettings') || Breeze_Globals::Is_Set('breezedonate'))
+		LoadBreezeMethod('Breeze_Globals');
+
+		$header = Breeze_Globals::factory('get');
+
+		if($context['current_action'] == 'admin' && $admin == true && $header->validate('breezeindex') && $header->validate('breezesettings') || $header->validate('breezedonate'))
 		{
 			$context['html_headers'] .= '
 			<link href="'. $settings['theme_url']. '/css/breezeAdmin.css" rel="stylesheet" type="text/css" />

@@ -11,7 +11,7 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class Globals
+class Breeze_Globals
 {
 	private static $instances = array();
  
@@ -21,7 +21,7 @@ class Globals
 		{
 			return self::$instances[$var];
 		}
-		return self::$instances[$var] = new Globals($var);
+		return self::$instances[$var] = new Breeze_Globals($var);
 	}
 
 	function __construct($var)
@@ -38,7 +38,7 @@ class Globals
 		return self::Sanitize($this->request[$value]);
 	}
 
-	public static function validate($var)
+	function validate($var)
 	{
 		if (isset($var) && !empty($var) && in_array($var, $_GET) || in_array($var, $_POST))
 			return true;

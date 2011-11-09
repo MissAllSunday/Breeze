@@ -18,6 +18,7 @@ if (!defined('SMF'))
 
 		loadLanguage('Breeze');
 		loadtemplate('Breeze');
+		LoadBreezeMethod(array('Breeze_Subs', 'Breeze_Logs'));
 
 		/* Set all the page stuff */
 		$context['page_title'] = $txt['breeze_admin_settings_main'];
@@ -33,53 +34,34 @@ if (!defined('SMF'))
 		/* Tell them if their server is up to the challange*/
 		$context['breeze']['versions'] = Breeze_Subs::Check_Versions();
 
-		/* Load all admin logs */
-		$context['breeze']['logs']['admin'] = Breeze_Logs::Get('admin', 5);
-
-		/* Get the relative date */
-		$context['breeze']['logs']['admin']['date'] = Breeze_Subs::Time_Elapsed($context['breeze']['logs']['admin']['date']);
 	}
 
 	function Breeze_Admin_Settings()
 	{
-		global $txt, $context;
+		global $scripturl, $txt, $context, $sourcedir;
 
-		loadLanguage('BreezeAdmin');
-		loadtemplate('BreezeAdmin');
+		loadLanguage('Breeze');
+		$context['sub_template'] = 'show_settings';
 
-		/* Page stuff */
-		$context['page_title'] = $txt['breeze_admin_settings_settings'];
-		$context['sub_template'] = 'admin_settings';
-		$context['linktree'][] = array(
-			'url' => $scripturl . '?action=admin;area=breezesettings',
-			'name' => $txt['breeze_admin_settings_settings']
+		require_once($sourcedir . '/ManageServer.php');
+
+		$config_vars = array(
+				array('check', 'breeze_admin_settings_eneble', 'subtext' => $txt['breeze_admin_settings_eneble_sub']),
+				array('select', 'breeze_admin_settings_menuposition', array('home' => $txt['home'], 'help' => $txt['help'], 'profile' => $txt['profile']), 'subtext' => $txt['breeze_admin_settings_menuposition_sub']),
+				array('check', 'breeze_admin_settings_enablegeneralwall', 'subtext' => $txt['breeze_admin_settings_enablegeneralwall_sub']),
 		);
 
-		/* Load the settings */
-		$context['breeze']['settings'] = $this->breeze['global_settings'];
+		$context['post_url'] = $scripturl . '?action=admin;area=breezesettings;save';
 
-		/* Saving... */
-		if (Breeze_Globals::Is_Set('save'))
+		// Saving?
+		if (isset($_GET['save']))
 		{
 			checkSession();
+			saveDBSettings($config_vars);
 			redirectexit('action=admin;area=breezesettings');
-
-			$data = array(
-				'enable' => 'int',
-				'menu_position' => 'int',
-				'enable_general_wall' => 'int',
-			);
-			$values = array(
-				Breeze_Globals::Post('enable'),
-				Breeze_Globals::Post('menu_position'),
-				Breeze_Globals::Post('enable_general_wall')
-			);
-			$indexes = array(
-				'id'
-			);
-			$insert = new Breeze_DB('breeze_logs');
-			$insert->InsertData($data, $values, $indexes);
 		}
+
+		prepareDBSettingContext($config_vars);
 	}
 
 	/* Pay no attention to the girl behind the curtain */

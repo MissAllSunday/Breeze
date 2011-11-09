@@ -13,12 +13,21 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-	/* The needed class */
-	function __autoload($classname)
+	/* An attempt to load the static method(s) used across the mod */
+	function LoadBreezeMethod($method)
 	{
 		global $sourcedir;
 
-		include($sourcedir.'/Breeze/'.$classname.'.php');
+		if (is_array($method))
+		{
+			foreach($method as $m)
+			{
+				return include_once($sourcedir.'/Breeze/'.$m.'.php');
+			}
+		}
+
+		else
+			return include_once($sourcedir.'/Breeze/'.$method.'.php');
 	}
 
 class Breeze
@@ -55,7 +64,7 @@ class Breeze
 			$profile_areas['info']['summary'] = array(
 				'label' => $txt['breeze_general_wall'],
 				'file' => 'Breeze_User.php',
-				'function' => 'Breeze_User::Wall',
+				'function' => 'Breeze_Wrapper_Wall',
 				'permission' => array(
 					'own' => 'profile_view_own',
 					'any' => 'profile_view_any',
@@ -67,7 +76,7 @@ class Breeze
 			'breezesettings' => array(
 				'label' => $txt['breeze_user_settings_name'],
 				'file' => 'Breeze_User.php',
-				'function' => 'Breeze_User::Settings',
+				'function' => 'Breeze_Wrapper_Settings',
 				'permission' => array(
 					'own' => 'profile_view_own',
 					'any' => 'profile_view_any',
@@ -76,7 +85,7 @@ class Breeze
 			'breezepermissions' => array(
 				'label' => $txt['breeze_user_permissions_name'],
 				'file' => 'Breeze_User.php',
-				'function' => 'Breeze_User::Permissions',
+				'function' => 'Breeze_Wrapper_Permissions',
 				'permission' => array(
 					'own' => 'profile_view_own',
 					'any' => 'breeze_edit_settings_any',
@@ -168,7 +177,7 @@ class Breeze
 				'breezesettings' => array(
 					'label' => $txt['breeze_admin_settings_settings'],
 					'file' => 'Breeze/Breeze_Admin.php',
-					'function' => 'Breeze_Admin:_Settings',
+					'function' => 'Breeze_Admin_Settings',
 					'icon' => 'corefeatures.gif',
 					'permission' => array('breeze_edit_general_settings'),
 				),
@@ -183,6 +192,7 @@ class Breeze
 		);
 	}
 }
+
 
 	/* And so it is
 	 Just like you said it would be
