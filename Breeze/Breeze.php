@@ -64,9 +64,9 @@ class Breeze
 		$s = Breeze_Settings::getInstance();
 
 		if ($s->enable('breeze_admin_settings_enable'))
-			$profile_areas['info']['summary'] = array(
+			$profile_areas['info']['areas']['summary'] = array(
 				'label' => $txt['breeze_general_wall'],
-				'file' => 'Breeze_User.php',
+				'file' => '/Breeze/Breeze_User.php',
 				'function' => 'Breeze_Wrapper_Wall',
 				'permission' => array(
 					'own' => 'profile_view_own',
@@ -75,7 +75,7 @@ class Breeze
 			);
 
 		/* User individual settings goes right here... */
-		$profile_areas['breeze_profile'] = array(
+/* 		$profile_areas['breeze_profile'] = array(
 			'breezesettings' => array(
 				'label' => $txt['breeze_user_settings_name'],
 				'file' => 'Breeze_User.php',
@@ -94,7 +94,7 @@ class Breeze
 					'any' => 'breeze_edit_settings_any',
 				),
 			),
-		);
+		); */
 		/* Done with the hacking... */
 	}
 
@@ -160,7 +160,7 @@ class Breeze
 	/* Set the action for the General Wall */
 	public static function Action_Hook(&$actions)
 	{
-		$actions['wall'] = array('Breeze_General.php', 'Breeze_General::Wall');
+		$actions['wall'] = array('/Breeze/Breeze_General.php', 'Breeze_General::Wall');
 	}
 
 	/* It's all about Admin settings from now on */
@@ -199,7 +199,6 @@ class Breeze
 		);
 	}
 }
-
 
 	/* And so it is
 	 Just like you said it would be

@@ -25,10 +25,9 @@ class Breeze_Settings
 		$pattern = '/breeze_/';
 
 		foreach ($modSettings as $k => $v)
-		{
 			if (preg_match($pattern, $k))
 				$matches[$k] = $v;
-		}
+
 		$this->settings = $matches;
 	}
 

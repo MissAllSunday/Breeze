@@ -20,23 +20,72 @@ $(document).ready(function () {
 	});
 });
 </script>
-		<span class="clear upperframe breeze_rss_box">
+	<div class="breeze_rss_box">
+		<span class="clear upperframe">
 			<span></span>
 		</span>
-		<div class="roundframe rfix breeze_rss_box">
+		<div class="roundframe rfix">
 			<div class="innerframe">
 				<div class="content">
 					<div id="Breeze_rss"></div>
 				</div>
 			</div>
 		</div>
-		<span class="lowerframe breeze_rss_box">
+		<span class="lowerframe">
 			<span></span>
 		</span>
-	<div class="breeze_admin_info">
-	something here
 	</div>
+	<div class="breeze_admin_info">
+	';
+
+	foreach($context['breeze']['versions'] as $version)
+		echo $version;
+		
+	echo'<br />I dont know what else I should put in here...</div>
 	<div class="clear"></div>';
+}
+
+
+/* Boring stuff you will never see... */
+function template_general_wall()
+{
+	global $txt;
+
+	echo '
+		<span class="clear upperframe">
+			<span></span>
+		</span>
+		<div class="roundframe rfix">
+			<div class="innerframe">
+				<div class="content">
+					',$txt['breeze_admin_settings_donate_text'],'
+				</div>
+			</div>
+		</div>
+		<span class="lowerframe">
+			<span></span>
+		</span><br />';
+}
+
+/* Boring stuff you will never see... */
+function template_user_wall()
+{
+	global $txt, $context;
+
+	echo '
+		<span class="clear upperframe">
+			<span></span>
+		</span>
+		<div class="roundframe rfix">
+			<div class="innerframe">
+				<div class="content">
+					',$context['breeze']['user'].$context['member']['name'].$context['member']['posts'],'
+				</div>
+			</div>
+		</div>
+		<span class="lowerframe">
+			<span></span>
+		</span><br />';
 }
 
 /* Boring stuff you will never see... */

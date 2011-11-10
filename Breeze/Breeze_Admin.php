@@ -23,10 +23,6 @@ if (!defined('SMF'))
 		/* Set all the page stuff */
 		$context['page_title'] = $txt['breeze_admin_settings_main'];
 		$context['sub_template'] = 'admin_home';
-		$context['linktree'][] = array(
-			'url' => $scripturl . '?action=admin;area=breezeindex',
-			'name' => $txt['breeze_admin_settings_main']
-		);
 
 		/* Headers */
 		Breeze_Subs::Headers(true);

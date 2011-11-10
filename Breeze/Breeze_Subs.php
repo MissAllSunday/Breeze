@@ -28,8 +28,8 @@ class Breeze_Subs {
 		);
 
 		$versions = array(
-			'php' => '',
-			'json' => ''
+			'php' => $txt['breeze_admin_settings_php_ok'],
+			'json' => sprintf($txt['breeze_admin_settings_server_needs_ok'], $txt['breeze_admin_settings_json'])
 		);
 
 		loadLanguage('Breeze');
@@ -126,6 +126,24 @@ tryLoadChain(
 				return $r . ' ' . $str . ($r > 1 ? 's' : '');
 			}
 		}
+	}
+
+	/* A function to cut-off a string */
+	public static function Truncate_String($string, $limit, $break = ' ', $pad = '...')
+	{
+		if(empty($limit))
+			$limit = 50;
+
+		 /* return with no change if string is shorter than $limit */
+		if(strlen($string) <= $limit)
+			return $string;
+
+		/* is $break present between $limit and the end of the string? */
+		if(false !== ($breakpoint = strpos($string, $break, $limit)))
+			if($breakpoint < strlen($string) - 1)
+				$string = substr($string, 0, $breakpoint) . $pad;
+
+		return $string;
 	}
 }
 ?>

@@ -57,7 +57,20 @@ class Breeze_User
 
 	public static function Wall()
 	{
+		global $txt, $scripturl, $context, $memID;
 
+		loadLanguage('Breeze');
+		loadtemplate('Breeze');
+		LoadBreezeMethod(array('Breeze_Settings','Breeze_Subs'));
+
+		/* Set all the page stuff */
+		$context['page_title'] = $txt['breeze_general_wall'];
+		$context['sub_template'] = 'user_wall';
+		
+		$context['breeze']['user'] = print_r($memID);
+
+		/* Headers */
+		Breeze_Subs::Headers();
 	}
 
 	public static function Settings()

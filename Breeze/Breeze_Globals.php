@@ -46,7 +46,8 @@ class Breeze_Globals
 
 	function raw($value)
 	{
-		return $this->request[$value];
+		if (isset($this->request[$value]))
+			return $this->request[$value];
 	}
 
 	public static function validate($var)
