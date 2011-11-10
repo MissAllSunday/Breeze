@@ -19,12 +19,9 @@ if (!defined('SMF'))
 		global $sourcedir;
 
 		if (is_array($method))
-		{
 			foreach($method as $m)
-			{
 				 include_once($sourcedir.'/Breeze/'.$m.'.php');
-			}
-		}
+
 		else
 			 include_once($sourcedir.'/Breeze/'.$method.'.php');
 	}
@@ -74,27 +71,33 @@ class Breeze
 				),
 			);
 
+		if ($s->enable('breeze_admin_settings_enable'))
+			$profile_areas['breeze_profile'] = array(
+				'title' => $txt['breeze_general_my_wall_settings'],
+				'areas' => array(
+				),
+			);
+
 		/* User individual settings goes right here... */
-/* 		$profile_areas['breeze_profile'] = array(
-			'breezesettings' => array(
-				'label' => $txt['breeze_user_settings_name'],
-				'file' => 'Breeze_User.php',
-				'function' => 'Breeze_Wrapper_Settings',
-				'permission' => array(
-					'own' => 'profile_view_own',
-					'any' => 'profile_view_any',
-					),
+		$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
+			'label' => $txt['breeze_user_settings_name'],
+			'file' => 'Breeze_User.php',
+			'function' => 'Breeze_Wrapper_Settings',
+			'permission' => array(
+				'own' => 'profile_view_own',
+				'any' => 'profile_view_any',
 				),
-			'breezepermissions' => array(
-				'label' => $txt['breeze_user_permissions_name'],
-				'file' => 'Breeze_User.php',
-				'function' => 'Breeze_Wrapper_Permissions',
-				'permission' => array(
-					'own' => 'profile_view_own',
-					'any' => 'breeze_edit_settings_any',
-				),
+		);
+
+		$profile_areas['breeze_profile']['areas']['breezepermissions'] = array(
+			'label' => $txt['breeze_user_permissions_name'],
+			'file' => 'Breeze_User.php',
+			'function' => 'Breeze_Wrapper_Permissions',
+			'permission' => array(
+				'own' => 'profile_view_own',
+				'any' => 'breeze_edit_settings_any',
 			),
-		); */
+		);
 		/* Done with the hacking... */
 	}
 

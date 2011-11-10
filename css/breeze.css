@@ -54,3 +54,106 @@ html ul.breeze_tabs li.active, html ul.breeze_tabs li.active a:hover  { /*--Make
 	padding: 20px;
 	font-size: 1.2em;
 }
+
+/* The admin news box */
+.breeze_rss_box
+{
+	float:left;
+	width:60%;
+}
+.breeze_admin_info
+{
+	float:right;
+	width:35%;
+	height: 13.5em;
+}
+
+/* The messages css */
+.breeze_ok_message
+{
+	background-attachment: scroll;
+	background-clip: border-box;
+	background-color: rgb(230, 239, 194);
+	background-image: none;
+	background-origin: padding-box;
+	background-position: 0% 0%;
+	background-repeat: repeat;
+	background-size: auto;
+	border: 2px solid #c6d880;
+	color: rgb(38, 68, 9);
+	margin: 1em;
+	padding: 0.8em;
+}
+.breeze_error_message
+{
+	background-attachment: scroll;
+	background-clip: border-box;
+	background-color: #f7bcbf;
+	background-image: none;
+	background-origin: padding-box;
+	background-position: 0% 0%;
+	background-repeat: repeat;
+	background-size: auto;
+	border: 2px solid #f7262e;
+	color: #8a1f11;
+	margin: 1em;
+	padding: 0.8em;
+}
+
+/* The user wall */
+.breeze_user_left
+{
+	float:left;
+	width:40%;
+}
+
+.breeze_user_left_avatar
+{
+	float:left;
+	margin:2px;
+	padding:1px;
+
+}
+
+.breeze_user_left_info
+{
+	float:right;
+	margin:1px;
+	padding:2px;
+	text-align:left;
+}
+
+ul.breeze_user_left_info
+ { 
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 5px;
+}
+ul.breeze_user_left_info ul li
+{ 
+display: inline;
+list-style-type: none;
+}
+
+.breeze_user_right
+{
+	float:left;
+	width:55%;
+	margin:5px;
+	padding:5px;
+}
+
+.breeze_user_inner
+{
+	margin:5px;
+	padding:5px;
+}
+
+.breeze_user_statusbox
+{
+
+}
+.breeze_user_statusbox textarea
+{
+	border: 1px solid #888;
+}

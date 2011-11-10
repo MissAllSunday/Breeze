@@ -15,6 +15,7 @@ global $txt;
 /* Public/General strings */
 $txt['breeze_general_wall'] = 'Wall';
 $txt['breeze_general_my_wall'] = 'My Wall';
+$txt['breeze_general_my_wall_settings'] = 'My Wall Settings';
 
 
 
@@ -24,7 +25,7 @@ $txt['breeze_user_settings_name'] = 'General Settings';
 $txt['breeze_user_permissions_name'] = 'Permissions';
 
 /* Admin Settings */
-$txt['breeze_admin_settings_admin_panel'] = 'breeze Admin Panel';
+$txt['breeze_admin_settings_admin_panel'] = 'Breeze Admin Panel';
 $txt['breeze_admin_settings_main'] = 'Main breeze Admin Center';
 $txt['breeze_admin_settings_settings'] = 'breeze General Settings';
 $txt['breeze_admin_settings_donate'] = 'Donate';
