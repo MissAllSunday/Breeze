@@ -74,8 +74,7 @@ class Breeze
 		if ($s->enable('breeze_admin_settings_enable'))
 			$profile_areas['breeze_profile'] = array(
 				'title' => $txt['breeze_general_my_wall_settings'],
-				'areas' => array(
-				),
+				'areas' => array(),
 			);
 
 		/* User individual settings goes right here... */

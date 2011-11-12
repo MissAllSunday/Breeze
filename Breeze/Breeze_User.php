@@ -21,38 +21,6 @@ class Breeze_User
 	/* Handle the actions and set the proper files to handle all */
 	public function  __construct()
 	{
-	
-	LoadBreezeMethod(array('Breeze_Subs', 'Breeze_Globals'));
-	
-		/* I comment this until I find a better way to get the settings */
-/* 		if (empty($this->breeze['global_settings']['enable']))
-			return; */
-
-		/* Declare all subactions we are gonna need */
-		$sub_actions = array(
-		'wall' => 'Breeze_User::Wall',
-		'entry' => 'Breeze_User::Entry',
-		'comment' => 'Breeze_User::Comment',
-		'single' => 'Breeze_User::Single',
-		'like' => 'Breeze_Likes::Like',
-		'dislike' => 'Breeze_Likes::Dislike',
-		'delete_entry' => 'Breeze_User::Delete_Entry',
-		'delete_comment' => 'Breeze_User::Delete_Comment',
-	);
-
-		Breeze_Subs::General_Headers();
-		
-		$sa = Breeze_Globals::factory('get');
-
-		/* Does the page even exist? */
-		if ($sa->validate('sa') && in_array($sa->see('sa'), $sub_actions))
-			call_user_func($subActions[$sa->see('sa')]);
-			
-		/* By default we call the user's wall */
-		else
-			call_user_func($subActions['wall']);
-
-		/* Done here, lets move on */
 	}
 
 	public static function Wall()
@@ -61,28 +29,63 @@ class Breeze_User
 
 		loadLanguage('Breeze');
 		loadtemplate('Breeze');
-		LoadBreezeMethod(array('Breeze_Settings','Breeze_Subs'));
+		LoadBreezeMethod(array(
+			'Breeze_Settings',
+			'Breeze_Subs',
+			'Breeze_Globals'
+		));
+		Breeze_Subs::Headers();
 
 		/* Set all the page stuff */
 		$context['page_title'] = $txt['breeze_general_wall'];
 		$context['sub_template'] = 'user_wall';
-		
-		$context['breeze']['user'] = print_r($memID);
 
-		/* Headers */
-		Breeze_Subs::Headers();
+
+
+		/* Handling the subactions */
+		$sa = Breeze_Globals::factory('get');
+
+		$subActions = array(
+			'post' => 'self::Post',
+		/* More actions here... */
+		);
+
+		/* Does the subaction even exist? */
+		if ($sa->validate('sa') && in_array($sa->see('sa'), $subActions))
+			call_user_func($subActions[$sa->see('sa')]);
+
 	}
 
-	public static function Settings()
+	/* We deal with the status/comments here... */
+	public static function Post()
 	{
+		/* We need all of this, really, we do. */
+		LoadBreezeMethod(array(
+			'Breeze_Settings',
+			'Breeze_Subs',
+			'Breeze_Post',
+			'Breeze_Globals')
+		);
+
+		/* Acording to the type, we create a new instance to handle it properly */
+		$p = Breeze_Globals::factory('post');
+
+		if ($p->validate('type') && $p->see('type') == 'status')
+			$value = Breeze_Post::factory('status', $p);
+
+		elseif ($p->validate('type') && $p->see('type') == 'comment')
+			$value = Breeze_Post::factory('comment', $p);
+
+		/* Lets update the wall with the brand new status/comment */
+		if ($value->ok)
+		{
+			echo json_encode($value->publish());
+
+		/* Don't forget to write everything up to the logs */
+
+		}
 
 	}
-
-	public static function Permissions()
-	{
-
-	}
-
 
 
 }

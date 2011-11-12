@@ -21,3 +21,24 @@ $(document).ready(function() {
 	});
 
 });
+
+/* The ajax stuff goes right here... */
+	function breezeAjaxForm(form_id, form_div_to_post, type){
+
+		$.ajax({
+			type: 'POST',
+			url: smf_scripturl + '?action=wall;sa=post',
+			async: false,
+			beforeSend: function(x) {
+				/* Validation stuff here */
+			},
+		 dataType: "json",
+		 success: function(data){
+			//do your stuff with the JSON data
+		 }
+		});
+	}
+
+$(document).ready(function() {  
+    new breezeAjaxForm('status');
+});
