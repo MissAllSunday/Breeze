@@ -191,25 +191,26 @@ function template_user_wall()
 	/* This is the status box,  O RLY? */
 	echo '<div class="breeze_user_right">
 		<div class="windowbg2">
-					<span class="topslice"><span></span></span>
-						<div class="breeze_user_inner">
-							<div class="breeze_user_statusbox">
-								<form method="post" action="', $scripturl, '?action=wall;sa=post" id="status">
-									<textarea cols="50" rows="5"></textarea>
-									<input type="hidden" id="type" name="type" value="status" />
-									<input type="submit" value="Submit" />
-								</form>
-							</div>
-						</div>
-					<span class="botslice"><span></span></span>
-				</div>';
+			<span class="topslice"><span></span></span>
+				<div class="breeze_user_inner">
+					<div class="breeze_user_statusbox">
+						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post" id="status" name="form">
+							<textarea cols="30" rows="2" name="content" id="content" maxlength="145" ></textarea><br />
+							<input type="submit" value="Update" name="submit" class="comment_button"/>
+						</form>
+					</div>
+				</div>
+			<span class="botslice"><span></span></span>
+		</div>';
 
 		/* New ajax status here */
-		
+	echo '<div id="breeze_load_image"></div>
+ <div id="breeze_display_status"></div>';
 				
 
 /* End of the status/comments */
-echo '</div>';
+echo '</div>
+	<div class="clear"></div>';
 }
 
 /* Boring stuff you will never see... */
