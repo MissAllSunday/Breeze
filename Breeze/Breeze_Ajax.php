@@ -13,7 +13,6 @@ if (!defined('SMF'))
 
 class Breeze_Ajax
 {
-
 	private function __construct()
 	{
 	}
@@ -32,41 +31,87 @@ class Breeze_Ajax
 
 		/* Does the subaction even exist? */
 		if ($sa->validate('sa') && in_array($sa->raw('sa'), array_keys($subActions)))
-			call_user_func($subActions[$_GET['sa']]);
+			call_user_func($subActions[$sa->raw('sa')]);
 	}
 
-	/* Deal with the status/comments... */
+	/* Deal with the status... */
 	public static function Post()
 	{
-		global $context;
+		global $context, $user_info, $memberContext;
 
 		/* We need all of this, really, we do. */
 		LoadBreezeMethod(array(
 			'Breeze_Settings',
 			'Breeze_Subs',
-			'Breeze_Post',
-			'Breeze_Globals'
+			'Breeze_Globals',
+			'Breeze_Data'
 		));
 
-		/* Acording to the type, we create a new instance to handle it properly */
+		/* Get the status data */
+		$send_data = Breeze_Globals::factory('post');
+
+		/* The status was posted by the profile owner? */
+		if ($send_data->see('owner_id') == $send_data->see('poster_id'))
+			$profile_id = $send_data->see('owner_id');
+
+		/* No? */
+		else
+			$profile_id = $send_data->see('poster_id');
+
+		/* Build the params array for the query */
+		$params = array(
+			'owner_id' => $send_data->see('owner_id'),
+			'poster_id' => $send_data->see('poster_id'),
+			'body' => $send_data->see('content'),
+			'type' => 'status'
+		);
+
+		/* Send the data far far away to be processed... */
+		$status = Breeze_Data::factory('status');
+		$status->Record($params);
+
+		/* ...and just like that, this status was added to the database...
+		and now we get the same status from the DB to build the server response. */
+
+			$query_params = array(
+				'rows' =>'id, owner_id, poster_id, time, body',
+				'order' => '{raw:sort}',
+			);
+			$query_data = array(
+				'sort' => 'id ASC',
+			);
+			$query = new Breeze_DB('breeze_status');
+			$query->Params($query_params, $query_data);
+			$query->GetData(null, true);
+
+			/* Open Sesame... */
+			$user = $profile_id;
+			loadMemberData($user, false, 'profile');
+			loadMemberContext($user);
+			$user = $memberContext[$user];
 
 
-		/* This is a temp solution... testing porpuses only */
-		$p = Breeze_Globals::factory('post');
+			/* Breeze parser... comming soon :P */
+			/* $query->data_result['body'] = Breeze::Parser($query->data_result['body']); */
 
-		$context['breeze']['post']['status'] = '
-			<div class="windowbg">
-			<span class="topslice"><span></span></span>
-				<div class="breeze_user_inner">
-					<div class="breeze_user_statusbox">
-						'.$p->see('content').'
+
+			$context['breeze']['post']['status'] = '
+				<div class="windowbg">
+				<span class="topslice"><span></span></span>
+					<div class="breeze_user_inner">
+						<div class="breeze_user_status_avatar">
+							'.$user['avatar']['image'].'
+						</div>
+						<div class="breeze_user_status_comment">
+							'.$query->data_result['body'].'
+						</div>
+						<div class="clear"></div>
 					</div>
-				</div>
-			<span class="botslice"><span></span></span>
-		</div>';
+				<span class="botslice"><span></span></span>
+				</div>';
 
-		$context['template_layers'] = array();
-		$context['sub_template'] = 'post_status';
+			$context['template_layers'] = array();
+			$context['sub_template'] = 'post_status';
 	}
 }
 ?>

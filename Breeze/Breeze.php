@@ -18,12 +18,12 @@ if (!defined('SMF'))
 	{
 		global $sourcedir;
 
-		if (is_array($method))
+		if (is_array($method) && !empty($method))
 			foreach($method as $m)
-				 include_once($sourcedir.'/Breeze/'.$m.'.php');
+				include_once($sourcedir.'/Breeze/'.$m.'.php');
 
 		else
-			 include_once($sourcedir.'/Breeze/'.$method.'.php');
+			include_once($sourcedir.'/Breeze/'.$method.'.php');
 	}
 
 class Breeze

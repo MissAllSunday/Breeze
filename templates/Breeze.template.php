@@ -70,7 +70,7 @@ function template_general_wall()
 /* User's wall. */
 function template_user_wall()
 {
-	global $txt, $context, $settings, $scripturl;
+	global $txt, $context, $settings, $scripturl, $user_info, $memberContext;
 
 	echo '
 	<div class="breeze_user_left">
@@ -195,8 +195,10 @@ function template_user_wall()
 				<div class="breeze_user_inner">
 					<div class="breeze_user_statusbox">
 						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post" id="status" name="form">
-							<textarea cols="30" rows="2" name="content" id="content" maxlength="145" ></textarea><br />
-							<input type="submit" value="Update" name="submit" class="comment_button"/>
+							<textarea cols="40" rows="5" name="content" id="content" maxlength="145" ></textarea>
+							<input type="hidden" value="',$context['member']['id'],'" name="owner_id" id="owner_id" />
+							<input type="hidden" value="',$user_info['id'],'" name="poster_id" id="poster_id" /><br />
+							<input type="submit" value="Update" name="submit" class="status_button"/>
 						</form>
 					</div>
 				</div>
@@ -206,7 +208,39 @@ function template_user_wall()
 		/* New ajax status here */
 	echo '<div id="breeze_load_image"></div>
  <div id="breeze_display_status"></div>';
-				
+ 
+	foreach ($context['member']['status'] as $k => $status)
+	{
+		$user = $status['poster_id'];
+		loadMemberData($user, false, 'profile');
+		loadMemberContext($user);
+		$user = $memberContext[$user];
+
+		echo '<div class="windowbg">
+			<span class="topslice"><span></span></span>
+				<div class="breeze_user_inner">
+					<div class="breeze_user_status_avatar">
+						',$user['avatar']['image'],'
+					</div>
+					<div class="breeze_user_status_comment">
+						',$status['body'],'
+						<p /><hr />
+						<a href="#" class="comment_button" id="',$status['id'],'">Comment</a>|like|delete<br />
+						<div id="loadplace',$status['id'],'"></div>
+						<div id="flash',$status['id'],'"></div>
+						 <div class="panel" id="slidepanel',$status['id'],'" style="display:none">
+							<form action="" method="post" name="',$status['id'],'">
+								<textarea id="textboxcontent',$status['id'],'" ></textarea><br />
+								<input type="submit" value="Comment "class="comment_submit" id="',$status['id'],'" />
+							</form>
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			<span class="botslice"><span></span></span>
+			</div>';
+	}
+
 
 /* End of the status/comments */
 echo '</div>

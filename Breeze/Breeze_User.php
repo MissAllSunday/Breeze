@@ -25,20 +25,37 @@ class Breeze_User
 
 	public static function Wall()
 	{
-		global $txt, $scripturl, $context, $memID;
+		global $txt, $scripturl, $context, $memID, $memberContext;
 
 		loadLanguage('Breeze');
 		loadtemplate('Breeze');
 		LoadBreezeMethod(array(
 			'Breeze_Settings',
 			'Breeze_Subs',
-			'Breeze_Globals'
+			'Breeze_Globals',
+			'Breeze_DB'
 		));
 		Breeze_Subs::Headers();
 
 		/* Set all the page stuff */
 		$context['page_title'] = $txt['breeze_general_wall'];
 		$context['sub_template'] = 'user_wall';
+		
+		/* Load all the status */
+		$query_params = array(
+			'rows' =>'id, owner_id, poster_id, time, body',
+			'order' => '{raw:sort}',
+			'where' => 'owner_id={int:memID}'
+		);
+		$query_data = array(
+			'sort' => 'id DESC',
+			'memID' => $context['member']['id']
+		);
+		$query = new Breeze_DB('breeze_status');
+		$query->Params($query_params, $query_data);
+		$query->GetData('id');
+
+			$context['member']['status'] = $query->data_result;
 
 	}
 
