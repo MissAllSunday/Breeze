@@ -105,6 +105,7 @@ html ul.breeze_tabs li.active, html ul.breeze_tabs li.active a:hover  { /*--Make
 {
 	float:left;
 	width:40%;
+
 }
 
 .breeze_user_left_avatar
@@ -141,6 +142,8 @@ list-style-type: none;
 	width:55%;
 	margin:5px;
 	padding:5px;
+	overflow:hiden;
+
 }
 
 .breeze_user_inner
@@ -156,4 +159,12 @@ list-style-type: none;
 .breeze_user_statusbox textarea
 {
 	border: 1px solid #888;
+}
+
+/* Ajax message */
+#breeze_load_image
+{
+	padding:0.8em;
+	margin-bottom:1em;
+	text-align:center;
 }

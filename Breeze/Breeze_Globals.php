@@ -31,6 +31,8 @@ class Breeze_Globals
 			$this->request = $_GET;
 		elseif ($var == 'post')
 			$this->request = $_POST;
+		elseif ($var == 'request')
+			$this->request = $_REQUEST;
 
 		else
 			return;

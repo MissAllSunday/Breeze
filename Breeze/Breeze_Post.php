@@ -37,15 +37,6 @@ class Breeze_Post
 		$this->data = $data;
 	}
 
-	function publish()
-	{
-		/* Write the html for the comment/status */
-		if ($this->value == 'status')
-			$publish = '';
-			
-			
-		return $publish
-	}
 }
 
 ?>

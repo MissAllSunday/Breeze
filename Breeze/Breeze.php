@@ -163,6 +163,9 @@ class Breeze
 	public static function Action_Hook(&$actions)
 	{
 		$actions['wall'] = array('/Breeze/Breeze_General.php', 'Breeze_General::Wall');
+		
+		/* A whole new action just for some ajax calls... */
+		$actions['breezeajax'] = array('/Breeze/Breeze_Ajax.php', 'Breeze_Ajax::factory');
 	}
 
 	/* It's all about Admin settings from now on */
