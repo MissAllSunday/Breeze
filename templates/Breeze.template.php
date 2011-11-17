@@ -209,28 +209,49 @@ function template_user_wall()
 	echo '<div id="breeze_load_image"></div>
  <div id="breeze_display_status"></div>';
  
+ 
 	foreach ($context['member']['status'] as $k => $status)
 	{
-		$breeze_user_info_c = Breeze_UserInfo::Profile($status['poster_id']);
 
 		echo '<div class="windowbg">
 			<span class="topslice"><span></span></span>
 				<div class="breeze_user_inner">
 					<div class="breeze_user_status_avatar">
-						',$breeze_user_info_c,'
+						',$status['breeze_user_info'],'
 					</div>
 					<div class="breeze_user_status_comment">
 						',$status['body'],'
 						<p /><hr />
-						<a href="#" class="comment_button" id="',$status['id'],'">Comment</a>|like|delete<br />
-						<div id="loadplace',$status['id'],'"></div>
-						<div id="flash',$status['id'],'"></div>
-						 <div class="panel" id="slidepanel',$status['id'],'" style="display:none">
-							<form action="" method="post" name="',$status['id'],'">
-								<textarea id="textboxcontent',$status['id'],'" ></textarea><br />
-								<input type="submit" value="Comment "class="comment_submit" id="',$status['id'],'" />
-							</form>
+						|like|delete|',$status['time'],'<p />
+						<div id="comment_flash_',$status['id'],'"></div>';
+						
+						/* Print out the comments */
+						foreach($status['comments'] as $comment)
+							echo'<div class="windowbg2">
+				<span class="topslice"><span></span></span>
+					<div class="breeze_user_inner">
+						<div class="breeze_user_status_avatar">
+							',$comment['comment_user_info'],'<br />
+							',$comment['time'],'
 						</div>
+						<div class="breeze_user_status_comment">
+							',$comment['body'],'
+						</div>
+						<div class="clear"></div>
+					</div>
+				<span class="botslice"><span></span></span>
+				</div>';
+				
+						echo'<div id="comment_loadplace_',$status['id'],'"></div>
+
+							<form action="', $scripturl, '?action=breezeajax;sa=postcomment" method="post" name="formID_',$status['id'],'" id="formID_',$status['id'],'">
+								<textarea id="textboxcontent_',$status['id'],'" cols="40" rows="2"></textarea>
+								<input type="hidden" value="',$status['poster_id'],'" name="status_owner_id',$status['id'],'" id="status_owner_id',$status['id'],'" />
+								<input type="hidden" value="',$context['member']['id'],'" name="profile_owner_id',$status['id'],'" id="profile_owner_id',$status['id'],'" />
+								<input type="hidden" value="',$status['id'],'" name="status_id',$status['id'],'" id="status_id',$status['id'],'" />
+								<input type="hidden" value="',$user_info['id'],'" name="poster_comment_id',$status['id'],'" id="poster_comment_id',$status['id'],'" /><br />
+								<input type="submit" value="Comment" class="comment_submit" id="',$status['id'],'" />
+							</form>
 					</div>
 					<div class="clear"></div>
 				</div>

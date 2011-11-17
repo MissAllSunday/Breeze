@@ -56,6 +56,7 @@ $txt['breeze_admin_settings_'] = '';
 
 /* Time */
 $txt['breeze_time_second'] = 'second';
+$txt['breeze_time_ago'] = 'ago.';
 $txt['breeze_time_minute'] = 'minute';
 $txt['breeze_time_hour'] = 'hour';
 $txt['breeze_time_day'] = 'day';

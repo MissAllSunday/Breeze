@@ -6,7 +6,6 @@
 		$(".status_button").click(function()
 		{
 			var test = $("#content").val();
-			var dataString = 'content='+ test;
 			var ownerID = $("#owner_id").val();
 			var posterID = $("#poster_id").val();
 			var loadImage = '<img src="' + smf_images_url + '/loading.gif" /> <span class="loading">' + ajax_notification_text + '</span>';
@@ -76,32 +75,70 @@
 		});
 	});
 
-/* Handle the comments ajax */
+/* Handle the comments */
 	$(document).ready(function()
 	{
 		$(".comment_submit").click(function()
 		{
 			var element = $(this);
 			var Id = element.attr("id");
-			var commentBox = $("#textboxcontent"+Id).val();
-			var dataString = 'textcontent='+ commentBox + '&com_msgid=' + Id;
+			var commentBox = $("#textboxcontent_"+Id).val();
+			var loadcommentImage = '<img src="' + smf_images_url + '/loading.gif" /> <span class="loading">' + ajax_notification_text + '</span>';
+			var status_owner_id = $("#status_owner_id"+Id).val();
+			var poster_comment_id = $("#poster_comment_id"+Id).val();
+			var profile_owner_id = $("#profile_owner_id"+Id).val();
+			var status_id = $("#status_id"+Id).val();
+
 			if(commentBox=='')
 			{
-				alert("Please Enter Some Text");
+				alert(breeze_empty_message);
 			}
 			else
 			{
-				$("#flash"+Id).show();
-				$("#flash"+Id).fadeIn(400).html('<img src="ajax-loader.gif" align="absmiddle"> loading.....');
-				$.ajax({
-				type: "POST",
-				url: "insertajax.php",
-				data: dataString,
-				cache: false,
-				success: function(html){
-				$("#loadplace"+Id).append(html);
-				$("#flash"+Id).hide();
-				}
+				$("#comment_flash_"+Id).show();
+				$("#comment_flash_"+Id).fadeIn(400).html(loadcommentImage);
+				$.ajax(
+				{
+					type: 'POST',
+					url: smf_scripturl + '?action=breezeajax;sa=postcomment',
+					data: ({content : commentBox, status_owner_id : status_owner_id, poster_comment_id : poster_comment_id, profile_owner_id: profile_owner_id, status_id : status_id}),
+					cache: false,
+					success: function(html)
+					{
+						if(html == 'error_')
+						{
+							showNotification(
+							{
+								message: breeze_error_message,
+								type: 'error',
+								autoClose: true,
+								duration: 1
+							});
+							$("#comment_flash_").hide();
+						}
+						else
+						{
+							$("#comment_loadplace_"+Id).append(html);
+							$("#comment_flash_"+Id).hide();
+							showNotification({
+								message: breeze_success_message,
+								type: 'success',
+								autoClose: true,
+								duration: 5
+							});
+						}
+					},
+					error: function (html)
+					{
+						showNotification(
+						{
+							message: breeze_error_message,
+							type: 'error',
+							autoClose: true,
+							duration: 5
+						});
+						$("#comment_flash_"+Id).hide();
+					},
 				});
 			}
 			return false;

@@ -109,7 +109,7 @@ if (typeof jQuery == \'undefined\')
 			if ($d >= 1)
 			{
 				$r = round($d);
-				return $r . ' ' . $str . ($r > 1 ? 's' : '');
+				return $r . ' ' . $str . ($r > 1 ? 's ' .$txt['breeze_time_ago'] : '');
 			}
 		}
 	}

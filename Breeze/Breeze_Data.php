@@ -37,14 +37,14 @@ class Breeze_Data
 		}
 		return self::$instances[$type] = new Breeze_Data($type);
 	}
-	
+
 	public function Check($value)
 	{
 		$pattern = '/error_/';
 
 		if (preg_match($pattern, $value))
 			return false;
-			
+
 		else
 			return true;
 
@@ -60,27 +60,53 @@ class Breeze_Data
 		$indexes = array();
 		$content = isset($params['body']) ? $params['body'] : '';
 
-		/* Insert! */
-		$data = array(
-			'owner_id' => 'int',
-			'poster_id' => 'int',
-			'time' => 'int',
-			'body' => 'string'
-		);
-		$values = array(
-			$params['owner_id'],
-			$params['poster_id'],
-			time(),
-			$content
-		);
-		$indexes = array(
-			'id'
-		);
-		$insert = new Breeze_DB('breeze_'.$params['type']);
-		$insert->InsertData($data, $values, $indexes);
+		if ($params['type'] == 'status')
+		{
+			/* Insert! */
+			$data = array(
+				'owner_id' => 'int',
+				'poster_id' => 'int',
+				'time' => 'int',
+				'body' => 'string'
+			);
+			$values = array(
+				$params['owner_id'],
+				$params['poster_id'],
+				time(),
+				$content
+			);
+			$indexes = array(
+				'id'
+			);
+			$insert = new Breeze_DB('breeze_'.$params['type']);
+			$insert->InsertData($data, $values, $indexes);
+		}
 
-		/* Done! */
-		$done = true;
+		else
+		{
+			/* Insert! */
+			$data = array(
+				'status_id' => 'int',
+				'status_owner_id' => 'int',
+				'poster_comment_id' => 'int',
+				'profile_owner_id' => 'int',
+				'time' => 'int',
+				'body' => 'string'
+			);
+			$values = array(
+				$params['status_id'],
+				$params['status_owner_id'],
+				$params['poster_comment_id'],
+				$params['profile_owner_id'],
+				time(),
+				$content
+			);
+			$indexes = array(
+				'id'
+			);
+			$insert = new Breeze_DB('breeze_'.$params['type']);
+			$insert->InsertData($data, $values, $indexes);
+		}
 	}
 
 	/* Record this please... */
