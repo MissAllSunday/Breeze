@@ -195,7 +195,7 @@ function template_user_wall()
 				<div class="breeze_user_inner">
 					<div class="breeze_user_statusbox">
 						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post" id="status" name="form">
-							<textarea cols="40" rows="5" name="content" id="content" maxlength="145" ></textarea>
+							<textarea cols="40" rows="5" name="content" id="content" ></textarea>
 							<input type="hidden" value="',$context['member']['id'],'" name="owner_id" id="owner_id" />
 							<input type="hidden" value="',$user_info['id'],'" name="poster_id" id="poster_id" /><br />
 							<input type="submit" value="Update" name="submit" class="status_button"/>
@@ -211,16 +211,13 @@ function template_user_wall()
  
 	foreach ($context['member']['status'] as $k => $status)
 	{
-		$user = $status['poster_id'];
-		loadMemberData($user, false, 'profile');
-		loadMemberContext($user);
-		$user = $memberContext[$user];
+		$breeze_user_info_c = Breeze_UserInfo::Profile($status['poster_id']);
 
 		echo '<div class="windowbg">
 			<span class="topslice"><span></span></span>
 				<div class="breeze_user_inner">
 					<div class="breeze_user_status_avatar">
-						',$user['avatar']['image'],'
+						',$breeze_user_info_c,'
 					</div>
 					<div class="breeze_user_status_comment">
 						',$status['body'],'

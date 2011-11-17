@@ -16,6 +16,8 @@ global $txt;
 $txt['breeze_general_wall'] = 'Wall';
 $txt['breeze_general_my_wall'] = 'My Wall';
 $txt['breeze_general_my_wall_settings'] = 'My Wall Settings';
+$txt['breeze_general_loading'] = 'Loading...';
+
 
 
 
@@ -79,4 +81,11 @@ $txt[''] = '';
 $txt[''] = '';
 $txt[''] = '';
 
-?>
+/* Error strings */
+$txt['breeze_error_message'] = 'There was an error, please try again or contact the forum admin.';
+$txt['breeze_success_message'] = 'Your message was successfully published';
+$txt['breeze_empty_message'] = 'You need to type something in the textbox.';
+$txt[''] = '';
+$txt[''] = '';
+$txt[''] = '';
+

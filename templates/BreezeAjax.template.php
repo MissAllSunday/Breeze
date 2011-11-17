@@ -11,6 +11,9 @@
 function template_post_status()
 {
 	global $txt, $context;
-
-	echo $context['breeze']['post']['status'];
+	if ($context['breeze']['validate'] == true)
+		echo $context['breeze']['post']['status'];
+	
+	else
+		echo 'error_';
 }

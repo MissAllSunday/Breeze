@@ -1,7 +1,7 @@
 
-
+ 
 /* The status stuff goes right here... */
-	$(function()
+	$(document).ready(function()
 	{
 		$(".status_button").click(function()
 		{
@@ -9,11 +9,16 @@
 			var dataString = 'content='+ test;
 			var ownerID = $("#owner_id").val();
 			var posterID = $("#poster_id").val();
-			var loadImage = '<img src="' + smf_images_url + '/loading.gif" /> <span class="loading">' + ajax_notification_text + '</span>'
+			var loadImage = '<img src="' + smf_images_url + '/loading.gif" /> <span class="loading">' + ajax_notification_text + '</span>';
 
 			if(test=='')
 			{
-				alert('Please Enter Some Text');
+				alert(breeze_empty_message);
+			}
+			/* Shhh! */
+			else if(test== 'about::breeze')
+			{
+				alert('People change. Feelings change. \n It doesn\'t mean that the love once shared wasn\'t true and real.\n It simply just means that sometimes when people grow, they grow apart...');
 			}
 			else
 			{
@@ -28,11 +33,43 @@
 					cache: false,
 					success: function(html)
 					{
-						$("#breeze_display_status").after(html);
-						document.getElementById('content').value='';
-						document.getElementById('content').focus();
+						if(html == 'error_')
+						{
+							showNotification(
+							{
+								message: breeze_error_message,
+								type: 'error',
+								autoClose: true,
+								duration: 5
+							});
+							$("#breeze_load_image").hide();
+						}
+						else
+						{
+							$("#breeze_display_status").after(html);
+							document.getElementById('content').value='';
+							document.getElementById('content').focus();
+							$("#breeze_load_image").hide();
+							showNotification({
+								message: breeze_success_message,
+								type: 'success',
+								autoClose: true,
+								duration: 5
+							});
+						}
+					},
+					error: function (html)
+					{
+						// Error occurred in sending request
+						showNotification(
+						{
+							message: breeze_error_message,
+							type: 'error',
+							autoClose: true,
+							duration: 5
+						});
 						$("#breeze_load_image").hide();
-					}
+					},
 				});
 			}
 			return false;
@@ -80,8 +117,17 @@
 			var I = element.attr("id");
 
 			$("#slidepanel"+I).slideToggle(300);
-			$(this).toggleClass("active"); 
+			$(this).toggleClass("active");
 
 			return false;
 		});
 	});
+
+
+$(document).ready(function() {
+
+		  $('a[rel*=facebox]').facebox({
+			loadingImage : smf_images_url + '/loading.gif',
+			closeImage   : smf_images_url + '/breeze/error_close.png'
+		  });
+    });

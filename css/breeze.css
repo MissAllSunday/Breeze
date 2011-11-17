@@ -4,167 +4,279 @@
 /* Css/Jquery tabs courtesy of Soh Tanaka at <http://www.sohtanaka.com/web-design/simple-tabs-w-css-jquery/> */
 
 ul.breeze_tabs {
-	margin: 0;
-	padding: 0;
-	float: left;
-	list-style: none;
-	height: 32px; /*--Set height of tabs--*/
-	border-bottom: 1px solid #999;
-	border-left: 1px solid #999;
-	width: 100%;
+margin: 0;
+padding: 0;
+float: left;
+list-style: none;
+height: 32px; /*--Set height of tabs--*/
+border-bottom: 1px solid #999;
+border-left: 1px solid #999;
+width: 100%;
 }
 ul.breeze_tabs li {
-	float: left;
-	margin: 0;
-	padding: 0;
-	height: 31px; /*--Subtract 1px from the height of the unordered list--*/
-	line-height: 31px; /*--Vertically aligns the text within the tab--*/
-	border: 1px solid #999;
-	border-left: none;
-	margin-bottom: -1px; /*--Pull the list item down 1px--*/
-	overflow: hidden;
-	position: relative;
-	background: #e0e0e0;
+float: left;
+margin: 0;
+padding: 0;
+height: 31px; /*--Subtract 1px from the height of the unordered list--*/
+line-height: 31px; /*--Vertically aligns the text within the tab--*/
+border: 1px solid #999;
+border-left: none;
+margin-bottom: -1px; /*--Pull the list item down 1px--*/
+overflow: hidden;
+position: relative;
+background: #e0e0e0;
 }
 ul.breeze_tabs li a {
-	text-decoration: none;
-	color: #000;
-	display: block;
-	font-size: 1.2em;
-	padding: 0 20px;
-	border: 1px solid #fff; /*--Gives the bevel look with a 1px white border inside the list item--*/
-	outline: none;
+text-decoration: none;
+color: #000;
+display: block;
+font-size: 1.2em;
+padding: 0 20px;
+border: 1px solid #fff; /*--Gives the bevel look with a 1px white border inside the list item--*/
+outline: none;
 }
 ul.breeze_tabs li a:hover {
-	background: #ccc;
+background: #ccc;
 }
 html ul.breeze_tabs li.active, html ul.breeze_tabs li.active a:hover  { /*--Makes sure that the active tab does not listen to the hover properties--*/
-	background: #fff;
-	border-bottom: 1px solid #fff; /*--Makes the active tab look like it's connected with its content--*/
+background: #fff;
+border-bottom: 1px solid #fff; /*--Makes the active tab look like it's connected with its content--*/
 }
 .breeze_tabs_container {
-	border: 1px solid #999;
-	border-top: none;
-	overflow: hidden;
-	clear: both;
-	float: left; width: 100%;
-	background: #fff;
+border: 1px solid #999;
+border-top: none;
+overflow: hidden;
+clear: both;
+float: left; width: 100%;
+background: #fff;
 }
 .breeze_tabs_content {
-	padding: 20px;
-	font-size: 1.2em;
+padding: 20px;
+font-size: 1.2em;
 }
 
 /* The admin news box */
 .breeze_rss_box
 {
-	float:left;
-	width:60%;
+float:left;
+width:60%;
 }
 .breeze_admin_info
 {
-	float:right;
-	width:35%;
-	height: 13.5em;
+float:right;
+width:35%;
+height: 13.5em;
 }
 
 /* The messages css */
 .breeze_ok_message
 {
-	background-attachment: scroll;
-	background-clip: border-box;
-	background-color: rgb(230, 239, 194);
-	background-image: none;
-	background-origin: padding-box;
-	background-position: 0% 0%;
-	background-repeat: repeat;
-	background-size: auto;
-	border: 2px solid #c6d880;
-	color: rgb(38, 68, 9);
-	margin: 1em;
-	padding: 0.8em;
+background-attachment: scroll;
+background-clip: border-box;
+background-color: rgb(230, 239, 194);
+background-image: none;
+background-origin: padding-box;
+background-position: 0% 0%;
+background-repeat: repeat;
+background-size: auto;
+border: 2px solid #c6d880;
+color: rgb(38, 68, 9);
+margin: 1em;
+padding: 0.8em;
 }
 .breeze_error_message
 {
-	background-attachment: scroll;
-	background-clip: border-box;
-	background-color: #f7bcbf;
-	background-image: none;
-	background-origin: padding-box;
-	background-position: 0% 0%;
-	background-repeat: repeat;
-	background-size: auto;
-	border: 2px solid #f7262e;
-	color: #8a1f11;
-	margin: 1em;
-	padding: 0.8em;
+background-attachment: scroll;
+background-clip: border-box;
+background-color: #f7bcbf;
+background-image: none;
+background-origin: padding-box;
+background-position: 0% 0%;
+background-repeat: repeat;
+background-size: auto;
+border: 2px solid #f7262e;
+color: #8a1f11;
+margin: 1em;
+padding: 0.8em;
 }
 
 /* The user wall */
 .breeze_user_left
 {
-	float:left;
-	width:40%;
+float:left;
+width:40%;
 
 }
 
 .breeze_user_left_avatar
 {
-	float:left;
-	margin:2px;
-	padding:1px;
+float:left;
+margin:2px;
+padding-left:5px;
+padding-right:15px;
+min-height:100px;
 
 }
 
 .breeze_user_left_info
 {
-	float:right;
-	margin:1px;
-	padding:2px;
-	text-align:left;
+
 }
 
 ul.breeze_user_left_info
- { 
-	list-style-type: none;
-	margin-left: 0px;
-	padding-left: 5px;
+{
+list-style-type: none;
+margin-left: 0px;
+padding-left: 5px;
 }
 ul.breeze_user_left_info ul li
-{ 
+{
 display: inline;
 list-style-type: none;
 }
 
 .breeze_user_right
 {
-	float:left;
-	width:55%;
-	margin:5px;
-	padding:5px;
-	overflow:hiden;
-
+float:left;
+width:55%;
+margin:5px;
+padding:5px;
 }
 
 .breeze_user_inner
 {
-	margin:5px;
-	padding:5px;
+margin:5px;
+padding:5px;
 }
 
-.breeze_user_statusbox
+.breeze_user_status_box
 {
 
 }
+
+.breeze_user_status_avatar
+{
+float:left;
+margin:3px;
+padding:3px;
+}
+
+.breeze_user_status_comment
+{
+float:right;
+margin:3px;
+padding:3px;
+width:70%;
+}
+
 .breeze_user_statusbox textarea
 {
-	border: 1px solid #888;
+border: 1px solid #888;
 }
 
 /* Ajax message */
 #breeze_load_image
 {
-	padding:0.8em;
-	margin-bottom:1em;
-	text-align:center;
+text-align:center;
+}
+
+/* Notifications */
+#info_message{
+display: none;
+width: 100%;
+height: 51px;
+position: absolute;
+top: 0;
+position: fixed;
+z-index: 50000;
+margin: 0;
+padding: 0;
+}
+.center_auto{
+margin: 0 auto;
+width: 950px;
+padding: 15px 25px;
+}
+#info_message .message_area{
+float: left;
+width: 98%;
+}
+#info_message .message_area span.link_ribbon{
+color: #999999;
+text-decoration: underline;
+cursor: pointer;
+}
+#info_message .button_area{
+float: left;
+width: 11px;
+height: 10px;
+margin-top: 3px;
+}
+.error_bg{
+background: url('../images/breeze/error_bg.png') 0 0 repeat-x;
+}
+.error_bg .message_area{
+font:bold 14px arial;
+color: #a20510;
+text-shadow: 0 1px 0 #fff;
+}
+.error_bg .button_area{
+background: url('../images/breeze/error_close.png') 0 0 no-repeat;
+cursor: pointer;
+}
+.error_bg .info_more_descrption{
+
+box-shadow: 0 0 5px #b2495b;
+}
+.succ_bg{
+background: url('../images/breeze/succ_bg.png') 0 0 repeat-x;
+}
+.succ_bg .message_area{
+font:bold 14px arial;
+color: #2f7c00;
+text-shadow: 0 1px 0 #fff;
+}
+.succ_bg .button_area{
+background: url('../images/breeze/succ_close.png') 0 0 no-repeat;
+cursor: pointer;
+}
+.info_bg{
+background: url('../images/breeze/info_bg.png') 0 0 repeat-x;
+}
+.info_bg .message_area{
+font:bold 14px arial;
+color: #0d9a95;
+text-shadow: 0 1px 0 #fff;
+}
+.info_bg .button_area{
+background: url('../images/breeze/info_close.png') 0 0 no-repeat;
+cursor: pointer;
+}
+.warn_bg{
+background: url('../images/breeze/warn_bg.png') 0 0 repeat-x;
+}
+.warn_bg .message_area{
+font:bold 14px arial;
+color: #a39709;
+text-shadow: 0 1px 0 #fff;
+}
+.warn_bg .button_area{
+background: url('../images/breeze/warn_close.png') 0 0 no-repeat;
+cursor: pointer;
+}
+.clearboth{
+clear: both;
+}
+.info_more_descrption{
+display: none;
+width: 950px;
+height: 300px;
+background: #fff;
+margin: 0 auto;
+padding: 10px;
+background: #fbfbfb;
+overflow: auto;
+}
+.succ_bg .info_more_descrption{
+box-shadow: 0 0 5px #56a25e;
 }

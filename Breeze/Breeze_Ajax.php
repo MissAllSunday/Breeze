@@ -38,13 +38,17 @@ class Breeze_Ajax
 	public static function Post()
 	{
 		global $context, $user_info, $memberContext;
+		
+		$context['breeze']['validate'] = false;
 
 		/* We need all of this, really, we do. */
 		LoadBreezeMethod(array(
 			'Breeze_Settings',
 			'Breeze_Subs',
 			'Breeze_Globals',
-			'Breeze_Data'
+			'Breeze_Data',
+			'Breeze_DB',
+			'Breeze_UserInfo'
 		));
 
 		/* Get the status data */
@@ -68,7 +72,12 @@ class Breeze_Ajax
 
 		/* Send the data far far away to be processed... */
 		$status = Breeze_Data::factory('status');
-		$status->Record($params);
+		
+		/* Lets check if the are no errors before doing the insert */
+		if ($status->Check($send_data->see('content')))
+		{
+			$context['breeze']['validate'] = true;
+			$status->Record($params);
 
 		/* ...and just like that, this status was added to the database...
 		and now we get the same status from the DB to build the server response. */
@@ -84,12 +93,7 @@ class Breeze_Ajax
 			$query->Params($query_params, $query_data);
 			$query->GetData(null, true);
 
-			/* Open Sesame... */
-			$user = $profile_id;
-			loadMemberData($user, false, 'profile');
-			loadMemberContext($user);
-			$user = $memberContext[$user];
-
+			$breeze_user_info = Breeze_UserInfo::Profile($profile_id);
 
 			/* Breeze parser... comming soon :P */
 			/* $query->data_result['body'] = Breeze::Parser($query->data_result['body']); */
@@ -100,7 +104,7 @@ class Breeze_Ajax
 				<span class="topslice"><span></span></span>
 					<div class="breeze_user_inner">
 						<div class="breeze_user_status_avatar">
-							'.$user['avatar']['image'].'
+							'.$breeze_user_info.'
 						</div>
 						<div class="breeze_user_status_comment">
 							'.$query->data_result['body'].'
@@ -109,9 +113,9 @@ class Breeze_Ajax
 					</div>
 				<span class="botslice"><span></span></span>
 				</div>';
+		}
 
 			$context['template_layers'] = array();
 			$context['sub_template'] = 'post_status';
 	}
 }
-?>

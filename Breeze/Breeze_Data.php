@@ -37,6 +37,18 @@ class Breeze_Data
 		}
 		return self::$instances[$type] = new Breeze_Data($type);
 	}
+	
+	public function Check($value)
+	{
+		$pattern = '/error_/';
+
+		if (preg_match($pattern, $value))
+			return false;
+			
+		else
+			return true;
+
+	}
 
 	/* Just send the data to the database */
 	public static function Record($params)
@@ -81,4 +93,4 @@ class Breeze_Data
 	{
 	}
 }
-?>
+

@@ -80,4 +80,3 @@ class Breeze_Globals
 		return $var;
 	}
 }
-?>

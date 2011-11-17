@@ -33,7 +33,8 @@ class Breeze_User
 			'Breeze_Settings',
 			'Breeze_Subs',
 			'Breeze_Globals',
-			'Breeze_DB'
+			'Breeze_DB',
+			'Breeze_UserInfo'
 		));
 		Breeze_Subs::Headers();
 
@@ -60,4 +61,3 @@ class Breeze_User
 	}
 
 }
-?>

@@ -46,48 +46,34 @@ class Breeze_Subs {
 	/* Headers */
 	public static function Headers($admin = false)
 	{
-		global $context, $settings;
+		global $context, $settings, $txt;
+
+		loadLanguage('Breeze');
+
+		/* Define some variables for the ajax stuff */
+		$context['html_headers'] .= '
+		<script type="text/javascript"><!-- // --><![CDATA[
+			var breeze_error_message = "'.JavaScriptEscape($txt['breeze_error_message']).'";
+			var breeze_success_message = "'.JavaScriptEscape($txt['breeze_success_message']).'";
+			var breeze_empty_message = "'.JavaScriptEscape($txt['breeze_empty_message']).'";
+	// ]]></script>';
+
 
 		/* Let's load jquery from google or microsoft CDN only if it hasn't been loaded yet */
 			$context['html_headers'] .= '
+
+			<link href="'. $settings['theme_url']. '/css/breeze.css" rel="stylesheet" type="text/css" />
+			<link href="'. $settings['theme_url']. '/css/facebox.css" rel="stylesheet" type="text/css" />
 			<script type="text/javascript">
-	function loadScript(src, callback) {
-		var head=document.getElementsByTagName(\'head\')[0];
-		var script= document.createElement(\'script\');
-		script.type= \'text/javascript\';
-		script.onreadystatechange = function () {
-			if (this.readyState == \'complete\' || this.readyState == \'loaded\') {
-				callback();
-			}
-		}
-		script.onload = callback;
-		script.src = src;
-		head.appendChild(script);
-	}
-
-	function isjQueryLoaded() {
-		return (typeof jQuery !== \'undefined\');
-	}
-
-	function tryLoadChain() {
-		var chain = arguments;
-		if (!isjQueryLoaded()) {
-			if (chain.length) {
-				loadScript(
-					chain[0],
-					function() {
-						tryLoadChain.apply(this, Array.prototype.slice.call(chain, 1));
-					}
-				);
-			}
-		}
-	}
-tryLoadChain(
-		\'https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js\',
-		\'http://ajax.microsoft.com/ajax/jQuery/jquery-1.6.4.min.js\');
+if (typeof jQuery == \'undefined\')
+{ 
+	document.write("<script src=\https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js\><\/script>");
+}
 	</script>
-			<script src="'. $settings['theme_url']. '/js/breeze.js" type="text/javascript"></script>
-			<link href="'. $settings['theme_url']. '/css/breeze.css" rel="stylesheet" type="text/css" />';
+	<script src="'. $settings['theme_url']. '/js/jquery_notification.js" type="text/javascript"></script>
+	<script src="'. $settings['theme_url']. '/js/breeze.js" type="text/javascript"></script>
+	<script src="'. $settings['theme_url']. '/js/facebox.js" type="text/javascript"></script>';
+
 
 		if($admin)
 		{
@@ -146,4 +132,3 @@ tryLoadChain(
 		return $string;
 	}
 }
-?>
