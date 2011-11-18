@@ -53,26 +53,31 @@ class Breeze_Subs {
 		/* Define some variables for the ajax stuff */
 		$context['html_headers'] .= '
 		<script type="text/javascript"><!-- // --><![CDATA[
-			var breeze_error_message = "'.JavaScriptEscape($txt['breeze_error_message']).'";
-			var breeze_success_message = "'.JavaScriptEscape($txt['breeze_success_message']).'";
-			var breeze_empty_message = "'.JavaScriptEscape($txt['breeze_empty_message']).'";
+			var breeze_error_message = "'.$txt['breeze_error_message'].'";
+			var breeze_success_message = "'.$txt['breeze_success_message'].'";
+			var breeze_empty_message = "'.$txt['breeze_empty_message'].'";
+			var breeze_error_delete = "'.$txt['breeze_error_message'].'";
+			var breeze_success_delete = "'.$txt['breeze_success_delete'].'";
+			var breeze_confirm_delete = "'.$txt['breeze_confirm_delete'].'";
+			var breeze_confirm_yes = "'.$txt['breeze_confirm_yes'].'";
+			var breeze_confirm_cancel = "'.$txt['breeze_confirm_cancel'].'";
 	// ]]></script>';
 
 
 		/* Let's load jquery from google or microsoft CDN only if it hasn't been loaded yet */
-			$context['html_headers'] .= '
-
-			<link href="'. $settings['theme_url']. '/css/breeze.css" rel="stylesheet" type="text/css" />
-			<link href="'. $settings['theme_url']. '/css/facebox.css" rel="stylesheet" type="text/css" />
-			<script type="text/javascript">
-if (typeof jQuery == \'undefined\')
-{ 
-	document.write("<script src=\https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js\><\/script>");
-}
-	</script>
-	<script src="'. $settings['theme_url']. '/js/jquery_notification.js" type="text/javascript"></script>
-	<script src="'. $settings['theme_url']. '/js/breeze.js" type="text/javascript"></script>
-	<script src="'. $settings['theme_url']. '/js/facebox.js" type="text/javascript"></script>';
+		$context['html_headers'] .= '
+		<link href="'. $settings['theme_url']. '/css/breeze.css" rel="stylesheet" type="text/css" />
+		<link href="'. $settings['theme_url']. '/css/facebox.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript">
+			if (typeof jQuery == \'undefined\')
+			{ 
+				document.write("<script src=\https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js\><\/script>");
+			}
+		</script>
+		<script src="'. $settings['theme_url']. '/js/jquery_notification.js" type="text/javascript"></script>
+		<script src="'. $settings['theme_url']. '/js/facebox.js" type="text/javascript"></script>
+		<script src="'. $settings['theme_url']. '/js/confirm.js" type="text/javascript"></script>
+		<script src="'. $settings['theme_url']. '/js/breeze.js" type="text/javascript"></script>';
 
 
 		if($admin)
@@ -82,7 +87,7 @@ if (typeof jQuery == \'undefined\')
 		}
 	}
 
-	/* Relative dates  <http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html> */
+	/* Relative dates  http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html */
 	public static function Time_Elapsed($ptime)
 	{
 		global $txt;

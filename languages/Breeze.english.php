@@ -82,11 +82,12 @@ $txt[''] = '';
 $txt[''] = '';
 $txt[''] = '';
 
-/* Error strings */
+/* Ajax strings */
 $txt['breeze_error_message'] = 'There was an error, please try again or contact the forum admin.';
 $txt['breeze_success_message'] = 'Your message was successfully published';
 $txt['breeze_empty_message'] = 'You need to type something in the textbox.';
-$txt[''] = '';
-$txt[''] = '';
-$txt[''] = '';
+$txt['breeze_success_delete'] = 'Your comment has been deleted';
+$txt['breeze_confirm_delete'] = 'Do you really want to delete this?';
+$txt['breeze_confirm_yes'] = 'Yes';
+$txt['breeze_confirm_cancel'] = 'Cancel';
 

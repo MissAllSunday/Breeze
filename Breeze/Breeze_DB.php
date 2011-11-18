@@ -147,4 +147,3 @@ if (!class_exists('Breeze_DB')):
 		}
 	}
 endif;
-?>

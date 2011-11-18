@@ -70,4 +70,4 @@ if (!defined('SMF'))
 			$arraydata->Params($params, $data);
 			$arraydata->UpdateData();
 	}
-?>
+

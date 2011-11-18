@@ -84,4 +84,4 @@ if (!defined('SMF'))
 			'name' => $txt['breeze_admin_settings_donate']
 		);
 	}
-?>
+

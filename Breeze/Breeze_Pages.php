@@ -15,4 +15,3 @@ class Breeze_Gallery
 {
 	// Null
 }
-?>

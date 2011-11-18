@@ -26,7 +26,8 @@ class Breeze_Ajax
 		$sa = Breeze_Globals::factory('get');
 		$subActions = array(
 			'post' => 'self::Post',
-			'postcomment' => 'self::PostComment'
+			'postcomment' => 'self::PostComment',
+			'delete' => 'self::Delete'
 		/* More actions here... */
 		);
 
@@ -38,7 +39,7 @@ class Breeze_Ajax
 	/* Deal with the status... */
 	private function Post()
 	{
-		global $context, $user_info, $memberContext;
+		global $context;
 
 		$context['breeze']['validate'] = false;
 
@@ -123,9 +124,9 @@ class Breeze_Ajax
 	/* Basically the same as Post, get the data from the form, send it to Breeze_Data, if Breeze_Data says OK, then fill the html and send it to the ajax template */
 	private function PostComment()
 	{
-		global $context, $user_info, $memberContext;
+		global $context;
 
-		$context['breeze']['validate'] = true;
+		$context['breeze']['validate'] = false;
 
 		/* We need all of this, really, we do. */
 		LoadBreezeMethod(array(
@@ -201,5 +202,81 @@ class Breeze_Ajax
 
 			$context['template_layers'] = array();
 			$context['sub_template'] = 'post_status';
+	}
+
+	/* Handles the deletion of both comments an status */
+	private function Delete()
+	{
+		global $context;
+
+		$context['breeze']['validate'] = false;
+
+		/* We need all of this, really, we do. */
+		LoadBreezeMethod(array(
+			'Breeze_Settings',
+			'Breeze_Subs',
+			'Breeze_Globals',
+			'Breeze_Data',
+			'Breeze_DB',
+			'Breeze_UserInfo'
+		));
+
+		/* Get the data */
+		$sa = Breeze_Globals::factory('post');
+
+		/* Is this a comment? */
+		if ($sa->validate('type') && $sa->see('type') == 'comment')
+		{
+
+			/* Perform the query */
+			$params = array(
+				'where' => 'id = {int:id}'
+			);
+
+			$data = array(
+				'id' => $sa->see('id')
+			);
+			$deletedata = new Breeze_DB('breeze_comment');
+			$deletedata->Params($params, $data);
+			$deletedata->DeleteData();
+
+			$context['breeze']['post']['status'] = '';
+			$context['breeze']['validate'] = true;
+		}
+
+		/* No?  then it must be a status... */
+		elseif ($sa->validate('type') && $sa->see('type') == 'status')
+		{
+
+			/* Perform the query, delete the comments first */
+			$comment_params = array(
+				'where' => 'status_id = {int:id}'
+			);
+
+			$comment_data = array(
+				'id' => $sa->see('id')
+			);
+			$delete_comment_data = new Breeze_DB('breeze_comment');
+			$delete_comment_data->Params($comment_params, $comment_data);
+			$delete_comment_data->DeleteData();
+
+			/* Then delete the status */
+			$status_params = array(
+				'where' => 'id = {int:id}'
+			);
+
+			$status_data = array(
+				'id' => $sa->see('id')
+			);
+			$delete_status_data = new Breeze_DB('breeze_status');
+			$delete_status_data->Params($status_params, $status_data);
+			$delete_status_data->DeleteData();
+
+			$context['breeze']['post']['status'] = '';
+			$context['breeze']['validate'] = true;
+		}
+
+		$context['template_layers'] = array();
+		$context['sub_template'] = 'post_status';
 	}
 }

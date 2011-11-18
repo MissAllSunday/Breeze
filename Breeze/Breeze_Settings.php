@@ -56,4 +56,3 @@ class Breeze_Settings
 			return false;
 	}
 }
-?>

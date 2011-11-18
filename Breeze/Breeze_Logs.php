@@ -71,4 +71,4 @@ class Breeze_Logs
 		$insert->InsertData($data, $values, $indexes);
 	}
 }
-?>
+

@@ -8,6 +8,7 @@
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ CC BY-NC-SA 3.0
  */
 
+	/* This will be moved to its own template... eventually */
 function template_admin_home()
 {
 	global $txt, $context;
@@ -40,13 +41,14 @@ $(document).ready(function () {
 
 	foreach($context['breeze']['versions'] as $version)
 		echo $version;
-		
+
 	echo'<br />I dont know what else I should put in here...</div>
 	<div class="clear"></div>';
 }
 
 
 /* General wall... */
+	/* This will be moved to its own template... eventually */
 function template_general_wall()
 {
 	global $txt;
@@ -185,9 +187,19 @@ function template_user_wall()
 		</div>
 		<span class="lowerframe">
 			<span></span>
-		</span>
-	</div>';
-	
+		</span>';
+
+		/* Modules */
+
+		echo '<div class="description" >modules goes here</div>';
+
+		echo '<div class="description" > <a href="javascript:void(0)" id="1" class="breeze_delete">another one</a></div>';
+
+
+	/* end of left div */
+	echo '</div>';
+
+
 	/* This is the status box,  O RLY? */
 	echo '<div class="breeze_user_right">
 		<div class="windowbg2">
@@ -208,40 +220,40 @@ function template_user_wall()
 		/* New ajax status here */
 	echo '<div id="breeze_load_image"></div>
  <div id="breeze_display_status"></div>';
- 
- 
+
+
 	foreach ($context['member']['status'] as $k => $status)
 	{
 
-		echo '<div class="windowbg">
+		echo '<div class="windowbg" id ="status_id_',$status['id'],'">
 			<span class="topslice"><span></span></span>
 				<div class="breeze_user_inner">
 					<div class="breeze_user_status_avatar">
 						',$status['breeze_user_info'],'
 					</div>
 					<div class="breeze_user_status_comment">
-						',$status['body'],'
+						',$status['body'],'<br />
+						<a href="javascript:void(0)" id="',$status['id'],'" class="breeze_delete_status">Delete</a>
 						<p /><hr />
 						|like|delete|',$status['time'],'<p />
 						<div id="comment_flash_',$status['id'],'"></div>';
-						
+
 						/* Print out the comments */
 						foreach($status['comments'] as $comment)
-							echo'<div class="windowbg2">
-				<span class="topslice"><span></span></span>
-					<div class="breeze_user_inner">
-						<div class="breeze_user_status_avatar">
-							',$comment['comment_user_info'],'<br />
-							',$comment['time'],'
-						</div>
-						<div class="breeze_user_status_comment">
-							',$comment['body'],'
-						</div>
-						<div class="clear"></div>
-					</div>
-				<span class="botslice"><span></span></span>
-				</div>';
-				
+							echo'<div class="description" id ="comment_id_',$comment['id'],'">
+									<div class="breeze_user_inner">
+										<div class="breeze_user_status_avatar">
+											',$comment['comment_user_info'],'<br />
+											',$comment['time'],'
+										</div>
+										<div class="breeze_user_status_comment">
+											',$comment['body'],'<br />
+											<a href="javascript:void(0)" id="',$comment['id'],'" class="breeze_delete_comment">Delete</a>
+										</div>
+										<div class="clear"></div>
+									</div>
+								</div>';
+
 						echo'<div id="comment_loadplace_',$status['id'],'"></div>
 
 							<form action="', $scripturl, '?action=breezeajax;sa=postcomment" method="post" name="formID_',$status['id'],'" id="formID_',$status['id'],'">
