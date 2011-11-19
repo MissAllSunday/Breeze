@@ -11,63 +11,108 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-	/* Someone liked this, dunno why */
-	public static function Breeze_Like($array, $entry = false)
+class Breeze_Likes
+{
+	private static $instance;
+
+	private function __construct()
 	{
-		global $sourcedir;
-
-		require_once($sourcedir . '/breeze_DB.class.php');
-
-		$data = array(
-			'id_entry' => 'int',
-			'id_comment' => 'int',
-			'id_member' => 'string',
-			'member_name' => 'string',
-			'liked' => 'int'
-		);
-		$values = array(
-			$entry ? $array['id_entry'] : 0,
-			$entry ? 0 : $array['id_comment'],
-			$array['id_member'],
-			$array['member_name'],
-			1
-		);
-		$indexes = array('id');
-
-		$insert = new OharaDBClass('breeze_Likes');
-		$insert->InsertData($data, $values, $indexes);
-
-		/* Log this please */
-		breeze_LogsWrite($params);
+		LoadBreezeMethod('Breeze_DB');
 	}
 
-	/* Me no longer like this */
-	public static function breeze_Unlike($array, $entry = false)
+	public static function getInstance()
 	{
-		global $sourcedir;
+		if (!self::$instance)
+		 {
+			self::$instance = new Breeze_Likes();
+		}
+		return self::$instance;
+	}
 
-		require_once($sourcedir . '/breeze_DB.class.php');
+	public function LoadByStatus($statusID)
+	{
+		$return = '';
 
-		/* Is this an entry or a comment? */
-		if ($entry)
-			$id = 'id_entry = {int:id} AND id_member = {int:id_member}';
+		if (empty($statusID))
+			return $return;
 
 		else
-			$id = 'id_comment = {int:id} AND id_member = {int:id_member}';
-
-			$params = array(
-				'set' => 'liked={int:liked}',
-				'where' => $id,
+		{
+			$query_params = array(
+				'rows' =>'id, status_id comment_id, profile_id, userwholiked_id, time, liked',
+				'order' => '{raw:sort}',
+				'where' => 'status_id={int:status_id}'
 			);
-
-			$data = array(
-				'liked' => 2,
-				'id' => $array['id'],
-				'id_member' => $array['id_member']
+			$query_data = array(
+				'sort' => 'id',
+				'status_id' => $statusID
 			);
+			$query = new Breeze_DB('breeze_likes');
+			$query->Params($query_params, $query_data);
+			$query->GetData('status_id');
+			
+			if (!empty($query->data_result))
+				$return = $query->data_result;
 
-			$arraydata = new OharaDBClass('breeze_Likes');
-			$arraydata->Params($params, $data);
-			$arraydata->UpdateData();
+			return $return;
+		}
 	}
 
+	public function LoadByComment($commentID)
+	{
+		$return = '';
+
+		if (empty($commentID))
+			return $return;
+
+		else
+		{
+			$query_params = array(
+				'rows' =>'id, status_id comment_id, profile_id, userwholiked_id, time, liked',
+				'order' => '{raw:sort}',
+				'where' => 'status_id={int:comment_id}'
+			);
+			$query_data = array(
+				'sort' => 'id',
+				'status_id' => $commentID
+			);
+			$query = new Breeze_DB('breeze_likes');
+			$query->Params($query_params, $query_data);
+			$query->GetData('comment_id');
+			
+			if (!empty($query->data_result))
+				$return = $query->data_result;
+
+			return $return;
+		}
+	}
+	
+	public function LoadByProfile($profileID)
+	{
+		$return = '';
+
+		if (empty($profileID))
+			return $return;
+
+		else
+		{
+			$query_params = array(
+				'rows' =>'id, status_id comment_id, profile_id, userwholiked_id, time, liked',
+				'order' => '{raw:sort}',
+				'where' => 'status_id={int:profile_id}'
+			);
+			$query_data = array(
+				'sort' => 'id',
+				'status_id' => $profileID
+			);
+			$query = new Breeze_DB('breeze_likes');
+			$query->Params($query_params, $query_data);
+			$query->GetData('profile_id');
+			
+			if (!empty($query->data_result))
+				$return = $query->data_result;
+
+			return $return;
+		}
+	}
+}
