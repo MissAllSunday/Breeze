@@ -24,24 +24,32 @@ class Breeze_Validate
 	{
 		if (!self::$instance)
 		 {
-			self::$instance = new Breeze_Settings();
+			self::$instance = new Breeze_Validate();
 		}
 		return self::$instance;
 	}
 
-	public function enable($var)
+	public function Get($type)
 	{
-		if (!empty($this->settings[$var]))
-			return true;
-		else
-			return false;
-	}
+		$return = '';
 
-	public function get($var)
-	{
-		if (!empty($this->settings[$var]))
-			return $this->settings[$var];
+		if (empty($type))
+			return $return;
+
 		else
-			return false;
+		{
+			$query_params = array(
+				'rows' =>'id'
+			);
+
+			$query = new Breeze_DB('breeze_'.$type);
+			$query->Params($query_params);
+			$query->GetData('id');
+			
+			if (!empty($query->data_result))
+				$return = $query->data_result;
+
+			return $return;
+		}
 	}
 }

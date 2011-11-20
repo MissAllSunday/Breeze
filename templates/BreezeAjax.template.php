@@ -10,10 +10,24 @@
 
 function template_post_status()
 {
-	global $txt, $context;
-	if ($context['breeze']['validate'] == true)
-		echo $context['breeze']['post']['status'];
+	global  $context;
 	
-	else
-		echo 'error_';
+	switch ($context['breeze']['ok'])
+	{
+		case 'error':
+			echo 'error_';
+			break;
+		case '':
+			echo 'error_';
+			break;
+		case 'deleted':
+			echo 'deleted_';
+			break;
+		case 'ok':
+			echo $context['breeze']['post']['data'];
+			break;
+		default:
+			echo 'error_';
+	}
+
 }

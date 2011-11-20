@@ -61,6 +61,7 @@ class Breeze_Subs {
 			var breeze_confirm_delete = "'.$txt['breeze_confirm_delete'].'";
 			var breeze_confirm_yes = "'.$txt['breeze_confirm_yes'].'";
 			var breeze_confirm_cancel = "'.$txt['breeze_confirm_cancel'].'";
+			var breeze_already_deleted = "'.$txt['breeze_already_deleted'].'";
 	// ]]></script>';
 
 

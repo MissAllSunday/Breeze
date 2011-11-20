@@ -90,4 +90,5 @@ $txt['breeze_success_delete'] = 'Your comment has been deleted';
 $txt['breeze_confirm_delete'] = 'Do you really want to delete this?';
 $txt['breeze_confirm_yes'] = 'Yes';
 $txt['breeze_confirm_cancel'] = 'Cancel';
+$txt['breeze_already_deleted'] = 'This comment/status was already deleted.';
 

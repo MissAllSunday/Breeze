@@ -19,11 +19,21 @@ class Breeze_Ajax
 
 	public static function factory()
 	{
-		LoadBreezeMethod('Breeze_Globals');
+		/* We need all of this, really, we do. */
+		LoadBreezeMethod(array(
+			'Breeze_Settings',
+			'Breeze_Subs',
+			'Breeze_Globals',
+			'Breeze_Data',
+			'Breeze_DB',
+			'Breeze_UserInfo',
+			'Breeze_Validate'
+		));
 		loadtemplate('BreezeAjax');
 
 		/* Handling the subactions */
 		$sa = Breeze_Globals::factory('get');
+
 		$subActions = array(
 			'post' => 'self::Post',
 			'postcomment' => 'self::PostComment',
@@ -41,17 +51,8 @@ class Breeze_Ajax
 	{
 		global $context;
 
-		$context['breeze']['validate'] = false;
-
-		/* We need all of this, really, we do. */
-		LoadBreezeMethod(array(
-			'Breeze_Settings',
-			'Breeze_Subs',
-			'Breeze_Globals',
-			'Breeze_Data',
-			'Breeze_DB',
-			'Breeze_UserInfo'
-		));
+		$context['breeze']['ok'] = '';
+		$context['breeze']['post']['data'] = '';
 
 		/* Get the status data */
 		$send_data = Breeze_Globals::factory('post');
@@ -78,7 +79,6 @@ class Breeze_Ajax
 		/* Lets check if the are no errors before doing the insert */
 		if ($status->Check($send_data->see('content')))
 		{
-			$context['breeze']['validate'] = true;
 			$status->Record($params);
 
 			/* ...and just like that, this status was added to the database...
@@ -100,8 +100,9 @@ class Breeze_Ajax
 			/* Breeze parser... comming soon :P */
 			/* $query->data_result['body'] = Breeze::Parser($query->data_result['body']); */
 
-
-			$context['breeze']['post']['status'] = '
+			/* It's all OK... */
+			$context['breeze']['ok'] = 'ok';
+			$context['breeze']['post']['data'] = '
 				<div class="windowbg">
 				<span class="topslice"><span></span></span>
 					<div class="breeze_user_inner">
@@ -126,80 +127,77 @@ class Breeze_Ajax
 	{
 		global $context;
 
-		$context['breeze']['validate'] = false;
-
-		/* We need all of this, really, we do. */
-		LoadBreezeMethod(array(
-			'Breeze_Settings',
-			'Breeze_Subs',
-			'Breeze_Globals',
-			'Breeze_Data',
-			'Breeze_DB',
-			'Breeze_UserInfo'
-		));
+		/* By default it will show an error, we only do stuff if necesary */
+		$context['breeze']['ok'] = '';
 
 		/* Get the status data */
 		$send_data = Breeze_Globals::factory('post');
+		
+		/* Check if the status where this comment was posted do exists */
+		$validate = Breeze_Validate::getInstance();
 
-		$profile_id = $send_data->see('poster_comment_id');
-
-		/* Build the params array for the query */
-		$params = array(
-			'status_id' => $send_data->see('status_id'),
-			'status_owner_id' => $send_data->see('status_owner_id'),
-			'poster_comment_id' => $send_data->see('poster_comment_id'),
-			'profile_owner_id' => $send_data->see('profile_owner_id'),
-			'body' => $send_data->see('content'),
-			'type' => 'comment'
-		);
-
-		/* Send the data far far away to be processed... */
-		$status = Breeze_Data::factory('comment');
-
-		/* Lets check if the are no errors before doing the insert */
-		if ($status->Check($send_data->see('content')))
+		/* /* The status do exists */
+		if (in_array($send_data->see('status_id'), array_keys($validate->Get('status'))))
 		{
-			$context['breeze']['validate'] = true;
-			$status->Record($params);
+			$profile_id = $send_data->see('poster_comment_id');
 
-			/* ...and just like that, this status was added to the database...
-			and now we get the same status from the DB to build the server response. */
-
-			$query_params = array(
-				'rows' =>'id, status_id status_owner_id, poster_comment_id, profile_owner_id, time, body',
-				'order' => '{raw:sort}',
-				'where' => 'status_id={int:status_id}'
+			/* Build the params array for the query */
+			$params = array(
+				'status_id' => $send_data->see('status_id'),
+				'status_owner_id' => $send_data->see('status_owner_id'),
+				'poster_comment_id' => $send_data->see('poster_comment_id'),
+				'profile_owner_id' => $send_data->see('profile_owner_id'),
+				'body' => $send_data->see('content'),
+				'type' => 'comment'
 			);
-			$query_data = array(
-				'sort' => 'id ASC',
-				'status_id' => $send_data->see('status_id')
-			);
-			$query = new Breeze_DB('breeze_comment');
-			$query->Params($query_params, $query_data);
-			$query->GetData(null, true);
 
-			$breeze_user_info = Breeze_UserInfo::Profile($profile_id);
+			/* Send the data far far away to be processed... */
+			$status = Breeze_Data::factory('comment');
 
-			/* Breeze parser... comming soon :P */
-			/* $query->data_result['body'] = Breeze::Parser($query->data_result['body']); */
+			/* Lets check if the are no errors before doing the insert */
+			if ($status->Check($send_data->see('content')))
+			{
+				$status->Record($params);
 
+				/* ...and just like that, this status was added to the database...
+				and now we get the same status from the DB to build the server response. */
 
-			$context['breeze']['post']['status'] = '
-				<div class="windowbg2">
-				<span class="topslice"><span></span></span>
-					<div class="breeze_user_inner">
-						<div class="breeze_user_status_avatar">
-							'.$breeze_user_info.'
+				$query_params = array(
+					'rows' =>'id, status_id status_owner_id, poster_comment_id, profile_owner_id, time, body',
+					'order' => '{raw:sort}',
+					'where' => 'status_id={int:status_id}'
+				);
+				$query_data = array(
+					'sort' => 'id ASC',
+					'status_id' => $send_data->see('status_id')
+				);
+				$query = new Breeze_DB('breeze_comment');
+				$query->Params($query_params, $query_data);
+				$query->GetData(null, true);
+
+				$breeze_user_info = Breeze_UserInfo::Profile($profile_id);
+
+				/* Breeze parser... comming soon :P */
+				/* $query->data_result['body'] = Breeze::Parser($query->data_result['body']); */
+
+				/* It's all OK... */
+				$context['breeze']['ok'] = 'ok';
+				$context['breeze']['post']['data'] = '
+					<div class="description" id ="comment_id_'.$query->data_result['id'].'">
+						<div class="breeze_user_inner">
+							<div class="breeze_user_status_avatar">
+								'.$breeze_user_info.'<br />
+								'.$query->data_result['time'].'
+							</div>
+							<div class="breeze_user_status_comment">
+								'.$query->data_result['body'].'<br />
+								<a href="javascript:void(0)" id="'.$query->data_result['id'].'" class="breeze_delete_comment">Delete</a>
+							</div>
+							<div class="clear"></div>
 						</div>
-						<div class="breeze_user_status_comment">
-							'.$query->data_result['body'].'
-						</div>
-						<div class="clear"></div>
-					</div>
-				<span class="botslice"><span></span></span>
-				</div>';
+					</div>';
+			}
 		}
-
 			$context['template_layers'] = array();
 			$context['sub_template'] = 'post_status';
 	}
@@ -209,71 +207,77 @@ class Breeze_Ajax
 	{
 		global $context;
 
-		$context['breeze']['validate'] = false;
-
-		/* We need all of this, really, we do. */
-		LoadBreezeMethod(array(
-			'Breeze_Settings',
-			'Breeze_Subs',
-			'Breeze_Globals',
-			'Breeze_Data',
-			'Breeze_DB',
-			'Breeze_UserInfo'
-		));
+		$context['breeze']['ok'] = '';
+		$context['breeze']['post']['data'] = '';
 
 		/* Get the data */
 		$sa = Breeze_Globals::factory('post');
-
-		/* Is this a comment? */
-		if ($sa->validate('type') && $sa->see('type') == 'comment')
+		
+		/* Check if the comment/tatus do exists */
+		$validate = Breeze_Validate::getInstance();
+		
+		if (in_array($sa->see('id'), array_keys($validate->Get($sa->see('type')))))
 		{
+			/* Is this a comment? */
+			if ($sa->validate('type') && $sa->see('type') == 'comment')
+			{
 
-			/* Perform the query */
-			$params = array(
-				'where' => 'id = {int:id}'
-			);
+				/* Perform the query */
+				$params = array(
+					'where' => 'id = {int:id}'
+				);
 
-			$data = array(
-				'id' => $sa->see('id')
-			);
-			$deletedata = new Breeze_DB('breeze_comment');
-			$deletedata->Params($params, $data);
-			$deletedata->DeleteData();
+				$data = array(
+					'id' => $sa->see('id')
+				);
+				$deletedata = new Breeze_DB('breeze_comment');
+				$deletedata->Params($params, $data);
+				$deletedata->DeleteData();
 
-			$context['breeze']['post']['status'] = '';
-			$context['breeze']['validate'] = true;
+				/* It's all OK... */
+				$context['breeze']['post']['data'] = '';
+				$context['breeze']['ok'] = 'ok';
+			}
+
+			/* No?  then it must be a status... */
+			elseif ($sa->validate('type') && $sa->see('type') == 'status')
+			{
+
+				/* Perform the query, delete the comments first */
+				$comment_params = array(
+					'where' => 'status_id = {int:id}'
+				);
+
+				$comment_data = array(
+					'id' => $sa->see('id')
+				);
+				$delete_comment_data = new Breeze_DB('breeze_comment');
+				$delete_comment_data->Params($comment_params, $comment_data);
+				$delete_comment_data->DeleteData();
+
+				/* Then delete the status */
+				$status_params = array(
+					'where' => 'id = {int:id}'
+				);
+
+				$status_data = array(
+					'id' => $sa->see('id')
+				);
+				$delete_status_data = new Breeze_DB('breeze_status');
+				$delete_status_data->Params($status_params, $status_data);
+				$delete_status_data->DeleteData();
+
+				/* It's all OK... */
+				$context['breeze']['post']['data'] = '';
+				$context['breeze']['ok'] = 'ok';
+			}
 		}
 
-		/* No?  then it must be a status... */
-		elseif ($sa->validate('type') && $sa->see('type') == 'status')
+		/* This comment/status was already been deleted, lets tell the user about it. */
+		else
 		{
-
-			/* Perform the query, delete the comments first */
-			$comment_params = array(
-				'where' => 'status_id = {int:id}'
-			);
-
-			$comment_data = array(
-				'id' => $sa->see('id')
-			);
-			$delete_comment_data = new Breeze_DB('breeze_comment');
-			$delete_comment_data->Params($comment_params, $comment_data);
-			$delete_comment_data->DeleteData();
-
-			/* Then delete the status */
-			$status_params = array(
-				'where' => 'id = {int:id}'
-			);
-
-			$status_data = array(
-				'id' => $sa->see('id')
-			);
-			$delete_status_data = new Breeze_DB('breeze_status');
-			$delete_status_data->Params($status_params, $status_data);
-			$delete_status_data->DeleteData();
-
-			$context['breeze']['post']['status'] = '';
-			$context['breeze']['validate'] = true;
+			$context['breeze']['post']['data'] = '';
+			$context['breeze']['ok'] = 'deleted';
 		}
 
 		$context['template_layers'] = array();

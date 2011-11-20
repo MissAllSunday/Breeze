@@ -114,7 +114,7 @@
 								autoClose: true,
 								duration: 1
 							});
-							$("#comment_flash_").hide();
+							$("#comment_flash_"+Id).hide();
 						}
 						else
 						{
@@ -171,7 +171,17 @@
 								message: breeze_error_message,
 								type: 'error',
 								autoClose: true,
-								duration: 1
+								duration: 5
+							});
+						}
+						else if(html == 'deleted_')
+						{
+							showNotification(
+							{
+								message: breeze_already_deleted,
+								type: 'error',
+								autoClose: true,
+								duration: 5
 							});
 						}
 						else

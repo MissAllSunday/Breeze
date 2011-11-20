@@ -217,14 +217,13 @@ function template_user_wall()
 			<span class="botslice"><span></span></span>
 		</div>';
 
-		/* New ajax status here */
+		/* New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING*/
 	echo '<div id="breeze_load_image"></div>
  <div id="breeze_display_status"></div>';
 
 
 	foreach ($context['member']['status'] as $k => $status)
 	{
-
 		echo '<div class="windowbg" id ="status_id_',$status['id'],'">
 			<span class="topslice"><span></span></span>
 				<div class="breeze_user_inner">
