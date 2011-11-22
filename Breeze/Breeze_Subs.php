@@ -78,8 +78,8 @@ class Breeze_Subs {
 		<script src="'. $settings['theme_url']. '/js/jquery_notification.js" type="text/javascript"></script>
 		<script src="'. $settings['theme_url']. '/js/facebox.js" type="text/javascript"></script>
 		<script src="'. $settings['theme_url']. '/js/confirm.js" type="text/javascript"></script>
+		<script src="'. $settings['theme_url']. '/js/livequery.js" type="text/javascript"></script>
 		<script src="'. $settings['theme_url']. '/js/breeze.js" type="text/javascript"></script>';
-
 
 		if($admin)
 		{

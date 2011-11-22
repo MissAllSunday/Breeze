@@ -193,7 +193,7 @@ function template_user_wall()
 
 		echo '<div class="description" >modules goes here</div>';
 
-		echo '<div class="description" > <a href="javascript:void(0)" id="1" class="breeze_delete">another one</a></div>';
+		echo '<div class="description" >another</div>';
 
 
 	/* end of left div */
@@ -231,10 +231,9 @@ function template_user_wall()
 						',$status['breeze_user_info'],'
 					</div>
 					<div class="breeze_user_status_comment">
-						',$status['body'],'<br />
-						<a href="javascript:void(0)" id="',$status['id'],'" class="breeze_delete_status">Delete</a>
-						<p /><hr />
-						|like|delete|',$status['time'],'<p />
+						',$status['body'],'
+						<div class="breeze_options"><span class="time_elapsed">',$status['time'],'</span>  <a href="javascript:void(0)" id="',$status['id'],'" class="breeze_delete_status">Delete</a> </div>
+						<hr />
 						<div id="comment_flash_',$status['id'],'"></div>';
 
 						/* Print out the comments */
@@ -243,11 +242,16 @@ function template_user_wall()
 									<div class="breeze_user_inner">
 										<div class="breeze_user_status_avatar">
 											',$comment['comment_user_info'],'<br />
-											',$comment['time'],'
 										</div>
 										<div class="breeze_user_status_comment">
-											',$comment['body'],'<br />
-											<a href="javascript:void(0)" id="',$comment['id'],'" class="breeze_delete_comment">Delete</a>
+											',$comment['body'],'
+											<div class="breeze_options">
+												<span class="time_elapsed">',$comment['time'],'</span> <a href="javascript:void(0)" id="',$comment['id'],'" class="breeze_like_comment">Like</a> <a href="javascript:void(0)" id="',$comment['id'],'" class="breeze_delete_comment">Delete</a>
+												<span class="breeze_like_status_id_',$comment['id'],'" id="',$status['id'],'"></span>
+												<span class="breeze_like_comment_id_',$comment['id'],'" id="',$comment['id'],'"></span>
+												<span class="breeze_like_userwholiked_id_',$comment['id'],'" id="',$comment['poster_comment_id'],'"></span>
+												<span class="breeze_like_profile_id_',$comment['id'],'" id="',$context['member']['id'],'"></span>
+											</div>
 										</div>
 										<div class="clear"></div>
 									</div>

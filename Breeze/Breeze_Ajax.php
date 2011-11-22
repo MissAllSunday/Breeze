@@ -27,7 +27,8 @@ class Breeze_Ajax
 			'Breeze_Data',
 			'Breeze_DB',
 			'Breeze_UserInfo',
-			'Breeze_Validate'
+			'Breeze_Validate',
+			'Breeze_Likes'
 		));
 		loadtemplate('BreezeAjax');
 
@@ -37,7 +38,8 @@ class Breeze_Ajax
 		$subActions = array(
 			'post' => 'self::Post',
 			'postcomment' => 'self::PostComment',
-			'delete' => 'self::Delete'
+			'delete' => 'self::Delete',
+			'like' => 'self::Like'
 		/* More actions here... */
 		);
 
@@ -132,7 +134,7 @@ class Breeze_Ajax
 
 		/* Get the status data */
 		$send_data = Breeze_Globals::factory('post');
-		
+
 		/* Check if the status where this comment was posted do exists */
 		$validate = Breeze_Validate::getInstance();
 
@@ -212,10 +214,10 @@ class Breeze_Ajax
 
 		/* Get the data */
 		$sa = Breeze_Globals::factory('post');
-		
+
 		/* Check if the comment/tatus do exists */
 		$validate = Breeze_Validate::getInstance();
-		
+
 		if (in_array($sa->see('id'), array_keys($validate->Get($sa->see('type')))))
 		{
 			/* Is this a comment? */
@@ -280,6 +282,34 @@ class Breeze_Ajax
 			$context['breeze']['ok'] = 'deleted';
 		}
 
+		$context['template_layers'] = array();
+		$context['sub_template'] = 'post_status';
+	}
+
+	private function Like()
+	{
+		global $context;
+
+		$context['breeze']['ok'] = 'ok';
+		$context['breeze']['post']['data'] = '';
+
+		/* Get the data */
+		$sa = Breeze_Globals::factory('post');
+
+		$like = Breeze_Likes::getInstance();
+
+		$data = array(
+			'userwholiked_id' => $sa->see('userwholiked_id'),
+			'status_id' => $sa->see('status_id'),
+			'comment_id' => $sa->see('comment_id'),
+			'profile_id' => $sa->see('profile_id'),
+			'liked' => $sa->see('liked')
+		);
+
+		$like->Insert($data);
+		
+		Get the brand new like...
+		
 		$context['template_layers'] = array();
 		$context['sub_template'] = 'post_status';
 	}

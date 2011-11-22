@@ -17,3 +17,4 @@ This mod uses the following scripts:
 -Nadia Alramli's confirm plugin http://nadiana.com/jquery-confirm-plugin
 -Facebox https://github.com/defunkt/facebox
 -zRSSFeeds http://www.zazar.net/developers/jquery/zrssfeed/
+-Brandon Aaron's Live query plugin http://brandonaaron.net/code/livequery/docs
