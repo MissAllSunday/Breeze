@@ -68,6 +68,11 @@ if (!class_exists('Breeze_DB')):
 
 			/* return $this->data_result; */
 		}
+		
+		function data_result()
+		{
+			return $this->data_result;
+		}
 
 		function UpdateData()
 		{

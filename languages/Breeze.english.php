@@ -17,7 +17,8 @@ $txt['breeze_general_wall'] = 'Wall';
 $txt['breeze_general_my_wall'] = 'My Wall';
 $txt['breeze_general_my_wall_settings'] = 'My Wall Settings';
 $txt['breeze_general_loading'] = 'Loading...';
-
+$txt['breeze_general_like'] = 'Like';
+$txt['breeze_general_unlike'] = 'Unlike';
 
 
 

@@ -41,6 +41,7 @@ class Breeze_User
 		/* Set all the page stuff */
 		$context['page_title'] = $txt['breeze_general_wall'];
 		$context['sub_template'] = 'user_wall';
+		$context['can_send_pm'] = allowedTo('pm_send');
 
 		/* Load all the status */
 		$query_params = array(
@@ -83,6 +84,8 @@ class Breeze_User
 				{
 					$c[$ck]['comment_user_info'] = Breeze_UserInfo::Profile($c[$ck]['poster_comment_id']);
 					$c[$ck]['time'] = Breeze_subs::Time_Elapsed($c[$ck]['time']);
+					
+					/* Get all the likes for this comment */
 				}
 
 				$z[$key]['comments'] = $c;

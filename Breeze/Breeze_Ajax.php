@@ -27,8 +27,7 @@ class Breeze_Ajax
 			'Breeze_Data',
 			'Breeze_DB',
 			'Breeze_UserInfo',
-			'Breeze_Validate',
-			'Breeze_Likes'
+			'Breeze_Validate'
 		));
 		loadtemplate('BreezeAjax');
 
@@ -38,8 +37,7 @@ class Breeze_Ajax
 		$subActions = array(
 			'post' => 'self::Post',
 			'postcomment' => 'self::PostComment',
-			'delete' => 'self::Delete',
-			'like' => 'self::Like'
+			'delete' => 'self::Delete'
 		/* More actions here... */
 		);
 
@@ -282,34 +280,6 @@ class Breeze_Ajax
 			$context['breeze']['ok'] = 'deleted';
 		}
 
-		$context['template_layers'] = array();
-		$context['sub_template'] = 'post_status';
-	}
-
-	private function Like()
-	{
-		global $context;
-
-		$context['breeze']['ok'] = 'ok';
-		$context['breeze']['post']['data'] = '';
-
-		/* Get the data */
-		$sa = Breeze_Globals::factory('post');
-
-		$like = Breeze_Likes::getInstance();
-
-		$data = array(
-			'userwholiked_id' => $sa->see('userwholiked_id'),
-			'status_id' => $sa->see('status_id'),
-			'comment_id' => $sa->see('comment_id'),
-			'profile_id' => $sa->see('profile_id'),
-			'liked' => $sa->see('liked')
-		);
-
-		$like->Insert($data);
-		
-		Get the brand new like...
-		
 		$context['template_layers'] = array();
 		$context['sub_template'] = 'post_status';
 	}
