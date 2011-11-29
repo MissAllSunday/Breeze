@@ -8,28 +8,32 @@
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ CC BY-NC-SA 3.0
  */
 
-	/* If you want to alter, transform, or build upon this work and release the result, please leave the original copyright statements and add yours below, thanks. */
+	/* If you want to alter, transform, or build upon this work and release the result, please leave the original copyright statements and add yours above, thanks. */
 
 if (!defined('SMF'))
 	die('Hacking attempt...');
-
-	/* An attempt to load the static method(s) used across the mod */
-	function LoadBreezeMethod($method)
-	{
-		global $sourcedir;
-
-		if (is_array($method) && !empty($method))
-			foreach($method as $m)
-				include_once($sourcedir.'/Breeze/'.$m.'.php');
-
-		else
-			include_once($sourcedir.'/Breeze/'.$method.'.php');
-	}
 
 class Breeze
 {
 	public function __construct()
 	{
+	}
+
+	/* An attempt to load the static method(s) used across the mod */
+	public static function LoadMethod($method)
+	{
+		global $sourcedir;
+
+		if (empty($method))
+			return;
+
+		if (is_array($method) && !empty($method))
+				foreach($method as $m)
+						require_once($sourcedir.'/Breeze/Breeze_'.$m.'.php');
+
+		else
+			require_once($sourcedir.'/Breeze/Breeze_'.$method.'.php');
+
 	}
 
 	/* Who can use this stuff? */
@@ -55,7 +59,7 @@ class Breeze
 		global $txt;
 
 		loadLanguage('Breeze');
-		LoadBreezeMethod('Breeze_Settings');
+		Breeze::LoadMethod('Settings');
 
 		/* Settings are required here */
 		$s = Breeze_Settings::getInstance();
@@ -106,7 +110,7 @@ class Breeze
 		global $scripturl, $txt, $context;
 
 		loadLanguage('Breeze');
-		LoadBreezeMethod('Breeze_Settings');
+		Breeze::LoadMethod('Settings');
 
 		/* Settings are required here */
 		$s = Breeze_Settings::getInstance();
@@ -163,7 +167,7 @@ class Breeze
 	public static function Action_Hook(&$actions)
 	{
 		$actions['wall'] = array('/Breeze/Breeze_General.php', 'Breeze_General::Wall');
-		
+
 		/* A whole new action just for some ajax calls... */
 		$actions['breezeajax'] = array('/Breeze/Breeze_Ajax.php', 'Breeze_Ajax::factory');
 	}

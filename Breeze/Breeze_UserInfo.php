@@ -36,6 +36,7 @@ class Breeze_UserInfo
 		loadMemberContext($user);
 		$user = $memberContext[$user];
 		$return = '';
+		$user['is_owner'] = $user['id']['id'] == $user_info['id'];
 
 		/* It all starts with the user's avatar or username... */
 		$return .= '<a href="#facebox_'.$user['id'].'" rel="facebox">'. (!empty($user['avatar']['image']) ? $user['avatar']['image'] : $user['link']) .'</a>
@@ -43,12 +44,17 @@ class Breeze_UserInfo
 			<div class="windowbg">
 				<span class="topslice"><span></span></span>
 				<div style="margin:3px;padding-right:15px;padding-left:5px;float:left;min-height:100px;">
-					'.$user['avatar']['image'].'<br />
-					'.$user['link'].'
-				</div>
+					'.$user['avatar']['image'].'<br />'.$user['link'].'';
+
+						// Can they add this member as a buddy?
+	if (!empty($context['can_have_buddy']) && !$user['is_owner'])
+		$return .= '
+				<br /><a href="'. $scripturl. '?action=buddy;u='.$user['id']. ';'.$context['session_var']. '='.$context['session_id'].'">['.$txt['buddy_' . ($context['member']['is_buddy'] ? 'remove' : 'add')].']</a>';
+
+				$return .= '</div>
 				<div>
 					<ul class="breeze_user_left_info">';
-					
+
 		// Show the member's primary group (like 'Administrator') if they have one.
 		if (!empty($user['group']))
 			$return .= '<li class="membergroup"><span style="color:'.$user['group_color'].';">'. $user['group']. '</span></li>';
@@ -56,7 +62,7 @@ class Breeze_UserInfo
 		// Show how many posts they have made.
 		if (!isset($context['disabled_fields']['posts']))
 			$return .= '<li class="postcount">'. $txt['member_postcount']. ': '. $user['posts']. '</li>';
-			
+
 		// Don't show these things for guests.
 		if (!$user['is_guest'])
 		{
@@ -74,7 +80,7 @@ class Breeze_UserInfo
 			// Show their personal text?
 			if (!empty($settings['show_blurb']) && $user['blurb'] != '')
 				$return .= '<li class="blurb">'. $user['blurb']. '</li>';
-				
+
 			// Any custom fields to show as icons?
 			if (!empty($user['custom_fields']))
 			{
@@ -95,7 +101,7 @@ class Breeze_UserInfo
 					$return .= '</ul>
 								</li>';
 			}
-			
+
 			// Show the profile, website, email address, and personal message buttons.
 			if ($settings['show_profile_buttons'])
 			{
@@ -113,7 +119,7 @@ class Breeze_UserInfo
 				$return .= '</ul>
 				</li>';
 			}
-			
+
 			// Any custom fields for standard placement?
 			if (!empty($user['custom_fields']))
 			{
@@ -137,7 +143,7 @@ class Breeze_UserInfo
 			<span class="botslice"><span></span></span>
 			</div>
 		</div>';
-					
+
 		return $return;
 	}
 }

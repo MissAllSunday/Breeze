@@ -137,11 +137,44 @@ function template_user_wall()
 	echo '
 			</div>
 			<span class="botslice"><span></span></span>
-		</div>
-		<p />
-		<div class ="description">modules here</div>
-	</div>';
-	
+		</div>';
+
+		/* Modules */
+		echo'<div class="breeze_modules">';
+
+		$counter = 0;
+
+		foreach($context['Breeze']['Modules'] as $m)
+		{
+			$counter++;
+
+			if ($counter % 2 == 0)
+				$class_id = '';
+
+			else
+				$class_id = '2';
+
+			echo '<div class="cat_bar">
+					<h3 class="catbg">
+						<span class="ie6_header floatleft">
+							',$m['title'],'
+						</span>
+					</h3>
+				</div>';
+
+			echo '<div class="windowbg',$class_id,'">
+					<span class="topslice"><span></span></span>
+					<div class="content">
+						',$m['data'],'
+					</div>
+					<span class="botslice"><span></span></span>
+				</div>';
+
+		}
+
+		/* Modules end */
+		echo '</div></div>';
+
 	/* End of right side */
 
 	/* Left side */
@@ -149,7 +182,7 @@ function template_user_wall()
 		<div class="windowbg2">
 			<span class="topslice"><span></span></span>
 			<div class="content">';
-			
+
 			/* Main content */
 				/* This is the status box,  O RLY? */
 			echo '<div class="breeze_user_inner">

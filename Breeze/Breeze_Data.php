@@ -53,7 +53,7 @@ class Breeze_Data
 	/* Just send the data to the database */
 	public static function Record($params)
 	{
-		LoadBreezeMethod(array('Breeze_DB', 'Breeze_Globals'));
+		Breeze::LoadMethod(array('DB', 'Globals'));
 
 		$data = array();
 		$values = array();

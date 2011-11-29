@@ -71,7 +71,7 @@ class Breeze_Subs {
 		<link href="'. $settings['theme_url']. '/css/facebox.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript">
 			if (typeof jQuery == \'undefined\')
-			{ 
+			{
 				document.write("<script src=\https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js\><\/script>");
 			}
 		</script>
@@ -136,5 +136,17 @@ class Breeze_Subs {
 				$string = substr($string, 0, $breakpoint) . $pad;
 
 		return $string;
+	}
+
+	public static function LoadUserInfo($id)
+	{
+		global $memberContext;
+
+		$u = $id;
+		loadMemberData($u, false, 'minimal');
+		loadMemberContext($u);
+		$u = $memberContext[$u];
+
+		return $u;
 	}
 }

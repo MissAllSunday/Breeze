@@ -8,7 +8,7 @@
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ CC BY-NC-SA 3.0
  */
 
-if (!class_exists('Breeze_DB')):
+if (!class_exists('DB')):
 	class Breeze_DB
 	{
 		function __construct($table)
@@ -68,8 +68,8 @@ if (!class_exists('Breeze_DB')):
 
 			/* return $this->data_result; */
 		}
-		
-		function data_result()
+
+		function DataResult()
 		{
 			return $this->data_result;
 		}

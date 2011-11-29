@@ -11,20 +11,20 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class Breeze_Validate
+class Validate
 {
 	private static $instance;
 
 	private function __construct()
 	{
-		LoadBreezeMethod('Breeze_DB');
+		Breeze::LoadMethod('DB');
 	}
 
 	public static function getInstance()
 	{
 		if (!self::$instance)
 		 {
-			self::$instance = new Breeze_Validate();
+			self::$instance = new Validate();
 		}
 		return self::$instance;
 	}

@@ -20,14 +20,14 @@ class Breeze_Ajax
 	public static function factory()
 	{
 		/* We need all of this, really, we do. */
-		LoadBreezeMethod(array(
-			'Breeze_Settings',
-			'Breeze_Subs',
-			'Breeze_Globals',
-			'Breeze_Data',
-			'Breeze_DB',
-			'Breeze_UserInfo',
-			'Breeze_Validate'
+		Breeze::LoadMethod(array(
+			'Settings',
+			'Subs',
+			'Globals',
+			'Data',
+			'DB',
+			'UserInfo',
+			'Validate'
 		));
 		loadtemplate('BreezeAjax');
 
@@ -94,6 +94,7 @@ class Breeze_Ajax
 			$query = new Breeze_DB('breeze_status');
 			$query->Params($query_params, $query_data);
 			$query->GetData(null, true);
+			$data = $query->DataResult();
 
 			$breeze_user_info = Breeze_UserInfo::Profile($profile_id);
 
@@ -110,7 +111,7 @@ class Breeze_Ajax
 							'.$breeze_user_info.'
 						</div>
 						<div class="breeze_user_status_comment">
-							'.$query->data_result['body'].'
+							'.$data['body'].'
 						</div>
 						<div class="clear"></div>
 					</div>
@@ -174,6 +175,8 @@ class Breeze_Ajax
 				$query = new Breeze_DB('breeze_comment');
 				$query->Params($query_params, $query_data);
 				$query->GetData(null, true);
+				$data = $query->DataResult();
+
 
 				$breeze_user_info = Breeze_UserInfo::Profile($profile_id);
 
@@ -183,15 +186,15 @@ class Breeze_Ajax
 				/* It's all OK... */
 				$context['breeze']['ok'] = 'ok';
 				$context['breeze']['post']['data'] = '
-					<div class="description" id ="comment_id_'.$query->data_result['id'].'">
+					<div class="description" id ="comment_id_'.$data['id'].'">
 						<div class="breeze_user_inner">
 							<div class="breeze_user_status_avatar">
 								'.$breeze_user_info.'<br />
-								'.$query->data_result['time'].'
+								'.$data['time'].'
 							</div>
 							<div class="breeze_user_status_comment">
-								'.$query->data_result['body'].'<br />
-								<a href="javascript:void(0)" id="'.$query->data_result['id'].'" class="breeze_delete_comment">Delete</a>
+								'.$data['body'].'<br />
+								<a href="javascript:void(0)" id="'.$data['id'].'" class="breeze_delete_comment">Delete</a>
 							</div>
 							<div class="clear"></div>
 						</div>

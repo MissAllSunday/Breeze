@@ -26,7 +26,7 @@ class Breeze_General
 
 		loadLanguage('Breeze');
 		loadtemplate('Breeze');
-		LoadBreezeMethod(array('Breeze_Settings','Breeze_Subs'));
+		Breeze::LoadMethod(array('Settings','Subs'));
 		writeLog(true);
 
 		/* Set all the page stuff */

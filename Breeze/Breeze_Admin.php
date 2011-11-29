@@ -18,7 +18,7 @@ if (!defined('SMF'))
 
 		loadLanguage('Breeze');
 		loadtemplate('Breeze');
-		LoadBreezeMethod(array('Breeze_Settings','Breeze_Subs'));
+		Breeze::LoadMethod(array('Settings','Subs'));
 
 		/* Set all the page stuff */
 		$context['page_title'] = $txt['breeze_admin_settings_main'];
@@ -71,7 +71,7 @@ if (!defined('SMF'))
 
 		loadLanguage('Breeze');
 		loadtemplate('Breeze');
-		LoadBreezeMethod('Breeze_Subs');
+		Breeze::LoadMethod('Subs');
 
 		/* Headers */
 		Breeze_Subs::Headers(true);
