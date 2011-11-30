@@ -15,31 +15,30 @@ if (!defined('SMF'))
 	helps to avoid having to write code over and over again */
 class Breeze_UserInfo
 {
-	public static function Profile($id)
+	public static function Profile($user, $id = false)
 	{
-		global $txt, $context, $settings, $scripturl, $user_info, $memberContext;
+		global $txt, $context, $settings, $scripturl, $user_info;
 
 		/* Can't do much if the user id is empty... */
-		if (empty($id))
+		if (empty($user))
 			return;
 
-		/* Safety first! */
-		if (is_numeric($id))
-			$id = (int) $id;
+		/* We load the data only if the user hasn't been loaded yet and we got and ID rather than an array
+			if we got an array, the user was already loaded*/
+		if ($id == true && isset($memberContext[$user]) == false)
+		{
+			global $memberContext;
 
-		else
-			return;
+			loadMemberData($user, false, 'profile');
+			loadMemberContext($user);
+			$user = $memberContext[$user];
+		}
 
-		/* load the user info */
-		$user = $id;
-		loadMemberData($user, false, 'profile');
-		loadMemberContext($user);
-		$user = $memberContext[$user];
 		$return = '';
-		$user['is_owner'] = $user['id']['id'] == $user_info['id'];
+		$user['is_owner'] = $user['id'] == $user_info['id'];
 
 		/* It all starts with the user's avatar or username... */
-		$return .= '<a href="#facebox_'.$user['id'].'" rel="facebox">'. (!empty($user['avatar']['image']) ? $user['avatar']['image'] : $user['link']) .'</a>
+		$return .= '<a href="#facebox_'.$user['id'].'" rel="facebox">'.(!empty($user['avatar']['href']) ? '<img src="'.$user['avatar']['href'].'" width="50px" />' : $user['link']) .'</a>
 		<div id="facebox_'.$user['id'].'" style="display:none;">
 			<div class="windowbg">
 				<span class="topslice"><span></span></span>

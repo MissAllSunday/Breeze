@@ -16,7 +16,7 @@ class Breeze_Modules
 	public function __construct($id)
 	{
 		$this->id = $id;
-		Breeze::LoadMethod(array('Subs','DB', 'Logs'));
+		Breeze::LoadMethod(array('UserInfo','DB', 'Logs'));
 	}
 
 	public function GetAllModules()
@@ -52,9 +52,9 @@ class Breeze_Modules
 
 			foreach($temp2 as $t)
 			{
-				$user = Breeze_Subs::LoadUserInfo($t);
+				$context['Breeze']['user_info'][$t] = Breeze_UserInfo::Profile($t, true);
 
-				$array['data'] .= '<td> <img src="'.$user['avatar']['href'].'" width="40px;" /><br />'.$user['link'].' </td>';
+				$array['data'] .= '<td> '.$context['Breeze']['user_info'][$t].' </td>';
 
 				if ($counter % $columns == 0)
 					$array['data'] .= '</tr><tr>';

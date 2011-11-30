@@ -44,6 +44,8 @@ class Breeze_Ajax
 		/* Does the subaction even exist? */
 		if ($sa->validate('sa') && in_array($sa->raw('sa'), array_keys($subActions)))
 			call_user_func($subActions[$sa->raw('sa')]);
+
+		/* No?  then tell them there was an error... */
 	}
 
 	/* Deal with the status... */
@@ -96,7 +98,7 @@ class Breeze_Ajax
 			$query->GetData(null, true);
 			$data = $query->DataResult();
 
-			$breeze_user_info = Breeze_UserInfo::Profile($profile_id);
+			$breeze_user_info = Breeze_UserInfo::Profile($profile_id, true);
 
 			/* Breeze parser... comming soon :P */
 			/* $query->data_result['body'] = Breeze::Parser($query->data_result['body']); */
@@ -177,8 +179,7 @@ class Breeze_Ajax
 				$query->GetData(null, true);
 				$data = $query->DataResult();
 
-
-				$breeze_user_info = Breeze_UserInfo::Profile($profile_id);
+				$breeze_user_info = Breeze_UserInfo::Profile($profile_id, true);
 
 				/* Breeze parser... comming soon :P */
 				/* $query->data_result['body'] = Breeze::Parser($query->data_result['body']); */

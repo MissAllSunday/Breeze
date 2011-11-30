@@ -211,7 +211,7 @@ function template_user_wall()
 			<span class="topslice"><span></span></span>
 				<div class="breeze_user_inner">
 					<div class="breeze_user_status_avatar">
-						',$status['breeze_user_info'],'
+						',$context['Breeze']['user_info'][$status['poster_id']],'
 					</div>
 					<div class="breeze_user_status_comment">
 						',$status['body'],'
@@ -224,7 +224,7 @@ function template_user_wall()
 							echo'<div class="description" id ="comment_id_',$comment['id'],'">
 									<div class="breeze_user_inner">
 										<div class="breeze_user_status_avatar">
-											',$comment['comment_user_info'],'<br />
+											',$context['Breeze']['user_info'][$comment['poster_comment_id']],'<br />
 										</div>
 										<div class="breeze_user_status_comment">
 											',$comment['body'],'

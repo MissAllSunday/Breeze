@@ -11,7 +11,7 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class Validate
+class Breeze_Validate
 {
 	private static $instance;
 
@@ -24,7 +24,7 @@ class Validate
 	{
 		if (!self::$instance)
 		 {
-			self::$instance = new Validate();
+			self::$instance = new Breeze_Validate();
 		}
 		return self::$instance;
 	}

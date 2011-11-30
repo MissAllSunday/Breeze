@@ -25,7 +25,7 @@ class Breeze_User
 
 	public static function Wall()
 	{
-		global $txt, $scripturl, $context, $memID, $memberContext, $modSettings,  $user_info;
+		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info;
 
 		loadLanguage('Breeze');
 		loadtemplate('Breeze');
@@ -52,6 +52,8 @@ class Breeze_User
 		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 		$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
 
+		$users_to_load = array();
+
 		/* Load all the status */
 		$query_params = array(
 			'rows' =>'id, owner_id, poster_id, time, body',
@@ -70,18 +72,21 @@ class Breeze_User
 		/* Append some useful tools */
 		foreach (array_keys($z) as $key)
 		{
-			$z[$key]['breeze_user_info'] = Breeze_UserInfo::Profile($z[$key]['poster_id']);
+			/* Let's collect the IDs */
+			$users_to_load[] = $z[$key]['poster_id'];
+
+			/* Do the conversion from unix time */
 			$z[$key]['time'] = Breeze_subs::Time_Elapsed($z[$key]['time']);
 
 			/* This isn't very efficient */
 			$c_query_params = array(
 				'rows' => 'id, status_id, status_owner_id, poster_comment_id, profile_owner_id, time, body',
 				'order' => '{raw:sort}',
-				'where' => 'status_id={int:memID}'
+				'where' => 'status_id={int:status_id}'
 			);
 			$c_query_data = array(
 				'sort' => 'id ASC',
-				'memID' => $z[$key]['id']
+				'status_id' => $z[$key]['id']
 			);
 			$c_query = new Breeze_DB('breeze_comment');
 			$c_query->Params($c_query_params, $c_query_data);
@@ -91,7 +96,10 @@ class Breeze_User
 			/* Yet another for each! */
 			foreach(array_keys($c) as $ck)
 			{
-				$c[$ck]['comment_user_info'] = Breeze_UserInfo::Profile($c[$ck]['poster_comment_id']);
+				/* Let's collect the IDs */
+				$users_to_load[] = $c[$ck]['poster_comment_id'];
+
+				/* Do the conversion from unix time */
 				$c[$ck]['time'] = Breeze_subs::Time_Elapsed($c[$ck]['time']);
 
 				/* Get all the likes for this comment */
@@ -100,9 +108,22 @@ class Breeze_User
 			$z[$key]['comments'] = $c;
 		}
 
+		/* Send the array to the template */
 		$context['member']['status'] = $z;
 
-		/* Done with the status... now its modules time */
+		/* We have all the IDs, let's prune the array a little */
+		$new_temp_array = array_unique($users_to_load);
+
+		/* Load the data */
+		loadMemberData($new_temp_array, false, 'profile');
+		foreach($new_temp_array as $u)
+		{
+			loadMemberContext($u);
+			$user = $memberContext[$u];
+			$context['Breeze']['user_info'][$user['id']] = Breeze_UserInfo::Profile($user);
+		}
+
+		/* Done with the status... now it's modules time */
 		$modules = new Breeze_Modules($context['member']['id']);
 		$temp = $modules->GetAllModules();
 		$exclude = array('__construct','GetAllModules');
