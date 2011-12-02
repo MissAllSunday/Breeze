@@ -108,15 +108,4 @@ class Breeze_Data
 			$insert->InsertData($data, $values, $indexes);
 		}
 	}
-
-	/* Record this please... */
-	public static function Log($params)
-	{
-	}
-
-	/* Temp, this function will send out notifications or private messages or both! to the user if some other person posted on his/her wall */
-	public static function Notifications($params)
-	{
-	}
 }
-

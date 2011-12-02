@@ -24,7 +24,7 @@ $txt['breeze_general_unlike'] = 'Unlike';
 
 /* User Individual Settings */
 $txt['breeze_profile'] = 'Wall Settings';
-$txt['breeze_user_settings_name'] = 'General Settings';
+$txt['breeze_user_settings_name'] = 'Wall Settings';
 $txt['breeze_user_permissions_name'] = 'Permissions';
 
 /* Admin Settings */
@@ -56,6 +56,7 @@ $txt['breeze_admin_settings_'] = '';
 $txt['breeze_admin_settings_'] = '';
 
 /* Time */
+$txt['breeze_time_just_now'] = 'just now.';
 $txt['breeze_time_second'] = 'second';
 $txt['breeze_time_ago'] = 'ago.';
 $txt['breeze_time_minute'] = 'minute';
@@ -92,4 +93,8 @@ $txt['breeze_confirm_delete'] = 'Do you really want to delete this?';
 $txt['breeze_confirm_yes'] = 'Yes';
 $txt['breeze_confirm_cancel'] = 'Cancel';
 $txt['breeze_already_deleted'] = 'This comment/status was already deleted.';
+
+
+/* Notifications */
+
 

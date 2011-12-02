@@ -72,7 +72,7 @@ class Breeze_Subs {
 		<script type="text/javascript">
 			if (typeof jQuery == \'undefined\')
 			{
-				document.write("<script src=\https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js\><\/script>");
+				document.write("<script src=\'https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js\'><\/script>");
 			}
 		</script>
 		<script src="'. $settings['theme_url']. '/js/jquery_notification.js" type="text/javascript"></script>
@@ -98,7 +98,7 @@ class Breeze_Subs {
 		$etime = time() - $ptime;
 
 		if ($etime < 1)
-			return '0 '.$txt['breeze_time_second'];
+			return $txt['breeze_time_just_now'];
 
 		$a = array(
 			12 * 30 * 24 * 60 * 60	=> $txt['breeze_time_year'],
@@ -115,7 +115,7 @@ class Breeze_Subs {
 			if ($d >= 1)
 			{
 				$r = round($d);
-				return $r . ' ' . $str . ($r > 1 ? 's ' .$txt['breeze_time_ago'] : '');
+				return $r . ' ' . $str . ($r > 1 ? 's ' : '').$txt['breeze_time_ago'];
 			}
 		}
 	}
@@ -124,7 +124,7 @@ class Breeze_Subs {
 	public static function Truncate_String($string, $limit, $break = ' ', $pad = '...')
 	{
 		if(empty($limit))
-			$limit = 50;
+			$limit = 30;
 
 		 /* return with no change if string is shorter than $limit */
 		if(strlen($string) <= $limit)
@@ -136,17 +136,5 @@ class Breeze_Subs {
 				$string = substr($string, 0, $breakpoint) . $pad;
 
 		return $string;
-	}
-
-	public static function LoadUserInfo($id)
-	{
-		global $memberContext;
-
-		$u = $id;
-		loadMemberData($u, false, 'minimal');
-		loadMemberContext($u);
-		$u = $memberContext[$u];
-
-		return $u;
 	}
 }

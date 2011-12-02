@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE package-info SYSTEM "http://www.simplemachines.org/xml/package-info">
+<package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
+	<id>Suki:breeze</id>
+	<name>Breeze</name>
+	<version>1.0</version>
+	<type>modification</type>
+
+	<install for="2.0 - 2.0.99">
+	<readme parsebbc="true">readme.txt</readme>
+	    <code>hooks.php</code>
+		<database>install.php</database>
+		<modification>Breeze.xml</modification>
+		<require-file name="templates/Breeze.template.php" destination="$themedir">template file</require-file>
+		<require-file name="templates/BreezeAjax.template.php" destination="$themedir">Ajax calls</require-file>
+		<require-dir name="css" destination="$themedir">CSS files</require-file>
+		<require-dir name="images" destination="$themedir">Image files</require-file>
+		<require-dir name="js" destination="$themedir">JavaScript</require-file>
+		<require-dir name="languages" destination="$themedir">The folder with the translations</require-dir>
+		<require-dir name="Breeze" destination="$sourcedir">Source files</require-dir>
+		<redirect url="$scripturl?action=admin;area=breezeindex" timeout="4000">redirect.txt</redirect>
+	</install>
+
+	<uninstall for="2.0 - 2.0.99">
+	    <code>hooks.php</code>
+		<modification reverse="true">Breeze.xml</modification>
+		<remove-dir name="$sourcedir/Breeze" />
+		<remove-file name="$themedir/Breeze.template.php" />
+		<remove-file name="$themedir/BreezeAjax.template.php" />
+		<remove-file name="$themedir/css/breeze.css" />
+		<remove-file name="$themedir/js/breeze.js" />
+		<remove-file name="$themedir/js/confirm.js" />
+		<remove-file name="$themedir/js/facebox.js" />
+		<remove-file name="$themedir/js/jquery.zrssfeed.min.js" />
+		<remove-file name="$themedir/js/jquery_notification.js" />
+		<remove-file name="$themedir/js/livequery.js" />
+		<remove-file name="$languagedir/Breeze.english.php" />
+	</uninstall>
+
+</package-info>

@@ -18,10 +18,10 @@
 
 	db_extend('packages');
 
-	if (empty($context['uninstalling'])){
-
+	if (empty($context['uninstalling']))
+	{
 		$tables[] = array(
-			'table_name' => '{db_prefix}breeze_comments',
+			'table_name' => '{db_prefix}breeze_comment',
 			'columns' => array(
 				array(
 					'name' => 'id',
@@ -31,31 +31,31 @@
 					'auto' => true
 				),
 				array(
-					'name' => 'id_entry_from',
+					'name' => 'status_id',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
 				),
 				array(
-					'name' => 'id_comment_from',
+					'name' => 'status_owner_id',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
 				),
 				array(
-					'name' => 'is_entry',
+					'name' => 'poster_comment_id',
 					'type' => 'int',
 					'size' => 1,
 					'null' => false
 				),
 				array(
-					'name' => 'likes',
+					'name' => 'profile_owner_id',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
 				),
 				array(
-					'name' => 'date',
+					'name' => 'time',
 					'type' => 'varchar',
 					'size' => 255,
 					'default' => '',
@@ -66,16 +66,50 @@
 					'size' => '',
 					'default' => '',
 				),
+			),
+			'indexes' => array(
 				array(
-					'name' => 'id_user',
+					'type' => 'primary',
+					'columns' => array('id')
+				),
+			),
+			'if_exists' => 'ignore',
+			'error' => 'fatal',
+			'parameters' => array(),
+		);
+
+		$tables[] = array(
+			'table_name' => '{db_prefix}breeze_status',
+			'columns' => array(
+				array(
+					'name' => 'id',
 					'type' => 'int',
-					'size' => 1,
+					'size' => 5,
+					'null' => false,
+					'auto' => true
+				),
+				array(
+					'name' => 'owner_id',
+					'type' => 'int',
+					'size' => 5,
 					'null' => false
 				),
 				array(
-					'name' => 'user_name',
+					'name' => 'poster_id',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
+				array(
+					'name' => 'time',
 					'type' => 'varchar',
 					'size' => 255,
+					'default' => '',
+				),
+				array(
+					'name' => 'body',
+					'type' => 'text',
+					'size' => '',
 					'default' => '',
 				),
 			),
@@ -91,7 +125,7 @@
 		);
 
 		$tables[] = array(
-			'table_name' => '{db_prefix}breeze_entries',
+			'table_name' => '{db_prefix}breeze_visit_log',
 			'columns' => array(
 				array(
 					'name' => 'id',
@@ -101,79 +135,22 @@
 					'auto' => true
 				),
 				array(
-					'name' => 'id_entry',
+					'name' => 'profile',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
 				),
 				array(
-					'name' => 'likes',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-			),
-			'indexes' => array(
-				array(
-					'type' => 'primary',
-					'columns' => array('id')
-				),
-			),
-			'if_exists' => 'ignore',
-			'error' => 'fatal',
-			'parameters' => array(),
-		);
-
-		$tables[] = array(
-			'table_name' => '{db_prefix}breeze_logs',
-			'columns' => array(
-				array(
-					'name' => 'id',
+					'name' => 'user',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
 				),
 				array(
-					'name' => 'id_entry',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(
-					'name' => 'id_comment',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(
-					'name' => 'type',
+					'name' => 'time',
 					'type' => 'varchar',
 					'size' => 255,
-					'null' => false
-				),
-				array(
-					'name' => 'date',
-					'type' => 'varchar',
-					'size' => 255,
-					'null' => false
-				),
-				array(
-					'name' => 'id_user',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(
-					'name' => 'user_name',
-					'type' => 'varchar',
-					'size' => 255,
-					'null' => false
-				),
-				array(
-					'name' => 'action',
-					'type' => 'varchar',
-					'size' => 255,
-					'null' => false
+					'default' => '',
 				),
 			),
 			'indexes' => array(
@@ -189,7 +166,7 @@
 
 		foreach ($tables as $table)
 		$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
-		
+
 		$rows = array();
 		$rows[] = array(
 			'method' => 'ignore',

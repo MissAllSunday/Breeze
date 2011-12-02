@@ -26,13 +26,17 @@ class Breeze_Logs
 	/* Log profile visits */
 	public function ProfileVisits()
 	{
-		global $user_info;
+		global $user_info, $context;
 
 		if (empty($this->profile))
 			return;
 
 		/* Don't log this if the user is visiting his/her own profile */
 		if ($this->profile == $user_info['id'])
+			return;
+			
+		/* Do not log guest people */
+		if ($context['user']['is_guest'])
 			return;
 
 		$params = array(
@@ -92,7 +96,6 @@ class Breeze_Logs
 
 	public function GetProfileVisits()
 	{
-
 		$last_week = strtotime('-1 week');
 
 		$params = array(
@@ -115,5 +118,35 @@ class Breeze_Logs
 
 		else
 			return array();
+	}
+	
+	/* Get the latest status made */
+	public function GetLatestStatus()
+	{
+		$last_week = strtotime('-1 week');
+
+		$params = array(
+			'rows' => 'id, owner_id, poster_id, time',
+			'where' => 'time >= {int:last_week} AND owner_id != {int:profile} AND poster_id = {int:profile}',
+			'limit' => 3
+		);
+		$data = array(
+			'last_week' => $last_week,
+			'profile' => $this->profile
+		);
+
+		$temp = new Breeze_DB('breeze_status');
+		$temp->Params($params, $data);
+		$temp->GetData();
+
+		$temp2 = $temp->DataResult();
+
+		if (!empty($temp2))
+			return $temp2;
+
+		else
+			return array();
+	
+	
 	}
 }

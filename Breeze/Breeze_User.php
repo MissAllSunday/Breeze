@@ -18,7 +18,6 @@ if (!defined('SMF'))
 
 class Breeze_User
 {
-	/* Handle the actions and set the proper files to handle all */
 	public function  __construct()
 	{
 	}
@@ -67,7 +66,7 @@ class Breeze_User
 		$query = new Breeze_DB('breeze_status');
 		$query->Params($query_params, $query_data);
 		$query->GetData('id');
-		$z = $query->data_result;
+		$z = $query->DataResult();
 
 		/* Append some useful tools */
 		foreach (array_keys($z) as $key)
@@ -76,7 +75,7 @@ class Breeze_User
 			$users_to_load[] = $z[$key]['poster_id'];
 
 			/* Do the conversion from unix time */
-			$z[$key]['time'] = Breeze_subs::Time_Elapsed($z[$key]['time']);
+			$z[$key]['time'] = Breeze_Subs::Time_Elapsed($z[$key]['time']);
 
 			/* This isn't very efficient */
 			$c_query_params = array(
@@ -91,7 +90,7 @@ class Breeze_User
 			$c_query = new Breeze_DB('breeze_comment');
 			$c_query->Params($c_query_params, $c_query_data);
 			$c_query->GetData('id');
-			$c = $c_query->data_result;
+			$c = $c_query->DataResult();
 
 			/* Yet another for each! */
 			foreach(array_keys($c) as $ck)
@@ -100,7 +99,7 @@ class Breeze_User
 				$users_to_load[] = $c[$ck]['poster_comment_id'];
 
 				/* Do the conversion from unix time */
-				$c[$ck]['time'] = Breeze_subs::Time_Elapsed($c[$ck]['time']);
+				$c[$ck]['time'] = Breeze_Subs::Time_Elapsed($c[$ck]['time']);
 
 				/* Get all the likes for this comment */
 			}
@@ -126,16 +125,35 @@ class Breeze_User
 		/* Done with the status... now it's modules time */
 		$modules = new Breeze_Modules($context['member']['id']);
 		$temp = $modules->GetAllModules();
-		$exclude = array('__construct','GetAllModules');
 		$context['Breeze']['Modules'] = array();
 
 		foreach($temp as $m)
-			if (!in_array($m, $exclude))
-				$context['Breeze']['Modules'][$m] = $modules->$m();
+			$context['Breeze']['Modules'][$m] = $modules->$m();
 
 		/* Write to the log */
 		$log = new Breeze_Logs($context['member']['id']);
 		$log->ProfileVisits();
 
+	}
+	
+	/* Shows a form for users to set up their wall as needed. */
+	function Settings()
+	{
+		global $context, $user_info;
+		
+		loadLanguage('Breeze');
+		loadtemplate('Breeze');
+
+		/* Is this the right user? */
+		if ($context['member']['id'] != $user_info['id'])
+			redirectexit('action=profile');
+	
+		/* Set all the page stuff */
+		$context['sub_template'] = 'user_settings';
+		$context['can_send_pm'] = allowedTo('pm_send');
+		$context['page_title'] = $txt['breeze_user_settings_name'];
+		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
+		$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
+	
 	}
 }

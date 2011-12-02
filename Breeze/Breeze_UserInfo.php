@@ -27,7 +27,7 @@ class Breeze_UserInfo
 			if we got an array, the user was already loaded*/
 		if ($id == true && isset($memberContext[$user]) == false)
 		{
-			global $memberContext;
+			global $memberContext, $context;
 
 			loadMemberData($user, false, 'profile');
 			loadMemberContext($user);
@@ -36,9 +36,15 @@ class Breeze_UserInfo
 
 		$return = '';
 		$user['is_owner'] = $user['id'] == $user_info['id'];
+		
+		/* Sometimes we just want the link */
+		$context['Breeze']['user_info']['link'][$user['id']] = $user['link'];
+		
+		/* ...or the name */
+		$context['Breeze']['user_info']['name'][$user['id']] = $user['name'];
 
 		/* It all starts with the user's avatar or username... */
-		$return .= '<a href="#facebox_'.$user['id'].'" rel="facebox">'.(!empty($user['avatar']['href']) ? '<img src="'.$user['avatar']['href'].'" width="50px" />' : $user['link']) .'</a>
+		$return .= '<a href="#facebox_'.$user['id'].'" rel="facebox">'.(!empty($user['avatar']['href']) ? '<img src="'.$user['avatar']['href'].'" width="70px" />' : $user['link']) .'</a>
 		<div id="facebox_'.$user['id'].'" style="display:none;">
 			<div class="windowbg">
 				<span class="topslice"><span></span></span>

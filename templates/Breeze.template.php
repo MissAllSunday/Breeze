@@ -202,12 +202,14 @@ function template_user_wall()
 
 
 	/* New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING*/
-	echo '<div id="breeze_load_image"></div><div id="breeze_display_status"></div>';
+	echo '<ul class="breeze_status">
+			<li id="breeze_load_image"></li>
+			<li id="breeze_display_status"></li>';
 
 	/* Status and comments */
 	foreach ($context['member']['status'] as $k => $status)
 	{
-		echo '<div class="windowbg" id ="status_id_',$status['id'],'">
+		echo '<li class="windowbg" id ="status_id_',$status['id'],'">
 			<span class="topslice"><span></span></span>
 				<div class="breeze_user_inner">
 					<div class="breeze_user_status_avatar">
@@ -218,49 +220,66 @@ function template_user_wall()
 						<div class="breeze_options"><span class="time_elapsed">',$status['time'],'</span>  <a href="javascript:void(0)" id="',$status['id'],'" class="breeze_delete_status">Delete</a> </div>
 						<hr />
 						<div id="comment_flash_',$status['id'],'"></div>';
+					echo '<ul class="breeze_comments_list">';
 
 						/* Print out the comments */
 						foreach($status['comments'] as $comment)
-							echo'<div class="description" id ="comment_id_',$comment['id'],'">
-									<div class="breeze_user_inner">
-										<div class="breeze_user_status_avatar">
-											',$context['Breeze']['user_info'][$comment['poster_comment_id']],'<br />
-										</div>
-										<div class="breeze_user_status_comment">
-											',$comment['body'],'
-											<div class="breeze_options">
-												<span class="time_elapsed">',$comment['time'],'</span> | <a href="javascript:void(0)" id="',$comment['id'],'" class="breeze_delete_comment">Delete</a>
-												<span class="breeze_like_status_id_',$comment['id'],'" id="',$status['id'],'"></span>
-												<span class="breeze_like_comment_id_',$comment['id'],'" id="',$comment['id'],'"></span>
-												<span class="breeze_like_userwholiked_id_',$comment['id'],'" id="',$comment['poster_comment_id'],'"></span>
-												<span class="breeze_like_profile_id_',$comment['id'],'" id="',$context['member']['id'],'"></span>
+								echo '<li class="description" id ="comment_id_',$comment['id'],'">
+											<div class="breeze_user_comment_avatar">
+												',$context['Breeze']['user_info'][$comment['poster_comment_id']],'<br />
 											</div>
-										</div>
-										<div class="clear"></div>
-									</div>
-								</div>';
+											<div class="breeze_user_comment_comment">
+												',$comment['body'],'
+												<div class="breeze_options">
+													<span class="time_elapsed">',$comment['time'],'</span> | <a href="javascript:void(0)" id="',$comment['id'],'" class="breeze_delete_comment">Delete</a>
+												</div>
+											</div>
+											<div class="clear"></div>
+										</li>';
 
-						echo'<div id="comment_loadplace_',$status['id'],'"></div>
+						echo'<li id="comment_loadplace_',$status['id'],'"></li>
 
-							<form action="', $scripturl, '?action=breezeajax;sa=postcomment" method="post" name="formID_',$status['id'],'" id="formID_',$status['id'],'">
+							<li><form action="', $scripturl, '?action=breezeajax;sa=postcomment" method="post" name="formID_',$status['id'],'" id="formID_',$status['id'],'">
 								<textarea id="textboxcontent_',$status['id'],'" cols="40" rows="2"></textarea>
 								<input type="hidden" value="',$status['poster_id'],'" name="status_owner_id',$status['id'],'" id="status_owner_id',$status['id'],'" />
 								<input type="hidden" value="',$context['member']['id'],'" name="profile_owner_id',$status['id'],'" id="profile_owner_id',$status['id'],'" />
 								<input type="hidden" value="',$status['id'],'" name="status_id',$status['id'],'" id="status_id',$status['id'],'" />
 								<input type="hidden" value="',$user_info['id'],'" name="poster_comment_id',$status['id'],'" id="poster_comment_id',$status['id'],'" /><br />
 								<input type="submit" value="Comment" class="comment_submit" id="',$status['id'],'" />
-							</form>
+							</form></li>
+						</ul>
 					</div>
 					<div class="clear"></div>
 				</div>
 			<span class="botslice"><span></span></span>
-			</div>';
+			</li>';
 	}
 
 	/* End of left side */
-	echo '</div>
+	echo '</ul></div>
 	<div class="clear"></div>
 	</div>';
+}
+
+function template_user_settings()
+{
+	global $context;
+	echo '
+		<span class="clear upperframe">
+			<span></span>
+		</span>
+		<div class="roundframe rfix">
+			<div class="innerframe">
+				<div class="content">
+					oh hai!
+					<pre>',print_r($context),'</pre>
+				</div>
+			</div>
+		</div>
+		<span class="lowerframe">
+			<span></span>
+		</span><br />';
+
 }
 
 /* Boring stuff you will never see... */

@@ -105,20 +105,33 @@ class Breeze_Ajax
 
 			/* It's all OK... */
 			$context['breeze']['ok'] = 'ok';
-			$context['breeze']['post']['data'] = '
-				<div class="windowbg">
-				<span class="topslice"><span></span></span>
-					<div class="breeze_user_inner">
-						<div class="breeze_user_status_avatar">
-							'.$breeze_user_info.'
-						</div>
-						<div class="breeze_user_status_comment">
-							'.$data['body'].'
-						</div>
-						<div class="clear"></div>
+			$context['breeze']['post']['data'] .= '
+		<li class="windowbg" id ="status_id_'.$data['id'].'">
+			<span class="topslice"><span></span></span>
+				<div class="breeze_user_inner">
+					<div class="breeze_user_status_avatar">
+						'.$breeze_user_info.'
 					</div>
-				<span class="botslice"><span></span></span>
-				</div>';
+					<div class="breeze_user_status_comment">
+						'.$data['body'].'
+						<div class="breeze_options"><span class="time_elapsed">'.Breeze_Subs::Time_Elapsed($data['time']).'</span>  <a href="javascript:void(0)" id="'.$data['id'].'" class="breeze_delete_status">Delete</a> </div>
+						<hr />
+						<div id="comment_flash_'.$data['id'].'"></div>';
+
+					$context['breeze']['post']['data'] .= '<ul class="breeze_comments_list">';
+
+						/* New status don't have comments... */
+
+						$context['breeze']['post']['data'] .= '<li id="comment_loadplace_'.$data['id'].'"></li>
+
+							<li><form action="'. $scripturl. '?action=breezeajax;sa=postcomment" method="post" name="formID_'.$data['id'].'" id="formID_'.$data['id'].'">
+								<textarea id="textboxcontent_'.$data['id'].'" cols="40" rows="2"></textarea>
+								<input type="hidden" value="'.$data['poster_id'].'" name="status_owner_id'.$data['id'].'" id="status_owner_id'.$data['id'].'" />
+								<input type="hidden" value="'.$context['member']['id'].'" name="profile_owner_id'.$data['id'].'" id="profile_owner_id'.$data['id'].'" />
+								<input type="hidden" value="'.$data['id'].'" name="status_id'.$data['id'].'" id="status_id'.$data['id'].'" />
+								<input type="hidden" value="'.$user_info['id'].'" name="poster_comment_id'.$data['id'].'" id="poster_comment_id'.$data['id'].'" /><br />
+								<input type="submit" value="Comment" class="comment_submit" id="'.$data['id'].'" />
+							</form></li>';
 		}
 
 			$context['template_layers'] = array();
@@ -128,7 +141,7 @@ class Breeze_Ajax
 	/* Basically the same as Post, get the data from the form, send it to Breeze_Data, if Breeze_Data says OK, then fill the html and send it to the ajax template */
 	private function PostComment()
 	{
-		global $context;
+		global $context, $scripturl, $user_info;
 
 		/* By default it will show an error, we only do stuff if necesary */
 		$context['breeze']['ok'] = '';
@@ -187,19 +200,18 @@ class Breeze_Ajax
 				/* It's all OK... */
 				$context['breeze']['ok'] = 'ok';
 				$context['breeze']['post']['data'] = '
-					<div class="description" id ="comment_id_'.$data['id'].'">
-						<div class="breeze_user_inner">
-							<div class="breeze_user_status_avatar">
-								'.$breeze_user_info.'<br />
-								'.$data['time'].'
-							</div>
-							<div class="breeze_user_status_comment">
-								'.$data['body'].'<br />
-								<a href="javascript:void(0)" id="'.$data['id'].'" class="breeze_delete_comment">Delete</a>
-							</div>
-							<div class="clear"></div>
+					<li class="description" id ="comment_id_'.$data['id'].'">
+						<div class="breeze_user_comment_avatar">
+							'.$breeze_user_info.'<br />
 						</div>
-					</div>';
+						<div class="breeze_user_comment_comment">
+							'.$data['body'].'
+							<div class="breeze_options">
+								<span class="time_elapsed">'.Breeze_Subs::Time_Elapsed($data['time']).'</span> | <a href="javascript:void(0)" id="'.$data['id'].'" class="breeze_delete_comment">Delete</a>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</li>';
 			}
 		}
 			$context['template_layers'] = array();

@@ -84,7 +84,7 @@ class Breeze
 		/* User individual settings goes right here... */
 		$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 			'label' => $txt['breeze_user_settings_name'],
-			'file' => 'Breeze_User.php',
+			'file' => 'Breeze/Breeze_User.php',
 			'function' => 'Breeze_Wrapper_Settings',
 			'permission' => array(
 				'own' => 'profile_view_own',
@@ -94,7 +94,7 @@ class Breeze
 
 		$profile_areas['breeze_profile']['areas']['breezepermissions'] = array(
 			'label' => $txt['breeze_user_permissions_name'],
-			'file' => 'Breeze_User.php',
+			'file' => 'Breeze/Breeze_User.php',
 			'function' => 'Breeze_Wrapper_Permissions',
 			'permission' => array(
 				'own' => 'profile_view_own',
@@ -172,6 +172,14 @@ class Breeze
 		$actions['breezeajax'] = array('/Breeze/Breeze_Ajax.php', 'Breeze_Ajax::factory');
 	}
 
+	/* DUH! WINNING! */
+	public static function Who()
+	{
+		$MAS = '<a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a>';
+
+		return $MAS;
+	}
+
 	/* It's all about Admin settings from now on */
 	public static function Admin_Button(&$admin_menu)
 	{
@@ -217,4 +225,3 @@ class Breeze
 	 The shorter story
 	 No love, no glory
 	 No hero in her skies */
-

@@ -153,7 +153,10 @@ padding:5px;
 {
 
 }
-
+.breeze_status
+{
+	list-style-type: none;
+}
 .breeze_user_status_avatar
 {
 float:left;
@@ -163,15 +166,30 @@ padding:3px;
 
 .breeze_user_status_comment
 {
-float:right;
-margin:3px;
+margin-left:80px;
 padding:3px;
-width:75%;
+width:85%;
 }
 
 .breeze_user_statusbox textarea
 {
 border: 1px solid #888;
+}
+
+/* Comments */
+.breeze_comments_list
+{
+	list-style-type: none;
+}
+.breeze_user_comment_avatar
+{
+	float:left;
+}
+.breeze_user_comment_comment
+{
+margin:3px;
+margin-left:75px;
+padding:3px;
 }
 
 /* Ajax message */

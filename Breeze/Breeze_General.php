@@ -55,4 +55,3 @@ class Breeze_General
 	{
 	}
 }
-
