@@ -167,24 +167,6 @@
 		foreach ($tables as $table)
 		$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
 
-		$rows = array();
-		$rows[] = array(
-			'method' => 'ignore',
-			'table_name' => '{db_prefix}breeze_settings',
-			'columns' => array(
-				'rss_url' => 'string'
-			),
-			'data' => array(
-				'http://missallsunday.com/.xml/type.rss/'  // Temp url
-			),
-			'keys' => array(
-				'enable'
-			)
-		);
-
-		foreach ($rows as $row)
-			$smcFunc['db_insert']($row['method'], $row['table_name'], $row['columns'], $row['data'], $row['keys']);
-
 	}
 
 ?>

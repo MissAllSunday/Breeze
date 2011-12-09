@@ -1,11 +1,20 @@
 <?php
 
 /**
- * @package breeze mod
+ * Breeze_
+ * 
+ * The purpose of this file is
+ * @package Breeze mod
  * @version 1.0
- * @author Suki <missallsunday@simplemachines.org>
- * @copyright 2011 Suki
- * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ CC BY-NC-SA 3.0
+ * @author Jessica Gonzalez <missallsunday@simplemachines.org>
+ * @copyright Copyright (c) 2011, Jessica Gonzalez
+ * @license http://mozilla.org/MPL/2.0/
+ */
+
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License version 2.0 (the \License"). You can obtain a copy of the
+ * License at http://mozilla.org/MPL/2.0/.
  */
 
 if (!defined('SMF'))
@@ -127,22 +136,5 @@ class Breeze_Modules
 
 
 		return $array;
-	}
-
-	private static function remove($array, $val = '', $preserve_keys = true)
-	{
-		if (empty($array) || !is_array($array))
-			return false;
-
-		if (!in_array($val, $array))
-			return $array;
-
-		foreach($array as $key => $value)
-		{
-			if ($value == $val) 
-				unset($array[$key]);
-		}
-
-		return ($preserve_keys === true) ? $array : array_values($array);
 	}
 }

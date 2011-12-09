@@ -1,11 +1,20 @@
 <?php
 
 /**
- * @package breeze mod
+ * Breeze_
+ * 
+ * The purpose of this file is
+ * @package Breeze mod
  * @version 1.0
- * @author Suki <missallsunday@simplemachines.org>
- * @copyright 2011 Suki
- * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ CC BY-NC-SA 3.0
+ * @author Jessica Gonzalez <missallsunday@simplemachines.org>
+ * @copyright Copyright (c) 2011, Jessica Gonzalez
+ * @license http://mozilla.org/MPL/2.0/
+ */
+
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License version 2.0 (the \License"). You can obtain a copy of the
+ * License at http://mozilla.org/MPL/2.0/.
  */
 
 if (!defined('SMF'))
@@ -27,7 +36,8 @@ class Breeze_Ajax
 			'Data',
 			'DB',
 			'UserInfo',
-			'Validate'
+			'Validate',
+			'Parser'
 		));
 		loadtemplate('BreezeAjax');
 
@@ -51,7 +61,7 @@ class Breeze_Ajax
 	/* Deal with the status... */
 	private function Post()
 	{
-		global $context;
+		global $context, $scripturl, $user_info;
 
 		$context['breeze']['ok'] = '';
 		$context['breeze']['post']['data'] = '';
@@ -100,9 +110,10 @@ class Breeze_Ajax
 
 			$breeze_user_info = Breeze_UserInfo::Profile($profile_id, true);
 
-			/* Breeze parser... comming soon :P */
-			/* $query->data_result['body'] = Breeze::Parser($query->data_result['body']); */
-
+			/* Breeze parser */
+			$parser = new Breeze_Parser($data['body']);
+			$data['body'] = $parser->Display();
+			
 			/* It's all OK... */
 			$context['breeze']['ok'] = 'ok';
 			$context['breeze']['post']['data'] .= '
@@ -127,7 +138,7 @@ class Breeze_Ajax
 							<li><form action="'. $scripturl. '?action=breezeajax;sa=postcomment" method="post" name="formID_'.$data['id'].'" id="formID_'.$data['id'].'">
 								<textarea id="textboxcontent_'.$data['id'].'" cols="40" rows="2"></textarea>
 								<input type="hidden" value="'.$data['poster_id'].'" name="status_owner_id'.$data['id'].'" id="status_owner_id'.$data['id'].'" />
-								<input type="hidden" value="'.$context['member']['id'].'" name="profile_owner_id'.$data['id'].'" id="profile_owner_id'.$data['id'].'" />
+								<input type="hidden" value="'.$data['owner_id'].'" name="profile_owner_id'.$data['id'].'" id="profile_owner_id'.$data['id'].'" />
 								<input type="hidden" value="'.$data['id'].'" name="status_id'.$data['id'].'" id="status_id'.$data['id'].'" />
 								<input type="hidden" value="'.$user_info['id'].'" name="poster_comment_id'.$data['id'].'" id="poster_comment_id'.$data['id'].'" /><br />
 								<input type="submit" value="Comment" class="comment_submit" id="'.$data['id'].'" />

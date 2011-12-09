@@ -1,11 +1,20 @@
 <?php
 
 /**
- * @package breeze mod
+ * Breeze_
+ * 
+ * The purpose of this file is
+ * @package Breeze mod
  * @version 1.0
- * @author Suki <missallsunday@simplemachines.org>
- * @copyright 2011 Suki
- * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ CC BY-NC-SA 3.0
+ * @author Jessica Gonzalez <missallsunday@simplemachines.org>
+ * @copyright Copyright (c) 2011, Jessica Gonzalez
+ * @license http://mozilla.org/MPL/2.0/
+ */
+
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License version 2.0 (the \License"). You can obtain a copy of the
+ * License at http://mozilla.org/MPL/2.0/.
  */
 
 if (!defined('SMF'))
@@ -35,7 +44,8 @@ class Breeze_User
 			'DB',
 			'UserInfo',
 			'Modules',
-			'Logs'
+			'Logs',
+			'Parser'
 		));
 		Breeze_Subs::Headers();
 
@@ -76,6 +86,10 @@ class Breeze_User
 
 			/* Do the conversion from unix time */
 			$z[$key]['time'] = Breeze_Subs::Time_Elapsed($z[$key]['time']);
+			
+			/* Parse the data */
+			$parse = new Breeze_Parser($z[$key]['body']);
+			$z[$key]['body'] = $parse->Display();
 
 			/* This isn't very efficient */
 			$c_query_params = array(

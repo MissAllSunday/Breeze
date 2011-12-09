@@ -1,11 +1,20 @@
 <?php
 
 /**
- * @package breeze mod
+ * Breeze_
+ * 
+ * The purpose of this file is
+ * @package Breeze mod
  * @version 1.0
- * @author Suki <missallsunday@simplemachines.org>
- * @copyright 2011 Suki
- * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ CC BY-NC-SA 3.0
+ * @author Jessica Gonzalez <missallsunday@simplemachines.org>
+ * @copyright Copyright (c) 2011, Jessica Gonzalez
+ * @license http://mozilla.org/MPL/2.0/
+ */
+
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License version 2.0 (the \License"). You can obtain a copy of the
+ * License at http://mozilla.org/MPL/2.0/.
  */
 
 if (!defined('SMF'))
@@ -107,5 +116,14 @@ class Breeze_Data
 			$insert = new Breeze_DB('breeze_'.$params['type']);
 			$insert->InsertData($data, $values, $indexes);
 		}
+	}
+	
+	private static function preparse($s)
+	{
+		$s = strtr($s, array('[]' => '&#91;]', '[&#039;' => '&#91;&#039;'));
+		$s = preg_replace('~&amp;#(\d{4,5}|[2-9]\d{2,4}|1[2-9]\d);~', '&#$1;', $s);
+		$s = preg_replace('~\[nobbc\](.+?)\[/nobbc\]~ie', '\'[nobbc]\' . strtr(\'$1\', array(\'[\' => \'&#91;\', \']\' => \'&#93;\', \':\' => \'&#58;\', \'@\' => \'&#64;\')) . \'[/nobbc]\'', $s);
+		$s = strtr($s, array("\r" => ''));
+		$s = preg_replace('~\.{100,}~', '...', $s);
 	}
 }

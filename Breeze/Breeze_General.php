@@ -1,11 +1,20 @@
 <?php
 
 /**
- * @package breeze mod
+ * Breeze_
+ * 
+ * The purpose of this file is
+ * @package Breeze mod
  * @version 1.0
- * @author Miss All Sunday <missallsunday@simplemachines.org>
- * @copyright 2011 Miss All Sunday
- * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ CC BY-NC-SA 3.0
+ * @author Jessica Gonzalez <missallsunday@simplemachines.org>
+ * @copyright Copyright (c) 2011, Jessica Gonzalez
+ * @license http://mozilla.org/MPL/2.0/
+ */
+
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License version 2.0 (the \License"). You can obtain a copy of the
+ * License at http://mozilla.org/MPL/2.0/.
  */
 
 if (!defined('SMF'))

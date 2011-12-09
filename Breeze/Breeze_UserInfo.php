@@ -1,11 +1,20 @@
 <?php
 
 /**
- * @package breeze mod
+ * Breeze_
+ * 
+ * The purpose of this file is
+ * @package Breeze mod
  * @version 1.0
- * @author Suki <missallsunday@simplemachines.org>
- * @copyright 2011 Suki
- * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ CC BY-NC-SA 3.0
+ * @author Jessica Gonzalez <missallsunday@simplemachines.org>
+ * @copyright Copyright (c) 2011, Jessica Gonzalez
+ * @license http://mozilla.org/MPL/2.0/
+ */
+
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License version 2.0 (the \License"). You can obtain a copy of the
+ * License at http://mozilla.org/MPL/2.0/.
  */
 
 if (!defined('SMF'))
@@ -44,7 +53,7 @@ class Breeze_UserInfo
 		$context['Breeze']['user_info']['name'][$user['id']] = $user['name'];
 
 		/* It all starts with the user's avatar or username... */
-		$return .= '<a href="#facebox_'.$user['id'].'" rel="facebox">'.(!empty($user['avatar']['href']) ? '<img src="'.$user['avatar']['href'].'" width="70px" />' : $user['link']) .'</a>
+		$return .= '<a href="#facebox_'.$user['id'].'" rel="facebox">'.(!empty($user['avatar']['href']) ? '<img src="'.$user['avatar']['href'].'" width="50px" />' : $user['link']) .'</a>
 		<div id="facebox_'.$user['id'].'" style="display:none;">
 			<div class="windowbg">
 				<span class="topslice"><span></span></span>

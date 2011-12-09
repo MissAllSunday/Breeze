@@ -1,14 +1,21 @@
 <?php
 
 /**
- * @package breeze mod
+ * Breeze Main file
+ * 
+ * The main file where functions for hooks are stored
+ * @package Breeze mod
  * @version 1.0
- * @author Suki <missallsunday@simplemachines.org>
- * @copyright 2011 Suki
- * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ CC BY-NC-SA 3.0
+ * @author Jessica Gonzalez <missallsunday@simplemachines.org>
+ * @copyright Copyright (c) 2011, Jessica Gonzalez
+ * @license http://mozilla.org/MPL/2.0/
  */
 
-	/* If you want to alter, transform, or build upon this work and release the result, please leave the original copyright statements and add yours above, thanks. */
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License version 2.0 (the \License"). You can obtain a copy of the
+ * License at http://mozilla.org/MPL/2.0/.
+ */
 
 if (!defined('SMF'))
 	die('Hacking attempt...');
@@ -19,7 +26,14 @@ class Breeze
 	{
 	}
 
-	/* An attempt to load the static method(s) used across the mod */
+	/**
+	 * An attempt to load the static method(s) used across the mod
+	 *
+	 * @todo Implement some checks before loading the file.
+	 * @param string $method When $method is a string it contains a single file name.
+	 * @param array $method a comma separated list of all the file names to be loaded.
+	 * @return void
+	 */
 	public static function LoadMethod($method)
 	{
 		global $sourcedir;
@@ -33,12 +47,17 @@ class Breeze
 
 		else
 			require_once($sourcedir.'/Breeze/Breeze_'.$method.'.php');
-
 	}
 
-	/* Who can use this stuff? */
-	public static function Permissions(&$permissionGroups, &$permissionList){
-
+	/**
+	 * Global permissions used by this mod per user group
+	 *
+	 * @param array $permissionGroups An array containing all possible permissions groups.
+	 * @param array $permissionList An associative array with all the possible permissions.
+	 * @return void
+	 */
+	public static function Permissions(&$permissionGroups, &$permissionList)
+	{
 		$permissionGroups['membergroup']['simple'] = array('breeze_per');
 		$permissionGroups['membergroup']['classic'] = array('breeze_per');
 		$permissionList['membergroup']['breeze_view_general_wall'] = array(true, 'breeze_per', 'breeze_per');
@@ -50,10 +69,15 @@ class Breeze
 		$permissionList['membergroup']['breeze_delete_entries_made_by_me'] = array(false, 'breeze_per', 'breeze_per');
 		$permissionList['membergroup']['breeze_delete_comments_made_by_me'] = array(false, 'breeze_per', 'breeze_per');
 		$permissionList['membergroup']['breeze_edit_settings_any'] = array(false, 'breeze_per', 'breeze_per');
-
 	}
 
-	/* Let's hack the profile page... not really, we will just replace the existing page with our own.*/
+	/**
+	 * Replace the summary action with the ction created by Breeze
+	 *
+	 * @see Breeze_User::Wall()
+	 * @param array $profile_areas An array containing all possible tabs for the profile menu.
+	 * @return void
+	 */
 	public static function Profile_Info(&$profile_areas)
 	{
 		global $txt;
@@ -64,6 +88,7 @@ class Breeze
 		/* Settings are required here */
 		$s = Breeze_Settings::getInstance();
 
+		/* Replace the summary page only if the mod is enable */
 		if ($s->enable('breeze_admin_settings_enable'))
 			$profile_areas['info']['areas']['summary'] = array(
 				'label' => $txt['breeze_general_wall'],
@@ -75,6 +100,7 @@ class Breeze
 				),
 			);
 
+		 /* Per user permissions */
 		if ($s->enable('breeze_admin_settings_enable'))
 			$profile_areas['breeze_profile'] = array(
 				'title' => $txt['breeze_general_my_wall_settings'],
@@ -104,7 +130,13 @@ class Breeze
 		/* Done with the hacking... */
 	}
 
-	/* The almighty Wall button */
+	/**
+	 * Insert a Wall button on the menu buttons array
+	 *
+	 * @param array $menu_buttons An array containing all possible tabs for the main menu.
+	 * @link http://mattzuba.com
+	 * @return void
+	 */
 	public static function Wall_Menu(&$menu_buttons){
 
 		global $scripturl, $txt, $context;
@@ -163,7 +195,12 @@ class Breeze
 		);
 	}
 
-	/* Set the action for the General Wall */
+	/**
+	 * Insert the actions needed by this mod
+	 *
+	 * @param array $actions An array containing all possible SMF actions.
+	 * @return void
+	 */
 	public static function Action_Hook(&$actions)
 	{
 		$actions['wall'] = array('/Breeze/Breeze_General.php', 'Breeze_General::Wall');
@@ -172,7 +209,12 @@ class Breeze
 		$actions['breezeajax'] = array('/Breeze/Breeze_Ajax.php', 'Breeze_Ajax::factory');
 	}
 
-	/* DUH! WINNING! */
+	/**
+	 * DUH! WINNING!
+	 *
+	 * Used in the credits action
+	 * @return a link for copyright notice
+	 */
 	public static function Who()
 	{
 		$MAS = '<a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a>';
