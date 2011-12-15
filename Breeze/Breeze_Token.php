@@ -40,5 +40,13 @@ if (!defined('SMF'))
 
 class Breeze_Token
 {
+	function CheckToken()
+	{
 
+	}
+
+	function WriteToken()
+	{
+
+	}
 }

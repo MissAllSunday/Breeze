@@ -2,7 +2,7 @@
 
 /**
  * Breeze_
- * 
+ *
  * The purpose of this file is
  * @package Breeze mod
  * @version 1.0
@@ -164,20 +164,39 @@ class Breeze_Subs {
 
 		return $string;
 	}
-	
-	private static function Remove($array, $val = '', $preserve_keys = true)
+
+	public static function Remove($array, $val, $preserve_keys = true)
 	{
-		if (empty($array) || !is_array($array))
+		if (empty($array) || empty($val) || !is_array($array))
 			return false;
 
-		if (!in_array($val, $array))
-			return $array;
-
-		foreach($array as $key => $value)
+		if (!is_array($val))
 		{
-			if ($value == $val) 
-				unset($array[$key]);
+			if (!in_array($val, $array))
+				return $array;
+
+			foreach($array as $key => $value)
+			{
+				if ($value == $val)
+					unset($array[$key]);
+			}
 		}
+
+		elseif (is_array($val))
+		{
+			foreach($val as $find)
+				foreach($array as $key => $value)
+				{
+					if (empty($array) || !is_array($array))
+						return false;
+
+					if ($value == $find)
+						unset($array[$key]);
+				}
+		}
+
+		else
+			return false;
 
 		return ($preserve_keys === true) ? $array : array_values($array);
 	}

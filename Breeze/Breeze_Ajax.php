@@ -2,7 +2,7 @@
 
 /**
  * Breeze_
- * 
+ *
  * The purpose of this file is
  * @package Breeze mod
  * @version 1.0
@@ -131,7 +131,7 @@ class Breeze_Ajax
 			/* Breeze parser */
 			$parser = new Breeze_Parser($data['body']);
 			$data['body'] = $parser->Display();
-			
+
 			/* It's all OK... */
 			$context['breeze']['ok'] = 'ok';
 			$context['breeze']['post']['data'] .= '
@@ -222,6 +222,10 @@ class Breeze_Ajax
 				$data = $query->DataResult();
 
 				$breeze_user_info = Breeze_UserInfo::Profile($profile_id, true);
+
+			/* Breeze parser */
+				$parser = new Breeze_Parser($data['body']);
+				$data['body'] = $parser->Display();
 
 				/* Breeze parser... comming soon :P */
 				/* $query->data_result['body'] = Breeze::Parser($query->data_result['body']); */

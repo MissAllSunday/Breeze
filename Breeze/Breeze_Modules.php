@@ -43,15 +43,18 @@ class Breeze_Modules
 	public function __construct($id)
 	{
 		$this->id = $id;
-		Breeze::LoadMethod(array('UserInfo','DB', 'Logs', 'Subs'));
+		Breeze::LoadMethod(array(
+			'UserInfo',
+			'DB',
+			'Logs',
+			'Subs'
+		));
 	}
 
 	public function GetAllModules()
 	{
 		$temp = get_class_methods('Breeze_Modules');
-		$temp = self::remove($temp, '__construct', false);
-		$temp = self::remove($temp, 'GetAllModules', false);
-		$temp = self::remove($temp, 'remove', false);
+		$temp = Breeze_Subs::Remove($temp, array('__construct', 'GetAllModules'), false);
 
 		return $temp;
 	}

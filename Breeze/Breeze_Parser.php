@@ -2,7 +2,7 @@
 
 /**
  * Breeze_
- * 
+ *
  * The purpose of this file is
  * @package Breeze mod
  * @version 1.0
@@ -44,14 +44,15 @@ class Breeze_Parser
 	function __construct($string)
 	{
 		$this->s = $string;
+		Breeze::LoadMethod(array(
+			'Subs'
+		));
 	}
 
 	function Display()
 	{
 		$temp = get_class_methods('Breeze_Parser');
-		$temp = self::remove($temp, '__construct', false);
-		$temp = self::remove($temp, 'Display', false);
-		$temp = self::remove($temp, 'remove', false);
+		$temp = Breeze_Subs::Remove($temp, array('__construct', 'Display'), false);
 
 		foreach ($temp as $t)
 			$this->s = self::$t($this->s);
@@ -62,11 +63,37 @@ class Breeze_Parser
 	/* Convert any valid urls on to links*/
 	private static function UrltoLink($s)
 	{
+		/* regex "Borrowed" from Sources/Subs.php:parse_bbc() */
 		$url_regex = '~(?<=[\s>\.(;\'"]|^)((?:http|https)://[\w\-_%@:|]+(?:\.[\w\-_%]+)*(?::\d+)?(?:/[\w\-_\~%\.@!,\?&;=#(){}+:\'\\\\]*)*[/\w\-_\~%@\?;=#}\\\\])~i';
 
 		if (preg_match_all($url_regex, $s, $matches))
 			foreach($matches[0] as $m)
 				$s = str_replace($m, '<a href="'.$m.'" class="bbc_link" target="_blank">'.$m.'</a>', $s);
+
+		return $s;
+	}
+
+	private function Mention($s)
+	{
+		global $memberContext, $context;
+
+		$regex = '/{([^<>&"\'=\\\\]*)}/';
+
+		if (preg_match_all($regex, $s, $matches))
+			foreach($matches[1] as $m)
+			{
+				if (in_array($m, array('_', '|')) || preg_match('~[<>&"\'=\\\\]~', preg_replace('~&#(?:\\d{1,7}|x[0-9a-fA-F]{1,6});~', '', $m)) != 0 || strpos($m, '[code') !== false || strpos($m, '[/code') !== false)
+					$s = str_replace($matches[0], '@'.$m, $s);
+
+				/* We need to do this since we only have the name, not the id */
+				if ($user = loadMemberData($m, true, 'minimal'))
+				{
+					$context['Breeze']['user_info'][$user[0]] = Breeze_UserInfo::Profile($user[0], true);
+					$s = str_replace($matches[0], '@'.$context['Breeze']['user_info']['link'][$user[0]], $s);
+				}
+				else
+					$s = str_replace($matches[0], '@'.$m, $s);
+			}
 
 		return $s;
 	}

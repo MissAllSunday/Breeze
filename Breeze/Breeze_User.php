@@ -65,6 +65,7 @@ class Breeze_User
 			'Logs',
 			'Parser'
 		));
+
 		Breeze_Subs::Headers();
 
 		/* Set all the page stuff */
@@ -133,6 +134,10 @@ class Breeze_User
 				/* Do the conversion from unix time */
 				$c[$ck]['time'] = Breeze_Subs::Time_Elapsed($c[$ck]['time']);
 
+				/* Parser */
+				$parser = new Breeze_Parser($c[$ck]['body']);
+				$c[$ck]['body'] = $parser->Display();
+
 				/* Get all the likes for this comment */
 			}
 
@@ -171,21 +176,39 @@ class Breeze_User
 	/* Shows a form for users to set up their wall as needed. */
 	function Settings()
 	{
-		global $context, $user_info;
+		global $context, $user_info, $txt, $scripturl;
 		
 		loadLanguage('Breeze');
 		loadtemplate('Breeze');
+		Breeze::LoadMethod(array(
+			'Form'
+		));
 
 		/* Is this the right user? */
 		if ($context['member']['id'] != $user_info['id'])
 			redirectexit('action=profile');
-	
+
 		/* Set all the page stuff */
 		$context['sub_template'] = 'user_settings';
 		$context['can_send_pm'] = allowedTo('pm_send');
 		$context['page_title'] = $txt['breeze_user_settings_name'];
 		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 		$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
+		
+		$FormData = array(
+			'action' => 'profile;area=breezesettings;u='.$context['member']['id'],
+			'method' => 'post',
+			'id_css' => 'test',
+			'name' => 'test',
+			'class_css' => 'test',
+			'onsubmit' => '',
+		);
+		$form = new Breeze_Form($FormData);
+		$form->AddCheckBox('check','1', 'this is a checkbox', false);
+		$form->AddCheckBox('check2','2', 'this is a checkbox', false);
+		$context['Breeze']['UserSettings']['Form'] = $form->Display();
+
+		echo '<pre>';print_r($form);echo '</pre>';
 	
 	}
 }
