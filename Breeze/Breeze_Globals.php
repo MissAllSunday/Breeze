@@ -2,7 +2,7 @@
 
 /**
  * Breeze_
- * 
+ *
  * The purpose of this file is
  * @package Breeze mod
  * @version 1.0
@@ -54,15 +54,19 @@ class Breeze_Globals
 
 	function __construct($var)
 	{
-		if ($var == 'get')
-			$this->request = $_GET;
-		elseif ($var == 'post')
-			$this->request = $_POST;
-		elseif ($var == 'request')
-			$this->request = $_REQUEST;
+		switch($var)
+		{
+			case 'get':
+				$this->request = $_GET;
+				break;
+			case 'post':
+				$this->request = $_POST;
+				break;
+			case 'request':
+				$this->request = $_REQUEST;
+				break;
+		}
 
-		else
-			return;
 	}
 
 	function see($value)
@@ -77,6 +81,9 @@ class Breeze_Globals
 	{
 		if (isset($this->request[$value]))
 			return $this->request[$value];
+
+		else
+			return false;
 	}
 
 	public static function validate($var)
@@ -85,6 +92,11 @@ class Breeze_Globals
 			return true;
 		else
 			return false;
+	}
+
+	function UnsetVar($var)
+	{
+		unset($this->request[$var]);
 	}
 
 	public static function Sanitize($var)

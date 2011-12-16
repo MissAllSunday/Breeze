@@ -111,16 +111,6 @@ if (!defined('SMF'))
 			return $this->AddElement($element);
 		}
 
-		function AddHiddenField($name,$value)
-		{
-			$element['type'] = 'hidden';
-			$element['name'] = $name;
-			$element['value'] = $value;
-			$element['html'] = '<input type="'. $element['type'] .'" name="'. $element['name'] .'" value="'. $element['value'] .'">';
-
-			return $this->AddElement($element);
-		}
-
 		function AddCheckBox($name,$value, $text, $checked = false)
 		{
 			$element['type'] = 'checkbox';
@@ -128,12 +118,12 @@ if (!defined('SMF'))
 			$element['value'] = $value;
 			$element['checked'] = empty($checked) ? '' : 'checked="checked"';
 			$element['text'] = $text;
-			$element['html'] = '<input type="'. $element['type'] .'" name="'. $element['name'] .'" value="'. $element['value'] .'" '. $element['checked'] .'>';
+			$element['html'] = '<input type="'. $element['type'] .'" name="'. $element['name'] .'" id="'. $element['name'] .'" value="'. (int)$element['value'] .'" '. $element['checked'] .' class="input_check" />';
 
 			return $this->AddElement($element);
 		}
 
-		function AddText($name,$value, $text, $size, $maxlength)
+		function AddText($name,$value, $text, $size = false, $maxlength = false)
 		{
 			$element['type'] = 'text';
 			$element['name'] = $name;
@@ -141,7 +131,7 @@ if (!defined('SMF'))
 			$element['text'] = $text;
 			$element['size'] = empty($size) ? 'size="20"' : 'size="' .$size. '"';
 			$element['maxlength'] = empty($maxlength) ? 'maxlength="20"' : 'maxlength="' .$maxlength. '"';
-			$element['html'] = '<input type="'. $element['type'] .'" name="'. $element['name'] .'" value="'. $element['value'] .'" '. $element['size'] .' '. $element['maxlength'] .'>';
+			$element['html'] = '<input type="'. $element['type'] .'" name="'. $element['name'] .'" id="'. $element['name'] .'" value="'. $element['value'] .'" '. $element['size'] .' '. $element['maxlength'] .' class="input_text" />';
 
 			return $this->AddElement($element);
 		}
@@ -152,7 +142,17 @@ if (!defined('SMF'))
 			$element['name'] = $name;
 			$element['value'] = empty($value) ? '' : $value;
 			$element['text'] = $text;
-			$element['html'] = '<'. $element['type'] .' name="'. $element['name'] .'">'. $element['value'] .'</'. $element['type'] .'>';
+			$element['html'] = '<'. $element['type'] .' name="'. $element['name'] .'" id="'. $element['name'] .'">'. $element['value'] .'</'. $element['type'] .'>';
+
+			return $this->AddElement($element);
+		}
+
+		function AddHiddenField($name,$value)
+		{
+			$element['type'] = 'hidden';
+			$element['name'] = $name;
+			$element['value'] = $value;
+			$element['html'] = '<input type="'. $element['type'] .'" name="'. $element['name'] .'" id="'. $element['name'] .'" value="'. $element['value'] .'" />';
 
 			return $this->AddElement($element);
 		}
@@ -162,7 +162,7 @@ if (!defined('SMF'))
 			$element['type'] = 'submit';
 			$element['name'] = $name;
 			$element['value']= $value;
-			$element['html'] = '<input class="'. $element['type'] .'" type="'. $element['type'] .'" name="'. $element['name'] .'" value="'. $element['value'] .'">';
+			$element['html'] = '<input class="'. $element['type'] .'" type="'. $element['type'] .'" name="'. $element['name'] .'" id="'. $element['name'] .'" value="'. $element['value'] .'" class="button_submit" />';
 
 			return $this->AddElement($element);
 		}
@@ -170,40 +170,41 @@ if (!defined('SMF'))
 		function Display()
 		{
 			$this->buffer = '<form action="'. $this->action .'" method="'. $this->method .'" id="'. $this->id_css .'" class="'. $this->class_css .'"  '. $this->onsubmit .' >';
-			$this->buffer .= '<dl>';
+			$this->buffer .= '<dl class="settings">';
 			$element = $this->GetNextElement();
 
-			foreach($this->elements as $element)
+			foreach($this->elements as $el)
 			{
-				switch($element['type'])
+				switch($el['type'])
 				{
 					case 'textarea':
 					case 'checkbox':
 					case 'text':
 						$this->buffer .= '<dt>
-							<span id="caption_'. $element['name'] .'">'. $element['text'] .'</span>
+							<label for="'. $el['name'] .'">'. $el['text'] .'</label>
 						</dt>
 						<dd>
-							'. $element['html'] .'
+							'. $el['html'] .'
 						</dd>';
 						break;
 					case 'select':
 						$this->buffer .= '<dt>
-							<span id="caption_'. $element['name'] .'">'. $element['text'] .'</span>
+							<span id="caption_'. $el['name'] .'">'. $el['text'] .'</span>
 						</dt>
 						<dd>
-							'. $element['html_start'] .'';
+							'. $el['html_start'] .'';
 
-						foreach($element['values'] as $k => $v)
+						foreach($el['values'] as $k => $v)
 							$this->buffer .= $v .'';
 
-						$this->buffer .= $element['html_end'] .'
+						$this->buffer .= $el['html_end'] .'
 						</dd>';
+						break;
 					case 'hidden':
 					case 'submit':
 						$this->buffer .= '<dt></dt>
 						<dd>
-							'. $element['html'] .'
+							<pre>'. $el['html'] .'</pre>
 						</dd>';
 						break;
 				}

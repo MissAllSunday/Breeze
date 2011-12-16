@@ -2,7 +2,7 @@
 
 /**
  * Breeze_
- * 
+ *
  * The purpose of this file is
  * @package Breeze mod
  * @version 1.0
@@ -40,6 +40,9 @@ if (!defined('SMF'))
 
 class Breeze_Modules
 {
+	private $user_settings;
+	private $id;
+
 	public function __construct($id)
 	{
 		$this->id = $id;
@@ -47,19 +50,28 @@ class Breeze_Modules
 			'UserInfo',
 			'DB',
 			'Logs',
-			'Subs'
+			'Subs',
+			'UserSettings'
 		));
+
+		$this->user_settings = new Breeze_UserSettings();
+		$this->user_settings->Load_UserSettings($this->id);
 	}
 
 	public function GetAllModules()
 	{
 		$temp = get_class_methods('Breeze_Modules');
-		$temp = Breeze_Subs::Remove($temp, array('__construct', 'GetAllModules'), false);
+		$temp = Breeze_Subs::Remove($temp, array(
+			$this->user_settings->enable('enable_buddies') ? '' : 'enable_buddies',
+			$this->user_settings->enable('enable_visitors') ? '' : 'enable_visitors',
+			'__construct',
+			'GetAllModules'
+		), false);
 
 		return $temp;
 	}
 
-	public function GetBuddies()
+	public function enable_buddies()
 	{
 		global $context;
 
@@ -102,7 +114,7 @@ class Breeze_Modules
 		return $array;
 	}
 
-	function GetVisits()
+	function enable_visitors()
 	{
 		global $context;
 
@@ -132,7 +144,7 @@ class Breeze_Modules
 
 		return $array;
 	}
-	
+
 	/* Shows the latest activity */
 	function Activity()
 	{
