@@ -49,14 +49,18 @@ if (!defined('SMF'))
 		public $status;
 		public $buffer;
 		public $onsubmit;
+		public $text;
 
 		function __construct($form = array())
 		{
-			global $scripturl;
+			global $scripturl, $txt;
 
 			if (empty($form) || !is_array($form))
 				return;
 
+			loadLanguage('Breeze');
+
+			$this->text = $txt;
 			$this->action = $scripturl . '?action=' . $form['action'];
 			$this->method = $form['method'];
 			$this->id_css= $form['id_css'];
@@ -104,9 +108,7 @@ if (!defined('SMF'))
 			$element['html_end'] = '</'. $element['type'] .'>';
 
 			foreach($values as $k => $v)
-			{
-				$element['values'][$k] = '<option value="' .$k. '">' .$v. '</option>';
-			}
+				$element['values'][$k] = '<option value="' .$k. '" '. (isset($v[1]) && $v[1] == 'selected' ? 'selected="selected"' : '') .'>'. $this->text['breeze_user_settings_'.$v[0]] .'</option>';
 
 			return $this->AddElement($element);
 		}
@@ -157,12 +159,19 @@ if (!defined('SMF'))
 			return $this->AddElement($element);
 		}
 
-		function AddSubmitButton($name,$value)
+		function AddSubmitButton($value)
 		{
 			$element['type'] = 'submit';
-			$element['name'] = $name;
-			$element['value']= $value;
-			$element['html'] = '<input class="'. $element['type'] .'" type="'. $element['type'] .'" name="'. $element['name'] .'" id="'. $element['name'] .'" value="'. $element['value'] .'" class="button_submit" />';
+			$element['value']= $this->text[$value];
+			$element['html'] = '<input class="button_submit" type="'. $element['type'] .'"  value="'. $element['value'] .'" />';
+
+			return $this->AddElement($element);
+		}
+
+		function AddHr()
+		{
+			$element['type'] = 'hr';
+			$element['html'] = '<hr />';
 
 			return $this->AddElement($element);
 		}
@@ -181,7 +190,8 @@ if (!defined('SMF'))
 					case 'checkbox':
 					case 'text':
 						$this->buffer .= '<dt>
-							<label for="'. $el['name'] .'">'. $el['text'] .'</label>
+							<span style="font-weight:bold;">'. $this->text['breeze_user_settings_'.$el['text'][0]] .'</span>
+							<br /><span class="smalltext">'. $this->text['breeze_user_settings_'.$el['text'][1]] .'</span>
 						</dt>
 						<dd>
 							'. $el['html'] .'
@@ -189,7 +199,8 @@ if (!defined('SMF'))
 						break;
 					case 'select':
 						$this->buffer .= '<dt>
-							<span id="caption_'. $el['name'] .'">'. $el['text'] .'</span>
+							<span style="font-weight:bold;">'. $this->text['breeze_user_settings_'.$el['text'][0]] .'</span>
+							<br /><span class="smalltext">'. $this->text['breeze_user_settings_'.$el['text'][1]] .'</span>
 						</dt>
 						<dd>
 							'. $el['html_start'] .'';
@@ -204,8 +215,13 @@ if (!defined('SMF'))
 					case 'submit':
 						$this->buffer .= '<dt></dt>
 						<dd>
-							<pre>'. $el['html'] .'</pre>
+							'. $el['html'] .'
 						</dd>';
+						break;
+					case 'hr':
+						$this->buffer .= '</dl>
+							'. $el['html'] .'
+						<dl class="settings">';
 						break;
 				}
 			}

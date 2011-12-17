@@ -1,14 +1,39 @@
 <?php
 
 /**
- * @package breeze mod
+ * Breeze_
+ *
+ * The purpose of this file is Provide the text strings
+ * @package Breeze mod
  * @version 1.0
- * @author Miss All Sunday <missallsunday@simplemachines.org>
- * @copyright 2011 Miss All Sunday
- * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ CC BY-NC-SA 3.0
+ * @author Jessica González <missallsunday@simplemachines.org>
+ * @copyright Copyright (c) 2011, Jessica González
+ * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
- /* Text strings */
+/*
+ * Version: MPL 1.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is http://missallsunday.com code.
+ *
+ * The Initial Developer of the Original Code is
+ * Jessica González.
+ * Portions created by the Initial Developer are Copyright (C) 2011
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *
+ */
 
 global $txt;
  
@@ -19,13 +44,50 @@ $txt['breeze_general_my_wall_settings'] = 'My Wall Settings';
 $txt['breeze_general_loading'] = 'Loading...';
 $txt['breeze_general_like'] = 'Like';
 $txt['breeze_general_unlike'] = 'Unlike';
+$txt['breeze_general_plural'] = '(s)';
+
+/* Modules */
+$txt['breeze_modules_enable_visitors_title'] = 'Recent Visitors';
+$txt['breeze_modules_enable_visitors_description'] = 'The last %1$s visitor%2$s to this page were: <p />';
+
 
 
 
 /* User Individual Settings */
 $txt['breeze_profile'] = 'Wall Settings';
 $txt['breeze_user_settings_name'] = 'Wall Settings';
+$txt['breeze_user_settings_wall_limit'] = 'How many status to show?';
+$txt['breeze_user_settings_wall_limit_sub'] = 'This will be the number of status to show by default, max value is 30';
+$txt['breeze_user_settings_kick_ignored'] = 'Do not show my wall to users in my ignore list';
+$txt['breeze_user_settings_kick_ignored_sub'] = 'If this is enable, users on your ignore list will not be able to see your wall.';
+$txt['breeze_user_settings_enable_buddies'] = 'Enable the "Buddies" module.';
+$txt['breeze_user_settings_enable_buddies_sub'] = 'This will show a block showing all your buddies.';
+$txt['breeze_user_settings_how_many_buddies'] = 'How many buddies to display';
+$txt['breeze_user_settings_how_many_buddies_sub'] = 'If empty it will show the default value 10, max value is 30.';
+$txt['breeze_user_settings_visitors'] = 'Enable the "Latest Visitors" module.';
+$txt['breeze_user_settings_visitors_sub'] = 'This will show a block with the latest visitors from the last week.';
+$txt['breeze_user_settings_notification_pm'] = 'Send me a pm when someone else mentions me in any wall.';
+$txt['breeze_user_settings_notification_pm_sub'] = 'This will send a private message per status or comment.';
+$txt['breeze_user_settings_how_many_visitors'] = 'How many visitors to display';
+$txt['breeze_user_settings_how_many_visitors_sub'] = 'If empty it will show the default value 10, max value is 30.';
+$txt['breeze_user_settings_time_frame'] = 'The time frame to consider when fetching the visitors';
+$txt['breeze_user_settings_time_frame_sub'] = 'For example, if you select "Last Week" then the module will show the users who had visited your wall in the last week.';
+$txt['breeze_user_settings_time_hour'] = 'Last Hour';
+$txt['breeze_user_settings_time_day'] = 'Last Day';
+$txt['breeze_user_settings_time_week'] = 'Last Week';
+$txt['breeze_user_settings_time_month'] = 'Last Month';
+$txt['breeze_user_settings_show_avatar'] = 'Show avatar in list';
+$txt['breeze_user_settings_show_avatar_sub'] = 'By default it shows the user link only.';
+$txt['breeze_user_settings_show_last_visit'] = 'Show the last time the users visited your wall';
+$txt['breeze_user_settings_notification_wall'] = 'Send me a pm when someone else post a new status on my wall';
+$txt['breeze_user_settings_notification_wall_sub'] = 'This will only apply for new status.';
+
+$txt['breeze_user_settings_'] = '';
+$txt['breeze_user_settings_'] = '';
+$txt['breeze_user_settings_'] = '';
+$txt['breeze_user_settings_'] = '';
 $txt['breeze_user_permissions_name'] = 'Permissions';
+
 
 /* Admin Settings */
 $txt['breeze_admin_settings_admin_panel'] = 'Breeze Admin Panel';

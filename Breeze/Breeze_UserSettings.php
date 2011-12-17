@@ -115,4 +115,12 @@ class Breeze_UserSettings
 		else
 			return false;
 	}
+
+	function setting($setting)
+	{
+		if (!empty($this->data[$setting]))
+			return $this->data[$setting];
+		else
+			return false;
+	}
 }

@@ -56,7 +56,7 @@ class Breeze_Data
 		$this->done = false;
 	}
 
-	public static function factory($type)
+	public function factory($type)
 	{
 		if (array_key_exists($type, self::$instances))
 		{
@@ -78,9 +78,12 @@ class Breeze_Data
 	}
 
 	/* Just send the data to the database */
-	public static function Record($params)
+	public function Record($params)
 	{
-		Breeze::LoadMethod(array('DB', 'Globals'));
+		Breeze::LoadMethod(array(
+			'DB',
+			'Globals'
+		));
 
 		$data = array();
 		$values = array();
@@ -136,12 +139,9 @@ class Breeze_Data
 		}
 	}
 	
-	private static function preparse($s)
+	public function Notifications($type, $who, $on)
 	{
-		$s = strtr($s, array('[]' => '&#91;]', '[&#039;' => '&#91;&#039;'));
-		$s = preg_replace('~&amp;#(\d{4,5}|[2-9]\d{2,4}|1[2-9]\d);~', '&#$1;', $s);
-		$s = preg_replace('~\[nobbc\](.+?)\[/nobbc\]~ie', '\'[nobbc]\' . strtr(\'$1\', array(\'[\' => \'&#91;\', \']\' => \'&#93;\', \':\' => \'&#58;\', \'@\' => \'&#64;\')) . \'[/nobbc]\'', $s);
-		$s = strtr($s, array("\r" => ''));
-		$s = preg_replace('~\.{100,}~', '...', $s);
+	
 	}
+
 }

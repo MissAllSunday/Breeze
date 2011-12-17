@@ -1,11 +1,38 @@
 <?php
 
 /**
- * @package breeze mod
+ * Breeze_
+ *
+ * The purpose of this file is
+ * @package Breeze mod
  * @version 1.0
- * @author Suki <missallsunday@simplemachines.org>
- * @copyright 2011 Suki
- * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ CC BY-NC-SA 3.0
+ * @author Jessica González <missallsunday@simplemachines.org>
+ * @copyright Copyright (c) 2011, Jessica González
+ * @license http://www.mozilla.org/MPL/MPL-1.1.html
+ */
+
+/*
+ * Version: MPL 1.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is http://missallsunday.com code.
+ *
+ * The Initial Developer of the Original Code is
+ * Jessica González.
+ * Portions created by the Initial Developer are Copyright (C) 2011
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *
  */
 
 	/* This will be moved to its own template... eventually */
@@ -187,7 +214,7 @@ function template_user_wall()
 				/* This is the status box,  O RLY? */
 			echo '<div class="breeze_user_inner">
 					<div class="breeze_user_statusbox">
-						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post" id="status" name="form">
+						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post" id="status" name="form_status" class="form_status">
 							<textarea cols="40" rows="5" name="content" id="content" ></textarea>
 							<input type="hidden" value="',$context['member']['id'],'" name="owner_id" id="owner_id" />
 							<input type="hidden" value="',$user_info['id'],'" name="poster_id" id="poster_id" /><br />
@@ -265,20 +292,16 @@ function template_user_settings()
 {
 	global $context;
 	echo '
-		<span class="clear upperframe">
-			<span></span>
-		</span>
-		<div class="roundframe rfix">
-			<div class="innerframe">
-				<div class="content">
-					oh hai!
-					<pre>',print_r($context),'</pre>
-				</div>
-			</div>
+		<div class="cat_bar">
+			<h3 class="catbg">', $context['page_title'] ,'</h3>
 		</div>
-		<span class="lowerframe">
-			<span></span>
-		</span><br />';
+		<div class="windowbg2">
+			<span class="topslice"><span></span></span>
+			<div class="content">
+				', $context['Breeze']['UserSettings']['Form'] ,'
+			</div>
+			<span class="botslice"><span></span></span>
+		</div><br />';
 
 }
 

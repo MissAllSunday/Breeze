@@ -180,8 +180,8 @@ class Breeze_User
 	{
 		global $context, $user_info, $txt, $scripturl;
 
-		loadLanguage('Breeze');
 		loadtemplate('Breeze');
+		loadLanguage('Breeze');
 		Breeze::LoadMethod(array(
 			'Form',
 			'Globals',
@@ -223,12 +223,77 @@ class Breeze_User
 			'class_css' => 'user_settings_form',
 			'onsubmit' => '',
 		);
-		$form = new Breeze_Form($FormData);
-		$form->AddCheckBox('enable_buddies', 1, $txt['breeze_user_settings_enable_buddies'], !empty($data['enable_buddies']) ? true : false);
-		$form->AddCheckBox('enable_visitors', 1, $txt['breeze_user_settings_enable_visitors'], !empty($data['enable_visitors']) ? true : false);
-		$form->AddCheckBox('enable_notification', 1, $txt['breeze_user_settings_enable_notification'], !empty($data['enable_notification']) ? true : false);
 
-		$form->AddSubmitButton($txt['save'],$txt['save']);
+		/* The long, long form */
+		$form = new Breeze_Form($FormData);
+
+		$form->AddCheckBox('enable_buddies', 1, array(
+			'enable_buddies',
+			'enable_buddies_sub'
+		), !empty($data['enable_buddies']) ? true : false);
+
+		$form->AddCheckBox('show_avatar_buddies', 1, array(
+			'show_avatar',
+			'show_avatar_sub'
+		), !empty($data['show_avatar_buddies']) ? true : false);
+
+		$form->AddText('how_many_buddies', !empty($data['how_many_buddies']) ? $data['how_many_buddies'] : '', array(
+			'how_many_buddies',
+			'how_many_buddies_sub'
+		), 6, 6);
+
+		$form->AddHr();
+
+		$form->AddCheckBox('enable_visitors', 1, array(
+			'visitors',
+			'visitors_sub'
+		), !empty($data['enable_visitors']) ? true : false);
+
+		$form->AddText('how_many_visitors', !empty($data['how_many_visitors']) ? $data['how_many_visitors'] : '', array(
+			'how_many_visitors',
+			'how_many_visitors_sub'
+		), 6, 6);
+
+		$form->AddSelect('time_frame', array(
+			'time_frame',
+			'time_frame_sub'
+		), $values = array(
+				'hour' => array(
+					'time_hour',
+					$data['time_frame'] == 'hour' ? 'selected' : false
+				),
+				'day' => array(
+					'time_day',
+					$data['time_frame'] == 'day' ? 'selected' : false
+				),
+				'week' => array(
+					'time_week',
+					$data['time_frame'] == 'week' ? 'selected' : false
+				),
+				'month' => array(
+					'time_month',
+					$data['time_frame'] == 'month' ? 'selected' : false
+				),
+			));
+
+		$form->AddCheckBox('enable_show_avatar', 1, array(
+			'show_avatar',
+			'show_avatar_sub'
+		), !empty($data['enable_show_avatar']) ? true : false);
+
+		$form->AddHr();
+
+		$form->AddCheckBox('enable_notification_pm', 1, array(
+			'notification_pm',
+			'notification_pm_sub'
+		), !empty($data['enable_notification']) ? true : false);
+
+		$form->AddCheckBox('enable_notification_wall', 1, array(
+			'notification_wall',
+			'notification_wall'
+		), !empty($data['enable_notification_wall']) ? true : false);
+
+		$form->AddSubmitButton('save');
 
 		/* Send the form to the template */
 		$context['Breeze']['UserSettings']['Form'] = $form->Display();
@@ -245,7 +310,6 @@ class Breeze_User
 			/* If the data already exist, update... */
 			if (self::$already == true)
 			{
-
 				$params = array(
 					'set' =>'enable_buddies={int:enable_buddies}, enable_visitors={int:enable_visitors}, enable_notification={int:enable_notification}',
 					'where' => 'user_id = {int:user_id}',

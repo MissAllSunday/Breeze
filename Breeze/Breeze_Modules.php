@@ -53,6 +53,9 @@ class Breeze_Modules
 			'Subs',
 			'UserSettings'
 		));
+		
+		loadLanguage('Breeze');
+		loadtemplate('Breeze');
 
 		$this->user_settings = new Breeze_UserSettings();
 		$this->user_settings->Load_UserSettings($this->id);
@@ -116,16 +119,16 @@ class Breeze_Modules
 
 	function enable_visitors()
 	{
-		global $context;
+		global $context, $txt;
 
 		$return = '';
 		$logs = new Breeze_logs($this->id);
 		$temp = $logs->GetProfileVisits();
 		$columns = 3;
 		$counter = 0;
-		$array['title'] = 'Latest Visitors';
+		$array['title'] = $txt['breeze_modules_enable_visitors_title'];
 
-		$array['data'] = '<table><tr>';
+		$array['data'] = $txt['breeze_modules_enable_visitors_description'] .'<table><tr>';
 
 		if (!empty($temp))
 			foreach($temp as $t)
