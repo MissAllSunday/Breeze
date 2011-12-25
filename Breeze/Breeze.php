@@ -145,6 +145,16 @@ class Breeze
 				'any' => 'breeze_edit_settings_any',
 			),
 		);
+		
+		$profile_areas['breeze_profile']['areas']['breezemodules'] = array(
+			'label' => $txt['breeze_user_modules_name'],
+			'file' => 'Breeze/Breeze_User.php',
+			'function' => 'Breeze_Wrapper_Modules',
+			'permission' => array(
+				'own' => 'profile_view_own',
+				'any' => 'breeze_edit_settings_any',
+			),
+		);
 		/* Done with the hacking... */
 	}
 

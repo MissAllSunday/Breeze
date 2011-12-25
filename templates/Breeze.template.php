@@ -288,6 +288,7 @@ function template_user_wall()
 	</div>';
 }
 
+/* User Settings */
 function template_user_settings()
 {
 	global $context;
@@ -302,7 +303,6 @@ function template_user_settings()
 			</div>
 			<span class="botslice"><span></span></span>
 		</div><br />';
-
 }
 
 /* Boring stuff you will never see... */

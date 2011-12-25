@@ -47,6 +47,7 @@ $txt['breeze_general_unlike'] = 'Unlike';
 $txt['breeze_general_plural'] = '(s)';
 
 /* Modules */
+$txt['breeze_general_my_wall_modules'] = 'My Wall Modules settings';
 $txt['breeze_modules_enable_visitors_title'] = 'Recent Visitors';
 $txt['breeze_modules_enable_visitors_description'] = 'The last %1$s visitor%2$s to this page were: <p />';
 
@@ -65,7 +66,7 @@ $txt['breeze_user_settings_enable_buddies_sub'] = 'This will show a block showin
 $txt['breeze_user_settings_how_many_buddies'] = 'How many buddies to display';
 $txt['breeze_user_settings_how_many_buddies_sub'] = 'If empty it will show the default value 10, max value is 30.';
 $txt['breeze_user_settings_visitors'] = 'Enable the "Latest Visitors" module.';
-$txt['breeze_user_settings_visitors_sub'] = 'This will show a block with the latest visitors from the last week.';
+$txt['breeze_user_settings_visitors_sub'] = 'This will show a block with the latest visitors to your wall.';
 $txt['breeze_user_settings_notification_pm'] = 'Send me a pm when someone else mentions me in any wall.';
 $txt['breeze_user_settings_notification_pm_sub'] = 'This will send a private message per status or comment.';
 $txt['breeze_user_settings_how_many_visitors'] = 'How many visitors to display';
@@ -87,6 +88,7 @@ $txt['breeze_user_settings_'] = '';
 $txt['breeze_user_settings_'] = '';
 $txt['breeze_user_settings_'] = '';
 $txt['breeze_user_permissions_name'] = 'Permissions';
+$txt['breeze_user_modules_name'] = 'Modules';
 
 
 /* Admin Settings */
