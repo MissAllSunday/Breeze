@@ -2,7 +2,7 @@
 
 /**
  * Breeze_
- * 
+ *
  * The purpose of this file is
  * @package Breeze mod
  * @version 1.0
@@ -41,6 +41,7 @@ if (!defined('SMF'))
 class Breeze_Validate
 {
 	private static $instance;
+	private $return = '';
 
 	private function __construct()
 	{
@@ -56,10 +57,8 @@ class Breeze_Validate
 		return self::$instance;
 	}
 
-	public function Get($type)
+	public function Get($type, $key = false)
 	{
-		$return = '';
-
 		if (empty($type))
 			return $return;
 
@@ -72,7 +71,7 @@ class Breeze_Validate
 			$query = new Breeze_DB('breeze_'.$type);
 			$query->Params($query_params);
 			$query->GetData('id');
-			
+
 			if (!empty($query->data_result))
 				$return = $query->data_result;
 

@@ -2,7 +2,7 @@
 
 /**
  * Breeze_
- * 
+ *
  * The purpose of this file is
  * @package Breeze mod
  * @version 1.0
@@ -61,7 +61,7 @@ class Breeze_Logs
 		/* Don't log this if the user is visiting his/her own profile */
 		if ($this->profile == $user_info['id'])
 			return;
-			
+
 		/* Do not log guest people */
 		if ($context['user']['is_guest'])
 			return;
@@ -146,7 +146,7 @@ class Breeze_Logs
 		else
 			return array();
 	}
-	
+
 	/* Get the latest status made */
 	public function GetLatestStatus()
 	{
@@ -173,7 +173,7 @@ class Breeze_Logs
 
 		else
 			return array();
-	
-	
+
+
 	}
 }

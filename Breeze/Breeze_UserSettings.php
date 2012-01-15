@@ -40,8 +40,8 @@ if (!defined('SMF'))
 
 class Breeze_UserSettings
 {
-	private $data;
-	private $already;
+	private $data = array();
+	private $already = false;
 
 	function __construct()
 	{
@@ -51,12 +51,6 @@ class Breeze_UserSettings
 		{
 			$this->data = $context['Breeze']['UserSettings'][$context['member']['id']];
 			$this->already = true;
-		}
-
-		else
-		{
-			$this->data = array();
-			$this->already = false;
 		}
 	}
 
