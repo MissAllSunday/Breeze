@@ -35,7 +35,7 @@
  *
  */
 
-function template_post_status()
+function template_breeze_post()
 {
 	global  $context;
 	

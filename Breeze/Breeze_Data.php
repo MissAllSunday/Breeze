@@ -49,7 +49,7 @@ class Breeze_Data
 		if ($type == 'status')
 			$this->type = 'status';
 		elseif ($type == 'comment')
-			$this->type = 'comment';
+			$this->type = 'comments';
 		else
 			return;
 
@@ -134,7 +134,7 @@ class Breeze_Data
 			$indexes = array(
 				'id'
 			);
-			$insert = new Breeze_DB('breeze_'.$params['type']);
+			$insert = new Breeze_DB('breeze_comments');
 			$insert->InsertData($data, $values, $indexes);
 		}
 	}

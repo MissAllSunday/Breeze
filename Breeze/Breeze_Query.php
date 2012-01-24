@@ -41,32 +41,29 @@ if (!defined('SMF'))
 class Breeze_Query
 {
 	private static $instance;
-	private $r = array();
+	private $Main = array();
 	private $query = array();
 	private $data = array();
-	private $query_params = array(
-				'rows' =>'*',
-			);
+	private $query_params = array('rows' =>'*');
+	private $query_data = array();
 	private $temp = array();
 	private $temp2 = array();
 	private $valid = false;
 
 	private function __construct()
 	{
-		global $context;
+		Breeze::Load('DB');
 
-		Breeze::LoadMethod('DB');
-
-		$this->query = $context['Breeze'];
-		$this->data = array(
+		$this->query = array(
 			'status' => new Breeze_DB('breeze_status'),
 			'comments' => new Breeze_DB('breeze_comments'),
 			'user_settings' => new Breeze_DB('breeze_user_settings'),
 			'user_settings_modules' => new Breeze_DB('breeze_user_settings_modules'),
 			'visit_log' => new Breeze_DB('breeze_visit_log')
-		)
+		);
 	}
 
+	/* Yes, I use a singleton, so what! */
 	public static function getInstance()
 	{
 		if (!self::$instance)
@@ -77,137 +74,160 @@ class Breeze_Query
 		return self::$instance;
 	}
 
-	private function AddToContext($name, $array)
+	/*
+	 * Cleans the old cache value
+	 *
+	 * Disclaimer: Killing in breeze world means replace the existing cache data with a null value so SMF generates a new cache...
+	 * @access private
+	 * @param mixed $type the name of value(s) to be deleted
+	 * @return void
+	 */
+	private function KillCache($type)
 	{
-		if (empty($name) || empty($array))
-			return;
+		if (!is_array($type))
+			$type = array($type);
 
-		global $context;
-
-		$context['Breeze'][$name] = $array;
+		foreach ($type as $t)
+			cache_put_data('Breeze:'. $t, '');
 	}
 
+	/*
+	 * Return an associative array based on the entered params
+	 *
+	 * @access private
+	 * @param string $table The name of the table to fetch
+	 * @param string $row The name of the row to fetch
+	 * @param int $value The value to compare to
+	 * @return array an associative array
+	 */
 	private function GetReturn($table, $row, $value)
 	{
-		/* Get the raw data */
-		$this->temp = $this->$table();
+	}
 
-		/* Safety first */
-		$value = (int) $value;
+	private function Query($var)
+	{
+		return $this->query[$var];
+	}
 
-		/* Do this only if there is something to work with */
-		if ($this->valid)
+	/*
+	 * The main method
+	 *
+	 * This is the center of breeze, everything in breeze world spins around this method; scary, I know...
+	 * @access private
+	 * @global $smcFunc the "handling DB stuff" var of SMF
+	 * @return array a very big associative array
+	 */
+	public function Main()
+	{
+		global $smcFunc;
+
+		/* Use the cache please... */
+		if (($this->Main = cache_get_data('Breeze:Main', 120)) == null)
 		{
-			/* Generate an array with a defined key */
-			foreach($this->temp as $t)
-				$this->temp2[$t[$row]] = $t;
+			/* Breeze DB class isn't capable of handling this yet... */
+			$result = $smcFunc['db_query']('', '
+				SELECT s.status_id, s.status_owner_id, s.status_poster_id, s.status_time, s.status_body, c.comments_id, c.comments_status_id, c.comments_status_owner_id, c.comments_poster_id, c.comments_profile_owner_id, c.comments_time, c.comments_body
+				FROM {db_prefix}breeze_status as s
+				INNER JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
+				ORDER BY status_time DESC
+				Limit {int:limit}',
+				array(
+					'limit' => $this->limit
+				)
+			);
 
-			/* If the key isn't equal to what we are looking for then unset it and create a new array with the info we want */
-			foreach($this->temp2 as $t2)
+			/* Populate the array like a boss! */
+			while ($row = $smcFunc['db_fetch_assoc']($result))
 			{
-				if ($t2 != $value)
-					unset($t2)
-
-				else
-					$this->r = $t2;
+				$s[$row['status_id']] = array(
+					'id' => $row['status_id'],
+					'owner_id' => $row['status_owner_id'],
+					'poster_id' => $row['status_poster_id'],
+					'time' => $row['status_time'],
+					'status_body' => $row['status_body']
+				);
+				$s[$row['status_id']]['comments'][$row['comments_id']] = array(
+					'id' => $row['comments_id'],
+					'poster_id' => $row['comments_poster_id'],
+					'owner_id' => $row['comments_profile_owner_id'],
+					'time' => $row['comments_time'],
+					'body' => $row['comments_body']
+				);
 			}
 		}
 
-		/* Return the info we want as we want it */
-		return $this->r;
+		return $this->Main;
 	}
 
-	/* Get all status */
-	public function GetStatus()
+	public function InsertStatus($array)
 	{
-		if (isset($this->query['GetStatus']) && !empty($this->query['GetStatus']))
-			return $this->query['GetStatus'];
+		/* We dont need this anymore */
+		$this->KillCache('Main');
 
-			$this->data['status']->Params($query_params);
-			$this->data['status']->GetData();
+		/* Insert! */
+		$data = array(
+			'status_owner_id' => 'int',
+			'status_poster_id' => 'int',
+			'status_time' => 'int',
+			'status_body' => 'string'
+		);
 
-			if (!empty($this->data['status']->DataResult()))
-			{
-				$this->valid = true;
-				$this->AddToContext('GetStatus', $this->data['status']->DataResult());
-				return $this->data['status']->DataResult();
-			}
+		$indexes = array(
+			'status_id'
+		);
 
-			else
-				return false;
+		$this->Query('status')->InsertData($data, $array, $indexes);
 	}
 
-	/* Methods for the status table */
-
-	public function GetStatusUserOwner($var)
+	public function InsertComment($array)
 	{
-		return $this->GetReturn('GetStatus', 'owner_id', $var);
+		/* We dont need this anymore */
+		$this->KillCache('Main');
+
+		/* Insert! */
+		$data = array(
+			'comments_status_id' => 'int',
+			'comments_status_owner_id' => 'int',
+			'comments_poster_id' => 'int',
+			'comments_profile_owner_id' => 'int',
+			'comments_time' => 'int',
+			'comments_body' => 'string'
+		);
+
+		$indexes = array(
+			'comments_id'
+		);
+
+		$this->Query('comments')->InsertData($data, $array, $indexes);
 	}
 
-	public function GetStatusUserPoster($var)
+	public function DeleteComment($id)
 	{
-		return $this->GetReturn('GetStatus', 'poster_id', $var);
+		/* Delete! */
+		$params = array(
+			'where' => 'comments_id = {int:id}'
+		);
+
+		$data = array(
+			'id' => $id
+		);
+
+		$this->Query('comments')->Params($params, $data);
+		$this->Query('comments')->DeleteData();
 	}
-
-	public function GetStatusID($var)
+	
+	public function DeleteComment($id)
 	{
-		return $this->GetReturn('GetStatus', 'id', $var);
-	}
+		/* Delete! */
+		$params = array(
+			'where' => 'comments_id = {int:id}'
+		);
 
-	public function GetStatusUserTime($var)
-	{
-		return $this->GetReturn('GetStatus', 'time', $var);
-	}
+		$data = array(
+			'id' => $id
+		);
 
-	/* Get All the comments */
-	public function GetComments()
-	{
-		if (isset($this->query['GetComments']) && !empty($this->query['GetComments']))
-			return $this->query['GetComments'];
-
-			$this->data['comments']->Params($query_params);
-			$this->data['comments']->GetData();
-
-			if (!empty($this->data['status']->DataResult()))
-			{
-				$this->valid = true;
-				$this->AddToContext('GetComments', $this->data['comments']->DataResult());
-				return $this->data['comments']->DataResult();
-			}
-
-			else
-				return false;
-	}
-
-	/* Methods for the comments table */
-
-	public function GetCommentsID($var)
-	{
-		return $this->GetReturn('GetComments', 'id', $var);
-	}
-
-	public function GetCommentsStatusID($var)
-	{
-		return $this->GetReturn('GetComments', 'status_id', $var);
-	}
-
-	public function GetCommentsStatusOwnerID($var)
-	{
-		return $this->GetReturn('GetComments', 'status_owner_id', $var);
-	}
-
-	public function GetCommentsPosterCommentID($var)
-	{
-		return $this->GetReturn('GetComments', 'poster_comment_id', $var);
-	}
-
-	public function GetCommentsProfileOwnerID($var)
-	{
-		return $this->GetReturn('GetComments', 'profile_owner_id', $var);
-	}
-
-	public function GetCommentsTime($var)
-	{
-		return $this->GetReturn('GetComments', 'time', $var);
+		$this->Query('comments')->Params($params, $data);
+		$this->Query('comments')->DeleteData();
 	}
 }

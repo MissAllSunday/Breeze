@@ -123,7 +123,7 @@ class Breeze_User
 				'sort' => 'id ASC',
 				'status_id' => $z[$key]['id']
 			);
-			$c_query = new Breeze_DB('breeze_comment');
+			$c_query = new Breeze_DB('breeze_comments');
 			$c_query->Params($c_query_params, $c_query_data);
 			$c_query->GetData('id');
 			$c = $c_query->DataResult();
