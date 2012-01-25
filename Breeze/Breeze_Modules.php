@@ -46,7 +46,7 @@ class Breeze_Modules
 	public function __construct($id)
 	{
 		$this->id = $id;
-		Breeze::LoadMethod(array(
+		Breeze::Load(array(
 			'UserInfo',
 			'DB',
 			'Logs',

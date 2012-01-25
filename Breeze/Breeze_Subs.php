@@ -45,7 +45,7 @@ class Breeze_Subs {
 	}
 
 	/* I can has fun? */
-	public static function Check_Versions()
+	public function Check_Versions()
 	{
 		global $txt;
 
@@ -71,7 +71,7 @@ class Breeze_Subs {
 	}
 
 	/* Headers */
-	public static function Headers($admin = false)
+	public function Headers($admin = false)
 	{
 		global $context, $settings, $txt;
 
@@ -116,7 +116,7 @@ class Breeze_Subs {
 	}
 
 	/* Relative dates  http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html */
-	public static function Time_Elapsed($ptime)
+	public function Time_Elapsed($ptime)
 	{
 		global $txt;
 
@@ -148,7 +148,7 @@ class Breeze_Subs {
 	}
 
 	/* A function to cut-off a string */
-	public static function Truncate_String($string, $limit, $break = ' ', $pad = '...')
+	public function TruncateString($string, $limit, $break = ' ', $pad = '...')
 	{
 		if(empty($limit))
 			$limit = 30;
@@ -165,7 +165,7 @@ class Breeze_Subs {
 		return $string;
 	}
 
-	public static function Remove($array, $val, $preserve_keys = true)
+	public function Remove($array, $val, $preserve_keys = true)
 	{
 		if (empty($array) || empty($val) || !is_array($array))
 			return false;

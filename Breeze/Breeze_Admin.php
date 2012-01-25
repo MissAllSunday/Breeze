@@ -2,7 +2,7 @@
 
 /**
  * Breeze_
- * 
+ *
  * The purpose of this file is
  * @package Breeze mod
  * @version 1.0
@@ -43,37 +43,35 @@ if (!defined('SMF'))
 	{
 		global $txt, $scripturl, $context;
 
-		loadLanguage('Breeze');
 		loadtemplate('Breeze');
-		Breeze::LoadMethod(array('Settings','Subs'));
+		Breeze::Load(array('Settings','Subs'));
+
+		$text = Breeze_Settings::getInstance();
 
 		/* Set all the page stuff */
-		$context['page_title'] = $txt['breeze_admin_settings_main'];
+		$context['page_title'] = $text->GetText('admin_settings_main');
 		$context['sub_template'] = 'admin_home';
 
 		/* Headers */
 		Breeze_Subs::Headers(true);
 
 		/* Tell them if their server is up to the challange*/
-		$context['breeze']['versions'] = Breeze_Subs::Check_Versions();
-		
-		/* Load the rss url from the database */
-		$rss = Breeze_Settings::getInstance();
-		$context['breeze']['rss_url'] = $rss->get('breeze_admin_settings_rss_url');
-
+		$context['breeze']['versions'] = Breeze_Subs::CheckVersions();
 	}
 
 	function Breeze_Admin_Settings()
 	{
-		global $scripturl, $txt, $context, $sourcedir;
+		global $scripturl, $context, $sourcedir;
 
-		loadLanguage('Breeze');
+		Breeze::Load(array('Settings'));
+		
+		$text = Breeze_Settings::getInstance();
 		$context['sub_template'] = 'show_settings';
 
 		require_once($sourcedir . '/ManageServer.php');
 
 		$config_vars = array(
-				array('check', 'breeze_admin_settings_enable', 'subtext' => $txt['breeze_admin_settings_enable_sub']),
+				array('check', 'breeze_admin_settings_enable', 'subtext' => $text->GetText('admin_settings_enable_sub')),
 				array('select', 'breeze_admin_settings_menuposition', array('home' => $txt['home'], 'help' => $txt['help'], 'profile' => $txt['profile']), 'subtext' => $txt['breeze_admin_settings_menuposition_sub']),
 				array('check', 'breeze_admin_settings_enablegeneralwall', 'subtext' => $txt['breeze_admin_settings_enablegeneralwall_sub']),
 		);
@@ -98,7 +96,7 @@ if (!defined('SMF'))
 
 		loadLanguage('Breeze');
 		loadtemplate('Breeze');
-		Breeze::LoadMethod('Subs');
+		Breeze::Load('Subs');
 
 		/* Headers */
 		Breeze_Subs::Headers(true);

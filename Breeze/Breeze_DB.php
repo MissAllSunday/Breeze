@@ -35,7 +35,7 @@
  *
  */
 
-if (!class_exists('DB')):
+if (!class_exists('Breeze_DB')):
 	class Breeze_DB
 	{
 		function __construct($table)

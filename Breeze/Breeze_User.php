@@ -58,7 +58,7 @@ class Breeze_User
 
 		loadLanguage('Breeze');
 		loadtemplate('Breeze');
-		Breeze::LoadMethod(array(
+		Breeze::Load(array(
 			'Settings',
 			'Subs',
 			'Globals',
@@ -183,7 +183,7 @@ class Breeze_User
 
 		loadtemplate('Breeze');
 		loadLanguage('Breeze');
-		Breeze::LoadMethod(array(
+		Breeze::Load(array(
 			'Form',
 			'Globals',
 			'DB'
@@ -303,7 +303,7 @@ class Breeze_User
 
 		loadtemplate('Breeze');
 		loadLanguage('Breeze');
-		Breeze::LoadMethod(array(
+		Breeze::Load(array(
 			'Form',
 			'Globals',
 			'DB'
@@ -414,7 +414,7 @@ class Breeze_User
 
 		loadtemplate('Breeze');
 		loadLanguage('Breeze');
-		Breeze::LoadMethod(array(
+		Breeze::Load(array(
 			'Form',
 			'Globals',
 			'DB'

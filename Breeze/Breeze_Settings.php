@@ -2,7 +2,7 @@
 
 /**
  * Breeze_
- * 
+ *
  * The purpose of this file is
  * @package Breeze mod
  * @version 1.0
@@ -41,21 +41,12 @@ if (!defined('SMF'))
 class Breeze_Settings
 {
 	private static $instance;
-	private $settings;
+	private $Settings;
+	private $Text;
 
 	private function __construct()
 	{
-		 global $modSettings;
-
-		/* Lets get all our settings from $modSettings */
-		$matches = array();
-		$pattern = '/breeze_/';
-
-		foreach ($modSettings as $k => $v)
-			if (preg_match($pattern, $k))
-				$matches[$k] = $v;
-
-		$this->settings = $matches;
+		$this->Extract();
 	}
 
 	public static function getInstance()
@@ -67,18 +58,69 @@ class Breeze_Settings
 		return self::$instance;
 	}
 
-	public function enable($var)
+	public function Extract()
 	{
-		if (!empty($this->settings[$var]))
+		global $txt, $modSettings;
+
+		loadLanguage('Breeze');
+
+		$this->pattern = '/BreezeMod_/';
+
+		/* Get only the settings that we need */
+		foreach ($modSettings as $km => $vm)
+			if (preg_match($this->pattern, $km))
+			{
+				$km = str_replace('BreezeMod_', '', $km);
+				$this->matchesSettings[$km] = $vm;
+			}
+
+			else
+				$this->matchesSettings = array();
+
+		$this->Settings = $this->matchesSettings;
+
+		/* Again, this time for $txt. */
+		foreach ($txt as $kt => $vt)
+			if (preg_match($this->pattern, $kt))
+			{
+				$kt = str_replace('BreezeMod_', '', $kt);
+				$this->matchesText[$kt] = $vt;
+			}
+
+		$this->Text = $this->matchesText;
+
+		/* Done? then we don't need this anymore */
+		if (!empty($this->Text) && !empty($this->Settings))
+		{
+			unset($this->matchesText);
+			unset($this->matchesSettings);
+		}
+	}
+
+	/* Return true if the value do exist, false otherwise, O RLY? */
+	public function Enable($var)
+	{
+		if (!empty($this->Settings[$var]))
 			return true;
 		else
 			return false;
 	}
 
-	public function get($var)
+	/* Get the requested setting  */
+	public function GetSetting($var)
 	{
-		if (!empty($this->settings[$var]))
-			return $this->settings[$var];
+		if (!empty($this->Settings[$var]) && $type == 'setting')
+			return $this->Settings[$var];
+
+		else
+			return false;
+	}
+	
+	public function GetText($var)
+	{
+		if (!empty($this->Text[$var]) && $type == 'text')
+			return $this->Text[$var];
+
 		else
 			return false;
 	}

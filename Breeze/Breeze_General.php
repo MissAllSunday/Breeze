@@ -53,7 +53,7 @@ class Breeze_General
 
 		loadLanguage('Breeze');
 		loadtemplate('Breeze');
-		Breeze::LoadMethod(array('Settings','Subs'));
+		Breeze::Load(array('Settings','Subs'));
 		writeLog(true);
 
 		/* Set all the page stuff */

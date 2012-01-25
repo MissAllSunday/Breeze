@@ -115,7 +115,7 @@ class Breeze_Query
 	 * This is the center of breeze, everything in breeze world spins around this method; scary, I know...
 	 * @access private
 	 * @global $smcFunc the "handling DB stuff" var of SMF
-	 * @return array a very big associative array
+	 * @return array a very big associative array with the ststus ID as key
 	 */
 	public function Main()
 	{
@@ -130,7 +130,7 @@ class Breeze_Query
 				FROM {db_prefix}breeze_status as s
 				INNER JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
 				ORDER BY status_time DESC
-				Limit {int:limit}',
+				', ($this->limit ? 'Limit {int:limit}' : '') ,'',
 				array(
 					'limit' => $this->limit
 				)
@@ -146,6 +146,8 @@ class Breeze_Query
 					'time' => $row['status_time'],
 					'status_body' => $row['status_body']
 				);
+
+				/* Comments */
 				$s[$row['status_id']]['comments'][$row['comments_id']] = array(
 					'id' => $row['comments_id'],
 					'poster_id' => $row['comments_poster_id'],
@@ -201,21 +203,31 @@ class Breeze_Query
 		$this->Query('comments')->InsertData($data, $array, $indexes);
 	}
 
-	public function DeleteComment($id)
+	public function DeleteStatus($id)
 	{
+		/* We dont need this anymore */
+		$this->KillCache('Main');
+
 		/* Delete! */
+		$paramsc = array(
+			'where' => 'comments_status_id = {int:id}'
+		);
 		$params = array(
-			'where' => 'comments_id = {int:id}'
+			'where' => 'status_id = {int:id}'
 		);
 
 		$data = array(
 			'id' => $id
 		);
 
-		$this->Query('comments')->Params($params, $data);
+		/* Ladies first */
+		$this->Query('comments')->Params($paramsc, $data);
 		$this->Query('comments')->DeleteData();
+		
+		$this->Query('status')->Params($params, $data);
+		$this->Query('status')->DeleteData();
 	}
-	
+
 	public function DeleteComment($id)
 	{
 		/* Delete! */

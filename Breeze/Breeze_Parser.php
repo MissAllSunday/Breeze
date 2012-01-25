@@ -44,7 +44,7 @@ class Breeze_Parser
 	function __construct($string)
 	{
 		$this->s = $string;
-		Breeze::LoadMethod(array(
+		Breeze::Load(array(
 			'Subs'
 		));
 	}

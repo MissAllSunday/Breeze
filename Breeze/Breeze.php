@@ -52,7 +52,7 @@ class Breeze
 	 * @param array $method a comma separated list of all the file names to be loaded.
 	 * @return void
 	 */
-	public static function LoadMethod($method)
+	public static function Load($method)
 	{
 		global $sourcedir;
 
@@ -101,7 +101,7 @@ class Breeze
 		global $txt;
 
 		loadLanguage('Breeze');
-		Breeze::LoadMethod('Settings');
+		Breeze::Load('Settings');
 
 		/* Settings are required here */
 		$s = Breeze_Settings::getInstance();
@@ -170,7 +170,7 @@ class Breeze
 		global $scripturl, $txt, $context;
 
 		loadLanguage('Breeze');
-		Breeze::LoadMethod('Settings');
+		Breeze::Load('Settings');
 
 		/* Settings are required here */
 		$s = Breeze_Settings::getInstance();
@@ -253,30 +253,30 @@ class Breeze
 	/* It's all about Admin settings from now on */
 	public static function Admin_Button(&$admin_menu)
 	{
-		global $txt;
+		Breeze::Load(array('Settings'));
 
-		loadLanguage('Breeze');
+		$text = Breeze_Settings::getInstance();
 
 		$admin_menu['breezeadmin']= array(
-			'title' => $txt['breeze_admin_settings_admin_panel'],
+			'title' => $text->GetText('admin_settings_admin_panel'),
 			'permission' => array('breeze_edit_general_settings'),
 			'areas' => array(
 				'breezeindex' => array(
-					'label' => $txt['breeze_admin_settings_main'],
+					'label' => $text->GetText('admin_settings_main'),
 					'file' => 'Breeze/Breeze_Admin.php',
 					'function' => 'Breeze_Admin_Main',
 					'icon' => 'administration.gif',
 					'permission' => array('breeze_edit_general_settings'),
 				),
 				'breezesettings' => array(
-					'label' => $txt['breeze_admin_settings_settings'],
+					'label' => $text->GetText('admin_settings_settings'),
 					'file' => 'Breeze/Breeze_Admin.php',
 					'function' => 'Breeze_Admin_Settings',
 					'icon' => 'corefeatures.gif',
 					'permission' => array('breeze_edit_general_settings'),
 				),
 				'breezedonate' => array(
-					'label' => $txt['breeze_admin_settings_donate'],
+					'label' => $text->GetText('admin_settings_donate'),
 					'file' => 'Breeze/Breeze_Admin.php',
 					'function' => 'Breeze_Admin_Donate',
 					'icon' => 'support.gif',

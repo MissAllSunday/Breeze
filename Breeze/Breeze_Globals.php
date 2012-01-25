@@ -40,17 +40,7 @@ if (!defined('SMF'))
 
 class Breeze_Globals
 {
-	private static $instances = array();
 	private $request;
-
-	public static function factory($var)
-	{
-		if (array_key_exists($var, self::$instances))
-		{
-			return self::$instances[$var];
-		}
-		return self::$instances[$var] = new Breeze_Globals($var);
-	}
 
 	function __construct($var)
 	{
@@ -69,15 +59,15 @@ class Breeze_Globals
 
 	}
 
-	function see($value)
+	function See($value)
 	{
-		if (isset($this->request[$value]) && self::validate($this->request[$value]))
-			return self::Sanitize($this->request[$value]);
+		if (isset($this->request[$value]) && $this->Validate($this->request[$value]))
+			return $this->Sanitize($this->request[$value]);
 		else
 			return 'error_' . $value;
 	}
 
-	function raw($value)
+	function Raw($value)
 	{
 		if (isset($this->request[$value]))
 			return $this->request[$value];
@@ -86,7 +76,7 @@ class Breeze_Globals
 			return false;
 	}
 
-	public static function validate($var)
+	public function Validate($var)
 	{
 		if (!empty($var))
 			return true;
@@ -94,7 +84,7 @@ class Breeze_Globals
 			return false;
 	}
 
-	function UnsetVar($var)
+	public function UnsetVar($var)
 	{
 		unset($this->request[$var]);
 	}

@@ -112,7 +112,7 @@ abstract class Breeze_Ajax
 
 			/* Send the data to the template */
 			$context['Breeze']['ajax']['ok'] = 'ok';
-			$context['Breeze']['ajax']['data'] =  $display->HTML();
+			$context['Breeze']['ajax']['data'] =  $display->HTML($params);
 		}
 
 		else
@@ -160,7 +160,7 @@ abstract class Breeze_Ajax
 
 			/* Send the data to the template */
 			$context['Breeze']['ajax']['ok'] = 'ok';
-			$context['Breeze']['ajax']['data'] =  $display->HTML();
+			$context['Breeze']['ajax']['data'] =  $display->HTML($params);
 		}
 
 			$context['template_layers'] = array();

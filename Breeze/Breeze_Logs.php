@@ -47,7 +47,7 @@ class Breeze_Logs
 		if (!empty($user))
 			$this->user = (int)$user;
 
-		Breeze::LoadMethod('DB');
+		Breeze::Load('DB');
 	}
 
 	/* Log profile visits */
