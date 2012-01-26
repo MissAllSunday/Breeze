@@ -115,7 +115,7 @@ class Breeze_Settings
 		else
 			return false;
 	}
-	
+
 	public function GetText($var)
 	{
 		if (!empty($this->Text[$var]) && $type == 'text')

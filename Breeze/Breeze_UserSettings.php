@@ -41,7 +41,7 @@ if (!defined('SMF'))
 class Breeze_UserSettings
 {
 	private $data = array();
-	private $already = false;
+	private static $already = false;
 
 	function __construct()
 	{
@@ -50,7 +50,7 @@ class Breeze_UserSettings
 		if (isset($context['Breeze']['UserSettings'][$context['member']['id']]) && !empty($context['Breeze']['UserSettings'][$context['member']['id']]))
 		{
 			$this->data = $context['Breeze']['UserSettings'][$context['member']['id']];
-			$this->already = true;
+			self::$already = true;
 		}
 	}
 
@@ -58,7 +58,7 @@ class Breeze_UserSettings
 	{
 		global $context;
 
-		if (!$this->already)
+		if (!self::$already)
 		{
 			/* Load the user settings */
 			$query_params = array(
@@ -82,7 +82,7 @@ class Breeze_UserSettings
 	{
 		global $context;
 
-		if (!$this->already)
+		if (!self::$already)
 		{
 			/* Load the user settings */
 			$query_params = array(

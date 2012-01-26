@@ -41,7 +41,7 @@ if (!defined('SMF'))
 	/* We can't call a static method from a string... let's do this the old way instead... */
 	function Breeze_Admin_Main()
 	{
-		global $txt, $scripturl, $context;
+		global $scripturl, $context;
 
 		loadtemplate('Breeze');
 		Breeze::Load(array('Settings','Subs'));
@@ -61,10 +61,10 @@ if (!defined('SMF'))
 
 	function Breeze_Admin_Settings()
 	{
-		global $scripturl, $context, $sourcedir;
+		global $txt, $scripturl, $context, $sourcedir;
 
 		Breeze::Load(array('Settings'));
-		
+
 		$text = Breeze_Settings::getInstance();
 		$context['sub_template'] = 'show_settings';
 
@@ -92,20 +92,22 @@ if (!defined('SMF'))
 	/* Pay no attention to the girl behind the curtain */
 	function Breeze_Admin_Donate()
 	{
-		global $txt, $context, $scripturl;
+		global $context, $scripturl;
 
-		loadLanguage('Breeze');
 		loadtemplate('Breeze');
-		Breeze::Load('Subs');
+		Breeze::Load('Subs', 'Settings');
 
 		/* Headers */
 		Breeze_Subs::Headers(true);
 
+		/* Text strings */
+		$text = Breeze_Settings::getInstance();
+
 		/* Page stuff */
-		$context['page_title'] = $txt['breeze_admin_settings_donate'];
+		$context['page_title'] = $text->GetText('admin_settings_donate');
 		$context['sub_template'] = 'admin_donate';
 		$context['linktree'][] = array(
 			'url' => $scripturl . '?action=admin;area=breezedonate',
-			'name' => $txt['breeze_admin_settings_donate']
+			'name' => $text->GetText('admin_settings_donate')
 		);
 	}
