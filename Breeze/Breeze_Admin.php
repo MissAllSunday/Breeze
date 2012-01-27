@@ -56,12 +56,13 @@ if (!defined('SMF'))
 		Breeze_Subs::Headers(true);
 
 		/* Tell them if their server is up to the challange*/
-		$context['breeze']['versions'] = Breeze_Subs::CheckVersions();
+		$version = new Breeze_Subs();
+		$context['breeze']['versions'] = $version->CheckVersions();
 	}
 
 	function Breeze_Admin_Settings()
 	{
-		global $txt, $scripturl, $context, $sourcedir;
+		global $scripturl, $context, $sourcedir;
 
 		Breeze::Load(array('Settings'));
 
@@ -71,9 +72,9 @@ if (!defined('SMF'))
 		require_once($sourcedir . '/ManageServer.php');
 
 		$config_vars = array(
-				array('check', 'breeze_admin_settings_enable', 'subtext' => $text->GetText('admin_settings_enable_sub')),
-				array('select', 'breeze_admin_settings_menuposition', array('home' => $txt['home'], 'help' => $txt['help'], 'profile' => $txt['profile']), 'subtext' => $txt['breeze_admin_settings_menuposition_sub']),
-				array('check', 'breeze_admin_settings_enablegeneralwall', 'subtext' => $txt['breeze_admin_settings_enablegeneralwall_sub']),
+				array('check', 'BreezeMod_admin_settings_enable', 'subtext' => $text->GetText('admin_settings_enable_sub')),
+				array('select', 'BreezeMod_admin_settings_menuposition', array('home' => $text->GetText('admin_settings_home'), 'help' => $text->GetText('admin_settings_help'), 'profile' => $text->GetText('admin_settings_profile')), 'subtext' => $text->GetText('admin_settings_menuposition_sub')),
+				array('check', 'BreezeMod_admin_settings_enablegeneralwall', 'subtext' => $text->GetText('admin_settings_enablegeneralwall_sub')),
 		);
 
 		$context['post_url'] = $scripturl . '?action=admin;area=breezesettings;save';

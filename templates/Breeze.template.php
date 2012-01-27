@@ -234,7 +234,7 @@ function template_user_wall()
 			<li id="breeze_display_status"></li>';
 
 	/* Status and comments */
-	foreach ($context['member']['status'] as $k => $status)
+	foreach ($context['member']['status'] as $status)
 	{
 		echo '<li class="windowbg" id ="status_id_',$status['id'],'">
 			<span class="topslice"><span></span></span>
@@ -253,7 +253,7 @@ function template_user_wall()
 						foreach($status['comments'] as $comment)
 								echo '<li class="description" id ="comment_id_',$comment['id'],'">
 											<div class="breeze_user_comment_avatar">
-												',$context['Breeze']['user_info'][$comment['poster_comment_id']],'<br />
+												',$context['Breeze']['user_info'][$comment['poster_id']],'<br />
 											</div>
 											<div class="breeze_user_comment_comment">
 												',$comment['body'],'
@@ -317,7 +317,7 @@ function template_admin_donate()
 		<div class="roundframe rfix">
 			<div class="innerframe">
 				<div class="content">
-					',$txt['breeze_admin_settings_donate_text'],'
+					',$txt['BreezeMod_admin_settings_donate_text'],'
 				</div>
 			</div>
 		</div>

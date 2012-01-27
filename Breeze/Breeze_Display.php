@@ -42,22 +42,13 @@ class Breeze_Display
 {
 	private $ReturnArray;
 	private $params;
-	private $time;
 	private $user_info;
+	private $tools;
+	private $parse;
+	private $type;
 
 	function __construct($params, $type)
 	{
-		if (empty($params))
-			$this->ReturnArray = '';
-
-		else
-			$this->params = $params;
-	}
-
-	public function HTML()
-	{
-		global $scripturl;
-
 		/* Load stuff */
 		Breeze::Load(array(
 			'UserInfo',
@@ -65,13 +56,27 @@ class Breeze_Display
 			'Parser'
 		));
 
-		$this->user_info = Breeze_UserInfo::Profile($profile_id, true);
-		$this->time = new Breeze_Subs();
+		if (empty($params))
+			$this->ReturnArray = '';
 
-		$parse = new Breeze_Parser($this->params['body']);
-		$this->params['body'] = $parse->Display();
+		else
+			$this->params = $params;
 
-		switch ($type)
+		$this->type = $type;
+		$this->parse = new Breeze_Parser();
+		$this->tools = new Breeze_Subs();
+	}
+
+	public function HTML()
+	{
+		global $scripturl;
+
+		$this->user_info = Breeze_UserInfo::Profile($this->params['poster_id'], true);
+
+		$this->params['body'] = $this->parse->Display($this->params['body']);
+		$this->params['time'] = $this->tools->TimeElapsed($this->params['time']);
+
+		switch ($this->type)
 		{
 			case 'status':
 				$this->ReturnArray .= '
@@ -83,7 +88,7 @@ class Breeze_Display
 					</div>
 					<div class="breeze_user_status_comment">
 						'. $this->params['body'] .'
-						<div class="breeze_options"><span class="time_elapsed">'. $this->time->Time_Elapsed($data['time']) .'</span>  <a href="javascript:void(0)" id="'. $this->params['id'] .'" class="breeze_delete_status">Delete</a> </div>
+						<div class="breeze_options"><span class="time_elapsed">'. $this->params['time'] .'</span>  <a href="javascript:void(0)" id="'. $this->params['id'] .'" class="breeze_delete_status">Delete</a> </div>
 						<hr />
 						<div id="comment_flash_'. $this->params['id'] .'"></div>';
 

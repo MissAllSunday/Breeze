@@ -41,16 +41,16 @@ if (!defined('SMF'))
 
 class Breeze_Parser
 {
-	function __construct($string)
+	function __construct()
 	{
-		$this->s = $string;
 		Breeze::Load(array(
 			'Subs'
 		));
 	}
 
-	function Display()
+	function Display($string)
 	{
+		$this->s = $string;
 		$temp = get_class_methods('Breeze_Parser');
 		$temp = Breeze_Subs::Remove($temp, array('__construct', 'Display'), false);
 

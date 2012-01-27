@@ -90,26 +90,23 @@ class Breeze
 	}
 
 	/**
-	 * Replace the summary action with the ction created by Breeze
+	 * Replace the summary action with the action created by Breeze
 	 *
 	 * @see Breeze_User::Wall()
 	 * @param array $profile_areas An array containing all possible tabs for the profile menu.
 	 * @return void
 	 */
-	public static function Profile_Info(&$profile_areas)
+	public static function ProfileInfo(&$profile_areas)
 	{
-		global $txt;
-
-		loadLanguage('Breeze');
 		Breeze::Load('Settings');
 
 		/* Settings are required here */
 		$s = Breeze_Settings::getInstance();
 
 		/* Replace the summary page only if the mod is enable */
-		if ($s->enable('breeze_admin_settings_enable'))
+		if ($s->Enable('admin_settings_enable'))
 			$profile_areas['info']['areas']['summary'] = array(
-				'label' => $txt['breeze_general_wall'],
+				'label' => $s->GetText('general_wall'),
 				'file' => '/Breeze/Breeze_User.php',
 				'function' => 'Breeze_Wrapper_Wall',
 				'permission' => array(
@@ -119,15 +116,15 @@ class Breeze
 			);
 
 		 /* Per user permissions */
-		if ($s->enable('breeze_admin_settings_enable'))
+		/* if ($s->Enable('admin_settings_enable')) */
 			$profile_areas['breeze_profile'] = array(
-				'title' => $txt['breeze_general_my_wall_settings'],
+				'title' => $s->GetText('general_my_wall_settings'),
 				'areas' => array(),
 			);
 
 		/* User individual settings goes right here... */
 		$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
-			'label' => $txt['breeze_user_settings_name'],
+			'label' => $s->GetText('user_settings_name'),
 			'file' => 'Breeze/Breeze_User.php',
 			'function' => 'Breeze_Wrapper_Settings',
 			'permission' => array(
@@ -137,7 +134,7 @@ class Breeze
 		);
 
 		$profile_areas['breeze_profile']['areas']['breezepermissions'] = array(
-			'label' => $txt['breeze_user_permissions_name'],
+			'label' => $s->GetText('user_permissions_name'),
 			'file' => 'Breeze/Breeze_User.php',
 			'function' => 'Breeze_Wrapper_Permissions',
 			'permission' => array(
@@ -147,7 +144,7 @@ class Breeze
 		);
 		
 		$profile_areas['breeze_profile']['areas']['breezemodules'] = array(
-			'label' => $txt['breeze_user_modules_name'],
+			'label' => $s->GetText('user_modules_name'),
 			'file' => 'Breeze/Breeze_User.php',
 			'function' => 'Breeze_Wrapper_Modules',
 			'permission' => array(
@@ -165,9 +162,9 @@ class Breeze
 	 * @link http://mattzuba.com
 	 * @return void
 	 */
-	public static function Wall_Menu(&$menu_buttons){
-
-		global $scripturl, $txt, $context;
+	public static function WallMenu(&$menu_buttons)
+	{
+		global $scripturl, $context;
 
 		loadLanguage('Breeze');
 		Breeze::Load('Settings');
@@ -176,7 +173,7 @@ class Breeze
 		$s = Breeze_Settings::getInstance();
 
 		/* Does the General Wall is enable? */
-		if ($s->enable('breeze_admin_settings_enablegeneralwall') == false)
+		if ($s->Enable('admin_settings_enablegeneralwall') == false)
 			return;
 
 		$insert = $s->get('breeze_admin_settings_menuposition') == 'home' ? 'home' : $s->get('breeze_admin_settings_menuposition');
@@ -191,29 +188,29 @@ class Breeze
 		$menu_buttons = array_merge(
 			array_slice($menu_buttons, 0, $counter),
 			array('breeze_Wall' => array(
-			'title' => $txt['breeze_general_wall'],
+			'title' => $s->GetText('general_wall'),
 			'href' => $scripturl . '?action=wall',
 			'show' => allowedTo('breeze_view_general_wall'),
 			'sub_buttons' => array(
 				'my_wall' => array(
-					'title' => $txt['breeze_general_my_wall'],
+					'title' => $s->GetText('general_my_wall'),
 					'href' => $scripturl . '?action=profile',
 					'show' => allowedTo('profile_view_own'),
 					'sub_buttons' => array(
 						'my_wall_settings' => array(
-							'title' => $txt['breeze_user_settings_name'],
+							'title' => $s->GetText('user_settings_name'),
 							'href' => $scripturl . '?action=profile;area=breezesettings',
 							'show' => allowedTo('profile_view_own'),
 						),
 						'my_wall_permissions' => array(
-							'title' => $txt['breeze_user_permissions_name'],
+							'title' => $s->GetText('user_permissions_name'),
 							'href' => $scripturl . '?action=profile;area=breezepermissions',
 							'show' => allowedTo('profile_view_own'),
 						),
 					),
 				),
 				'breeze_admin_panel' => array(
-					'title' => $txt['breeze_admin_settings_admin_panel'],
+					'title' => $s->GetText('admin_settings_admin_panel'),
 					'href' => $scripturl . '?action=admin;area=breezeindex',
 					'show' => allowedTo('breeze_edit_general_settings'),
 				),

@@ -65,6 +65,7 @@ class Breeze_Settings
 		loadLanguage('Breeze');
 
 		$this->pattern = '/BreezeMod_/';
+		$this->matchesSettings = array();
 
 		/* Get only the settings that we need */
 		foreach ($modSettings as $km => $vm)
@@ -74,8 +75,6 @@ class Breeze_Settings
 				$this->matchesSettings[$km] = $vm;
 			}
 
-			else
-				$this->matchesSettings = array();
 
 		$this->Settings = $this->matchesSettings;
 
@@ -109,7 +108,7 @@ class Breeze_Settings
 	/* Get the requested setting  */
 	public function GetSetting($var)
 	{
-		if (!empty($this->Settings[$var]) && $type == 'setting')
+		if (!empty($this->Settings[$var]))
 			return $this->Settings[$var];
 
 		else
@@ -118,7 +117,7 @@ class Breeze_Settings
 
 	public function GetText($var)
 	{
-		if (!empty($this->Text[$var]) && $type == 'text')
+		if (!empty($this->Text[$var]))
 			return $this->Text[$var];
 
 		else

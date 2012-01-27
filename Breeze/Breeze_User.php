@@ -48,28 +48,28 @@ class Breeze_User
 {
 	static $already = false;
 
-	public function  __construct()
-	{
-	}
+	public function  __construct(){}
 
 	public static function Wall()
 	{
 		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info;
 
-		loadLanguage('Breeze');
 		loadtemplate('Breeze');
 		Breeze::Load(array(
 			'Settings',
 			'Subs',
 			'Globals',
-			'DB',
 			'UserInfo',
 			'Modules',
 			'Logs',
-			'Parser'
+			'Query'
 		));
 
-		Breeze_Subs::Headers();
+		$settings = Breeze_Settings::getInstance();
+		$query = Breeze_Query::getInstance();
+		$tools = new Breeze_Subs();
+
+		$tools->Headers();
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'user_wall';
@@ -86,69 +86,21 @@ class Breeze_User
 		$users_to_load = array();
 
 		/* Load all the status */
-		$query_params = array(
-			'rows' =>'id, owner_id, poster_id, time, body',
-			'order' => '{raw:sort}',
-			'where' => 'owner_id={int:memID}'
-		);
-		$query_data = array(
-			'sort' => 'id DESC',
-			'memID' => $context['member']['id']
-		);
-		$query = new Breeze_DB('breeze_status');
-		$query->Params($query_params, $query_data);
-		$query->GetData('id');
-		$z = $query->DataResult();
+		$status = $query->GetStatusByProfile($context['member']['id']);
 
-		/* Append some useful tools */
-		foreach (array_keys($z) as $key)
+
+		/* Collect the IDs to build their profile's lightbox */
+		foreach($status as $s)
 		{
-			/* Let's collect the IDs */
-			$users_to_load[] = $z[$key]['poster_id'];
+			$users_to_load[] = $s['poster_id'];
 
-			/* Do the conversion from unix time */
-			$z[$key]['time'] = Breeze_Subs::Time_Elapsed($z[$key]['time']);
-
-			/* Parse the data */
-			$parse = new Breeze_Parser($z[$key]['body']);
-			$z[$key]['body'] = $parse->Display();
-
-			/* This isn't very efficient */
-			$c_query_params = array(
-				'rows' => 'id, status_id, status_owner_id, poster_comment_id, profile_owner_id, time, body',
-				'order' => '{raw:sort}',
-				'where' => 'status_id={int:status_id}'
-			);
-			$c_query_data = array(
-				'sort' => 'id ASC',
-				'status_id' => $z[$key]['id']
-			);
-			$c_query = new Breeze_DB('breeze_comments');
-			$c_query->Params($c_query_params, $c_query_data);
-			$c_query->GetData('id');
-			$c = $c_query->DataResult();
-
-			/* Yet another for each! */
-			foreach(array_keys($c) as $ck)
-			{
-				/* Let's collect the IDs */
-				$users_to_load[] = $c[$ck]['poster_comment_id'];
-
-				/* Do the conversion from unix time */
-				$c[$ck]['time'] = Breeze_Subs::Time_Elapsed($c[$ck]['time']);
-
-				/* Parser */
-				$parser = new Breeze_Parser($c[$ck]['body']);
-				$c[$ck]['body'] = $parser->Display();
-
-				/* Get all the likes for this comment */
-			}
-
-			$z[$key]['comments'] = $c;
+			/* Comments too */
+			foreach($s['comments'] as $c)
+				$users_to_load[] = $c['poster_id'];
 		}
 
 		/* Send the array to the template */
-		$context['member']['status'] = $z;
+		$context['member']['status'] = $status;
 
 		/* We have all the IDs, let's prune the array a little */
 		$new_temp_array = array_unique($users_to_load);
@@ -162,17 +114,20 @@ class Breeze_User
 			$context['Breeze']['user_info'][$user['id']] = Breeze_UserInfo::Profile($user);
 		}
 
+		/* We don't need this anymore */
+		unset($new_temp_array);
+
 		/* Done with the status... now it's modules time */
-		$modules = new Breeze_Modules($context['member']['id']);
+/* 		$modules = new Breeze_Modules($context['member']['id']);
 		$temp = $modules->GetAllModules();
 		$context['Breeze']['Modules'] = array();
 
 		foreach($temp as $m)
-			$context['Breeze']['Modules'][$m] = $modules->$m();
+			$context['Breeze']['Modules'][$m] = $modules->$m(); */
 
 		/* Write to the log */
-		$log = new Breeze_Logs($context['member']['id']);
-		$log->ProfileVisits();
+/* 		$log = new Breeze_Logs($context['member']['id']);
+		$log->ProfileVisits(); */
 
 	}
 
@@ -507,7 +462,7 @@ class Breeze_User
 						$data['time_frame'] == 'month' ? 'selected' : false
 					),
 				));
-				
+
 		else
 			$form->AddSelect('time_frame', array(
 				'time_frame',
@@ -538,7 +493,7 @@ class Breeze_User
 		), !empty($data['enable_show_avatar']) ? true : false);
 
 		$form->AddSubmitButton('save');
-		
+
 		echo '<pre>';
 		print_r($form);
 		echo'</pre>';

@@ -91,6 +91,12 @@ class Breeze_Query
 			cache_put_data('Breeze:'. $t, '');
 	}
 
+	private function UnsetTemp()
+	{
+		unset($this->temp);
+		unset($this->r);
+	}
+
 	/*
 	 * Return an associative array based on the entered params
 	 *
@@ -100,8 +106,74 @@ class Breeze_Query
 	 * @param int $value The value to compare to
 	 * @return array an associative array
 	 */
-	private function GetReturn($table, $row, $value)
+	private function GetReturn($row, $value)
 	{
+		/* Get the data */
+		$this->temp = $this->Main();
+
+		/* Needs to be empty by default */
+		$this->r = array();
+
+		/* Do this only if there is something to work with */
+		if ($this->temp)
+		{
+			/* Generate an array with a defined key */
+			foreach($this->temp as $t)
+				if ($t[$row] == $value)
+					$this->r[] = $t;
+		}
+
+		/* Clean */
+		$this->UnsetTemp();
+
+		/* Return the info we want as we want it */
+		return $this->r;
+	}
+
+	private function GetSingleValue($type, $value)
+	{
+		/* Get the data */
+		$this->temp = $this->Main();
+
+		if ($type == 'status')
+			foreach($this->temp as $s)
+				if ($s == $value)
+					$this->r = $s;
+
+		elseif ($type == 'comment')
+			foreach($this->temp as $c)
+				if ($c == $value)
+					$this->r = $c;
+
+		return $this->r;
+
+		$this->UnsetTemp();
+	}
+
+	public function GetSingleStatus()
+	{
+		/* Get the value directly from the DB */
+		$this->query_params = array(
+			'rows' = 'id',
+			'order' => '{raw:sort}',
+			'limit' => '{int:limit}'
+		);
+
+		$this->query_data = array(
+			'sort' => 'id ASC',
+			'limit' => 1
+		);
+		$this->Query('status')->Params($this->query_params, $this->query_data);
+
+		/* Done? then clean! */
+		$this->query_data = array();
+		$this->query_params['rows'] = '*';
+		unset($this->query_params['where']);
+		unset($this->query_params['order']);
+		unset($this->query_params['limit']);
+
+		return $this->Query('status')->GetData(null, true);
+
 	}
 
 	private function Query($var)
@@ -117,9 +189,18 @@ class Breeze_Query
 	 * @global $smcFunc the "handling DB stuff" var of SMF
 	 * @return array a very big associative array with the ststus ID as key
 	 */
-	public function Main()
+	private function Main()
 	{
 		global $smcFunc;
+
+		Breeze::Load(array(
+			'Subs',
+			'UserInfo',
+			'Parser',
+		));
+
+		$tools = new Breeze_Subs();
+		$parser = new Breeze_Parser();
 
 		/* Use the cache please... */
 		if (($this->Main = cache_get_data('Breeze:Main', 120)) == null)
@@ -130,35 +211,43 @@ class Breeze_Query
 				FROM {db_prefix}breeze_status as s
 				INNER JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
 				ORDER BY status_time DESC
-				', ($this->limit ? 'Limit {int:limit}' : '') ,'',
-				array(
-					'limit' => $this->limit
-				)
+				',
+				array()
 			);
 
 			/* Populate the array like a boss! */
 			while ($row = $smcFunc['db_fetch_assoc']($result))
 			{
-				$s[$row['status_id']] = array(
+				$this->Main[$row['status_id']] = array(
 					'id' => $row['status_id'],
 					'owner_id' => $row['status_owner_id'],
 					'poster_id' => $row['status_poster_id'],
-					'time' => $row['status_time'],
-					'status_body' => $row['status_body']
+					'time' => $tools->TimeElapsed($row['status_time']),
+					'body' => $parser->Display($row['status_body'])
 				);
 
 				/* Comments */
-				$s[$row['status_id']]['comments'][$row['comments_id']] = array(
+				$this->Main[$row['status_id']]['comments'][$row['comments_id']] = array(
 					'id' => $row['comments_id'],
 					'poster_id' => $row['comments_poster_id'],
 					'owner_id' => $row['comments_profile_owner_id'],
-					'time' => $row['comments_time'],
-					'body' => $row['comments_body']
+					'time' => $tools->TimeElapsed($row['comments_time']),
+					'body' => $parser->Display($row['comments_body'])
 				);
 			}
 		}
 
 		return $this->Main;
+	}
+
+	public function GetStatusByProfile($id)
+	{
+		return $this->GetReturn('owner_id', $id);
+	}
+
+	public function GetStatus()
+	{
+		return $this->Main();
 	}
 
 	public function InsertStatus($array)
@@ -223,7 +312,7 @@ class Breeze_Query
 		/* Ladies first */
 		$this->Query('comments')->Params($paramsc, $data);
 		$this->Query('comments')->DeleteData();
-		
+
 		$this->Query('status')->Params($params, $data);
 		$this->Query('status')->DeleteData();
 	}

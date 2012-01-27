@@ -38,16 +38,19 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class Breeze_Subs {
+class Breeze_Subs
+{
 
 	function __construct()
 	{
 	}
 
 	/* I can has fun? */
-	public function Check_Versions()
+	public function CheckVersions()
 	{
-		global $txt;
+		Breeze::Load('Settings');
+
+		$text = Breeze_Settings::getInstance();
 
 		$checkFor = array(
 			'php',
@@ -55,17 +58,17 @@ class Breeze_Subs {
 		);
 
 		$versions = array(
-			'php' => $txt['breeze_admin_settings_php_ok'],
-			'json' => sprintf($txt['breeze_admin_settings_server_needs_ok'], $txt['breeze_admin_settings_json'])
+			'php' => $text->GetText('admin_settings_php_ok'),
+			'json' => sprintf($text->GetText('admin_settings_server_needs_ok'), $text->GetText('admin_settings_json'))
 		);
 
 		loadLanguage('Breeze');
 
 		if (in_array('json', $checkFor) && !function_exists('json_decode') && !function_exists('json_encode'))
-			$versions['json'] = sprintf($txt['breeze_admin_settings_server_needs'], $txt['breeze_admin_settings_json']);
+			$versions['json'] = sprintf($text->GetText('admin_settings_Server_needs'), $text->GetText('admin_settings_json'));
 
 		if (@version_compare(PHP_VERSION, '5.3') == -1 && in_array('php', $checkFor))
-			$versions['php'] = sprintf($txt['breeze_admin_settings_php'], PHP_VERSION);
+			$versions['php'] = sprintf($text->GetText('admin_settings_php'), PHP_VERSION);
 
 		return $versions;
 	}
@@ -73,35 +76,32 @@ class Breeze_Subs {
 	/* Headers */
 	public function Headers($admin = false)
 	{
-		global $context, $settings, $txt;
+		global $context, $settings;
 
-		loadLanguage('Breeze');
+		Breeze::Load('Settings');
+
+		$text = Breeze_Settings::getInstance();
 
 		/* Define some variables for the ajax stuff */
 		$context['html_headers'] .= '
 		<script type="text/javascript"><!-- // --><![CDATA[
-			var breeze_error_message = "'.$txt['breeze_error_message'].'";
-			var breeze_success_message = "'.$txt['breeze_success_message'].'";
-			var breeze_empty_message = "'.$txt['breeze_empty_message'].'";
-			var breeze_error_delete = "'.$txt['breeze_error_message'].'";
-			var breeze_success_delete = "'.$txt['breeze_success_delete'].'";
-			var breeze_confirm_delete = "'.$txt['breeze_confirm_delete'].'";
-			var breeze_confirm_yes = "'.$txt['breeze_confirm_yes'].'";
-			var breeze_confirm_cancel = "'.$txt['breeze_confirm_cancel'].'";
-			var breeze_already_deleted = "'.$txt['breeze_already_deleted'].'";
+			var breeze_error_message = "'. $text->GetText('error_message') .'";
+			var breeze_success_message = "'. $text->GetText('success_message') .'";
+			var breeze_empty_message = "'. $text->GetText('empty_message') .'";
+			var breeze_error_delete = "'. $text->GetText('error_message') .'";
+			var breeze_success_delete = "'. $text->GetText('success_delete') .'";
+			var breeze_confirm_delete = "'. $text->GetText('confirm_delete') .'";
+			var breeze_confirm_yes = "'. $text->GetText('confirm_yes') .'";
+			var breeze_confirm_cancel = "'. $text->GetText('confirm_cancel') .'";
+			var breeze_already_deleted = "'. $text->GetText('already_Deleted') .'";
 	// ]]></script>';
 
 
-		/* Let's load jquery from google or microsoft CDN only if it hasn't been loaded yet */
+		/* Let's load jquery from CDN only if it hasn't been loaded yet */
 		$context['html_headers'] .= '
 		<link href="'. $settings['theme_url']. '/css/breeze.css" rel="stylesheet" type="text/css" />
 		<link href="'. $settings['theme_url']. '/css/facebox.css" rel="stylesheet" type="text/css" />
-		<script type="text/javascript">
-			if (typeof jQuery == \'undefined\')
-			{
-				document.write("<script src=\'https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js\'><\/script>");
-			}
-		</script>
+		<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery.min.js"%3E%3C/script%3E\'))</script>
 		<script src="'. $settings['theme_url']. '/js/jquery_notification.js" type="text/javascript"></script>
 		<script src="'. $settings['theme_url']. '/js/facebox.js" type="text/javascript"></script>
 		<script src="'. $settings['theme_url']. '/js/confirm.js" type="text/javascript"></script>
@@ -116,24 +116,24 @@ class Breeze_Subs {
 	}
 
 	/* Relative dates  http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html */
-	public function Time_Elapsed($ptime)
+	public function TimeElapsed($ptime)
 	{
-		global $txt;
+		Breeze::Load('Settings');
 
-		loadLanguage('Breeze');
+		$text = Breeze_Settings::getInstance();
 
 		$etime = time() - $ptime;
 
 		if ($etime < 1)
-			return $txt['breeze_time_just_now'];
+			return $text->GetText('time_just_now');
 
 		$a = array(
-			12 * 30 * 24 * 60 * 60	=> $txt['breeze_time_year'],
-			30 * 24 * 60 * 60		=> $txt['breeze_time_month'],
-			24 * 60 * 60			=> $txt['breeze_time_day'],
-			60 * 60					=> $txt['breeze_time_hour'],
-			60						=> $txt['breeze_time_minute'],
-			1						=> $txt['breeze_time_second']
+			12 * 30 * 24 * 60 * 60	=> $text->GetText('time_year'),
+			30 * 24 * 60 * 60		=> $text->GetText('time_month'),
+			24 * 60 * 60			=> $text->GetText('time_day'),
+			60 * 60					=> $text->GetText('time_hour'),
+			60						=> $text->GetText('time_minute'),
+			1						=> $text->GetText('time_second')
 		);
 
 		foreach ($a as $secs => $str)
@@ -142,7 +142,7 @@ class Breeze_Subs {
 			if ($d >= 1)
 			{
 				$r = round($d);
-				return $r . ' ' . $str . ($r > 1 ? 's ' : '').$txt['breeze_time_ago'];
+				return $r . ' ' . $str . ($r > 1 ? 's ' : ''). $text->GetText('time_ago');
 			}
 		}
 	}

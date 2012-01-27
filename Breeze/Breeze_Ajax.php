@@ -47,7 +47,8 @@ abstract class Breeze_Ajax
 	{
 		/* Load stuff */
 		Breeze::Load(array(
-			'Globals'
+			'Globals',
+			'Query'
 		));
 		loadtemplate('BreezeAjax');
 
@@ -56,7 +57,7 @@ abstract class Breeze_Ajax
 
 		/* Load the query class */
 		self::$query = Breeze_Query::getInstance();
-		
+
 		/* Compare */
 		self::$compare = self::$query->GetStatus();
 
@@ -98,14 +99,20 @@ abstract class Breeze_Ajax
 		{
 			/* Build the params array for the query */
 			$params = array(
-				$data->See('owner_id'),
-				$data->See('poster_id'),
-				time(),
-				$data->See('content')
+				'owner_id' => $data->See('owner_id'),
+				'poster_id' => $data->See('poster_id'),
+				'time' => time(),
+				'body' => $data->See('content')
 			);
 
 			/* Store the status */
 			self::$query->InsertStatus($params);
+
+
+			/* Get the newly created status */
+			$new_status = self::$query->GetSingleStatus();
+
+			$params['id'] = $new_status['id'];
 
 			/* The status was added, build the server response */
 			$display = new Breeze_Display($params, 'status');
@@ -144,12 +151,12 @@ abstract class Breeze_Ajax
 		{
 			/* Build the params array for the query */
 			$params = array(
-				$data->See('status_id'),
-				$data->See('status_owner_id'),
-				$data->See('poster_comment_id'),
-				$data->See('profile_owner_id'),
-				time(),
-				$data->See('content')
+				'status_id' => $data->See('status_id'),
+				'status_owner_id' => $data->See('status_owner_id'),
+				'poster_comment_id' => $data->See('poster_comment_id'),
+				'profile_owner_id' => $data->See('profile_owner_id'),
+				'time' => time(),
+				'body' => $data->See('content')
 			);
 
 			/* Store the status */
