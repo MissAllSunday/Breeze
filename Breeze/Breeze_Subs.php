@@ -142,7 +142,7 @@ class Breeze_Subs
 			if ($d >= 1)
 			{
 				$r = round($d);
-				return $r . ' ' . $str . ($r > 1 ? 's ' : ''). $text->GetText('time_ago');
+				return $r . ' ' . $str . ($r > 1 ? 's ' : ' '). $text->GetText('time_ago');
 			}
 		}
 	}

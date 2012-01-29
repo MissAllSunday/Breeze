@@ -84,6 +84,15 @@ class Breeze_Globals
 			return false;
 	}
 
+	public function ValidateBody($var)
+	{
+		if (isset($this->request[$var]) && !empty($this->request[$var]))
+			return true;
+
+		else
+			return false;
+	}
+	
 	public function UnsetVar($var)
 	{
 		unset($this->request[$var]);

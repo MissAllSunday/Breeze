@@ -51,9 +51,9 @@
 					alert(breeze_empty_message);
 				}
 				/* Shhh! */
-				else if(test== 'about::breeze')
+				else if(test== 'about:breeze')
 				{
-					alert('People change. Feelings change. \n It doesn\'t mean that the love once shared wasn\'t true and real.\n It simply just means that sometimes when people grow, they grow apart...');
+					alert('Y es que tengo un corazón tán necio \n que no comprende que no entiende \n que le hace daño amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n y es que tengo un corazón tán necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace daño \n te sigue amando igual o mucho más que ayer \n mucho más que ayer... \n');
 				}
 				else
 				{

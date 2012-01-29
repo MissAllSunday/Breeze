@@ -88,15 +88,15 @@ class Breeze_User
 		/* Load all the status */
 		$status = $query->GetStatusByProfile($context['member']['id']);
 
-
 		/* Collect the IDs to build their profile's lightbox */
 		foreach($status as $s)
 		{
 			$users_to_load[] = $s['poster_id'];
 
 			/* Comments too */
-			foreach($s['comments'] as $c)
-				$users_to_load[] = $c['poster_id'];
+			if ($s['comments'])
+				foreach($s['comments'] as $c)
+					$users_to_load[] = $c['poster_id'];
 		}
 
 		/* Send the array to the template */
@@ -493,10 +493,6 @@ class Breeze_User
 		), !empty($data['enable_show_avatar']) ? true : false);
 
 		$form->AddSubmitButton('save');
-
-		echo '<pre>';
-		print_r($form);
-		echo'</pre>';
 
 		/* Send the form to the template */
 		$context['Breeze']['UserSettings']['Form'] = $form->Display();

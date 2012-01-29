@@ -39,7 +39,7 @@ function template_breeze_post()
 {
 	global  $context;
 	
-	switch ($context['breeze']['ok'])
+	switch ($context['Breeze']['ajax']['ok'])
 	{
 		case 'error':
 			echo 'error_';
@@ -47,14 +47,13 @@ function template_breeze_post()
 		case '':
 			echo 'error_';
 			break;
-		case 'deleted':
+		case 'qw':
 			echo 'deleted_';
 			break;
 		case 'ok':
-			echo $context['breeze']['post']['data'];
+			echo $context['Breeze']['ajax']['data'];
 			break;
 		default:
 			echo 'error_';
 	}
-
 }

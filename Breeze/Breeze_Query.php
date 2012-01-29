@@ -41,7 +41,7 @@ if (!defined('SMF'))
 class Breeze_Query
 {
 	private static $instance;
-	private $Main = array();
+	public $Main = array();
 	private $query = array();
 	private $data = array();
 	private $query_params = array('rows' =>'*');
@@ -94,7 +94,6 @@ class Breeze_Query
 	private function UnsetTemp()
 	{
 		unset($this->temp);
-		unset($this->r);
 	}
 
 	/*
@@ -145,35 +144,49 @@ class Breeze_Query
 				if ($c == $value)
 					$this->r = $c;
 
-		return $this->r;
-
 		$this->UnsetTemp();
+
+		return $this->r;
 	}
 
 	public function GetSingleStatus()
 	{
 		/* Get the value directly from the DB */
 		$this->query_params = array(
-			'rows' = 'id',
+			'rows' => 'status_id',
 			'order' => '{raw:sort}',
 			'limit' => '{int:limit}'
 		);
 
 		$this->query_data = array(
-			'sort' => 'id ASC',
+			'sort' => 'status_id DESC',
 			'limit' => 1
 		);
 		$this->Query('status')->Params($this->query_params, $this->query_data);
+		$this->Query('status')->GetData(null, true);
 
-		/* Done? then clean! */
-		$this->query_data = array();
-		$this->query_params['rows'] = '*';
-		unset($this->query_params['where']);
-		unset($this->query_params['order']);
-		unset($this->query_params['limit']);
+		/* Done? */
+		return $this->Query('status')->DataResult();
+	}
+	
+	public function GetSingleComment()
+	{
+		/* Get the value directly from the DB */
+		$this->query_params = array(
+			'rows' => 'comments_id',
+			'order' => '{raw:sort}',
+			'limit' => '{int:limit}'
+		);
 
-		return $this->Query('status')->GetData(null, true);
+		$this->query_data = array(
+			'sort' => 'comments_id DESC',
+			'limit' => 1
+		);
+		$this->Query('comments')->Params($this->query_params, $this->query_data);
+		$this->Query('comments')->GetData(null, true);
 
+		/* Done? */
+		return $this->Query('comments')->DataResult();
 	}
 
 	private function Query($var)
@@ -209,7 +222,7 @@ class Breeze_Query
 			$result = $smcFunc['db_query']('', '
 				SELECT s.status_id, s.status_owner_id, s.status_poster_id, s.status_time, s.status_body, c.comments_id, c.comments_status_id, c.comments_status_owner_id, c.comments_poster_id, c.comments_profile_owner_id, c.comments_time, c.comments_body
 				FROM {db_prefix}breeze_status as s
-				INNER JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
+				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
 				ORDER BY status_time DESC
 				',
 				array()
@@ -227,13 +240,18 @@ class Breeze_Query
 				);
 
 				/* Comments */
-				$this->Main[$row['status_id']]['comments'][$row['comments_id']] = array(
-					'id' => $row['comments_id'],
-					'poster_id' => $row['comments_poster_id'],
-					'owner_id' => $row['comments_profile_owner_id'],
-					'time' => $tools->TimeElapsed($row['comments_time']),
-					'body' => $parser->Display($row['comments_body'])
-				);
+				if ($row['comments_id'])
+				{
+					$this->Main[$row['status_id']]['comments'][$row['comments_id']] = array(
+						'id' => $row['comments_id'],
+						'poster_id' => $row['comments_poster_id'],
+						'owner_id' => $row['comments_profile_owner_id'],
+						'time' => $tools->TimeElapsed($row['comments_time']),
+						'body' => $parser->Display($row['comments_body'])
+					);
+				}
+				else
+					$this->Main[$row['status_id']]['comments'] = array();
 			}
 		}
 

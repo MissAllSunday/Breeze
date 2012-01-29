@@ -38,10 +38,16 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
+
+	/* Wrapper functions */
+	function WrapperBreeze_AjaxPost() { Breeze_Ajax::Post(); }
+	function WrapperBreeze_AjaxPostComment() { Breeze_Ajax::PostComment(); }
+	function WrapperBreeze_AjaxDelete() { Breeze_Ajax::Delete(); }
+
 abstract class Breeze_Ajax
 {
-	private static $query;
-	private static $compare;
+	public static $query;
+	public static $compare;
 
 	public static function Call()
 	{
@@ -62,14 +68,14 @@ abstract class Breeze_Ajax
 		self::$compare = self::$query->GetStatus();
 
 		$subActions = array(
-			'post' => self::Post(),
-			'postcomment' => self::PostComment(),
-			'delete' => self::Delete()
+			'post' => 'WrapperBreeze_AjaxPost',
+			'postcomment' => 'WrapperBreeze_AjaxPostComment',
+			'delete' => 'WrapperBreeze_AjaxDelete'
 		);
 
 		/* Does the subaction even exist? */
-		if ($sa->Validate('sa') && in_array($sa->Raw('sa'), array_keys($subActions)))
-			call_user_func($subActions[$sa->raw('sa')]);
+		if (in_array($sa->Raw('sa'), array_keys($subActions)))
+			$subActions[$sa->Raw('sa')]();
 
 		/* No?  then tell them there was an error... */
 		/* else */
@@ -77,7 +83,7 @@ abstract class Breeze_Ajax
 	}
 
 	/* Deal with the status... */
-	private static function Post()
+	public static function Post()
 	{
 		global $context;
 
@@ -94,8 +100,8 @@ abstract class Breeze_Ajax
 		/* Get the status data */
 		$data = new Breeze_Globals('post');
 
-		/* Do this only if the data is good */
-		if ($data->Validate('content'))
+		/* Do this only if there is something to add to the database */
+		if ($data->ValidateBody('content'))
 		{
 			/* Build the params array for the query */
 			$params = array(
@@ -108,11 +114,10 @@ abstract class Breeze_Ajax
 			/* Store the status */
 			self::$query->InsertStatus($params);
 
-
-			/* Get the newly created status */
+			/* Get the newly created status, we just need the id */
 			$new_status = self::$query->GetSingleStatus();
 
-			$params['id'] = $new_status['id'];
+			$params['id'] = $new_status['status_id'];
 
 			/* The status was added, build the server response */
 			$display = new Breeze_Display($params, 'status');
@@ -130,7 +135,7 @@ abstract class Breeze_Ajax
 	}
 
 	/* Basically the same as Post */
-	private function PostComment()
+	public static function PostComment()
 	{
 		global $context;
 
@@ -147,20 +152,25 @@ abstract class Breeze_Ajax
 		$data = new Breeze_Globals('post');
 
 		/* The status do exists */
-		if (in_array($data->See('status_id'), self::$compare) && $data->Validate('content'))
+		if ($data->ValidateBody('content'))
 		{
 			/* Build the params array for the query */
 			$params = array(
 				'status_id' => $data->See('status_id'),
 				'status_owner_id' => $data->See('status_owner_id'),
-				'poster_comment_id' => $data->See('poster_comment_id'),
+				'poster_id' => $data->See('poster_comment_id'),
 				'profile_owner_id' => $data->See('profile_owner_id'),
 				'time' => time(),
 				'body' => $data->See('content')
 			);
 
-			/* Store the status */
+			/* Store the comment */
 			self::$query->InsertComment($params);
+
+			/* Once the comment was added, get it's ID form the DB */
+			$new_comment = self::$query->GetSingleComment();
+
+			$params['id'] = $new_comment['comments_id'];
 
 			/* The comment was added, build the server response */
 			$display = new Breeze_Display($params, 'comment');
@@ -170,12 +180,15 @@ abstract class Breeze_Ajax
 			$context['Breeze']['ajax']['data'] =  $display->HTML();
 		}
 
+		else
+			$context['Breeze']['ajax']['ok'] = 'error';
+
 			$context['template_layers'] = array();
 			$context['sub_template'] = 'breeze_post';
 	}
 
 	/* Handles the deletion of both comments an status */
-	private function Delete()
+	public static function Delete()
 	{
 		global $context;
 
@@ -186,7 +199,9 @@ abstract class Breeze_Ajax
 		$sa = new Breeze_Globals('post');
 
 		/* The status do exists */
-		if (in_array($sa->See('id'), self::$compare))
+		$eee = 1;
+
+		if ($eee == 1)
 		{
 			switch ($sa->See('type'))
 			{

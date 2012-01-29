@@ -42,7 +42,7 @@ class Breeze_Display
 {
 	private $ReturnArray;
 	private $params;
-	private $user_info;
+	private $UserInfo;
 	private $tools;
 	private $parse;
 	private $type;
@@ -69,9 +69,9 @@ class Breeze_Display
 
 	public function HTML()
 	{
-		global $scripturl;
+		global $scripturl, $user_info;
 
-		$this->user_info = Breeze_UserInfo::Profile($this->params['poster_id'], true);
+		$this->UserInfo = Breeze_UserInfo::Profile($this->params['poster_id'], true);
 
 		$this->params['body'] = $this->parse->Display($this->params['body']);
 		$this->params['time'] = $this->tools->TimeElapsed($this->params['time']);
@@ -79,12 +79,12 @@ class Breeze_Display
 		switch ($this->type)
 		{
 			case 'status':
-				$this->ReturnArray .= '
+				$this->ReturnArray = '
 		<li class="windowbg" id ="status_id_'. $this->params['id'] .'">
 			<span class="topslice"><span></span></span>
 				<div class="breeze_user_inner">
 					<div class="breeze_user_status_avatar">
-						'. $this->user_info .'
+						'. $this->UserInfo .'
 					</div>
 					<div class="breeze_user_status_comment">
 						'. $this->params['body'] .'
@@ -101,9 +101,9 @@ class Breeze_Display
 							<li><form action="'. $scripturl. '?action=breezeajax;sa=postcomment" method="post" name="formID_'. $this->params['id'] .'" id="formID_'. $this->params['id'] .'">
 								<textarea id="textboxcontent_'. $this->params['id'] .'" cols="40" rows="2"></textarea>
 								<input type="hidden" value="'. $this->params['poster_id'] .'" name="status_owner_id'. $this->params['id'] .'" id="status_owner_id'. $this->params['id'] .'" />
-								<input type="hidden" value="'.$context['member']['id'] .'" name="profile_owner_id'. $this->params['id'] .'" id="profile_owner_id'. $this->params['id'] .'" />
+								<input type="hidden" value="'. $this->params['owner_id'] .'" name="profile_owner_id'. $this->params['id'] .'" id="profile_owner_id'. $this->params['id'] .'" />
 								<input type="hidden" value="'. $this->params['id'] .'" name="status_id'. $this->params['id'] .'" id="status_id'. $this->params['id'] .'" />
-								<input type="hidden" value="'.$user_info['id'] .'" name="poster_comment_id'. $this->params['id'] .'" id="poster_comment_id'. $this->params['id'] .'" /><br />
+								<input type="hidden" value="'. $user_info['id'] .'" name="poster_comment_id'. $this->params['id'] .'" id="poster_comment_id'. $this->params['id'] .'" /><br />
 								<input type="submit" value="Comment" class="comment_submit" id="'. $this->params['id'] .'" />
 							</form></li>';
 				break;
@@ -111,12 +111,12 @@ class Breeze_Display
 				$this->ReturnArray = '
 					<li class="description" id ="comment_id_'. $this->params['id'] .'">
 						<div class="breeze_user_comment_avatar">
-							'. $this->user_info .'<br />
+							'. $this->UserInfo .'<br />
 						</div>
 						<div class="breeze_user_comment_comment">
 							'. $this->params['body'] .'
 							<div class="breeze_options">
-								<span class="time_elapsed">'. $this->time->Time_Elapsed($data['time']).'</span> | <a href="javascript:void(0)" id="'. $this->params['id'] .'" class="breeze_delete_comment">Delete</a>
+								<span class="time_elapsed">'. $this->params['time'] .'</span> | <a href="javascript:void(0)" id="'. $this->params['id'] .'" class="breeze_delete_comment">Delete</a>
 							</div>
 						</div>
 						<div class="clear"></div>

@@ -169,7 +169,7 @@ function template_user_wall()
 		/* Modules */
 		echo'<div class="breeze_modules">';
 
-		$counter = 0;
+/* 		$counter = 0;
 
 		foreach($context['Breeze']['Modules'] as $m)
 		{
@@ -197,7 +197,7 @@ function template_user_wall()
 					<span class="botslice"><span></span></span>
 				</div>';
 
-		}
+		} */
 
 		/* Modules end */
 		echo '</div></div>';
@@ -250,7 +250,8 @@ function template_user_wall()
 					echo '<ul class="breeze_comments_list">';
 
 						/* Print out the comments */
-						foreach($status['comments'] as $comment)
+						if ($status['comments'])
+							foreach($status['comments'] as $comment)
 								echo '<li class="description" id ="comment_id_',$comment['id'],'">
 											<div class="breeze_user_comment_avatar">
 												',$context['Breeze']['user_info'][$comment['poster_id']],'<br />
