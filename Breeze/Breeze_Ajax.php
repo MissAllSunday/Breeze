@@ -53,8 +53,9 @@ abstract class Breeze_Ajax
 	{
 		/* Load stuff */
 		Breeze::Load(array(
-			'Globals',
-			'Query'
+			'Query',
+			'Display',
+			'Globals'
 		));
 		loadtemplate('BreezeAjax');
 
@@ -63,9 +64,6 @@ abstract class Breeze_Ajax
 
 		/* Load the query class */
 		self::$query = Breeze_Query::getInstance();
-
-		/* Compare */
-		self::$compare = self::$query->GetStatus();
 
 		$subActions = array(
 			'post' => 'WrapperBreeze_AjaxPost',
@@ -86,12 +84,6 @@ abstract class Breeze_Ajax
 	public static function Post()
 	{
 		global $context;
-
-		Breeze::Load(array(
-			'Query',
-			'Display',
-			'Globals'
-		));
 
 		/* Set some values */
 		$context['Breeze']['ajax']['ok'] = '';
@@ -139,12 +131,6 @@ abstract class Breeze_Ajax
 	{
 		global $context;
 
-		Breeze::Load(array(
-			'Query',
-			'Display',
-			'Globals'
-		));
-
 		/* By default it will show an error, we only do stuff if necesary */
 		$context['Breeze']['ajax']['ok'] = '';
 
@@ -152,7 +138,7 @@ abstract class Breeze_Ajax
 		$data = new Breeze_Globals('post');
 
 		/* The status do exists */
-		if ($data->ValidateBody('content'))
+		if ($data->ValidateBody('content') && in_array($data->Raw('status_id'), array_keys(self::$query->GetStatus())))
 		{
 			/* Build the params array for the query */
 			$params = array(
@@ -198,11 +184,6 @@ abstract class Breeze_Ajax
 		/* Get the data */
 		$sa = new Breeze_Globals('post');
 
-		/* The status do exists */
-		$eee = 1;
-
-		if ($eee == 1)
-		{
 			switch ($sa->See('type'))
 			{
 				case 'status':
@@ -215,11 +196,8 @@ abstract class Breeze_Ajax
 
 			/* Send the data to the template */
 			$context['Breeze']['ajax']['ok'] = 'ok';
-		}
 
-		/* This comment/status was deleted already, let's tell the user about it. */
-		else
-			$context['Breeze']['ajax']['ok'] = 'deleted';
+
 
 		$context['template_layers'] = array();
 		$context['sub_template'] = 'breeze_post';

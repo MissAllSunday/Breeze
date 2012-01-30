@@ -88,6 +88,11 @@ class Breeze_User
 		/* Load all the status */
 		$status = $query->GetStatusByProfile($context['member']['id']);
 
+
+		echo '<pre>';
+		print_r($query);
+		echo '</pre>';
+
 		/* Collect the IDs to build their profile's lightbox */
 		foreach($status as $s)
 		{

@@ -55,13 +55,13 @@ class Breeze_Parser
 		$temp = Breeze_Subs::Remove($temp, array('__construct', 'Display'), false);
 
 		foreach ($temp as $t)
-			$this->s = self::$t($this->s);
+			$this->s = $this->$t($this->s);
 
 		return $this->s;
 	}
 
 	/* Convert any valid urls on to links*/
-	private static function UrltoLink($s)
+	private function UrltoLink($s)
 	{
 		/* regex "Borrowed" from Sources/Subs.php:parse_bbc() */
 		$url_regex = '~(?<=[\s>\.(;\'"]|^)((?:http|https)://[\w\-_%@:|]+(?:\.[\w\-_%]+)*(?::\d+)?(?:/[\w\-_\~%\.@!,\?&;=#(){}+:\'\\\\]*)*[/\w\-_\~%@\?;=#}\\\\])~i';

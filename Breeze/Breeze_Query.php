@@ -41,7 +41,8 @@ if (!defined('SMF'))
 class Breeze_Query
 {
 	private static $instance;
-	public $Main = array();
+	protected $Status = array();
+	protected $Comments = array();
 	private $query = array();
 	private $data = array();
 	private $query_params = array('rows' =>'*');
@@ -91,9 +92,26 @@ class Breeze_Query
 			cache_put_data('Breeze:'. $t, '');
 	}
 
-	private function UnsetTemp()
+	/*
+	 * Set the temp array back to null
+	 *
+	 * @access private
+	 * @return void
+	 */
+	private function ResetTemp()
 	{
-		unset($this->temp);
+		$this->temp = array();
+	}
+
+	/*
+	 * Set the return array back to null
+	 *
+	 * @access private
+	 * @return void
+	 */
+	private function ResetReturn()
+	{
+		$this->r = array();
 	}
 
 	/*
@@ -105,13 +123,13 @@ class Breeze_Query
 	 * @param int $value The value to compare to
 	 * @return array an associative array
 	 */
-	private function GetReturn($row, $value)
+	private function GetReturn($type, $row, $value)
 	{
 		/* Get the data */
-		$this->temp = $this->Main();
+		$this->SwitchData($type);
 
 		/* Needs to be empty by default */
-		$this->r = array();
+		$this->ResetReturn();
 
 		/* Do this only if there is something to work with */
 		if ($this->temp)
@@ -122,34 +140,76 @@ class Breeze_Query
 					$this->r[] = $t;
 		}
 
-		/* Clean */
-		$this->UnsetTemp();
+		/* Clean the Temp array */
+		$this->ResetTemp();
 
 		/* Return the info we want as we want it */
 		return $this->r;
 	}
 
+	/*
+	 * Set the temp array with the correct data acording to the type specified
+	 *
+	 * This make it easy to add more types if we ever need more types.
+	 * @param string the data type
+	 * @access private
+	 * @return void
+	 */
+	private function SwitchData($type)
+	{
+		switch ($type)
+		{
+			case 'status':
+				$this->temp = $this->Status();
+				break;
+			case 'comments':
+				$this->temp = $this->Comments();
+				break;
+			case 'likes':
+				$this->temp = $this->Likes();
+				break;
+			case 'logs':
+				$this->temp = $this->Logs();
+				break;
+		}
+	}
+
+	/*
+	 * Get a single value from an specified array.
+	 *
+	 * Needs a type, a row and a value, this iterates X array looking for X value in X row. This is a generic method used by other more specific methods
+	 * @param string $type the data type
+	 * @param mixed $value  Most of the cases will be a int.
+	 * @access private
+	 * @return array an array with the requested data
+	 */
 	private function GetSingleValue($type, $value)
 	{
+		/* Cleaning */
+		$this->ResetTemp();
+		$this->ResetReturn();
+
 		/* Get the data */
-		$this->temp = $this->Main();
+		$this->SwitchData($type);
 
-		if ($type == 'status')
-			foreach($this->temp as $s)
-				if ($s == $value)
-					$this->r = $s;
+		foreach($this->temp as $t)
+			if ($t == $value)
+				$this->r = $t;
 
-		elseif ($type == 'comment')
-			foreach($this->temp as $c)
-				if ($c == $value)
-					$this->r = $c;
-
-		$this->UnsetTemp();
+		/* Cleaning */
+		$this->ResetTemp();
 
 		return $this->r;
 	}
 
-	public function GetSingleStatus()
+	/*
+	 * Queries the DB directly to get the last status added.
+	 *
+	 * It is not reliable to use the cache array for this one so let's do a query here. We will only fetch the ID because that is the only thing we want. Mostly used for the server response in class Breeze_Ajax.
+	 * @access public
+	 * @return array An array with the last status ID.
+	 */
+	public function GetLastStatus()
 	{
 		/* Get the value directly from the DB */
 		$this->query_params = array(
@@ -168,7 +228,14 @@ class Breeze_Query
 		/* Done? */
 		return $this->Query('status')->DataResult();
 	}
-	
+
+	/*
+	 * Queries the DB directly to get the last comment added.
+	 *
+	 * Basically the same as the method above, query the DB to get the last comment added, ID only. Mostly used for the server response in class Breeze_Ajax.
+	 * @access public
+	 * @return array An array with the last status ID.
+	 */
 	public function GetSingleComment()
 	{
 		/* Get the value directly from the DB */
@@ -189,23 +256,28 @@ class Breeze_Query
 		return $this->Query('comments')->DataResult();
 	}
 
+	/*
+	 * Decorates the way we call a query. Oh! and calls the right table.
+	 *
+	 * This is one of the main queries. load all the status from all users.
+	 * @access private
+	 * @return array an array with the right query call.
+	 */
 	private function Query($var)
 	{
 		return $this->query[$var];
 	}
 
 	/*
-	 * The main method
+	 * The main method to load all the status
 	 *
-	 * This is the center of breeze, everything in breeze world spins around this method; scary, I know...
-	 * @access private
+	 * This is one of the main queries. load all the status from all users.
+	 * @access protected
 	 * @global $smcFunc the "handling DB stuff" var of SMF
-	 * @return array a very big associative array with the ststus ID as key
+	 * @return array a very big associative array with the status ID as key
 	 */
-	private function Main()
+	protected function Status()
 	{
-		global $smcFunc;
-
 		Breeze::Load(array(
 			'Subs',
 			'UserInfo',
@@ -214,15 +286,15 @@ class Breeze_Query
 
 		$tools = new Breeze_Subs();
 		$parser = new Breeze_Parser();
+		$this->Status = array();
 
 		/* Use the cache please... */
-		if (($this->Main = cache_get_data('Breeze:Main', 120)) == null)
+		if (($this->GetStatus = cache_get_data('Breeze:GetStatus', 120)) == null)
 		{
-			/* Breeze DB class isn't capable of handling this yet... */
+			/* Load all the status, set a limit if things get complicated */
 			$result = $smcFunc['db_query']('', '
-				SELECT s.status_id, s.status_owner_id, s.status_poster_id, s.status_time, s.status_body, c.comments_id, c.comments_status_id, c.comments_status_owner_id, c.comments_poster_id, c.comments_profile_owner_id, c.comments_time, c.comments_body
-				FROM {db_prefix}breeze_status as s
-				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
+				SELECT *
+				FROM {db_prefix}breeze_status
 				ORDER BY status_time DESC
 				',
 				array()
@@ -231,41 +303,99 @@ class Breeze_Query
 			/* Populate the array like a boss! */
 			while ($row = $smcFunc['db_fetch_assoc']($result))
 			{
-				$this->Main[$row['status_id']] = array(
+				$this->Status[$row['status_id']] = array(
 					'id' => $row['status_id'],
 					'owner_id' => $row['status_owner_id'],
 					'poster_id' => $row['status_poster_id'],
 					'time' => $tools->TimeElapsed($row['status_time']),
 					'body' => $parser->Display($row['status_body'])
 				);
-
-				/* Comments */
-				if ($row['comments_id'])
-				{
-					$this->Main[$row['status_id']]['comments'][$row['comments_id']] = array(
-						'id' => $row['comments_id'],
-						'poster_id' => $row['comments_poster_id'],
-						'owner_id' => $row['comments_profile_owner_id'],
-						'time' => $tools->TimeElapsed($row['comments_time']),
-						'body' => $parser->Display($row['comments_body'])
-					);
-				}
-				else
-					$this->Main[$row['status_id']]['comments'] = array();
 			}
+
+			/* Cache this beauty */
+			cache_put_data('Breeze:GetStatus', $this->Status, 120);
 		}
 
-		return $this->Main;
+		return $this->Status;
 	}
 
+	public function GetStatus()
+	{
+		return $this->Status;
+	}
+
+	/*
+	 * Get all status made in X profile page
+	 *
+	 * Uses the generic class GetReturn.
+	 * @see GetReturn()
+	 * @access protected
+	 * @global $smcFunc the "handling DB stuff" var of SMF
+	 * @return array a very big associative array with the status ID as key
+	 */
 	public function GetStatusByProfile($id)
 	{
 		return $this->GetReturn('owner_id', $id);
 	}
 
-	public function GetStatus()
+	/* Methods for comments */
+
+	/*
+	 * The main method to load all the comments
+	 *
+	 * This is one of the main queries, load all the commments form all users.
+	 * @access protected
+	 * @global $smcFunc the "handling DB stuff" var of SMF
+	 * @return array a very big associative array with the comment ID as key
+	 */
+	protected function Comments()
 	{
-		return $this->Main();
+		Breeze::Load(array(
+			'Subs',
+			'UserInfo',
+			'Parser',
+		));
+
+		$tools = new Breeze_Subs();
+		$parser = new Breeze_Parser();
+		$this->Comments = array();
+
+		/* Use the cache please... */
+		if (($this->GetStatus = cache_get_data('Breeze:GetComments', 120)) == null)
+		{
+			/* Load all the comments, set a limit if things get complicated */
+			$result = $smcFunc['db_query']('', '
+				SELECT *
+				FROM {db_prefix}breeze_comments
+				ORDER BY comments_time DESC
+				',
+				array()
+			);
+
+			/* Populate the array like a comments boss! */
+			while ($row = $smcFunc['db_fetch_assoc']($result))
+			{
+				$this->Comments[$row['comments_id']] = array(
+					'id' => $row['comments_id'],
+					'status_id' => $row['comments_status_id'],
+					'status_owner_id' => $row['comments_status_owner_id'],
+					'poster_id' => $row['comments_poster_id'],
+					'profile_owner_id' => $row['comments_profile_owner_id'],
+					'time' => $tools->TimeElapsed($row['comments_time']),
+					'body' => $parser->Display($row['comments_body'])
+				);
+			}
+
+			/* Cache this beauty */
+			cache_put_data('Breeze:GetComments', $this->Comments, 120);
+		}
+
+		return $this->Comments;
+	}
+
+	public function GetComments()
+	{
+		return $this->Comments;
 	}
 
 	public function InsertStatus($array)
