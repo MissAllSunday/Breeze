@@ -88,20 +88,21 @@ class Breeze_User
 		/* Load all the status */
 		$status = $query->GetStatusByProfile($context['member']['id']);
 
-
-		echo '<pre>';
-		print_r($query);
-		echo '</pre>';
-
-		/* Collect the IDs to build their profile's lightbox */
-		foreach($status as $s)
+		/* Collect the IDs to build their profile's lightbox and also load the comments */
+		foreach($status as $k => $s)
 		{
 			$users_to_load[] = $s['poster_id'];
 
-			/* Comments too */
-			if ($s['comments'])
-				foreach($s['comments'] as $c)
+			/* Load the comments for each status */
+			$status[$k]['comments'] = $query->GetCommentsByStatus($s['id']);
+
+			/* Get the user id from the comments */
+			if ($status[$k]['comments'])
+				foreach($status[$k]['comments'] as $c)
 					$users_to_load[] = $c['poster_id'];
+
+			else
+				$status[$k]['comments'] = array();
 		}
 
 		/* Send the array to the template */

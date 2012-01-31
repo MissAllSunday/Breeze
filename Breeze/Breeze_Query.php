@@ -58,9 +58,10 @@ class Breeze_Query
 		$this->query = array(
 			'status' => new Breeze_DB('breeze_status'),
 			'comments' => new Breeze_DB('breeze_comments'),
-			'user_settings' => new Breeze_DB('breeze_user_settings'),
-			'user_settings_modules' => new Breeze_DB('breeze_user_settings_modules'),
-			'visit_log' => new Breeze_DB('breeze_visit_log')
+			'settings' => new Breeze_DB('breeze_user_settings'),
+			'modules' => new Breeze_DB('breeze_user_settings_modules'),
+			'logs' => new Breeze_DB('breeze_visit_log'),
+			'likes' => new Breeze_DB('breeze_likes')
 		);
 	}
 
@@ -125,6 +126,10 @@ class Breeze_Query
 	 */
 	private function GetReturn($type, $row, $value)
 	{
+		/* Cleaning */
+		$this->ResetTemp();
+		$this->ResetReturn();
+
 		/* Get the data */
 		$this->SwitchData($type);
 
@@ -177,27 +182,20 @@ class Breeze_Query
 	/*
 	 * Get a single value from an specified array.
 	 *
-	 * Needs a type, a row and a value, this iterates X array looking for X value in X row. This is a generic method used by other more specific methods
+	 * Needs a type, a row and a value, this iterates X array looking for X value in X row. Yes, this can be used to fetch more than I value if you really want to fetch more than 1 value.
 	 * @param string $type the data type
-	 * @param mixed $value  Most of the cases will be a int.
+	 * @param string $row the row where thoe fetch the value from, should be the actual row name.
+	 * @param mixed $value  Most of the cases will be a int. the int is actually the ID of the particular value you are trying to fetch.
 	 * @access private
 	 * @return array an array with the requested data
 	 */
-	private function GetSingleValue($type, $value)
+	private function GetSingleValue($type, $row, $value)
 	{
 		/* Cleaning */
 		$this->ResetTemp();
 		$this->ResetReturn();
 
-		/* Get the data */
-		$this->SwitchData($type);
-
-		foreach($this->temp as $t)
-			if ($t == $value)
-				$this->r = $t;
-
-		/* Cleaning */
-		$this->ResetTemp();
+		return $this->GetReturn($type, $row, $id);
 
 		return $this->r;
 	}
@@ -225,6 +223,10 @@ class Breeze_Query
 		$this->Query('status')->Params($this->query_params, $this->query_data);
 		$this->Query('status')->GetData(null, true);
 
+		/* Clean the arrays used here, we may need them for something else */
+		$this->query_params = array();
+		$this->query_data = array();
+
 		/* Done? */
 		return $this->Query('status')->DataResult();
 	}
@@ -236,7 +238,7 @@ class Breeze_Query
 	 * @access public
 	 * @return array An array with the last status ID.
 	 */
-	public function GetSingleComment()
+	public function GetLastComment()
 	{
 		/* Get the value directly from the DB */
 		$this->query_params = array(
@@ -278,6 +280,8 @@ class Breeze_Query
 	 */
 	protected function Status()
 	{
+		global $smcFunc;
+
 		Breeze::Load(array(
 			'Subs',
 			'UserInfo',
@@ -286,10 +290,9 @@ class Breeze_Query
 
 		$tools = new Breeze_Subs();
 		$parser = new Breeze_Parser();
-		$this->Status = array();
 
 		/* Use the cache please... */
-		if (($this->GetStatus = cache_get_data('Breeze:GetStatus', 120)) == null)
+		if (($this->GetStatus = cache_get_data('Breeze:Status', 120)) == null)
 		{
 			/* Load all the status, set a limit if things get complicated */
 			$result = $smcFunc['db_query']('', '
@@ -313,7 +316,7 @@ class Breeze_Query
 			}
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:GetStatus', $this->Status, 120);
+			cache_put_data('Breeze:Status', $this->Status, 120);
 		}
 
 		return $this->Status;
@@ -329,14 +332,43 @@ class Breeze_Query
 	 *
 	 * Uses the generic class GetReturn.
 	 * @see GetReturn()
-	 * @access protected
-	 * @global $smcFunc the "handling DB stuff" var of SMF
-	 * @return array a very big associative array with the status ID as key
+	 * @param int $id the ID of the user that owns the profile page, it does not matter who made that status as long as the status was made in X profile page.
+	 * @access public
+	 * @return array an array containing all the status made in X profile page
 	 */
 	public function GetStatusByProfile($id)
 	{
-		return $this->GetReturn('owner_id', $id);
+		return $this->GetReturn('status', 'owner_id', $id);
 	}
+
+	/*
+	 * Get a single status based on the ID
+	 *
+	 * This should return just one value, if it returns more, then we have a bug somewhere or you didn't provide a valid ID
+	 * @see GetReturn()
+	 * @param int $id the ID of status you want to fetch.
+	 * @access public
+	 * @return array an array containing all the status made in X profile page
+	 */
+	public function GetStatusByID($id)
+	{
+		return $this->GetReturn('status', 'status_id', $id);
+	}
+
+	/*
+	 * Get all status made by X user.
+	 *
+	 * This returns all the status made by x user, it does not matter on what profile page they were made.
+	 * @see GetReturn()
+	 * @param int $id the ID of the user that you want to fetch the status from.
+	 * @access public
+	 * @return array an array containing all the status made in X profile page
+	 */
+	public function GetStatusByUser($id)
+	{
+		return $this->GetReturn('status', 'status_id', $id);
+	}
+
 
 	/* Methods for comments */
 
@@ -350,6 +382,8 @@ class Breeze_Query
 	 */
 	protected function Comments()
 	{
+		global $smcFunc;
+
 		Breeze::Load(array(
 			'Subs',
 			'UserInfo',
@@ -358,10 +392,9 @@ class Breeze_Query
 
 		$tools = new Breeze_Subs();
 		$parser = new Breeze_Parser();
-		$this->Comments = array();
 
 		/* Use the cache please... */
-		if (($this->GetStatus = cache_get_data('Breeze:GetComments', 120)) == null)
+		if (($this->Comments = cache_get_data('Breeze:Comments', 120)) == null)
 		{
 			/* Load all the comments, set a limit if things get complicated */
 			$result = $smcFunc['db_query']('', '
@@ -387,21 +420,47 @@ class Breeze_Query
 			}
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:GetComments', $this->Comments, 120);
+			cache_put_data('Breeze:Comments', $this->Comments, 120);
 		}
 
 		return $this->Comments;
 	}
 
+	/*
+	 * Returns all comments in the comments array
+	 *
+	 * @access public
+	 * @return array an array containing all comments. ID as the key.
+	 */
 	public function GetComments()
 	{
 		return $this->Comments;
 	}
 
+	/*
+	 * Get all comments made in X profile page
+	 *
+	 * Uses the generic class GetReturn.
+	 * @see GetReturn()
+	 * @access public
+	 * @return array an array containing all comments made in X profile page
+	 */
+	public function GetCommentsByProfile($id)
+	{
+		return $this->GetReturn('comments', 'profile_owner_id', $id);
+	}
+
+	public function GetCommentsByStatus($id)
+	{
+		return $this->GetReturn('comments', 'status_id', $id);
+	}
+
+	/* Editing methods */
+
 	public function InsertStatus($array)
 	{
 		/* We dont need this anymore */
-		$this->KillCache('Main');
+		$this->KillCache('Status');
 
 		/* Insert! */
 		$data = array(
@@ -421,7 +480,7 @@ class Breeze_Query
 	public function InsertComment($array)
 	{
 		/* We dont need this anymore */
-		$this->KillCache('Main');
+		$this->KillCache('Comments');
 
 		/* Insert! */
 		$data = array(
@@ -443,7 +502,7 @@ class Breeze_Query
 	public function DeleteStatus($id)
 	{
 		/* We dont need this anymore */
-		$this->KillCache('Main');
+		$this->KillCache('Status');
 
 		/* Delete! */
 		$paramsc = array(
