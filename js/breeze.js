@@ -37,13 +37,13 @@
 /* The status stuff goes right here... */
 	$(document).ready(function()
 	{
-		$('.status_button').livequery(function()
+		jQuery('.status_button').livequery(function()
 		{
 			$(this).click(function()
 			{
-				var test = $('#content').val();
-				var ownerID = $('#owner_id').val();
-				var posterID = $('#poster_id').val();
+				var test = jQuery('#content').val();
+				var ownerID = jQuery('#owner_id').val();
+				var posterID = jQuery('#poster_id').val();
 				var loadImage = '<img src="' + smf_images_url + '/breeze/loading.gif" /> <span class="loading">' + ajax_notification_text + '</span>';
 
 				if(test=='')
@@ -57,8 +57,8 @@
 				}
 				else
 				{
-					$('#breeze_load_image').show();
-					$('#breeze_load_image').fadeIn(400).html(loadImage);
+					jQuery('#breeze_load_image').show("slow");
+					jQuery('#breeze_load_image').fadeIn(400).html(loadImage);
 
 					$.ajax(
 					{
@@ -77,14 +77,14 @@
 									autoClose: true,
 									duration: 3
 								});
-								$('#breeze_load_image').hide('slow');
+								jQuery('#breeze_load_image').hide('slow');
 							}
 							else
 							{
-								$('#breeze_display_status').after(html);
+								jQuery('#breeze_display_status').after(html);
 								document.getElementById('content').value='';
 								document.getElementById('content').focus();
-								$('#breeze_load_image').hide('slow');
+								jQuery('#breeze_load_image').hide('slow');
 								showNotification({
 									message: breeze_success_message,
 									type: 'success',
@@ -103,7 +103,7 @@
 								autoClose: true,
 								duration: 3
 							});
-							$('#breeze_load_image').hide('slow');
+							jQuery('#breeze_load_image').hide('slow');
 						},
 					});
 				}
@@ -115,18 +115,18 @@
 /* Handle the comments */
 	$(document).ready(function()
 	{
-		$('.comment_submit').livequery(function()
+		jQuery('.comment_submit').livequery(function()
 		{
 			$(this).click(function()
 			{
 				var element = $(this);
 				var Id = element.attr('id');
-				var commentBox = $('#textboxcontent_'+Id).val();
+				var commentBox = jQuery('#textboxcontent_'+Id).val();
 				var loadcommentImage = '<img src="' + smf_images_url + '/breeze/loading.gif" /> <span class="loading">' + ajax_notification_text + '</span>';
-				var status_owner_id = $('#status_owner_id'+Id).val();
-				var poster_comment_id = $('#poster_comment_id'+Id).val();
-				var profile_owner_id = $('#profile_owner_id'+Id).val();
-				var status_id = $('#status_id'+Id).val();
+				var status_owner_id = jQuery('#status_owner_id'+Id).val();
+				var poster_comment_id = jQuery('#poster_comment_id'+Id).val();
+				var profile_owner_id = jQuery('#profile_owner_id'+Id).val();
+				var status_id = jQuery('#status_id'+Id).val();
 
 				if(commentBox=='')
 				{
@@ -134,8 +134,7 @@
 				}
 				else
 				{
-					$('#comment_flash_'+Id).show();
-					$('#comment_flash_'+Id).fadeIn(400).html(loadcommentImage);
+					jQuery('#comment_flash_'+Id).show("slow");
 					$.ajax(
 					{
 						type: 'POST',
@@ -153,14 +152,13 @@
 									autoClose: true,
 									duration: 3
 								});
-								$('#comment_flash_'+Id).hide('slow');
 							}
 							else
 							{
-								$('#comment_loadplace_'+Id).append(html);
+								jQuery('#comment_loadplace_'+Id).append(html);
+								jQuery('#comment_loadplace_'+Id).delay(100).fadeIn('slow');
 								document.getElementById('textboxcontent_'+Id).value='';
 								document.getElementById('textboxcontent_'+Id).focus();
-								$('#comment_flash_'+Id).hide('slow');
 								showNotification({
 									message: breeze_success_message,
 									type: 'success',
@@ -178,7 +176,7 @@
 								autoClose: true,
 								duration: 3
 							});
-							$('#comment_flash_'+Id).hide('slow');
+							jQuery('#comment_flash_'+Id).hide('slow');
 						},
 					});
 				}
@@ -190,7 +188,7 @@
 	/* Delete a comment */
 	$(document).ready(function()
 	{
-		$('.breeze_delete_comment').livequery(function()
+		jQuery('.breeze_delete_comment').livequery(function()
 		{
 			$(this).click(function()
 			{
@@ -228,7 +226,7 @@
 							}
 							else
 							{
-								$('#comment_id_'+I).hide('slow');
+								jQuery('#comment_id_'+I).hide('slow');
 								showNotification({
 									message: breeze_success_delete,
 									type: 'success',
@@ -246,7 +244,7 @@
 								autoClose: true,
 								duration: 3
 							});
-							$('#comment_id_'+I).hide('slow');
+							jQuery('#comment_id_'+I).hide('slow');
 						},
 					});
 				return false;
@@ -254,7 +252,7 @@
 		});
 
 		// The confirmation message
-		$('.breeze_delete_comment').livequery(function()
+		jQuery('.breeze_delete_comment').livequery(function()
 		{
 			$(this).confirm(
 			{
@@ -271,7 +269,7 @@
 
 		var b_c = C_C('PGRpdiBzdHlsZT0idGV4dC1hbGlnbjogY2VudGVyOyIgY2xhc3M9InNtYWxsdGV4dCI+QnJlZXplICZjb3B5OyAyMDExLCA8YSBocmVmPSJodHRwOi8vbWlzc2FsbHN1bmRheS5jb20iIHRpdGxlPSJGcmVlIFNNRiBtb2RzIiB0YXJnZXQ9ImJsYW5rIj5TdWtpPC9hPjwvZGl2Pg==');
 
-		$('#admin_content').append(b_c);
+		jQuery('#admin_content').append(b_c);
 	});
 
 	/* Toggle the comment box */
@@ -292,7 +290,7 @@
 	/* Delete a status */
 	$(document).ready(function()
 	{
-		$('.breeze_delete_status').livequery(function()
+		jQuery('.breeze_delete_status').livequery(function()
 		{
 			$(this).click(function()
 			{
@@ -320,7 +318,7 @@
 							}
 							else
 							{
-								$('#status_id_'+I).hide('slow');
+								jQuery('#status_id_'+I).hide('slow');
 								showNotification({
 									message: breeze_success_delete,
 									type: 'success',
@@ -338,7 +336,7 @@
 								autoClose: true,
 								duration: 3
 							});
-							$('#status_id_'+I).hide('slow');
+							jQuery('#status_id_'+I).hide('slow');
 						},
 					});
 				return false;
@@ -346,7 +344,7 @@
 		});
 
 		// The confirmation message
-		$('.breeze_delete_status').livequery(function()
+		jQuery('.breeze_delete_status').livequery(function()
 		{
 			$(this).confirm(
 			{
@@ -405,7 +403,7 @@
 /* Facebox */
 	$(document).ready(function()
 	{
-		$('a[rel*=facebox]').livequery(function()
+		jQuery('a[rel*=facebox]').livequery(function()
 		{
 			$(this).facebox(
 			{

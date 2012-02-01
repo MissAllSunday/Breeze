@@ -265,13 +265,13 @@ function template_user_wall()
 											<div class="clear"></div>
 										</li>';
 
-						echo'<li id="comment_loadplace_',$status['id'],'"></li>
+						echo'<li id="comment_loadplace_',$status['id'],'" style="display:none;"></li>
 
 							<li><form action="', $scripturl, '?action=breezeajax;sa=postcomment" method="post" name="formID_',$status['id'],'" id="formID_',$status['id'],'">
 								<textarea id="textboxcontent_',$status['id'],'" cols="40" rows="2"></textarea>
 								<input type="hidden" value="',$status['poster_id'],'" name="status_owner_id',$status['id'],'" id="status_owner_id',$status['id'],'" />
 								<input type="hidden" value="',$context['member']['id'],'" name="profile_owner_id',$status['id'],'" id="profile_owner_id',$status['id'],'" />
-								<input type="hidden" value="',$status['id'],'" name="status_id',$status['id'],'" id="status_id',$status['id'],'" />
+								<input type="hidden" value="', $status['id'] ,'" name="status_id',$status['id'],'" id="status_id', $status['id'] ,'" />
 								<input type="hidden" value="',$user_info['id'],'" name="poster_comment_id',$status['id'],'" id="poster_comment_id',$status['id'],'" /><br />
 								<input type="submit" value="Comment" class="comment_submit" id="',$status['id'],'" />
 							</form></li>

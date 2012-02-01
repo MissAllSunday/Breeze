@@ -184,20 +184,18 @@ class Breeze_Query
 	 *
 	 * Needs a type, a row and a value, this iterates X array looking for X value in X row. Yes, this can be used to fetch more than I value if you really want to fetch more than 1 value.
 	 * @param string $type the data type
-	 * @param string $row the row where thoe fetch the value from, should be the actual row name.
+	 * @param string $row the row where thoe fetch the value from, should be the actual row name in the array, not the rown name in the DB.
 	 * @param mixed $value  Most of the cases will be a int. the int is actually the ID of the particular value you are trying to fetch.
 	 * @access private
 	 * @return array an array with the requested data
 	 */
-	private function GetSingleValue($type, $row, $value)
+	public function GetSingleValue($type, $row, $value)
 	{
 		/* Cleaning */
 		$this->ResetTemp();
 		$this->ResetReturn();
 
-		return $this->GetReturn($type, $row, $id);
-
-		return $this->r;
+		return $this->GetReturn($type, $row, $value);
 	}
 
 	/*

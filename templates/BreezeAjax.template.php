@@ -47,7 +47,7 @@ function template_breeze_post()
 		case '':
 			echo 'error_';
 			break;
-		case 'qw':
+		case 'deleted':
 			echo 'deleted_';
 			break;
 		case 'ok':

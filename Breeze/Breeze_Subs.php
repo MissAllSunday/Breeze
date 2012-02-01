@@ -93,7 +93,7 @@ class Breeze_Subs
 			var breeze_confirm_delete = "'. $text->GetText('confirm_delete') .'";
 			var breeze_confirm_yes = "'. $text->GetText('confirm_yes') .'";
 			var breeze_confirm_cancel = "'. $text->GetText('confirm_cancel') .'";
-			var breeze_already_deleted = "'. $text->GetText('already_Deleted') .'";
+			var breeze_already_deleted = "'. $text->GetText('already_deleted') .'";
 	// ]]></script>';
 
 

@@ -86,13 +86,17 @@ class Breeze_Globals
 
 	public function ValidateBody($var)
 	{
-		if (isset($this->request[$var]) && !empty($this->request[$var]))
+		/* You cannot post just spaces */
+		if(ctype_space($this->request[$var]) || $this->request[$var] == '')
+			return false;
+
+		elseif (isset($this->request[$var]) && !empty($this->request[$var]) && !ctype_space($this->request[$var]))
 			return true;
 
 		else
 			return false;
 	}
-	
+
 	public function UnsetVar($var)
 	{
 		unset($this->request[$var]);
