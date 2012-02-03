@@ -3,7 +3,7 @@
 /**
  * Breeze_Query
  *
- * The purpose of this file is
+ * The purpose of this file is to have all queries made by this mod in a single place
  * @package Breeze mod
  * @version 1.0
  * @author Jessica González <missallsunday@simplemachines.org>
@@ -43,6 +43,7 @@ class Breeze_Query
 	private static $instance;
 	protected $Status = array();
 	protected $Comments = array();
+	protected $Settings = array();
 	private $query = array();
 	private $data = array();
 	private $query_params = array('rows' =>'*');
@@ -122,9 +123,10 @@ class Breeze_Query
 	 * @param string $table The name of the table to fetch
 	 * @param string $row The name of the row to fetch
 	 * @param int $value The value to compare to
+	 * @param bool $single true if the query will return only 1 array.
 	 * @return array an associative array
 	 */
-	private function GetReturn($type, $row, $value)
+	private function GetReturn($type, $row, $value, $single = false)
 	{
 		/* Cleaning */
 		$this->ResetTemp();
@@ -141,8 +143,15 @@ class Breeze_Query
 		{
 			/* Generate an array with a defined key */
 			foreach($this->temp as $t)
-				if ($t[$row] == $value)
+			{
+				if ($t[$row] == $value && !$single)
 					$this->r[] = $t;
+
+				/* Get a single value */
+				else if ($t[$row] == $value && $single)
+					$this->r = $t;
+			}
+
 		}
 
 		/* Clean the Temp array */
@@ -172,6 +181,12 @@ class Breeze_Query
 				break;
 			case 'likes':
 				$this->temp = $this->Likes();
+				break;
+			case 'settings':
+				$this->temp = $this->Settings();
+				break;
+			case 'modules':
+				$this->temp = $this->Modules();
 				break;
 			case 'logs':
 				$this->temp = $this->Logs();
@@ -290,7 +305,7 @@ class Breeze_Query
 		$parser = new Breeze_Parser();
 
 		/* Use the cache please... */
-		if (($this->GetStatus = cache_get_data('Breeze:Status', 120)) == null)
+		if (($this->Status = cache_get_data('Breeze:Status', 120)) == null)
 		{
 			/* Load all the status, set a limit if things get complicated */
 			$result = $smcFunc['db_query']('', '
@@ -453,6 +468,61 @@ class Breeze_Query
 		return $this->GetReturn('comments', 'status_id', $id);
 	}
 
+	/* Settings */
+
+	/*
+	 * The main method to load all the settings from all users
+	 *
+	 * This is one of the main queries. load all the settings from all users. We set the cache here on 4 minutes since the settings aren't updated that often.
+	 * @access protected
+	 * @global $smcFunc the "handling DB stuff" var of SMF
+	 * @return array a very big associative array with the user ID as key
+	 */
+	protected function Settings()
+	{
+		global $smcFunc;
+
+		/* Use the cache please... */
+		if (($this->Settings = cache_get_data('Breeze:Settings', 240)) == null)
+		{
+			/* Load all the status, set a limit if things get complicated */
+			$result = $smcFunc['db_query']('', '
+				SELECT *
+				FROM {db_prefix}breeze_user_settings
+				',
+				array()
+			);
+
+			/* Populate the array like a boss! */
+			while ($row = $smcFunc['db_fetch_assoc']($result))
+			{
+				$this->Settings[$row['user_id']] = array(
+					'user_id' => $row['user_id'],
+					'enable_wall' => $row['enable_wall'],
+					'kick_ignored' => $row['kick_ignored']
+				);
+			}
+
+			/* Cache this beauty */
+			cache_put_data('Breeze:Settings', $this->Settings, 240);
+		}
+
+		return $this->Settings;
+	}
+
+	/*
+	 * Gets all the settings from one user
+	 *
+	 * Gets all the users preferences
+	 * @access public
+	 * @param int $user  the User ID
+	 * @return array an array with the users settings
+	 */
+	public function GetSettingsByUser($user)
+	{
+		return $this->GetReturn('settings', 'user_id', $user, true);
+	}
+
 	/* Editing methods */
 
 	public function InsertStatus($array)
@@ -535,5 +605,36 @@ class Breeze_Query
 
 		$this->Query('comments')->Params($params, $data);
 		$this->Query('comments')->DeleteData();
+	}
+
+	public function UpdateUserSettings($data)
+	{
+		$params = array(
+			'set' =>'
+				enable_wall={int:enable_wall},
+				kick_ignored={int:kick_ignored}',
+			'where' => '
+				user_id = {int:user_id}',
+		);
+
+		/* Do the update */
+		$this->Query('settings')->Params($params, $data);
+		$this->Query('settings')->UpdateData();
+	}
+
+	public function InsertUserSettings($data)
+	{
+		$type = array(
+			'enable_wall' => 'int',
+			'kick_ignored' =>'int',
+			'user_id' => 'int'
+		);
+
+		$indexes = array(
+			'user_id'
+		);
+
+		/* Insert */
+		$this->Query('settings')->InsertData($type, $data, $indexes);
 	}
 }

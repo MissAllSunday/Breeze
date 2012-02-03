@@ -46,8 +46,6 @@ if (!defined('SMF'))
 
 class Breeze_User
 {
-	static $already = false;
-
 	public function  __construct(){}
 
 	public static function Wall()
@@ -69,6 +67,15 @@ class Breeze_User
 		$query = Breeze_Query::getInstance();
 		$tools = new Breeze_Subs();
 
+		/* Get this user's ignore list */
+		if (empty($context['member']['ignore_list']))
+			$context['member']['ignore_list'] = $query->GetUserIgnoreList($context['member']['id']);
+
+		/* I'm sorry, you aren't allowed in here, either by permission or by ignored list */
+		/* if (allowedTo('breeze_view_general_wall') == false || in_array($user_info['id'], $context['member']['ignore_list']))
+			return;*/
+
+		/* Display all the JavaScript bits */
 		$tools->Headers();
 
 		/* Set all the page stuff */
@@ -123,14 +130,6 @@ class Breeze_User
 		/* We don't need this anymore */
 		unset($new_temp_array);
 
-		/* Done with the status... now it's modules time */
-/* 		$modules = new Breeze_Modules($context['member']['id']);
-		$temp = $modules->GetAllModules();
-		$context['Breeze']['Modules'] = array();
-
-		foreach($temp as $m)
-			$context['Breeze']['Modules'][$m] = $modules->$m(); */
-
 		/* Write to the log */
 /* 		$log = new Breeze_Logs($context['member']['id']);
 		$log->ProfileVisits(); */
@@ -143,39 +142,31 @@ class Breeze_User
 		global $context, $user_info, $txt, $scripturl;
 
 		loadtemplate('Breeze');
-		loadLanguage('Breeze');
 		Breeze::Load(array(
 			'Form',
 			'Globals',
-			'DB'
+			'Query',
+			'Settings'
 		));
 
 		/* Is this the right user? */
 		if ($context['member']['id'] != $user_info['id'])
 			redirectexit('action=profile');
 
+		/* Load all we need */
+		$query = Breeze_Query::getInstance();
+		$text = Breeze_Settings::getInstance();
+		$data = $query->GetSettingsByUser($context['member']['id']);
+
+		if (!empty($data))
+			$already = true;
+
 		/* Set all the page stuff */
 		$context['sub_template'] = 'user_settings';
 		$context['can_send_pm'] = allowedTo('pm_send');
-		$context['page_title'] = $txt['breeze_user_settings_name'];
+		$context['page_title'] = $text->GetText('user_settings_name');
 		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
-		$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
-
-		/* Load the user settings */
-		$query_params = array(
-			'rows' =>'*',
-			'where' => 'user_id={int:user_id}',
-		);
-		$query_data = array(
-			'user_id' => $context['member']['id'],
-		);
-		$query = new Breeze_DB('breeze_user_settings');
-		$query->Params($query_params, $query_data);
-		$query->GetData(null, true);
-		$data = $query->DataResult();
-
-		if (!empty($data))
-			self::$already = true;
+		$context['canonical_url'] = $scripturl . '?action=profile;area=breezesettings;u=' . $context['member']['id'];
 
 		$FormData = array(
 			'action' => 'profile;area=breezesettings;save;u='.$context['member']['id'],
@@ -186,318 +177,21 @@ class Breeze_User
 			'onsubmit' => '',
 		);
 
-		/* The long, long form */
-		$form = new Breeze_Form($FormData);
-		$form->AddCheckBox('enable_notification_pm', 1, array(
-			'notification_pm',
-			'notification_pm_sub'
-		), !empty($data['enable_notification']) ? true : false);
-
-		$form->AddCheckBox('enable_notification_wall', 1, array(
-			'notification_wall',
-			'notification_wall'
-		), !empty($data['enable_notification_wall']) ? true : false);
-
-		$form->AddSubmitButton('save');
-
-		/* Send the form to the template */
-		$context['Breeze']['UserSettings']['Form'] = $form->Display();
-
-		/* Saving? */
-		if (isset($_GET['save']))
-		{
-			$sa = Breeze_Globals::factory('post');
-
-			$enable_buddies = $sa->raw('enable_buddies') ? 1 : 0;
-			$enable_visitors = $sa->raw('enable_visitors') ? 1 : 0;
-			$enable_notification = $sa->raw('enable_notification') ? 1 : 0;
-
-			/* If the data already exist, update... */
-			if (self::$already == true)
-			{
-				$params = array(
-					'set' =>'enable_buddies={int:enable_buddies}, enable_visitors={int:enable_visitors}, enable_notification={int:enable_notification}',
-					'where' => 'user_id = {int:user_id}',
-				);
-
-				$data = array(
-					'enable_buddies' => $enable_buddies,
-					'enable_visitors' => $enable_visitors,
-					'enable_notification' => $enable_notification,
-					'user_id' => $context['member']['id']
-				);
-
-				$updatedata = new Breeze_DB('breeze_user_settings');
-				$updatedata->Params($params, $data);
-				$updatedata->UpdateData();
-			}
-
-			/* ...if not, insert. */
-			else
-			{
-				$data = array(
-					'enable_buddies' => 'int',
-					'enable_visitors' => 'int',
-					'enable_notification' => 'int',
-					'user_id' => 'int'
-				);
-				$values = array(
-					$enable_buddies,
-					$enable_visitors,
-					$enable_notification,
-					$context['member']['id']
-				);
-				$indexes = array(
-					'user_id'
-				);
-				$insert = new Breeze_DB('breeze_user_settings');
-				$insert->InsertData($data, $values, $indexes);
-			}
-
-			redirectexit('action=profile;area=breezesettings;u='.$context['member']['id']);
-		}
-	}
-
-	function Permissions()
-	{
-		global $context, $user_info, $txt, $scripturl;
-
-		loadtemplate('Breeze');
-		loadLanguage('Breeze');
-		Breeze::Load(array(
-			'Form',
-			'Globals',
-			'DB'
-		));
-
-		/* Is this the right user? */
-		if ($context['member']['id'] != $user_info['id'])
-			redirectexit('action=profile');
-
-		/* Set all the page stuff */
-		$context['sub_template'] = 'user_settings';
-		$context['page_title'] = $txt['breeze_general_my_wall_modules'];
-		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
-		$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
-
-		/* Load the user settings */
-		$query_params = array(
-			'rows' =>'*',
-			'where' => 'user_id={int:user_id}',
-		);
-		$query_data = array(
-			'user_id' => $context['member']['id'],
-		);
-		$query = new Breeze_DB('breeze_user_settings_modules');
-		$query->Params($query_params, $query_data);
-		$query->GetData(null, true);
-		$data = $query->DataResult();
-
-		if (!empty($data))
-			self::$already = true;
-
-		$FormData = array(
-			'action' => 'profile;area=breezepermissions;save;u='.$context['member']['id'],
-			'method' => 'post',
-			'id_css' => 'user_settings_form',
-			'name' => 'user_settings_form',
-			'class_css' => 'user_settings_form',
-			'onsubmit' => '',
-		);
-
-		/* The long, long permissions form */
+		/* The long, long General/Modules settings form */
 		$form = new Breeze_Form($FormData);
 
+		$form->AddCheckBox('enable_wall', 1, array(
+			'enable_wall',
+			'enable_wall_sub'
+		), !empty($data['enable_wall']) ? true : false);
 
-		$form->AddSubmitButton('save');
-
-		/* Send the form to the template */
-		$context['Breeze']['UserSettings']['Form'] = $form->Display();
-
-		/* Saving? */
-		if (isset($_GET['save']))
-		{
-			$sa = Breeze_Globals::factory('post');
-
-			$enable_buddies = $sa->raw('enable_buddies') ? 1 : 0;
-			$enable_visitors = $sa->raw('enable_visitors') ? 1 : 0;
-			$enable_notification = $sa->raw('enable_notification') ? 1 : 0;
-
-			/* If the data already exist, update... */
-			if (self::$already == true)
-			{
-				$params = array(
-					'set' =>'enable_buddies={int:enable_buddies}, enable_visitors={int:enable_visitors}, enable_notification={int:enable_notification}',
-					'where' => 'user_id = {int:user_id}',
-				);
-
-				$data = array(
-					'enable_buddies' => $enable_buddies,
-					'enable_visitors' => $enable_visitors,
-					'enable_notification' => $enable_notification,
-					'user_id' => $context['member']['id']
-				);
-
-				$updatedata = new Breeze_DB('breeze_user_settings_permissions');
-				$updatedata->Params($params, $data);
-				$updatedata->UpdateData();
-			}
-
-			/* ...if not, insert. */
-			else
-			{
-				$data = array(
-					'enable_buddies' => 'int',
-					'enable_visitors' => 'int',
-					'enable_notification' => 'int',
-					'user_id' => 'int'
-				);
-				$values = array(
-					$enable_buddies,
-					$enable_visitors,
-					$enable_notification,
-					$context['member']['id']
-				);
-				$indexes = array(
-					'user_id'
-				);
-				$insert = new Breeze_DB('breeze_user_settings_permissions');
-				$insert->InsertData($data, $values, $indexes);
-			}
-
-			redirectexit('action=profile;area=breezepermissions;u='.$context['member']['id']);
-		}
-	}
-
-	function Modules()
-	{
-		global $context, $user_info, $txt, $scripturl;
-
-		loadtemplate('Breeze');
-		loadLanguage('Breeze');
-		Breeze::Load(array(
-			'Form',
-			'Globals',
-			'DB'
-		));
-
-		/* Is this the right user? */
-		if ($context['member']['id'] != $user_info['id'])
-			redirectexit('action=profile');
-
-		/* Set all the page stuff */
-		$context['sub_template'] = 'user_settings';
-		$context['page_title'] = $txt['breeze_general_my_wall_modules'];
-		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
-		$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
-
-		/* Load the user settings */
-		$query_params = array(
-			'rows' =>'*',
-			'where' => 'user_id={int:user_id}',
-		);
-		$query_data = array(
-			'user_id' => $context['member']['id'],
-		);
-		$query = new Breeze_DB('breeze_user_settings_modules');
-		$query->Params($query_params, $query_data);
-		$query->GetData(null, true);
-		$data = $query->DataResult();
-
-		if (!empty($data))
-			self::$already = true;
-
-		$FormData = array(
-			'action' => 'profile;area=breezemodules;save;u='.$context['member']['id'],
-			'method' => 'post',
-			'id_css' => 'user_settings_form',
-			'name' => 'user_settings_form',
-			'class_css' => 'user_settings_form',
-			'onsubmit' => '',
-		);
-
-		/* The long, long Modules form */
-		$form = new Breeze_Form($FormData);
-
-		$form->AddCheckBox('enable_buddies', 1, array(
-			'enable_buddies',
-			'enable_buddies_sub'
-		), !empty($data['enable_buddies']) ? true : false);
-
-		$form->AddCheckBox('show_avatar_buddies', 1, array(
-			'show_avatar',
-			'show_avatar_sub'
-		), !empty($data['show_avatar_buddies']) ? true : false);
-
-		$form->AddText('how_many_buddies', !empty($data['how_many_buddies']) ? $data['how_many_buddies'] : '', array(
-			'how_many_buddies',
-			'how_many_buddies_sub'
-		), 6, 6);
+		$form->AddCheckBox('kick_ignored', 1, array(
+			'kick_ignored',
+			'kick_ignored_sub'
+		), !empty($data['kick_ignored']) ? true : false);
 
 		$form->AddHr();
 
-		$form->AddCheckBox('enable_visitors', 1, array(
-			'visitors',
-			'visitors_sub'
-		), !empty($data['enable_visitors']) ? true : false);
-
-		$form->AddText('how_many_visitors', !empty($data['how_many_visitors']) ? $data['how_many_visitors'] : '', array(
-			'how_many_visitors',
-			'how_many_visitors_sub'
-		), 6, 6);
-
-		if (self::$already)
-			$form->AddSelect('time_frame', array(
-				'time_frame',
-				'time_frame_sub'
-			), $values = array(
-					'hour' => array(
-						'time_hour',
-						$data['time_frame'] == 'hour' ? 'selected' : false
-					),
-					'day' => array(
-						'time_day',
-						$data['time_frame'] == 'day' ? 'selected' : false
-					),
-					'week' => array(
-						'time_week',
-						$data['time_frame'] == 'week' ? 'selected' : false
-					),
-					'month' => array(
-						'time_month',
-						$data['time_frame'] == 'month' ? 'selected' : false
-					),
-				));
-
-		else
-			$form->AddSelect('time_frame', array(
-				'time_frame',
-				'time_frame_sub'
-			), $values = array(
-					'hour' => array(
-						'time_hour',
-						false
-					),
-					'day' => array(
-						'time_day',
-						false
-					),
-					'week' => array(
-						'time_week',
-						'selected'
-					),
-					'month' => array(
-						'time_month',
-						false
-					),
-				));
-
-
-		$form->AddCheckBox('enable_show_avatar', 1, array(
-			'show_avatar',
-			'show_avatar_sub'
-		), !empty($data['enable_show_avatar']) ? true : false);
-
 		$form->AddSubmitButton('save');
 
 		/* Send the form to the template */
@@ -506,55 +200,22 @@ class Breeze_User
 		/* Saving? */
 		if (isset($_GET['save']))
 		{
-			$sa = Breeze_Globals::factory('post');
+			$temp = $form->ReturnElementNames();
+			$save_data = array();
+			$save_data['user_id'] = $context['member']['id'];
 
-			$enable_buddies = $sa->raw('enable_buddies') ? 1 : 0;
-			$enable_visitors = $sa->raw('enable_visitors') ? 1 : 0;
-			$enable_notification = $sa->raw('enable_notification') ? 1 : 0;
+			foreach ($temp as &$type)
+				$save_data[$type] = !empty($_POST[$type]) ? 1 : 0;
 
 			/* If the data already exist, update... */
-			if (self::$already == true)
-			{
-				$params = array(
-					'set' =>'enable_buddies={int:enable_buddies}, enable_visitors={int:enable_visitors}, enable_notification={int:enable_notification}',
-					'where' => 'user_id = {int:user_id}',
-				);
-
-				$data = array(
-					'enable_buddies' => $enable_buddies,
-					'enable_visitors' => $enable_visitors,
-					'enable_notification' => $enable_notification,
-					'user_id' => $context['member']['id']
-				);
-
-				$updatedata = new Breeze_DB('breeze_user_settings_modules');
-				$updatedata->Params($params, $data);
-				$updatedata->UpdateData();
-			}
+			if ($already == true)
+				$query->UpdateUserSettings($save_data);
 
 			/* ...if not, insert. */
 			else
-			{
-				$data = array(
-					'enable_buddies' => 'int',
-					'enable_visitors' => 'int',
-					'enable_notification' => 'int',
-					'user_id' => 'int'
-				);
-				$values = array(
-					$enable_buddies,
-					$enable_visitors,
-					$enable_notification,
-					$context['member']['id']
-				);
-				$indexes = array(
-					'user_id'
-				);
-				$insert = new Breeze_DB('breeze_user_settings_modules');
-				$insert->InsertData($data, $values, $indexes);
-			}
+				$query->InsertUserSettings($save_data);
 
-			redirectexit('action=profile;area=breezemodules;u='.$context['member']['id']);
+			redirectexit('action=profile;area=breezesettings;u='.$context['member']['id']);
 		}
 	}
 }

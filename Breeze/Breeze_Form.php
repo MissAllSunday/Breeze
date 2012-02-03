@@ -55,12 +55,14 @@ if (!defined('SMF'))
 		{
 			global $scripturl, $txt;
 
+			LoadLanguage('Breeze');
+
 			if (empty($form) || !is_array($form))
 				return;
 
-			loadLanguage('Breeze');
-
+			/* Load the text strings */
 			$this->text = $txt;
+
 			$this->action = $scripturl . '?action=' . $form['action'];
 			$this->method = $form['method'];
 			$this->id_css= $form['id_css'];
@@ -70,6 +72,18 @@ if (!defined('SMF'))
 			$elements = array();
 			$this->status = 0;
 			$this->buffer = '';
+		}
+
+		public function ReturnElementNames()
+		{
+			$this->Returnelementsnames = array();
+
+			if (!empty($this->elements))
+				foreach ($this->elements as $e)
+					if (isset($e['name']) && !empty($e['name']))
+						$this->Returnelementsnames[$e['name']] = $e['name'];
+
+			return $this->Returnelementsnames;
 		}
 
 		private function AddElement($element)
@@ -108,7 +122,7 @@ if (!defined('SMF'))
 			$element['html_end'] = '</'. $element['type'] .'>';
 
 			foreach($values as $k => $v)
-				$element['values'][$k] = '<option value="' .$k. '" '. (isset($v[1]) && $v[1] == 'selected' ? 'selected="selected"' : '') .'>'. $this->text['breeze_user_settings_'.$v[0]] .'</option>';
+				$element['values'][$k] = '<option value="' .$k. '" '. (isset($v[1]) && $v[1] == 'selected' ? 'selected="selected"' : '') .'>'. $this->text['BreezeMod_user_settings_'.$v[0]] .'</option>';
 
 			return $this->AddElement($element);
 		}
@@ -190,8 +204,8 @@ if (!defined('SMF'))
 					case 'checkbox':
 					case 'text':
 						$this->buffer .= '<dt>
-							<span style="font-weight:bold;">'. $this->text['breeze_user_settings_'.$el['text'][0]] .'</span>
-							<br /><span class="smalltext">'. $this->text['breeze_user_settings_'.$el['text'][1]] .'</span>
+							<span style="font-weight:bold;">'. $this->text['BreezeMod_user_settings_'. $el['text'][0]] .'</span>
+							<br /><span class="smalltext">'. $this->text['BreezeMod_user_settings_'.$el['text'][1]] .'</span>
 						</dt>
 						<dd>
 							'. $el['html'] .'
@@ -199,8 +213,8 @@ if (!defined('SMF'))
 						break;
 					case 'select':
 						$this->buffer .= '<dt>
-							<span style="font-weight:bold;">'. $this->text['breeze_user_settings_'.$el['text'][0]] .'</span>
-							<br /><span class="smalltext">'. $this->text['breeze_user_settings_'.$el['text'][1]] .'</span>
+							<span style="font-weight:bold;">'. $this->text['BreezeMod_user_settings_'.$el['text'][0]] .'</span>
+							<br /><span class="smalltext">'. $this->text['BreezeMod_user_settings_'.$el['text'][1]] .'</span>
 						</dt>
 						<dd>
 							'. $el['html_start'] .'';

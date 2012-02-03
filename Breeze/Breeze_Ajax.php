@@ -47,7 +47,6 @@ if (!defined('SMF'))
 abstract class Breeze_Ajax
 {
 	public static $query;
-	public static $compare;
 
 	public static function Call()
 	{

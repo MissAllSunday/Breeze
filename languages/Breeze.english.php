@@ -52,15 +52,18 @@ $txt['BreezeMod_modules_enable_visitors_title'] = 'Recent Visitors';
 $txt['BreezeMod_modules_enable_visitors_description'] = 'The last %1$s visitor%2$s to this page were: <p />';
 
 
-
-
 /* User Individual Settings */
 $txt['BreezeMod_profile'] = 'Wall Settings';
 $txt['BreezeMod_user_settings_name'] = 'Wall Settings';
-$txt['BreezeMod_user_settings_wall_limit'] = 'How many status to show?';
-$txt['BreezeMod_user_settings_wall_limit_sub'] = 'This will be the number of status to show by default, max value is 30';
+$txt['BreezeMod_user_settings_wall_limit'] = 'How many status per page to show?';
+$txt['BreezeMod_user_settings_wall_limit_sub'] = 'This will be the number of status to show by default, max value is 30, if set it will create a pagination with the rest of your status.';
 $txt['BreezeMod_user_settings_kick_ignored'] = 'Do not show my wall to users in my ignore list';
-$txt['BreezeMod_user_settings_kick_ignored_sub'] = 'If this is enable, users on your ignore list will not be able to see your wall.';
+$txt['BreezeMod_user_settings_kick_ignored_sub'] = 'If this is enable, users on your ignore list will not be able to see your wall or to post on it.';
+$txt['BreezeMod_user_settings_enable_wall'] = 'Enable my wall';
+$txt['BreezeMod_user_settings_enable_wall_sub'] = 'If you want to use your wall, you need to check this option, otherwise your profile will show the default page.';
+
+
+/* Modules */
 $txt['BreezeMod_user_settings_enable_buddies'] = 'Enable the "Buddies" module.';
 $txt['BreezeMod_user_settings_enable_buddies_sub'] = 'This will show a block showing all your buddies.';
 $txt['BreezeMod_user_settings_how_many_buddies'] = 'How many buddies to display';
@@ -82,11 +85,6 @@ $txt['BreezeMod_user_settings_show_avatar_sub'] = 'By default it shows the user 
 $txt['BreezeMod_user_settings_show_last_visit'] = 'Show the last time the users visited your wall';
 $txt['BreezeMod_user_settings_notification_wall'] = 'Send me a pm when someone else post a new status on my wall';
 $txt['BreezeMod_user_settings_notification_wall_sub'] = 'This will only apply for new status.';
-
-$txt['BreezeMod_user_settings_'] = '';
-$txt['BreezeMod_user_settings_'] = '';
-$txt['BreezeMod_user_settings_'] = '';
-$txt['BreezeMod_user_settings_'] = '';
 $txt['BreezeMod_user_permissions_name'] = 'Permissions';
 $txt['BreezeMod_user_modules_name'] = 'Modules';
 
@@ -114,10 +112,6 @@ $txt['BreezeMod_admin_settings_enable_sub'] = 'The master setting, this must be 
 $txt['BreezeMod_admin_settings_home'] = 'Home';
 $txt['BreezeMod_admin_settings_help'] = 'Help';
 $txt['BreezeMod_admin_settings_profile'] = 'Profile';
-$txt['BreezeMod_admin_settings_'] = '';
-$txt['BreezeMod_admin_settings_'] = '';
-$txt['BreezeMod_admin_settings_'] = '';
-$txt['BreezeMod_admin_settings_'] = '';
 
 /* Time */
 $txt['BreezeMod_time_just_now'] = 'just now.';
@@ -133,7 +127,7 @@ $txt['BreezeMod_time_year'] = 'year';
 $txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to view the Wall.';
 $txt['permissiongroup_breeze_per'] = 'Breeze mod permissions';
 $txt['permissiongroup_simple_breeze_per'] = 'Breeze mod permissions';
-$txt['permissionname_breeze_view_general_wall'] = 'View the general Wall';
+$txt['permissionname_breeze_view_general_wall'] = 'View any user\'s Wall';
 $txt['permissionname_breeze_edit_general_settings'] = 'Edit the general Breeze settings';
 $txt['permissionname_breeze_delete_entries_own_wall'] = 'Delete all entries posted on his/her own wall.';
 $txt['permissionname_breeze_delete_entries_any_wall'] = 'Delete all entries on any wall';
@@ -141,12 +135,6 @@ $txt['permissionname_breeze_delete_comments_own_wall'] = 'Delete all comments po
 $txt['permissionname_breeze_delete_entries_made_by_me'] = 'Delete all entries made by this user, regarding on what wall he/she posted on.';
 $txt['permissionname_breeze_delete_comments_made_by_me'] = 'Delete all comments made by this user, regarding on what wall he/she posted on.';
 $txt['permissionname_breeze_edit_settings_any'] = 'Edit the user settings of any profile';
-$txt[''] = '';
-$txt[''] = '';
-$txt[''] = '';
-$txt[''] = '';
-$txt[''] = '';
-$txt[''] = '';
 
 /* Ajax strings */
 $txt['BreezeMod_error_message'] = 'There was an error, please try again or contact the forum admin.';
@@ -160,5 +148,3 @@ $txt['BreezeMod_already_deleted'] = 'This comment/status was already deleted.';
 
 
 /* Notifications */
-
-

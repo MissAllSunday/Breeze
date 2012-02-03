@@ -78,15 +78,7 @@ class Breeze
 	{
 		$permissionGroups['membergroup']['simple'] = array('breeze_per');
 		$permissionGroups['membergroup']['classic'] = array('breeze_per');
-		$permissionList['membergroup']['breeze_view_general_wall'] = array(true, 'breeze_per', 'breeze_per');
-		$permissionList['membergroup']['breeze_edit_general_settings'] = array(true, 'breeze_per', 'breeze_per');
-		$permissionList['membergroup']['breeze_delete_entries_own_wall'] = array(true, 'breeze_per', 'breeze_per');
-		$permissionList['membergroup']['breeze_delete_entries_any_wall'] = array(false, 'breeze_per', 'breeze_per');
-		$permissionList['membergroup']['breeze_delete_comments_own_wall'] = array(true, 'breeze_per', 'breeze_per');
-		$permissionList['membergroup']['breeze_delete_comments_own_wall'] = array(false, 'breeze_per', 'breeze_per');
-		$permissionList['membergroup']['breeze_delete_entries_made_by_me'] = array(false, 'breeze_per', 'breeze_per');
-		$permissionList['membergroup']['breeze_delete_comments_made_by_me'] = array(false, 'breeze_per', 'breeze_per');
-		$permissionList['membergroup']['breeze_edit_settings_any'] = array(false, 'breeze_per', 'breeze_per');
+		$permissionList['membergroup']['breeze_view_general_wall'] = array(false, 'breeze_per', 'breeze_per');
 	}
 
 	/**
@@ -133,7 +125,7 @@ class Breeze
 				),
 		);
 
-		$profile_areas['breeze_profile']['areas']['breezepermissions'] = array(
+/* 		$profile_areas['breeze_profile']['areas']['breezepermissions'] = array(
 			'label' => $s->GetText('user_permissions_name'),
 			'file' => 'Breeze/Breeze_User.php',
 			'function' => 'Breeze_Wrapper_Permissions',
@@ -151,7 +143,7 @@ class Breeze
 				'own' => 'profile_view_own',
 				'any' => 'breeze_edit_settings_any',
 			),
-		);
+		); */
 		/* Done with the hacking... */
 	}
 
@@ -238,7 +230,7 @@ class Breeze
 	 * DUH! WINNING!
 	 *
 	 * Used in the credits action
-	 * @return a link for copyright notice
+	 * @return string a link for copyright notice
 	 */
 	public static function Who()
 	{
