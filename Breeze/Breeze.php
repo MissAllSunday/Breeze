@@ -68,20 +68,6 @@ class Breeze
 	}
 
 	/**
-	 * Global permissions used by this mod per user group
-	 *
-	 * @param array $permissionGroups An array containing all possible permissions groups.
-	 * @param array $permissionList An associative array with all the possible permissions.
-	 * @return void
-	 */
-	public static function Permissions(&$permissionGroups, &$permissionList)
-	{
-		$permissionGroups['membergroup']['simple'] = array('breeze_per');
-		$permissionGroups['membergroup']['classic'] = array('breeze_per');
-		$permissionList['membergroup']['breeze_view_general_wall'] = array(false, 'breeze_per', 'breeze_per');
-	}
-
-	/**
 	 * Replace the summary action with the action created by Breeze
 	 *
 	 * @see Breeze_User::Wall()
@@ -106,44 +92,38 @@ class Breeze
 					'any' => 'profile_view_any',
 				),
 			);
+			
+		/* If the mod is enable, then create another page for the default profile page */
+		if ($s->Enable('admin_settings_enable'))
+			$profile_areas['info']['areas']['static'] = array(
+					'label' => $s->GetText('general_summary'),
+					'file' => 'Profile-View.php',
+					'function' => 'summary',
+					'permission' => array(
+						'own' => 'profile_view_own',
+						'any' => 'profile_view_any',
+					),
+				);
 
-		 /* Per user permissions */
-		/* if ($s->Enable('admin_settings_enable')) */
+		/* Per user permissions */
+		if ($s->Enable('admin_settings_enable'))
 			$profile_areas['breeze_profile'] = array(
 				'title' => $s->GetText('general_my_wall_settings'),
 				'areas' => array(),
 			);
 
 		/* User individual settings goes right here... */
-		$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
-			'label' => $s->GetText('user_settings_name'),
-			'file' => 'Breeze/Breeze_User.php',
-			'function' => 'Breeze_Wrapper_Settings',
-			'permission' => array(
-				'own' => 'profile_view_own',
-				'any' => 'profile_view_any',
-				),
-		);
+		if ($s->Enable('admin_settings_enable'))
+			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
+				'label' => $s->GetText('user_settings_name'),
+				'file' => 'Breeze/Breeze_User.php',
+				'function' => 'Breeze_Wrapper_Settings',
+				'permission' => array(
+					'own' => 'profile_view_own',
+					'any' => 'profile_view_any',
+					),
+			);
 
-/* 		$profile_areas['breeze_profile']['areas']['breezepermissions'] = array(
-			'label' => $s->GetText('user_permissions_name'),
-			'file' => 'Breeze/Breeze_User.php',
-			'function' => 'Breeze_Wrapper_Permissions',
-			'permission' => array(
-				'own' => 'profile_view_own',
-				'any' => 'breeze_edit_settings_any',
-			),
-		);
-		
-		$profile_areas['breeze_profile']['areas']['breezemodules'] = array(
-			'label' => $s->GetText('user_modules_name'),
-			'file' => 'Breeze/Breeze_User.php',
-			'function' => 'Breeze_Wrapper_Modules',
-			'permission' => array(
-				'own' => 'profile_view_own',
-				'any' => 'breeze_edit_settings_any',
-			),
-		); */
 		/* Done with the hacking... */
 	}
 

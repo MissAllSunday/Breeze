@@ -62,7 +62,8 @@ class Breeze_Query
 			'settings' => new Breeze_DB('breeze_user_settings'),
 			'modules' => new Breeze_DB('breeze_user_settings_modules'),
 			'logs' => new Breeze_DB('breeze_visit_log'),
-			'likes' => new Breeze_DB('breeze_likes')
+			'likes' => new Breeze_DB('breeze_likes'),
+			'member' => new Breeze_DB('members')
 		);
 	}
 
@@ -607,6 +608,11 @@ class Breeze_Query
 		$this->Query('comments')->DeleteData();
 	}
 
+	public function GetUserSettings($user)
+	{
+		return $this->GetReturn('settings', 'user_id', $user);
+	}
+
 	public function UpdateUserSettings($data)
 	{
 		$params = array(
@@ -636,5 +642,123 @@ class Breeze_Query
 
 		/* Insert */
 		$this->Query('settings')->InsertData($type, $data, $indexes);
+	}
+
+	public function GetUserIgnoreList($id)
+	{
+		$this->query_params = array(
+			'rows' =>'pm_ignore_list',
+			'where' => 'id_member = {int:id}',
+		);
+
+		$this->query_data = array(
+			'id' => $id
+		);
+
+		$this->Query('member')->Params($this->query_params, $this->query_data);
+		$this->Query('member')->GetData(null, true);
+		$temp = $this->Query('member')->DataResult();
+
+		/* Done? set the arrays back to empty */
+		$this->query_params = array();
+		$this->query_data = array();
+
+		if (!empty($temp['pm_ignore_list']))
+			return explode(',', $temp['pm_ignore_list']);
+
+		else
+			return array();
+	}
+
+	/* Log profile visits */
+	public function WriteProfileVisit($profile, $visitor)
+	{
+		global $context;
+
+		if (empty($profile) || empty($visitor))
+			return;
+
+		/* Don't log this if the user is visiting his/her own profile */
+		if ($profile == $visitor)
+			return;
+
+		/* Do not log guest people */
+		if ($context['user']['is_guest'])
+			return;
+
+		$this->query_params = array(
+			'rows' => 'profile, user, time, id',
+			'where' => 'profile = {int:profile} AND user = {int:user}'
+		);
+		$this->query_data = array(
+			'profile' => $profile,
+			'user' => $visitor
+		);
+
+		/* Get all visits to this profile */
+		$already = $this->GetProfileVisits($profile, true)
+
+		/* Is this your first time? */
+		if (empty($already))
+		{
+			$insert_data = array(
+				'profile' => 'int',
+				'user' => 'int',
+				'time' => 'int'
+			);
+			$insert_values = array(
+				$profile,
+				$visitor,
+				time()
+			);
+			$insert_indexes = array(
+				'id'
+			);
+
+			$this->Query('logs')->InsertData($insert_data, $insert_values, $insert_indexes);
+		}
+
+		/* No? then update the time*/
+		else
+		{
+			$update_params = array(
+				'set' =>'time = {int:time}',
+				'where' => 'profile = {int:profile} AND user = {int:user}',
+			);
+
+			$update_data = array(
+				'user' => $visitor,
+				'profile' => $profile,
+				'time' => time()
+			);
+
+			$this->Query('logs')->Params($update_params, $update_data);
+			$this->Query('logs')->UpdateData();
+		}
+	}
+
+	public function GetProfileVisits($profile, $all = false)
+	{
+		/* temporary hard coded will depend on user's choice */
+		$last_week = strtotime('-1 week');
+
+		$params = array(
+			'rows' => 'profile, user, time, id',
+			'where' => !$all ? 'time >= {int:last_week} AND profile = {int:profile}' : 'profile = {int:profile}'
+		);
+		$data = array(
+			'last_week' => $last_week,
+			'profile' => $profile
+		);
+
+		$this->Query('logs')->Params($params, $data);
+		$this->Query('logs')->GetData('id');
+
+
+		if (!empty($this->Query('logs')->DataResult()))
+			return $this->Query('logs')->DataResult();
+
+		else
+			return array();
 	}
 }

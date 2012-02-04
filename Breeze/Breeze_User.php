@@ -3,7 +3,7 @@
 /**
  * Breeze_
  *
- * The purpose of this file is
+ * The purpose of this file is To show the user wall and provide a settings page
  * @package Breeze mod
  * @version 1.0
  * @author Jessica González <missallsunday@simplemachines.org>
@@ -67,13 +67,24 @@ class Breeze_User
 		$query = Breeze_Query::getInstance();
 		$tools = new Breeze_Subs();
 
+		/* Another page already checked the permissions and if the mod is enable, but better be safe... */
+		if ($settings->Enable('admin_settings_enable'))
+			redirectexit();
+
+		/* Load this user's settings */
+		$user_settings = $query->GetUserSettings($context['member']['id']);
+
+		/* Does the user even enable this? */
+		if ($user_settings['enable_wall'] == 0 || !allowedTo('profile_view_own') || !allowedTo('profile_view_any'))
+			redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
 		/* Get this user's ignore list */
 		if (empty($context['member']['ignore_list']))
 			$context['member']['ignore_list'] = $query->GetUserIgnoreList($context['member']['id']);
 
-		/* I'm sorry, you aren't allowed in here, either by permission or by ignored list */
-		/* if (allowedTo('breeze_view_general_wall') == false || in_array($user_info['id'], $context['member']['ignore_list']))
-			return;*/
+		/* I'm sorry, you aren't allowed in here, but here's a nice static page :) */
+		if (in_array($user_info['id'], $context['member']['ignore_list']))
+			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* Display all the JavaScript bits */
 		$tools->Headers();
@@ -129,11 +140,10 @@ class Breeze_User
 
 		/* We don't need this anymore */
 		unset($new_temp_array);
+		unset($users_to_load);
 
 		/* Write to the log */
-/* 		$log = new Breeze_Logs($context['member']['id']);
-		$log->ProfileVisits(); */
-
+		$query->WriteProfileVisit($context['member']['id'], $user_info['id']);
 	}
 
 	/* Shows a form for users to set up their wall as needed. */
@@ -177,7 +187,7 @@ class Breeze_User
 			'onsubmit' => '',
 		);
 
-		/* The long, long General/Modules settings form */
+		/* The General settings form */
 		$form = new Breeze_Form($FormData);
 
 		$form->AddCheckBox('enable_wall', 1, array(
