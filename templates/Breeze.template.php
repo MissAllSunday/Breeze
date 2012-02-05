@@ -169,35 +169,35 @@ function template_user_wall()
 		/* Modules */
 		echo'<div class="breeze_modules">';
 
-/* 		$counter = 0;
+		$counter = 0;
 
 		foreach($context['Breeze']['Modules'] as $m)
-		{
-			$counter++;
+			if (!empty($m))
+			{
+				$counter++;
 
-			if ($counter % 2 == 0)
-				$class_id = '';
+				if ($counter % 2 == 0)
+					$class_id = '';
 
-			else
-				$class_id = '2';
+				else
+					$class_id = '2';
 
-			echo '<div class="cat_bar">
-					<h3 class="catbg">
-						<span class="ie6_header floatleft">
-							',$m['title'],'
-						</span>
-					</h3>
-				</div>';
+				echo '<div class="cat_bar">
+						<h3 class="catbg">
+							<span class="ie6_header floatleft">
+								',$m['title'],'
+							</span>
+						</h3>
+					</div>';
 
-			echo '<div class="windowbg',$class_id,'">
-					<span class="topslice"><span></span></span>
-					<div class="content">
-						',$m['data'],'
-					</div>
-					<span class="botslice"><span></span></span>
-				</div>';
-
-		} */
+				echo '<div class="windowbg',$class_id,'">
+						<span class="topslice"><span></span></span>
+						<div class="content">
+							',$m['data'],'
+						</div>
+						<span class="botslice"><span></span></span>
+					</div>';
+			}
 
 		/* Modules end */
 		echo '</div></div>';

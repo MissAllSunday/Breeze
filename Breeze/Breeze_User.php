@@ -59,16 +59,16 @@ class Breeze_User
 			'Globals',
 			'UserInfo',
 			'Modules',
-			'Logs',
 			'Query'
 		));
 
 		$settings = Breeze_Settings::getInstance();
 		$query = Breeze_Query::getInstance();
 		$tools = new Breeze_Subs();
+		$modules = new Breeze_Modules($context['member']['id']);
 
 		/* Another page already checked the permissions and if the mod is enable, but better be safe... */
-		if ($settings->Enable('admin_settings_enable'))
+		if (!$settings->Enable('admin_settings_enable'))
 			redirectexit();
 
 		/* Load this user's settings */
@@ -142,6 +142,9 @@ class Breeze_User
 		unset($new_temp_array);
 		unset($users_to_load);
 
+		/* Modules */
+		$context['Breeze']['Modules'] = $modules->GetAllModules();
+
 		/* Write to the log */
 		$query->WriteProfileVisit($context['member']['id'], $user_info['id']);
 	}
@@ -162,6 +165,9 @@ class Breeze_User
 		/* Is this the right user? */
 		if ($context['member']['id'] != $user_info['id'])
 			redirectexit('action=profile');
+
+		/* By default we set this to false */
+		$already = false;
 
 		/* Load all we need */
 		$query = Breeze_Query::getInstance();
@@ -202,6 +208,36 @@ class Breeze_User
 
 		$form->AddHr();
 
+		$form->AddCheckBox('enable_visits_module', 1, array(
+			'enable_visits_module',
+			'enable_visits_module_sub'
+		), !empty($data['enable_visits_module']) ? true : false);
+
+		$form->AddSelect('visits_module_timeframe', array(
+			'visits_module_timeframe',
+			'visits_module_timeframe_sub'
+		), $values = array(
+				1 => array(
+					'time_hour',
+					!empty($data['visits_module_timeframe']) ? ($data['visits_module_timeframe'] == 1 ? 'selected' : false) : false
+				),
+				2 => array(
+					'time_day',
+					!empty($data['visits_module_timeframe']) ? ($data['visits_module_timeframe'] == 2 ? 'selected' : false) : false
+				),
+				3 => array(
+					'time_week',
+					!empty($data['visits_module_timeframe']) ? ($data['visits_module_timeframe'] == 3 ? 'selected' : false) : 'selected'
+				),
+				4 => array(
+					'time_month',
+					!empty($data['visits_module_timeframe']) ? ($data['visits_module_timeframe'] == 4 ? 'selected' : false) : false
+				),
+			)
+		);
+
+		$form->AddHr();
+
 		$form->AddSubmitButton('save');
 
 		/* Send the form to the template */
@@ -215,7 +251,7 @@ class Breeze_User
 			$save_data['user_id'] = $context['member']['id'];
 
 			foreach ($temp as &$type)
-				$save_data[$type] = !empty($_POST[$type]) ? 1 : 0;
+				$save_data[$type] = !empty($_POST[$type]) ? (int) $_POST[$type] : 0;
 
 			/* If the data already exist, update... */
 			if ($already == true)

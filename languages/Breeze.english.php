@@ -39,6 +39,8 @@ global $txt;
  
 /* Public/General strings */
 $txt['BreezeMod_general_wall'] = 'Wall';
+$txt['BreezeMod_general_summary'] = 'Summary';
+
 $txt['BreezeMod_general_my_wall'] = 'My Wall';
 $txt['BreezeMod_general_my_wall_settings'] = 'My Wall Settings';
 $txt['BreezeMod_general_loading'] = 'Loading...';
@@ -61,6 +63,10 @@ $txt['BreezeMod_user_settings_kick_ignored'] = 'Do not show my wall to users in 
 $txt['BreezeMod_user_settings_kick_ignored_sub'] = 'If this is enable, users on your ignore list will not be able to see your wall or to post on it.';
 $txt['BreezeMod_user_settings_enable_wall'] = 'Enable my wall';
 $txt['BreezeMod_user_settings_enable_wall_sub'] = 'If you want to use your wall, you need to check this option, otherwise your profile will show the default page.';
+$txt['BreezeMod_user_settings_enable_visits_module'] = 'Enable the visits module?';
+$txt['BreezeMod_user_settings_enable_visits_module_sub'] = 'If this is enable, a block with the latest user who visited your wall will appear.';
+$txt['BreezeMod_user_settings_visits_module_timeframe'] = 'The time frame to count the vistis from.';
+$txt['BreezeMod_user_settings_visits_module_timeframe_sub'] = 'By default is set to aweek, that means the module will show the latest visits to your wall in the last week.';
 
 
 /* Modules */

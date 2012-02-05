@@ -41,135 +41,73 @@ if (!defined('SMF'))
 class Breeze_Modules
 {
 	private $user_settings;
-	private $id;
+	private $profile_id;
+	private $text;
+	private $query;
 
 	public function __construct($id)
 	{
-		$this->id = $id;
 		Breeze::Load(array(
 			'UserInfo',
-			'DB',
-			'Logs',
+			'Query',
 			'Subs',
-			'UserSettings'
+			'Settings'
 		));
-		
-		loadLanguage('Breeze');
-		loadtemplate('Breeze');
 
-		$this->user_settings = new Breeze_UserSettings();
-		$this->user_settings->Load_UserSettings($this->id);
+		/* Set some things */
+		$this->profile_id = $id;
+		$this->text = Breeze_Settings::getInstance();
+		$this->query = Breeze_Query::getInstance();
+		$this->user_settings = $this->query->GetUserSettings($this->profile_id);
 	}
 
 	public function GetAllModules()
 	{
+		/* This is fugly, I need to find a better way to handle modules, maybe a separate folder? */
 		$temp = get_class_methods('Breeze_Modules');
 		$temp = Breeze_Subs::Remove($temp, array(
-			$this->user_settings->enable('enable_buddies') ? '' : 'enable_buddies',
-			$this->user_settings->enable('enable_visitors') ? '' : 'enable_visitors',
+			$this->user_settings['enable_visits_module'] ? '' : 'enable_visits_module',
 			'__construct',
 			'GetAllModules'
 		), false);
 
-		return $temp;
+		foreach ($temp as $k => $t)
+			$array[$t] =  $this->$t();
+
+		return $array;
 	}
 
-	public function enable_buddies()
+	function enable_visits_module()
 	{
-		global $context;
-
-		$query_params = array(
-			'rows' =>'buddy_list',
-			'where' => 'id_member={int:id_member}',
-			'limit' => 1
-		);
-		$query_data = array(
-			'id_member' => $this->id
+		/* Set this as empty */
+		$array = array(
+			'title' => $this->text->GetText('modules_enable_visitors_title'),
+			'data' => ''
 		);
 
-		$query = new Breeze_DB('members');
-		$query->Params($query_params, $query_data);
-		$query->GetData(null, true);
-		$temp = $query->DataResult();
-		$temp2 = explode(',', $temp['buddy_list']);
+		/* Get the last visits to this profile page */
+		$visits = $this->query->GetProfilevisits($this->profile_id, $this->user_settings['visits_module_timeframe']);
 		$columns = 3;
 		$counter = 0;
-		$array['title'] = 'Buddies';
 
-		if (!empty($temp['buddy_list']))
+		if (!empty($visits))
 		{
 			$array['data'] = '<table><tr>';
 
-			foreach($temp2 as $t)
-			{
-				$context['Breeze']['user_info'][$t] = Breeze_UserInfo::Profile($t, true);
-
-				$array['data'] .= '<td> '.$context['Breeze']['user_info'][$t].' </td>';
-
-				if ($counter % $columns == 0)
-					$array['data'] .= '</tr><tr>';
-
-				$counter++;
-			}
-			$array['data'] .= '</tr></table>';
-		}
-
-		return $array;
-	}
-
-	function enable_visitors()
-	{
-		global $context, $txt;
-
-		$return = '';
-		$logs = new Breeze_logs($this->id);
-		$temp = $logs->GetProfileVisits();
-		$columns = 3;
-		$counter = 0;
-		$array['title'] = $txt['breeze_modules_enable_visitors_title'];
-
-		$array['data'] = $txt['breeze_modules_enable_visitors_description'] .'<table><tr>';
-
-		if (!empty($temp))
-			foreach($temp as $t)
+			foreach($visits as $t)
 			{
 				$context['Breeze']['user_info'][$t['user']] = Breeze_UserInfo::Profile($t['user'], true);
 
-				$array['data'] .= '<td>'.$context['Breeze']['user_info'][$t['user']].'<br />'.timeformat($t['time']).'</td>';
-
 				if ($counter % $columns == 0)
 					$array['data'] .= '</tr><tr>';
+
+				$array['data'] .= '<td>'.$context['Breeze']['user_info'][$t['user']].'<br /><pan style="text-align: center;" class="smalltext">'. timeformat($t['time']) .'</span></td>';
 
 				$counter++;
 			}
 
-		$array['data'] .= '</tr></table>';
-
-		return $array;
-	}
-
-	/* Shows the latest activity */
-	function Activity()
-	{
-		global $context;
-
-		$array['title'] = 'Activity';
-
-		$logs = new Breeze_Logs($this->id);
-		$temp = $logs->GetLatestStatus();
-		$poster = $context['Breeze']['user_info']['link'][$this->id];
-
-		$array['data'] = '<ul class="breeze_user_left_info" style="min-height:120px">';
-
-		foreach($temp as $t)
-		{
-			$profile_owner = $context['Breeze']['user_info']['link'][$t['owner_id']];
-			$array['data'] .= '<li>'.$poster. ' Commented in '.$profile_owner.'\' s profile '.Breeze_Subs::Time_Elapsed($t['time']).'<br /></li>';
-
+			$array['data'] .= '</tr></table>';
 		}
-
-		$array['data'] .= '</ul>';
-
 
 		return $array;
 	}

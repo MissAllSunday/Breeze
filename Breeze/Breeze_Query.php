@@ -3,7 +3,7 @@
 /**
  * Breeze_Query
  *
- * The purpose of this file is to have all queries made by this mod in a single place
+ * The purpose of this file is to have all queries made by this mod in a single place, probably the most important file and the biggest one too.
  * @package Breeze mod
  * @version 1.0
  * @author Jessica González <missallsunday@simplemachines.org>
@@ -61,7 +61,7 @@ class Breeze_Query
 			'comments' => new Breeze_DB('breeze_comments'),
 			'settings' => new Breeze_DB('breeze_user_settings'),
 			'modules' => new Breeze_DB('breeze_user_settings_modules'),
-			'logs' => new Breeze_DB('breeze_visit_log'),
+			'visitlogs' => new Breeze_DB('breeze_visit_log'),
 			'likes' => new Breeze_DB('breeze_likes'),
 			'member' => new Breeze_DB('members')
 		);
@@ -115,6 +115,18 @@ class Breeze_Query
 	private function ResetReturn()
 	{
 		$this->r = array();
+	}
+
+	/*
+	 * Set the query arrays back to empty
+	 *
+	 * @access private
+	 * @return void
+	 */
+	private function ResetQueryArrays()
+	{
+		$this->query_params = array();
+		$this->query_data = array();
 	}
 
 	/*
@@ -189,8 +201,8 @@ class Breeze_Query
 			case 'modules':
 				$this->temp = $this->Modules();
 				break;
-			case 'logs':
-				$this->temp = $this->Logs();
+			case 'visitlogs':
+				$this->temp = $this->VisitLog();
 				break;
 		}
 	}
@@ -238,8 +250,7 @@ class Breeze_Query
 		$this->Query('status')->GetData(null, true);
 
 		/* Clean the arrays used here, we may need them for something else */
-		$this->query_params = array();
-		$this->query_data = array();
+		$this->ResetQueryArrays();
 
 		/* Done? */
 		return $this->Query('status')->DataResult();
@@ -500,7 +511,9 @@ class Breeze_Query
 				$this->Settings[$row['user_id']] = array(
 					'user_id' => $row['user_id'],
 					'enable_wall' => $row['enable_wall'],
-					'kick_ignored' => $row['kick_ignored']
+					'kick_ignored' => $row['kick_ignored'],
+					'enable_visits_module' => $row['enable_visits_module'],
+					'visits_module_timeframe' => $row['visits_module_timeframe']
 				);
 			}
 
@@ -610,17 +623,18 @@ class Breeze_Query
 
 	public function GetUserSettings($user)
 	{
-		return $this->GetReturn('settings', 'user_id', $user);
+		return $this->GetReturn('settings', 'user_id', $user, true);
 	}
 
 	public function UpdateUserSettings($data)
 	{
 		$params = array(
-			'set' =>'
-				enable_wall={int:enable_wall},
-				kick_ignored={int:kick_ignored}',
-			'where' => '
-				user_id = {int:user_id}',
+			'set' =>
+				'enable_wall = {int:enable_wall},
+				kick_ignored = {int:kick_ignored},
+				visits_module_timeframe = {int:visits_module_timeframe},
+				enable_visits_module = {int:enable_visits_module}',
+			'where' =>'user_id = {int:user_id}',
 		);
 
 		/* Do the update */
@@ -631,9 +645,11 @@ class Breeze_Query
 	public function InsertUserSettings($data)
 	{
 		$type = array(
+			'user_id' => 'int',
 			'enable_wall' => 'int',
 			'kick_ignored' =>'int',
-			'user_id' => 'int'
+			'enable_visits_module' => 'int',
+			'visits_module_timeframe' => 'int'
 		);
 
 		$indexes = array(
@@ -660,14 +676,82 @@ class Breeze_Query
 		$temp = $this->Query('member')->DataResult();
 
 		/* Done? set the arrays back to empty */
-		$this->query_params = array();
-		$this->query_data = array();
+		$this->ResetQueryArrays();
 
 		if (!empty($temp['pm_ignore_list']))
 			return explode(',', $temp['pm_ignore_list']);
 
 		else
 			return array();
+	}
+
+	/*
+	 * The main method to load all the settings from all users
+	 *
+	 * This is one of the main queries. load all the settings from all users. We set the cache here on 4 minutes since the settings aren't updated that often.
+	 * @access protected
+	 * @global $smcFunc the "handling DB stuff" var of SMF
+	 * @return array a very big associative array with the user ID as key
+	 */
+	protected function VisitLog()
+	{
+		global $smcFunc;
+
+		/* Use the cache please... */
+		if (($this->Settings = cache_get_data('Breeze:VisitLog', 120)) == null)
+		{
+			/* Load all the status, set a limit if things get complicated */
+			$result = $smcFunc['db_query']('', '
+				SELECT *
+				FROM {db_prefix}breeze_visit_log
+				',
+				array()
+			);
+
+			/* Populate the array like a boss! */
+			while ($row = $smcFunc['db_fetch_assoc']($result))
+			{
+				$this->Settings[$row['id']] = array(
+					'id' => $row['id'],
+					'profile' => $row['profile'],
+					'user' => $row['user'],
+					'time' => timeformat($row['time']),
+					'visits_module_timeframe' => $row['visits_module_timeframe']
+				);
+			}
+
+			/* Cache this beauty */
+			cache_put_data('Breeze:Settings', $this->Settings, 240);
+		}
+
+		return $this->VisitLog;
+	}
+
+	public function GetUniqueVisit($profile, $visitor)
+	{
+		$this->query_params = array(
+			'rows' =>'id',
+			'where' => 'profile = {int:profile} AND user = {int:user}'
+		);
+
+		$this->query_data = array(
+			'profile' => $profile,
+			'user' => $visitor
+		);
+
+		/* Prepare the query */
+		$this->Query('visitlogs')->Params($this->query_params, $this->query_data);
+		$this->Query('visitlogs')->GetData('id', true);
+
+		/* Done? set the arrays back to empty */
+		$this->ResetQueryArrays();
+		$temp = $this->Query('visitlogs')->DataResult();
+
+		if (!empty($temp))
+			return $temp['id'];
+
+		else
+			return false;
 	}
 
 	/* Log profile visits */
@@ -686,17 +770,8 @@ class Breeze_Query
 		if ($context['user']['is_guest'])
 			return;
 
-		$this->query_params = array(
-			'rows' => 'profile, user, time, id',
-			'where' => 'profile = {int:profile} AND user = {int:user}'
-		);
-		$this->query_data = array(
-			'profile' => $profile,
-			'user' => $visitor
-		);
-
 		/* Get all visits to this profile */
-		$already = $this->GetProfileVisits($profile, true)
+		$already = $this->GetUniqueVisit($profile, $visitor);
 
 		/* Is this your first time? */
 		if (empty($already))
@@ -715,48 +790,70 @@ class Breeze_Query
 				'id'
 			);
 
-			$this->Query('logs')->InsertData($insert_data, $insert_values, $insert_indexes);
+			$this->Query('visitlogs')->InsertData($insert_data, $insert_values, $insert_indexes);
 		}
 
 		/* No? then update the time*/
 		else
 		{
-			$update_params = array(
+			$this->query_params = array(
 				'set' =>'time = {int:time}',
 				'where' => 'profile = {int:profile} AND user = {int:user}',
 			);
 
-			$update_data = array(
+			$this->query_data = array(
 				'user' => $visitor,
 				'profile' => $profile,
 				'time' => time()
 			);
 
-			$this->Query('logs')->Params($update_params, $update_data);
-			$this->Query('logs')->UpdateData();
+			$this->Query('visitlogs')->Params($this->query_params, $this->query_data);
+			$this->Query('visitlogs')->UpdateData();
 		}
+
+		/* Clean the arrays */
+		$this->ResetQueryArrays();
 	}
 
-	public function GetProfileVisits($profile, $all = false)
+	public function GetProfilevisits($profile, $time)
 	{
-		/* temporary hard coded will depend on user's choice */
-		$last_week = strtotime('-1 week');
+		/* Get the user's choice */
+		$date = $this->GetUserSettings($profile);
+
+		/* Set the time frame */
+		switch($date)
+		{
+			case 1:
+				$timeframe = strtotime('-1 hour');
+				break;
+			case 2:
+				$timeframe = strtotime('-1 day');
+				break;
+			case 3:
+				$timeframe = strtotime('-1 week');
+				break;
+			case 4:
+				$timeframe = strtotime('-1 month');
+				break;
+			default:
+				$timeframe = strtotime('-1 week');
+		}
 
 		$params = array(
 			'rows' => 'profile, user, time, id',
-			'where' => !$all ? 'time >= {int:last_week} AND profile = {int:profile}' : 'profile = {int:profile}'
+			'where' => 'time >= {int:timeframe} AND profile = {int:profile}'
 		);
 		$data = array(
-			'last_week' => $last_week,
+			'timeframe' => $timeframe,
 			'profile' => $profile
 		);
 
-		$this->Query('logs')->Params($params, $data);
-		$this->Query('logs')->GetData('id');
+		$this->Query('visitlogs')->Params($params, $data);
+		$this->Query('visitlogs')->GetData('id');
+		$temp = $this->Query('visitlogs')->DataResult();
 
-
-		if (!empty($this->Query('logs')->DataResult()))
-			return $this->Query('logs')->DataResult();
+		if (!empty($temp))
+			return $temp;
 
 		else
 			return array();
