@@ -51,6 +51,7 @@ if (!class_exists('Breeze_DB')):
 
 			$this->rows = isset($params['rows']) ? trim($params['rows']) : null;
 			$this->where = isset($params['where']) ? 'WHERE '.trim($params['where']) : null;
+			$this->whereAnd = isset($params['and']) ? 'AND '.trim($params['and']) : null;
 			$this->limit = isset($params['limit']) ? 'LIMIT '.trim($params['limit']) : null;
 			$this->left = isset($params['left_join']) ? 'LEFT JOIN '.trim($params['left_join']) : null;
 			$this->order = isset($params['order']) ? 'ORDER BY '.trim($params['order']) : null;
@@ -68,10 +69,11 @@ if (!class_exists('Breeze_DB')):
 			$query = $smcFunc['db_query']('', '
 				SELECT '.$this->rows .'
 				FROM '.$this->table .'
-				'.$this->left .'
-				'.$this->where .'
-				'.$this->order .'
-				'.$this->limit .'
+				'. $this->left .'
+				'. $this->where .'
+				'. $this->whereAnd .'
+				'. $this->order .'
+				'. $this->limit .'
 				',
 				$this->data
 			);

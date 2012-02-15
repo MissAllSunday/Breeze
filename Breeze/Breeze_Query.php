@@ -300,7 +300,7 @@ class Breeze_Query
 	 *
 	 * This is one of the main queries. load all the status from all users.
 	 * @access protected
-	 * @global $smcFunc the "handling DB stuff" var of SMF
+	 * @global array $smcFunc the "handling DB stuff" var of SMF
 	 * @return array a very big associative array with the status ID as key
 	 */
 	protected function Status()
@@ -402,7 +402,7 @@ class Breeze_Query
 	 *
 	 * This is one of the main queries, load all the commments form all users.
 	 * @access protected
-	 * @global $smcFunc the "handling DB stuff" var of SMF
+	 * @global array $smcFunc the "handling DB stuff" var of SMF
 	 * @return array a very big associative array with the comment ID as key
 	 */
 	protected function Comments()
@@ -487,7 +487,7 @@ class Breeze_Query
 	 *
 	 * This is one of the main queries. load all the settings from all users. We set the cache here on 4 minutes since the settings aren't updated that often.
 	 * @access protected
-	 * @global $smcFunc the "handling DB stuff" var of SMF
+	 * @global array $smcFunc the "handling DB stuff" var of SMF
 	 * @return array a very big associative array with the user ID as key
 	 */
 	protected function Settings()
@@ -690,7 +690,7 @@ class Breeze_Query
 	 *
 	 * This is one of the main queries. load all the settings from all users. We set the cache here on 4 minutes since the settings aren't updated that often.
 	 * @access protected
-	 * @global $smcFunc the "handling DB stuff" var of SMF
+	 * @global array $smcFunc the "handling DB stuff" var of SMF
 	 * @return array a very big associative array with the user ID as key
 	 */
 	protected function VisitLog()
@@ -698,7 +698,7 @@ class Breeze_Query
 		global $smcFunc;
 
 		/* Use the cache please... */
-		if (($this->Settings = cache_get_data('Breeze:VisitLog', 120)) == null)
+		if (($this->VisitLog = cache_get_data('Breeze:VisitLog', 120)) == null)
 		{
 			/* Load all the status, set a limit if things get complicated */
 			$result = $smcFunc['db_query']('', '
@@ -711,50 +711,60 @@ class Breeze_Query
 			/* Populate the array like a boss! */
 			while ($row = $smcFunc['db_fetch_assoc']($result))
 			{
-				$this->Settings[$row['id']] = array(
+				$this->VisitLog[$row['id']] = array(
 					'id' => $row['id'],
 					'profile' => $row['profile'],
 					'user' => $row['user'],
-					'time' => timeformat($row['time']),
-					'visits_module_timeframe' => $row['visits_module_timeframe']
+					'time' => timeformat($row['time'])
 				);
 			}
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:Settings', $this->Settings, 240);
+			cache_put_data('Breeze:VisitLog', $this->Settings, 240);
 		}
 
 		return $this->VisitLog;
 	}
 
-	public function GetUniqueVisit($profile, $visitor)
+	/*
+	 * Return a boolean, true if the user already visited the profile, false otherwise
+	 *
+	 * Get all the visits to X profile, compare if the visitor has already visited that profile, return a boolean.
+	 * @access protected
+	 * @param int $profile the User's ID that owns the profile
+	 * @param int $visitor The User's ID who is visiting this profile
+	 * @return bool
+	 */
+	protected function GetUniqueVisit($profile, $visitor)
 	{
-		$this->query_params = array(
-			'rows' =>'id',
-			'where' => 'profile = {int:profile} AND user = {int:user}'
-		);
-
-		$this->query_data = array(
-			'profile' => $profile,
-			'user' => $visitor
-		);
-
-		/* Prepare the query */
-		$this->Query('visitlogs')->Params($this->query_params, $this->query_data);
-		$this->Query('visitlogs')->GetData('id', true);
-
-		/* Done? set the arrays back to empty */
-		$this->ResetQueryArrays();
-		$temp = $this->Query('visitlogs')->DataResult();
+		$temp = $this->GetReturn('visitlogs', 'profile', $profile, false);
+		$temp2 = array();
 
 		if (!empty($temp))
-			return $temp['id'];
+		{
+			foreach($temp as $t)
+				$temp2[] = $t['user'];
+
+			if (in_array($visitor, $temp2))
+				return true;
+
+			else
+				return false;
+		}
 
 		else
 			return false;
 	}
 
-	/* Log profile visits */
+	/*
+	 * Logs profile visitors
+	 *
+	 * Checks if the visitor has already been here, if true, just update the time, otherwise create the entry on the DB, generates a new cache entry.
+	 * @access public
+	 * @param int $profile the User's ID that owns the profile
+	 * @param int $visitor The User's ID who is visiting this profile
+	 * @return void
+	 */
 	public function WriteProfileVisit($profile, $visitor)
 	{
 		global $context;
@@ -774,7 +784,7 @@ class Breeze_Query
 		$already = $this->GetUniqueVisit($profile, $visitor);
 
 		/* Is this your first time? */
-		if (empty($already))
+		if ($already == false)
 		{
 			$insert_data = array(
 				'profile' => 'int',
@@ -813,8 +823,20 @@ class Breeze_Query
 
 		/* Clean the arrays */
 		$this->ResetQueryArrays();
+
+		/* Set new cache */
+		$this->KillCache('VisitLog');
 	}
 
+	/*
+	 * Get's all the visits to X profile in X period of time
+	 *
+	 * The time period is defined by the user in their wall settings.
+	 * @access public
+	 * @param int $profile the User's ID that owns the profile
+	 * @param int $time a simple number that represents the timeframe
+	 * @return array
+	 */
 	public function GetProfilevisits($profile, $time)
 	{
 		/* Get the user's choice */
@@ -840,7 +862,7 @@ class Breeze_Query
 		}
 
 		$params = array(
-			'rows' => 'profile, user, time, id',
+			'rows' => '*',
 			'where' => 'time >= {int:timeframe} AND profile = {int:profile}'
 		);
 		$data = array(

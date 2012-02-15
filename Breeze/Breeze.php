@@ -2,7 +2,7 @@
 
 /**
  * Breeze_
- * 
+ *
  * The purpose of this file is
  * @package Breeze mod
  * @version 1.0
@@ -68,6 +68,24 @@ class Breeze
 	}
 
 	/**
+	 * Global permissions used by this mod per user group
+	 *
+	 * There is only permissions to post new status and comments on any profile because people needs to be able to post in their own profiles by default te same goes for deleting, people are able to delete their own status/comments on their own profile page.
+	 * @param array $permissionGroups An array containing all possible permissions groups.
+	 * @param array $permissionList An associative array with all the possible permissions.
+	 * @return void
+	 */
+	public static function Permissions(&$permissionGroups, &$permissionList)
+	{
+		$permissionList['membergroup']['breeze_edit_settings_any'] = array(false, 'breeze_per_classic', 'breeze_per_simple');
+		$permissionGroups['membergroup']['simple'] = array('breeze_per_simple');
+		$permissionGroups['membergroup']['classic'] = array('breeze_per_classic');
+		$permissionList['membergroup']['breeze_deleteStatus'] = array(false, 'breeze_per_classic', 'breeze_per_simple');
+		$permissionList['membergroup']['breeze_postStatus'] = array(false, 'breeze_per_classic', 'breeze_per_simple');
+		$permissionList['membergroup']['breeze_postComments'] = array(false, 'breeze_per_classic', 'breeze_per_simple');
+	}
+
+	/**
 	 * Replace the summary action with the action created by Breeze
 	 *
 	 * @see Breeze_User::Wall()
@@ -92,7 +110,7 @@ class Breeze
 					'any' => 'profile_view_any',
 				),
 			);
-			
+
 		/* If the mod is enable, then create another page for the default profile page */
 		if ($s->Enable('admin_settings_enable'))
 			$profile_areas['info']['areas']['static'] = array(

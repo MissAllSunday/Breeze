@@ -62,6 +62,7 @@ class Breeze_User
 			'Query'
 		));
 
+		/* We kinda need all this stuff, dont' ask why, just nod your head... */
 		$settings = Breeze_Settings::getInstance();
 		$query = Breeze_Query::getInstance();
 		$tools = new Breeze_Subs();
@@ -83,7 +84,7 @@ class Breeze_User
 			$context['member']['ignore_list'] = $query->GetUserIgnoreList($context['member']['id']);
 
 		/* I'm sorry, you aren't allowed in here, but here's a nice static page :) */
-		if (in_array($user_info['id'], $context['member']['ignore_list']))
+		if (in_array($user_info['id'], $context['member']['ignore_list']) && $user_settings['kick_ignored'] == 1)
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* Display all the JavaScript bits */

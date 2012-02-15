@@ -64,6 +64,7 @@ class Breeze_Modules
 	public function GetAllModules()
 	{
 		/* This is fugly, I need to find a better way to handle modules, maybe a separate folder? */
+		$array = array();
 		$temp = get_class_methods('Breeze_Modules');
 		$temp = Breeze_Subs::Remove($temp, array(
 			$this->user_settings['enable_visits_module'] ? '' : 'enable_visits_module',
