@@ -171,33 +171,34 @@ function template_user_wall()
 
 		$counter = 0;
 
-		foreach($context['Breeze']['Modules'] as $m)
-			if (!empty($m))
-			{
-				$counter++;
+		if (!empty($context['Breeze']['Modules']))
+			foreach($context['Breeze']['Modules'] as $m)
+				if (!empty($m))
+				{
+					$counter++;
 
-				if ($counter % 2 == 0)
-					$class_id = '';
+					if ($counter % 2 == 0)
+						$class_id = '';
 
-				else
-					$class_id = '2';
+					else
+						$class_id = '2';
 
-				echo '<div class="cat_bar">
-						<h3 class="catbg">
-							<span class="ie6_header floatleft">
-								',$m['title'],'
-							</span>
-						</h3>
-					</div>';
+					echo '<div class="cat_bar">
+							<h3 class="catbg">
+								<span class="ie6_header floatleft">
+									',$m['title'],'
+								</span>
+							</h3>
+						</div>';
 
-				echo '<div class="windowbg',$class_id,'">
-						<span class="topslice"><span></span></span>
-						<div class="content">
-							',$m['data'],'
-						</div>
-						<span class="botslice"><span></span></span>
-					</div>';
-			}
+					echo '<div class="windowbg',$class_id,'">
+							<span class="topslice"><span></span></span>
+							<div class="content">
+								',$m['data'],'
+							</div>
+							<span class="botslice"><span></span></span>
+						</div>';
+				}
 
 		/* Modules end */
 		echo '</div></div>';
@@ -206,24 +207,30 @@ function template_user_wall()
 
 	/* Left side */
 	echo '<div id="detailedinfo">
-		<div class="windowbg2">
-			<span class="topslice"><span></span></span>
+			<div class="windowbg2">
+				<span class="topslice">
+					<span></span>
+				</span>
 			<div class="content">';
 
 			/* Main content */
 				/* This is the status box,  O RLY? */
-			echo '<div class="breeze_user_inner">
-					<div class="breeze_user_statusbox">
-						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post" id="status" name="form_status" class="form_status">
-							<textarea cols="40" rows="5" name="content" id="content" ></textarea>
-							<input type="hidden" value="',$context['member']['id'],'" name="owner_id" id="owner_id" />
-							<input type="hidden" value="',$user_info['id'],'" name="poster_id" id="poster_id" /><br />
-							<input type="submit" value="Update" name="submit" class="status_button"/>
-						</form>
-					</div>
-				</div>';
+			if ($context['Breeze']['visitor']['post_status'])
+				echo '<div class="breeze_user_inner">
+						<div class="breeze_user_statusbox">
+							<form method="post" action="', $scripturl, '?action=breezeajax;sa=post" id="status" name="form_status" class="form_status">
+								<textarea cols="40" rows="5" name="content" id="content" ></textarea>
+								<input type="hidden" value="',$context['member']['id'],'" name="owner_id" id="owner_id" />
+								<input type="hidden" value="',$user_info['id'],'" name="poster_id" id="poster_id" /><br />
+								<input type="submit" value="Update" name="submit" class="status_button"/>
+							</form>
+						</div>
+					</div>';
+
 		echo'</div>
-			<span class="botslice"><span></span></span>
+			<span class="botslice">
+				<span></span>
+			</span>
 		</div>';
 		/* End of the status textarea */
 
@@ -244,8 +251,13 @@ function template_user_wall()
 					</div>
 					<div class="breeze_user_status_comment">
 						',$status['body'],'
-						<div class="breeze_options"><span class="time_elapsed">',$status['time'],'</span>  <a href="javascript:void(0)" id="',$status['id'],'" class="breeze_delete_status">Delete</a> </div>
-						<hr />
+						<div class="breeze_options"><span class="time_elapsed">',$status['time'],'</span>';
+
+						/* Delete link */
+						if ($context['Breeze']['visitor']['delete_status_comments'])
+							echo '<a href="javascript:void(0)" id="',$status['id'],'" class="breeze_delete_status">Delete</a> </div>';
+
+						echo '<hr />
 						<div id="comment_flash_',$status['id'],'"></div>';
 					echo '<ul class="breeze_comments_list">';
 
@@ -265,26 +277,32 @@ function template_user_wall()
 											<div class="clear"></div>
 										</li>';
 
-						echo'<li id="comment_loadplace_',$status['id'],'" style="display:none;"></li>
+						echo'<li id="comment_loadplace_',$status['id'],'" style="display:none;"></li>';
 
-							<li><form action="', $scripturl, '?action=breezeajax;sa=postcomment" method="post" name="formID_',$status['id'],'" id="formID_',$status['id'],'">
+							/* Post a new comment */
+							if ($context['Breeze']['visitor']['post_comment'])
+								echo '<li><form action="', $scripturl, '?action=breezeajax;sa=postcomment" method="post" name="formID_',$status['id'],'" id="formID_',$status['id'],'">
 								<textarea id="textboxcontent_',$status['id'],'" cols="40" rows="2"></textarea>
 								<input type="hidden" value="',$status['poster_id'],'" name="status_owner_id',$status['id'],'" id="status_owner_id',$status['id'],'" />
 								<input type="hidden" value="',$context['member']['id'],'" name="profile_owner_id',$status['id'],'" id="profile_owner_id',$status['id'],'" />
 								<input type="hidden" value="', $status['id'] ,'" name="status_id',$status['id'],'" id="status_id', $status['id'] ,'" />
 								<input type="hidden" value="',$user_info['id'],'" name="poster_comment_id',$status['id'],'" id="poster_comment_id',$status['id'],'" /><br />
 								<input type="submit" value="Comment" class="comment_submit" id="',$status['id'],'" />
-							</form></li>
-						</ul>
+							</form></li>';
+
+						echo '</ul>
 					</div>
 					<div class="clear"></div>
 				</div>
-			<span class="botslice"><span></span></span>
+			<span class="botslice">
+				<span></span>
+			</span>
 			</li>';
 	}
 
 	/* End of left side */
-	echo '</ul></div>
+	echo '</ul>
+	</div>
 	<div class="clear"></div>
 	</div>';
 }

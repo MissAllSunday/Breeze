@@ -67,7 +67,7 @@ class Breeze_Query
 		);
 	}
 
-	/* Yes, I use a singleton, so what! */
+	/* Yes, I used a singleton, so what! */
 	public static function getInstance()
 	{
 		if (!self::$instance)
@@ -164,7 +164,6 @@ class Breeze_Query
 				else if ($t[$row] == $value && $single)
 					$this->r = $t;
 			}
-
 		}
 
 		/* Clean the Temp array */

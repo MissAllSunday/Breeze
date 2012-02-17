@@ -36,7 +36,7 @@
  */
 
 global $txt;
- 
+
 /* Public/General strings */
 $txt['BreezeMod_general_wall'] = 'Wall';
 $txt['BreezeMod_general_summary'] = 'Summary';
@@ -131,16 +131,12 @@ $txt['BreezeMod_time_year'] = 'year';
 
 /* Permissions strings */
 $txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to view the Wall.';
-$txt['permissiongroup_breeze_per'] = 'Breeze mod permissions';
-$txt['permissiongroup_simple_breeze_per'] = 'Breeze mod permissions';
-$txt['permissionname_breeze_view_general_wall'] = 'View any user\'s Wall';
-$txt['permissionname_breeze_edit_general_settings'] = 'Edit the general Breeze settings';
-$txt['permissionname_breeze_delete_entries_own_wall'] = 'Delete all entries posted on his/her own wall.';
-$txt['permissionname_breeze_delete_entries_any_wall'] = 'Delete all entries on any wall';
-$txt['permissionname_breeze_delete_comments_own_wall'] = 'Delete all comments posted on his/her own wall.';
-$txt['permissionname_breeze_delete_entries_made_by_me'] = 'Delete all entries made by this user, regarding on what wall he/she posted on.';
-$txt['permissionname_breeze_delete_comments_made_by_me'] = 'Delete all comments made by this user, regarding on what wall he/she posted on.';
-$txt['permissionname_breeze_edit_settings_any'] = 'Edit the user settings of any profile';
+$txt['permissiongroup_simple_breeze_per_simple'] = 'Breeze mod permissions';
+$txt['permissiongroup_breeze_per_classic'] = 'Breeze mod permissions';
+$txt['permissionname_breeze_deleteStatus'] = 'Delete all status/comments on any wall';
+$txt['permissionname_breeze_postStatus'] = 'Post new Status on any wall';
+$txt['permissionname_breeze_postComments'] = 'Post new Comments on any wall';
+$txt['permissionname_breeze_edit_settings_any'] = 'Edit the user settings of any wall';
 
 /* Ajax strings */
 $txt['BreezeMod_error_message'] = 'There was an error, please try again or contact the forum admin.';
@@ -151,6 +147,11 @@ $txt['BreezeMod_confirm_delete'] = 'Do you really want to delete this?';
 $txt['BreezeMod_confirm_yes'] = 'Yes';
 $txt['BreezeMod_confirm_cancel'] = 'Cancel';
 $txt['BreezeMod_already_deleted'] = 'This comment/status was already deleted.';
+
+/* Errors */
+$txt['cannot_breeze_postStatus'] = 'I\'m sorry,  you aren\'t allowed to post new Status.';
+$txt['cannot_breeze_postComments'] = 'I\'m sorry,  you aren\'t allowed to post new Comments.';
+$txt['cannot_breeze_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete Status/Comments.';
 
 
 /* Notifications */

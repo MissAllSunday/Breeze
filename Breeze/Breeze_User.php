@@ -145,6 +145,11 @@ class Breeze_User
 
 		/* Modules */
 		$context['Breeze']['Modules'] = $modules->GetAllModules();
+		
+		/* The visitor's permissions */
+		$context['Breeze']['visitor']['post_status'] = allowedTo('breeze_postStatus');
+		$context['Breeze']['visitor']['post_comment'] = allowedTo('breeze_postComments');
+		$context['Breeze']['visitor']['delete_status_comments'] = allowedTo('breeze_deleteStatus');
 
 		/* Write to the log */
 		$query->WriteProfileVisit($context['member']['id'], $user_info['id']);

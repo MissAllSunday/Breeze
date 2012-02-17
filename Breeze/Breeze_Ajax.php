@@ -81,6 +81,9 @@ abstract class Breeze_Ajax
 	{
 		global $context;
 
+		/* You aren't allowed in here, let's show you a nice message error... */
+		isAllowedTo('breeze_postStatus');
+
 		/* Set some values */
 		$context['Breeze']['ajax']['ok'] = '';
 		$context['Breeze']['ajax']['data'] = '';
@@ -127,6 +130,9 @@ abstract class Breeze_Ajax
 	public static function PostComment()
 	{
 		global $context;
+
+		/* You aren't allowed in here, let's show you a nice message error... */
+		isAllowedTo('breeze_postComments');
 
 		/* By default it will show an error, we only do stuff if necesary */
 		$context['Breeze']['ajax']['ok'] = '';
@@ -178,6 +184,9 @@ abstract class Breeze_Ajax
 	public static function Delete()
 	{
 		global $context;
+
+		/* You aren't allowed in here, let's show you a nice message error... */
+		isAllowedTo('breeze_deleteStatus');
 
 		$context['Breeze']['ajax']['ok'] = '';
 		$context['Breeze']['ajax']['data'] = '';
