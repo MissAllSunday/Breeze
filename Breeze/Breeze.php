@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breeze_
+ * Breeze
  *
  * The purpose of this file is
  * @package Breeze mod

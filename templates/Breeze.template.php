@@ -305,7 +305,8 @@ function template_user_wall()
 	echo '</ul>';
 	
 	/* Pagination panel */
-	echo $context['Breeze']['pagination']['panel'];
+	if (!empty($context['Breeze']['pagination']['panel']))
+		echo $context['Breeze']['pagination']['panel'];
 
 	/* End of left side */
 	echo '</div>

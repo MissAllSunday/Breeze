@@ -125,15 +125,27 @@ class Breeze_User
 				$status[$k]['comments'] = array();
 		}
 
-		//Getting currect page.
+		/* Getting the current page. */
 		$page = !empty($_GET['page']) ? $_GET['page'] : 1;
 
-		//Applying pagination.
-		$pagination = pagination_array($status, $page, '?action=profile;page=', '', 5, 5);
+		/* Applying pagination. */
+		$pagination = new Breeze_Pagination($status, $page, '?action=profile;page=', '', 5, 5);
+		$pagination->PaginationArray();
+		$pagtrue = $pagination->PagTrue();
 
-		/* Send the array to the template */
-		$context['member']['status'] = $pagination['array'];
-		$context['Breeze']['pagination']['panel'] = $pagination['panel'];
+		/* Send the array to the template if there is pagination*/
+		if ($pagtrue)
+		{
+			$context['member']['status'] = $pagination->OutputArray();
+			$context['Breeze']['pagination']['panel'] = $pagination->OutputPanel();
+		}
+
+		/* If not, then let's use the default array */
+		else
+		{
+			$context['member']['status'] = $status;
+			$context['Breeze']['pagination']['panel'] = '';
+		}
 
 		/* We have all the IDs, let's prune the array a little */
 		$new_temp_array = array_unique($users_to_load);
