@@ -59,7 +59,8 @@ class Breeze_User
 			'Globals',
 			'UserInfo',
 			'Modules',
-			'Query'
+			'Query',
+			'Pagination'
 		));
 
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
@@ -124,8 +125,15 @@ class Breeze_User
 				$status[$k]['comments'] = array();
 		}
 
+		//Getting currect page.
+		$page = !empty($_GET['page']) ? $_GET['page'] : 1;
+
+		//Applying pagination.
+		$pagination = pagination_array($status, $page, '?action=profile;page=', '', 5, 5);
+
 		/* Send the array to the template */
-		$context['member']['status'] = $status;
+		$context['member']['status'] = $pagination['array'];
+		$context['Breeze']['pagination']['panel'] = $pagination['panel'];
 
 		/* We have all the IDs, let's prune the array a little */
 		$new_temp_array = array_unique($users_to_load);
@@ -145,7 +153,7 @@ class Breeze_User
 
 		/* Modules */
 		$context['Breeze']['Modules'] = $modules->GetAllModules();
-		
+
 		/* The visitor's permissions */
 		$context['Breeze']['visitor']['post_status'] = allowedTo('breeze_postStatus');
 		$context['Breeze']['visitor']['post_comment'] = allowedTo('breeze_postComments');

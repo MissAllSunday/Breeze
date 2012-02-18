@@ -153,5 +153,11 @@ $txt['cannot_breeze_postStatus'] = 'I\'m sorry,  you aren\'t allowed to post new
 $txt['cannot_breeze_postComments'] = 'I\'m sorry,  you aren\'t allowed to post new Comments.';
 $txt['cannot_breeze_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete Status/Comments.';
 
+/* Pagination */
+$txt['BreezeMod_pag_previous'] = 'previous';
+$txt['BreezeMod_pag_next'] = 'next';
+$txt['BreezeMod_pag_first'] = 'First';
+$txt['BreezeMod_pag_last'] = 'Last';
+
 
 /* Notifications */

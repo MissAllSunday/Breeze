@@ -214,7 +214,8 @@ function template_user_wall()
 			<div class="content">';
 
 			/* Main content */
-				/* This is the status box,  O RLY? */
+
+			/* This is the status box,  O RLY? */
 			if ($context['Breeze']['visitor']['post_status'])
 				echo '<div class="breeze_user_inner">
 						<div class="breeze_user_statusbox">
@@ -222,7 +223,7 @@ function template_user_wall()
 								<textarea cols="40" rows="5" name="content" id="content" ></textarea>
 								<input type="hidden" value="',$context['member']['id'],'" name="owner_id" id="owner_id" />
 								<input type="hidden" value="',$user_info['id'],'" name="poster_id" id="poster_id" /><br />
-								<input type="submit" value="Update" name="submit" class="status_button"/>
+								<input type="submit" value="', $txt['post'] ,'" name="submit" class="status_button"/>
 							</form>
 						</div>
 					</div>';
@@ -235,7 +236,7 @@ function template_user_wall()
 		/* End of the status textarea */
 
 
-	/* New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING*/
+	/* New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING and even if you do, DON'T MODIFY THIS */
 	echo '<ul class="breeze_status">
 			<li id="breeze_load_image"></li>
 			<li id="breeze_display_status"></li>';
@@ -287,7 +288,7 @@ function template_user_wall()
 								<input type="hidden" value="',$context['member']['id'],'" name="profile_owner_id',$status['id'],'" id="profile_owner_id',$status['id'],'" />
 								<input type="hidden" value="', $status['id'] ,'" name="status_id',$status['id'],'" id="status_id', $status['id'] ,'" />
 								<input type="hidden" value="',$user_info['id'],'" name="poster_comment_id',$status['id'],'" id="poster_comment_id',$status['id'],'" /><br />
-								<input type="submit" value="Comment" class="comment_submit" id="',$status['id'],'" />
+								<input type="submit" value="', $txt['post'] ,'" class="comment_submit" id="',$status['id'],'" />
 							</form></li>';
 
 						echo '</ul>
@@ -300,9 +301,14 @@ function template_user_wall()
 			</li>';
 	}
 
+	/* End of list */
+	echo '</ul>';
+	
+	/* Pagination panel */
+	echo $context['Breeze']['pagination']['panel'];
+
 	/* End of left side */
-	echo '</ul>
-	</div>
+	echo '</div>
 	<div class="clear"></div>
 	</div>';
 }

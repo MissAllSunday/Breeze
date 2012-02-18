@@ -1,12 +1,12 @@
 
 /**
  * Breeze_
- * 
+ *
  * The purpose of this file is
  * @package Breeze mod
  * @version 1.0
- * @author Jessica González <missallsunday@simplemachines.org>
- * @copyright Copyright (c) 2011, Jessica González
+ * @author Jessica Gonz\xE1lez <missallsunday@simplemachines.org>
+ * @copyright Copyright (c) 2011, Jessica Gonz\xE1lez
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -35,30 +35,29 @@
  */
 
 /* The status stuff goes right here... */
-	$(document).ready(function()
+	jQuery(document).ready(function()
 	{
 		jQuery('.status_button').livequery(function()
 		{
-			$(this).click(function()
+			jQuery(this).click(function()
 			{
 				var test = jQuery('#content').val();
 				var ownerID = jQuery('#owner_id').val();
 				var posterID = jQuery('#poster_id').val();
-				var loadImage = '<img src="' + smf_images_url + '/breeze/loading.gif" /> <span class="loading">' + ajax_notification_text + '</span>';
+				var loadImage = '<img src="' + smf_images_url + '/breeze/loading.gif" /><br /> <span class="loading">' + ajax_notification_text + '</span>';
 
 				if(test=='')
-				{
 					alert(breeze_empty_message);
-				}
+
 				/* Shhh! */
 				else if(test== 'about:breeze')
 				{
-					alert('Y es que tengo un corazón tán necio \n que no comprende que no entiende \n que le hace daño amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n y es que tengo un corazón tán necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace daño \n te sigue amando igual o mucho más que ayer \n mucho más que ayer... \n');
+					alert('Y es que tengo un coraz\xF3n t\xE1n necio \n que no comprende que no entiende \n que le hace da\xF1o amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n Y es que tengo un coraz\xF3n t\xE1n necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace da\xF1o \n te sigue amando igual o mucho m\xE1s que ayer \n mucho m\xE1s que ayer... \n');
 				}
+
 				else
 				{
-					jQuery('#breeze_load_image').show("slow");
-					jQuery('#breeze_load_image').fadeIn(400).html(loadImage);
+					jQuery('#breeze_load_image').slideDown('slow').html(loadImage);
 
 					$.ajax(
 					{
@@ -68,8 +67,48 @@
 						cache: false,
 						success: function(html)
 						{
+							/*
+							 * The server side found an issue
+							 *
+							 * @todo identify the different errors and show more info about it to the forum admin
+							 */
 							if(html == 'error_')
 							{
+								jQuery('#breeze_load_image').slideUp('slow', 'linear', function(){
+									showNotification(
+									{
+										message: breeze_error_message,
+										type: 'error',
+										autoClose: true,
+										duration: 3
+									});
+								});
+							}
+
+							else
+							{
+								jQuery('#breeze_load_image').slideUp('slow', 'linear', function(){
+									document.getElementById('content').value='';
+									document.getElementById('content').focus();
+									jQuery('#breeze_display_status').slideDown('slow', 'linear', function(){
+										showNotification({
+											message: breeze_success_message,
+											type: 'success',
+											autoClose: true,
+											duration: 3
+										});
+									});
+								}).after(html);
+							}
+						},
+						error: function (html)
+						{
+							/*
+							 * Something happen while sendind the request
+							 *
+							 * @todo identify the different errors and show more info about it to the forum admin
+							 */
+							jQuery('#breeze_load_image').slideUp('slow', 'linear', function(){
 								showNotification(
 								{
 									message: breeze_error_message,
@@ -77,33 +116,7 @@
 									autoClose: true,
 									duration: 3
 								});
-								jQuery('#breeze_load_image').hide('slow');
-							}
-							else
-							{
-								jQuery('#breeze_display_status').after(html);
-								document.getElementById('content').value='';
-								document.getElementById('content').focus();
-								jQuery('#breeze_load_image').hide('slow');
-								showNotification({
-									message: breeze_success_message,
-									type: 'success',
-									autoClose: true,
-									duration: 3
-								});
-							}
-						},
-						error: function (html)
-						{
-							// Error occurred in sending request
-							showNotification(
-							{
-								message: breeze_error_message,
-								type: 'error',
-								autoClose: true,
-								duration: 3
 							});
-							jQuery('#breeze_load_image').hide('slow');
 						},
 					});
 				}
@@ -113,13 +126,13 @@
 	});
 
 /* Handle the comments */
-	$(document).ready(function()
+	jQuery(document).ready(function()
 	{
 		jQuery('.comment_submit').livequery(function()
 		{
-			$(this).click(function()
+			jQuery(this).click(function()
 			{
-				var element = $(this);
+				var element = jQuery(this);
 				var Id = element.attr('id');
 				var commentBox = jQuery('#textboxcontent_'+Id).val();
 				var loadcommentImage = '<img src="' + smf_images_url + '/breeze/loading.gif" /> <span class="loading">' + ajax_notification_text + '</span>';
@@ -129,9 +142,8 @@
 				var status_id = jQuery('#status_id'+Id).val();
 
 				if(commentBox=='')
-				{
 					alert(breeze_empty_message);
-				}
+
 				else
 				{
 					jQuery('#comment_flash_'+Id).show("slow");
@@ -186,13 +198,13 @@
 	});
 
 	/* Delete a comment */
-	$(document).ready(function()
+	jQuery(document).ready(function()
 	{
 		jQuery('.breeze_delete_comment').livequery(function()
 		{
-			$(this).click(function()
+			jQuery(this).click(function()
 			{
-				var element = $(this);
+				var element = jQuery(this);
 				var I = element.attr('id');
 				var Type = 'comment';
 
@@ -254,7 +266,7 @@
 		// The confirmation message
 		jQuery('.breeze_delete_comment').livequery(function()
 		{
-			$(this).confirm(
+			jQuery(this).confirm(
 			{
 				msg: breeze_confirm_delete + '<br />',
 				buttons:
@@ -273,28 +285,28 @@
 	});
 
 	/* Toggle the comment box */
-	$(document).ready(function()
+	jQuery(document).ready(function()
 	{
 		$(".comment_button").click(function()
 		{
-			var element = $(this);
+			var element = jQuery(this);
 			var I = element.attr('id');
 
 			$("#slidepanel"+I).slideToggle(300);
-			$(this).toggleClass("active");
+			jQuery(this).toggleClass("active");
 
 			return false;
 		});
 	});
 
 	/* Delete a status */
-	$(document).ready(function()
+	jQuery(document).ready(function()
 	{
 		jQuery('.breeze_delete_status').livequery(function()
 		{
-			$(this).click(function()
+			jQuery(this).click(function()
 			{
-				var element = $(this);
+				var element = jQuery(this);
 				var I = element.attr('id');
 				var Type = 'status';
 
@@ -346,7 +358,7 @@
 		// The confirmation message
 		jQuery('.breeze_delete_status').livequery(function()
 		{
-			$(this).confirm(
+			jQuery(this).confirm(
 			{
 				msg: breeze_confirm_delete + '<br />',
 				buttons:
@@ -401,11 +413,11 @@
 	}
 
 /* Facebox */
-	$(document).ready(function()
+	jQuery(document).ready(function()
 	{
 		jQuery('a[rel*=facebox]').livequery(function()
 		{
-			$(this).facebox(
+			jQuery(this).facebox(
 			{
 				loadingImage : smf_images_url + '/breeze/loading.gif',
 				closeImage   : smf_images_url + '/breeze/error_close.png'

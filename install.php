@@ -43,6 +43,9 @@
 
 	global $smcFunc, $context;
 
+	/* Breeze needs php 5.2 or greater */
+	BreezeCheck();
+
 	db_extend('packages');
 
 	if (empty($context['uninstalling']))
@@ -237,6 +240,12 @@
 		foreach ($tables as $table)
 		$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
 
+	}
+
+	function BreezeCheck()
+	{
+		if (version_compare(PHP_VERSION, '5.2.0', '<'))
+			fatal_error('This mod needs PHP 5.2 or greater. You will not be able to install/use this mod, contact your host and ask for a php upgrade.');
 	}
 
 ?>

@@ -3,7 +3,7 @@
 /**
  * Breeze_
  *
- * The purpose of this file is
+ * The purpose of this file is to provide some tools used across the mod
  * @package Breeze mod
  * @version 1.0
  * @author Jessica González <missallsunday@simplemachines.org>
