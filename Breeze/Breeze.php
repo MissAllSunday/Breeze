@@ -61,7 +61,7 @@ class Breeze
 
 		if (is_array($method) && !empty($method))
 				foreach($method as $m)
-						require_once($sourcedir.'/Breeze/Breeze_'.$m.'.php');
+					require_once($sourcedir.'/Breeze/Breeze_'.$m.'.php');
 
 		else
 			require_once($sourcedir.'/Breeze/Breeze_'.$method.'.php');
@@ -94,6 +94,7 @@ class Breeze
 	 */
 	public static function ProfileInfo(&$profile_areas)
 	{
+		global $user_info, $context;
 		Breeze::Load('Settings');
 
 		/* Settings are required here */
@@ -130,8 +131,8 @@ class Breeze
 				'areas' => array(),
 			);
 
-		/* User individual settings goes right here... */
-		if ($s->Enable('admin_settings_enable'))
+		/* User individual settings, show the button if the mod is enable and the user is the profile owner or the user has the permissions to edit other walls */
+		if ($s->Enable('admin_settings_enable') && ($user_info['id'] == $context['member']['id'] || allowedTo('breeze_edit_settings_any')))
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $s->GetText('user_settings_name'),
 				'file' => 'Breeze/Breeze_User.php',

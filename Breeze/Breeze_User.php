@@ -77,7 +77,19 @@ class Breeze_User
 		$user_settings = $query->GetUserSettings($context['member']['id']);
 
 		/* Does the user even enable this? */
-		if ($user_settings['enable_wall'] == 0 || !allowedTo('profile_view_own') || !allowedTo('profile_view_any'))
+		if ($user_settings['enable_wall'] == 0)
+			redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
+		/* This user cannot see his/her own profile and cannot see any profile either */
+		if (!allowedTo('profile_view_own') && !allowedTo('profile_view_any'))
+			redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
+		/* This user cannot see his/her own profile and it's viewing his/her own profile */
+		if (!allowedTo('profile_view_own') && $user_info['id'] == $context['member']['id'])
+			redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
+		/* This user cannot see any profile and it's  viewing someone else's wall */
+		if (!allowedTo('profile_view_any') && $user_info['id'] != $context['member']['id'])
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* Get this user's ignore list */
@@ -129,7 +141,7 @@ class Breeze_User
 		$page = !empty($_GET['page']) ? $_GET['page'] : 1;
 
 		/* Applying pagination. */
-		$pagination = new Breeze_Pagination($status, $page, '?action=profile;page=', '', 5, 5);
+		$pagination = new Breeze_Pagination($status, $page, '?action=profile;page=', '', !empty($user_settings['pagination_number']) ? $user_settings['pagination_number'] : 5, 5);
 		$pagination->PaginationArray();
 		$pagtrue = $pagination->PagTrue();
 
@@ -231,6 +243,11 @@ class Breeze_User
 			'kick_ignored',
 			'kick_ignored_sub'
 		), !empty($data['kick_ignored']) ? true : false);
+
+		$form->AddText('pagination_number', !empty($data['pagination_number']) ? $data['pagination_number'] : '', array(
+			'pagination_number',
+			'pagination_number_sub'
+		), 3, 3);
 
 		$form->AddHr();
 

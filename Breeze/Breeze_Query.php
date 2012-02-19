@@ -512,7 +512,8 @@ class Breeze_Query
 					'enable_wall' => $row['enable_wall'],
 					'kick_ignored' => $row['kick_ignored'],
 					'enable_visits_module' => $row['enable_visits_module'],
-					'visits_module_timeframe' => $row['visits_module_timeframe']
+					'visits_module_timeframe' => $row['visits_module_timeframe'],
+					'pagination_number' => $row['pagination_number']
 				);
 			}
 
@@ -632,7 +633,8 @@ class Breeze_Query
 				'enable_wall = {int:enable_wall},
 				kick_ignored = {int:kick_ignored},
 				visits_module_timeframe = {int:visits_module_timeframe},
-				enable_visits_module = {int:enable_visits_module}',
+				enable_visits_module = {int:enable_visits_module},
+				pagination_number = {int:pagination_number}',
 			'where' =>'user_id = {int:user_id}',
 		);
 
@@ -647,6 +649,7 @@ class Breeze_Query
 			'user_id' => 'int',
 			'enable_wall' => 'int',
 			'kick_ignored' =>'int',
+			'pagination_number' => 'int',
 			'enable_visits_module' => 'int',
 			'visits_module_timeframe' => 'int'
 		);
