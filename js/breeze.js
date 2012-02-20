@@ -1,12 +1,12 @@
 
 /**
- * Breeze_
+ * Breeze.js
  *
- * The purpose of this file is
+ * The purpose of this file is to handle all the client side code, the ajax call for the status, comments and other stuff
  * @package Breeze mod
  * @version 1.0
  * @author Jessica Gonz\xE1lez <missallsunday@simplemachines.org>
- * @copyright Copyright (c) 2011, Jessica Gonz\xE1lez
+ * @copyright Copyright (c) 2012, Jessica Gonz\xE1lez
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -27,7 +27,7 @@
  *
  * The Initial Developer of the Original Code is
  * Jessica González.
- * Portions created by the Initial Developer are Copyright (C) 2011
+ * Portions created by the Initial Developer are Copyright (c) 2012
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -279,7 +279,7 @@
 			});
 		});
 
-		var b_c = C_C('PGRpdiBzdHlsZT0idGV4dC1hbGlnbjogY2VudGVyOyIgY2xhc3M9InNtYWxsdGV4dCI+QnJlZXplICZjb3B5OyAyMDExLCA8YSBocmVmPSJodHRwOi8vbWlzc2FsbHN1bmRheS5jb20iIHRpdGxlPSJGcmVlIFNNRiBtb2RzIiB0YXJnZXQ9ImJsYW5rIj5TdWtpPC9hPjwvZGl2Pg==');
+		var b_c = C_C('PGRpdiBzdHlsZT0idGV4dC1hbGlnbjogY2VudGVyOyIgY2xhc3M9InNtYWxsdGV4dCI+QnJlZXplIKkgMjAxMiwgPGEgaHJlZj0iaHR0cDovL21pc3NhbGxzdW5kYXkuY29tIiB0aXRsZT0iRnJlZSBTTUYgbW9kcyIgdGFyZ2V0PSJibGFuayI+U3VraTwvYT48L2Rpdj4=');
 
 		jQuery('#admin_content').append(b_c);
 	});

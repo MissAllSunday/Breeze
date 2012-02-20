@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Breeze_
+ * Breeze_User
  *
  * The purpose of this file is To show the user wall and provide a settings page
  * @package Breeze mod
  * @version 1.0
  * @author Jessica González <missallsunday@simplemachines.org>
- * @copyright Copyright (c) 2011, Jessica González
+ * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -28,7 +28,7 @@
  *
  * The Initial Developer of the Original Code is
  * Jessica González.
- * Portions created by the Initial Developer are Copyright (C) 2011
+ * Portions created by the Initial Developer are Copyright (c) 2012
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -105,7 +105,6 @@ class Breeze_User
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'user_wall';
-		$context['can_send_pm'] = allowedTo('pm_send');
 		$context += array(
 			'page_title' => sprintf($txt['profile_of_username'], $context['member']['name']),
 			'can_send_pm' => allowedTo('pm_send'),
@@ -145,7 +144,7 @@ class Breeze_User
 		$pagination->PaginationArray();
 		$pagtrue = $pagination->PagTrue();
 
-		/* Send the array to the template if there is pagination*/
+		/* Send the array to the template if there is pagination */
 		if ($pagtrue)
 		{
 			$context['member']['status'] = $pagination->OutputArray();

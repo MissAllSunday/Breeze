@@ -7,7 +7,7 @@
  * @package Breeze mod
  * @version 1.0
  * @author Jessica González <missallsunday@simplemachines.org>
- * @copyright Copyright (c) 2011, Jessica González
+ * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -61,7 +61,10 @@ class Breeze_Pagination
 		$this->num_rows = count($this->UsedArray);
 
 		if (!$this->num_rows or $this->LimitPage >= $this->num_rows)
+		{
 			$this->pagtrue = false;
+			return;
+		}
 
 		$this->num_pages = ceil($this->num_rows / $this->LimitPage);
 		$this->page_offset = ($this->Page - 1) * $this->LimitPage;

@@ -3,11 +3,11 @@
 /**
  * Breeze_
  * 
- * The purpose of this file is
+ * The purpose of this file is to generate a div with the user common info, name, avatarm, post, icons, stuff like that.
  * @package Breeze mod
  * @version 1.0
  * @author Jessica González <missallsunday@simplemachines.org>
- * @copyright Copyright (c) 2011, Jessica González
+ * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -28,7 +28,7 @@
  *
  * The Initial Developer of the Original Code is
  * Jessica González.
- * Portions created by the Initial Developer are Copyright (C) 2011
+ * Portions created by the Initial Developer are Copyright (c) 2012
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):

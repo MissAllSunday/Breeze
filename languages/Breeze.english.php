@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Breeze_
+ * Breeze.english
  *
  * The purpose of this file is Provide the text strings
  * @package Breeze mod
  * @version 1.0
  * @author Jessica González <missallsunday@simplemachines.org>
- * @copyright Copyright (c) 2011, Jessica González
+ * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -28,7 +28,7 @@
  *
  * The Initial Developer of the Original Code is
  * Jessica González.
- * Portions created by the Initial Developer are Copyright (C) 2011
+ * Portions created by the Initial Developer are Copyright (c) 2012
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
