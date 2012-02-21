@@ -88,6 +88,7 @@ $txt['BreezeMod_user_settings_time_hour'] = 'Last Hour';
 $txt['BreezeMod_user_settings_time_day'] = 'Last Day';
 $txt['BreezeMod_user_settings_time_week'] = 'Last Week';
 $txt['BreezeMod_user_settings_time_month'] = 'Last Month';
+$txt['BreezeMod_user_settings_time_year'] = 'Last Year';
 $txt['BreezeMod_user_settings_show_avatar'] = 'Show avatar in list';
 $txt['BreezeMod_user_settings_show_avatar_sub'] = 'By default it shows the user link only.';
 $txt['BreezeMod_user_settings_show_last_visit'] = 'Show the last time the users visited your wall';
@@ -120,6 +121,10 @@ $txt['BreezeMod_admin_settings_enable_sub'] = 'The master setting, this must be 
 $txt['BreezeMod_admin_settings_home'] = 'Home';
 $txt['BreezeMod_admin_settings_help'] = 'Help';
 $txt['BreezeMod_admin_settings_profile'] = 'Profile';
+$txt['BreezeMod_admin_enable_limit'] = 'Enable the query limit';
+$txt['BreezeMod_admin_enable_limit_sub'] = 'If you have problems with resources, you can enable the query limit, this will load only a fraction of the total of status/comments and can help to reduce server stress.';
+$txt['BreezeMod_admin_limit_timeframe'] = 'Set the limit in time to fetch status and comments from';
+$txt['BreezeMod_admin_limit_timeframe_sub'] = 'This will fetch the status/comments only from the past selected option, for example, the last week, the last month, etc.';
 
 /* Time */
 $txt['BreezeMod_time_just_now'] = 'just now.';

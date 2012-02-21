@@ -40,7 +40,7 @@ class Breeze_Pagination
 	public function __construct($array, $page = 1, $link_prefix = false, $link_suffix = false, $limit_page = 20, $limit_number = 10)
 	{
 		if (empty($array))
-			return;
+			$this->UsedArray = array();
 
 		else
 		{

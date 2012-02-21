@@ -51,10 +51,14 @@ class Breeze_Query
 	private $temp = array();
 	private $temp2 = array();
 	private $valid = false;
+	private $global_settings;
 
 	private function __construct()
 	{
-		Breeze::Load('DB');
+		Breeze::Load(array(
+			'DB',
+			'Settings'
+		));
 
 		$this->query = array(
 			'status' => new Breeze_DB('breeze_status'),
@@ -65,6 +69,8 @@ class Breeze_Query
 			'likes' => new Breeze_DB('breeze_likes'),
 			'member' => new Breeze_DB('members')
 		);
+
+		$this->global_settings = Breeze_Settings::getInstance();
 	}
 
 	/* Yes, I used a singleton, so what! */
@@ -322,9 +328,12 @@ class Breeze_Query
 			$result = $smcFunc['db_query']('', '
 				SELECT *
 				FROM {db_prefix}breeze_status
+				'. ($this->global_settings->Enable('admin_enable_limit') && $this->global_settings->Enable('admin_limit_timeframe') ? 'WHERE status_time >= {int:status_time}' : '' ).'
 				ORDER BY status_time DESC
 				',
-				array()
+				array(
+					'status_time' => $this->global_settings->GetSetting('admin_limit_timeframe'),
+				)
 			);
 
 			/* Populate the array like a boss! */
@@ -424,9 +433,12 @@ class Breeze_Query
 			$result = $smcFunc['db_query']('', '
 				SELECT *
 				FROM {db_prefix}breeze_comments
+				'. ($this->global_settings->Enable('admin_enable_limit') && $this->global_settings->Enable('admin_limit_timeframe') ? 'WHERE comments_time >= {int:comments_time}' : '' ).'
 				ORDER BY comments_time DESC
 				',
-				array()
+				array(
+					'comments_time' => $this->global_settings->GetSetting('admin_limit_timeframe'),
+				)
 			);
 
 			/* Populate the array like a comments boss! */

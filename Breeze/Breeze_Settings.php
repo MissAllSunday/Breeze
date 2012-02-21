@@ -72,6 +72,12 @@ class Breeze_Settings
 			if (preg_match($this->pattern, $km))
 			{
 				$km = str_replace('BreezeMod_', '', $km);
+
+				/* Hickjack this to convert the string to a timestamp */
+				if ($km == 'admin_limit_timeframe')
+					$vm = strtotime('-1 '.$vm);
+
+				/* Done? then populate the new array */
 				$this->matchesSettings[$km] = $vm;
 			}
 
