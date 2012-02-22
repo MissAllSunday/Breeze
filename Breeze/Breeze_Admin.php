@@ -43,7 +43,7 @@ if (!defined('SMF'))
 	{
 		global $scripturl, $context;
 
-		loadtemplate('Breeze');
+		loadtemplate('BreezeAdmin');
 		Breeze::Load(array('Settings','Subs'));
 
 		$text = Breeze_Settings::getInstance();

@@ -100,6 +100,7 @@ $txt['BreezeMod_user_modules_name'] = 'Modules';
 
 /* Admin Settings */
 $txt['BreezeMod_admin_settings_admin_panel'] = 'Breeze Admin Panel';
+$txt['BreezeMod_admin_welcome'] = 'This is your &quot;%1$s&quot;.  From here, you can edit the settings for Breeze If you have any trouble, feel free to <a href="http://missallsunday.com" target="_blank" class="new_win">ask for support</a> on the author\'s site.';
 $txt['BreezeMod_admin_settings_main'] = 'Main breeze Admin Center';
 $txt['BreezeMod_admin_settings_settings'] = 'breeze General Settings';
 $txt['BreezeMod_admin_settings_donate'] = 'Donate';

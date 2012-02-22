@@ -215,7 +215,7 @@ class Breeze_Query
 	/*
 	 * Get a single value from an specified array.
 	 *
-	 * Needs a type, a row and a value, this iterates X array looking for X value in X row. Yes, this can be used to fetch more than I value if you really want to fetch more than 1 value.
+	 * Needs a type, a row and a value, this iterates X array looking for X value in X row. Yes, this can be used to fetch more than one value if you really want to fetch more than 1 value.
 	 * @param string $type the data type
 	 * @param string $row the row where thoe fetch the value from, should be the actual row name in the array, not the rown name in the DB.
 	 * @param mixed $value  Most of the cases will be a int. the int is actually the ID of the particular value you are trying to fetch.
@@ -291,7 +291,7 @@ class Breeze_Query
 	/*
 	 * Decorates the way we call a query. Oh! and calls the right table.
 	 *
-	 * This is one of the main queries. load all the status from all users.
+	 * Call the right value in the query object.
 	 * @access private
 	 * @return array an array with the right query call.
 	 */
@@ -508,7 +508,7 @@ class Breeze_Query
 		/* Use the cache please... */
 		if (($this->Settings = cache_get_data('Breeze:Settings', 240)) == null)
 		{
-			/* Load all the status, set a limit if things get complicated */
+			/* Load all the settings from all users */
 			$result = $smcFunc['db_query']('', '
 				SELECT *
 				FROM {db_prefix}breeze_user_settings
@@ -895,3 +895,10 @@ class Breeze_Query
 			return array();
 	}
 }
+
+/*
+ * Saturday is almost over
+ * getting high on stormy weather
+ * something to remember
+ * a sunny day can make you crumble.
+ */

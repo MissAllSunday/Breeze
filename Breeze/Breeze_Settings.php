@@ -81,7 +81,6 @@ class Breeze_Settings
 				$this->matchesSettings[$km] = $vm;
 			}
 
-
 		$this->Settings = $this->matchesSettings;
 
 		/* Again, this time for $txt. */

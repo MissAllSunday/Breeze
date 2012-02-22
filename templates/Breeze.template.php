@@ -35,45 +35,6 @@
  *
  */
 
-	/* This will be moved to its own template... eventually */
-function template_admin_home()
-{
-	global $txt, $context;
-
-	echo '
-	<script type="text/javascript">
-$(document).ready(function () {
-	$(\'#Breeze_rss\').rssfeed(\'',$context['breeze']['rss_url'],'\', {
-		limit: 5
-	});
-});
-</script>
-	<div class="breeze_rss_box">
-		<span class="clear upperframe">
-			<span></span>
-		</span>
-		<div class="roundframe rfix">
-			<div class="innerframe">
-				<div class="content">
-					<div id="Breeze_rss"></div>
-				</div>
-			</div>
-		</div>
-		<span class="lowerframe">
-			<span></span>
-		</span>
-	</div>
-	<div class="breeze_admin_info">
-	';
-
-	foreach($context['breeze']['versions'] as $version)
-		echo $version;
-
-	echo'<br />I dont know what else I should put in here...</div>
-	<div class="clear"></div>';
-}
-
-
 /* General wall... */
 	/* This will be moved to its own template... eventually */
 function template_general_wall()
