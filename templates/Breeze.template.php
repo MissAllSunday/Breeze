@@ -291,24 +291,3 @@ function template_user_settings()
 			<span class="botslice"><span></span></span>
 		</div><br />';
 }
-
-/* Boring stuff you will never see... */
-function template_admin_donate()
-{
-	global $txt;
-
-	echo '
-		<span class="clear upperframe">
-			<span></span>
-		</span>
-		<div class="roundframe rfix">
-			<div class="innerframe">
-				<div class="content">
-					',$txt['BreezeMod_admin_settings_donate_text'],'
-				</div>
-			</div>
-		</div>
-		<span class="lowerframe">
-			<span></span>
-		</span><br />';
-}

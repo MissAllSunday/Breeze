@@ -35,12 +35,12 @@
  *
  */
 
-	/* This will be moved to its own template... eventually */
+	/* The admin panel where the news and other very useful stuff is displayed*/
 function template_admin_home()
 {
 	global $txt, $context;
 
-	// Welcome message for the admin.
+	/* Welcome message for the admin. */
 	echo '
 	<div id="admincenter">
 		<div class="cat_bar">
@@ -58,36 +58,36 @@ function template_admin_home()
 		</div>
 		<span class="lowerframe"><span></span></span>';
 
-	// Is there an update available?
+	/* Is there an update available? */
 	echo '
 		<div id="update_section"></div>';
 
 	echo '
 		<div id="admin_main_section">';
 
-	// Display the "live news" from simplemachines.org.
+	/* Display the "live news" from missallsunday.com. */
 	echo '
 			<div id="live_news" class="floatleft">
 				<div class="cat_bar">
 					<h3 class="catbg">
-						<span class="ie6_header floatleft"><a href="', $scripturl, '?action=helpadmin;help=live_news" onclick="return reqWin(this.href);" class="help"><img src="', $settings['images_url'], '/helptopics.gif" class="icon" alt="', $txt['help'], '" /></a> ', $txt['live'], '</span>
+						<span class="ie6_header floatleft">', $txt['BreezeMod_admin_live'] , '</span>
 					</h3>
 				</div>
 				<div class="windowbg nopadding">
 					<span class="topslice"><span></span></span>
-					<div class="content">
-						<div id="smfAnnouncements">', $txt['lfyi'], '</div>
+					<div class="content" id="breezelive">
+						<div id="breezelive"></div>
 					</div>
 					<span class="botslice"><span></span></span>
 				</div>
 			</div>';
 
-	// Show the user version information from their server.
+	/* Show the Breeze version. */
 	echo '
 			<div id="supportVersionsTable" class="floatright">
 				<div class="cat_bar">
 					<h3 class="catbg">
-						<a href="', $scripturl, '?action=admin;area=credits">', $txt['support_title'], '</a>
+						', $txt['support_title'], '
 					</h3>
 				</div>
 				<div class="windowbg nopadding">
@@ -95,21 +95,10 @@ function template_admin_home()
 					<div class="content">
 						<div id="version_details">
 							<strong>', $txt['support_versions'], ':</strong><br />
-							', $txt['support_versions_forum'], ':
-							<em id="yourVersion" style="white-space: nowrap;">', $context['forum_version'], '</em><br />
-							', $txt['support_versions_current'], ':
-							<em id="smfVersion" style="white-space: nowrap;">??</em><br />
-							', $context['can_admin'] ? '<a href="' . $scripturl . '?action=admin;area=maintain;sa=routine;activity=version">' . $txt['version_check_more'] . '</a>' : '', '<br />';
+							', $txt['BreezeMod_admin_breeze_version'] , ':
+							<em id="yourVersion" style="white-space: nowrap;">', $context['Breeze']['version'] , '</em><br />';
 
-	// Display all the members who can administrate the forum.
-	echo '
-							<br />
-							<strong>', $txt['administrators'], ':</strong>
-							', implode(', ', $context['administrators']);
-	// If we have lots of admins... don't show them all.
-	if (!empty($context['more_admins_link']))
-		echo '
-							(', $context['more_admins_link'], ')';
+		/* Some more stuff will be here... eventually */
 
 	echo '
 						</div>
@@ -117,6 +106,27 @@ function template_admin_home()
 					<span class="botslice"><span></span></span>
 				</div>
 			</div>
-		</div>';
+		</div>
+	</div>';
+}
 
+/* Boring stuff you will never see... */
+function template_admin_donate()
+{
+	global $txt;
+
+	echo '
+		<span class="clear upperframe">
+			<span></span>
+		</span>
+		<div class="roundframe rfix">
+			<div class="innerframe">
+				<div class="content">
+					',$txt['BreezeMod_admin_settings_donate_text'],'
+				</div>
+			</div>
+		</div>
+		<span class="lowerframe">
+			<span></span>
+		</span><br />';
 }

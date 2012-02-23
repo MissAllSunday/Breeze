@@ -126,6 +126,9 @@ $txt['BreezeMod_admin_enable_limit'] = 'Enable the query limit';
 $txt['BreezeMod_admin_enable_limit_sub'] = 'If you have problems with resources, you can enable the query limit, this will load only a fraction of the total of status/comments and can help to reduce server stress.';
 $txt['BreezeMod_admin_limit_timeframe'] = 'Set the limit in time to fetch status and comments from';
 $txt['BreezeMod_admin_limit_timeframe_sub'] = 'This will fetch the status/comments only from the past selected option, for example, the last week, the last month, etc.';
+$txt['BreezeMod_admin_breeze_version'] = 'Breeze version';
+$txt['BreezeMod_admin_live'] = 'Live from the suport forum...';
+
 
 /* Time */
 $txt['BreezeMod_time_just_now'] = 'just now.';
@@ -147,6 +150,7 @@ $txt['permissionname_breeze_postComments'] = 'Post new Comments on any wall';
 $txt['permissionname_breeze_edit_settings_any'] = 'Edit the user settings of any wall';
 
 /* Ajax strings */
+$txt['BreezeMod_feed_error_message'] = 'Breeze couldn\'t connect with the support site';
 $txt['BreezeMod_error_message'] = 'There was an error, please try again or contact the forum admin.';
 $txt['BreezeMod_success_message'] = 'Your message was successfully published';
 $txt['BreezeMod_empty_message'] = 'You need to type something in the textbox.';

@@ -48,16 +48,15 @@ if (!defined('SMF'))
 
 		$text = Breeze_Settings::getInstance();
 
+		/* Get the version */
+		$context['Breeze']['version'] = Breeze::$BreezeVersion;
+
 		/* Set all the page stuff */
 		$context['page_title'] = $text->GetText('admin_settings_main');
 		$context['sub_template'] = 'admin_home';
 
 		/* Headers */
 		Breeze_Subs::Headers(true);
-
-		/* Tell them if their server is up to the challange*/
-		$version = new Breeze_Subs();
-		$context['breeze']['versions'] = $version->CheckVersions();
 	}
 
 	function Breeze_Admin_Settings()
@@ -98,7 +97,7 @@ if (!defined('SMF'))
 	{
 		global $context, $scripturl;
 
-		loadtemplate('Breeze');
+		loadtemplate('BreezeAdmin');
 		Breeze::Load('Subs', 'Settings');
 
 		/* Headers */

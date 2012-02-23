@@ -40,6 +40,8 @@ if (!defined('SMF'))
 
 class Breeze
 {
+	static public $BreezeVersion = '1.0';
+
 	public function __construct()
 	{
 	}

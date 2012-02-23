@@ -111,7 +111,38 @@ class Breeze_Subs
 		if($admin)
 		{
 			$context['html_headers'] .= '
-			<script src="'. $settings['theme_url']. '/js/jquery.zrssfeed.min.js" type="text/javascript"></script>';
+			<script src="'. $settings['theme_url']. '/js/jquery.zrssfeed.min.js" type="text/javascript"></script>
+			<script type="text/javascript">
+var breeze_feed_error_message = "'. $text->GetText('feed_error_message') .'";
+
+$(document).ready(function () 
+{
+	$(\'#breezelive\').rssfeed(\'http://missallsunday.com/.xml/type.rss/\', 
+	{
+		limit: 5,
+		header: false,
+		date: true,
+		errormsg: breeze_feed_error_message
+   });
+});
+ </script>
+<style type="text/css">
+#breezelive
+{
+	width:95%;
+	margin:auto;
+}
+#breezelive ul
+ {
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+ }
+ #breezelive ul li
+ {
+	margin-left: 10px;
+ }
+</style>';
 		}
 	}
 
