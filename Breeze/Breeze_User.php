@@ -5,7 +5,7 @@
  *
  * The purpose of this file is To show the user wall and provide a settings page
  * @package Breeze mod
- * @version 1.0
+ * @version 1.0 Beta 1
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -77,7 +77,7 @@ class Breeze_User
 		$user_settings = $query->GetUserSettings($context['member']['id']);
 
 		/* Does the user even enable this? */
-		if ($user_settings['enable_wall'] == 0)
+		if (!isset($user_settings['enable_wall']))
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* This user cannot see his/her own profile and cannot see any profile either */

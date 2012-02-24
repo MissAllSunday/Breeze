@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to show all the current, enable modules for the users.
  * @package Breeze mod
- * @version 1.0
+ * @version 1.0 Beta 1
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html

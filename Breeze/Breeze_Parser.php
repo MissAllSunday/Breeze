@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to identify something in a tezt string and convert that to something different, for example, a url into an actual html link.
  * @package Breeze mod
- * @version 1.0
+ * @version 1.0 Beta 1
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html

@@ -5,7 +5,7 @@
  *
  * The purpose of this file is, the main file, handles the hooks, the actions, permissions, load needed files, etc.
  * @package Breeze mod
- * @version 1.0
+ * @version 1.0 Beta 1
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -157,9 +157,10 @@ class Breeze
 	 */
 	public static function WallMenu(&$menu_buttons)
 	{
+		return;
+
 		global $scripturl, $context;
 
-		loadLanguage('Breeze');
 		Breeze::Load('Settings');
 
 		/* Settings are required here */
@@ -169,7 +170,7 @@ class Breeze
 		if ($s->Enable('admin_settings_enablegeneralwall') == false)
 			return;
 
-		$insert = $s->get('breeze_admin_settings_menuposition') == 'home' ? 'home' : $s->get('breeze_admin_settings_menuposition');
+		$insert = $s->GetSetting('breeze_admin_settings_menuposition') == 'home' ? 'home' : $s->GetSetting('breeze_admin_settings_menuposition');
 
 		/* Let's add our button next to the admin's selection...
 		Thanks to SlammedDime <http://mattzuba.com> for the example */
@@ -181,34 +182,34 @@ class Breeze
 		$menu_buttons = array_merge(
 			array_slice($menu_buttons, 0, $counter),
 			array('breeze_Wall' => array(
-			'title' => $s->GetText('general_wall'),
-			'href' => $scripturl . '?action=wall',
-			'show' => allowedTo('breeze_view_general_wall'),
-			'sub_buttons' => array(
-				'my_wall' => array(
-					'title' => $s->GetText('general_my_wall'),
-					'href' => $scripturl . '?action=profile',
-					'show' => allowedTo('profile_view_own'),
-					'sub_buttons' => array(
-						'my_wall_settings' => array(
-							'title' => $s->GetText('user_settings_name'),
-							'href' => $scripturl . '?action=profile;area=breezesettings',
-							'show' => allowedTo('profile_view_own'),
-						),
-						'my_wall_permissions' => array(
-							'title' => $s->GetText('user_permissions_name'),
-							'href' => $scripturl . '?action=profile;area=breezepermissions',
-							'show' => allowedTo('profile_view_own'),
+				'title' => $s->GetText('general_wall'),
+				'href' => $scripturl . '?action=wall',
+				'show' => allowedTo('breeze_view_general_wall'),
+				'sub_buttons' => array(
+					'my_wall' => array(
+						'title' => $s->GetText('general_my_wall'),
+						'href' => $scripturl . '?action=profile',
+						'show' => allowedTo('profile_view_own'),
+						'sub_buttons' => array(
+							'my_wall_settings' => array(
+								'title' => $s->GetText('user_settings_name'),
+								'href' => $scripturl . '?action=profile;area=breezesettings',
+								'show' => allowedTo('profile_view_own'),
+							),
+							'my_wall_permissions' => array(
+								'title' => $s->GetText('user_permissions_name'),
+								'href' => $scripturl . '?action=profile;area=breezepermissions',
+								'show' => allowedTo('profile_view_own'),
+							),
 						),
 					),
+					'breeze_admin_panel' => array(
+						'title' => $s->GetText('admin_settings_admin_panel'),
+						'href' => $scripturl . '?action=admin;area=breezeindex',
+						'show' => allowedTo('breeze_edit_general_settings'),
+					),
 				),
-				'breeze_admin_panel' => array(
-					'title' => $s->GetText('admin_settings_admin_panel'),
-					'href' => $scripturl . '?action=admin;area=breezeindex',
-					'show' => allowedTo('breeze_edit_general_settings'),
-				),
-			),
-		)),
+			)),
 			array_slice($menu_buttons, $counter)
 		);
 	}
@@ -247,7 +248,7 @@ class Breeze
 
 		$text = Breeze_Settings::getInstance();
 
-		$admin_menu['breezeadmin']= array(
+		$admin_menu['breezeadmin'] = array(
 			'title' => $text->GetText('admin_settings_admin_panel'),
 			'permission' => array('breeze_edit_general_settings'),
 			'areas' => array(

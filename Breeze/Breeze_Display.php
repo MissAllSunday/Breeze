@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Breeze_
+ * Breeze_Display.php
  *
  * The purpose of this file is to create proper html based on the type and the info it got.
  * @package Breeze mod
- * @version 1.0
+ * @version 1.0 Beta 1
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -96,7 +96,8 @@ class Breeze_Display
 
 						/* New status don't have comments... */
 
-						$this->ReturnArray .= '<li id="comment_loadplace_'. $this->params['id'] .'"></li>
+						$this->ReturnArray .= '<li id="breeze_load_image_comment_'. $this->params['id'] .'"></li>
+						<li id="comment_loadplace_'. $this->params['id'] .'"></li>
 
 							<li><form action="'. $scripturl. '?action=breezeajax;sa=postcomment" method="post" name="formID_'. $this->params['id'] .'" id="formID_'. $this->params['id'] .'">
 								<textarea id="textboxcontent_'. $this->params['id'] .'" cols="40" rows="2"></textarea>
@@ -109,7 +110,7 @@ class Breeze_Display
 				break;
 			case 'comment':
 				$this->ReturnArray = '
-					<li class="description" id ="comment_id_'. $this->params['id'] .'">
+					<li class="windowbg2" id ="comment_id_'. $this->params['id'] .'">
 						<div class="breeze_user_comment_avatar">
 							'. $this->UserInfo .'<br />
 						</div>

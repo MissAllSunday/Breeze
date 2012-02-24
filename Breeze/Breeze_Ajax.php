@@ -5,7 +5,7 @@
  *
  * The purpose of this file is
  * @package Breeze mod
- * @version 1.0
+ * @version 1.0 Beta 1
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -93,14 +93,14 @@ abstract class Breeze_Ajax
 		$query = Breeze_Query::getInstance();
 
 		/* Do this only if there is something to add to the database */
-		if ($data->ValidateBody('content'))
+		if ($data->ValidateBody('breeze_post_status'))
 		{
 			/* Build the params array for the query */
 			$params = array(
 				'owner_id' => $data->See('owner_id'),
 				'poster_id' => $data->See('poster_id'),
 				'time' => time(),
-				'body' => $data->See('content')
+				'body' => $data->See('breeze_post_status')
 			);
 
 			/* Store the status */
@@ -141,6 +141,8 @@ abstract class Breeze_Ajax
 		$data = new Breeze_Globals('post');
 		$query = Breeze_Query::getInstance();
 		$temp_id_exists = $query->GetSingleValue('status', 'id', $data->See('status_id'));
+		
+		
 
 		/* The status do exists and the data is valid*/
 		if ($data->ValidateBody('content') && !empty($temp_id_exists))

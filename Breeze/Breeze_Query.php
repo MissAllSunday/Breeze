@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to have all queries made by this mod in a single place, probably the most important file and the biggest one too.
  * @package Breeze mod
- * @version 1.0
+ * @version 1.0 Beta 1
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html

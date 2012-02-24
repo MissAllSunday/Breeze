@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Breeze_
+ * remove.php
  *
- * The purpose of this file is
+ * The purpose of this file is to remove the hooks when uninstall
  * @package Breeze mod
  * @version 1.0 Beta 1
  * @author Jessica González <missallsunday@simplemachines.org>
@@ -44,14 +44,15 @@
 	/* Everybody likes hooks */
 	$hooks = array(
 		'integrate_pre_include' => '$sourcedir/Breeze/Breeze.php',
-		/* 'integrate_menu_buttons' => 'Breeze::WallMenu', */
+		/* 'integrate_menu_buttons' => 'Breeze::Wall_Menu', */
 		'integrate_actions' => 'Breeze::Action_Hook',
 		'integrate_load_permissions' => 'Breeze::Permissions',
 		'integrate_admin_areas' => 'Breeze::Admin_Button',
-		'integrate_profile_areas' => 'Breeze::ProfileInfo'
+		'integrate_profile_areas' => 'Breeze::Profile_Info'
 	);
 
-	$call = 'add_integration_function';
+	/* Uninstall please */
+	$call = 'remove_integration_function';
 
 	foreach ($hooks as $hook => $function)
 		$call($hook, $function);
