@@ -5,7 +5,7 @@
  *
  * The purpose of this file is
  * @package Breeze mod
- * @version 1.0
+ * @version 1.0 Beta 1
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -181,7 +181,7 @@ function template_user_wall()
 				echo '<div class="breeze_user_inner">
 						<div class="breeze_user_statusbox">
 							<form method="post" action="', $scripturl, '?action=breezeajax;sa=post" id="status" name="form_status" class="form_status">
-								<textarea cols="40" rows="5" name="breeze_post_status" id="breeze_post_status" ></textarea><br />
+								<textarea cols="40" rows="5" name="content" id="content" ></textarea>
 								<input type="hidden" value="',$context['member']['id'],'" name="owner_id" id="owner_id" />
 								<input type="hidden" value="',$user_info['id'],'" name="poster_id" id="poster_id" /><br />
 								<input type="submit" value="', $txt['post'] ,'" name="submit" class="status_button"/>
@@ -240,8 +240,8 @@ function template_user_wall()
 										</li>';
 
 						/* Display the new comments */
-						echo'<li id="breeze_load_image_comment_', $status['id'] ,'"></li>
-						<li id="comment_loadplace_', $status['id'] ,'" style="display:none;"></li>';
+						echo '<li id="comment_loadplace_', $status['id'] ,'" style="display:none;"></li>
+						<li id="breeze_load_image_comment_', $status['id'] ,'" style="margin:auto; text-align:center;"></li>';
 
 							/* Post a new comment */
 							if ($context['Breeze']['visitor']['post_comment'])

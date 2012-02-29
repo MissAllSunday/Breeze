@@ -434,7 +434,7 @@ class Breeze_Query
 				SELECT *
 				FROM {db_prefix}breeze_comments
 				'. ($this->global_settings->Enable('admin_enable_limit') && $this->global_settings->Enable('admin_limit_timeframe') ? 'WHERE comments_time >= {int:comments_time}' : '' ).'
-				ORDER BY comments_time DESC
+				ORDER BY comments_time ASC
 				',
 				array(
 					'comments_time' => $this->global_settings->GetSetting('admin_limit_timeframe'),

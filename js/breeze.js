@@ -4,7 +4,7 @@
  *
  * The purpose of this file is to handle all the client side code, the ajax call for the status, comments and other stuff
  * @package Breeze mod
- * @version 1.0
+ * @version 1.0 Beta 1
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -41,29 +41,29 @@
 		{
 			jQuery(this).click(function()
 			{
-				var breeze_post_status = jQuery('#breeze_post_status').val();
+				var test = jQuery('#content').val();
 				var ownerID = jQuery('#owner_id').val();
 				var posterID = jQuery('#poster_id').val();
 				var loadImage = '<img src="' + smf_images_url + '/breeze/loading.gif" /><br /> <span class="loading">' + ajax_notification_text + '</span>';
 
-				if(breeze_post_status=='')
+				if(test=='')
 					alert(breeze_empty_message);
 
 				/* Shhh! */
-				else if(breeze_post_status== 'about:breeze')
+				else if(test== 'about:breeze')
 				{
 					alert('Y es que tengo un coraz\xF3n t\xE1n necio \n que no comprende que no entiende \n que le hace da\xF1o amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n Y es que tengo un coraz\xF3n t\xE1n necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace da\xF1o \n te sigue amando igual o mucho m\xE1s que ayer \n mucho m\xE1s que ayer... \n');
 				}
 
 				else
 				{
-					jQuery('#breeze_load_image').slideDown('slow').html(loadImage);
+					jQuery('#breeze_load_image').fadeIn('slow').html(loadImage);
 
 					$.ajax(
 					{
 						type: 'POST',
 						url: smf_scripturl + '?action=breezeajax;sa=post',
-						data: ({breeze_post_status : breeze_post_status, owner_id : ownerID, poster_id : posterID}),
+						data: ({content : test, owner_id : ownerID, poster_id : posterID}),
 						cache: false,
 						success: function(html)
 						{
@@ -74,7 +74,7 @@
 							 */
 							if(html == 'error_')
 							{
-								jQuery('#breeze_load_image').slideUp('slow', 'linear', function(){
+								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
 									showNotification(
 									{
 										message: breeze_error_message,
@@ -87,10 +87,13 @@
 
 							else
 							{
-								jQuery('#breeze_load_image').slideUp('slow', 'linear', function(){
-									document.getElementById('breeze_post_status').value='';
-									document.getElementById('breeze_post_status').focus();
-									jQuery('#breeze_display_status').slideDown('slow', 'linear', function(){
+								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
+									document.getElementById('content').value='';
+									document.getElementById('content').focus();
+
+									jQuery('#breeze_display_status').append(html);
+
+									jQuery('#breeze_display_status').fadeIn('slow', 'linear', function(){
 										showNotification({
 											message: breeze_success_message,
 											type: 'success',
@@ -98,7 +101,7 @@
 											duration: 3
 										});
 									});
-								}).after(html);
+								});
 							}
 						},
 						error: function (html)
@@ -147,7 +150,7 @@
 
 				else
 				{
-					jQuery('#breeze_load_image_comment_'+Id).slideDown('slow').html(loadImage);
+					jQuery('#breeze_load_image_comment_'+Id).fadeIn('slow').html(loadImage);
 
 					$.ajax(
 					{
@@ -159,7 +162,7 @@
 						{
 							if(html == 'error_')
 							{
-								jQuery('#breeze_load_image_comment_'+Id).slideUp('slow', 'linear', function()
+								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function()
 								{
 									showNotification(
 									{
@@ -173,12 +176,14 @@
 
 							else
 							{
-								jQuery('#breeze_load_image_comment_'+Id).slideUp('slow', 'linear', function()
+								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function()
 								{
 									document.getElementById('textboxcontent_'+Id).value='';
 									document.getElementById('textboxcontent_'+Id).focus();
 
-									jQuery('#comment_loadplace_'+Id).slideDown('slow', 'linear', function()
+									jQuery('#comment_loadplace_'+Id).append(html);
+
+									jQuery('#comment_loadplace_'+Id).fadeIn('slow', 'linear', function()
 									{
 										showNotification({
 											message: breeze_success_message,
@@ -187,12 +192,12 @@
 											duration: 3
 										});
 									});
-								}).after(html);
+								});
 							}
 						},
 						error: function (html)
 						{
-							jQuery('#breeze_load_image_comment_'+Id).slideUp('slow', 'linear', function()
+							jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function()
 							{
 								showNotification(
 								{

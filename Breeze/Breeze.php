@@ -157,10 +157,9 @@ class Breeze
 	 */
 	public static function WallMenu(&$menu_buttons)
 	{
-		return;
-
 		global $scripturl, $context;
 
+		loadLanguage('Breeze');
 		Breeze::Load('Settings');
 
 		/* Settings are required here */
@@ -170,7 +169,7 @@ class Breeze
 		if ($s->Enable('admin_settings_enablegeneralwall') == false)
 			return;
 
-		$insert = $s->GetSetting('breeze_admin_settings_menuposition') == 'home' ? 'home' : $s->GetSetting('breeze_admin_settings_menuposition');
+		$insert = $s->get('breeze_admin_settings_menuposition') == 'home' ? 'home' : $s->get('breeze_admin_settings_menuposition');
 
 		/* Let's add our button next to the admin's selection...
 		Thanks to SlammedDime <http://mattzuba.com> for the example */

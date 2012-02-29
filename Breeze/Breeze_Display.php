@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breeze_Display.php
+ * Breeze_
  *
  * The purpose of this file is to create proper html based on the type and the info it got.
  * @package Breeze mod
@@ -96,8 +96,7 @@ class Breeze_Display
 
 						/* New status don't have comments... */
 
-						$this->ReturnArray .= '<li id="breeze_load_image_comment_'. $this->params['id'] .'"></li>
-						<li id="comment_loadplace_'. $this->params['id'] .'"></li>
+						$this->ReturnArray .= '
 
 							<li><form action="'. $scripturl. '?action=breezeajax;sa=postcomment" method="post" name="formID_'. $this->params['id'] .'" id="formID_'. $this->params['id'] .'">
 								<textarea id="textboxcontent_'. $this->params['id'] .'" cols="40" rows="2"></textarea>

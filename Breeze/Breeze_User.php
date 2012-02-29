@@ -77,7 +77,7 @@ class Breeze_User
 		$user_settings = $query->GetUserSettings($context['member']['id']);
 
 		/* Does the user even enable this? */
-		if (!isset($user_settings['enable_wall']))
+		if ($user_settings['enable_wall'] == 0)
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* This user cannot see his/her own profile and cannot see any profile either */
