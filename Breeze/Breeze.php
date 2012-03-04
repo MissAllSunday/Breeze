@@ -42,6 +42,8 @@ class Breeze
 {
 	static public $BreezeVersion = '1.0';
 
+	static public $BreezeFolder = '/Breeze/';
+
 	public function __construct()
 	{
 	}
@@ -63,10 +65,10 @@ class Breeze
 
 		if (is_array($method) && !empty($method))
 				foreach($method as $m)
-					require_once($sourcedir.'/Breeze/Breeze_'.$m.'.php');
+					require_once($sourcedir. Breeze::$BreezeFolder . 'Breeze_'.$m.'.php');
 
 		else
-			require_once($sourcedir.'/Breeze/Breeze_'.$method.'.php');
+			require_once($sourcedir . Breeze::$BreezeFolder .'Breeze_'.$method.'.php');
 	}
 
 	/**
@@ -106,7 +108,7 @@ class Breeze
 		if ($s->Enable('admin_settings_enable'))
 			$profile_areas['info']['areas']['summary'] = array(
 				'label' => $s->GetText('general_wall'),
-				'file' => '/Breeze/Breeze_User.php',
+				'file' => Breeze::$BreezeFolder .'Breeze_User.php',
 				'function' => 'Breeze_Wrapper_Wall',
 				'permission' => array(
 					'own' => 'profile_view_own',
@@ -137,7 +139,7 @@ class Breeze
 		if ($s->Enable('admin_settings_enable') && ($user_info['id'] == $context['member']['id'] || allowedTo('breeze_edit_settings_any')))
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $s->GetText('user_settings_name'),
-				'file' => 'Breeze/Breeze_User.php',
+				'file' => Breeze::$BreezeFolder .'Breeze_User.php',
 				'function' => 'Breeze_Wrapper_Settings',
 				'permission' => array(
 					'own' => 'profile_view_own',
@@ -221,10 +223,13 @@ class Breeze
 	 */
 	public static function Action_Hook(&$actions)
 	{
-		$actions['wall'] = array('/Breeze/Breeze_General.php', 'Breeze_General::Wall');
+		$actions['wall'] = array(Breeze::$BreezeFolder .'Breeze_General.php', 'Breeze_General::Wall');
 
 		/* A whole new action just for some ajax calls... */
-		$actions['breezeajax'] = array('/Breeze/Breeze_Ajax.php', 'Breeze_Ajax::Call');
+		$actions['breezeajax'] = array(Breeze::$BreezeFolder .'Breeze_Ajax.php', 'Breeze_Ajax::Call');
+
+		/* Replace the buddy action */
+		$actions['buddy'] = array(Breeze::$BreezeFolder .'Breeze_Buddy.php', 'Breeze_Buddy::Buddy');
 	}
 
 	/**

@@ -43,6 +43,8 @@ if (!defined('SMF'))
 	function Breeze_Wrapper_Settings(){Breeze_User::Settings();}
 	function Breeze_Wrapper_Permissions(){Breeze_User::Permissions();}
 	function Breeze_Wrapper_Modules(){Breeze_User::Modules();}
+	function Breeze_Wrapper_BuddyRequest(){Breeze_User::BuddyRequest();}
+	function Breeze_Wrapper_BuddyMessage(){Breeze_User::BuddyMessage();}
 
 class Breeze_User
 {

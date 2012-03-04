@@ -124,7 +124,7 @@ class Breeze_Pagination
 				$this->page_cur = '<strong>'. $i .'</strong>';
 
 			else
-				$this->page_cur = '<a href='. $this->LinkPrefix . $i . $this->LinkSufflix .'>'. $i .'</a>';
+				$this->page_cur = '<a href='. $scripturl .''. $this->LinkPrefix . $i . $this->LinkSufflix .'>'. $i .'</a>';
 
 			$this->panel .= ' <span>'. $this->page_cur .'</span>';
 		}
@@ -133,11 +133,13 @@ class Breeze_Pagination
 	/* Navigation arrows. */
 	private  function NavigationArrows()
 	{
+		global $scripturl;
+
 		if ($this->limit_number_start > 1)
-			$this->panel = '<strong><a href="'. $this->LinkPrefix . (1) . $this->LinkSufflix .'">&lt;&lt;</a>  <a href="'. $this->LinkPrefix . ($this->Page - 1) . $this->LinkSufflix .'">&lt;</a></strong>'. $this->panel;
+			$this->panel = '<strong><a href="'. $scripturl .''. $this->LinkPrefix . (1) . $this->LinkSufflix .'">&lt;&lt;</a>  <a href="'. $this->LinkPrefix . ($this->Page - 1) . $this->LinkSufflix .'">&lt;</a></strong>'. $this->panel;
 
 		if ($this->limit_number_end < $this->num_pages)
-			$this->panel = $this->panel .' <strong><a href="'. $this->LinkPrefix . ($this->Page + 1) . $this->LinkSufflix .'">&gt;</a> <a href="'. $this->LinkPrefix . $this->num_pages . $this->LinkSufflix .'">&gt;&gt;</a></strong>';
+			$this->panel = $this->panel .' <strong><a href="'. $scripturl .''. $this->LinkPrefix . ($this->Page + 1) . $this->LinkSufflix .'">&gt;</a> <a href="'. $this->LinkPrefix . $this->num_pages . $this->LinkSufflix .'">&gt;&gt;</a></strong>';
 	}
 
 	public function OutputArray()
