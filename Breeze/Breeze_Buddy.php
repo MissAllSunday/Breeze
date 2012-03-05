@@ -58,7 +58,7 @@ class Breeze_Buddy
 
 		$sa = new Breeze_Globals('get');
 
-		if ($sa->Validate('u'))
+		if ($sa->Validate('u') == false)
 			fatal_lang_error('no_access', false);
 
 		/* Problems in paradise? */

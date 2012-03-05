@@ -44,6 +44,8 @@ class Breeze_Query
 	protected $Status = array();
 	protected $Comments = array();
 	protected $Settings = array();
+	protected $likes = array();
+	protected $Notifications = array();
 	private $query = array();
 	private $data = array();
 	private $query_params = array('rows' =>'*');
@@ -67,7 +69,8 @@ class Breeze_Query
 			'modules' => new Breeze_DB('breeze_user_settings_modules'),
 			'visitlogs' => new Breeze_DB('breeze_visit_log'),
 			'likes' => new Breeze_DB('breeze_likes'),
-			'member' => new Breeze_DB('members')
+			'member' => new Breeze_DB('members'),
+			'notifications' => new Breeze_DB('breeze_notifications')
 		);
 
 		$this->global_settings = Breeze_Settings::getInstance();
@@ -208,6 +211,9 @@ class Breeze_Query
 				break;
 			case 'visitlogs':
 				$this->temp = $this->VisitLog();
+				break;
+			case 'notifications':
+				$this->temp = $this->Notifications();
 				break;
 		}
 	}
@@ -895,6 +901,73 @@ class Breeze_Query
 			return array();
 	}
 }
+
+	/*
+	 * The main method to load all the notifications
+	 *
+	 * This is one of the main queries. load all the notifications from all users.
+	 * @access protected
+	 * @global array $smcFunc the "handling DB stuff" var of SMF
+	 * @return array a very big associative array with the notification ID as key
+	 */
+	protected function Notifications()
+	{
+		global $smcFunc;
+
+		/* Use the cache please... */
+		if (($this->Notifications = cache_get_data('Breeze:Notifications', 120)) == null)
+		{
+			$result = $smcFunc['db_query']('', '
+				SELECT *
+				FROM {db_prefix}breeze_notifications
+				',
+				array()
+			);
+
+			/* Populate the array like a boss! */
+			while ($row = $smcFunc['db_fetch_assoc']($result))
+			{
+				$this->Notifications[$row['user']] = array(
+					'id' => $row['id'],
+					'user' => $row['user'],
+					'type' => $row['type'],
+					'time' => $row['time'],
+					'read' => $row['read']
+					'content' => json_decode($row['content'])
+				);
+			}
+
+			/* Cache this beauty */
+			cache_put_data('Breeze:Notifications', $this->Notifications, 120);
+		}
+
+		return $this->Notifications;
+	}
+
+	public function InsertNotification($array)
+	{
+		/* We dont need this anymore */
+		$this->KillCache('Notifications');
+
+		/* Convert to a json string */
+		$array['content'] = json_encode($array['content']);
+
+		/* Insert! */
+		$data = array(
+			'id' => 'int',
+			'user' => 'int',
+			'type' => 'string',
+			'time' => 'int',
+			'read' => 'int',
+			'content' => 'string'
+		);
+
+		$indexes = array(
+			'id'
+		);
+
+		$this->Query('notifications')->InsertData($data, $array, $indexes);
+	}
 
 /*
  * Saturday is almost over
