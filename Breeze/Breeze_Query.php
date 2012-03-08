@@ -95,7 +95,7 @@ class Breeze_Query
 	 * @param mixed $type the name of value(s) to be deleted
 	 * @return void
 	 */
-	private function KillCache($type)
+	public function KillCache($type)
 	{
 		if (!is_array($type))
 			$type = array($type);
@@ -319,13 +319,10 @@ class Breeze_Query
 		global $smcFunc;
 
 		Breeze::Load(array(
-			'Subs',
-			'UserInfo',
-			'Parser',
+			'Subs'
 		));
 
 		$tools = new Breeze_Subs();
-		$parser = new Breeze_Parser();
 
 		/* Use the cache please... */
 		if (($this->Status = cache_get_data('Breeze:Status', 120)) == null)
@@ -350,7 +347,7 @@ class Breeze_Query
 					'owner_id' => $row['status_owner_id'],
 					'poster_id' => $row['status_poster_id'],
 					'time' => $tools->TimeElapsed($row['status_time']),
-					'body' => $parser->Display($row['status_body'])
+					'body' => $row['status_body']
 				);
 			}
 
@@ -424,13 +421,10 @@ class Breeze_Query
 		global $smcFunc;
 
 		Breeze::Load(array(
-			'Subs',
-			'UserInfo',
-			'Parser',
+			'Subs'
 		));
 
 		$tools = new Breeze_Subs();
-		$parser = new Breeze_Parser();
 
 		/* Use the cache please... */
 		if (($this->Comments = cache_get_data('Breeze:Comments', 120)) == null)
@@ -457,7 +451,7 @@ class Breeze_Query
 					'poster_id' => $row['comments_poster_id'],
 					'profile_owner_id' => $row['comments_profile_owner_id'],
 					'time' => $tools->TimeElapsed($row['comments_time']),
-					'body' => $parser->Display($row['comments_body'])
+					'body' => $row['comments_body']
 				);
 			}
 
@@ -900,7 +894,6 @@ class Breeze_Query
 		else
 			return array();
 	}
-}
 
 	/*
 	 * The main method to load all the notifications
@@ -932,7 +925,7 @@ class Breeze_Query
 					'user' => $row['user'],
 					'type' => $row['type'],
 					'time' => $row['time'],
-					'read' => $row['read']
+					'read' => $row['read'],
 					'content' => json_decode($row['content'])
 				);
 			}
@@ -968,6 +961,7 @@ class Breeze_Query
 
 		$this->Query('notifications')->InsertData($data, $array, $indexes);
 	}
+}
 
 /*
  * Saturday is almost over

@@ -3,7 +3,7 @@
 /**
  * Breeze_
  * 
- * The purpose of this file is to generate a div with the user common info, name, avatarm, post, icons, stuff like that.
+ * The purpose of this file is to generate a div with the user common info, name, avatar, post, icons, stuff like that.
  * @package Breeze mod
  * @version 1.0 Beta 1
  * @author Jessica González <missallsunday@simplemachines.org>

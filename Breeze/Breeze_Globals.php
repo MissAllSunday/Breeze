@@ -42,7 +42,7 @@ class Breeze_Globals
 {
 	private $request;
 
-	function __construct($var)
+	public function __construct($var)
 	{
 		switch($var)
 		{
@@ -59,7 +59,7 @@ class Breeze_Globals
 
 	}
 
-	function See($value)
+	public function See($value)
 	{
 		if (isset($this->request[$value]) && $this->Validate($this->request[$value]))
 			return $this->Sanitize($this->request[$value]);
@@ -67,7 +67,7 @@ class Breeze_Globals
 			return 'error_' . $value;
 	}
 
-	function Raw($value)
+	public function Raw($value)
 	{
 		if (isset($this->request[$value]))
 			return $this->request[$value];
@@ -102,7 +102,7 @@ class Breeze_Globals
 		unset($this->request[$var]);
 	}
 
-	public static function Sanitize($var)
+	public function Sanitize($var)
 	{
 		if (get_magic_quotes_gpc())
 			$var = stripslashes($var);
@@ -111,10 +111,7 @@ class Breeze_Globals
 			$var = (int) $var;
 
 		elseif (is_string($var))
-		{
-			$var = strtr(htmlspecialchars($var, ENT_QUOTES), array("\r" => '<br />', "\n" => '<br />', "\t" => '<br />'));
-			$var = trim($var);
-		}
+			$var = trim(strtr(htmlspecialchars($var, ENT_QUOTES), array("\r" => '<br />', "\n" => '<br />', "\t" => '&nbsp;&nbsp;&nbsp;&nbsp;')));
 
 		else
 			$var = 'error_' . $var;

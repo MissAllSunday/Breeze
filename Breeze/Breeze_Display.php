@@ -53,7 +53,7 @@ class Breeze_Display
 		Breeze::Load(array(
 			'UserInfo',
 			'Subs',
-			'Parser'
+			'Settings'
 		));
 
 		if (empty($params))
@@ -63,8 +63,15 @@ class Breeze_Display
 			$this->params = $params;
 
 		$this->type = $type;
-		$this->parse = new Breeze_Parser();
 		$this->tools = new Breeze_Subs();
+		$this->text = Breeze_Settings::getInstance();
+
+		/* The visitor's permissions */
+		$this->permissions = array(
+			'poststatus' => allowedTo('breeze_postStatus'),
+			'postcomments' => allowedTo('breeze_postComments'),
+			'deletestatus' => allowedTo('breeze_deleteStatus')
+		);
 	}
 
 	public function HTML()
@@ -72,8 +79,6 @@ class Breeze_Display
 		global $scripturl, $user_info;
 
 		$this->UserInfo = Breeze_UserInfo::Profile($this->params['poster_id'], true);
-
-		$this->params['body'] = $this->parse->Display($this->params['body']);
 		$this->params['time'] = $this->tools->TimeElapsed($this->params['time']);
 
 		switch ($this->type)
@@ -81,31 +86,57 @@ class Breeze_Display
 			case 'status':
 				$this->ReturnArray = '
 		<li class="windowbg" id ="status_id_'. $this->params['id'] .'">
-			<span class="topslice"><span></span></span>
-				<div class="breeze_user_inner">
-					<div class="breeze_user_status_avatar">
-						'. $this->UserInfo .'
-					</div>
-					<div class="breeze_user_status_comment">
-						'. $this->params['body'] .'
-						<div class="breeze_options"><span class="time_elapsed">'. $this->params['time'] .'</span>  <a href="javascript:void(0)" id="'. $this->params['id'] .'" class="breeze_delete_status">Delete</a> </div>
-						<hr />
-						<div id="comment_flash_'. $this->params['id'] .'"></div>';
+			<span class="topslice">
+				<span></span>
+			</span>
+			<div class="breeze_user_inner">
+				<div class="breeze_user_status_avatar">
+					'. $this->UserInfo .'
+				</div>
+				<div class="breeze_user_status_comment">
+					'. $this->params['body'] .'
+					<div class="breeze_options"><span class="time_elapsed">'. $this->params['time'] .' </span>';
 
-					$this->ReturnArray .= '<ul class="breeze_comments_list">';
+					/* Delete link */
+					if ($this->permissions['deletestatus'])
+						$this->ReturnArray .= '| <a href="javascript:void(0)" id="'. $this->params['id'] .'" class="breeze_delete_status">'. $this->text->GetText('general_delete') .'</a>';
+
+					$this->ReturnArray .= '</div>
+					<hr />
+					<div id="comment_flash_'. $this->params['id'] .'"></div>';
+
+					$this->ReturnArray .= '<ul class="breeze_comments_list" id="comment_loadplace_'. $this->params['id'] .'">';
 
 						/* New status don't have comments... */
 
+						/* Display the new comments ^o^ */
 						$this->ReturnArray .= '
+						<li id="breeze_load_image_comment_'. $this->params['id'] .'" style="margin:auto; text-align:center;"></li>';
 
-							<li><form action="'. $scripturl. '?action=breezeajax;sa=postcomment" method="post" name="formID_'. $this->params['id'] .'" id="formID_'. $this->params['id'] .'">
+						/* Close the list */
+						$this->ReturnArray .= '</ul>';
+
+						/* Display the form for new comments */
+						if ($this->permissions['postcomments'])
+							$this->ReturnArray .= '
+							<span><form action="'. $scripturl. '?action=breezeajax;sa=postcomment" method="post" name="formID_'. $this->params['id'] .'" id="formID_'. $this->params['id'] .'">
 								<textarea id="textboxcontent_'. $this->params['id'] .'" cols="40" rows="2"></textarea>
 								<input type="hidden" value="'. $this->params['poster_id'] .'" name="status_owner_id'. $this->params['id'] .'" id="status_owner_id'. $this->params['id'] .'" />
 								<input type="hidden" value="'. $this->params['owner_id'] .'" name="profile_owner_id'. $this->params['id'] .'" id="profile_owner_id'. $this->params['id'] .'" />
 								<input type="hidden" value="'. $this->params['id'] .'" name="status_id'. $this->params['id'] .'" id="status_id'. $this->params['id'] .'" />
 								<input type="hidden" value="'. $user_info['id'] .'" name="poster_comment_id'. $this->params['id'] .'" id="poster_comment_id'. $this->params['id'] .'" /><br />
 								<input type="submit" value="Comment" class="comment_submit" id="'. $this->params['id'] .'" />
-							</form></li>';
+							</form></span>';
+
+
+					/* Close the div */
+					$this->ReturnArray .= '</div>
+					<div class="clear"></div>
+				</div>
+			<span class="botslice">
+				<span></span>
+			</span>
+			</li>';
 				break;
 			case 'comment':
 				$this->ReturnArray = '

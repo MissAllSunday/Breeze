@@ -116,6 +116,8 @@ class Breeze_Pagination
 	/* Generating page links. */
 	private function GeneratePageLinks()
 	{
+		global $scripturl;
+
 		for ($i = $this->limit_number_start; $i <= $this->limit_number_end; $i++)
 		{
 			$this->page_cur = '<a href='. $this->LinkPrefix . $i . $this->LinkSufflix. '>'. $i .'</a>';

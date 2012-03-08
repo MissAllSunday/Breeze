@@ -58,7 +58,6 @@ class Breeze_User
 		Breeze::Load(array(
 			'Settings',
 			'Subs',
-			'Globals',
 			'UserInfo',
 			'Modules',
 			'Query',
@@ -212,6 +211,7 @@ class Breeze_User
 		$query = Breeze_Query::getInstance();
 		$text = Breeze_Settings::getInstance();
 		$data = $query->GetSettingsByUser($context['member']['id']);
+		$globals = new Breeze_Globals('request');
 
 		if (!empty($data))
 			$already = true;
@@ -290,6 +290,9 @@ class Breeze_User
 		/* Saving? */
 		if (isset($_GET['save']))
 		{
+			/* Kill the Settings cache */
+			$query->KillCache('Settings');
+
 			$temp = $form->ReturnElementNames();
 			$save_data = array();
 			$save_data['user_id'] = $context['member']['id'];

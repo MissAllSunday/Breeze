@@ -52,23 +52,27 @@ class Breeze
 	 * An attempt to load the static method(s) used across the mod
 	 *
 	 * @todo Implement some checks before loading the file.
-	 * @param string $method When $method is a string it contains a single file name.
-	 * @param array $method a comma separated list of all the file names to be loaded.
+	 * @param string $file When $file is a string it contains a single file name.
+	 * @param array $file a comma separated list of all the file names to be loaded.
+	 * @param bool $smf special case used when trying to load an SMF source file for some resource or function
 	 * @return void
 	 */
-	public static function Load($method)
+	public static function Load($file, $smf = false)
 	{
 		global $sourcedir;
 
-		if (empty($method))
+		if (empty($file))
 			return;
 
-		if (is_array($method) && !empty($method))
-				foreach($method as $m)
-					require_once($sourcedir. Breeze::$BreezeFolder . 'Breeze_'.$m.'.php');
+		if (is_array($file) && !empty($file) && !$smf)
+				foreach($file as $f)
+					require_once($sourcedir. Breeze::$BreezeFolder . 'Breeze_'.$f.'.php');
 
+		elseif (!$smf)
+			require_once($sourcedir . Breeze::$BreezeFolder .'Breeze_'.$file.'.php');
+			
 		else
-			require_once($sourcedir . Breeze::$BreezeFolder .'Breeze_'.$method.'.php');
+			require_once($sourcedir .'/'.$file.'.php');
 	}
 
 	/**

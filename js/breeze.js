@@ -1,4 +1,3 @@
-
 /**
  * Breeze.js
  *
@@ -46,20 +45,31 @@
 				var posterID = jQuery('#poster_id').val();
 				var loadImage = '<img src="' + smf_images_url + '/breeze/loading.gif" /><br /> <span class="loading">' + ajax_notification_text + '</span>';
 
+				/* Disable the button to prevent multiple clicks -_- */
+				jQuery(this).attr('disabled', 'disabled');
+
 				if(test=='')
+				{
 					alert(breeze_empty_message);
+
+					/* Enable the button again... */
+					jQuery('.status_button').removeAttr('disabled');
+				}
 
 				/* Shhh! */
 				else if(test== 'about:breeze')
 				{
 					alert('Y es que tengo un coraz\xF3n t\xE1n necio \n que no comprende que no entiende \n que le hace da\xF1o amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n Y es que tengo un coraz\xF3n t\xE1n necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace da\xF1o \n te sigue amando igual o mucho m\xE1s que ayer \n mucho m\xE1s que ayer... \n');
+
+					/* Enable the button again... */
+					jQuery('.status_button').removeAttr('disabled');
 				}
 
 				else
 				{
 					jQuery('#breeze_load_image').fadeIn('slow').html(loadImage);
 
-					$.ajax(
+					jQuery.ajax(
 					{
 						type: 'POST',
 						url: smf_scripturl + '?action=breezeajax;sa=post',
@@ -67,6 +77,9 @@
 						cache: false,
 						success: function(html)
 						{
+							/* Enable the button again... */
+							jQuery('.status_button').removeAttr('disabled');
+
 							/*
 							 * The server side found an issue
 							 *
@@ -87,13 +100,15 @@
 
 							else
 							{
-								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
+								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function()
+								{
 									document.getElementById('content').value='';
 									document.getElementById('content').focus();
 
-									jQuery('#breeze_display_status').append(html);
+									jQuery('#breeze_display_status').prepend(html);
 
-									jQuery('#breeze_display_status').fadeIn('slow', 'linear', function(){
+									jQuery('#breeze_display_status').fadeIn('slow', 'linear', function()
+									{
 										showNotification({
 											message: breeze_success_message,
 											type: 'success',
@@ -106,6 +121,9 @@
 						},
 						error: function (html)
 						{
+							/* Enable the button again... */
+							jQuery('.status_button').removeAttr('disabled');
+
 							/*
 							 * Something happen while sendind the request
 							 *
@@ -152,7 +170,7 @@
 				{
 					jQuery('#breeze_load_image_comment_'+Id).fadeIn('slow').html(loadImage);
 
-					$.ajax(
+					jQuery.ajax(
 					{
 						type: 'POST',
 						url: smf_scripturl + '?action=breezeajax;sa=postcomment',
@@ -226,7 +244,7 @@
 				var I = element.attr('id');
 				var Type = 'comment';
 
-				$.ajax(
+				jQuery.ajax(
 					{
 						type: 'POST',
 						url: smf_scripturl + '?action=breezeajax;sa=delete',
@@ -328,7 +346,7 @@
 				var I = element.attr('id');
 				var Type = 'status';
 
-				$.ajax(
+				jQuery.ajax(
 					{
 						type: 'POST',
 						url: smf_scripturl + '?action=breezeajax;sa=delete',

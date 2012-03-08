@@ -45,6 +45,7 @@ $txt['BreezeMod_general_my_wall'] = 'My Wall';
 $txt['BreezeMod_general_my_wall_settings'] = 'My Wall Settings';
 $txt['BreezeMod_general_loading'] = 'Loading...';
 $txt['BreezeMod_general_like'] = 'Like';
+$txt['BreezeMod_general_delete'] = 'Delete';
 $txt['BreezeMod_general_unlike'] = 'Unlike';
 $txt['BreezeMod_general_plural'] = '(s)';
 

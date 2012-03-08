@@ -84,6 +84,8 @@ abstract class Breeze_Ajax
 		/* You aren't allowed in here, let's show you a nice message error... */
 		isAllowedTo('breeze_postStatus');
 
+		checkSession('post', '', false);
+
 		/* Set some values */
 		$context['Breeze']['ajax']['ok'] = '';
 		$context['Breeze']['ajax']['data'] = '';
@@ -133,6 +135,8 @@ abstract class Breeze_Ajax
 
 		/* You aren't allowed in here, let's show you a nice message error... */
 		isAllowedTo('breeze_postComments');
+
+		checkSession('post', '', false);
 
 		/* By default it will show an error, we only do stuff if necesary */
 		$context['Breeze']['ajax']['ok'] = '';
