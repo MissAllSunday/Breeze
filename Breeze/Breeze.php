@@ -40,7 +40,7 @@ if (!defined('SMF'))
 
 class Breeze
 {
-	static public $BreezeVersion = '1.0';
+	static public $BreezeVersion = '1.0 Beta 1';
 
 	static public $BreezeFolder = '/Breeze/';
 
@@ -70,7 +70,7 @@ class Breeze
 
 		elseif (!$smf)
 			require_once($sourcedir . Breeze::$BreezeFolder .'Breeze_'.$file.'.php');
-			
+
 		else
 			require_once($sourcedir .'/'.$file.'.php');
 	}

@@ -54,7 +54,8 @@ abstract class Breeze_Ajax
 		Breeze::Load(array(
 			'Query',
 			'Display',
-			'Globals'
+			'Globals',
+			'Parser'
 		));
 		loadtemplate('BreezeAjax');
 
@@ -93,16 +94,19 @@ abstract class Breeze_Ajax
 		/* Get the status data */
 		$data = new Breeze_Globals('post');
 		$query = Breeze_Query::getInstance();
+		$parser = new Breeze_Parser();
 
 		/* Do this only if there is something to add to the database */
 		if ($data->ValidateBody('content'))
 		{
+			$body = $data->See('content');
+
 			/* Build the params array for the query */
 			$params = array(
 				'owner_id' => $data->See('owner_id'),
 				'poster_id' => $data->See('poster_id'),
 				'time' => time(),
-				'body' => $data->See('content')
+				'body' => $parser->Display($body)
 			);
 
 			/* Store the status */
@@ -145,10 +149,13 @@ abstract class Breeze_Ajax
 		$data = new Breeze_Globals('post');
 		$query = Breeze_Query::getInstance();
 		$temp_id_exists = $query->GetSingleValue('status', 'id', $data->See('status_id'));
+		$parser = new Breeze_Parser();
 
 		/* The status do exists and the data is valid*/
 		if ($data->ValidateBody('content') && !empty($temp_id_exists))
 		{
+			$body = $data->See('content');
+
 			/* Build the params array for the query */
 			$params = array(
 				'status_id' => $data->See('status_id'),
@@ -156,13 +163,13 @@ abstract class Breeze_Ajax
 				'poster_id' => $data->See('poster_comment_id'),
 				'profile_owner_id' => $data->See('profile_owner_id'),
 				'time' => time(),
-				'body' => $data->See('content')
+				'body' => $parser->Display($body)
 			);
 
 			/* Store the comment */
 			$query->InsertComment($params);
 
-			/* Once the comment was added, get it's ID form the DB */
+			/* Once the comment was added, get it's ID from the DB */
 			$new_comment = $query->GetLastComment();
 
 			$params['id'] = $new_comment['comments_id'];

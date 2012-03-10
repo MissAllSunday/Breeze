@@ -174,3 +174,4 @@ $txt['BreezeMod_pag_last'] = 'Last';
 
 
 /* Notifications */
+$txt['BreezeMod_noti_title'] = 'Notifications';

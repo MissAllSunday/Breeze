@@ -961,6 +961,26 @@ class Breeze_Query
 
 		$this->Query('notifications')->InsertData($data, $array, $indexes);
 	}
+
+	public function DeleteNotification($id)
+	{
+		/* Delete! */
+		$params = array(
+			'where' => 'id = {int:id}'
+		);
+
+		$data = array(
+			'id' => $id
+		);
+
+		$this->Query('notifications')->Params($params, $data);
+		$this->Query('notifications')->DeleteData();
+	}
+
+	public function GetNotificationByUser($user)
+	{
+		return $this->GetReturn('notifications', 'user', $user);
+	}
 }
 
 /*

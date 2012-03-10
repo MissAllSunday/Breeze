@@ -99,14 +99,14 @@ class Breeze_Subs
 
 		/* Let's load jquery from CDN only if it hasn't been loaded yet */
 		$context['html_headers'] .= '
-		<link href="'. $settings['theme_url']. '/css/breeze.css" rel="stylesheet" type="text/css" />
-		<link href="'. $settings['theme_url']. '/css/facebox.css" rel="stylesheet" type="text/css" />
+		<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />
+		<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery.min.js"%3E%3C/script%3E\'))</script>
-		<script src="'. $settings['theme_url']. '/js/jquery_notification.js" type="text/javascript"></script>
-		<script src="'. $settings['theme_url']. '/js/facebox.js" type="text/javascript"></script>
-		<script src="'. $settings['theme_url']. '/js/confirm.js" type="text/javascript"></script>
-		<script src="'. $settings['theme_url']. '/js/livequery.js" type="text/javascript"></script>
-		<script src="'. $settings['theme_url']. '/js/breeze.js" type="text/javascript"></script>';
+		<script src="'. $settings['default_theme_url'] .'/js/jquery_notification.js" type="text/javascript"></script>
+		<script src="'. $settings['default_theme_url'] .'/js/facebox.js" type="text/javascript"></script>
+		<script src="'. $settings['default_theme_url'] .'/js/confirm.js" type="text/javascript"></script>
+		<script src="'. $settings['default_theme_url'] .'/js/livequery.js" type="text/javascript"></script>
+		<script src="'. $settings['default_theme_url'] .'/js/breeze.js" type="text/javascript"></script>';
 
 		/* CSS part */
 		$context['html_headers'] .= '
@@ -120,7 +120,7 @@ class Breeze_Subs
 		if($admin)
 		{
 			$context['html_headers'] .= '
-			<script src="'. $settings['theme_url']. '/js/jquery.zrssfeed.min.js" type="text/javascript"></script>
+			<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.min.js" type="text/javascript"></script>
 			<script type="text/javascript">
 var breeze_feed_error_message = "'. $text->GetText('feed_error_message') .'";
 

@@ -41,8 +41,6 @@ if (!defined('SMF'))
 	/* A bunch of wrapper functions so static methods can be callable with a string by SMF */
 	function Breeze_Wrapper_Wall(){Breeze_User::Wall();}
 	function Breeze_Wrapper_Settings(){Breeze_User::Settings();}
-	function Breeze_Wrapper_Permissions(){Breeze_User::Permissions();}
-	function Breeze_Wrapper_Modules(){Breeze_User::Modules();}
 	function Breeze_Wrapper_BuddyRequest(){Breeze_User::BuddyRequest();}
 	function Breeze_Wrapper_BuddyMessage(){Breeze_User::BuddyMessage();}
 
@@ -188,7 +186,7 @@ class Breeze_User
 	}
 
 	/* Shows a form for users to set up their wall as needed. */
-	function Settings()
+	public static function Settings()
 	{
 		global $context, $user_info, $txt, $scripturl;
 
@@ -310,5 +308,30 @@ class Breeze_User
 
 			redirectexit('action=profile;area=breezesettings;u='.$context['member']['id']);
 		}
+	}
+
+	public static function Notifications()
+	{
+		global $context, $user_info, $scripturl;
+
+		loadtemplate('Breeze');
+		Breeze::Load(array(
+			'Notifications',
+			'Globals',
+			'Query',
+			'Settings'
+		));
+
+		/* Load all we need */
+		$query = Breeze_Query::getInstance();
+		$text = Breeze_Settings::getInstance();
+		$data = $query->GetSettingsByUser($context['member']['id']);
+		$globals = new Breeze_Globals('request');
+
+		/* Set all the page stuff */
+		$context['sub_template'] = 'user_notifications';
+		$context['page_title'] = $text->GetText('noti_title');
+		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
+		$context['canonical_url'] = $scripturl . '?action=profile;area=notifications;u=' . $context['member']['id'];
 	}
 }
