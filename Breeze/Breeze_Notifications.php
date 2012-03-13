@@ -40,11 +40,12 @@ if (!defined('SMF'))
 
 class Breeze_Notifications
 {
-	$types = array();
-	$params = array();
-	$user = 0;
-	$settings = '';
-	$query = '';
+	protected $types = array();
+	protected $params = array();
+	private $user = 0;
+	private $settings = '';
+	private $query = '';
+	private $ReturnArray = array();
 
 	function __construct()
 	{
@@ -52,7 +53,8 @@ class Breeze_Notifications
 			'comment',
 			'status',
 			'like',
-			'buddy'
+			'buddy',
+			'mention'
 		);
 
 		Breeze::Load(array(
@@ -70,62 +72,39 @@ class Breeze_Notifications
 		if (in_array($type, $this->types) && !empty($params))
 		{
 			$this->params = $params;
+			$this->type = $type;
+			$this->params['type'] = $this->type;
 
-			switch ($type)
-			{
-				case 'comment':
-					$this->NewComment();
-					break;
-				case 'status':
-					$this->NewStatus();
-					break;
-				case 'like':
-					$this->NewLike();
-				case 'buddy':
-					$this->NewBuddy();
-					break;
-			}
+			$this->query->InsertNotification($this->params);
 		}
+
+		else
+			return false;
 	}
 
-	protected function NewComment()
-	{
-
-	}
-
-	protected function NewStatus()
-	{
-
-	}
-
-	protected function NewLike()
-	{
-
-	}
-
-	protected function NewBuddy()
-	{
-
-	}
-
-	public function GetByUser($user)
+	protected function GetByUser($user)
 	{
 		/* Dont even bother... */
 		if (empty($user))
 			return;
 
-		$this->user = $user;
+		$user = (int) $user;
 
+		return $this->query->GetNotificationByUser($user);
 	}
 
-	public function Stream()
+	public function Stream($user)
 	{
-
+		return $this->GetByUser($user);
 	}
 
-	protected function Delete()
+	protected function Delete($id)
 	{
+		$this->query->DeleteNotification($id);
+	}
 
-
+	protected function MarkAsRead($id)
+	{
+		$this->query->MarkAsReadNotification($id);
 	}
 }

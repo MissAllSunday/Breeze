@@ -58,6 +58,8 @@ $txt['BreezeMod_modules_enable_visitors_description'] = 'The last %1$s visitor%2
 /* User Individual Settings */
 $txt['BreezeMod_profile'] = 'Wall Settings';
 $txt['BreezeMod_user_settings_name'] = 'Wall Settings';
+$txt['BreezeMod_user_buddysettings_name'] = 'Buddy Requests';
+$txt['BreezeMod_user_notisettings_name'] = 'Notifications';
 $txt['BreezeMod_user_settings_wall_limit'] = 'How many status per page to show?';
 $txt['BreezeMod_user_settings_wall_limit_sub'] = 'This will be the number of status to show by default, max value is 30, if set it will create a pagination with the rest of your status.';
 $txt['BreezeMod_user_settings_kick_ignored'] = 'Do not show my wall to users in my ignore list';
@@ -172,6 +174,7 @@ $txt['BreezeMod_pag_next'] = 'next';
 $txt['BreezeMod_pag_first'] = 'First';
 $txt['BreezeMod_pag_last'] = 'Last';
 
-
 /* Notifications */
 $txt['BreezeMod_noti_title'] = 'Notifications';
+$txt['BreezeMod_noti_buddy_title'] = 'Buddy notification';
+$txt['BreezeMod_noti_buddy_message'] = 'The user %1$s has added you as his/her buddy, please confirm this request.';

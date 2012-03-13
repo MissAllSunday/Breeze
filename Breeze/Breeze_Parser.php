@@ -41,11 +41,16 @@ if (!defined('SMF'))
 
 class Breeze_Parser
 {
+	private $notification;
+
 	function __construct()
 	{
 		Breeze::Load(array(
-			'Subs'
+			'Subs',
+			'Notifications'
 		));
+
+		$this->notification = new Breeze_Notifications();
 	}
 
 	function Display($string)
@@ -90,6 +95,19 @@ class Breeze_Parser
 				{
 					$context['Breeze']['user_info'][$user[0]] = Breeze_UserInfo::Profile($user[0], true);
 					$s = str_replace($matches[0], '@'.$context['Breeze']['user_info']['link'][$user[0]], $s);
+
+					/* Does this user wants to be notificated? */
+					/* Some if check here */
+					{
+						/* Build the params */
+						$params = array(
+							/* Params here */
+						);
+
+						/* Create the notification */
+						$this->notification->Create('mention', $params);
+					}
+
 				}
 				else
 					$s = str_replace($matches[0], '@'.$m, $s);

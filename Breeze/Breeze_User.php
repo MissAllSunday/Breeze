@@ -42,7 +42,7 @@ if (!defined('SMF'))
 	function Breeze_Wrapper_Wall(){Breeze_User::Wall();}
 	function Breeze_Wrapper_Settings(){Breeze_User::Settings();}
 	function Breeze_Wrapper_BuddyRequest(){Breeze_User::BuddyRequest();}
-	function Breeze_Wrapper_BuddyMessage(){Breeze_User::BuddyMessage();}
+	function Breeze_Wrapper_Notifications(){Breeze_User::Notifications();}
 
 class Breeze_User
 {

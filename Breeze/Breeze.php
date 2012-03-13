@@ -151,6 +151,30 @@ class Breeze
 					),
 			);
 
+		/* Buddies page */
+		/* if $some_check here */
+			$profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
+				'label' => $s->GetText('user_buddysettings_name'),
+				'file' => Breeze::$BreezeFolder .'Breeze_User.php',
+				'function' => 'Breeze_Wrapper_BuddyRequest',
+				'permission' => array(
+					'own' => 'profile_view_own',
+					'any' => 'profile_view_any',
+					),
+			);
+
+		/* Notifications admin page */
+		/* if $some_check here */
+			$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
+				'label' => $s->GetText('user_notisettings_name'),
+				'file' => Breeze::$BreezeFolder .'Breeze_User.php',
+				'function' => 'Breeze_Wrapper_Notifications',
+				'permission' => array(
+					'own' => 'profile_view_own',
+					'any' => 'profile_view_any',
+					),
+			);
+
 		/* Done with the hacking... */
 	}
 

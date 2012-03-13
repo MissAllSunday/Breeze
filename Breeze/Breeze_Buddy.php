@@ -44,7 +44,7 @@ class Breeze_Buddy
 
 	public static function Buddy()
 	{
-		global $user_info;
+		global $user_info, $scripturl;
 
 		checkSession('get');
 
@@ -54,10 +54,18 @@ class Breeze_Buddy
 		Breeze::Load(array(
 			'Settings',
 			'Globals',
+			'Notifications',
+			'UserInfo',
+			'Query'
 		));
 
+		/* We need all this stuff */
 		$sa = new Breeze_Globals('get');
+		$notification = new Breeze_Notification();
+		$setings = Breeze_Settings::getInstance();
 
+
+		/* There's gotta be an user... */
 		if ($sa->Validate('u') == false)
 			fatal_lang_error('no_access', false);
 
@@ -73,13 +81,44 @@ class Breeze_Buddy
 		/* Before anything else, let's ask the user shall we? */
 		elseif ($user_info['id'] != $sa->Raw('u'))
 		{
+			/* Load the users link */
+			$user_asking = Breeze_UserInfo::Profile($user_info['id']);
+			$user_receiving = Breeze_UserInfo::Profile($sa->Raw('u'));
+
+			$params = array(
+				'user' => $sa->Raw('u'),
+				'time' => time(),
+				'read' => 0,
+				'content' => array(
+					'title' => $settings->GetText('noti_buddy_title'),
+					'message' => sprintf($settings->GetText('noti_buddy_message'), $context['Breeze']['user_info']['link'][$user_info['id']]),
+					'url' => $scripturl .'?action=profile;area=breezebuddies;u='. $sa->Raw('u')
+				)
+			);
+
 			/* Notification here */
+			$notification->Create('buddy', $params);
 
 			$user_info['buddies'][] = (int) $sa->Raw('u');
 
 			/* Show a nice message saying the user must approve the friendship request */
-			redirectexit('action=profile;sa=buddymessage;u=' . $sa->Raw('u'));
+			redirectexit('action=profile;area=breezebuddies;u=' . $sa->Raw('u'));
 		}
+
+	}
+
+	public function ShowBuddyRequests($user)
+	{
+		$query = Breeze_Query::getInstance();
+
+		/* Load all buddy request for this user */
+		$query->GetNotificationByType($user);
+
+		/* We only want the notification for this user... */
+		
+		
+		/* Return the notifications */
+
 
 	}
 }

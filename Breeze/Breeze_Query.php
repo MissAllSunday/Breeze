@@ -55,7 +55,7 @@ class Breeze_Query
 	private $valid = false;
 	private $global_settings;
 
-	private function __construct()
+	protected function __construct()
 	{
 		Breeze::Load(array(
 			'DB',
@@ -402,9 +402,8 @@ class Breeze_Query
 	 */
 	public function GetStatusByUser($id)
 	{
-		return $this->GetReturn('status', 'status_id', $id);
+		return $this->GetReturn('status', 'status_user', $id);
 	}
-
 
 	/* Methods for comments */
 
@@ -962,6 +961,23 @@ class Breeze_Query
 		$this->Query('notifications')->InsertData($data, $array, $indexes);
 	}
 
+	public function MarkAsReadNotification($id)
+	{
+		/* Delete! */
+		$params = array(
+			'set' => 'read = {int:read}',
+			'where' => 'id = {int:id}'
+		);
+
+		$data = array(
+			'read' => 1,
+			'id' => $id
+		);
+
+		$this->Query('notifications')->Params($params, $data);
+		$this->Query('notifications')->UpdateData();
+	}
+
 	public function DeleteNotification($id)
 	{
 		/* Delete! */
@@ -980,6 +996,11 @@ class Breeze_Query
 	public function GetNotificationByUser($user)
 	{
 		return $this->GetReturn('notifications', 'user', $user);
+	}
+	
+	public function GetNotificationByType($user)
+	{
+		return $this->GetReturn('notifications', 'type', $user);
 	}
 }
 
