@@ -44,7 +44,7 @@ class Breeze_Buddy
 
 	public static function Buddy()
 	{
-		global $user_info, $scripturl;
+		global $user_info, $scripturl, $context;
 
 		checkSession('get');
 
@@ -61,8 +61,8 @@ class Breeze_Buddy
 
 		/* We need all this stuff */
 		$sa = new Breeze_Globals('get');
-		$notification = new Breeze_Notification();
-		$setings = Breeze_Settings::getInstance();
+		$notification = new Breeze_Notifications();
+		$settings = Breeze_Settings::getInstance();
 
 
 		/* There's gotta be an user... */
@@ -82,43 +82,47 @@ class Breeze_Buddy
 		elseif ($user_info['id'] != $sa->Raw('u'))
 		{
 			/* Load the users link */
-			$user_asking = Breeze_UserInfo::Profile($user_info['id']);
-			$user_receiving = Breeze_UserInfo::Profile($sa->Raw('u'));
+			$user_asking = $user_info['name'];
 
 			$params = array(
 				'user' => $sa->Raw('u'),
+				'type' => 'buddy',
 				'time' => time(),
 				'read' => 0,
 				'content' => array(
-					'title' => $settings->GetText('noti_buddy_title'),
-					'message' => sprintf($settings->GetText('noti_buddy_message'), $context['Breeze']['user_info']['link'][$user_info['id']]),
+					'title' => 'someone wants to be your buddy',
+					'message' => 'this user wants to be your buddy',
 					'url' => $scripturl .'?action=profile;area=breezebuddies;u='. $sa->Raw('u')
 				)
 			);
 
 			/* Notification here */
-			$notification->Create('buddy', $params);
-
-			$user_info['buddies'][] = (int) $sa->Raw('u');
+			$notification->Create($params);
 
 			/* Show a nice message saying the user must approve the friendship request */
-			redirectexit('action=profile;area=breezebuddies;u=' . $sa->Raw('u'));
+			redirectexit('action=breezebuddyrequest;u=' . $sa->Raw('u'));
 		}
 
 	}
 
 	public function ShowBuddyRequests($user)
 	{
+		Breeze::Load(array(
+			'Query'
+		));
+
 		$query = Breeze_Query::getInstance();
 
 		/* Load all buddy request for this user */
-		$query->GetNotificationByType($user);
+		$temp = $query->GetNotificationByType('buddy');
+		$temp2 = array();
 
-		/* We only want the notification for this user... */
-		
-		
+		/* We only want the notifications for this user... */
+		foreach($temp as $t)
+			if ($t['user'] == $user)
+				$temp2[$t['id']] = $t;
+
 		/* Return the notifications */
-
-
+		return $temp2;
 	}
 }

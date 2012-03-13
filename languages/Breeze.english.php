@@ -59,6 +59,7 @@ $txt['BreezeMod_modules_enable_visitors_description'] = 'The last %1$s visitor%2
 $txt['BreezeMod_profile'] = 'Wall Settings';
 $txt['BreezeMod_user_settings_name'] = 'Wall Settings';
 $txt['BreezeMod_user_buddysettings_name'] = 'Buddy Requests';
+$txt['BreezeMod_user_buddyrequestmessage_name'] = 'Buddy Message Request Send';
 $txt['BreezeMod_user_notisettings_name'] = 'Notifications';
 $txt['BreezeMod_user_settings_wall_limit'] = 'How many status per page to show?';
 $txt['BreezeMod_user_settings_wall_limit_sub'] = 'This will be the number of status to show by default, max value is 30, if set it will create a pagination with the rest of your status.';

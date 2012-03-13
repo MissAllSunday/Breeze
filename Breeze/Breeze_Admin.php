@@ -98,7 +98,10 @@ if (!defined('SMF'))
 		global $context, $scripturl;
 
 		loadtemplate('BreezeAdmin');
-		Breeze::Load('Subs', 'Settings');
+		Breeze::Load(array(
+			'Subs', 
+			'Settings'
+		));
 
 		/* Headers */
 		Breeze_Subs::Headers(true);

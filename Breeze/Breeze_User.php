@@ -42,6 +42,7 @@ if (!defined('SMF'))
 	function Breeze_Wrapper_Wall(){Breeze_User::Wall();}
 	function Breeze_Wrapper_Settings(){Breeze_User::Settings();}
 	function Breeze_Wrapper_BuddyRequest(){Breeze_User::BuddyRequest();}
+	function Breeze_Wrapper_BuddyMessageSend(){Breeze_User::BuddyMessageSend();}
 	function Breeze_Wrapper_Notifications(){Breeze_User::Notifications();}
 
 class Breeze_User
@@ -333,5 +334,52 @@ class Breeze_User
 		$context['page_title'] = $text->GetText('noti_title');
 		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 		$context['canonical_url'] = $scripturl . '?action=profile;area=notifications;u=' . $context['member']['id'];
+	}
+
+	/* Show the buddy request list */
+	public static function BuddyRequest()
+	{
+		global $context, $user_info, $scripturl;
+
+		loadtemplate('BreezeBuddy');
+		Breeze::Load(array(
+			'Buddy',
+			'Settings'
+		));
+
+		/* Load all we need */
+		$buddies = new Breeze_Buddy();
+		$text = Breeze_Settings::getInstance();
+
+		/* Set all the page stuff */
+		$context['sub_template'] = 'Breeze_buddy_list';
+		$context['page_title'] = $text->GetText('noti_title');
+		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
+		$context['canonical_url'] = $scripturl . '?action=profile;area=breezebuddies;u=' . $context['member']['id'];
+
+		/* Send the buddy list to the template */
+		$context['Breeze']['Buddy_List'] = $buddies->ShowBuddyRequests($context['member']['id']);
+
+		echo '<pre>';
+		print_r($context['Breeze']['Buddy_List']);
+		echo '</pre>';
+	}
+
+	/* Show a message to let the user know their buddy request must be approved */
+	public static function BuddyMessageSend()
+	{
+		global $context, $user_info, $scripturl;
+
+		loadtemplate('BreezeBuddy');
+		Breeze::Load(array(
+			'Settings'
+		));
+
+		$text = Breeze_Settings::getInstance();
+
+		/* Set all the page stuff */
+		$context['sub_template'] = 'Breeze_request_buddy_message_send';
+		$context['page_title'] = $text->GetText('noti_title');
+		$context['canonical_url'] = $scripturl . '?action=breezebuddyrequest';
 	}
 }

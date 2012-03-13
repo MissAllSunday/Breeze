@@ -76,7 +76,7 @@ class Breeze_UserInfo
 			<div class="windowbg">
 				<span class="topslice"><span></span></span>
 				<div style="margin:3px;padding-right:15px;padding-left:5px;float:left;min-height:100px;">
-					'.$user['avatar']['image'].'<br />'.$user['link'].'';
+					'.($user['avatar']['image'] ? $user['avatar']['image'] : '').'<br />'.$user['link'].'';
 
 						// Can they add this member as a buddy?
 	if (!empty($context['can_have_buddy']) && !$user['is_owner'])

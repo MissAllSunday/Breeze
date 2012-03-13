@@ -157,9 +157,6 @@ class Breeze_Query
 		/* Get the data */
 		$this->SwitchData($type);
 
-		/* Needs to be empty by default */
-		$this->ResetReturn();
-
 		/* Do this only if there is something to work with */
 		if ($this->temp)
 		{
@@ -175,8 +172,7 @@ class Breeze_Query
 			}
 		}
 
-		/* Clean the Temp array */
-		$this->ResetTemp();
+
 
 		/* Return the info we want as we want it */
 		return $this->r;
@@ -487,7 +483,17 @@ class Breeze_Query
 
 	public function GetCommentsByStatus($id)
 	{
-		return $this->GetReturn('comments', 'status_id', $id);
+		/* Do not call the Comments method for every status, use it only once */
+		$this->ResetTemp();
+		$temp2 = array();
+
+		$this->temp = $this->GetComments();
+
+		foreach($this->temp as $c)
+			if ($c['status_id'] == $id)
+				$temp2[$c['id']] = $c;
+
+		return $temp2;
 	}
 
 	/* Settings */
@@ -946,12 +952,11 @@ class Breeze_Query
 
 		/* Insert! */
 		$data = array(
-			'id' => 'int',
 			'user' => 'int',
 			'type' => 'string',
 			'time' => 'int',
 			'read' => 'int',
-			'content' => 'string'
+			'content' => 'string',
 		);
 
 		$indexes = array(
@@ -963,7 +968,7 @@ class Breeze_Query
 
 	public function MarkAsReadNotification($id)
 	{
-		/* Delete! */
+		/* Mark as read */
 		$params = array(
 			'set' => 'read = {int:read}',
 			'where' => 'id = {int:id}'
@@ -997,10 +1002,10 @@ class Breeze_Query
 	{
 		return $this->GetReturn('notifications', 'user', $user);
 	}
-	
-	public function GetNotificationByType($user)
+
+	public function GetNotificationByType($type)
 	{
-		return $this->GetReturn('notifications', 'type', $user);
+		return $this->GetReturn('notifications', 'type', $type);
 	}
 }
 

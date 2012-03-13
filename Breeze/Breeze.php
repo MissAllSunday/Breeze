@@ -147,7 +147,7 @@ class Breeze
 				'function' => 'Breeze_Wrapper_Settings',
 				'permission' => array(
 					'own' => 'profile_view_own',
-					'any' => 'profile_view_any',
+					'any' => 'breeze_edit_settings_any',
 					),
 			);
 
@@ -159,7 +159,6 @@ class Breeze
 				'function' => 'Breeze_Wrapper_BuddyRequest',
 				'permission' => array(
 					'own' => 'profile_view_own',
-					'any' => 'profile_view_any',
 					),
 			);
 
@@ -171,7 +170,6 @@ class Breeze
 				'function' => 'Breeze_Wrapper_Notifications',
 				'permission' => array(
 					'own' => 'profile_view_own',
-					'any' => 'profile_view_any',
 					),
 			);
 
@@ -258,6 +256,9 @@ class Breeze
 
 		/* Replace the buddy action */
 		$actions['buddy'] = array(Breeze::$BreezeFolder .'Breeze_Buddy.php', 'Breeze_Buddy::Buddy');
+
+		/* A special action for the buddy request message */
+		$actions['breezebuddyrequest'] = array(Breeze::$BreezeFolder .'Breeze_User.php', 'Breeze_Wrapper_BuddyMessageSend');
 	}
 
 	/**
