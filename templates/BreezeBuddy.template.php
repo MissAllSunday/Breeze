@@ -53,7 +53,7 @@ function template_Breeze_request_buddy_message_send()
 		</span>
 		<div class="roundframe">
 			<div id="welcome">
-				Description message here
+				', $txt['BreezeMod_user_buddyrequestmessage_message'] ,'
 			</div>
 		</div>
 		<span class="lowerframe">
@@ -64,13 +64,13 @@ function template_Breeze_request_buddy_message_send()
 
 function template_Breeze_buddy_list()
 {
-	global $txt, $context;
+	global $txt, $context, $scripturl;
 
 	/* Welcome message for the admin. */
 	echo '
 		<div class="cat_bar">
 			<h3 class="catbg">
-				Buddy list
+				', $txt['BreezeMod_buddy_title'] ,'
 			</h3>
 		</div>
 		<span class="upperframe">
@@ -78,7 +78,7 @@ function template_Breeze_buddy_list()
 		</span>
 		<div class="roundframe">
 			<div id="welcome">
-				Description message here
+				', $txt['BreezeMod_buddy_desc'] ,'
 			</div>
 		</div>
 		<span class="lowerframe">
@@ -86,25 +86,34 @@ function template_Breeze_buddy_list()
 		</span>
 		<div id="admin_main_section">';
 
-	/* Show the Buddy request list. */
+	/* Buddy request */
+		echo '
+			<table class="table_grid" cellspacing="0" width="100%">
+				<thead>
+					<tr class="catbg">
+						<th scope="col" class="first_th">', $txt['BreezeMod_buddyrequest_list_message'] ,'</th>
+						<th scope="col" class="last_th">', $txt['BreezeMod_buddyrequest_list_confirm'] ,'</th>
+					</tr>
+				</thead>
+			<tbody>';
+
+			foreach($context['Breeze']['Buddy_Request'] as $request)
+			{
+				echo '
+						<tr class="windowbg" style="text-align: center">
+							<td>
+							', $request['content']->message ,'
+							</td>
+							<td>
+							<a href="', $scripturl ,'action=profile;area=breezebuddies;from=', $request['content']->from_id ,'" target="self">', $txt['BreezeMod_buddyrequest_list_confirm'] ,'</a>
+							</td>
+						</tr>';
+			}
+
+			echo '</tbody>
+			</table><br />';
+
+		/* end of admin div */
 	echo '
-			<div id="supportVersionsTable" >
-				<div class="cat_bar">
-					<h3 class="catbg">
-						buddy list
-					</h3>
-				</div>
-				<div class="windowbg nopadding">
-					<span class="topslice">
-						<span></span>
-					</span>
-					<div class="content">
-						buddy lisy here
-					</div>
-					<span class="botslice">
-						<span></span>
-					</span>
-				</div>
-			</div>
 		</div>';
 }

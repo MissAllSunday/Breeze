@@ -172,7 +172,8 @@ class Breeze_Query
 			}
 		}
 
-
+		/* Clean the Temp array */
+		$this->ResetTemp();
 
 		/* Return the info we want as we want it */
 		return $this->r;

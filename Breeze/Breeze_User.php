@@ -339,7 +339,11 @@ class Breeze_User
 	/* Show the buddy request list */
 	public static function BuddyRequest()
 	{
-		global $context, $user_info, $scripturl;
+		global $context, $user_info, $scripturl, $memberContext;
+
+		// Do a quick check to ensure people aren't getting here illegally!
+		if (!$context['user']['is_owner'])
+			fatal_lang_error('no_access', false);
 
 		loadtemplate('BreezeBuddy');
 		Breeze::Load(array(
@@ -357,12 +361,23 @@ class Breeze_User
 		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 		$context['canonical_url'] = $scripturl . '?action=profile;area=breezebuddies;u=' . $context['member']['id'];
 
-		/* Send the buddy list to the template */
-		$context['Breeze']['Buddy_List'] = $buddies->ShowBuddyRequests($context['member']['id']);
+		/* Send the buddy request to the template */
+		$context['Breeze']['Buddy_Request'] = $buddies->ShowBuddyRequests($context['member']['id']);
 
-		echo '<pre>';
-		print_r($context['Breeze']['Buddy_List']);
-		echo '</pre>';
+		if (isset($_REQUEST['from']) && $user_info['id'] != $_REQUEST['from'])
+		{
+			$user_info['buddies'][] = (int) $_REQUEST['from'];
+
+			/* Update the settings. */
+			updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
+
+			/* Send a pm to the user */
+
+			/* Destroy the notification */
+
+			/* Redirect back to the profile buddy request page*/
+			redirectexit('action=profile;area=breezebuddies;u=' . $user_info['id']);
+		}
 	}
 
 	/* Show a message to let the user know their buddy request must be approved */

@@ -70,10 +70,10 @@ class Breeze_Notifications
 	public function Create($params)
 	{
 		/* if the type is buddy then let's do a check to avoid duplicate entries */
-		if (!empty($params) && in_array($params['type'], $this->types) && $params['type'] == $this->types['buddy'])
+		/* if (!empty($params) && in_array($params['type'], $this->types) && $params['type'] == $this->types['buddy']) */
 		
 		
-		elseif (!empty($params) && in_array($params['type'], $this->types))
+		if (!empty($params) && in_array($params['type'], $this->types))
 		{
 			$this->params = $params;
 			$this->query->InsertNotification($this->params);

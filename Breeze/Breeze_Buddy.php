@@ -44,7 +44,7 @@ class Breeze_Buddy
 
 	public static function Buddy()
 	{
-		global $user_info, $scripturl, $context;
+		global $user_info, $scripturl, $context, $memberContext;
 
 		checkSession('get');
 
@@ -76,13 +76,30 @@ class Breeze_Buddy
 
 			/* Do the update */
 			updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
+
+			/* Done here, let's redirect the user to the profile page */
+			redirectexit('action=profile;u=' . $sa->Raw('u'));
 		}
 
 		/* Before anything else, let's ask the user shall we? */
 		elseif ($user_info['id'] != $sa->Raw('u'))
 		{
 			/* Load the users link */
-			$user_asking = $user_info['name'];
+			$user_load = array(
+				$user_info['id'],
+				$sa->Raw('u')
+			);
+
+		/* Load all the members up. */
+		loadMemberData($user_load, false, 'profile');
+
+		/* Setup the context for each buddy. */
+		$temp_users_load = array();
+		foreach ($user_load as $buddy)
+		{
+			loadMemberContext($buddy);
+			$temp_users_load[$buddy] = $memberContext[$buddy];
+		}
 
 			$params = array(
 				'user' => $sa->Raw('u'),
@@ -90,9 +107,10 @@ class Breeze_Buddy
 				'time' => time(),
 				'read' => 0,
 				'content' => array(
-					'title' => 'someone wants to be your buddy',
-					'message' => 'this user wants to be your buddy',
-					'url' => $scripturl .'?action=profile;area=breezebuddies;u='. $sa->Raw('u')
+					'message' => sprintf($settings->GetText('buddy_messagerequest_message'), $temp_users_load[$user_info['id']]['link']),
+					'url' => $scripturl .'?action=profile;area=breezebuddies;u='. $sa->Raw('u'),
+					'from_link' => $temp_users_load[$user_info['id']]['link'],
+					'from_id' => $user_info['id']
 				)
 			);
 

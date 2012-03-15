@@ -60,6 +60,7 @@ $txt['BreezeMod_profile'] = 'Wall Settings';
 $txt['BreezeMod_user_settings_name'] = 'Wall Settings';
 $txt['BreezeMod_user_buddysettings_name'] = 'Buddy Requests';
 $txt['BreezeMod_user_buddyrequestmessage_name'] = 'Buddy Message Request Send';
+$txt['BreezeMod_user_buddyrequestmessage_message'] = 'Your request has been submitted, the user will see your request and if he/she accepts it, you will receive a notification via private message.';
 $txt['BreezeMod_user_notisettings_name'] = 'Notifications';
 $txt['BreezeMod_user_settings_wall_limit'] = 'How many status per page to show?';
 $txt['BreezeMod_user_settings_wall_limit_sub'] = 'This will be the number of status to show by default, max value is 30, if set it will create a pagination with the rest of your status.';
@@ -179,3 +180,12 @@ $txt['BreezeMod_pag_last'] = 'Last';
 $txt['BreezeMod_noti_title'] = 'Notifications';
 $txt['BreezeMod_noti_buddy_title'] = 'Buddy notification';
 $txt['BreezeMod_noti_buddy_message'] = 'The user %1$s has added you as his/her buddy, please confirm this request.';
+
+/* Buddy List */
+$txt['BreezeMod_buddy_messagerequest_message'] = '%s wants to be your buddy!';
+$txt['BreezeMod_buddy_title'] = 'Buddy List';
+$txt['BreezeMod_buddy_desc'] = 'From here you can confirm buddy request.';
+$txt['BreezeMod_buddyrequest_title'] = 'Buddy requests';
+$txt['BreezeMod_buddyrequest_list_status'] = 'Status';
+$txt['BreezeMod_buddyrequest_list_message'] = 'Message';
+$txt['BreezeMod_buddyrequest_list_confirm'] = 'Confirm';
