@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to fetch all notifications for X user
  * @package Breeze mod
- * @version 1.0 Beta 1
+ * @version 1.0 Beta 2
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -69,11 +69,26 @@ class Breeze_Notifications
 
 	public function Create($params)
 	{
+		global $user_info;
+
+		/* Set this as false by default */
+		$double_request = false;
+
 		/* if the type is buddy then let's do a check to avoid duplicate entries */
-		/* if (!empty($params) && in_array($params['type'], $this->types) && $params['type'] == $this->types['buddy']) */
-		
-		
 		if (!empty($params) && in_array($params['type'], $this->types))
+		{
+			/* Load all the Notifications */
+			$temp = $this->query->GetNotifications();
+
+			foreach ($temp as $t)
+				if ($t['user'] == $params['user'] && $t['content']->from_id == $user_info['id'])
+					$double_request = true;
+		}
+
+		if ($double_request)
+			fatal_lang_error('BreezeMod_buddyrequest_error_doublerequest', false);
+
+		elseif (!empty($params) && in_array($params['type'], $this->types) && !$double_request)
 		{
 			$this->params = $params;
 			$this->query->InsertNotification($this->params);

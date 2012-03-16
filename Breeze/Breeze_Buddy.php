@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to replace the default buddy action in SMF with one that provides more functionality.
  * @package Breeze mod
- * @version 1.0 Beta 1
+ * @version 1.0 Beta 2
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -90,16 +90,16 @@ class Breeze_Buddy
 				$sa->Raw('u')
 			);
 
-		/* Load all the members up. */
-		loadMemberData($user_load, false, 'profile');
+			/* Load all the members up. */
+			loadMemberData($user_load, false, 'profile');
 
-		/* Setup the context for each buddy. */
-		$temp_users_load = array();
-		foreach ($user_load as $buddy)
-		{
-			loadMemberContext($buddy);
-			$temp_users_load[$buddy] = $memberContext[$buddy];
-		}
+			/* Setup the context for each buddy. */
+			$temp_users_load = array();
+			foreach ($user_load as $buddy)
+			{
+				loadMemberContext($buddy);
+				$temp_users_load[$buddy] = $memberContext[$buddy];
+			}
 
 			$params = array(
 				'user' => $sa->Raw('u'),
@@ -110,7 +110,8 @@ class Breeze_Buddy
 					'message' => sprintf($settings->GetText('buddy_messagerequest_message'), $temp_users_load[$user_info['id']]['link']),
 					'url' => $scripturl .'?action=profile;area=breezebuddies;u='. $sa->Raw('u'),
 					'from_link' => $temp_users_load[$user_info['id']]['link'],
-					'from_id' => $user_info['id']
+					'from_id' => $user_info['id'],
+					'from_buddies' => $user_info['buddies']
 				)
 			);
 

@@ -5,7 +5,7 @@
  *
  * The purpose of this file is
  * @package Breeze mod
- * @version 1.0 Beta 1
+ * @version 1.0 Beta 2
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -61,7 +61,7 @@ class Breeze_Globals
 
 	public function See($value)
 	{
-		if (isset($this->request[$value]) && $this->Validate($this->request[$value]))
+		if ($this->Validate($value))
 			return $this->Sanitize($this->request[$value]);
 		else
 			return 'error_' . $value;
@@ -78,7 +78,7 @@ class Breeze_Globals
 
 	public function Validate($var)
 	{
-		if (!empty($var))
+		if (isset($this->request[$var]))
 			return true;
 		else
 			return false;

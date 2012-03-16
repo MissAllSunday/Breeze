@@ -5,7 +5,7 @@
  *
  * The purpose of this file is Provide the text strings
  * @package Breeze mod
- * @version 1.0 Beta 1
+ * @version 1.0 Beta 2
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -179,13 +179,20 @@ $txt['BreezeMod_pag_last'] = 'Last';
 /* Notifications */
 $txt['BreezeMod_noti_title'] = 'Notifications';
 $txt['BreezeMod_noti_buddy_title'] = 'Buddy notification';
-$txt['BreezeMod_noti_buddy_message'] = 'The user %1$s has added you as his/her buddy, please confirm this request.';
+$txt['BreezeMod_noti_buddy_message'] = 'The user %s has added you as his/her buddy, please confirm this request.';
 
 /* Buddy List */
+$txt['BreezeMod_buddyrequest_error_doublerequest'] = 'You already sent a buddy request, please wait for the user\'s response.';
+$txt['BreezeMod_buddyrequest_error_dunno'] = 'Something went wrong, please contact the forum admin.';
 $txt['BreezeMod_buddy_messagerequest_message'] = '%s wants to be your buddy!';
 $txt['BreezeMod_buddy_title'] = 'Buddy List';
-$txt['BreezeMod_buddy_desc'] = 'From here you can confirm buddy request.';
+$txt['BreezeMod_buddy_desc'] = 'From here you can confirm or decline your buddy request. If you confirm the buddy request, a pm on your behalf wil be send to the user, if you decine the request the user will not receive anything';
 $txt['BreezeMod_buddyrequest_title'] = 'Buddy requests';
 $txt['BreezeMod_buddyrequest_list_status'] = 'Status';
 $txt['BreezeMod_buddyrequest_list_message'] = 'Message';
 $txt['BreezeMod_buddyrequest_list_confirm'] = 'Confirm';
+$txt['BreezeMod_buddyrequest_list_decline'] = 'Decline';
+$txt['BreezeMod_buddyrequest_confirmed_subject'] = 'Buddy request accepted.';
+$txt['BreezeMod_buddyrequest_confirmed_message'] ='%s has confirmed your buddy request';
+$txt['BreezeMod_buddyrequest_confirmed_inner_message'] = 'You successfully confirmed the request';
+$txt['BreezeMod_buddyrequest_confirmed_inner_message_de'] = 'You successfully declined the request';

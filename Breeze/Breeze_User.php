@@ -5,7 +5,7 @@
  *
  * The purpose of this file is To show the user wall and provide a settings page
  * @package Breeze mod
- * @version 1.0 Beta 1
+ * @version 1.0 Beta 2
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -60,7 +60,8 @@ class Breeze_User
 			'UserInfo',
 			'Modules',
 			'Query',
-			'Pagination'
+			'Pagination',
+			'Globals'
 		));
 
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
@@ -68,6 +69,7 @@ class Breeze_User
 		$query = Breeze_Query::getInstance();
 		$tools = new Breeze_Subs();
 		$modules = new Breeze_Modules($context['member']['id']);
+		$globals = new Breeze_Globals('get');
 
 		/* Another page already checked the permissions and if the mod is enable, but better be safe... */
 		if (!$settings->Enable('admin_settings_enable'))
@@ -137,7 +139,7 @@ class Breeze_User
 		}
 
 		/* Getting the current page. */
-		$page = !empty($_GET['page']) ? $_GET['page'] : 1;
+		$page = $globals->Validate('page') == true ? $globals->Raw('page') : 1;
 
 		/* Applying pagination. */
 		$pagination = new Breeze_Pagination($status, $page, '?action=profile;page=', '', !empty($user_settings['pagination_number']) ? $user_settings['pagination_number'] : 5, 5);
@@ -287,7 +289,7 @@ class Breeze_User
 		$context['Breeze']['UserSettings']['Form'] = $form->Display();
 
 		/* Saving? */
-		if (isset($_GET['save']))
+		if ($globals->Validate('save') == true)
 		{
 			/* Kill the Settings cache */
 			$query->KillCache('Settings');
@@ -341,19 +343,23 @@ class Breeze_User
 	{
 		global $context, $user_info, $scripturl, $memberContext;
 
-		// Do a quick check to ensure people aren't getting here illegally!
+		/* Do a quick check to ensure people aren't getting here illegally! */
 		if (!$context['user']['is_owner'])
 			fatal_lang_error('no_access', false);
 
 		loadtemplate('BreezeBuddy');
 		Breeze::Load(array(
 			'Buddy',
-			'Settings'
+			'Settings',
+			'Globals',
+			'Query'
 		));
 
 		/* Load all we need */
 		$buddies = new Breeze_Buddy();
 		$text = Breeze_Settings::getInstance();
+		$globals = new Breeze_Globals('request');
+		$query = Breeze_Query::getInstance();
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'Breeze_buddy_list';
@@ -361,22 +367,72 @@ class Breeze_User
 		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 		$context['canonical_url'] = $scripturl . '?action=profile;area=breezebuddies;u=' . $context['member']['id'];
 
-		/* Send the buddy request to the template */
+		/* Show a nice message for confirmation */
+		if ($globals->Validate('inner') == true)
+			switch ($globals->Raw('inner'))
+			{
+				case 1:
+					$context['Breeze']['inner_message'] = $text->GetText('buddyrequest_confirmed_inner_message');
+					break;
+				case 2:
+					$context['Breeze']['inner_message'] = $text->GetText('buddyrequest_confirmed_inner_message_de');
+					break;
+				default:
+					$context['Breeze']['inner_message'] = '';
+					break;
+			}
+
+		else
+			$context['Breeze']['inner_message'] = '';
+
+		/* Send the buddy request(s) to the template */
 		$context['Breeze']['Buddy_Request'] = $buddies->ShowBuddyRequests($context['member']['id']);
 
-		if (isset($_REQUEST['from']) && $user_info['id'] != $_REQUEST['from'])
+		if ($globals->Validate('from') == true && $globals->Validate('confirm') == true && $user_info['id'] != $globals->See('from'))
 		{
-			$user_info['buddies'][] = (int) $_REQUEST['from'];
+			/* Load Subs-Post to use sendpm */
+			Breeze::Load('Subs-Post', true);
 
-			/* Update the settings. */
+			$user_info['buddies'][] = $globals->See('from');
+			$context['Breeze']['Buddy_Request'][$globals->See('from')]['content']->from_buddies[] = $user_info['id'];
+
+			/* Update both users buddy array. */
 			updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
+			updateMemberData($globals->See('from'), array('buddy_list' => implode(',', $context['Breeze']['Buddy_Request'][$globals->See('from')]['content']->from_buddies)));
 
 			/* Send a pm to the user */
+			$recipients = array(
+				'to' => array($globals->See('from')),
+				'bcc' => array(),
+			);
+			$from = array(
+				'id' => $user_info['id'],
+				'name' => $user_info['name'],
+				'username' => $user_info['username'],
+			);
+
+			/* @todo let the user to send a customized message/title */
+			$subject = $text->GetText('buddyrequest_confirmed_subject');
+			$message = sprintf($text->GetText('buddyrequest_confirmed_message'), $user_info['name']);
+
+			sendpm($recipients, $subject, $message, false, $from);
 
 			/* Destroy the notification */
+			$query->DeleteNotification($globals->Raw('confirm'));
+
 
 			/* Redirect back to the profile buddy request page*/
-			redirectexit('action=profile;area=breezebuddies;u=' . $user_info['id']);
+			redirectexit('action=profile;area=breezebuddies;inner=1;u=' . $user_info['id']);
+		}
+
+		/* Declined? */
+		elseif ($globals->Validate('decline') == true)
+		{
+			/* Delete the notification */
+			$query->DeleteNotification($globals->Raw('decline'));
+
+			/* Redirect back to the profile buddy request page*/
+			redirectexit('action=profile;area=breezebuddies;inner=2;u=' . $user_info['id']);
 		}
 	}
 

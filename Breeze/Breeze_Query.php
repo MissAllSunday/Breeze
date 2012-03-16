@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to have all queries made by this mod in a single place, probably the most important file and the biggest one too.
  * @package Breeze mod
- * @version 1.0 Beta 1
+ * @version 1.0 Beta 2
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -91,7 +91,7 @@ class Breeze_Query
 	 * Cleans the old cache value
 	 *
 	 * Disclaimer: Killing in breeze world means replace the existing cache data with a null value so SMF generates a new cache...
-	 * @access private
+	 * @access public
 	 * @param mixed $type the name of value(s) to be deleted
 	 * @return void
 	 */
@@ -926,7 +926,7 @@ class Breeze_Query
 			/* Populate the array like a boss! */
 			while ($row = $smcFunc['db_fetch_assoc']($result))
 			{
-				$this->Notifications[$row['user']] = array(
+				$this->Notifications[$row['id']] = array(
 					'id' => $row['id'],
 					'user' => $row['user'],
 					'type' => $row['type'],
@@ -943,6 +943,11 @@ class Breeze_Query
 		return $this->Notifications;
 	}
 
+	public function GetNotifications()
+	{
+		return $this->Notifications();
+	}
+	
 	public function InsertNotification($array)
 	{
 		/* We dont need this anymore */
@@ -969,6 +974,9 @@ class Breeze_Query
 
 	public function MarkAsReadNotification($id)
 	{
+		/* We dont need this anymore */
+		$this->KillCache('Notifications');
+
 		/* Mark as read */
 		$params = array(
 			'set' => 'read = {int:read}',
@@ -986,6 +994,9 @@ class Breeze_Query
 
 	public function DeleteNotification($id)
 	{
+		/* We dont need this anymore */
+		$this->KillCache('Notifications');
+
 		/* Delete! */
 		$params = array(
 			'where' => 'id = {int:id}'

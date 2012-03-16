@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to create the tables Breeze needs.
  * @package Breeze mod
- * @version 1.0 Beta 1
+ * @version 1.0 Beta 2
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -242,6 +242,65 @@
 				array(
 					'type' => 'primary',
 					'columns' => array('user_id')
+				),
+			),
+			'if_exists' => 'ignore',
+			'error' => 'fatal',
+			'parameters' => array(),
+		);
+
+		/* Notifications */
+		$tables[] = array(
+			'table_name' => '{db_prefix}breeze_notifications',
+			'columns' => array(
+				array(
+					'name' => 'id',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false,
+					'auto' => true
+				),
+				array(
+					'name' => 'user',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
+				array(
+					'name' => 'type',
+					'type' => 'text',
+					'size' => '',
+					'default' => '',
+				),
+				array(
+					'name' => 'enable_visits_module',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
+				array(
+					'name' => 'time',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
+				array(
+					'name' => 'read',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
+				array(
+					'name' => 'content',
+					'type' => 'text',
+					'size' => '',
+					'default' => '',
+				),
+			),
+			'indexes' => array(
+				array(
+					'type' => 'primary',
+					'columns' => array('id')
 				),
 			),
 			'if_exists' => 'ignore',

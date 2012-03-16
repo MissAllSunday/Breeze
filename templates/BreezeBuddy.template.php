@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to show the admin section for the mod's settings
  * @package Breeze mod
- * @version 1.0 Beta 1
+ * @version 1.0 Beta 2
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -66,6 +66,10 @@ function template_Breeze_buddy_list()
 {
 	global $txt, $context, $scripturl;
 
+	/* If there is an inner_message, show it here */
+	if (!empty($context['Breeze']['inner_message']))
+		echo '<div class="windowbg" id="profile_success">', $context['Breeze']['inner_message'] ,'</div>';
+
 	/* Welcome message for the admin. */
 	echo '
 		<div class="cat_bar">
@@ -92,7 +96,8 @@ function template_Breeze_buddy_list()
 				<thead>
 					<tr class="catbg">
 						<th scope="col" class="first_th">', $txt['BreezeMod_buddyrequest_list_message'] ,'</th>
-						<th scope="col" class="last_th">', $txt['BreezeMod_buddyrequest_list_confirm'] ,'</th>
+						<th scope="col">', $txt['BreezeMod_buddyrequest_list_confirm'] ,'</th>
+						<th scope="col" class="last_th">', $txt['BreezeMod_buddyrequest_list_decline'] ,'</th>
 					</tr>
 				</thead>
 			<tbody>';
@@ -105,7 +110,10 @@ function template_Breeze_buddy_list()
 							', $request['content']->message ,'
 							</td>
 							<td>
-							<a href="', $scripturl ,'action=profile;area=breezebuddies;from=', $request['content']->from_id ,'" target="self">', $txt['BreezeMod_buddyrequest_list_confirm'] ,'</a>
+							<a href="', $scripturl ,'?action=profile;area=breezebuddies;from=', $request['content']->from_id ,';confirm=', $request['id'] ,'" target="self">', $txt['BreezeMod_buddyrequest_list_confirm'] ,'</a>
+							</td>
+							<td>
+							<a href="', $scripturl ,'?action=profile;area=breezebuddies;from=', $request['content']->from_id ,';decline=', $request['id'] ,'" target="self">', $txt['BreezeMod_buddyrequest_list_decline'] ,'</a>
 							</td>
 						</tr>';
 			}

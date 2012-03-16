@@ -6,7 +6,7 @@ Breeze is an Ajax powered social mod for your SMF forum, it allows your users to
 Requirements:
 
 -SMF 2.0.x
--PHP 5.3 or graater.
+-PHP 5.3 or greater.
 
 Features:
 

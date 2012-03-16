@@ -5,7 +5,7 @@
  * 
  * The purpose of this file is to generate a div with the user common info, name, avatar, post, icons, stuff like that.
  * @package Breeze mod
- * @version 1.0 Beta 1
+ * @version 1.0 Beta 2
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -77,11 +77,6 @@ class Breeze_UserInfo
 				<span class="topslice"><span></span></span>
 				<div style="margin:3px;padding-right:15px;padding-left:5px;float:left;min-height:100px;">
 					'.($user['avatar']['image'] ? $user['avatar']['image'] : '').'<br />'.$user['link'].'';
-
-						// Can they add this member as a buddy?
-	if (!empty($context['can_have_buddy']) && !$user['is_owner'])
-		$return .= '
-				<br /><a href="'. $scripturl. '?action=buddy;u='.$user['id']. ';'.$context['session_var']. '='.$context['session_id'].'">['.$txt['buddy_' . ($context['member']['is_buddy'] ? 'remove' : 'add')].']</a>';
 
 				$return .= '</div>
 				<div>

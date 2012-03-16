@@ -3,17 +3,18 @@
 <package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
 	<id>Suki:breeze</id>
 	<name>Breeze</name>
-	<version>1.0 Beta 1</version>
+	<version>1.0 Beta 2</version>
 	<type>modification</type>
 
 	<install for="2.0 - 2.0.99">
 	<readme parsebbc="true">README.txt</readme>
-		<code>hooks.php</code>
 		<database>install.php</database>
+		<code>hooks.php</code>
 		<modification>Breeze.xml</modification>
 		<require-file name="templates/Breeze.template.php" destination="$themedir">Wall template</require-file>
 		<require-file name="templates/BreezeAdmin.template.php" destination="$themedir">Admin template</require-file>
 		<require-file name="templates/BreezeAjax.template.php" destination="$themedir">Ajax calls</require-file>
+		<require-file name="templates/BreezeBuddy.template.php" destination="$themedir">Buddy system</require-file>
 		<require-dir name="css" destination="$themedir">CSS files</require-dir>
 		<require-dir name="images" destination="$themedir">Image files</require-dir>
 		<require-dir name="js" destination="$themedir">JavaScript</require-dir>
@@ -30,6 +31,7 @@
 		<remove-file name="$themedir/Breeze.template.php" />
 		<remove-file name="$themedir/BreezeAjax.template.php" />
 		<remove-file name="$themedir/BreezeAdmin.template.php" />
+		<remove-file name="$themedir/BreezeBuddy.template.php" />
 		<remove-file name="$themedir/css/breeze.css" />
 		<remove-file name="$themedir/js/breeze.js" />
 		<remove-file name="$themedir/js/confirm.js" />
