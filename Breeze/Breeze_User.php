@@ -79,7 +79,7 @@ class Breeze_User
 		$user_settings = $query->GetUserSettings($context['member']['id']);
 
 		/* Does the user even enable this? */
-		if ($user_settings['enable_wall'] == 0)
+		if (empty($user_settings['enable_wall']))
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* This user cannot see his/her own profile and cannot see any profile either */
@@ -180,9 +180,9 @@ class Breeze_User
 		$context['Breeze']['Modules'] = $modules->GetAllModules();
 
 		/* The visitor's permissions */
-		$context['Breeze']['visitor']['post_status'] = allowedTo('breeze_postStatus');
-		$context['Breeze']['visitor']['post_comment'] = allowedTo('breeze_postComments');
-		$context['Breeze']['visitor']['delete_status_comments'] = allowedTo('breeze_deleteStatus');
+		$context['Breeze']['visitor']['post_status'] = allowedTo('breeze_postStatus') || $context['user']['is_owner'];
+		$context['Breeze']['visitor']['post_comment'] = allowedTo('breeze_postComments') || $context['user']['is_owner'];
+		$context['Breeze']['visitor']['delete_status_comments'] = allowedTo('breeze_deleteStatus') || $context['user']['is_owner'];
 
 		/* Write to the log */
 		$query->WriteProfileVisit($context['member']['id'], $user_info['id']);

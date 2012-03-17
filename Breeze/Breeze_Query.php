@@ -357,7 +357,7 @@ class Breeze_Query
 
 	public function GetStatus()
 	{
-		return $this->Status;
+		return $this->Status ? $this->Status : $this->Status();
 	}
 
 	/*
@@ -466,7 +466,7 @@ class Breeze_Query
 	 */
 	public function GetComments()
 	{
-		return $this->Comments;
+		return $this->Comments ? $this->Comments : $this->Comments();
 	}
 
 	/*
@@ -488,7 +488,7 @@ class Breeze_Query
 		$this->ResetTemp();
 		$temp2 = array();
 
-		$this->temp = $this->GetComments();
+		$this->temp = $this->Comments ? $this->Comments : $this->Comments();
 
 		foreach($this->temp as $c)
 			if ($c['status_id'] == $id)
@@ -945,7 +945,7 @@ class Breeze_Query
 
 	public function GetNotifications()
 	{
-		return $this->Notifications();
+		return $this->Notifications ? $this->Notifications : $this->Notifications();
 	}
 	
 	public function InsertNotification($array)
