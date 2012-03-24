@@ -101,12 +101,18 @@ abstract class Breeze_Ajax
 		{
 			$body = $data->See('content');
 
+			/* Needed for the notification by mention */
+			$noti_info = array(
+				'wall_owner' => $data->See('owner_id'),
+				'wall_poster' => $data->See('poster_id'),
+			);
+
 			/* Build the params array for the query */
 			$params = array(
 				'owner_id' => $data->See('owner_id'),
 				'poster_id' => $data->See('poster_id'),
 				'time' => time(),
-				'body' => $parser->Display($body)
+				'body' => $parser->Display($body, $noti_info)
 			);
 
 			/* Store the status */

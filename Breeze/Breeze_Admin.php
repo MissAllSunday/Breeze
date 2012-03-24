@@ -63,26 +63,25 @@ if (!defined('SMF'))
 	{
 		global $scripturl, $context, $sourcedir;
 
-		Breeze::Load(array('Settings'));
+		Breeze::Load(array('Settings', 'Globals'));
 
 		$text = Breeze_Settings::getInstance();
 		$context['sub_template'] = 'show_settings';
+		$globals = new Breeze_Globals('request');
 
 		require_once($sourcedir . '/ManageServer.php');
 
 		$config_vars = array(
 				array('check', 'BreezeMod_admin_settings_enable', 'subtext' => $text->GetText('admin_settings_enable_sub')),
 				array('select', 'BreezeMod_admin_settings_menuposition', array('home' => $text->GetText('admin_settings_home'), 'help' => $text->GetText('admin_settings_help'), 'profile' => $text->GetText('admin_settings_profile')), 'subtext' => $text->GetText('admin_settings_menuposition_sub')),
-				array('check', 'BreezeMod_admin_settings_enablegeneralwall', 'subtext' => $text->GetText('admin_settings_enablegeneralwall_sub')),
 				array('check', 'BreezeMod_admin_enable_limit', 'subtext' => $text->GetText('admin_enable_limit_sub')),
 				array('select', 'BreezeMod_admin_limit_timeframe', array('hour' => $text->GetText('user_settings_time_hour'), 'day' => $text->GetText('user_settings_time_day'), 'week' => $text->GetText('user_settings_time_week'), 'month' => $text->GetText('user_settings_time_month'), 'year' => $text->GetText('user_settings_time_year')), 'subtext' => $text->GetText('admin_limit_timeframe_sub'))
 		);
 
-
 		$context['post_url'] = $scripturl . '?action=admin;area=breezesettings;save';
 
-		// Saving?
-		if (isset($_GET['save']))
+		/* Saving? */
+		if ($globals->Validate('save') == true)
 		{
 			checkSession();
 			saveDBSettings($config_vars);

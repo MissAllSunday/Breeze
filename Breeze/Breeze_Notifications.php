@@ -80,9 +80,10 @@ class Breeze_Notifications
 			/* Load all the Notifications */
 			$temp = $this->query->GetNotifications();
 
-			foreach ($temp as $t)
-				if ($t['user'] == $params['user'] && $t['content']->from_id == $user_info['id'])
-					$double_request = true;
+			if (!empty($temp))
+				foreach ($temp as $t)
+					if ($t['user'] == $params['user'] && $t['content']->from_id == $user_info['id'] && $t['type'] != 'mention')
+						$double_request = true;
 		}
 
 		if ($double_request)
@@ -96,6 +97,11 @@ class Breeze_Notifications
 
 		else
 			return false;
+	}
+
+	public function Count()
+	{
+		return count($this->query->GetNotifications());
 	}
 
 	protected function GetByUser($user)

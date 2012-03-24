@@ -47,17 +47,32 @@ class Breeze_Parser
 	{
 		Breeze::Load(array(
 			'Subs',
-			'Notifications'
+			'Notifications',
+			'UserInfo'
 		));
 
 		$this->notification = new Breeze_Notifications();
+		$this->settings = Breeze_Settings::getInstance();
+
+		/* Regex stuff */
+		$this->regex = array(
+			'url' => '~(?<=[\s>\.(;\'"]|^)((?:http|https)://[\w\-_%@:|]+(?:\.[\w\-_%]+)*(?::\d+)?(?:/[\w\-_\~%\.@!,\?&;=#(){}+:\'\\\\]*)*[/\w\-_\~%@\?;=#}\\\\])~i',
+			'mention' => '/{([^<>&"\'=\\\\]*)}/'
+		);
 	}
 
-	function Display($string)
+	public function Display($string, $mention_info = false)
 	{
 		$this->s = $string;
 		$temp = get_class_methods('Breeze_Parser');
 		$temp = Breeze_Subs::Remove($temp, array('__construct', 'Display'), false);
+
+		/* Used to notify the user */
+		if ($mention_info)
+			$this->mention_info = array(
+				$mention_info['wall_owner'],
+				$mention_info['wall_poster']
+			);
 
 		foreach ($temp as $t)
 			$this->s = $this->$t($this->s);
@@ -65,13 +80,10 @@ class Breeze_Parser
 		return $this->s;
 	}
 
-	/* Convert any valid urls on to links*/
+	/* Convert any valid urls on to links */
 	private function UrltoLink($s)
 	{
-		/* regex "Borrowed" from Sources/Subs.php:parse_bbc() */
-		$url_regex = '~(?<=[\s>\.(;\'"]|^)((?:http|https)://[\w\-_%@:|]+(?:\.[\w\-_%]+)*(?::\d+)?(?:/[\w\-_\~%\.@!,\?&;=#(){}+:\'\\\\]*)*[/\w\-_\~%@\?;=#}\\\\])~i';
-
-		if (preg_match_all($url_regex, $s, $matches))
+		if (preg_match_all($this->regex['url'], $s, $matches))
 			foreach($matches[0] as $m)
 				$s = str_replace($m, '<a href="'.$m.'" class="bbc_link" target="_blank">'.$m.'</a>', $s);
 
@@ -80,11 +92,9 @@ class Breeze_Parser
 
 	private function Mention($s)
 	{
-		global $memberContext, $context;
+		global $memberContext, $context, $user_info, $scripturl;
 
-		$regex = '/{([^<>&"\'=\\\\]*)}/';
-
-		if (preg_match_all($regex, $s, $matches))
+		if (preg_match_all($this->regex['mention'], $s, $matches))
 			foreach($matches[1] as $m)
 			{
 				if (in_array($m, array('_', '|')) || preg_match('~[<>&"\'=\\\\]~', preg_replace('~&#(?:\\d{1,7}|x[0-9a-fA-F]{1,6});~', '', $m)) != 0 || strpos($m, '[code') !== false || strpos($m, '[/code') !== false)
@@ -97,17 +107,28 @@ class Breeze_Parser
 					$s = str_replace($matches[0], '@'.$context['Breeze']['user_info']['link'][$user[0]], $s);
 
 					/* Does this user wants to be notificated? */
-					/* Some if check here */
+					if ($user[0] != $user_info['id'])
 					{
+						/* Load all the members up. */
+						$temp_users_load = Breeze_Subs::LoadUserInfo($this->mention_info);
+
 						/* Build the params */
 						$params = array(
-							/* Params here */
+							'user' => $user[0],
+							'type' => 'mention',
+							'time' => time(),
+							'read' => 0,
+							'content' => array(
+								'message' => $this->mention_info[1] == $this->mention_info[0] ? sprintf($this->settings->GetText('mention_message_own_wall'), $temp_users_load[$this->mention_info[1]]['link']) : sprintf($this->settings->GetText('mention_message'), $temp_users_load[$this->mention_info[1]]['link'], $temp_users_load[$this->mention_info[0]]['link']),
+								'url' => $scripturl .'?action=profile;area=breezenoti;u='. $user[0],
+								'from_link' => $temp_users_load[$this->mention_info[1]]['link'],
+								'from_id' => $temp_users_load[$this->mention_info[1]]['id'],
+							)
 						);
 
 						/* Create the notification */
-						$this->notification->Create('mention', $params);
+						$this->notification->Create($params);
 					}
-
 				}
 				else
 					$s = str_replace($matches[0], '@'.$m, $s);

@@ -56,7 +56,8 @@ class Breeze_Buddy
 			'Globals',
 			'Notifications',
 			'UserInfo',
-			'Query'
+			'Query',
+			'Subs'
 		));
 
 		/* We need all this stuff */
@@ -91,15 +92,7 @@ class Breeze_Buddy
 			);
 
 			/* Load all the members up. */
-			loadMemberData($user_load, false, 'profile');
-
-			/* Setup the context for each buddy. */
-			$temp_users_load = array();
-			foreach ($user_load as $buddy)
-			{
-				loadMemberContext($buddy);
-				$temp_users_load[$buddy] = $memberContext[$buddy];
-			}
+			$temp_users_load = Breeze_Subs::LoadUserInfo($user_load);
 
 			$params = array(
 				'user' => $sa->Raw('u'),
@@ -121,7 +114,6 @@ class Breeze_Buddy
 			/* Show a nice message saying the user must approve the friendship request */
 			redirectexit('action=breezebuddyrequest;u=' . $sa->Raw('u'));
 		}
-
 	}
 
 	public function ShowBuddyRequests($user)

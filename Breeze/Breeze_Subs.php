@@ -240,4 +240,27 @@ $(document).ready(function ()
 
 		return ($preserve_keys === true) ? $array : array_values($array);
 	}
+
+	public static function LoadUserInfo($id)
+	{
+		global $user_info, $memberContext;
+
+		/* Must be an array */
+		if (!is_array($id))
+			$id = array($id);
+
+		/* Load all the members up. */
+		loadMemberData($id, false, 'profile');
+
+		/* Setup the context for each user */
+		$temp_return = array();
+
+		foreach ($id as $i)
+		{
+			loadMemberContext($i);
+			$temp_return[$i] = $memberContext[$i];
+		}
+
+		return $temp_return;
+	}
 }

@@ -181,6 +181,10 @@ $txt['BreezeMod_noti_title'] = 'Notifications';
 $txt['BreezeMod_noti_buddy_title'] = 'Buddy notification';
 $txt['BreezeMod_noti_buddy_message'] = 'The user %s has added you as his/her buddy, please confirm this request.';
 
+/* Mentions */
+$txt['BreezeMod_mention_message'] = 'You have been mentioned by %1$s on %2$s\'s wall!';
+$txt['BreezeMod_mention_message_own_wall'] = 'You have been mentioned on %s own wall!';
+
 /* Buddy List */
 $txt['BreezeMod_buddyrequest_error_doublerequest'] = 'You already sent a buddy request, please wait for the user\'s response.';
 $txt['BreezeMod_buddyrequest_error_dunno'] = 'Something went wrong, please contact the forum admin.';
