@@ -45,10 +45,10 @@
 	$hooks = array(
 		'integrate_pre_include' => '$sourcedir/Breeze/Breeze.php',
 		/* 'integrate_menu_buttons' => 'Breeze::WallMenu', */
-		'integrate_actions' => 'Breeze::Action_Hook',
-		'integrate_load_permissions' => 'Breeze::Permissions',
-		'integrate_admin_areas' => 'Breeze::Admin_Button',
-		'integrate_profile_areas' => 'Breeze::ProfileInfo'
+		'integrate_actions' => 'Breeze::actionHook',
+		'integrate_load_permissions' => 'Breeze::permissions',
+		'integrate_admin_areas' => 'Breeze::adminButton',
+		'integrate_profile_areas' => 'Breeze::profileInfo'
 	);
 
 	$call = 'add_integration_function';

@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Breeze_
- * 
+ * BreezeDB
+ *
  * The purpose of this file is to perform the queries made by breeze, it only executes, no logic here.
  * @package Breeze mod
  * @version 1.0 Beta 2
@@ -35,16 +35,19 @@
  *
  */
 
-if (!class_exists('Breeze_DB')):
-	class Breeze_DB
+if (!class_exists('BreezeDB')):
+	class BreezeDB
 	{
 		function __construct($table)
 		{
 			$this->table = isset($table) ? '{db_prefix}'.$table : null;
-			$this->data_result = array();
+			$this->dataResult = array();
+
+			if (!$this->table)
+				return false;
 		}
 
-		function Params($params, $data = null, $values = null)
+		function params($params, $data = null, $values = null)
 		{
 			if(is_null($params))
 				return false;
@@ -59,7 +62,7 @@ if (!class_exists('Breeze_DB')):
 			$this->data = !is_array($data) ? array($data) : $data;
 		}
 
-		function GetData($key = null, $single = false)
+		function getData($key = null, $single = false)
 		{
 			global $smcFunc;
 
@@ -79,31 +82,31 @@ if (!class_exists('Breeze_DB')):
 			);
 
 			if (!$query)
-				$this->data_result = array();
+				$this->dataResult = array();
 
 			if($single)
 				while ($row = $smcFunc['db_fetch_assoc']($query))
-					$this->data_result = $row;
+					$this->dataResult = $row;
 
 			if ($key)
 				while($row = $smcFunc['db_fetch_assoc']($query))
-					$this->data_result[$row[$this->key]] = $row;
+					$this->dataResult[$row[$this->key]] = $row;
 
 			else
 				while($row = $smcFunc['db_fetch_assoc']($query))
-					$this->data_result[] = $row;
+					$this->dataResult[] = $row;
 
 			$smcFunc['db_free_result']($query);
 
-			/* return $this->data_result; */
+			/* return $this->dataResult; */
 		}
 
-		function DataResult()
+		function dataResult()
 		{
-			return $this->data_result;
+			return $this->dataResult;
 		}
 
-		function UpdateData()
+		function updateData()
 		{
 			global $smcFunc;
 
@@ -118,7 +121,7 @@ if (!class_exists('Breeze_DB')):
 			);
 		}
 
-		function DeleteData()
+		function deleteData()
 		{
 			global $smcFunc;
 
@@ -132,7 +135,7 @@ if (!class_exists('Breeze_DB')):
 			);
 		}
 
-		function InsertData($data, $values, $indexes)
+		function insertData($data, $values, $indexes)
 		{
 			if(is_null($values) || is_null($indexes) || is_null($data))
 				return false;
@@ -151,7 +154,7 @@ if (!class_exists('Breeze_DB')):
 			);
 		}
 
-		function Count($params = null, $data = null)
+		function count($params = null, $data = null)
 		{
 			global $smcFunc;
 

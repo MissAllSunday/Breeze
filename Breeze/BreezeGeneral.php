@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class Breeze_General
+class BreezeGeneral
 {
 	function __construct()
 	{
@@ -47,13 +47,13 @@ class Breeze_General
 
 	}
 	/* Get the latest entries of your buddies */
-	public static function Wall()
+	public static function wall()
 	{
 		global $txt, $scripturl, $context;
 
 		loadLanguage('Breeze');
 		loadtemplate('Breeze');
-		Breeze::Load(array('Settings','Subs'));
+		Breeze::loadFile(array('Settings','Subs'));
 		writeLog(true);
 
 		/* Set all the page stuff */
@@ -65,20 +65,20 @@ class Breeze_General
 		);
 
 		/* Headers */
-		Breeze_Subs::Headers(true);
+		BreezeSubs::headers(true);
 	}
 
 	/* Get the latest entries of your buddies */
-	public static function Get_Entries()
+	public static function getEntries()
 	{
 	}
 
 	/* Get the latest comments */
-	public static function Get_Comments()
+	public static function getComments()
 	{
 	}
 	
-	public static function Get_Logs()
+	public static function getLogs()
 	{
 	}
 }

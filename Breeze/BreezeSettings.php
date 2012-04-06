@@ -38,9 +38,9 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class Breeze_Settings
+class BreezeSettings
 {
-	private static $instance;
+	private static $_instance;
 	private $Settings;
 	private $Text;
 
@@ -51,11 +51,11 @@ class Breeze_Settings
 
 	public static function getInstance()
 	{
-		if (!self::$instance)
+		if (!self::$_instance)
 		 {
-			self::$instance = new Breeze_Settings();
+			self::$_instance = new BreezeSettings();
 		}
-		return self::$instance;
+		return self::$_instance;
 	}
 
 	public function Extract()

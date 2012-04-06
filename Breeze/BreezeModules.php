@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breeze_
+ * BreezeModules
  *
  * The purpose of this file is to show all the current, enable modules for the users.
  * @package Breeze mod
@@ -38,16 +38,16 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class Breeze_Modules
+class BreezeModules
 {
-	private $user_settings;
-	private $profile_id;
+	private $userSettings;
+	private $profileId;
 	private $text;
 	private $query;
 
 	public function __construct($id)
 	{
-		Breeze::Load(array(
+		Breeze::loadFile(array(
 			'UserInfo',
 			'Query',
 			'Subs',
@@ -55,21 +55,21 @@ class Breeze_Modules
 		));
 
 		/* Set some things */
-		$this->profile_id = $id;
-		$this->text = Breeze_Settings::getInstance();
-		$this->query = Breeze_Query::getInstance();
-		$this->user_settings = $this->query->GetUserSettings($this->profile_id);
+		$this->profileId = $id;
+		$this->text = BreezeSettings::getInstance();
+		$this->_query = BreezeQuery::getInstance();
+		$this->userSettings = $this->_query->getUserSettings($this->profileId);
 	}
 
-	public function GetAllModules()
+	public function getAllModules()
 	{
 		/* This is fugly, I need to find a better way to handle modules, maybe a separate folder? */
 		$array = array();
-		$temp = get_class_methods('Breeze_Modules');
-		$temp = Breeze_Subs::Remove($temp, array(
-			$this->user_settings['enable_visits_module'] ? '' : 'enable_visits_module',
+		$temp = get_class_methods('BreezeModules');
+		$temp = BreezeSubs::remove($temp, array(
+			$this->userSettings['enableVisitsModule'] ? '' : 'enableVisitsModule',
 			'__construct',
-			'GetAllModules'
+			'getAllModules'
 		), false);
 
 		foreach ($temp as $k => $t)
@@ -78,16 +78,16 @@ class Breeze_Modules
 		return $array;
 	}
 
-	function enable_visits_module()
+	function enableVisitsModule()
 	{
 		/* Set this as empty */
 		$array = array(
-			'title' => $this->text->GetText('modules_enable_visitors_title'),
+			'title' => $this->text->getText('modules_enable_visitors_title'),
 			'data' => ''
 		);
 
 		/* Get the last visits to this profile page */
-		$visits = $this->query->GetProfilevisits($this->profile_id, $this->user_settings['visits_module_timeframe']);
+		$visits = $this->_query->getProfilevisits($this->profileId, $this->userSettings['visits_module_timeframe']);
 		$columns = 3;
 		$counter = 0;
 
@@ -97,7 +97,7 @@ class Breeze_Modules
 
 			foreach($visits as $t)
 			{
-				$context['Breeze']['user_info'][$t['user']] = Breeze_UserInfo::Profile($t['user'], true);
+				$context['Breeze']['user_info'][$t['user']] = BreezeUserInfo::profile($t['user'], true);
 
 				if ($counter % $columns == 0)
 					$array['data'] .= '</tr><tr>';

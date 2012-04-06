@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breeze_
+ * BreezeGlobals
  *
  * The purpose of this file is
  * @package Breeze mod
@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class Breeze_Globals
+class BreezeGlobals
 {
 	private $request;
 
@@ -59,15 +59,15 @@ class Breeze_Globals
 
 	}
 
-	public function See($value)
+	public function seeGlobal($value)
 	{
-		if ($this->Validate($value))
-			return $this->Sanitize($this->request[$value]);
+		if ($this->validateGlobal($value))
+			return $this->sanitize($this->request[$value]);
 		else
 			return 'error_' . $value;
 	}
 
-	public function Raw($value)
+	public function raw($value)
 	{
 		if (isset($this->request[$value]))
 			return $this->request[$value];
@@ -76,7 +76,7 @@ class Breeze_Globals
 			return false;
 	}
 
-	public function Validate($var)
+	public function validateGlobal($var)
 	{
 		if (isset($this->request[$var]))
 			return true;
@@ -84,7 +84,7 @@ class Breeze_Globals
 			return false;
 	}
 
-	public function ValidateBody($var)
+	public function validateBody($var)
 	{
 		/* You cannot post just spaces */
 		if(ctype_space($this->request[$var]) || $this->request[$var] == '')
@@ -97,12 +97,12 @@ class Breeze_Globals
 			return false;
 	}
 
-	public function UnsetVar($var)
+	public function unsetVar($var)
 	{
 		unset($this->request[$var]);
 	}
 
-	public function Sanitize($var)
+	public function sanitize($var)
 	{
 		if (get_magic_quotes_gpc())
 			$var = stripslashes($var);

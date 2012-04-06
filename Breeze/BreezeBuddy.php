@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breeze_Buddy
+ * BreezeBuddy
  *
  * The purpose of this file is to replace the default buddy action in SMF with one that provides more functionality.
  * @package Breeze mod
@@ -38,11 +38,11 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class Breeze_Buddy
+class BreezeBuddy
 {
 	public function  __construct(){}
 
-	public static function Buddy()
+	public static function buddy()
 	{
 		global $user_info, $scripturl, $context, $memberContext;
 
@@ -51,7 +51,7 @@ class Breeze_Buddy
 		isAllowedTo('profile_identity_own');
 		is_not_guest();
 
-		Breeze::Load(array(
+		Breeze::loadFile(array(
 			'Settings',
 			'Globals',
 			'Notifications',
@@ -61,47 +61,47 @@ class Breeze_Buddy
 		));
 
 		/* We need all this stuff */
-		$sa = new Breeze_Globals('get');
-		$notification = new Breeze_Notifications();
-		$settings = Breeze_Settings::getInstance();
+		$sa = new BreezeGlobals('get');
+		$notification = new BreezeNotifications();
+		$settings = BreezeSettings::getInstance();
 
 
 		/* There's gotta be an user... */
-		if ($sa->Validate('u') == false)
+		if ($sa->validateGlobal('u') == false)
 			fatal_lang_error('no_access', false);
 
 		/* Problems in paradise? */
-		if (in_array($sa->Raw('u'), $user_info['buddies']))
+		if (in_array($sa->raw('u'), $user_info['buddies']))
 		{
-			$user_info['buddies'] = array_diff($user_info['buddies'], array($sa->Raw('u')));
+			$user_info['buddies'] = array_diff($user_info['buddies'], array($sa->raw('u')));
 
 			/* Do the update */
 			updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
 
 			/* Done here, let's redirect the user to the profile page */
-			redirectexit('action=profile;u=' . $sa->Raw('u'));
+			redirectexit('action=profile;u=' . $sa->raw('u'));
 		}
 
 		/* Before anything else, let's ask the user shall we? */
-		elseif ($user_info['id'] != $sa->Raw('u'))
+		elseif ($user_info['id'] != $sa->raw('u'))
 		{
 			/* Load the users link */
 			$user_load = array(
 				$user_info['id'],
-				$sa->Raw('u')
+				$sa->raw('u')
 			);
 
 			/* Load all the members up. */
-			$temp_users_load = Breeze_Subs::LoadUserInfo($user_load);
+			$temp_users_load = BreezeSubs::loadUserInfo($user_load);
 
 			$params = array(
-				'user' => $sa->Raw('u'),
+				'user' => $sa->raw('u'),
 				'type' => 'buddy',
 				'time' => time(),
 				'read' => 0,
 				'content' => array(
-					'message' => sprintf($settings->GetText('buddy_messagerequest_message'), $temp_users_load[$user_info['id']]['link']),
-					'url' => $scripturl .'?action=profile;area=breezebuddies;u='. $sa->Raw('u'),
+					'message' => sprintf($settings->getText('buddy_messagerequest_message'), $temp_users_load[$user_info['id']]['link']),
+					'url' => $scripturl .'?action=profile;area=breezebuddies;u='. $sa->raw('u'),
 					'from_link' => $temp_users_load[$user_info['id']]['link'],
 					'from_id' => $user_info['id'],
 					'from_buddies' => $user_info['buddies']
@@ -109,23 +109,23 @@ class Breeze_Buddy
 			);
 
 			/* Notification here */
-			$notification->Create($params);
+			$notification->create($params);
 
 			/* Show a nice message saying the user must approve the friendship request */
-			redirectexit('action=breezebuddyrequest;u=' . $sa->Raw('u'));
+			redirectexit('action=breezebuddyrequest;u=' . $sa->raw('u'));
 		}
 	}
 
-	public function ShowBuddyRequests($user)
+	public function showBuddyRequests($user)
 	{
-		Breeze::Load(array(
+		Breeze::loadFile(array(
 			'Query'
 		));
 
-		$query = Breeze_Query::getInstance();
+		$query = BreezeQuery::getInstance();
 
 		/* Load all buddy request for this user */
-		$temp = $query->GetNotificationByType('buddy');
+		$temp = $query->getNotificationByType('buddy');
 		$temp2 = array();
 
 		/* We only want the notifications for this user... */

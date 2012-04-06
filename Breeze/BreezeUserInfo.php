@@ -40,7 +40,7 @@ if (!defined('SMF'))
 
 	/* The purpose of this file is to centralize the user info,
 	helps to avoid having to write code over and over again */
-class Breeze_UserInfo
+class BreezeUserInfo
 {
 	public static function Profile($user, $id = false)
 	{

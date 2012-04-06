@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breeze_
+ * BreezeParser
  *
  * The purpose of this file is to identify something in a tezt string and convert that to something different, for example, a url into an actual html link.
  * @package Breeze mod
@@ -39,20 +39,20 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class Breeze_Parser
+class BreezeParser
 {
-	private $notification;
+	private $_notification;
 
 	function __construct()
 	{
-		Breeze::Load(array(
+		Breeze::loadFile(array(
 			'Subs',
 			'Notifications',
 			'UserInfo'
 		));
 
-		$this->notification = new Breeze_Notifications();
-		$this->settings = Breeze_Settings::getInstance();
+		$this->_notification = new BreezeNotifications();
+		$this->settings = BreezeSettings::getInstance();
 
 		/* Regex stuff */
 		$this->regex = array(
@@ -61,15 +61,15 @@ class Breeze_Parser
 		);
 	}
 
-	public function Display($string, $mention_info = false)
+	public function display($string, $mention_info = false)
 	{
 		$this->s = $string;
-		$temp = get_class_methods('Breeze_Parser');
-		$temp = Breeze_Subs::Remove($temp, array('__construct', 'Display'), false);
+		$temp = get_class_methods('BreezeParser');
+		$temp = BreezeSubs::remove($temp, array('__construct', 'Display'), false);
 
 		/* Used to notify the user */
 		if ($mention_info)
-			$this->mention_info = array(
+			$this->mentionInfo = array(
 				$mention_info['wall_owner'],
 				$mention_info['wall_poster']
 			);
@@ -81,7 +81,7 @@ class Breeze_Parser
 	}
 
 	/* Convert any valid urls on to links */
-	private function UrltoLink($s)
+	private function urltoLink($s)
 	{
 		if (preg_match_all($this->regex['url'], $s, $matches))
 			foreach($matches[0] as $m)
@@ -90,7 +90,7 @@ class Breeze_Parser
 		return $s;
 	}
 
-	private function Mention($s)
+	private function mention($s)
 	{
 		global $memberContext, $context, $user_info, $scripturl;
 
@@ -103,14 +103,14 @@ class Breeze_Parser
 				/* We need to do this since we only have the name, not the id */
 				if ($user = loadMemberData($m, true, 'minimal'))
 				{
-					$context['Breeze']['user_info'][$user[0]] = Breeze_UserInfo::Profile($user[0], true);
+					$context['Breeze']['user_info'][$user[0]] = BreezeUserInfo::profile($user[0], true);
 					$s = str_replace($matches[0], '@'.$context['Breeze']['user_info']['link'][$user[0]], $s);
 
 					/* Does this user wants to be notificated? */
 					if ($user[0] != $user_info['id'])
 					{
 						/* Load all the members up. */
-						$temp_users_load = Breeze_Subs::LoadUserInfo($this->mention_info);
+						$temp_users_load = BreezeSubs::loadUserInfo($this->mentionInfo);
 
 						/* Build the params */
 						$params = array(
@@ -119,15 +119,15 @@ class Breeze_Parser
 							'time' => time(),
 							'read' => 0,
 							'content' => array(
-								'message' => $this->mention_info[1] == $this->mention_info[0] ? sprintf($this->settings->GetText('mention_message_own_wall'), $temp_users_load[$this->mention_info[1]]['link']) : sprintf($this->settings->GetText('mention_message'), $temp_users_load[$this->mention_info[1]]['link'], $temp_users_load[$this->mention_info[0]]['link']),
+								'message' => $this->mentionInfo[1] == $this->mentionInfo[0] ? sprintf($this->settings->getText('mention_message_own_wall'), $temp_users_load[$this->mentionInfo[1]]['link']) : sprintf($this->settings->getText('mention_message'), $temp_users_load[$this->mentionInfo[1]]['link'], $temp_users_load[$this->mentionInfo[0]]['link']),
 								'url' => $scripturl .'?action=profile;area=breezenoti;u='. $user[0],
-								'from_link' => $temp_users_load[$this->mention_info[1]]['link'],
-								'from_id' => $temp_users_load[$this->mention_info[1]]['id'],
+								'from_link' => $temp_users_load[$this->mentionInfo[1]]['link'],
+								'from_id' => $temp_users_load[$this->mentionInfo[1]]['id'],
 							)
 						);
 
 						/* Create the notification */
-						$this->notification->Create($params);
+						$this->_notification->Create($params);
 					}
 				}
 				else

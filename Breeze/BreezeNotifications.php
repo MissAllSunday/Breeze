@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breeze_Notifications
+ * BreezeNotifications
  *
  * The purpose of this file is to fetch all notifications for X user
  * @package Breeze mod
@@ -38,18 +38,18 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class Breeze_Notifications
+class BreezeNotifications
 {
-	protected $types = array();
-	protected $params = array();
-	private $user = 0;
-	private $settings = '';
-	private $query = '';
-	private $ReturnArray = array();
+	protected $_types = array();
+	protected $_params = array();
+	private $_user = 0;
+	private $_settings = '';
+	private $_query = '';
+	private $_returnArray = array();
 
 	function __construct()
 	{
-		$this->types = array(
+		$this->_types = array(
 			'comment',
 			'status',
 			'like',
@@ -57,17 +57,17 @@ class Breeze_Notifications
 			'mention'
 		);
 
-		Breeze::Load(array(
+		Breeze::loadFile(array(
 			'Settings',
 			'Query',
 		));
 
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
-		$this->settings = Breeze_Settings::getInstance();
-		$this->query = Breeze_Query::getInstance();
+		$this->_settings = BreezeSettings::getInstance();
+		$this->_query = BreezeQuery::getInstance();
 	}
 
-	public function Create($params)
+	public function create($params)
 	{
 		global $user_info;
 
@@ -75,10 +75,10 @@ class Breeze_Notifications
 		$double_request = false;
 
 		/* if the type is buddy then let's do a check to avoid duplicate entries */
-		if (!empty($params) && in_array($params['type'], $this->types))
+		if (!empty($params) && in_array($params['type'], $this->_types))
 		{
 			/* Load all the Notifications */
-			$temp = $this->query->GetNotifications();
+			$temp = $this->_query->getNotifications();
 
 			if (!empty($temp))
 				foreach ($temp as $t)
@@ -89,22 +89,22 @@ class Breeze_Notifications
 		if ($double_request)
 			fatal_lang_error('BreezeMod_buddyrequest_error_doublerequest', false);
 
-		elseif (!empty($params) && in_array($params['type'], $this->types) && !$double_request)
+		elseif (!empty($params) && in_array($params['type'], $this->_types) && !$double_request)
 		{
-			$this->params = $params;
-			$this->query->InsertNotification($this->params);
+			$this->_params = $params;
+			$this->_query->InsertNotification($this->_params);
 		}
 
 		else
 			return false;
 	}
 
-	public function Count()
+	public function count()
 	{
-		return count($this->query->GetNotifications());
+		return count($this->_query->getNotifications());
 	}
 
-	protected function GetByUser($user)
+	protected function getByUser($user)
 	{
 		/* Dont even bother... */
 		if (empty($user))
@@ -112,21 +112,21 @@ class Breeze_Notifications
 
 		$user = (int) $user;
 
-		return $this->query->GetNotificationByUser($user);
+		return $this->_query->getNotificationByUser($user);
 	}
 
-	public function Stream($user)
+	public function stream($user)
 	{
-		return $this->GetByUser($user);
+		return $this->getByUser($user);
 	}
 
-	protected function Delete($id)
+	protected function delete($id)
 	{
-		$this->query->DeleteNotification($id);
+		$this->_query->deleteNotification($id);
 	}
 
-	protected function MarkAsRead($id)
+	protected function markAsRead($id)
 	{
-		$this->query->MarkAsReadNotification($id);
+		$this->_query->markAsReadNotification($id);
 	}
 }

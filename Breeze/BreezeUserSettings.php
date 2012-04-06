@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breeze_UserSettings.php
+ * BreezeUserSettings.php
  *
  * The purpose of this file is
  * @package Breeze mod
@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class Breeze_UserSettings
+class BreezeUserSettings
 {
 	private $data = array();
 	private static $already = false;
@@ -68,10 +68,10 @@ class Breeze_UserSettings
 			$query_data = array(
 				'user_id' => $context['member']['id'],
 			);
-			$query = new Breeze_DB('breeze_user_settings');
-			$query->Params($query_params, $query_data);
-			$query->GetData(null, true);
-			$this->data = $query->DataResult();
+			$query = new BreezeDB('breeze_user_settings');
+			$query->params($query_params, $query_data);
+			$query->getData(null, true);
+			$this->data = $query->dataResult();
 
 			if (!empty($data))
 				$context['Breeze']['UserSettings'][$context['member']['id']] = $this->data;
@@ -92,10 +92,10 @@ class Breeze_UserSettings
 			$query_data = array(
 				'user_id' => $user,
 			);
-			$query = new Breeze_DB('breeze_user_settings');
-			$query->Params($query_params, $query_data);
-			$query->GetData(null, true);
-			$this->data = $query->DataResult();
+			$query = new BreezeDB('breeze_user_settings');
+			$query->params($query_params, $query_data);
+			$query->getData(null, true);
+			$this->data = $query->dataResult();
 
 			if (!empty($data))
 				$context['Breeze']['UserSettings'][$user] = $this->data;
