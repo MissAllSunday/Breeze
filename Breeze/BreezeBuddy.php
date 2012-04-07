@@ -42,7 +42,7 @@ class BreezeBuddy
 {
 	public function  __construct(){}
 
-	public static function buddy()
+	public static function Buddy()
 	{
 		global $user_info, $scripturl, $context, $memberContext;
 
@@ -51,7 +51,7 @@ class BreezeBuddy
 		isAllowedTo('profile_identity_own');
 		is_not_guest();
 
-		Breeze::loadFile(array(
+		Breeze::Load(array(
 			'Settings',
 			'Globals',
 			'Notifications',
@@ -62,46 +62,46 @@ class BreezeBuddy
 
 		/* We need all this stuff */
 		$sa = new BreezeGlobals('get');
-		$notification = new Breezenotifications();
+		$notification = new BreezeNotifications();
 		$settings = BreezeSettings::getInstance();
 
 
 		/* There's gotta be an user... */
-		if ($sa->validateGlobal('u') == false)
+		if ($sa->Validate('u') == false)
 			fatal_lang_error('no_access', false);
 
 		/* Problems in paradise? */
-		if (in_array($sa->raw('u'), $user_info['buddies']))
+		if (in_array($sa->Raw('u'), $user_info['buddies']))
 		{
-			$user_info['buddies'] = array_diff($user_info['buddies'], array($sa->raw('u')));
+			$user_info['buddies'] = array_diff($user_info['buddies'], array($sa->Raw('u')));
 
 			/* Do the update */
 			updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
 
 			/* Done here, let's redirect the user to the profile page */
-			redirectexit('action=profile;u=' . $sa->raw('u'));
+			redirectexit('action=profile;u=' . $sa->Raw('u'));
 		}
 
 		/* Before anything else, let's ask the user shall we? */
-		elseif ($user_info['id'] != $sa->raw('u'))
+		elseif ($user_info['id'] != $sa->Raw('u'))
 		{
 			/* Load the users link */
 			$user_load = array(
 				$user_info['id'],
-				$sa->raw('u')
+				$sa->Raw('u')
 			);
 
 			/* Load all the members up. */
-			$temp_users_load = BreezeSubs::loadUserInfo($user_load);
+			$temp_users_load = BreezeSubs::LoadUserInfo($user_load);
 
 			$params = array(
-				'user' => $sa->raw('u'),
+				'user' => $sa->Raw('u'),
 				'type' => 'buddy',
 				'time' => time(),
 				'read' => 0,
 				'content' => array(
-					'message' => sprintf($settings->getText('buddy_messagerequest_message'), $temp_users_load[$user_info['id']]['link']),
-					'url' => $scripturl .'?action=profile;area=breezebuddies;u='. $sa->raw('u'),
+					'message' => sprintf($settings->GetText('buddy_messagerequest_message'), $temp_users_load[$user_info['id']]['link']),
+					'url' => $scripturl .'?action=profile;area=breezebuddies;u='. $sa->Raw('u'),
 					'from_link' => $temp_users_load[$user_info['id']]['link'],
 					'from_id' => $user_info['id'],
 					'from_buddies' => $user_info['buddies']
@@ -109,23 +109,23 @@ class BreezeBuddy
 			);
 
 			/* Notification here */
-			$notification->create($params);
+			$notification->Create($params);
 
 			/* Show a nice message saying the user must approve the friendship request */
-			redirectexit('action=breezebuddyrequest;u=' . $sa->raw('u'));
+			redirectexit('action=breezebuddyrequest;u=' . $sa->Raw('u'));
 		}
 	}
 
-	public function showbuddyRequests($user)
+	public function ShowBuddyRequests($user)
 	{
-		Breeze::loadFile(array(
+		Breeze::Load(array(
 			'Query'
 		));
 
 		$query = BreezeQuery::getInstance();
 
 		/* Load all buddy request for this user */
-		$temp = $query->getNotificationByType('buddy');
+		$temp = $query->GetNotificationByType('buddy');
 		$temp2 = array();
 
 		/* We only want the notifications for this user... */

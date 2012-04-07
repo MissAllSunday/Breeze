@@ -59,15 +59,15 @@ class BreezeGlobals
 
 	}
 
-	public function seeGlobal($value)
+	public function See($value)
 	{
-		if ($this->validateGlobal($value))
-			return $this->sanitize($this->request[$value]);
+		if ($this->Validate($value))
+			return $this->Sanitize($this->request[$value]);
 		else
 			return 'error_' . $value;
 	}
 
-	public function raw($value)
+	public function Raw($value)
 	{
 		if (isset($this->request[$value]))
 			return $this->request[$value];
@@ -76,7 +76,7 @@ class BreezeGlobals
 			return false;
 	}
 
-	public function validateGlobal($var)
+	public function Validate($var)
 	{
 		if (isset($this->request[$var]))
 			return true;
@@ -84,7 +84,7 @@ class BreezeGlobals
 			return false;
 	}
 
-	public function validateBody($var)
+	public function ValidateBody($var)
 	{
 		/* You cannot post just spaces */
 		if(ctype_space($this->request[$var]) || $this->request[$var] == '')
@@ -97,12 +97,12 @@ class BreezeGlobals
 			return false;
 	}
 
-	public function unsetVar($var)
+	public function UnsetVar($var)
 	{
 		unset($this->request[$var]);
 	}
 
-	public function sanitize($var)
+	public function Sanitize($var)
 	{
 		if (get_magic_quotes_gpc())
 			$var = stripslashes($var);

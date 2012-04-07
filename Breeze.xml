@@ -10,7 +10,7 @@
 	<operation>
 			<search position="replace"><![CDATA['mods' => array(]]></search>
 			<add><![CDATA['mods' => array(
-			Breeze::who(),]]></add>
+			Breeze::Who(),]]></add>
 		</operation>
 	</file>
 

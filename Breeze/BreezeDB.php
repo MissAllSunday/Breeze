@@ -2,7 +2,7 @@
 
 /**
  * BreezeDB
- *
+ * 
  * The purpose of this file is to perform the queries made by breeze, it only executes, no logic here.
  * @package Breeze mod
  * @version 1.0 Beta 2
@@ -41,13 +41,10 @@ if (!class_exists('BreezeDB')):
 		function __construct($table)
 		{
 			$this->table = isset($table) ? '{db_prefix}'.$table : null;
-			$this->_dataResult = array();
-
-			if (!$this->table)
-				return false;
+			$this->data_result = array();
 		}
 
-		function params($params, $data = null, $values = null)
+		function Params($params, $data = null, $values = null)
 		{
 			if(is_null($params))
 				return false;
@@ -59,10 +56,10 @@ if (!class_exists('BreezeDB')):
 			$this->left = isset($params['left_join']) ? 'LEFT JOIN '.trim($params['left_join']) : null;
 			$this->order = isset($params['order']) ? 'ORDER BY '.trim($params['order']) : null;
 			$this->set = isset($params['set']) ? 'SET '.trim($params['set']) : null;
-			$this->_data = !is_array($data) ? array($data) : $data;
+			$this->data = !is_array($data) ? array($data) : $data;
 		}
 
-		function getData($key = null, $single = false)
+		function GetData($key = null, $single = false)
 		{
 			global $smcFunc;
 
@@ -78,35 +75,35 @@ if (!class_exists('BreezeDB')):
 				'. $this->order .'
 				'. $this->limit .'
 				',
-				$this->_data
+				$this->data
 			);
 
 			if (!$query)
-				$this->_dataResult = array();
+				$this->data_result = array();
 
 			if($single)
 				while ($row = $smcFunc['db_fetch_assoc']($query))
-					$this->_dataResult = $row;
+					$this->data_result = $row;
 
 			if ($key)
 				while($row = $smcFunc['db_fetch_assoc']($query))
-					$this->_dataResult[$row[$this->key]] = $row;
+					$this->data_result[$row[$this->key]] = $row;
 
 			else
 				while($row = $smcFunc['db_fetch_assoc']($query))
-					$this->_dataResult[] = $row;
+					$this->data_result[] = $row;
 
 			$smcFunc['db_free_result']($query);
 
-			/* return $this->_dataResult; */
+			/* return $this->data_result; */
 		}
 
-		function dataResult()
+		function DataResult()
 		{
-			return $this->_dataResult;
+			return $this->data_result;
 		}
 
-		function updateData()
+		function UpdateData()
 		{
 			global $smcFunc;
 
@@ -117,11 +114,11 @@ if (!class_exists('BreezeDB')):
 				'.$this->order .'
 				'.$this->limit .'
 				',
-				$this->_data
+				$this->data
 			);
 		}
 
-		function deleteData()
+		function DeleteData()
 		{
 			global $smcFunc;
 
@@ -131,11 +128,11 @@ if (!class_exists('BreezeDB')):
 				'.$this->order .'
 				'.$this->limit .'
 				',
-				$this->_data
+				$this->data
 			);
 		}
 
-		function insertData($data, $values, $indexes)
+		function InsertData($data, $values, $indexes)
 		{
 			if(is_null($values) || is_null($indexes) || is_null($data))
 				return false;
@@ -144,17 +141,17 @@ if (!class_exists('BreezeDB')):
 
 			$this->indexes = isset($params['indexes']) ? array($params['indexes']) : null;
 			$this->values = !is_array($values) ? array($values) : $values;
-			$this->_data = !is_array($data) ? array($data) : $data;
+			$this->data = !is_array($data) ? array($data) : $data;
 
 			$smcFunc['db_insert']('replace',
 				''.$this->table .'',
-				$this->_data ,
+				$this->data ,
 				$this->values ,
 				$this->indexes
 			);
 		}
 
-		function count($params = null, $data = null)
+		function Count($params = null, $data = null)
 		{
 			global $smcFunc;
 
@@ -164,7 +161,7 @@ if (!class_exists('BreezeDB')):
 			if(is_null($data))
 				$data = array();
 
-			$this->_data = !is_array($data) ? array($data) : $data;
+			$this->data = !is_array($data) ? array($data) : $data;
 			$this->where = isset($params['where']) ? 'WHERE '.trim($params['where']) : null;
 			$this->left = isset($params['left_join']) ? 'LEFT JOIN '.trim($params['left_join']) : null;
 
@@ -174,7 +171,7 @@ if (!class_exists('BreezeDB')):
 				' . $this->where . '
 				' . $this->left . '
 				',
-				$this->_data
+				$this->data
 			);
 
 			list ($count) = $smcFunc['db_fetch_row']($request);

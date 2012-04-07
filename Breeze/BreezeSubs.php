@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breeze_
+ * BreezeSubs
  *
  * The purpose of this file is to provide some tools used across the mod
  * @package Breeze mod
@@ -48,7 +48,7 @@ class BreezeSubs
 	/* I can has fun? */
 	public function CheckVersions()
 	{
-		Breeze::loadFile('Settings');
+		Breeze::Load('Settings');
 
 		$text = BreezeSettings::getInstance();
 
@@ -58,17 +58,17 @@ class BreezeSubs
 		);
 
 		$versions = array(
-			'php' => $text->getText('admin_settings_php_ok'),
-			'json' => sprintf($text->getText('admin_settings_server_needs_ok'), $text->getText('admin_settings_json'))
+			'php' => $text->GetText('admin_settings_php_ok'),
+			'json' => sprintf($text->GetText('admin_settings_server_needs_ok'), $text->GetText('admin_settings_json'))
 		);
 
 		loadLanguage('Breeze');
 
 		if (in_array('json', $checkFor) && !function_exists('json_decode') && !function_exists('json_encode'))
-			$versions['json'] = sprintf($text->getText('admin_settings_Server_needs'), $text->getText('admin_settings_json'));
+			$versions['json'] = sprintf($text->GetText('admin_settings_Server_needs'), $text->GetText('admin_settings_json'));
 
 		if (@version_compare(PHP_VERSION, '5.3') == -1 && in_array('php', $checkFor))
-			$versions['php'] = sprintf($text->getText('admin_settings_php'), PHP_VERSION);
+			$versions['php'] = sprintf($text->GetText('admin_settings_php'), PHP_VERSION);
 
 		return $versions;
 	}
@@ -78,22 +78,22 @@ class BreezeSubs
 	{
 		global $context, $settings;
 
-		Breeze::loadFile('Settings');
+		Breeze::Load('Settings');
 
 		$text = BreezeSettings::getInstance();
 
 		/* Define some variables for the ajax stuff */
 		$context['html_headers'] .= '
 		<script type="text/javascript"><!-- // --><![CDATA[
-			var breeze_error_message = "'. $text->getText('error_message') .'";
-			var breeze_success_message = "'. $text->getText('success_message') .'";
-			var breeze_empty_message = "'. $text->getText('empty_message') .'";
-			var breeze_error_delete = "'. $text->getText('error_message') .'";
-			var breeze_success_delete = "'. $text->getText('success_delete') .'";
-			var breeze_confirm_delete = "'. $text->getText('confirm_delete') .'";
-			var breeze_confirm_yes = "'. $text->getText('confirm_yes') .'";
-			var breeze_confirm_cancel = "'. $text->getText('confirm_cancel') .'";
-			var breeze_already_deleted = "'. $text->getText('already_deleted') .'";
+			var breeze_error_message = "'. $text->GetText('error_message') .'";
+			var breeze_success_message = "'. $text->GetText('success_message') .'";
+			var breeze_empty_message = "'. $text->GetText('empty_message') .'";
+			var breeze_error_delete = "'. $text->GetText('error_message') .'";
+			var breeze_success_delete = "'. $text->GetText('success_delete') .'";
+			var breeze_confirm_delete = "'. $text->GetText('confirm_delete') .'";
+			var breeze_confirm_yes = "'. $text->GetText('confirm_yes') .'";
+			var breeze_confirm_cancel = "'. $text->GetText('confirm_cancel') .'";
+			var breeze_already_deleted = "'. $text->GetText('already_deleted') .'";
 	// ]]></script>';
 
 
@@ -122,7 +122,7 @@ class BreezeSubs
 			$context['html_headers'] .= '
 			<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.min.js" type="text/javascript"></script>
 			<script type="text/javascript">
-var breeze_feed_error_message = "'. $text->getText('feed_error_message') .'";
+var breeze_feed_error_message = "'. $text->GetText('feed_error_message') .'";
 
 $(document).ready(function ()
 {
@@ -156,24 +156,24 @@ $(document).ready(function ()
 	}
 
 	/* Relative dates  http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html */
-	public function timeElapsed($ptime)
+	public function TimeElapsed($ptime)
 	{
-		Breeze::loadFile('Settings');
+		Breeze::Load('Settings');
 
 		$text = BreezeSettings::getInstance();
 
 		$etime = time() - $ptime;
 
 		if ($etime < 1)
-			return $text->getText('time_just_now');
+			return $text->GetText('time_just_now');
 
 		$a = array(
-			12 * 30 * 24 * 60 * 60	=> $text->getText('time_year'),
-			30 * 24 * 60 * 60		=> $text->getText('time_month'),
-			24 * 60 * 60			=> $text->getText('time_day'),
-			60 * 60					=> $text->getText('time_hour'),
-			60						=> $text->getText('time_minute'),
-			1						=> $text->getText('time_second')
+			12 * 30 * 24 * 60 * 60	=> $text->GetText('time_year'),
+			30 * 24 * 60 * 60		=> $text->GetText('time_month'),
+			24 * 60 * 60			=> $text->GetText('time_day'),
+			60 * 60					=> $text->GetText('time_hour'),
+			60						=> $text->GetText('time_minute'),
+			1						=> $text->GetText('time_second')
 		);
 
 		foreach ($a as $secs => $str)
@@ -182,7 +182,7 @@ $(document).ready(function ()
 			if ($d >= 1)
 			{
 				$r = round($d);
-				return $r . ' ' . $str . ($r > 1 ? 's ' : ' '). $text->getText('time_ago');
+				return $r . ' ' . $str . ($r > 1 ? 's ' : ' '). $text->GetText('time_ago');
 			}
 		}
 	}
@@ -205,7 +205,7 @@ $(document).ready(function ()
 		return $string;
 	}
 
-	public function remove($array, $val, $preserve_keys = true)
+	public function Remove($array, $val, $preserve_keys = true)
 	{
 		if (empty($array) || empty($val) || !is_array($array))
 			return false;
@@ -241,7 +241,7 @@ $(document).ready(function ()
 		return ($preserve_keys === true) ? $array : array_values($array);
 	}
 
-	public static function loadUserInfo($id)
+	public static function LoadUserInfo($id)
 	{
 		global $user_info, $memberContext;
 

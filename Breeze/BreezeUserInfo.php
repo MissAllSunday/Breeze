@@ -42,7 +42,7 @@ if (!defined('SMF'))
 	helps to avoid having to write code over and over again */
 class BreezeUserInfo
 {
-	public static function profile($user, $id = false)
+	public static function Profile($user, $id = false)
 	{
 		global $txt, $context, $settings, $scripturl, $user_info;
 

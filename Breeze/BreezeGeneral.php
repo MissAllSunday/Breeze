@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breeze_
+ * BreezeGeneral
  * 
  * The purpose of this file is to show a general wall where user can see tatus and updates from other users or buddies
  * @package Breeze mod
@@ -47,13 +47,13 @@ class BreezeGeneral
 
 	}
 	/* Get the latest entries of your buddies */
-	public static function wall()
+	public static function Wall()
 	{
 		global $txt, $scripturl, $context;
 
 		loadLanguage('Breeze');
 		loadtemplate('Breeze');
-		Breeze::loadFile(array('Settings','Subs'));
+		Breeze::Load(array('Settings','Subs'));
 		writeLog(true);
 
 		/* Set all the page stuff */
@@ -65,20 +65,20 @@ class BreezeGeneral
 		);
 
 		/* Headers */
-		BreezeSubs::headers(true);
+		BreezeSubs::Headers(true);
 	}
 
 	/* Get the latest entries of your buddies */
-	public static function getEntries()
+	public static function Get_Entries()
 	{
 	}
 
 	/* Get the latest comments */
-	public static function getComments()
+	public static function Get_Comments()
 	{
 	}
 	
-	public static function getLogs()
+	public static function Get_Logs()
 	{
 	}
 }

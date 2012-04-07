@@ -36,7 +36,7 @@
  */
 
 	/* The admin panel where the news and other very useful stuff is displayed*/
-function template_breeze_admin_home()
+function template_admin_home()
 {
 	global $txt, $context;
 
@@ -111,7 +111,7 @@ function template_breeze_admin_home()
 }
 
 /* Boring stuff you will never see... */
-function template_breeze_admin_donate()
+function template_admin_donate()
 {
 	global $txt;
 

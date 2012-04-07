@@ -40,9 +40,9 @@ if (!defined('SMF'))
 
 class Breeze
 {
-	static public $breezeVersion = '1.0 Beta 1';
+	static public $BreezeVersion = '1.0 Beta 1';
 
-	static public $breezeFolder = '/Breeze/';
+	static public $BreezeFolder = '/Breeze/';
 
 	public function __construct()
 	{
@@ -57,7 +57,7 @@ class Breeze
 	 * @param bool $smf special case used when trying to load an SMF source file for some resource or function
 	 * @return void
 	 */
-	public static function loadFile($file, $smf = false)
+	public static function Load($file, $smf = false)
 	{
 		global $sourcedir;
 
@@ -66,10 +66,10 @@ class Breeze
 
 		if (is_array($file) && !empty($file) && !$smf)
 				foreach($file as $f)
-					require_once($sourcedir. Breeze::$breezeFolder . 'Breeze'.$f.'.php');
+					require_once($sourcedir. Breeze::$BreezeFolder . 'Breeze'.$f.'.php');
 
 		elseif (!$smf)
-			require_once($sourcedir . Breeze::$breezeFolder .'Breeze'.$file.'.php');
+			require_once($sourcedir . Breeze::$BreezeFolder .'Breeze'.$file.'.php');
 
 		else
 			require_once($sourcedir .'/'.$file.'.php');
@@ -83,7 +83,7 @@ class Breeze
 	 * @param array $permissionList An associative array with all the possible permissions.
 	 * @return void
 	 */
-	public static function permissions(&$permissionGroups, &$permissionList)
+	public static function Permissions(&$permissionGroups, &$permissionList)
 	{
 		$permissionList['membergroup']['breeze_edit_settings_any'] = array(false, 'breeze_per_classic', 'breeze_per_simple');
 		$permissionGroups['membergroup']['simple'] = array('breeze_per_simple');
@@ -100,20 +100,20 @@ class Breeze
 	 * @param array $profile_areas An array containing all possible tabs for the profile menu.
 	 * @return void
 	 */
-	public static function profileInfo(&$profile_areas)
+	public static function ProfileInfo(&$profile_areas)
 	{
 		global $user_info, $context;
-		Breeze::loadFile('Settings');
+		Breeze::Load('Settings');
 
 		/* Settings are required here */
 		$s = BreezeSettings::getInstance();
 
 		/* Replace the summary page only if the mod is enable */
-		if ($s->enableSetting('admin_settings_enable'))
+		if ($s->Enable('admin_settings_enable'))
 			$profile_areas['info']['areas']['summary'] = array(
-				'label' => $s->getText('general_wall'),
-				'file' => Breeze::$breezeFolder .'BreezeUser.php',
-				'function' => 'breeze_wrapper_wall',
+				'label' => $s->GetText('general_wall'),
+				'file' => Breeze::$BreezeFolder .'BreezeUser.php',
+				'function' => 'Breeze_Wrapper_Wall',
 				'permission' => array(
 					'own' => 'profile_view_own',
 					'any' => 'profile_view_any',
@@ -121,9 +121,9 @@ class Breeze
 			);
 
 		/* If the mod is enable, then create another page for the default profile page */
-		if ($s->enableSetting('admin_settings_enable'))
+		if ($s->Enable('admin_settings_enable'))
 			$profile_areas['info']['areas']['static'] = array(
-					'label' => $s->getText('general_summary'),
+					'label' => $s->GetText('general_summary'),
 					'file' => 'Profile-View.php',
 					'function' => 'summary',
 					'permission' => array(
@@ -133,18 +133,18 @@ class Breeze
 				);
 
 		/* Per user permissions */
-		if ($s->enableSetting('admin_settings_enable'))
+		if ($s->Enable('admin_settings_enable'))
 			$profile_areas['breeze_profile'] = array(
-				'title' => $s->getText('general_my_wall_settings'),
+				'title' => $s->GetText('general_my_wall_settings'),
 				'areas' => array(),
 			);
 
 		/* User individual settings, show the button if the mod is enable and the user is the profile owner or the user has the permissions to edit other walls */
-		if ($s->enableSetting('admin_settings_enable') && ($user_info['id'] == $context['member']['id'] || allowedTo('breeze_edit_settings_any')))
+		if ($s->Enable('admin_settings_enable') && ($user_info['id'] == $context['member']['id'] || allowedTo('breeze_edit_settings_any')))
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
-				'label' => $s->getText('user_settings_name'),
-				'file' => Breeze::$breezeFolder .'BreezeUser.php',
-				'function' => 'breeze_wrapper_settings',
+				'label' => $s->GetText('user_settings_name'),
+				'file' => Breeze::$BreezeFolder .'BreezeUser.php',
+				'function' => 'Breeze_Wrapper_Settings',
 				'permission' => array(
 					'own' => 'profile_view_own',
 					'any' => 'breeze_edit_settings_any',
@@ -154,9 +154,9 @@ class Breeze
 		/* Buddies page */
 		/* if $some_check here */
 			$profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
-				'label' => $s->getText('user_buddysettings_name'),
-				'file' => Breeze::$breezeFolder .'BreezeUser.php',
-				'function' => 'breeze_wrapper_buddyRequest',
+				'label' => $s->GetText('user_buddysettings_name'),
+				'file' => Breeze::$BreezeFolder .'BreezeUser.php',
+				'function' => 'Breeze_Wrapper_BuddyRequest',
 				'permission' => array(
 					'own' => 'profile_view_own',
 					),
@@ -165,8 +165,8 @@ class Breeze
 		/* Notifications admin page */
 		/* if $some_check here */
 			$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
-				'label' => $s->getText('user_notisettings_name'),
-				'file' => Breeze::$breezeFolder .'BreezeUser.php',
+				'label' => $s->GetText('user_notisettings_name'),
+				'file' => Breeze::$BreezeFolder .'BreezeUser.php',
 				'function' => 'Breeze_Wrapper_Notifications',
 				'permission' => array(
 					'own' => 'profile_view_own',
@@ -188,16 +188,16 @@ class Breeze
 		global $scripturl, $context;
 
 		loadLanguage('Breeze');
-		Breeze::loadFile('Settings');
+		Breeze::Load('Settings');
 
 		/* Settings are required here */
 		$s = BreezeSettings::getInstance();
 
 		/* Does the General Wall is enable? */
-		if ($s->enableSetting('admin_settings_enablegeneralwall') == false)
+		if ($s->Enable('admin_settings_enablegeneralwall') == false)
 			return;
 
-		$insert = $s->getSetting('breeze_admin_settings_menuposition') == 'home' ? 'home' : $s->getSetting('breeze_admin_settings_menuposition');
+		$insert = $s->GetSetting('breeze_admin_settings_menuposition') == 'home' ? 'home' : $s->GetSetting('breeze_admin_settings_menuposition');
 
 		/* Let's add our button next to the admin's selection...
 		Thanks to SlammedDime <http://mattzuba.com> for the example */
@@ -209,29 +209,29 @@ class Breeze
 		$menu_buttons = array_merge(
 			array_slice($menu_buttons, 0, $counter),
 			array('breeze_Wall' => array(
-				'title' => $s->getText('general_wall'),
+				'title' => $s->GetText('general_wall'),
 				'href' => $scripturl . '?action=wall',
 				'show' => allowedTo('breeze_view_general_wall'),
 				'sub_buttons' => array(
 					'my_wall' => array(
-						'title' => $s->getText('general_my_wall'),
+						'title' => $s->GetText('general_my_wall'),
 						'href' => $scripturl . '?action=profile',
 						'show' => allowedTo('profile_view_own'),
 						'sub_buttons' => array(
 							'my_wall_settings' => array(
-								'title' => $s->getText('user_settings_name'),
+								'title' => $s->GetText('user_settings_name'),
 								'href' => $scripturl . '?action=profile;area=breezesettings',
 								'show' => allowedTo('profile_view_own'),
 							),
 							'my_wall_permissions' => array(
-								'title' => $s->getText('user_permissions_name'),
+								'title' => $s->GetText('user_permissions_name'),
 								'href' => $scripturl . '?action=profile;area=breezepermissions',
 								'show' => allowedTo('profile_view_own'),
 							),
 						),
 					),
 					'breeze_admin_panel' => array(
-						'title' => $s->getText('admin_settings_admin_panel'),
+						'title' => $s->GetText('admin_settings_admin_panel'),
 						'href' => $scripturl . '?action=admin;area=breezeindex',
 						'show' => allowedTo('breeze_edit_general_settings'),
 					),
@@ -247,18 +247,18 @@ class Breeze
 	 * @param array $actions An array containing all possible SMF actions.
 	 * @return void
 	 */
-	public static function actionHook(&$actions)
+	public static function Action_Hook(&$actions)
 	{
-		$actions['wall'] = array(Breeze::$breezeFolder .'BreezeGeneral.php', 'BreezeGeneral::Wall');
+		$actions['wall'] = array(Breeze::$BreezeFolder .'BreezeGeneral.php', 'BreezeGeneral::Wall');
 
 		/* A whole new action just for some ajax calls... */
-		$actions['breezeajax'] = array(Breeze::$breezeFolder .'BreezeAjax.php', 'BreezeAjax::call');
+		$actions['breezeajax'] = array(Breeze::$BreezeFolder .'BreezeAjax.php', 'BreezeAjax::Call');
 
 		/* Replace the buddy action */
-		$actions['buddy'] = array(Breeze::$breezeFolder .'BreezeBuddy.php', 'BreezeBuddy::buddy');
+		$actions['buddy'] = array(Breeze::$BreezeFolder .'BreezeBuddy.php', 'BreezeBuddy::Buddy');
 
 		/* A special action for the buddy request message */
-		$actions['breezebuddyrequest'] = array(Breeze::$breezeFolder .'BreezeUser.php', 'breeze_wrapper_buddyMessageSend');
+		$actions['breezebuddyrequest'] = array(Breeze::$BreezeFolder .'BreezeUser.php', 'Breeze_Wrapper_BuddyMessageSend');
 	}
 
 	/**
@@ -267,7 +267,7 @@ class Breeze
 	 * Used in the credits action
 	 * @return string a link for copyright notice
 	 */
-	public static function who()
+	public static function Who()
 	{
 		$MAS = '<a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a>';
 
@@ -275,34 +275,34 @@ class Breeze
 	}
 
 	/* It's all about Admin settings from now on */
-	public static function adminButton(&$admin_menu)
+	public static function Admin_Button(&$admin_menu)
 	{
-		Breeze::loadFile(array('Settings'));
+		Breeze::Load(array('Settings'));
 
 		$text = BreezeSettings::getInstance();
 
 		$admin_menu['breezeadmin'] = array(
-			'title' => $text->getText('admin_settings_admin_panel'),
+			'title' => $text->GetText('admin_settings_admin_panel'),
 			'permission' => array('breeze_edit_general_settings'),
 			'areas' => array(
 				'breezeindex' => array(
-					'label' => $text->getText('admin_settings_main'),
-					'file' => 'Breeze/Breeze_Admin.php',
-					'function' => 'breeze_admin_main',
+					'label' => $text->GetText('admin_settings_main'),
+					'file' => 'Breeze/BreezeAdmin.php',
+					'function' => 'Breeze_Admin_Main',
 					'icon' => 'administration.gif',
 					'permission' => array('breeze_edit_general_settings'),
 				),
 				'breezesettings' => array(
-					'label' => $text->getText('admin_settings_settings'),
-					'file' => 'Breeze/Breeze_Admin.php',
-					'function' => 'breeze_admin_settings',
+					'label' => $text->GetText('admin_settings_settings'),
+					'file' => 'Breeze/BreezeAdmin.php',
+					'function' => 'Breeze_Admin_Settings',
 					'icon' => 'corefeatures.gif',
 					'permission' => array('breeze_edit_general_settings'),
 				),
 				'breezedonate' => array(
-					'label' => $text->getText('admin_settings_donate'),
-					'file' => 'Breeze/Breeze_Admin.php',
-					'function' => 'breeze_admin_donate',
+					'label' => $text->GetText('admin_settings_donate'),
+					'file' => 'Breeze/BreezeAdmin.php',
+					'function' => 'Breeze_Admin_Donate',
 					'icon' => 'support.gif',
 					'permission' => array('breeze_edit_general_settings'),
 				),

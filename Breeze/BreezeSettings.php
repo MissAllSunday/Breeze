@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breeze_
+ * BreezeSettings
  *
  * The purpose of this file is to extract the settings and text strings from the SMF arrays for a better and cleaner handling
  * @package Breeze mod
@@ -40,9 +40,9 @@ if (!defined('SMF'))
 
 class BreezeSettings
 {
-	private static $_instance;
-	private $_settings;
-	private $_text;
+	private static $instance;
+	private $Settings;
+	private $Text;
 
 	private function __construct()
 	{
@@ -51,11 +51,11 @@ class BreezeSettings
 
 	public static function getInstance()
 	{
-		if (!self::$_instance)
+		if (!self::$instance)
 		 {
-			self::$_instance = new BreezeSettings();
+			self::$instance = new BreezeSettings();
 		}
-		return self::$_instance;
+		return self::$instance;
 	}
 
 	public function Extract()
@@ -81,7 +81,7 @@ class BreezeSettings
 				$this->matchesSettings[$km] = $vm;
 			}
 
-		$this->_settings = $this->matchesSettings;
+		$this->Settings = $this->matchesSettings;
 
 		/* Again, this time for $txt. */
 		foreach ($txt as $kt => $vt)
@@ -91,10 +91,10 @@ class BreezeSettings
 				$this->matchesText[$kt] = $vt;
 			}
 
-		$this->_text = $this->matchesText;
+		$this->Text = $this->matchesText;
 
 		/* Done? then we don't need this anymore */
-		if (!empty($this->_text) && !empty($this->_settings))
+		if (!empty($this->Text) && !empty($this->Settings))
 		{
 			unset($this->matchesText);
 			unset($this->matchesSettings);
@@ -102,28 +102,28 @@ class BreezeSettings
 	}
 
 	/* Return true if the value do exist, false otherwise, O RLY? */
-	public function enableSetting($var)
+	public function Enable($var)
 	{
-		if (!empty($this->_settings[$var]))
+		if (!empty($this->Settings[$var]))
 			return true;
 		else
 			return false;
 	}
 
 	/* Get the requested setting  */
-	public function getSetting($var)
+	public function GetSetting($var)
 	{
-		if (!empty($this->_settings[$var]))
-			return $this->_settings[$var];
+		if (!empty($this->Settings[$var]))
+			return $this->Settings[$var];
 
 		else
 			return false;
 	}
 
-	public function getText($var)
+	public function GetText($var)
 	{
-		if (!empty($this->_text[$var]))
-			return $this->_text[$var];
+		if (!empty($this->Text[$var]))
+			return $this->Text[$var];
 
 		else
 			return false;

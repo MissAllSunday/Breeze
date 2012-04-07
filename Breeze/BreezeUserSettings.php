@@ -1,7 +1,7 @@
 <?php
 
 /**
- * BreezeUserSettings.php
+ * BreezeUserSettings
  *
  * The purpose of this file is
  * @package Breeze mod
@@ -40,7 +40,7 @@ if (!defined('SMF'))
 
 class BreezeUserSettings
 {
-	private $_data = array();
+	private $data = array();
 	private static $already = false;
 
 	function __construct()
@@ -49,12 +49,12 @@ class BreezeUserSettings
 
 		if (isset($context['Breeze']['UserSettings'][$context['member']['id']]) && !empty($context['Breeze']['UserSettings'][$context['member']['id']]))
 		{
-			$this->_data = $context['Breeze']['UserSettings'][$context['member']['id']];
+			$this->data = $context['Breeze']['UserSettings'][$context['member']['id']];
 			self::$already = true;
 		}
 	}
 
-	function currentUserSettings()
+	function Current_UserSettings()
 	{
 		global $context;
 
@@ -69,16 +69,16 @@ class BreezeUserSettings
 				'user_id' => $context['member']['id'],
 			);
 			$query = new BreezeDB('breeze_user_settings');
-			$query->params($query_params, $query_data);
-			$query->getData(null, true);
-			$this->_data = $query->dataResult();
+			$query->Params($query_params, $query_data);
+			$query->GetData(null, true);
+			$this->data = $query->DataResult();
 
 			if (!empty($data))
-				$context['Breeze']['UserSettings'][$context['member']['id']] = $this->_data;
+				$context['Breeze']['UserSettings'][$context['member']['id']] = $this->data;
 		}
 	}
 
-	function LoadUserSettings($user)
+	function Load_UserSettings($user)
 	{
 		global $context;
 
@@ -93,18 +93,18 @@ class BreezeUserSettings
 				'user_id' => $user,
 			);
 			$query = new BreezeDB('breeze_user_settings');
-			$query->params($query_params, $query_data);
-			$query->getData(null, true);
-			$this->_data = $query->dataResult();
+			$query->Params($query_params, $query_data);
+			$query->GetData(null, true);
+			$this->data = $query->DataResult();
 
 			if (!empty($data))
-				$context['Breeze']['UserSettings'][$user] = $this->_data;
+				$context['Breeze']['UserSettings'][$user] = $this->data;
 		}
 	}
 
 	function enable($setting)
 	{
-		if (!empty($this->_data[$setting]))
+		if (!empty($this->data[$setting]))
 			return true;
 		else
 			return false;
@@ -112,8 +112,8 @@ class BreezeUserSettings
 
 	function setting($setting)
 	{
-		if (!empty($this->_data[$setting]))
-			return $this->_data[$setting];
+		if (!empty($this->data[$setting]))
+			return $this->data[$setting];
 		else
 			return false;
 	}
