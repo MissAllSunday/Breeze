@@ -113,7 +113,7 @@ class Breeze
 			$profile_areas['info']['areas']['summary'] = array(
 				'label' => $s->getText('general_wall'),
 				'file' => Breeze::$breezeFolder .'BreezeUser.php',
-				'function' => 'Breeze_Wrapper_Wall',
+				'function' => 'breeze_wrapper_wall',
 				'permission' => array(
 					'own' => 'profile_view_own',
 					'any' => 'profile_view_any',
@@ -144,7 +144,7 @@ class Breeze
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $s->getText('user_settings_name'),
 				'file' => Breeze::$breezeFolder .'BreezeUser.php',
-				'function' => 'Breeze_Wrapper_Settings',
+				'function' => 'breeze_wrapper_settings',
 				'permission' => array(
 					'own' => 'profile_view_own',
 					'any' => 'breeze_edit_settings_any',
@@ -156,7 +156,7 @@ class Breeze
 			$profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
 				'label' => $s->getText('user_buddysettings_name'),
 				'file' => Breeze::$breezeFolder .'BreezeUser.php',
-				'function' => 'Breeze_Wrapper_BuddyRequest',
+				'function' => 'breeze_wrapper_buddyRequest',
 				'permission' => array(
 					'own' => 'profile_view_own',
 					),
@@ -258,7 +258,7 @@ class Breeze
 		$actions['buddy'] = array(Breeze::$breezeFolder .'BreezeBuddy.php', 'BreezeBuddy::buddy');
 
 		/* A special action for the buddy request message */
-		$actions['breezebuddyrequest'] = array(Breeze::$breezeFolder .'BreezeUser.php', 'Breeze_Wrapper_BuddyMessageSend');
+		$actions['breezebuddyrequest'] = array(Breeze::$breezeFolder .'BreezeUser.php', 'breeze_wrapper_buddyMessageSend');
 	}
 
 	/**

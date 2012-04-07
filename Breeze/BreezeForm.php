@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-	class Breeze_Form
+	class BreezeForm
 	{
 		public $method;
 		public $action;

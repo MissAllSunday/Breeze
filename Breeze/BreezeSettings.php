@@ -41,8 +41,8 @@ if (!defined('SMF'))
 class BreezeSettings
 {
 	private static $_instance;
-	private $Settings;
-	private $Text;
+	private $_settings;
+	private $_text;
 
 	private function __construct()
 	{
@@ -81,7 +81,7 @@ class BreezeSettings
 				$this->matchesSettings[$km] = $vm;
 			}
 
-		$this->Settings = $this->matchesSettings;
+		$this->_settings = $this->matchesSettings;
 
 		/* Again, this time for $txt. */
 		foreach ($txt as $kt => $vt)
@@ -91,10 +91,10 @@ class BreezeSettings
 				$this->matchesText[$kt] = $vt;
 			}
 
-		$this->Text = $this->matchesText;
+		$this->_text = $this->matchesText;
 
 		/* Done? then we don't need this anymore */
-		if (!empty($this->Text) && !empty($this->Settings))
+		if (!empty($this->_text) && !empty($this->_settings))
 		{
 			unset($this->matchesText);
 			unset($this->matchesSettings);
@@ -102,28 +102,28 @@ class BreezeSettings
 	}
 
 	/* Return true if the value do exist, false otherwise, O RLY? */
-	public function Enable($var)
+	public function enableSetting($var)
 	{
-		if (!empty($this->Settings[$var]))
+		if (!empty($this->_settings[$var]))
 			return true;
 		else
 			return false;
 	}
 
 	/* Get the requested setting  */
-	public function GetSetting($var)
+	public function getSetting($var)
 	{
-		if (!empty($this->Settings[$var]))
-			return $this->Settings[$var];
+		if (!empty($this->_settings[$var]))
+			return $this->_settings[$var];
 
 		else
 			return false;
 	}
 
-	public function GetText($var)
+	public function getText($var)
 	{
-		if (!empty($this->Text[$var]))
-			return $this->Text[$var];
+		if (!empty($this->_text[$var]))
+			return $this->_text[$var];
 
 		else
 			return false;

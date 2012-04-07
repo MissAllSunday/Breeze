@@ -40,7 +40,7 @@ if (!defined('SMF'))
 
 class BreezeUserSettings
 {
-	private $data = array();
+	private $_data = array();
 	private static $already = false;
 
 	function __construct()
@@ -49,12 +49,12 @@ class BreezeUserSettings
 
 		if (isset($context['Breeze']['UserSettings'][$context['member']['id']]) && !empty($context['Breeze']['UserSettings'][$context['member']['id']]))
 		{
-			$this->data = $context['Breeze']['UserSettings'][$context['member']['id']];
+			$this->_data = $context['Breeze']['UserSettings'][$context['member']['id']];
 			self::$already = true;
 		}
 	}
 
-	function Current_UserSettings()
+	function currentUserSettings()
 	{
 		global $context;
 
@@ -71,14 +71,14 @@ class BreezeUserSettings
 			$query = new BreezeDB('breeze_user_settings');
 			$query->params($query_params, $query_data);
 			$query->getData(null, true);
-			$this->data = $query->dataResult();
+			$this->_data = $query->dataResult();
 
 			if (!empty($data))
-				$context['Breeze']['UserSettings'][$context['member']['id']] = $this->data;
+				$context['Breeze']['UserSettings'][$context['member']['id']] = $this->_data;
 		}
 	}
 
-	function Load_UserSettings($user)
+	function LoadUserSettings($user)
 	{
 		global $context;
 
@@ -95,16 +95,16 @@ class BreezeUserSettings
 			$query = new BreezeDB('breeze_user_settings');
 			$query->params($query_params, $query_data);
 			$query->getData(null, true);
-			$this->data = $query->dataResult();
+			$this->_data = $query->dataResult();
 
 			if (!empty($data))
-				$context['Breeze']['UserSettings'][$user] = $this->data;
+				$context['Breeze']['UserSettings'][$user] = $this->_data;
 		}
 	}
 
 	function enable($setting)
 	{
-		if (!empty($this->data[$setting]))
+		if (!empty($this->_data[$setting]))
 			return true;
 		else
 			return false;
@@ -112,8 +112,8 @@ class BreezeUserSettings
 
 	function setting($setting)
 	{
-		if (!empty($this->data[$setting]))
-			return $this->data[$setting];
+		if (!empty($this->_data[$setting]))
+			return $this->_data[$setting];
 		else
 			return false;
 	}

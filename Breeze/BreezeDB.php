@@ -41,7 +41,7 @@ if (!class_exists('BreezeDB')):
 		function __construct($table)
 		{
 			$this->table = isset($table) ? '{db_prefix}'.$table : null;
-			$this->dataResult = array();
+			$this->_dataResult = array();
 
 			if (!$this->table)
 				return false;
@@ -59,7 +59,7 @@ if (!class_exists('BreezeDB')):
 			$this->left = isset($params['left_join']) ? 'LEFT JOIN '.trim($params['left_join']) : null;
 			$this->order = isset($params['order']) ? 'ORDER BY '.trim($params['order']) : null;
 			$this->set = isset($params['set']) ? 'SET '.trim($params['set']) : null;
-			$this->data = !is_array($data) ? array($data) : $data;
+			$this->_data = !is_array($data) ? array($data) : $data;
 		}
 
 		function getData($key = null, $single = false)
@@ -78,32 +78,32 @@ if (!class_exists('BreezeDB')):
 				'. $this->order .'
 				'. $this->limit .'
 				',
-				$this->data
+				$this->_data
 			);
 
 			if (!$query)
-				$this->dataResult = array();
+				$this->_dataResult = array();
 
 			if($single)
 				while ($row = $smcFunc['db_fetch_assoc']($query))
-					$this->dataResult = $row;
+					$this->_dataResult = $row;
 
 			if ($key)
 				while($row = $smcFunc['db_fetch_assoc']($query))
-					$this->dataResult[$row[$this->key]] = $row;
+					$this->_dataResult[$row[$this->key]] = $row;
 
 			else
 				while($row = $smcFunc['db_fetch_assoc']($query))
-					$this->dataResult[] = $row;
+					$this->_dataResult[] = $row;
 
 			$smcFunc['db_free_result']($query);
 
-			/* return $this->dataResult; */
+			/* return $this->_dataResult; */
 		}
 
 		function dataResult()
 		{
-			return $this->dataResult;
+			return $this->_dataResult;
 		}
 
 		function updateData()
@@ -117,7 +117,7 @@ if (!class_exists('BreezeDB')):
 				'.$this->order .'
 				'.$this->limit .'
 				',
-				$this->data
+				$this->_data
 			);
 		}
 
@@ -131,7 +131,7 @@ if (!class_exists('BreezeDB')):
 				'.$this->order .'
 				'.$this->limit .'
 				',
-				$this->data
+				$this->_data
 			);
 		}
 
@@ -144,11 +144,11 @@ if (!class_exists('BreezeDB')):
 
 			$this->indexes = isset($params['indexes']) ? array($params['indexes']) : null;
 			$this->values = !is_array($values) ? array($values) : $values;
-			$this->data = !is_array($data) ? array($data) : $data;
+			$this->_data = !is_array($data) ? array($data) : $data;
 
 			$smcFunc['db_insert']('replace',
 				''.$this->table .'',
-				$this->data ,
+				$this->_data ,
 				$this->values ,
 				$this->indexes
 			);
@@ -164,7 +164,7 @@ if (!class_exists('BreezeDB')):
 			if(is_null($data))
 				$data = array();
 
-			$this->data = !is_array($data) ? array($data) : $data;
+			$this->_data = !is_array($data) ? array($data) : $data;
 			$this->where = isset($params['where']) ? 'WHERE '.trim($params['where']) : null;
 			$this->left = isset($params['left_join']) ? 'LEFT JOIN '.trim($params['left_join']) : null;
 
@@ -174,7 +174,7 @@ if (!class_exists('BreezeDB')):
 				' . $this->where . '
 				' . $this->left . '
 				',
-				$this->data
+				$this->_data
 			);
 
 			list ($count) = $smcFunc['db_fetch_row']($request);

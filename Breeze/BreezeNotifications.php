@@ -78,7 +78,7 @@ class BreezeNotifications
 		if (!empty($params) && in_array($params['type'], $this->_types))
 		{
 			/* Load all the Notifications */
-			$temp = $this->_query->getNotifications();
+			$temp = $this->_query->getnotifications();
 
 			if (!empty($temp))
 				foreach ($temp as $t)
@@ -101,7 +101,7 @@ class BreezeNotifications
 
 	public function count()
 	{
-		return count($this->_query->getNotifications());
+		return count($this->_query->getnotifications());
 	}
 
 	protected function getByUser($user)

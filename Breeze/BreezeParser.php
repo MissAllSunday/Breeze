@@ -51,7 +51,7 @@ class BreezeParser
 			'UserInfo'
 		));
 
-		$this->_notification = new BreezeNotifications();
+		$this->_notification = new Breezenotifications();
 		$this->settings = BreezeSettings::getInstance();
 
 		/* Regex stuff */

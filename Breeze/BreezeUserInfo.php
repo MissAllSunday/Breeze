@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breeze_
+ * BreezeUserInfo
  * 
  * The purpose of this file is to generate a div with the user common info, name, avatar, post, icons, stuff like that.
  * @package Breeze mod
@@ -42,7 +42,7 @@ if (!defined('SMF'))
 	helps to avoid having to write code over and over again */
 class BreezeUserInfo
 {
-	public static function Profile($user, $id = false)
+	public static function profile($user, $id = false)
 	{
 		global $txt, $context, $settings, $scripturl, $user_info;
 

@@ -62,7 +62,7 @@ class BreezeBuddy
 
 		/* We need all this stuff */
 		$sa = new BreezeGlobals('get');
-		$notification = new BreezeNotifications();
+		$notification = new Breezenotifications();
 		$settings = BreezeSettings::getInstance();
 
 
@@ -116,7 +116,7 @@ class BreezeBuddy
 		}
 	}
 
-	public function showBuddyRequests($user)
+	public function showbuddyRequests($user)
 	{
 		Breeze::loadFile(array(
 			'Query'

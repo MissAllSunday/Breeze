@@ -369,7 +369,7 @@ class BreezeQuery
 	 * @access public
 	 * @return array an array containing all the status made in X profile page
 	 */
-	public function getStatusByProfile($id)
+	public function getStatusByprofile($id)
 	{
 		return $this->getReturn('status', 'owner_id', $id);
 	}
@@ -477,7 +477,7 @@ class BreezeQuery
 	 * @access public
 	 * @return array an array containing all comments made in X profile page
 	 */
-	public function getCommentsByProfile($id)
+	public function getCommentsByprofile($id)
 	{
 		return $this->getReturn('comments', 'profile_owner_id', $id);
 	}
@@ -512,7 +512,7 @@ class BreezeQuery
 		global $smcFunc;
 
 		/* Use the cache please... */
-		if (($this->Settings = cache_get_data('Breeze:Settings', 240)) == null)
+		if (($this->_settings = cache_get_data('Breeze:Settings', 240)) == null)
 		{
 			/* Load all the settings from all users */
 			$result = $smcFunc['db_query']('', '
@@ -525,7 +525,7 @@ class BreezeQuery
 			/* Populate the array like a boss! */
 			while ($row = $smcFunc['db_fetch_assoc']($result))
 			{
-				$this->Settings[$row['user_id']] = array(
+				$this->_settings[$row['user_id']] = array(
 					'user_id' => $row['user_id'],
 					'enable_wall' => $row['enable_wall'],
 					'kick_ignored' => $row['kick_ignored'],
@@ -536,10 +536,10 @@ class BreezeQuery
 			}
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:Settings', $this->Settings, 240);
+			cache_put_data('Breeze:Settings', $this->_settings, 240);
 		}
 
-		return $this->Settings;
+		return $this->_settings;
 	}
 
 	/*
@@ -644,7 +644,7 @@ class BreezeQuery
 		return $this->getReturn('settings', 'user_id', $user, true);
 	}
 
-	public function UpdateUserSettings($data)
+	public function updateUserSettings($data)
 	{
 		$params = array(
 			'set' =>
@@ -661,7 +661,7 @@ class BreezeQuery
 		$this->query('settings')->updateData();
 	}
 
-	public function InsertUserSettings($data)
+	public function insertUserSettings($data)
 	{
 		$type = array(
 			'user_id' => 'int',
@@ -740,7 +740,7 @@ class BreezeQuery
 			}
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:VisitLog', $this->Settings, 240);
+			cache_put_data('Breeze:VisitLog', $this->_settings, 240);
 		}
 
 		return $this->VisitLog;
@@ -909,7 +909,7 @@ class BreezeQuery
 	 * @global array $smcFunc the "handling DB stuff" var of SMF
 	 * @return array a very big associative array with the notification ID as key
 	 */
-	protected function Notifications()
+	protected function notifications()
 	{
 		global $smcFunc;
 
@@ -943,9 +943,9 @@ class BreezeQuery
 		return $this->Notifications;
 	}
 
-	public function getNotifications()
+	public function getnotifications()
 	{
-		return $this->Notifications ? $this->Notifications : $this->Notifications();
+		return $this->Notifications ? $this->Notifications : $this->notifications();
 	}
 	
 	public function InsertNotification($array)
