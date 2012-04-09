@@ -43,6 +43,8 @@ function template_breeze_post()
 	{
 		case 'error':
 			echo 'error_';
+		case 'cannot':
+			echo 'cannot_';
 			break;
 		case '':
 			echo 'error_';

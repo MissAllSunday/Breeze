@@ -40,40 +40,24 @@ if (!defined('SMF'))
 
 class BreezeSubs
 {
+	function __construct(){}
 
-	function __construct()
+	/* @todo move this to the buffer hook, I don't trust $context['html_headers'] anymore */
+	public function headersNotification()
 	{
+		global $context, $settings;
+
+		/* Some check here */
+		$context['html_headers'] .= '
+			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery.min.js"%3E%3C/script%3E\'))</script>
+			<script src="'. $settings['default_theme_url'] .'/js/sticky.full.js" type="text/javascript"></script>
+			<script type="text/javascript"><!-- // --><![CDATA[
+				var breeze_user_noti_position = "top-right";
+			// ]]></script>
+			<link rel="stylesheet" href="'. $settings['default_theme_url'] .'/css/sticky.full.css" type="text/css" />';
 	}
 
-	/* I can has fun? */
-	public function CheckVersions()
-	{
-		Breeze::Load('Settings');
-
-		$text = BreezeSettings::getInstance();
-
-		$checkFor = array(
-			'php',
-			'json'
-		);
-
-		$versions = array(
-			'php' => $text->GetText('admin_settings_php_ok'),
-			'json' => sprintf($text->GetText('admin_settings_server_needs_ok'), $text->GetText('admin_settings_json'))
-		);
-
-		loadLanguage('Breeze');
-
-		if (in_array('json', $checkFor) && !function_exists('json_decode') && !function_exists('json_encode'))
-			$versions['json'] = sprintf($text->GetText('admin_settings_Server_needs'), $text->GetText('admin_settings_json'));
-
-		if (@version_compare(PHP_VERSION, '5.3') == -1 && in_array('php', $checkFor))
-			$versions['php'] = sprintf($text->GetText('admin_settings_php'), PHP_VERSION);
-
-		return $versions;
-	}
-
-	/* Headers */
+	/* @todo move this to the buffer hook, I don't trust $context['html_headers'] anymore */
 	public function Headers($admin = false)
 	{
 		global $context, $settings;
@@ -94,6 +78,8 @@ class BreezeSubs
 			var breeze_confirm_yes = "'. $text->GetText('confirm_yes') .'";
 			var breeze_confirm_cancel = "'. $text->GetText('confirm_cancel') .'";
 			var breeze_already_deleted = "'. $text->GetText('already_deleted') .'";
+			var breeze_cannot_postStatus = "'. $text->GetText('cannot_postStatus') .'";
+			var breeze_cannot_postComments = "'. $text->GetText('cannot_postComments') .'";
 	// ]]></script>';
 
 

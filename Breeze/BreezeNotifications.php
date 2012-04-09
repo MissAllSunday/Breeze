@@ -115,9 +115,26 @@ class BreezeNotifications
 		return $this->query->GetNotificationByUser($user);
 	}
 
-	public function Stream($user)
+	public function doStream($user)
 	{
-		return $this->GetByUser($user);
+		global $context;
+
+		$show = $this->GetByUser($user);
+
+		$context['insert_after_template'] .= '
+		<script type="text/javascript"><!-- // --><![CDATA[
+$(document).ready(function()
+{';
+
+	foreach($show as $s)
+		$context['insert_after_template'] .= '
+			$.sticky(\''. $s['content']->message .'\');';
+
+		$context['insert_after_template'] .= '
+});
+
+// ]]></script>';
+
 	}
 
 	protected function Delete($id)

@@ -164,10 +164,12 @@ $txt['BreezeMod_confirm_delete'] = 'Do you really want to delete this?';
 $txt['BreezeMod_confirm_yes'] = 'Yes';
 $txt['BreezeMod_confirm_cancel'] = 'Cancel';
 $txt['BreezeMod_already_deleted'] = 'This comment/status was already deleted.';
+$txt['BreezeMod_cannot_postStatus'] = 'I\'m sorry,  you aren\'t allowed to post new Status.';
+$txt['BreezeMod_cannot_postComments'] = 'I\'m sorry,  you aren\'t allowed to post new Comments.';
 
 /* Errors */
-$txt['cannot_breeze_postStatus'] = 'I\'m sorry,  you aren\'t allowed to post new Status.';
-$txt['cannot_breeze_postComments'] = 'I\'m sorry,  you aren\'t allowed to post new Comments.';
+$txt['cannot_breeze_postStatus'] = $txt['BreezeMod_cannot_postStatus'];
+$txt['cannot_breeze_postComments'] = $txt['BreezeMod_cannot_postComments'];
 $txt['cannot_breeze_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete Status/Comments.';
 
 /* Pagination */
