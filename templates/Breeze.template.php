@@ -48,7 +48,7 @@ function template_general_wall()
 		<div class="roundframe rfix">
 			<div class="innerframe">
 				<div class="content">
-					',$txt['breeze_admin_settings_donate_text'],'
+					something
 				</div>
 			</div>
 		</div>
@@ -309,6 +309,25 @@ function template_user_settings()
 }
 
 function template_user_notifications()
+{
+	global $context, $txt;
+
+	echo '
+		<div class="cat_bar">
+			<h3 class="catbg">', $context['page_title'] ,'</h3>
+		</div>
+		<div class="windowbg2">
+			<span class="topslice"><span></span></span>
+			<div class="content">
+				stuff here!
+			</div>
+			<span class="botslice">
+				<span></span>
+			</span>
+		</div>';
+}
+
+function template_singleStatus()
 {
 	global $context, $txt;
 

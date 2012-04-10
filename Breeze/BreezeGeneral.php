@@ -2,7 +2,7 @@
 
 /**
  * BreezeGeneral
- * 
+ *
  * The purpose of this file is to show a general wall where user can see tatus and updates from other users or buddies
  * @package Breeze mod
  * @version 1.0 Beta 2
@@ -37,15 +37,33 @@
 
 if (!defined('SMF'))
 	die('Hacking attempt...');
+	
+	/* Wrapper functions */
+	wrapper_breezeGeneral_singleStatus(){BreezeGeneral::singleStatus();}
+	wrapper_breezeGeneral_singleComment(){BreezeGeneral::singleComment();}
 
 class BreezeGeneral
 {
-	function __construct()
+	public static function Call()
 	{
-	
-		/* We need the settings */
+		Breeze::Load(array('Globals'));
 
+		/* Handling the subactions */
+		$sa = new BreezeGlobals('get');
+
+		$subActions = array(
+			'singleStatus' => 'wrapper_breezeGeneral_singleStatus',
+			'singleComments' => 'wrapper_breezeGeneral_singleComment'
+		);
+
+		/* Does the subaction even exist? */
+		if (in_array($sa->Raw('sa'), array_keys($subActions)))
+			$subActions[$sa->Raw('sa')]();
+
+		else
+			self::Wall();
 	}
+
 	/* Get the latest entries of your buddies */
 	public static function Wall()
 	{
@@ -57,28 +75,52 @@ class BreezeGeneral
 		writeLog(true);
 
 		/* Set all the page stuff */
-		$context['page_title'] = $txt['breeze_general_wall'];
+		$context['page_title'] = 'demo';
 		$context['sub_template'] = 'general_wall';
 		$context['linktree'][] = array(
 			'url' => $scripturl . '?action=wall',
-			'name' => $txt['breeze_general_wall']
+			'name' => 'demo'
 		);
 
 		/* Headers */
 		BreezeSubs::Headers(true);
 	}
 
-	/* Get the latest entries of your buddies */
-	public static function Get_Entries()
+	/* Show a single status with all it's comments */
+	public static function singleStatus()
 	{
-	}
+		global $user_info;
 
-	/* Get the latest comments */
-	public static function Get_Comments()
-	{
-	}
-	
-	public static function Get_Logs()
-	{
+		/* Load all we need */
+		loadtemplate('Breeze');
+		Breeze::Load(array(
+			'Globals',
+			'Query',
+			'Settings'
+		));
+
+		/* Prepare all we need */
+		$globals = new BreezeGlobals('get');
+		$tools = BreezeSettings::getInstance();
+		$query = new BreezeQuery();
+
+		/* Set all the page stuff */
+		$context['sub_template'] = 'singleStatus';
+		$context['page_title'] = $text->GetText('singleStatus_pageTitle');
+		$context['canonical_url'] = $scripturl . '?action=wall;sa=singlestatus;u=' . $context['member']['id'];
+
+		/* get the status data */
+		if ($globals->See('statusID') == false)
+			$topicID = $user_info['id'];
+
+		else
+			$topicID = $globals->See('statusID');
+
+		$status = $query->GetStatusByID($topicID);
+
+		echo '<pre>';
+		print_r($status);
+		echo '</pre>';
+
 	}
 }

@@ -44,6 +44,7 @@ if (!defined('SMF'))
 	function Breeze_Wrapper_BuddyRequest(){BreezeUser::BuddyRequest();}
 	function Breeze_Wrapper_BuddyMessageSend(){BreezeUser::BuddyMessageSend();}
 	function Breeze_Wrapper_Notifications(){BreezeUser::Notifications();}
+	function Breeze_Wrapper_Single(){BreezeUser::Single();}
 
 class BreezeUser
 {

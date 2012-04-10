@@ -38,14 +38,11 @@
 function template_breeze_post()
 {
 	global  $context;
-	
+
 	switch ($context['Breeze']['ajax']['ok'])
 	{
 		case 'error':
 			echo 'error_';
-		case 'cannot':
-			echo 'cannot_';
-			break;
 		case '':
 			echo 'error_';
 			break;

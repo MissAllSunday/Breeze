@@ -192,7 +192,7 @@ $txt['BreezeMod_buddyrequest_error_doublerequest'] = 'You already sent a buddy r
 $txt['BreezeMod_buddyrequest_error_dunno'] = 'Something went wrong, please contact the forum admin.';
 $txt['BreezeMod_buddy_messagerequest_message'] = '%s wants to be your buddy!';
 $txt['BreezeMod_buddy_title'] = 'Buddy List';
-$txt['BreezeMod_buddy_desc'] = 'From here you can confirm or decline your buddy request. If you confirm the buddy request, a pm on your behalf wil be send to the user, if you decine the request the user will not receive anything';
+$txt['BreezeMod_buddy_desc'] = 'From here you can confirm or decline your buddy request. If you confirm the buddy request, a pm on your behalf will be send to the user, if you decine the request the user will not receive anything';
 $txt['BreezeMod_buddyrequest_title'] = 'Buddy requests';
 $txt['BreezeMod_buddyrequest_list_status'] = 'Status';
 $txt['BreezeMod_buddyrequest_list_message'] = 'Message';
@@ -202,3 +202,6 @@ $txt['BreezeMod_buddyrequest_confirmed_subject'] = 'Buddy request accepted.';
 $txt['BreezeMod_buddyrequest_confirmed_message'] ='%s has confirmed your buddy request';
 $txt['BreezeMod_buddyrequest_confirmed_inner_message'] = 'You successfully confirmed the request';
 $txt['BreezeMod_buddyrequest_confirmed_inner_message_de'] = 'You successfully declined the request';
+
+/* Single Status */
+$txt['BreezeMod_singleStatus_pageTitle'] = 'Single Status';

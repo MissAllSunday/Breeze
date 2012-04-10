@@ -84,13 +84,8 @@ abstract class BreezeAjax
 
 		/* You aren't allowed in here, let's show you a nice message error... */
 		if (!allowedTo('breeze_postStatus'))
-		{
-			/* Forget it pal */
-			$context['Breeze']['ajax']['ok'] = 'cannot';
-			$context['template_layers'] = array();
-			$context['sub_template'] = 'breeze_post';
 			return false;
-		}
+
 
 		checkSession('post', '', false);
 

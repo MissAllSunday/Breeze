@@ -253,6 +253,9 @@ class Breeze
 
 		/* A whole new action just for some ajax calls... */
 		$actions['breezeajax'] = array(Breeze::$BreezeFolder .'BreezeAjax.php', 'BreezeAjax::Call');
+		
+		/* The general wall */
+		$actions['wall'] = array(Breeze::$BreezeFolder .'BreezeGeneral.php', 'BreezeGeneral::Call');
 
 		/* Replace the buddy action */
 		$actions['buddy'] = array(Breeze::$BreezeFolder .'BreezeBuddy.php', 'BreezeBuddy::Buddy');
