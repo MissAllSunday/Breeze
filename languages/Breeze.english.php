@@ -183,6 +183,9 @@ $txt['BreezeMod_noti_title'] = 'Notifications';
 $txt['BreezeMod_noti_buddy_title'] = 'Buddy notification';
 $txt['BreezeMod_noti_buddy_message'] = 'The user %s has added you as his/her buddy, please confirm this request.';
 
+/* Comment notification */
+$txt['BreezeMod_noti_comment_message'] = '%1$s commented on the status made by %2$s';
+
 /* Mentions */
 $txt['BreezeMod_mention_message'] = 'You have been mentioned by %1$s on %2$s\'s wall!';
 $txt['BreezeMod_mention_message_own_wall'] = 'You have been mentioned on %s own wall!';

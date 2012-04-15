@@ -122,11 +122,7 @@ class BreezeGeneral
 
 		/* get the status data */
 		if ($globals->Validate('statusID'))
-		{
-			$statusID = $globals->See('statusID');
-
-			$status = $query->GetStatusByID($statusID);
-		}
+			$status = $query->GetStatusByID($globals->See('statusID'));
 
 		/* If no ID is set, then load the lastest status */
 		else

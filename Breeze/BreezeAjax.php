@@ -55,7 +55,10 @@ abstract class BreezeAjax
 			'Query',
 			'Display',
 			'Globals',
-			'Parser'
+			'Parser',
+			'Notifications',
+			'Subs',
+			'Settings'
 		));
 		loadtemplate('BreezeAjax');
 
@@ -86,17 +89,19 @@ abstract class BreezeAjax
 		if (!allowedTo('breeze_postStatus'))
 			return false;
 
-
 		checkSession('post', '', false);
 
 		/* Set some values */
-		$context['Breeze']['ajax']['ok'] = '';
-		$context['Breeze']['ajax']['data'] = '';
+		$context['Breeze']['ajax'] = array(
+			'ok' => '',
+			'data' => ''
+		);
 
-		/* Get the status data */
+		/* Load all the things we need */
 		$data = new BreezeGlobals('post');
 		$query = BreezeQuery::getInstance();
 		$parser = new BreezeParser();
+		$tools = BreezeSettings::getInstance();
 
 		/* Do this only if there is something to add to the database */
 		if ($data->ValidateBody('content'))
@@ -143,7 +148,7 @@ abstract class BreezeAjax
 	/* Basically the same as Post */
 	public static function PostComment()
 	{
-		global $context;
+		global $context, $memberContext;
 
 		/* You aren't allowed in here, let's show you a nice message error... */
 		isAllowedTo('breeze_postComments');
@@ -158,6 +163,8 @@ abstract class BreezeAjax
 		$query = BreezeQuery::getInstance();
 		$temp_id_exists = $query->GetSingleValue('status', 'id', $data->See('status_id'));
 		$parser = new BreezeParser();
+		$notification = new BreezeNotifications();
+		$tools = BreezeSettings::getInstance();
 
 		/* The status do exists and the data is valid*/
 		if ($data->ValidateBody('content') && !empty($temp_id_exists))
@@ -181,6 +188,41 @@ abstract class BreezeAjax
 			$new_comment = $query->GetLastComment();
 
 			$params['id'] = $new_comment['comments_id'];
+
+			/* Send out the notifications first thing to do, is to collect all the users who had posted on this status */
+			$temp_comments = $query->GetCommentsByStatus($data->See('status_id'));
+
+			/* If the status owner also commented, let's remove it, (s)he will receive an special notification later */
+			foreach($temp_comments as $c)
+				if ($c['poster_id'] != $data->See('status_owner_id') || $c['poster_id'] != $data->See('poster_comment_id'))
+					$notification_users[] = $c['poster_id'];
+
+			/* Prune the array, we don't want to send notifications twice */
+			$notification_users = array_unique($notification_users);
+
+			/* Load the user's info */
+			loadMemberData($new_temp_array, false, 'minimal');
+
+			/* Send them already! */
+			foreach($notification_users as $nu)
+			{
+				loadMemberContext($nu);
+				$user = $memberContext[$nu];
+			
+				$notification_params = array(
+					'user' => $nu,
+					'type' => 'comment',
+					'time' => time(),
+					'read' => 0,
+					'content' => array(
+						'message' => '',
+						'url' => $scripturl .'?action=wall;sa=singlestatus;u='. $nu,
+						'from_id' => $data->See('poster_comment_id'),
+					)
+				);
+
+				$notification->Create($notification_params);
+			}
 
 			/* The comment was added, build the server response */
 			$display = new BreezeDisplay($params, 'comment');
