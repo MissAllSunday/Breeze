@@ -192,25 +192,25 @@ class BreezeQuery
 		switch ($type)
 		{
 			case 'status':
-				$this->temp = $this->Status();
+				$this->temp = $this->Status ? $this->Status : $this->Status();
 				break;
 			case 'comments':
-				$this->temp = $this->Comments();
+				$this->temp = $this->Comments ? $this->Comments : $this->Comments();
 				break;
 			case 'likes':
-				$this->temp = $this->Likes();
+				$this->temp = $this->Likes ? $this->Likes : $this->Likes();
 				break;
 			case 'settings':
-				$this->temp = $this->Settings();
+				$this->temp = $this->Settings ? $this->Settings : $this->Settings();
 				break;
 			case 'modules':
-				$this->temp = $this->Modules();
+				$this->temp = $this->Modules ? $this->Modules : $this->Modules();
 				break;
 			case 'visitlogs':
-				$this->temp = $this->VisitLog();
+				$this->temp = $this->VisitLog ? $this->VisitLog : $this->VisitLog();
 				break;
 			case 'notifications':
-				$this->temp = $this->Notifications();
+				$this->temp = $this->Notifications ? $this->Notifications : $this->Notifications();
 				break;
 		}
 	}
@@ -385,7 +385,7 @@ class BreezeQuery
 	 */
 	public function GetStatusByID($id)
 	{
-		return $this->GetReturn('status', 'status_id', $id);
+		return $this->GetReturn('status', 'id', $id, true);
 	}
 
 	/*
@@ -400,6 +400,20 @@ class BreezeQuery
 	public function GetStatusByUser($id)
 	{
 		return $this->GetReturn('status', 'status_user', $id);
+	}
+
+	/*
+	 * Get the latest Status in the Status array.
+	 *
+	 * This returns the last status added to the array.
+	 * @access public
+	 * @return array the last status added to the Status array
+	 */
+	public function GetStatusByLast()
+	{
+		$array = $this->Status ? $this->Status : $this->Status();
+
+		return array_shift(array_values($array));
 	}
 
 	/* Methods for comments */
@@ -947,7 +961,7 @@ class BreezeQuery
 	{
 		return $this->Notifications ? $this->Notifications : $this->Notifications();
 	}
-	
+
 	public function InsertNotification($array)
 	{
 		/* We dont need this anymore */

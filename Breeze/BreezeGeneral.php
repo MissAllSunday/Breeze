@@ -37,10 +37,10 @@
 
 if (!defined('SMF'))
 	die('Hacking attempt...');
-	
+
 	/* Wrapper functions */
-	wrapper_breezeGeneral_singleStatus(){BreezeGeneral::singleStatus();}
-	wrapper_breezeGeneral_singleComment(){BreezeGeneral::singleComment();}
+	function wrapper_breezeGeneral_singleStatus(){ BreezeGeneral::singleStatus(); }
+	function wrapper_breezeGeneral_singleComment(){ BreezeGeneral::singleComment(); }
 
 class BreezeGeneral
 {
@@ -69,7 +69,6 @@ class BreezeGeneral
 	{
 		global $txt, $scripturl, $context;
 
-		loadLanguage('Breeze');
 		loadtemplate('Breeze');
 		Breeze::Load(array('Settings','Subs'));
 		writeLog(true);
@@ -89,38 +88,73 @@ class BreezeGeneral
 	/* Show a single status with all it's comments */
 	public static function singleStatus()
 	{
-		global $user_info;
+		global $user_info, $scripturl, $context, $memberContext;
 
 		/* Load all we need */
 		loadtemplate('Breeze');
 		Breeze::Load(array(
 			'Globals',
 			'Query',
-			'Settings'
+			'Settings',
+			'UserInfo',
+			'Subs'
 		));
 
 		/* Prepare all we need */
 		$globals = new BreezeGlobals('get');
 		$tools = BreezeSettings::getInstance();
-		$query = new BreezeQuery();
+		$query = BreezeQuery::getInstance();
+		$status = array();
+		$status['comments'] = array();
+
+		/* Headers */
+		BreezeSubs::Headers();
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'singleStatus';
-		$context['page_title'] = $text->GetText('singleStatus_pageTitle');
-		$context['canonical_url'] = $scripturl . '?action=wall;sa=singlestatus;u=' . $context['member']['id'];
+		$context['page_title'] = $tools->GetText('singleStatus_pageTitle');
+		$context['canonical_url'] = $scripturl . '?action=wall;sa=singlestatus';
+
+		/* The visitor's permissions */
+		$context['Breeze']['visitor']['post_status'] = allowedTo('breeze_postStatus');
+		$context['Breeze']['visitor']['post_comment'] = allowedTo('breeze_postComments');
+		$context['Breeze']['visitor']['delete_status_comments'] = allowedTo('breeze_deleteStatus');
 
 		/* get the status data */
-		if ($globals->See('statusID') == false)
-			$topicID = $user_info['id'];
+		if ($globals->Validate('statusID'))
+		{
+			$statusID = $globals->See('statusID');
 
+			$status = $query->GetStatusByID($statusID);
+		}
+
+		/* If no ID is set, then load the lastest status */
 		else
-			$topicID = $globals->See('statusID');
+			$status = $query->GetStatusByLast();
 
-		$status = $query->GetStatusByID($topicID);
+		/* Get tue user id */
+		$users_to_load[] = $status['owner_id'];
 
-		echo '<pre>';
-		print_r($status);
-		echo '</pre>';
+		/* Load the corresponding comments */
+		$status['comments'] = $query->GetCommentsByStatus($status['id']);
 
+		/* Get the id for all the users who commented on the status */
+		foreach($status['comments'] as $c)
+			$users_to_load[] = $c['poster_id'];
+
+		/* We have all the IDs, let's prune the array a little */
+		$new_temp_array = array_unique($users_to_load);
+
+		/* Load the data */
+		loadMemberData($new_temp_array, false, 'profile');
+		foreach($new_temp_array as $u)
+		{
+			loadMemberContext($u);
+			$user = $memberContext[$u];
+			$context['Breeze']['user_info'][$user['id']] = BreezeUserInfo::Profile($user);
+		}
+
+		/* Send the data to the template */
+		$context['Breeze']['singleStatus'] = $status;
 	}
 }
