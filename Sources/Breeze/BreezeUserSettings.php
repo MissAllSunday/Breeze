@@ -73,7 +73,7 @@ class BreezeUserSettings
 			$query->GetData(null, true);
 			$this->data = $query->DataResult();
 
-			if (!empty($data))
+			if (!empty($this->data))
 				$context['Breeze']['UserSettings'][$context['member']['id']] = $this->data;
 		}
 	}
@@ -97,7 +97,7 @@ class BreezeUserSettings
 			$query->GetData(null, true);
 			$this->data = $query->DataResult();
 
-			if (!empty($data))
+			if (!empty($this->data))
 				$context['Breeze']['UserSettings'][$user] = $this->data;
 		}
 	}

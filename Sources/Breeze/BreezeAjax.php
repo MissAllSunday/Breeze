@@ -208,7 +208,7 @@ abstract class BreezeAjax
 			{
 				loadMemberContext($nu);
 				$user = $memberContext[$nu];
-			
+
 				$notification_params = array(
 					'user' => $nu,
 					'type' => 'comment',
@@ -218,6 +218,7 @@ abstract class BreezeAjax
 						'message' => '',
 						'url' => $scripturl .'?action=wall;sa=singlestatus;u='. $nu,
 						'from_id' => $data->See('poster_comment_id'),
+                                                'from_link' => $user['link']
 					)
 				);
 
