@@ -148,10 +148,11 @@ abstract class BreezeAjax
 	/* Basically the same as Post */
 	public static function PostComment()
 	{
-		global $context, $memberContext;
+		global $context, $memberContext, $scripturl;
 
 		/* You aren't allowed in here, let's show you a nice message error... */
-		isAllowedTo('breeze_postComments');
+		if (!allowedTo('breeze_postComments'))
+			return false;
 
 		checkSession('post', '', false);
 
@@ -192,37 +193,47 @@ abstract class BreezeAjax
 			/* Send out the notifications first thing to do, is to collect all the users who had posted on this status */
 			$temp_comments = $query->GetCommentsByStatus($data->See('status_id'));
 
-			/* If the status owner also commented, let's remove it, (s)he will receive an special notification later */
+			/* Create the users array */
 			foreach($temp_comments as $c)
-				if ($c['poster_id'] != $data->See('status_owner_id') || $c['poster_id'] != $data->See('poster_comment_id'))
-					$notification_users[] = $c['poster_id'];
+				$notification_users[] = $c['poster_id'];
 
-			/* Prune the array, we don't want to send notifications twice */
-			$notification_users = array_unique($notification_users);
+			/* Remove from the list the profile owner, the status owner and the user who made the comment */
+			foreach($notification_users as $tu)
+				if ($tu == $data->See('poster_comment_id') || $tu == $data->See('status_owner_id') || $tu == $data->See('profile_owner_id'))
+					unset($tu;)
 
 			/* Load the user's info */
-			loadMemberData($new_temp_array, false, 'minimal');
+			$users_to_load = array(
+				$data->See('poster_comment_id'),
+				$data->See('status_owner_id'),
+				$data->See('profile_owner_id')
+			);
+			$users_data = BreezeSubs::LoadUserInfo($users_to_load);
 
-			/* Send them already! */
-			foreach($notification_users as $nu)
+			$user_who_commented = $users_data[$data->See('poster_comment_id')];
+			$user_who_created_the_status = $users_data[$data->See('status_owner_id')];
+			$user_who_owns_the_profile = $users_data[$data->See('profile_owner_id')];
+
+			/* Send it already! */
+			if (!empty($notification_users))
 			{
-				loadMemberContext($nu);
-				$user = $memberContext[$nu];
+				foreach($notification_users as $nu)
+				{
+					$notification_params = array(
+						'user' => $nu,
+						'type' => 'comment',
+						'time' => time(),
+						'read' => 0,
+						'content' => array(
+							'message' => sprintf($tools->GetText('noti_comment_message'), $user_who_commented['link'], $user_who_created_the_status['link'], $user_who_owns_the_profile['link']),
+							'url' => $scripturl .'?action=wall;sa=singlestatus;u='. $nu,
+							'userwhoposted' => $data->See('poster_comment_id'),
+							'userstatus' => $data->See('status_owner_id')
+						)
+					);
 
-				$notification_params = array(
-					'user' => $nu,
-					'type' => 'comment',
-					'time' => time(),
-					'read' => 0,
-					'content' => array(
-						'message' => '',
-						'url' => $scripturl .'?action=wall;sa=singlestatus;u='. $nu,
-						'from_id' => $data->See('poster_comment_id'),
-                                                'from_link' => $user['link']
-					)
-				);
-
-				$notification->Create($notification_params);
+					$notification->Create($notification_params);
+				}
 			}
 
 			/* The comment was added, build the server response */

@@ -235,6 +235,9 @@ $(document).ready(function ()
 		if (!is_array($id))
 			$id = array($id);
 
+		/* Remove double entries */
+		$id = array_unique($id);
+
 		/* Load all the members up. */
 		loadMemberData($id, false, 'profile');
 

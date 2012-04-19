@@ -46,6 +46,7 @@ class BreezeQuery
 	protected $Settings = array();
 	protected $likes = array();
 	protected $Notifications = array();
+	protected $VisitLog = array();
 	private $query = array();
 	private $data = array();
 	private $query_params = array('rows' =>'*');

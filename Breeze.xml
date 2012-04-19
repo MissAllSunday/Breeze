@@ -17,11 +17,14 @@
 	<operation>
 			<search position="replace"><![CDATA['mods' => array(]]></search>
 			<add><![CDATA[/* Breeze notifications */
-	Breeze::Load(array('Notifications', 'Subs'));
-	$notifications = new BreezeNotifications();
-	$subs = new BreezeSubs();
-	$subs->headersNotification();
-	$notifications->doStream($user_info['id']);
+	if(empty($user_info['is_guest']))
+	{
+		Breeze::Load(array('Notifications', 'Subs'));
+		$notifications = new BreezeNotifications();
+		$subs = new BreezeSubs();
+		$subs->headersNotification();
+		$notifications->doStream($user_info['id']);
+	}
 
 	// Wireless mode?  Load up the wireless stuff.]]></add>
 		</operation>
