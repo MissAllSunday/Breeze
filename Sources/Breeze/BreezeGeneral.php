@@ -46,8 +46,6 @@ class BreezeGeneral
 {
 	public static function Call()
 	{
-		Breeze::Load(array('Globals'));
-
 		/* Handling the subactions */
 		$sa = new BreezeGlobals('get');
 
@@ -70,7 +68,6 @@ class BreezeGeneral
 		global $txt, $scripturl, $context;
 
 		loadtemplate('Breeze');
-		Breeze::Load(array('Settings','Subs'));
 		writeLog(true);
 
 		/* Set all the page stuff */
@@ -92,13 +89,6 @@ class BreezeGeneral
 
 		/* Load all we need */
 		loadtemplate('Breeze');
-		Breeze::Load(array(
-			'Globals',
-			'Query',
-			'Settings',
-			'UserInfo',
-			'Subs'
-		));
 
 		/* Prepare all we need */
 		$globals = new BreezeGlobals('get');

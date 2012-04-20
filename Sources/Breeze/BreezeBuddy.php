@@ -51,15 +51,6 @@ class BreezeBuddy
 		isAllowedTo('profile_identity_own');
 		is_not_guest();
 
-		Breeze::Load(array(
-			'Settings',
-			'Globals',
-			'Notifications',
-			'UserInfo',
-			'Query',
-			'Subs'
-		));
-
 		/* We need all this stuff */
 		$sa = new BreezeGlobals('get');
 		$notification = new BreezeNotifications();
@@ -118,10 +109,6 @@ class BreezeBuddy
 
 	public function ShowBuddyRequests($user)
 	{
-		Breeze::Load(array(
-			'Query'
-		));
-
 		$query = BreezeQuery::getInstance();
 
 		/* Load all buddy request for this user */

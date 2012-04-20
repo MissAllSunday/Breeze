@@ -44,7 +44,6 @@ if (!defined('SMF'))
 		global $scripturl, $context;
 
 		loadtemplate('BreezeAdmin');
-		Breeze::Load(array('Settings','Subs'));
 
 		$text = BreezeSettings::getInstance();
 
@@ -63,8 +62,7 @@ if (!defined('SMF'))
 	{
 		global $scripturl, $context, $sourcedir;
 
-		Breeze::Load(array('Settings', 'Globals'));
-
+		/* Load stuff */
 		$text = BreezeSettings::getInstance();
 		$context['sub_template'] = 'show_settings';
 		$globals = new BreezeGlobals('request');
@@ -97,10 +95,6 @@ if (!defined('SMF'))
 		global $context, $scripturl;
 
 		loadtemplate('BreezeAdmin');
-		Breeze::Load(array(
-			'Subs', 
-			'Settings'
-		));
 
 		/* Headers */
 		BreezeSubs::Headers(true);

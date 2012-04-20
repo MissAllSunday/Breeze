@@ -38,40 +38,46 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
+/* Autoload */
+function __autoload($class_name)
+{
+	global $sourcedir;
+
+	$file_path = $sourcedir.Breeze::$BreezeFolder.$class_name . '.php';
+
+	if(file_exists($file_path))
+		require_once($file_path);
+
+	else
+		return false;
+}
+
 class Breeze
 {
 	static public $BreezeVersion = '1.0 Beta 1';
-
 	static public $BreezeFolder = '/Breeze/';
 
-	public function __construct()
-	{
-	}
+	public function __construct(){}
 
 	/**
-	 * An attempt to load the static method(s) used across the mod
+	 * Load SMF source files
 	 *
-	 * @todo Implement some checks before loading the file.
 	 * @param string $file When $file is a string it contains a single file name.
 	 * @param array $file a comma separated list of all the file names to be loaded.
-	 * @param bool $smf special case used when trying to load an SMF source file for some resource or function
 	 * @return void
 	 */
-	public static function Load($file, $smf = false)
+	public static function Load($file)
 	{
 		global $sourcedir;
 
 		if (empty($file))
 			return;
 
-		if (is_array($file) && !empty($file) && !$smf)
+		if (is_array($file) && !empty($file))
 				foreach($file as $f)
-					require_once($sourcedir. Breeze::$BreezeFolder . 'Breeze'.$f.'.php');
+					require_once($sourcedir. '/'.$f.'.php');
 
-		elseif (!$smf)
-			require_once($sourcedir . Breeze::$BreezeFolder .'Breeze'.$file.'.php');
-
-		else
+		elseif (!empty($file))
 			require_once($sourcedir .'/'.$file.'.php');
 	}
 
@@ -103,7 +109,6 @@ class Breeze
 	public static function ProfileInfo(&$profile_areas)
 	{
 		global $user_info, $context;
-		Breeze::Load('Settings');
 
 		/* Settings are required here */
 		$s = BreezeSettings::getInstance();
@@ -187,9 +192,6 @@ class Breeze
 	{
 		global $scripturl, $context;
 
-		loadLanguage('Breeze');
-		Breeze::Load('Settings');
-
 		/* Settings are required here */
 		$s = BreezeSettings::getInstance();
 
@@ -253,7 +255,7 @@ class Breeze
 
 		/* A whole new action just for some ajax calls... */
 		$actions['breezeajax'] = array(Breeze::$BreezeFolder .'BreezeAjax.php', 'BreezeAjax::Call');
-		
+
 		/* The general wall */
 		$actions['wall'] = array(Breeze::$BreezeFolder .'BreezeGeneral.php', 'BreezeGeneral::Call');
 
@@ -280,8 +282,6 @@ class Breeze
 	/* It's all about Admin settings from now on */
 	public static function Admin_Button(&$admin_menu)
 	{
-		Breeze::Load(array('Settings'));
-
 		$text = BreezeSettings::getInstance();
 
 		$admin_menu['breezeadmin'] = array(

@@ -51,15 +51,6 @@ abstract class BreezeAjax
 	public static function Call()
 	{
 		/* Load stuff */
-		Breeze::Load(array(
-			'Query',
-			'Display',
-			'Globals',
-			'Parser',
-			'Notifications',
-			'Subs',
-			'Settings'
-		));
 		loadtemplate('BreezeAjax');
 
 		/* Handling the subactions */
@@ -148,7 +139,7 @@ abstract class BreezeAjax
 	/* Basically the same as Post */
 	public static function PostComment()
 	{
-		global $context, $memberContext, $scripturl;
+		global $context, $scripturl;
 
 		/* You aren't allowed in here, let's show you a nice message error... */
 		if (!allowedTo('breeze_postComments'))
@@ -200,7 +191,7 @@ abstract class BreezeAjax
 			/* Remove from the list the profile owner, the status owner and the user who made the comment */
 			foreach($notification_users as $tu)
 				if ($tu == $data->See('poster_comment_id') || $tu == $data->See('status_owner_id') || $tu == $data->See('profile_owner_id'))
-					unset($tu;)
+					unset($tu);
 
 			/* Load the user's info */
 			$users_to_load = array(

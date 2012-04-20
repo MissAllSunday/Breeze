@@ -47,13 +47,6 @@ class BreezeModules
 
 	public function __construct($id)
 	{
-		Breeze::Load(array(
-			'UserInfo',
-			'Query',
-			'Subs',
-			'Settings'
-		));
-
 		/* Set some things */
 		$this->profile_id = $id;
 		$this->text = BreezeSettings::getInstance();

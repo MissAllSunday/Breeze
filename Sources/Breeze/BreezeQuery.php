@@ -58,11 +58,6 @@ class BreezeQuery
 
 	protected function __construct()
 	{
-		Breeze::Load(array(
-			'DB',
-			'Settings'
-		));
-
 		$this->query = array(
 			'status' => new BreezeDB('breeze_status'),
 			'comments' => new BreezeDB('breeze_comments'),
@@ -316,10 +311,6 @@ class BreezeQuery
 	{
 		global $smcFunc;
 
-		Breeze::Load(array(
-			'Subs'
-		));
-
 		$tools = new BreezeSubs();
 
 		/* Use the cache please... */
@@ -430,10 +421,6 @@ class BreezeQuery
 	protected function Comments()
 	{
 		global $smcFunc;
-
-		Breeze::Load(array(
-			'Subs'
-		));
 
 		$tools = new BreezeSubs();
 

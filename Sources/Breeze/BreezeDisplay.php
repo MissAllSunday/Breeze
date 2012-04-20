@@ -49,13 +49,6 @@ class BreezeDisplay
 
 	function __construct($params, $type)
 	{
-		/* Load stuff */
-		Breeze::Load(array(
-			'UserInfo',
-			'Subs',
-			'Settings'
-		));
-
 		if (empty($params))
 			$this->ReturnArray = '';
 

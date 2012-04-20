@@ -57,11 +57,6 @@ class BreezeNotifications
 			'mention'
 		);
 
-		Breeze::Load(array(
-			'Settings',
-			'Query',
-		));
-
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
 		$this->settings = BreezeSettings::getInstance();
 		$this->query = BreezeQuery::getInstance();

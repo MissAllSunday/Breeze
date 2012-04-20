@@ -45,12 +45,6 @@ class BreezeParser
 
 	function __construct()
 	{
-		Breeze::Load(array(
-			'Subs',
-			'Notifications',
-			'UserInfo'
-		));
-
 		$this->notification = new BreezeNotifications();
 		$this->settings = BreezeSettings::getInstance();
 

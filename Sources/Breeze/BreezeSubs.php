@@ -62,8 +62,6 @@ class BreezeSubs
 	{
 		global $context, $settings;
 
-		Breeze::Load('Settings');
-
 		$text = BreezeSettings::getInstance();
 
 		/* Define some variables for the ajax stuff */
@@ -144,10 +142,7 @@ $(document).ready(function ()
 	/* Relative dates  http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html */
 	public function TimeElapsed($ptime)
 	{
-		Breeze::Load('Settings');
-
 		$text = BreezeSettings::getInstance();
-
 		$etime = time() - $ptime;
 
 		if ($etime < 1)

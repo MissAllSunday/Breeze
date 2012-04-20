@@ -19,7 +19,6 @@
 			<add><![CDATA[/* Breeze notifications */
 	if(empty($user_info['is_guest']))
 	{
-		Breeze::Load(array('Notifications', 'Subs'));
 		$notifications = new BreezeNotifications();
 		$subs = new BreezeSubs();
 		$subs->headersNotification();

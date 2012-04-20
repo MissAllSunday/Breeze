@@ -55,15 +55,6 @@ class BreezeUser
 		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info;
 
 		loadtemplate('Breeze');
-		Breeze::Load(array(
-			'Settings',
-			'Subs',
-			'UserInfo',
-			'Modules',
-			'Query',
-			'Pagination',
-			'Globals'
-		));
 
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
 		$settings = BreezeSettings::getInstance();
@@ -195,12 +186,6 @@ class BreezeUser
 		global $context, $user_info, $txt, $scripturl;
 
 		loadtemplate('Breeze');
-		Breeze::Load(array(
-			'Form',
-			'Globals',
-			'Query',
-			'Settings'
-		));
 
 		/* Is this the right user? */
 		if ($context['member']['id'] != $user_info['id'])
@@ -319,12 +304,6 @@ class BreezeUser
 		global $context, $user_info, $scripturl;
 
 		loadtemplate('Breeze');
-		Breeze::Load(array(
-			'Notifications',
-			'Globals',
-			'Query',
-			'Settings'
-		));
 
 		/* Load all we need */
 		$query = BreezeQuery::getInstance();
@@ -349,12 +328,6 @@ class BreezeUser
 			fatal_lang_error('no_access', false);
 
 		loadtemplate('BreezeBuddy');
-		Breeze::Load(array(
-			'Buddy',
-			'Settings',
-			'Globals',
-			'Query'
-		));
 
 		/* Load all we need */
 		$buddies = new BreezeBuddy();
@@ -392,7 +365,7 @@ class BreezeUser
 		if ($globals->Validate('from') == true && $globals->Validate('confirm') == true && $user_info['id'] != $globals->See('from'))
 		{
 			/* Load Subs-Post to use sendpm */
-			Breeze::Load('Subs-Post', true);
+			Breeze::Load('Subs-Post');
 
 			$user_info['buddies'][] = $globals->See('from');
 			$context['Breeze']['Buddy_Request'][$globals->See('from')]['content']->from_buddies[] = $user_info['id'];
@@ -443,9 +416,6 @@ class BreezeUser
 		global $context, $user_info, $scripturl;
 
 		loadtemplate('BreezeBuddy');
-		Breeze::Load(array(
-			'Settings'
-		));
 
 		$text = BreezeSettings::getInstance();
 
