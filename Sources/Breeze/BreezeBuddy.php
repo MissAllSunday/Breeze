@@ -56,7 +56,6 @@ class BreezeBuddy
 		$notification = new BreezeNotifications();
 		$settings = BreezeSettings::getInstance();
 
-
 		/* There's gotta be an user... */
 		if ($sa->Validate('u') == false)
 			fatal_lang_error('no_access', false);

@@ -222,29 +222,42 @@ $(document).ready(function ()
 		return ($preserve_keys === true) ? $array : array_values($array);
 	}
 
-	public static function LoadUserInfo($id)
+	public static function LoadUserInfo($id, $single = false)
 	{
-		global $user_info, $memberContext;
+		global $memberContext;
 
 		/* Must be an array */
-		if (!is_array($id))
+		if (!$single && !is_array($id))
+		{
 			$id = array($id);
 
-		/* Remove double entries */
-		$id = array_unique($id);
+			/* Remove double entries */
+			$id = array_unique($id);
 
-		/* Load all the members up. */
-		loadMemberData($id, false, 'profile');
-
-		/* Setup the context for each user */
-		$temp_return = array();
-
-		foreach ($id as $i)
-		{
-			loadMemberContext($i);
-			$temp_return[$i] = $memberContext[$i];
+			/* Setup the context for each user */
+			$temp_return = array();
 		}
 
-		return $temp_return;
+		/* Load all the members up. */
+		if (loadMemberData($id, false, 'profile'))
+		{
+			if (!$single)
+				foreach ($id as $i)
+				{
+					loadMemberContext($i);
+					$temp_return[$i] = $memberContext[$i];
+				}
+
+			elseif ($single)
+				{
+					loadMemberContext($id);
+					$temp_return = $memberContext[$id];
+				}
+
+			return $temp_return;
+		}
+
+		else
+			return false;
 	}
 }

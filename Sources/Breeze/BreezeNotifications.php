@@ -46,6 +46,7 @@ class BreezeNotifications
 	private $settings = '';
 	private $query = '';
 	private $ReturnArray = array();
+	private $usersData = array();
 
 	function __construct()
 	{
@@ -87,6 +88,10 @@ class BreezeNotifications
 		elseif (!empty($params) && in_array($params['type'], $this->types) && !$double_request)
 		{
 			$this->params = $params;
+
+			/* Convert to a json string */
+			$this->params['content'] = json_encode($this->params['content']);
+
 			$this->query->InsertNotification($this->params);
 		}
 
@@ -114,22 +119,43 @@ class BreezeNotifications
 	{
 		global $context;
 
-		$show = $this->GetByUser($user);
+		$this->all = $this->GetByUser($user);
+
+		/* Load users data */
+		foreach ($this->all['content'] as $lu => $v)
+			if ()
+			$this->usersData[$v] = BreezeSubs::LoadUserInfo($v, true);
 
 		$context['insert_after_template'] .= '
 		<script type="text/javascript"><!-- // --><![CDATA[
 $(document).ready(function()
 {';
 
-	foreach($show as $s)
-		$context['insert_after_template'] .= '
-			$.sticky(\''. $s['content']->message .'\');';
+		/* Check for the type and act in accordance */
+		foreach($this->all as $all)
+			if (in_array($all['type'], $this->types))
+			{
+				$call = 'do' . ucfirst($this->types[$all['type']]);
+				$context['insert_after_template'] .= $this->$call($all) == false ? '' : $this->$call($all);
+			}
 
 		$context['insert_after_template'] .= '
 });
 
 // ]]></script>';
+	}
 
+	protected function doComments($noti)
+	{
+		global $user_info;
+
+		if ($noti['content']['user_who_commented'] == $user_info['id'])
+			return false;
+
+		if ($noti['content']['user_who_created_the_status'] == $user_info['id'])
+			$message = '$.sticky(\''. JavaScriptEscape($s['content']->message) .'\');';
+
+		return $message;
 	}
 
 	protected function Delete($id)

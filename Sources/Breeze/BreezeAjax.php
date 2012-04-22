@@ -188,11 +188,6 @@ abstract class BreezeAjax
 			foreach($temp_comments as $c)
 				$notification_users[] = $c['poster_id'];
 
-			/* Remove from the list the profile owner, the status owner and the user who made the comment */
-			foreach($notification_users as $tu)
-				if ($tu == $data->See('poster_comment_id') || $tu == $data->See('status_owner_id') || $tu == $data->See('profile_owner_id'))
-					unset($tu);
-
 			/* Load the user's info */
 			$users_to_load = array(
 				$data->See('poster_comment_id'),
@@ -216,10 +211,9 @@ abstract class BreezeAjax
 						'time' => time(),
 						'read' => 0,
 						'content' => array(
-							'message' => sprintf($tools->GetText('noti_comment_message'), $user_who_commented['link'], $user_who_created_the_status['link'], $user_who_owns_the_profile['link']),
-							'url' => $scripturl .'?action=wall;sa=singlestatus;u='. $nu,
-							'userwhoposted' => $data->See('poster_comment_id'),
-							'userstatus' => $data->See('status_owner_id')
+							'user_who_commented' => $data->See('poster_comment_id'),
+							'user_who_created_the_status' => $data->See('status_owner_id'),
+							'user_who_owns_the_profile' => $data->See('profile_owner_id')
 						)
 					);
 

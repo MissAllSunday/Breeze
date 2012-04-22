@@ -955,9 +955,6 @@ class BreezeQuery
 		/* We dont need this anymore */
 		$this->KillCache('Notifications');
 
-		/* Convert to a json string */
-		$array['content'] = json_encode($array['content']);
-
 		/* Insert! */
 		$data = array(
 			'user' => 'int',
