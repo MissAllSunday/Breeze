@@ -39,41 +39,41 @@ if (!defined('SMF'))
 	die('Hacking attempt...');
 
 	/* We can't call a static method from a string... let's do this the old way instead... */
-	function breeze_admin_main()
+	function Breeze_Admin_Main()
 	{
 		global $scripturl, $context;
 
 		loadtemplate('BreezeAdmin');
 
-		$text = Breeze::text();
+		$text = BreezeSettings::getInstance();
 
 		/* Get the version */
-		$context['Breeze']['version'] = Breeze::$breezeVersion;
+		$context['Breeze']['version'] = Breeze::$BreezeVersion;
 
 		/* Set all the page stuff */
-		$context['page_title'] = $text->getText('admin_settings_main');
+		$context['page_title'] = $text->GetText('admin_settings_main');
 		$context['sub_template'] = 'admin_home';
 
 		/* Headers */
 		BreezeSubs::Headers(true);
 	}
 
-	function breeze_admin_settings()
+	function Breeze_Admin_Settings()
 	{
 		global $scripturl, $context, $sourcedir;
 
 		/* Load stuff */
-		$text = Breeze::text();
+		$text = BreezeSettings::getInstance();
 		$context['sub_template'] = 'show_settings';
 		$globals = new BreezeGlobals('request');
 
 		require_once($sourcedir . '/ManageServer.php');
 
 		$config_vars = array(
-				array('check', 'BreezeMod_admin_settings_enable', 'subtext' => $text->getText('admin_settings_enable_sub')),
-				array('select', 'BreezeMod_admin_settings_menuposition', array('home' => $text->getText('admin_settings_home'), 'help' => $text->getText('admin_settings_help'), 'profile' => $text->getText('admin_settings_profile')), 'subtext' => $text->getText('admin_settings_menuposition_sub')),
-				array('check', 'BreezeMod_admin_enable_limit', 'subtext' => $text->getText('admin_enable_limit_sub')),
-				array('select', 'BreezeMod_admin_limit_timeframe', array('hour' => $text->getText('user_settings_time_hour'), 'day' => $text->getText('user_settings_time_day'), 'week' => $text->getText('user_settings_time_week'), 'month' => $text->getText('user_settings_time_month'), 'year' => $text->getText('user_settings_time_year')), 'subtext' => $text->getText('admin_limit_timeframe_sub'))
+				array('check', 'BreezeMod_admin_settings_enable', 'subtext' => $text->GetText('admin_settings_enable_sub')),
+				array('select', 'BreezeMod_admin_settings_menuposition', array('home' => $text->GetText('admin_settings_home'), 'help' => $text->GetText('admin_settings_help'), 'profile' => $text->GetText('admin_settings_profile')), 'subtext' => $text->GetText('admin_settings_menuposition_sub')),
+				array('check', 'BreezeMod_admin_enable_limit', 'subtext' => $text->GetText('admin_enable_limit_sub')),
+				array('select', 'BreezeMod_admin_limit_timeframe', array('hour' => $text->GetText('user_settings_time_hour'), 'day' => $text->GetText('user_settings_time_day'), 'week' => $text->GetText('user_settings_time_week'), 'month' => $text->GetText('user_settings_time_month'), 'year' => $text->GetText('user_settings_time_year')), 'subtext' => $text->GetText('admin_limit_timeframe_sub'))
 		);
 
 		$context['post_url'] = $scripturl . '?action=admin;area=breezesettings;save';
@@ -90,7 +90,7 @@ if (!defined('SMF'))
 	}
 
 	/* Pay no attention to the girl behind the curtain */
-	function breeze_admin_donate()
+	function Breeze_Admin_Donate()
 	{
 		global $context, $scripturl;
 
@@ -103,10 +103,10 @@ if (!defined('SMF'))
 		$text = BreezeSettings::getInstance();
 
 		/* Page stuff */
-		$context['page_title'] = $text->getText('admin_settings_donate');
+		$context['page_title'] = $text->GetText('admin_settings_donate');
 		$context['sub_template'] = 'admin_donate';
 		$context['linktree'][] = array(
 			'url' => $scripturl . '?action=admin;area=breezedonate',
-			'name' => $text->getText('admin_settings_donate')
+			'name' => $text->GetText('admin_settings_donate')
 		);
 	}

@@ -47,7 +47,6 @@ class BreezeNotifications
 	private $query = '';
 	private $ReturnArray = array();
 	private $usersData = array();
-	private $content = array();
 
 	function __construct()
 	{
@@ -123,15 +122,8 @@ class BreezeNotifications
 		$this->all = $this->GetByUser($user);
 
 		/* Load users data */
-		if (!empty($this->all))
-			foreach ($this->all as $g)
-				$this->content[] = get_object_vars($g['content']);
-
-			echo '<pre>';
-			print_r($this->content);
-			echo '</pre>';
-
-		foreach ($this->content as $k => $v)
+		foreach ($this->all['content'] as $lu => $v)
+			if ()
 			$this->usersData[$v] = BreezeSubs::LoadUserInfo($v, true);
 
 		$context['insert_after_template'] .= '
@@ -144,9 +136,7 @@ $(document).ready(function()
 			if (in_array($all['type'], $this->types))
 			{
 				$call = 'do' . ucfirst($this->types[$all['type']]);
-
-				if (method_exists($call))
-					$context['insert_after_template'] .= $this->$call($all) == false ? '' : $this->$call($all);
+				$context['insert_after_template'] .= $this->$call($all) == false ? '' : $this->$call($all);
 			}
 
 		$context['insert_after_template'] .= '
@@ -159,46 +149,13 @@ $(document).ready(function()
 	{
 		global $user_info;
 
-		/* No notification no fun for you! */
-		if (empty($noti))
-			return false;
-
-		/* Don't send the notification to the user who posted the comment */
 		if ($noti['content']['user_who_commented'] == $user_info['id'])
 			return false;
 
-		/* No users data no fun for you! */
-		if (empty($this->usersData))
-			return false;
-
-		/* Send the notification to the person who created the status */
-		elseif ($noti['content']->user_who_created_the_status == $user_info['id'])
-			$message = '$.sticky(\''. JavaScriptEscape(printf($this->settings->GetText('noti_comment_message_statusOwner'), $this->usersData[$noti['content']->user_who_commented]['link'], $this->usersData[$noti['content']->user_who_owns_the_profile]['link'])) .'\');';
-
-		/* Send the notification to the wall owner */
-		elseif ($noti['content']->user_who_owns_the_profile == $user_info['id'])
-			$message = '$.sticky(\''. JavaScriptEscape(printf($this->settings->GetText('noti_comment_message_wallOwner'), $this->usersData[$noti['content']->user_who_commented]['link'], $this->usersData[$noti['content']->user_who_created_the_status]['link'])) .'\');';
-
-		/* Send the generic message */
-		else
-			$message = '$.sticky(\''. JavaScriptEscape(printf($this->settings->GetText('noti_comment_message'), $this->usersData[$noti['content']->user_who_commented]['link'], $this->usersData[$noti['content']->user_who_created_the_status]['link'], $this->usersData[$noti['content']->user_who_owns_the_profile]['link'])) .'\');';
+		if ($noti['content']['user_who_created_the_status'] == $user_info['id'])
+			$message = '$.sticky(\''. JavaScriptEscape($s['content']->message) .'\');';
 
 		return $message;
-	}
-
-	protected function doMention($noti)
-	{
-		/* No notification no fun for you! */
-		if (empty($noti))
-			return false;
-
-		/* No users data no fun for you! */
-		if (empty($this->usersData))
-			return false;
-
-		/* Print the notification */
-		else
-			$message = '$.sticky(\''. JavaScriptEscape($this->mention_info[1] == $this->mention_info[0] ? sprintf($this->settings->GetText('mention_message_own_wall'), $temp_users_load[$this->mention_info[1]]['link']) : sprintf($this->settings->GetText('mention_message'), $temp_users_load[$this->mention_info[1]]['link'], $temp_users_load[$this->mention_info[0]]['link'])) .'\');';
 	}
 
 	protected function Delete($id)
