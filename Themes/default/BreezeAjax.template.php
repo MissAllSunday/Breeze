@@ -39,20 +39,6 @@ function template_breeze_post()
 {
 	global  $context;
 
-	switch ($context['Breeze']['ajax']['ok'])
-	{
-		case 'error':
-			echo 'error_';
-		case '':
-			echo 'error_';
-			break;
-		case 'deleted':
-			echo 'deleted_';
-			break;
-		case 'ok':
-			echo $context['Breeze']['ajax']['data'];
-			break;
-		default:
-			echo 'error_';
-	}
+	if ($context['Breeze']['ajax']['ok'])
+		echo $context['Breeze']['ajax']['data'];
 }
