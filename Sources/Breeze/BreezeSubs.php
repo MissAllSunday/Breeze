@@ -62,22 +62,22 @@ class BreezeSubs
 	{
 		global $context, $settings;
 
-		$text = BreezeSettings::getInstance();
+		$text = Breeze::text();
 
 		/* Define some variables for the ajax stuff */
 		$context['html_headers'] .= '
 		<script type="text/javascript"><!-- // --><![CDATA[
-			var breeze_error_message = "'. $text->GetText('error_message') .'";
-			var breeze_success_message = "'. $text->GetText('success_message') .'";
-			var breeze_empty_message = "'. $text->GetText('empty_message') .'";
-			var breeze_error_delete = "'. $text->GetText('error_message') .'";
-			var breeze_success_delete = "'. $text->GetText('success_delete') .'";
-			var breeze_confirm_delete = "'. $text->GetText('confirm_delete') .'";
-			var breeze_confirm_yes = "'. $text->GetText('confirm_yes') .'";
-			var breeze_confirm_cancel = "'. $text->GetText('confirm_cancel') .'";
-			var breeze_already_deleted = "'. $text->GetText('already_deleted') .'";
-			var breeze_cannot_postStatus = "'. $text->GetText('cannot_postStatus') .'";
-			var breeze_cannot_postComments = "'. $text->GetText('cannot_postComments') .'";
+			var breeze_error_message = "'. $text->getText('error_message') .'";
+			var breeze_success_message = "'. $text->getText('success_message') .'";
+			var breeze_empty_message = "'. $text->getText('empty_message') .'";
+			var breeze_error_delete = "'. $text->getText('error_message') .'";
+			var breeze_success_delete = "'. $text->getText('success_delete') .'";
+			var breeze_confirm_delete = "'. $text->getText('confirm_delete') .'";
+			var breeze_confirm_yes = "'. $text->getText('confirm_yes') .'";
+			var breeze_confirm_cancel = "'. $text->getText('confirm_cancel') .'";
+			var breeze_already_deleted = "'. $text->getText('already_deleted') .'";
+			var breeze_cannot_postStatus = "'. $text->getText('cannot_postStatus') .'";
+			var breeze_cannot_postComments = "'. $text->getText('cannot_postComments') .'";
 	// ]]></script>';
 
 
@@ -106,7 +106,7 @@ class BreezeSubs
 			$context['html_headers'] .= '
 			<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.min.js" type="text/javascript"></script>
 			<script type="text/javascript">
-var breeze_feed_error_message = "'. $text->GetText('feed_error_message') .'";
+var breeze_feed_error_message = "'. $text->getText('feed_error_message') .'";
 
 $(document).ready(function ()
 {
@@ -142,19 +142,19 @@ $(document).ready(function ()
 	/* Relative dates  http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html */
 	public function TimeElapsed($ptime)
 	{
-		$text = BreezeSettings::getInstance();
+		$text = Breeze::text();
 		$etime = time() - $ptime;
 
 		if ($etime < 1)
-			return $text->GetText('time_just_now');
+			return $text->getText('time_just_now');
 
 		$a = array(
-			12 * 30 * 24 * 60 * 60	=> $text->GetText('time_year'),
-			30 * 24 * 60 * 60		=> $text->GetText('time_month'),
-			24 * 60 * 60			=> $text->GetText('time_day'),
-			60 * 60					=> $text->GetText('time_hour'),
-			60						=> $text->GetText('time_minute'),
-			1						=> $text->GetText('time_second')
+			12 * 30 * 24 * 60 * 60	=> $text->getText('time_year'),
+			30 * 24 * 60 * 60		=> $text->getText('time_month'),
+			24 * 60 * 60			=> $text->getText('time_day'),
+			60 * 60					=> $text->getText('time_hour'),
+			60						=> $text->getText('time_minute'),
+			1						=> $text->getText('time_second')
 		);
 
 		foreach ($a as $secs => $str)
@@ -163,7 +163,7 @@ $(document).ready(function ()
 			if ($d >= 1)
 			{
 				$r = round($d);
-				return $r . ' ' . $str . ($r > 1 ? 's ' : ' '). $text->GetText('time_ago');
+				return $r . ' ' . $str . ($r > 1 ? 's ' : ' '). $text->getText('time_ago');
 			}
 		}
 	}

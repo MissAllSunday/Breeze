@@ -1,9 +1,9 @@
 <?php
 
 /**
- * remove.php
+ * BreezeSettings
  *
- * The purpose of this file is to remove the hooks when uninstall
+ * The purpose of this file is to extract the text strings from the language files
  * @package Breeze mod
  * @version 1.0 Beta 2
  * @author Jessica González <missallsunday@simplemachines.org>
@@ -35,24 +35,55 @@
  *
  */
 
-	if (file_exists(dirname(__FILE__) . '/SSI.php') && !defined('SMF'))
-		require_once(dirname(__FILE__) . '/SSI.php');
+if (!defined('SMF'))
+	die('Hacking attempt...');
 
-	elseif (!defined('SMF'))
-		exit('<b>Error:</b> Cannot install - please verify you put this in the same place as SMF\'s index.php.');
+class BreezeText
+{
+	private static $_instance;
+	protected $_text = array();
 
-	/* Everybody likes hooks */
-	$hooks = array(
-		'integrate_pre_include' => '$sourcedir/Breeze/Breeze.php',
-		/* 'integrate_menu_buttons' => 'Breeze::wallMenu', */
-		'integrate_actions' => 'Breeze::actions',
-		'integrate_load_permissions' => 'Breeze::permissions',
-		'integrate_admin_areas' => 'Breeze::adminButton',
-		'integrate_profile_areas' => 'Breeze::profileInfo'
-	);
 
-	/* Uninstall please */
-	$call = 'remove_integration_function';
+	private function __construct()
+	{
+		$this->extract();
+	}
 
-	foreach ($hooks as $hook => $function)
-		$call($hook, $function);
+	public static function getInstance()
+	{
+		if (!self::$_instance)
+		 {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+	}
+
+	public function extract()
+	{
+		global $txt;
+
+		loadLanguage(Breeze::$BreezeName);
+
+		$this->_pattern = '/BreezeMod_/';
+
+		/* Get only the settings that we need */
+		foreach ($txt as $kt => $vt)
+			if (preg_match($this->_pattern, $kt))
+			{
+				$kt = str_replace('BreezeMod_', '', $kt);
+
+				/* Done? then populate the new array */
+				$this->_text[$kt] = $vt;
+			}
+	}
+
+	/* Get the requested setting  */
+	public function getText($var)
+	{
+		if (!empty($this->_text[$var]))
+			return $this->_text[$var];
+
+		else
+			return false;
+	}
+}

@@ -40,21 +40,21 @@ if (!defined('SMF'))
 
 
 	/* Wrapper functions */
-	function WrapperBreeze_AjaxPost() { BreezeAjax::Post(); }
-	function WrapperBreeze_AjaxPostComment() { BreezeAjax::PostComment(); }
-	function WrapperBreeze_AjaxDelete() { BreezeAjax::Delete(); }
+	function WrapperBreeze_AjaxPost() { BreezeAjax::post(); }
+	function WrapperBreeze_AjaxPostComment() { BreezeAjax::postComment(); }
+	function WrapperBreeze_AjaxDelete() { BreezeAjax::delete(); }
 
 abstract class BreezeAjax
 {
 	public static $query;
 
-	public static function Call()
+	public static function call()
 	{
 		/* Load stuff */
 		loadtemplate('BreezeAjax');
 
 		/* Handling the subactions */
-		$sa = new BreezeGlobals('get');
+		$sglobals = breeze::sGlobals('get');
 
 		$subActions = array(
 			'post' => 'WrapperBreeze_AjaxPost',
@@ -63,8 +63,8 @@ abstract class BreezeAjax
 		);
 
 		/* Does the subaction even exist? */
-		if (in_array($sa->Raw('sa'), array_keys($subActions)))
-			$subActions[$sa->Raw('sa')]();
+		if (in_array($sglobals->Raw('sa'), array_keys($subActions)))
+			$subActions[$sglobals->Raw('sa')]();
 
 		/* No?  then tell them there was an error... */
 		/* else */
@@ -72,7 +72,7 @@ abstract class BreezeAjax
 	}
 
 	/* Deal with the status... */
-	public static function Post()
+	public static function post()
 	{
 		global $context;
 
@@ -89,10 +89,10 @@ abstract class BreezeAjax
 		);
 
 		/* Load all the things we need */
-		$data = new BreezeGlobals('post');
-		$query = BreezeQuery::getInstance();
-		$parser = new BreezeParser();
-		$tools = BreezeSettings::getInstance();
+		$data = Breeze::sGlobals('post');
+		$query = Breeze::query();
+		$parser = Breeze::parser();
+		$settings = Breeze::settings();
 
 		/* Do this only if there is something to add to the database */
 		if ($data->ValidateBody('content'))
@@ -114,10 +114,10 @@ abstract class BreezeAjax
 			);
 
 			/* Store the status */
-			$query->InsertStatus($params);
+			$query->insertStatus($params);
 
 			/* Get the newly created status, we just need the id */
-			$new_status = $query->GetLastStatus();
+			$new_status = $query->getLastStatus();
 
 			$params['id'] = $new_status['status_id'];
 
@@ -137,7 +137,7 @@ abstract class BreezeAjax
 	}
 
 	/* Basically the same as Post */
-	public static function PostComment()
+	public static function postComment()
 	{
 		global $context, $scripturl;
 
@@ -150,13 +150,13 @@ abstract class BreezeAjax
 		/* By default it will show an error, we only do stuff if necesary */
 		$context['Breeze']['ajax']['ok'] = '';
 
-		/* Get the status data */
-		$data = new BreezeGlobals('post');
-		$query = BreezeQuery::getInstance();
-		$temp_id_exists = $query->GetSingleValue('status', 'id', $data->See('status_id'));
-		$parser = new BreezeParser();
-		$notification = new BreezeNotifications();
-		$tools = BreezeSettings::getInstance();
+		/* Load all the things we need */
+		$data = Breeze::sGlobals('post');
+		$query = Breeze::query();
+		$parser = Breeze::parser();
+		$settings = Breeze::settings();
+		$temp_id_exists = $query->getSingleValue('status', 'id', $data->See('status_id'));
+		$notifications = Breeze::notifications();
 
 		/* The status do exists and the data is valid*/
 		if ($data->ValidateBody('content') && !empty($temp_id_exists))
@@ -174,15 +174,15 @@ abstract class BreezeAjax
 			);
 
 			/* Store the comment */
-			$query->InsertComment($params);
+			$query->insertComment($params);
 
 			/* Once the comment was added, get it's ID from the DB */
-			$new_comment = $query->GetLastComment();
+			$new_comment = $query->getLastComment();
 
 			$params['id'] = $new_comment['comments_id'];
 
 			/* Send out the notifications first thing to do, is to collect all the users who had posted on this status */
-			$temp_comments = $query->GetCommentsByStatus($data->See('status_id'));
+			$temp_comments = $query->getCommentsByStatus($data->See('status_id'));
 
 			/* Create the users array */
 			foreach($temp_comments as $c)
@@ -239,7 +239,7 @@ abstract class BreezeAjax
 	}
 
 	/* Handles the deletion of both comments an status */
-	public static function Delete()
+	public static function delete()
 	{
 		global $context;
 
@@ -252,7 +252,7 @@ abstract class BreezeAjax
 		/* Get the data */
 		$sa = new BreezeGlobals('post');
 		$query = BreezeQuery::getInstance();
-		$temp_id_exists = $query->GetSingleValue($sa->Raw('type') == 'status' ? 'status' : 'comments', 'id', $sa->See('id'));
+		$temp_id_exists = $query->getSingleValue($sa->Raw('type') == 'status' ? 'status' : 'comments', 'id', $sa->See('id'));
 
 			switch ($sa->Raw('type'))
 			{
@@ -260,7 +260,7 @@ abstract class BreezeAjax
 					/* Do this only if the status wasn't deleted already */
 					if (!empty($temp_id_exists))
 					{
-						$query->DeleteStatus($sa->See('id'));
+						$query->deleteStatus($sa->See('id'));
 						$context['Breeze']['ajax']['ok'] = 'ok';
 					}
 
@@ -272,7 +272,7 @@ abstract class BreezeAjax
 					/* Do this only if the comment wasn't deleted already */
 					if (!empty($temp_id_exists))
 					{
-						$query->DeleteComment($sa->See('id'));
+						$query->deleteComment($sa->See('id'));
 						$context['Breeze']['ajax']['ok'] = 'ok';
 					}
 

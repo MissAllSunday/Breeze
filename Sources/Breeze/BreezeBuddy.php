@@ -90,7 +90,7 @@ class BreezeBuddy
 				'time' => time(),
 				'read' => 0,
 				'content' => array(
-					'message' => sprintf($settings->GetText('buddy_messagerequest_message'), $temp_users_load[$user_info['id']]['link']),
+					'message' => sprintf($settings->getText('buddy_messagerequest_message'), $temp_users_load[$user_info['id']]['link']),
 					'url' => $scripturl .'?action=profile;area=breezebuddies;u='. $sa->Raw('u'),
 					'from_link' => $temp_users_load[$user_info['id']]['link'],
 					'from_id' => $user_info['id'],

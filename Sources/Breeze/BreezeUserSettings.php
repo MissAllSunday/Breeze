@@ -48,24 +48,40 @@ class BreezeUserSettings
 			return false;
 
 		$this->_user = $user;
-		$this->_data = Breeze::query()->getUserSettings($this->_user);
+		$this->_data = $this->loadUserSettings();
 	}
 
-	public function getUserSettings()
+	public function loadUserSettings()
 	{
-		if (!empty($this->_data))
+		$return = Breeze::query()->getUserSettings($this->_user);
+
+		if (!empty($return))
 		{
-			if (!empty($this->_data['wall_settings']))
-				$this->_data['wall_settings'] = json_decode($this->_data['wall_settings'] ,true);
+			if (!empty($return['wall_settings']))
+			{
+				$return += json_decode($return['wall_settings'] ,true);
 
-			if (!empty($this->_data['pm_ignore_list']))
-				$this->_data['pm_ignore_list'] = explode(',', $this->_data['pm_ignore_list']);
+				unset($return['wall_settings']);
+			}
 
-			return $this->_data;
+			if (!empty($return['pm_ignore_list']))
+				$return['pm_ignore_list'] = explode(',', $return['pm_ignore_list']);
+
+			return $return;
 		}
 
 		else
 			return false;
+	}
+
+	public function getUserSettings()
+	{
+		return $this->_data;
+	}
+
+	public function getUserIgnoreList()
+	{
+		return $this->_data['pm_ignore_list'];
 	}
 
 	public function updateUserSettings($save_data)
@@ -82,5 +98,23 @@ class BreezeUserSettings
 			$save_data['wall_settings'] = json_encode($save_data['wall_settings']);
 
 		Breeze::query()->insertUserSettings($this->_user, $save_data);
+	}
+
+	public function enable ($var)
+	{
+		if (!empty($this->_data[$var]))
+			return true;
+
+		else
+			return false;
+	}
+
+	public function getSetting($var)
+	{
+		if (!empty($this->_data[$var]))
+			return $this->_data[$var];
+
+		else
+			return false;
 	}
 }

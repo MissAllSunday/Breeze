@@ -75,7 +75,7 @@ class BreezeModules
 	{
 		/* Set this as empty */
 		$array = array(
-			'title' => $this->text->GetText('modules_enable_visitors_title'),
+			'title' => $this->text->getText('modules_enable_visitors_title'),
 			'data' => ''
 		);
 

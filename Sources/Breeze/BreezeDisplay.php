@@ -63,7 +63,7 @@ class BreezeDisplay
 		$this->permissions = array(
 			'poststatus' => allowedTo('breeze_postStatus'),
 			'postcomments' => allowedTo('breeze_postComments'),
-			'deletestatus' => allowedTo('breeze_deleteStatus')
+			'deleteStatus' => allowedTo('breeze_deleteStatus')
 		);
 	}
 
@@ -91,8 +91,8 @@ class BreezeDisplay
 					<div class="breeze_options"><span class="time_elapsed">'. $this->params['time'] .' </span>';
 
 					/* Delete link */
-					if ($this->permissions['deletestatus'])
-						$this->ReturnArray .= '| <a href="javascript:void(0)" id="'. $this->params['id'] .'" class="breeze_delete_status">'. $this->text->GetText('general_delete') .'</a>';
+					if ($this->permissions['deleteStatus'])
+						$this->ReturnArray .= '| <a href="javascript:void(0)" id="'. $this->params['id'] .'" class="breeze_delete_status">'. $this->text->getText('general_delete') .'</a>';
 
 					$this->ReturnArray .= '</div>
 					<hr />

@@ -102,7 +102,7 @@ class BreezeGeneral
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'singleStatus';
-		$context['page_title'] = $tools->GetText('singleStatus_pageTitle');
+		$context['page_title'] = $tools->getText('singleStatus_pageTitle');
 		$context['canonical_url'] = $scripturl . '?action=wall;sa=singlestatus';
 
 		/* The visitor's permissions */

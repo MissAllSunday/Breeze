@@ -90,7 +90,7 @@ class BreezeQuery
 	 */
 	protected function query($var)
 	{
-		if (in_array($var, $this->_tables))
+		if (array_key_exists($var, $this->_tables))
 			return new BreezeDB($this->_tables[$var]['table']);
 
 		else
@@ -180,8 +180,11 @@ class BreezeQuery
 	 */
 	private function switchData($type)
 	{
-		if (in_array($type, $this->_tables))
-			$this->_temp = $this->$this->_tables[$type]['property'] ? $this->$this->_tables[$type]['property'] : $this->$this->_tables[$type]['name']();
+		$property = $this->_tables[$type]['property'];
+		$method = $this->_tables[$type]['name'];
+
+		if (array_key_exists($type, $this->_tables))
+			$this->_temp = $this->$property ? $this->$property : $this->$method();
 	}
 
 	/*
@@ -267,49 +270,50 @@ class BreezeQuery
 	 * @global array $smcFunc the "handling DB stuff" var of SMF
 	 * @return array a very big associative array with the status ID as key
 	 */
-	protected function Status()
+	protected function status()
 	{
 		global $smcFunc;
 
-		$tools = new BreezeSubs();
+		$tools = Breeze::tools();
+		$gSettings = Breeze::settings();
 
 		/* Use the cache please... */
-		if (($this->Status = cache_get_data('Breeze:Status', 120)) == null)
+		if (($this->_status = cache_get_data('Breeze:'. $this->_tables['status']['name'], 120)) == null)
 		{
 			/* Load all the status, set a limit if things get complicated */
 			$result = $smcFunc['db_query']('', '
 				SELECT *
 				FROM {db_prefix}breeze_status
-				'. ($this->global_settings->Enable('admin_enable_limit') && $this->global_settings->Enable('admin_limit_timeframe') ? 'WHERE status_time >= {int:status_time}' : '' ).'
+				'. ($gSettings->enable('admin_enable_limit') && $gSettings->enable('admin_limit_timeframe') ? 'WHERE status_time >= {int:status_time}' : '' ).'
 				ORDER BY status_time DESC
 				',
 				array(
-					'status_time' => $this->global_settings->GetSetting('admin_limit_timeframe'),
+					'status_time' => $gSettings->getSetting('admin_limit_timeframe'),
 				)
 			);
 
 			/* Populate the array like a boss! */
 			while ($row = $smcFunc['db_fetch_assoc']($result))
 			{
-				$this->Status[$row['status_id']] = array(
+				$this->_status[$row['status_id']] = array(
 					'id' => $row['status_id'],
 					'owner_id' => $row['status_owner_id'],
 					'poster_id' => $row['status_poster_id'],
-					'time' => $tools->TimeElapsed($row['status_time']),
+					'time' => $tools->timeElapsed($row['status_time']),
 					'body' => $row['status_body']
 				);
 			}
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:Status', $this->Status, 120);
+			cache_put_data('Breeze:'. $this->_tables['status']['name'], $this->_status, 120);
 		}
 
-		return $this->Status;
+		return $this->_status;
 	}
 
 	public function getStatus()
 	{
-		return $this->Status ? $this->Status : $this->Status();
+		return $this->_status ? $this->_status : $this->status();
 	}
 
 	/*
@@ -323,7 +327,7 @@ class BreezeQuery
 	 */
 	public function getStatusByProfile($id)
 	{
-		return $this->getReturn('status', 'owner_id', $id);
+		return $this->getReturn($this->_tables['status']['name'], 'owner_id', $id);
 	}
 
 	/*
@@ -363,7 +367,7 @@ class BreezeQuery
 	 */
 	public function getStatusByLast()
 	{
-		$array = $this->Status ? $this->Status : $this->Status();
+		$array = $this->_status ? $this->_status : $this->status();
 
 		return array_shift(array_values($array));
 	}
@@ -378,46 +382,47 @@ class BreezeQuery
 	 * @global array $smcFunc the "handling DB stuff" var of SMF
 	 * @return array a very big associative array with the comment ID as key
 	 */
-	protected function Comments()
+	protected function comments()
 	{
 		global $smcFunc;
 
-		$tools = new BreezeSubs();
+		$tools = Breeze::tools();
+		$gSettings = Breeze::settings();
 
 		/* Use the cache please... */
-		if (($this->Comments = cache_get_data('Breeze:Comments', 120)) == null)
+		if (($this->comments = cache_get_data('Breeze:'. $this->_tables['comments']['name'], 120)) == null)
 		{
 			/* Load all the comments, set a limit if things get complicated */
 			$result = $smcFunc['db_query']('', '
 				SELECT *
 				FROM {db_prefix}breeze_comments
-				'. ($this->global_settings->Enable('admin_enable_limit') && $this->global_settings->Enable('admin_limit_timeframe') ? 'WHERE comments_time >= {int:comments_time}' : '' ).'
+				'. ($gSettings->enable('admin_enable_limit') && $gSettings->enable('admin_limit_timeframe') ? 'WHERE comments_time >= {int:comments_time}' : '' ).'
 				ORDER BY comments_time ASC
 				',
 				array(
-					'comments_time' => $this->global_settings->GetSetting('admin_limit_timeframe'),
+					'comments_time' => $gSettings->getSetting('admin_limit_timeframe'),
 				)
 			);
 
 			/* Populate the array like a comments boss! */
 			while ($row = $smcFunc['db_fetch_assoc']($result))
 			{
-				$this->Comments[$row['comments_id']] = array(
+				$this->_comments[$row['comments_id']] = array(
 					'id' => $row['comments_id'],
 					'status_id' => $row['comments_status_id'],
 					'status_owner_id' => $row['comments_status_owner_id'],
 					'poster_id' => $row['comments_poster_id'],
 					'profile_owner_id' => $row['comments_profile_owner_id'],
-					'time' => $tools->TimeElapsed($row['comments_time']),
+					'time' => $tools->timeElapsed($row['comments_time']),
 					'body' => $row['comments_body']
 				);
 			}
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:Comments', $this->Comments, 120);
+			cache_put_data('Breeze:'. $this->_tables['comments']['name'], $this->_comments, 120);
 		}
 
-		return $this->Comments;
+		return $this->_comments;
 	}
 
 	/*
@@ -428,7 +433,7 @@ class BreezeQuery
 	 */
 	public function getComments()
 	{
-		return $this->Comments ? $this->Comments : $this->Comments();
+		return $this->_comments ? $this->_comments : $this->comments();
 	}
 
 	/*
@@ -441,7 +446,7 @@ class BreezeQuery
 	 */
 	public function getCommentsByProfile($id)
 	{
-		return $this->getReturn('comments', 'profile_owner_id', $id);
+		return $this->getReturn($this->_tables['comments']['name'], 'profile_owner_id', $id);
 	}
 
 	public function getCommentsByStatus($id)
@@ -450,7 +455,7 @@ class BreezeQuery
 		$this->resetTemp();
 		$temp2 = array();
 
-		$this->_temp = $this->Comments ? $this->Comments : $this->Comments();
+		$this->_temp = $this->_comments ? $this->_comments : $this->comments();
 
 		foreach($this->_temp as $c)
 			if ($c['status_id'] == $id)
@@ -461,7 +466,7 @@ class BreezeQuery
 
 	/* Editing methods */
 
-	public function InsertStatus($array)
+	public function insertStatus($array)
 	{
 		/* We dont need this anymore */
 		$this->killCache('Status');
@@ -481,7 +486,7 @@ class BreezeQuery
 		$this->query($this->_tables['status']['name'])->insertData($data, $array, $indexes);
 	}
 
-	public function InsertComment($array)
+	public function insertComment($array)
 	{
 		/* We dont need this anymore */
 		$this->killCache('Comments');
@@ -503,7 +508,7 @@ class BreezeQuery
 		$this->query($this->_tables['comments']['name'])->insertData($data, $array, $indexes);
 	}
 
-	public function DeleteStatus($id)
+	public function deleteStatus($id)
 	{
 		/* We dont need this anymore */
 		$this->killCache('Status');
@@ -528,7 +533,7 @@ class BreezeQuery
 		$this->query($this->_tables['status']['name'])->deleteData();
 	}
 
-	public function DeleteComment($id)
+	public function deleteComment($id)
 	{
 		/* Delete! */
 		$params = array(

@@ -113,7 +113,7 @@ class BreezeParser
 							'time' => time(),
 							'read' => 0,
 							'content' => array(
-								'message' => $this->mention_info[1] == $this->mention_info[0] ? sprintf($this->settings->GetText('mention_message_own_wall'), $temp_users_load[$this->mention_info[1]]['link']) : sprintf($this->settings->GetText('mention_message'), $temp_users_load[$this->mention_info[1]]['link'], $temp_users_load[$this->mention_info[0]]['link']),
+								'message' => $this->mention_info[1] == $this->mention_info[0] ? sprintf($this->settings->getText('mention_message_own_wall'), $temp_users_load[$this->mention_info[1]]['link']) : sprintf($this->settings->getText('mention_message'), $temp_users_load[$this->mention_info[1]]['link'], $temp_users_load[$this->mention_info[0]]['link']),
 								'url' => $scripturl .'?action=profile;area=breezenoti;u='. $user[0],
 								'from_link' => $temp_users_load[$this->mention_info[1]]['link'],
 								'from_id' => $temp_users_load[$this->mention_info[1]]['id'],
