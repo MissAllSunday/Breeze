@@ -197,11 +197,16 @@ class BreezeUser
 		/* Load all we need */
 		$query = BreezeQuery::getInstance();
 		$text = BreezeSettings::getInstance();
-		$data = $query->GetSettingsByUser($context['member']['id']);
+		$data = Breeze::userSettings($context['member']['id']);
+		$userSettings = $data->getUserSettings();
 		$globals = new BreezeGlobals('request');
 
-		if (!empty($data))
+		if (!empty($userSettings))
 			$already = true;
+
+				echo '<pre>';
+			print_r($query->testmembers());
+			echo '</pre>';
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'user_settings';
@@ -225,47 +230,17 @@ class BreezeUser
 		$form->AddCheckBox('enable_wall', 1, array(
 			'enable_wall',
 			'enable_wall_sub'
-		), !empty($data['enable_wall']) ? true : false);
+		), !empty($userSettings['enable_wall']) ? true : false);
 
 		$form->AddCheckBox('kick_ignored', 1, array(
 			'kick_ignored',
 			'kick_ignored_sub'
-		), !empty($data['kick_ignored']) ? true : false);
+		), !empty($userSettings['wall_settings']['kick_ignored']) ? true : false);
 
-		$form->AddText('pagination_number', !empty($data['pagination_number']) ? $data['pagination_number'] : '', array(
+		$form->AddText('pagination_number', !empty($userSettings['wall_settings']['pagination_number']) ? $userSettings['wall_settings']['pagination_number'] : '', array(
 			'pagination_number',
 			'pagination_number_sub'
 		), 3, 3);
-
-		$form->AddHr();
-
-		$form->AddCheckBox('enable_visits_module', 1, array(
-			'enable_visits_module',
-			'enable_visits_module_sub'
-		), !empty($data['enable_visits_module']) ? true : false);
-
-		$form->AddSelect('visits_module_timeframe', array(
-			'visits_module_timeframe',
-			'visits_module_timeframe_sub'
-		), $values = array(
-				1 => array(
-					'time_hour',
-					!empty($data['visits_module_timeframe']) ? ($data['visits_module_timeframe'] == 1 ? 'selected' : false) : false
-				),
-				2 => array(
-					'time_day',
-					!empty($data['visits_module_timeframe']) ? ($data['visits_module_timeframe'] == 2 ? 'selected' : false) : false
-				),
-				3 => array(
-					'time_week',
-					!empty($data['visits_module_timeframe']) ? ($data['visits_module_timeframe'] == 3 ? 'selected' : false) : 'selected'
-				),
-				4 => array(
-					'time_month',
-					!empty($data['visits_module_timeframe']) ? ($data['visits_module_timeframe'] == 4 ? 'selected' : false) : false
-				),
-			)
-		);
 
 		$form->AddHr();
 

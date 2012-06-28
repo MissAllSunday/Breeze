@@ -81,6 +81,16 @@ class Breeze
 			require_once($sourcedir .'/'.$file.'.php');
 	}
 
+	public static function userSettings($user)
+	{
+		return new BreezeUserSettings($user);
+	}
+
+	public static function query()
+	{
+		return BreezeQuery::getInstance();
+	}
+
 	/**
 	 * Global permissions used by this mod per user group
 	 *

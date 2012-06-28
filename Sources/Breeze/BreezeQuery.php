@@ -459,64 +459,6 @@ class BreezeQuery
 		return $temp2;
 	}
 
-	/* Settings */
-
-	/*
-	 * The main method to load all the settings from all users
-	 *
-	 * This is one of the main queries. load all the settings from all users. We set the cache here on 4 minutes since the settings aren't updated that often.
-	 * @access protected
-	 * @global array $smcFunc the "handling DB stuff" var of SMF
-	 * @return array a very big associative array with the user ID as key
-	 */
-	protected function Settings()
-	{
-		global $smcFunc;
-
-		/* Use the cache please... */
-		if (($this->Settings = cache_get_data('Breeze:Settings', 240)) == null)
-		{
-			/* Load all the settings from all users */
-			$result = $smcFunc['db_query']('', '
-				SELECT *
-				FROM {db_prefix}breeze_user_settings
-				',
-				array()
-			);
-
-			/* Populate the array like a boss! */
-			while ($row = $smcFunc['db_fetch_assoc']($result))
-			{
-				$this->Settings[$row['user_id']] = array(
-					'user_id' => $row['user_id'],
-					'enable_wall' => $row['enable_wall'],
-					'kick_ignored' => $row['kick_ignored'],
-					'enable_visits_module' => $row['enable_visits_module'],
-					'visits_module_timeframe' => $row['visits_module_timeframe'],
-					'pagination_number' => $row['pagination_number']
-				);
-			}
-
-			/* Cache this beauty */
-			cache_put_data('Breeze:Settings', $this->Settings, 240);
-		}
-
-		return $this->Settings;
-	}
-
-	/*
-	 * Gets all the settings from one user
-	 *
-	 * Gets all the users preferences
-	 * @access public
-	 * @param int $user  the User ID
-	 * @return array an array with the users settings
-	 */
-	public function getSettingsByUser($user)
-	{
-		return $this->getReturn('settings', 'user_id', $user, true);
-	}
-
 	/* Editing methods */
 
 	public function InsertStatus($array)
@@ -601,7 +543,7 @@ class BreezeQuery
 		$this->query($this->_tables['comments']['name'])->deleteData();
 	}
 
-	protected function member()
+	protected function members()
 	{
 		global $smcFunc;
 
@@ -619,7 +561,7 @@ class BreezeQuery
 			/* Populate the array like a boss! */
 			while ($row = $smcFunc['db_fetch_assoc']($result))
 			{
-				$this->Settings[$row['id_member']] = $row;
+				$this->_members[$row['id_member']] = $row;
 			}
 
 			/* Cache this beauty */
@@ -631,7 +573,13 @@ class BreezeQuery
 
 	public function getUserSettings($user)
 	{
-		$temp = $this->getReturn($this->_tables['members']['name'], $user, 'wall_settings', false);
+		$return = $this->_members ? $this->_members : $this->members();
+
+		if (!empty($return[$user]))
+			return $return[$user];
+
+		else
+			return false;
 	}
 
 

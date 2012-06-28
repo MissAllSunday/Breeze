@@ -53,21 +53,17 @@ class BreezeUserSettings
 
 	public function getUserSettings()
 	{
-		return $this->_data;
-	}
+		if (!empty($this->_data))
+		{
+			if (!empty($this->_data['wall_settings']))
+				$this->_data['wall_settings'] = json_decode($this->_data['wall_settings'] ,true);
 
-	function enable($setting)
-	{
-		if (!empty($this->data[$setting]))
-			return true;
-		else
-			return false;
-	}
+			if (!empty($this->_data['pm_ignore_list']))
+				$this->_data['pm_ignore_list'] = explode(',', $this->_data['pm_ignore_list']);
 
-	function setting($setting)
-	{
-		if (!empty($this->data[$setting]))
-			return $this->data[$setting];
+			return $this->_data;
+		}
+
 		else
 			return false;
 	}
