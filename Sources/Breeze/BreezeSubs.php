@@ -58,7 +58,7 @@ class BreezeSubs
 	}
 
 	/* @todo move this to the buffer hook, I don't trust $context['html_headers'] anymore */
-	public function Headers($admin = false)
+	public function headers($admin = false)
 	{
 		global $context, $settings;
 
@@ -140,7 +140,7 @@ $(document).ready(function ()
 	}
 
 	/* Relative dates  http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html */
-	public function TimeElapsed($ptime)
+	public function timeElapsed($ptime)
 	{
 		$text = Breeze::text();
 		$etime = time() - $ptime;
@@ -169,7 +169,7 @@ $(document).ready(function ()
 	}
 
 	/* A function to cut-off a string */
-	public function TruncateString($string, $limit, $break = ' ', $pad = '...')
+	public function truncateString($string, $limit, $break = ' ', $pad = '...')
 	{
 		if(empty($limit))
 			$limit = 30;
@@ -186,7 +186,7 @@ $(document).ready(function ()
 		return $string;
 	}
 
-	public function Remove($array, $val, $preserve_keys = true)
+	public function remove($array, $val, $preserve_keys = true)
 	{
 		if (empty($array) || empty($val) || !is_array($array))
 			return false;

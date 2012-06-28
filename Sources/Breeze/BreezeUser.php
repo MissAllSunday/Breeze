@@ -131,7 +131,7 @@ class BreezeUser
 		}
 
 		/* Getting the current page. */
-		$page = $globals->Validate('page') == true ? $globals->Raw('page') : 1;
+		$page = $globals->validate('page') == true ? $globals->getRaw('page') : 1;
 
 		/* Applying pagination. */
 		$pagination = new BreezePagination($status, $page, '?action=profile;page=', '', 5, 5);
@@ -235,7 +235,7 @@ class BreezeUser
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
 
 		/* Saving? */
-		if ($globals->Validate('save') == true)
+		if ($globals->validate('save') == true)
 		{
 			/* Kill the  cache */
 			$query->killCache('members');
@@ -302,8 +302,8 @@ class BreezeUser
 		$context['canonical_url'] = $scripturl . '?action=profile;area=breezebuddies;u=' . $context['member']['id'];
 
 		/* Show a nice message for confirmation */
-		if ($globals->Validate('inner') == true)
-			switch ($globals->Raw('inner'))
+		if ($globals->validate('inner') == true)
+			switch ($globals->getRaw('inner'))
 			{
 				case 1:
 					$context['Breeze']['inner_message'] = $text->getText('buddyrequest_confirmed_inner_message');
@@ -322,21 +322,21 @@ class BreezeUser
 		/* Send the buddy request(s) to the template */
 		$context['Breeze']['Buddy_Request'] = $buddies->ShowBuddyRequests($context['member']['id']);
 
-		if ($globals->Validate('from') == true && $globals->Validate('confirm') == true && $user_info['id'] != $globals->See('from'))
+		if ($globals->validate('from') == true && $globals->validate('confirm') == true && $user_info['id'] != $globals->getValue('from'))
 		{
 			/* Load Subs-Post to use sendpm */
 			Breeze::Load('Subs-Post');
 
-			$user_info['buddies'][] = $globals->See('from');
-			$context['Breeze']['Buddy_Request'][$globals->See('from')]['content']->from_buddies[] = $user_info['id'];
+			$user_info['buddies'][] = $globals->getValue('from');
+			$context['Breeze']['Buddy_Request'][$globals->getValue('from')]['content']->from_buddies[] = $user_info['id'];
 
 			/* Update both users buddy array. */
 			updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
-			updateMemberData($globals->See('from'), array('buddy_list' => implode(',', $context['Breeze']['Buddy_Request'][$globals->See('from')]['content']->from_buddies)));
+			updateMemberData($globals->getValue('from'), array('buddy_list' => implode(',', $context['Breeze']['Buddy_Request'][$globals->getValue('from')]['content']->from_buddies)));
 
 			/* Send a pm to the user */
 			$recipients = array(
-				'to' => array($globals->See('from')),
+				'to' => array($globals->getValue('from')),
 				'bcc' => array(),
 			);
 			$from = array(
@@ -352,7 +352,7 @@ class BreezeUser
 			sendpm($recipients, $subject, $message, false, $from);
 
 			/* Destroy the notification */
-			$query->DeleteNotification($globals->Raw('confirm'));
+			$query->DeleteNotification($globals->getRaw('confirm'));
 
 
 			/* Redirect back to the profile buddy request page*/
@@ -360,10 +360,10 @@ class BreezeUser
 		}
 
 		/* Declined? */
-		elseif ($globals->Validate('decline') == true)
+		elseif ($globals->validate('decline') == true)
 		{
 			/* Delete the notification */
-			$query->DeleteNotification($globals->Raw('decline'));
+			$query->DeleteNotification($globals->getRaw('decline'));
 
 			/* Redirect back to the profile buddy request page*/
 			redirectexit('action=profile;area=breezebuddies;inner=2;u=' . $user_info['id']);

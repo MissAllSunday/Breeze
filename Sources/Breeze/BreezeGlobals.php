@@ -40,75 +40,74 @@ if (!defined('SMF'))
 
 class BreezeGlobals
 {
-	private $request;
+	protected $_request;
 
 	public function __construct($var)
 	{
 		switch($var)
 		{
 			case 'get':
-				$this->request = $_GET;
+				$this->_request = $_GET;
 				break;
 			case 'post':
-				$this->request = $_POST;
+				$this->_request = $_POST;
 				break;
 			case 'request':
-				$this->request = $_REQUEST;
+				$this->_request = $_REQUEST;
 				break;
 		}
-
 	}
 
-	public function See($value)
+	public function getValue($value)
 	{
-		if ($this->Validate($value))
-			return $this->Sanitize($this->request[$value]);
+		if ($this->validate($value))
+			return $this->sanitize($this->_request[$value]);
 		else
 			return 'error_' . $value;
 	}
 
-	public function Raw($value)
+	public function getRaw($value)
 	{
-		if (isset($this->request[$value]))
-			return $this->request[$value];
+		if (isset($this->_request[$value]))
+			return $this->_request[$value];
 
 		else
 			return false;
 	}
 
-	public function Validate($var)
+	public function validate($var)
 	{
-		if (isset($this->request[$var]))
+		if (isset($this->_request[$var]))
 			return true;
 		else
 			return false;
 	}
 
-	public function ValidateBody($var)
+	public function validateBody($var)
 	{
 		/* You cannot post just spaces */
-		if(ctype_space($this->request[$var]) || $this->request[$var] == '')
+		if(ctype_space($this->_request[$var]) || $this->_request[$var] == '')
 			return false;
 
-		elseif (isset($this->request[$var]) && !empty($this->request[$var]) && !ctype_space($this->request[$var]))
+		elseif (isset($this->_request[$var]) && !empty($this->_request[$var]) && !ctype_space($this->_request[$var]))
 			return true;
 
 		else
 			return false;
 	}
 
-	public function UnsetVar($var)
+	public function unsetVar($var)
 	{
-		unset($this->request[$var]);
+		unset($this->_request[$var]);
 	}
 
-	public function Sanitize($var)
+	public function sanitize($var)
 	{
 		if (get_magic_quotes_gpc())
 			$var = stripslashes($var);
 
 		if (is_numeric($var))
-			$var = (int) $var;
+			$var = (int) trim($var);
 
 		elseif (is_string($var))
 			$var = trim(strtr(htmlspecialchars($var, ENT_QUOTES), array("\r" => '<br />', "\n" => '<br />', "\t" => '&nbsp;&nbsp;&nbsp;&nbsp;')));

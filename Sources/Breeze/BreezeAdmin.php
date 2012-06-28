@@ -55,7 +55,7 @@ if (!defined('SMF'))
 		$context['sub_template'] = 'admin_home';
 
 		/* Headers */
-		BreezeSubs::Headers(true);
+		BreezeSubs::headers(true);
 	}
 
 	function Breeze_Admin_Settings()
@@ -79,7 +79,7 @@ if (!defined('SMF'))
 		$context['post_url'] = $scripturl . '?action=admin;area=breezesettings;save';
 
 		/* Saving? */
-		if ($globals->Validate('save') == true)
+		if ($globals->validate('save') == true)
 		{
 			checkSession();
 			saveDBSettings($config_vars);
@@ -97,7 +97,7 @@ if (!defined('SMF'))
 		loadtemplate('BreezeAdmin');
 
 		/* Headers */
-		BreezeSubs::Headers(true);
+		BreezeSubs::headers(true);
 
 		/* Text strings */
 		$text = Breeze::text();

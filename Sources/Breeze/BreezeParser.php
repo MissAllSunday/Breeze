@@ -59,7 +59,7 @@ class BreezeParser
 	{
 		$this->s = $string;
 		$temp = get_class_methods('BreezeParser');
-		$temp = BreezeSubs::Remove($temp, array('__construct', 'display'), false);
+		$temp = BreezeSubs::remove($temp, array('__construct', 'display'), false);
 
 		/* Used to notify the user */
 		if ($mention_info)
@@ -75,7 +75,7 @@ class BreezeParser
 	}
 
 	/* Convert any valid urls on to links */
-	private function UrltoLink($s)
+	private function urltoLink($s)
 	{
 		if (preg_match_all($this->regex['url'], $s, $matches))
 			foreach($matches[0] as $m)
@@ -84,7 +84,7 @@ class BreezeParser
 		return $s;
 	}
 
-	private function Mention($s)
+	private function mention($s)
 	{
 		global $memberContext, $context, $user_info, $scripturl;
 
