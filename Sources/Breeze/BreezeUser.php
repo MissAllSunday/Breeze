@@ -278,7 +278,7 @@ class BreezeUser
 		if ($globals->Validate('save') == true)
 		{
 			/* Kill the Settings cache */
-			$query->KillCache('Settings');
+			$query->killCache('Settings');
 
 			$temp = $form->ReturnElementNames();
 			$save_data = array();

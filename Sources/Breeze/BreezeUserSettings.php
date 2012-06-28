@@ -40,66 +40,20 @@ if (!defined('SMF'))
 
 class BreezeUserSettings
 {
-	private $data = array();
-	private static $already = false;
+	protected $_data = array();
 
-	function __construct()
+	function __construct($user)
 	{
-		global $context;
+		if (empty($user))
+			return false;
 
-		if (isset($context['Breeze']['UserSettings'][$context['member']['id']]) && !empty($context['Breeze']['UserSettings'][$context['member']['id']]))
-		{
-			$this->data = $context['Breeze']['UserSettings'][$context['member']['id']];
-			self::$already = true;
-		}
+		$this->_user = $user;
+		$this->_data = Breeze::query()->getUserSettings($this->_user);
 	}
 
-	function Current_UserSettings()
+	public function getUserSettings()
 	{
-		global $context;
-
-		if (!self::$already)
-		{
-			/* Load the user settings */
-			$query_params = array(
-				'rows' =>'*',
-				'where' => 'user_id={int:user_id}',
-			);
-			$query_data = array(
-				'user_id' => $context['member']['id'],
-			);
-			$query = new BreezeDB('breeze_user_settings');
-			$query->Params($query_params, $query_data);
-			$query->GetData(null, true);
-			$this->data = $query->DataResult();
-
-			if (!empty($this->data))
-				$context['Breeze']['UserSettings'][$context['member']['id']] = $this->data;
-		}
-	}
-
-	function Load_UserSettings($user)
-	{
-		global $context;
-
-		if (!self::$already)
-		{
-			/* Load the user settings */
-			$query_params = array(
-				'rows' =>'*',
-				'where' => 'user_id={int:user_id}',
-			);
-			$query_data = array(
-				'user_id' => $user,
-			);
-			$query = new BreezeDB('breeze_user_settings');
-			$query->Params($query_params, $query_data);
-			$query->GetData(null, true);
-			$this->data = $query->DataResult();
-
-			if (!empty($this->data))
-				$context['Breeze']['UserSettings'][$user] = $this->data;
-		}
+		return $this->_data;
 	}
 
 	function enable($setting)

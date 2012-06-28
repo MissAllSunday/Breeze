@@ -40,7 +40,7 @@ if (!defined('SMF'))
 
 class BreezeSettings
 {
-	private static $instance;
+	private static $_instance;
 	private $Settings;
 	private $Text;
 
@@ -51,11 +51,11 @@ class BreezeSettings
 
 	public static function getInstance()
 	{
-		if (!self::$instance)
+		if (!self::$_instance)
 		 {
-			self::$instance = new BreezeSettings();
+			self::$_instance = new BreezeSettings();
 		}
-		return self::$instance;
+		return self::$_instance;
 	}
 
 	public function Extract()
