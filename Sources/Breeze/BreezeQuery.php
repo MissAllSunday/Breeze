@@ -214,25 +214,25 @@ class BreezeQuery
 	 */
 	public function getLastStatus()
 	{
+		$return = $this->query($this->_tables['status']['name']);
+
 		/* Get the value directly from the DB */
-		$this->_queryParams = array(
+		$params = array(
 			'rows' => 'status_id',
 			'order' => '{raw:sort}',
 			'limit' => '{int:limit}'
 		);
 
-		$this->_queryData = array(
+		$data = array(
 			'sort' => 'status_id DESC',
 			'limit' => 1
 		);
-		$this->query($this->_tables['status']['name'])->params($this->_queryParams, $this->_queryData);
-		$this->query($this->_tables['status']['name'])->getData(null, true);
 
-		/* Clean the arrays used here, we may need them for something else */
-		$this->resetQueryArrays();
+		$return->params($params, $data);
+		$return->getData(null, true);
 
 		/* Done? */
-		return $this->query($this->_tables['status']['name'])->dataResult();
+		return $return->dataResult();
 	}
 
 	/*
@@ -244,6 +244,8 @@ class BreezeQuery
 	 */
 	public function getLastComment()
 	{
+		$return = $this->query($this->_tables['comments']['name']);
+
 		/* Get the value directly from the DB */
 		$this->_queryParams = array(
 			'rows' => 'comments_id',
@@ -255,11 +257,13 @@ class BreezeQuery
 			'sort' => 'comments_id DESC',
 			'limit' => 1
 		);
-		$this->query($this->_tables['comments']['name'])->params($this->_queryParams, $this->_queryData);
-		$this->query($this->_tables['comments']['name'])->getData(null, true);
+
+		$return->params($this->_queryParams, $this->_queryData);
+		$return->getData(null, true);
+		$this->resetQueryArrays();
 
 		/* Done? */
-		return $this->query($this->_tables['comments']['name'])->dataResult();
+		return $return->dataResult();
 	}
 
 	/*
@@ -469,7 +473,7 @@ class BreezeQuery
 	public function insertStatus($array)
 	{
 		/* We dont need this anymore */
-		$this->killCache('Status');
+		$this->killCache($this->_tables['status']['name']);
 
 		/* Insert! */
 		$data = array(
@@ -489,7 +493,7 @@ class BreezeQuery
 	public function insertComment($array)
 	{
 		/* We dont need this anymore */
-		$this->killCache('Comments');
+		$this->killCache($this->_tables['comments']['name']);
 
 		/* Insert! */
 		$data = array(
@@ -511,7 +515,10 @@ class BreezeQuery
 	public function deleteStatus($id)
 	{
 		/* We dont need this anymore */
-		$this->killCache('Status');
+		$this->killCache($this->_tables['status']['name']);
+
+		$deleteStatus = $this->query($this->_tables['status']['name']);
+		$deleteComments = $this->query($this->_tables['comments']['name']);
 
 		/* Delete! */
 		$paramsc = array(
@@ -526,15 +533,17 @@ class BreezeQuery
 		);
 
 		/* Ladies first */
-		$this->query($this->_tables['comments']['name'])->params($paramsc, $data);
-		$this->query($this->_tables['comments']['name'])->deleteData();
+		$deleteComments->params($paramsc, $data);
+		$deleteComments->deleteData();
 
-		$this->query($this->_tables['status']['name'])->params($params, $data);
-		$this->query($this->_tables['status']['name'])->deleteData();
+		$deleteStatus->params($params, $data);
+		$deleteStatus->deleteData();
 	}
 
 	public function deleteComment($id)
 	{
+		$delete = $this->query($this->_tables['comments']['name']);
+
 		/* Delete! */
 		$params = array(
 			'where' => 'comments_id = {int:id}'
@@ -544,8 +553,8 @@ class BreezeQuery
 			'id' => $id
 		);
 
-		$this->query($this->_tables['comments']['name'])->params($params, $data);
-		$this->query($this->_tables['comments']['name'])->deleteData();
+		$delete->params($params, $data);
+		$delete->deleteData();
 	}
 
 	protected function members()
@@ -553,7 +562,7 @@ class BreezeQuery
 		global $smcFunc;
 
 		/* Use the cache please... */
-		if (($this->_members = cache_get_data('Breeze:members', 120)) == null)
+		if (($this->_members = cache_get_data('Breeze:'. $this->_tables['members']['name'], 120)) == null)
 		{
 			/* Load all the settings from all users */
 			$result = $smcFunc['db_query']('', '
@@ -570,7 +579,7 @@ class BreezeQuery
 			}
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:members', $this->_members, 120);
+			cache_put_data('Breeze:'. $this->_tables['members']['name'], $this->_members, 120);
 		}
 
 		return $this->_members;
@@ -599,203 +608,6 @@ class BreezeQuery
 		);
 
 		$this->query($this->_tables['members']['name'])->insertData($data, $values, $indexes);
-	}
-
-
-	/*
-	 * The main method to load all the settings from all users
-	 *
-	 * This is one of the main queries. load all the settings from all users. We set the cache here on 4 minutes since the settings aren't updated that often.
-	 * @access protected
-	 * @global array $smcFunc the "handling DB stuff" var of SMF
-	 * @return array a very big associative array with the user ID as key
-	 */
-	protected function VisitLog()
-	{
-		global $smcFunc;
-
-		/* Use the cache please... */
-		if (($this->VisitLog = cache_get_data('Breeze:VisitLog', 120)) == null)
-		{
-			/* Load all the status, set a limit if things get complicated */
-			$result = $smcFunc['db_query']('', '
-				SELECT *
-				FROM {db_prefix}breeze_visit_log
-				',
-				array()
-			);
-
-			/* Populate the array like a boss! */
-			while ($row = $smcFunc['db_fetch_assoc']($result))
-			{
-				$this->VisitLog[$row['id']] = array(
-					'id' => $row['id'],
-					'profile' => $row['profile'],
-					'user' => $row['user'],
-					'time' => timeformat($row['time'])
-				);
-			}
-
-			/* Cache this beauty */
-			cache_put_data('Breeze:VisitLog', $this->Settings, 240);
-		}
-
-		return $this->VisitLog;
-	}
-
-	/*
-	 * Return a boolean, true if the user already visited the profile, false otherwise
-	 *
-	 * Get all the visits to X profile, compare if the visitor has already visited that profile, return a boolean.
-	 * @access protected
-	 * @param int $profile the User's ID that owns the profile
-	 * @param int $visitor The User's ID who is visiting this profile
-	 * @return bool
-	 */
-	protected function getUniqueVisit($profile, $visitor)
-	{
-		$temp = $this->getReturn('visitlogs', 'profile', $profile, false);
-		$temp2 = array();
-
-		if (!empty($temp))
-		{
-			foreach($temp as $t)
-				$temp2[] = $t['user'];
-
-			if (in_array($visitor, $temp2))
-				return true;
-
-			else
-				return false;
-		}
-
-		else
-			return false;
-	}
-
-	/*
-	 * Logs profile visitors
-	 *
-	 * Checks if the visitor has already been here, if true, just update the time, otherwise create the entry on the DB, generates a new cache entry.
-	 * @access public
-	 * @param int $profile the User's ID that owns the profile
-	 * @param int $visitor The User's ID who is visiting this profile
-	 * @return void
-	 */
-	public function WriteProfileVisit($profile, $visitor)
-	{
-		global $context;
-
-		if (empty($profile) || empty($visitor))
-			return;
-
-		/* Don't log this if the user is visiting his/her own profile */
-		if ($profile == $visitor)
-			return;
-
-		/* Do not log guest people */
-		if ($context['user']['is_guest'])
-			return;
-
-		/* Get all visits to this profile */
-		$already = $this->getUniqueVisit($profile, $visitor);
-
-		/* Is this your first time? */
-		if ($already == false)
-		{
-			$insert_data = array(
-				'profile' => 'int',
-				'user' => 'int',
-				'time' => 'int'
-			);
-			$insert_values = array(
-				$profile,
-				$visitor,
-				time()
-			);
-			$insert_indexes = array(
-				'id'
-			);
-
-			$this->query('visitlogs')->insertData($insert_data, $insert_values, $insert_indexes);
-		}
-
-		/* No? then update the time*/
-		else
-		{
-			$this->_queryParams = array(
-				'set' =>'time = {int:time}',
-				'where' => 'profile = {int:profile} AND user = {int:user}',
-			);
-
-			$this->_queryData = array(
-				'user' => $visitor,
-				'profile' => $profile,
-				'time' => time()
-			);
-
-			$this->query('visitlogs')->params($this->_queryParams, $this->_queryData);
-			$this->query('visitlogs')->updateData();
-		}
-
-		/* Clean the arrays */
-		$this->resetQueryArrays();
-
-		/* Set new cache */
-		$this->killCache('VisitLog');
-	}
-
-	/*
-	 * Get's all the visits to X profile in X period of time
-	 *
-	 * The time period is defined by the user in their wall settings.
-	 * @access public
-	 * @param int $profile the User's ID that owns the profile
-	 * @param int $time a simple number that represents the timeframe
-	 * @return array
-	 */
-	public function getProfilevisits($profile, $time)
-	{
-		/* Get the user's choice */
-		$date = $this->getUserSettings($profile);
-
-		/* Set the time frame */
-		switch($date)
-		{
-			case 1:
-				$timeframe = strtotime('-1 hour');
-				break;
-			case 2:
-				$timeframe = strtotime('-1 day');
-				break;
-			case 3:
-				$timeframe = strtotime('-1 week');
-				break;
-			case 4:
-				$timeframe = strtotime('-1 month');
-				break;
-			default:
-				$timeframe = strtotime('-1 week');
-		}
-
-		$params = array(
-			'rows' => '*',
-			'where' => 'time >= {int:timeframe} AND profile = {int:profile}'
-		);
-		$data = array(
-			'timeframe' => $timeframe,
-			'profile' => $profile
-		);
-
-		$this->query('visitlogs')->params($params, $data);
-		$this->query('visitlogs')->getData('id');
-		$temp = $this->query('visitlogs')->dataResult();
-
-		if (!empty($temp))
-			return $temp;
-
-		else
-			return array();
 	}
 
 	/*

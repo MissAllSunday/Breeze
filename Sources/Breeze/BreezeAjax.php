@@ -117,9 +117,9 @@ abstract class BreezeAjax
 			$query->insertStatus($params);
 
 			/* Get the newly created status, we just need the id */
-			$new_status = $query->getLastStatus();
+			$newStatus = $query->getLastStatus();
 
-			$params['id'] = $new_status['status_id'];
+			$params['id'] = $newStatus['status_id'];
 
 			/* The status was added, build the server response */
 			$display = new BreezeDisplay($params, 'status');

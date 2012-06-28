@@ -35,104 +35,107 @@
  *
  */
 
-
 class BreezeDB
 {
-	function __construct($table)
+	protected $_dataResult = array();
+	protected $_params = array();
+	protected $_table;
+	protected $_data;
+
+	public function __construct($table)
 	{
-		$this->table = isset($table) ? '{db_prefix}'.$table : null;
-		$this->data_result = array();
+		$this->_table = isset($table) ? '{db_prefix}'.$table : null;
 	}
 
-	function params($params, $data = null, $values = null)
+	public function params($params, $data = null)
 	{
-		if(is_null($params))
+		if(!is_array($params))
 			return false;
 
-		$this->rows = isset($params['rows']) ? trim($params['rows']) : null;
-		$this->where = isset($params['where']) ? 'WHERE '.trim($params['where']) : null;
-		$this->whereAnd = isset($params['and']) ? 'AND '.trim($params['and']) : null;
-		$this->limit = isset($params['limit']) ? 'LIMIT '.trim($params['limit']) : null;
-		$this->left = isset($params['left_join']) ? 'LEFT JOIN '.trim($params['left_join']) : null;
-		$this->order = isset($params['order']) ? 'ORDER BY '.trim($params['order']) : null;
-		$this->set = isset($params['set']) ? 'SET '.trim($params['set']) : null;
-		$this->data = !is_array($data) ? array($data) : $data;
+		$this->_params['rows'] = isset($params['rows']) ? trim($params['rows']) : '';
+		$this->_params['where'] = isset($params['where']) ? 'WHERE '. trim($params['where']) : '';
+		$this->_params['whereAnd'] = isset($params['and']) ? 'AND '. trim($params['and']) : '';
+		$this->_params['limit'] = isset($params['limit']) ? 'LIMIT '. trim($params['limit']) : '';
+		$this->_params['left'] = isset($params['left_join']) ? 'LEFT JOIN '. trim($params['left_join']) : '';
+		$this->_params['order'] = isset($params['order']) ? 'ORDER BY '. trim($params['order']) : '';
+		$this->_params['set'] = isset($params['set']) ? 'SET '. trim($params['set']) : '';
+		$this->_data = !is_array($data) ? array($data) : $data;
 	}
 
-	function getData($key = null, $single = false)
+	public function getData($key = null, $single = false)
 	{
 		global $smcFunc;
 
 		if ($key)
 			$this->key = $key;
+			
+		$params = $this->_params;
 
 		$query = $smcFunc['db_query']('', '
-			SELECT '.$this->rows .'
-			FROM '.$this->table .'
-			'. $this->left .'
-			'. $this->where .'
-			'. $this->whereAnd .'
-			'. $this->order .'
-			'. $this->limit .'
+			SELECT '. $this->_params['rows'] .'
+			FROM '. $this->_table .'
+			'. $this->_params['left'] .'
+			'. $this->_params['where'] .'
+				'. $this->_params['whereAnd'] .'
+			'. $this->_params['order'] .'
+			'. $this->_params['limit'] .'
 			',
-			$this->data
+			$this->_data
 		);
 
 		if (!$query)
-			$this->data_result = array();
+			$this->_dataResult = array();
 
 		if($single)
 			while ($row = $smcFunc['db_fetch_assoc']($query))
-				$this->data_result = $row;
+				$this->_dataResult = $row;
 
 		if ($key)
 			while($row = $smcFunc['db_fetch_assoc']($query))
-				$this->data_result[$row[$this->key]] = $row;
+				$this->_dataResult[$row[$this->key]] = $row;
 
 		else
 			while($row = $smcFunc['db_fetch_assoc']($query))
-				$this->data_result[] = $row;
+				$this->_dataResult[] = $row;
 
 		$smcFunc['db_free_result']($query);
-
-		/* return $this->data_result; */
 	}
 
-	function dataResult()
+	public function dataResult()
 	{
-		return $this->data_result;
+		return $this->_dataResult;
 	}
 
-	function updateData()
+	public function updateData()
 	{
 		global $smcFunc;
 
 		$smcFunc['db_query']('', '
-			UPDATE '.$this->table .'
+			UPDATE '.$this->_table .'
 			'.$this->set .'
-			'.$this->where .'
-			'.$this->order .'
-			'.$this->limit .'
+			'.$this->_params['where'] .'
+			'.$this->_params['order'] .'
+			'.$this->_params['limit'] .'
 			',
-			$this->data
+			$this->_data
 		);
 	}
 
-	function deleteData()
+	public function deleteData()
 	{
 		global $smcFunc;
 
 		$smcFunc['db_query']('', '
-			DELETE FROM '.$this->table .'
-			'.$this->where .'
-			'.$this->order .'
-			'.$this->limit .'
+			DELETE FROM '.$this->_table .'
+			'.$this->_params['where'] .'
+			'.$this->_params['order'] .'
+			'.$this->_params['limit'] .'
 			',
-			$this->data
+			$this->_data
 		);
 	}
 
-	function insertData($data, $values, $indexes)
+	public function insertData($data, $values, $indexes)
 	{
 		if(is_null($values) || is_null($indexes) || is_null($data))
 			return false;
@@ -141,17 +144,17 @@ class BreezeDB
 
 		$this->indexes = isset($params['indexes']) ? array($params['indexes']) : null;
 		$this->values = !is_array($values) ? array($values) : $values;
-		$this->data = !is_array($data) ? array($data) : $data;
+		$this->_data = !is_array($data) ? array($data) : $data;
 
 		$smcFunc['db_insert']('replace',
-			''.$this->table .'',
-			$this->data ,
+			''.$this->_table .'',
+			$this->_data ,
 			$this->values ,
 			$this->indexes
 		);
 	}
 
-	function count($params = null, $data = null)
+	public function count($params = null, $data = null)
 	{
 		global $smcFunc;
 
@@ -161,17 +164,17 @@ class BreezeDB
 		if(is_null($data))
 			$data = array();
 
-		$this->data = !is_array($data) ? array($data) : $data;
-		$this->where = isset($params['where']) ? 'WHERE '.trim($params['where']) : null;
-		$this->left = isset($params['left_join']) ? 'LEFT JOIN '.trim($params['left_join']) : null;
+		$this->_data = !is_array($data) ? array($data) : $data;
+		$this->_params['where'] = isset($params['where']) ? 'WHERE '.trim($params['where']) : null;
+		$this->_params['left'] = isset($params['left_join']) ? 'LEFT JOIN '.trim($params['left_join']) : null;
 
 		$request = $smcFunc['db_query']('', '
 			SELECT COUNT(*)
-			FROM '.$this->table .'
-			' . $this->where . '
-			' . $this->left . '
+			FROM '.$this->_table .'
+			' . $this->_params['where'] . '
+			' . $this->_params['left'] . '
 			',
-			$this->data
+			$this->_data
 		);
 
 		list ($count) = $smcFunc['db_fetch_row']($request);
