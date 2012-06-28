@@ -94,7 +94,7 @@ class BreezeUser
 		if (in_array($user_info['id'], $context['member']['ignore_list']) && $user_settings->enable('kick_ignored'))
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
-		/* Display all the JavaScript bits */
+		/* display all the JavaScript bits */
 		$tools->headers();
 
 		/* Set all the page stuff */
@@ -172,9 +172,6 @@ class BreezeUser
 		$context['Breeze']['visitor']['post_status'] = allowedTo('breeze_postStatus') || $context['user']['is_owner'];
 		$context['Breeze']['visitor']['post_comment'] = allowedTo('breeze_postComments') || $context['user']['is_owner'];
 		$context['Breeze']['visitor']['delete_status_comments'] = allowedTo('breeze_deleteStatus') || $context['user']['is_owner'];
-
-		/* Write to the log */
-		$query->WriteProfileVisit($context['member']['id'], $user_info['id']);
 	}
 
 	/* Shows a form for users to set up their wall as needed. */
@@ -190,11 +187,6 @@ class BreezeUser
 
 		/* By default we set this to false */
 		$already = false;
-
-		/* Set the json settings */
-		$jsonSettings = array(
-			'kick_ignored',
-		);
 
 		/* Load all we need */
 		$query = Breeze::query();
@@ -225,22 +217,22 @@ class BreezeUser
 		/* The General settings form */
 		$form = new BreezeForm($formData);
 
-		$form->AddCheckBox('enable_wall', 1, array(
+		$form->addCheckBox('enable_wall', 1, array(
 			'enable_wall',
 			'enable_wall_sub'
 		), !empty($userSettings['enable_wall']) ? true : false);
 
-		$form->AddCheckBox('kick_ignored', 1, array(
+		$form->addCheckBox('kick_ignored', 1, array(
 			'kick_ignored',
 			'kick_ignored_sub'
-		), !empty($userSettings['wall_settings']['kick_ignored']) ? true : false);
+		), !empty($userSettings['kick_ignored']) ? true : false);
 
-		$form->AddHr();
+		$form->addHr();
 
-		$form->AddSubmitButton('save');
+		$form->addSubmitButton('save');
 
 		/* Send the form to the template */
-		$context['Breeze']['UserSettings']['Form'] = $form->Display();
+		$context['Breeze']['UserSettings']['Form'] = $form->display();
 
 		/* Saving? */
 		if ($globals->Validate('save') == true)
@@ -248,22 +240,12 @@ class BreezeUser
 			/* Kill the  cache */
 			$query->killCache('members');
 
-			$temp = $form->ReturnElementNames();
+			$temp = $form->returnElementNames();
 			$save_data = array();
 			$save_data['id_member'] = $context['member']['id'];
 
 			foreach ($temp as &$type)
-			{
 				$save_data[$type] = !empty($_POST[$type]) ? (int) $_POST[$type] : 0;
-
-				/* Build the wall_settings array */
-				if (in_array($type, $jsonSettings))
-				{
-					$save_data['wall_settings'][$type] = $_POST[$type];
-
-					unset($save_data[$type]);
-				}
-			}
 
 			/* If the data already exist, update... */
 			if ($already == true)

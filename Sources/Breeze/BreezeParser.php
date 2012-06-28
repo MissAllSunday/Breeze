@@ -55,11 +55,11 @@ class BreezeParser
 		);
 	}
 
-	public function Display($string, $mention_info = false)
+	public function display($string, $mention_info = false)
 	{
 		$this->s = $string;
 		$temp = get_class_methods('BreezeParser');
-		$temp = BreezeSubs::Remove($temp, array('__construct', 'Display'), false);
+		$temp = BreezeSubs::Remove($temp, array('__construct', 'display'), false);
 
 		/* Used to notify the user */
 		if ($mention_info)

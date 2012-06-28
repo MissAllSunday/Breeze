@@ -41,6 +41,7 @@ if (!defined('SMF'))
 class BreezeUserSettings
 {
 	protected $_data = array();
+	protected $_jsonSettings = array();
 
 	function __construct($user)
 	{
@@ -49,6 +50,10 @@ class BreezeUserSettings
 
 		$this->_user = $user;
 		$this->_data = $this->loadUserSettings();
+
+		$this->jsonSettings =array(
+			'kick_ignored',
+		);
 	}
 
 	public function loadUserSettings()
@@ -86,16 +91,30 @@ class BreezeUserSettings
 
 	public function updateUserSettings($save_data)
 	{
-		if (!empty($save_data['wall_settings']))
-			$save_data['wall_settings'] = json_encode($save_data['wall_settings']);
+		foreach ($save_data as $k => $v)
+			if (in_array($k, $this->jsonSettings))
+			{
+				$save_data['wall_settings'][$k] = $v;
+
+				unset($save_data[$k]);
+			}
+
+		$save_data['wall_settings'] = json_encode($save_data['wall_settings']);
 
 		updateMemberData($this->_user, $save_data);
 	}
 
 	public function insertUserSettings($save_data)
 	{
-		if (!empty($save_data['wall_settings']))
-			$save_data['wall_settings'] = json_encode($save_data['wall_settings']);
+		foreach ($save_data as $k => $v)
+			if (in_array($s, $this->jsonSettings))
+			{
+				$save_data['wall_settings'][$k] = $v;
+
+				unset($save_data[$k]);
+			}
+
+		$save_data['wall_settings'] = json_encode($save_data['wall_settings']);
 
 		Breeze::query()->insertUserSettings($this->_user, $save_data);
 	}

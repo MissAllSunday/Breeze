@@ -63,7 +63,7 @@ class BreezeQuery
 				'property' => '_comments',
 			),
 			'members' => array(
-				'name' => 'member',
+				'name' => 'members',
 				'table' => 'members',
 				'property' => '_members',
 			),

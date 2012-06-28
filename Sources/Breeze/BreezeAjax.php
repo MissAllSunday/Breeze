@@ -110,7 +110,7 @@ abstract class BreezeAjax
 				'owner_id' => $data->See('owner_id'),
 				'poster_id' => $data->See('poster_id'),
 				'time' => time(),
-				'body' => $parser->Display($body, $noti_info)
+				'body' => $parser->display($body, $noti_info)
 			);
 
 			/* Store the status */
@@ -122,7 +122,7 @@ abstract class BreezeAjax
 			$params['id'] = $newStatus['status_id'];
 
 			/* The status was added, build the server response */
-			$display = new BreezeDisplay($params, 'status');
+			$display = new Breezedisplay($params, 'status');
 
 			/* Send the data to the template */
 			$context['Breeze']['ajax']['ok'] = 'ok';
@@ -170,7 +170,7 @@ abstract class BreezeAjax
 				'poster_id' => $data->See('poster_comment_id'),
 				'profile_owner_id' => $data->See('profile_owner_id'),
 				'time' => time(),
-				'body' => $parser->Display($body)
+				'body' => $parser->display($body)
 			);
 
 			/* Store the comment */
@@ -222,7 +222,7 @@ abstract class BreezeAjax
 			}
 
 			/* The comment was added, build the server response */
-			$display = new BreezeDisplay($params, 'comment');
+			$display = new Breezedisplay($params, 'comment');
 
 			/* Send the data to the template */
 			$context['Breeze']['ajax']['ok'] = 'ok';

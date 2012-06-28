@@ -1,7 +1,7 @@
 <?php
 
 /**
- * BreezeDisplay
+ * Breezedisplay
  *
  * The purpose of this file is to create proper html based on the type and the info it got.
  * @package Breeze mod
@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class BreezeDisplay
+class Breezedisplay
 {
 	private $ReturnArray;
 	private $params;
@@ -56,8 +56,8 @@ class BreezeDisplay
 			$this->params = $params;
 
 		$this->type = $type;
-		$this->tools = new BreezeSubs();
-		$this->text = BreezeSettings::getInstance();
+		$this->tools = Breeze::tools();
+		$this->text = Breeze::text();
 
 		/* The visitor's permissions */
 		$this->permissions = array(
@@ -102,14 +102,14 @@ class BreezeDisplay
 
 						/* New status don't have comments... */
 
-						/* Display the new comments ^o^ */
+						/* display the new comments ^o^ */
 						$this->ReturnArray .= '
 						<li id="breeze_load_image_comment_'. $this->params['id'] .'" style="margin:auto; text-align:center;"></li>';
 
 						/* Close the list */
 						$this->ReturnArray .= '</ul>';
 
-						/* Display the form for new comments */
+						/* display the form for new comments */
 						if ($this->permissions['postcomments'])
 							$this->ReturnArray .= '
 							<span><form action="'. $scripturl. '?action=breezeajax;sa=postcomment" method="post" name="formID_'. $this->params['id'] .'" id="formID_'. $this->params['id'] .'">
