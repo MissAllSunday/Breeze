@@ -194,8 +194,13 @@ class BreezeUser
 		/* By default we set this to false */
 		$already = false;
 
+		/* Set the json settings */
+		$jsonSettings = array(
+			'kick_ignored',
+		);
+
 		/* Load all we need */
-		$query = BreezeQuery::getInstance();
+		$query = Breeze::query();
 		$text = BreezeSettings::getInstance();
 		$data = Breeze::userSettings($context['member']['id']);
 		$userSettings = $data->getUserSettings();
@@ -204,10 +209,6 @@ class BreezeUser
 		if (!empty($userSettings))
 			$already = true;
 
-				echo '<pre>';
-			print_r($query->testmembers());
-			echo '</pre>';
-
 		/* Set all the page stuff */
 		$context['sub_template'] = 'user_settings';
 		$context['can_send_pm'] = allowedTo('pm_send');
@@ -215,8 +216,8 @@ class BreezeUser
 		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 		$context['canonical_url'] = $scripturl . '?action=profile;area=breezesettings;u=' . $context['member']['id'];
 
-		$FormData = array(
-			'action' => 'profile;area=breezesettings;save;u='.$context['member']['id'],
+		$formData = array(
+			'action' => 'profile;area=breezesettings;save;u='. $context['member']['id'],
 			'method' => 'post',
 			'id_css' => 'user_settings_form',
 			'name' => 'user_settings_form',
@@ -225,7 +226,7 @@ class BreezeUser
 		);
 
 		/* The General settings form */
-		$form = new BreezeForm($FormData);
+		$form = new BreezeForm($formData);
 
 		$form->AddCheckBox('enable_wall', 1, array(
 			'enable_wall',
@@ -237,11 +238,6 @@ class BreezeUser
 			'kick_ignored_sub'
 		), !empty($userSettings['wall_settings']['kick_ignored']) ? true : false);
 
-		$form->AddText('pagination_number', !empty($userSettings['wall_settings']['pagination_number']) ? $userSettings['wall_settings']['pagination_number'] : '', array(
-			'pagination_number',
-			'pagination_number_sub'
-		), 3, 3);
-
 		$form->AddHr();
 
 		$form->AddSubmitButton('save');
@@ -252,23 +248,33 @@ class BreezeUser
 		/* Saving? */
 		if ($globals->Validate('save') == true)
 		{
-			/* Kill the Settings cache */
-			$query->killCache('Settings');
+			/* Kill the  cache */
+			$query->killCache('members');
 
 			$temp = $form->ReturnElementNames();
 			$save_data = array();
-			$save_data['user_id'] = $context['member']['id'];
+			$save_data['id_member'] = $context['member']['id'];
 
 			foreach ($temp as &$type)
+			{
 				$save_data[$type] = !empty($_POST[$type]) ? (int) $_POST[$type] : 0;
+
+				/* Build the wall_settings array */
+				if (in_array($type, $jsonSettings))
+				{
+					$save_data['wall_settings'][$type] = $_POST[$type];
+
+					unset($save_data[$type]);
+				}
+			}
 
 			/* If the data already exist, update... */
 			if ($already == true)
-				$query->UpdateUserSettings($save_data);
+				$data->updateUserSettings($save_data);
 
 			/* ...if not, insert. */
 			else
-				$query->InsertUserSettings($save_data);
+				$data->insertUserSettings($save_data);
 
 			redirectexit('action=profile;area=breezesettings;u='.$context['member']['id']);
 		}

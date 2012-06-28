@@ -67,4 +67,20 @@ class BreezeUserSettings
 		else
 			return false;
 	}
+
+	public function updateUserSettings($save_data)
+	{
+		if (!empty($save_data['wall_settings']))
+			$save_data['wall_settings'] = json_encode($save_data['wall_settings']);
+
+		updateMemberData($this->_user, $save_data);
+	}
+
+	public function insertUserSettings($save_data)
+	{
+		if (!empty($save_data['wall_settings']))
+			$save_data['wall_settings'] = json_encode($save_data['wall_settings']);
+
+		Breeze::query()->insertUserSettings($this->_user, $save_data);
+	}
 }

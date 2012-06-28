@@ -582,6 +582,20 @@ class BreezeQuery
 			return false;
 	}
 
+	public function insertUserSettings($user, $values)
+	{
+		$data = array(
+			'enable_wall' => 'int',
+			'wall_settings' => 'string',
+		);
+
+		$indexes = array(
+			'id_member'
+		);
+
+		$this->query($this->_tables['members']['name'])->insertData($data, $values, $indexes);
+	}
+
 
 	/*
 	 * The main method to load all the settings from all users
