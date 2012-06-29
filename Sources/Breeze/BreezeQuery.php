@@ -437,7 +437,7 @@ class BreezeQuery
 	 */
 	public function getComments()
 	{
-		return $this->_comments ? $this->_comments : $this->comments();
+		return !empty($this->_comments) ? $this->_comments : $this->comments();
 	}
 
 	/*
@@ -453,13 +453,13 @@ class BreezeQuery
 		return $this->getReturn($this->_tables['comments']['name'], 'profile_owner_id', $id);
 	}
 
-	public function getCommentsByStatus($id)
+	public function getCommentsByStatus($id, $comments)
 	{
 		/* Do not call the Comments method for every status, use it only once */
 		$this->resetTemp();
 		$temp2 = array();
 
-		$this->_temp = $this->_comments ? $this->_comments : $this->comments();
+		$this->_temp = $comments;
 
 		foreach($this->_temp as $c)
 			if ($c['status_id'] == $id)
