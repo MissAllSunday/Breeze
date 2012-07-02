@@ -2,7 +2,7 @@
 
 /**
  * BreezeDB
- * 
+ *
  * The purpose of this file is to perform the queries made by breeze, it only executes, no logic here.
  * @package Breeze mod
  * @version 1.0 Beta 2
@@ -35,149 +35,151 @@
  *
  */
 
-if (!class_exists('BreezeDB')):
-	class BreezeDB
+class BreezeDB
+{
+	protected $_dataResult = array();
+	protected $_params = array();
+	protected $_table;
+	protected $_data;
+
+	public function __construct($table)
 	{
-		function __construct($table)
-		{
-			$this->table = isset($table) ? '{db_prefix}'.$table : null;
-			$this->data_result = array();
-		}
-
-		function Params($params, $data = null, $values = null)
-		{
-			if(is_null($params))
-				return false;
-
-			$this->rows = isset($params['rows']) ? trim($params['rows']) : null;
-			$this->where = isset($params['where']) ? 'WHERE '.trim($params['where']) : null;
-			$this->whereAnd = isset($params['and']) ? 'AND '.trim($params['and']) : null;
-			$this->limit = isset($params['limit']) ? 'LIMIT '.trim($params['limit']) : null;
-			$this->left = isset($params['left_join']) ? 'LEFT JOIN '.trim($params['left_join']) : null;
-			$this->order = isset($params['order']) ? 'ORDER BY '.trim($params['order']) : null;
-			$this->set = isset($params['set']) ? 'SET '.trim($params['set']) : null;
-			$this->data = !is_array($data) ? array($data) : $data;
-		}
-
-		function GetData($key = null, $single = false)
-		{
-			global $smcFunc;
-
-			if ($key)
-				$this->key = $key;
-
-			$query = $smcFunc['db_query']('', '
-				SELECT '.$this->rows .'
-				FROM '.$this->table .'
-				'. $this->left .'
-				'. $this->where .'
-				'. $this->whereAnd .'
-				'. $this->order .'
-				'. $this->limit .'
-				',
-				$this->data
-			);
-
-			if (!$query)
-				$this->data_result = array();
-
-			if($single)
-				while ($row = $smcFunc['db_fetch_assoc']($query))
-					$this->data_result = $row;
-
-			if ($key)
-				while($row = $smcFunc['db_fetch_assoc']($query))
-					$this->data_result[$row[$this->key]] = $row;
-
-			else
-				while($row = $smcFunc['db_fetch_assoc']($query))
-					$this->data_result[] = $row;
-
-			$smcFunc['db_free_result']($query);
-
-			/* return $this->data_result; */
-		}
-
-		function DataResult()
-		{
-			return $this->data_result;
-		}
-
-		function UpdateData()
-		{
-			global $smcFunc;
-
-			$smcFunc['db_query']('', '
-				UPDATE '.$this->table .'
-				'.$this->set .'
-				'.$this->where .'
-				'.$this->order .'
-				'.$this->limit .'
-				',
-				$this->data
-			);
-		}
-
-		function DeleteData()
-		{
-			global $smcFunc;
-
-			$smcFunc['db_query']('', '
-				DELETE FROM '.$this->table .'
-				'.$this->where .'
-				'.$this->order .'
-				'.$this->limit .'
-				',
-				$this->data
-			);
-		}
-
-		function InsertData($data, $values, $indexes)
-		{
-			if(is_null($values) || is_null($indexes) || is_null($data))
-				return false;
-
-			global $smcFunc;
-
-			$this->indexes = isset($params['indexes']) ? array($params['indexes']) : null;
-			$this->values = !is_array($values) ? array($values) : $values;
-			$this->data = !is_array($data) ? array($data) : $data;
-
-			$smcFunc['db_insert']('replace',
-				''.$this->table .'',
-				$this->data ,
-				$this->values ,
-				$this->indexes
-			);
-		}
-
-		function Count($params = null, $data = null)
-		{
-			global $smcFunc;
-
-			if(is_null($params))
-				$params = array();
-
-			if(is_null($data))
-				$data = array();
-
-			$this->data = !is_array($data) ? array($data) : $data;
-			$this->where = isset($params['where']) ? 'WHERE '.trim($params['where']) : null;
-			$this->left = isset($params['left_join']) ? 'LEFT JOIN '.trim($params['left_join']) : null;
-
-			$request = $smcFunc['db_query']('', '
-				SELECT COUNT(*)
-				FROM '.$this->table .'
-				' . $this->where . '
-				' . $this->left . '
-				',
-				$this->data
-			);
-
-			list ($count) = $smcFunc['db_fetch_row']($request);
-			$smcFunc['db_free_result']($request);
-
-			return $count;
-		}
+		$this->_table = isset($table) ? '{db_prefix}'.$table : null;
 	}
-endif;
+
+	public function params($params, $data = null)
+	{
+		if(!is_array($params))
+			return false;
+
+		$this->_params['rows'] = isset($params['rows']) ? trim($params['rows']) : '';
+		$this->_params['where'] = isset($params['where']) ? 'WHERE '. trim($params['where']) : '';
+		$this->_params['whereAnd'] = isset($params['and']) ? 'AND '. trim($params['and']) : '';
+		$this->_params['limit'] = isset($params['limit']) ? 'LIMIT '. trim($params['limit']) : '';
+		$this->_params['left'] = isset($params['left_join']) ? 'LEFT JOIN '. trim($params['left_join']) : '';
+		$this->_params['order'] = isset($params['order']) ? 'ORDER BY '. trim($params['order']) : '';
+		$this->_params['set'] = isset($params['set']) ? 'SET '. trim($params['set']) : '';
+		$this->_data = !is_array($data) ? array($data) : $data;
+	}
+
+	public function getData($key = null, $single = false)
+	{
+		global $smcFunc;
+
+		if ($key)
+			$this->key = $key;
+			
+		$params = $this->_params;
+
+		$query = $smcFunc['db_query']('', '
+			SELECT '. $this->_params['rows'] .'
+			FROM '. $this->_table .'
+			'. $this->_params['left'] .'
+			'. $this->_params['where'] .'
+				'. $this->_params['whereAnd'] .'
+			'. $this->_params['order'] .'
+			'. $this->_params['limit'] .'
+			',
+			$this->_data
+		);
+
+		if (!$query)
+			$this->_dataResult = array();
+
+		if($single)
+			while ($row = $smcFunc['db_fetch_assoc']($query))
+				$this->_dataResult = $row;
+
+		if ($key)
+			while($row = $smcFunc['db_fetch_assoc']($query))
+				$this->_dataResult[$row[$this->key]] = $row;
+
+		else
+			while($row = $smcFunc['db_fetch_assoc']($query))
+				$this->_dataResult[] = $row;
+
+		$smcFunc['db_free_result']($query);
+	}
+
+	public function dataResult()
+	{
+		return $this->_dataResult;
+	}
+
+	public function updateData()
+	{
+		global $smcFunc;
+
+		$smcFunc['db_query']('', '
+			UPDATE '.$this->_table .'
+			'.$this->set .'
+			'.$this->_params['where'] .'
+			'.$this->_params['order'] .'
+			'.$this->_params['limit'] .'
+			',
+			$this->_data
+		);
+	}
+
+	public function deleteData()
+	{
+		global $smcFunc;
+
+		$smcFunc['db_query']('', '
+			DELETE FROM '.$this->_table .'
+			'.$this->_params['where'] .'
+			'.$this->_params['order'] .'
+			'.$this->_params['limit'] .'
+			',
+			$this->_data
+		);
+	}
+
+	public function insertData($data, $values, $indexes)
+	{
+		if(is_null($values) || is_null($indexes) || is_null($data))
+			return false;
+
+		global $smcFunc;
+
+		$this->indexes = isset($params['indexes']) ? array($params['indexes']) : null;
+		$this->values = !is_array($values) ? array($values) : $values;
+		$this->_data = !is_array($data) ? array($data) : $data;
+
+		$smcFunc['db_insert']('replace',
+			''.$this->_table .'',
+			$this->_data ,
+			$this->values ,
+			$this->indexes
+		);
+	}
+
+	public function count($params = null, $data = null)
+	{
+		global $smcFunc;
+
+		if(is_null($params))
+			$params = array();
+
+		if(is_null($data))
+			$data = array();
+
+		$this->_data = !is_array($data) ? array($data) : $data;
+		$this->_params['where'] = isset($params['where']) ? 'WHERE '.trim($params['where']) : null;
+		$this->_params['left'] = isset($params['left_join']) ? 'LEFT JOIN '.trim($params['left_join']) : null;
+
+		$request = $smcFunc['db_query']('', '
+			SELECT COUNT(*)
+			FROM '.$this->_table .'
+			' . $this->_params['where'] . '
+			' . $this->_params['left'] . '
+			',
+			$this->_data
+		);
+
+		list ($count) = $smcFunc['db_fetch_row']($request);
+		$smcFunc['db_free_result']($request);
+
+		return $count;
+	}
+}

@@ -40,47 +40,61 @@ if (!defined('SMF'))
 
 class BreezeQuery
 {
-	private static $instance;
-	protected $Status = array();
-	protected $Comments = array();
-	protected $Settings = array();
-	protected $likes = array();
-	protected $Notifications = array();
-	protected $VisitLog = array();
-	private $query = array();
+	private static $_instance;
+	protected $_status = array();
+	protected $_comments = array();
+	protected $_members = array();
+	protected $_temp;
 	private $data = array();
 	private $query_params = array('rows' =>'*');
 	private $query_data = array();
-	private $temp = array();
-	private $temp2 = array();
-	private $valid = false;
-	private $global_settings;
 
 	protected function __construct()
 	{
-		$this->query = array(
-			'status' => new BreezeDB('breeze_status'),
-			'comments' => new BreezeDB('breeze_comments'),
-			'settings' => new BreezeDB('breeze_user_settings'),
-			'modules' => new BreezeDB('breeze_user_settings_modules'),
-			'visitlogs' => new BreezeDB('breeze_visit_log'),
-			'likes' => new BreezeDB('breeze_likes'),
-			'member' => new BreezeDB('members'),
-			'notifications' => new BreezeDB('breeze_notifications')
+		$this->_tables = array(
+			'status' => array(
+				'name' => 'status',
+				'table' => 'breeze_status',
+				'property' => '_status',
+			),
+			'comments' => array(
+				'name' => 'comments',
+				'table' => 'breeze_comments',
+				'property' => '_comments',
+			),
+			'members' => array(
+				'name' => 'members',
+				'table' => 'members',
+				'property' => '_members',
+			),
 		);
-
-		$this->global_settings = BreezeSettings::getInstance();
 	}
 
 	/* Yes, I used a singleton, so what! */
 	public static function getInstance()
 	{
-		if (!self::$instance)
+		if (!self::$_instance)
 		{
-			self::$instance = new BreezeQuery();
+			self::$_instance = new self();
 		}
 
-		return self::$instance;
+		return self::$_instance;
+	}
+
+	/*
+	 * Decorates the way we call a query. Oh! and calls the right table.
+	 *
+	 * Call the right table object.
+	 * @access protected
+	 * @return object a new DB object.
+	 */
+	protected function query($var)
+	{
+		if (array_key_exists($var, $this->_tables))
+			return new BreezeDB($this->_tables[$var]['table']);
+
+		else
+			return false;
 	}
 
 	/*
@@ -91,7 +105,7 @@ class BreezeQuery
 	 * @param mixed $type the name of value(s) to be deleted
 	 * @return void
 	 */
-	public function KillCache($type)
+	public function killCache($type)
 	{
 		if (!is_array($type))
 			$type = array($type);
@@ -103,35 +117,18 @@ class BreezeQuery
 	/*
 	 * Set the temp array back to null
 	 *
-	 * @access private
+	 * @access protected
 	 * @return void
 	 */
-	private function ResetTemp()
+	protected function resetTemp()
 	{
-		$this->temp = array();
+		$this->_temp = array();
 	}
 
-	/*
-	 * Set the return array back to null
-	 *
-	 * @access private
-	 * @return void
-	 */
-	private function ResetReturn()
+	protected function resetQueryArrays()
 	{
-		$this->r = array();
-	}
-
-	/*
-	 * Set the query arrays back to empty
-	 *
-	 * @access private
-	 * @return void
-	 */
-	private function ResetQueryArrays()
-	{
-		$this->query_params = array();
-		$this->query_data = array();
+		$this->_queryParams = array();
+		$this->_queryData = array();
 	}
 
 	/*
@@ -144,35 +141,36 @@ class BreezeQuery
 	 * @param bool $single true if the query will return only 1 array.
 	 * @return array an associative array
 	 */
-	private function GetReturn($type, $row, $value, $single = false)
+	private function getReturn($type, $row, $value, $single = false)
 	{
 		/* Cleaning */
-		$this->ResetTemp();
-		$this->ResetReturn();
+		$this->resetTemp();
 
 		/* Get the data */
-		$this->SwitchData($type);
+		$this->switchData($type);
+
+		$return ='';
 
 		/* Do this only if there is something to work with */
-		if ($this->temp)
+		if ($this->_temp)
 		{
 			/* Generate an array with a defined key */
-			foreach($this->temp as $t)
+			foreach($this->_temp as $t)
 			{
 				if ($t[$row] == $value && !$single)
-					$this->r[] = $t;
+					$return[] = $t;
 
 				/* Get a single value */
 				else if ($t[$row] == $value && $single)
-					$this->r = $t;
+					$return = $t;
 			}
 		}
 
-		/* Clean the Temp array */
-		$this->ResetTemp();
+		/* Cleaning */
+		$this->resetTemp();
 
 		/* Return the info we want as we want it */
-		return $this->r;
+		return $return;
 	}
 
 	/*
@@ -183,32 +181,13 @@ class BreezeQuery
 	 * @access private
 	 * @return void
 	 */
-	private function SwitchData($type)
+	private function switchData($type)
 	{
-		switch ($type)
-		{
-			case 'status':
-				$this->temp = $this->Status ? $this->Status : $this->Status();
-				break;
-			case 'comments':
-				$this->temp = $this->Comments ? $this->Comments : $this->Comments();
-				break;
-			case 'likes':
-				$this->temp = $this->Likes ? $this->Likes : $this->Likes();
-				break;
-			case 'settings':
-				$this->temp = $this->Settings ? $this->Settings : $this->Settings();
-				break;
-			case 'modules':
-				$this->temp = $this->Modules ? $this->Modules : $this->Modules();
-				break;
-			case 'visitlogs':
-				$this->temp = $this->VisitLog ? $this->VisitLog : $this->VisitLog();
-				break;
-			case 'notifications':
-				$this->temp = $this->Notifications ? $this->Notifications : $this->Notifications();
-				break;
-		}
+		$property = $this->_tables[$type]['property'];
+		$method = $this->_tables[$type]['name'];
+
+		if (array_key_exists($type, $this->_tables))
+			$this->_temp = $this->$property ? $this->$property : $this->$method();
 	}
 
 	/*
@@ -221,13 +200,12 @@ class BreezeQuery
 	 * @access private
 	 * @return array an array with the requested data
 	 */
-	public function GetSingleValue($type, $row, $value)
+	public function getSingleValue($type, $row, $value)
 	{
 		/* Cleaning */
-		$this->ResetTemp();
-		$this->ResetReturn();
+		$this->resetTemp();
 
-		return $this->GetReturn($type, $row, $value);
+		return $this->getReturn($type, $row, $value);
 	}
 
 	/*
@@ -237,27 +215,27 @@ class BreezeQuery
 	 * @access public
 	 * @return array An array with the last status ID.
 	 */
-	public function GetLastStatus()
+	public function getLastStatus()
 	{
+		$return = $this->query($this->_tables['status']['name']);
+
 		/* Get the value directly from the DB */
-		$this->query_params = array(
+		$params = array(
 			'rows' => 'status_id',
 			'order' => '{raw:sort}',
 			'limit' => '{int:limit}'
 		);
 
-		$this->query_data = array(
+		$data = array(
 			'sort' => 'status_id DESC',
 			'limit' => 1
 		);
-		$this->Query('status')->Params($this->query_params, $this->query_data);
-		$this->Query('status')->GetData(null, true);
 
-		/* Clean the arrays used here, we may need them for something else */
-		$this->ResetQueryArrays();
+		$return->params($params, $data);
+		$return->getData(null, true);
 
 		/* Done? */
-		return $this->Query('status')->DataResult();
+		return $return->dataResult();
 	}
 
 	/*
@@ -267,36 +245,28 @@ class BreezeQuery
 	 * @access public
 	 * @return array An array with the last status ID.
 	 */
-	public function GetLastComment()
+	public function getLastComment()
 	{
+		$return = $this->query($this->_tables['comments']['name']);
+
 		/* Get the value directly from the DB */
-		$this->query_params = array(
+		$this->_queryParams = array(
 			'rows' => 'comments_id',
 			'order' => '{raw:sort}',
 			'limit' => '{int:limit}'
 		);
 
-		$this->query_data = array(
+		$this->_queryData = array(
 			'sort' => 'comments_id DESC',
 			'limit' => 1
 		);
-		$this->Query('comments')->Params($this->query_params, $this->query_data);
-		$this->Query('comments')->GetData(null, true);
+
+		$return->params($this->_queryParams, $this->_queryData);
+		$return->getData(null, true);
+		$this->resetQueryArrays();
 
 		/* Done? */
-		return $this->Query('comments')->DataResult();
-	}
-
-	/*
-	 * Decorates the way we call a query. Oh! and calls the right table.
-	 *
-	 * Call the right value in the query object.
-	 * @access private
-	 * @return array an array with the right query call.
-	 */
-	private function Query($var)
-	{
-		return $this->query[$var];
+		return $return->dataResult();
 	}
 
 	/*
@@ -307,49 +277,50 @@ class BreezeQuery
 	 * @global array $smcFunc the "handling DB stuff" var of SMF
 	 * @return array a very big associative array with the status ID as key
 	 */
-	protected function Status()
+	protected function status()
 	{
 		global $smcFunc;
 
-		$tools = new BreezeSubs();
+		$tools = Breeze::tools();
+		$gSettings = Breeze::settings();
 
 		/* Use the cache please... */
-		if (($this->Status = cache_get_data('Breeze:Status', 120)) == null)
+		if (($this->_status = cache_get_data('Breeze:'. $this->_tables['status']['name'], 120)) == null)
 		{
 			/* Load all the status, set a limit if things get complicated */
 			$result = $smcFunc['db_query']('', '
 				SELECT *
 				FROM {db_prefix}breeze_status
-				'. ($this->global_settings->Enable('admin_enable_limit') && $this->global_settings->Enable('admin_limit_timeframe') ? 'WHERE status_time >= {int:status_time}' : '' ).'
+				'. ($gSettings->enable('admin_enable_limit') && $gSettings->enable('admin_limit_timeframe') ? 'WHERE status_time >= {int:status_time}' : '' ).'
 				ORDER BY status_time DESC
 				',
 				array(
-					'status_time' => $this->global_settings->GetSetting('admin_limit_timeframe'),
+					'status_time' => $gSettings->getSetting('admin_limit_timeframe'),
 				)
 			);
 
 			/* Populate the array like a boss! */
 			while ($row = $smcFunc['db_fetch_assoc']($result))
 			{
-				$this->Status[$row['status_id']] = array(
+				$this->_status[$row['status_id']] = array(
 					'id' => $row['status_id'],
 					'owner_id' => $row['status_owner_id'],
 					'poster_id' => $row['status_poster_id'],
-					'time' => $tools->TimeElapsed($row['status_time']),
+					'time' => $tools->timeElapsed($row['status_time']),
 					'body' => $row['status_body']
 				);
 			}
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:Status', $this->Status, 120);
+			cache_put_data('Breeze:'. $this->_tables['status']['name'], $this->_status, 120);
 		}
 
-		return $this->Status;
+		return $this->_status;
 	}
 
-	public function GetStatus()
+	public function getStatus()
 	{
-		return $this->Status ? $this->Status : $this->Status();
+		return $this->_status ? $this->_status : $this->status();
 	}
 
 	/*
@@ -361,9 +332,9 @@ class BreezeQuery
 	 * @access public
 	 * @return array an array containing all the status made in X profile page
 	 */
-	public function GetStatusByProfile($id)
+	public function getStatusByProfile($id)
 	{
-		return $this->GetReturn('status', 'owner_id', $id);
+		return $this->getReturn($this->_tables['status']['name'], 'owner_id', $id);
 	}
 
 	/*
@@ -375,9 +346,9 @@ class BreezeQuery
 	 * @access public
 	 * @return array an array containing all the status made in X profile page
 	 */
-	public function GetStatusByID($id)
+	public function getStatusByID($id)
 	{
-		return $this->GetReturn('status', 'id', $id, true);
+		return $this->getReturn('status', 'id', $id, true);
 	}
 
 	/*
@@ -389,9 +360,9 @@ class BreezeQuery
 	 * @access public
 	 * @return array an array containing all the status made in X profile page
 	 */
-	public function GetStatusByUser($id)
+	public function getStatusByUser($id)
 	{
-		return $this->GetReturn('status', 'status_user', $id);
+		return $this->getReturn('status', 'status_user', $id);
 	}
 
 	/*
@@ -401,9 +372,9 @@ class BreezeQuery
 	 * @access public
 	 * @return array the last status added to the Status array
 	 */
-	public function GetStatusByLast()
+	public function getStatusByLast()
 	{
-		$array = $this->Status ? $this->Status : $this->Status();
+		$array = $this->_status ? $this->_status : $this->status();
 
 		return array_shift(array_values($array));
 	}
@@ -418,46 +389,47 @@ class BreezeQuery
 	 * @global array $smcFunc the "handling DB stuff" var of SMF
 	 * @return array a very big associative array with the comment ID as key
 	 */
-	protected function Comments()
+	protected function comments()
 	{
 		global $smcFunc;
 
-		$tools = new BreezeSubs();
+		$tools = Breeze::tools();
+		$gSettings = Breeze::settings();
 
 		/* Use the cache please... */
-		if (($this->Comments = cache_get_data('Breeze:Comments', 120)) == null)
+		if (($this->_comments = cache_get_data('Breeze:'. $this->_tables['comments']['name'], 120)) == null)
 		{
 			/* Load all the comments, set a limit if things get complicated */
 			$result = $smcFunc['db_query']('', '
 				SELECT *
 				FROM {db_prefix}breeze_comments
-				'. ($this->global_settings->Enable('admin_enable_limit') && $this->global_settings->Enable('admin_limit_timeframe') ? 'WHERE comments_time >= {int:comments_time}' : '' ).'
+				'. ($gSettings->enable('admin_enable_limit') && $gSettings->enable('admin_limit_timeframe') ? 'WHERE comments_time >= {int:comments_time}' : '' ).'
 				ORDER BY comments_time ASC
 				',
 				array(
-					'comments_time' => $this->global_settings->GetSetting('admin_limit_timeframe'),
+					'comments_time' => $gSettings->getSetting('admin_limit_timeframe'),
 				)
 			);
 
 			/* Populate the array like a comments boss! */
 			while ($row = $smcFunc['db_fetch_assoc']($result))
 			{
-				$this->Comments[$row['comments_id']] = array(
+				$this->_comments[$row['comments_id']] = array(
 					'id' => $row['comments_id'],
 					'status_id' => $row['comments_status_id'],
 					'status_owner_id' => $row['comments_status_owner_id'],
 					'poster_id' => $row['comments_poster_id'],
 					'profile_owner_id' => $row['comments_profile_owner_id'],
-					'time' => $tools->TimeElapsed($row['comments_time']),
+					'time' => $tools->timeElapsed($row['comments_time']),
 					'body' => $row['comments_body']
 				);
 			}
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:Comments', $this->Comments, 120);
+			cache_put_data('Breeze:'. $this->_tables['comments']['name'], $this->_comments, 120);
 		}
 
-		return $this->Comments;
+		return $this->_comments;
 	}
 
 	/*
@@ -466,9 +438,9 @@ class BreezeQuery
 	 * @access public
 	 * @return array an array containing all comments. ID as the key.
 	 */
-	public function GetComments()
+	public function getComments()
 	{
-		return $this->Comments ? $this->Comments : $this->Comments();
+		return !empty($this->_comments) ? $this->_comments : $this->comments();
 	}
 
 	/*
@@ -479,90 +451,36 @@ class BreezeQuery
 	 * @access public
 	 * @return array an array containing all comments made in X profile page
 	 */
-	public function GetCommentsByProfile($id)
+	public function getCommentsByProfile($id)
 	{
-		return $this->GetReturn('comments', 'profile_owner_id', $id);
+		return $this->getReturn($this->_tables['comments']['name'], 'profile_owner_id', $id);
 	}
 
-	public function GetCommentsByStatus($id)
+	public function getCommentsByStatus($id)
 	{
 		/* Do not call the Comments method for every status, use it only once */
-		$this->ResetTemp();
+		$temp = array();
 		$temp2 = array();
+		$comments = $this->getComments();
 
-		$this->temp = $this->Comments ? $this->Comments : $this->Comments();
+		if (!empty($comments))
+		{
+			$temp = $comments;
 
-		foreach($this->temp as $c)
-			if ($c['status_id'] == $id)
-				$temp2[$c['id']] = $c;
+			foreach($temp as $c)
+				if ($c['status_id'] == $id)
+					$temp2[$c['id']] = $c;
+		}
 
 		return $temp2;
 	}
 
-	/* Settings */
-
-	/*
-	 * The main method to load all the settings from all users
-	 *
-	 * This is one of the main queries. load all the settings from all users. We set the cache here on 4 minutes since the settings aren't updated that often.
-	 * @access protected
-	 * @global array $smcFunc the "handling DB stuff" var of SMF
-	 * @return array a very big associative array with the user ID as key
-	 */
-	protected function Settings()
-	{
-		global $smcFunc;
-
-		/* Use the cache please... */
-		if (($this->Settings = cache_get_data('Breeze:Settings', 240)) == null)
-		{
-			/* Load all the settings from all users */
-			$result = $smcFunc['db_query']('', '
-				SELECT *
-				FROM {db_prefix}breeze_user_settings
-				',
-				array()
-			);
-
-			/* Populate the array like a boss! */
-			while ($row = $smcFunc['db_fetch_assoc']($result))
-			{
-				$this->Settings[$row['user_id']] = array(
-					'user_id' => $row['user_id'],
-					'enable_wall' => $row['enable_wall'],
-					'kick_ignored' => $row['kick_ignored'],
-					'enable_visits_module' => $row['enable_visits_module'],
-					'visits_module_timeframe' => $row['visits_module_timeframe'],
-					'pagination_number' => $row['pagination_number']
-				);
-			}
-
-			/* Cache this beauty */
-			cache_put_data('Breeze:Settings', $this->Settings, 240);
-		}
-
-		return $this->Settings;
-	}
-
-	/*
-	 * Gets all the settings from one user
-	 *
-	 * Gets all the users preferences
-	 * @access public
-	 * @param int $user  the User ID
-	 * @return array an array with the users settings
-	 */
-	public function GetSettingsByUser($user)
-	{
-		return $this->GetReturn('settings', 'user_id', $user, true);
-	}
-
 	/* Editing methods */
 
-	public function InsertStatus($array)
+	public function insertStatus($array)
 	{
 		/* We dont need this anymore */
-		$this->KillCache('Status');
+		$this->killCache($this->_tables['status']['name']);
 
 		/* Insert! */
 		$data = array(
@@ -576,13 +494,13 @@ class BreezeQuery
 			'status_id'
 		);
 
-		$this->Query('status')->InsertData($data, $array, $indexes);
+		$this->query($this->_tables['status']['name'])->insertData($data, $array, $indexes);
 	}
 
-	public function InsertComment($array)
+	public function insertComment($array)
 	{
 		/* We dont need this anymore */
-		$this->KillCache('Comments');
+		$this->killCache($this->_tables['comments']['name']);
 
 		/* Insert! */
 		$data = array(
@@ -598,13 +516,16 @@ class BreezeQuery
 			'comments_id'
 		);
 
-		$this->Query('comments')->InsertData($data, $array, $indexes);
+		$this->query($this->_tables['comments']['name'])->insertData($data, $array, $indexes);
 	}
 
-	public function DeleteStatus($id)
+	public function deleteStatus($id)
 	{
 		/* We dont need this anymore */
-		$this->KillCache('Status');
+		$this->killCache($this->_tables['status']['name']);
+
+		$deleteStatus = $this->query($this->_tables['status']['name']);
+		$deleteComments = $this->query($this->_tables['comments']['name']);
 
 		/* Delete! */
 		$paramsc = array(
@@ -619,15 +540,17 @@ class BreezeQuery
 		);
 
 		/* Ladies first */
-		$this->Query('comments')->Params($paramsc, $data);
-		$this->Query('comments')->DeleteData();
+		$deleteComments->params($paramsc, $data);
+		$deleteComments->deleteData();
 
-		$this->Query('status')->Params($params, $data);
-		$this->Query('status')->DeleteData();
+		$deleteStatus->params($params, $data);
+		$deleteStatus->deleteData();
 	}
 
-	public function DeleteComment($id)
+	public function deleteComment($id)
 	{
+		$delete = $this->query($this->_tables['comments']['name']);
+
 		/* Delete! */
 		$params = array(
 			'where' => 'comments_id = {int:id}'
@@ -637,95 +560,21 @@ class BreezeQuery
 			'id' => $id
 		);
 
-		$this->Query('comments')->Params($params, $data);
-		$this->Query('comments')->DeleteData();
+		$delete->params($params, $data);
+		$delete->deleteData();
 	}
 
-	public function GetUserSettings($user)
-	{
-		return $this->GetReturn('settings', 'user_id', $user, true);
-	}
-
-	public function UpdateUserSettings($data)
-	{
-		$params = array(
-			'set' =>
-				'enable_wall = {int:enable_wall},
-				kick_ignored = {int:kick_ignored},
-				visits_module_timeframe = {int:visits_module_timeframe},
-				enable_visits_module = {int:enable_visits_module},
-				pagination_number = {int:pagination_number}',
-			'where' =>'user_id = {int:user_id}',
-		);
-
-		/* Do the update */
-		$this->Query('settings')->Params($params, $data);
-		$this->Query('settings')->UpdateData();
-	}
-
-	public function InsertUserSettings($data)
-	{
-		$type = array(
-			'user_id' => 'int',
-			'enable_wall' => 'int',
-			'kick_ignored' =>'int',
-			'pagination_number' => 'int',
-			'enable_visits_module' => 'int',
-			'visits_module_timeframe' => 'int'
-		);
-
-		$indexes = array(
-			'user_id'
-		);
-
-		/* Insert */
-		$this->Query('settings')->InsertData($type, $data, $indexes);
-	}
-
-	public function GetUserIgnoreList($id)
-	{
-		$this->query_params = array(
-			'rows' =>'pm_ignore_list',
-			'where' => 'id_member = {int:id}',
-		);
-
-		$this->query_data = array(
-			'id' => $id
-		);
-
-		$this->Query('member')->Params($this->query_params, $this->query_data);
-		$this->Query('member')->GetData(null, true);
-		$temp = $this->Query('member')->DataResult();
-
-		/* Done? set the arrays back to empty */
-		$this->ResetQueryArrays();
-
-		if (!empty($temp['pm_ignore_list']))
-			return explode(',', $temp['pm_ignore_list']);
-
-		else
-			return array();
-	}
-
-	/*
-	 * The main method to load all the settings from all users
-	 *
-	 * This is one of the main queries. load all the settings from all users. We set the cache here on 4 minutes since the settings aren't updated that often.
-	 * @access protected
-	 * @global array $smcFunc the "handling DB stuff" var of SMF
-	 * @return array a very big associative array with the user ID as key
-	 */
-	protected function VisitLog()
+	protected function members()
 	{
 		global $smcFunc;
 
 		/* Use the cache please... */
-		if (($this->VisitLog = cache_get_data('Breeze:VisitLog', 120)) == null)
+		if (($this->_members = cache_get_data('Breeze:'. $this->_tables['members']['name'], 120)) == null)
 		{
-			/* Load all the status, set a limit if things get complicated */
+			/* Load all the settings from all users */
 			$result = $smcFunc['db_query']('', '
-				SELECT *
-				FROM {db_prefix}breeze_visit_log
+				SELECT wall_settings, pm_ignore_list, id_member, enable_wall
+				FROM {db_prefix}'. $this->_tables['members']['table'] .'
 				',
 				array()
 			);
@@ -733,174 +582,39 @@ class BreezeQuery
 			/* Populate the array like a boss! */
 			while ($row = $smcFunc['db_fetch_assoc']($result))
 			{
-				$this->VisitLog[$row['id']] = array(
-					'id' => $row['id'],
-					'profile' => $row['profile'],
-					'user' => $row['user'],
-					'time' => timeformat($row['time'])
-				);
+				$this->_members[$row['id_member']] = $row;
 			}
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:VisitLog', $this->Settings, 240);
+			cache_put_data('Breeze:'. $this->_tables['members']['name'], $this->_members, 120);
 		}
 
-		return $this->VisitLog;
+		return $this->_members;
 	}
 
-	/*
-	 * Return a boolean, true if the user already visited the profile, false otherwise
-	 *
-	 * Get all the visits to X profile, compare if the visitor has already visited that profile, return a boolean.
-	 * @access protected
-	 * @param int $profile the User's ID that owns the profile
-	 * @param int $visitor The User's ID who is visiting this profile
-	 * @return bool
-	 */
-	protected function GetUniqueVisit($profile, $visitor)
+	public function getUserSettings($user)
 	{
-		$temp = $this->GetReturn('visitlogs', 'profile', $profile, false);
-		$temp2 = array();
+		$return = $this->_members ? $this->_members : $this->members();
 
-		if (!empty($temp))
-		{
-			foreach($temp as $t)
-				$temp2[] = $t['user'];
-
-			if (in_array($visitor, $temp2))
-				return true;
-
-			else
-				return false;
-		}
+		if (!empty($return[$user]))
+			return $return[$user];
 
 		else
 			return false;
 	}
 
-	/*
-	 * Logs profile visitors
-	 *
-	 * Checks if the visitor has already been here, if true, just update the time, otherwise create the entry on the DB, generates a new cache entry.
-	 * @access public
-	 * @param int $profile the User's ID that owns the profile
-	 * @param int $visitor The User's ID who is visiting this profile
-	 * @return void
-	 */
-	public function WriteProfileVisit($profile, $visitor)
+	public function insertUserSettings($user, $values)
 	{
-		global $context;
-
-		if (empty($profile) || empty($visitor))
-			return;
-
-		/* Don't log this if the user is visiting his/her own profile */
-		if ($profile == $visitor)
-			return;
-
-		/* Do not log guest people */
-		if ($context['user']['is_guest'])
-			return;
-
-		/* Get all visits to this profile */
-		$already = $this->GetUniqueVisit($profile, $visitor);
-
-		/* Is this your first time? */
-		if ($already == false)
-		{
-			$insert_data = array(
-				'profile' => 'int',
-				'user' => 'int',
-				'time' => 'int'
-			);
-			$insert_values = array(
-				$profile,
-				$visitor,
-				time()
-			);
-			$insert_indexes = array(
-				'id'
-			);
-
-			$this->Query('visitlogs')->InsertData($insert_data, $insert_values, $insert_indexes);
-		}
-
-		/* No? then update the time*/
-		else
-		{
-			$this->query_params = array(
-				'set' =>'time = {int:time}',
-				'where' => 'profile = {int:profile} AND user = {int:user}',
-			);
-
-			$this->query_data = array(
-				'user' => $visitor,
-				'profile' => $profile,
-				'time' => time()
-			);
-
-			$this->Query('visitlogs')->Params($this->query_params, $this->query_data);
-			$this->Query('visitlogs')->UpdateData();
-		}
-
-		/* Clean the arrays */
-		$this->ResetQueryArrays();
-
-		/* Set new cache */
-		$this->KillCache('VisitLog');
-	}
-
-	/*
-	 * Get's all the visits to X profile in X period of time
-	 *
-	 * The time period is defined by the user in their wall settings.
-	 * @access public
-	 * @param int $profile the User's ID that owns the profile
-	 * @param int $time a simple number that represents the timeframe
-	 * @return array
-	 */
-	public function GetProfilevisits($profile, $time)
-	{
-		/* Get the user's choice */
-		$date = $this->GetUserSettings($profile);
-
-		/* Set the time frame */
-		switch($date)
-		{
-			case 1:
-				$timeframe = strtotime('-1 hour');
-				break;
-			case 2:
-				$timeframe = strtotime('-1 day');
-				break;
-			case 3:
-				$timeframe = strtotime('-1 week');
-				break;
-			case 4:
-				$timeframe = strtotime('-1 month');
-				break;
-			default:
-				$timeframe = strtotime('-1 week');
-		}
-
-		$params = array(
-			'rows' => '*',
-			'where' => 'time >= {int:timeframe} AND profile = {int:profile}'
-		);
 		$data = array(
-			'timeframe' => $timeframe,
-			'profile' => $profile
+			'enable_wall' => 'int',
+			'wall_settings' => 'string',
 		);
 
-		$this->Query('visitlogs')->Params($params, $data);
-		$this->Query('visitlogs')->GetData('id');
-		$temp = $this->Query('visitlogs')->DataResult();
+		$indexes = array(
+			'id_member'
+		);
 
-		if (!empty($temp))
-			return $temp;
-
-		else
-			return array();
+		$this->query($this->_tables['members']['name'])->insertData($data, $values, $indexes);
 	}
 
 	/*
@@ -945,7 +659,7 @@ class BreezeQuery
 		return $this->Notifications;
 	}
 
-	public function GetNotifications()
+	public function getNotifications()
 	{
 		return $this->Notifications ? $this->Notifications : $this->Notifications();
 	}
@@ -953,7 +667,7 @@ class BreezeQuery
 	public function InsertNotification($array)
 	{
 		/* We dont need this anymore */
-		$this->KillCache('Notifications');
+		$this->killCache('Notifications');
 
 		/* Insert! */
 		$data = array(
@@ -968,13 +682,13 @@ class BreezeQuery
 			'id'
 		);
 
-		$this->Query('notifications')->InsertData($data, $array, $indexes);
+		$this->query('notifications')->insertData($data, $array, $indexes);
 	}
 
 	public function MarkAsReadNotification($id)
 	{
 		/* We dont need this anymore */
-		$this->KillCache('Notifications');
+		$this->killCache('Notifications');
 
 		/* Mark as read */
 		$params = array(
@@ -987,14 +701,14 @@ class BreezeQuery
 			'id' => $id
 		);
 
-		$this->Query('notifications')->Params($params, $data);
-		$this->Query('notifications')->UpdateData();
+		$this->query('notifications')->params($params, $data);
+		$this->query('notifications')->updateData();
 	}
 
 	public function DeleteNotification($id)
 	{
 		/* We dont need this anymore */
-		$this->KillCache('Notifications');
+		$this->killCache('Notifications');
 
 		/* Delete! */
 		$params = array(
@@ -1005,18 +719,18 @@ class BreezeQuery
 			'id' => $id
 		);
 
-		$this->Query('notifications')->Params($params, $data);
-		$this->Query('notifications')->DeleteData();
+		$this->query('notifications')->params($params, $data);
+		$this->query('notifications')->deleteData();
 	}
 
-	public function GetNotificationByUser($user)
+	public function getNotificationByUser($user)
 	{
-		return $this->GetReturn('notifications', 'user', $user);
+		return $this->getReturn('notifications', 'user', $user);
 	}
 
-	public function GetNotificationByType($type)
+	public function getNotificationByType($type)
 	{
-		return $this->GetReturn('notifications', 'type', $type);
+		return $this->getReturn('notifications', 'type', $type);
 	}
 }
 

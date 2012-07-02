@@ -55,8 +55,8 @@ class BreezeGeneral
 		);
 
 		/* Does the subaction even exist? */
-		if (in_array($sa->Raw('sa'), array_keys($subActions)))
-			$subActions[$sa->Raw('sa')]();
+		if (in_array($sa->getRaw('sa'), array_keys($subActions)))
+			$subActions[$sa->getRaw('sa')]();
 
 		else
 			self::Wall();
@@ -79,7 +79,7 @@ class BreezeGeneral
 		);
 
 		/* Headers */
-		BreezeSubs::Headers(true);
+		BreezeSubs::headers(true);
 	}
 
 	/* Show a single status with all it's comments */
@@ -98,11 +98,11 @@ class BreezeGeneral
 		$status['comments'] = array();
 
 		/* Headers */
-		BreezeSubs::Headers();
+		BreezeSubs::headers();
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'singleStatus';
-		$context['page_title'] = $tools->GetText('singleStatus_pageTitle');
+		$context['page_title'] = $tools->getText('singleStatus_pageTitle');
 		$context['canonical_url'] = $scripturl . '?action=wall;sa=singlestatus';
 
 		/* The visitor's permissions */
@@ -111,8 +111,8 @@ class BreezeGeneral
 		$context['Breeze']['visitor']['delete_status_comments'] = allowedTo('breeze_deleteStatus');
 
 		/* get the status data */
-		if ($globals->Validate('statusID'))
-			$status = $query->GetStatusByID($globals->See('statusID'));
+		if ($globals->validate('statusID'))
+			$status = $query->GetStatusByID($globals->getValue('statusID'));
 
 		/* If no ID is set, then load the lastest status */
 		else

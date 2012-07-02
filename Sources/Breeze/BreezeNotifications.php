@@ -121,11 +121,6 @@ class BreezeNotifications
 
 		$this->all = $this->GetByUser($user);
 
-		/* Load users data */
-		foreach ($this->all['content'] as $lu => $v)
-			if ()
-			$this->usersData[$v] = BreezeSubs::LoadUserInfo($v, true);
-
 		$context['insert_after_template'] .= '
 		<script type="text/javascript"><!-- // --><![CDATA[
 $(document).ready(function()
