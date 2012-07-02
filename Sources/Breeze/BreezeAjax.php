@@ -40,21 +40,21 @@ if (!defined('SMF'))
 
 
 	/* Wrapper functions */
-	function WrapperBreeze_AjaxPost() { BreezeAjax::Post(); }
-	function WrapperBreeze_AjaxPostComment() { BreezeAjax::PostComment(); }
-	function WrapperBreeze_AjaxDelete() { BreezeAjax::Delete(); }
+	function WrapperBreeze_AjaxPost() { BreezeAjax::post(); }
+	function WrapperBreeze_AjaxPostComment() { BreezeAjax::postComment(); }
+	function WrapperBreeze_AjaxDelete() { BreezeAjax::delete(); }
 
 abstract class BreezeAjax
 {
 	public static $query;
 
-	public static function Call()
+	public static function call()
 	{
 		/* Load stuff */
 		loadtemplate('BreezeAjax');
 
 		/* Handling the subactions */
-		$sa = new BreezeGlobals('get');
+		$sglobals = breeze::sGlobals('get');
 
 		$subActions = array(
 			'post' => 'WrapperBreeze_AjaxPost',
@@ -63,8 +63,8 @@ abstract class BreezeAjax
 		);
 
 		/* Does the subaction even exist? */
-		if (in_array($sa->Raw('sa'), array_keys($subActions)))
-			$subActions[$sa->Raw('sa')]();
+		if (in_array($sglobals->getRaw('sa'), array_keys($subActions)))
+			$subActions[$sglobals->getRaw('sa')]();
 
 		/* No?  then tell them there was an error... */
 		/* else */
@@ -72,7 +72,7 @@ abstract class BreezeAjax
 	}
 
 	/* Deal with the status... */
-	public static function Post()
+	public static function post()
 	{
 		global $context;
 
@@ -89,40 +89,40 @@ abstract class BreezeAjax
 		);
 
 		/* Load all the things we need */
-		$data = new BreezeGlobals('post');
-		$query = BreezeQuery::getInstance();
-		$parser = new BreezeParser();
-		$tools = BreezeSettings::getInstance();
+		$data = Breeze::sGlobals('post');
+		$query = Breeze::query();
+		$parser = Breeze::parser();
+		$settings = Breeze::settings();
 
 		/* Do this only if there is something to add to the database */
-		if ($data->ValidateBody('content'))
+		if ($data->validateBody('content'))
 		{
-			$body = $data->See('content');
+			$body = $data->getValue('content');
 
 			/* Needed for the notification by mention */
 			$noti_info = array(
-				'wall_owner' => $data->See('owner_id'),
-				'wall_poster' => $data->See('poster_id'),
+				'wall_owner' => $data->getValue('owner_id'),
+				'wall_poster' => $data->getValue('poster_id'),
 			);
 
 			/* Build the params array for the query */
 			$params = array(
-				'owner_id' => $data->See('owner_id'),
-				'poster_id' => $data->See('poster_id'),
+				'owner_id' => $data->getValue('owner_id'),
+				'poster_id' => $data->getValue('poster_id'),
 				'time' => time(),
-				'body' => $parser->Display($body, $noti_info)
+				'body' => $parser->display($body, $noti_info)
 			);
 
 			/* Store the status */
-			$query->InsertStatus($params);
+			$query->insertStatus($params);
 
 			/* Get the newly created status, we just need the id */
-			$new_status = $query->GetLastStatus();
+			$newStatus = $query->getLastStatus();
 
-			$params['id'] = $new_status['status_id'];
+			$params['id'] = $newStatus['status_id'];
 
 			/* The status was added, build the server response */
-			$display = new BreezeDisplay($params, 'status');
+			$display = new Breezedisplay($params, 'status');
 
 			/* Send the data to the template */
 			$context['Breeze']['ajax']['ok'] = 'ok';
@@ -137,7 +137,7 @@ abstract class BreezeAjax
 	}
 
 	/* Basically the same as Post */
-	public static function PostComment()
+	public static function postComment()
 	{
 		global $context, $scripturl;
 
@@ -150,79 +150,39 @@ abstract class BreezeAjax
 		/* By default it will show an error, we only do stuff if necesary */
 		$context['Breeze']['ajax']['ok'] = '';
 
-		/* Get the status data */
-		$data = new BreezeGlobals('post');
-		$query = BreezeQuery::getInstance();
-		$temp_id_exists = $query->GetSingleValue('status', 'id', $data->See('status_id'));
-		$parser = new BreezeParser();
-		$notification = new BreezeNotifications();
-		$tools = BreezeSettings::getInstance();
+		/* Load all the things we need */
+		$data = Breeze::sGlobals('post');
+		$query = Breeze::query();
+		$parser = Breeze::parser();
+		$settings = Breeze::settings();
+		$temp_id_exists = $query->getSingleValue('status', 'id', $data->getValue('status_id'));
+		$notifications = Breeze::notifications();
 
 		/* The status do exists and the data is valid*/
-		if ($data->ValidateBody('content') && !empty($temp_id_exists))
+		if ($data->validateBody('content') && !empty($temp_id_exists))
 		{
-			$body = $data->See('content');
+			$body = $data->getValue('content');
 
 			/* Build the params array for the query */
 			$params = array(
-				'status_id' => $data->See('status_id'),
-				'status_owner_id' => $data->See('status_owner_id'),
-				'poster_id' => $data->See('poster_comment_id'),
-				'profile_owner_id' => $data->See('profile_owner_id'),
+				'status_id' => $data->getValue('status_id'),
+				'status_owner_id' => $data->getValue('status_owner_id'),
+				'poster_id' => $data->getValue('poster_comment_id'),
+				'profile_owner_id' => $data->getValue('profile_owner_id'),
 				'time' => time(),
-				'body' => $parser->Display($body)
+				'body' => $parser->display($body)
 			);
 
 			/* Store the comment */
-			$query->InsertComment($params);
+			$query->insertComment($params);
 
 			/* Once the comment was added, get it's ID from the DB */
-			$new_comment = $query->GetLastComment();
+			$new_comment = $query->getLastComment();
 
 			$params['id'] = $new_comment['comments_id'];
 
-			/* Send out the notifications first thing to do, is to collect all the users who had posted on this status */
-			$temp_comments = $query->GetCommentsByStatus($data->See('status_id'));
-
-			/* Create the users array */
-			foreach($temp_comments as $c)
-				$notification_users[] = $c['poster_id'];
-
-			/* Load the user's info */
-			$users_to_load = array(
-				$data->See('poster_comment_id'),
-				$data->See('status_owner_id'),
-				$data->See('profile_owner_id')
-			);
-			$users_data = BreezeSubs::LoadUserInfo($users_to_load);
-
-			$user_who_commented = $users_data[$data->See('poster_comment_id')];
-			$user_who_created_the_status = $users_data[$data->See('status_owner_id')];
-			$user_who_owns_the_profile = $users_data[$data->See('profile_owner_id')];
-
-			/* Send it already! */
-			if (!empty($notification_users))
-			{
-				foreach($notification_users as $nu)
-				{
-					$notification_params = array(
-						'user' => $nu,
-						'type' => 'comment',
-						'time' => time(),
-						'read' => 0,
-						'content' => array(
-							'user_who_commented' => $data->See('poster_comment_id'),
-							'user_who_created_the_status' => $data->See('status_owner_id'),
-							'user_who_owns_the_profile' => $data->See('profile_owner_id')
-						)
-					);
-
-					$notification->Create($notification_params);
-				}
-			}
-
 			/* The comment was added, build the server response */
-			$display = new BreezeDisplay($params, 'comment');
+			$display = new Breezedisplay($params, 'comment');
 
 			/* Send the data to the template */
 			$context['Breeze']['ajax']['ok'] = 'ok';
@@ -239,7 +199,7 @@ abstract class BreezeAjax
 	}
 
 	/* Handles the deletion of both comments an status */
-	public static function Delete()
+	public static function delete()
 	{
 		global $context;
 
@@ -252,15 +212,15 @@ abstract class BreezeAjax
 		/* Get the data */
 		$sa = new BreezeGlobals('post');
 		$query = BreezeQuery::getInstance();
-		$temp_id_exists = $query->GetSingleValue($sa->Raw('type') == 'status' ? 'status' : 'comments', 'id', $sa->See('id'));
+		$temp_id_exists = $query->getSingleValue($sa->getRaw('type') == 'status' ? 'status' : 'comments', 'id', $sa->getValue('id'));
 
-			switch ($sa->Raw('type'))
+			switch ($sa->getRaw('type'))
 			{
 				case 'status':
 					/* Do this only if the status wasn't deleted already */
 					if (!empty($temp_id_exists))
 					{
-						$query->DeleteStatus($sa->See('id'));
+						$query->deleteStatus($sa->getValue('id'));
 						$context['Breeze']['ajax']['ok'] = 'ok';
 					}
 
@@ -272,7 +232,7 @@ abstract class BreezeAjax
 					/* Do this only if the comment wasn't deleted already */
 					if (!empty($temp_id_exists))
 					{
-						$query->DeleteComment($sa->See('id'));
+						$query->deleteComment($sa->getValue('id'));
 						$context['Breeze']['ajax']['ok'] = 'ok';
 					}
 

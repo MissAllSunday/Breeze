@@ -57,21 +57,20 @@ class BreezeUser
 		loadtemplate('Breeze');
 
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
-		$settings = BreezeSettings::getInstance();
-		$query = BreezeQuery::getInstance();
-		$tools = new BreezeSubs();
-		$modules = new BreezeModules($context['member']['id']);
-		$globals = new BreezeGlobals('get');
+		$settings = Breeze::settings();
+		$query = Breeze::query();
+		$tools = Breeze::tools();
+		$globals = Breeze::sGlobals('get');
 
 		/* Another page already checked the permissions and if the mod is enable, but better be safe... */
-		if (!$settings->Enable('admin_settings_enable'))
+		if (!$settings->enable('admin_settings_enable'))
 			redirectexit();
 
 		/* Load this user's settings */
-		$user_settings = $query->GetUserSettings($context['member']['id']);
+		$user_settings = Breeze::userSettings($context['member']['id']);
 
 		/* Does the user even enable this? */
-		if (empty($user_settings['enable_wall']))
+		if (!$user_settings->enable('enable_wall'))
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* This user cannot see his/her own profile and cannot see any profile either */
@@ -88,14 +87,14 @@ class BreezeUser
 
 		/* Get this user's ignore list */
 		if (empty($context['member']['ignore_list']))
-			$context['member']['ignore_list'] = $query->GetUserIgnoreList($context['member']['id']);
+			$context['member']['ignore_list'] = $user_settings->getUserIgnoreList();
 
 		/* I'm sorry, you aren't allowed in here, but here's a nice static page :) */
-		if (in_array($user_info['id'], $context['member']['ignore_list']) && $user_settings['kick_ignored'] == 1)
+		if (in_array($user_info['id'], $context['member']['ignore_list']) && $user_settings->enable('kick_ignored'))
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
-		/* Display all the JavaScript bits */
-		$tools->Headers();
+		/* display all the JavaScript bits */
+		$tools->headers();
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'user_wall';
@@ -111,7 +110,8 @@ class BreezeUser
 		$users_to_load = array();
 
 		/* Load all the status */
-		$status = $query->GetStatusByProfile($context['member']['id']);
+		$status = $query->getStatusByProfile($context['member']['id']);
+
 
 		/* Collect the IDs to build their profile's lightbox and also load the comments */
 		foreach($status as $k => $s)
@@ -119,7 +119,7 @@ class BreezeUser
 			$users_to_load[] = $s['poster_id'];
 
 			/* Load the comments for each status */
-			$status[$k]['comments'] = $query->GetCommentsByStatus($s['id']);
+			$status[$k]['comments'] = $query->getCommentsByStatus($s['id']);
 
 			/* Get the user id from the comments */
 			if ($status[$k]['comments'])
@@ -131,10 +131,10 @@ class BreezeUser
 		}
 
 		/* Getting the current page. */
-		$page = $globals->Validate('page') == true ? $globals->Raw('page') : 1;
+		$page = $globals->validate('page') == true ? $globals->getRaw('page') : 1;
 
 		/* Applying pagination. */
-		$pagination = new BreezePagination($status, $page, '?action=profile;page=', '', !empty($user_settings['pagination_number']) ? $user_settings['pagination_number'] : 5, 5);
+		$pagination = new BreezePagination($status, $page, '?action=profile;page=', '', 15, 5);
 		$pagination->PaginationArray();
 		$pagtrue = $pagination->PagTrue();
 
@@ -168,22 +168,16 @@ class BreezeUser
 		unset($new_temp_array);
 		unset($users_to_load);
 
-		/* Modules */
-		$context['Breeze']['Modules'] = $modules->GetAllModules();
-
 		/* The visitor's permissions */
 		$context['Breeze']['visitor']['post_status'] = allowedTo('breeze_postStatus') || $context['user']['is_owner'];
 		$context['Breeze']['visitor']['post_comment'] = allowedTo('breeze_postComments') || $context['user']['is_owner'];
 		$context['Breeze']['visitor']['delete_status_comments'] = allowedTo('breeze_deleteStatus') || $context['user']['is_owner'];
-
-		/* Write to the log */
-		$query->WriteProfileVisit($context['member']['id'], $user_info['id']);
 	}
 
 	/* Shows a form for users to set up their wall as needed. */
 	public static function Settings()
 	{
-		global $context, $user_info, $txt, $scripturl;
+		global $context, $user_info, $scripturl;
 
 		loadtemplate('Breeze');
 
@@ -195,23 +189,24 @@ class BreezeUser
 		$already = false;
 
 		/* Load all we need */
-		$query = BreezeQuery::getInstance();
-		$text = BreezeSettings::getInstance();
-		$data = $query->GetSettingsByUser($context['member']['id']);
-		$globals = new BreezeGlobals('request');
+		$query = Breeze::query();
+		$text = Breeze::text();
+		$data = Breeze::userSettings($context['member']['id']);
+		$userSettings = $data->getUserSettings();
+		$globals = Breeze::sGlobals('request');
 
-		if (!empty($data))
+		if (!empty($userSettings))
 			$already = true;
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'user_settings';
 		$context['can_send_pm'] = allowedTo('pm_send');
-		$context['page_title'] = $text->GetText('user_settings_name');
+		$context['page_title'] = $text->getText('user_settings_name');
 		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 		$context['canonical_url'] = $scripturl . '?action=profile;area=breezesettings;u=' . $context['member']['id'];
 
-		$FormData = array(
-			'action' => 'profile;area=breezesettings;save;u='.$context['member']['id'],
+		$formData = array(
+			'action' => 'profile;area=breezesettings;save;u='. $context['member']['id'],
 			'method' => 'post',
 			'id_css' => 'user_settings_form',
 			'name' => 'user_settings_form',
@@ -220,80 +215,45 @@ class BreezeUser
 		);
 
 		/* The General settings form */
-		$form = new BreezeForm($FormData);
+		$form = new BreezeForm($formData);
 
-		$form->AddCheckBox('enable_wall', 1, array(
+		$form->addCheckBox('enable_wall', 1, array(
 			'enable_wall',
 			'enable_wall_sub'
-		), !empty($data['enable_wall']) ? true : false);
+		), !empty($userSettings['enable_wall']) ? true : false);
 
-		$form->AddCheckBox('kick_ignored', 1, array(
+		$form->addCheckBox('kick_ignored', 1, array(
 			'kick_ignored',
 			'kick_ignored_sub'
-		), !empty($data['kick_ignored']) ? true : false);
+		), !empty($userSettings['kick_ignored']) ? true : false);
 
-		$form->AddText('pagination_number', !empty($data['pagination_number']) ? $data['pagination_number'] : '', array(
-			'pagination_number',
-			'pagination_number_sub'
-		), 3, 3);
+		$form->addHr();
 
-		$form->AddHr();
-
-		$form->AddCheckBox('enable_visits_module', 1, array(
-			'enable_visits_module',
-			'enable_visits_module_sub'
-		), !empty($data['enable_visits_module']) ? true : false);
-
-		$form->AddSelect('visits_module_timeframe', array(
-			'visits_module_timeframe',
-			'visits_module_timeframe_sub'
-		), $values = array(
-				1 => array(
-					'time_hour',
-					!empty($data['visits_module_timeframe']) ? ($data['visits_module_timeframe'] == 1 ? 'selected' : false) : false
-				),
-				2 => array(
-					'time_day',
-					!empty($data['visits_module_timeframe']) ? ($data['visits_module_timeframe'] == 2 ? 'selected' : false) : false
-				),
-				3 => array(
-					'time_week',
-					!empty($data['visits_module_timeframe']) ? ($data['visits_module_timeframe'] == 3 ? 'selected' : false) : 'selected'
-				),
-				4 => array(
-					'time_month',
-					!empty($data['visits_module_timeframe']) ? ($data['visits_module_timeframe'] == 4 ? 'selected' : false) : false
-				),
-			)
-		);
-
-		$form->AddHr();
-
-		$form->AddSubmitButton('save');
+		$form->addSubmitButton('save');
 
 		/* Send the form to the template */
-		$context['Breeze']['UserSettings']['Form'] = $form->Display();
+		$context['Breeze']['UserSettings']['Form'] = $form->display();
 
 		/* Saving? */
-		if ($globals->Validate('save') == true)
+		if ($globals->validate('save') == true)
 		{
-			/* Kill the Settings cache */
-			$query->KillCache('Settings');
+			/* Kill the  cache */
+			$query->killCache('members');
 
-			$temp = $form->ReturnElementNames();
+			$temp = $form->returnElementNames();
 			$save_data = array();
-			$save_data['user_id'] = $context['member']['id'];
+			$save_data['id_member'] = $context['member']['id'];
 
 			foreach ($temp as &$type)
 				$save_data[$type] = !empty($_POST[$type]) ? (int) $_POST[$type] : 0;
 
 			/* If the data already exist, update... */
 			if ($already == true)
-				$query->UpdateUserSettings($save_data);
+				$data->updateUserSettings($save_data);
 
 			/* ...if not, insert. */
 			else
-				$query->InsertUserSettings($save_data);
+				$data->insertUserSettings($save_data);
 
 			redirectexit('action=profile;area=breezesettings;u='.$context['member']['id']);
 		}
@@ -307,13 +267,13 @@ class BreezeUser
 
 		/* Load all we need */
 		$query = BreezeQuery::getInstance();
-		$text = BreezeSettings::getInstance();
+		$text = Breeze::text();
 		$data = $query->GetSettingsByUser($context['member']['id']);
 		$globals = new BreezeGlobals('request');
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'user_notifications';
-		$context['page_title'] = $text->GetText('noti_title');
+		$context['page_title'] = $text->getText('noti_title');
 		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 		$context['canonical_url'] = $scripturl . '?action=profile;area=notifications;u=' . $context['member']['id'];
 	}
@@ -331,25 +291,25 @@ class BreezeUser
 
 		/* Load all we need */
 		$buddies = new BreezeBuddy();
-		$text = BreezeSettings::getInstance();
+		$text = Breeze::text();
 		$globals = new BreezeGlobals('request');
 		$query = BreezeQuery::getInstance();
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'Breeze_buddy_list';
-		$context['page_title'] = $text->GetText('noti_title');
+		$context['page_title'] = $text->getText('noti_title');
 		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 		$context['canonical_url'] = $scripturl . '?action=profile;area=breezebuddies;u=' . $context['member']['id'];
 
 		/* Show a nice message for confirmation */
-		if ($globals->Validate('inner') == true)
-			switch ($globals->Raw('inner'))
+		if ($globals->validate('inner') == true)
+			switch ($globals->getRaw('inner'))
 			{
 				case 1:
-					$context['Breeze']['inner_message'] = $text->GetText('buddyrequest_confirmed_inner_message');
+					$context['Breeze']['inner_message'] = $text->getText('buddyrequest_confirmed_inner_message');
 					break;
 				case 2:
-					$context['Breeze']['inner_message'] = $text->GetText('buddyrequest_confirmed_inner_message_de');
+					$context['Breeze']['inner_message'] = $text->getText('buddyrequest_confirmed_inner_message_de');
 					break;
 				default:
 					$context['Breeze']['inner_message'] = '';
@@ -362,21 +322,21 @@ class BreezeUser
 		/* Send the buddy request(s) to the template */
 		$context['Breeze']['Buddy_Request'] = $buddies->ShowBuddyRequests($context['member']['id']);
 
-		if ($globals->Validate('from') == true && $globals->Validate('confirm') == true && $user_info['id'] != $globals->See('from'))
+		if ($globals->validate('from') == true && $globals->validate('confirm') == true && $user_info['id'] != $globals->getValue('from'))
 		{
 			/* Load Subs-Post to use sendpm */
 			Breeze::Load('Subs-Post');
 
-			$user_info['buddies'][] = $globals->See('from');
-			$context['Breeze']['Buddy_Request'][$globals->See('from')]['content']->from_buddies[] = $user_info['id'];
+			$user_info['buddies'][] = $globals->getValue('from');
+			$context['Breeze']['Buddy_Request'][$globals->getValue('from')]['content']->from_buddies[] = $user_info['id'];
 
 			/* Update both users buddy array. */
 			updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
-			updateMemberData($globals->See('from'), array('buddy_list' => implode(',', $context['Breeze']['Buddy_Request'][$globals->See('from')]['content']->from_buddies)));
+			updateMemberData($globals->getValue('from'), array('buddy_list' => implode(',', $context['Breeze']['Buddy_Request'][$globals->getValue('from')]['content']->from_buddies)));
 
 			/* Send a pm to the user */
 			$recipients = array(
-				'to' => array($globals->See('from')),
+				'to' => array($globals->getValue('from')),
 				'bcc' => array(),
 			);
 			$from = array(
@@ -386,13 +346,13 @@ class BreezeUser
 			);
 
 			/* @todo let the user to send a customized message/title */
-			$subject = $text->GetText('buddyrequest_confirmed_subject');
-			$message = sprintf($text->GetText('buddyrequest_confirmed_message'), $user_info['name']);
+			$subject = $text->getText('buddyrequest_confirmed_subject');
+			$message = sprintf($text->getText('buddyrequest_confirmed_message'), $user_info['name']);
 
 			sendpm($recipients, $subject, $message, false, $from);
 
 			/* Destroy the notification */
-			$query->DeleteNotification($globals->Raw('confirm'));
+			$query->DeleteNotification($globals->getRaw('confirm'));
 
 
 			/* Redirect back to the profile buddy request page*/
@@ -400,10 +360,10 @@ class BreezeUser
 		}
 
 		/* Declined? */
-		elseif ($globals->Validate('decline') == true)
+		elseif ($globals->validate('decline') == true)
 		{
 			/* Delete the notification */
-			$query->DeleteNotification($globals->Raw('decline'));
+			$query->DeleteNotification($globals->getRaw('decline'));
 
 			/* Redirect back to the profile buddy request page*/
 			redirectexit('action=profile;area=breezebuddies;inner=2;u=' . $user_info['id']);
@@ -417,11 +377,11 @@ class BreezeUser
 
 		loadtemplate('BreezeBuddy');
 
-		$text = BreezeSettings::getInstance();
+		$text = Breeze::text();
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'Breeze_request_buddy_message_send';
-		$context['page_title'] = $text->GetText('noti_title');
+		$context['page_title'] = $text->getText('noti_title');
 		$context['canonical_url'] = $scripturl . '?action=breezebuddyrequest';
 	}
 }

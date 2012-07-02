@@ -74,45 +74,45 @@ if (!defined('SMF'))
 			$this->buffer = '';
 		}
 
-		public function ReturnElementNames()
+		public function returnElementNames()
 		{
-			$this->Returnelementsnames = array();
+			$this->returnelementsnames = array();
 
 			if (!empty($this->elements))
 				foreach ($this->elements as $e)
 					if (isset($e['name']) && !empty($e['name']))
-						$this->Returnelementsnames[$e['name']] = $e['name'];
+						$this->returnelementsnames[$e['name']] = $e['name'];
 
-			return $this->Returnelementsnames;
+			return $this->returnelementsnames;
 		}
 
-		private function AddElement($element)
+		private function addElement($element)
 		{
-			$plus = $this->CountElements();
-			$element['id'] = $this->CountElements();
+			$plus = $this->countElements();
+			$element['id'] = $this->countElements();
 			$this->elements[$element['id']] = $element;
 		}
 
-		private function CountElements()
+		private function countElements()
 		{
 			return count($this->elements);
 		}
 
-		private function GetElement($id)
+		private function getElement($id)
 		{
 			return $this->elements[$id];
 		}
 
-		private function GetNextElement()
+		private function getNextElement()
 		{
-			if( $this->status == $this->CountElements())
+			if( $this->status == $this->countElements())
 				$this->status = 0;
 
-			$element = $this->GetElement($this->status);
+			$element = $this->getElement($this->status);
 			$this->status++;
 		}
 
-		function AddSelect($name, $text, $values = array())
+		function addSelect($name, $text, $values = array())
 		{
 			$element['type'] = 'select';
 			$element['name'] = $name;
@@ -124,10 +124,10 @@ if (!defined('SMF'))
 			foreach($values as $k => $v)
 				$element['values'][$k] = '<option value="' .$k. '" '. (isset($v[1]) && $v[1] == 'selected' ? 'selected="selected"' : '') .'>'. $this->text['BreezeMod_user_settings_'.$v[0]] .'</option>';
 
-			return $this->AddElement($element);
+			return $this->addElement($element);
 		}
 
-		function AddCheckBox($name,$value, $text, $checked = false)
+		function addCheckBox($name,$value, $text, $checked = false)
 		{
 			$element['type'] = 'checkbox';
 			$element['name'] = $name;
@@ -136,10 +136,10 @@ if (!defined('SMF'))
 			$element['text'] = $text;
 			$element['html'] = '<input type="'. $element['type'] .'" name="'. $element['name'] .'" id="'. $element['name'] .'" value="'. (int)$element['value'] .'" '. $element['checked'] .' class="input_check" />';
 
-			return $this->AddElement($element);
+			return $this->addElement($element);
 		}
 
-		function AddText($name,$value, $text, $size = false, $maxlength = false)
+		function addText($name,$value, $text, $size = false, $maxlength = false)
 		{
 			$element['type'] = 'text';
 			$element['name'] = $name;
@@ -149,10 +149,10 @@ if (!defined('SMF'))
 			$element['maxlength'] = empty($maxlength) ? 'maxlength="20"' : 'maxlength="' .$maxlength. '"';
 			$element['html'] = '<input type="'. $element['type'] .'" name="'. $element['name'] .'" id="'. $element['name'] .'" value="'. $element['value'] .'" '. $element['size'] .' '. $element['maxlength'] .' class="input_text" />';
 
-			return $this->AddElement($element);
+			return $this->addElement($element);
 		}
 
-		function AddTextArea($name,$value, $text)
+		function addTextArea($name,$value, $text)
 		{
 			$element['type'] = 'textarea';
 			$element['name'] = $name;
@@ -160,41 +160,41 @@ if (!defined('SMF'))
 			$element['text'] = $text;
 			$element['html'] = '<'. $element['type'] .' name="'. $element['name'] .'" id="'. $element['name'] .'">'. $element['value'] .'</'. $element['type'] .'>';
 
-			return $this->AddElement($element);
+			return $this->addElement($element);
 		}
 
-		function AddHiddenField($name,$value)
+		function addHiddenField($name,$value)
 		{
 			$element['type'] = 'hidden';
 			$element['name'] = $name;
 			$element['value'] = $value;
 			$element['html'] = '<input type="'. $element['type'] .'" name="'. $element['name'] .'" id="'. $element['name'] .'" value="'. $element['value'] .'" />';
 
-			return $this->AddElement($element);
+			return $this->addElement($element);
 		}
 
-		function AddSubmitButton($value)
+		function addSubmitButton($value)
 		{
 			$element['type'] = 'submit';
 			$element['value']= $this->text[$value];
 			$element['html'] = '<input class="button_submit" type="'. $element['type'] .'"  value="'. $element['value'] .'" />';
 
-			return $this->AddElement($element);
+			return $this->addElement($element);
 		}
 
-		function AddHr()
+		function addHr()
 		{
 			$element['type'] = 'hr';
 			$element['html'] = '<hr />';
 
-			return $this->AddElement($element);
+			return $this->addElement($element);
 		}
 
-		function Display()
+		function display()
 		{
 			$this->buffer = '<form action="'. $this->action .'" method="'. $this->method .'" id="'. $this->id_css .'" class="'. $this->class_css .'"  '. $this->onsubmit .' >';
 			$this->buffer .= '<dl class="settings">';
-			$element = $this->GetNextElement();
+			$element = $this->getNextElement();
 
 			foreach($this->elements as $el)
 			{

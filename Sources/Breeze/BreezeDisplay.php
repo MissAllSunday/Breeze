@@ -1,7 +1,7 @@
 <?php
 
 /**
- * BreezeDisplay
+ * Breezedisplay
  *
  * The purpose of this file is to create proper html based on the type and the info it got.
  * @package Breeze mod
@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class BreezeDisplay
+class Breezedisplay
 {
 	private $ReturnArray;
 	private $params;
@@ -56,14 +56,14 @@ class BreezeDisplay
 			$this->params = $params;
 
 		$this->type = $type;
-		$this->tools = new BreezeSubs();
-		$this->text = BreezeSettings::getInstance();
+		$this->tools = Breeze::tools();
+		$this->text = Breeze::text();
 
 		/* The visitor's permissions */
 		$this->permissions = array(
 			'poststatus' => allowedTo('breeze_postStatus'),
 			'postcomments' => allowedTo('breeze_postComments'),
-			'deletestatus' => allowedTo('breeze_deleteStatus')
+			'deleteStatus' => allowedTo('breeze_deleteStatus')
 		);
 	}
 
@@ -72,7 +72,7 @@ class BreezeDisplay
 		global $scripturl, $user_info;
 
 		$this->UserInfo = BreezeUserInfo::Profile($this->params['poster_id'], true);
-		$this->params['time'] = $this->tools->TimeElapsed($this->params['time']);
+		$this->params['time'] = $this->tools->timeElapsed($this->params['time']);
 
 		switch ($this->type)
 		{
@@ -91,8 +91,8 @@ class BreezeDisplay
 					<div class="breeze_options"><span class="time_elapsed">'. $this->params['time'] .' </span>';
 
 					/* Delete link */
-					if ($this->permissions['deletestatus'])
-						$this->ReturnArray .= '| <a href="javascript:void(0)" id="'. $this->params['id'] .'" class="breeze_delete_status">'. $this->text->GetText('general_delete') .'</a>';
+					if ($this->permissions['deleteStatus'])
+						$this->ReturnArray .= '| <a href="javascript:void(0)" id="'. $this->params['id'] .'" class="breeze_delete_status">'. $this->text->getText('general_delete') .'</a>';
 
 					$this->ReturnArray .= '</div>
 					<hr />
@@ -102,14 +102,14 @@ class BreezeDisplay
 
 						/* New status don't have comments... */
 
-						/* Display the new comments ^o^ */
+						/* display the new comments ^o^ */
 						$this->ReturnArray .= '
 						<li id="breeze_load_image_comment_'. $this->params['id'] .'" style="margin:auto; text-align:center;"></li>';
 
 						/* Close the list */
 						$this->ReturnArray .= '</ul>';
 
-						/* Display the form for new comments */
+						/* display the form for new comments */
 						if ($this->permissions['postcomments'])
 							$this->ReturnArray .= '
 							<span><form action="'. $scripturl. '?action=breezeajax;sa=postcomment" method="post" name="formID_'. $this->params['id'] .'" id="formID_'. $this->params['id'] .'">

@@ -59,7 +59,7 @@ class BreezeModules
 		/* This is fugly, I need to find a better way to handle modules, maybe a separate folder? */
 		$array = array();
 		$temp = get_class_methods('BreezeModules');
-		$temp = BreezeSubs::Remove($temp, array(
+		$temp = BreezeSubs::remove($temp, array(
 			$this->user_settings['enable_visits_module'] ? '' : 'enable_visits_module',
 			'__construct',
 			'GetAllModules'
@@ -75,7 +75,7 @@ class BreezeModules
 	{
 		/* Set this as empty */
 		$array = array(
-			'title' => $this->text->GetText('modules_enable_visitors_title'),
+			'title' => $this->text->getText('modules_enable_visitors_title'),
 			'data' => ''
 		);
 

@@ -57,41 +57,41 @@ class BreezeBuddy
 		$settings = BreezeSettings::getInstance();
 
 		/* There's gotta be an user... */
-		if ($sa->Validate('u') == false)
+		if ($sa->validate('u') == false)
 			fatal_lang_error('no_access', false);
 
 		/* Problems in paradise? */
-		if (in_array($sa->Raw('u'), $user_info['buddies']))
+		if (in_array($sa->getRaw('u'), $user_info['buddies']))
 		{
-			$user_info['buddies'] = array_diff($user_info['buddies'], array($sa->Raw('u')));
+			$user_info['buddies'] = array_diff($user_info['buddies'], array($sa->getRaw('u')));
 
 			/* Do the update */
 			updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
 
 			/* Done here, let's redirect the user to the profile page */
-			redirectexit('action=profile;u=' . $sa->Raw('u'));
+			redirectexit('action=profile;u=' . $sa->getRaw('u'));
 		}
 
 		/* Before anything else, let's ask the user shall we? */
-		elseif ($user_info['id'] != $sa->Raw('u'))
+		elseif ($user_info['id'] != $sa->getRaw('u'))
 		{
 			/* Load the users link */
 			$user_load = array(
 				$user_info['id'],
-				$sa->Raw('u')
+				$sa->getRaw('u')
 			);
 
 			/* Load all the members up. */
 			$temp_users_load = BreezeSubs::LoadUserInfo($user_load);
 
 			$params = array(
-				'user' => $sa->Raw('u'),
+				'user' => $sa->getRaw('u'),
 				'type' => 'buddy',
 				'time' => time(),
 				'read' => 0,
 				'content' => array(
-					'message' => sprintf($settings->GetText('buddy_messagerequest_message'), $temp_users_load[$user_info['id']]['link']),
-					'url' => $scripturl .'?action=profile;area=breezebuddies;u='. $sa->Raw('u'),
+					'message' => sprintf($settings->getText('buddy_messagerequest_message'), $temp_users_load[$user_info['id']]['link']),
+					'url' => $scripturl .'?action=profile;area=breezebuddies;u='. $sa->getRaw('u'),
 					'from_link' => $temp_users_load[$user_info['id']]['link'],
 					'from_id' => $user_info['id'],
 					'from_buddies' => $user_info['buddies']
@@ -102,7 +102,7 @@ class BreezeBuddy
 			$notification->Create($params);
 
 			/* Show a nice message saying the user must approve the friendship request */
-			redirectexit('action=breezebuddyrequest;u=' . $sa->Raw('u'));
+			redirectexit('action=breezebuddyrequest;u=' . $sa->getRaw('u'));
 		}
 	}
 

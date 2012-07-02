@@ -55,11 +55,11 @@ class BreezeParser
 		);
 	}
 
-	public function Display($string, $mention_info = false)
+	public function display($string, $mention_info = false)
 	{
 		$this->s = $string;
 		$temp = get_class_methods('BreezeParser');
-		$temp = BreezeSubs::Remove($temp, array('__construct', 'Display'), false);
+		$temp = BreezeSubs::remove($temp, array('__construct', 'display'), false);
 
 		/* Used to notify the user */
 		if ($mention_info)
@@ -75,7 +75,7 @@ class BreezeParser
 	}
 
 	/* Convert any valid urls on to links */
-	private function UrltoLink($s)
+	private function urltoLink($s)
 	{
 		if (preg_match_all($this->regex['url'], $s, $matches))
 			foreach($matches[0] as $m)
@@ -84,7 +84,7 @@ class BreezeParser
 		return $s;
 	}
 
-	private function Mention($s)
+	private function mention($s)
 	{
 		global $memberContext, $context, $user_info, $scripturl;
 
@@ -113,7 +113,7 @@ class BreezeParser
 							'time' => time(),
 							'read' => 0,
 							'content' => array(
-								'message' => $this->mention_info[1] == $this->mention_info[0] ? sprintf($this->settings->GetText('mention_message_own_wall'), $temp_users_load[$this->mention_info[1]]['link']) : sprintf($this->settings->GetText('mention_message'), $temp_users_load[$this->mention_info[1]]['link'], $temp_users_load[$this->mention_info[0]]['link']),
+								'message' => $this->mention_info[1] == $this->mention_info[0] ? sprintf($this->settings->getText('mention_message_own_wall'), $temp_users_load[$this->mention_info[1]]['link']) : sprintf($this->settings->getText('mention_message'), $temp_users_load[$this->mention_info[1]]['link'], $temp_users_load[$this->mention_info[0]]['link']),
 								'url' => $scripturl .'?action=profile;area=breezenoti;u='. $user[0],
 								'from_link' => $temp_users_load[$this->mention_info[1]]['link'],
 								'from_id' => $temp_users_load[$this->mention_info[1]]['id'],
