@@ -40,17 +40,18 @@ if (!defined('SMF'))
 
 class BreezeNotifications
 {
-	protected $types = array();
+	protected $_settings = array();
 	protected $params = array();
-	private $user = 0;
+	protected $_user = 0;
 	private $settings = '';
-	private $query = '';
-	private $ReturnArray = array();
-	private $usersData = array();
+	private $_query;
+	protected $_returnArray = array();
+	protected $_usersData = array();
+	protected $_types = array();
 
 	function __construct()
 	{
-		$this->types = array(
+		$this->_types = array(
 			'comment',
 			'status',
 			'like',
@@ -59,8 +60,8 @@ class BreezeNotifications
 		);
 
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
-		$this->settings = BreezeSettings::getInstance();
-		$this->query = BreezeQuery::getInstance();
+		$this->_settings = Breeze::settings();
+		$this->_query = Breeze::query();
 	}
 
 	public function Create($params)
@@ -71,7 +72,7 @@ class BreezeNotifications
 		$double_request = false;
 
 		/* if the type is buddy then let's do a check to avoid duplicate entries */
-		if (!empty($params) && in_array($params['type'], $this->types))
+		if (!empty($params) && in_array($params['type'], $this->_types))
 		{
 			/* Load all the Notifications */
 			$temp = $this->query->GetNotifications();
@@ -85,7 +86,7 @@ class BreezeNotifications
 		if ($double_request)
 			fatal_lang_error('BreezeMod_buddyrequest_error_doublerequest', false);
 
-		elseif (!empty($params) && in_array($params['type'], $this->types) && !$double_request)
+		elseif (!empty($params) && in_array($params['type'], $this->_types) && !$double_request)
 		{
 			$this->params = $params;
 
@@ -128,9 +129,9 @@ $(document).ready(function()
 
 		/* Check for the type and act in accordance */
 		foreach($this->all as $all)
-			if (in_array($all['type'], $this->types))
+			if (in_array($all['type'], $this->_types))
 			{
-				$call = 'do' . ucfirst($this->types[$all['type']]);
+				$call = 'do' . ucfirst($this->_types[$all['type']]);
 				$context['insert_after_template'] .= $this->$call($all) == false ? '' : $this->$call($all);
 			}
 

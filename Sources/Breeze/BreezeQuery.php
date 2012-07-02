@@ -67,6 +67,11 @@ class BreezeQuery
 				'table' => 'members',
 				'property' => '_members',
 			),
+			'noti' => array(
+				'name' => 'notifications',
+				'table' => 'breeze_notifications',
+				'property' => '_notifications',
+			),
 		);
 	}
 
@@ -320,7 +325,7 @@ class BreezeQuery
 
 	public function getStatus()
 	{
-		return $this->_status ? $this->_status : $this->status();
+		return !empty($this->_status) ? $this->_status : $this->status();
 	}
 
 	/*
@@ -625,16 +630,16 @@ class BreezeQuery
 	 * @global array $smcFunc the "handling DB stuff" var of SMF
 	 * @return array a very big associative array with the notification ID as key
 	 */
-	protected function Notifications()
+	protected function notifications()
 	{
 		global $smcFunc;
 
 		/* Use the cache please... */
-		if (($this->Notifications = cache_get_data('Breeze:Notifications', 120)) == null)
+		if (($this->_notifications = cache_get_data('Breeze:'. $this->_tables['noti']['name'], 120)) == null)
 		{
 			$result = $smcFunc['db_query']('', '
 				SELECT *
-				FROM {db_prefix}breeze_notifications
+				FROM {db_prefix}'.  $this->_tables['noti']['table'] .'
 				',
 				array()
 			);
@@ -642,32 +647,32 @@ class BreezeQuery
 			/* Populate the array like a boss! */
 			while ($row = $smcFunc['db_fetch_assoc']($result))
 			{
-				$this->Notifications[$row['id']] = array(
+				$this->_notifications[$row['id']] = array(
 					'id' => $row['id'],
 					'user' => $row['user'],
 					'type' => $row['type'],
 					'time' => $row['time'],
 					'read' => $row['read'],
-					'content' => json_decode($row['content'])
+					'content' => json_decode($row['content'], true)
 				);
 			}
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:Notifications', $this->Notifications, 120);
+			cache_put_data('Breeze:'. $this->_tables['noti']['name'], $this->_notifications, 120);
 		}
 
-		return $this->Notifications;
+		return $this->_notifications;
 	}
 
 	public function getNotifications()
 	{
-		return $this->Notifications ? $this->Notifications : $this->Notifications();
+		return !empty($this->_notifications) ? $this->_notifications : $this->notifications();
 	}
 
 	public function InsertNotification($array)
 	{
 		/* We dont need this anymore */
-		$this->killCache('Notifications');
+		$this->killCache($this->_tables['noti']['name']);
 
 		/* Insert! */
 		$data = array(
@@ -682,13 +687,15 @@ class BreezeQuery
 			'id'
 		);
 
-		$this->query('notifications')->insertData($data, $array, $indexes);
+		$this->query($this->_tables['noti']['name'])->insertData($data, $array, $indexes);
 	}
 
-	public function MarkAsReadNotification($id)
+	public function markAsReadNotification($id)
 	{
 		/* We dont need this anymore */
-		$this->killCache('Notifications');
+		$this->killCache($this->_tables['noti']['name']);
+
+		$markRead = $this->query($this->_tables['noti']['name']);
 
 		/* Mark as read */
 		$params = array(
@@ -701,14 +708,16 @@ class BreezeQuery
 			'id' => $id
 		);
 
-		$this->query('notifications')->params($params, $data);
-		$this->query('notifications')->updateData();
+		$markRead->params($params, $data);
+		$markRead->updateData();
 	}
 
-	public function DeleteNotification($id)
+	public function deleteNotification($id)
 	{
 		/* We dont need this anymore */
-		$this->killCache('Notifications');
+		$this->killCache($this->_tables['noti']['name']);
+
+		$delete = $this->query($this->_tables['noti']['name']);
 
 		/* Delete! */
 		$params = array(
@@ -719,18 +728,18 @@ class BreezeQuery
 			'id' => $id
 		);
 
-		$this->query('notifications')->params($params, $data);
-		$this->query('notifications')->deleteData();
+		$delete->params($params, $data);
+		$delete->deleteData();
 	}
 
 	public function getNotificationByUser($user)
 	{
-		return $this->getReturn('notifications', 'user', $user);
+		return $this->getReturn($this->_tables['noti']['name'], 'user', $user);
 	}
 
 	public function getNotificationByType($type)
 	{
-		return $this->getReturn('notifications', 'type', $type);
+		return $this->getReturn($this->_tables['noti']['name'], 'type', $type);
 	}
 }
 
