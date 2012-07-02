@@ -181,46 +181,6 @@ abstract class BreezeAjax
 
 			$params['id'] = $new_comment['comments_id'];
 
-			/* Send out the notifications first thing to do, is to collect all the users who had posted on this status */
-			$temp_comments = $query->getCommentsByStatus($data->getValue('status_id'));
-
-			/* Create the users array */
-			foreach($temp_comments as $c)
-				$notification_users[] = $c['poster_id'];
-
-			/* Load the user's info */
-			$users_to_load = array(
-				$data->getValue('poster_comment_id'),
-				$data->getValue('status_owner_id'),
-				$data->getValue('profile_owner_id')
-			);
-			$users_data = BreezeSubs::LoadUserInfo($users_to_load);
-
-			$user_who_commented = $users_data[$data->getValue('poster_comment_id')];
-			$user_who_created_the_status = $users_data[$data->getValue('status_owner_id')];
-			$user_who_owns_the_profile = $users_data[$data->getValue('profile_owner_id')];
-
-			/* Send it already! */
-			if (!empty($notification_users))
-			{
-				foreach($notification_users as $nu)
-				{
-					$notification_params = array(
-						'user' => $nu,
-						'type' => 'comment',
-						'time' => time(),
-						'read' => 0,
-						'content' => array(
-							'user_who_commented' => $data->getValue('poster_comment_id'),
-							'user_who_created_the_status' => $data->getValue('status_owner_id'),
-							'user_who_owns_the_profile' => $data->getValue('profile_owner_id')
-						)
-					);
-
-					$notification->Create($notification_params);
-				}
-			}
-
 			/* The comment was added, build the server response */
 			$display = new Breezedisplay($params, 'comment');
 

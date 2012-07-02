@@ -57,14 +57,13 @@ class BreezeUser
 		loadtemplate('Breeze');
 
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
-		$settings = BreezeSettings::getInstance();
+		$settings = Breeze::settings();
 		$query = Breeze::query();
-		$tools = new BreezeSubs();
-		$modules = new BreezeModules($context['member']['id']);
-		$globals = new BreezeGlobals('get');
+		$tools = Breeze::tools();
+		$globals = Breeze::sGlobals('get');
 
 		/* Another page already checked the permissions and if the mod is enable, but better be safe... */
-		if (!$settings->Enable('admin_settings_enable'))
+		if (!$settings->enable('admin_settings_enable'))
 			redirectexit();
 
 		/* Load this user's settings */
@@ -113,8 +112,6 @@ class BreezeUser
 		/* Load all the status */
 		$status = $query->getStatusByProfile($context['member']['id']);
 
-		/* Load the comments */
-		$comments = $query->getComments();
 
 		/* Collect the IDs to build their profile's lightbox and also load the comments */
 		foreach($status as $k => $s)
@@ -122,7 +119,7 @@ class BreezeUser
 			$users_to_load[] = $s['poster_id'];
 
 			/* Load the comments for each status */
-			$status[$k]['comments'] = $query->getCommentsByStatus($s['id'], $comments);
+			$status[$k]['comments'] = $query->getCommentsByStatus($s['id']);
 
 			/* Get the user id from the comments */
 			if ($status[$k]['comments'])
@@ -137,7 +134,7 @@ class BreezeUser
 		$page = $globals->validate('page') == true ? $globals->getRaw('page') : 1;
 
 		/* Applying pagination. */
-		$pagination = new BreezePagination($status, $page, '?action=profile;page=', '', 5, 5);
+		$pagination = new BreezePagination($status, $page, '?action=profile;page=', '', 15, 5);
 		$pagination->PaginationArray();
 		$pagtrue = $pagination->PagTrue();
 

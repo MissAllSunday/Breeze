@@ -86,7 +86,7 @@ class BreezeUserSettings
 
 	public function getUserIgnoreList()
 	{
-		return $this->_data['pm_ignore_list'];
+		return array($this->_data['pm_ignore_list']);
 	}
 
 	public function updateUserSettings($save_data)

@@ -143,6 +143,9 @@ class BreezeQuery
 	 */
 	private function getReturn($type, $row, $value, $single = false)
 	{
+		/* Cleaning */
+		$this->resetTemp();
+
 		/* Get the data */
 		$this->switchData($type);
 
@@ -394,7 +397,7 @@ class BreezeQuery
 		$gSettings = Breeze::settings();
 
 		/* Use the cache please... */
-		if (($this->comments = cache_get_data('Breeze:'. $this->_tables['comments']['name'], 120)) == null)
+		if (($this->_comments = cache_get_data('Breeze:'. $this->_tables['comments']['name'], 120)) == null)
 		{
 			/* Load all the comments, set a limit if things get complicated */
 			$result = $smcFunc['db_query']('', '
@@ -453,17 +456,21 @@ class BreezeQuery
 		return $this->getReturn($this->_tables['comments']['name'], 'profile_owner_id', $id);
 	}
 
-	public function getCommentsByStatus($id, $comments)
+	public function getCommentsByStatus($id)
 	{
 		/* Do not call the Comments method for every status, use it only once */
-		$this->resetTemp();
+		$temp = array();
 		$temp2 = array();
+		$comments = $this->getComments();
 
-		$this->_temp = $comments;
+		if (!empty($comments))
+		{
+			$temp = $comments;
 
-		foreach($this->_temp as $c)
-			if ($c['status_id'] == $id)
-				$temp2[$c['id']] = $c;
+			foreach($temp as $c)
+				if ($c['status_id'] == $id)
+					$temp2[$c['id']] = $c;
+		}
 
 		return $temp2;
 	}
