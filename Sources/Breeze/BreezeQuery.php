@@ -669,7 +669,7 @@ class BreezeQuery
 		return !empty($this->_notifications) ? $this->_notifications : $this->notifications();
 	}
 
-	public function InsertNotification($array)
+	public function insertNotification($array)
 	{
 		/* We dont need this anymore */
 		$this->killCache($this->_tables['noti']['name']);
@@ -677,6 +677,7 @@ class BreezeQuery
 		/* Insert! */
 		$data = array(
 			'user' => 'int',
+			'user_to' => 'int',
 			'type' => 'string',
 			'time' => 'int',
 			'read' => 'int',

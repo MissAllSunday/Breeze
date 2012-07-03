@@ -41,16 +41,21 @@ if (!defined('SMF'))
 class BreezeNotifications
 {
 	protected $_settings = array();
-	protected $params = array();
+	protected $_params = array();
 	protected $_user = 0;
-	private $settings = '';
 	private $_query;
 	protected $_returnArray = array();
 	protected $_usersData = array();
 	protected $_types = array();
+	protected $_currentUser;
 
 	function __construct()
 	{
+		global $user_info;
+
+		/* Current user */
+		$this->_currentUser = $user_info['id'];
+
 		$this->_types = array(
 			'comment',
 			'status',
@@ -64,48 +69,73 @@ class BreezeNotifications
 		$this->_query = Breeze::query();
 	}
 
-	public function Create($params)
+	/* Special case for quick and dirty queries */
+	protected function query($table)
 	{
-		global $user_info;
+		return new BreezeQuery($table);
+	}
 
-		/* Set this as false by default */
-		$double_request = false;
-
-		/* if the type is buddy then let's do a check to avoid duplicate entries */
-		if (!empty($params) && in_array($params['type'], $this->_types))
-		{
-			/* Load all the Notifications */
-			$temp = $this->query->GetNotifications();
-
-			if (!empty($temp))
-				foreach ($temp as $t)
-					if ($t['user'] == $params['user'] && $t['content']->from_id == $user_info['id'] && $t['type'] != 'mention')
-						$double_request = true;
-		}
-
-		if ($double_request)
-			fatal_lang_error('BreezeMod_buddyrequest_error_doublerequest', false);
-
+	public function create($params)
+	{
 		elseif (!empty($params) && in_array($params['type'], $this->_types) && !$double_request)
 		{
-			$this->params = $params;
+			$this->_params = $params;
 
 			/* Convert to a json string */
-			$this->params['content'] = json_encode($this->params['content']);
+			$this->_params['content'] = json_encode($this->_params['content']);
 
-			$this->query->InsertNotification($this->params);
+			$this->query->insertNotification($this->_params);
 		}
 
 		else
 			return false;
 	}
 
-	public function Count()
+	public function createMention($params)
 	{
-		return count($this->query->GetNotifications());
+
 	}
 
-	protected function GetByUser($user)
+	public function createBuddy($params)
+	{
+		/* Set this as false by default */
+		$double_request = false;
+
+		$tempQuery = $this->query('notifications');
+
+		/* if the type is buddy then let's do a check to avoid duplicate entries */
+		if (!empty($params) && in_array($params['type'], $this->_types))
+		{
+			/* Doing a quick query will be better than loading the entire notifications array */
+			$tempParams = array (
+				'rows' => 'id',
+				'where' => 'user = {int:user} AND user_to = {int:user_to}',
+			);
+			$tempData = array(
+				'user' => $this->_currentUser,
+				'user_to' => $params['user_to'],
+			);
+			$tempQuery->params($this->_paramsAll, $this->_data);
+			$tempQuery->getData($this->_rows['id_user']);
+
+			$return = $this->_db->dataResult();
+
+			if (!empty($temp))
+				foreach ($temp as $t)
+					if ($t['user'] == $params['user'] && $t['content']['from_id'] == $this->_currentUser && $t['type'] != 'mention')
+						$double_request = true;
+		}
+
+		if ($double_request)
+			fatal_lang_error('BreezeMod_buddyrequest_error_doublerequest', false);
+	}
+
+	public function count()
+	{
+		return count($this->query->getNotifications());
+	}
+
+	protected function getByUser($user)
 	{
 		/* Dont even bother... */
 		if (empty($user))
@@ -113,14 +143,14 @@ class BreezeNotifications
 
 		$user = (int) $user;
 
-		return $this->query->GetNotificationByUser($user);
+		return $this->query->getNotificationByUser($user);
 	}
 
 	public function doStream($user)
 	{
 		global $context;
 
-		$this->all = $this->GetByUser($user);
+		$this->all = $this->getByUser($user);
 
 		$context['insert_after_template'] .= '
 		<script type="text/javascript"><!-- // --><![CDATA[
@@ -145,21 +175,21 @@ $(document).ready(function()
 	{
 		global $user_info;
 
-		if ($noti['content']['user_who_commented'] == $user_info['id'])
+		if ($noti['content']['user_who_commented'] == $this->_currentUser)
 			return false;
 
-		if ($noti['content']['user_who_created_the_status'] == $user_info['id'])
+		if ($noti['content']['user_who_created_the_status'] == $this->_currentUser)
 			$message = '$.sticky(\''. JavaScriptEscape($s['content']->message) .'\');';
 
 		return $message;
 	}
 
-	protected function Delete($id)
+	protected function delete($id)
 	{
-		$this->query->DeleteNotification($id);
+		$this->query->deleteNotification($id);
 	}
 
-	protected function MarkAsRead($id)
+	protected function markAsRead($id)
 	{
 		$this->query->MarkAsReadNotification($id);
 	}
