@@ -653,7 +653,7 @@ class BreezeQuery
 					'type' => $row['type'],
 					'time' => $row['time'],
 					'read' => $row['read'],
-					'content' => json_decode($row['content'], true)
+					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
 				);
 			}
 
@@ -734,6 +734,11 @@ class BreezeQuery
 	}
 
 	public function getNotificationByUser($user)
+	{
+		return $this->getReturn($this->_tables['noti']['name'], 'user_to', $user);
+	}
+	
+	public function getNotificationByUserSender($user)
 	{
 		return $this->getReturn($this->_tables['noti']['name'], 'user', $user);
 	}

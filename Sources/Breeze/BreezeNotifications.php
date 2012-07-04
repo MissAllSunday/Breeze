@@ -79,7 +79,13 @@ class BreezeNotifications
 	{
 		/* We have to make sure, we just have to! */
 		if (!empty($params) && in_array($params['type'], $this->_types))
+		{
+			/* Is there additional content? */
+			if !empty($params['content'])
+				$params['content'] = json_encode($params['content']);
+
 			$this->query->insertNotification($params);
+		}
 
 		else
 			return false;
@@ -145,7 +151,7 @@ class BreezeNotifications
 	{
 		global $context;
 
-		$this->all = $this->getByUser($user);
+		$this->_all = $this->getByUser($user);
 
 		$context['insert_after_template'] .= '
 		<script type="text/javascript"><!-- // --><![CDATA[
@@ -153,11 +159,11 @@ $(document).ready(function()
 {';
 
 		/* Check for the type and act in accordance */
-		foreach($this->all as $all)
+		foreach($this->_all as $all)
 			if (in_array($all['type'], $this->_types))
 			{
 				$call = 'do' . ucfirst($this->_types[$all['type']]);
-				$context['insert_after_template'] .= $this->$call($all) == false ? '' : $this->$call($all);
+				$context['insert_after_template'] .= '$.sticky(\''. JavaScriptEscape($this->$call($all) == false ? '' : $this->$call($all)) .'\');';
 			}
 
 		$context['insert_after_template'] .= '
@@ -167,6 +173,19 @@ $(document).ready(function()
 	}
 
 	protected function doComments($noti)
+	{
+		global $user_info;
+
+		if ($noti['content']['user_who_commented'] == $this->_currentUser)
+			return false;
+
+		if ($noti['content']['user_who_created_the_status'] == $this->_currentUser)
+			$message = ;
+
+		return $message;
+	}
+
+	protected function doBuddy($noti)
 	{
 		global $user_info;
 
