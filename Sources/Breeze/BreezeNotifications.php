@@ -77,15 +77,9 @@ class BreezeNotifications
 
 	public function create($params)
 	{
-		elseif (!empty($params) && in_array($params['type'], $this->_types) && !$double_request)
-		{
-			$this->_params = $params;
-
-			/* Convert to a json string */
-			$this->_params['content'] = json_encode($this->_params['content']);
-
-			$this->query->insertNotification($this->_params);
-		}
+		/* We have to make sure, we just have to! */
+		if (!empty($params) && in_array($params['type'], $this->_types))
+			$this->query->insertNotification($params);
 
 		else
 			return false;
@@ -115,19 +109,22 @@ class BreezeNotifications
 				'user' => $this->_currentUser,
 				'user_to' => $params['user_to'],
 			);
-			$tempQuery->params($this->_paramsAll, $this->_data);
-			$tempQuery->getData($this->_rows['id_user']);
+			$tempQuery->params($tempParams, $tempData);
+			$tempQuery->getData($this->_rows['id']);
 
-			$return = $this->_db->dataResult();
+			$return = $tempQuery->dataResult();
 
+			/* Patience is a virtue, you obviously don't know that, huh? */
 			if (!empty($temp))
-				foreach ($temp as $t)
-					if ($t['user'] == $params['user'] && $t['content']['from_id'] == $this->_currentUser && $t['type'] != 'mention')
-						$double_request = true;
+				fatal_lang_error('BreezeMod_buddyrequest_error_doublerequest', false);
+
+			/* We are good to go */
+			else
+				$this->create($params);
 		}
 
-		if ($double_request)
-			fatal_lang_error('BreezeMod_buddyrequest_error_doublerequest', false);
+		else
+			return false;
 	}
 
 	public function count()
@@ -139,9 +136,7 @@ class BreezeNotifications
 	{
 		/* Dont even bother... */
 		if (empty($user))
-			return;
-
-		$user = (int) $user;
+			return false;
 
 		return $this->query->getNotificationByUser($user);
 	}

@@ -44,7 +44,7 @@ class BreezeBuddy
 
 	public static function Buddy()
 	{
-		global $user_info, $scripturl, $context, $memberContext;
+		global $user_info, $scripturl, $context;
 
 		checkSession('get');
 
@@ -52,9 +52,9 @@ class BreezeBuddy
 		is_not_guest();
 
 		/* We need all this stuff */
-		$sa = new BreezeGlobals('get');
-		$notification = new BreezeNotifications();
-		$settings = BreezeSettings::getInstance();
+		$sa = Breeze::sGlobals('get');
+		$notification = Breeze::notifications();
+		$settings = Breeze::settings();
 
 		/* There's gotta be an user... */
 		if ($sa->validate('u') == false)
@@ -75,31 +75,16 @@ class BreezeBuddy
 		/* Before anything else, let's ask the user shall we? */
 		elseif ($user_info['id'] != $sa->getRaw('u'))
 		{
-			/* Load the users link */
-			$user_load = array(
-				$user_info['id'],
-				$sa->getRaw('u')
-			);
-
-			/* Load all the members up. */
-			$temp_users_load = BreezeSubs::LoadUserInfo($user_load);
-
 			$params = array(
-				'user' => $sa->getRaw('u'),
+				'user' => $user_info['id'],
+				'user_to' => $sa->getRaw('u'),
 				'type' => 'buddy',
 				'time' => time(),
 				'read' => 0,
-				'content' => array(
-					'message' => sprintf($settings->getText('buddy_messagerequest_message'), $temp_users_load[$user_info['id']]['link']),
-					'url' => $scripturl .'?action=profile;area=breezebuddies;u='. $sa->getRaw('u'),
-					'from_link' => $temp_users_load[$user_info['id']]['link'],
-					'from_id' => $user_info['id'],
-					'from_buddies' => $user_info['buddies']
-				)
 			);
 
 			/* Notification here */
-			$notification->Create($params);
+			$notification->createBuddy($params);
 
 			/* Show a nice message saying the user must approve the friendship request */
 			redirectexit('action=breezebuddyrequest;u=' . $sa->getRaw('u'));
@@ -108,10 +93,10 @@ class BreezeBuddy
 
 	public function ShowBuddyRequests($user)
 	{
-		$query = BreezeQuery::getInstance();
+		$query = Breeze::query();
 
 		/* Load all buddy request for this user */
-		$temp = $query->GetNotificationByType('buddy');
+		$temp = $query->getNotificationByType('buddy');
 		$temp2 = array();
 
 		/* We only want the notifications for this user... */
