@@ -74,7 +74,7 @@ class BreezeNotifications
 	/* Special case for quick and dirty queries */
 	protected function query($table)
 	{
-		return new BreezeQuery($table);
+		return new BreezeDB($table);
 	}
 
 	public function create($params)
@@ -89,7 +89,7 @@ class BreezeNotifications
 			else
 				$params['content'] = '';
 
-			$this->query->insertNotification($params);
+			$this->_query->insertNotification($params);
 		}
 
 		else
@@ -106,7 +106,8 @@ class BreezeNotifications
 		/* Set this as false by default */
 		$double_request = false;
 
-		$tempQuery = $this->query('notifications');
+		/* Yes, I know this is fugly! */
+		$tempQuery = $this->query('breeze_notifications');
 
 		/* if the type is buddy then let's do a check to avoid duplicate entries */
 		if (!empty($params) && in_array($params['type'], $this->_types))
@@ -200,7 +201,7 @@ $(document).ready(function()
 
 		/* load the user's link */
 		if (!isset($context['Breeze']['user_info'][$noti['user']]))
-			$this->_tools->loadUserInfo($noti['user'])
+			$this->_tools->loadUserInfo($noti['user']);
 
 		if ($noti['content']['user_who_created_the_status'] == $this->_currentUser)
 			$message = '$.sticky(\''. sprintf ($this->_text->getText('buddy_messagerequest_message'), $context['Breeze']['user_info'][$noti['user']]['link']) .'\');';

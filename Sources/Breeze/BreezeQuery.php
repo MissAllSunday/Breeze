@@ -674,6 +674,8 @@ class BreezeQuery
 		/* We dont need this anymore */
 		$this->killCache($this->_tables['noti']['name']);
 
+		$insert = $this->query($this->_tables['noti']['name']);
+
 		/* Insert! */
 		$data = array(
 			'user' => 'int',
@@ -688,7 +690,7 @@ class BreezeQuery
 			'id'
 		);
 
-		$this->query($this->_tables['noti']['name'])->insertData($data, $array, $indexes);
+		$insert->insertData($data, $array, $indexes);
 	}
 
 	public function markAsReadNotification($id)
@@ -737,7 +739,7 @@ class BreezeQuery
 	{
 		return $this->getReturn($this->_tables['noti']['name'], 'user_to', $user);
 	}
-	
+
 	public function getNotificationByUserSender($user)
 	{
 		return $this->getReturn($this->_tables['noti']['name'], 'user', $user);
