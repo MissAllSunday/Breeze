@@ -67,6 +67,8 @@ class BreezeNotifications
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
 		$this->_settings = Breeze::settings();
 		$this->_query = Breeze::query();
+		$this->_tools = Breeze::tools();
+		$this->_text = Breeze::text();
 	}
 
 	/* Special case for quick and dirty queries */
@@ -81,7 +83,7 @@ class BreezeNotifications
 		if (!empty($params) && in_array($params['type'], $this->_types))
 		{
 			/* Is there additional content? */
-			if !empty($params['content'])
+			if (!empty($params['content']))
 				$params['content'] = json_encode($params['content']);
 
 			else
@@ -183,7 +185,7 @@ $(document).ready(function()
 			return false;
 
 		if ($noti['content']['user_who_created_the_status'] == $this->_currentUser)
-			$message = ;
+			$message = '';
 
 		return $message;
 	}
@@ -192,11 +194,16 @@ $(document).ready(function()
 	{
 		global $user_info;
 
-		if ($noti['content']['user_who_commented'] == $this->_currentUser)
+		/* Extra check */
+		if ($noti['user_to'] != $this->_currentUser)
 			return false;
 
+		/* load the user's link */
+		if (!isset($context['Breeze']['user_info'][$noti['user']]))
+			$this->_tools->loadUserInfo($noti['user'])
+
 		if ($noti['content']['user_who_created_the_status'] == $this->_currentUser)
-			$message = '$.sticky(\''. JavaScriptEscape($s['content']->message) .'\');';
+			$message = '$.sticky(\''. sprintf ($this->_text->getText('buddy_messagerequest_message'), $context['Breeze']['user_info'][$noti['user']]['link']) .'\');';
 
 		return $message;
 	}

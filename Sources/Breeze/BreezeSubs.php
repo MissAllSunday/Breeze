@@ -230,13 +230,12 @@ $(document).ready(function ()
 		if (!is_array($id))
 			$id = array_unique(array($id));
 
-		/* Load all the members up. */)
-			if (loadMemberData($id, false, 'profile'))
-				foreach ($id as $i)
-				{
-					loadMemberContext($i);
-					$context['Breeze']['user_info'][$i] = $memberContext[$i];
-				}
-		}
+		/* Load all the members up. */
+		if (loadMemberData($id, false, 'profile'))
+			foreach ($id as $i)
+			{
+				loadMemberContext($i);
+				$context['Breeze']['user_info'][$i] = $memberContext[$i];
+			}
 	}
 }

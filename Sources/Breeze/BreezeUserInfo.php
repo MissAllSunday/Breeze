@@ -63,10 +63,10 @@ class BreezeUserInfo
 		$user['is_owner'] = $user['id'] == $user_info['id'];
 
 		/* Sometimes we just want the link */
-		$context['Breeze']['user_info']['link'][$user['id']] = $user['link'];
+		$context['Breeze']['user_info'][$user['id']]['link'] = $user['link'];
 
 		/* ...or the name */
-		$context['Breeze']['user_info']['name'][$user['id']] = $user['name'];
+		$context['Breeze']['user_info'][$user['id']]['name'] = $user['name'];
 
 		/* It all starts with the user's avatar or username... */
 		$return .= '<a href="#facebox_'.$user['id'].'" rel="facebox">'.(!empty($user['avatar']['href']) ? '<img src="'.$user['avatar']['href'].'" width="50px" />' : $user['link']) .'</a>
