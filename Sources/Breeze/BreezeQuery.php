@@ -42,6 +42,7 @@ class BreezeQuery
 {
 	private static $_instance;
 	protected $_status = array();
+	protected $_noti = array();
 	protected $_comments = array();
 	protected $_members = array();
 	protected $_temp;
@@ -68,9 +69,9 @@ class BreezeQuery
 				'property' => '_members',
 			),
 			'noti' => array(
-				'name' => 'notifications',
+				'name' => 'noti',
 				'table' => 'breeze_notifications',
-				'property' => '_notifications',
+				'property' => '_noti',
 			),
 		);
 	}
@@ -630,12 +631,12 @@ class BreezeQuery
 	 * @global array $smcFunc the "handling DB stuff" var of SMF
 	 * @return array a very big associative array with the notification ID as key
 	 */
-	protected function notifications()
+	protected function noti()
 	{
 		global $smcFunc;
 
 		/* Use the cache please... */
-		if (($this->_notifications = cache_get_data('Breeze:'. $this->_tables['noti']['name'], 120)) == null)
+		if (($this->_noti = cache_get_data('Breeze:'. $this->_tables['noti']['name'], 120)) == null)
 		{
 			$result = $smcFunc['db_query']('', '
 				SELECT *
@@ -647,7 +648,7 @@ class BreezeQuery
 			/* Populate the array like a boss! */
 			while ($row = $smcFunc['db_fetch_assoc']($result))
 			{
-				$this->_notifications[$row['id']] = array(
+				$this->_noti[$row['id']] = array(
 					'id' => $row['id'],
 					'user' => $row['user'],
 					'type' => $row['type'],
@@ -658,15 +659,15 @@ class BreezeQuery
 			}
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:'. $this->_tables['noti']['name'], $this->_notifications, 120);
+			cache_put_data('Breeze:'. $this->_tables['noti']['name'], $this->_noti, 120);
 		}
 
-		return $this->_notifications;
+		return $this->_noti;
 	}
 
 	public function getNotifications()
 	{
-		return !empty($this->_notifications) ? $this->_notifications : $this->notifications();
+		return !empty($this->_noti) ? $this->_noti : $this->noti();
 	}
 
 	public function insertNotification($array)

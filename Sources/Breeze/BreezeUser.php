@@ -266,10 +266,10 @@ class BreezeUser
 		loadtemplate('Breeze');
 
 		/* Load all we need */
-		$query = BreezeQuery::getInstance();
+		$query = Breeze::query();
 		$text = Breeze::text();
-		$data = $query->GetSettingsByUser($context['member']['id']);
-		$globals = new BreezeGlobals('request');
+		$data = $query->getSettingsByUser($context['member']['id']);
+		$globals = Breeze::sGlobals('request');
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'user_notifications';
