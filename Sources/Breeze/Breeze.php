@@ -55,7 +55,7 @@ function __autoload($class_name)
 class Breeze
 {
 	static public $BreezeName = 'Breeze';
-	static public $BreezeVersion = '1.0 Beta 1';
+	static public $BreezeVersion = '1.0 Beta 3';
 	static public $BreezeFolder = '/Breeze/';
 
 	public function __construct(){}

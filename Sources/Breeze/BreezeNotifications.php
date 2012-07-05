@@ -84,6 +84,9 @@ class BreezeNotifications
 			if !empty($params['content'])
 				$params['content'] = json_encode($params['content']);
 
+			else
+				$params['content'] = '';
+
 			$this->query->insertNotification($params);
 		}
 
@@ -116,7 +119,7 @@ class BreezeNotifications
 				'user_to' => $params['user_to'],
 			);
 			$tempQuery->params($tempParams, $tempData);
-			$tempQuery->getData($this->_rows['id']);
+			$tempQuery->getData('id');
 
 			$return = $tempQuery->dataResult();
 

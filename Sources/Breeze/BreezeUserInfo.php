@@ -44,7 +44,7 @@ class BreezeUserInfo
 {
 	public static function Profile($user, $id = false)
 	{
-		global $txt, $context, $settings, $scripturl, $user_info;
+		global $txt, $context, $settings, $scripturl, $user_info, $memberContext, $context;
 
 		/* Can't do much if the user id is empty... */
 		if (empty($user))
@@ -54,8 +54,6 @@ class BreezeUserInfo
 			if we got an array, the user was already loaded*/
 		if ($id == true && isset($memberContext[$user]) == false)
 		{
-			global $memberContext, $context;
-
 			loadMemberData($user, false, 'profile');
 			loadMemberContext($user);
 			$user = $memberContext[$user];
