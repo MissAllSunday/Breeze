@@ -2,7 +2,7 @@
 
 /**
  * BreezeUserInfo
- * 
+ *
  * The purpose of this file is to generate a div with the user common info, name, avatar, post, icons, stuff like that.
  * @package Breeze mod
  * @version 1.0 Beta 2

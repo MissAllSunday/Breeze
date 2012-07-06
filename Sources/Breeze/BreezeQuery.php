@@ -651,6 +651,7 @@ class BreezeQuery
 				$this->_noti[$row['id']] = array(
 					'id' => $row['id'],
 					'user' => $row['user'],
+					'user_to' => $row['user_to'],
 					'type' => $row['type'],
 					'time' => $row['time'],
 					'read' => $row['read'],

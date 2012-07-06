@@ -107,7 +107,7 @@ function template_Breeze_buddy_list()
 				echo '
 						<tr class="windowbg" style="text-align: center">
 							<td>
-							', $request['content']->message ,'
+							', $request['content']['message'] ,'
 							</td>
 							<td>
 							<a href="', $scripturl ,'?action=profile;area=breezebuddies;from=', $request['content']->from_id ,';confirm=', $request['id'] ,'" target="self">', $txt['BreezeMod_buddyrequest_list_confirm'] ,'</a>

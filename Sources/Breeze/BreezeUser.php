@@ -322,6 +322,8 @@ class BreezeUser
 		/* Send the buddy request(s) to the template */
 		$context['Breeze']['Buddy_Request'] = $buddies->ShowBuddyRequests($context['member']['id']);
 
+		echo '<pre>'; print_r($context['Breeze']['Buddy_Request']); echo '</pre>';
+
 		if ($globals->validate('from') == true && $globals->validate('confirm') == true && $user_info['id'] != $globals->getValue('from'))
 		{
 			/* Load Subs-Post to use sendpm */

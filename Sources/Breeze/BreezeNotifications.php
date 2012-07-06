@@ -71,12 +71,6 @@ class BreezeNotifications
 		$this->_text = Breeze::text();
 	}
 
-	/* Special case for quick and dirty queries */
-	protected function query($table)
-	{
-		return new BreezeDB($table);
-	}
-
 	public function create($params)
 	{
 		/* We have to make sure, we just have to! */
@@ -107,18 +101,18 @@ class BreezeNotifications
 		$double_request = false;
 
 		/* Yes, I know this is fugly! */
-		$tempQuery = $this->query('breeze_notifications');
+		$tempQuery = new BreezeDB('breeze_notifications');
 
 		/* if the type is buddy then let's do a check to avoid duplicate entries */
 		if (!empty($params) && in_array($params['type'], $this->_types))
 		{
 			/* Doing a quick query will be better than loading the entire notifications array */
 			$tempParams = array (
-				'rows' => 'id',
+				'rows' => '*',
 				'where' => 'user = {int:user} AND user_to = {int:user_to}',
 			);
 			$tempData = array(
-				'user' => $this->_currentUser,
+				'user' => !empty($params['user']) ? $params['user'] : $this->_currentUser,
 				'user_to' => $params['user_to'],
 			);
 			$tempQuery->params($tempParams, $tempData);
@@ -127,7 +121,7 @@ class BreezeNotifications
 			$return = $tempQuery->dataResult();
 
 			/* Patience is a virtue, you obviously don't know that, huh? */
-			if (!empty($temp))
+			if (!empty($return))
 				fatal_lang_error('BreezeMod_buddyrequest_error_doublerequest', false);
 
 			/* We are good to go */
