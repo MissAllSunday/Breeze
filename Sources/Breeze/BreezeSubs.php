@@ -222,42 +222,20 @@ $(document).ready(function ()
 		return ($preserve_keys === true) ? $array : array_values($array);
 	}
 
-	public static function LoadUserInfo($id, $single = false)
+	public static function loadUserInfo($id)
 	{
-		global $memberContext;
+		global $memberContext, $context;
 
 		/* Must be an array */
-		if (!$single && !is_array($id))
-		{
-			$id = array($id);
-
-			/* Remove double entries */
-			$id = array_unique($id);
-
-			/* Setup the context for each user */
-			$temp_return = array();
-		}
+		if (!is_array($id))
+			$id = array_unique(array($id));
 
 		/* Load all the members up. */
 		if (loadMemberData($id, false, 'profile'))
-		{
-			if (!$single)
-				foreach ($id as $i)
-				{
-					loadMemberContext($i);
-					$temp_return[$i] = $memberContext[$i];
-				}
-
-			elseif ($single)
-				{
-					loadMemberContext($id);
-					$temp_return = $memberContext[$id];
-				}
-
-			return $temp_return;
-		}
-
-		else
-			return false;
+			foreach ($id as $i)
+			{
+				loadMemberContext($i);
+				$context['Breeze']['user_info'][$i] = $memberContext[$i];
+			}
 	}
 }

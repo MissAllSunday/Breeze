@@ -2,7 +2,7 @@
 
 /**
  * BreezeUserInfo
- * 
+ *
  * The purpose of this file is to generate a div with the user common info, name, avatar, post, icons, stuff like that.
  * @package Breeze mod
  * @version 1.0 Beta 2
@@ -44,7 +44,7 @@ class BreezeUserInfo
 {
 	public static function Profile($user, $id = false)
 	{
-		global $txt, $context, $settings, $scripturl, $user_info;
+		global $txt, $context, $settings, $scripturl, $user_info, $memberContext, $context;
 
 		/* Can't do much if the user id is empty... */
 		if (empty($user))
@@ -54,8 +54,6 @@ class BreezeUserInfo
 			if we got an array, the user was already loaded*/
 		if ($id == true && isset($memberContext[$user]) == false)
 		{
-			global $memberContext, $context;
-
 			loadMemberData($user, false, 'profile');
 			loadMemberContext($user);
 			$user = $memberContext[$user];
@@ -65,10 +63,10 @@ class BreezeUserInfo
 		$user['is_owner'] = $user['id'] == $user_info['id'];
 
 		/* Sometimes we just want the link */
-		$context['Breeze']['user_info']['link'][$user['id']] = $user['link'];
+		$context['Breeze']['user_info'][$user['id']]['link'] = $user['link'];
 
 		/* ...or the name */
-		$context['Breeze']['user_info']['name'][$user['id']] = $user['name'];
+		$context['Breeze']['user_info'][$user['id']]['name'] = $user['name'];
 
 		/* It all starts with the user's avatar or username... */
 		$return .= '<a href="#facebox_'.$user['id'].'" rel="facebox">'.(!empty($user['avatar']['href']) ? '<img src="'.$user['avatar']['href'].'" width="50px" />' : $user['link']) .'</a>
