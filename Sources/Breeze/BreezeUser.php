@@ -320,27 +320,28 @@ class BreezeUser
 			$context['Breeze']['inner_message'] = '';
 
 		/* Send the buddy request(s) to the template */
-		$context['Breeze']['Buddy_Request'] = $buddies->ShowBuddyRequests($context['member']['id']);
-
-		echo '<pre>'; print_r($context['Breeze']['Buddy_Request']); echo '</pre>';
+		$context['Breeze']['Buddy_Request'] = $buddies->showBuddyRequests($context['member']['id']);
 
 		if ($globals->validate('from') == true && $globals->validate('confirm') == true && $user_info['id'] != $globals->getValue('from'))
 		{
 			/* Load Subs-Post to use sendpm */
-			Breeze::Load('Subs-Post');
+			Breeze::load('Subs-Post');
 
+			/* ...and a new friendship is born, yay! */
 			$user_info['buddies'][] = $globals->getValue('from');
-			$context['Breeze']['Buddy_Request'][$globals->getValue('from')]['content']->from_buddies[] = $user_info['id'];
+			$context['Breeze']['user_info'][$globals->getValue('from')]['buddies'][] = $user_info['id'];
 
 			/* Update both users buddy array. */
 			updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
-			updateMemberData($globals->getValue('from'), array('buddy_list' => implode(',', $context['Breeze']['Buddy_Request'][$globals->getValue('from')]['content']->from_buddies)));
+			updateMemberData($globals->getValue('from'), array('buddy_list' => implode(',', $context['Breeze']['user_info'][$globals->getValue('from')]['buddies'])));
 
 			/* Send a pm to the user */
 			$recipients = array(
 				'to' => array($globals->getValue('from')),
 				'bcc' => array(),
 			);
+
+			/* @todo make this a guest account */
 			$from = array(
 				'id' => $user_info['id'],
 				'name' => $user_info['name'],
@@ -349,7 +350,7 @@ class BreezeUser
 
 			/* @todo let the user to send a customized message/title */
 			$subject = $text->getText('buddyrequest_confirmed_subject');
-			$message = sprintf($text->getText('buddyrequest_confirmed_message'), $user_info['name']);
+			$message = sprintf($text->getText('buddyrequest_confirmed_message'), $user_info['link']);
 
 			sendpm($recipients, $subject, $message, false, $from);
 

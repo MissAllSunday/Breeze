@@ -91,7 +91,7 @@ class BreezeBuddy
 		}
 	}
 
-	public function ShowBuddyRequests($user)
+	public function showBuddyRequests($user)
 	{
 		global $context;
 
