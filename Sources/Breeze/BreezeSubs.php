@@ -231,7 +231,7 @@ $(document).ready(function ()
 			$id = array_unique(array($id));
 
 		/* Load all the members up. */
-		if (loadMemberData($id, false, 'profile'))
+		if (loadMemberData($id, false, 'normal'))
 			foreach ($id as $i)
 			{
 				loadMemberContext($i);

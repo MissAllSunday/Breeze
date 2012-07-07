@@ -7,25 +7,23 @@
 
 	<file name="$sourcedir/Load.php">
 	<operation>
-			<search position="replace"><![CDATA[// Wireless mode?  Load up the wireless stuff.]]></search>
-			<add><![CDATA['mods' => array(
-			Breeze::Who(),]]></add>
-		</operation>
-	</file>
-	
-	<file name="$sourcedir/Who.php">
-	<operation>
 			<search position="replace"><![CDATA['mods' => array(]]></search>
 			<add><![CDATA[/* Breeze notifications */
 	if(empty($user_info['is_guest']))
 	{
 		$notifications = new BreezeNotifications();
-		$subs = new BreezeSubs();
-		$subs->headersNotification();
 		$notifications->doStream($user_info['id']);
 	}
 
 	// Wireless mode?  Load up the wireless stuff.]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Who.php">
+	<operation>
+			<search position="replace"><![CDATA[// Wireless mode?  Load up the wireless stuff.]]></search>
+			<add><![CDATA['mods' => array(
+			Breeze::Who(),]]></add>
 		</operation>
 	</file>
 

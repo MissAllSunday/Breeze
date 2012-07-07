@@ -48,6 +48,7 @@ class BreezeNotifications
 	protected $_usersData = array();
 	protected $_types = array();
 	protected $_currentUser;
+	protected $_messages = array();
 
 	function __construct()
 	{
@@ -69,6 +70,10 @@ class BreezeNotifications
 		$this->_query = Breeze::query();
 		$this->_tools = Breeze::tools();
 		$this->_text = Breeze::text();
+
+
+		/* Special headers */
+		$this->_tools->headersNotification();
 	}
 
 	public function create($params)
@@ -135,7 +140,7 @@ class BreezeNotifications
 
 	public function count()
 	{
-		return count($this->query->getNotifications());
+		return count($this->_query->getNotifications());
 	}
 
 	protected function getByUser($user)
@@ -144,7 +149,7 @@ class BreezeNotifications
 		if (empty($user))
 			return false;
 
-		return $this->query->getNotificationByUser($user);
+		return $this->_query->getNotificationByUser($user);
 	}
 
 	public function doStream($user)
@@ -153,54 +158,48 @@ class BreezeNotifications
 
 		$this->_all = $this->getByUser($user);
 
-		$context['insert_after_template'] .= '
-		<script type="text/javascript"><!-- // --><![CDATA[
-$(document).ready(function()
-{';
+		/* Do this is there is actually something to show */
+		if (!empty($this->_all))
+		{
+			/* Call the methods */
+			foreach($this->_all as $all)
+				if (in_array($all['type'], $this->_types))
+				{
+					/* load the user's link */
+					if (empty($context['Breeze']['user_info'][$all['user']]))
+						$this->_tools->loadUserInfo($all['user']);
 
-		/* Check for the type and act in accordance */
-		foreach($this->_all as $all)
-			if (in_array($all['type'], $this->_types))
-			{
-				$call = 'do' . ucfirst($this->_types[$all['type']]);
-				$context['insert_after_template'] .= '$.sticky(\''. JavaScriptEscape($this->$call($all) == false ? '' : $this->$call($all)) .'\');';
-			}
+					$call = 'do' . ucfirst($all['type']);
+					$this->$call($all);
+				}
 
-		$context['insert_after_template'] .= '
-});
+			/* Show the notifications */
+			$context['insert_after_template'] .= '
+			<script type="text/javascript"><!-- // --><![CDATA[
+	$(document).ready(function()
+	{';
 
-// ]]></script>';
-	}
+			/* Check for the type and act in accordance */
+			foreach($this->_messages as $m)
+				$context['insert_after_template'] .= '$.sticky(\''. $m .'\');';
 
-	protected function doComments($noti)
-	{
-		global $user_info;
+			$context['insert_after_template'] .= '
+	});
 
-		if ($noti['content']['user_who_commented'] == $this->_currentUser)
-			return false;
-
-		if ($noti['content']['user_who_created_the_status'] == $this->_currentUser)
-			$message = '';
-
-		return $message;
+	// ]]></script>';
+		}
 	}
 
 	protected function doBuddy($noti)
 	{
-		global $user_info;
+		global $context;
 
 		/* Extra check */
 		if ($noti['user_to'] != $this->_currentUser)
 			return false;
 
-		/* load the user's link */
-		if (!isset($context['Breeze']['user_info'][$noti['user']]))
-			$this->_tools->loadUserInfo($noti['user']);
-
-		if ($noti['content']['user_who_created_the_status'] == $this->_currentUser)
-			$message = '$.sticky(\''. sprintf ($this->_text->getText('buddy_messagerequest_message'), $context['Breeze']['user_info'][$noti['user']]['link']) .'\');';
-
-		return $message;
+		/* Fill out the messages property */
+		$this->_messages[] = sprintf($this->_text->getText('buddy_messagerequest_message'), $context['Breeze']['user_info'][$noti['user']]['link']);
 	}
 
 	protected function delete($id)
