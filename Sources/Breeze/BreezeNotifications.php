@@ -174,20 +174,21 @@ class BreezeNotifications
 				}
 
 			/* Show the notifications */
-			$context['insert_after_template'] .= '
-			<script type="text/javascript"><!-- // --><![CDATA[
-	$(document).ready(function()
-	{';
-
-			/* Check for the type and act in accordance */
 			if (!empty($this->_messages))
+			{
+				$context['insert_after_template'] .= '
+				<script type="text/javascript"><!-- // --><![CDATA[
+		$(document).ready(function()
+		{';
+
+				/* Check for the type and act in accordance */
 				foreach($this->_messages as $m)
 					$context['insert_after_template'] .= '$.sticky(\''. $m .'\');';
 
-			$context['insert_after_template'] .= '
-	});
-
-	// ]]></script>';
+				$context['insert_after_template'] .= '
+		});
+		// ]]></script>';
+			}
 		}
 	}
 
