@@ -180,8 +180,9 @@ class BreezeNotifications
 	{';
 
 			/* Check for the type and act in accordance */
-			foreach($this->_messages as $m)
-				$context['insert_after_template'] .= '$.sticky(\''. $m .'\');';
+			if (!empty($this->_messages))
+				foreach($this->_messages as $m)
+					$context['insert_after_template'] .= '$.sticky(\''. $m .'\');';
 
 			$context['insert_after_template'] .= '
 	});
