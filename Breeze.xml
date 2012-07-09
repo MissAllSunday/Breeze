@@ -7,15 +7,17 @@
 
 	<file name="$sourcedir/Load.php">
 	<operation>
-			<search position="replace"><![CDATA['mods' => array(]]></search>
-			<add><![CDATA[/* Breeze notifications */
+			<search position="replace"><![CDATA[call_integration_hook('integrate_load_theme');]]></search>
+			<add><![CDATA[call_integration_hook('integrate_load_theme');
+
+	/* Breeze notifications
+	* @todo move this out of here!, implement some checkings for not showing this on every action otu there!
+	*/
 	if(empty($user_info['is_guest']))
 	{
 		$notifications = new BreezeNotifications();
 		$notifications->doStream($user_info['id']);
-	}
-
-	// Wireless mode?  Load up the wireless stuff.]]></add>
+	}]]></add>
 		</operation>
 	</file>
 
@@ -23,7 +25,7 @@
 	<operation>
 			<search position="replace"><![CDATA[// Wireless mode?  Load up the wireless stuff.]]></search>
 			<add><![CDATA['mods' => array(
-			Breeze::Who(),]]></add>
+			Breeze::who(),]]></add>
 		</operation>
 	</file>
 
