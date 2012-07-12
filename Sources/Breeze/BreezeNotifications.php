@@ -62,7 +62,9 @@ class BreezeNotifications
 			'status',
 			'like',
 			'buddy',
-			'mention'
+			'mention',
+			'reply',
+			'topic'
 		);
 
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
