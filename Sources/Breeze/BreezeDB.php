@@ -68,7 +68,7 @@ class BreezeDB
 
 		if ($key)
 			$this->key = $key;
-			
+
 		$params = $this->_params;
 
 		$query = $smcFunc['db_query']('', '

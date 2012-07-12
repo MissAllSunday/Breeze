@@ -51,7 +51,7 @@ class BreezeParser
 		/* Regex stuff */
 		$this->regex = array(
 			'url' => '~(?<=[\s>\.(;\'"]|^)((?:http|https)://[\w\-_%@:|]+(?:\.[\w\-_%]+)*(?::\d+)?(?:/[\w\-_\~%\.@!,\?&;=#(){}+:\'\\\\]*)*[/\w\-_\~%@\?;=#}\\\\])~i',
-			'mention' => '/{([^<>&"\'=\\\\]*)}/'
+			'mention' => '~{([\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u'
 		);
 	}
 
@@ -95,15 +95,14 @@ class BreezeParser
 
 				/* Let's make a quick query here... */
 				$tempParams = array (
-					'rows' => '*',
-					'where' => 'user = {int:user} AND user_to = {int:user_to}',
+					'rows' => 'id_member, member_name',
+					'where' => 'LOWER(real_name) IN({array_string:names}) OR LOWER(member_name) IN({array_string:names})',
 				);
 				$tempData = array(
-					'user' => !empty($params['user']) ? $params['user'] : $this->_currentUser,
-					'user_to' => $params['user_to'],
+					'names' => array_unique($querynames))
 				);
 				$tempQuery->params($tempParams, $tempData);
-				$tempQuery->getData('id');
+				$tempQuery->getData('id_member', false);
 
 				$return = $tempQuery->dataResult();
 
