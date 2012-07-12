@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to identify something in a tezt string and convert that to something different, for example, a url into an actual html link.
  * @package Breeze mod
- * @version 1.0 Beta 2
+ * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -63,10 +63,7 @@ class BreezeParser
 
 		/* Used to notify the user */
 		if ($mention_info)
-			$this->mention_info = array(
-				$mention_info['wall_owner'],
-				$mention_info['wall_poster']
-			);
+			$this->mention_info = $mention_info;
 
 		foreach ($temp as $t)
 			$this->s = $this->$t($this->s);
@@ -86,7 +83,9 @@ class BreezeParser
 
 	private function mention($s)
 	{
-		global $memberContext, $context, $user_info, $scripturl;
+		global, $context, $user_info, $scripturl;
+
+		$tempQuery = quickQuery('members');
 
 		if (preg_match_all($this->regex['mention'], $s, $matches))
 			foreach($matches[1] as $m)
@@ -94,7 +93,20 @@ class BreezeParser
 				if (in_array($m, array('_', '|')) || preg_match('~[<>&"\'=\\\\]~', preg_replace('~&#(?:\\d{1,7}|x[0-9a-fA-F]{1,6});~', '', $m)) != 0 || strpos($m, '[code') !== false || strpos($m, '[/code') !== false)
 					$s = str_replace($matches[0], '@'.$m, $s);
 
-				/* We need to do this since we only have the name, not the id */
+				/* Let's make a quick query here... */
+				$tempParams = array (
+					'rows' => '*',
+					'where' => 'user = {int:user} AND user_to = {int:user_to}',
+				);
+				$tempData = array(
+					'user' => !empty($params['user']) ? $params['user'] : $this->_currentUser,
+					'user_to' => $params['user_to'],
+				);
+				$tempQuery->params($tempParams, $tempData);
+				$tempQuery->getData('id');
+
+				$return = $tempQuery->dataResult();
+
 				if ($user = loadMemberData($m, true, 'minimal'))
 				{
 					$context['Breeze']['user_info'][$user[0]] = BreezeUserInfo::Profile($user[0], true);
@@ -108,10 +120,9 @@ class BreezeParser
 
 						/* Build the params */
 						$params = array(
-							'user' => $user[0],
+							'user' => $user_info['id'],
+							'user_to' => $user[0],
 							'type' => 'mention',
-							'time' => time(),
-							'read' => 0,
 							'content' => array(
 								'message' => $this->mention_info[1] == $this->mention_info[0] ? sprintf($this->settings->getText('mention_message_own_wall'), $temp_users_load[$this->mention_info[1]]['link']) : sprintf($this->settings->getText('mention_message'), $temp_users_load[$this->mention_info[1]]['link'], $temp_users_load[$this->mention_info[0]]['link']),
 								'url' => $scripturl .'?action=profile;area=breezenoti;u='. $user[0],
@@ -121,9 +132,10 @@ class BreezeParser
 						);
 
 						/* Create the notification */
-						$this->notification->Create($params);
+						$this->notification->create($params);
 					}
 				}
+
 				else
 					$s = str_replace($matches[0], '@'.$m, $s);
 			}

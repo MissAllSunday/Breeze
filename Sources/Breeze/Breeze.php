@@ -5,7 +5,7 @@
  *
  * The purpose of this file is, the main file, handles the hooks, the actions, permissions, load needed files, etc.
  * @package Breeze mod
- * @version 1.0 Beta 2
+ * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -90,6 +90,11 @@ class Breeze
 	public static function query()
 	{
 		return BreezeQuery::getInstance();
+	}
+
+	public static function quickQuery($table)
+	{
+		return new BreezeQuery($table);
 	}
 
 	public static function tools()

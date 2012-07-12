@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to fetch all notifications for X user
  * @package Breeze mod
- * @version 1.0 Beta 2
+ * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -107,8 +107,8 @@ class BreezeNotifications
 		/* Set this as false by default */
 		$double_request = false;
 
-		/* Yes, I know this is fugly! */
-		$tempQuery = new BreezeDB('breeze_notifications');
+		/* We need a quick query here */
+		$tempQuery = Breeze::quickQuery('breeze_notifications');
 
 		/* if the type is buddy then let's do a check to avoid duplicate entries */
 		if (!empty($params) && in_array($params['type'], $this->_types))
