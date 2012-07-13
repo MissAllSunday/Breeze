@@ -290,10 +290,10 @@ class BreezeUser
 		loadtemplate('BreezeBuddy');
 
 		/* Load all we need */
-		$buddies = new BreezeBuddy();
+		$buddies = Breeze::buddies();
 		$text = Breeze::text();
-		$globals = new BreezeGlobals('request');
-		$query = BreezeQuery::getInstance();
+		$globals = Breeze::sGlobals('request');
+		$query = Breeze:query();
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'Breeze_buddy_list';

@@ -64,8 +64,8 @@ if (!defined('SMF'))
 
 		/* Load stuff */
 		$text = Breeze::text();
+		$globals = Breeze::sGlobals('request');
 		$context['sub_template'] = 'show_settings';
-		$globals = new BreezeGlobals('request');
 
 		require_once($sourcedir . '/ManageServer.php');
 
