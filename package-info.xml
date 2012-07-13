@@ -11,15 +11,8 @@
 		<database>install.php</database>
 		<code>hooks.php</code>
 		<modification>Breeze.xml</modification>
-		<require-file name="templates/Breeze.template.php" destination="$themedir">Wall template</require-file>
-		<require-file name="templates/BreezeAdmin.template.php" destination="$themedir">Admin template</require-file>
-		<require-file name="templates/BreezeAjax.template.php" destination="$themedir">Ajax calls</require-file>
-		<require-file name="templates/BreezeBuddy.template.php" destination="$themedir">Buddy system</require-file>
-		<require-dir name="css" destination="$themedir">CSS files</require-dir>
-		<require-dir name="images" destination="$themedir">Image files</require-dir>
-		<require-dir name="js" destination="$themedir">JavaScript</require-dir>
-		<require-dir name="languages" destination="$themedir">Translations folder</require-dir>
-		<require-dir name="Breeze" destination="$sourcedir">Source files</require-dir>
+		<require-dir name="Themes" destination="$boarddir">Source files</require-dir>
+		<require-dir name="Sources" destination="$boarddir">Source files</require-dir>
 		<redirect url="$scripturl?action=admin;area=breezeindex" timeout="3000">redirect.txt</redirect>
 	</install>
 

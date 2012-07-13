@@ -127,6 +127,18 @@ class Breeze
 		return new BreezeNotifications();
 	}
 
+	public static function notificationStream()
+	{
+		global $user_info;
+
+		/* Guest don't need to see this */
+		if(empty($user_info['is_guest']))
+		{
+			$notifications = self::notifications();
+			$notifications->doStream($user_info['id']);
+		}
+	}
+
 	/**
 	 * Global permissions used by this mod per user group
 	 *
@@ -321,9 +333,7 @@ class Breeze
 	 */
 	public static function who()
 	{
-		$MAS = '<a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a>';
-
-		return $MAS;
+		return '<a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a>';
 	}
 
 	/* It's all about Admin settings from now on */

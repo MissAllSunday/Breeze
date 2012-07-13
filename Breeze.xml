@@ -5,25 +5,9 @@
 <modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
 	<id>Suki:breeze</id>
 
-	<file name="$sourcedir/Load.php">
-	<operation>
-			<search position="replace"><![CDATA[call_integration_hook('integrate_load_theme');]]></search>
-			<add><![CDATA[call_integration_hook('integrate_load_theme');
-
-	/* Breeze notifications
-	* @todo move this out of here!, implement some checkings for not showing this on every action otu there!
-	*/
-	if(empty($user_info['is_guest']))
-	{
-		$notifications = new BreezeNotifications();
-		$notifications->doStream($user_info['id']);
-	}]]></add>
-		</operation>
-	</file>
-
 	<file name="$sourcedir/Who.php">
 	<operation>
-			<search position="replace"><![CDATA[// Wireless mode?  Load up the wireless stuff.]]></search>
+			<search position="replace"><![CDATA['mods' => array(]]></search>
 			<add><![CDATA['mods' => array(
 			Breeze::who(),]]></add>
 		</operation>
