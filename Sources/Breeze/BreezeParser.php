@@ -83,61 +83,53 @@ class BreezeParser
 
 	private function mention($s)
 	{
-		global, $context, $user_info, $scripturl;
+		global $user_info, $scripturl;
 
-		$tempQuery = quickQuery('members');
+		$tempQuery = Breeze::quickQuery('members');
 
+		/* Serach for all possible names */
 		if (preg_match_all($this->regex['mention'], $s, $matches))
-			foreach($matches[1] as $m)
+			foreach($matches as $m)
+				$querynames[] = $m[1];
+
+		/* Nothing was found */
+		else
+			return $s;
+
+		/* Let's make a quick query here... */
+		$tempParams = array (
+			'rows' => 'id_member, member_name',
+			'where' => 'LOWER(real_name) IN({array_string:names}) OR LOWER(member_name) IN({array_string:names})',
+		);
+		$tempData = array(
+			'names' => array_unique($querynames))
+		);
+		$tempQuery->params($tempParams, $tempData);
+		$tempQuery->getData('id_member', false);
+		$searchNames = $tempQuery->dataResult();
+		reset($matches);
+
+		/* We got some results */
+		if (!empty($searchNames))
+		{
+			/* Lets get the names */
+			foreach($matches as $m)
 			{
-				if (in_array($m, array('_', '|')) || preg_match('~[<>&"\'=\\\\]~', preg_replace('~&#(?:\\d{1,7}|x[0-9a-fA-F]{1,6});~', '', $m)) != 0 || strpos($m, '[code') !== false || strpos($m, '[/code') !== false)
-					$s = str_replace($matches[0], '@'.$m, $s);
+				$names = explode(',', trim($m[1]));
 
-				/* Let's make a quick query here... */
-				$tempParams = array (
-					'rows' => 'id_member, member_name',
-					'where' => 'LOWER(real_name) IN({array_string:names}) OR LOWER(member_name) IN({array_string:names})',
-				);
-				$tempData = array(
-					'names' => array_unique($querynames))
-				);
-				$tempQuery->params($tempParams, $tempData);
-				$tempQuery->getData('id_member', false);
-
-				$return = $tempQuery->dataResult();
-
-				if ($user = loadMemberData($m, true, 'minimal'))
-				{
-					$context['Breeze']['user_info'][$user[0]] = BreezeUserInfo::Profile($user[0], true);
-					$s = str_replace($matches[0], '@'.$context['Breeze']['user_info']['link'][$user[0]], $s);
-
-					/* Does this user wants to be notificated? */
-					if ($user[0] != $user_info['id'])
+				/* You can't tag yourself */
+				foreach($names as $name)
+					if (in_array($name, $searchNames) && !array_key_exists($user_info['id'], $searchNames))
 					{
-						/* Load all the members up. */
-						$temp_users_load = BreezeSubs::LoadUserInfo($this->mention_info);
+						$id = array_search($name, $searchNames);
 
-						/* Build the params */
-						$params = array(
-							'user' => $user_info['id'],
-							'user_to' => $user[0],
-							'type' => 'mention',
-							'content' => array(
-								'message' => $this->mention_info[1] == $this->mention_info[0] ? sprintf($this->settings->getText('mention_message_own_wall'), $temp_users_load[$this->mention_info[1]]['link']) : sprintf($this->settings->getText('mention_message'), $temp_users_load[$this->mention_info[1]]['link'], $temp_users_load[$this->mention_info[0]]['link']),
-								'url' => $scripturl .'?action=profile;area=breezenoti;u='. $user[0],
-								'from_link' => $temp_users_load[$this->mention_info[1]]['link'],
-								'from_id' => $temp_users_load[$this->mention_info[1]]['id'],
-							)
-						);
-
-						/* Create the notification */
-						$this->notification->create($params);
+						$s = str_replace($m[0], '@<a href="' . $scripturl . '?action=profile;u=' . $id . '">' . $name . '</a>', $s);
 					}
-				}
+			}
+		}
 
 				else
 					$s = str_replace($matches[0], '@'.$m, $s);
-			}
 
 		return $s;
 	}
