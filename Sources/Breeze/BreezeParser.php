@@ -126,11 +126,17 @@ class BreezeParser
 						$s = str_replace($m[0], '@<a href="' . $scripturl . '?action=profile;u=' . $id . '">' . $name . '</a>', $s);
 					}
 			}
+
+			reset($matches);
 		}
 
-				else
-					$s = str_replace($matches[0], '@'.$m, $s);
+		/* There is no users, so just replace the names with a nice @ */
+		else
+			foreach($matches as $m)
+				$s = str_replace($m[0], '@'.$m, $s);
 
+
+		/* We are done mutilating the string, lets returning it */
 		return $s;
 	}
 }
