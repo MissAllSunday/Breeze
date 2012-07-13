@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to create the tables Breeze needs.
  * @package Breeze mod
- * @version 1.0 Beta 2
+ * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -43,7 +43,7 @@
 
 	global $smcFunc, $context;
 
-	/* Breeze needs php 5.2 or greater */
+	/* Breeze needs php 5.3 or greater */
 	BreezeCheck();
 
 	db_extend('packages');
@@ -76,7 +76,7 @@
 				array(
 					'name' => 'comments_poster_id',
 					'type' => 'int',
-					'size' => 1,
+					'size' => 5,
 					'null' => false
 				),
 				array(

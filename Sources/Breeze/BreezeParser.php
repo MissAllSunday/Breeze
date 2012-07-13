@@ -45,8 +45,8 @@ class BreezeParser
 
 	function __construct()
 	{
-		$this->notification = new BreezeNotifications();
-		$this->settings = BreezeSettings::getInstance();
+		$this->notification = Breeze::notifications();
+		$this->settings = Breeze::settings();
 
 		/* Regex stuff */
 		$this->regex = array(
@@ -134,7 +134,6 @@ class BreezeParser
 		else
 			foreach($matches as $m)
 				$s = str_replace($m[0], '@'.$m, $s);
-
 
 		/* We are done mutilating the string, lets returning it */
 		return $s;
