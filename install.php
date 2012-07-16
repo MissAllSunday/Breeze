@@ -224,6 +224,35 @@
 		/* Installing */
 		foreach ($tables as $table)
 		$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
+
+		/* Columns */
+		$columns = array(
+			'' => array(
+				'name' => 'enable_wall',
+				'type' => 'int',
+				'size' => 1,
+				'null' => false,
+				'default' => 0,
+				'unsigned' => true,
+				),
+			'wall_settings' => array(
+				'name' => 'wall_settings',
+				'type' => 'text',
+				'size' => '',
+				'null' => false,
+				'default' => '',
+				'unsigned' => true,
+				),
+		);
+
+		foreach ($columns as $c)
+			$smcFunc['db_add_column'](
+				'{db_prefix}members',
+				$c,
+				array(),
+				'update',
+				null
+			);
 	}
 
 	function BreezeCheck()
