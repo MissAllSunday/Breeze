@@ -65,6 +65,8 @@ class BreezeUser
 		/* Another page already checked the permissions and if the mod is enable, but better be safe... */
 		if (!$settings->enable('admin_settings_enable'))
 			redirectexit();
+			
+			echo '<pre>'; print_r($settings); echo '</pre>';
 
 		/* Load this user's settings */
 		$user_settings = Breeze::userSettings($context['member']['id']);
@@ -288,12 +290,12 @@ class BreezeUser
 			fatal_lang_error('no_access', false);
 
 		loadtemplate('BreezeBuddy');
-
+/* Agregar la columna wall_settings a _members */
 		/* Load all we need */
 		$buddies = Breeze::buddies();
 		$text = Breeze::text();
 		$globals = Breeze::sGlobals('request');
-		$query = Breeze:query();
+		$query = Breeze::query();
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'Breeze_buddy_list';
