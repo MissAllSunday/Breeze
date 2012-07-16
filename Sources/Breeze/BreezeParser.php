@@ -102,7 +102,7 @@ class BreezeParser
 			'where' => 'LOWER(real_name) IN({array_string:names}) OR LOWER(member_name) IN({array_string:names})',
 		);
 		$tempData = array(
-			'names' => array_unique($querynames))
+			'names' => array_unique($querynames),
 		);
 		$tempQuery->params($tempParams, $tempData);
 		$tempQuery->getData('id_member', false);

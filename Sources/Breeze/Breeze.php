@@ -82,52 +82,52 @@ class Breeze
 			require_once($sourcedir .'/'.$file.'.php');
 	}
 
-	public static function userSettings($user)
+	public function userSettings($user)
 	{
 		return new BreezeUserSettings($user);
 	}
 
-	public static function query()
+	public function query()
 	{
 		return BreezeQuery::getInstance();
 	}
 
-	public static function quickQuery($table)
+	public function quickQuery($table)
 	{
 		return new BreezeQuery($table);
 	}
 
-	public static function tools()
+	public function tools()
 	{
 		return new BreezeSubs();
 	}
 
-	public static function settings()
+	public function settings()
 	{
 		return BreezeSettings::getInstance();
 	}
 
-	public static function text()
+	public function text()
 	{
 		return BreezeText::getInstance();
 	}
 
-	public static function sGlobals($var)
+	public function sGlobals($var)
 	{
 		return new BreezeGlobals($var);
 	}
 
-	public static function parser()
+	public function parser()
 	{
 		return new BreezeParser();
 	}
 
-	public static function notifications()
+	public function notifications()
 	{
 		return new BreezeNotifications();
 	}
 
-	public static function notificationStream()
+	public function notificationStream()
 	{
 		global $user_info;
 

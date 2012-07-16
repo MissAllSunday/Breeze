@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class BreezeQuery
+class BreezeQuery extends Breeze
 {
 	private static $_instance;
 	protected $_status = array();
@@ -50,8 +50,10 @@ class BreezeQuery
 	private $query_params = array('rows' =>'*');
 	private $query_data = array();
 
-	protected function __construct()
+	public function __construct()
 	{
+		parent::__construct();
+
 		$this->_tables = array(
 			'status' => array(
 				'name' => 'status',
@@ -94,7 +96,7 @@ class BreezeQuery
 	 * @access protected
 	 * @return object a new DB object.
 	 */
-	protected function query($var)
+	public function query($var)
 	{
 		if (array_key_exists($var, $this->_tables))
 			return new BreezeDB($this->_tables[$var]['table']);
@@ -287,8 +289,8 @@ class BreezeQuery
 	{
 		global $smcFunc;
 
-		$tools = Breeze::tools();
-		$gSettings = Breeze::settings();
+		$tools = parent::tools();
+		$gSettings = parent::settings();
 
 		/* Use the cache please... */
 		if (($this->_status = cache_get_data('Breeze:'. $this->_tables['status']['name'], 120)) == null)
@@ -399,8 +401,8 @@ class BreezeQuery
 	{
 		global $smcFunc;
 
-		$tools = Breeze::tools();
-		$gSettings = Breeze::settings();
+		$tools = parent::tools();
+		$gSettings = parent::settings();
 
 		/* Use the cache please... */
 		if (($this->_comments = cache_get_data('Breeze:'. $this->_tables['comments']['name'], 120)) == null)
