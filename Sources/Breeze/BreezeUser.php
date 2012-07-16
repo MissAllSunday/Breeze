@@ -65,8 +65,6 @@ class BreezeUser
 		/* Another page already checked the permissions and if the mod is enable, but better be safe... */
 		if (!$settings->enable('admin_settings_enable'))
 			redirectexit();
-			
-			echo '<pre>'; print_r($settings); echo '</pre>';
 
 		/* Load this user's settings */
 		$user_settings = Breeze::userSettings($context['member']['id']);

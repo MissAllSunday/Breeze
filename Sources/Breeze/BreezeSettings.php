@@ -87,10 +87,6 @@ class BreezeSettings
 	/* Return true if the value do exist, false otherwise, O RLY? */
 	public function enable($var)
 	{
-
-			global $modSettings;
-			echo '<pre>'; print_r($modSettings); echo '</pre>';
-
 		if (!empty($this->_settings[$var]))
 			return true;
 		else
