@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to create the tables Breeze needs.
  * @package Breeze mod
- * @version 1.0 Beta 2
+ * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -43,7 +43,7 @@
 
 	global $smcFunc, $context;
 
-	/* Breeze needs php 5.2 or greater */
+	/* Breeze needs php 5.3 or greater */
 	BreezeCheck();
 
 	db_extend('packages');
@@ -76,7 +76,7 @@
 				array(
 					'name' => 'comments_poster_id',
 					'type' => 'int',
-					'size' => 1,
+					'size' => 5,
 					'null' => false
 				),
 				array(
@@ -156,99 +156,6 @@
 			'parameters' => array(),
 		);
 
-		/* Logs */
-		$tables[] = array(
-			'table_name' => '{db_prefix}breeze_visit_log',
-			'columns' => array(
-				array(
-					'name' => 'id',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false,
-					'auto' => true
-				),
-				array(
-					'name' => 'profile',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(
-					'name' => 'user',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(
-					'name' => 'time',
-					'type' => 'varchar',
-					'size' => 255,
-					'default' => '',
-				),
-			),
-			'indexes' => array(
-				array(
-					'type' => 'primary',
-					'columns' => array('id')
-				),
-			),
-			'if_exists' => 'ignore',
-			'error' => 'fatal',
-			'parameters' => array(),
-		);
-
-		/* User Settings */
-		$tables[] = array(
-			'table_name' => '{db_prefix}breeze_user_settings',
-			'columns' => array(
-				array(
-					'name' => 'user_id',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false,
-				),
-				array(
-					'name' => 'enable_wall',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(
-					'name' => 'kick_ignored',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(
-					'name' => 'enable_visits_module',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(
-					'name' => 'visits_module_timeframe',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(
-					'name' => 'pagination_number',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-			),
-			'indexes' => array(
-				array(
-					'type' => 'primary',
-					'columns' => array('user_id')
-				),
-			),
-			'if_exists' => 'ignore',
-			'error' => 'fatal',
-			'parameters' => array(),
-		);
-
 		/* Notifications */
 		$tables[] = array(
 			'table_name' => '{db_prefix}breeze_notifications',
@@ -262,6 +169,12 @@
 				),
 				array(
 					'name' => 'user',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
+				array(
+					'name' => 'user_to',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
@@ -311,10 +224,39 @@
 		/* Installing */
 		foreach ($tables as $table)
 		$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
+
+		/* Columns */
+		$columns = array(
+			'' => array(
+				'name' => 'enable_wall',
+				'type' => 'int',
+				'size' => 1,
+				'null' => false,
+				'default' => 0,
+				'unsigned' => true,
+				),
+			'wall_settings' => array(
+				'name' => 'wall_settings',
+				'type' => 'text',
+				'size' => '',
+				'null' => false,
+				'default' => '',
+				'unsigned' => true,
+				),
+		);
+
+		foreach ($columns as $c)
+			$smcFunc['db_add_column'](
+				'{db_prefix}members',
+				$c,
+				array(),
+				'update',
+				null
+			);
 	}
 
 	function BreezeCheck()
 	{
-		if (version_compare(PHP_VERSION, '5.2.0', '<'))
-			fatal_error('This mod needs PHP 5.2 or greater. You will not be able to install/use this mod, contact your host and ask for a php upgrade.');
+		if (version_compare(PHP_VERSION, '5.3.0', '<'))
+			fatal_error('This mod needs PHP 5.3 or greater. You will not be able to install/use this mod, contact your host and ask for a php upgrade.');
 	}

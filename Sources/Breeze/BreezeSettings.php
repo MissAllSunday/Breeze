@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to extract the settings and text strings from the SMF arrays for a better and cleaner handling
  * @package Breeze mod
- * @version 1.0 Beta 2
+ * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -65,18 +65,23 @@ class BreezeSettings
 		$this->_pattern = '/BreezeMod_/';
 
 		/* Get only the settings that we need */
-		foreach ($modSettings as $km => $vm)
-			if (preg_match($this->_pattern, $km))
-			{
-				$km = str_replace('BreezeMod_', '', $km);
+		if (($this->_settings = cache_get_data('Breeze:settings', 360)) == null)
+		{
+			foreach ($modSettings as $km => $vm)
+				if (preg_match($this->_pattern, $km))
+				{
+					$km = str_replace('BreezeMod_', '', $km);
 
-				/* Hickjack this to convert the string to a timestamp */
-				if ($km == 'admin_limit_timeframe')
-					$vm = strtotime('-1 '.$vm);
+					/* Hickjack this to convert the string to a timestamp */
+					if ($km == 'admin_limit_timeframe')
+						$vm = strtotime('-1 '.$vm);
 
-				/* Done? then populate the new array */
-				$this->_settings[$km] = $vm;
-			}
+					/* Done? then populate the new array */
+					$this->_settings[$km] = $vm;
+				}
+
+			cache_put_data('Breeze:settings', $this->_settings, 360);
+		}
 	}
 
 	/* Return true if the value do exist, false otherwise, O RLY? */

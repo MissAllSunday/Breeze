@@ -5,7 +5,7 @@
  *
  * The purpose of this file is, the main file, handles the hooks, the actions, permissions, load needed files, etc.
  * @package Breeze mod
- * @version 1.0 Beta 2
+ * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -82,44 +82,61 @@ class Breeze
 			require_once($sourcedir .'/'.$file.'.php');
 	}
 
-	public static function userSettings($user)
+	public function userSettings($user)
 	{
 		return new BreezeUserSettings($user);
 	}
 
-	public static function query()
+	public function query()
 	{
 		return BreezeQuery::getInstance();
 	}
 
-	public static function tools()
+	public function quickQuery($table)
+	{
+		return new BreezeQuery($table);
+	}
+
+	public function tools()
 	{
 		return new BreezeSubs();
 	}
 
-	public static function settings()
+	public function settings()
 	{
 		return BreezeSettings::getInstance();
 	}
 
-	public static function text()
+	public function text()
 	{
 		return BreezeText::getInstance();
 	}
 
-	public static function sGlobals($var)
+	public function sGlobals($var)
 	{
 		return new BreezeGlobals($var);
 	}
 
-	public static function parser()
+	public function parser()
 	{
 		return new BreezeParser();
 	}
 
-	public static function notifications()
+	public function notifications()
 	{
 		return new BreezeNotifications();
+	}
+
+	public function notificationStream()
+	{
+		global $user_info;
+
+		/* Guest don't need to see this */
+		if(empty($user_info['is_guest']))
+		{
+			$notifications = self::notifications();
+			$notifications->doStream($user_info['id']);
+		}
 	}
 
 	/**
@@ -316,9 +333,7 @@ class Breeze
 	 */
 	public static function who()
 	{
-		$MAS = '<a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a>';
-
-		return $MAS;
+		return '<a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a>';
 	}
 
 	/* It's all about Admin settings from now on */

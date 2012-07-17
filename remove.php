@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to remove the hooks when uninstall
  * @package Breeze mod
- * @version 1.0 Beta 2
+ * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -48,7 +48,8 @@
 		'integrate_actions' => 'Breeze::actions',
 		'integrate_load_permissions' => 'Breeze::permissions',
 		'integrate_admin_areas' => 'Breeze::adminButton',
-		'integrate_profile_areas' => 'Breeze::profileInfo'
+		'integrate_profile_areas' => 'Breeze::profileInfo',
+		'integrate_load_theme' => 'Breeze::notificationStream',
 	);
 
 	/* Uninstall please */

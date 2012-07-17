@@ -5,7 +5,7 @@
  *
  * The purpose of this file is To show the user wall and provide a settings page
  * @package Breeze mod
- * @version 1.0 Beta 2
+ * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -62,6 +62,10 @@ class BreezeUser
 		$tools = Breeze::tools();
 		$globals = Breeze::sGlobals('get');
 
+		/* Default values */
+		$status = array();
+		$users_to_load = array();
+
 		/* Another page already checked the permissions and if the mod is enable, but better be safe... */
 		if (!$settings->enable('admin_settings_enable'))
 			redirectexit();
@@ -107,28 +111,26 @@ class BreezeUser
 		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 		$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
 
-		$users_to_load = array();
-
 		/* Load all the status */
 		$status = $query->getStatusByProfile($context['member']['id']);
 
-
 		/* Collect the IDs to build their profile's lightbox and also load the comments */
-		foreach($status as $k => $s)
-		{
-			$users_to_load[] = $s['poster_id'];
+		if (!empty($status))
+			foreach($status as $k => $s)
+			{
+				$users_to_load[] = $s['poster_id'];
 
-			/* Load the comments for each status */
-			$status[$k]['comments'] = $query->getCommentsByStatus($s['id']);
+				/* Load the comments for each status */
+				$status[$k]['comments'] = $query->getCommentsByStatus($s['id']);
 
-			/* Get the user id from the comments */
-			if ($status[$k]['comments'])
-				foreach($status[$k]['comments'] as $c)
-					$users_to_load[] = $c['poster_id'];
+				/* Get the user id from the comments */
+				if ($status[$k]['comments'])
+					foreach($status[$k]['comments'] as $c)
+						$users_to_load[] = $c['poster_id'];
 
-			else
-				$status[$k]['comments'] = array();
-		}
+				else
+					$status[$k]['comments'] = array();
+			}
 
 		/* Getting the current page. */
 		$page = $globals->validate('page') == true ? $globals->getRaw('page') : 1;
@@ -288,12 +290,12 @@ class BreezeUser
 			fatal_lang_error('no_access', false);
 
 		loadtemplate('BreezeBuddy');
-
+/* Agregar la columna wall_settings a _members */
 		/* Load all we need */
-		$buddies = new BreezeBuddy();
+		$buddies = Breeze::buddies();
 		$text = Breeze::text();
-		$globals = new BreezeGlobals('request');
-		$query = BreezeQuery::getInstance();
+		$globals = Breeze::sGlobals('request');
+		$query = Breeze::query();
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'Breeze_buddy_list';

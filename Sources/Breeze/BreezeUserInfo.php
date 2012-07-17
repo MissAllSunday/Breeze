@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to generate a div with the user common info, name, avatar, post, icons, stuff like that.
  * @package Breeze mod
- * @version 1.0 Beta 2
+ * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html

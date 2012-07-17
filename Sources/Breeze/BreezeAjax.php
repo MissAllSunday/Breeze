@@ -5,7 +5,7 @@
  *
  * The purpose of this file is
  * @package Breeze mod
- * @version 1.0 Beta 2
+ * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -54,7 +54,7 @@ abstract class BreezeAjax
 		loadtemplate('BreezeAjax');
 
 		/* Handling the subactions */
-		$sglobals = breeze::sGlobals('get');
+		$sglobals = Breeze::sGlobals('get');
 
 		$subActions = array(
 			'post' => 'WrapperBreeze_AjaxPost',
@@ -210,8 +210,8 @@ abstract class BreezeAjax
 		$context['Breeze']['ajax']['data'] = '';
 
 		/* Get the data */
-		$sa = new BreezeGlobals('post');
-		$query = BreezeQuery::getInstance();
+		$sa = Breeze::sGlobals('post');
+		$query = Breeze::query();
 		$temp_id_exists = $query->getSingleValue($sa->getRaw('type') == 'status' ? 'status' : 'comments', 'id', $sa->getValue('id'));
 
 			switch ($sa->getRaw('type'))

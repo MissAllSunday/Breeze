@@ -5,7 +5,7 @@
  *
  * The purpose of this file is, a procedural set of functions that handles the admin pages for Breeze
  * @package Breeze mod
- * @version 1.0 Beta 2
+ * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -64,8 +64,8 @@ if (!defined('SMF'))
 
 		/* Load stuff */
 		$text = Breeze::text();
+		$globals = Breeze::sGlobals('request');
 		$context['sub_template'] = 'show_settings';
-		$globals = new BreezeGlobals('request');
 
 		require_once($sourcedir . '/ManageServer.php');
 
