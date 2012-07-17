@@ -204,77 +204,78 @@ function template_user_wall()
 	<ul class="breeze_status" id="breeze_display_status">';
 
 	/* Status and comments */
-	foreach ($context['member']['status'] as $status)
-	{
-		echo '<li class="windowbg" id ="status_id_', $status['id'] ,'">
-			<span class="topslice"><span></span></span>
-				<div class="breeze_user_inner">
-					<div class="breeze_user_status_avatar">
-						',$context['Breeze']['user_info'][$status['poster_id']],'
-					</div>
-					<div class="breeze_user_status_comment">
-						',$status['body'],'
-						<div class="breeze_options"><span class="time_elapsed">', $status['time'] ,' </span>';
+	if (!empty($context['member']['status']))
+		foreach ($context['member']['status'] as $status)
+		{
+			echo '<li class="windowbg" id ="status_id_', $status['id'] ,'">
+				<span class="topslice"><span></span></span>
+					<div class="breeze_user_inner">
+						<div class="breeze_user_status_avatar">
+							',$context['Breeze']['user_info'][$status['poster_id']],'
+						</div>
+						<div class="breeze_user_status_comment">
+							',$status['body'],'
+							<div class="breeze_options"><span class="time_elapsed">', $status['time'] ,' </span>';
 
-						/* Delete link */
-						if ($context['Breeze']['visitor']['delete_status_comments'])
-							echo '| <a href="javascript:void(0)" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['BreezeMod_general_delete'] ,'</a> </div>';
+							/* Delete link */
+							if ($context['Breeze']['visitor']['delete_status_comments'])
+								echo '| <a href="javascript:void(0)" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['BreezeMod_general_delete'] ,'</a> </div>';
 
-						echo '<hr />
-						<div id="comment_flash_', $status['id'] ,'"></div>';
-					echo '<ul class="breeze_comments_list" id="comment_loadplace_', $status['id'] ,'">';
+							echo '<hr />
+							<div id="comment_flash_', $status['id'] ,'"></div>';
+						echo '<ul class="breeze_comments_list" id="comment_loadplace_', $status['id'] ,'">';
 
-						/* Print out the comments */
-						if ($status['comments'])
-							foreach($status['comments'] as $comment)
-							{
-								echo '<li class="windowbg2" id ="comment_id_', $comment['id'] ,'">
-											<div class="breeze_user_comment_avatar">
-												',$context['Breeze']['user_info'][$comment['poster_id']],'<br />
-											</div>
-											<div class="breeze_user_comment_comment">
-												',$comment['body'],'
-												<div class="breeze_options">
-													<span class="time_elapsed">', $comment['time'] ,'</span>';
-
-													/* Delete comment */
-								if ($context['Breeze']['visitor']['delete_status_comments'])
-									echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['BreezeMod_general_delete'] ,'</a>';
-
-								echo '
+							/* Print out the comments */
+							if ($status['comments'])
+								foreach($status['comments'] as $comment)
+								{
+									echo '<li class="windowbg2" id ="comment_id_', $comment['id'] ,'">
+												<div class="breeze_user_comment_avatar">
+													',$context['Breeze']['user_info'][$comment['poster_id']],'<br />
 												</div>
-											</div>
-											<div class="clear"></div>
-										</li>';
-							}
+												<div class="breeze_user_comment_comment">
+													',$comment['body'],'
+													<div class="breeze_options">
+														<span class="time_elapsed">', $comment['time'] ,'</span>';
 
-						/* Display the new comments */
-						echo '<li id="breeze_load_image_comment_', $status['id'] ,'" style="margin:auto; text-align:center;"></li>';
+														/* Delete comment */
+									if ($context['Breeze']['visitor']['delete_status_comments'])
+										echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['BreezeMod_general_delete'] ,'</a>';
 
-						echo '</ul>';
+									echo '
+													</div>
+												</div>
+												<div class="clear"></div>
+											</li>';
+								}
 
-							/* Post a new comment */
-							if ($context['Breeze']['visitor']['post_comment'])
-								echo '<div>
-								<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
-									<textarea id="textboxcontent_', $status['id'] ,'" cols="40" rows="2"></textarea>
-									<input type="hidden" value="',$status['poster_id'],'" name="status_owner_id', $status['id'] ,'" id="status_owner_id', $status['id'] ,'" />
-									<input type="hidden" value="',$context['member']['id'],'" name="profile_owner_id', $status['id'] ,'" id="profile_owner_id', $status['id'] ,'" />
-									<input type="hidden" value="', $status['id'] ,'" name="status_id', $status['id'] ,'" id="status_id', $status['id'] ,'" />
-									<input type="hidden" value="',$user_info['id'],'" name="poster_comment_id', $status['id'] ,'" id="poster_comment_id', $status['id'] ,'" /><br />
-									<input type="submit" value="', $txt['post'] ,'" class="comment_submit" id="', $status['id'] ,'" />
-								</form>
-							</div>';
+							/* Display the new comments */
+							echo '<li id="breeze_load_image_comment_', $status['id'] ,'" style="margin:auto; text-align:center;"></li>';
 
-					echo '
+							echo '</ul>';
+
+								/* Post a new comment */
+								if ($context['Breeze']['visitor']['post_comment'])
+									echo '<div>
+									<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
+										<textarea id="textboxcontent_', $status['id'] ,'" cols="40" rows="2"></textarea>
+										<input type="hidden" value="',$status['poster_id'],'" name="status_owner_id', $status['id'] ,'" id="status_owner_id', $status['id'] ,'" />
+										<input type="hidden" value="',$context['member']['id'],'" name="profile_owner_id', $status['id'] ,'" id="profile_owner_id', $status['id'] ,'" />
+										<input type="hidden" value="', $status['id'] ,'" name="status_id', $status['id'] ,'" id="status_id', $status['id'] ,'" />
+										<input type="hidden" value="',$user_info['id'],'" name="poster_comment_id', $status['id'] ,'" id="poster_comment_id', $status['id'] ,'" /><br />
+										<input type="submit" value="', $txt['post'] ,'" class="comment_submit" id="', $status['id'] ,'" />
+									</form>
+								</div>';
+
+						echo '
+						</div>
+						<div class="clear"></div>
 					</div>
-					<div class="clear"></div>
-				</div>
-			<span class="botslice">
-				<span></span>
-			</span>
-			</li>';
-	}
+				<span class="botslice">
+					<span></span>
+				</span>
+				</li>';
+		}
 
 	/* End of list */
 	echo '</ul>';
