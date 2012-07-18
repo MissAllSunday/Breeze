@@ -47,6 +47,7 @@ class BreezeParser
 	{
 		$this->notification = Breeze::notifications();
 		$this->settings = Breeze::settings();
+		$this->tools = breeze::tools();
 
 		/* Regex stuff */
 		$this->regex = array(
@@ -88,7 +89,7 @@ class BreezeParser
 		$tempQuery = Breeze::quickQuery('members');
 
 		/* Serach for all possible names */
-		if (preg_match_all($this->regex['mention'], $s, $matches))
+		if (preg_match_all($this->regex['mention'], $s, $matches, PREG_SET_ORDER))
 			foreach($matches as $m)
 				$querynames[] = $m[1];
 
@@ -98,7 +99,7 @@ class BreezeParser
 
 		/* Let's make a quick query here... */
 		$tempParams = array (
-			'rows' => 'id_member, member_name',
+			'rows' => 'id_member, member_name, real_name',
 			'where' => 'LOWER(real_name) IN({array_string:names}) OR LOWER(member_name) IN({array_string:names})',
 		);
 		$tempData = array(
@@ -109,6 +110,8 @@ class BreezeParser
 		$searchNames = $tempQuery->dataResult();
 		reset($matches);
 
+		echo '<pre>'; print_r($searchNames); echo '</pre>';
+		
 		/* We got some results */
 		if (!empty($searchNames))
 		{
@@ -119,9 +122,9 @@ class BreezeParser
 
 				/* You can't tag yourself */
 				foreach($names as $name)
-					if (in_array($name, $searchNames) && !array_key_exists($user_info['id'], $searchNames))
+					if (!array_key_exists($user_info['id'], $searchNames))
 					{
-						$id = array_search($name, $searchNames);
+						$id = $this->tools->returnKey($name, $searchNames);
 
 						$s = str_replace($m[0], '@<a href="' . $scripturl . '?action=profile;u=' . $id . '">' . $name . '</a>', $s);
 					}

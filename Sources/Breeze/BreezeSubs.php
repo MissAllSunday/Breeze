@@ -186,6 +186,18 @@ $(document).ready(function ()
 		return $string;
 	}
 
+	/* Checks if a value on a multidimencional array exists and return the main key */
+	public function returnKey($value, $array)
+	{
+		if (empty($value) || empty($array))
+			return false;
+
+		foreach ($array as $k => $v)
+			foreach ($v as $id)
+			if ($value == $id)
+				return $k;
+	}
+
 	public function remove($array, $val, $preserve_keys = true)
 	{
 		if (empty($array) || empty($val) || !is_array($array))
