@@ -67,19 +67,14 @@ class BreezeText
 		$this->_pattern = '/BreezeMod_/';
 
 		/* Get only the settings that we need */
-		if (($this->_text = cache_get_data('Breeze:text', 360)) == null)
-		{
-			foreach ($txt as $kt => $vt)
-				if (preg_match($this->_pattern, $kt))
-				{
-					$kt = str_replace('BreezeMod_', '', $kt);
+		foreach ($txt as $kt => $vt)
+			if (preg_match($this->_pattern, $kt))
+			{
+				$kt = str_replace('BreezeMod_', '', $kt);
 
-					/* Done? then populate the new array */
-					$this->_text[$kt] = $vt;
-				}
-
-			cache_put_data('Breeze:text', $this->_text, 360);
-		}
+				/* Done? then populate the new array */
+				$this->_text[$kt] = $vt;
+			}
 	}
 
 	/* Get the requested setting  */

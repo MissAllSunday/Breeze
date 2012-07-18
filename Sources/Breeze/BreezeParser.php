@@ -107,7 +107,7 @@ class BreezeParser
 		);
 		$tempQuery->params($tempParams, $tempData);
 		$tempQuery->getData('id_member', false);
-		$searchNames = $tempQuery->dataResult();
+		$searchNames = array_unique($tempQuery->dataResult());
 		reset($matches);
 
 		/* We got some results */
