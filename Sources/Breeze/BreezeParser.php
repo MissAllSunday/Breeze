@@ -110,8 +110,6 @@ class BreezeParser
 		$searchNames = $tempQuery->dataResult();
 		reset($matches);
 
-		echo '<pre>'; print_r($searchNames); echo '</pre>';
-		
 		/* We got some results */
 		if (!empty($searchNames))
 		{
@@ -126,7 +124,12 @@ class BreezeParser
 					{
 						$id = $this->tools->returnKey($name, $searchNames);
 
-						$s = str_replace($m[0], '@<a href="' . $scripturl . '?action=profile;u=' . $id . '">' . $name . '</a>', $s);
+						/* is this a valid user? */
+						if (!empty($id))
+							$s = str_replace($m[0], '@<a href="' . $scripturl . '?action=profile;u=' . $id . '">' . $name . '</a>', $s);
+
+						else
+							$s = str_replace($m[0], '@' . $name, $s);
 					}
 			}
 

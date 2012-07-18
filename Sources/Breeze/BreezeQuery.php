@@ -319,6 +319,8 @@ class BreezeQuery extends Breeze
 				);
 			}
 
+			$smcFunc['db_free_result']($result);
+
 			/* Cache this beauty */
 			cache_put_data('Breeze:'. $this->_tables['status']['name'], $this->_status, 120);
 		}
@@ -432,6 +434,8 @@ class BreezeQuery extends Breeze
 					'body' => $row['comments_body']
 				);
 			}
+
+			$smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
 			cache_put_data('Breeze:'. $this->_tables['comments']['name'], $this->_comments, 120);
@@ -589,9 +593,9 @@ class BreezeQuery extends Breeze
 
 			/* Populate the array like a boss! */
 			while ($row = $smcFunc['db_fetch_assoc']($result))
-			{
 				$this->_members[$row['id_member']] = $row;
-			}
+
+			$smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
 			cache_put_data('Breeze:'. $this->_tables['members']['name'], $this->_members, 120);
@@ -660,6 +664,8 @@ class BreezeQuery extends Breeze
 					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
 				);
 			}
+
+			$smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
 			cache_put_data('Breeze:'. $this->_tables['noti']['name'], $this->_noti, 120);

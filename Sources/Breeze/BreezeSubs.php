@@ -194,8 +194,13 @@ $(document).ready(function ()
 
 		foreach ($array as $k => $v)
 			foreach ($v as $id)
-			if ($value == $id)
-				return $k;
+			{
+				if ($value == $id)
+					return $k;
+
+				else
+					return false;
+			}
 	}
 
 	public function remove($array, $val, $preserve_keys = true)
