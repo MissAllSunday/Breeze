@@ -193,14 +193,25 @@ $(document).ready(function ()
 			return false;
 
 		foreach ($array as $k => $v)
-			foreach ($v as $id)
+		{
+			if (is_array($v))
 			{
-				if ($value == $id)
+				if (in_array($value, $v))
+					return $k;
+
+					else
+						return false;
+			}
+
+			else
+			{
+				if ($v == $value)
 					return $k;
 
 				else
 					return false;
 			}
+		}
 	}
 
 	public function remove($array, $val, $preserve_keys = true)

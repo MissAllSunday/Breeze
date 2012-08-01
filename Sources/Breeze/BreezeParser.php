@@ -91,7 +91,7 @@ class BreezeParser
 		/* Serach for all possible names */
 		if (preg_match_all($this->regex['mention'], $s, $matches, PREG_SET_ORDER))
 			foreach($matches as $m)
-				$querynames[] = $m[1];
+				$querynames[] = trim($m[1]);
 
 		/* Nothing was found */
 		else
@@ -113,25 +113,22 @@ class BreezeParser
 		/* We got some results */
 		if (!empty($searchNames))
 		{
-			/* Lets get the names */
-			foreach($matches as $m)
-				$names[] = trim($m[1]);
-
 				/* You can't tag yourself */
-				foreach($names as $name)
-					if (!array_key_exists($user_info['id'], $searchNames))
-					{
-						$id = $this->tools->returnKey($name, $searchNames);
-						
-						echo '<pre>';print_r($id);echo '</pre>';
+				if (array_key_exists($user_info['id'], $searchNames))
+					unset($searchNames[$user_info['id']]);
 
-						/* is this a valid user? */
-						if (!empty($id))
-							$s = str_replace('{'.$name .'}', '@<a href="' . $scripturl . '?action=profile;u=' . $id . '">' . $name . '</a>', $s);
+				/* Do the replacement */
+				foreach($querynames as $name)
+				{
+					$id = $this->tools->returnKey($name, $searchNames);
 
-						else
-							$s = str_replace('{'.$name .'}', '@' . $name, $s);
-					}
+					/* is this a valid user? */
+					if (!empty($id))
+						$s = str_replace('{'.$name .'}', '@<a href="' . $scripturl . '?action=profile;u=' . $id . '">' . $name . '</a>', $s);
+
+					else
+						$s = str_replace('{'.$name .'}', '@' . $name, $s);
+				}
 
 			reset($matches);
 		}
