@@ -87,6 +87,7 @@ class BreezeParser
 		global $user_info, $scripturl;
 
 		$tempQuery = Breeze::quickQuery('members');
+		$searchNames = array();
 
 		/* Serach for all possible names */
 		if (preg_match_all($this->regex['mention'], $s, $matches, PREG_SET_ORDER))
@@ -100,15 +101,18 @@ class BreezeParser
 		/* Let's make a quick query here... */
 		$tempParams = array (
 			'rows' => 'id_member, member_name, real_name',
-			'where' => 'LOWER(real_name) IN({array_string:names}) OR LOWER(member_name) IN({array_string:names})',
+			'where' => 'real_name IN({array_string:names}) OR member_name IN({array_string:names})',
 		);
 		$tempData = array(
 			'names' => array_unique($querynames),
 		);
 		$tempQuery->params($tempParams, $tempData);
 		$tempQuery->getData('id_member', false);
+
+		/* Get the actual users */
 		$searchNames = !is_array($tempQuery->dataResult()) ? array($tempQuery->dataResult()) : $tempQuery->dataResult();
-		reset($matches);
+
+		reset($querynames);
 
 		/* We got some results */
 		if (!empty($searchNames))
@@ -117,20 +121,27 @@ class BreezeParser
 				if (array_key_exists($user_info['id'], $searchNames))
 					unset($searchNames[$user_info['id']]);
 
-				/* Do the replacement */
+					echo '<pre>';print_r($searchNames);echo '</pre>';
+
+				/* Lets collect the info */
 				foreach($querynames as $name)
 				{
-					$id = $this->tools->returnKey($name, $searchNames);
+					$find[] = '{'. $name .'}';
 
 					/* is this a valid user? */
+					$id = BreezeTools::returnKey($name, $searchNames);
+
 					if (!empty($id))
-						$s = str_replace('{'.$name .'}', '@<a href="' . $scripturl . '?action=profile;u=' . $id . '">' . $name . '</a>', $s);
+						$replace[] = '@<a href="' . $scripturl . '?action=profile;u=' . $id . '">' . $name . '</a>';
 
 					else
-						$s = str_replace('{'.$name .'}', '@' . $name, $s);
+						$replace[] = '@' .$name;
 				}
 
-			reset($matches);
+				echo '<pre>';print_r($replace);echo '</pre>';
+
+			/* Do the replacement already */
+			$s = str_replace($find, $replace, $s);
 		}
 
 		/* There is no users, so just replace the names with a nice @ */
