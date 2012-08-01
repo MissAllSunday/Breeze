@@ -79,7 +79,7 @@ class BreezeGeneral
 		);
 
 		/* Headers */
-		BreezeSubs::headers(true);
+		BreezeTools::headers(true);
 	}
 
 	/* Show a single status with all it's comments */
@@ -98,7 +98,7 @@ class BreezeGeneral
 		$status['comments'] = array();
 
 		/* Headers */
-		BreezeSubs::headers();
+		BreezeTools::headers();
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'singleStatus';

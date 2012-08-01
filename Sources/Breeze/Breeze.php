@@ -99,7 +99,7 @@ class Breeze
 
 	public function tools()
 	{
-		return new BreezeSubs();
+		return new BreezeTools();
 	}
 
 	public function settings()

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * BreezeSubs
+ * BreezeTools
  *
  * The purpose of this file is to provide some tools used across the mod
  * @package Breeze mod
@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class BreezeSubs
+class BreezeTools
 {
 	function __construct(){}
 

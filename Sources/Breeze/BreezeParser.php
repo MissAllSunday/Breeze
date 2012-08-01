@@ -47,7 +47,7 @@ class BreezeParser
 	{
 		$this->notification = Breeze::notifications();
 		$this->settings = Breeze::settings();
-		$this->tools = breeze::tools();
+		$this->tools = Breeze::tools();
 
 		/* Regex stuff */
 		$this->regex = array(
@@ -60,7 +60,7 @@ class BreezeParser
 	{
 		$this->s = $string;
 		$temp = get_class_methods('BreezeParser');
-		$temp = BreezeSubs::remove($temp, array('__construct', 'display'), false);
+		$temp = BreezeTools::remove($temp, array('__construct', 'display'), false);
 
 		/* Used to notify the user */
 		if ($mention_info)
@@ -107,7 +107,7 @@ class BreezeParser
 		);
 		$tempQuery->params($tempParams, $tempData);
 		$tempQuery->getData('id_member', false);
-		$searchNames = array_unique($tempQuery->dataResult());
+		$searchNames = !is_array($tempQuery->dataResult()) ? array($tempQuery->dataResult()) : $tempQuery->dataResult();
 		reset($matches);
 
 		/* We got some results */
@@ -115,23 +115,23 @@ class BreezeParser
 		{
 			/* Lets get the names */
 			foreach($matches as $m)
-			{
-				$names = explode(',', trim($m[1]));
+				$names[] = trim($m[1]);
 
 				/* You can't tag yourself */
 				foreach($names as $name)
 					if (!array_key_exists($user_info['id'], $searchNames))
 					{
 						$id = $this->tools->returnKey($name, $searchNames);
+						
+						echo '<pre>';print_r($id);echo '</pre>';
 
 						/* is this a valid user? */
 						if (!empty($id))
-							$s = str_replace($m[0], '@<a href="' . $scripturl . '?action=profile;u=' . $id . '">' . $name . '</a>', $s);
+							$s = str_replace('{'.$name .'}', '@<a href="' . $scripturl . '?action=profile;u=' . $id . '">' . $name . '</a>', $s);
 
 						else
-							$s = str_replace($m[0], '@' . $name, $s);
+							$s = str_replace('{'.$name .'}', '@' . $name, $s);
 					}
-			}
 
 			reset($matches);
 		}
@@ -139,7 +139,7 @@ class BreezeParser
 		/* There is no users, so just replace the names with a nice @ */
 		else
 			foreach($matches as $m)
-				$s = str_replace($m[0], '@'.$m, $s);
+				$s = str_replace($m[0], '@'.$m[1], $s);
 
 		/* We are done mutilating the string, lets returning it */
 		return $s;
