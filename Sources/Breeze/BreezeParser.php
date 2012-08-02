@@ -126,10 +126,22 @@ class BreezeParser
 				unset($searchNames[$user_info['id']]);
 			}
 
+			echo '<pre>';print_r($searchNames);echo '</pre>';
+
+			echo '<pre>';print_r($querynames);echo '</pre>';
+
 			/* Lets collect the info */
 			foreach($searchNames as $name)
 			{
-				$find[] = '{'. $name['member_name'] .'}';
+				/* Ugly but necessary to include both display and real name */
+				foreach ($querynames as $query)
+				{
+					if ($query == $name['member_name'])
+						$find[] = '{'. $name['member_name'] .'}';
+
+					else
+						$find[] = '{'. $name['real_name'] .'}';
+				}
 
 				$replace[] = '@<a href="' . $scripturl . '?action=profile;u=' . $name['id_member'] . '" class="bbc_link" target="_blank">' . $name['member_name'] . '</a>';
 			}

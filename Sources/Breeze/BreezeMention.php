@@ -44,38 +44,36 @@ class BreezeMention
 	protected $_notification;
 	protected $_settings;
 	protected $_tools;
+	protected $_string;
+	protected $_regex = '~{([\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u';
 
-	function __construct($string)
+	function __construct()
 	{
 		$this->_notification = Breeze::notifications();
 		$this->_settings = Breeze::settings();
 		$this->_tools = Breeze::tools();
-		$this->_string = $string;
-
-		/* Regex stuff */
-		$this->regex = array(
-			'mention' => '~{([\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u'
-		);
-
-		/* Do the mention */
-		$this->mention();
 	}
 
-	private function mention()
+	private function mention($string)
 	{
-		global $user_info, $scripturl;
+		global $user_info;
 
+		/* Oh, common! really? */
+		if (empty($string))
+			return false;
+
+		$this->_string = $string;
 		$tempQuery = Breeze::quickQuery('members');
 		$searchNames = array();
 
 		/* Search for all possible names */
-		if (preg_match_all($this->regex['mention'], $s, $matches, PREG_SET_ORDER))
+		if (preg_match_all($this->_regex, $s, $matches, PREG_SET_ORDER))
 			foreach($matches as $m)
 				$querynames[] = trim($m[1]);
 
 		/* Nothing was found */
 		else
-			return $s;
+			return $this->_string;
 
 		/* Let's make a quick query here... */
 		$tempParams = array (
@@ -98,8 +96,39 @@ class BreezeMention
 			if (array_key_exists($user_info['id'], $searchNames))
 				unset($searchNames[$user_info['id']]);
 
-
 			/* Lets create the notification */
+			foreach ($searchNames as $name)
+			{
+				$params = array(
+					'user' => $user_info['id'],
+					'user_to' => $name['id_member'],
+					'type' => 'mention',
+					'time' => time(),
+					'read' => 0,
+				);
+
+				/* Notification here */
+				$this->_notification->createMention($params);
+
+				/* Ugly but necessary to include both display and real name */
+				foreach ($querynames as $query)
+				{
+					if ($query == $name['member_name'])
+						$find[] = '{'. $name['member_name'] .'}';
+
+					else
+						$find[] = '{'. $name['real_name'] .'}';
+				}
+
+				/* Building the pre-format, format is as follows: {id,name,display} */
+				$replace[] = '{'. $name['id_member'] .','. $name['member_name'] .','. $name['real_name'] .'}';
+			}
 		}
+
+		/* Finally do the replacement */
+		$this->_string = str_replace($find, $replace, $this->_string);
+		
+		/* Return the string */
+		return $this->_string;
 	}
 }
