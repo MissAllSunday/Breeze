@@ -56,7 +56,7 @@ class BreezeParser
 		);
 	}
 
-	public function display($string, $mention_info = false)
+	public function display($string)
 	{
 		$this->s = $string;
 		$temp = get_class_methods('BreezeParser');

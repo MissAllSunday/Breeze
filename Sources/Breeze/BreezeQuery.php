@@ -291,6 +291,7 @@ class BreezeQuery extends Breeze
 
 		$tools = parent::tools();
 		$gSettings = parent::settings();
+		$parser = parent::parser();
 
 		/* Use the cache please... */
 		if (($this->_status = cache_get_data('Breeze:'. $this->_tables['status']['name'], 120)) == null)
@@ -315,7 +316,7 @@ class BreezeQuery extends Breeze
 					'owner_id' => $row['status_owner_id'],
 					'poster_id' => $row['status_poster_id'],
 					'time' => $tools->timeElapsed($row['status_time']),
-					'body' => $row['status_body']
+					'body' => $parser->display($row['status_body']),
 				);
 			}
 
@@ -405,6 +406,7 @@ class BreezeQuery extends Breeze
 
 		$tools = parent::tools();
 		$gSettings = parent::settings();
+		$parser = parent::parser();
 
 		/* Use the cache please... */
 		if (($this->_comments = cache_get_data('Breeze:'. $this->_tables['comments']['name'], 120)) == null)
@@ -431,7 +433,7 @@ class BreezeQuery extends Breeze
 					'poster_id' => $row['comments_poster_id'],
 					'profile_owner_id' => $row['comments_profile_owner_id'],
 					'time' => $tools->timeElapsed($row['comments_time']),
-					'body' => $row['comments_body']
+					'body' => $parser->display($row['comments_body']),
 				);
 			}
 

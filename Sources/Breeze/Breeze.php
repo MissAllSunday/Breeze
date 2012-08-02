@@ -122,6 +122,11 @@ class Breeze
 		return new BreezeParser();
 	}
 
+	public function mention()
+	{
+		return new BreezeMention();
+	}
+
 	public function notifications()
 	{
 		return new BreezeNotifications();

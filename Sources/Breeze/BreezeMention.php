@@ -54,7 +54,7 @@ class BreezeMention
 		$this->_tools = Breeze::tools();
 	}
 
-	private function mention($string)
+	private function mention($string, $noti_info = false)
 	{
 		global $user_info;
 
