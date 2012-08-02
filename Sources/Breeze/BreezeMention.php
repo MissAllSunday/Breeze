@@ -1,7 +1,7 @@
 <?php
 
 /**
- * BreezeParser
+ * BreezeMention
  *
  * The purpose of this file is to identify something in a tezt string and convert that to something different, for example, a url into an actual html link.
  * @package Breeze mod
@@ -39,50 +39,29 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class BreezeParser
+class BreezeMention
 {
-	private $notification;
+	protected $_notification;
+	protected $_settings;
+	protected $_tools;
 
-	function __construct()
+	function __construct($string)
 	{
-		$this->notification = Breeze::notifications();
-		$this->settings = Breeze::settings();
-		$this->tools = Breeze::tools();
+		$this->_notification = Breeze::notifications();
+		$this->_settings = Breeze::settings();
+		$this->_tools = Breeze::tools();
+		$this->_string = $string;
 
 		/* Regex stuff */
 		$this->regex = array(
-			'url' => '~(?<=[\s>\.(;\'"]|^)((?:http|https)://[\w\-_%@:|]+(?:\.[\w\-_%]+)*(?::\d+)?(?:/[\w\-_\~%\.@!,\?&;=#(){}+:\'\\\\]*)*[/\w\-_\~%@\?;=#}\\\\])~i',
 			'mention' => '~{([\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u'
 		);
+
+		/* Do the mention */
+		$this->mention();
 	}
 
-	public function display($string, $mention_info = false)
-	{
-		$this->s = $string;
-		$temp = get_class_methods('BreezeParser');
-		$temp = BreezeTools::remove($temp, array('__construct', 'display'), false);
-
-		/* Used to notify the user */
-		if ($mention_info)
-			$this->mention_info = $mention_info;
-
-		foreach ($temp as $t)
-			$this->s = $this->$t($this->s);
-
-		return $this->s;
-	}
-
-	/* Convert any valid urls on to links */
-	private function urltoLink($s)
-	{
-		if (preg_match_all($this->regex['url'], $s, $matches))
-			foreach($matches[0] as $m)
-				$s = str_replace($m, '<a href="'.$m.'" class="bbc_link" target="_blank">'.$m.'</a>', $s);
-
-		return $s;
-	}
-
-	private function mention($s)
+	private function mention()
 	{
 		global $user_info, $scripturl;
 
@@ -115,35 +94,12 @@ class BreezeParser
 		/* We got some results */
 		if (!empty($searchNames))
 		{
-			/* You can't tag yourself but your name will be converted anyway... */
+			/* You can't notify yourself */
 			if (array_key_exists($user_info['id'], $searchNames))
-			{
-				$find[] = '{'. $searchNames[$user_info['id']]['member_name'] .'}';
-
-				$replace[] = '@' . $searchNames[$user_info['id']]['member_name'] ;
-
-				/* Are we done? then bye bye! */
 				unset($searchNames[$user_info['id']]);
-			}
 
-			/* Lets collect the info */
-			foreach($searchNames as $name)
-			{
-				$find[] = '{'. $name['member_name'] .'}';
 
-				$replace[] = '@<a href="' . $scripturl . '?action=profile;u=' . $name['id_member'] . '" class="bbc_link" target="_blank">' . $name['member_name'] . '</a>';
-			}
-
-			/* Do the replacement already */
-			$s = str_replace($find, $replace, $s);
+			/* Lets create the notification */
 		}
-
-		/* There is no users, so just replace the names with a nice @ */
-		else
-			foreach($matches as $m)
-				$s = str_replace($m[0], '@'.$m[1], $s);
-
-		/* We are done mutilating the string, lets returning it */
-		return $s;
 	}
 }
