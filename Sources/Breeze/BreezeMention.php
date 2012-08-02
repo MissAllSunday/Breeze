@@ -127,7 +127,7 @@ class BreezeMention
 
 		/* Finally do the replacement */
 		$this->_string = str_replace($find, $replace, $this->_string);
-		
+
 		/* Return the string */
 		return $this->_string;
 	}

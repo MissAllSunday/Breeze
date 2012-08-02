@@ -52,7 +52,7 @@ class BreezeParser
 		/* Regex stuff */
 		$this->regex = array(
 			'url' => '~(?<=[\s>\.(;\'"]|^)((?:http|https)://[\w\-_%@:|]+(?:\.[\w\-_%]+)*(?::\d+)?(?:/[\w\-_\~%\.@!,\?&;=#(){}+:\'\\\\]*)*[/\w\-_\~%@\?;=#}\\\\])~i',
-			'mention' => '~{([\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u'
+			'mention' => '~{(?<id>[0-9]+),(?<name>[\s\w,;-_\[\]\\\/\+\.\~\$\!]+),(?<display>[\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u',
 		);
 	}
 
@@ -84,78 +84,28 @@ class BreezeParser
 
 	private function mention($s)
 	{
-		global $user_info, $scripturl;
-
-		$tempQuery = Breeze::quickQuery('members');
-		$searchNames = array();
+		global $scripturl;
 
 		/* Search for all possible names */
 		if (preg_match_all($this->regex['mention'], $s, $matches, PREG_SET_ORDER))
-			foreach($matches as $m)
-				$querynames[] = trim($m[1]);
-
-		/* Nothing was found */
-		else
-			return $s;
-
-		/* Let's make a quick query here... */
-		$tempParams = array (
-			'rows' => 'id_member, member_name, real_name',
-			'where' => 'real_name IN({array_string:names}) OR member_name IN({array_string:names})',
-		);
-		$tempData = array(
-			'names' => array_unique($querynames),
-		);
-		$tempQuery->params($tempParams, $tempData);
-		$tempQuery->getData('id_member', false);
-
-		/* Get the actual users */
-		$searchNames = !is_array($tempQuery->dataResult()) ? array($tempQuery->dataResult()) : $tempQuery->dataResult();
-
-		/* We got some results */
-		if (!empty($searchNames))
 		{
 			/* You can't tag yourself but your name will be converted anyway... */
-			if (array_key_exists($user_info['id'], $searchNames))
+			foreach ($matches as $query)
 			{
-				$find[] = '{'. $searchNames[$user_info['id']]['member_name'] .'}';
+				$find[] = $query[0];
 
-				$replace[] = '@' . $searchNames[$user_info['id']]['member_name'] ;
-
-				/* Are we done? then bye bye! */
-				unset($searchNames[$user_info['id']]);
-			}
-
-			echo '<pre>';print_r($searchNames);echo '</pre>';
-
-			echo '<pre>';print_r($querynames);echo '</pre>';
-
-			/* Lets collect the info */
-			foreach($searchNames as $name)
-			{
-				/* Ugly but necessary to include both display and real name */
-				foreach ($querynames as $query)
-				{
-					if ($query == $name['member_name'])
-						$find[] = '{'. $name['member_name'] .'}';
-
-					else
-						$find[] = '{'. $name['real_name'] .'}';
-				}
-
-				$replace[] = '@<a href="' . $scripturl . '?action=profile;u=' . $name['id_member'] . '" class="bbc_link" target="_blank">' . $name['member_name'] . '</a>';
+				$replace[] = '@<a href="' . $scripturl . '?action=profile;u=' . $query['id'] . '" class="bbc_link" target="_blank">' . $query['display'] . '</a>';
 			}
 
 			/* Do the replacement already */
 			$s = str_replace($find, $replace, $s);
+
+			/* We are done mutilating the string, lets returning it */
+			return $s;
 		}
 
-		/* There is no users, so just replace the names with a nice @ */
+		/* Nothing was found */
 		else
-			foreach($matches as $m)
-				$s = str_replace($m[0], '@'.$m[1], $s);
-
-		/* We are done mutilating the string, lets returning it */
-		return $s;
+			return $s;
 	}
 }
