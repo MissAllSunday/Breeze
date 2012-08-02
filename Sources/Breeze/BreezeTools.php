@@ -187,7 +187,7 @@ $(document).ready(function ()
 	}
 
 	/* Checks if a value on a multidimencional array exists and return the main key */
-	public static function returnKey($value, $array)
+	public function returnKey($value, $array)
 	{
 		if (empty($value) || empty($array))
 			return false;

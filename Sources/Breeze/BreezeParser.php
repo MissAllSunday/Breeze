@@ -112,33 +112,27 @@ class BreezeParser
 		/* Get the actual users */
 		$searchNames = !is_array($tempQuery->dataResult()) ? array($tempQuery->dataResult()) : $tempQuery->dataResult();
 
-		reset($querynames);
-
 		/* We got some results */
 		if (!empty($searchNames))
 		{
-				/* You can't tag yourself */
+				/* You can't tag yourself but your name will be converted anyway... */
 				if (array_key_exists($user_info['id'], $searchNames))
-					unset($searchNames[$user_info['id']]);
-
-					echo '<pre>';print_r($searchNames);echo '</pre>';
-
-				/* Lets collect the info */
-				foreach($querynames as $name)
 				{
-					$find[] = '{'. $name .'}';
+					$find[] = '{'. $searchNames[$user_info['id']]['member_name'] .'}';
 
-					/* is this a valid user? */
-					$id = BreezeTools::returnKey($name, $searchNames);
+					$replace[] = '@' . $searchNames[$user_info['id']]['member_name'] ;
 
-					if (!empty($id))
-						$replace[] = '@<a href="' . $scripturl . '?action=profile;u=' . $id . '">' . $name . '</a>';
-
-					else
-						$replace[] = '@' .$name;
+					/* Are we done? then bye bye! */
+					unset($searchNames[$user_info['id']]);
 				}
 
-				echo '<pre>';print_r($replace);echo '</pre>';
+				/* Lets collect the info */
+				foreach($searchNames as $name)
+				{
+					$find[] = '{'. $name['member_name'] .'}';
+
+					$replace[] = '@<a href="' . $scripturl . '?action=profile;u=' . $name['id_member'] . '">' . $name['member_name'] . '</a>';
+				}
 
 			/* Do the replacement already */
 			$s = str_replace($find, $replace, $s);
