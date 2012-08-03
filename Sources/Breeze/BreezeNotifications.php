@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class BreezeNotifications
+class BreezeNotifications extends Breeze
 {
 	protected $_settings = array();
 	protected $_params = array();
@@ -53,6 +53,8 @@ class BreezeNotifications
 	function __construct()
 	{
 		global $user_info;
+
+		parent::__construct();
 
 		/* Current user */
 		$this->_currentUser = $user_info['id'];
@@ -108,7 +110,7 @@ class BreezeNotifications
 		$double_request = false;
 
 		/* We need a quick query here */
-		$tempQuery = Breeze::quickQuery('breeze_notifications');
+		$tempQuery = $this->quickQuery('breeze_notifications');
 
 		/* if the type is buddy then let's do a check to avoid duplicate entries */
 		if (!empty($params) && in_array($params['type'], $this->_types))

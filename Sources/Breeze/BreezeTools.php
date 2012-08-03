@@ -1,7 +1,7 @@
 <?php
 
 /**
- * BreezeSubs
+ * BreezeTools
  *
  * The purpose of this file is to provide some tools used across the mod
  * @package Breeze mod
@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class BreezeSubs
+class BreezeTools
 {
 	function __construct(){}
 
@@ -184,6 +184,34 @@ $(document).ready(function ()
 				$string = substr($string, 0, $breakpoint) . $pad;
 
 		return $string;
+	}
+
+	/* Checks if a value on a multidimencional array exists and return the main key */
+	public function returnKey($value, $array)
+	{
+		if (empty($value) || empty($array))
+			return false;
+
+		foreach ($array as $k => $v)
+		{
+			if (is_array($v))
+			{
+				if (in_array($value, $v))
+					return $k;
+
+					else
+						return false;
+			}
+
+			else
+			{
+				if ($v == $value)
+					return $k;
+
+				else
+					return false;
+			}
+		}
 	}
 
 	public function remove($array, $val, $preserve_keys = true)

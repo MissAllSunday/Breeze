@@ -94,12 +94,12 @@ class Breeze
 
 	public function quickQuery($table)
 	{
-		return new BreezeQuery($table);
+		return new BreezeDB($table);
 	}
 
 	public function tools()
 	{
-		return new BreezeSubs();
+		return new BreezeTools();
 	}
 
 	public function settings()
@@ -120,6 +120,11 @@ class Breeze
 	public function parser()
 	{
 		return new BreezeParser();
+	}
+
+	public function mention()
+	{
+		return new BreezeMention();
 	}
 
 	public function notifications()

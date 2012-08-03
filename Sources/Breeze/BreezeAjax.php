@@ -92,6 +92,7 @@ abstract class BreezeAjax
 		$data = Breeze::sGlobals('post');
 		$query = Breeze::query();
 		$parser = Breeze::parser();
+		$mention = Breeze::mention();
 		$settings = Breeze::settings();
 
 		/* Do this only if there is something to add to the database */
@@ -110,7 +111,7 @@ abstract class BreezeAjax
 				'owner_id' => $data->getValue('owner_id'),
 				'poster_id' => $data->getValue('poster_id'),
 				'time' => time(),
-				'body' => $parser->display($body, $noti_info)
+				'body' => $mention->mention($body, $noti_info),
 			);
 
 			/* Store the status */
@@ -119,7 +120,11 @@ abstract class BreezeAjax
 			/* Get the newly created status, we just need the id */
 			$newStatus = $query->getLastStatus();
 
+			/* Set the ID */
 			$params['id'] = $newStatus['status_id'];
+
+			/* Parse the content */
+			$params['body'] = $parser->display($params['body']);
 
 			/* The status was added, build the server response */
 			$display = new Breezedisplay($params, 'status');
@@ -154,9 +159,9 @@ abstract class BreezeAjax
 		$data = Breeze::sGlobals('post');
 		$query = Breeze::query();
 		$parser = Breeze::parser();
+		$mention = Breeze::mention();
 		$settings = Breeze::settings();
 		$temp_id_exists = $query->getSingleValue('status', 'id', $data->getValue('status_id'));
-		$notifications = Breeze::notifications();
 
 		/* The status do exists and the data is valid*/
 		if ($data->validateBody('content') && !empty($temp_id_exists))
@@ -170,7 +175,7 @@ abstract class BreezeAjax
 				'poster_id' => $data->getValue('poster_comment_id'),
 				'profile_owner_id' => $data->getValue('profile_owner_id'),
 				'time' => time(),
-				'body' => $parser->display($body)
+				'body' => $mention->mention($body)
 			);
 
 			/* Store the comment */
@@ -179,7 +184,11 @@ abstract class BreezeAjax
 			/* Once the comment was added, get it's ID from the DB */
 			$new_comment = $query->getLastComment();
 
+			/* Set the ID */
 			$params['id'] = $new_comment['comments_id'];
+
+			/* Parse the content */
+			$params['body'] = $parser->display($params['body']);
 
 			/* The comment was added, build the server response */
 			$display = new Breezedisplay($params, 'comment');

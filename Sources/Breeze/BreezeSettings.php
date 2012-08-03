@@ -65,23 +65,18 @@ class BreezeSettings
 		$this->_pattern = '/BreezeMod_/';
 
 		/* Get only the settings that we need */
-		if (($this->_settings = cache_get_data('Breeze:settings', 360)) == null)
-		{
-			foreach ($modSettings as $km => $vm)
-				if (preg_match($this->_pattern, $km))
-				{
-					$km = str_replace('BreezeMod_', '', $km);
+		foreach ($modSettings as $km => $vm)
+			if (preg_match($this->_pattern, $km))
+			{
+				$km = str_replace('BreezeMod_', '', $km);
 
-					/* Hickjack this to convert the string to a timestamp */
-					if ($km == 'admin_limit_timeframe')
-						$vm = strtotime('-1 '.$vm);
+				/* Hickjack this to convert the string to a timestamp */
+				if ($km == 'admin_limit_timeframe')
+					$vm = strtotime('-1 '.$vm);
 
-					/* Done? then populate the new array */
-					$this->_settings[$km] = $vm;
-				}
-
-			cache_put_data('Breeze:settings', $this->_settings, 360);
-		}
+				/* Done? then populate the new array */
+				$this->_settings[$km] = $vm;
+			}
 	}
 
 	/* Return true if the value do exist, false otherwise, O RLY? */

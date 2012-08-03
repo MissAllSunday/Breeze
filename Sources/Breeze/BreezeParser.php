@@ -47,23 +47,20 @@ class BreezeParser
 	{
 		$this->notification = Breeze::notifications();
 		$this->settings = Breeze::settings();
+		$this->tools = Breeze::tools();
 
 		/* Regex stuff */
 		$this->regex = array(
 			'url' => '~(?<=[\s>\.(;\'"]|^)((?:http|https)://[\w\-_%@:|]+(?:\.[\w\-_%]+)*(?::\d+)?(?:/[\w\-_\~%\.@!,\?&;=#(){}+:\'\\\\]*)*[/\w\-_\~%@\?;=#}\\\\])~i',
-			'mention' => '~{([\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u'
+			'mention' => '~{(?<id>[0-9]+),(?<name>[\s\w,;-_\[\]\\\/\+\.\~\$\!]+),(?<display>[\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u',
 		);
 	}
 
-	public function display($string, $mention_info = false)
+	public function display($string)
 	{
 		$this->s = $string;
 		$temp = get_class_methods('BreezeParser');
-		$temp = BreezeSubs::remove($temp, array('__construct', 'display'), false);
-
-		/* Used to notify the user */
-		if ($mention_info)
-			$this->mention_info = $mention_info;
+		$temp = BreezeTools::remove($temp, array('__construct', 'display'), false);
 
 		foreach ($temp as $t)
 			$this->s = $this->$t($this->s);
@@ -83,59 +80,28 @@ class BreezeParser
 
 	private function mention($s)
 	{
-		global $user_info, $scripturl;
+		global $scripturl;
 
-		$tempQuery = Breeze::quickQuery('members');
+		/* Search for all possible names */
+		if (preg_match_all($this->regex['mention'], $s, $matches, PREG_SET_ORDER))
+		{
+			/* You can't tag yourself but your name will be converted anyway... */
+			foreach ($matches as $query)
+			{
+				$find[] = $query[0];
 
-		/* Serach for all possible names */
-		if (preg_match_all($this->regex['mention'], $s, $matches))
-			foreach($matches as $m)
-				$querynames[] = $m[1];
+				$replace[] = '@<a href="' . $scripturl . '?action=profile;u=' . $query['id'] . '" class="bbc_link" target="_blank">' . $query['display'] . '</a>';
+			}
+
+			/* Do the replacement already */
+			$s = str_replace($find, $replace, $s);
+
+			/* We are done mutilating the string, lets returning it */
+			return $s;
+		}
 
 		/* Nothing was found */
 		else
 			return $s;
-
-		/* Let's make a quick query here... */
-		$tempParams = array (
-			'rows' => 'id_member, member_name',
-			'where' => 'LOWER(real_name) IN({array_string:names}) OR LOWER(member_name) IN({array_string:names})',
-		);
-		$tempData = array(
-			'names' => array_unique($querynames),
-		);
-		$tempQuery->params($tempParams, $tempData);
-		$tempQuery->getData('id_member', false);
-		$searchNames = $tempQuery->dataResult();
-		reset($matches);
-
-		/* We got some results */
-		if (!empty($searchNames))
-		{
-			/* Lets get the names */
-			foreach($matches as $m)
-			{
-				$names = explode(',', trim($m[1]));
-
-				/* You can't tag yourself */
-				foreach($names as $name)
-					if (in_array($name, $searchNames) && !array_key_exists($user_info['id'], $searchNames))
-					{
-						$id = array_search($name, $searchNames);
-
-						$s = str_replace($m[0], '@<a href="' . $scripturl . '?action=profile;u=' . $id . '">' . $name . '</a>', $s);
-					}
-			}
-
-			reset($matches);
-		}
-
-		/* There is no users, so just replace the names with a nice @ */
-		else
-			foreach($matches as $m)
-				$s = str_replace($m[0], '@'.$m, $s);
-
-		/* We are done mutilating the string, lets returning it */
-		return $s;
 	}
 }

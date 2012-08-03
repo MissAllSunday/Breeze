@@ -291,6 +291,7 @@ class BreezeQuery extends Breeze
 
 		$tools = parent::tools();
 		$gSettings = parent::settings();
+		$parser = parent::parser();
 
 		/* Use the cache please... */
 		if (($this->_status = cache_get_data('Breeze:'. $this->_tables['status']['name'], 120)) == null)
@@ -315,9 +316,11 @@ class BreezeQuery extends Breeze
 					'owner_id' => $row['status_owner_id'],
 					'poster_id' => $row['status_poster_id'],
 					'time' => $tools->timeElapsed($row['status_time']),
-					'body' => $row['status_body']
+					'body' => $parser->display($row['status_body']),
 				);
 			}
+
+			$smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
 			cache_put_data('Breeze:'. $this->_tables['status']['name'], $this->_status, 120);
@@ -403,6 +406,7 @@ class BreezeQuery extends Breeze
 
 		$tools = parent::tools();
 		$gSettings = parent::settings();
+		$parser = parent::parser();
 
 		/* Use the cache please... */
 		if (($this->_comments = cache_get_data('Breeze:'. $this->_tables['comments']['name'], 120)) == null)
@@ -429,9 +433,11 @@ class BreezeQuery extends Breeze
 					'poster_id' => $row['comments_poster_id'],
 					'profile_owner_id' => $row['comments_profile_owner_id'],
 					'time' => $tools->timeElapsed($row['comments_time']),
-					'body' => $row['comments_body']
+					'body' => $parser->display($row['comments_body']),
 				);
 			}
+
+			$smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
 			cache_put_data('Breeze:'. $this->_tables['comments']['name'], $this->_comments, 120);
@@ -589,9 +595,9 @@ class BreezeQuery extends Breeze
 
 			/* Populate the array like a boss! */
 			while ($row = $smcFunc['db_fetch_assoc']($result))
-			{
 				$this->_members[$row['id_member']] = $row;
-			}
+
+			$smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
 			cache_put_data('Breeze:'. $this->_tables['members']['name'], $this->_members, 120);
@@ -660,6 +666,8 @@ class BreezeQuery extends Breeze
 					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
 				);
 			}
+
+			$smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
 			cache_put_data('Breeze:'. $this->_tables['noti']['name'], $this->_noti, 120);

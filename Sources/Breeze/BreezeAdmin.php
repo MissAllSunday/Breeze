@@ -55,7 +55,7 @@ if (!defined('SMF'))
 		$context['sub_template'] = 'admin_home';
 
 		/* Headers */
-		BreezeSubs::headers(true);
+		BreezeTools::headers(true);
 	}
 
 	function Breeze_Admin_Settings()
@@ -97,7 +97,7 @@ if (!defined('SMF'))
 		loadtemplate('BreezeAdmin');
 
 		/* Headers */
-		BreezeSubs::headers(true);
+		BreezeTools::headers(true);
 
 		/* Text strings */
 		$text = Breeze::text();
