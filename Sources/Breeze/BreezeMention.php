@@ -54,7 +54,7 @@ class BreezeMention
 		$this->_tools = Breeze::tools();
 	}
 
-	private function mention($string, $noti_info = false)
+	public function mention($string, $noti_info = false)
 	{
 		global $user_info;
 
@@ -67,7 +67,7 @@ class BreezeMention
 		$searchNames = array();
 
 		/* Search for all possible names */
-		if (preg_match_all($this->_regex, $s, $matches, PREG_SET_ORDER))
+		if (preg_match_all($this->_regex, $this->_string, $matches, PREG_SET_ORDER))
 			foreach($matches as $m)
 				$querynames[] = trim($m[1]);
 

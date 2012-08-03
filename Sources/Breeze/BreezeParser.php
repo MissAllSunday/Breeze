@@ -62,10 +62,6 @@ class BreezeParser
 		$temp = get_class_methods('BreezeParser');
 		$temp = BreezeTools::remove($temp, array('__construct', 'display'), false);
 
-		/* Used to notify the user */
-		if ($mention_info)
-			$this->mention_info = $mention_info;
-
 		foreach ($temp as $t)
 			$this->s = $this->$t($this->s);
 
