@@ -105,10 +105,6 @@ class BreezeMention
 			/* We got some results */
 			if (!empty($searchNames))
 			{
-				/* You can't notify yourself */
-				if (array_key_exists($user_info['id'], $searchNames))
-					unset($searchNames[$user_info['id']]);
-
 				/* Let's create the notification */
 				foreach ($searchNames as $name)
 				{
@@ -123,6 +119,17 @@ class BreezeMention
 							$name['raw_name'] = $name['member_name'];
 					}
 
+					/* Let's create the preformat */
+					$find[] = '{'. $name['raw_name'] .'}';
+					$replace[] = '{'. $name['id_member'] .','. $name['member_name'] .','. $name['real_name'] .'}';
+
+					/* You can't notify yourself but your name will be converted anyway */
+					if (array_key_exists($user_info['id'], $searchNames))
+						unset($searchNames[$user_info['id']]);
+
+					/* Append the mentioned user ID */
+					$noti_info['wall_mentioned'] = $name['id_member'];
+
 					$params = array(
 						'user' => $user_info['id'],
 						'user_to' => $name['id_member'],
@@ -134,10 +141,6 @@ class BreezeMention
 
 					/* Notification here */
 					$this->_notification->createMention($params);
-
-					/* Let's create the preformat */
-					$find[] = '{'. $name['raw_name'] .'}';
-					$replace[] = '{'. $name['id_member'] .','. $name['member_name'] .','. $name['real_name'] .'}';
 				}
 			}
 
