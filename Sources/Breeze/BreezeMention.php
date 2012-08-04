@@ -114,8 +114,14 @@ class BreezeMention
 				{
 					/* Ugly, but we need to associate the raw name with the actual names somehow... */
 					foreach ($queryNames as $query)
+					{
 						if (in_array($query, $name))
 							$name['raw_name'] = $query;
+
+						/* No? then use the display name and hope for the best... */
+						else
+							$name['raw_name'] = $name['member_name'];
+					}
 
 					$params = array(
 						'user' => $user_info['id'],
