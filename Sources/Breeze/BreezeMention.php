@@ -3,7 +3,7 @@
 /**
  * BreezeMention
  *
- * The purpose of this file is to identify something in a tezt string and convert that to something different, for example, a url into an actual html link.
+ * The purpose of this file is to identify a mention in a string and convert that to a more easy to use format which will be used by the aprser class later, oh, and create the mention notification..
  * @package Breeze mod
  * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
@@ -35,7 +35,6 @@
  *
  */
 
-
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
@@ -46,12 +45,10 @@ class BreezeMention
 	protected $_tools;
 	protected $_string;
 	protected $_regex = '~{([\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u';
+	protected $_query;
 
 	function __construct()
 	{
-		$this->_notification = Breeze::notifications();
-		$this->_settings = Breeze::settings();
-		$this->_tools = Breeze::tools();
 	}
 
 	public function mention($string, $noti_info = false)
@@ -63,8 +60,6 @@ class BreezeMention
 			return false;
 
 		$this->_string = $string;
-		$tempQuery = Breeze::quickQuery('members');
-		$searchNames = array();
 
 		/* Search for all possible names */
 		if (preg_match_all($this->_regex, $this->_string, $matches, PREG_SET_ORDER))
@@ -75,19 +70,33 @@ class BreezeMention
 		else
 			return $this->_string;
 
+		/* Load and set what we need */
+		$this->_query = Breeze::quickQuery('members');
+		$this->_notification = Breeze::notifications();
+		$this->_settings = Breeze::settings();
+		$this->_tools = Breeze::tools();
+		$searchNames = array();
+
+		/* Sorry, you just can't tag a single person more than once */
+		$queryNames = array_unique($queryNames);
+
+		/* Don't abuse... sorry, hardcoded for now*/
+		if (count($queryNames) >= 10)
+			$queryNames = array_slice($queryNames, 0, 10);
+
 		/* Let's make a quick query here... */
 		$tempParams = array (
 			'rows' => 'id_member, member_name, real_name',
 			'where' => 'real_name IN({array_string:names}) OR member_name IN({array_string:names})',
 		);
 		$tempData = array(
-			'names' => array_unique($querynames),
+			'names' => $querynames,
 		);
-		$tempQuery->params($tempParams, $tempData);
-		$tempQuery->getData('id_member', false);
+		$this->_query->params($tempParams, $tempData);
+		$this->_query->getData('id_member', false);
 
 		/* Get the actual users */
-		$searchNames = !is_array($tempQuery->dataResult()) ? array($tempQuery->dataResult()) : $tempQuery->dataResult();
+		$searchNames = !is_array($this->_query->dataResult()) ? array($this->_query->dataResult()) : $this->_query->dataResult();
 
 		/* We got some results */
 		if (!empty($searchNames))
@@ -105,10 +114,11 @@ class BreezeMention
 					'type' => 'mention',
 					'time' => time(),
 					'read' => 0,
+					'content' => $noti_info,
 				);
 
 				/* Notification here */
-				/* $this->_notification->createMention($params); */
+				$this->_notification->createMention($params);
 
 				/* Ugly but necessary to include both display and real name */
 				foreach ($querynames as $query)
