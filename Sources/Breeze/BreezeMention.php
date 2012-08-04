@@ -110,8 +110,6 @@ class BreezeMention
 				/* Notification here */
 				/* $this->_notification->createMention($params); */
 
-				echo '<pre>';print_r($querynames);echo '</pre>';
-
 				/* Ugly but necessary to include both display and real name */
 				foreach ($querynames as $query)
 				{
@@ -124,10 +122,6 @@ class BreezeMention
 				$replace[] = '{'. $name['id_member'] .','. $name['member_name'] .','. $name['real_name'] .'}';
 			}
 		}
-
-		echo '<pre>';print_r($find);echo '</pre>';
-
-		echo '<pre>';print_r($replace);echo '</pre>';
 
 		/* Finally do the replacement */
 		$this->_string = str_replace($find, $replace, $this->_string);
