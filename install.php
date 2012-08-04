@@ -186,12 +186,6 @@
 					'default' => '',
 				),
 				array(
-					'name' => 'enable_visits_module',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(
 					'name' => 'time',
 					'type' => 'int',
 					'size' => 5,
