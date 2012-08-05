@@ -101,6 +101,7 @@ class BreezeNotifications extends Breeze
 
 	public function createMention($params)
 	{
+		/* OK, so we have a mention here, this will become into 3, maybe 4 notifications... */
 
 	}
 

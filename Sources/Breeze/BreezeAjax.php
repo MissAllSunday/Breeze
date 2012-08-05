@@ -100,28 +100,30 @@ abstract class BreezeAjax
 		{
 			$body = $data->getValue('content');
 
-			/* Needed for the notification by mention */
-			$noti_info = array(
-				'wall_owner' => $data->getValue('owner_id'),
-				'wall_poster' => $data->getValue('poster_id'),
-			);
-
-			/* Build the params array for the query */
-			$params = array(
-				'owner_id' => $data->getValue('owner_id'),
-				'poster_id' => $data->getValue('poster_id'),
-				'time' => time(),
-				'body' => $mention->mention($body, $noti_info),
-			);
-
 			/* Store the status */
-			$query->insertStatus($params);
+			$query->insertStatus(
+				array(
+					'owner_id' => $data->getValue('owner_id'),
+					'poster_id' => $data->getValue('poster_id'),
+					'time' => time(),
+					'body' => $mention->preMention($body),
+				)
+			);
 
 			/* Get the newly created status, we just need the id */
 			$newStatus = $query->getLastStatus();
 
 			/* Set the ID */
 			$params['id'] = $newStatus['status_id'];
+
+			/* Build the notifications */
+			$mention->mention(
+				array(
+					'wall_owner' => $data->getValue('owner_id'),
+					'wall_poster' => $data->getValue('poster_id'),
+					'status_id' => $params['id'],
+				)
+			);
 
 			/* Parse the content */
 			$params['body'] = $parser->display($params['body']);
@@ -167,6 +169,14 @@ abstract class BreezeAjax
 		if ($data->validateBody('content') && !empty($temp_id_exists))
 		{
 			$body = $data->getValue('content');
+
+			/* Needed for the notification by mention */
+			$noti_info = array(
+				'wall_owner' => $data->getValue('owner_id'),
+				'wall_poster' => $data->getValue('poster_id'),
+				'wall_status_owner' => $data->getValue('status_owner_id'),
+				'status_id' => $data->getValue('status_id'),
+			);
 
 			/* Build the params array for the query */
 			$params = array(

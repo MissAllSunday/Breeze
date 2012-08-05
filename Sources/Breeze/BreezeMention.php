@@ -46,13 +46,23 @@ class BreezeMention
 	protected $_string;
 	protected $_regex;
 	protected $_query;
+	protected $_searchNames = array();
+	protected $_queryNames = array();
 
 	function __construct()
 	{
 		$this->_regex = '~{([\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u';
 	}
 
-	public function mention($string, $noti_info = false)
+	/*
+	 * Converts raw data to a preformatted text
+	 *
+	 * Gets the raw string and converts it to a formatted string: {id,real_name,display_name} to be saved by the database.
+	 * @see BreezeAjax class
+	 * @access protected
+	 * @return string the formatted string
+	 */
+	public function preMention($string, $noti_info = false)
 	{
 		global $user_info;
 
@@ -61,55 +71,54 @@ class BreezeMention
 			return false;
 
 		$this->_string = $string;
-		$queryNames = array();
 
 		/* Search for all possible names */
 		if (preg_match_all($this->_regex, $this->_string, $matches, PREG_SET_ORDER))
 			foreach($matches as $m)
-				$queryNames[] = trim($m[1]);
+				$this->_queryNames[] = trim($m[1]);
 
 		/* Do this if we have something */
-		if (!empty($queryNames))
+		if (!empty($this->_queryNames))
 		{
 			/* Load and set what we need */
 			$this->_query = Breeze::quickQuery('members');
 			$this->_notification = Breeze::notifications();
 			$this->_settings = Breeze::settings();
 			$this->_tools = Breeze::tools();
-			$searchNames = array();
 
 			/* We need an array */
-			$queryNames = is_array($queryNames) ? $queryNames : array($queryNames);
+			$this->_queryNames = is_array($this->_queryNames) ? $this->_queryNames : array($this->_queryNames);
 
 			/* Sorry, you just can't tag a single person more than once */
-			$queryNames = array_unique($queryNames);
+			$this->_queryNames = array_unique($this->_queryNames);
 
 			/* Don't abuse... sorry, hardcoded for now */
-			if (count($queryNames) >= 10)
-				$queryNames = array_slice($queryNames, 0, 10);
+			if (count($this->_queryNames) >= 10)
+				$this->_queryNames = array_slice($this->_queryNames, 0, 10);
 
 			/* Let's make a quick query here... */
-			$tempParams = array (
-				'rows' => 'id_member, member_name, real_name',
-				'where' => 'real_name IN({array_string:names}) OR member_name IN({array_string:names})',
+			$this->_query->params(
+				array (
+					'rows' => 'id_member, member_name, real_name',
+					'where' => 'real_name IN({array_string:names}) OR member_name IN({array_string:names})',
+				),
+				array(
+					'names' => $this->_queryNames,
+				)
 			);
-			$tempData = array(
-				'names' => $queryNames,
-			);
-			$this->_query->params($tempParams, $tempData);
 			$this->_query->getData('id_member', false);
 
 			/* Get the actual users */
-			$searchNames = !is_array($this->_query->dataResult()) ? array($this->_query->dataResult()) : $this->_query->dataResult();
+			$this->_searchNames = !is_array($this->_query->dataResult()) ? array($this->_query->dataResult()) : $this->_query->dataResult();
 
 			/* We got some results */
-			if (!empty($searchNames))
+			if (!empty($this->_searchNames))
 			{
 				/* Let's create the notification */
-				foreach ($searchNames as $name)
+				foreach ($this->_searchNames as $name)
 				{
 					/* Ugly, but we need to associate the raw name with the actual names somehow... */
-					foreach ($queryNames as $query)
+					foreach ($this->_queryNames as $query)
 					{
 						if (in_array($query, $name))
 							$name['raw_name'] = $query;
@@ -122,25 +131,6 @@ class BreezeMention
 					/* Let's create the preformat */
 					$find[] = '{'. $name['raw_name'] .'}';
 					$replace[] = '{'. $name['id_member'] .','. $name['member_name'] .','. $name['real_name'] .'}';
-
-					/* You can't notify yourself but your name will be converted anyway */
-					if (array_key_exists($user_info['id'], $searchNames))
-						unset($searchNames[$user_info['id']]);
-
-					/* Append the mentioned user ID */
-					$noti_info['wall_mentioned'] = $name['id_member'];
-
-					$params = array(
-						'user' => $user_info['id'],
-						'user_to' => $name['id_member'],
-						'type' => 'mention',
-						'time' => time(),
-						'read' => 0,
-						'content' => $noti_info,
-					);
-
-					/* Notification here */
-					$this->_notification->createMention($params);
 				}
 			}
 
@@ -149,5 +139,27 @@ class BreezeMention
 		}
 
 		return $this->_string;
+	}
+
+	protected function mention($noti_info)
+	{
+		/* You can't notify yourself */
+			if (array_key_exists($user_info['id'], $this->_searchNames))
+				unset($this->_searchNames[$user_info['id']]);
+
+		/* Append the mentioned user ID */
+		$noti_info['wall_mentioned'] = $name['id_member'];
+
+		$params = array(
+			'user' => $user_info['id'],
+			'user_to' => $name['id_member'],
+			'type' => 'mention',
+			'time' => time(),
+			'read' => 0,
+			'content' => $noti_info,
+		);
+
+		/* Notification here */
+		$this->_notification->createMention($params);
 	}
 }
