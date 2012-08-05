@@ -52,6 +52,8 @@ class BreezeMention
 	function __construct()
 	{
 		$this->_regex = '~{([\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u';
+		$this->_notification = Breeze::notifications();
+		$this->_settings = Breeze::settings();
 	}
 
 	/*
@@ -62,7 +64,7 @@ class BreezeMention
 	 * @access protected
 	 * @return string the formatted string
 	 */
-	public function preMention($string, $noti_info = false)
+	public function preMention($string)
 	{
 		global $user_info;
 
@@ -82,9 +84,6 @@ class BreezeMention
 		{
 			/* Load and set what we need */
 			$this->_query = Breeze::quickQuery('members');
-			$this->_notification = Breeze::notifications();
-			$this->_settings = Breeze::settings();
-			$this->_tools = Breeze::tools();
 
 			/* We need an array */
 			$this->_queryNames = is_array($this->_queryNames) ? $this->_queryNames : array($this->_queryNames);
@@ -144,22 +143,23 @@ class BreezeMention
 	protected function mention($noti_info)
 	{
 		/* You can't notify yourself */
-			if (array_key_exists($user_info['id'], $this->_searchNames))
-				unset($this->_searchNames[$user_info['id']]);
+		if (array_key_exists($user_info['id'], $this->_searchNames))
+			unset($this->_searchNames[$user_info['id']]);
 
-		/* Append the mentioned user ID */
-		$noti_info['wall_mentioned'] = $name['id_member'];
+		foreach ($this->_searchNames as $name)
+		{
+			/* Append the mentioned user ID */
+			$noti_info['wall_mentioned'] = $name['id_member'];
 
-		$params = array(
-			'user' => $user_info['id'],
-			'user_to' => $name['id_member'],
-			'type' => 'mention',
-			'time' => time(),
-			'read' => 0,
-			'content' => $noti_info,
-		);
-
-		/* Notification here */
-		$this->_notification->createMention($params);
+			/* Notification here */
+			$this->_notification->createMention(array(
+				'user' => $user_info['id'],
+				'user_to' => $name['id_member'],
+				'type' => 'mention',
+				'time' => time(),
+				'read' => 0,
+				'content' => $noti_info,
+			));
+		}
 	}
 }

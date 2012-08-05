@@ -117,13 +117,11 @@ abstract class BreezeAjax
 			$params['id'] = $newStatus['status_id'];
 
 			/* Build the notifications */
-			$mention->mention(
-				array(
+			$mention->mention(array(
 					'wall_owner' => $data->getValue('owner_id'),
 					'wall_poster' => $data->getValue('poster_id'),
 					'status_id' => $params['id'],
-				)
-			);
+				));
 
 			/* Parse the content */
 			$params['body'] = $parser->display($params['body']);
@@ -170,14 +168,6 @@ abstract class BreezeAjax
 		{
 			$body = $data->getValue('content');
 
-			/* Needed for the notification by mention */
-			$noti_info = array(
-				'wall_owner' => $data->getValue('owner_id'),
-				'wall_poster' => $data->getValue('poster_id'),
-				'wall_status_owner' => $data->getValue('status_owner_id'),
-				'status_id' => $data->getValue('status_id'),
-			);
-
 			/* Build the params array for the query */
 			$params = array(
 				'status_id' => $data->getValue('status_id'),
@@ -185,7 +175,7 @@ abstract class BreezeAjax
 				'poster_id' => $data->getValue('poster_comment_id'),
 				'profile_owner_id' => $data->getValue('profile_owner_id'),
 				'time' => time(),
-				'body' => $mention->mention($body)
+				'body' => $mention->preMention($body)
 			);
 
 			/* Store the comment */
@@ -196,6 +186,14 @@ abstract class BreezeAjax
 
 			/* Set the ID */
 			$params['id'] = $new_comment['comments_id'];
+
+			/* build the notification */
+			$mention->mention(array(
+				'wall_owner' => $data->getValue('owner_id'),
+				'wall_poster' => $data->getValue('poster_id'),
+				'wall_status_owner' => $data->getValue('status_owner_id'),
+				'status_id' => $data->getValue('status_id'),
+			));
 
 			/* Parse the content */
 			$params['body'] = $parser->display($params['body']);
