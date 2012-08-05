@@ -117,15 +117,16 @@ class BreezeNotifications extends Breeze
 		if (!empty($params) && in_array($params['type'], $this->_types))
 		{
 			/* Doing a quick query will be better than loading the entire notifications array */
-			$tempParams = array (
-				'rows' => '*',
-				'where' => 'user = {int:user} AND user_to = {int:user_to}',
+			$tempQuery->params(
+				array(
+					'rows' => '*',
+					'where' => 'user = {int:user} AND user_to = {int:user_to}',
+				), 
+				array(
+					'user' => !empty($params['user']) ? $params['user'] : $this->_currentUser,
+					'user_to' => $params['user_to'],
+				)
 			);
-			$tempData = array(
-				'user' => !empty($params['user']) ? $params['user'] : $this->_currentUser,
-				'user_to' => $params['user_to'],
-			);
-			$tempQuery->params($tempParams, $tempData);
 			$tempQuery->getData('id');
 
 			$return = $tempQuery->dataResult();

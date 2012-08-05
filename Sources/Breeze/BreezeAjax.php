@@ -100,15 +100,15 @@ abstract class BreezeAjax
 		{
 			$body = $data->getValue('content');
 
-			/* Store the status */
-			$query->insertStatus(
-				array(
+			$params = array(
 					'owner_id' => $data->getValue('owner_id'),
 					'poster_id' => $data->getValue('poster_id'),
 					'time' => time(),
 					'body' => $mention->preMention($body),
-				)
-			);
+				);
+
+			/* Store the status */
+			$query->insertStatus($params);
 
 			/* Get the newly created status, we just need the id */
 			$newStatus = $query->getLastStatus();
