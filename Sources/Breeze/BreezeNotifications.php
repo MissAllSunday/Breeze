@@ -99,12 +99,6 @@ class BreezeNotifications extends Breeze
 			return false;
 	}
 
-	public function createMention($params)
-	{
-		/* OK, so we have a mention here, this will become into 3, maybe 4 notifications... */
-
-	}
-
 	public function createBuddy($params)
 	{
 		/* Set this as false by default */
@@ -121,7 +115,7 @@ class BreezeNotifications extends Breeze
 				array(
 					'rows' => '*',
 					'where' => 'user = {int:user} AND user_to = {int:user_to}',
-				), 
+				),
 				array(
 					'user' => !empty($params['user']) ? $params['user'] : $this->_currentUser,
 					'user_to' => $params['user_to'],
@@ -164,7 +158,7 @@ class BreezeNotifications extends Breeze
 
 		$this->_all = $this->getByUser($user);
 
-		/* Do this is there is actually something to show */
+		/* Do this if there is actually something to show */
 		if (!empty($this->_all))
 		{
 			/* Call the methods */
@@ -208,6 +202,23 @@ class BreezeNotifications extends Breeze
 
 		/* Fill out the messages property */
 		$this->_messages[] = sprintf($this->_text->getText('buddy_messagerequest_message'), $context['Breeze']['user_info'][$noti['user']]['link']);
+	}
+
+	protected function doMention($noti)
+	{
+		global $context;
+
+		/* Extra check */
+		if ($noti['user_to'] != $this->_currentUser)
+			return false;
+
+		/* Is this a mention on a comment? */
+		if (isset($noti['wall_comment_owner']) && !empty($noti['wall_comment_owner']))
+			$this->_messages[] = sprintf();
+
+		/* No? then this is a mention made on a status */
+		else
+			$this->_messages[] = sprintf();
 	}
 
 	protected function delete($id)
