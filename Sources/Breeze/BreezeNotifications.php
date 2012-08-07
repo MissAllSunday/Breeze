@@ -212,13 +212,29 @@ class BreezeNotifications extends Breeze
 		if ($noti['user_to'] != $this->_currentUser)
 			return false;
 
+		/* We need to load some users info */
+
 		/* Is this a mention on a comment? */
 		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
+		{
+			/* Is this the same user's wall? */
+			if ()
+			$text = sprintf();
+
+			/* This is someone elses wall, go figure... */
+			else
+				$text = sprintf();
+
+			/* Create the message already */
 			$this->_messages[] = sprintf();
+		}
 
 		/* No? then this is a mention made on a status */
 		else
+		{
 			$this->_messages[] = sprintf();
+
+		}
 	}
 
 	protected function delete($id)
