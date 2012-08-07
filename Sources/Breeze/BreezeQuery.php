@@ -554,7 +554,7 @@ class BreezeQuery extends Breeze
 			array(
 				'where' => 'comments_status_id = {int:id}',
 			), 
-			$data,
+			$data
 		);
 		$deleteComments->deleteData();
 
@@ -573,7 +573,7 @@ class BreezeQuery extends Breeze
 			), 
 			array(
 				'id' => $id
-			),
+			)
 		);
 		$delete->deleteData();
 	}
@@ -700,7 +700,7 @@ class BreezeQuery extends Breeze
 			$array, 
 			array(
 				'id'
-			),
+			)
 		);
 	}
 
@@ -720,7 +720,7 @@ class BreezeQuery extends Breeze
 			array(
 				'read' => 1,
 				'id' => $id
-			),
+			)
 		);
 		$markRead->updateData();
 	}
@@ -739,7 +739,7 @@ class BreezeQuery extends Breeze
 			), 
 			array(
 				'id' => $id
-			),
+			)
 		);
 		$delete->deleteData();
 	}
