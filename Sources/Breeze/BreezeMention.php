@@ -152,7 +152,7 @@ class BreezeMention
 			$noti_info['wall_mentioned'] = $name['id_member'];
 
 			/* Notification here */
-			$this->_notification->createMention(array(
+			$this->_notification->create(array(
 				'user' => $user_info['id'],
 				'user_to' => $name['id_member'],
 				'type' => 'mention',
