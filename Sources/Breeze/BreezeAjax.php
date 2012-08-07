@@ -192,7 +192,7 @@ abstract class BreezeAjax
 				'wall_owner' => $data->getValue('owner_id'),
 				'wall_poster' => $data->getValue('poster_id'),
 				'wall_status_owner' => $data->getValue('status_owner_id'),
-				'wall_comment_owner' => $params['id'],
+				'comment_id' => $params['id'],
 				'status_id' => $data->getValue('status_id'),
 			));
 

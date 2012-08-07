@@ -213,7 +213,7 @@ class BreezeNotifications extends Breeze
 			return false;
 
 		/* Is this a mention on a comment? */
-		if (isset($noti['wall_comment_owner']) && !empty($noti['wall_comment_owner']))
+		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
 			$this->_messages[] = sprintf();
 
 		/* No? then this is a mention made on a status */
