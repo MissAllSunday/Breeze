@@ -545,9 +545,7 @@ class BreezeQuery extends Breeze
 			array(
 				'where' => 'comments_status_id = {int:id}',
 			), 
-			array(
-				'id' => $id,
-			)
+			$data
 		);
 		$deleteComments->deleteData();
 
