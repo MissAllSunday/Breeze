@@ -83,11 +83,8 @@ class BreezeMention
 			/* Load and set what we need */
 			$this->_query = Breeze::quickQuery('members');
 
-			/* We need an array */
-			$this->_queryNames = is_array($this->_queryNames) ? $this->_queryNames : array($this->_queryNames);
-
-			/* Sorry, you just can't tag a single person more than once */
-			$this->_queryNames = array_unique($this->_queryNames);
+			/* We need an array and users won't be notified twice... */
+			$this->_queryNames = array_unique(is_array($this->_queryNames) ? $this->_queryNames : array($this->_queryNames));
 
 			/* Don't abuse... sorry, hardcoded for now */
 			if (count($this->_queryNames) >= 10)
@@ -95,7 +92,7 @@ class BreezeMention
 
 			/* Let's make a quick query here... */
 			$this->_query->params(
-				array (
+				array(
 					'rows' => 'id_member, member_name, real_name',
 					'where' => 'real_name IN({array_string:names}) OR member_name IN({array_string:names})',
 				),

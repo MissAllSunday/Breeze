@@ -115,7 +115,7 @@ class BreezeNotifications extends Breeze
 				array(
 					'rows' => '*',
 					'where' => 'user = {int:user} AND user_to = {int:user_to}',
-				), 
+				),
 				array(
 					'user' => !empty($params['user']) ? $params['user'] : $this->_currentUser,
 					'user_to' => $params['user_to'],
@@ -158,7 +158,7 @@ class BreezeNotifications extends Breeze
 
 		$this->_all = $this->getByUser($user);
 
-		/* Do this is there is actually something to show */
+		/* Do this if there is actually something to show */
 		if (!empty($this->_all))
 		{
 			/* Call the methods */
@@ -202,6 +202,39 @@ class BreezeNotifications extends Breeze
 
 		/* Fill out the messages property */
 		$this->_messages[] = sprintf($this->_text->getText('buddy_messagerequest_message'), $context['Breeze']['user_info'][$noti['user']]['link']);
+	}
+
+	protected function doMention($noti)
+	{
+		global $context;
+
+		/* Extra check */
+		if ($noti['user_to'] != $this->_currentUser)
+			return false;
+
+		/* We need to load some users info */
+
+		/* Is this a mention on a comment? */
+		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
+		{
+			/* Is this the same user's wall? */
+			if ()
+			$text = sprintf();
+
+			/* This is someone elses wall, go figure... */
+			else
+				$text = sprintf();
+
+			/* Create the message already */
+			$this->_messages[] = sprintf();
+		}
+
+		/* No? then this is a mention made on a status */
+		else
+		{
+			$this->_messages[] = sprintf();
+
+		}
 	}
 
 	protected function delete($id)
