@@ -211,19 +211,18 @@ class BreezeNotifications extends Breeze
 		if ($noti['user_to'] != $this->_currentUser)
 			return false;
 
-		/* Load the wall owner */
-		if (empty($context['Breeze']['user_info'][$noti['content']['wall_owner']]))
-			$this->_tools->loadUserInfo($noti['content']['wall_owner']);
-
-		/* Load the user who posted */
-		if (empty($context['Breeze']['user_info'][$noti['content']['wall_poster']]))
-			$this->_tools->loadUserInfo($noti['content']['wall_poster']);
+		/* Lots of users to load */
+		$this->_tools->loadUserInfo(array(
+			$noti['content']['wall_owner'],
+			$noti['content']['wall_poster'],
+			$noti['user_to'],
+		));
 
 		/* Is this a mention on a comment? */
 		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
 		{
 			/* Is this the same user's wall? */
-			if ()
+			if ($noti['content']['wall_owner'] == $noti['user_to'])
 			$text = sprintf();
 
 			/* This is someone elses wall, go figure... */
