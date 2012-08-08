@@ -99,12 +99,6 @@ class BreezeNotifications extends Breeze
 			return false;
 	}
 
-	public function createMention($params)
-	{
-		/* OK, so we have a mention here, this will become into 3, maybe 4 notifications... */
-
-	}
-
 	public function createBuddy($params)
 	{
 		/* Set this as false by default */

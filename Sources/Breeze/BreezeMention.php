@@ -66,8 +66,6 @@ class BreezeMention
 	 */
 	public function preMention($string)
 	{
-		global $user_info;
-
 		/* Oh, common! really? */
 		if (empty($string))
 			return false;
@@ -140,8 +138,10 @@ class BreezeMention
 		return $this->_string;
 	}
 
-	protected function mention($noti_info)
+	public function mention($noti_info)
 	{
+		global $user_info;
+
 		/* You can't notify yourself */
 		if (array_key_exists($user_info['id'], $this->_searchNames))
 			unset($this->_searchNames[$user_info['id']]);
@@ -152,7 +152,7 @@ class BreezeMention
 			$noti_info['wall_mentioned'] = $name['id_member'];
 
 			/* Notification here */
-			$this->_notification->createMention(array(
+			$this->_notification->create(array(
 				'user' => $user_info['id'],
 				'user_to' => $name['id_member'],
 				'type' => 'mention',

@@ -540,21 +540,14 @@ class BreezeQuery extends Breeze
 		$deleteStatus = $this->query($this->_tables['status']['name']);
 		$deleteComments = $this->query($this->_tables['comments']['name']);
 
-		/* Delete! */
-		$params = array(
-			'where' => 'status_id = {int:id}',
-		);
-
-		$data = array(
-			'id' => $id,
-		);
-
 		/* Ladies first */
 		$deleteComments->params(
 			array(
 				'where' => 'comments_status_id = {int:id}',
 			), 
-			$data,
+			array(
+				'id' => $id,
+			)
 		);
 		$deleteComments->deleteData();
 
@@ -573,7 +566,7 @@ class BreezeQuery extends Breeze
 			), 
 			array(
 				'id' => $id
-			),
+			)
 		);
 		$delete->deleteData();
 	}
@@ -700,7 +693,7 @@ class BreezeQuery extends Breeze
 			$array, 
 			array(
 				'id'
-			),
+			)
 		);
 	}
 
@@ -720,7 +713,7 @@ class BreezeQuery extends Breeze
 			array(
 				'read' => 1,
 				'id' => $id
-			),
+			)
 		);
 		$markRead->updateData();
 	}
@@ -739,7 +732,7 @@ class BreezeQuery extends Breeze
 			), 
 			array(
 				'id' => $id
-			),
+			)
 		);
 		$delete->deleteData();
 	}
