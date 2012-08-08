@@ -180,7 +180,6 @@ class BreezeNotifications extends Breeze
 				<script type="text/javascript"><!-- // --><![CDATA[
 		$(document).ready(function()
 		{';
-
 				/* Check for the type and act in accordance */
 				foreach($this->_messages as $m)
 					$context['insert_after_template'] .= '$.sticky(\''. $m .'\');';
@@ -212,7 +211,13 @@ class BreezeNotifications extends Breeze
 		if ($noti['user_to'] != $this->_currentUser)
 			return false;
 
-		/* We need to load some users info */
+		/* Load the wall owner */
+		if (empty($context['Breeze']['user_info'][$noti['content']['wall_owner']]))
+			$this->_tools->loadUserInfo($noti['content']['wall_owner']);
+
+		/* Load the user who posted */
+		if (empty($context['Breeze']['user_info'][$noti['content']['wall_poster']]))
+			$this->_tools->loadUserInfo($noti['content']['wall_poster']);
 
 		/* Is this a mention on a comment? */
 		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
