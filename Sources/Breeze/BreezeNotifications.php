@@ -211,6 +211,9 @@ class BreezeNotifications extends Breeze
 		if ($noti['user_to'] != $this->_currentUser)
 			return false;
 
+		/* Yeah, we started with nothing! */
+		$text = '';
+
 		/* Lots of users to load */
 		$this->_tools->loadUserInfo(array(
 			$noti['content']['wall_owner'],
@@ -219,29 +222,52 @@ class BreezeNotifications extends Breeze
 		));
 
 		/* Build the status link */
-		$statusLink = $scripturl .'?action=profile;area=status;u='. $noti['content']['wall_owner'] .';bid=' $noti['content']['status_id'];
+		$statusLink = $scripturl .'?action=profile;area=wallstatus;u='. $noti['content']['wall_owner'] .';bid=' $noti['content']['status_id'];
 
 		/* Is this a mention on a comment? */
 		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
 		{
 			/* Is this the same user's wall? */
 			if ($noti['content']['wall_owner'] == $noti['user_to'])
-			$text = sprintf($this->_text->getText('mention_message_own_wall_comment'), );
+				$text = sprintf(
+					$this->_text->getText('mention_message_own_wall_comment'),
+					$statusLink, 
+					$context['Breeze']['user_info'][$noti['content']['wall_poster']],
+				);
 
 			/* This is someone elses wall, go figure... */
 			else
-				$text = sprintf();
-
-			/* Create the message already */
-			$this->_messages[] = sprintf();
+				$text = sprintf(
+					$this->_text->getText('mention_message_comment'),
+					$context['Breeze']['user_info'][$noti['content']['wall_poster']],
+					$context['Breeze']['user_info'][$noti['content']['wall_owner']],
+					$statusLink,
+				);
 		}
 
 		/* No? then this is a mention made on a status */
 		else
 		{
-			$this->_messages[] = sprintf();
+			/* Is this your own wall? */
+			if ($noti['content']['wall_owner'] == $noti['user_to'])
+				$text = sprintf(
+					$this->_text->getText('mention_message_own_wall_status'), 
+					$statusLink,
+					$context['Breeze']['user_info'][$noti['content']['wall_owner']],
+				);
 
+			/* No? don't worry, you will get your precious notification anyway */
+			else
+				$text = sprintf(
+					$this->_text->getText('mention_message_comment'),
+					$context['Breeze']['user_info'][$noti['content']['wall_poster']],
+					$context['Breeze']['user_info'][$noti['content']['wall_owner']],
+					$statusLink,
+				);
 		}
+
+		/* Create the message already */
+		$this->_messages[] = $text;
 	}
 
 	protected function delete($id)
