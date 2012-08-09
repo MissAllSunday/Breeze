@@ -222,7 +222,7 @@ class BreezeNotifications extends Breeze
 		));
 
 		/* Build the status link */
-		$statusLink = $scripturl .'?action=profile;area=wallstatus;u='. $noti['content']['wall_owner'] .';bid=' $noti['content']['status_id'];
+		$statusLink = $scripturl .'?action=profile;area=wallstatus;u='. $noti['content']['wall_owner'] .';bid='. $noti['content']['status_id'];
 
 		/* Is this a mention on a comment? */
 		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
@@ -232,16 +232,16 @@ class BreezeNotifications extends Breeze
 				$text = sprintf(
 					$this->_text->getText('mention_message_own_wall_comment'),
 					$statusLink, 
-					$context['Breeze']['user_info'][$noti['content']['wall_poster']],
+					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link']
 				);
 
 			/* This is someone elses wall, go figure... */
 			else
 				$text = sprintf(
 					$this->_text->getText('mention_message_comment'),
-					$context['Breeze']['user_info'][$noti['content']['wall_poster']],
-					$context['Breeze']['user_info'][$noti['content']['wall_owner']],
-					$statusLink,
+					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
+					$context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'],
+					$statusLink
 				);
 		}
 
@@ -253,16 +253,16 @@ class BreezeNotifications extends Breeze
 				$text = sprintf(
 					$this->_text->getText('mention_message_own_wall_status'), 
 					$statusLink,
-					$context['Breeze']['user_info'][$noti['content']['wall_owner']],
+					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link']
 				);
 
 			/* No? don't worry, you will get your precious notification anyway */
 			else
 				$text = sprintf(
 					$this->_text->getText('mention_message_comment'),
-					$context['Breeze']['user_info'][$noti['content']['wall_poster']],
-					$context['Breeze']['user_info'][$noti['content']['wall_owner']],
-					$statusLink,
+					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
+					$context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'],
+					$statusLink
 				);
 		}
 
