@@ -182,7 +182,7 @@ class BreezeNotifications extends Breeze
 		{';
 				/* Check for the type and act in accordance */
 				foreach($this->_messages as $m)
-					$context['insert_after_template'] .= '$.sticky(\''. $m .'\');';
+					$context['insert_after_template'] .= '$.sticky('. JavaScriptEscape($m) .');';
 
 				$context['insert_after_template'] .= '
 		});
@@ -257,7 +257,7 @@ class BreezeNotifications extends Breeze
 				);
 
 			/* No? don't worry, you will get your precious notification anyway */
-			else
+			elseif ($noti['content']['wall_owner'] != $noti['user_to'])
 				$text = sprintf(
 					$this->_text->getText('mention_message_comment'),
 					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
