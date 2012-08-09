@@ -205,7 +205,7 @@ class BreezeNotifications extends Breeze
 
 	protected function doMention($noti)
 	{
-		global $context;
+		global $context, $scripturl;
 
 		/* Extra check */
 		if ($noti['user_to'] != $this->_currentUser)
@@ -218,12 +218,15 @@ class BreezeNotifications extends Breeze
 			$noti['user_to'],
 		));
 
+		/* Build the status link */
+		$statusLink = $scripturl .'?action=profile;area=status;u='. $noti['content']['wall_owner'] .';bid=' $noti['content']['status_id'];
+
 		/* Is this a mention on a comment? */
 		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
 		{
 			/* Is this the same user's wall? */
 			if ($noti['content']['wall_owner'] == $noti['user_to'])
-			$text = sprintf();
+			$text = sprintf($this->_text->getText('mention_message_own_wall_comment'), );
 
 			/* This is someone elses wall, go figure... */
 			else
