@@ -85,7 +85,7 @@ class BreezeParser
 		/* Search for all possible names */
 		if (preg_match_all($this->regex['mention'], $s, $matches, PREG_SET_ORDER))
 		{
-			/* You can't tag yourself but your name will be converted anyway... */
+			/* Find any instances */
 			foreach ($matches as $query)
 			{
 				$find[] = $query[0];

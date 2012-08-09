@@ -228,18 +228,17 @@ class BreezeQuery extends Breeze
 		$return = $this->query($this->_tables['status']['name']);
 
 		/* Get the value directly from the DB */
-		$params = array(
-			'rows' => 'status_id',
-			'order' => '{raw:sort}',
-			'limit' => '{int:limit}'
+		$return->params(
+			array(
+				'rows' => 'status_id',
+				'order' => '{raw:sort}',
+				'limit' => '{int:limit}'
+			), 
+			array(
+				'sort' => 'status_id DESC',
+				'limit' => 1
+			)
 		);
-
-		$data = array(
-			'sort' => 'status_id DESC',
-			'limit' => 1
-		);
-
-		$return->params($params, $data);
 		$return->getData(null, true);
 
 		/* Done? */
@@ -497,18 +496,18 @@ class BreezeQuery extends Breeze
 		$this->killCache($this->_tables['status']['name']);
 
 		/* Insert! */
-		$data = array(
-			'status_owner_id' => 'int',
-			'status_poster_id' => 'int',
-			'status_time' => 'int',
-			'status_body' => 'string'
+		$this->query($this->_tables['status']['name'])->insertData(
+			array(
+				'status_owner_id' => 'int',
+				'status_poster_id' => 'int',
+				'status_time' => 'int',
+				'status_body' => 'string',
+			), 
+			$array, 
+			array(
+				'status_id',
+			)
 		);
-
-		$indexes = array(
-			'status_id'
-		);
-
-		$this->query($this->_tables['status']['name'])->insertData($data, $array, $indexes);
 	}
 
 	public function insertComment($array)
@@ -517,20 +516,20 @@ class BreezeQuery extends Breeze
 		$this->killCache($this->_tables['comments']['name']);
 
 		/* Insert! */
-		$data = array(
-			'comments_status_id' => 'int',
-			'comments_status_owner_id' => 'int',
-			'comments_poster_id' => 'int',
-			'comments_profile_owner_id' => 'int',
-			'comments_time' => 'int',
-			'comments_body' => 'string'
+		$this->query($this->_tables['comments']['name'])->insertData(
+			array(
+				'comments_status_id' => 'int',
+				'comments_status_owner_id' => 'int',
+				'comments_poster_id' => 'int',
+				'comments_profile_owner_id' => 'int',
+				'comments_time' => 'int',
+				'comments_body' => 'string',
+			), 
+			$array, 
+			array(
+				'comments_id',
+			)
 		);
-
-		$indexes = array(
-			'comments_id'
-		);
-
-		$this->query($this->_tables['comments']['name'])->insertData($data, $array, $indexes);
 	}
 
 	public function deleteStatus($id)
@@ -542,19 +541,21 @@ class BreezeQuery extends Breeze
 		$deleteComments = $this->query($this->_tables['comments']['name']);
 
 		/* Delete! */
-		$paramsc = array(
-			'where' => 'comments_status_id = {int:id}'
-		);
 		$params = array(
-			'where' => 'status_id = {int:id}'
+			'where' => 'status_id = {int:id}',
 		);
 
 		$data = array(
-			'id' => $id
+			'id' => $id,
 		);
 
 		/* Ladies first */
-		$deleteComments->params($paramsc, $data);
+		$deleteComments->params(
+			array(
+				'where' => 'comments_status_id = {int:id}',
+			), 
+			$data
+		);
 		$deleteComments->deleteData();
 
 		$deleteStatus->params($params, $data);
@@ -566,15 +567,14 @@ class BreezeQuery extends Breeze
 		$delete = $this->query($this->_tables['comments']['name']);
 
 		/* Delete! */
-		$params = array(
-			'where' => 'comments_id = {int:id}'
+		$delete->params(
+			array(
+				'where' => 'comments_id = {int:id}'
+			), 
+			array(
+				'id' => $id
+			)
 		);
-
-		$data = array(
-			'id' => $id
-		);
-
-		$delete->params($params, $data);
 		$delete->deleteData();
 	}
 
@@ -619,16 +619,16 @@ class BreezeQuery extends Breeze
 
 	public function insertUserSettings($user, $values)
 	{
-		$data = array(
-			'enable_wall' => 'int',
-			'wall_settings' => 'string',
+		$this->query($this->_tables['members']['name'])->insertData(
+			array(
+				'enable_wall' => 'int',
+				'wall_settings' => 'string',
+			), 
+			$values, 
+			array(
+				'id_member',
+			)
 		);
-
-		$indexes = array(
-			'id_member'
-		);
-
-		$this->query($this->_tables['members']['name'])->insertData($data, $values, $indexes);
 	}
 
 	/*
@@ -688,21 +688,20 @@ class BreezeQuery extends Breeze
 
 		$insert = $this->query($this->_tables['noti']['name']);
 
-		/* Insert! */
-		$data = array(
-			'user' => 'int',
-			'user_to' => 'int',
-			'type' => 'string',
-			'time' => 'int',
-			'read' => 'int',
-			'content' => 'string',
+		$insert->insertData(
+			array(
+				'user' => 'int',
+				'user_to' => 'int',
+				'type' => 'string',
+				'time' => 'int',
+				'read' => 'int',
+				'content' => 'string',
+			), 
+			$array, 
+			array(
+				'id'
+			)
 		);
-
-		$indexes = array(
-			'id'
-		);
-
-		$insert->insertData($data, $array, $indexes);
 	}
 
 	public function markAsReadNotification($id)
@@ -713,17 +712,16 @@ class BreezeQuery extends Breeze
 		$markRead = $this->query($this->_tables['noti']['name']);
 
 		/* Mark as read */
-		$params = array(
-			'set' => 'read = {int:read}',
-			'where' => 'id = {int:id}'
+		$markRead->params(
+			array(
+				'set' => 'read = {int:read}',
+				'where' => 'id = {int:id}'
+			), 
+			array(
+				'read' => 1,
+				'id' => $id
+			)
 		);
-
-		$data = array(
-			'read' => 1,
-			'id' => $id
-		);
-
-		$markRead->params($params, $data);
 		$markRead->updateData();
 	}
 
@@ -735,15 +733,14 @@ class BreezeQuery extends Breeze
 		$delete = $this->query($this->_tables['noti']['name']);
 
 		/* Delete! */
-		$params = array(
-			'where' => 'id = {int:id}'
+		$delete->params(
+			array(
+				'where' => 'id = {int:id}'
+			), 
+			array(
+				'id' => $id
+			)
 		);
-
-		$data = array(
-			'id' => $id
-		);
-
-		$delete->params($params, $data);
 		$delete->deleteData();
 	}
 

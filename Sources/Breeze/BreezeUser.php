@@ -207,17 +207,17 @@ class BreezeUser
 		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 		$context['canonical_url'] = $scripturl . '?action=profile;area=breezesettings;u=' . $context['member']['id'];
 
-		$formData = array(
-			'action' => 'profile;area=breezesettings;save;u='. $context['member']['id'],
-			'method' => 'post',
-			'id_css' => 'user_settings_form',
-			'name' => 'user_settings_form',
-			'class_css' => 'user_settings_form',
-			'onsubmit' => '',
-		);
-
 		/* The General settings form */
-		$form = new BreezeForm($formData);
+		$form = new BreezeForm(
+			array(
+				'action' => 'profile;area=breezesettings;save;u='. $context['member']['id'],
+				'method' => 'post',
+				'id_css' => 'user_settings_form',
+				'name' => 'user_settings_form',
+				'class_css' => 'user_settings_form',
+				'onsubmit' => '',
+			)
+		);
 
 		$form->addCheckBox('enable_wall', 1, array(
 			'enable_wall',

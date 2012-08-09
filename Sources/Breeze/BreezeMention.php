@@ -3,7 +3,7 @@
 /**
  * BreezeMention
  *
- * The purpose of this file is to identify something in a tezt string and convert that to something different, for example, a url into an actual html link.
+ * The purpose of this file is to identify a mention in a string and convert that to a more easy to use format which will be used by the aprser class later, oh, and create the mention notification..
  * @package Breeze mod
  * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
@@ -35,7 +35,6 @@
  *
  */
 
-
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
@@ -45,94 +44,119 @@ class BreezeMention
 	protected $_settings;
 	protected $_tools;
 	protected $_string;
-	protected $_regex = '~{([\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u';
+	protected $_regex;
+	protected $_query;
+	protected $_searchNames = array();
+	protected $_queryNames = array();
 
 	function __construct()
 	{
+		$this->_regex = '~{([\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u';
 		$this->_notification = Breeze::notifications();
 		$this->_settings = Breeze::settings();
-		$this->_tools = Breeze::tools();
 	}
 
-	public function mention($string, $noti_info = false)
+	/*
+	 * Converts raw data to a preformatted text
+	 *
+	 * Gets the raw string and converts it to a formatted string: {id,real_name,display_name} to be saved by the database.
+	 * @see BreezeAjax class
+	 * @access protected
+	 * @return string the formatted string
+	 */
+	public function preMention($string)
 	{
-		global $user_info;
-
 		/* Oh, common! really? */
 		if (empty($string))
 			return false;
 
 		$this->_string = $string;
-		$tempQuery = Breeze::quickQuery('members');
-		$searchNames = array();
 
 		/* Search for all possible names */
 		if (preg_match_all($this->_regex, $this->_string, $matches, PREG_SET_ORDER))
 			foreach($matches as $m)
-				$querynames[] = trim($m[1]);
+				$this->_queryNames[] = trim($m[1]);
 
-		/* Nothing was found */
-		else
-			return $this->_string;
-
-		/* Let's make a quick query here... */
-		$tempParams = array (
-			'rows' => 'id_member, member_name, real_name',
-			'where' => 'real_name IN({array_string:names}) OR member_name IN({array_string:names})',
-		);
-		$tempData = array(
-			'names' => array_unique($querynames),
-		);
-		$tempQuery->params($tempParams, $tempData);
-		$tempQuery->getData('id_member', false);
-
-		/* Get the actual users */
-		$searchNames = !is_array($tempQuery->dataResult()) ? array($tempQuery->dataResult()) : $tempQuery->dataResult();
-
-		/* We got some results */
-		if (!empty($searchNames))
+		/* Do this if we have something */
+		if (!empty($this->_queryNames))
 		{
-			/* You can't notify yourself */
-			if (array_key_exists($user_info['id'], $searchNames))
-				unset($searchNames[$user_info['id']]);
+			/* Load and set what we need */
+			$this->_query = Breeze::quickQuery('members');
 
-			/* Lets create the notification */
-			foreach ($searchNames as $name)
+			/* We need an array and users won't be notified twice... */
+			$this->_queryNames = array_unique(is_array($this->_queryNames) ? $this->_queryNames : array($this->_queryNames));
+
+			/* Don't abuse... sorry, hardcoded for now */
+			if (count($this->_queryNames) >= 10)
+				$this->_queryNames = array_slice($this->_queryNames, 0, 10);
+
+			/* Let's make a quick query here... */
+			$this->_query->params(
+				array(
+					'rows' => 'id_member, member_name, real_name',
+					'where' => 'real_name IN({array_string:names}) OR member_name IN({array_string:names})',
+				),
+				array(
+					'names' => $this->_queryNames,
+				)
+			);
+			$this->_query->getData('id_member', false);
+
+			/* Get the actual users */
+			$this->_searchNames = !is_array($this->_query->dataResult()) ? array($this->_query->dataResult()) : $this->_query->dataResult();
+
+			/* We got some results */
+			if (!empty($this->_searchNames))
 			{
-				$params = array(
-					'user' => $user_info['id'],
-					'user_to' => $name['id_member'],
-					'type' => 'mention',
-					'time' => time(),
-					'read' => 0,
-				);
-
-				/* Notification here */
-				/* $this->_notification->createMention($params); */
-
-				echo '<pre>';print_r($querynames);echo '</pre>';
-
-				/* Ugly but necessary to include both display and real name */
-				foreach ($querynames as $query)
+				/* Let's create the notification */
+				foreach ($this->_searchNames as $name)
 				{
-					$key = array_search($query, $name)
+					/* Ugly, but we need to associate the raw name with the actual names somehow... */
+					foreach ($this->_queryNames as $query)
+					{
+						if (in_array($query, $name))
+							$name['raw_name'] = $query;
 
-					$find[] = '{'. $name['member_name'] .'}';
+						/* No? then use the display name and hope for the best... */
+						else
+							$name['raw_name'] = $name['member_name'];
+					}
+
+					/* Let's create the preformat */
+					$find[] = '{'. $name['raw_name'] .'}';
+					$replace[] = '{'. $name['id_member'] .','. $name['member_name'] .','. $name['real_name'] .'}';
 				}
-
-				/* Building the pre-format, format is as follows: {id,name,display} */
-				$replace[] = '{'. $name['id_member'] .','. $name['member_name'] .','. $name['real_name'] .'}';
 			}
+
+			/* Finally do the replacement */
+			$this->_string = str_replace($find, $replace, $this->_string);
 		}
 
-		echo '<pre>';print_r($find);echo '</pre>';
-
-		echo '<pre>';print_r($replace);echo '</pre>';
-
-		/* Finally do the replacement */
-		$this->_string = str_replace($find, $replace, $this->_string);
-
-		/* Return the string */
 		return $this->_string;
+	}
+
+	public function mention($noti_info)
+	{
+		global $user_info;
+
+		/* You can't notify yourself */
+		if (array_key_exists($user_info['id'], $this->_searchNames))
+			unset($this->_searchNames[$user_info['id']]);
+
+		foreach ($this->_searchNames as $name)
+		{
+			/* Append the mentioned user ID */
+			$noti_info['wall_mentioned'] = $name['id_member'];
+
+			/* Notification here */
+			$this->_notification->create(array(
+				'user' => $user_info['id'],
+				'user_to' => $name['id_member'],
+				'type' => 'mention',
+				'time' => time(),
+				'read' => 0,
+				'content' => $noti_info,
+			));
+		}
 	}
 }

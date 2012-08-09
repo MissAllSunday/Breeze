@@ -99,11 +99,6 @@ class BreezeNotifications extends Breeze
 			return false;
 	}
 
-	public function createMention($params)
-	{
-
-	}
-
 	public function createBuddy($params)
 	{
 		/* Set this as false by default */
@@ -116,15 +111,16 @@ class BreezeNotifications extends Breeze
 		if (!empty($params) && in_array($params['type'], $this->_types))
 		{
 			/* Doing a quick query will be better than loading the entire notifications array */
-			$tempParams = array (
-				'rows' => '*',
-				'where' => 'user = {int:user} AND user_to = {int:user_to}',
+			$tempQuery->params(
+				array(
+					'rows' => '*',
+					'where' => 'user = {int:user} AND user_to = {int:user_to}',
+				),
+				array(
+					'user' => !empty($params['user']) ? $params['user'] : $this->_currentUser,
+					'user_to' => $params['user_to'],
+				)
 			);
-			$tempData = array(
-				'user' => !empty($params['user']) ? $params['user'] : $this->_currentUser,
-				'user_to' => $params['user_to'],
-			);
-			$tempQuery->params($tempParams, $tempData);
 			$tempQuery->getData('id');
 
 			$return = $tempQuery->dataResult();
@@ -162,7 +158,7 @@ class BreezeNotifications extends Breeze
 
 		$this->_all = $this->getByUser($user);
 
-		/* Do this is there is actually something to show */
+		/* Do this if there is actually something to show */
 		if (!empty($this->_all))
 		{
 			/* Call the methods */
@@ -184,10 +180,9 @@ class BreezeNotifications extends Breeze
 				<script type="text/javascript"><!-- // --><![CDATA[
 		$(document).ready(function()
 		{';
-
 				/* Check for the type and act in accordance */
 				foreach($this->_messages as $m)
-					$context['insert_after_template'] .= '$.sticky(\''. $m .'\');';
+					$context['insert_after_template'] .= '$.sticky('. JavaScriptEscape($m) .');';
 
 				$context['insert_after_template'] .= '
 		});
@@ -206,6 +201,73 @@ class BreezeNotifications extends Breeze
 
 		/* Fill out the messages property */
 		$this->_messages[] = sprintf($this->_text->getText('buddy_messagerequest_message'), $context['Breeze']['user_info'][$noti['user']]['link']);
+	}
+
+	protected function doMention($noti)
+	{
+		global $context, $scripturl;
+
+		/* Extra check */
+		if ($noti['user_to'] != $this->_currentUser)
+			return false;
+
+		/* Yeah, we started with nothing! */
+		$text = '';
+
+		/* Lots of users to load */
+		$this->_tools->loadUserInfo(array(
+			$noti['content']['wall_owner'],
+			$noti['content']['wall_poster'],
+			$noti['user_to'],
+		));
+
+		/* Build the status link */
+		$statusLink = $scripturl .'?action=profile;area=wallstatus;u='. $noti['content']['wall_owner'] .';bid='. $noti['content']['status_id'];
+
+		/* Is this a mention on a comment? */
+		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
+		{
+			/* Is this the same user's wall? */
+			if ($noti['content']['wall_owner'] == $noti['user_to'])
+				$text = sprintf(
+					$this->_text->getText('mention_message_own_wall_comment'),
+					$statusLink, 
+					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link']
+				);
+
+			/* This is someone elses wall, go figure... */
+			else
+				$text = sprintf(
+					$this->_text->getText('mention_message_comment'),
+					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
+					$context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'],
+					$statusLink
+				);
+		}
+
+		/* No? then this is a mention made on a status */
+		else
+		{
+			/* Is this your own wall? */
+			if ($noti['content']['wall_owner'] == $noti['user_to'])
+				$text = sprintf(
+					$this->_text->getText('mention_message_own_wall_status'), 
+					$statusLink,
+					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link']
+				);
+
+			/* No? don't worry, you will get your precious notification anyway */
+			elseif ($noti['content']['wall_owner'] != $noti['user_to'])
+				$text = sprintf(
+					$this->_text->getText('mention_message_comment'),
+					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
+					$context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'],
+					$statusLink
+				);
+		}
+
+		/* Create the message already */
+		$this->_messages[] = $text;
 	}
 
 	protected function delete($id)

@@ -75,16 +75,16 @@ class BreezeBuddy
 		/* Before anything else, let's ask the user shall we? */
 		elseif ($user_info['id'] != $sa->getRaw('u'))
 		{
-			$params = array(
-				'user' => $user_info['id'],
-				'user_to' => $sa->getRaw('u'),
-				'type' => 'buddy',
-				'time' => time(),
-				'read' => 0,
-			);
-
 			/* Notification here */
-			$notification->createBuddy($params);
+			$notification->createBuddy(
+				array(
+					'user' => $user_info['id'],
+					'user_to' => $sa->getRaw('u'),
+					'type' => 'buddy',
+					'time' => time(),
+					'read' => 0,
+				)
+			);
 
 			/* Show a nice message saying the user must approve the friendship request */
 			redirectexit('action=breezebuddyrequest;u=' . $sa->getRaw('u'));
