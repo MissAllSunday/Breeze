@@ -402,14 +402,17 @@ class BreezeUser
 		$globals = Breeze::sGlobals('post');
 		$settings = Breeze::settings();
 		$query = Breeze::query();
-		
-		/* We need an user ID and a status ID */
-		
+
+		/* We are gonna load the status from the user array so we kinda need both the user ID and a status ID */
+		if (!$globals->validate('u') || !$globals->validate('bid'))
+			fatal_lang_error('no_access', false);
+
 		/* Load the single status */
+		$context['Breeze']['single'] = $query->getStatusByID($globals->getValue('bid'), $globals->getValue('u'));
 
 		/* Set all the page stuff */
-		$context['sub_template'] = 'Breeze_request_buddy_message_send';
+		$context['sub_template'] = 'Breeze_show_single_status';
 		$context['page_title'] = $text->getText('noti_title');
-		$context['canonical_url'] = $scripturl . '?action=breezebuddyrequest';
+		$context['canonical_url'] = $scripturl .'?action=profile;area=wallstatus';
 	}
 }

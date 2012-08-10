@@ -336,15 +336,51 @@ class BreezeQuery extends Breeze
 	/*
 	 * Get all status made in X profile page
 	 *
-	 * Uses the generic class GetReturn.
-	 * @see GetReturn()
+	 * Uses a custom uery and store the results on separate cache entries per profile.
 	 * @param int $id the ID of the user that owns the profile page, it does not matter who made that status as long as the status was made in X profile page.
 	 * @access public
 	 * @return array an array containing all the status made in X profile page
 	 */
 	public function getStatusByProfile($id)
 	{
-		return $this->getReturn($this->_tables['status']['name'], 'owner_id', $id);
+		$tools = parent::tools();
+		$gSettings = parent::settings();
+		$parser = parent::parser();
+
+		/* Use the cache please... */
+		if (($this->_status = cache_get_data('Breeze:'. $id, 120)) == null)
+		{
+			/* Load all the status, set a limit if things get complicated */
+			$result = $smcFunc['db_query']('', '
+				SELECT *
+				FROM {db_prefix}breeze_status
+				'. ($gSettings->enable('admin_enable_limit') && $gSettings->enable('admin_limit_timeframe') ? 'WHERE status_time >= {int:status_time}' : '' ).'
+				ORDER BY status_time DESC
+				',
+				array(
+					'status_time' => $gSettings->getSetting('admin_limit_timeframe'),
+				)
+			);
+
+			/* Populate the array like a boss! */
+			while ($row = $smcFunc['db_fetch_assoc']($result))
+			{
+				$this->_status[$row['status_id']] = array(
+					'id' => $row['status_id'],
+					'owner_id' => $row['status_owner_id'],
+					'poster_id' => $row['status_poster_id'],
+					'time' => $tools->timeElapsed($row['status_time']),
+					'body' => $parser->display($row['status_body']),
+				);
+			}
+
+			$smcFunc['db_free_result']($result);
+
+			/* Cache this beauty */
+			cache_put_data('Breeze:'. $this->_tables['status']['name'], $this->_status, 120);
+		}
+
+		return $this->_status;
 	}
 
 	/*
@@ -356,7 +392,7 @@ class BreezeQuery extends Breeze
 	 * @access public
 	 * @return array an array containing all the status made in X profile page
 	 */
-	public function getStatusByID($id)
+	public function getStatusByID($id, $user)
 	{
 		return $this->getReturn('status', 'id', $id, true);
 	}
