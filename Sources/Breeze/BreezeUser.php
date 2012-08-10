@@ -389,4 +389,27 @@ class BreezeUser
 		$context['page_title'] = $text->getText('noti_title');
 		$context['canonical_url'] = $scripturl . '?action=breezebuddyrequest';
 	}
+
+	/* Show a single status with all it's comments */
+	public static function Single()
+	{
+		global $context, $user_info, $scripturl;
+
+		loadtemplate('Breeze');
+
+		/* Load what we need */
+		$text = Breeze::text();
+		$globals = Breeze::sGlobals('post');
+		$settings = Breeze::settings();
+		$query = Breeze::query();
+		
+		/* We need an user ID and a status ID */
+		
+		/* Load the single status */
+
+		/* Set all the page stuff */
+		$context['sub_template'] = 'Breeze_request_buddy_message_send';
+		$context['page_title'] = $text->getText('noti_title');
+		$context['canonical_url'] = $scripturl . '?action=breezebuddyrequest';
+	}
 }
