@@ -60,7 +60,6 @@ class BreezeUserInfo
 		}
 
 		$return = '';
-		$user['is_owner'] = $user['id'] == $user_info['id'];
 
 		/* Sometimes we just want the link */
 		$context['Breeze']['user_info'][$user['id']]['link'] = $user['link'];

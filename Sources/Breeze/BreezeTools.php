@@ -256,10 +256,10 @@ $(document).ready(function ()
 
 		/* Must be an array */
 		if (!is_array($id))
-			$id = array_unique(array($id));
+			$id = array($id);
 
 		/* Load all the members up. */
-		if (loadMemberData($id, false, 'normal'))
+		if (loadMemberData(array_unique($id), false, 'normal'))
 			foreach ($id as $i)
 			{
 				loadMemberContext($i);
