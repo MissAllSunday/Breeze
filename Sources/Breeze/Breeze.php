@@ -242,6 +242,18 @@ class Breeze
 					),
 			);
 
+		/* Individual status page */
+		/* if $some_check here */
+			$profile_areas['breeze_profile']['areas']['wallstatus'] = array(
+				'label' => $text->getText('buddyrequest_list_status'),
+				'file' => Breeze::$BreezeFolder .'BreezeUser.php',
+				'function' => 'Breeze_Wrapper_Single',
+				'permission' => array(
+					'own' => 'profile_view_own',
+					'any' => 'profile_view_any',
+					),
+			);
+
 		/* Done with the hacking... */
 	}
 
