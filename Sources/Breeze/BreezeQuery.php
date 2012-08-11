@@ -350,15 +350,18 @@ class BreezeQuery extends Breeze
 		/* Use the cache please... */
 		if (($this->_status = cache_get_data('Breeze:'. $id, 120)) == null)
 		{
-			/* Load all the status, set a limit if things get complicated */
+			/* Big query... */
 			$result = $smcFunc['db_query']('', '
-				SELECT *
-				FROM {db_prefix}breeze_status
-				'. ($gSettings->enable('admin_enable_limit') && $gSettings->enable('admin_limit_timeframe') ? 'WHERE status_time >= {int:status_time}' : '' ).'
-				ORDER BY status_time DESC
+				SELECT s.status_id, s.status_owner_id, s.status_poster_id, s.status_time, s.status_body, c.comments_id, c.comments_status_id, c.comments_status_owner_id, comments_poster_id, c.comments_profile_owner_id, c.comments_time, c.comments_body
+				FROM {db_prefix}breeze_status AS s
+					LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_owner_id = s.status_owner_id)
+				WHERE s.status_owner_id = {int:owner}
+				'. ($gSettings->enable('admin_enable_limit') && $gSettings->enable('admin_limit_timeframe') ? 'AND s.status_time >= {int:status_time}' : '' ).'
+				ORDER BY s.status_time DESC
 				',
 				array(
 					'status_time' => $gSettings->getSetting('admin_limit_timeframe'),
+					'owner' => $id
 				)
 			);
 
