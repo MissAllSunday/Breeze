@@ -259,14 +259,15 @@ $(document).ready(function ()
 			$id = array($id);
 
 		/* Load all the members up. */
-		if (loadMemberData(array_unique($id), false, 'normal'))
-			foreach ($id as $i)
+		loadMemberData($id, false, 'profile');
+		foreach ($id as $i)
+		{
+			if (!isset($context['Breeze']['user_info'][$i]))
 			{
-				if (!isset($context['Breeze']['user_info'][$i]))
-				{
-					loadMemberContext($i);
-					$context['Breeze']['user_info'][$i] = BreezeUserInfo::Profile($user);
-				}
+				loadMemberContext($i);
+				$user = $memberContext[$i];
+				$context['Breeze']['user_info'][$user['id']] = BreezeUserInfo::Profile($user);
 			}
+		}
 	}
 }

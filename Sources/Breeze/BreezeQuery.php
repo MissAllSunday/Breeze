@@ -343,6 +343,8 @@ class BreezeQuery extends Breeze
 	 */
 	public function getStatusByProfile($id)
 	{
+		global $smcFunc;
+
 		$tools = parent::tools();
 		$gSettings = parent::settings();
 		$parser = parent::parser();
@@ -354,7 +356,7 @@ class BreezeQuery extends Breeze
 			$result = $smcFunc['db_query']('', '
 				SELECT s.status_id, s.status_owner_id, s.status_poster_id, s.status_time, s.status_body, c.comments_id, c.comments_status_id, c.comments_status_owner_id, comments_poster_id, c.comments_profile_owner_id, c.comments_time, c.comments_body
 				FROM {db_prefix}breeze_status AS s
-					LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_owner_id = s.status_owner_id)
+					LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
 				WHERE s.status_owner_id = {int:owner}
 				'. ($gSettings->enable('admin_enable_limit') && $gSettings->enable('admin_limit_timeframe') ? 'AND s.status_time >= {int:status_time}' : '' ).'
 				ORDER BY s.status_time DESC
@@ -374,7 +376,11 @@ class BreezeQuery extends Breeze
 					'poster_id' => $row['status_poster_id'],
 					'time' => $tools->timeElapsed($row['status_time']),
 					'body' => $parser->display($row['status_body']),
-					'comments' => array(
+				);
+
+				/* Comments */
+				if (!empty($row['comments_id']))
+					$return[$row['status_id']]['comments'][$row['comments_id']] = array(
 						'id' => $row['comments_id'],
 						'status_id' => $row['comments_status_id'],
 						'status_owner_id' => $row['comments_status_owner_id'],
@@ -382,19 +388,7 @@ class BreezeQuery extends Breeze
 						'profile_owner_id' => $row['comments_profile_owner_id'],
 						'time' => $tools->timeElapsed($row['comments_time']),
 						'body' => $parser->display($row['comments_body']),
-					),
-				);
-
-				/* Collect all the users */
-				$usersArray = array(
-					$return[$row['status_id']]['owner_id'],
-					$return[$row['status_id']]['poster_id'],
-					$return[$row['status_id']]['comments'],
-					$return[$row['status_id']]['comments']['poster_id'],
-				);
-
-				/* Load the users data */
-				$tools->loadUserInfo($usersArray);
+					);
 			}
 
 			$smcFunc['db_free_result']($result);

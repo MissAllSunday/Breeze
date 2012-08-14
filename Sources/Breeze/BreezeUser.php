@@ -110,9 +110,28 @@ class BreezeUser
 		);
 		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 		$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
+		$context['member']['status'] = array();
 
 		/* Load all the status */
 		$status = $query->getStatusByProfile($context['member']['id']);
+		
+		/* echo '<pre>';print_r($status);echo '</pre>'; */
+
+		/* Load the users data */
+		if (!empty($status))
+		{
+			foreach($status as $s)
+			{
+				$usersArray[] = $s['owner_id'];
+				$usersArray[] = $s['poster_id'];
+
+				if (!empty($s['comments']))
+					foreach($s['comments'] as $c)
+						$usersArray[] = $c['poster_id'];
+			}
+
+			$tools->loadUserInfo(array_unique($usersArray));
+		}
 
 		/* Getting the current page. */
 		$page = $globals->validate('page') == true ? $globals->getRaw('page') : 1;
