@@ -114,24 +114,6 @@ class BreezeUser
 		/* Load all the status */
 		$status = $query->getStatusByProfile($context['member']['id']);
 
-		/* Collect the IDs to build their profile's lightbox and also load the comments */
-		if (!empty($status))
-			foreach($status as $k => $s)
-			{
-				$users_to_load[] = $s['poster_id'];
-
-				/* Load the comments for each status */
-				$status[$k]['comments'] = $query->getCommentsByStatus($s['id']);
-
-				/* Get the user id from the comments */
-				if ($status[$k]['comments'])
-					foreach($status[$k]['comments'] as $c)
-						$users_to_load[] = $c['poster_id'];
-
-				else
-					$status[$k]['comments'] = array();
-			}
-
 		/* Getting the current page. */
 		$page = $globals->validate('page') == true ? $globals->getRaw('page') : 1;
 
@@ -153,22 +135,6 @@ class BreezeUser
 			$context['member']['status'] = $status;
 			$context['Breeze']['pagination']['panel'] = '';
 		}
-
-		/* We have all the IDs, let's prune the array a little */
-		$new_temp_array = array_unique($users_to_load);
-
-		/* Load the data */
-		loadMemberData($new_temp_array, false, 'profile');
-		foreach($new_temp_array as $u)
-		{
-			loadMemberContext($u);
-			$user = $memberContext[$u];
-			$context['Breeze']['user_info'][$user['id']] = BreezeUserInfo::Profile($user);
-		}
-
-		/* We don't need this anymore */
-		unset($new_temp_array);
-		unset($users_to_load);
 
 		/* The visitor's permissions */
 		$context['Breeze']['visitor']['post_status'] = allowedTo('breeze_postStatus') || $context['user']['is_owner'];

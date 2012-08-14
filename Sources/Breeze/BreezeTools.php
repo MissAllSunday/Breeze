@@ -262,8 +262,11 @@ $(document).ready(function ()
 		if (loadMemberData(array_unique($id), false, 'normal'))
 			foreach ($id as $i)
 			{
-				loadMemberContext($i);
-				$context['Breeze']['user_info'][$i] = $memberContext[$i];
+				if (!isset($context['Breeze']['user_info'][$i]))
+				{
+					loadMemberContext($i);
+					$context['Breeze']['user_info'][$i] = BreezeUserInfo::Profile($user);
+				}
 			}
 	}
 }
