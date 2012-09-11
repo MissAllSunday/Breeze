@@ -62,7 +62,7 @@ class BreezeText
 	{
 		global $txt;
 
-		loadLanguage(Breeze::$BreezeName);
+		loadLanguage(Breeze::$breeze_name);
 
 		$this->_pattern = '/BreezeMod_/';
 

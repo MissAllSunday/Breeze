@@ -110,27 +110,26 @@ class BreezeUser
 		);
 		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 		$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
+		$context['member']['status'] = array();
 
 		/* Load all the status */
 		$status = $query->getStatusByProfile($context['member']['id']);
 
-		/* Collect the IDs to build their profile's lightbox and also load the comments */
+		/* Load the users data */
 		if (!empty($status))
-			foreach($status as $k => $s)
+		{
+			foreach($status as $s)
 			{
-				$users_to_load[] = $s['poster_id'];
+				$usersArray[] = $s['owner_id'];
+				$usersArray[] = $s['poster_id'];
 
-				/* Load the comments for each status */
-				$status[$k]['comments'] = $query->getCommentsByStatus($s['id']);
-
-				/* Get the user id from the comments */
-				if ($status[$k]['comments'])
-					foreach($status[$k]['comments'] as $c)
-						$users_to_load[] = $c['poster_id'];
-
-				else
-					$status[$k]['comments'] = array();
+				if (!empty($s['comments']))
+					foreach($s['comments'] as $c)
+						$usersArray[] = $c['poster_id'];
 			}
+
+			$tools->loadUserInfo(array_unique($usersArray));
+		}
 
 		/* Getting the current page. */
 		$page = $globals->validate('page') == true ? $globals->getRaw('page') : 1;
@@ -153,22 +152,6 @@ class BreezeUser
 			$context['member']['status'] = $status;
 			$context['Breeze']['pagination']['panel'] = '';
 		}
-
-		/* We have all the IDs, let's prune the array a little */
-		$new_temp_array = array_unique($users_to_load);
-
-		/* Load the data */
-		loadMemberData($new_temp_array, false, 'profile');
-		foreach($new_temp_array as $u)
-		{
-			loadMemberContext($u);
-			$user = $memberContext[$u];
-			$context['Breeze']['user_info'][$user['id']] = BreezeUserInfo::Profile($user);
-		}
-
-		/* We don't need this anymore */
-		unset($new_temp_array);
-		unset($users_to_load);
 
 		/* The visitor's permissions */
 		$context['Breeze']['visitor']['post_status'] = allowedTo('breeze_postStatus') || $context['user']['is_owner'];
@@ -388,5 +371,31 @@ class BreezeUser
 		$context['sub_template'] = 'Breeze_request_buddy_message_send';
 		$context['page_title'] = $text->getText('noti_title');
 		$context['canonical_url'] = $scripturl . '?action=breezebuddyrequest';
+	}
+
+	/* Show a single status with all it's comments */
+	public static function Single()
+	{
+		global $context, $user_info, $scripturl;
+
+		loadtemplate('Breeze');
+
+		/* Load what we need */
+		$text = Breeze::text();
+		$globals = Breeze::sGlobals('post');
+		$settings = Breeze::settings();
+		$query = Breeze::query();
+
+		/* We are gonna load the status from the user array so we kinda need both the user ID and a status ID */
+		if (!$globals->validate('u') || !$globals->validate('bid'))
+			fatal_lang_error('no_access', false);
+
+		/* Load the single status */
+		$context['Breeze']['single'] = $query->getStatusByID($globals->getValue('bid'), $globals->getValue('u'));
+
+		/* Set all the page stuff */
+		$context['sub_template'] = 'Breeze_show_single_status';
+		$context['page_title'] = $text->getText('noti_title');
+		$context['canonical_url'] = $scripturl .'?action=profile;area=wallstatus';
 	}
 }

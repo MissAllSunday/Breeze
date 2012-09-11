@@ -233,7 +233,7 @@ class BreezeQuery extends Breeze
 				'rows' => 'status_id',
 				'order' => '{raw:sort}',
 				'limit' => '{int:limit}'
-			), 
+			),
 			array(
 				'sort' => 'status_id DESC',
 				'limit' => 1
@@ -336,15 +336,68 @@ class BreezeQuery extends Breeze
 	/*
 	 * Get all status made in X profile page
 	 *
-	 * Uses the generic class GetReturn.
-	 * @see GetReturn()
+	 * Uses a custom query and store the results on separate cache entries per profile.
 	 * @param int $id the ID of the user that owns the profile page, it does not matter who made that status as long as the status was made in X profile page.
 	 * @access public
 	 * @return array an array containing all the status made in X profile page
 	 */
 	public function getStatusByProfile($id)
 	{
-		return $this->getReturn($this->_tables['status']['name'], 'owner_id', $id);
+		global $smcFunc;
+
+		$tools = parent::tools();
+		$gSettings = parent::settings();
+		$parser = parent::parser();
+
+		/* Use the cache please... */
+		if (($return = cache_get_data('Breeze:'. $id, 120)) == null)
+		{
+			/* Big query... */
+			$result = $smcFunc['db_query']('', '
+				SELECT s.status_id, s.status_owner_id, s.status_poster_id, s.status_time, s.status_body, c.comments_id, c.comments_status_id, c.comments_status_owner_id, comments_poster_id, c.comments_profile_owner_id, c.comments_time, c.comments_body
+				FROM {db_prefix}breeze_status AS s
+					LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
+				WHERE s.status_owner_id = {int:owner}
+				'. ($gSettings->enable('admin_enable_limit') && $gSettings->enable('admin_limit_timeframe') ? 'AND s.status_time >= {int:status_time}' : '' ).'
+				ORDER BY s.status_time DESC
+				',
+				array(
+					'status_time' => $gSettings->getSetting('admin_limit_timeframe'),
+					'owner' => $id
+				)
+			);
+
+			/* Populate the array like a big heavy boss! */
+			while ($row = $smcFunc['db_fetch_assoc']($result))
+			{
+				$return[$row['status_id']] = array(
+					'id' => $row['status_id'],
+					'owner_id' => $row['status_owner_id'],
+					'poster_id' => $row['status_poster_id'],
+					'time' => $tools->timeElapsed($row['status_time']),
+					'body' => $parser->display($row['status_body']),
+				);
+
+				/* Comments */
+				if (!empty($row['comments_id']))
+					$return[$row['status_id']]['comments'][$row['comments_id']] = array(
+						'id' => $row['comments_id'],
+						'status_id' => $row['comments_status_id'],
+						'status_owner_id' => $row['comments_status_owner_id'],
+						'poster_id' => $row['comments_poster_id'],
+						'profile_owner_id' => $row['comments_profile_owner_id'],
+						'time' => $tools->timeElapsed($row['comments_time']),
+						'body' => $parser->display($row['comments_body']),
+					);
+			}
+
+			$smcFunc['db_free_result']($result);
+
+			/* Cache this beauty */
+			cache_put_data('Breeze:'. $id, $return, 120);
+		}
+
+		return $return;
 	}
 
 	/*
@@ -356,7 +409,7 @@ class BreezeQuery extends Breeze
 	 * @access public
 	 * @return array an array containing all the status made in X profile page
 	 */
-	public function getStatusByID($id)
+	public function getStatusByID($id, $user)
 	{
 		return $this->getReturn('status', 'id', $id, true);
 	}
@@ -502,8 +555,8 @@ class BreezeQuery extends Breeze
 				'status_poster_id' => 'int',
 				'status_time' => 'int',
 				'status_body' => 'string',
-			), 
-			$array, 
+			),
+			$array,
 			array(
 				'status_id',
 			)
@@ -524,8 +577,8 @@ class BreezeQuery extends Breeze
 				'comments_profile_owner_id' => 'int',
 				'comments_time' => 'int',
 				'comments_body' => 'string',
-			), 
-			$array, 
+			),
+			$array,
 			array(
 				'comments_id',
 			)
@@ -540,20 +593,11 @@ class BreezeQuery extends Breeze
 		$deleteStatus = $this->query($this->_tables['status']['name']);
 		$deleteComments = $this->query($this->_tables['comments']['name']);
 
-		/* Delete! */
-		$params = array(
-			'where' => 'status_id = {int:id}',
-		);
-
-		$data = array(
-			'id' => $id,
-		);
-
 		/* Ladies first */
 		$deleteComments->params(
 			array(
 				'where' => 'comments_status_id = {int:id}',
-			), 
+			),
 			$data
 		);
 		$deleteComments->deleteData();
@@ -570,7 +614,7 @@ class BreezeQuery extends Breeze
 		$delete->params(
 			array(
 				'where' => 'comments_id = {int:id}'
-			), 
+			),
 			array(
 				'id' => $id
 			)
@@ -623,8 +667,8 @@ class BreezeQuery extends Breeze
 			array(
 				'enable_wall' => 'int',
 				'wall_settings' => 'string',
-			), 
-			$values, 
+			),
+			$values,
 			array(
 				'id_member',
 			)
@@ -696,8 +740,8 @@ class BreezeQuery extends Breeze
 				'time' => 'int',
 				'read' => 'int',
 				'content' => 'string',
-			), 
-			$array, 
+			),
+			$array,
 			array(
 				'id'
 			)
@@ -716,7 +760,7 @@ class BreezeQuery extends Breeze
 			array(
 				'set' => 'read = {int:read}',
 				'where' => 'id = {int:id}'
-			), 
+			),
 			array(
 				'read' => 1,
 				'id' => $id
@@ -736,7 +780,7 @@ class BreezeQuery extends Breeze
 		$delete->params(
 			array(
 				'where' => 'id = {int:id}'
-			), 
+			),
 			array(
 				'id' => $id
 			)

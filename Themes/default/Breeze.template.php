@@ -226,7 +226,7 @@ function template_user_wall()
 						echo '<ul class="breeze_comments_list" id="comment_loadplace_', $status['id'] ,'">';
 
 							/* Print out the comments */
-							if ($status['comments'])
+							if (!empty($status['comments']))
 								foreach($status['comments'] as $comment)
 								{
 									echo '<li class="windowbg2" id ="comment_id_', $comment['id'] ,'">
