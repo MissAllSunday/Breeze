@@ -229,8 +229,6 @@ function template_user_wall()
 							if (!empty($status['comments']))
 								foreach($status['comments'] as $comment)
 								{
-								echo '<pre>';print_r($comment);echo '</pre>';
-								
 									echo '<li class="windowbg2" id ="comment_id_', $comment['id'] ,'">
 												<div class="breeze_user_comment_avatar">
 													',$context['Breeze']['user_info'][$comment['poster_id']],'<br />

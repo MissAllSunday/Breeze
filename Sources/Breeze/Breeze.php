@@ -43,7 +43,7 @@ function __autoload($class_name)
 {
 	global $sourcedir;
 
-	$file_path = $sourcedir.Breeze::$BreezeFolder.$class_name . '.php';
+	$file_path = $sourcedir.Breeze::$breeze_folder.$class_name . '.php';
 
 	if(file_exists($file_path))
 		require_once($file_path);
@@ -54,9 +54,9 @@ function __autoload($class_name)
 
 class Breeze
 {
-	static public $BreezeName = 'Breeze';
-	static public $BreezeVersion = '1.0 Beta 3';
-	static public $BreezeFolder = '/Breeze/';
+	static public $breeze_name = 'Breeze';
+	static public $breeze_version = '1.0 Beta 3';
+	static public $breeze_folder = '/Breeze/';
 
 	public function __construct(){}
 
@@ -169,7 +169,7 @@ class Breeze
 	 * @param array $profile_areas An array containing all possible tabs for the profile menu.
 	 * @return void
 	 */
-	public static function profileInfo(&$profile_areas)
+	public static function profile(&$profile_areas)
 	{
 		global $user_info, $context;
 
@@ -181,7 +181,7 @@ class Breeze
 		if ($gSettings->enable('admin_settings_enable'))
 			$profile_areas['info']['areas']['summary'] = array(
 				'label' => $text->getText('general_wall'),
-				'file' => Breeze::$BreezeFolder .'BreezeUser.php',
+				'file' => Breeze::$breeze_folder .'BreezeUser.php',
 				'function' => 'Breeze_Wrapper_Wall',
 				'permission' => array(
 					'own' => 'profile_view_own',
@@ -212,7 +212,7 @@ class Breeze
 		if ($gSettings->enable('admin_settings_enable') && ($user_info['id'] == $context['member']['id'] || allowedTo('breeze_edit_settings_any')))
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $text->getText('user_settings_name'),
-				'file' => Breeze::$BreezeFolder .'BreezeUser.php',
+				'file' => Breeze::$breeze_folder .'BreezeUser.php',
 				'function' => 'Breeze_Wrapper_Settings',
 				'permission' => array(
 					'own' => 'profile_view_own',
@@ -224,7 +224,7 @@ class Breeze
 		/* if $some_check here */
 			$profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
 				'label' => $text->getText('user_buddysettings_name'),
-				'file' => Breeze::$BreezeFolder .'BreezeUser.php',
+				'file' => Breeze::$breeze_folder .'BreezeUser.php',
 				'function' => 'Breeze_Wrapper_BuddyRequest',
 				'permission' => array(
 					'own' => 'profile_view_own',
@@ -235,7 +235,7 @@ class Breeze
 		/* if $some_check here */
 			$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
 				'label' => $text->getText('user_notisettings_name'),
-				'file' => Breeze::$BreezeFolder .'BreezeUser.php',
+				'file' => Breeze::$breeze_folder .'BreezeUser.php',
 				'function' => 'Breeze_Wrapper_Notifications',
 				'permission' => array(
 					'own' => 'profile_view_own',
@@ -246,7 +246,7 @@ class Breeze
 		/* if $some_check here */
 			$profile_areas['breeze_profile']['areas']['wallstatus'] = array(
 				'label' => $text->getText('buddyrequest_list_status'),
-				'file' => Breeze::$BreezeFolder .'BreezeUser.php',
+				'file' => Breeze::$breeze_folder .'BreezeUser.php',
 				'function' => 'Breeze_Wrapper_Single',
 				'permission' => array(
 					'own' => 'profile_view_own',
@@ -264,7 +264,7 @@ class Breeze
 	 * @link http://mattzuba.com
 	 * @return void
 	 */
-	public static function wallMenu(&$menu_buttons)
+	public static function menu(&$menu_buttons)
 	{
 		global $scripturl, $context;
 
@@ -330,16 +330,16 @@ class Breeze
 	{
 
 		/* A whole new action just for some ajax calls... */
-		$actions['breezeajax'] = array(Breeze::$BreezeFolder .'BreezeAjax.php', 'BreezeAjax::call');
+		$actions['breezeajax'] = array(Breeze::$breeze_folder .'BreezeAjax.php', 'BreezeAjax::call');
 
 		/* The general wall */
-		$actions['wall'] = array(Breeze::$BreezeFolder .'BreezeGeneral.php', 'BreezeGeneral::call');
+		$actions['wall'] = array(Breeze::$breeze_folder .'BreezeGeneral.php', 'BreezeGeneral::call');
 
 		/* Replace the buddy action */
-		$actions['buddy'] = array(Breeze::$BreezeFolder .'BreezeBuddy.php', 'BreezeBuddy::buddy');
+		$actions['buddy'] = array(Breeze::$breeze_folder .'BreezeBuddy.php', 'BreezeBuddy::buddy');
 
 		/* A special action for the buddy request message */
-		$actions['breezebuddyrequest'] = array(Breeze::$BreezeFolder .'BreezeUser.php', 'Breeze_Wrapper_BuddyMessageSend');
+		$actions['breezebuddyrequest'] = array(Breeze::$breeze_folder .'BreezeUser.php', 'Breeze_Wrapper_BuddyMessageSend');
 	}
 
 	/**
@@ -354,7 +354,7 @@ class Breeze
 	}
 
 	/* It's all about Admin settings from now on */
-	public static function AdminButton(&$admin_menu)
+	public static function admin(&$admin_menu)
 	{
 		$text = Breeze::text();
 

@@ -114,8 +114,6 @@ class BreezeUser
 
 		/* Load all the status */
 		$status = $query->getStatusByProfile($context['member']['id']);
-		
-		/* echo '<pre>';print_r($status);echo '</pre>'; */
 
 		/* Load the users data */
 		if (!empty($status))

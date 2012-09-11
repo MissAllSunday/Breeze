@@ -47,7 +47,7 @@
 		/* 'integrate_menu_buttons' => 'Breeze::wallMenu', */
 		'integrate_actions' => 'Breeze::actions',
 		'integrate_load_permissions' => 'Breeze::permissions',
-		'integrate_admin_areas' => 'Breeze::adminButton',
+		'integrate_admin_areas' => 'Breeze::admin',
 		'integrate_profile_areas' => 'Breeze::profileInfo',
 		'integrate_load_theme' => 'Breeze::notificationStream',
 	);
