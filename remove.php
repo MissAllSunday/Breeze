@@ -48,7 +48,7 @@
 		'integrate_actions' => 'Breeze::actions',
 		'integrate_load_permissions' => 'Breeze::permissions',
 		'integrate_admin_areas' => 'Breeze::admin',
-		'integrate_profile_areas' => 'Breeze::profile',
+		'integrate_profile_areas' => 'Breeze::profile'
 	);
 
 	/* Uninstall please */
