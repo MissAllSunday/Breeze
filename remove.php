@@ -44,12 +44,11 @@
 	/* Everybody likes hooks */
 	$hooks = array(
 		'integrate_pre_include' => '$sourcedir/Breeze/Breeze.php',
-		/* 'integrate_menu_buttons' => 'Breeze::wallMenu', */
+		/* 'integrate_menu_buttons' => 'Breeze::wall', */
 		'integrate_actions' => 'Breeze::actions',
 		'integrate_load_permissions' => 'Breeze::permissions',
 		'integrate_admin_areas' => 'Breeze::admin',
-		'integrate_profile_areas' => 'Breeze::profileInfo',
-		'integrate_load_theme' => 'Breeze::notificationStream',
+		'integrate_profile_areas' => 'Breeze::profile',
 	);
 
 	/* Uninstall please */
