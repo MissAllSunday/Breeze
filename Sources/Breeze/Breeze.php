@@ -82,11 +82,6 @@ class Breeze
 			require_once($sourcedir .'/'.$file.'.php');
 	}
 
-	public function userSettings($user)
-	{
-		return new BreezeUserSettings($user);
-	}
-
 	public function query()
 	{
 		return BreezeQuery::getInstance();
@@ -214,9 +209,10 @@ class Breeze
 				'label' => $text->getText('user_settings_name'),
 				'file' => Breeze::$breeze_folder .'BreezeUser.php',
 				'function' => 'Breeze_Wrapper_Settings',
+				'sc' => 'post',
 				'permission' => array(
-					'own' => 'profile_view_own',
-					'any' => 'breeze_edit_settings_any',
+					'own' => array('profile_view_own', 'profile_view_any',),
+					'any' => array('profile_view_any'),
 					),
 			);
 

@@ -39,18 +39,18 @@ if (!defined('SMF'))
 	die('Hacking attempt...');
 
 	/* A bunch of wrapper functions so static methods can be callable with a string by SMF */
-	function Breeze_Wrapper_Wall(){BreezeUser::Wall();}
-	function Breeze_Wrapper_Settings(){BreezeUser::Settings();}
-	function Breeze_Wrapper_BuddyRequest(){BreezeUser::BuddyRequest();}
-	function Breeze_Wrapper_BuddyMessageSend(){BreezeUser::BuddyMessageSend();}
-	function Breeze_Wrapper_Notifications(){BreezeUser::Notifications();}
+	function Breeze_Wrapper_Wall(){BreezeUser::wall();}
+	function Breeze_Wrapper_Settings($memID){BreezeUser::settings($memID);}
+	function Breeze_Wrapper_BuddyRequest(){BreezeUser::buddyRequest();}
+	function Breeze_Wrapper_BuddyMessageSend(){BreezeUser::buddyMessageSend();}
+	function Breeze_Wrapper_Notifications(){BreezeUser::notifications();}
 	function Breeze_Wrapper_Single(){BreezeUser::Single();}
 
 class BreezeUser
 {
 	public function  __construct(){}
 
-	public static function Wall()
+	public static function wall()
 	{
 		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info;
 
@@ -160,91 +160,30 @@ class BreezeUser
 	}
 
 	/* Shows a form for users to set up their wall as needed. */
-	public static function Settings()
+	public static function settings($memID)
 	{
-		global $context, $user_info, $scripturl;
+		global $context;
 
-		loadtemplate('Breeze');
+		Breeze::load('Profile-Modify');
+		loadThemeOptions($memID);
 
-		/* Is this the right user? */
-		if ($context['member']['id'] != $user_info['id'])
-			redirectexit('action=profile');
-
-		/* By default we set this to false */
-		$already = false;
-
-		/* Load all we need */
-		$query = Breeze::query();
 		$text = Breeze::text();
-		$data = Breeze::userSettings($context['member']['id']);
-		$userSettings = $data->getUserSettings();
-		$globals = Breeze::sGlobals('request');
 
-		if (!empty($userSettings))
-			$already = true;
+		$context['sub_template'] = 'edit_options';
+		$context['page_desc'] = $text->getText('user_settings_enable_wall');
 
-		/* Set all the page stuff */
-		$context['sub_template'] = 'user_settings';
-		$context['can_send_pm'] = allowedTo('pm_send');
-		$context['page_title'] = $text->getText('user_settings_name');
-		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
-		$context['canonical_url'] = $scripturl . '?action=profile;area=breezesettings;u=' . $context['member']['id'];
-
-		/* The General settings form */
-		$form = new BreezeForm(
-			array(
-				'action' => 'profile;area=breezesettings;save;u='. $context['member']['id'],
-				'method' => 'post',
-				'id_css' => 'user_settings_form',
-				'name' => 'user_settings_form',
-				'class_css' => 'user_settings_form',
-				'onsubmit' => '',
-			)
+		$context['profile_fields'] = array(
+			'Breeze_enable_wall' => array(
+				'type' => 'check',
+				'label' => $text->getText('user_settings_enable_wall'),
+				'subtext' => $text->getText('user_settings_enable_wall_sub'),
+				'input_attr' => '',
+				'value' => !empty($context['member']['options']['Breeze_enable_wall']) ? 1 : 0
+			),
 		);
-
-		$form->addCheckBox('enable_wall', 1, array(
-			'enable_wall',
-			'enable_wall_sub'
-		), !empty($userSettings['enable_wall']) ? true : false);
-
-		$form->addCheckBox('kick_ignored', 1, array(
-			'kick_ignored',
-			'kick_ignored_sub'
-		), !empty($userSettings['kick_ignored']) ? true : false);
-
-		$form->addHr();
-
-		$form->addSubmitButton('save');
-
-		/* Send the form to the template */
-		$context['Breeze']['UserSettings']['Form'] = $form->display();
-
-		/* Saving? */
-		if ($globals->validate('save') == true)
-		{
-			/* Kill the  cache */
-			$query->killCache('members');
-
-			$temp = $form->returnElementNames();
-			$save_data = array();
-			$save_data['id_member'] = $context['member']['id'];
-
-			foreach ($temp as &$type)
-				$save_data[$type] = !empty($_POST[$type]) ? (int) $_POST[$type] : 0;
-
-			/* If the data already exist, update... */
-			if ($already == true)
-				$data->updateUserSettings($save_data);
-
-			/* ...if not, insert. */
-			else
-				$data->insertUserSettings($save_data);
-
-			redirectexit('action=profile;area=breezesettings;u='.$context['member']['id']);
-		}
 	}
 
-	public static function Notifications()
+	public static function notifications()
 	{
 		global $context, $user_info, $scripturl;
 
@@ -264,7 +203,7 @@ class BreezeUser
 	}
 
 	/* Show the buddy request list */
-	public static function BuddyRequest()
+	public static function buddyRequest()
 	{
 		global $context, $user_info, $scripturl, $memberContext;
 
@@ -359,7 +298,7 @@ class BreezeUser
 	}
 
 	/* Show a message to let the user know their buddy request must be approved */
-	public static function BuddyMessageSend()
+	public static function buddyMessageSend()
 	{
 		global $context, $user_info, $scripturl;
 
@@ -374,7 +313,7 @@ class BreezeUser
 	}
 
 	/* Show a single status with all it's comments */
-	public static function Single()
+	public static function single()
 	{
 		global $context, $user_info, $scripturl;
 

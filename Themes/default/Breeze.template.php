@@ -290,25 +290,6 @@ function template_user_wall()
 	</div>';
 }
 
-/* User Settings */
-function template_user_settings()
-{
-	global $context;
-	echo '
-		<div class="cat_bar">
-			<h3 class="catbg">', $context['page_title'] ,'</h3>
-		</div>
-		<div class="windowbg2">
-			<span class="topslice"><span></span></span>
-			<div class="content">
-				', $context['Breeze']['UserSettings']['Form'] ,'
-			</div>
-			<span class="botslice">
-				<span></span>
-			</span>
-		</div><br />';
-}
-
 function template_user_notifications()
 {
 	global $context, $txt;
