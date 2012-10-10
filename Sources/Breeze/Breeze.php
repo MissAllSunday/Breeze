@@ -204,7 +204,7 @@ class Breeze
 			);
 
 		/* User individual settings, show the button if the mod is enable and the user is the profile owner or the user has the permissions to edit other walls */
-		if ($gSettings->enable('admin_settings_enable') && ($user_info['id'] == $context['member']['id'] || allowedTo('breeze_edit_settings_any')))
+		if ($gSettings->enable('admin_settings_enable'))
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $text->getText('user_settings_name'),
 				'file' => Breeze::$breeze_folder .'BreezeUser.php',
@@ -213,7 +213,7 @@ class Breeze
 				'permission' => array(
 					'own' => array('profile_view_own', 'profile_view_any',),
 					'any' => array('profile_view_any'),
-					),
+				),
 			);
 
 		/* Buddies page */

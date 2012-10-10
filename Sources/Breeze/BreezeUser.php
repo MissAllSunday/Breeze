@@ -44,7 +44,7 @@ if (!defined('SMF'))
 	function Breeze_Wrapper_BuddyRequest(){BreezeUser::buddyRequest();}
 	function Breeze_Wrapper_BuddyMessageSend(){BreezeUser::buddyMessageSend();}
 	function Breeze_Wrapper_Notifications(){BreezeUser::notifications();}
-	function Breeze_Wrapper_Single(){BreezeUser::Single();}
+	function Breeze_Wrapper_Single(){BreezeUser::single();}
 
 class BreezeUser
 {
@@ -180,7 +180,51 @@ class BreezeUser
 				'input_attr' => '',
 				'value' => !empty($context['member']['options']['Breeze_enable_wall']) ? 1 : 0
 			),
+			'Breeze_pagination_number' => array(
+				'type' => 'int',
+				'label' => $text->getText('user_settings_pagination_number'),
+				'subtext' => $text->getText('user_settings_pagination_number_sub'),
+				'input_attr' => '',
+				'size' => 4,
+				'value' => !empty($context['member']['options']['Breeze_pagination_number']) ? $context['member']['options']['Breeze_pagination_number'] : 0
+			),
+			'Breeze_infinite_scroll' => array(
+				'type' => 'check',
+				'label' => $text->getText('user_settings_infinite_scroll'),
+				'subtext' => $text->getText('user_settings_infinite_scroll_sub'),
+				'input_attr' => '',
+				'value' => !empty($context['member']['options']['Breeze_infinite_scroll']) ? 1 : 0
+			),
+			'Breeze_kick_ignored' => array(
+				'type' => 'check',
+				'label' => $text->getText('user_settings_kick_ignored'),
+				'subtext' => $text->getText('user_settings_kick_ignored_sub'),
+				'input_attr' => '',
+				'value' => !empty($context['member']['options']['Breeze_kick_ignored']) ? 1 : 0
+			),
+			'Breeze_enable_visits_module' => array(
+				'type' => 'check',
+				'label' => $text->getText('user_settings_enable_visits_module'),
+				'subtext' => $text->getText('user_settings_enable_visits_module_sub'),
+				'input_attr' => '',
+				'value' => !empty($context['member']['options']['Breeze_enable_visits_module']) ? 1 : 0
+			),
+			'Breeze_visits_module_timeframe' => array(
+				'type' => 'select',
+				'label' => $text->getText('user_settings_visits_module_timeframe'),
+				'subtext' => $text->getText('user_settings_visits_module_timeframe_sub'),
+				'options' => array(
+					'Hour' => $text->getText('user_settings_visits_module_timeframe_hour'),
+					'Day' => $text->getText('user_settings_visits_module_timeframe_day'),
+					'Week' => $text->getText('user_settings_visits_module_timeframe_week'),
+					'Month' => $text->getText('user_settings_visits_module_timeframe_month'),
+					),
+				'value' => !empty($context['member']['options']['Breeze_visits_module_timeframe']) ? $context['member']['options']['Breeze_visits_module_timeframe'] : $text->getText('user_settings_visits_module_timeframe_week'),
+			),
 		);
+		
+		if (isset($_GET['save']))
+			saveProfileFields();
 	}
 
 	public static function notifications()

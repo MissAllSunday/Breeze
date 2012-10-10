@@ -66,14 +66,20 @@ $txt['BreezeMod_user_settings_wall_limit'] = 'How many status per page to show?'
 $txt['BreezeMod_user_settings_wall_limit_sub'] = 'This will be the number of status to show by default, max value is 30, if set it will create a pagination with the rest of your status.';
 $txt['BreezeMod_user_settings_kick_ignored'] = 'Do not show my wall to users in my ignore list';
 $txt['BreezeMod_user_settings_kick_ignored_sub'] = 'If this is enable, users on your ignore list will not be able to see your wall or to post on it.';
+$txt['BreezeMod_user_settings_infinite_scroll'] = 'Use infinite scroll';
+$txt['BreezeMod_user_settings_infinite_scroll_sub'] = 'This setting will allow you to load previous status on the same page by scrolling down.';
 $txt['BreezeMod_user_settings_pagination_number'] = 'How many status will be displayed per page';
 $txt['BreezeMod_user_settings_pagination_number_sub'] = 'Enter the number of status you want to display per page on your wall. By default is 5';
 $txt['BreezeMod_user_settings_enable_wall'] = 'Enable my wall';
 $txt['BreezeMod_user_settings_enable_wall_sub'] = 'If you want to use your wall, you need to check this option, otherwise your profile will show the default page.';
-$txt['BreezeMod_user_settings_enable_visits_module'] = 'Enable the visits module?';
+$txt['BreezeMod_user_settings_enable_visits_module'] = 'Enable the visits block?';
 $txt['BreezeMod_user_settings_enable_visits_module_sub'] = 'If this is enable, a block with the latest user who visited your wall will appear.';
-$txt['BreezeMod_user_settings_visits_module_timeframe'] = 'The time frame to count the vistis from.';
-$txt['BreezeMod_user_settings_visits_module_timeframe_sub'] = 'By default is set to aweek, that means the module will show the latest visits to your wall in the last week.';
+$txt['BreezeMod_user_settings_visits_module_timeframe'] = 'The time frame to count the visits from.';
+$txt['BreezeMod_user_settings_visits_module_timeframe_sub'] = 'By default is set to a week, that means the module will show the latest visits to your wall in the last week.';
+$txt['BreezeMod_user_settings_visits_module_timeframe_hour'] = 'Hour';
+$txt['BreezeMod_user_settings_visits_module_timeframe_day'] = 'Day';
+$txt['BreezeMod_user_settings_visits_module_timeframe_week'] = 'Week';
+$txt['BreezeMod_user_settings_visits_module_timeframe_month'] = 'Month';
 
 
 /* Modules */
