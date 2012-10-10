@@ -3,7 +3,7 @@
 /**
  * BreezeForm
  *
- * The purpose of this file is
+ * The purpose of this file is to create the member options fields
  * @package Breeze mod
  * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
@@ -192,7 +192,6 @@ if (!defined('SMF'))
 
 		function display()
 		{
-			$this->buffer = '<form action="'. $this->action .'" method="'. $this->method .'" id="'. $this->id_css .'" class="'. $this->class_css .'"  '. $this->onsubmit .' >';
 			$this->buffer .= '<dl class="settings">';
 			$element = $this->getNextElement();
 
@@ -240,7 +239,7 @@ if (!defined('SMF'))
 				}
 			}
 
-			$this->buffer .= '</dl></form>';
+			$this->buffer .= '</dl>';
 
 			return $this->buffer;
 		}

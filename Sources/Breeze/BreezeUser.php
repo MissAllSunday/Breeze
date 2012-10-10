@@ -70,11 +70,8 @@ class BreezeUser
 		if (!$settings->enable('admin_settings_enable'))
 			redirectexit();
 
-		/* Load this user's settings */
-		$user_settings = Breeze::userSettings($context['member']['id']);
-
 		/* Does the user even enable this? */
-		if (!$user_settings->enable('enable_wall'))
+		/* Check here */
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* This user cannot see his/her own profile and cannot see any profile either */
@@ -90,12 +87,10 @@ class BreezeUser
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* Get this user's ignore list */
-		if (empty($context['member']['ignore_list']))
-			$context['member']['ignore_list'] = $user_settings->getUserIgnoreList();
 
 		/* I'm sorry, you aren't allowed in here, but here's a nice static page :) */
-		if (in_array($user_info['id'], $context['member']['ignore_list']) && $user_settings->enable('kick_ignored'))
-			redirectexit('action=profile;area=static;u='.$context['member']['id']);
+/* 		if (in_array($user_info['id'], $context['member']['ignore_list']) && $user_settings->enable('kick_ignored'))
+			redirectexit('action=profile;area=static;u='.$context['member']['id']); */
 
 		/* display all the JavaScript bits */
 		$tools->headers();
@@ -162,69 +157,19 @@ class BreezeUser
 	/* Shows a form for users to set up their wall as needed. */
 	public static function settings($memID)
 	{
-		global $context;
+		global $context, $cur_profile;
 
 		Breeze::load('Profile-Modify');
+		loadtemplate('Breeze');
+
 		loadThemeOptions($memID);
+		if (allowedTo(array('profile_extra_own', 'profile_extra_any')))
+			loadCustomFields($memID, 'theme');
 
-		$text = Breeze::text();
+		$context['Breeze']['text'] = Breeze::text();
 
-		$context['sub_template'] = 'edit_options';
-		$context['page_desc'] = $text->getText('user_settings_enable_wall');
-
-		$context['profile_fields'] = array(
-			'Breeze_enable_wall' => array(
-				'type' => 'check',
-				'label' => $text->getText('user_settings_enable_wall'),
-				'subtext' => $text->getText('user_settings_enable_wall_sub'),
-				'input_attr' => '',
-				'value' => !empty($context['member']['options']['Breeze_enable_wall']) ? 1 : 0
-			),
-			'Breeze_pagination_number' => array(
-				'type' => 'int',
-				'label' => $text->getText('user_settings_pagination_number'),
-				'subtext' => $text->getText('user_settings_pagination_number_sub'),
-				'input_attr' => '',
-				'size' => 4,
-				'value' => !empty($context['member']['options']['Breeze_pagination_number']) ? $context['member']['options']['Breeze_pagination_number'] : 0
-			),
-			'Breeze_infinite_scroll' => array(
-				'type' => 'check',
-				'label' => $text->getText('user_settings_infinite_scroll'),
-				'subtext' => $text->getText('user_settings_infinite_scroll_sub'),
-				'input_attr' => '',
-				'value' => !empty($context['member']['options']['Breeze_infinite_scroll']) ? 1 : 0
-			),
-			'Breeze_kick_ignored' => array(
-				'type' => 'check',
-				'label' => $text->getText('user_settings_kick_ignored'),
-				'subtext' => $text->getText('user_settings_kick_ignored_sub'),
-				'input_attr' => '',
-				'value' => !empty($context['member']['options']['Breeze_kick_ignored']) ? 1 : 0
-			),
-			'Breeze_enable_visits_module' => array(
-				'type' => 'check',
-				'label' => $text->getText('user_settings_enable_visits_module'),
-				'subtext' => $text->getText('user_settings_enable_visits_module_sub'),
-				'input_attr' => '',
-				'value' => !empty($context['member']['options']['Breeze_enable_visits_module']) ? 1 : 0
-			),
-			'Breeze_visits_module_timeframe' => array(
-				'type' => 'select',
-				'label' => $text->getText('user_settings_visits_module_timeframe'),
-				'subtext' => $text->getText('user_settings_visits_module_timeframe_sub'),
-				'options' => array(
-					'Hour' => $text->getText('user_settings_visits_module_timeframe_hour'),
-					'Day' => $text->getText('user_settings_visits_module_timeframe_day'),
-					'Week' => $text->getText('user_settings_visits_module_timeframe_week'),
-					'Month' => $text->getText('user_settings_visits_module_timeframe_month'),
-					),
-				'value' => !empty($context['member']['options']['Breeze_visits_module_timeframe']) ? $context['member']['options']['Breeze_visits_module_timeframe'] : $text->getText('user_settings_visits_module_timeframe_week'),
-			),
-		);
-		
-		if (isset($_GET['save']))
-			saveProfileFields();
+		$context['sub_template'] = 'member_options';
+		$context['page_desc'] = $context['Breeze']['text']->getText('user_settings_enable_wall');
 	}
 
 	public static function notifications()

@@ -393,3 +393,53 @@ function template_singleStatus()
 	/* End of list */
 	echo '</ul></div>';
 }
+
+function template_member_options()
+{
+	global $context, $settings, $options, $scripturl, $modSettings, $txt;
+
+	// The main containing header.
+	echo '
+		<form action="', $scripturl, '?action=profile;area=breezesettings;save" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator" enctype="multipart/form-data" onsubmit="return checkProfileSubmit();">
+			<h3 class="catbg">
+				<span class="left"></span>
+				<img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" class="icon" />
+				', $context['page_desc'] , '
+			</h3>
+			<p class="windowbg description">
+				', $context['page_desc'] , '
+			</p>
+			<div class="windowbg2">
+				<span class="topslice"><span></span></span>
+					<div class="content">';
+
+		echo '
+						<dl>
+							<dt>
+								<strong>', $context['Breeze']['text']->getText('user_settings_enable_wall'), '</strong>
+							</dt>
+							<dd>
+								<input type="hidden" name="default_options[Breeze_enable_wall]" value="0" /><input class="input_check" type="checkbox" name="default_options[Breeze_enable_wall]"', (!empty($context['member']['options']['Breeze_enable_wall']) ? ' checked="checked"' : ''), ' value="1"  />
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<strong>', $context['Breeze']['text']->getText('user_settings_pagination_number'), '</strong>
+							</dt>
+							<dd>
+								<input type="hidden" name="default_options[Breeze_pagination_number]" value="0" /><input class="input_text" type="text" size="5" maxlength="5" name="default_options[Breeze_pagination_number]"', (!empty($context['member']['options']['Breeze_pagination_number']) ? ' value="'. $context['member']['options']['Breeze_pagination_number'] .'"' : ''), '  />
+							</dd>
+						</dl>
+						';
+
+
+	// Show the standard "Save Settings" profile button.
+	template_profile_save();
+
+	echo '
+					</div>
+				<span class="botslice"><span></span></span>
+			</div>
+			<br />
+		</form>';
+}
