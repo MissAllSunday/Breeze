@@ -42,7 +42,7 @@ class BreezeText
 {
 	private static $_instance;
 	protected $_text = array();
-	private $_pattern = '/BreezeMod_/';
+	private $_pattern = 'BreezeMod_';
 	private function __construct(){}
 
 	public static function getInstance()
@@ -71,6 +71,9 @@ class BreezeText
 	 */
 	public function getText($var)
 	{
+		if (empty($var))
+			return false;
+
 		if (empty($this->_text))
 			$this->extract();
 

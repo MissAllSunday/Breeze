@@ -42,7 +42,7 @@ class BreezeSettings
 {
 	private static $_instance;
 	protected $_settings = array();
-	private $_pattern = '/BreezeMod_/';
+	private $_pattern = 'BreezeMod_';
 
 
 	private function __construct(){}
@@ -66,7 +66,7 @@ class BreezeSettings
 	public function enable($var)
 	{
 		if (empty($this->_settings))
-			this->extract();
+			$this->extract();
 
 		if (!empty($this->_settings[$this->_pattern . $var]))
 			return true;
@@ -79,7 +79,7 @@ class BreezeSettings
 	public function getSetting($var)
 	{
 		if (empty($this->_settings))
-			this->extract();
+			$this->extract();
 
 		if (!empty($this->_settings[$this->_pattern . $var]))
 			return $this->_settings[$this->_pattern . $var];
