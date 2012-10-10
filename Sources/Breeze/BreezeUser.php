@@ -170,6 +170,18 @@ class BreezeUser
 
 		$context['sub_template'] = 'member_options';
 		$context['page_desc'] = $context['Breeze']['text']->getText('user_settings_enable_wall');
+
+		/* Create the form */
+		$form = new BreezeForm();
+
+		$form->addCheckBox(
+			'Breeze_enable_wall', 
+			'enable_wall',
+			!empty($context['member']['options']['Breeze_enable_wall']) ? true : false
+		);
+
+		/* Send the form to the template */
+		$context['Breeze']['UserSettings']['Form'] = $form->display();
 	}
 
 	public static function notifications()

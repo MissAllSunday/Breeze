@@ -413,24 +413,8 @@ function template_member_options()
 				<span class="topslice"><span></span></span>
 					<div class="content">';
 
-		echo '
-						<dl>
-							<dt>
-								<strong>', $context['Breeze']['text']->getText('user_settings_enable_wall'), '</strong>
-							</dt>
-							<dd>
-								<input type="hidden" name="default_options[Breeze_enable_wall]" value="0" /><input class="input_check" type="checkbox" name="default_options[Breeze_enable_wall]"', (!empty($context['member']['options']['Breeze_enable_wall']) ? ' checked="checked"' : ''), ' value="1"  />
-							</dd>
-						</dl>
-						<dl>
-							<dt>
-								<strong>', $context['Breeze']['text']->getText('user_settings_pagination_number'), '</strong>
-							</dt>
-							<dd>
-								<input type="hidden" name="default_options[Breeze_pagination_number]" value="0" /><input class="input_text" type="text" size="5" maxlength="5" name="default_options[Breeze_pagination_number]"', (!empty($context['member']['options']['Breeze_pagination_number']) ? ' value="'. $context['member']['options']['Breeze_pagination_number'] .'"' : ''), '  />
-							</dd>
-						</dl>
-						';
+		/* Print the form */
+		echo $context['Breeze']['UserSettings']['Form'];
 
 
 	// Show the standard "Save Settings" profile button.
