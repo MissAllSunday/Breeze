@@ -175,9 +175,57 @@ class BreezeUser
 		$form = new BreezeForm();
 
 		$form->addCheckBox(
-			'Breeze_enable_wall', 
+			'Breeze_enable_wall',
 			'enable_wall',
 			!empty($context['member']['options']['Breeze_enable_wall']) ? true : false
+		);
+
+		$form->addText(
+			'Breeze_pagination_number',
+			'pagination_number',
+			!empty($context['member']['options']['Breeze_pagination_number']) ? $context['member']['options']['Breeze_pagination_number'] : 0,
+			3,3
+		);
+
+		$form->addCheckBox(
+			'Breeze_infinite_scroll',
+			'infinite_scroll',
+			!empty($context['member']['options']['Breeze_infinite_scroll']) ? true : false
+		);
+
+		$form->addCheckBox(
+			'Breeze_kick_ignored',
+			'kick_ignored',
+			!empty($context['member']['options']['Breeze_kick_ignored']) ? true : false
+		);
+
+		$form->addCheckBox(
+			'Breeze_enable_visits_module',
+			'enable_visits_module',
+			!empty($context['member']['options']['Breeze_enable_visits_module']) ? true : false
+		);
+
+		$form->addSelect(
+			'Breeze_visits_timeframe',
+			'visits_module_timeframe',
+			array(
+				'Hour' => array(
+					'visits_module_timeframe_hour',
+					!empty($context['member']['options']['Breeze_visits_timeframe']) && $context['member']['options']['Breeze_visits_timeframe'] == 'Hour' ? 'selected' : ''
+				),
+				'Day' => array(
+					'visits_module_timeframe_day',
+					!empty($context['member']['options']['Breeze_visits_timeframe']) && $context['member']['options']['Breeze_visits_timeframe'] == 'Day' ? 'selected' : ''
+				),
+				'Week' => array(
+					'visits_module_timeframe_week',
+					!empty($context['member']['options']['Breeze_visits_timeframe']) && $context['member']['options']['Breeze_visits_timeframe'] == 'Week' ? 'selected' : ''
+				),
+				'Month' => array(
+					'visits_module_timeframe_month',
+					!empty($context['member']['options']['Breeze_visits_timeframe']) && $context['member']['options']['Breeze_visits_timeframe'] == 'Month' ? 'selected' : ''
+				),
+			)
 		);
 
 		/* Send the form to the template */
