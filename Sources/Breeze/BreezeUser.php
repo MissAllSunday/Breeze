@@ -157,7 +157,7 @@ class BreezeUser
 	/* Shows a form for users to set up their wall as needed. */
 	public static function settings($memID)
 	{
-		global $context, $cur_profile;
+		global $context;
 
 		Breeze::load('Profile-Modify');
 		loadtemplate('Breeze');
@@ -167,7 +167,6 @@ class BreezeUser
 			loadCustomFields($memID, 'theme');
 
 		$context['Breeze']['text'] = Breeze::text();
-
 		$context['sub_template'] = 'member_options';
 		$context['page_desc'] = $context['Breeze']['text']->getText('user_settings_enable_wall');
 

@@ -39,7 +39,7 @@ if (!defined('SMF'))
 	die('Hacking attempt...');
 
 /* Autoload */
-function __autoload($class_name)
+function breeze_autoloader($class_name)
 {
 	global $sourcedir;
 
@@ -51,6 +51,8 @@ function __autoload($class_name)
 	else
 		return false;
 }
+
+spl_autoload_register('breeze_autoloader');
 
 class Breeze
 {
