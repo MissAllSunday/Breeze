@@ -57,7 +57,7 @@ class BreezeText
 	{
 		global $txt;
 
-		loadLanguage(Breeze::$breeze_name);
+		loadLanguage(Breeze::$name);
 
 		$this->_text = $txt;
 	}

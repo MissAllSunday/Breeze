@@ -43,7 +43,7 @@ function breeze_autoloader($class_name)
 {
 	global $sourcedir;
 
-	$file_path = $sourcedir.Breeze::$breeze_folder.$class_name . '.php';
+	$file_path = $sourcedir.Breeze::$folder.$class_name . '.php';
 
 	if(file_exists($file_path))
 		require_once($file_path);
@@ -56,9 +56,9 @@ spl_autoload_register('breeze_autoloader');
 
 class Breeze
 {
-	static public $breeze_name = 'Breeze';
-	static public $breeze_version = '1.0 Beta 3';
-	static public $breeze_folder = '/Breeze/';
+	public static $name = 'Breeze';
+	public static $version = '1.0 Beta 3';
+	public static $folder = '/Breeze/';
 
 	public function __construct(){}
 
@@ -107,6 +107,11 @@ class Breeze
 	public function text()
 	{
 		return BreezeText::getInstance();
+	}
+
+	public function buddies()
+	{
+		return new BreezeBuddy();
 	}
 
 	public function sGlobals($var)
@@ -178,7 +183,7 @@ class Breeze
 		if ($gSettings->enable('admin_settings_enable'))
 			$profile_areas['info']['areas']['summary'] = array(
 				'label' => $text->getText('general_wall'),
-				'file' => Breeze::$breeze_folder .'BreezeUser.php',
+				'file' => Breeze::$folder .'BreezeUser.php',
 				'function' => 'Breeze_Wrapper_Wall',
 				'permission' => array(
 					'own' => 'profile_view_own',
@@ -209,7 +214,7 @@ class Breeze
 		if ($gSettings->enable('admin_settings_enable'))
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $text->getText('user_settings_name'),
-				'file' => Breeze::$breeze_folder .'BreezeUser.php',
+				'file' => Breeze::$folder .'BreezeUser.php',
 				'function' => 'Breeze_Wrapper_Settings',
 				'sc' => 'post',
 				'permission' => array(
@@ -222,7 +227,7 @@ class Breeze
 		/* if $some_check here */
 			$profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
 				'label' => $text->getText('user_buddysettings_name'),
-				'file' => Breeze::$breeze_folder .'BreezeUser.php',
+				'file' => Breeze::$folder .'BreezeUser.php',
 				'function' => 'Breeze_Wrapper_BuddyRequest',
 				'permission' => array(
 					'own' => 'profile_view_own',
@@ -233,7 +238,7 @@ class Breeze
 		/* if $some_check here */
 			$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
 				'label' => $text->getText('user_notisettings_name'),
-				'file' => Breeze::$breeze_folder .'BreezeUser.php',
+				'file' => Breeze::$folder .'BreezeUser.php',
 				'function' => 'Breeze_Wrapper_Notifications',
 				'permission' => array(
 					'own' => 'profile_view_own',
@@ -244,7 +249,7 @@ class Breeze
 		/* if $some_check here */
 			$profile_areas['breeze_profile']['areas']['wallstatus'] = array(
 				'label' => $text->getText('buddyrequest_list_status'),
-				'file' => Breeze::$breeze_folder .'BreezeUser.php',
+				'file' => Breeze::$folder .'BreezeUser.php',
 				'function' => 'Breeze_Wrapper_Single',
 				'permission' => array(
 					'own' => 'profile_view_own',
@@ -328,16 +333,16 @@ class Breeze
 	{
 
 		/* A whole new action just for some ajax calls... */
-		$actions['breezeajax'] = array(Breeze::$breeze_folder .'BreezeAjax.php', 'BreezeAjax::call');
+		$actions['breezeajax'] = array(Breeze::$folder .'BreezeAjax.php', 'BreezeAjax::call');
 
 		/* The general wall */
-		$actions['wall'] = array(Breeze::$breeze_folder .'BreezeGeneral.php', 'BreezeGeneral::call');
+		$actions['wall'] = array(Breeze::$folder .'BreezeGeneral.php', 'BreezeGeneral::call');
 
 		/* Replace the buddy action */
-		$actions['buddy'] = array(Breeze::$breeze_folder .'BreezeBuddy.php', 'BreezeBuddy::buddy');
+		$actions['buddy'] = array(Breeze::$folder .'BreezeBuddy.php', 'BreezeBuddy::buddy');
 
 		/* A special action for the buddy request message */
-		$actions['breezebuddyrequest'] = array(Breeze::$breeze_folder .'BreezeUser.php', 'Breeze_Wrapper_BuddyMessageSend');
+		$actions['breezebuddyrequest'] = array(Breeze::$folder .'BreezeUser.php', 'Breeze_Wrapper_BuddyMessageSend');
 	}
 
 	/**

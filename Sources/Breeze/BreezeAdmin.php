@@ -48,7 +48,7 @@ if (!defined('SMF'))
 		$text = Breeze::text();
 
 		/* Get the version */
-		$context['Breeze']['version'] = Breeze::$breeze_version;
+		$context['Breeze']['version'] = Breeze::$version;
 
 		/* Set all the page stuff */
 		$context['page_title'] = $text->getText('admin_settings_main');

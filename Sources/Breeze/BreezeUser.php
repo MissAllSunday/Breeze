@@ -260,7 +260,7 @@ class BreezeUser
 			fatal_lang_error('no_access', false);
 
 		loadtemplate('BreezeBuddy');
-/* Agregar la columna wall_settings a _members */
+
 		/* Load all we need */
 		$buddies = Breeze::buddies();
 		$text = Breeze::text();
