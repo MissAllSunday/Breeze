@@ -92,7 +92,7 @@ class BreezeUser
 		$temp_ignore_list = $query->getUserSetting($context['member']['id'], 'pm_ignore_list');
 
 		if (!empty($temp_ignore_list))
-		$context['member']['ignore_list'] = explode(',', $temp_ignore_list);
+			$context['member']['ignore_list'] = explode(',', $temp_ignore_list);
 
 		/* I'm sorry, you aren't allowed in here, but here's a nice static page :) */
 		if (in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['member']['options']['Breeze_kick_ignored']))
