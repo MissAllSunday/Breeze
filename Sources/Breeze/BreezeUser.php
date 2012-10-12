@@ -71,7 +71,7 @@ class BreezeUser
 			redirectexit();
 
 		/* Does the user even enable this? */
-		/* Check here */
+		if (empty($context['member']['options']['Breeze_enable_wall']))
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* This user cannot see his/her own profile and cannot see any profile either */
@@ -87,10 +87,16 @@ class BreezeUser
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* Get this user's ignore list */
+		$context['member']['ignore_list'] = array();
+
+		$temp_ignore_list = $query->getUserSetting($context['member']['id'], 'pm_ignore_list');
+
+		if (!empty($temp_ignore_list))
+		$context['member']['ignore_list'] = explode(',', $temp_ignore_list);
 
 		/* I'm sorry, you aren't allowed in here, but here's a nice static page :) */
-/* 		if (in_array($user_info['id'], $context['member']['ignore_list']) && $user_settings->enable('kick_ignored'))
-			redirectexit('action=profile;area=static;u='.$context['member']['id']); */
+		if (in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['member']['options']['Breeze_kick_ignored']))
+			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* display all the JavaScript bits */
 		$tools->headers();

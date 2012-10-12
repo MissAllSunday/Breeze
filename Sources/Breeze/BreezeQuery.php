@@ -631,7 +631,7 @@ class BreezeQuery extends Breeze
 		{
 			/* Load all the settings from all users */
 			$result = $smcFunc['db_query']('', '
-				SELECT wall_settings, pm_ignore_list, id_member, enable_wall
+				SELECT pm_ignore_list, id_member
 				FROM {db_prefix}'. $this->_tables['members']['table'] .'
 				',
 				array()
@@ -650,29 +650,27 @@ class BreezeQuery extends Breeze
 		return $this->_members;
 	}
 
-	public function getUserSettings($user)
+	public function getUserSetting($user, $setting = false)
 	{
 		$return = $this->_members ? $this->_members : $this->members();
 
-		if (!empty($return[$user]))
-			return $return[$user];
+		if ($setting)
+		{
+			if (!empty($return[$user][$setting]))
+				return $return[$user][$setting];
+
+			else
+				return false;
+		}
 
 		else
-			return false;
-	}
+		{
+			if (!empty($return[$user]))
+				return $return[$user];
 
-	public function insertUserSettings($user, $values)
-	{
-		$this->query($this->_tables['members']['name'])->insertData(
-			array(
-				'enable_wall' => 'int',
-				'wall_settings' => 'string',
-			),
-			$values,
-			array(
-				'id_member',
-			)
-		);
+			else
+				return false;
+		}
 	}
 
 	/*
