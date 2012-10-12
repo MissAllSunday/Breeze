@@ -54,7 +54,7 @@ class BreezeUser
 	{
 		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info;
 
-		loadtemplate('Breeze');
+		loadtemplate(Breeze::$name);
 
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
 		$settings = Breeze::settings();
@@ -160,7 +160,7 @@ class BreezeUser
 		global $context;
 
 		Breeze::load('Profile-Modify');
-		loadtemplate('Breeze');
+		loadtemplate(Breeze::$name);
 
 		loadThemeOptions($memID);
 		if (allowedTo(array('profile_extra_own', 'profile_extra_any')))
@@ -235,7 +235,7 @@ class BreezeUser
 	{
 		global $context, $user_info, $scripturl;
 
-		loadtemplate('Breeze');
+		loadtemplate(Breeze::$name);
 
 		/* Load all we need */
 		$query = Breeze::query();
@@ -365,7 +365,7 @@ class BreezeUser
 	{
 		global $context, $user_info, $scripturl;
 
-		loadtemplate('Breeze');
+		loadtemplate(Breeze::$name);
 
 		/* Load what we need */
 		$text = Breeze::text();
