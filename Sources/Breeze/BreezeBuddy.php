@@ -96,29 +96,12 @@ class BreezeBuddy
 		global $context;
 
 		$query = Breeze::query();
-		$text = Breeze::text();
-		$tools = Breeze::tools();
+
+		/* I don't have time for this... */
+		if (empty($user))
+			return false;
 
 		/* Load all buddy request for this user */
-		$temp = $query->getNotificationByType('buddy');
-		$temp2 = array();
-
-		/* We only want the notifications for this user... */
-		if (!empty($temp))
-			foreach($temp as $t)
-				if ($t['user_to'] == $user)
-				{
-					$temp2[$t['id']] = $t;
-
-					/* load the user's link */
-					if (!isset($context['Breeze']['user_info'][$t['user']]))
-						$tools->loadUserInfo($t['user']);
-
-					/* build the message */
-					$temp2[$t['id']]['content']['message'] = sprintf ($text->getText('buddy_messagerequest_message'), $context['Breeze']['user_info'][$t['user']]['link']);
-				}
-
-		/* Return the notifications */
-		return $temp2;
+		return $query->getNotificationByType('buddy', $user);
 	}
 }

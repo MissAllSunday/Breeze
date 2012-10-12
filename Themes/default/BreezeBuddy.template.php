@@ -91,6 +91,8 @@ function template_Breeze_buddy_list()
 		<div id="admin_main_section">';
 
 	/* Buddy request */
+	if (!empty($context['Breeze']['Buddy_Request']))
+	{
 		echo '
 			<table class="table_grid" cellspacing="0" width="100%">
 				<thead>
@@ -117,6 +119,10 @@ function template_Breeze_buddy_list()
 							</td>
 						</tr>';
 			}
+	}
+
+	else
+		echo 'There is no buddy request for you';
 
 			echo '</tbody>
 			</table><br />';
