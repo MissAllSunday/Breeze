@@ -54,11 +54,58 @@ function breeze_autoloader($class_name)
 
 spl_autoload_register('breeze_autoloader');
 
+function chatusers()
+{
+	global $sourcedir;
+
+	/* Declare the var so we know it always exists */
+	$data = '';
+
+	/* Requires a function in a source file far far away... */
+	require_once($sourcedir .'/Subs-Package.php');
+
+	/* Do we have json library? */
+	$json = function_exists('json_decode');
+
+	/* Append the json part if we can use json */
+	$url = 'http://api.mibbit.com/YOUR API ID HERE'. $json ? '.json' : '';
+
+	/* Fetch the page */
+	$data =  fetch_web_data($url);
+
+	/* Do we got something? */
+	if (!empty($data))
+	{
+		/* if we have json, lets use it, makes things easier for everyone */
+		if  ($json)
+		{
+			/* Decode the data */
+			$jsonData = json_decode($data);
+
+			/* Return the value if its an object */
+			if (is_object($jsonData))
+				return $jsonData->mibbitians;
+
+			else
+				return false;
+		}
+
+		/* No? then its a plain text/html page */
+		else
+			return (int) $data;
+	}
+
+	/* No? then return false */
+	else
+		return false;
+}
+
 class Breeze
 {
 	public static $name = 'Breeze';
 	public static $version = '1.0 Beta 3';
 	public static $folder = '/Breeze/';
+	public static $txtpattern = 'BreezeMod_';
 
 	public function __construct(){}
 

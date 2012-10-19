@@ -42,7 +42,7 @@ class BreezeText
 {
 	private static $_instance;
 	protected $_text = array();
-	private $_pattern = 'BreezeMod_';
+	private $_pattern = 'Breeze_';
 	private function __construct(){}
 
 	public static function getInstance()

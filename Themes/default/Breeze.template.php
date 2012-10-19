@@ -219,7 +219,7 @@ function template_user_wall()
 
 							/* Delete link */
 							if ($context['Breeze']['visitor']['delete_status_comments'])
-								echo '| <a href="javascript:void(0)" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['BreezeMod_general_delete'] ,'</a> </div>';
+								echo '| <a href="javascript:void(0)" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> </div>';
 
 							echo '<hr />
 							<div id="comment_flash_', $status['id'] ,'"></div>';
@@ -240,7 +240,7 @@ function template_user_wall()
 
 														/* Delete comment */
 									if ($context['Breeze']['visitor']['delete_status_comments'])
-										echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['BreezeMod_general_delete'] ,'</a>';
+										echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 									echo '
 													</div>
@@ -333,7 +333,7 @@ function template_singleStatus()
 
 					/* Delete link */
 					if ($context['Breeze']['visitor']['delete_status_comments'])
-						echo '| <a href="javascript:void(0)" id="', $context['Breeze']['singleStatus']['id'] ,'" class="breeze_delete_status">', $txt['BreezeMod_general_delete'] ,'</a> </div>';
+						echo '| <a href="javascript:void(0)" id="', $context['Breeze']['singleStatus']['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> </div>';
 
 					echo '<hr />
 					<div id="comment_flash_', $context['Breeze']['singleStatus']['id'] ,'"></div>';
@@ -354,7 +354,7 @@ function template_singleStatus()
 
 							/* Delete comment */
 							if ($context['Breeze']['visitor']['delete_status_comments'])
-								echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['BreezeMod_general_delete'] ,'</a>';
+								echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 							echo '
 											</div>

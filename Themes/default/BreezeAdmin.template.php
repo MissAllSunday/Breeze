@@ -46,14 +46,14 @@ function template_admin_home()
 		<div class="cat_bar">
 			<h3 class="catbg">';
 
-	echo $txt['BreezeMod_admin_settings_admin_panel'], '
+	echo $txt['Breeze_admin_settings_admin_panel'], '
 			</h3>
 		</div>
 		<span class="upperframe"><span></span></span>
 		<div class="roundframe">
 			<div id="welcome">
 				<strong>', $txt['hello_guest'], ' ', $context['user']['name'], '!</strong>
-				', sprintf($txt['BreezeMod_admin_welcome'], $txt['BreezeMod_admin_settings_admin_panel']), '
+				', sprintf($txt['Breeze_admin_welcome'], $txt['Breeze_admin_settings_admin_panel']), '
 			</div>
 		</div>
 		<span class="lowerframe"><span></span></span>';
@@ -70,7 +70,7 @@ function template_admin_home()
 			<div id="live_news" class="floatleft">
 				<div class="cat_bar">
 					<h3 class="catbg">
-						<span class="ie6_header floatleft">', $txt['BreezeMod_admin_live'] , '</span>
+						<span class="ie6_header floatleft">', $txt['Breeze_admin_live'] , '</span>
 					</h3>
 				</div>
 				<div class="windowbg nopadding">
@@ -95,7 +95,7 @@ function template_admin_home()
 					<div class="content">
 						<div id="version_details">
 							<strong>', $txt['support_versions'], ':</strong><br />
-							', $txt['BreezeMod_admin_breeze_version'] , ':
+							', $txt['Breeze_admin_breeze_version'] , ':
 							<em id="yourVersion" style="white-space: nowrap;">', $context['Breeze']['version'] , '</em><br />';
 
 		/* Some more stuff will be here... eventually */
@@ -122,7 +122,7 @@ function template_admin_donate()
 		<div class="roundframe rfix">
 			<div class="innerframe">
 				<div class="content">
-					',$txt['BreezeMod_admin_settings_donate_text'],'
+					',$txt['Breeze_admin_settings_donate_text'],'
 				</div>
 			</div>
 		</div>
