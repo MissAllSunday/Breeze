@@ -67,7 +67,7 @@ class BreezeGeneral
 	{
 		global $txt, $scripturl, $context;
 
-		loadtemplate('Breeze');
+		loadtemplate(Breeze::$name);
 		writeLog(true);
 
 		/* Set all the page stuff */
@@ -88,7 +88,7 @@ class BreezeGeneral
 		global $user_info, $scripturl, $context, $memberContext;
 
 		/* Load all we need */
-		loadtemplate('Breeze');
+		loadtemplate(Breeze::$name);
 
 		/* Prepare all we need */
 		$globals = new BreezeGlobals('get');

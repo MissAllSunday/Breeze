@@ -45,7 +45,7 @@ function template_Breeze_request_buddy_message_send()
 	<div id="admincenter">
 		<div class="cat_bar">
 			<h3 class="catbg">'
-				, $txt['BreezeMod_user_buddyrequestmessage_name'], '
+				, $txt['Breeze_user_buddyrequestmessage_name'], '
 			</h3>
 		</div>
 		<span class="upperframe">
@@ -53,7 +53,7 @@ function template_Breeze_request_buddy_message_send()
 		</span>
 		<div class="roundframe">
 			<div id="welcome">
-				', $txt['BreezeMod_user_buddyrequestmessage_message'] ,'
+				', $txt['Breeze_user_buddyrequestmessage_message'] ,'
 			</div>
 		</div>
 		<span class="lowerframe">
@@ -74,7 +74,7 @@ function template_Breeze_buddy_list()
 	echo '
 		<div class="cat_bar">
 			<h3 class="catbg">
-				', $txt['BreezeMod_buddy_title'] ,'
+				', $txt['Breeze_buddy_title'] ,'
 			</h3>
 		</div>
 		<span class="upperframe">
@@ -82,7 +82,7 @@ function template_Breeze_buddy_list()
 		</span>
 		<div class="roundframe">
 			<div id="welcome">
-				', $txt['BreezeMod_buddy_desc'] ,'
+				', $txt['Breeze_buddy_desc'] ,'
 			</div>
 		</div>
 		<span class="lowerframe">
@@ -91,13 +91,15 @@ function template_Breeze_buddy_list()
 		<div id="admin_main_section">';
 
 	/* Buddy request */
+	if (!empty($context['Breeze']['Buddy_Request']))
+	{
 		echo '
 			<table class="table_grid" cellspacing="0" width="100%">
 				<thead>
 					<tr class="catbg">
-						<th scope="col" class="first_th">', $txt['BreezeMod_buddyrequest_list_message'] ,'</th>
-						<th scope="col">', $txt['BreezeMod_buddyrequest_list_confirm'] ,'</th>
-						<th scope="col" class="last_th">', $txt['BreezeMod_buddyrequest_list_decline'] ,'</th>
+						<th scope="col" class="first_th">', $txt['Breeze_buddyrequest_list_message'] ,'</th>
+						<th scope="col">', $txt['Breeze_buddyrequest_list_confirm'] ,'</th>
+						<th scope="col" class="last_th">', $txt['Breeze_buddyrequest_list_decline'] ,'</th>
 					</tr>
 				</thead>
 			<tbody>';
@@ -110,13 +112,17 @@ function template_Breeze_buddy_list()
 							', $request['content']['message'] ,'
 							</td>
 							<td>
-							<a href="', $scripturl ,'?action=profile;area=breezebuddies;from=', $request['user'] ,';confirm=', $request['id'] ,'" target="self">', $txt['BreezeMod_buddyrequest_list_confirm'] ,'</a>
+							<a href="', $scripturl ,'?action=profile;area=breezebuddies;from=', $request['user'] ,';confirm=', $request['id'] ,'" target="self">', $txt['Breeze_buddyrequest_list_confirm'] ,'</a>
 							</td>
 							<td>
-							<a href="', $scripturl ,'?action=profile;area=breezebuddies;from=', $request['user'] ,';decline=', $request['id'] ,'" target="self">', $txt['BreezeMod_buddyrequest_list_decline'] ,'</a>
+							<a href="', $scripturl ,'?action=profile;area=breezebuddies;from=', $request['user'] ,';decline=', $request['id'] ,'" target="self">', $txt['Breeze_buddyrequest_list_decline'] ,'</a>
 							</td>
 						</tr>';
 			}
+	}
+
+	else
+		echo 'There is no buddy request for you';
 
 			echo '</tbody>
 			</table><br />';

@@ -219,7 +219,7 @@ function template_user_wall()
 
 							/* Delete link */
 							if ($context['Breeze']['visitor']['delete_status_comments'])
-								echo '| <a href="javascript:void(0)" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['BreezeMod_general_delete'] ,'</a> </div>';
+								echo '| <a href="javascript:void(0)" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> </div>';
 
 							echo '<hr />
 							<div id="comment_flash_', $status['id'] ,'"></div>';
@@ -240,7 +240,7 @@ function template_user_wall()
 
 														/* Delete comment */
 									if ($context['Breeze']['visitor']['delete_status_comments'])
-										echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['BreezeMod_general_delete'] ,'</a>';
+										echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 									echo '
 													</div>
@@ -333,7 +333,7 @@ function template_singleStatus()
 
 					/* Delete link */
 					if ($context['Breeze']['visitor']['delete_status_comments'])
-						echo '| <a href="javascript:void(0)" id="', $context['Breeze']['singleStatus']['id'] ,'" class="breeze_delete_status">', $txt['BreezeMod_general_delete'] ,'</a> </div>';
+						echo '| <a href="javascript:void(0)" id="', $context['Breeze']['singleStatus']['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> </div>';
 
 					echo '<hr />
 					<div id="comment_flash_', $context['Breeze']['singleStatus']['id'] ,'"></div>';
@@ -354,7 +354,7 @@ function template_singleStatus()
 
 							/* Delete comment */
 							if ($context['Breeze']['visitor']['delete_status_comments'])
-								echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['BreezeMod_general_delete'] ,'</a>';
+								echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 							echo '
 											</div>
@@ -392,4 +392,38 @@ function template_singleStatus()
 
 	/* End of list */
 	echo '</ul></div>';
+}
+
+function template_member_options()
+{
+	global $context, $settings, $options, $scripturl, $modSettings, $txt;
+
+	// The main containing header.
+	echo '
+		<form action="', $scripturl, '?action=profile;area=breezesettings;save" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator" enctype="multipart/form-data" onsubmit="return checkProfileSubmit();">
+			<h3 class="catbg">
+				<span class="left"></span>
+				<img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" class="icon" />
+				', $context['page_desc'] , '
+			</h3>
+			<p class="windowbg description">
+				', $context['page_desc'] , '
+			</p>
+			<div class="windowbg2">
+				<span class="topslice"><span></span></span>
+					<div class="content">';
+
+		/* Print the form */
+		echo $context['Breeze']['UserSettings']['Form'];
+
+
+	// Show the standard "Save Settings" profile button.
+	template_profile_save();
+
+	echo '
+					</div>
+				<span class="botslice"><span></span></span>
+			</div>
+			<br />
+		</form>';
 }

@@ -48,7 +48,7 @@ if (!defined('SMF'))
 		$text = Breeze::text();
 
 		/* Get the version */
-		$context['Breeze']['version'] = Breeze::$breeze_version;
+		$context['Breeze']['version'] = Breeze::$version;
 
 		/* Set all the page stuff */
 		$context['page_title'] = $text->getText('admin_settings_main');
@@ -70,10 +70,10 @@ if (!defined('SMF'))
 		require_once($sourcedir . '/ManageServer.php');
 
 		$config_vars = array(
-			array('check', 'BreezeMod_admin_settings_enable', 'subtext' => $text->getText('admin_settings_enable_sub')),
-			array('select', 'BreezeMod_admin_settings_menuposition', array('home' => $text->getText('admin_settings_home'), 'help' => $text->getText('admin_settings_help'), 'profile' => $text->getText('admin_settings_profile')), 'subtext' => $text->getText('admin_settings_menuposition_sub')),
-			array('check', 'BreezeMod_admin_enable_limit', 'subtext' => $text->getText('admin_enable_limit_sub')),
-			array('select', 'BreezeMod_admin_limit_timeframe', array('hour' => $text->getText('user_settings_time_hour'), 'day' => $text->getText('user_settings_time_day'), 'week' => $text->getText('user_settings_time_week'), 'month' => $text->getText('user_settings_time_month'), 'year' => $text->getText('user_settings_time_year')), 'subtext' => $text->getText('admin_limit_timeframe_sub'))
+			array('check', Breeze::$txtpattern .'admin_settings_enable', 'subtext' => $text->getText('admin_settings_enable_sub')),
+			array('select', Breeze::$txtpattern .'settings_menuposition', array('home' => $text->getText('admin_settings_home'), 'help' => $text->getText('admin_settings_help'), 'profile' => $text->getText('admin_settings_profile')), 'subtext' => $text->getText('admin_settings_menuposition_sub')),
+			array('check', Breeze::$txtpattern .'admin_enable_limit', 'subtext' => $text->getText('admin_enable_limit_sub')),
+			array('select', Breeze::$txtpattern .'admin_limit_timeframe', array('hour' => $text->getText('user_settings_time_hour'), 'day' => $text->getText('user_settings_time_day'), 'week' => $text->getText('user_settings_time_week'), 'month' => $text->getText('user_settings_time_month'), 'year' => $text->getText('user_settings_time_year')), 'subtext' => $text->getText('admin_limit_timeframe_sub'))
 		);
 
 		$context['post_url'] = $scripturl . '?action=admin;area=breezesettings;save';

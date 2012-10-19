@@ -42,19 +42,16 @@ class BreezeSettings
 {
 	private static $_instance;
 	protected $_settings = array();
+	private $_pattern = 'BreezeMod_';
 
 
-	private function __construct()
-	{
-		$this->extract();
-	}
+	private function __construct(){}
 
 	public static function getInstance()
 	{
 		if (!self::$_instance)
-		 {
 			self::$_instance = new self();
-		}
+
 		return self::$_instance;
 	}
 
@@ -62,28 +59,18 @@ class BreezeSettings
 	{
 		global $modSettings;
 
-		$this->_pattern = '/BreezeMod_/';
-
-		/* Get only the settings that we need */
-		foreach ($modSettings as $km => $vm)
-			if (preg_match($this->_pattern, $km))
-			{
-				$km = str_replace('BreezeMod_', '', $km);
-
-				/* Hickjack this to convert the string to a timestamp */
-				if ($km == 'admin_limit_timeframe')
-					$vm = strtotime('-1 '.$vm);
-
-				/* Done? then populate the new array */
-				$this->_settings[$km] = $vm;
-			}
+		$this->_settings = $modSettings;
 	}
 
 	/* Return true if the value do exist, false otherwise, O RLY? */
 	public function enable($var)
 	{
-		if (!empty($this->_settings[$var]))
+		if (empty($this->_settings))
+			$this->extract();
+
+		if (!empty($this->_settings[$this->_pattern . $var]))
 			return true;
+
 		else
 			return false;
 	}
@@ -91,8 +78,11 @@ class BreezeSettings
 	/* Get the requested setting  */
 	public function getSetting($var)
 	{
-		if (!empty($this->_settings[$var]))
-			return $this->_settings[$var];
+		if (empty($this->_settings))
+			$this->extract();
+
+		if (!empty($this->_settings[$this->_pattern . $var]))
+			return $this->_settings[$this->_pattern . $var];
 
 		else
 			return false;

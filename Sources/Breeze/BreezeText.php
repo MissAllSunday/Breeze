@@ -42,19 +42,14 @@ class BreezeText
 {
 	private static $_instance;
 	protected $_text = array();
-
-
-	private function __construct()
-	{
-		$this->extract();
-	}
+	private $_pattern = 'Breeze_';
+	private function __construct(){}
 
 	public static function getInstance()
 	{
 		if (!self::$_instance)
-		 {
 			self::$_instance = new self();
-		}
+
 		return self::$_instance;
 	}
 
@@ -62,26 +57,28 @@ class BreezeText
 	{
 		global $txt;
 
-		loadLanguage(Breeze::$breeze_name);
+		loadLanguage(Breeze::$name);
 
-		$this->_pattern = '/BreezeMod_/';
-
-		/* Get only the settings that we need */
-		foreach ($txt as $kt => $vt)
-			if (preg_match($this->_pattern, $kt))
-			{
-				$kt = str_replace('BreezeMod_', '', $kt);
-
-				/* Done? then populate the new array */
-				$this->_text[$kt] = $vt;
-			}
+		$this->_text = $txt;
 	}
 
-	/* Get the requested setting  */
+	/**
+	 * Get the requested array element.
+	 *
+	 * @param string the key name for the requested element
+	 * @access public
+	 * @return mixed
+	 */
 	public function getText($var)
 	{
-		if (!empty($this->_text[$var]))
-			return $this->_text[$var];
+		if (empty($var))
+			return false;
+
+		if (empty($this->_text))
+			$this->extract();
+
+		if (!empty($this->_text[$this->_pattern . $var]))
+			return $this->_text[$this->_pattern . $var];
 
 		else
 			return false;

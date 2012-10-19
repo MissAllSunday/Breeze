@@ -114,7 +114,8 @@ class BreezeNotifications extends Breeze
 			$tempQuery->params(
 				array(
 					'rows' => '*',
-					'where' => 'user = {int:user} AND user_to = {int:user_to}',
+					'where' => 'user = {int:user}',
+					'whereAnd' => 'user_to = {int:user_to}',
 				),
 				array(
 					'user' => !empty($params['user']) ? $params['user'] : $this->_currentUser,

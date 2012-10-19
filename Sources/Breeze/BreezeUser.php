@@ -44,7 +44,7 @@ if (!defined('SMF'))
 	function Breeze_Wrapper_BuddyRequest(){BreezeUser::buddyRequest();}
 	function Breeze_Wrapper_BuddyMessageSend(){BreezeUser::buddyMessageSend();}
 	function Breeze_Wrapper_Notifications(){BreezeUser::notifications();}
-	function Breeze_Wrapper_Single(){BreezeUser::Single();}
+	function Breeze_Wrapper_Single(){BreezeUser::single();}
 
 class BreezeUser
 {
@@ -54,7 +54,7 @@ class BreezeUser
 	{
 		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info;
 
-		loadtemplate('Breeze');
+		loadtemplate(Breeze::$name);
 
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
 		$settings = Breeze::settings();
@@ -70,11 +70,8 @@ class BreezeUser
 		if (!$settings->enable('admin_settings_enable'))
 			redirectexit();
 
-		/* Load this user's settings */
-		$user_settings = Breeze::userSettings($context['member']['id']);
-
 		/* Does the user even enable this? */
-		if (!$user_settings->enable('enable_wall'))
+		if (empty($context['member']['options']['Breeze_enable_wall']))
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* This user cannot see his/her own profile and cannot see any profile either */
@@ -90,11 +87,15 @@ class BreezeUser
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* Get this user's ignore list */
-		if (empty($context['member']['ignore_list']))
-			$context['member']['ignore_list'] = $user_settings->getUserIgnoreList();
+		$context['member']['ignore_list'] = array();
+
+		$temp_ignore_list = $query->getUserSetting($context['member']['id'], 'pm_ignore_list');
+
+		if (!empty($temp_ignore_list))
+			$context['member']['ignore_list'] = explode(',', $temp_ignore_list);
 
 		/* I'm sorry, you aren't allowed in here, but here's a nice static page :) */
-		if (in_array($user_info['id'], $context['member']['ignore_list']) && $user_settings->enable('kick_ignored'))
+		if (in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['member']['options']['Breeze_kick_ignored']))
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* display all the JavaScript bits */
@@ -165,29 +166,82 @@ class BreezeUser
 		global $context;
 
 		Breeze::load('Profile-Modify');
+		loadtemplate(Breeze::$name);
+
 		loadThemeOptions($memID);
+		if (allowedTo(array('profile_extra_own', 'profile_extra_any')))
+			loadCustomFields($memID, 'theme');
 
-		$text = Breeze::text();
+		$context['Breeze']['text'] = Breeze::text();
+		$context['sub_template'] = 'member_options';
+		$context['page_desc'] = $context['Breeze']['text']->getText('user_settings_enable_wall');
 
-		$context['sub_template'] = 'edit_options';
-		$context['page_desc'] = $text->getText('user_settings_enable_wall');
+		/* Create the form */
+		$form = new BreezeForm();
 
-		$context['profile_fields'] = array(
-			'Breeze_enable_wall' => array(
-				'type' => 'check',
-				'label' => $text->getText('user_settings_enable_wall'),
-				'subtext' => $text->getText('user_settings_enable_wall_sub'),
-				'input_attr' => '',
-				'value' => !empty($context['member']['options']['Breeze_enable_wall']) ? 1 : 0
-			),
+		$form->addCheckBox(
+			'Breeze_enable_wall',
+			'enable_wall',
+			!empty($context['member']['options']['Breeze_enable_wall']) ? true : false
 		);
+
+		$form->addText(
+			'Breeze_pagination_number',
+			'pagination_number',
+			!empty($context['member']['options']['Breeze_pagination_number']) ? $context['member']['options']['Breeze_pagination_number'] : 0,
+			3,3
+		);
+
+		$form->addCheckBox(
+			'Breeze_infinite_scroll',
+			'infinite_scroll',
+			!empty($context['member']['options']['Breeze_infinite_scroll']) ? true : false
+		);
+
+		$form->addCheckBox(
+			'Breeze_kick_ignored',
+			'kick_ignored',
+			!empty($context['member']['options']['Breeze_kick_ignored']) ? true : false
+		);
+
+		$form->addCheckBox(
+			'Breeze_enable_visits_module',
+			'enable_visits_module',
+			!empty($context['member']['options']['Breeze_enable_visits_module']) ? true : false
+		);
+
+		$form->addSelect(
+			'Breeze_visits_timeframe',
+			'visits_module_timeframe',
+			array(
+				'Hour' => array(
+					'visits_module_timeframe_hour',
+					!empty($context['member']['options']['Breeze_visits_timeframe']) && $context['member']['options']['Breeze_visits_timeframe'] == 'Hour' ? 'selected' : ''
+				),
+				'Day' => array(
+					'visits_module_timeframe_day',
+					!empty($context['member']['options']['Breeze_visits_timeframe']) && $context['member']['options']['Breeze_visits_timeframe'] == 'Day' ? 'selected' : ''
+				),
+				'Week' => array(
+					'visits_module_timeframe_week',
+					!empty($context['member']['options']['Breeze_visits_timeframe']) && $context['member']['options']['Breeze_visits_timeframe'] == 'Week' ? 'selected' : ''
+				),
+				'Month' => array(
+					'visits_module_timeframe_month',
+					!empty($context['member']['options']['Breeze_visits_timeframe']) && $context['member']['options']['Breeze_visits_timeframe'] == 'Month' ? 'selected' : ''
+				),
+			)
+		);
+
+		/* Send the form to the template */
+		$context['Breeze']['UserSettings']['Form'] = $form->display();
 	}
 
 	public static function notifications()
 	{
 		global $context, $user_info, $scripturl;
 
-		loadtemplate('Breeze');
+		loadtemplate(Breeze::$name);
 
 		/* Load all we need */
 		$query = Breeze::query();
@@ -212,7 +266,7 @@ class BreezeUser
 			fatal_lang_error('no_access', false);
 
 		loadtemplate('BreezeBuddy');
-/* Agregar la columna wall_settings a _members */
+
 		/* Load all we need */
 		$buddies = Breeze::buddies();
 		$text = Breeze::text();
@@ -317,7 +371,7 @@ class BreezeUser
 	{
 		global $context, $user_info, $scripturl;
 
-		loadtemplate('Breeze');
+		loadtemplate(Breeze::$name);
 
 		/* Load what we need */
 		$text = Breeze::text();
