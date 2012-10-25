@@ -200,8 +200,10 @@ class BreezeNotifications extends Breeze
 		if ($noti['user_to'] != $this->_currentUser)
 			return false;
 
+		$this->_tools->loadUserInfo($noti['user_to']);
+
 		/* Fill out the messages property */
-		$this->_messages[] = sprintf($this->_text->getText('buddy_messagerequest_message'), $context['Breeze']['user_info'][$noti['user']]['link']);
+		$this->_messages[] = sprintf($this->_text->getText('buddy_messagerequest_message'), $context['Breeze']['user_info'][$noti['user']]);
 	}
 
 	protected function doMention($noti)
@@ -232,7 +234,7 @@ class BreezeNotifications extends Breeze
 			if ($noti['content']['wall_owner'] == $noti['user_to'])
 				$text = sprintf(
 					$this->_text->getText('mention_message_own_wall_comment'),
-					$statusLink, 
+					$statusLink,
 					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link']
 				);
 
@@ -252,7 +254,7 @@ class BreezeNotifications extends Breeze
 			/* Is this your own wall? */
 			if ($noti['content']['wall_owner'] == $noti['user_to'])
 				$text = sprintf(
-					$this->_text->getText('mention_message_own_wall_status'), 
+					$this->_text->getText('mention_message_own_wall_status'),
 					$statusLink,
 					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link']
 				);
