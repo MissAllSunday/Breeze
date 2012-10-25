@@ -203,7 +203,7 @@ class BreezeNotifications extends Breeze
 		$this->_tools->loadUserInfo($noti['user_to']);
 
 		/* Fill out the messages property */
-		$this->_messages[] = sprintf($this->_text->getText('buddy_messagerequest_message'), $context['Breeze']['user_info'][$noti['user']]);
+		$this->_messages[] = sprintf($this->_text->getText('buddy_messagerequest_message'), $context['Breeze']['user_info'][$noti['user']]['link']);
 	}
 
 	protected function doMention($noti)

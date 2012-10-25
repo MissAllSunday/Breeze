@@ -252,22 +252,12 @@ $(document).ready(function ()
 
 	public static function loadUserInfo($id)
 	{
-		global $memberContext, $context;
-
 		/* Must be an array */
 		if (!is_array($id))
 			$id = array($id);
 
 		/* Load all the members up. */
-		loadMemberData($id, false, 'profile');
 		foreach ($id as $i)
-		{
-			if (!isset($context['Breeze']['user_info'][$i]))
-			{
-				loadMemberContext($i);
-				$user = $memberContext[$i];
-				$context['Breeze']['user_info'][$user['id']] = BreezeUserInfo::Profile($user);
-			}
-		}
+			BreezeUserInfo::Profile($i, true);
 	}
 }

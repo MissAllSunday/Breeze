@@ -211,7 +211,7 @@ function template_user_wall()
 				<span class="topslice"><span></span></span>
 					<div class="breeze_user_inner">
 						<div class="breeze_user_status_avatar">
-							',$context['Breeze']['user_info'][$status['poster_id']],'
+							',$context['Breeze']['user_info'][$status['poster_id']]['facebox'],'
 						</div>
 						<div class="breeze_user_status_comment">
 							',$status['body'],'
@@ -231,7 +231,7 @@ function template_user_wall()
 								{
 									echo '<li class="windowbg2" id ="comment_id_', $comment['id'] ,'">
 												<div class="breeze_user_comment_avatar">
-													',$context['Breeze']['user_info'][$comment['poster_id']],'<br />
+													',$context['Breeze']['user_info'][$comment['poster_id']]['facebox'],'<br />
 												</div>
 												<div class="breeze_user_comment_comment">
 													',$comment['body'],'
@@ -325,7 +325,7 @@ function template_singleStatus()
 		<span class="topslice"><span></span></span>
 			<div class="breeze_user_inner">
 				<div class="breeze_user_status_avatar">
-					', $context['Breeze']['user_info'][$context['Breeze']['singleStatus']['poster_id']] ,'
+					', $context['Breeze']['user_info'][$context['Breeze']['singleStatus']['poster_id']]['facebox'] ,'
 				</div>
 				<div class="breeze_user_status_comment">
 					', $context['Breeze']['singleStatus']['body'] ,'
@@ -345,7 +345,7 @@ function template_singleStatus()
 						{
 							echo '<li class="windowbg2" id ="comment_id_', $comment['id'] ,'">
 										<div class="breeze_user_comment_avatar">
-											',$context['Breeze']['user_info'][$comment['poster_id']],'<br />
+											',$context['Breeze']['user_info'][$comment['poster_id']]['facebox'],'<br />
 										</div>
 										<div class="breeze_user_comment_comment">
 											',$comment['body'],'
