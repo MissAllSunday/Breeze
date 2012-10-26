@@ -249,14 +249,21 @@ $(document).ready(function ()
 	{
 		global $memberContext;
 
+		/* If this isn't an array, lets change it to one */
+		if (!is_array($id))
+			$id = array($id);
+
+		/* SMF always return the data as an array */
 		$array = loadMemberData($id, false, 'profile');
 
+		/* Load the users data if it wasn't loaded already */
 		if (!empty($array) && is_array($array))
 			foreach ($array as $u)
 			{
 				if (empty($memberContext[$u]))
 					loadMemberContext($u);
 
+				/* Create the context var */
 				BreezeUserInfo::profile($u);
 			}
 	}
