@@ -804,6 +804,7 @@ class BreezeQuery extends Breeze
 		$tools = Breeze::tools();
 
 		$return =  $this->getReturn($this->_tables['noti']['name'], 'type', $type);
+		$returnUser = array();
 
 		if (!empty($return))
 		{

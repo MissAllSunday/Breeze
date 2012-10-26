@@ -74,10 +74,6 @@ class BreezeNotifications extends Breeze
 		$this->_query = Breeze::query();
 		$this->_tools = Breeze::tools();
 		$this->_text = Breeze::text();
-
-
-		/* Special headers */
-		$this->_tools->headersNotification();
 	}
 
 	public function create($params)
@@ -101,6 +97,8 @@ class BreezeNotifications extends Breeze
 
 	public function createBuddy($params)
 	{
+		loadLanguage(Breeze::$name);
+
 		/* Set this as false by default */
 		$double_request = false;
 
@@ -128,7 +126,7 @@ class BreezeNotifications extends Breeze
 
 			/* Patience is a virtue, you obviously don't know that, huh? */
 			if (!empty($return))
-				fatal_lang_error('BreezeMod_buddyrequest_error_doublerequest', false);
+				fatal_lang_error('Breeze_buddyrequest_error_doublerequest', false);
 
 			/* We are good to go */
 			else

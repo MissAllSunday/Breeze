@@ -42,67 +42,62 @@ class BreezeTools
 {
 	function __construct(){}
 
-	/* @todo move this to the buffer hook, I don't trust $context['html_headers'] anymore */
-	public function headersNotification()
-	{
-		global $context, $settings;
-
-		/* Some check here */
-		$context['html_headers'] .= '
-			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery.min.js"%3E%3C/script%3E\'))</script>
-			<script src="'. $settings['default_theme_url'] .'/js/sticky.full.js" type="text/javascript"></script>
-			<script type="text/javascript"><!-- // --><![CDATA[
-				var breeze_user_noti_position = "top-right";
-			// ]]></script>
-			<link rel="stylesheet" href="'. $settings['default_theme_url'] .'/css/sticky.full.css" type="text/css" />';
-	}
 
 	/* @todo move this to the buffer hook, I don't trust $context['html_headers'] anymore */
-	public function headers($admin = false)
+	public function headers($type = 'profile')
 	{
 		global $context, $settings;
 
 		$text = Breeze::text();
 
 		/* Define some variables for the ajax stuff */
-		$context['html_headers'] .= '
-		<script type="text/javascript"><!-- // --><![CDATA[
-			var breeze_error_message = "'. $text->getText('error_message') .'";
-			var breeze_success_message = "'. $text->getText('success_message') .'";
-			var breeze_empty_message = "'. $text->getText('empty_message') .'";
-			var breeze_error_delete = "'. $text->getText('error_message') .'";
-			var breeze_success_delete = "'. $text->getText('success_delete') .'";
-			var breeze_confirm_delete = "'. $text->getText('confirm_delete') .'";
-			var breeze_confirm_yes = "'. $text->getText('confirm_yes') .'";
-			var breeze_confirm_cancel = "'. $text->getText('confirm_cancel') .'";
-			var breeze_already_deleted = "'. $text->getText('already_deleted') .'";
-			var breeze_cannot_postStatus = "'. $text->getText('cannot_postStatus') .'";
-			var breeze_cannot_postComments = "'. $text->getText('cannot_postComments') .'";
-	// ]]></script>';
-
-
-		/* Let's load jquery from CDN only if it hasn't been loaded yet */
-		$context['html_headers'] .= '
-		<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />
-		<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
-		<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery.min.js"%3E%3C/script%3E\'))</script>
-		<script src="'. $settings['default_theme_url'] .'/js/jquery_notification.js" type="text/javascript"></script>
-		<script src="'. $settings['default_theme_url'] .'/js/facebox.js" type="text/javascript"></script>
-		<script src="'. $settings['default_theme_url'] .'/js/confirm.js" type="text/javascript"></script>
-		<script src="'. $settings['default_theme_url'] .'/js/livequery.js" type="text/javascript"></script>
-		<script src="'. $settings['default_theme_url'] .'/js/breeze.js" type="text/javascript"></script>';
-
-		/* CSS part */
-		$context['html_headers'] .= '
-<style type="text/css">
-.breeze_user_comment_avatar
-{
-	padding:5px;
-}
-</style>';
-
-		if($admin)
+		if ($type == 'profile')
 		{
+			$context['html_headers'] .= '
+			<script type="text/javascript"><!-- // --><![CDATA[
+				var breeze_error_message = "'. $text->getText('error_message') .'";
+				var breeze_success_message = "'. $text->getText('success_message') .'";
+				var breeze_empty_message = "'. $text->getText('empty_message') .'";
+				var breeze_error_delete = "'. $text->getText('error_message') .'";
+				var breeze_success_delete = "'. $text->getText('success_delete') .'";
+				var breeze_confirm_delete = "'. $text->getText('confirm_delete') .'";
+				var breeze_confirm_yes = "'. $text->getText('confirm_yes') .'";
+				var breeze_confirm_cancel = "'. $text->getText('confirm_cancel') .'";
+				var breeze_already_deleted = "'. $text->getText('already_deleted') .'";
+				var breeze_cannot_postStatus = "'. $text->getText('cannot_postStatus') .'";
+				var breeze_cannot_postComments = "'. $text->getText('cannot_postComments') .'";
+		// ]]></script>';
+
+			/* Let's load jquery from CDN only if it hasn't been loaded yet */
+			$context['html_headers'] .= '
+			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />
+			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
+			<link rel="stylesheet" href="'. $settings['default_theme_url'] .'/css/sticky.full.css" type="text/css" />
+			<script src="'. $settings['default_theme_url'] .'/js/jquery_notification.js" type="text/javascript"></script>
+			<script src="'. $settings['default_theme_url'] .'/js/facebox.js" type="text/javascript"></script>
+			<script src="'. $settings['default_theme_url'] .'/js/confirm.js" type="text/javascript"></script>
+			<script src="'. $settings['default_theme_url'] .'/js/livequery.js" type="text/javascript"></script>
+			<script src="'. $settings['default_theme_url'] .'/js/breeze.js" type="text/javascript"></script>';
+
+			/* CSS part */
+			$context['html_headers'] .= '
+			<style type="text/css">
+			.breeze_user_comment_avatar
+			{
+				padding:5px;
+			}
+			</style>';
+		}
+
+		/* Some check here */
+		if ($type == 'noti')
+			$context['insert_after_template'] .= '
+			<script src="'. $settings['default_theme_url'] .'/js/sticky.full.js" type="text/javascript"></script>
+			<script type="text/javascript"><!-- // --><![CDATA[
+				var breeze_user_noti_position = "top-right";
+			// ]]></script>';
+
+		if($type == 'admin')
 			$context['html_headers'] .= '
 			<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.min.js" type="text/javascript"></script>
 			<script type="text/javascript">
@@ -136,7 +131,7 @@ $(document).ready(function ()
 	margin-left: 10px;
  }
 </style>';
-		}
+
 	}
 
 	/* Relative dates  http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html */

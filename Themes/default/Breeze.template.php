@@ -62,7 +62,7 @@ function template_user_wall()
 {
 	global $txt, $context, $settings, $scripturl, $user_info;
 
-	loadLanguage('Breeze');
+	loadLanguage(Breeze::$name);
 
 	echo '<div id="profileview" class="flow_auto">
 			<div class="cat_bar">
