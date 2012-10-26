@@ -99,7 +99,7 @@ class BreezeUser
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* display all the JavaScript bits */
-		$tools->headers();
+		$tools->headers('profile');
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'user_wall';
@@ -112,6 +112,9 @@ class BreezeUser
 		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 		$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
 		$context['member']['status'] = array();
+
+		/* Collect all the users IDs */
+		$usersArray = array();
 
 		/* Load all the status */
 		$status = $query->getStatusByProfile($context['member']['id']);
@@ -128,9 +131,10 @@ class BreezeUser
 					foreach($s['comments'] as $c)
 						$usersArray[] = $c['poster_id'];
 			}
-
-			$tools->loadUserInfo(array_unique($usersArray));
 		}
+
+		/* Load the users info */
+		$tools->loadUserInfo(array_unique($usersArray));
 
 		/* Getting the current page. */
 		$page = $globals->validate('page') == true ? $globals->getRaw('page') : 1;

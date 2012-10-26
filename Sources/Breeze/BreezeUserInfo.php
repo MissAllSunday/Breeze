@@ -42,7 +42,7 @@ if (!defined('SMF'))
 	helps to avoid having to write code over and over again */
 class BreezeUserInfo
 {
-	public static function profile($u, $id = false)
+	public static function profile($u)
 	{
 		global $txt, $context, $settings, $scripturl, $user_info, $memberContext, $context;
 
@@ -50,6 +50,7 @@ class BreezeUserInfo
 		if (empty($u))
 			return;
 
+		/* An extra check ;) */
 		if (empty($memberContext[$u]))
 			$user = $memberContext[$u];
 
