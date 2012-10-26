@@ -42,7 +42,7 @@ if (!defined('SMF'))
 	helps to avoid having to write code over and over again */
 class BreezeUserInfo
 {
-	public static function Profile($u, $id = false)
+	public static function profile($u, $id = false)
 	{
 		global $txt, $context, $settings, $scripturl, $user_info, $memberContext, $context;
 
@@ -50,15 +50,8 @@ class BreezeUserInfo
 		if (empty($u))
 			return;
 
-		/* We load the data only if the user hasn't been loaded yet and we got and ID rather than an array
-			if we got an array, the user was already loaded*/
-		if ($id == true && empty($memberContext[$u]))
-		{
-			loadMemberData($u, false, 'profile');
-			loadMemberContext($u);
-		}
-
-		$user = $memberContext[$u];
+		if (empty($memberContext[$u]))
+			$user = $memberContext[$u];
 
 		$context['Breeze']['user_info'][$user['id']]['facebox'] = '';
 

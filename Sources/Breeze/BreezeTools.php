@@ -247,12 +247,17 @@ $(document).ready(function ()
 
 	public static function loadUserInfo($id)
 	{
-		/* Must be an array */
-		if (!is_array($id))
-			$id = array($id);
+		global $memberContext;
 
-		/* Load all the members up. */
-		foreach ($id as $i)
-			BreezeUserInfo::Profile($i, true);
+		$array = loadMemberData($id, false, 'profile');
+
+		if (!empty($array) && is_array($array))
+			foreach ($array as $u)
+			{
+				if (empty($memberContext[$u]))
+					loadMemberContext($u);
+
+				BreezeUserInfo::profile($u);
+			}
 	}
 }

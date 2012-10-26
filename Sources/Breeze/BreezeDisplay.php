@@ -69,9 +69,9 @@ class Breezedisplay
 
 	public function HTML()
 	{
-		global $scripturl, $user_info;
+		global $scripturl, $user_info, $context;
 
-		$this->UserInfo = BreezeUserInfo::Profile($this->params['poster_id'], true);
+		BreezeUserInfo::profile($this->params['poster_id'], true);
 		$this->params['time'] = $this->tools->timeElapsed($this->params['time']);
 
 		switch ($this->type)
@@ -84,7 +84,7 @@ class Breezedisplay
 			</span>
 			<div class="breeze_user_inner">
 				<div class="breeze_user_status_avatar">
-					'. $this->UserInfo .'
+					'. $context['Breeze']['user_info'][$this->params['poster_id']]['facebox'] .'
 				</div>
 				<div class="breeze_user_status_comment">
 					'. $this->params['body'] .'
