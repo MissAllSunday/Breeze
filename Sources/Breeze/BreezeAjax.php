@@ -38,12 +38,6 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-
-	/* Wrapper functions */
-	function WrapperBreeze_AjaxPost() { BreezeAjax::post(); }
-	function WrapperBreeze_AjaxPostComment() { BreezeAjax::postComment(); }
-	function WrapperBreeze_AjaxDelete() { BreezeAjax::delete(); }
-
 abstract class BreezeAjax
 {
 	public static $query;
@@ -57,14 +51,14 @@ abstract class BreezeAjax
 		$sglobals = Breeze::sGlobals('get');
 
 		$subActions = array(
-			'post' => 'WrapperBreeze_AjaxPost',
-			'postcomment' => 'WrapperBreeze_AjaxPostComment',
-			'delete' => 'WrapperBreeze_AjaxDelete'
+			'post' => 'BreezeAjax::post',
+			'postcomment' => 'BreezeAjax::postComment',
+			'delete' => 'BreezeAjax::delete'
 		);
 
 		/* Does the subaction even exist? */
-		if (in_array($sglobals->getRaw('sa'), array_keys($subActions)))
-			call_user_func($subActions[$sglobals->getRaw('sa')]);
+		if (in_array($sglobals->getValue('sa'), array_keys($subActions)))
+			call_user_func($subActions[$sglobals->getValue('sa')]);
 
 		/* No?  then tell them there was an error... */
 		/* else */
@@ -230,9 +224,9 @@ abstract class BreezeAjax
 		/* Get the data */
 		$sa = Breeze::sGlobals('post');
 		$query = Breeze::query();
-		$temp_id_exists = $query->getSingleValue($sa->getRaw('type') == 'status' ? 'status' : 'comments', 'id', $sa->getValue('id'));
+		$temp_id_exists = $query->getSingleValue($sa->getValue('type') == 'status' ? 'status' : 'comments', 'id', $sa->getValue('id'));
 
-			switch ($sa->getRaw('type'))
+			switch ($sa->getValue('type'))
 			{
 				case 'status':
 					/* Do this only if the status wasn't deleted already */

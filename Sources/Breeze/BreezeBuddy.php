@@ -61,25 +61,25 @@ class BreezeBuddy
 			fatal_lang_error('no_access', false);
 
 		/* Problems in paradise? */
-		if (in_array($sa->getRaw('u'), $user_info['buddies']))
+		if (in_array($sa->getValue('u'), $user_info['buddies']))
 		{
-			$user_info['buddies'] = array_diff($user_info['buddies'], array($sa->getRaw('u')));
+			$user_info['buddies'] = array_diff($user_info['buddies'], array($sa->getValue('u')));
 
 			/* Do the update */
 			updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
 
 			/* Done here, let's redirect the user to the profile page */
-			redirectexit('action=profile;u=' . $sa->getRaw('u'));
+			redirectexit('action=profile;u=' . $sa->getValue('u'));
 		}
 
 		/* Before anything else, let's ask the user shall we? */
-		elseif ($user_info['id'] != $sa->getRaw('u'))
+		elseif ($user_info['id'] != $sa->getValue('u'))
 		{
 			/* Notification here */
 			$notification->createBuddy(
 				array(
 					'user' => $user_info['id'],
-					'user_to' => $sa->getRaw('u'),
+					'user_to' => $sa->getValue('u'),
 					'type' => 'buddy',
 					'time' => time(),
 					'read' => 0,
@@ -87,7 +87,7 @@ class BreezeBuddy
 			);
 
 			/* Show a nice message saying the user must approve the friendship request */
-			redirectexit('action=breezebuddyrequest;u=' . $sa->getRaw('u'));
+			redirectexit('action=breezebuddyrequest;u=' . $sa->getValue('u'));
 		}
 	}
 
