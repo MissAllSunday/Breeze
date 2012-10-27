@@ -71,7 +71,7 @@ class Breezedisplay
 	{
 		global $scripturl, $user_info, $context;
 
-		BreezeUserInfo::profile($this->params['poster_id'], true);
+		Breeze::tools()->loadUserInfo($this->params['poster_id']);
 		$this->params['time'] = $this->tools->timeElapsed($this->params['time']);
 
 		switch ($this->type)

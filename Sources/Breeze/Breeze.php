@@ -181,6 +181,11 @@ class Breeze
 		return new BreezeNotifications();
 	}
 
+	public function headers()
+	{
+		self::tools()->headers('noti');
+	}
+
 	public function notificationStream()
 	{
 		global $user_info, $context;

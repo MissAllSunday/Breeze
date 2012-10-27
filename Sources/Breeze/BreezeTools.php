@@ -50,6 +50,11 @@ class BreezeTools
 
 		$text = Breeze::text();
 
+		/* This gets loaded always */
+		$context['html_headers'] .= '
+			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery.min.js"%3E%3C/script%3E\'))</script>
+			<link rel="stylesheet" href="'. $settings['default_theme_url'] .'/css/sticky.full.css" type="text/css" />';
+
 		/* Define some variables for the ajax stuff */
 		if ($type == 'profile')
 		{
@@ -72,7 +77,6 @@ class BreezeTools
 			$context['html_headers'] .= '
 			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />
 			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
-			<link rel="stylesheet" href="'. $settings['default_theme_url'] .'/css/sticky.full.css" type="text/css" />
 			<script src="'. $settings['default_theme_url'] .'/js/jquery_notification.js" type="text/javascript"></script>
 			<script src="'. $settings['default_theme_url'] .'/js/facebox.js" type="text/javascript"></script>
 			<script src="'. $settings['default_theme_url'] .'/js/confirm.js" type="text/javascript"></script>
@@ -80,6 +84,7 @@ class BreezeTools
 			<script src="'. $settings['default_theme_url'] .'/js/breeze.js" type="text/javascript"></script>';
 
 			/* CSS part */
+			/* @todo move this to its own file */
 			$context['html_headers'] .= '
 			<style type="text/css">
 			.breeze_user_comment_avatar
@@ -89,7 +94,7 @@ class BreezeTools
 			</style>';
 		}
 
-		/* Some check here */
+		/* Stuff for the notifications */
 		if ($type == 'noti')
 			$context['insert_after_template'] .= '
 			<script src="'. $settings['default_theme_url'] .'/js/sticky.full.js" type="text/javascript"></script>
@@ -97,6 +102,7 @@ class BreezeTools
 				var breeze_user_noti_position = "top-right";
 			// ]]></script>';
 
+		/* Admin bits */
 		if($type == 'admin')
 			$context['html_headers'] .= '
 			<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.min.js" type="text/javascript"></script>
@@ -245,7 +251,7 @@ $(document).ready(function ()
 		return ($preserve_keys === true) ? $array : array_values($array);
 	}
 
-	public static function loadUserInfo($id)
+	public function loadUserInfo($id)
 	{
 		global $memberContext;
 
