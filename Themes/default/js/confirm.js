@@ -52,8 +52,8 @@ jQuery.fn.confirm = function(options) {
         return;
       }
       target._handlers = new Array();
-      for (var i in events[type]) {
-        target._handlers.push(events[type][i]);
+      for (var i in events) {
+        target._handlers.push(events[i]);
       }
     }
     

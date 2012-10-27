@@ -74,10 +74,6 @@ class BreezeNotifications extends Breeze
 		$this->_query = Breeze::query();
 		$this->_tools = Breeze::tools();
 		$this->_text = Breeze::text();
-
-
-		/* Special headers */
-		$this->_tools->headersNotification();
 	}
 
 	public function create($params)
@@ -101,6 +97,8 @@ class BreezeNotifications extends Breeze
 
 	public function createBuddy($params)
 	{
+		loadLanguage(Breeze::$name);
+
 		/* Set this as false by default */
 		$double_request = false;
 
@@ -128,7 +126,7 @@ class BreezeNotifications extends Breeze
 
 			/* Patience is a virtue, you obviously don't know that, huh? */
 			if (!empty($return))
-				fatal_lang_error('BreezeMod_buddyrequest_error_doublerequest', false);
+				fatal_lang_error('Breeze_buddyrequest_error_doublerequest', false);
 
 			/* We are good to go */
 			else
@@ -200,6 +198,8 @@ class BreezeNotifications extends Breeze
 		if ($noti['user_to'] != $this->_currentUser)
 			return false;
 
+		$this->_tools->loadUserInfo($noti['user_to']);
+
 		/* Fill out the messages property */
 		$this->_messages[] = sprintf($this->_text->getText('buddy_messagerequest_message'), $context['Breeze']['user_info'][$noti['user']]['link']);
 	}
@@ -232,7 +232,7 @@ class BreezeNotifications extends Breeze
 			if ($noti['content']['wall_owner'] == $noti['user_to'])
 				$text = sprintf(
 					$this->_text->getText('mention_message_own_wall_comment'),
-					$statusLink, 
+					$statusLink,
 					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link']
 				);
 
@@ -252,7 +252,7 @@ class BreezeNotifications extends Breeze
 			/* Is this your own wall? */
 			if ($noti['content']['wall_owner'] == $noti['user_to'])
 				$text = sprintf(
-					$this->_text->getText('mention_message_own_wall_status'), 
+					$this->_text->getText('mention_message_own_wall_status'),
 					$statusLink,
 					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link']
 				);

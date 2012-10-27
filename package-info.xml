@@ -10,7 +10,6 @@
 	<readme parsebbc="true">README.txt</readme>
 		<database>install.php</database>
 		<code>hooks.php</code>
-		<modification>Breeze.xml</modification>
 		<require-dir name="Themes" destination="$boarddir">Source files</require-dir>
 		<require-dir name="Sources" destination="$boarddir">Source files</require-dir>
 		<redirect url="$scripturl?action=admin;area=breezeindex" timeout="3000">redirect.txt</redirect>
@@ -19,7 +18,6 @@
 	<uninstall for="2.0 - 2.0.99">
 		<code>remove.php</code>
 		<database>install.php</database>
-		<modification reverse="true">Breeze.xml</modification>
 		<remove-dir name="$sourcedir/Breeze" />
 		<remove-file name="$themedir/Breeze.template.php" />
 		<remove-file name="$themedir/BreezeAjax.template.php" />

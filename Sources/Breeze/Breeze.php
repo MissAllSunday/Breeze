@@ -181,15 +181,20 @@ class Breeze
 		return new BreezeNotifications();
 	}
 
+	public function headers()
+	{
+		self::tools()->headers('noti');
+	}
+
 	public function notificationStream()
 	{
-		global $user_info;
+		global $user_info, $context;
 
 		/* Guest don't need to see this */
 		if(empty($user_info['is_guest']))
 		{
 			$notifications = self::notifications();
-			$notifications->doStream($user_info['id']);
+			$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
 		}
 	}
 
