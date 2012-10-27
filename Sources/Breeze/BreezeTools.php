@@ -47,13 +47,18 @@ class BreezeTools
 	public function headers($type = 'profile')
 	{
 		global $context, $settings;
+		static $header_done = false;
 
 		$text = Breeze::text();
 
-		/* This gets loaded always */
-		$context['html_headers'] .= '
+		if (!$header_done)
+		{
+			$context['html_headers'] .= '
 			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery.min.js"%3E%3C/script%3E\'))</script>
 			<link rel="stylesheet" href="'. $settings['default_theme_url'] .'/css/sticky.full.css" type="text/css" />';
+
+			$header_done = true;
+		}
 
 		/* Define some variables for the ajax stuff */
 		if ($type == 'profile')
