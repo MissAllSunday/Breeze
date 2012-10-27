@@ -64,7 +64,7 @@ abstract class BreezeAjax
 
 		/* Does the subaction even exist? */
 		if (in_array($sglobals->getRaw('sa'), array_keys($subActions)))
-			$subActions[$sglobals->getRaw('sa')]();
+			call_user_func($subActions[$sglobals->getRaw('sa')]);
 
 		/* No?  then tell them there was an error... */
 		/* else */
