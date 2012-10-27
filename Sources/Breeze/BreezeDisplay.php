@@ -71,7 +71,10 @@ class Breezedisplay
 	{
 		global $scripturl, $user_info, $context;
 
-		Breeze::tools()->loadUserInfo($this->params['poster_id']);
+		/* Load the user info */
+		$this->tools->loadUserInfo($this->params['poster_id']);
+
+		/* Set the elapsed time */
 		$this->params['time'] = $this->tools->timeElapsed($this->params['time']);
 
 		switch ($this->type)
@@ -135,7 +138,7 @@ class Breezedisplay
 				$this->ReturnArray = '
 					<li class="windowbg2" id ="comment_id_'. $this->params['id'] .'">
 						<div class="breeze_user_comment_avatar">
-							'. $this->UserInfo .'<br />
+							'. $context['Breeze']['user_info'][$this->params['poster_id']]['facebox'] .'<br />
 						</div>
 						<div class="breeze_user_comment_comment">
 							'. $this->params['body'] .'

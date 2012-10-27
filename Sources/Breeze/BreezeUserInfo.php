@@ -52,7 +52,9 @@ class BreezeUserInfo
 
 		/* An extra check ;) */
 		if (empty($memberContext[$u]))
-			$user = $memberContext[$u];
+			loadMemberContext($u);
+
+		$user = $memberContext[$u];
 
 		$context['Breeze']['user_info'][$user['id']]['facebox'] = '';
 

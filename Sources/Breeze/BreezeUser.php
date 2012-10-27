@@ -64,7 +64,6 @@ class BreezeUser
 
 		/* Default values */
 		$status = array();
-		$users_to_load = array();
 
 		/* Another page already checked the permissions and if the mod is enable, but better be safe... */
 		if (!$settings->enable('admin_settings_enable'))

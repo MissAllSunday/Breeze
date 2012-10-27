@@ -272,5 +272,8 @@ $(document).ready(function ()
 				/* Create the context var */
 				BreezeUserInfo::profile($u);
 			}
+
+		else
+			return false;
 	}
 }
