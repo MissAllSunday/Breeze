@@ -290,9 +290,12 @@ function template_user_wall()
 	</div>';
 
 	/* Don't forget to print the users data */
-	foreach ($context['Breeze']['user_info'] as $userData)
-		if (empty($userData['data'])
-			echo $userData['data'];
+	if (!empty($context['Breeze']['user_info']))
+		foreach ($context['Breeze']['user_info'] as $userData)
+			if (!empty($userData['data']))
+				echo $userData['data'];
+
+			echo '<pre>';print_r($context['Breeze']['user_info']);
 }
 
 function template_user_notifications()

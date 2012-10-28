@@ -56,23 +56,31 @@ class BreezeUserInfo
 
 		$user = $memberContext[$u];
 
-		$context['Breeze']['user_info'][$user['id']]['data'] = '';
-		$context['Breeze']['user_info'][$user['id']]['facebox'] = '';
+		/* Set an empty array */
+		$context['Breeze']['user_info'][$user['id']] = array(
+			'link' => '',
+			'data' => '',
+			'name' => ''
+		);
 
 		/* Sometimes we just want the link */
-		$context['Breeze']['user_info'][$user['id']]['link'] = $user['link'];
+		if (!empty($user['link']))
+			$context['Breeze']['user_info'][$user['id']]['link'] = $user['link'];
 
 		/* ...or the name */
-		$context['Breeze']['user_info'][$user['id']]['name'] = $user['name'];
+		if (!empty($user['name']))
+			$context['Breeze']['user_info'][$user['id']]['name'] = $user['name'];
 
 		/* It all starts with the user's avatar or username... */
-		$context['Breeze']['user_info'][$user['id']]['facebox'] .= '<a href="#facebox_'.$user['id'].'" rel="facebox">'.(!empty($user['avatar']['href']) ? '<img src="'.$user['avatar']['href'].'" width="50px" />' : $user['link']) .'</a>';
+		$context['Breeze']['user_info'][$user['id']]['facebox'] .= '<a href="#facebox_'. $user['id'] .'" rel="facebox">'.(!empty($user['avatar']['href']) ? '<img src="'.$user['avatar']['href'].'" width="50px" />' : $user['link']) .'</a>';
 
 		/* Set the data */
-		$context['Breeze']['user_info'][$user['id']]['data'] = '
-		<div id="facebox_'.$user['id'].'" style="display:none;">
+		$context['Breeze']['user_info'][$user['id']]['data'] .= '
+		<div id="facebox_'. $user['id'] .'" style="display:none;">
 			<div class="windowbg">
-				<span class="topslice"><span></span></span>
+				<span class="topslice">
+					<span></span>
+				</span>
 				<div style="margin:3px;padding-right:15px;padding-left:5px;float:left;min-height:100px;">
 					'.($user['avatar']['image'] ? $user['avatar']['image'] : '').'<br />'.$user['link'].'';
 
