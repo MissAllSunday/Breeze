@@ -76,7 +76,7 @@ class BreezeUserInfo
 		$context['Breeze']['user_info'][$user['id']]['facebox'] .= '<a href="#facebox_'. $user['id'] .'" rel="facebox">'.(!empty($user['avatar']['href']) ? '<img src="'.$user['avatar']['href'].'" width="50px" />' : $user['link']) .'</a>';
 
 		/* Set the data */
-		$context['Breeze']['user_info'][$user['id']]['data'] .= '
+		$context['Breeze']['user_info'][$user['id']]['data'] = '
 		<div id="facebox_'. $user['id'] .'" style="display:none;">
 			<div class="windowbg">
 				<span class="topslice">

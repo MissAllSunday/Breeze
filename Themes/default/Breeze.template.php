@@ -286,7 +286,7 @@ function template_user_wall()
 
 	/* End of left side */
 	echo '</div>
-	<div class="clear"></div>
+		<div class="clear"></div>
 	</div>';
 
 	/* Don't forget to print the users data */
