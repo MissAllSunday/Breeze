@@ -112,10 +112,10 @@ abstract class BreezeAjax
 
 			/* Build the notifications */
 			$mention->mention(array(
-					'wall_owner' => $data->getValue('owner_id'),
-					'wall_poster' => $data->getValue('poster_id'),
-					'status_id' => $params['id'],
-				));
+				'wall_owner' => $data->getValue('owner_id'),
+				'wall_poster' => $data->getValue('poster_id'),
+				'status_id' => $params['id'],
+			));
 
 			/* Parse the content */
 			$params['body'] = $parser->display($params['body']);
