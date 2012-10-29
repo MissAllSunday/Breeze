@@ -99,9 +99,6 @@ class BreezeNotifications extends Breeze
 	{
 		loadLanguage(Breeze::$name);
 
-		/* Set this as false by default */
-		$double_request = false;
-
 		/* We need a quick query here */
 		$tempQuery = $this->quickQuery('breeze_notifications');
 
@@ -111,7 +108,7 @@ class BreezeNotifications extends Breeze
 			/* Doing a quick query will be better than loading the entire notifications array */
 			$tempQuery->params(
 				array(
-					'rows' => '*',
+					'rows' => 'id',
 					'where' => 'user = {int:user}',
 					'whereAnd' => 'user_to = {int:user_to}',
 				),
