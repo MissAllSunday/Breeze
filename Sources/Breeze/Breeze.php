@@ -189,7 +189,7 @@ class Breeze
 	/**
 	 * Global permissions used by this mod per user group
 	 *
-	 * There is only permissions to post new status and comments on any profile because people needs to be able to post in their own profiles by default te same goes for deleting, people are able to delete their own status/comments on their own profile page.
+	 * There is only permissions to post new status and comments on any profile because people needs to be able to post in their own profiles by default the same goes for deleting, people are able to delete their own status/comments on their own profile page.
 	 * @param array $permissionGroups An array containing all possible permissions groups.
 	 * @param array $permissionList An associative array with all the possible permissions.
 	 * @return void
@@ -207,7 +207,7 @@ class Breeze
 	/**
 	 * Replace the summary action with the action created by Breeze
 	 *
-	 * @see BreezeUser::Wall()
+	 * @see BreezeUser::wall()
 	 * @param array $profile_areas An array containing all possible tabs for the profile menu.
 	 * @return void
 	 */

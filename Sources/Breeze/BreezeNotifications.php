@@ -152,6 +152,11 @@ class BreezeNotifications extends Breeze
 	{
 		global $context;
 
+		/* Safety */
+		if (empty($user))
+			return false;
+
+		/* Get all the notification for this user */
 		$this->_all = $this->getByUser($user);
 
 		/* Do this if there is actually something to show */
@@ -175,10 +180,31 @@ class BreezeNotifications extends Breeze
 				$context['insert_after_template'] .= '
 				<script type="text/javascript"><!-- // --><![CDATA[
 		$(document).ready(function()
-		{';
-				/* Check for the type and act in accordance */
-				foreach($this->_messages as $m)
-					$context['insert_after_template'] .= '$.sticky('. JavaScriptEscape($m) .');';
+		{
+';
+				$context['insert_after_template'] .= 'noty({
+	text: \'example\',
+	type: \'notification\',
+	dismissQueue: true,
+	layout: \'topRight\',
+	closeWith: [\'button\'],
+	buttons: [
+		{addClass: \'button_submit\', text: \'Ok\', onClick: function($noty) {
+
+			// this = button element
+			// $noty = $noty element
+
+			$noty.close();
+			noty({text: \'You clicked "Ok" button\', type: \'success\'});
+		  }
+		},
+		{addClass: \'button_submit\', text: \'Cancel\', onClick: function($noty) {
+			$noty.close();
+			noty({text: \'You clicked "Cancel" button\', type: \'error\'});
+		  }
+		}
+	  ]
+});';
 
 				$context['insert_after_template'] .= '
 		});

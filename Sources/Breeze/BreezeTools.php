@@ -105,6 +105,11 @@ class BreezeTools
 			$notifications = Breeze::notifications();
 			$context['insert_after_template'] .= '
 			<script src="'. $settings['default_theme_url'] .'/js/sticky.full.js" type="text/javascript"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
 			<script type="text/javascript"><!-- // --><![CDATA[
 				var breeze_user_noti_position = "top-right";
 			// ]]></script>';
