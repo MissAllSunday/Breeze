@@ -46,7 +46,7 @@ class BreezeTools
 	/* @todo move this to the buffer hook, I don't trust $context['html_headers'] anymore */
 	public function headers($type = 'profile')
 	{
-		global $context, $settings;
+		global $context, $settings, $user_info;
 		static $header_done = false;
 
 		$text = Breeze::text();
@@ -100,12 +100,17 @@ class BreezeTools
 		}
 
 		/* Stuff for the notifications */
-		if ($type == 'noti')
+		if ($type == 'noti' && empty($user_info['is_guest']))
+		{
+			$notifications = Breeze::notifications();
 			$context['insert_after_template'] .= '
 			<script src="'. $settings['default_theme_url'] .'/js/sticky.full.js" type="text/javascript"></script>
 			<script type="text/javascript"><!-- // --><![CDATA[
 				var breeze_user_noti_position = "top-right";
 			// ]]></script>';
+
+			$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
+		}
 
 		/* Admin bits */
 		if($type == 'admin')
