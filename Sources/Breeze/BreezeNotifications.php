@@ -190,26 +190,19 @@ class BreezeNotifications extends Breeze
 	closeWith: [\'button\'],
 	buttons: [
 		{addClass: \'button_submit\', text: breeze_noti_markasread, onClick: function($noty) {
-
-			// this = button element
-			// $noty = $noty element
-
+			// make an ajax call here
 			$noty.close();
 			noty({text: breeze_noti_markasread_after, timeout: 1500, type: \'success\'});
-		  }
+		}
 		},
 		{addClass: \'button_submit\', text: breeze_noti_delete, onClick: function($noty) {
-
-			// this = button element
-			// $noty = $noty element
-
+			// make an ajax call here
 			$noty.close();
-			noty({text: \'You clicked "Ok" button\', type: \'success\'});
+			noty({text: breeze_noti_delete_after, timeout: 1500, type: \'success\'});
 		  }
 		},
-		{addClass: \'button_submit\', text: \'Cancel\', onClick: function($noty) {
+		{addClass: \'button_submit\', text: var breeze_noti_cancel, onClick: function($noty) {
 			$noty.close();
-			noty({text: \'You clicked "Cancel" button\', type: \'error\'});
 		  }
 		}
 	  ]

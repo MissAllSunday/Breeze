@@ -116,6 +116,7 @@ class BreezeTools
 				var breeze_noti_delete = "'. $text->getText('general_delete') .'";
 				var breeze_noti_delete_after = "'. $text->getText('noti_delete_after') .'";
 				var breeze_noti_close = "'. $text->getText('general_close') .'";
+				var breeze_noti_cancel = "'. $text->getText('confirm_cancel') .'";
 			// ]]></script>';
 
 			$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
