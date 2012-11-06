@@ -111,7 +111,11 @@ class BreezeTools
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
 			<script type="text/javascript"><!-- // --><![CDATA[
-				var breeze_user_noti_position = "top-right";
+				var breeze_noti_markasread = "'. $text->getText('noti_markasread') .'";
+				var breeze_noti_markasread_after = "'. $text->getText('noti_markasread_after') .'";
+				var breeze_noti_delete = "'. $text->getText('general_delete') .'";
+				var breeze_noti_delete_after = "'. $text->getText('noti_delete_after') .'";
+				var breeze_noti_close = "'. $text->getText('general_close') .'";
 			// ]]></script>';
 
 			$context['insert_after_template'] .= $notifications->doStream($user_info['id']);

@@ -189,7 +189,16 @@ class BreezeNotifications extends Breeze
 	layout: \'topRight\',
 	closeWith: [\'button\'],
 	buttons: [
-		{addClass: \'button_submit\', text: \'Ok\', onClick: function($noty) {
+		{addClass: \'button_submit\', text: breeze_noti_markasread, onClick: function($noty) {
+
+			// this = button element
+			// $noty = $noty element
+
+			$noty.close();
+			noty({text: breeze_noti_markasread_after, timeout: 1500, type: \'success\'});
+		  }
+		},
+		{addClass: \'button_submit\', text: breeze_noti_delete, onClick: function($noty) {
 
 			// this = button element
 			// $noty = $noty element
