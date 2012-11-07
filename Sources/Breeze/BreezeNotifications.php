@@ -347,6 +347,6 @@ class BreezeNotifications extends Breeze
 
 	protected function markAsRead($id)
 	{
-		$this->query->MarkAsReadNotification($id);
+		$this->query->markAsReadNotification($id);
 	}
 }
