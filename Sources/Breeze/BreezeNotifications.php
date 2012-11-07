@@ -159,8 +159,6 @@ class BreezeNotifications extends Breeze
 		/* Get all the notification for this user */
 		$this->_all = $this->getToUser($user);
 
-		echo '<pre>';print_r($this->_all);
-
 		/* Do this if there is actually something to show */
 		if (!empty($this->_all))
 		{

@@ -269,6 +269,9 @@ abstract class BreezeAjax
 
 		checkSession('post', '', false);
 
+		$context['template_layers'] = array();
+		$context['sub_template'] = 'breeze_post';
+
 		/* Set some values */
 		$context['Breeze']['ajax'] = array(
 			/* By default we assume all went terrible wrong... */
@@ -288,10 +291,7 @@ abstract class BreezeAjax
 
 		/* Is this valid data? */
 		if (empty($noti) || empty($user))
-		{
-			$context['Breeze']['ajax']['ok'] = 'error_';
 			return false;
-		}
 
 		/* We must make sure this noti really exists, we just must!!! */
 		$noti_temp = $notifications->getToUser($user);
@@ -300,17 +300,10 @@ abstract class BreezeAjax
 		if (!empty($noti_temp))
 			foreach ($noti_temp as $temp)
 				if ($temp['id'] != $noti))
-				{
-					$context['Breeze']['ajax']['ok'] = 'error_';
 					return false;
-				}
 
 		/* All is good, mark this as read */
-		$context['template_layers'] = array();
-		$context['sub_template'] = 'breeze_post';
 		$context['Breeze']['ajax']['ok'] = 'ok';
-
-		/* Finally! */
 		$notifications->markAsRead($noti);
 	}
 }
