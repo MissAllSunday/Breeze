@@ -63,7 +63,7 @@ class BreezeGlobals
 		if ($this->validate($value))
 			return $this->sanitize($this->_request[$value]);
 		else
-			return 'error_' . $value;
+			return false;
 	}
 
 	public function getRaw($value)

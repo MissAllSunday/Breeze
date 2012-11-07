@@ -139,7 +139,7 @@ class BreezeNotifications extends Breeze
 		return count($this->_query->getNotifications());
 	}
 
-	protected function getByUser($user)
+	protected function getToUser($user)
 	{
 		/* Dont even bother... */
 		if (empty($user))
@@ -157,7 +157,9 @@ class BreezeNotifications extends Breeze
 			return false;
 
 		/* Get all the notification for this user */
-		$this->_all = $this->getByUser($user);
+		$this->_all = $this->getToUser($user);
+
+		echo '<pre>';print_r($this->_all);
 
 		/* Do this if there is actually something to show */
 		if (!empty($this->_all))
@@ -186,9 +188,9 @@ class BreezeNotifications extends Breeze
 		{
 ';
 
-				foreach($this->_messages as $k => $m)
+				foreach($this->_messages as $m)
 					$context['insert_after_template'] .= 'noty({
-		text: '. JavaScriptEscape($m) .',
+		text: '. JavaScriptEscape($m['message']) .',
 		type: \'notification\',
 		dismissQueue: true,
 		layout: \'topRight\',
@@ -196,13 +198,14 @@ class BreezeNotifications extends Breeze
 		buttons: [{
 				addClass: \'button_submit\', text: breeze_noti_markasread, onClick: function($noty) {
 					// make an ajax call here
-					var noti_id = \''. $k .'\';
+					var noti_id = \''. $m['id'] .'\';
+					var user = \''. $m['user'] .'\';
 
 					jQuery.ajax(
 					{
 						type: \'POST\',
 						url: smf_scripturl + \'?action=breezeajax;sa=notimarkasread\',
-						data: ({content : noti_id}),
+						data: ({content : noti_id, user : user}),
 						cache: false,
 						success: function(html)
 						{
@@ -253,8 +256,11 @@ class BreezeNotifications extends Breeze
 		if (empty($noti) || !is_array($noti) || $noti['user_to'] != $this->_currentUser)
 			return false;
 
+		$this->_messages[$noti['id']]['id'] = $noti['id'];
+		$this->_messages[$noti['id']]['user'] = $noti['user'];
+
 		/* Fill out the messages property */
-		$this->_messages[$noti['id']] = sprintf(
+		$this->_messages[$noti['id']]['message'] = sprintf(
 			$this->_text->getText('buddy_messagerequest_message'),
 			$context['Breeze']['user_info'][$noti['user']]['link'],
 			$noti['id']
@@ -329,7 +335,11 @@ class BreezeNotifications extends Breeze
 		}
 
 		/* Create the message already */
-		$this->_messages[$noti['id']] = $text;
+		$this->_messages[$noti['id']] = array(
+		'id' => $noti['id'],
+		'user' => $noti['user'],
+		'message' => $text
+		);
 	}
 
 	protected function delete($id)

@@ -54,8 +54,8 @@ abstract class BreezeAjax
 			'post' => 'BreezeAjax::post',
 			'postcomment' => 'BreezeAjax::postComment',
 			'delete' => 'BreezeAjax::delete',
-			'notimarkasread' => '',
-			'notidelete' => '',
+			'notimarkasread' => 'BreezeAjax::notimark',
+			'notidelete' => 'BreezeAjax::notidelete',
 		);
 
 		/* Does the subaction even exist? */
@@ -260,5 +260,57 @@ abstract class BreezeAjax
 		$context['sub_template'] = 'breeze_post';
 
 		unset($temp_id_exists);
+	}
+
+	/* Mark a notification as read */
+	public static function notimark()
+	{
+		global $context;
+
+		checkSession('post', '', false);
+
+		/* Set some values */
+		$context['Breeze']['ajax'] = array(
+			/* By default we assume all went terrible wrong... */
+			'ok' => 'error_',
+			/* This will be empty anyway, maybe in the future I will find a use for it */
+			'data' => 'ok'
+		);
+
+		/* Load what we need */
+		$sa = Breeze::sGlobals('post');
+		$query = Breeze::query();
+		$notifications = Breeze::notifications();
+
+		/* Get the data */
+		$noti = $sa->getValue('content');
+		$user = $sa->getValue('user');
+
+		/* Is this valid data? */
+		if (empty($noti) || empty($user))
+		{
+			$context['Breeze']['ajax']['ok'] = 'error_';
+			return false;
+		}
+
+		/* We must make sure this noti really exists, we just must!!! */
+		$noti_temp = $notifications->getToUser($user);
+
+		/* Ugly, I know.. I KNOW!!! */
+		if (!empty($noti_temp))
+			foreach ($noti_temp as $temp)
+				if ($temp['id'] != $noti))
+				{
+					$context['Breeze']['ajax']['ok'] = 'error_';
+					return false;
+				}
+
+		/* All is good, mark this as read */
+		$context['template_layers'] = array();
+		$context['sub_template'] = 'breeze_post';
+		$context['Breeze']['ajax']['ok'] = 'ok';
+
+		/* Finally! */
+		$notifications->markAsRead($noti);
 	}
 }
