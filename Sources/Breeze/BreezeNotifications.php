@@ -163,20 +163,23 @@ class BreezeNotifications extends Breeze
 		if (!empty($this->_all))
 		{
 			/* Call the methods */
-			foreach($this->_all as $all)
-				if (in_array($all['type'], $this->_types))
+			foreach($this->_all as $single)
+				if (in_array($single['type'], $this->_types))
 				{
 					/* load the user's link */
-					if (empty($context['Breeze']['user_info'][$all['user']]))
-						$this->_tools->loadUserInfo($all['user']);
+					if (empty($context['Breeze']['user_info'][$single['user']]))
+						$this->_tools->loadUserInfo($single['user']);
 
-					$call = 'do' . ucfirst($all['type']);
-					$this->$call($all);
+					$call = 'do' . ucfirst($single['type']);
+					$this->$call($single);
 				}
 
 			/* Show the notifications */
 			if (!empty($this->_messages))
 			{
+				/* Make sure its an array */
+				$this->_messages = !is_array($this->_messages) ? array($this->_messages) : $this->_messages;
+
 				$context['insert_after_template'] .= '
 				<script type="text/javascript"><!-- // --><![CDATA[
 		$(document).ready(function()
@@ -190,14 +193,37 @@ class BreezeNotifications extends Breeze
 		dismissQueue: true,
 		layout: \'topRight\',
 		closeWith: [\'button\'],
-		buttons: [
-			{addClass: \'button_submit\', text: breeze_noti_markasread, onClick: function($noty) {
-				// make an ajax call here
-				var noti_id = \'', $k ,'\';
+		buttons: [{
+				addClass: \'button_submit\', text: breeze_noti_markasread, onClick: function($noty) {
+					// make an ajax call here
+					var noti_id = \''. $k .'\';
 
-				$noty.close();
-				noty({text: breeze_noti_markasread_after, timeout: 1500, type: \'success\'});
-			}
+						jQuery.ajax(
+						{
+							type: \'POST\',
+							url: smf_scripturl + \'?action=breezeajax;sa=notimarkasread\',
+							data: ({content : noti_id}),
+							cache: false,
+							success: function(html)
+							{
+								if(html == \'error_\')
+								{
+									noty({text: breeze_error_message, timeout: 1500, type: \'error\'});
+								}
+
+								else
+								{
+									noty({text: breeze_noti_markasread_after, timeout: 1500, type: \'success\'});
+								}
+							},
+							error: function (html)
+							{
+								noty({text: breeze_error_message, timeout: 1500, type: \'error\'});
+							},
+						});
+
+					$noty.close();
+				}
 			},
 			{addClass: \'button_submit\', text: breeze_noti_delete, onClick: function($noty) {
 				// make an ajax call here
@@ -224,13 +250,11 @@ class BreezeNotifications extends Breeze
 		global $context;
 
 		/* Extra check */
-		if ($noti['user_to'] != $this->_currentUser)
+		if (empty($noti) || !is_array($noti) || $noti['user_to'] != $this->_currentUser)
 			return false;
 
-		$this->_tools->loadUserInfo($noti['user_to']);
-
 		/* Fill out the messages property */
-		$this->_message[$noti['id']] = sprintf(
+		$this->_messages[$noti['id']] = sprintf(
 			$this->_text->getText('buddy_messagerequest_message'),
 			$context['Breeze']['user_info'][$noti['user']]['link'],
 			$noti['id']
@@ -305,7 +329,7 @@ class BreezeNotifications extends Breeze
 		}
 
 		/* Create the message already */
-		$this->_message[$noti['id']] = $text;
+		$this->_messages[$noti['id']] = $text;
 	}
 
 	protected function delete($id)

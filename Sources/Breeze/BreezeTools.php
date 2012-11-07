@@ -104,18 +104,18 @@ class BreezeTools
 		{
 			$notifications = Breeze::notifications();
 			$context['insert_after_template'] .= '
-			<script src="'. $settings['default_theme_url'] .'/js/sticky.full.js" type="text/javascript"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
 			<script type="text/javascript"><!-- // --><![CDATA[
+				var breeze_error_message = "'. $text->getText('error_message') .'";
 				var breeze_noti_markasread = "'. $text->getText('noti_markasread') .'";
 				var breeze_noti_markasread_after = "'. $text->getText('noti_markasread_after') .'";
 				var breeze_noti_delete = "'. $text->getText('general_delete') .'";
 				var breeze_noti_delete_after = "'. $text->getText('noti_delete_after') .'";
-				var breeze_noti_close = "'. $text->getText('general_close') .'";
+				var breeze_noti_close = "'. $text->getText('noti_close') .'";
 				var breeze_noti_cancel = "'. $text->getText('confirm_cancel') .'";
 			// ]]></script>';
 
