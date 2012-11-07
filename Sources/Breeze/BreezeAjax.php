@@ -295,16 +295,7 @@ abstract class BreezeAjax
 		/* We must make sure this noti really exists, we just must!!! */
 		$noti_temp = $notifications->getToUser($user);
 
-		/* Ugly, I know.. I KNOW!!! */
-		if (!empty($noti_temp))
-			foreach ($noti_temp as $temp)
-				$keys[$temp['id']] = $temp;
-
-		/* If this is empty, there was an error... */
-		else
-			$context['Breeze']['ajax']['ok'] = 'error';
-
-		if (empty($keys) || !array_key_exists($noti, $keys))
+		if (empty($noti_temp) || !array_key_exists($noti, $noti_temp))
 			$context['Breeze']['ajax']['ok'] = 'error';
 
 		else

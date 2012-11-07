@@ -139,13 +139,48 @@ class BreezeNotifications extends Breeze
 		return count($this->_query->getNotifications());
 	}
 
-	public function getToUser($user)
+	public function getToUser($user, $all = false)
 	{
 		/* Dont even bother... */
 		if (empty($user))
 			return false;
 
-		return $this->_query->getNotificationByUser($user);
+		$temp =  $this->_query->getNotificationByUser($user);
+
+		/* Send those who hasn't been viewed */
+		if (!$all && !empty($temp))
+			foreach ($temp as $k => $t)
+			{
+				if (!empty($t['viewed']))
+					unset($temp[$k]);
+
+				else
+					$temp[$t['id']] = $t;
+			}
+
+		return $temp;
+	}
+
+	public function getByUser($user, $all = false)
+	{
+		/* Dont even bother... */
+		if (empty($user))
+			return false;
+
+		$temp =  $this->_query->getNotificationByUserSender($user);
+
+		/* Send those who hasn't been viewed */
+		if (!$all && !empty($temp))
+			foreach ($temp as $k => $t)
+			{
+				if (!empty($t['viewed']))
+					unset($temp[$k]);
+
+				else
+					$temp[$t['id']] = $t;
+			}
+
+		return $temp;
 	}
 
 	public function doStream($user)
@@ -187,7 +222,10 @@ class BreezeNotifications extends Breeze
 ';
 
 				foreach($this->_messages as $m)
-					$context['insert_after_template'] .= 'noty({
+					$context['insert_after_template'] .= '
+	var noti_id = \''. $m['id'] .'\';
+	var user = \''. $m['user'] .'\';
+	noty({
 		text: '. JavaScriptEscape($m['message']) .',
 		type: \'notification\',
 		dismissQueue: true,
@@ -196,9 +234,6 @@ class BreezeNotifications extends Breeze
 		buttons: [{
 				addClass: \'button_submit\', text: breeze_noti_markasread, onClick: function($noty) {
 					// make an ajax call here
-					var noti_id = \''. $m['id'] .'\';
-					var user = \''. $m['user'] .'\';
-
 					jQuery.ajax(
 					{
 						type: \'POST\',
