@@ -193,6 +193,7 @@ class BreezeNotifications extends Breeze
 		buttons: [
 			{addClass: \'button_submit\', text: breeze_noti_markasread, onClick: function($noty) {
 				// make an ajax call here
+
 				$noty.close();
 				noty({text: breeze_noti_markasread_after, timeout: 1500, type: \'success\'});
 			}
@@ -260,7 +261,8 @@ class BreezeNotifications extends Breeze
 				$text = sprintf(
 					$this->_text->getText('mention_message_own_wall_comment'),
 					$statusLink,
-					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link']
+					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
+					$noti['id']
 				);
 
 			/* This is someone elses wall, go figure... */
@@ -269,7 +271,8 @@ class BreezeNotifications extends Breeze
 					$this->_text->getText('mention_message_comment'),
 					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
 					$context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'],
-					$statusLink
+					$statusLink,
+					$noti['id']
 				);
 		}
 
@@ -281,7 +284,8 @@ class BreezeNotifications extends Breeze
 				$text = sprintf(
 					$this->_text->getText('mention_message_own_wall_status'),
 					$statusLink,
-					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link']
+					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
+					$noti['id']
 				);
 
 			/* No? don't worry, you will get your precious notification anyway */
@@ -290,7 +294,8 @@ class BreezeNotifications extends Breeze
 					$this->_text->getText('mention_message_comment'),
 					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
 					$context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'],
-					$statusLink
+					$statusLink,
+					$noti['id']
 				);
 		}
 

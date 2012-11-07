@@ -199,10 +199,10 @@ $txt['Breeze_noti_comment_message_statusOwner'] = '%1$s commented on your status
 $txt['Breeze_noti_comment_message_wallOwner'] = '%1$s commented on the status made by %2$s on your wall';
 
 /* Mentions */
-$txt['Breeze_mention_message_status'] = '<a href="%3$s" class="bbc_link" target="_blank"> You have been mentioned</a> by %1$s on %2$s\'s wall!';
+$txt['Breeze_mention_message_status'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> You have been mentioned</a> by %1$s on %2$s\'s wall!';
 $txt['Breeze_mention_message_own_wall_status'] = '<a href="%1$s" class="bbc_link" target="_blank">You have been mentioned</a> on your own wall by %2$s!';
-$txt['Breeze_mention_message_comment'] = '<a href="%3$s" class="bbc_link" target="_blank"> You have been mentioned on a comment</a> by %1$s on %2$s\'s wall!';
-$txt['Breeze_mention_message_own_wall_comment'] = '<a href="%1$s" class="bbc_link" target="_blank">You have been mentioned</a> on a comment on your own wall by %2$s!';
+$txt['Breeze_mention_message_comment'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> You have been mentioned on a comment</a> by %1$s on %2$s\'s wall!';
+$txt['Breeze_mention_message_own_wall_comment'] = '<a href="%1$s" class="bbc_link" target="_blank" id="noti_%3$s">You have been mentioned</a> on a comment on your own wall by %2$s!';
 
 /* Buddy List */
 $txt['Breeze_buddyrequest_error_doublerequest'] = 'You already sent a buddy request, please wait for the user\'s response.';
