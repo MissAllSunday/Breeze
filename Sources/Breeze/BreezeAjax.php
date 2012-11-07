@@ -53,7 +53,9 @@ abstract class BreezeAjax
 		$subActions = array(
 			'post' => 'BreezeAjax::post',
 			'postcomment' => 'BreezeAjax::postComment',
-			'delete' => 'BreezeAjax::delete'
+			'delete' => 'BreezeAjax::delete',
+			'notimarkasread' => '',
+			'notidelete' => '',
 		);
 
 		/* Does the subaction even exist? */

@@ -198,29 +198,29 @@ class BreezeNotifications extends Breeze
 					// make an ajax call here
 					var noti_id = \''. $k .'\';
 
-						jQuery.ajax(
+					jQuery.ajax(
+					{
+						type: \'POST\',
+						url: smf_scripturl + \'?action=breezeajax;sa=notimarkasread\',
+						data: ({content : noti_id}),
+						cache: false,
+						success: function(html)
 						{
-							type: \'POST\',
-							url: smf_scripturl + \'?action=breezeajax;sa=notimarkasread\',
-							data: ({content : noti_id}),
-							cache: false,
-							success: function(html)
-							{
-								if(html == \'error_\')
-								{
-									noty({text: breeze_error_message, timeout: 1500, type: \'error\'});
-								}
-
-								else
-								{
-									noty({text: breeze_noti_markasread_after, timeout: 1500, type: \'success\'});
-								}
-							},
-							error: function (html)
+							if(html == \'error_\')
 							{
 								noty({text: breeze_error_message, timeout: 1500, type: \'error\'});
-							},
-						});
+							}
+
+							else
+							{
+								noty({text: breeze_noti_markasread_after, timeout: 1500, type: \'success\'});
+							}
+						},
+						error: function (html)
+						{
+							noty({text: breeze_error_message, timeout: 1500, type: \'error\'});
+						},
+					});
 
 					$noty.close();
 				}
