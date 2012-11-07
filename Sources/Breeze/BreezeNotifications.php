@@ -212,14 +212,9 @@ class BreezeNotifications extends Breeze
 								noty({text: breeze_error_message, timeout: 3500, type: \'error\'});
 							}
 
-							else if(html == \'ok\')
-							{
-								noty({text: breeze_error_message, timeout: 3500, type: \'success\'});
-							}
-
 							else
 							{
-								noty({text: html, timeout: 3500, type: \'error\'});
+								noty({text: breeze_noti_markasread_after, timeout: 3500, type: \'success\'});
 							}
 						},
 						error: function (html)

@@ -276,7 +276,7 @@ abstract class BreezeAjax
 			/* By default we assume all went terrible wrong... */
 			'ok' => 'error',
 			/* This will be empty anyway, maybe in the future I will find a use for it */
-			'data' => 'ok'
+			'data' => 'error_'
 		);
 
 		/* Load what we need */
@@ -311,6 +311,7 @@ abstract class BreezeAjax
 		{
 			/* All is good, mark this as read */
 			$context['Breeze']['ajax']['ok'] = 'ok';
+			$context['Breeze']['ajax']['data'] = 'ok';
 			$notifications->markAsRead($noti);
 		}
 
