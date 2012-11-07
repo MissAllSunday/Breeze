@@ -209,17 +209,22 @@ class BreezeNotifications extends Breeze
 						{
 							if(html == \'error_\')
 							{
-								noty({text: breeze_error_message, timeout: 1500, type: \'error\'});
+								noty({text: breeze_error_message, timeout: 3500, type: \'error\'});
+							}
+
+							else if(html == \'ok\')
+							{
+								noty({text: breeze_error_message, timeout: 3500, type: \'success\'});
 							}
 
 							else
 							{
-								noty({text: breeze_noti_markasread_after, timeout: 1500, type: \'success\'});
+								noty({text: html, timeout: 3500, type: \'error\'});
 							}
 						},
 						error: function (html)
 						{
-							noty({text: breeze_error_message, timeout: 1500, type: \'error\'});
+							noty({text: breeze_error_message, timeout: 3500, type: \'error\'});
 						},
 					});
 
@@ -229,7 +234,7 @@ class BreezeNotifications extends Breeze
 			{addClass: \'button_submit\', text: breeze_noti_delete, onClick: function($noty) {
 				// make an ajax call here
 				$noty.close();
-				noty({text: breeze_noti_delete_after, timeout: 1500, type: \'success\'});
+				noty({text: breeze_noti_delete_after, timeout: 3500, type: \'success\'});
 			  }
 			},
 			{addClass: \'button_submit\', text: breeze_noti_cancel, onClick: function($noty) {
@@ -342,11 +347,11 @@ class BreezeNotifications extends Breeze
 
 	protected function delete($id)
 	{
-		$this->query->deleteNotification($id);
+		$this->_query->deleteNotification($id);
 	}
 
-	protected function markAsRead($id)
+	public function markAsRead($id)
 	{
-		$this->query->markAsReadNotification($id);
+		$this->_query->markAsReadNotification($id);
 	}
 }

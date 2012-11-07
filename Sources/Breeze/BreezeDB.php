@@ -112,7 +112,7 @@ class BreezeDB
 
 		$smcFunc['db_query']('', '
 			UPDATE '.$this->_table .'
-			'.$this->set .'
+			'.$this->_params['set'] .'
 			'.$this->_params['where'] .'
 			'.$this->_params['order'] .'
 			'.$this->_params['limit'] .'

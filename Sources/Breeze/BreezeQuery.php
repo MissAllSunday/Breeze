@@ -49,10 +49,15 @@ class BreezeQuery extends Breeze
 	private $data = array();
 	private $query_params = array('rows' =>'*');
 	private $query_data = array();
+	private $_smcFunc;
 
 	public function __construct()
 	{
+		global $smcFunc;
+
 		parent::__construct();
+
+		$this->_smcFunc = $smcFunc;
 
 		$this->_tables = array(
 			'status' => array(
@@ -728,9 +733,8 @@ class BreezeQuery extends Breeze
 		/* We dont need this anymore */
 		$this->killCache($this->_tables['noti']['name']);
 
-		$insert = $this->query($this->_tables['noti']['name']);
-
-		$insert->insertData(
+		$this->_smcFunc['db_insert']('replace',
+			'{db_prefix}'. ($this->_tables['noti']['table']) .'',
 			array(
 				'user' => 'int',
 				'user_to' => 'int',
@@ -740,9 +744,7 @@ class BreezeQuery extends Breeze
 				'content' => 'string',
 			),
 			$array,
-			array(
-				'id'
-			)
+			array('id')
 		);
 	}
 
@@ -751,20 +753,16 @@ class BreezeQuery extends Breeze
 		/* We dont need this anymore */
 		$this->killCache($this->_tables['noti']['name']);
 
-		$markRead = $this->query($this->_tables['noti']['name']);
-
 		/* Mark as read */
-		$markRead->params(
-			array(
-				'set' => 'read = {int:read}',
-				'where' => 'id = {int:id}'
-			),
+		$this->_smcFunc['db_query']('', '
+			UPDATE {db_prefix}'. ($this->_tables['noti']['table']) .'
+			SET read = {int:read}
+			WHERE id = {int:id}',
 			array(
 				'read' => 1,
 				'id' => $id
-			)
+			),
 		);
-		$markRead->updateData();
 	}
 
 	public function deleteNotification($id)
@@ -772,18 +770,13 @@ class BreezeQuery extends Breeze
 		/* We dont need this anymore */
 		$this->killCache($this->_tables['noti']['name']);
 
-		$delete = $this->query($this->_tables['noti']['name']);
-
 		/* Delete! */
-		$delete->params(
-			array(
-				'where' => 'id = {int:id}'
-			),
-			array(
-				'id' => $id
-			)
+		$this->_smcFunc['db_query']('', '
+			DELETE
+			FROM {db_prefix}'. ($this->_tables['noti']['table']) .'
+			WHERE id = {int:id}',
+			array('id' => '{int:id}'),
 		);
-		$delete->deleteData();
 	}
 
 	public function getNotificationByUser($user)
