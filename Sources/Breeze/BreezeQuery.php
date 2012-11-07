@@ -709,7 +709,7 @@ class BreezeQuery extends Breeze
 					'user_to' => $row['user_to'],
 					'type' => $row['type'],
 					'time' => $row['time'],
-					'read' => $row['read'],
+					'viewed' => $row['viewed'],
 					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
 				);
 			}
@@ -740,7 +740,7 @@ class BreezeQuery extends Breeze
 				'user_to' => 'int',
 				'type' => 'string',
 				'time' => 'int',
-				'read' => 'int',
+				'viewed' => 'int',
 				'content' => 'string',
 			),
 			$array,
@@ -748,20 +748,20 @@ class BreezeQuery extends Breeze
 		);
 	}
 
-	public function markAsReadNotification($id)
+	public function markAsviewedNotification($id)
 	{
 		/* We dont need this anymore */
 		$this->killCache($this->_tables['noti']['name']);
 
-		/* Mark as read */
+		/* Mark as viewed */
 		$this->_smcFunc['db_query']('', '
 			UPDATE {db_prefix}'. ($this->_tables['noti']['table']) .'
-			SET read = {int:read}
+			SET viewed = {int:viewed}
 			WHERE id = {int:id}',
 			array(
-				'read' => 1,
-				'id' => $id
-			),
+				'viewed' => 1,
+				'id' => (int) $id,
+			)
 		);
 	}
 
@@ -775,7 +775,7 @@ class BreezeQuery extends Breeze
 			DELETE
 			FROM {db_prefix}'. ($this->_tables['noti']['table']) .'
 			WHERE id = {int:id}',
-			array('id' => '{int:id}'),
+			array('id' => '{int:id}')
 		);
 	}
 
