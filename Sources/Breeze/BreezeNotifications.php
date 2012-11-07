@@ -139,7 +139,7 @@ class BreezeNotifications extends Breeze
 		return count($this->_query->getNotifications());
 	}
 
-	protected function getToUser($user)
+	public function getToUser($user)
 	{
 		/* Dont even bother... */
 		if (empty($user))
@@ -255,7 +255,7 @@ class BreezeNotifications extends Breeze
 			return false;
 
 		$this->_messages[$noti['id']]['id'] = $noti['id'];
-		$this->_messages[$noti['id']]['user'] = $noti['user'];
+		$this->_messages[$noti['id']]['user'] = $noti['user_to'];
 
 		/* Fill out the messages property */
 		$this->_messages[$noti['id']]['message'] = sprintf(
@@ -335,7 +335,7 @@ class BreezeNotifications extends Breeze
 		/* Create the message already */
 		$this->_messages[$noti['id']] = array(
 		'id' => $noti['id'],
-		'user' => $noti['user'],
+		'user' => $noti['user_to'],
 		'message' => $text
 		);
 	}

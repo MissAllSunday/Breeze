@@ -269,19 +269,18 @@ abstract class BreezeAjax
 
 		checkSession('post', '', false);
 
-		$context['template_layers'] = array();
-		$context['sub_template'] = 'breeze_post';
+		$keys = array();
 
 		/* Set some values */
 		$context['Breeze']['ajax'] = array(
 			/* By default we assume all went terrible wrong... */
-			'ok' => 'error_',
+			'ok' => 'error',
 			/* This will be empty anyway, maybe in the future I will find a use for it */
 			'data' => 'ok'
 		);
 
 		/* Load what we need */
-		$sa = Breeze::sGlobals('post');
+		$sa = Breeze::sGlobals('request');
 		$query = Breeze::query();
 		$notifications = Breeze::notifications();
 
@@ -291,7 +290,7 @@ abstract class BreezeAjax
 
 		/* Is this valid data? */
 		if (empty($noti) || empty($user))
-			return false;
+			$context['Breeze']['ajax']['ok'] = 'error';
 
 		/* We must make sure this noti really exists, we just must!!! */
 		$noti_temp = $notifications->getToUser($user);
@@ -299,11 +298,23 @@ abstract class BreezeAjax
 		/* Ugly, I know.. I KNOW!!! */
 		if (!empty($noti_temp))
 			foreach ($noti_temp as $temp)
-				if ($temp['id'] != $noti))
-					return false;
+				$keys[$temp['id']] = $temp;
 
-		/* All is good, mark this as read */
-		$context['Breeze']['ajax']['ok'] = 'ok';
-		$notifications->markAsRead($noti);
+		/* If this is empty, there was an error... */
+		else
+			$context['Breeze']['ajax']['ok'] = 'error';
+
+		if (empty($keys) || !array_key_exists($noti, $keys))
+			$context['Breeze']['ajax']['ok'] = 'error';
+
+		else
+		{
+			/* All is good, mark this as read */
+			$context['Breeze']['ajax']['ok'] = 'ok';
+			$notifications->markAsRead($noti);
+		}
+
+		$context['template_layers'] = array();
+		$context['sub_template'] = 'breeze_post';
 	}
 }
