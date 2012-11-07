@@ -207,7 +207,7 @@ $txt['Breeze_mention_message_own_wall_comment'] = '<a href="%1$s" class="bbc_lin
 /* Buddy List */
 $txt['Breeze_buddyrequest_error_doublerequest'] = 'You already sent a buddy request, please wait for the user\'s response.';
 $txt['Breeze_buddyrequest_error_dunno'] = 'Something went wrong, please contact the forum admin.';
-$txt['Breeze_buddy_messagerequest_message'] = '%s wants to be your buddy!';
+$txt['Breeze_buddy_messagerequest_message'] = '%1$s wants to be your buddy! <span id="noti_%2$s"></span>';
 $txt['Breeze_buddy_title'] = 'Buddy List';
 $txt['Breeze_buddy_desc'] = 'From here you can confirm or decline your buddy request. If you confirm the buddy request, a pm on your behalf will be send to the user, if you decine the request the user will not receive anything';
 $txt['Breeze_buddyrequest_title'] = 'Buddy requests';

@@ -183,7 +183,7 @@ class BreezeNotifications extends Breeze
 		{
 ';
 
-				foreach($this->_messages as $m)
+				foreach($this->_messages as $k => $m)
 					$context['insert_after_template'] .= 'noty({
 		text: '. JavaScriptEscape($m) .',
 		type: \'notification\',
@@ -193,6 +193,7 @@ class BreezeNotifications extends Breeze
 		buttons: [
 			{addClass: \'button_submit\', text: breeze_noti_markasread, onClick: function($noty) {
 				// make an ajax call here
+				var noti_id = \'', $k ,'\';
 
 				$noty.close();
 				noty({text: breeze_noti_markasread_after, timeout: 1500, type: \'success\'});
@@ -229,7 +230,11 @@ class BreezeNotifications extends Breeze
 		$this->_tools->loadUserInfo($noti['user_to']);
 
 		/* Fill out the messages property */
-		$this->_messages[] = sprintf($this->_text->getText('buddy_messagerequest_message'), $context['Breeze']['user_info'][$noti['user']]['link']);
+		$this->_message[$noti['id']] = sprintf(
+			$this->_text->getText('buddy_messagerequest_message'),
+			$context['Breeze']['user_info'][$noti['user']]['link'],
+			$noti['id']
+		);
 	}
 
 	protected function doMention($noti)
@@ -300,7 +305,7 @@ class BreezeNotifications extends Breeze
 		}
 
 		/* Create the message already */
-		$this->_messages[] = $text;
+		$this->_message[$noti['id']] = $text;
 	}
 
 	protected function delete($id)
