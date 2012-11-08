@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-abstract class BreezeAjax
+abstract class BreezeAjax extends Breeze
 {
 	public static $query;
 
@@ -48,7 +48,7 @@ abstract class BreezeAjax
 		loadtemplate('BreezeAjax');
 
 		/* Handling the subactions */
-		$sglobals = Breeze::sGlobals('get');
+		$sglobals = $this->sGlobals('get');
 
 		$subActions = array(
 			'post' => 'BreezeAjax::post',
@@ -84,12 +84,15 @@ abstract class BreezeAjax
 			'data' => ''
 		);
 
+		/* Call the parent */
+		parent::__construct();
+
 		/* Load all the things we need */
-		$data = Breeze::sGlobals('post');
-		$query = Breeze::query();
-		$parser = Breeze::parser();
-		$mention = Breeze::mention();
-		$settings = Breeze::settings();
+		$data = $this->sGlobals('post');
+		$query = $this->query();
+		$parser = $this->parser();
+		$mention = $this->mention();
+		$settings = $this->settings();
 
 		/* Do this only if there is something to add to the database */
 		if ($data->validateBody('content'))
@@ -151,12 +154,15 @@ abstract class BreezeAjax
 		/* By default it will show an error, we only do stuff if necesary */
 		$context['Breeze']['ajax']['ok'] = '';
 
+		/* Call the parent */
+		parent::__construct();
+
 		/* Load all the things we need */
-		$data = Breeze::sGlobals('post');
-		$query = Breeze::query();
-		$parser = Breeze::parser();
-		$mention = Breeze::mention();
-		$settings = Breeze::settings();
+		$data = $this->sGlobals('post');
+		$query = $this->query();
+		$parser = $this->parser();
+		$mention = $this->mention();
+		$settings = $this->settings();
 		$temp_id_exists = $query->getSingleValue('status', 'id', $data->getValue('status_id'));
 
 		/* The status do exists and the data is valid*/
@@ -223,9 +229,12 @@ abstract class BreezeAjax
 		$context['Breeze']['ajax']['ok'] = '';
 		$context['Breeze']['ajax']['data'] = '';
 
+		/* Call the parent */
+		parent::__construct();
+
 		/* Get the data */
-		$sa = Breeze::sGlobals('post');
-		$query = Breeze::query();
+		$sa = $this->sGlobals('post');
+		$query = $this->query();
 		$temp_id_exists = $query->getSingleValue($sa->getValue('type') == 'status' ? 'status' : 'comments', 'id', $sa->getValue('id'));
 
 			switch ($sa->getValue('type'))
@@ -279,9 +288,12 @@ abstract class BreezeAjax
 			'data' => 'error_'
 		);
 
+		/* Call the parent */
+		parent::__construct();
+
 		/* Load what we need */
-		$sa = Breeze::sGlobals('request');
-		$query = Breeze::query();
+		$sa = $this->sGlobals('request');
+		$query = $this->query();
 		$notifications = Breeze::notifications();
 
 		/* Get the data */
