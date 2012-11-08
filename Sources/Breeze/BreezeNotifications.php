@@ -215,6 +215,7 @@ class BreezeNotifications extends Breeze
 				/* Make sure its an array */
 				$this->_messages = !is_array($this->_messages) ? array($this->_messages) : $this->_messages;
 
+				/* @todo move this to breeze.js */
 				$context['insert_after_template'] .= '
 				<script type="text/javascript"><!-- // --><![CDATA[
 		$(document).ready(function()
@@ -263,6 +264,29 @@ class BreezeNotifications extends Breeze
 			},
 			{addClass: \'button_submit\', text: breeze_noti_delete, onClick: function($noty) {
 				// make an ajax call here
+					jQuery.ajax(
+					{
+						type: \'POST\',
+						url: smf_scripturl + \'?action=breezeajax;sa=notidelete\',
+						data: ({content : noti_id, user : user}),
+						cache: false,
+						success: function(html)
+						{
+							if(html == \'error_\')
+							{
+								noty({text: breeze_error_message, timeout: 3500, type: \'error\'});
+							}
+
+							else
+							{
+								noty({text: breeze_noti_markasread_after, timeout: 3500, type: \'success\'});
+							}
+						},
+						error: function (html)
+						{
+							noty({text: breeze_error_message, timeout: 3500, type: \'error\'});
+						},
+					});
 				$noty.close();
 				noty({text: breeze_noti_delete_after, timeout: 3500, type: \'success\'});
 			  }

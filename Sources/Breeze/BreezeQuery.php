@@ -301,7 +301,7 @@ class BreezeQuery extends Breeze
 		if (($this->_status = cache_get_data('Breeze:'. $this->_tables['status']['name'], 120)) == null)
 		{
 			/* Load all the status, set a limit if things get complicated */
-			$result = $smcFunc['db_query']('', '
+			$result = $this->_smcFunc['db_query']('', '
 				SELECT *
 				FROM {db_prefix}breeze_status
 				'. ($gSettings->enable('admin_enable_limit') && $gSettings->enable('admin_limit_timeframe') ? 'WHERE status_time >= {int:status_time}' : '' ).'
@@ -313,7 +313,7 @@ class BreezeQuery extends Breeze
 			);
 
 			/* Populate the array like a boss! */
-			while ($row = $smcFunc['db_fetch_assoc']($result))
+			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 			{
 				$this->_status[$row['status_id']] = array(
 					'id' => $row['status_id'],
@@ -324,7 +324,7 @@ class BreezeQuery extends Breeze
 				);
 			}
 
-			$smcFunc['db_free_result']($result);
+			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
 			cache_put_data('Breeze:'. $this->_tables['status']['name'], $this->_status, 120);
@@ -358,7 +358,7 @@ class BreezeQuery extends Breeze
 		if (($return = cache_get_data('Breeze:'. $id, 120)) == null)
 		{
 			/* Big query... */
-			$result = $smcFunc['db_query']('', '
+			$result = $this->_smcFunc['db_query']('', '
 				SELECT s.status_id, s.status_owner_id, s.status_poster_id, s.status_time, s.status_body, c.comments_id, c.comments_status_id, c.comments_status_owner_id, comments_poster_id, c.comments_profile_owner_id, c.comments_time, c.comments_body
 				FROM {db_prefix}breeze_status AS s
 					LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
@@ -373,7 +373,7 @@ class BreezeQuery extends Breeze
 			);
 
 			/* Populate the array like a big heavy boss! */
-			while ($row = $smcFunc['db_fetch_assoc']($result))
+			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 			{
 				$return[$row['status_id']] = array(
 					'id' => $row['status_id'],
@@ -396,7 +396,7 @@ class BreezeQuery extends Breeze
 					);
 			}
 
-			$smcFunc['db_free_result']($result);
+			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
 			cache_put_data('Breeze:'. $id, $return, 120);
@@ -469,7 +469,7 @@ class BreezeQuery extends Breeze
 		if (($this->_comments = cache_get_data('Breeze:'. $this->_tables['comments']['name'], 120)) == null)
 		{
 			/* Load all the comments, set a limit if things get complicated */
-			$result = $smcFunc['db_query']('', '
+			$result = $this->_smcFunc['db_query']('', '
 				SELECT *
 				FROM {db_prefix}breeze_comments
 				'. ($gSettings->enable('admin_enable_limit') && $gSettings->enable('admin_limit_timeframe') ? 'WHERE comments_time >= {int:comments_time}' : '' ).'
@@ -481,7 +481,7 @@ class BreezeQuery extends Breeze
 			);
 
 			/* Populate the array like a comments boss! */
-			while ($row = $smcFunc['db_fetch_assoc']($result))
+			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 			{
 				$this->_comments[$row['comments_id']] = array(
 					'id' => $row['comments_id'],
@@ -494,7 +494,7 @@ class BreezeQuery extends Breeze
 				);
 			}
 
-			$smcFunc['db_free_result']($result);
+			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
 			cache_put_data('Breeze:'. $this->_tables['comments']['name'], $this->_comments, 120);
@@ -550,7 +550,7 @@ class BreezeQuery extends Breeze
 
 	public function insertStatus($array)
 	{
-		/* We dont need this anymore */
+		/* We don't need this no more */
 		$this->killCache($this->_tables['status']['name']);
 
 		/* Insert! */
@@ -570,7 +570,7 @@ class BreezeQuery extends Breeze
 
 	public function insertComment($array)
 	{
-		/* We dont need this anymore */
+		/* We don't need this no more */
 		$this->killCache($this->_tables['comments']['name']);
 
 		/* Insert! */
@@ -592,50 +592,50 @@ class BreezeQuery extends Breeze
 
 	public function deleteStatus($id)
 	{
-		/* We dont need this anymore */
+		/* We don't need this no more */
 		$this->killCache($this->_tables['status']['name']);
 
 		$deleteStatus = $this->query($this->_tables['status']['name']);
 		$deleteComments = $this->query($this->_tables['comments']['name']);
 
 		/* Ladies first */
-		$deleteComments->params(
+		$this->_smcFunc['db_query']('', '
+			DELETE FROM {db_prefix}'. ($this->query($this->_tables['comments']['table']) .'
+			WHERE comments_status_id = {int:id}',
 			array(
-				'where' => 'comments_status_id = {int:id}',
-			),
-			$data
+				'id' => $id,
+			)
 		);
-		$deleteComments->deleteData();
 
-		$deleteStatus->params($params, $data);
-		$deleteStatus->deleteData();
+		/* Same for status */
+		$this->_smcFunc['db_query']('', '
+			DELETE FROM {db_prefix}'. ($this->query($this->_tables['status']['table']) .'
+			WHERE status_id = {int:id}',
+			array(
+				'id' => $id,
+			)
+		);
 	}
 
 	public function deleteComment($id)
 	{
-		$delete = $this->query($this->_tables['comments']['name']);
-
 		/* Delete! */
-		$delete->params(
+		$this->_smcFunc['db_query']('', '
+			DELETE FROM {db_prefix}'. ($this->query($this->_tables['comments']['table']) .'
+			WHERE id_pm = comments_id = {int:id}',
 			array(
-				'where' => 'comments_id = {int:id}'
-			),
-			array(
-				'id' => $id
+				'id' => $id,
 			)
 		);
-		$delete->deleteData();
 	}
 
 	protected function members()
 	{
-		global $smcFunc;
-
 		/* Use the cache please... */
 		if (($this->_members = cache_get_data('Breeze:'. $this->_tables['members']['name'], 120)) == null)
 		{
 			/* Load all the settings from all users */
-			$result = $smcFunc['db_query']('', '
+			$result = $this->_smcFunc['db_query']('', '
 				SELECT pm_ignore_list, id_member
 				FROM {db_prefix}'. $this->_tables['members']['table'] .'
 				',
@@ -643,10 +643,10 @@ class BreezeQuery extends Breeze
 			);
 
 			/* Populate the array like a boss! */
-			while ($row = $smcFunc['db_fetch_assoc']($result))
+			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 				$this->_members[$row['id_member']] = $row;
 
-			$smcFunc['db_free_result']($result);
+			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
 			cache_put_data('Breeze:'. $this->_tables['members']['name'], $this->_members, 120);
@@ -688,12 +688,10 @@ class BreezeQuery extends Breeze
 	 */
 	protected function noti()
 	{
-		global $smcFunc;
-
 		/* Use the cache please... */
 		if (($this->_noti = cache_get_data('Breeze:'. $this->_tables['noti']['name'], 120)) == null)
 		{
-			$result = $smcFunc['db_query']('', '
+			$result = $this->_smcFunc['db_query']('', '
 				SELECT *
 				FROM {db_prefix}'.  $this->_tables['noti']['table'] .'
 				',
@@ -701,10 +699,10 @@ class BreezeQuery extends Breeze
 			);
 
 			/* Populate the array like a boss! */
-			while ($row = $smcFunc['db_fetch_assoc']($result))
+			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 			{
-				$this->_noti[$row['id']] = array(
-					'id' => $row['id'],
+				$this->_noti[$row['notifications_id']] = array(
+					'id' => $row['notifications_id'],
 					'user' => $row['user'],
 					'user_to' => $row['user_to'],
 					'type' => $row['type'],
@@ -714,7 +712,7 @@ class BreezeQuery extends Breeze
 				);
 			}
 
-			$smcFunc['db_free_result']($result);
+			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
 			cache_put_data('Breeze:'. $this->_tables['noti']['name'], $this->_noti, 120);
@@ -730,7 +728,7 @@ class BreezeQuery extends Breeze
 
 	public function insertNotification($array)
 	{
-		/* We dont need this anymore */
+		/* We don't need this no more */
 		$this->killCache($this->_tables['noti']['name']);
 
 		$this->_smcFunc['db_insert']('replace',
@@ -744,20 +742,20 @@ class BreezeQuery extends Breeze
 				'content' => 'string',
 			),
 			$array,
-			array('id')
+			array('notifications_id')
 		);
 	}
 
 	public function markAsviewedNotification($id)
 	{
-		/* We dont need this anymore */
+		/* We don't need this no more */
 		$this->killCache($this->_tables['noti']['name']);
 
 		/* Mark as viewed */
 		$this->_smcFunc['db_query']('', '
 			UPDATE {db_prefix}'. ($this->_tables['noti']['table']) .'
 			SET viewed = {int:viewed}
-			WHERE id = {int:id}',
+			WHERE notifications_id = {int:id}',
 			array(
 				'viewed' => 1,
 				'id' => (int) $id,
@@ -767,14 +765,14 @@ class BreezeQuery extends Breeze
 
 	public function deleteNotification($id)
 	{
-		/* We dont need this anymore */
+		/* We don't need this no more */
 		$this->killCache($this->_tables['noti']['name']);
 
 		/* Delete! */
 		$this->_smcFunc['db_query']('', '
 			DELETE
 			FROM {db_prefix}'. ($this->_tables['noti']['table']) .'
-			WHERE id = {int:id}',
+			WHERE notifications_id = {int:id}',
 			array('id' => '{int:id}')
 		);
 	}
