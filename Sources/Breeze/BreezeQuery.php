@@ -87,27 +87,9 @@ class BreezeQuery extends Breeze
 	public static function getInstance()
 	{
 		if (!self::$_instance)
-		{
 			self::$_instance = new self();
-		}
 
 		return self::$_instance;
-	}
-
-	/*
-	 * Decorates the way we call a query. Oh! and calls the right table.
-	 *
-	 * Call the right table object.
-	 * @access protected
-	 * @return object a new DB object.
-	 */
-	public function query($var)
-	{
-		if (array_key_exists($var, $this->_tables))
-			return new BreezeDB($this->_tables[$var]['table']);
-
-		else
-			return false;
 	}
 
 	/*
@@ -208,9 +190,9 @@ class BreezeQuery extends Breeze
 	 *
 	 * Needs a type, a row and a value, this iterates X array looking for X value in X row. Yes, this can be used to fetch more than one value if you really want to fetch more than 1 value.
 	 * @param string $type the data type
-	 * @param string $row the row where thoe fetch the value from, should be the actual row name in the array, not the rown name in the DB.
+	 * @param string $row the row where to fetch the value from, should be the actual row name in the array, not the row name in the DB.
 	 * @param mixed $value  Most of the cases will be a int. the int is actually the ID of the particular value you are trying to fetch.
-	 * @access private
+	 * @access public
 	 * @return array an array with the requested data
 	 */
 	public function getSingleValue($type, $row, $value)
@@ -230,24 +212,27 @@ class BreezeQuery extends Breeze
 	 */
 	public function getLastStatus()
 	{
-		$return = $this->query($this->_tables['status']['name']);
+		$return = '';
 
 		/* Get the value directly from the DB */
-		$return->params(
+		$result = $this->_smcFunc['db_query']('', '
+			SELECT status_id
+			FROM {db_prefix}'. ($this->_tables['status']['table']) .'
+			ORDER BY {raw:sort}
+			LIMIT {int:limit}',
 			array(
-				'rows' => 'status_id',
-				'order' => '{raw:sort}',
-				'limit' => '{int:limit}'
-			),
-			array(
-				'sort' => 'status_id DESC',
-				'limit' => 1
+			'sort' => 'status_id DESC',
+			'limit' => 1
 			)
 		);
-		$return->getData(null, true);
+
+		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+			$return = $row;
+
+		$this->_smcFunc['db_free_result']($result);
 
 		/* Done? */
-		return $return->dataResult();
+		return $return;
 	}
 
 	/*
@@ -259,26 +244,27 @@ class BreezeQuery extends Breeze
 	 */
 	public function getLastComment()
 	{
-		$return = $this->query($this->_tables['comments']['name']);
+		$return = '';
 
 		/* Get the value directly from the DB */
-		$this->_queryParams = array(
-			'rows' => 'comments_id',
-			'order' => '{raw:sort}',
-			'limit' => '{int:limit}'
-		);
-
-		$this->_queryData = array(
+		$result = $this->_smcFunc['db_query']('', '
+			SELECT comments_id
+			FROM {db_prefix}'. ($this->_tables['comments']['table']) .'
+			ORDER BY {raw:sort}
+			LIMIT {int:limit}',
+			array(
 			'sort' => 'comments_id DESC',
 			'limit' => 1
+			)
 		);
 
-		$return->params($this->_queryParams, $this->_queryData);
-		$return->getData(null, true);
-		$this->resetQueryArrays();
+		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+			$return = $row;
+
+		$this->_smcFunc['db_free_result']($result);
 
 		/* Done? */
-		return $return->dataResult();
+		return $return;
 	}
 
 	/*
@@ -291,8 +277,6 @@ class BreezeQuery extends Breeze
 	 */
 	protected function status()
 	{
-		global $smcFunc;
-
 		$tools = parent::tools();
 		$gSettings = parent::settings();
 		$parser = parent::parser();
@@ -348,8 +332,6 @@ class BreezeQuery extends Breeze
 	 */
 	public function getStatusByProfile($id)
 	{
-		global $smcFunc;
-
 		$tools = parent::tools();
 		$gSettings = parent::settings();
 		$parser = parent::parser();
@@ -459,8 +441,6 @@ class BreezeQuery extends Breeze
 	 */
 	protected function comments()
 	{
-		global $smcFunc;
-
 		$tools = parent::tools();
 		$gSettings = parent::settings();
 		$parser = parent::parser();
@@ -554,7 +534,8 @@ class BreezeQuery extends Breeze
 		$this->killCache($this->_tables['status']['name']);
 
 		/* Insert! */
-		$this->query($this->_tables['status']['name'])->insertData(
+		$this->_smcFunc['db_insert']('replace',
+			'{db_prefix}'. ($this->_tables['status']['table']) .'',
 			array(
 				'status_owner_id' => 'int',
 				'status_poster_id' => 'int',
@@ -574,7 +555,8 @@ class BreezeQuery extends Breeze
 		$this->killCache($this->_tables['comments']['name']);
 
 		/* Insert! */
-		$this->query($this->_tables['comments']['name'])->insertData(
+		$this->_smcFunc['db_insert']('replace',
+			'{db_prefix}'. ($this->_tables['comments']['table']) .'',
 			array(
 				'comments_status_id' => 'int',
 				'comments_status_owner_id' => 'int',
@@ -595,22 +577,24 @@ class BreezeQuery extends Breeze
 		/* We don't need this no more */
 		$this->killCache($this->_tables['status']['name']);
 
-		$deleteStatus = $this->query($this->_tables['status']['name']);
-		$deleteComments = $this->query($this->_tables['comments']['name']);
-
 		/* Ladies first */
+		$this->deleteCommentByStatusID($id);
+
+		/* Same for status */
 		$this->_smcFunc['db_query']('', '
-			DELETE FROM {db_prefix}'. ($this->query($this->_tables['comments']['table']) .'
-			WHERE comments_status_id = {int:id}',
+			DELETE FROM {db_prefix}'. ($this->_tables['status']['table']) .'
+			WHERE status_id = {int:id}',
 			array(
 				'id' => $id,
 			)
 		);
+	}
 
-		/* Same for status */
+	public function deleteCommentByStatusID($id)
+	{
 		$this->_smcFunc['db_query']('', '
-			DELETE FROM {db_prefix}'. ($this->query($this->_tables['status']['table']) .'
-			WHERE status_id = {int:id}',
+			DELETE FROM {db_prefix}'. ($this->_tables['comments']['table']) .'
+			WHERE comments_status_id = {int:id}',
 			array(
 				'id' => $id,
 			)
@@ -621,7 +605,7 @@ class BreezeQuery extends Breeze
 	{
 		/* Delete! */
 		$this->_smcFunc['db_query']('', '
-			DELETE FROM {db_prefix}'. ($this->query($this->_tables['comments']['table']) .'
+			DELETE FROM {db_prefix}'. ($this->_tables['comments']['table']) .'
 			WHERE id_pm = comments_id = {int:id}',
 			array(
 				'id' => $id,
@@ -700,7 +684,6 @@ class BreezeQuery extends Breeze
 
 			/* Populate the array like a boss! */
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-			{
 				$this->_noti[$row['notifications_id']] = array(
 					'id' => $row['notifications_id'],
 					'user' => $row['user'],
@@ -710,7 +693,6 @@ class BreezeQuery extends Breeze
 					'viewed' => $row['viewed'],
 					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
 				);
-			}
 
 			$this->_smcFunc['db_free_result']($result);
 
