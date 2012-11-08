@@ -55,10 +55,12 @@ class BreezeQuery extends Breeze
 	{
 		global $smcFunc;
 
+		/* Call the parent */
 		parent::__construct();
 
 		$this->_smcFunc = $smcFunc;
 
+		/* @todo, create a multidimensional array containing all the columns for each table */
 		$this->_tables = array(
 			'status' => array(
 				'name' => 'status',
@@ -277,10 +279,6 @@ class BreezeQuery extends Breeze
 	 */
 	protected function status()
 	{
-		$tools = parent::tools();
-		$gSettings = parent::settings();
-		$parser = parent::parser();
-
 		/* Use the cache please... */
 		if (($this->_status = cache_get_data('Breeze:'. $this->_tables['status']['name'], 120)) == null)
 		{
@@ -288,11 +286,11 @@ class BreezeQuery extends Breeze
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT *
 				FROM {db_prefix}breeze_status
-				'. ($gSettings->enable('admin_enable_limit') && $gSettings->enable('admin_limit_timeframe') ? 'WHERE status_time >= {int:status_time}' : '' ).'
+				'. ($this->settings()->enable('admin_enable_limit') && $this->settings()->enable('admin_limit_timeframe') ? 'WHERE status_time >= {int:status_time}' : '' ).'
 				ORDER BY status_time DESC
 				',
 				array(
-					'status_time' => $gSettings->getSetting('admin_limit_timeframe'),
+					'status_time' => $this->settings()->getSetting('admin_limit_timeframe'),
 				)
 			);
 
@@ -303,8 +301,8 @@ class BreezeQuery extends Breeze
 					'id' => $row['status_id'],
 					'owner_id' => $row['status_owner_id'],
 					'poster_id' => $row['status_poster_id'],
-					'time' => $tools->timeElapsed($row['status_time']),
-					'body' => $parser->display($row['status_body']),
+					'time' => $this->tools()->timeElapsed($row['status_time']),
+					'body' => $this->parser()->display($row['status_body']),
 				);
 			}
 
@@ -332,10 +330,6 @@ class BreezeQuery extends Breeze
 	 */
 	public function getStatusByProfile($id)
 	{
-		$tools = parent::tools();
-		$gSettings = parent::settings();
-		$parser = parent::parser();
-
 		/* Use the cache please... */
 		if (($return = cache_get_data('Breeze:'. $id, 120)) == null)
 		{
@@ -345,11 +339,11 @@ class BreezeQuery extends Breeze
 				FROM {db_prefix}breeze_status AS s
 					LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
 				WHERE s.status_owner_id = {int:owner}
-				'. ($gSettings->enable('admin_enable_limit') && $gSettings->enable('admin_limit_timeframe') ? 'AND s.status_time >= {int:status_time}' : '' ).'
+				'. ($this->settings()->enable('admin_enable_limit') && $this->settings()->enable('admin_limit_timeframe') ? 'AND s.status_time >= {int:status_time}' : '' ).'
 				ORDER BY s.status_time DESC
 				',
 				array(
-					'status_time' => $gSettings->getSetting('admin_limit_timeframe'),
+					'status_time' => $this->settings()->getSetting('admin_limit_timeframe'),
 					'owner' => $id
 				)
 			);
@@ -361,8 +355,8 @@ class BreezeQuery extends Breeze
 					'id' => $row['status_id'],
 					'owner_id' => $row['status_owner_id'],
 					'poster_id' => $row['status_poster_id'],
-					'time' => $tools->timeElapsed($row['status_time']),
-					'body' => $parser->display($row['status_body']),
+					'time' => $this->tools()->timeElapsed($row['status_time']),
+					'body' => $this->parser()->display($row['status_body']),
 				);
 
 				/* Comments */
@@ -373,8 +367,8 @@ class BreezeQuery extends Breeze
 						'status_owner_id' => $row['comments_status_owner_id'],
 						'poster_id' => $row['comments_poster_id'],
 						'profile_owner_id' => $row['comments_profile_owner_id'],
-						'time' => $tools->timeElapsed($row['comments_time']),
-						'body' => $parser->display($row['comments_body']),
+						'time' => $this->tools()->timeElapsed($row['comments_time']),
+						'body' => $this->parser()->display($row['comments_body']),
 					);
 			}
 
@@ -441,10 +435,6 @@ class BreezeQuery extends Breeze
 	 */
 	protected function comments()
 	{
-		$tools = parent::tools();
-		$gSettings = parent::settings();
-		$parser = parent::parser();
-
 		/* Use the cache please... */
 		if (($this->_comments = cache_get_data('Breeze:'. $this->_tables['comments']['name'], 120)) == null)
 		{
@@ -452,11 +442,11 @@ class BreezeQuery extends Breeze
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT *
 				FROM {db_prefix}breeze_comments
-				'. ($gSettings->enable('admin_enable_limit') && $gSettings->enable('admin_limit_timeframe') ? 'WHERE comments_time >= {int:comments_time}' : '' ).'
+				'. ($this->settings()->enable('admin_enable_limit') && $this->settings()->enable('admin_limit_timeframe') ? 'WHERE comments_time >= {int:comments_time}' : '' ).'
 				ORDER BY comments_time ASC
 				',
 				array(
-					'comments_time' => $gSettings->getSetting('admin_limit_timeframe'),
+					'comments_time' => $this->settings()->getSetting('admin_limit_timeframe'),
 				)
 			);
 
@@ -469,8 +459,8 @@ class BreezeQuery extends Breeze
 					'status_owner_id' => $row['comments_status_owner_id'],
 					'poster_id' => $row['comments_poster_id'],
 					'profile_owner_id' => $row['comments_profile_owner_id'],
-					'time' => $tools->timeElapsed($row['comments_time']),
-					'body' => $parser->display($row['comments_body']),
+					'time' => $this->tools()->timeElapsed($row['comments_time']),
+					'body' => $this->parser()->display($row['comments_body']),
 				);
 			}
 
@@ -790,7 +780,7 @@ class BreezeQuery extends Breeze
 						$returnUser[$r['id']] = $r;
 
 						/* load the user's link */
-						$tools->loadUserInfo($r['user']);
+						$this->tools()->loadUserInfo($r['user']);
 
 						/* build the message */
 						$returnUser[$r['id']]['content']['message'] = sprintf($text->getText('buddy_messagerequest_message'), $context['Breeze']['user_info'][$r['user']]);
