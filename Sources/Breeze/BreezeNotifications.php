@@ -54,6 +54,7 @@ class BreezeNotifications extends Breeze
 	{
 		global $user_info;
 
+		/* Call the parent */
 		parent::__construct();
 
 		/* Current user */
@@ -70,10 +71,10 @@ class BreezeNotifications extends Breeze
 		);
 
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
-		$this->_settings = Breeze::settings();
-		$this->_query = Breeze::query();
-		$this->_tools = Breeze::tools();
-		$this->_text = Breeze::text();
+		$this->_settings = $this->settings();
+		$this->_query = $this->query();
+		$this->_tools = $this->tools();
+		$this->_text = $this->text();
 	}
 
 	public function create($params)

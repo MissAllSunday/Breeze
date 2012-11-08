@@ -138,7 +138,7 @@ class Breeze
 
 	public function quickQuery($table)
 	{
-		return new BreezeDB($table);
+		return $this->query->quickQuery($table);
 	}
 
 	public function tools()
