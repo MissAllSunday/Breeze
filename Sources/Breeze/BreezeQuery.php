@@ -58,7 +58,7 @@ class BreezeQuery extends Breeze
 		/* Call the parent */
 		parent::__construct();
 
-		$this->_smcFunc = $smcFunc;
+		$this->_smcFunc = $this->_smcFunc;
 
 		/* @todo, create a multidimensional array containing all the columns for each table */
 		$this->_tables = array(
@@ -92,6 +92,38 @@ class BreezeQuery extends Breeze
 			self::$_instance = new self();
 
 		return self::$_instance;
+	}
+
+	public function quickQuery($params, $data, $key = null, $single = false)
+	{
+		$dataResult = array();
+
+		$query = $this->_smcFunc['db_query']('', '
+			SELECT '. $params['rows'] .'
+			FROM '. $params['table'] .'
+			'. (!empty($params['join']) ? 'LEFT JOIN '. $params['join'] : '') .'
+			'. (!empty($params['where']) ? 'WHERE '. $params['where'] : '') .'
+				'. (!empty($params['and']) ? 'AND '. $params['and'] : '') .'
+			'. (!empty($params['order']) ? 'ORDER BY '. $params['order'] : '') .'
+			'. (!empty($params['limit']) ? 'LIMIT '. $params['limit'] : '') .'',
+			$data
+		);
+
+		if($single)
+			while ($row = $this->_smcFunc['db_fetch_assoc']($query))
+				$dataResult = $row;
+
+		if ($key)
+			while($row = $this->_smcFunc['db_fetch_assoc']($query))
+				$dataResult[$row[$key]] = $row;
+
+		else
+			while($row = $this->_smcFunc['db_fetch_assoc']($query))
+				$dataResult[] = $row;
+
+		$this->_smcFunc['db_free_result']($query);
+
+		return $dataResult;
 	}
 
 	/*
@@ -274,7 +306,7 @@ class BreezeQuery extends Breeze
 	 *
 	 * This is one of the main queries. load all the status from all users.
 	 * @access protected
-	 * @global array $smcFunc the "handling DB stuff" var of SMF
+	 * @global array $this->_smcFunc the "handling DB stuff" var of SMF
 	 * @return array a very big associative array with the status ID as key
 	 */
 	protected function status()
@@ -430,7 +462,7 @@ class BreezeQuery extends Breeze
 	 *
 	 * This is one of the main queries, load all the commments form all users.
 	 * @access protected
-	 * @global array $smcFunc the "handling DB stuff" var of SMF
+	 * @global array $this->_smcFunc the "handling DB stuff" var of SMF
 	 * @return array a very big associative array with the comment ID as key
 	 */
 	protected function comments()
@@ -657,7 +689,7 @@ class BreezeQuery extends Breeze
 	 *
 	 * This is one of the main queries. load all the notifications from all users.
 	 * @access protected
-	 * @global array $smcFunc the "handling DB stuff" var of SMF
+	 * @global array $this->_smcFunc the "handling DB stuff" var of SMF
 	 * @return array a very big associative array with the notification ID as key
 	 */
 	protected function noti()
