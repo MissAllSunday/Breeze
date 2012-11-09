@@ -114,8 +114,8 @@ class Breeze
 	 * @param array $params An array with all the params  for the query
 	 * @param array $data An array to pass to $smcFunc casting array
 	 * @param bool $key A boolean value to asign a row as key on the returning array
-	 * @param bool $single A bool to tell the query to return a single value instead of an array
-	 * @return mixed either an array or a var with the query result
+	 * @param bool $single A bool to tell the query to return a single value instead of An array
+	 * @return mixed either An array or a var with the query result
 	 */
 	public function quickQuery($params, $data, $key = false, $single = false)
 	{
@@ -363,7 +363,7 @@ class Breeze
 
 		/* Settings are required here */
 		$gSettings = $this->settings();
-		$text = $this->text();
+		$text = self::text();
 
 		/* Does the General Wall is enable? */
 		if ($gSettings->enable('admin_settings_enablegeneralwall') == false)
@@ -454,12 +454,12 @@ class Breeze
 	/**
 	 * Breeze::admin()
 	 * 
-	 * @param array $admin_menu an array with all the admin settings buttons
+	 * @param array $admin_menu An array with all the admin settings buttons
 	 * @return
 	 */
 	public static function admin(&$admin_menu)
 	{
-		$text = $this->text();
+		$text = self::text();
 
 		$admin_menu['breezeadmin'] = array(
 			'title' => $text->getText('admin_settings_admin_panel'),

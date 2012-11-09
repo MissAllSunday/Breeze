@@ -111,8 +111,8 @@ class BreezeQuery extends Breeze
 	 * @param array $params An array with all the params  for the query
 	 * @param array $data An array to pass to $smcFunc casting array
 	 * @param bool $key A boolean value to asign a row as key on the returning array
-	 * @param bool $single A bool to tell the query to return a single value instead of an array
-	 * @return mixed either an array or a var with the query result
+	 * @param bool $single A bool to tell the query to return a single value instead of An array
+	 * @return mixed either An array or a var with the query result
 	 */
 	public function quickQuery($params, $data, $key = null, $single = false)
 	{
@@ -148,10 +148,8 @@ class BreezeQuery extends Breeze
 	 * BreezeQuery::killCache()
 	 * 
 	 * Disclaimer: Killing in breeze world means replace the existing cache data with a null value so SMF generates a new cache...
-	 * @param mixed $type the name of value(s) to be deleted
+	 * @param string $type the name of value(s) to be deleted
 	 * @return void
-	 * @param mixed $type
-	 * @return
 	 */
 	public function killCache($type)
 	{
@@ -196,7 +194,7 @@ class BreezeQuery extends Breeze
 		/* Do this only if there is something to work with */
 		if ($this->_temp)
 		{
-			/* Generate an array with a defined key */
+			/* Generate An array with a defined key */
 			foreach ($this->_temp as $t)
 			{
 				if ($t[$row] == $value && !$single)
@@ -239,7 +237,7 @@ class BreezeQuery extends Breeze
 	 * @param string $type the data type
 	 * @param string $row the row where to fetch the value from, should be the actual row name in the array, not the row name in the DB.
 	 * @param mixed $value  Most of the cases will be a int. the int is actually the ID of the particular value you are trying to fetch.
-	 * @return array an array with the requested data
+	 * @return array An array with the requested data
 	 */
 	public function getSingleValue($type, $row, $value)
 	{
@@ -422,7 +420,7 @@ class BreezeQuery extends Breeze
 	* @see BreezeQuery::getReturn()()
 	* @param int $id the ID of status you want to fetch.
 	* @access public
-	* @return array an array containing all the status made in X profile page
+	* @return array An array containing all the status made in X profile page
 	*/
 	/**
 	 * BreezeQuery::getStatusByID()
@@ -431,7 +429,7 @@ class BreezeQuery extends Breeze
 	 * @see BreezeQuery::getReturn()()
 	 * @param int $id the ID of status you want to fetch.
 	 * @access public
-	 * @return array an array containing all the status made in X profile page
+	 * @return array An array containing all the status made in X profile page
 	 */
 	public function getStatusByID($id, $user)
 	{
@@ -444,7 +442,7 @@ class BreezeQuery extends Breeze
 	 * Get all status made by X user. This returns all the status made by x user, it does not matter on what profile page they were made.
 	 * @see BreezeQuery::getReturn()
 	 * @param int $id the ID of the user that you want to fetch the status from.
-	 * @return array an array containing all the status made in X profile page
+	 * @return array An array containing all the status made in X profile page
 	 */
 	public function getStatusByUser($id)
 	{
@@ -516,7 +514,7 @@ class BreezeQuery extends Breeze
 	 * BreezeQuery::getComments()
 	 * 
 	 * Returns all comments in the comments array
-	 * @return array an array containing all comments. ID as the key.
+	 * @return array An array containing all comments. ID as the key.
 	 */
 	public function getComments()
 	{
@@ -528,7 +526,7 @@ class BreezeQuery extends Breeze
 	 * 
 	 * Get all comments made in X profile page. Uses the generic method getReturn.
 	 * @param int $id
-	 * @return array an array containing all comments made in X profile page
+	 * @return array An array containing all comments made in X profile page
 	 */
 	public function getCommentsByProfile($id)
 	{
@@ -762,7 +760,7 @@ class BreezeQuery extends Breeze
 	 * 
 	 * Calls BreezeQuery::noti() if its corresponding property is empty
 	 * @see BreezeQuery::noti()
-	 * @return bool|array Either an boolean false or an array of data
+	 * @return bool|array Either an boolean false or An array of data
 	 */
 	public function getNotifications()
 	{
@@ -859,7 +857,7 @@ class BreezeQuery extends Breeze
 	 * Gets all the notifications stored under an specific type
 	 * @param string $type the notification type
 	 * @param bool $user
-	 * @return bool|array Either an array with data or a boolean false
+	 * @return bool|array Either An array with data or a boolean false
 	 */
 	public function getNotificationByType($type, $user = false)
 	{

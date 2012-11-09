@@ -12,28 +12,28 @@
  */
 
 /*
- * Version: MPL 1.1
- *
- * The contents of this file are subject to the Mozilla Public License Version
- * 1.1 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
- * for the specific language governing rights and limitations under the
- * License.
- *
- * The Original Code is http://missallsunday.com code.
- *
- * The Initial Developer of the Original Code is
- * Jessica González.
- * Portions created by the Initial Developer are Copyright (c) 2012
- * the Initial Developer. All Rights Reserved.
- *
- * Contributor(s):
- *
- */
+* Version: MPL 1.1
+*
+* The contents of this file are subject to the Mozilla Public License Version
+* 1.1 (the "License"); you may not use this file except in compliance with
+* the License. You may obtain a copy of the License at
+* http://www.mozilla.org/MPL/
+*
+* Software distributed under the License is distributed on an "AS IS" basis,
+* WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+* for the specific language governing rights and limitations under the
+* License.
+*
+* The Original Code is http://missallsunday.com code.
+*
+* The Initial Developer of the Original Code is
+* Jessica González.
+* Portions created by the Initial Developer are Copyright (c) 2012
+* the Initial Developer. All Rights Reserved.
+*
+* Contributor(s):
+*
+*/
 
 if (!defined('SMF'))
 	die('Hacking attempt...');
@@ -50,6 +50,11 @@ class BreezeNotifications extends Breeze
 	protected $_currentUser;
 	protected $_messages = array();
 
+	/**
+	 * BreezeNotifications::__construct()
+	 * 
+	 * @return
+	 */
 	function __construct()
 	{
 		global $user_info;
@@ -67,8 +72,7 @@ class BreezeNotifications extends Breeze
 			'buddy',
 			'mention',
 			'reply',
-			'topic'
-		);
+			'topic');
 
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
 		$this->_settings = $this->settings();
@@ -77,6 +81,12 @@ class BreezeNotifications extends Breeze
 		$this->_text = $this->text();
 	}
 
+	/**
+	 * BreezeNotifications::create()
+	 * 
+	 * @param mixed $params
+	 * @return
+	 */
 	public function create($params)
 	{
 		/* We have to make sure, we just have to! */
@@ -96,34 +106,31 @@ class BreezeNotifications extends Breeze
 			return false;
 	}
 
+	/**
+	 * BreezeNotifications::createBuddy()
+	 * 
+	 * @param mixed $params
+	 * @return
+	 */
 	public function createBuddy($params)
 	{
 		loadLanguage(Breeze::$name);
-
-		/* We need a quick query here */
-		$tempQuery = $this->quickQuery('breeze_notifications');
 
 		/* if the type is buddy then let's do a check to avoid duplicate entries */
 		if (!empty($params) && in_array($params['type'], $this->_types))
 		{
 			/* Doing a quick query will be better than loading the entire notifications array */
-			$tempQuery->params(
-				array(
-					'rows' => 'id',
-					'where' => 'user = {int:user}',
-					'whereAnd' => 'user_to = {int:user_to}',
-				),
-				array(
-					'user' => !empty($params['user']) ? $params['user'] : $this->_currentUser,
-					'user_to' => $params['user_to'],
-				)
-			);
-			$tempQuery->getData('id');
-
-			$return = $tempQuery->dataResult();
+			$tempQuery = $this->quickQuery(array(
+				'rows' => 'id',
+				'where' => 'user = {int:user}',
+				'whereAnd' => 'user_to = {int:user_to}',
+				), array(
+				'user' => !empty($params['user']) ? $params['user']:$this->_currentUser,
+				'user_to' => $params['user_to'],
+				), 'id', false);
 
 			/* Patience is a virtue, you obviously don't know that, huh? */
-			if (!empty($return))
+			if (!empty($tempQuery))
 				fatal_lang_error('Breeze_buddyrequest_error_doublerequest', false);
 
 			/* We are good to go */
@@ -135,18 +142,30 @@ class BreezeNotifications extends Breeze
 			return false;
 	}
 
+	/**
+	 * BreezeNotifications::count()
+	 * 
+	 * @return
+	 */
 	public function count()
 	{
 		return count($this->_query->getNotifications());
 	}
 
+	/**
+	 * BreezeNotifications::getToUser()
+	 * 
+	 * @param mixed $user
+	 * @param bool $all
+	 * @return
+	 */
 	public function getToUser($user, $all = false)
 	{
 		/* Dont even bother... */
 		if (empty($user))
 			return false;
 
-		$temp =  $this->_query->getNotificationByUser($user);
+		$temp = $this->_query->getNotificationByUser($user);
 
 		/* Send those who hasn't been viewed */
 		if (!$all && !empty($temp))
@@ -162,13 +181,20 @@ class BreezeNotifications extends Breeze
 		return $temp;
 	}
 
+	/**
+	 * BreezeNotifications::getByUser()
+	 * 
+	 * @param mixed $user
+	 * @param bool $all
+	 * @return
+	 */
 	public function getByUser($user, $all = false)
 	{
 		/* Dont even bother... */
 		if (empty($user))
 			return false;
 
-		$temp =  $this->_query->getNotificationByUserSender($user);
+		$temp = $this->_query->getNotificationByUserSender($user);
 
 		/* Send those who hasn't been viewed */
 		if (!$all && !empty($temp))
@@ -184,6 +210,12 @@ class BreezeNotifications extends Breeze
 		return $temp;
 	}
 
+	/**
+	 * BreezeNotifications::doStream()
+	 * 
+	 * @param mixed $user
+	 * @return
+	 */
 	public function doStream($user)
 	{
 		global $context;
@@ -199,7 +231,7 @@ class BreezeNotifications extends Breeze
 		if (!empty($this->_all))
 		{
 			/* Call the methods */
-			foreach($this->_all as $single)
+			foreach ($this->_all as $single)
 				if (in_array($single['type'], $this->_types))
 				{
 					/* load the user's link */
@@ -214,7 +246,8 @@ class BreezeNotifications extends Breeze
 			if (!empty($this->_messages))
 			{
 				/* Make sure its an array */
-				$this->_messages = !is_array($this->_messages) ? array($this->_messages) : $this->_messages;
+				$this->_messages = !is_array($this->_messages) ? array($this->_messages):$this->
+					_messages;
 
 				/* @todo move this to breeze.js */
 				$context['insert_after_template'] .= '
@@ -223,12 +256,12 @@ class BreezeNotifications extends Breeze
 		{
 ';
 
-				foreach($this->_messages as $m)
+				foreach ($this->_messages as $m)
 					$context['insert_after_template'] .= '
-	var noti_id = \''. $m['id'] .'\';
-	var user = \''. $m['user'] .'\';
+	var noti_id = \'' . $m['id'] . '\';
+	var user = \'' . $m['user'] . '\';
 	noty({
-		text: '. JavaScriptEscape($m['message']) .',
+		text: ' . JavaScriptEscape($m['message']) . ',
 		type: \'notification\',
 		dismissQueue: true,
 		layout: \'topRight\',
@@ -306,6 +339,12 @@ class BreezeNotifications extends Breeze
 		}
 	}
 
+	/**
+	 * BreezeNotifications::doBuddy()
+	 * 
+	 * @param mixed $noti
+	 * @return
+	 */
 	protected function doBuddy($noti)
 	{
 		global $context;
@@ -318,13 +357,16 @@ class BreezeNotifications extends Breeze
 		$this->_messages[$noti['id']]['user'] = $noti['user_to'];
 
 		/* Fill out the messages property */
-		$this->_messages[$noti['id']]['message'] = sprintf(
-			$this->_text->getText('buddy_messagerequest_message'),
-			$context['Breeze']['user_info'][$noti['user']]['link'],
-			$noti['id']
-		);
+		$this->_messages[$noti['id']]['message'] = sprintf($this->_text->getText('buddy_messagerequest_message'),
+			$context['Breeze']['user_info'][$noti['user']]['link'], $noti['id']);
 	}
 
+	/**
+	 * BreezeNotifications::doMention()
+	 * 
+	 * @param mixed $noti
+	 * @return
+	 */
 	protected function doMention($noti)
 	{
 		global $context, $scripturl;
@@ -341,32 +383,25 @@ class BreezeNotifications extends Breeze
 			$noti['content']['wall_owner'],
 			$noti['content']['wall_poster'],
 			$noti['user_to'],
-		));
+			));
 
 		/* Build the status link */
-		$statusLink = $scripturl .'?action=profile;area=wallstatus;u='. $noti['content']['wall_owner'] .';bid='. $noti['content']['status_id'];
+		$statusLink = $scripturl . '?action=profile;area=wallstatus;u=' . $noti['content']['wall_owner'] .
+			';bid=' . $noti['content']['status_id'];
 
 		/* Is this a mention on a comment? */
 		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
 		{
 			/* Is this the same user's wall? */
 			if ($noti['content']['wall_owner'] == $noti['user_to'])
-				$text = sprintf(
-					$this->_text->getText('mention_message_own_wall_comment'),
-					$statusLink,
-					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
-					$noti['id']
-				);
+				$text = sprintf($this->_text->getText('mention_message_own_wall_comment'), $statusLink,
+					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'], $noti['id']);
 
 			/* This is someone elses wall, go figure... */
 			else
-				$text = sprintf(
-					$this->_text->getText('mention_message_comment'),
-					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
-					$context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'],
-					$statusLink,
-					$noti['id']
-				);
+				$text = sprintf($this->_text->getText('mention_message_comment'), $context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
+					$context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'], $statusLink,
+					$noti['id']);
 		}
 
 		/* No? then this is a mention made on a status */
@@ -374,37 +409,40 @@ class BreezeNotifications extends Breeze
 		{
 			/* Is this your own wall? */
 			if ($noti['content']['wall_owner'] == $noti['user_to'])
-				$text = sprintf(
-					$this->_text->getText('mention_message_own_wall_status'),
-					$statusLink,
-					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
-					$noti['id']
-				);
+				$text = sprintf($this->_text->getText('mention_message_own_wall_status'), $statusLink,
+					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'], $noti['id']);
 
 			/* No? don't worry, you will get your precious notification anyway */
 			elseif ($noti['content']['wall_owner'] != $noti['user_to'])
-				$text = sprintf(
-					$this->_text->getText('mention_message_comment'),
-					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
-					$context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'],
-					$statusLink,
-					$noti['id']
-				);
+				$text = sprintf($this->_text->getText('mention_message_comment'), $context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
+					$context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'], $statusLink,
+					$noti['id']);
 		}
 
 		/* Create the message already */
 		$this->_messages[$noti['id']] = array(
-		'id' => $noti['id'],
-		'user' => $noti['user_to'],
-		'message' => $text
-		);
+			'id' => $noti['id'],
+			'user' => $noti['user_to'],
+			'message' => $text);
 	}
 
+	/**
+	 * BreezeNotifications::delete()
+	 * 
+	 * @param mixed $id
+	 * @return
+	 */
 	protected function delete($id)
 	{
 		$this->_query->deleteNotification($id);
 	}
 
+	/**
+	 * BreezeNotifications::markAsRead()
+	 * 
+	 * @param mixed $id
+	 * @return
+	 */
 	public function markAsRead($id)
 	{
 		$this->_query->markAsviewedNotification($id);
