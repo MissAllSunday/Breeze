@@ -58,7 +58,7 @@ class BreezeQuery extends Breeze
 		/* Call the parent */
 		parent::__construct();
 
-		$this->_smcFunc = $this->_smcFunc;
+		$this->_smcFunc = $smcFunc;
 
 		/* @todo, create a multidimensional array containing all the columns for each table */
 		$this->_tables = array(

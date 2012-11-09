@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class BreezeMention
+class BreezeMention extends Breeze
 {
 	protected $_notification;
 	protected $_settings;
@@ -51,9 +51,12 @@ class BreezeMention
 
 	function __construct()
 	{
+		/* Call the parent */
+		parent::__construct();
+
 		$this->_regex = '~{([\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u';
-		$this->_notification = Breeze::notifications();
-		$this->_settings = Breeze::settings();
+		$this->_notification = $this->notifications();
+		$this->_settings = $this->settings();
 	}
 
 	/*
@@ -80,9 +83,6 @@ class BreezeMention
 		/* Do this if we have something */
 		if (!empty($this->_queryNames))
 		{
-			/* Load and set what we need */
-			$this->_query = Breeze::quickQuery('members');
-
 			/* We need an array and users won't be notified twice... */
 			$this->_queryNames = array_unique(is_array($this->_queryNames) ? $this->_queryNames : array($this->_queryNames));
 
@@ -91,19 +91,21 @@ class BreezeMention
 				$this->_queryNames = array_slice($this->_queryNames, 0, 10);
 
 			/* Let's make a quick query here... */
-			$this->_query->params(
+			$tempQuery = $this->quickQuery(
 				array(
+					'table' => 'members',
 					'rows' => 'id_member, member_name, real_name',
 					'where' => 'real_name IN({array_string:names}) OR member_name IN({array_string:names})',
 				),
 				array(
-					'names' => $this->_queryNames,
-				)
+					'names' => $this->_queryNames
+				),
+				'id_member', false
 			);
-			$this->_query->getData('id_member', false);
 
 			/* Get the actual users */
-			$this->_searchNames = !is_array($this->_query->dataResult()) ? array($this->_query->dataResult()) : $this->_query->dataResult();
+			if (!empty($tempQuery))
+				$this->_searchNames = !is_array($tempQuery) ? array($tempQuery) : $tempQuery;
 
 			/* We got some results */
 			if (!empty($this->_searchNames))

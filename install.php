@@ -161,7 +161,7 @@
 			'table_name' => '{db_prefix}breeze_notifications',
 			'columns' => array(
 				array(
-					'name' => 'id',
+					'name' => 'notifications_id',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false,
@@ -192,7 +192,7 @@
 					'null' => false
 				),
 				array(
-					'name' => 'read',
+					'name' => 'viewed',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
@@ -207,7 +207,7 @@
 			'indexes' => array(
 				array(
 					'type' => 'primary',
-					'columns' => array('id')
+					'columns' => array('notifications_id')
 				),
 			),
 			'if_exists' => 'ignore',
