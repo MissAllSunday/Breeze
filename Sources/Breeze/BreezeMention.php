@@ -86,7 +86,7 @@ class BreezeMention extends Breeze
 			/* We need an array and users won't be notified twice... */
 			$this->_queryNames = array_unique(is_array($this->_queryNames) ? $this->_queryNames : array($this->_queryNames));
 
-			/* Don't abuse... sorry, hardcoded for now */
+			/* @todo make a setting for this */
 			if (count($this->_queryNames) >= 10)
 				$this->_queryNames = array_slice($this->_queryNames, 0, 10);
 
