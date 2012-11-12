@@ -355,6 +355,22 @@ class BreezeAjax extends Breeze
 		if (empty($noti) || empty($user))
 			$context['Breeze']['ajax']['ok'] = 'error';
 
+		/* We must make sure this noti really exists, we just must!!! */
+		$noti_temp = $notifications->getToUser($user);
+
+		if (empty($noti_temp) || !array_key_exists($noti, $noti_temp))
+			$context['Breeze']['ajax']['ok'] = 'error';
+
+		else
+		{
+			/* All is good, mark this as read */
+			$context['Breeze']['ajax']['ok'] = 'ok';
+			$context['Breeze']['ajax']['data'] = 'ok';
+			$notifications->delete($noti);
+		}
+
+		$notifications->delete($noti);
+
 		$context['template_layers'] = array();
 		$context['sub_template'] = 'breeze_post';
 	}
