@@ -277,10 +277,10 @@ class BreezeAjax extends Breeze
 		unset($temp_id_exists);
 	}
 
-	/* Mark a notification as read */
 	/**
 	 * BreezeAjax::notimark()
 	 * 
+	 * Mark a notification as read
 	 * @return
 	 */
 	public static function notimark()
@@ -288,8 +288,6 @@ class BreezeAjax extends Breeze
 		global $context;
 
 		checkSession('post', '', false);
-
-		$keys = array();
 
 		/* Set some values */
 		$context['Breeze']['ajax'] = array( /* By default we assume all went terrible wrong... */
@@ -322,6 +320,40 @@ class BreezeAjax extends Breeze
 			$context['Breeze']['ajax']['data'] = 'ok';
 			$notifications->markAsRead($noti);
 		}
+
+		$context['template_layers'] = array();
+		$context['sub_template'] = 'breeze_post';
+	}
+
+	/**
+	 * BreezeAjax::notidelete()
+	 * 
+	 * Deletes a notification by ID
+	 * @return
+	 */
+	public static function notidelete()
+	{
+		global $context;
+
+		checkSession('post', '', false);
+
+		/* Set some values */
+		$context['Breeze']['ajax'] = array( /* By default we assume all went terrible wrong... */
+				'ok' => 'error', /* This will be empty anyway, maybe in the future I will find a use for it */
+				'data' => 'error_');
+
+		/* Load what we need */
+		$sa = Breeze::sGlobals('request');
+		$query = Breeze::query();
+		$notifications = Breeze::notifications();
+
+		/* Get the data */
+		$noti = $sa->getValue('content');
+		$user = $sa->getValue('user');
+
+		/* Is this valid data? */
+		if (empty($noti) || empty($user))
+			$context['Breeze']['ajax']['ok'] = 'error';
 
 		$context['template_layers'] = array();
 		$context['sub_template'] = 'breeze_post';
