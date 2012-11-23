@@ -161,7 +161,7 @@
 			'table_name' => '{db_prefix}breeze_notifications',
 			'columns' => array(
 				array(
-					'name' => 'notifications_id',
+					'name' => 'id',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false,

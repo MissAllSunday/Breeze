@@ -71,9 +71,7 @@ class Breeze
 	 * 
 	 * @return
 	 */
-	public function __construct()
-	{
-	}
+	public function __construct(){}
 
 	/**
 	 * Breeze::load()
@@ -93,8 +91,8 @@ class Breeze
 			foreach ($file as $f)
 				require_once ($sourcedir . '/' . $f . '.php');
 
-			elseif (!empty($file))
-				require_once ($sourcedir . '/' . $file . '.php');
+		elseif (!empty($file))
+			require_once ($sourcedir . '/' . $file . '.php');
 	}
 
 	/**
@@ -420,22 +418,17 @@ class Breeze
 	 */
 	public static function actions(&$actions)
 	{
-
 		/* A whole new action just for some ajax calls... */
-		$actions['breezeajax'] = array(Breeze::$folder . 'BreezeAjax.php',
-				'BreezeAjax::call');
+		$actions['breezeajax'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
 
 		/* The general wall */
-		$actions['wall'] = array(Breeze::$folder . 'BreezeGeneral.php',
-				'BreezeGeneral::call');
+		$actions['wall'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
 
 		/* Replace the buddy action */
-		$actions['buddy'] = array(Breeze::$folder . 'BreezeBuddy.php',
-				'BreezeBuddy::buddy');
+		$actions['buddy'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
 
 		/* A special action for the buddy request message */
-		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php',
-				'Breeze_Wrapper_BuddyMessageSend');
+		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
 	}
 
 	/**

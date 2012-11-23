@@ -61,7 +61,7 @@ class BreezeAjax extends Breeze
 			'delete' => 'BreezeAjax::delete',
 			'notimarkasread' => 'BreezeAjax::notimark',
 			'notidelete' => 'BreezeAjax::notidelete',
-			);
+		);
 
 		/* Does the subaction even exist? */
 		if (in_array($sglobals->getValue('sa'), array_keys($subActions)))
