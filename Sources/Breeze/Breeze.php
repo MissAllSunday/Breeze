@@ -119,7 +119,7 @@ class Breeze
 	 */
 	public function quickQuery($params, $data, $key = false, $single = false)
 	{
-		return $this->query()->quickQuery($params, $data, $key = false, $single = false);
+		return self::query()->quickQuery($params, $data, $key = false, $single = false);
 	}
 
 	/**
