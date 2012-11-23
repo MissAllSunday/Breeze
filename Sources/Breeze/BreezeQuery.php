@@ -90,7 +90,7 @@ class BreezeQuery extends Breeze
 				'name' => 'noti',
 				'table' => 'breeze_notifications',
 				'property' => '_noti',
-				'columns' => array('notifications_id', 'user', 'user_to', 'type', 'time', 'viewed', 'content'),
+				'columns' => array('id', 'user', 'user_to', 'type', 'time', 'viewed', 'content'),
 				),
 		);
 	}
@@ -718,8 +718,8 @@ class BreezeQuery extends Breeze
 
 			/* Populate the array like a boss! */
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-				$this->_noti[$row['notifications_id']] = array(
-					'id' => $row['notifications_id'],
+				$this->_noti[$row['id']] = array(
+					'id' => $row['id'],
 					'user' => $row['user'],
 					'user_to' => $row['user_to'],
 					'type' => $row['type'],
@@ -770,7 +770,7 @@ class BreezeQuery extends Breeze
 			'time' => 'int',
 			'viewed' => 'int',
 			'content' => 'string',
-			), $array, array('notifications_id'));
+			), $array, array('id'));
 	}
 
 	/**
