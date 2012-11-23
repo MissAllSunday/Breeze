@@ -53,7 +53,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::__construct()
-	 * 
+	 *
 	 * Creates a multidimensional array with all the details about the tables used in Breeze
 	 * @return
 	 */
@@ -96,22 +96,8 @@ class BreezeQuery extends Breeze
 	}
 
 	/**
-	 * BreezeQuery::getInstance()
-	 * 
-	 * Yes, I used a singleton, so what!
-	 * @return object access to this class methods and properties
-	 */
-	public static function getInstance()
-	{
-		if (!self::$_instance)
-			self::$_instance = new self();
-
-		return self::$_instance;
-	}
-
-	/**
 	 * BreezeQuery::quickQuery()
-	 * 
+	 *
 	 * @param array $params An array with all the params  for the query
 	 * @param array $data An array to pass to $smcFunc casting array
 	 * @param bool $key A boolean value to asign a row as key on the returning array
@@ -123,13 +109,15 @@ class BreezeQuery extends Breeze
 		$dataResult = array();
 
 		$query = $this->_smcFunc['db_query']('', '
-			SELECT ' . $params['rows'] . '
-			FROM {db_prefix}' . $params['table'] . '
-			' . (!empty($params['join']) ? 'LEFT JOIN ' . $params['join']:'') . '
-			' . (!empty($params['where']) ? 'WHERE ' . $params['where']:'') . '
-				' . (!empty($params['and']) ? 'AND ' . $params['and']:'') . '
-			' . (!empty($params['order']) ? 'ORDER BY ' . $params['order']:'') . '
-			' . (!empty($params['limit']) ? 'LIMIT ' . $params['limit']:'') . '', $data);
+			SELECT ' . $params['rows'] .'
+			FROM {db_prefix}' . $params['table'] .'
+			'. (!empty($params['join']) ? 'LEFT JOIN '. $params['join'] : '') .'
+			'. (!empty($params['where']) ? 'WHERE '. $params['where'] : '') .'
+				'. (!empty($params['and']) ? 'AND '. $params['and'] : '') .'
+			'. (!empty($params['order']) ? 'ORDER BY ' . $params['order'] : '') .'
+			'. (!empty($params['limit']) ? 'LIMIT '. $params['limit'] : '') . '',
+			$data
+		);
 
 		if ($single)
 			while ($row = $this->_smcFunc['db_fetch_assoc']($query))
@@ -150,7 +138,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::killCache()
-	 * 
+	 *
 	 * Disclaimer: Killing in breeze world means replace the existing cache data with a null value so SMF generates a new cache...
 	 * @param string $type the name of value(s) to be deleted
 	 * @return void
@@ -161,12 +149,12 @@ class BreezeQuery extends Breeze
 			$type = array($type);
 
 		foreach ($type as $t)
-			cache_put_data('Breeze:' . $t, '');
+			cache_put_data(parent::$name .'-'. $t, '');
 	}
 
 	/**
 	 * BreezeQuery::resetTemp()
-	 * 
+	 *
 	 * Resets the temp property if you wish to use it, call this method first
 	 * @return void
 	 */
@@ -177,7 +165,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::getReturn()
-	 * 
+	 *
 	 * Return an associative array based on the entered params
 	 * @param string $type The name of the table to fetch
 	 * @param string $row The name of the row to fetch
@@ -220,7 +208,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::switchData()
-	 * 
+	 *
 	 * Set the temp array with the correct data acording to the type specified
 	 * @param string $type the data type
 	 * @return void
@@ -236,7 +224,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::getSingleValue()
-	 * 
+	 *
 	 * Needs a type, a row and a value, this iterates X array looking for X value in X row. Yes, this can be used to fetch more than one value if you really want to fetch more than 1 value.
 	 * @param string $type the data type
 	 * @param string $row the row where to fetch the value from, should be the actual row name in the array, not the row name in the DB.
@@ -253,7 +241,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::getLastStatus()
-	 * 
+	 *
 	 * It is not reliable to use the cache array for this one so let's do a query here.
 	 * @see BreezeAjax
 	 * @return array An array with the last status ID.
@@ -280,7 +268,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::getLastComment()
-	 * 
+	 *
 	 * Basically the same as the method above, query the DB to get the last comment added, ID only.
 	 * @see BreezeAjax
 	 * @return array An array with the last status ID.
@@ -307,7 +295,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::status()
-	 * 
+	 *
 	 * The main method to load all the status. This is one of the main queries.
 	 * @return array a very big associative array with the status ID row as key
 	 */
@@ -350,8 +338,8 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::getStatus()
-	 * 
-	 * Calls BreezeQuery::status() if the _status property doesn't exists already 
+	 *
+	 * Calls BreezeQuery::status() if the _status property doesn't exists already
 	 * @return array An array with all the status loaded by status())
 	 */
 	public function getStatus()
@@ -361,7 +349,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::getStatusByProfile()
-	 * 
+	 *
 	 * Get all status made in X profile page. Uses a custom query and store the results on separate cache entries per profile.
 	 * @param int $id the ID of the user that owns the profile page, it does not matter who made that status as long as the status was made in X profile page.
 	 * @return array An array containing all the status made in X profile page
@@ -428,7 +416,7 @@ class BreezeQuery extends Breeze
 	*/
 	/**
 	 * BreezeQuery::getStatusByID()
-	 * 
+	 *
 	 * Get a single status based on the ID. This should return just one value, if it returns more, then we have a bug somewhere or you didn't provide a valid ID
 	 * @see BreezeQuery::getReturn()()
 	 * @param int $id the ID of status you want to fetch.
@@ -442,7 +430,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::getStatusByUser()
-	 * 
+	 *
 	 * Get all status made by X user. This returns all the status made by x user, it does not matter on what profile page they were made.
 	 * @see BreezeQuery::getReturn()
 	 * @param int $id the ID of the user that you want to fetch the status from.
@@ -455,7 +443,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::getStatusByLast()
-	 * 
+	 *
 	 * Get the latest Status in the Status array. This returns the last status added to the array.
 	 * @return array the last status added to the Status array
 	 */
@@ -470,7 +458,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::comments()
-	 * 
+	 *
 	 * The main method to load all the comments. This is one of the main queries, load all the commments form all users.
 	 * @return array a very big associative array with the comment ID as key
 	 */
@@ -516,7 +504,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::getComments()
-	 * 
+	 *
 	 * Returns all comments in the comments array
 	 * @return array An array containing all comments. ID as the key.
 	 */
@@ -527,7 +515,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::getCommentsByProfile()
-	 * 
+	 *
 	 * Get all comments made in X profile page. Uses the generic method getReturn.
 	 * @param int $id
 	 * @return array An array containing all comments made in X profile page
@@ -540,7 +528,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::getCommentsByStatus()
-	 * 
+	 *
 	 * Get all comments under an specific status
 	 * @see BreezeQuery::getReturn()
 	 * @param int $id
@@ -569,7 +557,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::insertStatus()
-	 * 
+	 *
 	 * @param mixed $array
 	 * @return
 	 */
@@ -590,7 +578,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::insertComment()
-	 * 
+	 *
 	 * @param mixed $array
 	 * @return
 	 */
@@ -613,7 +601,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::deleteStatus()
-	 * 
+	 *
 	 * @param int $id
 	 * @return
 	 */
@@ -633,7 +621,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::deleteCommentByStatusID()
-	 * 
+	 *
 	 * @param int $id
 	 * @return
 	 */
@@ -646,7 +634,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::deleteComment()
-	 * 
+	 *
 	 * @param int $id
 	 * @return
 	 */
@@ -660,7 +648,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::members()
-	 * 
+	 *
 	 * @return
 	 */
 	protected function members()
@@ -691,7 +679,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::getUserSetting()
-	 * 
+	 *
 	 * Gets a unique user setting
 	 * @param int $user
 	 * @param bool $setting
@@ -722,7 +710,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::noti()
-	 * 
+	 *
 	 * Loads all the notifications, uses cahce when possible
 	 * @return array
 	 */
@@ -761,7 +749,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::getNotifications()
-	 * 
+	 *
 	 * Calls BreezeQuery::noti() if its corresponding property is empty
 	 * @see BreezeQuery::noti()
 	 * @return bool|array Either an boolean false or An array of data
@@ -773,7 +761,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::insertNotification()
-	 * 
+	 *
 	 * Inserts a notification entry on the DB
 	 * @param array $array
 	 * @return void
@@ -796,7 +784,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::markAsviewedNotification()
-	 * 
+	 *
 	 * Marks the specific notification entry as "viewed"
 	 * @param int $id The notification ID
 	 * @return
@@ -815,7 +803,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::deleteNotification()
-	 * 
+	 *
 	 * Deletes the specific notification entry from the DB
 	 * @param int $id the notification ID
 	 * @return void
@@ -834,7 +822,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::getNotificationByUser()
-	 * 
+	 *
 	 * @param int $user The user from where the notifications will be fetched
 	 * @return array
 	 */
@@ -845,7 +833,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::getNotificationByUserSender()
-	 * 
+	 *
 	 * @see BreezeQuery::getReturn())
 	 * @param int $user The user from where the notifications will be fetched
 	 * @return array
@@ -857,7 +845,7 @@ class BreezeQuery extends Breeze
 
 	/**
 	 * BreezeQuery::getNotificationByType()
-	 * 
+	 *
 	 * Gets all the notifications stored under an specific type
 	 * @param string $type the notification type
 	 * @param bool $user
