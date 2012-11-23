@@ -40,14 +40,14 @@ if (!defined('SMF'))
 
 class BreezeAjax extends Breeze
 {
-	public static $query;
+	public $query;
 
 	/**
 	 * BreezeAjax::call()
 	 * 
 	 * @return
 	 */
-	public static function call()
+	public function call()
 	{
 		/* Load stuff */
 		loadtemplate('BreezeAjax');
@@ -77,7 +77,7 @@ class BreezeAjax extends Breeze
 	 * 
 	 * @return
 	 */
-	public static function post()
+	public function post()
 	{
 		global $context;
 
@@ -148,7 +148,7 @@ class BreezeAjax extends Breeze
 	 * 
 	 * @return
 	 */
-	public static function postComment()
+	public function postComment()
 	{
 		global $context, $scripturl;
 
@@ -227,7 +227,7 @@ class BreezeAjax extends Breeze
 	 * 
 	 * @return
 	 */
-	public static function delete()
+	public function delete()
 	{
 		global $context;
 
@@ -283,7 +283,7 @@ class BreezeAjax extends Breeze
 	 * Mark a notification as read
 	 * @return
 	 */
-	public static function notimark()
+	public function notimark()
 	{
 		global $context;
 
@@ -331,7 +331,7 @@ class BreezeAjax extends Breeze
 	 * Deletes a notification by ID
 	 * @return
 	 */
-	public static function notidelete()
+	public function notidelete()
 	{
 		global $context;
 

@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class BreezeDispatcher
+abstract class BreezeDispatcher
 {
 
 	/**
@@ -46,7 +46,7 @@ class BreezeDispatcher
 	 *
 	 * @return
 	 */
-	public function __construct(){}
+	private function __construct(){}
 
 	static function dispatch()
 	{
