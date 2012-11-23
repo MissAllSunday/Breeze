@@ -290,8 +290,8 @@ class BreezeAjax extends Breeze
 		checkSession('post', '', false);
 
 		/* Set some values */
-		$context['Breeze']['ajax'] = array( /* By default we assume all went terrible wrong... */
-				'ok' => 'error', /* This will be empty anyway, maybe in the future I will find a use for it */
+		$context['Breeze']['ajax'] = array(
+				'ok' => 'error',
 				'data' => 'error_');
 
 		/* Load what we need */
@@ -338,8 +338,8 @@ class BreezeAjax extends Breeze
 		checkSession('post', '', false);
 
 		/* Set some values */
-		$context['Breeze']['ajax'] = array( /* By default we assume all went terrible wrong... */
-				'ok' => 'error', /* This will be empty anyway, maybe in the future I will find a use for it */
+		$context['Breeze']['ajax'] = array(
+				'ok' => 'error',
 				'data' => 'error_');
 
 		/* Load what we need */
@@ -368,8 +368,6 @@ class BreezeAjax extends Breeze
 			$context['Breeze']['ajax']['data'] = 'ok';
 			$notifications->delete($noti);
 		}
-
-		$notifications->delete($noti);
 
 		$context['template_layers'] = array();
 		$context['sub_template'] = 'breeze_post';

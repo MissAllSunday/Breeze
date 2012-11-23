@@ -432,7 +432,7 @@ class BreezeNotifications extends Breeze
 	 * @param mixed $id
 	 * @return
 	 */
-	protected function delete($id)
+	public function delete($id)
 	{
 		$this->_query->deleteNotification($id);
 	}
