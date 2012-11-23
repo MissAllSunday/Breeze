@@ -48,7 +48,7 @@ class BreezeGlobals
 	 * @param mixed $var
 	 * @return
 	 */
-	public function __construct($var)
+	public function __construct($var = 'request')
 	{
 		switch ($var)
 		{
@@ -61,6 +61,8 @@ class BreezeGlobals
 			case 'request':
 				$this->_request = $_REQUEST;
 				break;
+			default:
+				$this->_request = $_REQUEST;
 		}
 	}
 
