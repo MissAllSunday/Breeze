@@ -307,7 +307,7 @@ class BreezeQuery extends Breeze
 		{
 			/* Load all the status, set a limit if things get complicated */
 			$result = $this->_smcFunc['db_query']('', '
-				SELECT '. implode($this->_tables['status']['colums']) .'
+				SELECT '. implode(',', $this->_tables['status']['colums']) .'
 				FROM {db_prefix}breeze_status
 				' . ($this->settings()->enable('admin_enable_limit') && $this->settings()->
 				enable('admin_limit_timeframe') ? 'WHERE status_time >= {int:status_time}':'') .
@@ -461,7 +461,7 @@ class BreezeQuery extends Breeze
 		{
 			/* Load all the comments, set a limit if things get complicated */
 			$result = $this->_smcFunc['db_query']('', '
-				SELECT '. implode($this->_tables['comments']['columns']) .'
+				SELECT '. implode(',', $this->_tables['comments']['columns']) .'
 				FROM {db_prefix}breeze_comments
 				' . ($this->settings()->enable('admin_enable_limit') && $this->settings()->
 				enable('admin_limit_timeframe') ? 'WHERE comments_time >= {int:comments_time}':
@@ -712,7 +712,7 @@ class BreezeQuery extends Breeze
 			120)) == null)
 		{
 			$result = $this->_smcFunc['db_query']('', '
-				SELECT '. implode($this->_tables['noti']['columns']) .'
+				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
 				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
 				', array());
 
