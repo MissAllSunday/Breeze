@@ -219,7 +219,7 @@ class BreezeQuery extends Breeze
 		$method = $this->_tables[$type]['name'];
 
 		if (array_key_exists($type, $this->_tables))
-			$this->_temp = $this->$property ? $this->$property:$this->$method();
+			$this->_temp = $this->$property ? $this->$property : $this->$method();
 	}
 
 	/**
@@ -302,7 +302,7 @@ class BreezeQuery extends Breeze
 	protected function status()
 	{
 		/* Use the cache please... */
-		if (($this->_status = cache_get_data('Breeze:' . $this->_tables['status']['name'],
+		if (($this->_status = cache_get_data(parent::$name .'-' . $this->_tables['status']['name'],
 			120)) == null)
 		{
 			/* Load all the status, set a limit if things get complicated */
@@ -330,7 +330,7 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:' . $this->_tables['status']['name'], $this->_status, 120);
+			cache_put_data(parent::$name .'-' . $this->_tables['status']['name'], $this->_status, 120);
 		}
 
 		return $this->_status;
@@ -357,7 +357,7 @@ class BreezeQuery extends Breeze
 	public function getStatusByProfile($id)
 	{
 		/* Use the cache please... */
-		if (($return = cache_get_data('Breeze:' . $id, 120)) == null)
+		if (($return = cache_get_data(parent::$name .'-' . $id, 120)) == null)
 		{
 			/* Big query... */
 			$result = $this->_smcFunc['db_query']('', '
@@ -399,21 +399,12 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:' . $id, $return, 120);
+			cache_put_data(parent::$name .'-' . $id, $return, 120);
 		}
 
 		return $return;
 	}
 
-	/*
-	* Get a single status based on the ID
-	*
-	* This should return just one value, if it returns more, then we have a bug somewhere or you didn't provide a valid ID
-	* @see BreezeQuery::getReturn()()
-	* @param int $id the ID of status you want to fetch.
-	* @access public
-	* @return array An array containing all the status made in X profile page
-	*/
 	/**
 	 * BreezeQuery::getStatusByID()
 	 *
@@ -465,12 +456,12 @@ class BreezeQuery extends Breeze
 	protected function comments()
 	{
 		/* Use the cache please... */
-		if (($this->_comments = cache_get_data('Breeze:' . $this->_tables['comments']['name'],
+		if (($this->_comments = cache_get_data(parent::$name .'-' . $this->_tables['comments']['name'],
 			120)) == null)
 		{
 			/* Load all the comments, set a limit if things get complicated */
 			$result = $this->_smcFunc['db_query']('', '
-				SELECT *
+				SELECT '. implode($this->_tables['comments']['columns']) .'
 				FROM {db_prefix}breeze_comments
 				' . ($this->settings()->enable('admin_enable_limit') && $this->settings()->
 				enable('admin_limit_timeframe') ? 'WHERE comments_time >= {int:comments_time}':
@@ -495,7 +486,7 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:' . $this->_tables['comments']['name'], $this->_comments,
+			cache_put_data(parent::$name .'-' . $this->_tables['comments']['name'], $this->_comments,
 				120);
 		}
 
@@ -654,7 +645,7 @@ class BreezeQuery extends Breeze
 	protected function members()
 	{
 		/* Use the cache please... */
-		if (($this->_members = cache_get_data('Breeze:' . $this->_tables['members']['name'],
+		if (($this->_members = cache_get_data(parent::$name .'-' . $this->_tables['members']['name'],
 			120)) == null)
 		{
 			/* Load all the settings from all users */
@@ -670,7 +661,7 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:' . $this->_tables['members']['name'], $this->_members,
+			cache_put_data(parent::$name .'-' . $this->_tables['members']['name'], $this->_members,
 				120);
 		}
 
@@ -717,7 +708,7 @@ class BreezeQuery extends Breeze
 	protected function noti()
 	{
 		/* Use the cache please... */
-		if (($this->_noti = cache_get_data('Breeze:' . $this->_tables['noti']['name'],
+		if (($this->_noti = cache_get_data(parent::$name .'-' . $this->_tables['noti']['name'],
 			120)) == null)
 		{
 			$result = $this->_smcFunc['db_query']('', '
@@ -741,7 +732,7 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data('Breeze:' . $this->_tables['noti']['name'], $this->_noti, 120);
+			cache_put_data(parent::$name .'-' . $this->_tables['noti']['name'], $this->_noti, 120);
 		}
 
 		return $this->_noti;
