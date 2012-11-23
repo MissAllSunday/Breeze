@@ -714,7 +714,8 @@ class BreezeQuery extends Breeze
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
 				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
-				', array());
+				', array()
+			);
 
 			/* Populate the array like a boss! */
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
@@ -725,9 +726,8 @@ class BreezeQuery extends Breeze
 					'type' => $row['type'],
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
-					'content' => !empty($row['content']) ? json_decode($row['content'], true):array
-						(),
-					);
+					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+				);
 
 			$this->_smcFunc['db_free_result']($result);
 
