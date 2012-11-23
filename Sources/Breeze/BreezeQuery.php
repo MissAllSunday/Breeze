@@ -72,23 +72,27 @@ class BreezeQuery extends Breeze
 				'name' => 'status',
 				'table' => 'breeze_status',
 				'property' => '_status',
+				'columns' => array('status_id', 'status_owner_id', 'status_poster_id', 'status_time', 'status_body'),
 				),
 			'comments' => array(
 				'name' => 'comments',
 				'table' => 'breeze_comments',
 				'property' => '_comments',
+				'columns' => array('comments_id', 'comments_status_id', 'comments_status_owner_id', 'comments_poster_id', 'comments_profile_owner_id', 'comments_time', 'comments_body'),
 				),
 			'members' => array(
 				'name' => 'members',
 				'table' => 'members',
 				'property' => '_members',
+				'columns' => array(),
 				),
 			'noti' => array(
 				'name' => 'noti',
 				'table' => 'breeze_notifications',
 				'property' => '_noti',
+				'columns' => array('notifications_id', 'user', 'user_to', 'type', 'time', 'viewed', 'content'),
 				),
-			);
+		);
 	}
 
 	/**
