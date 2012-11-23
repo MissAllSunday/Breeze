@@ -136,7 +136,7 @@ class BreezeAjax extends Breeze
 				));
 
 			/* Parse the content */
-			$params['body'] = $this->_parser->->display($params['body']);
+			$params['body'] = $this->_parser->display($params['body']);
 
 			/* The status was added, build the server response */
 			$display = new Breezedisplay($params, 'status');
@@ -207,7 +207,7 @@ class BreezeAjax extends Breeze
 				));
 
 			/* Parse the content */
-			$params['body'] = $this->_parser->->display($params['body']);
+			$params['body'] = $this->_parser->display($params['body']);
 
 			/* The comment was added, build the server response */
 			$display = new Breezedisplay($params, 'comment');
