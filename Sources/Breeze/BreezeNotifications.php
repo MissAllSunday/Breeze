@@ -121,6 +121,7 @@ class BreezeNotifications extends Breeze
 		{
 			/* Doing a quick query will be better than loading the entire notifications array */
 			$tempQuery = $this->quickQuery(array(
+				'table' => 'notifications',
 				'rows' => 'id',
 				'where' => 'user = {int:user}',
 				'whereAnd' => 'user_to = {int:user_to}',
