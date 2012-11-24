@@ -54,8 +54,8 @@ class BreezeAjax extends Breeze
 
 		/* Load all the things we need */
 		$this->_data = $this->sGlobals('request');
-		$this->_query = $this->query();
-		$this->_parser = $this->parser();
+		$this->_query = $this->get('query');
+		$this->_parser = $this->get('parser');
 		$this->_mention = $this->mention();
 		$this->_settings = $this->settings();
 		$this->_notifications = $this->notifications();

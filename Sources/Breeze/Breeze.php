@@ -96,6 +96,17 @@ class Breeze
 	}
 
 	/**
+	 * Breeze::get()
+	 *
+	  *@param string The name of the class
+	 * @return object Access to the class
+	 */
+	public function get($object, $param = false)
+	{
+		return new $object($param ? $param : false);
+	}
+
+	/**
 	 * Breeze::query()
 	 * 
 	 * @see BreezeQuery
