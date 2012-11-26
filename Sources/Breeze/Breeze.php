@@ -103,7 +103,9 @@ class Breeze
 	 */
 	public function get($object, $param = false)
 	{
-		return new $object($param ? $param : null);
+		$object = ucfirst($object);
+		$class = self::$name . $object;
+		return new $class($param ? $param : null);
 	}
 
 	/**
