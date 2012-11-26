@@ -103,7 +103,7 @@ class Breeze
 	 */
 	public function get($object, $param = false)
 	{
-		return new $object($param ? $param : false);
+		return new $object($param ? $param : null);
 	}
 
 	/**
