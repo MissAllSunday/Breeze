@@ -67,7 +67,7 @@ class Breeze
 	public static $txtpattern = 'BreezeMod_';
 
 	/* Its easier to list the allowed actions */
-	public static $_allowedActions = array('display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who',)
+	public static $_allowedActions = array('display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who',);
 
 	/**
 	 * Breeze::__construct()

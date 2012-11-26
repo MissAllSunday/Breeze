@@ -139,7 +139,8 @@ $txt['Breeze_admin_limit_timeframe'] = 'Set the limit in time to fetch status an
 $txt['Breeze_admin_limit_timeframe_sub'] = 'This will fetch the status/comments only from the past selected option, for example, the last week, the last month, etc.';
 $txt['Breeze_admin_breeze_version'] = 'Breeze version';
 $txt['Breeze_admin_live'] = 'Live from the suport forum...';
-
+$txt['Breeze_allowedActions'] = 'Write the actions where you wish the notification system shows up';
+$txt['Breeze_allowedActions_sub'] = 'By default, the notificaiton system will appear on the following actions: '. implode(', ', Breeze::$_allowedActions) .'. Plus the BoardIndex, MessageIndex, Topic and Board pages. <br /> Please add your actions in a comma separated list, example: action, action, action, action';
 
 /* Time */
 $txt['Breeze_time_just_now'] = 'just now.';
