@@ -286,8 +286,14 @@ function template_user_wall()
 
 	/* End of left side */
 	echo '</div>
-	<div class="clear"></div>
+		<div class="clear"></div>
 	</div>';
+
+	/* Don't forget to print the users data */
+	if (!empty($context['Breeze']['user_info']))
+		foreach ($context['Breeze']['user_info'] as $userData)
+			if (!empty($userData['data']))
+				echo $userData['data'];
 }
 
 function template_user_notifications()
@@ -392,6 +398,12 @@ function template_singleStatus()
 
 	/* End of list */
 	echo '</ul></div>';
+
+	/* Don't forget to print the users data */
+	if (!empty($context['Breeze']['user_info']))
+		foreach ($context['Breeze']['user_info'] as $userData)
+			if (!empty($userData['data']))
+				echo $userData['data'];
 }
 
 function template_member_options()

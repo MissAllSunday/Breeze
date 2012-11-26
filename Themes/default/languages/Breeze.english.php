@@ -139,7 +139,8 @@ $txt['Breeze_admin_limit_timeframe'] = 'Set the limit in time to fetch status an
 $txt['Breeze_admin_limit_timeframe_sub'] = 'This will fetch the status/comments only from the past selected option, for example, the last week, the last month, etc.';
 $txt['Breeze_admin_breeze_version'] = 'Breeze version';
 $txt['Breeze_admin_live'] = 'Live from the suport forum...';
-
+$txt['Breeze_allowedActions'] = 'Write the actions where you wish the notification system shows up';
+$txt['Breeze_allowedActions_sub'] = 'By default, the notificaiton system will appear on the following actions: '. implode(', ', Breeze::$_allowedActions) .'. Plus the BoardIndex, MessageIndex, Topic and Board pages. <br /> Please add your actions in a comma separated list, example: action, action, action, action';
 
 /* Time */
 $txt['Breeze_time_just_now'] = 'just now.';
@@ -188,6 +189,10 @@ $txt['Breeze_pag_last'] = 'Last';
 $txt['Breeze_noti_title'] = 'Notifications';
 $txt['Breeze_noti_buddy_title'] = 'Buddy notification';
 $txt['Breeze_noti_buddy_message'] = 'The user %s has added you as his/her buddy, please confirm this request.';
+$txt['Breeze_noti_markasread'] = 'Mark as read';
+$txt['Breeze_noti_close'] = 'Close';
+$txt['Breeze_noti_markasread_after'] = 'You have successfully marked this notification as read';
+$txt['Breeze_noti_delete_after'] = 'You have successfully deleted this notification';
 
 /* Comment notification */
 $txt['Breeze_noti_comment_message'] = '%1$s commented on the status made by %2$s on %3$s\'s wall,<br/> <a href="" class="bbc_link" target="_blank">see the comment</a>';
@@ -195,15 +200,15 @@ $txt['Breeze_noti_comment_message_statusOwner'] = '%1$s commented on your status
 $txt['Breeze_noti_comment_message_wallOwner'] = '%1$s commented on the status made by %2$s on your wall';
 
 /* Mentions */
-$txt['Breeze_mention_message_status'] = '<a href="%3$s" class="bbc_link" target="_blank"> You have been mentioned</a> by %1$s on %2$s\'s wall!';
+$txt['Breeze_mention_message_status'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> You have been mentioned</a> by %1$s on %2$s\'s wall!';
 $txt['Breeze_mention_message_own_wall_status'] = '<a href="%1$s" class="bbc_link" target="_blank">You have been mentioned</a> on your own wall by %2$s!';
-$txt['Breeze_mention_message_comment'] = '<a href="%3$s" class="bbc_link" target="_blank"> You have been mentioned on a comment</a> by %1$s on %2$s\'s wall!';
-$txt['Breeze_mention_message_own_wall_comment'] = '<a href="%1$s" class="bbc_link" target="_blank">You have been mentioned</a> on a comment on your own wall by %2$s!';
+$txt['Breeze_mention_message_comment'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> You have been mentioned on a comment</a> by %1$s on %2$s\'s wall!';
+$txt['Breeze_mention_message_own_wall_comment'] = '<a href="%1$s" class="bbc_link" target="_blank" id="noti_%3$s">You have been mentioned</a> on a comment on your own wall by %2$s!';
 
 /* Buddy List */
 $txt['Breeze_buddyrequest_error_doublerequest'] = 'You already sent a buddy request, please wait for the user\'s response.';
 $txt['Breeze_buddyrequest_error_dunno'] = 'Something went wrong, please contact the forum admin.';
-$txt['Breeze_buddy_messagerequest_message'] = '%s wants to be your buddy!';
+$txt['Breeze_buddy_messagerequest_message'] = '%1$s wants to be your buddy! <span id="noti_%2$s"></span>';
 $txt['Breeze_buddy_title'] = 'Buddy List';
 $txt['Breeze_buddy_desc'] = 'From here you can confirm or decline your buddy request. If you confirm the buddy request, a pm on your behalf will be send to the user, if you decine the request the user will not receive anything';
 $txt['Breeze_buddyrequest_title'] = 'Buddy requests';

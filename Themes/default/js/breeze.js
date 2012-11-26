@@ -3,7 +3,7 @@
  *
  * The purpose of this file is to handle all the client side code, the ajax call for the status, comments and other stuff
  * @package Breeze mod
- * @version 1.0 Beta 2
+ * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
  * @copyright Copyright (c) 2012, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
