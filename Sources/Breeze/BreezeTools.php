@@ -45,6 +45,7 @@ class BreezeTools extends Breeze
 
 		$this->text = $this->text();
 		$this->bSettings = $this->settings();
+		$this->_data = $this->sGlobals('request');
 	}
 
 
@@ -102,8 +103,8 @@ class BreezeTools extends Breeze
 			</style>';
 		}
 
-		/* Stuff for the notifications, don't show this is we are on an action specified */
-		if ($type == 'noti' && empty($user_info['is_guest']))
+		/* Stuff for the notifications, don't show this if we aren't on a specified action */
+		if ($type == 'noti' && empty($user_info['is_guest']) && (in_array($this->_data->getValue('action'), parent::$_allowedActions) || $this->_data->getValue('action') == false))
 		{
 			$notifications = $this->notifications();
 

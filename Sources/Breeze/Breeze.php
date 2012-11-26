@@ -40,7 +40,7 @@ if (!defined('SMF'))
 
 /**
  * breeze_autoloader()
- * 
+ *
  * @param mixed $class_name
  * @return
  */
@@ -66,16 +66,19 @@ class Breeze
 	public static $folder = '/Breeze/';
 	public static $txtpattern = 'BreezeMod_';
 
+	/* Its easier to list the allowed actions */
+	public static $_allowedActions = array('display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who',)
+
 	/**
 	 * Breeze::__construct()
-	 * 
+	 *
 	 * @return
 	 */
 	public function __construct(){}
 
 	/**
 	 * Breeze::load()
-	 * 
+	 *
 	 * @param string $file When $file is a string it contains a single file name.
 	 * @param array $file a comma separated list of all the file names to be loaded.
 	 * @return
@@ -110,7 +113,7 @@ class Breeze
 
 	/**
 	 * Breeze::query()
-	 * 
+	 *
 	 * @see BreezeQuery
 	 * @return object Access to BreezeQuery
 	 */
@@ -121,7 +124,7 @@ class Breeze
 
 	/**
 	 * Breeze::quickQuery()
-	 * 
+	 *
 	 * @param array $params An array with all the params  for the query
 	 * @param array $data An array to pass to $smcFunc casting array
 	 * @param bool $key A boolean value to asign a row as key on the returning array
@@ -135,7 +138,7 @@ class Breeze
 
 	/**
 	 * Breeze::tools()
-	 * 
+	 *
 	 * @see BreezeTools
 	 * @return object Access to BreezeTools
 	 */
@@ -146,7 +149,7 @@ class Breeze
 
 	/**
 	 * Breeze::settings()
-	 * 
+	 *
 	 * @see BreezeSettings
 	 * @return object Access to BreezeSettings
 	 */
@@ -157,7 +160,7 @@ class Breeze
 
 	/**
 	 * Breeze::text()
-	 * 
+	 *
 	 * @see BreezeText
 	 * @return object Access to BreezeText
 	 */
@@ -168,7 +171,7 @@ class Breeze
 
 	/**
 	 * Breeze::buddies()
-	 * 
+	 *
 	 * @see BreezeBuddy
 	 * @return object access to BreezeBuddy
 	 */
@@ -179,7 +182,7 @@ class Breeze
 
 	/**
 	 * Breeze::sGlobals()
-	 * 
+	 *
 	 * @param string $var Either post, request or get
 	 * @return object Acces to BreezeGlobals
 	 */
@@ -190,7 +193,7 @@ class Breeze
 
 	/**
 	 * Breeze::parser()
-	 * 
+	 *
 	 * @see BreezeParser
 	 * @return object Access to BreezeParser
 	 */
@@ -201,7 +204,7 @@ class Breeze
 
 	/**
 	 * Breeze::mention()
-	 * 
+	 *
 	 * @see BreezeMention
 	 * @return object Access to BreezeMention
 	 */
@@ -212,7 +215,7 @@ class Breeze
 
 	/**
 	 * Breeze::notifications()
-	 * 
+	 *
 	 * @see BreezeNotifications
 	 * @return object Access to BreezeNotifications
 	 */
@@ -223,7 +226,7 @@ class Breeze
 
 	/**
 	 * Breeze::headers()
-	 * 
+	 *
 	 * Method used to embed the JavaScript and other bits of code on every page inside SMF
 	 * @see BreezeTools
 	 * @return void
@@ -235,7 +238,7 @@ class Breeze
 
 	/**
 	 * Breeze::permissions()
-	 * 
+	 *
 	 * There is only permissions to post new status and comments on any profile because people needs to be able to post in their own profiles by default the same goes for deleting, people are able to delete their own status/comments on their own profile page.
 	 * @param array $permissionGroups An array containing all possible permissions groups.
 	 * @param array $permissionList An associative array with all the possible permissions.
@@ -265,7 +268,7 @@ class Breeze
 
 	/**
 	 * Breeze::profile()
-	 * 
+	 *
 	 * Replace the summary action with the action created by Breeze
 	 *
 	 * @see BreezeUser::wall()
@@ -362,7 +365,7 @@ class Breeze
 
 	/**
 	 * Breeze::menu()
-	 * 
+	 *
 	 * Insert a Wall button on the menu buttons array
 	 * @param array $menu_buttons An array containing all possible tabs for the main menu.
 	 * @link http://mattzuba.com
@@ -424,7 +427,7 @@ class Breeze
 
 	/**
 	 * Breeze::actions()
-	 * 
+	 *
 	 * Insert the actions needed by this mod
 	 * @param array $actions An array containing all possible SMF actions.
 	 * @return void
@@ -446,7 +449,7 @@ class Breeze
 
 	/**
 	 * Breeze::who()
-	 * 
+	 *
 	 * Used in the credits action
 	 * @return string a link for copyright notice
 	 */
@@ -459,7 +462,7 @@ class Breeze
 
 	/**
 	 * Breeze::admin()
-	 * 
+	 *
 	 * @param array $admin_menu An array with all the admin settings buttons
 	 * @return
 	 */
