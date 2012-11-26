@@ -71,18 +71,18 @@ class BreezeAjax extends Breeze
 		/* Handling the subactions */
 		$sglobals = $this->sGlobals('get');
 
+		/* Safety first, hardcoded the actions */
 		$subActions = array(
-			'post' => 'BreezeAjax::post',
-			'postcomment' => 'BreezeAjax::postComment',
-			'delete' => 'BreezeAjax::delete',
-			'notimarkasread' => 'BreezeAjax::notimark',
-			'notidelete' => 'BreezeAjax::notidelete',
+			'post' => 'post',
+			'postcomment' => 'postComment',
+			'delete' => 'delete',
+			'notimarkasread' => 'notimark',
+			'notidelete' => 'notidelete',
 		);
 
 		/* Does the subaction even exist? */
-		/* @todo, call the method rather than calling the function */
 		if (in_array($sglobals->getValue('sa'), array_keys($subActions)))
-			call_user_func($subActions[$sglobals->getValue('sa')]);
+			$this->$subActions[$sglobals->getValue('sa')]();
 
 		/* No?  then tell them there was an error... */
 		/* else */
