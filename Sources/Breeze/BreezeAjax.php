@@ -199,12 +199,12 @@ class BreezeAjax extends Breeze
 
 			/* build the notification */
 			$this->_mention->mention(array(
-				'wall_owner' => $this->_data->getValue('owner_id'),
-				'wall_poster' => $this->_data->getValue('poster_id'),
+				'wall_owner' => $this->_data->getValue('profile_owner_id'),
+				'wall_poster' => $this->_data->getValue('poster_comment_id'),
 				'wall_status_owner' => $this->_data->getValue('status_owner_id'),
 				'comment_id' => $params['id'],
 				'status_id' => $this->_data->getValue('status_id'),
-				));
+			));
 
 			/* Parse the content */
 			$params['body'] = $this->_parser->display($params['body']);

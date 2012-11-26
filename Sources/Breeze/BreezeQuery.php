@@ -307,7 +307,7 @@ class BreezeQuery extends Breeze
 		{
 			/* Load all the status, set a limit if things get complicated */
 			$result = $this->_smcFunc['db_query']('', '
-				SELECT '. implode(',', $this->_tables['status']['colums']) .'
+				SELECT '. implode(',', $this->_tables['status']['columns']) .'
 				FROM {db_prefix}breeze_status
 				' . ($this->settings()->enable('admin_enable_limit') && $this->settings()->
 				enable('admin_limit_timeframe') ? 'WHERE status_time >= {int:status_time}':'') .
@@ -317,7 +317,6 @@ class BreezeQuery extends Breeze
 
 			/* Populate the array like a boss! */
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-			{
 				$this->_status[$row['status_id']] = array(
 					'id' => $row['status_id'],
 					'owner_id' => $row['status_owner_id'],
@@ -325,7 +324,6 @@ class BreezeQuery extends Breeze
 					'time' => $this->tools()->timeElapsed($row['status_time']),
 					'body' => $this->parser()->display($row['status_body']),
 					);
-			}
 
 			$this->_smcFunc['db_free_result']($result);
 
