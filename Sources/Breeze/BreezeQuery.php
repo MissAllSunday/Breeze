@@ -787,7 +787,7 @@ class BreezeQuery extends Breeze
 		$this->_smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables['noti']['table']) . '
 			SET viewed = {int:viewed}
-			WHERE notifications_id = {int:id}', array('viewed' => 1, 'id' => (int)$id, ));
+			WHERE id = {int:id}', array('viewed' => 1, 'id' => (int)$id, ));
 	}
 
 	/**
@@ -806,7 +806,7 @@ class BreezeQuery extends Breeze
 		$this->_smcFunc['db_query']('', '
 			DELETE
 			FROM {db_prefix}' . ($this->_tables['noti']['table']) . '
-			WHERE notifications_id = {int:id}', array('id' => '{int:id}'));
+			WHERE id = {int:id}', array('id' => '{int:id}'));
 	}
 
 	/**

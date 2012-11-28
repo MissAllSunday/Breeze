@@ -117,7 +117,7 @@ class BreezeAjax extends Breeze
 				'poster_id' => $this->_data->getValue('poster_id'),
 				'time' => time(),
 				'body' => $this->_mention->preMention($body),
-				);
+			);
 
 			/* Store the status */
 			$this->_query->insertStatus($params);

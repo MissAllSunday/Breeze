@@ -100,20 +100,17 @@
 
 							else
 							{
-								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function()
-								{
+								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
 									document.getElementById('content').value='';
 									document.getElementById('content').focus();
 
 									jQuery('#breeze_display_status').prepend(html);
 
-									jQuery('#breeze_display_status').fadeIn('slow', 'linear', function()
-									{
-										showNotification({
-											message: breeze_success_message,
-											type: 'success',
-											autoClose: true,
-											duration: 3
+									jQuery('#breeze_display_status').fadeIn('slow', 'linear', function(){
+										noty({
+											text: breeze_success_message,
+											timeout: 3500, type: 'success',
+											layout: 'top'
 										});
 									});
 								});
