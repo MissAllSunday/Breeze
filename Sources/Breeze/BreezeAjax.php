@@ -61,10 +61,7 @@ class BreezeAjax extends Breeze
 		$this->_text = $this->text();
 
 		/* Set a temp var, by default lets pretend everything went wrong... */
-		$this->_response = array(
-			'type' => 'error',
-			'data' => $this->_text->getText('error_message');
-		);
+		$this->_response = '';
 	}
 
 	/**
@@ -102,16 +99,14 @@ class BreezeAjax extends Breeze
 	 */
 	public function post()
 	{
-		global $context;
-
 		/* You aren't allowed in here, let's show you a nice message error... */
 		if (!allowedTo('breeze_postStatus'))
 			return false;
 
 		checkSession('post', '', false);
 
-		/* Set some values */
-		$context['Breeze']['ajax'] = array('ok' => '', 'data' => '');
+		/* Get the data */
+		$this->_data = $this->sGlobals('post');
 
 		/* Do this only if there is something to add to the database */
 		if ($this->_data->validateBody('content'))
@@ -148,12 +143,11 @@ class BreezeAjax extends Breeze
 			$display = new Breezedisplay($params, 'status');
 
 			/* Send the data to the template */
-			$context['Breeze']['ajax']['ok'] = 'ok';
-			$context['Breeze']['ajax']['data'] = $display->HTML();
+			$this->_response = $display->HTML();
 		}
 
-		else
-			$context['Breeze']['ajax']['ok'] = 'error';
+		/* Send the response */
+		$this->passValue();
 	}
 
 	/**
@@ -354,8 +348,11 @@ class BreezeAjax extends Breeze
 	{
 		global $context;
 
+		/* Set the template */
 		$context['template_layers'] = array();
 		$context['sub_template'] = 'breeze_post';
-		$context['Breeze']['ajax'] = $this->_response;
+
+		/* If there is a value, pass it */
+		$context['Breeze']['ajax'] = !empty($this->_response) ? $this->_response : $this->_text->getText('error_message');;
 	}
 }
