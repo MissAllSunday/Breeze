@@ -277,21 +277,28 @@ class BreezeAjax extends Breeze
 
 		/* Is this valid data? */
 		if (empty($noti) || empty($user))
-			$context['Breeze']['ajax']['ok'] = 'error';
+		{
+			$this->passValue();
+			return;
+		}
 
 		/* We must make sure this noti really exists, we just must!!! */
 		$noti_temp = $this->_notifications->getToUser($user);
 
 		if (empty($noti_temp) || !array_key_exists($noti, $noti_temp))
-			$context['Breeze']['ajax']['ok'] = 'error';
+		{
+			$this->passValue();
+			return;
+		}
 
 		else
 		{
 			/* All is good, mark this as read */
-			$context['Breeze']['ajax']['ok'] = 'ok';
-			$context['Breeze']['ajax']['data'] = 'ok';
 			$this->_notifications->markAsRead($noti);
+			$this->_response = $this->_text->getText('noti_markasread_after');
 		}
+
+		$this->passValue();
 	}
 
 	/**
@@ -333,7 +340,7 @@ class BreezeAjax extends Breeze
 		}
 	}
 
-	protected function passValue()
+	protected function passValue($error = false)
 	{
 		global $context;
 
@@ -341,7 +348,12 @@ class BreezeAjax extends Breeze
 		$context['template_layers'] = array();
 		$context['sub_template'] = 'breeze_post';
 
+		/* Is there a custom error message? use it */
+		if ($error)
+			$context['Breeze']['ajax'] = $error;
+
 		/* If there is a value, pass it */
-		$context['Breeze']['ajax'] = !empty($this->_response) ? $this->_response : $this->_text->getText('error_message');;
+		else
+			$context['Breeze']['ajax'] = !empty($this->_response) ? $this->_response : $this->_text->getText('error_message');;
 	}
 }
