@@ -140,7 +140,7 @@ class BreezeAjax extends Breeze
 			$params['body'] = $this->_parser->display($params['body']);
 
 			/* The status was added, build the server response */
-			$display = new Breezedisplay($params, 'status');
+			$display = new BreezeDisplay($params, 'status');
 
 			/* Send the data to the template */
 			$this->_response = $display->HTML();
@@ -164,9 +164,6 @@ class BreezeAjax extends Breeze
 			return false;
 
 		checkSession('post', '', false);
-
-		/* By default it will show an error, we only do stuff if necesary */
-		$context['Breeze']['ajax']['ok'] = '';
 
 		/* Load all the things we need */
 		$temp_id_exists = $this->_query->getSingleValue('status', 'id', $this->_data->getValue('status_id'));
@@ -207,15 +204,14 @@ class BreezeAjax extends Breeze
 			$params['body'] = $this->_parser->display($params['body']);
 
 			/* The comment was added, build the server response */
-			$display = new Breezedisplay($params, 'comment');
+			$display = new BreezeDisplay($params, 'comment');
 
 			/* Send the data to the template */
-			$context['Breeze']['ajax']['ok'] = 'ok';
-			$context['Breeze']['ajax']['data'] = $display->HTML();
+			$this->_response = $display->HTML();
 		}
 
-		else
-			$context['Breeze']['ajax']['ok'] = 'error';
+		/* Send the response */
+		$this->passValue();
 
 		unset($temp_id_exists);
 	}
@@ -236,40 +232,33 @@ class BreezeAjax extends Breeze
 		/* Get the global vars */
 		$this->_data = $this->sGlobals('request');
 
-
 		/* Get the data */
-		$temp_id_exists = $this->_query->getSingleValue($this->_data->getValue('type') == 'status' ?
-			'status':'comments', 'id', $this->_data->getValue('id'));
-
-		switch ($this->_data->getValue('type'))
+		if ($this->_data->getValue('id') != false)
 		{
-			case 'status':
-				/* Do this only if the status wasn't deleted already */
-				if (!empty($temp_id_exists))
-				{
-					$this->_query->deleteStatus($this->_data->getValue('id'));
-					$context['Breeze']['ajax']['ok'] = 'ok';
-				}
+			$temp_id_exists = $this->_query->getSingleValue(
+				$this->_data->getValue('type') == 'status' ? 'status':'comments',
+				'id',
+				$this->_data->getValue('id')
+			);
 
-				else
-					$context['Breeze']['ajax']['ok'] = 'deleted';
+			/* Do this only if the message wasn't deleted already */
+			if (!empty($temp_id_exists))
+			{
+				$type = 'delete'. ucfirst($this->_data->getValue('type'));
 
-				break;
-			case 'comment':
-				/* Do this only if the comment wasn't deleted already */
-				if (!empty($temp_id_exists))
-				{
-					$this->_query->deleteComment($this->_data->getValue('id'));
-					$context['Breeze']['ajax']['ok'] = 'ok';
-				}
+				$this->_query->$type($this->_data->getValue('id'));
+				$this->_response = $this->_text->getText('success_message');
+			}
 
-				else
-					$context['Breeze']['ajax']['ok'] = 'deleted';
+			/* Tell them someone has deleted the message already */
+			else
+				$this->_response = $this->_text->getText('already_deleted');
 
-				break;
+			unset($temp_id_exists);
 		}
 
-		unset($temp_id_exists);
+		/* Either way, pass the response */
+		$this->passValue();
 	}
 
 	/**
