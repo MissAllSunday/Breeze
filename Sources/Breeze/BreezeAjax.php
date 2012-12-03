@@ -154,9 +154,6 @@ class BreezeAjax extends Breeze
 
 		else
 			$context['Breeze']['ajax']['ok'] = 'error';
-
-		$context['template_layers'] = array();
-		$context['sub_template'] = 'breeze_post';
 	}
 
 	/**
@@ -166,7 +163,7 @@ class BreezeAjax extends Breeze
 	 */
 	public function postComment()
 	{
-		global $context, $scripturl;
+		global $scripturl;
 
 		/* You aren't allowed in here, let's show you a nice message error... */
 		if (!allowedTo('breeze_postComments'))
@@ -226,9 +223,6 @@ class BreezeAjax extends Breeze
 		else
 			$context['Breeze']['ajax']['ok'] = 'error';
 
-		$context['template_layers'] = array();
-		$context['sub_template'] = 'breeze_post';
-
 		unset($temp_id_exists);
 	}
 
@@ -240,8 +234,6 @@ class BreezeAjax extends Breeze
 	 */
 	public function delete()
 	{
-		global $context;
-
 		/* You aren't allowed in here, let's show you a nice message error... */
 		isAllowedTo('breeze_deleteStatus');
 
@@ -283,9 +275,6 @@ class BreezeAjax extends Breeze
 				break;
 		}
 
-		$context['template_layers'] = array();
-		$context['sub_template'] = 'breeze_post';
-
 		unset($temp_id_exists);
 	}
 
@@ -297,14 +286,7 @@ class BreezeAjax extends Breeze
 	 */
 	public function notimark()
 	{
-		global $context;
-
 		checkSession('post', '', false);
-
-		/* Set some values */
-		$context['Breeze']['ajax'] = array(
-				'ok' => 'error',
-				'data' => 'error_');
 
 		/* Get the data */
 		$noti = $this->_data->getValue('content');
@@ -327,9 +309,6 @@ class BreezeAjax extends Breeze
 			$context['Breeze']['ajax']['data'] = 'ok';
 			$this->_notifications->markAsRead($noti);
 		}
-
-		$context['template_layers'] = array();
-		$context['sub_template'] = 'breeze_post';
 	}
 
 	/**
@@ -340,8 +319,6 @@ class BreezeAjax extends Breeze
 	 */
 	public function notidelete()
 	{
-		global $context;
-
 		checkSession('post', '', false);
 
 		/* Set some values */
@@ -371,8 +348,14 @@ class BreezeAjax extends Breeze
 			$context['Breeze']['ajax']['data'] = 'ok';
 			$this->_notifications->delete($noti);
 		}
+	}
+
+	protected function passValue()
+	{
+		global $context;
 
 		$context['template_layers'] = array();
 		$context['sub_template'] = 'breeze_post';
+		$context['Breeze']['ajax'] = $this->_response;
 	}
 }
