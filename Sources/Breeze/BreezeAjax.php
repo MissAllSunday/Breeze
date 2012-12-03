@@ -58,6 +58,13 @@ class BreezeAjax extends Breeze
 		$this->_mention = $this->mention();
 		$this->_settings = $this->settings();
 		$this->_notifications = $this->notifications();
+		$this->_text = $this->text();
+
+		/* Set a temp var, by default lets pretend everything went wrong... */
+		$this->_response = array(
+			'type' => 'error',
+			'data' => $this->_text->getText('error_message');
+		);
 	}
 
 	/**
@@ -83,9 +90,9 @@ class BreezeAjax extends Breeze
 		if (in_array($sglobals->getValue('sa'), array_keys($subActions)))
 			$this->$subActions[$sglobals->getValue('sa')]();
 
-		/* No?  then tell them there was an error... */
-		/* else */
-		/* some redirect here.. */
+		/* Sorry pal... */
+		else
+		fatal_lang_error ($this->_text->getText('error_no_valid_action'));
 	}
 
 	/**
@@ -241,10 +248,8 @@ class BreezeAjax extends Breeze
 		checkSession('post', '', false);
 
 		/* Get the global vars */
-		$this->_data = $this->sGlobals('post');
+		$this->_data = $this->sGlobals('request');
 
-		$context['Breeze']['ajax']['ok'] = '';
-		$context['Breeze']['ajax']['data'] = '';
 
 		/* Get the data */
 		$temp_id_exists = $this->_query->getSingleValue($this->_data->getValue('type') == 'status' ?
