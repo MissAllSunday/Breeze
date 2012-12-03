@@ -88,12 +88,10 @@
 							if(html == 'error_')
 							{
 								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
-									showNotification(
-									{
-										message: breeze_error_message,
-										type: 'error',
-										autoClose: true,
-										duration: 3
+									noty({
+										text: breeze_error_message,
+										timeout: 3500, type: 'error',
+										layout: 'top'
 									});
 								});
 							}
@@ -122,7 +120,7 @@
 							jQuery('.status_button').removeAttr('disabled');
 
 							/*
-							 * Something happen while sendind the request
+							 * Something happen while sending the request
 							 *
 							 * @todo identify the different errors and show more info about it to the forum admin
 							 */

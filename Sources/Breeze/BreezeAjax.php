@@ -53,7 +53,6 @@ class BreezeAjax extends Breeze
 		loadtemplate('BreezeAjax');
 
 		/* Load all the things we need */
-		$this->_data = $this->sGlobals('request');
 		$this->_query = $this->query();
 		$this->_parser = $this->parser();
 		$this->_mention = $this->mention();
@@ -238,6 +237,11 @@ class BreezeAjax extends Breeze
 
 		/* You aren't allowed in here, let's show you a nice message error... */
 		isAllowedTo('breeze_deleteStatus');
+
+		checkSession('post', '', false);
+
+		/* Get the global vars */
+		$this->_data = $this->sGlobals('post');
 
 		$context['Breeze']['ajax']['ok'] = '';
 		$context['Breeze']['ajax']['data'] = '';
