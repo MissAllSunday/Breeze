@@ -252,7 +252,13 @@ class BreezeAjax extends Breeze
 
 			/* Tell them someone has deleted the message already */
 			else
-				$this->_response = $this->_text->getText('already_deleted');
+			{
+				$this->passValue(array(
+					'data' => $this->_text->getText('already_deleted'),
+					'type' => 'deleted'
+				));
+				return;
+			}
 
 			unset($temp_id_exists);
 		}
@@ -349,11 +355,8 @@ class BreezeAjax extends Breeze
 		$context['sub_template'] = 'breeze_post';
 
 		/* Is there a custom error message? Use it */
-		if ($error)
-			$context['Breeze']['ajax'] = array(
-				'data' => $error,
-				'type' => 'error'
-			);
+		if ($error && is_array($error))
+			$context['Breeze']['ajax'] = $error;
 
 		/* If there is a value, pass it */
 		else

@@ -75,22 +75,16 @@
 						url: smf_scripturl + '?action=breezeajax;sa=post',
 						data: ({content : test, owner_id : ownerID, poster_id : posterID}),
 						cache: false,
+						dataType: 'json',
 						success: function(html)
 						{
-							/* Enable the button again... */
-							jQuery('.status_button').removeAttr('disabled');
-
-							/*
-							 * The server side found an issue
-							 *
-							 * @todo identify the different errors and show more info about it to the forum admin
-							 */
-							if(html == 'error_')
+							/* The server side found an issue */
+							if(html.type == 'error')
 							{
 								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
 									noty({
-										text: breeze_error_message,
-										timeout: 3500, type: 'error',
+										text: html.data,
+										timeout: 3500, type: html.type,
 										layout: 'top'
 									});
 								});
@@ -102,7 +96,7 @@
 									document.getElementById('content').value='';
 									document.getElementById('content').focus();
 
-									jQuery('#breeze_display_status').prepend(html);
+									jQuery('#breeze_display_status').prepend(html.data);
 
 									jQuery('#breeze_display_status').fadeIn('slow', 'linear', function(){
 										noty({
@@ -113,6 +107,9 @@
 									});
 								});
 							}
+
+							/* Enable the button again... */
+							jQuery('.status_button').removeAttr('disabled');
 						},
 						error: function (html)
 						{
@@ -173,14 +170,13 @@
 						cache: false,
 						success: function(html)
 						{
-							if(html == 'error_')
+							if(html.type == 'error')
 							{
 								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function()
 								{
-									showNotification(
-									{
-										message: breeze_error_message,
-										type: 'error',
+									showNotification({
+										message: html.data,
+										type: html.type,
 										autoClose: true,
 										duration: 3
 									});
@@ -212,8 +208,7 @@
 						{
 							jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function()
 							{
-								showNotification(
-								{
+								showNotification({
 									message: breeze_error_message,
 									type: 'error',
 									autoClose: true,
@@ -247,21 +242,19 @@
 						cache: false,
 						success: function(html)
 						{
-							if(html == 'error_')
+							if(html.type == 'error')
 							{
-								showNotification(
-								{
-									message: breeze_error_message,
+								showNotification({
+									message: html.data,
 									type: 'error',
 									autoClose: true,
 									duration: 3
 								});
 							}
-							else if(html == 'deleted_')
+							else if(html.type == 'deleted')
 							{
-								showNotification(
-								{
-									message: breeze_already_deleted,
+								showNotification({
+									message: html.data,
 									type: 'error',
 									autoClose: true,
 									duration: 3
@@ -271,7 +264,7 @@
 							{
 								jQuery('#comment_id_'+I).hide('slow');
 								showNotification({
-									message: breeze_success_delete,
+									message: html.data,
 									type: 'success',
 									autoClose: true,
 									duration: 3
@@ -280,8 +273,7 @@
 						},
 						error: function (html)
 						{
-							showNotification(
-							{
+							showNotification({
 								message: breeze_error_message,
 								type: 'error',
 								autoClose: true,
