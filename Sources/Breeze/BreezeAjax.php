@@ -348,12 +348,20 @@ class BreezeAjax extends Breeze
 		$context['template_layers'] = array();
 		$context['sub_template'] = 'breeze_post';
 
-		/* Is there a custom error message? use it */
+		/* Is there a custom error message? Use it */
 		if ($error)
-			$context['Breeze']['ajax'] = $error;
+		{
+			$context['Breeze']['ajax'] = array(
+				'data' => $error,
+				'type' => 'error'
+			);
+		}
 
 		/* If there is a value, pass it */
 		else
-			$context['Breeze']['ajax'] = !empty($this->_response) ? $this->_response : $this->_text->getText('error_message');;
+			$context['Breeze']['ajax'] = array(
+				'data' => !empty($this->_response) ? $this->_response : $this->_text->getText('error_message'),
+				'type' => 'ok'
+			);
 	}
 }
