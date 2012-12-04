@@ -39,20 +39,7 @@ function template_breeze_post()
 {
 	global  $context;
 
-	switch ($context['Breeze']['ajax']['ok'])
-	{
-		case 'error':
-			echo 'error_';
-		case '':
-			echo 'error_';
-			break;
-		case 'deleted':
-			echo 'deleted_';
-			break;
-		case 'ok':
-			echo $context['Breeze']['ajax']['data'];
-			break;
-		default:
-			echo 'error_';
-	}
+	/* There is no reason why this would be empty but who knows, also, last minute check for json */
+	if (!empty($context['Breeze']['ajax']) && function_exists('json_encode') == true)
+		echo json_encode($context['Breeze']['ajax']);
 }

@@ -350,12 +350,10 @@ class BreezeAjax extends Breeze
 
 		/* Is there a custom error message? Use it */
 		if ($error)
-		{
 			$context['Breeze']['ajax'] = array(
 				'data' => $error,
 				'type' => 'error'
 			);
-		}
 
 		/* If there is a value, pass it */
 		else
