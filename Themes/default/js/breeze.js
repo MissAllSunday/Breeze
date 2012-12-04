@@ -90,8 +90,7 @@
 								});
 							}
 
-							else
-							{
+							else if(html.type == 'ok'){
 								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
 									document.getElementById('content').value='';
 									document.getElementById('content').focus();

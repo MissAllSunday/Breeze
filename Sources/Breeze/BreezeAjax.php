@@ -106,7 +106,7 @@ class BreezeAjax extends Breeze
 		checkSession('post', '', false);
 
 		/* Get the data */
-		$this->_data = $this->sGlobals('post');
+		$this->_data = $this->sGlobals('request');
 
 		/* Do this only if there is something to add to the database */
 		if ($this->_data->validateBody('content'))
@@ -143,11 +143,18 @@ class BreezeAjax extends Breeze
 			$display = new BreezeDisplay($params, 'status');
 
 			/* Send the data to the template */
-			$this->_response = $display->HTML();
+			$this->passValue(array(
+				'type' => 'ok',
+				'data' => $display->HTML()
+			));
+
+			/* End it */
+			return;
 		}
 
-		/* Send the response */
-		$this->passValue();
+		/* There was an error */
+		else
+			$this->passValue(false);
 	}
 
 	/**
@@ -346,7 +353,7 @@ class BreezeAjax extends Breeze
 		}
 	}
 
-	protected function passValue($error = false)
+	protected function passValue($array = false)
 	{
 		global $context;
 
@@ -355,14 +362,14 @@ class BreezeAjax extends Breeze
 		$context['sub_template'] = 'breeze_post';
 
 		/* Is there a custom error message? Use it */
-		if ($error && is_array($error))
-			$context['Breeze']['ajax'] = $error;
+		if ($array)
+			$context['Breeze']['ajax'] = $array;
 
 		/* If there is a value, pass it */
 		else
 			$context['Breeze']['ajax'] = array(
-				'data' => !empty($this->_response) ? $this->_response : $this->_text->getText('error_message'),
-				'type' => 'ok'
+				'data' => $this->_text->getText('error_message'),
+				'type' => 'error'
 			);
 	}
 }
