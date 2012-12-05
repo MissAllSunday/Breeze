@@ -311,12 +311,12 @@ class BreezeNotifications extends Breeze
 						{
 							if(html.type == \'error\')
 							{
-								noty({text: breeze_error_message, timeout: 3500, type: \'error\'});
+								noty({text: html.data, timeout: 3500, type: \'error\'});
 							}
 
 							else if(html.type == \'ok\')
 							{
-								noty({text: breeze_noti_markasread_after, timeout: 3500, type: \'success\'});
+								noty({text: html.data, timeout: 3500, type: \'success\'});
 							}
 						},
 						error: function (html)
@@ -325,8 +325,7 @@ class BreezeNotifications extends Breeze
 						},
 					});
 				$noty.close();
-				noty({text: breeze_noti_delete_after, timeout: 3500, type: \'success\'});
-			  }
+			}
 			},
 			{addClass: \'button_submit\', text: breeze_noti_cancel, onClick: function($noty) {
 				$noty.close();

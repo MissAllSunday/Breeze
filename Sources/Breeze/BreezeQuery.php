@@ -805,7 +805,11 @@ class BreezeQuery extends Breeze
 		$this->_smcFunc['db_query']('', '
 			DELETE
 			FROM {db_prefix}' . ($this->_tables['noti']['table']) . '
-			WHERE id = {int:id}', array('id' => '{int:id}'));
+			WHERE id = {int:id}',
+			array(
+				'id' => (int) $id
+			)
+		);
 	}
 
 	/**

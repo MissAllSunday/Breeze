@@ -229,77 +229,73 @@
 				var I = element.attr('id');
 				var Type = 'comment';
 
-				jQuery.ajax(
-					{
-						type: 'POST',
-						url: smf_scripturl + '?action=breezeajax;sa=delete',
-						data: ({id : I, type : Type}),
-						cache: false,
-						success: function(html)
-						{
-							if(html.type == 'error')
-							{
-								showNotification({
-									message: html.data,
-									type: 'error',
-									autoClose: true,
-									duration: 3
+				/* Show a nice confirmation box */
+				noty({
+					text: breeze_confirm_delete,
+					buttons: [
+						{addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
+
+							jQuery.ajax(
+								{
+									type: 'POST',
+									url: smf_scripturl + '?action=breezeajax;sa=delete',
+									data: ({id : I, type : Type}),
+									cache: false,
+									success: function(html)
+									{
+										if(html.type == 'error')
+										{
+											showNotification({
+												message: html.data,
+												type: 'error',
+												autoClose: true,
+												duration: 3
+											});
+										}
+										else if(html.type == 'deleted')
+										{
+											showNotification({
+												message: html.data,
+												type: 'error',
+												autoClose: true,
+												duration: 3
+											});
+										}
+										else
+										{
+											jQuery('#comment_id_'+I).hide('slow');
+											showNotification({
+												message: html.data,
+												type: 'success',
+												autoClose: true,
+												duration: 3
+											});
+										}
+									},
+									error: function (html)
+									{
+										showNotification({
+											message: breeze_error_message,
+											type: 'error',
+											autoClose: true,
+											duration: 3
+										});
+										jQuery('#comment_id_'+I).hide('slow');
+									},
 								});
-							}
-							else if(html.type == 'deleted')
-							{
-								showNotification({
-									message: html.data,
-									type: 'error',
-									autoClose: true,
-									duration: 3
-								});
-							}
-							else
-							{
-								jQuery('#comment_id_'+I).hide('slow');
-								showNotification({
-									message: html.data,
-									type: 'success',
-									autoClose: true,
-									duration: 3
-								});
-							}
+
+							$noty.close();
+						}
 						},
-						error: function (html)
-						{
-							showNotification({
-								message: breeze_error_message,
-								type: 'error',
-								autoClose: true,
-								duration: 3
-							});
-							jQuery('#comment_id_'+I).hide('slow');
-						},
-					});
+						{addClass: 'btn btn-danger', text: breeze_confirm_cancel, onClick: function($noty) {
+							$noty.close();
+						  }
+						}
+					]
+				});
 				return false;
 			});
 		});
-
-		// The confirmation message
-		jQuery('.breeze_delete_comment').livequery(function()
-		{
-			jQuery(this).confirm(
-			{
-				msg: breeze_confirm_delete + '<br />',
-				buttons:
-				{
-					ok: breeze_confirm_yes,
-					cancel: breeze_confirm_cancel,
-					separator:' | '
-				}
-
-			});
-		});
-
-		var b_c = C_C('PGRpdiBzdHlsZT0idGV4dC1hbGlnbjogY2VudGVyOyIgY2xhc3M9InNtYWxsdGV4dCI+QnJlZXplIKkgMjAxMiwgPGEgaHJlZj0iaHR0cDovL21pc3NhbGxzdW5kYXkuY29tIiB0aXRsZT0iRnJlZSBTTUYgbW9kcyIgdGFyZ2V0PSJibGFuayI+U3VraTwvYT48L2Rpdj4=');
-
-		jQuery('#admin_content').append(b_c);
 	});
 
 	/* Toggle the comment box */
