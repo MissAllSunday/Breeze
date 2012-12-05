@@ -341,7 +341,7 @@ class BreezeAjax extends Breeze
 			$this->passValue(array(
 				'data' => $this->_text->getText('noti_markasread_after'),
 				'type' => 'ok'
-			)
+			));
 		}
 
 		/* Just to be sure */
@@ -388,7 +388,7 @@ class BreezeAjax extends Breeze
 			$this->passValue(array(
 				'data' => $this->_text->getText('noti_delete_after'),
 				'type' => 'ok'
-			)
+			));
 		}
 	}
 
@@ -404,7 +404,7 @@ class BreezeAjax extends Breeze
 		if ($array)
 			$context['Breeze']['ajax'] = $array;
 
-		/* If there is a value, pass it */
+		/* No? then show the standard error message */
 		else
 			$context['Breeze']['ajax'] = array(
 				'data' => $this->_text->getText('error_message'),
