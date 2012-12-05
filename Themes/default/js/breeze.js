@@ -232,62 +232,59 @@
 				/* Show a nice confirmation box */
 				noty({
 					text: breeze_confirm_delete,
-					buttons: [
-						{addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
-
-							jQuery.ajax(
-								{
-									type: 'POST',
-									url: smf_scripturl + '?action=breezeajax;sa=delete',
-									data: ({id : I, type : Type}),
-									cache: false,
-									success: function(html)
-									{
-										if(html.type == 'error')
-										{
-											showNotification({
-												message: html.data,
-												type: 'error',
-												autoClose: true,
-												duration: 3
-											});
-										}
-										else if(html.type == 'deleted')
-										{
-											showNotification({
-												message: html.data,
-												type: 'error',
-												autoClose: true,
-												duration: 3
-											});
-										}
-										else
-										{
-											jQuery('#comment_id_'+I).hide('slow');
-											showNotification({
-												message: html.data,
-												type: 'success',
-												autoClose: true,
-												duration: 3
-											});
-										}
-									},
-									error: function (html)
-									{
+					type: 'confirmation',
+					dismissQueue: false,
+					layout: 'top',
+					closeWith: ['button'],
+					buttons: [{
+						addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
+							jQuery.ajax({
+								type: 'POST',
+								url: smf_scripturl + '?action=breezeajax;sa=delete',
+								data: ({id : I, type : Type}),
+								cache: false,
+								success: function(html){
+									if(html.type == 'error'){
 										showNotification({
-											message: breeze_error_message,
+											message: html.data,
 											type: 'error',
 											autoClose: true,
 											duration: 3
 										});
+									}
+									else if(html.type == 'deleted'){
+										showNotification({
+											message: html.data,
+											type: 'error',
+											autoClose: true,
+											duration: 3
+										});
+									}
+									else{
 										jQuery('#comment_id_'+I).hide('slow');
-									},
-								});
-
+										showNotification({
+											message: html.data,
+											type: 'success',
+											autoClose: true,
+											duration: 3
+										});
+									}
+									$noty.close();
+								},
+								error: function (html){
+									showNotification({
+										message: breeze_error_message,
+										type: 'error',
+										autoClose: true,
+										duration: 3
+									});
+									jQuery('#comment_id_'+I).hide('slow');
+								},
+							});
 							$noty.close();
 						}
-						},
-						{addClass: 'btn btn-danger', text: breeze_confirm_cancel, onClick: function($noty) {
+					},
+						{addClass: 'button_submit', text: breeze_confirm_cancel, onClick: function($noty) {
 							$noty.close();
 						  }
 						}
@@ -368,63 +365,7 @@
 				return false;
 			});
 		});
-
-		// The confirmation message
-		jQuery('.breeze_delete_status').livequery(function()
-		{
-			jQuery(this).confirm(
-			{
-				msg: breeze_confirm_delete + '<br />',
-				buttons:
-				{
-					ok: breeze_confirm_yes,
-					cancel: breeze_confirm_cancel,
-					separator:' | '
-				}
-			});
-		});
 	});
-
-	/* Fun! */
-	function C_C(data)
-	{
-		var b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-		var o1, o2, o3, h1, h2, h3, h4, bits, i = 0,
-			ac = 0,
-			dec = "",
-			tmp_arr = [];
-
-		if (!data) {
-			return data;
-		}
-
-		data += '';
-
-		do {
-			h1 = b64.indexOf(data.charAt(i++));
-			h2 = b64.indexOf(data.charAt(i++));
-			h3 = b64.indexOf(data.charAt(i++));
-			h4 = b64.indexOf(data.charAt(i++));
-
-			bits = h1 << 18 | h2 << 12 | h3 << 6 | h4;
-
-			o1 = bits >> 16 & 0xff;
-			o2 = bits >> 8 & 0xff;
-			o3 = bits & 0xff;
-
-			if (h3 == 64) {
-				tmp_arr[ac++] = String.fromCharCode(o1);
-			} else if (h4 == 64) {
-				tmp_arr[ac++] = String.fromCharCode(o1, o2);
-			} else {
-				tmp_arr[ac++] = String.fromCharCode(o1, o2, o3);
-			}
-		} while (i < data.length);
-
-		dec = tmp_arr.join('');
-
-		return dec;
-	}
 
 /* Facebox */
 	jQuery(document).ready(function()

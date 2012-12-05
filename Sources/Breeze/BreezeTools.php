@@ -86,13 +86,13 @@ class BreezeTools extends Breeze
 			$context['html_headers'] .= '
 			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />
 			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery_notification.js" type="text/javascript"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js" type="text/javascript"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/confirm.js" type="text/javascript"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js" type="text/javascript"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js" type="text/javascript"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>';
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/center.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topCenter.js"></script>';
 
 			/* CSS part */
 			/* @todo move this to its own file */
