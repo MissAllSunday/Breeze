@@ -166,41 +166,38 @@
 						url: smf_scripturl + '?action=breezeajax;sa=postcomment',
 						data: ({content : commentBox, status_owner_id : status_owner_id, poster_comment_id : poster_comment_id, profile_owner_id: profile_owner_id, status_id : status_id}),
 						cache: false,
-						success: function(html)
-						{
+						success: function(html){
+							/* The server side found an issue */
 							if(html.type == 'error')
 							{
-								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function()
-								{
-									showNotification({
-										message: html.data,
-										type: html.type,
-										autoClose: true,
-										duration: 3
+								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function(){
+									noty({
+										text: html.data,
+										timeout: 3500, type: html.type,
+										layout: 'top'
 									});
 								});
 							}
 
-							else
-							{
-								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function()
-								{
+							else if(html.type == 'ok'){
+								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function(){
 									document.getElementById('textboxcontent_'+Id).value='';
 									document.getElementById('textboxcontent_'+Id).focus();
 
 									jQuery('#comment_loadplace_'+Id).append(html);
 
-									jQuery('#comment_loadplace_'+Id).fadeIn('slow', 'linear', function()
-									{
-										showNotification({
-											message: breeze_success_message,
-											type: 'success',
-											autoClose: true,
-											duration: 3
+									jQuery('#comment_loadplace_'+Id).fadeIn('slow', 'linear', function(){
+										noty({
+											text: breeze_success_message,
+											timeout: 3500, type: 'success',
+											layout: 'top'
 										});
 									});
 								});
 							}
+
+							/* Enable the button again... */
+							jQuery('.status_button').removeAttr('disabled');
 						},
 						error: function (html)
 						{
