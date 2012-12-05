@@ -76,8 +76,7 @@
 						data: ({content : test, owner_id : ownerID, poster_id : posterID}),
 						cache: false,
 						dataType: 'json',
-						success: function(html)
-						{
+						success: function(html){
 							/* The server side found an issue */
 							if(html.type == 'error')
 							{

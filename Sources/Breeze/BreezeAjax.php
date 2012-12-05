@@ -106,7 +106,14 @@ class BreezeAjax extends Breeze
 		checkSession('post', '', false);
 
 		/* Get the data */
-		$this->_data = $this->sGlobals('request');
+		$this->_data = $this->sGlobals('post');
+
+		/* Sorry, try to play nice next time */
+		if (!$this->_data->getValue('owner_id') || !$this->_data->getValue('poster_id') || !$this->_data->getValue('content'))
+		{
+			$this->passValue(false);
+			return;
+		}
 
 		/* Do this only if there is something to add to the database */
 		if ($this->_data->validateBody('content'))
@@ -171,6 +178,15 @@ class BreezeAjax extends Breeze
 			return false;
 
 		checkSession('post', '', false);
+
+		$this->_data = $this->sGlobals('post');
+
+		/* Sorry, try to play nice next time */
+		if (!$this->_data->getValue('status_owner_id') || !$this->_data->getValue('status_owner_id') || !$this->_data->getValue('poster_comment_id') || !$this->_data->getValue('profile_owner_id') || !$this->_data->getValue('content'))
+		{
+			$this->passValue(false);
+			return;
+		}
 
 		/* Load all the things we need */
 		$temp_id_exists = $this->_query->getSingleValue('status', 'id', $this->_data->getValue('status_id'));
@@ -237,7 +253,7 @@ class BreezeAjax extends Breeze
 		checkSession('post', '', false);
 
 		/* Get the global vars */
-		$this->_data = $this->sGlobals('request');
+		$this->_data = $this->sGlobals('post');
 
 		/* Get the data */
 		if ($this->_data->getValue('id') != false)
