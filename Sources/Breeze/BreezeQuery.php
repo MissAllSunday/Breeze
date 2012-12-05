@@ -661,8 +661,7 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data(parent::$name .'-' . $this->_tables['members']['name'], $this->_members,
-				120);
+			cache_put_data(parent::$name .'-' . $this->_tables['members']['name'], $this->_members, 120);
 		}
 
 		return $this->_members;

@@ -279,7 +279,7 @@ class BreezeAjax extends Breeze
 				$this->_query->$type($this->_data->getValue('id'));
 				$this->passValue(array(
 					'data' => $this->_text->getText('success_message'),
-					'type' => 'deleted'
+					'type' => 'ok'
 				));
 				return;
 			}
