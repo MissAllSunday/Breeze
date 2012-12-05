@@ -343,9 +343,6 @@ class BreezeAjax extends Breeze
 				'type' => 'ok'
 			));
 		}
-
-		/* Just to be sure */
-		$this->passValue();
 	}
 
 	/**
