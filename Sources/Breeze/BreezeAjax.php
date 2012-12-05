@@ -311,6 +311,9 @@ class BreezeAjax extends Breeze
 	{
 		checkSession('post', '', false);
 
+		/* Get the global vars */
+		$this->_data = $this->sGlobals('post');
+
 		/* Get the data */
 		$noti = $this->_data->getValue('content');
 		$user = $this->_data->getValue('user');
@@ -335,9 +338,13 @@ class BreezeAjax extends Breeze
 		{
 			/* All is good, mark this as read */
 			$this->_notifications->markAsRead($noti);
-			$this->_response = $this->_text->getText('noti_markasread_after');
+			$this->passValue(array(
+				'data' => $this->_text->getText('noti_markasread_after'),
+				'type' => 'ok'
+			)
 		}
 
+		/* Just to be sure */
 		$this->passValue();
 	}
 
@@ -351,11 +358,8 @@ class BreezeAjax extends Breeze
 	{
 		checkSession('post', '', false);
 
-		/* Set some values */
-		$context['Breeze']['ajax'] = array(
-			'ok' => 'error',
-			'data' => 'error_'
-		);
+		/* Get the global vars */
+		$this->_data = $this->sGlobals('post');
 
 		/* Get the data */
 		$noti = $this->_data->getValue('content');
@@ -363,20 +367,28 @@ class BreezeAjax extends Breeze
 
 		/* Is this valid data? */
 		if (empty($noti) || empty($user))
-			$context['Breeze']['ajax']['ok'] = 'error';
+		{
+			$this->passValue();
+			return;
+		}
 
 		/* We must make sure this noti really exists, we just must!!! */
 		$noti_temp = $this->_notifications->getToUser($user);
 
 		if (empty($noti_temp) || !array_key_exists($noti, $noti_temp))
-			$context['Breeze']['ajax']['ok'] = 'error';
+		{
+			$this->passValue();
+			return;
+		}
 
 		else
 		{
-			/* All is good, mark this as read */
-			$context['Breeze']['ajax']['ok'] = 'ok';
-			$context['Breeze']['ajax']['data'] = 'ok';
+			/* All is good, delete thi */
 			$this->_notifications->delete($noti);
+			$this->passValue(array(
+				'data' => $this->_text->getText('noti_delete_after'),
+				'type' => 'ok'
+			)
 		}
 	}
 
