@@ -66,7 +66,6 @@ class BreezeQuery extends Breeze
 
 		$this->_smcFunc = $smcFunc;
 
-		/* @todo, create a multidimensional array containing all the columns for each table */
 		$this->_tables = array(
 			'status' => array(
 				'name' => 'status',

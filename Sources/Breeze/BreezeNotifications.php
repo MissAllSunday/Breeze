@@ -276,14 +276,15 @@ class BreezeNotifications extends Breeze
 						url: smf_scripturl + \'?action=breezeajax;sa=notimarkasread\',
 						data: ({content : noti_id, user : user}),
 						cache: false,
+						dataType: \'json\',
 						success: function(html)
 						{
-							if(html == \'error_\')
+							if(html.type == \'error\')
 							{
 								noty({text: breeze_error_message, timeout: 3500, type: \'error\'});
 							}
 
-							else
+							else if(html.type == \'ok\')
 							{
 								noty({text: breeze_noti_markasread_after, timeout: 3500, type: \'success\'});
 							}
@@ -305,14 +306,15 @@ class BreezeNotifications extends Breeze
 						url: smf_scripturl + \'?action=breezeajax;sa=notidelete\',
 						data: ({content : noti_id, user : user}),
 						cache: false,
+						dataType: \'json\',
 						success: function(html)
 						{
-							if(html == \'error_\')
+							if(html.type == \'error\')
 							{
 								noty({text: breeze_error_message, timeout: 3500, type: \'error\'});
 							}
 
-							else
+							else if(html.type == \'ok\')
 							{
 								noty({text: breeze_noti_markasread_after, timeout: 3500, type: \'success\'});
 							}
