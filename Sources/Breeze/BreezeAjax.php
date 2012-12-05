@@ -203,7 +203,8 @@ class BreezeAjax extends Breeze
 				'poster_id' => $this->_data->getValue('poster_comment_id'),
 				'profile_owner_id' => $this->_data->getValue('profile_owner_id'),
 				'time' => time(),
-				'body' => $this->_mention->preMention($body));
+				'body' => $this->_mention->preMention($body)
+			);
 
 			/* Store the comment */
 			$this->_query->insertComment($params);
@@ -230,19 +231,26 @@ class BreezeAjax extends Breeze
 			$display = new BreezeDisplay($params, 'comment');
 
 			/* Send the data to the template */
-			$this->_response = $display->HTML();
+			$this->passValue(array(
+				'type' => 'ok',
+				'data' => $display->HTML()
+			));
+
+			/* End it */
+			return;
 		}
 
-		/* Send the response */
-		$this->passValue();
+		/* There was an error */
+		else
+			$this->passValue(false);
 
 		unset($temp_id_exists);
 	}
 
-	/* Handles the deletion of both comments an status */
 	/**
 	 * BreezeAjax::delete()
 	 *
+	 * Handles the deletion of both comments an status
 	 * @return
 	 */
 	public function delete()
@@ -268,9 +276,12 @@ class BreezeAjax extends Breeze
 			if (!empty($temp_id_exists))
 			{
 				$type = 'delete'. ucfirst($this->_data->getValue('type'));
-
 				$this->_query->$type($this->_data->getValue('id'));
-				$this->_response = $this->_text->getText('success_message');
+				$this->passValue(array(
+					'data' => $this->_text->getText('success_message'),
+					'type' => 'deleted'
+				));
+				return;
 			}
 
 			/* Tell them someone has deleted the message already */
