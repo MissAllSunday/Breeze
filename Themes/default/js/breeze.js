@@ -249,13 +249,14 @@
 											timeout: 3500, type: 'error',
 										});
 									}
-									else {
+									else if(html.type == 'ok'){
 										jQuery('#comment_id_'+I).fadeIn('slow', 'linear', function(){
 											noty({
 												text: breeze_success_delete,
 												timeout: 3500, type: 'success',
 											});
 										});
+										$noty.close();
 									}
 								},
 								error: function (html){
@@ -265,7 +266,6 @@
 									});
 								},
 							});
-							
 						}
 					},
 						{addClass: 'button_submit', text: breeze_confirm_cancel, onClick: function($noty) {

@@ -97,7 +97,7 @@ class BreezeUser
 		if (in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['member']['options']['Breeze_kick_ignored']))
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
-		/* display all the JavaScript bits */
+		/* Display all the JavaScript bits */
 		$tools->headers('profile');
 
 		/* Set all the page stuff */
