@@ -171,7 +171,7 @@
 							{
 								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function(){
 									noty({
-										text: html.data,
+										text: breeze_error_message,
 										timeout: 3500, type: html.type,
 									});
 								});
@@ -181,13 +181,11 @@
 								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function(){
 									document.getElementById('textboxcontent_'+Id).value='';
 									document.getElementById('textboxcontent_'+Id).focus();
-
-									jQuery('#comment_loadplace_'+Id).append(html);
+									jQuery('#comment_loadplace_'+Id).append(html.data);
 									jQuery('#comment_loadplace_'+Id).fadeIn('slow', 'linear', function(){
 										noty({
 											text: breeze_success_message,
 											timeout: 3500, type: 'success',
-
 										});
 									});
 								});
@@ -198,12 +196,10 @@
 						},
 						error: function (html)
 						{
-							jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function()
-							{
-								noty({
-									text: breeze_error_message,
-									timeout: 3500, type: 'error',
-								});
+							jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow');
+							noty({
+								text: breeze_error_message,
+								timeout: 3500, type: 'error',
 							});
 						},
 					});
@@ -254,7 +250,7 @@
 										});
 									}
 									else if(html.type == 'ok'){
-										jQuery('#comment_id_'+I).hide('slow');
+										jQuery('#comment_id_'+I).fadeOut('slow');
 										$noty.close();
 										noty({
 											text: html.data,
