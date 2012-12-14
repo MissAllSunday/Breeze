@@ -91,7 +91,7 @@ class BreezeMention extends Breeze
 				$this->_queryNames = array_slice($this->_queryNames, 0, 10);
 
 			/* Let's make a quick query here... */
-			$tempQuery = $this->quickQuery(
+			$tempQuery = $this->query()->quickQuery(
 				array(
 					'table' => 'members',
 					'rows' => 'id_member, member_name, real_name',
@@ -100,7 +100,7 @@ class BreezeMention extends Breeze
 				array(
 					'names' => $this->_queryNames
 				),
-				'id_member', false
+				'id_member'
 			);
 
 			/* Get the actual users */
@@ -137,7 +137,7 @@ class BreezeMention extends Breeze
 		return $this->_string;
 	}
 
-	public function mention($noti_info)
+	public function mention($noti_info = array())
 	{
 		global $user_info;
 

@@ -103,7 +103,7 @@ class BreezeQuery extends Breeze
 	 * @param bool $single A bool to tell the query to return a single value instead of An array
 	 * @return mixed either An array or a var with the query result
 	 */
-	public function quickQuery($params, $data, $key = null, $single = false)
+	public function quickQuery($params, $data, $key = false, $single = false)
 	{
 		$dataResult = array();
 
@@ -122,13 +122,13 @@ class BreezeQuery extends Breeze
 			while ($row = $this->_smcFunc['db_fetch_assoc']($query))
 				$dataResult = $row;
 
-		if ($key)
+		if (!empty($key))
 			while ($row = $this->_smcFunc['db_fetch_assoc']($query))
 				$dataResult[$row[$key]] = $row;
 
-			else
-				while ($row = $this->_smcFunc['db_fetch_assoc']($query))
-					$dataResult[] = $row;
+		else
+			while ($row = $this->_smcFunc['db_fetch_assoc']($query))
+				$dataResult[] = $row;
 
 		$this->_smcFunc['db_free_result']($query);
 

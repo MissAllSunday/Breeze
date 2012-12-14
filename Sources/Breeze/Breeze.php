@@ -126,20 +126,6 @@ class Breeze
 	}
 
 	/**
-	 * Breeze::quickQuery()
-	 *
-	 * @param array $params An array with all the params  for the query
-	 * @param array $data An array to pass to $smcFunc casting array
-	 * @param bool $key A boolean value to asign a row as key on the returning array
-	 * @param bool $single A bool to tell the query to return a single value instead of An array
-	 * @return mixed either An array or a var with the query result
-	 */
-	public function quickQuery($params, $data, $key = false, $single = false)
-	{
-		return self::query()->quickQuery($params, $data, $key = false, $single = false);
-	}
-
-	/**
 	 * Breeze::tools()
 	 *
 	 * @see BreezeTools
@@ -236,7 +222,8 @@ class Breeze
 	 */
 	public function headers()
 	{
-		self::tools()->headers('noti');
+		$headers = new BreezeTools();
+		$headers->headers('noti');
 	}
 
 	/**

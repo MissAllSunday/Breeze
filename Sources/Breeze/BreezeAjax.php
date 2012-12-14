@@ -109,7 +109,7 @@ class BreezeAjax extends Breeze
 		checkSession('post', '', false);
 
 		/* Get the data */
-		$this->_data = $this->sGlobals('post');
+		$this->_data = $this->sGlobals('request');
 
 		/* Sorry, try to play nice next time */
 		if (!$this->_data->getValue('owner_id') || !$this->_data->getValue('poster_id') || !$this->_data->getValue('content'))
