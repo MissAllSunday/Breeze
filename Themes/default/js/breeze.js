@@ -75,49 +75,37 @@
 						url: smf_scripturl + '?action=breezeajax;sa=post',
 						data: ({content : test, owner_id : ownerID, poster_id : posterID}),
 						cache: false,
-						success: function(html)
-						{
-							/* Enable the button again... */
-							jQuery('.status_button').removeAttr('disabled');
-
-							/*
-							 * The server side found an issue
-							 *
-							 * @todo identify the different errors and show more info about it to the forum admin
-							 */
-							if(html == 'error_')
+						dataType: 'json',
+						success: function(html){
+							/* The server side found an issue */
+							if(html.type == 'error')
 							{
 								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
-									showNotification(
-									{
-										message: breeze_error_message,
-										type: 'error',
-										autoClose: true,
-										duration: 3
+									noty({
+										text: html.data,
+										timeout: 3500, type: html.type,
 									});
 								});
 							}
 
-							else
-							{
-								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function()
-								{
+							else if(html.type == 'ok'){
+								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
 									document.getElementById('content').value='';
 									document.getElementById('content').focus();
 
-									jQuery('#breeze_display_status').prepend(html);
+									jQuery('#breeze_display_status').prepend(html.data);
 
-									jQuery('#breeze_display_status').fadeIn('slow', 'linear', function()
-									{
-										showNotification({
-											message: breeze_success_message,
-											type: 'success',
-											autoClose: true,
-											duration: 3
+									jQuery('#breeze_display_status').fadeIn('slow', 'linear', function(){
+										noty({
+											text: breeze_success_message,
+											timeout: 3500, type: 'success',
 										});
 									});
 								});
 							}
+
+							/* Enable the button again... */
+							jQuery('.status_button').removeAttr('disabled');
 						},
 						error: function (html)
 						{
@@ -125,7 +113,7 @@
 							jQuery('.status_button').removeAttr('disabled');
 
 							/*
-							 * Something happen while sendind the request
+							 * Something happen while sending the request
 							 *
 							 * @todo identify the different errors and show more info about it to the forum admin
 							 */
@@ -176,54 +164,42 @@
 						url: smf_scripturl + '?action=breezeajax;sa=postcomment',
 						data: ({content : commentBox, status_owner_id : status_owner_id, poster_comment_id : poster_comment_id, profile_owner_id: profile_owner_id, status_id : status_id}),
 						cache: false,
-						success: function(html)
-						{
-							if(html == 'error_')
+						dataType: 'json',
+						success: function(html){
+							/* The server side found an issue */
+							if(html.type == 'error')
 							{
-								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function()
-								{
-									showNotification(
-									{
-										message: breeze_error_message,
-										type: 'error',
-										autoClose: true,
-										duration: 3
+								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function(){
+									noty({
+										text: breeze_error_message,
+										timeout: 3500, type: html.type,
 									});
 								});
 							}
 
-							else
-							{
-								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function()
-								{
+							else if(html.type == 'ok'){
+								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function(){
 									document.getElementById('textboxcontent_'+Id).value='';
 									document.getElementById('textboxcontent_'+Id).focus();
-
-									jQuery('#comment_loadplace_'+Id).append(html);
-
-									jQuery('#comment_loadplace_'+Id).fadeIn('slow', 'linear', function()
-									{
-										showNotification({
-											message: breeze_success_message,
-											type: 'success',
-											autoClose: true,
-											duration: 3
+									jQuery('#comment_loadplace_'+Id).append(html.data);
+									jQuery('#comment_loadplace_'+Id).fadeIn('slow', 'linear', function(){
+										noty({
+											text: breeze_success_message,
+											timeout: 3500, type: 'success',
 										});
 									});
 								});
 							}
+
+							/* Enable the button again... */
+							jQuery('.status_button').removeAttr('disabled');
 						},
 						error: function (html)
 						{
-							jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function()
-							{
-								showNotification(
-								{
-									message: breeze_error_message,
-									type: 'error',
-									autoClose: true,
-									duration: 3
-								});
+							jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow');
+							noty({
+								text: breeze_error_message,
+								timeout: 3500, type: 'error',
 							});
 						},
 					});
@@ -244,80 +220,62 @@
 				var I = element.attr('id');
 				var Type = 'comment';
 
-				jQuery.ajax(
-					{
-						type: 'POST',
-						url: smf_scripturl + '?action=breezeajax;sa=delete',
-						data: ({id : I, type : Type}),
-						cache: false,
-						success: function(html)
-						{
-							if(html == 'error_')
-							{
-								showNotification(
-								{
-									message: breeze_error_message,
-									type: 'error',
-									autoClose: true,
-									duration: 3
-								});
-							}
-							else if(html == 'deleted_')
-							{
-								showNotification(
-								{
-									message: breeze_already_deleted,
-									type: 'error',
-									autoClose: true,
-									duration: 3
-								});
-							}
-							else
-							{
-								jQuery('#comment_id_'+I).hide('slow');
-								showNotification({
-									message: breeze_success_delete,
-									type: 'success',
-									autoClose: true,
-									duration: 3
-								});
-							}
-						},
-						error: function (html)
-						{
-							showNotification(
-							{
-								message: breeze_error_message,
-								type: 'error',
-								autoClose: true,
-								duration: 3
+				/* Show a nice confirmation box */
+				noty({
+					text: breeze_confirm_delete,
+					type: 'confirmation',
+					dismissQueue: false,
+					closeWith: ['button'],
+					buttons: [{
+						addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
+							jQuery.ajax({
+								type: 'POST',
+								url: smf_scripturl + '?action=breezeajax;sa=delete',
+								data: ({id : I, type : Type}),
+								cache: false,
+								dataType: 'json',
+								success: function(html){
+									if(html.type == 'error'){
+										$noty.close();
+										noty({
+											text: html.data,
+											timeout: 3500, type: 'error',
+										});
+									}
+									else if(html.type == 'deleted'){
+										$noty.close();
+										noty({
+											text: html.data,
+											timeout: 3500, type: 'error',
+										});
+									}
+									else if(html.type == 'ok'){
+										jQuery('#comment_id_'+I).fadeOut('slow');
+										$noty.close();
+										noty({
+											text: html.data,
+											timeout: 3500, type: 'success',
+										});
+									}
+								},
+								error: function (html){
+									$noty.close();
+									noty({
+										text: html.data,
+										timeout: 3500, type: 'error',
+									});
+								},
 							});
-							jQuery('#comment_id_'+I).hide('slow');
-						},
-					});
+						}
+					},
+						{addClass: 'button_submit', text: breeze_confirm_cancel, onClick: function($noty) {
+							$noty.close();
+						}}
+					]
+				});
 				return false;
 			});
 		});
-
-		// The confirmation message
-		jQuery('.breeze_delete_comment').livequery(function()
-		{
-			jQuery(this).confirm(
-			{
-				msg: breeze_confirm_delete + '<br />',
-				buttons:
-				{
-					ok: breeze_confirm_yes,
-					cancel: breeze_confirm_cancel,
-					separator:' | '
-				}
-
-			});
-		});
-
-		var b_c = C_C('PGRpdiBzdHlsZT0idGV4dC1hbGlnbjogY2VudGVyOyIgY2xhc3M9InNtYWxsdGV4dCI+QnJlZXplIKkgMjAxMiwgPGEgaHJlZj0iaHR0cDovL21pc3NhbGxzdW5kYXkuY29tIiB0aXRsZT0iRnJlZSBTTUYgbW9kcyIgdGFyZ2V0PSJibGFuayI+U3VraTwvYT48L2Rpdj4=');
-
-		jQuery('#admin_content').append(b_c);
 	});
 
 	/* Toggle the comment box */
@@ -390,63 +348,7 @@
 				return false;
 			});
 		});
-
-		// The confirmation message
-		jQuery('.breeze_delete_status').livequery(function()
-		{
-			jQuery(this).confirm(
-			{
-				msg: breeze_confirm_delete + '<br />',
-				buttons:
-				{
-					ok: breeze_confirm_yes,
-					cancel: breeze_confirm_cancel,
-					separator:' | '
-				}
-			});
-		});
 	});
-
-	/* Fun! */
-	function C_C(data)
-	{
-		var b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-		var o1, o2, o3, h1, h2, h3, h4, bits, i = 0,
-			ac = 0,
-			dec = "",
-			tmp_arr = [];
-
-		if (!data) {
-			return data;
-		}
-
-		data += '';
-
-		do {
-			h1 = b64.indexOf(data.charAt(i++));
-			h2 = b64.indexOf(data.charAt(i++));
-			h3 = b64.indexOf(data.charAt(i++));
-			h4 = b64.indexOf(data.charAt(i++));
-
-			bits = h1 << 18 | h2 << 12 | h3 << 6 | h4;
-
-			o1 = bits >> 16 & 0xff;
-			o2 = bits >> 8 & 0xff;
-			o3 = bits & 0xff;
-
-			if (h3 == 64) {
-				tmp_arr[ac++] = String.fromCharCode(o1);
-			} else if (h4 == 64) {
-				tmp_arr[ac++] = String.fromCharCode(o1, o2);
-			} else {
-				tmp_arr[ac++] = String.fromCharCode(o1, o2, o3);
-			}
-		} while (i < data.length);
-
-		dec = tmp_arr.join('');
-
-		return dec;
-	}
 
 /* Facebox */
 	jQuery(document).ready(function()

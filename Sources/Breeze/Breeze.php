@@ -99,15 +99,18 @@ class Breeze
 	}
 
 	/**
-	 * Breeze::get()
+	 * Breeze::instantiate()
 	 *
-	  *@param string The name of the class
+	 *@param string The name of the class
 	 * @return object Access to the class
 	 */
-	public function get($object, $param = false)
+	public function instantiate($objectName, $param = false)
 	{
-		$object = ucfirst($object);
-		$class = self::$name . $object;
+		if (empty($objectName))
+			return false;
+
+		$objectName = ucfirst($objectName);
+		$class = self::$name . $objectName;
 		return new $class($param ? $param : null);
 	}
 

@@ -49,16 +49,19 @@ class BreezeAjax extends Breeze
 	 */
 	public function __construct()
 	{
-		/* Load stuff */
-		loadtemplate('BreezeAjax');
+		/* Needed to show error strings */
+		loadLanguage(parent::$name);
 
 		/* Load all the things we need */
-		$this->_data = $this->sGlobals('request');
 		$this->_query = $this->query();
 		$this->_parser = $this->parser();
 		$this->_mention = $this->mention();
 		$this->_settings = $this->settings();
 		$this->_notifications = $this->notifications();
+		$this->_text = $this->text();
+
+		/* Set a temp var, by default lets pretend everything went wrong... */
+		$this->_response = '';
 	}
 
 	/**
@@ -71,7 +74,7 @@ class BreezeAjax extends Breeze
 		/* Handling the subactions */
 		$sglobals = $this->sGlobals('get');
 
-		/* Safety first, hardcoded the actions */
+		/* Safety first, hardcode the actions */
 		$subActions = array(
 			'post' => 'post',
 			'postcomment' => 'postComment',
@@ -82,11 +85,16 @@ class BreezeAjax extends Breeze
 
 		/* Does the subaction even exist? */
 		if (in_array($sglobals->getValue('sa'), array_keys($subActions)))
+		{
 			$this->$subActions[$sglobals->getValue('sa')]();
 
-		/* No?  then tell them there was an error... */
-		/* else */
-		/* some redirect here.. */
+			/* Send the response back to the browser */
+			$this->returnResponse();
+		}
+
+		/* Sorry pal... */
+		else
+		fatal_lang_error ($this->_text->getText('error_no_valid_action'));
 	}
 
 	/**
@@ -96,16 +104,18 @@ class BreezeAjax extends Breeze
 	 */
 	public function post()
 	{
-		global $context;
-
 		/* You aren't allowed in here, let's show you a nice message error... */
 		if (!allowedTo('breeze_postStatus'))
 			return false;
 
 		checkSession('post', '', false);
 
-		/* Set some values */
-		$context['Breeze']['ajax'] = array('ok' => '', 'data' => '');
+		/* Get the data */
+		$this->_data = $this->sGlobals('post');
+
+		/* Sorry, try to play nice next time */
+		if (!$this->_data->getValue('owner_id') || !$this->_data->getValue('poster_id') || !$this->_data->getValue('content'))
+			return;
 
 		/* Do this only if there is something to add to the database */
 		if ($this->_data->validateBody('content'))
@@ -117,7 +127,7 @@ class BreezeAjax extends Breeze
 				'poster_id' => $this->_data->getValue('poster_id'),
 				'time' => time(),
 				'body' => $this->_mention->preMention($body),
-				);
+			);
 
 			/* Store the status */
 			$this->_query->insertStatus($params);
@@ -139,18 +149,21 @@ class BreezeAjax extends Breeze
 			$params['body'] = $this->_parser->display($params['body']);
 
 			/* The status was added, build the server response */
-			$display = new Breezedisplay($params, 'status');
+			$display = new BreezeDisplay($params, 'status');
 
-			/* Send the data to the template */
-			$context['Breeze']['ajax']['ok'] = 'ok';
-			$context['Breeze']['ajax']['data'] = $display->HTML();
+			/* Send the data back to the browser */
+			$this->_response = array(
+				'type' => 'ok',
+				'data' => $display->HTML()
+			);
+
+			/* End it */
+			return;
 		}
 
+		/* There was an error */
 		else
-			$context['Breeze']['ajax']['ok'] = 'error';
-
-		$context['template_layers'] = array();
-		$context['sub_template'] = 'breeze_post';
+			$this->_response = false;
 	}
 
 	/**
@@ -160,7 +173,7 @@ class BreezeAjax extends Breeze
 	 */
 	public function postComment()
 	{
-		global $context, $scripturl;
+		global $scripturl;
 
 		/* You aren't allowed in here, let's show you a nice message error... */
 		if (!allowedTo('breeze_postComments'))
@@ -168,8 +181,11 @@ class BreezeAjax extends Breeze
 
 		checkSession('post', '', false);
 
-		/* By default it will show an error, we only do stuff if necesary */
-		$context['Breeze']['ajax']['ok'] = '';
+		$this->_data = $this->sGlobals('post');
+
+		/* Sorry, try to play nice next time */
+		if (!$this->_data->getValue('status_owner_id') || !$this->_data->getValue('status_owner_id') || !$this->_data->getValue('poster_comment_id') || !$this->_data->getValue('profile_owner_id') || !$this->_data->getValue('content'))
+			return;
 
 		/* Load all the things we need */
 		$temp_id_exists = $this->_query->getSingleValue('status', 'id', $this->_data->getValue('status_id'));
@@ -186,7 +202,8 @@ class BreezeAjax extends Breeze
 				'poster_id' => $this->_data->getValue('poster_comment_id'),
 				'profile_owner_id' => $this->_data->getValue('profile_owner_id'),
 				'time' => time(),
-				'body' => $this->_mention->preMention($body));
+				'body' => $this->_mention->preMention($body)
+			);
 
 			/* Store the comment */
 			$this->_query->insertComment($params);
@@ -210,74 +227,81 @@ class BreezeAjax extends Breeze
 			$params['body'] = $this->_parser->display($params['body']);
 
 			/* The comment was added, build the server response */
-			$display = new Breezedisplay($params, 'comment');
+			$display = new BreezeDisplay($params, 'comment');
 
-			/* Send the data to the template */
-			$context['Breeze']['ajax']['ok'] = 'ok';
-			$context['Breeze']['ajax']['data'] = $display->HTML();
+			/* Send the data back to the browser */
+			$this->_response = array(
+				'type' => 'ok',
+				'data' => $display->HTML()
+			);
+
+			/* End it */
+			return;
 		}
 
+		/* There was an error */
 		else
-			$context['Breeze']['ajax']['ok'] = 'error';
-
-		$context['template_layers'] = array();
-		$context['sub_template'] = 'breeze_post';
-
-		unset($temp_id_exists);
+			$this->_response = false;
 	}
 
-	/* Handles the deletion of both comments an status */
 	/**
 	 * BreezeAjax::delete()
 	 *
+	 * Handles the deletion of both comments an status
 	 * @return
 	 */
 	public function delete()
 	{
-		global $context;
-
 		/* You aren't allowed in here, let's show you a nice message error... */
 		isAllowedTo('breeze_deleteStatus');
 
-		$context['Breeze']['ajax']['ok'] = '';
-		$context['Breeze']['ajax']['data'] = '';
+		checkSession('post', '', false);
+
+		/* Get the global vars */
+		$this->_data = $this->sGlobals('request');
 
 		/* Get the data */
-		$temp_id_exists = $this->_query->getSingleValue($this->_data->getValue('type') == 'status' ?
-			'status':'comments', 'id', $this->_data->getValue('id'));
-
-		switch ($this->_data->getValue('type'))
+		if ($this->_data->getValue('id') != false)
 		{
-			case 'status':
-				/* Do this only if the status wasn't deleted already */
-				if (!empty($temp_id_exists))
-				{
-					$this->_query->deleteStatus($this->_data->getValue('id'));
-					$context['Breeze']['ajax']['ok'] = 'ok';
-				}
+			$temp_id_exists = $this->_query->getSingleValue(
+				$this->_data->getValue('type') == 'status' ? 'status':'comments',
+				'id',
+				$this->_data->getValue('id')
+			);
 
-				else
-					$context['Breeze']['ajax']['ok'] = 'deleted';
+			/* Do this only if the message wasn't deleted already */
+			if (!empty($temp_id_exists))
+			{
+				$type = 'delete'. ucfirst($this->_data->getValue('type'));
+				$this->_query->$type($this->_data->getValue('id'));
 
-				break;
-			case 'comment':
-				/* Do this only if the comment wasn't deleted already */
-				if (!empty($temp_id_exists))
-				{
-					$this->_query->deleteComment($this->_data->getValue('id'));
-					$context['Breeze']['ajax']['ok'] = 'ok';
-				}
+				/* Send the data back to the browser */
+				$this->_response = array(
+					'data' => $this->_text->getText('success_delete'),
+					'type' => 'ok'
+				);
 
-				else
-					$context['Breeze']['ajax']['ok'] = 'deleted';
+				/* End it! */
+				return;
+			}
 
-				break;
+			/* Tell them someone has deleted the message already */
+			else
+			{
+				$this->_response = array(
+					'data' => $this->_text->getText('already_deleted'),
+					'type' => 'deleted'
+				);
+
+				/* Don't forget to end it */
+				return;
+			}
+
+			unset($temp_id_exists);
 		}
 
-		$context['template_layers'] = array();
-		$context['sub_template'] = 'breeze_post';
-
-		unset($temp_id_exists);
+		/* Either way, pass the response */
+		$this->_response = false;
 	}
 
 	/**
@@ -288,14 +312,10 @@ class BreezeAjax extends Breeze
 	 */
 	public function notimark()
 	{
-		global $context;
-
 		checkSession('post', '', false);
 
-		/* Set some values */
-		$context['Breeze']['ajax'] = array(
-				'ok' => 'error',
-				'data' => 'error_');
+		/* Get the global vars */
+		$this->_data = $this->sGlobals('post');
 
 		/* Get the data */
 		$noti = $this->_data->getValue('content');
@@ -303,24 +323,23 @@ class BreezeAjax extends Breeze
 
 		/* Is this valid data? */
 		if (empty($noti) || empty($user))
-			$context['Breeze']['ajax']['ok'] = 'error';
+			return;
 
 		/* We must make sure this noti really exists, we just must!!! */
 		$noti_temp = $this->_notifications->getToUser($user);
 
 		if (empty($noti_temp) || !array_key_exists($noti, $noti_temp))
-			$context['Breeze']['ajax']['ok'] = 'error';
+			return;
 
 		else
 		{
 			/* All is good, mark this as read */
-			$context['Breeze']['ajax']['ok'] = 'ok';
-			$context['Breeze']['ajax']['data'] = 'ok';
 			$this->_notifications->markAsRead($noti);
+			$this->_response = array(
+				'data' => $this->_text->getText('noti_markasread_after'),
+				'type' => 'ok'
+			);
 		}
-
-		$context['template_layers'] = array();
-		$context['sub_template'] = 'breeze_post';
 	}
 
 	/**
@@ -331,15 +350,10 @@ class BreezeAjax extends Breeze
 	 */
 	public function notidelete()
 	{
-		global $context;
-
 		checkSession('post', '', false);
 
-		/* Set some values */
-		$context['Breeze']['ajax'] = array(
-			'ok' => 'error',
-			'data' => 'error_'
-		);
+		/* Get the global vars */
+		$this->_data = $this->sGlobals('post');
 
 		/* Get the data */
 		$noti = $this->_data->getValue('content');
@@ -347,23 +361,60 @@ class BreezeAjax extends Breeze
 
 		/* Is this valid data? */
 		if (empty($noti) || empty($user))
-			$context['Breeze']['ajax']['ok'] = 'error';
+			return;
 
 		/* We must make sure this noti really exists, we just must!!! */
 		$noti_temp = $this->_notifications->getToUser($user);
 
 		if (empty($noti_temp) || !array_key_exists($noti, $noti_temp))
-			$context['Breeze']['ajax']['ok'] = 'error';
+			return;
 
 		else
 		{
-			/* All is good, mark this as read */
-			$context['Breeze']['ajax']['ok'] = 'ok';
-			$context['Breeze']['ajax']['data'] = 'ok';
+			/* All is good, delete thi */
 			$this->_notifications->delete($noti);
+			$this->_response = array(
+				'data' => $this->_text->getText('noti_delete_after'),
+				'type' => 'ok'
+			);
 		}
+	}
 
-		$context['template_layers'] = array();
-		$context['sub_template'] = 'breeze_post';
+	/**
+	 * BreezeAjax::returnResponse()
+	 *
+	 * Returns a json encoded response back to the browser
+	 * @param array The array that will be sent to the browser
+	 * @return
+	 */
+	protected function returnResponse()
+	{
+		global $modSettings;
+
+		/* kill anything else */
+		ob_end_clean();
+
+		if (!empty($modSettings['enableCompressedOutput']))
+			@ob_start('ob_gzhandler');
+
+		else
+			ob_start();
+
+		/* Send the header */
+		header('Content-Type: application/json');
+
+		/* Is there a custom error message? Use it */
+		if (!empty($this->_response))
+			print json_encode($this->_response);
+
+		/* No? then show the standard error message */
+		else
+			print json_encode(array(
+				'data' => $this->_text->getText('error_message'),
+				'type' => 'error'
+			));
+
+		/* Done */
+		obExit(false);
 	}
 }

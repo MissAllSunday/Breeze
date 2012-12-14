@@ -40,7 +40,6 @@ if (!defined('SMF'))
 
 abstract class BreezeDispatcher
 {
-
 	/**
 	 * BreezeDispatcher::__construct()
 	 *

@@ -238,7 +238,7 @@ function template_user_wall()
 													<div class="breeze_options">
 														<span class="time_elapsed">', $comment['time'] ,'</span>';
 
-														/* Delete comment */
+									/* Delete comment */
 									if ($context['Breeze']['visitor']['delete_status_comments'])
 										echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 

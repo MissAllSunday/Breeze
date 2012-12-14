@@ -170,9 +170,10 @@ $txt['Breeze_success_delete'] = 'Your comment has been deleted';
 $txt['Breeze_confirm_delete'] = 'Do you really want to delete this?';
 $txt['Breeze_confirm_yes'] = 'Yes';
 $txt['Breeze_confirm_cancel'] = 'Cancel';
-$txt['Breeze_already_deleted'] = 'This comment/status was already deleted.';
+$txt['Breeze_already_deleted'] = 'This comment/status was already deleted. Try refreshing your browser';
 $txt['Breeze_cannot_postStatus'] = 'I\'m sorry,  you aren\'t allowed to post new Status.';
 $txt['Breeze_cannot_postComments'] = 'I\'m sorry,  you aren\'t allowed to post new Comments.';
+$txt['Breeze_error_no_valid_action'] = 'This is not a valid action.';
 
 /* Errors */
 $txt['cannot_breeze_postStatus'] = $txt['Breeze_cannot_postStatus'];

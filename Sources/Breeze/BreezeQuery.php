@@ -66,7 +66,6 @@ class BreezeQuery extends Breeze
 
 		$this->_smcFunc = $smcFunc;
 
-		/* @todo, create a multidimensional array containing all the columns for each table */
 		$this->_tables = array(
 			'status' => array(
 				'name' => 'status',
@@ -632,7 +631,11 @@ class BreezeQuery extends Breeze
 		/* Delete! */
 		$this->_smcFunc['db_query']('', '
 			DELETE FROM {db_prefix}' . ($this->_tables['comments']['table']) . '
-			WHERE id_pm = comments_id = {int:id}', array('id' => $id, ));
+			WHERE comments_id = {int:id}',
+			array(
+				'id' => (int) $id,
+			)
+		);
 	}
 
 	/**
@@ -643,8 +646,7 @@ class BreezeQuery extends Breeze
 	protected function members()
 	{
 		/* Use the cache please... */
-		if (($this->_members = cache_get_data(parent::$name .'-' . $this->_tables['members']['name'],
-			120)) == null)
+		if (($this->_members = cache_get_data(parent::$name .'-' . $this->_tables['members']['name'], 120)) == null)
 		{
 			/* Load all the settings from all users */
 			$result = $this->_smcFunc['db_query']('', '
@@ -659,8 +661,7 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data(parent::$name .'-' . $this->_tables['members']['name'], $this->_members,
-				120);
+			cache_put_data(parent::$name .'-' . $this->_tables['members']['name'], $this->_members, 120);
 		}
 
 		return $this->_members;
@@ -787,7 +788,7 @@ class BreezeQuery extends Breeze
 		$this->_smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables['noti']['table']) . '
 			SET viewed = {int:viewed}
-			WHERE notifications_id = {int:id}', array('viewed' => 1, 'id' => (int)$id, ));
+			WHERE id = {int:id}', array('viewed' => 1, 'id' => (int)$id, ));
 	}
 
 	/**
@@ -806,7 +807,11 @@ class BreezeQuery extends Breeze
 		$this->_smcFunc['db_query']('', '
 			DELETE
 			FROM {db_prefix}' . ($this->_tables['noti']['table']) . '
-			WHERE notifications_id = {int:id}', array('id' => '{int:id}'));
+			WHERE id = {int:id}',
+			array(
+				'id' => (int) $id
+			)
+		);
 	}
 
 	/**
