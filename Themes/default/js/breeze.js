@@ -304,47 +304,59 @@
 				var I = element.attr('id');
 				var Type = 'status';
 
-				jQuery.ajax(
-					{
-						type: 'POST',
-						url: smf_scripturl + '?action=breezeajax;sa=delete',
-						data: ({id : I, type : Type}),
-						cache: false,
-						success: function(html)
-						{
-							if(html == 'error_')
-							{
-								showNotification(
-								{
-									message: breeze_error_message,
-									type: 'error',
-									autoClose: true,
-									duration: 3
-								});
-							}
-							else
-							{
-								jQuery('#status_id_'+I).hide('slow');
-								showNotification({
-									message: breeze_success_delete,
-									type: 'success',
-									autoClose: true,
-									duration: 3
-								});
-							}
-						},
-						error: function (html)
-						{
-							showNotification(
-							{
-								message: breeze_error_message,
-								type: 'error',
-								autoClose: true,
-								duration: 3
+				/* Show a nice confirmation box */
+				noty({
+					text: breeze_confirm_delete,
+					type: 'confirmation',
+					dismissQueue: false,
+					closeWith: ['button'],
+					buttons: [{
+						addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
+							jQuery.ajax({
+								type: 'POST',
+								url: smf_scripturl + '?action=breezeajax;sa=delete',
+								data: ({id : I, type : Type}),
+								cache: false,
+								dataType: 'json',
+								success: function(html){
+									if(html.type == 'error'){
+										$noty.close();
+										noty({
+											text: html.data,
+											timeout: 3500, type: 'error',
+										});
+									}
+									else if(html.type == 'deleted'){
+										$noty.close();
+										noty({
+											text: html.data,
+											timeout: 3500, type: 'error',
+										});
+									}
+									else if(html.type == 'ok'){
+										jQuery('#status_id_'+I).fadeOut('slow');
+										$noty.close();
+										noty({
+											text: html.data,
+											timeout: 3500, type: 'success',
+										});
+									}
+								},
+								error: function (html){
+									$noty.close();
+									noty({
+										text: html.data,
+										timeout: 3500, type: 'error',
+									});
+								},
 							});
-							jQuery('#status_id_'+I).hide('slow');
-						},
-					});
+						}
+					},
+						{addClass: 'button_submit', text: breeze_confirm_cancel, onClick: function($noty) {
+							$noty.close();
+						}}
+					]
+				});
 				return false;
 			});
 		});

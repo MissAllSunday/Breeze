@@ -141,7 +141,7 @@ class BreezeAjax extends Breeze
 				'wall_owner' => $this->_data->getValue('owner_id'),
 				'wall_poster' => $this->_data->getValue('poster_id'),
 				'status_id' => $params['id'],
-				));
+			));
 
 			/* Parse the content */
 			$params['body'] = $this->_parser->display($params['body']);
