@@ -40,8 +40,6 @@ if (!defined('SMF'))
 
 class BreezeAjax extends Breeze
 {
-	public $query;
-
 	/**
 	 * BreezeAjax::__construct()
 	 *
