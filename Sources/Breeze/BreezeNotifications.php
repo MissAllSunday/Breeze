@@ -52,7 +52,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::__construct()
-	 * 
+	 *
 	 * @return
 	 */
 	function __construct()
@@ -83,7 +83,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::create()
-	 * 
+	 *
 	 * @param mixed $params
 	 * @return
 	 */
@@ -108,7 +108,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::createBuddy()
-	 * 
+	 *
 	 * @param mixed $params
 	 * @return
 	 */
@@ -126,11 +126,11 @@ class BreezeNotifications extends Breeze
 					'rows' => 'id',
 					'where' => 'user = {int:user}',
 					'whereAnd' => 'user_to = {int:user_to}',
-				), 
+				),
 				array(
 					'user' => !empty($params['user']) ? $params['user'] : $this->_currentUser,
 					'user_to' => $params['user_to'],
-				), 
+				),
 				'id', false
 			);
 
@@ -149,7 +149,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::count()
-	 * 
+	 *
 	 * @return
 	 */
 	public function count()
@@ -159,7 +159,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::getToUser()
-	 * 
+	 *
 	 * @param mixed $user
 	 * @param bool $all
 	 * @return
@@ -188,7 +188,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::getByUser()
-	 * 
+	 *
 	 * @param mixed $user
 	 * @param bool $all
 	 * @return
@@ -217,7 +217,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::doStream()
-	 * 
+	 *
 	 * @param mixed $user
 	 * @return
 	 */
@@ -318,6 +318,11 @@ class BreezeNotifications extends Breeze
 								noty({text: html.data, timeout: 3500, type: \'error\'});
 							}
 
+							else if(html.type == \'deleted\')
+							{
+								noty({text: html.data, timeout: 3500, type: \'error\'});
+							}
+
 							else if(html.type == \'ok\')
 							{
 								noty({text: html.data, timeout: 3500, type: \'success\'});
@@ -347,7 +352,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::doBuddy()
-	 * 
+	 *
 	 * @param mixed $noti
 	 * @return
 	 */
@@ -369,7 +374,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::doMention()
-	 * 
+	 *
 	 * @param mixed $noti
 	 * @return
 	 */
@@ -434,7 +439,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::delete()
-	 * 
+	 *
 	 * @param mixed $id
 	 * @return
 	 */
@@ -445,7 +450,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::markAsRead()
-	 * 
+	 *
 	 * @param mixed $id
 	 * @return
 	 */

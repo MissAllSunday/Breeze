@@ -351,7 +351,7 @@ class BreezeAjax extends Breeze
 		checkSession('post', '', false);
 
 		/* Get the global vars */
-		$this->_data = $this->sGlobals('post');
+		$this->_data = $this->sGlobals('request');
 
 		/* Get the data */
 		$noti = $this->_data->getValue('content');
@@ -365,7 +365,13 @@ class BreezeAjax extends Breeze
 		$noti_temp = $this->_notifications->getToUser($user);
 
 		if (empty($noti_temp) || !array_key_exists($noti, $noti_temp))
+		{
+			$this->_response = array(
+				'data' => $this->_text->getText('already_deleted_noti'),
+				'type' => 'deleted'
+			);
 			return;
+		}
 
 		else
 		{
@@ -375,6 +381,7 @@ class BreezeAjax extends Breeze
 				'data' => $this->_text->getText('noti_delete_after'),
 				'type' => 'ok'
 			);
+			return;
 		}
 	}
 
