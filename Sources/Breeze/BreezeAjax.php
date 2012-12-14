@@ -261,7 +261,7 @@ class BreezeAjax extends Breeze
 		checkSession('post', '', false);
 
 		/* Get the global vars */
-		$this->_data = $this->sGlobals('post');
+		$this->_data = $this->sGlobals('request');
 
 		/* Get the data */
 		if ($this->_data->getValue('id') != false)
@@ -278,7 +278,7 @@ class BreezeAjax extends Breeze
 				$type = 'delete'. ucfirst($this->_data->getValue('type'));
 				$this->_query->$type($this->_data->getValue('id'));
 				$this->passValue(array(
-					'data' => $this->_text->getText('success_message'),
+					'data' => $this->_text->getText('success_delete'),
 					'type' => 'ok'
 				));
 				return;

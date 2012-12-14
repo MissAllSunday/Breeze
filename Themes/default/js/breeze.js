@@ -164,6 +164,7 @@
 						url: smf_scripturl + '?action=breezeajax;sa=postcomment',
 						data: ({content : commentBox, status_owner_id : status_owner_id, poster_comment_id : poster_comment_id, profile_owner_id: profile_owner_id, status_id : status_id}),
 						cache: false,
+						dataType: 'json',
 						success: function(html){
 							/* The server side found an issue */
 							if(html.type == 'error')
@@ -227,7 +228,6 @@
 				noty({
 					text: breeze_confirm_delete,
 					type: 'confirmation',
-					layout: 'center',
 					dismissQueue: false,
 					closeWith: ['button'],
 					buttons: [{
@@ -237,30 +237,33 @@
 								url: smf_scripturl + '?action=breezeajax;sa=delete',
 								data: ({id : I, type : Type}),
 								cache: false,
+								dataType: 'json',
 								success: function(html){
 									if(html.type == 'error'){
+										$noty.close();
 										noty({
 											text: html.data,
 											timeout: 3500, type: 'error',
 										});
 									}
 									else if(html.type == 'deleted'){
+										$noty.close();
 										noty({
 											text: html.data,
 											timeout: 3500, type: 'error',
 										});
 									}
 									else if(html.type == 'ok'){
-										jQuery('#comment_id_'+I).fadeIn('slow', 'linear', function(){
-											noty({
-												text: breeze_success_delete,
-												timeout: 3500, type: 'success',
-											});
-										});
+										jQuery('#comment_id_'+I).hide('slow');
 										$noty.close();
+										noty({
+											text: html.data,
+											timeout: 3500, type: 'success',
+										});
 									}
 								},
 								error: function (html){
+									$noty.close();
 									noty({
 										text: html.data,
 										timeout: 3500, type: 'error',
