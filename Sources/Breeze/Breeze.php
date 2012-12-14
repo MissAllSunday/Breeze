@@ -101,7 +101,7 @@ class Breeze
 	/**
 	 * Breeze::instantiate()
 	 *
-	  *@param string The name of the class
+	 *@param string The name of the class
 	 * @return object Access to the class
 	 */
 	public function instantiate($objectName, $param = false)

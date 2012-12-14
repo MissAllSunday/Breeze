@@ -49,8 +49,8 @@ class BreezeAjax extends Breeze
 	 */
 	public function __construct()
 	{
-		/* Load stuff */
-		loadtemplate('BreezeAjax');
+		/* Needed to show error strings */
+		loadLanguage(parent::$name);
 
 		/* Load all the things we need */
 		$this->_query = $this->query();
@@ -111,7 +111,7 @@ class BreezeAjax extends Breeze
 		/* Sorry, try to play nice next time */
 		if (!$this->_data->getValue('owner_id') || !$this->_data->getValue('poster_id') || !$this->_data->getValue('content'))
 		{
-			$this->passValue(false);
+			$this->returnResponse(false);
 			return;
 		}
 
@@ -150,7 +150,7 @@ class BreezeAjax extends Breeze
 			$display = new BreezeDisplay($params, 'status');
 
 			/* Send the data to the template */
-			$this->passValue(array(
+			$this->returnResponse(array(
 				'type' => 'ok',
 				'data' => $display->HTML()
 			));
@@ -161,7 +161,7 @@ class BreezeAjax extends Breeze
 
 		/* There was an error */
 		else
-			$this->passValue(false);
+			$this->returnResponse(false);
 	}
 
 	/**
@@ -184,7 +184,7 @@ class BreezeAjax extends Breeze
 		/* Sorry, try to play nice next time */
 		if (!$this->_data->getValue('status_owner_id') || !$this->_data->getValue('status_owner_id') || !$this->_data->getValue('poster_comment_id') || !$this->_data->getValue('profile_owner_id') || !$this->_data->getValue('content'))
 		{
-			$this->passValue(false);
+			$this->returnResponse(false);
 			return;
 		}
 
@@ -231,7 +231,7 @@ class BreezeAjax extends Breeze
 			$display = new BreezeDisplay($params, 'comment');
 
 			/* Send the data to the template */
-			$this->passValue(array(
+			$this->returnResponse(array(
 				'type' => 'ok',
 				'data' => $display->HTML()
 			));
@@ -242,7 +242,7 @@ class BreezeAjax extends Breeze
 
 		/* There was an error */
 		else
-			$this->passValue(false);
+			$this->returnResponse(false);
 
 		unset($temp_id_exists);
 	}
@@ -277,7 +277,7 @@ class BreezeAjax extends Breeze
 			{
 				$type = 'delete'. ucfirst($this->_data->getValue('type'));
 				$this->_query->$type($this->_data->getValue('id'));
-				$this->passValue(array(
+				$this->returnResponse(array(
 					'data' => $this->_text->getText('success_delete'),
 					'type' => 'ok'
 				));
@@ -287,7 +287,7 @@ class BreezeAjax extends Breeze
 			/* Tell them someone has deleted the message already */
 			else
 			{
-				$this->passValue(array(
+				$this->returnResponse(array(
 					'data' => $this->_text->getText('already_deleted'),
 					'type' => 'deleted'
 				));
@@ -298,7 +298,7 @@ class BreezeAjax extends Breeze
 		}
 
 		/* Either way, pass the response */
-		$this->passValue();
+		$this->returnResponse();
 	}
 
 	/**
@@ -321,7 +321,7 @@ class BreezeAjax extends Breeze
 		/* Is this valid data? */
 		if (empty($noti) || empty($user))
 		{
-			$this->passValue();
+			$this->returnResponse();
 			return;
 		}
 
@@ -330,7 +330,7 @@ class BreezeAjax extends Breeze
 
 		if (empty($noti_temp) || !array_key_exists($noti, $noti_temp))
 		{
-			$this->passValue();
+			$this->returnResponse();
 			return;
 		}
 
@@ -338,7 +338,7 @@ class BreezeAjax extends Breeze
 		{
 			/* All is good, mark this as read */
 			$this->_notifications->markAsRead($noti);
-			$this->passValue(array(
+			$this->returnResponse(array(
 				'data' => $this->_text->getText('noti_markasread_after'),
 				'type' => 'ok'
 			));
@@ -365,7 +365,7 @@ class BreezeAjax extends Breeze
 		/* Is this valid data? */
 		if (empty($noti) || empty($user))
 		{
-			$this->passValue();
+			$this->returnResponse();
 			return;
 		}
 
@@ -374,7 +374,7 @@ class BreezeAjax extends Breeze
 
 		if (empty($noti_temp) || !array_key_exists($noti, $noti_temp))
 		{
-			$this->passValue();
+			$this->returnResponse();
 			return;
 		}
 
@@ -382,30 +382,48 @@ class BreezeAjax extends Breeze
 		{
 			/* All is good, delete thi */
 			$this->_notifications->delete($noti);
-			$this->passValue(array(
+			$this->returnResponse(array(
 				'data' => $this->_text->getText('noti_delete_after'),
 				'type' => 'ok'
 			));
 		}
 	}
 
-	protected function passValue($array = false)
+	/**
+	 * BreezeAjax::returnResponse()
+	 *
+	 * Returns a json encoded response back to the browser
+	 * @param array The array that will be sent to the browser
+	 * @return
+	 */
+	protected function returnResponse($array = false)
 	{
-		global $context;
+		global $modSettings;
 
-		/* Set the template */
-		$context['template_layers'] = array();
-		$context['sub_template'] = 'breeze_post';
+		/* kill anything else */
+		ob_end_clean();
+
+		if (!empty($modSettings['enableCompressedOutput']))
+			@ob_start('ob_gzhandler');
+
+		else
+			ob_start();
+
+		/* Send the header */
+		header('Content-Type: application/json');
 
 		/* Is there a custom error message? Use it */
 		if ($array)
-			$context['Breeze']['ajax'] = $array;
+			print json_encode($array);
 
 		/* No? then show the standard error message */
 		else
-			$context['Breeze']['ajax'] = array(
+			print json_encode(array(
 				'data' => $this->_text->getText('error_message'),
 				'type' => 'error'
-			);
+			));
+
+		/* Done */
+		obExit(false);
 	}
 }
