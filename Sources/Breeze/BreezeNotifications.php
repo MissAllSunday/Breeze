@@ -334,8 +334,7 @@ class BreezeNotifications extends Breeze
 						},
 					});
 				$noty.close();
-			}
-			},
+			}},
 			{addClass: \'button_submit\', text: breeze_noti_cancel, onClick: function($noty) {
 				$noty.close();
 			  }

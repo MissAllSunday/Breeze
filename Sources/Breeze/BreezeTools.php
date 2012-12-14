@@ -136,17 +136,18 @@ class BreezeTools extends Breeze
 		/* Admin bits */
 		if($type == 'admin')
 			$context['html_headers'] .= '
-			<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.min.js" type="text/javascript"></script>
+			<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.js" type="text/javascript"></script>
 			<script type="text/javascript">
 var breeze_feed_error_message = "'. $this->text->getText('feed_error_message') .'";
 
 $(document).ready(function ()
 {
-	$(\'#breezelive\').rssfeed(\'http://missallsunday.com/index.php?action=.xml;type=rss;sa=recent;board=11;limit=5/\',
+	$(\'#breezelive\').rssfeed(\''. Breeze::$supportStite .'\',
 	{
 		limit: 5,
 		header: false,
 		date: true,
+		linktarget: \'_blank\',
 		errormsg: breeze_feed_error_message
    });
 });

@@ -66,6 +66,9 @@ class Breeze
 	public static $folder = '/Breeze/';
 	public static $txtpattern = 'BreezeMod_';
 
+	/* Support site feed */
+	public static $supportStite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
+
 	/* Its easier to list the allowed actions */
 	public static $_allowedActions = array('display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who',);
 

@@ -50,12 +50,16 @@ if (!defined('SMF'))
 		/* Get the version */
 		$context['Breeze']['version'] = Breeze::$version;
 
+		/* The support site RSS feed */
+		$context['Breeze']['support'] = Breeze::$supportStite;
+
 		/* Set all the page stuff */
 		$context['page_title'] = $text->getText('admin_settings_main');
 		$context['sub_template'] = 'admin_home';
 
 		/* Headers */
-		BreezeTools::headers('admin');
+		$headers = new BreezeTools();
+		$headers->headers('admin');
 	}
 
 	function Breeze_Admin_Settings()
