@@ -74,7 +74,7 @@ class BreezeAjax extends Breeze
 		/* Handling the subactions */
 		$sglobals = $this->sGlobals('get');
 
-		/* Safety first, hardcoded the actions */
+		/* Safety first, hardcode the actions */
 		$subActions = array(
 			'post' => 'post',
 			'postcomment' => 'postComment',
@@ -85,7 +85,12 @@ class BreezeAjax extends Breeze
 
 		/* Does the subaction even exist? */
 		if (in_array($sglobals->getValue('sa'), array_keys($subActions)))
+		{
 			$this->$subActions[$sglobals->getValue('sa')]();
+
+			/* Send the response back to the browser */
+			$this->returnResponse();
+		}
 
 		/* Sorry pal... */
 		else
@@ -110,10 +115,7 @@ class BreezeAjax extends Breeze
 
 		/* Sorry, try to play nice next time */
 		if (!$this->_data->getValue('owner_id') || !$this->_data->getValue('poster_id') || !$this->_data->getValue('content'))
-		{
-			$this->returnResponse(false);
 			return;
-		}
 
 		/* Do this only if there is something to add to the database */
 		if ($this->_data->validateBody('content'))
@@ -149,11 +151,11 @@ class BreezeAjax extends Breeze
 			/* The status was added, build the server response */
 			$display = new BreezeDisplay($params, 'status');
 
-			/* Send the data to the template */
-			$this->returnResponse(array(
+			/* Send the data back to the browser */
+			$this->_response = array(
 				'type' => 'ok',
 				'data' => $display->HTML()
-			));
+			);
 
 			/* End it */
 			return;
@@ -161,7 +163,7 @@ class BreezeAjax extends Breeze
 
 		/* There was an error */
 		else
-			$this->returnResponse(false);
+			$this->_response = false;
 	}
 
 	/**
@@ -183,10 +185,7 @@ class BreezeAjax extends Breeze
 
 		/* Sorry, try to play nice next time */
 		if (!$this->_data->getValue('status_owner_id') || !$this->_data->getValue('status_owner_id') || !$this->_data->getValue('poster_comment_id') || !$this->_data->getValue('profile_owner_id') || !$this->_data->getValue('content'))
-		{
-			$this->returnResponse(false);
 			return;
-		}
 
 		/* Load all the things we need */
 		$temp_id_exists = $this->_query->getSingleValue('status', 'id', $this->_data->getValue('status_id'));
@@ -230,11 +229,11 @@ class BreezeAjax extends Breeze
 			/* The comment was added, build the server response */
 			$display = new BreezeDisplay($params, 'comment');
 
-			/* Send the data to the template */
-			$this->returnResponse(array(
+			/* Send the data back to the browser */
+			$this->_response = array(
 				'type' => 'ok',
 				'data' => $display->HTML()
-			));
+			);
 
 			/* End it */
 			return;
@@ -242,9 +241,7 @@ class BreezeAjax extends Breeze
 
 		/* There was an error */
 		else
-			$this->returnResponse(false);
-
-		unset($temp_id_exists);
+			$this->_response = false;
 	}
 
 	/**
@@ -277,20 +274,26 @@ class BreezeAjax extends Breeze
 			{
 				$type = 'delete'. ucfirst($this->_data->getValue('type'));
 				$this->_query->$type($this->_data->getValue('id'));
-				$this->returnResponse(array(
+
+				/* Send the data back to the browser */
+				$this->_response = array(
 					'data' => $this->_text->getText('success_delete'),
 					'type' => 'ok'
-				));
+				);
+
+				/* End it! */
 				return;
 			}
 
 			/* Tell them someone has deleted the message already */
 			else
 			{
-				$this->returnResponse(array(
+				$this->_response = array(
 					'data' => $this->_text->getText('already_deleted'),
 					'type' => 'deleted'
-				));
+				);
+
+				/* Don't forget to end it */
 				return;
 			}
 
@@ -298,7 +301,7 @@ class BreezeAjax extends Breeze
 		}
 
 		/* Either way, pass the response */
-		$this->returnResponse();
+		$this->_response = false;
 	}
 
 	/**
@@ -320,28 +323,22 @@ class BreezeAjax extends Breeze
 
 		/* Is this valid data? */
 		if (empty($noti) || empty($user))
-		{
-			$this->returnResponse();
 			return;
-		}
 
 		/* We must make sure this noti really exists, we just must!!! */
 		$noti_temp = $this->_notifications->getToUser($user);
 
 		if (empty($noti_temp) || !array_key_exists($noti, $noti_temp))
-		{
-			$this->returnResponse();
 			return;
-		}
 
 		else
 		{
 			/* All is good, mark this as read */
 			$this->_notifications->markAsRead($noti);
-			$this->returnResponse(array(
+			$this->_response = array(
 				'data' => $this->_text->getText('noti_markasread_after'),
 				'type' => 'ok'
-			));
+			);
 		}
 	}
 
@@ -364,28 +361,22 @@ class BreezeAjax extends Breeze
 
 		/* Is this valid data? */
 		if (empty($noti) || empty($user))
-		{
-			$this->returnResponse();
 			return;
-		}
 
 		/* We must make sure this noti really exists, we just must!!! */
 		$noti_temp = $this->_notifications->getToUser($user);
 
 		if (empty($noti_temp) || !array_key_exists($noti, $noti_temp))
-		{
-			$this->returnResponse();
 			return;
-		}
 
 		else
 		{
 			/* All is good, delete thi */
 			$this->_notifications->delete($noti);
-			$this->returnResponse(array(
+			$this->_response = array(
 				'data' => $this->_text->getText('noti_delete_after'),
 				'type' => 'ok'
-			));
+			);
 		}
 	}
 
@@ -396,7 +387,7 @@ class BreezeAjax extends Breeze
 	 * @param array The array that will be sent to the browser
 	 * @return
 	 */
-	protected function returnResponse($array = false)
+	protected function returnResponse()
 	{
 		global $modSettings;
 
@@ -413,8 +404,8 @@ class BreezeAjax extends Breeze
 		header('Content-Type: application/json');
 
 		/* Is there a custom error message? Use it */
-		if ($array)
-			print json_encode($array);
+		if (!empty($this->_response))
+			print json_encode($this->_response);
 
 		/* No? then show the standard error message */
 		else
