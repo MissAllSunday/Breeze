@@ -227,6 +227,7 @@
 				noty({
 					text: breeze_confirm_delete,
 					type: 'confirmation',
+					layout: 'center',
 					dismissQueue: false,
 					closeWith: ['button'],
 					buttons: [{
