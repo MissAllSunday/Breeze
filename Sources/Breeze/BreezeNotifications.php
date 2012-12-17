@@ -160,9 +160,9 @@ class BreezeNotifications extends Breeze
 	/**
 	 * BreezeNotifications::getToUser()
 	 *
-	 * @param mixed $user
+	 * @param int $user
 	 * @param bool $all
-	 * @return
+	 * @return array
 	 */
 	public function getToUser($user, $all = false)
 	{

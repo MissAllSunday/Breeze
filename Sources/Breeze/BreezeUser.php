@@ -46,7 +46,7 @@ if (!defined('SMF'))
 	function Breeze_Wrapper_Notifications(){BreezeUser::notifications();}
 	function Breeze_Wrapper_Single(){BreezeUser::single();}
 
-class BreezeUser
+class BreezeUser extends Breeze
 {
 	public function  __construct(){}
 
@@ -54,13 +54,15 @@ class BreezeUser
 	{
 		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info;
 
+		$breeze = new Breeze();
+
 		loadtemplate(Breeze::$name);
 
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
-		$settings = Breeze::settings();
-		$query = Breeze::query();
-		$tools = Breeze::tools();
-		$globals = Breeze::sGlobals('get');
+		$settings = $breeze->settings();
+		$query = $breeze->query();
+		$tools = $breeze->tools();
+		$globals = $breeze->sGlobals('get');
 
 		/* Default values */
 		$status = array();
@@ -242,16 +244,17 @@ class BreezeUser
 
 	public static function notifications()
 	{
-		global $context, $user_info, $scripturl;
+		global $context, $user_info, $scripturl, $options;
 
 		loadtemplate(Breeze::$name);
 
 		/* Load all we need */
-		$query = Breeze::query();
+		$query = $breeze->query();
 		$text = Breeze::text();
-		$data = $query->getSettingsByUser($context['member']['id']);
-		$globals = Breeze::sGlobals('request');
+		$globals = $breeze->sGlobals('request');
+		$context['Breeze']['noti'] = $this->notifications()->getToUser($context['member']['id'], true);
 
+		print_r($context['Breeze']['noti']);
 		/* Set all the page stuff */
 		$context['sub_template'] = 'user_notifications';
 		$context['page_title'] = $text->getText('noti_title');
@@ -273,8 +276,8 @@ class BreezeUser
 		/* Load all we need */
 		$buddies = Breeze::buddies();
 		$text = Breeze::text();
-		$globals = Breeze::sGlobals('request');
-		$query = Breeze::query();
+		$globals = $breeze->sGlobals('request');
+		$query = $breeze->query();
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'Breeze_buddy_list';
@@ -378,9 +381,9 @@ class BreezeUser
 
 		/* Load what we need */
 		$text = Breeze::text();
-		$globals = Breeze::sGlobals('post');
-		$settings = Breeze::settings();
-		$query = Breeze::query();
+		$globals = $breeze->sGlobals('post');
+		$settings = $breeze->settings();
+		$query = $breeze->query();
 
 		/* We are gonna load the status from the user array so we kinda need both the user ID and a status ID */
 		if (!$globals->validate('u') || !$globals->validate('bid'))

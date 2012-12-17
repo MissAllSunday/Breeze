@@ -230,6 +230,19 @@ class Breeze
 	}
 
 	/**
+	 * Breeze::headersHook()
+	 *
+	 * Static method used to embed the JavaScript and other bits of code on every page inside SMF, used by the SMF hook system
+	 * @see BreezeTools
+	 * @return void
+	 */
+	public static function headersHook()
+	{
+		$headers = new BreezeTools();
+		$headers->headers('noti');
+	}
+
+	/**
 	 * Breeze::permissions()
 	 *
 	 * There is only permissions to post new status and comments on any profile because people needs to be able to post in their own profiles by default the same goes for deleting, people are able to delete their own status/comments on their own profile page.
