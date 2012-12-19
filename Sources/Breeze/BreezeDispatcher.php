@@ -66,7 +66,7 @@ abstract class BreezeDispatcher
 
 			/* Lets call the method */
 			$method_name = $actions[$sglobals->getValue('action')][1];
-			$controller->$method_name();
+			call_user_func_array(array($controller, $method_name), array());
 		}
 	}
 }
