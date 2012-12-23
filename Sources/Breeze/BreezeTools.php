@@ -42,7 +42,6 @@ class BreezeTools extends Breeze
 {
 	function __construct()
 	{
-
 		$this->text = $this->text();
 		$this->bSettings = $this->settings();
 		$this->_data = $this->sGlobals('request');

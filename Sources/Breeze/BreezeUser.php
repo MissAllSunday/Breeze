@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-	/* A bunch of wrapper functions so static methods can be callable with a string by SMF */
+	/* A bunch of ugly, very ugly wrapper functions because static methods cannot be callable with a string by SMF meh... */
 	function Breeze_Wrapper_Wall(){BreezeUser::wall();}
 	function Breeze_Wrapper_Settings($memID){BreezeUser::settings($memID);}
 	function Breeze_Wrapper_BuddyRequest(){BreezeUser::buddyRequest();}
@@ -52,55 +52,8 @@ class BreezeUser
 
 	public static function wall()
 	{
-		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info;
-
-		$breeze = new Breeze();
-
-		loadtemplate(Breeze::$name);
-
-		/* We kinda need all this stuff, dont' ask why, just nod your head... */
-		$settings = Breeze::settings();
-		$query = Breeze::query();
-		$tools = Breeze::tools();
-		$globals = Breeze::sGlobals('get');
-
 		/* Default values */
 		$status = array();
-
-		/* Another page already checked the permissions and if the mod is enable, but better be safe... */
-		if (!$settings->enable('admin_settings_enable'))
-			redirectexit();
-
-		/* Does the user even enable this? */
-		if (empty($context['member']['options']['Breeze_enable_wall']))
-			redirectexit('action=profile;area=static;u='.$context['member']['id']);
-
-		/* This user cannot see his/her own profile and cannot see any profile either */
-		if (!allowedTo('profile_view_own') && !allowedTo('profile_view_any'))
-			redirectexit('action=profile;area=static;u='.$context['member']['id']);
-
-		/* This user cannot see his/her own profile and it's viewing his/her own profile */
-		if (!allowedTo('profile_view_own') && $user_info['id'] == $context['member']['id'])
-			redirectexit('action=profile;area=static;u='.$context['member']['id']);
-
-		/* This user cannot see any profile and it's  viewing someone else's wall */
-		if (!allowedTo('profile_view_any') && $user_info['id'] != $context['member']['id'])
-			redirectexit('action=profile;area=static;u='.$context['member']['id']);
-
-		/* Get this user's ignore list */
-		$context['member']['ignore_list'] = array();
-
-		$temp_ignore_list = $query->getUserSetting($context['member']['id'], 'pm_ignore_list');
-
-		if (!empty($temp_ignore_list))
-			$context['member']['ignore_list'] = explode(',', $temp_ignore_list);
-
-		/* I'm sorry, you aren't allowed in here, but here's a nice static page :) */
-		if (in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['member']['options']['Breeze_kick_ignored']))
-			redirectexit('action=profile;area=static;u='.$context['member']['id']);
-
-		/* Display all the JavaScript bits */
-		$tools->headers('profile');
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'user_wall';
@@ -396,5 +349,53 @@ class BreezeUser
 		$context['sub_template'] = 'Breeze_show_single_status';
 		$context['page_title'] = $text->getText('noti_title');
 		$context['canonical_url'] = $scripturl .'?action=profile;area=wallstatus';
+	}
+
+	protected static function checkPermissions()
+	{
+		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info;
+
+		loadtemplate(Breeze::$name);
+
+		/* We kinda need all this stuff, dont' ask why, just nod your head... */
+		$settings = Breeze::settings();
+		$query = Breeze::query();
+		$tools = Breeze::tools();
+		$globals = Breeze::sGlobals('get');
+
+		/* Another page already checked the permissions and if the mod is enable, but better be safe... */
+		if (!$settings->enable('admin_settings_enable'))
+			redirectexit();
+
+		/* Does the user even enable this? */
+		if (empty($context['member']['options']['Breeze_enable_wall']))
+			redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
+		/* This user cannot see his/her own profile and cannot see any profile either */
+		if (!allowedTo('profile_view_own') && !allowedTo('profile_view_any'))
+			redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
+		/* This user cannot see his/her own profile and it's viewing his/her own profile */
+		if (!allowedTo('profile_view_own') && $user_info['id'] == $context['member']['id'])
+			redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
+		/* This user cannot see any profile and it's  viewing someone else's wall */
+		if (!allowedTo('profile_view_any') && $user_info['id'] != $context['member']['id'])
+			redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
+		/* Get this user's ignore list */
+		$context['member']['ignore_list'] = array();
+
+		$temp_ignore_list = $query->getUserSetting($context['member']['id'], 'pm_ignore_list');
+
+		if (!empty($temp_ignore_list))
+			$context['member']['ignore_list'] = explode(',', $temp_ignore_list);
+
+		/* I'm sorry, you aren't allowed in here, but here's a nice static page :) */
+		if (in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['member']['options']['Breeze_kick_ignored']))
+			redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
+		/* Display all the JavaScript bits */
+		$tools->headers('profile');
 	}
 }
