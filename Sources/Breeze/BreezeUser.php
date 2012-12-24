@@ -363,6 +363,9 @@ class BreezeUser
 		/* Load the single status */
 		$context['Breeze']['single'] = $query->getStatusByID($globals->getValue('bid'), $globals->getValue('u'));
 
+		/* Load the users info */
+		$tools->loadUserInfo(array_unique(array($context['Breeze']['single']['owner_id'], $context['Breeze']['single']['poster_id'])));
+
 		/* Set all the page stuff */
 		$context['sub_template'] = 'singleStatus';
 		$context['page_title'] = $text->getText('noti_title');
