@@ -327,27 +327,27 @@ function template_singleStatus()
 	echo '<div>
 	<ul class="breeze_status" id="breeze_display_status">';
 
-	echo '<li class="windowbg" id ="status_id_', $context['Breeze']['singleStatus']['id'] ,'">
+	echo '<li class="windowbg" id ="status_id_', $context['Breeze']['single']['id'] ,'">
 		<span class="topslice"><span></span></span>
 			<div class="breeze_user_inner">
 				<div class="breeze_user_status_avatar">
-					', $context['Breeze']['user_info'][$context['Breeze']['singleStatus']['poster_id']]['facebox'] ,'
+					', $context['Breeze']['user_info'][$context['Breeze']['single']['poster_id']]['facebox'] ,'
 				</div>
 				<div class="breeze_user_status_comment">
-					', $context['Breeze']['singleStatus']['body'] ,'
-					<div class="breeze_options"><span class="time_elapsed">', $context['Breeze']['singleStatus']['time'] ,' </span>';
+					', $context['Breeze']['single']['body'] ,'
+					<div class="breeze_options"><span class="time_elapsed">', $context['Breeze']['single']['time'] ,' </span>';
 
 					/* Delete link */
 					if ($context['Breeze']['visitor']['delete_status_comments'])
-						echo '| <a href="javascript:void(0)" id="', $context['Breeze']['singleStatus']['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> </div>';
+						echo '| <a href="javascript:void(0)" id="', $context['Breeze']['single']['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> </div>';
 
 					echo '<hr />
-					<div id="comment_flash_', $context['Breeze']['singleStatus']['id'] ,'"></div>';
-				echo '<ul class="breeze_comments_list" id="comment_loadplace_', $context['Breeze']['singleStatus']['id'] ,'">';
+					<div id="comment_flash_', $context['Breeze']['single']['id'] ,'"></div>';
+				echo '<ul class="breeze_comments_list" id="comment_loadplace_', $context['Breeze']['single']['id'] ,'">';
 
 					/* Print out the comments */
-					if ($context['Breeze']['singleStatus']['comments'])
-						foreach($context['Breeze']['singleStatus']['comments'] as $comment)
+					if (!empty($context['Breeze']['single']['comments']))
+						foreach($context['Breeze']['single']['comments'] as $comment)
 						{
 							echo '<li class="windowbg2" id ="comment_id_', $comment['id'] ,'">
 										<div class="breeze_user_comment_avatar">
@@ -370,20 +370,20 @@ function template_singleStatus()
 						}
 
 						/* Display the new comments */
-						echo '<li id="breeze_load_image_comment_', $context['Breeze']['singleStatus']['id'] ,'" style="margin:auto; text-align:center;"></li>';
+						echo '<li id="breeze_load_image_comment_', $context['Breeze']['single']['id'] ,'" style="margin:auto; text-align:center;"></li>';
 
 						echo '</ul>';
 
 							/* Post a new comment */
 							if ($context['Breeze']['visitor']['post_comment'])
 								echo '<div>
-								<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $context['Breeze']['singleStatus']['id'] ,'" id="formID_', $context['Breeze']['singleStatus']['id'] ,'">
-									<textarea id="textboxcontent_', $context['Breeze']['singleStatus']['id'] ,'" cols="40" rows="2"></textarea>
-									<input type="hidden" value="',$context['Breeze']['singleStatus']['poster_id'],'" name="status_owner_id', $context['Breeze']['singleStatus']['id'] ,'" id="status_owner_id', $context['Breeze']['singleStatus']['id'] ,'" />
-									<input type="hidden" value="', $context['Breeze']['singleStatus']['owner_id'] ,'" name="profile_owner_id', $context['Breeze']['singleStatus']['id'] ,'" id="profile_owner_id', $context['Breeze']['singleStatus']['id'] ,'" />
-									<input type="hidden" value="', $context['Breeze']['singleStatus']['id'] ,'" name="status_id', $context['Breeze']['singleStatus']['id'] ,'" id="status_id', $context['Breeze']['singleStatus']['id'] ,'" />
-									<input type="hidden" value="',$user_info['id'],'" name="poster_comment_id', $context['Breeze']['singleStatus']['id'] ,'" id="poster_comment_id', $context['Breeze']['singleStatus']['id'] ,'" /><br />
-									<input type="submit" value="', $txt['post'] ,'" class="comment_submit" id="', $context['Breeze']['singleStatus']['id'] ,'" />
+								<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $context['Breeze']['single']['id'] ,'" id="formID_', $context['Breeze']['single']['id'] ,'">
+									<textarea id="textboxcontent_', $context['Breeze']['single']['id'] ,'" cols="40" rows="2"></textarea>
+									<input type="hidden" value="',$context['Breeze']['single']['poster_id'],'" name="status_owner_id', $context['Breeze']['single']['id'] ,'" id="status_owner_id', $context['Breeze']['single']['id'] ,'" />
+									<input type="hidden" value="', $context['Breeze']['single']['owner_id'] ,'" name="profile_owner_id', $context['Breeze']['single']['id'] ,'" id="profile_owner_id', $context['Breeze']['single']['id'] ,'" />
+									<input type="hidden" value="', $context['Breeze']['single']['id'] ,'" name="status_id', $context['Breeze']['single']['id'] ,'" id="status_id', $context['Breeze']['single']['id'] ,'" />
+									<input type="hidden" value="',$user_info['id'],'" name="poster_comment_id', $context['Breeze']['single']['id'] ,'" id="poster_comment_id', $context['Breeze']['single']['id'] ,'" /><br />
+									<input type="submit" value="', $txt['post'] ,'" class="comment_submit" id="', $context['Breeze']['single']['id'] ,'" />
 								</form>
 							</div>';
 
