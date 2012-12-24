@@ -70,64 +70,67 @@ function template_user_wall()
 					<span class="ie6_header floatleft"><img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" class="icon" />', $txt['summary'], '</span>
 				</h3>
 			</div>
-				<div id="basicinfo">
-		<div class="windowbg">
-			<span class="topslice"><span></span></span>
-			<div class="content flow_auto">
-				<div class="username"><h4>', $context['member']['name'], ' <span class="position">', (!empty($context['member']['group']) ? $context['member']['group'] : $context['member']['post_group']), '</span></h4></div>
-				', $context['member']['avatar']['image'], '
-				<ul class="reset">';
+			<div id="basicinfo">
+				<div class="windowbg">
+					<span class="topslice"><span></span></span>
+					<div class="content flow_auto">
+						<div class="username"><h4>', $context['member']['name'], ' <span class="position">', (!empty($context['member']['group']) ? $context['member']['group'] : $context['member']['post_group']), '</span></h4></div>
+						', $context['member']['avatar']['image'], '
+							<ul class="reset">';
 
-	// What about if we allow email only via the forum??
-	if ($context['member']['show_email'] === 'yes' || $context['member']['show_email'] === 'no_through_forum' || $context['member']['show_email'] === 'yes_permission_override')
-		echo '
-					<li><a href="', $scripturl, '?action=emailuser;sa=email;uid=', $context['member']['id'], '" title="', $context['member']['show_email'] == 'yes' || $context['member']['show_email'] == 'yes_permission_override' ? $context['member']['email'] : '', '" rel="nofollow"><img src="', $settings['images_url'], '/email_sm.gif" alt="', $txt['email'], '" /></a></li>';
-
-	// Don't show an icon if they haven't specified a website.
-	if ($context['member']['website']['url'] !== '' && !isset($context['disabled_fields']['website']))
-		echo '
-					<li><a href="', $context['member']['website']['url'], '" title="' . $context['member']['website']['title'] . '" target="_blank" class="new_win">', ($settings['use_image_buttons'] ? '<img src="' . $settings['images_url'] . '/www_sm.gif" alt="' . $context['member']['website']['title'] . '" />' : $txt['www']), '</a></li>';
-
-	// Are there any custom profile fields for the summary?
-	if (!empty($context['custom_fields']))
-	{
-		foreach ($context['custom_fields'] as $field)
-			if (($field['placement'] == 1 || empty($field['output_html'])) && !empty($field['value']))
+			// What about if we allow email only via the forum??
+			if ($context['member']['show_email'] === 'yes' || $context['member']['show_email'] === 'no_through_forum' || $context['member']['show_email'] === 'yes_permission_override')
 				echo '
-					<li class="custom_field">', $field['output_html'], '</li>';
-	}
+								<li><a href="', $scripturl, '?action=emailuser;sa=email;uid=', $context['member']['id'], '" title="', $context['member']['show_email'] == 'yes' || $context['member']['show_email'] == 'yes_permission_override' ? $context['member']['email'] : '', '" rel="nofollow"><img src="', $settings['images_url'], '/email_sm.gif" alt="', $txt['email'], '" /></a></li>';
 
-	echo '
-				', !isset($context['disabled_fields']['icq']) && !empty($context['member']['icq']['link']) ? '<li>' . $context['member']['icq']['link'] . '</li>' : '', '
-				', !isset($context['disabled_fields']['msn']) && !empty($context['member']['msn']['link']) ? '<li>' . $context['member']['msn']['link'] . '</li>' : '', '
-				', !isset($context['disabled_fields']['aim']) && !empty($context['member']['aim']['link']) ? '<li>' . $context['member']['aim']['link'] . '</li>' : '', '
-				', !isset($context['disabled_fields']['yim']) && !empty($context['member']['yim']['link']) ? '<li>' . $context['member']['yim']['link'] . '</li>' : '', '
-			</ul>
-			<span id="userstatus">', $context['can_send_pm'] ? '<a href="' . $context['member']['online']['href'] . '" title="' . $context['member']['online']['label'] . '" rel="nofollow">' : '', $settings['use_image_buttons'] ? '<img src="' . $context['member']['online']['image_href'] . '" alt="' . $context['member']['online']['text'] . '" align="middle" />' : $context['member']['online']['text'], $context['can_send_pm'] ? '</a>' : '', $settings['use_image_buttons'] ? '<span class="smalltext"> ' . $context['member']['online']['text'] . '</span>' : '';
+			// Don't show an icon if they haven't specified a website.
+			if ($context['member']['website']['url'] !== '' && !isset($context['disabled_fields']['website']))
+				echo '
+								<li><a href="', $context['member']['website']['url'], '" title="' . $context['member']['website']['title'] . '" target="_blank" class="new_win">', ($settings['use_image_buttons'] ? '<img src="' . $settings['images_url'] . '/www_sm.gif" alt="' . $context['member']['website']['title'] . '" />' : $txt['www']), '</a></li>';
+
+			// Are there any custom profile fields for the summary?
+			if (!empty($context['custom_fields']))
+			{
+				foreach ($context['custom_fields'] as $field)
+					if (($field['placement'] == 1 || empty($field['output_html'])) && !empty($field['value']))
+						echo '
+								<li class="custom_field">', $field['output_html'], '</li>';
+			}
+
+			echo '
+								', !isset($context['disabled_fields']['icq']) && !empty($context['member']['icq']['link']) ? '<li>' . $context['member']['icq']['link'] . '</li>' : '', '
+								', !isset($context['disabled_fields']['msn']) && !empty($context['member']['msn']['link']) ? '<li>' . $context['member']['msn']['link'] . '</li>' : '', '
+								', !isset($context['disabled_fields']['aim']) && !empty($context['member']['aim']['link']) ? '<li>' . $context['member']['aim']['link'] . '</li>' : '', '
+								', !isset($context['disabled_fields']['yim']) && !empty($context['member']['yim']['link']) ? '<li>' . $context['member']['yim']['link'] . '</li>' : '', '
+							</ul>
+							<span id="userstatus">', $context['can_send_pm'] ? '
+								<a href="' . $context['member']['online']['href'] . '" title="' . $context['member']['online']['label'] . '" rel="nofollow">' : '', $settings['use_image_buttons'] ? '<img src="' . $context['member']['online']['image_href'] . '" alt="' . $context['member']['online']['text'] . '" align="middle" />' : $context['member']['online']['text'], $context['can_send_pm'] ? '</a>' : '', $settings['use_image_buttons'] ? '<span class="smalltext"> ' . $context['member']['online']['text'] . '</span>' : '';
 
 	// Can they add this member as a buddy?
 	if (!empty($context['can_have_buddy']) && !$context['user']['is_owner'])
 		echo '
-				<br /><a href="', $scripturl, '?action=buddy;u=', $context['id_member'], ';', $context['session_var'], '=', $context['session_id'], '">[', $txt['buddy_' . ($context['member']['is_buddy'] ? 'remove' : 'add')], ']</a>';
+								<br /><a href="', $scripturl, '?action=buddy;u=', $context['id_member'], ';', $context['session_var'], '=', $context['session_id'], '">[', $txt['buddy_' . ($context['member']['is_buddy'] ? 'remove' : 'add')], ']</a>';
 
 	echo '
-				</span>';
+							</span>';
 
 	echo '
-				<p id="infolinks">';
+						<p id="infolinks">';
 
 	if (!$context['user']['is_owner'] && $context['can_send_pm'])
 		echo '
-					<a href="', $scripturl, '?action=pm;sa=send;u=', $context['id_member'], '">', $txt['profile_sendpm_short'], '</a><br />';
+							<a href="', $scripturl, '?action=pm;sa=send;u=', $context['id_member'], '">', $txt['profile_sendpm_short'], '</a><br />';
 	echo '
-					<a href="', $scripturl, '?action=profile;area=showposts;u=', $context['id_member'], '">', $txt['showPosts'], '</a><br />
-					<a href="', $scripturl, '?action=profile;area=statistics;u=', $context['id_member'], '">', $txt['statPanel'], '</a>
-				</p>';
+							<a href="', $scripturl, '?action=profile;area=showposts;u=', $context['id_member'], '">', $txt['showPosts'], '</a><br />
+							<a href="', $scripturl, '?action=profile;area=statistics;u=', $context['id_member'], '">', $txt['statPanel'], '</a>
+						</p>';
 
 	echo '
-			</div>
-			<span class="botslice"><span></span></span>
-		</div>';
+					</div>
+					<span class="botslice">
+						<span></span>
+					</span>
+				</div>';
 
 		/* Modules */
 		echo'<div class="breeze_modules">';
@@ -320,30 +323,29 @@ function template_singleStatus()
 	global $context, $txt, $user_info, $scripturl;
 
 	echo '
-		<div class="cat_bar">
-			<h3 class="catbg">', $context['page_title'] ,'</h3>
-		</div>';
-
-	echo '<div>
-	<ul class="breeze_status" id="breeze_display_status">';
-
-	echo '<li class="windowbg" id ="status_id_', $context['Breeze']['single']['id'] ,'">
-		<span class="topslice"><span></span></span>
-			<div class="breeze_user_inner">
-				<div class="breeze_user_status_avatar">
-					', $context['Breeze']['user_info'][$context['Breeze']['single']['poster_id']]['facebox'] ,'
-				</div>
-				<div class="breeze_user_status_comment">
-					', $context['Breeze']['single']['body'] ,'
-					<div class="breeze_options"><span class="time_elapsed">', $context['Breeze']['single']['time'] ,' </span>';
+			<div class="windowbg" id ="status_id_', $context['Breeze']['single']['id'] ,'">
+				<span class="topslice">
+					<span></span>
+				</span>
+				<div class="breeze_user_inner">
+					<div class="breeze_user_status_avatar">
+						', $context['Breeze']['user_info'][$context['Breeze']['single']['poster_id']]['facebox'] ,'
+					</div>
+					<div class="breeze_user_status_comment">
+						', $context['Breeze']['single']['body'] ,'
+						<div class="breeze_options">
+							<span class="time_elapsed">', $context['Breeze']['single']['time'] ,' </span>';
 
 					/* Delete link */
 					if ($context['Breeze']['visitor']['delete_status_comments'])
-						echo '| <a href="javascript:void(0)" id="', $context['Breeze']['single']['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> </div>';
+						echo '| <a href="javascript:void(0)" id="', $context['Breeze']['single']['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
 
-					echo '<hr />
-					<div id="comment_flash_', $context['Breeze']['single']['id'] ,'"></div>';
-				echo '<ul class="breeze_comments_list" id="comment_loadplace_', $context['Breeze']['single']['id'] ,'">';
+					echo '
+						</div>
+						<hr />
+						<div id="comment_flash_', $context['Breeze']['single']['id'] ,'"></div>';
+				echo '
+						<ul class="breeze_comments_list" id="comment_loadplace_', $context['Breeze']['single']['id'] ,'">';
 
 					/* Print out the comments */
 					if (!empty($context['Breeze']['single']['comments']))
@@ -394,16 +396,8 @@ function template_singleStatus()
 			<span class="botslice">
 				<span></span>
 			</span>
-			</li>';
+			</div><br />';
 
-	/* End of list */
-	echo '</ul></div>';
-
-	/* Don't forget to print the users data */
-	if (!empty($context['Breeze']['user_info']))
-		foreach ($context['Breeze']['user_info'] as $userData)
-			if (!empty($userData['data']))
-				echo $userData['data'];
 }
 
 function template_member_options()
