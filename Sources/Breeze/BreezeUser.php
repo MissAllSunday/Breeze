@@ -52,6 +52,22 @@ class BreezeUser
 
 	public static function wall()
 	{
+		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info;
+
+		loadtemplate(Breeze::$name);
+
+		/* Check if this user is welcomed here */
+		self::checkPermissions();
+
+		/* We kinda need all this stuff, dont' ask why, just nod your head... */
+		$settings = Breeze::settings();
+		$query = Breeze::query();
+		$tools = Breeze::tools();
+		$globals = Breeze::sGlobals('get');
+
+		/* Display all the JavaScript bits */
+		$tools->headers('profile');
+
 		/* Default values */
 		$status = array();
 
@@ -353,15 +369,9 @@ class BreezeUser
 
 	protected static function checkPermissions()
 	{
-		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info;
+		global $context, $memberContext, $user_info;
 
 		loadtemplate(Breeze::$name);
-
-		/* We kinda need all this stuff, dont' ask why, just nod your head... */
-		$settings = Breeze::settings();
-		$query = Breeze::query();
-		$tools = Breeze::tools();
-		$globals = Breeze::sGlobals('get');
 
 		/* Another page already checked the permissions and if the mod is enable, but better be safe... */
 		if (!$settings->enable('admin_settings_enable'))
@@ -394,8 +404,5 @@ class BreezeUser
 		/* I'm sorry, you aren't allowed in here, but here's a nice static page :) */
 		if (in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['member']['options']['Breeze_kick_ignored']))
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
-
-		/* Display all the JavaScript bits */
-		$tools->headers('profile');
 	}
 }
