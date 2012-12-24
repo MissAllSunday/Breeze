@@ -398,6 +398,12 @@ function template_singleStatus()
 			</span>
 			</div><br />';
 
+	/* Don't forget to print the users data */
+	if (!empty($context['Breeze']['user_info']))
+		foreach ($context['Breeze']['user_info'] as $userData)
+			if (!empty($userData['data']))
+				echo $userData['data'];
+
 }
 
 function template_member_options()
