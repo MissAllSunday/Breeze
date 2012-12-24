@@ -127,11 +127,6 @@ class BreezeUser
 			$context['member']['status'] = $status;
 			$context['Breeze']['pagination']['panel'] = '';
 		}
-
-		/* The visitor's permissions */
-		$context['Breeze']['visitor']['post_status'] = allowedTo('breeze_postStatus') || $context['user']['is_owner'];
-		$context['Breeze']['visitor']['post_comment'] = allowedTo('breeze_postComments') || $context['user']['is_owner'];
-		$context['Breeze']['visitor']['delete_status_comments'] = allowedTo('breeze_deleteStatus') || $context['user']['is_owner'];
 	}
 
 	/* Shows a form for users to set up their wall as needed. */
@@ -351,14 +346,15 @@ class BreezeUser
 		/* Check if this user is welcomed here */
 		self::checkPermissions();
 
-		/* Display all the JavaScript bits */
-		$tools->headers('profile');
-
 		/* Load what we need */
 		$text = Breeze::text();
 		$globals = Breeze::sGlobals('get');
 		$settings = Breeze::settings();
 		$query = Breeze::query();
+		$tools = Breeze::tools();
+
+		/* Display all the JavaScript bits */
+		$tools->headers('profile');
 
 		/* We are gonna load the status from the user array so we kinda need both the user ID and a status ID */
 		if (!$globals->validate('u') || !$globals->validate('bid'))
@@ -378,6 +374,9 @@ class BreezeUser
 		global $context, $memberContext, $user_info;
 
 		loadtemplate(Breeze::$name);
+
+		$settings = Breeze::settings();
+		$query = Breeze::query();
 
 		/* Another page already checked the permissions and if the mod is enable, but better be safe... */
 		if (!$settings->enable('admin_settings_enable'))
@@ -410,5 +409,10 @@ class BreezeUser
 		/* I'm sorry, you aren't allowed in here, but here's a nice static page :) */
 		if (in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['member']['options']['Breeze_kick_ignored']))
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
+		/* You are allowed here but you still need to obey some permissions */
+		$context['Breeze']['visitor']['post_status'] = allowedTo('breeze_postStatus') || $context['user']['is_owner'];
+		$context['Breeze']['visitor']['post_comment'] = allowedTo('breeze_postComments') || $context['user']['is_owner'];
+		$context['Breeze']['visitor']['delete_status_comments'] = allowedTo('breeze_deleteStatus') || $context['user']['is_owner'];
 	}
 }
