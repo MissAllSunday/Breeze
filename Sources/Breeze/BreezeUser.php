@@ -344,13 +344,19 @@ class BreezeUser
 	/* Show a single status with all it's comments */
 	public static function single()
 	{
-		global $context, $user_info, $scripturl;
+		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info;
 
 		loadtemplate(Breeze::$name);
 
+		/* Check if this user is welcomed here */
+		self::checkPermissions();
+
+		/* Display all the JavaScript bits */
+		$tools->headers('profile');
+
 		/* Load what we need */
 		$text = Breeze::text();
-		$globals = Breeze::sGlobals('post');
+		$globals = Breeze::sGlobals('get');
 		$settings = Breeze::settings();
 		$query = Breeze::query();
 
@@ -362,7 +368,7 @@ class BreezeUser
 		$context['Breeze']['single'] = $query->getStatusByID($globals->getValue('bid'), $globals->getValue('u'));
 
 		/* Set all the page stuff */
-		$context['sub_template'] = 'Breeze_show_single_status';
+		$context['sub_template'] = 'singleStatus';
 		$context['page_title'] = $text->getText('noti_title');
 		$context['canonical_url'] = $scripturl .'?action=profile;area=wallstatus';
 	}
