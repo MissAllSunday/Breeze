@@ -187,6 +187,7 @@ $txt['Breeze_pag_previous'] = 'previous';
 $txt['Breeze_pag_next'] = 'next';
 $txt['Breeze_pag_first'] = 'First';
 $txt['Breeze_pag_last'] = 'Last';
+$txt['Breeze_pag_pages'] = 'Pages :';
 
 /* Notifications */
 $txt['Breeze_noti_title'] = 'Notifications';
