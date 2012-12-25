@@ -74,7 +74,6 @@ class BreezeUser
 		/* Set all the page stuff */
 		$context['sub_template'] = 'user_wall';
 		$context += array(
-			'page_title' => sprintf($txt['profile_of_username'], $context['member']['name']),
 			'can_send_pm' => allowedTo('pm_send'),
 			'can_have_buddy' => allowedTo('profile_identity_own') && !empty($modSettings['enable_buddylist']),
 			'can_issue_warning' => in_array('w', $context['admin_features']) && allowedTo('issue_warning') && $modSettings['warning_settings'][0] == 1,
@@ -127,6 +126,9 @@ class BreezeUser
 			$context['member']['status'] = $status;
 			$context['Breeze']['pagination']['panel'] = '';
 		}
+
+		/* Page name depends on pagination */
+		$context['page_title'] = sprintf($txt['profile_of_username'], $context['member']['name']) . !empty($pagetrue) ? ' - ' . $someVar : '';
 	}
 
 	/* Shows a form for users to set up their wall as needed. */
