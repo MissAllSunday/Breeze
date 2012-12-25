@@ -143,7 +143,12 @@ class BreezeUser
 
 		$context['Breeze']['text'] = Breeze::text();
 		$context['sub_template'] = 'member_options';
-		$context['page_desc'] = $context['Breeze']['text']->getText('user_settings_enable_wall');
+		$context['page_desc'] = $context['Breeze']['text']->getText('user_settings_enable_desc');
+
+		$context += array(
+			'page_title' => $context['Breeze']['text']->getText('user_settings_name'),
+			'page_desc' => $context['Breeze']['text']->getText('user_settings_enable_desc')
+		);
 
 		/* Create the form */
 		$form = new BreezeForm();

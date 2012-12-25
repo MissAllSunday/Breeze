@@ -62,6 +62,7 @@ $txt['Breeze_user_buddysettings_name'] = 'Buddy Requests';
 $txt['Breeze_user_buddyrequestmessage_name'] = 'Buddy Message Request Send';
 $txt['Breeze_user_buddyrequestmessage_message'] = 'Your request has been submitted, the user will see your request and if he/she accepts it, you will receive a notification via private message.';
 $txt['Breeze_user_notisettings_name'] = 'Notifications';
+$txt['Breeze_user_settings_enable_desc'] = 'From this page you will be able to setup the different settings for your wall.';
 $txt['Breeze_user_settings_wall_limit'] = 'How many status per page to show?';
 $txt['Breeze_user_settings_wall_limit_sub'] = 'This will be the number of status to show by default, max value is 30, if set it will create a pagination with the rest of your status.';
 $txt['Breeze_user_settings_kick_ignored'] = 'Do not show my wall to users in my ignore list';
