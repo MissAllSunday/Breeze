@@ -115,20 +115,9 @@ class BreezeUser
 		$pagtrue = $pagination->PagTrue();
 		$currentPage = $page > 1 ? $txt['Breeze_pag_page'] . $page : '';
 
-
 		/* Send the array to the template if there is pagination */
-		if ($pagtrue)
-		{
-			$context['member']['status'] = $pagination->OutputArray();
-			$context['Breeze']['pagination']['panel'] = $pagination->OutputPanel();
-		}
-
-		/* If not, then let's use the default array */
-		else
-		{
-			$context['member']['status'] = $status;
-			$context['Breeze']['pagination']['panel'] = '';
-		}
+		$context['member']['status'] = !empty($pagtrue) ? $pagination->OutputArray() : $status;
+		$context['Breeze']['pagination']['panel'] = !empty($pagtrue) ? $pagination->OutputPanel() : '';
 
 		/* Page name depends on pagination */
 		$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name'], $currentPage);
