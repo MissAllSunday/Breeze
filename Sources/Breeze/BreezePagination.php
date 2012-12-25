@@ -40,16 +40,16 @@ class BreezePagination
 	public function __construct($array, $page = 1, $link_prefix = false, $link_suffix = false, $limit_page = 20, $limit_number = 10)
 	{
 		if (empty($array))
-			$this->UsedArray = array();
+			$this->usedArray = array();
 
 		else
 		{
-			$this->UsedArray = $array;
-			$this->Page = !empty($page) || !$limit_page ? $page : 1;
-			$this->LinkPrefix = !empty($link_prefix) ? $link_prefix : '';
-			$this->LinkSufflix = !empty($link_sufflix) ? $link_sufflix : '';
-			$this->LimitPage = !empty($limit_page) ? $limit_page : 20;
-			$this->LimitNumber = !empty($limit_number) ? $limit_number : 20;
+			$this->usedArray = $array;
+			$this->page = !empty($page) || !$limit_page ? $page : 1;
+			$this->linkPrefix = !empty($link_prefix) ? $link_prefix : '';
+			$this->linkSufflix = !empty($link_sufflix) ? $link_sufflix : '';
+			$this->limitPage = !empty($limit_page) ? $limit_page : 20;
+			$this->limitNumber = !empty($limit_number) ? $limit_number : 20;
 			$this->panel = '';
 			$this->output = array();
 			$this->page_cur = '';
@@ -58,22 +58,22 @@ class BreezePagination
 
 	public function PaginationArray()
 	{
-		$this->num_rows = count($this->UsedArray);
+		$this->num_rows = count($this->usedArray);
 
-		if (!$this->num_rows or $this->LimitPage >= $this->num_rows)
+		if (!$this->num_rows or $this->limitPage >= $this->num_rows)
 		{
 			$this->pagtrue = false;
 			return;
 		}
 
-		$this->num_pages = ceil($this->num_rows / $this->LimitPage);
-		$this->page_offset = ($this->Page - 1) * $this->LimitPage;
+		$this->num_pages = ceil($this->num_rows / $this->limitPage);
+		$this->page_offset = ($this->page - 1) * $this->limitPage;
 
 		/* Calculating the first number to show */
-		if ($this->LimitNumber)
+		if ($this->limitNumber)
 		{
-			$this->limit_number_start = $this->Page - ceil($this->LimitNumber / 2);
-			$this->limit_number_end = ceil($this->Page + $this->LimitNumber / 2) - 1;
+			$this->limit_number_start = $this->page - ceil($this->limitNumber / 2);
+			$this->limit_number_end = ceil($this->page + $this->limitNumber / 2) - 1;
 
 			if ($this->limit_number_start < 1)
 				$this->limit_number_start = 1;
@@ -81,8 +81,8 @@ class BreezePagination
 			//In case if the current page is at the beginning.
 			$this->dif = ($this->limit_number_end - $this->limit_number_start);
 
-			if ($this->dif < $this->LimitNumber)
-				$this->limit_number_end = $this->limit_number_end + ($this->LimitNumber - ($this->dif + 1));
+			if ($this->dif < $this->limitNumber)
+				$this->limit_number_end = $this->limit_number_end + ($this->limitNumber - ($this->dif + 1));
 
 			if ($this->limit_number_end > $this->num_pages)
 				$this->limit_number_end = $this->num_pages;
@@ -107,8 +107,8 @@ class BreezePagination
 
 		$this->output['panel'] = $this->panel; //Panel HTML source.
 		$this->output['offset'] = $this->page_offset; //Current page number.
-		$this->output['limit'] = $this->LimitPage; //Number of resuts per page.
-		$this->output['array'] = array_slice($this->UsedArray, $this->page_offset, $this->LimitPage, true); //Array of current page results.
+		$this->output['limit'] = $this->limitPage; //Number of resuts per page.
+		$this->output['array'] = array_slice($this->usedArray, $this->page_offset, $this->limitPage, true); //Array of current page results.
 
 		$this->pagtrue = true;
 	}
@@ -120,13 +120,13 @@ class BreezePagination
 
 		for ($i = $this->limit_number_start; $i <= $this->limit_number_end; $i++)
 		{
-			$this->page_cur = '<a href='. $this->LinkPrefix . $i . $this->LinkSufflix. '>'. $i .'</a>';
+			$this->page_cur = '<a href='. $this->linkPrefix . $i . $this->linkSufflix. '>'. $i .'</a>';
 
-			if ($this->Page == $i)
+			if ($this->page == $i)
 				$this->page_cur = '<strong>'. $i .'</strong>';
 
 			else
-				$this->page_cur = '<a href='. $scripturl .''. $this->LinkPrefix . $i . $this->LinkSufflix .'>'. $i .'</a>';
+				$this->page_cur = '<a href='. $scripturl .''. $this->linkPrefix . $i . $this->linkSufflix .'>'. $i .'</a>';
 
 			$this->panel .= ' <span>'. $this->page_cur .'</span>';
 		}
@@ -138,10 +138,10 @@ class BreezePagination
 		global $scripturl;
 
 		if ($this->limit_number_start > 1)
-			$this->panel = '<strong><a href="'. $scripturl .''. $this->LinkPrefix . (1) . $this->LinkSufflix .'">&lt;&lt;</a>  <a href="'. $this->LinkPrefix . ($this->Page - 1) . $this->LinkSufflix .'">&lt;</a></strong>'. $this->panel;
+			$this->panel = '<strong><a href="'. $scripturl .''. $this->linkPrefix . (1) . $this->linkSufflix .'">&lt;&lt;</a>  <a href="'. $this->linkPrefix . ($this->page - 1) . $this->linkSufflix .'">&lt;</a></strong>'. $this->panel;
 
 		if ($this->limit_number_end < $this->num_pages)
-			$this->panel = $this->panel .' <strong><a href="'. $scripturl .''. $this->LinkPrefix . ($this->Page + 1) . $this->LinkSufflix .'">&gt;</a> <a href="'. $this->LinkPrefix . $this->num_pages . $this->LinkSufflix .'">&gt;&gt;</a></strong>';
+			$this->panel = $this->panel .' <strong><a href="'. $scripturl .''. $this->linkPrefix . ($this->page + 1) . $this->linkSufflix .'">&gt;</a> <a href="'. $this->linkPrefix . $this->num_pages . $this->linkSufflix .'">&gt;&gt;</a></strong>';
 	}
 
 	public function OutputArray()
