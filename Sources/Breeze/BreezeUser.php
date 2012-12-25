@@ -40,7 +40,7 @@ if (!defined('SMF'))
 
 	/* A bunch of ugly, very ugly wrapper functions because static methods cannot be callable with a string by SMF meh... */
 	function Breeze_Wrapper_Wall(){BreezeUser::wall();}
-	function Breeze_Wrapper_Settings($memID){BreezeUser::settings($memID);}
+	function Breeze_Wrapper_Settings(){BreezeUser::settings();}
 	function Breeze_Wrapper_BuddyRequest(){BreezeUser::buddyRequest();}
 	function Breeze_Wrapper_BuddyMessageSend(){BreezeUser::buddyMessageSend();}
 	function Breeze_Wrapper_Notifications(){BreezeUser::notifications();}
@@ -130,9 +130,9 @@ class BreezeUser
 	}
 
 	/* Shows a form for users to set up their wall as needed. */
-	public static function settings($memID)
+	public static function settings()
 	{
-		global $context;
+		global $context, $memID;
 
 		Breeze::load('Profile-Modify');
 		loadtemplate(Breeze::$name);
