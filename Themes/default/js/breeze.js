@@ -379,10 +379,10 @@
 jQuery(document).ready(function(){
 
 	jQuery.noConflict();
-	jQuery('#breeze_display_status').infinitescroll({
+	jQuery('#breeze_content').infinitescroll({
 
-		navSelector  : "div.pagelinks",
-		nextSelector : "div.pagelinks a:first",
+		navSelector  : "#breeze_pagination",
+		nextSelector : "#breeze_pagination a:first",
 		itemSelector : "ul.breeze_display_status",
 		loadingText  : "Loading new posts...",
 		loadingImg   : smf_images_url + "/breeze/loading.gif",

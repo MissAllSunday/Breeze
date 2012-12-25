@@ -204,6 +204,7 @@ function template_user_wall()
 
 	/* New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING and even if you do, DON'T MODIFY THIS */
 	echo '<span id="breeze_load_image" style="margin:auto; text-align:center;"></span>
+	<div id="breeze_content">
 	<ul class="breeze_status" id="breeze_display_status">';
 
 	/* Status and comments */
@@ -281,7 +282,8 @@ function template_user_wall()
 		}
 
 	/* End of list */
-	echo '</ul>';
+	echo '</ul>
+	</div>';
 
 	/* Pagination panel */
 	if (!empty($context['Breeze']['pagination']['panel']))

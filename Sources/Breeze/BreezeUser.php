@@ -114,6 +114,8 @@ class BreezeUser
 		$pagination->PaginationArray();
 		$pagtrue = $pagination->PagTrue();
 		$currentPage = $page > 1 ? $txt['Breeze_pag_page'] . $page : '';
+		
+		echo '<pre>';print_r($pagination->output);echo '</pre>';
 
 		/* Send the array to the template if there is pagination */
 		$context['member']['status'] = !empty($pagtrue) ? $pagination->OutputArray() : $status;
