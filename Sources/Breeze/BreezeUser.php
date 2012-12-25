@@ -107,10 +107,10 @@ class BreezeUser
 		$tools->loadUserInfo(array_unique($usersArray));
 
 		/* Getting the current page. */
-		$page = $globals->validate('page') == true ? $globals->getRaw('page') : 1;
+		$page = $globals->validate('page') == true ? $globals->getValue('page') : 1;
 
 		/* Applying pagination. */
-		$pagination = new BreezePagination($status, $page, '?action=profile;page=', '', 15, 5);
+		$pagination = new BreezePagination($status, $page, '?action=profile;page=', '', !empty($context['member']['options']['Breeze_pagination_number']) ? $context['member']['options']['Breeze_pagination_number'] : 5, 5);
 		$pagination->PaginationArray();
 		$pagtrue = $pagination->PagTrue();
 		$currentPage = $page > 1 ? $txt['Breeze_pag_page'] . $page : '';
