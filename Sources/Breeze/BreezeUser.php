@@ -64,6 +64,7 @@ class BreezeUser
 		$query = Breeze::query();
 		$tools = Breeze::tools();
 		$globals = Breeze::sGlobals('get');
+		$text = Breeze::text();
 
 		/* Display all the JavaScript bits */
 		$tools->headers('profile');
@@ -112,6 +113,8 @@ class BreezeUser
 		$pagination = new BreezePagination($status, $page, '?action=profile;page=', '', 15, 5);
 		$pagination->PaginationArray();
 		$pagtrue = $pagination->PagTrue();
+		$currentPage = $page > 1 ? $txt['Breeze_pag_page'] . $page : '';
+
 
 		/* Send the array to the template if there is pagination */
 		if ($pagtrue)
@@ -128,7 +131,7 @@ class BreezeUser
 		}
 
 		/* Page name depends on pagination */
-		$context['page_title'] = sprintf($txt['profile_of_username'], $context['member']['name']) . !empty($pagetrue) ? ' - ' . $someVar : '';
+		$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name'], $currentPage);
 	}
 
 	/* Shows a form for users to set up their wall as needed. */

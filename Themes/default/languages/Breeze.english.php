@@ -188,6 +188,8 @@ $txt['Breeze_pag_next'] = 'next';
 $txt['Breeze_pag_first'] = 'First';
 $txt['Breeze_pag_last'] = 'Last';
 $txt['Breeze_pag_pages'] = 'Pages :';
+$txt['Breeze_pag_page'] = '- page ';
+$txt['Breeze_profile_of_username'] = 'Profile of %1$s %2$s';
 
 /* Notifications */
 $txt['Breeze_noti_title'] = 'Notifications';

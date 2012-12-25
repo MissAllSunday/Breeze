@@ -162,6 +162,15 @@ class BreezePagination
 			return false;
 	}
 
+	public function OutputPage()
+	{
+		if(!empty($this->page))
+			return $this->page;
+
+		else
+			return false;
+	}
+
 	public function OutputOffSet()
 	{
 		if(!empty($this->output['offset']))
