@@ -64,6 +64,7 @@ class BreezeUser
 		$query = Breeze::query();
 		$tools = Breeze::tools();
 		$globals = Breeze::sGlobals('get');
+		$text = Breeze::text();
 
 		/* Display all the JavaScript bits */
 		$tools->headers('profile');
@@ -74,7 +75,6 @@ class BreezeUser
 		/* Set all the page stuff */
 		$context['sub_template'] = 'user_wall';
 		$context += array(
-			'page_title' => sprintf($txt['profile_of_username'], $context['member']['name']),
 			'can_send_pm' => allowedTo('pm_send'),
 			'can_have_buddy' => allowedTo('profile_identity_own') && !empty($modSettings['enable_buddylist']),
 			'can_issue_warning' => in_array('w', $context['admin_features']) && allowedTo('issue_warning') && $modSettings['warning_settings'][0] == 1,
@@ -107,26 +107,20 @@ class BreezeUser
 		$tools->loadUserInfo(array_unique($usersArray));
 
 		/* Getting the current page. */
-		$page = $globals->validate('page') == true ? $globals->getRaw('page') : 1;
+		$page = $globals->validate('page') == true ? $globals->getValue('page') : 1;
 
 		/* Applying pagination. */
-		$pagination = new BreezePagination($status, $page, '?action=profile;page=', '', 15, 5);
+		$pagination = new BreezePagination($status, $page, '?action=profile;u='. $context['member']['id'] .';page=', '', !empty($context['member']['options']['Breeze_pagination_number']) ? $context['member']['options']['Breeze_pagination_number'] : 5, 5);
 		$pagination->PaginationArray();
 		$pagtrue = $pagination->PagTrue();
+		$currentPage = $page > 1 ? $txt['Breeze_pag_page'] . $page : '';
 
 		/* Send the array to the template if there is pagination */
-		if ($pagtrue)
-		{
-			$context['member']['status'] = $pagination->OutputArray();
-			$context['Breeze']['pagination']['panel'] = $pagination->OutputPanel();
-		}
+		$context['member']['status'] = !empty($pagtrue) ? $pagination->OutputArray() : $status;
+		$context['Breeze']['pagination']['panel'] = !empty($pagtrue) ? $pagination->OutputPanel() . $pagination->OutputNext() : '';
 
-		/* If not, then let's use the default array */
-		else
-		{
-			$context['member']['status'] = $status;
-			$context['Breeze']['pagination']['panel'] = '';
-		}
+		/* Page name depends on pagination */
+		$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name'], $currentPage);
 	}
 
 	/* Shows a form for users to set up their wall as needed. */

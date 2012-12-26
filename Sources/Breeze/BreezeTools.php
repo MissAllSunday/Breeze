@@ -79,29 +79,29 @@ class BreezeTools extends Breeze
 				var breeze_already_deleted = "'. $this->text->getText('already_deleted') .'";
 				var breeze_cannot_postStatus = "'. $this->text->getText('cannot_postStatus') .'";
 				var breeze_cannot_postComments = "'. $this->text->getText('cannot_postComments') .'";
+				var breeze_page_loading = "'. $this->text->getText('page_loading') .'";
+				var breeze_page_loading_end = "'. $this->text->getText('page_loading_end') .'";
 		// ]]></script>';
 
 			/* Let's load jquery from CDN only if it hasn't been loaded yet */
 			$context['html_headers'] .= '
 			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />
 			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js" type="text/javascript"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js" type="text/javascript"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js" type="text/javascript"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/center.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topCenter.js"></script>';
 
-			/* CSS part */
-			/* @todo move this to its own file */
+			/* Does the user wants to use infinite scroll? */
+			if (!empty($context['member']['options']['Breeze_infinite_scroll']))
+				$context['html_headers'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.infinitescroll.min.js" type="text/javascript"></script>';
+
+			/* Load breeze.js untill everyone else is loaded */
 			$context['html_headers'] .= '
-			<style type="text/css">
-			.breeze_user_comment_avatar
-			{
-				padding:5px;
-			}
-			</style>';
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
 		}
 
 		/* Does the admin wants to add more actions? */
