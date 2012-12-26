@@ -22,6 +22,7 @@ The mod uses the following scripts:
 - [zRSSFeeds] (http://www.zazar.net/developers/jquery/zrssfeed/)
 - [Brandon Aaron Live query plugin] (http://brandonaaron.net/code/livequery/docs)
 - [needim noty jquery plugin] (http://needim.github.com/noty/)
+- [Paul Irish infinite-scroll] (https://github.com/paulirish/infinite-scroll)
 
 ######Notes:
 
