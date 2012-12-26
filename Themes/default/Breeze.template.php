@@ -315,7 +315,7 @@ function template_user_notifications()
 			<span class="botslice">
 				<span></span>
 			</span>
-		</div>';
+		</div><br />';
 }
 
 function template_singleStatus()

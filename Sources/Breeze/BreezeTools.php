@@ -58,7 +58,7 @@ class BreezeTools extends Breeze
 		{
 			$context['html_headers'] .= '
 			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery.min.js"%3E%3C/script%3E\'))</script>
-			<link rel="stylesheet" href="'. $settings['default_theme_url'] .'/css/sticky.full.css" type="text/css" />';
+			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />';
 
 			$header_done = true;
 		}
@@ -85,7 +85,6 @@ class BreezeTools extends Breeze
 
 			/* Let's load jquery from CDN only if it hasn't been loaded yet */
 			$context['html_headers'] .= '
-			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />
 			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js"></script>
@@ -151,23 +150,7 @@ $(document).ready(function ()
    });
 });
  </script>
-<style type="text/css">
-#breezelive
-{
-	width:95%;
-	margin:auto;
-}
-#breezelive ul
- {
-	list-style-type: none;
-	padding: 0px;
-	margin: 0px;
- }
- #breezelive ul li
- {
-	margin-left: 10px;
- }
-</style>';
+';
 
 	}
 

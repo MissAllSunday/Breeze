@@ -375,7 +375,7 @@ class BreezeAjax extends Breeze
 
 		else
 		{
-			/* All is good, delete thi */
+			/* All is good, delete it */
 			$this->_notifications->delete($noti);
 			$this->_response = array(
 				'data' => $this->_text->getText('noti_delete_after'),
@@ -408,7 +408,7 @@ class BreezeAjax extends Breeze
 		/* Send the header */
 		header('Content-Type: application/json');
 
-		/* Is there a custom error message? Use it */
+		/* Is there a custom message? Use it */
 		if (!empty($this->_response))
 			print json_encode($this->_response);
 

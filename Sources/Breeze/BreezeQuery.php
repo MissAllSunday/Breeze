@@ -341,7 +341,7 @@ class BreezeQuery extends Breeze
 	 */
 	public function getStatus()
 	{
-		return !empty($this->_status) ? $this->_status:$this->status();
+		return !empty($this->_status) ? $this->_status : $this->status();
 	}
 
 	/**
@@ -447,7 +447,7 @@ class BreezeQuery extends Breeze
 	/**
 	 * BreezeQuery::comments()
 	 *
-	 * The main method to load all the comments. This is one of the main queries, load all the commments form all users.
+	 * The main method to load all the comments. This is one of the main queries, load all the commments from all users.
 	 * @return array a very big associative array with the comment ID as key
 	 */
 	protected function comments()
