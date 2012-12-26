@@ -112,7 +112,7 @@ class BreezePagination
 		$this->output['offset'] = $this->page_offset; //Current page number.
 		$this->output['limit'] = $this->limitPage; //Number of resuts per page.
 		$this->output['array'] = array_slice($this->usedArray, $this->page_offset, $this->limitPage, true); //Array of current page results.
-		$this->output['next'] = $this->num_pages != $this->page ? '<a href="'. $this->scripturl .''. $this->linkPrefix . ($this->page + 1) . $this->linkSufflix .'" id="breeze_next_link">'. Breeze::text()->getText('pag_next') .'</a>' : '';
+		$this->output['next'] = $this->num_pages != $this->page ? '<a href="'. $this->scripturl .''. $this->linkPrefix . ($this->page + 1) . $this->linkSufflix .'" id="breeze_next_link" style="display:none;">'. Breeze::text()->getText('pag_next') .'</a>' : '';
 
 		$this->pagtrue = true;
 	}

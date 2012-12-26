@@ -379,13 +379,14 @@
 jQuery(document).ready(function(){
 
 	jQuery.noConflict();
-	jQuery('#breeze_content').infinitescroll({
+	jQuery('#breeze_display_status').infinitescroll({
 
 		navSelector  : "#breeze_pagination",
-		nextSelector : "#breeze_pagination a:first",
-		itemSelector : "ul.breeze_display_status",
+		nextSelector : "#breeze_next_link",
+		itemSelector : "li.windowbg",
 		loadingText  : "Loading new posts...",
 		loadingImg   : smf_images_url + "/breeze/loading.gif",
-		donetext     : "I think we've hit the end, Jim"
+		donetext     : "I think we've hit the end, Jim",
+		animate      : true,
 	});
 });
