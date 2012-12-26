@@ -115,7 +115,7 @@ $txt['Breeze_admin_settings_admin_panel'] = 'Breeze Admin Panel';
 $txt['Breeze_admin_welcome'] = 'This is your &quot;%1$s&quot;.  From here, you can edit the settings for Breeze If you have any trouble, feel free to <a href="http://missallsunday.com" target="_blank" class="new_win">ask for support</a> on the author\'s site.';
 $txt['Breeze_admin_settings_main'] = 'Main breeze Admin Center';
 $txt['Breeze_admin_settings_settings'] = 'breeze General Settings';
-$txt['Breeze_admin_settings_donate'] = 'Donate';
+$txt['Breeze_admin_settings_donate_title'] = 'Boring stuff you will never see...';
 $txt['Breeze_admin_settings_server_needs'] = '<div class="breeze_error_message">Your Server does not support %s, contact your hosting provider and ask for it to be enable, otherwise you won\'t be able to use this mod at full.</div>';
 $txt['Breeze_admin_settings_json'] = 'JSON library';
 $txt['Breeze_admin_settings_php'] = '<div class="breeze_error_message">Your PHP version: ( %s ) is lower than the minimum required by this mod: 5.3, you won\'t be able to use this mod at full.</div>';
@@ -124,7 +124,6 @@ $txt['Breeze_admin_settings_server_needs_ok'] = '<div class="breeze_ok_message">
 $txt['Breeze_admin_settings_tab_server_specs'] = 'Server Requirements';
 $txt['Breeze_admin_settings_tab_admin_logs'] = 'Admin Logs';
 $txt['Breeze_admin_settings_donate'] = 'Donate';
-$txt['Breeze_admin_settings_donate_text'] = 'Boring stuff you wil never see...';
 $txt['Breeze_admin_settings_enablegeneralwall'] = 'Enable General Wall';
 $txt['Breeze_admin_settings_enablegeneralwall_sub'] = 'If enable, a generai wall will apear, in this general wall the user will be able to see his/her buddie\'s status and recent activity';
 $txt['Breeze_admin_settings_menuposition'] = 'Select the position for the general Wall button.';
@@ -226,3 +225,6 @@ $txt['Breeze_buddyrequest_confirmed_inner_message_de'] = 'You successfully decli
 
 /* Single Status */
 $txt['Breeze_singleStatus_pageTitle'] = 'Single Status';
+
+/* Donate */
+$txt['Breeze_donate'] = 'Breeze is a free SMF modification brought to you by a PHP enthusiast on her free time.<p />If you like this modification and would like to show your appreciation, please consider making a <a href="http://missallsunday.com/shoes/">donation</a>. Your donation will be used to cover server costs and/or to buy the developer more shoes as shoes keeps her happy and if she is happy then there will be more updates ;)<p />You can also show your appreciation by letting me know you are using Breeze on your forum, come by, say hi and show me your shiny profile pages powered by Breeze.';

@@ -58,7 +58,7 @@ if (!defined('SMF'))
 		$context['sub_template'] = 'admin_home';
 
 		/* Headers */
-		$headers = new BreezeTools();
+		$headers = Breeze::tools();
 		$headers->headers('admin');
 	}
 
@@ -102,16 +102,18 @@ if (!defined('SMF'))
 		loadtemplate('BreezeAdmin');
 
 		/* Headers */
-		BreezeTools::headers(true);
+		$headers = Breeze::tools();
+		$headers->headers('admin');
 
 		/* Text strings */
 		$text = Breeze::text();
 
 		/* Page stuff */
-		$context['page_title'] = $text->getText('admin_settings_donate');
+		$context['page_title'] = $text->getText('admin_settings_donate_title');
 		$context['sub_template'] = 'admin_donate';
 		$context['linktree'][] = array(
 			'url' => $scripturl . '?action=admin;area=breezedonate',
-			'name' => $text->getText('admin_settings_donate')
+			'name' => $text->getText('admin_settings_donate_title')
 		);
+		$context['Breeze']['donate'] = $text->getText('donate');
 	}

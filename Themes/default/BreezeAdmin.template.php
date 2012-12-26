@@ -113,16 +113,19 @@ function template_admin_home()
 /* Boring stuff you will never see... */
 function template_admin_donate()
 {
-	global $txt;
+	global $context;
 
 	echo '
+		<div class="cat_bar">
+			<h3 class="catbg">', $context['page_title'] ,'</h3>
+		</div>
 		<span class="clear upperframe">
 			<span></span>
 		</span>
 		<div class="roundframe rfix">
 			<div class="innerframe">
 				<div class="content">
-					',$txt['Breeze_admin_settings_donate_text'],'
+					',$context['Breeze']['donate'],'
 				</div>
 			</div>
 		</div>
