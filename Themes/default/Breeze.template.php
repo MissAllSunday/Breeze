@@ -285,7 +285,7 @@ function template_user_wall()
 
 	/* Pagination panel */
 	if (!empty($context['Breeze']['pagination']['panel']))
-		echo '<div class="pagelinks" id="breeze_pagination">', $txt['pages'] ,': ', $context['Breeze']['pagination']['panel'] ,'</div>';
+		echo '<div id="breeze_pagination">', $txt['pages'] ,': ', $context['Breeze']['pagination']['panel'] ,'</div>';
 
 	/* End of left side */
 	echo '</div>

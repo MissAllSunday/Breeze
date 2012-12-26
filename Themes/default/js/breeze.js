@@ -384,9 +384,9 @@ jQuery(document).ready(function(){
 		navSelector  : "#breeze_pagination",
 		nextSelector : "#breeze_next_link",
 		itemSelector : "li.windowbg",
-		loadingText  : "Loading new posts...",
-		loadingImg   : smf_images_url + "/breeze/loading.gif",
-		donetext     : "I think we've hit the end, Jim",
+		msgText  : "Loading new posts...",
+		img   : smf_images_url + "/breeze/loading.gif",
+		finishedMsg     : "I think we've hit the end, Jim",
 		animate      : true,
 	});
 });

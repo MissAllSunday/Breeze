@@ -93,19 +93,9 @@ class BreezeTools extends Breeze
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topCenter.js"></script>';
 
 			/* Does the user wants to use infinite scroll? */
-			/* if (!empty($context['member']['options']['Breeze_infinite_scroll'])) */
+			if (!empty($context['member']['options']['Breeze_infinite_scroll']))
 				$context['html_headers'] .= '
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.infinitescroll.min.js" type="text/javascript"></script>';
-
-			/* CSS part */
-			/* @todo move this to its own file */
-			$context['html_headers'] .= '
-			<style type="text/css">
-			.breeze_user_comment_avatar
-			{
-				padding:5px;
-			}
-			</style>';
 
 			/* Load breeze.js untill everyone else is loaded */
 			$context['html_headers'] .= '
