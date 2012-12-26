@@ -79,6 +79,8 @@ class BreezeTools extends Breeze
 				var breeze_already_deleted = "'. $this->text->getText('already_deleted') .'";
 				var breeze_cannot_postStatus = "'. $this->text->getText('cannot_postStatus') .'";
 				var breeze_cannot_postComments = "'. $this->text->getText('cannot_postComments') .'";
+				var breeze_page_loading = "'. $this->text->getText('page_loading') .'";
+				var breeze_page_loading_end = "'. $this->text->getText('page_loading_end') .'";
 		// ]]></script>';
 
 			/* Let's load jquery from CDN only if it hasn't been loaded yet */
