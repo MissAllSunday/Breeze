@@ -311,6 +311,17 @@ box-shadow: 0 0 5px #56a25e;
 	text-align:right;
 }
 
+#breeze_pagination
+{
+margin:auto;
+text-align: center;
+}
+
+.breeze_user_comment_avatar
+{
+	padding:5px;
+}
+
 /* a.breeze_delete_status:hover, a.breeze_delete_comment:hover{
 	background:#fbe3e4;
 	border:1px solid #fbc2c4;
