@@ -378,11 +378,11 @@ class BreezeQuery extends Breeze
 					'poster_id' => $row['status_poster_id'],
 					'time' => $this->tools()->timeElapsed($row['status_time']),
 					'body' => $this->parser()->display($row['status_body']),
-					);
+				);
 
 				/* Comments */
-				if (!empty($row['comments_id']))
-					$return[$row['status_id']]['comments'][$row['comments_id']] = array(
+				if (!empty($row['comments_status_id']))
+					$c[$row['comments_status_id']][$row['comments_id']] = array(
 						'id' => $row['comments_id'],
 						'status_id' => $row['comments_status_id'],
 						'status_owner_id' => $row['comments_status_owner_id'],
@@ -390,7 +390,10 @@ class BreezeQuery extends Breeze
 						'profile_owner_id' => $row['comments_profile_owner_id'],
 						'time' => $this->tools()->timeElapsed($row['comments_time']),
 						'body' => $this->parser()->display($row['comments_body']),
-						);
+					);
+
+				/* Merge them both */
+				$return[$row['status_id']]['comments'] = $c[$row['comments_status_id']];
 			}
 
 			$this->_smcFunc['db_free_result']($result);
