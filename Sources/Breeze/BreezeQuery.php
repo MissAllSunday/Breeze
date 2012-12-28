@@ -50,6 +50,7 @@ class BreezeQuery extends Breeze
 	private $query_params = array('rows' => '*');
 	private $query_data = array();
 	private $_smcFunc;
+	protected static$usersArray;
 
 	/**
 	 * BreezeQuery::__construct()
@@ -378,10 +379,12 @@ class BreezeQuery extends Breeze
 					'poster_id' => $row['status_poster_id'],
 					'time' => $this->tools()->timeElapsed($row['status_time']),
 					'body' => $this->parser()->display($row['status_body']),
+					'comments' => array(),
 				);
 
 				/* Comments */
 				if (!empty($row['comments_status_id']))
+				{
 					$c[$row['comments_status_id']][$row['comments_id']] = array(
 						'id' => $row['comments_id'],
 						'status_id' => $row['comments_status_id'],
@@ -392,15 +395,29 @@ class BreezeQuery extends Breeze
 						'body' => $this->parser()->display($row['comments_body']),
 					);
 
-				/* Merge them both */
-				$return[$row['status_id']]['comments'] = $c[$row['comments_status_id']];
+					/* Merge them both */
+					$return[$row['status_id']]['comments'] = $c[$row['comments_status_id']];
+				}
+
+				/* Get the users IDs */
+				self::$usersArray = array(
+					$row['status_owner_id'],
+					$row['status_poster_id'],
+					$row['comments_status_owner_id'],
+					$row['comments_poster_id'],
+					$row['comments_poster_id'],
+				);
 			}
 
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
 			cache_put_data(parent::$name .'-' . $id, $return, 120);
+
 		}
+
+		/* Load the user's data */
+		$this->tools()->loadUserInfo(array_unique(self::$usersArray));
 
 		return $return;
 	}
