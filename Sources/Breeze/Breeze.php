@@ -450,7 +450,7 @@ class Breeze
 		$actions['buddy'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
 
 		/* A special action for the buddy request message */
-		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
+		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'BreezeUser::buddyRequest');
 	}
 
 	/**

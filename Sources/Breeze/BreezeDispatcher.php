@@ -56,7 +56,6 @@ abstract class BreezeDispatcher
 			'breezeajax' => array('BreezeAjax' , 'call'),
 			'wall' => array('BreezeGeneral', 'call'),
 			'buddy' => array('BreezeBuddy', 'buddy'),
-			'breezebuddyrequest' => array('BreezeUser', 'BuddyMessageSend'),
 		);
 
 		if (in_array($sglobals->getValue('action'), array_keys($actions)))
