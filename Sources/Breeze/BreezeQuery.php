@@ -50,6 +50,7 @@ class BreezeQuery extends Breeze
 	private $query_params = array('rows' => '*');
 	private $query_data = array();
 	private $_smcFunc;
+	protected static$usersArray;
 
 	/**
 	 * BreezeQuery::__construct()
@@ -353,6 +354,11 @@ class BreezeQuery extends Breeze
 	 */
 	public function getStatusByProfile($id)
 	{
+		/* Declare some generic vars */
+		$comments_poster_id = array();
+		$status_owner_id = array();
+		$status_poster_id = array();
+
 		/* Use the cache please... */
 		if (($return = cache_get_data(parent::$name .'-' . $id, 120)) == null)
 		{
@@ -378,11 +384,13 @@ class BreezeQuery extends Breeze
 					'poster_id' => $row['status_poster_id'],
 					'time' => $this->tools()->timeElapsed($row['status_time']),
 					'body' => $this->parser()->display($row['status_body']),
-					);
+					'comments' => array(),
+				);
 
 				/* Comments */
-				if (!empty($row['comments_id']))
-					$return[$row['status_id']]['comments'][$row['comments_id']] = array(
+				if (!empty($row['comments_status_id']))
+				{
+					$c[$row['comments_status_id']][$row['comments_id']] = array(
 						'id' => $row['comments_id'],
 						'status_id' => $row['comments_status_id'],
 						'status_owner_id' => $row['comments_status_owner_id'],
@@ -390,14 +398,35 @@ class BreezeQuery extends Breeze
 						'profile_owner_id' => $row['comments_profile_owner_id'],
 						'time' => $this->tools()->timeElapsed($row['comments_time']),
 						'body' => $this->parser()->display($row['comments_body']),
-						);
+					);
+
+					/* Merge them both */
+					$return[$row['status_id']]['comments'] = $c[$row['comments_status_id']];
+				}
+
+				/* Get the users IDs */
+				$comments_poster_id[] = $row['comments_poster_id'];
+				$status_owner_id[] = $row['status_owner_id'];
+				$status_poster_id[] = $row['status_poster_id'];
 			}
+
+			/* Merge all the users arrays */
+			$usersArray = array_merge($comments_poster_id, $status_owner_id, $status_poster_id);
 
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
 			cache_put_data(parent::$name .'-' . $id, $return, 120);
 		}
+
+		/* Load the user's data */
+		if (!empty($usersArray))
+			cache_put_data(parent::$name .'-users'. $id, $usersArray, 120);
+
+		else
+			$usersArray = cache_get_data(parent::$name .'-users'. $id, 120);
+
+		$this->tools()->loadUserInfo(array_filter(array_unique($usersArray), 'strlen'));
 
 		return $return;
 	}
