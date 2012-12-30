@@ -354,6 +354,11 @@ class BreezeQuery extends Breeze
 	 */
 	public function getStatusByProfile($id)
 	{
+		/* Declare some generic vars */
+		$comments_poster_id = array();
+		$status_owner_id = array();
+		$status_poster_id = array();
+
 		/* Use the cache please... */
 		if (($return = cache_get_data(parent::$name .'-' . $id, 120)) == null)
 		{
@@ -400,24 +405,28 @@ class BreezeQuery extends Breeze
 				}
 
 				/* Get the users IDs */
-				self::$usersArray = array(
-					$row['status_owner_id'],
-					$row['status_poster_id'],
-					$row['comments_status_owner_id'],
-					$row['comments_poster_id'],
-					$row['comments_poster_id'],
-				);
+				$comments_poster_id[] = $row['comments_poster_id'];
+				$status_owner_id[] = $row['status_owner_id'];
+				$status_poster_id[] = $row['status_poster_id'];
 			}
+
+			/* Merge all the users arrays */
+			$usersArray = array_merge($comments_poster_id, $status_owner_id, $status_poster_id);
 
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
 			cache_put_data(parent::$name .'-' . $id, $return, 120);
-
 		}
 
 		/* Load the user's data */
-		$this->tools()->loadUserInfo(array_unique(self::$usersArray));
+		if (!empty($usersArray))
+			cache_put_data(parent::$name .'-users'. $id, $usersArray, 120);
+
+		else
+			$usersArray = cache_get_data(parent::$name .'-users'. $id, 120);
+
+		$this->tools()->loadUserInfo(array_filter(array_unique($usersArray), 'strlen'));
 
 		return $return;
 	}
