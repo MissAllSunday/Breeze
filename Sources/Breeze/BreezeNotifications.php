@@ -126,10 +126,12 @@ class BreezeNotifications extends Breeze
 					'rows' => 'id',
 					'where' => 'user = {int:user}',
 					'whereAnd' => 'user_to = {int:user_to}',
+					'whereAnd' => 'type = {string:type}',
 				),
 				array(
 					'user' => !empty($params['user']) ? $params['user'] : $this->_currentUser,
 					'user_to' => $params['user_to'],
+					'type' => $params['type'],
 				),
 				'id', false
 			);
