@@ -114,6 +114,7 @@ class BreezeQuery extends Breeze
 			'. (!empty($params['join']) ? 'LEFT JOIN '. $params['join'] : '') .'
 			'. (!empty($params['where']) ? 'WHERE '. $params['where'] : '') .'
 				'. (!empty($params['and']) ? 'AND '. $params['and'] : '') .'
+				'. (!empty($params['andTwo']) ? 'AND '. $params['andTwo'] : '') .'
 			'. (!empty($params['order']) ? 'ORDER BY ' . $params['order'] : '') .'
 			'. (!empty($params['limit']) ? 'LIMIT '. $params['limit'] : '') . '',
 			$data
