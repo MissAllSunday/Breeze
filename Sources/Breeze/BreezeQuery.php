@@ -426,7 +426,9 @@ class BreezeQuery extends Breeze
 		else
 			$usersArray = cache_get_data(parent::$name .'-users'. $id, 120);
 
-		$this->tools()->loadUserInfo(array_filter(array_unique($usersArray), 'strlen'));
+		/* Load only if there is something to load */
+		if (!empty($usersArray))
+			$this->tools()->loadUserInfo(array_filter(array_unique($usersArray), 'strlen'));
 
 		return $return;
 	}
