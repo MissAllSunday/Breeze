@@ -225,7 +225,6 @@ class BreezeUser
 		/* Set all the page stuff */
 		$context['sub_template'] = 'Breeze_buddy_list';
 		$context['page_title'] = $text->getText('noti_title');
-		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 		$context['canonical_url'] = $scripturl . '?action=profile;area=breezebuddies;u=' . $context['member']['id'];
 
 		/* Show a nice message for confirmation */

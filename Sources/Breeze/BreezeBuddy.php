@@ -79,7 +79,7 @@ class BreezeBuddy extends Breeze
 		elseif ($user_info['id'] != $sa->getValue('u'))
 		{
 			/* Notification here */
-			$notification->createBuddy(
+			$this->notification->createBuddy(
 				array(
 					'user' => $user_info['id'],
 					'user_to' => $sa->getValue('u'),
@@ -101,6 +101,6 @@ class BreezeBuddy extends Breeze
 			return false;
 
 		/* Load all buddy request for this user */
-		return $query->getNotificationByType('buddy', $user);
+		return $this->query->getNotificationByType('buddy', $user);
 	}
 }
