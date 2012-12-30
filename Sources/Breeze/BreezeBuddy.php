@@ -38,11 +38,16 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-class BreezeBuddy
+class BreezeBuddy extends Breeze
 {
-	public function  __construct(){}
+	public function  __construct()
+	{
+		$this->notification = $this->notifications();
+		$this->settings = $this->settings();
+		$this->query = $this->query();
+	}
 
-	public static function Buddy()
+	public function buddy()
 	{
 		global $user_info, $scripturl, $context;
 
@@ -52,9 +57,7 @@ class BreezeBuddy
 		is_not_guest();
 
 		/* We need all this stuff */
-		$sa = Breeze::sGlobals('get');
-		$notification = Breeze::notifications();
-		$settings = Breeze::settings();
+		$sa = $this->sGlobals('get');
 
 		/* There's gotta be an user... */
 		if ($sa->validate('u') == false)
@@ -93,10 +96,6 @@ class BreezeBuddy
 
 	public function showBuddyRequests($user)
 	{
-		global $context;
-
-		$query = Breeze::query();
-
 		/* I don't have time for this... */
 		if (empty($user))
 			return false;
