@@ -385,13 +385,6 @@ class BreezeNotifications extends Breeze
 		/* Yeah, we started with nothing! */
 		$text = '';
 
-		/* Lots of users to load */
-		$this->_tools->loadUserInfo(array(
-			$noti['content']['wall_owner'],
-			$noti['content']['wall_poster'],
-			$noti['user_to'],
-			));
-
 		/* Build the status link */
 		$statusLink = $scripturl . '?action=profile;area=wallstatus;u=' . $noti['content']['wall_owner'] .
 			';bid=' . $noti['content']['status_id'];
