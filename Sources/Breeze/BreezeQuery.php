@@ -778,7 +778,7 @@ class BreezeQuery extends Breeze
 	 */
 	public function getNotifications()
 	{
-		return !empty($this->_noti) ? $this->_noti:$this->noti();
+		return !empty($this->_noti) ? $this->_noti : $this->noti();
 	}
 
 	/**
@@ -854,13 +854,66 @@ class BreezeQuery extends Breeze
 	 */
 	public function getNotificationByUser($user)
 	{
-		return $this->getReturn($this->_tables['noti']['name'], 'user_to', $user);
+		/* Generic vars */
+		$user = array();
+		$user_to = array();
+
+		/* Use the cache please... */
+		if (($return = cache_get_data(parent::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, 120)) == null)
+		{
+			$result = $this->_smcFunc['db_query']('', '
+				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
+				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
+				WHERE user_to = {int:user_to}
+				', array(
+					'user_to' => (int) $user,
+				)
+			);
+
+			/* Populate the array like a boss! */
+			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+			{
+				$return[$row['id']] = array(
+					'id' => $row['id'],
+					'user' => $row['user'],
+					'user_to' => $row['user_to'],
+					'type' => $row['type'],
+					'time' => $row['time'],
+					'viewed' => $row['viewed'],
+					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+				);
+
+				$user[] = $row['user'];
+				$user_to[] = $row['user_to'];
+			}
+
+			/* Merge all the users arrays */
+			$usersArray = array_merge($user, $user_to);
+
+			$this->_smcFunc['db_free_result']($result);
+
+			/* Cache this beauty */
+			cache_put_data(parent::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, 120);
+		}
+
+		/* Load the user's data */
+		if (!empty($usersArray))
+			cache_put_data(parent::$name .'-' . $this->_tables['noti']['name'] . '-'. $user .'-users', 120);
+
+		else
+			$usersArray = cache_get_data(parent::$name .'-' . $this->_tables['noti']['name'] . '-'. $user .'-users', 120);
+
+		/* Load only if there is something to load */
+		if (!empty($usersArray))
+			$this->tools()->loadUserInfo(array_filter(array_unique($usersArray), 'strlen'));
+
+		return $return;
 	}
 
 	/**
 	 * BreezeQuery::getNotificationByUserSender()
 	 *
-	 * @see BreezeQuery::getReturn())
+	 * @see BreezeQuery::getReturn()
 	 * @param int $user The user from where the notifications will be fetched
 	 * @return array
 	 */

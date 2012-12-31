@@ -253,7 +253,7 @@ class BreezeNotifications extends Breeze
 			if (!empty($this->_messages))
 			{
 				/* Make sure its an array */
-				$this->_messages = !is_array($this->_messages) ? array($this->_messages):$this->
+				$this->_messages = !is_array($this->_messages) ? array($this->_messages) : $this->
 					_messages;
 
 				/* @todo move this to breeze.js */
