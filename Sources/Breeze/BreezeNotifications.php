@@ -241,10 +241,6 @@ class BreezeNotifications extends Breeze
 			foreach ($this->_all as $single)
 				if (in_array($single['type'], $this->_types))
 				{
-					/* load the user's link */
-					if (empty($context['Breeze']['user_info'][$single['user']]))
-						$this->_tools->loadUserInfo($single['user']);
-
 					$call = 'do' . ucfirst($single['type']);
 					$this->$call($single);
 				}
@@ -253,8 +249,7 @@ class BreezeNotifications extends Breeze
 			if (!empty($this->_messages))
 			{
 				/* Make sure its an array */
-				$this->_messages = !is_array($this->_messages) ? array($this->_messages) : $this->
-					_messages;
+				$this->_messages = !is_array($this->_messages) ? array($this->_messages) : $this->_messages;
 
 				/* @todo move this to breeze.js */
 				$context['insert_after_template'] .= '
