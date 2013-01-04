@@ -55,12 +55,9 @@ class BreezeNotifications extends Breeze
 	 *
 	 * @return
 	 */
-	function __construct()
+	function __construct($settings, $text, $tools, $query)
 	{
 		global $user_info;
-
-		/* Call the parent */
-		parent::__construct();
 
 		/* Current user */
 		$this->_currentUser = $user_info['id'];
@@ -75,10 +72,10 @@ class BreezeNotifications extends Breeze
 			'topic');
 
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
-		$this->_settings = $this->settings();
-		$this->_query = $this->query();
-		$this->_tools = $this->tools();
-		$this->_text = $this->text();
+		$this->_settings = $settings;
+		$this->_query = $query;
+		$this->_tools = $tools;
+		$this->_text = $text;
 	}
 
 	/**
@@ -120,7 +117,7 @@ class BreezeNotifications extends Breeze
 		if (!empty($params) && in_array($params['type'], $this->_types))
 		{
 			/* Doing a quick query will be better than loading the entire notifications array */
-			$tempQuery = $this->query()->quickQuery(
+			$tempQuery = $this->query->quickQuery(
 				array(
 					'table' => 'breeze_notifications',
 					'rows' => 'id',

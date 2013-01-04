@@ -90,7 +90,7 @@ abstract class BreezeDispatcher
 		/* Notifications */
 		$container->notifications = $container->asShared(function ($c)
 		{
-			return new BreezeNotifications($c->settings, $c->query, $c->tools, $c->text);
+			return new BreezeNotifications($c->settings, $c->text, $c->tools, $c->query);
 		});
 
 		/* Parser */
