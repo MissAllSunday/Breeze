@@ -102,7 +102,7 @@ abstract class BreezeDispatcher
 		/* Mention */
 		$container->mention = $container->asShared(function ($c)
 		{
-			return new BreezeMention($c->notifications, $c->settings);
+			return new BreezeMention($c->settings, $c->notifications);
 		});
 
 		$actions = array(

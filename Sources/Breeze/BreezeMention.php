@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-class BreezeMention extends Breeze
+class BreezeMention
 {
 	protected $_notification;
 	protected $_settings;
@@ -49,14 +49,11 @@ class BreezeMention extends Breeze
 	protected $_searchNames = array();
 	protected $_queryNames = array();
 
-	function __construct()
+	function __construct($settings, $notifications)
 	{
-		/* Call the parent */
-		parent::__construct();
-
 		$this->_regex = '~{([\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u';
-		$this->_notification = $this->notifications();
-		$this->_settings = $this->settings();
+		$this->_notification = $notifications;
+		$this->_settings = $settings;
 	}
 
 	/*
@@ -91,7 +88,7 @@ class BreezeMention extends Breeze
 				$this->_queryNames = array_slice($this->_queryNames, 0, 10);
 
 			/* Let's make a quick query here... */
-			$tempQuery = $this->query()->quickQuery(
+			$tempQuery = $this->query->quickQuery(
 				array(
 					'table' => 'members',
 					'rows' => 'id_member, member_name, real_name',
