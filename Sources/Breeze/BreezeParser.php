@@ -43,11 +43,11 @@ class BreezeParser
 {
 	private $notification;
 
-	function __construct()
+	function __construct($settings, $tools, $notifications)
 	{
-		$this->notification = Breeze::notifications();
-		$this->settings = Breeze::settings();
-		$this->tools = Breeze::tools();
+		$this->notification = $notifications;
+		$this->settings = $settings;
+		$this->tools = $tools;
 
 		/* Regex stuff */
 		$this->regex = array(
@@ -60,7 +60,7 @@ class BreezeParser
 	{
 		$this->s = $string;
 		$temp = get_class_methods('BreezeParser');
-		$temp = BreezeTools::remove($temp, array('__construct', 'display'), false);
+		$temp = $this->tools->remove($temp, array('__construct', 'display'), false);
 
 		foreach ($temp as $t)
 			$this->s = $this->$t($this->s);

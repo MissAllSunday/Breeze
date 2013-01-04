@@ -96,7 +96,7 @@ abstract class BreezeDispatcher
 		/* Parser */
 		$container->parser = $container->asShared(function ($c)
 		{
-			return new BreezParser($c->notifications, $c->settings, $c->tools);
+			return new BreezParser($c->settings, $c->tools, $c->notifications);
 		});
 
 		/* Mention */
