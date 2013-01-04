@@ -38,9 +38,9 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-class Breezedisplay
+class BreezeDisplay
 {
-	private $ReturnArray;
+	private $returnArray;
 	private $params;
 	private $UserInfo;
 	private $tools;
@@ -49,15 +49,18 @@ class Breezedisplay
 
 	function __construct($params, $type)
 	{
-		if (empty($params))
-			$this->ReturnArray = '';
-
-		else
-			$this->params = $params;
-
 		$this->type = $type;
 		$this->tools = Breeze::tools();
 		$this->text = Breeze::text();
+	}
+
+	public function create($params, $type)
+	{
+		if (empty($params))
+			$this->returnArray = '';
+
+		else
+			$this->params = $params;
 
 		/* The visitor's permissions */
 		$this->permissions = array(
@@ -80,7 +83,7 @@ class Breezedisplay
 		switch ($this->type)
 		{
 			case 'status':
-				$this->ReturnArray = '
+				$this->returnArray = '
 		<li class="windowbg" id ="status_id_'. $this->params['id'] .'">
 			<span class="topslice">
 				<span></span>
@@ -95,26 +98,26 @@ class Breezedisplay
 
 					/* Delete link */
 					if ($this->permissions['deleteStatus'])
-						$this->ReturnArray .= '| <a href="javascript:void(0)" id="'. $this->params['id'] .'" class="breeze_delete_status">'. $this->text->getText('general_delete') .'</a>';
+						$this->returnArray .= '| <a href="javascript:void(0)" id="'. $this->params['id'] .'" class="breeze_delete_status">'. $this->text->getText('general_delete') .'</a>';
 
-					$this->ReturnArray .= '</div>
+					$this->returnArray .= '</div>
 					<hr />
 					<div id="comment_flash_'. $this->params['id'] .'"></div>';
 
-					$this->ReturnArray .= '<ul class="breeze_comments_list" id="comment_loadplace_'. $this->params['id'] .'">';
+					$this->returnArray .= '<ul class="breeze_comments_list" id="comment_loadplace_'. $this->params['id'] .'">';
 
 						/* New status don't have comments... */
 
 						/* display the new comments ^o^ */
-						$this->ReturnArray .= '
+						$this->returnArray .= '
 						<li id="breeze_load_image_comment_'. $this->params['id'] .'" style="margin:auto; text-align:center;"></li>';
 
 						/* Close the list */
-						$this->ReturnArray .= '</ul>';
+						$this->returnArray .= '</ul>';
 
 						/* display the form for new comments */
 						if ($this->permissions['postcomments'])
-							$this->ReturnArray .= '
+							$this->returnArray .= '
 							<span><form action="'. $scripturl. '?action=breezeajax;sa=postcomment" method="post" name="formID_'. $this->params['id'] .'" id="formID_'. $this->params['id'] .'">
 								<textarea id="textboxcontent_'. $this->params['id'] .'" cols="40" rows="2"></textarea>
 								<input type="hidden" value="'. $this->params['poster_id'] .'" name="status_owner_id'. $this->params['id'] .'" id="status_owner_id'. $this->params['id'] .'" />
@@ -126,7 +129,7 @@ class Breezedisplay
 
 
 					/* Close the div */
-					$this->ReturnArray .= '</div>
+					$this->returnArray .= '</div>
 					<div class="clear"></div>
 				</div>
 			<span class="botslice">
@@ -135,7 +138,7 @@ class Breezedisplay
 			</li>';
 				break;
 			case 'comment':
-				$this->ReturnArray = '
+				$this->returnArray = '
 					<li class="windowbg2" id ="comment_id_'. $this->params['id'] .'">
 						<div class="breeze_user_comment_avatar">
 							'. $context['Breeze']['user_info'][$this->params['poster_id']]['facebox'] .'<br />
@@ -151,6 +154,6 @@ class Breezedisplay
 				break;
 		}
 
-		return $this->ReturnArray;
+		return $this->returnArray;
 	}
 }
