@@ -36,7 +36,7 @@
  */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
 	/* Wrapper functions */
 	function wrapper_breezeGeneral_singleStatus(){ BreezeGeneral::singleStatus(); }

@@ -36,7 +36,7 @@
  */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
 	/* A bunch of ugly, very ugly wrapper functions because static methods cannot be callable with a string by SMF meh... */
 	function Breeze_Wrapper_Wall(){BreezeUser::wall();}

@@ -36,7 +36,7 @@
  */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
 	/* The purpose of this file is to centralize the user info,
 	helps to avoid having to write code over and over again */

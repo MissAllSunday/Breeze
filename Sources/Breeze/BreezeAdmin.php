@@ -36,7 +36,7 @@
  */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
 	/* We can't call a static method from a string... let's do this the old way instead... */
 	function Breeze_Admin_Main()

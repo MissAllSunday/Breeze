@@ -36,7 +36,7 @@
  */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
 class BreezeMention extends Breeze
 {
