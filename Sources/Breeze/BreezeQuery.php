@@ -530,7 +530,7 @@ class BreezeQuery extends Breeze
 	 */
 	public function getComments()
 	{
-		return !empty($this->_comments) ? $this->_comments:$this->comments();
+		return !empty($this->_comments) ? $this->_comments : $this->comments();
 	}
 
 	/**

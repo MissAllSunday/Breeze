@@ -72,7 +72,13 @@ abstract class BreezeDispatcher
 		/* Query */
 		$container->query = $container->asShared(function ($c)
 		{
-			return new BreezeQuery($c->settings, $c->globals, $c->text);
+			return new BreezeQuery($c->settings, $c->tools, $c->parser, $c->text);
+		});
+
+		/* Form */
+		$container->form = $container->asShared(function ($c)
+		{
+			return new BreezeQuery($c->text);
 		});
 
 		$actions = array(
