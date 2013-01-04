@@ -69,6 +69,12 @@ abstract class BreezeDispatcher
 			return new BreezeText();
 		});
 
+		/* Tools */
+		$container->tools = $container->asShared(function ($c)
+		{
+			return new BreezeTools($c->text, $c->settings);
+		});
+
 		/* Query */
 		$container->query = $container->asShared(function ($c)
 		{
@@ -79,6 +85,24 @@ abstract class BreezeDispatcher
 		$container->form = $container->asShared(function ($c)
 		{
 			return new BreezeQuery($c->text);
+		});
+
+		/* Notifications */
+		$container->notifications = $container->asShared(function ($c)
+		{
+			return new BreezeNotifications($c->settings, $c->query, $c->tools, $c->text);
+		});
+
+		/* Parser */
+		$container->parser = $container->asShared(function ($c)
+		{
+			return new BreezParser($c->notifications, $c->settings, $c->tools);
+		});
+
+		/* Mention */
+		$container->mention = $container->asShared(function ($c)
+		{
+			return new BreezeMention($c->notifications, $c->settings);
 		});
 
 		$actions = array(
