@@ -49,8 +49,31 @@ abstract class BreezeDispatcher
 
 	static function dispatch()
 	{
-		/* Cheating, shhh! */
-		$sglobals = Breeze::sGlobals('get');
+		$container = new BreezeContainer();
+
+		/* Globals */
+		$container->globals = $container->asShared(function ($c)
+		{
+			return new BreezeGlobals();
+		});
+
+		/* Settings */
+		$container->settings = $container->asShared(function ($c)
+		{
+			return new BreezeSettings();
+		});
+
+		/* Text */
+		$container->text = $container->asShared(function ($c)
+		{
+			return new BreezeText();
+		});
+
+		/* Query */
+		$container->query = $container->asShared(function ($c)
+		{
+			return new BreezeQuery($c->settings, $c->globals, $c->text);
+		});
 
 		$actions = array(
 			'breezeajax' => array('BreezeAjax' , 'call'),
