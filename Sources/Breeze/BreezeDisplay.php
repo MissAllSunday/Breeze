@@ -49,7 +49,6 @@ class BreezeDisplay
 
 	function __construct($params, $type)
 	{
-		$this->type = $type;
 		$this->tools = Breeze::tools();
 		$this->text = Breeze::text();
 	}
@@ -61,6 +60,8 @@ class BreezeDisplay
 
 		else
 			$this->params = $params;
+
+		$this->type = $type;
 
 		/* The visitor's permissions */
 		$this->permissions = array(
