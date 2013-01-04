@@ -38,15 +38,16 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-class BreezeTools extends Breeze
+class BreezeTools
 {
-	function __construct()
+	function __construct($settings, $text)
 	{
-		$this->text = $this->text();
-		$this->bSettings = $this->settings();
-		$this->_data = $this->sGlobals('request');
-	}
+		$this->text = $text;
+		$this->settings = $settings;
 
+		/* Get globals */
+		$this->_data = new BreezeGlobals('request');
+	}
 
 	/* @todo move this to the buffer hook, I don't trust $context['html_headers'] anymore */
 	public function headers($type = 'profile')
@@ -104,8 +105,8 @@ class BreezeTools extends Breeze
 		}
 
 		/* Does the admin wants to add more actions? */
-		if ($this->bSettings->enable('allowedActions'))
-			parent::$_allowedActions = array_merge(parent::$_allowedActions, explode(',', $this->bSettings->getSetting('allowedActions')));
+		if ($this->settings->enable('allowedActions'))
+			parent::$_allowedActions = array_merge(parent::$_allowedActions, explode(',', $this->settings->getSetting('allowedActions')));
 
 		/* Stuff for the notifications, don't show this if we aren't on a specified action */
 		if ($type == 'noti' && empty($user_info['is_guest']) && (in_array($this->_data->getValue('action'), parent::$_allowedActions) || $this->_data->getValue('action') == false))
