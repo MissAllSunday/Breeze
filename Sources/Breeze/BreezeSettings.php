@@ -42,17 +42,21 @@ class BreezeSettings
 {
 	private static $_instance;
 	protected $_settings = array();
-	private $_pattern = 'BreezeMod_';
+	private $_pattern;
 
-
-	private function __construct(){}
-
-	public static function getInstance()
+	public function __construct()
 	{
-		if (!self::$_instance)
-			self::$_instance = new self();
+		$this->_pattern = Breeze::$name .'_';
+		$this->doExtract();
+	}
 
-		return self::$_instance;
+	public function doExtract()
+	{
+		global $modSettings;
+
+		foreach ($modSettings as $key => $value)
+			if (strstr($key, $this->_pattern) != false)
+				$this->_settings[$key] = $modSettings[$key];
 	}
 
 	public function extract()
@@ -79,7 +83,7 @@ class BreezeSettings
 	public function getSetting($var)
 	{
 		if (empty($this->_settings))
-			$this->extract();
+			$this->doExtract();
 
 		if (!empty($this->_settings[$this->_pattern . $var]))
 			return $this->_settings[$this->_pattern . $var];

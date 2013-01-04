@@ -40,26 +40,24 @@ if (!defined('SMF'))
 
 class BreezeText
 {
-	private static $_instance;
 	protected $_text = array();
-	private $_pattern = 'Breeze_';
-	private function __construct(){}
+	private $_pattern;
 
-	public static function getInstance()
+	public function __construct()
 	{
-		if (!self::$_instance)
-			self::$_instance = new self();
-
-		return self::$_instance;
+		$this->_pattern = Breeze::$name .'_';
+		$this->doExtract();
 	}
 
-	public function extract()
+	public function doExtract()
 	{
 		global $txt;
 
 		loadLanguage(Breeze::$name);
 
-		$this->_text = $txt;
+		foreach ($txt as $key => $value)
+			if (strstr($key, $this->_pattern) != false)
+				$this->_text[$key] = $txt[$key];
 	}
 
 	/**
@@ -75,7 +73,7 @@ class BreezeText
 			return false;
 
 		if (empty($this->_text))
-			$this->extract();
+			$this->doExtract();
 
 		if (!empty($this->_text[$this->_pattern . $var]))
 			return $this->_text[$this->_pattern . $var];
