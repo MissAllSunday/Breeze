@@ -49,11 +49,11 @@ Tested on PHP 5.3 and 5.4, IE8, Opera and Firefox.
 
 [size=12pt][color=purple]This mod uses the following scripts[/color][/size]
 
--Srinivas Tamada's notification plugin http://www.9lessons.info/2011/10/jquery-notification-plugin.html
--Nadia Alramli's confirm plugin http://nadiana.com/jquery-confirm-plugin
--Facebox https://github.com/defunkt/facebox
--zRSSFeeds http://www.zazar.net/developers/jquery/zrssfeed/
--Brandon Aaron's Live query plugin http://brandonaaron.net/code/livequery/docs
+- [Facebox] (https://github.com/defunkt/facebox)
+- [zRSSFeeds] (http://www.zazar.net/developers/jquery/zrssfeed/)
+- [Brandon Aaron Live query plugin] (http://brandonaaron.net/code/livequery/docs)
+- [needim noty jquery plugin] (http://needim.github.com/noty/)
+- [Paul Irish infinite-scroll] (https://github.com/paulirish/infinite-scroll)
 
 
 [size=12pt][color=purple]Changelog[/color][/size]
