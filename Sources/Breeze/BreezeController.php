@@ -99,6 +99,12 @@ class BreezeController
 			return new BreezeNotifications($c->settings, $c->text, $c->tools, $c->query);
 		});
 
+		/* Buddy */
+		$this->container->buddy = $this->container->asShared(function ($c)
+		{
+			return new BreezeBuddy($c->settings,$c->query, $c->notifications);
+		});
+
 		/* Mention */
 		$this->container->mention = $this->container->asShared(function ($c)
 		{
