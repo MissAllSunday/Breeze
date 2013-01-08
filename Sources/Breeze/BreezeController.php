@@ -78,31 +78,31 @@ class BreezeController
 		/* Query */
 		$this->container->query = $this->container->asShared(function ($c)
 		{
-			return new BreezeQuery($c->settings, $c->tools, $c->parser, $c->text);
+			return new BreezeQuery($c->settings, $c->text, $c->tools, $c->parser);
 		});
 
 		/* Form */
 		$this->container->form = $this->container->asShared(function ($c)
 		{
-			return new BreezeQuery($c->text);
+			return new BreezeForm($c->text);
 		});
 
 		/* Notifications */
 		$this->container->notifications = $this->container->asShared(function ($c)
 		{
-			return new BreezeNotifications($c->settings, $c->query, $c->tools, $c->text);
+			return new BreezeNotifications($c->settings, $c->text, $c->tools, $c->query);
 		});
 
 		/* Parser */
 		$this->container->parser = $this->container->asShared(function ($c)
 		{
-			return new BreezeParser($c->notifications, $c->settings, $c->tools);
+			return new BreezeParser($c->settings, $c->tools, $c->notifications);
 		});
 
 		/* Mention */
 		$this->container->mention = $this->container->asShared(function ($c)
 		{
-			return new BreezeMention($c->notifications, $c->settings);
+			return new BreezeMention($c->settings, $c->notifications);
 		});
 	}
 

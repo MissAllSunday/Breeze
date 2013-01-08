@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-class BreezeAjax extends Breeze
+class BreezeAjax
 {
 	/**
 	 * BreezeAjax::__construct()
@@ -48,7 +48,7 @@ class BreezeAjax extends Breeze
 	public function __construct()
 	{
 		/* Needed to show error strings */
-		loadLanguage(parent::$name);
+		loadLanguage(Breeze::$name);
 
 		/* Load all the things we need */
 		$this->_query = $this->query();

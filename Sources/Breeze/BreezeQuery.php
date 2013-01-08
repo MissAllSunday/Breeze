@@ -153,7 +153,7 @@ class BreezeQuery extends Breeze
 			$type = array($type);
 
 		foreach ($type as $t)
-			cache_put_data(parent::$name .'-'. $t, '');
+			cache_put_data(Breeze::$name .'-'. $t, '');
 	}
 
 	/**
@@ -306,7 +306,7 @@ class BreezeQuery extends Breeze
 	protected function status()
 	{
 		/* Use the cache please... */
-		if (($this->_status = cache_get_data(parent::$name .'-' . $this->_tables['status']['name'],
+		if (($this->_status = cache_get_data(Breeze::$name .'-' . $this->_tables['status']['name'],
 			120)) == null)
 		{
 			/* Load all the status, set a limit if things get complicated */
@@ -332,7 +332,7 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data(parent::$name .'-' . $this->_tables['status']['name'], $this->_status, 120);
+			cache_put_data(Breeze::$name .'-' . $this->_tables['status']['name'], $this->_status, 120);
 		}
 
 		return $this->_status;
@@ -364,7 +364,7 @@ class BreezeQuery extends Breeze
 		$status_poster_id = array();
 
 		/* Use the cache please... */
-		if (($return = cache_get_data(parent::$name .'-' . $id, 120)) == null)
+		if (($return = cache_get_data(Breeze::$name .'-' . $id, 120)) == null)
 		{
 			/* Big query... */
 			$result = $this->_smcFunc['db_query']('', '
@@ -420,15 +420,15 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data(parent::$name .'-' . $id, $return, 120);
+			cache_put_data(Breeze::$name .'-' . $id, $return, 120);
 		}
 
 		/* Load the user's data */
 		if (!empty($usersArray))
-			cache_put_data(parent::$name .'-users'. $id, $usersArray, 120);
+			cache_put_data(Breeze::$name .'-users'. $id, $usersArray, 120);
 
 		else
-			$usersArray = cache_get_data(parent::$name .'-users'. $id, 120);
+			$usersArray = cache_get_data(Breeze::$name .'-users'. $id, 120);
 
 		/* Load only if there is something to load */
 		if (!empty($usersArray))
@@ -488,7 +488,7 @@ class BreezeQuery extends Breeze
 	protected function comments()
 	{
 		/* Use the cache please... */
-		if (($this->_comments = cache_get_data(parent::$name .'-' . $this->_tables['comments']['name'],
+		if (($this->_comments = cache_get_data(Breeze::$name .'-' . $this->_tables['comments']['name'],
 			120)) == null)
 		{
 			/* Load all the comments, set a limit if things get complicated */
@@ -518,7 +518,7 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data(parent::$name .'-' . $this->_tables['comments']['name'], $this->_comments,
+			cache_put_data(Breeze::$name .'-' . $this->_tables['comments']['name'], $this->_comments,
 				120);
 		}
 
@@ -681,7 +681,7 @@ class BreezeQuery extends Breeze
 	protected function members()
 	{
 		/* Use the cache please... */
-		if (($this->_members = cache_get_data(parent::$name .'-' . $this->_tables['members']['name'], 120)) == null)
+		if (($this->_members = cache_get_data(Breeze::$name .'-' . $this->_tables['members']['name'], 120)) == null)
 		{
 			/* Load all the settings from all users */
 			$result = $this->_smcFunc['db_query']('', '
@@ -696,7 +696,7 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data(parent::$name .'-' . $this->_tables['members']['name'], $this->_members, 120);
+			cache_put_data(Breeze::$name .'-' . $this->_tables['members']['name'], $this->_members, 120);
 		}
 
 		return $this->_members;
@@ -742,7 +742,7 @@ class BreezeQuery extends Breeze
 	protected function noti()
 	{
 		/* Use the cache please... */
-		if (($this->_noti = cache_get_data(parent::$name .'-' . $this->_tables['noti']['name'],
+		if (($this->_noti = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'],
 			120)) == null)
 		{
 			$result = $this->_smcFunc['db_query']('', '
@@ -766,7 +766,7 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data(parent::$name .'-' . $this->_tables['noti']['name'], $this->_noti, 120);
+			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'], $this->_noti, 120);
 		}
 
 		return $this->_noti;
@@ -862,7 +862,7 @@ class BreezeQuery extends Breeze
 		$generic_user_to = array();
 
 		/* Use the cache please... */
-		if (($return = cache_get_data(parent::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, 120)) == null)
+		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, 120)) == null)
 		{
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
@@ -896,7 +896,7 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data(parent::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, $return, 120);
+			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, $return, 120);
 		}
 
 		/* Load the user's data */
