@@ -62,10 +62,10 @@ abstract class BreezeDispatcher
 			$controller_name = $actions[$sglobals->getValue('action')][0];
 
 			if ($sglobals->getValue('action') == 'buddy')
-				$controller = new $controller_name($dependency->get('notifications'), $dependency->get('settings'), $dependency->get('query'));
+				$controller = new $controller_name($dependency->get('settings'), $dependency->get('query'), $dependency->get('notifications'));
 
 			if ($sglobals->getValue('action') == 'breezeajax')
-				$controller = new $controller_name($dependency->get('query'), $dependency->get('parser'), $dependency->get('mention'), $dependency->get('settings'), $dependency->get('notifications'), $dependency->get('text'));
+				$controller = new $controller_name($dependency->get('settings'), $dependency->get('text'), $dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'));
 
 			/* Lets call the method */
 			$method_name = $actions[$sglobals->getValue('action')][1];
