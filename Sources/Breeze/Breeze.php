@@ -139,7 +139,10 @@ class Breeze
 	{
 		global $context, $settings, $user_info, $breezeController;
 		static $header_done = false;
-		
+
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
 		$text = $breezeController->get('text');
 		$settings = $breezeController->get('settings');
 
@@ -200,7 +203,7 @@ class Breeze
 		if ($type == 'noti' && empty($user_info['is_guest']) && (in_array($this->_data->getValue('action'), Breeze::$_allowedActions) || $this->_data->getValue('action') == false))
 		{
 			$notifications = $breezeController->get('notifications');
-			
+
 
 			$context['insert_after_template'] .= '
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
