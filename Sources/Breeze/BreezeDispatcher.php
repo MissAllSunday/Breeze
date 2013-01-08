@@ -49,61 +49,7 @@ abstract class BreezeDispatcher
 
 	static function dispatch()
 	{
-		$container = new BreezeContainer();
-
-		/* Globals */
-		$container->globals = $container->asShared(function ($c)
-		{
-			return new BreezeGlobals();
-		});
-
-		/* Settings */
-		$container->settings = $container->asShared(function ($c)
-		{
-			return new BreezeSettings();
-		});
-
-		/* Text */
-		$container->text = $container->asShared(function ($c)
-		{
-			return new BreezeText();
-		});
-
-		/* Tools */
-		$container->tools = $container->asShared(function ($c)
-		{
-			return new BreezeTools($c->settings, $c->text);
-		});
-
-		/* Query */
-		$container->query = $container->asShared(function ($c)
-		{
-			return new BreezeQuery($c->settings, $c->text, $c->tools, $c->parser);
-		});
-
-		/* Form */
-		$container->form = $container->asShared(function ($c)
-		{
-			return new BreezeQuery($c->text);
-		});
-
-		/* Notifications */
-		$container->notifications = $container->asShared(function ($c)
-		{
-			return new BreezeNotifications($c->settings, $c->text, $c->tools, $c->query);
-		});
-
-		/* Parser */
-		$container->parser = $container->asShared(function ($c)
-		{
-			return new BreezParser($c->settings, $c->tools, $c->notifications);
-		});
-
-		/* Mention */
-		$container->mention = $container->asShared(function ($c)
-		{
-			return new BreezeMention($c->settings, $c->notifications);
-		});
+		$controller = new BreezeController();
 
 		$actions = array(
 			'breezeajax' => array('BreezeAjax' , 'call'),
@@ -116,10 +62,10 @@ abstract class BreezeDispatcher
 			$controller_name = $actions[$sglobals->getValue('action')][0];
 
 			if ($sglobals->getValue('action') == 'buddy')
-				$controller = new $controller_name($container->notifications, $container->settings, $container->query);
+				$controller = new $controller_name($controller->notifications(), $controller->settings(), $controller->query());
 
 			if ($sglobals->getValue('action') == 'breezeajax')
-				$controller = new $controller_name($container->query, $container->parser, $container->mention, $container->settings, $container->notifications, $container->text);
+				$controller = new $controller_name($controller->query(), $controller->parser(), $controller->mention(), $controller->settings(), $controller->notifications(), $controller->text());
 
 			/* Lets call the method */
 			$method_name = $actions[$sglobals->getValue('action')][1];
