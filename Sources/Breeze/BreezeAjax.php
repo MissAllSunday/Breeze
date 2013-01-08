@@ -45,18 +45,18 @@ class BreezeAjax
 	 *
 	 * @return
 	 */
-	public function __construct()
+	public function __construct($settings, $text, $query, $notifications, $parser, $mention)
 	{
 		/* Needed to show error strings */
 		loadLanguage(Breeze::$name);
 
 		/* Load all the things we need */
-		$this->_query = $this->query();
-		$this->_parser = $this->parser();
-		$this->_mention = $this->mention();
-		$this->_settings = $this->settings();
-		$this->_notifications = $this->notifications();
-		$this->_text = $this->text();
+		$this->_query = $query;
+		$this->_parser = $parser;
+		$this->_mention = $mention;
+		$this->_settings = $settings;
+		$this->_notifications = $notifications;
+		$this->_text = $text;
 
 		/* Set a temp var, by default lets pretend everything went wrong... */
 		$this->_response = '';
