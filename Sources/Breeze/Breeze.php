@@ -118,61 +118,6 @@ class Breeze
 	}
 
 	/**
-	 * Breeze::query()
-	 *
-	 * @see BreezeQuery
-	 * @return object Access to BreezeQuery
-	 */
-	public function query()
-	{
-		return new BreezeQuery();
-	}
-
-	/**
-	 * Breeze::tools()
-	 *
-	 * @see BreezeTools
-	 * @return object Access to BreezeTools
-	 */
-	public function tools()
-	{
-		return new BreezeTools();
-	}
-
-	/**
-	 * Breeze::settings()
-	 *
-	 * @see BreezeSettings
-	 * @return object Access to BreezeSettings
-	 */
-	public function settings()
-	{
-		return BreezeSettings::getInstance();
-	}
-
-	/**
-	 * Breeze::text()
-	 *
-	 * @see BreezeText
-	 * @return object Access to BreezeText
-	 */
-	public function text()
-	{
-		return BreezeText::getInstance();
-	}
-
-	/**
-	 * Breeze::buddies()
-	 *
-	 * @see BreezeBuddy
-	 * @return object access to BreezeBuddy
-	 */
-	public function buddies()
-	{
-		return new BreezeBuddy();
-	}
-
-	/**
 	 * Breeze::sGlobals()
 	 *
 	 * @param string $var Either post, request or get
@@ -184,39 +129,6 @@ class Breeze
 	}
 
 	/**
-	 * Breeze::parser()
-	 *
-	 * @see BreezeParser
-	 * @return object Access to BreezeParser
-	 */
-	public function parser()
-	{
-		return new BreezeParser();
-	}
-
-	/**
-	 * Breeze::mention()
-	 *
-	 * @see BreezeMention
-	 * @return object Access to BreezeMention
-	 */
-	public function mention()
-	{
-		return new BreezeMention();
-	}
-
-	/**
-	 * Breeze::notifications()
-	 *
-	 * @see BreezeNotifications
-	 * @return object Access to BreezeNotifications
-	 */
-	public function notifications()
-	{
-		return new BreezeNotifications();
-	}
-
-	/**
 	 * Breeze::headersHook()
 	 *
 	 * Static method used to embed the JavaScript and other bits of code on every page inside SMF, used by the SMF hook system
@@ -225,8 +137,12 @@ class Breeze
 	 */
 	public static function headersHook()
 	{
-		$controller = new BreezeController();
-		$headers = $controller->get('tools');
+		global $breezeController;
+
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
+		$headers = $breezeController->get('tools');
 		$headers->headers('noti');
 	}
 
@@ -271,11 +187,11 @@ class Breeze
 	 */
 	public static function profile(&$profile_areas)
 	{
-		global $user_info, $context;
+		global $user_info, $context, $breezeController;
 
 		/* Settings are required here */
-		$gSettings = self::settings();
-		$text = self::text();
+		$gSettings = $breezeController->get('settings');
+		$text = $breezeController->get('text');
 
 		/* Replace the summary page only if the mod is enable */
 		if ($gSettings->enable('admin_settings_enable'))
@@ -367,11 +283,11 @@ class Breeze
 	 */
 	public static function menu(&$menu_buttons)
 	{
-		global $scripturl, $context;
+		global $scripturl, $context, $breezeController;
 
 		/* Settings are required here */
-		$gSettings = $this->settings();
-		$text = self::text();
+		$gSettings = $breezeController->get('settings');
+		$text = $breezeController->get('text');
 
 		/* Does the General Wall is enable? */
 		if ($gSettings->enable('admin_settings_enablegeneralwall') == false)
@@ -462,7 +378,9 @@ class Breeze
 	 */
 	public static function admin(&$admin_menu)
 	{
-		$text = self::text();
+		global $breezeController;
+
+		$text = $breezeController->get('text');
 
 		$admin_menu['breezeadmin'] = array(
 			'title' => $text->getText('admin_settings_admin_panel'),
