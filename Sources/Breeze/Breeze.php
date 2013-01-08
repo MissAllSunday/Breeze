@@ -217,19 +217,6 @@ class Breeze
 	}
 
 	/**
-	 * Breeze::headers()
-	 *
-	 * Method used to embed the JavaScript and other bits of code on every page inside SMF
-	 * @see BreezeTools
-	 * @return void
-	 */
-	public function headers()
-	{
-		$headers = new BreezeTools();
-		$headers->headers('noti');
-	}
-
-	/**
 	 * Breeze::headersHook()
 	 *
 	 * Static method used to embed the JavaScript and other bits of code on every page inside SMF, used by the SMF hook system
