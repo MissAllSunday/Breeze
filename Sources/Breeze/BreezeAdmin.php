@@ -59,7 +59,7 @@ if (!defined('SMF'))
 
 		/* Headers */
 		$headers = Breeze::tools();
-		$headers->headers('admin');
+		$headers->headersHook('admin');
 	}
 
 	function Breeze_Admin_Settings()
