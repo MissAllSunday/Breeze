@@ -59,18 +59,11 @@ class BreezeSettings
 				$this->_settings[$key] = $modSettings[$key];
 	}
 
-	public function extract()
-	{
-		global $modSettings;
-
-		$this->_settings = $modSettings;
-	}
-
 	/* Return true if the value do exist, false otherwise, O RLY? */
 	public function enable($var)
 	{
 		if (empty($this->_settings))
-			$this->extract();
+			$this->doExtract();
 
 		if (!empty($this->_settings[$this->_pattern . $var]))
 			return true;

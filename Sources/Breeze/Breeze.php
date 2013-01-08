@@ -237,9 +237,113 @@ class Breeze
 	 * @return void
 	 */
 	public static function headersHook()
+	/* @todo move this to the buffer hook, I don't trust $context['html_headers'] anymore */
+	public function headers($type = 'profile')
 	{
-		$headers = new BreezeTools();
-		$headers->headers('noti');
+		global $context, $settings, $user_info, $txt, $modSettings;
+		static $header_done = false;
+
+		loadLanguage(Breeze::$name);
+
+		if (!$header_done)
+		{
+			$context['html_headers'] .= '
+			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery.min.js"%3E%3C/script%3E\'))</script>
+			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />';
+
+			$header_done = true;
+		}
+
+		/* Define some variables for the ajax stuff */
+		if ($type == 'profile')
+		{
+			$context['html_headers'] .= '
+			<script type="text/javascript"><!-- // --><![CDATA[
+				var breeze_error_message = "'. $txt['error_message'] .'";
+				var breeze_success_message = "'. $txt['success_message'] .'";
+				var breeze_empty_message = "'. $txt['empty_message'] .'";
+				var breeze_error_delete = "'. $txt['error_message'] .'";
+				var breeze_success_delete = "'. $txt['success_delete'] .'";
+				var breeze_confirm_delete = "'. $txt['confirm_delete'] .'";
+				var breeze_confirm_yes = "'. $txt['confirm_yes'] .'";
+				var breeze_confirm_cancel = "'. $txt['confirm_cancel'] .'";
+				var breeze_already_deleted = "'. $txt['already_deleted'] .'";
+				var breeze_cannot_postStatus = "'. $txt['cannot_postStatus'] .'";
+				var breeze_cannot_postComments = "'. $txt['cannot_postComments'] .'";
+				var breeze_page_loading = "'. $txt['page_loading'] .'";
+				var breeze_page_loading_end = "'. $txt['page_loading_end'] .'";
+		// ]]></script>';
+
+			/* Let's load jquery from CDN only if it hasn't been loaded yet */
+			$context['html_headers'] .= '
+			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/center.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topCenter.js"></script>';
+
+			/* Does the user wants to use infinite scroll? */
+			if (!empty($context['member']['options']['Breeze_infinite_scroll']))
+				$context['html_headers'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.infinitescroll.min.js" type="text/javascript"></script>';
+
+			/* Load breeze.js untill everyone else is loaded */
+			$context['html_headers'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
+		}
+
+		/* Does the admin wants to add more actions? */
+		if (!empty($modSettings['Breeze_allowedActions']))
+			parent::$_allowedActions = array_merge(parent::$_allowedActions, explode(',', $modSettings['Breeze_allowedActions']));
+
+		/* Stuff for the notifications, don't show this if we aren't on a specified action */
+		if ($type == 'noti' && empty($user_info['is_guest']) && (in_array($this->_data->getValue('action'), parent::$_allowedActions) || $this->_data->getValue('action') == false))
+		{
+			/* Singleton to the rescue! */
+			$notifications = BreezeNotifications::getInstance();
+
+			$context['insert_after_template'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
+			<script type="text/javascript"><!-- // --><![CDATA[
+				var breeze_error_message = "'. $txt['error_message'] .'";
+				var breeze_noti_markasread = "'. $txt['noti_markasread'] .'";
+				var breeze_noti_markasread_after = "'. $txt['noti_markasread_after'] .'";
+				var breeze_noti_delete = "'. $txt['general_delete'] .'";
+				var breeze_noti_delete_after = "'. $txt['noti_delete_after'] .'";
+				var breeze_noti_close = "'. $txt['noti_close'] .'";
+				var breeze_noti_cancel = "'. $txt['confirm_cancel'] .'";
+			// ]]></script>';
+
+			$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
+		}
+
+		/* Admin bits */
+		if($type == 'admin')
+			$context['html_headers'] .= '
+			<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.js" type="text/javascript"></script>
+			<script type="text/javascript">
+var breeze_feed_error_message = "'. $txt['feed_error_message') .'";
+
+$(document).ready(function ()
+{
+	$(\'#breezelive\').rssfeed(\''. Breeze::$supportStite .'\',
+	{
+		limit: 5,
+		header: false,
+		date: true,
+		linktarget: \'_blank\',
+		errormsg: breeze_feed_error_message
+   });
+});
+ </script>
+';
+
 	}
 
 	/**
