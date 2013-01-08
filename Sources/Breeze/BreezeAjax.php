@@ -70,7 +70,7 @@ class BreezeAjax
 	public function call()
 	{
 		/* Handling the subactions */
-		$sglobals = $this->sGlobals('get');
+		$sglobals = Breeze::sGlobals('get');
 
 		/* Safety first, hardcode the actions */
 		$subActions = array(
@@ -109,7 +109,7 @@ class BreezeAjax
 		checkSession('post', '', false);
 
 		/* Get the data */
-		$this->_data = $this->sGlobals('request');
+		$this->_data = Breeze::sGlobals('request');
 
 		/* Sorry, try to play nice next time */
 		if (!$this->_data->getValue('owner_id') || !$this->_data->getValue('poster_id') || !$this->_data->getValue('content'))
@@ -256,7 +256,7 @@ class BreezeAjax
 		checkSession('post', '', false);
 
 		/* Get the global vars */
-		$this->_data = $this->sGlobals('request');
+		$this->_data = Breeze::sGlobals('request');
 
 		/* Get the data */
 		if ($this->_data->getValue('id') != false)
@@ -351,7 +351,7 @@ class BreezeAjax
 		checkSession('post', '', false);
 
 		/* Get the global vars */
-		$this->_data = $this->sGlobals('request');
+		$this->_data = Breeze::sGlobals('request');
 
 		/* Get the data */
 		$noti = $this->_data->getValue('content');

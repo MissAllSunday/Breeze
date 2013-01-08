@@ -367,12 +367,12 @@ class BreezeUser
 
 	protected static function checkPermissions()
 	{
-		global $context, $memberContext, $user_info;
+		global $context, $memberContext, $user_info, $breezeController;
 
 		loadtemplate(Breeze::$name);
 
-		$settings = Breeze::settings();
-		$query = Breeze::query();
+		$settings = $breezeController->get('settings');
+		$query = $breezeController->get('query');
 
 		/* Another page already checked the permissions and if the mod is enable, but better be safe... */
 		if (!$settings->enable('admin_settings_enable'))

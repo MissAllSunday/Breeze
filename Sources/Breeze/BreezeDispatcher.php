@@ -50,6 +50,7 @@ abstract class BreezeDispatcher
 	static function dispatch()
 	{
 		$dependency = new BreezeController();
+		$sglobals = Breeze::sGlobals('get');
 
 		$actions = array(
 			'breezeajax' => array('BreezeAjax' , 'call'),

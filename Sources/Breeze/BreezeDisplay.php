@@ -49,8 +49,10 @@ class BreezeDisplay
 
 	function __construct($params, $type)
 	{
-		$this->tools = Breeze::tools();
-		$this->text = Breeze::text();
+		global $breezeController;
+
+		$this->tools = $breezeController->get('tools');
+		$this->text = $breezeController->get('text');
 	}
 
 	public function create($params, $type)
