@@ -59,7 +59,7 @@ if (!defined('SMF'))
 		$context['sub_template'] = 'admin_home';
 
 		/* Headers */
-		$headers->headersHook('admin');
+		$headers->headers('admin');
 	}
 
 	function Breeze_Admin_Settings()

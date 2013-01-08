@@ -49,7 +49,7 @@ abstract class BreezeDispatcher
 
 	static function dispatch()
 	{
-		$controller = new BreezeController();
+		$dependency = new BreezeController();
 
 		$actions = array(
 			'breezeajax' => array('BreezeAjax' , 'call'),
@@ -62,10 +62,10 @@ abstract class BreezeDispatcher
 			$controller_name = $actions[$sglobals->getValue('action')][0];
 
 			if ($sglobals->getValue('action') == 'buddy')
-				$controller = new $controller_name($controller->notifications(), $controller->settings(), $controller->query());
+				$controller = new $controller_name($dependency->get('notifications'), $dependency->get('settings'), $dependency->get('query'));
 
 			if ($sglobals->getValue('action') == 'breezeajax')
-				$controller = new $controller_name($controller->query(), $controller->parser(), $controller->mention(), $controller->settings(), $controller->notifications(), $controller->text());
+				$controller = new $controller_name($dependency->get('query'), $dependency->get('parser'), $dependency->get('mention'), $dependency->get('settings'), $dependency->get('notifications'), $dependency->get('text'));
 
 			/* Lets call the method */
 			$method_name = $actions[$sglobals->getValue('action')][1];
