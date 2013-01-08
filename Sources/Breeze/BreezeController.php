@@ -42,12 +42,12 @@ class BreezeController
 {
 	public function __construct()
 	{
-		$this->container = new BreezeContainer();
+		$this->container-> = new BreezeContainer();
 	}
 
 	public function globals()
 	{
-		return $this->containerglobals = $this->containerasShared(function ($c)
+		return $this->container->globals = $this->container->asShared(function ($c)
 		{
 			return new BreezeGlobals();
 		});
@@ -55,7 +55,7 @@ class BreezeController
 
 	public function settings()
 	{
-		return $this->containersettings = $this->containerasShared(function ($c)
+		return $this->container->settings = $this->container->asShared(function ($c)
 		{
 			return new BreezeSettings();
 		});
@@ -63,7 +63,7 @@ class BreezeController
 
 	public function text()
 	{
-		return $this->containertext = $this->containerasShared(function ($c)
+		return $this->container->text = $this->container->asShared(function ($c)
 		{
 			return new BreezeText();
 		});
@@ -71,7 +71,7 @@ class BreezeController
 
 	public function tools()
 	{
-		return $this->containertools = $this->containerasShared(function ($c)
+		return $this->container->tools = $this->container->asShared(function ($c)
 		{
 			return new BreezeTools($c->settings, $c->text);
 		});
@@ -79,7 +79,7 @@ class BreezeController
 
 	public function query()
 	{
-		return $this->containerquery = $this->containerasShared(function ($c)
+		return $this->container->query = $this->container->asShared(function ($c)
 		{
 			return new BreezeQuery($c->settings, $c->text, $c->tools, $c->parser);
 		});
@@ -87,7 +87,7 @@ class BreezeController
 
 	public function form()
 	{
-		return $this->containerform = $this->containerasShared(function ($c)
+		return $this->container->form = $this->container->asShared(function ($c)
 		{
 			return new BreezeForm($c->text);
 		});
@@ -95,7 +95,7 @@ class BreezeController
 
 	public function notifications()
 	{
-		return $this->containernotifications = $this->containerasShared(function ($c)
+		return $this->container->notifications = $this->container->asShared(function ($c)
 		{
 			return new BreezeNotifications($c->settings, $c->text, $c->tools, $c->query);
 		});
@@ -103,7 +103,7 @@ class BreezeController
 
 	public function parser()
 	{
-		return $this->containerparser = $this->containerasShared(function ($c)
+		return $this->container->parser = $this->container->asShared(function ($c)
 		{
 			return new BreezParser($c->settings, $c->tools, $c->notifications);
 		});
@@ -111,7 +111,7 @@ class BreezeController
 
 	public function mention()
 	{
-		return $this->containerparser = $this->containerasShared(function ($c)
+		return $this->container->parser = $this->container->asShared(function ($c)
 		{
 			return new BreezeMention($c->settings, $c->notifications);
 		});
