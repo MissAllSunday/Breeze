@@ -40,80 +40,74 @@ if (!defined('SMF'))
 
 class BreezeController
 {
+	protected $dependencies = array();
+
 	public function __construct()
 	{
-		$this->container-> = new BreezeContainer();
+		$this->container = new BreezeContainer();
+
+		$this->set();
 	}
 
-	public function globals()
+	protected function set()
 	{
-		return $this->container->globals = $this->container->asShared(function ($c)
+		/* Globals */
+		$this->container->globals = $this->container->asShared(function ($c)
 		{
 			return new BreezeGlobals();
 		});
-	}
 
-	public function settings()
-	{
-		return $this->container->settings = $this->container->asShared(function ($c)
+		/* Settings */
+		$this->container->settings = $this->container->asShared(function ($c)
 		{
 			return new BreezeSettings();
 		});
-	}
 
-	public function text()
-	{
-		return $this->container->text = $this->container->asShared(function ($c)
+		/* Text */
+		$this->container->text = $this->container->asShared(function ($c)
 		{
 			return new BreezeText();
 		});
-	}
 
-	public function tools()
-	{
-		return $this->container->tools = $this->container->asShared(function ($c)
+		/* Tools */
+		$this->container->tools = $this->container->asShared(function ($c)
 		{
 			return new BreezeTools($c->settings, $c->text);
 		});
-	}
 
-	public function query()
-	{
-		return $this->container->query = $this->container->asShared(function ($c)
+		/* Query */
+		$this->container->query = $this->container->asShared(function ($c)
 		{
-			return new BreezeQuery($c->settings, $c->text, $c->tools, $c->parser);
+			return new BreezeQuery($c->settings, $c->tools, $c->parser, $c->text);
+		});
+
+		/* Form */
+		$this->container->form = $this->container->asShared(function ($c)
+		{
+			return new BreezeQuery($c->text);
+		});
+
+		/* Notifications */
+		$this->container->notifications = $this->container->asShared(function ($c)
+		{
+			return new BreezeNotifications($c->settings, $c->query, $c->tools, $c->text);
+		});
+
+		/* Parser */
+		$this->container->parser = $this->container->asShared(function ($c)
+		{
+			return new BreezParser($c->notifications, $c->settings, $c->tools);
+		});
+
+		/* Mention */
+		$this->container->mention = $this->container->asShared(function ($c)
+		{
+			return new BreezeMention($c->notifications, $c->settings);
 		});
 	}
 
-	public function form()
+	public function get($var)
 	{
-		return $this->container->form = $this->container->asShared(function ($c)
-		{
-			return new BreezeForm($c->text);
-		});
-	}
-
-	public function notifications()
-	{
-		return $this->container->notifications = $this->container->asShared(function ($c)
-		{
-			return new BreezeNotifications($c->settings, $c->text, $c->tools, $c->query);
-		});
-	}
-
-	public function parser()
-	{
-		return $this->container->parser = $this->container->asShared(function ($c)
-		{
-			return new BreezParser($c->settings, $c->tools, $c->notifications);
-		});
-	}
-
-	public function mention()
-	{
-		return $this->container->parser = $this->container->asShared(function ($c)
-		{
-			return new BreezeMention($c->settings, $c->notifications);
-		});
+		return $this->container->$var;
 	}
 }

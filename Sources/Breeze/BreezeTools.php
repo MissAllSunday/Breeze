@@ -50,7 +50,7 @@ class BreezeTools
 	}
 
 	/* @todo move this to the buffer hook, I don't trust $context['html_headers'] anymore */
-	public function headers($type = 'profile')
+	public function headers($type = 'noti')
 	{
 		global $context, $settings, $user_info;
 		static $header_done = false;
@@ -106,10 +106,10 @@ class BreezeTools
 
 		/* Does the admin wants to add more actions? */
 		if ($this->settings->enable('allowedActions'))
-			parent::$_allowedActions = array_merge(parent::$_allowedActions, explode(',', $this->settings->getSetting('allowedActions')));
+			Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $this->settings->getSetting('allowedActions')));
 
 		/* Stuff for the notifications, don't show this if we aren't on a specified action */
-		if ($type == 'noti' && empty($user_info['is_guest']) && (in_array($this->_data->getValue('action'), parent::$_allowedActions) || $this->_data->getValue('action') == false))
+		if ($type == 'noti' && empty($user_info['is_guest']) && (in_array($this->_data->getValue('action'), Breeze::$_allowedActions) || $this->_data->getValue('action') == false))
 		{
 			$notifications = $this->notifications();
 

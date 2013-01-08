@@ -225,7 +225,8 @@ class Breeze
 	 */
 	public static function headersHook()
 	{
-		$headers = new BreezeTools();
+		$controller = new BreezeController();
+		$headers = $controller->get('tools');
 		$headers->headers('noti');
 	}
 
