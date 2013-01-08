@@ -135,7 +135,7 @@ class Breeze
 	 * @see BreezeTools
 	 * @return void
 	 */
-	public static function headersHook()
+	public static function headersHook($type = 'noti')
 	{
 		global $context, $settings, $user_info, $breezeController;
 		static $header_done = false;
@@ -144,7 +144,8 @@ class Breeze
 			$breezeController = new BreezeController();
 
 		$text = $breezeController->get('text');
-		$settings = $breezeController->get('settings');
+		$breezeSettings = $breezeController->get('settings');
+		$breezeGlobals = Breeze::sGlobals('get');
 
 		if (!$header_done)
 		{
@@ -196,11 +197,11 @@ class Breeze
 		}
 
 		/* Does the admin wants to add more actions? */
-		if ($settings->enable('allowedActions'))
-			Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $settings->getSetting('allowedActions')));
+		if ($breezeSettings->enable('allowedActions'))
+			Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $breezeSettings->getSetting('allowedActions')));
 
 		/* Stuff for the notifications, don't show this if we aren't on a specified action */
-		if ($type == 'noti' && empty($user_info['is_guest']) && (in_array($this->_data->getValue('action'), Breeze::$_allowedActions) || $this->_data->getValue('action') == false))
+		if ($type == 'noti' && empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
 		{
 			$notifications = $breezeController->get('notifications');
 

@@ -96,7 +96,7 @@ class BreezeController
 		/* Parser */
 		$this->container->parser = $this->container->asShared(function ($c)
 		{
-			return new BreezParser($c->notifications, $c->settings, $c->tools);
+			return new BreezeParser($c->notifications, $c->settings, $c->tools);
 		});
 
 		/* Mention */
