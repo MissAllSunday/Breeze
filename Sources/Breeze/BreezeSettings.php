@@ -40,7 +40,6 @@ if (!defined('SMF'))
 
 class BreezeSettings
 {
-	private static $_instance;
 	protected $_settings = array();
 	private $_pattern;
 
@@ -55,7 +54,7 @@ class BreezeSettings
 		global $modSettings;
 
 		foreach ($modSettings as $key => $value)
-			if (strstr($key, $this->_pattern) != false)
+			if (substr($key, 0, 6) == Breeze::$name)
 				$this->_settings[$key] = $modSettings[$key];
 	}
 
@@ -83,5 +82,13 @@ class BreezeSettings
 
 		else
 			return false;
+	}
+
+	public function getAll()
+	{
+		if (empty($this->_settings))
+			$this->doExtract();
+
+			return $this->_settings;
 	}
 }

@@ -291,6 +291,9 @@ $(document).ready(function ()
 	{
 		global $user_info, $context, $breezeController;
 
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
 		/* Settings are required here */
 		$gSettings = $breezeController->get('settings');
 		$text = $breezeController->get('text');

@@ -56,7 +56,7 @@ class BreezeText
 		loadLanguage(Breeze::$name);
 
 		foreach ($txt as $key => $value)
-			if (strstr($key, $this->_pattern) != false)
+			if (substr($key, 0, 6) == Breeze::$name)
 				$this->_text[$key] = $txt[$key];
 	}
 

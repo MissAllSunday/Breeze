@@ -75,6 +75,12 @@ class BreezeController
 			return new BreezeTools($c->settings, $c->text);
 		});
 
+		/* Parser */
+		$this->container->parser = $this->container->asShared(function ($c)
+		{
+			return new BreezeParser($c->settings, $c->tools);
+		});
+
 		/* Query */
 		$this->container->query = $this->container->asShared(function ($c)
 		{
@@ -91,12 +97,6 @@ class BreezeController
 		$this->container->notifications = $this->container->asShared(function ($c)
 		{
 			return new BreezeNotifications($c->settings, $c->text, $c->tools, $c->query);
-		});
-
-		/* Parser */
-		$this->container->parser = $this->container->asShared(function ($c)
-		{
-			return new BreezeParser($c->settings, $c->tools, $c->notifications);
 		});
 
 		/* Mention */

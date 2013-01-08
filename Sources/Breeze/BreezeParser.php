@@ -43,9 +43,8 @@ class BreezeParser
 {
 	private $notification;
 
-	function __construct($settings, $tools, $notifications)
+	function __construct($settings, $tools)
 	{
-		$this->notification = $notifications;
 		$this->settings = $settings;
 		$this->tools = $tools;
 
