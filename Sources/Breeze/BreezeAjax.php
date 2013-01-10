@@ -179,7 +179,7 @@ class BreezeAjax
 
 		checkSession('post', '', false);
 
-		$this->_data = $this->sGlobals('post');
+		$this->_data = Breeze::sGlobals('request');
 
 		/* Sorry, try to play nice next time */
 		if (!$this->_data->getValue('status_owner_id') || !$this->_data->getValue('status_owner_id') || !$this->_data->getValue('poster_comment_id') || !$this->_data->getValue('profile_owner_id') || !$this->_data->getValue('content'))
@@ -313,7 +313,7 @@ class BreezeAjax
 		checkSession('post', '', false);
 
 		/* Get the global vars */
-		$this->_data = $this->sGlobals('post');
+		$this->_data = Breeze::sGlobals('request');
 
 		/* Get the data */
 		$noti = $this->_data->getValue('content');
