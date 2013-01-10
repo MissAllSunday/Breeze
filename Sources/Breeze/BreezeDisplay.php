@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breezedisplay
+ * BreezeDisplay
  *
  * The purpose of this file is to create proper html based on the type and the info it got.
  * @package Breeze mod
@@ -40,8 +40,8 @@ if (!defined('SMF'))
 
 class BreezeDisplay
 {
-	private $returnArray;
-	private $params;
+	private $returnArray = array();
+	private $params = array();
 	private $UserInfo;
 	private $tools;
 	private $parse;
@@ -53,15 +53,8 @@ class BreezeDisplay
 
 		$this->tools = $breezeController->get('tools');
 		$this->text = $breezeController->get('text');
-	}
 
-	public function create($params, $type)
-	{
-		if (empty($params))
-			$this->returnArray = '';
-
-		else
-			$this->params = $params;
+		$this->params = $params;
 
 		$this->type = $type;
 

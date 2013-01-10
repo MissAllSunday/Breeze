@@ -92,7 +92,7 @@ class BreezeAjax
 
 		/* Sorry pal... */
 		else
-		fatal_lang_error ($this->_text->getText('error_no_valid_action'));
+			fatal_lang_error ($this->_text->getText('error_no_valid_action'));
 	}
 
 	/**

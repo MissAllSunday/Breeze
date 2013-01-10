@@ -42,7 +42,6 @@ class BreezeMention
 {
 	protected $_notification;
 	protected $_settings;
-	protected $_tools;
 	protected $_string;
 	protected $_regex;
 	protected $_query;
