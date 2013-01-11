@@ -59,7 +59,7 @@ class BreezeMention
 	/*
 	 * Converts raw data to a preformatted text
 	 *
-	 * Gets the raw string and converts it to a formatted string: {id,real_name,display_name} to be saved by the database.
+	 * Gets the raw string and converts it to a formatted string: {id,real_name,display_name} to be saved to the database.
 	 * @see BreezeAjax class
 	 * @access protected
 	 * @return string the formatted string
@@ -125,10 +125,10 @@ class BreezeMention
 					$find[] = '{'. $name['raw_name'] .'}';
 					$replace[] = '{'. $name['id_member'] .','. $name['member_name'] .','. $name['real_name'] .'}';
 				}
-			}
 
-			/* Finally do the replacement */
-			$this->_string = str_replace($find, $replace, $this->_string);
+				/* Finally do the replacement */
+				$this->_string = str_replace($find, $replace, $this->_string);
+			}
 		}
 
 		return $this->_string;
