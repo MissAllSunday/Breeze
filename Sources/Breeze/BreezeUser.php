@@ -36,7 +36,7 @@
  */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
 	/* A bunch of ugly, very ugly wrapper functions because static methods cannot be callable with a string by SMF meh... */
 	function Breeze_Wrapper_Wall(){BreezeUser::wall();}
@@ -52,22 +52,25 @@ class BreezeUser
 
 	public static function wall()
 	{
-		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info;
+		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info, $breezeController;
 
 		loadtemplate(Breeze::$name);
 
 		/* Check if this user is welcomed here */
 		self::checkPermissions();
 
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
-		$settings = Breeze::settings();
-		$query = Breeze::query();
-		$tools = Breeze::tools();
+		$settings = $breezeController->get('settings');
+		$query = $breezeController->get('query');
+		$tools = $breezeController->get('tools');
 		$globals = Breeze::sGlobals('get');
-		$text = Breeze::text();
+		$text = $breezeController->get('text');
 
 		/* Display all the JavaScript bits */
-		$tools->headers('profile');
+		Breeze::headersHook('profile');
 
 		/* Default values */
 		$status = array();
@@ -106,7 +109,7 @@ class BreezeUser
 	/* Shows a form for users to set up their wall as needed. */
 	public static function settings()
 	{
-		global $context, $memID;
+		global $context, $memID, $breezeController;
 
 		Breeze::load('Profile-Modify');
 		loadtemplate(Breeze::$name);
@@ -115,7 +118,10 @@ class BreezeUser
 		if (allowedTo(array('profile_extra_own', 'profile_extra_any')))
 			loadCustomFields($memID, 'theme');
 
-		$context['Breeze']['text'] = Breeze::text();
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
+		$context['Breeze']['text'] = $breezeController->get('text');
 		$context['sub_template'] = 'member_options';
 		$context['page_desc'] = $context['Breeze']['text']->getText('user_settings_enable_desc');
 
@@ -125,7 +131,7 @@ class BreezeUser
 		);
 
 		/* Create the form */
-		$form = new BreezeForm();
+		$form = $breezeController->get('form');
 
 		$form->addCheckBox(
 			'Breeze_enable_wall',
@@ -187,15 +193,19 @@ class BreezeUser
 
 	public static function notifications()
 	{
-		global $context, $user_info, $scripturl, $options;
+		global $context, $user_info, $scripturl, $options, $breezeController;
 
 		loadtemplate(Breeze::$name);
 
-		/* Load all we need */
-		$query = Breeze::query();
-		$text = Breeze::text();
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
+		/* We kinda need all this stuff, dont' ask why, just nod your head... */
+		$query = $breezeController->get('query');
+		$text = $breezeController->get('text');
 		$globals = Breeze::sGlobals('request');
-		$context['Breeze']['noti'] = $this->notifications()->getToUser($context['member']['id'], true);
+		$notifications = $breezeController->get('notifications');
+		$context['Breeze']['noti'] = $notifications->getToUser($context['member']['id'], true);
 
 		print_r($context['Breeze']['noti']);
 		/* Set all the page stuff */
@@ -208,7 +218,7 @@ class BreezeUser
 	/* Show the buddy request list */
 	public static function buddyRequest()
 	{
-		global $context, $user_info, $scripturl, $memberContext;
+		global $context, $user_info, $scripturl, $memberContext, $breezeController;
 
 		/* Do a quick check to ensure people aren't getting here illegally! */
 		if (!$context['user']['is_owner'])
@@ -216,11 +226,14 @@ class BreezeUser
 
 		loadtemplate('BreezeBuddy');
 
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
 		/* Load all we need */
-		$buddies = Breeze::buddies();
-		$text = Breeze::text();
+		$buddies = $breezeController->get('buddy');
+		$text = $breezeController->get('text');
 		$globals = Breeze::sGlobals('request');
-		$query = Breeze::query();
+		$query = $breezeController->get('query');
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'Breeze_buddy_list';
@@ -283,7 +296,6 @@ class BreezeUser
 			/* Destroy the notification */
 			$query->DeleteNotification($globals->getRaw('confirm'));
 
-
 			/* Redirect back to the profile buddy request page*/
 			redirectexit('action=profile;area=breezebuddies;inner=1;u=' . $user_info['id']);
 		}
@@ -302,11 +314,15 @@ class BreezeUser
 	/* Show a message to let the user know their buddy request must be approved */
 	public static function buddyMessageSend()
 	{
-		global $context, $user_info, $scripturl;
+		global $context, $scripturl, $breezeController;
 
 		loadtemplate('BreezeBuddy');
 
-		$text = Breeze::text();
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
+		/* Load all we need */
+		$text = $breezeController->get('text');
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'Breeze_request_buddy_message_send';
@@ -317,7 +333,7 @@ class BreezeUser
 	/* Show a single status with all it's comments */
 	public static function single()
 	{
-		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info;
+		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info, $breezeController;
 
 		loadtemplate(Breeze::$name);
 
@@ -325,14 +341,14 @@ class BreezeUser
 		self::checkPermissions();
 
 		/* Load what we need */
-		$text = Breeze::text();
+		$text = $breezeController->get('text');
 		$globals = Breeze::sGlobals('get');
-		$settings = Breeze::settings();
-		$query = Breeze::query();
-		$tools = Breeze::tools();
+		$settings = $breezeController->get('settings');
+		$query = $breezeController->get('query');
+		$tools = $breezeController->get('tools');
 
 		/* Display all the JavaScript bits */
-		$tools->headers('profile');
+		Breeze::headersHook('profile');
 
 		/* We are gonna load the status from the user array so we kinda need both the user ID and a status ID */
 		if (!$globals->validate('u') || !$globals->validate('bid'))
@@ -352,12 +368,12 @@ class BreezeUser
 
 	protected static function checkPermissions()
 	{
-		global $context, $memberContext, $user_info;
+		global $context, $memberContext, $user_info, $breezeController;
 
 		loadtemplate(Breeze::$name);
 
-		$settings = Breeze::settings();
-		$query = Breeze::query();
+		$settings = $breezeController->get('settings');
+		$query = $breezeController->get('query');
 
 		/* Another page already checked the permissions and if the mod is enable, but better be safe... */
 		if (!$settings->enable('admin_settings_enable'))

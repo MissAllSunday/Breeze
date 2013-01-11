@@ -36,7 +36,7 @@
 */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
 class BreezeQuery extends Breeze
 {
@@ -58,12 +58,15 @@ class BreezeQuery extends Breeze
 	 * Creates a multidimensional array with all the details about the tables used in Breeze
 	 * @return
 	 */
-	public function __construct()
+	public function __construct($settings, $text, $tools, $parser)
 	{
 		global $smcFunc;
 
-		/* Call the parent */
-		parent::__construct();
+		/* Set everything */
+		$this->settings = $settings;
+		$this->text = $text;
+		$this->tools = $tools;
+		$this->parser = $parser;
 
 		$this->_smcFunc = $smcFunc;
 
@@ -150,7 +153,7 @@ class BreezeQuery extends Breeze
 			$type = array($type);
 
 		foreach ($type as $t)
-			cache_put_data(parent::$name .'-'. $t, '');
+			cache_put_data(Breeze::$name .'-'. $t, '');
 	}
 
 	/**
@@ -303,18 +306,18 @@ class BreezeQuery extends Breeze
 	protected function status()
 	{
 		/* Use the cache please... */
-		if (($this->_status = cache_get_data(parent::$name .'-' . $this->_tables['status']['name'],
+		if (($this->_status = cache_get_data(Breeze::$name .'-' . $this->_tables['status']['name'],
 			120)) == null)
 		{
 			/* Load all the status, set a limit if things get complicated */
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT '. implode(',', $this->_tables['status']['columns']) .'
 				FROM {db_prefix}breeze_status
-				' . ($this->settings()->enable('admin_enable_limit') && $this->settings()->
+				' . ($this->settings->enable('admin_enable_limit') && $this->settings->
 				enable('admin_limit_timeframe') ? 'WHERE status_time >= {int:status_time}':'') .
 				'
 				ORDER BY status_time DESC
-				', array('status_time' => $this->settings()->getSetting('admin_limit_timeframe'), ));
+				', array('status_time' => $this->settings->getSetting('admin_limit_timeframe'), ));
 
 			/* Populate the array like a boss! */
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
@@ -322,14 +325,14 @@ class BreezeQuery extends Breeze
 					'id' => $row['status_id'],
 					'owner_id' => $row['status_owner_id'],
 					'poster_id' => $row['status_poster_id'],
-					'time' => $this->tools()->timeElapsed($row['status_time']),
-					'body' => $this->parser()->display($row['status_body']),
+					'time' => $this->tools->timeElapsed($row['status_time']),
+					'body' => $this->parser->display($row['status_body']),
 					);
 
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data(parent::$name .'-' . $this->_tables['status']['name'], $this->_status, 120);
+			cache_put_data(Breeze::$name .'-' . $this->_tables['status']['name'], $this->_status, 120);
 		}
 
 		return $this->_status;
@@ -361,7 +364,7 @@ class BreezeQuery extends Breeze
 		$status_poster_id = array();
 
 		/* Use the cache please... */
-		if (($return = cache_get_data(parent::$name .'-' . $id, 120)) == null)
+		if (($return = cache_get_data(Breeze::$name .'-' . $id, 120)) == null)
 		{
 			/* Big query... */
 			$result = $this->_smcFunc['db_query']('', '
@@ -369,11 +372,11 @@ class BreezeQuery extends Breeze
 				FROM {db_prefix}breeze_status AS s
 					LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
 				WHERE s.status_owner_id = {int:owner}
-				' . ($this->settings()->enable('admin_enable_limit') && $this->settings()->
+				' . ($this->settings->enable('admin_enable_limit') && $this->settings->
 				enable('admin_limit_timeframe') ? 'AND s.status_time >= {int:status_time}':'') .
 				'
 				ORDER BY s.status_time DESC
-				', array('status_time' => $this->settings()->getSetting('admin_limit_timeframe'),
+				', array('status_time' => $this->settings->getSetting('admin_limit_timeframe'),
 					'owner' => $id));
 
 			/* Populate the array like a big heavy boss! */
@@ -383,8 +386,8 @@ class BreezeQuery extends Breeze
 					'id' => $row['status_id'],
 					'owner_id' => $row['status_owner_id'],
 					'poster_id' => $row['status_poster_id'],
-					'time' => $this->tools()->timeElapsed($row['status_time']),
-					'body' => $this->parser()->display($row['status_body']),
+					'time' => $this->tools->timeElapsed($row['status_time']),
+					'body' => $this->parser->display($row['status_body']),
 					'comments' => array(),
 				);
 
@@ -397,8 +400,8 @@ class BreezeQuery extends Breeze
 						'status_owner_id' => $row['comments_status_owner_id'],
 						'poster_id' => $row['comments_poster_id'],
 						'profile_owner_id' => $row['comments_profile_owner_id'],
-						'time' => $this->tools()->timeElapsed($row['comments_time']),
-						'body' => $this->parser()->display($row['comments_body']),
+						'time' => $this->tools->timeElapsed($row['comments_time']),
+						'body' => $this->parser->display($row['comments_body']),
 					);
 
 					/* Merge them both */
@@ -417,19 +420,19 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data(parent::$name .'-' . $id, $return, 120);
+			cache_put_data(Breeze::$name .'-' . $id, $return, 120);
 		}
 
 		/* Load the user's data */
 		if (!empty($usersArray))
-			cache_put_data(parent::$name .'-users'. $id, $usersArray, 120);
+			cache_put_data(Breeze::$name .'-users'. $id, $usersArray, 120);
 
 		else
-			$usersArray = cache_get_data(parent::$name .'-users'. $id, 120);
+			$usersArray = cache_get_data(Breeze::$name .'-users'. $id, 120);
 
 		/* Load only if there is something to load */
 		if (!empty($usersArray))
-			$this->tools()->loadUserInfo(array_filter(array_unique($usersArray), 'strlen'));
+			$this->tools->loadUserInfo(array_filter(array_unique($usersArray), 'strlen'));
 
 		return $return;
 	}
@@ -485,18 +488,18 @@ class BreezeQuery extends Breeze
 	protected function comments()
 	{
 		/* Use the cache please... */
-		if (($this->_comments = cache_get_data(parent::$name .'-' . $this->_tables['comments']['name'],
+		if (($this->_comments = cache_get_data(Breeze::$name .'-' . $this->_tables['comments']['name'],
 			120)) == null)
 		{
 			/* Load all the comments, set a limit if things get complicated */
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT '. implode(',', $this->_tables['comments']['columns']) .'
 				FROM {db_prefix}breeze_comments
-				' . ($this->settings()->enable('admin_enable_limit') && $this->settings()->
+				' . ($this->settings->enable('admin_enable_limit') && $this->settings->
 				enable('admin_limit_timeframe') ? 'WHERE comments_time >= {int:comments_time}':
 				'') . '
 				ORDER BY comments_time ASC
-				', array('comments_time' => $this->settings()->getSetting('admin_limit_timeframe'), ));
+				', array('comments_time' => $this->settings->getSetting('admin_limit_timeframe'), ));
 
 			/* Populate the array like a comments boss! */
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
@@ -507,15 +510,15 @@ class BreezeQuery extends Breeze
 					'status_owner_id' => $row['comments_status_owner_id'],
 					'poster_id' => $row['comments_poster_id'],
 					'profile_owner_id' => $row['comments_profile_owner_id'],
-					'time' => $this->tools()->timeElapsed($row['comments_time']),
-					'body' => $this->parser()->display($row['comments_body']),
+					'time' => $this->tools->timeElapsed($row['comments_time']),
+					'body' => $this->parser->display($row['comments_body']),
 					);
 			}
 
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data(parent::$name .'-' . $this->_tables['comments']['name'], $this->_comments,
+			cache_put_data(Breeze::$name .'-' . $this->_tables['comments']['name'], $this->_comments,
 				120);
 		}
 
@@ -530,7 +533,7 @@ class BreezeQuery extends Breeze
 	 */
 	public function getComments()
 	{
-		return !empty($this->_comments) ? $this->_comments:$this->comments();
+		return !empty($this->_comments) ? $this->_comments : $this->comments();
 	}
 
 	/**
@@ -678,7 +681,7 @@ class BreezeQuery extends Breeze
 	protected function members()
 	{
 		/* Use the cache please... */
-		if (($this->_members = cache_get_data(parent::$name .'-' . $this->_tables['members']['name'], 120)) == null)
+		if (($this->_members = cache_get_data(Breeze::$name .'-' . $this->_tables['members']['name'], 120)) == null)
 		{
 			/* Load all the settings from all users */
 			$result = $this->_smcFunc['db_query']('', '
@@ -693,7 +696,7 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data(parent::$name .'-' . $this->_tables['members']['name'], $this->_members, 120);
+			cache_put_data(Breeze::$name .'-' . $this->_tables['members']['name'], $this->_members, 120);
 		}
 
 		return $this->_members;
@@ -739,7 +742,7 @@ class BreezeQuery extends Breeze
 	protected function noti()
 	{
 		/* Use the cache please... */
-		if (($this->_noti = cache_get_data(parent::$name .'-' . $this->_tables['noti']['name'],
+		if (($this->_noti = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'],
 			120)) == null)
 		{
 			$result = $this->_smcFunc['db_query']('', '
@@ -763,7 +766,7 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data(parent::$name .'-' . $this->_tables['noti']['name'], $this->_noti, 120);
+			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'], $this->_noti, 120);
 		}
 
 		return $this->_noti;
@@ -859,7 +862,7 @@ class BreezeQuery extends Breeze
 		$generic_user_to = array();
 
 		/* Use the cache please... */
-		if (($return = cache_get_data(parent::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, 120)) == null)
+		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, 120)) == null)
 		{
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
@@ -893,7 +896,7 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			/* Cache this beauty */
-			cache_put_data(parent::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, $return, 120);
+			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, $return, 120);
 		}
 
 		/* Load the user's data */
@@ -905,7 +908,7 @@ class BreezeQuery extends Breeze
 
 		/* Load only if there is something to load */
 		if (!empty($usersArray))
-			$this->tools()->loadUserInfo(array_filter(array_unique($usersArray), 'strlen'));
+			$this->tools->loadUserInfo(array_filter(array_unique($usersArray), 'strlen'));
 
 		return $return;
 	}
@@ -934,9 +937,6 @@ class BreezeQuery extends Breeze
 	{
 		global $context;
 
-		$text = $this->text();
-		$tools = Breeze::tools();
-
 		$return = $this->getReturn($this->_tables['noti']['name'], 'type', $type);
 		$returnUser = array();
 		$this->test = array();
@@ -952,10 +952,10 @@ class BreezeQuery extends Breeze
 						$returnUser[$r['id']] = $r;
 
 						/* load the user's link */
-						$this->tools()->loadUserInfo($r['user']);
+						$this->tools->loadUserInfo($r['user']);
 
 						/* build the message */
-						$returnUser[$r['id']]['content']['message'] = sprintf($text->getText('buddy_messagerequest_message'),
+						$returnUser[$r['id']]['content']['message'] = sprintf($this->text->getText('buddy_messagerequest_message'),
 							$context['Breeze']['user_info'][$r['user']]);
 					}
 

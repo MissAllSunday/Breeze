@@ -36,16 +36,17 @@
  */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
 	/* We can't call a static method from a string... let's do this the old way instead... */
 	function Breeze_Admin_Main()
 	{
-		global $scripturl, $context;
+		global $scripturl, $context, $breezeController;
 
 		loadtemplate('BreezeAdmin');
 
-		$text = Breeze::text();
+		$text = $breezeController->get('text');
+		$headers = $breezeController->get('tools');
 
 		/* Get the version */
 		$context['Breeze']['version'] = Breeze::$version;
@@ -58,16 +59,15 @@ if (!defined('SMF'))
 		$context['sub_template'] = 'admin_home';
 
 		/* Headers */
-		$headers = Breeze::tools();
-		$headers->headers('admin');
+		Breeze::headersHook('admin');
 	}
 
 	function Breeze_Admin_Settings()
 	{
-		global $scripturl, $context, $sourcedir;
+		global $scripturl, $context, $sourcedir, $breezeController;
 
 		/* Load stuff */
-		$text = Breeze::text();
+		$text = $breezeController->get('text');
 		$globals = Breeze::sGlobals('request');
 		$context['sub_template'] = 'show_settings';
 
@@ -97,16 +97,16 @@ if (!defined('SMF'))
 	/* Pay no attention to the girl behind the curtain */
 	function Breeze_Admin_Donate()
 	{
-		global $context, $scripturl;
+		global $context, $scripturl, $breezeController;
 
 		loadtemplate('BreezeAdmin');
 
 		/* Headers */
-		$headers = Breeze::tools();
-		$headers->headers('admin');
+		$headers = $breezeController->get('tools');
+		Breeze::headersHook('admin');
 
 		/* Text strings */
-		$text = Breeze::text();
+		$text = $breezeController->get('text');
 
 		/* Page stuff */
 		$context['page_title'] = $text->getText('admin_settings_donate_title');

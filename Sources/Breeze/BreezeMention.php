@@ -36,33 +36,30 @@
  */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
-class BreezeMention extends Breeze
+class BreezeMention
 {
 	protected $_notification;
 	protected $_settings;
-	protected $_tools;
 	protected $_string;
 	protected $_regex;
 	protected $_query;
 	protected $_searchNames = array();
 	protected $_queryNames = array();
 
-	function __construct()
+	function __construct($settings, $query, $notifications)
 	{
-		/* Call the parent */
-		parent::__construct();
-
 		$this->_regex = '~{([\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u';
-		$this->_notification = $this->notifications();
-		$this->_settings = $this->settings();
+		$this->_notification = $notifications;
+		$this->_settings = $settings;
+		$this->_query = $query;
 	}
 
 	/*
 	 * Converts raw data to a preformatted text
 	 *
-	 * Gets the raw string and converts it to a formatted string: {id,real_name,display_name} to be saved by the database.
+	 * Gets the raw string and converts it to a formatted string: {id,real_name,display_name} to be saved to the database.
 	 * @see BreezeAjax class
 	 * @access protected
 	 * @return string the formatted string
@@ -91,7 +88,7 @@ class BreezeMention extends Breeze
 				$this->_queryNames = array_slice($this->_queryNames, 0, 10);
 
 			/* Let's make a quick query here... */
-			$tempQuery = $this->query()->quickQuery(
+			$tempQuery = $this->_query->quickQuery(
 				array(
 					'table' => 'members',
 					'rows' => 'id_member, member_name, real_name',
@@ -128,10 +125,10 @@ class BreezeMention extends Breeze
 					$find[] = '{'. $name['raw_name'] .'}';
 					$replace[] = '{'. $name['id_member'] .','. $name['member_name'] .','. $name['real_name'] .'}';
 				}
-			}
 
-			/* Finally do the replacement */
-			$this->_string = str_replace($find, $replace, $this->_string);
+				/* Finally do the replacement */
+				$this->_string = str_replace($find, $replace, $this->_string);
+			}
 		}
 
 		return $this->_string;

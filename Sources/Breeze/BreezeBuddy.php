@@ -36,15 +36,15 @@
  */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
-class BreezeBuddy extends Breeze
+class BreezeBuddy
 {
-	public function  __construct()
+	public function  __construct($settings, $query, $notifications)
 	{
-		$this->notification = $this->notifications();
-		$this->settings = $this->settings();
-		$this->query = $this->query();
+		$this->notification = $notifications;
+		$this->settings = $settings;
+		$this->query = $query;
 	}
 
 	public function buddy()

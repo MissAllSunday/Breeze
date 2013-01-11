@@ -36,7 +36,7 @@
 */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
 abstract class BreezeDispatcher
 {
@@ -49,7 +49,7 @@ abstract class BreezeDispatcher
 
 	static function dispatch()
 	{
-		/* Cheating, shhh! */
+		$dependency = new BreezeController();
 		$sglobals = Breeze::sGlobals('get');
 
 		$actions = array(
@@ -61,7 +61,12 @@ abstract class BreezeDispatcher
 		if (in_array($sglobals->getValue('action'), array_keys($actions)))
 		{
 			$controller_name = $actions[$sglobals->getValue('action')][0];
-			$controller = new $controller_name();
+
+			if ($sglobals->getValue('action') == 'buddy')
+				$controller = new $controller_name($dependency->get('settings'), $dependency->get('query'), $dependency->get('notifications'));
+
+			if ($sglobals->getValue('action') == 'breezeajax')
+				$controller = new $controller_name($dependency->get('settings'), $dependency->get('text'), $dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'));
 
 			/* Lets call the method */
 			$method_name = $actions[$sglobals->getValue('action')][1];

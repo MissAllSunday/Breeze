@@ -36,27 +36,27 @@
 */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
-class BreezeAjax extends Breeze
+class BreezeAjax
 {
 	/**
 	 * BreezeAjax::__construct()
 	 *
 	 * @return
 	 */
-	public function __construct()
+	public function __construct($settings, $text, $query, $notifications, $parser, $mention)
 	{
 		/* Needed to show error strings */
-		loadLanguage(parent::$name);
+		loadLanguage(Breeze::$name);
 
 		/* Load all the things we need */
-		$this->_query = $this->query();
-		$this->_parser = $this->parser();
-		$this->_mention = $this->mention();
-		$this->_settings = $this->settings();
-		$this->_notifications = $this->notifications();
-		$this->_text = $this->text();
+		$this->_query = $query;
+		$this->_parser = $parser;
+		$this->_mention = $mention;
+		$this->_settings = $settings;
+		$this->_notifications = $notifications;
+		$this->_text = $text;
 
 		/* Set a temp var, by default lets pretend everything went wrong... */
 		$this->_response = '';
@@ -70,7 +70,7 @@ class BreezeAjax extends Breeze
 	public function call()
 	{
 		/* Handling the subactions */
-		$sglobals = $this->sGlobals('get');
+		$sglobals = Breeze::sGlobals('get');
 
 		/* Safety first, hardcode the actions */
 		$subActions = array(
@@ -92,7 +92,7 @@ class BreezeAjax extends Breeze
 
 		/* Sorry pal... */
 		else
-		fatal_lang_error ($this->_text->getText('error_no_valid_action'));
+			fatal_lang_error ($this->_text->getText('error_no_valid_action'));
 	}
 
 	/**
@@ -109,7 +109,7 @@ class BreezeAjax extends Breeze
 		checkSession('post', '', false);
 
 		/* Get the data */
-		$this->_data = $this->sGlobals('request');
+		$this->_data = Breeze::sGlobals('request');
 
 		/* Sorry, try to play nice next time */
 		if (!$this->_data->getValue('owner_id') || !$this->_data->getValue('poster_id') || !$this->_data->getValue('content'))
@@ -174,12 +174,12 @@ class BreezeAjax extends Breeze
 		global $scripturl;
 
 		/* You aren't allowed in here, let's show you a nice message error... */
-		if (!allowedTo('breeze_postComments'))
-			return false;
+		/* if (!allowedTo('breeze_postComments')) */
+			/* return false; */
 
 		checkSession('post', '', false);
 
-		$this->_data = $this->sGlobals('post');
+		$this->_data = Breeze::sGlobals('request');
 
 		/* Sorry, try to play nice next time */
 		if (!$this->_data->getValue('status_owner_id') || !$this->_data->getValue('status_owner_id') || !$this->_data->getValue('poster_comment_id') || !$this->_data->getValue('profile_owner_id') || !$this->_data->getValue('content'))
@@ -256,7 +256,7 @@ class BreezeAjax extends Breeze
 		checkSession('post', '', false);
 
 		/* Get the global vars */
-		$this->_data = $this->sGlobals('request');
+		$this->_data = Breeze::sGlobals('request');
 
 		/* Get the data */
 		if ($this->_data->getValue('id') != false)
@@ -313,7 +313,7 @@ class BreezeAjax extends Breeze
 		checkSession('post', '', false);
 
 		/* Get the global vars */
-		$this->_data = $this->sGlobals('post');
+		$this->_data = Breeze::sGlobals('request');
 
 		/* Get the data */
 		$noti = $this->_data->getValue('content');
@@ -351,7 +351,7 @@ class BreezeAjax extends Breeze
 		checkSession('post', '', false);
 
 		/* Get the global vars */
-		$this->_data = $this->sGlobals('request');
+		$this->_data = Breeze::sGlobals('request');
 
 		/* Get the data */
 		$noti = $this->_data->getValue('content');
