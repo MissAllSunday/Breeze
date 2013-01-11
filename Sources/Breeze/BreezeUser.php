@@ -345,6 +345,7 @@ class BreezeUser
 		$globals = Breeze::sGlobals('get');
 		$settings = $breezeController->get('settings');
 		$query = $breezeController->get('query');
+		$tools = $breezeController->get('tools');
 
 		/* Display all the JavaScript bits */
 		Breeze::headersHook('profile');
