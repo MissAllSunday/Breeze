@@ -54,7 +54,7 @@ class BreezeSettings
 		global $modSettings;
 
 		foreach ($modSettings as $key => $value)
-			if (substr($key, 0, 6) == Breeze::$name)
+			if (substr($key, 0, strlen(trim(Breeze::$name))) == Breeze::$name)
 				$this->_settings[$key] = $modSettings[$key];
 	}
 
