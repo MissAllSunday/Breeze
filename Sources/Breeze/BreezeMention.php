@@ -48,11 +48,12 @@ class BreezeMention
 	protected $_searchNames = array();
 	protected $_queryNames = array();
 
-	function __construct($settings, $notifications)
+	function __construct($settings, $query, $notifications)
 	{
 		$this->_regex = '~{([\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u';
 		$this->_notification = $notifications;
 		$this->_settings = $settings;
+		$this->_query = $query;
 	}
 
 	/*
@@ -87,7 +88,7 @@ class BreezeMention
 				$this->_queryNames = array_slice($this->_queryNames, 0, 10);
 
 			/* Let's make a quick query here... */
-			$tempQuery = $this->query->quickQuery(
+			$tempQuery = $this->_query->quickQuery(
 				array(
 					'table' => 'members',
 					'rows' => 'id_member, member_name, real_name',
