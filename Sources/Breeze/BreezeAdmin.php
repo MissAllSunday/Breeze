@@ -77,8 +77,9 @@ if (!defined('SMF'))
 		$config_vars = array(
 			array('check', Breeze::$txtpattern .'admin_settings_enable', 'subtext' => $text->getText('admin_settings_enable_sub')),
 			array('check', Breeze::$txtpattern .'admin_enable_limit', 'subtext' => $text->getText('admin_enable_limit_sub')),
-			array('text', Breeze::$txtpattern .'_allowedActions', 'size' => 56, 'subtext' => $text->getText('allowedActions_sub')),
-			array('select', Breeze::$txtpattern .'admin_limit_timeframe', array('hour' => $text->getText('user_settings_time_hour'), 'day' => $text->getText('user_settings_time_day'), 'week' => $text->getText('user_settings_time_week'), 'month' => $text->getText('user_settings_time_month'), 'year' => $text->getText('user_settings_time_year')), 'subtext' => $text->getText('admin_limit_timeframe_sub'))
+			array('select', Breeze::$txtpattern .'admin_limit_timeframe', array('hour' => $text->getText('user_settings_time_hour'), 'day' => $text->getText('user_settings_time_day'), 'week' => $text->getText('user_settings_time_week'), 'month' => $text->getText('user_settings_time_month'), 'year' => $text->getText('user_settings_time_year')), 'subtext' => $text->getText('admin_limit_timeframe_sub')),
+			array('text', Breeze::$txtpattern .'allowedActions', 'size' => 56, 'subtext' => $text->getText('allowedActions_sub')),
+			array('int', Breeze::$txtpattern .'admin_mention_limit', 'size' => 3, 'subtext' => $text->getText('admin_mention_limit_sub')),
 		);
 
 		$context['post_url'] = $scripturl . '?action=admin;area=breezesettings;save';
