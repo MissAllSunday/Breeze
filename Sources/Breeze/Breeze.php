@@ -223,6 +223,9 @@ class Breeze
 			// ]]></script>';
 
 			$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
+
+			if ($breezeGlobals->getValue('action') == 'profile' && $breezeSettings->enable('admin_settings_enable'))
+				$context['insert_after_template'] .= Breeze::who();
 		}
 
 		/* Admin bits */
@@ -245,7 +248,6 @@ $(document).ready(function ()
 });
  </script>
 ';
-
 	}
 
 	/**
@@ -470,7 +472,7 @@ $(document).ready(function ()
 	 */
 	public static function who()
 	{
-		return '<a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a>';
+		return '<div style="margin:auto; text-align:center"><a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a></div>';
 	}
 
 	/* It's all about Admin settings from now on */
