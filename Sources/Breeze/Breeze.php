@@ -153,6 +153,10 @@ class Breeze
 			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery.min.js"%3E%3C/script%3E\'))</script>
 			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />';
 
+			/* DUH! winning! */
+			if ($breezeGlobals->getValue('action') == 'profile' && $breezeSettings->enable('admin_settings_enable'))
+				$context['insert_after_template'] .= Breeze::who();
+
 			$header_done = true;
 		}
 
@@ -205,7 +209,6 @@ class Breeze
 		{
 			$notifications = $breezeController->get('notifications');
 
-
 			$context['insert_after_template'] .= '
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
@@ -223,9 +226,6 @@ class Breeze
 			// ]]></script>';
 
 			$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
-
-			if ($breezeGlobals->getValue('action') == 'profile' && $breezeSettings->enable('admin_settings_enable'))
-				$context['insert_after_template'] .= Breeze::who();
 		}
 
 		/* Admin bits */
@@ -248,6 +248,7 @@ $(document).ready(function ()
 });
  </script>
 ';
+
 	}
 
 	/**
