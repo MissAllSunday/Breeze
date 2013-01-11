@@ -174,8 +174,8 @@ class BreezeAjax
 		global $scripturl;
 
 		/* You aren't allowed in here, let's show you a nice message error... */
-		if (!allowedTo('breeze_postComments'))
-			return false;
+		/* if (!allowedTo('breeze_postComments')) */
+			/* return false; */
 
 		checkSession('post', '', false);
 
