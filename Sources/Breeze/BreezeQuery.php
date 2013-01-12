@@ -448,7 +448,69 @@ class BreezeQuery extends Breeze
 	 */
 	public function getStatusByID($id, $user)
 	{
-		return $this->getReturn('status', 'id', $id, true);
+		if (empty($id))
+			return false;
+
+		$comments_poster_id = array();
+		$status_owner_id = array();
+		$status_poster_id = array();
+
+		$result = $this->_smcFunc['db_query']('', '
+			SELECT s.status_id, s.status_owner_id, s.status_poster_id, s.status_time, s.status_body, c.comments_id, c.comments_status_id, c.comments_status_owner_id, comments_poster_id, c.comments_profile_owner_id, c.comments_time, c.comments_body
+			FROM {db_prefix}breeze_status AS s
+				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
+			WHERE s.status_id = {int:status_id}
+			ORDER BY s.status_time DESC',
+			array(
+				'status_id' => $id
+			)
+		);
+
+		/* Populate the array like a big heavy boss! */
+		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+		{
+			$return = array(
+				'id' => $row['status_id'],
+				'owner_id' => $row['status_owner_id'],
+				'poster_id' => $row['status_poster_id'],
+				'time' => $this->tools->timeElapsed($row['status_time']),
+				'body' => $this->parser->display($row['status_body']),
+				'comments' => empty($row['comments_status_id']) ? array() : array(
+					$row['comments_id'] => array(
+						'id' => $row['comments_id'],
+						'status_id' => $row['comments_status_id'],
+						'status_owner_id' => $row['comments_status_owner_id'],
+						'poster_id' => $row['comments_poster_id'],
+						'profile_owner_id' => $row['comments_profile_owner_id'],
+						'time' => $this->tools->timeElapsed($row['comments_time']),
+						'body' => $this->parser->display($row['comments_body']),
+					),
+				),
+			);
+
+			/* Get the users IDs */
+			$comments_poster_id[] = $row['comments_poster_id'];
+			$status_owner_id[] = $row['status_owner_id'];
+			$status_poster_id[] = $row['status_poster_id'];
+		}
+
+		/* Merge all the users arrays */
+		$usersArray = array_merge($comments_poster_id, $status_owner_id, $status_poster_id);
+
+		$this->_smcFunc['db_free_result']($result);
+
+		/* Load the user's data */
+		if (!empty($usersArray))
+			cache_put_data(Breeze::$name .'-users'. $id, $usersArray, 120);
+
+		else
+			$usersArray = cache_get_data(Breeze::$name .'-users'. $id, 120);
+
+		/* Load only if there is something to load */
+		if (!empty($usersArray))
+			$this->tools->loadUserInfo(array_filter(array_unique($usersArray), 'strlen'));
+
+		return $return;
 	}
 
 	/**
