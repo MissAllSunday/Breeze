@@ -84,6 +84,7 @@ class BreezeAjax
 		/* Does the subaction even exist? */
 		if (in_array($sglobals->getValue('sa'), array_keys($subActions)))
 		{
+			/* This is somehow ugly. */
 			$this->$subActions[$sglobals->getValue('sa')]();
 
 			/* Send the response back to the browser */
