@@ -303,6 +303,7 @@ $(document).ready(function ()
 
 		/* Replace the summary page only if the mod is enable */
 		if ($gSettings->enable('admin_settings_enable'))
+		{
 			$profile_areas['info']['areas']['summary'] = array(
 				'label' => $text->getText('general_wall'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
@@ -313,8 +314,7 @@ $(document).ready(function ()
 					),
 				);
 
-		/* If the mod is enable, then create another page for the default profile page */
-		if ($gSettings->enable('admin_settings_enable'))
+			/* If the mod is enable, then create another page for the default profile page */
 			$profile_areas['info']['areas']['static'] = array(
 				'label' => $text->getText('general_summary'),
 				'file' => 'Profile-View.php',
@@ -325,15 +325,13 @@ $(document).ready(function ()
 					),
 				);
 
-		/* Per user permissions */
-		if ($gSettings->enable('admin_settings_enable'))
+			/* Per user permissions */
 			$profile_areas['breeze_profile'] = array(
 				'title' => $text->getText('general_my_wall_settings'),
 				'areas' => array(),
 				);
 
-		/* User individual settings, show the button if the mod is enable and the user is the profile owner or the user has the permissions to edit other walls */
-		if ($gSettings->enable('admin_settings_enable'))
+			/* User individual settings, show the button if the mod is enable and the user is the profile owner or the user has the permissions to edit other walls */
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $text->getText('user_settings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
@@ -348,24 +346,22 @@ $(document).ready(function ()
 					),
 				);
 
-		/* Buddies page */
-		/* if $some_check here */
-		$profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
-			'label' => $text->getText('user_buddysettings_name'),
-			'file' => Breeze::$folder . 'BreezeUser.php',
-			'function' => 'Breeze_Wrapper_BuddyRequest',
-			'permission' => array('own' => 'profile_view_own', ),
-			);
+			/* Buddies page */
+			$profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
+				'label' => $text->getText('user_buddysettings_name'),
+				'file' => Breeze::$folder . 'BreezeUser.php',
+				'function' => 'Breeze_Wrapper_BuddyRequest',
+				'permission' => array('own' => 'profile_view_own', ),
+				);
 
-		/* Notifications admin page */
-		/* if $some_check here */
-		$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
-			'label' => $text->getText('user_notisettings_name'),
-			'file' => Breeze::$folder . 'BreezeUser.php',
-			'function' => 'Breeze_Wrapper_Notifications',
-			'permission' => array('own' => 'profile_view_own', ),
-			);
-
+			/* Notifications admin page */
+			$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
+				'label' => $text->getText('user_notisettings_name'),
+				'file' => Breeze::$folder . 'BreezeUser.php',
+				'function' => 'Breeze_Wrapper_Notifications',
+				'permission' => array('own' => 'profile_view_own', ),
+				);
+		}
 		/* Done with the hacking... */
 	}
 
