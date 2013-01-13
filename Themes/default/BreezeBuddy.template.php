@@ -119,13 +119,24 @@ function template_Breeze_buddy_list()
 							</td>
 						</tr>';
 			}
+
+		echo '</tbody>
+		</table><br />';
 	}
 
 	else
-		echo 'There is no buddy request for you';
-
-			echo '</tbody>
-			</table><br />';
+		echo '<p />
+<div class="windowbg">
+	<span class="topslice">
+		<span></span>
+	</span>
+	<div class="content flow_auto">
+		', $txt['Breeze_buddyrequest_noBuddies'] ,'
+	</div>
+	<span class="botslice">
+		<span></span>
+	</span>
+	</div>';
 
 		/* end of admin div */
 	echo '

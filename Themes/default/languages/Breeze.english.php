@@ -221,6 +221,7 @@ $txt['Breeze_buddy_messagerequest_message'] = '%1$s wants to be your buddy! <spa
 $txt['Breeze_buddy_title'] = 'Buddy List';
 $txt['Breeze_buddy_desc'] = 'From here you can confirm or decline your buddy request. If you confirm the buddy request, a pm on your behalf will be send to the user, if you decine the request the user will not receive anything';
 $txt['Breeze_buddyrequest_title'] = 'Buddy requests';
+$txt['Breeze_buddyrequest_noBuddies'] = 'You currently don\'t have any buddy requests';
 $txt['Breeze_buddyrequest_list_status'] = 'Status';
 $txt['Breeze_buddyrequest_list_message'] = 'Message';
 $txt['Breeze_buddyrequest_list_confirm'] = 'Confirm';
