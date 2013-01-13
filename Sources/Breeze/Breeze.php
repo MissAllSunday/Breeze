@@ -290,7 +290,7 @@ $(document).ready(function ()
 	 * @param array $profile_areas An array containing all possible tabs for the profile menu.
 	 * @return void
 	 */
-	public static function profile(&$profile_areas)
+	public static function profile($profile_areas)
 	{
 		global $user_info, $context, $breezeController;
 
@@ -373,7 +373,7 @@ $(document).ready(function ()
 	 * @link http://mattzuba.com
 	 * @return void
 	 */
-	public static function menu(&$menu_buttons)
+	public static function menu($menu_buttons)
 	{
 		global $scripturl, $context, $breezeController;
 
@@ -434,7 +434,7 @@ $(document).ready(function ()
 	 * @param array $actions An array containing all possible SMF actions.
 	 * @return void
 	 */
-	public static function actions(&$actions)
+	public static function actions($actions)
 	{
 		/* A whole new action just for some ajax calls... */
 		$actions['breezeajax'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
