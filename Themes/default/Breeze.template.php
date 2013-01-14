@@ -309,8 +309,43 @@ function template_user_notifications()
 		</div>
 		<div class="windowbg2">
 			<span class="topslice"><span></span></span>
-			<div class="content">
-				stuff here!
+			<div class="content">';
+
+	if (!empty($context['Breeze']['noti']))
+	{
+		echo '
+			<table class="table_grid" cellspacing="0" width="100%">
+				<thead>
+					<tr class="catbg">
+						<th scope="col" class="first_th">', $txt['Breeze_noti_message'] ,'</th>
+						<th scope="col">', $txt['Breeze_noti_markasread'] ,'</th>
+						<th scope="col" class="last_th">', $txt['Breeze_general_delete'] ,'</th>
+					</tr>
+				</thead>
+			<tbody>';
+
+		foreach($context['Breeze']['noti'] as $noti)
+		{
+			echo '
+						<tr class="windowbg" style="text-align: center">
+							<td>
+								<a href="javascript:void(0)" id="lol">Link</a>
+							</td>
+							<td>
+							lol
+							</td>
+							<td>
+							lolololololo
+							</td>
+						</tr>';
+		}
+
+		/* Close the table */
+		echo '</tbody>
+		</table><br />';
+	}
+
+		echo'
 			</div>
 			<span class="botslice">
 				<span></span>

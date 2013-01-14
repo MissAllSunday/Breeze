@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-class BreezeNotifications extends Breeze
+class BreezeNotifications
 {
 	protected $_settings = array();
 	protected $_params = array();

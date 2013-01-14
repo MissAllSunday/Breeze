@@ -197,6 +197,9 @@ class BreezeUser
 
 		loadtemplate(Breeze::$name);
 
+		/* Display all the JavaScript bits */
+		Breeze::headersHook('profile');
+
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
@@ -207,7 +210,6 @@ class BreezeUser
 		$notifications = $breezeController->get('notifications');
 		$context['Breeze']['noti'] = $notifications->getToUser($context['member']['id'], true);
 
-		print_r($context['Breeze']['noti']);
 		/* Set all the page stuff */
 		$context['sub_template'] = 'user_notifications';
 		$context['page_title'] = $text->getText('noti_title');
@@ -359,7 +361,7 @@ class BreezeUser
 
 		/* Set all the page stuff */
 		$context['sub_template'] = 'singleStatus';
-		$context['page_title'] = $text->getText('noti_title');
+		$context['page_title'] = $text->getText('singleStatus_pageTitle');
 		$context['canonical_url'] = $scripturl .'?action=profile;area=wallstatus';
 	}
 

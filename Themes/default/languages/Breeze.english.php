@@ -196,6 +196,7 @@ $txt['Breeze_page_loading_end'] = 'There are no more messages, go to top';
 
 /* Notifications */
 $txt['Breeze_noti_title'] = 'Notifications';
+$txt['Breeze_noti_message'] = 'Message';
 $txt['Breeze_noti_buddy_title'] = 'Buddy notification';
 $txt['Breeze_noti_buddy_message'] = 'The user %s has added you as his/her buddy, please confirm this request.';
 $txt['Breeze_noti_markasread'] = 'Mark as read';
