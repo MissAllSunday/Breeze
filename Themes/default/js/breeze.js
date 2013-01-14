@@ -396,3 +396,32 @@ jQuery(document).ready(function(){
 		animate      : true,
 	});
 });
+
+jQuery(document).ready(function(){
+	jQuery('#lol').click(function(){
+		jQuery.ajax(
+		{
+			type: \'POST\',
+			url: smf_scripturl + \'?action=breezeajax;sa=notimarkasread\',
+			data: ({content : noti_id, user : user}),
+			cache: false,
+			dataType: \'json\',
+			success: function(html)
+			{
+				if(html.type == \'error\')
+				{
+					noty({text: breeze_error_message, timeout: 3500, type: \'error\'});
+				}
+
+				else if(html.type == \'ok\')
+				{
+					noty({text: breeze_noti_markasread_after, timeout: 3500, type: \'success\'});
+				}
+			},
+			error: function (html)
+			{
+				noty({text: breeze_error_message, timeout: 3500, type: \'error\'});
+			},
+		});
+	});
+});
