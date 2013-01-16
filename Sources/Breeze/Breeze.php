@@ -150,7 +150,7 @@ class Breeze
 		if (!$header_done)
 		{
 			$context['html_headers'] .= '
-			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery.min.js"%3E%3C/script%3E\'))</script>
+			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.6.1.js"%3E%3C/script%3E\'))</script>
 			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />';
 
 			/* DUH! winning! */
