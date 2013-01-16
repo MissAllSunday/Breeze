@@ -397,7 +397,12 @@ jQuery(document).ready(function(){
 });
 
 jQuery(document).ready(function(){
-	jQuery('#lol').click(function(){
+	jQuery('.Breeze_markRead').click(function(){
+
+		var element = jQuery(this);
+		var noti_id = element.attr('id');
+		var user = breeze_current_user;
+
 		jQuery.ajax(
 		{
 			type: 'POST',

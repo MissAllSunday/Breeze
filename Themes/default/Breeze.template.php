@@ -329,7 +329,7 @@ function template_user_notifications()
 			echo '
 						<tr class="windowbg" style="text-align: center">
 							<td>
-								<a href="javascript:void(0)" id="'. $noti['id'] .'">Link</a>
+								<a href="javascript:void(0)" id="markread_'. $noti['id'] .'" class="Breeze_markRead">Link</a>
 							</td>
 							<td>
 							lol
