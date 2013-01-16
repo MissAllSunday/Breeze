@@ -400,7 +400,8 @@ jQuery(document).ready(function(){
 	jQuery('.Breeze_markRead').click(function(){
 
 		var element = jQuery(this);
-		var noti_id = element.attr('id');
+		var noti_id = element.attr('id').replace(/[^0-9]/gi, '');
+		noti_id = parseInt(noti_id, 10);
 		var user = breeze_current_user;
 
 		jQuery.ajax(
