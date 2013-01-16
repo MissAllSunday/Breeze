@@ -178,6 +178,7 @@ class Breeze
 				var breeze_cannot_postComments = "'. $text->getText('cannot_postComments') .'";
 				var breeze_page_loading = "'. $text->getText('page_loading') .'";
 				var breeze_page_loading_end = "'. $text->getText('page_loading_end') .'";
+				var breeze_current_user = "'. $user_info['id'] .'";
 		// ]]></script>';
 
 			/* Let's load jquery from CDN only if it hasn't been loaded yet */
