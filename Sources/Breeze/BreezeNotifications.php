@@ -429,9 +429,9 @@ class BreezeNotifications
 	 * @param mixed $id
 	 * @return
 	 */
-	public function delete($id)
+	public function delete($id, $user)
 	{
-		$this->_query->deleteNotification($id);
+		$this->_query->deleteNotification($id, $user);
 	}
 
 	/**
@@ -440,8 +440,8 @@ class BreezeNotifications
 	 * @param mixed $id
 	 * @return
 	 */
-	public function markAsRead($id)
+	public function markAsRead($id, $user)
 	{
-		$this->_query->markAsviewedNotification($id);
+		$this->_query->markAsviewedNotification($id, $user);
 	}
 }

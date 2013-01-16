@@ -876,10 +876,10 @@ class BreezeQuery extends Breeze
 	 * @param int $id The notification ID
 	 * @return
 	 */
-	public function markAsviewedNotification($id)
+	public function markAsviewedNotification($id, $user)
 	{
 		/* We don't need this no more */
-		$this->killCache($this->_tables['noti']['name']);
+		$this->killCache($this->_tables['noti']['name'] . '-'. $user);
 
 		/* Mark as viewed */
 		$this->_smcFunc['db_query']('', '
@@ -895,10 +895,10 @@ class BreezeQuery extends Breeze
 	 * @param int $id the notification ID
 	 * @return void
 	 */
-	public function deleteNotification($id)
+	public function deleteNotification($id, $user)
 	{
 		/* We don't need this no more */
-		$this->killCache($this->_tables['noti']['name']);
+		$this->killCache($this->_tables['noti']['name'] . '-'. $user);
 
 		/* Delete! */
 		$this->_smcFunc['db_query']('', '

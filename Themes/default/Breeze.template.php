@@ -327,17 +327,17 @@ function template_user_notifications()
 		foreach($context['Breeze']['noti'] as $noti)
 		{
 			echo '
-						<tr class="windowbg" style="text-align: center">
-							<td>
-								', $txt['Breeze_noti_message'] ,'
-							</td>
-							<td>
-							', !empty($noti['viewed']) ? $txt['Breeze_noti_markasread_viewed'] : '<a href="javascript:void(0)" id="markread_'. $noti['id'] .'" class="Breeze_markRead">'. $txt['Breeze_noti_markasread'] .'</a>' ,'
-							</td>
-							<td>
-							', $txt['Breeze_general_delete'] ,'
-							</td>
-						</tr>';
+				<tr class="windowbg" style="text-align: center">
+					<td>
+						', $txt['Breeze_noti_message'] ,'
+					</td>
+					<td>
+					', !empty($noti['viewed']) ? $txt['Breeze_noti_markasread_viewed'] : '<a href="javascript:void(0)" id="markread_'. $noti['id'] .'" class="Breeze_markRead">'. $txt['Breeze_noti_markasread'] .'</a>' ,'
+					</td>
+					<td>
+					', $txt['Breeze_general_delete'] ,'
+					</td>
+				</tr>';
 		}
 
 		/* Close the table */
