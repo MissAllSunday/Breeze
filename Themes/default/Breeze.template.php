@@ -335,7 +335,7 @@ function template_user_notifications()
 					', !empty($noti['viewed']) ? $txt['Breeze_noti_markasread_viewed'] : '<a href="javascript:void(0)" id="markread_'. $noti['id'] .'" class="Breeze_markRead">'. $txt['Breeze_noti_markasread'] .'</a>' ,'
 					</td>
 					<td>
-					', $txt['Breeze_general_delete'] ,'
+					<a href="javascript:void(0)" id="delete_'. $noti['id'] .'" class="Breeze_delete">', $txt['Breeze_general_delete'] ,'</a>
 					</td>
 				</tr>';
 		}
