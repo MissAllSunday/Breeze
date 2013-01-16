@@ -200,6 +200,7 @@ $txt['Breeze_noti_message'] = 'Message';
 $txt['Breeze_noti_buddy_title'] = 'Buddy notification';
 $txt['Breeze_noti_buddy_message'] = 'The user %s has added you as his/her buddy, please confirm this request.';
 $txt['Breeze_noti_markasread'] = 'Mark as read';
+$txt['Breeze_noti_markasread_viewed'] = 'Already marked as read';
 $txt['Breeze_noti_close'] = 'Close';
 $txt['Breeze_noti_markasread_after'] = 'You have successfully marked this notification as read';
 $txt['Breeze_noti_delete_after'] = 'You have successfully deleted this notification';
