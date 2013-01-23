@@ -58,7 +58,7 @@ class BreezeAjax
 		$this->_notifications = $notifications;
 		$this->_text = $text;
 
-		/* Set a temp var, by default lets pretend everything went wrong... */
+		/* Set an empty var, by default lets pretend everything went wrong... */
 		$this->_response = '';
 	}
 
@@ -103,9 +103,8 @@ class BreezeAjax
 	 */
 	public function post()
 	{
-		/* You aren't allowed in here, let's show you a nice message error... */
-		if (!$this->permissions('Status'))
-			return false;
+		/* You aren't allowed in here, let's show you a nice static page... */
+		$this->permissions('Status');
 
 		checkSession('post', '', false);
 
@@ -428,25 +427,14 @@ class BreezeAjax
 	{
 		global $context;
 
+		/* Check for the proper permission */
 		if ($type)
-		{
-			/* You aren't allowed in here, let's show you a nice message error... */
 			if (!allowedTo('breeze_post'. $type) || !$context['user']['is_owner'])
-				return false;
-
-			else
-				return true;
-		}
+				redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 		/* Just a generic "is owner" */
 		else
-		{
 			if(!$context['user']['is_owner'])
-				return false;
-
-			else
-				return true;
-		}
-
+				redirectexit('action=profile;area=static;u='.$context['member']['id']);
 	}
 }
