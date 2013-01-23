@@ -376,25 +376,28 @@
 	});
 
 /* infinitescroll  */
-jQuery(document).ready(function(){
-	jQuery.noConflict();
-	jQuery('#breeze_display_status').infinitescroll({
-		loading: {
-			finished: undefined,
-			msg: null,
-			msgText  : breeze_page_loading,
-			img   : smf_images_url + "/breeze/loading.gif",
-			finishedMsg     : breeze_page_loading_end,
-			selector: null,
-			speed: 'slow',
-			start: undefined
-		},
-		navSelector  : "#breeze_pagination",
-		nextSelector : "#breeze_next_link",
-		itemSelector : "li.windowbg",
-		animate      : true,
+if (typeof breeze_infinite_scroll == "string")
+{
+	jQuery(document).ready(function(){
+		jQuery.noConflict();
+		jQuery('#breeze_display_status').infinitescroll({
+			loading: {
+				finished: undefined,
+				msg: null,
+				msgText  : breeze_page_loading,
+				img   : smf_images_url + "/breeze/loading.gif",
+				finishedMsg     : breeze_page_loading_end,
+				selector: null,
+				speed: 'slow',
+				start: undefined
+			},
+			navSelector  : "#breeze_pagination",
+			nextSelector : "#breeze_next_link",
+			itemSelector : "li.windowbg",
+			animate      : true,
+		});
 	});
-});
+}
 
 /* Mark as read */
 jQuery(document).ready(function(){
