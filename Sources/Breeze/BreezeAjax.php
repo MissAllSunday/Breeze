@@ -428,11 +428,25 @@ class BreezeAjax
 	{
 		global $context;
 
-		/* You aren't allowed in here, let's show you a nice message error... */
-		if (!allowedTo('breeze_post'. $type) || !$context['user']['is_owner'])
-			return false;
+		if ($type)
+		{
+			/* You aren't allowed in here, let's show you a nice message error... */
+			if (!allowedTo('breeze_post'. $type) || !$context['user']['is_owner'])
+				return false;
 
+			else
+				return true;
+		}
+
+		/* Just a generic "is owner" */
 		else
-			return true;
+		{
+			if(!$context['user']['is_owner'])
+				return false;
+
+			else
+				return true;
+		}
+
 	}
 }
