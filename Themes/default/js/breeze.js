@@ -396,6 +396,7 @@ jQuery(document).ready(function(){
 	});
 });
 
+/* Mark as read */
 jQuery(document).ready(function(){
 	jQuery('.Breeze_markRead').click(function(){
 
@@ -408,6 +409,42 @@ jQuery(document).ready(function(){
 		{
 			type: 'POST',
 			url: smf_scripturl + '?action=breezeajax;sa=notimarkasread',
+			data: ({content : noti_id, user : user}),
+			cache: false,
+			dataType: 'json',
+			success: function(html)
+			{
+				if(html.type == 'error')
+				{
+					noty({text: breeze_error_message, timeout: 3500, type: 'error'});
+				}
+
+				else if(html.type == 'ok')
+				{
+					noty({text: breeze_noti_markasread_after, timeout: 3500, type: 'success'});
+				}
+			},
+			error: function (html)
+			{
+				noty({text: breeze_error_message, timeout: 3500, type: 'error'});
+			},
+		});
+	});
+});
+
+/* Delete a notification */
+jQuery(document).ready(function(){
+	jQuery('.Breeze_delete').click(function(){
+
+		var element = jQuery(this);
+		var noti_id = element.attr('id').replace(/[^0-9]/gi, '');
+		noti_id = parseInt(noti_id, 10);
+		var user = breeze_current_user;
+
+		jQuery.ajax(
+		{
+			type: 'POST',
+			url: smf_scripturl + '?action=breezeajax;sa=notidelete',
 			data: ({content : noti_id, user : user}),
 			cache: false,
 			dataType: 'json',
