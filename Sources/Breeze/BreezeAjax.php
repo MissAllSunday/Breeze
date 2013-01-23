@@ -104,7 +104,7 @@ class BreezeAjax
 	public function post()
 	{
 		/* You aren't allowed in here, let's show you a nice message error... */
-		if (!allowedTo('breeze_postStatus'))
+		if (!$this->permissions('Status'))
 			return false;
 
 		checkSession('post', '', false);
@@ -422,5 +422,17 @@ class BreezeAjax
 
 		/* Done */
 		obExit(false);
+	}
+
+	protected function permissions($type)
+	{
+		global $context;
+
+		/* You aren't allowed in here, let's show you a nice message error... */
+		if (!allowedTo('breeze_post'. $type) || !$context['user']['is_owner'])
+			return false;
+
+		else
+			return true;
 	}
 }
