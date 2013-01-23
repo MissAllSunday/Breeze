@@ -58,7 +58,7 @@ class BreezeAjax
 		$this->_notifications = $notifications;
 		$this->_text = $text;
 
-		/* Set a temp var, by default lets pretend everything went wrong... */
+		/* Set an empty var, by default lets pretend everything went wrong... */
 		$this->_response = '';
 	}
 
@@ -103,9 +103,8 @@ class BreezeAjax
 	 */
 	public function post()
 	{
-		/* You aren't allowed in here, let's show you a nice message error... */
-		if (!allowedTo('breeze_postStatus'))
-			return false;
+		/* You aren't allowed in here, let's show you a nice static page... */
+		$this->permissions('postStatus');
 
 		checkSession('post', '', false);
 
@@ -174,9 +173,8 @@ class BreezeAjax
 	{
 		global $scripturl;
 
-		/* You aren't allowed in here, let's show you a nice message error... */
-		/* if (!allowedTo('breeze_postComments')) */
-			/* return false; */
+		/* You aren't allowed in here, let's show you a nice static page... */
+		$this->permissions('postComments');
 
 		checkSession('post', '', false);
 
@@ -251,9 +249,6 @@ class BreezeAjax
 	 */
 	public function delete()
 	{
-		/* You aren't allowed in here, let's show you a nice message error... */
-		isAllowedTo('breeze_deleteStatus');
-
 		checkSession('post', '', false);
 
 		/* Get the global vars */
@@ -262,8 +257,11 @@ class BreezeAjax
 		/* Get the data */
 		if ($this->_data->getValue('id') != false)
 		{
+			/* You aren't allowed in here, let's show you a nice message error... */
+			$this->permissions('delete'. ucfirst($this->_data->getValue('type')));
+
 			$temp_id_exists = $this->_query->getSingleValue(
-				$this->_data->getValue('type') == 'status' ? 'status':'comments',
+				$this->_data->getValue('type') == 'status' ? 'status' : 'comments',
 				'id',
 				$this->_data->getValue('id')
 			);
@@ -313,6 +311,8 @@ class BreezeAjax
 	{
 		checkSession('post', '', false);
 
+		$this->permissions();
+
 		/* Get the global vars */
 		$this->_data = Breeze::sGlobals('request');
 
@@ -350,6 +350,8 @@ class BreezeAjax
 	public function notidelete()
 	{
 		checkSession('post', '', false);
+
+		$this->permissions();
 
 		/* Get the global vars */
 		$this->_data = Breeze::sGlobals('request');
@@ -422,5 +424,20 @@ class BreezeAjax
 
 		/* Done */
 		obExit(false);
+	}
+
+	protected function permissions($type)
+	{
+		global $context;
+
+		/* Check for the proper permission */
+		if ($type)
+			if (!allowedTo('breeze_'. $type) || !$context['user']['is_owner'])
+				redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
+		/* Just a generic "is owner" */
+		else
+			if(!$context['user']['is_owner'])
+				redirectexit('action=profile;area=static;u='.$context['member']['id']);
 	}
 }
