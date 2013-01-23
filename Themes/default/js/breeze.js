@@ -404,15 +404,15 @@ jQuery(document).ready(function(){
 	jQuery('.Breeze_markRead').click(function(){
 
 		var element = jQuery(this);
-		var noti_id = element.attr('id').replace(/[^0-9]/gi, '');
-		noti_id = parseInt(noti_id, 10);
+		var noti_id_delete = element.attr('id').replace(/[^0-9]/gi, '');
+		noti_id_delete = parseInt(noti_id_delete, 10);
 		var user = breeze_current_user;
 
 		jQuery.ajax(
 		{
 			type: 'POST',
 			url: smf_scripturl + '?action=breezeajax;sa=notimarkasread',
-			data: ({content : noti_id, user : user}),
+			data: ({content : noti_id_delete, user : user}),
 			cache: false,
 			dataType: 'json',
 			success: function(html)
@@ -424,7 +424,7 @@ jQuery(document).ready(function(){
 
 				else if(html.type == 'ok')
 				{
-					noty({text: breeze_noti_markasread_after, timeout: 3500, type: 'success'});
+					noty({text: breeze_noti_delete_after, timeout: 3500, type: 'success'});
 				}
 			},
 			error: function (html)
