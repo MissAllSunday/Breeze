@@ -1018,7 +1018,7 @@ class BreezeQuery extends Breeze
 
 						/* build the message */
 						$returnUser[$r['id']]['content']['message'] = sprintf($this->text->getText('buddy_messagerequest_message'),
-							$context['Breeze']['user_info'][$r['user']]);
+							$context['Breeze']['user_info'][$r['user']]['link'], $r['id']);
 					}
 
 				return $returnUser;

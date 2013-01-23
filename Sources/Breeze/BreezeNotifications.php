@@ -117,7 +117,7 @@ class BreezeNotifications
 		if (!empty($params) && in_array($params['type'], $this->_types))
 		{
 			/* Doing a quick query will be better than loading the entire notifications array */
-			$tempQuery = $this->query->quickQuery(
+			$tempQuery = $this->_query->quickQuery(
 				array(
 					'table' => 'breeze_notifications',
 					'rows' => 'id',
