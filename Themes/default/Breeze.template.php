@@ -167,7 +167,7 @@ function template_user_wall()
 
 
 	/* New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING and even if you do, DON'T MODIFY THIS */
-	echo '<span id="breeze_load_image" style="margin:auto; text-align:center;"></span>
+	echo '<span id="breeze_load_image"></span>
 	<ul class="breeze_status" id="breeze_display_status">';
 
 	/* Status and comments */
@@ -185,7 +185,7 @@ function template_user_wall()
 							<div class="breeze_options"><span class="time_elapsed">', $status['time'] ,' </span>';
 
 							/* Delete link */
-							if ($context['Breeze']['visitor']['delete_status_comments'])
+							if ($context['Breeze']['visitor']['delete_status'])
 								echo '| <a href="javascript:void(0)" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> </div>';
 
 							echo '<hr />
@@ -206,7 +206,7 @@ function template_user_wall()
 														<span class="time_elapsed">', $comment['time'] ,'</span>';
 
 									/* Delete comment */
-									if ($context['Breeze']['visitor']['delete_status_comments'])
+									if ($context['Breeze']['visitor']['delete_comments'])
 										echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 									echo '
