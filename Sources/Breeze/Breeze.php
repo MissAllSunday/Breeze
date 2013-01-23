@@ -7,7 +7,7 @@
  * @package Breeze mod
  * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
- * @copyright Copyright (c) 2012, Jessica González
+ * @copyright Copyright (c) 2013 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -36,7 +36,7 @@
 */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
 /**
  * breeze_autoloader()
@@ -64,7 +64,10 @@ class Breeze
 	public static $name = 'Breeze';
 	public static $version = '1.0 Beta 3';
 	public static $folder = '/Breeze/';
-	public static $txtpattern = 'BreezeMod_';
+	public static $txtpattern = 'Breeze_';
+
+	/* Support site feed */
+	public static $supportStite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
 
 	/* Its easier to list the allowed actions */
 	public static $_allowedActions = array('display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who',);
@@ -115,75 +118,6 @@ class Breeze
 	}
 
 	/**
-	 * Breeze::query()
-	 *
-	 * @see BreezeQuery
-	 * @return object Access to BreezeQuery
-	 */
-	public function query()
-	{
-		return new BreezeQuery();
-	}
-
-	/**
-	 * Breeze::quickQuery()
-	 *
-	 * @param array $params An array with all the params  for the query
-	 * @param array $data An array to pass to $smcFunc casting array
-	 * @param bool $key A boolean value to asign a row as key on the returning array
-	 * @param bool $single A bool to tell the query to return a single value instead of An array
-	 * @return mixed either An array or a var with the query result
-	 */
-	public function quickQuery($params, $data, $key = false, $single = false)
-	{
-		return self::query()->quickQuery($params, $data, $key = false, $single = false);
-	}
-
-	/**
-	 * Breeze::tools()
-	 *
-	 * @see BreezeTools
-	 * @return object Access to BreezeTools
-	 */
-	public function tools()
-	{
-		return new BreezeTools();
-	}
-
-	/**
-	 * Breeze::settings()
-	 *
-	 * @see BreezeSettings
-	 * @return object Access to BreezeSettings
-	 */
-	public function settings()
-	{
-		return BreezeSettings::getInstance();
-	}
-
-	/**
-	 * Breeze::text()
-	 *
-	 * @see BreezeText
-	 * @return object Access to BreezeText
-	 */
-	public function text()
-	{
-		return BreezeText::getInstance();
-	}
-
-	/**
-	 * Breeze::buddies()
-	 *
-	 * @see BreezeBuddy
-	 * @return object access to BreezeBuddy
-	 */
-	public function buddies()
-	{
-		return new BreezeBuddy();
-	}
-
-	/**
 	 * Breeze::sGlobals()
 	 *
 	 * @param string $var Either post, request or get
@@ -195,48 +129,128 @@ class Breeze
 	}
 
 	/**
-	 * Breeze::parser()
+	 * Breeze::headersHook()
 	 *
-	 * @see BreezeParser
-	 * @return object Access to BreezeParser
-	 */
-	public function parser()
-	{
-		return new BreezeParser();
-	}
-
-	/**
-	 * Breeze::mention()
-	 *
-	 * @see BreezeMention
-	 * @return object Access to BreezeMention
-	 */
-	public function mention()
-	{
-		return new BreezeMention();
-	}
-
-	/**
-	 * Breeze::notifications()
-	 *
-	 * @see BreezeNotifications
-	 * @return object Access to BreezeNotifications
-	 */
-	public function notifications()
-	{
-		return new BreezeNotifications();
-	}
-
-	/**
-	 * Breeze::headers()
-	 *
-	 * Method used to embed the JavaScript and other bits of code on every page inside SMF
+	 * Static method used to embed the JavaScript and other bits of code on every page inside SMF, used by the SMF hook system
 	 * @see BreezeTools
 	 * @return void
 	 */
-	public function headers()
+	public static function headersHook($type = 'noti')
 	{
-		self::tools()->headers('noti');
+		global $context, $settings, $user_info, $breezeController;
+		static $header_done = false;
+
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
+		$text = $breezeController->get('text');
+		$breezeSettings = $breezeController->get('settings');
+		$breezeGlobals = Breeze::sGlobals('get');
+
+		if (!$header_done)
+		{
+			$context['html_headers'] .= '
+			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.6.1.js"%3E%3C/script%3E\'))</script>
+			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />';
+
+			/* DUH! winning! */
+			if ($breezeGlobals->getValue('action') == 'profile' && $breezeSettings->enable('admin_settings_enable'))
+				$context['insert_after_template'] .= Breeze::who();
+
+			$header_done = true;
+		}
+
+		/* Define some variables for the ajax stuff */
+		if ($type == 'profile')
+		{
+			$context['html_headers'] .= '
+			<script type="text/javascript"><!-- // --><![CDATA[
+				var breeze_error_message = "'. $text->getText('error_message') .'";
+				var breeze_success_message = "'. $text->getText('success_message') .'";
+				var breeze_empty_message = "'. $text->getText('empty_message') .'";
+				var breeze_error_delete = "'. $text->getText('error_message') .'";
+				var breeze_success_delete = "'. $text->getText('success_delete') .'";
+				var breeze_confirm_delete = "'. $text->getText('confirm_delete') .'";
+				var breeze_confirm_yes = "'. $text->getText('confirm_yes') .'";
+				var breeze_confirm_cancel = "'. $text->getText('confirm_cancel') .'";
+				var breeze_already_deleted = "'. $text->getText('already_deleted') .'";
+				var breeze_cannot_postStatus = "'. $text->getText('cannot_postStatus') .'";
+				var breeze_cannot_postComments = "'. $text->getText('cannot_postComments') .'";
+				var breeze_page_loading = "'. $text->getText('page_loading') .'";
+				var breeze_page_loading_end = "'. $text->getText('page_loading_end') .'";
+				var breeze_current_user = '. $user_info['id'] .';
+				var breeze_infinite_scroll = '. (!empty($context['member']['options']['Breeze_infinite_scroll']) ? '"string"' : '0' ).';
+		// ]]></script>';
+
+			/* Let's load jquery from CDN only if it hasn't been loaded yet */
+			$context['html_headers'] .= '
+			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/center.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topCenter.js"></script>';
+
+			/* Does the user wants to use infinite scroll? */
+			if (!empty($context['member']['options']['Breeze_infinite_scroll']))
+				$context['html_headers'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.infinitescroll.min.js" type="text/javascript"></script>';
+
+			/* Load breeze.js untill everyone else is loaded */
+			$context['html_headers'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
+		}
+
+		/* Does the admin wants to add more actions? */
+		if ($breezeSettings->enable('allowedActions'))
+			Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $breezeSettings->getSetting('allowedActions')));
+
+		/* Stuff for the notifications, don't show this if we aren't on a specified action */
+		if ($type == 'noti' && empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
+		{
+			$notifications = $breezeController->get('notifications');
+
+			$context['insert_after_template'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
+			<script type="text/javascript"><!-- // --><![CDATA[
+				var breeze_error_message = "'. $text->getText('error_message') .'";
+				var breeze_noti_markasread = "'. $text->getText('noti_markasread') .'";
+				var breeze_noti_markasread_after = "'. $text->getText('noti_markasread_after') .'";
+				var breeze_noti_delete = "'. $text->getText('general_delete') .'";
+				var breeze_noti_delete_after = "'. $text->getText('noti_delete_after') .'";
+				var breeze_noti_close = "'. $text->getText('noti_close') .'";
+				var breeze_noti_cancel = "'. $text->getText('confirm_cancel') .'";
+			// ]]></script>';
+
+			$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
+		}
+
+		/* Admin bits */
+		if($type == 'admin')
+			$context['html_headers'] .= '
+			<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.js" type="text/javascript"></script>
+			<script type="text/javascript">
+var breeze_feed_error_message = "'. $text->getText('feed_error_message') .'";
+
+$(document).ready(function ()
+{
+	$(\'#breezelive\').rssfeed(\''. Breeze::$supportStite .'\',
+	{
+		limit: 5,
+		header: false,
+		date: true,
+		linktarget: \'_blank\',
+		errormsg: breeze_feed_error_message
+   });
+});
+ </script>
+';
+
 	}
 
 	/**
@@ -249,13 +263,13 @@ class Breeze
 	 */
 	public static function permissions(&$permissionGroups, &$permissionList)
 	{
-		$permissionList['membergroup']['breeze_edit_settings_any'] = array(
-			false,
-			'breeze_per_classic',
-			'breeze_per_simple');
 		$permissionGroups['membergroup']['simple'] = array('breeze_per_simple');
 		$permissionGroups['membergroup']['classic'] = array('breeze_per_classic');
 		$permissionList['membergroup']['breeze_deleteStatus'] = array(
+			false,
+			'breeze_per_classic',
+			'breeze_per_simple');
+		$permissionList['membergroup']['breeze_deleteComments'] = array(
 			false,
 			'breeze_per_classic',
 			'breeze_per_simple');
@@ -278,16 +292,20 @@ class Breeze
 	 * @param array $profile_areas An array containing all possible tabs for the profile menu.
 	 * @return void
 	 */
-	public static function profile(&$profile_areas)
+	public static function profile($profile_areas)
 	{
-		global $user_info, $context;
+		global $user_info, $context, $breezeController;
+
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
 
 		/* Settings are required here */
-		$gSettings = self::settings();
-		$text = self::text();
+		$gSettings = $breezeController->get('settings');
+		$text = $breezeController->get('text');
 
 		/* Replace the summary page only if the mod is enable */
 		if ($gSettings->enable('admin_settings_enable'))
+		{
 			$profile_areas['info']['areas']['summary'] = array(
 				'label' => $text->getText('general_wall'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
@@ -298,8 +316,7 @@ class Breeze
 					),
 				);
 
-		/* If the mod is enable, then create another page for the default profile page */
-		if ($gSettings->enable('admin_settings_enable'))
+			/* If the mod is enable, then create another page for the default profile page */
 			$profile_areas['info']['areas']['static'] = array(
 				'label' => $text->getText('general_summary'),
 				'file' => 'Profile-View.php',
@@ -310,15 +327,13 @@ class Breeze
 					),
 				);
 
-		/* Per user permissions */
-		if ($gSettings->enable('admin_settings_enable'))
+			/* Per user permissions */
 			$profile_areas['breeze_profile'] = array(
 				'title' => $text->getText('general_my_wall_settings'),
 				'areas' => array(),
 				);
 
-		/* User individual settings, show the button if the mod is enable and the user is the profile owner or the user has the permissions to edit other walls */
-		if ($gSettings->enable('admin_settings_enable'))
+			/* User individual settings, show the button if the mod is enable and the user is the profile owner or the user has the permissions to edit other walls */
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $text->getText('user_settings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
@@ -333,36 +348,22 @@ class Breeze
 					),
 				);
 
-		/* Buddies page */
-		/* if $some_check here */
-		$profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
-			'label' => $text->getText('user_buddysettings_name'),
-			'file' => Breeze::$folder . 'BreezeUser.php',
-			'function' => 'Breeze_Wrapper_BuddyRequest',
-			'permission' => array('own' => 'profile_view_own', ),
-			);
+			/* Buddies page */
+			$profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
+				'label' => $text->getText('user_buddysettings_name'),
+				'file' => Breeze::$folder . 'BreezeUser.php',
+				'function' => 'Breeze_Wrapper_BuddyRequest',
+				'permission' => array('own' => 'profile_view_own', ),
+				);
 
-		/* Notifications admin page */
-		/* if $some_check here */
-		$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
-			'label' => $text->getText('user_notisettings_name'),
-			'file' => Breeze::$folder . 'BreezeUser.php',
-			'function' => 'Breeze_Wrapper_Notifications',
-			'permission' => array('own' => 'profile_view_own', ),
-			);
-
-		/* Individual status page */
-		/* if $some_check here */
-		$profile_areas['breeze_profile']['areas']['wallstatus'] = array(
-			'label' => $text->getText('buddyrequest_list_status'),
-			'file' => Breeze::$folder . 'BreezeUser.php',
-			'function' => 'Breeze_Wrapper_Single',
-			'permission' => array(
-				'own' => 'profile_view_own',
-				'any' => 'profile_view_any',
-				),
-			);
-
+			/* Notifications admin page */
+			$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
+				'label' => $text->getText('user_notisettings_name'),
+				'file' => Breeze::$folder . 'BreezeUser.php',
+				'function' => 'Breeze_Wrapper_Notifications',
+				'permission' => array('own' => 'profile_view_own', ),
+				);
+		}
 		/* Done with the hacking... */
 	}
 
@@ -374,13 +375,13 @@ class Breeze
 	 * @link http://mattzuba.com
 	 * @return void
 	 */
-	public static function menu(&$menu_buttons)
+	public static function menu($menu_buttons)
 	{
-		global $scripturl, $context;
+		global $scripturl, $context, $breezeController;
 
 		/* Settings are required here */
-		$gSettings = $this->settings();
-		$text = self::text();
+		$gSettings = $breezeController->get('settings');
+		$text = $breezeController->get('text');
 
 		/* Does the General Wall is enable? */
 		if ($gSettings->enable('admin_settings_enablegeneralwall') == false)
@@ -435,7 +436,7 @@ class Breeze
 	 * @param array $actions An array containing all possible SMF actions.
 	 * @return void
 	 */
-	public static function actions(&$actions)
+	public static function actions($actions)
 	{
 		/* A whole new action just for some ajax calls... */
 		$actions['breezeajax'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
@@ -447,7 +448,7 @@ class Breeze
 		$actions['buddy'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
 
 		/* A special action for the buddy request message */
-		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
+		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'BreezeUser::buddyMessageSend');
 	}
 
 	/**
@@ -458,7 +459,11 @@ class Breeze
 	 */
 	public static function who()
 	{
-		return '<a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a>';
+		$actions = Breeze::sGlobals('get');
+
+		/* Show this only in pages generated by Breeze, people are already mad because I dare to put a link back to my site .__. */
+		if (($actions->getValue('action') == 'profile' && $actions->getValue('area') == 'breezebuddies' || $actions->getValue('area') == 'breezenoti' || $actions->getValue('area') == 'breeze') || ($actions->getValue('action') == 'profile' && !$actions->getValue('area')))
+			return '<div style="margin:auto; text-align:center"><a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a></div>';
 	}
 
 	/* It's all about Admin settings from now on */
@@ -471,7 +476,9 @@ class Breeze
 	 */
 	public static function admin(&$admin_menu)
 	{
-		$text = self::text();
+		global $breezeController;
+
+		$text = $breezeController->get('text');
 
 		$admin_menu['breezeadmin'] = array(
 			'title' => $text->getText('admin_settings_admin_panel'),

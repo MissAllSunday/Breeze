@@ -7,7 +7,7 @@
  * @package Breeze mod
  * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
- * @copyright Copyright (c) 2012, Jessica González
+ * @copyright Copyright (c) 2013 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -37,17 +37,16 @@
 
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
 class BreezeParser
 {
 	private $notification;
 
-	function __construct()
+	function __construct($settings, $tools)
 	{
-		$this->notification = Breeze::notifications();
-		$this->settings = Breeze::settings();
-		$this->tools = Breeze::tools();
+		$this->settings = $settings;
+		$this->tools = $tools;
 
 		/* Regex stuff */
 		$this->regex = array(
@@ -60,7 +59,7 @@ class BreezeParser
 	{
 		$this->s = $string;
 		$temp = get_class_methods('BreezeParser');
-		$temp = BreezeTools::remove($temp, array('__construct', 'display'), false);
+		$temp = $this->tools->remove($temp, array('__construct', 'display'), false);
 
 		foreach ($temp as $t)
 			$this->s = $this->$t($this->s);

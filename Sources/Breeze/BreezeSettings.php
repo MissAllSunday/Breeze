@@ -7,7 +7,7 @@
  * @package Breeze mod
  * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
- * @copyright Copyright (c) 2012, Jessica González
+ * @copyright Copyright (c) 2013 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -36,37 +36,33 @@
  */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
 class BreezeSettings
 {
-	private static $_instance;
 	protected $_settings = array();
-	private $_pattern = 'BreezeMod_';
+	private $_pattern;
 
-
-	private function __construct(){}
-
-	public static function getInstance()
+	public function __construct()
 	{
-		if (!self::$_instance)
-			self::$_instance = new self();
-
-		return self::$_instance;
+		$this->_pattern = Breeze::$name .'_';
+		$this->doExtract();
 	}
 
-	public function extract()
+	public function doExtract()
 	{
 		global $modSettings;
 
-		$this->_settings = $modSettings;
+		foreach ($modSettings as $key => $value)
+			if (substr($key, 0, strlen(trim(Breeze::$name))) == Breeze::$name)
+				$this->_settings[$key] = $modSettings[$key];
 	}
 
 	/* Return true if the value do exist, false otherwise, O RLY? */
 	public function enable($var)
 	{
 		if (empty($this->_settings))
-			$this->extract();
+			$this->doExtract();
 
 		if (!empty($this->_settings[$this->_pattern . $var]))
 			return true;
@@ -79,12 +75,20 @@ class BreezeSettings
 	public function getSetting($var)
 	{
 		if (empty($this->_settings))
-			$this->extract();
+			$this->doExtract();
 
 		if (!empty($this->_settings[$this->_pattern . $var]))
 			return $this->_settings[$this->_pattern . $var];
 
 		else
 			return false;
+	}
+
+	public function getAll()
+	{
+		if (empty($this->_settings))
+			$this->doExtract();
+
+			return $this->_settings;
 	}
 }

@@ -7,7 +7,7 @@
  * @package Breeze mod
  * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
- * @copyright Copyright (c) 2012, Jessica González
+ * @copyright Copyright (c) 2013 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -36,13 +36,18 @@
  */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
 class BreezeBuddy
 {
-	public function  __construct(){}
+	public function  __construct($settings, $query, $notifications)
+	{
+		$this->notification = $notifications;
+		$this->settings = $settings;
+		$this->query = $query;
+	}
 
-	public static function Buddy()
+	public function buddy()
 	{
 		global $user_info, $scripturl, $context;
 
@@ -53,8 +58,6 @@ class BreezeBuddy
 
 		/* We need all this stuff */
 		$sa = Breeze::sGlobals('get');
-		$notification = Breeze::notifications();
-		$settings = Breeze::settings();
 
 		/* There's gotta be an user... */
 		if ($sa->validate('u') == false)
@@ -76,7 +79,7 @@ class BreezeBuddy
 		elseif ($user_info['id'] != $sa->getValue('u'))
 		{
 			/* Notification here */
-			$notification->createBuddy(
+			$this->notification->createBuddy(
 				array(
 					'user' => $user_info['id'],
 					'user_to' => $sa->getValue('u'),
@@ -93,15 +96,11 @@ class BreezeBuddy
 
 	public function showBuddyRequests($user)
 	{
-		global $context;
-
-		$query = Breeze::query();
-
 		/* I don't have time for this... */
 		if (empty($user))
 			return false;
 
 		/* Load all buddy request for this user */
-		return $query->getNotificationByType('buddy', $user);
+		return $this->query->getNotificationByType('buddy', $user);
 	}
 }

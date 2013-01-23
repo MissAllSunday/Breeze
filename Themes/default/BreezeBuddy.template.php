@@ -5,9 +5,9 @@
  *
  * The purpose of this file is to show the admin section for the mod's settings
  * @package Breeze mod
- * @version 1.0 Beta 2
+ * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
- * @copyright Copyright (c) 2012, Jessica González
+ * @copyright Copyright (c) 2013 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -112,20 +112,31 @@ function template_Breeze_buddy_list()
 							', $request['content']['message'] ,'
 							</td>
 							<td>
-							<a href="', $scripturl ,'?action=profile;area=breezebuddies;from=', $request['user'] ,';confirm=', $request['id'] ,'" target="self">', $txt['Breeze_buddyrequest_list_confirm'] ,'</a>
+							<a href="', $scripturl ,'?action=profile;area=breezebuddies;from=', $request['user'] ,';confirm=', $request['id'] ,'" target="_self">', $txt['Breeze_buddyrequest_list_confirm'] ,'</a>
 							</td>
 							<td>
-							<a href="', $scripturl ,'?action=profile;area=breezebuddies;from=', $request['user'] ,';decline=', $request['id'] ,'" target="self">', $txt['Breeze_buddyrequest_list_decline'] ,'</a>
+							<a href="', $scripturl ,'?action=profile;area=breezebuddies;from=', $request['user'] ,';decline=', $request['id'] ,'" target="_self">', $txt['Breeze_buddyrequest_list_decline'] ,'</a>
 							</td>
 						</tr>';
 			}
+
+		echo '</tbody>
+		</table><br />';
 	}
 
 	else
-		echo 'There is no buddy request for you';
-
-			echo '</tbody>
-			</table><br />';
+		echo '<p />
+<div class="windowbg">
+	<span class="topslice">
+		<span></span>
+	</span>
+	<div class="content flow_auto">
+		', $txt['Breeze_buddyrequest_noBuddies'] ,'
+	</div>
+	<span class="botslice">
+		<span></span>
+	</span>
+	</div>';
 
 		/* end of admin div */
 	echo '

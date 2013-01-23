@@ -5,7 +5,7 @@
  * @package Breeze mod
  * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
- * @copyright Copyright (c) 2012, Jessica González
+ * @copyright Copyright (c) 2013 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -304,47 +304,59 @@
 				var I = element.attr('id');
 				var Type = 'status';
 
-				jQuery.ajax(
-					{
-						type: 'POST',
-						url: smf_scripturl + '?action=breezeajax;sa=delete',
-						data: ({id : I, type : Type}),
-						cache: false,
-						success: function(html)
-						{
-							if(html == 'error_')
-							{
-								showNotification(
-								{
-									message: breeze_error_message,
-									type: 'error',
-									autoClose: true,
-									duration: 3
-								});
-							}
-							else
-							{
-								jQuery('#status_id_'+I).hide('slow');
-								showNotification({
-									message: breeze_success_delete,
-									type: 'success',
-									autoClose: true,
-									duration: 3
-								});
-							}
-						},
-						error: function (html)
-						{
-							showNotification(
-							{
-								message: breeze_error_message,
-								type: 'error',
-								autoClose: true,
-								duration: 3
+				/* Show a nice confirmation box */
+				noty({
+					text: breeze_confirm_delete,
+					type: 'confirmation',
+					dismissQueue: false,
+					closeWith: ['button'],
+					buttons: [{
+						addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
+							jQuery.ajax({
+								type: 'POST',
+								url: smf_scripturl + '?action=breezeajax;sa=delete',
+								data: ({id : I, type : Type}),
+								cache: false,
+								dataType: 'json',
+								success: function(html){
+									if(html.type == 'error'){
+										$noty.close();
+										noty({
+											text: html.data,
+											timeout: 3500, type: 'error',
+										});
+									}
+									else if(html.type == 'deleted'){
+										$noty.close();
+										noty({
+											text: html.data,
+											timeout: 3500, type: 'error',
+										});
+									}
+									else if(html.type == 'ok'){
+										jQuery('#status_id_'+I).fadeOut('slow');
+										$noty.close();
+										noty({
+											text: html.data,
+											timeout: 3500, type: 'success',
+										});
+									}
+								},
+								error: function (html){
+									$noty.close();
+									noty({
+										text: html.data,
+										timeout: 3500, type: 'error',
+									});
+								},
 							});
-							jQuery('#status_id_'+I).hide('slow');
-						},
-					});
+						}
+					},
+						{addClass: 'button_submit', text: breeze_confirm_cancel, onClick: function($noty) {
+							$noty.close();
+						}}
+					]
+				});
 				return false;
 			});
 		});
@@ -362,3 +374,99 @@
 			});
 		});
 	});
+
+/* infinitescroll  */
+if (typeof breeze_infinite_scroll == "string")
+{
+	jQuery(document).ready(function(){
+		jQuery.noConflict();
+		jQuery('#breeze_display_status').infinitescroll({
+			loading: {
+				finished: undefined,
+				msg: null,
+				msgText  : breeze_page_loading,
+				img   : smf_images_url + "/breeze/loading.gif",
+				finishedMsg     : breeze_page_loading_end,
+				selector: null,
+				speed: 'slow',
+				start: undefined
+			},
+			navSelector  : "#breeze_pagination",
+			nextSelector : "#breeze_next_link",
+			itemSelector : "li.windowbg",
+			animate      : true,
+		});
+	});
+}
+
+/* Mark as read */
+jQuery(document).ready(function(){
+	jQuery('.Breeze_markRead').click(function(){
+
+		var element = jQuery(this);
+		var noti_id_delete = element.attr('id').replace(/[^0-9]/gi, '');
+		noti_id_delete = parseInt(noti_id_delete, 10);
+		var user = breeze_current_user;
+
+		jQuery.ajax(
+		{
+			type: 'POST',
+			url: smf_scripturl + '?action=breezeajax;sa=notimarkasread',
+			data: ({content : noti_id_delete, user : user}),
+			cache: false,
+			dataType: 'json',
+			success: function(html)
+			{
+				if(html.type == 'error')
+				{
+					noty({text: breeze_error_message, timeout: 3500, type: 'error'});
+				}
+
+				else if(html.type == 'ok')
+				{
+					noty({text: breeze_noti_delete_after, timeout: 3500, type: 'success'});
+				}
+			},
+			error: function (html)
+			{
+				noty({text: breeze_error_message, timeout: 3500, type: 'error'});
+			},
+		});
+	});
+});
+
+/* Delete a notification */
+jQuery(document).ready(function(){
+	jQuery('.Breeze_delete').click(function(){
+
+		var element = jQuery(this);
+		var noti_id = element.attr('id').replace(/[^0-9]/gi, '');
+		noti_id = parseInt(noti_id, 10);
+		var user = breeze_current_user;
+
+		jQuery.ajax(
+		{
+			type: 'POST',
+			url: smf_scripturl + '?action=breezeajax;sa=notidelete',
+			data: ({content : noti_id, user : user}),
+			cache: false,
+			dataType: 'json',
+			success: function(html)
+			{
+				if(html.type == 'error')
+				{
+					noty({text: breeze_error_message, timeout: 3500, type: 'error'});
+				}
+
+				else if(html.type == 'ok')
+				{
+					noty({text: breeze_noti_markasread_after, timeout: 3500, type: 'success'});
+				}
+			},
+			error: function (html)
+			{
+				noty({text: breeze_error_message, timeout: 3500, type: 'error'});
+			},
+		});
+	});
+});

@@ -7,7 +7,7 @@
  * @package Breeze mod
  * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
- * @copyright Copyright (c) 2012, Jessica González
+ * @copyright Copyright (c) 2013 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -36,31 +36,29 @@
 */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
-class BreezeAjax extends Breeze
+class BreezeAjax
 {
-	public $query;
-
 	/**
 	 * BreezeAjax::__construct()
 	 *
 	 * @return
 	 */
-	public function __construct()
+	public function __construct($settings, $text, $query, $notifications, $parser, $mention)
 	{
 		/* Needed to show error strings */
-		loadLanguage(parent::$name);
+		loadLanguage(Breeze::$name);
 
 		/* Load all the things we need */
-		$this->_query = $this->query();
-		$this->_parser = $this->parser();
-		$this->_mention = $this->mention();
-		$this->_settings = $this->settings();
-		$this->_notifications = $this->notifications();
-		$this->_text = $this->text();
+		$this->_query = $query;
+		$this->_parser = $parser;
+		$this->_mention = $mention;
+		$this->_settings = $settings;
+		$this->_notifications = $notifications;
+		$this->_text = $text;
 
-		/* Set a temp var, by default lets pretend everything went wrong... */
+		/* Set an empty var, by default lets pretend everything went wrong... */
 		$this->_response = '';
 	}
 
@@ -72,7 +70,7 @@ class BreezeAjax extends Breeze
 	public function call()
 	{
 		/* Handling the subactions */
-		$sglobals = $this->sGlobals('get');
+		$sglobals = Breeze::sGlobals('get');
 
 		/* Safety first, hardcode the actions */
 		$subActions = array(
@@ -86,6 +84,7 @@ class BreezeAjax extends Breeze
 		/* Does the subaction even exist? */
 		if (in_array($sglobals->getValue('sa'), array_keys($subActions)))
 		{
+			/* This is somehow ugly. */
 			$this->$subActions[$sglobals->getValue('sa')]();
 
 			/* Send the response back to the browser */
@@ -94,7 +93,7 @@ class BreezeAjax extends Breeze
 
 		/* Sorry pal... */
 		else
-		fatal_lang_error ($this->_text->getText('error_no_valid_action'));
+			fatal_lang_error ($this->_text->getText('error_no_valid_action'));
 	}
 
 	/**
@@ -104,14 +103,13 @@ class BreezeAjax extends Breeze
 	 */
 	public function post()
 	{
-		/* You aren't allowed in here, let's show you a nice message error... */
-		if (!allowedTo('breeze_postStatus'))
-			return false;
+		/* You aren't allowed in here, let's show you a nice static page... */
+		$this->permissions('postStatus');
 
 		checkSession('post', '', false);
 
 		/* Get the data */
-		$this->_data = $this->sGlobals('post');
+		$this->_data = Breeze::sGlobals('request');
 
 		/* Sorry, try to play nice next time */
 		if (!$this->_data->getValue('owner_id') || !$this->_data->getValue('poster_id') || !$this->_data->getValue('content'))
@@ -143,7 +141,7 @@ class BreezeAjax extends Breeze
 				'wall_owner' => $this->_data->getValue('owner_id'),
 				'wall_poster' => $this->_data->getValue('poster_id'),
 				'status_id' => $params['id'],
-				));
+			));
 
 			/* Parse the content */
 			$params['body'] = $this->_parser->display($params['body']);
@@ -175,13 +173,12 @@ class BreezeAjax extends Breeze
 	{
 		global $scripturl;
 
-		/* You aren't allowed in here, let's show you a nice message error... */
-		if (!allowedTo('breeze_postComments'))
-			return false;
+		/* You aren't allowed in here, let's show you a nice static page... */
+		$this->permissions('postComments');
 
 		checkSession('post', '', false);
 
-		$this->_data = $this->sGlobals('post');
+		$this->_data = Breeze::sGlobals('request');
 
 		/* Sorry, try to play nice next time */
 		if (!$this->_data->getValue('status_owner_id') || !$this->_data->getValue('status_owner_id') || !$this->_data->getValue('poster_comment_id') || !$this->_data->getValue('profile_owner_id') || !$this->_data->getValue('content'))
@@ -252,19 +249,19 @@ class BreezeAjax extends Breeze
 	 */
 	public function delete()
 	{
-		/* You aren't allowed in here, let's show you a nice message error... */
-		isAllowedTo('breeze_deleteStatus');
-
 		checkSession('post', '', false);
 
 		/* Get the global vars */
-		$this->_data = $this->sGlobals('request');
+		$this->_data = Breeze::sGlobals('request');
 
 		/* Get the data */
 		if ($this->_data->getValue('id') != false)
 		{
+			/* You aren't allowed in here, let's show you a nice message error... */
+			$this->permissions('delete'. ucfirst($this->_data->getValue('type')));
+
 			$temp_id_exists = $this->_query->getSingleValue(
-				$this->_data->getValue('type') == 'status' ? 'status':'comments',
+				$this->_data->getValue('type') == 'status' ? 'status' : 'comments',
 				'id',
 				$this->_data->getValue('id')
 			);
@@ -314,8 +311,10 @@ class BreezeAjax extends Breeze
 	{
 		checkSession('post', '', false);
 
+		$this->permissions();
+
 		/* Get the global vars */
-		$this->_data = $this->sGlobals('post');
+		$this->_data = Breeze::sGlobals('request');
 
 		/* Get the data */
 		$noti = $this->_data->getValue('content');
@@ -334,7 +333,7 @@ class BreezeAjax extends Breeze
 		else
 		{
 			/* All is good, mark this as read */
-			$this->_notifications->markAsRead($noti);
+			$this->_notifications->markAsRead($noti, $user);
 			$this->_response = array(
 				'data' => $this->_text->getText('noti_markasread_after'),
 				'type' => 'ok'
@@ -352,8 +351,10 @@ class BreezeAjax extends Breeze
 	{
 		checkSession('post', '', false);
 
+		$this->permissions();
+
 		/* Get the global vars */
-		$this->_data = $this->sGlobals('post');
+		$this->_data = Breeze::sGlobals('request');
 
 		/* Get the data */
 		$noti = $this->_data->getValue('content');
@@ -367,16 +368,23 @@ class BreezeAjax extends Breeze
 		$noti_temp = $this->_notifications->getToUser($user);
 
 		if (empty($noti_temp) || !array_key_exists($noti, $noti_temp))
+		{
+			$this->_response = array(
+				'data' => $this->_text->getText('already_deleted_noti'),
+				'type' => 'deleted'
+			);
 			return;
+		}
 
 		else
 		{
-			/* All is good, delete thi */
-			$this->_notifications->delete($noti);
+			/* All is good, delete it */
+			$this->_notifications->delete($noti, $user);
 			$this->_response = array(
 				'data' => $this->_text->getText('noti_delete_after'),
 				'type' => 'ok'
 			);
+			return;
 		}
 	}
 
@@ -403,7 +411,7 @@ class BreezeAjax extends Breeze
 		/* Send the header */
 		header('Content-Type: application/json');
 
-		/* Is there a custom error message? Use it */
+		/* Is there a custom message? Use it */
 		if (!empty($this->_response))
 			print json_encode($this->_response);
 
@@ -416,5 +424,20 @@ class BreezeAjax extends Breeze
 
 		/* Done */
 		obExit(false);
+	}
+
+	protected function permissions($type)
+	{
+		global $context;
+
+		/* Check for the proper permission */
+		if ($type)
+			if (!allowedTo('breeze_'. $type) || !$context['user']['is_owner'])
+				redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
+		/* Just a generic "is owner" */
+		else
+			if(!$context['user']['is_owner'])
+				redirectexit('action=profile;area=static;u='.$context['member']['id']);
 	}
 }

@@ -7,7 +7,7 @@
  * @package Breeze mod
  * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
- * @copyright Copyright (c) 2012, Jessica González
+ * @copyright Copyright (c) 2013 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -36,7 +36,7 @@
 */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
 abstract class BreezeDispatcher
 {
@@ -49,24 +49,28 @@ abstract class BreezeDispatcher
 
 	static function dispatch()
 	{
-		/* Cheating, shhh! */
+		$dependency = new BreezeController();
 		$sglobals = Breeze::sGlobals('get');
 
 		$actions = array(
 			'breezeajax' => array('BreezeAjax' , 'call'),
 			'wall' => array('BreezeGeneral', 'call'),
 			'buddy' => array('BreezeBuddy', 'buddy'),
-			'breezebuddyrequest' => array('BreezeUser', 'BuddyMessageSend'),
 		);
 
 		if (in_array($sglobals->getValue('action'), array_keys($actions)))
 		{
 			$controller_name = $actions[$sglobals->getValue('action')][0];
-			$controller = new $controller_name();
+
+			if ($sglobals->getValue('action') == 'buddy')
+				$controller = new $controller_name($dependency->get('settings'), $dependency->get('query'), $dependency->get('notifications'));
+
+			if ($sglobals->getValue('action') == 'breezeajax')
+				$controller = new $controller_name($dependency->get('settings'), $dependency->get('text'), $dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'));
 
 			/* Lets call the method */
 			$method_name = $actions[$sglobals->getValue('action')][1];
-			$controller->$method_name();
+			call_user_func_array(array($controller, $method_name), array());
 		}
 	}
 }

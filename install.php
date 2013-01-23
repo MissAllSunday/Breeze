@@ -207,7 +207,7 @@
 			'indexes' => array(
 				array(
 					'type' => 'primary',
-					'columns' => array('notifications_id')
+					'columns' => array('id')
 				),
 			),
 			'if_exists' => 'ignore',

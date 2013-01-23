@@ -1,46 +1,59 @@
-What is Breeze?
-
-Breeze is an Ajax powered social mod for your SMF forum, it allows your users to turn their profile pages into a dymanic wall where they can publish new status and comment on other user's status.
+[center][color=purple][size=15pt]Breeze Social mod[/size][/color] [/center]
 
 
-Requirements:
+Created by [url=http://missallsunday.com]Suki[/url] [color=red]important, support for this modification will only be provided by it's author on the developer's site.[/color]
 
--SMF 2.0.x
--PHP 5.3 or greater.
+[b]This mod needs PHP 5.3 and SMF 2.0.x or greater[/b]
 
-Features:
+[color=purple][b][size=12pt]License[/size][/b][/color]
+[code]
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 1.1.
+If a copy of the MPL was not distributed with this file,
+You can obtain one at http://mozilla.org/MPL/
 
--Uses hooks, no template edits are necessary, this mod will work with any theme.
--Global permissions using the SMF permission system to allow member groups to post status on any wall, post comments on any wall, delete status/comments on any wall. By default, users are able to post status, post comments and delete status/comments on their own profile.
-The mod still depends on the "can see profile own/any"  permission.
--Modules, modules are tiny blocks of info, for example, a "last visits" one or a "my buddies" block.
--Pagination to show multiple status easily.
--Some user's individual settings:
-	-Enable/Disable their own wall.
-	-Do not show my wall to users in my ignore list
-	-How many status will be displayed per page
-	-Module's independent settings
-
-
-Known issues:
-
--The visitors module doesn't work quite well.
+The contents of this package are subject to the Mozilla Public License Version
+1.1 (the "License"); you may not use this package except in compliance with
+the License. You may obtain a copy of the License at
+http://www.mozilla.org/MPL/
+ *
+Software distributed under the License is distributed on an "AS IS" basis,
+WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+for the specific language governing rights and limitations under the
+License.[/code]
 
 
-Things left to do:
+[size=12pt][color=purple]Introduction[/color][/size]
 
--Re-write the buddy system to include confirmation from users when someone marks them as a buddy.
--General Wall, where users can see updates and status from their buddies
--Improve UI
--Like/Unlike system, probably extend it to messages too.
--Notifications
--Simple Gallery and tagging in images
--Build a better module system, to allow any module to easily integrate with Breeze
+Breeze is a social mod, it lest youy users to turn their dull profile ages into a dynamic wall where they can post status and comments, users will receive notifications
 
-This mod uses the following scripts:
+[size=12pt][color=purple]Supported Languages[/color][/size]
 
--Srinivas Tamada's notification plugin http://www.9lessons.info/2011/10/jquery-notification-plugin.html
--Nadia Alramli's confirm plugin http://nadiana.com/jquery-confirm-plugin
--Facebox https://github.com/defunkt/facebox
--zRSSFeeds http://www.zazar.net/developers/jquery/zrssfeed/
--Brandon Aaron's Live query plugin http://brandonaaron.net/code/livequery/docs
+o English/utf8
+o Spanish_latin/utf8
+
+I welcome translations, please post it on the support site ;)
+
+
+[size=12pt][color=purple]Installation[/color][/size]
+
+Use the package manager to install this modification, Breeze will work with all themes.
+Tested on PHP 5.3 and 5.4, IE8, Opera and Firefox.
+
+
+[size=12pt][color=purple]This mod uses the following scripts[/color][/size]
+
+- [Facebox] (https://github.com/defunkt/facebox)
+- [zRSSFeeds] (http://www.zazar.net/developers/jquery/zrssfeed/)
+- [Brandon Aaron Live query plugin] (http://brandonaaron.net/code/livequery/docs)
+- [needim noty jquery plugin] (http://needim.github.com/noty/)
+- [Paul Irish infinite-scroll] (https://github.com/paulirish/infinite-scroll)
+
+
+[size=12pt][color=purple]Changelog[/color][/size]
+
+[code]
+
+[b]1.0[/b] - Windmill
+Initial release
+
+[/code]

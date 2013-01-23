@@ -5,9 +5,9 @@
  *
  * The purpose of this file is to show the admin section for the mod's settings
  * @package Breeze mod
- * @version 1.0 Beta 2
+ * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
- * @copyright Copyright (c) 2012, Jessica González
+ * @copyright Copyright (c) 2013 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -113,16 +113,19 @@ function template_admin_home()
 /* Boring stuff you will never see... */
 function template_admin_donate()
 {
-	global $txt;
+	global $context;
 
 	echo '
+		<div class="cat_bar">
+			<h3 class="catbg">', $context['page_title'] ,'</h3>
+		</div>
 		<span class="clear upperframe">
 			<span></span>
 		</span>
 		<div class="roundframe rfix">
 			<div class="innerframe">
 				<div class="content">
-					',$txt['Breeze_admin_settings_donate_text'],'
+					',$context['Breeze']['donate'],'
 				</div>
 			</div>
 		</div>

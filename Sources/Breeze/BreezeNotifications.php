@@ -7,7 +7,7 @@
  * @package Breeze mod
  * @version 1.0 Beta 3
  * @author Jessica González <missallsunday@simplemachines.org>
- * @copyright Copyright (c) 2012, Jessica González
+ * @copyright Copyright (c) 2013 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -36,9 +36,9 @@
 */
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+	die('No direct access...');
 
-class BreezeNotifications extends Breeze
+class BreezeNotifications
 {
 	protected $_settings = array();
 	protected $_params = array();
@@ -52,15 +52,12 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::__construct()
-	 * 
+	 *
 	 * @return
 	 */
-	function __construct()
+	function __construct($settings, $text, $tools, $query)
 	{
 		global $user_info;
-
-		/* Call the parent */
-		parent::__construct();
 
 		/* Current user */
 		$this->_currentUser = $user_info['id'];
@@ -75,15 +72,15 @@ class BreezeNotifications extends Breeze
 			'topic');
 
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
-		$this->_settings = $this->settings();
-		$this->_query = $this->query();
-		$this->_tools = $this->tools();
-		$this->_text = $this->text();
+		$this->_settings = $settings;
+		$this->_query = $query;
+		$this->_tools = $tools;
+		$this->_text = $text;
 	}
 
 	/**
 	 * BreezeNotifications::create()
-	 * 
+	 *
 	 * @param mixed $params
 	 * @return
 	 */
@@ -108,7 +105,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::createBuddy()
-	 * 
+	 *
 	 * @param mixed $params
 	 * @return
 	 */
@@ -120,15 +117,21 @@ class BreezeNotifications extends Breeze
 		if (!empty($params) && in_array($params['type'], $this->_types))
 		{
 			/* Doing a quick query will be better than loading the entire notifications array */
-			$tempQuery = $this->quickQuery(array(
-				'table' => 'breeze_notifications',
-				'rows' => 'id',
-				'where' => 'user = {int:user}',
-				'whereAnd' => 'user_to = {int:user_to}',
-				), array(
-				'user' => !empty($params['user']) ? $params['user']:$this->_currentUser,
-				'user_to' => $params['user_to'],
-				), 'id', false);
+			$tempQuery = $this->_query->quickQuery(
+				array(
+					'table' => 'breeze_notifications',
+					'rows' => 'id',
+					'where' => 'user = {int:user}',
+					'and' => 'user_to = {int:user_to}',
+					'andTwo' => 'type = {string:type}',
+				),
+				array(
+					'user' => !empty($params['user']) ? $params['user'] : $this->_currentUser,
+					'user_to' => $params['user_to'],
+					'type' => $params['type'],
+				),
+				'id', false
+			);
 
 			/* Patience is a virtue, you obviously don't know that, huh? */
 			if (!empty($tempQuery))
@@ -145,7 +148,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::count()
-	 * 
+	 *
 	 * @return
 	 */
 	public function count()
@@ -155,10 +158,10 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::getToUser()
-	 * 
-	 * @param mixed $user
+	 *
+	 * @param int $user
 	 * @param bool $all
-	 * @return
+	 * @return array
 	 */
 	public function getToUser($user, $all = false)
 	{
@@ -184,7 +187,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::getByUser()
-	 * 
+	 *
 	 * @param mixed $user
 	 * @param bool $all
 	 * @return
@@ -213,7 +216,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::doStream()
-	 * 
+	 *
 	 * @param mixed $user
 	 * @return
 	 */
@@ -235,10 +238,6 @@ class BreezeNotifications extends Breeze
 			foreach ($this->_all as $single)
 				if (in_array($single['type'], $this->_types))
 				{
-					/* load the user's link */
-					if (empty($context['Breeze']['user_info'][$single['user']]))
-						$this->_tools->loadUserInfo($single['user']);
-
 					$call = 'do' . ucfirst($single['type']);
 					$this->$call($single);
 				}
@@ -247,8 +246,7 @@ class BreezeNotifications extends Breeze
 			if (!empty($this->_messages))
 			{
 				/* Make sure its an array */
-				$this->_messages = !is_array($this->_messages) ? array($this->_messages):$this->
-					_messages;
+				$this->_messages = !is_array($this->_messages) ? array($this->_messages) : $this->_messages;
 
 				/* @todo move this to breeze.js */
 				$context['insert_after_template'] .= '
@@ -314,6 +312,11 @@ class BreezeNotifications extends Breeze
 								noty({text: html.data, timeout: 3500, type: \'error\'});
 							}
 
+							else if(html.type == \'deleted\')
+							{
+								noty({text: html.data, timeout: 3500, type: \'error\'});
+							}
+
 							else if(html.type == \'ok\')
 							{
 								noty({text: html.data, timeout: 3500, type: \'success\'});
@@ -325,8 +328,7 @@ class BreezeNotifications extends Breeze
 						},
 					});
 				$noty.close();
-			}
-			},
+			}},
 			{addClass: \'button_submit\', text: breeze_noti_cancel, onClick: function($noty) {
 				$noty.close();
 			  }
@@ -343,7 +345,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::doBuddy()
-	 * 
+	 *
 	 * @param mixed $noti
 	 * @return
 	 */
@@ -365,7 +367,7 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::doMention()
-	 * 
+	 *
 	 * @param mixed $noti
 	 * @return
 	 */
@@ -379,13 +381,6 @@ class BreezeNotifications extends Breeze
 
 		/* Yeah, we started with nothing! */
 		$text = '';
-
-		/* Lots of users to load */
-		$this->_tools->loadUserInfo(array(
-			$noti['content']['wall_owner'],
-			$noti['content']['wall_poster'],
-			$noti['user_to'],
-			));
 
 		/* Build the status link */
 		$statusLink = $scripturl . '?action=profile;area=wallstatus;u=' . $noti['content']['wall_owner'] .
@@ -430,23 +425,23 @@ class BreezeNotifications extends Breeze
 
 	/**
 	 * BreezeNotifications::delete()
-	 * 
+	 *
 	 * @param mixed $id
 	 * @return
 	 */
-	public function delete($id)
+	public function delete($id, $user)
 	{
-		$this->_query->deleteNotification($id);
+		$this->_query->deleteNotification($id, $user);
 	}
 
 	/**
 	 * BreezeNotifications::markAsRead()
-	 * 
+	 *
 	 * @param mixed $id
 	 * @return
 	 */
-	public function markAsRead($id)
+	public function markAsRead($id, $user)
 	{
-		$this->_query->markAsviewedNotification($id);
+		$this->_query->markAsviewedNotification($id, $user);
 	}
 }

@@ -49,7 +49,7 @@
 		'integrate_load_permissions' => 'Breeze::permissions',
 		'integrate_admin_areas' => 'Breeze::admin',
 		'integrate_profile_areas' => 'Breeze::profile',
-		'integrate_load_theme' => 'Breeze::headers',
+		'integrate_load_theme' => 'Breeze::headersHook',
 	);
 
 	$call = 'add_integration_function';
