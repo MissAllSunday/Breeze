@@ -269,6 +269,10 @@ $(document).ready(function ()
 			false,
 			'breeze_per_classic',
 			'breeze_per_simple');
+		$permissionList['membergroup']['breeze_deleteComments'] = array(
+			false,
+			'breeze_per_classic',
+			'breeze_per_simple');
 		$permissionList['membergroup']['breeze_postStatus'] = array(
 			false,
 			'breeze_per_classic',
