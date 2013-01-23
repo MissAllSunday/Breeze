@@ -57,7 +57,7 @@ class BreezeBuddy
 		is_not_guest();
 
 		/* We need all this stuff */
-		$sa = $this->sGlobals('get');
+		$sa = Breeze::sGlobals('get');
 
 		/* There's gotta be an user... */
 		if ($sa->validate('u') == false)
