@@ -309,6 +309,10 @@ function template_user_notifications()
 		</table><br />';
 	}
 
+	/* Gotta be more social buddy... */
+	else
+		echo $txt['Breeze_noti_none'];
+
 		echo'
 			</div>
 			<span class="botslice">

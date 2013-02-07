@@ -205,6 +205,7 @@ $txt['Breeze_noti_markasread_viewed'] = 'Already marked as read';
 $txt['Breeze_noti_close'] = 'Close';
 $txt['Breeze_noti_markasread_after'] = 'You have successfully marked this notification as read';
 $txt['Breeze_noti_delete_after'] = 'You have successfully deleted this notification';
+$txt['Breeze_noti_none'] = 'You don\'t have any notifications';
 
 /* Comment notification */
 $txt['Breeze_noti_comment_message'] = '%1$s commented on the status made by %2$s on %3$s\'s wall,<br/> <a href="" class="bbc_link" target="_blank">see the comment</a>';
