@@ -426,18 +426,21 @@ class BreezeAjax
 		obExit(false);
 	}
 
-	protected function permissions($type)
+	protected function permissions($type = false, $owner_id)
 	{
-		global $context;
+		global $user_info;
+
+		/* Profile owner? */
+		$is_owner = $owner_id == $user_info['id'];
 
 		/* Check for the proper permission */
 		if ($type)
-			if (!allowedTo('breeze_'. $type) || !$context['user']['is_owner'])
-				redirectexit('action=profile;area=static;u='.$context['member']['id']);
+			if (!allowedTo('breeze_'. $type) || !$is_owner)
+				redirectexit('action=profile;area=static;u='. $context['member']['id']);
 
 		/* Just a generic "is owner" */
 		else
-			if(!$context['user']['is_owner'])
+			if(!$is_owner)
 				redirectexit('action=profile;area=static;u='.$context['member']['id']);
 	}
 }
