@@ -50,6 +50,22 @@
 
 	if (empty($context['uninstalling']))
 	{
+		/* Add an extra column for the profile views */
+		$smcFunc['db_add_column'](
+			'{db_prefix}members',
+			array(
+				'name' => 'breeze_views',
+				'type' => 'int',
+				'size' => 10,
+				'null' => false,
+				'default' => 0,
+				'unsigned' => true,
+			),
+			array(),
+			'update',
+			null
+		);
+
 		/* Comments */
 		$tables[] = array(
 			'table_name' => '{db_prefix}breeze_comments',
