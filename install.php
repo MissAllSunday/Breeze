@@ -215,6 +215,34 @@
 			'parameters' => array(),
 		);
 
+		/* Profile views */
+		$tables[] = array(
+			'table_name' => '{db_prefix}breeze_profile_views',
+			'columns' => array(
+				array(
+					'name' => 'user',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
+				array(
+					'name' => 'time',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
+			),
+			'indexes' => array(
+				array(
+					'type' => 'primary',
+					'columns' => array('user')
+				),
+			),
+			'if_exists' => 'ignore',
+			'error' => 'fatal',
+			'parameters' => array(),
+		);
+
 		/* Installing */
 		foreach ($tables as $table)
 		$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
