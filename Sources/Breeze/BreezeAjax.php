@@ -103,9 +103,6 @@ class BreezeAjax
 	 */
 	public function post()
 	{
-		/* You aren't allowed in here, let's show you a nice static page... */
-		$this->permissions('postStatus');
-
 		checkSession('post', '', false);
 
 		/* Get the data */
@@ -118,6 +115,9 @@ class BreezeAjax
 		/* Do this only if there is something to add to the database */
 		if ($this->_data->validateBody('content'))
 		{
+			/* You aren't allowed in here, let's show you a nice static page... */
+			$this->permissions('postStatus', $this->_data->getValue('owner_id'));
+
 			$body = $this->_data->getValue('content');
 
 			$params = array(
