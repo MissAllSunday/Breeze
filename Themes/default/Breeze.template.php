@@ -64,7 +64,8 @@ function template_user_wall()
 
 	loadLanguage(Breeze::$name);
 
-	echo '<div id="profileview" class="flow_auto">
+	echo '
+		<div id="profileview" class="flow_auto">
 			<div class="cat_bar">
 				<h3 class="catbg">
 					<span class="ie6_header floatleft"><img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" class="icon" />', $txt['summary'], '</span>
@@ -147,12 +148,14 @@ function template_user_wall()
 	/* End of right side */
 
 	/* Left side */
-	echo '<div id="detailedinfo">
-			<div class="windowbg2">
-				<span class="topslice">
-					<span></span>
-				</span>
-			<div class="content">';
+	echo '
+			<div class="tabContainer">
+			<div id="detailedinfo">
+				<div class="windowbg2">
+					<span class="topslice">
+						<span></span>
+					</span>
+				<div class="content">';
 
 			/* Main content */
 
@@ -171,11 +174,12 @@ function template_user_wall()
 						</div>
 					</div>';
 
-		echo'</div>
-			<span class="botslice">
-				<span></span>
-			</span>
-		</div>';
+		echo'
+				</div>
+				<span class="botslice">
+					<span></span>
+				</span>
+			</div>';
 		/* End of the status textarea */
 
 
@@ -264,8 +268,19 @@ function template_user_wall()
 	if (!empty($context['Breeze']['pagination']['panel']))
 		echo '<div id="breeze_pagination">', $txt['pages'] ,': ', $context['Breeze']['pagination']['panel'] ,'</div>';
 
+	/* End of Wall div */
+	echo '
+			</div>';
+
+	/* Profile visitors */
+
+	/* End of profile visitors */
+
+	/* Any other tab must be here */
+
 	/* End of left side */
-	echo '</div>
+	echo '
+	</div>
 		<div class="clear"></div>
 	</div>';
 
