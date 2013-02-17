@@ -1047,7 +1047,7 @@ class BreezeQuery extends Breeze
 
 		$this->_smcFunc['db_query']('', '
 			UPDATE {db_prefix}members
-			SET profile_views = profile_views + 1
+			SET breeze_profile_views = breeze_profile_views + 1
 			WHERE id_member = ({int:id})',
 			array(
 				'id' => (int) $id,
