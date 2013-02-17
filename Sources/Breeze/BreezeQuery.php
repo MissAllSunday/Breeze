@@ -1037,9 +1037,9 @@ class BreezeQuery extends Breeze
 	 * BreezeQuery::updateProfileViews()
 	 *
 	 * Updates the member profile views count
-	 * @param int $id the user ID
+	 * @param string $string a json
 	 */
-	public function updateProfileViews($id)
+	public function updateProfileViews($array)
 	{
 		/* Do not waste my time */
 		if (empty($id))
