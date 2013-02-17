@@ -349,8 +349,6 @@ class BreezeAjax
 	{
 		checkSession('post', '', false);
 
-		$this->permissions();
-
 		/* Get the global vars */
 		$this->_data = Breeze::sGlobals('request');
 
