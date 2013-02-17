@@ -1032,6 +1032,28 @@ class BreezeQuery extends Breeze
 		else
 			return false;
 	}
+
+	/**
+	 * BreezeQuery::updateProfileViews()
+	 *
+	 * Updates the member profile views count
+	 * @param int $id the user ID
+	 */
+	public function updateProfileViews($id)
+	{
+		/* Do not waste my time */
+		if (empty($id))
+			return false;
+
+		$this->_smcFunc['db_query']('', '
+			UPDATE {db_prefix}members
+			SET profile_views = profile_views + 1
+			WHERE id_member = ({int:id})',
+			array(
+				'id' => (int) $id,
+			)
+		);
+	}
 }
 
 /*

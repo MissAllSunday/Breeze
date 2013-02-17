@@ -54,7 +54,7 @@
 		$smcFunc['db_add_column'](
 			'{db_prefix}members',
 			array(
-				'name' => 'breeze_views',
+				'name' => 'profile_views',
 				'type' => 'int',
 				'size' => 10,
 				'null' => false,
