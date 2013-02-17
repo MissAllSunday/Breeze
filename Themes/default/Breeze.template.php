@@ -149,8 +149,8 @@ function template_user_wall()
 
 	/* Left side */
 	echo '
-			<div class="tabContainer">
-			<div id="detailedinfo">
+			<div class="tabContainer" id="detailedinfo">
+			<div id="tabs_wall">
 				<div class="windowbg2">
 					<span class="topslice">
 						<span></span>
@@ -273,7 +273,11 @@ function template_user_wall()
 			</div>';
 
 	/* Profile visitors */
+	echo '<div id="tabs_views">';
 
+	echo 'I\'m Buzz Lightyear, Space Ranger, Universe Protection Unit.';
+
+	echo '</div>';
 	/* End of profile visitors */
 
 	/* Any other tab must be here */
