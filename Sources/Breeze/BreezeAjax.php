@@ -258,7 +258,7 @@ class BreezeAjax
 		if ($this->_data->getValue('id') != false)
 		{
 			/* You aren't allowed in here, let's show you a nice message error... */
-			$this->permissions('delete'. ucfirst($this->_data->getValue('type')));
+			$this->permissions('delete'. ucfirst($this->_data->getValue('type')), false);
 
 			$temp_id_exists = $this->_query->getSingleValue(
 				$this->_data->getValue('type') == 'status' ? 'status' : 'comments',
