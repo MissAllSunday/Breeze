@@ -426,12 +426,12 @@ class BreezeAjax
 		obExit(false);
 	}
 
-	protected function permissions($type = false, $owner_id)
+	protected function permissions($type = false, $owner_id = false)
 	{
 		global $user_info;
 
 		/* Profile owner? */
-		$is_owner = $owner_id == $user_info['id'];
+		$is_owner = !empty($owner_id) ? $owner_id == $user_info['id'] : true;
 
 		/* Check for the proper permission */
 		if ($type)
