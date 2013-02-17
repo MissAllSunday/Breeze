@@ -173,9 +173,6 @@ class BreezeAjax
 	{
 		global $scripturl;
 
-		/* You aren't allowed in here, let's show you a nice static page... */
-		$this->permissions('postComments');
-
 		checkSession('post', '', false);
 
 		$this->_data = Breeze::sGlobals('request');
@@ -190,6 +187,9 @@ class BreezeAjax
 		/* The status do exists and the data is valid*/
 		if ($this->_data->validateBody('content') && !empty($temp_id_exists))
 		{
+			/* You aren't allowed in here, let's show you a nice static page... */
+			$this->permissions('postComments', $this->_data->getValue('profile_owner_id'));
+
 			$body = $this->_data->getValue('content');
 
 			/* Build the params array for the query */
