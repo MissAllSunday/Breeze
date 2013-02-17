@@ -145,6 +145,8 @@ function template_user_wall()
 
 			/* Main content */
 
+			/* Here be tabs... */
+
 			/* This is the status box,  O RLY? */
 			if ($context['Breeze']['visitor']['post_status'])
 				echo '<div class="breeze_user_inner">
