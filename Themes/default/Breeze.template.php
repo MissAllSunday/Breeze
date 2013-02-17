@@ -131,7 +131,18 @@ function template_user_wall()
 						<span></span>
 					</span>
 				</div>';
-		echo '</div>';
+
+		/* Links for tabs */
+		echo '
+				<div class="windowbg">
+					<ul id="breeze_tabLinks" class="idTabs">
+						<li><a href="#tabs_wall" class="selected">Wall</a></li>
+						<li><a href="#tabs_views">Profile views</a></li>
+					</ul>
+				</div>';
+
+		echo '
+			</div>';
 
 	/* End of right side */
 
