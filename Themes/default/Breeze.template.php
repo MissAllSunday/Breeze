@@ -139,6 +139,7 @@ function template_user_wall()
 					<ul id="breeze_tabLinks" class="idTabs">
 						<li><a href="#tabs_wall" class="selected">Wall</a></li>
 						<li><a href="#tabs_views">Profile views</a></li>
+						<li><a href="#tabs_test">test tab</a></li>
 					</ul>
 				</div>';
 
@@ -281,6 +282,11 @@ function template_user_wall()
 	/* End of profile visitors */
 
 	/* Any other tab must be here */
+	echo '<div id="tabs_test">';
+
+	echo 'testig, testing, I\'m testing!';
+
+	echo '</div>';
 
 	/* End of left side */
 	echo '
