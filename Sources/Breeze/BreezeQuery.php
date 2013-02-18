@@ -1037,9 +1037,10 @@ class BreezeQuery extends Breeze
 	 * BreezeQuery::updateProfileViews()
 	 *
 	 * Updates the member profile views count
-	 * @param string $string a json
+	 * @param int $id the user ID
+	 * @param string $json_string a json string
 	 */
-	public function updateProfileViews($array)
+	public function updateProfileViews($id, $json_string)
 	{
 		/* Do not waste my time */
 		if (empty($id))
@@ -1047,10 +1048,11 @@ class BreezeQuery extends Breeze
 
 		$this->_smcFunc['db_query']('', '
 			UPDATE {db_prefix}members
-			SET breeze_profile_views = breeze_profile_views + 1
+			SET breeze_profile_views = {string:json_string}
 			WHERE id_member = ({int:id})',
 			array(
 				'id' => (int) $id,
+				'json_string' => $json_string,
 			)
 		);
 	}
