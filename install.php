@@ -58,7 +58,6 @@
 				'type' => 'text',
 				'size' => '',
 				'default' => '',
-				'unsigned' => true,
 			),
 			array(),
 			'update',

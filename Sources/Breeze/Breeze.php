@@ -123,7 +123,7 @@ class Breeze
 	 * @param string $var Either post, request or get
 	 * @return object Acces to BreezeGlobals
 	 */
-	public function sGlobals($var)
+	public static function sGlobals($var)
 	{
 		return new BreezeGlobals($var);
 	}
