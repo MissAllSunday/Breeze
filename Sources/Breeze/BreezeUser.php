@@ -62,6 +62,9 @@ class BreezeUser
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
+		/* Track the visit */
+		self::trackViews();
+
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
 		$settings = $breezeController->get('settings');
 		$query = $breezeController->get('query');
@@ -411,5 +414,33 @@ class BreezeUser
 		$context['Breeze']['visitor']['post_comment'] = allowedTo('breeze_postComments') || $context['user']['is_owner'];
 		$context['Breeze']['visitor']['delete_status'] = allowedTo('breeze_deleteStatus') || $context['user']['is_owner'];
 		$context['Breeze']['visitor']['delete_comments'] = allowedTo('breeze_deleteComments') || $context['user']['is_owner'];
+	}
+
+	protected static function trackViews
+	{
+		global $user_info, $context, $breezeController;
+
+		/* Don't log own views */
+		if ($context['member']['id'] === $user_info['id'])
+			return false;
+
+		/* Get the profile views */
+		$views = $breezeController->get('query')->getViews($context['member']['id']);
+
+		/* Don't have any views yet? */
+		if (empty($views))
+		{
+			$data = array();
+
+			/* Build the array */
+			$data[$user_info['id']] = array(
+				'user' => $user_info['id'],
+				'last_view' => time(),
+				'views' => 0,
+			);
+
+			/* Insert the data */
+			updateMemberData($context['member']['id'], array('breeze_profile_views' => json_encode($data)));
+		}
 	}
 }
