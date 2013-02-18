@@ -1043,7 +1043,7 @@ class BreezeQuery extends Breeze
 	public function updateProfileViews($id, $json_string)
 	{
 		/* Do not waste my time */
-		if (empty($id))
+		if (empty($id) || empty($json_string))
 			return false;
 
 		$this->_smcFunc['db_query']('', '
