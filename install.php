@@ -50,6 +50,21 @@
 
 	if (empty($context['uninstalling']))
 	{
+		/* Profile views */
+		$smcFunc['db_add_column'](
+			'{db_prefix}members',
+			array(
+				'name' => 'breeze_profile_views',
+				'type' => 'text',
+				'size' => '',
+				'default' => '',
+				'unsigned' => true,
+			),
+			array(),
+			'update',
+			null
+		);
+
 		/* Comments */
 		$tables[] = array(
 			'table_name' => '{db_prefix}breeze_comments',
@@ -208,34 +223,6 @@
 				array(
 					'type' => 'primary',
 					'columns' => array('id')
-				),
-			),
-			'if_exists' => 'ignore',
-			'error' => 'fatal',
-			'parameters' => array(),
-		);
-
-		/* Profile views */
-		$tables[] = array(
-			'table_name' => '{db_prefix}breeze_profile_views',
-			'columns' => array(
-				array(
-					'name' => 'user',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(
-					'name' => 'time',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-			),
-			'indexes' => array(
-				array(
-					'type' => 'primary',
-					'columns' => array('user')
 				),
 			),
 			'if_exists' => 'ignore',
