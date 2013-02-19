@@ -1069,8 +1069,8 @@ class BreezeQuery extends Breeze
 		);
 
 		/* Populate the array like a boss! */
-		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-			$return = $row;
+		while ($row = $this->_smcFunc['db_fetch_row']($result))
+			$return = $row[0];
 
 		$this->_smcFunc['db_free_result']($result);
 

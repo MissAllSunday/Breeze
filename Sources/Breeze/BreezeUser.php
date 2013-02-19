@@ -427,7 +427,7 @@ class BreezeUser
 			return false;
 
 		/* Do this only if t hasn't been done before */
-		if (cache_get_data(Breeze::$name .'-tempViews-'. $context['member']['id'], 60) == null)
+		if (cache_get_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], 60) == null)
 		{
 			/* Get the profile views */
 			$views = $breezeController->get('query')->getViews($context['member']['id']);
@@ -446,7 +446,7 @@ class BreezeUser
 				updateMemberData($context['member']['id'], array('breeze_profile_views' => json_encode($data)));
 
 				/* Set the temp cache */
-				cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'], $data[$user_info['id']], 60);
+				cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], $data[$user_info['id']], 60);
 
 				/* Cut it off */
 				return;
@@ -478,7 +478,7 @@ class BreezeUser
 			updateMemberData($context['member']['id'], array('breeze_profile_views' => json_encode($views)));
 
 			/* ...and set the temp cache */
-			cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'], $views[$user_info['id']], 60);
+			cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], $views[$user_info['id']], 60);
 		}
 
 		else
