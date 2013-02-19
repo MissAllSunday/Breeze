@@ -62,9 +62,6 @@ class BreezeUser
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
-		/* Track the visit */
-		self::trackViews();
-
 		/* We kinda need all this stuff, dont' ask why, just nod your head... */
 		$settings = $breezeController->get('settings');
 		$query = $breezeController->get('query');
@@ -74,6 +71,13 @@ class BreezeUser
 
 		/* Display all the JavaScript bits */
 		Breeze::headersHook('profile');
+
+		/* Track the visit */
+		$context['member']['profile_views'] = self::trackViews();
+
+		/* Load the users data */
+		if (!empty($context['member']['profile_views']))
+			$tools->loadUserInfo(array_keys($context['member']['profile_views']));
 
 		/* Default values */
 		$status = array();
@@ -435,8 +439,6 @@ class BreezeUser
 			/* Don't have any views yet? */
 			if (empty($views))
 			{
-				$views = array();
-
 				/* Build the array */
 				$views[$user_info['id']] = array(
 					'user' => $user_info['id'],
