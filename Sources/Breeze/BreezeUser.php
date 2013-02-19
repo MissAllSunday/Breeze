@@ -434,7 +434,7 @@ class BreezeUser
 			return false;
 
 		/* Do this only if t hasn't been done before */
-		if (($return = cache_get_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], 60)) == null)
+		if (($views = cache_get_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], 60)) == null)
 		{
 			/* Get the profile views */
 			$views = $breezeController->get('query')->getViews($context['member']['id']);

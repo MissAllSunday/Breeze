@@ -274,11 +274,15 @@ function template_user_wall()
 			</div>';
 
 	/* Profile visitors */
-	if ($context['member']['options']['Breeze_enable_visits_module'])
+	if ($context['member']['options']['Breeze_enable_visits_module'] && !empty($context['member']['profile_views']))
 	{
 		echo '<div id="tabs_views">';
 
-		echo 'I\'m Buzz Lightyear, Space Ranger, Universe Protection Unit.';
+		foreach ($context['member']['profile_views'] as $profile_views)
+		{
+			$profile_views['user'];
+
+		}
 
 		echo '</div>';
 	}
