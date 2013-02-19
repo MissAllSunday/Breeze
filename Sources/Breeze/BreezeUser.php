@@ -73,11 +73,14 @@ class BreezeUser
 		Breeze::headersHook('profile');
 
 		/* Track the visit */
-		$context['member']['profile_views'] = self::trackViews();
+		if (!empty($context['member']['options']['Breeze_enable_visits_module']))
+		{
+			$context['member']['profile_views'] = self::trackViews();
 
-		/* Load the users data */
-		if (!empty($context['member']['profile_views']))
-			$tools->loadUserInfo(array_keys($context['member']['profile_views']));
+			/* Load the users data */
+			if (!empty($context['member']['profile_views']))
+				$tools->loadUserInfo(array_keys($context['member']['profile_views']));
+		}
 
 		/* Default values */
 		$status = array();

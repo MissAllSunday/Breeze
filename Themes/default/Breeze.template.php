@@ -138,7 +138,7 @@ function template_user_wall()
 				<div class="windowbg">
 					<ul id="breeze_tabLinks" class="idTabs">
 						<li><a href="#tabs_wall" class="selected">Wall</a></li>
-						<li><a href="#tabs_views">Profile views</a></li>
+						', !empty($context['member']['options']['Breeze_enable_visits_module']) ? '<li><a href="#tabs_views">Profile views</a></li>' : '' ,'
 						<li><a href="#tabs_test">test tab</a></li>
 					</ul>
 				</div>';
@@ -274,11 +274,14 @@ function template_user_wall()
 			</div>';
 
 	/* Profile visitors */
-	echo '<div id="tabs_views">';
+	if ($context['member']['options']['Breeze_enable_visits_module'])
+	{
+		echo '<div id="tabs_views">';
 
-	echo 'I\'m Buzz Lightyear, Space Ranger, Universe Protection Unit.';
+		echo 'I\'m Buzz Lightyear, Space Ranger, Universe Protection Unit.';
 
-	echo '</div>';
+		echo '</div>';
+	}
 	/* End of profile visitors */
 
 	/* Any other tab must be here */
