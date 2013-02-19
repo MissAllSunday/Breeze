@@ -481,7 +481,6 @@ class BreezeUser
 			cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'], $views[$user_info['id']], 60);
 		}
 
-		
 		else
 			return false;
 	}
