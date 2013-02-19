@@ -1064,7 +1064,7 @@ class BreezeQuery extends Breeze
 		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, 120)) == null)
 		{
 			$result = $this->_smcFunc['db_query']('', '
-				SELECT '. implode(',', $this->_tables['members']['columns']) .'
+				SELECT breeze_profile_views
 				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
 				WHERE id_member = {int:user}
 				', array(
