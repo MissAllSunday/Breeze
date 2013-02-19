@@ -1061,11 +1061,11 @@ class BreezeQuery extends Breeze
 	{
 
 		/* We are gonna use the cache to avoid multiple callings at the database when refreshing */
-		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, 120)) == null)
+		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['members']['name'] . '-'. $user, 120)) == null)
 		{
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT breeze_profile_views
-				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
+				FROM {db_prefix}' . $this->_tables['members']['table'] . '
 				WHERE id_member = {int:user}
 				', array(
 					'user' => (int) $user,
@@ -1078,7 +1078,7 @@ class BreezeQuery extends Breeze
 
 			$this->_smcFunc['db_free_result']($result);
 
-			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, $return, 120);
+			cache_put_data(Breeze::$name .'-' . $this->_tables['members']['name'] . '-'. $user, $return, 120);
 		}
 
 		/* Return the data */

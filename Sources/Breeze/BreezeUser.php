@@ -420,27 +420,69 @@ class BreezeUser
 	{
 		global $user_info, $context, $breezeController;
 
+		$data = array();
+
 		/* Don't log own views */
 		if ($context['member']['id'] === $user_info['id'])
 			return false;
 
-		/* Get the profile views */
-		$views = $breezeController->get('query')->getViews($context['member']['id']);
-
-		/* Don't have any views yet? */
-		if (empty($views))
+		/* Do this only if t hasn't bene done before */
+		if (cache_get_data(Breeze::$name .'-tempViews-'. $context['member']['id'], 60) == null)
 		{
-			$data = array();
+			/* Get the profile views */
+			$views = $breezeController->get('query')->getViews($context['member']['id']);
 
-			/* Build the array */
-			$data[$user_info['id']] = array(
-				'user' => $user_info['id'],
-				'last_view' => time(),
-				'views' => 0,
-			);
+			/* Don't have any views yet? */
+			if (empty($views))
+			{
+				/* Build the array */
+				$data[$user_info['id']] = array(
+					'user' => $user_info['id'],
+					'last_view' => time(),
+					'views' => 1,
+				);
 
-			/* Insert the data */
-			updateMemberData($context['member']['id'], array('breeze_profile_views' => json_encode($data)));
+				/* Insert the data */
+				updateMemberData($context['member']['id'], array('breeze_profile_views' => json_encode($data)));
+
+				/* Set the temp cache */
+				cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'], $data[$user_info['id']], 60);
+
+				/* Cut it off */
+				return;
+			}
+
+			/* Get the data */
+			$views = json_decode($views, true);
+
+			/* Does this member has been here before? */
+			if (!empty($views[$user_info['id']]))
+			{
+				/* Update the data then */
+				$views[$user_info['id']]['last_view'] = time();
+				$views[$user_info['id']]['views'] = $views[$user_info['id']]['views'] + 1;
+			}
+
+			/* First time huh? */
+			else
+			{
+				/* Build the array */
+				$views[$user_info['id']] = array(
+					'user' => $user_info['id'],
+					'last_view' => time(),
+					'views' => 1,
+				);
+			}
+
+			/* Either way, update the table */
+			updateMemberData($context['member']['id'], array('breeze_profile_views' => json_encode($views)));
+
+			/* ...and set the temp cache */
+			cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'], $views[$user_info['id']], 60);
 		}
+
+		
+		else
+			return false;
 	}
 }
