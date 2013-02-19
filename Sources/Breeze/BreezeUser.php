@@ -422,11 +422,11 @@ class BreezeUser
 
 		$data = array();
 
-		/* Don't log own views */
-		if ($context['member']['id'] === $user_info['id'])
+		/* Don't log own or guest views*/
+		if ($context['member']['id'] === $user_info['id'] || $user_info['is_uest'] == true)
 			return false;
 
-		/* Do this only if t hasn't bene done before */
+		/* Do this only if t hasn't been done before */
 		if (cache_get_data(Breeze::$name .'-tempViews-'. $context['member']['id'], 60) == null)
 		{
 			/* Get the profile views */
