@@ -416,14 +416,14 @@ class BreezeUser
 		$context['Breeze']['visitor']['delete_comments'] = allowedTo('breeze_deleteComments') || $context['user']['is_owner'];
 	}
 
-	protected static function trackViews
+	protected static function trackViews()
 	{
 		global $user_info, $context, $breezeController;
 
 		$data = array();
 
 		/* Don't log own or guest views*/
-		if ($context['member']['id'] === $user_info['id'] || $user_info['is_uest'] == true)
+		if ($context['member']['id'] === $user_info['id'] || $user_info['is_guest'] == true)
 			return false;
 
 		/* Do this only if t hasn't been done before */
