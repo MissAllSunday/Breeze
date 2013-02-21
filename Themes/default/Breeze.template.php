@@ -274,7 +274,7 @@ function template_user_wall()
 			</div>';
 
 	/* Profile visitors */
-	if ($context['member']['options']['Breeze_enable_visits_module'] && !empty($context['member']['profile_views']))
+	if (!empty($context['member']['options']['Breeze_enable_visits_module']) && !empty($context['member']['profile_views']))
 	{
 		$style_counter = 1;
 
