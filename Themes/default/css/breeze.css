@@ -283,3 +283,28 @@ text-align: center;
  {
 	margin-left: 10px;
  }
+
+ul.breeze_top_profile_views
+{
+	float:left;
+	margin:5px;
+}
+
+.breeze_profile_views_name
+{
+	margin-bottom:5px !important;
+}
+
+.breeze_profile_views_block
+{
+	float:left;
+	margin: 5px !important;
+	border-radius:5px;
+}
+.breeze_profile_views_inner
+{
+	position:relative;
+	text-align:center;
+	width:170px;
+	float:left;
+}

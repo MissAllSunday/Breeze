@@ -280,24 +280,24 @@ function template_user_wall()
 
 		echo '
 			<div id="tabs_views">
-				<table class="table_grid" cellspacing="0" width="90%">
-					<tbody>';
+				<ul class="reset breeze_top_profile_views">';
 
 		foreach ($context['member']['profile_views'] as $profile_views)
 		{
 			$style_counter++;
 
 			echo '
-						<tr class="windowbg', $style_counter/2 == 1 ? '2' : '' ,'" class="breeze_profile_views">
-							<td>', $context['Breeze']['user_info'][$profile_views['user']]['facebox'] ,'<br />
-							Views: ', $profile_views['views'] ,'
-							</td>
-						</tr>';
-
+					<li class="windowbg', $style_counter/2 == 1 ? '2' : '' ,' breeze_profile_views_block">
+						<ul class="breeze_profile_views_inner reset">
+							<li class="breeze_profile_views_name"><h1 class="titlebg">', $context['Breeze']['user_info'][$profile_views['user']]['link'] ,'</h1></li>
+							<li class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$profile_views['user']]['facebox'] ,'</li>
+							<li class="breeze_profile_views_last">', $profile_views['views'] ,'</li>
+						</ul>
+					</li>';
 		}
 
-		echo '</tbody>
-				</table>
+		echo '
+				</ul>
 			</div>';
 	}
 	/* End of profile visitors */
