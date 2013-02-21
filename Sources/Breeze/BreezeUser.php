@@ -76,10 +76,10 @@ class BreezeUser
 		if (!empty($context['member']['options']['Breeze_enable_visits_module']))
 		{
 			$context['member']['profile_views'] = self::trackViews();
-var_dump($context['member']['profile_views']);
+
 			/* Load the users data */
-/* 			if (!empty($context['member']['profile_views']))
-				$tools->loadUserInfo(array_keys($context['member']['profile_views'])); */
+			if (!empty($context['member']['profile_views']))
+				$tools->loadUserInfo(array_keys($context['member']['profile_views']));
 		}
 
 		/* Default values */
