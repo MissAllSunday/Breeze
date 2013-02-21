@@ -276,15 +276,21 @@ function template_user_wall()
 	/* Profile visitors */
 	if ($context['member']['options']['Breeze_enable_visits_module'] && !empty($context['member']['profile_views']))
 	{
-		echo '<div id="tabs_views">';
+		echo '
+			<div id="tabs_views">
+				<table class="table_grid" cellspacing="0" width="100%">
+					<tbody>';
 
 		foreach ($context['member']['profile_views'] as $profile_views)
 		{
-			$profile_views['user'];
+			echo '
+						<tr class="windowbg" style="">LOL LOL', $context['Breeze']['user_info'][$profile_views['user']]['facebox'] ,'</tr>';
 
 		}
 
-		echo '</div>';
+		echo '</tbody>
+				</table>
+			</div>';
 	}
 	/* End of profile visitors */
 
