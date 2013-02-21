@@ -276,6 +276,8 @@ function template_user_wall()
 	/* Profile visitors */
 	if ($context['member']['options']['Breeze_enable_visits_module'] && !empty($context['member']['profile_views']))
 	{
+		$style_counter = 1;
+
 		echo '
 			<div id="tabs_views">
 				<table class="table_grid" cellspacing="0" width="100%">
@@ -283,8 +285,10 @@ function template_user_wall()
 
 		foreach ($context['member']['profile_views'] as $profile_views)
 		{
+			$style_counter++;
+
 			echo '
-						<tr class="windowbg" style="">LOL LOL', $context['Breeze']['user_info'][$profile_views['user']]['facebox'] ,'</tr>';
+						<tr class="windowbg', $style_counter/2 == 1 ? '2' : '' ,'" style=""><td>LOL LOL', $context['Breeze']['user_info'][$profile_views['user']]['facebox'] ,'</td></tr>';
 
 		}
 
