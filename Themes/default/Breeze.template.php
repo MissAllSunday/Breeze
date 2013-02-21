@@ -291,7 +291,7 @@ function template_user_wall()
 						<ul class="breeze_profile_views_inner reset">
 							<li class="breeze_profile_views_name"><h1 class="titlebg">', $context['Breeze']['user_info'][$profile_views['user']]['link'] ,'</h1></li>
 							<li class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$profile_views['user']]['facebox'] ,'</li>
-							<li class="breeze_profile_views_last">', $profile_views['views'] ,'</li>
+							<li class="breeze_profile_views_last">', $txt['Breeze_general_last_view'] ,': ', $context['breeze']['tools']->timeElapsed($profile_views['last_view']) ,'</li>
 						</ul>
 					</li>';
 		}

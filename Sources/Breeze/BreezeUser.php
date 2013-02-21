@@ -86,6 +86,7 @@ class BreezeUser
 		$status = array();
 
 		/* Set all the page stuff */
+		$context['breeze']['tools'] = $tools;
 		$context['sub_template'] = 'user_wall';
 		$context += array(
 			'can_send_pm' => allowedTo('pm_send'),

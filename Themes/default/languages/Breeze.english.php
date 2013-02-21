@@ -45,6 +45,7 @@ $txt['Breeze_general_my_wall'] = 'My Wall';
 $txt['Breeze_general_my_wall_settings'] = 'My Wall Settings';
 $txt['Breeze_general_loading'] = 'Loading...';
 $txt['Breeze_general_like'] = 'Like';
+$txt['Breeze_general_last_view'] = 'Last view';
 $txt['Breeze_general_delete'] = 'Delete';
 $txt['Breeze_general_unlike'] = 'Unlike';
 $txt['Breeze_general_plural'] = '(s)';
