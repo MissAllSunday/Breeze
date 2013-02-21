@@ -280,7 +280,7 @@ function template_user_wall()
 
 		echo '
 			<div id="tabs_views">
-				<table class="table_grid" cellspacing="0" width="100%">
+				<table class="table_grid" cellspacing="0" width="90%">
 					<tbody>';
 
 		foreach ($context['member']['profile_views'] as $profile_views)
@@ -288,7 +288,11 @@ function template_user_wall()
 			$style_counter++;
 
 			echo '
-						<tr class="windowbg', $style_counter/2 == 1 ? '2' : '' ,'" style=""><td>LOL LOL', $context['Breeze']['user_info'][$profile_views['user']]['facebox'] ,'</td></tr>';
+						<tr class="windowbg', $style_counter/2 == 1 ? '2' : '' ,'" class="breeze_profile_views">
+							<td>', $context['Breeze']['user_info'][$profile_views['user']]['facebox'] ,'<br />
+							Views: ', $profile_views['views'] ,'
+							</td>
+						</tr>';
 
 		}
 
