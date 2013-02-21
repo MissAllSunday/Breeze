@@ -76,10 +76,10 @@ class BreezeUser
 		if (!empty($context['member']['options']['Breeze_enable_visits_module']))
 		{
 			$context['member']['profile_views'] = self::trackViews();
-
+var_dump($context['member']['profile_views']);
 			/* Load the users data */
-			if (!empty($context['member']['profile_views']))
-				$tools->loadUserInfo(array_keys($context['member']['profile_views']));
+/* 			if (!empty($context['member']['profile_views']))
+				$tools->loadUserInfo(array_keys($context['member']['profile_views'])); */
 		}
 
 		/* Default values */
@@ -429,15 +429,21 @@ class BreezeUser
 
 		$data = array();
 
-		/* Don't log own or guest views*/
-		if ($context['member']['id'] === $user_info['id'] || $user_info['is_guest'] == true)
+		/* Don't log guest views*/
+		if ($user_info['is_guest'] == true)
 			return false;
 
 		/* Do this only if t hasn't been done before */
-		if (($views = cache_get_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], 60)) == null)
+		$views = cache_get_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], 60);
+
+		if (empty($views))
 		{
 			/* Get the profile views */
 			$views = $breezeController->get('query')->getViews($context['member']['id']);
+
+			/* Don't track own views */
+			if ($context['member']['id'] == $user_info['id'])
+				return !empty($views) ? json_decode($views, true) : false;
 
 			/* Don't have any views yet? */
 			if (empty($views))
