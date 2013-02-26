@@ -77,7 +77,8 @@
 						data: ({content : test, owner_id : ownerID, poster_id : posterID}),
 						cache: false,
 						dataType: 'json',
-						success: function(html){
+						success: function(html)
+						{
 							/* The server side found an issue */
 							if(html.type == 'error')
 							{
@@ -394,8 +395,7 @@ jQuery(document).ready(function(){
 		noti_id_delete = parseInt(noti_id_delete, 10);
 		var user = breeze_current_user;
 
-		jQuery.ajax(
-		{
+		jQuery.ajax({
 			type: 'POST',
 			url: smf_scripturl + '?action=breezeajax;sa=notimarkasread',
 			data: ({content : noti_id_delete, user : user}),
