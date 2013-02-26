@@ -342,9 +342,7 @@ $(document).ready(function ()
 				'permission' => array(
 					'own' => array(
 						'profile_view_own',
-						'profile_view_any',
 						),
-					'any' => array('profile_view_any'),
 					),
 				);
 
