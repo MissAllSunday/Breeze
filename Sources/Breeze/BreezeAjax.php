@@ -427,16 +427,16 @@ class BreezeAjax
 		global $user_info;
 
 		/* Profile owner? */
-		$is_owner = !empty($owner_id) ? $owner_id == $user_info['id'] : true;
+		$is_owner = !empty($owner_id) ? ($owner_id == $user_info['id']) : true;
 
 		/* Check for the proper permission */
-		if ($type)
-			if (!allowedTo('breeze_'. $type) || !$is_owner)
-				redirectexit('action=profile;area=static;u='. $owner_id);
+		if (!$is_owner && !empty($type))
+			isAllowedTo('breeze_'. $type);
+
 
 		/* Just a generic "is owner" */
 		else
 			if(!$is_owner)
-				redirectexit('action=profile;area=static;u='. $owner_id);
+				fatal_lang_error($this->_text->getText('error_no_valid_action'));
 	}
 }
