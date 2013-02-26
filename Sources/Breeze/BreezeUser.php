@@ -115,7 +115,7 @@ class BreezeUser
 		loadtemplate(Breeze::$name);
 
 		loadThemeOptions($memID);
-		if (allowedTo(array('profile_extra_own', 'profile_extra_any')))
+		if (allowedTo(array('profile_extra_own')))
 			loadCustomFields($memID, 'theme');
 
 		if (empty($breezeController))
