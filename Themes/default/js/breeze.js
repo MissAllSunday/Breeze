@@ -278,21 +278,6 @@
 		});
 	});
 
-	/* Toggle the comment box */
-	jQuery(document).ready(function()
-	{
-		$(".comment_button").click(function()
-		{
-			var element = jQuery(this);
-			var I = element.attr('id');
-
-			$("#slidepanel"+I).slideToggle(300);
-			jQuery(this).toggleClass("active");
-
-			return false;
-		});
-	});
-
 	/* Delete a status */
 	jQuery(document).ready(function()
 	{
