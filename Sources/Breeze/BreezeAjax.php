@@ -432,11 +432,11 @@ class BreezeAjax
 		/* Check for the proper permission */
 		if ($type)
 			if (!allowedTo('breeze_'. $type) || !$is_owner)
-				redirectexit('action=profile;area=static;u='. $context['member']['id']);
+				redirectexit('action=profile;area=static;u='. $owner_id);
 
 		/* Just a generic "is owner" */
 		else
 			if(!$is_owner)
-				redirectexit('action=profile;area=static;u='.$context['member']['id']);
+				redirectexit('action=profile;area=static;u='. $owner_id);
 	}
 }
