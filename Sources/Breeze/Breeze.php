@@ -140,6 +140,10 @@ class Breeze
 		global $context, $settings, $user_info, $breezeController;
 		static $header_done = false;
 
+		/* Don't do anything if we are in SSI world */
+		if (SMF == 'SSI')
+			return false;
+
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
