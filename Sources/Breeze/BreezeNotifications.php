@@ -388,7 +388,7 @@ class BreezeNotifications
 
 		/* Sometimes this data hasn't been loaded yet */
 		if (empty($context['Breeze']['user_info'][$noti['content']['wall_poster']]) || empty($context['Breeze']['user_info'][$noti['content']['wall_owner']]))
-		$this-tools->loadUserInfo(array($noti['content']['wall_poster'], $noti['content']['wall_owner']));
+		$this->tools->loadUserInfo(array($noti['content']['wall_poster'], $noti['content']['wall_owner']));
 
 		/* Is this a mention on a comment? */
 		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
