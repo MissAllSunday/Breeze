@@ -649,7 +649,7 @@ class BreezeQuery extends Breeze
 	public function insertStatus($array)
 	{
 		/* We don't need this no more */
-		$this->killCache($this->_tables['status']['name']);
+		cache_put_data(Breeze::$name .'-' . $array['owner_id'], '');
 
 		/* Insert! */
 		$this->_smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['status']['table']) .
