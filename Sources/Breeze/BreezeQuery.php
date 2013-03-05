@@ -123,15 +123,15 @@ class BreezeQuery extends Breeze
 			$data
 		);
 
-		if ($single)
+		if (!empty($single))
 			while ($row = $this->_smcFunc['db_fetch_assoc']($query))
 				$dataResult = $row;
 
-		if (!empty($key))
+		elseif (!empty($key) && empty($single))
 			while ($row = $this->_smcFunc['db_fetch_assoc']($query))
 				$dataResult[$row[$key]] = $row;
 
-		else
+		elseif (empty($single) && empty($key))
 			while ($row = $this->_smcFunc['db_fetch_assoc']($query))
 				$dataResult[] = $row;
 
