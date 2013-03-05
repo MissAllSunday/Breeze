@@ -331,12 +331,6 @@ $(document).ready(function ()
 					),
 				);
 
-			/* Per user permissions */
-			$profile_areas['breeze_profile'] = array(
-				'title' => $text->getText('general_my_wall_settings'),
-				'areas' => array(),
-				);
-
 			/* User individual settings, show the button if the mod is enable and the user is the profile owner or the user has the permissions to edit other walls */
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $text->getText('user_settings_name'),
