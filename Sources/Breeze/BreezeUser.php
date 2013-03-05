@@ -38,14 +38,6 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-	/* A bunch of ugly, very ugly wrapper functions because static methods cannot be callable with a string by SMF meh... */
-	function Breeze_Wrapper_Wall(){BreezeUser::wall();}
-	function Breeze_Wrapper_Settings(){BreezeUser::settings();}
-	function Breeze_Wrapper_BuddyRequest(){BreezeUser::buddyRequest();}
-	function Breeze_Wrapper_BuddyMessageSend(){BreezeUser::buddyMessageSend();}
-	function Breeze_Wrapper_Notifications(){BreezeUser::notifications();}
-	function Breeze_Wrapper_Single(){BreezeUser::single();}
-
 function breezeWall()
 {
 	global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info, $breezeController;
