@@ -46,7 +46,7 @@ if (!defined('SMF'))
 	function Breeze_Wrapper_Notifications(){BreezeUser::notifications();}
 	function Breeze_Wrapper_Single(){BreezeUser::single();}
 
-function wall()
+function breezeWall()
 {
 	global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info, $breezeController;
 
@@ -103,7 +103,7 @@ function wall()
 }
 
 /* Shows a form for users to set up their wall as needed. */
-function settings()
+function breezeSettings()
 {
 	global $context, $memID, $breezeController;
 
@@ -187,7 +187,7 @@ function settings()
 	$context['Breeze']['UserSettings']['Form'] = $form->display();
 }
 
-function notifications()
+function breezeNotifications()
 {
 	global $context, $user_info, $scripturl, $options, $breezeController;
 
@@ -214,7 +214,7 @@ function notifications()
 }
 
 /* Show the buddy request list */
-function buddyRequest()
+function breezeBuddyRequest()
 {
 	global $context, $user_info, $scripturl, $memberContext, $breezeController;
 
@@ -310,7 +310,7 @@ function buddyRequest()
 }
 
 /* Show a message to let the user know their buddy request must be approved */
-function buddyMessageSend()
+function breezeBuddyMessageSend()
 {
 	global $context, $scripturl, $breezeController;
 
@@ -329,7 +329,7 @@ function buddyMessageSend()
 }
 
 /* Show a single status with all it's comments */
-function single()
+function breezeSingle()
 {
 	global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info, $breezeController;
 
@@ -361,7 +361,7 @@ function single()
 	$context['canonical_url'] = $scripturl .'?action=profile;area=wallstatus';
 }
 
-function checkPermissions()
+function breezeCheckPermissions()
 {
 	global $context, $memberContext, $user_info, $breezeController;
 
