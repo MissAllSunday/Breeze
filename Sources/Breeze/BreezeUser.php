@@ -53,7 +53,7 @@ function wall()
 	loadtemplate(Breeze::$name);
 
 	/* Check if this user is welcomed here */
-	self::checkPermissions();
+	breezeCheckPermissions();
 
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
@@ -336,7 +336,7 @@ function single()
 	loadtemplate(Breeze::$name);
 
 	/* Check if this user is welcomed here */
-	self::checkPermissions();
+	breezeCheckPermissions();
 
 	/* Load what we need */
 	$text = $breezeController->get('text');
