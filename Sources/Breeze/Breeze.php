@@ -313,7 +313,7 @@ $(document).ready(function ()
 			$profile_areas['info']['areas']['summary'] = array(
 				'label' => $text->getText('general_wall'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'Breeze_Wrapper_Wall',
+				'function' => 'breezeWall',
 				'permission' => array(
 					'own' => 'profile_view_own',
 					'any' => 'profile_view_any',
@@ -341,7 +341,7 @@ $(document).ready(function ()
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $text->getText('user_settings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'Breeze_Wrapper_Settings',
+				'function' => 'breezeSettings',
 				'sc' => 'post',
 				'permission' => array(
 					'own' => array(
@@ -354,7 +354,7 @@ $(document).ready(function ()
 			$profile_areas['breeze_profile']['areas']['wallstatus'] = array(
 				'label' => $text->getText('user_buddysettings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'Breeze_Wrapper_Single',
+				'function' => 'breezeSingle',
 				'permission' => array('own' => 'profile_view_own', 'any' => 'profile_view_any',),
 				);
 
@@ -362,7 +362,7 @@ $(document).ready(function ()
 			$profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
 				'label' => $text->getText('user_buddysettings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'Breeze_Wrapper_BuddyRequest',
+				'function' => 'breezeBuddyRequest',
 				'permission' => array('own' => 'profile_view_own', ),
 				);
 
@@ -370,7 +370,7 @@ $(document).ready(function ()
 			$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
 				'label' => $text->getText('user_notisettings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'Breeze_Wrapper_Notifications',
+				'function' => 'breezeNotifications',
 				'permission' => array('own' => 'profile_view_own', ),
 				);
 		}
