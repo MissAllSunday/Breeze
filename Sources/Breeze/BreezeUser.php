@@ -46,7 +46,7 @@ if (!defined('SMF'))
 	function Breeze_Wrapper_Notifications(){BreezeUser::notifications();}
 	function Breeze_Wrapper_Single(){BreezeUser::single();}
 
-	public static function wall()
+	function wall()
 	{
 		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info, $breezeController;
 
@@ -103,7 +103,7 @@ if (!defined('SMF'))
 	}
 
 	/* Shows a form for users to set up their wall as needed. */
-	public static function settings()
+	function settings()
 	{
 		global $context, $memID, $breezeController;
 
@@ -187,7 +187,7 @@ if (!defined('SMF'))
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
 	}
 
-	public static function notifications()
+	function notifications()
 	{
 		global $context, $user_info, $scripturl, $options, $breezeController;
 
@@ -214,7 +214,7 @@ if (!defined('SMF'))
 	}
 
 	/* Show the buddy request list */
-	public static function buddyRequest()
+	function buddyRequest()
 	{
 		global $context, $user_info, $scripturl, $memberContext, $breezeController;
 
@@ -310,7 +310,7 @@ if (!defined('SMF'))
 	}
 
 	/* Show a message to let the user know their buddy request must be approved */
-	public static function buddyMessageSend()
+	function buddyMessageSend()
 	{
 		global $context, $scripturl, $breezeController;
 
@@ -329,7 +329,7 @@ if (!defined('SMF'))
 	}
 
 	/* Show a single status with all it's comments */
-	public static function single()
+	function single()
 	{
 		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info, $breezeController;
 
@@ -361,7 +361,7 @@ if (!defined('SMF'))
 		$context['canonical_url'] = $scripturl .'?action=profile;area=wallstatus';
 	}
 
-	protected static function checkPermissions()
+	function checkPermissions()
 	{
 		global $context, $memberContext, $user_info, $breezeController;
 
