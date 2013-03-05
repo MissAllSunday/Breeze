@@ -350,6 +350,14 @@ $(document).ready(function ()
 					),
 				);
 
+			/* Single status */
+			$profile_areas['breeze_profile']['areas']['wallstatus'] = array(
+				'label' => $text->getText('user_buddysettings_name'),
+				'file' => Breeze::$folder . 'BreezeUser.php',
+				'function' => 'Breeze_Wrapper_Single',
+				'permission' => array('own' => 'profile_view_own', 'any' => 'profile_view_any',),
+				);
+
 			/* Buddies page */
 			$profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
 				'label' => $text->getText('user_buddysettings_name'),
