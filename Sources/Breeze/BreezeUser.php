@@ -46,10 +46,6 @@ if (!defined('SMF'))
 	function Breeze_Wrapper_Notifications(){BreezeUser::notifications();}
 	function Breeze_Wrapper_Single(){BreezeUser::single();}
 
-class BreezeUser
-{
-	public function  __construct(){}
-
 	public static function wall()
 	{
 		global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info, $breezeController;
@@ -412,4 +408,3 @@ class BreezeUser
 		$context['Breeze']['visitor']['delete_status'] = allowedTo('breeze_deleteStatus') || $context['user']['is_owner'];
 		$context['Breeze']['visitor']['delete_comments'] = allowedTo('breeze_deleteComments') || $context['user']['is_owner'];
 	}
-}
