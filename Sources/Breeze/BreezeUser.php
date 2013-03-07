@@ -101,11 +101,17 @@ function breezeWall()
 
 	/* Get the profile views */
 	if (!empty($context['member']['options']['Breeze_enable_visits_tab']))
+	{
 		$context['Breeze']['views'] = breezeTrackViews();
+
+		/* Load their data */
+		$tools->loadUserInfo(array_keys($context['Breeze']['views']));
+	}
 
 	/* Show buddies only if there is something to show */
 	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
 		$tools->loadUserInfo($context['member']['buddies']);
+
 }
 
 /* Shows a form for users to set up their wall as needed. */
@@ -423,10 +429,10 @@ function breezeCheckPermissions()
 		redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 	/* You are allowed here but you still need to obey some permissions */
-	$context['Breeze']['permissions']['post_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postStatus');
-	$context['Breeze']['permissions']['post_comment'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postComments');
-	$context['Breeze']['permissions']['delete_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteStatus');
-	$context['Breeze']['permissions']['delete_comments'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
+	$context['permissions']['post_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postStatus');
+	$context['permissions']['post_comment'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postComments');
+	$context['permissions']['delete_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteStatus');
+	$context['permissions']['delete_comments'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
 }
 
 function breezeTrackViews()
