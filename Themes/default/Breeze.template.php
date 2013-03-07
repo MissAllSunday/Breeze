@@ -138,7 +138,7 @@ function template_user_wall()
 				<div class="windowbg">
 					<ul id="breeze_tabLinks" class="idTabs">
 						<li><a href="#tabs_wall" class="selected">', $txt['Breeze_tabs_wall'] ,'</a></li>
-						', !empty($context['member']['options']['Breeze_enable_visits_module']) ? '<li><a href="#tabs_views">', $txt['Breeze_tabs_views'] ,'</a></li>' : '' ,'
+						', !empty($context['member']['options']['Breeze_enable_visits_module']) ? '<li><a href="#tabs_views">'. $txt['Breeze_tabs_views'] .'</a></li>' : '' ,'
 						<li><a href="#tabs_test">', $txt['Breeze_tabs_buddies'] ,'</a></li>
 					</ul>
 				</div>';
