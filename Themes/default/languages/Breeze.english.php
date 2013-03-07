@@ -59,6 +59,7 @@ $txt['Breeze_modules_enable_visitors_description'] = 'The last %1$s visitor%2$s 
 $txt['Breeze_profile'] = 'Wall Settings';
 $txt['Breeze_user_settings_name'] = 'Wall Settings';
 $txt['Breeze_user_buddysettings_name'] = 'Buddy Requests';
+$txt['Breeze_user_buddysettings_name'] = 'Single Status';
 $txt['Breeze_user_buddyrequestmessage_name'] = 'Buddy Message Request Send';
 $txt['Breeze_user_buddyrequestmessage_message'] = 'Your request has been submitted, the user will see your request and if he/she accepts it, you will receive a notification via private message.';
 $txt['Breeze_user_notisettings_name'] = 'Notifications';

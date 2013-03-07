@@ -331,6 +331,16 @@ $(document).ready(function ()
 					),
 				);
 
+			/* Single Status */
+			$profile_areas['info']['areas']['wallstatus'] = array(
+				'label' => $text->getText('user_single_status'),
+				'file' => 'BreezeUser.php',
+				'function' => 'breezeSingle',
+				'permission' => array(
+					'own' => 'profile_view_own',
+					'any' => 'profile_view_any',
+					),
+				);
 
 			/* Per user permissions */
 			$profile_areas['breeze_profile'] = array(
