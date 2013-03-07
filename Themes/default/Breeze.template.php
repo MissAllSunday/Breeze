@@ -140,7 +140,7 @@ function template_user_wall()
 					<ul id="breeze_tabLinks" class="idTabs">
 						<li><a href="#tabs_wall" class="selected">', $txt['Breeze_tabs_wall'] ,'</a></li>
 						', !empty($context['member']['options']['Breeze_enable_visits_tab']) ? '<li><a href="#tabs_views">'. $txt['Breeze_tabs_views'] .'</a></li>' : '' ,'
-						', !empty($context['member']['options']['Breeze_enable_buddies_tab']) ? '<li><a href="#tabs_views">'. $txt['Breeze_tabs_buddies'] .'</a></li>' : '' ,'
+						', !empty($context['member']['options']['Breeze_enable_buddies_tab']) ? '<li><a href="#tabs_buddies">'. $txt['Breeze_tabs_buddies'] .'</a></li>' : '' ,'
 					</ul>
 				</div>';
 
@@ -277,18 +277,14 @@ function template_user_wall()
 	/* Profile visitors */
 	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) && !empty($context['Breeze']['views']))
 	{
-		$style_counter = 1;
-
 		echo '
-			<div id="tabs_views">
+			<div id="tabs_views" style="display: none;">
 				<ul class="reset breeze_top_profile_views">';
 
 		foreach ($context['Breeze']['views'] as $profile_views)
 		{
-			$style_counter++;
-
 			echo '
-					<li class="windowbg', $style_counter/2 == 1 ? '2' : '' ,' breeze_profile_views_block">
+					<li class="windowbg breeze_profile_views_block">
 						<ul class="breeze_profile_views_inner reset">
 							<li class="breeze_profile_views_name"><h1 class="titlebg">', $context['Breeze']['user_info'][$profile_views['user']]['link'] ,'</h1></li>
 							<li class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$profile_views['user']]['facebox'] ,'</li>
@@ -304,13 +300,26 @@ function template_user_wall()
 	/* End of profile visitors */
 
 	/* Buddies tab */
-	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']))
+	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
 	{
-		echo '<div id="tabs_buddies">';
+		echo '
+			<div id="tabs_buddies" style="display: none;">
+				<ul class="reset breeze_top_profile_views">';
 
-		echo 'testig, testing, I\'m testing!';
+		foreach ($context['member']['buddies'] as $buddies)
+		{
+			echo '
+					<li class="windowbg breeze_profile_views_block">
+						<ul class="breeze_profile_views_inner reset">
+							<li class="breeze_profile_views_name"><h1 class="titlebg">', $context['Breeze']['user_info'][$buddies]['link'] ,'</h1></li>
+							<li class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$buddies]['facebox'] ,'</li>
+						</ul>
+					</li>';
+		}
 
-		echo '</div>';
+		echo '
+				</ul>
+			</div>';
 	}
 	/* End of buddies tab */
 
