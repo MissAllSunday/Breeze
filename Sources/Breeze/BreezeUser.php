@@ -78,6 +78,7 @@ function breezeWall()
 	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 	$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
 	$context['member']['status'] = array();
+	$context['breeze']['tools'] = $tools;
 
 	/* Load all the status */
 	$status = $query->getStatusByProfile($context['member']['id']);

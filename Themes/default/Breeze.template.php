@@ -163,7 +163,7 @@ function template_user_wall()
 			/* Here be tabs... */
 
 			/* This is the status box,  O RLY? */
-			if ($context['Breeze']['permissions']['post_status'])
+			if (!empty($context['Breeze']['permissions']['post_status']))
 				echo '<div class="breeze_user_inner">
 						<div class="breeze_user_statusbox">
 							<form method="post" action="', $scripturl, '?action=breezeajax;sa=post" id="status" name="form_status" class="form_status">
@@ -203,7 +203,7 @@ function template_user_wall()
 							<div class="breeze_options"><span class="time_elapsed">', $status['time'] ,' </span>';
 
 							/* Delete link */
-							if ($context['Breeze']['permissions']['delete_status'])
+							if (!empty($context['Breeze']['permissions']['delete_status']))
 								echo '| <a href="javascript:void(0)" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> </div>';
 
 							echo '<hr />
@@ -224,7 +224,7 @@ function template_user_wall()
 														<span class="time_elapsed">', $comment['time'] ,'</span>';
 
 									/* Delete comment */
-									if ($context['Breeze']['permissions']['delete_comments'])
+									if (!empty($context['Breeze']['permissions']['delete_comments']))
 										echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 									echo '
@@ -240,7 +240,7 @@ function template_user_wall()
 							echo '</ul>';
 
 								/* Post a new comment */
-								if ($context['Breeze']['permissions']['post_comment'])
+								if (!empty($context['Breeze']['permissions']['post_comment']))
 									echo '<div>
 									<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
 										<textarea id="textboxcontent_', $status['id'] ,'" cols="40" rows="2"></textarea>
