@@ -411,7 +411,8 @@ function breezeCheckPermissions()
 	/* Get this user's ignore list */
 	$context['member']['ignore_list'] = array();
 
-	$temp_ignore_list = $query->getUserSetting($context['member']['id'], 'pm_ignore_list');
+	/* Get the ignored list */
+	$temp_ignore_list = !empty($context['member']['id']['ignore_list']) ? $context['member']['id']['ignore_list'] : $query->getUserSetting($context['member']['id'], 'pm_ignore_list');
 
 	if (!empty($temp_ignore_list))
 		$context['member']['ignore_list'] = explode(',', $temp_ignore_list);
@@ -420,12 +421,12 @@ function breezeCheckPermissions()
 	if (in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['member']['options']['Breeze_kick_ignored']))
 		redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
-		/* You are allowed here but you still need to obey some permissions */
-		$context['Breeze']['visitor']['post_status'] = allowedTo('breeze_postStatus') || $context['user']['is_owner'];
-		$context['Breeze']['visitor']['post_comment'] = allowedTo('breeze_postComments') || $context['user']['is_owner'];
-		$context['Breeze']['visitor']['delete_status'] = allowedTo('breeze_deleteStatus') || $context['user']['is_owner'];
-		$context['Breeze']['visitor']['delete_comments'] = allowedTo('breeze_deleteComments') || $context['user']['is_owner'];
-	}
+	/* You are allowed here but you still need to obey some permissions */
+	$context['Breeze']['permissions']['post_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postStatus');
+	$context['Breeze']['permissions']['post_comment'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postComments');
+	$context['Breeze']['permissions']['delete_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteStatus');
+	$context['Breeze']['permissions']['delete_comments'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
+}
 
 function breezeTrackViews()
 {

@@ -138,7 +138,7 @@ function template_user_wall()
 				<div class="windowbg">
 					<ul id="breeze_tabLinks" class="idTabs">
 						<li><a href="#tabs_wall" class="selected">', $txt['Breeze_tabs_wall'] ,'</a></li>
-						', !empty($context['member']['options']['Breeze_enable_visits_module']) ? '<li><a href="#tabs_views">'. $txt['Breeze_tabs_views'] .'</a></li>' : '' ,'
+						', !empty($context['member']['options']['Breeze_enable_visits_tab']) ? '<li><a href="#tabs_views">'. $txt['Breeze_tabs_views'] .'</a></li>' : '' ,'
 						<li><a href="#tabs_buddies">', $txt['Breeze_tabs_buddies'] ,'</a></li>
 					</ul>
 				</div>';
@@ -163,7 +163,7 @@ function template_user_wall()
 			/* Here be tabs... */
 
 			/* This is the status box,  O RLY? */
-			if ($context['Breeze']['visitor']['post_status'])
+			if ($context['Breeze']['permissions']['post_status'])
 				echo '<div class="breeze_user_inner">
 						<div class="breeze_user_statusbox">
 							<form method="post" action="', $scripturl, '?action=breezeajax;sa=post" id="status" name="form_status" class="form_status">
@@ -203,7 +203,7 @@ function template_user_wall()
 							<div class="breeze_options"><span class="time_elapsed">', $status['time'] ,' </span>';
 
 							/* Delete link */
-							if ($context['Breeze']['visitor']['delete_status'])
+							if ($context['Breeze']['permissions']['delete_status'])
 								echo '| <a href="javascript:void(0)" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> </div>';
 
 							echo '<hr />
@@ -224,7 +224,7 @@ function template_user_wall()
 														<span class="time_elapsed">', $comment['time'] ,'</span>';
 
 									/* Delete comment */
-									if ($context['Breeze']['visitor']['delete_comments'])
+									if ($context['Breeze']['permissions']['delete_comments'])
 										echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 									echo '
@@ -240,7 +240,7 @@ function template_user_wall()
 							echo '</ul>';
 
 								/* Post a new comment */
-								if ($context['Breeze']['visitor']['post_comment'])
+								if ($context['Breeze']['permissions']['post_comment'])
 									echo '<div>
 									<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
 										<textarea id="textboxcontent_', $status['id'] ,'" cols="40" rows="2"></textarea>
@@ -274,7 +274,7 @@ function template_user_wall()
 			</div>';
 
 	/* Profile visitors */
-	if (!empty($context['member']['options']['Breeze_enable_visits_module']) && !empty($context['member']['profile_views']))
+	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) && !empty($context['Breeze']['views']))
 	{
 		$style_counter = 1;
 
@@ -282,7 +282,7 @@ function template_user_wall()
 			<div id="tabs_views">
 				<ul class="reset breeze_top_profile_views">';
 
-		foreach ($context['member']['profile_views'] as $profile_views)
+		foreach ($context['Breeze']['views'] as $profile_views)
 		{
 			$style_counter++;
 
@@ -399,7 +399,7 @@ function template_singleStatus()
 							<span class="time_elapsed">', $context['Breeze']['single']['time'] ,' </span>';
 
 					/* Delete link */
-					if ($context['Breeze']['visitor']['delete_status'])
+					if ($context['Breeze']['permissions']['delete_status'])
 						echo '| <a href="javascript:void(0)" id="', $context['Breeze']['single']['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
 
 					echo '
@@ -423,7 +423,7 @@ function template_singleStatus()
 												<span class="time_elapsed">', $comment['time'] ,'</span>';
 
 							/* Delete comment */
-							if ($context['Breeze']['visitor']['delete_status'])
+							if ($context['Breeze']['permissions']['delete_status'])
 								echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 							echo '
@@ -439,7 +439,7 @@ function template_singleStatus()
 						echo '</ul>';
 
 							/* Post a new comment */
-							if ($context['Breeze']['visitor']['post_comment'])
+							if ($context['Breeze']['permissions']['post_comment'])
 								echo '<div>
 								<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $context['Breeze']['single']['id'] ,'" id="formID_', $context['Breeze']['single']['id'] ,'">
 									<textarea id="textboxcontent_', $context['Breeze']['single']['id'] ,'" cols="40" rows="2"></textarea>
