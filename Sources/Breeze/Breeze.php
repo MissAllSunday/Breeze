@@ -334,7 +334,7 @@ $(document).ready(function ()
 			/* Single Status */
 			$profile_areas['info']['areas']['wallstatus'] = array(
 				'label' => $text->getText('user_single_status'),
-				'file' => 'BreezeUser.php',
+				'file' => Breeze::$folder .'BreezeUser.php',
 				'function' => 'breezeSingle',
 				'permission' => array(
 					'own' => 'profile_view_own',
