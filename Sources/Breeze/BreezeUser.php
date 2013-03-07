@@ -412,7 +412,7 @@ function breezeCheckPermissions()
 	$context['member']['ignore_list'] = array();
 
 	/* Get the ignored list */
-	$temp_ignore_list = !empty($context['member']['id']['ignore_list']) ? $context['member']['id']['ignore_list'] : $query->getUserSetting($context['member']['id'], 'pm_ignore_list');
+	$temp_ignore_list = !empty($context['member']['ignore_list']) ? $context['member']['ignore_list'] : $query->getUserSetting($context['member']['id'], 'pm_ignore_list');
 
 	if (!empty($temp_ignore_list))
 		$context['member']['ignore_list'] = explode(',', $temp_ignore_list);
