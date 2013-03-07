@@ -195,7 +195,12 @@ $txt['Breeze_pag_pages'] = 'Pages :';
 $txt['Breeze_pag_page'] = '- page ';
 $txt['Breeze_profile_of_username'] = 'Profile of %1$s %2$s';
 $txt['Breeze_page_loading'] = 'Loading more messages...';
-$txt['Breeze_page_loading_end'] = 'There are no more messages, go to top';
+$txt['Breeze_page_loading_end'] = '<div class="breeze_center">There are no more messages, go to top</div>';
+
+/* Tabs */
+$txt['Breeze_tabs_wall'] = 'Wall';
+$txt['Breeze_tabs_buddies'] = 'Buddies';
+$txt['Breeze_tabs_views'] = 'Profile Views';
 
 /* Notifications */
 $txt['Breeze_noti_title'] = 'Notifications';
