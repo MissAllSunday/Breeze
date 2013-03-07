@@ -102,9 +102,9 @@ function breezeWall()
 	if (!empty($context['member']['options']['Breeze_enable_visits_tab']))
 		$context['Breeze']['views'] = breezeTrackViews();
 
-	/* Show buddies */
-	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']))
-		$context['Breeze']['buddies'] = breezeGetBuddies();
+	/* Show buddies only if there is something to show */
+	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
+		$tools->loadUserInfo($context['member']['buddies']);
 }
 
 /* Shows a form for users to set up their wall as needed. */
