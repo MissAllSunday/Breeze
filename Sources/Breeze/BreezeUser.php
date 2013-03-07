@@ -192,32 +192,6 @@ function breezeNotifications()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-<<<<<<< HEAD
-		/* Track the visit */
-		if (!empty($context['member']['options']['Breeze_enable_visits_module']))
-		{
-			$context['member']['profile_views'] = self::trackViews();
-
-			/* Load the users data */
-			if (!empty($context['member']['profile_views']))
-				$tools->loadUserInfo(array_keys($context['member']['profile_views']));
-		}
-
-		/* Default values */
-		$status = array();
-
-		/* Set all the page stuff */
-		$context['breeze']['tools'] = $tools;
-		$context['sub_template'] = 'user_wall';
-		$context += array(
-			'can_send_pm' => allowedTo('pm_send'),
-			'can_have_buddy' => allowedTo('profile_identity_own') && !empty($modSettings['enable_buddylist']),
-			'can_issue_warning' => in_array('w', $context['admin_features']) && allowedTo('issue_warning') && $modSettings['warning_settings'][0] == 1,
-		);
-		$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
-		$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
-		$context['member']['status'] = array();
-=======
 	/* We kinda need all this stuff, dont' ask why, just nod your head... */
 	$query = $breezeController->get('query');
 	$text = $breezeController->get('text');
@@ -231,7 +205,6 @@ function breezeNotifications()
 	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 	$context['canonical_url'] = $scripturl . '?action=profile;area=notifications;u=' . $context['member']['id'];
 }
->>>>>>> develop
 
 /* Show the buddy request list */
 function breezeBuddyRequest()
