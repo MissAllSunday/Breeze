@@ -133,13 +133,14 @@ function template_user_wall()
 					</span>
 				</div>';
 
-		/* Links for tabs */
-		echo '
+		/* Links for tabs show it if there is at least 1 tab*/
+		if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
+			echo '
 				<div class="windowbg">
 					<ul id="breeze_tabLinks" class="idTabs">
 						<li><a href="#tabs_wall" class="selected">', $txt['Breeze_tabs_wall'] ,'</a></li>
 						', !empty($context['member']['options']['Breeze_enable_visits_tab']) ? '<li><a href="#tabs_views">'. $txt['Breeze_tabs_views'] .'</a></li>' : '' ,'
-						<li><a href="#tabs_buddies">', $txt['Breeze_tabs_buddies'] ,'</a></li>
+						', !empty($context['member']['options']['Breeze_enable_buddies_tab']) ? '<li><a href="#tabs_views">'. $txt['Breeze_tabs_buddies'] .'</a></li>' : '' ,'
 					</ul>
 				</div>';
 
@@ -302,12 +303,16 @@ function template_user_wall()
 	}
 	/* End of profile visitors */
 
-	/* Any other tab must be here */
-	echo '<div id="tabs_test">';
+	/* Buddies tab */
+	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']))
+	{
+		echo '<div id="tabs_buddies">';
 
-	echo 'testig, testing, I\'m testing!';
+		echo 'testig, testing, I\'m testing!';
 
-	echo '</div>';
+		echo '</div>';
+	}
+	/* End of buddies tab */
 
 	/* End of left side */
 	echo '
