@@ -40,7 +40,8 @@ if (!defined('SMF'))
 
 function breezeWall()
 {
-	global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info, $breezeController;
+	global $txt, $scripturl, $context, $memberContext;
+	global $modSettings,  $user_info, $breezeController, $memID;
 
 	loadtemplate(Breeze::$name);
 

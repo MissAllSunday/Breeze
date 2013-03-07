@@ -331,6 +331,7 @@ $(document).ready(function ()
 					),
 				);
 
+
 			/* Per user permissions */
 			$profile_areas['breeze_profile'] = array(
 				'title' => $text->getText('general_my_wall_settings'),
@@ -348,14 +349,6 @@ $(document).ready(function ()
 						'profile_view_own',
 						),
 					),
-				);
-
-			/* Single status */
-			$profile_areas['breeze_profile']['areas']['wallstatus'] = array(
-				'label' => $text->getText('user_buddysettings_name'),
-				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'breezeSingle',
-				'permission' => array('own' => 'profile_view_own', 'any' => 'profile_view_any',),
 				);
 
 			/* Buddies page */
