@@ -63,6 +63,10 @@ function breezeWall()
 
 	/* Default values */
 	$status = array();
+	$context['Breeze'] = array(
+		'views' => '',
+		'buddies' => '',
+	);
 
 	/* Set all the page stuff */
 	$context['sub_template'] = 'user_wall';
@@ -74,6 +78,7 @@ function breezeWall()
 	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 	$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
 	$context['member']['status'] = array();
+	$context['breeze']['tools'] = $tools;
 
 	/* Load all the status */
 	$status = $query->getStatusByProfile($context['member']['id']);
@@ -93,6 +98,19 @@ function breezeWall()
 
 	/* Page name depends on pagination */
 	$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name'], $currentPage);
+
+	/* Get the profile views */
+	if (!empty($context['member']['options']['Breeze_enable_visits_tab']))
+	{
+		$context['Breeze']['views'] = breezeTrackViews();
+
+		/* Load their data */
+		$tools->loadUserInfo(array_keys($context['Breeze']['views']));
+	}
+
+	/* Show buddies only if there is something to show */
+	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
+		$tools->loadUserInfo($context['member']['buddies']);
 }
 
 /* Shows a form for users to set up their wall as needed. */
@@ -122,12 +140,14 @@ function breezeSettings()
 	/* Create the form */
 	$form = $breezeController->get('form');
 
+	/* Per user master setting */
 	$form->addCheckBox(
 		'Breeze_enable_wall',
 		'enable_wall',
 		!empty($context['member']['options']['Breeze_enable_wall']) ? true : false
 	);
 
+	/* Pagination */
 	$form->addText(
 		'Breeze_pagination_number',
 		'pagination_number',
@@ -135,24 +155,35 @@ function breezeSettings()
 		3,3
 	);
 
+	/* Infinite scroll */
 	$form->addCheckBox(
 		'Breeze_infinite_scroll',
 		'infinite_scroll',
 		!empty($context['member']['options']['Breeze_infinite_scroll']) ? true : false
 	);
 
+	/* Allow ignored users */
 	$form->addCheckBox(
 		'Breeze_kick_ignored',
 		'kick_ignored',
 		!empty($context['member']['options']['Breeze_kick_ignored']) ? true : false
 	);
 
+	/* Buddies tab */
 	$form->addCheckBox(
-		'Breeze_enable_visits_module',
-		'enable_visits_module',
-		!empty($context['member']['options']['Breeze_enable_visits_module']) ? true : false
+		'Breeze_enable_buddies_tab',
+		'enable_buddies_tab',
+		!empty($context['member']['options']['Breeze_enable_buddies_tab']) ? true : false
 	);
 
+	/* Profile visits tab */
+	$form->addCheckBox(
+		'Breeze_enable_visits_tab',
+		'enable_visits_tab',
+		!empty($context['member']['options']['Breeze_enable_visits_tab']) ? true : false
+	);
+
+	/* Visits timeframe */
 	$form->addSelect(
 		'Breeze_visits_timeframe',
 		'visits_module_timeframe',
@@ -386,7 +417,8 @@ function breezeCheckPermissions()
 	/* Get this user's ignore list */
 	$context['member']['ignore_list'] = array();
 
-	$temp_ignore_list = $query->getUserSetting($context['member']['id'], 'pm_ignore_list');
+	/* Get the ignored list */
+	$temp_ignore_list = !empty($context['member']['ignore_list']) ? $context['member']['ignore_list'] : $query->getUserSetting($context['member']['id'], 'pm_ignore_list');
 
 	if (!empty($temp_ignore_list))
 		$context['member']['ignore_list'] = explode(',', $temp_ignore_list);
@@ -396,8 +428,82 @@ function breezeCheckPermissions()
 		redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 	/* You are allowed here but you still need to obey some permissions */
-	$context['Breeze']['visitor']['post_status'] = allowedTo('breeze_postStatus') || $context['user']['is_owner'];
-	$context['Breeze']['visitor']['post_comment'] = allowedTo('breeze_postComments') || $context['user']['is_owner'];
-	$context['Breeze']['visitor']['delete_status'] = allowedTo('breeze_deleteStatus') || $context['user']['is_owner'];
-	$context['Breeze']['visitor']['delete_comments'] = allowedTo('breeze_deleteComments') || $context['user']['is_owner'];
+	$context['permissions']['post_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postStatus');
+	$context['permissions']['post_comment'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postComments');
+	$context['permissions']['delete_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteStatus');
+	$context['permissions']['delete_comments'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
+}
+
+function breezeTrackViews()
+{
+	global $user_info, $context, $breezeController;
+
+	$data = array();
+
+	/* Don't log guest views*/
+	if ($user_info['is_guest'] == true)
+		return false;
+
+	/* Do this only if t hasn't been done before */
+	$views = cache_get_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], 60);
+
+	if (empty($views))
+	{
+		/* Get the profile views */
+		$views = $breezeController->get('query')->getViews($context['member']['id']);
+
+		/* Don't track own views */
+		if ($context['member']['id'] == $user_info['id'])
+			return !empty($views) ? json_decode($views, true) : false;
+
+		/* Don't have any views yet? */
+		if (empty($views))
+		{
+			/* Build the array */
+			$views[$user_info['id']] = array(
+				'user' => $user_info['id'],
+				'last_view' => time(),
+				'views' => 1,
+			);
+
+			/* Insert the data */
+			updateMemberData($context['member']['id'], array('breeze_profile_views' => json_encode($views)));
+
+			/* Set the temp cache */
+			cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], $views, 60);
+
+			/* Cut it off */
+			return $views;
+		}
+
+		/* Get the data */
+		$views = json_decode($views, true);
+
+		/* Does this member has been here before? */
+		if (!empty($views[$user_info['id']]))
+		{
+			/* Update the data then */
+			$views[$user_info['id']]['last_view'] = time();
+			$views[$user_info['id']]['views'] = $views[$user_info['id']]['views'] + 1;
+		}
+
+		/* First time huh? */
+		else
+		{
+			/* Build the array */
+			$views[$user_info['id']] = array(
+				'user' => $user_info['id'],
+				'last_view' => time(),
+				'views' => 1,
+			);
+		}
+
+		/* Either way, update the table */
+		updateMemberData($context['member']['id'], array('breeze_profile_views' => json_encode($views)));
+
+		/* ...and set the temp cache */
+		cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], $views, 60);
+	}
+
+	return $views;
 }
