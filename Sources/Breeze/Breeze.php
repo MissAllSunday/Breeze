@@ -190,12 +190,15 @@ class Breeze
 			$context['html_headers'] .= '
 			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.idTabs.min.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/center.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topCenter.js"></script>';
+
+			/* Any tabs? */
+			if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
+				$context['html_headers'] .= '<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.idTabs.min.js"></script>';
 
 			/* Does the user wants to use infinite scroll? */
 			if (!empty($context['member']['options']['Breeze_infinite_scroll']))
