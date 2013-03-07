@@ -151,11 +151,18 @@ function breezeSettings()
 		!empty($context['member']['options']['Breeze_kick_ignored']) ? true : false
 	);
 
+	/* Buddies tab */
+	$form->addCheckBox(
+		'Breeze_enable_buddies_tab',
+		'enable_buddies_tab',
+		!empty($context['member']['options']['Breeze_enable_buddies_tab']) ? true : false
+	);
+
 	/* Profile visits tab */
 	$form->addCheckBox(
-		'Breeze_enable_visits_module',
-		'enable_visits_module',
-		!empty($context['member']['options']['Breeze_enable_visits_module']) ? true : false
+		'Breeze_enable_visits_tab',
+		'enable_visits_tab',
+		!empty($context['member']['options']['Breeze_enable_visits_tab']) ? true : false
 	);
 
 	/* Visits timeframe */
