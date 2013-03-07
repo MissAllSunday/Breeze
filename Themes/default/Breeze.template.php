@@ -151,7 +151,59 @@ function template_user_wall()
 
 	/* Left side */
 	echo '
-			<div class="tabContainer" id="detailedinfo">
+			<div class="tabContainer" id="detailedinfo">';
+
+	/* Profile visitors */
+	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) && !empty($context['Breeze']['views']))
+	{
+		echo '
+				<div id="tabs_views" style="display: none;">
+					<ul class="reset breeze_top_profile_views">';
+
+		foreach ($context['Breeze']['views'] as $profile_views)
+		{
+			echo '
+						<li class="windowbg2 breeze_profile_views_block">
+							<ul class="breeze_profile_views_inner reset">
+								<li class="breeze_profile_views_name"><h1 class="titlebg">', $context['Breeze']['user_info'][$profile_views['user']]['link'] ,'</h1></li>
+								<li class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$profile_views['user']]['facebox'] ,'</li>
+								<li class="breeze_profile_views_last">', $txt['Breeze_general_last_view'] ,': ', $context['breeze']['tools']->timeElapsed($profile_views['last_view']) ,'</li>
+							</ul>
+						</li>';
+		}
+
+		echo '
+					</ul>
+				</div>';
+	}
+	/* End of profile visitors */
+
+	/* Buddies tab */
+	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
+	{
+		echo '
+				<div id="tabs_buddies" style="display: none;">
+					<ul class="reset breeze_top_profile_views">';
+
+		foreach ($context['member']['buddies'] as $buddies)
+		{
+			echo '
+						<li class="windowbg2 breeze_profile_views_block">
+							<ul class="breeze_profile_views_inner reset">
+								<li class="breeze_profile_views_name"><h1 class="titlebg">', $context['Breeze']['user_info'][$buddies]['link'] ,'</h1></li>
+								<li class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$buddies]['facebox'] ,'</li>
+							</ul>
+						</li>';
+		}
+
+		echo '
+					</ul>
+				</div>';
+	}
+	/* End of buddies tab */
+
+	/* Wall div */
+	echo '
 			<div id="tabs_wall">
 				<div class="windowbg2">
 					<span class="topslice">
@@ -273,55 +325,6 @@ function template_user_wall()
 	/* End of Wall div */
 	echo '
 			</div>';
-
-	/* Profile visitors */
-	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) && !empty($context['Breeze']['views']))
-	{
-		echo '
-			<div id="tabs_views" style="display: none;">
-				<ul class="reset breeze_top_profile_views">';
-
-		foreach ($context['Breeze']['views'] as $profile_views)
-		{
-			echo '
-					<li class="windowbg breeze_profile_views_block">
-						<ul class="breeze_profile_views_inner reset">
-							<li class="breeze_profile_views_name"><h1 class="titlebg">', $context['Breeze']['user_info'][$profile_views['user']]['link'] ,'</h1></li>
-							<li class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$profile_views['user']]['facebox'] ,'</li>
-							<li class="breeze_profile_views_last">', $txt['Breeze_general_last_view'] ,': ', $context['breeze']['tools']->timeElapsed($profile_views['last_view']) ,'</li>
-						</ul>
-					</li>';
-		}
-
-		echo '
-				</ul>
-			</div>';
-	}
-	/* End of profile visitors */
-
-	/* Buddies tab */
-	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
-	{
-		echo '
-			<div id="tabs_buddies" style="display: none;">
-				<ul class="reset breeze_top_profile_views">';
-
-		foreach ($context['member']['buddies'] as $buddies)
-		{
-			echo '
-					<li class="windowbg breeze_profile_views_block">
-						<ul class="breeze_profile_views_inner reset">
-							<li class="breeze_profile_views_name"><h1 class="titlebg">', $context['Breeze']['user_info'][$buddies]['link'] ,'</h1></li>
-							<li class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$buddies]['facebox'] ,'</li>
-						</ul>
-					</li>';
-		}
-
-		echo '
-				</ul>
-			</div>';
-	}
-	/* End of buddies tab */
 
 	/* End of left side */
 	echo '
