@@ -63,6 +63,10 @@ function breezeWall()
 
 	/* Default values */
 	$status = array();
+	$context['Breeze'] = array(
+		'views' => '',
+		'buddies' => '',
+	);
 
 	/* Set all the page stuff */
 	$context['sub_template'] = 'user_wall';
@@ -93,6 +97,14 @@ function breezeWall()
 
 	/* Page name depends on pagination */
 	$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name'], $currentPage);
+
+	/* Get the profile views */
+	if (!empty($context['member']['options']['Breeze_enable_visits_tab']))
+		$context['Breeze']['views'] = breezeTrackViews();
+
+	/* Show buddies */
+	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']))
+		$context['Breeze']['buddies'] = breezeGetBuddies();
 }
 
 /* Shows a form for users to set up their wall as needed. */
