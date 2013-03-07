@@ -122,12 +122,14 @@ function breezeSettings()
 	/* Create the form */
 	$form = $breezeController->get('form');
 
+	/* Per user master setting */
 	$form->addCheckBox(
 		'Breeze_enable_wall',
 		'enable_wall',
 		!empty($context['member']['options']['Breeze_enable_wall']) ? true : false
 	);
 
+	/* Pagination */
 	$form->addText(
 		'Breeze_pagination_number',
 		'pagination_number',
@@ -135,24 +137,28 @@ function breezeSettings()
 		3,3
 	);
 
+	/* Infinite scroll */
 	$form->addCheckBox(
 		'Breeze_infinite_scroll',
 		'infinite_scroll',
 		!empty($context['member']['options']['Breeze_infinite_scroll']) ? true : false
 	);
 
+	/* Allow ignored users */
 	$form->addCheckBox(
 		'Breeze_kick_ignored',
 		'kick_ignored',
 		!empty($context['member']['options']['Breeze_kick_ignored']) ? true : false
 	);
 
+	/* Profile visits tab */
 	$form->addCheckBox(
 		'Breeze_enable_visits_module',
 		'enable_visits_module',
 		!empty($context['member']['options']['Breeze_enable_visits_module']) ? true : false
 	);
 
+	/* Visits timeframe */
 	$form->addSelect(
 		'Breeze_visits_timeframe',
 		'visits_module_timeframe',
