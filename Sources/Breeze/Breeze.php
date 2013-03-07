@@ -169,21 +169,21 @@ class Breeze
 		{
 			$context['html_headers'] .= '
 			<script type="text/javascript"><!-- // --><![CDATA[
-				var breeze_error_message = "'. $text->getText('error_message') .'";
-				var breeze_success_message = "'. $text->getText('success_message') .'";
-				var breeze_empty_message = "'. $text->getText('empty_message') .'";
-				var breeze_error_delete = "'. $text->getText('error_message') .'";
-				var breeze_success_delete = "'. $text->getText('success_delete') .'";
-				var breeze_confirm_delete = "'. $text->getText('confirm_delete') .'";
-				var breeze_confirm_yes = "'. $text->getText('confirm_yes') .'";
-				var breeze_confirm_cancel = "'. $text->getText('confirm_cancel') .'";
-				var breeze_already_deleted = "'. $text->getText('already_deleted') .'";
-				var breeze_cannot_postStatus = "'. $text->getText('cannot_postStatus') .'";
-				var breeze_cannot_postComments = "'. $text->getText('cannot_postComments') .'";
-				var breeze_page_loading = "'. $text->getText('page_loading') .'";
-				var breeze_page_loading_end = "'. $text->getText('page_loading_end') .'";
-				var breeze_current_user = '. $user_info['id'] .';
-				var breeze_infinite_scroll = '. (!empty($context['member']['options']['Breeze_infinite_scroll']) ? '"string"' : '0' ).';
+				var breeze_error_message = '. JavaScriptEscape($text->getText('error_message')) .';
+				var breeze_success_message = '. JavaScriptEscape($text->getText('success_message')) .';
+				var breeze_empty_message = '. JavaScriptEscape($text->getText('empty_message')) .';
+				var breeze_error_delete = '. JavaScriptEscape($text->getText('error_message')) .';
+				var breeze_success_delete = '. JavaScriptEscape($text->getText('success_delete')) .';
+				var breeze_confirm_delete = '.JavaScriptEscape( $text->getText('confirm_delete')) .';
+				var breeze_confirm_yes = '. JavaScriptEscape($text->getText('confirm_yes')) .';
+				var breeze_confirm_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
+				var breeze_already_deleted = '. JavaScriptEscape($text->getText('already_deleted')) .';
+				var breeze_cannot_postStatus = '. JavaScriptEscape($text->getText('cannot_postStatus')) .';
+				var breeze_cannot_postComments = '. JavaScriptEscape($text->getText('cannot_postComments')) .';
+				var breeze_page_loading = '. JavaScriptEscape($text->getText('page_loading')) .';
+				var breeze_page_loading_end = '. JavaScriptEscape($text->getText('page_loading_end')) .';
+				var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
+				var breeze_infinite_scroll = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_infinite_scroll']) ? 'string' : '0' )).';
 		// ]]></script>';
 
 			/* Let's load jquery from CDN only if it hasn't been loaded yet */
@@ -226,13 +226,13 @@ class Breeze
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
 			<script type="text/javascript"><!-- // --><![CDATA[
-				var breeze_error_message = "'. $text->getText('error_message') .'";
-				var breeze_noti_markasread = "'. $text->getText('noti_markasread') .'";
-				var breeze_noti_markasread_after = "'. $text->getText('noti_markasread_after') .'";
-				var breeze_noti_delete = "'. $text->getText('general_delete') .'";
-				var breeze_noti_delete_after = "'. $text->getText('noti_delete_after') .'";
-				var breeze_noti_close = "'. $text->getText('noti_close') .'";
-				var breeze_noti_cancel = "'. $text->getText('confirm_cancel') .'";
+				var breeze_error_message = '. JavaScriptEscape($text->getText('error_message')) .';
+				var breeze_noti_markasread = '. JavaScriptEscape($text->getText('noti_markasread')) .';
+				var breeze_noti_markasread_after = '. JavaScriptEscape($text->getText('noti_markasread_after')) .';
+				var breeze_noti_delete = '. JavaScriptEscape($text->getText('general_delete')) .';
+				var breeze_noti_delete_after = '. JavaScriptEscape($text->getText('noti_delete_after')) .';
+				var breeze_noti_close = '. JavaScriptEscape($text->getText('noti_close')) .';
+				var breeze_noti_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
 			// ]]></script>';
 
 			$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
@@ -243,7 +243,7 @@ class Breeze
 			$context['html_headers'] .= '
 			<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.js" type="text/javascript"></script>
 			<script type="text/javascript">
-var breeze_feed_error_message = "'. $text->getText('feed_error_message') .'";
+var breeze_feed_error_message = '. JavaScriptEscape($text->getText('feed_error_message')) .';
 
 $(document).ready(function ()
 {
