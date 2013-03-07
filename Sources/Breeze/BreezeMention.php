@@ -84,8 +84,10 @@ class BreezeMention
 			$this->_queryNames = array_unique(is_array($this->_queryNames) ? $this->_queryNames : array($this->_queryNames));
 
 			/* Sorry, theres gotta be a limit you know? */
-			if ($this->_settings->enable('admin_mention_limit') && count($this->_queryNames) >= (int) $this->_settings->getSetting('admin_mention_limit'))
-				$this->_queryNames = array_slice($this->_queryNames, 0, (int) $this->_settings->getSetting('admin_mention_limit'));
+			$admin_mention_limit = $this->_settings->enable('admin_mention_limit') ? $this->_settings->getSetting('admin_mention_limit') : 10;
+
+			if (!empty($admin_mention_limit) && count($this->_queryNames) >= $admin_mention_limit)
+				$this->_queryNames = array_slice($this->_queryNames, 0, $admin_mention_limit);
 
 			/* Let's make a quick query here... */
 			$this->_searchNames = $this->_query->quickQuery(
