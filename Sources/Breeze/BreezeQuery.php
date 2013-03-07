@@ -87,7 +87,7 @@ class BreezeQuery extends Breeze
 				'name' => 'members',
 				'table' => 'members',
 				'property' => '_members',
-				'columns' => array(),
+				'columns' => array('breeze_profile_views'),
 				),
 			'noti' => array(
 				'name' => 'noti',
@@ -1031,6 +1031,51 @@ class BreezeQuery extends Breeze
 
 		else
 			return false;
+	}
+
+	/**
+	 * BreezeQuery::updateProfileViews()
+	 *
+	 * Updates the member profile views count
+	 * @param int $id the user ID
+	 * @param string $json_string a json string
+	 */
+	public function updateProfileViews($id, $json_string)
+	{
+		/* Do not waste my time */
+		if (empty($id) || empty($json_string))
+			return false;
+
+		$this->_smcFunc['db_query']('', '
+			UPDATE {db_prefix}members
+			SET breeze_profile_views = {string:json_string}
+			WHERE id_member = ({int:id})',
+			array(
+				'id' => (int) $id,
+				'json_string' => $json_string,
+			)
+		);
+	}
+
+	public function getViews($user)
+	{
+		$result = $this->_smcFunc['db_query']('', '
+			SELECT breeze_profile_views
+			FROM {db_prefix}' . $this->_tables['members']['table'] . '
+			WHERE id_member = {int:user}
+			', array(
+				'user' => (int) $user,
+			)
+		);
+
+		/* Populate the array like a boss! */
+		while ($row = $this->_smcFunc['db_fetch_row']($result))
+			$return = $row[0];
+
+		$this->_smcFunc['db_free_result']($result);
+
+		/* Return the data */
+		return $return;
 	}
 }
 
