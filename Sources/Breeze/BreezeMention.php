@@ -84,11 +84,13 @@ class BreezeMention
 			$this->_queryNames = array_unique(is_array($this->_queryNames) ? $this->_queryNames : array($this->_queryNames));
 
 			/* Sorry, theres gotta be a limit you know? */
-			if ($this->_settings->enable('admin_mention_limit') && count($this->_queryNames) >= (int) $this->_settings->getSetting('admin_mention_limit'))
-				$this->_queryNames = array_slice($this->_queryNames, 0, (int) $this->_settings->getSetting('admin_mention_limit'));
+			$admin_mention_limit = $this->_settings->enable('admin_mention_limit') ? $this->_settings->getSetting('admin_mention_limit') : 10;
+
+			if (!empty($admin_mention_limit) && count($this->_queryNames) >= $admin_mention_limit)
+				$this->_queryNames = array_slice($this->_queryNames, 0, $admin_mention_limit);
 
 			/* Let's make a quick query here... */
-			$tempQuery = $this->_query->quickQuery(
+			$this->_searchNames = $this->_query->quickQuery(
 				array(
 					'table' => 'members',
 					'rows' => 'id_member, member_name, real_name',
@@ -97,12 +99,13 @@ class BreezeMention
 				array(
 					'names' => $this->_queryNames
 				),
-				'id_member'
+				'id_member',
+				false
 			);
 
 			/* Get the actual users */
-			if (!empty($tempQuery))
-				$this->_searchNames = !is_array($tempQuery) ? array($tempQuery) : $tempQuery;
+			if (!empty($this->_searchNames))
+				$this->_searchNames = !is_array($this->_searchNames) ? array($this->_searchNames) : $this->_searchNames;
 
 			/* We got some results */
 			if (!empty($this->_searchNames))

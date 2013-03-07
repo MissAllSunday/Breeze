@@ -399,7 +399,7 @@ function template_singleStatus()
 							<span class="time_elapsed">', $context['Breeze']['single']['time'] ,' </span>';
 
 					/* Delete link */
-					if ($context['Breeze']['visitor']['delete_status_comments'])
+					if ($context['Breeze']['visitor']['delete_status'])
 						echo '| <a href="javascript:void(0)" id="', $context['Breeze']['single']['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
 
 					echo '
@@ -423,7 +423,7 @@ function template_singleStatus()
 												<span class="time_elapsed">', $comment['time'] ,'</span>';
 
 							/* Delete comment */
-							if ($context['Breeze']['visitor']['delete_status_comments'])
+							if ($context['Breeze']['visitor']['delete_status'])
 								echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 							echo '

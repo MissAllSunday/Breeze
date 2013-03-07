@@ -67,7 +67,7 @@ class Breeze
 	public static $txtpattern = 'Breeze_';
 
 	/* Support site feed */
-	public static $supportStite = '';
+	public static $supportStite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
 
 	/* Its easier to list the allowed actions */
 	public static $_allowedActions = array('display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who',);
@@ -139,6 +139,10 @@ class Breeze
 	{
 		global $context, $settings, $user_info, $breezeController;
 		static $header_done = false;
+
+		/* Don't do anything if we are in SSI world */
+		if (SMF == 'SSI')
+			return false;
 
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
@@ -310,7 +314,7 @@ $(document).ready(function ()
 			$profile_areas['info']['areas']['summary'] = array(
 				'label' => $text->getText('general_wall'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'Breeze_Wrapper_Wall',
+				'function' => 'breezeWall',
 				'permission' => array(
 					'own' => 'profile_view_own',
 					'any' => 'profile_view_any',
@@ -328,24 +332,34 @@ $(document).ready(function ()
 					),
 				);
 
-			/* Per user permissions */
+			/* Create the area */
 			$profile_areas['breeze_profile'] = array(
 				'title' => $text->getText('general_my_wall_settings'),
 				'areas' => array(),
+				);
+
+			/* Single Status */
+			$profile_areas['breeze_profile']['areas']['wallstatus'] = array(
+				'label' => $text->getText('user_single_status'),
+				'file' => Breeze::$folder .'BreezeUser.php',
+				'function' => 'breezeSingle',
+				'hidden' => true,
+				'permission' => array(
+					'own' => 'profile_view_own',
+					'any' => 'profile_view_any',
+					),
 				);
 
 			/* User individual settings, show the button if the mod is enable and the user is the profile owner or the user has the permissions to edit other walls */
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $text->getText('user_settings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'Breeze_Wrapper_Settings',
+				'function' => 'breezeSettings',
 				'sc' => 'post',
 				'permission' => array(
 					'own' => array(
 						'profile_view_own',
-						'profile_view_any',
 						),
-					'any' => array('profile_view_any'),
 					),
 				);
 
@@ -353,7 +367,7 @@ $(document).ready(function ()
 			$profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
 				'label' => $text->getText('user_buddysettings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'Breeze_Wrapper_BuddyRequest',
+				'function' => 'breezeBuddyRequest',
 				'permission' => array('own' => 'profile_view_own', ),
 				);
 
@@ -361,7 +375,7 @@ $(document).ready(function ()
 			$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
 				'label' => $text->getText('user_notisettings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'Breeze_Wrapper_Notifications',
+				'function' => 'breezeNotifications',
 				'permission' => array('own' => 'profile_view_own', ),
 				);
 		}

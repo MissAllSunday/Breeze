@@ -123,15 +123,15 @@ class BreezeQuery extends Breeze
 			$data
 		);
 
-		if ($single)
+		if (!empty($single))
 			while ($row = $this->_smcFunc['db_fetch_assoc']($query))
 				$dataResult = $row;
 
-		if (!empty($key))
+		elseif (!empty($key) && empty($single))
 			while ($row = $this->_smcFunc['db_fetch_assoc']($query))
 				$dataResult[$row[$key]] = $row;
 
-		else
+		elseif (empty($single) && empty($key))
 			while ($row = $this->_smcFunc['db_fetch_assoc']($query))
 				$dataResult[] = $row;
 
@@ -649,7 +649,7 @@ class BreezeQuery extends Breeze
 	public function insertStatus($array)
 	{
 		/* We don't need this no more */
-		$this->killCache($this->_tables['status']['name']);
+		cache_put_data(Breeze::$name .'-' . $array['owner_id'], '');
 
 		/* Insert! */
 		$this->_smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['status']['table']) .

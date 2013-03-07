@@ -57,13 +57,14 @@
 				}
 
 				/* Shhh! */
-				else if(test== 'about:breeze')
-				{
-					alert('Y es que tengo un coraz\xF3n t\xE1n necio \n que no comprende que no entiende \n que le hace da\xF1o amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n Y es que tengo un coraz\xF3n t\xE1n necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace da\xF1o \n te sigue amando igual o mucho m\xE1s que ayer \n mucho m\xE1s que ayer... \n');
+				else
+					if(test== 'about:breeze')
+					{
+						alert('Y es que tengo un coraz\xF3n t\xE1n necio \n que no comprende que no entiende \n que le hace da\xF1o amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n Y es que tengo un coraz\xF3n t\xE1n necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace da\xF1o \n te sigue amando igual o mucho m\xE1s que ayer \n mucho m\xE1s que ayer... \n');
 
-					/* Enable the button again... */
-					jQuery('.status_button').removeAttr('disabled');
-				}
+						/* Enable the button again... */
+						jQuery('.status_button').removeAttr('disabled');
+					}
 
 				else
 				{
@@ -76,7 +77,8 @@
 						data: ({content : test, owner_id : ownerID, poster_id : posterID}),
 						cache: false,
 						dataType: 'json',
-						success: function(html){
+						success: function(html)
+						{
 							/* The server side found an issue */
 							if(html.type == 'error')
 							{
@@ -278,21 +280,6 @@
 		});
 	});
 
-	/* Toggle the comment box */
-	jQuery(document).ready(function()
-	{
-		$(".comment_button").click(function()
-		{
-			var element = jQuery(this);
-			var I = element.attr('id');
-
-			$("#slidepanel"+I).slideToggle(300);
-			jQuery(this).toggleClass("active");
-
-			return false;
-		});
-	});
-
 	/* Delete a status */
 	jQuery(document).ready(function()
 	{
@@ -408,8 +395,7 @@ jQuery(document).ready(function(){
 		noti_id_delete = parseInt(noti_id_delete, 10);
 		var user = breeze_current_user;
 
-		jQuery.ajax(
-		{
+		jQuery.ajax({
 			type: 'POST',
 			url: smf_scripturl + '?action=breezeajax;sa=notimarkasread',
 			data: ({content : noti_id_delete, user : user}),

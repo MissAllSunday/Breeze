@@ -258,7 +258,7 @@ class BreezeAjax
 		if ($this->_data->getValue('id') != false)
 		{
 			/* You aren't allowed in here, let's show you a nice message error... */
-			$this->permissions('delete'. ucfirst($this->_data->getValue('type')));
+			$this->permissions('delete'. ucfirst($this->_data->getValue('type')), false);
 
 			$temp_id_exists = $this->_query->getSingleValue(
 				$this->_data->getValue('type') == 'status' ? 'status' : 'comments',
@@ -311,8 +311,6 @@ class BreezeAjax
 	{
 		checkSession('post', '', false);
 
-		$this->permissions();
-
 		/* Get the global vars */
 		$this->_data = Breeze::sGlobals('request');
 
@@ -350,8 +348,6 @@ class BreezeAjax
 	public function notidelete()
 	{
 		checkSession('post', '', false);
-
-		$this->permissions();
 
 		/* Get the global vars */
 		$this->_data = Breeze::sGlobals('request');
@@ -431,16 +427,16 @@ class BreezeAjax
 		global $user_info;
 
 		/* Profile owner? */
-		$is_owner = !empty($owner_id) ? $owner_id == $user_info['id'] : true;
+		$is_owner = !empty($owner_id) ? ($owner_id == $user_info['id']) : true;
 
 		/* Check for the proper permission */
-		if ($type)
-			if (!allowedTo('breeze_'. $type) || !$is_owner)
-				redirectexit('action=profile;area=static;u='. $context['member']['id']);
+		if (!$is_owner && !empty($type))
+			isAllowedTo('breeze_'. $type);
+
 
 		/* Just a generic "is owner" */
 		else
 			if(!$is_owner)
-				redirectexit('action=profile;area=static;u='.$context['member']['id']);
+				fatal_lang_error($this->_text->getText('error_no_valid_action'));
 	}
 }

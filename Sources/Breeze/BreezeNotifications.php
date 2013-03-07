@@ -386,6 +386,10 @@ class BreezeNotifications
 		$statusLink = $scripturl . '?action=profile;area=wallstatus;u=' . $noti['content']['wall_owner'] .
 			';bid=' . $noti['content']['status_id'];
 
+		/* Sometimes this data hasn't been loaded yet */
+		if (empty($context['Breeze']['user_info'][$noti['content']['wall_poster']]) || empty($context['Breeze']['user_info'][$noti['content']['wall_owner']]))
+		$this->_tools->loadUserInfo(array($noti['content']['wall_poster'], $noti['content']['wall_owner']));
+
 		/* Is this a mention on a comment? */
 		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
 		{
@@ -411,16 +415,15 @@ class BreezeNotifications
 
 			/* No? don't worry, you will get your precious notification anyway */
 			elseif ($noti['content']['wall_owner'] != $noti['user_to'])
-				$text = sprintf($this->_text->getText('mention_message_comment'), $context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
-					$context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'], $statusLink,
-					$noti['id']);
+				$text = sprintf($this->_text->getText('mention_message_comment'), $context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'], $context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'], $statusLink, $noti['id']);
 		}
 
 		/* Create the message already */
 		$this->_messages[$noti['id']] = array(
 			'id' => $noti['id'],
 			'user' => $noti['user_to'],
-			'message' => $text);
+			'message' => $text
+		);
 	}
 
 	/**

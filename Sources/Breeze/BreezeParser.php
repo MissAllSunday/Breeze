@@ -68,7 +68,7 @@ class BreezeParser
 	}
 
 	/* Convert any valid urls on to links */
-	private function urltoLink($s)
+	protected function urltoLink($s)
 	{
 		if (preg_match_all($this->regex['url'], $s, $matches))
 			foreach($matches[0] as $m)
@@ -77,7 +77,7 @@ class BreezeParser
 		return $s;
 	}
 
-	private function mention($s)
+	protected function mention($s)
 	{
 		global $scripturl;
 
