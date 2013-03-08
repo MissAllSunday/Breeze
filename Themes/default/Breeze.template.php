@@ -153,6 +153,12 @@ function template_user_wall()
 	echo '
 			<div class="tabContainer" id="detailedinfo">';
 
+	/* Scroll to top */
+	echo '
+			<p id="breezeTop">
+				<a href="#wrapper"><span></span>Back to Top</a>
+			</p>';
+
 	/* Profile visitors */
 	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) && !empty($context['Breeze']['views']))
 	{
@@ -212,8 +218,6 @@ function template_user_wall()
 				<div class="content">';
 
 			/* Main content */
-
-			/* Here be tabs... */
 
 			/* This is the status box,  O RLY? */
 			if (!empty($context['permissions']['post_status']))

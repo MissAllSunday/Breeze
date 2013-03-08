@@ -457,11 +457,11 @@ jQuery(document).ready(function(){
 	});
 });
 
-/* Scroll to Top */
+/* Scroll to top */
 jQuery(document).ready(function(){
 
-	// hide #back-top first
-	jQuery("#back-top").hide();
+	// hide #breezeTop first
+	jQuery("#breezeTop").hide();
 
 	jQuery(function ()
 	{
@@ -469,15 +469,15 @@ jQuery(document).ready(function(){
 		{
 			if (jQuery(this).scrollTop() > 100)
 			{
-				jQuery('#back-top').fadeIn();
+				jQuery('#breezeTop').fadeIn();
 			}
 			else
 			{
-				jQuery('#back-top').fadeOut();
+				jQuery('#breezeTop').fadeOut();
 			}
 		});
 
-		jQuery('#back-top a').click(function ()
+		jQuery('#breezeTop a').click(function ()
 		{
 			jQuery('body,html').animate({
 				scrollTop: 0
