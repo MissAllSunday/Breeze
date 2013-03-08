@@ -308,3 +308,47 @@ ul.breeze_top_profile_views
 	width:170px;
 	float:left;
 }
+
+#breezeTop {
+	position: fixed;
+	bottom: 30px;
+	margin-left: -150px;
+}
+
+#breezeTop a {
+	width: 108px;
+	display: block;
+	text-align: center;
+	font: 11px/100% Arial, Helvetica, sans-serif;
+	text-transform: uppercase;
+	text-decoration: none;
+	color: #bbb;
+
+	/* transition */
+	-webkit-transition: 1s;
+	-moz-transition: 1s;
+	transition: 1s;
+}
+#breezeTop a:hover {
+	color: #000;
+}
+
+/* arrow icon (span tag) */
+#breezeTop span {
+	height: 10px;
+	display: block;
+	background: #ddd url(../images/sort_up.gif) no-repeat center center;
+
+	/* rounded corners */
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+
+	/* transition */
+	-webkit-transition: 1s;
+	-moz-transition: 1s;
+	transition: 1s;
+}
+#breezeTop a:hover span {
+	background-color: #777;
+}

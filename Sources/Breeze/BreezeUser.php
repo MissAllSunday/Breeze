@@ -100,7 +100,7 @@ function breezeWall()
 	$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name'], $currentPage);
 
 	/* Get the profile views */
-	if (!empty($context['member']['options']['Breeze_enable_visits_tab']))
+	if (!$user_info['is_guest'] && !empty($context['member']['options']['Breeze_enable_visits_tab']))
 	{
 		$context['Breeze']['views'] = breezeTrackViews();
 
