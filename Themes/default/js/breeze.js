@@ -456,3 +456,34 @@ jQuery(document).ready(function(){
 		});
 	});
 });
+
+/* Scroll to top */
+jQuery(document).ready(function(){
+
+	// hide #breezeTop first
+	jQuery("#breezeTop").hide();
+
+	jQuery(function ()
+	{
+		jQuery(window).scroll(function ()
+		{
+			if (jQuery(this).scrollTop() > 100)
+			{
+				jQuery('#breezeTop').fadeIn();
+			}
+			else
+			{
+				jQuery('#breezeTop').fadeOut();
+			}
+		});
+
+		jQuery('#breezeTop a').click(function ()
+		{
+			jQuery('body,html').animate({
+				scrollTop: 0
+			}, 800);
+			return false;
+		});
+	});
+
+});

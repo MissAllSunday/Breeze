@@ -64,7 +64,8 @@ function template_user_wall()
 
 	loadLanguage(Breeze::$name);
 
-	echo '<div id="profileview" class="flow_auto">
+	echo '
+		<div id="profileview" class="flow_auto">
 			<div class="cat_bar">
 				<h3 class="catbg">
 					<span class="ie6_header floatleft"><img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" class="icon" />', $txt['summary'], '</span>
@@ -131,22 +132,95 @@ function template_user_wall()
 						<span></span>
 					</span>
 				</div>';
-		echo '</div>';
+
+		/* Links for tabs show it if there is at least 1 tab*/
+		if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
+			echo '
+				<div class="windowbg">
+					<ul id="breeze_tabLinks" class="idTabs">
+						<li><a href="#tabs_wall" class="selected">', $txt['Breeze_tabs_wall'] ,'</a></li>
+						', !empty($context['member']['options']['Breeze_enable_visits_tab']) ? '<li><a href="#tabs_views">'. $txt['Breeze_tabs_views'] .'</a></li>' : '' ,'
+						', !empty($context['member']['options']['Breeze_enable_buddies_tab']) ? '<li><a href="#tabs_buddies">'. $txt['Breeze_tabs_buddies'] .'</a></li>' : '' ,'
+					</ul>
+				</div>';
+
+		echo '
+			</div>';
 
 	/* End of right side */
 
 	/* Left side */
-	echo '<div id="detailedinfo">
-			<div class="windowbg2">
-				<span class="topslice">
-					<span></span>
-				</span>
-			<div class="content">';
+	echo '
+			<div class="tabContainer" id="detailedinfo">';
+
+	/* Scroll to top */
+	echo '
+			<p id="breezeTop">
+				<a href="#wrapper"><span></span>Back to Top</a>
+			</p>';
+
+	/* Profile visitors */
+	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) && !empty($context['Breeze']['views']))
+	{
+		echo '
+				<div id="tabs_views" style="display: none;">
+					<ul class="reset breeze_top_profile_views">';
+
+		foreach ($context['Breeze']['views'] as $profile_views)
+		{
+			echo '
+						<li class="windowbg2 breeze_profile_views_block">
+							<ul class="breeze_profile_views_inner reset">
+								<li class="breeze_profile_views_name"><h1 class="titlebg">', $context['Breeze']['user_info'][$profile_views['user']]['link'] ,'</h1></li>
+								<li class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$profile_views['user']]['facebox'] ,'</li>
+								<li class="breeze_profile_views_last">', $txt['Breeze_general_last_view'] ,': ', $context['breeze']['tools']->timeElapsed($profile_views['last_view']) ,'</li>
+							</ul>
+						</li>';
+		}
+
+		echo '
+					</ul>
+				</div>';
+	}
+	/* End of profile visitors */
+
+	/* Buddies tab */
+	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
+	{
+		echo '
+				<div id="tabs_buddies" style="display: none;">
+					<ul class="reset breeze_top_profile_views">';
+
+		foreach ($context['member']['buddies'] as $buddies)
+		{
+			echo '
+						<li class="windowbg2 breeze_profile_views_block">
+							<ul class="breeze_profile_views_inner reset">
+								<li class="breeze_profile_views_name"><h1 class="titlebg">', $context['Breeze']['user_info'][$buddies]['link'] ,'</h1></li>
+								<li class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$buddies]['facebox'] ,'</li>
+							</ul>
+						</li>';
+		}
+
+		echo '
+					</ul>
+				</div>';
+	}
+	/* End of buddies tab */
+
+	/* Wall div */
+	echo '
+			<div id="tabs_wall">
+				<div class="windowbg2">
+					<span class="topslice">
+						<span></span>
+					</span>
+				<div class="content">';
 
 			/* Main content */
 
 			/* This is the status box,  O RLY? */
-			if ($context['Breeze']['visitor']['post_status'])
+			if (!empty($context['permissions']['post_status']))
 				echo '<div class="breeze_user_inner">
 						<div class="breeze_user_statusbox">
 							<form method="post" action="', $scripturl, '?action=breezeajax;sa=post" id="status" name="form_status" class="form_status">
@@ -158,11 +232,12 @@ function template_user_wall()
 						</div>
 					</div>';
 
-		echo'</div>
-			<span class="botslice">
-				<span></span>
-			</span>
-		</div>';
+		echo'
+				</div>
+				<span class="botslice">
+					<span></span>
+				</span>
+			</div>';
 		/* End of the status textarea */
 
 
@@ -185,7 +260,7 @@ function template_user_wall()
 							<div class="breeze_options"><span class="time_elapsed">', $status['time'] ,' </span>';
 
 							/* Delete link */
-							if ($context['Breeze']['visitor']['delete_status'])
+							if (!empty($context['permissions']['delete_status']))
 								echo '| <a href="javascript:void(0)" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> </div>';
 
 							echo '<hr />
@@ -206,7 +281,7 @@ function template_user_wall()
 														<span class="time_elapsed">', $comment['time'] ,'</span>';
 
 									/* Delete comment */
-									if ($context['Breeze']['visitor']['delete_comments'])
+									if (!empty($context['permissions']['delete_comments']))
 										echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 									echo '
@@ -222,7 +297,7 @@ function template_user_wall()
 							echo '</ul>';
 
 								/* Post a new comment */
-								if ($context['Breeze']['visitor']['post_comment'])
+								if (!empty($context['permissions']['post_comment']))
 									echo '<div>
 									<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
 										<textarea id="textboxcontent_', $status['id'] ,'" cols="40" rows="2"></textarea>
@@ -251,8 +326,13 @@ function template_user_wall()
 	if (!empty($context['Breeze']['pagination']['panel']))
 		echo '<div id="breeze_pagination">', $txt['pages'] ,': ', $context['Breeze']['pagination']['panel'] ,'</div>';
 
+	/* End of Wall div */
+	echo '
+			</div>';
+
 	/* End of left side */
-	echo '</div>
+	echo '
+	</div>
 		<div class="clear"></div>
 	</div>';
 
@@ -340,7 +420,7 @@ function template_singleStatus()
 							<span class="time_elapsed">', $context['Breeze']['single']['time'] ,' </span>';
 
 					/* Delete link */
-					if ($context['Breeze']['visitor']['delete_status'])
+					if ($context['permissions']['delete_status'])
 						echo '| <a href="javascript:void(0)" id="', $context['Breeze']['single']['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
 
 					echo '
@@ -364,7 +444,7 @@ function template_singleStatus()
 												<span class="time_elapsed">', $comment['time'] ,'</span>';
 
 							/* Delete comment */
-							if ($context['Breeze']['visitor']['delete_status'])
+							if ($context['permissions']['delete_status'])
 								echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 							echo '
@@ -380,7 +460,7 @@ function template_singleStatus()
 						echo '</ul>';
 
 							/* Post a new comment */
-							if ($context['Breeze']['visitor']['post_comment'])
+							if ($context['permissions']['post_comment'])
 								echo '<div>
 								<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $context['Breeze']['single']['id'] ,'" id="formID_', $context['Breeze']['single']['id'] ,'">
 									<textarea id="textboxcontent_', $context['Breeze']['single']['id'] ,'" cols="40" rows="2"></textarea>

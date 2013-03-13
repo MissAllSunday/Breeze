@@ -45,6 +45,7 @@ $txt['Breeze_general_my_wall'] = 'My Wall';
 $txt['Breeze_general_my_wall_settings'] = 'My Wall Settings';
 $txt['Breeze_general_loading'] = 'Loading...';
 $txt['Breeze_general_like'] = 'Like';
+$txt['Breeze_general_last_view'] = 'Last view';
 $txt['Breeze_general_delete'] = 'Delete';
 $txt['Breeze_general_unlike'] = 'Unlike';
 $txt['Breeze_general_plural'] = '(s)';
@@ -74,8 +75,10 @@ $txt['Breeze_user_settings_pagination_number'] = 'How many status will be displa
 $txt['Breeze_user_settings_pagination_number_sub'] = 'Enter the number of status you want to display per page on your wall. By default is 5';
 $txt['Breeze_user_settings_enable_wall'] = 'Enable my wall';
 $txt['Breeze_user_settings_enable_wall_sub'] = 'If you want to use your wall, you need to check this option, otherwise your profile will show the default page.';
-$txt['Breeze_user_settings_enable_visits_module'] = 'Enable the visits block?';
-$txt['Breeze_user_settings_enable_visits_module_sub'] = 'If this is enable, a block with the latest user who visited your wall will appear.';
+$txt['Breeze_user_settings_enable_buddies_tab'] = 'Enable the Buddies tab?';
+$txt['Breeze_user_settings_enable_buddies_tab_sub'] = 'If this is enable, a new tab will be visible, this tab will contain all your confirmed buddies';
+$txt['Breeze_user_settings_enable_visits_tab'] = 'Enable the visits tab?';
+$txt['Breeze_user_settings_enable_visits_tab_sub'] = 'This tab will show the latest visitors to your wall.';
 $txt['Breeze_user_settings_visits_module_timeframe'] = 'The time frame to count the visits from.';
 $txt['Breeze_user_settings_visits_module_timeframe_sub'] = 'By default is set to a week, that means the module will show the latest visits to your wall in the last week.';
 $txt['Breeze_user_settings_visits_module_timeframe_hour'] = 'Hour';
@@ -196,7 +199,12 @@ $txt['Breeze_pag_pages'] = 'Pages :';
 $txt['Breeze_pag_page'] = '- page ';
 $txt['Breeze_profile_of_username'] = 'Profile of %1$s %2$s';
 $txt['Breeze_page_loading'] = 'Loading more messages...';
-$txt['Breeze_page_loading_end'] = 'There are no more messages, go to top';
+$txt['Breeze_page_loading_end'] = '<div class="breeze_center">There are no more messages, go to top</div>';
+
+/* Tabs */
+$txt['Breeze_tabs_wall'] = 'Wall';
+$txt['Breeze_tabs_buddies'] = 'Buddies';
+$txt['Breeze_tabs_views'] = 'Profile Views';
 
 /* Notifications */
 $txt['Breeze_noti_title'] = 'Notifications';
@@ -242,4 +250,4 @@ $txt['Breeze_buddyrequest_confirmed_inner_message_de'] = 'You successfully decli
 $txt['Breeze_singleStatus_pageTitle'] = 'Single Status';
 
 /* Donate */
-$txt['Breeze_donate'] = 'Breeze is a free SMF modification brought to you by a PHP enthusiast on her free time.<p />If you like this modification and would like to show your appreciation, please consider making a <a href="http://missallsunday.com/shoes/">donation</a>. Your donation will be used to cover server costs and/or to buy the developer more shoes as shoes keeps her happy and if she is happy then there will be more updates ;)<p />You can also show your appreciation by letting me know you are using Breeze on your forum, come by, say hi and show me your shiny profile pages powered by Breeze.';
+$txt['Breeze_donate'] = 'Breeze is a free SMF modification brought to you by a PHP enthusiast on her free time.<p />If you like this modification and would like to show your appreciation, please consider making a <a href="http://missallsunday.com/">donation</a>. Your donation will be used to cover server costs and/or to buy shoes, shoes keeps the developer happy and if she is happy then there will be more updates ;)<p />You can also show your appreciation by letting me know you are using Breeze on your forum, come by, say hi and show me your shiny profile pages powered by Breeze.';
