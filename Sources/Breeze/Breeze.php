@@ -504,11 +504,11 @@ $(document).ready(function ()
 			'function' => 'Breeze_Admin_Main',
 			'icon' => 'administration.gif',
 			'subsections' => array(
-				'general' => array($txt['Breeze_admin_settings_main']),
-				'settings' => array($txt['Breeze_admin_settings_settings'] ),
-				'permissions' => array($txt['Breeze_admin_settings_sub_permissions']),
-				'style' => array($txt['Breeze_admin_settings_sub_style'])
-				'donate' => array($txt['Breeze_admin_settings_donate'] ),
+				'general' => array($text->getText('admin_settings_main')),
+				'settings' => array($text->getText('admin_settings_settings')),
+				'permissions' => array($text->getText('admin_settings_sub_permissions')),
+				'style' => array($text->getText('admin_settings_sub_style')),
+				'donate' => array($text->getText('admin_settings_donate')),
 			),
 		);
 	}

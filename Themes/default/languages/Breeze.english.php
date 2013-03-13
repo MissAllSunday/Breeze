@@ -117,10 +117,10 @@ $txt['Breeze_user_modules_name'] = 'Modules';
 /* Admin Settings */
 $txt['Breeze_admin_settings_admin_panel'] = 'Breeze Admin Panel';
 $txt['Breeze_admin_welcome'] = 'This is your &quot;Breeze Admin Panel&quot;.  From here, you can edit the settings for Breeze If you have any trouble, feel free to <a href="http://missallsunday.com" target="_blank" class="new_win">ask for support</a> on the author\'s site.';
-$txt['Breeze_admin_settings_main'] = 'Main breeze Admin Center';
+$txt['Breeze_admin_settings_main'] = 'Main Breeze Admin Center';
 $txt['Breeze_admin_settings_sub_permissions'] = 'Permissions';
 $txt['Breeze_admin_settings_sub_style'] = 'Style and Layout';
-$txt['Breeze_admin_settings_settings'] = 'Breeze General Settings';
+$txt['Breeze_admin_settings_settings'] = 'General Settings';
 $txt['Breeze_admin_settings_donate_title'] = 'Boring stuff you will never see...';
 $txt['Breeze_admin_settings_server_needs'] = '<div class="breeze_error_message">Your Server does not support %s, contact your hosting provider and ask for it to be enable, otherwise you won\'t be able to use this mod at full.</div>';
 $txt['Breeze_admin_settings_json'] = 'JSON library';
