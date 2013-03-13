@@ -509,6 +509,10 @@ $(document).ready(function ()
 					'file' => 'Breeze/BreezeAdmin.php',
 					'function' => 'Breeze_Admin_Settings',
 					'icon' => 'corefeatures.gif',
+					'subsections' => array(
+						'permissions' => array($text->getText('admin_settings_sub_permissions')),
+						'style' => array($text->getText('admin_settings_sub_permissions')),
+					),
 					),
 				'breezedonate' => array(
 					'label' => $text->getText('admin_settings_donate'),
