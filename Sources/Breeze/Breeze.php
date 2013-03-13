@@ -501,7 +501,7 @@ $(document).ready(function ()
 		$admin_menu['config']['areas']['breezeadmin'] = array(
 			'label' => $text->getText('admin_settings_main'),
 			'file' => 'Breeze/BreezeAdmin.php',
-			'function' => 'Breeze_Admin_Main',
+			'function' => 'Breeze_Admin_Index',
 			'icon' => 'administration.gif',
 			'subsections' => array(
 				'general' => array($text->getText('admin_settings_main')),

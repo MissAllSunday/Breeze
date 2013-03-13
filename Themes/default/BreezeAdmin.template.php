@@ -42,21 +42,7 @@ function template_admin_home()
 
 	/* Welcome message for the admin. */
 	echo '
-	<div id="admincenter">
-		<div class="cat_bar">
-			<h3 class="catbg">';
-
-	echo $txt['Breeze_admin_settings_admin_panel'], '
-			</h3>
-		</div>
-		<span class="upperframe"><span></span></span>
-		<div class="roundframe">
-			<div id="welcome">
-				<strong>', $txt['hello_guest'], ' ', $context['user']['name'], '!</strong>
-				', sprintf($txt['Breeze_admin_welcome'], $txt['Breeze_admin_settings_admin_panel']), '
-			</div>
-		</div>
-		<span class="lowerframe"><span></span></span>';
+	<div id="admincenter">';
 
 	/* Is there an update available? */
 	echo '
@@ -107,7 +93,8 @@ function template_admin_home()
 				</div>
 			</div>
 		</div>
-	</div>';
+	</div>
+	<br />';
 }
 
 /* Boring stuff you will never see... */

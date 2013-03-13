@@ -42,10 +42,8 @@ function Breeze_Admin_Index()
 {
 		global $txt, $scripturl, $context, $sourcedir;
 
-		loadLanguage('Breeze');
-
 		require_once($sourcedir . '/ManageSettings.php');
-
+		loadLanguage('Breeze');
 		$context['page_title'] = $txt['Breeze_admin_settings_admin_panel'];
 
 		$subActions = array(
@@ -56,11 +54,9 @@ function Breeze_Admin_Index()
 			'donate' => 'Breeze_Admin_Donate',
 		);
 
-		loadGeneralSettingParameters($subActions, 'general');
+		loadGeneralSettingParameters($subActions, 'settings');
 
 		$context[$context['admin_menu_name']]['tab_data'] = array(
-			'title' => $txt['Breeze_admin_settings_admin_panel'],
-			'description' => $txt['Breeze_admin_welcome'],
 			'tabs' => array(
 				'general' => array(),
 				'settings' => array(),
@@ -91,6 +87,10 @@ function Breeze_Admin_Index()
 		/* Set all the page stuff */
 		$context['page_title'] = $text->getText('admin_settings_main');
 		$context['sub_template'] = 'admin_home';
+		$context[$context['admin_menu_name']]['tab_data'] = array(
+			'title' => $text->getText('admin_settings_admin_panel'),
+			'description' => $text->getText('admin_welcome'),
+		);
 
 		/* Headers */
 		Breeze::headersHook('admin');
@@ -100,11 +100,17 @@ function Breeze_Admin_Index()
 	{
 		global $scripturl, $context, $sourcedir, $breezeController;
 
+		loadtemplate('Admin');
+
 		/* Load stuff */
 		$text = $breezeController->get('text');
 		$globals = Breeze::sGlobals('request');
 		$context['sub_template'] = 'show_settings';
 		$context['page_title'] = $text->getText('admin_settings_main');
+		$context[$context['admin_menu_name']]['tab_data'] = array(
+			'title' => 'LOL',
+			'description' => 'Description',
+		);
 
 		require_once($sourcedir . '/ManageServer.php');
 
