@@ -503,21 +503,18 @@ $(document).ready(function ()
 					'file' => 'Breeze/BreezeAdmin.php',
 					'function' => 'Breeze_Admin_Main',
 					'icon' => 'administration.gif',
-					'permission' => array('breeze_edit_general_settings'),
 					),
 				'breezesettings' => array(
 					'label' => $text->getText('admin_settings_settings'),
 					'file' => 'Breeze/BreezeAdmin.php',
 					'function' => 'Breeze_Admin_Settings',
 					'icon' => 'corefeatures.gif',
-					'permission' => array('breeze_edit_general_settings'),
 					),
 				'breezedonate' => array(
 					'label' => $text->getText('admin_settings_donate'),
 					'file' => 'Breeze/BreezeAdmin.php',
 					'function' => 'Breeze_Admin_Donate',
 					'icon' => 'support.gif',
-					'permission' => array('breeze_edit_general_settings'),
 					),
 				),
 			);
