@@ -38,7 +38,41 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-	/* We can't call a static method from a string... let's do this the old way instead... */
+function Breeze_Admin_Index()
+{
+		global $txt, $scripturl, $context, $sourcedir;
+
+		loadLanguage('Breeze');
+
+		require_once($sourcedir . '/ManageSettings.php');
+
+		$context['page_title'] = $txt['Breeze_admin_settings_admin_panel'];
+
+		$subActions = array(
+			'general' => 'Breeze_Admin_Main',
+			'settings' => 'Breeze_Admin_Settings',
+			'permissions' => 'Breeze_Admin_Permissions',
+			'style' => 'Breeze_Admin_Style',
+			'donate' => 'Breeze_Admin_Donate',
+		);
+
+		loadGeneralSettingParameters($subActions, 'general');
+
+		$context[$context['admin_menu_name']]['tab_data'] = array(
+			'title' => $txt['Breeze_admin_settings_admin_panel'],
+			'description' => $txt['Breeze_admin_welcome'],
+			'tabs' => array(
+				'general' => array(),
+				'settings' => array(),
+				'permissions' => array(),
+				'style' => array(),
+				'donate' => array(),
+			),
+		);
+
+		call_user_func($subActions[$_REQUEST['sa']]);
+}
+
 	function Breeze_Admin_Main()
 	{
 		global $scripturl, $context, $breezeController;

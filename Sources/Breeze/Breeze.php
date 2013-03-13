@@ -498,34 +498,19 @@ $(document).ready(function ()
 
 		$text = $breezeController->get('text');
 
-		$admin_menu['breezeadmin'] = array(
-			'title' => $text->getText('admin_settings_admin_panel'),
-			'permission' => array('breeze_edit_general_settings'),
-			'areas' => array(
-				'breezeindex' => array(
-					'label' => $text->getText('admin_settings_main'),
-					'file' => 'Breeze/BreezeAdmin.php',
-					'function' => 'Breeze_Admin_Main',
-					'icon' => 'administration.gif',
-					),
-				'breezesettings' => array(
-					'label' => $text->getText('admin_settings_settings'),
-					'file' => 'Breeze/BreezeAdmin.php',
-					'function' => 'Breeze_Admin_Settings',
-					'icon' => 'corefeatures.gif',
-					'subsections' => array(
-						'permissions' => array($text->getText('admin_settings_sub_permissions')),
-						'style' => array($text->getText('admin_settings_sub_permissions')),
-					),
-					),
-				'breezedonate' => array(
-					'label' => $text->getText('admin_settings_donate'),
-					'file' => 'Breeze/BreezeAdmin.php',
-					'function' => 'Breeze_Admin_Donate',
-					'icon' => 'support.gif',
-					),
-				),
-			);
+		$admin_menu['config']['areas']['breezeadmin'] = array(
+			'label' => $text->getText('admin_settings_main'),
+			'file' => 'Breeze/BreezeAdmin.php',
+			'function' => 'Breeze_Admin_Main',
+			'icon' => 'administration.gif',
+			'subsections' => array(
+				'general' => array($txt['Breeze_admin_settings_main']),
+				'settings' => array($txt['Breeze_admin_settings_settings'] ),
+				'permissions' => array($txt['Breeze_admin_settings_sub_permissions']),
+				'style' => array($txt['Breeze_admin_settings_sub_style'])
+				'donate' => array($txt['Breeze_admin_settings_donate'] ),
+			),
+		);
 	}
 }
 
