@@ -137,7 +137,7 @@ class Breeze
 	 */
 	public static function headersHook($type = 'noti')
 	{
-		global $context, $settings, $user_info, $breezeController;
+		global $context, $settings, $user_info, $breezeController, $txt;
 		static $header_done = false;
 
 		// Don't do anything if we are in SSI world
@@ -204,6 +204,27 @@ class Breeze
 			if (!empty($context['member']['options']['Breeze_infinite_scroll']))
 				$context['html_headers'] .= '
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.infinitescroll.min.js" type="text/javascript"></script>';
+
+			// Use SMFs autosuggest script for mentions
+			$context['html_headers'] .= '<script type="text/javascript"><!-- // --><![CDATA[
+			function suggestMember()
+{
+	omemberSuggest = new smc_AutoSuggest({
+		sSelf: \'omemberSuggest\',
+		sSessionId: \''. $context['session_id'] .'\',
+		sSessionVar: \'', $context['session_var'] .'\',
+		sControlId: \'status\',
+		sSearchType: \'member\',
+		sSearchType: \'member\',
+		sPostName: \'recipient_to\',
+		sURLMask: \'action=profile;u=%item_id%\',
+		sTextDeleteItem: \''. $txt['autosuggest_delete_item'] .'\',
+		bItemList: true,
+		sItemListContainerId: \'to_item_list_container\',
+	});
+}
+suggestMember();
+		// ]]></script>';
 
 			// Load breeze.js untill everyone else is loaded
 			$context['html_headers'] .= '

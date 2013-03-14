@@ -229,6 +229,7 @@ function template_user_wall()
 								<input type="hidden" value="',$user_info['id'],'" name="poster_id" id="poster_id" /><br />
 								<input type="submit" value="', $txt['post'] ,'" name="submit" class="status_button"/>
 							</form>
+							<div id="to_item_list_container"></div>
 						</div>
 					</div>';
 
