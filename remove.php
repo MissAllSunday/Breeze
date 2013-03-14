@@ -44,7 +44,7 @@
 	/* Everybody likes hooks */
 	$hooks = array(
 		'integrate_pre_include' => '$sourcedir/Breeze/Breeze.php',
-		/* 'integrate_menu_buttons' => 'Breeze::wall', */
+		'integrate_menu_buttons' => 'Breeze::menu',
 		'integrate_actions' => 'Breeze::actions',
 		'integrate_load_permissions' => 'Breeze::permissions',
 		'integrate_admin_areas' => 'Breeze::admin',
