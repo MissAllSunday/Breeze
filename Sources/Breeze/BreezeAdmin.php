@@ -78,13 +78,13 @@ function Breeze_Admin_Main()
 	$text = $breezeController->get('text');
 	$headers = $breezeController->get('tools');
 
-	/* Get the version */
+	// Get the version
 	$context['Breeze']['version'] = Breeze::$version;
 
-	/* The support site RSS feed */
+	// The support site RSS feed
 	$context['Breeze']['support'] = Breeze::$supportStite;
 
-	/* Set all the page stuff */
+	// Set all the page stuff
 	$context['page_title'] = $text->getText('admin_settings_main');
 	$context['sub_template'] = 'admin_home';
 	$context[$context['admin_menu_name']]['tab_data'] = array(
@@ -92,7 +92,7 @@ function Breeze_Admin_Main()
 		'description' => $text->getText('admin_welcome'),
 	);
 
-	/* Headers */
+	// Headers
 	Breeze::headersHook('admin');
 }
 
@@ -102,7 +102,7 @@ function Breeze_Admin_Settings()
 
 	loadtemplate('Admin');
 
-	/* Load stuff */
+	// Load stuff
 	$text = $breezeController->get('text');
 	$globals = Breeze::sGlobals('request');
 	$context['sub_template'] = 'show_settings';
@@ -124,7 +124,7 @@ function Breeze_Admin_Settings()
 
 	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=settings;save';
 
-	/* Saving? */
+	// Saving?
 	if ($globals->validate('save') == true)
 	{
 		checkSession();
@@ -141,7 +141,7 @@ function Breeze_Admin_Permissions()
 
 	loadtemplate('Admin');
 
-	/* Load stuff */
+	// Load stuff
 	$text = $breezeController->get('text');
 	$globals = Breeze::sGlobals('request');
 	$context['sub_template'] = 'show_settings';
@@ -161,7 +161,7 @@ function Breeze_Admin_Permissions()
 
 	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=permissions;save';
 
-	/* Saving? */
+	// Saving?
 	if ($globals->validate('save') == true)
 	{
 		checkSession();
@@ -172,21 +172,21 @@ function Breeze_Admin_Permissions()
 	prepareDBSettingContext($config_vars);
 }
 
-/* Pay no attention to the girl behind the curtain */
+// Pay no attention to the girl behind the curtain
 function Breeze_Admin_Donate()
 {
 	global $context, $scripturl, $breezeController;
 
 	loadtemplate('BreezeAdmin');
 
-	/* Headers */
+	// Headers
 	$headers = $breezeController->get('tools');
 	Breeze::headersHook('admin');
 
-	/* Text strings */
+	// Text strings
 	$text = $breezeController->get('text');
 
-	/* Page stuff */
+	// Page stuff
 	$context['page_title'] = Breeze::$name .' - '. $text->getText('admin_settings_donate');
 	$context['sub_template'] = 'admin_donate';
 	$context['Breeze']['donate'] = $text->getText('donate');

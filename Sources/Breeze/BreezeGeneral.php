@@ -38,7 +38,7 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-	/* Wrapper functions */
+	// Wrapper functions
 	function wrapper_breezeGeneral_singleStatus(){ BreezeGeneral::singleStatus(); }
 	function wrapper_breezeGeneral_singleComment(){ BreezeGeneral::singleComment(); }
 
@@ -46,7 +46,7 @@ class BreezeGeneral
 {
 	public static function Call()
 	{
-		/* Handling the subactions */
+		// Handling the subactions
 		$sa = new BreezeGlobals('get');
 
 		$subActions = array(
@@ -54,7 +54,7 @@ class BreezeGeneral
 			'singleComments' => 'wrapper_breezeGeneral_singleComment'
 		);
 
-		/* Does the subaction even exist? */
+		// Does the subaction even exist?
 		if (in_array($sa->getRaw('sa'), array_keys($subActions)))
 			$subActions[$sa->getRaw('sa')]();
 
@@ -62,7 +62,7 @@ class BreezeGeneral
 			self::Wall();
 	}
 
-	/* Get the latest entries of your buddies */
+	// Get the latest entries of your buddies
 	public static function Wall()
 	{
 		global $txt, $scripturl, $context;
@@ -70,7 +70,7 @@ class BreezeGeneral
 		loadtemplate(Breeze::$name);
 		writeLog(true);
 
-		/* Set all the page stuff */
+		// Set all the page stuff
 		$context['page_title'] = 'demo';
 		$context['sub_template'] = 'general_wall';
 		$context['linktree'][] = array(
@@ -78,60 +78,60 @@ class BreezeGeneral
 			'name' => 'demo'
 		);
 
-		/* Headers */
+		// Headers
 		BreezeTools::headers(true);
 	}
 
-	/* Show a single status with all it's comments */
+	// Show a single status with all it's comments
 	public static function singleStatus()
 	{
 		global $user_info, $scripturl, $context, $memberContext;
 
-		/* Load all we need */
+		// Load all we need
 		loadtemplate(Breeze::$name);
 
-		/* Prepare all we need */
+		// Prepare all we need
 		$globals = new BreezeGlobals('get');
 		$tools = BreezeSettings::getInstance();
 		$query = BreezeQuery::getInstance();
 		$status = array();
 		$status['comments'] = array();
 
-		/* Headers */
+		// Headers
 		BreezeTools::headers();
 
-		/* Set all the page stuff */
+		// Set all the page stuff
 		$context['sub_template'] = 'singleStatus';
 		$context['page_title'] = $tools->getText('singleStatus_pageTitle');
 		$context['canonical_url'] = $scripturl . '?action=wall;sa=singlestatus';
 
-		/* The visitor's permissions */
+		// The visitor's permissions
 		$context['Breeze']['visitor']['post_status'] = allowedTo('breeze_postStatus');
 		$context['Breeze']['visitor']['post_comment'] = allowedTo('breeze_postComments');
 		$context['Breeze']['visitor']['delete_status_comments'] = allowedTo('breeze_deleteStatus');
 
-		/* get the status data */
+		// get the status data
 		if ($globals->validate('statusID'))
 			$status = $query->GetStatusByID($globals->getValue('statusID'));
 
-		/* If no ID is set, then load the lastest status */
+		// If no ID is set, then load the lastest status
 		else
 			$status = $query->GetStatusByLast();
 
-		/* Get tue user id */
+		// Get tue user id
 		$users_to_load[] = $status['owner_id'];
 
-		/* Load the corresponding comments */
+		// Load the corresponding comments
 		$status['comments'] = $query->GetCommentsByStatus($status['id']);
 
-		/* Get the id for all the users who commented on the status */
+		// Get the id for all the users who commented on the status
 		foreach($status['comments'] as $c)
 			$users_to_load[] = $c['poster_id'];
 
-		/* We have all the IDs, let's prune the array a little */
+		// We have all the IDs, let's prune the array a little
 		$new_temp_array = array_unique($users_to_load);
 
-		/* Load the data */
+		// Load the data
 		loadMemberData($new_temp_array, false, 'profile');
 		foreach($new_temp_array as $u)
 		{
@@ -140,7 +140,7 @@ class BreezeGeneral
 			$context['Breeze']['user_info'][$user['id']] = BreezeUserInfo::Profile($user);
 		}
 
-		/* Send the data to the template */
+		// Send the data to the template
 		$context['Breeze']['singleStatus'] = $status;
 	}
 }

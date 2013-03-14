@@ -44,7 +44,7 @@ class BreezeGlobals
 
 	/**
 	 * BreezeGlobals::__construct()
-	 * 
+	 *
 	 * @param mixed $var
 	 * @return
 	 */
@@ -68,7 +68,7 @@ class BreezeGlobals
 
 	/**
 	 * BreezeGlobals::getValue()
-	 * 
+	 *
 	 * @param mixed $value
 	 * @return
 	 */
@@ -82,7 +82,7 @@ class BreezeGlobals
 
 	/**
 	 * BreezeGlobals::getRaw()
-	 * 
+	 *
 	 * @param mixed $value
 	 * @return
 	 */
@@ -97,7 +97,7 @@ class BreezeGlobals
 
 	/**
 	 * BreezeGlobals::validate()
-	 * 
+	 *
 	 * @param mixed $var
 	 * @return
 	 */
@@ -111,7 +111,7 @@ class BreezeGlobals
 
 	/**
 	 * BreezeGlobals::validateBody()
-	 * 
+	 *
 	 * @param mixed $var
 	 * @return
 	 */
@@ -120,7 +120,7 @@ class BreezeGlobals
 		if (!isset($this->_request[$var]) || empty($this->_request[$var]))
 			return false;
 
-		/* You cannot post just spaces */
+		// You cannot post just spaces
 		if (ctype_space($this->_request[$var]) || $this->_request[$var] == '')
 			return false;
 
@@ -134,7 +134,7 @@ class BreezeGlobals
 
 	/**
 	 * BreezeGlobals::unsetVar()
-	 * 
+	 *
 	 * @param mixed $var
 	 * @return
 	 */
@@ -145,7 +145,7 @@ class BreezeGlobals
 
 	/**
 	 * BreezeGlobals::sanitize()
-	 * 
+	 *
 	 * @param mixed $var
 	 * @return
 	 */

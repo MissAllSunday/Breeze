@@ -46,17 +46,17 @@ class BreezeUserInfo
 	{
 		global $txt, $context, $settings, $scripturl, $user_info, $memberContext, $context;
 
-		/* Can't do much if the user id is empty... */
+		// Can't do much if the user id is empty...
 		if (empty($u))
 			return;
 
-		/* An extra check ;) */
+		// An extra check ;)
 		if (empty($memberContext[$u]))
 			loadMemberContext($u);
 
 		$user = $memberContext[$u];
 
-		/* Set an empty array */
+		// Set an empty array
 		$context['Breeze']['user_info'][$user['id']] = array(
 			'facebox' => '',
 			'link' => '',
@@ -64,18 +64,18 @@ class BreezeUserInfo
 			'name' => ''
 		);
 
-		/* Sometimes we just want the link */
+		// Sometimes we just want the link
 		if (!empty($user['link']))
 			$context['Breeze']['user_info'][$user['id']]['link'] = $user['link'];
 
-		/* ...or the name */
+		// ...or the name
 		if (!empty($user['name']))
 			$context['Breeze']['user_info'][$user['id']]['name'] = $user['name'];
 
-		/* It all starts with the user's avatar or username... */
+		// It all starts with the user's avatar or username...
 		$context['Breeze']['user_info'][$user['id']]['facebox'] .= (!empty($user['avatar']['href']) ? '<a href="#facebox_'. $user['id'] .'" rel="facebox"><img src="'.$user['avatar']['href'].'" width="50px" /></a>' : $user['link']);
 
-		/* Set the data */
+		// Set the data
 		$context['Breeze']['user_info'][$user['id']]['data'] = '
 		<div id="facebox_'. $user['id'] .'" style="display:none;">
 			<div class="windowbg">
@@ -170,7 +170,7 @@ class BreezeUserInfo
 
 
 
-		/* Info list end */
+		// Info list end
 		$context['Breeze']['user_info'][$user['id']]['data'] .= '</ul>
 				</div>
 				<div class="clear"></div>

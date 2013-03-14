@@ -35,23 +35,23 @@
  *
  */
 
-	/* The admin panel where the news and other very useful stuff is displayed*/
+	// The admin panel where the news and other very useful stuff is displayed
 function template_admin_home()
 {
 	global $txt, $context;
 
-	/* Welcome message for the admin. */
+	// Welcome message for the admin.
 	echo '
 	<div id="admincenter">';
 
-	/* Is there an update available? */
+	// Is there an update available?
 	echo '
 		<div id="update_section"></div>';
 
 	echo '
 		<div id="admin_main_section">';
 
-	/* Display the "live news" from missallsunday.com. */
+	// Display the "live news" from missallsunday.com.
 	echo '
 			<div id="live_news" class="floatleft">
 				<div class="cat_bar">
@@ -68,7 +68,7 @@ function template_admin_home()
 				</div>
 			</div>';
 
-	/* Show the Breeze version. */
+	// Show the Breeze version.
 	echo '
 			<div id="supportVersionsTable" class="floatright">
 				<div class="cat_bar">
@@ -84,7 +84,7 @@ function template_admin_home()
 							', $txt['Breeze_admin_breeze_version'] , ':
 							<em id="yourVersion" style="white-space: nowrap;">', $context['Breeze']['version'] , '</em><br />';
 
-		/* Some more stuff will be here... eventually */
+		// Some more stuff will be here... eventually
 
 	echo '
 						</div>
@@ -97,7 +97,7 @@ function template_admin_home()
 	<br />';
 }
 
-/* Boring stuff you will never see... */
+// Boring stuff you will never see...
 function template_admin_donate()
 {
 	global $context;

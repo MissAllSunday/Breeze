@@ -35,8 +35,8 @@
  *
  */
 
-/* General wall... */
-	/* This will be moved to its own template... eventually */
+// General wall...
+	// This will be moved to its own template... eventually
 function template_general_wall()
 {
 	global $txt;
@@ -57,7 +57,7 @@ function template_general_wall()
 		</span><br />';
 }
 
-/* User's wall. */
+// User's wall.
 function template_user_wall()
 {
 	global $txt, $context, $settings, $scripturl, $user_info;
@@ -133,7 +133,7 @@ function template_user_wall()
 					</span>
 				</div>';
 
-		/* Links for tabs show it if there is at least 1 tab*/
+		// Links for tabs show it if there is at least 1 tab
 		if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
 			echo '
 				<div class="windowbg">
@@ -147,19 +147,19 @@ function template_user_wall()
 		echo '
 			</div>';
 
-	/* End of right side */
+	// End of right side
 
-	/* Left side */
+	// Left side
 	echo '
 			<div class="tabContainer" id="detailedinfo">';
 
-	/* Scroll to top */
+	// Scroll to top
 	echo '
 			<p id="breezeTop">
 				<a href="#wrapper"><span></span>Back to Top</a>
 			</p>';
 
-	/* Profile visitors */
+	// Profile visitors
 	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) && !empty($context['Breeze']['views']))
 	{
 		echo '
@@ -182,9 +182,9 @@ function template_user_wall()
 					</ul>
 				</div>';
 	}
-	/* End of profile visitors */
+	// End of profile visitors
 
-	/* Buddies tab */
+	// Buddies tab
 	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
 	{
 		echo '
@@ -206,9 +206,9 @@ function template_user_wall()
 					</ul>
 				</div>';
 	}
-	/* End of buddies tab */
+	// End of buddies tab
 
-	/* Wall div */
+	// Wall div
 	echo '
 			<div id="tabs_wall">
 				<div class="windowbg2">
@@ -217,9 +217,9 @@ function template_user_wall()
 					</span>
 				<div class="content">';
 
-			/* Main content */
+			// Main content
 
-			/* This is the status box,  O RLY? */
+			// This is the status box,  O RLY?
 			if (!empty($context['permissions']['post_status']))
 				echo '<div class="breeze_user_inner">
 						<div class="breeze_user_statusbox">
@@ -238,14 +238,14 @@ function template_user_wall()
 					<span></span>
 				</span>
 			</div>';
-		/* End of the status textarea */
+		// End of the status textarea
 
 
-	/* New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING and even if you do, DON'T MODIFY THIS */
+	// New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING and even if you do, DON'T MODIFY THIS
 	echo '<span id="breeze_load_image"></span>
 	<ul class="breeze_status" id="breeze_display_status">';
 
-	/* Status and comments */
+	// Status and comments
 	if (!empty($context['member']['status']))
 		foreach ($context['member']['status'] as $status)
 		{
@@ -259,7 +259,7 @@ function template_user_wall()
 							',$status['body'],'
 							<div class="breeze_options"><span class="time_elapsed">', $status['time'] ,' </span>';
 
-							/* Delete link */
+							// Delete link
 							if (!empty($context['permissions']['delete_status']))
 								echo '| <a href="javascript:void(0)" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> </div>';
 
@@ -267,7 +267,7 @@ function template_user_wall()
 							<div id="comment_flash_', $status['id'] ,'"></div>';
 						echo '<ul class="breeze_comments_list" id="comment_loadplace_', $status['id'] ,'">';
 
-							/* Print out the comments */
+							// Print out the comments
 							if (!empty($status['comments']))
 								foreach($status['comments'] as $comment)
 								{
@@ -280,7 +280,7 @@ function template_user_wall()
 													<div class="breeze_options">
 														<span class="time_elapsed">', $comment['time'] ,'</span>';
 
-									/* Delete comment */
+									// Delete comment
 									if (!empty($context['permissions']['delete_comments']))
 										echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
@@ -291,12 +291,12 @@ function template_user_wall()
 											</li>';
 								}
 
-							/* Display the new comments */
+							// Display the new comments
 							echo '<li id="breeze_load_image_comment_', $status['id'] ,'" style="margin:auto; text-align:center;"></li>';
 
 							echo '</ul>';
 
-								/* Post a new comment */
+								// Post a new comment
 								if (!empty($context['permissions']['post_comment']))
 									echo '<div>
 									<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
@@ -319,24 +319,24 @@ function template_user_wall()
 				</li>';
 		}
 
-	/* End of list */
+	// End of list
 	echo '</ul>';
 
-	/* Pagination panel */
+	// Pagination panel
 	if (!empty($context['Breeze']['pagination']['panel']))
 		echo '<div id="breeze_pagination">', $txt['pages'] ,': ', $context['Breeze']['pagination']['panel'] ,'</div>';
 
-	/* End of Wall div */
+	// End of Wall div
 	echo '
 			</div>';
 
-	/* End of left side */
+	// End of left side
 	echo '
 	</div>
 		<div class="clear"></div>
 	</div>';
 
-	/* Don't forget to print the users data */
+	// Don't forget to print the users data
 	if (!empty($context['Breeze']['user_info']))
 		foreach ($context['Breeze']['user_info'] as $userData)
 			if (!empty($userData['data']))
@@ -384,12 +384,12 @@ function template_user_notifications()
 				</tr>';
 		}
 
-		/* Close the table */
+		// Close the table
 		echo '</tbody>
 		</table><br />';
 	}
 
-	/* Gotta be more social buddy... */
+	// Gotta be more social buddy...
 	else
 		echo $txt['Breeze_noti_none'];
 
@@ -419,7 +419,7 @@ function template_singleStatus()
 						<div class="breeze_options">
 							<span class="time_elapsed">', $context['Breeze']['single']['time'] ,' </span>';
 
-					/* Delete link */
+					// Delete link
 					if ($context['permissions']['delete_status'])
 						echo '| <a href="javascript:void(0)" id="', $context['Breeze']['single']['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
 
@@ -430,7 +430,7 @@ function template_singleStatus()
 				echo '
 						<ul class="breeze_comments_list" id="comment_loadplace_', $context['Breeze']['single']['id'] ,'">';
 
-					/* Print out the comments */
+					// Print out the comments
 					if (!empty($context['Breeze']['single']['comments']))
 						foreach($context['Breeze']['single']['comments'] as $comment)
 						{
@@ -443,7 +443,7 @@ function template_singleStatus()
 											<div class="breeze_options">
 												<span class="time_elapsed">', $comment['time'] ,'</span>';
 
-							/* Delete comment */
+							// Delete comment
 							if ($context['permissions']['delete_status'])
 								echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
@@ -454,12 +454,12 @@ function template_singleStatus()
 									</li>';
 						}
 
-						/* Display the new comments */
+						// Display the new comments
 						echo '<li id="breeze_load_image_comment_', $context['Breeze']['single']['id'] ,'" style="margin:auto; text-align:center;"></li>';
 
 						echo '</ul>';
 
-							/* Post a new comment */
+							// Post a new comment
 							if ($context['permissions']['post_comment'])
 								echo '<div>
 								<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $context['Breeze']['single']['id'] ,'" id="formID_', $context['Breeze']['single']['id'] ,'">
@@ -481,7 +481,7 @@ function template_singleStatus()
 			</span>
 			</div><br />';
 
-	/* Don't forget to print the users data */
+	// Don't forget to print the users data
 	if (!empty($context['Breeze']['user_info']))
 		foreach ($context['Breeze']['user_info'] as $userData)
 			if (!empty($userData['data']))
@@ -508,7 +508,7 @@ function template_member_options()
 				<span class="topslice"><span></span></span>
 					<div class="content">';
 
-		/* Print the form */
+		// Print the form
 		echo $context['Breeze']['UserSettings']['Form'];
 
 

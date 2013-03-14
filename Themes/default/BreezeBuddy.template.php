@@ -35,12 +35,12 @@
  *
  */
 
-	/* Show a message to let the user know his/her request must be approved by the user */
+	// Show a message to let the user know his/her request must be approved by the user
 function template_Breeze_request_buddy_message_send()
 {
 	global $txt, $context;
 
-	/* Welcome message for the admin. */
+	// Welcome message for the admin.
 	echo '
 	<div id="admincenter">
 		<div class="cat_bar">
@@ -66,11 +66,11 @@ function template_Breeze_buddy_list()
 {
 	global $txt, $context, $scripturl;
 
-	/* If there is an inner_message, show it here */
+	// If there is an inner_message, show it here
 	if (!empty($context['Breeze']['inner_message']))
 		echo '<div class="windowbg" id="profile_success">', $context['Breeze']['inner_message'] ,'</div>';
 
-	/* Welcome message for the admin. */
+	// Welcome message for the admin.
 	echo '
 		<div class="cat_bar">
 			<h3 class="catbg">
@@ -90,7 +90,7 @@ function template_Breeze_buddy_list()
 		</span>
 		<div id="admin_main_section">';
 
-	/* Buddy request */
+	// Buddy request
 	if (!empty($context['Breeze']['Buddy_Request']))
 	{
 		echo '
@@ -138,7 +138,7 @@ function template_Breeze_buddy_list()
 	</span>
 	</div>';
 
-		/* end of admin div */
+		// end of admin div
 	echo '
 		</div>';
 }

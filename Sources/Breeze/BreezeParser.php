@@ -48,7 +48,7 @@ class BreezeParser
 		$this->settings = $settings;
 		$this->tools = $tools;
 
-		/* Regex stuff */
+		// Regex stuff
 		$this->regex = array(
 			'url' => '~(?<=[\s>\.(;\'"]|^)((?:http|https)://[\w\-_%@:|]+(?:\.[\w\-_%]+)*(?::\d+)?(?:/[\w\-_\~%\.@!,\?&;=#(){}+:\'\\\\]*)*[/\w\-_\~%@\?;=#}\\\\])~i',
 			'mention' => '~{(?<id>[0-9]+),(?<name>[\s\w,;-_\[\]\\\/\+\.\~\$\!]+),(?<display>[\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u',
@@ -67,7 +67,7 @@ class BreezeParser
 		return $this->s;
 	}
 
-	/* Convert any valid urls on to links */
+	// Convert any valid urls on to links
 	protected function urltoLink($s)
 	{
 		if (preg_match_all($this->regex['url'], $s, $matches))
@@ -81,10 +81,10 @@ class BreezeParser
 	{
 		global $scripturl;
 
-		/* Search for all possible names */
+		// Search for all possible names
 		if (preg_match_all($this->regex['mention'], $s, $matches, PREG_SET_ORDER))
 		{
-			/* Find any instances */
+			// Find any instances
 			foreach ($matches as $query)
 			{
 				$find[] = $query[0];
@@ -92,14 +92,14 @@ class BreezeParser
 				$replace[] = '@<a href="' . $scripturl . '?action=profile;u=' . $query['id'] . '" class="bbc_link" target="_blank">' . $query['display'] . '</a>';
 			}
 
-			/* Do the replacement already */
+			// Do the replacement already
 			$s = str_replace($find, $replace, $s);
 
-			/* We are done mutilating the string, lets returning it */
+			// We are done mutilating the string, lets returning it
 			return $s;
 		}
 
-		/* Nothing was found */
+		// Nothing was found
 		else
 			return $s;
 	}

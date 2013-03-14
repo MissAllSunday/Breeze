@@ -51,61 +51,61 @@ class BreezeController
 
 	protected function set()
 	{
-		/* Globals */
+		// Globals
 		$this->container->globals = $this->container->asShared(function ($c)
 		{
 			return new BreezeGlobals();
 		});
 
-		/* Settings */
+		// Settings
 		$this->container->settings = $this->container->asShared(function ($c)
 		{
 			return new BreezeSettings();
 		});
 
-		/* Text */
+		// Text
 		$this->container->text = $this->container->asShared(function ($c)
 		{
 			return new BreezeText();
 		});
 
-		/* Tools */
+		// Tools
 		$this->container->tools = $this->container->asShared(function ($c)
 		{
 			return new BreezeTools($c->settings, $c->text);
 		});
 
-		/* Parser */
+		// Parser
 		$this->container->parser = $this->container->asShared(function ($c)
 		{
 			return new BreezeParser($c->settings, $c->tools);
 		});
 
-		/* Query */
+		// Query
 		$this->container->query = $this->container->asShared(function ($c)
 		{
 			return new BreezeQuery($c->settings, $c->text, $c->tools, $c->parser);
 		});
 
-		/* Form */
+		// Form
 		$this->container->form = $this->container->asShared(function ($c)
 		{
 			return new BreezeForm($c->text);
 		});
 
-		/* Notifications */
+		// Notifications
 		$this->container->notifications = $this->container->asShared(function ($c)
 		{
 			return new BreezeNotifications($c->settings, $c->text, $c->tools, $c->query);
 		});
 
-		/* Buddy */
+		// Buddy
 		$this->container->buddy = $this->container->asShared(function ($c)
 		{
 			return new BreezeBuddy($c->settings,$c->query, $c->notifications);
 		});
 
-		/* Mention */
+		// Mention
 		$this->container->mention = $this->container->asShared(function ($c)
 		{
 			return new BreezeMention($c->settings, $c->query, $c->notifications);

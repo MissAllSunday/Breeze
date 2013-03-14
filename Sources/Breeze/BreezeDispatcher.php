@@ -68,7 +68,7 @@ abstract class BreezeDispatcher
 			if ($sglobals->getValue('action') == 'breezeajax')
 				$controller = new $controller_name($dependency->get('settings'), $dependency->get('text'), $dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'));
 
-			/* Lets call the method */
+			// Lets call the method
 			$method_name = $actions[$sglobals->getValue('action')][1];
 			call_user_func_array(array($controller, $method_name), array());
 		}

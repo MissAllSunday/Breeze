@@ -58,7 +58,7 @@ class BreezeDisplay
 
 		$this->type = $type;
 
-		/* The visitor's permissions */
+		// The visitor's permissions
 		$this->permissions = array(
 			'poststatus' => allowedTo('breeze_postStatus'),
 			'postcomments' => allowedTo('breeze_postComments'),
@@ -70,10 +70,10 @@ class BreezeDisplay
 	{
 		global $scripturl, $user_info, $context;
 
-		/* Load the user info */
+		// Load the user info
 		$this->tools->loadUserInfo($this->params['poster_id']);
 
-		/* Set the elapsed time */
+		// Set the elapsed time
 		$this->params['time'] = $this->tools->timeElapsed($this->params['time']);
 
 		switch ($this->type)
@@ -92,7 +92,7 @@ class BreezeDisplay
 					'. $this->params['body'] .'
 					<div class="breeze_options"><span class="time_elapsed">'. $this->params['time'] .' </span>';
 
-					/* Delete link */
+					// Delete link
 					if ($this->permissions['deleteStatus'])
 						$this->returnArray .= '| <a href="javascript:void(0)" id="'. $this->params['id'] .'" class="breeze_delete_status">'. $this->text->getText('general_delete') .'</a>';
 
@@ -102,16 +102,16 @@ class BreezeDisplay
 
 					$this->returnArray .= '<ul class="breeze_comments_list" id="comment_loadplace_'. $this->params['id'] .'">';
 
-						/* New status don't have comments... */
+						// New status don't have comments...
 
-						/* display the new comments ^o^ */
+						// display the new comments ^o^
 						$this->returnArray .= '
 						<li id="breeze_load_image_comment_'. $this->params['id'] .'" style="margin:auto; text-align:center;"></li>';
 
-						/* Close the list */
+						// Close the list
 						$this->returnArray .= '</ul>';
 
-						/* display the form for new comments */
+						// display the form for new comments
 						if ($this->permissions['postcomments'])
 							$this->returnArray .= '
 							<span><form action="'. $scripturl. '?action=breezeajax;sa=postcomment" method="post" name="formID_'. $this->params['id'] .'" id="formID_'. $this->params['id'] .'">
@@ -124,7 +124,7 @@ class BreezeDisplay
 							</form></span>';
 
 
-					/* Close the div */
+					// Close the div
 					$this->returnArray .= '</div>
 					<div class="clear"></div>
 				</div>

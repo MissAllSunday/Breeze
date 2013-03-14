@@ -41,7 +41,7 @@
 	elseif (!defined('SMF'))
 		exit('<b>Error:</b> Cannot install - please verify you put this in the same place as SMF\'s index.php.');
 
-	/* Everybody likes hooks */
+	// Everybody likes hooks
 	$hooks = array(
 		'integrate_pre_include' => '$sourcedir/Breeze/Breeze.php',
 		'integrate_menu_buttons' => 'Breeze::menu',
@@ -52,7 +52,7 @@
 		'integrate_load_theme' => 'Breeze::headers',
 	);
 
-	/* Uninstall please */
+	// Uninstall please
 	$call = 'remove_integration_function';
 
 	foreach ($hooks as $hook => $function)

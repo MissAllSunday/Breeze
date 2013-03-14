@@ -58,7 +58,7 @@ class BreezeSettings
 				$this->_settings[$key] = $modSettings[$key];
 	}
 
-	/* Return true if the value do exist, false otherwise, O RLY? */
+	// Return true if the value do exist, false otherwise, O RLY?
 	public function enable($var)
 	{
 		if (empty($this->_settings))
@@ -71,7 +71,7 @@ class BreezeSettings
 			return false;
 	}
 
-	/* Get the requested setting  */
+	// Get the requested setting
 	public function getSetting($var)
 	{
 		if (empty($this->_settings))

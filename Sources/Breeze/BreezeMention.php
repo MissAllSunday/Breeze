@@ -66,30 +66,30 @@ class BreezeMention
 	 */
 	public function preMention($string)
 	{
-		/* Oh, common! really? */
+		// Oh, common! really?
 		if (empty($string))
 			return false;
 
 		$this->_string = $string;
 
-		/* Search for all possible names */
+		// Search for all possible names
 		if (preg_match_all($this->_regex, $this->_string, $matches, PREG_SET_ORDER))
 			foreach($matches as $m)
 				$this->_queryNames[] = trim($m[1]);
 
-		/* Do this if we have something */
+		// Do this if we have something
 		if (!empty($this->_queryNames))
 		{
-			/* We need an array and users won't be notified twice... */
+			// We need an array and users won't be notified twice...
 			$this->_queryNames = array_unique(is_array($this->_queryNames) ? $this->_queryNames : array($this->_queryNames));
 
-			/* Sorry, theres gotta be a limit you know? */
+			// Sorry, theres gotta be a limit you know?
 			$admin_mention_limit = $this->_settings->enable('admin_mention_limit') ? $this->_settings->getSetting('admin_mention_limit') : 10;
 
 			if (!empty($admin_mention_limit) && count($this->_queryNames) >= $admin_mention_limit)
 				$this->_queryNames = array_slice($this->_queryNames, 0, $admin_mention_limit);
 
-			/* Let's make a quick query here... */
+			// Let's make a quick query here...
 			$this->_searchNames = $this->_query->quickQuery(
 				array(
 					'table' => 'members',
@@ -103,33 +103,33 @@ class BreezeMention
 				false
 			);
 
-			/* Get the actual users */
+			// Get the actual users
 			if (!empty($this->_searchNames))
 				$this->_searchNames = !is_array($this->_searchNames) ? array($this->_searchNames) : $this->_searchNames;
 
-			/* We got some results */
+			// We got some results
 			if (!empty($this->_searchNames))
 			{
-				/* Let's create the notification */
+				// Let's create the notification
 				foreach ($this->_searchNames as $name)
 				{
-					/* Ugly, but we need to associate the raw name with the actual names somehow... */
+					// Ugly, but we need to associate the raw name with the actual names somehow...
 					foreach ($this->_queryNames as $query)
 					{
 						if (in_array($query, $name))
 							$name['raw_name'] = $query;
 
-						/* No? then use the display name and hope for the best... */
+						// No? then use the display name and hope for the best...
 						else
 							$name['raw_name'] = $name['member_name'];
 					}
 
-					/* Let's create the preformat */
+					// Let's create the preformat
 					$find[] = '{'. $name['raw_name'] .'}';
 					$replace[] = '{'. $name['id_member'] .','. $name['member_name'] .','. $name['real_name'] .'}';
 				}
 
-				/* Finally do the replacement */
+				// Finally do the replacement
 				$this->_string = str_replace($find, $replace, $this->_string);
 			}
 		}
@@ -141,16 +141,16 @@ class BreezeMention
 	{
 		global $user_info;
 
-		/* You can't notify yourself */
+		// You can't notify yourself
 		if (array_key_exists($user_info['id'], $this->_searchNames))
 			unset($this->_searchNames[$user_info['id']]);
 
 		foreach ($this->_searchNames as $name)
 		{
-			/* Append the mentioned user ID */
+			// Append the mentioned user ID
 			$noti_info['wall_mentioned'] = $name['id_member'];
 
-			/* Notification here */
+			// Notification here
 			$this->_notification->create(array(
 				'user' => $user_info['id'],
 				'user_to' => $name['id_member'],

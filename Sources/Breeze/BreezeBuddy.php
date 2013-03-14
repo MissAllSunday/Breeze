@@ -56,29 +56,29 @@ class BreezeBuddy
 		isAllowedTo('profile_identity_own');
 		is_not_guest();
 
-		/* We need all this stuff */
+		// We need all this stuff
 		$sa = Breeze::sGlobals('get');
 
-		/* There's gotta be an user... */
+		// There's gotta be an user...
 		if ($sa->validate('u') == false)
 			fatal_lang_error('no_access', false);
 
-		/* Problems in paradise? */
+		// Problems in paradise?
 		if (in_array($sa->getValue('u'), $user_info['buddies']))
 		{
 			$user_info['buddies'] = array_diff($user_info['buddies'], array($sa->getValue('u')));
 
-			/* Do the update */
+			// Do the update
 			updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
 
-			/* Done here, let's redirect the user to the profile page */
+			// Done here, let's redirect the user to the profile page
 			redirectexit('action=profile;u=' . $sa->getValue('u'));
 		}
 
-		/* Before anything else, let's ask the user shall we? */
+		// Before anything else, let's ask the user shall we?
 		elseif ($user_info['id'] != $sa->getValue('u'))
 		{
-			/* Notification here */
+			// Notification here
 			$this->notification->createBuddy(
 				array(
 					'user' => $user_info['id'],
@@ -89,18 +89,18 @@ class BreezeBuddy
 				)
 			);
 
-			/* Show a nice message saying the user must approve the friendship request */
+			// Show a nice message saying the user must approve the friendship request
 			redirectexit('action=breezebuddyrequest;u=' . $sa->getValue('u'));
 		}
 	}
 
 	public function showBuddyRequests($user)
 	{
-		/* I don't have time for this... */
+		// I don't have time for this...
 		if (empty($user))
 			return false;
 
-		/* Load all buddy request for this user */
+		// Load all buddy request for this user
 		return $this->query->getNotificationByType('buddy', $user);
 	}
 }

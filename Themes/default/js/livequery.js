@@ -1,5 +1,5 @@
 /*! Copyright (c) 2008 Brandon Aaron (http://brandonaaron.net)
- * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) 
+ * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  *
  * Version: 1.0.3
@@ -47,7 +47,7 @@ $.extend($.fn, {
 
 		// Find the Live Query based on arguments and stop it
 		$.each( $.livequery.queries, function(i, query) {
-			if ( self.selector == query.selector && self.context == query.context && 
+			if ( self.selector == query.selector && self.context == query.context &&
 				(!type || type == query.type) && (!fn || fn.$lqguid == query.fn.$lqguid) && (!fn2 || fn2.$lqguid == query.fn2.$lqguid) && !this.stopped )
 					$.livequery.stop(query.id);
 		});
