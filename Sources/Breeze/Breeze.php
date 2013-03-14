@@ -154,7 +154,7 @@ class Breeze
 		if (!$header_done)
 		{
 			$context['html_headers'] .= '
-			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.6.1.js"%3E%3C/script%3E\'))</script>
+			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
 			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />';
 
 			// DUH! winning!
@@ -189,12 +189,15 @@ class Breeze
 			// Let's load jquery from CDN only if it hasn't been loaded yet
 			$context['html_headers'] .= '
 			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
+			<link rel="stylesheet" type="text/css" href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css"/>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/center.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topCenter.js"></script>';
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topCenter.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>';
 
 			// Any tabs?
 			if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
@@ -204,27 +207,6 @@ class Breeze
 			if (!empty($context['member']['options']['Breeze_infinite_scroll']))
 				$context['html_headers'] .= '
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.infinitescroll.min.js" type="text/javascript"></script>';
-
-			// Use SMFs autosuggest script for mentions
-			$context['html_headers'] .= '<script type="text/javascript"><!-- // --><![CDATA[
-			function suggestMember()
-{
-	omemberSuggest = new smc_AutoSuggest({
-		sSelf: \'omemberSuggest\',
-		sSessionId: \''. $context['session_id'] .'\',
-		sSessionVar: \'', $context['session_var'] .'\',
-		sControlId: \'status\',
-		sSearchType: \'member\',
-		sSearchType: \'member\',
-		sPostName: \'recipient_to\',
-		sURLMask: \'action=profile;u=%item_id%\',
-		sTextDeleteItem: \''. $txt['autosuggest_delete_item'] .'\',
-		bItemList: true,
-		sItemListContainerId: \'to_item_list_container\',
-	});
-}
-suggestMember();
-		// ]]></script>';
 
 			// Load breeze.js untill everyone else is loaded
 			$context['html_headers'] .= '
