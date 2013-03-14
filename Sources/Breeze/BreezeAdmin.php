@@ -155,6 +155,8 @@ function Breeze_Admin_Permissions()
 
 	$config_vars = array(
 		array('permissions', 'breeze_deleteComments', 0, $txt['permissionname_breeze_deleteComments']),
+		array('permissions', 'breeze_postStatus', 0, $txt['permissionname_breeze_postStatus']),
+		array('permissions', 'breeze_postComments', 0, $txt['permissionname_breeze_postComments']),
 	);
 
 	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=permissions;save';
