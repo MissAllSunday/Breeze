@@ -122,7 +122,7 @@ function Breeze_Admin_Settings()
 		array('int', Breeze::$txtpattern .'admin_mention_limit', 'size' => 3, 'subtext' => $text->getText('admin_mention_limit_sub')),
 	);
 
-	$context['post_url'] = $scripturl . '?action=admin;area=breezesettings;save';
+	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=settings;save';
 
 	/* Saving? */
 	if ($globals->validate('save') == true)
@@ -130,6 +130,41 @@ function Breeze_Admin_Settings()
 		checkSession();
 		saveDBSettings($config_vars);
 		redirectexit('action=admin;area=breezeadmin;sa=settings');
+	}
+
+	prepareDBSettingContext($config_vars);
+}
+
+function Breeze_Admin_Permissions()
+{
+	global $scripturl, $context, $sourcedir, $breezeController, $txt;
+
+	loadtemplate('Admin');
+
+	/* Load stuff */
+	$text = $breezeController->get('text');
+	$globals = Breeze::sGlobals('request');
+	$context['sub_template'] = 'show_settings';
+	$context['page_title'] = $text->getText('admin_settings_main');
+	$context[$context['admin_menu_name']]['tab_data'] = array(
+		'title' => Breeze::$name .' - '. $text->getText('admin_settings_permissions'),
+		'description' => $text->getText('admin_settings_permissions_desc'),
+	);
+
+	require_once($sourcedir . '/ManageServer.php');
+
+	$config_vars = array(
+		array('permissions', 'breeze_deleteComments', 0, $txt['permissionname_breeze_deleteComments']),
+	);
+
+	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=permissions;save';
+
+	/* Saving? */
+	if ($globals->validate('save') == true)
+	{
+		checkSession();
+		saveDBSettings($config_vars);
+		redirectexit('action=admin;area=breezeadmin;sa=permissions');
 	}
 
 	prepareDBSettingContext($config_vars);
