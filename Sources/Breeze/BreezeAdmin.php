@@ -185,11 +185,11 @@ function Breeze_Admin_Donate()
 	$text = $breezeController->get('text');
 
 	/* Page stuff */
-	$context['page_title'] = $text->getText('admin_settings_donate_title');
+	$context['page_title'] = Breeze::$name .' - '. $text->getText('admin_settings_donate');
 	$context['sub_template'] = 'admin_donate';
-	$context['linktree'][] = array(
-		'url' => $scripturl . '?action=admin;area=breezedonate',
-		'name' => $text->getText('admin_settings_donate_title')
-	);
 	$context['Breeze']['donate'] = $text->getText('donate');
+	$context[$context['admin_menu_name']]['tab_data'] = array(
+		'title' => $context['page_title'],
+		'description' => $text->getText('admin_settings_donate_desc'),
+	);
 }
