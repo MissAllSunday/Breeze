@@ -121,6 +121,7 @@ $txt['Breeze_admin_settings_main'] = 'Main Breeze Admin Center';
 $txt['Breeze_admin_settings_sub_permissions'] = 'Permissions';
 $txt['Breeze_admin_settings_sub_style'] = 'Style and Layout';
 $txt['Breeze_admin_settings_settings'] = 'General Settings';
+$txt['Breeze_admin_settings_settings_desc'] = 'This is the general settings page, from here you can enable/disable the mod as well as configuring general settings.'; 
 $txt['Breeze_admin_settings_donate_title'] = 'Boring stuff you will never see...';
 $txt['Breeze_admin_settings_server_needs'] = '<div class="breeze_error_message">Your Server does not support %s, contact your hosting provider and ask for it to be enable, otherwise you won\'t be able to use this mod at full.</div>';
 $txt['Breeze_admin_settings_json'] = 'JSON library';
