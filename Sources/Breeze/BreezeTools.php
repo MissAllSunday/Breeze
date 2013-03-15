@@ -159,28 +159,6 @@ class BreezeTools
 		return ($preserve_keys === true) ? $array : array_values($array);
 	}
 
-	public function userMention()
-	{
-		global $smcFunc;
-
-		$return = '{';
-
-		$result = $smcFunc['db_query']('', '
-			SELECT id_member, member_name
-			FROM {db_prefix}members',
-			array()
-		);
-
-		while ($row = $smcFunc['db_fetch_assoc']($result))
-			$return .= $row['id_member'] .':\''. $row['member_name'] .'\', ';
-
-		$smcFunc['db_free_result']($result);
-
-		$return .= '}';
-
-		return $return;
-	}
-
 	public function loadUserInfo($id)
 	{
 		global $memberContext;
