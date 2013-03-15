@@ -150,6 +150,7 @@ class Breeze
 		$text = $breezeController->get('text');
 		$breezeSettings = $breezeController->get('settings');
 		$breezeGlobals = Breeze::sGlobals('get');
+		$tools = $breezeController->get('tools');
 
 		if (!$header_done)
 		{
@@ -184,6 +185,7 @@ class Breeze
 				var breeze_page_loading_end = '. JavaScriptEscape($text->getText('page_loading_end')) .';
 				var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
 				var breeze_infinite_scroll = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_infinite_scroll']) ? 'string' : '0' )).';
+				var breezeUsers = '. $tools->userMention() .';
 		// ]]></script>';
 
 			// Let's load jquery from CDN only if it hasn't been loaded yet

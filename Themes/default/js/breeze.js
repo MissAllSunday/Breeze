@@ -489,20 +489,14 @@ jQuery(document).ready(function(){
 
 jQuery(function(){
 
-            var data = ["Jacob","Miss All Sunday","Ethan","Emma","Michael","Olivia","Alexander","Sophia","William","Ava","Joshua","Emily","Daniel","Madison","Jayden","lepture","Abigail","Noah","Chloe","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","??","???", "???"
-            ];
-
+	data = jQuery.map(breezeUsers, function(value, i) {
+		return {'id':i, 'name':value,};
+	});
 
 	jQuery('#content').atwho("@",{
-		tpl: "<li data-value='(${name})' data-insert='(${name})'>${name} <small>${name}</small></li>",
-		'data':data,
-		'choose': "data-insert",
-		'callbacks': {
-			filter: function (query, data, search_key) {
-				return jQuery.map(data, function(item, i) {
-					return item[search_key].toLowerCase().indexOf(query) < 0 ? null : item
-				})
-			}
-		}
+		tpl: "<li data-value='(${name}, ${id})'>${name} <small>${name}</small></li>",
+		'data': data,
+		'choose': "data-value",
+		'callbacks': false,
 	});
 });
