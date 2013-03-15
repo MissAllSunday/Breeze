@@ -1082,7 +1082,7 @@ class BreezeQuery extends Breeze
 	{
 		global $smcFunc;
 
-		$return = '{';
+		$return = '';
 
 		$result = $smcFunc['db_query']('', '
 			SELECT id_member, member_name
@@ -1091,11 +1091,9 @@ class BreezeQuery extends Breeze
 		);
 
 		while ($row = $smcFunc['db_fetch_assoc']($result))
-			$return .= $row['id_member'] .':\''. $row['member_name'] .'\', ';
+			$return[$row['id_member']] = $row['member_name'];
 
 		$smcFunc['db_free_result']($result);
-
-		$return .= '}';
 
 		return $return;
 	}
