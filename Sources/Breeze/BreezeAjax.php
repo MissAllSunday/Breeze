@@ -393,7 +393,12 @@ class BreezeAjax
 	 */
 	protected function usersMention()
 	{
-
+		// For testing purposes only, just pass the result directly
+		$this->_response = array(
+			'data' => $this->_query->userMention(),
+			'type' => 'ok'
+		);
+		return;
 	}
 
 	/**
