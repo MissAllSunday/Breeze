@@ -79,6 +79,7 @@ class BreezeAjax
 			'delete' => 'delete',
 			'notimarkasread' => 'notimark',
 			'notidelete' => 'notidelete',
+			'usersmention' = 'usersMention',
 		);
 
 		// Does the subaction even exist?
@@ -382,6 +383,17 @@ class BreezeAjax
 			);
 			return;
 		}
+	}
+
+	/**
+	 * BreezeAjax::usersMention()
+	 *
+	 * Creates an array of searchable users
+	 * @return void
+	 */
+	protected function usersMention()
+	{
+
 	}
 
 	/**
