@@ -489,6 +489,18 @@ jQuery(document).ready(function(){
 
 jQuery(function(){
 
+	var breezeUsers = jQuery.ajax({
+			type: 'GET',
+			url: smf_scripturl + '?action=breezeajax;sa=usersmention',
+			data: '',
+			cache: false,
+			dataType: 'json',
+			success: function(html)
+			{
+				return html.data;
+			}
+		});
+console.log(breezeUsers);
 	data = jQuery.map(breezeUsers, function(value, i) {
 		return {'id':i, 'name':value,};
 	});

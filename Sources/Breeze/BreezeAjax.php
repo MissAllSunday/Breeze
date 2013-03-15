@@ -79,7 +79,7 @@ class BreezeAjax
 			'delete' => 'delete',
 			'notimarkasread' => 'notimark',
 			'notidelete' => 'notidelete',
-			'usersmention' = 'usersMention',
+			'usersmention' => 'usersMention',
 		);
 
 		// Does the subaction even exist?
