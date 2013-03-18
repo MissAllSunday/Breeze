@@ -488,25 +488,27 @@ jQuery(document).ready(function(){
 });
 
 jQuery(document).ready(function(){
-	jQuery('textarea[rel*=atwhoMention]').atwho('@', {
-		search_key: "name",
-		tpl: "<li data-value='(${name}, ${id})'>${name} <small>${name}</small></li>",
-		data: smf_scripturl + '?action=breezeajax;sa=usersmention',
-		limit: 20,
-		callback: {
-			filter: function (query, data, search_key) {
-				return $.map(data, function(item, i) {
-					return item[search_key].toLowerCase().indexOf(query) < 0 ? null : item
-				})
-			},
-			remote_filter: function(params, url, render_callback) {
-				jQuery.ajax(url, {
-					type: "GET",
-					dataType: "json"
-				}).done(function(data){
-					render_callback(data)
+	jQuery('textarea[rel*=atwhoMention]').bind("focus", function(event){
+		jQuery.ajax({
+			url: smf_scripturl + '?action=breezeajax;sa=usersmention',
+			type: "GET",
+			dataType: "json",
+			success: function(result)
+			{
+				jQuery('textarea[rel*=atwhoMention]').atwho('@', {
+					search_key: "name",
+					tpl: "<li data-value='(${name}, ${id})'>${name} <small>${id}</small></li>",
+					data: result,
+					limit: 20,
+					callback: {
+						filter: function (query, data, search_key) {
+							return jQuery.map(data, function(item, i) {
+								return item[search_key].toLowerCase().indexOf(query) < 0 ? null : item
+							})
+						},
+					}
 				});
-			}
-		}
+			},
+		});
 	});
 });

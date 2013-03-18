@@ -1092,8 +1092,8 @@ class BreezeQuery extends Breeze
 
 		while ($row = $smcFunc['db_fetch_assoc']($result))
 			$return[] = array(
+				'name' => $row['member_name'],
 				'id' => (int) $row['id_member'],
-				'name' => $row['member_name']
 			);
 
 		$smcFunc['db_free_result']($result);
