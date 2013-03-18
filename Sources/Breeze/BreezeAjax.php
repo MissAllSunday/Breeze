@@ -394,10 +394,7 @@ class BreezeAjax
 	protected function usersMention()
 	{
 		// For testing purposes only, just pass the result directly
-		$this->_response = array(
-			'data' => $this->_query->userMention(),
-			'type' => 'ok'
-		);
+		$this->_response = $this->_query->userMention();
 		return;
 	}
 
@@ -412,7 +409,7 @@ class BreezeAjax
 	{
 		global $modSettings;
 
-		// kill anything else
+		// Kill anything else
 		ob_end_clean();
 
 		if (!empty($modSettings['enableCompressedOutput']))

@@ -350,17 +350,17 @@
 	});
 
 // Facebox
-	jQuery(document).ready(function()
+jQuery(document).ready(function()
+{
+	jQuery('a[rel*=facebox]').livequery(function()
 	{
-		jQuery('a[rel*=facebox]').livequery(function()
+		jQuery(this).facebox(
 		{
-			jQuery(this).facebox(
-			{
-				loadingImage : smf_images_url + '/breeze/loading.gif',
-				closeImage   : smf_images_url + '/breeze/error_close.png'
-			});
+			loadingImage : smf_images_url + '/breeze/loading.gif',
+			closeImage   : smf_images_url + '/breeze/error_close.png'
 		});
 	});
+});
 
 // infinitescroll
 if (typeof breeze_infinite_scroll == "string")
@@ -487,28 +487,26 @@ jQuery(document).ready(function(){
 	});
 });
 
-jQuery(function(){
-
-	var breezeUsers = jQuery.ajax({
-			type: 'GET',
-			url: smf_scripturl + '?action=breezeajax;sa=usersmention',
-			data: '',
-			cache: false,
-			dataType: 'json',
-			success: function(html)
-			{
-				return html.data;
-			}
-		});
-console.log(breezeUsers);
-	data = jQuery.map(breezeUsers, function(value, i) {
-		return {'id':i, 'name':value,};
-	});
-
-	jQuery('#content').atwho("@",{
+jQuery(document).ready(function(){
+	jQuery('textarea[rel*=atwhoMention]').atwho('@', {
+		search_key: "name",
 		tpl: "<li data-value='(${name}, ${id})'>${name} <small>${name}</small></li>",
-		'data': data,
-		'choose': "data-value",
-		'callbacks': false,
+		data: smf_scripturl + '?action=breezeajax;sa=usersmention',
+		limit: 20,
+		callback: {
+			filter: function (query, data, search_key) {
+				return $.map(data, function(item, i) {
+					return item[search_key].toLowerCase().indexOf(query) < 0 ? null : item
+				})
+			},
+			remote_filter: function(params, url, render_callback) {
+				jQuery.ajax(url, {
+					type: "GET",
+					dataType: "json"
+				}).done(function(data){
+					render_callback(data)
+				});
+			}
+		}
 	});
 });
