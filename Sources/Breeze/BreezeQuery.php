@@ -1085,20 +1085,22 @@ class BreezeQuery extends Breeze
 		$return = array();
 
 		$result = $smcFunc['db_query']('', '
-			SELECT id_member, member_name
-			FROM {db_prefix}members',
+			SELECT id_member, member_name, real_name
+			FROM {db_prefix}members
+			WHERE is_activated = 1
+				AND posts >= 10',// @todo, make a setting to chose how many posts would be required to appear in the mention script
 			array()
 		);
 
 		while ($row = $smcFunc['db_fetch_assoc']($result))
 			$return[] = array(
-				'name' => $row['member_name'],
+				'name' => $row['real_name'], // @todo, make a setting to let the admin chose which name wants to  use here
 				'id' => (int) $row['id_member'],
 			);
 
 		$smcFunc['db_free_result']($result);
 
-		return $return;
+		return !empty($return) ? $return : false;
 	}
 }
 
