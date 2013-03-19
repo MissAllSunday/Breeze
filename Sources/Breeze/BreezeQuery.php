@@ -1085,13 +1085,16 @@ class BreezeQuery extends Breeze
 		// Let us set a very long-lived cache entry
 		if (($return = cache_get_data(Breeze::$name .'-Mentions', 7200)) == null)
 		{
+			$return = array();
+			$postsLimit = $this->settings->enable('admin_posts_for_mention') ? (int) $this->settings->getSetting('admin_posts_for_mention') : 1;
+
 			$result = $smcFunc['db_query']('', '
 				SELECT id_member, member_name, real_name
 				FROM {db_prefix}members
-				WHERE is_activated = 1
-					AND posts >= {int:posts}',
-				array(
-					'posts' => $this->settings->enable('admin_posts_for_mention') ? $this->settings->getSetting('admin_posts_for_mention') : 1,
+				' . ($this->settings->enable('admin_posts_for_mention') ? '
+				WHERE posts >= {int:p}' : '') .
+				'',array(
+					'p' => $postsLimit,
 				)
 			);
 
@@ -1107,8 +1110,7 @@ class BreezeQuery extends Breeze
 			cache_put_data(Breeze::$name .'-Mentions', $return, 7200);
 		}
 
-		// Last minute check
-		return !empty($return) ? $return : false;
+		return $return;
 	}
 }
 
