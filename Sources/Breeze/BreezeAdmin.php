@@ -172,6 +172,41 @@ function Breeze_Admin_Permissions()
 	prepareDBSettingContext($config_vars);
 }
 
+function Breeze_Admin_Style()
+{
+	global $scripturl, $context, $sourcedir, $breezeController, $txt;
+
+	loadtemplate('Admin');
+
+	// Load stuff
+	$text = $breezeController->get('text');
+	$globals = Breeze::sGlobals('request');
+	$context['sub_template'] = 'show_settings';
+	$context['page_title'] = $text->getText('admin_settings_sub_style');
+	$context[$context['admin_menu_name']]['tab_data'] = array(
+		'title' => Breeze::$name .' - '. $text->getText('admin_settings_sub_style'),
+		'description' => $text->getText('admin_settings_sub_style_desc'),
+	);
+
+	require_once($sourcedir . '/ManageServer.php');
+
+	$config_vars = array(
+		array('int', Breeze::$txtpattern .'admin_posts_for_mention', 'size' => 3, 'subtext' => $text->getText('admin_posts_for_mention_sub')),
+	);
+
+	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=style;save';
+
+	// Saving?
+	if ($globals->validate('save') == true)
+	{
+		checkSession();
+		saveDBSettings($config_vars);
+		redirectexit('action=admin;area=breezeadmin;sa=style');
+	}
+
+	prepareDBSettingContext($config_vars);
+}
+
 // Pay no attention to the girl behind the curtain
 function Breeze_Admin_Donate()
 {
