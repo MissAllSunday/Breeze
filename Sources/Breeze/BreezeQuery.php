@@ -1082,24 +1082,30 @@ class BreezeQuery extends Breeze
 	{
 		global $smcFunc;
 
-		$return = array();
-
-		$result = $smcFunc['db_query']('', '
-			SELECT id_member, member_name, real_name
-			FROM {db_prefix}members
-			WHERE is_activated = 1
-				AND posts >= 10',// @todo, make a setting to chose how many posts would be required to appear in the mention script
-			array()
-		);
-
-		while ($row = $smcFunc['db_fetch_assoc']($result))
-			$return[] = array(
-				'name' => $row['real_name'],
-				'id' => (int) $row['id_member'],
+		// Let us set a very long-lived cache entry
+		if (($return = cache_get_data(Breeze::$name .'-Mentions', 7200)) == null)
+		{
+			$result = $smcFunc['db_query']('', '
+				SELECT id_member, member_name, real_name
+				FROM {db_prefix}members
+				WHERE is_activated = 1
+					AND posts >= 10',// @todo, make a setting to chose how many posts would be required to appear in the mention script
+				array()
 			);
 
-		$smcFunc['db_free_result']($result);
+			while ($row = $smcFunc['db_fetch_assoc']($result))
+				$return[] = array(
+					'name' => $row['real_name'],
+					'id' => (int) $row['id_member'],
+				);
 
+			$smcFunc['db_free_result']($result);
+
+			// Cached and forget about it
+			cache_put_data(Breeze::$name .'-Mentions', $return, 7200);
+		}
+
+		// Last minute check
 		return !empty($return) ? $return : false;
 	}
 }
