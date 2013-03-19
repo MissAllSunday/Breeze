@@ -1089,8 +1089,10 @@ class BreezeQuery extends Breeze
 				SELECT id_member, member_name, real_name
 				FROM {db_prefix}members
 				WHERE is_activated = 1
-					AND posts >= 10',// @todo, make a setting to chose how many posts would be required to appear in the mention script
-				array()
+					AND posts >= {int:posts}',
+				array(
+					'posts' => $this->settings->enable('admin_posts_for_mention') ? $this->settings->getSetting('admin_posts_for_mention') : 1,
+				)
 			);
 
 			while ($row = $smcFunc['db_fetch_assoc']($result))
