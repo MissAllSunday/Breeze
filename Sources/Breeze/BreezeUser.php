@@ -57,7 +57,7 @@ function breezeWall()
 	$tools = $breezeController->get('tools');
 	$globals = Breeze::sGlobals('get');
 	$text = $breezeController->get('text');
-print_r($query->userMention());
+
 	// Display all the JavaScript bits
 	Breeze::headersHook('profile');
 
