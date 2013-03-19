@@ -115,6 +115,7 @@ function Breeze_Admin_Settings()
 	require_once($sourcedir . '/ManageServer.php');
 
 	$config_vars = array(
+		array('title', Breeze::$txtpattern .'admin_settings_settings'),
 		array('check', Breeze::$txtpattern .'admin_settings_enable', 'subtext' => $text->getText('admin_settings_enable_sub')),
 		array('check', Breeze::$txtpattern .'admin_enable_limit', 'subtext' => $text->getText('admin_enable_limit_sub')),
 		array('select', Breeze::$txtpattern .'admin_limit_timeframe', array('hour' => $text->getText('user_settings_time_hour'), 'day' => $text->getText('user_settings_time_day'), 'week' => $text->getText('user_settings_time_week'), 'month' => $text->getText('user_settings_time_month'), 'year' => $text->getText('user_settings_time_year')), 'subtext' => $text->getText('admin_limit_timeframe_sub')),
@@ -154,6 +155,7 @@ function Breeze_Admin_Permissions()
 	require_once($sourcedir . '/ManageServer.php');
 
 	$config_vars = array(
+		array('title', Breeze::$txtpattern .'admin_settings_permissions'),
 		array('permissions', 'breeze_deleteComments', 0, $txt['permissionname_breeze_deleteComments']),
 		array('permissions', 'breeze_postStatus', 0, $txt['permissionname_breeze_postStatus']),
 		array('permissions', 'breeze_postComments', 0, $txt['permissionname_breeze_postComments']),
@@ -191,6 +193,7 @@ function Breeze_Admin_Style()
 	require_once($sourcedir . '/ManageServer.php');
 
 	$config_vars = array(
+		array('title', Breeze::$txtpattern .'admin_settings_sub_style'),
 		array('int', Breeze::$txtpattern .'admin_posts_for_mention', 'size' => 3, 'subtext' => $text->getText('admin_posts_for_mention_sub')),
 	);
 
