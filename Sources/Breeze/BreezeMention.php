@@ -42,8 +42,8 @@ class BreezeMention
 {
 	protected $_notification;
 	protected $_settings;
-	protected $_string;
-	protected $_regex;
+	protected $_string = '';
+	protected $_regex = array();
 	protected $_query;
 	protected $_searchNames = array();
 	protected $_queryNames = array();
@@ -57,7 +57,26 @@ class BreezeMention
 	}
 
 	/*
-	 * Gets the raw string, parses it and creates the notifications
+	 * Gets the raw string, parses it and sets a new property with users data
+	 *
+	 * @see BreezeAjax class
+	 * @access public
+	 * @return string
+	 */
+	public function preMention($string)
+	{
+		$this->_string = $string;
+
+		// Search for all possible names
+		if (preg_match_all($this->_regex, $this->_string, $matches, PREG_SET_ORDER))
+			foreach ($matches as $m)
+				$this->_queryNames[$m[2]] = $m;
+
+		return $this->_string;
+	}
+
+	/*
+	 * Creates a notification based on external params
 	 *
 	 * @see BreezeAjax class
 	 * @access public
@@ -66,15 +85,6 @@ class BreezeMention
 	public function mention($noti_info = array())
 	{
 		global $user_info;
-
-		// Search for all possible names
-		if (preg_match_all($this->_regex, $this->_string, $matches, PREG_SET_ORDER))
-			foreach ($matches as $m)
-				$this->_queryNames[$m[2]] = $m;
-
-		// No? nada? :(
-		if (empty($this->_queryNames))
-			return false;
 
 		// We need an array and users won't be notified twice...
 		$this->_queryNames = array_unique(is_array($this->_queryNames) ? $this->_queryNames : array($this->_queryNames));

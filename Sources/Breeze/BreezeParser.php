@@ -89,7 +89,7 @@ class BreezeParser
 			{
 				$find[] = $query[0];
 
-				$replace[] = '@<a href="' . $scripturl . '?action=profile;u=' . $query['id'] . '" class="bbc_link" target="_blank">' . $query['display'] . '</a>';
+				$replace[] = '@<a href="' . $scripturl . '?action=profile;u=' . $query[2] . '" class="bbc_link" target="_blank">' . $query[1] . '</a>';
 			}
 
 			// Do the replacement already
