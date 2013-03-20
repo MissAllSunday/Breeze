@@ -245,8 +245,7 @@ class Breeze
 			<script type="text/javascript">
 var breeze_feed_error_message = '. JavaScriptEscape($text->getText('feed_error_message')) .';
 
-$(document).ready(function ()
-{
+$(document).ready(function (){
 	$(\'#breezelive\').rssfeed(\''. Breeze::$supportStite .'\',
 	{
 		limit: 5,
