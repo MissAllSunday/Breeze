@@ -120,12 +120,9 @@
 							 * @todo identify the different errors and show more info about it to the forum admin
 							 */
 							jQuery('#breeze_load_image').slideUp('slow', 'linear', function(){
-								showNotification(
-								{
-									message: breeze_error_message,
-									type: 'error',
-									autoClose: true,
-									duration: 3
+								noty({
+									text: html.data,
+									timeout: 3500, type: html.type,
 								});
 							});
 						},
