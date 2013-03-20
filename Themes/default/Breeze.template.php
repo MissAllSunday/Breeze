@@ -131,20 +131,7 @@ function template_user_wall()
 					<span class="botslice">
 						<span></span>
 					</span>
-				</div>';
-
-		// Links for tabs show it if there is at least 1 tab
-		if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
-			echo '
-				<div class="windowbg">
-					<ul id="breeze_tabLinks" class="idTabs">
-						<li><a href="#tabs_wall" class="selected">', $txt['Breeze_tabs_wall'] ,'</a></li>
-						', !empty($context['member']['options']['Breeze_enable_visits_tab']) ? '<li><a href="#tabs_views">'. $txt['Breeze_tabs_views'] .'</a></li>' : '' ,'
-						', !empty($context['member']['options']['Breeze_enable_buddies_tab']) ? '<li><a href="#tabs_buddies">'. $txt['Breeze_tabs_buddies'] .'</a></li>' : '' ,'
-					</ul>
-				</div>';
-
-		echo '
+				</div>
 			</div>';
 
 	// End of right side
@@ -208,6 +195,15 @@ function template_user_wall()
 	}
 	// End of buddies tab
 
+        // Links for tabs show it if there is at least 1 tab
+		if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
+			echo '
+					<div id="breeze_tabLinks" class="idTabs">
+						<a href="#tabs_wall" class="mytestbutton selected">', $txt['Breeze_tabs_wall'] ,'</a>
+						', !empty($context['member']['options']['Breeze_enable_visits_tab']) ? '<a href="#tabs_views" class="mytestbutton">'. $txt['Breeze_tabs_views'] .'</a>' : '' ,'
+						', !empty($context['member']['options']['Breeze_enable_buddies_tab']) ? '<a href="#tabs_buddies" class="mytestbutton">'. $txt['Breeze_tabs_buddies'] .'</a>' : '' ,'
+					</div>';
+        
 	// Wall div
 	echo '
 			<div id="tabs_wall">
