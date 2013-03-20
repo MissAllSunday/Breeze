@@ -50,7 +50,7 @@ class BreezeMention
 
 	function __construct($settings, $query, $notifications)
 	{
-		$this->_regex = '~{([\s\w,;-_\[\]\\\/\+\.\~\$\!]+)}~u';
+		$this->_regex = '~@\(([\s\w,;-_\[\]\\\/\+\.\~\$\!]+), ([0-9]+)\)~u';
 		$this->_notification = $notifications;
 		$this->_settings = $settings;
 		$this->_query = $query;
