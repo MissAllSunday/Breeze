@@ -60,26 +60,45 @@ class BreezeMention
 	 * Gets the raw string, parses it and creates the notifications
 	 *
 	 * @see BreezeAjax class
-	 * @access protected
-	 * @return string the formatted string
+	 * @access public
+	 * @return void
 	 */
 	public function mention($noti_info = array())
 	{
 		global $user_info;
 
-		// You can't notify yourself
-		if (array_key_exists($user_info['id'], $this->_searchNames))
-			unset($this->_searchNames[$user_info['id']]);
+		// Search for all possible names
+		if (preg_match_all($this->_regex, $this->_string, $matches, PREG_SET_ORDER))
+			foreach ($matches as $m)
+				$this->_queryNames[$m[2]] = $m;
 
-		foreach ($this->_searchNames as $name)
+		// No? nada? :(
+		if (empty($this->_queryNames))
+			return false;
+
+		// We need an array and users won't be notified twice...
+		$this->_queryNames = array_unique(is_array($this->_queryNames) ? $this->_queryNames : array($this->_queryNames));
+
+		// You can't notify yourself
+		if (isset($this->_queryNames[$user_info['id']]))
+			unset($this->_queryNames[$user_info['id']]);
+
+		// Sorry, theres gotta be a limit you know?
+		$admin_mention_limit = $this->_settings->enable('admin_mention_limit') ? $this->_settings->getSetting('admin_mention_limit') : 10;
+
+		// Chop the array off!
+		if (!empty($admin_mention_limit) && count($this->_queryNames) >= $admin_mention_limit)
+			$this->_queryNames = array_slice($this->_queryNames, 0, $admin_mention_limit);
+
+		foreach ($this->_queryNames as $name)
 		{
 			// Append the mentioned user ID
-			$noti_info['wall_mentioned'] = $name['id_member'];
+			$noti_info['wall_mentioned'] = $name[2];
 
 			// Notification here
 			$this->_notification->create(array(
 				'user' => $user_info['id'],
-				'user_to' => $name['id_member'],
+				'user_to' => $name[2],
 				'type' => 'mention',
 				'time' => time(),
 				'read' => 0,
