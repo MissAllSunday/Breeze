@@ -120,12 +120,9 @@
 							 * @todo identify the different errors and show more info about it to the forum admin
 							 */
 							jQuery('#breeze_load_image').slideUp('slow', 'linear', function(){
-								showNotification(
-								{
-									message: breeze_error_message,
-									type: 'error',
-									autoClose: true,
-									duration: 3
+								noty({
+									text: html.data,
+									timeout: 3500, type: html.type,
 								});
 							});
 						},
@@ -350,17 +347,17 @@
 	});
 
 // Facebox
-	jQuery(document).ready(function()
+jQuery(document).ready(function()
+{
+	jQuery('a[rel*=facebox]').livequery(function()
 	{
-		jQuery('a[rel*=facebox]').livequery(function()
+		jQuery(this).facebox(
 		{
-			jQuery(this).facebox(
-			{
-				loadingImage : smf_images_url + '/breeze/loading.gif',
-				closeImage   : smf_images_url + '/breeze/error_close.png'
-			});
+			loadingImage : smf_images_url + '/breeze/loading.gif',
+			closeImage   : smf_images_url + '/breeze/error_close.png'
 		});
 	});
+});
 
 // infinitescroll
 if (typeof breeze_infinite_scroll == "string")
@@ -485,5 +482,30 @@ jQuery(document).ready(function(){
 			return false;
 		});
 	});
+});
 
+jQuery(document).ready(function(){
+	jQuery('textarea[rel*=atwhoMention]').bind("focus", function(event){
+		jQuery.ajax({
+			url: smf_scripturl + '?action=breezeajax;sa=usersmention',
+			type: "GET",
+			dataType: "json",
+			success: function(result)
+			{
+				jQuery('textarea[rel*=atwhoMention]').atwho('@', {
+					search_key: "name",
+					tpl: "<li data-value='(${name}, ${id})'>${name} <small>${id}</small></li>",
+					data: result,
+					limit: breeze_how_many_mentions_options,
+					callback: {
+						filter: function (query, data, search_key) {
+							return jQuery.map(data, function(item, i) {
+								return item[search_key].toLowerCase().indexOf(query) < 0 ? null : item
+							})
+						},
+					}
+				});
+			},
+		});
+	});
 });
