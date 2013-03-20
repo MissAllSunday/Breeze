@@ -162,6 +162,14 @@ function breezeSettings()
 		!empty($context['member']['options']['Breeze_infinite_scroll']) ? true : false
 	);
 
+	// How many options to be displayed when mentioning
+	$form->addText(
+		'Breeze_how_many_mentions_options',
+		'how_many_mentions_options',
+		!empty($context['member']['options']['Breeze_how_many_mentions_options']) ? $context['member']['options']['Breeze_how_many_mentions_options'] : 0,
+		3,3
+	);
+
 	// Allow ignored users
 	$form->addCheckBox(
 		'Breeze_kick_ignored',
