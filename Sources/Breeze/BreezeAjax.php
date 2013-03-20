@@ -125,7 +125,7 @@ class BreezeAjax
 				'owner_id' => $this->_data->getValue('owner_id'),
 				'poster_id' => $this->_data->getValue('poster_id'),
 				'time' => time(),
-				'body' => $this->_mention->preMention($body),
+				'body' => $body,
 			);
 
 			// Store the status
