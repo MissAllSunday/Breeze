@@ -46,25 +46,18 @@ class BreezeSettings
 	public function __construct()
 	{
 		$this->_pattern = Breeze::$name .'_';
-		$this->doExtract();
 	}
 
-	public function doExtract()
-	{
-		global $modSettings;
-
-		foreach ($modSettings as $key => $value)
-			if (substr($key, 0, strlen(trim(Breeze::$name))) == Breeze::$name)
-				$this->_settings[$key] = $modSettings[$key];
-	}
 
 	// Return true if the value do exist, false otherwise, O RLY?
 	public function enable($var)
 	{
-		if (empty($this->_settings))
-			$this->doExtract();
+		global $modSettings;
 
-		if (!empty($this->_settings[$this->_pattern . $var]))
+		if (empty($var))
+			return false;
+
+		if (isset($modSettings[$this->_pattern . $var]) && !empty($modSettings[$this->_pattern . $var]))
 			return true;
 
 		else
@@ -74,11 +67,19 @@ class BreezeSettings
 	// Get the requested setting
 	public function getSetting($var)
 	{
-		if (empty($this->_settings))
-			$this->doExtract();
+		if (empty($var))
+			return false;
 
-		if (!empty($this->_settings[$this->_pattern . $var]))
-			return $this->_settings[$this->_pattern . $var];
+		global $modSettings;
+
+		if (true == $this->enable($var))
+		{
+			if (!empty($modSettings[$this->_pattern . $var]))
+				return $modSettings[$this->_pattern . $var];
+
+			else
+				return false;
+		}
 
 		else
 			return false;
@@ -86,9 +87,8 @@ class BreezeSettings
 
 	public function getAll()
 	{
-		if (empty($this->_settings))
-			$this->doExtract();
+		global $modSettings;
 
-			return $this->_settings;
+		return $modSettings;
 	}
 }

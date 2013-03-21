@@ -45,19 +45,10 @@ class BreezeText
 
 	public function __construct()
 	{
-		$this->_pattern = Breeze::$name .'_';
-		$this->doExtract();
-	}
-
-	public function doExtract()
-	{
-		global $txt;
-
+		/* Load the mod's language file */
 		loadLanguage(Breeze::$name);
 
-		foreach ($txt as $key => $value)
-			if (substr($key, 0, strlen(trim(Breeze::$name))) == Breeze::$name)
-				$this->_text[$key] = $txt[$key];
+		$this->_pattern = Breeze::$name .'_';
 	}
 
 	/**
@@ -69,16 +60,22 @@ class BreezeText
 	 */
 	public function getText($var)
 	{
+		global $txt;
+
 		if (empty($var))
 			return false;
 
-		if (empty($this->_text))
-			$this->doExtract();
-
-		if (!empty($this->_text[$this->_pattern . $var]))
-			return $this->_text[$this->_pattern . $var];
+		if (!empty($txt[$this->_pattern . $var]))
+			return $txt[$this->_pattern . $var];
 
 		else
 			return false;
+	}
+
+	public function getAll()
+	{
+		global $txt;
+
+		return $txt;
 	}
 }
