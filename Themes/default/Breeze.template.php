@@ -367,13 +367,13 @@ function template_user_notifications()
 					</tr>
 				</thead>
 			<tbody>';
-var_dump($context['Breeze']['noti']);
+
 		foreach($context['Breeze']['noti'] as $noti)
 		{
 			echo '
 				<tr class="windowbg" style="text-align: center">
 					<td>
-						', $txt['Breeze_noti_message'] ,'
+						', $noti['message'] ,'
 					</td>
 					<td>
 					', !empty($noti['viewed']) ? $txt['Breeze_noti_markasread_viewed'] : '<a href="javascript:void(0)" id="markread_'. $noti['id'] .'" class="Breeze_markRead">'. $txt['Breeze_noti_markasread'] .'</a>' ,'

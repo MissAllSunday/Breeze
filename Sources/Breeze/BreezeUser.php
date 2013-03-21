@@ -236,7 +236,21 @@ function breezeNotifications()
 	$text = $breezeController->get('text');
 	$globals = Breeze::sGlobals('request');
 	$notifications = $breezeController->get('notifications');
-	$context['Breeze']['noti'] = $notifications->getToUser($context['member']['id'], true);
+	$tempNoti = $notifications->getToUser($context['member']['id'], true);
+
+	// Create the unique message for each noti @todo, this should be moved to BreezeNotifications
+	if (!empty($tempNoti))
+		foreach ($tempNoti as $single)
+		{
+			if (in_array($single['type'], $notifications->types))
+			{
+				$call = 'do' . ucfirst($single['type']);
+				$notifications->$call($single, true);
+			}
+		}
+
+	// Pass the info to the template
+	$context['Breeze']['noti'] = $notifications->getMessages();
 
 	// Set all the page stuff
 	$context['sub_template'] = 'user_notifications';
