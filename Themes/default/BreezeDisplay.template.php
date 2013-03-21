@@ -116,118 +116,118 @@ function template_main()
 	return $return;
 }
 
-function userInfo()
+function template_userInfo()
 {
 	global $txt, $context, $settings, $scripturl, $user_info, $context;
 
 	// Sometimes we just want the link
-	if (!empty($user['link']))
-		$context['Breeze']['user_info'][$user['id']]['link'] = $user['link'];
+	if (!empty($context['user']['info']['link']))
+		$context['Breeze']['user_info'][$context['user']['info']['id']]['link'] = $context['user']['info']['link'];
 
 	// ...or the name
-	if (!empty($user['name']))
-		$context['Breeze']['user_info'][$user['id']]['name'] = $user['name'];
+	if (!empty($context['user']['info']['name']))
+		$context['Breeze']['user_info'][$context['user']['info']['id']]['name'] = $context['user']['info']['name'];
 
 	// It all starts with the user's avatar or username...
-	$context['Breeze']['user_info'][$user['id']]['facebox'] .= (!empty($user['avatar']['href']) ? '<a href="#facebox_'. $user['id'] .'" rel="facebox"><img src="'.$user['avatar']['href'].'" width="50px" /></a>' : $user['link']);
+	$context['Breeze']['user_info'][$context['user']['info']['id']]['facebox'] .= (!empty($context['user']['info']['avatar']['href']) ? '<a href="#facebox_'. $context['user']['info']['id'] .'" rel="facebox"><img src="'.$context['user']['info']['avatar']['href'].'" width="50px" /></a>' : $context['user']['info']['link']);
 
 	// Set the data
-	$context['Breeze']['user_info'][$user['id']]['data'] = '
-	<div id="facebox_'. $user['id'] .'" style="display:none;">
+	$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] = '
+	<div id="facebox_'. $context['user']['info']['id'] .'" style="display:none;">
 		<div class="windowbg">
 			<span class="topslice">
 				<span></span>
 			</span>
 			<div style="margin:3px;padding-right:15px;padding-left:5px;float:left;min-height:100px;">
-				'.($user['avatar']['image'] ? $user['avatar']['image'] : '').'<br />'. $user['link'];
+				'.($context['user']['info']['avatar']['image'] ? $context['user']['info']['avatar']['image'] : '').'<br />'. $context['user']['info']['link'];
 
-	$context['Breeze']['user_info'][$user['id']]['data'] .= '</div>
+	$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '</div>
 			<div>
 				<ul class="breeze_user_left_info">';
 
 	// Show the member's primary group (like 'Administrator') if they have one.
-	if (!empty($user['group']))
-		$context['Breeze']['user_info'][$user['id']]['data'] .= '<li class="membergroup"><span style="color:'.$user['group_color'].';">'. $user['group']. '</span></li>';
+	if (!empty($context['user']['info']['group']))
+		$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '<li class="membergroup"><span style="color:'.$context['user']['info']['group_color'].';">'. $context['user']['info']['group']. '</span></li>';
 
 	// Show how many posts they have made.
 	if (!isset($context['disabled_fields']['posts']))
-		$context['Breeze']['user_info'][$user['id']]['data'] .= '<li class="postcount">'. $txt['member_postcount']. ': '. $user['posts']. '</li>';
+		$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '<li class="postcount">'. $txt['member_postcount']. ': '. $context['user']['info']['posts']. '</li>';
 
 	// Don't show these things for guests.
-	if (!$user['is_guest'])
+	if (!$context['user']['info']['is_guest'])
 	{
 
 		// Show the post group if and only if they have no other group or the option is on, and they are in a post group.
-		if ((empty($settings['hide_post_group']) || $user['group'] == '') && $user['post_group'] != '')
-			$context['Breeze']['user_info'][$user['id']]['data'] .= '<li class="postgroup">'. $user['post_group']. '</li>';
+		if ((empty($settings['hide_post_group']) || $context['user']['info']['group'] == '') && $context['user']['info']['post_group'] != '')
+			$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '<li class="postgroup">'. $context['user']['info']['post_group']. '</li>';
 
-		$context['Breeze']['user_info'][$user['id']]['data'] .= '<li class="stars">'. $user['group_stars']. '</li>';
+		$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '<li class="stars">'. $context['user']['info']['group_stars']. '</li>';
 
 		// Show the member's gender icon?
-		if (!empty($settings['show_gender']) && $user['gender']['image'] != '' && !isset($context['disabled_fields']['gender']))
-			$context['Breeze']['user_info'][$user['id']]['data'] .= '<li class="gender">'. $txt['gender']. ': '. $user['gender']['image']. '</li>';
+		if (!empty($settings['show_gender']) && $context['user']['info']['gender']['image'] != '' && !isset($context['disabled_fields']['gender']))
+			$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '<li class="gender">'. $txt['gender']. ': '. $context['user']['info']['gender']['image']. '</li>';
 
 		// Show their personal text?
-		if (!empty($settings['show_blurb']) && $user['blurb'] != '')
-			$context['Breeze']['user_info'][$user['id']]['data'] .= '<li class="blurb">'. $user['blurb']. '</li>';
+		if (!empty($settings['show_blurb']) && $context['user']['info']['blurb'] != '')
+			$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '<li class="blurb">'. $context['user']['info']['blurb']. '</li>';
 
 		// Any custom fields to show as icons?
-		if (!empty($user['custom_fields']))
+		if (!empty($context['user']['info']['custom_fields']))
 		{
 			$shown = false;
-			foreach ($user['custom_fields'] as $custom)
+			foreach ($context['user']['info']['custom_fields'] as $custom)
 			{
 				if ($custom['placement'] != 1 || empty($custom['value']))
 					continue;
 				if (empty($shown))
 				{
 					$shown = true;
-					$context['Breeze']['user_info'][$user['id']]['data'] .= '<li class="im_icons">
+					$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '<li class="im_icons">
 								<ul>';
 				}
-				$context['Breeze']['user_info'][$user['id']]['data'] .= '<li>'. $custom['value']. '</li>';
+				$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '<li>'. $custom['value']. '</li>';
 			}
 			if ($shown)
-				$context['Breeze']['user_info'][$user['id']]['data'] .= '</ul>
+				$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '</ul>
 							</li>';
 		}
 
 		// Show the profile, website, email address, and personal message buttons.
 		if ($settings['show_profile_buttons'])
 		{
-			$context['Breeze']['user_info'][$user['id']]['data'] .= '<li class="profile">
+			$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '<li class="profile">
 								<ul>';
 
 			// Don't show an icon if they haven't specified a website.
-			if ($user['website']['url'] != '' && !isset($context['disabled_fields']['website']))
-				$context['Breeze']['user_info'][$user['id']]['data'] .= '<li><a href="'. $user['website']['url']. '" title="' . $user['website']['title'] . '" target="_blank" class="new_win">'. ($settings['use_image_buttons'] ? '<img src="' . $settings['images_url'] . '/www_sm.gif" alt="' . $user['website']['title'] . '" />' : $txt['www']). '</a></li>';
+			if ($context['user']['info']['website']['url'] != '' && !isset($context['disabled_fields']['website']))
+				$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '<li><a href="'. $context['user']['info']['website']['url']. '" title="' . $context['user']['info']['website']['title'] . '" target="_blank" class="new_win">'. ($settings['use_image_buttons'] ? '<img src="' . $settings['images_url'] . '/www_sm.gif" alt="' . $context['user']['info']['website']['title'] . '" />' : $txt['www']). '</a></li>';
 
 			// Don't show the email address if they want it hidden.
-			if (in_array($user['show_email'], array('yes', 'yes_permission_override', 'no_through_forum')))
-				$context['Breeze']['user_info'][$user['id']]['data'] .= '<li><a href="'. $scripturl . '?action=emailuser;sa=email;msg='. $user['id']. '" rel="nofollow">'. ($settings['use_image_buttons'] ? '<img src="' . $settings['images_url'] . '/email_sm.gif" alt="' . $txt['email'] . '" title="' . $txt['email'] . '" />' : $txt['email']). '</a></li>';
+			if (in_array($context['user']['info']['show_email'], array('yes', 'yes_permission_override', 'no_through_forum')))
+				$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '<li><a href="'. $scripturl . '?action=emailuser;sa=email;msg='. $context['user']['info']['id']. '" rel="nofollow">'. ($settings['use_image_buttons'] ? '<img src="' . $settings['images_url'] . '/email_sm.gif" alt="' . $txt['email'] . '" title="' . $txt['email'] . '" />' : $txt['email']). '</a></li>';
 
-			$context['Breeze']['user_info'][$user['id']]['data'] .= '</ul>
+			$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '</ul>
 			</li>';
 		}
 
 		// Any custom fields for standard placement?
-		if (!empty($user['custom_fields']))
+		if (!empty($context['user']['info']['custom_fields']))
 		{
-			foreach ($user['custom_fields'] as $custom)
+			foreach ($context['user']['info']['custom_fields'] as $custom)
 				if (empty($custom['placement']) || empty($custom['value']))
-					$context['Breeze']['user_info'][$user['id']]['data'] .= '
+					$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '
 							<li class="custom">'. $custom['title'] . ': '. $custom['value'] . '</li>';
 		}
 	}
 
 	// Otherwise, show the guest's email.
-	elseif (!empty($user['email']) && in_array($user['show_email'], array('yes', 'yes_permission_override', 'no_through_forum')))
-		$context['Breeze']['user_info'][$user['id']]['data'] .= '<li class="email"><a href="'. $scripturl . '?action=emailuser;sa=email;msg='. $context['id'] . '" rel="nofollow">'. ($settings['use_image_buttons'] ? '<img src="' . $settings['images_url'] . '/email_sm.gif" alt="' . $txt['email'] . '" title="' . $txt['email'] . '" />' : $txt['email']). '</a></li>';
+	elseif (!empty($context['user']['info']['email']) && in_array($context['user']['info']['show_email'], array('yes', 'yes_permission_override', 'no_through_forum')))
+		$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '<li class="email"><a href="'. $scripturl . '?action=emailuser;sa=email;msg='. $context['id'] . '" rel="nofollow">'. ($settings['use_image_buttons'] ? '<img src="' . $settings['images_url'] . '/email_sm.gif" alt="' . $txt['email'] . '" title="' . $txt['email'] . '" />' : $txt['email']). '</a></li>';
 
 
 
 	// Info list end
-	$context['Breeze']['user_info'][$user['id']]['data'] .= '</ul>
+	$context['Breeze']['user_info'][$context['user']['info']['id']]['data'] .= '</ul>
 			</div>
 			<div class="clear"></div>
 		<span class="botslice"><span></span></span>
