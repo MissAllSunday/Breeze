@@ -353,20 +353,19 @@ ul.breeze_top_profile_views
 	background-color: #777;
 }
 a.mytestbutton {
-        padding: 3px;
-        margin: 3px;
-	min-height: 15px;
-	min-width: 25px;
-        border: 1px solid #F0F4F7;
-        text-decoration: none;
+	
+	color: #050505;
+	padding: 5px;
 	background-color: #E7EAEF;
-        -webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border: 1px solid #949494;
+	text-decoration: none;
 }
 a.mytestbutton:hover {
         background-color: #F0F2F6;
 }
 .idTabs {
-        margin-top: 10px;
+	margin-top: 6px;
 }
