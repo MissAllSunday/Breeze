@@ -79,6 +79,7 @@ class BreezeDisplay
 		loadtemplate(Breeze::$name .'Display');
 
 		// Pass everything to the template
+		$context['template_layers'] = array();
 		$context['sub_template'] = 'main';
 		$context['Breeze']['type'] = $this->type;
 		$context['Breeze']['params'] = $this->params;
