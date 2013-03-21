@@ -64,6 +64,10 @@ class BreezeUserInfo
 			'name' => ''
 		);
 
+		// The user must exists!
+		if (!isset($user) || empty($user))
+			return false;
+
 		// Sometimes we just want the link
 		if (!empty($user['link']))
 			$context['Breeze']['user_info'][$user['id']]['link'] = $user['link'];
