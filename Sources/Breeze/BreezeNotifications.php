@@ -257,8 +257,8 @@ class BreezeNotifications
 
 				foreach ($this->_messages as $m)
 					$context['insert_after_template'] .= '
-	var noti_id = \'' . $m['id'] . '\';
-	var user = \'' . $m['user'] . '\';
+	var noti_id_' . $m['id'] . ' = \'' . $m['id'] . '\';
+	var user_' . $m['user'] . ' = \'' . $m['user'] . '\';
 	noty({
 		text: ' . JavaScriptEscape($m['message']) . ',
 		type: \'notification\',
@@ -272,7 +272,7 @@ class BreezeNotifications
 					{
 						type: \'POST\',
 						url: smf_scripturl + \'?action=breezeajax;sa=notimarkasread\',
-						data: ({content : noti_id, user : user}),
+						data: ({content : noti_id_' . $m['id'] . ', user : user_' . $m['user'] . '}),
 						cache: false,
 						dataType: \'json\',
 						success: function(html)
@@ -302,7 +302,7 @@ class BreezeNotifications
 					{
 						type: \'POST\',
 						url: smf_scripturl + \'?action=breezeajax;sa=notidelete\',
-						data: ({content : noti_id, user : user}),
+						data: ({content : noti_id_' . $m['id'] . ', user : user_' . $m['user'] . '}),
 						cache: false,
 						dataType: \'json\',
 						success: function(html)
