@@ -54,9 +54,16 @@ class BreezeUserInfo
 		if (empty($memberContext[$u]))
 			loadMemberContext($u);
 
+		// Pass the user data to the template
 		$context['user']['info'] = $memberContext[$u];
 
-		// Set an empty array
+		loadtemplate(Breeze::$name .'Display');
+
+		// Call the right func and strip the layers
+		$context['template_layers'] = array();
+		$context['sub_template'] = 'userInfo';
+
+		// Set an empty array to avoid undefined errors when an user no longer exists
 		$context['Breeze']['user_info'][$user['id']] = array(
 			'facebox' => '',
 			'link' => '',
@@ -69,6 +76,6 @@ class BreezeUserInfo
 			return false;
 
 		else
-			template_main();
+			template_userInfo();
 	}
 }
