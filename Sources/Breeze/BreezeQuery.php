@@ -1077,6 +1077,41 @@ class BreezeQuery extends Breeze
 		// Return the data
 		return $return;
 	}
+
+	public function userMention()
+	{
+		global $smcFunc;
+
+		// Let us set a very long-lived cache entry
+		if (($return = cache_get_data(Breeze::$name .'-Mentions', 7200)) == null)
+		{
+			$return = array();
+			$postsLimit = $this->settings->enable('admin_posts_for_mention') ? (int) $this->settings->getSetting('admin_posts_for_mention') : 1;
+
+			$result = $smcFunc['db_query']('', '
+				SELECT id_member, member_name, real_name
+				FROM {db_prefix}members
+				' . ($this->settings->enable('admin_posts_for_mention') ? '
+				WHERE posts >= {int:p}' : '') .
+				'',array(
+					'p' => $postsLimit,
+				)
+			);
+
+			while ($row = $smcFunc['db_fetch_assoc']($result))
+				$return[] = array(
+					'name' => $row['real_name'],
+					'id' => (int) $row['id_member'],
+				);
+
+			$smcFunc['db_free_result']($result);
+
+			// Cached and forget about it
+			cache_put_data(Breeze::$name .'-Mentions', $return, 7200);
+		}
+
+		return $return;
+	}
 }
 
 /*
