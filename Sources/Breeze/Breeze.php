@@ -137,7 +137,7 @@ class Breeze
 	 */
 	public static function headersHook($type = 'noti')
 	{
-		global $context, $settings, $user_info, $breezeController;
+		global $context, $settings, $user_info, $breezeController, $txt;
 		static $header_done = false;
 
 		// Don't do anything if we are in SSI world
@@ -154,7 +154,7 @@ class Breeze
 		if (!$header_done)
 		{
 			$context['html_headers'] .= '
-			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.6.1.js"%3E%3C/script%3E\'))</script>
+			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
 			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />';
 
 			// DUH! winning!
@@ -184,17 +184,21 @@ class Breeze
 				var breeze_page_loading_end = '. JavaScriptEscape($text->getText('page_loading_end')) .';
 				var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
 				var breeze_infinite_scroll = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_infinite_scroll']) ? 'string' : '0' )).';
+				var breeze_how_many_mentions_options = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_how_many_mentions_options']) ? $context['member']['options']['Breeze_how_many_mentions_options'] : 5)) .';
 		// ]]></script>';
 
 			// Let's load jquery from CDN only if it hasn't been loaded yet
 			$context['html_headers'] .= '
 			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
+			<link rel="stylesheet" type="text/css" href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css"/>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/center.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topCenter.js"></script>';
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topCenter.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>';
 
 			// Any tabs?
 			if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))

@@ -224,7 +224,7 @@ function template_user_wall()
 				echo '<div class="breeze_user_inner">
 						<div class="breeze_user_statusbox">
 							<form method="post" action="', $scripturl, '?action=breezeajax;sa=post" id="status" name="form_status" class="form_status">
-								<textarea cols="40" rows="5" name="content" id="content" ></textarea>
+								<textarea cols="40" rows="5" name="content" id="content" rel="atwhoMention"></textarea>
 								<input type="hidden" value="',$context['member']['id'],'" name="owner_id" id="owner_id" />
 								<input type="hidden" value="',$user_info['id'],'" name="poster_id" id="poster_id" /><br />
 								<input type="submit" value="', $txt['post'] ,'" name="submit" class="status_button"/>
@@ -300,7 +300,7 @@ function template_user_wall()
 								if (!empty($context['permissions']['post_comment']))
 									echo '<div>
 									<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
-										<textarea id="textboxcontent_', $status['id'] ,'" cols="40" rows="2"></textarea>
+										<textarea id="textboxcontent_', $status['id'] ,'" cols="40" rows="2" rel="atwhoMention"></textarea>
 										<input type="hidden" value="',$status['poster_id'],'" name="status_owner_id', $status['id'] ,'" id="status_owner_id', $status['id'] ,'" />
 										<input type="hidden" value="',$context['member']['id'],'" name="profile_owner_id', $status['id'] ,'" id="profile_owner_id', $status['id'] ,'" />
 										<input type="hidden" value="', $status['id'] ,'" name="status_id', $status['id'] ,'" id="status_id', $status['id'] ,'" />
@@ -373,7 +373,7 @@ function template_user_notifications()
 			echo '
 				<tr class="windowbg" style="text-align: center">
 					<td>
-						', $txt['Breeze_noti_message'] ,'
+						', $noti['message'] ,'
 					</td>
 					<td>
 					', !empty($noti['viewed']) ? $txt['Breeze_noti_markasread_viewed'] : '<a href="javascript:void(0)" id="markread_'. $noti['id'] .'" class="Breeze_markRead">'. $txt['Breeze_noti_markasread'] .'</a>' ,'
@@ -463,7 +463,7 @@ function template_singleStatus()
 							if ($context['permissions']['post_comment'])
 								echo '<div>
 								<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $context['Breeze']['single']['id'] ,'" id="formID_', $context['Breeze']['single']['id'] ,'">
-									<textarea id="textboxcontent_', $context['Breeze']['single']['id'] ,'" cols="40" rows="2"></textarea>
+									<textarea id="textboxcontent_', $context['Breeze']['single']['id'] ,'" cols="40" rows="2" rel="atwhoMention"></textarea>
 									<input type="hidden" value="',$context['Breeze']['single']['poster_id'],'" name="status_owner_id', $context['Breeze']['single']['id'] ,'" id="status_owner_id', $context['Breeze']['single']['id'] ,'" />
 									<input type="hidden" value="', $context['Breeze']['single']['owner_id'] ,'" name="profile_owner_id', $context['Breeze']['single']['id'] ,'" id="profile_owner_id', $context['Breeze']['single']['id'] ,'" />
 									<input type="hidden" value="', $context['Breeze']['single']['id'] ,'" name="status_id', $context['Breeze']['single']['id'] ,'" id="status_id', $context['Breeze']['single']['id'] ,'" />
