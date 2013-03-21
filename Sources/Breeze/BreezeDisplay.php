@@ -68,7 +68,7 @@ class BreezeDisplay
 
 	public function HTML()
 	{
-		global $scripturl, $user_info, $context;
+		global $context;
 
 		// Load the user info
 		$this->tools->loadUserInfo($this->params['poster_id']);
@@ -76,80 +76,17 @@ class BreezeDisplay
 		// Set the elapsed time
 		$this->params['time'] = $this->tools->timeElapsed($this->params['time']);
 
-		switch ($this->type)
-		{
-			case 'status':
-				$this->returnArray = '
-		<li class="windowbg" id ="status_id_'. $this->params['id'] .'">
-			<span class="topslice">
-				<span></span>
-			</span>
-			<div class="breeze_user_inner">
-				<div class="breeze_user_status_avatar">
-					'. $context['Breeze']['user_info'][$this->params['poster_id']]['facebox'] .'
-				</div>
-				<div class="breeze_user_status_comment">
-					'. $this->params['body'] .'
-					<div class="breeze_options"><span class="time_elapsed">'. $this->params['time'] .' </span>';
+		loadtemplate(Breeze::$name .'Display');
 
-					// Delete link
-					if ($this->permissions['deleteStatus'])
-						$this->returnArray .= '| <a href="javascript:void(0)" id="'. $this->params['id'] .'" class="breeze_delete_status">'. $this->text->getText('general_delete') .'</a>';
+		// Pass everything to the template
+		$context['template_layers'] = array();
+		$context['sub_template'] = 'main';
+		$context['Breeze']['type'] = $this->type;
+		$context['Breeze']['params'] = $this->params;
+		$context['Breeze']['permissions'] = $this->permissions;
+		$context['Breeze']['text'] = $this->text;
 
-					$this->returnArray .= '</div>
-					<hr />
-					<div id="comment_flash_'. $this->params['id'] .'"></div>';
-
-					$this->returnArray .= '<ul class="breeze_comments_list" id="comment_loadplace_'. $this->params['id'] .'">';
-
-						// New status don't have comments...
-
-						// display the new comments ^o^
-						$this->returnArray .= '
-						<li id="breeze_load_image_comment_'. $this->params['id'] .'" style="margin:auto; text-align:center;"></li>';
-
-						// Close the list
-						$this->returnArray .= '</ul>';
-
-						// display the form for new comments
-						if ($this->permissions['postcomments'])
-							$this->returnArray .= '
-							<span><form action="'. $scripturl. '?action=breezeajax;sa=postcomment" method="post" name="formID_'. $this->params['id'] .'" id="formID_'. $this->params['id'] .'">
-								<textarea id="textboxcontent_'. $this->params['id'] .'" cols="40" rows="2"></textarea>
-								<input type="hidden" value="'. $this->params['poster_id'] .'" name="status_owner_id'. $this->params['id'] .'" id="status_owner_id'. $this->params['id'] .'" />
-								<input type="hidden" value="'. $this->params['owner_id'] .'" name="profile_owner_id'. $this->params['id'] .'" id="profile_owner_id'. $this->params['id'] .'" />
-								<input type="hidden" value="'. $this->params['id'] .'" name="status_id'. $this->params['id'] .'" id="status_id'. $this->params['id'] .'" />
-								<input type="hidden" value="'. $user_info['id'] .'" name="poster_comment_id'. $this->params['id'] .'" id="poster_comment_id'. $this->params['id'] .'" /><br />
-								<input type="submit" value="Comment" class="comment_submit" id="'. $this->params['id'] .'" />
-							</form></span>';
-
-
-					// Close the div
-					$this->returnArray .= '</div>
-					<div class="clear"></div>
-				</div>
-			<span class="botslice">
-				<span></span>
-			</span>
-			</li>';
-				break;
-			case 'comment':
-				$this->returnArray = '
-					<li class="windowbg2" id ="comment_id_'. $this->params['id'] .'">
-						<div class="breeze_user_comment_avatar">
-							'. $context['Breeze']['user_info'][$this->params['poster_id']]['facebox'] .'<br />
-						</div>
-						<div class="breeze_user_comment_comment">
-							'. $this->params['body'] .'
-							<div class="breeze_options">
-								<span class="time_elapsed">'. $this->params['time'] .'</span> | <a href="javascript:void(0)" id="'. $this->params['id'] .'" class="breeze_delete_comment">Delete</a>
-							</div>
-						</div>
-						<div class="clear"></div>
-					</li>';
-				break;
-		}
-
-		return $this->returnArray;
+		// Done
+		return template_main();
 	}
 }
