@@ -68,7 +68,7 @@ class BreezeDisplay
 
 	public function HTML()
 	{
-		global context;
+		global $context;
 
 		// Load the user info
 		$this->tools->loadUserInfo($this->params['poster_id']);
@@ -83,7 +83,10 @@ class BreezeDisplay
 		$context['sub_template'] = 'main';
 		$context['Breeze']['type'] = $this->type;
 		$context['Breeze']['params'] = $this->params;
-		$context['Breeze']['permissions'] = $this->permissions
+		$context['Breeze']['permissions'] = $this->permissions;
 		$context['Breeze']['text'] = $this->text;
+
+		// Done
+		return template_main();
 	}
 }
