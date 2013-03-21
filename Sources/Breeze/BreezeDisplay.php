@@ -76,6 +76,11 @@ class BreezeDisplay
 		// Set the elapsed time
 		$this->params['time'] = $this->tools->timeElapsed($this->params['time']);
 
+		loadtemplate(Breeze::$name .'Display');
+
+		// Pass everything to the template
+		$context['sub_template'] = 'main';
+
 		switch ($this->type)
 		{
 			case 'status':
