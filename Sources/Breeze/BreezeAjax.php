@@ -72,6 +72,9 @@ class BreezeAjax
 		// Handling the subactions
 		$sglobals = Breeze::sGlobals('get');
 
+		// Lets assume we can work with JavaScript
+		$this->noJS = true;
+
 		// Safety first, hardcode the actions
 		$subActions = array(
 			'post' => 'post',
@@ -81,6 +84,10 @@ class BreezeAjax
 			'notidelete' => 'notidelete',
 			'usersmention' => 'usersMention',
 		);
+
+		// Not using JavaScript?
+		if ($sglobals->getValue('js') == false)
+			$this->noJS = true;
 
 		// Does the subaction even exist?
 		if (in_array($sglobals->getValue('sa'), array_keys($subActions)))
