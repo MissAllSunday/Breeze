@@ -872,7 +872,7 @@ class BreezeQuery extends Breeze
 	/**
 	 * BreezeQuery::markNoti()
 	 *
-	 * Marks the specific notification entry as "viewed"
+	 * Marks the specific notification entry as either read/unread 1 = read, 0 = unread
 	 * @param int $id The notification ID
 	 * @return
 	 */
@@ -885,7 +885,12 @@ class BreezeQuery extends Breeze
 		$this->_smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables['noti']['table']) . '
 			SET viewed = {int:viewed}
-			WHERE id = {int:id}', array('viewed' => 1, 'id' => (int)$id, ));
+			WHERE id = {int:id}',
+			array(
+				'viewed' => $viewed,
+				'id' => $id,
+			)
+		);
 	}
 
 	/**
