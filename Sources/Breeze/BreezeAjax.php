@@ -89,11 +89,14 @@ class BreezeAjax
 		if ($sglobals->getValue('js') == false)
 			$this->noJS = true;
 
+		// Temporarily turn this into a normal var
+		$call = $this->subActions;
+
 		// Does the subaction even exist?
-		if (isset($this->subActions[$sglobals->getValue('sa')]))
+		if (isset($call[$sglobals->getValue('sa')]))
 		{
 			// This is somehow ugly.
-			$this->$this->subActions[$sglobals->getValue('sa')]();
+			$this->$call[$sglobals->getValue('sa')]();
 
 			// Send the response back to the browser
 			$this->returnResponse();
@@ -165,7 +168,7 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = '?action=profile;u='. $this->_data->getValue('owner_id');
+				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id');
 
 			// End it
 			return;
@@ -447,7 +450,7 @@ class BreezeAjax
 		global $modSettings;
 
 		// No JS? fine... jut send them to whatever url they're from
-		if (true == $this->noJS && isset($this->redirectURL))
+		if (true == $this->noJS && !empty($this->redirectURL))
 		{
 			redirectexit($this->redirectURL);
 

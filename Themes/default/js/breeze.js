@@ -73,7 +73,7 @@
 					jQuery.ajax(
 					{
 						type: 'POST',
-						url: smf_scripturl + '?action=breezeajax;sa=post;js',
+						url: smf_scripturl + '?action=breezeajax;sa=post;js=1',
 						data: ({content : test, owner_id : ownerID, poster_id : posterID}),
 						cache: false,
 						dataType: 'json',
@@ -160,7 +160,7 @@
 					jQuery.ajax(
 					{
 						type: 'POST',
-						url: smf_scripturl + '?action=breezeajax;sa=postcomment;js',
+						url: smf_scripturl + '?action=breezeajax;sa=postcomment;js=1',
 						data: ({content : commentBox, status_owner_id : status_owner_id, poster_comment_id : poster_comment_id, profile_owner_id: profile_owner_id, status_id : status_id}),
 						cache: false,
 						dataType: 'json',
@@ -229,7 +229,7 @@
 						addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
 							jQuery.ajax({
 								type: 'POST',
-								url: smf_scripturl + '?action=breezeajax;sa=delete;js',
+								url: smf_scripturl + '?action=breezeajax;sa=delete;js=1',
 								data: ({id : I, type : Type}),
 								cache: false,
 								dataType: 'json',
@@ -298,7 +298,7 @@
 						addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
 							jQuery.ajax({
 								type: 'POST',
-								url: smf_scripturl + '?action=breezeajax;sa=delete;js',
+								url: smf_scripturl + '?action=breezeajax;sa=delete;js=1',
 								data: ({id : I, type : Type}),
 								cache: false,
 								dataType: 'json',
@@ -394,7 +394,7 @@ jQuery(document).ready(function(){
 
 		jQuery.ajax({
 			type: 'GET',
-			url: smf_scripturl + '?action=breezeajax;sa=notimarkasread;js',
+			url: smf_scripturl + '?action=breezeajax;sa=notimarkasread;js=1',
 			data: ({content : noti_id_delete, user : user}),
 			cache: false,
 			dataType: 'json',
@@ -430,7 +430,7 @@ jQuery(document).ready(function(){
 		jQuery.ajax(
 		{
 			type: 'POST',
-			url: smf_scripturl + '?action=breezeajax;sa=notidelete;js',
+			url: smf_scripturl + '?action=breezeajax;sa=notidelete;js=1',
 			data: ({content : noti_id, user : user}),
 			cache: false,
 			dataType: 'json',
@@ -487,7 +487,7 @@ jQuery(document).ready(function(){
 jQuery(document).ready(function(){
 	jQuery('textarea[rel*=atwhoMention]').bind("focus", function(event){
 		jQuery.ajax({
-			url: smf_scripturl + '?action=breezeajax;sa=usersmention;js',
+			url: smf_scripturl + '?action=breezeajax;sa=usersmention;js=1',
 			type: "GET",
 			dataType: "json",
 			success: function(result)
