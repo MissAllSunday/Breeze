@@ -889,13 +889,13 @@ class BreezeQuery extends Breeze
 	}
 
 	/**
-	 * BreezeQuery::deleteNotification()
+	 * BreezeQuery::deleteNoti()
 	 *
 	 * Deletes the specific notification entry from the DB
 	 * @param int $id the notification ID
 	 * @return void
 	 */
-	public function deleteNotification($id, $user)
+	public function deleteNoti($id, $user)
 	{
 		// We don't need this no more
 		$this->killCache($this->_tables['noti']['name'] . '-'. $user);

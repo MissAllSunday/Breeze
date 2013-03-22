@@ -411,7 +411,7 @@ class BreezeAjax
 		else
 		{
 			// All is good, delete it
-			$this->_notifications->delete($noti, $user);
+			$this->_query->deleteNoti($noti, $user);
 			$this->_response = array(
 				'data' => $this->_text->getText('noti_delete_after'),
 				'type' => 'ok'

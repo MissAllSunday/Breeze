@@ -437,15 +437,4 @@ class BreezeNotifications
 		else
 			return false;
 	}
-
-	/**
-	 * BreezeNotifications::delete()
-	 *
-	 * @param mixed $id
-	 * @return
-	 */
-	public function delete($id, $user)
-	{
-		$this->_query->deleteNotification($id, $user);
-	}
 }
