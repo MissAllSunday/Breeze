@@ -101,7 +101,29 @@ function template_admin_home()
 			<div class="windowbg nopadding">
 				<span class="topslice"><span></span></span>
 				<div class="content" id="breezelive">
-					', $txt['Breeze_admin_general_credits_decs'] ,'
+					<p>', $txt['Breeze_admin_general_credits_decs'] ,'</p>';
+
+	// Print the credits array
+	if (!empty($context['Breeze']['credits']))
+		foreach ($context['Breeze']['credits'] as $c)
+		{
+			echo '
+					<dl>
+						<dt>
+							<strong>', $c['name'], ':</strong>
+						</dt>';
+
+			foreach ($c['users'] as $u)
+				echo '
+						<dd>
+							<a href="', $u['site'] ,'">', $u['name'] ,'</a>
+						</dd>';
+
+			echo '
+					</dl>';
+		}
+
+	echo '
 				</div>
 				<span class="botslice"><span></span></span>
 			</div>

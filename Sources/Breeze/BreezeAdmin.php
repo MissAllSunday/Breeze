@@ -92,6 +92,9 @@ function Breeze_Admin_Main()
 		'description' => $text->getText('admin_welcome'),
 	);
 
+	// Get the credits
+	$context['Breeze']['credits'] = Breeze::credits();
+
 	// Headers
 	Breeze::headersHook('admin');
 }

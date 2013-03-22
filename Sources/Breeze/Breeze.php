@@ -477,12 +477,13 @@ $(document).ready(function (){
 
 	public static function credits()
 	{
+		// Dear contributor, please feel free to add yourself here
 		$credits = array(
 			'dev' => array(
 				'name' => 'Developer(s)',
 				'users' => array(
 					'suki' => array(
-						'name' => 'Jessica "Suki" Gonz\xE1lez',
+						'name' => 'Jessica "Suki" Gonz&aacute;lez',
 						'site' => 'http://missallsunday.com',
 					),
 				),
@@ -517,6 +518,8 @@ $(document).ready(function (){
 				),
 			),
 		);
+
+		return $credits;
 	}
 }
 
