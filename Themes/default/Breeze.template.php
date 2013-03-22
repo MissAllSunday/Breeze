@@ -345,7 +345,7 @@ function template_user_wall()
 
 function template_user_notifications()
 {
-	global $context, $txt;
+	global $context, $txt, $scripturl, $user_info;
 
 	echo '
 		<div class="cat_bar">
@@ -362,7 +362,7 @@ function template_user_notifications()
 				<thead>
 					<tr class="catbg">
 						<th scope="col" class="first_th">', $txt['Breeze_noti_message'] ,'</th>
-						<th scope="col">', $txt['Breeze_noti_markasread'] ,'</th>
+						<th scope="col">', $txt['Breeze_noti_markasread_title'] ,'</th>
 						<th scope="col" class="last_th">', $txt['Breeze_general_delete'] ,'</th>
 					</tr>
 				</thead>
@@ -376,7 +376,7 @@ function template_user_notifications()
 						', $noti['message'] ,'
 					</td>
 					<td>
-					', !empty($noti['viewed']) ? $txt['Breeze_noti_markasread_viewed'] : '<a href="javascript:void(0)" id="markread_'. $noti['id'] .'" class="Breeze_markRead">'. $txt['Breeze_noti_markasread'] .'</a>' ,'
+					', !empty($noti['viewed']) ? $txt['Breeze_noti_markasunread'] : '<a href="'. $scripturl .'?action=breezeajax;sa=notimarkasread;content='. $noti['id'] .';user='. $user_info['id'] .'" id="markread_'. $noti['id'] .'" class="Breeze_markRead">'. $txt['Breeze_noti_markasread'] .'</a>' ,'
 					</td>
 					<td>
 					<a href="javascript:void(0)" id="delete_'. $noti['id'] .'" class="Breeze_delete">', $txt['Breeze_general_delete'] ,'</a>

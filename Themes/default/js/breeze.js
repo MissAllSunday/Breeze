@@ -393,8 +393,8 @@ jQuery(document).ready(function(){
 		var user = breeze_current_user;
 
 		jQuery.ajax({
-			type: 'POST',
-			url: smf_scripturl + '?action=breezeajax;sa=notimarkasread',
+			type: 'GET',
+			url: smf_scripturl + '?action=breezeajax;sa=notimarkasread;js',
 			data: ({content : noti_id_delete, user : user}),
 			cache: false,
 			dataType: 'json',
