@@ -23,6 +23,7 @@ The mod uses the following scripts:
 - [Brandon Aaron Live query plugin] (http://brandonaaron.net/code/livequery/docs)
 - [needim noty jquery plugin] (http://needim.github.com/noty/)
 - [Paul Irish infinite-scroll] (https://github.com/paulirish/infinite-scroll)
+- [ichord Mentions autocomplete script] (http://ichord.github.com/At.js)
 
 ######Notes:
 

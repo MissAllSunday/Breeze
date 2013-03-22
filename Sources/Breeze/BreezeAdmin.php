@@ -54,7 +54,7 @@ function Breeze_Admin_Index()
 			'donate' => 'Breeze_Admin_Donate',
 		);
 
-		loadGeneralSettingParameters($subActions, 'settings');
+		loadGeneralSettingParameters($subActions, 'general');
 
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'tabs' => array(
