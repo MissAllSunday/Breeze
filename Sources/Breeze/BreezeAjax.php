@@ -249,7 +249,7 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = '?action=profile;u='. $this->_data->getValue('profile_owner_id');
+				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('profile_owner_id');
 
 			// End it
 			return;
@@ -299,7 +299,7 @@ class BreezeAjax
 
 				// Se the redirect url
 				if (true == $this->noJS)
-					$this->redirectURL = '?action=profile';
+					$this->redirectURL = 'action=profile';
 
 				// End it!
 				return;
@@ -315,7 +315,7 @@ class BreezeAjax
 
 				// Se the redirect url
 				if (true == $this->noJS)
-					$this->redirectURL = '?action=profile;deleted_already';
+					$this->redirectURL = 'action=profile;deleted_already';
 
 				// Don't forget to end it
 				return;
@@ -358,7 +358,7 @@ class BreezeAjax
 		else
 		{
 			// All is good, mark this as read
-			$this->_query->markNoti($noti, $user, $noti_temp['viewed']);
+			$this->_query->markNoti($noti, $user, $noti_temp[$noti]['viewed']);
 			$this->_response = array(
 				'data' => $this->_text->getText('noti_markasread_after'),
 				'type' => 'ok'
@@ -366,7 +366,7 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = '?action=profile;area=breezenoti;u='. $user;
+				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';success';
 		}
 	}
 
@@ -403,7 +403,7 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = '?action=profile;area=breezenoti;deleted_already;u='. $user;
+				$this->redirectURL = 'action=profile;area=breezenoti;deleted_already;u='. $user;
 
 			return;
 		}
@@ -419,7 +419,7 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = '?action=profile;area=breezenoti;u='. $user;
+				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user;
 
 			return;
 		}

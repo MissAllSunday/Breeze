@@ -362,6 +362,7 @@ class BreezeNotifications
 
 		$this->_messages[$noti['id']]['id'] = $noti['id'];
 		$this->_messages[$noti['id']]['user'] = $noti['user_to'];
+		$this->_messages[$noti['id']]['viewed'] = $noti['viewed'];
 
 		// Fill out the messages property
 		$this->_messages[$noti['id']]['message'] = sprintf($this->_text->getText('buddy_messagerequest_message'),
@@ -425,7 +426,8 @@ class BreezeNotifications
 		$this->_messages[$noti['id']] = array(
 			'id' => $noti['id'],
 			'user' => $noti['user_to'],
-			'message' => $text
+			'message' => $text,
+			'viewed' => $noti['viewed']
 		);
 	}
 
