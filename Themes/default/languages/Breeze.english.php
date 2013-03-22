@@ -136,6 +136,8 @@ $txt['Breeze_admin_settings_server_needs_ok'] = '<div class="breeze_ok_message">
 $txt['Breeze_admin_settings_tab_server_specs'] = 'Server Requirements';
 $txt['Breeze_admin_settings_tab_admin_logs'] = 'Admin Logs';
 $txt['Breeze_admin_settings_donate'] = 'Donate';
+$txt['Breeze_admin_general_credits_title'] = 'Credits';
+$txt['Breeze_admin_general_credits_decs'] = 'Breeze is brought to you thanks to the following persons and/or scripts:'; 
 $txt['Breeze_admin_settings_enablegeneralwall'] = 'Enable General Wall';
 $txt['Breeze_admin_settings_enablegeneralwall_sub'] = 'If enable, a generai wall will apear, in this general wall the user will be able to see his/her buddie\'s status and recent activity';
 $txt['Breeze_admin_settings_menuposition'] = 'Select the position for the general Wall button.';

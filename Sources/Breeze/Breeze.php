@@ -474,6 +474,50 @@ $(document).ready(function (){
 			),
 		);
 	}
+
+	public static function credits()
+	{
+		$credits = array(
+			'dev' => array(
+				'name' => 'Developer(s)',
+				'users' => array(
+					'suki' => array(
+						'name' => 'Jessica "Suki" Gonz\xE1lez',
+						'site' => 'http://missallsunday.com',
+					),
+				),
+			),
+			'scripts' => array(
+				'name' => 'Third Party Scripts',
+				'users' => array(
+					'facebox' => array(
+						'name' => 'Facebox',
+						'site' => 'https://github.com/defunkt/facebox',
+					),
+					'feed' => array(
+						'name' => 'zRSSFeeds',
+						'site' => 'http://www.zazar.net/developers/jquery/zrssfeed',
+					),
+					'live_query' => array(
+						'name' => 'Live query plugin',
+						'site' => 'http://brandonaaron.net/code/livequery/docs',
+					),
+					'noty' => array(
+						'name' => 'noty jquery plugin',
+						'site' => 'http://needim.github.com/noty/',
+					),
+					'scroll' => array(
+						'name' => 'infinite-scroll',
+						'site' => 'https://github.com/paulirish/infinite-scroll',
+					),
+					'mentions' => array(
+						'name' => 'Mentions autocomplete',
+						'site' => 'http://ichord.github.com/At.js',
+					),
+				),
+			),
+		);
+	}
 }
 
 /* And so it is

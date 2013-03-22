@@ -92,6 +92,19 @@ function template_admin_home()
 					<span class="botslice"><span></span></span>
 				</div>
 			</div>
+		<br class="clear" />
+			<div class="cat_bar">
+				<h3 class="catbg">
+					<span class="ie6_header floatleft">', $txt['Breeze_admin_general_credits_title'] , '</span>
+				</h3>
+			</div>
+			<div class="windowbg nopadding">
+				<span class="topslice"><span></span></span>
+				<div class="content" id="breezelive">
+					', $txt['Breeze_admin_general_credits_decs'] ,'
+				</div>
+				<span class="botslice"><span></span></span>
+			</div>
 		</div>
 	</div>
 	<br />';
