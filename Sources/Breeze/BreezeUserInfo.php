@@ -64,6 +64,10 @@ class BreezeUserInfo
 			'name' => ''
 		);
 
+		// The user must exists!
+		if (!isset($user) || empty($user))
+			return false;
+
 		// Sometimes we just want the link
 		if (!empty($user['link']))
 			$context['Breeze']['user_info'][$user['id']]['link'] = $user['link'];
@@ -126,7 +130,8 @@ class BreezeUserInfo
 					if (empty($shown))
 					{
 						$shown = true;
-						$context['Breeze']['user_info'][$user['id']]['data'] .= '<li class="im_icons">
+						$context['Breeze']['user_info'][$user['id']]['data'] .= '
+								<li class="im_icons">
 									<ul>';
 					}
 					$context['Breeze']['user_info'][$user['id']]['data'] .= '<li>'. $custom['value']. '</li>';
@@ -139,7 +144,8 @@ class BreezeUserInfo
 			// Show the profile, website, email address, and personal message buttons.
 			if ($settings['show_profile_buttons'])
 			{
-				$context['Breeze']['user_info'][$user['id']]['data'] .= '<li class="profile">
+				$context['Breeze']['user_info'][$user['id']]['data'] .= '
+								<li class="profile">
 									<ul>';
 
 				// Don't show an icon if they haven't specified a website.
@@ -150,8 +156,9 @@ class BreezeUserInfo
 				if (in_array($user['show_email'], array('yes', 'yes_permission_override', 'no_through_forum')))
 					$context['Breeze']['user_info'][$user['id']]['data'] .= '<li><a href="'. $scripturl . '?action=emailuser;sa=email;msg='. $user['id']. '" rel="nofollow">'. ($settings['use_image_buttons'] ? '<img src="' . $settings['images_url'] . '/email_sm.gif" alt="' . $txt['email'] . '" title="' . $txt['email'] . '" />' : $txt['email']). '</a></li>';
 
-				$context['Breeze']['user_info'][$user['id']]['data'] .= '</ul>
-				</li>';
+				$context['Breeze']['user_info'][$user['id']]['data'] .= '
+									</ul>
+								</li>';
 			}
 
 			// Any custom fields for standard placement?

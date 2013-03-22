@@ -79,6 +79,7 @@ class BreezeAjax
 			'delete' => 'delete',
 			'notimarkasread' => 'notimark',
 			'notidelete' => 'notidelete',
+			'usersmention' => 'usersMention',
 		);
 
 		// Does the subaction even exist?
@@ -385,6 +386,19 @@ class BreezeAjax
 	}
 
 	/**
+	 * BreezeAjax::usersMention()
+	 *
+	 * Creates an array of searchable users
+	 * @return void
+	 */
+	protected function usersMention()
+	{
+		// For testing purposes only, just pass the result directly
+		$this->_response = $this->_query->userMention();
+		return;
+	}
+
+	/**
 	 * BreezeAjax::returnResponse()
 	 *
 	 * Returns a json encoded response back to the browser
@@ -395,7 +409,7 @@ class BreezeAjax
 	{
 		global $modSettings;
 
-		// kill anything else
+		// Kill anything else
 		ob_end_clean();
 
 		if (!empty($modSettings['enableCompressedOutput']))
