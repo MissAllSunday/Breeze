@@ -376,7 +376,7 @@ function template_user_notifications()
 						', $noti['message'] ,'
 					</td>
 					<td>
-					', !empty($noti['viewed']) ? $txt['Breeze_noti_markasunread'] : '<a href="'. $scripturl .'?action=breezeajax;sa=notimarkasread;content='. $noti['id'] .';user='. $user_info['id'] .'" id="markread_'. $noti['id'] .'" class="Breeze_markRead">'. $txt['Breeze_noti_markasread'] .'</a>' ,'
+					<a href="'. $scripturl .'?action=breezeajax;sa=notimarkasread;content='. $noti['id'] .';user='. $user_info['id'] .'" id="markread_'. $noti['id'] .'" class="Breeze_markRead">'. (!empty($noti['viewed']) ? $txt['Breeze_noti_markasunread'] : $txt['Breeze_noti_markasread']) .'</a>
 					</td>
 					<td>
 					<a href="javascript:void(0)" id="delete_'. $noti['id'] .'" class="Breeze_delete">', $txt['Breeze_general_delete'] ,'</a>
