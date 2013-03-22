@@ -358,7 +358,7 @@ class BreezeAjax
 		else
 		{
 			// All is good, mark this as read
-			$this->_notifications->markAsRead($noti, $user);
+			$this->_query->markNoti($noti, $user, $noti_temp['viewed']);
 			$this->_response = array(
 				'data' => $this->_text->getText('noti_markasread_after'),
 				'type' => 'ok'

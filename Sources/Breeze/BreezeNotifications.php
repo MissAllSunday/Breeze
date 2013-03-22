@@ -448,15 +448,4 @@ class BreezeNotifications
 	{
 		$this->_query->deleteNotification($id, $user);
 	}
-
-	/**
-	 * BreezeNotifications::markAsRead()
-	 *
-	 * @param mixed $id
-	 * @return
-	 */
-	public function markAsRead($id, $user)
-	{
-		$this->_query->markAsviewedNotification($id, $user);
-	}
 }

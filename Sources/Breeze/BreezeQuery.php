@@ -870,13 +870,13 @@ class BreezeQuery extends Breeze
 	}
 
 	/**
-	 * BreezeQuery::markAsviewedNotification()
+	 * BreezeQuery::markNoti()
 	 *
 	 * Marks the specific notification entry as "viewed"
 	 * @param int $id The notification ID
 	 * @return
 	 */
-	public function markAsviewedNotification($id, $user)
+	public function markNoti($id, $user, $viewed)
 	{
 		// We don't need this no more
 		$this->killCache($this->_tables['noti']['name'] . '-'. $user);
