@@ -76,7 +76,7 @@ class BreezeAjax
 		$sglobals = Breeze::sGlobals('get');
 
 		// Safety first, hardcode the actions
-		$subActions = array(
+		$this->subActions = array(
 			'post' => 'post',
 			'postcomment' => 'postComment',
 			'delete' => 'delete',
@@ -90,10 +90,10 @@ class BreezeAjax
 			$this->noJS = true;
 
 		// Does the subaction even exist?
-		if (isset($subActions[$sglobals->getValue('sa')]))
+		if (isset($this->subActions[$sglobals->getValue('sa')]))
 		{
 			// This is somehow ugly.
-			$this->$subActions[$sglobals->getValue('sa')]();
+			$this->$this->subActions[$sglobals->getValue('sa')]();
 
 			// Send the response back to the browser
 			$this->returnResponse();
