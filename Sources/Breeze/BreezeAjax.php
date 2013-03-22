@@ -40,6 +40,9 @@ if (!defined('SMF'))
 
 class BreezeAjax
 {
+	var $noJS = false;
+	var $redirectURL = '';
+
 	/**
 	 * BreezeAjax::__construct()
 	 *
@@ -72,9 +75,6 @@ class BreezeAjax
 		// Handling the subactions
 		$sglobals = Breeze::sGlobals('get');
 
-		// Lets assume we can work with JavaScript
-		$this->noJS = true;
-
 		// Safety first, hardcode the actions
 		$subActions = array(
 			'post' => 'post',
@@ -90,7 +90,7 @@ class BreezeAjax
 			$this->noJS = true;
 
 		// Does the subaction even exist?
-		if (in_array($sglobals->getValue('sa'), array_keys($subActions)))
+		if (isset($subActions[$sglobals->getValue('sa')]))
 		{
 			// This is somehow ugly.
 			$this->$subActions[$sglobals->getValue('sa')]();
@@ -162,6 +162,10 @@ class BreezeAjax
 				'type' => 'ok',
 				'data' => $display->HTML()
 			);
+
+			// Se the redirect url
+			if (true == $this->noJS)
+				$this->redirectURL = '?action=profile;u='. $this->_data->getValue('owner_id');
 
 			// End it
 			return;
@@ -240,6 +244,10 @@ class BreezeAjax
 				'data' => $display->HTML()
 			);
 
+			// Se the redirect url
+			if (true == $this->noJS)
+				$this->redirectURL = '?action=profile;u='. $this->_data->getValue('profile_owner_id');
+
 			// End it
 			return;
 		}
@@ -286,6 +294,10 @@ class BreezeAjax
 					'type' => 'ok'
 				);
 
+				// Se the redirect url
+				if (true == $this->noJS)
+					$this->redirectURL = '?action=profile';
+
 				// End it!
 				return;
 			}
@@ -297,6 +309,10 @@ class BreezeAjax
 					'data' => $this->_text->getText('already_deleted'),
 					'type' => 'deleted'
 				);
+
+				// Se the redirect url
+				if (true == $this->noJS)
+					$this->redirectURL = '?action=profile;deleted_already';
 
 				// Don't forget to end it
 				return;
@@ -344,6 +360,10 @@ class BreezeAjax
 				'data' => $this->_text->getText('noti_markasread_after'),
 				'type' => 'ok'
 			);
+
+			// Se the redirect url
+			if (true == $this->noJS)
+				$this->redirectURL = '?action=profile;area=breezenoti;u='. $user;
 		}
 	}
 
@@ -377,6 +397,11 @@ class BreezeAjax
 				'data' => $this->_text->getText('already_deleted_noti'),
 				'type' => 'deleted'
 			);
+
+			// Se the redirect url
+			if (true == $this->noJS)
+				$this->redirectURL = '?action=profile;area=breezenoti;deleted_already;u='. $user;
+
 			return;
 		}
 
@@ -388,6 +413,11 @@ class BreezeAjax
 				'data' => $this->_text->getText('noti_delete_after'),
 				'type' => 'ok'
 			);
+
+			// Se the redirect url
+			if (true == $this->noJS)
+				$this->redirectURL = '?action=profile;area=breezenoti;u='. $user;
+
 			return;
 		}
 	}
@@ -415,6 +445,10 @@ class BreezeAjax
 	protected function returnResponse()
 	{
 		global $modSettings;
+
+		// No JS? fine... jut send them to whatever url they're from
+		if (true == $this->noJS && isset($this->redirectURL))
+			redirectexit($this->redirectURL);
 
 		// Kill anything else
 		ob_end_clean();
