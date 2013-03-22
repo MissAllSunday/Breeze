@@ -451,6 +451,7 @@ class BreezeAjax
 		{
 			redirectexit($this->redirectURL);
 
+			// Safety first!
 			return;
 		}
 
@@ -468,11 +469,11 @@ class BreezeAjax
 
 		// Is there a custom message? Use it
 		if (!empty($this->_response))
-			print json_encode($this->_response);
+			echo json_encode($this->_response);
 
 		// No? then show the standard error message
 		else
-			print json_encode(array(
+			echo json_encode(array(
 				'data' => $this->_text->getText('error_message'),
 				'type' => 'error'
 			));
