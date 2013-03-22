@@ -274,7 +274,7 @@ class BreezeNotifications
 					jQuery.ajax(
 					{
 						type: \'POST\',
-						url: smf_scripturl + \'?action=breezeajax;sa=notimarkasread\',
+						url: smf_scripturl + \'?action=breezeajax;sa=notimark\',
 						data: ({content : noti_id_' . $m['id'] . ', user : user_' . $m['user'] . '}),
 						cache: false,
 						dataType: \'json\',

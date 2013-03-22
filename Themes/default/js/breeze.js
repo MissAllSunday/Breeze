@@ -394,7 +394,7 @@ jQuery(document).ready(function(){
 
 		jQuery.ajax({
 			type: 'GET',
-			url: smf_scripturl + '?action=breezeajax;sa=notimarkasread;js=1',
+			url: smf_scripturl + '?action=breezeajax;sa=notimark;js=1',
 			data: ({content : noti_id_delete, user : user}),
 			cache: false,
 			dataType: 'json',

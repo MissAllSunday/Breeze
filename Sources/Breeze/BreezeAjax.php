@@ -80,7 +80,7 @@ class BreezeAjax
 			'post' => 'post',
 			'postcomment' => 'postComment',
 			'delete' => 'delete',
-			'notimarkasread' => 'notimark',
+			'notimark' => 'notimark',
 			'notidelete' => 'notidelete',
 			'usersmention' => 'usersMention',
 		);
