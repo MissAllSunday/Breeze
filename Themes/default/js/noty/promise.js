@@ -209,7 +209,7 @@ jQuery.Callbacks = function( flags ) {
 
   // Convert flags from String-formatted to Object-formatted
   // (we check in cache first)
-  flags = flags ? ( /*flagsCache[ flags ] || */createFlags( flags ) ) : {};
+  flags = flags ? ( //flagsCache[ flags ] || createFlags( flags ) ) : {};
 
   var // Actual callback list
     list = [],

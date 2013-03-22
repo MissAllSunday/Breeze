@@ -59,7 +59,7 @@ class BreezeNotifications
 	{
 		global $user_info;
 
-		/* Current user */
+		// Current user
 		$this->_currentUser = $user_info['id'];
 
 		$this->_types = array(
@@ -71,7 +71,7 @@ class BreezeNotifications
 			'reply',
 			'topic');
 
-		/* We kinda need all this stuff, dont' ask why, just nod your head... */
+		// We kinda need all this stuff, dont' ask why, just nod your head...
 		$this->_settings = $settings;
 		$this->_query = $query;
 		$this->_tools = $tools;
@@ -86,10 +86,10 @@ class BreezeNotifications
 	 */
 	public function create($params)
 	{
-		/* We have to make sure, we just have to! */
+		// We have to make sure, we just have to!
 		if (!empty($params) && in_array($params['type'], $this->_types))
 		{
-			/* Is there additional content? */
+			// Is there additional content?
 			if (!empty($params['content']))
 				$params['content'] = json_encode($params['content']);
 
@@ -113,10 +113,10 @@ class BreezeNotifications
 	{
 		loadLanguage(Breeze::$name);
 
-		/* if the type is buddy then let's do a check to avoid duplicate entries */
+		// if the type is buddy then let's do a check to avoid duplicate entries
 		if (!empty($params) && in_array($params['type'], $this->_types))
 		{
-			/* Doing a quick query will be better than loading the entire notifications array */
+			// Doing a quick query will be better than loading the entire notifications array
 			$tempQuery = $this->_query->quickQuery(
 				array(
 					'table' => 'breeze_notifications',
@@ -133,11 +133,11 @@ class BreezeNotifications
 				'id', false
 			);
 
-			/* Patience is a virtue, you obviously don't know that, huh? */
+			// Patience is a virtue, you obviously don't know that, huh?
 			if (!empty($tempQuery))
 				fatal_lang_error('Breeze_buddyrequest_error_doublerequest', false);
 
-			/* We are good to go */
+			// We are good to go
 			else
 				$this->create($params);
 		}
@@ -165,13 +165,13 @@ class BreezeNotifications
 	 */
 	public function getToUser($user, $all = false)
 	{
-		/* Dont even bother... */
+		// Dont even bother...
 		if (empty($user))
 			return false;
 
 		$temp = $this->_query->getNotificationByUser($user);
 
-		/* Send those who hasn't been viewed */
+		// Send those who hasn't been viewed
 		if (!$all && !empty($temp))
 			foreach ($temp as $k => $t)
 			{
@@ -194,13 +194,13 @@ class BreezeNotifications
 	 */
 	public function getByUser($user, $all = false)
 	{
-		/* Dont even bother... */
+		// Dont even bother...
 		if (empty($user))
 			return false;
 
 		$temp = $this->_query->getNotificationByUserSender($user);
 
-		/* Send those who hasn't been viewed */
+		// Send those who hasn't been viewed
 		if (!$all && !empty($temp))
 			foreach ($temp as $k => $t)
 			{
@@ -224,17 +224,17 @@ class BreezeNotifications
 	{
 		global $context;
 
-		/* Safety */
+		// Safety
 		if (empty($user))
 			return false;
 
-		/* Get all the notification for this user */
+		// Get all the notification for this user
 		$this->_all = $this->getToUser($user);
 
-		/* Do this if there is actually something to show */
+		// Do this if there is actually something to show
 		if (!empty($this->_all))
 		{
-			/* Call the methods */
+			// Call the methods
 			foreach ($this->_all as $single)
 				if (in_array($single['type'], $this->_types))
 				{
@@ -242,13 +242,13 @@ class BreezeNotifications
 					$this->$call($single);
 				}
 
-			/* Show the notifications */
+			// Show the notifications
 			if (!empty($this->_messages))
 			{
-				/* Make sure its an array */
+				// Make sure its an array
 				$this->_messages = !is_array($this->_messages) ? array($this->_messages) : $this->_messages;
 
-				/* @todo move this to breeze.js */
+				// @todo move this to breeze.js
 				$context['insert_after_template'] .= '
 				<script type="text/javascript"><!-- // --><![CDATA[
 		$(document).ready(function()
@@ -353,14 +353,14 @@ class BreezeNotifications
 	{
 		global $context;
 
-		/* Extra check */
+		// Extra check
 		if (empty($noti) || !is_array($noti) || $noti['user_to'] != $this->_currentUser)
 			return false;
 
 		$this->_messages[$noti['id']]['id'] = $noti['id'];
 		$this->_messages[$noti['id']]['user'] = $noti['user_to'];
 
-		/* Fill out the messages property */
+		// Fill out the messages property
 		$this->_messages[$noti['id']]['message'] = sprintf($this->_text->getText('buddy_messagerequest_message'),
 			$context['Breeze']['user_info'][$noti['user']]['link'], $noti['id']);
 	}
@@ -375,52 +375,55 @@ class BreezeNotifications
 	{
 		global $context, $scripturl;
 
-		/* Extra check */
+		// Extra check
 		if ($noti['user_to'] != $this->_currentUser)
 			return false;
 
-		/* Yeah, we started with nothing! */
+		// Yeah, we started with nothing!
 		$text = '';
 
-		/* Build the status link */
+		// Build the status link
 		$statusLink = $scripturl . '?action=profile;area=wallstatus;u=' . $noti['content']['wall_owner'] .
 			';bid=' . $noti['content']['status_id'];
 
-		/* Is this a mention on a comment? */
+		// Sometimes this data hasn't been loaded yet
+		if (empty($context['Breeze']['user_info'][$noti['content']['wall_poster']]) || empty($context['Breeze']['user_info'][$noti['content']['wall_owner']]))
+		$this->_tools->loadUserInfo(array($noti['content']['wall_poster'], $noti['content']['wall_owner']));
+
+		// Is this a mention on a comment?
 		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
 		{
-			/* Is this the same user's wall? */
+			// Is this the same user's wall?
 			if ($noti['content']['wall_owner'] == $noti['user_to'])
 				$text = sprintf($this->_text->getText('mention_message_own_wall_comment'), $statusLink,
 					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'], $noti['id']);
 
-			/* This is someone elses wall, go figure... */
+			// This is someone elses wall, go figure...
 			else
 				$text = sprintf($this->_text->getText('mention_message_comment'), $context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
 					$context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'], $statusLink,
 					$noti['id']);
 		}
 
-		/* No? then this is a mention made on a status */
+		// No? then this is a mention made on a status
 		else
 		{
-			/* Is this your own wall? */
+			// Is this your own wall?
 			if ($noti['content']['wall_owner'] == $noti['user_to'])
 				$text = sprintf($this->_text->getText('mention_message_own_wall_status'), $statusLink,
 					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'], $noti['id']);
 
-			/* No? don't worry, you will get your precious notification anyway */
+			// No? don't worry, you will get your precious notification anyway
 			elseif ($noti['content']['wall_owner'] != $noti['user_to'])
-				$text = sprintf($this->_text->getText('mention_message_comment'), $context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
-					$context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'], $statusLink,
-					$noti['id']);
+				$text = sprintf($this->_text->getText('mention_message_comment'), $context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'], $context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'], $statusLink, $noti['id']);
 		}
 
-		/* Create the message already */
+		// Create the message already
 		$this->_messages[$noti['id']] = array(
 			'id' => $noti['id'],
 			'user' => $noti['user_to'],
-			'message' => $text);
+			'message' => $text
+		);
 	}
 
 	/**

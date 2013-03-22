@@ -43,14 +43,28 @@
 
 	global $smcFunc, $context;
 
-	/* Breeze needs php 5.3 or greater */
+	// Breeze needs php 5.3 or greater
 	BreezeCheck();
 
 	db_extend('packages');
 
 	if (empty($context['uninstalling']))
 	{
-		/* Comments */
+		// Profile views
+		$smcFunc['db_add_column'](
+			'{db_prefix}members',
+			array(
+				'name' => 'breeze_profile_views',
+				'type' => 'text',
+				'size' => '',
+				'default' => '',
+			),
+			array(),
+			'update',
+			null
+		);
+
+		// Comments
 		$tables[] = array(
 			'table_name' => '{db_prefix}breeze_comments',
 			'columns' => array(
@@ -109,7 +123,7 @@
 			'parameters' => array(),
 		);
 
-		/* Status */
+		// Status
 		$tables[] = array(
 			'table_name' => '{db_prefix}breeze_status',
 			'columns' => array(
@@ -156,7 +170,7 @@
 			'parameters' => array(),
 		);
 
-		/* Notifications */
+		// Notifications
 		$tables[] = array(
 			'table_name' => '{db_prefix}breeze_notifications',
 			'columns' => array(
@@ -215,7 +229,7 @@
 			'parameters' => array(),
 		);
 
-		/* Installing */
+		// Installing
 		foreach ($tables as $table)
 		$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
 	}

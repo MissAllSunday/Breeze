@@ -73,7 +73,7 @@ class BreezePagination
 		$this->num_pages = ceil($this->num_rows / $this->limitPage);
 		$this->page_offset = ($this->page - 1) * $this->limitPage;
 
-		/* Calculating the first number to show */
+		// Calculating the first number to show
 		if ($this->limitNumber)
 		{
 			$this->limit_number_start = $this->page - ceil($this->limitNumber / 2);
@@ -104,7 +104,7 @@ class BreezePagination
 			$this->limit_number_end = $this->num_pages;
 		}
 
-		/* Let's generate the panel */
+		// Let's generate the panel
 		$this->GeneratePageLinks();
 		$this->NavigationArrows();
 		$this->panel = trim($this->panel);
@@ -118,7 +118,7 @@ class BreezePagination
 		$this->pagtrue = true;
 	}
 
-	/* Generating page links. */
+	// Generating page links.
 	private function GeneratePageLinks()
 	{
 		for ($i = $this->limit_number_start; $i <= $this->limit_number_end; $i++)
@@ -135,7 +135,7 @@ class BreezePagination
 		}
 	}
 
-	/* Navigation arrows. */
+	// Navigation arrows.
 	private function NavigationArrows()
 	{
 		if ($this->limit_number_start > 1)

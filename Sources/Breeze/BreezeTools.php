@@ -45,11 +45,11 @@ class BreezeTools
 		$this->text = $text;
 		$this->settings = $settings;
 
-		/* Get globals */
+		// Get globals
 		$this->_data = new BreezeGlobals('request');
 	}
 
-	/* Relative dates  http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html */
+	// Relative dates  http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html
 	public function timeElapsed($ptime)
 	{
 		$etime = time() - $ptime;
@@ -77,17 +77,17 @@ class BreezeTools
 		}
 	}
 
-	/* A function to cut-off a string */
+	// A function to cut-off a string
 	public function truncateString($string, $limit, $break = ' ', $pad = '...')
 	{
 		if(empty($limit))
 			$limit = 30;
 
-		 /* return with no change if string is shorter than $limit */
+		 // return with no change if string is shorter than $limit
 		if(strlen($string) <= $limit)
 			return $string;
 
-		/* is $break present between $limit and the end of the string? */
+		// is $break present between $limit and the end of the string?
 		if(false !== ($breakpoint = strpos($string, $break, $limit)))
 			if($breakpoint < strlen($string) - 1)
 				$string = substr($string, 0, $breakpoint) . $pad;
@@ -95,7 +95,7 @@ class BreezeTools
 		return $string;
 	}
 
-	/* Checks if a value on a multidimencional array exists and return the main key */
+	// Checks if a value on a multidimencional array exists and return the main key
 	public function returnKey($value, $array)
 	{
 		if (empty($value) || empty($array))
@@ -163,21 +163,21 @@ class BreezeTools
 	{
 		global $memberContext;
 
-		/* If this isn't an array, lets change it to one */
+		// If this isn't an array, lets change it to one
 		if (!is_array($id))
 			$id = array($id);
 
-		/* SMF always return the data as an array */
+		// SMF always return the data as an array
 		$array = loadMemberData($id, false, 'profile');
 
-		/* Load the users data if it wasn't loaded already */
+		// Load the users data if it wasn't loaded already
 		if (!empty($array) && is_array($array))
 			foreach ($array as $u)
 			{
 				if (empty($memberContext[$u]))
 					loadMemberContext($u);
 
-				/* Create the context var */
+				// Create the context var
 				BreezeUserInfo::profile($u);
 			}
 

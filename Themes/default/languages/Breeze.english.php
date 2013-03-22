@@ -37,7 +37,7 @@
 
 global $txt;
 
-/* Public/General strings */
+// Public/General strings
 $txt['Breeze_general_wall'] = 'Wall';
 $txt['Breeze_general_summary'] = 'Summary';
 
@@ -45,20 +45,22 @@ $txt['Breeze_general_my_wall'] = 'My Wall';
 $txt['Breeze_general_my_wall_settings'] = 'My Wall Settings';
 $txt['Breeze_general_loading'] = 'Loading...';
 $txt['Breeze_general_like'] = 'Like';
+$txt['Breeze_general_last_view'] = 'Last view';
 $txt['Breeze_general_delete'] = 'Delete';
 $txt['Breeze_general_unlike'] = 'Unlike';
 $txt['Breeze_general_plural'] = '(s)';
 
-/* Modules */
+// Modules
 $txt['Breeze_general_my_wall_modules'] = 'My Wall Modules settings';
 $txt['Breeze_modules_enable_visitors_title'] = 'Recent Visitors';
 $txt['Breeze_modules_enable_visitors_description'] = 'The last %1$s visitor%2$s to this page were: <p />';
 
 
-/* User Individual Settings */
+// User Individual Settings
 $txt['Breeze_profile'] = 'Wall Settings';
 $txt['Breeze_user_settings_name'] = 'Wall Settings';
 $txt['Breeze_user_buddysettings_name'] = 'Buddy Requests';
+$txt['Breeze_user_single_status'] = 'Single Status';
 $txt['Breeze_user_buddyrequestmessage_name'] = 'Buddy Message Request Send';
 $txt['Breeze_user_buddyrequestmessage_message'] = 'Your request has been submitted, the user will see your request and if he/she accepts it, you will receive a notification via private message.';
 $txt['Breeze_user_notisettings_name'] = 'Notifications';
@@ -73,8 +75,10 @@ $txt['Breeze_user_settings_pagination_number'] = 'How many status will be displa
 $txt['Breeze_user_settings_pagination_number_sub'] = 'Enter the number of status you want to display per page on your wall. By default is 5';
 $txt['Breeze_user_settings_enable_wall'] = 'Enable my wall';
 $txt['Breeze_user_settings_enable_wall_sub'] = 'If you want to use your wall, you need to check this option, otherwise your profile will show the default page.';
-$txt['Breeze_user_settings_enable_visits_module'] = 'Enable the visits block?';
-$txt['Breeze_user_settings_enable_visits_module_sub'] = 'If this is enable, a block with the latest user who visited your wall will appear.';
+$txt['Breeze_user_settings_enable_buddies_tab'] = 'Enable the Buddies tab?';
+$txt['Breeze_user_settings_enable_buddies_tab_sub'] = 'If this is enable, a new tab will be visible, this tab will contain all your confirmed buddies';
+$txt['Breeze_user_settings_enable_visits_tab'] = 'Enable the visits tab?';
+$txt['Breeze_user_settings_enable_visits_tab_sub'] = 'This tab will show the latest visitors to your wall.';
 $txt['Breeze_user_settings_visits_module_timeframe'] = 'The time frame to count the visits from.';
 $txt['Breeze_user_settings_visits_module_timeframe_sub'] = 'By default is set to a week, that means the module will show the latest visits to your wall in the last week.';
 $txt['Breeze_user_settings_visits_module_timeframe_hour'] = 'Hour';
@@ -82,8 +86,7 @@ $txt['Breeze_user_settings_visits_module_timeframe_day'] = 'Day';
 $txt['Breeze_user_settings_visits_module_timeframe_week'] = 'Week';
 $txt['Breeze_user_settings_visits_module_timeframe_month'] = 'Month';
 
-
-/* Modules */
+// Modules
 $txt['Breeze_user_settings_enable_buddies'] = 'Enable the "Buddies" module.';
 $txt['Breeze_user_settings_enable_buddies_sub'] = 'This will show a block showing all your buddies.';
 $txt['Breeze_user_settings_how_many_buddies'] = 'How many buddies to display';
@@ -110,12 +113,18 @@ $txt['Breeze_user_permissions_name'] = 'Permissions';
 $txt['Breeze_user_modules_name'] = 'Modules';
 
 
-/* Admin Settings */
+// Admin Settings
 $txt['Breeze_admin_settings_admin_panel'] = 'Breeze Admin Panel';
-$txt['Breeze_admin_welcome'] = 'This is your &quot;%1$s&quot;.  From here, you can edit the settings for Breeze If you have any trouble, feel free to <a href="http://missallsunday.com" target="_blank" class="new_win">ask for support</a> on the author\'s site.';
-$txt['Breeze_admin_settings_main'] = 'Main breeze Admin Center';
-$txt['Breeze_admin_settings_settings'] = 'breeze General Settings';
-$txt['Breeze_admin_settings_donate_title'] = 'Boring stuff you will never see...';
+$txt['Breeze_admin_welcome'] = 'This is your &quot;Breeze Admin Panel&quot;.  From here, you can edit the settings for Breeze If you have any trouble, feel free to <a href="http://missallsunday.com" target="_blank" class="new_win">ask for support</a> on the author\'s site.';
+$txt['Breeze_admin_settings_main'] = 'Main Breeze Admin Center';
+$txt['Breeze_admin_settings_sub_permissions'] = 'Permissions';
+$txt['Breeze_admin_settings_sub_style'] = 'Style and Layout';
+$txt['Breeze_admin_settings_settings'] = 'General Settings';
+$txt['Breeze_admin_settings_settings_desc'] = 'This is the general settings page, from here you can enable/disable the mod as well as configuring general settings.';
+$txt['Breeze_admin_settings_permissions'] = 'Permissions';
+$txt['Breeze_admin_settings_permissions_desc'] = 'From here you can add/remove specific Breeze permissions.';
+$txt['Breeze_admin_settings_donate'] = 'Donate';
+$txt['Breeze_admin_settings_donate_desc'] = 'Boring stuff you had curious about it but you\'ll never gonna see it again :P';
 $txt['Breeze_admin_settings_server_needs'] = '<div class="breeze_error_message">Your Server does not support %s, contact your hosting provider and ask for it to be enable, otherwise you won\'t be able to use this mod at full.</div>';
 $txt['Breeze_admin_settings_json'] = 'JSON library';
 $txt['Breeze_admin_settings_php'] = '<div class="breeze_error_message">Your PHP version: ( %s ) is lower than the minimum required by this mod: 5.3, you won\'t be able to use this mod at full.</div>';
@@ -136,7 +145,7 @@ $txt['Breeze_admin_settings_profile'] = 'Profile';
 $txt['Breeze_admin_enable_limit'] = 'Enable the query limit';
 $txt['Breeze_admin_enable_limit_sub'] = 'If you have problems with resources, you can enable the query limit, this will load only a fraction of the total of status/comments and can help to reduce server stress.';
 $txt['Breeze_admin_mention_limit'] = 'How many users can the poster mention on a single message?';
-$txt['Breeze_admin_mention_limit_sub'] = 'Leave it blank to not have any restriction, if the user tries to mention more users than allowed, only the first X will be converted to mentions where X is the number you specified.';
+$txt['Breeze_admin_mention_limit_sub'] = 'Leave it blank to not have any restriction, if the user tries to mention more users than allowed, only the first X will be converted to mentions where X is the number you specified. If left empty, the mod will use the default value: 10';
 $txt['Breeze_admin_limit_timeframe'] = 'Set the limit in time to fetch status and comments from';
 $txt['Breeze_admin_limit_timeframe_sub'] = 'This will fetch the status/comments only from the past selected option, for example, the last week, the last month, etc.';
 $txt['Breeze_admin_breeze_version'] = 'Breeze version';
@@ -144,7 +153,7 @@ $txt['Breeze_admin_live'] = 'Live from the suport forum...';
 $txt['Breeze_allowedActions'] = 'Write the actions where you wish the notification system shows up';
 $txt['Breeze_allowedActions_sub'] = 'By default, the notification system will appear on the following actions: '. implode(', ', Breeze::$_allowedActions) .'. Plus the BoardIndex, MessageIndex, Topic and Board pages. <br /> Please add your actions in a comma separated list, example: action, action, action, action';
 
-/* Time */
+// Time
 $txt['Breeze_time_just_now'] = 'just now.';
 $txt['Breeze_time_second'] = 'second';
 $txt['Breeze_time_ago'] = 'ago.';
@@ -154,7 +163,7 @@ $txt['Breeze_time_day'] = 'day';
 $txt['Breeze_time_month'] = 'month';
 $txt['Breeze_time_year'] = 'year';
 
-/* Permissions strings */
+// Permissions strings
 $txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to view the Wall.';
 $txt['permissiongroup_simple_breeze_per_simple'] = 'Breeze mod permissions';
 $txt['permissiongroup_breeze_per_classic'] = 'Breeze mod permissions';
@@ -164,7 +173,7 @@ $txt['permissionname_breeze_postStatus'] = 'Post new Status on any wall';
 $txt['permissionname_breeze_postComments'] = 'Post new Comments on any wall';
 $txt['permissionname_breeze_edit_settings_any'] = 'Edit the user settings of any wall';
 
-/* Ajax strings */
+// Ajax strings
 $txt['Breeze_feed_error_message'] = 'Breeze couldn\'t connect with the support site';
 $txt['Breeze_error_message'] = 'There was an error, please try again or contact the forum admin.';
 $txt['Breeze_success_message'] = 'Your message was successfully published';
@@ -179,12 +188,12 @@ $txt['Breeze_cannot_postStatus'] = 'I\'m sorry,  you aren\'t allowed to post new
 $txt['Breeze_cannot_postComments'] = 'I\'m sorry,  you aren\'t allowed to post new Comments.';
 $txt['Breeze_error_no_valid_action'] = 'This is not a valid action.';
 
-/* Errors */
+// Errors
 $txt['cannot_breeze_postStatus'] = $txt['Breeze_cannot_postStatus'];
 $txt['cannot_breeze_postComments'] = $txt['Breeze_cannot_postComments'];
 $txt['cannot_breeze_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete Status/Comments.';
 
-/* Pagination */
+// Pagination
 $txt['Breeze_pag_previous'] = 'previous';
 $txt['Breeze_pag_next'] = 'next';
 $txt['Breeze_pag_first'] = 'First';
@@ -193,9 +202,14 @@ $txt['Breeze_pag_pages'] = 'Pages :';
 $txt['Breeze_pag_page'] = '- page ';
 $txt['Breeze_profile_of_username'] = 'Profile of %1$s %2$s';
 $txt['Breeze_page_loading'] = 'Loading more messages...';
-$txt['Breeze_page_loading_end'] = 'There are no more messages, go to top';
+$txt['Breeze_page_loading_end'] = '<div class="breeze_center">There are no more messages, go to top</div>';
 
-/* Notifications */
+// Tabs
+$txt['Breeze_tabs_wall'] = 'Wall';
+$txt['Breeze_tabs_buddies'] = 'Buddies';
+$txt['Breeze_tabs_views'] = 'Profile Views';
+
+// Notifications
 $txt['Breeze_noti_title'] = 'Notifications';
 $txt['Breeze_noti_message'] = 'Message';
 $txt['Breeze_noti_buddy_title'] = 'Buddy notification';
@@ -205,19 +219,20 @@ $txt['Breeze_noti_markasread_viewed'] = 'Already marked as read';
 $txt['Breeze_noti_close'] = 'Close';
 $txt['Breeze_noti_markasread_after'] = 'You have successfully marked this notification as read';
 $txt['Breeze_noti_delete_after'] = 'You have successfully deleted this notification';
+$txt['Breeze_noti_none'] = 'You don\'t have any notifications';
 
-/* Comment notification */
+// Comment notification
 $txt['Breeze_noti_comment_message'] = '%1$s commented on the status made by %2$s on %3$s\'s wall,<br/> <a href="" class="bbc_link" target="_blank">see the comment</a>';
 $txt['Breeze_noti_comment_message_statusOwner'] = '%1$s commented on your status made in %2$s\'s wall';
 $txt['Breeze_noti_comment_message_wallOwner'] = '%1$s commented on the status made by %2$s on your wall';
 
-/* Mentions */
+// Mentions
 $txt['Breeze_mention_message_status'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> You have been mentioned</a> by %1$s on %2$s\'s wall!';
 $txt['Breeze_mention_message_own_wall_status'] = '<a href="%1$s" class="bbc_link" target="_blank">You have been mentioned</a> on your own wall by %2$s!';
 $txt['Breeze_mention_message_comment'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> You have been mentioned on a comment</a> by %1$s on %2$s\'s wall!';
 $txt['Breeze_mention_message_own_wall_comment'] = '<a href="%1$s" class="bbc_link" target="_blank" id="noti_%3$s">You have been mentioned</a> on a comment on your own wall by %2$s!';
 
-/* Buddy List */
+// Buddy List
 $txt['Breeze_buddyrequest_error_doublerequest'] = 'You already sent a buddy request, please wait for the user\'s response.';
 $txt['Breeze_buddyrequest_error_dunno'] = 'Something went wrong, please contact the forum admin.';
 $txt['Breeze_buddy_messagerequest_message'] = '%1$s wants to be your buddy! <span id="noti_%2$s"></span>';
@@ -234,8 +249,8 @@ $txt['Breeze_buddyrequest_confirmed_message'] ='%s has confirmed your buddy requ
 $txt['Breeze_buddyrequest_confirmed_inner_message'] = 'You successfully confirmed the request';
 $txt['Breeze_buddyrequest_confirmed_inner_message_de'] = 'You successfully declined the request';
 
-/* Single Status */
+// Single Status
 $txt['Breeze_singleStatus_pageTitle'] = 'Single Status';
 
-/* Donate */
-$txt['Breeze_donate'] = 'Breeze is a free SMF modification brought to you by a PHP enthusiast on her free time.<p />If you like this modification and would like to show your appreciation, please consider making a <a href="http://missallsunday.com/shoes/">donation</a>. Your donation will be used to cover server costs and/or to buy the developer more shoes as shoes keeps her happy and if she is happy then there will be more updates ;)<p />You can also show your appreciation by letting me know you are using Breeze on your forum, come by, say hi and show me your shiny profile pages powered by Breeze.';
+// Donate
+$txt['Breeze_donate'] = 'Breeze is a free SMF modification brought to you by a PHP enthusiast on her free time.<p />If you like this modification and would like to show your appreciation, please consider making a <a href="http://missallsunday.com/">donation</a>. Your donation will be used to cover server costs and/or to buy shoes, shoes keeps the developer happy and if she is happy then there will be more updates ;)<p />You can also show your appreciation by letting me know you are using Breeze on your forum, come by, say hi and show me your shiny profile pages powered by Breeze.';

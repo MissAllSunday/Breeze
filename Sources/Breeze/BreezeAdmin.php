@@ -38,83 +38,160 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-	/* We can't call a static method from a string... let's do this the old way instead... */
-	function Breeze_Admin_Main()
-	{
-		global $scripturl, $context, $breezeController;
+function Breeze_Admin_Index()
+{
+		global $txt, $scripturl, $context, $sourcedir;
 
-		loadtemplate('BreezeAdmin');
+		require_once($sourcedir . '/ManageSettings.php');
+		loadLanguage('Breeze');
+		$context['page_title'] = $txt['Breeze_admin_settings_admin_panel'];
 
-		$text = $breezeController->get('text');
-		$headers = $breezeController->get('tools');
-
-		/* Get the version */
-		$context['Breeze']['version'] = Breeze::$version;
-
-		/* The support site RSS feed */
-		$context['Breeze']['support'] = Breeze::$supportStite;
-
-		/* Set all the page stuff */
-		$context['page_title'] = $text->getText('admin_settings_main');
-		$context['sub_template'] = 'admin_home';
-
-		/* Headers */
-		Breeze::headersHook('admin');
-	}
-
-	function Breeze_Admin_Settings()
-	{
-		global $scripturl, $context, $sourcedir, $breezeController;
-
-		/* Load stuff */
-		$text = $breezeController->get('text');
-		$globals = Breeze::sGlobals('request');
-		$context['sub_template'] = 'show_settings';
-		$context['page_title'] = $text->getText('admin_settings_main');
-
-		require_once($sourcedir . '/ManageServer.php');
-
-		$config_vars = array(
-			array('check', Breeze::$txtpattern .'admin_settings_enable', 'subtext' => $text->getText('admin_settings_enable_sub')),
-			array('check', Breeze::$txtpattern .'admin_enable_limit', 'subtext' => $text->getText('admin_enable_limit_sub')),
-			array('select', Breeze::$txtpattern .'admin_limit_timeframe', array('hour' => $text->getText('user_settings_time_hour'), 'day' => $text->getText('user_settings_time_day'), 'week' => $text->getText('user_settings_time_week'), 'month' => $text->getText('user_settings_time_month'), 'year' => $text->getText('user_settings_time_year')), 'subtext' => $text->getText('admin_limit_timeframe_sub')),
-			array('text', Breeze::$txtpattern .'allowedActions', 'size' => 56, 'subtext' => $text->getText('allowedActions_sub')),
-			array('int', Breeze::$txtpattern .'admin_mention_limit', 'size' => 3, 'subtext' => $text->getText('admin_mention_limit_sub')),
+		$subActions = array(
+			'general' => 'Breeze_Admin_Main',
+			'settings' => 'Breeze_Admin_Settings',
+			'permissions' => 'Breeze_Admin_Permissions',
+			'style' => 'Breeze_Admin_Style',
+			'donate' => 'Breeze_Admin_Donate',
 		);
 
-		$context['post_url'] = $scripturl . '?action=admin;area=breezesettings;save';
+		loadGeneralSettingParameters($subActions, 'settings');
 
-		/* Saving? */
-		if ($globals->validate('save') == true)
-		{
-			checkSession();
-			saveDBSettings($config_vars);
-			redirectexit('action=admin;area=breezesettings');
-		}
-
-		prepareDBSettingContext($config_vars);
-	}
-
-	/* Pay no attention to the girl behind the curtain */
-	function Breeze_Admin_Donate()
-	{
-		global $context, $scripturl, $breezeController;
-
-		loadtemplate('BreezeAdmin');
-
-		/* Headers */
-		$headers = $breezeController->get('tools');
-		Breeze::headersHook('admin');
-
-		/* Text strings */
-		$text = $breezeController->get('text');
-
-		/* Page stuff */
-		$context['page_title'] = $text->getText('admin_settings_donate_title');
-		$context['sub_template'] = 'admin_donate';
-		$context['linktree'][] = array(
-			'url' => $scripturl . '?action=admin;area=breezedonate',
-			'name' => $text->getText('admin_settings_donate_title')
+		$context[$context['admin_menu_name']]['tab_data'] = array(
+			'tabs' => array(
+				'general' => array(),
+				'settings' => array(),
+				'permissions' => array(),
+				'style' => array(),
+				'donate' => array(),
+			),
 		);
-		$context['Breeze']['donate'] = $text->getText('donate');
+
+		call_user_func($subActions[$_REQUEST['sa']]);
+}
+
+function Breeze_Admin_Main()
+{
+	global $scripturl, $context, $breezeController;
+
+	loadtemplate('BreezeAdmin');
+
+	$text = $breezeController->get('text');
+	$headers = $breezeController->get('tools');
+
+	// Get the version
+	$context['Breeze']['version'] = Breeze::$version;
+
+	// The support site RSS feed
+	$context['Breeze']['support'] = Breeze::$supportStite;
+
+	// Set all the page stuff
+	$context['page_title'] = $text->getText('admin_settings_main');
+	$context['sub_template'] = 'admin_home';
+	$context[$context['admin_menu_name']]['tab_data'] = array(
+		'title' => $text->getText('admin_settings_admin_panel'),
+		'description' => $text->getText('admin_welcome'),
+	);
+
+	// Headers
+	Breeze::headersHook('admin');
+}
+
+function Breeze_Admin_Settings()
+{
+	global $scripturl, $context, $sourcedir, $breezeController;
+
+	loadtemplate('Admin');
+
+	// Load stuff
+	$text = $breezeController->get('text');
+	$globals = Breeze::sGlobals('request');
+	$context['sub_template'] = 'show_settings';
+	$context['page_title'] = $text->getText('admin_settings_main');
+	$context[$context['admin_menu_name']]['tab_data'] = array(
+		'title' => Breeze::$name .' - '. $text->getText('admin_settings_settings'),
+		'description' => $text->getText('admin_settings_settings_desc'),
+	);
+
+	require_once($sourcedir . '/ManageServer.php');
+
+	$config_vars = array(
+		array('check', Breeze::$txtpattern .'admin_settings_enable', 'subtext' => $text->getText('admin_settings_enable_sub')),
+		array('check', Breeze::$txtpattern .'admin_enable_limit', 'subtext' => $text->getText('admin_enable_limit_sub')),
+		array('select', Breeze::$txtpattern .'admin_limit_timeframe', array('hour' => $text->getText('user_settings_time_hour'), 'day' => $text->getText('user_settings_time_day'), 'week' => $text->getText('user_settings_time_week'), 'month' => $text->getText('user_settings_time_month'), 'year' => $text->getText('user_settings_time_year')), 'subtext' => $text->getText('admin_limit_timeframe_sub')),
+		array('text', Breeze::$txtpattern .'allowedActions', 'size' => 56, 'subtext' => $text->getText('allowedActions_sub')),
+		array('int', Breeze::$txtpattern .'admin_mention_limit', 'size' => 3, 'subtext' => $text->getText('admin_mention_limit_sub')),
+	);
+
+	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=settings;save';
+
+	// Saving?
+	if ($globals->validate('save') == true)
+	{
+		checkSession();
+		saveDBSettings($config_vars);
+		redirectexit('action=admin;area=breezeadmin;sa=settings');
 	}
+
+	prepareDBSettingContext($config_vars);
+}
+
+function Breeze_Admin_Permissions()
+{
+	global $scripturl, $context, $sourcedir, $breezeController, $txt;
+
+	loadtemplate('Admin');
+
+	// Load stuff
+	$text = $breezeController->get('text');
+	$globals = Breeze::sGlobals('request');
+	$context['sub_template'] = 'show_settings';
+	$context['page_title'] = $text->getText('admin_settings_main');
+	$context[$context['admin_menu_name']]['tab_data'] = array(
+		'title' => Breeze::$name .' - '. $text->getText('admin_settings_permissions'),
+		'description' => $text->getText('admin_settings_permissions_desc'),
+	);
+
+	require_once($sourcedir . '/ManageServer.php');
+
+	$config_vars = array(
+		array('permissions', 'breeze_deleteComments', 0, $txt['permissionname_breeze_deleteComments']),
+		array('permissions', 'breeze_postStatus', 0, $txt['permissionname_breeze_postStatus']),
+		array('permissions', 'breeze_postComments', 0, $txt['permissionname_breeze_postComments']),
+	);
+
+	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=permissions;save';
+
+	// Saving?
+	if ($globals->validate('save') == true)
+	{
+		checkSession();
+		saveDBSettings($config_vars);
+		redirectexit('action=admin;area=breezeadmin;sa=permissions');
+	}
+
+	prepareDBSettingContext($config_vars);
+}
+
+// Pay no attention to the girl behind the curtain
+function Breeze_Admin_Donate()
+{
+	global $context, $scripturl, $breezeController;
+
+	loadtemplate('BreezeAdmin');
+
+	// Headers
+	$headers = $breezeController->get('tools');
+	Breeze::headersHook('admin');
+
+	// Text strings
+	$text = $breezeController->get('text');
+
+	// Page stuff
+	$context['page_title'] = Breeze::$name .' - '. $text->getText('admin_settings_donate');
+	$context['sub_template'] = 'admin_donate';
+	$context['Breeze']['donate'] = $text->getText('donate');
+	$context[$context['admin_menu_name']]['tab_data'] = array(
+		'title' => $context['page_title'],
+		'description' => $text->getText('admin_settings_donate_desc'),
+	);
+}

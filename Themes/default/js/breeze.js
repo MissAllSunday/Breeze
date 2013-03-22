@@ -33,7 +33,7 @@
  *
  */
 
-/* The status stuff goes right here... */
+// The status stuff goes right here...
 	jQuery(document).ready(function()
 	{
 		jQuery('.status_button').livequery(function()
@@ -45,25 +45,26 @@
 				var posterID = jQuery('#poster_id').val();
 				var loadImage = '<img src="' + smf_images_url + '/breeze/loading.gif" /><br /> <span class="loading">' + ajax_notification_text + '</span>';
 
-				/* Disable the button to prevent multiple clicks -_- */
+				// Disable the button to prevent multiple clicks -_-
 				jQuery(this).attr('disabled', 'disabled');
 
 				if(test=='')
 				{
 					alert(breeze_empty_message);
 
-					/* Enable the button again... */
+					// Enable the button again...
 					jQuery('.status_button').removeAttr('disabled');
 				}
 
-				/* Shhh! */
-				else if(test== 'about:breeze')
-				{
-					alert('Y es que tengo un coraz\xF3n t\xE1n necio \n que no comprende que no entiende \n que le hace da\xF1o amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n Y es que tengo un coraz\xF3n t\xE1n necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace da\xF1o \n te sigue amando igual o mucho m\xE1s que ayer \n mucho m\xE1s que ayer... \n');
+				// Shhh!
+				else
+					if(test== 'about:breeze')
+					{
+						alert('Y es que tengo un coraz\xF3n t\xE1n necio \n que no comprende que no entiende \n que le hace da\xF1o amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n Y es que tengo un coraz\xF3n t\xE1n necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace da\xF1o \n te sigue amando igual o mucho m\xE1s que ayer \n mucho m\xE1s que ayer... \n');
 
-					/* Enable the button again... */
-					jQuery('.status_button').removeAttr('disabled');
-				}
+						// Enable the button again...
+						jQuery('.status_button').removeAttr('disabled');
+					}
 
 				else
 				{
@@ -76,8 +77,9 @@
 						data: ({content : test, owner_id : ownerID, poster_id : posterID}),
 						cache: false,
 						dataType: 'json',
-						success: function(html){
-							/* The server side found an issue */
+						success: function(html)
+						{
+							// The server side found an issue
 							if(html.type == 'error')
 							{
 								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
@@ -104,12 +106,12 @@
 								});
 							}
 
-							/* Enable the button again... */
+							// Enable the button again...
 							jQuery('.status_button').removeAttr('disabled');
 						},
 						error: function (html)
 						{
-							/* Enable the button again... */
+							// Enable the button again...
 							jQuery('.status_button').removeAttr('disabled');
 
 							/*
@@ -134,7 +136,7 @@
 		});
 	});
 
-/* Handle the comments */
+// Handle the comments
 	jQuery(document).ready(function()
 	{
 		jQuery('.comment_submit').livequery(function()
@@ -166,7 +168,7 @@
 						cache: false,
 						dataType: 'json',
 						success: function(html){
-							/* The server side found an issue */
+							// The server side found an issue
 							if(html.type == 'error')
 							{
 								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function(){
@@ -191,7 +193,7 @@
 								});
 							}
 
-							/* Enable the button again... */
+							// Enable the button again...
 							jQuery('.status_button').removeAttr('disabled');
 						},
 						error: function (html)
@@ -209,7 +211,7 @@
 		});
 	});
 
-	/* Delete a comment */
+	// Delete a comment
 	jQuery(document).ready(function()
 	{
 		jQuery('.breeze_delete_comment').livequery(function()
@@ -220,7 +222,7 @@
 				var I = element.attr('id');
 				var Type = 'comment';
 
-				/* Show a nice confirmation box */
+				// Show a nice confirmation box
 				noty({
 					text: breeze_confirm_delete,
 					type: 'confirmation',
@@ -278,22 +280,7 @@
 		});
 	});
 
-	/* Toggle the comment box */
-	jQuery(document).ready(function()
-	{
-		$(".comment_button").click(function()
-		{
-			var element = jQuery(this);
-			var I = element.attr('id');
-
-			$("#slidepanel"+I).slideToggle(300);
-			jQuery(this).toggleClass("active");
-
-			return false;
-		});
-	});
-
-	/* Delete a status */
+	// Delete a status
 	jQuery(document).ready(function()
 	{
 		jQuery('.breeze_delete_status').livequery(function()
@@ -304,7 +291,7 @@
 				var I = element.attr('id');
 				var Type = 'status';
 
-				/* Show a nice confirmation box */
+				// Show a nice confirmation box
 				noty({
 					text: breeze_confirm_delete,
 					type: 'confirmation',
@@ -362,7 +349,7 @@
 		});
 	});
 
-/* Facebox */
+// Facebox
 	jQuery(document).ready(function()
 	{
 		jQuery('a[rel*=facebox]').livequery(function()
@@ -375,7 +362,7 @@
 		});
 	});
 
-/* infinitescroll  */
+// infinitescroll
 if (typeof breeze_infinite_scroll == "string")
 {
 	jQuery(document).ready(function(){
@@ -399,7 +386,7 @@ if (typeof breeze_infinite_scroll == "string")
 	});
 }
 
-/* Mark as read */
+// Mark as read
 jQuery(document).ready(function(){
 	jQuery('.Breeze_markRead').click(function(){
 
@@ -408,8 +395,7 @@ jQuery(document).ready(function(){
 		noti_id_delete = parseInt(noti_id_delete, 10);
 		var user = breeze_current_user;
 
-		jQuery.ajax(
-		{
+		jQuery.ajax({
 			type: 'POST',
 			url: smf_scripturl + '?action=breezeajax;sa=notimarkasread',
 			data: ({content : noti_id_delete, user : user}),
@@ -435,7 +421,7 @@ jQuery(document).ready(function(){
 	});
 });
 
-/* Delete a notification */
+// Delete a notification
 jQuery(document).ready(function(){
 	jQuery('.Breeze_delete').click(function(){
 
@@ -469,4 +455,35 @@ jQuery(document).ready(function(){
 			},
 		});
 	});
+});
+
+// Scroll to top
+jQuery(document).ready(function(){
+
+	// hide #breezeTop first
+	jQuery("#breezeTop").hide();
+
+	jQuery(function ()
+	{
+		jQuery(window).scroll(function ()
+		{
+			if (jQuery(this).scrollTop() > 100)
+			{
+				jQuery('#breezeTop').fadeIn();
+			}
+			else
+			{
+				jQuery('#breezeTop').fadeOut();
+			}
+		});
+
+		jQuery('#breezeTop a').click(function ()
+		{
+			jQuery('body,html').animate({
+				scrollTop: 0
+			}, 800);
+			return false;
+		});
+	});
+
 });
