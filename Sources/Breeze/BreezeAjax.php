@@ -448,7 +448,11 @@ class BreezeAjax
 
 		// No JS? fine... jut send them to whatever url they're from
 		if (true == $this->noJS && isset($this->redirectURL))
+		{
 			redirectexit($this->redirectURL);
+
+			return;
+		}
 
 		// Kill anything else
 		ob_end_clean();
