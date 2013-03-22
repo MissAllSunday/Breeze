@@ -46,7 +46,7 @@ class BreezeNotifications
 	private $_query;
 	protected $_returnArray = array();
 	protected $_usersData = array();
-	protected $_types = array();
+	public $types = array();
 	protected $_currentUser;
 	protected $_messages = array();
 
@@ -62,14 +62,15 @@ class BreezeNotifications
 		// Current user
 		$this->_currentUser = $user_info['id'];
 
-		$this->_types = array(
+		$this->types = array(
 			'comment',
 			'status',
 			'like',
 			'buddy',
 			'mention',
 			'reply',
-			'topic');
+			'topic'
+		);
 
 		// We kinda need all this stuff, dont' ask why, just nod your head...
 		$this->_settings = $settings;
@@ -87,7 +88,7 @@ class BreezeNotifications
 	public function create($params)
 	{
 		// We have to make sure, we just have to!
-		if (!empty($params) && in_array($params['type'], $this->_types))
+		if (!empty($params) && in_array($params['type'], $this->types))
 		{
 			// Is there additional content?
 			if (!empty($params['content']))
@@ -114,7 +115,7 @@ class BreezeNotifications
 		loadLanguage(Breeze::$name);
 
 		// if the type is buddy then let's do a check to avoid duplicate entries
-		if (!empty($params) && in_array($params['type'], $this->_types))
+		if (!empty($params) && in_array($params['type'], $this->types))
 		{
 			// Doing a quick query will be better than loading the entire notifications array
 			$tempQuery = $this->_query->quickQuery(
@@ -169,6 +170,7 @@ class BreezeNotifications
 		if (empty($user))
 			return false;
 
+		// @todo, Avoid pointless foreachs, get what we need directoy from the DB!
 		$temp = $this->_query->getNotificationByUser($user);
 
 		// Send those who hasn't been viewed
@@ -198,6 +200,7 @@ class BreezeNotifications
 		if (empty($user))
 			return false;
 
+		// @todo, Avoid pointless foreachs, get what we need directoy from the DB!
 		$temp = $this->_query->getNotificationByUserSender($user);
 
 		// Send those who hasn't been viewed
@@ -236,7 +239,7 @@ class BreezeNotifications
 		{
 			// Call the methods
 			foreach ($this->_all as $single)
-				if (in_array($single['type'], $this->_types))
+				if (in_array($single['type'], $this->types))
 				{
 					$call = 'do' . ucfirst($single['type']);
 					$this->$call($single);
@@ -257,8 +260,8 @@ class BreezeNotifications
 
 				foreach ($this->_messages as $m)
 					$context['insert_after_template'] .= '
-	var noti_id = \'' . $m['id'] . '\';
-	var user = \'' . $m['user'] . '\';
+	var noti_id_' . $m['id'] . ' = \'' . $m['id'] . '\';
+	var user_' . $m['user'] . ' = \'' . $m['user'] . '\';
 	noty({
 		text: ' . JavaScriptEscape($m['message']) . ',
 		type: \'notification\',
@@ -272,7 +275,7 @@ class BreezeNotifications
 					{
 						type: \'POST\',
 						url: smf_scripturl + \'?action=breezeajax;sa=notimarkasread\',
-						data: ({content : noti_id, user : user}),
+						data: ({content : noti_id_' . $m['id'] . ', user : user_' . $m['user'] . '}),
 						cache: false,
 						dataType: \'json\',
 						success: function(html)
@@ -302,7 +305,7 @@ class BreezeNotifications
 					{
 						type: \'POST\',
 						url: smf_scripturl + \'?action=breezeajax;sa=notidelete\',
-						data: ({content : noti_id, user : user}),
+						data: ({content : noti_id_' . $m['id'] . ', user : user_' . $m['user'] . '}),
 						cache: false,
 						dataType: \'json\',
 						success: function(html)
@@ -349,7 +352,7 @@ class BreezeNotifications
 	 * @param mixed $noti
 	 * @return
 	 */
-	protected function doBuddy($noti)
+	public function doBuddy($noti)
 	{
 		global $context;
 
@@ -371,7 +374,7 @@ class BreezeNotifications
 	 * @param mixed $noti
 	 * @return
 	 */
-	protected function doMention($noti)
+	public function doMention($noti)
 	{
 		global $context, $scripturl;
 
@@ -424,6 +427,15 @@ class BreezeNotifications
 			'user' => $noti['user_to'],
 			'message' => $text
 		);
+	}
+
+	public function getMessages()
+	{
+		if (!empty($this->_messages))
+			return $this->_messages;
+
+		else
+			return false;
 	}
 
 	/**
