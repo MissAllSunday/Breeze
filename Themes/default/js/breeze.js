@@ -73,7 +73,7 @@
 					jQuery.ajax(
 					{
 						type: 'POST',
-						url: smf_scripturl + '?action=breezeajax;sa=post',
+						url: smf_scripturl + '?action=breezeajax;sa=post;js',
 						data: ({content : test, owner_id : ownerID, poster_id : posterID}),
 						cache: false,
 						dataType: 'json',
@@ -160,7 +160,7 @@
 					jQuery.ajax(
 					{
 						type: 'POST',
-						url: smf_scripturl + '?action=breezeajax;sa=postcomment',
+						url: smf_scripturl + '?action=breezeajax;sa=postcomment;js',
 						data: ({content : commentBox, status_owner_id : status_owner_id, poster_comment_id : poster_comment_id, profile_owner_id: profile_owner_id, status_id : status_id}),
 						cache: false,
 						dataType: 'json',
@@ -229,7 +229,7 @@
 						addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
 							jQuery.ajax({
 								type: 'POST',
-								url: smf_scripturl + '?action=breezeajax;sa=delete',
+								url: smf_scripturl + '?action=breezeajax;sa=delete;js',
 								data: ({id : I, type : Type}),
 								cache: false,
 								dataType: 'json',
@@ -298,7 +298,7 @@
 						addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
 							jQuery.ajax({
 								type: 'POST',
-								url: smf_scripturl + '?action=breezeajax;sa=delete',
+								url: smf_scripturl + '?action=breezeajax;sa=delete;js',
 								data: ({id : I, type : Type}),
 								cache: false,
 								dataType: 'json',
@@ -430,7 +430,7 @@ jQuery(document).ready(function(){
 		jQuery.ajax(
 		{
 			type: 'POST',
-			url: smf_scripturl + '?action=breezeajax;sa=notidelete',
+			url: smf_scripturl + '?action=breezeajax;sa=notidelete;js',
 			data: ({content : noti_id, user : user}),
 			cache: false,
 			dataType: 'json',
@@ -487,7 +487,7 @@ jQuery(document).ready(function(){
 jQuery(document).ready(function(){
 	jQuery('textarea[rel*=atwhoMention]').bind("focus", function(event){
 		jQuery.ajax({
-			url: smf_scripturl + '?action=breezeajax;sa=usersmention',
+			url: smf_scripturl + '?action=breezeajax;sa=usersmention;js',
 			type: "GET",
 			dataType: "json",
 			success: function(result)
