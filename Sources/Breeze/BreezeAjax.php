@@ -371,8 +371,11 @@ class BreezeAjax
 
 		else
 		{
+			// Send the "viewed" param as a string to avoid issues with boolean values been printed
+			$viewed = !empty($noti_temp[$noti]['viewed']) ? '1' : '0';
+
 			// All is good, mark this as read
-			$this->_query->markNoti($noti, $user, $noti_temp[$noti]['viewed']);
+			$this->_query->markNoti($noti, $user, $viewed);
 			$this->_response = array(
 				'data' => $this->_text->getText('noti_markasread_after'),
 				'type' => 'ok'
