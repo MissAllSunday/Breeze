@@ -40,8 +40,9 @@ if (!defined('SMF'))
 
 class BreezeAjax
 {
-	var $noJS = false;
-	var $redirectURL = '';
+	protected $noJS = false;
+	protected $redirectURL = '';
+	public $subActions = array();
 
 	/**
 	 * BreezeAjax::__construct()
@@ -356,7 +357,7 @@ class BreezeAjax
 		}
 
 		// We must make sure this noti really exists, we just must!!!
-		$noti_temp = $this->_notifications->getToUser($user);
+		$noti_temp = $this->_notifications->getToUser($user, true);
 
 		if (empty($noti_temp) || !isset($noti_temp[$noti]))
 		{
@@ -379,7 +380,10 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_markasread;';
+				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_'. (!empty($noti_temp[$noti]['viewed']) ? 'un' : '') .'markasread;';
+
+			// If we manage to get this far we don't have to worry about stoping the process, still, safety first!
+			return;
 		}
 	}
 
