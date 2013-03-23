@@ -227,7 +227,9 @@ $txt['Breeze_noti_markasread_title'] = 'Mark as read/unread';
 $txt['Breeze_noti_markasread_viewed'] = 'Already marked as read';
 $txt['Breeze_noti_close'] = 'Close';
 $txt['Breeze_noti_markasread_after'] = 'You have successfully marked this notification as read';
+$txt['Breeze_noti_markasreaddeleted_after'] = 'This notification was already deleted or is not a valid entry.';
 $txt['Breeze_noti_delete_after'] = 'You have successfully deleted this notification';
+$txt['Breeze_noti_novalid_after'] = 'This isn\'t a valid action.';
 $txt['Breeze_noti_none'] = 'You don\'t have any notifications';
 
 // Comment notification

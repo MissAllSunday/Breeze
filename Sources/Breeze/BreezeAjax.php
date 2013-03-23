@@ -346,14 +346,27 @@ class BreezeAjax
 		$user = $this->_data->getValue('user');
 
 		// Is this valid data?
-/* 		if (empty($noti) || empty($user))
-			return; */
+		if (empty($noti) || empty($user))
+		{
+			if (true == $this->noJS)
+				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_novalid';
+
+			// Stop the process
+			return;
+		}
 
 		// We must make sure this noti really exists, we just must!!!
 		$noti_temp = $this->_notifications->getToUser($user);
 
-		if (empty($noti_temp) || !array_key_exists($noti, $noti_temp))
+		if (empty($noti_temp) || !isset($noti_temp[$noti]))
+		{
+			// Tell the user about it
+			if (true == $this->noJS)
+				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_markasreaddeleted';
+
+			// Stop the process
 			return;
+		}
 
 		else
 		{
