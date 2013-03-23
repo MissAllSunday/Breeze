@@ -114,7 +114,7 @@ class BreezeAjax
 	 */
 	public function post()
 	{
-		checkSession('post', '', false);
+		checkSession('request', '', false);
 
 		// Get the data
 		$this->_data = Breeze::sGlobals('request');
@@ -188,7 +188,7 @@ class BreezeAjax
 	{
 		global $scripturl;
 
-		checkSession('post', '', false);
+		checkSession('request', '', false);
 
 		$this->_data = Breeze::sGlobals('request');
 
@@ -268,7 +268,7 @@ class BreezeAjax
 	 */
 	public function delete()
 	{
-		checkSession('post', '', false);
+		checkSession('request', '', false);
 
 		// Get the global vars
 		$this->_data = Breeze::sGlobals('request');
@@ -315,7 +315,7 @@ class BreezeAjax
 
 				// Se the redirect url
 				if (true == $this->noJS)
-					$this->redirectURL = 'action=profile;deleted_already';
+					$this->redirectURL = 'action=profile;m=message_deleted';
 
 				// Don't forget to end it
 				return;
@@ -336,7 +336,7 @@ class BreezeAjax
 	 */
 	public function notimark()
 	{
-		checkSession('post', '', false);
+		checkSession('request', '', false);
 
 		// Get the global vars
 		$this->_data = Breeze::sGlobals('request');
@@ -346,8 +346,8 @@ class BreezeAjax
 		$user = $this->_data->getValue('user');
 
 		// Is this valid data?
-		if (empty($noti) || empty($user))
-			return;
+/* 		if (empty($noti) || empty($user))
+			return; */
 
 		// We must make sure this noti really exists, we just must!!!
 		$noti_temp = $this->_notifications->getToUser($user);
@@ -366,7 +366,7 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';success';
+				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_markasread;';
 		}
 	}
 
@@ -378,7 +378,7 @@ class BreezeAjax
 	 */
 	public function notidelete()
 	{
-		checkSession('post', '', false);
+		checkSession('request', '', false);
 
 		// Get the global vars
 		$this->_data = Breeze::sGlobals('request');
@@ -403,7 +403,7 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;area=breezenoti;deleted_already;u='. $user;
+				$this->redirectURL = 'action=profile;area=breezenoti;m=noti_delete;u='. $user;
 
 			return;
 		}

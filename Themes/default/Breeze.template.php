@@ -347,6 +347,16 @@ function template_user_notifications()
 {
 	global $context, $txt, $scripturl, $user_info;
 
+	// Get the message from the server
+	$serverResponse = Breeze::sGlobals('get');
+
+	// Show a nice confirmation message for those without JavaScript
+	if ($serverResponse->getValue('m') == true)
+		echo
+		'<div class="windowbg" id="profile_success">
+			', $txt['Breeze_'. $serverResponse->getValue('m') .'_after'] ,'
+		</div>';
+
 	echo '
 		<div class="cat_bar">
 			<h3 class="catbg">', $context['page_title'] ,'</h3>
@@ -366,7 +376,7 @@ function template_user_notifications()
 						<th scope="col" class="last_th">', $txt['Breeze_general_delete'] ,'</th>
 					</tr>
 				</thead>
-			<tbody>';
+				<tbody>';
 
 		foreach($context['Breeze']['noti'] as $noti)
 		{
@@ -385,8 +395,9 @@ function template_user_notifications()
 		}
 
 		// Close the table
-		echo '</tbody>
-		</table><br />';
+		echo '
+				</tbody>
+			</table><br />';
 	}
 
 	// Gotta be more social buddy...
