@@ -870,13 +870,13 @@ class BreezeQuery extends Breeze
 	}
 
 	/**
-	 * BreezeQuery::markAsviewedNotification()
+	 * BreezeQuery::markNoti()
 	 *
-	 * Marks the specific notification entry as "viewed"
+	 * Marks the specific notification entry as either read/unread 1 = read, 0 = unread
 	 * @param int $id The notification ID
 	 * @return
 	 */
-	public function markAsviewedNotification($id, $user)
+	public function markNoti($id, $user, $viewed)
 	{
 		// We don't need this no more
 		$this->killCache($this->_tables['noti']['name'] . '-'. $user);
@@ -885,17 +885,22 @@ class BreezeQuery extends Breeze
 		$this->_smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables['noti']['table']) . '
 			SET viewed = {int:viewed}
-			WHERE id = {int:id}', array('viewed' => 1, 'id' => (int)$id, ));
+			WHERE id = {int:id}',
+			array(
+				'viewed' => $viewed,
+				'id' => $id,
+			)
+		);
 	}
 
 	/**
-	 * BreezeQuery::deleteNotification()
+	 * BreezeQuery::deleteNoti()
 	 *
 	 * Deletes the specific notification entry from the DB
 	 * @param int $id the notification ID
 	 * @return void
 	 */
-	public function deleteNotification($id, $user)
+	public function deleteNoti($id, $user)
 	{
 		// We don't need this no more
 		$this->killCache($this->_tables['noti']['name'] . '-'. $user);

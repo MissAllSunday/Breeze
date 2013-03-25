@@ -40,6 +40,10 @@ if (!defined('SMF'))
 
 class BreezeAjax
 {
+	protected $noJS = false;
+	protected $redirectURL = '';
+	public $subActions = array();
+
 	/**
 	 * BreezeAjax::__construct()
 	 *
@@ -73,20 +77,27 @@ class BreezeAjax
 		$sglobals = Breeze::sGlobals('get');
 
 		// Safety first, hardcode the actions
-		$subActions = array(
+		$this->subActions = array(
 			'post' => 'post',
 			'postcomment' => 'postComment',
 			'delete' => 'delete',
-			'notimarkasread' => 'notimark',
+			'notimark' => 'notimark',
 			'notidelete' => 'notidelete',
 			'usersmention' => 'usersMention',
 		);
 
+		// Not using JavaScript?
+		if ($sglobals->getValue('js') == false)
+			$this->noJS = true;
+
+		// Temporarily turn this into a normal var
+		$call = $this->subActions;
+
 		// Does the subaction even exist?
-		if (in_array($sglobals->getValue('sa'), array_keys($subActions)))
+		if (isset($call[$sglobals->getValue('sa')]))
 		{
 			// This is somehow ugly.
-			$this->$subActions[$sglobals->getValue('sa')]();
+			$this->$call[$sglobals->getValue('sa')]();
 
 			// Send the response back to the browser
 			$this->returnResponse();
@@ -104,7 +115,7 @@ class BreezeAjax
 	 */
 	public function post()
 	{
-		checkSession('post', '', false);
+		checkSession('request', '', false);
 
 		// Get the data
 		$this->_data = Breeze::sGlobals('request');
@@ -156,6 +167,10 @@ class BreezeAjax
 				'data' => $display->HTML()
 			);
 
+			// Se the redirect url
+			if (true == $this->noJS)
+				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id');
+
 			// End it
 			return;
 		}
@@ -174,7 +189,7 @@ class BreezeAjax
 	{
 		global $scripturl;
 
-		checkSession('post', '', false);
+		checkSession('request', '', false);
 
 		$this->_data = Breeze::sGlobals('request');
 
@@ -233,6 +248,10 @@ class BreezeAjax
 				'data' => $display->HTML()
 			);
 
+			// Se the redirect url
+			if (true == $this->noJS)
+				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('profile_owner_id');
+
 			// End it
 			return;
 		}
@@ -250,7 +269,7 @@ class BreezeAjax
 	 */
 	public function delete()
 	{
-		checkSession('post', '', false);
+		checkSession('request', '', false);
 
 		// Get the global vars
 		$this->_data = Breeze::sGlobals('request');
@@ -279,6 +298,10 @@ class BreezeAjax
 					'type' => 'ok'
 				);
 
+				// Se the redirect url
+				if (true == $this->noJS)
+					$this->redirectURL = 'action=profile';
+
 				// End it!
 				return;
 			}
@@ -290,6 +313,10 @@ class BreezeAjax
 					'data' => $this->_text->getText('already_deleted'),
 					'type' => 'deleted'
 				);
+
+				// Se the redirect url
+				if (true == $this->noJS)
+					$this->redirectURL = 'action=profile;m=message_deleted';
 
 				// Don't forget to end it
 				return;
@@ -310,7 +337,7 @@ class BreezeAjax
 	 */
 	public function notimark()
 	{
-		checkSession('post', '', false);
+		checkSession('request', '', false);
 
 		// Get the global vars
 		$this->_data = Breeze::sGlobals('request');
@@ -321,22 +348,42 @@ class BreezeAjax
 
 		// Is this valid data?
 		if (empty($noti) || empty($user))
+		{
+			if (true == $this->noJS)
+				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_novalid';
+
+			// Stop the process
 			return;
+		}
 
 		// We must make sure this noti really exists, we just must!!!
-		$noti_temp = $this->_notifications->getToUser($user);
+		$noti_temp = $this->_notifications->getToUser($user, true);
 
-		if (empty($noti_temp) || !array_key_exists($noti, $noti_temp))
+		if (empty($noti_temp) || !isset($noti_temp[$noti]))
+		{
+			// Tell the user about it
+			if (true == $this->noJS)
+				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_markasreaddeleted';
+
+			// Stop the process
 			return;
+		}
 
 		else
 		{
 			// All is good, mark this as read
-			$this->_notifications->markAsRead($noti, $user);
+			$this->_query->markNoti($noti, $user, $noti_temp[$noti]['viewed']);
 			$this->_response = array(
 				'data' => $this->_text->getText('noti_markasread_after'),
 				'type' => 'ok'
 			);
+
+			// Se the redirect url
+			if (true == $this->noJS)
+				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_'. (!empty($noti_temp[$noti]['viewed']) ? 'un' : '') .'markasread;';
+
+			// If we manage to get this far we don't have to worry about stoping the process, still, safety first!
+			return;
 		}
 	}
 
@@ -348,7 +395,7 @@ class BreezeAjax
 	 */
 	public function notidelete()
 	{
-		checkSession('post', '', false);
+		checkSession('request', '', false);
 
 		// Get the global vars
 		$this->_data = Breeze::sGlobals('request');
@@ -370,17 +417,27 @@ class BreezeAjax
 				'data' => $this->_text->getText('already_deleted_noti'),
 				'type' => 'deleted'
 			);
+
+			// Se the redirect url
+			if (true == $this->noJS)
+				$this->redirectURL = 'action=profile;area=breezenoti;m=noti_delete;u='. $user;
+
 			return;
 		}
 
 		else
 		{
 			// All is good, delete it
-			$this->_notifications->delete($noti, $user);
+			$this->_query->deleteNoti($noti, $user);
 			$this->_response = array(
 				'data' => $this->_text->getText('noti_delete_after'),
 				'type' => 'ok'
 			);
+
+			// Se the redirect url
+			if (true == $this->noJS)
+				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user;
+
 			return;
 		}
 	}
@@ -409,6 +466,15 @@ class BreezeAjax
 	{
 		global $modSettings;
 
+		// No JS? fine... jut send them to whatever url they're from
+		if (true == $this->noJS && !empty($this->redirectURL))
+		{
+			redirectexit($this->redirectURL);
+
+			// Safety first!
+			return;
+		}
+
 		// Kill anything else
 		ob_end_clean();
 
@@ -423,11 +489,11 @@ class BreezeAjax
 
 		// Is there a custom message? Use it
 		if (!empty($this->_response))
-			print json_encode($this->_response);
+			echo json_encode($this->_response);
 
 		// No? then show the standard error message
 		else
-			print json_encode(array(
+			echo json_encode(array(
 				'data' => $this->_text->getText('error_message'),
 				'type' => 'error'
 			));
