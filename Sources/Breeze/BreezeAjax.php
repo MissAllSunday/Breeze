@@ -123,7 +123,6 @@ class BreezeAjax
 		// Sorry, try to play nice next time
 		if (!$this->_data->getValue('owner_id') || !$this->_data->getValue('poster_id') || !$this->_data->getValue('content'))
 		{
-
 			// Se the redirect url
 			if (true == $this->noJS)
 				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message';
@@ -184,7 +183,13 @@ class BreezeAjax
 
 		// There was an error
 		else
+		{
+			// Se the redirect url
+			if (true == $this->noJS)
+				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message';
+
 			$this->_response = false;
+		}
 	}
 
 	/**
@@ -201,14 +206,20 @@ class BreezeAjax
 		$this->_data = Breeze::sGlobals('request');
 
 		// Sorry, try to play nice next time
-		if (!$this->_data->getValue('status_owner_id') || !$this->_data->getValue('status_owner_id') || !$this->_data->getValue('poster_comment_id') || !$this->_data->getValue('profile_owner_id') || !$this->_data->getValue('content'))
+		if (!$this->_data->getValue('status_owner_id') || !$this->_data->getValue('status_owner_id') || !$this->_data->getValue('poster_comment_id') || !$this->_data->getValue('profile_owner_id') || !$this->_data->getValue('contentComments'))
+		{
+			// Se the redirect url
+			if (true == $this->noJS)
+				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message';
+
 			return;
+		}
 
 		// Load all the things we need
 		$temp_id_exists = $this->_query->getSingleValue('status', 'id', $this->_data->getValue('status_id'));
 
 		// The status do exists and the data is valid
-		if ($this->_data->validateBody('content') && !empty($temp_id_exists))
+		if ($this->_data->validateBody('contentComments') && !empty($temp_id_exists))
 		{
 			// You aren't allowed in here, let's show you a nice static page...
 			$this->permissions('postComments', $this->_data->getValue('profile_owner_id'));
@@ -257,7 +268,7 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('profile_owner_id');
+				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('profile_owner_id') .';m=success_message';
 
 			// End it
 			return;
@@ -265,7 +276,13 @@ class BreezeAjax
 
 		// There was an error
 		else
+		{
+			// Se the redirect url
+			if (true == $this->noJS)
+				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message';
+
 			$this->_response = false;
+		}
 	}
 
 	/**

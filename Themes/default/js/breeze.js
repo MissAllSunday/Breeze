@@ -161,7 +161,7 @@
 					{
 						type: 'POST',
 						url: smf_scripturl + '?action=breezeajax;sa=postcomment;js=1',
-						data: ({content : commentBox, status_owner_id : status_owner_id, poster_comment_id : poster_comment_id, profile_owner_id: profile_owner_id, status_id : status_id}),
+						data: ({contentComments : contentComments, status_owner_id : status_owner_id, poster_comment_id : poster_comment_id, profile_owner_id: profile_owner_id, status_id : status_id}),
 						cache: false,
 						dataType: 'json',
 						success: function(html){

@@ -310,7 +310,7 @@ function template_user_wall()
 								if (!empty($context['permissions']['post_comment']))
 									echo '<div>
 									<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
-										<textarea id="textboxcontent_', $status['id'] ,'" cols="40" rows="2" rel="atwhoMention"></textarea>
+										<textarea id="textboxcontent_', $status['id'] ,'" cols="40" rows="2" name="contentComments" rel="atwhoMention"></textarea>
 										<input type="hidden" value="',$status['poster_id'],'" name="status_owner_id', $status['id'] ,'" id="status_owner_id', $status['id'] ,'" />
 										<input type="hidden" value="',$context['member']['id'],'" name="profile_owner_id', $status['id'] ,'" id="profile_owner_id', $status['id'] ,'" />
 										<input type="hidden" value="', $status['id'] ,'" name="status_id', $status['id'] ,'" id="status_id', $status['id'] ,'" />
