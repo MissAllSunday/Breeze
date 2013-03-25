@@ -80,14 +80,7 @@ function template_user_wall()
 				<a href="#tabs_wall" class="mytestbutton selected">', $txt['Breeze_tabs_wall'] ,'</a>
 				', !empty($context['member']['options']['Breeze_enable_visits_tab']) ? '<a href="#tabs_views" class="mytestbutton">'. $txt['Breeze_tabs_views'] .'</a>' : '' ,'
 				', !empty($context['member']['options']['Breeze_enable_buddies_tab']) ? '<a href="#tabs_buddies" class="mytestbutton">'. $txt['Breeze_tabs_buddies'] .'</a>' : '' ,'
-			</div>
-		</div>';
-	
-	// Feature: Post it like twitter
-		echo '
-		<div class="title_barIC">
-			<div class="idTabs">
-				<a href="#post" class="mytestbutton">Post</a>
+				<span class="right"><a href="#post" class="mytestbutton">Post</a></span>
 			</div>
 		</div>';
 	
@@ -267,7 +260,7 @@ function template_user_wall()
 							',$status['body'],'
 							<div class="breeze_options">
 								<span class="time_elapsed">', $status['time'] ,' </span>
-								| Like ';
+								| Reply ';
 
 							// Delete link
 							if (!empty($context['permissions']['delete_status']))
