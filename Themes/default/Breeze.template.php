@@ -345,7 +345,17 @@ function template_user_wall()
 
 function template_user_notifications()
 {
-	global $context, $txt;
+	global $context, $txt, $scripturl, $user_info;
+
+	// Get the message from the server
+	$serverResponse = Breeze::sGlobals('get');
+
+	// Show a nice confirmation message for those without JavaScript
+	if ($serverResponse->getValue('m') == true)
+		echo
+		'<div class="windowbg" id="profile_success">
+			', $txt['Breeze_'. $serverResponse->getValue('m') .'_after'] ,'
+		</div>';
 
 	echo '
 		<div class="cat_bar">
@@ -362,11 +372,11 @@ function template_user_notifications()
 				<thead>
 					<tr class="catbg">
 						<th scope="col" class="first_th">', $txt['Breeze_noti_message'] ,'</th>
-						<th scope="col">', $txt['Breeze_noti_markasread'] ,'</th>
+						<th scope="col">', $txt['Breeze_noti_markasread_title'] ,'</th>
 						<th scope="col" class="last_th">', $txt['Breeze_general_delete'] ,'</th>
 					</tr>
 				</thead>
-			<tbody>';
+				<tbody>';
 
 		foreach($context['Breeze']['noti'] as $noti)
 		{
@@ -376,7 +386,7 @@ function template_user_notifications()
 						', $noti['message'] ,'
 					</td>
 					<td>
-					', !empty($noti['viewed']) ? $txt['Breeze_noti_markasread_viewed'] : '<a href="javascript:void(0)" id="markread_'. $noti['id'] .'" class="Breeze_markRead">'. $txt['Breeze_noti_markasread'] .'</a>' ,'
+					<a href="'. $scripturl .'?action=breezeajax;sa=notimark;content='. $noti['id'] .';user='. $user_info['id'] .'" id="markread_'. $noti['id'] .'" class="Breeze_markRead">'. (!empty($noti['viewed']) ? $txt['Breeze_noti_markasunread'] : $txt['Breeze_noti_markasread']) .'</a>
 					</td>
 					<td>
 					<a href="javascript:void(0)" id="delete_'. $noti['id'] .'" class="Breeze_delete">', $txt['Breeze_general_delete'] ,'</a>
@@ -385,8 +395,9 @@ function template_user_notifications()
 		}
 
 		// Close the table
-		echo '</tbody>
-		</table><br />';
+		echo '
+				</tbody>
+			</table><br />';
 	}
 
 	// Gotta be more social buddy...

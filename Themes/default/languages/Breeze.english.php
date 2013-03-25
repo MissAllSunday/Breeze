@@ -136,6 +136,8 @@ $txt['Breeze_admin_settings_server_needs_ok'] = '<div class="breeze_ok_message">
 $txt['Breeze_admin_settings_tab_server_specs'] = 'Server Requirements';
 $txt['Breeze_admin_settings_tab_admin_logs'] = 'Admin Logs';
 $txt['Breeze_admin_settings_donate'] = 'Donate';
+$txt['Breeze_admin_general_credits_title'] = 'Credits';
+$txt['Breeze_admin_general_credits_decs'] = 'Breeze is brought to you thanks to the following persons and/or scripts:'; 
 $txt['Breeze_admin_settings_enablegeneralwall'] = 'Enable General Wall';
 $txt['Breeze_admin_settings_enablegeneralwall_sub'] = 'If enable, a generai wall will apear, in this general wall the user will be able to see his/her buddie\'s status and recent activity';
 $txt['Breeze_admin_settings_menuposition'] = 'Select the position for the general Wall button.';
@@ -220,10 +222,15 @@ $txt['Breeze_noti_message'] = 'Message';
 $txt['Breeze_noti_buddy_title'] = 'Buddy notification';
 $txt['Breeze_noti_buddy_message'] = 'The user %s has added you as his/her buddy, please confirm this request.';
 $txt['Breeze_noti_markasread'] = 'Mark as read';
+$txt['Breeze_noti_markasunread'] = 'Mark as unread';
+$txt['Breeze_noti_markasread_title'] = 'Mark as read/unread';
 $txt['Breeze_noti_markasread_viewed'] = 'Already marked as read';
 $txt['Breeze_noti_close'] = 'Close';
+$txt['Breeze_noti_unmarkasread_after'] = 'You have successfully marked this notification as unread';
 $txt['Breeze_noti_markasread_after'] = 'You have successfully marked this notification as read';
+$txt['Breeze_noti_markasreaddeleted_after'] = 'This notification was already deleted or is not a valid entry.';
 $txt['Breeze_noti_delete_after'] = 'You have successfully deleted this notification';
+$txt['Breeze_noti_novalid_after'] = 'This isn\'t a valid action.';
 $txt['Breeze_noti_none'] = 'You don\'t have any notifications';
 
 // Comment notification

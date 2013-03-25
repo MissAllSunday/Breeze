@@ -54,7 +54,7 @@ function Breeze_Admin_Index()
 			'donate' => 'Breeze_Admin_Donate',
 		);
 
-		loadGeneralSettingParameters($subActions, 'settings');
+		loadGeneralSettingParameters($subActions, 'general');
 
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'tabs' => array(
@@ -91,6 +91,9 @@ function Breeze_Admin_Main()
 		'title' => $text->getText('admin_settings_admin_panel'),
 		'description' => $text->getText('admin_welcome'),
 	);
+
+	// Get the credits
+	$context['Breeze']['credits'] = Breeze::credits();
 
 	// Headers
 	Breeze::headersHook('admin');

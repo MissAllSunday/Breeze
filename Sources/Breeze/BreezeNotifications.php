@@ -274,7 +274,7 @@ class BreezeNotifications
 					jQuery.ajax(
 					{
 						type: \'POST\',
-						url: smf_scripturl + \'?action=breezeajax;sa=notimarkasread\',
+						url: smf_scripturl + \'?action=breezeajax;sa=notimark\',
 						data: ({content : noti_id_' . $m['id'] . ', user : user_' . $m['user'] . '}),
 						cache: false,
 						dataType: \'json\',
@@ -362,6 +362,7 @@ class BreezeNotifications
 
 		$this->_messages[$noti['id']]['id'] = $noti['id'];
 		$this->_messages[$noti['id']]['user'] = $noti['user_to'];
+		$this->_messages[$noti['id']]['viewed'] = $noti['viewed'];
 
 		// Fill out the messages property
 		$this->_messages[$noti['id']]['message'] = sprintf($this->_text->getText('buddy_messagerequest_message'),
@@ -425,7 +426,8 @@ class BreezeNotifications
 		$this->_messages[$noti['id']] = array(
 			'id' => $noti['id'],
 			'user' => $noti['user_to'],
-			'message' => $text
+			'message' => $text,
+			'viewed' => $noti['viewed']
 		);
 	}
 
@@ -436,27 +438,5 @@ class BreezeNotifications
 
 		else
 			return false;
-	}
-
-	/**
-	 * BreezeNotifications::delete()
-	 *
-	 * @param mixed $id
-	 * @return
-	 */
-	public function delete($id, $user)
-	{
-		$this->_query->deleteNotification($id, $user);
-	}
-
-	/**
-	 * BreezeNotifications::markAsRead()
-	 *
-	 * @param mixed $id
-	 * @return
-	 */
-	public function markAsRead($id, $user)
-	{
-		$this->_query->markAsviewedNotification($id, $user);
 	}
 }
