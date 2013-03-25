@@ -122,7 +122,14 @@ class BreezeAjax
 
 		// Sorry, try to play nice next time
 		if (!$this->_data->getValue('owner_id') || !$this->_data->getValue('poster_id') || !$this->_data->getValue('content'))
+		{
+
+			// Se the redirect url
+			if (true == $this->noJS)
+				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message';
+
 			return;
+		}
 
 		// Do this only if there is something to add to the database
 		if ($this->_data->validateBody('content'))
@@ -169,7 +176,7 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id');
+				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=success_message';
 
 			// End it
 			return;
@@ -384,6 +391,9 @@ class BreezeAjax
 			// Se the redirect url
 			if (true == $this->noJS)
 				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_'. (!empty($noti_temp[$noti]['viewed']) ? 'un' : '') .'markasread;';
+
+			// Delete the data to avoid issues
+			$this->_data->unsetVar('content');
 
 			// If we manage to get this far we don't have to worry about stoping the process, still, safety first!
 			return;

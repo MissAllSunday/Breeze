@@ -64,6 +64,16 @@ function template_user_wall()
 
 	loadLanguage(Breeze::$name);
 
+	// Get the message from the server
+	$serverResponse = Breeze::sGlobals('get');
+
+	// Show a nice confirmation message for those without JavaScript
+	if ($serverResponse->getValue('m') == true)
+		echo
+		'<div class="windowbg" id="profile_success">
+			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
+		</div>';
+
 	echo '
 		<div id="profileview" class="flow_auto">
 			<div class="cat_bar">
