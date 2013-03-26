@@ -55,6 +55,10 @@ $txt['Breeze_general_my_wall_modules'] = 'My Wall Modules settings';
 $txt['Breeze_modules_enable_visitors_title'] = 'Recent Visitors';
 $txt['Breeze_modules_enable_visitors_description'] = 'The last %1$s visitor%2$s to this page were: <p />';
 
+// New Strings
+
+$txt['Breeze_post'] = 'Post';
+$txt['Breeze_reply'] = 'Reply';
 
 // User Individual Settings
 $txt['Breeze_profile'] = 'Wall Settings';

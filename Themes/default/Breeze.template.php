@@ -82,7 +82,7 @@ function template_user_wall()
 				', !empty($context['member']['options']['Breeze_enable_buddies_tab']) ? '<a href="#tabs_buddies" class="mytestbutton">'. $txt['Breeze_tabs_buddies'] .'</a>' : '' ,'
 			</div>
 			<div class="right">
-				<a href="#info" rel="facebox" class="mytestbutton">Post</a>
+				<a href="#info" rel="facebox" class="mytestbutton">',$txt['Breeze_post'],'</a>
 			</div>
 		</div>';
 			
@@ -251,7 +251,7 @@ function template_user_wall()
 							',$status['body'],'
 							<div class="breeze_options">
 								<span class="time_elapsed">', $status['time'] ,' </span>
-								<a href="#reply_', $status['id'], '" class="mytestbutton" rel="facebox">Reply</a> ';
+								<a href="#reply_', $status['id'], '" class="mytestbutton" rel="facebox">',$txt['Breeze_reply'],'</a> ';
 
 							// Delete link
 							if (!empty($context['permissions']['delete_status']))
