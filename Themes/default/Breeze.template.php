@@ -231,6 +231,7 @@ function template_user_wall()
 	// Wall div
 	echo '
 			<div id="tabs_wall">';
+			
 
 	// New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING and even if you do, DON'T MODIFY THIS
 	echo '<span id="breeze_load_image"></span>
@@ -250,7 +251,7 @@ function template_user_wall()
 							',$status['body'],'
 							<div class="breeze_options">
 								<span class="time_elapsed">', $status['time'] ,' </span>
-								<a href="#reply" class="mytestbutton" rel="facebox">Reply</a> ';
+								<a href="#reply_', $status['id'], '" class="mytestbutton" rel="facebox">Reply</a> ';
 
 							// Delete link
 							if (!empty($context['permissions']['delete_status']))
@@ -292,7 +293,7 @@ function template_user_wall()
 								// Post a new comment
 								if (!empty($context['permissions']['post_comment']))
 									echo '
-								<div id="reply" style="display: none;">
+								<div id="reply_', $status['id'], '" style="display: none;">
 									<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
 										<textarea id="textboxcontent_', $status['id'] ,'" cols="40" rows="2"></textarea>
 										<input type="hidden" value="',$status['poster_id'],'" name="status_owner_id', $status['id'] ,'" id="status_owner_id', $status['id'] ,'" />
