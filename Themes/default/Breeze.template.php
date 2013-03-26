@@ -71,7 +71,7 @@ function template_user_wall()
 					<span class="ie6_header floatleft"><img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" class="icon" />', $txt['summary'], '</span>
 				</h3>
 			</div>';
-			
+		
 	// Links for tabs show it if there is at least 1 tab
 	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
 		echo '
@@ -80,11 +80,30 @@ function template_user_wall()
 				<a href="#tabs_wall" class="mytestbutton selected">', $txt['Breeze_tabs_wall'] ,'</a>
 				', !empty($context['member']['options']['Breeze_enable_visits_tab']) ? '<a href="#tabs_views" class="mytestbutton">'. $txt['Breeze_tabs_views'] .'</a>' : '' ,'
 				', !empty($context['member']['options']['Breeze_enable_buddies_tab']) ? '<a href="#tabs_buddies" class="mytestbutton">'. $txt['Breeze_tabs_buddies'] .'</a>' : '' ,'
-				<span class="right"><a href="#post" class="mytestbutton">Post</a></span>
+			</div>
+			<div class="right">
+				<a href="#info" rel="facebox" class="mytestbutton">Post</a>
+			</div>
+		</div>';
+			
+			
+		// This is the status box,  O RLY?
+		if (!empty($context['permissions']['post_status']))
+		echo '
+		<div id="info" style="display:none;">
+			<div class="breeze_user_inner">
+				<div class="breeze_user_statusbox">
+					<form method="post" action="', $scripturl, '?action=breezeajax;sa=post" id="status" name="form_status" class="form_status">
+						<textarea cols="40" rows="5" name="content" id="content" ></textarea>
+						<input type="hidden" value="',$context['member']['id'],'" name="owner_id" id="owner_id" />
+						<input type="hidden" value="',$user_info['id'],'" name="poster_id" id="poster_id" /><br />
+						<input type="submit" value="', $txt['post'] ,'" name="submit" class="status_button"/>
+					</form>
+				</div>
 			</div>
 		</div>';
 	
-	echo '
+		echo '
 			<div id="basicinfo">
 				<div class="windowbg">
 					<span class="topslice"><span></span></span>
@@ -211,36 +230,7 @@ function template_user_wall()
         
 	// Wall div
 	echo '
-			<div id="tabs_wall">
-				<div class="windowbg2">
-					<span class="topslice">
-						<span></span>
-					</span>
-				<div class="content">';
-
-			// Main content
-
-			// This is the status box,  O RLY?
-			if (!empty($context['permissions']['post_status']))
-				echo '<div class="breeze_user_inner">
-						<div class="breeze_user_statusbox">
-							<form method="post" action="', $scripturl, '?action=breezeajax;sa=post" id="status" name="form_status" class="form_status">
-								<textarea cols="40" rows="5" name="content" id="content" ></textarea>
-								<input type="hidden" value="',$context['member']['id'],'" name="owner_id" id="owner_id" />
-								<input type="hidden" value="',$user_info['id'],'" name="poster_id" id="poster_id" /><br />
-								<input type="submit" value="', $txt['post'] ,'" name="submit" class="status_button"/>
-							</form>
-						</div>
-					</div>';
-
-		echo'
-				</div>
-				<span class="botslice">
-					<span></span>
-				</span>
-			</div>';
-		// End of the status textarea
-
+			<div id="tabs_wall">';
 
 	// New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING and even if you do, DON'T MODIFY THIS
 	echo '<span id="breeze_load_image"></span>
@@ -260,11 +250,11 @@ function template_user_wall()
 							',$status['body'],'
 							<div class="breeze_options">
 								<span class="time_elapsed">', $status['time'] ,' </span>
-								| Reply ';
+								<a href="#reply" class="mytestbutton" rel="facebox">Reply</a> ';
 
 							// Delete link
 							if (!empty($context['permissions']['delete_status']))
-								echo '| <a href="javascript:void(0)" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> </div>';
+								echo '<a href="javascript:void(0)" id="', $status['id'] ,'" class="breeze_delete_status mytestbutton">', $txt['Breeze_general_delete'] ,'</a> </div>';
 
 							echo '<hr />
 							<div id="comment_flash_', $status['id'] ,'"></div>';
@@ -285,7 +275,7 @@ function template_user_wall()
 
 									// Delete comment
 									if (!empty($context['permissions']['delete_comments']))
-										echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
+										echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment mytestbutton">', $txt['Breeze_general_delete'] ,'</a>';
 
 									echo '
 													</div>
@@ -301,7 +291,8 @@ function template_user_wall()
 
 								// Post a new comment
 								if (!empty($context['permissions']['post_comment']))
-									echo '<div>
+									echo '
+								<div id="reply" style="display: none;">
 									<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
 										<textarea id="textboxcontent_', $status['id'] ,'" cols="40" rows="2"></textarea>
 										<input type="hidden" value="',$status['poster_id'],'" name="status_owner_id', $status['id'] ,'" id="status_owner_id', $status['id'] ,'" />

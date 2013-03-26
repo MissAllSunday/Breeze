@@ -40,7 +40,7 @@
 		{
 			jQuery(this).click(function()
 			{
-				var test = jQuery('#content').val();
+				var test = jQuery('#facebox #content').val();
 				var ownerID = jQuery('#owner_id').val();
 				var posterID = jQuery('#poster_id').val();
 				var loadImage = '<img src="' + smf_images_url + '/breeze/loading.gif" /><br /> <span class="loading">' + ajax_notification_text + '</span>';
@@ -103,6 +103,7 @@
 											timeout: 3500, type: 'success',
 										});
 									});
+									jQuery.facebox.close();
 								});
 							}
 
