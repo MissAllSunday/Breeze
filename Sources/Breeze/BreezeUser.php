@@ -247,7 +247,7 @@ function breezeBuddyRequest()
 	if (!$context['user']['is_owner'])
 		fatal_lang_error('no_access', false);
 
-	loadtemplate('BreezeBuddy');
+	loadTemplate('BreezeBuddy');
 
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
