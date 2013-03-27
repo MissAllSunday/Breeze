@@ -230,7 +230,7 @@
 							jQuery.ajax({
 								type: 'POST',
 								url: smf_scripturl + '?action=breezeajax;sa=delete;js=1',
-								data: ({id : I, type : Type}),
+								data: ({bid : I, type : Type}),
 								cache: false,
 								dataType: 'json',
 								success: function(html){

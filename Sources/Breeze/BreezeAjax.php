@@ -305,8 +305,12 @@ class BreezeAjax
 		// Get the global vars
 		$this->_data = Breeze::sGlobals('request');
 
+		// Set some much needed vars
+		$id = $this->_data->getValue('bid');
+		$type = $this->_data->getValue('type');
+
 		// Get the data
-		if ($this->_data->getValue('id') != false)
+		if ($this->_data->getValue('bid') != false)
 		{
 			// You aren't allowed in here, let's show you a nice message error...
 			$this->permissions('delete'. ucfirst($this->_data->getValue('type')), false);

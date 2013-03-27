@@ -292,7 +292,7 @@ function template_user_wall()
 
 									// Delete comment
 									if (!empty($context['permissions']['delete_comments']))
-										echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
+										echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $comment['id'] ,';type=comment" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 									echo '
 													</div>
