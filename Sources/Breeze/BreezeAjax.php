@@ -310,22 +310,22 @@ class BreezeAjax
 		$type = $this->_data->getValue('type');
 
 		// Get the data
-		if ($this->_data->getValue('bid') != false)
+		if ($id) != false)
 		{
 			// You aren't allowed in here, let's show you a nice message error...
 			$this->permissions('delete'. ucfirst($this->_data->getValue('type')), false);
 
 			$temp_id_exists = $this->_query->getSingleValue(
-				$this->_data->getValue('type') == 'status' ? 'status' : 'comments',
+				$type == 'status' ? 'status' : 'comments',
 				'id',
-				$this->_data->getValue('id')
+				$id
 			);
 
 			// Do this only if the message wasn't deleted already
 			if (!empty($temp_id_exists))
 			{
-				$type = 'delete'. ucfirst($this->_data->getValue('type'));
-				$this->_query->$type($this->_data->getValue('id'));
+				$typeCall = 'delete'. ucfirst($type);
+				$this->_query->$typeCall($id);
 
 				// Send the data back to the browser
 				$this->_response = array(
