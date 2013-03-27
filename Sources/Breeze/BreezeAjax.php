@@ -206,11 +206,11 @@ class BreezeAjax
 		$this->_data = Breeze::sGlobals('request');
 
 		// Trickery, theres always room for moar!
-		$status_owner_id = $this->_data->getValue('status_owner_id'. $this->noJS == true ? $this->_data->getValue('status_id') : '');
-		$poster_comment_id = $this->_data->getValue('poster_comment_id'. $this->noJS == true ? $this->_data->getValue('status_id') : '');
-		$profile_owner_id = $this->_data->getValue('profile_owner_id'. $this->noJS == true ? $this->_data->getValue('status_id') : '');
-		$content = $this->_data->getValue('content');
 		$status_id = $this->_data->getValue('status_id');
+		$status_owner_id = $this->_data->getValue('status_owner_id'. ($this->noJS == true ? $status_id : ''));
+		$poster_comment_id = $this->_data->getValue('poster_comment_id'. ($this->noJS == true ? $status_id : ''));
+		$profile_owner_id = $this->_data->getValue('profile_owner_id'. ($this->noJS == true ? $status_id : ''));
+		$content = $this->_data->getValue('content');
 
 		// Sorry, try to play nice next time
 		if (!$status_owner_id || !$poster_comment_id || !$profile_owner_id || !$content)
