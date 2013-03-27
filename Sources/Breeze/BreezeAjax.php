@@ -206,42 +206,39 @@ class BreezeAjax
 		$this->_data = Breeze::sGlobals('request');
 
 		// Trickery, theres always room for moar!
-		if (true == $this->noJS)
-		{
-			// Define some vars
-			$status_owner_id =
-			$poster_comment_id
-			$profile_owner_id
-			$content =
-		}
+		$status_owner_id = $this->_data->getValue('status_owner_id'. $this->noJS == true ? $this->_data->getValue('status_id') : '');
+		$poster_comment_id = $this->_data->getValue('poster_comment_id'. $this->noJS == true ? $this->_data->getValue('status_id') : '');
+		$profile_owner_id = $this->_data->getValue('profile_owner_id'. $this->noJS == true ? $this->_data->getValue('status_id') : '');
+		$content = $this->_data->getValue('content');
+		$status_id = $this->_data->getValue('status_id');
 
 		// Sorry, try to play nice next time
-		if (!$this->_data->getValue('status_owner_id') || !$this->_data->getValue('status_owner_id') || !$this->_data->getValue('poster_comment_id') || !$this->_data->getValue('profile_owner_id') || !$this->_data->getValue('content'))
+		if (!$status_owner_id || !$poster_comment_id || !$profile_owner_id || !$content)
 		{
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message';
+				$this->redirectURL = 'action=profile;u='. $profile_owner_id .';m=error_message';
 
 			return;
 		}
 
 		// Load all the things we need
-		$temp_id_exists = $this->_query->getSingleValue('status', 'id', $this->_data->getValue('status_id'));
+		$temp_id_exists = $this->_query->getSingleValue('status', 'id', $status_id);
 
 		// The status do exists and the data is valid
 		if ($this->_data->validateBody('content') && !empty($temp_id_exists))
 		{
 			// You aren't allowed in here, let's show you a nice static page...
-			$this->permissions('postComments', $this->_data->getValue('profile_owner_id'));
+			$this->permissions('postComments', $profile_owner_id);
 
 			$body = $this->_data->getValue('content');
 
 			// Build the params array for the query
 			$params = array(
-				'status_id' => $this->_data->getValue('status_id'),
-				'status_owner_id' => $this->_data->getValue('status_owner_id'),
-				'poster_id' => $this->_data->getValue('poster_comment_id'),
-				'profile_owner_id' => $this->_data->getValue('profile_owner_id'),
+				'status_id' => $status_id,
+				'status_owner_id' => $status_owner_id,
+				'poster_id' => $poster_comment_id,
+				'profile_owner_id' => $profile_owner_id,
 				'time' => time(),
 				'body' => $this->_mention->preMention($body)
 			);
@@ -257,11 +254,11 @@ class BreezeAjax
 
 			// build the notification
 			$this->_mention->mention(array(
-				'wall_owner' => $this->_data->getValue('profile_owner_id'),
-				'wall_poster' => $this->_data->getValue('poster_comment_id'),
-				'wall_status_owner' => $this->_data->getValue('status_owner_id'),
+				'wall_owner' => $profile_owner_id,
+				'wall_poster' => $poster_comment_id,
+				'wall_status_owner' => $status_owner_id,
 				'comment_id' => $params['id'],
-				'status_id' => $this->_data->getValue('status_id'),
+				'status_id' => $status_id,
 			));
 
 			// Parse the content
@@ -278,7 +275,7 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('profile_owner_id') .';m=success_message';
+				$this->redirectURL = 'action=profile;u='. $profile_owner_id .';m=success_message';
 
 			// End it
 			return;
@@ -289,7 +286,7 @@ class BreezeAjax
 		{
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message';
+				$this->redirectURL = 'action=profile;u='. $profile_owner_id .';m=error_message';
 
 			$this->_response = false;
 		}
