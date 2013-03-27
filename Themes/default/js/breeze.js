@@ -147,7 +147,7 @@
 				var status_owner_id = jQuery('#status_owner_id'+Id).val();
 				var poster_comment_id = jQuery('#poster_comment_id'+Id).val();
 				var profile_owner_id = jQuery('#profile_owner_id'+Id).val();
-				var status_id = jQuery('#status_id'+Id).val();
+				var status_id = Id;
 				var loadImage = '<img src="' + smf_images_url + '/breeze/loading.gif" /><br /> <span class="loading">' + ajax_notification_text + '</span>';
 
 				if(commentBox=='')
@@ -161,7 +161,7 @@
 					{
 						type: 'POST',
 						url: smf_scripturl + '?action=breezeajax;sa=postcomment;js=1',
-						data: ({contentComments : contentComments, status_owner_id : status_owner_id, poster_comment_id : poster_comment_id, profile_owner_id: profile_owner_id, status_id : status_id}),
+						data: ({content : commentBox, status_owner_id : status_owner_id, poster_comment_id : poster_comment_id, profile_owner_id: profile_owner_id, status_id : status_id}),
 						cache: false,
 						dataType: 'json',
 						success: function(html){

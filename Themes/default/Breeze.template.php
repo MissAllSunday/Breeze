@@ -310,10 +310,10 @@ function template_user_wall()
 								if (!empty($context['permissions']['post_comment']))
 									echo '<div>
 									<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
-										<textarea id="textboxcontent_', $status['id'] ,'" cols="40" rows="2" name="contentComments" rel="atwhoMention"></textarea>
+										<textarea id="textboxcontent_', $status['id'] ,'" name="content" cols="40" rows="2" rel="atwhoMention"></textarea>
 										<input type="hidden" value="',$status['poster_id'],'" name="status_owner_id', $status['id'] ,'" id="status_owner_id', $status['id'] ,'" />
 										<input type="hidden" value="',$context['member']['id'],'" name="profile_owner_id', $status['id'] ,'" id="profile_owner_id', $status['id'] ,'" />
-										<input type="hidden" value="', $status['id'] ,'" name="status_id', $status['id'] ,'" id="status_id', $status['id'] ,'" />
+										<input type="hidden" value="', $status['id'] ,'" name="status_id', $status['id'] ,'" id="status_id" />
 										<input type="hidden" value="',$user_info['id'],'" name="poster_comment_id', $status['id'] ,'" id="poster_comment_id', $status['id'] ,'" /><br />
 										<input type="submit" value="', $txt['post'] ,'" class="comment_submit" id="', $status['id'] ,'" />
 									</form>
@@ -484,7 +484,7 @@ function template_singleStatus()
 							if ($context['permissions']['post_comment'])
 								echo '<div>
 								<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $context['Breeze']['single']['id'] ,'" id="formID_', $context['Breeze']['single']['id'] ,'">
-									<textarea id="textboxcontent_', $context['Breeze']['single']['id'] ,'" cols="40" rows="2" rel="atwhoMention"></textarea>
+									<textarea id="textboxcontent_', $context['Breeze']['single']['id'] ,'" cols="40" rows="2"  name="content_', $context['Breeze']['single']['id'] ,'" rel="atwhoMention"></textarea>
 									<input type="hidden" value="',$context['Breeze']['single']['poster_id'],'" name="status_owner_id', $context['Breeze']['single']['id'] ,'" id="status_owner_id', $context['Breeze']['single']['id'] ,'" />
 									<input type="hidden" value="', $context['Breeze']['single']['owner_id'] ,'" name="profile_owner_id', $context['Breeze']['single']['id'] ,'" id="profile_owner_id', $context['Breeze']['single']['id'] ,'" />
 									<input type="hidden" value="', $context['Breeze']['single']['id'] ,'" name="status_id', $context['Breeze']['single']['id'] ,'" id="status_id', $context['Breeze']['single']['id'] ,'" />

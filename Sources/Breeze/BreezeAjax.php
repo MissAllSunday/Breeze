@@ -205,8 +205,18 @@ class BreezeAjax
 
 		$this->_data = Breeze::sGlobals('request');
 
+		// Trickery, theres always room for moar!
+		if (true == $this->noJS)
+		{
+			// Define some vars
+			$status_owner_id =
+			$poster_comment_id
+			$profile_owner_id
+			$content =
+		}
+
 		// Sorry, try to play nice next time
-		if (!$this->_data->getValue('status_owner_id') || !$this->_data->getValue('status_owner_id') || !$this->_data->getValue('poster_comment_id') || !$this->_data->getValue('profile_owner_id') || !$this->_data->getValue('contentComments'))
+		if (!$this->_data->getValue('status_owner_id') || !$this->_data->getValue('status_owner_id') || !$this->_data->getValue('poster_comment_id') || !$this->_data->getValue('profile_owner_id') || !$this->_data->getValue('content'))
 		{
 			// Se the redirect url
 			if (true == $this->noJS)
@@ -219,7 +229,7 @@ class BreezeAjax
 		$temp_id_exists = $this->_query->getSingleValue('status', 'id', $this->_data->getValue('status_id'));
 
 		// The status do exists and the data is valid
-		if ($this->_data->validateBody('contentComments') && !empty($temp_id_exists))
+		if ($this->_data->validateBody('content') && !empty($temp_id_exists))
 		{
 			// You aren't allowed in here, let's show you a nice static page...
 			$this->permissions('postComments', $this->_data->getValue('profile_owner_id'));
