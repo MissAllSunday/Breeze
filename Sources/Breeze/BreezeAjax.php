@@ -308,6 +308,7 @@ class BreezeAjax
 		// Set some much needed vars
 		$id = $this->_data->getValue('bid');
 		$type = $this->_data->getValue('type');
+		$profile_owner = $this->_data->getValue('profile_owner');
 
 		// Get the data
 		if ($id) != false)
@@ -335,7 +336,7 @@ class BreezeAjax
 
 				// Se the redirect url
 				if (true == $this->noJS)
-					$this->redirectURL = 'action=profile';
+					$this->redirectURL = 'action=profile;m=success_delete;u='. $profile_owner;
 
 				// End it!
 				return;
@@ -351,7 +352,7 @@ class BreezeAjax
 
 				// Se the redirect url
 				if (true == $this->noJS)
-					$this->redirectURL = 'action=profile;m=message_deleted';
+					$this->redirectURL = 'action=profile;m=message_deleted;u='. $profile_owner;
 
 				// Don't forget to end it
 				return;
