@@ -105,7 +105,7 @@ class BreezeAjax
 
 		// Sorry pal...
 		else
-			fatal_lang_error('Breeze_error_no_valid_action');
+			fatal_lang_error('Breeze_error_no_valid_action', false);
 	}
 
 	/**
