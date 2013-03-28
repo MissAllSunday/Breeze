@@ -311,7 +311,7 @@ class BreezeAjax
 		$profile_owner = $this->_data->getValue('profile_owner');
 
 		// Get the data
-		if ($id) != false)
+		if ($id != false)
 		{
 			// You aren't allowed in here, let's show you a nice message error...
 			$this->permissions('delete'. ucfirst($this->_data->getValue('type')), false);
