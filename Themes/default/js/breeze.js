@@ -286,7 +286,7 @@
 			{
 				var element = jQuery(this);
 				var I = element.attr('id');
-				var Type = 'status';
+				var typeMethod = 'status';
 
 				// Show a nice confirmation box
 				noty({
@@ -299,7 +299,7 @@
 							jQuery.ajax({
 								type: 'POST',
 								url: smf_scripturl + '?action=breezeajax;sa=delete;js=1',
-								data: ({id : I, type : Type}),
+								data: ({bid : I, type : typeMethod}),
 								cache: false,
 								dataType: 'json',
 								success: function(html){
