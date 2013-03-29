@@ -426,6 +426,16 @@ function template_singleStatus()
 {
 	global $context, $txt, $user_info, $scripturl;
 
+	// Get the message from the server
+	$serverResponse = Breeze::sGlobals('get');
+
+	// Show a nice confirmation message for those without JavaScript
+	if ($serverResponse->getValue('m') == true)
+		echo
+		'<div '. $serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"' ,'>
+			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
+		</div>';
+
 	echo '
 			<div class="windowbg" id ="status_id_', $context['Breeze']['single']['id'] ,'">
 				<span class="topslice">
