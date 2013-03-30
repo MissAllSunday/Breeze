@@ -6,7 +6,7 @@
  * The purpose of this file is to create proper html based on the type and the info it got.
  * @package Breeze mod
  * @version 1.0 Beta 3
- * @author Jessica González <missallsunday@simplemachines.org>
+ * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2013 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
