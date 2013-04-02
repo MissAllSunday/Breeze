@@ -352,7 +352,7 @@ class BreezeAjax
 
 				// Se the redirect url
 				if (true == $this->noJS && !empty($profile_owner))
-					$this->redirectURL = 'action=profile;m=message_deleted;u='. $profile_owner;
+					$this->redirectURL = 'action=profile;m=message_deleted;e=1;u='. $profile_owner;
 
 				// Don't forget to end it
 				return;
