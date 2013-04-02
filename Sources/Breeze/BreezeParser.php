@@ -70,16 +70,6 @@ class BreezeParser
 		return $this->s;
 	}
 
-	// Convert any valid urls on to links
-	protected function urltoLink()
-	{
-		if (preg_match_all($this->regex['url'], $this->s, $matches))
-			foreach($matches[0] as $m)
-				$this->s = str_replace($m, '<a href="'.$m.'" class="bbc_link" target="_blank">'.$m.'</a>', $this->s);
-
-		return $this->s;
-	}
-
 	protected function mention()
 	{
 		global $scripturl;
@@ -97,18 +87,11 @@ class BreezeParser
 
 			// Do the replacement already
 			$this->s = str_replace($find, $replace, $this->s);
-
-			// We are done mutilating the string, lets returning it
-			return $this->s;
 		}
-
-		// Nothing was found
-		else
-			return $this->s;
 	}
 
 	protected function smf_parse()
 	{
-		return parse_bbc();
+		$this->s = parse_bbc($this->s);
 	}
 }
