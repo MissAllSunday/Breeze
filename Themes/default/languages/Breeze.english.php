@@ -61,7 +61,7 @@ $txt['Breeze_profile'] = 'Wall Settings';
 $txt['Breeze_user_settings_name'] = 'Wall Settings';
 $txt['Breeze_user_buddysettings_name'] = 'Buddy Requests';
 $txt['Breeze_user_single_status'] = 'Single Status';
-$txt['Breeze_user_buddyrequestmessage_name'] = 'Buddy Message Request Send';
+$txt['Breeze_user_buddyrequestmessage_name'] = 'Buddy message request send';
 $txt['Breeze_user_buddyrequestmessage_message'] = 'Your request has been submitted, the user will see your request and if he/she accepts it, you will receive a notification via private message.';
 $txt['Breeze_user_notisettings_name'] = 'Notifications';
 $txt['Breeze_user_settings_enable_desc'] = 'From this page you will be able to setup the different settings for your wall.';
@@ -171,7 +171,7 @@ $txt['Breeze_time_month'] = 'month';
 $txt['Breeze_time_year'] = 'year';
 
 // Permissions strings
-$txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to view the Wall.';
+$txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to this the Wall.';
 $txt['permissiongroup_simple_breeze_per_simple'] = 'Breeze mod permissions';
 $txt['permissiongroup_breeze_per_classic'] = 'Breeze mod permissions';
 $txt['permissionname_breeze_deleteStatus'] = 'Delete all status on any wall';
