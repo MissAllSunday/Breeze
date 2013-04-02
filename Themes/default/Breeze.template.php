@@ -363,7 +363,7 @@ function template_user_notifications()
 	// Show a nice confirmation message for those without JavaScript
 	if ($serverResponse->getValue('m') == true)
 		echo
-		'<div class="windowbg" id="profile_success">
+		'<div class="', $serverResponse->getValue('e') == true ? 'errorbox' : 'windowbg' ,'" id="profile_success">
 			', $txt['Breeze_'. $serverResponse->getValue('m') .'_after'] ,'
 		</div>';
 
