@@ -103,4 +103,9 @@ class BreezeParser
 		else
 			return $s;
 	}
+
+	protected function smf_parse($s)
+	{
+		return parse_bbc($s);
+	}
 }
