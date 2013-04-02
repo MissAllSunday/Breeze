@@ -60,8 +60,7 @@ class BreezeParser
 			return false;
 
 		$this->s = $string;
-		$temp = get_class_methods(__CLASS__);
-		$temp = $this->tools->remove($temp, array('__construct', 'display'), false);
+		$temp = $this->tools->remove(get_class_methods(__CLASS__), array('__construct', 'display'), false);
 
 		foreach ($temp as $t)
 			$this->$t();

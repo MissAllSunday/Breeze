@@ -96,7 +96,7 @@ class BreezeAjax
 		// Does the subaction even exist?
 		if (isset($call[$sglobals->getValue('sa')]))
 		{
-			// This is somehow ugly.
+			// This is somehow ugly but its faster.
 			$this->$call[$sglobals->getValue('sa')]();
 
 			// Send the response back to the browser
