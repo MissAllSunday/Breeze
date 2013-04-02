@@ -192,6 +192,10 @@ function template_user_wall()
 					</ul>
 				</div>';
 	}
+
+	// User doesn't have any visits
+	else
+		echo '<p class="windowbg description" style="display: none;" id="tabs_views">', $txt['Breeze_user_modules_visits_none'] ,'</p>';
 	// End of profile visitors
 
 	// Buddies tab
@@ -216,6 +220,10 @@ function template_user_wall()
 					</ul>
 				</div>';
 	}
+
+	// User doesn't have any visits
+	else
+		echo '<p class="windowbg description" style="display: none;" id="tabs_buddies">', $txt['Breeze_user_modules_buddies_none']  ,'</p>';
 	// End of buddies tab
 
 	// Wall div

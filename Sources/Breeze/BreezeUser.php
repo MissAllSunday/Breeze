@@ -105,7 +105,8 @@ function breezeWall()
 		$context['Breeze']['views'] = breezeTrackViews();
 
 		// Load their data
-		$tools->loadUserInfo(array_keys($context['Breeze']['views']));
+		if (!empty($context['Breeze']['views']))
+			$tools->loadUserInfo(array_keys($context['Breeze']['views']));
 	}
 
 	// Show buddies only if there is something to show
