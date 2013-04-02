@@ -139,7 +139,7 @@ $txt['Breeze_admin_settings_donate'] = 'Donate';
 $txt['Breeze_admin_general_credits_title'] = 'Credits';
 $txt['Breeze_admin_general_credits_decs'] = 'Breeze is brought to you thanks to the following persons and/or scripts:'; 
 $txt['Breeze_admin_settings_enablegeneralwall'] = 'Enable General Wall';
-$txt['Breeze_admin_settings_enablegeneralwall_sub'] = 'If enable, a generai wall will apear, in this general wall the user will be able to see his/her buddie\'s status and recent activity';
+$txt['Breeze_admin_settings_enablegeneralwall_sub'] = 'If enable, a general wall will appear, in this general wall the user will be able to see his/her buddie\'s status and recent activity';
 $txt['Breeze_admin_settings_menuposition'] = 'Select the position for the general Wall button.';
 $txt['Breeze_admin_settings_menuposition_sub'] = 'By default is next to the home button.';
 $txt['Breeze_admin_settings_enable'] = 'Enable the Breeze mod';
@@ -209,18 +209,19 @@ $txt['Breeze_pag_pages'] = 'Pages :';
 $txt['Breeze_pag_page'] = '- page ';
 $txt['Breeze_profile_of_username'] = 'Profile of %1$s %2$s';
 $txt['Breeze_page_loading'] = 'Loading more messages...';
-$txt['Breeze_page_loading_end'] = '<div class="breeze_center">There are no more messages, go to top</div>';
+$txt['Breeze_page_loading_end'] = '<span class="breeze_center">There are no more messages, go to top</span>';
 
 // Tabs
 $txt['Breeze_tabs_wall'] = 'Wall';
 $txt['Breeze_tabs_buddies'] = 'Buddies';
 $txt['Breeze_tabs_views'] = 'Profile Views';
+$txt['Breeze_goTop'] = 'Go to top';
 
 // Notifications
 $txt['Breeze_noti_title'] = 'Notifications';
 $txt['Breeze_noti_message'] = 'Message';
 $txt['Breeze_noti_buddy_title'] = 'Buddy notification';
-$txt['Breeze_noti_buddy_message'] = 'The user %s has added you as his/her buddy, please confirm this request.';
+$txt['Breeze_noti_buddy_message'] = 'User %s has added you as his/her buddy, please confirm this request.';
 $txt['Breeze_noti_markasread'] = 'Mark as read';
 $txt['Breeze_noti_markasunread'] = 'Mark as unread';
 $txt['Breeze_noti_markasread_title'] = 'Mark as read/unread';
