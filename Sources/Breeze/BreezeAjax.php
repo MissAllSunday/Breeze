@@ -96,7 +96,7 @@ class BreezeAjax
 		// Does the subaction even exist?
 		if (isset($call[$sglobals->getValue('sa')]))
 		{
-			// This is somehow ugly.
+			// This is somehow ugly but its faster.
 			$this->$call[$sglobals->getValue('sa')]();
 
 			// Send the response back to the browser
@@ -125,7 +125,7 @@ class BreezeAjax
 		{
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message';
+				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message;e=1';
 
 			return;
 		}
@@ -186,7 +186,7 @@ class BreezeAjax
 		{
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message';
+				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message;e=1;';
 
 			$this->_response = false;
 		}
@@ -217,7 +217,7 @@ class BreezeAjax
 		{
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $profile_owner_id .';m=error_message';
+				$this->redirectURL = 'action=profile;u='. $profile_owner_id .';m=error_message;e=1;';
 
 			return;
 		}
@@ -286,7 +286,7 @@ class BreezeAjax
 		{
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $profile_owner_id .';m=error_message';
+				$this->redirectURL = 'action=profile;u='. $profile_owner_id .';m=error_message;e=1;';
 
 			$this->_response = false;
 		}
@@ -386,7 +386,7 @@ class BreezeAjax
 		if (empty($noti) || empty($user))
 		{
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_novalid';
+				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_novalid;e=1;';
 
 			// Stop the process
 			return;
@@ -399,7 +399,7 @@ class BreezeAjax
 		{
 			// Tell the user about it
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_markasreaddeleted';
+				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_markasreaddeleted;e=1;';
 
 			// Stop the process
 			return;
@@ -462,7 +462,7 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;area=breezenoti;m=noti_delete;u='. $user;
+				$this->redirectURL = 'action=profile;area=breezenoti;e=1;m=noti_delete;u='. $user;
 
 			return;
 		}
@@ -492,7 +492,7 @@ class BreezeAjax
 	 */
 	protected function usersMention()
 	{
-		// For testing purposes only, just pass the result directly
+		// Just pass the result directly
 		$this->_response = $this->_query->userMention();
 		return;
 	}
