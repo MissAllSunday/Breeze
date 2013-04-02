@@ -6,7 +6,7 @@
  * The purpose of this file is
  * @package Breeze mod
  * @version 1.0 Beta 3
- * @author Jessica González <missallsunday@simplemachines.org>
+ * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2013 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
@@ -63,6 +63,16 @@ function template_user_wall()
 	global $txt, $context, $settings, $scripturl, $user_info;
 
 	loadLanguage(Breeze::$name);
+
+	// Get the message from the server
+	$serverResponse = Breeze::sGlobals('get');
+
+	// Show a nice confirmation message for those without JavaScript
+	if ($serverResponse->getValue('m') == true)
+		echo
+		'<div '. $serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"' ,'>
+			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
+		</div>';
 
 	echo '
 		<div id="profileview" class="flow_auto">
@@ -156,7 +166,7 @@ function template_user_wall()
 	// Scroll to top
 	echo '
 			<p id="breezeTop">
-				<a href="#wrapper"><span></span>Back to Top</a>
+				<a href="#wrapper"><span></span>', $txt['Breeze_goTop'] ,'</a>
 			</p>';
 
 	// Profile visitors
@@ -259,9 +269,9 @@ function template_user_wall()
 							',$status['body'],'
 							<div class="breeze_options"><span class="time_elapsed">', $status['time'] ,' </span>';
 
-							// Delete link
+							// Delete status
 							if (!empty($context['permissions']['delete_status']))
-								echo '| <a href="javascript:void(0)" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> </div>';
+								echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $status['id'] ,';type=status;profile_owner=',$context['member']['id'],'" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> </div>';
 
 							echo '<hr />
 							<div id="comment_flash_', $status['id'] ,'"></div>';
@@ -282,7 +292,7 @@ function template_user_wall()
 
 									// Delete comment
 									if (!empty($context['permissions']['delete_comments']))
-										echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
+										echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $comment['id'] ,';type=comment;profile_owner=',$context['member']['id'],'" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 									echo '
 													</div>
@@ -300,10 +310,10 @@ function template_user_wall()
 								if (!empty($context['permissions']['post_comment']))
 									echo '<div>
 									<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
-										<textarea id="textboxcontent_', $status['id'] ,'" cols="40" rows="2" rel="atwhoMention"></textarea>
+										<textarea id="textboxcontent_', $status['id'] ,'" name="content" cols="40" rows="2" rel="atwhoMention"></textarea>
 										<input type="hidden" value="',$status['poster_id'],'" name="status_owner_id', $status['id'] ,'" id="status_owner_id', $status['id'] ,'" />
 										<input type="hidden" value="',$context['member']['id'],'" name="profile_owner_id', $status['id'] ,'" id="profile_owner_id', $status['id'] ,'" />
-										<input type="hidden" value="', $status['id'] ,'" name="status_id', $status['id'] ,'" id="status_id', $status['id'] ,'" />
+										<input type="hidden" value="', $status['id'] ,'" name="status_id" id="status_id" />
 										<input type="hidden" value="',$user_info['id'],'" name="poster_comment_id', $status['id'] ,'" id="poster_comment_id', $status['id'] ,'" /><br />
 										<input type="submit" value="', $txt['post'] ,'" class="comment_submit" id="', $status['id'] ,'" />
 									</form>
@@ -353,7 +363,7 @@ function template_user_notifications()
 	// Show a nice confirmation message for those without JavaScript
 	if ($serverResponse->getValue('m') == true)
 		echo
-		'<div class="windowbg" id="profile_success">
+		'<div class="', $serverResponse->getValue('e') == true ? 'errorbox' : 'windowbg' ,'" id="profile_success">
 			', $txt['Breeze_'. $serverResponse->getValue('m') .'_after'] ,'
 		</div>';
 
@@ -416,6 +426,16 @@ function template_singleStatus()
 {
 	global $context, $txt, $user_info, $scripturl;
 
+	// Get the message from the server
+	$serverResponse = Breeze::sGlobals('get');
+
+	// Show a nice confirmation message for those without JavaScript
+	if ($serverResponse->getValue('m') == true)
+		echo
+		'<div '. $serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"' ,'>
+			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
+		</div>';
+
 	echo '
 			<div class="windowbg" id ="status_id_', $context['Breeze']['single']['id'] ,'">
 				<span class="topslice">
@@ -430,9 +450,9 @@ function template_singleStatus()
 						<div class="breeze_options">
 							<span class="time_elapsed">', $context['Breeze']['single']['time'] ,' </span>';
 
-					// Delete link
+					// Delete status
 					if ($context['permissions']['delete_status'])
-						echo '| <a href="javascript:void(0)" id="', $context['Breeze']['single']['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
+						echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $status['id'] ,';type=status;profile_owner=',$context['member']['id'],'" id="', $context['Breeze']['single']['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
 
 					echo '
 						</div>
@@ -456,7 +476,7 @@ function template_singleStatus()
 
 							// Delete comment
 							if ($context['permissions']['delete_status'])
-								echo '| <a href="javascript:void(0)" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
+								echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $comment['id'] ,';type=comment;profile_owner=',$context['member']['id'],'" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 							echo '
 											</div>
@@ -474,10 +494,10 @@ function template_singleStatus()
 							if ($context['permissions']['post_comment'])
 								echo '<div>
 								<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $context['Breeze']['single']['id'] ,'" id="formID_', $context['Breeze']['single']['id'] ,'">
-									<textarea id="textboxcontent_', $context['Breeze']['single']['id'] ,'" cols="40" rows="2" rel="atwhoMention"></textarea>
+									<textarea id="textboxcontent_', $context['Breeze']['single']['id'] ,'" cols="40" rows="2"  name="content_', $context['Breeze']['single']['id'] ,'" rel="atwhoMention"></textarea>
 									<input type="hidden" value="',$context['Breeze']['single']['poster_id'],'" name="status_owner_id', $context['Breeze']['single']['id'] ,'" id="status_owner_id', $context['Breeze']['single']['id'] ,'" />
 									<input type="hidden" value="', $context['Breeze']['single']['owner_id'] ,'" name="profile_owner_id', $context['Breeze']['single']['id'] ,'" id="profile_owner_id', $context['Breeze']['single']['id'] ,'" />
-									<input type="hidden" value="', $context['Breeze']['single']['id'] ,'" name="status_id', $context['Breeze']['single']['id'] ,'" id="status_id', $context['Breeze']['single']['id'] ,'" />
+									<input type="hidden" value="', $context['Breeze']['single']['id'] ,'" name="status_id" id="status_id" />
 									<input type="hidden" value="',$user_info['id'],'" name="poster_comment_id', $context['Breeze']['single']['id'] ,'" id="poster_comment_id', $context['Breeze']['single']['id'] ,'" /><br />
 									<input type="submit" value="', $txt['post'] ,'" class="comment_submit" id="', $context['Breeze']['single']['id'] ,'" />
 								</form>

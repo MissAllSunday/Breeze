@@ -6,7 +6,7 @@
  * The purpose of this file is to have all queries made by this mod in a single place, probably the most important file and the biggest one too.
  * @package Breeze mod
  * @version 1.0 Beta 3
- * @author Jessica González <missallsunday@simplemachines.org>
+ * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2013 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
@@ -881,13 +881,16 @@ class BreezeQuery extends Breeze
 		// We don't need this no more
 		$this->killCache($this->_tables['noti']['name'] . '-'. $user);
 
+		// We actually want to change the value... Just invert the value, ugly, but it gets the job done
+		$change = $viewed == 1 ? 0 : 1;
+
 		// Mark as viewed
 		$this->_smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables['noti']['table']) . '
 			SET viewed = {int:viewed}
 			WHERE id = {int:id}',
 			array(
-				'viewed' => $viewed,
+				'viewed' => $change,
 				'id' => $id,
 			)
 		);

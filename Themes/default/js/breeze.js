@@ -4,7 +4,7 @@
  * The purpose of this file is to handle all the client side code, the ajax call for the status, comments and other stuff
  * @package Breeze mod
  * @version 1.0 Beta 3
- * @author Jessica González <missallsunday@simplemachines.org>
+ * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2013 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
@@ -147,7 +147,7 @@
 				var status_owner_id = jQuery('#status_owner_id'+Id).val();
 				var poster_comment_id = jQuery('#poster_comment_id'+Id).val();
 				var profile_owner_id = jQuery('#profile_owner_id'+Id).val();
-				var status_id = jQuery('#status_id'+Id).val();
+				var status_id = Id;
 				var loadImage = '<img src="' + smf_images_url + '/breeze/loading.gif" /><br /> <span class="loading">' + ajax_notification_text + '</span>';
 
 				if(commentBox=='')
@@ -217,7 +217,7 @@
 			{
 				var element = jQuery(this);
 				var I = element.attr('id');
-				var Type = 'comment';
+				var typeMethod = 'comment';
 
 				// Show a nice confirmation box
 				noty({
@@ -230,7 +230,7 @@
 							jQuery.ajax({
 								type: 'POST',
 								url: smf_scripturl + '?action=breezeajax;sa=delete;js=1',
-								data: ({id : I, type : Type}),
+								data: ({bid : I, type : typeMethod}),
 								cache: false,
 								dataType: 'json',
 								success: function(html){
@@ -286,7 +286,7 @@
 			{
 				var element = jQuery(this);
 				var I = element.attr('id');
-				var Type = 'status';
+				var typeMethod = 'status';
 
 				// Show a nice confirmation box
 				noty({
@@ -299,7 +299,7 @@
 							jQuery.ajax({
 								type: 'POST',
 								url: smf_scripturl + '?action=breezeajax;sa=delete;js=1',
-								data: ({id : I, type : Type}),
+								data: ({bid : I, type : typeMethod}),
 								cache: false,
 								dataType: 'json',
 								success: function(html){
