@@ -57,32 +57,35 @@ class BreezeParser
 
 	public function display($string)
 	{
+		if (empty($string))
+			return false;
+
 		$this->s = $string;
 		$temp = get_class_methods('BreezeParser');
 		$temp = $this->tools->remove($temp, array('__construct', 'display'), false);
 
 		foreach ($temp as $t)
-			$this->s = $this->$t($this->s);
+			$this->$t();
 
 		return $this->s;
 	}
 
 	// Convert any valid urls on to links
-	protected function urltoLink($s)
+	protected function urltoLink()
 	{
-		if (preg_match_all($this->regex['url'], $s, $matches))
+		if (preg_match_all($this->regex['url'], $this->s, $matches))
 			foreach($matches[0] as $m)
-				$s = str_replace($m, '<a href="'.$m.'" class="bbc_link" target="_blank">'.$m.'</a>', $s);
+				$this->s = str_replace($m, '<a href="'.$m.'" class="bbc_link" target="_blank">'.$m.'</a>', $this->s);
 
-		return $s;
+		return $this->s;
 	}
 
-	protected function mention($s)
+	protected function mention()
 	{
 		global $scripturl;
 
 		// Search for all possible names
-		if (preg_match_all($this->regex['mention'], $s, $matches, PREG_SET_ORDER))
+		if (preg_match_all($this->regex['mention'], $this->s, $matches, PREG_SET_ORDER))
 		{
 			// Find any instances
 			foreach ($matches as $query)
@@ -93,19 +96,19 @@ class BreezeParser
 			}
 
 			// Do the replacement already
-			$s = str_replace($find, $replace, $s);
+			$this->s = str_replace($find, $replace, $this->s);
 
 			// We are done mutilating the string, lets returning it
-			return $s;
+			return $this->s;
 		}
 
 		// Nothing was found
 		else
-			return $s;
+			return $this->s;
 	}
 
-	protected function smf_parse($s)
+	protected function smf_parse()
 	{
-		return parse_bbc($s);
+		return parse_bbc();
 	}
 }
