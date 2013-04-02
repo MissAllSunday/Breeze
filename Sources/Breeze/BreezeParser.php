@@ -41,7 +41,7 @@ if (!defined('SMF'))
 
 class BreezeParser
 {
-	private $notification;
+	protected $regex;
 
 	function __construct($settings, $tools)
 	{
@@ -50,7 +50,6 @@ class BreezeParser
 
 		// Regex stuff
 		$this->regex = array(
-			'url' => '~(?<=[\s>\.(;\'"]|^)((?:http|https)://[\w\-_%@:|]+(?:\.[\w\-_%]+)*(?::\d+)?(?:/[\w\-_\~%\.@!,\?&;=#(){}+:\'\\\\]*)*[/\w\-_\~%@\?;=#}\\\\])~i',
 			'mention' => '~@\(([\s\w,;-_\[\]\\\/\+\.\~\$\!]+), ([0-9]+)\)~u',
 		);
 	}
