@@ -218,6 +218,7 @@
 				var element = jQuery(this);
 				var I = element.attr('id');
 				var typeMethod = 'comment';
+				var urlParam = element.attr('href');
 
 				// Show a nice confirmation box
 				noty({
@@ -229,32 +230,33 @@
 						addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
 							jQuery.ajax({
 								type: 'POST',
-								url: smf_scripturl + '?action=breezeajax;sa=delete;js=1',
-								data: ({bid : I, type : typeMethod}),
+								url: urlParam + ';js=1',
 								cache: false,
 								dataType: 'json',
 								success: function(html){
-									if(html.type == 'error'){
-										$noty.close();
-										noty({
-											text: html.data,
-											timeout: 3500, type: 'error',
-										});
-									}
-									else if(html.type == 'deleted'){
-										$noty.close();
-										noty({
-											text: html.data,
-											timeout: 3500, type: 'error',
-										});
-									}
-									else if(html.type == 'ok'){
+									$noty.close();
+
+									switch(html.type)
+									{
+										case 'error':
+											noty({
+												text: html.data,
+												timeout: 3500, type: 'error',
+											});
+										break;
+										case 'deleted':
+											noty({
+												text: html.data,
+												timeout: 3500, type: 'error',
+											});
+										break;
+										case 'ok':
 										jQuery('#comment_id_'+I).fadeOut('slow');
-										$noty.close();
 										noty({
 											text: html.data,
 											timeout: 3500, type: 'success',
 										});
+										break;
 									}
 								},
 								error: function (html){
@@ -287,6 +289,7 @@
 				var element = jQuery(this);
 				var I = element.attr('id');
 				var typeMethod = 'status';
+				var urlParam = element.attr('href');
 
 				// Show a nice confirmation box
 				noty({
@@ -298,32 +301,32 @@
 						addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
 							jQuery.ajax({
 								type: 'POST',
-								url: smf_scripturl + '?action=breezeajax;sa=delete;js=1',
-								data: ({bid : I, type : typeMethod}),
+								url: urlParam + ';js=1',
 								cache: false,
 								dataType: 'json',
 								success: function(html){
-									if(html.type == 'error'){
-										$noty.close();
-										noty({
-											text: html.data,
-											timeout: 3500, type: 'error',
-										});
-									}
-									else if(html.type == 'deleted'){
-										$noty.close();
-										noty({
-											text: html.data,
-											timeout: 3500, type: 'error',
-										});
-									}
-									else if(html.type == 'ok'){
-										jQuery('#status_id_'+I).fadeOut('slow');
-										$noty.close();
-										noty({
-											text: html.data,
-											timeout: 3500, type: 'success',
-										});
+									$noty.close();
+									switch(html.type)
+									{
+										case 'error':
+											noty({
+												text: html.data,
+												timeout: 3500, type: 'error',
+											});
+										break;
+										case 'deleted':
+											noty({
+												text: html.data,
+												timeout: 3500, type: 'error',
+											});
+										break;
+										case 'ok':
+											jQuery('#status_id_'+I).fadeOut('slow');
+											noty({
+												text: html.data,
+												timeout: 3500, type: 'success',
+											});
+										break;
 									}
 								},
 								error: function (html){
