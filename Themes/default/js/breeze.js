@@ -231,7 +231,6 @@
 							jQuery.ajax({
 								type: 'POST',
 								url: urlParam + ';js=1',
-								data: ({bid : I, type : typeMethod}),
 								cache: false,
 								dataType: 'json',
 								success: function(html){
