@@ -334,7 +334,7 @@ function breezeBuddyRequest()
 
 		// @todo let the user to send a customized message/title
 		$subject = $text->getText('buddyrequest_confirmed_subject');
-		$message = sprintf($text->getText('buddyrequest_confirmed_message'), $user_info['link']);
+		$message = $text->getText('buddyrequest_confirmed_message');
 
 		sendpm($recipients, $subject, $message, false, $from);
 
