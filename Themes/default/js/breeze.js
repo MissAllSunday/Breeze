@@ -305,27 +305,28 @@
 								cache: false,
 								dataType: 'json',
 								success: function(html){
-									if(html.type == 'error'){
-										$noty.close();
-										noty({
-											text: html.data,
-											timeout: 3500, type: 'error',
-										});
-									}
-									else if(html.type == 'deleted'){
-										$noty.close();
-										noty({
-											text: html.data,
-											timeout: 3500, type: 'error',
-										});
-									}
-									else if(html.type == 'ok'){
-										jQuery('#status_id_'+I).fadeOut('slow');
-										$noty.close();
-										noty({
-											text: html.data,
-											timeout: 3500, type: 'success',
-										});
+									$noty.close();
+									switch(html.type)
+									{
+										case 'error':
+											noty({
+												text: html.data,
+												timeout: 3500, type: 'error',
+											});
+										break;
+										case 'deleted':
+											noty({
+												text: html.data,
+												timeout: 3500, type: 'error',
+											});
+										break;
+										case 'ok':
+											jQuery('#status_id_'+I).fadeOut('slow');
+											noty({
+												text: html.data,
+												timeout: 3500, type: 'success',
+											});
+										break;
 									}
 								},
 								error: function (html){
