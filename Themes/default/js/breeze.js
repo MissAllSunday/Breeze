@@ -287,6 +287,7 @@
 				var element = jQuery(this);
 				var I = element.attr('id');
 				var typeMethod = 'status';
+				var urlParam = element.attr('href');
 
 				// Show a nice confirmation box
 				noty({
@@ -298,8 +299,7 @@
 						addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
 							jQuery.ajax({
 								type: 'POST',
-								url: smf_scripturl + '?action=breezeajax;sa=delete;js=1',
-								data: ({bid : I, type : typeMethod}),
+								url: urlParam + ';js=1',
 								cache: false,
 								dataType: 'json',
 								success: function(html){
