@@ -260,7 +260,7 @@ $txt['Breeze_buddyrequest_list_message'] = 'Message';
 $txt['Breeze_buddyrequest_list_confirm'] = 'Confirm';
 $txt['Breeze_buddyrequest_list_decline'] = 'Decline';
 $txt['Breeze_buddyrequest_confirmed_subject'] = 'Buddy request accepted.';
-$txt['Breeze_buddyrequest_confirmed_message'] ='%s has confirmed your buddy request';
+$txt['Breeze_buddyrequest_confirmed_message'] ='I have confirmed and accepted your buddy request';
 $txt['Breeze_buddyrequest_confirmed_inner_message'] = 'You successfully confirmed the request';
 $txt['Breeze_buddyrequest_confirmed_inner_message_de'] = 'You successfully declined the request';
 
