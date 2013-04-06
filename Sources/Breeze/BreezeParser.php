@@ -41,7 +41,7 @@ if (!defined('SMF'))
 
 class BreezeParser
 {
-	private $notification;
+	protected $regex;
 
 	function __construct($settings, $tools)
 	{
@@ -50,39 +50,30 @@ class BreezeParser
 
 		// Regex stuff
 		$this->regex = array(
-			'url' => '~(?<=[\s>\.(;\'"]|^)((?:http|https)://[\w\-_%@:|]+(?:\.[\w\-_%]+)*(?::\d+)?(?:/[\w\-_\~%\.@!,\?&;=#(){}+:\'\\\\]*)*[/\w\-_\~%@\?;=#}\\\\])~i',
 			'mention' => '~@\(([\s\w,;-_\[\]\\\/\+\.\~\$\!]+), ([0-9]+)\)~u',
 		);
 	}
 
 	public function display($string)
 	{
+		if (empty($string))
+			return false;
+
 		$this->s = $string;
-		$temp = get_class_methods('BreezeParser');
-		$temp = $this->tools->remove($temp, array('__construct', 'display'), false);
+		$temp = $this->tools->remove(get_class_methods(__CLASS__), array('__construct', 'display'), false);
 
 		foreach ($temp as $t)
-			$this->s = $this->$t($this->s);
+			$this->$t();
 
 		return $this->s;
 	}
 
-	// Convert any valid urls on to links
-	protected function urltoLink($s)
-	{
-		if (preg_match_all($this->regex['url'], $s, $matches))
-			foreach($matches[0] as $m)
-				$s = str_replace($m, '<a href="'.$m.'" class="bbc_link" target="_blank">'.$m.'</a>', $s);
-
-		return $s;
-	}
-
-	protected function mention($s)
+	protected function mention()
 	{
 		global $scripturl;
 
 		// Search for all possible names
-		if (preg_match_all($this->regex['mention'], $s, $matches, PREG_SET_ORDER))
+		if (preg_match_all($this->regex['mention'], $this->s, $matches, PREG_SET_ORDER))
 		{
 			// Find any instances
 			foreach ($matches as $query)
@@ -93,14 +84,12 @@ class BreezeParser
 			}
 
 			// Do the replacement already
-			$s = str_replace($find, $replace, $s);
-
-			// We are done mutilating the string, lets returning it
-			return $s;
+			$this->s = str_replace($find, $replace, $this->s);
 		}
+	}
 
-		// Nothing was found
-		else
-			return $s;
+	protected function smf_parse()
+	{
+		$this->s = parse_bbc($this->s);
 	}
 }

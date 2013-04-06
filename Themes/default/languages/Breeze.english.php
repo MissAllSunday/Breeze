@@ -113,6 +113,8 @@ $txt['Breeze_user_settings_notification_wall'] = 'Send me a pm when someone else
 $txt['Breeze_user_settings_notification_wall_sub'] = 'This will only apply for new status.';
 $txt['Breeze_user_permissions_name'] = 'Permissions';
 $txt['Breeze_user_modules_name'] = 'Modules';
+$txt['Breeze_user_modules_visits_none'] = 'There are no recent visits';
+$txt['Breeze_user_modules_buddies_none'] = 'This user currently doesn\'t have any buddies';
 
 
 // Admin Settings
@@ -258,7 +260,7 @@ $txt['Breeze_buddyrequest_list_message'] = 'Message';
 $txt['Breeze_buddyrequest_list_confirm'] = 'Confirm';
 $txt['Breeze_buddyrequest_list_decline'] = 'Decline';
 $txt['Breeze_buddyrequest_confirmed_subject'] = 'Buddy request accepted.';
-$txt['Breeze_buddyrequest_confirmed_message'] ='%s has confirmed your buddy request';
+$txt['Breeze_buddyrequest_confirmed_message'] ='I have confirmed and accepted your buddy request';
 $txt['Breeze_buddyrequest_confirmed_inner_message'] = 'You successfully confirmed the request';
 $txt['Breeze_buddyrequest_confirmed_inner_message_de'] = 'You successfully declined the request';
 

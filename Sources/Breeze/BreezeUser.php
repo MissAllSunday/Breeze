@@ -105,7 +105,8 @@ function breezeWall()
 		$context['Breeze']['views'] = breezeTrackViews();
 
 		// Load their data
-		$tools->loadUserInfo(array_keys($context['Breeze']['views']));
+		if (!empty($context['Breeze']['views']))
+			$tools->loadUserInfo(array_keys($context['Breeze']['views']));
 	}
 
 	// Show buddies only if there is something to show
@@ -333,7 +334,7 @@ function breezeBuddyRequest()
 
 		// @todo let the user to send a customized message/title
 		$subject = $text->getText('buddyrequest_confirmed_subject');
-		$message = sprintf($text->getText('buddyrequest_confirmed_message'), $user_info['link']);
+		$message = $text->getText('buddyrequest_confirmed_message');
 
 		sendpm($recipients, $subject, $message, false, $from);
 
