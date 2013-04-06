@@ -177,7 +177,6 @@ function template_user_wall()
 					<ul class="reset breeze_top_profile_views">';
 
 		foreach ($context['Breeze']['views'] as $profile_views)
-		{
 			echo '
 						<li class="windowbg2 breeze_profile_views_block">
 							<div class="cat_bar">
@@ -194,16 +193,16 @@ function template_user_wall()
 								<span></span>
 							</span>
 						</li>';
-		}
 
 		echo '
 					</ul>
 				</div>';
 	}
 
-	// User doesn't have any buddies
+	// User doesn't have any visitors
 	else
 		echo '<p class="windowbg description" style="display: none;" id="tabs_views">', $txt['Breeze_user_modules_visits_none'] ,'</p>';
+
 	// End of profile visitors
 
 	// Buddies tab
@@ -214,15 +213,21 @@ function template_user_wall()
 					<ul class="reset breeze_top_profile_views">';
 
 		foreach ($context['member']['buddies'] as $buddies)
-		{
 			echo '
 						<li class="windowbg2 breeze_profile_views_block">
-							<ul class="breeze_profile_views_inner reset">
-								<li class="breeze_profile_views_name"><h1 class="titlebg">', $context['Breeze']['user_info'][$buddies]['link'] ,'</h1></li>
-								<li class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$buddies]['facebox'] ,'</li>
-							</ul>
+							<div class="cat_bar">
+								<h3 class="catbg">', $context['Breeze']['user_info'][$buddies]['link'] ,'</h3>
+							</div>
+							<span class="upperframe">
+								<span></span>
+							</span>
+							<div class="roundframe">
+								<p class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$buddies]['facebox'] ,'</p>
+							</div>
+							<span class="lowerframe">
+								<span></span>
+							</span>
 						</li>';
-		}
 
 		echo '
 					</ul>
