@@ -163,9 +163,10 @@ class BreezeForm
 		return $this->addElement($element);
 	}
 
-	function addHTML($html)
+	function addHTML($text, $html)
 	{
 		$element['type'] = 'html';
+		$element['text'] = $text;
 		$element['html'] = $html;
 
 		return $this->addElement($element);
@@ -212,7 +213,8 @@ class BreezeForm
 						'. $el['html'] .'
 					</dd>';
 					break;
-				case 'hr':
+				case 'hr'
+				case 'html':
 					$this->buffer .= '</dl>
 						'. $el['html'] .'
 					<dl class="settings">';
