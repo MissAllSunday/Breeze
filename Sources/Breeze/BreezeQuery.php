@@ -1095,9 +1095,6 @@ class BreezeQuery extends Breeze
 	 */
 	public function deletevLog($user)
 	{
-		// We don't need this no more
-		$this->killCache($this->_tables['noti']['name'] . '-'. $user);
-
 		// Delete!
 		$this->_smcFunc['db_query']('', '
 			DELETE

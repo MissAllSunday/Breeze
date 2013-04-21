@@ -545,6 +545,16 @@ function template_member_options()
 {
 	global $context, $settings, $options, $scripturl, $modSettings, $txt;
 
+	// Get the message from the server
+	$serverResponse = Breeze::sGlobals('get');
+
+	// Show a nice confirmation message for those without JavaScript
+	if ($serverResponse->getValue('m') == true)
+		echo
+		'<div '. $serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"' ,'>
+			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
+		</div>';
+
 	// The main containing header.
 	echo '
 		<form action="', $scripturl, '?action=profile;area=breezesettings;save" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator" enctype="multipart/form-data" onsubmit="return checkProfileSubmit();">
