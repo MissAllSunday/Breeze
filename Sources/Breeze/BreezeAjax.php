@@ -506,6 +506,8 @@ class BreezeAjax
 	 */
 	protected function cleanLog()
 	{
+		global $user_info;
+
 		checkSession('request', '', false);
 
 		// Get the global vars
@@ -515,7 +517,8 @@ class BreezeAjax
 		$log = $this->_data->getValue('log');
 		$user = $this->_data->getValue('u');
 
-		if (empty($log) || empty($user))
+		// An extra check
+		if (empty($log) || empty($user) || $user_info['id'] != $user)
 			return false;
 
 		// Ready to go!
