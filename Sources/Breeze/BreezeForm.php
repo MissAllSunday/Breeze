@@ -163,6 +163,14 @@ class BreezeForm
 		return $this->addElement($element);
 	}
 
+	function addHTML($html)
+	{
+		$element['type'] = 'html';
+		$element['html'] = $html;
+
+		return $this->addElement($element);
+	}
+
 	function display()
 	{
 		$this->buffer .= '<dl class="settings">';

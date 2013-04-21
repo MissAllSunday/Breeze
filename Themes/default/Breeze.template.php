@@ -563,6 +563,9 @@ function template_member_options()
 		// Print the form
 		echo $context['Breeze']['UserSettings']['Form'];
 
+		// Set a link for cleaning the visitors log
+		echo '<a href="', $scripturl, '?action=profile;sa=cleanvLog">Clean visitors log</a>';
+
 
 	// Show the standard "Save Settings" profile button.
 	template_profile_save();
