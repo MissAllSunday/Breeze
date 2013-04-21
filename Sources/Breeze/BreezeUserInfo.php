@@ -104,7 +104,6 @@ class BreezeUserInfo
 		// Don't show these things for guests.
 		if (!$user['is_guest'])
 		{
-
 			// Show the post group if and only if they have no other group or the option is on, and they are in a post group.
 			if ((empty($settings['hide_post_group']) || $user['group'] == '') && $user['post_group'] != '')
 				$context['Breeze']['user_info'][$user['id']]['data'] .= '<li class="postgroup">'. $user['post_group']. '</li>';
@@ -184,5 +183,19 @@ class BreezeUserInfo
 			<span class="botslice"><span></span></span>
 			</div>
 		</div>';
+	}
+
+	// Poster is a guest
+	public static function guest($u)
+	{
+		global $txt, $context;
+
+		// Guest don't have that many options...
+		$context['Breeze']['user_info'][$u] = array(
+			'facebox' => $txt['guest_title'],
+			'link' => $txt['guest_title'],
+			'data' => '',
+			'name' => $txt['guest_title']
+		);
 	}
 }
