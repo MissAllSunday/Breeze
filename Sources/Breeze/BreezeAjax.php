@@ -84,6 +84,7 @@ class BreezeAjax
 			'notimark' => 'notimark',
 			'notidelete' => 'notidelete',
 			'usersmention' => 'usersMention',
+			'cleanlog' => 'cleanLog'
 		);
 
 		// Not using JavaScript?
@@ -495,6 +496,24 @@ class BreezeAjax
 		// Just pass the result directly
 		$this->_response = $this->_query->userMention();
 		return;
+	}
+
+	/**
+	 * BreezeAjax::cleanLog()
+	 *
+	 * Deletes the visitors log
+	 * @return void
+	 */
+	protected function cleanLog()
+	{
+		checkSession('request', '', false);
+
+		// Get the global vars
+		$this->_data = Breeze::sGlobals('request');
+
+		// Get the data
+		$log = $this->_data->getValue('log');
+		$user = $this->_data->getValue('u');
 	}
 
 	/**

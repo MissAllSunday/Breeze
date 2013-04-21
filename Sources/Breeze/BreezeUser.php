@@ -219,7 +219,7 @@ function breezeSettings()
 	// Clean visits log
 	$form->addHTML(
 		'clean_visits',
-		'<a href="'. $scripturl .'?action=breezeajax;sa=cleanLog;log=visitors">%s</a>'
+		'<a href="'. $scripturl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['member']['id'] .'">%s</a>'
 	);
 
 	// Send the form to the template
