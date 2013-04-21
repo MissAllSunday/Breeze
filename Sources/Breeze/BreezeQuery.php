@@ -1097,11 +1097,12 @@ class BreezeQuery extends Breeze
 	{
 		// Delete!
 		$this->_smcFunc['db_query']('', '
-			DELETE
-			FROM {db_prefix}' . $this->_tables['members']['table'] . '
+			UPDATE {db_prefix}' . $this->_tables['members']['table'] . '
+			SET breeze_profile_views = {string:empty}
 			WHERE id_member = {int:id}',
 			array(
-				'id' => (int) $user
+				'id' => (int) $user,
+				'empty' => ''
 			)
 		);
 	}

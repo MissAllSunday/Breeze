@@ -527,7 +527,7 @@ class BreezeAjax
 
 		// Se the redirect url
 		if (true == $this->noJS)
-			$this->redirectURL = 'action=profile;area=breezesettings;u='. $user;
+			$this->redirectURL = 'action=profile;area=breezesettings;m=noti_visits_clean;u='. $user;
 	}
 
 	/**
