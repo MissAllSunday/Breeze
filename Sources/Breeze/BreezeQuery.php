@@ -1086,6 +1086,27 @@ class BreezeQuery extends Breeze
 		return $return;
 	}
 
+	/**
+	 * BreezeQuery::deletevLog()
+	 *
+	 * Deletes the specific visits log entry from the DB
+	 * @param int $user the user ID
+	 * @return void
+	 */
+	public function deleteViews($user)
+	{
+		// Delete!
+		$this->_smcFunc['db_query']('', '
+			UPDATE {db_prefix}' . $this->_tables['members']['table'] . '
+			SET breeze_profile_views = {string:empty}
+			WHERE id_member = {int:id}',
+			array(
+				'id' => (int) $user,
+				'empty' => ''
+			)
+		);
+	}
+
 	public function userMention()
 	{
 		global $smcFunc;

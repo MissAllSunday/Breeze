@@ -78,7 +78,7 @@ $txt['Breeze_user_settings_enable_wall_sub'] = 'If you want to use your wall, yo
 $txt['Breeze_user_settings_enable_buddies_tab'] = 'Enable the Buddies tab?';
 $txt['Breeze_user_settings_enable_buddies_tab_sub'] = 'If this is enable, a new tab will be visible, this tab will contain all your confirmed buddies';
 $txt['Breeze_user_settings_how_many_mentions_options'] = 'How many users will be displayed as options when mentioning an user';
-$txt['Breeze_user_settings_how_many_mentions_options_sub'] = 'for example, if you set this on 5 then when metioning you will see 5 possible options to chose from.';
+$txt['Breeze_user_settings_how_many_mentions_options_sub'] = 'for example, if you set this on 5 then when mentioning you will see 5 possible options to chose from.';
 $txt['Breeze_user_settings_enable_visits_tab'] = 'Enable the visits tab?';
 $txt['Breeze_user_settings_enable_visits_tab_sub'] = 'This tab will show the latest visitors to your wall.';
 $txt['Breeze_user_settings_visits_module_timeframe'] = 'The time frame to count the visits from.';
@@ -87,6 +87,8 @@ $txt['Breeze_user_settings_visits_module_timeframe_hour'] = 'Hour';
 $txt['Breeze_user_settings_visits_module_timeframe_day'] = 'Day';
 $txt['Breeze_user_settings_visits_module_timeframe_week'] = 'Week';
 $txt['Breeze_user_settings_visits_module_timeframe_month'] = 'Month';
+$txt['Breeze_user_settings_clean_visits'] = 'Clean the visits log';
+$txt['Breeze_user_settings_clean_visits_sub'] = 'Removes all visits from your visits tab.';
 
 // Modules
 $txt['Breeze_user_settings_enable_buddies'] = 'Enable the "Buddies" module.';
@@ -144,7 +146,7 @@ $txt['Breeze_admin_settings_enablegeneralwall'] = 'Enable General Wall';
 $txt['Breeze_admin_settings_enablegeneralwall_sub'] = 'If enable, a general wall will appear, in this general wall the user will be able to see his/her buddie\'s status and recent activity';
 $txt['Breeze_admin_settings_menuposition'] = 'Select the position for the general Wall button.';
 $txt['Breeze_admin_settings_menuposition_sub'] = 'By default is next to the home button.';
-$txt['Breeze_admin_settings_enable'] = 'Enable the Breeze mod';
+$txt['Breeze_admin_settings_enable'] = 'Enable Breeze mod';
 $txt['Breeze_admin_settings_enable_sub'] = 'The master setting, this must be enable for the mod to work properly.';
 $txt['Breeze_admin_settings_home'] = 'Home';
 $txt['Breeze_admin_settings_help'] = 'Help';
@@ -233,6 +235,7 @@ $txt['Breeze_noti_unmarkasread_after'] = 'You have successfully marked this noti
 $txt['Breeze_noti_markasread_after'] = 'You have successfully marked this notification as read';
 $txt['Breeze_noti_markasreaddeleted_after'] = 'This notification was already deleted or is not a valid entry.';
 $txt['Breeze_noti_delete_after'] = 'You have successfully deleted this notification';
+$txt['Breeze_noti_visits_clean'] = 'You have successfully cleaned your visitors log';
 $txt['Breeze_noti_novalid_after'] = 'This isn\'t a valid action.';
 $txt['Breeze_noti_none'] = 'You don\'t have any notifications';
 
