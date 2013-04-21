@@ -1093,7 +1093,7 @@ class BreezeQuery extends Breeze
 	 * @param int $user the user ID
 	 * @return void
 	 */
-	public function deletevLog($user)
+	public function deleteViews($user)
 	{
 		// Delete!
 		$this->_smcFunc['db_query']('', '

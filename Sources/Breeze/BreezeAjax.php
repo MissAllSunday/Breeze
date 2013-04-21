@@ -519,7 +519,7 @@ class BreezeAjax
 			return false;
 
 		// Ready to go!
-		$this->_query->deletevLog($user);
+		$this->_query->deleteViews($user);
 		$this->_response = array(
 			'data' => $this->_text->getText('noti_visits_clean'),
 			'type' => 'ok'
