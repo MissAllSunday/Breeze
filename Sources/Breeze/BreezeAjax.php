@@ -514,6 +514,20 @@ class BreezeAjax
 		// Get the data
 		$log = $this->_data->getValue('log');
 		$user = $this->_data->getValue('u');
+
+		if (empty($log) || empty($user))
+			return false;
+
+		// Ready to go!
+		$this->_query->deletevLog($user);
+		$this->_response = array(
+			'data' => $this->_text->getText('noti_visits_clean'),
+			'type' => 'ok'
+		);
+
+		// Se the redirect url
+		if (true == $this->noJS)
+			$this->redirectURL = 'action=profile;area=breezesettings;u='. $user;
 	}
 
 	/**
