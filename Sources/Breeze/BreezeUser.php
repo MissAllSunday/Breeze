@@ -117,7 +117,7 @@ function breezeWall()
 // Shows a form for users to set up their wall as needed.
 function breezeSettings()
 {
-	global $context, $memID, $breezeController;
+	global $context, $memID, $breezeController, $scripturl, $txt;
 
 	Breeze::load('Profile-Modify');
 	loadtemplate(Breeze::$name);
@@ -214,6 +214,12 @@ function breezeSettings()
 				!empty($context['member']['options']['Breeze_visits_timeframe']) && $context['member']['options']['Breeze_visits_timeframe'] == 'Month' ? 'selected' : ''
 			),
 		)
+	);
+
+	// Clean visits log
+	$form->addHTML(
+		'clean_visits',
+		'<a href="'. $scripturl .'?action=breezeajax;sa=cleanLog;log=visitors">%s</a>'
 	);
 
 	// Send the form to the template

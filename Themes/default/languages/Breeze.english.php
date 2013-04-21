@@ -87,6 +87,8 @@ $txt['Breeze_user_settings_visits_module_timeframe_hour'] = 'Hour';
 $txt['Breeze_user_settings_visits_module_timeframe_day'] = 'Day';
 $txt['Breeze_user_settings_visits_module_timeframe_week'] = 'Week';
 $txt['Breeze_user_settings_visits_module_timeframe_month'] = 'Month';
+$txt['Breeze_user_settings_clean_visits'] = 'Clean the visits log';
+$txt['Breeze_user_settings_clean_visits_sub'] = 'Removes all visits from your visits tab.';
 
 // Modules
 $txt['Breeze_user_settings_enable_buddies'] = 'Enable the "Buddies" module.';

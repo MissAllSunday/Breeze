@@ -213,11 +213,19 @@ class BreezeForm
 						'. $el['html'] .'
 					</dd>';
 					break;
-				case 'hr'
-				case 'html':
+				case 'hr':
 					$this->buffer .= '</dl>
 						'. $el['html'] .'
 					<dl class="settings">';
+					break;
+				case 'html':
+					$this->buffer .= '<dt>
+						<span style="font-weight:bold;">'. $this->text->getText('user_settings_'. $el['text']) .'</span>
+						<br /><span class="smalltext">'. $this->text->getText('user_settings_'.$el['text'] .'_sub') .'</span>
+					</dt>
+					<dd>
+						'. sprintf($el['html'], $this->text->getText('user_settings_'. $el['text'])) .'
+					</dd>';
 					break;
 			}
 		}
