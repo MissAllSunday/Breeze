@@ -70,7 +70,7 @@ function template_user_wall()
 	// Show a nice confirmation message for those without JavaScript
 	if ($serverResponse->getValue('m') == true)
 		echo
-		'<div '. $serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"' ,'>
+		'<div '. ($serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"') ,'>
 			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
 		</div>';
 
@@ -453,7 +453,7 @@ function template_singleStatus()
 	// Show a nice confirmation message for those without JavaScript
 	if ($serverResponse->getValue('m') == true)
 		echo
-		'<div '. $serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"' ,'>
+		'<div '. ($serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"') ,'>
 			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
 		</div>';
 
@@ -551,7 +551,7 @@ function template_member_options()
 	// Show a nice confirmation message for those without JavaScript
 	if ($serverResponse->getValue('m') == true)
 		echo
-		'<div '. $serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"' ,'>
+		'<div '. ($serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"') ,'>
 			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
 		</div>';
 
