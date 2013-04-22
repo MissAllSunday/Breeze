@@ -337,18 +337,7 @@ ul.breeze_top_profile_views
 #breezeTop span {
 	height: 10px;
 	display: block;
-	background: #ddd url(../images/sort_up.gif) no-repeat center center;
-
-	/* rounded corners */
-	-webkit-border-radius: 15px;
-	-moz-border-radius: 15px;
-	border-radius: 15px;
-
-	/* transition */
-	-webkit-transition: 1s;
-	-moz-transition: 1s;
-	transition: 1s;
+	background: url(../images/sort_up.gif) no-repeat center center;
 }
 #breezeTop a:hover span {
-	background-color: #777;
 }
