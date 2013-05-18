@@ -32,3 +32,17 @@
  *
  */
 
+jQuery(function() {
+	jQuery('#breezeTabs > div').hide();
+	jQuery('#breezeTabs div:first').fadeIn('slow');
+	jQuery('#breezeTabs ul li:first').addClass('active');
+	jQuery('#breezeTabs ul li a').click(function(){
+		jQuery('#breezeTabs ul li.active').removeClass('active');
+		jQuery(this).parent().addClass('active');
+		var selectedTab=jQuery(this).attr('href');
+		jQuery('#breezeTabs > div').fadeOut('slow', function() {
+			jQuery(selectedTab).delay(100).fadeIn('slow');
+		});        
+		return false;
+	});
+});
