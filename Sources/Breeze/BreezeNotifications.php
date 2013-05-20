@@ -170,6 +170,8 @@ class BreezeNotifications
 		if (empty($user))
 			return false;
 
+		$userstoLoad = array();
+
 		// @todo, Avoid pointless foreachs, get what we need directoy from the DB!
 		$temp = $this->_query->getNotificationByUser($user);
 
@@ -182,7 +184,14 @@ class BreezeNotifications
 
 				else
 					$temp[$t['id']] = $t;
+
+				// Collect users data
+				$userstoLoad[] = $t['user'];
+				$userstoLoad[] = $t['user_to'];
 			}
+
+		// Load users data
+		BreezeTools::loadUserInfo(array_unique($userstoLoad));
 
 		return $temp;
 	}
@@ -241,7 +250,11 @@ class BreezeNotifications
 			foreach ($this->_all as $single)
 				if (in_array($single['type'], $this->types))
 				{
+					// Get the users to load
+					$userstoLoad[] = $single['user'];
+					$userstoLoad[] = $single['user_to'];
 					$call = 'do' . ucfirst($single['type']);
+
 					$this->$call($single);
 				}
 
@@ -257,7 +270,6 @@ class BreezeNotifications
 		$(document).ready(function()
 		{
 ';
-
 				foreach ($this->_messages as $m)
 					$context['insert_after_template'] .= '
 	var noti_id_' . $m['id'] . ' = \'' . $m['id'] . '\';

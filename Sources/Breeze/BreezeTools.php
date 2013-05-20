@@ -168,13 +168,13 @@ class BreezeTools
 			$id = array($id);
 
 		// $memberContext gets set and globalized, we're gonna take advantage of it
-		loadMemberData($id, false, 'profile');
+		$loaded_ids = loadMemberData($id, false, 'profile');
 
 		// Set the context var
 		foreach ($id as $u)
 		{
 			// Avoid SMF showing an awful error message
-			if (isset($memberContext[$u]) && !empty($memberContext[$u]))
+			if (in_array($u, $loaded_ids))
 			{
 				loadMemberContext($u);
 
