@@ -927,10 +927,6 @@ class BreezeQuery extends Breeze
 	 */
 	public function getNotificationByUser($user)
 	{
-		// Generic vars
-		$generic_user = array();
-		$generic_user_to = array();
-
 		// Use the cache please...
 		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, 120)) == null)
 		{
@@ -955,30 +951,13 @@ class BreezeQuery extends Breeze
 					'viewed' => $row['viewed'],
 					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
 				);
-
-				$generic_user[] = $row['user'];
-				$generic_user_to[] = $row['user_to'];
 			}
-
-			// Merge all the users arrays
-			$usersArray = array_merge($generic_user, $generic_user_to);
 
 			$this->_smcFunc['db_free_result']($result);
 
 			// Cache this beauty
 			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, $return, 120);
 		}
-
-		// Load the user's data
-		if (!empty($usersArray))
-			cache_put_data('notiUsers-'. $user, $usersArray, 120);
-
-		else
-			$usersArray = cache_get_data('notiUsers-'. $user, 120);
-
-		// Load only if there is something to load
-		if (!empty($usersArray))
-			$this->tools->loadUserInfo(array_filter(array_unique($usersArray), 'strlen'));
 
 		return $return;
 	}

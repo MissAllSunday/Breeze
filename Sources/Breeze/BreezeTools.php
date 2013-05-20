@@ -167,7 +167,7 @@ class BreezeTools
 		if (!is_array($id))
 			$id = array($id);
 
-		// $memberContext gets set anf globalized, we're gonna take advantage of it
+		// $memberContext gets set and globalized, we're gonna take advantage of it
 		loadMemberData($id, false, 'profile');
 
 		// Set the context var
