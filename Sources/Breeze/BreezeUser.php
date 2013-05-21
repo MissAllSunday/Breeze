@@ -248,13 +248,14 @@ function breezeNotifications()
 	// Create the unique message for each noti @todo, this should be moved to BreezeNotifications
 	if (!empty($tempNoti))
 		foreach ($tempNoti as $single)
-		{
-			if (in_array($single['type'], $notifications->types))
+			if (!empty($single['type']))
 			{
-				$call = 'do' . ucfirst($single['type']);
-				$notifications->$call($single, true);
+				if (in_array($single['type'], $notifications->types))
+				{
+					$call = 'do' . ucfirst($single['type']);
+					$notifications->$call($single, true);
+				}
 			}
-		}
 
 	// Pass the info to the template
 	$context['Breeze']['noti'] = $notifications->getMessages();

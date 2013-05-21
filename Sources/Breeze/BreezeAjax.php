@@ -394,7 +394,7 @@ class BreezeAjax
 		}
 
 		// We must make sure this noti really exists, we just must!!!
-		$noti_temp = $this->_notifications->getToUser($user, true);
+		$noti_temp = $this->_query->getNotificationByUser($user, true);
 
 		if (empty($noti_temp) || !isset($noti_temp[$noti]))
 		{
