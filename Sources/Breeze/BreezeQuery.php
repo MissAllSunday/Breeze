@@ -798,7 +798,7 @@ class BreezeQuery extends Breeze
 	/**
 	 * BreezeQuery::noti()
 	 *
-	 * Loads all the notifications, uses cahce when possible
+	 * Loads all the notifications, uses cache when possible
 	 * @return array
 	 */
 	protected function noti()
@@ -925,19 +925,20 @@ class BreezeQuery extends Breeze
 	 * @param int $user The user from where the notifications will be fetched
 	 * @return array
 	 */
-	public function getNotificationByUser($user)
+	public function getNotificationByUser($user, $all = false)
 	{
-		// Generic vars
-		$generic_user = array();
-		$generic_user_to = array();
-
 		// Use the cache please...
 		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, 120)) == null)
 		{
+			/* There is no notifications */
+			$return['users'] = array();
+			$return['data'] = array();
+
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
 				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
 				WHERE user_to = {int:user_to}
+				'. (empty($all) ? 'AND viewed = 0' : '') .'
 				', array(
 					'user_to' => (int) $user,
 				)
@@ -946,7 +947,7 @@ class BreezeQuery extends Breeze
 			// Populate the array like a boss!
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 			{
-				$return[$row['id']] = array(
+				$return['data'][$row['id']] = array(
 					'id' => $row['id'],
 					'user' => $row['user'],
 					'user_to' => $row['user_to'],
@@ -956,29 +957,20 @@ class BreezeQuery extends Breeze
 					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
 				);
 
-				$generic_user[] = $row['user'];
-				$generic_user_to[] = $row['user_to'];
+				// Collect the users
+				$return['users'][] = $row['user_to'];
+				$return['users'][] = $row['user'];
 			}
-
-			// Merge all the users arrays
-			$usersArray = array_merge($generic_user, $generic_user_to);
 
 			$this->_smcFunc['db_free_result']($result);
 
-			// Cache this beauty
-			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, $return, 120);
+			// Delete duplicate IDs
+			$return['users'] = array_unique($return['users']);
+
+			// Cache this beauty for the most used stream feature
+			if (empty($all))
+				cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, $return, 120);
 		}
-
-		// Load the user's data
-		if (!empty($usersArray))
-			cache_put_data('notiUsers-'. $user, $usersArray, 120);
-
-		else
-			$usersArray = cache_get_data('notiUsers-'. $user, 120);
-
-		// Load only if there is something to load
-		if (!empty($usersArray))
-			$this->tools->loadUserInfo(array_filter(array_unique($usersArray), 'strlen'));
 
 		return $return;
 	}
@@ -1084,6 +1076,27 @@ class BreezeQuery extends Breeze
 
 		// Return the data
 		return $return;
+	}
+
+	/**
+	 * BreezeQuery::deletevLog()
+	 *
+	 * Deletes the specific visits log entry from the DB
+	 * @param int $user the user ID
+	 * @return void
+	 */
+	public function deleteViews($user)
+	{
+		// Delete!
+		$this->_smcFunc['db_query']('', '
+			UPDATE {db_prefix}' . $this->_tables['members']['table'] . '
+			SET breeze_profile_views = {string:empty}
+			WHERE id_member = {int:id}',
+			array(
+				'id' => (int) $user,
+				'empty' => ''
+			)
+		);
 	}
 
 	public function userMention()

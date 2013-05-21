@@ -158,36 +158,6 @@ class BreezeNotifications
 	}
 
 	/**
-	 * BreezeNotifications::getToUser()
-	 *
-	 * @param int $user
-	 * @param bool $all
-	 * @return array
-	 */
-	public function getToUser($user, $all = false)
-	{
-		// Dont even bother...
-		if (empty($user))
-			return false;
-
-		// @todo, Avoid pointless foreachs, get what we need directoy from the DB!
-		$temp = $this->_query->getNotificationByUser($user);
-
-		// Send those who hasn't been viewed
-		if (!$all && !empty($temp))
-			foreach ($temp as $k => $t)
-			{
-				if (!empty($t['viewed']))
-					unset($temp[$k]);
-
-				else
-					$temp[$t['id']] = $t;
-			}
-
-		return $temp;
-	}
-
-	/**
 	 * BreezeNotifications::getByUser()
 	 *
 	 * @param mixed $user
@@ -232,16 +202,21 @@ class BreezeNotifications
 			return false;
 
 		// Get all the notification for this user
-		$this->_all = $this->getToUser($user);
+		$this->_all = $this->_query->getNotificationByUser($user);
+
+		// Load the users data
+		$this->_tools->loadUserInfo($this->_all['users']);
 
 		// Do this if there is actually something to show
-		if (!empty($this->_all))
+		if (!empty($this->_all['data']))
 		{
 			// Call the methods
-			foreach ($this->_all as $single)
+			foreach ($this->_all['data'] as $single)
 				if (in_array($single['type'], $this->types))
 				{
 					$call = 'do' . ucfirst($single['type']);
+
+					// Call the right method
 					$this->$call($single);
 				}
 
@@ -257,7 +232,6 @@ class BreezeNotifications
 		$(document).ready(function()
 		{
 ';
-
 				foreach ($this->_messages as $m)
 					$context['insert_after_template'] .= '
 	var noti_id_' . $m['id'] . ' = \'' . $m['id'] . '\';

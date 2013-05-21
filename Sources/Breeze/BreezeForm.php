@@ -163,6 +163,15 @@ class BreezeForm
 		return $this->addElement($element);
 	}
 
+	function addHTML($text, $html)
+	{
+		$element['type'] = 'html';
+		$element['text'] = $text;
+		$element['html'] = $html;
+
+		return $this->addElement($element);
+	}
+
 	function display()
 	{
 		$this->buffer .= '<dl class="settings">';
@@ -208,6 +217,15 @@ class BreezeForm
 					$this->buffer .= '</dl>
 						'. $el['html'] .'
 					<dl class="settings">';
+					break;
+				case 'html':
+					$this->buffer .= '<dt>
+						<span style="font-weight:bold;">'. $this->text->getText('user_settings_'. $el['text']) .'</span>
+						<br /><span class="smalltext">'. $this->text->getText('user_settings_'.$el['text'] .'_sub') .'</span>
+					</dt>
+					<dd>
+						'. sprintf($el['html'], $this->text->getText('user_settings_'. $el['text'])) .'
+					</dd>';
 					break;
 			}
 		}

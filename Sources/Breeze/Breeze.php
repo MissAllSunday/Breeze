@@ -202,7 +202,7 @@ class Breeze
 
 			// Any tabs?
 			if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
-				$context['html_headers'] .= '<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.idTabs.min.js"></script>';
+				$context['html_headers'] .= '<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
 
 			// Does the user wants to use infinite scroll?
 			if (!empty($context['member']['options']['Breeze_infinite_scroll']))

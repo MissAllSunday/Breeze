@@ -117,7 +117,7 @@ function breezeWall()
 // Shows a form for users to set up their wall as needed.
 function breezeSettings()
 {
-	global $context, $memID, $breezeController;
+	global $context, $memID, $breezeController, $scripturl, $txt;
 
 	Breeze::load('Profile-Modify');
 	loadtemplate(Breeze::$name);
@@ -216,6 +216,12 @@ function breezeSettings()
 		)
 	);
 
+	// Clean visits log
+	$form->addHTML(
+		'clean_visits',
+		'<a href="'. $scripturl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['member']['id'] .'">%s</a>'
+	);
+
 	// Send the form to the template
 	$context['Breeze']['UserSettings']['Form'] = $form->display();
 }
@@ -237,18 +243,23 @@ function breezeNotifications()
 	$text = $breezeController->get('text');
 	$globals = Breeze::sGlobals('request');
 	$notifications = $breezeController->get('notifications');
-	$tempNoti = $notifications->getToUser($context['member']['id'], true);
+	$tempNoti = $query->getNotificationByUser($context['member']['id'], true);
+
+	// Load the users data
+	if (!empty($tempNoti['users']))
+	BreezeTools::loadUserInfo($tempNoti['users']);
 
 	// Create the unique message for each noti @todo, this should be moved to BreezeNotifications
-	if (!empty($tempNoti))
-		foreach ($tempNoti as $single)
-		{
-			if (in_array($single['type'], $notifications->types))
+	if (!empty($tempNoti['data']))
+		foreach ($tempNoti['data'] as $single)
+			if (!empty($single['type']))
 			{
-				$call = 'do' . ucfirst($single['type']);
-				$notifications->$call($single, true);
+				if (in_array($single['type'], $notifications->types))
+				{
+					$call = 'do' . ucfirst($single['type']);
+					$notifications->$call($single, true);
+				}
 			}
-		}
 
 	// Pass the info to the template
 	$context['Breeze']['noti'] = $notifications->getMessages();
