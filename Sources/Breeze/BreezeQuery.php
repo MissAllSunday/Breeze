@@ -930,6 +930,9 @@ class BreezeQuery extends Breeze
 		// Use the cache please...
 		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, 120)) == null)
 		{
+			$return['users'] = array();
+			$return['data'] = array();
+
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
 				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
