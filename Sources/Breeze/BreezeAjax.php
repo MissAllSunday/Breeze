@@ -84,6 +84,7 @@ class BreezeAjax
 			'notimark' => 'notimark',
 			'notidelete' => 'notidelete',
 			'usersmention' => 'usersMention',
+			'cleanlog' => 'cleanLog'
 		);
 
 		// Not using JavaScript?
@@ -393,9 +394,9 @@ class BreezeAjax
 		}
 
 		// We must make sure this noti really exists, we just must!!!
-		$noti_temp = $this->_notifications->getToUser($user, true);
+		$noti_temp = $this->_query->getNotificationByUser($user, true);
 
-		if (empty($noti_temp) || !isset($noti_temp[$noti]))
+		if (empty($noti_temp['data']) || !isset($noti_temp['data'][$noti]))
 		{
 			// Tell the user about it
 			if (true == $this->noJS)
@@ -408,7 +409,7 @@ class BreezeAjax
 		else
 		{
 			// Send the "viewed" param as a string to avoid issues with boolean values been printed
-			$viewed = !empty($noti_temp[$noti]['viewed']) ? '1' : '0';
+			$viewed = !empty($noti_temp['data'][$noti]['viewed']) ? '1' : '0';
 
 			// All is good, mark this as read
 			$this->_query->markNoti($noti, $user, $viewed);
@@ -419,7 +420,7 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_'. (!empty($noti_temp[$noti]['viewed']) ? 'un' : '') .'markasread;';
+				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_'. (!empty($noti_temp['data'][$noti]['viewed']) ? 'un' : '') .'markasread;';
 
 			// Delete the data to avoid issues
 			$this->_data->unsetVar('content');
@@ -451,9 +452,9 @@ class BreezeAjax
 			return;
 
 		// We must make sure this noti really exists, we just must!!!
-		$noti_temp = $this->_notifications->getToUser($user);
+		$noti_temp = $this->_query->getNotificationByUser($user, true);
 
-		if (empty($noti_temp) || !array_key_exists($noti, $noti_temp))
+		if (empty($noti_temp['data']) || !array_key_exists($noti, $noti_temp['data']))
 		{
 			$this->_response = array(
 				'data' => $this->_text->getText('already_deleted_noti'),
@@ -495,6 +496,41 @@ class BreezeAjax
 		// Just pass the result directly
 		$this->_response = $this->_query->userMention();
 		return;
+	}
+
+	/**
+	 * BreezeAjax::cleanLog()
+	 *
+	 * Deletes the visitors log
+	 * @return void
+	 */
+	protected function cleanLog()
+	{
+		global $user_info;
+
+		checkSession('request', '', false);
+
+		// Get the global vars
+		$this->_data = Breeze::sGlobals('request');
+
+		// Get the data
+		$log = $this->_data->getValue('log');
+		$user = $this->_data->getValue('u');
+
+		// An extra check
+		if (empty($log) || empty($user) || $user_info['id'] != $user)
+			return false;
+
+		// Ready to go!
+		$this->_query->deleteViews($user);
+		$this->_response = array(
+			'data' => $this->_text->getText('noti_visits_clean'),
+			'type' => 'ok'
+		);
+
+		// Se the redirect url
+		if (true == $this->noJS)
+			$this->redirectURL = 'action=profile;area=breezesettings;m=noti_visits_clean;u='. $user;
 	}
 
 	/**

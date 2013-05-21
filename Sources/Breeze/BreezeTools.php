@@ -167,21 +167,24 @@ class BreezeTools
 		if (!is_array($id))
 			$id = array($id);
 
-		// SMF always return the data as an array
-		$array = loadMemberData($id, false, 'profile');
+		// $memberContext gets set and globalized, we're gonna take advantage of it
+		$loaded_ids = loadMemberData($id, false, 'profile');
 
-		// Load the users data if it wasn't loaded already
-		if (!empty($array) && is_array($array))
-			foreach ($array as $u)
+		// Set the context var
+		foreach ($id as $u)
+		{
+			// Avoid SMF showing an awful error message
+			if (in_array($u, $loaded_ids))
 			{
-				if (empty($memberContext[$u]))
-					loadMemberContext($u);
+				loadMemberContext($u);
 
-				// Create the context var
+				// Normal context var
 				BreezeUserInfo::profile($u);
 			}
 
-		else
-			return false;
+			// Poster is a guest
+			else
+				BreezeUserInfo::guest($u);
+		}
 	}
 }

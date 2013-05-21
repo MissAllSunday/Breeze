@@ -70,7 +70,7 @@ function template_user_wall()
 	// Show a nice confirmation message for those without JavaScript
 	if ($serverResponse->getValue('m') == true)
 		echo
-		'<div '. $serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"' ,'>
+		'<div '. ($serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"') ,'>
 			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
 		</div>';
 
@@ -143,17 +143,6 @@ function template_user_wall()
 					</span>
 				</div>';
 
-		// Links for tabs show it if there is at least 1 tab
-		if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
-			echo '
-				<div class="windowbg">
-					<ul id="breeze_tabLinks" class="idTabs">
-						<li><a href="#tabs_wall" class="selected">', $txt['Breeze_tabs_wall'] ,'</a></li>
-						', !empty($context['member']['options']['Breeze_enable_visits_tab']) ? '<li><a href="#tabs_views">'. $txt['Breeze_tabs_views'] .'</a></li>' : '' ,'
-						', !empty($context['member']['options']['Breeze_enable_buddies_tab']) ? '<li><a href="#tabs_buddies">'. $txt['Breeze_tabs_buddies'] .'</a></li>' : '' ,'
-					</ul>
-				</div>';
-
 		echo '
 			</div>';
 
@@ -161,83 +150,29 @@ function template_user_wall()
 
 	// Left side
 	echo '
-			<div class="tabContainer" id="detailedinfo">';
+	<div class="tabContainer" id="detailedinfo">
+	<div id="breezeTabs">';
+
+	// Links for tabs show it if there is at least 1 tab
+	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
+		echo '
+		<ul class="reset">
+			<li><a href="#tabs_wall" class="button_strip_manage">', $txt['Breeze_tabs_wall'] ,'</a></li>
+			', (!empty($context['member']['options']['Breeze_enable_visits_tab']) ? '
+			<li>
+				<a href="#tabs_views">'. $txt['Breeze_tabs_views'] .'</a>
+			</li>' : '') ,'
+			', (!empty($context['member']['options']['Breeze_enable_buddies_tab']) ? '
+			<li>
+				<a href="#tabs_buddies">'. $txt['Breeze_tabs_buddies'] .'</a>
+			</li>' : '') ,'
+		</ul>';
 
 	// Scroll to top
 	echo '
 			<p id="breezeTop">
 				<a href="#wrapper"><span></span>', $txt['Breeze_goTop'] ,'</a>
 			</p>';
-
-	// Profile visitors
-	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) && !empty($context['Breeze']['views']))
-	{
-		echo '
-				<div id="tabs_views" style="display: none;">
-					<ul class="reset breeze_top_profile_views">';
-
-		foreach ($context['Breeze']['views'] as $profile_views)
-			echo '
-						<li class="windowbg2 breeze_profile_views_block">
-							<div class="cat_bar">
-								<h3 class="catbg">', $context['Breeze']['user_info'][$profile_views['user']]['link'] ,'</h3>
-							</div>
-							<span class="upperframe">
-								<span></span>
-							</span>
-							<div class="roundframe">
-								<p class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$profile_views['user']]['facebox'] ,'</p>
-								<p>', $txt['Breeze_general_last_view'] ,': ', $context['breeze']['tools']->timeElapsed($profile_views['last_view']) ,'</p>
-							</div>
-							<span class="lowerframe">
-								<span></span>
-							</span>
-						</li>';
-
-		echo '
-					</ul>
-				</div>';
-	}
-
-	// User doesn't have any visitors
-	else
-		echo '<p class="windowbg description" style="display: none;" id="tabs_views">', $txt['Breeze_user_modules_visits_none'] ,'</p>';
-
-	// End of profile visitors
-
-	// Buddies tab
-	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
-	{
-		echo '
-				<div id="tabs_buddies" style="display: none;">
-					<ul class="reset breeze_top_profile_views">';
-
-		foreach ($context['member']['buddies'] as $buddies)
-			echo '
-						<li class="windowbg2 breeze_profile_views_block">
-							<div class="cat_bar">
-								<h3 class="catbg">', $context['Breeze']['user_info'][$buddies]['link'] ,'</h3>
-							</div>
-							<span class="upperframe">
-								<span></span>
-							</span>
-							<div class="roundframe">
-								<p class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$buddies]['facebox'] ,'</p>
-							</div>
-							<span class="lowerframe">
-								<span></span>
-							</span>
-						</li>';
-
-		echo '
-					</ul>
-				</div>';
-	}
-
-	// User doesn't have any visits
-	else
-		echo '<p class="windowbg description" style="display: none;" id="tabs_views">', $txt['Breeze_user_modules_buddies_none']  ,'</p>';
-	// End of buddies tab
 
 	// Wall div
 	echo '
@@ -361,8 +296,79 @@ function template_user_wall()
 	echo '
 			</div>';
 
+	// Profile visitors
+	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) && !empty($context['Breeze']['views']))
+	{
+		echo '
+				<div id="tabs_views">
+					<ul class="reset breeze_top_profile_views">';
+
+		foreach ($context['Breeze']['views'] as $profile_views)
+			echo '
+						<li class="windowbg2 breeze_profile_views_block">
+							<div class="cat_bar">
+								<h3 class="catbg">', $context['Breeze']['user_info'][$profile_views['user']]['link'] ,'</h3>
+							</div>
+							<span class="upperframe">
+								<span></span>
+							</span>
+							<div class="roundframe">
+								<p class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$profile_views['user']]['facebox'] ,'</p>
+								<p>', $txt['Breeze_general_last_view'] ,': ', $context['breeze']['tools']->timeElapsed($profile_views['last_view']) ,'</p>
+							</div>
+							<span class="lowerframe">
+								<span></span>
+							</span>
+						</li>';
+
+		echo '
+					</ul>
+				</div>';
+	}
+
+	// User doesn't have any visitors
+	else
+		echo '<p class="windowbg description" style="display: none;" id="tabs_views">', $txt['Breeze_user_modules_visits_none'] ,'</p>';
+
+	// End of profile visitors
+
+	// Buddies tab
+	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
+	{
+		echo '
+				<div id="tabs_buddies">
+					<ul class="reset breeze_top_profile_views">';
+
+		foreach ($context['member']['buddies'] as $buddies)
+			echo '
+						<li class="windowbg2 breeze_profile_views_block">
+							<div class="cat_bar">
+								<h3 class="catbg">', $context['Breeze']['user_info'][$buddies]['link'] ,'</h3>
+							</div>
+							<span class="upperframe">
+								<span></span>
+							</span>
+							<div class="roundframe">
+								<p class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$buddies]['facebox'] ,'</p>
+							</div>
+							<span class="lowerframe">
+								<span></span>
+							</span>
+						</li>';
+
+		echo '
+					</ul>
+				</div>';
+	}
+
+	// User doesn't have any visits
+	else
+		echo '<p class="windowbg description" style="display: none;" id="tabs_views">', $txt['Breeze_user_modules_buddies_none']  ,'</p>';
+	// End of buddies tab
+
 	// End of left side
 	echo '
+	</div>
 	</div>
 		<div class="clear"></div>
 	</div>';
@@ -453,7 +459,7 @@ function template_singleStatus()
 	// Show a nice confirmation message for those without JavaScript
 	if ($serverResponse->getValue('m') == true)
 		echo
-		'<div '. $serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"' ,'>
+		'<div '. ($serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"') ,'>
 			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
 		</div>';
 
@@ -545,6 +551,16 @@ function template_member_options()
 {
 	global $context, $settings, $options, $scripturl, $modSettings, $txt;
 
+	// Get the message from the server
+	$serverResponse = Breeze::sGlobals('get');
+
+	// Show a nice confirmation message for those without JavaScript
+	if ($serverResponse->getValue('m') == true)
+		echo
+		'<div '. ($serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"') ,'>
+			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
+		</div>';
+
 	// The main containing header.
 	echo '
 		<form action="', $scripturl, '?action=profile;area=breezesettings;save" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator" enctype="multipart/form-data" onsubmit="return checkProfileSubmit();">
@@ -562,7 +578,6 @@ function template_member_options()
 
 		// Print the form
 		echo $context['Breeze']['UserSettings']['Form'];
-
 
 	// Show the standard "Save Settings" profile button.
 	template_profile_save();
