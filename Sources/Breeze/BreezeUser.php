@@ -243,7 +243,7 @@ function breezeNotifications()
 	$text = $breezeController->get('text');
 	$globals = Breeze::sGlobals('request');
 	$notifications = $breezeController->get('notifications');
-	$tempNoti = $notifications->getToUser($context['member']['id'], true);
+	$tempNoti = $query->getNotificationByUser($context['member']['id'], true);
 
 	// Create the unique message for each noti @todo, this should be moved to BreezeNotifications
 	if (!empty($tempNoti))
