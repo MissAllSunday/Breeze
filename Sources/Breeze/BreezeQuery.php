@@ -798,7 +798,7 @@ class BreezeQuery extends Breeze
 	/**
 	 * BreezeQuery::noti()
 	 *
-	 * Loads all the notifications, uses cahce when possible
+	 * Loads all the notifications, uses cache when possible
 	 * @return array
 	 */
 	protected function noti()
@@ -930,6 +930,7 @@ class BreezeQuery extends Breeze
 		// Use the cache please...
 		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, 120)) == null)
 		{
+			/* There is no notifications */
 			$return['users'] = array();
 			$return['data'] = array();
 
@@ -966,8 +967,9 @@ class BreezeQuery extends Breeze
 			// Delete duplicate IDs
 			$return['users'] = array_unique($return['users']);
 
-			// Cache this beauty
-			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, $return, 120);
+			// Cache this beauty for the most used stream feature
+			if (empty($all))
+				cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, $return, 120);
 		}
 
 		return $return;
