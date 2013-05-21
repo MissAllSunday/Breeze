@@ -247,7 +247,7 @@ function breezeNotifications()
 
 	// Load the users data
 	if (!empty($tempNoti['users']))
-	BreezeToolsloadUserInfo($tempNoti['users']);
+	BreezeTools::loadUserInfo($tempNoti['users']);
 
 	// Create the unique message for each noti @todo, this should be moved to BreezeNotifications
 	if (!empty($tempNoti['data']))

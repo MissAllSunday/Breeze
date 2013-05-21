@@ -452,9 +452,9 @@ class BreezeAjax
 			return;
 
 		// We must make sure this noti really exists, we just must!!!
-		$noti_temp = $this->_notifications->getToUser($user);
+		$noti_temp = $this->_query->getNotificationByUser($user, true);
 
-		if (empty($noti_temp) || !array_key_exists($noti, $noti_temp))
+		if (empty($noti_temp['data']) || !array_key_exists($noti, $noti_temp['data']))
 		{
 			$this->_response = array(
 				'data' => $this->_text->getText('already_deleted_noti'),
