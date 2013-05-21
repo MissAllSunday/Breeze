@@ -205,7 +205,7 @@ class BreezeNotifications
 		$this->_all = $this->_query->getNotificationByUser($user);
 
 		// Load the users data
-		BreezeTools::loadUserInfo($this->_all['users']);
+		$this->_tools->loadUserInfo($this->_all['users']);
 
 		// Do this if there is actually something to show
 		if (!empty($this->_all['data']))
