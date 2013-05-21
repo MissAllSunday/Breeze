@@ -245,9 +245,13 @@ function breezeNotifications()
 	$notifications = $breezeController->get('notifications');
 	$tempNoti = $query->getNotificationByUser($context['member']['id'], true);
 
+	// Load the users data
+	if (!empty($tempNoti['users']))
+	BreezeToolsloadUserInfo($tempNoti['users']);
+
 	// Create the unique message for each noti @todo, this should be moved to BreezeNotifications
-	if (!empty($tempNoti))
-		foreach ($tempNoti as $single)
+	if (!empty($tempNoti['data']))
+		foreach ($tempNoti['data'] as $single)
 			if (!empty($single['type']))
 			{
 				if (in_array($single['type'], $notifications->types))
