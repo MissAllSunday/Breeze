@@ -204,18 +204,19 @@ class BreezeNotifications
 		// Get all the notification for this user
 		$this->_all = $this->_query->getNotificationByUser($user);
 
+		// Load the users data
+		BreezeTools::loadUserInfo($this->_all['users']);
+
 		// Do this if there is actually something to show
-		if (!empty($this->_all))
+		if (!empty($this->_all['data']))
 		{
 			// Call the methods
-			foreach ($this->_all as $single)
+			foreach ($this->_all['data'] as $single)
 				if (in_array($single['type'], $this->types))
 				{
-					// Get the users to load
-					$userstoLoad[] = $single['user'];
-					$userstoLoad[] = $single['user_to'];
 					$call = 'do' . ucfirst($single['type']);
 
+					// Call the right method
 					$this->$call($single);
 				}
 
