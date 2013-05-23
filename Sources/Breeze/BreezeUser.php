@@ -81,7 +81,13 @@ function breezeWall()
 	$context['breeze']['tools'] = $tools;
 
 	// Load all the status
-	$status = $query->getStatusByProfile($context['member']['id']);
+	$data = $query->getStatusByProfile($context['member']['id']);
+
+	// Load users data
+	$tools->loadUserInfo($data['users']);
+
+	// Pass th status info
+	$status = $data['data'];
 
 	// Getting the current page.
 	$page = $globals->validate('page') == true ? $globals->getValue('page') : 1;
