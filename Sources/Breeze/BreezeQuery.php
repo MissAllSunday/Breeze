@@ -465,7 +465,7 @@ class BreezeQuery extends Breeze
 		// Populate the array like a big heavy boss!
 		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 		{
-			$return = array(
+			$return['data'] = array(
 				'id' => $row['status_id'],
 				'owner_id' => $row['status_owner_id'],
 				'poster_id' => $row['status_poster_id'],
@@ -485,9 +485,9 @@ class BreezeQuery extends Breeze
 			);
 
 			// Get the users IDs
-			$comments_poster_id[] = $row['comments_poster_id'];
-			$status_owner_id[] = $row['status_owner_id'];
-			$status_poster_id[] = $row['status_poster_id'];
+			$return['users'][] = $row['comments_poster_id'];
+			$return['users'][] = $row['status_owner_id'];
+			$return['users'][] = $row['status_poster_id'];
 		}
 
 		$this->_smcFunc['db_free_result']($result);
