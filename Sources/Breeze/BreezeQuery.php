@@ -441,7 +441,7 @@ class BreezeQuery extends Breeze
 	 * BreezeQuery::getStatusByID()
 	 *
 	 * Get a single status based on the ID. This should return just one value, if it returns more, then we have a bug somewhere or you didn't provide a valid ID
-	 * @see BreezeQuery::getReturn()()
+	 * @see BreezeQuery::getReturn()
 	 * @param int $id the ID of status you want to fetch.
 	 * @access public
 	 * @return array An array containing all the status made in X profile page
@@ -450,10 +450,6 @@ class BreezeQuery extends Breeze
 	{
 		if (empty($id))
 			return false;
-
-		$comments_poster_id = array();
-		$status_owner_id = array();
-		$status_poster_id = array();
 
 		$result = $this->_smcFunc['db_query']('', '
 			SELECT s.status_id, s.status_owner_id, s.status_poster_id, s.status_time, s.status_body, c.comments_id, c.comments_status_id, c.comments_status_owner_id, comments_poster_id, c.comments_profile_owner_id, c.comments_time, c.comments_body
@@ -494,21 +490,7 @@ class BreezeQuery extends Breeze
 			$status_poster_id[] = $row['status_poster_id'];
 		}
 
-		// Merge all the users arrays
-		$usersArray = array_merge($comments_poster_id, $status_owner_id, $status_poster_id);
-
 		$this->_smcFunc['db_free_result']($result);
-
-		// Load the user's data
-		if (!empty($usersArray))
-			cache_put_data(Breeze::$name .'-users'. $id, $usersArray, 120);
-
-		else
-			$usersArray = cache_get_data(Breeze::$name .'-users'. $id, 120);
-
-		// Load only if there is something to load
-		if (!empty($usersArray))
-			$this->tools->loadUserInfo(array_filter(array_unique($usersArray), 'strlen'));
 
 		return $return;
 	}
