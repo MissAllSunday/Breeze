@@ -485,7 +485,8 @@ function template_singleStatus()
 						</div>
 						<hr />
 						<div id="comment_flash_', $context['Breeze']['single']['id'] ,'"></div>';
-				echo '
+
+					echo '
 						<ul class="breeze_comments_list" id="comment_loadplace_', $context['Breeze']['single']['id'] ,'">';
 
 					// Print out the comments

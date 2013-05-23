@@ -451,6 +451,15 @@ class BreezeQuery extends Breeze
 		if (empty($id))
 			return false;
 
+		// Set some empty arrays to a void errors
+		$return = array(
+			'data' => array(),
+			'users' => array(),
+		);
+
+		// For some reason we need to fetch the comments separately
+		$c = array();
+
 		$result = $this->_smcFunc['db_query']('', '
 			SELECT s.status_id, s.status_owner_id, s.status_poster_id, s.status_time, s.status_body, c.comments_id, c.comments_status_id, c.comments_status_owner_id, comments_poster_id, c.comments_profile_owner_id, c.comments_time, c.comments_body
 			FROM {db_prefix}breeze_status AS s
@@ -471,18 +480,24 @@ class BreezeQuery extends Breeze
 				'poster_id' => $row['status_poster_id'],
 				'time' => $this->tools->timeElapsed($row['status_time']),
 				'body' => $this->parser->display($row['status_body']),
-				'comments' => empty($row['comments_status_id']) ? array() : array(
-					$row['comments_id'] => array(
-						'id' => $row['comments_id'],
-						'status_id' => $row['comments_status_id'],
-						'status_owner_id' => $row['comments_status_owner_id'],
-						'poster_id' => $row['comments_poster_id'],
-						'profile_owner_id' => $row['comments_profile_owner_id'],
-						'time' => $this->tools->timeElapsed($row['comments_time']),
-						'body' => $this->parser->display($row['comments_body']),
-					),
-				),
 			);
+
+			// Comments
+			if (!empty($row['comments_status_id']))
+			{
+				$c[$row['comments_id']] = array(
+					'id' => $row['comments_id'],
+					'status_id' => $row['comments_status_id'],
+					'status_owner_id' => $row['comments_status_owner_id'],
+					'poster_id' => $row['comments_poster_id'],
+					'profile_owner_id' => $row['comments_profile_owner_id'],
+					'time' => $this->tools->timeElapsed($row['comments_time']),
+					'body' => $this->parser->display($row['comments_body']),
+				);
+
+				// Merge them both
+				$return['data']['comments'] = $c;
+			}
 
 			// Get the users IDs
 			if (!empty($row['comments_poster_id']))
