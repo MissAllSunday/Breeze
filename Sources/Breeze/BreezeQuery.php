@@ -356,12 +356,13 @@ class BreezeQuery extends Breeze
 	 * @param int $id the ID of the user that owns the profile page, it does not matter who made that status as long as the status was made in X profile page.
 	 * @return array An array containing all the status made in X profile page
 	 */
-	public function getStatusByProfile($id)
+	public function getStatusByProfilegetStatusByProfile($id)
 	{
-		// Declare some generic vars
-		$comments_poster_id = array();
-		$status_owner_id = array();
-		$status_poster_id = array();
+		// Declare some generic vars, mainly to avoid errors
+		$return = array(
+			'data' => array(),
+			'users' => array(),
+		);
 
 		// Use the cache please...
 		if (($return = cache_get_data(Breeze::$name .'-' . $id, 120)) == null)
@@ -382,7 +383,7 @@ class BreezeQuery extends Breeze
 			// Populate the array like a big heavy boss!
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 			{
-				$return[$row['status_id']] = array(
+				$return['data'][$row['status_id']] = array(
 					'id' => $row['status_id'],
 					'owner_id' => $row['status_owner_id'],
 					'poster_id' => $row['status_poster_id'],
@@ -405,34 +406,20 @@ class BreezeQuery extends Breeze
 					);
 
 					// Merge them both
-					$return[$row['status_id']]['comments'] = $c[$row['comments_status_id']];
+					$return['data'][$row['status_id']]['comments'] = $c[$row['comments_status_id']];
 				}
 
 				// Get the users IDs
-				$comments_poster_id[] = $row['comments_poster_id'];
-				$status_owner_id[] = $row['status_owner_id'];
-				$status_poster_id[] = $row['status_poster_id'];
+				$return['users'][] = $row['comments_poster_id'];
+				$return['users'][] = $row['status_owner_id'];
+				$return['users'][] = $row['status_poster_id'];
 			}
-
-			// Merge all the users arrays
-			$usersArray = array_merge($comments_poster_id, $status_owner_id, $status_poster_id);
 
 			$this->_smcFunc['db_free_result']($result);
 
 			// Cache this beauty
 			cache_put_data(Breeze::$name .'-' . $id, $return, 120);
 		}
-
-		// Load the user's data
-		if (!empty($usersArray))
-			cache_put_data(Breeze::$name .'-users'. $id, $usersArray, 120);
-
-		else
-			$usersArray = cache_get_data(Breeze::$name .'-users'. $id, 120);
-
-		// Load only if there is something to load
-		if (!empty($usersArray))
-			$this->tools->loadUserInfo(array_filter(array_unique($usersArray), 'strlen'));
 
 		return $return;
 	}
