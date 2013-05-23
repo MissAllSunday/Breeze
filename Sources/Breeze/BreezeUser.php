@@ -411,7 +411,12 @@ function breezeSingle()
 		fatal_lang_error('no_access', false);
 
 	// Load the single status
-	$context['Breeze']['single'] = $query->getStatusByID($globals->getValue('bid'), $globals->getValue('u'));
+	$data = $query->getStatusByID($globals->getValue('bid'), $globals->getValue('u'));
+
+	// Load the users data
+	$tools->loadUserInfo($data['users']);
+
+	$context['Breeze']['single'] = $data['data'];
 
 	// Set all the page stuff
 	$context['sub_template'] = 'singleStatus';
