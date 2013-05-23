@@ -485,7 +485,9 @@ class BreezeQuery extends Breeze
 			);
 
 			// Get the users IDs
-			$return['users'][] = $row['comments_poster_id'];
+			if (!empty($row['comments_poster_id']))
+				$return['users'][] = $row['comments_poster_id'];
+
 			$return['users'][] = $row['status_owner_id'];
 			$return['users'][] = $row['status_poster_id'];
 		}
@@ -493,7 +495,7 @@ class BreezeQuery extends Breeze
 		$this->_smcFunc['db_free_result']($result);
 
 		// Clean it a bit
-		$return['users'] = array_unique($return['users'])M
+		$return['users'] = array_unique($return['users']);
 
 		return $return;
 	}
