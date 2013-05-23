@@ -492,6 +492,9 @@ class BreezeQuery extends Breeze
 
 		$this->_smcFunc['db_free_result']($result);
 
+		// Clean it a bit
+		$return['users'] = array_unique($return['users'])M
+
 		return $return;
 	}
 
