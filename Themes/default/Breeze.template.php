@@ -151,12 +151,12 @@ function template_user_wall()
 	// Left side
 	echo '
 	<div class="tabContainer" id="detailedinfo">
-	<div id="breezeTabs">';
+	<div id="tab-container" class="tab-container">';
 
 	// Links for tabs show it if there is at least 1 tab
 	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
 		echo '
-		<ul class="reset">
+		<ul class="etabs">
 			<li><a href="#tabs_wall" class="button_strip_manage">', $txt['Breeze_tabs_wall'] ,'</a></li>
 			', (!empty($context['member']['options']['Breeze_enable_visits_tab']) ? '
 			<li>
@@ -300,7 +300,7 @@ function template_user_wall()
 	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) && !empty($context['Breeze']['views']))
 	{
 		echo '
-				<div id="tabs_views">
+				<div id="tabs_views" class="hide">
 					<ul class="reset breeze_top_profile_views">';
 
 		foreach ($context['Breeze']['views'] as $profile_views)
@@ -328,7 +328,7 @@ function template_user_wall()
 
 	// User doesn't have any visitors
 	else
-		echo '<p class="windowbg description" style="display: none;" id="tabs_views">', $txt['Breeze_user_modules_visits_none'] ,'</p>';
+		echo '<p class="hide windowbg description" id="tabs_views">', $txt['Breeze_user_modules_visits_none'] ,'</p>';
 
 	// End of profile visitors
 
@@ -336,7 +336,7 @@ function template_user_wall()
 	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
 	{
 		echo '
-				<div id="tabs_buddies">
+				<div id="tabs_buddies" class="hide">
 					<ul class="reset breeze_top_profile_views">';
 
 		foreach ($context['member']['buddies'] as $buddies)
@@ -363,7 +363,7 @@ function template_user_wall()
 
 	// User doesn't have any visits
 	else
-		echo '<p class="windowbg description" style="display: none;" id="tabs_views">', $txt['Breeze_user_modules_buddies_none']  ,'</p>';
+		echo '<p class="hide windowbg description" id="tabs_views">', $txt['Breeze_user_modules_buddies_none']  ,'</p>';
 	// End of buddies tab
 
 	// End of left side

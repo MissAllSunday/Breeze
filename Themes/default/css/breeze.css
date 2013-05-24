@@ -341,3 +341,8 @@ ul.breeze_top_profile_views
 }
 #breezeTop a:hover span {
 }
+
+.hide
+{
+	display:none;
+}
