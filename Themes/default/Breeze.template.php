@@ -151,12 +151,12 @@ function template_user_wall()
 	// Left side
 	echo '
 	<div class="tabContainer" id="detailedinfo">
-	<div id="breezeTabs">';
+	<div id="tab-container" class="tab-container">';
 
 	// Links for tabs show it if there is at least 1 tab
 	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
 		echo '
-		<ul class="reset">
+		<ul class="etabs">
 			<li><a href="#tabs_wall" class="button_strip_manage">', $txt['Breeze_tabs_wall'] ,'</a></li>
 			', (!empty($context['member']['options']['Breeze_enable_visits_tab']) ? '
 			<li>
