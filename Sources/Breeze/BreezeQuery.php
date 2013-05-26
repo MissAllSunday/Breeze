@@ -356,7 +356,7 @@ class BreezeQuery extends Breeze
 	 * @param int $id the ID of the user that owns the profile page, it does not matter who made that status as long as the status was made in X profile page.
 	 * @return array An array containing all the status made in X profile page
 	 */
-	public function getStatusByProfilegetStatusByProfile($id)
+	public function getStatusByProfile($id)
 	{
 		// Declare some generic vars, mainly to avoid errors
 		$return = array(
@@ -417,10 +417,13 @@ class BreezeQuery extends Breeze
 
 			$this->_smcFunc['db_free_result']($result);
 
+			// Clean it a bit
+			$return['users'] = array_filter(array_unique($return['users']));
+
 			// Cache this beauty
 			cache_put_data(Breeze::$name .'-' . $id, $return, 120);
 		}
-
+echo '<pre>';print_r($return);die;
 		return $return;
 	}
 
@@ -497,7 +500,7 @@ class BreezeQuery extends Breeze
 		$this->_smcFunc['db_free_result']($result);
 
 		// Clean it a bit
-		$return['users'] = array_unique($return['users']);
+		$return['users'] = array_filter(array_unique($return['users']));
 
 		return $return;
 	}
@@ -954,7 +957,7 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			// Delete duplicate IDs
-			$return['users'] = array_unique($return['users']);
+			$return['users'] = array_filter(array_unique($return['users']));
 
 			// Cache this beauty for the most used stream feature
 			if (empty($all))
