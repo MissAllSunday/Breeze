@@ -323,7 +323,7 @@ function breezeBuddyRequest()
 	// Send the buddy request(s) to the template
 	$context['Breeze']['Buddy_Request'] = $buddies->showBuddyRequests($context['member']['id']);
 
-	if ($globals->validate('from') == true && $globals->validate('confirm') == true && $user_info['id'] != $globals->getValue('from'))
+	if ($globals->validate('from') == true && $globals->validate('message') == 'confirm' && $user_info['id'] != $globals->getValue('from'))
 	{
 		// Load Subs-Post to use sendpm
 		Breeze::load('Subs-Post');
@@ -352,21 +352,24 @@ function breezeBuddyRequest()
 		// @todo let the user to send a customized message/title
 		$subject = $text->getText('buddyrequest_confirmed_subject');
 		$message = $text->getText('buddyrequest_confirmed_message');
+		$noti = $globals->getValue('noti');
 
 		sendpm($recipients, $subject, $message, false, $from);
 
 		// Destroy the notification
-		$query->DeleteNotification($globals->getRaw('confirm'));
+		$query->deleteNoti($noti, $user_info['id']);
 
 		// Redirect back to the profile buddy request page
 		redirectexit('action=profile;area=breezebuddies;inner=1;u=' . $user_info['id']);
 	}
 
 	// Declined?
-	elseif ($globals->validate('decline') == true)
+	elseif ($globals->validate('message') == 'decline')
 	{
-		// Delete the notification
-		$query->DeleteNotification($globals->getRaw('decline'));
+		$noti = $globals->getValue('noti');
+
+		// Destroy the notification
+		$query->deleteNoti($noti, $user_info['id']);
 
 		// Redirect back to the profile buddy request page
 		redirectexit('action=profile;area=breezebuddies;inner=2;u=' . $user_info['id']);
