@@ -327,6 +327,10 @@ function template_user_wall()
 				</div>';
 	}
 
+	// User doesn't have any visitors
+	elseif (!empty($context['member']['options']['Breeze_enable_visits_tab']) && empty($context['Breeze']['views']))
+		echo '<div class="windowbg description" id="tabs_views">', $txt['Breeze_user_modules_visits_none'] ,'</div>';
+
 	// End of profile visitors
 
 	// Buddies tab
@@ -358,6 +362,9 @@ function template_user_wall()
 				</div>';
 	}
 
+	// User doesn't have any visits
+	elseif (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && empty($context['member']['buddies']))
+		echo '<div class="windowbg description" id="tabs_buddies">', $txt['Breeze_user_modules_buddies_none']  ,'</div>';
 	// End of buddies tab
 
 	// End of left side
