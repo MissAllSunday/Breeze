@@ -365,11 +365,6 @@ jQuery(document).ready(function()
 // infinitescroll
 jQuery(document).ready(function(){
 
-	if (typeof breeze_infinite_scroll == "string")
-	{
-		return;
-	}
-
 	jQuery.noConflict();
 	jQuery('#breeze_display_status').infinitescroll({
 		loading: {

@@ -150,7 +150,7 @@ function template_user_wall()
 
 	// Left side
 	echo '
-	<div class="tabContainer" id="detailedinfo">
+	<div id="detailedinfo">
 	<div id="tab-container" class="tab-container">';
 
 	// Scroll to top
@@ -301,7 +301,7 @@ function template_user_wall()
 	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) && !empty($context['Breeze']['views']))
 	{
 		echo '
-				<div id="tabs_views" class="hide">
+				<div id="tabs_views">
 					<ul class="reset breeze_top_profile_views">';
 
 		foreach ($context['Breeze']['views'] as $profile_views)
@@ -329,7 +329,7 @@ function template_user_wall()
 
 	// User doesn't have any visitors
 	else
-		echo '<p class="hide windowbg description" id="tabs_views">', $txt['Breeze_user_modules_visits_none'] ,'</p>';
+		echo '<div class="windowbg description" id="tabs_views">', $txt['Breeze_user_modules_visits_none'] ,'</div>';
 
 	// End of profile visitors
 
@@ -337,7 +337,7 @@ function template_user_wall()
 	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
 	{
 		echo '
-				<div id="tabs_buddies" class="hide">
+				<div id="tabs_buddies">
 					<ul class="reset breeze_top_profile_views">';
 
 		foreach ($context['member']['buddies'] as $buddies)
@@ -364,7 +364,7 @@ function template_user_wall()
 
 	// User doesn't have any visits
 	else
-		echo '<p class="hide windowbg description" id="tabs_views">', $txt['Breeze_user_modules_buddies_none']  ,'</p>';
+		echo '<div class="windowbg description" id="tabs_buddies">', $txt['Breeze_user_modules_buddies_none']  ,'</div>';
 	// End of buddies tab
 
 	// End of left side

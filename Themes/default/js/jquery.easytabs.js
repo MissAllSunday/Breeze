@@ -23,7 +23,7 @@
           panelActiveClass: "active",
           tabActiveClass: "active",
           defaultTab: "li:first-child",
-          animationSpeed: "normal",
+          animationSpeed: "slow",
           tabs: "> ul > li",
           updateHash: true,
           cycle: false,
