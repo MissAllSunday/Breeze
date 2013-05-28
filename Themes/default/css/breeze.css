@@ -346,3 +346,9 @@ ul.breeze_top_profile_views
 {
 	display:none;
 }
+
+.etabs
+{
+	display:inline-block;
+	margin:5px;
+}

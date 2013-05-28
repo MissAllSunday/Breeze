@@ -153,26 +153,27 @@ function template_user_wall()
 	<div class="tabContainer" id="detailedinfo">
 	<div id="tab-container" class="tab-container">';
 
-	// Links for tabs show it if there is at least 1 tab
-	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
-		echo '
-		<ul class="etabs">
-			<li><a href="#tabs_wall" class="button_strip_manage">', $txt['Breeze_tabs_wall'] ,'</a></li>
-			', (!empty($context['member']['options']['Breeze_enable_visits_tab']) ? '
-			<li>
-				<a href="#tabs_views">'. $txt['Breeze_tabs_views'] .'</a>
-			</li>' : '') ,'
-			', (!empty($context['member']['options']['Breeze_enable_buddies_tab']) ? '
-			<li>
-				<a href="#tabs_buddies">'. $txt['Breeze_tabs_buddies'] .'</a>
-			</li>' : '') ,'
-		</ul>';
-
 	// Scroll to top
 	echo '
 			<p id="breezeTop">
 				<a href="#wrapper"><span></span>', $txt['Breeze_goTop'] ,'</a>
 			</p>';
+
+	// Links for tabs show it if there is at least 1 tab
+	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
+		echo '
+		<ul class="etabs dropmenu">
+			<li><a href="#tabs_wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>
+			', (!empty($context['member']['options']['Breeze_enable_visits_tab']) ? '
+			<li>
+				<a href="#tabs_views" class="firstlevel"><span class="firstlevel">'. $txt['Breeze_tabs_views'] .'</span></a>
+			</li>' : '') ,'
+			', (!empty($context['member']['options']['Breeze_enable_buddies_tab']) ? '
+			<li>
+				<a href="#tabs_buddies" class="firstlevel"><span class="firstlevel">'. $txt['Breeze_tabs_buddies'] .'</span></a>
+			</li>' : '') ,'
+		</ul>';
+
 
 	// Wall div
 	echo '

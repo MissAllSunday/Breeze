@@ -84,7 +84,8 @@ function breezeWall()
 	$data = $query->getStatusByProfile($context['member']['id']);
 
 	// Load users data
-	$tools->loadUserInfo($data['users']);
+	if (!empty($data['users']))
+		$tools->loadUserInfo($data['users']);
 
 	// Pass th status info
 	$status = $data['data'];

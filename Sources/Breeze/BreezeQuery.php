@@ -423,7 +423,7 @@ class BreezeQuery extends Breeze
 			// Cache this beauty
 			cache_put_data(Breeze::$name .'-' . $id, $return, 120);
 		}
-echo '<pre>';print_r($return);die;
+
 		return $return;
 	}
 
