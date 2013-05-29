@@ -399,7 +399,7 @@ $(document).ready(function (){
 	 */
 	public static function menu(&$menu_buttons)
 	{
-		global $context, $breezeController, $txt;
+		global $context, $breezeController, $txt, $scripturl;
 
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
