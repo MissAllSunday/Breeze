@@ -397,9 +397,22 @@ $(document).ready(function (){
 	 * @link http://mattzuba.com
 	 * @return void
 	 */
-	public static function menu($menu_buttons)
+	public static function menu(&$menu_buttons)
 	{
-		global $context;
+		global $context, $breezeController, $txt;
+
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
+		$gSettings = $breezeController->get('settings');
+
+		// Replace the duplicate profile button
+		if ($gSettings->enable('admin_settings_enable') && !empty($menu_buttons['profile']['sub_buttons']['summary']))
+			$menu_buttons['profile']['sub_buttons']['summary'] = array(
+				'title' => $txt['summary'],
+				'href' => $scripturl . '?action=profile;area=static',
+				'show' => true,
+			);
 
 		// Shh!
 		Breeze::who(false);
@@ -412,7 +425,7 @@ $(document).ready(function (){
 	 * @param array $actions An array containing all possible SMF actions.
 	 * @return void
 	 */
-	public static function actions($actions)
+	public static function actions(&$actions)
 	{
 		// A whole new action just for some ajax calls...
 		$actions['breezeajax'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
