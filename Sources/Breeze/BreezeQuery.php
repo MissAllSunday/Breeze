@@ -838,6 +838,35 @@ class BreezeQuery extends Breeze
 		return !empty($this->_noti) ? $this->_noti : $this->noti();
 	}
 
+	public function getSingleNoti($values, $type)
+	{
+		$return = array();
+
+		if (empty($values) || !is_array($values) || empty($type))
+			return false;
+
+		$result = $this->_smcFunc['db_query']('', '
+			SELECT '. implode(',', $this->_tables['noti']['columns']) .'
+			FROM {db_prefix}' . $this->_tables['noti']['table'] . '
+			WHERE user_to = {int:user_to}
+				AND user = {int:user}
+				AND type = {string:type}
+			LIMIT 1',
+			array(
+				'user_to' => $values['user_to'],
+				'user' => $values['user'],
+				'type' => $type,
+			)
+		);
+
+		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+			$return = $row;
+
+		$this->_smcFunc['db_free_result']($result);
+
+		return $return;
+	}
+
 	/**
 	 * BreezeQuery::insertNotification()
 	 *
