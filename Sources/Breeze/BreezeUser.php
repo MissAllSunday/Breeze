@@ -377,13 +377,21 @@ function breezeBuddyRequest()
 	}
 }
 
-// Show a message to let the user know their buddy request must be approved
+// Show all possible message regarding the buddy system
 function breezeBuddyMessage()
 {
 	global $context, $scripturl, $breezeController;
 
 	loadtemplate('BreezeBuddy');
 
+	// Get the params
+	$globals = Breeze::sGlobals('request');
+
+	// We need a message...
+	if (empty($globals->getValue('message')))
+		redirectexit('action=profile');
+
+	// Lets stuff the memory!
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
@@ -391,7 +399,7 @@ function breezeBuddyMessage()
 	$text = $breezeController->get('text');
 
 	// Set all the page stuff
-	$context['sub_template'] = 'Breeze_request_buddy_message_send';
+	$context['sub_template'] = 'Breeze_buddy_message';
 	$context['page_title'] = $text->getText('noti_title');
 	$context['canonical_url'] = $scripturl . '?action=breezebuddyrequest';
 }

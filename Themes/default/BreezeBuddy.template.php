@@ -36,11 +36,11 @@
  */
 
 	// Show a message to let the user know his/her request must be approved by the user
-function template_Breeze_request_buddy_message_send()
+function template_Breeze_buddy_message()
 {
 	global $txt, $context;
 
-	// Welcome message for the admin.
+	// Show a nice message
 	echo '
 	<div id="admincenter">
 		<div class="cat_bar">

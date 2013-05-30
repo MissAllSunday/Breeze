@@ -90,7 +90,7 @@ class BreezeBuddy
 			);
 
 			// Show a nice message saying the user must approve the friendship request
-			redirectexit('action=breezebuddyrequest;u=' . $sa->getValue('u'));
+			redirectexit('action=breezebuddyrequest;u=' . $sa->getValue('u') .';message=');
 		}
 	}
 
