@@ -71,6 +71,22 @@ class BreezeBuddy
 			// Do the update
 			updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
 
+			// Does the user decided to remove the request before the other part was able to take any action?
+			$doesExists = $this->query->getSingleNoti(array(
+				'user_to' => $sa->getValue('u'),
+				'user' => $user_info['id'],
+			), 'buddy');
+
+			// Tell the user to either wait or confirm the deletion
+			if (!empty($doesExists))
+			{
+				// Load the users info
+				BreezeTools::loadUserInfo($sa->getValue('u'));
+
+				/* Send a nice message to the user */
+				redirectexit('action=breezebuddyrequest;u=' . $sa->getValue('u') .';message=');
+			}
+
 			// Done here, let's redirect the user to the profile page
 			redirectexit('action=profile;u=' . $sa->getValue('u'));
 		}
