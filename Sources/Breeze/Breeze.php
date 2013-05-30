@@ -437,7 +437,7 @@ $(document).ready(function (){
 		$actions['buddy'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
 
 		// A special action for the buddy request message
-		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'breezeBuddyMessageSend');
+		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'breezeBuddyMessage');
 	}
 
 	/**

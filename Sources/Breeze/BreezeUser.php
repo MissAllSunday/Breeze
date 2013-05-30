@@ -378,7 +378,7 @@ function breezeBuddyRequest()
 }
 
 // Show a message to let the user know their buddy request must be approved
-function breezeBuddyMessageSend()
+function breezeBuddyMessage()
 {
 	global $context, $scripturl, $breezeController;
 
