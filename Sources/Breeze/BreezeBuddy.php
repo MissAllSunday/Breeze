@@ -60,6 +60,8 @@ class BreezeBuddy
 		// We need all this stuff
 		$sa = Breeze::sGlobals('get');
 
+		/* @todo theres a lot of ifs here... better split all cases into small methods */
+
 		// There's gotta be an user...
 		if ($sa->validate('u') == false)
 			fatal_lang_error('no_access', false);
@@ -86,7 +88,9 @@ class BreezeBuddy
 					updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
 				}
 
-				Create the message to show
+				// Create the message to show
+				$context['Breeze']['buddy']['title'] = $text->getText('noti_buddy_message_'. $globals->getValue('message') .'_title');
+				$context['Breeze']['buddy']['message'] = $text->getText('noti_buddy_message_'. $globals->getValue('message') .'_message');
 
 				redirectexit('action=breezebuddyrequest;u=' . $sa->getValue('u') .';message=1');
 			}

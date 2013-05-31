@@ -405,13 +405,6 @@ function breezeBuddyMessage()
 
 	// Linktree here someday!
 
-	$context['Breeze']['buddy']['title'] = $text->getText('noti_buddy_message_'. $globals->getValue('message') .'_title');
-	$context['Breeze']['buddy']['message'] = $text->getText('noti_buddy_message_'. $globals->getValue('message') .'_message');
-
-
-	// Nothinig to see here
-	else
-		redirectexit('action=profile');
 }
 
 // Show a single status with all it's comments
