@@ -102,7 +102,7 @@ class BreezeController
 		// Buddy
 		$this->container->buddy = $this->container->asShared(function ($c)
 		{
-			return new BreezeBuddy($c->settings,$c->query, $c->notifications);
+			return new BreezeBuddy($c->settings,$c->query, $c->notifications, $c->text);
 		});
 
 		// Mention
