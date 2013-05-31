@@ -66,10 +66,6 @@ class BreezeBuddy
 		// Problems in paradise?
 		if (in_array($sa->getValue('u'), $user_info['buddies']))
 		{
-			$user_info['buddies'] = array_diff($user_info['buddies'], array($sa->getValue('u')));
-
-			// Do the update
-			updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
 
 			// Does the user decided to remove the request before the other part was able to take any action?
 			$doesExists = $this->query->getSingleNoti(array(
@@ -80,11 +76,23 @@ class BreezeBuddy
 			// Tell the user to either wait or confirm the deletion
 			if (!empty($doesExists))
 			{
-				// Load the users info
-				BreezeTools::loadUserInfo($sa->getValue('u'));
+				// Te user really wants to do this... so be it!
+				if ($sa->validate('forced') == true)
+				{
+					$user_info['buddies'] = array_diff($user_info['buddies'], array($sa->getValue('u')));
 
-				/* Send a nice message to the user */
-				redirectexit('action=breezebuddyrequest;u=' . $sa->getValue('u') .';message=');
+					// Do the update
+					updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
+				}
+
+				redirectexit('action=breezebuddyrequest;u=' . $sa->getValue('u') .';message=1');
+			}
+
+			// Friendship is over, at least from one direction
+			else
+			{
+				$user_info['buddies'] = array_diff($user_info['buddies'], array($sa->getValue('u')));
+				updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
 			}
 
 			// Done here, let's redirect the user to the profile page
@@ -106,7 +114,7 @@ class BreezeBuddy
 			);
 
 			// Show a nice message saying the user must approve the friendship request
-			redirectexit('action=breezebuddyrequest;u=' . $sa->getValue('u') .';message=');
+			redirectexit('action=breezebuddyrequest;u=' . $sa->getValue('u') .';message=2');
 		}
 	}
 
