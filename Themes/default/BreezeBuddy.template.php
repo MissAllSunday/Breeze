@@ -38,14 +38,14 @@
 	// Show a message to let the user know his/her request must be approved by the user
 function template_Breeze_buddy_message()
 {
-	global $txt, $context;
+	global $context;
 
 	// Show a nice message
 	echo '
 	<div id="admincenter">
 		<div class="cat_bar">
 			<h3 class="catbg">'
-				, $txt['Breeze_user_buddyrequestmessage_name'], '
+				, $context['Breeze']['buddy']['title'] , '
 			</h3>
 		</div>
 		<span class="upperframe">
@@ -53,7 +53,7 @@ function template_Breeze_buddy_message()
 		</span>
 		<div class="roundframe">
 			<div id="welcome">
-				', $txt['Breeze_user_buddyrequestmessage_message'] ,'
+				', $context['Breeze']['buddy']['message'] ,'
 			</div>
 		</div>
 		<span class="lowerframe">

@@ -402,6 +402,17 @@ function breezeBuddyMessage()
 	$context['sub_template'] = 'Breeze_buddy_message';
 	$context['page_title'] = $text->getText('noti_title');
 	$context['canonical_url'] = $scripturl . '?action=breezebuddyrequest';
+
+	// Set the title an message
+	if (!empty($globals->getValue('message')))
+	{
+		$context['Breeze']['buddy']['title'] = $text->getText('noti_buddy_message_'. $globals->getValue('message') .'_title');
+		$context['Breeze']['buddy']['message'] = $text->getText('noti_buddy_message_'. $globals->getValue('message') .'_message');
+	}
+
+	// Nothinig to see here
+	else
+		redirectexit('action=profile');
 }
 
 // Show a single status with all it's comments

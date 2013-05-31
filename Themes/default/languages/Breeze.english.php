@@ -62,7 +62,6 @@ $txt['Breeze_user_settings_name'] = 'Wall Settings';
 $txt['Breeze_user_buddysettings_name'] = 'Buddy Requests';
 $txt['Breeze_user_single_status'] = 'Single Status';
 $txt['Breeze_user_buddyrequestmessage_name'] = 'Buddy message request send';
-$txt['Breeze_user_buddyrequestmessage_message'] = 'Your request has been submitted, the user will see your request and if he/she accepts it, you will receive a notification via private message.';
 $txt['Breeze_user_notisettings_name'] = 'Notifications';
 $txt['Breeze_user_settings_enable_desc'] = 'From this page you will be able to setup the different settings for your wall.';
 $txt['Breeze_user_settings_wall_limit'] = 'How many status per page to show?';
@@ -238,6 +237,11 @@ $txt['Breeze_noti_delete_after'] = 'You have successfully deleted this notificat
 $txt['Breeze_noti_visits_clean'] = 'You have successfully cleaned your visitors log';
 $txt['Breeze_noti_novalid_after'] = 'This isn\'t a valid action.';
 $txt['Breeze_noti_none'] = 'You don\'t have any notifications';
+
+$txt['Breeze_noti_buddy_message_1_title'] = 'Confirmation required';
+$txt['Breeze_noti_buddy_message_1_message'] = 'User %s hasn\'t either denied or confirmed your buddy request, do you want to wait or force the buddy removal';
+$txt['Breeze_noti_buddy_message_2_title'] = 'Buddy request sent';
+$txt['Breeze_noti_buddy_message_2_message'] = 'Your request has been submitted, the user will see your request and if he/she accepts it, you will receive a notification via private message.';
 
 // Comment notification
 $txt['Breeze_noti_comment_message'] = '%1$s commented on the status made by %2$s on %3$s\'s wall,<br/> <a href="" class="bbc_link" target="_blank">see the comment</a>';
