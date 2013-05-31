@@ -387,7 +387,7 @@ function breezeBuddyMessage()
 	// Get the params
 	$globals = Breeze::sGlobals('request');
 
-	// We need a message...
+	// Get on the guest list!
 	if (empty($globals->getValue('message')))
 		redirectexit('action=profile');
 
@@ -403,12 +403,11 @@ function breezeBuddyMessage()
 	$context['page_title'] = $text->getText('noti_title');
 	$context['canonical_url'] = $scripturl . '?action=breezebuddyrequest';
 
-	// Set the title an message
-	if (!empty($globals->getValue('message')))
-	{
-		$context['Breeze']['buddy']['title'] = $text->getText('noti_buddy_message_'. $globals->getValue('message') .'_title');
-		$context['Breeze']['buddy']['message'] = $text->getText('noti_buddy_message_'. $globals->getValue('message') .'_message');
-	}
+	// Linktree here someday!
+
+	$context['Breeze']['buddy']['title'] = $text->getText('noti_buddy_message_'. $globals->getValue('message') .'_title');
+	$context['Breeze']['buddy']['message'] = $text->getText('noti_buddy_message_'. $globals->getValue('message') .'_message');
+
 
 	// Nothinig to see here
 	else

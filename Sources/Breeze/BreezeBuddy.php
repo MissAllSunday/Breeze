@@ -86,6 +86,8 @@ class BreezeBuddy
 					updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
 				}
 
+				Create the message to show
+
 				redirectexit('action=breezebuddyrequest;u=' . $sa->getValue('u') .';message=1');
 			}
 
