@@ -61,68 +61,19 @@ class BreezeBuddy
 		$sa = Breeze::sGlobals('get');
 
 		/* @todo theres a lot of ifs here... better split all cases into small methods */
+		$subActions = array(
+			'wait',
+			'force',
+			'invite',
+			'remove',
+			'removeBoth',
+		);
 
 		// There's gotta be an user...
 		if ($sa->validate('u') == false)
 			fatal_lang_error('no_access', false);
 
-		// Problems in paradise?
-		if (in_array($sa->getValue('u'), $user_info['buddies']))
-		{
 
-			// Does the user decided to remove the request before the other part was able to take any action?
-			$doesExists = $this->query->getSingleNoti(array(
-				'user_to' => $sa->getValue('u'),
-				'user' => $user_info['id'],
-			), 'buddy');
-
-			// Tell the user to either wait or confirm the deletion
-			if (!empty($doesExists))
-			{
-				// Te user really wants to do this... so be it!
-				if ($sa->validate('forced') == true)
-				{
-					$user_info['buddies'] = array_diff($user_info['buddies'], array($sa->getValue('u')));
-
-					// Do the update
-					updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
-				}
-
-				// Create the message to show
-				$context['Breeze']['buddy']['title'] = $text->getText('noti_buddy_message_'. $globals->getValue('message') .'_title');
-				$context['Breeze']['buddy']['message'] = $text->getText('noti_buddy_message_'. $globals->getValue('message') .'_message');
-
-				redirectexit('action=breezebuddyrequest;u=' . $sa->getValue('u') .';message=1');
-			}
-
-			// Friendship is over, at least from one direction
-			else
-			{
-				$user_info['buddies'] = array_diff($user_info['buddies'], array($sa->getValue('u')));
-				updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
-			}
-
-			// Done here, let's redirect the user to the profile page
-			redirectexit('action=profile;u=' . $sa->getValue('u'));
-		}
-
-		// Before anything else, let's ask the user shall we?
-		elseif ($user_info['id'] != $sa->getValue('u'))
-		{
-			// Notification here
-			$this->notification->createBuddy(
-				array(
-					'user' => $user_info['id'],
-					'user_to' => $sa->getValue('u'),
-					'type' => 'buddy',
-					'time' => time(),
-					'read' => 0,
-				)
-			);
-
-			// Show a nice message saying the user must approve the friendship request
-			redirectexit('action=breezebuddyrequest;u=' . $sa->getValue('u') .';message=2');
-		}
 	}
 
 	public function showBuddyRequests($user)
