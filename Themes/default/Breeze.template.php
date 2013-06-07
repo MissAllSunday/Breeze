@@ -162,8 +162,8 @@ function template_user_wall()
 	// Links for tabs show it if there is at least 1 tab
 	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
 		echo '
-		<ul class="etabs dropmenu">
-			<li><a href="#tabs_wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>
+		<ul class="dropmenu">
+			<li><a href="#tabs_wall" class="active firstlevel" onmousedown="breezeTabs(\'tabs_wall\', this);"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>
 			', (!empty($context['member']['options']['Breeze_enable_visits_tab']) ? '
 			<li>
 				<a href="#tabs_views" class="firstlevel"><span class="firstlevel">'. $txt['Breeze_tabs_views'] .'</span></a>

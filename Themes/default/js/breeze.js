@@ -26,7 +26,7 @@
  *
  * The Initial Developer of the Original Code is
  * Jessica González.
- * Portions created by the Initial Developer are Copyright (c) 2012
+ * Portions created by the Initial Developer are Copyright (c) 2012, 2013
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):

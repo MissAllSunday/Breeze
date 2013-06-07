@@ -210,7 +210,7 @@ class Breeze
 				$context['html_headers'] .= '
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.infinitescroll.min.js" type="text/javascript"></script>';
 
-			// Load breeze.js untill everyone else is loaded
+			// Load breeze.js until everyone else is loaded
 			$context['html_headers'] .= '
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
 		}

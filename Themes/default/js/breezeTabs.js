@@ -26,9 +26,20 @@
  *
  * The Initial Developer of the Original Code is
  * Jessica González.
- * Portions created by the Initial Developer are Copyright (c) 2012
+ * Portions created by the Initial Developer are Copyright (c) 2012, 2013
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
  *
  */
+ 
+function breezeTabs(divid, obj){
+	if(document.getElementById(divid).style.display == \'none\'){
+		obj.innerHTML= "Hide";
+		document.getElementById(divid).style.display = \'block\';
+	}
+	else{
+		obj.innerHTML= "Expand";
+		document.getElementById(divid).style.display = \'none\';
+	}
+}
