@@ -1,5 +1,5 @@
 /**
- * Breeze.js
+ * breeze.js
  *
  * The purpose of this file is to handle all the client side code, the ajax call for the status, comments and other stuff
  * @package Breeze mod
@@ -510,8 +510,4 @@ jQuery(document).ready(function(){
 			},
 		});
 	});
-});
-
-jQuery(document).ready(function(){
-	jQuery('#tab-container').easytabs();
 });
