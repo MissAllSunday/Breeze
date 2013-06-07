@@ -418,7 +418,8 @@ class BreezeQuery extends Breeze
 			$this->_smcFunc['db_free_result']($result);
 
 			// Clean it a bit
-			$return['users'] = array_filter(array_unique($return['users']));
+			if (!empty($return['users']))
+				$return['users'] = array_filter(array_unique($return['users']));
 
 			// Cache this beauty
 			cache_put_data(Breeze::$name .'-' . $id, $return, 120);

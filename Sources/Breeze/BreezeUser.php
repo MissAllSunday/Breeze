@@ -88,7 +88,8 @@ function breezeWall()
 		$tools->loadUserInfo($data['users']);
 
 	// Pass th status info
-	$status = $data['data'];
+	if (!empty($data['data']))
+		$status = $data['data'];
 
 	// Getting the current page.
 	$page = $globals->validate('page') == true ? $globals->getValue('page') : 1;
