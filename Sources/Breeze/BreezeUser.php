@@ -378,7 +378,7 @@ function breezeBuddyRequest()
 	}
 }
 
-// Show all possible message regarding the buddy system
+/* // Show all possible message regarding the buddy system
 function breezeBuddyMessage()
 {
 	global $context, $scripturl, $breezeController;
@@ -387,9 +387,10 @@ function breezeBuddyMessage()
 
 	// Get the params
 	$globals = Breeze::sGlobals('request');
+	$message = $globals->getValue('message')
 
 	// Get on the guest list!
-	if (empty($globals->getValue('message')))
+	if (empty($message))
 		redirectexit('action=profile');
 
 	// Lets stuff the memory!
@@ -406,7 +407,7 @@ function breezeBuddyMessage()
 
 	// Linktree here someday!
 
-}
+} */
 
 // Show a single status with all it's comments
 function breezeSingle()
