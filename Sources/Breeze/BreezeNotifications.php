@@ -66,7 +66,7 @@ class BreezeNotifications
 			'comment',
 			'status',
 			'like',
-			'buddy',
+			// 'buddy', todo refactors the buddy system
 			'mention',
 			'reply',
 			'topic'
