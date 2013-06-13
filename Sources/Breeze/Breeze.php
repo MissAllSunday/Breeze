@@ -273,7 +273,7 @@ $(document).ready(function (){
 	 * @param array $permissionList An associative array with all the possible permissions.
 	 * @return void
 	 */
-	public static function permissions($permissionGroups, $permissionList)
+	public static function permissions(&$permissionGroups, &$permissionList)
 	{
 		$permissionGroups['membergroup']['simple'] = array('breeze_per_simple');
 		$permissionGroups['membergroup']['classic'] = array('breeze_per_classic');
@@ -304,7 +304,7 @@ $(document).ready(function (){
 	 * @param array $profile_areas An array containing all possible tabs for the profile menu.
 	 * @return void
 	 */
-	public static function profile($profile_areas)
+	public static function profile(&$profile_areas)
 	{
 		global $user_info, $context, $breezeController;
 
@@ -468,7 +468,7 @@ $(document).ready(function (){
 	 * @param array $admin_menu An array with all the admin settings buttons
 	 * @return
 	 */
-	public static function admin($admin_menu)
+	public static function admin(&$admin_menu)
 	{
 		global $breezeController;
 
