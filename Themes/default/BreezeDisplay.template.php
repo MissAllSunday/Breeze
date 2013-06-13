@@ -43,7 +43,7 @@ function template_main()
 	{
 		case 'status':
 			$return = '
-	<li class="windowbg" id ="status_id_'. $context['Breeze']['params']['id'] .'">
+	<li id ="status_id_'. $context['Breeze']['params']['id'] .'">
 		<span class="topslice">
 			<span></span>
 		</span>
@@ -98,7 +98,7 @@ function template_main()
 			break;
 		case 'comment':
 			$return = '
-				<li class="windowbg2" id ="comment_id_'. $context['Breeze']['params']['id'] .'">
+				<li id ="comment_id_'. $context['Breeze']['params']['id'] .'">
 					<div class="breeze_user_comment_avatar">
 						'. $context['Breeze']['user_info'][$context['Breeze']['params']['poster_id']]['facebox'] .'<br />
 					</div>
