@@ -308,6 +308,532 @@ ul.breeze_top_profile_views
 	width:170px;
 	float:left;
 }
+/* The admin news box */
+.breeze_rss_box
+{
+float:left;
+width:60%;
+}
+.breeze_admin_info
+{
+float:right;
+width:35%;
+height: 13.5em;
+}
+
+/* The messages css */
+.breeze_ok_message
+{
+background-attachment: scroll;
+background-clip: border-box;
+background-color: rgb(230, 239, 194);
+background-image: none;
+background-origin: padding-box;
+background-position: 0% 0%;
+background-repeat: repeat;
+background-size: auto;
+border: 2px solid #c6d880;
+color: rgb(38, 68, 9);
+margin: 1em;
+padding: 0.8em;
+}
+.breeze_error_message
+{
+background-attachment: scroll;
+background-clip: border-box;
+background-color: #f7bcbf;
+background-image: none;
+background-origin: padding-box;
+background-position: 0% 0%;
+background-repeat: repeat;
+background-size: auto;
+border: 2px solid #f7262e;
+color: #8a1f11;
+margin: 1em;
+padding: 0.8em;
+}
+
+/* The user wall */
+.breeze_user_left
+{
+float:left;
+width:40%;
+
+}
+
+.breeze_user_left_avatar
+{
+float:left;
+margin:2px;
+padding-left:5px;
+padding-right:15px;
+min-height:100px;
+
+}
+
+.breeze_user_left_info
+{
+
+}
+
+ul.breeze_user_left_info
+{
+list-style-type: none;
+margin-left: 0px;
+padding-left: 5px;
+}
+ul.breeze_user_left_info ul li
+{
+display: inline;
+list-style-type: none;
+}
+
+.breeze_user_right
+{
+float:left;
+width:55%;
+margin:5px;
+padding:5px;
+}
+
+.breeze_user_inner
+{
+margin:5px;
+padding:5px;
+}
+
+.breeze_user_status_box
+{
+
+}
+.breeze_status
+{
+	list-style-type: none;
+}
+*
+{
+	margin: 0;
+	padding: 0;
+}
+.breeze_user_status_avatar
+{
+	float:left;
+	margin:3px;
+	padding:3px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.breeze_user_status_comment:before
+{
+	background: url(../images/breeze/comment.png) no-repeat scroll 0 0 transparent;
+    content: "";
+    height: 20px;
+    margin-left: -18px;
+    margin-top: 8px;
+    position: absolute;
+    width: 9px;
+}
+.breeze_user_status_comment
+{
+	margin-left:80px;
+	padding: 10px;
+	font-size: 90%;
+	background: #F5F5F5;
+	border: 1px solid #DDDDDD;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset
+}
+
+.breeze_user_statusbox textarea
+{
+	border: 1px solid #888;
+}
+
+/* Comments */
+.breeze_comments_list
+{
+	list-style-type: none;
+}
+.breeze_user_comment_avatar
+{
+	float:left;
+	margin:3px;
+	padding:3px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+.breeze_user_comment_comment:before
+{
+	background: url(../images/breeze/reply.png) no-repeat scroll 0 0 transparent;
+    content: "";
+    height: 20px;
+    margin-left: -13px;
+    margin-top: 8px;
+    position: absolute;
+    width: 9px;
+}
+.breeze_user_comment_comment
+{
+	margin:3px 3px 3px 75px;
+	padding:5px;
+	text-align:left;
+	background: #eee;
+	border: 1px solid #DDDDDD;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset
+}
+
+/* Ajax message */
+#breeze_load_image
+{
+	text-align:center;
+	margin:auto;
+	padding-bottom:5px;
+}
+
+/* Notifications */
+#info_message
+{
+	display: none;
+	width: 100%;
+	height: 51px;
+	position: absolute;
+	top: 0;
+	position: fixed;
+	z-index: 50000;
+	margin: 0;
+	padding: 0;
+}
+.center_auto
+{
+	margin: 0 auto;
+	width: 950px;
+	padding: 15px 25px;
+}
+#info_message .message_area
+{
+	float: left;
+	width: 98%;
+}
+#info_message .message_area span.link_ribbon{
+color: #999999;
+text-decoration: underline;
+cursor: pointer;
+}
+#info_message .button_area{
+float: left;
+width: 11px;
+height: 10px;
+margin-top: 3px;
+}
+.error_bg{
+background: url('../images/breeze/error_bg.png') 0 0 repeat-x;
+}
+.error_bg .message_area{
+font:bold 14px arial;
+color: #a20510;
+text-shadow: 0 1px 0 #fff;
+}
+.error_bg .button_area{
+background: url('../images/breeze/error_close.png') 0 0 no-repeat;
+cursor: pointer;
+}
+.error_bg .info_more_descrption{
+
+box-shadow: 0 0 5px #b2495b;
+}
+.succ_bg{
+background: url('../images/breeze/succ_bg.png') 0 0 repeat-x;
+}
+.succ_bg .message_area{
+font:bold 14px arial;
+color: #2f7c00;
+text-shadow: 0 1px 0 #fff;
+}
+.succ_bg .button_area{
+background: url('../images/breeze/succ_close.png') 0 0 no-repeat;
+cursor: pointer;
+}
+.info_bg{
+background: url('../images/breeze/info_bg.png') 0 0 repeat-x;
+}
+.info_bg .message_area{
+font:bold 14px arial;
+color: #0d9a95;
+text-shadow: 0 1px 0 #fff;
+}
+.info_bg .button_area{
+background: url('../images/breeze/info_close.png') 0 0 no-repeat;
+cursor: pointer;
+}
+.warn_bg{
+background: url('../images/breeze/warn_bg.png') 0 0 repeat-x;
+}
+.warn_bg .message_area{
+font:bold 14px arial;
+color: #a39709;
+text-shadow: 0 1px 0 #fff;
+}
+.warn_bg .button_area{
+background: url('../images/breeze/warn_close.png') 0 0 no-repeat;
+cursor: pointer;
+}
+.clearboth{
+clear: both;
+}
+.info_more_descrption{
+display: none;
+width: 950px;
+height: 300px;
+background: #fff;
+margin: 0 auto;
+padding: 10px;
+background: #fbfbfb;
+overflow: auto;
+}
+.succ_bg .info_more_descrption{
+box-shadow: 0 0 5px #56a25e;
+}
+
+/* Options */
+.breeze_options
+{
+	padding: 10px 5px 10px 5px;
+	text-align:right;
+}
+
+#breeze_pagination
+{
+margin:auto;
+text-align: center;
+}
+
+.breeze_user_comment_avatar
+{
+	padding:5px;
+}
+
+/* Admin bits */
+#breezelive
+{
+	width:95%;
+	margin:auto;
+}
+#breezelive ul
+ {
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+ }
+ #breezelive ul li
+ {
+	margin-left: 10px;
+ }
+
+ul.breeze_top_profile_views
+{
+	float:left;
+	margin:5px;
+}
+
+.breeze_profile_views_name
+{
+	margin-bottom:5px !important;
+}
+
+.breeze_profile_views_block
+{
+	float:left;
+	margin: 5px !important;
+	border-radius:5px;
+}
+.breeze_profile_views_inner
+{
+	position:relative;
+	text-align:center;
+	width:170px;
+	float:left;
+}
+
+.pest:before
+{
+	background: url(../images/breeze/status.png) no-repeat scroll 0 0 transparent;
+    content: "";
+    height: 20px;
+    margin-left: 8px;
+    margin-top: 15px;
+    position: absolute;
+    width: 9px;
+}
+.status_update textarea
+{
+	margin:5px 0 0 15px;
+	padding:5px;
+	text-align:left;
+	background: #fafafa;
+	border: 1px solid #444;
+	height: 45px;
+	width: 70%;
+}
+.status_update .status_button
+{
+	margin: 20px 20px 0 0;
+}
+.breeze_status_post_avatar
+{
+	height: 50px;
+	width: 50px;
+}
+
+/*** Styles for Breeze ***/
+#breeze_basicinfo
+{
+	width: 29%;
+	float: right;
+	margin:0;
+	padding:10px;
+	text-align:left;
+	background: #eee;
+	border: 1px solid #DDDDDD;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset
+}
+#breeze_basicinfo div.center
+{
+	text-align: center;
+}
+#breeze_basicinfo .windowbg .content
+{
+	padding-right: 20px;
+}
+#breeze_detailedinfo
+{
+	width: 69%;
+	float: left;
+}
+#blockinfo
+{
+	width: 69%;
+	float: left;
+}
+.btn_profile
+{
+	background: #fcfcfc; /* Old browsers */
+	background: -moz-linear-gradient(top, #fcfcfc 0%, #eeeeee 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fcfcfc), color-stop(100%,#eeeeee)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #fcfcfc 0%,#eeeeee 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #fcfcfc 0%,#eeeeee 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #fcfcfc 0%,#eeeeee 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #fcfcfc 0%,#eeeeee 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
+    border-color: #CCCCCC #C6C6C6 #AAAAAA;
+    color: #111111;
+    text-shadow: 0 1px 0 #EEEEEE;
+	border-width: 1px;
+	border-style: solid;
+    border-radius: 4px;
+    box-shadow: 0 1px 0 0 #DDDDDD;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Helvetica Neue,Helvetica,Arial;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 3px;
+    padding: 5px 10px;
+}
+.btn_profile a
+{
+	color: #111111;
+	vertical-align: middle;
+}
+.btn_profile a:hover
+{
+	text-decoration: underline;
+	color: #111111;
+}
+.btn_profile:hover
+{
+	background: #ffffff; /* Old browsers */
+	background: -moz-linear-gradient(top, #ffffff 0%, #dddddd 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#dddddd)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #ffffff 0%,#dddddd 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #ffffff 0%,#dddddd 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #ffffff 0%,#dddddd 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #ffffff 0%,#dddddd 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dddddd',GradientType=0 ); /* IE6-9 */
+}
+#blockinfo .perfil_avatar
+{
+	width: 100px;
+	height: 100px;
+	float: left;
+	padding: 6px;
+	border-radius: 6px;
+	background: #e0e7ef;
+	margin-right: 10px;
+}
+#blockinfo h4.nombre
+{
+	font-size: 16pt;
+	margin-bottom: -10px;
+	margin-left: 135px;
+}
+#breeze_basicinfo h4
+{
+	font-size: 135%;
+	font-weight: 100;
+	line-height: 105%;
+	white-space: pre-wrap;
+	overflow: hidden;
+}
+h4.nombre span.title
+{
+	font-size: 50%;
+	font-weight: normal;
+	margin: -2px 0 0 0;
+}
+#breeze_basicinfo img.avatar
+{
+	display: block;
+	margin: 10px auto 0;
+}
+#breeze_basicinfo ul
+{
+	list-style-type: none;
+	margin: 10px 0 0 0;
+}
+#breeze_basicinfo ul li
+{
+	display: inline;
+	margin-left: 5px;
+	height: 20px;
+}
+#blockinfo ul
+{
+	list-style-type: none;
+	margin: 10px 0 0 0;
+}
+#blockinfo ul li
+{
+	display: block;
+	float: left;
+	margin-left: 5px;
+	height: 20px;
+}
+.frame_on {
+	border: 1px solid #ccc;
+	box-shadow: 0 0 3px #008000;
+}
+.frame_off {
+	border: 1px solid #ccc;
+	box-shadow: 0 0 3px #aaa;
+}
+#blockinfo span#userstatus
+{
+	display: block;
+}
+#blockinfo span#userstatus img
+{
+	vertical-align: middle;
+}
 
 .hide
 {
