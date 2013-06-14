@@ -34,4 +34,4 @@ by signing off your contributions, you acknowledge that you can and do license y
 
 ######Branches organization:
 * ***master*** - is the main branch, only used to merge in a "final release"
-* ***development*** - is the branch where the development of the "next" version/s happens
+* ***develop*** - is the branch where the development of the "next" version/s happens
