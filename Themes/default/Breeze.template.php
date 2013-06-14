@@ -150,8 +150,7 @@ function template_user_wall()
 
 	// Left side
 	echo '
-	<div id="detailedinfo">
-	<div id="tab-container" class="tab-container">';
+	<div id="detailedinfo">';
 
 	// Scroll to top
 	echo '
@@ -369,7 +368,6 @@ function template_user_wall()
 
 	// End of left side
 	echo '
-	</div>
 	</div>
 		<div class="clear"></div>
 	</div>';
