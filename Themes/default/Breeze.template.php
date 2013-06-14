@@ -158,21 +158,6 @@ function template_user_wall()
 				<a href="#wrapper"><span></span>', $txt['Breeze_goTop'] ,'</a>
 			</p>';
 
-	// Links for tabs show it if there is at least 1 tab
-	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
-		echo '
-		<ul class="dropmenu">
-			<li><a href="#tabs_wall" class="active firstlevel" onmousedown="breezeTabs(\'tabs_wall\', this);"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>
-			', (!empty($context['member']['options']['Breeze_enable_visits_tab']) ? '
-			<li>
-				<a href="#tabs_views" class="firstlevel"><span class="firstlevel">'. $txt['Breeze_tabs_views'] .'</span></a>
-			</li>' : '') ,'
-			', (!empty($context['member']['options']['Breeze_enable_buddies_tab']) ? '
-			<li>
-				<a href="#tabs_buddies" class="firstlevel"><span class="firstlevel">'. $txt['Breeze_tabs_buddies'] .'</span></a>
-			</li>' : '') ,'
-		</ul>';
-
 	// Wall div
 	echo '
 			<div id="tabs_wall">
