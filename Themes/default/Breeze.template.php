@@ -152,12 +152,6 @@ function template_user_wall()
 	echo '
 	<div id="detailedinfo">';
 
-	// Scroll to top
-	echo '
-			<p id="breezeTop">
-				<a href="#wrapper"><span></span>', $txt['Breeze_goTop'] ,'</a>
-			</p>';
-
 	// Wall div
 	echo '
 			<div id="tabs_wall">
