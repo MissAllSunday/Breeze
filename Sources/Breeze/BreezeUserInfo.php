@@ -82,7 +82,7 @@ class BreezeUserInfo
 		// Set the data
 		$context['Breeze']['user_info'][$user['id']]['data'] = '
 		<div id="facebox_'. $user['id'] .'" style="display:none;">
-			<div class="windowbg">
+			<div class="description">
 				<span class="topslice">
 					<span></span>
 				</span>
