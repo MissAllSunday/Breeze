@@ -558,3 +558,12 @@ h4.nombre span.title
 {
 	vertical-align: middle;
 }
+
+.breeze_avatar
+{
+	margin:3px;
+	padding-right:15px;
+	padding-left:5px;
+	float:left;
+	min-height:100px;
+}

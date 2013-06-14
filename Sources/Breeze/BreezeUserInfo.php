@@ -82,14 +82,15 @@ class BreezeUserInfo
 		// Set the data
 		$context['Breeze']['user_info'][$user['id']]['data'] = '
 		<div id="facebox_'. $user['id'] .'" style="display:none;">
-			<div class="windowbg">
+			<div class="description">
 				<span class="topslice">
 					<span></span>
 				</span>
-				<div style="margin:3px;padding-right:15px;padding-left:5px;float:left;min-height:100px;">
+				<div class="breeze_avatar">
 					'.($user['avatar']['image'] ? $user['avatar']['image'] : '<img src="'.$settings['images_url'].'/breeze/bda.png" alt="" />').'<br />'. $user['link'];
 
-		$context['Breeze']['user_info'][$user['id']]['data'] .= '</div>
+		$context['Breeze']['user_info'][$user['id']]['data'] .= '
+				</div>
 				<div>
 					<ul class="breeze_user_left_info">';
 
