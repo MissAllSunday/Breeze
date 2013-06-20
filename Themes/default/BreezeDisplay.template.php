@@ -43,7 +43,7 @@ function template_main()
 	{
 		case 'status':
 			$return = '
-	<li id ="status_id_'. $context['Breeze']['params']['id'] .'">
+	<li class="windowbg2" id ="status_id_'. $context['Breeze']['params']['id'] .'">
 		<span class="topslice">
 			<span></span>
 		</span>
