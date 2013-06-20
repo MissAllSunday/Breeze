@@ -22,7 +22,7 @@
   display:table;
   width: 370px;
   padding: 5px;
-  background: #fff;
+  background: transparent;
   border-radius:4px;
 }
 
@@ -38,7 +38,7 @@
   top:5px;
   right:5px;
   padding:2px;
-  background:#fff;
+  background: transparent;
 }
 #facebox .close img{
   opacity:0.3;
