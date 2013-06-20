@@ -150,30 +150,7 @@ function template_user_wall()
 
 	// Left side
 	echo '
-	<div id="detailedinfo">
-	<div id="tab-container" class="tab-container">';
-
-	// Scroll to top
-	echo '
-			<p id="breezeTop">
-				<a href="#wrapper"><span></span>', $txt['Breeze_goTop'] ,'</a>
-			</p>';
-
-	// Links for tabs show it if there is at least 1 tab
-	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) || !empty($context['member']['options']['Breeze_enable_buddies_tab']))
-		echo '
-		<ul class="dropmenu">
-			<li><a href="#tabs_wall" class="active firstlevel" onmousedown="breezeTabs(\'tabs_wall\', this);"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>
-			', (!empty($context['member']['options']['Breeze_enable_visits_tab']) ? '
-			<li>
-				<a href="#tabs_views" class="firstlevel"><span class="firstlevel">'. $txt['Breeze_tabs_views'] .'</span></a>
-			</li>' : '') ,'
-			', (!empty($context['member']['options']['Breeze_enable_buddies_tab']) ? '
-			<li>
-				<a href="#tabs_buddies" class="firstlevel"><span class="firstlevel">'. $txt['Breeze_tabs_buddies'] .'</span></a>
-			</li>' : '') ,'
-		</ul>';
-
+	<div id="detailedinfo">';
 
 	// Wall div
 	echo '
@@ -297,79 +274,8 @@ function template_user_wall()
 	echo '
 			</div>';
 
-	// Profile visitors
-	if (!empty($context['member']['options']['Breeze_enable_visits_tab']) && !empty($context['Breeze']['views']))
-	{
-		echo '
-				<div id="tabs_views">
-					<ul class="reset breeze_top_profile_views">';
-
-		foreach ($context['Breeze']['views'] as $profile_views)
-			echo '
-						<li class="windowbg2 breeze_profile_views_block">
-							<div class="cat_bar">
-								<h3 class="catbg">', $context['Breeze']['user_info'][$profile_views['user']]['link'] ,'</h3>
-							</div>
-							<span class="upperframe">
-								<span></span>
-							</span>
-							<div class="roundframe">
-								<p class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$profile_views['user']]['facebox'] ,'</p>
-								<p>', $txt['Breeze_general_last_view'] ,': ', $context['breeze']['tools']->timeElapsed($profile_views['last_view']) ,'</p>
-							</div>
-							<span class="lowerframe">
-								<span></span>
-							</span>
-						</li>';
-
-		echo '
-					</ul>
-				</div>';
-	}
-
-	// User doesn't have any visitors
-	elseif (!empty($context['member']['options']['Breeze_enable_visits_tab']) && empty($context['Breeze']['views']))
-		echo '<div class="windowbg description" id="tabs_views">', $txt['Breeze_user_modules_visits_none'] ,'</div>';
-
-	// End of profile visitors
-
-	// Buddies tab
-	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
-	{
-		echo '
-				<div id="tabs_buddies">
-					<ul class="reset breeze_top_profile_views">';
-
-		foreach ($context['member']['buddies'] as $buddies)
-			echo '
-						<li class="windowbg2 breeze_profile_views_block">
-							<div class="cat_bar">
-								<h3 class="catbg">', $context['Breeze']['user_info'][$buddies]['link'] ,'</h3>
-							</div>
-							<span class="upperframe">
-								<span></span>
-							</span>
-							<div class="roundframe">
-								<p class="breeze_profile_views_avatar">', $context['Breeze']['user_info'][$buddies]['facebox'] ,'</p>
-							</div>
-							<span class="lowerframe">
-								<span></span>
-							</span>
-						</li>';
-
-		echo '
-					</ul>
-				</div>';
-	}
-
-	// User doesn't have any visits
-	elseif (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && empty($context['member']['buddies']))
-		echo '<div class="windowbg description" id="tabs_buddies">', $txt['Breeze_user_modules_buddies_none']  ,'</div>';
-	// End of buddies tab
-
 	// End of left side
 	echo '
-	</div>
 	</div>
 		<div class="clear"></div>
 	</div>';
