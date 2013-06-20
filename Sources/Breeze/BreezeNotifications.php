@@ -79,6 +79,16 @@ class BreezeNotifications
 		$this->_text = $text;
 	}
 
+	public function getByReceiver($user)
+	{
+		return $this->_query->getNotificationByReceiver($user);
+	}
+
+	public function getBySender($user)
+	{
+		return $this->_query->getNotificationBySender($user);
+	}
+
 	/**
 	 * BreezeNotifications::create()
 	 *
@@ -148,46 +158,6 @@ class BreezeNotifications
 	}
 
 	/**
-	 * BreezeNotifications::count()
-	 *
-	 * @return
-	 */
-	public function count()
-	{
-		return count($this->_query->getNotifications());
-	}
-
-	/**
-	 * BreezeNotifications::getByUser()
-	 *
-	 * @param mixed $user
-	 * @param bool $all
-	 * @return
-	 */
-	public function getByUser($user, $all = false)
-	{
-		// Dont even bother...
-		if (empty($user))
-			return false;
-
-		// @todo, Avoid pointless foreachs, get what we need directoy from the DB!
-		$temp = $this->_query->getNotificationByUserSender($user);
-
-		// Send those who hasn't been viewed
-		if (!$all && !empty($temp))
-			foreach ($temp as $k => $t)
-			{
-				if (!empty($t['viewed']))
-					unset($temp[$k]);
-
-				else
-					$temp[$t['id']] = $t;
-			}
-
-		return $temp;
-	}
-
-	/**
 	 * BreezeNotifications::doStream()
 	 *
 	 * @param mixed $user
@@ -202,7 +172,7 @@ class BreezeNotifications
 			return false;
 
 		// Get all the notification for this user
-		$this->_all = $this->_query->getNotificationByUser($user);
+		$this->_all = $this->_query->getNotificationByReceiver($user);
 
 		// Load the users data
 		$this->_tools->loadUserInfo($this->_all['users']);
@@ -409,6 +379,15 @@ class BreezeNotifications
 	{
 		if (!empty($this->_messages))
 			return $this->_messages;
+
+		else
+			return false;
+	}
+
+	public function getAll()
+	{
+		if (!empty($this->_all))
+			return $this->_all;
 
 		else
 			return false;
