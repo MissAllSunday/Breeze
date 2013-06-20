@@ -93,7 +93,7 @@ class BreezeQuery extends Breeze
 				'name' => 'noti',
 				'table' => 'breeze_notifications',
 				'property' => '_noti',
-				'columns' => array('id', 'user', 'user_to', 'type', 'time', 'viewed', 'content'),
+				'columns' => array('id', 'sender', 'receiver', 'type', 'time', 'viewed', 'content'),
 				),
 		);
 	}
@@ -810,8 +810,8 @@ class BreezeQuery extends Breeze
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 				$this->_noti[$row['id']] = array(
 					'id' => $row['id'],
-					'user' => $row['user'],
-					'user_to' => $row['user_to'],
+					'sender' => $row['sender'],
+					'receiver' => $row['receiver'],
 					'type' => $row['type'],
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
@@ -849,13 +849,13 @@ class BreezeQuery extends Breeze
 		$result = $this->_smcFunc['db_query']('', '
 			SELECT '. implode(',', $this->_tables['noti']['columns']) .'
 			FROM {db_prefix}' . $this->_tables['noti']['table'] . '
-			WHERE user_to = {int:user_to}
-				AND user = {int:user}
+			WHERE receiver = {int:receiver}
+				AND sender = {int:sender}
 				AND type = {string:type}
 			LIMIT 1',
 			array(
-				'user_to' => $values['user_to'],
-				'user' => $values['user'],
+				'receiver' => $values['receiver'],
+				'sender' => $values['sender'],
 				'type' => $type,
 			)
 		);
@@ -882,8 +882,8 @@ class BreezeQuery extends Breeze
 
 		$this->_smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['noti']['table']) .
 			'', array(
-			'user' => 'int',
-			'user_to' => 'int',
+			'sender' => 'int',
+			'receiver' => 'int',
 			'type' => 'string',
 			'time' => 'int',
 			'viewed' => 'int',
@@ -959,30 +959,25 @@ class BreezeQuery extends Breeze
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
 				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
-				WHERE user_to = {int:user_to}
+				WHERE receiver = {int:receiver}
 				'. (empty($all) ? 'AND viewed = 0' : '') .'
 				', array(
-					'user_to' => (int) $user,
+					'receiver' => (int) $user,
 				)
 			);
 
 			// Populate the array like a boss!
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-			{
 				$return['data'][$row['id']] = array(
 					'id' => $row['id'],
-					'user' => $row['user'],
-					'user_to' => $row['user_to'],
+					'sender' => $row['sender'],
+					'receiver' => $row['receiver'],
 					'type' => $row['type'],
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
 					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
 				);
 
-				// Collect the users
-				$return['users'][] = $row['user_to'];
-				$return['users'][] = $row['user'];
-			}
 
 			$this->_smcFunc['db_free_result']($result);
 
@@ -1031,7 +1026,7 @@ class BreezeQuery extends Breeze
 			if ($user)
 			{
 				foreach ($return as $r)
-					if ($r['user_to'] == $user)
+					if ($r['receiver'] == $user)
 					{
 						$returnUser[$r['id']] = $r;
 
