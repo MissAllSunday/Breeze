@@ -839,31 +839,64 @@ class BreezeQuery extends Breeze
 		return !empty($this->_noti) ? $this->_noti : $this->noti();
 	}
 
-	public function getSingleNoti($values, $type)
+	public function getNotiBySender($senderID, $limit = false)
 	{
 		$return = array();
 
-		if (empty($values) || !is_array($values) || empty($type))
+		if (empty($senderID))
 			return false;
 
-		$result = $this->_smcFunc['db_query']('', '
-			SELECT '. implode(',', $this->_tables['noti']['columns']) .'
-			FROM {db_prefix}' . $this->_tables['noti']['table'] . '
-			WHERE receiver = {int:receiver}
-				AND sender = {int:sender}
-				AND type = {string:type}
-			LIMIT 1',
-			array(
-				'receiver' => $values['receiver'],
-				'sender' => $values['sender'],
-				'type' => $type,
-			)
-		);
+		if ((Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Sender-'. $senderID, 120)) == null)
+		{
+			$result = $this->_smcFunc['db_query']('', '
+				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
+				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
+				WHERE sender = {int:sender}
+				'. (!empty($limit) ? '
+				LIMIT '. $limit : '') .'',
+				array(
+					'sender' => $senderID,
+				)
+			);
 
-		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-			$return = $row;
+			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+				$return[$row['id']] = $row;
 
-		$this->_smcFunc['db_free_result']($result);
+			$this->_smcFunc['db_free_result']($result);
+
+			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Sender-'. $senderID, $return, 120);
+		}
+
+		return $return;
+	}
+
+	public function getNotiByReceiver($receiverID, $limit = false)
+	{
+		$return = array();
+
+		if (empty($receiverID))
+			return false;
+
+		if ((Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Receiver-'. $receiverID, 120)) == null)
+		{
+			$result = $this->_smcFunc['db_query']('', '
+				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
+				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
+				WHERE receiver = {int:receiver}
+				'. (!empty($limit) ? '
+				LIMIT '. $limit : '') .'',
+				array(
+					'receiver' => $senderID,
+				)
+			);
+
+			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+				$return[$row['id']] = $row;
+
+			$this->_smcFunc['db_free_result']($result);
+
+			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Receiver-'. $receiverID, $return, 120);
+		}
 
 		return $return;
 	}
