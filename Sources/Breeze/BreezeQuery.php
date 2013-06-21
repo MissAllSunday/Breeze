@@ -729,6 +729,38 @@ class BreezeQuery extends Breeze
 	}
 
 	/**
+	 * BreezeQuery::getUserSetting()
+	 *
+	 * Gets a unique user setting
+	 * @param int $user
+	 * @param bool $setting
+	 * @return bool|mixed either a boolean false or the requested value which can be a string or a boolean
+	 */
+	public function getUserSettings($user, $setting = false)
+	{
+		$result = $this->_smcFunc['db_query']('', '
+			SELECT pm_ignore_list, id_member
+			FROM {db_prefix}' . $this->_tables['members']['table'] . '
+			WHERE id_member = {int:user}',
+			array(
+				'user' => $user,
+			)
+		);
+
+		// Populate the array like a boss!
+		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+			$return = $row;
+
+		$this->_smcFunc['db_free_result']($result);
+
+		if (!empty($setting) && !empty($return[$setting]))
+		return $return[$setting];
+
+		elseif (empty($setting))
+			return $return;
+	}
+
+	/**
 	 * BreezeQuery::noti()
 	 *
 	 * Loads all the notifications, uses cache when possible

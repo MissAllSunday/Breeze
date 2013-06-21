@@ -260,11 +260,11 @@ function breezeNotifications()
 	$text = $breezeController->get('text');
 	$globals = Breeze::sGlobals('request');
 	$notifications = $breezeController->get('notifications');
-	$tempNoti = $query->getNotificationByUser($context['member']['id'], true);
+	$tempNoti = $query->getNotificationByReceiver($context['member']['id'], true);
 
 	// Load the users data
 	if (!empty($tempNoti['users']))
-	BreezeTools::loadUserInfo($tempNoti['users']);
+		BreezeTools::loadUserInfo($tempNoti['users']);
 
 	// Create the unique message for each noti @todo, this should be moved to BreezeNotifications
 	if (!empty($tempNoti['data']))
@@ -489,7 +489,7 @@ function breezeCheckPermissions()
 	$context['member']['ignore_list'] = array();
 
 	// Get the ignored list
-	$temp_ignore_list = !empty($context['member']['ignore_list']) ? $context['member']['ignore_list'] : $query->getUserSetting($context['member']['id'], 'pm_ignore_list');
+	$temp_ignore_list = !empty($context['member']['ignore_list']) ? $context['member']['ignore_list'] : $query->getUserSettings($context['member']['id'], 'pm_ignore_list');
 
 	if (!empty($temp_ignore_list))
 		$context['member']['ignore_list'] = explode(',', $temp_ignore_list);
