@@ -133,12 +133,12 @@ class BreezeNotifications
 					'table' => 'breeze_notifications',
 					'rows' => 'id',
 					'where' => 'user = {int:user}',
-					'and' => 'user_to = {int:user_to}',
+					'and' => 'receiver = {int:receiver}',
 					'andTwo' => 'type = {string:type}',
 				),
 				array(
 					'user' => !empty($params['user']) ? $params['user'] : $this->_currentUser,
-					'user_to' => $params['user_to'],
+					'receiver' => $params['receiver'],
 					'type' => $params['type'],
 				),
 				'id', false
@@ -172,7 +172,7 @@ class BreezeNotifications
 			return false;
 
 		// Get all the notification for this user
-		$this->_all = $this->_query->getNotificationByReceiver($user);
+		$this->_all = $this->getByReceiver($user);
 
 		// Load the users data
 		$this->_tools->loadUserInfo($this->_all['users']);
@@ -301,11 +301,11 @@ class BreezeNotifications
 		global $context;
 
 		// Extra check
-		if (empty($noti) || !is_array($noti) || $noti['user_to'] != $this->_currentUser)
+		if (empty($noti) || !is_array($noti) || $noti['receiver'] != $this->_currentUser)
 			return false;
 
 		$this->_messages[$noti['id']]['id'] = $noti['id'];
-		$this->_messages[$noti['id']]['user'] = $noti['user_to'];
+		$this->_messages[$noti['id']]['user'] = $noti['receiver'];
 		$this->_messages[$noti['id']]['viewed'] = $noti['viewed'];
 
 		// Fill out the messages property
@@ -324,7 +324,7 @@ class BreezeNotifications
 		global $context, $scripturl;
 
 		// Extra check
-		if ($noti['user_to'] != $this->_currentUser)
+		if ($noti['receiver'] != $this->_currentUser)
 			return false;
 
 		// Yeah, we started with nothing!
@@ -342,7 +342,7 @@ class BreezeNotifications
 		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
 		{
 			// Is this the same user's wall?
-			if ($noti['content']['wall_owner'] == $noti['user_to'])
+			if ($noti['content']['wall_owner'] == $noti['receiver'])
 				$text = sprintf($this->_text->getText('mention_message_own_wall_comment'), $statusLink,
 					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'], $noti['id']);
 
@@ -357,19 +357,19 @@ class BreezeNotifications
 		else
 		{
 			// Is this your own wall?
-			if ($noti['content']['wall_owner'] == $noti['user_to'])
+			if ($noti['content']['wall_owner'] == $noti['receiver'])
 				$text = sprintf($this->_text->getText('mention_message_own_wall_status'), $statusLink,
 					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'], $noti['id']);
 
 			// No? don't worry, you will get your precious notification anyway
-			elseif ($noti['content']['wall_owner'] != $noti['user_to'])
+			elseif ($noti['content']['wall_owner'] != $noti['receiver'])
 				$text = sprintf($this->_text->getText('mention_message_comment'), $context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'], $context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'], $statusLink, $noti['id']);
 		}
 
 		// Create the message already
 		$this->_messages[$noti['id']] = array(
 			'id' => $noti['id'],
-			'user' => $noti['user_to'],
+			'user' => $noti['receiver'],
 			'message' => $text,
 			'viewed' => $noti['viewed']
 		);

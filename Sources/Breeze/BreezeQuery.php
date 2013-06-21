@@ -1025,18 +1025,6 @@ class BreezeQuery extends Breeze
 	}
 
 	/**
-	 * BreezeQuery::getNotificationByUserSender()
-	 *
-	 * @see BreezeQuery::getReturn()
-	 * @param int $user The user from where the notifications will be fetched
-	 * @return array
-	 */
-	public function getNotificationByUserSender($user)
-	{
-		return $this->getReturn($this->_tables['noti']['name'], 'user', $user);
-	}
-
-	/**
 	 * BreezeQuery::getNotificationByType()
 	 *
 	 * Gets all the notifications stored under an specific type
@@ -1048,38 +1036,7 @@ class BreezeQuery extends Breeze
 	{
 		global $context;
 
-		$return = $this->getReturn($this->_tables['noti']['name'], 'type', $type);
-		$returnUser = array();
-		$this->test = array();
-
-		if (!empty($return))
-		{
-			// Lets return the request for a particular user
-			if ($user)
-			{
-				foreach ($return as $r)
-					if ($r['receiver'] == $user)
-					{
-						$returnUser[$r['id']] = $r;
-
-						// load the user's link
-						$this->tools->loadUserInfo($r['user']);
-
-						// build the message
-						$returnUser[$r['id']]['content']['message'] = sprintf($this->text->getText('buddy_messagerequest_message'),
-							$context['Breeze']['user_info'][$r['user']]['link'], $r['id']);
-					}
-
-				return $returnUser;
-			}
-
-			// No? then send the entire array
-			else
-				return $return;
-		}
-
-		else
-			return false;
+		// Gotta re-do this thing
 	}
 
 	/**
