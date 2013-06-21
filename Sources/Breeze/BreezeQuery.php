@@ -729,66 +729,6 @@ class BreezeQuery extends Breeze
 	}
 
 	/**
-	 * BreezeQuery::members()
-	 *
-	 * @return
-	 */
-	protected function members()
-	{
-		// Use the cache please...
-		if (($this->_members = cache_get_data(Breeze::$name .'-' . $this->_tables['members']['name'], 120)) == null)
-		{
-			// Load all the settings from all users
-			$result = $this->_smcFunc['db_query']('', '
-				SELECT pm_ignore_list, id_member
-				FROM {db_prefix}' . $this->_tables['members']['table'] . '
-				', array());
-
-			// Populate the array like a boss!
-			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-				$this->_members[$row['id_member']] = $row;
-
-			$this->_smcFunc['db_free_result']($result);
-
-			// Cache this beauty
-			cache_put_data(Breeze::$name .'-' . $this->_tables['members']['name'], $this->_members, 120);
-		}
-
-		return $this->_members;
-	}
-
-	/**
-	 * BreezeQuery::getUserSetting()
-	 *
-	 * Gets a unique user setting
-	 * @param int $user
-	 * @param bool $setting
-	 * @return bool|mixed either a boolean false or the requested value which can be a string or a boolean
-	 */
-	public function getUserSetting($user, $setting = false)
-	{
-		$return = $this->_members ? $this->_members:$this->members();
-
-		if ($setting)
-		{
-			if (!empty($return[$user][$setting]))
-				return $return[$user][$setting];
-
-			else
-				return false;
-		}
-
-		else
-		{
-			if (!empty($return[$user]))
-				return $return[$user];
-
-			else
-				return false;
-		}
-	}
-
-	/**
 	 * BreezeQuery::noti()
 	 *
 	 * Loads all the notifications, uses cache when possible
