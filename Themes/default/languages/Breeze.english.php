@@ -88,6 +88,8 @@ $txt['Breeze_user_settings_visits_module_timeframe_week'] = 'Week';
 $txt['Breeze_user_settings_visits_module_timeframe_month'] = 'Month';
 $txt['Breeze_user_settings_clean_visits'] = 'Clean the visits log';
 $txt['Breeze_user_settings_clean_visits_sub'] = 'Removes all visits from your visits tab.';
+$txt['Breeze_user_settings_clear_noti'] = 'How many seconds do you want the notifications to be displayed before been automatically closed';
+$txt['Breeze_user_settings_clear_noti_sub'] = 'In seconds, If you leave this empty the notifications won\'t be automatically closed and you must manually click the "close all notifications" button.';
 
 // Modules
 $txt['Breeze_user_settings_enable_buddies'] = 'Enable the "Buddies" module.';

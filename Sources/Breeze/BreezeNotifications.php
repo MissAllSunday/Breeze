@@ -177,6 +177,17 @@ class BreezeNotifications
 		// Load the users data
 		$this->_tools->loadUserInfo($this->_all['users']);
 
+		// If we aren't in the profile then we must call a function in a source file far far away...
+		if (empty($context['member']['options']))
+		{
+			global $sourcedir;
+
+			require_once($sourcedir . '/Profile-Modify.php');
+
+			// Call and set $context['member']['options']
+			loadThemeOptions($this->_currentUser);
+		}
+
 		// Do this if there is actually something to show
 		if (!empty($this->_all['data']))
 		{
@@ -244,7 +255,6 @@ class BreezeNotifications
 				}
 			},
 			{addClass: \'button_submit\', text: breeze_noti_delete, onClick: function($noty) {
-				// make an ajax call here
 					jQuery.ajax(
 					{
 						type: \'POST\',
@@ -294,7 +304,8 @@ class BreezeNotifications
 		callback: {
 			afterClose: function() {
 				$.noty.closeAll();
-			}
+			},
+			'. (!empty($context['member']['options']['Breeze_clear_noti']) ?  'onShow: function() {window.setTimeout("$.noty.closeAll()", '. $context['member']['options']['Breeze_clear_noti'] * 1000 .');},' : '') .'
 		},
 	});
 ';

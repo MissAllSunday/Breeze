@@ -230,6 +230,15 @@ function breezeSettings()
 		'<a href="'. $scripturl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['member']['id'] .'">%s</a>'
 	);
 
+	// How many seconds before closing the notifications?
+	$form->addText(
+		'Breeze_clear_noti',
+		'clear_noti',
+		!empty($context['member']['options']['Breeze_clear_noti']) ? $context['member']['options']['Breeze_clear_noti'] : 0,
+		3,
+		3
+	);
+
 	// Send the form to the template
 	$context['Breeze']['UserSettings']['Form'] = $form->display();
 }
