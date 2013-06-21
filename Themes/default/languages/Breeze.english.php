@@ -230,6 +230,7 @@ $txt['Breeze_noti_markasunread'] = 'Mark as unread';
 $txt['Breeze_noti_markasread_title'] = 'Mark as read/unread';
 $txt['Breeze_noti_markasread_viewed'] = 'Already marked as read';
 $txt['Breeze_noti_close'] = 'Close';
+$txt['Breeze_noti_closeAll'] = 'Close all notifications';
 $txt['Breeze_noti_unmarkasread_after'] = 'You have successfully marked this notification as unread';
 $txt['Breeze_noti_markasread_after'] = 'You have successfully marked this notification as read';
 $txt['Breeze_noti_markasreaddeleted_after'] = 'This notification was already deleted or is not a valid entry.';

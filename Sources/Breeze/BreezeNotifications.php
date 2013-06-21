@@ -283,6 +283,23 @@ class BreezeNotifications
 		  ]
 	});';
 
+				// A close all button
+				$context['insert_after_template'] .=
+		'noty({
+		text: \''. $this->_text->getText('noti_closeAll') .'\',
+		type: \'warning\',
+		dismissQueue: true,
+		layout: \'topRight\',
+		closeWith: [\'click\'],
+		callback: {
+			afterClose: function() {
+				$.noty.closeAll();
+			}
+		},
+	});
+';
+
+				// Close the js call
 				$context['insert_after_template'] .= '
 		});
 		// ]]></script>';
@@ -303,6 +320,8 @@ class BreezeNotifications
 		// Extra check
 		if (empty($noti) || !is_array($noti) || $noti['receiver'] != $this->_currentUser)
 			return false;
+
+		// @todo let BreezeBuddy to handle all the logic here, you just need to take care of showing the actual message...
 
 		$this->_messages[$noti['id']]['id'] = $noti['id'];
 		$this->_messages[$noti['id']]['user'] = $noti['receiver'];
