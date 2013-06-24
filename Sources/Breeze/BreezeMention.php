@@ -119,4 +119,14 @@ class BreezeMention
 			));
 		}
 	}
+
+	public function getString()
+	{
+		return $this->_string;
+	}
+
+	public function getQueryNames()
+	{
+		return $this->_queryNames;
+	}
 }
