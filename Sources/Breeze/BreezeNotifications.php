@@ -303,7 +303,7 @@ class BreezeNotifications
 		closeWith: [\'click\'],
 		callback: {
 			afterClose: function() {
-				$.noty.closeAll();
+				jQuery.noty.closeAll();
 			},
 			'. (!empty($context['member']['options']['Breeze_clear_noti']) ?  'onShow: function() {window.setTimeout("$.noty.closeAll()", '. $context['member']['options']['Breeze_clear_noti'] * 1000 .');},' : '') .'
 		},
