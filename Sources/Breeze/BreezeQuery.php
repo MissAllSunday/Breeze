@@ -844,7 +844,7 @@ class BreezeQuery extends Breeze
 	public function markNoti($id, $user, $viewed)
 	{
 		// We don't need this no more
-		$this->killCache($this->_tables['noti']['name'] . '-'. $user);
+		$this->killCache($this->_tables['noti']['name'] . '-Receiver-'. $user);
 
 		// We actually want to change the value... Just invert the value, ugly, but it gets the job done
 		$change = $viewed == 1 ? 0 : 1;
@@ -871,7 +871,7 @@ class BreezeQuery extends Breeze
 	public function deleteNoti($id, $user)
 	{
 		// We don't need this no more
-		$this->killCache($this->_tables['noti']['name'] . '-'. $user);
+		$this->killCache($this->_tables['noti']['name'] . '-Receiver-'. $user);
 
 		// Delete!
 		$this->_smcFunc['db_query']('', '

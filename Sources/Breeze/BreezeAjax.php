@@ -394,7 +394,7 @@ class BreezeAjax
 		}
 
 		// We must make sure this noti really exists, we just must!!!
-		$noti_temp = $this->_query->getNotificationByUser($user, true);
+		$noti_temp = $this->_query->getNotificationByReceiver($user, true);
 
 		if (empty($noti_temp['data']) || !isset($noti_temp['data'][$noti]))
 		{
@@ -452,7 +452,7 @@ class BreezeAjax
 			return;
 
 		// We must make sure this noti really exists, we just must!!!
-		$noti_temp = $this->_query->getNotificationByUser($user, true);
+		$noti_temp = $this->_query->getNotificationByReceiver($user, true);
 
 		if (empty($noti_temp['data']) || !array_key_exists($noti, $noti_temp['data']))
 		{
