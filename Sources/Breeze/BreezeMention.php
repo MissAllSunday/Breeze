@@ -110,8 +110,8 @@ class BreezeMention
 
 			// Notification here
 			$this->_notification->create(array(
-				'user' => $user_info['id'],
-				'user_to' => $name[2],
+				'sender' => $user_info['id'],
+				'receiver' => $name[2],
 				'type' => 'mention',
 				'time' => time(),
 				'read' => 0,
