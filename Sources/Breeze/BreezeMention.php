@@ -89,9 +89,6 @@ class BreezeMention
 		if (empty($this->_queryNames))
 			return false;
 
-		// We need an array and users won't be notified twice...
-		$this->_queryNames = array_unique(is_array($this->_queryNames) ? $this->_queryNames : array($this->_queryNames));
-
 		// You can't notify yourself
 		if (isset($this->_queryNames[$user_info['id']]))
 			unset($this->_queryNames[$user_info['id']]);
@@ -110,13 +107,23 @@ class BreezeMention
 
 			// Notification here
 			$this->_notification->create(array(
-				'user' => $user_info['id'],
-				'user_to' => $name[2],
+				'sender' => $user_info['id'],
+				'receiver' => $name[2],
 				'type' => 'mention',
 				'time' => time(),
 				'read' => 0,
 				'content' => $noti_info,
 			));
 		}
+	}
+
+	public function getString()
+	{
+		return $this->_string;
+	}
+
+	public function getQueryNames()
+	{
+		return $this->_queryNames;
 	}
 }

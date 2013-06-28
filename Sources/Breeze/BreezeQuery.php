@@ -93,7 +93,7 @@ class BreezeQuery extends Breeze
 				'name' => 'noti',
 				'table' => 'breeze_notifications',
 				'property' => '_noti',
-				'columns' => array('id', 'user', 'user_to', 'type', 'time', 'viewed', 'content'),
+				'columns' => array('id', 'sender', 'receiver', 'type', 'time', 'viewed', 'content'),
 				),
 		);
 	}
@@ -729,35 +729,6 @@ class BreezeQuery extends Breeze
 	}
 
 	/**
-	 * BreezeQuery::members()
-	 *
-	 * @return
-	 */
-	protected function members()
-	{
-		// Use the cache please...
-		if (($this->_members = cache_get_data(Breeze::$name .'-' . $this->_tables['members']['name'], 120)) == null)
-		{
-			// Load all the settings from all users
-			$result = $this->_smcFunc['db_query']('', '
-				SELECT pm_ignore_list, id_member
-				FROM {db_prefix}' . $this->_tables['members']['table'] . '
-				', array());
-
-			// Populate the array like a boss!
-			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-				$this->_members[$row['id_member']] = $row;
-
-			$this->_smcFunc['db_free_result']($result);
-
-			// Cache this beauty
-			cache_put_data(Breeze::$name .'-' . $this->_tables['members']['name'], $this->_members, 120);
-		}
-
-		return $this->_members;
-	}
-
-	/**
 	 * BreezeQuery::getUserSetting()
 	 *
 	 * Gets a unique user setting
@@ -765,27 +736,28 @@ class BreezeQuery extends Breeze
 	 * @param bool $setting
 	 * @return bool|mixed either a boolean false or the requested value which can be a string or a boolean
 	 */
-	public function getUserSetting($user, $setting = false)
+	public function getUserSettings($user, $setting = false)
 	{
-		$return = $this->_members ? $this->_members:$this->members();
+		$result = $this->_smcFunc['db_query']('', '
+			SELECT pm_ignore_list, id_member
+			FROM {db_prefix}' . $this->_tables['members']['table'] . '
+			WHERE id_member = {int:user}',
+			array(
+				'user' => $user,
+			)
+		);
 
-		if ($setting)
-		{
-			if (!empty($return[$user][$setting]))
-				return $return[$user][$setting];
+		// Populate the array like a boss!
+		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+			$return = $row;
 
-			else
-				return false;
-		}
+		$this->_smcFunc['db_free_result']($result);
 
-		else
-		{
-			if (!empty($return[$user]))
-				return $return[$user];
+		if (!empty($setting) && !empty($return[$setting]))
+		return $return[$setting];
 
-			else
-				return false;
-		}
+		elseif (empty($setting))
+			return $return;
 	}
 
 	/**
@@ -810,8 +782,8 @@ class BreezeQuery extends Breeze
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 				$this->_noti[$row['id']] = array(
 					'id' => $row['id'],
-					'user' => $row['user'],
-					'user_to' => $row['user_to'],
+					'sender' => $row['sender'],
+					'receiver' => $row['receiver'],
 					'type' => $row['type'],
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
@@ -839,35 +811,6 @@ class BreezeQuery extends Breeze
 		return !empty($this->_noti) ? $this->_noti : $this->noti();
 	}
 
-	public function getSingleNoti($values, $type)
-	{
-		$return = array();
-
-		if (empty($values) || !is_array($values) || empty($type))
-			return false;
-
-		$result = $this->_smcFunc['db_query']('', '
-			SELECT '. implode(',', $this->_tables['noti']['columns']) .'
-			FROM {db_prefix}' . $this->_tables['noti']['table'] . '
-			WHERE user_to = {int:user_to}
-				AND user = {int:user}
-				AND type = {string:type}
-			LIMIT 1',
-			array(
-				'user_to' => $values['user_to'],
-				'user' => $values['user'],
-				'type' => $type,
-			)
-		);
-
-		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-			$return = $row;
-
-		$this->_smcFunc['db_free_result']($result);
-
-		return $return;
-	}
-
 	/**
 	 * BreezeQuery::insertNotification()
 	 *
@@ -882,8 +825,8 @@ class BreezeQuery extends Breeze
 
 		$this->_smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['noti']['table']) .
 			'', array(
-			'user' => 'int',
-			'user_to' => 'int',
+			'sender' => 'int',
+			'receiver' => 'int',
 			'type' => 'string',
 			'time' => 'int',
 			'viewed' => 'int',
@@ -901,10 +844,7 @@ class BreezeQuery extends Breeze
 	public function markNoti($id, $user, $viewed)
 	{
 		// We don't need this no more
-		$this->killCache($this->_tables['noti']['name'] . '-'. $user);
-
-		// We actually want to change the value... Just invert the value, ugly, but it gets the job done
-		$change = $viewed == 1 ? 0 : 1;
+		$this->killCache($this->_tables['noti']['name'] . '-Receiver-'. $user);
 
 		// Mark as viewed
 		$this->_smcFunc['db_query']('', '
@@ -912,7 +852,7 @@ class BreezeQuery extends Breeze
 			SET viewed = {int:viewed}
 			WHERE id = {int:id}',
 			array(
-				'viewed' => $change,
+				'viewed' => (int) $viewed,
 				'id' => $id,
 			)
 		);
@@ -928,7 +868,7 @@ class BreezeQuery extends Breeze
 	public function deleteNoti($id, $user)
 	{
 		// We don't need this no more
-		$this->killCache($this->_tables['noti']['name'] . '-'. $user);
+		$this->killCache($this->_tables['noti']['name'] . '-Receiver-'. $user);
 
 		// Delete!
 		$this->_smcFunc['db_query']('', '
@@ -942,15 +882,15 @@ class BreezeQuery extends Breeze
 	}
 
 	/**
-	 * BreezeQuery::getNotificationByUser()
+	 * BreezeQuery::getNotificationByReceiver()
 	 *
 	 * @param int $user The user from where the notifications will be fetched
 	 * @return array
 	 */
-	public function getNotificationByUser($user, $all = false)
+	public function getNotificationByReceiver($user, $all = false)
 	{
 		// Use the cache please...
-		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, 120)) == null)
+		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Receiver-'. $user, 120)) == null)
 		{
 			/* There is no notifications */
 			$return['users'] = array();
@@ -959,10 +899,10 @@ class BreezeQuery extends Breeze
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
 				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
-				WHERE user_to = {int:user_to}
+				WHERE receiver = {int:receiver}
 				'. (empty($all) ? 'AND viewed = 0' : '') .'
 				', array(
-					'user_to' => (int) $user,
+					'receiver' => (int) $user,
 				)
 			);
 
@@ -971,17 +911,17 @@ class BreezeQuery extends Breeze
 			{
 				$return['data'][$row['id']] = array(
 					'id' => $row['id'],
-					'user' => $row['user'],
-					'user_to' => $row['user_to'],
+					'sender' => $row['sender'],
+					'receiver' => $row['receiver'],
 					'type' => $row['type'],
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
 					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
 				);
 
-				// Collect the users
-				$return['users'][] = $row['user_to'];
-				$return['users'][] = $row['user'];
+				// Fill out the users IDs
+				$return['users'][] = $row['sender'];
+				$return['users'][] = $row['receiver'];
 			}
 
 			$this->_smcFunc['db_free_result']($result);
@@ -991,22 +931,66 @@ class BreezeQuery extends Breeze
 
 			// Cache this beauty for the most used stream feature
 			if (empty($all))
-				cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-'. $user, $return, 120);
+				cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Receiver-'. $user, $return, 120);
 		}
 
 		return $return;
 	}
 
 	/**
-	 * BreezeQuery::getNotificationByUserSender()
+	 * BreezeQuery::getNotificationBySender()
 	 *
-	 * @see BreezeQuery::getReturn()
 	 * @param int $user The user from where the notifications will be fetched
 	 * @return array
 	 */
-	public function getNotificationByUserSender($user)
+	public function getNotificationBySender($user, $all = false)
 	{
-		return $this->getReturn($this->_tables['noti']['name'], 'user', $user);
+		// Use the cache please...
+		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Sender-'. $user, 120)) == null)
+		{
+			/* There is no notifications */
+			$return['users'] = array();
+			$return['data'] = array();
+
+			$result = $this->_smcFunc['db_query']('', '
+				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
+				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
+				WHERE sender = {int:sender}
+				'. (empty($all) ? 'AND viewed = 0' : '') .'
+				', array(
+					'sender' => (int) $user,
+				)
+			);
+
+			// Populate the array like a boss!
+			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+			{
+				$return['data'][$row['id']] = array(
+					'id' => $row['id'],
+					'sender' => $row['sender'],
+					'receiver' => $row['receiver'],
+					'type' => $row['type'],
+					'time' => $row['time'],
+					'viewed' => $row['viewed'],
+					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+				);
+
+				// Fill out the users IDs
+				$return['users'][] = $row['sender'];
+				$return['users'][] = $row['receiver'];
+			}
+
+			$this->_smcFunc['db_free_result']($result);
+
+			// Delete duplicate IDs
+			$return['users'] = array_filter(array_unique($return['users']));
+
+			// Cache this beauty for the most used stream feature
+			if (empty($all))
+				cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Seceiver-'. $user, $return, 120);
+		}
+
+		return $return;
 	}
 
 	/**
@@ -1021,38 +1005,7 @@ class BreezeQuery extends Breeze
 	{
 		global $context;
 
-		$return = $this->getReturn($this->_tables['noti']['name'], 'type', $type);
-		$returnUser = array();
-		$this->test = array();
-
-		if (!empty($return))
-		{
-			// Lets return the request for a particular user
-			if ($user)
-			{
-				foreach ($return as $r)
-					if ($r['user_to'] == $user)
-					{
-						$returnUser[$r['id']] = $r;
-
-						// load the user's link
-						$this->tools->loadUserInfo($r['user']);
-
-						// build the message
-						$returnUser[$r['id']]['content']['message'] = sprintf($this->text->getText('buddy_messagerequest_message'),
-							$context['Breeze']['user_info'][$r['user']]['link'], $r['id']);
-					}
-
-				return $returnUser;
-			}
-
-			// No? then send the entire array
-			else
-				return $return;
-		}
-
-		else
-			return false;
+		// Gotta re-do this thing
 	}
 
 	/**

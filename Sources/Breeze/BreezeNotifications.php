@@ -79,6 +79,16 @@ class BreezeNotifications
 		$this->_text = $text;
 	}
 
+	public function getByReceiver($user)
+	{
+		return $this->_query->getNotificationByReceiver($user);
+	}
+
+	public function getBySender($user)
+	{
+		return $this->_query->getNotificationBySender($user);
+	}
+
 	/**
 	 * BreezeNotifications::create()
 	 *
@@ -123,12 +133,12 @@ class BreezeNotifications
 					'table' => 'breeze_notifications',
 					'rows' => 'id',
 					'where' => 'user = {int:user}',
-					'and' => 'user_to = {int:user_to}',
+					'and' => 'receiver = {int:receiver}',
 					'andTwo' => 'type = {string:type}',
 				),
 				array(
 					'user' => !empty($params['user']) ? $params['user'] : $this->_currentUser,
-					'user_to' => $params['user_to'],
+					'receiver' => $params['receiver'],
 					'type' => $params['type'],
 				),
 				'id', false
@@ -148,46 +158,6 @@ class BreezeNotifications
 	}
 
 	/**
-	 * BreezeNotifications::count()
-	 *
-	 * @return
-	 */
-	public function count()
-	{
-		return count($this->_query->getNotifications());
-	}
-
-	/**
-	 * BreezeNotifications::getByUser()
-	 *
-	 * @param mixed $user
-	 * @param bool $all
-	 * @return
-	 */
-	public function getByUser($user, $all = false)
-	{
-		// Dont even bother...
-		if (empty($user))
-			return false;
-
-		// @todo, Avoid pointless foreachs, get what we need directoy from the DB!
-		$temp = $this->_query->getNotificationByUserSender($user);
-
-		// Send those who hasn't been viewed
-		if (!$all && !empty($temp))
-			foreach ($temp as $k => $t)
-			{
-				if (!empty($t['viewed']))
-					unset($temp[$k]);
-
-				else
-					$temp[$t['id']] = $t;
-			}
-
-		return $temp;
-	}
-
-	/**
 	 * BreezeNotifications::doStream()
 	 *
 	 * @param mixed $user
@@ -202,10 +172,21 @@ class BreezeNotifications
 			return false;
 
 		// Get all the notification for this user
-		$this->_all = $this->_query->getNotificationByUser($user);
+		$this->_all = $this->getByReceiver($user);
 
 		// Load the users data
 		$this->_tools->loadUserInfo($this->_all['users']);
+
+		// If we aren't in the profile then we must call a function in a source file far far away...
+		if (empty($context['member']['options']))
+		{
+			global $sourcedir;
+
+			require_once($sourcedir . '/Profile-Modify.php');
+
+			// Call and set $context['member']['options']
+			loadThemeOptions($this->_currentUser);
+		}
 
 		// Do this if there is actually something to show
 		if (!empty($this->_all['data']))
@@ -244,11 +225,10 @@ class BreezeNotifications
 		closeWith: [\'button\'],
 		buttons: [{
 				addClass: \'button_submit\', text: breeze_noti_markasread, onClick: function($noty) {
-					// make an ajax call here
 					jQuery.ajax(
 					{
 						type: \'POST\',
-						url: smf_scripturl + \'?action=breezeajax;sa=notimark\',
+						url: smf_scripturl + \'?action=breezeajax;sa=notimark;js=1\',
 						data: ({content : noti_id_' . $m['id'] . ', user : user_' . $m['user'] . '}),
 						cache: false,
 						dataType: \'json\',
@@ -274,11 +254,10 @@ class BreezeNotifications
 				}
 			},
 			{addClass: \'button_submit\', text: breeze_noti_delete, onClick: function($noty) {
-				// make an ajax call here
 					jQuery.ajax(
 					{
 						type: \'POST\',
-						url: smf_scripturl + \'?action=breezeajax;sa=notidelete\',
+						url: smf_scripturl + \'?action=breezeajax;sa=notidelete;js=1\',
 						data: ({content : noti_id_' . $m['id'] . ', user : user_' . $m['user'] . '}),
 						cache: false,
 						dataType: \'json\',
@@ -313,6 +292,24 @@ class BreezeNotifications
 		  ]
 	});';
 
+				// A close all button
+				$context['insert_after_template'] .=
+		'noty({
+		text: \''. $this->_text->getText('noti_closeAll') .'\',
+		type: \'warning\',
+		dismissQueue: true,
+		layout: \'topRight\',
+		closeWith: [\'click\'],
+		callback: {
+			afterClose: function() {
+				jQuery.noty.closeAll();
+			},
+			'. (!empty($context['member']['options']['Breeze_clear_noti']) ?  'onShow: function() {window.setTimeout("jQuery.noty.closeAll()", '. $context['member']['options']['Breeze_clear_noti'] * 1000 .');},' : '') .'
+		},
+	});
+';
+
+				// Close the js call
 				$context['insert_after_template'] .= '
 		});
 		// ]]></script>';
@@ -331,11 +328,13 @@ class BreezeNotifications
 		global $context;
 
 		// Extra check
-		if (empty($noti) || !is_array($noti) || $noti['user_to'] != $this->_currentUser)
+		if (empty($noti) || !is_array($noti) || $noti['receiver'] != $this->_currentUser)
 			return false;
 
+		// @todo let BreezeBuddy to handle all the logic here, you just need to take care of showing the actual message...
+
 		$this->_messages[$noti['id']]['id'] = $noti['id'];
-		$this->_messages[$noti['id']]['user'] = $noti['user_to'];
+		$this->_messages[$noti['id']]['user'] = $noti['receiver'];
 		$this->_messages[$noti['id']]['viewed'] = $noti['viewed'];
 
 		// Fill out the messages property
@@ -354,7 +353,7 @@ class BreezeNotifications
 		global $context, $scripturl;
 
 		// Extra check
-		if ($noti['user_to'] != $this->_currentUser)
+		if ($noti['receiver'] != $this->_currentUser)
 			return false;
 
 		// Yeah, we started with nothing!
@@ -372,7 +371,7 @@ class BreezeNotifications
 		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
 		{
 			// Is this the same user's wall?
-			if ($noti['content']['wall_owner'] == $noti['user_to'])
+			if ($noti['content']['wall_owner'] == $noti['receiver'])
 				$text = sprintf($this->_text->getText('mention_message_own_wall_comment'), $statusLink,
 					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'], $noti['id']);
 
@@ -387,19 +386,19 @@ class BreezeNotifications
 		else
 		{
 			// Is this your own wall?
-			if ($noti['content']['wall_owner'] == $noti['user_to'])
+			if ($noti['content']['wall_owner'] == $noti['receiver'])
 				$text = sprintf($this->_text->getText('mention_message_own_wall_status'), $statusLink,
 					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'], $noti['id']);
 
 			// No? don't worry, you will get your precious notification anyway
-			elseif ($noti['content']['wall_owner'] != $noti['user_to'])
+			elseif ($noti['content']['wall_owner'] != $noti['receiver'])
 				$text = sprintf($this->_text->getText('mention_message_comment'), $context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'], $context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'], $statusLink, $noti['id']);
 		}
 
 		// Create the message already
 		$this->_messages[$noti['id']] = array(
 			'id' => $noti['id'],
-			'user' => $noti['user_to'],
+			'user' => $noti['receiver'],
 			'message' => $text,
 			'viewed' => $noti['viewed']
 		);
@@ -409,6 +408,15 @@ class BreezeNotifications
 	{
 		if (!empty($this->_messages))
 			return $this->_messages;
+
+		else
+			return false;
+	}
+
+	public function getAll()
+	{
+		if (!empty($this->_all))
+			return $this->_all;
 
 		else
 			return false;

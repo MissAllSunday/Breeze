@@ -88,6 +88,8 @@ $txt['Breeze_user_settings_visits_module_timeframe_week'] = 'Week';
 $txt['Breeze_user_settings_visits_module_timeframe_month'] = 'Month';
 $txt['Breeze_user_settings_clean_visits'] = 'Clean the visits log';
 $txt['Breeze_user_settings_clean_visits_sub'] = 'Removes all visits from your visits tab.';
+$txt['Breeze_user_settings_clear_noti'] = 'How many seconds do you want the notifications to be displayed before been automatically closed';
+$txt['Breeze_user_settings_clear_noti_sub'] = 'In seconds, If you leave this empty the notifications won\'t be automatically closed and you must manually click the "close all notifications" button.';
 
 // Modules
 $txt['Breeze_user_settings_enable_buddies'] = 'Enable the "Buddies" module.';
@@ -230,6 +232,7 @@ $txt['Breeze_noti_markasunread'] = 'Mark as unread';
 $txt['Breeze_noti_markasread_title'] = 'Mark as read/unread';
 $txt['Breeze_noti_markasread_viewed'] = 'Already marked as read';
 $txt['Breeze_noti_close'] = 'Close';
+$txt['Breeze_noti_closeAll'] = 'Close all notifications';
 $txt['Breeze_noti_unmarkasread_after'] = 'You have successfully marked this notification as unread';
 $txt['Breeze_noti_markasread_after'] = 'You have successfully marked this notification as read';
 $txt['Breeze_noti_markasreaddeleted_after'] = 'This notification was already deleted or is not a valid entry.';
