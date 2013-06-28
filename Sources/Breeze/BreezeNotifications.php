@@ -225,11 +225,10 @@ class BreezeNotifications
 		closeWith: [\'button\'],
 		buttons: [{
 				addClass: \'button_submit\', text: breeze_noti_markasread, onClick: function($noty) {
-					// make an ajax call here
 					jQuery.ajax(
 					{
 						type: \'POST\',
-						url: smf_scripturl + \'?action=breezeajax;sa=notimark\',
+						url: smf_scripturl + \'?action=breezeajax;sa=notimark;js=1\',
 						data: ({content : noti_id_' . $m['id'] . ', user : user_' . $m['user'] . '}),
 						cache: false,
 						dataType: \'json\',
@@ -258,7 +257,7 @@ class BreezeNotifications
 					jQuery.ajax(
 					{
 						type: \'POST\',
-						url: smf_scripturl + \'?action=breezeajax;sa=notidelete\',
+						url: smf_scripturl + \'?action=breezeajax;sa=notidelete;js=1\',
 						data: ({content : noti_id_' . $m['id'] . ', user : user_' . $m['user'] . '}),
 						cache: false,
 						dataType: \'json\',
