@@ -408,8 +408,8 @@ class BreezeAjax
 
 		else
 		{
-			// Send the "viewed" param as a string to avoid issues with boolean values been printed
-			$viewed = !empty($noti_temp['data'][$noti]['viewed']) ? '1' : '0';
+			// Whatever you choose, I'll do the opposite!
+			$viewed = !$noti_temp['data'][$noti]['viewed'];
 
 			// All is good, mark this as read
 			$this->_query->markNoti($noti, $user, $viewed);
@@ -424,6 +424,7 @@ class BreezeAjax
 
 			// Delete the data to avoid issues
 			$this->_data->unsetVar('content');
+			$this->_data->unsetVar('user');
 
 			// If we manage to get this far we don't have to worry about stoping the process, still, safety first!
 			return;

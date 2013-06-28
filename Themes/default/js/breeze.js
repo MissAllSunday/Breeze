@@ -385,40 +385,37 @@ jQuery(document).ready(function(){
 });
 
 
-// Mark as read
-jQuery(document).ready(function(){
-	jQuery('.Breeze_markRead').click(function(){
+// Mark as un/read
+// jQuery(document).ready(function(){
+	// jQuery('.Breeze_markRead').click(function(){
 
-		var element = jQuery(this);
-		var noti_id_delete = element.attr('id').replace(/[^0-9]/gi, '');
-		noti_id_delete = parseInt(noti_id_delete, 10);
-		var user = breeze_current_user;
+		// var element = jQuery(this);
+		// var user = breeze_current_user;
 
-		jQuery.ajax({
-			type: 'GET',
-			url: smf_scripturl + '?action=breezeajax;sa=notimark;js=1',
-			data: ({content : noti_id_delete, user : user}),
-			cache: false,
-			dataType: 'json',
-			success: function(html)
-			{
-				if(html.type == 'error')
-				{
-					noty({text: breeze_error_message, timeout: 3500, type: 'error'});
-				}
+		// jQuery.ajax({
+			// type: 'GET',
+			// url: element.attr('href') + 'js=1',
+			// cache: false,
+			// dataType: 'json',
+			// success: function(html)
+			// {
+				// if(html.type == 'error')
+				// {
+					// noty({text: breeze_error_message, timeout: 3500, type: 'error'});
+				// }
 
-				else if(html.type == 'ok')
-				{
-					noty({text: breeze_noti_delete_after, timeout: 3500, type: 'success'});
-				}
-			},
-			error: function (html)
-			{
-				noty({text: breeze_error_message, timeout: 3500, type: 'error'});
-			},
-		});
-	});
-});
+				// else if(html.type == 'ok')
+				// {
+					// noty({text: breeze_noti_delete_after, timeout: 3500, type: 'success'});
+				// }
+			// },
+			// error: function (html)
+			// {
+				// noty({text: breeze_error_message, timeout: 3500, type: 'error'});
+			// },
+		// });
+	// });
+// });
 
 // Delete a notification
 jQuery(document).ready(function(){
