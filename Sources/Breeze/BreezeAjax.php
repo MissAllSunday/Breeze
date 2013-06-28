@@ -394,7 +394,7 @@ class BreezeAjax
 		}
 
 		// We must make sure this noti really exists, we just must!!!
-		$noti_temp = $this->_query->getNotificationByUser($user, true);
+		$noti_temp = $this->_query->getNotificationByReceiver($user, true);
 
 		if (empty($noti_temp['data']) || !isset($noti_temp['data'][$noti]))
 		{
@@ -408,8 +408,8 @@ class BreezeAjax
 
 		else
 		{
-			// Send the "viewed" param as a string to avoid issues with boolean values been printed
-			$viewed = !empty($noti_temp['data'][$noti]['viewed']) ? '1' : '0';
+			// Whatever you choose, I'll do the opposite!
+			$viewed = !$noti_temp['data'][$noti]['viewed'];
 
 			// All is good, mark this as read
 			$this->_query->markNoti($noti, $user, $viewed);
@@ -424,6 +424,7 @@ class BreezeAjax
 
 			// Delete the data to avoid issues
 			$this->_data->unsetVar('content');
+			$this->_data->unsetVar('user');
 
 			// If we manage to get this far we don't have to worry about stoping the process, still, safety first!
 			return;
@@ -452,7 +453,7 @@ class BreezeAjax
 			return;
 
 		// We must make sure this noti really exists, we just must!!!
-		$noti_temp = $this->_query->getNotificationByUser($user, true);
+		$noti_temp = $this->_query->getNotificationByReceiver($user, true);
 
 		if (empty($noti_temp['data']) || !array_key_exists($noti, $noti_temp['data']))
 		{
@@ -479,7 +480,7 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user;
+				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user. ';m=noti_delete';
 
 			return;
 		}

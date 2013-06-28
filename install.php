@@ -188,7 +188,7 @@
 					'null' => false
 				),
 				array(
-					'name' => 'user_to',
+					'name' => 'receiver',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
