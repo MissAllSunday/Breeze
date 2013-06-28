@@ -151,6 +151,10 @@ class Breeze
 		$breezeSettings = $breezeController->get('settings');
 		$breezeGlobals = Breeze::sGlobals('get');
 
+		// Gotta set this to false to force the query if we're outside the profile area
+		if ($type != 'profile')
+			$context['user']['is_owner'] = false;
+
 		if (!$header_done)
 		{
 			$context['html_headers'] .= '
@@ -366,12 +370,12 @@ $(document).ready(function (){
 				);
 
 			// Buddies page
-			$profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
-				'label' => $text->getText('user_buddysettings_name'),
-				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'breezeBuddyRequest',
-				'permission' => array('own' => 'profile_view_own', ),
-				);
+			// $profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
+				// 'label' => $text->getText('user_buddysettings_name'),
+				// 'file' => Breeze::$folder . 'BreezeUser.php',
+				// 'function' => 'breezeBuddyRequest',
+				// 'permission' => array('own' => 'profile_view_own', ),
+				// );
 
 			// Notifications admin page
 			$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
@@ -408,6 +412,9 @@ $(document).ready(function (){
 				'href' => $scripturl . '?action=profile;area=static',
 				'show' => true,
 			);
+
+		// Cheat, lets cheat a little!
+		Breeze::headersHook();
 
 		// Shh!
 		Breeze::who(false);
@@ -466,6 +473,9 @@ $(document).ready(function (){
 	public static function admin($admin_menu)
 	{
 		global $breezeController;
+
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
 
 		$text = $breezeController->get('text');
 
