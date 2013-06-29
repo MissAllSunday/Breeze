@@ -51,11 +51,13 @@ class BreezeDisplay
 	{
 		global $breezeController;
 
+		// Sometimes $breezeController won't be set
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
 		$this->tools = $breezeController->get('tools');
 		$this->text = $breezeController->get('text');
-
 		$this->params = $params;
-
 		$this->type = $type;
 
 		// The visitor's permissions

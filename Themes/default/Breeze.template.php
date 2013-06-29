@@ -184,16 +184,17 @@ function template_user_wall()
 			</div>';
 		// End of the status textarea
 
-
 	// New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING and even if you do, DON'T MODIFY THIS
-	echo '<span id="breeze_load_image"></span>
-	<ul class="breeze_status" id="breeze_display_status">';
+	echo '
+		<div id="breeze_load_image"></div>
+		<ul class="breeze_status" id="breeze_display_status">';
 
 	// Status and comments
 	if (!empty($context['member']['status']))
 		foreach ($context['member']['status'] as $status)
 		{
-			echo '<li class="windowbg" id ="status_id_', $status['id'] ,'">
+			echo '
+			<li class="windowbg" id ="status_id_', $status['id'] ,'">
 				<span class="topslice"><span></span></span>
 					<div class="breeze_user_inner">
 						<div class="breeze_user_status_avatar">
