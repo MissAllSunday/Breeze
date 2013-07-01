@@ -44,6 +44,24 @@ margin: 1em;
 padding: 0.8em;
 }
 
+/* Main divs */
+#Breeze_left_block
+{
+float:left;
+width: 62%;
+margin: 2px;
+padding: 2px;
+}
+
+#Breeze_right_block
+{
+float:right;
+width: 35%;
+margin: 2px;
+padding: 2px;
+}
+
+
 /* The user wall */
 .breeze_user_left
 {
