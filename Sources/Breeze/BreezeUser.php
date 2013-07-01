@@ -87,7 +87,7 @@ function breezeWall()
 	if (!empty($data['users']))
 		$tools->loadUserInfo($data['users']);
 
-	// Pass th status info
+	// Pass the status info
 	if (!empty($data['data']))
 		$status = $data['data'];
 

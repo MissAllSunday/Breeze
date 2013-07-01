@@ -212,6 +212,45 @@ function template_user_wall()
 		</span>
 	</div>';
 
+	// Profile visitors
+	if (!empty($context['Breeze']['views']))
+	{
+		echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+				<span id="author">
+					'. $txt['Breeze_tabs_views'] .'
+			</h3>
+		</div>
+		<div class="windowbg2">
+			<span class="topslice">
+			<span> </span>
+			</span>
+			<div class="content BreezeList">';
+
+		// Print a nice Ul
+		echo '
+				<ul class="reset">';
+
+		// Show the profile visitors
+		foreach ($context['Breeze']['views'] as $visitor)
+		{
+
+			echo '<li> ', $context['Breeze']['user_info'][$visitor['user']]['facebox'] ,' </li>';
+		}
+
+		// End the visitors list
+		echo '
+				</ul>';
+
+		echo '
+			</div>
+			<span class="botslice">
+			<span> </span>
+			</span>
+		</div>';
+	}
+
 
 	// End of right block
 	echo '

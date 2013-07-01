@@ -219,7 +219,7 @@ $txt['Breeze_page_loading_end'] = '<span class="breeze_center">There are no more
 // Tabs
 $txt['Breeze_tabs_wall'] = 'Wall';
 $txt['Breeze_tabs_buddies'] = 'Buddies';
-$txt['Breeze_tabs_views'] = 'Profile Views';
+$txt['Breeze_tabs_views'] = 'Profile Visitors';
 $txt['Breeze_goTop'] = 'Go to top';
 
 // Notifications
