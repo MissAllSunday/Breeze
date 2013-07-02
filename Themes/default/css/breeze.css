@@ -77,6 +77,21 @@ padding: 2px;
 	width: 75px;
 }
 
+#Breeze_right_block div.content dt { 
+clear: both;
+float: left;
+font-weight: 700;
+margin: 0px 0px 3px;
+padding: 0px;
+width: 35%;
+}
+
+#Breeze_right_block div.content dd { 
+float: left;
+margin: 0px 0px 3px;
+padding: 0px;
+width: 65%;
+}
 
 /* The user wall */
 .breeze_user_left
