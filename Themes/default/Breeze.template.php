@@ -60,6 +60,14 @@ function template_user_wall()
 	echo '
 		<div id="Breeze_left_block">';
 
+	echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+				<span id="author">
+					'. $txt['Breeze_tabs_wall'] .'
+			</h3>
+		</div>';
+
 	// Wall div
 	echo '
 			<div id="tabs_wall">
@@ -68,8 +76,6 @@ function template_user_wall()
 						<span></span>
 					</span>
 				<div class="content">';
-
-			// Main content
 
 			// This is the status box,  O RLY?
 			if (!empty($context['permissions']['post_status']))
