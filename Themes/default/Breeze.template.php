@@ -322,7 +322,7 @@ function template_user_wall()
 		foreach ($context['member']['buddies'] as $buddy)
 		{
 
-			echo '<li> ', $context['Breeze']['user_info'][$buddy['user']]['facebox'] ,' </li>';
+			echo '<li> ', $context['Breeze']['user_info'][$buddy]['facebox'] ,' </li>';
 		}
 
 		// End the visitors list
