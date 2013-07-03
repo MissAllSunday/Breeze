@@ -40,8 +40,8 @@ if (!defined('SMF'))
 
 function breezeWall()
 {
-	global $txt, $scripturl, $context, $memberContext;
-	global $modSettings,  $user_info, $breezeController, $memID;
+	global $txt, $scripturl, $context, $memberContext, $sourcedir;
+	global $modSettings,  $user_info, $breezeController, $memID, $user_profile;
 
 	loadtemplate(Breeze::$name);
 
@@ -79,6 +79,7 @@ function breezeWall()
 	$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
 	$context['member']['status'] = array();
 	$context['breeze']['tools'] = $tools;
+	$context['can_view_warning'] = in_array('w', $context['admin_features']) && (allowedTo('issue_warning') && !$context['user']['is_owner']) || (!empty($modSettings['warning_show']) && ($modSettings['warning_show'] > 1 || $context['user']['is_owner']));
 
 	// Load all the status
 	$data = $query->getStatusByProfile($context['member']['id']);
@@ -87,7 +88,7 @@ function breezeWall()
 	if (!empty($data['users']))
 		$tools->loadUserInfo($data['users']);
 
-	// Pass th status info
+	// Pass the status info
 	if (!empty($data['data']))
 		$status = $data['data'];
 

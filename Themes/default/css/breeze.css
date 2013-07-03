@@ -44,12 +44,73 @@ margin: 1em;
 padding: 0.8em;
 }
 
+/* Main divs */
+#Breeze_left_block
+{
+float:left;
+width: 62%;
+margin: 2px;
+padding: 2px;
+}
+
+#Breeze_right_block
+{
+float:right;
+width: 35%;
+margin: 2px;
+padding: 2px;
+}
+
+.BreezeBlock
+{
+	margin-bottom:5px;
+}
+
+.BreezeInfoBlock
+{
+	float:auto;
+	margin: auto;
+	text-align:center;
+	padding-bottom:5px;
+}
+
+.BreezeList
+{
+	height: auto;
+	overflow: hidden;
+}
+
+.BreezeList ul li {
+	display: inline;
+	float: left;
+	min-height: 105px;
+	margin: 1px;
+	overflow: hidden;
+	text-align: center;
+	width: 75px;
+}
+
+#Breeze_right_block div.content dt {
+clear: both;
+float: left;
+font-weight: 700;
+margin: 0px 0px 3px;
+padding: 0px;
+width: 35%;
+}
+
+#Breeze_right_block div.content dd {
+float: left;
+margin: 0px 0px 3px;
+padding: 0px;
+width: 65%;
+}
+
 /* The user wall */
 .breeze_user_left
 {
 float:left;
 width:40%;
-
 }
 
 .breeze_user_left_avatar
@@ -111,8 +172,6 @@ padding:5px;
 	float:left;
 	margin:3px;
 	padding:3px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
 }
 
 .breeze_user_status_comment:before
