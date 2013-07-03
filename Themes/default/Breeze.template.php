@@ -200,13 +200,12 @@ function template_user_wall()
 				', $txt['Breeze_tabs_pinfo'], '
 		</h3>
 	</div>
-	<div class="windowbg">
+	<div class="windowbg BreezeBlock">
 		<span class="topslice">
 		<span> </span>
 		</span>
-		<div class="content">';
+		<div class="content BreezeInfoBlock">';
 	echo '
-			<div style="float:auto;margin:auto;text-align:center;padding-bottom:5px;">
 				<div class="username"><h4>', $context['member']['name'] ,'<br/><span class="position">', (!empty($context['member']['group']) ? $context['member']['group'] : $context['member']['post_group']), '</span></h4></div>
 				', $context['member']['avatar']['image'], '
 				<ul class="reset">';
@@ -241,24 +240,17 @@ function template_user_wall()
 	// Can they add this member as a buddy?
 	if (!empty($context['can_have_buddy']) && !$context['user']['is_owner'])
 		echo '
-				<br /><a href="', $scripturl, '?action=buddy;u=', $context['id_member'], ';', $context['session_var'], '=', $context['session_id'], '">[', $txt['buddy_' . ($context['member']['is_buddy'] ? 'remove' : 'add')], ']</a>';
+			<br /><a href="', $scripturl, '?action=buddy;u=', $context['id_member'], ';', $context['session_var'], '=', $context['session_id'], '">[', $txt['buddy_' . ($context['member']['is_buddy'] ? 'remove' : 'add')], ']</a>';
 
 	if (!$context['user']['is_owner'] && $context['can_send_pm'])
 		echo '
-					<br /><a href="', $scripturl, '?action=pm;sa=send;u=', $context['id_member'], '">', $txt['profile_sendpm_short'], '</a><br />';
+			<br /><a href="', $scripturl, '?action=pm;sa=send;u=', $context['id_member'], '">', $txt['profile_sendpm_short'], '</a><br />';
 	echo '
-					<a href="', $scripturl, '?action=profile;area=showposts;u=', $context['id_member'], '">', $txt['showPosts'], '</a><br />
-					<a href="', $scripturl, '?action=profile;area=statistics;u=', $context['id_member'], '">', $txt['statPanel'], '</a>';
+			<a href="', $scripturl, '?action=profile;area=showposts;u=', $context['id_member'], '">', $txt['showPosts'], '</a><br />
+			<a href="', $scripturl, '?action=profile;area=statistics;u=', $context['id_member'], '">', $txt['statPanel'], '</a>';
 
 	echo '
-				<br /></span>';
-
-	echo '
-		</div>';
-
-	// Clear both
-	echo '
-		<div class="clear"></div>';
+			<br /></span>';
 
 	echo'
 		</div>
@@ -277,7 +269,7 @@ function template_user_wall()
 					'. $txt['Breeze_tabs_views'] .'
 			</h3>
 		</div>
-		<div class="windowbg2">
+		<div class="windowbg2 BreezeBlock">
 			<span class="topslice">
 			<span> </span>
 			</span>
@@ -292,6 +284,45 @@ function template_user_wall()
 		{
 
 			echo '<li> ', $context['Breeze']['user_info'][$visitor['user']]['facebox'] ,' </li>';
+		}
+
+		// End the visitors list
+		echo '
+				</ul>';
+
+		echo '
+			</div>
+			<span class="botslice">
+			<span> </span>
+			</span>
+		</div>';
+	}
+
+	// Buddy list
+	if (!empty($context['member']['buddies']))
+	{
+		echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+				<span id="author">
+					'. $txt['Breeze_tabs_buddies'] .'
+			</h3>
+		</div>
+		<div class="windowbg2 BreezeBlock">
+			<span class="topslice">
+			<span> </span>
+			</span>
+			<div class="content BreezeList">';
+
+		// Print a nice Ul
+		echo '
+				<ul class="reset">';
+
+		// Show the profile visitors
+		foreach ($context['member']['buddies'] as $buddy)
+		{
+
+			echo '<li> ', $context['Breeze']['user_info'][$buddy['user']]['facebox'] ,' </li>';
 		}
 
 		// End the visitors list
