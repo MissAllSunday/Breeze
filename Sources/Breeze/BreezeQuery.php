@@ -996,16 +996,53 @@ class BreezeQuery extends Breeze
 	/**
 	 * BreezeQuery::getNotificationByType()
 	 *
-	 * Gets all the notifications stored under an specific type
+	 * Gets all the notifications stored under an specific type, it will fetch the receivers
 	 * @param string $type the notification type
-	 * @param bool $user
+	 * @param bool $user the receiver user for this specific notification
 	 * @return bool|array Either An array with data or a boolean false
 	 */
 	public function getNotificationByType($type, $user = false)
 	{
-		global $context;
+		if (empty($user) || empty($type))
+			return false
 
-		// Gotta re-do this thing
+		// Check the cache, you might get lucky tonight...
+		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Receiver-'. $user, 120)) == null)
+		{
+
+			$result = $this->_smcFunc['db_query']('', '
+				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
+				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
+				WHERE receiver = {int:receiver}
+					AND type = {string:type}
+				', array(
+					'receiver' => (int) $user,
+					'type' => $type,
+				)
+			);
+
+			// Populate the array like a boss!
+			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+				$return[$row['id']] = array(
+					'id' => $row['id'],
+					'sender' => $row['sender'],
+					'receiver' => $row['receiver'],
+					'type' => $row['type'],
+					'time' => $row['time'],
+					'viewed' => $row['viewed'],
+					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+				);
+
+			$this->_smcFunc['db_free_result']($result);
+		}
+
+		// There is a cache entry, lets use it!
+		else
+			foreach ($return as $r)
+				if ($r['type'] != $type)
+					unset($return[$r]);
+
+		return $return;
 	}
 
 	/**
