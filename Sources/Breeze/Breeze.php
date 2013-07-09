@@ -461,7 +461,7 @@ $(document).ready(function (){
 		$noti->create(array(
 				'sender' => $posterOptions['id'],
 				'receiver' => $posterOptions['id'],
-				'type' => 'topic',
+				'type' => 'log',
 				'time' => time(),
 				'read' => 0,
 				'content' => $topicOptions,

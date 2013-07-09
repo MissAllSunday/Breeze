@@ -62,6 +62,7 @@ class BreezeNotifications
 		// Current user
 		$this->_currentUser = $user_info['id'];
 
+		// Don't include the log type here since its, well, a log, and we'll retrieve it somewhere else...
 		$this->types = array(
 			'comment',
 			'status',

@@ -57,6 +57,7 @@ function breezeWall()
 	$tools = $breezeController->get('tools');
 	$globals = Breeze::sGlobals('get');
 	$text = $breezeController->get('text');
+	$log = $breezeController->get('log');
 
 	// Display all the JavaScript bits
 	Breeze::headersHook('profile');
@@ -64,8 +65,9 @@ function breezeWall()
 	// Default values
 	$status = array();
 	$context['Breeze'] = array(
-		'views' => '',
-		'buddies' => '',
+		'views' => false
+		'log' => false,
+		'buddiesLog' => false,
 	);
 
 	// Set all the page stuff
@@ -121,6 +123,10 @@ function breezeWall()
 	// Show buddies only if there is something to show
 	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
 		$tools->loadUserInfo($context['member']['buddies']);
+
+	// Show this user recent activity
+	// some check here
+	$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
 }
 
 // Shows a form for users to set up their wall as needed.
