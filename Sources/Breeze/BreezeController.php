@@ -110,6 +110,12 @@ class BreezeController
 		{
 			return new BreezeMention($c->settings, $c->query, $c->notifications);
 		});
+
+		// Log
+		$this->container->log = $this->container->asShared(function ($c)
+		{
+			return new BreezeLog($c->query);
+		});
 	}
 
 	public function get($var)
