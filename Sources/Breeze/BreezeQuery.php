@@ -1013,17 +1013,17 @@ class BreezeQuery extends Breeze
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
 				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
-				WHERE receiver = {int:receiver}
+				WHERE receiver '. (is_array($user) ? 'IN ({array_int:user})' : '= {int:user}') .'
 					AND type = {string:type}
 				', array(
-					'receiver' => (int) $user,
+					'user' => $user,
 					'type' => $type,
 				)
 			);
 
 			// Populate the array like a boss!
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-				$return[$row['id']] = array(
+				$return[$row['receiver']][$row['id']] = array(
 					'id' => $row['id'],
 					'sender' => $row['sender'],
 					'receiver' => $row['receiver'],
