@@ -454,18 +454,17 @@ $(document).ready(function (){
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
-		// We need the almighty power
+		// We need the almighty power of breezeController!
 		$noti = $breezeController->get('notifications');
+
+		// Cheating, lets insert the notification directly
 		$noti->create(array(
-				'sender' => $user_info['id'],
-				'receiver' => $user_info['id'],
+				'sender' => $posterOptions['id'],
+				'receiver' => $posterOptions['id'],
 				'type' => 'topic',
 				'time' => time(),
 				'read' => 0,
-				'content' => array(
-					'topic_id' => $topicOptions,
-					'board' => $topicOptions['board'],
-				),
+				'content' => $topicOptions,
 			));
 	}
 
