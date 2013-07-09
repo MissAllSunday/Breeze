@@ -49,6 +49,7 @@
 		'integrate_load_permissions' => 'Breeze::permissions',
 		'integrate_admin_areas' => 'Breeze::admin',
 		'integrate_profile_areas' => 'Breeze::profile',
+		'integrate_create_topic' => 'Breeze::topic',
 	);
 
 	$call = 'add_integration_function';
