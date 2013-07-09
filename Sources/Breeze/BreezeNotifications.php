@@ -69,7 +69,7 @@ class BreezeNotifications
 			// 'buddy', todo refactors the buddy system
 			'mention',
 			'reply',
-			'topic'
+			'topic',
 		);
 
 		// We kinda need all this stuff, dont' ask why, just nod your head...

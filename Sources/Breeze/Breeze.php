@@ -443,6 +443,33 @@ $(document).ready(function (){
 	}
 
 	/**
+	 * Breeze::topic()
+	 *
+	 * @return
+	 */
+	public static function topic($msgOptions, $topicOptions, $posterOptions)
+	{
+		global $context, $breezeController, $txt, $scripturl, $user_info;
+
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
+		// We need the almighty power
+		$noti = $breezeController->get('notifications');
+		$noti->create(array(
+				'sender' => $user_info['id'],
+				'receiver' => $user_info['id'],
+				'type' => 'topic',
+				'time' => time(),
+				'read' => 0,
+				'content' => array(
+					'topic_id' => $topicOptions,
+					'board' => $topicOptions['board'],
+				),
+			));
+	}
+
+	/**
 	 * Breeze::who()
 	 *
 	 * Used in the credits action
@@ -467,6 +494,7 @@ $(document).ready(function (){
 	/**
 	 * Breeze::admin()
 	 *
+	 * Creates a new notification everytime an user creates a new topic
 	 * @param array $admin_menu An array with all the admin settings buttons
 	 * @return
 	 */
