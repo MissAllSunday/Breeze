@@ -40,6 +40,9 @@ if (!defined('SMF'))
 
 class BreezeLog
 {
+	protected $result = array();
+	protected $log = array();
+
 	function __construct($query)
 	{
 		$this->_query = $query;
@@ -52,14 +55,34 @@ class BreezeLog
 			return false;
 
 		// Lets make queries!
-		$this->log = $this->_query->getNotificationByType('log', $user);
+		$temp = $this->_query->getActivityLog($user);
 
 		// Nada? :(
-		if (empty($log) || empty($log[$user]))
+		if (empty($temp) || empty($temp[$user]))
 			return false;
 
-		// Every log entry has a sub entry to know what are we gonna do with each sub-type...
-		foreach ($log[$user] as $entry)
-			$this->$this->log['']
+		else
+			$this->log = $temp[$user];
+
+		// Every log entry has a unique type that matches a method here, lets call that method
+		foreach ($this->log as $entry)
+			$this->$entry['type']();
+
+		// If everything wnet well, return the final result
+		if (!empty($this->result))
+			return $this->result;
+
+		else
+		return false;
+	}
+
+	public function getLog()
+	{
+		return $this->log;
+	}
+
+	public function getResult()
+	{
+		return $this->result;
 	}
 }

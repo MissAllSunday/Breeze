@@ -1058,7 +1058,7 @@ class BreezeQuery extends Breeze
 		if (empty($user))
 			return false
 
-		// Unfortunately, there is no cache for this one...
+		// Unfortunately, there is no cache for this one... maybe someday... with an ugly foreach to check every single user and compare...
 		$result = $this->_smcFunc['db_query']('', '
 			SELECT '. implode(',', $this->_tables['noti']['columns']) .'
 			FROM {db_prefix}' . $this->_tables['noti']['table'] . '
