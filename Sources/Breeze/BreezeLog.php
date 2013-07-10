@@ -44,4 +44,22 @@ class BreezeLog
 	{
 		$this->_query = $query;
 	}
+
+	public function getActivity($user)
+	{
+		// The usual check...
+		if (empty($user))
+			return false;
+
+		// Lets make queries!
+		$this->log = $this->_query->getNotificationByType('log', $user);
+
+		// Nada? :(
+		if (empty($log) || empty($log[$user]))
+			return false;
+
+		// Every log entry has a sub entry to know what are we gonna do with each sub-type...
+		foreach ($log[$user] as $entry)
+			$this->$this->log['']
+	}
 }
