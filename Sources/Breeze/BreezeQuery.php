@@ -998,7 +998,7 @@ class BreezeQuery extends Breeze
 	 *
 	 * Gets all the notifications stored under an specific type, it will fetch the receivers
 	 * @param string $type the notification type
-	 * @param bool $user the receiver user for this specific notification
+	 * @param integer|array $user either an integer or an array that holds the receiver user ID(s) for this specific notification
 	 * @return bool|array Either An array with data or a boolean false
 	 */
 	public function getNotificationByType($type, $user = false)
@@ -1041,6 +1041,48 @@ class BreezeQuery extends Breeze
 			foreach ($return as $r)
 				if ($r['type'] != $type)
 					unset($return[$r]);
+
+		return $return;
+	}
+
+	/**
+	 * BreezeQuery::getActivityLog()
+	 *
+	 * Gets all the notifications stored as logs, this type of logs has 3 on the "read" column, this indicates the row a log entry.
+	 * @param integer|array $user either a single ID or an array of IDs to get the logs from
+	 * @return bool|array Either An array with data or a boolean false
+	 */
+	public function getActivityLog($user = false)
+	{
+		// The usual check..
+		if (empty($user))
+			return false
+
+		// Unfortunately, there is no cache for this one...
+		$result = $this->_smcFunc['db_query']('', '
+			SELECT '. implode(',', $this->_tables['noti']['columns']) .'
+			FROM {db_prefix}' . $this->_tables['noti']['table'] . '
+			WHERE receiver '. (is_array($user) ? 'IN ({array_int:user})' : '= {int:user}') .'
+				AND read = {int:read}
+			', array(
+				'user' => $user,
+				'read' => 3, // 3 is a special case indicating this is a log entry.
+			)
+		);
+
+		// Populate the array like a boss!
+		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+			$return[$row['receiver']][$row['id']] = array(
+				'id' => $row['id'],
+				'sender' => $row['sender'],
+				'receiver' => $row['receiver'],
+				'type' => $row['type'],
+				'time' => $row['time'],
+				'viewed' => $row['viewed'],
+				'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+			);
+
+		$this->_smcFunc['db_free_result']($result);
 
 		return $return;
 	}
