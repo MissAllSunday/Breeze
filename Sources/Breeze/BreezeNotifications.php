@@ -97,21 +97,14 @@ class BreezeNotifications
 	 */
 	public function create($params)
 	{
-		// We have to make sure, we just have to!
-		if (!empty($params) && in_array($params['type'], $this->types))
-		{
-			// Is there additional content?
-			if (!empty($params['content']))
-				$params['content'] = is_array($params['content']) ? json_encode($params['content']) : $params['content'];
-
-			else
-				$params['content'] = '';
-
-			$this->_query->insertNotification($params);
-		}
+		// Is there additional content?
+		if (!empty($params['content']))
+			$params['content'] = is_array($params['content']) ? json_encode($params['content']) : (is_object($params['content']) ? $params['content']() : $params['content']);
 
 		else
-			return false;
+			$params['content'] = '';
+
+		$this->_query->insertNotification($params);
 	}
 
 	/**

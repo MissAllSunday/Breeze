@@ -465,7 +465,10 @@ $(document).ready(function (){
 					'type' => 'newTopic',
 					'time' => time(),
 					'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-					'content' => array_merge($topicOptions, $msgOptions),
+					'content' => function() use ($posterOptions, $topicOptions, $msgOptions, $scripturl)
+						{
+							 return $posterOptions['name'] .' created a new topic: ' . $scripturl .'?topic='. $topicOptions['id'];
+						},
 				));
 	}
 
