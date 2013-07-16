@@ -1004,7 +1004,7 @@ class BreezeQuery extends Breeze
 	public function getNotificationByType($type, $user = false)
 	{
 		if (empty($user) || empty($type))
-			return false
+			return false;
 
 		// Check the cache, you might get lucky tonight...
 		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Receiver-'. $user, 120)) == null)
@@ -1056,17 +1056,17 @@ class BreezeQuery extends Breeze
 	{
 		// The usual check..
 		if (empty($user))
-			return false
+			return false;
 
 		// Unfortunately, there is no cache for this one... maybe someday... with an ugly foreach to check every single user and compare...
 		$result = $this->_smcFunc['db_query']('', '
 			SELECT '. implode(',', $this->_tables['noti']['columns']) .'
 			FROM {db_prefix}' . $this->_tables['noti']['table'] . '
 			WHERE receiver '. (is_array($user) ? 'IN ({array_int:user})' : '= {int:user}') .'
-				AND read = {int:read}
+				AND viewed = {int:viewed}
 			', array(
 				'user' => $user,
-				'read' => 3, // 3 is a special case indicating this is a log entry.
+				'viewed' => 3, // 3 is a special case indicating this is a log entry.
 			)
 		);
 

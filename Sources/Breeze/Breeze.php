@@ -464,7 +464,7 @@ $(document).ready(function (){
 					'receiver' => $posterOptions['id'],
 					'type' => 'newTopic',
 					'time' => time(),
-					'read' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
+					'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
 					'content' => array_merge($topicOptions, $msgOptions),
 				));
 	}

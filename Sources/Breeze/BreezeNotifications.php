@@ -102,7 +102,7 @@ class BreezeNotifications
 		{
 			// Is there additional content?
 			if (!empty($params['content']))
-				$params['content'] = json_encode($params['content']);
+				$params['content'] = is_array($params['content']) ? json_encode($params['content']) : $params['content'];
 
 			else
 				$params['content'] = '';

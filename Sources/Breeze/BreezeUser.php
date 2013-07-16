@@ -65,7 +65,7 @@ function breezeWall()
 	// Default values
 	$status = array();
 	$context['Breeze'] = array(
-		'views' => false
+		'views' => false,
 		'log' => false,
 		'buddiesLog' => false,
 	);
