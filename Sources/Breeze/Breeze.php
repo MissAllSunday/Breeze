@@ -456,20 +456,21 @@ $(document).ready(function (){
 
 		// We need the almighty power of breezeController!
 		$noti = $breezeController->get('notifications');
+		$text = $breezeController->get('text');
 
 		// Cheating, lets insert the notification directly, do it only if the topic was approved
 		if ($topicOptions['is_approved'])
 			$noti->create(array(
-					'sender' => $posterOptions['id'],
-					'receiver' => $posterOptions['id'],
-					'type' => 'newTopic',
-					'time' => time(),
-					'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-					'content' => function() use ($posterOptions, $topicOptions, $msgOptions, $scripturl)
-						{
-							 return $posterOptions['name'] .' created a new topic: ' . $scripturl .'?topic='. $topicOptions['id'];
-						},
-				));
+				'sender' => $posterOptions['id'],
+				'receiver' => $posterOptions['id'],
+				'type' => 'newTopic',
+				'time' => time(),
+				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
+				'content' => function() use ($posterOptions, $topicOptions, $msgOptions, $scripturl)
+					{
+						 return $posterOptions['name'] .' '. $text->getText('log_newTopic') .' ' . $scripturl .'?topic='. $topicOptions['id'];
+					},
+			));
 	}
 
 	/**
