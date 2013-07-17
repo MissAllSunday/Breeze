@@ -1079,7 +1079,7 @@ class BreezeQuery extends Breeze
 				'type' => $row['type'],
 				'time' => $row['time'],
 				'viewed' => $row['viewed'],
-				'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+				'content' => $row['content'],
 			);
 
 		$this->_smcFunc['db_free_result']($result);

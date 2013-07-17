@@ -68,7 +68,7 @@ class BreezeLog
 		foreach ($this->log as $entry)
 		{
 			// If there is a method, call it
-			if (in_array($entry['type'], get_class_methods($self)))
+			if (in_array($entry['type'], get_class_methods('BreezeLog')))
 				$this->$entry['type']();
 
 			// No? then pass the content
