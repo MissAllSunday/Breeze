@@ -64,11 +64,19 @@ class BreezeLog
 		else
 			$this->log = $temp[$user];
 
-		// Every log entry has a unique type that matches a method here, lets call that method
+		// Lets decide what should we do with these... call a method or pass it straight?
 		foreach ($this->log as $entry)
-			$this->$entry['type']();
+		{
+			// If there is a method, call it
+			if (in_array($entry['type'], get_class_methods($self)))
+				$this->$entry['type']();
 
-		// If everything wnet well, return the final result
+			// No? then pass the content
+			else if (!empty($entry['content']))
+				$this->result[$entry['id']] = $entry['content'];
+		}
+
+		// If everything went well, return the final result
 		if (!empty($this->result))
 			return $this->result;
 
