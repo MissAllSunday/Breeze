@@ -466,7 +466,7 @@ $(document).ready(function (){
 				'type' => 'newTopic',
 				'time' => time(),
 				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-				'content' => function() use ($posterOptions, $topicOptions, $msgOptions, $scripturl)
+				'content' => function() use ($posterOptions, $topicOptions, $msgOptions, $scripturl, $text)
 					{
 						 return $posterOptions['name'] .' '. $text->getText('log_newTopic') .' <a href="'. $scripturl .'?topic='. $topicOptions['id'] .'">'. $msgOptions['subject'] .'</a>';
 					},

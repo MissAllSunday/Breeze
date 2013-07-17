@@ -126,7 +126,7 @@ function breezeWall()
 
 	// Show this user recent activity
 	// some check here
-	$context['Breeze']['log'] = $log->getActivity($context['member']['id']);echo '<pre>';print_r($context['Breeze']);die;
+	$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
 }
 
 // Shows a form for users to set up their wall as needed.
