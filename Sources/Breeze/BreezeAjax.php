@@ -251,7 +251,7 @@ class BreezeAjax
 			// Store the comment
 			$this->_query->insertComment($params);
 
-			// Once the comment was added, get it's ID from the DB
+			// Once the comment was added, get it's ID from the DB @todo get the ID from the insertComment() method
 			$new_comment = $this->_query->getLastComment();
 
 			// Set the ID
@@ -263,8 +263,12 @@ class BreezeAjax
 				'wall_poster' => $poster_comment_id,
 				'wall_status_owner' => $status_owner_id,
 				'comment_id' => $params['id'],
-				'status_id' => $status_id,
-			));
+				'status_id' => $status_id,),
+				array(
+					'name' => 'comment',
+					'id' => $new_comment,
+				),
+			);
 
 			// Parse the content
 			$params['body'] = $this->_parser->display($params['body']);
