@@ -664,9 +664,6 @@ class BreezeQuery extends Breeze
 	 */
 	public function insertStatus($array)
 	{
-		// We don't need this no more
-		cache_put_data(Breeze::$name .'-' . $array['owner_id'], '');
-
 		// Insert!
 		$this->_smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['status']['table']) .
 			'', array(
@@ -675,6 +672,15 @@ class BreezeQuery extends Breeze
 			'status_time' => 'int',
 			'status_body' => 'string',
 			), $array, array('status_id', ));
+
+		// Get the newly created comment ID
+		$status_id = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comments']['table']), 'status_id');
+
+		//Kill the profile cache
+		$this->killCache('status', $status_id, $array['status_owner_id']);
+
+		// Return the newly inserted comment ID
+		return $status_id;
 	}
 
 	/**
@@ -685,9 +691,6 @@ class BreezeQuery extends Breeze
 	 */
 	public function insertComment($array)
 	{
-		// We don't need this no more
-		$this->killCache($this->_tables['comments']['name']);
-
 		// Insert!
 		$this->_smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['comments']['table']) .
 			'', array(
@@ -698,6 +701,15 @@ class BreezeQuery extends Breeze
 			'comments_time' => 'int',
 			'comments_body' => 'string',
 			), $array, array('comments_id', ));
+
+		// Get the newly created comment ID
+		$comment_id = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comments']['table']), 'comments_id');
+
+		//Kill the profile cache
+		$this->killCache('comments', $comment_id, $array['comments_profile_owner_id']);
+
+		// Return the newly inserted comment ID
+		return $comment_id;
 	}
 
 	/**
