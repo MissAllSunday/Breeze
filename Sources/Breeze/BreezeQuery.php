@@ -171,7 +171,7 @@ class BreezeQuery extends Breeze
 			return false;
 
 		// We got the data we need, turn it into an array
-		$profile_owner = is_array($profile_owner) ? array($profile_owner) : $profile_owner;
+		$profile_owner = !is_array($profile_owner) ? array($profile_owner) : $profile_owner;
 
 		foreach ($profile_owner as $owner)
 			cache_put_data(Breeze::$name .'-Profile-'. $owner, '');
@@ -677,7 +677,7 @@ class BreezeQuery extends Breeze
 		$status_id = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comments']['table']), 'status_id');
 
 		//Kill the profile cache
-		$this->killCache('status', $status_id, $array['status_owner_id']);
+		$this->killCache('status', $status_id, $array['owner_id']);
 
 		// Return the newly inserted comment ID
 		return $status_id;
@@ -706,7 +706,7 @@ class BreezeQuery extends Breeze
 		$comment_id = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comments']['table']), 'comments_id');
 
 		//Kill the profile cache
-		$this->killCache('comments', $comment_id, $array['comments_profile_owner_id']);
+		$this->killCache('comments', $comment_id, $array['profile_owner_id']);
 
 		// Return the newly inserted comment ID
 		return $comment_id;

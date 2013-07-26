@@ -147,13 +147,10 @@ class BreezeAjax
 			);
 
 			// Store the status
-			$this->_query->insertStatus($params);
-
-			// Get the newly created status, we just need the id @todo make the same query to return the ID
-			$newStatus = $this->_query->getLastStatus();
+			$newStatus = $this->_query->insertStatus($params);
 
 			// Set the ID
-			$params['id'] = $newStatus['status_id'];
+			$params['id'] = $newStatus;
 
 			// Build the notifications
 			$this->_mention->mention(
@@ -249,13 +246,10 @@ class BreezeAjax
 			);
 
 			// Store the comment
-			$this->_query->insertComment($params);
-
-			// Once the comment was added, get it's ID from the DB @todo get the ID from the insertComment() method
-			$new_comment = $this->_query->getLastComment();
+			$new_comment = $this->_query->insertComment($params);
 
 			// Set the ID
-			$params['id'] = $new_comment['comments_id'];
+			$params['id'] = $new_comment;
 
 			// build the notification
 			$this->_mention->mention(
