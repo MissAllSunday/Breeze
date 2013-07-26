@@ -93,7 +93,7 @@ class BreezeQuery extends Breeze
 				'name' => 'noti',
 				'table' => 'breeze_notifications',
 				'property' => '_noti',
-				'columns' => array('id', 'sender', 'receiver', 'type', 'time', 'viewed', 'content'),
+				'columns' => array('id', 'sender', 'receiver', 'type', 'time', 'viewed', 'content', 'type_id'),
 				),
 		);
 	}
@@ -690,6 +690,8 @@ class BreezeQuery extends Breeze
 
 		// Ladies first
 		$this->deleteCommentByStatusID($id);
+
+		// We need to delete all possible notifications tied up with thi status
 
 		// Same for status
 		$this->_smcFunc['db_query']('', '

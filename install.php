@@ -217,6 +217,12 @@
 					'size' => '',
 					'default' => '',
 				),
+				array(
+					'name' => 'type_id',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
 			),
 			'indexes' => array(
 				array(
