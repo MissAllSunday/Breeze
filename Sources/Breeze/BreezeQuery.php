@@ -886,6 +886,34 @@ class BreezeQuery extends Breeze
 	}
 
 	/**
+	 * BreezeQuery::deleteByType()
+	 *
+	 * Deletes the specific notification entry from the DB if it contains an specific type or second_type and matched the ID provided.
+	 * @param int $id The type_id, helps to build associations between comments/staus and notifications
+	 * @param string $type The actual name of the type, could be comment, status, topic or message
+	 * @param $user The user ID to clean the right cache entry.
+	 * @return void
+	 */
+	public function deletebyType($id, $type, $user)
+	{
+		// We don't need this no more
+		$this->killCache($this->_tables['noti']['name'] . '-Receiver-'. $user);
+
+		// Delete!
+		$this->_smcFunc['db_query']('', '
+			DELETE
+			FROM {db_prefix}' . ($this->_tables['noti']['table']) . '
+			WHERE type_id = {int:id}
+				AND type = {string:type}
+				OR second_type = {string:type}',
+			array(
+				'id' => (int) $id,
+				'type' => $type,
+			)
+		);
+	}
+
+	/**
 	 * BreezeQuery::getNotificationByReceiver()
 	 *
 	 * @param int $user The user from where the notifications will be fetched
