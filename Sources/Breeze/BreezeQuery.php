@@ -1036,7 +1036,7 @@ class BreezeQuery extends Breeze
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
 					'content' => !empty($row['content']) ? $row['content'] : array(),
-					 => $row['type_id'],
+					'type_id' => $row['type_id'],
 				);
 
 			$this->_smcFunc['db_free_result']($result);

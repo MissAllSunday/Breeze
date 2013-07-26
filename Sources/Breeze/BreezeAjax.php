@@ -149,7 +149,7 @@ class BreezeAjax
 			// Store the status
 			$this->_query->insertStatus($params);
 
-			// Get the newly created status, we just need the id
+			// Get the newly created status, we just need the id @todo make the same query to return the ID
 			$newStatus = $this->_query->getLastStatus();
 
 			// Set the ID
@@ -159,8 +159,12 @@ class BreezeAjax
 			$this->_mention->mention(array(
 				'wall_owner' => $this->_data->getValue('owner_id'),
 				'wall_poster' => $this->_data->getValue('poster_id'),
-				'status_id' => $params['id'],
-			));
+				'status_id' => $params['id'],),
+				array(
+					'name' => 'status',
+					'id' => $newStatus,
+				),
+			);
 
 			// Parse the content
 			$params['body'] = $this->_parser->display($params['body']);

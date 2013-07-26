@@ -82,7 +82,7 @@ class BreezeMention
 	 * @access public
 	 * @return void
 	 */
-	public function mention($noti_info = array())
+	public function mention($noti_info = array(), $type = array())
 	{
 		global $user_info;
 
@@ -113,6 +113,8 @@ class BreezeMention
 				'time' => time(),
 				'read' => 0,
 				'content' => $noti_info,
+				'type_id' => !empty($type) && !empty($type['id']) ? $type['id'] : 0,
+				'second_type' = !empty($type) && !empty($type['name']) ? $type['name'] : '',
 			));
 		}
 	}
