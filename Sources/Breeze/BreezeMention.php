@@ -114,7 +114,7 @@ class BreezeMention
 				'read' => 0,
 				'content' => $noti_info,
 				'type_id' => !empty($type) && !empty($type['id']) ? $type['id'] : 0,
-				'second_type' = !empty($type) && !empty($type['name']) ? $type['name'] : '',
+				'second_type' => !empty($type) && !empty($type['name']) ? $type['name'] : '',
 			));
 		}
 	}

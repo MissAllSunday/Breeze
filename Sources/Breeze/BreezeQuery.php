@@ -706,7 +706,7 @@ class BreezeQuery extends Breeze
 	 * @param int $id
 	 * @return
 	 */
-	public function deleteStatus($id, $profile_owner)
+	public function deleteStatus($id, $profile_owner = false)
 	{
 		// We know the profile_owner, pass it to avoid an extra query
 		$this->killCache('status', $id, $profile_owner);
@@ -726,6 +726,7 @@ class BreezeQuery extends Breeze
 	/**
 	 * BreezeQuery::deleteCommentByStatusID()
 	 *
+	 * This shouldn't be called as a standalone method, use deleteComment() instead
 	 * @param int $id
 	 * @return
 	 */
@@ -742,13 +743,13 @@ class BreezeQuery extends Breeze
 	 * @param int $id
 	 * @return
 	 */
-	public function deleteComment($id)
+	public function deleteComment($id, $profile_owner = false)
 	{
-		// We don't need this no more
-		$this->killCache('comments', $id);
+		// If we know the profile_owner ID we will save an extra query so try to include it as a param please!
+		$this->killCache('comments', $id, $profile_owner);
 
 		// We need to delete all possible notifications tied up with this status
-		$this->deleteNotiByType('comment', $id);
+		$this->deleteNotiByType('comments', $id);
 
 		// Delete!
 		$this->_smcFunc['db_query']('', '
@@ -919,7 +920,7 @@ class BreezeQuery extends Breeze
 	 * BreezeQuery::deleteNotiByType()
 	 *
 	 * Deletes the specific notification entry from the DB if it contains an specific type or second_type and matched the ID provided.
-	 * @param string $type The actual name of the type, could be comment, status, topic or message
+	 * @param string $type The actual name of the type, could be comments, status, topics or messages, in plural
 	 * @param int $id The type_id, helps to build associations between comments/staus and notifications
 	 * @param $user The user ID to clean the right cache entry.
 	 * @return void

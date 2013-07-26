@@ -64,13 +64,13 @@ class BreezeNotifications
 
 		// Don't include the log type here since its, well, a log, and we'll retrieve it somewhere else...
 		$this->types = array(
-			'comment',
+			'comments',
 			'status',
 			'like',
 			// 'buddy', todo refactors the buddy system
 			'mention',
-			'message',
-			'topic',
+			'messages',
+			'topics',
 		);
 
 		// We kinda need all this stuff, dont' ask why, just nod your head...

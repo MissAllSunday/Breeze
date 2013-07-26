@@ -156,14 +156,14 @@ class BreezeAjax
 			$params['id'] = $newStatus['status_id'];
 
 			// Build the notifications
-			$this->_mention->mention(array(
-				'wall_owner' => $this->_data->getValue('owner_id'),
-				'wall_poster' => $this->_data->getValue('poster_id'),
-				'status_id' => $params['id'],),
+			$this->_mention->mention(
 				array(
-					'name' => 'status',
-					'id' => $newStatus,
-				),
+					'wall_owner' => $this->_data->getValue('owner_id'),
+					'wall_poster' => $this->_data->getValue('poster_id'),
+					'status_id' => $params['id'],),
+				array(
+						'name' => 'status',
+						'id' => $newStatus,)
 			);
 
 			// Parse the content
@@ -258,16 +258,16 @@ class BreezeAjax
 			$params['id'] = $new_comment['comments_id'];
 
 			// build the notification
-			$this->_mention->mention(array(
-				'wall_owner' => $profile_owner_id,
-				'wall_poster' => $poster_comment_id,
-				'wall_status_owner' => $status_owner_id,
-				'comment_id' => $params['id'],
-				'status_id' => $status_id,),
+			$this->_mention->mention(
 				array(
-					'name' => 'comment',
-					'id' => $new_comment,
-				),
+					'wall_owner' => $profile_owner_id,
+					'wall_poster' => $poster_comment_id,
+					'wall_status_owner' => $status_owner_id,
+					'comment_id' => $params['id'],
+					'status_id' => $status_id,),
+				array(
+						'name' => 'comment',
+						'id' => $new_comment,)
 			);
 
 			// Parse the content
@@ -335,7 +335,7 @@ class BreezeAjax
 			if (!empty($temp_id_exists))
 			{
 				$typeCall = 'delete'. ucfirst($type);
-				$this->_query->$typeCall($id);
+				$this->_query->$typeCall($id, $profile_owner);
 
 				// Send the data back to the browser
 				$this->_response = array(
