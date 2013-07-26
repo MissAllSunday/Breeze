@@ -182,7 +182,7 @@
 					'auto' => true
 				),
 				array(
-					'name' => 'user',
+					'name' => 'sender',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
@@ -195,8 +195,8 @@
 				),
 				array(
 					'name' => 'type',
-					'type' => 'text',
-					'size' => '',
+					'type' => 'varchar',
+					'size' => 255,
 					'default' => '',
 				),
 				array(
@@ -222,6 +222,12 @@
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
+				),
+				array(
+					'name' => 'second_type',
+					'type' => 'varchar',
+					'size' => 255,
+					'default' => '',
 				),
 			),
 			'indexes' => array(
