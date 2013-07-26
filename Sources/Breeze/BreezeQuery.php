@@ -833,6 +833,7 @@ class BreezeQuery extends Breeze
 			'time' => 'int',
 			'viewed' => 'int',
 			'content' => 'string',
+			'type_id' => 'int',
 			), $array, array('id'));
 	}
 
@@ -919,6 +920,7 @@ class BreezeQuery extends Breeze
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
 					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+					'type_id' => $row['type_id'],
 				);
 
 				// Fill out the users IDs
@@ -975,6 +977,7 @@ class BreezeQuery extends Breeze
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
 					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+					'type_id' => $row['type_id'],
 				);
 
 				// Fill out the users IDs
@@ -1033,6 +1036,7 @@ class BreezeQuery extends Breeze
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
 					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+					 => $row['type_id'],
 				);
 
 			$this->_smcFunc['db_free_result']($result);
@@ -1082,6 +1086,7 @@ class BreezeQuery extends Breeze
 				'time' => $row['time'],
 				'viewed' => $row['viewed'],
 				'content' => $row['content'],
+				'type_id' => $row['type_id'],
 			);
 
 		$this->_smcFunc['db_free_result']($result);
