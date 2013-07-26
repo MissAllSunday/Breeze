@@ -69,7 +69,8 @@ class BreezeNotifications
 			'like',
 			// 'buddy', todo refactors the buddy system
 			'mention',
-			'reply',
+			'message',
+			'topic',
 		);
 
 		// We kinda need all this stuff, dont' ask why, just nod your head...
@@ -170,6 +171,9 @@ class BreezeNotifications
 		// Load the users data
 		$this->_tools->loadUserInfo($this->_all['users']);
 
+		// Get the actual class methods
+		$doMhetods = get_class_methods(__CLASS__);
+
 		// If we aren't in the profile then we must call a function in a source file far far away...
 		if (empty($context['member']['options']))
 		{
@@ -186,7 +190,7 @@ class BreezeNotifications
 		{
 			// Call the methods
 			foreach ($this->_all['data'] as $single)
-				if (in_array($single['type'], $this->types))
+				if (in_array($single['type'], $this->types) && in_array('create'. ucfirst($single['type']), $doMethods))
 				{
 					$call = 'do' . ucfirst($single['type']);
 
