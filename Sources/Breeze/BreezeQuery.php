@@ -93,7 +93,7 @@ class BreezeQuery extends Breeze
 				'name' => 'noti',
 				'table' => 'breeze_notifications',
 				'property' => '_noti',
-				'columns' => array('id', 'sender', 'receiver', 'type', 'time', 'viewed', 'content', 'type_id'),
+				'columns' => array('id', 'sender', 'receiver', 'type', 'time', 'viewed', 'content', 'type_id', 'second_type',),
 				),
 		);
 	}
@@ -834,6 +834,7 @@ class BreezeQuery extends Breeze
 			'viewed' => 'int',
 			'content' => 'string',
 			'type_id' => 'int',
+			'second_type' => 'string',
 			), $array, array('id'));
 	}
 
@@ -921,6 +922,7 @@ class BreezeQuery extends Breeze
 					'viewed' => $row['viewed'],
 					'content' => !empty($row['content']) ? $row['content'] : array(),
 					'type_id' => $row['type_id'],
+					'second_type' => $row['second_type'],
 				);
 
 				// Fill out the users IDs
@@ -978,6 +980,7 @@ class BreezeQuery extends Breeze
 					'viewed' => $row['viewed'],
 					'content' => !empty($row['content']) ? $row['content'] : array(),
 					'type_id' => $row['type_id'],
+					'second_type' => $row['second_type'],
 				);
 
 				// Fill out the users IDs
@@ -1037,6 +1040,7 @@ class BreezeQuery extends Breeze
 					'viewed' => $row['viewed'],
 					'content' => !empty($row['content']) ? $row['content'] : array(),
 					'type_id' => $row['type_id'],
+					'second_type' => $row['second_type'],
 				);
 
 			$this->_smcFunc['db_free_result']($result);
@@ -1087,6 +1091,7 @@ class BreezeQuery extends Breeze
 				'viewed' => $row['viewed'],
 				'content' => $row['content'],
 				'type_id' => $row['type_id'],
+				'second_type' => $row['second_type'],
 			);
 
 		$this->_smcFunc['db_free_result']($result);
