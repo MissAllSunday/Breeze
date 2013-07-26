@@ -153,7 +153,7 @@ class BreezeQuery extends Breeze
 		// If we didn't get a profile owner, lets get it from the data provided...
 		if (!$profile_owner)
 		{
-			$columnName = ($type == 'comments' ? 'comments_profile' : 'owner_id') . '_owner_id';
+			$columnName = ($type == 'comments' ? 'comments_profile' : 'status') . '_owner_id';
 
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT '. ($columnName) .'
@@ -866,7 +866,8 @@ class BreezeQuery extends Breeze
 	public function insertNotification($array)
 	{
 		// We don't need this no more
-		$this->killCache($this->_tables['noti']['name']);
+		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Receiver-'. $array['receiver'], null, 120);
+		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Sender-'. $array['sender'], null, 120);
 
 		$this->_smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['noti']['table']) .
 			'', array(
@@ -891,7 +892,8 @@ class BreezeQuery extends Breeze
 	public function markNoti($id, $user, $viewed)
 	{
 		// We don't need this no more
-		$this->killCache($this->_tables['noti']['name'] . '-Receiver-'. $user);
+		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Receiver-'. $user, null, 120);
+		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Sender-'. $user, null, 120);
 
 		// Mark as viewed
 		$this->_smcFunc['db_query']('', '
@@ -915,7 +917,8 @@ class BreezeQuery extends Breeze
 	public function deleteNoti($id, $user)
 	{
 		// We don't need this no more
-		$this->killCache($this->_tables['noti']['name'] . '-Receiver-'. $user);
+		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Receiver-'. $user, null, 120);
+		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Sender-'. $user, null, 120);
 
 		// Delete!
 		$this->_smcFunc['db_query']('', '
@@ -940,15 +943,16 @@ class BreezeQuery extends Breeze
 	public function deleteNotiByType($type, $id, $user = false)
 	{
 		// We don't need this no more
-		$this->killCache($this->_tables['noti']['name'] . '-Receiver-'. $user);
+		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Receiver-'. $user, null, 120);
+		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Sender-'. $user, null, 120);
 
 		// Delete!
 		$this->_smcFunc['db_query']('', '
 			DELETE
 			FROM {db_prefix}' . ($this->_tables['noti']['table']) . '
 			WHERE type_id = {int:id}
-				AND type = {string:type}
-				OR second_type = {string:type}',
+				AND (type = {string:type}
+				OR second_type = {string:type})',
 			array(
 				'id' => (int) $id,
 				'type' => $type,
