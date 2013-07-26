@@ -190,8 +190,11 @@ class BreezeNotifications
 		{
 			// Call the methods
 			foreach ($this->_all['data'] as $single)
-				if (in_array($single['type'], $this->types) && in_array('create'. ucfirst($single['type']), $doMethods))
+				if (in_array($single['type'], $this->types) && $this->_tools->isJson($single['content']))
 				{
+					// We're pretty sure there is a method for this noti and that content is a json string so...
+					$single['content'] = json_decode($single['content'], true);
+
 					$call = 'do' . ucfirst($single['type']);
 
 					// Call the right method

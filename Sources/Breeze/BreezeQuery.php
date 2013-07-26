@@ -789,7 +789,7 @@ class BreezeQuery extends Breeze
 					'type' => $row['type'],
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
-					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+					'content' => !empty($row['content']) ? $row['content'] : array(),
 				);
 
 			$this->_smcFunc['db_free_result']($result);
@@ -919,7 +919,7 @@ class BreezeQuery extends Breeze
 					'type' => $row['type'],
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
-					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+					'content' => !empty($row['content']) ? $row['content'] : array(),
 					'type_id' => $row['type_id'],
 				);
 
@@ -976,7 +976,7 @@ class BreezeQuery extends Breeze
 					'type' => $row['type'],
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
-					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+					'content' => !empty($row['content']) ? $row['content'] : array(),
 					'type_id' => $row['type_id'],
 				);
 
@@ -1035,7 +1035,7 @@ class BreezeQuery extends Breeze
 					'type' => $row['type'],
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
-					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+					'content' => !empty($row['content']) ? $row['content'] : array(),
 					 => $row['type_id'],
 				);
 
