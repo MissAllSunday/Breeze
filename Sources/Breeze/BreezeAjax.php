@@ -147,20 +147,21 @@ class BreezeAjax
 			);
 
 			// Store the status
-			$this->_query->insertStatus($params);
-
-			// Get the newly created status, we just need the id
-			$newStatus = $this->_query->getLastStatus();
+			$newStatus = $this->_query->insertStatus($params);
 
 			// Set the ID
-			$params['id'] = $newStatus['status_id'];
+			$params['id'] = $newStatus;
 
 			// Build the notifications
-			$this->_mention->mention(array(
-				'wall_owner' => $this->_data->getValue('owner_id'),
-				'wall_poster' => $this->_data->getValue('poster_id'),
-				'status_id' => $params['id'],
-			));
+			$this->_mention->mention(
+				array(
+					'wall_owner' => $this->_data->getValue('owner_id'),
+					'wall_poster' => $this->_data->getValue('poster_id'),
+					'status_id' => $params['id'],),
+				array(
+						'name' => 'status',
+						'id' => $newStatus,)
+			);
 
 			// Parse the content
 			$params['body'] = $this->_parser->display($params['body']);
@@ -245,22 +246,23 @@ class BreezeAjax
 			);
 
 			// Store the comment
-			$this->_query->insertComment($params);
-
-			// Once the comment was added, get it's ID from the DB
-			$new_comment = $this->_query->getLastComment();
+			$new_comment = $this->_query->insertComment($params);
 
 			// Set the ID
-			$params['id'] = $new_comment['comments_id'];
+			$params['id'] = $new_comment;
 
 			// build the notification
-			$this->_mention->mention(array(
-				'wall_owner' => $profile_owner_id,
-				'wall_poster' => $poster_comment_id,
-				'wall_status_owner' => $status_owner_id,
-				'comment_id' => $params['id'],
-				'status_id' => $status_id,
-			));
+			$this->_mention->mention(
+				array(
+					'wall_owner' => $profile_owner_id,
+					'wall_poster' => $poster_comment_id,
+					'wall_status_owner' => $status_owner_id,
+					'comment_id' => $params['id'],
+					'status_id' => $status_id,),
+				array(
+						'name' => 'comments',
+						'id' => $new_comment,)
+			);
 
 			// Parse the content
 			$params['body'] = $this->_parser->display($params['body']);
@@ -327,7 +329,7 @@ class BreezeAjax
 			if (!empty($temp_id_exists))
 			{
 				$typeCall = 'delete'. ucfirst($type);
-				$this->_query->$typeCall($id);
+				$this->_query->$typeCall($id, $profile_owner);
 
 				// Send the data back to the browser
 				$this->_response = array(

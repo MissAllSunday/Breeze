@@ -64,12 +64,13 @@ class BreezeNotifications
 
 		// Don't include the log type here since its, well, a log, and we'll retrieve it somewhere else...
 		$this->types = array(
-			'comment',
+			'comments',
 			'status',
 			'like',
 			// 'buddy', todo refactors the buddy system
 			'mention',
-			'reply',
+			'messages',
+			'topics',
 		);
 
 		// We kinda need all this stuff, dont' ask why, just nod your head...
@@ -103,6 +104,8 @@ class BreezeNotifications
 
 		else
 			$params['content'] = '';
+
+		// More logic here? dunno...
 
 		$this->_query->insertNotification($params);
 	}
@@ -170,6 +173,9 @@ class BreezeNotifications
 		// Load the users data
 		$this->_tools->loadUserInfo($this->_all['users']);
 
+		// Get the actual class methods
+		$doMhetods = get_class_methods(__CLASS__);
+
 		// If we aren't in the profile then we must call a function in a source file far far away...
 		if (empty($context['member']['options']))
 		{
@@ -186,8 +192,11 @@ class BreezeNotifications
 		{
 			// Call the methods
 			foreach ($this->_all['data'] as $single)
-				if (in_array($single['type'], $this->types))
+				if (in_array($single['type'], $this->types) && $this->_tools->isJson($single['content']))
 				{
+					// We're pretty sure there is a method for this noti and that content is a json string so...
+					$single['content'] = json_decode($single['content'], true);
+
 					$call = 'do' . ucfirst($single['type']);
 
 					// Call the right method
