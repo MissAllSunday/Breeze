@@ -260,7 +260,7 @@ class BreezeAjax
 					'comment_id' => $params['id'],
 					'status_id' => $status_id,),
 				array(
-						'name' => 'comment',
+						'name' => 'comments',
 						'id' => $new_comment,)
 			);
 
