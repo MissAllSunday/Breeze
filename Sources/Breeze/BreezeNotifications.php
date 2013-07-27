@@ -105,6 +105,8 @@ class BreezeNotifications
 		else
 			$params['content'] = '';
 
+		// More logic here? dunno...
+
 		$this->_query->insertNotification($params);
 	}
 
