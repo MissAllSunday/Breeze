@@ -77,6 +77,12 @@ class BreezeTools
 		}
 	}
 
+	public function isJson($string)
+	{
+		json_decode($string);
+		return (json_last_error() == JSON_ERROR_NONE);
+	}
+
 	// A function to cut-off a string
 	public function truncateString($string, $limit, $break = ' ', $pad = '...')
 	{
