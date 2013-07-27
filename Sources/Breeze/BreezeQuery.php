@@ -1164,9 +1164,12 @@ class BreezeQuery extends Breeze
 	 */
 	public function getActivityLog($user = false)
 	{
+		// We start with nothing!
+		$return = false;
+
 		// The usual check..
 		if (empty($user))
-			return false;
+			return $return;
 
 		// Unfortunately, there is no cache for this one... maybe someday... with an ugly foreach to check every single user and compare...
 		$result = $this->_smcFunc['db_query']('', '
