@@ -463,13 +463,15 @@ $(document).ready(function (){
 			$noti->create(array(
 				'sender' => $posterOptions['id'],
 				'receiver' => $posterOptions['id'],
-				'type' => 'newTopic',
+				'type' => 'topics',
 				'time' => time(),
 				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
 				'content' => function() use ($posterOptions, $topicOptions, $msgOptions, $scripturl, $text)
 					{
 						 return $posterOptions['name'] .' '. $text->getText('log_newTopic') .' <a href="'. $scripturl .'?topic='. $topicOptions['id'] .'">'. $msgOptions['subject'] .'</a>';
 					},
+				'type_id' => $topicOptions['id'],
+				'second_type' => 'topics',
 			));
 	}
 
