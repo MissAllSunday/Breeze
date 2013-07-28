@@ -105,7 +105,9 @@ class BreezeNotifications
 		else
 			$params['content'] = '';
 
-		// More logic here? dunno...
+		// If we didn't get this data, make it an empty string and be done with it...
+			$params['type_id'] = !empty($params['type_id']) ? $params['type_id'] : '';
+			$params['second_type'] = !empty($params['second_type']) ? $params['second_type'] : '';
 
 		$this->_query->insertNotification($params);
 	}
