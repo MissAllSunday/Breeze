@@ -167,9 +167,6 @@ class BreezeNotifications
 		// Load the users data
 		$this->_tools->loadUserInfo($this->_all['users']);
 
-		// Get the actual class methods
-		$doMhetods = get_class_methods(__CLASS__);
-
 		// If we aren't in the profile then we must call a function in a source file far far away...
 		if (empty($context['member']['options']))
 		{
