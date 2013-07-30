@@ -64,12 +64,13 @@ class BreezeNotifications
 
 		// Don't include the log type here since its, well, a log, and we'll retrieve it somewhere else...
 		$this->types = array(
-			'comment',
+			'comments',
 			'status',
 			'like',
 			// 'buddy', todo refactors the buddy system
 			'mention',
-			'reply',
+			'messages',
+			'topics',
 		);
 
 		// We kinda need all this stuff, dont' ask why, just nod your head...
@@ -103,6 +104,10 @@ class BreezeNotifications
 
 		else
 			$params['content'] = '';
+
+		// If we didn't get this data, make it an empty string and be done with it...
+			$params['type_id'] = !empty($params['type_id']) ? $params['type_id'] : '';
+			$params['second_type'] = !empty($params['second_type']) ? $params['second_type'] : '';
 
 		$this->_query->insertNotification($params);
 	}
@@ -150,16 +155,8 @@ class BreezeNotifications
 			return false;
 	}
 
-	/**
-	 * BreezeNotifications::doStream()
-	 *
-	 * @param mixed $user
-	 * @return
-	 */
-	public function doStream($user)
+	public function prepare($user)
 	{
-		global $context;
-
 		// Safety
 		if (empty($user))
 			return false;
@@ -169,6 +166,9 @@ class BreezeNotifications
 
 		// Load the users data
 		$this->_tools->loadUserInfo($this->_all['users']);
+
+		// Get the actual class methods
+		$doMhetods = get_class_methods(__CLASS__);
 
 		// If we aren't in the profile then we must call a function in a source file far far away...
 		if (empty($context['member']['options']))
@@ -186,28 +186,50 @@ class BreezeNotifications
 		{
 			// Call the methods
 			foreach ($this->_all['data'] as $single)
-				if (in_array($single['type'], $this->types))
+				if (in_array($single['type'], $this->types) && $this->_tools->isJson($single['content']))
 				{
+					// We're pretty sure there is a method for this noti and that content is a json string so...
+					$single['content'] = json_decode($single['content'], true);
+
 					$call = 'do' . ucfirst($single['type']);
 
 					// Call the right method
 					$this->$call($single);
 				}
 
-			// Show the notifications
-			if (!empty($this->_messages))
-			{
-				// Make sure its an array
-				$this->_messages = !is_array($this->_messages) ? array($this->_messages) : $this->_messages;
+			// Let them know everthing went better than expected!
+			return true;
+		}
 
-				// @todo move this to breeze.js
-				$context['insert_after_template'] .= '
+		// Oh no! something went terrible wrong...
+		else
+			return false;
+	}
+
+	/**
+	 * BreezeNotifications::doStream()
+	 *
+	 * @param mixed $user
+	 * @return
+	 */
+	public function doStream($user)
+	{
+		global $context;
+
+		// Show the notifications
+		if (!empty($this->_messages))
+		{
+			// Make sure its an array
+			$this->_messages = !is_array($this->_messages) ? array($this->_messages) : $this->_messages;
+
+			// @todo move this to breeze.js
+			$context['insert_after_template'] .= '
 				<script type="text/javascript"><!-- // --><![CDATA[
 		$(document).ready(function()
 		{
 ';
-				foreach ($this->_messages as $m)
-					$context['insert_after_template'] .= '
+			foreach ($this->_messages as $m)
+				$context['insert_after_template'] .= '
 	var noti_id_' . $m['id'] . ' = \'' . $m['id'] . '\';
 	var user_' . $m['user'] . ' = \'' . $m['user'] . '\';
 	noty({
@@ -285,8 +307,8 @@ class BreezeNotifications
 		  ]
 	});';
 
-				// A close all button
-				$context['insert_after_template'] .=
+			// A close all button
+			$context['insert_after_template'] .=
 		'noty({
 		text: \''. $this->_text->getText('noti_closeAll') .'\',
 		type: \'warning\',
@@ -302,11 +324,10 @@ class BreezeNotifications
 	});
 ';
 
-				// Close the js call
-				$context['insert_after_template'] .= '
+			// Close the js call
+			$context['insert_after_template'] .= '
 		});
 		// ]]></script>';
-			}
 		}
 	}
 
