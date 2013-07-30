@@ -106,8 +106,8 @@ class BreezeNotifications
 			$params['content'] = '';
 
 		// If we didn't get this data, make it an empty string and be done with it...
-			$params['type_id'] = !empty($params['type_id']) ? $params['type_id'] : '';
-			$params['second_type'] = !empty($params['second_type']) ? $params['second_type'] : '';
+		$params['type_id'] = !empty($params['type_id']) ? $params['type_id'] : '';
+		$params['second_type'] = !empty($params['second_type']) ? $params['second_type'] : '';
 
 		$this->_query->insertNotification($params);
 	}
@@ -163,14 +163,17 @@ class BreezeNotifications
 	 * @param int $user the user ID from where the notifications wil be show
 	 * @return
 	 */
-	public function prepare($user)
+	public function prepare($user, $all = false)
 	{
 		// Safety
 		if (empty($user))
 			return false;
 
+		// Get the right call
+		$call = 'getNotificationByReceiver'. (!empty($all) ? 'All' : '');
+
 		// Get all the notification for this user
-		$this->_all = $this->getByReceiver($user);
+		$this->_all = $this->_query->$call($user);
 
 		// Load the users data
 		$this->_tools->loadUserInfo($this->_all['users']);

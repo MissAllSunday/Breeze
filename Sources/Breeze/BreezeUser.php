@@ -274,7 +274,7 @@ function breezeNotifications()
 		BreezeTools::loadUserInfo($tempNoti['users']);
 
 	// Pass the info to the template
-	if ($notifications->prepare($context['member']['id']))
+	if ($notifications->prepare($context['member']['id'], true))
 		$context['Breeze']['noti'] = $notifications->getMessages();
 
 	// Set all the page stuff

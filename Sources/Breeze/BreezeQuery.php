@@ -991,7 +991,7 @@ class BreezeQuery extends Breeze
 	 * @param int $user The user from where the notifications will be fetched
 	 * @return array
 	 */
-	public function getNotificationByReceiver($user, $all = false)
+	public function getNotificationByReceiver($user)
 	{
 		// Use the cache please...
 		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Receiver-'. $user, 120)) == null)
@@ -1004,7 +1004,7 @@ class BreezeQuery extends Breeze
 				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
 				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
 				WHERE receiver = {int:receiver}
-				'. (empty($all) ? 'AND viewed = 0' : '') .'
+					AND viewed = 0
 				', array(
 					'receiver' => (int) $user,
 				)
@@ -1036,13 +1036,55 @@ class BreezeQuery extends Breeze
 			$return['users'] = array_filter(array_unique($return['users']));
 
 			// Cache this beauty for the most used stream feature
-			if (empty($all))
-				cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Receiver-'. $user, $return, 120);
+			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Receiver-'. $user, $return, 120);
 		}
 
 		return $return;
 	}
 
+	public function getNotificationByReceiverAll($user)
+	{
+		/* There is no notifications */
+		$return['users'] = array();
+		$return['data'] = array();
+
+		$result = $this->_smcFunc['db_query']('', '
+			SELECT '. implode(',', $this->_tables['noti']['columns']) .'
+			FROM {db_prefix}' . $this->_tables['noti']['table'] . '
+			WHERE receiver = {int:receiver}
+			', array(
+				'receiver' => (int) $user,
+			)
+		);
+
+		// Populate the array like a boss!
+		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+		{
+			$return['data'][$row['id']] = array(
+				'id' => $row['id'],
+				'sender' => $row['sender'],
+				'receiver' => $row['receiver'],
+				'type' => $row['type'],
+				'time' => $row['time'],
+				'viewed' => $row['viewed'],
+				'content' => !empty($row['content']) ? $row['content'] : array(),
+				'type_id' => $row['type_id'],
+				'second_type' => $row['second_type'],
+			);
+
+			// Fill out the users IDs
+			$return['users'][] = $row['sender'];
+			$return['users'][] = $row['receiver'];
+		}
+
+		$this->_smcFunc['db_free_result']($result);
+
+		// Delete duplicate IDs
+		$return['users'] = array_filter(array_unique($return['users']));
+
+		return $return;
+	}
+	
 	/**
 	 * BreezeQuery::getNotificationBySender()
 	 *
@@ -1095,7 +1137,7 @@ class BreezeQuery extends Breeze
 
 			// Cache this beauty for the most used stream feature
 			if (empty($all))
-				cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Seceiver-'. $user, $return, 120);
+				cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Sender-'. $user, $return, 120);
 		}
 
 		return $return;

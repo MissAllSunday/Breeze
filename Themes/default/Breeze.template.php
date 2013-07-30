@@ -344,7 +344,7 @@ function template_user_wall()
 			</span>
 		</div>';
 	}
-	
+
 	echo '<pre>';print_r($context['Breeze']);die;
 
 	// End of right block
@@ -551,6 +551,8 @@ function template_member_options()
 
 function template_server_response()
 {
+	global $txt;
+
 	// Get the message from the server
 	$serverResponse = Breeze::sGlobals('get');
 
