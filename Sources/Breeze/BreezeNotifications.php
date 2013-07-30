@@ -213,6 +213,10 @@ class BreezeNotifications
 	{
 		global $context;
 
+		// Prepare the thingy...
+		if (!$this->prepare($user))
+			return false;
+
 		// Show the notifications
 		if (!empty($this->_messages))
 		{

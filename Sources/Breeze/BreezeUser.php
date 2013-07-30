@@ -273,20 +273,9 @@ function breezeNotifications()
 	if (!empty($tempNoti['users']))
 		BreezeTools::loadUserInfo($tempNoti['users']);
 
-	// Create the unique message for each noti @todo, this should be moved to BreezeNotifications
-	if (!empty($tempNoti['data']))
-		foreach ($tempNoti['data'] as $single)
-			if (!empty($single['type']))
-			{
-				if (in_array($single['type'], $notifications->types))
-				{
-					$call = 'do' . ucfirst($single['type']);
-					$notifications->$call($single, true);
-				}
-			}
-
 	// Pass the info to the template
-	$context['Breeze']['noti'] = $notifications->getMessages();
+	if ($notifications->prepare($context['member']['id']))
+		$context['Breeze']['noti'] = $notifications->getMessages();
 
 	// Set all the page stuff
 	$context['sub_template'] = 'user_notifications';
