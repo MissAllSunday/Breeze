@@ -42,15 +42,7 @@ function template_user_wall()
 
 	loadLanguage(Breeze::$name);
 
-	// Get the message from the server
-	$serverResponse = Breeze::sGlobals('get');
-
-	// Show a nice confirmation message for those without JavaScript
-	if ($serverResponse->getValue('m') == true)
-		echo
-	'<div '. ($serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"') ,'>
-		', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
-	</div>';
+	template_server_response();
 
 	// Start of profileview div
 	echo '
@@ -352,6 +344,8 @@ function template_user_wall()
 			</span>
 		</div>';
 	}
+	
+	echo '<pre>';print_r($context['Breeze']);die;
 
 	// End of right block
 	echo '
@@ -373,14 +367,7 @@ function template_user_notifications()
 	global $context, $txt, $scripturl, $user_info;
 
 	// Get the message from the server
-	$serverResponse = Breeze::sGlobals('get');
-
-	// Show a nice confirmation message for those without JavaScript
-	if ($serverResponse->getValue('m') == true)
-		echo
-		'<div class="', $serverResponse->getValue('e') == true ? 'errorbox' : 'windowbg' ,'" id="profile_success">
-			', $txt['Breeze_'. $serverResponse->getValue('m') .'_after'] ,'
-		</div>';
+	template_server_response();
 
 	echo '
 		<div class="cat_bar">
@@ -440,16 +427,6 @@ function template_user_notifications()
 function template_singleStatus()
 {
 	global $context, $txt, $user_info, $scripturl;
-
-	// Get the message from the server
-	$serverResponse = Breeze::sGlobals('get');
-
-	// Show a nice confirmation message for those without JavaScript
-	if ($serverResponse->getValue('m') == true)
-		echo
-		'<div '. ($serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"') ,'>
-			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
-		</div>';
 
 	echo '
 			<div class="windowbg" id ="status_id_', $context['Breeze']['single']['id'] ,'">
@@ -541,14 +518,7 @@ function template_member_options()
 	global $context, $settings, $options, $scripturl, $modSettings, $txt;
 
 	// Get the message from the server
-	$serverResponse = Breeze::sGlobals('get');
-
-	// Show a nice confirmation message for those without JavaScript
-	if ($serverResponse->getValue('m') == true)
-		echo
-		'<div '. ($serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"') ,'>
-			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
-		</div>';
+	template_server_response();
 
 	// The main containing header.
 	echo '
@@ -577,4 +547,17 @@ function template_member_options()
 			</div>
 			<br />
 		</form>';
+}
+
+function template_server_response()
+{
+	// Get the message from the server
+	$serverResponse = Breeze::sGlobals('get');
+
+	// Show a nice confirmation message for those without JavaScript
+	if ($serverResponse->getValue('m') == true)
+		echo
+		'<div '. ($serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"') ,'>
+			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
+		</div>';
 }

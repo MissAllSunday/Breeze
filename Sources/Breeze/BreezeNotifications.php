@@ -155,6 +155,14 @@ class BreezeNotifications
 			return false;
 	}
 
+	/**
+	 * BreezeNotifications::doStream()
+	 *
+	 * Fetch all notifications assigned to a given user, loads the member settings if they aren't already loaded.
+	 * Calls the appropiated local method if needed.
+	 * @param int $user the user ID from where the notifications wil be show
+	 * @return
+	 */
 	public function prepare($user)
 	{
 		// Safety
@@ -206,7 +214,7 @@ class BreezeNotifications
 	/**
 	 * BreezeNotifications::doStream()
 	 *
-	 * @param mixed $user
+	 * @param int $user the user ID from where the notifications wil be show
 	 * @return
 	 */
 	public function doStream($user)
