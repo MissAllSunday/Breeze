@@ -93,7 +93,7 @@ class BreezeQuery extends Breeze
 				'name' => 'noti',
 				'table' => 'breeze_notifications',
 				'property' => '_noti',
-				'columns' => array('id', 'sender', 'receiver', 'type', 'time', 'viewed', 'content'),
+				'columns' => array('id', 'sender', 'receiver', 'type', 'time', 'viewed', 'content', 'type_id', 'second_type',),
 				),
 		);
 	}
@@ -144,16 +144,39 @@ class BreezeQuery extends Breeze
 	 * BreezeQuery::killCache()
 	 *
 	 * Disclaimer: Killing in breeze world means replace the existing cache data with a null value so SMF generates a new cache...
+	 * With the data provided, we need to clean the main cache entry, which is the per profile cache
 	 * @param string $type the name of value(s) to be deleted
 	 * @return void
 	 */
-	public function killCache($type)
+	public function killCache($type, $id, $profile_owner = false)
 	{
-		if (!is_array($type))
-			$type = array($type);
+		// If we didn't get a profile owner, lets get it from the data provided...
+		if (!$profile_owner)
+		{
+			$columnName = ($type == 'comments' ? 'comments_profile' : 'status') . '_owner_id';
 
-		foreach ($type as $t)
-			cache_put_data(Breeze::$name .'-'. $t, '');
+			$result = $this->_smcFunc['db_query']('', '
+				SELECT '. ($columnName) .'
+				FROM {db_prefix}breeze_'. ($type) .'
+				WHERE '. ($type) .'_id = {int:id}
+				', array('id' => $id,));
+
+			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+				$profile_owner = $row[$columnName];
+
+			$this->_smcFunc['db_free_result']($result);
+		}
+
+		if (empty($profile_owner))
+			return false;
+
+		// We got the data we need, turn it into an array
+		$profile_owner = !is_array($profile_owner) ? array($profile_owner) : $profile_owner;
+
+		foreach ($profile_owner as $owner)
+			cache_put_data(Breeze::$name .'-Profile-'. $owner, '');
+
+		// Clean any other cache too
 	}
 
 	/**
@@ -365,7 +388,7 @@ class BreezeQuery extends Breeze
 		);
 
 		// Use the cache please...
-		if (($return = cache_get_data(Breeze::$name .'-' . $id, 120)) == null)
+		if (($return = cache_get_data(Breeze::$name .'-Profile-' . $id, 120)) == null)
 		{
 			// Big query...
 			$result = $this->_smcFunc['db_query']('', '
@@ -422,7 +445,7 @@ class BreezeQuery extends Breeze
 				$return['users'] = array_filter(array_unique($return['users']));
 
 			// Cache this beauty
-			cache_put_data(Breeze::$name .'-' . $id, $return, 120);
+			cache_put_data(Breeze::$name .'-Profile-' . $id, $return, 120);
 		}
 
 		return $return;
@@ -641,9 +664,6 @@ class BreezeQuery extends Breeze
 	 */
 	public function insertStatus($array)
 	{
-		// We don't need this no more
-		cache_put_data(Breeze::$name .'-' . $array['owner_id'], '');
-
 		// Insert!
 		$this->_smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['status']['table']) .
 			'', array(
@@ -652,6 +672,15 @@ class BreezeQuery extends Breeze
 			'status_time' => 'int',
 			'status_body' => 'string',
 			), $array, array('status_id', ));
+
+		// Get the newly created comment ID
+		$status_id = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comments']['table']), 'status_id');
+
+		//Kill the profile cache
+		$this->killCache('status', $status_id, $array['owner_id']);
+
+		// Return the newly inserted comment ID
+		return $status_id;
 	}
 
 	/**
@@ -662,9 +691,6 @@ class BreezeQuery extends Breeze
 	 */
 	public function insertComment($array)
 	{
-		// We don't need this no more
-		$this->killCache($this->_tables['comments']['name']);
-
 		// Insert!
 		$this->_smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['comments']['table']) .
 			'', array(
@@ -675,6 +701,15 @@ class BreezeQuery extends Breeze
 			'comments_time' => 'int',
 			'comments_body' => 'string',
 			), $array, array('comments_id', ));
+
+		// Get the newly created comment ID
+		$comment_id = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comments']['table']), 'comments_id');
+
+		//Kill the profile cache
+		$this->killCache('comments', $comment_id, $array['profile_owner_id']);
+
+		// Return the newly inserted comment ID
+		return $comment_id;
 	}
 
 	/**
@@ -683,13 +718,16 @@ class BreezeQuery extends Breeze
 	 * @param int $id
 	 * @return
 	 */
-	public function deleteStatus($id)
+	public function deleteStatus($id, $profile_owner = false)
 	{
-		// We don't need this no more
-		$this->killCache($this->_tables['status']['name']);
+		// We know the profile_owner, pass it to avoid an extra query
+		$this->killCache('status', $id, $profile_owner);
 
 		// Ladies first
 		$this->deleteCommentByStatusID($id);
+
+		// We need to delete all possible notifications tied up with this status
+		$this->deleteNotiByType('status', $id);
 
 		// Same for status
 		$this->_smcFunc['db_query']('', '
@@ -700,6 +738,7 @@ class BreezeQuery extends Breeze
 	/**
 	 * BreezeQuery::deleteCommentByStatusID()
 	 *
+	 * This shouldn't be called as a standalone method, use deleteComment() instead
 	 * @param int $id
 	 * @return
 	 */
@@ -716,8 +755,14 @@ class BreezeQuery extends Breeze
 	 * @param int $id
 	 * @return
 	 */
-	public function deleteComment($id)
+	public function deleteComment($id, $profile_owner = false)
 	{
+		// If we know the profile_owner ID we will save an extra query so try to include it as a param please!
+		$this->killCache('comments', $id, $profile_owner);
+
+		// We need to delete all possible notifications tied up with this status
+		$this->deleteNotiByType('comments', $id);
+
 		// Delete!
 		$this->_smcFunc['db_query']('', '
 			DELETE FROM {db_prefix}' . ($this->_tables['comments']['table']) . '
@@ -787,7 +832,7 @@ class BreezeQuery extends Breeze
 					'type' => $row['type'],
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
-					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+					'content' => !empty($row['content']) ? $row['content'] : array(),
 				);
 
 			$this->_smcFunc['db_free_result']($result);
@@ -821,7 +866,8 @@ class BreezeQuery extends Breeze
 	public function insertNotification($array)
 	{
 		// We don't need this no more
-		$this->killCache($this->_tables['noti']['name']);
+		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Receiver-'. $array['receiver'], '');
+		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Sender-'. $array['sender'], '');
 
 		$this->_smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['noti']['table']) .
 			'', array(
@@ -831,6 +877,8 @@ class BreezeQuery extends Breeze
 			'time' => 'int',
 			'viewed' => 'int',
 			'content' => 'string',
+			'type_id' => 'int',
+			'second_type' => 'string',
 			), $array, array('id'));
 	}
 
@@ -844,7 +892,8 @@ class BreezeQuery extends Breeze
 	public function markNoti($id, $user, $viewed)
 	{
 		// We don't need this no more
-		$this->killCache($this->_tables['noti']['name'] . '-Receiver-'. $user);
+		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Receiver-'. $user, '');
+		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Sender-'. $user, '');
 
 		// Mark as viewed
 		$this->_smcFunc['db_query']('', '
@@ -868,7 +917,8 @@ class BreezeQuery extends Breeze
 	public function deleteNoti($id, $user)
 	{
 		// We don't need this no more
-		$this->killCache($this->_tables['noti']['name'] . '-Receiver-'. $user);
+		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Receiver-'. $user, '');
+		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Sender-'. $user, '');
 
 		// Delete!
 		$this->_smcFunc['db_query']('', '
@@ -878,6 +928,60 @@ class BreezeQuery extends Breeze
 			array(
 				'id' => (int) $id
 			)
+		);
+	}
+
+	/**
+	 * BreezeQuery::deleteNotiByType()
+	 *
+	 * Deletes the specific notification entry from the DB if it contains an specific type or second_type and matched the ID provided.
+	 * @param string $type The actual name of the type, could be comments, status, topics or messages, in plural
+	 * @param int $id The type_id, helps to build associations between comments/staus and notifications
+	 * @param $user The user ID to clean the right cache entry.
+	 * @return void
+	 */
+	public function deleteNotiByType($type, $id)
+	{
+		$sender = 0;
+		$receiver = 0;
+
+		// Lets get both the sender and receiver IDs
+		$result = $this->_smcFunc['db_query']('', '
+			SELECT sender, receiver
+			FROM {db_prefix}' . ($this->_tables['noti']['table']) . '
+			WHERE type_id = {int:id}
+				AND (second_type = {string:type}
+				OR type = {string:type})',
+			array(
+				'id' => $id,
+				'type' => $type,)
+		);
+
+		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+		{
+			$sender = $row['sender'];
+			$receiver = $row['receiver'];
+		}
+
+		$this->_smcFunc['db_free_result']($result);
+
+		// We got em, delete their cache entries
+		if (!empty($sender) && !empty($receiver))
+		{
+			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Receiver-'. $receiver, '');
+			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Sender-'. $sender, '');
+		}
+
+		// Delete!
+		$this->_smcFunc['db_query']('', '
+			DELETE
+			FROM {db_prefix}' . ($this->_tables['noti']['table']) . '
+			WHERE type_id = {int:id}
+				AND (type = {string:type}
+				OR second_type = {string:type})',
+			array(
+				'id' => (int) $id,
+				'type' => $type,)
 		);
 	}
 
@@ -916,7 +1020,9 @@ class BreezeQuery extends Breeze
 					'type' => $row['type'],
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
-					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+					'content' => !empty($row['content']) ? $row['content'] : array(),
+					'type_id' => $row['type_id'],
+					'second_type' => $row['second_type'],
 				);
 
 				// Fill out the users IDs
@@ -972,7 +1078,9 @@ class BreezeQuery extends Breeze
 					'type' => $row['type'],
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
-					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+					'content' => !empty($row['content']) ? $row['content'] : array(),
+					'type_id' => $row['type_id'],
+					'second_type' => $row['second_type'],
 				);
 
 				// Fill out the users IDs
@@ -1030,7 +1138,9 @@ class BreezeQuery extends Breeze
 					'type' => $row['type'],
 					'time' => $row['time'],
 					'viewed' => $row['viewed'],
-					'content' => !empty($row['content']) ? json_decode($row['content'], true) : array(),
+					'content' => !empty($row['content']) ? $row['content'] : array(),
+					'type_id' => $row['type_id'],
+					'second_type' => $row['second_type'],
 				);
 
 			$this->_smcFunc['db_free_result']($result);
@@ -1054,9 +1164,12 @@ class BreezeQuery extends Breeze
 	 */
 	public function getActivityLog($user = false)
 	{
+		// We start with nothing!
+		$return = false;
+
 		// The usual check..
 		if (empty($user))
-			return false;
+			return $return;
 
 		// Unfortunately, there is no cache for this one... maybe someday... with an ugly foreach to check every single user and compare...
 		$result = $this->_smcFunc['db_query']('', '
@@ -1080,6 +1193,8 @@ class BreezeQuery extends Breeze
 				'time' => $row['time'],
 				'viewed' => $row['viewed'],
 				'content' => $row['content'],
+				'type_id' => $row['type_id'],
+				'second_type' => $row['second_type'],
 			);
 
 		$this->_smcFunc['db_free_result']($result);

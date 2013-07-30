@@ -43,7 +43,7 @@
 				var test = jQuery('#content').val();
 				var ownerID = jQuery('#owner_id').val();
 				var posterID = jQuery('#poster_id').val();
-				var loadImage = '<img src="' + smf_images_url + '/breeze/loading.gif" /><br /> <span class="loading">' + ajax_notification_text + '</span>';
+				var loadImage = '<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" /><br /> <span class="loading">' + ajax_notification_text + '</span>';
 
 				// Disable the button to prevent multiple clicks -_-
 				jQuery(this).attr('disabled', 'disabled');
@@ -143,12 +143,12 @@
 				var element = jQuery(this);
 				var Id = element.attr('id');
 				var commentBox = jQuery('#textboxcontent_'+Id).val();
-				var loadcommentImage = '<img src="' + smf_images_url + '/breeze/loading.gif" /> <span class="loading">' + ajax_notification_text + '</span>';
+				var loadcommentImage = '<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" /> <span class="loading">' + ajax_notification_text + '</span>';
 				var status_owner_id = jQuery('#status_owner_id'+Id).val();
 				var poster_comment_id = jQuery('#poster_comment_id'+Id).val();
 				var profile_owner_id = jQuery('#profile_owner_id'+Id).val();
 				var status_id = Id;
-				var loadImage = '<img src="' + smf_images_url + '/breeze/loading.gif" /><br /> <span class="loading">' + ajax_notification_text + '</span>';
+				var loadImage = '<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" /><br /> <span class="loading">' + ajax_notification_text + '</span>';
 
 				if(commentBox=='')
 					alert(breeze_empty_message);
