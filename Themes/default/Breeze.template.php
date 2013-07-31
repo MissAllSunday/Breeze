@@ -345,8 +345,6 @@ function template_user_wall()
 		</div>';
 	}
 
-	echo '<pre>';print_r($context['Breeze']);die;
-
 	// End of right block
 	echo '
 		</div>';
