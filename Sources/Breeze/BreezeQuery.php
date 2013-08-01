@@ -275,58 +275,6 @@ class BreezeQuery extends Breeze
 	}
 
 	/**
-	 * BreezeQuery::status()
-	 *
-	 * The main method to load all the status. This is one of the main queries.
-	 * @return array a very big associative array with the status ID row as key
-	 */
-	protected function status()
-	{
-		// Use the cache please...
-		if (($this->_status = cache_get_data(Breeze::$name .'-' . $this->_tables['status']['name'],
-			120)) == null)
-		{
-			// Load all the status, set a limit if things get complicated
-			$result = $this->_smcFunc['db_query']('', '
-				SELECT '. implode(',', $this->_tables['status']['columns']) .'
-				FROM {db_prefix}breeze_status
-				' . ($this->settings->enable('admin_enable_limit') && $this->settings->
-				enable('admin_limit_timeframe') ? 'WHERE status_time >= {int:status_time}':'') .
-				'
-				ORDER BY status_time DESC
-				', array('status_time' => $this->settings->getSetting('admin_limit_timeframe'), ));
-
-			// Populate the array like a boss!
-			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-				$this->_status[$row['status_id']] = array(
-					'id' => $row['status_id'],
-					'owner_id' => $row['status_owner_id'],
-					'poster_id' => $row['status_poster_id'],
-					'time' => $this->tools->timeElapsed($row['status_time']),
-					'body' => $this->parser->display($row['status_body']),
-					);
-
-			$this->_smcFunc['db_free_result']($result);
-
-			// Cache this beauty
-			cache_put_data(Breeze::$name .'-' . $this->_tables['status']['name'], $this->_status, 120);
-		}
-
-		return $this->_status;
-	}
-
-	/**
-	 * BreezeQuery::getStatus()
-	 *
-	 * Calls BreezeQuery::status() if the _status property doesn't exists already
-	 * @return array An array with all the status loaded by status())
-	 */
-	public function getStatus()
-	{
-		return !empty($this->_status) ? $this->_status : $this->status();
-	}
-
-	/**
 	 * BreezeQuery::getStatusByProfile()
 	 *
 	 * Get all status made in X profile page. Uses a custom query and store the results on separate cache entries per profile.
@@ -493,7 +441,8 @@ class BreezeQuery extends Breeze
 	 */
 	public function getStatusByUser($id)
 	{
-		return $this->getReturn('status', 'status_user', $id);
+		// @todo make this a real query
+		return;
 	}
 
 	/**
@@ -504,9 +453,8 @@ class BreezeQuery extends Breeze
 	 */
 	public function getStatusByLast()
 	{
-		$array = $this->_status ? $this->_status:$this->status();
-
-		return array_shift(array_values($array));
+		// @todo make sthis a real query
+		return;
 	}
 
 	// Methods for comments
