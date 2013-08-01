@@ -225,7 +225,7 @@ class BreezeAjax
 		}
 
 		// Load all the things we need
-		$temp_id_exists = $this->_query->getSingleValue('status', 'id', $status_id);
+		$temp_id_exists = $this->_query->getSingleValue('status', 'status_id', $status_id);
 
 		// The status do exists and the data is valid
 		if ($this->_data->validateBody('content') && !empty($temp_id_exists))

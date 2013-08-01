@@ -260,10 +260,25 @@ class BreezeQuery extends Breeze
 	 */
 	public function getSingleValue($type, $row, $value)
 	{
-		// Cleaning
-		$this->resetTemp();
+		// The usual checks
+		if (empty($type) || empty($row) || empty($value))
+			return false;
 
-		return $this->getReturn($type, $row, $value);
+		// Get the value directly from the DB
+		$result = $this->_smcFunc['db_query']('', '
+			SELECT '. ($row) .'
+			FROM {db_prefix}' . ($this->_tables[$type]['table']) . '
+			WHERE '. ($row) .' = '. ($value) .'
+			', array()
+		);
+
+		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+			$return = $row;
+
+		$this->_smcFunc['db_free_result']($result);
+
+		// Done?
+		return !empty($return) ? $return : false;
 	}
 
 	/**
@@ -1084,7 +1099,7 @@ class BreezeQuery extends Breeze
 
 		return $return;
 	}
-	
+
 	/**
 	 * BreezeQuery::getNotificationBySender()
 	 *
