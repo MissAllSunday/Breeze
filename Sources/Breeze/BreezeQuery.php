@@ -179,67 +179,6 @@ class BreezeQuery extends Breeze
 		// Clean any other cache too
 	}
 
-	/**
-	 * BreezeQuery::resetTemp()
-	 *
-	 * Resets the temp property if you wish to use it, call this method first
-	 * @return void
-	 */
-	protected function resetTemp()
-	{
-		$this->_temp = array();
-	}
-
-	/**
-	 * BreezeQuery::getReturn()
-	 *
-	 * Return an associative array based on the entered params
-	 * @param string $type The name of the table to fetch
-	 * @param string $row The name of the row to fetch
-	 * @param int $value The value to compare to
-	 * @param bool $single true if the query will return only 1 array.
-	 * @return array an associative array
-	 */
-	private function getReturn($type, $row, $value, $single = false)
-	{
-		// Cleaning
-		$this->resetTemp();
-
-		// Get the data
-		$this->switchData($type);
-
-		$return = '';
-
-		// Do this only if there is something to work with
-		if ($this->_temp)
-		{
-			// Generate An array with a defined key
-			foreach ($this->_temp as $t)
-			{
-				if ($t[$row] == $value && !$single)
-					$return[] = $t;
-
-				// Get a single value
-				else
-					if ($t[$row] == $value && $single)
-						$return = $t;
-			}
-		}
-
-		// Cleaning
-		$this->resetTemp();
-
-		// Return the info we want as we want it
-		return $return;
-	}
-
-	/**
-	 * BreezeQuery::switchData()
-	 *
-	 * Set the temp array with the correct data acording to the type specified
-	 * @param string $type the data type
-	 * @return void
-	 */
 	private function switchData($type)
 	{
 		$property = $this->_tables[$type]['property'];
