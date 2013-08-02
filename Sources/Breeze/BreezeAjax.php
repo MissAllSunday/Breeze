@@ -87,6 +87,10 @@ class BreezeAjax
 			'cleanlog' => 'cleanLog'
 		);
 
+		// Master setting is off, back off!
+		if (!$this->_settings->enable('admin_settings_enable'))
+			fatal_lang_error('Breeze_error_no_valid_action', false);
+
 		// Not using JavaScript?
 		if ($sglobals->getValue('js') == false)
 			$this->noJS = true;
