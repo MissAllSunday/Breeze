@@ -120,6 +120,7 @@ function Breeze_Admin_Settings()
 	$config_vars = array(
 		array('title', Breeze::$txtpattern .'admin_settings_settings'),
 		array('check', Breeze::$txtpattern .'admin_settings_enable', 'subtext' => $text->getText('admin_settings_enable_sub')),
+		array('check', Breeze::$txtpattern .'admin_settings_force_enable', 'subtext' => $text->getText('admin_settings_force_enable_sub')),
 		array('check', Breeze::$txtpattern .'admin_enable_limit', 'subtext' => $text->getText('admin_enable_limit_sub')),
 		array('select', Breeze::$txtpattern .'admin_limit_timeframe', array('hour' => $text->getText('user_settings_time_hour'), 'day' => $text->getText('user_settings_time_day'), 'week' => $text->getText('user_settings_time_week'), 'month' => $text->getText('user_settings_time_month'), 'year' => $text->getText('user_settings_time_year')), 'subtext' => $text->getText('admin_limit_timeframe_sub')),
 		array('text', Breeze::$txtpattern .'allowedActions', 'size' => 56, 'subtext' => $text->getText('allowedActions_sub')),
