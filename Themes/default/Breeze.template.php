@@ -53,12 +53,12 @@ function template_user_wall()
 		<div id="Breeze_left_block">';
 
 	echo '
-		<div class="cat_bar">
-			<h3 class="catbg">
-				<span id="author">
-					'. $txt['Breeze_tabs_wall'] .'
-			</h3>
-		</div>';
+			<div class="cat_bar">
+				<h3 class="catbg">
+					<span id="author">
+						'. $txt['Breeze_tabs_wall'] .'
+				</h3>
+			</div>';
 
 	// Wall div
 	echo '
@@ -116,30 +116,32 @@ function template_user_wall()
 
 							echo '<hr />
 							<div id="comment_flash_', $status['id'] ,'"></div>';
-						echo '<ul class="breeze_comments_list" id="comment_loadplace_', $status['id'] ,'">';
+						echo '
+								<ul class="breeze_comments_list" id="comment_loadplace_', $status['id'] ,'">';
 
 							// Print out the comments
 							if (!empty($status['comments']))
 								foreach($status['comments'] as $comment)
 								{
-									echo '<li class="windowbg2" id ="comment_id_', $comment['id'] ,'">
-												<div class="breeze_user_comment_avatar">
-													',$context['Breeze']['user_info'][$comment['poster_id']]['facebox'],'<br />
-												</div>
-												<div class="breeze_user_comment_comment">
-													',$comment['body'],'
-													<div class="breeze_options">
-														<span class="time_elapsed">', $comment['time'] ,'</span>';
+									echo '
+									<li class="windowbg2" id ="comment_id_', $comment['id'] ,'">												
+										<div class="breeze_user_comment_avatar">
+												',$context['Breeze']['user_info'][$comment['poster_id']]['facebox'],'<br />
+										</div>
+										<div class="breeze_user_comment_comment">
+											',$comment['body'],'
+											<div class="breeze_options">
+												<span class="time_elapsed">', $comment['time'] ,'</span>';
 
 									// Delete comment
 									if (!empty($context['permissions']['delete_comments']))
 										echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $comment['id'] ,';type=comment;profile_owner=',$context['member']['id'],'" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 									echo '
-													</div>
-												</div>
-												<div class="clear"></div>
-											</li>';
+											</div>
+										</div>
+										<div class="clear"></div>
+									</li>';
 								}
 
 							// Display the new comments
@@ -149,7 +151,8 @@ function template_user_wall()
 
 								// Post a new comment
 								if (!empty($context['permissions']['post_comment']))
-									echo '<div>
+									echo '
+								<div>
 									<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
 										<textarea id="textboxcontent_', $status['id'] ,'" name="content" cols="40" rows="2" rel="atwhoMention"></textarea>
 										<input type="hidden" value="',$status['poster_id'],'" name="status_owner_id', $status['id'] ,'" id="status_owner_id', $status['id'] ,'" />
@@ -162,11 +165,9 @@ function template_user_wall()
 
 						echo '
 						</div>
-						<div class="clear"></div>
+						<div class="clear">xcvxcvxcvxcv</div>
 					</div>
-				<span class="botslice">
-					<span></span>
-				</span>
+				<span class="botslice"><span></span></span>
 				</li>';
 		}
 

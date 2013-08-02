@@ -289,6 +289,9 @@ class BreezeQuery extends Breeze
 			'users' => array(),
 		);
 
+		// We're using the query limit, set the correct time
+		$status_time = strtotime('-1 '. $this->settings->getSetting('admin_limit_timeframe'));
+
 		// Use the cache please...
 		if (($return = cache_get_data(Breeze::$name .'-Profile-' . $id, 120)) == null)
 		{
@@ -302,7 +305,7 @@ class BreezeQuery extends Breeze
 				enable('admin_limit_timeframe') ? 'AND s.status_time >= {int:status_time}':'') .
 				'
 				ORDER BY s.status_time DESC
-				', array('status_time' => $this->settings->getSetting('admin_limit_timeframe'),
+				', array('status_time' => $status_time,
 					'owner' => $id));
 
 			// Populate the array like a big heavy boss!
