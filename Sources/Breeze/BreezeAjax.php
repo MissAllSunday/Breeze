@@ -325,7 +325,7 @@ class BreezeAjax
 
 			$temp_id_exists = $this->_query->getSingleValue(
 				$type == 'status' ? 'status' : 'comments',
-				'id',
+				($type == 'status' ? 'status' : 'comments') .'_id',
 				$id
 			);
 
