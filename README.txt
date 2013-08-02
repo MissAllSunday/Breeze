@@ -24,7 +24,7 @@ License.[/code]
 
 [size=12pt][color=purple]Introduction[/color][/size]
 
-Breeze is a social mod, it lest youy users to turn their dull profile ages into a dynamic wall where they can post status and comments, users will receive notifications
+Breeze is a social mod, it lest youy users to turn their dull profile ages into a dynamic wall where they can post status and comments.
 
 [size=12pt][color=purple]Supported Languages[/color][/size]
 
@@ -47,6 +47,7 @@ Tested on PHP 5.3 and 5.4, IE8, Opera and Firefox.
 - [Brandon Aaron Live query plugin] (http://brandonaaron.net/code/livequery/docs)
 - [needim noty jquery plugin] (http://needim.github.com/noty/)
 - [Paul Irish infinite-scroll] (https://github.com/paulirish/infinite-scroll)
+- [ichord Mentions autocomplete script] (http://ichord.github.com/At.js)
 
 
 [size=12pt][color=purple]Changelog[/color][/size]
