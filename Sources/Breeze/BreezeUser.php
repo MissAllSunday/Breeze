@@ -465,9 +465,15 @@ function breezeCheckPermissions()
 	if (!$settings->enable('admin_settings_enable'))
 		redirectexit();
 
-	// Does the user even enable this?
-	if (empty($context['member']['options']['Breeze_enable_wall']))
-		redirectexit('action=profile;area=static;u='.$context['member']['id']);
+	// If we are forcing the wall, lets check the admin setting first
+	if ($settings->enable('admin_settings_force_enable'))
+		if (!isset($context['member']['options']['Breeze_enable_wall']))
+			$context['member']['options']['Breeze_enable_wall'] = 1;
+
+	// Do the normal check, do note this is not an elsif check, its separate.
+	else
+		if (empty($context['member']['options']['Breeze_enable_wall']))
+			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 	// This user cannot see his/her own profile and cannot see any profile either
 	if (!allowedTo('profile_view_own') && !allowedTo('profile_view_any'))
