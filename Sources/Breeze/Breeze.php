@@ -445,9 +445,10 @@ $(document).ready(function (){
 	/**
 	 * Breeze::topic()
 	 *
+	 * Creates a new notification when someone open a new topic
 	 * @return
 	 */
-	public static function topic($msgOptions, $topicOptions, $posterOptions)
+	public static function newTopic($msgOptions, $topicOptions, $posterOptions)
 	{
 		global $context, $breezeController, $txt, $scripturl, $user_info;
 
@@ -468,10 +469,44 @@ $(document).ready(function (){
 				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
 				'content' => function() use ($posterOptions, $topicOptions, $msgOptions, $scripturl, $text)
 					{
-						 return $posterOptions['name'] .' '. $text->getText('log_newTopic') .' <a href="'. $scripturl .'?topic='. $topicOptions['id'] .'">'. $msgOptions['subject'] .'</a>';
+						return $posterOptions['name'] .' '. $text->getText('log_newTopic') .' <a href="'. $scripturl .'?topic='. $topicOptions['id'] .'">'. $msgOptions['subject'] .'</a>';
 					},
 				'type_id' => $topicOptions['id'],
 				'second_type' => 'topics',
+			));
+	}
+
+	/**
+	 * Breeze::newRegister()
+	 *
+	 * Creates a new notification when someone open a new topic
+	 * @return
+	 */
+	public static function newRegister($regOptions, $user_id)
+	{
+		global $context, $breezeController, $txt, $scripturl, $user_info;
+
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
+		// We need the almighty power of breezeController!
+		$noti = $breezeController->get('notifications');
+		$text = $breezeController->get('text');
+
+		// Cheating, lets insert the notification directly, do it only if the topic was approved
+		if ($topicOptions['is_approved'])
+			$noti->create(array(
+				'sender' => $user_id,
+				'receiver' => $user_id,
+				'type' => 'register',
+				'time' => time(),
+				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
+				'content' => function() use ($regOptions, $scripturl, $text)
+					{
+						return $regOptions['username'] .' '. $text->getText('log_newRegister');
+					},
+				'type_id' => 0,
+				'second_type' => 'register',
 			));
 	}
 

@@ -285,6 +285,7 @@ $txt['Breeze_singleStatus_pageTitle'] = 'Single Status';
 
 // Log
 $txt['Breeze_log_newTopic'] = 'created a new topic:';
+$txt['Breeze_log_newRegister'] = 'has just registered!';
 
 // Donate
 $txt['Breeze_donate'] = 'Breeze is a free SMF modification brought to you by a PHP enthusiast on her free time.<p />If you like this modification and would like to show your appreciation, please consider making a <a href="http://missallsunday.com/">donation</a>. Your donation will be used to cover server costs and/or to buy shoes, shoes keeps the developer happy and if she is happy then there will be more updates ;)<p />You can also show your appreciation by letting me know you are using Breeze on your forum, come by, say hi and show me your shiny profile pages powered by Breeze.';
