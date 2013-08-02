@@ -310,7 +310,7 @@ function template_user_wall()
 	}
 
 	// Buddy list
-	if (!empty($context['member']['buddies']))
+	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
 	{
 		echo '
 		<div class="cat_bar">
