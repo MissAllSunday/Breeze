@@ -77,11 +77,7 @@ class BreezeLog
 		}
 
 		// If everything went well, return the final result
-		if (!empty($this->result))
-			return $this->result;
-
-		else
-		return false;
+		return !empty($this->result) ? $this->result : false;
 	}
 
 	public function getLog()
