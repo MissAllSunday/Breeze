@@ -78,6 +78,7 @@ function template_user_wall()
 								<input type="hidden" value="',$context['member']['id'],'" name="owner_id" id="owner_id" />
 								<input type="hidden" value="',$user_info['id'],'" name="poster_id" id="poster_id" /><br />
 								<input type="submit" value="', $txt['post'] ,'" name="submit" class="status_button"/>
+								<input type="hidden" id="', $context['session_var'], '" name="', $context['session_var'], '" value="', $context['session_id'], '" />
 							</form>
 						</div>
 					</div>';
@@ -124,7 +125,7 @@ function template_user_wall()
 								foreach($status['comments'] as $comment)
 								{
 									echo '
-									<li class="windowbg2" id ="comment_id_', $comment['id'] ,'">												
+									<li class="windowbg2" id ="comment_id_', $comment['id'] ,'">
 										<div class="breeze_user_comment_avatar">
 												',$context['Breeze']['user_info'][$comment['poster_id']]['facebox'],'<br />
 										</div>
