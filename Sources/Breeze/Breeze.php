@@ -237,6 +237,8 @@ class Breeze
 				var breeze_noti_delete_after = '. JavaScriptEscape($text->getText('noti_delete_after')) .';
 				var breeze_noti_close = '. JavaScriptEscape($text->getText('noti_close')) .';
 				var breeze_noti_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
+				var breeze_session_id = ' . JavaScriptEscape($context['session_id']) . ';
+				var breeze_session_var = ' . JavaScriptEscape($context['session_var']) . ';
 			// ]]></script>';
 
 			$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
