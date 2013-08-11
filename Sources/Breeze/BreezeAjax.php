@@ -146,6 +146,9 @@ class BreezeAjax
 				'body' => $this->_mention->preMention($body),
 			);
 
+			// Maybe a last minute change before inserting the new status?
+			call_integration_hook('integrate_breeze_before_insertStatus', array(&$params));
+
 			// Store the status
 			$newStatus = $this->_query->insertStatus($params);
 
@@ -165,6 +168,10 @@ class BreezeAjax
 
 			// Parse the content
 			$params['body'] = $this->_parser->display($params['body']);
+
+			// The status was inserted, tell everyone!
+			call_integration_hook('integrate_breeze_after_insertStatus', array(&$params));
+
 
 			// Send the data back to the browser
 			$this->_response = array(
@@ -234,11 +241,11 @@ class BreezeAjax
 				'body' => $this->_mention->preMention($body)
 			);
 
-			// Store the comment
-			$new_comment = $this->_query->insertComment($params);
+			// Before inserting the comment...
+			call_integration_hook('integrate_breeze_before_insertComment', array(&$params));
 
-			// Set the ID
-			$params['id'] = $new_comment;
+			// Store the comment
+			$params['id'] = $this->_query->insertComment($params);
 
 			// build the notification
 			$this->_mention->mention(
@@ -255,6 +262,9 @@ class BreezeAjax
 
 			// Parse the content
 			$params['body'] = $this->_parser->display($params['body']);
+
+			// The comment was created, tell the world of just those who want it to know...
+			call_integration_hook('integrate_breeze_after_insertComment', array(&$params));
 
 			// Send the data back to the browser
 			$this->_response = array(
