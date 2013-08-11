@@ -75,6 +75,12 @@ class BreezeController
 			return new BreezeTools($c->settings, $c->text);
 		});
 
+		// Display
+		$this->container->display = $this->container->asShared(function ($c)
+		{
+			return new BreezeDisplay($c->tools, $c->text);
+		});
+
 		// Parser
 		$this->container->parser = $this->container->asShared(function ($c)
 		{

@@ -267,15 +267,12 @@ class BreezeAjax
 			);
 
 			// Parse the content
-			$params['body'] = $this->_parser->display();
-
-			// The comment was added, build the server response
-			$display = new BreezeDisplay($params, 'comment');
+			$params['body'] = $this->_parser->display($params['body']);
 
 			// Send the data back to the browser
 			$this->_response = array(
 				'type' => 'ok',
-				'data' => $this->_display->HTML($params['body'])
+				'data' => $this->_display->HTML($params, 'comment')
 			);
 
 			// Se the redirect url

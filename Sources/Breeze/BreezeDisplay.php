@@ -47,7 +47,7 @@ class BreezeDisplay
 	private $parse;
 	private $type;
 
-	function __construct($params, $type)
+	function __construct($tools, $text)
 	{
 		global $breezeController;
 
@@ -55,10 +55,8 @@ class BreezeDisplay
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
-		$this->tools = $breezeController->get('tools');
-		$this->text = $breezeController->get('text');
-		$this->params = $params;
-		$this->type = $type;
+		$this->tools = $tools;
+		$this->text = $text;
 
 		// The visitor's permissions
 		$this->permissions = array(
@@ -68,9 +66,15 @@ class BreezeDisplay
 		);
 	}
 
-	public function HTML()
+	public function HTML($params, $type)
 	{
 		global $context;
+
+		if (empty($params) || empty($type))
+			return false;
+
+		$this->params = $params;
+		$this->type = $type;
 
 		// Load the user info
 		$this->tools->loadUserInfo($this->params['poster_id']);
