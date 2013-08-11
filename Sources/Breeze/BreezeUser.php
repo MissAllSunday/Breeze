@@ -138,6 +138,7 @@ function breezeSettings()
 	loadtemplate(Breeze::$name);
 
 	loadThemeOptions($memID);
+
 	if (allowedTo(array('profile_extra_own')))
 		loadCustomFields($memID, 'theme');
 

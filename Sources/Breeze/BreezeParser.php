@@ -62,8 +62,14 @@ class BreezeParser
 		$this->s = $string;
 		$temp = $this->tools->remove(get_class_methods(__CLASS__), array('__construct', 'display'), false);
 
+		// We may want to add something before it gets parsed...
+		call_integration_hook('integrate_breeze_before_parser', array(&$this->s));
+
 		foreach ($temp as $t)
 			$this->$t();
+
+		// ...or after?
+		call_integration_hook('integrate_breeze_after_parser', array(&$this->s));
 
 		return $this->s;
 	}
