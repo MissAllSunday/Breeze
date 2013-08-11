@@ -242,6 +242,7 @@ $txt['Breeze_noti_closeAll'] = 'Close all notifications';
 $txt['Breeze_noti_unmarkasread_after'] = 'You have successfully marked this notification as unread';
 $txt['Breeze_noti_markasread_after'] = 'You have successfully marked this notification as read';
 $txt['Breeze_noti_markasreaddeleted_after'] = 'This notification was already deleted or is not a valid entry.';
+$txt['Breeze_noti_markasreaddeleted'] = 'This notification was already deleted or is not a valid entry.';
 $txt['Breeze_noti_delete_after'] = 'You have successfully deleted this notification';
 $txt['Breeze_noti_visits_clean'] = 'You have successfully cleaned your visitors log';
 $txt['Breeze_noti_novalid_after'] = 'This isn\'t a valid action.';
