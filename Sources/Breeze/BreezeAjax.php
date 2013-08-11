@@ -170,13 +170,10 @@ class BreezeAjax
 			// Parse the content
 			$params['body'] = $this->_parser->display($params['body']);
 
-			// The status was added, build the server response
-			$display = new BreezeDisplay($params, 'status');
-
 			// Send the data back to the browser
 			$this->_response = array(
 				'type' => 'ok',
-				'data' => $display->HTML()
+				'data' => $display->HTML($params, 'status')
 			);
 
 			// Se the redirect url
@@ -269,7 +266,7 @@ class BreezeAjax
 			);
 
 			// Parse the content
-			$params['body'] = $this->_parser->display($params['body']);
+			$params['body'] = $this->_parser->display();
 
 			// The comment was added, build the server response
 			$display = new BreezeDisplay($params, 'comment');
@@ -277,7 +274,7 @@ class BreezeAjax
 			// Send the data back to the browser
 			$this->_response = array(
 				'type' => 'ok',
-				'data' => $display->HTML()
+				'data' => $this->_display->HTML($params['body'])
 			);
 
 			// Se the redirect url

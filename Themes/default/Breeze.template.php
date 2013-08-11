@@ -109,11 +109,13 @@ function template_user_wall()
 						</div>
 						<div class="breeze_user_status_comment">
 							',$status['body'],'
-							<div class="breeze_options"><span class="time_elapsed">', $status['time'] ,' </span>';
+							<div class="breeze_options">
+								<span class="time_elapsed">', $status['time'] ,' </span>';
 
 							// Delete status
 							if (!empty($context['permissions']['delete_status']))
-								echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $status['id'] ,';type=status;profile_owner=',$context['member']['id'],'" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> </div>';
+								echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $status['id'] ,';type=status;profile_owner=',$context['member']['id'],'" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a> 
+							</div>';
 
 							echo '<hr />
 							<div id="comment_flash_', $status['id'] ,'"></div>';
@@ -167,7 +169,7 @@ function template_user_wall()
 
 						echo '
 						</div>
-						<div class="clear">xcvxcvxcvxcv</div>
+						<div class="clear"></div>
 					</div>
 				<span class="botslice"><span></span></span>
 				</li>';
