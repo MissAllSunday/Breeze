@@ -128,13 +128,8 @@ class BreezeAjax
 
 		// Sorry, try to play nice next time
 		if (!$this->_data->getValue('owner_id') || !$this->_data->getValue('poster_id') || !$this->_data->getValue('content'))
-		{
-			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message;e=1';
-
-			return;
-		}
+				return $this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message;e=1';
 
 		// Do this only if there is something to add to the database
 		if ($this->_data->validateBody('content'))
@@ -179,10 +174,7 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=success_message';
-
-			// End it
-			return;
+				return $this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=success_message';
 		}
 
 		// There was an error
@@ -218,13 +210,8 @@ class BreezeAjax
 
 		// Sorry, try to play nice next time
 		if (!$status_owner_id || !$poster_comment_id || !$profile_owner_id || !$content)
-		{
-			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $profile_owner_id .';m=error_message;e=1;';
-
-			return;
-		}
+				return $this->redirectURL = 'action=profile;u='. $profile_owner_id .';m=error_message;e=1;';
 
 		// Load all the things we need
 		$temp_id_exists = $this->_query->getSingleValue('status', 'status_id', $status_id);
@@ -386,26 +373,15 @@ class BreezeAjax
 
 		// Is this valid data?
 		if (empty($noti) || empty($user))
-		{
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_novalid;e=1;';
-
-			// Stop the process
-			return;
-		}
+				return $this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_novalid;e=1;';
 
 		// We must make sure this noti really exists, we just must!!!
 		$noti_temp = $this->_query->getNotificationByReceiver($user, true);
 
 		if (empty($noti_temp['data']) || !isset($noti_temp['data'][$noti]))
-		{
-			// Tell the user about it
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_markasreaddeleted;e=1;';
-
-			// Stop the process
-			return;
-		}
+				return $this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_markasreaddeleted;e=1;';
 
 		else
 		{
@@ -496,8 +472,7 @@ class BreezeAjax
 	protected function usersMention()
 	{
 		// Just pass the result directly
-		$this->_response = $this->_query->userMention();
-		return;
+		return $this->_response = $this->_query->userMention();
 	}
 
 	/**
@@ -548,12 +523,7 @@ class BreezeAjax
 
 		// No JS? fine... jut send them to whatever url they're from
 		if (true == $this->noJS && !empty($this->redirectURL))
-		{
-			redirectexit($this->redirectURL);
-
-			// Safety first!
-			return;
-		}
+			return redirectexit($this->redirectURL);
 
 		// Kill anything else
 		ob_end_clean();
