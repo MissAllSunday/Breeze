@@ -98,6 +98,9 @@ class BreezeNotifications
 	 */
 	public function create($params)
 	{
+		// Before inserting...
+		call_integration_hook('integrate_breeze_before_insertingNoti', array(&$params));
+
 		// Is there additional content?
 		if (!empty($params['content']))
 			$params['content'] = is_array($params['content']) ? json_encode($params['content']) : (is_object($params['content']) ? $params['content']() : $params['content']);
@@ -233,6 +236,9 @@ class BreezeNotifications
 		{
 			// Make sure its an array
 			$this->_messages = !is_array($this->_messages) ? array($this->_messages) : $this->_messages;
+
+			// Last minute change? yeah, yeah, I'm passing a protected property...
+			call_integration_hook('integrate_breeze_before_ShowNoti', array(&$this->_messages));
 
 			// @todo move this to breeze.js
 			$context['insert_after_template'] .= '
