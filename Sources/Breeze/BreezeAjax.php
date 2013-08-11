@@ -49,7 +49,7 @@ class BreezeAjax
 	 *
 	 * @return
 	 */
-	public function __construct($settings, $text, $query, $notifications, $parser, $mention)
+	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display)
 	{
 		// Needed to show error strings
 		loadLanguage(Breeze::$name);
@@ -61,6 +61,7 @@ class BreezeAjax
 		$this->_settings = $settings;
 		$this->_notifications = $notifications;
 		$this->_text = $text;
+		$this->_display = $display;
 
 		// Set an empty var, by default lets pretend everything went wrong...
 		$this->_response = '';
@@ -173,7 +174,7 @@ class BreezeAjax
 			// Send the data back to the browser
 			$this->_response = array(
 				'type' => 'ok',
-				'data' => $display->HTML($params, 'status')
+				'data' => $this->_display->HTML($params, 'status')
 			);
 
 			// Se the redirect url
