@@ -68,9 +68,6 @@ abstract class BreezeDispatcher
 				case 'buddy':
 					$controller = new $controller_name($dependency->get('settings'), $dependency->get('query'), $dependency->get('notifications'));
 					break;
-				case 'wall':
-					echo "i equals 1";
-					break;
 				case 'breezeajax':
 				case 'wall':
 					$controller = new $controller_name($dependency->get('settings'), $dependency->get('text'), $dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'), $dependency->get('display'));
