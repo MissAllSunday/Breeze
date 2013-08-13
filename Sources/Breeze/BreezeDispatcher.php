@@ -54,7 +54,7 @@ abstract class BreezeDispatcher
 
 		$actions = array(
 			'breezeajax' => array('BreezeAjax' , 'call'),
-			'wall' => array('BreezeGeneral', 'call'),
+			'wall' => array('BreezeWall', 'call'),
 			// 'buddy' => array('BreezeBuddy', 'buddy'),  @todo for next version
 		);
 
