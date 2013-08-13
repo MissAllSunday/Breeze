@@ -38,28 +38,9 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-class BreezeGeneral
-{
-	public static function Call()
-	{
-		// Handling the subactions
-		$sa = new BreezeGlobals('get');
-
-		$subActions = array(
-			'singleStatus' => 'wrapper_breezeGeneral_singleStatus',
-			'singleComments' => 'wrapper_breezeGeneral_singleComment'
-		);
-
-		// Does the subaction even exist?
-		if (in_array($sa->getRaw('sa'), array_keys($subActions)))
-			$subActions[$sa->getRaw('sa')]();
-
-		else
-			self::Wall();
-	}
 
 	// Get the latest entries of your buddies
-	public static function Wall()
+	function generalWall()
 	{
 		global $txt, $scripturl, $context;
 
@@ -79,7 +60,7 @@ class BreezeGeneral
 	}
 
 	// Show a single status with all it's comments
-	public static function singleStatus()
+	function singleStatus()
 	{
 		global $user_info, $scripturl, $context, $memberContext;
 
@@ -139,4 +120,3 @@ class BreezeGeneral
 		// Send the data to the template
 		$context['Breeze']['singleStatus'] = $status;
 	}
-}
