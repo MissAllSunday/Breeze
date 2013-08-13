@@ -41,6 +41,41 @@ if (!defined('SMF'))
 class BreezeWall
 {
 
+	public function call()
+	{
+		// Handling the subactions
+		$sglobals = Breeze::sGlobals('get');
+
+		// Safety first, hardcode the actions
+		$this->subActions = array(
+			'general' => 'post',
+			'single' => 'singleStatus',
+			'singleComment' => 'singleComment',
+			'log' => => 'log',
+		);
+
+		// Master setting is off, back off!
+		if (!$this->_settings->enable('admin_settings_enable'))
+			fatal_lang_error('Breeze_error_no_valid_action', false);
+
+		// Temporarily turn this into a normal var
+		$call = $this->subActions;
+
+		// Does the subaction even exist?
+		if (isset($call[$sglobals->getValue('sa')]))
+		{
+			// This is somehow ugly but its faster.
+			$this->$call[$sglobals->getValue('sa')]();
+
+			// Send the response back to the browser
+			$this->returnResponse();
+		}
+
+		// Sorry pal...
+		else
+			fatal_lang_error('Breeze_error_no_valid_action', false);
+	}
+
 // Get the latest entries of your buddies
 function generalWall()
 {
