@@ -38,10 +38,6 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-	// Wrapper functions
-	function wrapper_breezeGeneral_singleStatus(){ BreezeGeneral::singleStatus(); }
-	function wrapper_breezeGeneral_singleComment(){ BreezeGeneral::singleComment(); }
-
 class BreezeGeneral
 {
 	public static function Call()
