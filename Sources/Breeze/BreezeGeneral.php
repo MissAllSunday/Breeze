@@ -53,15 +53,15 @@ function generalWall()
 		$breezeController = new BreezeController();
 
 	// Set all the page stuff
-	$context['page_title'] = 'demo';
+	$context['page_title'] = $txt['Breeze_general_wall'];
 	$context['sub_template'] = 'general_wall';
 	$context['linktree'][] = array(
 		'url' => $scripturl . '?action=wall',
-		'name' => 'demo'
+		'name' => $context['page_title'],
 	);
 
 	// Headers
-	BreezeTools::headers(true);
+	Breeze::headersHook('profile');
 }
 
 // Show a single status with all it's comments
