@@ -63,11 +63,21 @@ abstract class BreezeDispatcher
 			$controller_name = $actions[$sglobals->getValue('action')][0];
 
 			// Should prob use a switch here...
-			if ($sglobals->getValue('action') == 'buddy')
-				$controller = new $controller_name($dependency->get('settings'), $dependency->get('query'), $dependency->get('notifications'));
-
-			if ($sglobals->getValue('action') == 'breezeajax')
-				$controller = new $controller_name($dependency->get('settings'), $dependency->get('text'), $dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'), $dependency->get('display'));
+			switch ($sglobals->getValue('action'))
+			{
+				case 'buddy':
+					$controller = new $controller_name($dependency->get('settings'), $dependency->get('query'), $dependency->get('notifications'));
+					break;
+				case 'wall':
+					echo "i equals 1";
+					break;
+				case 'breezeajax':
+				case 'wall':
+					$controller = new $controller_name($dependency->get('settings'), $dependency->get('text'), $dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'), $dependency->get('display'));
+					break;
+				default:
+					fatal_lang_error('Breeze_error_no_valid_action', false);
+			}
 
 			// Lets call the method
 			$method_name = $actions[$sglobals->getValue('action')][1];

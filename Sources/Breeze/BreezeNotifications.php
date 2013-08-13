@@ -162,7 +162,7 @@ class BreezeNotifications
 	 * BreezeNotifications::doStream()
 	 *
 	 * Fetch all notifications assigned to a given user, loads the member settings if they aren't already loaded.
-	 * Calls the appropiated local method if needed.
+	 * Calls the appropriated local method if needed.
 	 * @param int $user the user ID from where the notifications wil be show
 	 * @return
 	 */
