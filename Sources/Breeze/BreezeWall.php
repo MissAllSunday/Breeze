@@ -41,6 +41,21 @@ if (!defined('SMF'))
 class BreezeWall
 {
 
+	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display)
+	{
+		// Needed to show error strings
+		loadLanguage(Breeze::$name);
+
+		// Load all the things we need
+		$this->_query = $query;
+		$this->_parser = $parser;
+		$this->_mention = $mention;
+		$this->_settings = $settings;
+		$this->_notifications = $notifications;
+		$this->_text = $text;
+		$this->_display = $display;
+	}
+
 	public function call()
 	{
 		// Handling the subactions
