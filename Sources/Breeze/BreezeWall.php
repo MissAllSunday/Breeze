@@ -109,6 +109,20 @@ class BreezeWall
 			'name' => $context['page_title'],
 		);
 
+		// By default this is se set as empty, makes life easier, for me at least...
+		$context['wall'] = array();
+
+		// Time to overheat the server!
+		if (!empty($user_info['buddies']))
+			foreach ($user_info['buddies'] as $buddy)
+			{
+				// Get the latest status
+				$context['wall'][$buddy]['status'] = $this->_query->getStatusByUser($buddy);
+
+				// Get the latest activity
+				$context['wall'][$buddy]['activity'] = $this->_query->getActivityLog($buddy);
+			}
+
 		// Headers
 		Breeze::headersHook('profile');
 	}
