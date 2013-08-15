@@ -257,7 +257,7 @@ class BreezeAjax
 					'status_id' => $status_id,),
 				array(
 						'name' => 'comments',
-						'id' => $new_comment,)
+						'id' => $params['id'],)
 			);
 
 			// Parse the content

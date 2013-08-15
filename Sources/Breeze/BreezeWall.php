@@ -76,10 +76,7 @@ class BreezeWall
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
 
-		// Set the permissions
-		Breeze::checkPermissions('wall');
-
-		// Does the subaction even exist?
+		// Does the sub-action even exist?
 		if (isset($call[$sglobals->getValue('sa')]))
 		{
 			// This is somehow ugly but its faster.

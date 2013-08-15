@@ -575,5 +575,5 @@ function template_general_wall()
 {
 	global $context;
 
-	echo '<pre>';print_r($context['Breeze']);die;
+
 }
