@@ -49,7 +49,7 @@ class BreezeAjax
 	 *
 	 * @return
 	 */
-	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display)
+	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display, $tools)
 	{
 		// Needed to show error strings
 		loadLanguage(Breeze::$name);
@@ -62,6 +62,7 @@ class BreezeAjax
 		$this->_notifications = $notifications;
 		$this->_text = $text;
 		$this->_display = $display;
+		$this->_tools = $tools;
 
 		// Set an empty var, by default lets pretend everything went wrong...
 		$this->_response = '';
@@ -257,7 +258,7 @@ class BreezeAjax
 					'status_id' => $status_id,),
 				array(
 						'name' => 'comments',
-						'id' => $new_comment,)
+						'id' => $params['id'],)
 			);
 
 			// Parse the content

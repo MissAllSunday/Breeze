@@ -1,9 +1,9 @@
 <?php
 
 /**
- * BreezeGeneral
+ * BreezeWall
  *
- * The purpose of this file is to show a general wall where user can see tatus and updates from other users or buddies
+ * The purpose of this file is to show a general wall where user can see status and updates from other users or buddies
  * @package Breeze mod
  * @version 1.0 Beta 3
  * @author Jessica González <suki@missallsunday.com>
@@ -38,52 +38,100 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-	// Wrapper functions
-	function wrapper_breezeGeneral_singleStatus(){ BreezeGeneral::singleStatus(); }
-	function wrapper_breezeGeneral_singleComment(){ BreezeGeneral::singleComment(); }
-
-class BreezeGeneral
+class BreezeWall
 {
-	public static function Call()
+	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display, $tools)
+	{
+		// Needed to show error strings
+		loadLanguage(Breeze::$name);
+
+		// Load all the things we need
+		$this->_query = $query;
+		$this->_parser = $parser;
+		$this->_mention = $mention;
+		$this->_settings = $settings;
+		$this->_notifications = $notifications;
+		$this->_text = $text;
+		$this->_display = $display;
+		$this->_tools = $tools;
+	}
+
+	public function call()
 	{
 		// Handling the subactions
-		$sa = new BreezeGlobals('get');
+		$sglobals = Breeze::sGlobals('get');
 
-		$subActions = array(
-			'singleStatus' => 'wrapper_breezeGeneral_singleStatus',
-			'singleComments' => 'wrapper_breezeGeneral_singleComment'
+		// Safety first, hardcode the actions
+		$this->subActions = array(
+			'general' => 'generalWall',
+			'single' => 'singleStatus',
+			'singleComment' => 'singleComment',
+			'log' => 'log',
 		);
 
-		// Does the subaction even exist?
-		if (in_array($sa->getRaw('sa'), array_keys($subActions)))
-			$subActions[$sa->getRaw('sa')]();
+		// Master setting is off, back off!
+		if (!$this->_settings->enable('admin_settings_enable'))
+			fatal_lang_error('Breeze_error_no_valid_action', false);
 
+		// Temporarily turn this into a normal var
+		$call = $this->subActions;
+
+		// Does the sub-action even exist?
+		if (isset($call[$sglobals->getValue('sa')]))
+		{
+			// This is somehow ugly but its faster.
+			$this->$call[$sglobals->getValue('sa')]();
+		}
+
+		// By default lets load the general wall
 		else
-			self::Wall();
+			$this->$call['general']();
 	}
 
 	// Get the latest entries of your buddies
-	public static function Wall()
+	function generalWall()
 	{
-		global $txt, $scripturl, $context;
+		global $txt, $scripturl, $context, $memberContext, $sourcedir;
+		global $modSettings,  $user_info;
 
 		loadtemplate(Breeze::$name);
+		loadtemplate(Breeze::$name .'Functions');
 		writeLog(true);
 
 		// Set all the page stuff
-		$context['page_title'] = 'demo';
+		$context['page_title'] = $txt['Breeze_general_wall'];
 		$context['sub_template'] = 'general_wall';
 		$context['linktree'][] = array(
 			'url' => $scripturl . '?action=wall',
-			'name' => 'demo'
+			'name' => $context['page_title'],
 		);
 
+		// By default this is se set as empty, makes life easier, for me at least...
+		$context['Breeze'] = array();
+
+		// Time to overheat the server!
+		if (!empty($user_info['buddies']))
+		{
+			// Get the latest status
+			$status = $this->_query->getStatusByUser($user_info['buddies']);
+			$context['Breeze']['status'] = $status['data'];
+
+			// Get the latest activity
+			$context['Breeze']['activity'] = $this->_query->getActivityLog($user_info['buddies']);
+
+				// Load users data
+				if (!empty($status['users']))
+					$this->_tools->loadUserInfo($status['users']);
+		}
+
+		// No buddies huh? worry not! heres the latest status...
+
 		// Headers
-		BreezeTools::headers(true);
+		Breeze::headersHook('profile');
 	}
 
 	// Show a single status with all it's comments
-	public static function singleStatus()
+	function singleStatus()
 	{
 		global $user_info, $scripturl, $context, $memberContext;
 

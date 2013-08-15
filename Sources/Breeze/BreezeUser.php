@@ -44,6 +44,7 @@ function breezeWall()
 	global $modSettings,  $user_info, $breezeController, $memID, $user_profile;
 
 	loadtemplate(Breeze::$name);
+	loadtemplate(Breeze::$name .'Functions');
 
 	// Check if this user is welcomed here
 	breezeCheckPermissions();
@@ -80,8 +81,14 @@ function breezeWall()
 	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 	$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
 	$context['member']['status'] = array();
-	$context['breeze']['tools'] = $tools;
+	$context['Breeze']['tools'] = $tools;
 	$context['can_view_warning'] = in_array('w', $context['admin_features']) && (allowedTo('issue_warning') && !$context['user']['is_owner']) || (!empty($modSettings['warning_show']) && ($modSettings['warning_show'] > 1 || $context['user']['is_owner']));
+
+	// You are allowed here but you still need to obey some permissions
+	$context['Breeze']['permissions']['post_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postStatus');
+	$context['Breeze']['permissions']['post_comment'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postComments');
+	$context['Breeze']['permissions']['delete_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteStatus');
+	$context['Breeze']['permissions']['delete_comments'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
 
 	// Load all the status
 	$data = $query->getStatusByProfile($context['member']['id']);
@@ -423,7 +430,7 @@ function breezeSingle()
 	loadtemplate(Breeze::$name);
 
 	// Check if this user is welcomed here
-	breezeCheckPermissions();
+	Breeze::checkPermissions();
 
 	// Load what we need
 	$text = $breezeController->get('text');
@@ -451,61 +458,6 @@ function breezeSingle()
 	$context['sub_template'] = 'singleStatus';
 	$context['page_title'] = $text->getText('singleStatus_pageTitle');
 	$context['canonical_url'] = $scripturl .'?action=profile;area=wallstatus';
-}
-
-function breezeCheckPermissions()
-{
-	global $context, $memberContext, $user_info, $breezeController;
-
-	loadtemplate(Breeze::$name);
-
-	$settings = $breezeController->get('settings');
-	$query = $breezeController->get('query');
-
-	// Another page already checked the permissions and if the mod is enable, but better be safe...
-	if (!$settings->enable('admin_settings_enable'))
-		redirectexit();
-
-	// If we are forcing the wall, lets check the admin setting first
-	if ($settings->enable('admin_settings_force_enable'))
-		if (!isset($context['member']['options']['Breeze_enable_wall']))
-			$context['member']['options']['Breeze_enable_wall'] = 1;
-
-	// Do the normal check, do note this is not an elsif check, its separate.
-	else
-		if (empty($context['member']['options']['Breeze_enable_wall']))
-			redirectexit('action=profile;area=static;u='.$context['member']['id']);
-
-	// This user cannot see his/her own profile and cannot see any profile either
-	if (!allowedTo('profile_view_own') && !allowedTo('profile_view_any'))
-		redirectexit('action=profile;area=static;u='.$context['member']['id']);
-
-	// This user cannot see his/her own profile and it's viewing his/her own profile
-	if (!allowedTo('profile_view_own') && $user_info['id'] == $context['member']['id'])
-		redirectexit('action=profile;area=static;u='.$context['member']['id']);
-
-	// This user cannot see any profile and it's  viewing someone else's wall
-	if (!allowedTo('profile_view_any') && $user_info['id'] != $context['member']['id'])
-		redirectexit('action=profile;area=static;u='.$context['member']['id']);
-
-	// Get this user's ignore list
-	$context['member']['ignore_list'] = array();
-
-	// Get the ignored list
-	$temp_ignore_list = !empty($context['member']['ignore_list']) ? $context['member']['ignore_list'] : $query->getUserSettings($context['member']['id'], 'pm_ignore_list');
-
-	if (!empty($temp_ignore_list))
-		$context['member']['ignore_list'] = explode(',', $temp_ignore_list);
-
-	// I'm sorry, you aren't allowed in here, but here's a nice static page :)
-	if (in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['member']['options']['Breeze_kick_ignored']))
-		redirectexit('action=profile;area=static;u='.$context['member']['id']);
-
-	// You are allowed here but you still need to obey some permissions
-	$context['permissions']['post_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postStatus');
-	$context['permissions']['post_comment'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postComments');
-	$context['permissions']['delete_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteStatus');
-	$context['permissions']['delete_comments'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
 }
 
 function breezeTrackViews()
@@ -580,4 +532,54 @@ function breezeTrackViews()
 	}
 
 	return $views;
+}
+
+function breezeCheckPermissions()
+{
+	global $context, $memberContext, $user_info, $breezeController;
+
+	if (empty($breezeController))
+		$breezeController = new BreezeController();
+
+	$settings = $breezeController->get('settings');
+	$query = $breezeController->get('query');
+
+	// Another page already checked the permissions and if the mod is enable, but better be safe...
+	if (!$settings->enable('admin_settings_enable'))
+		redirectexit();
+
+	// If we are forcing the wall, lets check the admin setting first
+	if ($settings->enable('admin_settings_force_enable'))
+		if (!isset($context['member']['options']['Breeze_enable_wall']))
+			$context['member']['options']['Breeze_enable_wall'] = 1;
+
+	// Do the normal check, do note this is not an elsif check, its separate.
+	else
+		if (empty($context['member']['options']['Breeze_enable_wall']))
+			redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
+	// This user cannot see his/her own profile and cannot see any profile either
+	if (!allowedTo('profile_view_own') && !allowedTo('profile_view_any'))
+		redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
+	// This user cannot see his/her own profile and it's viewing his/her own profile
+	if (!allowedTo('profile_view_own') && $user_info['id'] == $context['member']['id'])
+		redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
+	// This user cannot see any profile and it's  viewing someone else's wall
+	if (!allowedTo('profile_view_any') && $user_info['id'] != $context['member']['id'])
+		redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
+	// Get this user's ignore list
+	$context['member']['ignore_list'] = array();
+
+	// Get the ignored list
+	$temp_ignore_list = !empty($context['member']['ignore_list']) ? $context['member']['ignore_list'] : $query->getUserSettings($context['member']['id'], 'pm_ignore_list');
+
+	if (!empty($temp_ignore_list))
+		$context['member']['ignore_list'] = explode(',', $temp_ignore_list);
+
+	// I'm sorry, you aren't allowed in here, but here's a nice static page :)
+	if (in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['member']['options']['Breeze_kick_ignored']))
+		redirectexit('action=profile;area=static;u='.$context['member']['id']);
 }
