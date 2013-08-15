@@ -54,7 +54,7 @@ abstract class BreezeDispatcher
 
 		$actions = array(
 			'breezeajax' => array('BreezeAjax' , 'call'),
-			'wall' => array('BreezeGeneral', 'call'),
+			'wall' => array('BreezeWall', 'call'),
 			// 'buddy' => array('BreezeBuddy', 'buddy'),  @todo for next version
 		);
 
@@ -62,12 +62,19 @@ abstract class BreezeDispatcher
 		{
 			$controller_name = $actions[$sglobals->getValue('action')][0];
 
-			// Should prob use a switch here...
-			if ($sglobals->getValue('action') == 'buddy')
-				$controller = new $controller_name($dependency->get('settings'), $dependency->get('query'), $dependency->get('notifications'));
-
-			if ($sglobals->getValue('action') == 'breezeajax')
-				$controller = new $controller_name($dependency->get('settings'), $dependency->get('text'), $dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'), $dependency->get('display'));
+			// Should probably use a switch here...
+			switch ($sglobals->getValue('action'))
+			{
+				case 'buddy':
+					$controller = new $controller_name($dependency->get('settings'), $dependency->get('query'), $dependency->get('notifications'));
+					break;
+				case 'breezeajax':
+				case 'wall':
+					$controller = new $controller_name($dependency->get('settings'), $dependency->get('text'), $dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'), $dependency->get('display'), $dependency->get('tools'));
+					break;
+				default:
+					fatal_lang_error('Breeze_error_no_valid_action', false);
+			}
 
 			// Lets call the method
 			$method_name = $actions[$sglobals->getValue('action')][1];

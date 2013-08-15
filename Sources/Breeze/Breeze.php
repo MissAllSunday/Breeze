@@ -406,6 +406,7 @@ $(document).ready(function (){
 			$breezeController = new BreezeController();
 
 		$gSettings = $breezeController->get('settings');
+		$gText = $breezeController->get('text');
 
 		// Replace the duplicate profile button
 		if ($gSettings->enable('admin_settings_enable') && !empty($menu_buttons['profile']['sub_buttons']['summary']))
@@ -414,6 +415,25 @@ $(document).ready(function (){
 				'href' => $scripturl . '?action=profile;area=static',
 				'show' => true,
 			);
+
+	// The Wall link
+	$insert = 'home'; // for now lets use the home button as reference...
+	$counter = 0;
+
+	foreach ($menu_buttons as $area => $dummy)
+		if (++$counter && $area == $insert )
+			break;
+
+	$menu_buttons = array_merge(
+		array_slice($menu_buttons, 0, $counter),
+		array('wall' => array(
+			'title' => $gText->getText('general_wall'),
+			'href' => $scripturl . '?action=wall',
+			'show' => $gSettings->enable('admin_settings_enable'),
+			'sub_buttons' => array(),
+		)),
+		array_slice($menu_buttons, $counter)
+	);
 
 		// Cheat, lets cheat a little!
 		Breeze::headersHook();
@@ -470,9 +490,9 @@ $(document).ready(function (){
 				'time' => time(),
 				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
 				'content' => function() use ($posterOptions, $topicOptions, $msgOptions, $scripturl, $text)
-					{
-						return $posterOptions['name'] .' '. $text->getText('log_newTopic') .' <a href="'. $scripturl .'?topic='. $topicOptions['id'] .'">'. $msgOptions['subject'] .'</a>';
-					},
+				{
+					return $posterOptions['name'] .' '. $text->getText('log_newTopic') .' <a href="'. $scripturl .'?topic='. $topicOptions['id'] .'">'. $msgOptions['subject'] .'</a>';
+				},
 				'type_id' => $topicOptions['id'],
 				'second_type' => 'topics',
 			));
