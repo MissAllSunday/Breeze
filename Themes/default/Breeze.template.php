@@ -43,7 +43,7 @@ function template_user_wall()
 	loadLanguage(Breeze::$name);
 
 	template_server_response();
-
+// echo '<pre>';print_r($context['Breeze']);die;
 	// Start of profileview div
 	echo '
 	<div id="profileview" class="flow_auto">';
@@ -70,7 +70,7 @@ function template_user_wall()
 				<div class="content">';
 
 			// This is the status box,  O RLY?
-			if (!empty($context['permissions']['post_status']))
+			if (!empty($context['Breeze']['permissions']['post_status']))
 				echo '<div class="breeze_user_inner">
 						<div class="breeze_user_statusbox">
 							<form method="post" action="', $scripturl, '?action=breezeajax;sa=post" id="status" name="form_status" class="form_status">
@@ -113,7 +113,7 @@ function template_user_wall()
 								<span class="time_elapsed">', $status['time'] ,' </span>';
 
 							// Delete status
-							if (!empty($context['permissions']['delete_status']))
+							if (!empty($context['Breeze']['permissions']['delete_status']))
 								echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $status['id'] ,';type=status;profile_owner=',$context['member']['id'],'" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>
 							</div>';
 
@@ -137,7 +137,7 @@ function template_user_wall()
 												<span class="time_elapsed">', $comment['time'] ,'</span>';
 
 									// Delete comment
-									if (!empty($context['permissions']['delete_comments']))
+									if (!empty($context['Breeze']['permissions']['delete_comments']))
 										echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $comment['id'] ,';type=comment;profile_owner=',$context['member']['id'],'" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 									echo '
@@ -153,7 +153,7 @@ function template_user_wall()
 							echo '</ul>';
 
 								// Post a new comment
-								if (!empty($context['permissions']['post_comment']))
+								if (!empty($context['Breeze']['permissions']['post_comment']))
 									echo '
 								<div>
 									<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
@@ -292,7 +292,7 @@ function template_user_wall()
 			echo '<br />',  $context['Breeze']['user_info'][$visitor['user']]['link'];
 
 			// The last visit was at...?
-			echo '<br />',  $context['breeze']['tools']->timeElapsed($visitor['last_view']);
+			echo '<br />',  $context['Breeze']['tools']->timeElapsed($visitor['last_view']);
 
 			// If you're the profile owner you might want to know how many time this user has visited your profile...
 			if ($context['member']['id'] == $user_info['id'])
@@ -446,7 +446,7 @@ function template_singleStatus()
 							<span class="time_elapsed">', $context['Breeze']['single']['time'] ,' </span>';
 
 					// Delete status
-					if ($context['permissions']['delete_status'])
+					if ($context['Breeze']['permissions']['delete_status'])
 						echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $context['Breeze']['single']['id'] ,';type=status;profile_owner=',$context['member']['id'],'" id="', $context['Breeze']['single']['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
 
 					echo '
@@ -471,7 +471,7 @@ function template_singleStatus()
 												<span class="time_elapsed">', $comment['time'] ,'</span>';
 
 							// Delete comment
-							if ($context['permissions']['delete_status'])
+							if ($context['Breeze']['permissions']['delete_status'])
 								echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $comment['id'] ,';type=comment;profile_owner=',$context['member']['id'],'" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 							echo '
@@ -487,7 +487,7 @@ function template_singleStatus()
 						echo '</ul>';
 
 							// Post a new comment
-							if ($context['permissions']['post_comment'])
+							if ($context['Breeze']['permissions']['post_comment'])
 								echo '<div>
 								<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $context['Breeze']['single']['id'] ,'" id="formID_', $context['Breeze']['single']['id'] ,'">
 									<textarea id="textboxcontent_', $context['Breeze']['single']['id'] ,'" cols="40" rows="2"  name="content_', $context['Breeze']['single']['id'] ,'" rel="atwhoMention"></textarea>
@@ -575,5 +575,5 @@ function template_general_wall()
 {
 	global $context;
 
-	echo '<pre>';print_r($context['wall']);die;
+	echo '<pre>';print_r($context['Breeze']);die;
 }
