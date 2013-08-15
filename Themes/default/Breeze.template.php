@@ -92,7 +92,7 @@ function template_user_wall()
 		// End of the status textarea
 
 	// Print the status and comments
-	breeze_status($context['member']['status'], $context['Breeze']['permissions']);
+	breeze_status($context['member']['status']);
 
 	// Pagination panel
 	if (!empty($context['Breeze']['pagination']['panel']))
@@ -430,10 +430,10 @@ function template_general_wall()
 	// Left block, user's data and blocks
 	echo '
 		<div id="Breeze_left_block">';
-
+echo '<pre>';print_r($context['Breeze']['status']);die;
 		// Print the buddies status
-		if (!empty($context['Breeze']['status']))
-			breeze_status($context['Breeze']['status'], );
+		// if (!empty($context['Breeze']['status']))
+			// breeze_status($context['Breeze']['status']);
 
 	echo '
 		</div>';

@@ -111,19 +111,20 @@ class BreezeWall
 
 		// Time to overheat the server!
 		if (!empty($user_info['buddies']))
-			foreach ($user_info['buddies'] as $buddy)
-			{
-				// Get the latest status
-				$status = $this->_query->getStatusByUser($buddy);
-				$context['Breeze']['status'][$buddy] = $status['data'];
-
-				// Get the latest activity
-				$context['Breeze']['activity'][$buddy] = $this->_query->getActivityLog($buddy);
+		{
+			// Get the latest status
+			$status = $this->_query->getStatusByUser($user_info['buddies']);
+			$context['Breeze']['status'] = $status['data'];
+echo '<pre>';print_r($context['Breeze']['status']);die;
+			// Get the latest activity
+			$context['Breeze']['activity'][$buddy] = $this->_query->getActivityLog($buddy);
 
 				// Load users data
 				if (!empty($status['users']))
 					$this->_tools->loadUserInfo($status['users']);
-			}
+		}
+
+		// No buddies huh? worry not! heres the latest status...
 
 		// Headers
 		Breeze::headersHook('profile');

@@ -84,6 +84,12 @@ function breezeWall()
 	$context['Breeze']['tools'] = $tools;
 	$context['can_view_warning'] = in_array('w', $context['admin_features']) && (allowedTo('issue_warning') && !$context['user']['is_owner']) || (!empty($modSettings['warning_show']) && ($modSettings['warning_show'] > 1 || $context['user']['is_owner']));
 
+	// You are allowed here but you still need to obey some permissions
+	$context['Breeze']['permissions']['post_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postStatus');
+	$context['Breeze']['permissions']['post_comment'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postComments');
+	$context['Breeze']['permissions']['delete_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteStatus');
+	$context['Breeze']['permissions']['delete_comments'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
+
 	// Load all the status
 	$data = $query->getStatusByProfile($context['member']['id']);
 

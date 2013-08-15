@@ -50,9 +50,9 @@ function breeze_status($data)
 		{
 			// Yes, this is ugly, deal with it...
 			$post_status = $status['poster_id'] == $user_info['id'] ? true : allowedTo('breeze_postStatus');
-			$post_comment = $status['poster_id'] == $user_info['id'] == true ? true : allowedTo('breeze_postComments');
-			$delete_status = $status['poster_id'] == $user_info['id'] == true ? true : allowedTo('breeze_deleteStatus');
-			$delete_comments = $status['poster_id'] == $user_info['id'] == true ? true : allowedTo('breeze_deleteComments');
+			$post_comment = $status['poster_id'] == $user_info['id'] ? true : allowedTo('breeze_postComments');
+			$delete_status = $status['poster_id'] == $user_info['id'] ? true : allowedTo('breeze_deleteStatus');
+			$delete_comments = $status['poster_id'] == $user_info['id'] ? true : allowedTo('breeze_deleteComments');
 
 			echo '
 			<li class="windowbg" id ="status_id_', $status['id'] ,'">
@@ -67,8 +67,8 @@ function breeze_status($data)
 								<span class="time_elapsed">', $status['time'] ,' </span>';
 
 							// Delete status
-							if (!empty($permissions['delete_status']))
-								echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $status['id'] ,';type=status;profile_owner=',$context['member']['id'],'" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
+							if (!empty($delete_status))
+								echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $status['id'] ,';type=status;profile_owner=', $status['owner_id'] ,'" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
 
 							echo '
 							</div>
@@ -81,6 +81,9 @@ function breeze_status($data)
 							if (!empty($status['comments']))
 								foreach($status['comments'] as $comment)
 								{
+									// Yes, the owner of this comment can delete it if they so desire it
+									$delete_single_comment = $comment['poster_id'] == $user_info['id'] ? true : allowedTo('breeze_deleteComments');
+
 									echo '
 									<li class="windowbg2" id ="comment_id_', $comment['id'] ,'">
 										<div class="breeze_user_comment_avatar">
@@ -92,8 +95,8 @@ function breeze_status($data)
 												<span class="time_elapsed">', $comment['time'] ,'</span>';
 
 									// Delete comment
-									if (!empty($permissions['delete_comments']))
-										echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $comment['id'] ,';type=comment;profile_owner=',$context['member']['id'],'" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
+									if ($delete_comments == true || $delete_single_comment == true)
+										echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $comment['id'] ,';type=comment;profile_owner=', $status['owner_id'] ,'" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 									echo '
 											</div>
