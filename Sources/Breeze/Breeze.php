@@ -415,6 +415,25 @@ $(document).ready(function (){
 				'show' => true,
 			);
 
+	// The Wall link
+	$insert = 'home'; // for now lets use the home button as reference...
+	$counter = 0;
+
+	foreach ($menu_buttons as $area => $dummy)
+		if (++$counter && $area == $insert )
+			break;
+
+	$menu_buttons = array_merge(
+		array_slice($menu_buttons, 0, $counter),
+		array('faq' => array(
+			'title' => $txt['Breeze_general_wall'],
+			'href' => $scripturl . '?action=wall',
+			'show' => $gSettings->enable('admin_settings_enable'),
+			'sub_buttons' => array(),
+		)),
+		array_slice($menu_buttons, $counter)
+	);
+
 		// Cheat, lets cheat a little!
 		Breeze::headersHook();
 
