@@ -62,7 +62,7 @@ abstract class BreezeDispatcher
 		{
 			$controller_name = $actions[$sglobals->getValue('action')][0];
 
-			// Should prob use a switch here...
+			// Should probably use a switch here...
 			switch ($sglobals->getValue('action'))
 			{
 				case 'buddy':

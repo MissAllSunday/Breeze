@@ -570,3 +570,8 @@ function template_server_response()
 			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
 		</div>';
 }
+
+function template_general_wall()
+{
+	echo 'A horse, a horse, my kingdom for a horse...';
+}

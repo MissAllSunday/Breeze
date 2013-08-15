@@ -66,7 +66,7 @@ class BreezeWall
 			'general' => 'generalWall',
 			'single' => 'singleStatus',
 			'singleComment' => 'singleComment',
-			'log' => => 'log',
+			'log' => 'log',
 		);
 
 		// Master setting is off, back off!
@@ -88,30 +88,30 @@ class BreezeWall
 			$this->$call['general']();
 	}
 
-// Get the latest entries of your buddies
-function generalWall()
-{
-	global $txt, $scripturl, $context, $memberContext, $sourcedir;
-	global $modSettings,  $user_info, $breezeController;
+	// Get the latest entries of your buddies
+	function generalWall()
+	{
+		global $txt, $scripturl, $context, $memberContext, $sourcedir;
+		global $modSettings,  $user_info, $breezeController;
 
-	loadtemplate(Breeze::$name);
-	writeLog(true);
+		loadtemplate(Breeze::$name);
+		writeLog(true);
 
-	// Time to overheat the server...
-	if (empty($breezeController))
-		$breezeController = new BreezeController();
+		// Time to overheat the server...
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
 
-	// Set all the page stuff
-	$context['page_title'] = $txt['Breeze_general_wall'];
-	$context['sub_template'] = 'general_wall';
-	$context['linktree'][] = array(
-		'url' => $scripturl . '?action=wall',
-		'name' => $context['page_title'],
-	);
+		// Set all the page stuff
+		$context['page_title'] = $txt['Breeze_general_wall'];
+		$context['sub_template'] = 'general_wall';
+		$context['linktree'][] = array(
+			'url' => $scripturl . '?action=wall',
+			'name' => $context['page_title'],
+		);
 
-	// Headers
-	Breeze::headersHook('profile');
-{
+		// Headers
+		Breeze::headersHook('profile');
+	}
 
 	// Show a single status with all it's comments
 	function singleStatus()
