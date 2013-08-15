@@ -123,6 +123,10 @@ function breeze_status($data)
 				<span class="botslice"><span></span></span>
 			</li>';
 		}
+
+	// End of list
+	echo '
+		</ul>';
  }
 
 function breeze_profile_owner()
@@ -195,4 +199,14 @@ function breeze_profile_owner()
 		<span> </span>
 		</span>
 	</div>';
+}
+
+function breeze_user_info()
+{
+	global $context;
+
+	if (!empty($context['Breeze']['user_info']))
+		foreach ($context['Breeze']['user_info'] as $userData)
+			if (!empty($userData['data']))
+				echo $userData['data'];
 }

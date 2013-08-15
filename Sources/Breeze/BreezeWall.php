@@ -40,8 +40,7 @@ if (!defined('SMF'))
 
 class BreezeWall
 {
-
-	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display)
+	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display, $tools)
 	{
 		// Needed to show error strings
 		loadLanguage(Breeze::$name);
@@ -54,6 +53,7 @@ class BreezeWall
 		$this->_notifications = $notifications;
 		$this->_text = $text;
 		$this->_display = $display;
+		$this->_tools = $tools;
 	}
 
 	public function call()
@@ -92,15 +92,11 @@ class BreezeWall
 	function generalWall()
 	{
 		global $txt, $scripturl, $context, $memberContext, $sourcedir;
-		global $modSettings,  $user_info, $breezeController;
+		global $modSettings,  $user_info;
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
 		writeLog(true);
-
-		// Time to overheat the server...
-		if (empty($breezeController))
-			$breezeController = new BreezeController();
 
 		// Set all the page stuff
 		$context['page_title'] = $txt['Breeze_general_wall'];
@@ -111,17 +107,22 @@ class BreezeWall
 		);
 
 		// By default this is se set as empty, makes life easier, for me at least...
-		$context['wall'] = array();
+		$context['Breeze'] = array();
 
 		// Time to overheat the server!
 		if (!empty($user_info['buddies']))
 			foreach ($user_info['buddies'] as $buddy)
 			{
 				// Get the latest status
-				$context['wall'][$buddy]['status'] = $this->_query->getStatusByUser($buddy);
+				$status = $this->_query->getStatusByUser($buddy);
+				$context['Breeze']['status'][$buddy] = $status['data'];
 
 				// Get the latest activity
-				$context['wall'][$buddy]['activity'] = $this->_query->getActivityLog($buddy);
+				$context['Breeze']['activity'][$buddy] = $this->_query->getActivityLog($buddy);
+
+				// Load users data
+				if (!empty($status['users']))
+					$this->_tools->loadUserInfo($status['users']);
 			}
 
 		// Headers

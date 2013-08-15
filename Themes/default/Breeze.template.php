@@ -88,14 +88,11 @@ function template_user_wall()
 				<span class="botslice">
 					<span></span>
 				</span>
-			</div>';
+				</div>';
 		// End of the status textarea
 
 	// Print the status and comments
 	breeze_status($context['member']['status']);
-
-	// End of list
-	echo '</ul>';
 
 	// Pagination panel
 	if (!empty($context['Breeze']['pagination']['panel']))
@@ -214,10 +211,7 @@ function template_user_wall()
 	</div>';
 
 	// Don't forget to print the users data
-	if (!empty($context['Breeze']['user_info']))
-		foreach ($context['Breeze']['user_info'] as $userData)
-			if (!empty($userData['data']))
-				echo $userData['data'];
+	breeze_user_info();
 }
 
 function template_user_notifications()
@@ -428,7 +422,32 @@ function template_server_response()
 
 function template_general_wall()
 {
-	global $context;
+	global $context, $txt, $scripturl, $settings;
 
-echo '<pre>';print_r($context['wall']);die;
+	echo '
+	<div id="profileview" class="flow_auto">';
+
+	// Left block, user's data and blocks
+	echo '
+		<div id="Breeze_left_block">';
+
+		// Print the buddies status
+		if (!empty($context['Breeze']['status']))
+			breeze_status($context['Breeze']['status']);
+
+	echo '
+		</div>';
+
+	echo '
+		<div id="Breeze_right_block">';
+
+
+	echo '
+		</div>';
+
+	echo '
+	</div>';
+
+	// Lastly, print the suers info
+	breeze_user_info();
 }

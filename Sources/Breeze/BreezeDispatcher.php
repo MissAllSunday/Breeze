@@ -70,7 +70,7 @@ abstract class BreezeDispatcher
 					break;
 				case 'breezeajax':
 				case 'wall':
-					$controller = new $controller_name($dependency->get('settings'), $dependency->get('text'), $dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'), $dependency->get('display'));
+					$controller = new $controller_name($dependency->get('settings'), $dependency->get('text'), $dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'), $dependency->get('display'), $dependency->get('tools'));
 					break;
 				default:
 					fatal_lang_error('Breeze_error_no_valid_action', false);
