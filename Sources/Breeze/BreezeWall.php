@@ -63,7 +63,7 @@ class BreezeWall
 
 		// Safety first, hardcode the actions
 		$this->subActions = array(
-			'general' => 'post',
+			'general' => 'generalWall',
 			'single' => 'singleStatus',
 			'singleComment' => 'singleComment',
 			'log' => => 'log',
@@ -81,14 +81,11 @@ class BreezeWall
 		{
 			// This is somehow ugly but its faster.
 			$this->$call[$sglobals->getValue('sa')]();
-
-			// Send the response back to the browser
-			$this->returnResponse();
 		}
 
-		// Sorry pal...
+		// By default lets load the general wall
 		else
-			fatal_lang_error('Breeze_error_no_valid_action', false);
+			$this->$call['general']();
 	}
 
 // Get the latest entries of your buddies
