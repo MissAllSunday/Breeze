@@ -48,6 +48,12 @@ function breeze_status($data)
 	if (!empty($data))
 		foreach ($data as $status)
 		{
+			// Yes, this is ugly, deal with it...
+			$post_status = $status['poster_id'] == $user_info['id'] ? true : allowedTo('breeze_postStatus');
+			$post_comment = $status['poster_id'] == $user_info['id'] == true ? true : allowedTo('breeze_postComments');
+			$delete_status = $status['poster_id'] == $user_info['id'] == true ? true : allowedTo('breeze_deleteStatus');
+			$delete_comments = $status['poster_id'] == $user_info['id'] == true ? true : allowedTo('breeze_deleteComments');
+
 			echo '
 			<li class="windowbg" id ="status_id_', $status['id'] ,'">
 				<span class="topslice"><span></span></span>
@@ -61,7 +67,7 @@ function breeze_status($data)
 								<span class="time_elapsed">', $status['time'] ,' </span>';
 
 							// Delete status
-							if (!empty($context['Breeze']['permissions']['delete_status']))
+							if (!empty($permissions['delete_status']))
 								echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $status['id'] ,';type=status;profile_owner=',$context['member']['id'],'" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
 
 							echo '
@@ -86,7 +92,7 @@ function breeze_status($data)
 												<span class="time_elapsed">', $comment['time'] ,'</span>';
 
 									// Delete comment
-									if (!empty($context['Breeze']['permissions']['delete_comments']))
+									if (!empty($permissions['delete_comments']))
 										echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $comment['id'] ,';type=comment;profile_owner=',$context['member']['id'],'" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 									echo '
@@ -102,7 +108,7 @@ function breeze_status($data)
 							echo '</ul>';
 
 								// Post a new comment
-								if (!empty($context['Breeze']['permissions']['post_comment']))
+								if (!empty($permissions['post_comment']))
 									echo '
 								<div>
 									<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
