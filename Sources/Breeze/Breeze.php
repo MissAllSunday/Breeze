@@ -406,6 +406,7 @@ $(document).ready(function (){
 			$breezeController = new BreezeController();
 
 		$gSettings = $breezeController->get('settings');
+		$gText = $breezeController->get('text');
 
 		// Replace the duplicate profile button
 		if ($gSettings->enable('admin_settings_enable') && !empty($menu_buttons['profile']['sub_buttons']['summary']))
@@ -425,8 +426,8 @@ $(document).ready(function (){
 
 	$menu_buttons = array_merge(
 		array_slice($menu_buttons, 0, $counter),
-		array('faq' => array(
-			'title' => $txt['Breeze_general_wall'],
+		array('wall' => array(
+			'title' => $gText->getText('general_wall'),
 			'href' => $scripturl . '?action=wall',
 			'show' => $gSettings->enable('admin_settings_enable'),
 			'sub_buttons' => array(),
@@ -489,9 +490,9 @@ $(document).ready(function (){
 				'time' => time(),
 				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
 				'content' => function() use ($posterOptions, $topicOptions, $msgOptions, $scripturl, $text)
-					{
-						return $posterOptions['name'] .' '. $text->getText('log_newTopic') .' <a href="'. $scripturl .'?topic='. $topicOptions['id'] .'">'. $msgOptions['subject'] .'</a>';
-					},
+				{
+					return $posterOptions['name'] .' '. $text->getText('log_newTopic') .' <a href="'. $scripturl .'?topic='. $topicOptions['id'] .'">'. $msgOptions['subject'] .'</a>';
+				},
 				'type_id' => $topicOptions['id'],
 				'second_type' => 'topics',
 			));
