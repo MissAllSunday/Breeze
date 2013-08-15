@@ -430,10 +430,11 @@ function template_general_wall()
 	// Left block, user's data and blocks
 	echo '
 		<div id="Breeze_left_block">';
-echo '<pre>';print_r($context['Breeze']['status']);die;
+
 		// Print the buddies status
-		// if (!empty($context['Breeze']['status']))
-			// breeze_status($context['Breeze']['status']);
+		if (!empty($context['Breeze']['status']))
+			foreach ($context['Breeze']['status'] as $status)
+				breeze_status($status);
 
 	echo '
 		</div>';

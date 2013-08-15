@@ -111,7 +111,7 @@ function breeze_status($data)
 							echo '</ul>';
 
 								// Post a new comment
-								if (!empty($permissions['post_comment']))
+								if (!empty($post_comment))
 									echo '
 								<div>
 									<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
