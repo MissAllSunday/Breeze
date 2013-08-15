@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breeze_
+ * Breeze.template
  *
  * The purpose of this file is
  * @package Breeze mod
@@ -573,5 +573,7 @@ function template_server_response()
 
 function template_general_wall()
 {
-	echo 'A horse, a horse, my kingdom for a horse...';
+	global $context;
+
+	echo '<pre>';print_r($context['wall']);die;
 }
