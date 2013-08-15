@@ -34,9 +34,13 @@
  * Contributor(s):
  *
  */
- 
- function breeze_post_status($data)
+
+function breeze_post_status($data)
  {
- 
+
  }
+
+function breeze_status($data)
+ {
+
  }

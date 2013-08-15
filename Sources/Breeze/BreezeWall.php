@@ -95,6 +95,7 @@ class BreezeWall
 		global $modSettings,  $user_info, $breezeController;
 
 		loadtemplate(Breeze::$name);
+		loadtemplate(Breeze::$name .'Functions');
 		writeLog(true);
 
 		// Time to overheat the server...

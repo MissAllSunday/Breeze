@@ -44,6 +44,7 @@ function breezeWall()
 	global $modSettings,  $user_info, $breezeController, $memID, $user_profile;
 
 	loadtemplate(Breeze::$name);
+	loadtemplate(Breeze::$name .'Functions');
 
 	// Check if this user is welcomed here
 	breezeCheckPermissions();
