@@ -89,6 +89,8 @@ class BreezeAjax
 			'cleanlog' => 'cleanLog'
 		);
 
+		echo '<pre>';print_r($sglobals);die;
+
 		// Master setting is off, back off!
 		if (!$this->_settings->enable('admin_settings_enable'))
 			fatal_lang_error('Breeze_error_no_valid_action', false);

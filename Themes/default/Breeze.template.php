@@ -429,7 +429,13 @@ function template_general_wall()
 
 	// Left block, user's data and blocks
 	echo '
-		<div id="Breeze_left_block">';
+		<div id="Breeze_left_block">
+			<div class="cat_bar">
+				<h3 class="catbg">
+					<span id="author">
+						', $txt['Breeze_general_latest_buddy_status'] ,'
+				</h3>
+			</div>';
 
 		// Print the buddies status
 		if (!empty($context['Breeze']['status']))
@@ -442,6 +448,25 @@ function template_general_wall()
 	echo '
 		<div id="Breeze_right_block">';
 
+	echo '
+			<div class="cat_bar">
+				<h3 class="catbg">
+					<span id="author">
+						', $txt['Breeze_general_activity'] ,'
+				</h3>
+			</div>
+			<div class="windowbg2 BreezeBlock">
+				<span class="topslice">
+					<span> </span>
+				</span>';
+
+	if (!empty($context['Breeze']['activity']))
+		foreach ($context['Breeze']['activity'] as $activity)
+			breeze_activity($activity);
+
+	echo '
+			<span class="botslice"><span></span></span>
+			</div>';
 
 	echo '
 		</div>';

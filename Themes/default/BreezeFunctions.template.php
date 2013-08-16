@@ -210,6 +210,29 @@ function breeze_profile_owner()
 	</div>';
 }
 
+function breeze_activity($data)
+{
+	global $context, $txt;
+
+	if (empty($data))
+		return false;
+
+	echo '
+		<div class="content">
+			<ul class="reset">';
+
+	foreach ($data as $act)
+	{
+		echo '
+				<li>', $act['content'] ,'</li>';
+	}
+
+	// Close the ul
+	echo '
+			</ul>
+		</div>';
+}
+
 function breeze_user_info()
 {
 	global $context;

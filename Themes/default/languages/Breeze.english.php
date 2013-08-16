@@ -49,6 +49,8 @@ $txt['Breeze_general_last_view'] = 'Last view';
 $txt['Breeze_general_delete'] = 'Delete';
 $txt['Breeze_general_unlike'] = 'Unlike';
 $txt['Breeze_general_plural'] = '(s)';
+$txt['Breeze_general_activity'] = 'Latest activity';
+$txt['Breeze_general_latest_buddy_status'] = 'Latest buddy status';
 
 // Modules
 $txt['Breeze_general_my_wall_modules'] = 'My Wall Modules settings';
