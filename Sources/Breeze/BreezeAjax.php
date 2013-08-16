@@ -89,7 +89,8 @@ class BreezeAjax
 			'cleanlog' => 'cleanLog'
 		);
 
-		echo '<pre>';print_r($sglobals);die;
+		// Build the correct redirect URL
+		$this->comingFrom = $sglobals->getValue('rf') == true ? $sglobals->getValue('rf') : 'wall';
 
 		// Master setting is off, back off!
 		if (!$this->_settings->enable('admin_settings_enable'))
@@ -132,7 +133,7 @@ class BreezeAjax
 		// Sorry, try to play nice next time
 		if (!$this->_data->getValue('owner_id') || !$this->_data->getValue('poster_id') || !$this->_data->getValue('content'))
 			if (true == $this->noJS)
-				return $this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message;e=1';
+				return $this->setRedirect(array('error' => 'error_message'), $this->_data->getValue('owner_id'));
 
 		// Do this only if there is something to add to the database
 		if ($this->_data->validateBody('content'))
@@ -184,7 +185,7 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				return $this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=success_message';
+				return $this->setRedirect(array('success' => 'success_message'), $this->_data->getValue('owner_id'));
 		}
 
 		// There was an error
@@ -192,7 +193,7 @@ class BreezeAjax
 		{
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message;e=1;';
+				$this->setRedirect(array('error' => 'error_message'), $this->_data->getValue('owner_id'));
 
 			$this->_response = false;
 		}
@@ -581,5 +582,34 @@ class BreezeAjax
 		else
 			if(!$is_owner)
 				fatal_lang_error($this->_text->getText('error_no_valid_action'));
+	}
+
+	/**
+	 * BreezeAjax::setRedirect()
+	 *
+	 * Set a valid url with the params provided
+	 * @param array $message Includes the type and the actual message to send back as a response
+	 * @param int $user If we're coming from the profile area we need to redirect to that specific user's profile page.
+	 * @return
+	 */
+	protected function setRedirect($message, $user, $extra = false)
+	{
+		$messageString = '';
+		$userString = '';
+		$extraString = '';
+
+		// Build the strings as a valid syntax to pass by $_GET
+		if (!empty($message))
+			foreach ($message as $k => $v)
+				$messageString .= ';mb['. $k .']='. $v;
+
+		$userString = $this->comingFrom == 'profile' ? ';u='. $user : '';
+
+		// A special are perhaps?
+		if (!empty($extra))
+			foreach ($extra as $k => $v)
+				$extraString .= ';'. $k .'='. $v;
+
+		$this->redirectURL .= 'action='. $this->comingFrom . $messageString . $extraString . $userString;
 	}
 }
