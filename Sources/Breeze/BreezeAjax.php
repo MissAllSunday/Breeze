@@ -154,10 +154,7 @@ class BreezeAjax
 			call_integration_hook('integrate_breeze_before_insertStatus', array(&$params));
 
 			// Store the status
-			$newStatus = $this->_query->insertStatus($params);
-
-			// Set the ID
-			$params['id'] = $newStatus;
+			$params['id'] = $this->_query->insertStatus($params);
 
 			// Build the notifications
 			$this->_mention->mention(
@@ -167,7 +164,7 @@ class BreezeAjax
 					'status_id' => $params['id'],),
 				array(
 						'name' => 'status',
-						'id' => $newStatus,)
+						'id' => $params['id'],)
 			);
 
 			// Parse the content
