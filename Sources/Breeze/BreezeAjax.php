@@ -209,7 +209,7 @@ class BreezeAjax
 
 		$this->_data = Breeze::sGlobals('request');
 
-		// Trickery, theres always room for moar!
+		// Trickery, there's always room for moar!
 		$status_id = $this->_data->getValue('status_id');
 		$status_owner_id = $this->_data->getValue('status_owner_id'. ($this->noJS == true ? $status_id : ''));
 		$poster_comment_id = $this->_data->getValue('poster_comment_id'. ($this->noJS == true ? $status_id : ''));
@@ -219,7 +219,7 @@ class BreezeAjax
 		// Sorry, try to play nice next time
 		if (!$status_owner_id || !$poster_comment_id || !$profile_owner_id || !$content)
 			if (true == $this->noJS)
-				return $this->redirectURL = 'action=profile;u='. $profile_owner_id .';m=error_message;e=1;';
+				return $this->setRedirect(array('error' => 'error_message'), $profile_owner_id);
 
 		// Load all the things we need
 		$temp_id_exists = $this->_query->getSingleValue('status', 'status_id', $status_id);
@@ -275,7 +275,7 @@ class BreezeAjax
 
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $profile_owner_id .';m=success_message';
+				$this->setRedirect(array('success' => 'sucess_message'), $profile_owner_id);
 
 			// End it
 			return;
@@ -286,7 +286,7 @@ class BreezeAjax
 		{
 			// Se the redirect url
 			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $profile_owner_id .';m=error_message;e=1;';
+				$this->setRedirect(array('error' => 'error_message'), $profile_owner_id);
 
 			$this->_response = false;
 		}
@@ -336,7 +336,7 @@ class BreezeAjax
 
 				// Se the redirect url
 				if (true == $this->noJS)
-					$this->redirectURL = 'action=profile;m=success_delete;u='. $profile_owner;
+					$this->setRedirect(array('success' => 'success_delete'), $profile_owner);$this->redirectURL = 'action=profile;m=success_delete;u='. $profile_owner;
 
 				// End it!
 				return;
