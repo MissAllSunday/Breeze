@@ -190,12 +190,12 @@ class BreezeAjax
 
 			// Something went terrible wrong!
 			else
-				return $this->setResponse();
+				return $this->setResponse(array('owner' => $this->_data->getValue('owner_id'),));
 		}
 
 		// There was an (generic) error
 		else
-			return $this->setResponse();
+			return $this->setResponse(array('owner' => $this->_data->getValue('owner_id'),));
 	}
 
 	/**
@@ -287,12 +287,12 @@ class BreezeAjax
 
 			// Something wrong with the server
 			else
-				return $this->setResponse();
+				return $this->setResponse(array('owner' => $this->_data->getValue('owner_id'),));
 		}
 
 		// There was an error
 		else
-			return $this->setResponse();
+			return $this->setResponse(array('owner' => $this->_data->getValue('owner_id'),));
 	}
 
 	/**
@@ -329,43 +329,34 @@ class BreezeAjax
 			if (!empty($temp_id_exists))
 			{
 				$typeCall = 'delete'. ucfirst($type);
+
+				// Do the query dance!
 				$this->_query->$typeCall($id, $profile_owner);
 
 				// Send the data back to the browser
-				$this->_response = array(
-					'data' => $this->_text->getText('success_delete'),
-					'type' => 'ok'
-				);
-
-				// Se the redirect url
-				if (true == $this->noJS)
-					$this->setRedirect(array('success' => 'success_delete'), $profile_owner);$this->_redirectURL = 'action=profile;m=success_delete;u='. $profile_owner;
-
-				// End it!
-				return;
+				return $this->setResponse(array(
+					'type' => 'success',
+					'message' => 'delete_'. $type,
+					'owner' => $profile_owner,
+				));
 			}
 
 			// Tell them someone has deleted the message already
 			else
-			{
-				$this->_response = array(
-					'data' => $this->_text->getText('already_deleted'),
-					'type' => 'deleted'
-				);
-
-				// Se the redirect url
-				if (true == $this->noJS && !empty($profile_owner))
-					$this->_redirectURL = 'action=profile;m=message_deleted;e=1;u='. $profile_owner;
-
-				// Don't forget to end it
-				return;
-			}
-
-			unset($temp_id_exists);
+				return $this->setResponse(array(
+					'type' => 'error',
+					'message' => 'already_deleted_'. $type,
+					'owner' => $profile_owner,
+				));
 		}
 
-		// Either way, pass the response
-		$this->_response = false;
+		// No valid ID, no candy for you!
+		else
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $profile_owner,
+			));
 	}
 
 	/**
@@ -387,15 +378,23 @@ class BreezeAjax
 
 		// Is this valid data?
 		if (empty($noti) || empty($user))
-			if (true == $this->noJS)
-				return $this->_redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_novalid;e=1;';
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'extra' => array('area' => 'breezenoti',),
+				'owner' => $user,
+			));
 
 		// We must make sure this noti really exists, we just must!!!
 		$noti_temp = $this->_query->getNotificationByReceiver($user, true);
 
 		if (empty($noti_temp['data']) || !isset($noti_temp['data'][$noti]))
-			if (true == $this->noJS)
-				return $this->_redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_markasreaddeleted;e=1;';
+			return $this->setResponse(array(
+				'message' => 'already_deleted_noti',
+				'type' => 'error',
+				'extra' => array('area' => 'breezenoti',),
+				'owner' => $user,
+			));
 
 		else
 		{
