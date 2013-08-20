@@ -408,16 +408,12 @@ class BreezeAjax
 				'type' => 'ok'
 			);
 
-			// Se the redirect url
-			if (true == $this->noJS)
-				$this->_redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_'. (!empty($noti_temp['data'][$noti]['viewed']) ? 'un' : '') .'markasread;';
-
-			// Delete the data to avoid issues
-			$this->_data->unsetVar('content');
-			$this->_data->unsetVar('user');
-
-			// If we manage to get this far we don't have to worry about stoping the process, still, safety first!
-			return;
+			// All done!
+			return $this->setResponse(array(
+				'type' => 'success',
+				'message' => 'noti_markasread_after',
+				'owner' => $user,
+			));
 		}
 	}
 
