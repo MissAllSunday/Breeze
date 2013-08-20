@@ -567,16 +567,24 @@ class BreezeAjax
 		obExit(false);
 	}
 
-	protected function setResponse()
+	protected function setResponse($data)
 	{
 		// Data is empty, fill out a generic response
 		if (empty($data))
-			$this->_response = array(
-				'message' => $this->_text->getText('error_server'),
+			$data = array(
+				'message' => 'server',
 				'data' => '',
 				'type' => 'error',
 				'owner' => 0,
 			);
+
+		// If we didn't get all the params, set them to an empty var and don't forget to convert the message to a proper text string
+		$this->_response = array(
+			'message' => $this->_text->getText($data['type'] .'_'. $data['message']),
+			'data' => !empty($data['data']) ? $data['data'] : '',
+			'type' => $data['type'],
+			'owner' => !empty($data['owner']) ? $data['owner'] : 0,
+		);
 	}
 
 	/**
