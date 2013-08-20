@@ -133,8 +133,8 @@ class BreezeAjax
 		// Sorry, try to play nice next time
 		if (!$this->_data->getValue('owner_id') || !$this->_data->getValue('poster_id') || !$this->_data->getValue('content'))
 			return $this->setResponse(array(
-				'type' => 'error',
 				'message' => 'wrong_values',
+				'type' => 'error',
 				'owner' => $this->_data->getValue('owner_id'),
 			));
 
@@ -177,12 +177,12 @@ class BreezeAjax
 				$params['body'] = $this->_parser->display($params['body']);
 
 				// The status was inserted, tell everyone!
-				call_integration_hook('integrate_breeze_after_insertStatus', array(&$params));
+				call_integration_hook('integrate_breeze_after_insertStatus', array($params));
 
 				// Send the data back to the browser
 				return $this->setResponse(array(
 					'type' => 'success',
-					'message' => $this->_text->getText('success_published'),
+					'message' => 'published',
 					'data' => $this->_display->HTML($params, 'status'),
 					'owner' => $this->_data->getValue('owner_id'),
 				));
@@ -190,12 +190,12 @@ class BreezeAjax
 
 			// Something went terrible wrong!
 			else
-				$this->setResponse();
+				return $this->setResponse();
 		}
 
-		// There was an error
+		// There was an (generic) error
 		else
-			$this->setResponse();
+			return $this->setResponse();
 	}
 
 	/**
@@ -221,7 +221,11 @@ class BreezeAjax
 		// Sorry, try to play nice next time
 		if (!$status_owner_id || !$poster_comment_id || !$profile_owner_id || !$content)
 			if (true == $this->noJS)
-				return $this->setRedirect(array('error' => 'error_message'), $profile_owner_id);
+				return $this->setResponse(array(
+					'message' => 'wrong_values',
+					'type' => 'error',
+					'owner' => $this->_data->getValue('owner_id'),
+				));
 
 		// Load all the things we need
 		$temp_id_exists = $this->_query->getSingleValue('status', 'status_id', $status_id);
@@ -250,48 +254,45 @@ class BreezeAjax
 			// Store the comment
 			$params['id'] = $this->_query->insertComment($params);
 
-			// build the notification
-			$this->_mention->mention(
-				array(
-					'wall_owner' => $profile_owner_id,
-					'wall_poster' => $poster_comment_id,
-					'wall_status_owner' => $status_owner_id,
-					'comment_id' => $params['id'],
-					'status_id' => $status_id,),
-				array(
-						'name' => 'comments',
-						'id' => $params['id'],)
-			);
+			// The Comment was inserted
+			if (!empty($params['id']))
+			{
+				// build the notification
+				$this->_mention->mention(
+					array(
+						'wall_owner' => $profile_owner_id,
+						'wall_poster' => $poster_comment_id,
+						'wall_status_owner' => $status_owner_id,
+						'comment_id' => $params['id'],
+						'status_id' => $status_id,),
+					array(
+							'name' => 'comments',
+							'id' => $params['id'],)
+				);
 
-			// Parse the content
-			$params['body'] = $this->_parser->display($params['body']);
+				// Parse the content
+				$params['body'] = $this->_parser->display($params['body']);
 
-			// The comment was created, tell the world of just those who want it to know...
-			call_integration_hook('integrate_breeze_after_insertComment', array(&$params));
+				// The comment was created, tell the world of just those who want it to know...
+				call_integration_hook('integrate_breeze_after_insertComment', array(&$params));
 
-			// Send the data back to the browser
-			$this->_response = array(
-				'type' => 'ok',
-				'data' => $this->_display->HTML($params, 'comment')
-			);
+				// Send the data back to the browser
+				return $this->setResponse(array(
+					'type' => 'success',
+					'message' => 'published_comment',
+					'data' => $this->_display->HTML($params, 'comment'),
+					'owner' => $profile_owner_id,
+				));
+			}
 
-			// Se the redirect url
-			if (true == $this->noJS)
-				$this->setRedirect(array('success' => 'sucess_message'), $profile_owner_id);
-
-			// End it
-			return;
+			// Something wrong with the server
+			else
+				return $this->setResponse();
 		}
 
 		// There was an error
 		else
-		{
-			// Se the redirect url
-			if (true == $this->noJS)
-				$this->setRedirect(array('error' => 'error_message'), $profile_owner_id);
-
-			$this->_response = false;
-		}
+			return $this->setResponse();
 	}
 
 	/**
@@ -567,7 +568,7 @@ class BreezeAjax
 		obExit(false);
 	}
 
-	protected function setResponse($data)
+	protected function setResponse($data = array())
 	{
 		// Data is empty, fill out a generic response
 		if (empty($data))
