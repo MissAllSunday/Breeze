@@ -403,16 +403,13 @@ class BreezeAjax
 
 			// All is good, mark this as read
 			$this->_query->markNoti($noti, $user, $viewed);
-			$this->_response = array(
-				'data' => $this->_text->getText('noti_markasread_after'),
-				'type' => 'ok'
-			);
 
 			// All done!
 			return $this->setResponse(array(
 				'type' => 'success',
 				'message' => 'noti_markasread_after',
 				'owner' => $user,
+				'extra' => array('area' => 'breezenoti',),
 			));
 		}
 	}
@@ -442,33 +439,24 @@ class BreezeAjax
 		$noti_temp = $this->_query->getNotificationByReceiver($user, true);
 
 		if (empty($noti_temp['data']) || !array_key_exists($noti, $noti_temp['data']))
-		{
-			$this->_response = array(
-				'data' => $this->_text->getText('already_deleted_noti'),
-				'type' => 'deleted'
-			);
-
-			// Se the redirect url
-			if (true == $this->noJS)
-				$this->_redirectURL = 'action=profile;area=breezenoti;e=1;m=noti_delete;u='. $user;
-
-			return;
-		}
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'extra' => array('area' => 'breezenoti',),
+				'owner' => $user,
+			));
 
 		else
 		{
-			// All is good, delete it
+			// All good, delete it
 			$this->_query->deleteNoti($noti, $user);
-			$this->_response = array(
-				'data' => $this->_text->getText('noti_delete_after'),
-				'type' => 'ok'
-			);
 
-			// Se the redirect url
-			if (true == $this->noJS)
-				$this->_redirectURL = 'action=profile;area=breezenoti;u='. $user. ';m=noti_delete';
-
-			return;
+			return $this->setResponse(array(
+				'type' => 'success',
+				'message' => 'noti_delete_after',
+				'owner' => $user,
+				'extra' => array('area' => 'breezenoti',),
+			));
 		}
 	}
 
@@ -505,18 +493,22 @@ class BreezeAjax
 
 		// An extra check
 		if (empty($log) || empty($user) || $user_info['id'] != $user)
-			return false;
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'extra' => array('area' => 'breezenoti',),
+				'owner' => $user,
+			));
 
 		// Ready to go!
 		$this->_query->deleteViews($user);
-		$this->_response = array(
-			'data' => $this->_text->getText('noti_visits_clean'),
-			'type' => 'ok'
-		);
 
-		// Se the redirect url
-		if (true == $this->noJS)
-			$this->_redirectURL = 'action=profile;area=breezesettings;m=noti_visits_clean;u='. $user;
+		return $this->setResponse(array(
+			'type' => 'success',
+			'message' => 'noti_visits_clean',
+			'owner' => $user,
+			'extra' => array('area' => 'breezesettings',),
+		));
 	}
 
 	/**
@@ -550,7 +542,7 @@ class BreezeAjax
 		if (!empty($this->_response))
 			echo json_encode($this->_response);
 
-		// Fall to a generic server error..
+		// Fall to a generic server error, this should never happen but just want to be sure...
 		else
 			echo json_encode(array(
 				'message' => $this->_text->getText('error_server'),
@@ -593,22 +585,21 @@ class BreezeAjax
 	 * @param int $user If we're coming from the profile area we need to redirect to that specific user's profile page.
 	 * @return
 	 */
-	protected function setRedirect($message, $user, $extra = false)
+	protected function setRedirect()
 	{
 		$messageString = '';
 		$userString = '';
 		$extraString = '';
 
 		// Build the strings as a valid syntax to pass by $_GET
-		if (!empty($message))
-			foreach ($message as $k => $v)
-				$messageString .= ';mb['. $k .']='. $v;
+		if (!empty($this->_response['message']) && !empty($this->_response['type']))
+				$messageString .= ';ms['. $this->_response['type'] .']='. $this->_response['message'];
 
-		$userString = $this->comingFrom == 'profile' ? ';u='. $user : '';
+		$userString = $this->comingFrom == 'profile' ? ';u='. $this->_response['owner'] : '';
 
 		// A special are perhaps?
-		if (!empty($extra))
-			foreach ($extra as $k => $v)
+		if (!empty($this->_response['extra']))
+			foreach ($this->_response['extra'] as $k => $v)
 				$extraString .= ';'. $k .'='. $v;
 
 		$this->_redirectURL .= 'action='. $this->comingFrom . $messageString . $extraString . $userString;
