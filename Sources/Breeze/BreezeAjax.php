@@ -616,7 +616,6 @@ class BreezeAjax
 		if (!$is_owner && !empty($type))
 			isAllowedTo('breeze_'. $type);
 
-
 		// Just a generic "is owner"
 		else
 			if(!$is_owner)
