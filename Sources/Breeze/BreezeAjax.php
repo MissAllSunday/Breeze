@@ -577,6 +577,7 @@ class BreezeAjax
 				'data' => '',
 				'type' => 'error',
 				'owner' => 0,
+				'extra' => '',
 			);
 
 		// If we didn't get all the params, set them to an empty var and don't forget to convert the message to a proper text string
@@ -585,6 +586,7 @@ class BreezeAjax
 			'data' => !empty($data['data']) ? $data['data'] : '',
 			'type' => $data['type'],
 			'owner' => !empty($data['owner']) ? $data['owner'] : 0,
+			'extra' => !empty($data['extra']) ? $data['extra'] : '',
 		);
 	}
 
