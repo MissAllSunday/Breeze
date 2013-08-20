@@ -132,8 +132,11 @@ class BreezeAjax
 
 		// Sorry, try to play nice next time
 		if (!$this->_data->getValue('owner_id') || !$this->_data->getValue('poster_id') || !$this->_data->getValue('content'))
-			if (true == $this->noJS)
-				return $this->setRedirect(array('error' => 'error_message'), $this->_data->getValue('owner_id'));
+			return $this->setResponse(array(
+				'type' => 'error',
+				'message' => 'wrong_values',
+				'owner' => $this->_data->getValue('owner_id'),
+			));
 
 		// Do this only if there is something to add to the database
 		if ($this->_data->validateBody('content'))
@@ -177,9 +180,9 @@ class BreezeAjax
 				call_integration_hook('integrate_breeze_after_insertStatus', array(&$params));
 
 				// Send the data back to the browser
-				$this->setResponse(array(
+				return $this->setResponse(array(
 					'type' => 'success',
-					'message' => 'published',
+					'message' => $this->_text->getText('success_published'),
 					'data' => $this->_display->HTML($params, 'status'),
 					'owner' => $this->_data->getValue('owner_id'),
 				));
@@ -551,32 +554,29 @@ class BreezeAjax
 		if (!empty($this->_response))
 			echo json_encode($this->_response);
 
-		// This shouldn't ever happen but just to be extra safe...
+		// Fall to a generic server error..
 		else
-			echo echo json_encode(array(
-				'data' => $this->_text->getText('error_message'),
-				'type' => 'error'
+			echo json_encode(array(
+				'message' => $this->_text->getText('error_server'),
+				'data' => '',
+				'type' => 'error',
+				'owner' => 0,
 			));
 
 		// Done
 		obExit(false);
 	}
 
-	protected function setResponse($data)
+	protected function setResponse()
 	{
-		// Safety first!
-		$this->_response = false;
-		$this->_redirectURL = false;
-
-		// If there is no data, build the most used one, a server error...
+		// Data is empty, fill out a generic response
 		if (empty($data))
 			$this->_response = array(
-				'data' => $this->_text->getText('error_message'),
-				'type' => 'error'
+				'message' => $this->_text->getText('error_server'),
+				'data' => '',
+				'type' => 'error',
+				'owner' => 0,
 			);
-
-		else
-			$this->_response = $data;
 	}
 
 	/**
