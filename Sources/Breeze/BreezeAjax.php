@@ -97,7 +97,7 @@ class BreezeAjax
 			fatal_lang_error('Breeze_error_no_valid_action', false);
 
 		// Not using JavaScript?
-		if ($sglobals->getValue('js') == false)
+		if (!$sglobals->getValue('js'))
 			$this->noJS = true;
 
 		// Temporarily turn this into a normal var
@@ -287,12 +287,12 @@ class BreezeAjax
 
 			// Something wrong with the server
 			else
-				return $this->setResponse(array('owner' => $this->_data->getValue('owner_id'),));
+				return $this->setResponse(array('owner' => $this->_data->getValue('owner_id'), 'type' => 'error',));
 		}
 
 		// There was an error
 		else
-			return $this->setResponse(array('owner' => $this->_data->getValue('owner_id'),));
+			return $this->setResponse(array('owner' => $this->_data->getValue('owner_id'), 'type' => 'error',));
 	}
 
 	/**
@@ -523,8 +523,14 @@ class BreezeAjax
 		global $modSettings;
 
 		// No JS? fine... jut send them to whatever url they're from
-		if (true == $this->noJS && !empty($this->_response))
-			return redirectexit($this->setRedirect());
+		if ($this->noJS)
+		{
+			// Build the redirect url
+			$this->setRedirect();
+
+			// And to the page we go!
+			return redirectexit($this->_redirectURL);
+		}
 
 		// Kill anything else
 		ob_end_clean();
