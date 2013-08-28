@@ -51,6 +51,7 @@ $txt['Breeze_general_unlike'] = 'Unlike';
 $txt['Breeze_general_plural'] = '(s)';
 $txt['Breeze_general_activity'] = 'Latest activity';
 $txt['Breeze_general_latest_buddy_status'] = 'Latest buddy status';
+$txt['Breeze_general_posted_on'] = 'Posted on %s\'s Profile';
 
 // Modules
 $txt['Breeze_general_my_wall_modules'] = 'My Wall Modules settings';

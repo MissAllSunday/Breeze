@@ -55,14 +55,26 @@ function breeze_status($data)
 			$delete_comments = $status['poster_id'] == $user_info['id'] ? true : allowedTo('breeze_deleteComments');
 
 			echo '
-			<li class="windowbg" id ="status_id_', $status['id'] ,'">
+			<li class="windowbg" id ="status_id_', $status['id'] ,'">';
+
+			// If we're on the general wall, show a nice bar indicating where this status come from...
+			if (!empty($context['Breeze']['commingFrom']) && $context['Breeze']['commingFrom'] == 'wall')
+				echo '
+				<div class="cat_bar">
+					<h3 class="catbg">
+						<span id="author">
+							', sprintf($txt['Breeze_general_posted_on'], $context['Breeze']['user_info'][$status['poster_id']]['link']) ,'
+					</h3>
+				</div>';
+
+			echo '
 				<span class="topslice"><span></span></span>
 					<div class="breeze_user_inner">
 						<div class="breeze_user_status_avatar">
-							',$context['Breeze']['user_info'][$status['poster_id']]['facebox'],'
+							', $context['Breeze']['user_info'][$status['poster_id']]['facebox'] ,'
 						</div>
 						<div class="breeze_user_status_comment">
-							',$status['body'],'
+							', $status['body'] ,'
 							<div class="breeze_options">
 								<span class="time_elapsed" title="', timeformat($status['time_raw'], false) ,'">', $status['time'] ,' </span>';
 

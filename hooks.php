@@ -50,7 +50,6 @@
 		'integrate_admin_areas' => 'Breeze::admin',
 		'integrate_profile_areas' => 'Breeze::profile',
 		'integrate_create_topic' => 'Breeze::newTopic',
-		'integrate_create_topic' => 'Breeze::newTopic',
 		// 'integrate_register_after' => 'Breeze::newRegister',  @todo for SMF 2.1
 	);
 
