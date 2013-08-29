@@ -89,12 +89,15 @@ class BreezeAjax
 			'cleanlog' => 'cleanLog'
 		);
 
+		// Build the correct redirect URL
+		$this->comingFrom = $sglobals->getValue('rf') == true ? $sglobals->getValue('rf') : 'wall';
+
 		// Master setting is off, back off!
 		if (!$this->_settings->enable('admin_settings_enable'))
 			fatal_lang_error('Breeze_error_no_valid_action', false);
 
 		// Not using JavaScript?
-		if ($sglobals->getValue('js') == false)
+		if (!$sglobals->getValue('js'))
 			$this->noJS = true;
 
 		// Temporarily turn this into a normal var
@@ -129,8 +132,11 @@ class BreezeAjax
 
 		// Sorry, try to play nice next time
 		if (!$this->_data->getValue('owner_id') || !$this->_data->getValue('poster_id') || !$this->_data->getValue('content'))
-			if (true == $this->noJS)
-				return $this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message;e=1';
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $this->_data->getValue('owner_id'),
+			));
 
 		// Do this only if there is something to add to the database
 		if ($this->_data->validateBody('content'))
@@ -151,49 +157,45 @@ class BreezeAjax
 			call_integration_hook('integrate_breeze_before_insertStatus', array(&$params));
 
 			// Store the status
-			$newStatus = $this->_query->insertStatus($params);
+			$params['id'] = $this->_query->insertStatus($params);
 
-			// Set the ID
-			$params['id'] = $newStatus;
+			// All went good or so it seems...
+			if (!empty($params['id']))
+			{
+				// Build the notifications
+				$this->_mention->mention(
+					array(
+						'wall_owner' => $this->_data->getValue('owner_id'),
+						'wall_poster' => $this->_data->getValue('poster_id'),
+						'status_id' => $params['id'],),
+					array(
+							'name' => 'status',
+							'id' => $params['id'],)
+				);
 
-			// Build the notifications
-			$this->_mention->mention(
-				array(
-					'wall_owner' => $this->_data->getValue('owner_id'),
-					'wall_poster' => $this->_data->getValue('poster_id'),
-					'status_id' => $params['id'],),
-				array(
-						'name' => 'status',
-						'id' => $newStatus,)
-			);
+				// Parse the content
+				$params['body'] = $this->_parser->display($params['body']);
 
-			// Parse the content
-			$params['body'] = $this->_parser->display($params['body']);
+				// The status was inserted, tell everyone!
+				call_integration_hook('integrate_breeze_after_insertStatus', array($params));
 
-			// The status was inserted, tell everyone!
-			call_integration_hook('integrate_breeze_after_insertStatus', array(&$params));
+				// Send the data back to the browser
+				return $this->setResponse(array(
+					'type' => 'success',
+					'message' => 'published',
+					'data' => $this->_display->HTML($params, 'status'),
+					'owner' => $this->_data->getValue('owner_id'),
+				));
+			}
 
-
-			// Send the data back to the browser
-			$this->_response = array(
-				'type' => 'ok',
-				'data' => $this->_display->HTML($params, 'status')
-			);
-
-			// Se the redirect url
-			if (true == $this->noJS)
-				return $this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=success_message';
+			// Something went terrible wrong!
+			else
+				return $this->setResponse(array('owner' => $this->_data->getValue('owner_id'),));
 		}
 
-		// There was an error
+		// There was an (generic) error
 		else
-		{
-			// Se the redirect url
-			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $this->_data->getValue('owner_id') .';m=error_message;e=1;';
-
-			$this->_response = false;
-		}
+			return $this->setResponse(array('owner' => $this->_data->getValue('owner_id'),));
 	}
 
 	/**
@@ -209,7 +211,7 @@ class BreezeAjax
 
 		$this->_data = Breeze::sGlobals('request');
 
-		// Trickery, theres always room for moar!
+		// Trickery, there's always room for moar!
 		$status_id = $this->_data->getValue('status_id');
 		$status_owner_id = $this->_data->getValue('status_owner_id'. ($this->noJS == true ? $status_id : ''));
 		$poster_comment_id = $this->_data->getValue('poster_comment_id'. ($this->noJS == true ? $status_id : ''));
@@ -219,7 +221,11 @@ class BreezeAjax
 		// Sorry, try to play nice next time
 		if (!$status_owner_id || !$poster_comment_id || !$profile_owner_id || !$content)
 			if (true == $this->noJS)
-				return $this->redirectURL = 'action=profile;u='. $profile_owner_id .';m=error_message;e=1;';
+				return $this->setResponse(array(
+					'message' => 'wrong_values',
+					'type' => 'error',
+					'owner' => $this->_data->getValue('owner_id'),
+				));
 
 		// Load all the things we need
 		$temp_id_exists = $this->_query->getSingleValue('status', 'status_id', $status_id);
@@ -248,48 +254,45 @@ class BreezeAjax
 			// Store the comment
 			$params['id'] = $this->_query->insertComment($params);
 
-			// build the notification
-			$this->_mention->mention(
-				array(
-					'wall_owner' => $profile_owner_id,
-					'wall_poster' => $poster_comment_id,
-					'wall_status_owner' => $status_owner_id,
-					'comment_id' => $params['id'],
-					'status_id' => $status_id,),
-				array(
-						'name' => 'comments',
-						'id' => $params['id'],)
-			);
+			// The Comment was inserted
+			if (!empty($params['id']))
+			{
+				// build the notification
+				$this->_mention->mention(
+					array(
+						'wall_owner' => $profile_owner_id,
+						'wall_poster' => $poster_comment_id,
+						'wall_status_owner' => $status_owner_id,
+						'comment_id' => $params['id'],
+						'status_id' => $status_id,),
+					array(
+							'name' => 'comments',
+							'id' => $params['id'],)
+				);
 
-			// Parse the content
-			$params['body'] = $this->_parser->display($params['body']);
+				// Parse the content
+				$params['body'] = $this->_parser->display($params['body']);
 
-			// The comment was created, tell the world of just those who want it to know...
-			call_integration_hook('integrate_breeze_after_insertComment', array(&$params));
+				// The comment was created, tell the world of just those who want it to know...
+				call_integration_hook('integrate_breeze_after_insertComment', array(&$params));
 
-			// Send the data back to the browser
-			$this->_response = array(
-				'type' => 'ok',
-				'data' => $this->_display->HTML($params, 'comment')
-			);
+				// Send the data back to the browser
+				return $this->setResponse(array(
+					'type' => 'success',
+					'message' => 'published_comment',
+					'data' => $this->_display->HTML($params, 'comment'),
+					'owner' => $profile_owner_id,
+				));
+			}
 
-			// Se the redirect url
-			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $profile_owner_id .';m=success_message';
-
-			// End it
-			return;
+			// Something wrong with the server
+			else
+				return $this->setResponse(array('owner' => $this->_data->getValue('owner_id'), 'type' => 'error',));
 		}
 
 		// There was an error
 		else
-		{
-			// Se the redirect url
-			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;u='. $profile_owner_id .';m=error_message;e=1;';
-
-			$this->_response = false;
-		}
+			return $this->setResponse(array('owner' => $this->_data->getValue('owner_id'), 'type' => 'error',));
 	}
 
 	/**
@@ -326,43 +329,34 @@ class BreezeAjax
 			if (!empty($temp_id_exists))
 			{
 				$typeCall = 'delete'. ucfirst($type);
+
+				// Do the query dance!
 				$this->_query->$typeCall($id, $profile_owner);
 
 				// Send the data back to the browser
-				$this->_response = array(
-					'data' => $this->_text->getText('success_delete'),
-					'type' => 'ok'
-				);
-
-				// Se the redirect url
-				if (true == $this->noJS)
-					$this->redirectURL = 'action=profile;m=success_delete;u='. $profile_owner;
-
-				// End it!
-				return;
+				return $this->setResponse(array(
+					'type' => 'success',
+					'message' => 'delete_'. $type,
+					'owner' => $profile_owner,
+				));
 			}
 
 			// Tell them someone has deleted the message already
 			else
-			{
-				$this->_response = array(
-					'data' => $this->_text->getText('already_deleted'),
-					'type' => 'deleted'
-				);
-
-				// Se the redirect url
-				if (true == $this->noJS && !empty($profile_owner))
-					$this->redirectURL = 'action=profile;m=message_deleted;e=1;u='. $profile_owner;
-
-				// Don't forget to end it
-				return;
-			}
-
-			unset($temp_id_exists);
+				return $this->setResponse(array(
+					'type' => 'error',
+					'message' => 'already_deleted_'. $type,
+					'owner' => $profile_owner,
+				));
 		}
 
-		// Either way, pass the response
-		$this->_response = false;
+		// No valid ID, no candy for you!
+		else
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $profile_owner,
+			));
 	}
 
 	/**
@@ -384,15 +378,23 @@ class BreezeAjax
 
 		// Is this valid data?
 		if (empty($noti) || empty($user))
-			if (true == $this->noJS)
-				return $this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_novalid;e=1;';
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'extra' => array('area' => 'breezenoti',),
+				'owner' => $user,
+			));
 
 		// We must make sure this noti really exists, we just must!!!
 		$noti_temp = $this->_query->getNotificationByReceiver($user, true);
 
 		if (empty($noti_temp['data']) || !isset($noti_temp['data'][$noti]))
-			if (true == $this->noJS)
-				return $this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_markasreaddeleted;e=1;';
+			return $this->setResponse(array(
+				'message' => 'already_deleted_noti',
+				'type' => 'error',
+				'extra' => array('area' => 'breezenoti',),
+				'owner' => $user,
+			));
 
 		else
 		{
@@ -401,21 +403,14 @@ class BreezeAjax
 
 			// All is good, mark this as read
 			$this->_query->markNoti($noti, $user, $viewed);
-			$this->_response = array(
-				'data' => $this->_text->getText('noti_markasread_after'),
-				'type' => 'ok'
-			);
 
-			// Se the redirect url
-			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user .';m=noti_'. (!empty($noti_temp['data'][$noti]['viewed']) ? 'un' : '') .'markasread;';
-
-			// Delete the data to avoid issues
-			$this->_data->unsetVar('content');
-			$this->_data->unsetVar('user');
-
-			// If we manage to get this far we don't have to worry about stoping the process, still, safety first!
-			return;
+			// All done!
+			return $this->setResponse(array(
+				'type' => 'success',
+				'message' => 'noti_markasread_after',
+				'owner' => $user,
+				'extra' => array('area' => 'breezenoti',),
+			));
 		}
 	}
 
@@ -444,33 +439,24 @@ class BreezeAjax
 		$noti_temp = $this->_query->getNotificationByReceiver($user, true);
 
 		if (empty($noti_temp['data']) || !array_key_exists($noti, $noti_temp['data']))
-		{
-			$this->_response = array(
-				'data' => $this->_text->getText('already_deleted_noti'),
-				'type' => 'deleted'
-			);
-
-			// Se the redirect url
-			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;area=breezenoti;e=1;m=noti_delete;u='. $user;
-
-			return;
-		}
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'extra' => array('area' => 'breezenoti',),
+				'owner' => $user,
+			));
 
 		else
 		{
-			// All is good, delete it
+			// All good, delete it
 			$this->_query->deleteNoti($noti, $user);
-			$this->_response = array(
-				'data' => $this->_text->getText('noti_delete_after'),
-				'type' => 'ok'
-			);
 
-			// Se the redirect url
-			if (true == $this->noJS)
-				$this->redirectURL = 'action=profile;area=breezenoti;u='. $user. ';m=noti_delete';
-
-			return;
+			return $this->setResponse(array(
+				'type' => 'success',
+				'message' => 'noti_delete_after',
+				'owner' => $user,
+				'extra' => array('area' => 'breezenoti',),
+			));
 		}
 	}
 
@@ -507,18 +493,22 @@ class BreezeAjax
 
 		// An extra check
 		if (empty($log) || empty($user) || $user_info['id'] != $user)
-			return false;
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'extra' => array('area' => 'breezenoti',),
+				'owner' => $user,
+			));
 
 		// Ready to go!
 		$this->_query->deleteViews($user);
-		$this->_response = array(
-			'data' => $this->_text->getText('noti_visits_clean'),
-			'type' => 'ok'
-		);
 
-		// Se the redirect url
-		if (true == $this->noJS)
-			$this->redirectURL = 'action=profile;area=breezesettings;m=noti_visits_clean;u='. $user;
+		return $this->setResponse(array(
+			'type' => 'success',
+			'message' => 'noti_visits_clean',
+			'owner' => $user,
+			'extra' => array('area' => 'breezesettings',),
+		));
 	}
 
 	/**
@@ -533,8 +523,14 @@ class BreezeAjax
 		global $modSettings;
 
 		// No JS? fine... jut send them to whatever url they're from
-		if (true == $this->noJS && !empty($this->redirectURL))
-			return redirectexit($this->redirectURL);
+		if ($this->noJS == true)
+		{
+			// Build the redirect url
+			$this->setRedirect();
+
+			// And to the page we go!
+			return redirectexit($this->_redirectURL);
+		}
 
 		// Kill anything else
 		ob_end_clean();
@@ -552,15 +548,67 @@ class BreezeAjax
 		if (!empty($this->_response))
 			echo json_encode($this->_response);
 
-		// No? then show the standard error message
+		// Fall to a generic server error, this should never happen but just want to be sure...
 		else
 			echo json_encode(array(
-				'data' => $this->_text->getText('error_message'),
-				'type' => 'error'
+				'message' => $this->_text->getText('error_server'),
+				'data' => '',
+				'type' => 'error',
+				'owner' => 0,
 			));
 
 		// Done
 		obExit(false);
+	}
+
+	protected function setResponse($data = array())
+	{
+		// Data is empty, fill out a generic response
+		if (empty($data))
+			$data = array(
+				'message' => 'server',
+				'data' => '',
+				'type' => 'error',
+				'owner' => 0,
+				'extra' => '',
+			);
+
+		// If we didn't get all the params, set them to an empty var and don't forget to convert the message to a proper text string
+		$this->_response = array(
+			'message' => $this->noJS == false ? $this->_text->getText($data['type'] .'_'. $data['message']) : $data['message'],
+			'data' => !empty($data['data']) ? $data['data'] : '',
+			'type' => $data['type'],
+			'owner' => !empty($data['owner']) ? $data['owner'] : 0,
+			'extra' => !empty($data['extra']) ? $data['extra'] : '',
+		);
+	}
+
+	/**
+	 * BreezeAjax::setRedirect()
+	 *
+	 * Set a valid url with the params provided
+	 * @param array $message Includes the type and the actual message to send back as a response
+	 * @param int $user If we're coming from the profile area we need to redirect to that specific user's profile page.
+	 * @return
+	 */
+	protected function setRedirect()
+	{
+		$messageString = '';
+		$userString = '';
+		$extraString = '';
+
+		// Build the strings as a valid syntax to pass by $_GET
+		if (!empty($this->_response['message']) && !empty($this->_response['type']))
+				$messageString .= ';mstype='. $this->_response['type'] .';msmessage='. $this->_response['message'];
+
+		$userString = $this->comingFrom == 'profile' ? ';u='. $this->_response['owner'] : '';
+
+		// A special are perhaps?
+		if (!empty($this->_response['extra']))
+			foreach ($this->_response['extra'] as $k => $v)
+				$extraString .= ';'. $k .'='. $v;
+
+		$this->_redirectURL .= 'action='. $this->comingFrom . $messageString . $extraString . $userString;
 	}
 
 	protected function permissions($type = false, $owner_id = false)
@@ -573,7 +621,6 @@ class BreezeAjax
 		// Check for the proper permission
 		if (!$is_owner && !empty($type))
 			isAllowedTo('breeze_'. $type);
-
 
 		// Just a generic "is owner"
 		else

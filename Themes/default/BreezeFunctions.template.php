@@ -55,20 +55,32 @@ function breeze_status($data)
 			$delete_comments = $status['poster_id'] == $user_info['id'] ? true : allowedTo('breeze_deleteComments');
 
 			echo '
-			<li class="windowbg" id ="status_id_', $status['id'] ,'">
+			<li class="windowbg" id ="status_id_', $status['id'] ,'">';
+
+			// If we're on the general wall, show a nice bar indicating where this status come from...
+			if (!empty($context['Breeze']['commingFrom']) && $context['Breeze']['commingFrom'] == 'wall')
+				echo '
+				<div class="cat_bar">
+					<h3 class="catbg">
+						<span id="author">
+							', sprintf($txt['Breeze_general_posted_on'], $context['Breeze']['user_info'][$status['poster_id']]['link']) ,'
+					</h3>
+				</div>';
+
+			echo '
 				<span class="topslice"><span></span></span>
 					<div class="breeze_user_inner">
 						<div class="breeze_user_status_avatar">
-							',$context['Breeze']['user_info'][$status['poster_id']]['facebox'],'
+							', $context['Breeze']['user_info'][$status['poster_id']]['facebox'] ,'
 						</div>
 						<div class="breeze_user_status_comment">
-							',$status['body'],'
+							', $status['body'] ,'
 							<div class="breeze_options">
-								<span class="time_elapsed">', $status['time'] ,' </span>';
+								<span class="time_elapsed" title="', timeformat($status['time_raw'], false) ,'">', $status['time'] ,' </span>';
 
 							// Delete status
 							if (!empty($delete_status))
-								echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $status['id'] ,';type=status;profile_owner=', $status['owner_id'] ,'" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
+								echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $status['id'] ,';type=status;profile_owner=', $status['owner_id'] ,'', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
 
 							echo '
 							</div>
@@ -92,11 +104,11 @@ function breeze_status($data)
 										<div class="breeze_user_comment_comment">
 											',$comment['body'],'
 											<div class="breeze_options">
-												<span class="time_elapsed">', $comment['time'] ,'</span>';
+												<span class="time_elapsed" title="', timeformat($comment['time_raw'], false) ,'">', $comment['time'] ,'</span>';
 
 									// Delete comment
 									if ($delete_comments == true || $delete_single_comment == true)
-										echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $comment['id'] ,';type=comment;profile_owner=', $status['owner_id'] ,'" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
+										echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $comment['id'] ,';type=comment;profile_owner=', $status['owner_id'] ,'', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
 
 									echo '
 											</div>
@@ -114,10 +126,10 @@ function breeze_status($data)
 								if (!empty($post_comment))
 									echo '
 								<div>
-									<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
+									<form action="', $scripturl , '?action=breezeajax;sa=postcomment', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
 										<textarea id="textboxcontent_', $status['id'] ,'" name="content" cols="40" rows="2" rel="atwhoMention"></textarea>
-										<input type="hidden" value="',$status['poster_id'],'" name="status_owner_id', $status['id'] ,'" id="status_owner_id', $status['id'] ,'" />
-										<input type="hidden" value="',$context['member']['id'],'" name="profile_owner_id', $status['id'] ,'" id="profile_owner_id', $status['id'] ,'" />
+										<input type="hidden" value="', $status['poster_id'] ,'" name="status_owner_id', $status['id'] ,'" id="status_owner_id', $status['id'] ,'" />
+										<input type="hidden" value="', $status['owner_id'] ,'" name="profile_owner_id', $status['id'] ,'" id="profile_owner_id', $status['id'] ,'" />
 										<input type="hidden" value="', $status['id'] ,'" name="status_id" id="status_id" />
 										<input type="hidden" value="',$user_info['id'],'" name="poster_comment_id', $status['id'] ,'" id="poster_comment_id', $status['id'] ,'" /><br />
 										<input type="hidden" id="', $context['session_var'], '" name="', $context['session_var'], '" value="', $context['session_id'], '" />
@@ -210,6 +222,29 @@ function breeze_profile_owner()
 	</div>';
 }
 
+function breeze_activity($data)
+{
+	global $context, $txt;
+
+	if (empty($data))
+		return false;
+
+	echo '
+		<div class="content">
+			<ul class="reset">';
+
+	foreach ($data as $act)
+	{
+		echo '
+				<li>', $act['content'] ,'</li>';
+	}
+
+	// Close the ul
+	echo '
+			</ul>
+		</div>';
+}
+
 function breeze_user_info()
 {
 	global $context;
@@ -218,4 +253,25 @@ function breeze_user_info()
 		foreach ($context['Breeze']['user_info'] as $userData)
 			if (!empty($userData['data']))
 				echo $userData['data'];
+}
+
+function breeze_server_response()
+{
+	global $txt;
+
+	// Just to be sure...
+	loadLanguage(Breeze::$name);
+
+	// Get the message from the server
+	$serverResponse = Breeze::sGlobals('get');
+
+	$type = $serverResponse->getValue('mstype');
+	$message = $serverResponse->getValue('msmessage');
+
+	// Show a nice confirmation message for those without JavaScript
+	if (!empty($type) && !empty($message))
+		echo
+		'<div '. ($type == 'error' ? 'class="errorbox"' : 'id="profile_success"') ,'>
+			', $txt['Breeze_'. $type .'_'. $message] ,'
+		</div>';
 }

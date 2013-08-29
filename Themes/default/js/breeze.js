@@ -84,13 +84,13 @@
 							{
 								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
 									noty({
-										text: html.data,
+										text: html.message,
 										timeout: 3500, type: html.type,
 									});
 								});
 							}
 
-							else if(html.type == 'ok'){
+							else if(html.type == 'success'){
 								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
 									document.getElementById('content').value='';
 									document.getElementById('content').focus();
@@ -99,8 +99,8 @@
 
 									jQuery('#breeze_display_status').fadeIn('slow', 'linear', function(){
 										noty({
-											text: breeze_success_message,
-											timeout: 3500, type: 'success',
+											text: html.message,
+											timeout: 3500, type: html.type,
 										});
 									});
 								});
@@ -121,7 +121,7 @@
 							 */
 							jQuery('#breeze_load_image').slideUp('slow', 'linear', function(){
 								noty({
-									text: html.data,
+									text: html.message,
 									timeout: 3500, type: html.type,
 								});
 							});
@@ -170,21 +170,21 @@
 							{
 								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function(){
 									noty({
-										text: breeze_error_message,
+										text: html.message,
 										timeout: 3500, type: html.type,
 									});
 								});
 							}
 
-							else if(html.type == 'ok'){
+							else if(html.type == 'success'){
 								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function(){
 									document.getElementById('textboxcontent_'+Id).value='';
 									document.getElementById('textboxcontent_'+Id).focus();
 									jQuery('#comment_loadplace_'+Id).append(html.data);
 									jQuery('#comment_loadplace_'+Id).fadeIn('slow', 'linear', function(){
 										noty({
-											text: breeze_success_message,
-											timeout: 3500, type: 'success',
+											text: html.message,
+											timeout: 3500, type: html.type,
 										});
 									});
 								});
@@ -197,8 +197,8 @@
 						{
 							jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow');
 							noty({
-								text: breeze_error_message,
-								timeout: 3500, type: 'error',
+								text: html.message,
+								timeout: 3500, type: html.type,
 							});
 						},
 					});
@@ -240,21 +240,15 @@
 									{
 										case 'error':
 											noty({
-												text: html.data,
-												timeout: 3500, type: 'error',
+												text: html.message,
+												timeout: 3500, type: html.type,
 											});
 										break;
-										case 'deleted':
-											noty({
-												text: html.data,
-												timeout: 3500, type: 'error',
-											});
-										break;
-										case 'ok':
+										case 'success':
 										jQuery('#comment_id_'+I).fadeOut('slow');
 										noty({
-											text: html.data,
-											timeout: 3500, type: 'success',
+											text: html.message,
+											timeout: 3500, type: html.type,
 										});
 										break;
 									}
@@ -262,8 +256,8 @@
 								error: function (html){
 									$noty.close();
 									noty({
-										text: html.data,
-										timeout: 3500, type: 'error',
+										text: html.message,
+										timeout: 3500, type: html.error,
 									});
 								},
 							});
@@ -310,21 +304,15 @@
 									{
 										case 'error':
 											noty({
-												text: html.data,
-												timeout: 3500, type: 'error',
+												text: html.message,
+												timeout: 3500, type: html.type,
 											});
 										break;
-										case 'deleted':
-											noty({
-												text: html.data,
-												timeout: 3500, type: 'error',
-											});
-										break;
-										case 'ok':
+										case 'success':
 											jQuery('#status_id_'+I).fadeOut('slow');
 											noty({
-												text: html.data,
-												timeout: 3500, type: 'success',
+												text: html.message,
+												timeout: 3500, type: html.type,
 											});
 										break;
 									}
@@ -332,8 +320,8 @@
 								error: function (html){
 									$noty.close();
 									noty({
-										text: html.data,
-										timeout: 3500, type: 'error',
+										text: html.message,
+										timeout: 3500, type: html.type,
 									});
 								},
 							});
@@ -364,7 +352,6 @@ jQuery(document).ready(function()
 
 // infinitescroll
 jQuery(document).ready(function(){
-
 	jQuery.noConflict();
 	jQuery('#breeze_display_status').infinitescroll({
 		loading: {
