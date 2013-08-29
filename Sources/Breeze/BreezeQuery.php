@@ -188,6 +188,29 @@ class BreezeQuery extends Breeze
 			$this->_temp = $this->$property ? $this->$property : $this->$method();
 	}
 
+	protected function getCount($id)
+	{
+		$count = 0;
+
+		if (empty($id))
+			return $count;
+
+		$result = $this->_smcFunc['db_query']('', '
+			SELECT status_id
+			FROM {db_prefix}breeze_status
+			WHERE status_owner_id = {int:owner}',
+			array(
+				'owner' => $id
+			)
+		);
+
+		$count =  $this->_smcFunc['db_num_rows']($result);
+
+		$this->_smcFunc['db_free_result']($result);
+
+		return $count;
+	}
+
 	/**
 	 * BreezeQuery::getSingleValue()
 	 *
