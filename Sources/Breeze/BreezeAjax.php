@@ -599,7 +599,7 @@ class BreezeAjax
 
 		// Build the strings as a valid syntax to pass by $_GET
 		if (!empty($this->_response['message']) && !empty($this->_response['type']))
-				$messageString .= ';ms[type]='. $this->_response['type'] .';ms[message]='. $this->_response['message'];
+				$messageString .= ';mstype='. $this->_response['type'] .';msmessage='. $this->_response['message'];
 
 		$userString = $this->comingFrom == 'profile' ? ';u='. $this->_response['owner'] : '';
 

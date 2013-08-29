@@ -264,13 +264,14 @@ function breeze_server_response()
 
 	// Get the message from the server
 	$serverResponse = Breeze::sGlobals('get');
-	
-	$arrayResponse = $serverResponse->getValue('ms');
+
+	$type = $serverResponse->getValue('mstype');
+	$message = $serverResponse->getValue('msmessage');
 
 	// Show a nice confirmation message for those without JavaScript
-	if ($arrayResponse == true and is_array($arrayResponse))
+	if (!empty($type) && !empty($message))
 		echo
-		'<div '. ($serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"') ,'>
-			', $txt['Breeze_'. $arrayResponse['type'] .'_'. $arrayResponse['message']] ,'
+		'<div '. ($type == 'error' ? 'class="errorbox"' : 'id="profile_success"') ,'>
+			', $txt['Breeze_'. $type .'_'. $message] ,'
 		</div>';
 }

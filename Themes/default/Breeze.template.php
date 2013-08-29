@@ -42,8 +42,9 @@ function template_user_wall()
 
 	loadLanguage(Breeze::$name);
 
-	template_server_response();
-// echo '<pre>';print_r($context['Breeze']);die;
+	// Print the server response
+	breeze_server_response();
+
 	// Start of profileview div
 	echo '
 	<div id="profileview" class="flow_auto">';
@@ -405,6 +406,9 @@ function template_member_options()
 function template_general_wall()
 {
 	global $context, $txt, $scripturl, $settings;
+
+	// Print the server response
+	breeze_server_response();
 
 	echo '
 	<div id="profileview" class="flow_auto">';
