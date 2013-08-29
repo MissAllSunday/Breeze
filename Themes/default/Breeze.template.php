@@ -402,24 +402,6 @@ function template_member_options()
 		</form>';
 }
 
-function template_server_response()
-{
-	global $txt;
-
-	// Just to be sure...
-	loadLanguage(Breeze::$name);
-
-	// Get the message from the server
-	$serverResponse = Breeze::sGlobals('get');
-
-	// Show a nice confirmation message for those without JavaScript
-	if ($serverResponse->getValue('m') == true)
-		echo
-		'<div '. ($serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"') ,'>
-			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
-		</div>';
-}
-
 function template_general_wall()
 {
 	global $context, $txt, $scripturl, $settings;

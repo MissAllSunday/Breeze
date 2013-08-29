@@ -523,7 +523,7 @@ class BreezeAjax
 		global $modSettings;
 
 		// No JS? fine... jut send them to whatever url they're from
-		if ($this->noJS)
+		if ($this->noJS == true)
 		{
 			// Build the redirect url
 			$this->setRedirect();
@@ -575,7 +575,7 @@ class BreezeAjax
 
 		// If we didn't get all the params, set them to an empty var and don't forget to convert the message to a proper text string
 		$this->_response = array(
-			'message' => $this->_text->getText($data['type'] .'_'. $data['message']),
+			'message' => $this->noJS == false ? $this->_text->getText($data['type'] .'_'. $data['message']) : $data['message'],
 			'data' => !empty($data['data']) ? $data['data'] : '',
 			'type' => $data['type'],
 			'owner' => !empty($data['owner']) ? $data['owner'] : 0,
@@ -599,7 +599,7 @@ class BreezeAjax
 
 		// Build the strings as a valid syntax to pass by $_GET
 		if (!empty($this->_response['message']) && !empty($this->_response['type']))
-				$messageString .= ';ms['. $this->_response['type'] .']='. $this->_response['message'];
+				$messageString .= ';ms[type]='. $this->_response['type'] .';ms[message]='. $this->_response['message'];
 
 		$userString = $this->comingFrom == 'profile' ? ';u='. $this->_response['owner'] : '';
 

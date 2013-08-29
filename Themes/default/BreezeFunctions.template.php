@@ -254,3 +254,23 @@ function breeze_user_info()
 			if (!empty($userData['data']))
 				echo $userData['data'];
 }
+
+function breeze_server_response()
+{
+	global $txt;
+
+	// Just to be sure...
+	loadLanguage(Breeze::$name);
+
+	// Get the message from the server
+	$serverResponse = Breeze::sGlobals('get');
+	
+	$arrayResponse = $serverResponse->getValue('ms');
+
+	// Show a nice confirmation message for those without JavaScript
+	if ($arrayResponse == true and is_array($arrayResponse))
+		echo
+		'<div '. ($serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"') ,'>
+			', $txt['Breeze_'. $arrayResponse['type'] .'_'. $arrayResponse['message']] ,'
+		</div>';
+}
