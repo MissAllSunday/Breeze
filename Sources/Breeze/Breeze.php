@@ -429,7 +429,7 @@ $(document).ready(function (){
 		array('wall' => array(
 			'title' => $gText->getText('general_wall'),
 			'href' => $scripturl . '?action=wall',
-			'show' => $gSettings->enable('admin_settings_enable'),
+			'show' => $gSettings->enable('admin_settings_enable') && !$user_info['is_guest'],
 			'sub_buttons' => array(),
 		)),
 		array_slice($menu_buttons, $counter)
