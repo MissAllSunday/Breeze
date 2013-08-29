@@ -93,7 +93,11 @@ class BreezeWall
 	{
 		global $txt, $scripturl, $context, $memberContext, $sourcedir;
 		global $modSettings,  $user_info;
-print_r($user_info);
+
+		// Guest don't have any busness here... back off!
+		if ($user_info['is_guest'])
+			redirectexit();
+
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
 		writeLog(true);
