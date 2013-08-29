@@ -94,7 +94,7 @@ class BreezeWall
 		global $txt, $scripturl, $context, $memberContext, $sourcedir;
 		global $modSettings,  $user_info;
 
-		// Guest don't have any busness here... back off!
+		// Guest don't have any business here... back off!
 		if ($user_info['is_guest'])
 			redirectexit();
 
