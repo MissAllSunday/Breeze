@@ -53,7 +53,7 @@ function template_main()
 			</div>
 			<div class="breeze_user_status_comment">
 				'. $context['Breeze']['params']['body'] .'
-				<div class="breeze_options"><span class="time_elapsed">'. $context['Breeze']['params']['time'] .' </span>';
+				<div class="breeze_options"><span class="time_elapsed" title="'. $context['Breeze']['params']['time_raw'] .'">'. $context['Breeze']['params']['time'] .' </span>';
 
 				// Delete link
 				if ($context['Breeze']['permissions']['deleteStatus'])
@@ -67,7 +67,7 @@ function template_main()
 
 					// New status don't have comments...
 
-					// display the new comments ^o^
+					// Display the new comments ^o^
 					$return .= '
 					<li id="breeze_load_image_comment_'. $context['Breeze']['params']['id'] .'" style="margin:auto; text-align:center;"></li>';
 
@@ -105,7 +105,7 @@ function template_main()
 					<div class="breeze_user_comment_comment">
 						'. $context['Breeze']['params']['body'] .'
 						<div class="breeze_options">
-							<span class="time_elapsed">'. $context['Breeze']['params']['time'] .'</span> | <a href="javascript:void(0)" id="'. $context['Breeze']['params']['id'] .'" class="breeze_delete_comment">Delete</a>
+							<span class="time_elapsed" title="'. $context['Breeze']['params']['time_raw'] .'">'. $context['Breeze']['params']['time'] .'</span> | <a href="javascript:void(0)" id="'. $context['Breeze']['params']['id'] .'" class="breeze_delete_comment">Delete</a>
 						</div>
 					</div>
 					<div class="clear"></div>

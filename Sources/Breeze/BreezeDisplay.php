@@ -79,6 +79,9 @@ class BreezeDisplay
 		// Load the user info
 		$this->tools->loadUserInfo($this->params['poster_id']);
 
+		// Set the normal time first...
+		$this->params['time_raw'] = timeformat($this->params['time'], false);
+
 		// Set the elapsed time
 		$this->params['time'] = $this->tools->timeElapsed($this->params['time']);
 
