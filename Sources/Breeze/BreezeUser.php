@@ -69,6 +69,7 @@ function breezeWall()
 		'views' => false,
 		'log' => false,
 		'buddiesLog' => false,
+		'commingFrom' => 'profile',
 	);
 
 	// Set all the page stuff

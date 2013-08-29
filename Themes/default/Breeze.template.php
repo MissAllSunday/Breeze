@@ -42,8 +42,9 @@ function template_user_wall()
 
 	loadLanguage(Breeze::$name);
 
-	template_server_response();
-// echo '<pre>';print_r($context['Breeze']);die;
+	// Print the server response
+	breeze_server_response();
+
 	// Start of profileview div
 	echo '
 	<div id="profileview" class="flow_auto">';
@@ -73,7 +74,7 @@ function template_user_wall()
 			if (!empty($context['Breeze']['permissions']['post_status']))
 				echo '<div class="breeze_user_inner">
 						<div class="breeze_user_statusbox">
-							<form method="post" action="', $scripturl, '?action=breezeajax;sa=post" id="status" name="form_status" class="form_status">
+							<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" id="status" name="form_status" class="form_status">
 								<textarea cols="40" rows="5" name="content" id="content" rel="atwhoMention"></textarea>
 								<input type="hidden" value="',$context['member']['id'],'" name="owner_id" id="owner_id" />
 								<input type="hidden" value="',$user_info['id'],'" name="poster_id" id="poster_id" /><br />
@@ -402,34 +403,25 @@ function template_member_options()
 		</form>';
 }
 
-function template_server_response()
-{
-	global $txt;
-
-	// Just to be sure...
-	loadLanguage(Breeze::$name);
-
-	// Get the message from the server
-	$serverResponse = Breeze::sGlobals('get');
-
-	// Show a nice confirmation message for those without JavaScript
-	if ($serverResponse->getValue('m') == true)
-		echo
-		'<div '. ($serverResponse->getValue('e') == true ? 'class="errorbox"' : 'id="profile_success"') ,'>
-			', $txt['Breeze_'. $serverResponse->getValue('m')] ,'
-		</div>';
-}
-
 function template_general_wall()
 {
 	global $context, $txt, $scripturl, $settings;
+
+	// Print the server response
+	breeze_server_response();
 
 	echo '
 	<div id="profileview" class="flow_auto">';
 
 	// Left block, user's data and blocks
 	echo '
-		<div id="Breeze_left_block">';
+		<div id="Breeze_left_block">
+			<div class="cat_bar">
+				<h3 class="catbg">
+					<span id="author">
+						', $txt['Breeze_general_latest_buddy_status'] ,'
+				</h3>
+			</div>';
 
 		// Print the buddies status
 		if (!empty($context['Breeze']['status']))
@@ -442,6 +434,25 @@ function template_general_wall()
 	echo '
 		<div id="Breeze_right_block">';
 
+	echo '
+			<div class="cat_bar">
+				<h3 class="catbg">
+					<span id="author">
+						', $txt['Breeze_general_activity'] ,'
+				</h3>
+			</div>
+			<div class="windowbg2 BreezeBlock">
+				<span class="topslice">
+					<span> </span>
+				</span>';
+
+	if (!empty($context['Breeze']['activity']))
+		foreach ($context['Breeze']['activity'] as $activity)
+			breeze_activity($activity);
+
+	echo '
+			<span class="botslice"><span></span></span>
+			</div>';
 
 	echo '
 		</div>';

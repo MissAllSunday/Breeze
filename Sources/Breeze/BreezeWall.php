@@ -109,6 +109,9 @@ class BreezeWall
 		// By default this is se set as empty, makes life easier, for me at least...
 		$context['Breeze'] = array();
 
+		// We need to log the action we're currently on
+		$context['Breeze']['commingFrom'] = 'wall';
+
 		// Time to overheat the server!
 		if (!empty($user_info['buddies']))
 		{

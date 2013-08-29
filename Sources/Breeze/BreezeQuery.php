@@ -316,6 +316,7 @@ class BreezeQuery extends Breeze
 					'owner_id' => $row['status_owner_id'],
 					'poster_id' => $row['status_poster_id'],
 					'time' => $this->tools->timeElapsed($row['status_time']),
+					'time_raw' => $row['status_time'],
 					'body' => $this->parser->display($row['status_body']),
 					'comments' => array(),
 				);
@@ -330,6 +331,7 @@ class BreezeQuery extends Breeze
 						'poster_id' => $row['comments_poster_id'],
 						'profile_owner_id' => $row['comments_profile_owner_id'],
 						'time' => $this->tools->timeElapsed($row['comments_time']),
+						'time_raw' => $row['comments_time'],
 						'body' => $this->parser->display($row['comments_body']),
 					);
 
@@ -398,6 +400,7 @@ class BreezeQuery extends Breeze
 				'owner_id' => $row['status_owner_id'],
 				'poster_id' => $row['status_poster_id'],
 				'time' => $this->tools->timeElapsed($row['status_time']),
+				'time_raw' => $row['status_time'],
 				'body' => $this->parser->display($row['status_body']),
 			);
 
@@ -411,6 +414,7 @@ class BreezeQuery extends Breeze
 					'poster_id' => $row['comments_poster_id'],
 					'profile_owner_id' => $row['comments_profile_owner_id'],
 					'time' => $this->tools->timeElapsed($row['comments_time']),
+					'time_raw' => $row['comments_time'],
 					'body' => $this->parser->display($row['comments_body']),
 				);
 
@@ -478,6 +482,7 @@ class BreezeQuery extends Breeze
 				'owner_id' => $row['status_owner_id'],
 				'poster_id' => $row['status_poster_id'],
 				'time' => $this->tools->timeElapsed($row['status_time']),
+				'time_raw' => $row['status_time'],
 				'body' => $this->parser->display($row['status_body']),
 			);
 
@@ -491,6 +496,7 @@ class BreezeQuery extends Breeze
 					'poster_id' => $row['comments_poster_id'],
 					'profile_owner_id' => $row['comments_profile_owner_id'],
 					'time' => $this->tools->timeElapsed($row['comments_time']),
+					'time_raw' => $row['comments_time'],
 					'body' => $this->parser->display($row['comments_body']),
 				);
 
