@@ -63,7 +63,7 @@ function breeze_status($data)
 				<div class="cat_bar">
 					<h3 class="catbg">
 						<span id="author">
-							', sprintf($txt['Breeze_general_posted_on'], $context['Breeze']['user_info'][$status['poster_id']]['link']) ,'
+							', sprintf($txt['Breeze_general_posted_on'], $context['Breeze']['user_info'][$status['owner_id']]['link']) ,'
 					</h3>
 				</div>';
 

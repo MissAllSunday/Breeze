@@ -93,7 +93,7 @@ class BreezeWall
 	{
 		global $txt, $scripturl, $context, $memberContext, $sourcedir;
 		global $modSettings,  $user_info;
-
+print_r($user_info);
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
 		writeLog(true);
