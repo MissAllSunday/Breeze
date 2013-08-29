@@ -400,7 +400,7 @@ $(document).ready(function (){
 	 */
 	public static function menu(&$menu_buttons)
 	{
-		global $context, $breezeController, $txt, $scripturl;
+		global $context, $breezeController, $txt, $scripturl, $user_info;
 
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
@@ -429,7 +429,7 @@ $(document).ready(function (){
 		array('wall' => array(
 			'title' => $gText->getText('general_wall'),
 			'href' => $scripturl . '?action=wall',
-			'show' => $gSettings->enable('admin_settings_enable') && !$user_info['is_guest'],
+			'show' => ($gSettings->enable('admin_settings_enable') && !$user_info['is_guest']),
 			'sub_buttons' => array(),
 		)),
 		array_slice($menu_buttons, $counter)
