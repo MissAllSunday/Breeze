@@ -91,8 +91,12 @@ function breezeWall()
 	$context['Breeze']['permissions']['delete_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteStatus');
 	$context['Breeze']['permissions']['delete_comments'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
 
+	// Set up some vars for pagination
+	$maxIndex = !empty($context['member']['options']['Breeze_pagination_number']) ? $context['member']['options']['Breeze_pagination_number'] : 5;
+	$page = $globals->validate('start') == true ? $globals->getValue('start') : 0;
+
 	// Load all the status
-	$data = $query->getStatusByProfile($context['member']['id']);
+	$data = $query->getStatusByProfile($context['member']['id'], $maxIndex, $page);
 
 	// Load users data
 	if (!empty($data['users']))
@@ -101,9 +105,6 @@ function breezeWall()
 	// Pass the status info
 	if (!empty($data['data']))
 		$status = $data['data'];
-
-	// Getting the current page.
-	$page = $globals->validate('page') == true ? $globals->getValue('page') : 1;
 
 	// Applying pagination.
 	$pagination = new BreezePagination($status, $page, '?action=profile;u='. $context['member']['id'] .';page=', '', !empty($context['member']['options']['Breeze_pagination_number']) ? $context['member']['options']['Breeze_pagination_number'] : 5, 5);
