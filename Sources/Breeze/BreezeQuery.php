@@ -315,7 +315,7 @@ class BreezeQuery extends Breeze
 		);
 
 		// Not worth the effort...
-		if (empty($id) || empty($maxIndex) || empty($page))
+		if (empty($id) || empty($maxIndex))
 			return $return;
 
 		// How many precious little gems do we have?
@@ -327,8 +327,8 @@ class BreezeQuery extends Breeze
 			FROM {db_prefix}breeze_status AS s
 				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
 			WHERE s.status_owner_id = {int:owner}
-			LIMIT {int:start}, {int:maxindex}
-			ORDER BY s.status_time DESC',
+			ORDER BY s.status_time DESC
+			LIMIT {int:start}, {int:maxindex}',
 			array(
 				'start' => $start,
 				'maxindex' => $maxIndex,
