@@ -95,10 +95,6 @@ function template_user_wall()
 	// Print the status and comments
 	breeze_status($context['member']['status']);
 
-	// Pagination
-	if (!empty($context['page_index']))
-		echo $context['page_index'];
-
 	// End of Wall div
 	echo '
 			</div>';
