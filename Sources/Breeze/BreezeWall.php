@@ -114,6 +114,8 @@ class BreezeWall
 		if ($this->member['is_guest'])
 			redirectexit();
 
+		$globals = Breeze::sGlobals('get');
+
 		// Obscure, evil stuff...
 		writeLog(true);
 
