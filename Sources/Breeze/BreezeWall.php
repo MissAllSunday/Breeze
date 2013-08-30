@@ -105,7 +105,7 @@ class BreezeWall
 	}
 
 	// Get the latest entries of your buddies
-	function generalWall()
+	public function generalWall()
 	{
 		global $txt, $scripturl, $context, $sourcedir;
 		global $modSettings;
@@ -124,14 +124,14 @@ class BreezeWall
 		$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;
 
 		// Set all the page stuff
-		$context['page_title'] = $txt['Breeze_general_wall'];
+		$context['page_title'] = $txt['Breeze_general_wall'] .' '. (!empty($currentPage) && $currentPage >= 1 ? ' - '. $txt['Breeze_general_wall_page'] .' '. $currentPage : '');
 		$context['sub_template'] = 'general_wall';
 		$context['linktree'][] = array(
 			'url' => $scripturl . '?action=wall',
 			'name' => $context['page_title'],
 		);
 
-		// By default this is se set as empty, makes life easier, for me at least...
+		// By default this is set as empty, makes life easier, for me at least...
 		$context['Breeze'] = array();
 
 		// We need to log the action we're currently on
@@ -141,11 +141,11 @@ class BreezeWall
 		if (!empty($this->member['buddies']))
 		{
 			// Get the latest status
-			$status = $this->_query->getStatusByUser($this->member['buddies']);
+			$status = $this->_query->getStatusByUser($this->member['buddies'], $maxIndex, $currentPage);
 			$context['Breeze']['status'] = $status['data'];
 
 			// Get the latest activity
-			$context['Breeze']['activity'] = $this->_query->getActivityLog($user_info['buddies']);
+			$context['Breeze']['activity'] = $this->_query->getActivityLog($this->member['buddies']);
 
 				// Load users data
 				if (!empty($status['users']))

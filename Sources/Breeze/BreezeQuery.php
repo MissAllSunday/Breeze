@@ -189,19 +189,28 @@ class BreezeQuery extends Breeze
 			$this->_temp = $this->$property ? $this->$property : $this->$method();
 	}
 
-	protected function getCount($id)
+	/**
+	 * BreezeQuery::getCount()
+	 *
+	 * Gets and return the number of rows from the data provided
+	 * Only works for the status table.
+	 * @param mixed $data either a single ID or an array of IDs to match the query against.
+	 * @param string $where The sql WHERE instruction.
+	 * @return array
+	 */
+	protected function getCount($data, $where)
 	{
 		$count = 0;
 
-		if (empty($id))
+		if (empty($id) || empty($where))
 			return $count;
 
 		$result = $this->_smcFunc['db_query']('', '
 			SELECT status_id
 			FROM {db_prefix}breeze_status
-			WHERE status_owner_id = {int:owner}',
+			WHERE '. ($where),
 			array(
-				'owner' => $id
+				'data' => $id
 			)
 		);
 
@@ -319,7 +328,7 @@ class BreezeQuery extends Breeze
 			return $return;
 
 		// How many precious little gems do we have?
-		$count = $this->getCount($id);
+		$count = $this->getCount($id, 'status_owner_id = {int:data}');
 
 		// Big query...
 		$result = $this->_smcFunc['db_query']('', '
@@ -389,7 +398,6 @@ class BreezeQuery extends Breeze
 	 * BreezeQuery::getStatusByID()
 	 *
 	 * Get a single status based on the ID. This should return just one value, if it returns more, then we have a bug somewhere or you didn't provide a valid ID
-	 * @see BreezeQuery::getReturn()
 	 * @param int $id the ID of status you want to fetch.
 	 * @access public
 	 * @return array An array containing all the status made in X profile page
@@ -469,11 +477,12 @@ class BreezeQuery extends Breeze
 	 * BreezeQuery::getStatusByUser()
 	 *
 	 * Get all status made by X user. This returns all the status made by x user, it does not matter on what profile page they were made.
-	 * @see BreezeQuery::getReturn()
 	 * @param int $id the ID of the user that you want to fetch the status from.
+	 * @param int $maxIndex The maximum amount of status to fetch.
+	 * @param int $currentPage For working alongside pagination.
 	 * @return array An array containing all the status made in X profile page
 	 */
-	public function getStatusByUser($id)
+	public function getStatusByUser($id, $maxIndex, $currentPage)
 	{
 		if (empty($id))
 			return false;
@@ -482,12 +491,16 @@ class BreezeQuery extends Breeze
 		$return = array(
 			'data' => array(),
 			'users' => array(),
+			'pagination' => '',
 		);
 
 		// Work with arrays
 		$id = !is_array($id) ? array($id) : $id;
 
-		// For some reason we need to fetch the comments separately
+		// Count all the possible items we can fetch
+		$count = $this->getCount($id, 'status_poster_id IN ({array_int:data})')
+
+		// We need to fetch the comments separately
 		$c = array();
 
 		$result = $this->_smcFunc['db_query']('', '
