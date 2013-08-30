@@ -60,13 +60,14 @@ class BreezeQuery extends Breeze
 	 */
 	public function __construct($settings, $text, $tools, $parser)
 	{
-		global $smcFunc;
+		global $smcFunc, $scripturl;
 
 		// Set everything
 		$this->settings = $settings;
 		$this->text = $text;
 		$this->tools = $tools;
 		$this->parser = $parser;
+		$this->scripturl = $scripturl;
 
 		$this->_smcFunc = $smcFunc;
 
@@ -189,6 +190,38 @@ class BreezeQuery extends Breeze
 	}
 
 	/**
+	 * BreezeQuery::getCount()
+	 *
+	 * Gets and return the number of rows from the data provided
+	 * Only works for the status table.
+	 * @param mixed $data either a single ID or an array of IDs to match the query against.
+	 * @param string $where The sql WHERE instruction.
+	 * @return array
+	 */
+	protected function getCount($data, $where)
+	{
+		$count = 0;
+
+		if (empty($data) || empty($where))
+			return $count;
+
+		$result = $this->_smcFunc['db_query']('', '
+			SELECT status_id
+			FROM {db_prefix}breeze_status
+			WHERE '. ($where),
+			array(
+				'data' => $data
+			)
+		);
+
+		$count =  $this->_smcFunc['db_num_rows']($result);
+
+		$this->_smcFunc['db_free_result']($result);
+
+		return $count;
+	}
+
+	/**
 	 * BreezeQuery::getSingleValue()
 	 *
 	 * Needs a type, a row and a value, this iterates X array looking for X value in X row. Yes, this can be used to fetch more than one value if you really want to fetch more than 1 value.
@@ -281,79 +314,82 @@ class BreezeQuery extends Breeze
 	 * @param int $id the ID of the user that owns the profile page, it does not matter who made that status as long as the status was made in X profile page.
 	 * @return array An array containing all the status made in X profile page
 	 */
-	public function getStatusByProfile($id)
+	public function getStatusByProfile($id, $maxIndex, $start)
 	{
 		// Declare some generic vars, mainly to avoid errors
 		$return = array(
 			'data' => array(),
 			'users' => array(),
+			'pagination' => '',
 		);
 
-		// We're using the query limit, set the correct time
-		$status_time = strtotime('-1 '. $this->settings->getSetting('admin_limit_timeframe'));
+		// Not worth the effort...
+		if (empty($id) || empty($maxIndex))
+			return $return;
 
-		// Use the cache please...
-		if (($return = cache_get_data(Breeze::$name .'-Profile-' . $id, 120)) == null)
+		// How many precious little gems do we have?
+		$count = $this->getCount($id, 'status_owner_id = {int:data}');
+
+		// Big query...
+		$result = $this->_smcFunc['db_query']('', '
+			SELECT s.status_id, s.status_owner_id, s.status_poster_id, s.status_time, s.status_body, c.comments_id, c.comments_status_id, c.comments_status_owner_id, comments_poster_id, c.comments_profile_owner_id, c.comments_time, c.comments_body
+			FROM {db_prefix}breeze_status AS s
+				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
+			WHERE s.status_owner_id = {int:owner}
+			ORDER BY s.status_time DESC
+			LIMIT {int:start}, {int:maxindex}',
+			array(
+				'start' => $start,
+				'maxindex' => $maxIndex,
+				'owner' => $id
+			)
+		);
+
+		// Populate the array like a big heavy boss!
+		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 		{
-			// Big query...
-			$result = $this->_smcFunc['db_query']('', '
-				SELECT s.status_id, s.status_owner_id, s.status_poster_id, s.status_time, s.status_body, c.comments_id, c.comments_status_id, c.comments_status_owner_id, comments_poster_id, c.comments_profile_owner_id, c.comments_time, c.comments_body
-				FROM {db_prefix}breeze_status AS s
-					LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
-				WHERE s.status_owner_id = {int:owner}
-				' . ($this->settings->enable('admin_enable_limit') && $this->settings->
-				enable('admin_limit_timeframe') ? 'AND s.status_time >= {int:status_time}':'') .
-				'
-				ORDER BY s.status_time DESC
-				', array('status_time' => $status_time,
-					'owner' => $id));
+			$return['data'][$row['status_id']] = array(
+				'id' => $row['status_id'],
+				'owner_id' => $row['status_owner_id'],
+				'poster_id' => $row['status_poster_id'],
+				'time' => $this->tools->timeElapsed($row['status_time']),
+				'time_raw' => $row['status_time'],
+				'body' => $this->parser->display($row['status_body']),
+				'comments' => array(),
+			);
 
-			// Populate the array like a big heavy boss!
-			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+			// Comments
+			if (!empty($row['comments_status_id']))
 			{
-				$return['data'][$row['status_id']] = array(
-					'id' => $row['status_id'],
-					'owner_id' => $row['status_owner_id'],
-					'poster_id' => $row['status_poster_id'],
-					'time' => $this->tools->timeElapsed($row['status_time']),
-					'time_raw' => $row['status_time'],
-					'body' => $this->parser->display($row['status_body']),
-					'comments' => array(),
+				$c[$row['comments_status_id']][$row['comments_id']] = array(
+					'id' => $row['comments_id'],
+					'status_id' => $row['comments_status_id'],
+					'status_owner_id' => $row['comments_status_owner_id'],
+					'poster_id' => $row['comments_poster_id'],
+					'profile_owner_id' => $row['comments_profile_owner_id'],
+					'time' => $this->tools->timeElapsed($row['comments_time']),
+					'time_raw' => $row['comments_time'],
+					'body' => $this->parser->display($row['comments_body']),
 				);
 
-				// Comments
-				if (!empty($row['comments_status_id']))
-				{
-					$c[$row['comments_status_id']][$row['comments_id']] = array(
-						'id' => $row['comments_id'],
-						'status_id' => $row['comments_status_id'],
-						'status_owner_id' => $row['comments_status_owner_id'],
-						'poster_id' => $row['comments_poster_id'],
-						'profile_owner_id' => $row['comments_profile_owner_id'],
-						'time' => $this->tools->timeElapsed($row['comments_time']),
-						'time_raw' => $row['comments_time'],
-						'body' => $this->parser->display($row['comments_body']),
-					);
-
-					// Merge them both
-					$return['data'][$row['status_id']]['comments'] = $c[$row['comments_status_id']];
-				}
-
-				// Get the users IDs
-				$return['users'][] = $row['comments_poster_id'];
-				$return['users'][] = $row['status_owner_id'];
-				$return['users'][] = $row['status_poster_id'];
+				// Merge them both
+				$return['data'][$row['status_id']]['comments'] = $c[$row['comments_status_id']];
 			}
 
-			$this->_smcFunc['db_free_result']($result);
-
-			// Clean it a bit
-			if (!empty($return['users']))
-				$return['users'] = array_filter(array_unique($return['users']));
-
-			// Cache this beauty
-			cache_put_data(Breeze::$name .'-Profile-' . $id, $return, 120);
+			// Get the users IDs
+			$return['users'][] = $row['comments_poster_id'];
+			$return['users'][] = $row['status_owner_id'];
+			$return['users'][] = $row['status_poster_id'];
 		}
+
+		$this->_smcFunc['db_free_result']($result);
+
+		// Clean it a bit
+		if (!empty($return['users']))
+			$return['users'] = array_filter(array_unique($return['users']));
+
+		// Lastly, build the pagination
+		$return['pagination'] = constructPageIndex($this->scripturl . '?action=profile', $start, $count, $maxIndex, false);
 
 		return $return;
 	}
@@ -362,7 +398,6 @@ class BreezeQuery extends Breeze
 	 * BreezeQuery::getStatusByID()
 	 *
 	 * Get a single status based on the ID. This should return just one value, if it returns more, then we have a bug somewhere or you didn't provide a valid ID
-	 * @see BreezeQuery::getReturn()
 	 * @param int $id the ID of status you want to fetch.
 	 * @access public
 	 * @return array An array containing all the status made in X profile page
@@ -442,11 +477,12 @@ class BreezeQuery extends Breeze
 	 * BreezeQuery::getStatusByUser()
 	 *
 	 * Get all status made by X user. This returns all the status made by x user, it does not matter on what profile page they were made.
-	 * @see BreezeQuery::getReturn()
 	 * @param int $id the ID of the user that you want to fetch the status from.
+	 * @param int $maxIndex The maximum amount of status to fetch.
+	 * @param int $currentPage For working alongside pagination.
 	 * @return array An array containing all the status made in X profile page
 	 */
-	public function getStatusByUser($id)
+	public function getStatusByUser($id, $maxIndex, $start)
 	{
 		if (empty($id))
 			return false;
@@ -455,12 +491,16 @@ class BreezeQuery extends Breeze
 		$return = array(
 			'data' => array(),
 			'users' => array(),
+			'pagination' => '',
 		);
 
 		// Work with arrays
 		$id = !is_array($id) ? array($id) : $id;
 
-		// For some reason we need to fetch the comments separately
+		// Count all the possible items we can fetch
+		$count = $this->getCount($id, 'status_poster_id IN ({array_int:data})');
+
+		// We need to fetch the comments separately
 		$c = array();
 
 		$result = $this->_smcFunc['db_query']('', '
@@ -468,8 +508,11 @@ class BreezeQuery extends Breeze
 			FROM {db_prefix}breeze_status AS s
 				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
 			WHERE s.status_poster_id IN ({array_int:id})
-			ORDER BY s.status_time DESC',
+			ORDER BY s.status_time DESC
+			LIMIT {int:start}, {int:maxindex}',
 			array(
+				'start' => $start,
+				'maxindex' => $maxIndex,
 				'id' => $id
 			)
 		);
@@ -516,6 +559,9 @@ class BreezeQuery extends Breeze
 
 		// Clean it a bit
 		$return['users'] = array_filter(array_unique($return['users']));
+
+		// Lastly, build the pagination
+		$return['pagination'] = constructPageIndex($this->scripturl . '?action=wall', $start, $count, $maxIndex, false);
 
 		return $return;
 	}

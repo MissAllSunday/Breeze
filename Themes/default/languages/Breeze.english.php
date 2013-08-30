@@ -39,6 +39,7 @@ global $txt;
 
 // Public/General strings
 $txt['Breeze_general_wall'] = 'Wall';
+$txt['Breeze_general_wall_page'] = 'page';
 $txt['Breeze_general_summary'] = 'Summary';
 
 $txt['Breeze_general_my_wall'] = 'My Wall';
