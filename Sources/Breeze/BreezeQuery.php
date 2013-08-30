@@ -202,7 +202,7 @@ class BreezeQuery extends Breeze
 	{
 		$count = 0;
 
-		if (empty($id) || empty($where))
+		if (empty($data) || empty($where))
 			return $count;
 
 		$result = $this->_smcFunc['db_query']('', '
@@ -210,7 +210,7 @@ class BreezeQuery extends Breeze
 			FROM {db_prefix}breeze_status
 			WHERE '. ($where),
 			array(
-				'data' => $id
+				'data' => $data
 			)
 		);
 
@@ -482,7 +482,7 @@ class BreezeQuery extends Breeze
 	 * @param int $currentPage For working alongside pagination.
 	 * @return array An array containing all the status made in X profile page
 	 */
-	public function getStatusByUser($id, $maxIndex, $currentPage)
+	public function getStatusByUser($id, $maxIndex, $start)
 	{
 		if (empty($id))
 			return false;
@@ -498,7 +498,7 @@ class BreezeQuery extends Breeze
 		$id = !is_array($id) ? array($id) : $id;
 
 		// Count all the possible items we can fetch
-		$count = $this->getCount($id, 'status_poster_id IN ({array_int:data})')
+		$count = $this->getCount($id, 'status_poster_id IN ({array_int:data})');
 
 		// We need to fetch the comments separately
 		$c = array();
@@ -508,8 +508,11 @@ class BreezeQuery extends Breeze
 			FROM {db_prefix}breeze_status AS s
 				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
 			WHERE s.status_poster_id IN ({array_int:id})
-			ORDER BY s.status_time DESC',
+			ORDER BY s.status_time DESC
+			LIMIT {int:start}, {int:maxindex}',
 			array(
+				'start' => $start,
+				'maxindex' => $maxIndex,
 				'id' => $id
 			)
 		);
@@ -556,6 +559,9 @@ class BreezeQuery extends Breeze
 
 		// Clean it a bit
 		$return['users'] = array_filter(array_unique($return['users']));
+
+		// Lastly, build the pagination
+		$return['pagination'] = constructPageIndex($this->scripturl . '?action=wall', $start, $count, $maxIndex, false);
 
 		return $return;
 	}

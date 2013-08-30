@@ -147,9 +147,13 @@ class BreezeWall
 			// Get the latest activity
 			$context['Breeze']['activity'] = $this->_query->getActivityLog($this->member['buddies']);
 
-				// Load users data
-				if (!empty($status['users']))
-					$this->_tools->loadUserInfo($status['users']);
+			// Load users data
+			if (!empty($status['users']))
+				$this->_tools->loadUserInfo($status['users']);
+
+			// Applying pagination.
+			if (!empty($status['pagination']))
+				$context['page_index'] = $status['pagination'];
 		}
 
 		// No buddies huh? worry not! here's the latest status...
