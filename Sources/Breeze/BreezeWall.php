@@ -42,8 +42,24 @@ class BreezeWall
 {
 	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display, $tools)
 	{
+		global $user_info, $memberContext;
+
 		// Needed to show error strings
 		loadLanguage(Breeze::$name);
+
+		// Load the templates
+		loadtemplate(Breeze::$name);
+		loadtemplate(Breeze::$name .'Functions');
+
+		// We need to load the current user's data
+		if (empty($memberContext[$user_info['id']]))
+		{
+			loadMemberData($user_info['id'], false, 'profile');
+			loadMemberContext($user_info['id']);
+		}
+
+		// The member viewing this page
+		$this->member = $memberContext[$user_info['id']];
 
 		// Load all the things we need
 		$this->_query = $query;
@@ -91,16 +107,19 @@ class BreezeWall
 	// Get the latest entries of your buddies
 	function generalWall()
 	{
-		global $txt, $scripturl, $context, $memberContext, $sourcedir;
-		global $modSettings,  $user_info;
+		global $txt, $scripturl, $context, $sourcedir;
+		global $modSettings;
 
 		// Guest don't have any business here... back off!
-		if ($user_info['is_guest'])
+		if ($this->member['is_guest'])
 			redirectexit();
 
-		loadtemplate(Breeze::$name);
-		loadtemplate(Breeze::$name .'Functions');
+		// Obscure, evil stuff...
 		writeLog(true);
+
+		// Pagination max index and current page
+		$maxIndex = !empty($this->member['options']['Breeze_pagination_number']) ? $this->member['options']['Breeze_pagination_number'] : 5;
+		$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;
 
 		// Set all the page stuff
 		$context['page_title'] = $txt['Breeze_general_wall'];
@@ -117,10 +136,10 @@ class BreezeWall
 		$context['Breeze']['commingFrom'] = 'wall';
 
 		// Time to overheat the server!
-		if (!empty($user_info['buddies']))
+		if (!empty($this->member['buddies']))
 		{
 			// Get the latest status
-			$status = $this->_query->getStatusByUser($user_info['buddies']);
+			$status = $this->_query->getStatusByUser($this->member['buddies']);
 			$context['Breeze']['status'] = $status['data'];
 
 			// Get the latest activity
@@ -131,7 +150,8 @@ class BreezeWall
 					$this->_tools->loadUserInfo($status['users']);
 		}
 
-		// No buddies huh? worry not! heres the latest status...
+		// No buddies huh? worry not! here's the latest status...
+		// coming soon... LOL
 
 		// Headers
 		Breeze::headersHook('profile');
