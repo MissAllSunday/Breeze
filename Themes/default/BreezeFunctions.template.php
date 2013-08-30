@@ -63,7 +63,7 @@ function breeze_status($data)
 				<div class="cat_bar">
 					<h3 class="catbg">
 						<span id="author">
-							', sprintf($txt['Breeze_general_posted_on'], $context['Breeze']['user_info'][$status['poster_id']]['link']) ,'
+							', sprintf($txt['Breeze_general_posted_on'], $context['Breeze']['user_info'][$status['owner_id']]['link']) ,'
 					</h3>
 				</div>';
 
@@ -148,6 +148,13 @@ function breeze_status($data)
 	// End of list
 	echo '
 		</ul>';
+
+	// Pagination
+	if (!empty($context['page_index']))
+		echo '
+		<div class="pagelinks floatleft">
+			', $txt['pages'], ': ', $context['page_index'], $context['menu_separator'] . ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
+		</div>';
  }
 
 function breeze_profile_owner()

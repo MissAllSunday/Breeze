@@ -162,56 +162,56 @@ class Breeze
 			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />';
 
 			// DUH! winning!
-			if ($breezeGlobals->getValue('action') == 'profile' && $breezeSettings->enable('admin_settings_enable'))
+			if (($breezeGlobals->getValue('action') == 'profile' || $breezeGlobals->getValue('action') == 'wall') && $breezeSettings->enable('admin_settings_enable'))
 				$context['insert_after_template'] .= Breeze::who(true);
 
-			$header_done = true;
-		}
-
-		// Define some variables for the ajax stuff
-		if ($type == 'profile')
-		{
-			$context['html_headers'] .= '
-			<script type="text/javascript"><!-- // --><![CDATA[
-				var breeze_error_message = '. JavaScriptEscape($text->getText('error_message')) .';
-				var breeze_success_message = '. JavaScriptEscape($text->getText('success_message')) .';
-				var breeze_empty_message = '. JavaScriptEscape($text->getText('empty_message')) .';
-				var breeze_error_delete = '. JavaScriptEscape($text->getText('error_message')) .';
-				var breeze_success_delete = '. JavaScriptEscape($text->getText('success_delete')) .';
-				var breeze_confirm_delete = '.JavaScriptEscape( $text->getText('confirm_delete')) .';
-				var breeze_confirm_yes = '. JavaScriptEscape($text->getText('confirm_yes')) .';
-				var breeze_confirm_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
-				var breeze_already_deleted = '. JavaScriptEscape($text->getText('already_deleted')) .';
-				var breeze_cannot_postStatus = '. JavaScriptEscape($text->getText('cannot_postStatus')) .';
-				var breeze_cannot_postComments = '. JavaScriptEscape($text->getText('cannot_postComments')) .';
-				var breeze_page_loading = '. JavaScriptEscape($text->getText('page_loading')) .';
-				var breeze_page_loading_end = '. JavaScriptEscape($text->getText('page_loading_end')) .';
-				var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
-				var breeze_infinite_scroll = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_infinite_scroll']) ? 'string' : '0' )).';
-				var breeze_how_many_mentions_options = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_how_many_mentions_options']) ? $context['member']['options']['Breeze_how_many_mentions_options'] : 5)) .';
-		// ]]></script>';
-
-			// Let's load jquery from CDN only if it hasn't been loaded yet
-			$context['html_headers'] .= '
-			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
-			<link rel="stylesheet" type="text/css" href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css"/>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/center.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topCenter.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>';
-
-			// Does the user wants to use infinite scroll?
-			if (!empty($context['member']['options']['Breeze_infinite_scroll']))
+			// Define some variables for the ajax stuff
+			if ($type == 'profile')
+			{
 				$context['html_headers'] .= '
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.infinitescroll.min.js" type="text/javascript"></script>';
+				<script type="text/javascript"><!-- // --><![CDATA[
+					var breeze_error_message = '. JavaScriptEscape($text->getText('error_message')) .';
+					var breeze_success_message = '. JavaScriptEscape($text->getText('success_message')) .';
+					var breeze_empty_message = '. JavaScriptEscape($text->getText('empty_message')) .';
+					var breeze_error_delete = '. JavaScriptEscape($text->getText('error_message')) .';
+					var breeze_success_delete = '. JavaScriptEscape($text->getText('success_delete')) .';
+					var breeze_confirm_delete = '.JavaScriptEscape( $text->getText('confirm_delete')) .';
+					var breeze_confirm_yes = '. JavaScriptEscape($text->getText('confirm_yes')) .';
+					var breeze_confirm_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
+					var breeze_already_deleted = '. JavaScriptEscape($text->getText('already_deleted')) .';
+					var breeze_cannot_postStatus = '. JavaScriptEscape($text->getText('cannot_postStatus')) .';
+					var breeze_cannot_postComments = '. JavaScriptEscape($text->getText('cannot_postComments')) .';
+					var breeze_page_loading = '. JavaScriptEscape($text->getText('page_loading')) .';
+					var breeze_page_loading_end = '. JavaScriptEscape($text->getText('page_loading_end')) .';
+					var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
+					var breeze_infinite_scroll = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_infinite_scroll']) ? 'string' : '0' )).';
+					var breeze_how_many_mentions_options = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_how_many_mentions_options']) ? $context['member']['options']['Breeze_how_many_mentions_options'] : 5)) .';
+			// ]]></script>';
 
-			// Load breeze.js until everyone else is loaded
-			$context['html_headers'] .= '
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
+				// Let's load jquery from CDN only if it hasn't been loaded yet
+				$context['html_headers'] .= '
+				<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
+				<link rel="stylesheet" type="text/css" href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css"/>
+				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
+				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js"></script>
+				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
+				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
+				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/center.js"></script>
+				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topCenter.js"></script>
+				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
+				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>';
+
+				// Does the user wants to use infinite scroll?
+				if (!empty($context['member']['options']['Breeze_infinite_scroll']))
+					$context['html_headers'] .= '
+				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.infinitescroll.min.js" type="text/javascript"></script>';
+
+				// Load breeze.js until everyone else is loaded
+				$context['html_headers'] .= '
+				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
+			}
+
+			$header_done = true;
 		}
 
 		// Does the admin wants to add more actions?
@@ -274,7 +274,7 @@ $(document).ready(function (){
 	 * @param array $permissionList An associative array with all the possible permissions.
 	 * @return void
 	 */
-	public static function permissions($permissionGroups, $permissionList)
+	public static function permissions(&$permissionGroups, &$permissionList)
 	{
 		$permissionGroups['membergroup']['simple'] = array('breeze_per_simple');
 		$permissionGroups['membergroup']['classic'] = array('breeze_per_classic');
@@ -400,7 +400,7 @@ $(document).ready(function (){
 	 */
 	public static function menu(&$menu_buttons)
 	{
-		global $context, $breezeController, $txt, $scripturl;
+		global $context, $breezeController, $txt, $scripturl, $user_info;
 
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
@@ -429,7 +429,7 @@ $(document).ready(function (){
 		array('wall' => array(
 			'title' => $gText->getText('general_wall'),
 			'href' => $scripturl . '?action=wall',
-			'show' => $gSettings->enable('admin_settings_enable'),
+			'show' => ($gSettings->enable('admin_settings_enable') && !$user_info['is_guest']),
 			'sub_buttons' => array(),
 		)),
 		array_slice($menu_buttons, $counter)
@@ -545,7 +545,7 @@ $(document).ready(function (){
 		$actions = Breeze::sGlobals('get');
 
 		// Show this only in pages generated by Breeze, people are already mad because I dare to put a link back to my site .__.
-		if ($return == true && ($actions->getValue('action') == 'profile' && $actions->getValue('area') == 'breezebuddies' || $actions->getValue('area') == 'breezenoti' || $actions->getValue('area') == 'breeze') || ($actions->getValue('action') == 'profile' && !$actions->getValue('area')))
+		if ($return == true && ($actions->getValue('action') == 'wall' || $actions->getValue('action') == 'profile' && $actions->getValue('area') == 'breezebuddies' || $actions->getValue('area') == 'breezenoti' || $actions->getValue('area') == 'breeze') || ($actions->getValue('action') == 'profile' && !$actions->getValue('area')))
 			return '<div style="margin:auto; text-align:center" class="clear"><a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a></div>';
 
 		elseif ($return == false && isset($context['current_action']) && $context['current_action'] === 'credits')
@@ -565,6 +565,7 @@ $(document).ready(function (){
 	{
 		global $breezeController;
 
+		// Time to overheat the server, yay!
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
@@ -629,15 +630,20 @@ $(document).ready(function (){
 			),
 		);
 
+		// Oh well, one can dream...
+		call_integration_hook('integrate_breeze_credits', array(&$credits));
+
 		return $credits;
 	}
 }
 
-/* And so it is
+/*
+* And so it is
 * Just like you said it would be
 * We'll both forget the breeze
 * Most of the time
 * And so it is
 * The shorter story
 * No love, no glory
-* No hero in her skies */
+* No hero in her skies
+*/

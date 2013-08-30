@@ -95,11 +95,6 @@ function template_user_wall()
 	// Print the status and comments
 	breeze_status($context['member']['status']);
 
-	// Pagination panel
-	if (!empty($context['Breeze']['pagination']['panel']))
-		echo '
-			<div id="breeze_pagination">', $txt['pages'] ,': ', $context['Breeze']['pagination']['panel'] ,'</div>';
-
 	// End of Wall div
 	echo '
 			</div>';
@@ -220,7 +215,7 @@ function template_user_notifications()
 	global $context, $txt, $scripturl, $user_info;
 
 	// Get the message from the server
-	template_server_response();
+	breeze_server_response();
 
 	echo '
 		<div class="cat_bar">
@@ -372,7 +367,7 @@ function template_member_options()
 	global $context, $settings, $options, $scripturl, $modSettings, $txt;
 
 	// Get the message from the server
-	template_server_response();
+	breeze_server_response();
 
 	// The main containing header.
 	echo '

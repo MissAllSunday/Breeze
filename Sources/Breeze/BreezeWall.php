@@ -42,8 +42,30 @@ class BreezeWall
 {
 	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display, $tools)
 	{
+		global $user_info, $memberContext, $context;
+
 		// Needed to show error strings
 		loadLanguage(Breeze::$name);
+
+		// Load the templates
+		loadtemplate(Breeze::$name);
+		loadtemplate(Breeze::$name .'Functions');
+
+		// We need to load the current user's data
+		if (empty($memberContext[$user_info['id']]))
+		{
+			loadMemberData($user_info['id'], false, 'profile');
+			loadMemberContext($user_info['id']);
+		}
+
+		// The member viewing this page
+		$this->member = $memberContext[$user_info['id']];
+
+		// To make things easier, set a context var
+		$context['member'] = $memberContext[$user_info['id']];
+
+		// Display all the JavaScript bits
+		Breeze::headersHook('profile');
 
 		// Load all the things we need
 		$this->_query = $query;
@@ -89,45 +111,59 @@ class BreezeWall
 	}
 
 	// Get the latest entries of your buddies
-	function generalWall()
+	public function generalWall()
 	{
-		global $txt, $scripturl, $context, $memberContext, $sourcedir;
-		global $modSettings,  $user_info;
+		global $txt, $scripturl, $context, $sourcedir;
+		global $modSettings;
 
-		loadtemplate(Breeze::$name);
-		loadtemplate(Breeze::$name .'Functions');
+		// Guest don't have any business here... back off!
+		if ($this->member['is_guest'])
+			redirectexit();
+
+		$globals = Breeze::sGlobals('get');
+
+		// Obscure, evil stuff...
 		writeLog(true);
 
+		// Pagination max index and current page
+		$maxIndex = !empty($this->member['options']['Breeze_pagination_number']) ? $this->member['options']['Breeze_pagination_number'] : 5;
+		$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;
+
 		// Set all the page stuff
-		$context['page_title'] = $txt['Breeze_general_wall'];
+		$context['page_title'] = $txt['Breeze_general_wall'] .' '. (!empty($currentPage) && $currentPage >= 1 ? ' - '. $txt['Breeze_general_wall_page'] .' '. $currentPage : '');
 		$context['sub_template'] = 'general_wall';
 		$context['linktree'][] = array(
 			'url' => $scripturl . '?action=wall',
 			'name' => $context['page_title'],
 		);
 
-		// By default this is se set as empty, makes life easier, for me at least...
+		// By default this is set as empty, makes life easier, for me at least...
 		$context['Breeze'] = array();
 
 		// We need to log the action we're currently on
 		$context['Breeze']['commingFrom'] = 'wall';
 
 		// Time to overheat the server!
-		if (!empty($user_info['buddies']))
+		if (!empty($this->member['buddies']))
 		{
 			// Get the latest status
-			$status = $this->_query->getStatusByUser($user_info['buddies']);
+			$status = $this->_query->getStatusByUser($this->member['buddies'], $maxIndex, $currentPage);
 			$context['Breeze']['status'] = $status['data'];
 
 			// Get the latest activity
-			$context['Breeze']['activity'] = $this->_query->getActivityLog($user_info['buddies']);
+			$context['Breeze']['activity'] = $this->_query->getActivityLog($this->member['buddies']);
 
-				// Load users data
-				if (!empty($status['users']))
-					$this->_tools->loadUserInfo($status['users']);
+			// Load users data
+			if (!empty($status['users']))
+				$this->_tools->loadUserInfo($status['users']);
+
+			// Applying pagination.
+			if (!empty($status['pagination']))
+				$context['page_index'] = $status['pagination'];
 		}
 
-		// No buddies huh? worry not! heres the latest status...
+		// No buddies huh? worry not! here's the latest status...
+		// coming soon... LOL
 
 		// Headers
 		Breeze::headersHook('profile');

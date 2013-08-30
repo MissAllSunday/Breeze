@@ -91,8 +91,12 @@ function breezeWall()
 	$context['Breeze']['permissions']['delete_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteStatus');
 	$context['Breeze']['permissions']['delete_comments'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
 
+	// Set up some vars for pagination
+	$maxIndex = !empty($context['member']['options']['Breeze_pagination_number']) ? $context['member']['options']['Breeze_pagination_number'] : 5;
+	$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;
+
 	// Load all the status
-	$data = $query->getStatusByProfile($context['member']['id']);
+	$data = $query->getStatusByProfile($context['member']['id'], $maxIndex, $currentPage);
 
 	// Load users data
 	if (!empty($data['users']))
@@ -100,20 +104,11 @@ function breezeWall()
 
 	// Pass the status info
 	if (!empty($data['data']))
-		$status = $data['data'];
-
-	// Getting the current page.
-	$page = $globals->validate('page') == true ? $globals->getValue('page') : 1;
+		$context['member']['status'] = $data['data'];
 
 	// Applying pagination.
-	$pagination = new BreezePagination($status, $page, '?action=profile;u='. $context['member']['id'] .';page=', '', !empty($context['member']['options']['Breeze_pagination_number']) ? $context['member']['options']['Breeze_pagination_number'] : 5, 5);
-	$pagination->PaginationArray();
-	$pagtrue = $pagination->PagTrue();
-	$currentPage = $page > 1 ? $txt['Breeze_pag_page'] . $page : '';
-
-	// Send the array to the template if there is pagination
-	$context['member']['status'] = !empty($pagtrue) ? $pagination->OutputArray() : $status;
-	$context['Breeze']['pagination']['panel'] = !empty($pagtrue) ? $pagination->OutputPanel() . $pagination->OutputNext() : '';
+	if (!empty($data['pagination']))
+		$context['page_index'] = $data['pagination'];
 
 	// Page name depends on pagination
 	$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name'], $currentPage);
@@ -144,6 +139,7 @@ function breezeSettings()
 
 	Breeze::load('Profile-Modify');
 	loadtemplate(Breeze::$name);
+	loadtemplate(Breeze::$name .'Functions');
 
 	loadThemeOptions($memID);
 
