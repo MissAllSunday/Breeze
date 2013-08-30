@@ -42,7 +42,7 @@ class BreezeWall
 {
 	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display, $tools)
 	{
-		global $user_info, $memberContext;
+		global $user_info, $memberContext, $context;
 
 		// Needed to show error strings
 		loadLanguage(Breeze::$name);
@@ -60,6 +60,12 @@ class BreezeWall
 
 		// The member viewing this page
 		$this->member = $memberContext[$user_info['id']];
+
+		// To make things easier, set a context var
+		$context['member'] = $memberContext[$user_info['id']];
+
+		// Display all the JavaScript bits
+		Breeze::headersHook('profile');
 
 		// Load all the things we need
 		$this->_query = $query;
