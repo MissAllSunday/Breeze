@@ -389,7 +389,7 @@ class BreezeQuery extends Breeze
 			$return['users'] = array_filter(array_unique($return['users']));
 
 		// Lastly, build the pagination
-		$return['pagination'] = constructPageIndex($this->scripturl . '?action=profile', $start, $count, $maxIndex, false);
+		$return['pagination'] = $this->tools->pagination($this->scripturl . '?action=profile', $start, $count, $maxIndex, false);
 
 		return $return;
 	}
@@ -561,7 +561,7 @@ class BreezeQuery extends Breeze
 		$return['users'] = array_filter(array_unique($return['users']));
 
 		// Lastly, build the pagination
-		$return['pagination'] = constructPageIndex($this->scripturl . '?action=wall', $start, $count, $maxIndex, false);
+		$return['pagination'] = $this->tools->pagination($this->scripturl . '?action=wall', $start, $count, $maxIndex, false);
 
 		return $return;
 	}

@@ -184,7 +184,6 @@ class Breeze
 					var breeze_page_loading = '. JavaScriptEscape($text->getText('page_loading')) .';
 					var breeze_page_loading_end = '. JavaScriptEscape($text->getText('page_loading_end')) .';
 					var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
-					var breeze_infinite_scroll = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_infinite_scroll']) ? 'string' : '0' )).';
 					var breeze_how_many_mentions_options = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_how_many_mentions_options']) ? $context['member']['options']['Breeze_how_many_mentions_options'] : 5)) .';
 			// ]]></script>';
 
@@ -202,9 +201,9 @@ class Breeze
 				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>';
 
 				// Does the user wants to use infinite scroll?
-				if (!empty($context['member']['options']['Breeze_infinite_scroll']))
-					$context['html_headers'] .= '
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.infinitescroll.min.js" type="text/javascript"></script>';
+				// if (!empty($context['member']['options']['Breeze_infinite_scroll']))
+					// $context['html_headers'] .= '
+				// <script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.infinitescroll.js" type="text/javascript"></script>';
 
 				// Load breeze.js until everyone else is loaded
 				$context['html_headers'] .= '

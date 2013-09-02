@@ -176,12 +176,12 @@ function breezeSettings()
 		3,3
 	);
 
-	// Infinite scroll
-	$form->addCheckBox(
-		'Breeze_infinite_scroll',
-		'infinite_scroll',
-		!empty($context['member']['options']['Breeze_infinite_scroll']) ? true : false
-	);
+	// Infinite scroll, not now honey, I have a headache...
+	// $form->addCheckBox(
+		// 'Breeze_infinite_scroll',
+		// 'infinite_scroll',
+		// !empty($context['member']['options']['Breeze_infinite_scroll']) ? true : false
+	// );
 
 	// How many options to be displayed when mentioning
 	$form->addText(
