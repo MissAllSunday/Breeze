@@ -260,6 +260,7 @@ function breezeNotifications()
 	global $context, $user_info, $scripturl, $options, $breezeController;
 
 	loadtemplate(Breeze::$name);
+	loadtemplate(Breeze::$name .'Functions');
 
 	// Display all the JavaScript bits
 	Breeze::headersHook('profile');
@@ -298,7 +299,8 @@ function breezeBuddyRequest()
 	if (!$context['user']['is_owner'])
 		fatal_lang_error('no_access', false);
 
-	loadtemplate('BreezeBuddy');
+	loadtemplate(Breeze::$name);
+	loadtemplate(Breeze::$name .'Functions');
 
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
@@ -425,6 +427,7 @@ function breezeSingle()
 	global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info, $breezeController;
 
 	loadtemplate(Breeze::$name);
+	loadtemplate(Breeze::$name .'Functions');
 
 	// Check if this user is welcomed here
 	Breeze::checkPermissions();
