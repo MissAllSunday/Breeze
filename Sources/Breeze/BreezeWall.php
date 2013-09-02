@@ -51,19 +51,6 @@ class BreezeWall
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
 
-		// We need to load the current user's data
-		if (empty($memberContext[$user_info['id']]))
-		{
-			loadMemberData($user_info['id'], false, 'profile');
-			loadMemberContext($user_info['id']);
-		}
-
-		// The member viewing this page
-		$this->member = $memberContext[$user_info['id']];
-
-		// To make things easier, set a context var
-		$context['member'] = $memberContext[$user_info['id']];
-
 		// Display all the JavaScript bits
 		Breeze::headersHook('profile');
 
@@ -76,6 +63,16 @@ class BreezeWall
 		$this->_text = $text;
 		$this->_display = $display;
 		$this->_tools = $tools;
+
+		// We need to load the current user's data
+		if (empty($context['Breeze']['user_info'][$user_info['id']]))
+			$this->_tools->loadUserInfo($user_info['id'], false, 'profile');
+
+		// The member viewing this page
+		$this->member = $memberContext[$user_info['id']];
+
+		// To make things easier, set a context var
+		$context['member'] = $memberContext[$user_info['id']];
 	}
 
 	public function call()

@@ -49,10 +49,11 @@ function breezeWall()
 	// Check if this user is welcomed here
 	breezeCheckPermissions();
 
+	// Madness, madness I say!
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	// We kinda need all this stuff, dont' ask why, just nod your head...
+	// We kinda need all this stuff, don't ask why, just nod your head...
 	$settings = $breezeController->get('settings');
 	$query = $breezeController->get('query');
 	$tools = $breezeController->get('tools');
@@ -62,6 +63,10 @@ function breezeWall()
 
 	// Display all the JavaScript bits
 	Breeze::headersHook('profile');
+
+	// We need to make sure we have all your info...
+	if (empty($context['Breeze']['user_info'][$user_info['id']]))
+		$tools->loadUserInfo($user_info['id'], false, 'profile');
 
 	// Default values
 	$status = array();
@@ -111,7 +116,7 @@ function breezeWall()
 		$context['page_index'] = $data['pagination'];
 
 	// Page name depends on pagination
-	$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name'], $currentPage);
+	$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name']);
 
 	// Get the profile views
 	if (!$user_info['is_guest'] && !empty($context['member']['options']['Breeze_enable_visits_tab']))
