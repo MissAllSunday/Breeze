@@ -127,7 +127,7 @@ class BreezeWall
 		$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;
 
 		// Set all the page stuff
-		$context['page_title'] = $txt['Breeze_general_wall'] .' '. (!empty($currentPage) && $currentPage >= 1 ? ' - '. $txt['Breeze_general_wall_page'] .' '. $currentPage : '');
+		$context['page_title'] = $txt['Breeze_general_wall'];
 		$context['sub_template'] = 'general_wall';
 		$context['linktree'][] = array(
 			'url' => $scripturl . '?action=wall',

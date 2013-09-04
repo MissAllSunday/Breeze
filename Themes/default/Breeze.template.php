@@ -95,6 +95,13 @@ function template_user_wall()
 	// Print the status and comments
 	breeze_status($context['member']['status']);
 
+	// Pagination
+	if (!empty($context['page_index']))
+		echo '
+		<div class="pagelinks">
+			', $txt['pages'], ': ', $context['page_index'], $context['menu_separator'] . ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
+		</div>';
+
 	// End of Wall div
 	echo '
 			</div>';
@@ -422,6 +429,13 @@ function template_general_wall()
 		if (!empty($context['Breeze']['status']))
 			foreach ($context['Breeze']['status'] as $status)
 				breeze_status($status);
+
+	// Pagination
+	if (!empty($context['page_index']))
+		echo '
+		<div class="pagelinks">
+			', $txt['pages'], ': ', $context['page_index'], $context['menu_separator'] . ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
+		</div>';
 
 	echo '
 		</div>';

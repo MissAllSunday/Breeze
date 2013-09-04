@@ -46,7 +46,7 @@ function breezeWall()
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
 
-	// Check if this user is welcomed here
+	// Check if this user allowed to be here
 	breezeCheckPermissions();
 
 	// Madness, madness I say!
@@ -434,8 +434,8 @@ function breezeSingle()
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
 
-	// Check if this user is welcomed here
-	Breeze::checkPermissions();
+	// Check if this user is allowed
+	breezeCheckPermissions();
 
 	// Load what we need
 	$text = $breezeController->get('text');
@@ -558,7 +558,7 @@ function breezeCheckPermissions()
 		if (!isset($context['member']['options']['Breeze_enable_wall']))
 			$context['member']['options']['Breeze_enable_wall'] = 1;
 
-	// Do the normal check, do note this is not an elsif check, its separate.
+	// Do the normal check, do note this is not an elseif check, its separate.
 	else
 		if (empty($context['member']['options']['Breeze_enable_wall']))
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
@@ -574,9 +574,6 @@ function breezeCheckPermissions()
 	// This user cannot see any profile and it's  viewing someone else's wall
 	if (!allowedTo('profile_view_any') && $user_info['id'] != $context['member']['id'])
 		redirectexit('action=profile;area=static;u='.$context['member']['id']);
-
-	// Get this user's ignore list
-	$context['member']['ignore_list'] = array();
 
 	// Get the ignored list
 	$temp_ignore_list = !empty($context['member']['ignore_list']) ? $context['member']['ignore_list'] : $query->getUserSettings($context['member']['id'], 'pm_ignore_list');

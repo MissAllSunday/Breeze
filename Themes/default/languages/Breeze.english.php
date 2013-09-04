@@ -50,7 +50,7 @@ $txt['Breeze_general_last_view'] = 'Last view';
 $txt['Breeze_general_delete'] = 'Delete';
 $txt['Breeze_general_unlike'] = 'Unlike';
 $txt['Breeze_general_plural'] = '(s)';
-$txt['Breeze_general_activity'] = 'Latest activity';
+$txt['Breeze_general_activity'] = 'Latest buddie\'s activity';
 $txt['Breeze_general_latest_buddy_status'] = 'Latest buddy status';
 $txt['Breeze_general_posted_on'] = 'Posted on %s\'s Profile';
 
@@ -232,7 +232,7 @@ $txt['Breeze_pag_first'] = 'First';
 $txt['Breeze_pag_last'] = 'Last';
 $txt['Breeze_pag_pages'] = 'Pages :';
 $txt['Breeze_pag_page'] = '- page ';
-$txt['Breeze_profile_of_username'] = 'Profile of %1$s %2$s';
+$txt['Breeze_profile_of_username'] = 'Profile of %1$s';
 $txt['Breeze_page_loading'] = 'Loading more messages...';
 $txt['Breeze_page_loading_end'] = '<span class="breeze_center">There are no more messages, go to top</span>';
 

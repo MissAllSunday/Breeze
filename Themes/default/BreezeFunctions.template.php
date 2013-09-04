@@ -160,13 +160,6 @@ function breeze_status($data)
 	// End of list
 	echo '
 		</ul>';
-
-	// Pagination
-	if (!empty($context['page_index']))
-		echo '
-		<div class="pagelinks">
-			', $txt['pages'], ': ', $context['page_index'], $context['menu_separator'] . ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
-		</div>';
  }
 
 function breeze_profile_owner()
