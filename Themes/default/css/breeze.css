@@ -215,8 +215,6 @@ padding:5px;
 	float:left;
 	margin:3px;
 	padding:3px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
 }
 .breeze_user_comment_comment:before
 {
@@ -237,6 +235,24 @@ padding:5px;
 	border: 1px solid #DDDDDD;
 	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset */
 }
+
+.post_comment
+{
+	padding: 5px;
+	display:table-cell;
+	vertical-align:middle;
+}
+
+.post_comment form
+{
+	padding-left:5px;
+}
+
+.post_comment img, .post_comment form
+{
+	display: inline-block;
+}
+
 
 /* Ajax message */
 #breeze_load_image

@@ -99,7 +99,7 @@ function breeze_status($data)
 									echo '
 									<li class="windowbg2" id ="comment_id_', $comment['id'] ,'">
 										<div class="breeze_user_comment_avatar">
-												',$context['Breeze']['user_info'][$comment['poster_id']]['facebox'],'<br />
+												', $context['Breeze']['user_info'][$comment['poster_id']]['facebox'] ,'<br />
 										</div>
 										<div class="breeze_user_comment_comment">
 											',$comment['body'],'
@@ -124,8 +124,16 @@ function breeze_status($data)
 
 								// Post a new comment
 								if (!empty($post_comment))
+								{
 									echo '
-								<div>
+								<div class="post_comment">';
+
+									// Show a nice avatar next to the post form
+									if (!empty($context['Breeze']['user_info'][$user_info['id']]['facebox']))
+									echo $context['Breeze']['user_info'][$user_info['id']]['facebox'];
+
+								// The actual post form
+									echo '
 									<form action="', $scripturl , '?action=breezeajax;sa=postcomment', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
 										<textarea id="textboxcontent_', $status['id'] ,'" name="content" cols="40" rows="2" rel="atwhoMention"></textarea>
 										<input type="hidden" value="', $status['poster_id'] ,'" name="status_owner_id', $status['id'] ,'" id="status_owner_id', $status['id'] ,'" />
@@ -134,8 +142,12 @@ function breeze_status($data)
 										<input type="hidden" value="',$user_info['id'],'" name="poster_comment_id', $status['id'] ,'" id="poster_comment_id', $status['id'] ,'" /><br />
 										<input type="hidden" id="', $context['session_var'], '" name="', $context['session_var'], '" value="', $context['session_id'], '" />
 										<input type="submit" value="', $txt['post'] ,'" class="comment_submit" id="', $status['id'] ,'" />
-									</form>
+									</form>';
+
+								// End of div post_comment
+									echo '
 								</div>';
+								}
 
 						echo '
 						</div>
