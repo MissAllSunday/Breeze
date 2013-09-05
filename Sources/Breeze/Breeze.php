@@ -70,7 +70,7 @@ class Breeze
 	public static $supportStite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
 
 	// Its easier to list the allowed actions
-	public static $_allowedActions = array('display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who',);
+	public static $_allowedActions = array('wall', 'display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who',);
 
 	/**
 	 * Breeze::__construct()
@@ -185,6 +185,8 @@ class Breeze
 					var breeze_page_loading_end = '. JavaScriptEscape($text->getText('page_loading_end')) .';
 					var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
 					var breeze_how_many_mentions_options = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_how_many_mentions_options']) ? $context['member']['options']['Breeze_how_many_mentions_options'] : 5)) .';
+					var breeze_session_id = ' . JavaScriptEscape($context['session_id']) . ';
+					var breeze_session_var = ' . JavaScriptEscape($context['session_var']) . ';
 			// ]]></script>';
 
 				// Let's load jquery from CDN only if it hasn't been loaded yet
@@ -205,20 +207,6 @@ class Breeze
 					// $context['html_headers'] .= '
 				// <script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.infinitescroll.js" type="text/javascript"></script>';
 
-				// Load breeze.js until everyone else is loaded
-				$context['html_headers'] .= '
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
-			}
-
-			// Does the admin wants to add more actions?
-			if ($breezeSettings->enable('allowedActions'))
-				Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $breezeSettings->getSetting('allowedActions')));
-
-			// Stuff for the notifications, don't show this if we aren't on a specified action
-			if ($type == 'noti' && empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
-			{
-				$notifications = $breezeController->get('notifications');
-
 				$context['insert_after_template'] .= '
 				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
 				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
@@ -233,15 +221,27 @@ class Breeze
 					var breeze_noti_delete_after = '. JavaScriptEscape($text->getText('noti_delete_after')) .';
 					var breeze_noti_close = '. JavaScriptEscape($text->getText('noti_close')) .';
 					var breeze_noti_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
-					var breeze_session_id = ' . JavaScriptEscape($context['session_id']) . ';
-					var breeze_session_var = ' . JavaScriptEscape($context['session_var']) . ';
 				// ]]></script>';
 
-				$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
+				// Load breeze.js until everyone else is loaded
+				$context['html_headers'] .= '
+				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
 			}
 
 			$header_done = true;
 		}
+
+			// Does the admin wants to add more actions?
+			if ($breezeSettings->enable('allowedActions'))
+				Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $breezeSettings->getSetting('allowedActions')));
+
+			// Stuff for the notifications, don't show this if we aren't on a specified action
+			if ($type == 'noti' && empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
+			{
+				$notifications = $breezeController->get('notifications');
+				$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
+			}
+
 
 		// Admin bits
 		if($type == 'admin')

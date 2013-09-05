@@ -407,7 +407,7 @@ class BreezeNotifications
 				$text = sprintf($this->_text->getText('mention_message_own_wall_comment'), $statusLink,
 					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'], $noti['id']);
 
-			// This is someone elses wall, go figure...
+			// This is someone else's wall, go figure...
 			else
 				$text = sprintf($this->_text->getText('mention_message_comment'), $context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
 					$context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'], $statusLink,
