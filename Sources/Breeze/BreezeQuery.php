@@ -180,15 +180,6 @@ class BreezeQuery extends Breeze
 		// Clean any other cache too
 	}
 
-	private function switchData($type)
-	{
-		$property = $this->_tables[$type]['property'];
-		$method = $this->_tables[$type]['name'];
-
-		if (array_key_exists($type, $this->_tables))
-			$this->_temp = $this->$property ? $this->$property : $this->$method();
-	}
-
 	/**
 	 * BreezeQuery::getCount()
 	 *

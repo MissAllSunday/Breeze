@@ -392,7 +392,7 @@ class BreezeNotifications
 		$text = '';
 
 		// Build the status link
-		$statusLink = $scripturl . '?action=profile;area=wallstatus;u=' . $noti['content']['wall_owner'] .
+		$statusLink = $scripturl . '?action=wall;sa=single;u=' . $noti['content']['wall_owner'] .
 			';bid=' . $noti['content']['status_id'];
 
 		// Sometimes this data hasn't been loaded yet

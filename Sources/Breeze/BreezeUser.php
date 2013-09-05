@@ -426,45 +426,6 @@ function breezeBuddyMessage()
 
 } */
 
-// Show a single status with all it's comments
-function breezeSingle()
-{
-	global $txt, $scripturl, $context, $memberContext, $modSettings,  $user_info, $breezeController;
-
-	loadtemplate(Breeze::$name);
-	loadtemplate(Breeze::$name .'Functions');
-
-	// Check if this user is allowed
-	breezeCheckPermissions();
-
-	// Load what we need
-	$text = $breezeController->get('text');
-	$globals = Breeze::sGlobals('get');
-	$settings = $breezeController->get('settings');
-	$query = $breezeController->get('query');
-	$tools = $breezeController->get('tools');
-
-	// Display all the JavaScript bits
-	Breeze::headersHook('profile');
-
-	// We are gonna load the status from the user array so we kinda need both the user ID and a status ID
-	if (!$globals->validate('u') || !$globals->validate('bid'))
-		fatal_lang_error('no_access', false);
-
-	// Load the single status
-	$data = $query->getStatusByID($globals->getValue('bid'), $globals->getValue('u'));
-
-	// Load the users data
-	$tools->loadUserInfo($data['users']);
-
-	$context['Breeze']['single'] = $data['data'];
-
-	// Set all the page stuff
-	$context['sub_template'] = 'singleStatus';
-	$context['page_title'] = $text->getText('singleStatus_pageTitle');
-	$context['canonical_url'] = $scripturl .'?action=profile;area=wallstatus';
-}
-
 function breezeTrackViews()
 {
 	global $user_info, $context, $breezeController;
