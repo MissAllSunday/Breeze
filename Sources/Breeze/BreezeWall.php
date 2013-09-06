@@ -189,7 +189,7 @@ class BreezeWall
 		// Load the users data
 		$this->_tools->loadUserInfo($data['users']);
 
-		$context['Breeze']['single'] = $data['data'];
+		$context['Breeze']['single'] = array($data['data']);
 
 		// Set all the page stuff
 		$context['sub_template'] = 'singleStatus';

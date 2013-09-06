@@ -283,83 +283,8 @@ function template_singleStatus()
 {
 	global $context, $txt, $user_info, $scripturl;
 
-	echo '
-			<div class="windowbg" id ="status_id_', $context['Breeze']['single']['id'] ,'">
-				<span class="topslice">
-					<span></span>
-				</span>
-				<div class="breeze_user_inner">
-					<div class="breeze_user_status_avatar">
-						', $context['Breeze']['user_info'][$context['Breeze']['single']['poster_id']]['facebox'] ,'
-					</div>
-					<div class="breeze_user_status_comment">
-						', $context['Breeze']['single']['body'] ,'
-						<div class="breeze_options">
-							<span class="time_elapsed">', $context['Breeze']['single']['time'] ,' </span>';
-
-					// Delete status
-					if ($context['Breeze']['permissions']['delete_status'])
-						echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $context['Breeze']['single']['id'] ,';type=status;profile_owner=',$context['member']['id'],'" id="', $context['Breeze']['single']['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
-
-					echo '
-						</div>
-						<hr />
-						<div id="comment_flash_', $context['Breeze']['single']['id'] ,'"></div>';
-
-					echo '
-						<ul class="breeze_comments_list" id="comment_loadplace_', $context['Breeze']['single']['id'] ,'">';
-
-					// Print out the comments
-					if (!empty($context['Breeze']['single']['comments']))
-						foreach($context['Breeze']['single']['comments'] as $comment)
-						{
-							echo '<li class="windowbg2" id ="comment_id_', $comment['id'] ,'">
-										<div class="breeze_user_comment_avatar">
-											',$context['Breeze']['user_info'][$comment['poster_id']]['facebox'],'<br />
-										</div>
-										<div class="breeze_user_comment_comment">
-											',$comment['body'],'
-											<div class="breeze_options">
-												<span class="time_elapsed">', $comment['time'] ,'</span>';
-
-							// Delete comment
-							if ($context['Breeze']['permissions']['delete_status'])
-								echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $comment['id'] ,';type=comment;profile_owner=',$context['member']['id'],'" id="', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
-
-							echo '
-											</div>
-										</div>
-										<div class="clear"></div>
-									</li>';
-						}
-
-						// Display the new comments
-						echo '<li id="breeze_load_image_comment_', $context['Breeze']['single']['id'] ,'" style="margin:auto; text-align:center;"></li>';
-
-						echo '</ul>';
-
-							// Post a new comment
-							if ($context['Breeze']['permissions']['post_comment'])
-								echo '<div>
-								<form action="', $scripturl , '?action=breezeajax;sa=postcomment" method="post" name="formID_', $context['Breeze']['single']['id'] ,'" id="formID_', $context['Breeze']['single']['id'] ,'">
-									<textarea id="textboxcontent_', $context['Breeze']['single']['id'] ,'" cols="40" rows="2"  name="content_', $context['Breeze']['single']['id'] ,'" rel="atwhoMention"></textarea>
-									<input type="hidden" value="',$context['Breeze']['single']['poster_id'],'" name="status_owner_id', $context['Breeze']['single']['id'] ,'" id="status_owner_id', $context['Breeze']['single']['id'] ,'" />
-									<input type="hidden" value="', $context['Breeze']['single']['owner_id'] ,'" name="profile_owner_id', $context['Breeze']['single']['id'] ,'" id="profile_owner_id', $context['Breeze']['single']['id'] ,'" />
-									<input type="hidden" value="', $context['Breeze']['single']['id'] ,'" name="status_id" id="status_id" />
-									<input type="hidden" value="',$user_info['id'],'" name="poster_comment_id', $context['Breeze']['single']['id'] ,'" id="poster_comment_id', $context['Breeze']['single']['id'] ,'" /><br />
-									<input type="hidden" id="', $context['session_var'], '" name="', $context['session_var'], '" value="', $context['session_id'], '" />
-									<input type="submit" value="', $txt['post'] ,'" class="comment_submit" id="', $context['Breeze']['single']['id'] ,'" />
-								</form>
-							</div>';
-
-					echo '
-					</div>
-					<div class="clear"></div>
-				</div>
-			<span class="botslice">
-				<span></span>
-			</span>
-			</div><br />';
+	if (!empty($context['Breeze']['single']))
+		breeze_status($context['Breeze']['single']);
 
 	// Don't forget to print the users data
 	if (!empty($context['Breeze']['user_info']))
