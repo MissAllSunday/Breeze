@@ -40,7 +40,7 @@ if (!defined('SMF'))
 
 function Breeze_Admin_Index()
 {
-		global $txt, $scripturl, $context, $sourcedir;
+		global $txt, $scripturl, $context, $sourcedir, $settings;
 
 		require_once($sourcedir . '/ManageSettings.php');
 		loadLanguage('Breeze');
@@ -68,9 +68,10 @@ function Breeze_Admin_Index()
 
 		// Admin bits
 		$context['html_headers'] .= '
-			<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.js" type="text/javascript"></script>
-			<script type="text/javascript">
-var breeze_feed_error_message = '. JavaScriptEscape($text->getText('feed_error_message')) .';
+<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
+<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.js" type="text/javascript"></script>
+<script type="text/javascript">
+var breeze_feed_error_message = '. JavaScriptEscape($txt['Breeze_feed_error_message']) .';
 
 $(document).ready(function (){
 	$(\'#breezelive\').rssfeed(\''. Breeze::$supportStite .'\',
