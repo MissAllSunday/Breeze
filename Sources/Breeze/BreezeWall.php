@@ -176,6 +176,9 @@ class BreezeWall
 
 		$globals = Breeze::sGlobals('get');
 
+		// This is still part of the whole wall stuff
+		$context['Breeze']['commingFrom'] == 'wall';
+
 		// Display all the JavaScript bits
 		Breeze::headersHook('profile');
 
