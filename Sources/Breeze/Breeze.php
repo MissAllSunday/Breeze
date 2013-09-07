@@ -195,10 +195,6 @@ class Breeze
 				<link rel="stylesheet" type="text/css" href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css"/>
 				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
 				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js"></script>
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/center.js"></script>
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topCenter.js"></script>
 				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
 				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>';
 
@@ -206,42 +202,10 @@ class Breeze
 				// if (!empty($context['member']['options']['Breeze_infinite_scroll']))
 					// $context['html_headers'] .= '
 				// <script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.infinitescroll.js" type="text/javascript"></script>';
-
-				$context['insert_after_template'] .= '
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
-				<script type="text/javascript"><!-- // --><![CDATA[
-					var breeze_error_message = '. JavaScriptEscape($text->getText('error_message')) .';
-					var breeze_noti_markasread = '. JavaScriptEscape($text->getText('noti_markasread')) .';
-					var breeze_noti_markasread_after = '. JavaScriptEscape($text->getText('noti_markasread_after')) .';
-					var breeze_noti_delete = '. JavaScriptEscape($text->getText('general_delete')) .';
-					var breeze_noti_delete_after = '. JavaScriptEscape($text->getText('noti_delete_after')) .';
-					var breeze_noti_close = '. JavaScriptEscape($text->getText('noti_close')) .';
-					var breeze_noti_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
-				// ]]></script>';
-
-				// Load breeze.js until everyone else is loaded
-				$context['html_headers'] .= '
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
 			}
 
 			$header_done = true;
 		}
-
-			// Does the admin wants to add more actions?
-			if ($breezeSettings->enable('allowedActions'))
-				Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $breezeSettings->getSetting('allowedActions')));
-
-			// Stuff for the notifications, don't show this if we aren't on a specified action
-			if ($type == 'noti' && empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
-			{
-				$notifications = $breezeController->get('notifications');
-				$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
-			}
-
 
 		// Admin bits
 		if($type == 'admin')
@@ -263,6 +227,41 @@ $(document).ready(function (){
  </script>
 ';
 
+		// Stuff needed by the notification system
+		$context['insert_after_template'] .= '
+		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
+		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
+		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
+		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
+		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
+		<script type="text/javascript"><!-- // --><![CDATA[
+			var breeze_error_message = '. JavaScriptEscape($text->getText('error_message')) .';
+			var breeze_noti_markasread = '. JavaScriptEscape($text->getText('noti_markasread')) .';
+			var breeze_noti_markasread_after = '. JavaScriptEscape($text->getText('noti_markasread_after')) .';
+			var breeze_noti_delete = '. JavaScriptEscape($text->getText('general_delete')) .';
+			var breeze_noti_delete_after = '. JavaScriptEscape($text->getText('noti_delete_after')) .';
+			var breeze_noti_close = '. JavaScriptEscape($text->getText('noti_close')) .';
+			var breeze_noti_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
+		// ]]></script>';
+
+		// Load breeze.js until everyone else is loaded
+		$context['html_headers'] .= '
+		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
+
+		// Are we showing any notifications?
+		if ($type == 'noti')
+		{
+			// Does the admin wants to add more actions?
+			if ($breezeSettings->enable('allowedActions'))
+				Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $breezeSettings->getSetting('allowedActions')));
+
+			// Stuff for the notifications, don't show this if we aren't on a specified action
+			if ($type == 'noti' && empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
+			{
+				$notifications = $breezeController->get('notifications');
+				$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
+			}
+		}
 	}
 
 	/**
