@@ -135,7 +135,7 @@ class Breeze
 	 * @see BreezeTools
 	 * @return void
 	 */
-	public static function headersHook($type = 'noti')
+	public static function headersHook()
 	{
 		global $context, $settings, $user_info, $breezeController, $txt;
 		static $header_done = false;
@@ -151,10 +151,6 @@ class Breeze
 		$breezeSettings = $breezeController->get('settings');
 		$breezeGlobals = Breeze::sGlobals('get');
 
-		// Gotta set this to false to force the query if we're outside the profile area
-		if ($type != 'profile')
-			$context['user']['is_owner'] = false;
-
 		if (!$header_done)
 		{
 			$context['html_headers'] .= '
@@ -166,101 +162,70 @@ class Breeze
 				$context['insert_after_template'] .= Breeze::who(true);
 
 			// Define some variables for the ajax stuff
-			if ($type == 'profile')
-			{
-				$context['html_headers'] .= '
-				<script type="text/javascript"><!-- // --><![CDATA[
-					var breeze_error_message = '. JavaScriptEscape($text->getText('error_message')) .';
-					var breeze_success_message = '. JavaScriptEscape($text->getText('success_message')) .';
-					var breeze_empty_message = '. JavaScriptEscape($text->getText('empty_message')) .';
-					var breeze_error_delete = '. JavaScriptEscape($text->getText('error_message')) .';
-					var breeze_success_delete = '. JavaScriptEscape($text->getText('success_delete')) .';
-					var breeze_confirm_delete = '.JavaScriptEscape( $text->getText('confirm_delete')) .';
-					var breeze_confirm_yes = '. JavaScriptEscape($text->getText('confirm_yes')) .';
-					var breeze_confirm_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
-					var breeze_already_deleted = '. JavaScriptEscape($text->getText('already_deleted')) .';
-					var breeze_cannot_postStatus = '. JavaScriptEscape($text->getText('cannot_postStatus')) .';
-					var breeze_cannot_postComments = '. JavaScriptEscape($text->getText('cannot_postComments')) .';
-					var breeze_page_loading = '. JavaScriptEscape($text->getText('page_loading')) .';
-					var breeze_page_loading_end = '. JavaScriptEscape($text->getText('page_loading_end')) .';
-					var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
-					var breeze_how_many_mentions_options = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_how_many_mentions_options']) ? $context['member']['options']['Breeze_how_many_mentions_options'] : 5)) .';
-					var breeze_session_id = ' . JavaScriptEscape($context['session_id']) . ';
-					var breeze_session_var = ' . JavaScriptEscape($context['session_var']) . ';
-			// ]]></script>';
-
-				// Let's load jquery from CDN only if it hasn't been loaded yet
-				$context['html_headers'] .= '
-				<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
-				<link rel="stylesheet" type="text/css" href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css"/>
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js"></script>
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>';
-
-				// Does the user wants to use infinite scroll?
-				// if (!empty($context['member']['options']['Breeze_infinite_scroll']))
-					// $context['html_headers'] .= '
-				// <script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.infinitescroll.js" type="text/javascript"></script>';
-			}
-
-			$header_done = true;
-		}
-
-		// Admin bits
-		if($type == 'admin')
 			$context['html_headers'] .= '
-			<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.js" type="text/javascript"></script>
-			<script type="text/javascript">
-var breeze_feed_error_message = '. JavaScriptEscape($text->getText('feed_error_message')) .';
-
-$(document).ready(function (){
-	$(\'#breezelive\').rssfeed(\''. Breeze::$supportStite .'\',
-	{
-		limit: 5,
-		header: false,
-		date: true,
-		linktarget: \'_blank\',
-		errormsg: breeze_feed_error_message
-   });
-});
- </script>
-';
-
-		// Stuff needed by the notification system
-		$context['insert_after_template'] .= '
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
-		<script type="text/javascript"><!-- // --><![CDATA[
-			var breeze_error_message = '. JavaScriptEscape($text->getText('error_message')) .';
-			var breeze_noti_markasread = '. JavaScriptEscape($text->getText('noti_markasread')) .';
-			var breeze_noti_markasread_after = '. JavaScriptEscape($text->getText('noti_markasread_after')) .';
-			var breeze_noti_delete = '. JavaScriptEscape($text->getText('general_delete')) .';
-			var breeze_noti_delete_after = '. JavaScriptEscape($text->getText('noti_delete_after')) .';
-			var breeze_noti_close = '. JavaScriptEscape($text->getText('noti_close')) .';
-			var breeze_noti_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
+			<script type="text/javascript"><!-- // --><![CDATA[
+				var breeze_error_message = '. JavaScriptEscape($text->getText('error_message')) .';
+				var breeze_success_message = '. JavaScriptEscape($text->getText('success_message')) .';
+				var breeze_empty_message = '. JavaScriptEscape($text->getText('empty_message')) .';
+				var breeze_error_delete = '. JavaScriptEscape($text->getText('error_message')) .';
+				var breeze_success_delete = '. JavaScriptEscape($text->getText('success_delete')) .';
+				var breeze_confirm_delete = '.JavaScriptEscape( $text->getText('confirm_delete')) .';
+				var breeze_confirm_yes = '. JavaScriptEscape($text->getText('confirm_yes')) .';
+				var breeze_confirm_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
+				var breeze_already_deleted = '. JavaScriptEscape($text->getText('already_deleted')) .';
+				var breeze_cannot_postStatus = '. JavaScriptEscape($text->getText('cannot_postStatus')) .';
+				var breeze_cannot_postComments = '. JavaScriptEscape($text->getText('cannot_postComments')) .';
+				var breeze_page_loading = '. JavaScriptEscape($text->getText('page_loading')) .';
+				var breeze_page_loading_end = '. JavaScriptEscape($text->getText('page_loading_end')) .';
+				var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
+				var breeze_how_many_mentions_options = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_how_many_mentions_options']) ? $context['member']['options']['Breeze_how_many_mentions_options'] : 5)) .';
+				var breeze_session_id = ' . JavaScriptEscape($context['session_id']) . ';
+				var breeze_session_var = ' . JavaScriptEscape($context['session_var']) . ';
 		// ]]></script>';
 
-		// Load breeze.js until everyone else is loaded
-		$context['html_headers'] .= '
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
+			// Let's load jquery from CDN only if it hasn't been loaded yet
+			$context['html_headers'] .= '
+			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
+			<link rel="stylesheet" type="text/css" href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css"/>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>';
 
-		// Are we showing any notifications?
-		if ($type == 'noti')
-		{
+
+			// Stuff needed by the notification system
+			$context['insert_after_template'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
+			<script type="text/javascript"><!-- // --><![CDATA[
+				var breeze_error_message = '. JavaScriptEscape($text->getText('error_message')) .';
+				var breeze_noti_markasread = '. JavaScriptEscape($text->getText('noti_markasread')) .';
+				var breeze_noti_markasread_after = '. JavaScriptEscape($text->getText('noti_markasread_after')) .';
+				var breeze_noti_delete = '. JavaScriptEscape($text->getText('general_delete')) .';
+				var breeze_noti_delete_after = '. JavaScriptEscape($text->getText('noti_delete_after')) .';
+				var breeze_noti_close = '. JavaScriptEscape($text->getText('noti_close')) .';
+				var breeze_noti_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
+			// ]]></script>';
+
+			// Load breeze.js until everyone else is loaded
+			$context['html_headers'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
+
 			// Does the admin wants to add more actions?
 			if ($breezeSettings->enable('allowedActions'))
 				Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $breezeSettings->getSetting('allowedActions')));
 
 			// Stuff for the notifications, don't show this if we aren't on a specified action
-			if ($type == 'noti' && empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
+			if (empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
 			{
 				$notifications = $breezeController->get('notifications');
 				$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
 			}
+
+			$header_done = true;
 		}
 	}
 

@@ -66,7 +66,26 @@ function Breeze_Admin_Index()
 			),
 		);
 
-		call_user_func($subActions[$_REQUEST['sa']]);
+		// Admin bits
+		$context['html_headers'] .= '
+			<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.js" type="text/javascript"></script>
+			<script type="text/javascript">
+var breeze_feed_error_message = '. JavaScriptEscape($text->getText('feed_error_message')) .';
+
+$(document).ready(function (){
+	$(\'#breezelive\').rssfeed(\''. Breeze::$supportStite .'\',
+	{
+		limit: 5,
+		header: false,
+		date: true,
+		linktarget: \'_blank\',
+		errormsg: breeze_feed_error_message
+   });
+});
+ </script>';
+
+		// Call the sub-action
+		$subActions[$_REQUEST['sa']]();
 }
 
 function Breeze_Admin_Main()

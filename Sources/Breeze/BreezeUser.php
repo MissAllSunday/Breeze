@@ -61,9 +61,6 @@ function breezeWall()
 	$text = $breezeController->get('text');
 	$log = $breezeController->get('log');
 
-	// Display all the JavaScript bits
-	Breeze::headersHook('profile');
-
 	// We need to make sure we have all your info...
 	if (empty($context['Breeze']['user_info'][$user_info['id']]))
 		$tools->loadUserInfo($user_info['id'], false, 'profile');
