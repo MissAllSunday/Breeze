@@ -153,6 +153,10 @@ class Breeze
 
 		if (!$header_done)
 		{
+			// Gotta set this to false to force the query if we're outside the profile area
+			if ($breezeGlobals->getValue('action') != 'profile')
+				$context['user']['is_owner'] = false;
+
 			$context['html_headers'] .= '
 			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
 			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />';
