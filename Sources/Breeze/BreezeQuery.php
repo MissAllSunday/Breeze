@@ -421,13 +421,14 @@ class BreezeQuery extends Breeze
 		// Populate the array like a big heavy boss!
 		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 		{
-			$return['data'] = array(
+			$return['data'][$row['status_id']] = array(
 				'id' => $row['status_id'],
 				'owner_id' => $row['status_owner_id'],
 				'poster_id' => $row['status_poster_id'],
 				'time' => $this->tools->timeElapsed($row['status_time']),
 				'time_raw' => $row['status_time'],
 				'body' => $this->parser->display($row['status_body']),
+				'comments' => array(),
 			);
 
 			// Comments
@@ -445,7 +446,7 @@ class BreezeQuery extends Breeze
 				);
 
 				// Merge them both
-				$return['data']['comments'] = $c;
+				$return['data'][$row['status_id']]['comments'] = $c;
 			}
 
 			// Get the users IDs

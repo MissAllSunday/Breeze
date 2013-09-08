@@ -199,8 +199,7 @@ class BreezeWall
 		// Load the users data
 		$this->_tools->loadUserInfo($data['users']);
 
-		$context['Breeze']['status'] = array($data['data']);
-		echo'<pre>';print_r($context['Breeze']['status']);die;
+		$context['Breeze']['status'][] = $data['data'];
 
 		// Set all the page stuff
 		$context['sub_template'] = 'general_wall';
