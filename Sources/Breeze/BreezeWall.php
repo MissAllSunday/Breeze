@@ -161,9 +161,6 @@ class BreezeWall
 
 		// No buddies huh? worry not! here's the latest status...
 		// coming soon... LOL
-
-		// Headers
-		Breeze::headersHook('profile');
 	}
 
 	// Show a single status with all it's comments
@@ -177,7 +174,7 @@ class BreezeWall
 		$globals = Breeze::sGlobals('get');
 
 		// This is still part of the whole wall stuff
-		$context['Breeze']['commingFrom'] == 'wall';
+		$context['Breeze']['commingFrom'] = 'wall';
 
 		// Display all the JavaScript bits
 		Breeze::headersHook('profile');
@@ -189,14 +186,28 @@ class BreezeWall
 		// Load the single status
 		$data = $this->_query->getStatusByID($globals->getValue('bid'), $globals->getValue('u'));
 
+		if (!empty($this->member['buddies']))
+		{
+			// Get the latest activity
+			$context['Breeze']['activity'] = $this->_query->getActivityLog($this->member['buddies']);
+
+			// Load users data
+			if (!empty($status['users']))
+				$this->_tools->loadUserInfo($status['users']);
+		}
+
 		// Load the users data
 		$this->_tools->loadUserInfo($data['users']);
 
-		$context['Breeze']['single'] = array($data['data']);
+		$context['Breeze']['status'] = array($data['data']);
+		echo'<pre>';print_r($context['Breeze']['status']);die;
 
 		// Set all the page stuff
-		$context['sub_template'] = 'singleStatus';
+		$context['sub_template'] = 'general_wall';
 		$context['page_title'] = $this->_text->getText('singleStatus_pageTitle');
 		$context['canonical_url'] = $scripturl .'?action=wall;area=single;u='. $globals->getValue('u') .';bid='. $globals->getValue('bid');
+
+		// There cannot be any pagination
+		$context['page_index'] = array();
 	}
 }

@@ -279,21 +279,6 @@ function template_user_notifications()
 		</div><br />';
 }
 
-function template_singleStatus()
-{
-	global $context, $txt, $user_info, $scripturl;
-
-	if (!empty($context['Breeze']['single']))
-		breeze_status($context['Breeze']['single']);
-
-	// Don't forget to print the users data
-	if (!empty($context['Breeze']['user_info']))
-		foreach ($context['Breeze']['user_info'] as $userData)
-			if (!empty($userData['data']))
-				echo $userData['data'];
-
-}
-
 function template_member_options()
 {
 	global $context, $settings, $options, $scripturl, $modSettings, $txt;
