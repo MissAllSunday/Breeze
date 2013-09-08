@@ -227,10 +227,7 @@ function template_user_notifications()
 	echo '
 		<div class="cat_bar">
 			<h3 class="catbg">', $context['page_title'] ,'</h3>
-		</div>
-		<div class="windowbg2">
-			<span class="topslice"><span></span></span>
-			<div class="content">';
+		</div>';
 
 	if (!empty($context['Breeze']['noti']))
 	{
@@ -240,7 +237,10 @@ function template_user_notifications()
 					<tr class="catbg">
 						<th scope="col" class="first_th">', $txt['Breeze_noti_message'] ,'</th>
 						<th scope="col">', $txt['Breeze_noti_markasread_title'] ,'</th>
-						<th scope="col" class="last_th">', $txt['Breeze_general_delete'] ,'</th>
+						<th scope="col">', $txt['Breeze_general_delete'] ,'</th>
+						<th scope="col" class="last_th">
+							', $txt['Breeze_noti_checkAll'] ,' <input type="checkbox" name="check_all">
+						</th>
 					</tr>
 				</thead>
 				<tbody>';
@@ -258,6 +258,9 @@ function template_user_notifications()
 					<td>
 					<a href="'. $scripturl .'?action=breezeajax;sa=notidelete;content='. $noti['id'] .';user='. $user_info['id'] .'', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'">', $txt['Breeze_general_delete'] ,'</a>
 					</td>
+					<td>
+						<input type="checkbox" name="checked" class="idRow">
+					</td>
 				</tr>';
 		}
 
@@ -265,18 +268,41 @@ function template_user_notifications()
 		echo '
 				</tbody>
 			</table><br />';
+
+		// Print the select box
+		echo'
+			<div style="float:right;">
+				', $txt['Breeze_noti_selectedOptions'] ,'
+				<select>
+					<option value="">&nbsp;&nbsp;&nbsp;</option>
+					<option value="read">', $txt['Breeze_noti_markasread']  ,'</option>
+					<option value="unread">', $txt['Breeze_noti_markasunread'] ,'</option>
+					<option value="delete">', $txt['Breeze_general_delete'] ,'</option>
+				</select>
+			</div>
+			<div class="clear"></div>
+		';
+
 	}
 
 	// Gotta be more social buddy...
 	else
-		echo $txt['Breeze_noti_none'];
-
-		echo'
+	{
+		echo '
+		<div class="windowbg2">
+			<span class="topslice"><span></span></span>
+			<div class="content">
+				', $txt['Breeze_noti_none'] ,'
 			</div>
 			<span class="botslice">
 				<span></span>
 			</span>
-		</div><br />';
+		</div>';
+	}
+
+	// For some reason we need to add a br, otherwise it gets borked...
+	echo '
+		<br />';
 }
 
 function template_member_options()

@@ -256,6 +256,9 @@ $txt['Breeze_noti_close'] = 'Close';
 $txt['Breeze_noti_closeAll'] = 'Close all notifications';
 $txt['Breeze_noti_novalid_after'] = 'This isn\'t a valid notification.';
 $txt['Breeze_noti_none'] = 'You don\'t have any notifications';
+$txt['Breeze_noti_checkAll'] = 'Check all';
+$txt['Breeze_noti_check'] = 'check';
+$txt['Breeze_noti_selectedOptions'] = 'With the selected options do: ';
 
 $txt['Breeze_noti_buddy_message_1_title'] = 'Confirmation required';
 $txt['Breeze_noti_buddy_message_1_message'] = 'User %s hasn\'t either denied or confirmed your buddy request, do you want to wait or force the buddy removal';
