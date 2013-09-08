@@ -85,6 +85,7 @@ class BreezeAjax
 			'delete' => 'delete',
 			'notimark' => 'notimark',
 			'notidelete' => 'notidelete',
+			'multiNoti' => 'multiNoti',
 			'usersmention' => 'usersMention',
 			'cleanlog' => 'cleanLog'
 		);
@@ -458,6 +459,20 @@ class BreezeAjax
 				'extra' => array('area' => 'breezenoti',),
 			));
 		}
+	}
+
+	/**
+	 * BreezeAjax::multiNoti()
+	 *
+	 * Handles mass actions, mark as read/unread and deletion of multiple notifications at once
+	 * @return void
+	 */
+	public function multiNoti()
+	{
+		checkSession('request', '', false);
+
+		// Get the global vars
+		$this->_data = Breeze::sGlobals('request');
 	}
 
 	/**
