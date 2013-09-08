@@ -253,10 +253,10 @@ function template_user_notifications()
 						', $noti['message'] ,'
 					</td>
 					<td>
-					<a href="'. $scripturl .'?action=breezeajax;sa=notimark;content='. $noti['id'] .';user='. $user_info['id'] .'">'. (!empty($noti['viewed']) ? $txt['Breeze_noti_markasunread'] : $txt['Breeze_noti_markasread']) .'</a>
+					<a href="'. $scripturl .'?action=breezeajax;sa=notimark;content='. $noti['id'] .';user='. $user_info['id'] .'', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'">'. (!empty($noti['viewed']) ? $txt['Breeze_noti_markasunread'] : $txt['Breeze_noti_markasread']) .'</a>
 					</td>
 					<td>
-					<a href="'. $scripturl .'?action=breezeajax;sa=notidelete;content='. $noti['id'] .';user='. $user_info['id'] .'">', $txt['Breeze_general_delete'] ,'</a>
+					<a href="'. $scripturl .'?action=breezeajax;sa=notidelete;content='. $noti['id'] .';user='. $user_info['id'] .'', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'">', $txt['Breeze_general_delete'] ,'</a>
 					</td>
 				</tr>';
 		}

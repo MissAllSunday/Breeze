@@ -285,6 +285,9 @@ function breezeNotifications()
 	if ($notifications->prepare($context['member']['id'], true))
 		$context['Breeze']['noti'] = $notifications->getMessages();
 
+	// Tell everyone where we've been
+	$context['Breeze']['commingFrom'] = 'profile';
+
 	// Set all the page stuff
 	$context['sub_template'] = 'user_notifications';
 	$context['page_title'] = $text->getText('noti_title');
