@@ -259,7 +259,7 @@ function template_user_notifications()
 					<a href="'. $scripturl .'?action=breezeajax;sa=notidelete;content='. $noti['id'] .';user='. $user_info['id'] .'', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'">', $txt['Breeze_general_delete'] ,'</a>
 					</td>
 					<td>
-						<input type="checkbox" name="checked" class="idRow">
+						<input type="checkbox" name="checked" class="idRow" value="', $noti['id'] ,'">
 					</td>
 				</tr>';
 		}
@@ -282,7 +282,6 @@ function template_user_notifications()
 			</div>
 			<div class="clear"></div>
 		';
-
 	}
 
 	// Gotta be more social buddy...

@@ -293,6 +293,14 @@ function breezeNotifications()
 	$context['page_title'] = $text->getText('noti_title');
 	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 	$context['canonical_url'] = $scripturl . '?action=profile;area=notifications;u=' . $context['member']['id'];
+
+	// Print some jQuery goodies...
+	$context['html_headers'] .= '
+	<script type="text/javascript"><!-- // --><![CDATA[
+		jQuery(document).on(\'change\', \'input[name="check_all"]\',function() {
+			jQuery(\'.idRow\').prop("checked" , this.checked);
+		});
+	// ]]></script>';
 }
 
 // Show the buddy request list
