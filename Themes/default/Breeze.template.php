@@ -274,14 +274,14 @@ function template_user_notifications()
 		echo'
 			<div style="float:right;">
 				', $txt['Breeze_noti_selectedOptions'] ,'
-				<select id="multiNotiOption">
+				<select id="multiNotiOption" name="multiNotiOption">
 					<option value="">&nbsp;&nbsp;&nbsp;</option>
 					<option value="read">', $txt['Breeze_noti_markasread']  ,'</option>
 					<option value="unread">', $txt['Breeze_noti_markasunread'] ,'</option>
 					<option value="delete">', $txt['Breeze_general_delete'] ,'</option>
 				</select>
-				<input type="submit" value="', $txt['Breeze_noti_send'] ,'" class="comment_submit" />
 				<input type="hidden" id="', $context['session_var'], '" name="', $context['session_var'], '" value="', $context['session_id'], '" />
+				<input type="submit" value="', $txt['Breeze_noti_send'] ,'" class="button_submit" />
 			</div>
 			<div class="clear"></div>';
 

@@ -473,6 +473,27 @@ class BreezeAjax
 
 		// Get the global vars
 		$this->_data = Breeze::sGlobals('request');
+
+		// Start with getting the data
+		$do = $this->_data->getValue('multiNotiOption');
+		$idNoti = $this->_data->getValue('idNoti');
+		$user = $this->_data->getValue('user');
+
+		if (empty($do) || empty($idNoti) || empty($user))
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'extra' => array('area' => 'breezenoti',),
+				'owner' => $user,
+			));
+
+		// Figure it out what we're gonna do
+		$call = ($do == 'delete' ? 'delete' ? 'mark') . 'Noti';
+
+		// $set the "viewed" var
+		if ($do != 'delete')
+			$viewed = $do == 'read' ? 1 : 0;
+
 	}
 
 	/**
