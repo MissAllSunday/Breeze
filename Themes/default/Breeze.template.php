@@ -232,7 +232,7 @@ function template_user_notifications()
 	if (!empty($context['Breeze']['noti']))
 	{
 		echo '
-		<form action="', $scripturl , '?action=breezeajax;sa=multiNoti', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" method="post" name="multiNoti" id="multiNoti">
+		<form action="', $scripturl , '?action=breezeajax;sa=multiNoti;user=', $user_info['id'] ,'', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" method="post" name="multiNoti" id="multiNoti">
 			<table class="table_grid" cellspacing="0" width="100%">
 				<thead>
 					<tr class="catbg">
@@ -254,13 +254,13 @@ function template_user_notifications()
 						', $noti['message'] ,'
 					</td>
 					<td>
-					<a href="'. $scripturl .'?action=breezeajax;sa=notimark;content='. $noti['id'] .';user='. $user_info['id'] .'', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'">'. (!empty($noti['viewed']) ? $txt['Breeze_noti_markasunread'] : $txt['Breeze_noti_markasread']) .'</a>
+					<a href="', $scripturl ,'?action=breezeajax;sa=notimark;content=', $noti['id'] ,';user=', $user_info['id'] ,'', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'">', (!empty($noti['viewed']) ? $txt['Breeze_noti_markasunread'] : $txt['Breeze_noti_markasread']) ,'</a>
 					</td>
 					<td>
-					<a href="'. $scripturl .'?action=breezeajax;sa=notidelete;content='. $noti['id'] .';user='. $user_info['id'] .'', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'">', $txt['Breeze_general_delete'] ,'</a>
+					<a href="', $scripturl ,'?action=breezeajax;sa=notidelete;content=', $noti['id'] ,';user='. $user_info['id'] ,'', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'">', $txt['Breeze_general_delete'] ,'</a>
 					</td>
 					<td>
-						<input type="checkbox" name="checked" class="idNoti" value="', $noti['id'] ,'">
+						<input type="checkbox" name="idNoti[]" class="idNoti" value="', $noti['id'] ,'">
 					</td>
 				</tr>';
 		}
@@ -281,6 +281,7 @@ function template_user_notifications()
 					<option value="delete">', $txt['Breeze_general_delete'] ,'</option>
 				</select>
 				<input type="submit" value="', $txt['Breeze_noti_send'] ,'" class="comment_submit" />
+				<input type="hidden" id="', $context['session_var'], '" name="', $context['session_var'], '" value="', $context['session_id'], '" />
 			</div>
 			<div class="clear"></div>';
 
