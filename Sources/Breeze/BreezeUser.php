@@ -298,7 +298,7 @@ function breezeNotifications()
 	$context['html_headers'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[
 		jQuery(document).on(\'change\', \'input[name="check_all"]\',function() {
-			jQuery(\'.idRow\').prop("checked" , this.checked);
+			jQuery(\'.idNoti\').prop("checked" , this.checked);
 		});
 	// ]]></script>';
 }

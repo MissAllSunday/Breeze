@@ -232,6 +232,7 @@ function template_user_notifications()
 	if (!empty($context['Breeze']['noti']))
 	{
 		echo '
+		<form action="', $scripturl , '?action=breezeajax;sa=multiNoti', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" method="post" name="multiNoti" id="multiNoti">
 			<table class="table_grid" cellspacing="0" width="100%">
 				<thead>
 					<tr class="catbg">
@@ -259,7 +260,7 @@ function template_user_notifications()
 					<a href="'. $scripturl .'?action=breezeajax;sa=notidelete;content='. $noti['id'] .';user='. $user_info['id'] .'', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'">', $txt['Breeze_general_delete'] ,'</a>
 					</td>
 					<td>
-						<input type="checkbox" name="checked" class="idRow" value="', $noti['id'] ,'">
+						<input type="checkbox" name="checked" class="idNoti" value="', $noti['id'] ,'">
 					</td>
 				</tr>';
 		}
@@ -273,15 +274,19 @@ function template_user_notifications()
 		echo'
 			<div style="float:right;">
 				', $txt['Breeze_noti_selectedOptions'] ,'
-				<select>
+				<select id="multiNotiOption">
 					<option value="">&nbsp;&nbsp;&nbsp;</option>
 					<option value="read">', $txt['Breeze_noti_markasread']  ,'</option>
 					<option value="unread">', $txt['Breeze_noti_markasunread'] ,'</option>
 					<option value="delete">', $txt['Breeze_general_delete'] ,'</option>
 				</select>
+				<input type="submit" value="', $txt['Breeze_noti_send'] ,'" class="comment_submit" />
 			</div>
-			<div class="clear"></div>
-		';
+			<div class="clear"></div>';
+
+		// End the form
+		echo '
+		</form>';
 	}
 
 	// Gotta be more social buddy...
