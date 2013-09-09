@@ -815,7 +815,7 @@ class BreezeQuery extends Breeze
 		$this->_smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables['noti']['table']) . '
 			SET viewed = {int:viewed}
-			WHERE id = {int:id}',
+			WHERE id '. (is_array($id) ? 'IN ({array_int:id})' : '= {int:id}'),
 			array(
 				'viewed' => (int) $viewed,
 				'id' => $id,
