@@ -111,7 +111,7 @@ class BreezeAjax
 			$this->$call[$sglobals->getValue('sa')]();
 
 			// Send the response back to the browser
-			// $this->returnResponse();
+			$this->returnResponse();
 		}
 
 		// Sorry pal...
@@ -491,7 +491,7 @@ class BreezeAjax
 		{
 			// Figure it out what we're gonna do
 			$call = ($do == 'delete' ? 'delete' : 'mark') . 'Noti';
-echo '<pre>';print_r($this->_data->getValue('idNoti'));die;
+
 			// Set the "viewed" var
 			$viewed = $do == 'read' ? 1 : 0;
 
