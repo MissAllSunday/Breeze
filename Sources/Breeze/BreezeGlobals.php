@@ -151,6 +151,9 @@ class BreezeGlobals
 	 */
 	public function sanitize($var)
 	{
+		if (is_array($var))
+			return $var;
+
 		if (get_magic_quotes_gpc())
 			$var = stripslashes($var);
 
