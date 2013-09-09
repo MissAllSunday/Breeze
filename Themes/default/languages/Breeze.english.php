@@ -219,6 +219,9 @@ $txt['Breeze_error_noti_markasreaddeleted_after'] = 'This notification was alrea
 $txt['Breeze_error_noti_markasreaddeleted'] = 'This notification was already deleted or is not a valid entry.';
 $txt['Breeze_success_noti_delete_after'] = 'You have successfully deleted this notification';
 $txt['Breeze_success_noti_visits_clean'] = 'You have successfully cleaned your visitors log';
+$txt['Breeze_success_notiMulti_delete_after'] = 'You have successfully deleted all notifications';
+$txt['Breeze_success_notiMulti_markasread_after'] = 'You have successfully marked as read all notifications';
+$txt['Breeze_success_notiMulti_unmarkasread_after'] = 'You have successfully marked as unread all notifications';
 
 // Errors
 $txt['cannot_breeze_postStatus'] = $txt['Breeze_cannot_postStatus'];

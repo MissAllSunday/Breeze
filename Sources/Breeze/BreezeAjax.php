@@ -487,13 +487,21 @@ class BreezeAjax
 				'owner' => $user,
 			));
 
-		// Figure it out what we're gonna do
-		$call = ($do == 'delete' ? 'delete' ? 'mark') . 'Noti';
+		else
+		{
+			// Figure it out what we're gonna do
+			$call = ($do == 'delete' ? 'delete' ? 'mark') . 'Noti';
 
-		// $set the "viewed" var
-		if ($do != 'delete')
-			$viewed = $do == 'read' ? 1 : 0;
+			// $set the "viewed" var
+			$this->_query->$call($idNoti, $user, $do == 'read' ? 1 : 0);
 
+			return $this->setResponse(array(
+				'type' => 'success',
+				'message' => 'noti_delete_after',
+				'owner' => $user,
+				'extra' => array('area' => 'breezenoti',),
+			));
+		}
 	}
 
 	/**
