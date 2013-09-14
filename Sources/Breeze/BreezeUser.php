@@ -63,7 +63,7 @@ function breezeWall()
 
 	// We need to make sure we have all your info...
 	if (empty($context['Breeze']['user_info'][$user_info['id']]))
-		$tools->loadUserInfo($user_info['id'], false, 'profile');
+		$tools->loadUserInfo($user_info['id']);
 
 	// Default values
 	$status = array();
