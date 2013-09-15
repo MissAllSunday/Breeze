@@ -405,3 +405,42 @@ jQuery(document).ready(function(){
 		});
 	});
 });
+
+// Infinite scrolling
+jQuery(document).ready(function(){
+
+	// Hide the pagination
+	jQuery('.pagelinks').hide();
+
+var IsDuplicateScrollEvent = 0;
+
+	jQuery(document).ready(function () {
+		TrackEventsForPageScroll();
+	});
+
+	function TrackEventsForPageScroll()
+	{
+	   jQuery(window).scroll(function(){
+
+		var scrollPercent = GetScrollPercent();
+
+			if(scrollPercent > 90)
+			{
+				if(IsDuplicateScrollEvent == 0)
+				{
+					IsDuplicateScrollEvent = 1;
+					alert('it works!');
+					// content here
+				}
+			}
+		});
+	}
+
+	function GetScrollPercent()
+	{
+		 var bottom = jQuery(window).height() + jQuery(window).scrollTop();
+		 var height = jQuery(document).height();
+
+		 return Math.round(100*bottom/height);
+	}
+});

@@ -55,7 +55,7 @@ function breeze_status($data)
 			$delete_comments = $status['poster_id'] == $user_info['id'] ? true : allowedTo('breeze_deleteComments');
 
 			echo '
-			<li class="windowbg" id ="status_id_', $status['id'] ,'">';
+			<li class="windowbg status_breeze" id ="status_id_', $status['id'] ,'">';
 
 			// If we're on the general wall, show a nice bar indicating where this status come from...
 			if (!empty($context['Breeze']['commingFrom']) && $context['Breeze']['commingFrom'] == 'wall')
