@@ -420,7 +420,7 @@ var IsDuplicateScrollEvent = 0;
 
 	function TrackEventsForPageScroll()
 	{
-	   jQuery(window).scroll(function(){
+		jQuery(window).scroll(function(){
 
 		var scrollPercent = GetScrollPercent();
 
