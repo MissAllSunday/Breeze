@@ -137,11 +137,14 @@ function breezeWall()
 // Shows a form for users to set up their wall as needed.
 function breezeSettings()
 {
-	global $context, $memID, $breezeController, $scripturl, $txt;
+	global $context, $memID, $breezeController, $scripturl, $txt, $user_info;
 
 	Breeze::load('Profile-Modify');
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
+
+	// Is owner?
+	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 
 	loadThemeOptions($memID);
 
@@ -517,6 +520,9 @@ function breezeCheckPermissions()
 
 	$settings = $breezeController->get('settings');
 	$query = $breezeController->get('query');
+
+	// Is owner?
+	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 
 	// Another page already checked the permissions and if the mod is enable, but better be safe...
 	if (!$settings->enable('admin_settings_enable'))

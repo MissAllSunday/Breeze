@@ -260,7 +260,7 @@ class BreezeTools
 		foreach ($id as $u)
 		{
 			// Avoid SMF showing an awful error message
-			if (in_array($u, $loaded_ids))
+			if (is_array($loaded_ids) && in_array($u, $loaded_ids))
 			{
 				loadMemberContext($u);
 
