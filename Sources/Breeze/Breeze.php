@@ -183,8 +183,8 @@ class Breeze
 				var breeze_page_loading_end = '. JavaScriptEscape($text->getText('page_loading_end')) .';
 				var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
 				var breeze_how_many_mentions_options = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_how_many_mentions_options']) ? $context['member']['options']['Breeze_how_many_mentions_options'] : 5)) .';
-				var breeze_session_id = ' . JavaScriptEscape($context['session_id']) . ';
-				var breeze_session_var = ' . JavaScriptEscape($context['session_var']) . ';
+				var window.breeze_session_id = ' . JavaScriptEscape($context['session_id']) . ';
+				var window.breeze_session_var = ' . JavaScriptEscape($context['session_var']) . ';
 		// ]]></script>';
 
 			// Let's load jquery from CDN only if it hasn't been loaded yet
