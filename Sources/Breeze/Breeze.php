@@ -135,24 +135,27 @@ class Breeze
 	 * @see BreezeTools
 	 * @return void
 	 */
-	public static function headersHook()
+	public static function headersHook($action = false)
 	{
 		global $context, $settings, $user_info, $breezeController, $txt;
 		static $header_done = false;
+
+		// We explicitly need an action... not really but who cares...
+		if (empty($action))
+			return false;
 
 		// Don't do anything if we are in SSI world
 		if (SMF == 'SSI')
 			return false;
 
-		if (empty($breezeController))
-			$breezeController = new BreezeController();
-
-		$text = $breezeController->get('text');
-		$breezeSettings = $breezeController->get('settings');
-		$breezeGlobals = Breeze::sGlobals('get');
-
 		if (!$header_done)
 		{
+			if (empty($breezeController))
+				$breezeController = new BreezeController();
+
+			$text = $breezeController->get('text');
+			$breezeSettings = $breezeController->get('settings');
+			$breezeGlobals = Breeze::sGlobals('get');
 			// Gotta set this to false to force the query if we're outside the profile area
 			if ($breezeGlobals->getValue('action') != 'profile')
 				$context['user']['is_owner'] = false;
