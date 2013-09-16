@@ -414,7 +414,7 @@ jQuery(document).ready(function(){
 
 	var numberOfScrollEvents = 0;
 
-	// Check if we are near the end of the page
+	// Fires up the infinite scrolling thingy
 	TrackEventsForPageScroll();
 
 	function TrackEventsForPageScroll()
@@ -423,7 +423,7 @@ jQuery(document).ready(function(){
 
 		var scrollPercent = GetScrollPercent();
 
-			if(scrollPercent > 90)
+			if(scrollPercent > 90 || scrollPercent < 95)
 			{
 				// Increment the number of scroll events
 				numberOfScrollEvents++;
@@ -432,11 +432,11 @@ jQuery(document).ready(function(){
 				if (numberOfScrollEvents * window.breeze_maxIndex >= window.breeze_numberTimes)
 				{
 					noty({
-						text: html.message,
-						timeout: 3500, type: html.type,
-						type: html.type,
+						text: 'There aren\'t any more messages to fetch',
+						timeout: 3500, type: 'success',
 					});
 
+					jQuery('#breeze_display_status').append('<li class="windowbg> There aren\'t any more messages to fetch</li>');
 					return;
 				}
 
@@ -473,6 +473,7 @@ jQuery(document).ready(function(){
 		});
 	}
 
+	// Check if we are near the end of the page
 	function GetScrollPercent()
 	{
 		 var bottom = jQuery(window).height() + jQuery(window).scrollTop();
