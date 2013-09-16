@@ -432,7 +432,6 @@ jQuery(document).ready(function(){
 
 				jQuery.ajax(
 				{
-					type: 'REQUEST',
 					url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1' + breeze_session_var + '=' + breeze_session_id,
 					data: ({commingFrom : breeze_commingFrom, userID : breeze_userID, maxIndex : breeze_maxIndex, numberTimes : numberOfScrollEvents, totalItems : breeze_totalItems}),
 					cache: false,
@@ -446,7 +445,7 @@ jQuery(document).ready(function(){
 
 						else if(html.type == 'error'){
 							noty({
-								text: html.data,
+								text: html.message,
 								timeout: 3500, type: html.type,
 								type: html.type,
 							});

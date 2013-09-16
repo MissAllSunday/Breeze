@@ -514,12 +514,12 @@ class BreezeAjax
 		checkSession('request', '', false);
 
 		// Get the global vars
-		$this->_data = Breeze::sGlobals('request');
+		$globals = Breeze::sGlobals('request');
 
-		$id = $this->_data->getValue('userID');
-		$maxIndex = $this->_data->getValue('maxIndex');
-		$numberTimes = $this->_data->getValue('numberTimes');
-		$commingFrom = $this->_data->getValue('commingFrom');
+		$id = $globals->getRaw('userID');
+		$maxIndex = $globals->getRaw('maxIndex');
+		$numberTimes = $globals->getRaw('numberTimes');
+		$commingFrom = $globals->getRaw('commingFrom');
 		$return = '';
 
 		// The usual checks
