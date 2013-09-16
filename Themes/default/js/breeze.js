@@ -410,13 +410,12 @@ jQuery(document).ready(function(){
 jQuery(document).ready(function(){
 
 	// Hide the pagination
-	jQuery('.pagelinks').hide();
+	// jQuery('.pagelinks').hide();
 
 	var numberOfScrollEvents = 0;
 
-	jQuery(document).ready(function () {
-		TrackEventsForPageScroll();
-	});
+	// Check if we are near the end of the page
+	TrackEventsForPageScroll();
 
 	function TrackEventsForPageScroll()
 	{
@@ -429,11 +428,13 @@ jQuery(document).ready(function(){
 				// Increment the number of scroll events
 				numberOfScrollEvents++;
 
+				// @todo We have the total amount of items, the current number of events and the maxIndex, now we can calculate if we hve reached the end before making the ajax call...
+
 				jQuery.ajax(
 				{
 					type: 'REQUEST',
 					url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1' + breeze_session_var + '=' + breeze_session_id,
-					data: ({commingFrom : breeze_commingFrom, ownerId : breeze_profile_owner, maxIndex : breeze_maxIndex, numberTimes : numberOfScrollEvents}),
+					data: ({commingFrom : breeze_commingFrom, userID : breeze_userID, maxIndex : breeze_maxIndex, numberTimes : numberOfScrollEvents, totalItems : breeze_totalItems}),
 					cache: false,
 					dataType: 'json',
 					success: function(html)
@@ -442,6 +443,8 @@ jQuery(document).ready(function(){
 						if(html.type == 'success'){
 							jQuery('#breeze_display_status').append(html.data);
 						}
+
+						// @todo implement an "error" response too
 					},
 					error: function (html)
 					{},

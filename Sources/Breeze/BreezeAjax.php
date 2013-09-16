@@ -511,12 +511,32 @@ class BreezeAjax
 
 	protected function fetchStatus()
 	{
-		$id = 1;
-		$maxIndex = 5;
-		$start = 5;
+		checkSession('request', '', false);
+
+		// Get the global vars
+		$this->_data = Breeze::sGlobals('request');
+
+		$id = $this->_data->getValue('userID');
+		$maxIndex = $this->_data->getValue('maxIndex');
+		$numberTimes = $this->_data->getValue('numberTimes');
+		$commingFrom = $this->_data->getValue('commingFrom');
 		$return = '';
 
-		$data = $this->_query->getStatusByProfile($id, $maxIndex, $start);
+		// The usual checks
+		if (empty($id) || empty($maxIndex) || empty($numberTimes) || empty($commingFrom))
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $id,
+			));
+
+		// Calculate the start value
+		$start = $maxIndex * $numberTimes;
+
+		// Get the right call to the DB
+		$call = $commingFrom == 'profile' ? 'getStatusByProfile' : 'getStatusByUser';
+
+		$data = $this->_query->$call($id, $maxIndex, $start);
 
 		if (!empty($data['data']))
 			foreach ($data['data'] as $params)

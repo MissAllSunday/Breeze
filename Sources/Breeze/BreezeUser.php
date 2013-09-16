@@ -138,7 +138,8 @@ function breezeWall()
 <script type="text/javascript"><!-- // --><![CDATA[
 	var breeze_commingFrom = ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ';
 	var breeze_maxIndex = ' . JavaScriptEscape($maxIndex) . ';
-	var breeze_profile_owner = ' . JavaScriptEscape($user_info['id']) . ';
+	var breeze_userID = ' . JavaScriptEscape($user_info['id']) . ';
+	var breeze_totalItems = ' . JavaScriptEscape($data['count']) . ';
 // ]]></script>';
 
 }
