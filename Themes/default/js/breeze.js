@@ -410,7 +410,7 @@ jQuery(document).ready(function(){
 jQuery(document).ready(function(){
 
 	// Hide the pagination
-	// jQuery('.pagelinks').hide();
+	jQuery('.pagelinks').hide();
 
 	var numberOfScrollEvents = 0;
 
@@ -444,10 +444,21 @@ jQuery(document).ready(function(){
 							jQuery('#breeze_display_status').append(html.data);
 						}
 
-						// @todo implement an "error" response too
+						else if(html.type == 'error'){
+							noty({
+								text: html.data,
+								timeout: 3500, type: html.type,
+								type: html.type,
+							});
+						}
 					},
-					error: function (html)
-					{},
+					error: function (html){
+						noty({
+							text: 'error',
+							timeout: 3500,
+							type: 'error',
+						});
+					},
 				});
 			}
 		});

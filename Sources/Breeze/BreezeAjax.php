@@ -546,7 +546,7 @@ class BreezeAjax
 			'type' => 'success',
 			'message' => 'published_comment',
 			'data' => $return,
-			'owner' => $profile_owner_id,
+			'owner' => $id,
 		));
 	}
 
@@ -693,7 +693,7 @@ class BreezeAjax
 
 		$userString = $this->comingFrom == 'profile' ? ';u='. $this->_response['owner'] : '';
 
-		// A special are perhaps?
+		// A special area perhaps?
 		if (!empty($this->_response['extra']))
 			foreach ($this->_response['extra'] as $k => $v)
 				$extraString .= ';'. $k .'='. $v;
