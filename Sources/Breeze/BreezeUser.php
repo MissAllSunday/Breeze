@@ -41,7 +41,7 @@ if (!defined('SMF'))
 function breezeWall()
 {
 	global $txt, $scripturl, $context, $memberContext, $sourcedir;
-	global $modSettings,  $user_info, $breezeController, $memID, $user_profile;
+	global $modSettings,  $user_info, $breezeController, $memID, $user_profile, $settings;
 
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
@@ -54,7 +54,7 @@ function breezeWall()
 		$breezeController = new BreezeController();
 
 	// We kinda need all this stuff, don't ask why, just nod your head...
-	$settings = $breezeController->get('settings');
+	$breezeSettings = $breezeController->get('settings');
 	$query = $breezeController->get('query');
 	$tools = $breezeController->get('tools');
 	$globals = Breeze::sGlobals('get');
@@ -135,13 +135,13 @@ function breezeWall()
 
 	// Need to pass some vars to the browser :(
 	$context['html_headers'] .= '
-<script type="text/javascript"><!-- // --><![CDATA[
-	window.breeze_commingFrom = ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ';
-	window.breeze_maxIndex = ' . $maxIndex . ';
-	window.breeze_userID = ' . $user_info['id'] . ';
-	window.breeze_totalItems = ' . $data['count'] . ';
-// ]]></script>';
-
+	<script type="text/javascript"><!-- // --><![CDATA[
+		window.breeze_commingFrom = ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ';
+		window.breeze_maxIndex = ' . $maxIndex . ';
+		window.breeze_userID = ' . $user_info['id'] . ';
+		window.breeze_totalItems = ' . $data['count'] . ';
+	// ]]></script>
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze_scroll.js"></script>';
 }
 
 // Shows a form for users to set up their wall as needed.
@@ -528,18 +528,18 @@ function breezeCheckPermissions()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	$settings = $breezeController->get('settings');
+	$breezeSettings = $breezeController->get('settings');
 	$query = $breezeController->get('query');
 
 	// Is owner?
 	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 
 	// Another page already checked the permissions and if the mod is enable, but better be safe...
-	if (!$settings->enable('admin_settings_enable'))
+	if (!$breezeSettings->enable('admin_settings_enable'))
 		redirectexit();
 
 	// If we are forcing the wall, lets check the admin setting first
-	if ($settings->enable('admin_settings_force_enable'))
+	if ($breezeSettings->enable('admin_settings_force_enable'))
 		if (!isset($context['member']['options']['Breeze_enable_wall']))
 			$context['member']['options']['Breeze_enable_wall'] = 1;
 
