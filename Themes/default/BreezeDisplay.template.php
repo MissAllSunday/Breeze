@@ -94,7 +94,7 @@ function template_main()
 		<span class="botslice">
 			<span></span>
 		</span>
-		</li>';
+	</li>';
 			break;
 		case 'comment':
 			$return = '

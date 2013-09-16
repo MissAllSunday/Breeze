@@ -88,6 +88,8 @@ class BreezeAjax
 			'multiNoti' => 'multiNoti',
 			'usersmention' => 'usersMention',
 			'cleanlog' => 'cleanLog'
+			'fetch' => 'fetchStatus',
+			'fetchc' => 'fetchComment',
 		);
 
 		// Build the correct redirect URL
@@ -505,6 +507,27 @@ class BreezeAjax
 				'extra' => array('area' => 'breezenoti',),
 			));
 		}
+	}
+
+	protected function fetchStatus()
+	{
+		$id = 1;
+		$maxIndex = 5;
+		$start = 5;
+		$return = '';
+
+		$data = $this->_query->getStatusByProfile($id, $maxIndex, $start);
+
+		if (!empty($data['data']))
+			foreach ($data['data'] as $params)
+				$return .= $this->_display->HTML($params, 'status');
+
+		return $this->setResponse(array(
+			'type' => 'success',
+			'message' => 'published_comment',
+			'data' => $return,
+			'owner' => $profile_owner_id,
+		));
 	}
 
 	/**

@@ -429,8 +429,24 @@ var IsDuplicateScrollEvent = 0;
 				if(IsDuplicateScrollEvent == 0)
 				{
 					IsDuplicateScrollEvent = 1;
-					alert('it works!');
-					// content here
+
+					jQuery.ajax(
+					{
+						type: 'POST',
+						url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1' + breeze_session_var + '=' + breeze_session_id,
+						data: ({content : test, owner_id : ownerID, poster_id : posterID}),
+						cache: false,
+						dataType: 'json',
+						success: function(html)
+						{
+							// The server side found an issue
+							if(html.type == 'success'){
+								jQuery('#breeze_display_status').apend(html.data);
+							}
+						},
+						error: function (html)
+						{},
+					});
 				}
 			}
 		});
