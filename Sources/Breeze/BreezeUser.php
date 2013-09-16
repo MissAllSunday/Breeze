@@ -136,10 +136,10 @@ function breezeWall()
 	// Need to pass some vars to the browser :(
 	$context['html_headers'] .= '
 <script type="text/javascript"><!-- // --><![CDATA[
-	var breeze_commingFrom = ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ';
-	var breeze_maxIndex = ' . JavaScriptEscape($maxIndex) . ';
-	var breeze_userID = ' . JavaScriptEscape($user_info['id']) . ';
-	var breeze_totalItems = ' . JavaScriptEscape($data['count']) . ';
+	window.breeze_commingFrom = ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ';
+	window.breeze_maxIndex = ' . $maxIndex . ';
+	window.breeze_userID = ' . $user_info['id'] . ';
+	window.breeze_totalItems = ' . $data['count'] . ';
 // ]]></script>';
 
 }

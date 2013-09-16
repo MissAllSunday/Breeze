@@ -428,12 +428,22 @@ jQuery(document).ready(function(){
 				// Increment the number of scroll events
 				numberOfScrollEvents++;
 
-				// @todo We have the total amount of items, the current number of events and the maxIndex, now we can calculate if we hve reached the end before making the ajax call...
+				// Have we reached the end?
+				if (numberOfScrollEvents * window.breeze_maxIndex >= window.breeze_numberTimes)
+				{
+					noty({
+						text: html.message,
+						timeout: 3500, type: html.type,
+						type: html.type,
+					});
+
+					return;
+				}
 
 				jQuery.ajax(
 				{
-					url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1' + breeze_session_var + '=' + breeze_session_id,
-					data: ({commingFrom : breeze_commingFrom, userID : breeze_userID, maxIndex : breeze_maxIndex, numberTimes : numberOfScrollEvents, totalItems : breeze_totalItems}),
+					url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1',
+					data: ({commingFrom : window.breeze_commingFrom, userID : window.breeze_userID, maxIndex : window.breeze_maxIndex, numberTimes : numberOfScrollEvents, totalItems : window.breeze_totalItems}),
 					cache: false,
 					dataType: 'json',
 					success: function(html)

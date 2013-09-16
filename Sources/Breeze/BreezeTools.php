@@ -83,7 +83,7 @@ class BreezeTools
 		return (json_last_error() == JSON_ERROR_NONE);
 	}
 
-	// Blatantly stolen from Sources/Subs.php:constructPageIndex
+	// Blatantly stolen from Sources/Subs.php::constructPageIndex()
 	public function pagination($base_url, &$start, $max_value, $num_per_page, $flexible_start = false)
 	{
 		global $modSettings;
