@@ -412,7 +412,7 @@ jQuery(document).ready(function(){
 	// Hide the pagination
 	jQuery('.pagelinks').hide();
 
-var IsDuplicateScrollEvent = 0;
+	var numberOfScrollEvents = 0;
 
 	jQuery(document).ready(function () {
 		TrackEventsForPageScroll();
@@ -426,27 +426,26 @@ var IsDuplicateScrollEvent = 0;
 
 			if(scrollPercent > 90)
 			{
-				if(IsDuplicateScrollEvent == 0)
-				{
-					IsDuplicateScrollEvent = 1;
+				// Increment the number of scroll events
+				numberOfScrollEvents++;
 
-					jQuery.ajax(
+				jQuery.ajax(
+				{
+					type: 'REQUEST',
+					url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1' + breeze_session_var + '=' + breeze_session_id,
+					data: ({commingFrom : breeze_commingFrom, ownerId : breeze_profile_owner, maxIndex : breeze_maxIndex, numberTimes : numberOfScrollEvents}),
+					cache: false,
+					dataType: 'json',
+					success: function(html)
 					{
-						type: 'REQUEST',
-						url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1' + breeze_session_var + '=' + breeze_session_id,
-						cache: false,
-						dataType: 'json',
-						success: function(html)
-						{
-							// The server side found an issue
-							if(html.type == 'success'){
-								jQuery('#breeze_display_status').append(html.data);
-							}
-						},
-						error: function (html)
-						{},
-					});
-				}
+						// The server side found an issue
+						if(html.type == 'success'){
+							jQuery('#breeze_display_status').append(html.data);
+						}
+					},
+					error: function (html)
+					{},
+				});
 			}
 		});
 	}
