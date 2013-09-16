@@ -132,6 +132,14 @@ function breezeWall()
 	// Show this user recent activity
 	// some check here
 	$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
+
+	// Need to pass some vars to the browser :(
+	$context['html_headers'] .= '
+<script type="text/javascript"><!-- // --><![CDATA[
+	var breeze_commingFrom = ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ';
+	var breeze_maxIndex = ' . JavaScriptEscape($maxIndex) . ';
+// ]]></script>';
+
 }
 
 // Shows a form for users to set up their wall as needed.
