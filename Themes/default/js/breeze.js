@@ -432,16 +432,15 @@ var IsDuplicateScrollEvent = 0;
 
 					jQuery.ajax(
 					{
-						type: 'POST',
+						type: 'REQUEST',
 						url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1' + breeze_session_var + '=' + breeze_session_id,
-						data: ({content : test, owner_id : ownerID, poster_id : posterID}),
 						cache: false,
 						dataType: 'json',
 						success: function(html)
 						{
 							// The server side found an issue
 							if(html.type == 'success'){
-								jQuery('#breeze_display_status').apend(html.data);
+								jQuery('#breeze_display_status').append(html.data);
 							}
 						},
 						error: function (html)

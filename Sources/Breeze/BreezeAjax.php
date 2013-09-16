@@ -87,7 +87,7 @@ class BreezeAjax
 			'notidelete' => 'notidelete',
 			'multiNoti' => 'multiNoti',
 			'usersmention' => 'usersMention',
-			'cleanlog' => 'cleanLog'
+			'cleanlog' => 'cleanLog',
 			'fetch' => 'fetchStatus',
 			'fetchc' => 'fetchComment',
 		);
