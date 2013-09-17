@@ -139,25 +139,23 @@ class Breeze
 	{
 		global $context, $settings, $user_info, $breezeController, $txt;
 		static $header_done = false;
-
-		// We explicitly need an action... not really but who cares...
-		if (empty($action))
-			return false;
+		static $breezeController;
 
 		// Don't do anything if we are in SSI world
 		if (SMF == 'SSI')
 			return false;
 
+		// This is MADNESS!
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
+		$text = $breezeController->get('text');
+		$breezeSettings = $breezeController->get('settings');
+		$breezeGlobals = Breeze::sGlobals('get');
+
+		// Print once
 		if (!$header_done)
 		{
-			// This is MADNESS!
-			if (empty($breezeController))
-				$breezeController = new BreezeController();
-
-			$text = $breezeController->get('text');
-			$breezeSettings = $breezeController->get('settings');
-			$breezeGlobals = Breeze::sGlobals('get');
-
 			// Load jQuery and the css files
 			$context['html_headers'] .= '
 			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
@@ -170,62 +168,35 @@ class Breeze
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>';
+
+			// Define some variables for the ajax stuff
+			$context['html_headers'] .= '
 			<script type="text/javascript"><!-- // --><![CDATA[
-				var breeze_error_message = '. JavaScriptEscape($text->getText('error_message')) .';
 				var breeze_noti_markasread = '. JavaScriptEscape($text->getText('noti_markasread')) .';
 				var breeze_noti_markasread_after = '. JavaScriptEscape($text->getText('noti_markasread_after')) .';
 				var breeze_noti_delete = '. JavaScriptEscape($text->getText('general_delete')) .';
 				var breeze_noti_delete_after = '. JavaScriptEscape($text->getText('noti_delete_after')) .';
 				var breeze_noti_close = '. JavaScriptEscape($text->getText('noti_close')) .';
 				var breeze_noti_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
+				var breeze_error_message = '. JavaScriptEscape($text->getText('error_message')) .';
+				var breeze_success_message = '. JavaScriptEscape($text->getText('success_message')) .';
+				var breeze_empty_message = '. JavaScriptEscape($text->getText('empty_message')) .';
+				var breeze_error_delete = '. JavaScriptEscape($text->getText('error_message')) .';
+				var breeze_success_delete = '. JavaScriptEscape($text->getText('success_delete')) .';
+				var breeze_confirm_delete = '.JavaScriptEscape( $text->getText('confirm_delete')) .';
+				var breeze_confirm_yes = '. JavaScriptEscape($text->getText('confirm_yes')) .';
+				var breeze_confirm_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
+				var breeze_already_deleted = '. JavaScriptEscape($text->getText('already_deleted')) .';
+				var breeze_cannot_postStatus = '. JavaScriptEscape($text->getText('cannot_postStatus')) .';
+				var breeze_cannot_postComments = '. JavaScriptEscape($text->getText('cannot_postComments')) .';
+				var breeze_page_loading = '. JavaScriptEscape($text->getText('page_loading')) .';
+				var breeze_page_loading_end = '. JavaScriptEscape($text->getText('page_loading_end')) .';
+				var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
+				var breeze_how_many_mentions_options = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_how_many_mentions_options']) ? $context['member']['options']['Breeze_how_many_mentions_options'] : 5)) .';
+				window.breeze_session_id = ' . JavaScriptEscape($context['session_id']) . ';
+				window.breeze_session_var = ' . JavaScriptEscape($context['session_var']) . ';
 			// ]]></script>';
-
-			if ($action == 'wall' || 'profile')
-			{
-				// Gotta set this to false to force the query if we're outside the profile area
-				if ($action == 'wall')
-					$context['user']['is_owner'] = false;
-
-				// DUH! winning!
-				if ($breezeSettings->enable('admin_settings_enable'))
-					$context['insert_after_template'] .= Breeze::who(true);
-
-				// Define some variables for the ajax stuff
-				$context['html_headers'] .= '
-				<script type="text/javascript"><!-- // --><![CDATA[
-					var breeze_error_message = '. JavaScriptEscape($text->getText('error_message')) .';
-					var breeze_success_message = '. JavaScriptEscape($text->getText('success_message')) .';
-					var breeze_empty_message = '. JavaScriptEscape($text->getText('empty_message')) .';
-					var breeze_error_delete = '. JavaScriptEscape($text->getText('error_message')) .';
-					var breeze_success_delete = '. JavaScriptEscape($text->getText('success_delete')) .';
-					var breeze_confirm_delete = '.JavaScriptEscape( $text->getText('confirm_delete')) .';
-					var breeze_confirm_yes = '. JavaScriptEscape($text->getText('confirm_yes')) .';
-					var breeze_confirm_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
-					var breeze_already_deleted = '. JavaScriptEscape($text->getText('already_deleted')) .';
-					var breeze_cannot_postStatus = '. JavaScriptEscape($text->getText('cannot_postStatus')) .';
-					var breeze_cannot_postComments = '. JavaScriptEscape($text->getText('cannot_postComments')) .';
-					var breeze_page_loading = '. JavaScriptEscape($text->getText('page_loading')) .';
-					var breeze_page_loading_end = '. JavaScriptEscape($text->getText('page_loading_end')) .';
-					var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
-					var breeze_how_many_mentions_options = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_how_many_mentions_options']) ? $context['member']['options']['Breeze_how_many_mentions_options'] : 5)) .';
-					window.breeze_session_id = ' . JavaScriptEscape($context['session_id']) . ';
-					window.breeze_session_var = ' . JavaScriptEscape($context['session_var']) . ';
-			// ]]></script>';
-
-				// Load all the libs this mod needs and oh boy there are quite a few!
-				$context['html_headers'] .= '
-				<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
-				<link rel="stylesheet" type="text/css" href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css"/>
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js"></script>
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
-				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>';
-
-				// Does the user wants to use infinite scroll?
-				if (!empty($context['member']['options']['Breeze_infinite_scroll']))
-					$context['html_headers'] .= '
-					<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze_scroll.js"></script>';
-			}
 
 			// Load breeze.js until everyone else is loaded
 			$context['html_headers'] .= '
@@ -243,6 +214,26 @@ class Breeze
 			}
 
 			$header_done = true;
+		}
+
+		if ($action)
+		{
+			// Gotta set this to false to force the query if we're outside the profile area
+			if ($action == 'wall')
+				$context['user']['is_owner'] = false;
+
+			// Load all the libs this mod needs and oh boy there are quite a few!
+			$context['html_headers'] .= '
+			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
+			<link rel="stylesheet" type="text/css" href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css"/>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>';
+
+			// Does the user wants to use infinite scroll?
+			if (!empty($context['member']['options']['Breeze_infinite_scroll']))
+				$context['html_headers'] .= '
+				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze_scroll.js"></script>';
 		}
 	}
 
@@ -289,6 +280,7 @@ class Breeze
 	{
 		global $user_info, $context, $breezeController, $memID;
 
+		// Safety
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
@@ -366,6 +358,8 @@ class Breeze
 				'function' => 'breezeNotifications',
 				'permission' => array('own' => 'profile_view_own', ),
 				);
+
+			Breeze::headersHook(true);
 		}
 		// Done with the hacking...
 	}
@@ -415,9 +409,6 @@ class Breeze
 		array_slice($menu_buttons, $counter)
 	);
 
-		// Cheat, lets cheat a little!
-		Breeze::headersHook();
-
 		// Shh!
 		Breeze::who(false);
 	}
@@ -442,6 +433,9 @@ class Breeze
 
 		// A special action for the buddy request message
 		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'breezeBuddyMessage');
+
+		// Cheat, lets cheat a little!
+		Breeze::headersHook();
 	}
 
 	/**
@@ -522,13 +516,11 @@ class Breeze
 	{
 		global $context;
 
-		$actions = Breeze::sGlobals('get');
-
 		// Show this only in pages generated by Breeze, people are already mad because I dare to put a link back to my site .__.
-		if ($return == true && ($actions->getValue('action') == 'wall' || $actions->getValue('action') == 'profile' && $actions->getValue('area') == 'breezebuddies' || $actions->getValue('area') == 'breezenoti' || $actions->getValue('area') == 'breeze') || ($actions->getValue('action') == 'profile' && !$actions->getValue('area')))
+		if ($return)
 			return '<div style="margin:auto; text-align:center" class="clear"><a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a></div>';
 
-		elseif ($return == false && isset($context['current_action']) && $context['current_action'] === 'credits')
+		elseif (!$return && isset($context['current_action']) && $context['current_action'] === 'credits')
 			$context['copyrights']['mods'][] = '<a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a>';
 	}
 
