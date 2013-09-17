@@ -206,13 +206,6 @@ class Breeze
 			if ($breezeSettings->enable('allowedActions'))
 				Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $breezeSettings->getSetting('allowedActions')));
 
-			// Stuff for the notifications, don't show this if we aren't on a specified action
-			if (empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
-			{
-				$notifications = $breezeController->get('notifications');
-				$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
-			}
-
 			$header_done = true;
 		}
 
@@ -234,6 +227,13 @@ class Breeze
 			if (!empty($context['member']['options']['Breeze_infinite_scroll']))
 				$context['html_headers'] .= '
 				<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze_scroll.js"></script>';
+
+			// Stuff for the notifications, don't show this if we aren't on a specified action
+			if (empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
+			{
+				$notifications = $breezeController->get('notifications');
+				$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
+			}
 		}
 	}
 
