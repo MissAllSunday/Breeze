@@ -139,7 +139,6 @@ class Breeze
 	{
 		global $context, $settings, $user_info, $breezeController, $txt;
 		static $header_done = false;
-		static $breezeController;
 
 		// Don't do anything if we are in SSI world
 		if (SMF == 'SSI')
@@ -316,18 +315,6 @@ class Breeze
 			$profile_areas['breeze_profile'] = array(
 				'title' => $text->getText('general_my_wall_settings'),
 				'areas' => array(),
-				);
-
-			// Single Status
-			$profile_areas['breeze_profile']['areas']['wallstatus'] = array(
-				'label' => $text->getText('user_single_status'),
-				'file' => Breeze::$folder .'BreezeUser.php',
-				'function' => 'breezeSingle',
-				'hidden' => true,
-				'permission' => array(
-					'own' => 'profile_view_own',
-					'any' => 'profile_view_any',
-					),
 				);
 
 			// User individual settings, show the button if the mod is enable and the user is the profile owner or the user has the permissions to edit other walls
