@@ -278,38 +278,52 @@ class BreezeTools
 			return $loaded_ids;
 	}
 
-	public function loadProfileOwner()
+	public function loadMemberContext()
 	{
-		global $memID, $context, $user_info;
+		global $memID, $context, $user_info, $memberContext;
 
-		// Get the GET, get it?
-		$globals = Breeze::sGlobals('get');
+		// If this was already set, skip this part
+		if (empty($context['member']))
+		{
+			// Get the GET, get it?
+			$globals = Breeze::sGlobals('get');
 
-		// Did we get the user by name...
-		if ($globals->getValue('user'))
-			$memberResult = $this->loadUserInfo($globals->getValue('user'), true);
+			// Did we get the user by name...
+			if ($globals->getValue('user'))
+				$memberResult = $this->loadUserInfo($globals->getValue('user'), true);
 
-		// ... or by id_member?
-		elseif ($globals->getValue('u'))
-			$memberResult = $this->loadUserInfo($globals->getValue('u'), true);
+			// ... or by id_member?
+			elseif ($globals->getValue('u'))
+				$memberResult = $this->loadUserInfo($globals->getValue('u'), true);
 
-		// If it was just ?action=profile, edit your own profile.
+			// No var, use $user_info
+			else
+				$memberResult = $this->loadUserInfo($user_info['id'], true);
+
+			// Check if loadMemberData() has returned a valid result.
+			if (!is_array($memberResult))
+				fatal_lang_error('not_a_user', false);
+
+			// If all went well, we have a valid member ID!
+			list ($memID) = $memberResult;
+			$context['id_member'] = $memID;
+
+			// Let's have some information about this member ready, too.
+			loadMemberContext($memID);
+			$context['member'] = $memberContext[$memID];
+		}
+
+		// Set the much needed is_owner var
+		if($context['member']['id'] == $user_info['id'])
+		{
+			$context['member']['is_owner'] = true;
+			$context['user']['is_owner'] = true;
+		}
+
 		else
-			$memberResult = $this->loadUserInfo($user_info['id'], true);
-
-		// Check if loadMemberData() has returned a valid result.
-		if (!is_array($memberResult))
-			fatal_lang_error('not_a_user', false);
-
-		// If all went well, we have a valid member ID!
-		list ($memID) = $memberResult;
-		$context['id_member'] = $memID;
-
-		// Let's have some information about this member ready, too.
-		loadMemberContext($memID);
-		$context['member'] = $memberContext[$memID];
-
-		// Is this the profile of the user himself or herself?
-		$context['user']['is_owner'] = $memID == $user_info['id'];
+		{
+			$context['member']['is_owner'] = true;
+			$context['user']['is_owner'] = true;
+		}
 	}
 }

@@ -41,7 +41,7 @@ if (!defined('SMF'))
 function breezeWall()
 {
 	global $txt, $scripturl, $context, $memberContext, $sourcedir;
-	global $modSettings,  $user_info, $breezeController, $memID, $user_profile, $settings;
+	global $modSettings,  $user_info, $breezeController, $memID, $settings;
 
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
@@ -58,7 +58,8 @@ function breezeWall()
 	$text = $breezeController->get('text');
 	$log = $breezeController->get('log');
 
-	$tools->LoadProfileOwner();
+	// Set member context if it hasn't been set yet
+	$tools->loadMemberContext();
 
 	// Check if this user allowed to be here
 	breezeCheckPermissions();
@@ -86,13 +87,13 @@ function breezeWall()
 	$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
 	$context['member']['status'] = array();
 	$context['Breeze']['tools'] = $tools;
-	$context['can_view_warning'] = in_array('w', $context['admin_features']) && (allowedTo('issue_warning') && !$context['user']['is_owner']) || (!empty($modSettings['warning_show']) && ($modSettings['warning_show'] > 1 || $context['user']['is_owner']));
+	$context['can_view_warning'] = in_array('w', $context['admin_features']) && (allowedTo('issue_warning') && !$context['member']['is_owner']) || (!empty($modSettings['warning_show']) && ($modSettings['warning_show'] > 1 || $context['member']['is_owner']));
 
 	// You are allowed here but you still need to obey some permissions
-	$context['Breeze']['permissions']['post_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postStatus');
-	$context['Breeze']['permissions']['post_comment'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postComments');
-	$context['Breeze']['permissions']['delete_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteStatus');
-	$context['Breeze']['permissions']['delete_comments'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
+	$context['Breeze']['permissions']['post_status'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_postStatus');
+	$context['Breeze']['permissions']['post_comment'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_postComments');
+	$context['Breeze']['permissions']['delete_status'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_deleteStatus');
+	$context['Breeze']['permissions']['delete_comments'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
 
 	// Set up some vars for pagination
 	$maxIndex = !empty($context['member']['options']['Breeze_pagination_number']) ? $context['member']['options']['Breeze_pagination_number'] : 5;
@@ -149,20 +150,14 @@ function breezeSettings()
 {
 	global $context, $memID, $breezeController, $scripturl, $txt, $user_info;
 
-	Breeze::load('Profile-Modify');
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
 
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	// Identify is this person is the profile owner
-	$breezeController->get('tools')->LoadProfileOwner();
-
-	loadThemeOptions($memID);
-
-	if (allowedTo(array('profile_extra_own')))
-		loadCustomFields($memID, 'theme');
+	// Identify if this person is the profile owner
+	$breezeController->get('tools')->loadMemberContext();
 
 	$context['Breeze']['text'] = $breezeController->get('text');
 	$context['sub_template'] = 'member_options';
@@ -280,7 +275,7 @@ function breezeNotifications()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	// We kinda need all this stuff, dont' ask why, just nod your head...
+	// We kinda need all this stuff, don't ask why, just nod your head...
 	$query = $breezeController->get('query');
 	$text = $breezeController->get('text');
 	$globals = Breeze::sGlobals('request');
@@ -301,7 +296,7 @@ function breezeNotifications()
 	// Set all the page stuff
 	$context['sub_template'] = 'user_notifications';
 	$context['page_title'] = $text->getText('noti_title');
-	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
+	$context['member']['is_owner'] = $context['member']['id'] == $user_info['id'];
 	$context['canonical_url'] = $scripturl . '?action=profile;area=notifications;u=' . $context['member']['id'];
 
 	// Print some jQuery goodies...
@@ -319,7 +314,7 @@ function breezeBuddyRequest()
 	global $context, $user_info, $scripturl, $memberContext, $breezeController;
 
 	// Do a quick check to ensure people aren't getting here illegally!
-	if (!$context['user']['is_owner'])
+	if (!$context['member']['is_owner'])
 		fatal_lang_error('no_access', false);
 
 	loadtemplate(Breeze::$name);
@@ -527,9 +522,6 @@ function breezeCheckPermissions()
 
 	$breezeSettings = $breezeController->get('settings');
 	$query = $breezeController->get('query');
-
-	// Is owner?
-	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 
 	// Another page already checked the permissions and if the mod is enable, but better be safe...
 	if (!$breezeSettings->enable('admin_settings_enable'))
