@@ -333,8 +333,14 @@ class BreezeAjax
 			{
 				$typeCall = 'delete'. ucfirst($type);
 
+				// Mess up the vars before performing the query
+				call_integration_hook('integrate_breeze_before_delete', array(&$type, &$id, &$profile_owner));
+
 				// Do the query dance!
 				$this->_query->$typeCall($id, $profile_owner);
+
+				// Tell everyone what just happened here...
+				call_integration_hook('integrate_breeze_after_delete', array($type, $id, $profile_owner));
 
 				// Send the data back to the browser
 				return $this->setResponse(array(
