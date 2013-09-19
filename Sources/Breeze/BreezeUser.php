@@ -49,9 +49,6 @@ function breezeWall()
 	// Check if this user allowed to be here
 	breezeCheckPermissions();
 
-	// DUH! winning!
-	$context['insert_after_template'] .= Breeze::who(true);
-
 	// Madness, madness I say!
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
@@ -278,9 +275,6 @@ function breezeNotifications()
 
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
-
-	// Display all the JavaScript bits
-	Breeze::headersHook('profile');
 
 	if (empty($breezeController))
 		$breezeController = new BreezeController();

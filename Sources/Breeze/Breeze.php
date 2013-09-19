@@ -162,7 +162,7 @@ class Breeze
 			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />';
 
 			// DUH! winning!
-			if (($breezeGlobals->getValue('action') == 'profile' || $breezeGlobals->getValue('action') == 'wall') && $breezeSettings->enable('admin_settings_enable'))
+			if ($breezeSettings->enable('admin_settings_enable') && ($breezeGlobals->getValue('action') == 'profile' || $breezeGlobals->getValue('action') == 'wall'))
 				$context['insert_after_template'] .= Breeze::who(true);
 
 			// Define some variables for the ajax stuff
@@ -342,8 +342,6 @@ class Breeze
 				'function' => 'breezeNotifications',
 				'permission' => array('own' => 'profile_view_own', ),
 				);
-
-			Breeze::headersHook(true);
 		}
 		// Done with the hacking...
 	}
@@ -393,8 +391,8 @@ class Breeze
 			array_slice($menu_buttons, $counter)
 		);
 
-		// Shh!
-		Breeze::who(false);
+		// DUH! winning!
+		Breeze::who();
 	}
 
 	/**
@@ -419,7 +417,7 @@ class Breeze
 		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'breezeBuddyMessage');
 
 		// Cheat, lets cheat a little!
-		Breeze::headersHook();
+		Breeze::headersHook(true);
 	}
 
 	/**
