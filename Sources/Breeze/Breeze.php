@@ -213,6 +213,11 @@ class Breeze
 				var breeze_noti_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
 			// ]]></script>';
 
+			// Does the user wants to use infinite scroll?
+			if (!empty($context['member']['options']['Breeze_infinite_scroll']))
+				$context['insert_after_template'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze_scroll.js"></script>';
+
 			// Load breeze.js until everyone else is loaded
 			$context['html_headers'] .= '
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
