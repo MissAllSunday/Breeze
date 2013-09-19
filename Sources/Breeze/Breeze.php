@@ -70,7 +70,7 @@ class Breeze
 	public static $supportStite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
 
 	// Its easier to list the allowed actions
-	public static $_allowedActions = array('wall', 'display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who',);
+	public static $_allowedActions = array('wall', 'display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who', 'credits',);
 
 	/**
 	 * Breeze::__construct()
@@ -155,7 +155,7 @@ class Breeze
 		{
 			// Gotta set this to false to force the query if we're outside the profile area
 			if ($breezeGlobals->getValue('action') != 'profile')
-				$context['user']['is_owner'] = false;
+				$context['user']['is_owner'] = '';
 
 			$context['html_headers'] .= '
 			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>

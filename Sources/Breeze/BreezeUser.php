@@ -46,9 +46,6 @@ function breezeWall()
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
 
-	// Check if this user allowed to be here
-	breezeCheckPermissions();
-
 	// Madness, madness I say!
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
@@ -60,6 +57,11 @@ function breezeWall()
 	$globals = Breeze::sGlobals('get');
 	$text = $breezeController->get('text');
 	$log = $breezeController->get('log');
+
+	$tools->LoadProfileOwner();
+
+	// Check if this user allowed to be here
+	breezeCheckPermissions();
 
 	// We need to make sure we have all your info...
 	if (empty($context['Breeze']['user_info'][$user_info['id']]))
@@ -81,7 +83,6 @@ function breezeWall()
 		'can_have_buddy' => allowedTo('profile_identity_own') && !empty($modSettings['enable_buddylist']),
 		'can_issue_warning' => in_array('w', $context['admin_features']) && allowedTo('issue_warning') && $modSettings['warning_settings'][0] == 1,
 	);
-	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 	$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
 	$context['member']['status'] = array();
 	$context['Breeze']['tools'] = $tools;
@@ -152,16 +153,16 @@ function breezeSettings()
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
 
-	// Is owner?
-	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
+	if (empty($breezeController))
+		$breezeController = new BreezeController();
+
+	// Identify is this person is the profile owner
+	$breezeController->get('tools')->LoadProfileOwner();
 
 	loadThemeOptions($memID);
 
 	if (allowedTo(array('profile_extra_own')))
 		loadCustomFields($memID, 'theme');
-
-	if (empty($breezeController))
-		$breezeController = new BreezeController();
 
 	$context['Breeze']['text'] = $breezeController->get('text');
 	$context['sub_template'] = 'member_options';

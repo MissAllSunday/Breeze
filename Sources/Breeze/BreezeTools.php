@@ -245,7 +245,7 @@ class BreezeTools
 		return ($preserve_keys === true) ? $array : array_values($array);
 	}
 
-	public function loadUserInfo($id)
+	public function loadUserInfo($id, $returnID = false)
 	{
 		global $memberContext;
 
@@ -272,5 +272,44 @@ class BreezeTools
 			else
 				BreezeUserInfo::guest($u);
 		}
+
+		// Lastly, if the ID was requested, sent it back!
+		if ($returnID)
+			return $loaded_ids;
+	}
+
+	public function loadProfileOwner()
+	{
+		global $memID, $context, $user_info;
+
+		// Get the GET, get it?
+		$globals = Breeze::sGlobals('get');
+
+		// Did we get the user by name...
+		if ($globals->getValue('user'))
+			$memberResult = $this->loadUserInfo($globals->getValue('user'), true);
+
+		// ... or by id_member?
+		elseif ($globals->getValue('u'))
+			$memberResult = $this->loadUserInfo($globals->getValue('u'), true);
+
+		// If it was just ?action=profile, edit your own profile.
+		else
+			$memberResult = $this->loadUserInfo($user_info['id'], true);
+
+		// Check if loadMemberData() has returned a valid result.
+		if (!is_array($memberResult))
+			fatal_lang_error('not_a_user', false);
+
+		// If all went well, we have a valid member ID!
+		list ($memID) = $memberResult;
+		$context['id_member'] = $memID;
+
+		// Let's have some information about this member ready, too.
+		loadMemberContext($memID);
+		$context['member'] = $memberContext[$memID];
+
+		// Is this the profile of the user himself or herself?
+		$context['user']['is_owner'] = $memID == $user_info['id'];
 	}
 }
