@@ -526,7 +526,13 @@ class BreezeAjax
 		$commingFrom = $globals->getRaw('commingFrom');
 		$return = '';
 
-
+		// The usual checks
+		if (empty($id) || empty($maxIndex) || empty($numberTimes) || empty($commingFrom))
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $id,
+			));
 
 		// Calculate the start value
 		$start = $maxIndex * $numberTimes;
@@ -537,15 +543,23 @@ class BreezeAjax
 		$data = $this->_query->$call($id, $maxIndex, $start);
 
 		if (!empty($data['data']))
-			foreach ($data['data'] as $params)
-				$return .= $this->_display->HTML($params, 'status');
+		{
+				foreach ($data['data'] as $params)
+					$return .= $this->_display->HTML($params, 'status');
 
-		return $this->setResponse(array(
-			'type' => 'success',
-			'message' => 'published_comment',
-			'data' => $return,
-			'owner' => $id,
-		));
+			return $this->setResponse(array(
+				'type' => 'success',
+				'data' => $return,
+				'owner' => $id,
+			));
+		}
+
+		else
+			return $this->setResponse(array(
+				'type' => 'success',
+				'data' => 'end',
+				'owner' => $id,
+			));
 	}
 
 	/**

@@ -107,7 +107,7 @@ function template_main()
 					<div class="breeze_user_comment_comment">
 						'. $context['Breeze']['params']['body'] .'
 						<div class="breeze_options">
-							<span class="time_elapsed" title="'. $context['Breeze']['params']['time_raw'] .'">'. $context['Breeze']['params']['time'] .'</span> | <a href="javascript:void(0)" id="'. $context['Breeze']['params']['id'] .'" class="breeze_delete_comment">Delete</a>
+							<span class="time_elapsed" title="'. timeformat($context['Breeze']['params']['time_raw'], false) .'">'. $context['Breeze']['params']['time'] .' </span> | <a href="javascript:void(0)" id="'. $context['Breeze']['params']['id'] .'" class="breeze_delete_comment">Delete</a>
 						</div>
 					</div>
 					<div class="clear"></div>

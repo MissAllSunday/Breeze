@@ -35,7 +35,6 @@
 
 // Infinite scrolling
 jQuery(document).ready(function(){
-
 	// Hide the pagination
 	jQuery('.pagelinks').hide();
 
@@ -71,7 +70,19 @@ jQuery(document).ready(function(){
 					{
 						// The server response as a JSON object
 						if(html.type == 'success'){
-							jQuery('.breeze_status').append(html.data);
+							if (html.data != 'end'){
+								jQuery('.breeze_status').append(html.data);
+							}
+
+							else{
+								noty({
+									text: 'You Win the Internet!',
+									timeout: 3500,
+									type: 'success',
+								});
+								jQuery('tempDIV').hide();
+								return;
+							}
 						}
 
 						else if(html.type == 'error'){
@@ -92,7 +103,6 @@ jQuery(document).ready(function(){
 				});
 			},
 		}).appendTo('#tempDIV');
-
 	}
 
 	// Check if we are near the end of the page
