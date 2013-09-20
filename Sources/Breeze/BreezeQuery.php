@@ -382,6 +382,9 @@ class BreezeQuery extends Breeze
 		// Lastly, build the pagination
 		$return['pagination'] = $this->tools->pagination($this->scripturl . '?action=profile', $start, $count, $maxIndex, false);
 
+		// Pass the total amount of items
+		$return['count'] = $count;
+
 		return $return;
 	}
 
@@ -554,6 +557,9 @@ class BreezeQuery extends Breeze
 
 		// Lastly, build the pagination
 		$return['pagination'] = $this->tools->pagination($this->scripturl . '?action=wall', $start, $count, $maxIndex, false);
+
+		// Pass the total amount of items
+		$return['count'] = $count;
 
 		return $return;
 	}

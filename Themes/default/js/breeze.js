@@ -73,7 +73,7 @@
 					jQuery.ajax(
 					{
 						type: 'POST',
-						url: smf_scripturl + '?action=breezeajax;sa=post;js=1' + breeze_session_var + '=' + breeze_session_id,
+						url: smf_scripturl + '?action=breezeajax;sa=post;js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
 						data: ({content : test, owner_id : ownerID, poster_id : posterID}),
 						cache: false,
 						dataType: 'json',
@@ -160,7 +160,7 @@
 					jQuery.ajax(
 					{
 						type: 'POST',
-						url: smf_scripturl + '?action=breezeajax;sa=postcomment;js=1' + breeze_session_var + '=' + breeze_session_id,
+						url: smf_scripturl + '?action=breezeajax;sa=postcomment;js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
 						data: ({content : commentBox, status_owner_id : status_owner_id, poster_comment_id : poster_comment_id, profile_owner_id: profile_owner_id, status_id : status_id}),
 						cache: false,
 						dataType: 'json',
@@ -230,7 +230,7 @@
 						addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
 							jQuery.ajax({
 								type: 'POST',
-								url: urlParam + ';js=1' + breeze_session_var + '=' + breeze_session_id,
+								url: urlParam + ';js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
 								cache: false,
 								dataType: 'json',
 								success: function(html){
@@ -295,7 +295,7 @@
 						addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
 							jQuery.ajax({
 								type: 'POST',
-								url: urlParam + ';js=1' + breeze_session_var + '=' + breeze_session_id,
+								url: urlParam + ';js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
 								cache: false,
 								dataType: 'json',
 								success: function(html){
@@ -383,7 +383,7 @@ jQuery(document).ready(function(){
 jQuery(document).ready(function(){
 	jQuery('textarea[rel*=atwhoMention]').bind("focus", function(event){
 		jQuery.ajax({
-			url: smf_scripturl + '?action=breezeajax;sa=usersmention;js=1' + breeze_session_var + '=' + breeze_session_id,
+			url: smf_scripturl + '?action=breezeajax;sa=usersmention;js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
 			type: "GET",
 			dataType: "json",
 			success: function(result)

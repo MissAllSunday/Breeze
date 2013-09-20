@@ -41,25 +41,28 @@ if (!defined('SMF'))
 function breezeWall()
 {
 	global $txt, $scripturl, $context, $memberContext, $sourcedir;
-	global $modSettings,  $user_info, $breezeController, $memID, $user_profile;
+	global $modSettings,  $user_info, $breezeController, $memID, $settings;
 
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
-
-	// Check if this user allowed to be here
-	breezeCheckPermissions();
 
 	// Madness, madness I say!
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
 	// We kinda need all this stuff, don't ask why, just nod your head...
-	$settings = $breezeController->get('settings');
+	$breezeSettings = $breezeController->get('settings');
 	$query = $breezeController->get('query');
 	$tools = $breezeController->get('tools');
 	$globals = Breeze::sGlobals('get');
 	$text = $breezeController->get('text');
 	$log = $breezeController->get('log');
+
+	// Set member context if it hasn't been set yet
+	$tools->loadMemberContext();
+
+	// Check if this user allowed to be here
+	breezeCheckPermissions();
 
 	// We need to make sure we have all your info...
 	if (empty($context['Breeze']['user_info'][$user_info['id']]))
@@ -81,17 +84,16 @@ function breezeWall()
 		'can_have_buddy' => allowedTo('profile_identity_own') && !empty($modSettings['enable_buddylist']),
 		'can_issue_warning' => in_array('w', $context['admin_features']) && allowedTo('issue_warning') && $modSettings['warning_settings'][0] == 1,
 	);
-	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 	$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
 	$context['member']['status'] = array();
 	$context['Breeze']['tools'] = $tools;
-	$context['can_view_warning'] = in_array('w', $context['admin_features']) && (allowedTo('issue_warning') && !$context['user']['is_owner']) || (!empty($modSettings['warning_show']) && ($modSettings['warning_show'] > 1 || $context['user']['is_owner']));
+	$context['can_view_warning'] = in_array('w', $context['admin_features']) && (allowedTo('issue_warning') && !$context['member']['is_owner']) || (!empty($modSettings['warning_show']) && ($modSettings['warning_show'] > 1 || $context['member']['is_owner']));
 
 	// You are allowed here but you still need to obey some permissions
-	$context['Breeze']['permissions']['post_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postStatus');
-	$context['Breeze']['permissions']['post_comment'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_postComments');
-	$context['Breeze']['permissions']['delete_status'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteStatus');
-	$context['Breeze']['permissions']['delete_comments'] = $context['user']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
+	$context['Breeze']['permissions']['post_status'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_postStatus');
+	$context['Breeze']['permissions']['post_comment'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_postComments');
+	$context['Breeze']['permissions']['delete_status'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_deleteStatus');
+	$context['Breeze']['permissions']['delete_comments'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
 
 	// Set up some vars for pagination
 	$maxIndex = !empty($context['member']['options']['Breeze_pagination_number']) ? $context['member']['options']['Breeze_pagination_number'] : 5;
@@ -132,6 +134,15 @@ function breezeWall()
 	// Show this user recent activity
 	// some check here
 	$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
+
+	// Need to pass some vars to the browser :(
+	$context['html_headers'] .= '
+	<script type="text/javascript"><!-- // --><![CDATA[
+		window.breeze_commingFrom = ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ';
+		window.breeze_maxIndex = ' . $maxIndex . ';
+		window.breeze_userID = ' . $user_info['id'] . ';
+		window.breeze_totalItems = ' . $data['count'] . ';
+	// ]]></script>';
 }
 
 // Shows a form for users to set up their wall as needed.
@@ -139,20 +150,14 @@ function breezeSettings()
 {
 	global $context, $memID, $breezeController, $scripturl, $txt, $user_info;
 
-	Breeze::load('Profile-Modify');
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
 
-	// Is owner?
-	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
-
-	loadThemeOptions($memID);
-
-	if (allowedTo(array('profile_extra_own')))
-		loadCustomFields($memID, 'theme');
-
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
+
+	// Identify if this person is the profile owner
+	$breezeController->get('tools')->loadMemberContext();
 
 	$context['Breeze']['text'] = $breezeController->get('text');
 	$context['sub_template'] = 'member_options';
@@ -181,12 +186,12 @@ function breezeSettings()
 		3,3
 	);
 
-	// Infinite scroll, not now honey, I have a headache...
-	// $form->addCheckBox(
-		// 'Breeze_infinite_scroll',
-		// 'infinite_scroll',
-		// !empty($context['member']['options']['Breeze_infinite_scroll']) ? true : false
-	// );
+	// Infinite scroll
+	$form->addCheckBox(
+		'Breeze_infinite_scroll',
+		'infinite_scroll',
+		!empty($context['member']['options']['Breeze_infinite_scroll']) ? true : false
+	);
 
 	// How many options to be displayed when mentioning
 	$form->addText(
@@ -267,13 +272,10 @@ function breezeNotifications()
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
 
-	// Display all the JavaScript bits
-	Breeze::headersHook('profile');
-
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	// We kinda need all this stuff, dont' ask why, just nod your head...
+	// We kinda need all this stuff, don't ask why, just nod your head...
 	$query = $breezeController->get('query');
 	$text = $breezeController->get('text');
 	$globals = Breeze::sGlobals('request');
@@ -294,7 +296,7 @@ function breezeNotifications()
 	// Set all the page stuff
 	$context['sub_template'] = 'user_notifications';
 	$context['page_title'] = $text->getText('noti_title');
-	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
+	$context['member']['is_owner'] = $context['member']['id'] == $user_info['id'];
 	$context['canonical_url'] = $scripturl . '?action=profile;area=notifications;u=' . $context['member']['id'];
 
 	// Print some jQuery goodies...
@@ -312,7 +314,7 @@ function breezeBuddyRequest()
 	global $context, $user_info, $scripturl, $memberContext, $breezeController;
 
 	// Do a quick check to ensure people aren't getting here illegally!
-	if (!$context['user']['is_owner'])
+	if (!$context['member']['is_owner'])
 		fatal_lang_error('no_access', false);
 
 	loadtemplate(Breeze::$name);
@@ -518,18 +520,15 @@ function breezeCheckPermissions()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	$settings = $breezeController->get('settings');
+	$breezeSettings = $breezeController->get('settings');
 	$query = $breezeController->get('query');
 
-	// Is owner?
-	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
-
 	// Another page already checked the permissions and if the mod is enable, but better be safe...
-	if (!$settings->enable('admin_settings_enable'))
+	if (!$breezeSettings->enable('admin_settings_enable'))
 		redirectexit();
 
 	// If we are forcing the wall, lets check the admin setting first
-	if ($settings->enable('admin_settings_force_enable'))
+	if ($breezeSettings->enable('admin_settings_force_enable'))
 		if (!isset($context['member']['options']['Breeze_enable_wall']))
 			$context['member']['options']['Breeze_enable_wall'] = 1;
 

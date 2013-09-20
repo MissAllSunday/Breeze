@@ -55,7 +55,7 @@ function breeze_status($data)
 			$delete_comments = $status['poster_id'] == $user_info['id'] ? true : allowedTo('breeze_deleteComments');
 
 			echo '
-			<li class="windowbg" id ="status_id_', $status['id'] ,'">';
+			<li class="windowbg status_breeze" id ="status_id_', $status['id'] ,'">';
 
 			// If we're on the general wall, show a nice bar indicating where this status come from...
 			if (!empty($context['Breeze']['commingFrom']) && $context['Breeze']['commingFrom'] == 'wall')
@@ -212,11 +212,11 @@ function breeze_profile_owner()
 			<span id="userstatus">', $context['can_send_pm'] ? '<a href="' . $context['member']['online']['href'] . '" title="' . $context['member']['online']['label'] . '" rel="nofollow">' : '', $settings['use_image_buttons'] ? '<img src="' . $context['member']['online']['image_href'] . '" alt="' . $context['member']['online']['text'] . '" align="middle" />' : $context['member']['online']['text'], $context['can_send_pm'] ? '</a>' : '', $settings['use_image_buttons'] ? '<span class="smalltext"> ' . $context['member']['online']['text'] . '</span>' : '';
 
 	// Can they add this member as a buddy?
-	if (!empty($context['can_have_buddy']) && !$context['user']['is_owner'])
+	if (!empty($context['can_have_buddy']) && !$context['member']['is_owner'])
 		echo '
 			<br /><a href="', $scripturl, '?action=buddy;u=', $context['id_member'], ';', $context['session_var'], '=', $context['session_id'], '">[', $txt['buddy_' . ($context['member']['is_buddy'] ? 'remove' : 'add')], ']</a>';
 
-	if (!$context['user']['is_owner'] && $context['can_send_pm'])
+	if (!$context['member']['is_owner'] && $context['can_send_pm'])
 		echo '
 			<br /><a href="', $scripturl, '?action=pm;sa=send;u=', $context['id_member'], '">', $txt['profile_sendpm_short'], '</a><br />';
 	echo '

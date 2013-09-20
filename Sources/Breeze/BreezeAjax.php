@@ -87,7 +87,9 @@ class BreezeAjax
 			'notidelete' => 'notidelete',
 			'multiNoti' => 'multiNoti',
 			'usersmention' => 'usersMention',
-			'cleanlog' => 'cleanLog'
+			'cleanlog' => 'cleanLog',
+			'fetch' => 'fetchStatus',
+			'fetchc' => 'fetchComment',
 		);
 
 		// Build the correct redirect URL
@@ -331,8 +333,14 @@ class BreezeAjax
 			{
 				$typeCall = 'delete'. ucfirst($type);
 
+				// Mess up the vars before performing the query
+				call_integration_hook('integrate_breeze_before_delete', array(&$type, &$id, &$profile_owner));
+
 				// Do the query dance!
 				$this->_query->$typeCall($id, $profile_owner);
+
+				// Tell everyone what just happened here...
+				call_integration_hook('integrate_breeze_after_delete', array($type, $id, $profile_owner));
 
 				// Send the data back to the browser
 				return $this->setResponse(array(
@@ -507,6 +515,53 @@ class BreezeAjax
 		}
 	}
 
+	protected function fetchStatus()
+	{
+		// Get the global vars
+		$globals = Breeze::sGlobals('request');
+
+		$id = $globals->getRaw('userID');
+		$maxIndex = $globals->getRaw('maxIndex');
+		$numberTimes = $globals->getRaw('numberTimes');
+		$commingFrom = $globals->getRaw('commingFrom');
+		$return = '';
+
+		// The usual checks
+		if (empty($id) || empty($maxIndex) || empty($numberTimes) || empty($commingFrom))
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $id,
+			));
+
+		// Calculate the start value
+		$start = $maxIndex * $numberTimes;
+
+		// Get the right call to the DB
+		$call = $commingFrom == 'profile' ? 'getStatusByProfile' : 'getStatusByUser';
+
+		$data = $this->_query->$call($id, $maxIndex, $start);
+
+		if (!empty($data['data']))
+		{
+				foreach ($data['data'] as $params)
+					$return .= $this->_display->HTML($params, 'status');
+
+			return $this->setResponse(array(
+				'type' => 'success',
+				'data' => $return,
+				'owner' => $id,
+			));
+		}
+
+		else
+			return $this->setResponse(array(
+				'type' => 'success',
+				'data' => 'end',
+				'owner' => $id,
+			));
+	}
+
 	/**
 	 * BreezeAjax::usersMention()
 	 *
@@ -650,7 +705,7 @@ class BreezeAjax
 
 		$userString = $this->comingFrom == 'profile' ? ';u='. $this->_response['owner'] : '';
 
-		// A special are perhaps?
+		// A special area perhaps?
 		if (!empty($this->_response['extra']))
 			foreach ($this->_response['extra'] as $k => $v)
 				$extraString .= ';'. $k .'='. $v;

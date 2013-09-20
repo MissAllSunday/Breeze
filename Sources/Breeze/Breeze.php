@@ -70,7 +70,7 @@ class Breeze
 	public static $supportStite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
 
 	// Its easier to list the allowed actions
-	public static $_allowedActions = array('wall', 'display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who',);
+	public static $_allowedActions = array('wall', 'display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who', 'credits',);
 
 	/**
 	 * Breeze::__construct()
@@ -151,18 +151,17 @@ class Breeze
 		$breezeSettings = $breezeController->get('settings');
 		$breezeGlobals = Breeze::sGlobals('get');
 
+		// Set $context['member'] if it hasn't been set before
+		$breezeController->get('tools')->loadMemberContext();
+
 		if (!$header_done)
 		{
-			// Gotta set this to false to force the query if we're outside the profile area
-			if ($breezeGlobals->getValue('action') != 'profile')
-				$context['user']['is_owner'] = false;
-
 			$context['html_headers'] .= '
 			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
 			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />';
 
 			// DUH! winning!
-			if (($breezeGlobals->getValue('action') == 'profile' || $breezeGlobals->getValue('action') == 'wall') && $breezeSettings->enable('admin_settings_enable'))
+			if ($breezeSettings->enable('admin_settings_enable') && ($breezeGlobals->getValue('action') == 'profile' || $breezeGlobals->getValue('action') == 'wall'))
 				$context['insert_after_template'] .= Breeze::who(true);
 
 			// Define some variables for the ajax stuff
@@ -213,6 +212,11 @@ class Breeze
 				var breeze_noti_close = '. JavaScriptEscape($text->getText('noti_close')) .';
 				var breeze_noti_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
 			// ]]></script>';
+
+			// Does the user wants to use infinite scroll?
+			if (!empty($context['member']['options']['Breeze_infinite_scroll']))
+				$context['insert_after_template'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze_scroll.js"></script>';
 
 			// Load breeze.js until everyone else is loaded
 			$context['html_headers'] .= '
@@ -276,6 +280,7 @@ class Breeze
 	{
 		global $user_info, $context, $breezeController, $memID;
 
+		// Safety
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
@@ -311,19 +316,7 @@ class Breeze
 			$profile_areas['breeze_profile'] = array(
 				'title' => $text->getText('general_my_wall_settings'),
 				'areas' => array(),
-				);
-
-			// Single Status
-			$profile_areas['breeze_profile']['areas']['wallstatus'] = array(
-				'label' => $text->getText('user_single_status'),
-				'file' => Breeze::$folder .'BreezeUser.php',
-				'function' => 'breezeSingle',
-				'hidden' => true,
-				'permission' => array(
-					'own' => 'profile_view_own',
-					'any' => 'profile_view_any',
-					),
-				);
+			);
 
 			// User individual settings, show the button if the mod is enable and the user is the profile owner or the user has the permissions to edit other walls
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
@@ -383,30 +376,27 @@ class Breeze
 				'show' => true,
 			);
 
-	// The Wall link
-	$insert = 'home'; // for now lets use the home button as reference...
-	$counter = 0;
+		// The Wall link
+		$insert = 'home'; // for now lets use the home button as reference...
+		$counter = 0;
 
-	foreach ($menu_buttons as $area => $dummy)
-		if (++$counter && $area == $insert )
-			break;
+		foreach ($menu_buttons as $area => $dummy)
+			if (++$counter && $area == $insert )
+				break;
 
-	$menu_buttons = array_merge(
-		array_slice($menu_buttons, 0, $counter),
-		array('wall' => array(
-			'title' => $gText->getText('general_wall'),
-			'href' => $scripturl . '?action=wall',
-			'show' => ($gSettings->enable('admin_settings_enable') && !$user_info['is_guest']),
-			'sub_buttons' => array(),
-		)),
-		array_slice($menu_buttons, $counter)
-	);
+		$menu_buttons = array_merge(
+			array_slice($menu_buttons, 0, $counter),
+			array('wall' => array(
+				'title' => $gText->getText('general_wall'),
+				'href' => $scripturl . '?action=wall',
+				'show' => ($gSettings->enable('admin_settings_enable') && !$user_info['is_guest']),
+				'sub_buttons' => array(),
+			)),
+			array_slice($menu_buttons, $counter)
+		);
 
-		// Cheat, lets cheat a little!
-		Breeze::headersHook();
-
-		// Shh!
-		Breeze::who(false);
+		// DUH! winning!
+		Breeze::who();
 	}
 
 	/**
@@ -429,6 +419,9 @@ class Breeze
 
 		// A special action for the buddy request message
 		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'breezeBuddyMessage');
+
+		// Cheat, lets cheat a little!
+		Breeze::headersHook(true);
 	}
 
 	/**
@@ -509,13 +502,11 @@ class Breeze
 	{
 		global $context;
 
-		$actions = Breeze::sGlobals('get');
-
 		// Show this only in pages generated by Breeze, people are already mad because I dare to put a link back to my site .__.
-		if ($return == true && ($actions->getValue('action') == 'wall' || $actions->getValue('action') == 'profile' && $actions->getValue('area') == 'breezebuddies' || $actions->getValue('area') == 'breezenoti' || $actions->getValue('area') == 'breeze') || ($actions->getValue('action') == 'profile' && !$actions->getValue('area')))
+		if ($return)
 			return '<div style="margin:auto; text-align:center" class="clear"><a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a></div>';
 
-		elseif ($return == false && isset($context['current_action']) && $context['current_action'] === 'credits')
+		elseif (!$return && isset($context['current_action']) && $context['current_action'] === 'credits')
 			$context['copyrights']['mods'][] = '<a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a>';
 	}
 

@@ -83,7 +83,7 @@ class BreezeTools
 		return (json_last_error() == JSON_ERROR_NONE);
 	}
 
-	// Blatantly stolen from Sources/Subs.php:constructPageIndex
+	// Blatantly stolen from Sources/Subs.php::constructPageIndex()
 	public function pagination($base_url, &$start, $max_value, $num_per_page, $flexible_start = false)
 	{
 		global $modSettings;
@@ -245,7 +245,7 @@ class BreezeTools
 		return ($preserve_keys === true) ? $array : array_values($array);
 	}
 
-	public function loadUserInfo($id)
+	public function loadUserInfo($id, $returnID = false)
 	{
 		global $memberContext;
 
@@ -271,6 +271,59 @@ class BreezeTools
 			// Poster is a guest
 			else
 				BreezeUserInfo::guest($u);
+		}
+
+		// Lastly, if the ID was requested, sent it back!
+		if ($returnID)
+			return $loaded_ids;
+	}
+
+	public function loadMemberContext()
+	{
+		global $memID, $context, $user_info, $memberContext;
+
+		// If this was already set, skip this part
+		if (empty($context['member']))
+		{
+			// Get the GET, get it?
+			$globals = Breeze::sGlobals('get');
+
+			// Did we get the user by name...
+			if ($globals->getValue('user'))
+				$memberResult = $this->loadUserInfo($globals->getValue('user'), true);
+
+			// ... or by id_member?
+			elseif ($globals->getValue('u'))
+				$memberResult = $this->loadUserInfo($globals->getValue('u'), true);
+
+			// No var, use $user_info
+			else
+				$memberResult = $this->loadUserInfo($user_info['id'], true);
+
+			// Check if loadMemberData() has returned a valid result.
+			if (!is_array($memberResult))
+				fatal_lang_error('not_a_user', false);
+
+			// If all went well, we have a valid member ID!
+			list ($memID) = $memberResult;
+			$context['id_member'] = $memID;
+
+			// Let's have some information about this member ready, too.
+			loadMemberContext($memID);
+			$context['member'] = $memberContext[$memID];
+		}
+
+		// Set the much needed is_owner var
+		if($context['member']['id'] == $user_info['id'])
+		{
+			$context['member']['is_owner'] = true;
+			$context['user']['is_owner'] = true;
+		}
+
+		else
+		{
+			$context['member']['is_owner'] = true;
+			$context['user']['is_owner'] = true;
 		}
 	}
 }
