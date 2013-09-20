@@ -39,45 +39,39 @@ jQuery(document).ready(function(){
 	// Hide the pagination
 	jQuery('.pagelinks').hide();
 
-	var numberOfScrollEvents = 0;
+	var numberOfEvents = 0;
 
 	// Fires up the infinite scrolling thingy
-	TrackEventsForPageScroll();
+	showMoarButton();
 
-	function TrackEventsForPageScroll()
+	function showMoarButton()
 	{
-		jQuery(window).scroll(function(){
+		jQuery('<div/>', {
+			id: 'tempDIV',
+			class: 'clear',
+			style: 'margin:auto;text-align:center;padding:5px;width: 62%;',
+		}).appendTo('#profileview').show();
 
-		var scrollPercent = GetScrollPercent();
+		// And also a nice button...
+		jQuery('<button/>', {
+			id: 'loadMoar',
+			class: 'clear',
+			text: 'Load moar!!',
+			click: function () {
 
-			if(scrollPercent > 90 || scrollPercent < 95)
-			{
-				// Increment the number of scroll events
-				numberOfScrollEvents++;
-
-				// Have we reached the end?
-				if (numberOfScrollEvents * window.breeze_maxIndex >= window.breeze_numberTimes)
-				{
-					noty({
-						text: 'There aren\'t any more messages to fetch',
-						timeout: 3500, type: 'success',
-					});
-
-					jQuery('#breeze_display_status').append('<li class="windowbg> There aren\'t any more messages to fetch</li>');
-					return;
-				}
+				numberOfEvents++;
 
 				jQuery.ajax(
 				{
-					url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1'  + window.breeze_session_var + '=' + window.breeze_session_id,
-					data: ({commingFrom : window.breeze_commingFrom, userID : window.breeze_userID, maxIndex : window.breeze_maxIndex, numberTimes : numberOfScrollEvents, totalItems : window.breeze_totalItems}),
+					// Yes, this is a VERY large url...
+					url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1;commingFrom='+ window.breeze_commingFrom +';userID='+ window.breeze_userID +';maxIndex='+ window.breeze_maxIndex +';numberTimes='+ numberOfEvents +';totalItems='+ window.breeze_totalItems +';' + window.breeze_session_var + '=' + window.breeze_session_id,
 					cache: false,
 					dataType: 'json',
 					success: function(html)
 					{
-						// The server side found an issue
+						// The server response as a JSON object
 						if(html.type == 'success'){
-							jQuery('#breeze_display_status').append(html.data);
+							jQuery('.breeze_status').append(html.data);
 						}
 
 						else if(html.type == 'error'){
@@ -90,14 +84,15 @@ jQuery(document).ready(function(){
 					},
 					error: function (html){
 						noty({
-							text: 'error',
+							text: html,
 							timeout: 3500,
 							type: 'error',
 						});
 					},
 				});
-			}
-		});
+			},
+		}).appendTo('#tempDIV');
+
 	}
 
 	// Check if we are near the end of the page

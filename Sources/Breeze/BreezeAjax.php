@@ -517,8 +517,6 @@ class BreezeAjax
 
 	protected function fetchStatus()
 	{
-		checkSession('request', '', false);
-
 		// Get the global vars
 		$globals = Breeze::sGlobals('request');
 
@@ -528,13 +526,7 @@ class BreezeAjax
 		$commingFrom = $globals->getRaw('commingFrom');
 		$return = '';
 
-		// The usual checks
-		if (empty($id) || empty($maxIndex) || empty($numberTimes) || empty($commingFrom))
-			return $this->setResponse(array(
-				'message' => 'wrong_values',
-				'type' => 'error',
-				'owner' => $id,
-			));
+
 
 		// Calculate the start value
 		$start = $maxIndex * $numberTimes;

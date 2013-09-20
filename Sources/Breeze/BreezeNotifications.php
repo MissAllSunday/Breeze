@@ -243,7 +243,7 @@ class BreezeNotifications
 			// @todo move this to breeze.js
 			$context['insert_after_template'] .= '
 				<script type="text/javascript"><!-- // --><![CDATA[
-		$(document).ready(function()
+		jQuery(document).ready(function()
 		{
 ';
 			foreach ($this->_messages as $m)
