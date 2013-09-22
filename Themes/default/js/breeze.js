@@ -127,6 +127,31 @@ jQuery(document).ready(function(){
 		return false;
 	});
 
+	// Mentioning
+	jQuery('textarea[rel*=atwhoMention]').bind("focus", function(event){
+		jQuery.ajax({
+			url: smf_scripturl + '?action=breezeajax;sa=usersmention;js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
+			type: "GET",
+			dataType: "json",
+			success: function(result)
+			{
+				jQuery('textarea[rel*=atwhoMention]').atwho('@', {
+					search_key: "name",
+					tpl: "<li data-value='(${name}, ${id})'>${name} <small>${id}</small></li>",
+					data: result,
+					limit: breeze_how_many_mentions_options,
+					callback: {
+						filter: function (query, data, search_key) {
+							return jQuery.map(data, function(item, i) {
+								return item[search_key].toLowerCase().indexOf(query) < 0 ? null : item
+							})
+						},
+					}
+				});
+			},
+		});
+	});
+
 });
 
 
