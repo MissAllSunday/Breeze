@@ -84,15 +84,14 @@ jQuery(document).ready(function(){
 			jQuery('#breeze_load_image').fadeIn('slow').html(breeze.loadImage);
 
 			// The long, long ajax call...
-			jQuery.ajax(
-			{
+			jQuery.ajax({
 				type: 'GET',
 				url: smf_scripturl + '?action=breezeajax;sa=post;js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
 				data: status,
 				cache: false,
 				dataType: 'json',
 				success: function(html)
-				{console.log(html);
+				{
 					jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
 						// Enable the button again...
 						jQuery('.status_button').removeAttr('disabled');
@@ -128,24 +127,72 @@ jQuery(document).ready(function(){
 	});
 
 	// Post a new comment
-	$(document).on('submit', '.form_comment', function(event){
-
-		// Set a new object
-		var comment = {};
+	jQuery(document).on('submit', '.form_comment', function(event){
 
 		// The most important thing is... the ID
-		comment.Status = parseInt(jQuery(this).attr('id').replace('form_comment_', ''));
+		var StatusID = parseInt(jQuery(this).attr('id').replace('form_comment_', ''));
 
-		// Set the profile owner
-		comment = {
+		// Gather all the data we need
+		var comment = {
+			'Status' : StatusID,
 			'Owner' : window.breeze_profileOwner,
-			'Poster' : jQuery('#commentPoster_' + comment.Status).val(),
-			'StatusPoster' : jQuery('#commentStatusPoster_' + comment.Status).val(),
-			'Content' : jQuery('#commentContent_' + comment.Status).val(),
+			'Poster' : jQuery('#commentPoster_' + StatusID).val(),
+			'StatusPoster' : jQuery('#commentStatusPoster_' + StatusID).val(),
+			'Content' : jQuery('#commentContent_' + StatusID).val(),
 		};
 
+		// Don't be silly...
+		if(comment.Content=='')
+		{
+			alert(breeze_empty_message); // @todo, perhaps fire a nice noty message instead of a nasty alert?
+			return false;
+		}
 
-console.log(comment);
+		else
+		{
+			// Disable the button
+			jQuery('#commentSubmit_' + StatusID).attr('disabled', 'disabled');
+
+			// The usual loading image...
+			jQuery('#breeze_load_image_comment_'+ StatusID).fadeIn('slow').html(breeze.loadImage);
+
+			jQuery.ajax({
+				type: 'GET',
+				url: smf_scripturl + '?action=breezeajax;sa=postcomment;js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
+				data: comment,
+				cache: false,
+				dataType: 'json',
+				success: function(html){
+
+					jQuery('#breeze_load_image_comment_'+ StatusID).fadeOut('slow', 'linear', function(){
+
+						// Send the notification
+						breeze.noti(html);
+
+						// Everything went better than expected :)
+						jQuery('#comment_loadplace_'+Id).append(html.data).fadeIn('slow', 'linear', function(){
+							noty({
+								text: html.message,
+								timeout: 3500, type: html.type,
+							});
+						});
+					});
+
+					// Enable the button again...
+					jQuery('#commentSubmit_' + StatusID).removeAttr('disabled');
+					jQuery('#commentContent_' + StatusID).val('').focus();
+
+				},
+				error: function (html)
+				{
+					jQuery('#breeze_load_image_comment_'+ StatusID).fadeOut('slow');
+					breeze.noti(html);
+					jQuery('#commentSubmit_' + StatusID).removeAttr('disabled');
+					jQuery('#commentContent_' + StatusID).val('').focus();
+				},
+			});
+		}
+
 		// Prevent normal behaviour
 		return false;
 	});
