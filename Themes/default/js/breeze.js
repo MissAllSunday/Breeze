@@ -33,25 +33,104 @@
  *
  */
 
+// Some re-usable vars
+var breeze = {};
+
+breeze.loadImage = '<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" />';
+
 // The status stuff goes right here...
 jQuery(document).ready(function(){
 
-	// Some re-usable vars
-	var breeze = {};
-
-	breeze.loadImage = '<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" />';
 
 	// Posting a new status
 	jQuery('#form_status').submit(function(event){
 
-		var statusData = {};
+		var status = {};
 
 		// Get all the values we need
 		jQuery('#form_status :input').each(function(){
-			var input = $(this);
-			statusData[input.attr('name')] = input.val();
+			var input = jQuery(this);
+			status[input.attr('name').replace('status', '')] = input.val();
 		});
-		console.log(statusData);
+
+		// You need to type something...
+		if(status.Content=='')
+		{
+			alert(breeze_empty_message); // @todo, perhaps fire a nice noty message instead of a nasty alert?
+			return false;
+		}
+
+		else
+		{
+			// Shh!
+			if (status.Content == 'about:Suki')
+			{
+				alert('Y es que tengo un coraz\xF3n t\xE1n necio \n que no comprende que no entiende \n que le hace da\xF1o amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n Y es que tengo un coraz\xF3n t\xE1n necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace da\xF1o \n te sigue amando igual o mucho m\xE1s que ayer \n mucho m\xE1s que ayer... \n');
+				return false;
+			}
+
+			// Show a nice loading image so people can think we are actually doing some work...
+			jQuery('#breeze_load_image').fadeIn('slow').html(breeze.loadImage);
+
+			// The long, long ajax call...
+			jQuery.ajax(
+			{
+				type: 'POST',
+				url: smf_scripturl + '?action=breezeajax;sa=post;js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
+				data: status,
+				cache: false,
+				dataType: 'json',
+				success: function(html)
+				{
+					// The server side found an issue
+					if(html.type == 'error')
+					{
+						jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
+							noty({
+								text: html.message,
+								timeout: 3500, type: html.type,
+							});
+						});
+					}
+
+					else if(html.type == 'success'){
+						jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
+							document.getElementById('content').value='';
+							document.getElementById('content').focus();
+
+							jQuery('#breeze_display_status').prepend(html.data);
+
+							jQuery('#breeze_display_status').fadeIn('slow', 'linear', function(){
+								noty({
+									text: html.message,
+									timeout: 3500, type: html.type,
+								});
+							});
+						});
+					}
+
+					// Enable the button again...
+					jQuery('.status_button').removeAttr('disabled');
+				},
+				error: function (html)
+				{
+					// Enable the button again...
+					jQuery('.status_button').removeAttr('disabled');
+
+					/*
+					 * Something happen while sending the request
+					 *
+					 * @todo identify the different errors and show more info about it to the forum admin
+					 */
+					jQuery('#breeze_load_image').slideUp('slow', 'linear', function(){
+						noty({
+							text: html.message,
+							timeout: 3500, type: html.type,
+						});
+					});
+				},
+			});
+		}
 
 		// Temp
 		return false;
