@@ -251,6 +251,68 @@ jQuery(document).ready(function(){
 		return false;
 	});
 
+	// Deleting a status, pretty much the same as deleting a comment :(
+	jQuery(document).on('click', '.breeze_delete_status', function(event){
+
+		var element = jQuery(this);
+		var I = parseInt(element.attr('id').replace('deleteStatus_', ''));
+		var typeMethod = 'status';
+		var urlParam = element.attr('href');
+
+		// Show a nice confirmation box
+		noty({
+			text: breeze_confirm_delete,
+			type: 'confirmation',
+			dismissQueue: false,
+			closeWith: ['button'],
+			buttons: [{
+				addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
+					jQuery.ajax({
+						type: 'GET',
+						url: urlParam + ';js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
+						cache: false,
+						dataType: 'json',
+						success: function(html){
+							$noty.close();
+							switch(html.type)
+							{
+								case 'error':
+									noty({
+										text: html.message,
+										timeout: 3500, 
+										type: html.type,
+									});
+								break;
+								case 'success':
+									jQuery('#status_id_'+I).fadeOut('slow');
+									noty({
+										text: html.message,
+										timeout: 3500, 
+										type: html.type,
+									});
+								break;
+							}
+						},
+						error: function (html){
+							$noty.close();
+							noty({
+								text: html.message,
+								timeout: 3500, 
+								type: html.type,
+							});
+						},
+					});
+				}
+			},
+				{addClass: 'button_submit', text: breeze_confirm_cancel, onClick: function($noty) {
+					$noty.close();
+				}}
+			]
+		});
+	
+		return false;
+	});
+
 	// Mentioning
 	jQuery('textarea[rel*=atwhoMention]').bind("focus", function(event){
 		jQuery.ajax({

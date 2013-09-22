@@ -80,7 +80,7 @@ function breeze_status($data)
 
 							// Delete status
 							if (!empty($delete_status))
-								echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $status['id'] ,';type=status;profile_owner=', $status['owner_id'] ,'', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" id="', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
+								echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $status['id'] ,';type=status;profile_owner=', $status['owner_id'] ,'', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" id="deleteStatus_', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
 
 							echo '
 							</div>
@@ -159,7 +159,7 @@ function breeze_status($data)
 	// End of list
 	echo '
 		</ul>';
- }
+}
 
 function breeze_profile_owner()
 {
