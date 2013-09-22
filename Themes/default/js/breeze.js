@@ -36,4 +36,9 @@
 // The status stuff goes right here...
 jQuery(document).ready(function(){
 
+	// Posting a new status
+	jQuery('#form_status').submit(function( event ) {
+		alert('clicked!!!');
+	});
+
 });
