@@ -152,6 +152,16 @@ jQuery(document).ready(function(){
 		});
 	});
 
+	// Facebox
+	jQuery('a[rel*=facebox]').livequery(function()
+	{
+		jQuery(this).facebox(
+		{
+			loadingImage : smf_images_url + '/breeze/loading.gif',
+			closeImage   : smf_images_url + '/breeze/error_close.png'
+		});
+	});
+
 });
 
 
