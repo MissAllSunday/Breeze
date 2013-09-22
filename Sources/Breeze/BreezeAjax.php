@@ -131,27 +131,27 @@ class BreezeAjax
 		checkSession('request', '', false);
 
 		// Get the data
-		$this->_data = Breeze::sGlobals('request');
+		$this->_data = Breeze::sGlobals('get');
 
 		// Sorry, try to play nice next time
-		if (!$this->_data->getValue('owner_id') || !$this->_data->getValue('poster_id') || !$this->_data->getValue('content'))
+		if (!$this->_data->getValue('Owner') || !$this->_data->getValue('Poster') || !$this->_data->getValue('Content'))
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
-				'owner' => $this->_data->getValue('owner_id'),
+				'owner' => $this->_data->getValue('Owner'),
 			));
 
 		// Do this only if there is something to add to the database
-		if ($this->_data->validateBody('content'))
+		if ($this->_data->validateBody('Content'))
 		{
 			// You aren't allowed in here, let's show you a nice static page...
 			$this->permissions('postStatus', $this->_data->getValue('owner_id'));
 
-			$body = $this->_data->getValue('content');
+			$body = $this->_data->getValue('Content');
 
 			$params = array(
-				'owner_id' => $this->_data->getValue('owner_id'),
-				'poster_id' => $this->_data->getValue('poster_id'),
+				'owner_id' => $this->_data->getValue('Owner'),
+				'poster_id' => $this->_data->getValue('Poster'),
 				'time' => time(),
 				'body' => $this->_mention->preMention($body),
 			);
@@ -168,8 +168,8 @@ class BreezeAjax
 				// Build the notifications
 				$this->_mention->mention(
 					array(
-						'wall_owner' => $this->_data->getValue('owner_id'),
-						'wall_poster' => $this->_data->getValue('poster_id'),
+						'wall_owner' => $this->_data->getValue('Owner'),
+						'wall_poster' => $this->_data->getValue('Poster'),
 						'status_id' => $params['id'],),
 					array(
 							'name' => 'status',
@@ -187,18 +187,18 @@ class BreezeAjax
 					'type' => 'success',
 					'message' => 'published',
 					'data' => $this->_display->HTML($params, 'status'),
-					'owner' => $this->_data->getValue('owner_id'),
+					'owner' => $this->_data->getValue('Owner'),
 				));
 			}
 
 			// Something went terrible wrong!
 			else
-				return $this->setResponse(array('owner' => $this->_data->getValue('owner_id'),));
+				return $this->setResponse(array('owner' => $this->_data->getValue('Owner'),));
 		}
 
 		// There was an (generic) error
 		else
-			return $this->setResponse(array('owner' => $this->_data->getValue('owner_id'),));
+			return $this->setResponse(array('owner' => $this->_data->getValue('Owner'),));
 	}
 
 	/**

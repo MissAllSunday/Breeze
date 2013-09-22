@@ -38,14 +38,25 @@ var breeze = {};
 
 breeze.loadImage = '<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" />';
 
-// The status stuff goes right here...
-jQuery(document).ready(function(){
+// Helper function to show a notification instance
+breeze.noti = function(params)
+{
+	noty({
+		text: params.message,
+		timeout: 3500, //@todo set this to a user setting
+		type: params.type,
+	});
+}
 
+jQuery(document).ready(function(){
 
 	// Posting a new status
 	jQuery('#form_status').submit(function(event){
 
 		var status = {};
+
+		// Get the profile owner
+		status.Owner = window.breeze_profileOwner;
 
 		// Get all the values we need
 		jQuery('#form_status :input').each(function(){
@@ -75,53 +86,33 @@ jQuery(document).ready(function(){
 			// The long, long ajax call...
 			jQuery.ajax(
 			{
-				type: 'POST',
+				type: 'GET',
 				url: smf_scripturl + '?action=breezeajax;sa=post;js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
 				data: status,
 				cache: false,
 				dataType: 'json',
 				success: function(html)
-				{
-					// The server side found an issue
-					if(html.type == 'error')
-					{
-						jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
-							noty({
-								text: html.message,
-								timeout: 3500, type: html.type,
-							});
-						});
-					}
+				{console.log(html);
+					jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
+						// Enable the button again...
+						jQuery('.status_button').removeAttr('disabled');
 
-					else if(html.type == 'success'){
-						jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
-							document.getElementById('content').value='';
-							document.getElementById('content').focus();
+						// Set the notification
+						breeze.noti(html);
 
-							jQuery('#breeze_display_status').prepend(html.data);
-
-							jQuery('#breeze_display_status').fadeIn('slow', 'linear', function(){
-								noty({
-									text: html.message,
-									timeout: 3500, type: html.type,
-								});
-							});
-						});
-					}
-
-					// Enable the button again...
-					jQuery('.status_button').removeAttr('disabled');
+						// Do some after work...
+						if (html.type == 'success')
+						{
+							jQuery('#statusContent').text('').focus();
+							jQuery('#breeze_display_status').prepend(html.data).fadeIn('slow', 'linear', function(){})
+						}
+					});
 				},
 				error: function (html)
 				{
 					// Enable the button again...
 					jQuery('.status_button').removeAttr('disabled');
 
-					/*
-					 * Something happen while sending the request
-					 *
-					 * @todo identify the different errors and show more info about it to the forum admin
-					 */
 					jQuery('#breeze_load_image').slideUp('slow', 'linear', function(){
 						noty({
 							text: html.message,
@@ -132,8 +123,10 @@ jQuery(document).ready(function(){
 			});
 		}
 
-		// Temp
+		// Prevent normal behaviour
 		return false;
 	});
 
 });
+
+
