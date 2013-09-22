@@ -192,6 +192,65 @@ jQuery(document).ready(function(){
 		return false;
 	});
 
+	// Deleting a comment
+	jQuery(document).on('click', '.breeze_delete_comment', function(event){
+
+		// Get the ID
+		commentID = parseInt(jQuery(this).attr('id').replace('deleteComment_', ''));
+		commentUrl = jQuery(this).attr('href');
+
+		// Show a confirmation message
+		noty({
+			text: breeze_confirm_delete,
+			type: 'confirmation',
+			dismissQueue: false,
+			closeWith: ['button'],
+			buttons: [{
+				addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
+					jQuery.ajax({
+						type: 'GET',
+						url: commentUrl + ';js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
+						cache: false,
+						dataType: 'json',
+						success: function(html){
+							$noty.close();
+
+							switch(html.type)
+							{
+								case 'error':
+									noty({
+										text: html.message,
+										timeout: 3500, type: html.type,
+									});
+								break;
+								case 'success':
+								jQuery('#comment_id_'+ commentID).fadeOut('slow');
+								noty({
+									text: html.message,
+									timeout: 3500, type: html.type,
+								});
+								break;
+							}
+						},
+						error: function (html){
+							$noty.close();
+							noty({
+								text: html.message,
+								timeout: 3500, type: html.error,
+							});
+						},
+					});
+				}
+			},
+				{addClass: 'button_submit', text: breeze_confirm_cancel, onClick: function($noty) {
+					$noty.close();
+				}}
+			]
+		});
+
+		return false;
+	});
+
 	// Mentioning
 	jQuery('textarea[rel*=atwhoMention]').bind("focus", function(event){
 		jQuery.ajax({
