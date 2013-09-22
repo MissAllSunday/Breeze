@@ -215,11 +215,11 @@ class BreezeAjax
 		$this->_data = Breeze::sGlobals('request');
 
 		// Trickery, there's always room for moar!
-		$status_id = $this->_data->getValue('status_id');
-		$status_owner_id = $this->_data->getValue('status_owner_id'. ($this->noJS == true ? $status_id : ''));
-		$poster_comment_id = $this->_data->getValue('poster_comment_id'. ($this->noJS == true ? $status_id : ''));
-		$profile_owner_id = $this->_data->getValue('profile_owner_id'. ($this->noJS == true ? $status_id : ''));
-		$content = $this->_data->getValue('content');
+		$status_id = $this->_data->getValue('Status');
+		$status_owner_id = $this->_data->getValue('StatusPoster');
+		$poster_comment_id = $this->_data->getValue('Poster');
+		$profile_owner_id = $this->_data->getValue('Owner');
+		$content = $this->_data->getValue('Content');
 
 		// Sorry, try to play nice next time
 		if (!$status_owner_id || !$poster_comment_id || !$profile_owner_id || !$content)
@@ -227,19 +227,19 @@ class BreezeAjax
 				return $this->setResponse(array(
 					'message' => 'wrong_values',
 					'type' => 'error',
-					'owner' => $this->_data->getValue('owner_id'),
+					'owner' => $status_owner_id,
 				));
 
 		// Load all the things we need
 		$temp_id_exists = $this->_query->getSingleValue('status', 'status_id', $status_id);
 
 		// The status do exists and the data is valid
-		if ($this->_data->validateBody('content') && !empty($temp_id_exists))
+		if ($this->_data->validateBody('Content') && !empty($temp_id_exists))
 		{
 			// You aren't allowed in here, let's show you a nice static page...
 			$this->permissions('postComments', $profile_owner_id);
 
-			$body = $this->_data->getValue('content');
+			$body = $this->_data->getValue('Content');
 
 			// Build the params array for the query
 			$params = array(
@@ -290,12 +290,12 @@ class BreezeAjax
 
 			// Something wrong with the server
 			else
-				return $this->setResponse(array('owner' => $this->_data->getValue('owner_id'), 'type' => 'error',));
+				return $this->setResponse(array('owner' => $this->_data->getValue('Owner'), 'type' => 'error',));
 		}
 
 		// There was an error
 		else
-			return $this->setResponse(array('owner' => $this->_data->getValue('owner_id'), 'type' => 'error',));
+			return $this->setResponse(array('owner' => $this->_data->getValue('Owner'), 'type' => 'error',));
 	}
 
 	/**

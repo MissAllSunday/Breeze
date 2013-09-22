@@ -138,7 +138,7 @@ function breeze_status($data)
 										<textarea name="commentContent_', $status['id'] ,'" id="commentContent_', $status['id'] ,'" cols="40" rows="2" rel="atwhoMention"></textarea>
 										<input type="hidden" value="', $status['poster_id'] ,'" name="commentStatusPoster_', $status['id'] ,'" id="commentStatusPoster_', $status['id'] ,'" />
 										<input type="hidden" value="',$user_info['id'],'" name="commentPoster_', $status['id'] ,'" id="commentPoster_', $status['id'] ,'" />
-										<input type="hidden" value="', $status['poster_id'] ,'" name="commentOwner_', $status['id'] ,'" id="commentPoster_', $status['id'] ,'" /><br />
+										<input type="hidden" value="', $status['poster_id'] ,'" name="commentOwner_', $status['id'] ,'" id="commentOwner_', $status['id'] ,'" /><br />
 										<input type="hidden" id="', $context['session_var'], '" name="', $context['session_var'], '" value="', $context['session_id'], '" />
 										<input type="submit" value="', $txt['post'] ,'" class="comment_submit" name="commentSubmit_', $status['id'] ,'" id="commentSubmit_', $status['id'] ,'" />
 									</form>';

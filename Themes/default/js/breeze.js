@@ -135,7 +135,7 @@ jQuery(document).ready(function(){
 		// Gather all the data we need
 		var comment = {
 			'Status' : StatusID,
-			'Owner' : window.breeze_profileOwner,
+			'Owner' : jQuery('#commentOwner_' + StatusID).val(),
 			'Poster' : jQuery('#commentPoster_' + StatusID).val(),
 			'StatusPoster' : jQuery('#commentStatusPoster_' + StatusID).val(),
 			'Content' : jQuery('#commentContent_' + StatusID).val(),
@@ -170,12 +170,7 @@ jQuery(document).ready(function(){
 						breeze.noti(html);
 
 						// Everything went better than expected :)
-						jQuery('#comment_loadplace_'+Id).append(html.data).fadeIn('slow', 'linear', function(){
-							noty({
-								text: html.message,
-								timeout: 3500, type: html.type,
-							});
-						});
+						jQuery('#comment_loadplace_'+ StatusID).append(html.data).fadeIn('slow', 'linear', function(){});
 					});
 
 					// Enable the button again...
