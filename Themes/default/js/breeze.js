@@ -142,7 +142,7 @@ jQuery(document).ready(function(){
 		// Get all the values
 		jQuery('.form_comment :input').each(function(){
 			var input = jQuery(this);
-			status[input.attr('name').replace('status', '')] = input.val();
+			comment[input.attr('name').replace('status', '')] = input.val();
 		});
 
 console.log(comment);
