@@ -134,14 +134,12 @@ function breeze_status($data)
 
 								// The actual post form
 									echo '
-									<form action="', $scripturl , '?action=breezeajax;sa=postcomment', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" method="post" name="formID_', $status['id'] ,'" id="formID_', $status['id'] ,'">
-										<textarea id="textboxcontent_', $status['id'] ,'" name="content" cols="40" rows="2" rel="atwhoMention"></textarea>
-										<input type="hidden" value="', $status['poster_id'] ,'" name="status_owner_id', $status['id'] ,'" id="status_owner_id', $status['id'] ,'" />
-										<input type="hidden" value="', $status['owner_id'] ,'" name="profile_owner_id', $status['id'] ,'" id="profile_owner_id', $status['id'] ,'" />
-										<input type="hidden" value="', $status['id'] ,'" name="status_id" id="status_id" />
-										<input type="hidden" value="',$user_info['id'],'" name="poster_comment_id', $status['id'] ,'" id="poster_comment_id', $status['id'] ,'" /><br />
+									<form action="', $scripturl , '?action=breezeajax;sa=postcomment', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" method="post" name="form_comment_', $status['id'] ,'" id="form_comment_', $status['id'] ,'" class="form_comment">
+										<textarea id="commentContent" name="commentContent" cols="40" rows="2" rel="atwhoMention"></textarea>
+										<input type="hidden" value="', $status['poster_id'] ,'" name="commentStatusPoster" />
+										<input type="hidden" value="',$user_info['id'],'" name="commentPoster" id="poster_comment_id', $status['id'] ,'" /><br />
 										<input type="hidden" id="', $context['session_var'], '" name="', $context['session_var'], '" value="', $context['session_id'], '" />
-										<input type="submit" value="', $txt['post'] ,'" class="comment_submit" id="', $status['id'] ,'" />
+										<input type="submit" value="', $txt['post'] ,'" class="comment_submit" name="commentSubmit" />
 									</form>';
 
 								// End of div post_comment

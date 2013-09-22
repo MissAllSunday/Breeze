@@ -127,6 +127,29 @@ jQuery(document).ready(function(){
 		return false;
 	});
 
+	// Post a new comment
+	$(document).on('submit', '.form_comment', function(event){
+
+		// Set a new object
+		var comment = {};
+
+		// The most important thing is... the ID
+		comment.Status = parseInt(jQuery(this).attr('id').replace('form_comment_', ''));
+
+		// Set the profile owner
+		comment.Owner = window.breeze_profileOwner;
+
+		// Get all the values
+		jQuery('.form_comment :input').each(function(){
+			var input = jQuery(this);
+			status[input.attr('name').replace('status', '')] = input.val();
+		});
+
+console.log(comment);
+		// Prevent normal behaviour
+		return false;
+	});
+
 	// Mentioning
 	jQuery('textarea[rel*=atwhoMention]').bind("focus", function(event){
 		jQuery.ajax({
