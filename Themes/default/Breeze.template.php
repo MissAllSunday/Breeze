@@ -76,9 +76,9 @@ function template_user_wall()
 					<div class="breeze_user_inner">
 						<div class="breeze_user_statusbox">
 							<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
-								<textarea cols="40" rows="5" name="b_status_content" id="content" rel="atwhoMention"></textarea>
-								<input type="hidden" value="',$user_info['id'],'" name="b_status_poster" id="poster_id" /><br />
-								<input type="submit" value="', $txt['post'] ,'" name="submit" class="status_button"/>
+								<textarea cols="40" rows="5" name="b_statusContent" id="b_statusContent" rel="atwhoMention"></textarea>
+								<input type="hidden" value="',$user_info['id'],'" name="b_statusPoster" id="b_statusPoster" /><br />
+								<input type="submit" value="', $txt['post'] ,'" name="submit" class="status_button" id="b_statusSubmit"/>
 							</form>
 						</div>
 					</div>';

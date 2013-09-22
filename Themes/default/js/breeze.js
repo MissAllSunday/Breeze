@@ -36,9 +36,25 @@
 // The status stuff goes right here...
 jQuery(document).ready(function(){
 
+	// Some re-usable vars
+	var breeze = {};
+
+	breeze.loadImage = '<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" />';
+
 	// Posting a new status
-	jQuery('#form_status').submit(function( event ) {
-		alert('clicked!!!');
+	jQuery('#form_status').submit(function(event){
+
+		var statusData = {};
+
+		// Get all the values we need
+		jQuery('#form_status :input').each(function(){
+			var input = $(this);
+			statusData[input.attr('name')] = input.val();
+		});
+		console.log(statusData);
+
+		// Temp
+		return false;
 	});
 
 });
