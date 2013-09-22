@@ -137,13 +137,13 @@ jQuery(document).ready(function(){
 		comment.Status = parseInt(jQuery(this).attr('id').replace('form_comment_', ''));
 
 		// Set the profile owner
-		comment.Owner = window.breeze_profileOwner;
+		comment = {
+			'Owner' : window.breeze_profileOwner,
+			'Poster' : jQuery('#commentPoster_' + comment.Status).val(),
+			'StatusPoster' : jQuery('#commentStatusPoster_' + comment.Status).val(),
+			'Content' : jQuery('#commentContent_' + comment.Status).val(),
+		};
 
-		// Get all the values
-		jQuery('.form_comment :input').each(function(){
-			var input = jQuery(this);
-			comment[input.attr('name').replace('status', '')] = input.val();
-		});
 
 console.log(comment);
 		// Prevent normal behaviour
