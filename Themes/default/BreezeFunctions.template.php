@@ -130,7 +130,7 @@ function breeze_status($data)
 
 									// Show a nice avatar next to the post form
 									if (!empty($context['Breeze']['user_info'][$user_info['id']]['facebox']))
-									echo $context['Breeze']['user_info'][$user_info['id']]['facebox'];
+										echo $context['Breeze']['user_info'][$user_info['id']]['facebox'];
 
 								// The actual post form
 									echo '
