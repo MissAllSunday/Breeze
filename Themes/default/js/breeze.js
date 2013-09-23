@@ -102,7 +102,7 @@ jQuery(document).ready(function(){
 						// Do some after work...
 						if (html.type == 'success')
 						{
-							jQuery('#statusContent').text('').focus();
+							jQuery('#statusContent').val('');
 							jQuery('#breeze_display_status').prepend(html.data).fadeIn('slow', 'linear', function(){})
 						}
 					});
@@ -111,6 +111,7 @@ jQuery(document).ready(function(){
 				{
 					// Enable the button again...
 					jQuery('.status_button').removeAttr('disabled');
+					jQuery('#statusContent').val('');
 
 					jQuery('#breeze_load_image').slideUp('slow', 'linear', function(){
 						noty({
@@ -175,7 +176,7 @@ jQuery(document).ready(function(){
 
 					// Enable the button again...
 					jQuery('#commentSubmit_' + StatusID).removeAttr('disabled');
-					jQuery('#commentContent_' + StatusID).val('').focus();
+					jQuery('#commentContent_' + StatusID).val('');
 
 				},
 				error: function (html)
@@ -183,7 +184,7 @@ jQuery(document).ready(function(){
 					jQuery('#breeze_load_image_comment_'+ StatusID).fadeOut('slow');
 					breeze.noti(html);
 					jQuery('#commentSubmit_' + StatusID).removeAttr('disabled');
-					jQuery('#commentContent_' + StatusID).val('').focus();
+					jQuery('#commentContent_' + StatusID).val('');
 				},
 			});
 		}
