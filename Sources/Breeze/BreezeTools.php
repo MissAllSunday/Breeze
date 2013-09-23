@@ -322,8 +322,8 @@ class BreezeTools
 
 		else
 		{
-			$context['member']['is_owner'] = true;
-			$context['user']['is_owner'] = true;
+			$context['member']['is_owner'] = false;
+			$context['user']['is_owner'] = false;
 		}
 	}
 }
