@@ -35,12 +35,14 @@
  *
  */
 
-function breeze_status($data)
- {
+function breeze_status($data, $returnVar = false)
+{
 	global $context, $txt, $user_info, $scripturl;
 
+	$echo = '';
+
 	// New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING and even if you do, DON'T MODIFY THIS
-	echo '
+	$echo .= '
 		<div id="breeze_load_image"></div>
 		<ul class="breeze_status" id="breeze_display_status">';
 
@@ -54,101 +56,80 @@ function breeze_status($data)
 			$delete_status = $status['poster_id'] == $user_info['id'] ? true : allowedTo('breeze_deleteStatus');
 			$delete_comments = $status['poster_id'] == $user_info['id'] ? true : allowedTo('breeze_deleteComments');
 
-			echo '
-			<li class="windowbg status_breeze" id ="status_id_', $status['id'] ,'">';
+			$echo .= '
+			<li class="windowbg status_breeze" id ="status_id_'. $status['id'] .'">';
 
 			// If we're on the general wall, show a nice bar indicating where this status come from...
 			if (!empty($context['Breeze']['commingFrom']) && $context['Breeze']['commingFrom'] == 'wall')
-				echo '
+				$echo .= '
 				<div class="cat_bar">
 					<h3 class="catbg">
 						<span id="author">
-							', sprintf($txt['Breeze_general_posted_on'], $context['Breeze']['user_info'][$status['owner_id']]['link']) ,'
+							'. sprintf($txt['Breeze_general_posted_on'], $context['Breeze']['user_info'][$status['owner_id']]['link']) .'
 					</h3>
 				</div>';
 
-			echo '
+			$echo .= '
 				<span class="topslice"><span></span></span>
 					<div class="breeze_user_inner">
 						<div class="breeze_user_status_avatar">
-							', $context['Breeze']['user_info'][$status['poster_id']]['facebox'] ,'
+							'. $context['Breeze']['user_info'][$status['poster_id']]['facebox'] .'
 						</div>
 						<div class="breeze_user_status_comment">
-							', $status['body'] ,'
+							'. $status['body'] .'
 							<div class="breeze_options">
-								<span class="time_elapsed" title="', timeformat($status['time_raw'], false) ,'">', $status['time'] ,' </span>';
+								<span class="time_elapsed" title="'. timeformat($status['time_raw'], false) .'">'. $status['time'] .' </span>';
 
 							// Delete status
 							if (!empty($delete_status))
-								echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $status['id'] ,';type=status;profile_owner=', $status['owner_id'] ,'', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" id="deleteStatus_', $status['id'] ,'" class="breeze_delete_status">', $txt['Breeze_general_delete'] ,'</a>';
+								$echo .= '| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $status['id'] .';type=status;profile_owner='. $status['owner_id'] .''. (!empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '') .'" id="deleteStatus_'. $status['id'] .'" class="breeze_delete_status">'. $txt['Breeze_general_delete'] .'</a>';
 
-							echo '
+							$echo .= '
 							</div>
 							<hr />
-							<div id="comment_flash_', $status['id'] ,'"></div>';
-						echo '
-								<ul class="breeze_comments_list" id="comment_loadplace_', $status['id'] ,'">';
+							<div id="comment_flash_'. $status['id'] .'"></div>';
+
+							$echo .= '
+								<ul class="breeze_comments_list" id="comment_loadplace_'. $status['id'] .'">';
 
 							// Print out the comments
 							if (!empty($status['comments']))
-								foreach($status['comments'] as $comment)
-								{
-									// Yes, the owner of this comment can delete it if they so desire it
-									$delete_single_comment = $comment['poster_id'] == $user_info['id'] ? true : allowedTo('breeze_deleteComments');
-
-									echo '
-									<li class="windowbg2" id ="comment_id_', $comment['id'] ,'">
-										<div class="breeze_user_comment_avatar">
-												', $context['Breeze']['user_info'][$comment['poster_id']]['facebox'] ,'<br />
-										</div>
-										<div class="breeze_user_comment_comment">
-											',$comment['body'],'
-											<div class="breeze_options">
-												<span class="time_elapsed" title="', timeformat($comment['time_raw'], false) ,'">', $comment['time'] ,'</span>';
-
-									// Delete comment
-									if ($delete_comments == true || $delete_single_comment == true)
-										echo '| <a href="', $scripturl , '?action=breezeajax;sa=delete;bid=', $comment['id'] ,';type=comment;profile_owner=', $status['owner_id'] ,'', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" id="deleteComment_', $comment['id'] ,'" class="breeze_delete_comment">', $txt['Breeze_general_delete'] ,'</a>';
-
-									echo '
-											</div>
-										</div>
-										<div class="clear"></div>
-									</li>';
-								}
+									$echo .= breeze_comment($status['comments'], true);
 
 							// Display the new comments
-							echo '<li id="breeze_load_image_comment_', $status['id'] ,'" style="margin:auto; text-align:center;"></li>';
+							$echo .= '
+									<li id="breeze_load_image_comment_'. $status['id'] .'" style="margin:auto; text-align:center;"></li>';
 
-							echo '</ul>';
+							$echo .= '
+								</ul>';
 
 								// Post a new comment
 								if (!empty($post_comment))
 								{
-									echo '
+									$echo .= '
 								<div class="post_comment">';
 
 									// Show a nice avatar next to the post form
 									if (!empty($context['Breeze']['user_info'][$user_info['id']]['facebox']))
-										echo $context['Breeze']['user_info'][$user_info['id']]['facebox'];
+										$echo .=  $context['Breeze']['user_info'][$user_info['id']]['facebox'];
 
 								// The actual post form
-									echo '
-									<form action="', $scripturl , '?action=breezeajax;sa=postcomment', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" method="post" name="form_comment_', $status['id'] ,'" id="form_comment_', $status['id'] ,'" class="form_comment">
-										<textarea name="commentContent_', $status['id'] ,'" id="commentContent_', $status['id'] ,'" cols="40" rows="2" rel="atwhoMention"></textarea>
-										<input type="hidden" value="', $status['poster_id'] ,'" name="commentStatusPoster_', $status['id'] ,'" id="commentStatusPoster_', $status['id'] ,'" />
-										<input type="hidden" value="',$user_info['id'],'" name="commentPoster_', $status['id'] ,'" id="commentPoster_', $status['id'] ,'" />
-										<input type="hidden" value="', $status['poster_id'] ,'" name="commentOwner_', $status['id'] ,'" id="commentOwner_', $status['id'] ,'" /><br />
-										<input type="hidden" id="', $context['session_var'], '" name="', $context['session_var'], '" value="', $context['session_id'], '" />
-										<input type="submit" value="', $txt['post'] ,'" class="comment_submit" name="commentSubmit_', $status['id'] ,'" id="commentSubmit_', $status['id'] ,'" />
+									$echo .= '
+									<form action="'. $scripturl .'?action=breezeajax;sa=postcomment'. (!empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '') .'" method="post" name="form_comment_'. $status['id'] .'" id="form_comment_'. $status['id'] .'" class="form_comment">
+										<textarea name="commentContent_'. $status['id'] .'" id="commentContent_'. $status['id'] .'" cols="40" rows="2" rel="atwhoMention"></textarea>
+										<input type="hidden" value="'. $status['poster_id'] .'" name="commentStatusPoster_'. $status['id'] .'" id="commentStatusPoster_'. $status['id'] .'" />
+										<input type="hidden" value="'. $user_info['id'] .'" name="commentPoster_'. $status['id'] .'" id="commentPoster_'. $status['id'] .'" />
+										<input type="hidden" value="'. $status['poster_id'] .'" name="commentOwner_'. $status['id'] .'" id="commentOwner_'. $status['id'] .'" /><br />
+										<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
+										<input type="submit" value="'. $txt['post'] .'" class="comment_submit" name="commentSubmit_'. $status['id'] .'" id="commentSubmit_'. $status['id'] .'" />
 									</form>';
 
 								// End of div post_comment
-									echo '
+									$echo .= '
 								</div>';
 								}
 
-						echo '
+						$echo .= '
 						</div>
 						<div class="clear"></div>
 					</div>
@@ -157,8 +138,55 @@ function breeze_status($data)
 		}
 
 	// End of list
-	echo '
+	$echo .= '
 		</ul>';
+
+	// What are we gonna do?
+	if ($returnVar)
+		return $echo;
+
+	else
+		echo $echo;
+}
+
+function breeze_comment($comments, $returnVar = false)
+{
+	global $context, $txt, $scripturl, $user_info;
+
+	$echo = '';
+
+	foreach ($comments as $comment)
+	{
+		// Yes, the owner of this comment can delete it if they so desire it
+		$delete_single_comment = $comment['poster_id'] == $user_info['id'] ? true : allowedTo('breeze_deleteComments');
+
+		$echo .= '
+		<li class="windowbg2" id ="comment_id_'. $comment['id'] .'">
+			<div class="breeze_user_comment_avatar">
+					'. $context['Breeze']['user_info'][$comment['poster_id']]['facebox'] .'<br />
+			</div>
+			<div class="breeze_user_comment_comment">
+				'. $comment['body'] .'
+				<div class="breeze_options">
+					<span class="time_elapsed" title="'. timeformat($comment['time_raw'], false) .'">'. $comment['time'] .'</span>';
+
+		// Delete comment
+		if ($delete_single_comment == true)
+			$echo .= '| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $comment['id'] .';type=comment;profile_owner='. $comment['profile_owner_id'] .''. (!empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '') .'" id="deleteComment_'. $comment['id'] .'" class="breeze_delete_comment">'. $txt['Breeze_general_delete'] .'</a>';
+
+		$echo .= '
+				</div>
+			</div>
+			<div class="clear"></div>
+		</li>';
+	}
+
+	// What are we going to do?
+	if ($returnVar)
+		return $echo;
+
+	else
+		echo $echo;
 }
 
 function breeze_profile_owner()

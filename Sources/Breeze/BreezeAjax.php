@@ -187,7 +187,7 @@ class BreezeAjax
 				return $this->setResponse(array(
 					'type' => 'success',
 					'message' => 'published',
-					'data' => $this->_display->HTML($params, 'status'),
+					'data' => $this->_display->HTML($params, 'status', true),
 					'owner' => $this->_data->getValue('Owner'),
 				));
 			}
@@ -285,7 +285,7 @@ class BreezeAjax
 				return $this->setResponse(array(
 					'type' => 'success',
 					'message' => 'published_comment',
-					'data' => $this->_display->HTML($params, 'comment'),
+					'data' => $this->_display->HTML($params, 'comment', true),
 					'owner' => $profile_owner_id,
 				));
 			}
@@ -546,8 +546,7 @@ class BreezeAjax
 
 		if (!empty($data['data']))
 		{
-				foreach ($data['data'] as $params)
-					$return .= $this->_display->HTML($params, 'status');
+			$return .= $this->_display->HTML($data['data'], 'status');
 
 			return $this->setResponse(array(
 				'type' => 'success',
@@ -559,6 +558,7 @@ class BreezeAjax
 		else
 			return $this->setResponse(array(
 				'type' => 'success',
+				'message' => 'end',
 				'data' => 'end',
 				'owner' => $id,
 			));

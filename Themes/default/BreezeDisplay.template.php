@@ -76,17 +76,17 @@ function template_main()
 					// Close the list
 					$return .= '</ul>';
 
-					// display the form for new comments
+					// Fisplay the form for new comments
 					if ($context['Breeze']['permissions']['postcomments'])
 						$return .= '
 						<form action="'. $scripturl .'?action=breezeajax;sa=postcomment'. (!empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '') .'" method="post" name="form_comment_'. $context['Breeze']['params']['id'] .'" id="form_comment_'. $context['Breeze']['params']['id'] .'" class="form_comment">
-										<textarea name="commentContent_'. $context['Breeze']['params']['id'] .'" id="commentContent_'. $context['Breeze']['params']['id'] .'" cols="40" rows="2" rel="atwhoMention"></textarea>
-										<input type="hidden" value="'. $context['Breeze']['params']['poster_id'] .'" name="commentStatusPoster_'. $context['Breeze']['params']['id'] .'" id="commentStatusPoster_'. $context['Breeze']['params']['id'] .'" />
-										<input type="hidden" value="'. $user_info['id'] .'" name="commentPoster_'. $context['Breeze']['params']['id'] .'" id="commentPoster_'. $context['Breeze']['params']['id'] .'" />
-										<input type="hidden" value="'. $context['Breeze']['params']['poster_id'] .'" name="commentOwner_'. $context['Breeze']['params']['id'] .'" id="commentOwner_'. $context['Breeze']['params']['id'] .'" /><br />
-										<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
-										<input type="submit" value="'. $txt['post'] .'" class="comment_submit" name="commentSubmit_'. $context['Breeze']['params']['id'] .'" id="commentSubmit_'. $context['Breeze']['params']['id'] .'" />
-									</form>';
+							<textarea name="commentContent_'. $context['Breeze']['params']['id'] .'" id="commentContent_'. $context['Breeze']['params']['id'] .'" cols="40" rows="2" rel="atwhoMention"></textarea>
+							<input type="hidden" value="'. $context['Breeze']['params']['poster_id'] .'" name="commentStatusPoster_'. $context['Breeze']['params']['id'] .'" id="commentStatusPoster_'. $context['Breeze']['params']['id'] .'" />
+							<input type="hidden" value="'. $user_info['id'] .'" name="commentPoster_'. $context['Breeze']['params']['id'] .'" id="commentPoster_'. $context['Breeze']['params']['id'] .'" />
+							<input type="hidden" value="'. $context['Breeze']['params']['poster_id'] .'" name="commentOwner_'. $context['Breeze']['params']['id'] .'" id="commentOwner_'. $context['Breeze']['params']['id'] .'" /><br />
+							<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
+							<input type="submit" value="'. $txt['post'] .'" class="comment_submit" name="commentSubmit_'. $context['Breeze']['params']['id'] .'" id="commentSubmit_'. $context['Breeze']['params']['id'] .'" />
+						</form>';
 
 
 				// Close the div
