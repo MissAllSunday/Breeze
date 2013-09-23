@@ -537,7 +537,7 @@ class BreezeAjax
 			));
 
 		// Calculate the start value
-		$start = $maxIndex * $numberTimes;
+		$start = $maxIndex * $numberTimes - 1;
 
 		// Get the right call to the DB
 		$call = $commingFrom == 'profile' ? 'getStatusByProfile' : 'getStatusByUser';
@@ -548,8 +548,12 @@ class BreezeAjax
 		{
 			$return .= $this->_display->HTML($data['data'], 'status');
 
+			// Load the users data
+			$this->_tools->loadUserInfo($data['users']);
+
 			return $this->setResponse(array(
 				'type' => 'success',
+				'message' => '',
 				'data' => $return,
 				'owner' => $id,
 			));
@@ -679,7 +683,7 @@ class BreezeAjax
 
 		// If we didn't get all the params, set them to an empty var and don't forget to convert the message to a proper text string
 		$this->_response = array(
-			'message' => $this->noJS == false ? $this->_text->getText($data['type'] .'_'. $data['message']) : $data['message'],
+			'message' => !empty($data['message']) ? ($this->noJS == false ? $this->_text->getText($data['type'] .'_'. $data['message']) : $data['message']) : 'server',
 			'data' => !empty($data['data']) ? $data['data'] : '',
 			'type' => $data['type'],
 			'owner' => !empty($data['owner']) ? $data['owner'] : 0,
