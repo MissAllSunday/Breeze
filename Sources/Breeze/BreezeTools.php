@@ -326,4 +326,69 @@ class BreezeTools
 			$context['user']['is_owner'] = false;
 		}
 	}
+
+	/**
+	 * Breeze::profileHeaders()
+	 *
+	 * Static method, a helper method to load JavaScript code for the profile and wall page
+	 * @see BreezeTools
+	 * @return void
+	 */
+	public function profileHeaders()
+	{
+		global $context, $settings, $user_info;
+		static $profile_header = false;
+
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
+		$breezeGlobals = Breeze::sGlobals('get');
+
+		if (!$profile_header)
+		{
+			// Set $context['member'] if it hasn't been set before
+			$this->loadMemberContext();
+
+			$context['html_headers'] .= '
+			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
+			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />';
+
+			// DUH! winning!
+			if ($this->settings->enable('admin_settings_enable') && ($breezeGlobals->getValue('action') == 'profile' || $breezeGlobals->getValue('action') == 'wall'))
+				$context['insert_after_template'] .= Breeze::who(true);
+
+			// Let's load jquery from CDN only if it hasn't been loaded yet
+			$context['html_headers'] .= '
+			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
+			<link rel="stylesheet" type="text/css" href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css"/>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>';
+
+			// Generic JS vars and files
+			$context['insert_after_template'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
+			<script type="text/javascript"><!-- // --><![CDATA[
+				var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
+				var breeze_how_many_mentions_options = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_how_many_mentions_options']) ? $context['member']['options']['Breeze_how_many_mentions_options'] : 5)) .';
+				var breeze_session_id = ' . JavaScriptEscape($context['session_id']) . ';
+				var breeze_session_var = ' . JavaScriptEscape($context['session_var']) . ';
+			// ]]></script>';
+
+			// Does the user wants to use infinite scroll?
+			if (!empty($context['member']['options']['Breeze_infinite_scroll']))
+				$context['insert_after_template'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze_scroll.js"></script>';
+
+			// Load breeze.js until everyone else is loaded
+			$context['html_headers'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
+
+			$profile_header = true;
+		}
+	}
 }

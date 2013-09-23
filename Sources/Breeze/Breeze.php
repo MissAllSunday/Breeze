@@ -131,13 +131,12 @@ class Breeze
 	/**
 	 * Breeze::headersHook()
 	 *
-	 * Static method used to embed the JavaScript and other bits of code on every page inside SMF, used by the SMF hook system
-	 * @see BreezeTools
+	 * Static method used to embed the JavaScript and other bits of code on every page inside SMF.
 	 * @return void
 	 */
-	public static function headersHook()
+	public function headersHook()
 	{
-		global $context, $settings, $user_info, $breezeController, $txt;
+		global $context, $user_info, $breezeController;
 		static $header_done = false;
 
 		// Don't do anything if we are in SSI world
@@ -147,22 +146,10 @@ class Breeze
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
-		$text = $breezeController->get('text');
-		$breezeSettings = $breezeController->get('settings');
-		$breezeGlobals = Breeze::sGlobals('get');
-
-		// Set $context['member'] if it hasn't been set before
-		$breezeController->get('tools')->loadMemberContext();
-
 		if (!$header_done)
 		{
-			$context['html_headers'] .= '
-			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
-			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />';
-
-			// DUH! winning!
-			if ($breezeSettings->enable('admin_settings_enable') && ($breezeGlobals->getValue('action') == 'profile' || $breezeGlobals->getValue('action') == 'wall'))
-				$context['insert_after_template'] .= Breeze::who(true);
+			$breezeSettings = $breezeController->get('settings');
+			$breezeGlobals = Breeze::sGlobals('get');
 
 			// Define some variables for the ajax stuff
 			$context['html_headers'] .= '
@@ -180,29 +167,6 @@ class Breeze
 				var breeze_cannot_postComments = '. JavaScriptEscape($text->getText('cannot_postComments')) .';
 				var breeze_page_loading = '. JavaScriptEscape($text->getText('page_loading')) .';
 				var breeze_page_loading_end = '. JavaScriptEscape($text->getText('page_loading_end')) .';
-				var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
-				var breeze_how_many_mentions_options = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_how_many_mentions_options']) ? $context['member']['options']['Breeze_how_many_mentions_options'] : 5)) .';
-				var breeze_session_id = ' . JavaScriptEscape($context['session_id']) . ';
-				var breeze_session_var = ' . JavaScriptEscape($context['session_var']) . ';
-		// ]]></script>';
-
-			// Let's load jquery from CDN only if it hasn't been loaded yet
-			$context['html_headers'] .= '
-			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
-			<link rel="stylesheet" type="text/css" href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css"/>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>';
-
-
-			// Stuff needed by the notification system
-			$context['insert_after_template'] .= '
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
-			<script type="text/javascript"><!-- // --><![CDATA[
 				var breeze_error_message = '. JavaScriptEscape($text->getText('error_message')) .';
 				var breeze_noti_markasread = '. JavaScriptEscape($text->getText('noti_markasread')) .';
 				var breeze_noti_markasread_after = '. JavaScriptEscape($text->getText('noti_markasread_after')) .';
@@ -210,16 +174,7 @@ class Breeze
 				var breeze_noti_delete_after = '. JavaScriptEscape($text->getText('noti_delete_after')) .';
 				var breeze_noti_close = '. JavaScriptEscape($text->getText('noti_close')) .';
 				var breeze_noti_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
-			// ]]></script>';
-
-			// Does the user wants to use infinite scroll?
-			if (!empty($context['member']['options']['Breeze_infinite_scroll']))
-				$context['insert_after_template'] .= '
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze_scroll.js"></script>';
-
-			// Load breeze.js until everyone else is loaded
-			$context['html_headers'] .= '
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
+		// ]]></script>';
 
 			// Does the admin wants to add more actions?
 			if ($breezeSettings->enable('allowedActions'))
