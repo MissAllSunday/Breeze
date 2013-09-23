@@ -161,6 +161,7 @@ class BreezeAjax
 
 			// Store the status
 			$params['id'] = $this->_query->insertStatus($params);
+			$parmas['time_raw'] = time();
 
 			// All went good or so it seems...
 			if (!empty($params['id']))
@@ -256,6 +257,7 @@ class BreezeAjax
 
 			// Store the comment
 			$params['id'] = $this->_query->insertComment($params);
+			$parmas['time_raw'] = time();
 
 			// The Comment was inserted
 			if (!empty($params['id']))
