@@ -33,354 +33,288 @@
  *
  */
 
-// The status stuff goes right here...
-	jQuery(document).ready(function()
-	{
-		jQuery('.status_button').livequery(function()
+// Some re-usable vars
+var breeze = {};
+
+breeze.loadImage = '<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" />';
+
+// Helper function to show a notification instance
+breeze.noti = function(params)
+{
+	noty({
+		text: params.message,
+		timeout: 3500, //@todo set this to a user setting
+		type: params.type,
+	});
+}
+
+jQuery(document).ready(function(){
+
+	// Posting a new status
+	jQuery('#form_status').submit(function(event){
+
+		var status = {};
+
+		// Get the profile owner
+		status.Owner = window.breeze_profileOwner;
+
+		// Get all the values we need
+		jQuery('#form_status :input').each(function(){
+			var input = jQuery(this);
+			status[input.attr('name').replace('status', '')] = input.val();
+		});
+
+		// You need to type something...
+		if(status.Content=='')
 		{
-			jQuery(this).click(function()
+			alert(breeze_empty_message); // @todo, perhaps fire a nice noty message instead of a nasty alert?
+			return false;
+		}
+
+		else
+		{
+			// Shh!
+			if (status.Content == 'about:Suki')
 			{
-				var test = jQuery('#content').val();
-				var ownerID = jQuery('#owner_id').val();
-				var posterID = jQuery('#poster_id').val();
-				var loadImage = '<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" /><br /> <span class="loading">' + ajax_notification_text + '</span>';
+				alert('Y es que tengo un coraz\xF3n t\xE1n necio \n que no comprende que no entiende \n que le hace da\xF1o amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n Y es que tengo un coraz\xF3n t\xE1n necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace da\xF1o \n te sigue amando igual o mucho m\xE1s que ayer \n mucho m\xE1s que ayer... \n');
+				return false;
+			}
 
-				// Disable the button to prevent multiple clicks -_-
-				jQuery(this).attr('disabled', 'disabled');
+			// Show a nice loading image so people can think we are actually doing some work...
+			jQuery('#breeze_load_image').fadeIn('slow').html(breeze.loadImage);
 
-				if(test=='')
+			// The long, long ajax call...
+			jQuery.ajax({
+				type: 'GET',
+				url: smf_scripturl + '?action=breezeajax;sa=post;js=1' + window.breeze_session_var + '=' + window.breeze_session_id + ';rf=' + window.breeze_commingFrom,
+				data: status,
+				cache: false,
+				dataType: 'json',
+				success: function(html)
 				{
-					alert(breeze_empty_message);
-
-					// Enable the button again...
-					jQuery('.status_button').removeAttr('disabled');
-				}
-
-				// Shhh!
-				else
-					if(test== 'about:breeze')
-					{
-						alert('Y es que tengo un coraz\xF3n t\xE1n necio \n que no comprende que no entiende \n que le hace da\xF1o amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n Y es que tengo un coraz\xF3n t\xE1n necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace da\xF1o \n te sigue amando igual o mucho m\xE1s que ayer \n mucho m\xE1s que ayer... \n');
-
+					jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
 						// Enable the button again...
 						jQuery('.status_button').removeAttr('disabled');
-					}
 
-				else
+						// Set the notification
+						breeze.noti(html);
+
+						// Do some after work...
+						if (html.type == 'success')
+						{
+							jQuery('#statusContent').val('');
+							jQuery('#breeze_display_status').prepend(html.data).fadeIn('slow', 'linear', function(){})
+						}
+					});
+				},
+				error: function (html)
 				{
-					jQuery('#breeze_load_image').fadeIn('slow').html(loadImage);
+					// Enable the button again...
+					jQuery('.status_button').removeAttr('disabled');
+					jQuery('#statusContent').val('');
 
-					jQuery.ajax(
-					{
-						type: 'POST',
-						url: smf_scripturl + '?action=breezeajax;sa=post;js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
-						data: ({content : test, owner_id : ownerID, poster_id : posterID}),
+					jQuery('#breeze_load_image').slideUp('slow', 'linear', function(){
+						noty({
+							text: html.message,
+							timeout: 3500, type: html.type,
+						});
+					});
+				},
+			});
+		}
+
+		// Prevent normal behaviour
+		return false;
+	});
+
+	// Post a new comment
+	jQuery(document).on('submit', '.form_comment', function(event){
+
+		// The most important thing is... the ID
+		var StatusID = parseInt(jQuery(this).attr('id').replace('form_comment_', ''));
+
+		// Gather all the data we need
+		var comment = {
+			'Status' : StatusID,
+			'Owner' : jQuery('#commentOwner_' + StatusID).val(),
+			'Poster' : jQuery('#commentPoster_' + StatusID).val(),
+			'StatusPoster' : jQuery('#commentStatusPoster_' + StatusID).val(),
+			'Content' : jQuery('#commentContent_' + StatusID).val(),
+		};
+
+		// Don't be silly...
+		if(comment.Content=='')
+		{
+			alert(breeze_empty_message); // @todo, perhaps fire a nice noty message instead of a nasty alert?
+			return false;
+		}
+
+		else
+		{
+			// Disable the button
+			jQuery('#commentSubmit_' + StatusID).attr('disabled', 'disabled');
+
+			// The usual loading image...
+			jQuery('#breeze_load_image_comment_'+ StatusID).fadeIn('slow').html(breeze.loadImage);
+
+			jQuery.ajax({
+				type: 'GET',
+				url: smf_scripturl + '?action=breezeajax;sa=postcomment;js=1' + window.breeze_session_var + '=' + window.breeze_session_id + ';rf=' + window.breeze_commingFrom,
+				data: comment,
+				cache: false,
+				dataType: 'json',
+				success: function(html){
+
+					jQuery('#breeze_load_image_comment_'+ StatusID).fadeOut('slow', 'linear', function(){
+
+						// Send the notification
+						breeze.noti(html);
+
+						// Everything went better than expected :)
+						jQuery('#comment_loadplace_'+ StatusID).append(html.data).fadeIn('slow', 'linear', function(){});
+					});
+
+					// Enable the button again...
+					jQuery('#commentSubmit_' + StatusID).removeAttr('disabled');
+					jQuery('#commentContent_' + StatusID).val('');
+
+				},
+				error: function (html)
+				{
+					jQuery('#breeze_load_image_comment_'+ StatusID).fadeOut('slow');
+					breeze.noti(html);
+					jQuery('#commentSubmit_' + StatusID).removeAttr('disabled');
+					jQuery('#commentContent_' + StatusID).val('');
+				},
+			});
+		}
+
+		// Prevent normal behaviour
+		return false;
+	});
+
+	// Deleting a comment
+	jQuery(document).on('click', '.breeze_delete_comment', function(event){
+
+		// Get the ID
+		commentID = parseInt(jQuery(this).attr('id').replace('deleteComment_', ''));
+		commentUrl = jQuery(this).attr('href');
+
+		// Show a confirmation message
+		noty({
+			text: breeze_confirm_delete,
+			type: 'confirmation',
+			dismissQueue: false,
+			closeWith: ['button'],
+			buttons: [{
+				addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
+					jQuery.ajax({
+						type: 'GET',
+						url: commentUrl + ';js=1' + window.breeze_session_var + '=' + window.breeze_session_id + ';rf=' + window.breeze_commingFrom,
 						cache: false,
 						dataType: 'json',
-						success: function(html)
-						{
-							// The server side found an issue
-							if(html.type == 'error')
+						success: function(html){
+							$noty.close();
+
+							switch(html.type)
 							{
-								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
+								case 'error':
 									noty({
 										text: html.message,
 										timeout: 3500, type: html.type,
 									});
-								});
-							}
-
-							else if(html.type == 'success'){
-								jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
-									document.getElementById('content').value='';
-									document.getElementById('content').focus();
-
-									jQuery('#breeze_display_status').prepend(html.data);
-
-									jQuery('#breeze_display_status').fadeIn('slow', 'linear', function(){
-										noty({
-											text: html.message,
-											timeout: 3500, type: html.type,
-										});
-									});
-								});
-							}
-
-							// Enable the button again...
-							jQuery('.status_button').removeAttr('disabled');
-						},
-						error: function (html)
-						{
-							// Enable the button again...
-							jQuery('.status_button').removeAttr('disabled');
-
-							/*
-							 * Something happen while sending the request
-							 *
-							 * @todo identify the different errors and show more info about it to the forum admin
-							 */
-							jQuery('#breeze_load_image').slideUp('slow', 'linear', function(){
+								break;
+								case 'success':
+								jQuery('#comment_id_'+ commentID).fadeOut('slow');
 								noty({
 									text: html.message,
 									timeout: 3500, type: html.type,
 								});
+								break;
+							}
+						},
+						error: function (html){
+							$noty.close();
+							noty({
+								text: html.message,
+								timeout: 3500, type: html.error,
 							});
 						},
 					});
 				}
-				return false;
-			});
+			},
+				{addClass: 'button_submit', text: breeze_confirm_cancel, onClick: function($noty) {
+					$noty.close();
+				}}
+			]
 		});
+
+		return false;
 	});
 
-// Handle the comments
-	jQuery(document).ready(function()
-	{
-		jQuery('.comment_submit').livequery(function()
-		{
-			jQuery(this).click(function()
-			{
-				var element = jQuery(this);
-				var Id = element.attr('id');
-				var commentBox = jQuery('#textboxcontent_'+Id).val();
-				var loadcommentImage = '<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" /> <span class="loading">' + ajax_notification_text + '</span>';
-				var status_owner_id = jQuery('#status_owner_id'+Id).val();
-				var poster_comment_id = jQuery('#poster_comment_id'+Id).val();
-				var profile_owner_id = jQuery('#profile_owner_id'+Id).val();
-				var status_id = Id;
-				var loadImage = '<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" /><br /> <span class="loading">' + ajax_notification_text + '</span>';
+	// Deleting a status, pretty much the same as deleting a comment :(
+	jQuery(document).on('click', '.breeze_delete_status', function(event){
 
-				if(commentBox=='')
-					alert(breeze_empty_message);
+		var element = jQuery(this);
+		var I = parseInt(element.attr('id').replace('deleteStatus_', ''));
+		var typeMethod = 'status';
+		var urlParam = element.attr('href');
 
-				else
-				{
-					jQuery('#breeze_load_image_comment_'+Id).fadeIn('slow').html(loadImage);
-
-					jQuery.ajax(
-					{
-						type: 'POST',
-						url: smf_scripturl + '?action=breezeajax;sa=postcomment;js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
-						data: ({content : commentBox, status_owner_id : status_owner_id, poster_comment_id : poster_comment_id, profile_owner_id: profile_owner_id, status_id : status_id}),
+		// Show a nice confirmation box
+		noty({
+			text: breeze_confirm_delete,
+			type: 'confirmation',
+			dismissQueue: false,
+			closeWith: ['button'],
+			buttons: [{
+				addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
+					jQuery.ajax({
+						type: 'GET',
+						url: urlParam + ';js=1' + window.breeze_session_var + '=' + window.breeze_session_id + ';rf=' + window.breeze_commingFrom,
 						cache: false,
 						dataType: 'json',
 						success: function(html){
-							// The server side found an issue
-							if(html.type == 'error')
+							$noty.close();
+							switch(html.type)
 							{
-								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function(){
+								case 'error':
 									noty({
 										text: html.message,
-										timeout: 3500, type: html.type,
+										timeout: 3500, 
+										type: html.type,
 									});
-								});
-							}
-
-							else if(html.type == 'success'){
-								jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow', 'linear', function(){
-									document.getElementById('textboxcontent_'+Id).value='';
-									document.getElementById('textboxcontent_'+Id).focus();
-									jQuery('#comment_loadplace_'+Id).append(html.data);
-									jQuery('#comment_loadplace_'+Id).fadeIn('slow', 'linear', function(){
-										noty({
-											text: html.message,
-											timeout: 3500, type: html.type,
-										});
+								break;
+								case 'success':
+									jQuery('#status_id_'+I).fadeOut('slow');
+									noty({
+										text: html.message,
+										timeout: 3500, 
+										type: html.type,
 									});
-								});
+								break;
 							}
-
-							// Enable the button again...
-							jQuery('.status_button').removeAttr('disabled');
 						},
-						error: function (html)
-						{
-							jQuery('#breeze_load_image_comment_'+Id).fadeOut('slow');
+						error: function (html){
+							$noty.close();
 							noty({
 								text: html.message,
-								timeout: 3500, type: html.type,
+								timeout: 3500, 
+								type: html.type,
 							});
 						},
 					});
 				}
-				return false;
-			});
+			},
+				{addClass: 'button_submit', text: breeze_confirm_cancel, onClick: function($noty) {
+					$noty.close();
+				}}
+			]
 		});
+	
+		return false;
 	});
 
-	// Delete a comment
-	jQuery(document).ready(function()
-	{
-		jQuery('.breeze_delete_comment').livequery(function()
-		{
-			jQuery(this).click(function()
-			{
-				var element = jQuery(this);
-				var I = element.attr('id');
-				var typeMethod = 'comment';
-				var urlParam = element.attr('href');
-
-				// Show a nice confirmation box
-				noty({
-					text: breeze_confirm_delete,
-					type: 'confirmation',
-					dismissQueue: false,
-					closeWith: ['button'],
-					buttons: [{
-						addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
-							jQuery.ajax({
-								type: 'POST',
-								url: urlParam + ';js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
-								cache: false,
-								dataType: 'json',
-								success: function(html){
-									$noty.close();
-
-									switch(html.type)
-									{
-										case 'error':
-											noty({
-												text: html.message,
-												timeout: 3500, type: html.type,
-											});
-										break;
-										case 'success':
-										jQuery('#comment_id_'+I).fadeOut('slow');
-										noty({
-											text: html.message,
-											timeout: 3500, type: html.type,
-										});
-										break;
-									}
-								},
-								error: function (html){
-									$noty.close();
-									noty({
-										text: html.message,
-										timeout: 3500, type: html.error,
-									});
-								},
-							});
-						}
-					},
-						{addClass: 'button_submit', text: breeze_confirm_cancel, onClick: function($noty) {
-							$noty.close();
-						}}
-					]
-				});
-				return false;
-			});
-		});
-	});
-
-	// Delete a status
-	jQuery(document).ready(function()
-	{
-		jQuery('.breeze_delete_status').livequery(function()
-		{
-			jQuery(this).click(function()
-			{
-				var element = jQuery(this);
-				var I = element.attr('id');
-				var typeMethod = 'status';
-				var urlParam = element.attr('href');
-
-				// Show a nice confirmation box
-				noty({
-					text: breeze_confirm_delete,
-					type: 'confirmation',
-					dismissQueue: false,
-					closeWith: ['button'],
-					buttons: [{
-						addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
-							jQuery.ajax({
-								type: 'POST',
-								url: urlParam + ';js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
-								cache: false,
-								dataType: 'json',
-								success: function(html){
-									$noty.close();
-									switch(html.type)
-									{
-										case 'error':
-											noty({
-												text: html.message,
-												timeout: 3500, type: html.type,
-											});
-										break;
-										case 'success':
-											jQuery('#status_id_'+I).fadeOut('slow');
-											noty({
-												text: html.message,
-												timeout: 3500, type: html.type,
-											});
-										break;
-									}
-								},
-								error: function (html){
-									$noty.close();
-									noty({
-										text: html.message,
-										timeout: 3500, type: html.type,
-									});
-								},
-							});
-						}
-					},
-						{addClass: 'button_submit', text: breeze_confirm_cancel, onClick: function($noty) {
-							$noty.close();
-						}}
-					]
-				});
-				return false;
-			});
-		});
-	});
-
-// Facebox
-jQuery(document).ready(function()
-{
-	jQuery('a[rel*=facebox]').livequery(function()
-	{
-		jQuery(this).facebox(
-		{
-			loadingImage : smf_images_url + '/breeze/loading.gif',
-			closeImage   : smf_images_url + '/breeze/error_close.png'
-		});
-	});
-});
-
-// Scroll to top
-jQuery(document).ready(function(){
-
-	// hide #breezeTop first
-	jQuery("#breezeTop").hide();
-
-	jQuery(function ()
-	{
-		jQuery(window).scroll(function ()
-		{
-			if (jQuery(this).scrollTop() > 100)
-			{
-				jQuery('#breezeTop').fadeIn();
-			}
-			else
-			{
-				jQuery('#breezeTop').fadeOut();
-			}
-		});
-
-		jQuery('#breezeTop a').click(function ()
-		{
-			jQuery('body,html').animate({
-				scrollTop: 0
-			}, 800);
-			return false;
-		});
-	});
-});
-
-jQuery(document).ready(function(){
+	// Mentioning
 	jQuery('textarea[rel*=atwhoMention]').bind("focus", function(event){
 		jQuery.ajax({
 			url: smf_scripturl + '?action=breezeajax;sa=usersmention;js=1' + window.breeze_session_var + '=' + window.breeze_session_id,
@@ -404,4 +338,17 @@ jQuery(document).ready(function(){
 			},
 		});
 	});
+
+	// Facebox
+	jQuery('a[rel*=facebox]').livequery(function()
+	{
+		jQuery(this).facebox(
+		{
+			loadingImage : smf_images_url + '/breeze/loading.gif',
+			closeImage   : smf_images_url + '/breeze/error_close.png'
+		});
+	});
+
 });
+
+
