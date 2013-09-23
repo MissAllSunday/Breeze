@@ -49,53 +49,34 @@ class BreezeDisplay
 
 	function __construct($tools, $text)
 	{
-		global $breezeController;
-
-		// Sometimes $breezeController won't be set
-		if (empty($breezeController))
-			$breezeController = new BreezeController();
-
 		$this->tools = $tools;
 		$this->text = $text;
-
-		// The visitor's permissions
-		$this->permissions = array(
-			'poststatus' => allowedTo('breeze_postStatus'),
-			'postcomments' => allowedTo('breeze_postComments'),
-			'deleteStatus' => allowedTo('breeze_deleteStatus')
-		);
 	}
 
-	public function HTML($params, $type)
+	public function HTML($params, $type, $single = false)
 	{
 		global $context;
 
 		if (empty($params) || empty($type))
 			return false;
 
-		$this->params = $params;
-		$this->type = $type;
+		$return = array();
+		$users = array();
+		$call = 'breeze_'. $type;
 
-		// Load the user info
-		$this->tools->loadUserInfo($this->params['poster_id']);
+		// Functions template
+		loadtemplate(Breeze::$name .'Functions');
 
-		// Set the normal time first...
-		$this->params['time_raw'] = timeformat($this->params['time'], false);
+		if ($single)
+			$params['time'] = $this->tools->timeElapsed($params['time']);
 
-		// Set the elapsed time
-		$this->params['time'] = $this->tools->timeElapsed($this->params['time']);
+		// Let us work with an array
+		$params = $single ? array($params) : $params;
 
-		loadtemplate(Breeze::$name .'Display');
+		// Call the template with return param as true
+		$return = $call($params, true);
 
-		// Pass everything to the template
-		$context['template_layers'] = array();
-		$context['sub_template'] = 'main';
-		$context['Breeze']['type'] = $this->type;
-		$context['Breeze']['params'] = $this->params;
-		$context['Breeze']['permissions'] = $this->permissions;
-		$context['Breeze']['text'] = $this->text;
-
-		// Done
-		return template_main();
+		// If single is true, return the first (and only) item in the array
+		return $return;
 	}
 }
