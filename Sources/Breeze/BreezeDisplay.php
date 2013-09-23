@@ -67,6 +67,9 @@ class BreezeDisplay
 		// Functions template
 		loadtemplate(Breeze::$name .'Functions');
 
+		if ($single)
+			$params['time'] = $this->tools->timeElapsed($params['time']);
+
 		// Let us work with an array
 		$params = $single ? array($params) : $params;
 
