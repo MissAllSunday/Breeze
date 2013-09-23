@@ -191,7 +191,6 @@ class Breeze
 			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
 			<link rel="stylesheet" type="text/css" href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css"/>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livequery.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>';
 
@@ -568,17 +567,9 @@ class Breeze
 						'name' => 'zRSSFeeds',
 						'site' => 'http://www.zazar.net/developers/jquery/zrssfeed',
 					),
-					'live_query' => array(
-						'name' => 'Live query plugin',
-						'site' => 'http://brandonaaron.net/code/livequery/docs',
-					),
 					'noty' => array(
 						'name' => 'noty jquery plugin',
 						'site' => 'http://needim.github.com/noty/',
-					),
-					'scroll' => array(
-						'name' => 'infinite-scroll',
-						'site' => 'https://github.com/paulirish/infinite-scroll',
 					),
 					'mentions' => array(
 						'name' => 'Mentions autocomplete',
