@@ -134,7 +134,7 @@ class Breeze
 	 * Static method used to embed the JavaScript and other bits of code on every page inside SMF.
 	 * @return void
 	 */
-	public function headersHook()
+	public static function headersHook()
 	{
 		global $context, $user_info, $breezeController;
 		static $header_done = false;
@@ -373,9 +373,6 @@ class Breeze
 
 		// A special action for the buddy request message
 		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'breezeBuddyMessage');
-
-		// Cheat, lets cheat a little!
-		Breeze::headersHook(true);
 	}
 
 	/**

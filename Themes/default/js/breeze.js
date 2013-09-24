@@ -280,7 +280,7 @@ jQuery(document).ready(function(){
 								case 'error':
 									noty({
 										text: html.message,
-										timeout: 3500, 
+										timeout: 3500,
 										type: html.type,
 									});
 								break;
@@ -288,7 +288,7 @@ jQuery(document).ready(function(){
 									jQuery('#status_id_'+I).fadeOut('slow');
 									noty({
 										text: html.message,
-										timeout: 3500, 
+										timeout: 3500,
 										type: html.type,
 									});
 								break;
@@ -298,7 +298,7 @@ jQuery(document).ready(function(){
 							$noty.close();
 							noty({
 								text: html.message,
-								timeout: 3500, 
+								timeout: 3500,
 								type: html.type,
 							});
 						},
@@ -310,7 +310,7 @@ jQuery(document).ready(function(){
 				}}
 			]
 		});
-	
+
 		return false;
 	});
 
@@ -348,5 +348,3 @@ jQuery(document).ready(function(){
 		});
 	});
 });
-
-
