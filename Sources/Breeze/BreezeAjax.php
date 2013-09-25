@@ -187,7 +187,7 @@ class BreezeAjax
 				return $this->setResponse(array(
 					'type' => 'success',
 					'message' => 'published',
-					'data' => $this->_display->HTML($params, 'status', true),
+					'data' => $this->_display->HTML($params, 'status', true, $this->_data->getValue('Poster')),
 					'owner' => $this->_data->getValue('Owner'),
 				));
 			}
@@ -285,7 +285,7 @@ class BreezeAjax
 				return $this->setResponse(array(
 					'type' => 'success',
 					'message' => 'published_comment',
-					'data' => $this->_display->HTML($params, 'comment', true),
+					'data' => $this->_display->HTML($params, 'comment', true, $poster_comment_id),
 					'owner' => $profile_owner_id,
 				));
 			}
@@ -546,10 +546,7 @@ class BreezeAjax
 
 		if (!empty($data['data']))
 		{
-			$return .= $this->_display->HTML($data['data'], 'status');
-
-			// Load the users data
-			$this->_tools->loadUserInfo($data['users']);
+			$return .= $this->_display->HTML($data['data'], 'status', false, $data['users']);
 
 			return $this->setResponse(array(
 				'type' => 'success',

@@ -120,8 +120,9 @@ class Breeze
 	/**
 	 * Breeze::sGlobals()
 	 *
+	 * A new instance of BreezeGlobals.
 	 * @param string $var Either post, request or get
-	 * @return object Acces to BreezeGlobals
+	 * @return object Access to BreezeGlobals
 	 */
 	public static function sGlobals($var)
 	{
@@ -146,34 +147,36 @@ class Breeze
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
+		// Prevent this from showing twice
 		if (!$header_done)
 		{
 			$breezeSettings = $breezeController->get('settings');
 			$breezeGlobals = Breeze::sGlobals('get');
+			$breezeText = $breezeController->get('text');
 
 			// Define some variables for the ajax stuff
 			$context['html_headers'] .= '
 			<script type="text/javascript"><!-- // --><![CDATA[
-				var breeze_error_message = '. JavaScriptEscape($text->getText('error_message')) .';
-				var breeze_success_message = '. JavaScriptEscape($text->getText('success_message')) .';
-				var breeze_empty_message = '. JavaScriptEscape($text->getText('empty_message')) .';
-				var breeze_error_delete = '. JavaScriptEscape($text->getText('error_message')) .';
-				var breeze_success_delete = '. JavaScriptEscape($text->getText('success_delete')) .';
-				var breeze_confirm_delete = '.JavaScriptEscape( $text->getText('confirm_delete')) .';
-				var breeze_confirm_yes = '. JavaScriptEscape($text->getText('confirm_yes')) .';
-				var breeze_confirm_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
-				var breeze_already_deleted = '. JavaScriptEscape($text->getText('already_deleted')) .';
-				var breeze_cannot_postStatus = '. JavaScriptEscape($text->getText('cannot_postStatus')) .';
-				var breeze_cannot_postComments = '. JavaScriptEscape($text->getText('cannot_postComments')) .';
-				var breeze_page_loading = '. JavaScriptEscape($text->getText('page_loading')) .';
-				var breeze_page_loading_end = '. JavaScriptEscape($text->getText('page_loading_end')) .';
-				var breeze_error_message = '. JavaScriptEscape($text->getText('error_message')) .';
-				var breeze_noti_markasread = '. JavaScriptEscape($text->getText('noti_markasread')) .';
-				var breeze_noti_markasread_after = '. JavaScriptEscape($text->getText('noti_markasread_after')) .';
-				var breeze_noti_delete = '. JavaScriptEscape($text->getText('general_delete')) .';
-				var breeze_noti_delete_after = '. JavaScriptEscape($text->getText('noti_delete_after')) .';
-				var breeze_noti_close = '. JavaScriptEscape($text->getText('noti_close')) .';
-				var breeze_noti_cancel = '. JavaScriptEscape($text->getText('confirm_cancel')) .';
+				var breeze_error_message = '. JavaScriptEscape($breezeText->getText('error_message')) .';
+				var breeze_success_message = '. JavaScriptEscape($breezeText->getText('success_message')) .';
+				var breeze_empty_message = '. JavaScriptEscape($breezeText->getText('empty_message')) .';
+				var breeze_error_delete = '. JavaScriptEscape($breezeText->getText('error_message')) .';
+				var breeze_success_delete = '. JavaScriptEscape($breezeText->getText('success_delete')) .';
+				var breeze_confirm_delete = '.JavaScriptEscape($breezeText->getText('confirm_delete')) .';
+				var breeze_confirm_yes = '. JavaScriptEscape($breezeText->getText('confirm_yes')) .';
+				var breeze_confirm_cancel = '. JavaScriptEscape($breezeText->getText('confirm_cancel')) .';
+				var breeze_already_deleted = '. JavaScriptEscape($breezeText->getText('already_deleted')) .';
+				var breeze_cannot_postStatus = '. JavaScriptEscape($breezeText->getText('cannot_postStatus')) .';
+				var breeze_cannot_postComments = '. JavaScriptEscape($breezeText->getText('cannot_postComments')) .';
+				var breeze_page_loading = '. JavaScriptEscape($breezeText->getText('page_loading')) .';
+				var breeze_page_loading_end = '. JavaScriptEscape($breezeText->getText('page_loading_end')) .';
+				var breeze_error_message = '. JavaScriptEscape($breezeText->getText('error_message')) .';
+				var breeze_noti_markasread = '. JavaScriptEscape($breezeText->getText('noti_markasread')) .';
+				var breeze_noti_markasread_after = '. JavaScriptEscape($breezeText->getText('noti_markasread_after')) .';
+				var breeze_noti_delete = '. JavaScriptEscape($breezeText->getText('general_delete')) .';
+				var breeze_noti_delete_after = '. JavaScriptEscape($breezeText->getText('noti_delete_after')) .';
+				var breeze_noti_close = '. JavaScriptEscape($breezeText->getText('noti_close')) .';
+				var breeze_noti_cancel = '. JavaScriptEscape($breezeText->getText('confirm_cancel')) .';
 		// ]]></script>';
 
 			// Does the admin wants to add more actions?
@@ -351,6 +354,9 @@ class Breeze
 
 		// DUH! winning!
 		Breeze::who();
+
+		// Notifications call
+		Breeze::headersHook(true);
 	}
 
 	/**

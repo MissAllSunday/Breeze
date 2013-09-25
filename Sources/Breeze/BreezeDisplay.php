@@ -53,7 +53,7 @@ class BreezeDisplay
 		$this->text = $text;
 	}
 
-	public function HTML($params, $type, $single = false)
+	public function HTML($params, $type, $single = false, $usersToLoad = false)
 	{
 		global $context;
 
@@ -72,6 +72,10 @@ class BreezeDisplay
 
 		// Let us work with an array
 		$params = $single ? array($params) : $params;
+
+		// If there is something to load, load it then!
+		if ($usersToLoad)
+			$this->tools->loadUserInfo($usersToLoad);
 
 		// Call the template with return param as true
 		$return = $call($params, true);

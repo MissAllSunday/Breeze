@@ -58,15 +58,16 @@ function breezeWall()
 	$text = $breezeController->get('text');
 	$log = $breezeController->get('log');
 
-	// Set member context if it hasn't been set yet
-	$tools->loadMemberContext();
-
 	// Check if this user allowed to be here
 	breezeCheckPermissions();
 
 	// We need to make sure we have all your info...
 	if (empty($context['Breeze']['user_info'][$user_info['id']]))
 		$tools->loadUserInfo($user_info['id']);
+
+	// Set member context if it hasn't been set yet
+	$tools->loadMemberContext();
+	$tools->profileHeaders();
 
 	// Default values
 	$status = array();
@@ -159,6 +160,7 @@ function breezeSettings()
 
 	// Identify if this person is the profile owner
 	$breezeController->get('tools')->loadMemberContext();
+	$breezeController->get('tools')->profileHeaders();
 
 	$context['Breeze']['text'] = $breezeController->get('text');
 	$context['sub_template'] = 'member_options';
@@ -276,6 +278,9 @@ function breezeNotifications()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
+	$breezeController->get('tools')->loadMemberContext();
+	$breezeController->get('tools')->profileHeaders();
+
 	// We kinda need all this stuff, don't ask why, just nod your head...
 	$query = $breezeController->get('query');
 	$text = $breezeController->get('text');
@@ -323,6 +328,9 @@ function breezeBuddyRequest()
 
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
+
+	$breezeController->get('tools')->loadMemberContext();
+	$breezeController->get('tools')->profileHeaders();
 
 	// Load all we need
 	$buddies = $breezeController->get('buddy');
@@ -449,6 +457,9 @@ function breezeTrackViews()
 	// Don't log guest views
 	if ($user_info['is_guest'] == true)
 		return false;
+
+	$breezeController->get('tools')->loadMemberContext();
+	$breezeController->get('tools')->profileHeaders();
 
 	// Do this only if t hasn't been done before
 	$views = cache_get_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], 60);
