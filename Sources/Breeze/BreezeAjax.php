@@ -278,7 +278,7 @@ class BreezeAjax
 				$params['body'] = $this->_parser->display($params['body']);
 
 				// The comment was created, tell the world of just those who want it to know...
-				call_integration_hook('integrate_breeze_after_insertComment', array(&$params));
+				call_integration_hook('integrate_breeze_after_insertComment', array($params));
 
 				// Send the data back to the browser
 				return $this->setResponse(array(
