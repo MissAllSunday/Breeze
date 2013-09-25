@@ -116,12 +116,13 @@ function breeze_status($data, $returnVar = false)
 								// The actual post form
 									$echo .= '
 									<form action="'. $scripturl .'?action=breezeajax;sa=postcomment'. (!empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '') .'" method="post" name="form_comment_'. $status['id'] .'" id="form_comment_'. $status['id'] .'" class="form_comment">
-										<textarea name="commentContent_'. $status['id'] .'" id="commentContent_'. $status['id'] .'" cols="40" rows="2" rel="atwhoMention"></textarea>
-										<input type="hidden" value="'. $status['poster_id'] .'" name="commentStatusPoster_'. $status['id'] .'" id="commentStatusPoster_'. $status['id'] .'" />
-										<input type="hidden" value="'. $user_info['id'] .'" name="commentPoster_'. $status['id'] .'" id="commentPoster_'. $status['id'] .'" />
-										<input type="hidden" value="'. $status['poster_id'] .'" name="commentOwner_'. $status['id'] .'" id="commentOwner_'. $status['id'] .'" /><br />
+										<textarea name="commentContent" id="commentContent_'. $status['id'] .'" cols="40" rows="2" rel="atwhoMention"></textarea>
+										<input type="hidden" value="'. $status['poster_id'] .'" name="commentStatusPoster" id="commentStatusPoster_'. $status['id'] .'" />
+										<input type="hidden" value="'. $user_info['id'] .'" name="commentPoster" id="commentPoster_'. $status['id'] .'" />
+										<input type="hidden" value="'. $status['id'] .'" name="commentStatus" id="commentStatus_'. $status['id'] .'" />
+										<input type="hidden" value="'. $status['poster_id'] .'" name="commentOwner" id="commentOwner_'. $status['id'] .'" /><br />
 										<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
-										<input type="submit" value="'. $txt['post'] .'" class="comment_submit" name="commentSubmit_'. $status['id'] .'" id="commentSubmit_'. $status['id'] .'" />
+										<input type="submit" value="'. $txt['post'] .'" class="comment_submit" name="commentSubmit" id="commentSubmit_'. $status['id'] .'" />
 									</form>';
 
 								// End of div post_comment
