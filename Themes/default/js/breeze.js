@@ -56,16 +56,16 @@ jQuery(document).ready(function(){
 		var status = {};
 
 		// Get the profile owner
-		status.Owner = window.breeze_profileOwner;
+		status.statusOwner = window.breeze_profileOwner;
 
 		// Get all the values we need
 		jQuery('#form_status :input').each(function(){
 			var input = jQuery(this);
-			status[input.attr('name').replace('status', '')] = input.val();
+			status[input.attr('name')] = input.val();
 		});
 
 		// You need to type something...
-		if(status.Content=='')
+		if(status.statusContent=='')
 		{
 			alert(breeze_empty_message); // @todo, perhaps fire a nice noty message instead of a nasty alert?
 			return false;
@@ -74,7 +74,7 @@ jQuery(document).ready(function(){
 		else
 		{
 			// Shh!
-			if (status.Content == 'about:Suki')
+			if (status.statusContent == 'about:Suki')
 			{
 				alert('Y es que tengo un coraz\xF3n t\xE1n necio \n que no comprende que no entiende \n que le hace da\xF1o amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n Y es que tengo un coraz\xF3n t\xE1n necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace da\xF1o \n te sigue amando igual o mucho m\xE1s que ayer \n mucho m\xE1s que ayer... \n');
 				return false;
