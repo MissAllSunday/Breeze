@@ -221,37 +221,37 @@ class BreezeAjax
 		$this->_data = Breeze::sGlobals('request');
 
 		// Trickery, there's always room for moar!
-		$status_id = $this->_data->getValue('commentStatus');
-		$status_owner_id = $this->_data->getValue('commentStatusPoster');
-		$poster_comment_id = $this->_data->getValue('commentPoster');
-		$profile_owner_id = $this->_data->getValue('commentOwner');
-		$content = $this->_data->getValue('commentContent');
+		$commentStatus = $this->_data->getValue('commentStatus');
+		$commentStatusPoster = $this->_data->getValue('commentStatusPoster');
+		$commentPoster = $this->_data->getValue('commentPoster');
+		$commentOwner = $this->_data->getValue('commentOwner');
+		$commentContent = $this->_data->getValue('commentContent');
 
 		// Sorry, try to play nice next time
-		if (!$status_owner_id || !$poster_comment_id || !$profile_owner_id || !$content)
+		if (!$commentStatusPoster || !$commentPoster || !$commentOwner || !$commentContent)
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
-				'owner' => $status_owner_id,
+				'owner' => $commentStatusPoster,
 			));
 
 		// Load all the things we need
-		$temp_id_exists = $this->_query->getSingleValue('status', 'status_id', $status_id);
+		$temp_id_exists = $this->_query->getSingleValue('status', 'status_id', $commentStatus);
 
 		// The status do exists and the data is valid
 		if ($this->_data->validateBody('commentContent') && !empty($temp_id_exists))
 		{
 			// You aren't allowed in here, let's show you a nice static page...
-			$this->permissions('postComments', $profile_owner_id);
+			$this->permissions('postComments', $commentOwner);
 
-			$body = $content;
+			$body = $commentContent;
 
 			// Build the params array for the query
 			$params = array(
-				'status_id' => $status_id,
-				'status_owner_id' => $status_owner_id,
-				'poster_id' => $poster_comment_id,
-				'profile_owner_id' => $profile_owner_id,
+				'status_id' => $commentStatus,
+				'status_owner_id' => $commentStatusPoster,
+				'poster_id' => $commentPoster,
+				'profile_owner_id' => $commentOwner,
 				'time' => time(),
 				'body' => $this->_mention->preMention($body)
 			);
@@ -269,11 +269,11 @@ class BreezeAjax
 				// build the notification
 				$this->_mention->mention(
 					array(
-						'wall_owner' => $profile_owner_id,
-						'wall_poster' => $poster_comment_id,
-						'wall_status_owner' => $status_owner_id,
+						'wall_owner' => $commentOwner,
+						'wall_poster' => $commentPoster,
+						'wall_status_owner' => $commentStatusPoster,
 						'comment_id' => $params['id'],
-						'status_id' => $status_id,),
+						'status_id' => $commentStatus,),
 					array(
 							'name' => 'comments',
 							'id' => $params['id'],)
@@ -289,19 +289,19 @@ class BreezeAjax
 				return $this->setResponse(array(
 					'type' => 'success',
 					'message' => 'published_comment',
-					'data' => $this->_display->HTML($params, 'comment', true, $poster_comment_id),
-					'owner' => $profile_owner_id,
+					'data' => $this->_display->HTML($params, 'comment', true, $commentPoster),
+					'owner' => $commentOwner,
 				));
 			}
 
 			// Something wrong with the server
 			else
-				return $this->setResponse(array('owner' => $this->_data->getValue('commentOwner'), 'type' => 'error',));
+				return $this->setResponse(array('owner' => $commentOwner, 'type' => 'error',));
 		}
 
 		// There was an error
 		else
-			return $this->setResponse(array('owner' => $this->_data->getValue('commentOwner'), 'type' => 'error',));
+			return $this->setResponse(array('owner' => $commentOwner, 'type' => 'error',));
 	}
 
 	/**
