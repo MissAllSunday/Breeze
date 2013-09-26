@@ -10,8 +10,8 @@
 	<readme parsebbc="true">README.txt</readme>
 		<database>install.php</database>
 		<code>hooks.php</code>
-		<require-dir name="Themes" destination="$boarddir">Source files</require-dir>
-		<require-dir name="Sources" destination="$boarddir">Source files</require-dir>
+		<require-dir name="Themes" destination="$boarddir">Theme files</require-dir>
+		<require-dir name="Sources/Breeze" destination="$sourcedir">Source files</require-dir>
 		<redirect url="$scripturl?action=admin;area=breezeadmin;sa=general" timeout="3000">redirect.txt</redirect>
 	</install>
 
