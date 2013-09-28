@@ -57,6 +57,7 @@ function breezeWall()
 	$globals = Breeze::sGlobals('get');
 	$text = $breezeController->get('text');
 	$log = $breezeController->get('log');
+	$usersToLoad = array();
 
 	// Check if this user allowed to be here
 	breezeCheckPermissions();
@@ -105,7 +106,7 @@ function breezeWall()
 
 	// Load users data
 	if (!empty($data['users']))
-		$tools->loadUserInfo($data['users']);
+		$usersToLoad = $usersToLoad + $data['users'];
 
 	// Pass the status info
 	if (!empty($data['data']))
@@ -125,12 +126,12 @@ function breezeWall()
 
 		// Load their data
 		if (!empty($context['Breeze']['views']))
-			$tools->loadUserInfo(array_keys($context['Breeze']['views']));
+			$usersToLoad = $usersToLoad + array_keys($context['Breeze']['views']);
 	}
 
 	// Show buddies only if there is something to show
 	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
-		$tools->loadUserInfo($context['member']['buddies']);
+		$usersToLoad = $usersToLoad + $context['member']['buddies'];
 
 	// Show this user recent activity
 	// some check here
@@ -145,6 +146,10 @@ function breezeWall()
 		window.breeze_userID = ' . $user_info['id'] . ';
 		window.breeze_totalItems = ' . $data['count'] . ';
 	// ]]></script>';
+
+	// Lastly, load all the users data from this bunch of user IDs
+	if (!empty($usersToLoad))
+		$tools->loadUserInfo(array_unique($usersToLoad));
 }
 
 // Shows a form for users to set up their wall as needed.
@@ -608,15 +613,8 @@ function loadMember()
 	}
 
 	// Set the much needed is_owner var
-	if($context['member']['id'] == $user_info['id'])
-	{
-		$context['member']['is_owner'] = true;
-		$context['user']['is_owner'] = true;
-	}
 
-	else
-	{
-		$context['member']['is_owner'] = false;
-		$context['user']['is_owner'] = false;
-	}
+	$context['member']['is_owner'] = $context['member']['id'] == $user_info['id'];
+	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
+
 }
