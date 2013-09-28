@@ -66,7 +66,7 @@ function breezeWall()
 		$tools->loadUserInfo($user_info['id']);
 
 	// Set member context if it hasn't been set yet
-	$tools->loadMemberContext();
+	loadMember();
 	$tools->profileHeaders();
 
 	// Default values
@@ -159,7 +159,7 @@ function breezeSettings()
 		$breezeController = new BreezeController();
 
 	// Identify if this person is the profile owner
-	$breezeController->get('tools')->loadMemberContext();
+	loadMember();
 	$breezeController->get('tools')->profileHeaders();
 
 	$context['Breeze']['text'] = $breezeController->get('text');
@@ -278,7 +278,7 @@ function breezeNotifications()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	$breezeController->get('tools')->loadMemberContext();
+	loadMember();
 	$breezeController->get('tools')->profileHeaders();
 
 	// We kinda need all this stuff, don't ask why, just nod your head...
@@ -329,7 +329,7 @@ function breezeBuddyRequest()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	$breezeController->get('tools')->loadMemberContext();
+	loadMember();
 	$breezeController->get('tools')->profileHeaders();
 
 	// Load all we need
@@ -458,7 +458,7 @@ function breezeTrackViews()
 	if ($user_info['is_guest'] == true)
 		return false;
 
-	$breezeController->get('tools')->loadMemberContext();
+	loadMember();
 	$breezeController->get('tools')->profileHeaders();
 
 	// Do this only if t hasn't been done before
@@ -570,4 +570,53 @@ function breezeCheckPermissions()
 	// I'm sorry, you aren't allowed in here, but here's a nice static page :)
 	if (!empty($context['member']['ignore_list']) && is_array($context['member']['ignore_list']) && in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['member']['options']['Breeze_kick_ignored']))
 		redirectexit('action=profile;area=static;u='.$context['member']['id']);
+}
+
+function loadMember()
+{
+	global $memID, $context, $user_info, $memberContext;
+
+	// If this was already set, skip this part
+	if (empty($context['member']))
+	{
+		// Get the GET, get it?
+		$globals = Breeze::sGlobals('get');
+
+		// Did we get the user by name...
+		if ($globals->getValue('user'))
+			$memberResult = $this->loadUserInfo($globals->getValue('user'), true);
+
+		// ... or by id_member?
+		elseif ($globals->getValue('u'))
+			$memberResult = $this->loadUserInfo($globals->getValue('u'), true);
+
+		// No var, use $user_info
+		else
+			$memberResult = $this->loadUserInfo($user_info['id'], true);
+
+		// Check if loadMemberData() has returned a valid result.
+		if (!is_array($memberResult))
+			return;
+
+		// If all went well, we have a valid member ID!
+		list ($memID) = $memberResult;
+		$context['id_member'] = $memID;
+
+		// Let's have some information about this member ready, too.
+		loadMemberContext($memID);
+		$context['member'] = $memberContext[$memID];
+	}
+
+	// Set the much needed is_owner var
+	if($context['member']['id'] == $user_info['id'])
+	{
+		$context['member']['is_owner'] = true;
+		$context['user']['is_owner'] = true;
+	}
+
+	else
+	{
+		$context['member']['is_owner'] = false;
+		$context['user']['is_owner'] = false;
+	}
 }

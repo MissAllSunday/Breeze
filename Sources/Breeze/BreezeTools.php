@@ -278,55 +278,6 @@ class BreezeTools
 			return $loaded_ids;
 	}
 
-	public function loadMemberContext()
-	{
-		global $memID, $context, $user_info, $memberContext;
-
-		// If this was already set, skip this part
-		if (empty($context['member']))
-		{
-			// Get the GET, get it?
-			$globals = Breeze::sGlobals('get');
-
-			// Did we get the user by name...
-			if ($globals->getValue('user'))
-				$memberResult = $this->loadUserInfo($globals->getValue('user'), true);
-
-			// ... or by id_member?
-			elseif ($globals->getValue('u'))
-				$memberResult = $this->loadUserInfo($globals->getValue('u'), true);
-
-			// No var, use $user_info
-			else
-				$memberResult = $this->loadUserInfo($user_info['id'], true);
-
-			// Check if loadMemberData() has returned a valid result.
-			if (!is_array($memberResult))
-				return;
-
-			// If all went well, we have a valid member ID!
-			list ($memID) = $memberResult;
-			$context['id_member'] = $memID;
-
-			// Let's have some information about this member ready, too.
-			loadMemberContext($memID);
-			$context['member'] = $memberContext[$memID];
-		}
-
-		// Set the much needed is_owner var
-		if($context['member']['id'] == $user_info['id'])
-		{
-			$context['member']['is_owner'] = true;
-			$context['user']['is_owner'] = true;
-		}
-
-		else
-		{
-			$context['member']['is_owner'] = false;
-			$context['user']['is_owner'] = false;
-		}
-	}
-
 	/**
 	 * Breeze::profileHeaders()
 	 *
@@ -346,8 +297,6 @@ class BreezeTools
 
 		if (!$profile_header)
 		{
-			// Set $context['member'] if it hasn't been set before
-			$this->loadMemberContext();
 
 			$context['html_headers'] .= '
 			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
