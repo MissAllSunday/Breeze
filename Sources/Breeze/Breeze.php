@@ -517,6 +517,10 @@ class Breeze
 			'scripts' => array(
 				'name' => 'Third Party Scripts',
 				'users' => array(
+					'jQuery' => array(
+						'name' => 'jQuery',
+						'site' => 'http://jquery.com/',
+					),
 					'facebox' => array(
 						'name' => 'Facebox',
 						'site' => 'https://github.com/defunkt/facebox',
