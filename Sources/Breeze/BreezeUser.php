@@ -60,14 +60,14 @@ function breezeWall()
 	$usersToLoad = array();
 
 	// Check if this user allowed to be here
+	loadMember();
 	breezeCheckPermissions();
 
 	// We need to make sure we have all your info...
 	if (empty($context['Breeze']['user_info'][$user_info['id']]))
 		$tools->loadUserInfo($user_info['id']);
 
-	// Set member context if it hasn't been set yet
-	loadMember();
+	// Load al the JS goodies...
 	$tools->profileHeaders();
 
 	// Default values
