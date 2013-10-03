@@ -64,6 +64,10 @@ class BreezeWall
 		$this->_display = $display;
 		$this->_tools = $tools;
 
+		// This will always be true since every member gets their own unique and shiny wall page...
+		$context['member']['is_ower'] = true;
+		$context['user']['is_owner'] = true;
+
 		// We need to load the current user's data
 		if (empty($context['Breeze']['user_info'][$user_info['id']]))
 			$this->_tools->loadUserInfo($user_info['id'], false, 'profile');
@@ -122,6 +126,7 @@ class BreezeWall
 		// Obscure, evil stuff...
 		writeLog(true);
 
+echo '<pre>';print_r($context['user']);die;
 		// Pagination max index and current page
 		$maxIndex = !empty($this->member['options']['Breeze_pagination_number']) ? $this->member['options']['Breeze_pagination_number'] : 5;
 		$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;

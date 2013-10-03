@@ -572,7 +572,7 @@ class BreezeQuery extends Breeze
 	 */
 	public function getStatusByLast()
 	{
-		// @todo make sthis a real query
+		// @todo make this a real query
 		return;
 	}
 
