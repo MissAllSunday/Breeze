@@ -51,9 +51,6 @@ class BreezeWall
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
 
-		// Display all the JavaScript bits
-		Breeze::headersHook('profile');
-
 		// Load all the things we need
 		$this->_query = $query;
 		$this->_parser = $parser;
@@ -63,6 +60,9 @@ class BreezeWall
 		$this->_text = $text;
 		$this->_display = $display;
 		$this->_tools = $tools;
+
+		// Print the JS bits
+		$this->_tools->profileHeaders();
 
 		// This will always be true since every member gets their own unique and shiny wall page...
 		$context['member']['is_ower'] = true;
@@ -126,7 +126,6 @@ class BreezeWall
 		// Obscure, evil stuff...
 		writeLog(true);
 
-echo '<pre>';print_r($context['user']);die;
 		// Pagination max index and current page
 		$maxIndex = !empty($this->member['options']['Breeze_pagination_number']) ? $this->member['options']['Breeze_pagination_number'] : 5;
 		$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;

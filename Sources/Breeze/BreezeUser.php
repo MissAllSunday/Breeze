@@ -613,7 +613,6 @@ function loadMember()
 	}
 
 	// Set the much needed is_owner var
-
 	$context['member']['is_owner'] = $context['member']['id'] == $user_info['id'];
 	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
 

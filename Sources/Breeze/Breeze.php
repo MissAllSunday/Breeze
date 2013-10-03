@@ -356,7 +356,7 @@ class Breeze
 		Breeze::who();
 
 		// Notifications call
-		Breeze::headersHook(true);
+		// Breeze::headersHook();
 	}
 
 	/**
