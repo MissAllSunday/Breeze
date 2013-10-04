@@ -289,6 +289,14 @@ function breezeNotifications()
 	loadMember();
 	$breezeController->get('tools')->profileHeaders();
 
+	// Globals...
+	$globals = Breeze::sGlobals('request');
+
+	// Subactions, there aren't that many, still better safe than sorry
+	$subActions = array(
+		'options' => 'breezeNotiSettings',
+	);
+
 	// Create the tabs for the template.
 	$context[$context['profile_menu_name']]['tab_data'] = array(
 		'title' => 'bla bla bla',
@@ -300,10 +308,13 @@ function breezeNotifications()
 		),
 	);
 
+	// Any subaction?
+	if (isset($subActions[$globals->getValue('sa')]))
+		$subActions[$globals->getValue('sa')]();
+
 	// We kinda need all this stuff, don't ask why, just nod your head...
 	$query = $breezeController->get('query');
 	$text = $breezeController->get('text');
-	$globals = Breeze::sGlobals('request');
 	$notifications = $breezeController->get('notifications');
 	$tools = $breezeController->get('tools');
 	$tempNoti = $query->getNotificationByReceiver($context['member']['id'], true);
@@ -332,6 +343,11 @@ function breezeNotifications()
 			jQuery(\'.idNoti\').prop("checked" , this.checked);
 		});
 	// ]]></script>';
+}
+
+function breezeNotiSettings()
+{
+	echo 'LOL';
 }
 
 // Show the buddy request list
