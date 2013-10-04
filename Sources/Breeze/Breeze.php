@@ -301,6 +301,9 @@ class Breeze
 				'label' => $text->getText('user_notisettings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
 				'function' => 'breezeNotifications',
+				'subsections' => array(
+						'options' => array($text->getText('user_notisettings_name_settings'), array('profile_view_own', 'profile_view_any')),
+					),
 				'permission' => array('own' => 'profile_view_own', ),
 				);
 		}
@@ -447,7 +450,7 @@ class Breeze
 				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
 				'content' => function() use ($regOptions, $scripturl, $text, $scripturl, $user_id)
 					{
-						return '<a href="'. $scripturl .'?action=profile;u='. $user_id . '">'$regOptions['username'] .'</a> '. $text->getText('log_newRegister');
+						return '<a href="'. $scripturl .'?action=profile;u='. $user_id . '">'. $regOptions['username'] .'</a> '. $text->getText('log_newRegister');
 					},
 				'type_id' => 0,
 				'second_type' => 'register',
