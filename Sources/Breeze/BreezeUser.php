@@ -167,6 +167,9 @@ function breezeSettings()
 	loadMember();
 	$breezeController->get('tools')->profileHeaders();
 
+	// Set the page title
+	$context['page_title'] = $txt['showPosts'] . ' - ' . $user_profile[$memID]['real_name'];
+
 	$context['Breeze']['text'] = $breezeController->get('text');
 	$context['sub_template'] = 'member_options';
 	$context['page_desc'] = $context['Breeze']['text']->getText('user_settings_enable_desc');
@@ -285,6 +288,17 @@ function breezeNotifications()
 
 	loadMember();
 	$breezeController->get('tools')->profileHeaders();
+
+	// Create the tabs for the template.
+	$context[$context['profile_menu_name']]['tab_data'] = array(
+		'title' => 'bla bla bla',
+		'description' => 'bla bla bla',
+		'icon' => 'profile_sm.gif',
+		'tabs' => array(
+			'options' => array(
+			),
+		),
+	);
 
 	// We kinda need all this stuff, don't ask why, just nod your head...
 	$query = $breezeController->get('query');
