@@ -305,11 +305,12 @@ function breezeNotifications()
 	$text = $breezeController->get('text');
 	$globals = Breeze::sGlobals('request');
 	$notifications = $breezeController->get('notifications');
+	$tools = $breezeController->get('tools');
 	$tempNoti = $query->getNotificationByReceiver($context['member']['id'], true);
 
 	// Load the users data
 	if (!empty($tempNoti['users']))
-		BreezeTools::loadUserInfo($tempNoti['users']);
+		$tools->loadUserInfo($tempNoti['users']);
 
 	// Pass the info to the template
 	if ($notifications->prepare($context['member']['id'], true))
