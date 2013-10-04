@@ -35,8 +35,6 @@
 
 // Infinite scrolling
 jQuery(document).ready(function(){
-	// Hide the pagination
-	jQuery('.pagelinks').hide();
 
 	var numberOfEvents = 0;
 
