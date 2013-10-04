@@ -73,7 +73,7 @@ class BreezeNotifications
 			'topics',
 		);
 
-		// We kinda need all this stuff, dont' ask why, just nod your head...
+		// We kinda need all this stuff, don't' ask why, just nod your head...
 		$this->_settings = $settings;
 		$this->_query = $query;
 		$this->_tools = $tools;
@@ -208,7 +208,7 @@ class BreezeNotifications
 					$this->$call($single);
 				}
 
-			// Let them know everthing went better than expected!
+			// Let them know everything went better than expected!
 			return true;
 		}
 
