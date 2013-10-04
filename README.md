@@ -1,4 +1,4 @@
-**Breeze**, www.missallsunday.com
+**Breeze**, missallsunday.com
 
 The software is licensed under [MPL 1.1 license](http://www.mozilla.org/MPL/MPL-1.1.html).
 
@@ -20,9 +20,7 @@ The mod uses the following scripts:
 
 - [Facebox] (https://github.com/defunkt/facebox)
 - [zRSSFeeds] (http://www.zazar.net/developers/jquery/zrssfeed/)
-- [Brandon Aaron Live query plugin] (http://brandonaaron.net/code/livequery/docs)
 - [needim noty jquery plugin] (http://needim.github.com/noty/)
-- [Paul Irish infinite-scroll] (https://github.com/paulirish/infinite-scroll)
 - [ichord Mentions autocomplete script] (http://ichord.github.com/At.js)
 
 ######Notes:
