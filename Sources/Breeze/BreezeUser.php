@@ -271,7 +271,7 @@ function breezeSettings()
 	);
 
 	// Notification settings
-	$form->addHr();
+	$form->addSection('name_settings');
 
 	// Noti on comment
 	$form->addCheckBox(

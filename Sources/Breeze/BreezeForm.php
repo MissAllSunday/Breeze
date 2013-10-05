@@ -158,7 +158,7 @@ class BreezeForm
 	function addHr()
 	{
 		$element['type'] = 'hr';
-		$element['html'] = '<hr />';
+		$element['html'] = '<br /><hr /><br />';
 
 		return $this->addElement($element);
 	}
@@ -168,6 +168,14 @@ class BreezeForm
 		$element['type'] = 'html';
 		$element['text'] = $text;
 		$element['html'] = $html;
+
+		return $this->addElement($element);
+	}
+
+	function addSection($text)
+	{
+		$element['type'] = 'section';
+		$element['text'] = $text;
 
 		return $this->addElement($element);
 	}
@@ -226,6 +234,15 @@ class BreezeForm
 					<dd>
 						'. sprintf($el['html'], $this->text->getText('user_settings_'. $el['text'])) .'
 					</dd>';
+					break;
+				case 'section':
+				$this->buffer .= '
+				</dl>
+				<div class="cat_bar">
+					<h3 class="catbg">'. $this->text->getText('user_settings_'. $el['text']) .'</h3>
+				</div>
+				<br />
+				<dl class="settings">';
 					break;
 			}
 		}
