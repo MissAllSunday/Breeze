@@ -270,6 +270,23 @@ function breezeSettings()
 		3
 	);
 
+	// Notification settings
+	$form->addHr();
+
+	// Noti on comment
+	$form->addCheckBox(
+		'Breeze_noti_on_comment',
+		'noti_on_comment',
+		!empty($context['member']['options']['Breeze_noti_on_comment']) ? true : false
+	);
+
+	// Noti on mention
+	$form->addCheckBox(
+		'Breeze_noti_on_mention',
+		'noti_on_mention',
+		!empty($context['member']['options']['Breeze_noti_on_mention']) ? true : false
+	);
+
 	// Send the form to the template
 	$context['Breeze']['UserSettings']['Form'] = $form->display();
 }
@@ -321,26 +338,6 @@ function breezeNotifications()
 			jQuery(\'.idNoti\').prop("checked" , this.checked);
 		});
 	// ]]></script>';
-
-	// Notification settings
-	$form = $breezeController->get('form');
-
-	// Noti on comment
-	$form->addCheckBox(
-		'Breeze_noti_on_comment',
-		'noti_on_comment',
-		!empty($context['member']['options']['Breeze_noti_on_comment']) ? true : false
-	);
-	
-	// Noti on mention
-	$form->addCheckBox(
-		'Breeze_noti_on_mention',
-		'noti_on_mention',
-		!empty($context['member']['options']['Breeze_noti_on_mention']) ? true : false
-	);
-
-	// Send the form to the template
-	$context['Breeze']['UserSettings']['Form'] = $form->display();
 }
 
 // Show the buddy request list
