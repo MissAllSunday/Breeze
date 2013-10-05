@@ -301,9 +301,7 @@ class Breeze
 				'label' => $text->getText('user_notisettings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
 				'function' => 'breezeNotifications',
-				'subsections' => array(
-						'options' => array($text->getText('user_notisettings_name_settings'), array('profile_view_own', 'profile_view_any')),
-					),
+				'subsections' => array(),
 				'permission' => array('own' => 'profile_view_own', ),
 				);
 		}

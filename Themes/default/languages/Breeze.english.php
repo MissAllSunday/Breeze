@@ -249,6 +249,8 @@ $txt['Breeze_goTop'] = 'Go to top';
 
 // Notifications
 $txt['Breeze_noti_title'] = 'Notifications';
+$txt['Breeze_noti_title_settings'] = 'Notifications settings';
+$txt['Breeze_noti_title_settings_desc'] = 'Enable/disable individual notifications.';
 $txt['Breeze_noti_message'] = 'Message';
 $txt['Breeze_noti_buddy_title'] = 'Buddy notification';
 $txt['Breeze_noti_buddy_message'] = 'User %s has added you as his/her buddy, please confirm this request.';
