@@ -327,11 +327,18 @@ function breezeNotifications()
 	// Notification settings
 	$form = $breezeController->get('form');
 
-	// Per user master setting
+	// Noti on comment
 	$form->addCheckBox(
-		'Breeze_enable_wall',
-		'enable_wall',
-		!empty($context['member']['options']['Breeze_enable_wall']) ? true : false
+		'Breeze_noti_on_comment',
+		'noti_on_comment',
+		!empty($context['member']['options']['Breeze_noti_on_comment']) ? true : false
+	);
+	
+	// Noti on mention
+	$form->addCheckBox(
+		'Breeze_noti_on_mention',
+		'noti_on_mention',
+		!empty($context['member']['options']['Breeze_noti_on_mention']) ? true : false
 	);
 
 	// Send the form to the template

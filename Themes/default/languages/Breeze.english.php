@@ -95,6 +95,10 @@ $txt['Breeze_user_settings_clean_visits'] = 'Clean the visits log';
 $txt['Breeze_user_settings_clean_visits_sub'] = 'Removes all visits from your visits tab.';
 $txt['Breeze_user_settings_clear_noti'] = 'How many seconds do you want the notifications to be displayed before been automatically closed';
 $txt['Breeze_user_settings_clear_noti_sub'] = 'In seconds, If you leave this empty the notifications won\'t be automatically closed and you must manually click the "close all notifications" button.';
+$txt['Breeze_user_settings_noti_on_comment'] = 'Notify me when someone comments on my status';
+$txt['Breeze_user_settings_noti_on_comment_sub'] = 'On status made by me on any wall.';
+$txt['Breeze_user_settings_noti_on_mention'] = 'Notify me when someone mentions me.';
+$txt['Breeze_user_settings_noti_on_mention_sub'] = 'On every place where a user can use the mention system.';
 
 // Modules
 $txt['Breeze_user_settings_enable_buddies'] = 'Enable the "Buddies" module.';
