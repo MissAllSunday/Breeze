@@ -309,7 +309,7 @@ function template_user_notifications()
 	echo '
 		<br />
 		<div>
-			<form action="', $scripturl, '?action=profile;area=area=breezenoti;sa=options;save" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator" enctype="multipart/form-data" onsubmit="return checkProfileSubmit();">
+			<form action="', $scripturl, '?action=profile;area=area=breezenoti;save" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator" enctype="multipart/form-data" onsubmit="return checkProfileSubmit();">
 			<div class="cat_bar">
 				<h3 class="catbg">', $txt['Breeze_noti_title_settings'] , '</h3>
 			</div>
@@ -318,8 +318,8 @@ function template_user_notifications()
 				<span class="topslice"><span></span></span>
 					<div class="content">';
 
-		// Print the form
-		echo $context['Breeze']['UserSettings']['Form'];
+	// Print the form
+	echo $context['Breeze']['UserSettings']['Form'];
 
 	// Show the standard "Save Settings" profile button.
 	template_profile_save();

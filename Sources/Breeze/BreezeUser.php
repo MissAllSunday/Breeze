@@ -168,15 +168,13 @@ function breezeSettings()
 	$breezeController->get('tools')->profileHeaders();
 
 	// Set the page title
-	$context['page_title'] = $txt['showPosts'] . ' - ' . $user_profile[$memID]['real_name'];
-
-	$context['Breeze']['text'] = $breezeController->get('text');
+	$context['page_title'] = $breezeController->get('text')->getText('user_settings_name');
 	$context['sub_template'] = 'member_options';
-	$context['page_desc'] = $context['Breeze']['text']->getText('user_settings_enable_desc');
+	$context['page_desc'] = $breezeController->get('text')->getText('user_settings_enable_desc');
 
 	$context += array(
-		'page_title' => $context['Breeze']['text']->getText('user_settings_name'),
-		'page_desc' => $context['Breeze']['text']->getText('user_settings_enable_desc')
+		'page_title' => $breezeController->get('text')->getText('user_settings_name'),
+		'page_desc' => $breezeController->get('text')->getText('user_settings_enable_desc')
 	);
 
 	// Create the form
