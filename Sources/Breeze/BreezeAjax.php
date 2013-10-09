@@ -3,7 +3,7 @@
 /**
  * BreezeAjax
  *
- * The purpose of this file is
+ * The purpose of this file is to handle all possible actions Breeze executes.
  * @package Breeze mod
  * @version 1.0 Beta 3
  * @author Jessica González <suki@missallsunday.com>

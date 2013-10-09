@@ -484,6 +484,9 @@ function breezeTrackViews()
 	if ($user_info['is_guest'] == true)
 		return false;
 
+	if (empty($breezeController))
+		$breezeController = new BreezeController();
+
 	loadMember();
 	$breezeController->get('tools')->profileHeaders();
 
@@ -514,6 +517,9 @@ function breezeTrackViews()
 
 			// Set the temp cache
 			cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], $views, 60);
+
+			// Load the visitors data
+			$breezeController->get('tools')->loadUserInfo(array_keys($views));
 
 			// Cut it off
 			return $views;
@@ -547,6 +553,9 @@ function breezeTrackViews()
 		// ...and set the temp cache
 		cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], $views, 60);
 	}
+
+	// Don't forget to load the visitors data
+	$breezeController->get('tools')->loadUserInfo(array_keys($views));
 
 	return $views;
 }
