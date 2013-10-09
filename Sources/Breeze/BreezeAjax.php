@@ -541,7 +541,7 @@ class BreezeAjax
 			));
 
 		// Calculate the start value
-		$start = $maxIndex * $numberTimes - 1;
+		$start = $maxIndex * $numberTimes;
 
 		// Get the right call to the DB
 		$call = $commingFrom == 'profile' ? 'getStatusByProfile' : 'getStatusByUser';
