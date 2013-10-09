@@ -172,7 +172,7 @@ class BreezeQuery extends Breeze
 			return false;
 
 		// We got the data we need, turn it into an array
-		$profile_owner = !is_array($profile_owner) ? array($profile_owner) : $profile_owner;
+		$profile_owner = (array) $profile_owner;
 
 		foreach ($profile_owner as $owner)
 			cache_put_data(Breeze::$name .'-Profile-'. $owner, '');
@@ -490,7 +490,7 @@ class BreezeQuery extends Breeze
 		);
 
 		// Work with arrays
-		$id = !is_array($id) ? array($id) : $id;
+		$id = (array) $id;
 
 		// Count all the possible items we can fetch
 		$count = $this->getCount($id, 'status_poster_id IN ({array_int:data})');
