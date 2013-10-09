@@ -61,12 +61,12 @@ class BreezeWall
 		$this->_display = $display;
 		$this->_tools = $tools;
 
-		// Print the JS bits
-		$this->_tools->profileHeaders();
-
 		// This will always be true since every member gets their own unique and shiny wall page...
 		$context['member']['is_ower'] = true;
 		$context['user']['is_owner'] = true;
+
+		// Print the JS bits
+		$this->_tools->profileHeaders();
 
 		// We need to load the current user's data
 		if (empty($context['Breeze']['user_info'][$user_info['id']]))
@@ -95,6 +95,9 @@ class BreezeWall
 		// Master setting is off, back off!
 		if (!$this->_settings->enable('admin_settings_enable'))
 			fatal_lang_error('Breeze_error_no_valid_action', false);
+
+		// Guest aren't allowed, sorry.
+		is_not_guest($this->_text->getText('error_no_access'));
 
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;

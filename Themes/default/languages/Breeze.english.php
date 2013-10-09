@@ -218,6 +218,7 @@ $txt['Breeze_error_already_marked_noti'] = 'This notification was marked as read
 $txt['Breeze_cannot_postStatus'] = 'I\'m sorry,  you aren\'t allowed to post new Status.';
 $txt['Breeze_cannot_postComments'] = 'I\'m sorry,  you aren\'t allowed to post new Comments.';
 $txt['Breeze_error_no_valid_action'] = 'This is not a valid action.';
+$txt['Breeze_error_no_access'] = 'I\'m sorry, you don\'t have access to this section.';
 $txt['Breeze_success_noti_unmarkasread_after'] = 'You have successfully marked this notification as unread';
 $txt['Breeze_success_noti_markasread_after'] = 'You have successfully marked this notification as read';
 $txt['Breeze_error_noti_markasreaddeleted_after'] = 'This notification was already deleted or is not a valid entry.';
