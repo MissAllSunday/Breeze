@@ -242,6 +242,8 @@ function Breeze_Admin_Maintenance()
 	// Text strings
 	$text = $breezeController->get('text');
 
+	$globals = Breeze::sGlobals('get');
+
 	// Page stuff
 	$context['page_title'] = Breeze::$name .' - '. $text->getText('admin_settings_sub_maintenance');
 	$context['sub_template'] = 'admin_maintenance';
@@ -249,6 +251,31 @@ function Breeze_Admin_Maintenance()
 		'title' => $context['page_title'],
 		'description' => $text->getText('admin_settings_sub_maintenance_desc'),
 	);
+
+	// Hackish code is hackish...
+	$do = $globals->getValue('do');
+
+	if (!empty($do))
+	{
+		// Almighty breezeQuery class!
+		$query = $breezeController->get('query');
+
+		// Yep, I'm lazy enough to not find a better alternative to this...
+		switch ($do) {
+			case 'status_since':
+			case 'comment_since':
+
+				break;
+			case 'status_user':
+			case 'comment_user':
+
+				break;
+		}
+
+		// Set a nice response form the server..
+		$context['Breeze']['response'] = 
+	}
+
 }
 
 // Pay no attention to the girl behind the curtain...

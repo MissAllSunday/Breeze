@@ -140,7 +140,7 @@ function template_admin_maintenance()
 
 	// Mass delete status
 	echo '
-		<div class="floatright" style="width:48%;">
+		<div class="floatright" style="width:49%;">
 			<div class="cat_bar">
 				<h3 class="catbg">', $txt['Breeze_maintenance_status_tools'] , '</h3>
 			</div>
@@ -178,7 +178,7 @@ function template_admin_maintenance()
 
 	// Comment tools
 	echo '
-		<div class="floatleft" style="width:48%;">
+		<div class="floatleft" style="width:49%;">
 			<div class="cat_bar">
 				<h3 class="catbg">', $txt['Breeze_maintenance_comments_tools'] , '</h3>
 			</div>
