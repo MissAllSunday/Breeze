@@ -80,8 +80,7 @@ function template_admin_home()
 					<span class="topslice"><span></span></span>
 					<div class="content">
 						<div id="version_details">
-							<strong>', $txt['support_versions'], ':</strong><br />
-							', $txt['Breeze_admin_breeze_version'] , ':
+							<strong>', $txt['Breeze_admin_breeze_version'] , '</strong> :
 							<em id="yourVersion" style="white-space: nowrap;">', $context['Breeze']['version'] , '</em><br />';
 
 		// Some more stuff will be here... eventually

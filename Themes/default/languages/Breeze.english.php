@@ -132,7 +132,7 @@ $txt['Breeze_user_modules_buddies_none'] = 'This user currently doesn\'t have an
 
 // Admin Settings
 $txt['Breeze_admin_settings_admin_panel'] = 'Breeze Admin Panel';
-$txt['Breeze_admin_welcome'] = 'This is your &quot;Breeze Admin Panel&quot;.  From here, you can edit the settings for Breeze If you have any trouble, feel free to <a href="http://missallsunday.com" target="_blank" class="new_win">ask for support</a> on the author\'s site.';
+$txt['Breeze_admin_welcome'] = 'This is your Breeze Admin Panel. From here, you can edit all the pertinent settings for it. If you have any troubles or issues, feel free to <a href="http://missallsunday.com" target="_blank" class="new_win">ask for support</a> on the author\'s site.';
 $txt['Breeze_admin_settings_main'] = 'Main Breeze Admin Center';
 $txt['Breeze_admin_settings_sub_permissions'] = 'Permissions';
 $txt['Breeze_admin_settings_sub_style'] = 'Style and Layout';

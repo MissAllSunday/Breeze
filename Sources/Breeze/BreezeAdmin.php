@@ -40,10 +40,13 @@ if (!defined('SMF'))
 
 function Breeze_Admin_Index()
 {
-		global $txt, $scripturl, $context, $sourcedir, $settings;
+		global $txt, $scripturl, $context, $sourcedir, $settings, $breezeController;
 
 		require_once($sourcedir . '/ManageSettings.php');
 		loadLanguage('Breeze');
+		loadtemplate('BreezeAdmin');
+		loadtemplate('Admin');
+
 		$context['page_title'] = $txt['Breeze_admin_settings_admin_panel'];
 
 		$subActions = array(
@@ -68,6 +71,9 @@ function Breeze_Admin_Index()
 			),
 		);
 
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
 		// Call the sub-action
 		$subActions[$_REQUEST['sa']]();
 }
@@ -75,8 +81,6 @@ function Breeze_Admin_Index()
 function Breeze_Admin_Main()
 {
 	global $scripturl, $context, $breezeController, $settings;
-
-	loadtemplate('BreezeAdmin');
 
 	$text = $breezeController->get('text');
 	$headers = $breezeController->get('tools');
@@ -117,16 +121,11 @@ jQuery(document).ready(function (){
 
 	// Get the credits
 	$context['Breeze']['credits'] = Breeze::credits();
-
-	// Headers
-	Breeze::headersHook('admin');
 }
 
 function Breeze_Admin_Settings()
 {
 	global $scripturl, $context, $sourcedir, $breezeController;
-
-	loadtemplate('Admin');
 
 	// Load stuff
 	$text = $breezeController->get('text');
@@ -167,8 +166,6 @@ function Breeze_Admin_Permissions()
 {
 	global $scripturl, $context, $sourcedir, $breezeController, $txt;
 
-	loadtemplate('Admin');
-
 	// Load stuff
 	$text = $breezeController->get('text');
 	$globals = Breeze::sGlobals('request');
@@ -205,8 +202,6 @@ function Breeze_Admin_Style()
 {
 	global $scripturl, $context, $sourcedir, $breezeController, $txt;
 
-	loadtemplate('Admin');
-
 	// Load stuff
 	$text = $breezeController->get('text');
 	$globals = Breeze::sGlobals('request');
@@ -241,12 +236,6 @@ function Breeze_Admin_Style()
 function Breeze_Admin_Donate()
 {
 	global $context, $scripturl, $breezeController;
-
-	loadtemplate('BreezeAdmin');
-
-	// Headers
-	$headers = $breezeController->get('tools');
-	Breeze::headersHook('admin');
 
 	// Text strings
 	$text = $breezeController->get('text');
