@@ -131,6 +131,11 @@ function template_admin_home()
 	<br />';
 }
 
+function template_admin_maintenance()
+{
+	global $context;
+}
+
 // Boring stuff you will never see...
 function template_admin_donate()
 {

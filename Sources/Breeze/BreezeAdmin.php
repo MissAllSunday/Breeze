@@ -232,7 +232,23 @@ function Breeze_Admin_Style()
 	prepareDBSettingContext($config_vars);
 }
 
-// Pay no attention to the girl behind the curtain
+function Breeze_Admin_Maintenance()
+{
+	global $context, $scripturl, $breezeController;
+
+	// Text strings
+	$text = $breezeController->get('text');
+
+	// Page stuff
+	$context['page_title'] = Breeze::$name .' - '. $text->getText('admin_settings_sub_maintenance');
+	$context['sub_template'] = 'admin_maintenance';
+	$context[$context['admin_menu_name']]['tab_data'] = array(
+		'title' => $context['page_title'],
+		'description' => $text->getText('admin_settings_sub_maintenance_desc'),
+	);
+}
+
+// Pay no attention to the girl behind the curtain...
 function Breeze_Admin_Donate()
 {
 	global $context, $scripturl, $breezeController;

@@ -503,6 +503,7 @@ class Breeze
 				'settings' => array($text->getText('admin_settings_settings')),
 				'permissions' => array($text->getText('admin_settings_sub_permissions')),
 				'style' => array($text->getText('admin_settings_sub_style')),
+				'maintenance' => array($text->getText('admin_settings_sub_maintenance')),
 				'donate' => array($text->getText('admin_settings_donate')),
 			),
 		);
