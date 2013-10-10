@@ -90,7 +90,7 @@ function Breeze_Admin_Main()
 var breeze_feed_error_message = '. JavaScriptEscape($text->getText('feed_error_message')) .';
 
 jQuery(document).ready(function (){
-	jQuery(\'#breezelive\').rssfeed(\''. Breeze::$supportStite .'\',
+	jQuery(\'#breezelive\').rssfeed(\''. Breeze::$supportSite .'\',
 	{
 		limit: 5,
 		header: false,
@@ -105,7 +105,7 @@ jQuery(document).ready(function (){
 	$context['Breeze']['version'] = Breeze::$version;
 
 	// The support site RSS feed
-	$context['Breeze']['support'] = Breeze::$supportStite;
+	$context['Breeze']['support'] = Breeze::$supportSite;
 
 	// Set all the page stuff
 	$context['page_title'] = $text->getText('admin_settings_main');
