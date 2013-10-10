@@ -177,9 +177,21 @@ $txt['Breeze_admin_limit_timeframe_sub'] = 'This will fetch the status/comments 
 $txt['Breeze_admin_posts_for_mention'] = 'How many posts are required to appear on the mention list?';
 $txt['Breeze_admin_posts_for_mention_sub'] = 'To avoid having a huge list of users to chose from when mentioning, you can set how many posts does an user needs to have in order to be mentionable, if you leave this setting empty, it will use the default value: 1.<br /> To help with the server load, the mentions list gets cached and it only sets a new list every 2 hours, if you change this setting, make sure to clean your forum cache to see the results.';
 $txt['Breeze_admin_breeze_version'] = 'Breeze version';
-$txt['Breeze_admin_live'] = 'Live from the suport forum...';
+$txt['Breeze_admin_live'] = 'Live from the support forum...';
 $txt['Breeze_allowedActions'] = 'Write the actions where you wish the notification system shows up';
 $txt['Breeze_allowedActions_sub'] = 'By default, the notification system will appear on the following actions: '. implode(', ', Breeze::$_allowedActions) .'. Plus the BoardIndex, MessageIndex, Topic and Board pages. <br /> Please add your actions in a comma separated list, example: action, action, action, action';
+
+// Maintenance tools
+$txt['Breeze_maintenance_status_tools'] = 'Status tools';
+$txt['Breeze_maintenance_comments_tools'] = 'Comments tools';
+$txt['Breeze_maintenance_noti_tools'] = 'Notifications tools';
+$txt['Breeze_maintenance_delete_status'] = 'Delete all status since:';
+$txt['Breeze_maintenance_delete_comments'] = 'Delete all comments since:';
+$txt['Breeze_maintenance_delete_week'] = 'Last Week';
+$txt['Breeze_maintenance_delete_month'] = 'Last Month';
+$txt['Breeze_maintenance_delete_year'] = 'Last Year';
+$txt['Breeze_maintenance_delete_year'] = 'Delete them all.';
+$txt['Breeze_maintenance_delete_status'] = 'Delete all status made by user(s):';
 
 // Time
 $txt['Breeze_time_just_now'] = 'just now.';
@@ -295,7 +307,7 @@ $txt['Breeze_buddyrequest_error_doublerequest'] = 'You already sent a buddy requ
 $txt['Breeze_buddyrequest_error_dunno'] = 'Something went wrong, please contact the forum admin.';
 $txt['Breeze_buddy_messagerequest_message'] = '%1$s wants to be your buddy! <span id="noti_%2$s"></span>';
 $txt['Breeze_buddy_title'] = 'Buddy List';
-$txt['Breeze_buddy_desc'] = 'From here you can confirm or decline your buddy request. If you confirm the buddy request, a pm on your behalf will be send to the user, if you decine the request the user will not receive anything';
+$txt['Breeze_buddy_desc'] = 'From here you can confirm or decline your buddy request. If you confirm the buddy request, a pm on your behalf will be send to the user, if you decline the request the user will not receive anything';
 $txt['Breeze_buddyrequest_title'] = 'Buddy requests';
 $txt['Breeze_buddyrequest_noBuddies'] = 'You currently don\'t have any buddy requests';
 $txt['Breeze_buddyrequest_list_status'] = 'Status';

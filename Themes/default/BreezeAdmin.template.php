@@ -133,7 +133,30 @@ function template_admin_home()
 
 function template_admin_maintenance()
 {
-	global $context;
+	global $context, $txt;
+
+	echo '
+	<div id="manage_maintenance">';
+
+	// Mass delete status
+	echo '
+		<div class="cat_bar">
+			<h3 class="catbg">', $txt['Breeze_maintenance_delete_status'] , '</h3>
+		</div>
+		<div class="windowbg">
+			<span class="topslice"><span></span></span>
+			<div class="content">
+				<form action="', $scripturl, '?action=admin;area=maintain;sa=routine;activity=version" method="post" accept-charset="', $context['character_set'], '">
+					<p>', $txt['maintain_version_info'], '</p>
+					<span><input type="submit" value="', $txt['maintain_run_now'], '" class="button_submit" /></span>
+					<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" />
+				</form>
+			</div>
+			<span class="botslice"><span></span></span>
+		</div>';
+
+	echo '
+	</div>';
 }
 
 // Boring stuff you will never see...
