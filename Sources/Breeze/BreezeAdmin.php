@@ -235,7 +235,7 @@ function Breeze_Admin_Style()
 
 function Breeze_Admin_Maintenance()
 {
-	global $context, $scripturl, $breezeController, $settings;
+	global $context, $scripturl, $breezeController;
 
 	loadLanguage('ManageMaintenance');
 
@@ -274,13 +274,14 @@ function Breeze_Admin_Maintenance()
 			case 'status_user':
 			case 'comment_user':
 
+
+
 				break;
 		}
 
 		// Set a nice response form the server..
-		$context['Breeze']['response'] =
+		$context['Breeze']['response'] = '';
 	}
-
 }
 
 // Pay no attention to the girl behind the curtain...
