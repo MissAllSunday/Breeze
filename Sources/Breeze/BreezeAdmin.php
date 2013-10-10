@@ -235,7 +235,7 @@ function Breeze_Admin_Style()
 
 function Breeze_Admin_Maintenance()
 {
-	global $context, $scripturl, $breezeController;
+	global $context, $scripturl, $breezeController, $settings;
 
 	loadLanguage('ManageMaintenance');
 
