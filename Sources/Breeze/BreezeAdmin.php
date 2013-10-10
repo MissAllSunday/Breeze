@@ -68,8 +68,21 @@ function Breeze_Admin_Index()
 			),
 		);
 
-		// Admin bits
-		$context['html_headers'] .= '
+		// Call the sub-action
+		$subActions[$_REQUEST['sa']]();
+}
+
+function Breeze_Admin_Main()
+{
+	global $scripturl, $context, $breezeController;
+
+	loadtemplate('BreezeAdmin');
+
+	$text = $breezeController->get('text');
+	$headers = $breezeController->get('tools');
+
+	// Admin bits
+	$context['html_headers'] .= '
 <script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
 <script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -86,19 +99,6 @@ $(document).ready(function (){
    });
 });
  </script>';
-
-		// Call the sub-action
-		$subActions[$_REQUEST['sa']]();
-}
-
-function Breeze_Admin_Main()
-{
-	global $scripturl, $context, $breezeController;
-
-	loadtemplate('BreezeAdmin');
-
-	$text = $breezeController->get('text');
-	$headers = $breezeController->get('tools');
 
 	// Get the version
 	$context['Breeze']['version'] = Breeze::$version;
