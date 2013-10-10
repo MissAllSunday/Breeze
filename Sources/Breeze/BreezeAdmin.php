@@ -51,6 +51,7 @@ function Breeze_Admin_Index()
 			'settings' => 'Breeze_Admin_Settings',
 			'permissions' => 'Breeze_Admin_Permissions',
 			'style' => 'Breeze_Admin_Style',
+			'maintenance' => 'Breeze_Admin_Maintenance'
 			'donate' => 'Breeze_Admin_Donate',
 		);
 
@@ -62,6 +63,7 @@ function Breeze_Admin_Index()
 				'settings' => array(),
 				'permissions' => array(),
 				'style' => array(),
+				'maintenance' => array(),
 				'donate' => array(),
 			),
 		);
