@@ -185,13 +185,13 @@ $txt['Breeze_allowedActions_sub'] = 'By default, the notification system will ap
 $txt['Breeze_maintenance_status_tools'] = 'Status tools';
 $txt['Breeze_maintenance_comments_tools'] = 'Comments tools';
 $txt['Breeze_maintenance_noti_tools'] = 'Notifications tools';
-$txt['Breeze_maintenance_delete_status'] = 'Delete all status since:';
+$txt['Breeze_maintenance_delete_status_since'] = 'Delete all status since: ';
 $txt['Breeze_maintenance_delete_comments'] = 'Delete all comments since:';
 $txt['Breeze_maintenance_delete_week'] = 'Last Week';
 $txt['Breeze_maintenance_delete_month'] = 'Last Month';
 $txt['Breeze_maintenance_delete_year'] = 'Last Year';
-$txt['Breeze_maintenance_delete_year'] = 'Delete them all.';
-$txt['Breeze_maintenance_delete_status'] = 'Delete all status made by user(s):';
+$txt['Breeze_maintenance_delete_all'] = 'Delete them all.';
+$txt['Breeze_maintenance_delete_status_user'] = 'Delete all status made by user(s):';
 
 // Time
 $txt['Breeze_time_just_now'] = 'just now.';

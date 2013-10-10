@@ -46,6 +46,7 @@ function Breeze_Admin_Index()
 		loadLanguage('Breeze');
 		loadtemplate('BreezeAdmin');
 		loadtemplate('Admin');
+		loadLanguage('Admin');
 
 		$context['page_title'] = $txt['Breeze_admin_settings_admin_panel'];
 
@@ -235,6 +236,8 @@ function Breeze_Admin_Style()
 function Breeze_Admin_Maintenance()
 {
 	global $context, $scripturl, $breezeController;
+
+	loadLanguage('ManageMaintenance');
 
 	// Text strings
 	$text = $breezeController->get('text');
