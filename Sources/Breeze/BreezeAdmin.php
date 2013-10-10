@@ -265,6 +265,11 @@ function Breeze_Admin_Maintenance()
 			case 'status_since':
 			case 'comment_since':
 
+			$since = $globals->getValue('since');
+
+			if (empty($since))
+				fatal_lang_error($text->getText('maintenance_error_since'));
+
 				break;
 			case 'status_user':
 			case 'comment_user':
@@ -273,7 +278,7 @@ function Breeze_Admin_Maintenance()
 		}
 
 		// Set a nice response form the server..
-		$context['Breeze']['response'] = 
+		$context['Breeze']['response'] =
 	}
 
 }

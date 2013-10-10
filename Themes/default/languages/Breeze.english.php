@@ -197,6 +197,8 @@ $txt['Breeze_maintenance_status_since_success'] = 'You have successfully deleted
 $txt['Breeze_maintenance_comment_since_success'] = 'You have successfully deleted all comments since';
 $txt['Breeze_maintenance_status_user_success'] = 'You have successfully deleted all status made by';
 $txt['Breeze_maintenance_status_user_success'] = 'You have successfully deleted all comments made by';
+$txt['Breeze_maintenance_error_since'] = 'You need to specify a date.';
+$txt['Breeze_maintenance_error_user'] = 'You need to type  valid username or ID';
 
 // Time
 $txt['Breeze_time_just_now'] = 'just now.';

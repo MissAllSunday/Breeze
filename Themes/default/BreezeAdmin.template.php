@@ -151,7 +151,7 @@ function template_admin_maintenance()
 						<dt>', $txt['Breeze_maintenance_delete_status_since'] , '</dt>
 						<dd>
 							<form action="', $scripturl , '?action=admin;area=breezeadmin;sa=maintenance;do=status_since" method="post" accept-charset="', $context['character_set'], '">
-							<select id="status_since" name="status_since">
+							<select id="status_since" name="since">
 								<option value="">&nbsp;&nbsp;&nbsp;</option>
 								<option value="week">', $txt['Breeze_maintenance_delete_week']  ,'</option>
 								<option value="month">', $txt['Breeze_maintenance_delete_month'] ,'</option>
@@ -165,7 +165,7 @@ function template_admin_maintenance()
 						<dt>', $txt['Breeze_maintenance_delete_status_user'] , '</dt>
 						<dd>
 							<form action="', $scripturl , '?action=admin;area=breezeadmin;sa=maintenance;do=status_user" method="post" accept-charset="', $context['character_set'], '">
-									<input type="text" name="status_user" id="status_user" size="3">
+									<input type="text" name="user" id="status_user" size="3">
 									<span><input type="submit" value="', $txt['maintain_run_now'], '" class="button_submit" /></span>
 									<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" />
 							</form>
@@ -189,7 +189,7 @@ function template_admin_maintenance()
 						<dt>', $txt['Breeze_maintenance_delete_comments'] , '</dt>
 						<dd>
 							<form action="', $scripturl , '?action=admin;area=breezeadmin;sa=maintenance;do=comment_since" method="post" accept-charset="', $context['character_set'], '">
-							<select id="comment_since" name="comment_since">
+							<select id="comment_since" name="since">
 								<option value="">&nbsp;&nbsp;&nbsp;</option>
 								<option value="week">', $txt['Breeze_maintenance_delete_week']  ,'</option>
 								<option value="month">', $txt['Breeze_maintenance_delete_month'] ,'</option>
@@ -203,7 +203,7 @@ function template_admin_maintenance()
 						<dt>', $txt['Breeze_maintenance_delete_comment_user'] , '</dt>
 						<dd>
 							<form action="', $scripturl , '?action=admin;area=breezeadmin;sa=maintenance;do=comment_user" method="post" accept-charset="', $context['character_set'], '">
-									<input type="text" name="comment_user" id="comment_user" size="3">
+									<input type="text" name="user" id="comment_user" size="3">
 									<span><input type="submit" value="', $txt['maintain_run_now'], '" class="button_submit" /></span>
 									<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" />
 							</form>
