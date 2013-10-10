@@ -192,6 +192,7 @@ $txt['Breeze_maintenance_delete_month'] = 'Last Month';
 $txt['Breeze_maintenance_delete_year'] = 'Last Year';
 $txt['Breeze_maintenance_delete_all'] = 'Delete them all.';
 $txt['Breeze_maintenance_delete_status_user'] = 'Delete all status made by user(s):';
+$txt['Breeze_maintenance_delete_comment_user'] = 'Delete all comments made by user(s):';
 
 // Time
 $txt['Breeze_time_just_now'] = 'just now.';
