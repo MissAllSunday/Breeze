@@ -51,7 +51,7 @@ function Breeze_Admin_Index()
 			'settings' => 'Breeze_Admin_Settings',
 			'permissions' => 'Breeze_Admin_Permissions',
 			'style' => 'Breeze_Admin_Style',
-			'maintenance' => 'Breeze_Admin_Maintenance'
+			'maintenance' => 'Breeze_Admin_Maintenance',
 			'donate' => 'Breeze_Admin_Donate',
 		);
 
@@ -74,7 +74,7 @@ function Breeze_Admin_Index()
 
 function Breeze_Admin_Main()
 {
-	global $scripturl, $context, $breezeController;
+	global $scripturl, $context, $breezeController, $settings;
 
 	loadtemplate('BreezeAdmin');
 
@@ -83,13 +83,14 @@ function Breeze_Admin_Main()
 
 	// Admin bits
 	$context['html_headers'] .= '
+<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
 <script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.js" type="text/javascript"></script>
 <script type="text/javascript">
-var breeze_feed_error_message = '. JavaScriptEscape($txt['Breeze_feed_error_message']) .';
+var breeze_feed_error_message = '. JavaScriptEscape($text->getText('feed_error_message')) .';
 
-$(document).ready(function (){
-	$(\'#breezelive\').rssfeed(\''. Breeze::$supportStite .'\',
+jQuery(document).ready(function (){
+	jQuery(\'#breezelive\').rssfeed(\''. Breeze::$supportStite .'\',
 	{
 		limit: 5,
 		header: false,
