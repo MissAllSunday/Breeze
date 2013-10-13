@@ -274,7 +274,7 @@ function Breeze_Admin_Maintenance()
 			case 'status_user':
 			case 'comment_user':
 
-
+			// Do they used the auto-suggest thingy?
 
 				break;
 		}
