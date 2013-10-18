@@ -242,7 +242,7 @@ function Breeze_Admin_Maintenance()
 	// Text strings
 	$text = $breezeController->get('text');
 
-	$globals = Breeze::sGlobals('get');
+	$globals = Breeze::sGlobals('request');
 
 	// Page stuff
 	$context['page_title'] = Breeze::$name .' - '. $text->getText('admin_settings_sub_maintenance');
@@ -257,6 +257,8 @@ function Breeze_Admin_Maintenance()
 
 	if (!empty($do))
 	{
+		$users = array();
+
 		// Almighty breezeQuery class!
 		$query = $breezeController->get('query');
 
@@ -274,7 +276,11 @@ function Breeze_Admin_Maintenance()
 			case 'status_user':
 			case 'comment_user':
 
-			// Do they used the auto-suggest thingy?
+			if (!$globals->getValue('status_user_suggest') || !$globals->getValue('comment_user_suggest'))
+				$users = explode(',', $globals->getValue('user'));
+
+			else
+				$users = !empty($globals->getValue('status_user_suggest')) ? $globals->getValue('status_user_suggest') : $globals->getValue('comment_user_suggest');
 
 				break;
 		}
