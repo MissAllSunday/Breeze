@@ -657,6 +657,18 @@ class BreezeQuery extends Breeze
 			WHERE status_id = {int:id}', array('id' => $id, ));
 	}
 
+	public function deleteCommentByUser($profile_owner)
+	{
+		if (empty($profile_owner))
+			return false;
+
+		$this->killCache('comments', false, $profile_owner);
+
+		$this->_smcFunc['db_query']('', '
+			DELETE FROM {db_prefix}' . ($this->_tables['status']['table']) . '
+			WHERE comments_poster_id  IN({array_int:id})', array('id' => $profile_owner, ));
+	}
+
 	/**
 	 * BreezeQuery::deleteCommentByStatusID()
 	 *
