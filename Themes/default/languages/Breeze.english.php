@@ -192,6 +192,7 @@ $txt['Breeze_maintenance_delete_month'] = 'Last Month';
 $txt['Breeze_maintenance_delete_year'] = 'Last Year';
 $txt['Breeze_maintenance_delete_all'] = 'Delete them all.';
 $txt['Breeze_maintenance_delete_status_user'] = 'Delete all status made by user(s):';
+$txt['Breeze_maintenance_delete_status_user_desc'] = 'Ids only, comma separated or type the user\'s name and select the correct one from the options below.';
 $txt['Breeze_maintenance_delete_comment_user'] = 'Delete all comments made by user(s):';
 $txt['Breeze_maintenance_status_since_success'] = 'You have successfully deleted all status since';
 $txt['Breeze_maintenance_comment_since_success'] = 'You have successfully deleted all comments since';

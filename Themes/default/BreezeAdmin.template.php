@@ -163,7 +163,7 @@ function template_admin_maintenance()
 							</form>
 						</dd>
 						<dt>', $txt['Breeze_maintenance_delete_status_user'] , '<br/>
-							<span class="smalltext">', $txt['Breeze_maintenance_delete_status_user'] , '</span></dt>
+							<span class="smalltext">', $txt['Breeze_maintenance_delete_status_user_desc'] , '</span></dt>
 						<dd>
 							<form action="', $scripturl , '?action=admin;area=breezeadmin;sa=maintenance;do=status_user" method="post" accept-charset="', $context['character_set'], '">
 									<input type="text" name="user" id="status_user">
@@ -202,7 +202,8 @@ function template_admin_maintenance()
 							<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" />
 							</form>
 						</dd>
-						<dt>', $txt['Breeze_maintenance_delete_comment_user'] , '</dt>
+						<dt>', $txt['Breeze_maintenance_delete_comment_user'] , '<br/>
+							<span class="smalltext">', $txt['Breeze_maintenance_delete_status_user_desc'] , '</span></dt>
 						<dd>
 							<form action="', $scripturl , '?action=admin;area=breezeadmin;sa=maintenance;do=comment_user" method="post" accept-charset="', $context['character_set'], '">
 									<input type="text" name="user" id="comment_user">

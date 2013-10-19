@@ -280,7 +280,7 @@ function Breeze_Admin_Maintenance()
 				$users = explode(',', $globals->getValue('user'));
 
 			else
-				$users = !empty($globals->getValue('status_user_suggest')) ? $globals->getValue('status_user_suggest') : $globals->getValue('comment_user_suggest');
+				$users = $globals->getValue('status_user_suggest') ? $globals->getValue('status_user_suggest') : $globals->getValue('comment_user_suggest');
 
 				break;
 		}
