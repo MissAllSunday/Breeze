@@ -196,8 +196,8 @@ $txt['Breeze_maintenance_delete_status_user_desc'] = 'Ids only, comma separated 
 $txt['Breeze_maintenance_delete_comment_user'] = 'Delete all comments made by user(s):';
 $txt['Breeze_maintenance_status_since_success'] = 'You have successfully deleted all status since';
 $txt['Breeze_maintenance_comment_since_success'] = 'You have successfully deleted all comments since';
-$txt['Breeze_maintenance_status_user_success'] = 'You have successfully deleted all status made by';
-$txt['Breeze_maintenance_status_user_success'] = 'You have successfully deleted all comments made by';
+$txt['Breeze_maintenance_status_user_success'] = 'You have successfully deleted all status made by those users';
+$txt['Breeze_maintenance_comment_user_success'] = 'You have successfully deleted all comments made by thoe users';
 $txt['Breeze_maintenance_error_since'] = 'You need to specify a date.';
 $txt['Breeze_maintenance_error_user'] = 'You need to type  valid username or ID';
 

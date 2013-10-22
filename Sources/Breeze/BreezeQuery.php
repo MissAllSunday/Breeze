@@ -662,6 +662,8 @@ class BreezeQuery extends Breeze
 		if (empty($profile_owner))
 			return false;
 
+		$profile_owner = (array) $profile_owner;
+
 		$this->killCache('comments', false, $profile_owner);
 
 		$this->_smcFunc['db_query']('', '
@@ -673,6 +675,8 @@ class BreezeQuery extends Breeze
 	{
 		if (empty($profile_owner))
 			return false;
+
+		$profile_owner = (array) $profile_owner;
 
 		$this->killCache('comments', false, $profile_owner);
 

@@ -276,17 +276,21 @@ function Breeze_Admin_Maintenance()
 			case 'status_user':
 			case 'comment_user':
 
-			if (!$globals->getValue('status_user_suggest') || !$globals->getValue('comment_user_suggest'))
-				$users = explode(',', $globals->getValue('user'));
+				if (!$globals->getValue('status_user_suggest') || !$globals->getValue('comment_user_suggest'))
+					$users = explode(',', $globals->getValue('user'));
 
-			else
-				$users = $globals->getValue('status_user_suggest') ? $globals->getValue('status_user_suggest') : $globals->getValue('comment_user_suggest');
+				else
+					$users = $globals->getValue('status_user_suggest') ? $globals->getValue('status_user_suggest') : $globals->getValue('comment_user_suggest');
+
+				$method = 'delete'. ($do == 'status_user' ? 'Status' : 'Comment'). 'ByUser';
+
+				$result = $query->$method($users);
+
+				if ($result)
+					$context['Breeze']['response'] = $text->getText('maintenance_'. ($do == 'status_user' ? 'status' : 'comment'). '_user_success');
 
 				break;
 		}
-
-		// Set a nice response form the server..
-		$context['Breeze']['response'] = '';
 	}
 }
 

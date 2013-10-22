@@ -135,6 +135,13 @@ function template_admin_maintenance()
 {
 	global $context, $txt, $scripturl, $settings;
 
+	// Set a nice response message
+	if (isset($context['Breeze']['response']) && !empty($context['Breeze']['response']))
+	echo '
+	<div class="windowbg" id="profile_success">
+		', $context['Breeze']['response'] ,'
+	</div>';
+
 	echo '
 	<div id="manage_maintenance" style="margin:auto;">';
 
