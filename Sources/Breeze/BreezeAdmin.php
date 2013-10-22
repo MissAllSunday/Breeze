@@ -40,10 +40,14 @@ if (!defined('SMF'))
 
 function Breeze_Admin_Index()
 {
-		global $txt, $scripturl, $context, $sourcedir, $settings;
+		global $txt, $scripturl, $context, $sourcedir, $settings, $breezeController;
 
 		require_once($sourcedir . '/ManageSettings.php');
 		loadLanguage('Breeze');
+		loadtemplate('BreezeAdmin');
+		loadtemplate('Admin');
+		loadLanguage('Admin');
+
 		$context['page_title'] = $txt['Breeze_admin_settings_admin_panel'];
 
 		$subActions = array(
@@ -51,6 +55,7 @@ function Breeze_Admin_Index()
 			'settings' => 'Breeze_Admin_Settings',
 			'permissions' => 'Breeze_Admin_Permissions',
 			'style' => 'Breeze_Admin_Style',
+			'maintenance' => 'Breeze_Admin_Maintenance',
 			'donate' => 'Breeze_Admin_Donate',
 		);
 
@@ -62,19 +67,35 @@ function Breeze_Admin_Index()
 				'settings' => array(),
 				'permissions' => array(),
 				'style' => array(),
+				'maintenance' => array(),
 				'donate' => array(),
 			),
 		);
 
-		// Admin bits
-		$context['html_headers'] .= '
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
+		// Call the sub-action
+		$subActions[$_REQUEST['sa']]();
+}
+
+function Breeze_Admin_Main()
+{
+	global $scripturl, $context, $breezeController, $settings;
+
+	$text = $breezeController->get('text');
+	$headers = $breezeController->get('tools');
+
+	// Admin bits
+	$context['html_headers'] .= '
+<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
 <script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.js" type="text/javascript"></script>
 <script type="text/javascript">
-var breeze_feed_error_message = '. JavaScriptEscape($txt['Breeze_feed_error_message']) .';
+var breeze_feed_error_message = '. JavaScriptEscape($text->getText('feed_error_message')) .';
 
-$(document).ready(function (){
-	$(\'#breezelive\').rssfeed(\''. Breeze::$supportStite .'\',
+jQuery(document).ready(function (){
+	jQuery(\'#breezelive\').rssfeed(\''. Breeze::$supportSite .'\',
 	{
 		limit: 5,
 		header: false,
@@ -85,24 +106,11 @@ $(document).ready(function (){
 });
  </script>';
 
-		// Call the sub-action
-		$subActions[$_REQUEST['sa']]();
-}
-
-function Breeze_Admin_Main()
-{
-	global $scripturl, $context, $breezeController;
-
-	loadtemplate('BreezeAdmin');
-
-	$text = $breezeController->get('text');
-	$headers = $breezeController->get('tools');
-
 	// Get the version
 	$context['Breeze']['version'] = Breeze::$version;
 
 	// The support site RSS feed
-	$context['Breeze']['support'] = Breeze::$supportStite;
+	$context['Breeze']['support'] = Breeze::$supportSite;
 
 	// Set all the page stuff
 	$context['page_title'] = $text->getText('admin_settings_main');
@@ -114,16 +122,11 @@ function Breeze_Admin_Main()
 
 	// Get the credits
 	$context['Breeze']['credits'] = Breeze::credits();
-
-	// Headers
-	Breeze::headersHook('admin');
 }
 
 function Breeze_Admin_Settings()
 {
 	global $scripturl, $context, $sourcedir, $breezeController;
-
-	loadtemplate('Admin');
 
 	// Load stuff
 	$text = $breezeController->get('text');
@@ -164,8 +167,6 @@ function Breeze_Admin_Permissions()
 {
 	global $scripturl, $context, $sourcedir, $breezeController, $txt;
 
-	loadtemplate('Admin');
-
 	// Load stuff
 	$text = $breezeController->get('text');
 	$globals = Breeze::sGlobals('request');
@@ -202,8 +203,6 @@ function Breeze_Admin_Style()
 {
 	global $scripturl, $context, $sourcedir, $breezeController, $txt;
 
-	loadtemplate('Admin');
-
 	// Load stuff
 	$text = $breezeController->get('text');
 	$globals = Breeze::sGlobals('request');
@@ -234,16 +233,71 @@ function Breeze_Admin_Style()
 	prepareDBSettingContext($config_vars);
 }
 
-// Pay no attention to the girl behind the curtain
-function Breeze_Admin_Donate()
+function Breeze_Admin_Maintenance()
 {
 	global $context, $scripturl, $breezeController;
 
-	loadtemplate('BreezeAdmin');
+	loadLanguage('ManageMaintenance');
 
-	// Headers
-	$headers = $breezeController->get('tools');
-	Breeze::headersHook('admin');
+	// Text strings
+	$text = $breezeController->get('text');
+
+	$globals = Breeze::sGlobals('request');
+
+	// Page stuff
+	$context['page_title'] = Breeze::$name .' - '. $text->getText('admin_settings_sub_maintenance');
+	$context['sub_template'] = 'admin_maintenance';
+	$context[$context['admin_menu_name']]['tab_data'] = array(
+		'title' => $context['page_title'],
+		'description' => $text->getText('admin_settings_sub_maintenance_desc'),
+	);
+
+	// Hackish code is hackish...
+	$do = $globals->getValue('do');
+
+	if (!empty($do))
+	{
+		$users = array();
+
+		// Almighty breezeQuery class!
+		$query = $breezeController->get('query');
+
+		// Yep, I'm lazy enough to not find a better alternative to this...
+		switch ($do) {
+			case 'status_since':
+			case 'comment_since':
+
+			$since = $globals->getValue('since');
+
+			if (empty($since))
+				fatal_lang_error($text->getText('maintenance_error_since'));
+
+				break;
+			case 'status_user':
+			case 'comment_user':
+
+				if (!$globals->getValue('status_user_suggest') || !$globals->getValue('comment_user_suggest'))
+					$users = explode(',', $globals->getValue('user'));
+
+				else
+					$users = $globals->getValue('status_user_suggest') ? $globals->getValue('status_user_suggest') : $globals->getValue('comment_user_suggest');
+
+				$method = 'delete'. ($do == 'status_user' ? 'Status' : 'Comment'). 'ByUser';
+
+				$result = $query->$method($users);
+
+				if ($result)
+					$context['Breeze']['response'] = $text->getText('maintenance_'. ($do == 'status_user' ? 'status' : 'comment'). '_user_success');
+
+				break;
+		}
+	}
+}
+
+// Pay no attention to the girl behind the curtain...
+function Breeze_Admin_Donate()
+{
+	global $context, $scripturl, $breezeController;
 
 	// Text strings
 	$text = $breezeController->get('text');

@@ -67,7 +67,7 @@ class Breeze
 	public static $txtpattern = 'Breeze_';
 
 	// Support site feed
-	public static $supportStite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
+	public static $supportSite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
 
 	// Its easier to list the allowed actions
 	public static $_allowedActions = array('wall', 'display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who', 'credits',);
@@ -503,6 +503,7 @@ class Breeze
 				'settings' => array($text->getText('admin_settings_settings')),
 				'permissions' => array($text->getText('admin_settings_sub_permissions')),
 				'style' => array($text->getText('admin_settings_sub_style')),
+				'maintenance' => array($text->getText('admin_settings_sub_maintenance')),
 				'donate' => array($text->getText('admin_settings_donate')),
 			),
 		);

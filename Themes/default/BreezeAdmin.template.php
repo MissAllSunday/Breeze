@@ -80,8 +80,7 @@ function template_admin_home()
 					<span class="topslice"><span></span></span>
 					<div class="content">
 						<div id="version_details">
-							<strong>', $txt['support_versions'], ':</strong><br />
-							', $txt['Breeze_admin_breeze_version'] , ':
+							<strong>', $txt['Breeze_admin_breeze_version'] , '</strong> :
 							<em id="yourVersion" style="white-space: nowrap;">', $context['Breeze']['version'] , '</em><br />';
 
 		// Some more stuff will be here... eventually
@@ -130,6 +129,139 @@ function template_admin_home()
 		</div>
 	</div>
 	<br />';
+}
+
+function template_admin_maintenance()
+{
+	global $context, $txt, $scripturl, $settings;
+
+	// Set a nice response message
+	if (isset($context['Breeze']['response']) && !empty($context['Breeze']['response']))
+	echo '
+	<div class="windowbg" id="profile_success">
+		', $context['Breeze']['response'] ,'
+	</div>';
+
+	echo '
+	<div id="manage_maintenance" style="margin:auto;">';
+
+	// Mass delete status
+	echo '
+		<div class="floatright" style="width:49%;">
+			<div class="cat_bar">
+				<h3 class="catbg">', $txt['Breeze_maintenance_status_tools'] , '</h3>
+			</div>
+			<div class="windowbg">
+				<span class="topslice"><span></span></span>
+				<div class="content">
+					<dl class="settings">
+						<dt>', $txt['Breeze_maintenance_delete_status_since'] , '</dt>
+						<dd>
+							<form action="', $scripturl , '?action=admin;area=breezeadmin;sa=maintenance;do=status_since" method="post" accept-charset="', $context['character_set'], '">
+							<select id="status_since" name="since">
+								<option value="">&nbsp;&nbsp;&nbsp;</option>
+								<option value="week">', $txt['Breeze_maintenance_delete_week']  ,'</option>
+								<option value="month">', $txt['Breeze_maintenance_delete_month'] ,'</option>
+								<option value="year">', $txt['Breeze_maintenance_delete_year'] ,'</option>
+								<option value="all">', $txt['Breeze_maintenance_delete_all'] ,'</option>
+							</select>
+							<span><input type="submit" value="', $txt['maintain_run_now'], '" class="button_submit" /></span>
+							<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" />
+							</form>
+						</dd>
+						<dt>', $txt['Breeze_maintenance_delete_status_user'] , '<br/>
+							<span class="smalltext">', $txt['Breeze_maintenance_delete_status_user_desc'] , '</span></dt>
+						<dd>
+							<form action="', $scripturl , '?action=admin;area=breezeadmin;sa=maintenance;do=status_user" method="post" accept-charset="', $context['character_set'], '">
+									<input type="text" name="user" id="status_user">
+									<span><input type="submit" value="', $txt['maintain_run_now'], '" class="button_submit" /></span>
+									<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" /><br />
+									<div id="to_item_list_container_status"></div>
+							</form>
+						</dd>
+					</dl>
+				</div>
+				<span class="botslice"><span></span></span>
+			</div>
+		</div>';
+
+	// Comment tools
+	echo '
+		<div class="floatleft" style="width:49%;">
+			<div class="cat_bar">
+				<h3 class="catbg">', $txt['Breeze_maintenance_comments_tools'] , '</h3>
+			</div>
+			<div class="windowbg">
+				<span class="topslice"><span></span></span>
+				<div class="content">
+					<dl class="settings">
+						<dt>', $txt['Breeze_maintenance_delete_comments'] , '</dt>
+						<dd>
+							<form action="', $scripturl , '?action=admin;area=breezeadmin;sa=maintenance;do=comment_since" method="post" accept-charset="', $context['character_set'], '">
+							<select id="comment_since" name="since">
+								<option value="">&nbsp;&nbsp;&nbsp;</option>
+								<option value="week">', $txt['Breeze_maintenance_delete_week']  ,'</option>
+								<option value="month">', $txt['Breeze_maintenance_delete_month'] ,'</option>
+								<option value="year">', $txt['Breeze_maintenance_delete_year'] ,'</option>
+								<option value="all">', $txt['Breeze_maintenance_delete_all'] ,'</option>
+							</select>
+							<span><input type="submit" value="', $txt['maintain_run_now'], '" class="button_submit" /></span>
+							<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" />
+							</form>
+						</dd>
+						<dt>', $txt['Breeze_maintenance_delete_comment_user'] , '<br/>
+							<span class="smalltext">', $txt['Breeze_maintenance_delete_status_user_desc'] , '</span></dt>
+						<dd>
+							<form action="', $scripturl , '?action=admin;area=breezeadmin;sa=maintenance;do=comment_user" method="post" accept-charset="', $context['character_set'], '">
+									<input type="text" name="user" id="comment_user">
+									<span><input type="submit" value="', $txt['maintain_run_now'], '" class="button_submit" /></span>
+									<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" /><br/>
+									<div id="to_item_list_container_comment"></div>
+							</form>
+						</dd>
+					</dl>
+				</div>
+				<span class="botslice"><span></span></span>
+			</div>
+		</div>';
+
+	echo '
+		<div class="clear"></div>
+	</div>
+	<br />';
+
+	// Auto-suggest script
+	echo '<script type="text/javascript" src="'. $settings['default_theme_url'] .'/scripts/PersonalMessage.js?fin20"></script>
+<script type="text/javascript" src="'. $settings['default_theme_url'] .'/scripts/suggest.js?fin20"></script>
+<script type="text/javascript"><!-- // --><![CDATA[
+	var comment_user = new smc_AutoSuggest({
+		sSelf: \'comment_user\',
+		sSessionId: \'', $context['session_id'], '\',
+		sSessionVar: \'', $context['session_var'], '\',
+		sSuggestId: \'comment_user\',
+		sControlId: \'comment_user\',
+		sSearchType: \'member\',
+		sPostName: \'comment_user_suggest\',
+		sURLMask: \'action=profile;u=%item_id%\',
+		sTextDeleteItem: \'', $txt['autosuggest_delete_item'], '\',
+		bItemList: true,
+		sItemListContainerId: \'to_item_list_container_comment\',
+	});
+
+	var status_user = new smc_AutoSuggest({
+		sSelf: \'status_user\',
+		sSessionId: \'', $context['session_id'], '\',
+		sSessionVar: \'', $context['session_var'], '\',
+		sSuggestId: \'status_user\',
+		sControlId: \'status_user\',
+		sSearchType: \'member\',
+		sPostName: \'status_user_suggest\',
+		sURLMask: \'action=profile;u=%item_id%\',
+		sTextDeleteItem: \'', $txt['autosuggest_delete_item'], '\',
+		bItemList: true,
+		sItemListContainerId: \'to_item_list_container_status\',
+	});
+// ]]></script>';
 }
 
 // Boring stuff you will never see...

@@ -132,11 +132,13 @@ $txt['Breeze_user_modules_buddies_none'] = 'This user currently doesn\'t have an
 
 // Admin Settings
 $txt['Breeze_admin_settings_admin_panel'] = 'Breeze Admin Panel';
-$txt['Breeze_admin_welcome'] = 'This is your &quot;Breeze Admin Panel&quot;.  From here, you can edit the settings for Breeze If you have any trouble, feel free to <a href="http://missallsunday.com" target="_blank" class="new_win">ask for support</a> on the author\'s site.';
+$txt['Breeze_admin_welcome'] = 'This is your Breeze Admin Panel. From here, you can edit all the pertinent settings for it. If you have any troubles or issues, feel free to <a href="http://missallsunday.com" target="_blank" class="new_win">ask for support</a> on the author\'s site.';
 $txt['Breeze_admin_settings_main'] = 'Main Breeze Admin Center';
 $txt['Breeze_admin_settings_sub_permissions'] = 'Permissions';
 $txt['Breeze_admin_settings_sub_style'] = 'Style and Layout';
-$txt['Breeze_admin_settings_sub_style_desc'] = 'Some description here';
+$txt['Breeze_admin_settings_sub_style_desc'] = 'Deals with styling and other similar settings.';
+$txt['Breeze_admin_settings_sub_maintenance'] = 'Maintenance tools';
+$txt['Breeze_admin_settings_sub_maintenance_desc'] = 'Mass delete status, comments and notifications.';
 $txt['Breeze_admin_settings_settings'] = 'General Settings';
 $txt['Breeze_admin_settings_settings_desc'] = 'This is the general settings page, from here you can enable/disable the mod as well as configuring general settings.';
 $txt['Breeze_admin_settings_permissions'] = 'Permissions';
@@ -175,9 +177,29 @@ $txt['Breeze_admin_limit_timeframe_sub'] = 'This will fetch the status/comments 
 $txt['Breeze_admin_posts_for_mention'] = 'How many posts are required to appear on the mention list?';
 $txt['Breeze_admin_posts_for_mention_sub'] = 'To avoid having a huge list of users to chose from when mentioning, you can set how many posts does an user needs to have in order to be mentionable, if you leave this setting empty, it will use the default value: 1.<br /> To help with the server load, the mentions list gets cached and it only sets a new list every 2 hours, if you change this setting, make sure to clean your forum cache to see the results.';
 $txt['Breeze_admin_breeze_version'] = 'Breeze version';
-$txt['Breeze_admin_live'] = 'Live from the suport forum...';
+$txt['Breeze_admin_live'] = 'Live from the support forum...';
 $txt['Breeze_allowedActions'] = 'Write the actions where you wish the notification system shows up';
 $txt['Breeze_allowedActions_sub'] = 'By default, the notification system will appear on the following actions: '. implode(', ', Breeze::$_allowedActions) .'. Plus the BoardIndex, MessageIndex, Topic and Board pages. <br /> Please add your actions in a comma separated list, example: action, action, action, action';
+
+// Maintenance tools
+$txt['Breeze_maintenance_status_tools'] = 'Status tools';
+$txt['Breeze_maintenance_comments_tools'] = 'Comments tools';
+$txt['Breeze_maintenance_noti_tools'] = 'Notifications tools';
+$txt['Breeze_maintenance_delete_status_since'] = 'Delete all status since: ';
+$txt['Breeze_maintenance_delete_comments'] = 'Delete all comments since:';
+$txt['Breeze_maintenance_delete_week'] = 'Last Week';
+$txt['Breeze_maintenance_delete_month'] = 'Last Month';
+$txt['Breeze_maintenance_delete_year'] = 'Last Year';
+$txt['Breeze_maintenance_delete_all'] = 'Delete them all.';
+$txt['Breeze_maintenance_delete_status_user'] = 'Delete all status made by user(s):';
+$txt['Breeze_maintenance_delete_status_user_desc'] = 'Ids only, comma separated or type the user\'s name and select the correct one from the options below.';
+$txt['Breeze_maintenance_delete_comment_user'] = 'Delete all comments made by user(s):';
+$txt['Breeze_maintenance_status_since_success'] = 'You have successfully deleted all status since';
+$txt['Breeze_maintenance_comment_since_success'] = 'You have successfully deleted all comments since';
+$txt['Breeze_maintenance_status_user_success'] = 'You have successfully deleted all status made by those users';
+$txt['Breeze_maintenance_comment_user_success'] = 'You have successfully deleted all comments made by thoe users';
+$txt['Breeze_maintenance_error_since'] = 'You need to specify a date.';
+$txt['Breeze_maintenance_error_user'] = 'You need to type  valid username or ID';
 
 // Time
 $txt['Breeze_time_just_now'] = 'just now.';
@@ -293,7 +315,7 @@ $txt['Breeze_buddyrequest_error_doublerequest'] = 'You already sent a buddy requ
 $txt['Breeze_buddyrequest_error_dunno'] = 'Something went wrong, please contact the forum admin.';
 $txt['Breeze_buddy_messagerequest_message'] = '%1$s wants to be your buddy! <span id="noti_%2$s"></span>';
 $txt['Breeze_buddy_title'] = 'Buddy List';
-$txt['Breeze_buddy_desc'] = 'From here you can confirm or decline your buddy request. If you confirm the buddy request, a pm on your behalf will be send to the user, if you decine the request the user will not receive anything';
+$txt['Breeze_buddy_desc'] = 'From here you can confirm or decline your buddy request. If you confirm the buddy request, a pm on your behalf will be send to the user, if you decline the request the user will not receive anything';
 $txt['Breeze_buddyrequest_title'] = 'Buddy requests';
 $txt['Breeze_buddyrequest_noBuddies'] = 'You currently don\'t have any buddy requests';
 $txt['Breeze_buddyrequest_list_status'] = 'Status';
