@@ -35,18 +35,47 @@
 
  jQuery(document).ready(function(){
 
-	var tabs = new Array();
+	var tabs = {};
+
+	var getCurrentActive = function (){
+
+		var output = null,
+			key;
+
+		for (key in tabs) {
+			if (tabs.hasOwnProperty(key)) {
+				if (tabs[key].active == true){
+					output = tabs[key];
+				}
+			}
+		}
+
+		return output;
+	};
 
 	// Get all available <li> tags
-	jQuery('ul.breezeTabs').each(function(i){
+	jQuery('ul.breezeTabs li').each(function(){
+
+		tabs[jQuery(this).attr('class')] = {
+			href : jQuery(this).find('a').attr('href'),
+			name : jQuery(this).attr('class'),
+			active : (jQuery(this).attr('class') == 'wall') ? true : false
+		};
 
 		// Hide all tabs by default
-		jQuery(i).hide();
+		jQuery(tabs[jQuery(this).attr('class')].href).hide();
 
-		tabs[i] = jQuery(this).attr('href');
+		// Make the wall page the active tab...
+		jQuery(tabs['wall'].href).show();
+	});
+
+	// The Wall tab
+	jQuery('li.wall a').click(function (e) {
+
+		e.preventDefault();
 	});
 
 	jQuery(window).hashchange();
 
-	console.log(tabs);
+	console.log(getCurrentActive());
  });
