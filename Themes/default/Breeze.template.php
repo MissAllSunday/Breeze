@@ -51,7 +51,7 @@ function template_user_wall()
 
 	// Tabs
 	echo '
-		<ul class="dropmenu">
+		<ul class="dropmenu breezeTabs">
 			<li class="tab"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">Wall</span></a></li>
 			<li class="tab"><a href="#tab-buddies" class="firstlevel"><span class="firstlevel">Buddies</span></a></li>
 			<li class="tab"><a href="#tab-visits" class="firstlevel"><span class="firstlevel">Visits</span></a></li>
