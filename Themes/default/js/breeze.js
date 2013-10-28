@@ -347,15 +347,4 @@ jQuery(document).ready(function(){
 			closeImage   : smf_images_url + '/breeze/error_close.png'
 		});
 	});
-
-	// Tabs
-	jQuery('.tab-container').easytabs({
-		animate: true,
-		animationSpeed: 500,
-		defaultTab: 'tab-wall',
-		updateHash: false,
-		cycle: 2000
-	});
-	
-	jQuery(window).hashchange();
 });

@@ -32,14 +32,21 @@
  * Contributor(s):
  *
  */
- 
+
  jQuery(document).ready(function(){
- 
+
 	var tabs = new Array();
- 
+
 	// Get all available <li> tags
 	jQuery('ul.breezeTabs').each(function(i){
+
+		// Hide all tabs by default
+		jQuery(i).hide();
+
 		tabs[i] = jQuery(this).attr('href');
 	});
- 
+
+	jQuery(window).hashchange();
+
+	console.log(tabs);
  });
