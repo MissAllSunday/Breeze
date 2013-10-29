@@ -45,7 +45,7 @@
 		for (key in tabs) {
 			if (tabs.hasOwnProperty(key)) {
 				if (tabs[key].active == true){
-					output = tabs[key];
+					output = tabs[key].name;
 				}
 			}
 		}
@@ -71,6 +71,19 @@
 
 	// The Wall tab
 	jQuery('li.wall a').click(function (e) {
+
+		// Is it active already?
+		if (tabs['wall'].active == true)
+			return false;
+
+		else
+		{
+			// Tell whatever tab is active at the moment to get lost...
+			tabs[getCurrentActive()].active = false;
+
+			// And set this as the active one...
+			tabs['wall'].active = true;
+		}
 
 		e.preventDefault();
 	});
