@@ -37,6 +37,21 @@
 
 	var tabs = {};
 
+	var tabChange = function (newTab){
+
+		currentActive = getCurrentActive();
+
+		// Tell whatever tab is active at the moment to get lost...
+		tabs[currentActive].active = false;
+		jQuery(tabs[currentActive].href).fadeOut('slow', function() {
+
+			jQuery(tabs[newTab].href).fadeIn('slow', function() {});
+		});
+
+		// And set this as the active one...
+		tabs[newTab].active = true;
+	}
+
 	var getCurrentActive = function (){
 
 		var output = null,
@@ -78,17 +93,41 @@
 
 		else
 		{
-			// Tell whatever tab is active at the moment to get lost...
-			tabs[getCurrentActive()].active = false;
+			tabChange('wall');
+		}
 
-			// And set this as the active one...
-			tabs['wall'].active = true;
+		e.preventDefault();
+	});
+
+	// Buddies tab
+	jQuery('li.buddies a').click(function (e) {
+
+		// Is it active already?
+		if (tabs['buddies'].active == true)
+			return false;
+
+		else
+		{
+			tabChange('buddies');
+		}
+
+		e.preventDefault();
+	});
+
+	// Visits tab
+	jQuery('li.visits a').click(function (e) {
+
+		// Is it active already?
+		if (tabs['visits'].active == true)
+			return false;
+
+		else
+		{
+			tabChange('visits');
 		}
 
 		e.preventDefault();
 	});
 
 	jQuery(window).hashchange();
-
-	console.log(getCurrentActive());
  });
