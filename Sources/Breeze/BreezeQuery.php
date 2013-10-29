@@ -27,7 +27,7 @@
 * The Original Code is http://missallsunday.com code.
 *
 * The Initial Developer of the Original Code is
-* Jessica González.
+* Jessica Gon<áez.
 * Portions created by the Initial Developer are Copyright (c) 2012
 * the Initial Developer. All Rights Reserved.
 *
