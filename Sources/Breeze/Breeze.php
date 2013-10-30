@@ -483,7 +483,7 @@ class Breeze
 	 * @param array $admin_menu An array with all the admin settings buttons
 	 * @return
 	 */
-	public static function admin($admin_menu)
+	public static function admin(&$admin_menu)
 	{
 		global $breezeController;
 
