@@ -45,6 +45,10 @@
 		tabs[currentActive].active = false;
 		jQuery(tabs[currentActive].href).fadeOut('slow', function() {
 
+			// Remove the active class and add it to the newtab
+			jQuery('li.'+ currentActive +' a').removeClass('active');
+			jQuery('li.'+ newTab +' a').addClass('active');
+
 			jQuery(tabs[newTab].href).fadeIn('slow', function() {});
 		});
 
@@ -118,11 +122,11 @@
 	jQuery('li.visits a').click(function (e) {
 
 		// Is it active already?
-		if (tabs['visits'].active == true)
+		if (tabs['visits'].active == true){
 			return false;
+		}
 
-		else
-		{
+		else {
 			tabChange('visits');
 		}
 
