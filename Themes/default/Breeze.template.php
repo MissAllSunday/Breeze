@@ -62,6 +62,20 @@ function template_user_wall()
 	echo '
 		<div id="tab-wall">';
 
+	// This is the status box,  O RLY?
+	if (!empty($context['Breeze']['permissions']['post_status']))
+			echo '
+			<div class="breeze_user_inner windowbg2">
+					<div class="breeze_user_statusbox">
+							<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
+									<textarea cols="40" rows="5" name="statusContent" id="statusContent" rel="atwhoMention"></textarea>
+									<input type="hidden" value="', $user_info['id'] ,'" name="statusPoster" id="statusPoster" />
+									<input type="hidden" value="', $context['member']['id'] ,'" name="statusOwner" id="statusOwner" />
+									<br /><input type="submit" value="', $txt['post'] ,'" name="statusSubmit" class="status_button" id="statusSubmit"/>
+							</form>
+					</div>
+			</div>';
+
 		breeze_status($context['member']['status']);
 
 
