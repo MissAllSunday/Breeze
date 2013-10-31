@@ -42,38 +42,43 @@ function template_user_wall()
 
 	loadLanguage(Breeze::$name);
 
-	// Print the server response
-	breeze_server_response();
-
 	// Start of profileview div
 	echo '
-	<div id="profileview" class="flow_auto tab-container">';
+	<div id="profileview" class="flow_auto">';
+
+	// Right block, tabs and block
+	echo '
+		<div id="Breeze_right_block">';
 
 	// Tabs
 	echo '
-		<ul class="dropmenu breezeTabs">
-			<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">Wall</span></a></li>
-			<li class="buddies"><a href="#tab-buddies" class="firstlevel"><span class="firstlevel">Buddies</span></a></li>
-			<li class="visits"><a href="#tab-visits" class="firstlevel"><span class="firstlevel">Visits</span></a></li>
-		</ul>
+		<div id="Breeze_tabs">
+			<ul class="dropmenu breezeTabs">
+				<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>
+				<li class="buddies"><a href="#tab-buddies" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_buddies'] ,'</span></a></li>
+				<li class="visits"><a href="#tab-visits" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_views'] ,'</span></a></li>
+			</ul>
+		</div>
 		<p />';
 
 	// Wall
 	echo '
-		<div id="tab-wall">';
+		<div id="tab-wall" class="content">';
 
 	// This is the status box,  O RLY?
 	if (!empty($context['Breeze']['permissions']['post_status']))
 			echo '
-			<div class="breeze_user_inner windowbg2">
-					<div class="breeze_user_statusbox">
-							<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
-									<textarea cols="40" rows="5" name="statusContent" id="statusContent" rel="atwhoMention"></textarea>
-									<input type="hidden" value="', $user_info['id'] ,'" name="statusPoster" id="statusPoster" />
-									<input type="hidden" value="', $context['member']['id'] ,'" name="statusOwner" id="statusOwner" />
-									<br /><input type="submit" value="', $txt['post'] ,'" name="statusSubmit" class="status_button" id="statusSubmit"/>
-							</form>
-					</div>
+			<div class="breeze_user_inner windowbg">
+				<span class="topslice"><span></span></span>
+				<div class="breeze_user_statusbox content">
+						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
+								<textarea cols="40" rows="5" name="statusContent" id="statusContent" rel="atwhoMention"></textarea>
+								<input type="hidden" value="', $user_info['id'] ,'" name="statusPoster" id="statusPoster" />
+								<input type="hidden" value="', $context['member']['id'] ,'" name="statusOwner" id="statusOwner" />
+								<br /><input type="submit" value="', $txt['post'] ,'" name="statusSubmit" class="status_button" id="statusSubmit"/>
+						</form>
+				</div>
+				<span class="botslice"><span></span></span>
 			</div>';
 
 		breeze_status($context['member']['status']);
@@ -88,63 +93,25 @@ function template_user_wall()
 	echo '
 		</div>';
 
-	// Buddies
-	echo '
-		<div id="tab-buddies">';
 
-	echo '
-			<div class="cat_bar">
-				<h3 class="catbg">
-					<span id="author">
-						', $txt['Breeze_tabs_buddies'] ,'
-				</h3>
-			</div>';
-
-	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
-	{
-			echo '
-			<div class="windowbg2 BreezeBlock content">
-				<span class="topslice">
-					<span> </span>
-				</span>
-				<div class="content BreezeList">';
-
-			// Print a nice Ul
-			echo '
-					<ul class="reset">';
-
-			// Show the profile visitors in a big, fat echo!
-			foreach ($context['member']['buddies'] as $buddy)
-					echo '
-						<li> ', $context['Breeze']['user_info'][$buddy]['facebox'] ,' <br /> ', $context['Breeze']['user_info'][$buddy]['link'] ,'</li>';
-
-			// End the visitors list
-			echo '
-					</ul>';
-
-			echo '
-				</div>
-				<span class="botslice">
-					<span> </span>
-				</span>
-			</div>';
-	}
-
-	// This user doesn't have any buddies :(
-	else
-		echo '
-			<div class="windowbg2 BreezeBlock content">
-			<p />', $txt['Breeze_user_modules_buddies_none'] ,'
-			</div>';
-
+	// End of right block
 	echo '
 		</div>';
 
-	// Visits
+	// Left block, users data and info
 	echo '
-		<div id="tab-visits">vsits</div>';
+		<div id="Breeze_left_block">';
+
+	// Profile owner details
+	breeze_profile_owner();
+
+	// End of left block
+	echo '
+		</div>';
 
 
+
+	// End of profileview div
 	echo '
 	</div>';
 
