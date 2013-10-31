@@ -127,7 +127,7 @@ $txt['Breeze_user_permissions_name'] = 'Permissions';
 $txt['Breeze_user_modules_name'] = 'Modules';
 $txt['Breeze_user_modules_visits'] = 'Visits: ';
 $txt['Breeze_user_modules_visits_none'] = 'There are no recent visits';
-$txt['Breeze_user_modules_buddies_none'] = 'This user currently doesn\'t have any buddies';
+$txt['Breeze_user_modules_buddies_none'] = 'This user doesn\'t have any buddies';
 
 
 // Admin Settings

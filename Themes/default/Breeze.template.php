@@ -56,7 +56,7 @@ function template_user_wall()
 			<li class="buddies"><a href="#tab-buddies" class="firstlevel"><span class="firstlevel">Buddies</span></a></li>
 			<li class="visits"><a href="#tab-visits" class="firstlevel"><span class="firstlevel">Visits</span></a></li>
 		</ul>
-		<br />';
+		<p />';
 
 	// Wall
 	echo '
@@ -78,7 +78,6 @@ function template_user_wall()
 
 		breeze_status($context['member']['status']);
 
-
 		// Pagination
 		if (!empty($context['page_index']))
 			echo '
@@ -89,23 +88,54 @@ function template_user_wall()
 	echo '
 		</div>';
 
-	// Buddy
+	// Buddies
 	echo '
 		<div id="tab-buddies">';
-
 
 	echo '
 			<div class="cat_bar">
 				<h3 class="catbg">
 					<span id="author">
-						', $txt['Breeze_general_latest_buddy_status'] ,'
+						', $txt['Breeze_tabs_buddies'] ,'
 				</h3>
 			</div>';
 
-		// Print the buddies status
-		if (!empty($context['Breeze']['status']))
-			foreach ($context['Breeze']['status'] as $status)
-				breeze_status($status);
+	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
+	{
+			echo '
+			<div class="windowbg2 BreezeBlock content">
+				<span class="topslice">
+					<span> </span>
+				</span>
+				<div class="content BreezeList">';
+
+			// Print a nice Ul
+			echo '
+					<ul class="reset">';
+
+			// Show the profile visitors in a big, fat echo!
+			foreach ($context['member']['buddies'] as $buddy)
+					echo '
+						<li> ', $context['Breeze']['user_info'][$buddy]['facebox'] ,' <br /> ', $context['Breeze']['user_info'][$buddy]['link'] ,'</li>';
+
+			// End the visitors list
+			echo '
+					</ul>';
+
+			echo '
+				</div>
+				<span class="botslice">
+					<span> </span>
+				</span>
+			</div>';
+	}
+
+	// This user doesn't have any buddies :(
+	else
+		echo '
+			<div class="windowbg2 BreezeBlock content">
+			<p />', $txt['Breeze_user_modules_buddies_none'] ,'
+			</div>';
 
 	echo '
 		</div>';
