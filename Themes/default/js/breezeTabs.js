@@ -101,6 +101,7 @@
 		}
 
 		e.preventDefault();
+		return false;
 	});
 
 	// Buddies tab
@@ -116,6 +117,7 @@
 		}
 
 		e.preventDefault();
+		return false;
 	});
 
 	// Visits tab
@@ -131,6 +133,7 @@
 		}
 
 		e.preventDefault();
+		return false;
 	});
 
 	jQuery(window).hashchange();
