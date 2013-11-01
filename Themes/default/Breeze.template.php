@@ -65,6 +65,16 @@ function template_user_wall()
 	echo '
 		<div id="tab-wall" class="content">';
 
+
+	// A nice title bar
+	echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+				<span id="author">
+					', sprintf($txt['Breeze_general_wall_profile'], $context['Breeze']['user_info'][$user_info['id']]['link']) ,'
+			</h3>
+		</div>';
+
 	// This is the status box,  O RLY?
 	if (!empty($context['Breeze']['permissions']['post_status']))
 			echo '

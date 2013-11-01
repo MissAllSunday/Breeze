@@ -41,6 +41,7 @@ global $txt;
 $txt['Breeze_general_wall'] = 'Wall';
 $txt['Breeze_general_wall_page'] = 'page';
 $txt['Breeze_general_summary'] = 'Summary';
+$txt['Breeze_general_wall_profile'] = '%s\' Wall';
 
 $txt['Breeze_general_my_wall'] = 'My Wall';
 $txt['Breeze_general_my_wall_settings'] = 'My Wall Settings';
