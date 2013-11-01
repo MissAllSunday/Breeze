@@ -59,7 +59,7 @@ function template_user_wall()
 				<li class="visits"><a href="#tab-visits" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_views'] ,'</span></a></li>
 			</ul>
 		</div>
-		<p />';
+		<p class="clear" />';
 
 	// Wall
 	echo '
@@ -70,8 +70,7 @@ function template_user_wall()
 	echo '
 		<div class="cat_bar">
 			<h3 class="catbg">
-				<span id="author">
-					', sprintf($txt['Breeze_general_wall_profile'], $context['Breeze']['user_info'][$user_info['id']]['link']) ,'
+					', $txt['Breeze_general_wall'] ,'
 			</h3>
 		</div>';
 
@@ -113,7 +112,6 @@ function template_user_wall()
 		echo '
 			<div class="cat_bar">
 				<h3 class="catbg">
-					<span id="author">
 						'. $txt['Breeze_tabs_buddies'] .'
 				</h3>
 			</div>';
@@ -168,7 +166,6 @@ function template_user_wall()
 		echo '
 				<div class="cat_bar">
 					<h3 class="catbg">
-						<span id="author">
 							'. $txt['Breeze_tabs_views'] .'
 					</h3>
 				</div>';
