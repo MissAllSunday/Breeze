@@ -85,6 +85,7 @@ function template_user_wall()
 								<textarea cols="40" rows="5" name="statusContent" id="statusContent" rel="atwhoMention"></textarea>
 								<input type="hidden" value="', $user_info['id'] ,'" name="statusPoster" id="statusPoster" />
 								<input type="hidden" value="', $context['member']['id'] ,'" name="statusOwner" id="statusOwner" />
+								<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
 								<br /><input type="submit" value="', $txt['post'] ,'" name="statusSubmit" class="status_button" id="statusSubmit"/>
 						</form>
 				</div>
