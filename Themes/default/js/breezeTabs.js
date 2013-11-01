@@ -92,11 +92,11 @@
 	jQuery('li.wall a').click(function (e) {
 
 		// Is it active already?
-		if (tabs['wall'].active == true)
+		if (tabs['wall'].active == true){
 			return false;
+		}
 
-		else
-		{
+		else{
 			tabChange('wall');
 		}
 
@@ -107,11 +107,11 @@
 	jQuery('li.buddies a').click(function (e) {
 
 		// Is it active already?
-		if (tabs['buddies'].active == true)
+		if (tabs['buddies'].active == true){
 			return false;
+		}
 
-		else
-		{
+		else{
 			tabChange('buddies');
 		}
 

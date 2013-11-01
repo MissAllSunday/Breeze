@@ -93,6 +93,69 @@ function template_user_wall()
 	echo '
 		</div>';
 
+	// Buddies
+	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']))
+	{
+		echo '
+		<div id="tab-buddies" class="content">';
+
+		echo '
+			<div class="cat_bar">
+				<h3 class="catbg">
+					<span id="author">
+						'. $txt['Breeze_tabs_buddies'] .'
+				</h3>
+			</div>';
+
+		if (!empty($context['member']['buddies']))
+		{
+			echo '
+			<div class="windowbg2">
+				<span class="topslice">
+				<span> </span>
+				</span>
+				<div class="content BreezeList">';
+
+			// Print a nice Ul
+			echo '
+					<ul class="reset">';
+
+			// Show the profile visitors in a big, fat echo!
+			foreach ($context['member']['buddies'] as $buddy)
+				echo '
+						<li> ', $context['Breeze']['user_info'][$buddy]['facebox'] ,' <br /> ', $context['Breeze']['user_info'][$buddy]['link'] ,'</li>';
+
+			// End the buddies list
+			echo '
+					</ul>';
+
+			echo '
+				</div>
+				<span class="botslice">
+				<span> </span>
+				</span>
+			</div>';
+		}
+
+		// No buddies :(
+		else
+			echo '
+			<div class="windowbg2 content">
+				', $txt['Breeze_user_modules_buddies_none'] ,'
+			</div>';
+
+		echo '
+		</div>';
+	}
+
+	// Visits
+	echo '
+		<div id="tab-visits" class="content">';
+
+echo 'lol';
+	echo '
+			</div>';
+
 
 	// End of right block
 	echo '
