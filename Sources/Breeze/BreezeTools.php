@@ -325,7 +325,7 @@ class BreezeTools
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
 			<script type="text/javascript"><!-- // --><![CDATA[
 				var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
-				var breeze_how_many_mentions_options = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_how_many_mentions_options']) ? $context['member']['options']['Breeze_how_many_mentions_options'] : 5)) .';
+				var breeze_how_many_mentions = '. (JavaScriptEscape(!empty($context['member']['options']['Breeze_how_many_mentions']) ? $context['member']['options']['Breeze_how_many_mentions'] : 5)) .';
 				var breeze_session_id = ' . JavaScriptEscape($context['session_id']) . ';
 				var breeze_session_var = ' . JavaScriptEscape($context['session_var']) . ';
 			// ]]></script>';

@@ -326,7 +326,7 @@ jQuery(document).ready(function(){
 					search_key: "name",
 					tpl: "<li data-value='(${name}, ${id})'>${name} <small>${id}</small></li>",
 					data: result,
-					limit: breeze_how_many_mentions_options,
+					limit: breeze_how_many_mentions,
 					callback: {
 						filter: function (query, data, search_key) {
 							return jQuery.map(data, function(item, i) {

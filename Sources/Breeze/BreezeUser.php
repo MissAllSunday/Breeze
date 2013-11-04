@@ -204,9 +204,9 @@ function breezeSettings()
 
 	// How many options to be displayed when mentioning
 	$form->addText(
-		'Breeze_how_many_mentions_options',
-		'how_many_mentions_options',
-		!empty($context['member']['options']['Breeze_how_many_mentions_options']) ? $context['member']['options']['Breeze_how_many_mentions_options'] : 0,
+		'Breeze_how_many_mentions',
+		'how_many_mentions',
+		!empty($context['member']['options']['Breeze_how_many_mentions']) ? $context['member']['options']['Breeze_how_many_mentions'] : 0,
 		3,3
 	);
 
@@ -237,19 +237,19 @@ function breezeSettings()
 		'visitors_module_timeframe',
 		array(
 			'Hour' => array(
-				'visitors_module_timeframe_hour',
+				'visitors_timeframe_hour',
 				!empty($context['member']['options']['Breeze_visitors_timeframe']) && $context['member']['options']['Breeze_visitors_timeframe'] == 'Hour' ? 'selected' : ''
 			),
 			'Day' => array(
-				'visitors_module_timeframe_day',
+				'visitors_timeframe_day',
 				!empty($context['member']['options']['Breeze_visitors_timeframe']) && $context['member']['options']['Breeze_visitors_timeframe'] == 'Day' ? 'selected' : ''
 			),
 			'Week' => array(
-				'visitors_module_timeframe_week',
+				'visitors_timeframe_week',
 				!empty($context['member']['options']['Breeze_visitors_timeframe']) && $context['member']['options']['Breeze_visitors_timeframe'] == 'Week' ? 'selected' : ''
 			),
 			'Month' => array(
-				'visitors_module_timeframe_month',
+				'visitors_timeframe_month',
 				!empty($context['member']['options']['Breeze_visitors_timeframe']) && $context['member']['options']['Breeze_visitors_timeframe'] == 'Month' ? 'selected' : ''
 			),
 		)
