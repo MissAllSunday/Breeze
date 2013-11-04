@@ -217,24 +217,24 @@ function breezeSettings()
 		!empty($context['member']['options']['Breeze_kick_ignored']) ? true : false
 	);
 
-	// Buddies tab
+	// Buddies
 	$form->addCheckBox(
-		'Breeze_enable_buddies_tab',
-		'enable_buddies_tab',
-		!empty($context['member']['options']['Breeze_enable_buddies_tab']) ? true : false
+		'Breeze_enable_buddies',
+		'enable_buddies',
+		!empty($context['member']['options']['Breeze_enable_buddies']) ? true : false
 	);
 
-	// Profile visitors tab
+	// Profile visitors
 	$form->addCheckBox(
-		'Breeze_enable_visitors_tab',
-		'enable_visitors_tab',
-		!empty($context['member']['options']['Breeze_enable_visitors_tab']) ? true : false
+		'Breeze_enable_visitors',
+		'enable_visitors',
+		!empty($context['member']['options']['Breeze_enable_visitors']) ? true : false
 	);
 
-	// visitors timeframe
+	// Visitors timeframe
 	$form->addSelect(
 		'Breeze_visitors_timeframe',
-		'visitors_module_timeframe',
+		'visitors_timeframe',
 		array(
 			'Hour' => array(
 				'visitors_timeframe_hour',

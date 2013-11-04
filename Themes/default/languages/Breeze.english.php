@@ -92,7 +92,7 @@ $txt['Breeze_user_settings_visitors_timeframe_day'] = 'Day';
 $txt['Breeze_user_settings_visitors_timeframe_week'] = 'Week';
 $txt['Breeze_user_settings_visitors_timeframe_month'] = 'Month';
 $txt['Breeze_user_settings_clean_visitors'] = 'Clean the visitors log';
-$txt['Breeze_user_settings_clean_visitors_sub'] = 'Removes all visitors from your visitors tab.';
+$txt['Breeze_user_settings_clean_visitors_sub'] = 'Removes all visitors from your visitors block.';
 $txt['Breeze_user_settings_clear_noti'] = 'How many seconds do you want the notifications to be displayed before been automatically closed';
 $txt['Breeze_user_settings_clear_noti_sub'] = 'In seconds, If you leave this empty the notifications won\'t be automatically closed and you must manually click the "close all notifications" button.';
 $txt['Breeze_user_settings_noti_on_comment'] = 'Notify me when someone comments on my status';
@@ -101,8 +101,8 @@ $txt['Breeze_user_settings_noti_on_mention'] = 'Notify me when someone mentions 
 $txt['Breeze_user_settings_noti_on_mention_sub'] = 'On every place where a user can use the mention system.';
 
 // Modules
-$txt['Breeze_user_settings_enable_buddies'] = 'Enable the "Buddies" module.';
-$txt['Breeze_user_settings_enable_buddies_sub'] = 'This will show a block showing all your buddies.';
+$txt['Breeze_user_settings_enable_buddies'] = 'Enable the "Buddies" block.';
+$txt['Breeze_user_settings_enable_buddies_sub'] = 'This will show a block div showing all your buddies and their info.';
 $txt['Breeze_user_settings_how_many_buddies'] = 'How many buddies to display';
 $txt['Breeze_user_settings_how_many_buddies_sub'] = 'If empty it will show the default value 10, max value is 30.';
 $txt['Breeze_user_settings_visitors'] = 'Enable the "Latest Visitors" module.';
@@ -251,7 +251,7 @@ $txt['Breeze_tabs_buddies'] = 'Buddies';
 $txt['Breeze_tabs_views'] = 'Profile Visitors';
 $txt['Breeze_tabs_pinfo'] = 'Profile Info';
 $txt['Breeze_tabs_activity'] = 'Recent activity';
-$txt['Breeze_tabs_posts'] = 'Recent posts'
+$txt['Breeze_tabs_posts'] = 'Recent posts';
 $txt['Breeze_goTop'] = 'Go to top';
 
 // Notifications
