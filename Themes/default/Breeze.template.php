@@ -55,8 +55,8 @@ function template_user_wall()
 		<div id="Breeze_tabs">
 			<ul class="dropmenu breezeTabs">
 				<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>
-				<li class="buddies"><a href="#tab-buddies" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_buddies'] ,'</span></a></li>
-				<li class="visits"><a href="#tab-visits" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_views'] ,'</span></a></li>
+				<li class="buddies"><a href="#tab-activity" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_activity'] ,'</span></a></li>
+				<li class="buddies"><a href="#tab-posts" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_posts'] ,'</span></a></li>
 			</ul>
 		</div>
 		<p class="clear" />';

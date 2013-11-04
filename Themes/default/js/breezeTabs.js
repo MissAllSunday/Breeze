@@ -104,32 +104,32 @@
 		return false;
 	});
 
-	// Buddies tab
-	jQuery('li.buddies a').click(function (e) {
+	// Posts tab
+	jQuery('li.posts a').click(function (e) {
 
 		// Is it active already?
-		if (tabs['buddies'].active == true){
+		if (tabs['posts'].active == true){
 			return false;
 		}
 
 		else{
-			tabChange('buddies');
+			tabChange('posts');
 		}
 
 		e.preventDefault();
 		return false;
 	});
 
-	// Visits tab
-	jQuery('li.visits a').click(function (e) {
+	// Activity tab
+	jQuery('li.activity a').click(function (e) {
 
 		// Is it active already?
-		if (tabs['visits'].active == true){
+		if (tabs['activity'].active == true){
 			return false;
 		}
 
 		else {
-			tabChange('visits');
+			tabChange('activity');
 		}
 
 		e.preventDefault();
