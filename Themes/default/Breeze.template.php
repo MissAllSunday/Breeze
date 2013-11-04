@@ -127,7 +127,45 @@ function template_user_wall()
 	breeze_profile_owner();
 
 	// Buddies
+	if (!empty($context['member']['options']['Breeze_enable_buddies']))
+	{
+		echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+				'. $txt['Breeze_tabs_buddies'] .'
+			</h3>
+		</div>';
 
+		echo '
+		<div class="windowbg2">
+			<span class="topslice"><span> </span></span>
+			<div class="content BreezeList">';
+
+		if (!empty($context['member']['buddies']))
+		{
+			// Print a nice Ul
+			echo '
+				<ul class="reset">';
+
+			// Show the profile visitors in a big, fat echo!
+			foreach ($context['member']['buddies'] as $buddy)
+				echo '
+					<li> ', $context['Breeze']['user_info'][$buddy]['facebox'] ,' <br /> ', $context['Breeze']['user_info'][$buddy]['link'] ,'</li>';
+
+			// End the buddies list
+			echo '
+				</ul>';
+		}
+
+		// No buddies :(
+		else $txt['Breeze_user_modules_buddies_none'];
+
+			echo '
+			</div>
+			<span class="botslice"><span> </span></span>
+		</div>';
+
+	}
 	// Buddies end
 
 	// Visitors
@@ -143,9 +181,7 @@ function template_user_wall()
 
 		echo '
 		<div class="windowbg2">
-			<span class="topslice">
-				<span> </span>
-			</span>
+			<span class="topslice"><span> </span></span>
 			<div class="content BreezeList">';
 
 		if (!empty($context['Breeze']['views']))
@@ -189,9 +225,7 @@ function template_user_wall()
 
 		echo '
 			</div>
-			<span class="botslice">
-			<span> </span>
-			</span>
+			<span class="botslice"><span> </span></span>
 		</div>';
 	}
 	// Visitor end
