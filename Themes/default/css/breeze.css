@@ -48,17 +48,19 @@ padding: 0.8em;
 #Breeze_left_block
 {
 float:left;
-width: 62%;
-margin: 2px;
-padding: 2px;
+width: 29%;
 }
 
 #Breeze_right_block
 {
 float:right;
-width: 35%;
+width: 70%;
 margin: 2px;
 padding: 2px;
+}
+
+#Breeze_tabs
+{
 }
 
 .BreezeBlock
@@ -144,12 +146,6 @@ list-style-type: none;
 {
 float:left;
 width:55%;
-margin:5px;
-padding:5px;
-}
-
-.breeze_user_inner
-{
 margin:5px;
 padding:5px;
 }

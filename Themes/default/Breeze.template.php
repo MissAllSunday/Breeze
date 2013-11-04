@@ -42,172 +42,211 @@ function template_user_wall()
 
 	loadLanguage(Breeze::$name);
 
-	// Print the server response
-	breeze_server_response();
-
 	// Start of profileview div
 	echo '
 	<div id="profileview" class="flow_auto">';
 
-	// Left block, user's data and blocks
+	// Right block, tabs and block
 	echo '
-		<div id="Breeze_left_block">';
+		<div id="Breeze_right_block">';
 
+	// Tabs
 	echo '
-			<div class="cat_bar">
-				<h3 class="catbg">
-					<span id="author">
-						'. $txt['Breeze_tabs_wall'] .'
-				</h3>
-			</div>';
+		<div id="Breeze_tabs">
+			<ul class="dropmenu breezeTabs">
+				<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>
+				<li class="buddies"><a href="#tab-buddies" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_buddies'] ,'</span></a></li>
+				<li class="visits"><a href="#tab-visits" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_views'] ,'</span></a></li>
+			</ul>
+		</div>
+		<p class="clear" />';
 
-	// Wall div
+	// Wall
 	echo '
-			<div id="tabs_wall">
-				<div class="windowbg2">
-					<span class="topslice">
-						<span></span>
-					</span>
-				<div class="content">';
+		<div id="tab-wall" class="content">';
 
-			// This is the status box,  O RLY?
-			if (!empty($context['Breeze']['permissions']['post_status']))
-				echo '
-					<div class="breeze_user_inner">
-						<div class="breeze_user_statusbox">
-							<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
+
+	// A nice title bar
+	echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+					', $txt['Breeze_general_wall'] ,'
+			</h3>
+		</div>';
+
+	// This is the status box,  O RLY?
+	if (!empty($context['Breeze']['permissions']['post_status']))
+			echo '
+			<div class="breeze_user_inner windowbg">
+				<span class="topslice"><span></span></span>
+				<div class="breeze_user_statusbox content">
+						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
 								<textarea cols="40" rows="5" name="statusContent" id="statusContent" rel="atwhoMention"></textarea>
 								<input type="hidden" value="', $user_info['id'] ,'" name="statusPoster" id="statusPoster" />
 								<input type="hidden" value="', $context['member']['id'] ,'" name="statusOwner" id="statusOwner" />
+								<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
 								<br /><input type="submit" value="', $txt['post'] ,'" name="statusSubmit" class="status_button" id="statusSubmit"/>
-							</form>
-						</div>
-					</div>';
-
-		echo'
+						</form>
 				</div>
-				<span class="botslice">
-					<span></span>
-				</span>
-				</div>';
-		// End of the status textarea
-
-	// Print the status and comments
-	breeze_status($context['member']['status']);
-
-	// Pagination
-	if (!empty($context['page_index']))
-		echo '
-		<div class="pagelinks">
-			', $txt['pages'], ': ', $context['page_index'], $context['menu_separator'] . ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
-		</div>';
-
-	// End of Wall div
-	echo '
+				<span class="botslice"><span></span></span>
 			</div>';
 
-	// End of left side
+		breeze_status($context['member']['status']);
+
+		// Pagination
+		if (!empty($context['page_index']))
+			echo '
+			<div class="pagelinks">
+				', $txt['pages'], ': ', $context['page_index'], $context['menu_separator'] . ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
+			</div>';
+
 	echo '
 		</div>';
 
-	// Right block, user's data and blocks
-	echo '
-	<div id="Breeze_right_block">';
-
-	// Profile owner details
-	breeze_profile_owner();
-
-	// Profile visitors
-	if (!empty($context['Breeze']['views']))
+	// Buddies
+	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']))
 	{
 		echo '
-		<div class="cat_bar">
-			<h3 class="catbg">
-				<span id="author">
-					'. $txt['Breeze_tabs_views'] .'
-			</h3>
-		</div>
-		<div class="windowbg2 BreezeBlock">
-			<span class="topslice">
-			<span> </span>
-			</span>
-			<div class="content BreezeList">';
+		<div id="tab-buddies" class="content">';
 
-		// Print a nice Ul
 		echo '
-				<ul class="reset">';
+			<div class="cat_bar">
+				<h3 class="catbg">
+						'. $txt['Breeze_tabs_buddies'] .'
+				</h3>
+			</div>';
 
-		// Show the profile visitors
-		foreach ($context['Breeze']['views'] as $visitor)
+		if (!empty($context['member']['buddies']))
 		{
+			echo '
+			<div class="windowbg2">
+				<span class="topslice">
+				<span> </span>
+				</span>
+				<div class="content BreezeList">';
 
-			echo '<li> ', $context['Breeze']['user_info'][$visitor['user']]['facebox'];
+			// Print a nice Ul
+			echo '
+					<ul class="reset">';
 
-			// The user's name, don't forget to put a nice br to force a break line...
-			echo '<br />',  $context['Breeze']['user_info'][$visitor['user']]['link'];
+			// Show the profile visitors in a big, fat echo!
+			foreach ($context['member']['buddies'] as $buddy)
+				echo '
+						<li> ', $context['Breeze']['user_info'][$buddy]['facebox'] ,' <br /> ', $context['Breeze']['user_info'][$buddy]['link'] ,'</li>';
 
-			// The last visit was at...?
-			echo '<br />',  $context['Breeze']['tools']->timeElapsed($visitor['last_view']);
+			// End the buddies list
+			echo '
+					</ul>';
 
-			// If you're the profile owner you might want to know how many time this user has visited your profile...
-			if ($context['member']['id'] == $user_info['id'])
-				echo '<br />',  $txt['Breeze_user_modules_visits'] . $visitor['views'];
-
-			// Finally, close the li
-			echo '</li>';
+			echo '
+				</div>
+				<span class="botslice">
+				<span> </span>
+				</span>
+			</div>';
 		}
 
-		// End the visitors list
-		echo '
-				</ul>';
+		// No buddies :(
+		else
+			echo '
+			<div class="windowbg2 content">
+				', $txt['Breeze_user_modules_buddies_none'] ,'
+			</div>';
 
 		echo '
-			</div>
-			<span class="botslice">
-			<span> </span>
-			</span>
 		</div>';
 	}
 
-	// Buddy list
-	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
+	// Visits
+	if (!empty($context['member']['options']['Breeze_enable_visits_tab']))
 	{
 		echo '
-		<div class="cat_bar">
-			<h3 class="catbg">
-				<span id="author">
-					'. $txt['Breeze_tabs_buddies'] .'
-			</h3>
-		</div>
-		<div class="windowbg2 BreezeBlock">
-			<span class="topslice">
-			<span> </span>
-			</span>
-			<div class="content BreezeList">';
-
-		// Print a nice Ul
-		echo '
-				<ul class="reset">';
-
-		// Show the profile visitors in a big, fat echo!
-		foreach ($context['member']['buddies'] as $buddy)
-			echo '<li> ', $context['Breeze']['user_info'][$buddy]['facebox'] ,' <br /> ', $context['Breeze']['user_info'][$buddy]['link'] ,'</li>';
-
-		// End the visitors list
-		echo '
-				</ul>';
+			<div id="tab-visits" class="content">';
 
 		echo '
-			</div>
-			<span class="botslice">
-			<span> </span>
-			</span>
-		</div>';
+				<div class="cat_bar">
+					<h3 class="catbg">
+							'. $txt['Breeze_tabs_views'] .'
+					</h3>
+				</div>';
+
+		if (!empty($context['Breeze']['views']))
+		{
+			echo '
+				<div class="windowbg2">
+					<span class="topslice">
+					<span> </span>
+					</span>
+					<div class="content BreezeList">';
+
+			// Print a nice Ul
+			echo '
+						<ul class="reset">';
+
+			// Show the profile visitors
+			foreach ($context['Breeze']['views'] as $visitor)
+			{
+				echo '
+						<li> ', $context['Breeze']['user_info'][$visitor['user']]['facebox'];
+
+				// The user's name, don't forget to put a nice br to force a break line...
+				echo '
+							<br />',  $context['Breeze']['user_info'][$visitor['user']]['link'];
+
+				// The last visit was at...?
+				echo '
+							<br />',  $context['Breeze']['tools']->timeElapsed($visitor['last_view']);
+
+				// If you're the profile owner you might want to know how many time this user has visited your profile...
+				if ($context['member']['id'] == $user_info['id'])
+					echo '
+							<br />',  $txt['Breeze_user_modules_visits'] . $visitor['views'];
+
+				// Finally, close the li
+				echo '
+						</li>';
+			}
+
+			// End the visitors list
+			echo '
+					</ul>';
+
+			echo '
+				</div>
+				<span class="botslice">
+				<span> </span>
+				</span>
+			</div>';
+		}
+
+		// No visits :(
+		else
+			echo '
+			<div class="windowbg2 content">
+				', $txt['Breeze_user_modules_visits_none'] ,'
+			</div>';
+
+		echo '
+				</div>';
 	}
+
 
 	// End of right block
 	echo '
 		</div>';
+
+	// Left block, users data and info
+	echo '
+		<div id="Breeze_left_block">';
+
+	// Profile owner details
+	breeze_profile_owner();
+
+	// End of left block
+	echo '
+		</div>';
+
+
 
 	// End of profileview div
 	echo '

@@ -316,6 +316,8 @@ class BreezeTools
 
 			// Generic JS vars and files
 			$context['insert_after_template'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.hashchange.min.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
@@ -331,7 +333,7 @@ class BreezeTools
 			// Does the user wants to use infinite scroll?
 			if (!empty($context['member']['options']['Breeze_infinite_scroll']))
 				$context['insert_after_template'] .= '
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze_scroll.js"></script>';
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeScroll.js"></script>';
 
 			// Load breeze.js until everyone else is loaded
 			$context['html_headers'] .= '
