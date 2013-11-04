@@ -91,27 +91,27 @@ function template_user_wall()
 				<span class="botslice"><span></span></span>
 			</div>';
 
-		breeze_status($context['member']['status']);
+	breeze_status($context['member']['status']);
 
-		// Pagination
-		if (!empty($context['page_index']))
-			echo '
+	// Pagination
+	if (!empty($context['page_index']))
+		echo '
 			<div class="pagelinks">
 				', $txt['pages'], ': ', $context['page_index'], $context['menu_separator'] . ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
 			</div>';
 
-	// End of wall
+	// Wall end
 	echo '
 		</div>';
 
 	// Activity
 
-	// End of activity
+	// Activity end
 
 
 	// Posts
 
-	// End of Posts
+	// Posts end
 
 
 
@@ -125,6 +125,76 @@ function template_user_wall()
 
 	// Profile owner details
 	breeze_profile_owner();
+
+	// Buddies
+
+	// Buddies end
+
+	// Visitors
+	if (!empty($context['member']['options']['Breeze_enable_visitors']))
+	{
+
+		echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+				'. $txt['Breeze_tabs_views'] .'
+			</h3>
+		</div>';
+
+		echo '
+		<div class="windowbg2">
+			<span class="topslice">
+				<span> </span>
+			</span>
+			<div class="content BreezeList">';
+
+		if (!empty($context['Breeze']['views']))
+		{
+			// Print a nice Ul
+			echo '
+				<ul class="reset">';
+
+			// Show the profile visitors
+			foreach ($context['Breeze']['views'] as $visitor)
+			{
+				echo '
+					<li> ', $context['Breeze']['user_info'][$visitor['user']]['facebox'];
+
+				// The user's name, don't forget to put a nice br to force a break line...
+				echo '
+						<br />',  $context['Breeze']['user_info'][$visitor['user']]['link'];
+
+				// The last visit was at...?
+				echo '
+						<br />',  $context['Breeze']['tools']->timeElapsed($visitor['last_view']);
+
+				// If you're the profile owner you might want to know how many time this user has visited your profile...
+				if ($context['member']['id'] == $user_info['id'])
+					echo '
+						<br />',  $txt['Breeze_user_modules_visitors'] . $visitor['views'];
+
+				// Finally, close the li
+				echo '
+					</li>';
+			}
+
+			// End the visitors list
+			echo '
+				</ul>';
+		}
+
+		// No visitors :(
+		else
+			echo $txt['Breeze_user_modules_visitors_none'];
+
+		echo '
+			</div>
+			<span class="botslice">
+			<span> </span>
+			</span>
+		</div>';
+	}
+	// Visitor end
 
 	// End of left block
 	echo '
