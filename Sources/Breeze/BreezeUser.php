@@ -120,7 +120,7 @@ function breezeWall()
 	$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name']);
 
 	// Get the profile views
-	if (!$user_info['is_guest'] && !empty($context['member']['options']['Breeze_enable_visits_tab']))
+	if (!$user_info['is_guest'] && !empty($context['member']['options']['Breeze_enable_visitors_tab']))
 	{
 		$context['Breeze']['views'] = breezeTrackViews();
 
@@ -224,40 +224,40 @@ function breezeSettings()
 		!empty($context['member']['options']['Breeze_enable_buddies_tab']) ? true : false
 	);
 
-	// Profile visits tab
+	// Profile visitors tab
 	$form->addCheckBox(
-		'Breeze_enable_visits_tab',
-		'enable_visits_tab',
-		!empty($context['member']['options']['Breeze_enable_visits_tab']) ? true : false
+		'Breeze_enable_visitors_tab',
+		'enable_visitors_tab',
+		!empty($context['member']['options']['Breeze_enable_visitors_tab']) ? true : false
 	);
 
-	// Visits timeframe
+	// visitors timeframe
 	$form->addSelect(
-		'Breeze_visits_timeframe',
-		'visits_module_timeframe',
+		'Breeze_visitors_timeframe',
+		'visitors_module_timeframe',
 		array(
 			'Hour' => array(
-				'visits_module_timeframe_hour',
-				!empty($context['member']['options']['Breeze_visits_timeframe']) && $context['member']['options']['Breeze_visits_timeframe'] == 'Hour' ? 'selected' : ''
+				'visitors_module_timeframe_hour',
+				!empty($context['member']['options']['Breeze_visitors_timeframe']) && $context['member']['options']['Breeze_visitors_timeframe'] == 'Hour' ? 'selected' : ''
 			),
 			'Day' => array(
-				'visits_module_timeframe_day',
-				!empty($context['member']['options']['Breeze_visits_timeframe']) && $context['member']['options']['Breeze_visits_timeframe'] == 'Day' ? 'selected' : ''
+				'visitors_module_timeframe_day',
+				!empty($context['member']['options']['Breeze_visitors_timeframe']) && $context['member']['options']['Breeze_visitors_timeframe'] == 'Day' ? 'selected' : ''
 			),
 			'Week' => array(
-				'visits_module_timeframe_week',
-				!empty($context['member']['options']['Breeze_visits_timeframe']) && $context['member']['options']['Breeze_visits_timeframe'] == 'Week' ? 'selected' : ''
+				'visitors_module_timeframe_week',
+				!empty($context['member']['options']['Breeze_visitors_timeframe']) && $context['member']['options']['Breeze_visitors_timeframe'] == 'Week' ? 'selected' : ''
 			),
 			'Month' => array(
-				'visits_module_timeframe_month',
-				!empty($context['member']['options']['Breeze_visits_timeframe']) && $context['member']['options']['Breeze_visits_timeframe'] == 'Month' ? 'selected' : ''
+				'visitors_module_timeframe_month',
+				!empty($context['member']['options']['Breeze_visitors_timeframe']) && $context['member']['options']['Breeze_visitors_timeframe'] == 'Month' ? 'selected' : ''
 			),
 		)
 	);
 
-	// Clean visits log
+	// Clean visitors log
 	$form->addHTML(
-		'clean_visits',
+		'clean_visitors',
 		'<a href="'. $scripturl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['member']['id'] .'">%s</a>'
 	);
 

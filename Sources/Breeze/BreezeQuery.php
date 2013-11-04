@@ -1214,7 +1214,7 @@ class BreezeQuery extends Breeze
 	/**
 	 * BreezeQuery::deletevLog()
 	 *
-	 * Deletes the specific visits log entry from the DB
+	 * Deletes the specific visitors log entry from the DB
 	 * @param int $user the user ID
 	 * @return void
 	 */

@@ -157,11 +157,11 @@ function template_user_wall()
 		</div>';
 	}
 
-	// Visits
-	if (!empty($context['member']['options']['Breeze_enable_visits_tab']))
+	// visitors
+	if (!empty($context['member']['options']['Breeze_enable_visitors_tab']))
 	{
 		echo '
-			<div id="tab-visits" class="content">';
+			<div id="tab-visitors" class="content">';
 
 		echo '
 				<div class="cat_bar">
@@ -200,7 +200,7 @@ function template_user_wall()
 				// If you're the profile owner you might want to know how many time this user has visited your profile...
 				if ($context['member']['id'] == $user_info['id'])
 					echo '
-							<br />',  $txt['Breeze_user_modules_visits'] . $visitor['views'];
+							<br />',  $txt['Breeze_user_modules_visitors'] . $visitor['views'];
 
 				// Finally, close the li
 				echo '
@@ -219,11 +219,11 @@ function template_user_wall()
 			</div>';
 		}
 
-		// No visits :(
+		// No visitors :(
 		else
 			echo '
 			<div class="windowbg2 content">
-				', $txt['Breeze_user_modules_visits_none'] ,'
+				', $txt['Breeze_user_modules_visitors_none'] ,'
 			</div>';
 
 		echo '
