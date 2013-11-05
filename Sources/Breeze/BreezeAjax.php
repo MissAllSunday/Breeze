@@ -138,7 +138,7 @@ class BreezeAjax
 		$statusPoster = $this->_data->getValue('statusPoster');
 		$statusContent = $this->_data->getValue('statusContent');
 
-		// Sorry, try to play nice next time
+		// Sorry, try to play nicer next time
 		if (!$statusOwner || !$statusPoster || !$statusContent)
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
@@ -171,7 +171,7 @@ class BreezeAjax
 			// All went good or so it seems...
 			if (!empty($params['id']))
 			{
-				// Build the notifications
+				// Build the notification(s) via BreezeMention
 				$this->_mention->mention(
 					array(
 						'wall_owner' => $statusOwner,
@@ -266,7 +266,7 @@ class BreezeAjax
 			// The Comment was inserted
 			if (!empty($params['id']))
 			{
-				// build the notification
+				// Build the notification(s) for this comment via BreezeMention
 				$this->_mention->mention(
 					array(
 						'wall_owner' => $commentOwner,
@@ -284,6 +284,21 @@ class BreezeAjax
 
 				// The comment was created, tell the world of just those who want it to know...
 				call_integration_hook('integrate_breeze_after_insertComment', array($params));
+
+				// Send out a log for this postingStatus action
+				$this->_notifications->create(array(
+					'sender' => $commentPoster,
+					'receiver' => $commentPoster,
+					'type' => 'logComment',
+					'time' => time(),
+					'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
+					'content' => function() use ($params, $scripturl, $this->_text, $this->_tools)
+					{
+						return $text->getText('newComment' . $params['wall_owner'] == $params['wall_poster'] ? '_own' : '');
+					},
+					'type_id' => $topicOptions['id'],
+					'second_type' => 'comment',
+				));
 
 				// Send the data back to the browser
 				return $this->setResponse(array(
