@@ -285,6 +285,9 @@ class BreezeAjax
 				// The comment was created, tell the world of just those who want it to know...
 				call_integration_hook('integrate_breeze_after_insertComment', array($params));
 
+				// A workaround for php5.3 and passing parent object to lambda
+				$that = $this;
+
 				// Send out a log for this postingStatus action
 				$this->_notifications->create(array(
 					'sender' => $commentPoster,
@@ -292,13 +295,16 @@ class BreezeAjax
 					'type' => 'logComment',
 					'time' => time(),
 					'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-					'content' => function() use ($params, $scripturl, $this->_text, $this->_tools)
+					'content' => function() use ($params, $scripturl, $that)
 					{
 						return $text->getText('newComment' . $params['wall_owner'] == $params['wall_poster'] ? '_own' : '');
 					},
 					'type_id' => $topicOptions['id'],
 					'second_type' => 'comment',
 				));
+
+				// We don't need "that" anymore :P
+				unset($that);
 
 				// Send the data back to the browser
 				return $this->setResponse(array(
