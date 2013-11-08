@@ -309,9 +309,6 @@ class BreezeAjax
 					'second_type' => 'comment',
 				));
 
-				// We don't need "that" anymore :P
-				unset($that);
-
 				// Send the data back to the browser
 				return $this->setResponse(array(
 					'type' => 'success',
