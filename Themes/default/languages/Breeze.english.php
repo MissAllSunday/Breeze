@@ -302,12 +302,12 @@ $txt['Breeze_buddyrequest_confirmed_inner_message_de'] = 'You successfully decli
 $txt['Breeze_singleStatus_pageTitle'] = 'Single Status';
 
 // Log
-$txt['Breeze_log_newTopic'] = 'created a new topic:';
-$txt['Breeze_log_newRegister'] = 'has just registered!';
-$txt['Breeze_log_newComment'] = 'Made a new comment on %s\'s wall';
-$txt['Breeze_log_newComment_own'] = 'Made a comment on his/her own wall'; 
-$txt['Breeze_log_newStatus'] = 'Made a new status on %s\'s wall';
-$txt['Breeze_log_newStatus_own'] = 'Made a new status on his/her own %s\'s wall';
+$txt['Breeze_logTopic'] = 'created a new topic:';
+$txt['Breeze_logRegister'] = 'has just registered!';
+$txt['Breeze_logComment'] = 'Made a new comment on %s\'s wall';
+$txt['Breeze_logComment_own'] = 'Made a comment on his/her own wall'; 
+$txt['Breeze_logStatus'] = 'Made a new status on %s\'s wall';
+$txt['Breeze_logStatus_own'] = 'Made a new status on his/her own %s\'s wall';
 
 // Donate
 $txt['Breeze_donate'] = 'Breeze is a free SMF modification brought to you by a PHP enthusiast on her free time.<p />If you like this modification and would like to show your appreciation, please consider making a <a href="http://missallsunday.com/">donation</a>. Your donation will be used to cover server costs and/or to buy shoes, shoes keeps the developer happy and if she is happy then there will be more updates ;)<p />You can also show your appreciation by letting me know you are using Breeze on your forum, come by, say hi and show me your shiny profile pages powered by Breeze.';
