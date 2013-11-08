@@ -412,7 +412,7 @@ class Breeze
 				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
 				'content' => function() use ($posterOptions, $topicOptions, $msgOptions, $scripturl, $text)
 				{
-					return $posterOptions['name'] .' '. $text->getText('log_newTopic') .' <a href="'. $scripturl .'?topic='. $topicOptions['id'] .'.0">'. $msgOptions['subject'] .'</a>';
+					return $posterOptions['name'] .' '. $text->getText('logTopic') .' <a href="'. $scripturl .'?topic='. $topicOptions['id'] .'.0">'. $msgOptions['subject'] .'</a>';
 				},
 				'type_id' => $topicOptions['id'],
 				'second_type' => 'topics',
@@ -448,7 +448,7 @@ class Breeze
 				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
 				'content' => function() use ($regOptions, $scripturl, $text, $scripturl, $user_id)
 					{
-						return '<a href="'. $scripturl .'?action=profile;u='. $user_id . '">'. $regOptions['username'] .'</a> '. $text->getText('log_newRegister');
+						return '<a href="'. $scripturl .'?action=profile;u='. $user_id . '">'. $regOptions['username'] .'</a> '. $text->getText('logRegister');
 					},
 				'type_id' => 0,
 				'second_type' => 'register',
