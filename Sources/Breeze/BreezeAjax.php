@@ -300,7 +300,10 @@ class BreezeAjax
 					'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
 					'content' => function() use ($params, $scripturl, $passText, $loadedUsers)
 					{
-						return $text->getText('newComment' . $params['wall_owner'] == $params['wall_poster'] ? '_own' : '');
+						// Own wall?
+						$own = $params['wall_owner'] == $params['wall_poster'];
+
+						return $own ? ($loadedUsers[$params['wall_poster']]['link'] .' '. $passText) : ($loadedUsers[$params['wall_poster']]['link'] .' '. sprintf($passText, $params['wall_owner']));
 					},
 					'type_id' => $topicOptions['id'],
 					'second_type' => 'comment',
