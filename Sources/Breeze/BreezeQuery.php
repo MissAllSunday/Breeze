@@ -1271,12 +1271,57 @@ class BreezeQuery extends Breeze
 	 * BreezeQuery::loadMinimalData()
 	 *
 	 * Quick and dirty way to get an user's name and link
-	 * @param int $user the user ID
+	 * @param array $user(s) the user ID
 	 * @return array containing the following info:  id as key, name, username, link and id.
 	 */
-	public function loadMinimalData($user)
+	public function loadMinimalData($usesr)
 	{
+		global $smcFunc;
 
+		if (empty($user))
+			return false;
+
+		// Arrays only please!
+		$users = (array) $users;
+		$toLoad = array();
+		$returnData = array();
+
+		// Got some stored results?
+		foreach ($users as $u)
+		{
+			if (cache_get_data(Breeze::$name .'-'. $u .'-MinimalData', 360))
+				$returnData[$u] = cache_get_data(Breeze::$name .'-'. $u .'-MinimalData', 360);
+
+			// Nope? :(
+			else
+				$toLoad[] = $u;
+		}
+
+		// Well well well...
+		if (!empty($toLoad))
+		{
+			$select_columns = 'id_member, member_name, real_name';
+
+			$request = $smcFunc['db_query']('', '
+				SELECT' . $select_columns . '
+				FROM {db_prefix}members
+				WHERE mem.id_member IN ({array_int:users})',
+				array(
+					'users' => $toLoad,
+				)
+			);
+
+			while ($row = $smcFunc['db_fetch_assoc']($request))
+				$returnData[$row['id_member']] = $row;
+
+			$smcFunc['db_free_result']($request);
+
+			// Yep, another foreach...
+			foreach ($returnData as $k => $v)
+				cache_put_data(Breeze::$name .'-'. $k .'-MinimalData', $returnData[$k], 360);
+		}
+
+		return $returnData;
 	}
 }
 
