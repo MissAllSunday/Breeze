@@ -305,7 +305,7 @@ class BreezeAjax
 
 						return $own ? ($loadedUsers[$params['wall_poster']]['link'] .' '. $passText) : ($loadedUsers[$params['wall_poster']]['link'] .' '. sprintf($passText, $params['wall_owner']));
 					},
-					'type_id' => $topicOptions['id'],
+					'type_id' => $params['id'],
 					'second_type' => 'comment',
 				));
 
