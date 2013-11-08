@@ -1274,7 +1274,7 @@ class BreezeQuery extends Breeze
 	 * @param array $user(s) the user ID
 	 * @return array containing the following info:  id as key, name, username, link and id.
 	 */
-	public function loadMinimalData($usesr)
+	public function loadMinimalData($users)
 	{
 		global $smcFunc;
 
