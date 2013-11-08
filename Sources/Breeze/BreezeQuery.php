@@ -1266,6 +1266,18 @@ class BreezeQuery extends Breeze
 
 		return $return;
 	}
+
+	/**
+	 * BreezeQuery::loadMinimalData()
+	 *
+	 * Quick and dirty way to get an user's name and link
+	 * @param int $user the user ID
+	 * @return array containing the following info:  id as key, name, username, link and id.
+	 */
+	public function loadMinimalData($user)
+	{
+
+	}
 }
 
 /*
