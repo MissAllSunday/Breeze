@@ -1300,10 +1300,10 @@ class BreezeQuery extends Breeze
 		// Well well well...
 		if (!empty($toLoad))
 		{
-			$select_columns = 'id_member, member_name, real_name';
+			$selectColumns = 'id_member, member_name, real_name';
 
 			$request = $smcFunc['db_query']('', '
-				SELECT' . $select_columns . '
+				SELECT' . $selectColumns . '
 				FROM {db_prefix}members
 				WHERE mem.id_member IN ({array_int:users})',
 				array(
