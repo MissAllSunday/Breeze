@@ -1305,7 +1305,7 @@ class BreezeQuery extends Breeze
 			$request = $smcFunc['db_query']('', '
 				SELECT' . $selectColumns . '
 				FROM {db_prefix}members
-				WHERE mem.id_member IN ({array_int:users})',
+				WHERE id_member IN ({array_int:users})',
 				array(
 					'users' => $toLoad,
 				)
