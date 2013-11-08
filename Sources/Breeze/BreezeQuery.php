@@ -1276,7 +1276,7 @@ class BreezeQuery extends Breeze
 	 */
 	public function loadMinimalData($users)
 	{
-		global $smcFunc;
+		global $smcFunc, $scripturl, $txt;
 
 		if (empty($user))
 			return false;
@@ -1285,12 +1285,25 @@ class BreezeQuery extends Breeze
 		$users = (array) $users;
 		$toLoad = array();
 		$returnData = array();
+		$toCache = array();
 
 		// Got some stored results?
 		foreach ($users as $u)
 		{
 			if (cache_get_data(Breeze::$name .'-'. $u .'-MinimalData', 360))
-				$returnData[$u] = cache_get_data(Breeze::$name .'-'. $u .'-MinimalData', 360);
+			{
+				$profile = cache_get_data(Breeze::$name .'-'. $u .'-MinimalData', 360);
+
+				$returnData[$u] = array(
+					'username' => $profile['member_name'],
+					'name' => $profile['real_name'],
+					'id' => $profile['id_member'],
+					'href' => $scripturl . '?action=profile;u=' . $profile['id_member'],
+					'link' => '<a href="' . $scripturl . '?action=profile;u=' . $profile['id_member'] . '" title="' . $txt['profile_of'] . ' ' . $profile['real_name'] . '">' . $profile['real_name'] . '</a>',
+				);
+
+				unset($profile);
+			}
 
 			// Nope? :(
 			else
@@ -1312,13 +1325,26 @@ class BreezeQuery extends Breeze
 			);
 
 			while ($row = $smcFunc['db_fetch_assoc']($request))
-				$returnData[$row['id_member']] = $row;
+				$toCache[$row['id_member']] = $row;
 
 			$smcFunc['db_free_result']($request);
 
 			// Yep, another foreach...
-			foreach ($returnData as $k => $v)
-				cache_put_data(Breeze::$name .'-'. $k .'-MinimalData', $returnData[$k], 360);
+			foreach ($toCache as $k => $v)
+			{
+				cache_put_data(Breeze::$name .'-'. $k .'-MinimalData', $toCache[$k], 360);
+
+				$profile = $toCache[$k];
+
+				// Build the nicely formatted array.
+				$returnData[$k] = array(
+					'username' => $profile['member_name'],
+					'name' => $profile['real_name'],
+					'id' => $profile['id_member'],
+					'href' => $scripturl . '?action=profile;u=' . $profile['id_member'],
+					'link' => '<a href="' . $scripturl . '?action=profile;u=' . $profile['id_member'] . '" title="' . $txt['profile_of'] . ' ' . $profile['real_name'] . '">' . $profile['real_name'] . '</a>',
+				);
+			}
 		}
 
 		return $returnData;
