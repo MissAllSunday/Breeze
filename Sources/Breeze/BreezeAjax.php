@@ -286,7 +286,10 @@ class BreezeAjax
 				call_integration_hook('integrate_breeze_after_insertComment', array($params));
 
 				// A workaround for php5.3 and passing parent object to lambda
-				$that = $this;
+				$passText = $this->getText('newComment' . $params['wall_owner'] == $params['wall_poster'] ? '_own' : '');
+
+				// Load the users data, one fine day I will count how many times I typed this exact sentence...
+				$loadedUsers = $this->_query->loadMinimalData(array($commentOwner, $commentPoster, $commentStatusPoster));
 
 				// Send out a log for this postingStatus action
 				$this->_notifications->create(array(
@@ -295,7 +298,7 @@ class BreezeAjax
 					'type' => 'logComment',
 					'time' => time(),
 					'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-					'content' => function() use ($params, $scripturl, $that)
+					'content' => function() use ($params, $scripturl, $passText, $loadedUsers)
 					{
 						return $text->getText('newComment' . $params['wall_owner'] == $params['wall_poster'] ? '_own' : '');
 					},
