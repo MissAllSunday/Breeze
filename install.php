@@ -135,7 +135,7 @@
 					'auto' => true
 				),
 				array(
-					'name' => 'id_status_owner',
+					'name' => 'id_profile_owner',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
