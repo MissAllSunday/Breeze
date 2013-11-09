@@ -69,44 +69,44 @@
 			'table_name' => '{db_prefix}breeze_comments',
 			'columns' => array(
 				array(
-					'name' => 'comments_id',
+					'name' => 'id_comment',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false,
 					'auto' => true
 				),
 				array(
-					'name' => 'comments_status_id',
+					'name' => 'id_status',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
 				),
 				array(
-					'name' => 'comments_status_owner_id',
+					'name' => 'id_status_owner',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
 				),
 				array(
-					'name' => 'comments_poster_id',
+					'name' => 'id_poster',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
 				),
 				array(
-					'name' => 'comments_profile_owner_id',
+					'name' => 'id_profile_owner',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
 				),
 				array(
-					'name' => 'comments_time',
+					'name' => 'time',
 					'type' => 'varchar',
 					'size' => 255,
 					'default' => '',
 				),
 				array(
-					'name' => 'comments_body',
+					'name' => 'body',
 					'type' => 'text',
 					'size' => '',
 					'default' => '',
@@ -128,32 +128,32 @@
 			'table_name' => '{db_prefix}breeze_status',
 			'columns' => array(
 				array(
-					'name' => 'status_id',
+					'name' => 'id_status',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false,
 					'auto' => true
 				),
 				array(
-					'name' => 'status_owner_id',
+					'name' => 'id_status_owner',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
 				),
 				array(
-					'name' => 'status_poster_id',
+					'name' => 'id_poster',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
 				),
 				array(
-					'name' => 'status_time',
+					'name' => 'time',
 					'type' => 'varchar',
 					'size' => 255,
 					'default' => '',
 				),
 				array(
-					'name' => 'status_body',
+					'name' => 'body',
 					'type' => 'text',
 					'size' => '',
 					'default' => '',
@@ -162,7 +162,7 @@
 			'indexes' => array(
 				array(
 					'type' => 'primary',
-					'columns' => array('status_id')
+					'columns' => array('id_status')
 				),
 			),
 			'if_exists' => 'ignore',
