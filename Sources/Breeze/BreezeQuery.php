@@ -154,7 +154,7 @@ class BreezeQuery extends Breeze
 		// If we didn't get a profile owner, lets get it from the data provided...
 		if (!$profile_owner)
 		{
-			$columnName = ($type == 'comments' ? 'comments_profile' : 'status') . '_owner_id';
+			$columnName = 'id_profile_owner';
 
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT '. ($columnName) .'
