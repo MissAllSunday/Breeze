@@ -76,13 +76,13 @@ class BreezeQuery extends Breeze
 				'name' => 'status',
 				'table' => 'breeze_status',
 				'property' => '_status',
-				'columns' => array('status_id', 'status_owner_id', 'status_poster_id', 'status_time', 'status_body'),
+				'columns' => array('id_status', 'id_profile_owner', 'id_poster', 'time', 'body'),
 				),
 			'comments' => array(
 				'name' => 'comments',
 				'table' => 'breeze_comments',
 				'property' => '_comments',
-				'columns' => array('comments_id', 'comments_status_id', 'comments_status_owner_id', 'comments_poster_id', 'comments_profile_owner_id', 'comments_time', 'comments_body'),
+				'columns' => array('id_comment', 'id_status', 'id_status_owner', 'id_poster', 'id_profile_owner', 'time', 'body'),
 				),
 			'members' => array(
 				'name' => 'members',
