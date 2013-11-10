@@ -322,7 +322,7 @@ class BreezeQuery extends Breeze
 
 		// Big query...
 		$result = $this->_smcFunc['db_query']('', '
-			SELECT s.id_status, s.id_profile_owner, s.id_poster, s.time, s.body, c.id_comment, c.id_status, c.id_status_owner, id_poster, c.id_profile_owner, c.time, c.body
+			SELECT s.id_status, s.id_profile_owner, s.id_poster AS status_poster, s.time, s.body, c.id_comment, c.id_status, c.id_status_owner, c.id_poster AS comment_poster, c.id_profile_owner, c.time, c.body
 			FROM {db_prefix}breeze_status AS s
 				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.id_status = s.id_status)
 			WHERE s.id_profile_owner = {int:owner}
