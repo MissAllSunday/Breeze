@@ -115,7 +115,7 @@
 			'indexes' => array(
 				array(
 					'type' => 'primary',
-					'columns' => array('comments_id')
+					'columns' => array('id_comment')
 				),
 			),
 			'if_exists' => 'ignore',
