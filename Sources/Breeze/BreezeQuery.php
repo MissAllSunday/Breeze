@@ -1276,7 +1276,7 @@ class BreezeQuery extends Breeze
 	 */
 	public function loadMinimalData($users)
 	{
-		global $smcFunc, $scripturl, $txt;
+		global $scripturl, $txt;
 
 		if (empty($user))
 			return false;
@@ -1315,7 +1315,7 @@ class BreezeQuery extends Breeze
 		{
 			$selectColumns = 'id_member, member_name, real_name';
 
-			$request = $smcFunc['db_query']('', '
+			$request = $this->_smcFunc['db_query']('', '
 				SELECT' . $selectColumns . '
 				FROM {db_prefix}members
 				WHERE id_member IN ({array_int:users})',
@@ -1327,7 +1327,7 @@ class BreezeQuery extends Breeze
 			while ($row = $smcFunc['db_fetch_assoc']($request))
 				$toCache[$row['id_member']] = $row;
 
-			$smcFunc['db_free_result']($request);
+			$this->_smcFunc['db_free_result']($request);
 
 			// Yep, another foreach...
 			foreach ($toCache as $k => $v)
