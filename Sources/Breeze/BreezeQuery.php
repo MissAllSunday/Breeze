@@ -215,7 +215,6 @@ class BreezeQuery extends Breeze
 	/**
 	 * BreezeQuery::getSingleValue()
 	 *
-	 * Needs a type, a row and a value, this iterates X array looking for X value in X row. Yes, this can be used to fetch more than one value if you really want to fetch more than 1 value.
 	 * @param string $type the data type
 	 * @param string $row the row where to fetch the value from, should be the actual row name in the array, not the row name in the DB.
 	 * @param mixed $value  Most of the cases will be a int. the int is actually the ID of the particular value you are trying to fetch.
