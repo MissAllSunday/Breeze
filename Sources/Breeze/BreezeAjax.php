@@ -224,11 +224,11 @@ class BreezeAjax
 		$commentStatus = $this->_data->getValue('commentStatus');
 		$commentStatusPoster = $this->_data->getValue('commentStatusPoster');
 		$commentPoster = $this->_data->getValue('commentPoster');
-		$commentOwner = $this->_data->getValue('commentOwner');
+		$commentProfile = $this->_data->getValue('commentProfile');
 		$commentContent = $this->_data->getValue('commentContent');
 
 		// Sorry, try to play nice next time
-		if (!$commentStatusPoster || !$commentPoster || !$commentOwner || !$commentContent)
+		if (!$commentStatusPoster || !$commentPoster || !$commentProfile || !$commentContent)
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
@@ -242,7 +242,7 @@ class BreezeAjax
 		if ($this->_data->validateBody('commentContent') && !empty($temp_id_exists))
 		{
 			// You aren't allowed in here, let's show you a nice static page...
-			$this->permissions('postComments', $commentOwner);
+			$this->permissions('postComments', $commentProfile);
 
 			$body = $commentContent;
 
@@ -251,7 +251,7 @@ class BreezeAjax
 				'status_id' => $commentStatus,
 				'status_id_profile' => $commentStatusPoster,
 				'poster_id' => $commentPoster,
-				'profile_id_profile' => $commentOwner,
+				'profile_id_profile' => $commentProfile,
 				'time' => time(),
 				'body' => $this->_mention->preMention($body)
 			);
@@ -269,7 +269,7 @@ class BreezeAjax
 				// Build the notification(s) for this comment via BreezeMention
 				$this->_mention->mention(
 					array(
-						'wall_owner' => $commentOwner,
+						'wall_owner' => $commentProfile,
 						'wall_poster' => $commentPoster,
 						'wall_status_owner' => $commentStatusPoster,
 						'comment_id' => $params['id'],
@@ -289,7 +289,7 @@ class BreezeAjax
 				$passText = $this->getText('logComment' . $params['wall_owner'] == $params['wall_poster'] ? '_own' : '');
 
 				// Load the users data, one fine day I will count how many times I typed this exact sentence...
-				$loadedUsers = $this->_query->loadMinimalData(array($commentOwner, $commentPoster, $commentStatusPoster));
+				$loadedUsers = $this->_query->loadMinimalData(array($commentProfile, $commentPoster, $commentStatusPoster));
 
 				// Send out a log for this postingStatus action
 				$this->_notifications->create(array(
@@ -314,18 +314,18 @@ class BreezeAjax
 					'type' => 'success',
 					'message' => 'published_comment',
 					'data' => $this->_display->HTML($params, 'comment', true, $commentPoster),
-					'owner' => $commentOwner,
+					'owner' => $commentProfile,
 				));
 			}
 
 			// Something wrong with the server
 			else
-				return $this->setResponse(array('owner' => $commentOwner, 'type' => 'error',));
+				return $this->setResponse(array('owner' => $commentProfile, 'type' => 'error',));
 		}
 
 		// There was an error
 		else
-			return $this->setResponse(array('owner' => $commentOwner, 'type' => 'error',));
+			return $this->setResponse(array('owner' => $commentProfile, 'type' => 'error',));
 	}
 
 	/**
@@ -602,7 +602,7 @@ class BreezeAjax
 		$passText = $this->getText($type . $this->params['wall_owner'] == $this->params['wall_poster'] ? '_own' : '');
 
 		// Load the users data, one fine day I will count how many times I typed this exact sentence...
-		$loadedUsers = $this->_query->loadMinimalData(array($commentOwner, $commentPoster, $commentStatusPoster));
+		$loadedUsers = $this->_query->loadMinimalData(array($commentProfile, $commentPoster, $commentStatusPoster));
 
 		// Convert object to regular var
 		$params = $this->params;

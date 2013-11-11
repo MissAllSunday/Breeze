@@ -136,7 +136,7 @@ jQuery(document).ready(function(){
 		// Gather all the data we need
 		var comment = {
 			'commentStatus' : StatusID,
-			'commentOwner' : jQuery('#commentOwner_' + StatusID).val(),
+			'commentProfile' : jQuery('#commentProfile_' + StatusID).val(),
 			'commentPoster' : jQuery('#commentPoster_' + StatusID).val(),
 			'commentStatusPoster' : jQuery('#commentStatusPoster_' + StatusID).val(),
 			'commentContent' : jQuery('#commentContent_' + StatusID).val(),

@@ -65,7 +65,7 @@ function breeze_status($data, $returnVar = false)
 				<div class="cat_bar">
 					<h3 class="catbg">
 						<span id="author">
-							'. sprintf($txt['Breeze_general_posted_on'], $context['Breeze']['user_info'][$status['id_profile']]['link']) .'
+							'. sprintf($txt['Breeze_general_posted_on'], $context['Breeze']['user_info'][$status['profile']]['link']) .'
 					</h3>
 				</div>';
 
@@ -120,7 +120,7 @@ function breeze_status($data, $returnVar = false)
 										<input type="hidden" value="'. $status['poster'] .'" name="commentStatusPoster" id="commentStatusPoster_'. $status['id'] .'" />
 										<input type="hidden" value="'. $user_info['id'] .'" name="commentPoster" id="commentPoster_'. $status['id'] .'" />
 										<input type="hidden" value="'. $status['id'] .'" name="commentStatus" id="commentStatus_'. $status['id'] .'" />
-										<input type="hidden" value="'. $status['poster'] .'" name="commentOwner" id="commentOwner_'. $status['id'] .'" /><br />
+										<input type="hidden" value="'. $status['profile'] .'" name="commentProfile" id="commentProfile_'. $status['id'] .'" /><br />
 										<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
 										<input type="submit" value="'. $txt['post'] .'" class="comment_submit" name="commentSubmit" id="commentSubmit_'. $status['id'] .'" />
 									</form>';
