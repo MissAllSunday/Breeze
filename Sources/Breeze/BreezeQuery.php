@@ -425,7 +425,7 @@ class BreezeQuery extends Breeze
 		{
 			$return['data'][$row['id_status']] = array(
 				'id' => $row['id_status'],
-				'owner_id' => $row['id_profile'],
+				'id_profile' => $row['id_profile'],
 				'poster_id' => $row['id_poster'],
 				'time' => $this->tools->timeElapsed($row['time']),
 				'raw_time' => $row['time'],
@@ -441,7 +441,7 @@ class BreezeQuery extends Breeze
 					'id_status' => $row['id_status'],
 					'id_profile' => $row['id_status_owner'],
 					'poster_id' => $row['id_poster'],
-					'profile_owner_id' => $row['id_profile'],
+					'profile_id_profile' => $row['id_profile'],
 					'time' => $this->tools->timeElapsed($row['time']),
 					'raw_time' => $row['time'],
 					'body' => $this->parser->display($row['body']),
@@ -516,7 +516,7 @@ class BreezeQuery extends Breeze
 		{
 			$return['data'][$row['id_poster']][$row['id_status']] = array(
 				'id' => $row['id_status'],
-				'owner_id' => $row['id_profile'],
+				'id_profile' => $row['id_profile'],
 				'poster_id' => $row['id_poster'],
 				'time' => $this->tools->timeElapsed($row['time']),
 				'raw_time' => $row['time'],
@@ -531,7 +531,7 @@ class BreezeQuery extends Breeze
 					'id_status' => $row['id_status'],
 					'id_profile' => $row['id_status_owner'],
 					'poster_id' => $row['id_poster'],
-					'profile_owner_id' => $row['id_profile'],
+					'profile_id_profile' => $row['id_profile'],
 					'time' => $this->tools->timeElapsed($row['time']),
 					'raw_time' => $row['time'],
 					'body' => $this->parser->display($row['body']),
@@ -602,7 +602,7 @@ class BreezeQuery extends Breeze
 		$id_status = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comments']['table']), 'id_status');
 
 		//Kill the profile cache
-		$this->killCache('status', $id_status, $array['owner_id']);
+		$this->killCache('status', $id_status, $array['id_profile']);
 
 		// Return the newly inserted comment ID
 		return $id_status;
@@ -631,7 +631,7 @@ class BreezeQuery extends Breeze
 		$comment_id = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comments']['table']), 'id_comment');
 
 		//Kill the profile cache
-		$this->killCache('comment', $comment_id, $array['profile_owner_id']);
+		$this->killCache('comment', $comment_id, $array['profile_id_profile']);
 
 		// Return the newly inserted comment ID
 		return $comment_id;

@@ -249,9 +249,9 @@ class BreezeAjax
 			// Build the params array for the query
 			$params = array(
 				'status_id' => $commentStatus,
-				'status_owner_id' => $commentStatusPoster,
+				'status_id_profile' => $commentStatusPoster,
 				'poster_id' => $commentPoster,
-				'profile_owner_id' => $commentOwner,
+				'profile_id_profile' => $commentOwner,
 				'time' => time(),
 				'body' => $this->_mention->preMention($body)
 			);
@@ -777,12 +777,12 @@ class BreezeAjax
 		$this->_redirectURL .= 'action='. $this->comingFrom . $messageString . $extraString . $userString;
 	}
 
-	protected function permissions($type = false, $owner_id = false)
+	protected function permissions($type = false, $id_profile = false)
 	{
 		global $user_info;
 
 		// Profile owner?
-		$is_owner = !empty($owner_id) ? ($owner_id == $user_info['id']) : true;
+		$is_owner = !empty($id_profile) ? ($id_profile == $user_info['id']) : true;
 
 		// Check for the proper permission
 		if (!$is_owner && !empty($type))
