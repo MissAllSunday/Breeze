@@ -159,12 +159,12 @@ function breeze_comment($comments, $returnVar = false)
 	foreach ($comments as $comment)
 	{
 		// Yes, the owner of this comment can delete it if they so desire it
-		$delete_single_comment = $comment['poster_id'] == $user_info['id'] ? true : allowedTo('breeze_deleteComments');
+		$delete_single_comment = $comment['poster'] == $user_info['id'] ? true : allowedTo('breeze_deleteComments');
 
 		$echo .= '
 		<li class="windowbg2" id ="comment_id_'. $comment['id'] .'">
 			<div class="breeze_user_comment_avatar">
-					'. $context['Breeze']['user_info'][$comment['poster_id']]['facebox'] .'<br />
+					'. $context['Breeze']['user_info'][$comment['poster']]['facebox'] .'<br />
 			</div>
 			<div class="breeze_user_comment_comment">
 				'. $comment['body'] .'
@@ -173,7 +173,7 @@ function breeze_comment($comments, $returnVar = false)
 
 		// Delete comment
 		if ($delete_single_comment == true)
-			$echo .= '| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $comment['id'] .';type=comment;profile_owner='. $comment['profile_id_profile'] .''. (!empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '') .'" id="deleteComment_'. $comment['id'] .'" class="breeze_delete_comment">'. $txt['Breeze_general_delete'] .'</a>';
+			$echo .= '| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $comment['id'] .';type=comment;profile_owner='. $comment['profile'] .''. (!empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '') .'" id="deleteComment_'. $comment['id'] .'" class="breeze_delete_comment">'. $txt['Breeze_general_delete'] .'</a>';
 
 		$echo .= '
 				</div>

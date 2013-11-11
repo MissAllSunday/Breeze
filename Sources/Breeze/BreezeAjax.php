@@ -236,7 +236,7 @@ class BreezeAjax
 			));
 
 		// Load all the things we need
-		$temp_id_exists = $this->_query->getSingleValue('status', 'status_id', $commentStatus);
+		$temp_id_exists = $this->_query->getSingleValue('status', 'id_status', $commentStatus);
 
 		// The status do exists and the data is valid
 		if ($this->_data->validateBody('commentContent') && !empty($temp_id_exists))
@@ -286,7 +286,7 @@ class BreezeAjax
 				call_integration_hook('integrate_breeze_after_insertComment', array($params));
 
 				// A workaround for php5.3 and passing parent object to lambda
-				$passText = $this->getText('logComment' . $params['wall_owner'] == $params['wall_poster'] ? '_own' : '');
+				$passText = $this->_text->getText('logComment' . $params['wall_owner'] == $params['wall_poster'] ? '_own' : '');
 
 				// Load the users data, one fine day I will count how many times I typed this exact sentence...
 				$loadedUsers = $this->_query->loadMinimalData(array($commentProfile, $commentPoster, $commentStatusPoster));
@@ -354,7 +354,7 @@ class BreezeAjax
 
 			$temp_id_exists = $this->_query->getSingleValue(
 				$type == 'status' ? 'status' : 'comments',
-				($type == 'status' ? 'status' : 'comments') .'_id',
+				'id_' .($type == 'status' ? 'status' : 'comment'),
 				$id
 			);
 
