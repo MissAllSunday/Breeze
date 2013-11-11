@@ -159,7 +159,7 @@ class BreezeQuery extends Breeze
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT '. ($columnName) .'
 				FROM {db_prefix}breeze_'. ($type) .'
-				WHERE '. ($type) .'_id = {int:id}
+				WHERE id_'. ($type) .' = {int:id}
 				', array('id' => $id,));
 
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
@@ -631,7 +631,7 @@ class BreezeQuery extends Breeze
 		$comment_id = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comments']['table']), 'id_comment');
 
 		//Kill the profile cache
-		$this->killCache('comments', $comment_id, $array['profile_owner_id']);
+		$this->killCache('comment', $comment_id, $array['profile_owner_id']);
 
 		// Return the newly inserted comment ID
 		return $comment_id;
