@@ -340,8 +340,8 @@ class BreezeQuery extends Breeze
 		{
 			$return['data'][$row['id_status']] = array(
 				'id' => $row['id_status'],
-				'profile_owner' => $row['id_profile_owner'],
-				'poster' => $row['id_poster'],
+				'profile' => $row['id_profile_owner'],
+				'poster' => $row['status_poster'],
 				'time' => $this->tools->timeElapsed($row['time']),
 				'raw_time' => $row['time'],
 				'body' => $this->parser->display($row['body']),
@@ -353,10 +353,10 @@ class BreezeQuery extends Breeze
 			{
 				$c[$row['id_status']][$row['id_comment']] = array(
 					'id' => $row['id_comment'],
-					'id_status' => $row['id_status'],
-					'id_profile_owner' => $row['id_status_owner'],
-					'poster_id' => $row['id_poster'],
-					'profile_owner_id' => $row['id_profile_owner'],
+					'status' => $row['id_status'],
+					'profile' => $row['id_profile_owner'],
+					'poster' => $row['comment_poster'],
+					'status_poster' => $row['status_poster'],
 					'time' => $this->tools->timeElapsed($row['time']),
 					'raw_time' => $row['time'],
 					'body' => $this->parser->display($row['body']),
@@ -367,9 +367,9 @@ class BreezeQuery extends Breeze
 			}
 
 			// Get the users IDs
-			$return['users'][] = $row['id_poster'];
+			$return['users'][] = $row['comment_poster'];
 			$return['users'][] = $row['id_profile_owner'];
-			$return['users'][] = $row['id_poster'];
+			$return['users'][] = $row['status_poster'];
 		}
 
 		$this->_smcFunc['db_free_result']($result);
