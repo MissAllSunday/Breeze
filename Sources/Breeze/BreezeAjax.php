@@ -155,8 +155,8 @@ class BreezeAjax
 			$body = $statusContent;
 
 			$params = array(
-				'owner_id' => $statusOwner,
-				'poster_id' => $statusPoster,
+				'id_profile' => $statusOwner,
+				'id_poster' => $statusPoster,
 				'time' => time(),
 				'body' => $this->_mention->preMention($body),
 			);

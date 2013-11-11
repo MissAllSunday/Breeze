@@ -76,13 +76,13 @@ class BreezeQuery extends Breeze
 				'name' => 'status',
 				'table' => 'breeze_status',
 				'property' => '_status',
-				'columns' => array('id_status', 'id_profile_owner', 'id_poster', 'time', 'body'),
+				'columns' => array('id_status', 'id_profile', 'id_poster', 'time', 'body'),
 				),
 			'comments' => array(
 				'name' => 'comments',
 				'table' => 'breeze_comments',
 				'property' => '_comments',
-				'columns' => array('id_comment', 'id_status', 'id_status_owner', 'id_poster', 'id_profile_owner', 'time', 'body'),
+				'columns' => array('id_comment', 'id_status', 'id_status_owner', 'id_poster', 'id_profile', 'time', 'body'),
 				),
 			'members' => array(
 				'name' => 'members',
@@ -154,7 +154,7 @@ class BreezeQuery extends Breeze
 		// If we didn't get a profile owner, lets get it from the data provided...
 		if (!$profile_owner)
 		{
-			$columnName = 'id_profile_owner';
+			$columnName = 'id_profile';
 
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT '. ($columnName) .'
@@ -318,14 +318,14 @@ class BreezeQuery extends Breeze
 			return $return;
 
 		// How many precious little gems do we have?
-		$count = $this->getCount($id, 'id_profile_owner = {int:data}');
+		$count = $this->getCount($id, 'id_profile = {int:data}');
 
 		// Big query...
 		$result = $this->_smcFunc['db_query']('', '
-			SELECT s.id_status, s.id_profile_owner, s.id_poster AS status_poster, s.time, s.body, c.id_comment, c.id_status, c.id_status_owner, c.id_poster AS comment_poster, c.id_profile_owner, c.time, c.body
+			SELECT s.id_status, s.id_profile, s.id_poster AS status_poster, s.time, s.body, c.id_comment, c.id_status, c.id_status_owner, c.id_poster AS comment_poster, c.id_profile, c.time, c.body
 			FROM {db_prefix}breeze_status AS s
 				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.id_status = s.id_status)
-			WHERE s.id_profile_owner = {int:owner}
+			WHERE s.id_profile = {int:owner}
 			ORDER BY s.time DESC
 			LIMIT {int:start}, {int:maxindex}',
 			array(
@@ -340,7 +340,7 @@ class BreezeQuery extends Breeze
 		{
 			$return['data'][$row['id_status']] = array(
 				'id' => $row['id_status'],
-				'profile' => $row['id_profile_owner'],
+				'profile' => $row['id_profile'],
 				'poster' => $row['status_poster'],
 				'time' => $this->tools->timeElapsed($row['time']),
 				'raw_time' => $row['time'],
@@ -354,7 +354,7 @@ class BreezeQuery extends Breeze
 				$c[$row['id_status']][$row['id_comment']] = array(
 					'id' => $row['id_comment'],
 					'status' => $row['id_status'],
-					'profile' => $row['id_profile_owner'],
+					'profile' => $row['id_profile'],
 					'poster' => $row['comment_poster'],
 					'status_poster' => $row['status_poster'],
 					'time' => $this->tools->timeElapsed($row['time']),
@@ -368,7 +368,7 @@ class BreezeQuery extends Breeze
 
 			// Get the users IDs
 			$return['users'][] = $row['comment_poster'];
-			$return['users'][] = $row['id_profile_owner'];
+			$return['users'][] = $row['id_profile'];
 			$return['users'][] = $row['status_poster'];
 		}
 
@@ -410,7 +410,7 @@ class BreezeQuery extends Breeze
 		$c = array();
 
 		$result = $this->_smcFunc['db_query']('', '
-			SELECT s.id_status, s.id_profile_owner, s.id_poster, s.time, s.body, c.id_comment, c.id_status, c.id_status_owner, id_poster, c.id_profile_owner, c.time, c.body
+			SELECT s.id_status, s.id_profile, s.id_poster, s.time, s.body, c.id_comment, c.id_status, c.id_status_owner, id_poster, c.id_profile, c.time, c.body
 			FROM {db_prefix}breeze_status AS s
 				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.id_status = s.id_status)
 			WHERE s.id_status = {int:id_status}
@@ -425,7 +425,7 @@ class BreezeQuery extends Breeze
 		{
 			$return['data'][$row['id_status']] = array(
 				'id' => $row['id_status'],
-				'owner_id' => $row['id_profile_owner'],
+				'owner_id' => $row['id_profile'],
 				'poster_id' => $row['id_poster'],
 				'time' => $this->tools->timeElapsed($row['time']),
 				'raw_time' => $row['time'],
@@ -439,9 +439,9 @@ class BreezeQuery extends Breeze
 				$c[$row['id_comment']] = array(
 					'id' => $row['id_comment'],
 					'id_status' => $row['id_status'],
-					'id_profile_owner' => $row['id_status_owner'],
+					'id_profile' => $row['id_status_owner'],
 					'poster_id' => $row['id_poster'],
-					'profile_owner_id' => $row['id_profile_owner'],
+					'profile_owner_id' => $row['id_profile'],
 					'time' => $this->tools->timeElapsed($row['time']),
 					'raw_time' => $row['time'],
 					'body' => $this->parser->display($row['body']),
@@ -455,7 +455,7 @@ class BreezeQuery extends Breeze
 			if (!empty($row['id_poster']))
 				$return['users'][] = $row['id_poster'];
 
-			$return['users'][] = $row['id_profile_owner'];
+			$return['users'][] = $row['id_profile'];
 			$return['users'][] = $row['id_poster'];
 		}
 
@@ -498,7 +498,7 @@ class BreezeQuery extends Breeze
 		$c = array();
 
 		$result = $this->_smcFunc['db_query']('', '
-			SELECT s.id_status, s.id_profile_owner, s.id_poster, s.time, s.body, c.id_comment, c.id_status, c.id_status_owner, id_poster, c.id_profile_owner, c.time, c.body
+			SELECT s.id_status, s.id_profile, s.id_poster, s.time, s.body, c.id_comment, c.id_status, c.id_status_owner, id_poster, c.id_profile, c.time, c.body
 			FROM {db_prefix}breeze_status AS s
 				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.id_status = s.id_status)
 			WHERE s.id_poster IN ({array_int:id})
@@ -516,7 +516,7 @@ class BreezeQuery extends Breeze
 		{
 			$return['data'][$row['id_poster']][$row['id_status']] = array(
 				'id' => $row['id_status'],
-				'owner_id' => $row['id_profile_owner'],
+				'owner_id' => $row['id_profile'],
 				'poster_id' => $row['id_poster'],
 				'time' => $this->tools->timeElapsed($row['time']),
 				'raw_time' => $row['time'],
@@ -529,9 +529,9 @@ class BreezeQuery extends Breeze
 				$c[$row['id_poster']][$row['id_status']][$row['id_comment']] = array(
 					'id' => $row['id_comment'],
 					'id_status' => $row['id_status'],
-					'id_profile_owner' => $row['id_status_owner'],
+					'id_profile' => $row['id_status_owner'],
 					'poster_id' => $row['id_poster'],
-					'profile_owner_id' => $row['id_profile_owner'],
+					'profile_owner_id' => $row['id_profile'],
 					'time' => $this->tools->timeElapsed($row['time']),
 					'raw_time' => $row['time'],
 					'body' => $this->parser->display($row['body']),
@@ -545,7 +545,7 @@ class BreezeQuery extends Breeze
 			if (!empty($row['id_poster']))
 				$return['users'][] = $row['id_poster'];
 
-			$return['users'][] = $row['id_profile_owner'];
+			$return['users'][] = $row['id_profile'];
 			$return['users'][] = $row['id_poster'];
 		}
 
@@ -580,15 +580,19 @@ class BreezeQuery extends Breeze
 	/**
 	 * BreezeQuery::insertStatus()
 	 *
-	 * @param mixed $array
+	 * @param array $array list of all the values to be inserted.
 	 * @return
 	 */
 	public function insertStatus($array)
 	{
+		// No money, no fun!
+		if (empty($array))
+			return false;
+
 		// Insert!
 		$this->_smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['status']['table']) .
 			'', array(
-			'id_profile_owner' => 'int',
+			'id_profile' => 'int',
 			'id_poster' => 'int',
 			'time' => 'int',
 			'body' => 'string',
@@ -618,7 +622,7 @@ class BreezeQuery extends Breeze
 			'id_status' => 'int',
 			'id_status_owner' => 'int',
 			'id_poster' => 'int',
-			'id_profile_owner' => 'int',
+			'id_profile' => 'int',
 			'time' => 'int',
 			'body' => 'string',
 			), $array, array('id_comment', ));

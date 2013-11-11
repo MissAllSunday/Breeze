@@ -94,7 +94,7 @@
 					'null' => false
 				),
 				array(
-					'name' => 'id_profile_owner',
+					'name' => 'id_profile',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
@@ -135,7 +135,7 @@
 					'auto' => true
 				),
 				array(
-					'name' => 'id_profile_owner',
+					'name' => 'id_profile',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
