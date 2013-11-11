@@ -340,10 +340,10 @@ class BreezeQuery extends Breeze
 		{
 			$return['data'][$row['id_status']] = array(
 				'id' => $row['id_status'],
-				'owner_id' => $row['id_profile_owner'],
-				'poster_id' => $row['id_poster'],
+				'profile_owner' => $row['id_profile_owner'],
+				'poster' => $row['id_poster'],
 				'time' => $this->tools->timeElapsed($row['time']),
-				'time_raw' => $row['time'],
+				'raw_time' => $row['time'],
 				'body' => $this->parser->display($row['body']),
 				'comments' => array(),
 			);
@@ -358,7 +358,7 @@ class BreezeQuery extends Breeze
 					'poster_id' => $row['id_poster'],
 					'profile_owner_id' => $row['id_profile_owner'],
 					'time' => $this->tools->timeElapsed($row['time']),
-					'time_raw' => $row['time'],
+					'raw_time' => $row['time'],
 					'body' => $this->parser->display($row['body']),
 				);
 
@@ -428,7 +428,7 @@ class BreezeQuery extends Breeze
 				'owner_id' => $row['id_profile_owner'],
 				'poster_id' => $row['id_poster'],
 				'time' => $this->tools->timeElapsed($row['time']),
-				'time_raw' => $row['time'],
+				'raw_time' => $row['time'],
 				'body' => $this->parser->display($row['body']),
 				'comments' => array(),
 			);
@@ -443,7 +443,7 @@ class BreezeQuery extends Breeze
 					'poster_id' => $row['id_poster'],
 					'profile_owner_id' => $row['id_profile_owner'],
 					'time' => $this->tools->timeElapsed($row['time']),
-					'time_raw' => $row['time'],
+					'raw_time' => $row['time'],
 					'body' => $this->parser->display($row['body']),
 				);
 
@@ -519,7 +519,7 @@ class BreezeQuery extends Breeze
 				'owner_id' => $row['id_profile_owner'],
 				'poster_id' => $row['id_poster'],
 				'time' => $this->tools->timeElapsed($row['time']),
-				'time_raw' => $row['time'],
+				'raw_time' => $row['time'],
 				'body' => $this->parser->display($row['body']),
 			);
 
@@ -533,7 +533,7 @@ class BreezeQuery extends Breeze
 					'poster_id' => $row['id_poster'],
 					'profile_owner_id' => $row['id_profile_owner'],
 					'time' => $this->tools->timeElapsed($row['time']),
-					'time_raw' => $row['time'],
+					'raw_time' => $row['time'],
 					'body' => $this->parser->display($row['body']),
 				);
 
