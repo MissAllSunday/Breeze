@@ -322,7 +322,7 @@ class BreezeQuery extends Breeze
 
 		// Big query...
 		$result = $this->_smcFunc['db_query']('', '
-			SELECT s.id_status, s.id_profile, s.id_poster AS status_poster, s.time, s.body, c.id_comment, c.id_status, c.id_status_owner, c.id_poster AS comment_poster, c.time, c.body
+			SELECT s.id_status, s.id_profile, s.id_poster AS status_poster, s.time, s.body, c.id_comment, c.id_status_owner, c.id_poster AS comment_poster, c.time, c.body
 			FROM {db_prefix}breeze_status AS s
 				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.id_status = s.id_status)
 			WHERE s.id_profile = {int:owner}
@@ -349,7 +349,7 @@ class BreezeQuery extends Breeze
 			);
 
 			// Comments
-			if (!empty($row['id_status']))
+			if (!empty($row['id_comment']))
 			{
 				$c[$row['id_status']][$row['id_comment']] = array(
 					'id' => $row['id_comment'],
@@ -410,7 +410,7 @@ class BreezeQuery extends Breeze
 		$c = array();
 
 		$result = $this->_smcFunc['db_query']('', '
-			SELECT s.id_status, s.id_profile, s.id_poster, s.time, s.body, c.id_comment, c.id_status, c.id_status_owner, id_poster c.time, c.body
+			SELECT s.id_status, s.id_profile, s.id_poster, s.time, s.body, c.id_comment, c.id_status_owner, id_poster c.time, c.body
 			FROM {db_prefix}breeze_status AS s
 				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.id_status = s.id_status)
 			WHERE s.id_status = {int:id_status}
@@ -498,7 +498,7 @@ class BreezeQuery extends Breeze
 		$c = array();
 
 		$result = $this->_smcFunc['db_query']('', '
-			SELECT s.id_status, s.id_profile, s.id_poster, s.time, s.body, c.id_comment, c.id_status, c.id_status_owner, id_poster, c.time, c.body
+			SELECT s.id_status, s.id_profile, s.id_poster, s.time, s.body, c.id_comment, c.id_status_owner, id_poster, c.time, c.body
 			FROM {db_prefix}breeze_status AS s
 				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.id_status = s.id_status)
 			WHERE s.id_poster IN ({array_int:id})
