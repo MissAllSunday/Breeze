@@ -78,7 +78,7 @@ function breeze_status($data, $returnVar = false)
 						<div class="breeze_user_status_comment">
 							'. $status['body'] .'
 							<div class="breeze_options">
-								<span class="time_elapsed" title="'. timeformat($status['time_raw'], false) .'">'. $status['time'] .' </span>';
+								<span class="time_elapsed" title="'. timeformat($status['raw_time'], false) .'">'. $status['time'] .' </span>';
 
 							// Delete status
 							if (!empty($delete_status))
@@ -169,7 +169,7 @@ function breeze_comment($comments, $returnVar = false)
 			<div class="breeze_user_comment_comment">
 				'. $comment['body'] .'
 				<div class="breeze_options">
-					<span class="time_elapsed" title="'. timeformat($comment['time_raw'], false) .'">'. $comment['time'] .'</span>';
+					<span class="time_elapsed" title="'. timeformat($comment['raw_time'], false) .'">'. $comment['time'] .'</span>';
 
 		// Delete comment
 		if ($delete_single_comment == true)
