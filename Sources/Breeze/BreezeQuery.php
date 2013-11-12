@@ -322,7 +322,7 @@ class BreezeQuery extends Breeze
 
 		// Big query...
 		$result = $this->_smcFunc['db_query']('', '
-			SELECT s.id_status, s.id_profile, s.id_poster AS status_poster, s.time, s.body, c.id_comment, c.id_status_owner, c.id_poster AS comment_poster, c.time, c.body
+			SELECT s.id_status, s.id_profile, s.id_poster AS status_poster, s.time AS status_time, s.body AS status_body, c.id_comment, c.id_status_owner, c.id_poster AS comment_poster, c.time, c.body
 			FROM {db_prefix}breeze_status AS s
 				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.id_status = s.id_status)
 			WHERE s.id_profile = {int:owner}
@@ -342,9 +342,9 @@ class BreezeQuery extends Breeze
 				'id' => $row['id_status'],
 				'profile' => $row['id_profile'],
 				'poster' => $row['status_poster'],
-				'time' => $this->tools->timeElapsed($row['time']),
+				'time' => $this->tools->timeElapsed($row['status_time']),
 				'raw_time' => $row['time'],
-				'body' => $this->parser->display($row['body']),
+				'body' => $this->parser->display($row['status_body']),
 				'comments' => array(),
 			);
 
@@ -631,7 +631,7 @@ class BreezeQuery extends Breeze
 		$comment_id = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comment']['table']), 'id_comment');
 
 		//Kill the profile cache
-		$this->killCache('comment', $comment_id, $array['profile_id_profile']);
+		$this->killCache('comment', $comment_id, $array['profile']);
 
 		// Return the newly inserted comment ID
 		return $comment_id;
