@@ -78,7 +78,7 @@ class BreezeQuery extends Breeze
 				'property' => '_status',
 				'columns' => array('id_status', 'id_profile', 'id_poster', 'time', 'body'),
 				),
-			'comments' => array(
+			'comment' => array(
 				'name' => 'comments',
 				'table' => 'breeze_comments',
 				'property' => '_comments',
@@ -158,7 +158,7 @@ class BreezeQuery extends Breeze
 
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT '. ($columnName) .'
-				FROM {db_prefix}breeze_'. ($type) .'
+				FROM {db_prefix}'. ($this->_tables[$type]['table']) .'
 				WHERE id_'. ($type) .' = {int:id}
 				', array('id' => $id,));
 
@@ -284,7 +284,7 @@ class BreezeQuery extends Breeze
 		// Get the value directly from the DB
 		$result = $this->_smcFunc['db_query']('', '
 			SELECT id_comment
-			FROM {db_prefix}' . ($this->_tables['comments']['table']) . '
+			FROM {db_prefix}' . ($this->_tables['comment']['table']) . '
 			ORDER BY {raw:sort}
 			LIMIT {int:limit}', array('sort' => 'id_comment DESC', 'limit' => 1));
 
@@ -599,7 +599,7 @@ class BreezeQuery extends Breeze
 			), $array, array('id_status', ));
 
 		// Get the newly created comment ID
-		$id_status = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comments']['table']), 'id_status');
+		$id_status = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comment']['table']), 'id_status');
 
 		//Kill the profile cache
 		$this->killCache('status', $id_status, $array['id_profile']);
@@ -617,7 +617,7 @@ class BreezeQuery extends Breeze
 	public function insertComment($array)
 	{
 		// Insert!
-		$this->_smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['comments']['table']) .
+		$this->_smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['comment']['table']) .
 			'', array(
 			'id_status' => 'int',
 			'id_status_owner' => 'int',
@@ -628,7 +628,7 @@ class BreezeQuery extends Breeze
 			), $array, array('id_comment', ));
 
 		// Get the newly created comment ID
-		$comment_id = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comments']['table']), 'id_comment');
+		$comment_id = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comment']['table']), 'id_comment');
 
 		//Kill the profile cache
 		$this->killCache('comment', $comment_id, $array['profile_id_profile']);
@@ -670,7 +670,7 @@ class BreezeQuery extends Breeze
 	public function deleteCommentByStatusID($id)
 	{
 		$this->_smcFunc['db_query']('', '
-			DELETE FROM {db_prefix}' . ($this->_tables['comments']['table']) . '
+			DELETE FROM {db_prefix}' . ($this->_tables['comment']['table']) . '
 			WHERE id_status = {int:id}', array('id' => $id, ));
 	}
 
@@ -690,7 +690,7 @@ class BreezeQuery extends Breeze
 
 		// Delete!
 		$this->_smcFunc['db_query']('', '
-			DELETE FROM {db_prefix}' . ($this->_tables['comments']['table']) . '
+			DELETE FROM {db_prefix}' . ($this->_tables['comment']['table']) . '
 			WHERE id_comment = {int:id}',
 			array(
 				'id' => (int) $id,

@@ -248,10 +248,10 @@ class BreezeAjax
 
 			// Build the params array for the query
 			$params = array(
-				'status_id' => $commentStatus,
-				'status_id_profile' => $commentStatusPoster,
-				'poster_id' => $commentPoster,
-				'profile_id_profile' => $commentProfile,
+				'id_status' => $commentStatus,
+				'id_status_owner' => $commentStatusPoster,
+				'poster' => $commentPoster,
+				'profile' => $commentProfile,
 				'time' => time(),
 				'body' => $this->_mention->preMention($body)
 			);
@@ -286,7 +286,7 @@ class BreezeAjax
 				call_integration_hook('integrate_breeze_after_insertComment', array($params));
 
 				// A workaround for php5.3 and passing parent object to lambda
-				$passText = $this->_text->getText('logComment' . $params['wall_owner'] == $params['wall_poster'] ? '_own' : '');
+				$passText = $this->_text->getText('logComment' . $params['id_profile'] == $params['id_poster'] ? '_own' : '');
 
 				// Load the users data, one fine day I will count how many times I typed this exact sentence...
 				$loadedUsers = $this->_query->loadMinimalData(array($commentProfile, $commentPoster, $commentStatusPoster));
@@ -303,7 +303,7 @@ class BreezeAjax
 						// Own wall?
 						$own = $params['wall_owner'] == $params['wall_poster'];
 
-						return $own ? ($loadedUsers[$params['wall_poster']]['link'] .' '. $passText) : ($loadedUsers[$params['wall_poster']]['link'] .' '. sprintf($passText, $params['wall_owner']));
+						return $own ? ($loadedUsers[$params['id_poster']]['link'] .' '. $passText) : ($loadedUsers[$params['id_poster']]['link'] .' '. sprintf($passText, $params['id_profile']));
 					},
 					'type_id' => $params['id'],
 					'second_type' => 'comment',
