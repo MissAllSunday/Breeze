@@ -353,8 +353,8 @@ class BreezeAjax
 			$this->permissions('delete'. ucfirst($this->_data->getValue('type')), false);
 
 			$temp_id_exists = $this->_query->getSingleValue(
-				$type == 'status' ? 'status' : 'comments',
-				($type == 'status' ? 'status' : 'comments') .'_id',
+				$type,
+				$type .'_id',
 				$id
 			);
 
