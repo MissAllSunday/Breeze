@@ -228,7 +228,7 @@ class BreezeAjax
 		$commentContent = $this->_data->getValue('commentContent');
 
 		// Sorry, try to play nice next time
-		if (!$commentStatusPoster || !$commentPoster || !$commentOwner || !$commentContent)
+		if (!$commentStatus || !$commentStatusPoster || !$commentPoster || !$commentOwner || !$commentContent)
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
@@ -251,7 +251,7 @@ class BreezeAjax
 				'status_id' => $commentStatus,
 				'status_owner_id' => $commentStatusPoster,
 				'poster_id' => $commentPoster,
-				'profile_owner_id' => $commentOwner,
+				'profile_id' => $commentOwner,
 				'time' => time(),
 				'body' => $this->_mention->preMention($body)
 			);
@@ -282,14 +282,21 @@ class BreezeAjax
 				// Parse the content
 				$params['body'] = $this->_parser->display($params['body']);
 
-				// The comment was created, tell the world of just those who want it to know...
+				// The comment was created, tell the world or just those who want to know...
 				call_integration_hook('integrate_breeze_after_insertComment', array($params));
-
-				// A workaround for php5.3 and passing parent object to lambda
-				$passText = $this->getText('logComment' . $params['wall_owner'] == $params['wall_poster'] ? '_own' : '');
 
 				// Load the users data, one fine day I will count how many times I typed this exact sentence...
 				$loadedUsers = $this->_query->loadMinimalData(array($commentOwner, $commentPoster, $commentStatusPoster));
+
+				//Posting on your own wall?
+				$own = $commentOwner == $commentPoster;
+
+				// A workaround for php5.3 and passing parent object to lambda.
+				if ($own)
+					$passText = $loadedUsers[$commentPoster]['link'] .' '. $this->_text->getText('logComment_own');
+
+				else
+					$passText = $loadedUsers[$params['poster_id']]['link'] .' '. sprintf($this->_text->getText('logComment'), $commentOwner);
 
 				// Send out a log for this postingStatus action
 				$this->_notifications->create(array(
@@ -298,12 +305,9 @@ class BreezeAjax
 					'type' => 'logComment',
 					'time' => time(),
 					'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-					'content' => function() use ($params, $scripturl, $passText, $loadedUsers)
+					'content' => function() use ($passText)
 					{
-						// Own wall?
-						$own = $params['wall_owner'] == $params['wall_poster'];
-
-						return $own ? ($loadedUsers[$params['wall_poster']]['link'] .' '. $passText) : ($loadedUsers[$params['wall_poster']]['link'] .' '. sprintf($passText, $params['wall_owner']));
+						return $passText;
 					},
 					'type_id' => $params['id'],
 					'second_type' => 'comment',

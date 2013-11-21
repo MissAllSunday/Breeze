@@ -94,7 +94,7 @@
 					'null' => false
 				),
 				array(
-					'name' => 'comments_profile_owner_id',
+					'name' => 'comments_profile_id',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false

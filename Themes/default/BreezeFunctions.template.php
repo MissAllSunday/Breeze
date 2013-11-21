@@ -173,7 +173,7 @@ function breeze_comment($comments, $returnVar = false)
 
 		// Delete comment
 		if ($delete_single_comment == true)
-			$echo .= '| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $comment['id'] .';type=comment;profile_owner='. $comment['profile_owner_id'] .''. (!empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '') .'" id="deleteComment_'. $comment['id'] .'" class="breeze_delete_comment">'. $txt['Breeze_general_delete'] .'</a>';
+			$echo .= '| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $comment['id'] .';type=comment;profile_owner='. $comment['profile_id'] .''. (!empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '') .'" id="deleteComment_'. $comment['id'] .'" class="breeze_delete_comment">'. $txt['Breeze_general_delete'] .'</a>';
 
 		$echo .= '
 				</div>
