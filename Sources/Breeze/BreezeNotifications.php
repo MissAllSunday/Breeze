@@ -49,6 +49,7 @@ class BreezeNotifications
 	public $types = array();
 	protected $_currentUser;
 	protected $_messages = array();
+	protected loadedUsers = array();
 
 	/**
 	 * BreezeNotifications::__construct()
@@ -178,8 +179,8 @@ class BreezeNotifications
 		// Get all the notification for this user
 		$this->_all = $this->_query->$call($user);
 
-		// Load the users data
-		$this->_tools->loadUserInfo($this->_all['users']);
+		// Load the users data.
+		$this->loadedUsers = $this->_query->loadMinimalData($this->_all['users']);
 
 		// If we aren't in the profile then we must call a function in a source file far far away...
 		if (empty($context['member']['options']))
@@ -189,7 +190,7 @@ class BreezeNotifications
 			require_once($sourcedir . '/Profile-Modify.php');
 
 			// Call and set $context['member']['options']
-			loadThemeOptions($this->_currentUser);
+			loadThemeOptions($this->_currentUser); // @todo don't depend on this one, build your own.
 		}
 
 		// Do this if there is actually something to show
@@ -371,7 +372,7 @@ class BreezeNotifications
 
 		// Fill out the messages property
 		$this->_messages[$noti['id']]['message'] = sprintf($this->_text->getText('buddy_messagerequest_message'),
-			$context['Breeze']['user_info'][$noti['user']]['link'], $noti['id']);
+			$this->loadedUsers[$noti['user']]['link'], $noti['id']);
 	}
 
 	/**
@@ -396,8 +397,8 @@ class BreezeNotifications
 			';bid=' . $noti['content']['status_id'];
 
 		// Sometimes this data hasn't been loaded yet
-		if (empty($context['Breeze']['user_info'][$noti['content']['wall_poster']]) || empty($context['Breeze']['user_info'][$noti['content']['wall_owner']]))
-		$this->_tools->loadUserInfo(array($noti['content']['wall_poster'], $noti['content']['wall_owner']));
+		if (empty($this->loadedUsers[$noti['content']['wall_poster']]) || empty($this->loadedUsers[$noti['content']['wall_owner']]))
+			$this->_query->loadMinimalData(array($noti['content']['wall_poster'], $noti['content']['wall_owner']));
 
 		// Is this a mention on a comment?
 		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
@@ -405,12 +406,12 @@ class BreezeNotifications
 			// Is this the same user's wall?
 			if ($noti['content']['wall_owner'] == $noti['receiver'])
 				$text = sprintf($this->_text->getText('mention_message_own_wall_comment'), $statusLink,
-					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'], $noti['id']);
+					$this->loadedUsers[$noti['content']['wall_poster']]['link'], $noti['id']);
 
 			// This is someone else's wall, go figure...
 			else
-				$text = sprintf($this->_text->getText('mention_message_comment'), $context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'],
-					$context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'], $statusLink,
+				$text = sprintf($this->_text->getText('mention_message_comment'), $this->loadedUsers[$noti['content']['wall_poster']]['link'],
+					$this->loadedUsers[$noti['content']['wall_owner']]['link'], $statusLink,
 					$noti['id']);
 		}
 
@@ -420,11 +421,11 @@ class BreezeNotifications
 			// Is this your own wall?
 			if ($noti['content']['wall_owner'] == $noti['receiver'])
 				$text = sprintf($this->_text->getText('mention_message_own_wall_status'), $statusLink,
-					$context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'], $noti['id']);
+					$this->loadedUsers[$noti['content']['wall_poster']]['link'], $noti['id']);
 
 			// No? don't worry, you will get your precious notification anyway
 			elseif ($noti['content']['wall_owner'] != $noti['receiver'])
-				$text = sprintf($this->_text->getText('mention_message_comment'), $context['Breeze']['user_info'][$noti['content']['wall_poster']]['link'], $context['Breeze']['user_info'][$noti['content']['wall_owner']]['link'], $statusLink, $noti['id']);
+				$text = sprintf($this->_text->getText('mention_message_comment'), $this->loadedUsers[$noti['content']['wall_poster']]['link'], $this->loadedUsers[$noti['content']['wall_owner']]['link'], $statusLink, $noti['id']);
 		}
 
 		// Create the message already

@@ -1287,6 +1287,7 @@ class BreezeQuery extends Breeze
 
 		// Arrays only please!
 		$users = (array) $users;
+		$users = array_unique($users);
 		$toLoad = array();
 		$returnData = array();
 		$toCache = array();
