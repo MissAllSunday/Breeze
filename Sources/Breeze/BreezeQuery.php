@@ -1278,7 +1278,7 @@ class BreezeQuery extends Breeze
 	{
 		global $smcFunc, $scripturl, $txt;
 
-		if (empty($user))
+		if (empty($users))
 			return false;
 
 		// Arrays only please!
@@ -1313,10 +1313,8 @@ class BreezeQuery extends Breeze
 		// Well well well...
 		if (!empty($toLoad))
 		{
-			$selectColumns = 'id_member, member_name, real_name';
-
 			$request = $smcFunc['db_query']('', '
-				SELECT' . $selectColumns . '
+				SELECT id_member, member_name, real_name
 				FROM {db_prefix}members
 				WHERE id_member IN ({array_int:users})',
 				array(
