@@ -145,7 +145,7 @@ jQuery(document).ready(function(){
 		// Don't be silly...
 		if(comment.commentContent=='')
 		{
-			alert(breeze_empty_message); // @todo, perhaps fire a nice noty message instead of a nasty alert?
+			breeze.noti({message: breeze_empty_message, type : 'error'});
 			return false;
 		}
 
