@@ -103,6 +103,21 @@ class BreezeLog
 			return $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_text->getText('logComment'), $entry['content']['status_owner_id']);
 	}
 
+	protected function logStatus($entry, $user)
+	{
+		// Load the users data, one fine day I will count how many times I typed this exact sentence...
+		$loadedUsers = $this->_query->loadMinimalData(array_unique(array($entry['content']['owner_id'], $entry['content']['poster_id'],)));
+
+		//Posting on your own wall?
+		$own = $entry['content']['owner_id'] == $entry['content']['poster_id'];
+
+		if ($own)
+			return $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_text->getText('logStatus_own');
+
+		else
+			return $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_text->getText('logStatus'), $entry['content']['owner_id']);
+	}
+
 	public function getLog()
 	{
 		return $this->log;

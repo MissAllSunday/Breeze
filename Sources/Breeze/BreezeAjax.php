@@ -188,6 +188,21 @@ class BreezeAjax
 				// The status was inserted, tell everyone!
 				call_integration_hook('integrate_breeze_after_insertStatus', array($params));
 
+				$logStatus = $params;
+				unset($logStatus['body']);
+
+				// Send out a log for this postingStatus action.
+				$this->_notifications->create(array(
+					'sender' => $statusPoster,
+					'receiver' => $statusPoster,
+					'type' => 'logStatus',
+					'time' => time(),
+					'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
+					'content' => $logStatus,
+					'type_id' => $params['id'],
+					'second_type' => 'status',
+				));
+
 				// Send the data back to the browser
 				return $this->setResponse(array(
 					'type' => 'success',
