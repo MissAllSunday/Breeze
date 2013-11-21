@@ -159,7 +159,7 @@ class Breeze
 			<script type="text/javascript"><!-- // --><![CDATA[
 				var breeze_error_message = '. JavaScriptEscape($breezeText->getText('error_message')) .';
 				var breeze_success_message = '. JavaScriptEscape($breezeText->getText('success_message')) .';
-				var breeze_empty_message = '. JavaScriptEscape($breezeText->getText('empty_message')) .';
+				var breeze_empty_message = '. JavaScriptEscape($breezeText->getText('error_empty')) .';
 				var breeze_error_delete = '. JavaScriptEscape($breezeText->getText('error_message')) .';
 				var breeze_success_delete = '. JavaScriptEscape($breezeText->getText('success_delete')) .';
 				var breeze_confirm_delete = '.JavaScriptEscape($breezeText->getText('confirm_delete')) .';

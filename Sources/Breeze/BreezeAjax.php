@@ -605,7 +605,7 @@ class BreezeAjax
 		$loadedUsers = $this->_query->loadMinimalData(array($commentOwner, $commentPoster, $commentStatusPoster));
 
 		// Convert object to regular var
-		$params = this->params;
+		$params = $this->params;
 
 		// Send out a log for this postingStatus action
 		$this->_notifications->create(array(

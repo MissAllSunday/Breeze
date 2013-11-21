@@ -63,11 +63,12 @@ jQuery(document).ready(function(){
 			var input = jQuery(this);
 			status[input.attr('name')] = input.val();
 		});
-
+console.log(status);
+return false;
 		// You need to type something...
 		if(status.statusContent=='')
 		{
-			alert(breeze_empty_message); // @todo, perhaps fire a nice noty message instead of a nasty alert?
+			breeze.noti({message: breeze_empty_message, type : 'error'});
 			return false;
 		}
 

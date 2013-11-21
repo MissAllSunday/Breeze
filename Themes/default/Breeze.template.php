@@ -81,16 +81,17 @@ function template_user_wall()
 				<span class="topslice"><span></span></span>
 				<div class="breeze_user_statusbox content">
 						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
-								<textarea cols="40" rows="5" name="statusContent" id="statusContent" rel="atwhoMention"></textarea>
-								<input type="hidden" value="', $user_info['id'] ,'" name="statusPoster" id="statusPoster" />
-								<input type="hidden" value="', $context['member']['id'] ,'" name="statusOwner" id="statusOwner" />
-								<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
-								<br /><input type="submit" value="', $txt['post'] ,'" name="statusSubmit" class="status_button" id="statusSubmit"/>
+							<textarea cols="40" rows="5" name="statusContent" id="statusContent" rel="atwhoMention"></textarea>
+							<input type="hidden" value="', $user_info['id'] ,'" name="statusPoster" id="statusPoster" />
+							<input type="hidden" value="', $context['member']['id'] ,'" name="statusOwner" id="statusOwner" />
+							<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
+							<br /><input type="submit" value="', $txt['post'] ,'" name="statusSubmit" class="status_button" id="statusSubmit"/>
 						</form>
 				</div>
 				<span class="botslice"><span></span></span>
 			</div>';
 
+	// Print out the status if there are any.
 	breeze_status($context['member']['status']);
 
 	// Pagination
