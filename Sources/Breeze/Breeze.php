@@ -155,29 +155,17 @@ class Breeze
 			$breezeText = $breezeController->get('text');
 
 			// Define some variables for the ajax stuff
+			$jsVars = array('feed_error_message', 'error_server', 'error_wrong_values', 'success_published', 'success_published_comment', 'error_empty', 'success_delete_status', 'success_delete_comment', 'confirm_delete', 'confirm_yes', 'confirm_cancel', 'error_already_deleted_status', 'error_already_deleted_comment', 'error_already_deleted_noti', 'error_already_marked_noti', 'cannot_postStatus', 'cannot_postComments', 'error_no_valid_action', 'error_no_access', 'success_noti_unmarkasread_after', 'success_noti_markasread_after', 'error_noti_markasreaddeleted_after', 'error_noti_markasreaddeleted', 'success_noti_delete_after', 'success_noti_visitors_clean',  'success_notiMulti_delete_after', 'success_notiMulti_markasread_after', 'success_notiMulti_unmarkasread_after',);
+
 			$context['html_headers'] .= '
-			<script type="text/javascript"><!-- // --><![CDATA[
-				var breeze_error_message = '. JavaScriptEscape($breezeText->getText('error_message')) .';
-				var breeze_success_message = '. JavaScriptEscape($breezeText->getText('success_message')) .';
-				var breeze_empty_message = '. JavaScriptEscape($breezeText->getText('error_empty')) .';
-				var breeze_error_delete = '. JavaScriptEscape($breezeText->getText('error_message')) .';
-				var breeze_success_delete = '. JavaScriptEscape($breezeText->getText('success_delete')) .';
-				var breeze_confirm_delete = '.JavaScriptEscape($breezeText->getText('confirm_delete')) .';
-				var breeze_confirm_yes = '. JavaScriptEscape($breezeText->getText('confirm_yes')) .';
-				var breeze_confirm_cancel = '. JavaScriptEscape($breezeText->getText('confirm_cancel')) .';
-				var breeze_already_deleted = '. JavaScriptEscape($breezeText->getText('already_deleted')) .';
-				var breeze_cannot_postStatus = '. JavaScriptEscape($breezeText->getText('cannot_postStatus')) .';
-				var breeze_cannot_postComments = '. JavaScriptEscape($breezeText->getText('cannot_postComments')) .';
-				var breeze_page_loading = '. JavaScriptEscape($breezeText->getText('page_loading')) .';
-				var breeze_page_loading_end = '. JavaScriptEscape($breezeText->getText('page_loading_end')) .';
-				var breeze_error_message = '. JavaScriptEscape($breezeText->getText('error_message')) .';
-				var breeze_noti_markasread = '. JavaScriptEscape($breezeText->getText('noti_markasread')) .';
-				var breeze_noti_markasread_after = '. JavaScriptEscape($breezeText->getText('noti_markasread_after')) .';
-				var breeze_noti_delete = '. JavaScriptEscape($breezeText->getText('general_delete')) .';
-				var breeze_noti_delete_after = '. JavaScriptEscape($breezeText->getText('noti_delete_after')) .';
-				var breeze_noti_close = '. JavaScriptEscape($breezeText->getText('noti_close')) .';
-				var breeze_noti_cancel = '. JavaScriptEscape($breezeText->getText('confirm_cancel')) .';
-		// ]]></script>';
+			<script type="text/javascript"><!-- // --><![CDATA[';
+
+			foreach ($jsVars as $var)
+				$context['html_headers'] .= '
+				var breeze_'. $var .' = '. JavaScriptEscape($breezeText->getText($var));
+
+			$context['html_headers'] .= '
+			// ]]></script>';
 
 			// Does the admin wants to add more actions?
 			if ($breezeSettings->enable('allowedActions'))
@@ -357,7 +345,7 @@ class Breeze
 		Breeze::who();
 
 		// Notifications call
-		// Breeze::headersHook();
+		Breeze::headersHook();
 	}
 
 	/**

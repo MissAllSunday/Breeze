@@ -63,8 +63,7 @@ jQuery(document).ready(function(){
 			var input = jQuery(this);
 			status[input.attr('name')] = input.val();
 		});
-console.log(status);
-return false;
+
 		// You need to type something...
 		if(status.statusContent=='')
 		{
