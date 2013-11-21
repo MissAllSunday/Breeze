@@ -326,7 +326,7 @@ class BreezeQuery extends Breeze
 			FROM {db_prefix}breeze_status AS s
 				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.id_status = s.id_status)
 			WHERE s.id_profile = {int:owner}
-			ORDER BY s.time DESC
+			ORDER BY status_time DESC
 			LIMIT {int:start}, {int:maxindex}',
 			array(
 				'start' => $start,
@@ -602,7 +602,7 @@ class BreezeQuery extends Breeze
 		$id_status = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comment']['table']), 'id_status');
 
 		//Kill the profile cache
-		$this->killCache('status', $id_status, $array['id_profile']);
+		$this->killCache('status', $id_status, $array['profile']);
 
 		// Return the newly inserted comment ID
 		return $id_status;
