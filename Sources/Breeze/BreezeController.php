@@ -120,7 +120,7 @@ class BreezeController
 		// Log
 		$this->container->log = $this->container->asShared(function ($c)
 		{
-			return new BreezeLog($c->query);
+			return new BreezeLog($c->settings, $c->text, $c->tools, $c->query);
 		});
 	}
 

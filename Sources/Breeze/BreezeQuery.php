@@ -1294,6 +1294,8 @@ class BreezeQuery extends Breeze
 		// Got some stored results?
 		foreach ($users as $u)
 		{
+			$u = (int) $u;
+
 			if (cache_get_data(Breeze::$name .'-'. $u .'-MinimalData', 360))
 			{
 				$profile = cache_get_data(Breeze::$name .'-'. $u .'-MinimalData', 360);

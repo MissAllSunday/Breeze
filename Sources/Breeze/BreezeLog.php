@@ -43,8 +43,11 @@ class BreezeLog
 	protected $result = array();
 	protected $log = array();
 
-	function __construct($query)
+	function __construct($settings, $text, $tools, $query)
 	{
+		$this->_settings = $settings;
+		$this->_text = $text;
+		$this->_tools = $tools;
 		$this->_query = $query;
 	}
 
@@ -54,30 +57,50 @@ class BreezeLog
 		if (empty($user))
 			return false;
 
+		// Work with arrays.
+		$user = (array) $user;
+		$user = array_unique($user);
+
 		// Lets make queries!
-		$temp = $this->_query->getActivityLog($user);
+		$this->log = $this->_query->getActivityLog($user);
 
 		// Nada? :(
-		if (empty($temp) || empty($temp[$user]))
+		if (empty($this->log))
 			return false;
 
-		else
-			$this->log = $temp[$user];
-
 		// Lets decide what should we do with these... call a method or pass it straight?
-		foreach ($this->log as $entry)
-		{
-			// If there is a method, call it
-			if (in_array($entry['type'], get_class_methods('BreezeLog')))
-				$this->$entry['type']();
+		foreach ($this->log as $eachUser => $data)
+			foreach ($data as $entry)
+			{
+				// If there is a method, call it
+				if (in_array($entry['type'], get_class_methods('BreezeLog')))
+				{
+					$entry['content'] = json_decode($entry['content'], true);
+					$this->result[$eachUser][$entry['id']] = $this->$entry['type']($entry, $eachUser);
+				}
 
-			// No? then pass the content
-			else if (!empty($entry['content']))
-				$this->result[$entry['id']] = $entry['content'];
-		}
+				// No? then pass the content
+				else if (!empty($entry['content']))
+					$this->result[$eachUser][$entry['id']]['content'] = $entry['content'];
+			}
 
 		// If everything went well, return the final result
 		return !empty($this->result) ? $this->result : false;
+	}
+
+	protected function logComment($entry, $user)
+	{
+		// Load the users data, one fine day I will count how many times I typed this exact sentence...
+		$loadedUsers = $this->_query->loadMinimalData(array_unique(array($entry['content']['status_owner_id'], $entry['content']['poster_id'], $entry['content']['profile_id'])));
+
+		//Posting on your own wall?
+		$own = $entry['content']['status_owner_id'] == $entry['content']['poster_id'];
+
+		if ($own)
+			return $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_text->getText('logComment_own');
+
+		else
+			return $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_text->getText('logComment'), $entry['content']['status_owner_id']);
 	}
 
 	public function getLog()
