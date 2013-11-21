@@ -285,30 +285,17 @@ class BreezeAjax
 				// The comment was created, tell the world or just those who want to know...
 				call_integration_hook('integrate_breeze_after_insertComment', array($params));
 
-				// Load the users data, one fine day I will count how many times I typed this exact sentence...
-				$loadedUsers = $this->_query->loadMinimalData(array($commentOwner, $commentPoster, $commentStatusPoster));
+				$logComment = $params;
+				unset($logComment['body']);
 
-				//Posting on your own wall?
-				$own = $commentOwner == $commentPoster;
-
-				// A workaround for php5.3 and passing parent object to lambda.
-				if ($own)
-					$passText = $loadedUsers[$commentPoster]['link'] .' '. $this->_text->getText('logComment_own');
-
-				else
-					$passText = $loadedUsers[$params['poster_id']]['link'] .' '. sprintf($this->_text->getText('logComment'), $commentOwner);
-
-				// Send out a log for this postingStatus action
+				// Send out a log for this postingStatus action.
 				$this->_notifications->create(array(
 					'sender' => $commentPoster,
 					'receiver' => $commentPoster,
 					'type' => 'logComment',
 					'time' => time(),
 					'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-					'content' => function() use ($passText)
-					{
-						return $passText;
-					},
+					'content' => $logComment,
 					'type_id' => $params['id'],
 					'second_type' => 'comment',
 				));

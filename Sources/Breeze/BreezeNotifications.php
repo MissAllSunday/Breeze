@@ -159,7 +159,7 @@ class BreezeNotifications
 	}
 
 	/**
-	 * BreezeNotifications::doStream()
+	 * BreezeNotifications::prepare()
 	 *
 	 * Fetch all notifications assigned to a given user, loads the member settings if they aren't already loaded.
 	 * Calls the appropriated local method if needed.
@@ -240,7 +240,7 @@ class BreezeNotifications
 			// Last minute change? yeah, yeah, I'm passing a protected property...
 			call_integration_hook('integrate_breeze_before_ShowNoti', array(&$this->_messages));
 
-			// @todo move this to breeze.js
+			// @todo move this to breeze.js ?
 			$context['insert_after_template'] .= '
 				<script type="text/javascript"><!-- // --><![CDATA[
 		jQuery(document).ready(function()

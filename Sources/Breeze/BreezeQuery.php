@@ -1135,11 +1135,15 @@ class BreezeQuery extends Breeze
 		if (empty($user))
 			return $return;
 
+		// Work with arrays.
+		$user = (array) $user;
+		$user = array_unique($user);
+
 		// Unfortunately, there is no cache for this one... maybe someday... with an ugly foreach to check every single user and compare...
 		$result = $this->_smcFunc['db_query']('', '
 			SELECT '. implode(',', $this->_tables['noti']['columns']) .'
 			FROM {db_prefix}' . $this->_tables['noti']['table'] . '
-			WHERE receiver '. (is_array($user) ? 'IN ({array_int:user})' : '= {int:user}') .'
+			WHERE receiver IN ({array_int:user})
 				AND viewed = {int:viewed}
 			', array(
 				'user' => $user,
