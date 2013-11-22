@@ -166,7 +166,7 @@ class BreezeForm
 	function addHTML($text, $html)
 	{
 		$element['type'] = 'html';
-		$element['text'] = $name;
+		$element['text'] = $text;
 		$element['html'] = $html;
 
 		return $this->addElement($element);
@@ -175,7 +175,7 @@ class BreezeForm
 	function addSection($text)
 	{
 		$element['type'] = 'section';
-		$element['text'] = $name;
+		$element['text'] = $text;
 
 		return $this->addElement($element);
 	}
