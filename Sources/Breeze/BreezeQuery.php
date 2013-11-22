@@ -705,22 +705,38 @@ class BreezeQuery extends Breeze
 	 */
 	public function getUserSettings($user, $setting = false)
 	{
+		$return = array();
+
+		if (!$user)
+			return false;
+
 		$result = $this->_smcFunc['db_query']('', '
-			SELECT pm_ignore_list, id_member
-			FROM {db_prefix}' . $this->_tables['members']['table'] . '
-			WHERE id_member = {int:user}',
+			SELECT th.variable, th.value, mem.pm_ignore_list, mem.buddy_list
+			FROM {db_prefix}themes AS th
+			LEFT JOIN {db_prefix}members AS mem ON (mem.id_member = th.id_member)
+			WHERE th.id_member = {int:user}
+				AND th.variable LIKE {string:breeze}',
 			array(
+				'breeze' => '%Breeze_%',
 				'user' => $user,
 			)
 		);
-
 		// Populate the array like a boss!
 		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-			$return = $row;
+		{
+			$variable = str_replace('Breeze_', '', $row['variable']);
+			$value = is_numeric($row['value']) ? (bool) $row['value'] : (string) $row['value'];
+			$return[$variable] = $value;
+
+			$return = array(
+				'ignore_list' => explode(',', $row['pm_ignore_list']),
+				'buddy_list' => explode(',', $row['buddy_list']),
+			);
+		}
 
 		$this->_smcFunc['db_free_result']($result);
 
-		if (!empty($setting) && !empty($return[$setting]))
+		if ($setting && !empty($return[$setting]))
 		return $return[$setting];
 
 		elseif (empty($setting))
