@@ -182,14 +182,12 @@ function breezeSettings()
 
 	// Per user master setting
 	$form->addCheckBox(
-		'Breeze_enable_wall',
 		'enable_wall',
 		!empty($context['member']['options']['Breeze_enable_wall']) ? true : false
 	);
 
 	// Pagination
 	$form->addText(
-		'Breeze_pagination_number',
 		'pagination_number',
 		!empty($context['member']['options']['Breeze_pagination_number']) ? $context['member']['options']['Breeze_pagination_number'] : 0,
 		3,3
@@ -197,14 +195,12 @@ function breezeSettings()
 
 	// Infinite scroll
 	$form->addCheckBox(
-		'Breeze_infinite_scroll',
 		'infinite_scroll',
 		!empty($context['member']['options']['Breeze_infinite_scroll']) ? true : false
 	);
 
 	// How many options to be displayed when mentioning
 	$form->addText(
-		'Breeze_how_many_mentions',
 		'how_many_mentions',
 		!empty($context['member']['options']['Breeze_how_many_mentions']) ? $context['member']['options']['Breeze_how_many_mentions'] : 0,
 		3,3
@@ -212,35 +208,30 @@ function breezeSettings()
 
 	// Allow ignored users
 	$form->addCheckBox(
-		'Breeze_kick_ignored',
 		'kick_ignored',
 		!empty($context['member']['options']['Breeze_kick_ignored']) ? true : false
 	);
 
 	// Activity Log.
 	$form->addCheckBox(
-		'Breeze_enable_activityLog',
 		'enable_activityLog',
 		!empty($context['member']['options']['Breeze_enable_activityLog']) ? true : false
 	);
 
 	// Buddies
 	$form->addCheckBox(
-		'Breeze_enable_buddies',
 		'enable_buddies',
 		!empty($context['member']['options']['Breeze_enable_buddies']) ? true : false
 	);
 
 	// Profile visitors
 	$form->addCheckBox(
-		'Breeze_enable_visitors',
 		'enable_visitors',
 		!empty($context['member']['options']['Breeze_enable_visitors']) ? true : false
 	);
 
 	// Visitors timeframe
 	$form->addSelect(
-		'Breeze_visitors_timeframe',
 		'visitors_timeframe',
 		array(
 			'Hour' => array(
@@ -270,7 +261,6 @@ function breezeSettings()
 
 	// How many seconds before closing the notifications?
 	$form->addText(
-		'Breeze_clear_noti',
 		'clear_noti',
 		!empty($context['member']['options']['Breeze_clear_noti']) ? $context['member']['options']['Breeze_clear_noti'] : 0,
 		3,
@@ -282,14 +272,12 @@ function breezeSettings()
 
 	// Noti on comment
 	$form->addCheckBox(
-		'Breeze_noti_on_comment',
 		'noti_on_comment',
 		!empty($context['member']['options']['Breeze_noti_on_comment']) ? true : false
 	);
 
 	// Noti on mention
 	$form->addCheckBox(
-		'Breeze_noti_on_mention',
 		'noti_on_mention',
 		!empty($context['member']['options']['Breeze_noti_on_mention']) ? true : false
 	);
