@@ -217,6 +217,13 @@ function breezeSettings()
 		!empty($context['member']['options']['Breeze_kick_ignored']) ? true : false
 	);
 
+	// Activity Log.
+	$form->addCheckBox(
+		'Breeze_enable_activityLog',
+		'enable_activityLog',
+		!empty($context['member']['options']['Breeze_enable_activityLog']) ? true : false
+	);
+
 	// Buddies
 	$form->addCheckBox(
 		'Breeze_enable_buddies',

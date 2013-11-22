@@ -49,7 +49,7 @@ class BreezeNotifications
 	public $types = array();
 	protected $_currentUser;
 	protected $_messages = array();
-	protected loadedUsers = array();
+	protected $loadedUsers = array();
 
 	/**
 	 * BreezeNotifications::__construct()
