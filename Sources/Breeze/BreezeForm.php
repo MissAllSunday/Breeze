@@ -94,12 +94,12 @@ class BreezeForm
 		$this->status++;
 	}
 
-	function addSelect($name, $text, $values = array())
+	function addSelect($name,$values = array())
 	{
 		$element['type'] = 'select';
 		$element['name'] = $name;
 		$element['values'] = $values;
-		$element['text']  = $text;
+		$element['text']  = $name;
 		$element['html_start'] = '<'. $element['type'] .' name="default_options['. $element['name'] .']">';
 		$element['html_end'] = '</'. $element['type'] .'>';
 
@@ -109,24 +109,24 @@ class BreezeForm
 		return $this->addElement($element);
 	}
 
-	function addCheckBox($name, $text, $checked = false)
+	function addCheckBox($name,$checked = false)
 	{
 		$element['type'] = 'checkbox';
 		$element['name'] = $name;
 		$element['value'] = 1;
 		$element['checked'] = empty($checked) ? '' : 'checked="checked"';
-		$element['text'] = $text;
+		$element['text'] = $name;
 		$element['html'] = '<input type="'. $element['type'] .'" name="default_options['. $element['name'] .']" id="default_options['. $element['name'] .']" value="'. (int)$element['value'] .'" '. $element['checked'] .' class="input_check" />';
 
 		return $this->addElement($element);
 	}
 
-	function addText($name, $text, $value, $size = false, $maxlength = false)
+	function addText($name,$value, $size = false, $maxlength = false)
 	{
 		$element['type'] = 'text';
 		$element['name'] = $name;
 		$element['value'] = $value;
-		$element['text'] = $text;
+		$element['text'] = $name;
 		$element['size'] = empty($size) ? 'size="20"' : 'size="' .$size. '"';
 		$element['maxlength'] = empty($maxlength) ? 'maxlength="20"' : 'maxlength="' .$maxlength. '"';
 		$element['html'] = '<input type="'. $element['type'] .'" name="default_options['. $element['name'] .']" id="'. $element['name'] .'" value="'. $element['value'] .'" '. $element['size'] .' '. $element['maxlength'] .' class="input_text" />';
@@ -134,12 +134,12 @@ class BreezeForm
 		return $this->addElement($element);
 	}
 
-	function addTextArea($name, $text, $value)
+	function addTextArea($name,$value)
 	{
 		$element['type'] = 'textarea';
 		$element['name'] = $name;
 		$element['value'] = empty($value) ? '' : $value;
-		$element['text'] = $text;
+		$element['text'] = $name;
 		$element['html'] = '<'. $element['type'] .' name="default_options['. $element['name'] .']" id="'. $element['name'] .'">'. $element['value'] .'</'. $element['type'] .'>';
 
 		return $this->addElement($element);
@@ -166,7 +166,7 @@ class BreezeForm
 	function addHTML($text, $html)
 	{
 		$element['type'] = 'html';
-		$element['text'] = $text;
+		$element['text'] = $name;
 		$element['html'] = $html;
 
 		return $this->addElement($element);
@@ -175,7 +175,7 @@ class BreezeForm
 	function addSection($text)
 	{
 		$element['type'] = 'section';
-		$element['text'] = $text;
+		$element['text'] = $name;
 
 		return $this->addElement($element);
 	}
