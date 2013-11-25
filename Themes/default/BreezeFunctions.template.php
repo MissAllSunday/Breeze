@@ -208,19 +208,19 @@ function breeze_profile_owner()
 		</span>
 		<div class="content BreezeInfoBlock">';
 	echo '
-				<div class="username"><h4>', $context['member']['name'] ,'<br/><span class="position">', (!empty($context['member']['group']) ? $context['member']['group'] : $context['member']['post_group']), '</span></h4></div>
-				', $context['member']['avatar']['image'], '
+				<div class="username"><h4>', $context['breeze']['member']['name'] ,'<br/><span class="position">', (!empty($context['breeze']['member']['group']) ? $context['breeze']['member']['group'] : $context['breeze']['member']['post_group']), '</span></h4></div>
+				', $context['breeze']['member']['avatar']['image'], '
 				<ul class="reset">';
 
 	// What about if we allow email only via the forum??
-	if ($context['member']['show_email'] === 'yes' || $context['member']['show_email'] === 'no_through_forum' || $context['member']['show_email'] === 'yes_permission_override')
+	if ($context['breeze']['member']['show_email'] === 'yes' || $context['breeze']['member']['show_email'] === 'no_through_forum' || $context['breeze']['member']['show_email'] === 'yes_permission_override')
 		echo '
-					<li><a href="', $scripturl, '?action=emailuser;sa=email;uid=', $context['member']['id'], '" title="', $context['member']['show_email'] == 'yes' || $context['member']['show_email'] == 'yes_permission_override' ? $context['member']['email'] : '', '" rel="nofollow"><img src="', $settings['images_url'], '/email_sm.gif" alt="', $txt['email'], '" /></a></li>';
+					<li><a href="', $scripturl, '?action=emailuser;sa=email;uid=', $context['breeze']['member']['id'], '" title="', $context['breeze']['member']['show_email'] == 'yes' || $context['breeze']['member']['show_email'] == 'yes_permission_override' ? $context['breeze']['member']['email'] : '', '" rel="nofollow"><img src="', $settings['images_url'], '/email_sm.gif" alt="', $txt['email'], '" /></a></li>';
 
 	// Don't show an icon if they haven't specified a website.
-	if ($context['member']['website']['url'] !== '' && !isset($context['disabled_fields']['website']))
+	if ($context['breeze']['member']['website']['url'] !== '' && !isset($context['disabled_fields']['website']))
 		echo '
-					<li><a href="', $context['member']['website']['url'], '" title="' . $context['member']['website']['title'] . '" target="_blank" class="new_win">', ($settings['use_image_buttons'] ? '<img src="' . $settings['images_url'] . '/www_sm.gif" alt="' . $context['member']['website']['title'] . '" />' : $txt['www']), '</a></li>';
+					<li><a href="', $context['breeze']['member']['website']['url'], '" title="' . $context['breeze']['member']['website']['title'] . '" target="_blank" class="new_win">', ($settings['use_image_buttons'] ? '<img src="' . $settings['images_url'] . '/www_sm.gif" alt="' . $context['breeze']['member']['website']['title'] . '" />' : $txt['www']), '</a></li>';
 
 	// Are there any custom profile fields for the summary?
 	if (!empty($context['custom_fields']))
@@ -232,19 +232,19 @@ function breeze_profile_owner()
 	}
 
 	echo '
-				', !isset($context['disabled_fields']['icq']) && !empty($context['member']['icq']['link']) ? '<li>' . $context['member']['icq']['link'] . '</li>' : '', '
-				', !isset($context['disabled_fields']['msn']) && !empty($context['member']['msn']['link']) ? '<li>' . $context['member']['msn']['link'] . '</li>' : '', '
-				', !isset($context['disabled_fields']['aim']) && !empty($context['member']['aim']['link']) ? '<li>' . $context['member']['aim']['link'] . '</li>' : '', '
-				', !isset($context['disabled_fields']['yim']) && !empty($context['member']['yim']['link']) ? '<li>' . $context['member']['yim']['link'] . '</li>' : '', '
+				', !isset($context['disabled_fields']['icq']) && !empty($context['breeze']['member']['icq']['link']) ? '<li>' . $context['breeze']['member']['icq']['link'] . '</li>' : '', '
+				', !isset($context['disabled_fields']['msn']) && !empty($context['breeze']['member']['msn']['link']) ? '<li>' . $context['breeze']['member']['msn']['link'] . '</li>' : '', '
+				', !isset($context['disabled_fields']['aim']) && !empty($context['breeze']['member']['aim']['link']) ? '<li>' . $context['breeze']['member']['aim']['link'] . '</li>' : '', '
+				', !isset($context['disabled_fields']['yim']) && !empty($context['breeze']['member']['yim']['link']) ? '<li>' . $context['breeze']['member']['yim']['link'] . '</li>' : '', '
 			</ul>
-			<span id="userstatus">', $context['can_send_pm'] ? '<a href="' . $context['member']['online']['href'] . '" title="' . $context['member']['online']['label'] . '" rel="nofollow">' : '', $settings['use_image_buttons'] ? '<img src="' . $context['member']['online']['image_href'] . '" alt="' . $context['member']['online']['text'] . '" align="middle" />' : $context['member']['online']['text'], $context['can_send_pm'] ? '</a>' : '', $settings['use_image_buttons'] ? '<span class="smalltext"> ' . $context['member']['online']['text'] . '</span>' : '';
+			<span id="userstatus">', $context['can_send_pm'] ? '<a href="' . $context['breeze']['member']['online']['href'] . '" title="' . $context['breeze']['member']['online']['label'] . '" rel="nofollow">' : '', $settings['use_image_buttons'] ? '<img src="' . $context['breeze']['member']['online']['image_href'] . '" alt="' . $context['breeze']['member']['online']['text'] . '" align="middle" />' : $context['breeze']['member']['online']['text'], $context['can_send_pm'] ? '</a>' : '', $settings['use_image_buttons'] ? '<span class="smalltext"> ' . $context['breeze']['member']['online']['text'] . '</span>' : '';
 
 	// Can they add this member as a buddy?
-	if (!empty($context['can_have_buddy']) && !$context['member']['is_owner'])
+	if (!empty($context['can_have_buddy']) && !$context['breeze']['member']['is_owner'])
 		echo '
-			<br /><a href="', $scripturl, '?action=buddy;u=', $context['id_member'], ';', $context['session_var'], '=', $context['session_id'], '">[', $txt['buddy_' . ($context['member']['is_buddy'] ? 'remove' : 'add')], ']</a>';
+			<br /><a href="', $scripturl, '?action=buddy;u=', $context['id_member'], ';', $context['session_var'], '=', $context['session_id'], '">[', $txt['buddy_' . ($context['breeze']['member']['is_buddy'] ? 'remove' : 'add')], ']</a>';
 
-	if (!$context['member']['is_owner'] && $context['can_send_pm'])
+	if (!$context['breeze']['member']['is_owner'] && $context['can_send_pm'])
 		echo '
 			<br /><a href="', $scripturl, '?action=pm;sa=send;u=', $context['id_member'], '">', $txt['profile_sendpm_short'], '</a><br />';
 	echo '

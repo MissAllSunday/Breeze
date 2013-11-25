@@ -183,13 +183,13 @@ class BreezeNotifications
 		$this->loadedUsers = $this->_query->loadMinimalData($this->_all['users']);
 
 		// If we aren't in the profile then we must call a function in a source file far far away...
-		if (empty($context['breeze']['options']))
+		if (empty($context['breeze']['member']['options']))
 		{
 			global $sourcedir;
 
 			require_once($sourcedir . '/Profile-Modify.php');
 
-			// Call and set $context['breeze']['options']
+			// Call and set $context['breeze']['member']['options']
 			loadThemeOptions($this->_currentUser); // @todo don't depend on this one, build your own.
 		}
 
@@ -338,7 +338,7 @@ class BreezeNotifications
 			afterClose: function() {
 				jQuery.noty.closeAll();
 			},
-			'. (!empty($context['breeze']['options']['clear_noti']) ?  'onShow: function() {window.setTimeout("jQuery.noty.closeAll()", '. $context['breeze']['options']['clear_noti'] * 1000 .');},' : '') .'
+			'. (!empty($context['breeze']['member']['options']['clear_noti']) ?  'onShow: function() {window.setTimeout("jQuery.noty.closeAll()", '. $context['breeze']['member']['options']['clear_noti'] * 1000 .');},' : '') .'
 		},
 	});
 ';

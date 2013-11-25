@@ -86,23 +86,23 @@ function breezeWall()
 		'can_have_buddy' => allowedTo('profile_identity_own') && !empty($modSettings['enable_buddylist']),
 		'can_issue_warning' => in_array('w', $context['admin_features']) && allowedTo('issue_warning') && $modSettings['warning_settings'][0] == 1,
 	);
-	$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
-	$context['member']['status'] = array();
+	$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['breeze']['member']['id'];
+	$context['breeze']['member']['status'] = array();
 	$context['Breeze']['tools'] = $tools;
-	$context['can_view_warning'] = in_array('w', $context['admin_features']) && (allowedTo('issue_warning') && !$context['member']['is_owner']) || (!empty($modSettings['warning_show']) && ($modSettings['warning_show'] > 1 || $context['member']['is_owner']));
+	$context['can_view_warning'] = in_array('w', $context['admin_features']) && (allowedTo('issue_warning') && !$context['breeze']['member']['is_owner']) || (!empty($modSettings['warning_show']) && ($modSettings['warning_show'] > 1 || $context['breeze']['member']['is_owner']));
 
 	// You are allowed here but you still need to obey some permissions
-	$context['Breeze']['permissions']['post_status'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_postStatus');
-	$context['Breeze']['permissions']['post_comment'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_postComments');
-	$context['Breeze']['permissions']['delete_status'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_deleteStatus');
-	$context['Breeze']['permissions']['delete_comments'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
+	$context['Breeze']['permissions']['post_status'] = $context['breeze']['member']['is_owner'] == true ? true : allowedTo('breeze_postStatus');
+	$context['Breeze']['permissions']['post_comment'] = $context['breeze']['member']['is_owner'] == true ? true : allowedTo('breeze_postComments');
+	$context['Breeze']['permissions']['delete_status'] = $context['breeze']['member']['is_owner'] == true ? true : allowedTo('breeze_deleteStatus');
+	$context['Breeze']['permissions']['delete_comments'] = $context['breeze']['member']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
 
 	// Set up some vars for pagination
-	$maxIndex = !empty($context['breeze']['options']['pagination_number']) ? $context['breeze']['options']['pagination_number'] : 5;
+	$maxIndex = !empty($context['breeze']['member']['options']['pagination_number']) ? $context['breeze']['member']['options']['pagination_number'] : 5;
 	$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;
 
 	// Load all the status
-	$data = $query->getStatusByProfile($context['member']['id'], $maxIndex, $currentPage);
+	$data = $query->getStatusByProfile($context['breeze']['member']['id'], $maxIndex, $currentPage);
 
 	// Load users data
 	if (!empty($data['users']))
@@ -110,17 +110,17 @@ function breezeWall()
 
 	// Pass the status info
 	if (!empty($data['data']))
-		$context['member']['status'] = $data['data'];
+		$context['breeze']['member']['status'] = $data['data'];
 
 	// Applying pagination.
 	if (!empty($data['pagination']))
 		$context['page_index'] = $data['pagination'];
 
 	// Page name depends on pagination
-	$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name']);
+	$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['breeze']['member']['name']);
 
 	// Get the profile views
-	if (!$user_info['is_guest'] && !empty($context['breeze']['options']['enable_visitors_tab']))
+	if (!$user_info['is_guest'] && !empty($context['breeze']['member']['options']['enable_visitors_tab']))
 	{
 		$context['Breeze']['views'] = breezeTrackViews();
 
@@ -130,17 +130,17 @@ function breezeWall()
 	}
 
 	// Show buddies only if there is something to show
-	if (!empty($context['breeze']['options']['enable_buddies_tab']) && !empty($context['member']['buddies']))
-		$usersToLoad = $usersToLoad + $context['member']['buddies'];
+	if (!empty($context['breeze']['member']['options']['enable_buddies_tab']) && !empty($context['breeze']['member']['buddies']))
+		$usersToLoad = $usersToLoad + $context['breeze']['member']['buddies'];
 
 	// Show this user recent activity
 	// some check here
-	$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
+	$context['Breeze']['log'] = $log->getActivity($context['breeze']['member']['id']);
 
 	// Need to pass some vars to the browser :(
 	$context['html_headers'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[
-		window.breeze_profileOwner = '. $context['member']['id'] .';
+		window.breeze_profileOwner = '. $context['breeze']['member']['id'] .';
 		window.breeze_commingFrom = ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ';
 		window.breeze_maxIndex = ' . $maxIndex . ';
 		window.breeze_userID = ' . $user_info['id'] . ';
@@ -185,51 +185,51 @@ function breezeSettings()
 	// Per user master setting
 	$form->addCheckBox(
 		'enable_wall',
-		!empty($context['breeze']['options']['enable_wall']) ? true : false
+		!empty($context['breeze']['member']['options']['enable_wall']) ? true : false
 	);
 
 	// Pagination
 	$form->addText(
 		'pagination_number',
-		!empty($context['breeze']['options']['pagination_number']) ? $context['breeze']['options']['pagination_number'] : 0,
+		!empty($context['breeze']['member']['options']['pagination_number']) ? $context['breeze']['member']['options']['pagination_number'] : 0,
 		3,3
 	);
 
 	// Infinite scroll
 	$form->addCheckBox(
 		'infinite_scroll',
-		!empty($context['breeze']['options']['infinite_scroll']) ? true : false
+		!empty($context['breeze']['member']['options']['infinite_scroll']) ? true : false
 	);
 
 	// How many options to be displayed when mentioning
 	$form->addText(
 		'how_many_mentions',
-		!empty($context['breeze']['options']['how_many_mentions']) ? $context['breeze']['options']['how_many_mentions'] : 0,
+		!empty($context['breeze']['member']['options']['how_many_mentions']) ? $context['breeze']['member']['options']['how_many_mentions'] : 0,
 		3,3
 	);
 
 	// Allow ignored users
 	$form->addCheckBox(
 		'kick_ignored',
-		!empty($context['breeze']['options']['kick_ignored']) ? true : false
+		!empty($context['breeze']['member']['options']['kick_ignored']) ? true : false
 	);
 
 	// Activity Log.
 	$form->addCheckBox(
 		'enable_activityLog',
-		!empty($context['breeze']['options']['enable_activityLog']) ? true : false
+		!empty($context['breeze']['member']['options']['enable_activityLog']) ? true : false
 	);
 
 	// Buddies
 	$form->addCheckBox(
 		'enable_buddies',
-		!empty($context['breeze']['options']['enable_buddies']) ? true : false
+		!empty($context['breeze']['member']['options']['enable_buddies']) ? true : false
 	);
 
 	// Profile visitors
 	$form->addCheckBox(
 		'enable_visitors',
-		!empty($context['breeze']['options']['enable_visitors']) ? true : false
+		!empty($context['breeze']['member']['options']['enable_visitors']) ? true : false
 	);
 
 	// Visitors timeframe
@@ -238,19 +238,19 @@ function breezeSettings()
 		array(
 			'Hour' => array(
 				'visitors_timeframe_hour',
-				!empty($context['breeze']['options']['visitors_timeframe']) && $context['breeze']['options']['visitors_timeframe'] == 'Hour' ? 'selected' : ''
+				!empty($context['breeze']['member']['options']['visitors_timeframe']) && $context['breeze']['member']['options']['visitors_timeframe'] == 'Hour' ? 'selected' : ''
 			),
 			'Day' => array(
 				'visitors_timeframe_day',
-				!empty($context['breeze']['options']['visitors_timeframe']) && $context['breeze']['options']['visitors_timeframe'] == 'Day' ? 'selected' : ''
+				!empty($context['breeze']['member']['options']['visitors_timeframe']) && $context['breeze']['member']['options']['visitors_timeframe'] == 'Day' ? 'selected' : ''
 			),
 			'Week' => array(
 				'visitors_timeframe_week',
-				!empty($context['breeze']['options']['visitors_timeframe']) && $context['breeze']['options']['visitors_timeframe'] == 'Week' ? 'selected' : ''
+				!empty($context['breeze']['member']['options']['visitors_timeframe']) && $context['breeze']['member']['options']['visitors_timeframe'] == 'Week' ? 'selected' : ''
 			),
 			'Month' => array(
 				'visitors_timeframe_month',
-				!empty($context['breeze']['options']['visitors_timeframe']) && $context['breeze']['options']['visitors_timeframe'] == 'Month' ? 'selected' : ''
+				!empty($context['breeze']['member']['options']['visitors_timeframe']) && $context['breeze']['member']['options']['visitors_timeframe'] == 'Month' ? 'selected' : ''
 			),
 		)
 	);
@@ -258,13 +258,13 @@ function breezeSettings()
 	// Clean visitors log
 	$form->addHTML(
 		'clean_visitors',
-		'<a href="'. $scripturl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['member']['id'] .'">%s</a>'
+		'<a href="'. $scripturl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['breeze']['member']['id'] .'">%s</a>'
 	);
 
 	// How many seconds before closing the notifications?
 	$form->addText(
 		'clear_noti',
-		!empty($context['breeze']['options']['clear_noti']) ? $context['breeze']['options']['clear_noti'] : 0,
+		!empty($context['breeze']['member']['options']['clear_noti']) ? $context['breeze']['member']['options']['clear_noti'] : 0,
 		3,
 		3
 	);
@@ -275,13 +275,13 @@ function breezeSettings()
 	// Noti on comment
 	$form->addCheckBox(
 		'noti_on_comment',
-		!empty($context['breeze']['options']['noti_on_comment']) ? true : false
+		!empty($context['breeze']['member']['options']['noti_on_comment']) ? true : false
 	);
 
 	// Noti on mention
 	$form->addCheckBox(
 		'noti_on_mention',
-		!empty($context['breeze']['options']['noti_on_mention']) ? true : false
+		!empty($context['breeze']['member']['options']['noti_on_mention']) ? true : false
 	);
 
 	// Send the form to the template
@@ -291,7 +291,7 @@ function breezeSettings()
 	if ($sg->getValue('save'))
 	{
 		// You gotta bury it! Bury it! Bury it with a shovel and then bury the shovel!
-		cache_put_data(Breeze::$name .'-options-'. $context['member']['id'], null, 120);
+		cache_put_data(Breeze::$name .'-options-'. $context['breeze']['member']['id'], null, 120);
 
 		// Do the actual Update.
 
@@ -321,14 +321,14 @@ function breezeNotifications()
 	$text = $breezeController->get('text');
 	$notifications = $breezeController->get('notifications');
 	$tools = $breezeController->get('tools');
-	$tempNoti = $query->getNotificationByReceiver($context['member']['id'], true);
+	$tempNoti = $query->getNotificationByReceiver($context['breeze']['member']['id'], true);
 
 	// Load the users data
 	if (!empty($tempNoti['users']))
 		$tools->loadUserInfo($tempNoti['users']);
 
 	// Pass the info to the template
-	if ($notifications->prepare($context['member']['id'], true))
+	if ($notifications->prepare($context['breeze']['member']['id'], true))
 		$context['Breeze']['noti'] = $notifications->getMessages();
 
 	// Tell everyone where we've been
@@ -337,8 +337,8 @@ function breezeNotifications()
 	// Set all the page stuff
 	$context['sub_template'] = 'user_notifications';
 	$context['page_title'] = $text->getText('noti_title');
-	$context['member']['is_owner'] = $context['member']['id'] == $user_info['id'];
-	$context['canonical_url'] = $scripturl . '?action=profile;area=notifications;u=' . $context['member']['id'];
+	$context['breeze']['member']['is_owner'] = $context['breeze']['member']['id'] == $user_info['id'];
+	$context['canonical_url'] = $scripturl . '?action=profile;area=notifications;u=' . $context['breeze']['member']['id'];
 
 	// Print some jQuery goodies...
 	$context['html_headers'] .= '
@@ -355,7 +355,7 @@ function breezeBuddyRequest()
 	global $context, $user_info, $scripturl, $memberContext, $breezeController;
 
 	// Do a quick check to ensure people aren't getting here illegally!
-	if (!$context['member']['is_owner'])
+	if (!$context['breeze']['member']['is_owner'])
 		fatal_lang_error('no_access', false);
 
 	loadtemplate(Breeze::$name);
@@ -376,7 +376,7 @@ function breezeBuddyRequest()
 	// Set all the page stuff
 	$context['sub_template'] = 'Breeze_buddy_list';
 	$context['page_title'] = $text->getText('noti_title');
-	$context['canonical_url'] = $scripturl . '?action=profile;area=breezebuddies;u=' . $context['member']['id'];
+	$context['canonical_url'] = $scripturl . '?action=profile;area=breezebuddies;u=' . $context['breeze']['member']['id'];
 
 	// Show a nice message for confirmation
 	if ($globals->validate('inner') == true)
@@ -397,7 +397,7 @@ function breezeBuddyRequest()
 		$context['Breeze']['inner_message'] = '';
 
 	// Send the buddy request(s) to the template
-	$context['Breeze']['Buddy_Request'] = $buddies->showBuddyRequests($context['member']['id']);
+	$context['Breeze']['Buddy_Request'] = $buddies->showBuddyRequests($context['breeze']['member']['id']);
 
 	if ($globals->validate('from') == true && $globals->validate('message') == 'confirm' && $user_info['id'] != $globals->getValue('from'))
 	{
@@ -500,15 +500,15 @@ function breezeTrackViews()
 	$breezeController->get('tools')->profileHeaders();
 
 	// Do this only if t hasn't been done before
-	$views = cache_get_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], 60);
+	$views = cache_get_data(Breeze::$name .'-tempViews-'. $context['breeze']['member']['id'].'-by-'. $user_info['id'], 60);
 
 	if (empty($views))
 	{
 		// Get the profile views
-		$views = $breezeController->get('query')->getViews($context['member']['id']);
+		$views = $breezeController->get('query')->getViews($context['breeze']['member']['id']);
 
 		// Don't track own views
-		if ($context['member']['id'] == $user_info['id'])
+		if ($context['breeze']['member']['id'] == $user_info['id'])
 			return !empty($views) ? json_decode($views, true) : false;
 
 		// Don't have any views yet?
@@ -522,10 +522,10 @@ function breezeTrackViews()
 			);
 
 			// Insert the data
-			updateMemberData($context['member']['id'], array('breeze_profile_views' => json_encode($views)));
+			updateMemberData($context['breeze']['member']['id'], array('breeze_profile_views' => json_encode($views)));
 
 			// Set the temp cache
-			cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], $views, 60);
+			cache_put_data(Breeze::$name .'-tempViews-'. $context['breeze']['member']['id'].'-by-'. $user_info['id'], $views, 60);
 
 			// Load the visitors data
 			$breezeController->get('tools')->loadUserInfo(array_keys($views));
@@ -557,10 +557,10 @@ function breezeTrackViews()
 		}
 
 		// Either way, update the table
-		updateMemberData($context['member']['id'], array('breeze_profile_views' => json_encode($views)));
+		updateMemberData($context['breeze']['member']['id'], array('breeze_profile_views' => json_encode($views)));
 
 		// ...and set the temp cache
-		cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], $views, 60);
+		cache_put_data(Breeze::$name .'-tempViews-'. $context['breeze']['member']['id'].'-by-'. $user_info['id'], $views, 60);
 	}
 
 	// Don't forget to load the visitors data
@@ -585,31 +585,31 @@ function breezeCheckPermissions()
 
 	// If we are forcing the wall, lets check the admin setting first
 	if ($breezeSettings->enable('admin_settings_force_enable'))
-		if (!isset($context['breeze']['options']['enable_wall']))
-			$context['breeze']['options']['enable_wall'] = 1;
+		if (!isset($context['breeze']['member']['options']['enable_wall']))
+			$context['breeze']['member']['options']['enable_wall'] = 1;
 
 	// Do the normal check, do note this is not an elseif check, its separate.
 	else
-		if (empty($context['breeze']['options']['enable_wall']))
-			redirectexit('action=profile;area=static;u='.$context['member']['id']);
+		if (empty($context['breeze']['member']['options']['enable_wall']))
+			redirectexit('action=profile;area=static;u='.$context['breeze']['member']['id']);
 
 	// This user cannot see his/her own profile and cannot see any profile either
 	if (!allowedTo('profile_view_own') && !allowedTo('profile_view_any'))
-		redirectexit('action=profile;area=static;u='.$context['member']['id']);
+		redirectexit('action=profile;area=static;u='.$context['breeze']['member']['id']);
 
 	// This user cannot see his/her own profile and it's viewing his/her own profile
-	if (!allowedTo('profile_view_own') && $user_info['id'] == $context['member']['id'])
-		redirectexit('action=profile;area=static;u='.$context['member']['id']);
+	if (!allowedTo('profile_view_own') && $user_info['id'] == $context['breeze']['member']['id'])
+		redirectexit('action=profile;area=static;u='.$context['breeze']['member']['id']);
 
 	// This user cannot see any profile and it's  viewing someone else's wall
-	if (!allowedTo('profile_view_any') && $user_info['id'] != $context['member']['id'])
-		redirectexit('action=profile;area=static;u='.$context['member']['id']);
+	if (!allowedTo('profile_view_any') && $user_info['id'] != $context['breeze']['member']['id'])
+		redirectexit('action=profile;area=static;u='.$context['breeze']['member']['id']);
 
 	// Get the ignored list. @todo turn this into a function or something.
 
 	// I'm sorry, you aren't allowed in here, but here's a nice static page :)
-	if (!empty($context['member']['ignore_list']) && is_array($context['member']['ignore_list']) && in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['breeze']['options']['kick_ignored']))
-		redirectexit('action=profile;area=static;u='.$context['member']['id']);
+	if (!empty($context['breeze']['member']['ignore_list']) && is_array($context['breeze']['member']['ignore_list']) && in_array($user_info['id'], $context['breeze']['member']['ignore_list']) && !empty($context['breeze']['member']['options']['kick_ignored']))
+		redirectexit('action=profile;area=static;u='.$context['breeze']['member']['id']);
 }
 
 function loadMember()
@@ -617,7 +617,7 @@ function loadMember()
 	global $memID, $context, $user_info, $memberContext;
 
 	// If this was already set, skip this part
-	if (empty($context['member']))
+	if (empty($context['breeze']['member']))
 	{
 		// Get the GET, get it?
 		$globals = Breeze::sGlobals('get');
@@ -644,11 +644,11 @@ function loadMember()
 
 		// Let's have some information about this member ready, too.
 		loadMemberContext($memID);
-		$context['member'] = $memberContext[$memID];
+		$context['breeze']['member'] = $memberContext[$memID];
 	}
 
 	// Set the much needed is_owner var
-	$context['member']['is_owner'] = $context['member']['id'] == $user_info['id'];
-	$context['user']['is_owner'] = $context['member']['id'] == $user_info['id'];
+	$context['breeze']['member']['is_owner'] = $context['breeze']['member']['id'] == $user_info['id'];
+	$context['user']['is_owner'] = $context['breeze']['member']['id'] == $user_info['id'];
 
 }
