@@ -72,6 +72,12 @@ class BreezeQuery extends Breeze
 		$this->_smcFunc = $smcFunc;
 
 		$this->_tables = array(
+			'options' => array(
+				'name' => 'options',
+				'table' => 'breeze_options',
+				'property' => '_options',
+				'columns' => array('variable', 'value',),
+				),
 			'status' => array(
 				'name' => 'status',
 				'table' => 'breeze_status',
