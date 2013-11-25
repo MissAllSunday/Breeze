@@ -128,7 +128,7 @@ function template_user_wall()
 	breeze_profile_owner();
 
 	// Buddies
-	if (!empty($context['member']['options']['Breeze_enable_buddies']))
+	if (!empty($context['breeze']['options']['enable_buddies']))
 	{
 		echo '
 		<div class="cat_bar">
@@ -170,7 +170,7 @@ function template_user_wall()
 	// Buddies end
 
 	// Visitors
-	if (!empty($context['member']['options']['Breeze_enable_visitors']))
+	if (!empty($context['breeze']['options']['enable_visitors']))
 	{
 
 		echo '

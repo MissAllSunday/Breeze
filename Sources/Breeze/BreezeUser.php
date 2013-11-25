@@ -98,7 +98,7 @@ function breezeWall()
 	$context['Breeze']['permissions']['delete_comments'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
 
 	// Set up some vars for pagination
-	$maxIndex = !empty($context['member']['options']['Breeze_pagination_number']) ? $context['member']['options']['Breeze_pagination_number'] : 5;
+	$maxIndex = !empty($context['breeze']['options']['pagination_number']) ? $context['breeze']['options']['pagination_number'] : 5;
 	$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;
 
 	// Load all the status
@@ -120,7 +120,7 @@ function breezeWall()
 	$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name']);
 
 	// Get the profile views
-	if (!$user_info['is_guest'] && !empty($context['member']['options']['Breeze_enable_visitors_tab']))
+	if (!$user_info['is_guest'] && !empty($context['breeze']['options']['enable_visitors_tab']))
 	{
 		$context['Breeze']['views'] = breezeTrackViews();
 
@@ -130,7 +130,7 @@ function breezeWall()
 	}
 
 	// Show buddies only if there is something to show
-	if (!empty($context['member']['options']['Breeze_enable_buddies_tab']) && !empty($context['member']['buddies']))
+	if (!empty($context['breeze']['options']['enable_buddies_tab']) && !empty($context['member']['buddies']))
 		$usersToLoad = $usersToLoad + $context['member']['buddies'];
 
 	// Show this user recent activity
@@ -185,51 +185,51 @@ function breezeSettings()
 	// Per user master setting
 	$form->addCheckBox(
 		'enable_wall',
-		!empty($context['member']['options']['Breeze_enable_wall']) ? true : false
+		!empty($context['breeze']['options']['enable_wall']) ? true : false
 	);
 
 	// Pagination
 	$form->addText(
 		'pagination_number',
-		!empty($context['member']['options']['Breeze_pagination_number']) ? $context['member']['options']['Breeze_pagination_number'] : 0,
+		!empty($context['breeze']['options']['pagination_number']) ? $context['breeze']['options']['pagination_number'] : 0,
 		3,3
 	);
 
 	// Infinite scroll
 	$form->addCheckBox(
 		'infinite_scroll',
-		!empty($context['member']['options']['Breeze_infinite_scroll']) ? true : false
+		!empty($context['breeze']['options']['infinite_scroll']) ? true : false
 	);
 
 	// How many options to be displayed when mentioning
 	$form->addText(
 		'how_many_mentions',
-		!empty($context['member']['options']['Breeze_how_many_mentions']) ? $context['member']['options']['Breeze_how_many_mentions'] : 0,
+		!empty($context['breeze']['options']['how_many_mentions']) ? $context['breeze']['options']['how_many_mentions'] : 0,
 		3,3
 	);
 
 	// Allow ignored users
 	$form->addCheckBox(
 		'kick_ignored',
-		!empty($context['member']['options']['Breeze_kick_ignored']) ? true : false
+		!empty($context['breeze']['options']['kick_ignored']) ? true : false
 	);
 
 	// Activity Log.
 	$form->addCheckBox(
 		'enable_activityLog',
-		!empty($context['member']['options']['Breeze_enable_activityLog']) ? true : false
+		!empty($context['breeze']['options']['enable_activityLog']) ? true : false
 	);
 
 	// Buddies
 	$form->addCheckBox(
 		'enable_buddies',
-		!empty($context['member']['options']['Breeze_enable_buddies']) ? true : false
+		!empty($context['breeze']['options']['enable_buddies']) ? true : false
 	);
 
 	// Profile visitors
 	$form->addCheckBox(
 		'enable_visitors',
-		!empty($context['member']['options']['Breeze_enable_visitors']) ? true : false
+		!empty($context['breeze']['options']['enable_visitors']) ? true : false
 	);
 
 	// Visitors timeframe
@@ -238,19 +238,19 @@ function breezeSettings()
 		array(
 			'Hour' => array(
 				'visitors_timeframe_hour',
-				!empty($context['member']['options']['Breeze_visitors_timeframe']) && $context['member']['options']['Breeze_visitors_timeframe'] == 'Hour' ? 'selected' : ''
+				!empty($context['breeze']['options']['visitors_timeframe']) && $context['breeze']['options']['visitors_timeframe'] == 'Hour' ? 'selected' : ''
 			),
 			'Day' => array(
 				'visitors_timeframe_day',
-				!empty($context['member']['options']['Breeze_visitors_timeframe']) && $context['member']['options']['Breeze_visitors_timeframe'] == 'Day' ? 'selected' : ''
+				!empty($context['breeze']['options']['visitors_timeframe']) && $context['breeze']['options']['visitors_timeframe'] == 'Day' ? 'selected' : ''
 			),
 			'Week' => array(
 				'visitors_timeframe_week',
-				!empty($context['member']['options']['Breeze_visitors_timeframe']) && $context['member']['options']['Breeze_visitors_timeframe'] == 'Week' ? 'selected' : ''
+				!empty($context['breeze']['options']['visitors_timeframe']) && $context['breeze']['options']['visitors_timeframe'] == 'Week' ? 'selected' : ''
 			),
 			'Month' => array(
 				'visitors_timeframe_month',
-				!empty($context['member']['options']['Breeze_visitors_timeframe']) && $context['member']['options']['Breeze_visitors_timeframe'] == 'Month' ? 'selected' : ''
+				!empty($context['breeze']['options']['visitors_timeframe']) && $context['breeze']['options']['visitors_timeframe'] == 'Month' ? 'selected' : ''
 			),
 		)
 	);
@@ -264,7 +264,7 @@ function breezeSettings()
 	// How many seconds before closing the notifications?
 	$form->addText(
 		'clear_noti',
-		!empty($context['member']['options']['Breeze_clear_noti']) ? $context['member']['options']['Breeze_clear_noti'] : 0,
+		!empty($context['breeze']['options']['clear_noti']) ? $context['breeze']['options']['clear_noti'] : 0,
 		3,
 		3
 	);
@@ -275,13 +275,13 @@ function breezeSettings()
 	// Noti on comment
 	$form->addCheckBox(
 		'noti_on_comment',
-		!empty($context['member']['options']['Breeze_noti_on_comment']) ? true : false
+		!empty($context['breeze']['options']['noti_on_comment']) ? true : false
 	);
 
 	// Noti on mention
 	$form->addCheckBox(
 		'noti_on_mention',
-		!empty($context['member']['options']['Breeze_noti_on_mention']) ? true : false
+		!empty($context['breeze']['options']['noti_on_mention']) ? true : false
 	);
 
 	// Send the form to the template
@@ -291,6 +291,7 @@ function breezeSettings()
 	if ($sg->getValue('save'))
 	{
 		// You gotta bury it! Bury it! Bury it with a shovel and then bury the shovel!
+		cache_put_data(Breeze::$name .'-options-'. $context['member']['id'], null, 120);
 
 		// Do the actual Update.
 
@@ -584,12 +585,12 @@ function breezeCheckPermissions()
 
 	// If we are forcing the wall, lets check the admin setting first
 	if ($breezeSettings->enable('admin_settings_force_enable'))
-		if (!isset($context['member']['options']['Breeze_enable_wall']))
-			$context['member']['options']['Breeze_enable_wall'] = 1;
+		if (!isset($context['breeze']['options']['enable_wall']))
+			$context['breeze']['options']['enable_wall'] = 1;
 
 	// Do the normal check, do note this is not an elseif check, its separate.
 	else
-		if (empty($context['member']['options']['Breeze_enable_wall']))
+		if (empty($context['breeze']['options']['enable_wall']))
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 	// This user cannot see his/her own profile and cannot see any profile either
@@ -611,7 +612,7 @@ function breezeCheckPermissions()
 		$context['member']['ignore_list'] = explode(',', $temp_ignore_list);
 
 	// I'm sorry, you aren't allowed in here, but here's a nice static page :)
-	if (!empty($context['member']['ignore_list']) && is_array($context['member']['ignore_list']) && in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['member']['options']['Breeze_kick_ignored']))
+	if (!empty($context['member']['ignore_list']) && is_array($context['member']['ignore_list']) && in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['breeze']['options']['kick_ignored']))
 		redirectexit('action=profile;area=static;u='.$context['member']['id']);
 }
 
