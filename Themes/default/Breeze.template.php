@@ -83,7 +83,7 @@ function template_user_wall()
 						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
 							<textarea cols="40" rows="5" name="statusContent" id="statusContent" rel="atwhoMention"></textarea>
 							<input type="hidden" value="', $user_info['id'] ,'" name="statusPoster" id="statusPoster" />
-							<input type="hidden" value="', $context['breeze']['member']['id'] ,'" name="statusOwner" id="statusOwner" />
+							<input type="hidden" value="', $context['member']['id'] ,'" name="statusOwner" id="statusOwner" />
 							<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
 							<br /><input type="submit" value="', $txt['post'] ,'" name="statusSubmit" class="status_button" id="statusSubmit"/>
 						</form>
@@ -92,7 +92,7 @@ function template_user_wall()
 			</div>';
 
 	// Print out the status if there are any.
-	breeze_status($context['breeze']['member']['status']);
+	breeze_status($context['member']['status']);
 
 	// Pagination
 	if (!empty($context['page_index']))
@@ -128,7 +128,7 @@ function template_user_wall()
 	breeze_profile_owner();
 
 	// Buddies
-	if (!empty($context['breeze']['member']['options']['enable_buddies']))
+	if (!empty($context['member']['options']['enable_buddies']))
 	{
 		echo '
 		<div class="cat_bar">
@@ -142,14 +142,14 @@ function template_user_wall()
 			<span class="topslice"><span> </span></span>
 			<div class="content BreezeList">';
 
-		if (!empty($context['breeze']['member']['buddies']))
+		if (!empty($context['member']['buddies']))
 		{
 			// Print a nice Ul
 			echo '
 				<ul class="reset">';
 
 			// Show the profile visitors in a big, fat echo!
-			foreach ($context['breeze']['member']['buddies'] as $buddy)
+			foreach ($context['member']['buddies'] as $buddy)
 				echo '
 					<li> ', $context['Breeze']['user_info'][$buddy]['facebox'] ,' <br /> ', $context['Breeze']['user_info'][$buddy]['link'] ,'</li>';
 
@@ -170,7 +170,7 @@ function template_user_wall()
 	// Buddies end
 
 	// Visitors
-	if (!empty($context['breeze']['member']['options']['enable_visitors']))
+	if (!empty($context['member']['options']['enable_visitors']))
 	{
 
 		echo '
@@ -206,7 +206,7 @@ function template_user_wall()
 						<br />',  $context['Breeze']['tools']->timeElapsed($visitor['last_view']);
 
 				// If you're the profile owner you might want to know how many time this user has visited your profile...
-				if ($context['breeze']['member']['id'] == $user_info['id'])
+				if ($context['member']['id'] == $user_info['id'])
 					echo '
 						<br />',  $txt['Breeze_user_modules_visitors'] . $visitor['views'];
 
