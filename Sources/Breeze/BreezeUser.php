@@ -160,6 +160,8 @@ function breezeSettings()
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
 
+	$sg = Breeze::sGlobals('get');
+
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
@@ -284,6 +286,17 @@ function breezeSettings()
 
 	// Send the form to the template
 	$context['Breeze']['UserSettings']['Form'] = $form->display();
+
+	// Saving?
+	if ($sg->getValue('save'))
+	{
+		// You gotta bury it! Bury it! Bury it with a shovel and then bury the shovel!
+
+		// Do the actual Update.
+
+		// Back to the settings page we go!
+		redirectexit($scripturl, '?action=profile;area=breezesettings;mstype=success;msmessage=updated_settings');
+	}
 }
 
 function breezeNotifications()
