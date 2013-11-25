@@ -707,11 +707,10 @@ class BreezeQuery extends Breeze
 	 * Gets a unique user setting
 	 * @param int $user
 	 * @param bool $setting
-	 * @return bool|mixed either a boolean false or the requested value which can be a string or a boolean
+	 * @return bool|array Either a boolean false or the requested user data.
 	 */
 	public function getUserSettings($user)
 	{
-
 		if (!$user)
 			return false;
 

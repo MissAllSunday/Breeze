@@ -95,8 +95,7 @@ function breezeWall()
 
 	// You are allowed here but you still need to obey some permissions.
 	foreach (Breeze::$permissions as $p)
-		$context['Breeze']['permissions'][$p] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_'. $p);
-
+		$context['Breeze']['permissions'][$p] = $context['member']['is_owner'] ? true : allowedTo('breeze_'. $p);
 
 	// Set up some vars for pagination
 	$maxIndex = !empty($context['member']['options']['pagination_number']) ? $context['member']['options']['pagination_number'] : 5;
@@ -166,8 +165,6 @@ function breezeSettings()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	// Identify if this person is the profile owner
-	loadMember();
 	$breezeController->get('tools')->profileHeaders();
 
 	// Set the page title
@@ -292,7 +289,7 @@ function breezeSettings()
 	$context['Breeze']['UserSettings']['Form'] = $form->display();
 
 	// Saving?
-	if ($sg->getValue('save'))
+	if ($sg->validate('save'))
 	{
 		// You gotta bury it! Bury it! Bury it with a shovel and then bury the shovel!
 		cache_put_data(Breeze::$name .'-options-'. $context['member']['id'], null, 120);
@@ -314,7 +311,6 @@ function breezeNotifications()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	loadMember();
 	$breezeController->get('tools')->profileHeaders();
 
 	// Globals...
@@ -368,7 +364,6 @@ function breezeBuddyRequest()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	loadMember();
 	$breezeController->get('tools')->profileHeaders();
 
 	// Load all we need
@@ -500,7 +495,6 @@ function breezeTrackViews()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	loadMember();
 	$breezeController->get('tools')->profileHeaders();
 
 	// Do this only if t hasn't been done before
