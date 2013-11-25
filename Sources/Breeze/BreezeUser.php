@@ -605,11 +605,7 @@ function breezeCheckPermissions()
 	if (!allowedTo('profile_view_any') && $user_info['id'] != $context['member']['id'])
 		redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
-	// Get the ignored list
-	$temp_ignore_list = !empty($context['member']['ignore_list']) ? $context['member']['ignore_list'] : $query->getUserSettings($context['member']['id'], 'pm_ignore_list');
-
-	if (!empty($temp_ignore_list))
-		$context['member']['ignore_list'] = explode(',', $temp_ignore_list);
+	// Get the ignored list. @todo turn this into a function or something.
 
 	// I'm sorry, you aren't allowed in here, but here's a nice static page :)
 	if (!empty($context['member']['ignore_list']) && is_array($context['member']['ignore_list']) && in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['breeze']['options']['kick_ignored']))
