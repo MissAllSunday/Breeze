@@ -705,25 +705,33 @@ class BreezeQuery extends Breeze
 	 */
 	public function getUserSettings($user)
 	{
-		$return = array();
 
 		if (!$user)
 			return false;
 
-		$result = $this->_smcFunc['db_query']('', '
-			SELECT variable, value
-			FROM {db_prefix}' . ($this->_tables['options']['table']) . '
-			WHERE member_id = {int:user}',
-			array(
-				'user' => $user,
-			)
-		);
+		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['options']['name'] .'-'. $user,
+			120)) == null)
+		{
+			$return = array();
 
-		// Populate the array like a boss!
-		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-			$return[$row['variable']] = $row['value'];
+			$result = $this->_smcFunc['db_query']('', '
+				SELECT variable, value
+				FROM {db_prefix}' . ($this->_tables['options']['table']) . '
+				WHERE member_id = {int:user}',
+				array(
+					'user' => $user,
+				)
+			);
 
-		$this->_smcFunc['db_free_result']($result);
+			// Populate the array like a boss!
+			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+				$return[$row['variable']] = is_numeric($row['value']) ? (bool) $row['value'] : (string) $row['value'];
+
+			$this->_smcFunc['db_free_result']($result);
+
+			// Cache this beauty.
+			cache_put_data(Breeze::$name .'-' . $this->_tables['options']['name'] .'-'. $user, $return, 120);
+		}
 
 		return $return;
 	}
