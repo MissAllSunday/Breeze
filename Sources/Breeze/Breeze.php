@@ -65,6 +65,7 @@ class Breeze
 	public static $version = '1.0 Beta 3';
 	public static $folder = '/Breeze/';
 	public static $txtpattern = 'Breeze_';
+	public static $permissions = array('postStatus', 'postComments', 'deleteStatus', 'deleteComments',);
 
 	// Support site feed
 	public static $supportStite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';

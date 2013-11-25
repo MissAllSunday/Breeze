@@ -93,11 +93,10 @@ function breezeWall()
 	$context['Breeze']['tools'] = $tools;
 	$context['can_view_warning'] = in_array('w', $context['admin_features']) && (allowedTo('issue_warning') && !$context['member']['is_owner']) || (!empty($modSettings['warning_show']) && ($modSettings['warning_show'] > 1 || $context['member']['is_owner']));
 
-	// You are allowed here but you still need to obey some permissions
-	$context['Breeze']['permissions']['post_status'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_postStatus');
-	$context['Breeze']['permissions']['post_comment'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_postComments');
-	$context['Breeze']['permissions']['delete_status'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_deleteStatus');
-	$context['Breeze']['permissions']['delete_comments'] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_deleteComments');
+	// You are allowed here but you still need to obey some permissions.
+	foreach (Breeze::$permissions as $p)
+		$context['Breeze']['permissions'][$p] = $context['member']['is_owner'] == true ? true : allowedTo('breeze_'. $p);
+
 
 	// Set up some vars for pagination
 	$maxIndex = !empty($context['member']['options']['pagination_number']) ? $context['member']['options']['pagination_number'] : 5;
