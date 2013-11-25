@@ -346,11 +346,14 @@ function template_member_options()
 	// The main containing header.
 	echo '
 		<form action="', $scripturl, '?action=profile;area=breezesettings;save" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator" enctype="multipart/form-data" onsubmit="return checkProfileSubmit();">
-			<h3 class="catbg">
-				<span class="left"></span>
-				<img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" class="icon" />
-				', $context['page_desc'] , '
-			</h3>
+			<div class="cat_bar">
+				<h3 class="catbg">
+					<span class="ie6_header floatleft">
+						<img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" class="icon" />
+						', $context['page_desc'] , '
+					</span>
+				</h3>
+			</div>
 			<p class="windowbg description">
 				', $context['page_desc'] , '
 			</p>
