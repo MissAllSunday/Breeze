@@ -361,9 +361,6 @@ function template_member_options()
 		// Print the form
 		echo $context['Breeze']['UserSettings']['Form'];
 
-	// Show the standard "Save Settings" profile button.
-	template_profile_save();
-
 	echo '
 					</div>
 				<span class="botslice"><span></span></span>
