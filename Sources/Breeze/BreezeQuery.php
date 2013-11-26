@@ -94,7 +94,7 @@ class BreezeQuery extends Breeze
 				'name' => 'members',
 				'table' => 'members',
 				'property' => '_members',
-				'columns' => array('breeze_profile_views'),
+				'columns' => array('breeze_profile_views', 'pm_ignore_list', 'buddy_list'),
 				),
 			'noti' => array(
 				'name' => 'noti',
@@ -720,8 +720,9 @@ class BreezeQuery extends Breeze
 			$return = array();
 
 			$result = $this->_smcFunc['db_query']('', '
-				SELECT variable, value
-				FROM {db_prefix}' . ($this->_tables['options']['table']) . '
+				SELECT op.' . (implode(' op', $this->_tables['options']['columns'])) . ' mem' . (implode(' mem.', $this->_tables['members']['columns'])) . '
+				FROM {db_prefix}' . ($this->_tables['options']['table']) . ' AS op
+					LEFT JOIN {db_prefix}'. ($this->_tables['members']['table']) .' ON (mem.id_member = op.member_id)
 				WHERE member_id = {int:user}',
 				array(
 					'user' => $user,
