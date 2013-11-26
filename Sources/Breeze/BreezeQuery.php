@@ -741,6 +741,26 @@ class BreezeQuery extends Breeze
 		return $return;
 	}
 
+	public function insertUserSettings($array, $userID)
+	{
+		if (empty($array) || empty($userID))
+			return false;
+
+		$array = (array) $array;
+		$inserts = array();
+
+		foreach ($array as $var => $val)
+			$inserts[] = array($iuserID, $var, $val);
+
+		if (!empty($inserts))
+			$this->_smcFunc['db_insert']('insert',
+				'{db_prefix}' . ($this->_tables['options']['table']),
+				array('member_id' => 'int', 'variable' => 'string-255', 'value' => 'string-65534'),
+				$inserts,
+				array('member_id')
+			);
+	}
+
 	/**
 	 * BreezeQuery::noti()
 	 *
