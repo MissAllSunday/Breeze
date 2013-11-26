@@ -747,10 +747,11 @@ class BreezeQuery extends Breeze
 			return false;
 
 		$array = (array) $array;
+		$userID = (int) $userID;
 		$inserts = array();
 
 		foreach ($array as $var => $val)
-			$inserts[] = array($iuserID, $var, $val);
+			$inserts[] = array($userID, $var, $val);
 
 		if (!empty($inserts))
 			$this->_smcFunc['db_insert']('insert',

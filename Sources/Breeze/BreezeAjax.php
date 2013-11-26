@@ -420,7 +420,6 @@ class BreezeAjax
 				'extra' => array('area' => 'breezesettings',),
 				'owner' => $profile_owner,
 			));
-
 	}
 
 	/**
