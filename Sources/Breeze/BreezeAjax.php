@@ -90,6 +90,7 @@ class BreezeAjax
 			'cleanlog' => 'cleanLog',
 			'fetch' => 'fetchStatus',
 			'fetchc' => 'fetchComment',
+			'usersettings' => 'userSettings',
 		);
 
 		// Build the correct redirect URL
@@ -402,6 +403,11 @@ class BreezeAjax
 				'type' => 'error',
 				'owner' => $profile_owner,
 			));
+	}
+
+	public function userSettings()
+	{
+		$this->_data = Breeze::sGlobals('request');
 	}
 
 	/**

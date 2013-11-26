@@ -345,7 +345,7 @@ function template_member_options()
 
 	// The main containing header.
 	echo '
-		<form action="', $scripturl, '?action=profile;area=breezesettings;save" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator" enctype="multipart/form-data" onsubmit="return checkProfileSubmit();">
+		<form action="', $scripturl, '?action=breezeajax;sa=usersettings;rf=profile" method="post" accept-charset="', $context['character_set'], '" name="breezeSettings" id="breezeSettings">
 			<div class="cat_bar">
 				<h3 class="catbg">
 					<span class="ie6_header floatleft">
@@ -362,10 +362,13 @@ function template_member_options()
 					<div class="content">';
 
 		// Print the form
-		echo $context['Breeze']['UserSettings']['Form'];
+	echo $context['Breeze']['UserSettings']['Form'];
+
+	// Print the save button.
+	echo '<input type="submit" name="submit" value="', $txt['save'] ,'" class="button_submit floatright"/>';
 
 	echo '
-					</div>
+				</div>
 				<span class="botslice"><span></span></span>
 			</div>
 			<br />

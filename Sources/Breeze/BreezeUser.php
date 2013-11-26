@@ -287,18 +287,6 @@ function breezeSettings()
 
 	// Send the form to the template
 	$context['Breeze']['UserSettings']['Form'] = $form->display();
-
-	// Saving?
-	if ($sg->validate('save'))
-	{
-		// You gotta bury it! Bury it! Bury it with a shovel and then bury the shovel!
-		cache_put_data(Breeze::$name .'-options-'. $context['member']['id'], null, 120);
-
-		// Do the actual Update.
-
-		// Back to the settings page we go!
-		redirectexit($scripturl, '?action=profile;area=breezesettings;mstype=success;msmessage=updated_settings');
-	}
 }
 
 function breezeNotifications()
