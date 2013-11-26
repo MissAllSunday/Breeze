@@ -197,7 +197,7 @@ class BreezeForm
 						<br /><span class="smalltext">'. $this->text->getText('user_settings_'. $el['text'] .'_sub') .'</span>
 					</dt>
 					<dd>
-						<input type="hidden" name="default_options['. $el['name'] .']" value="0" />'. $el['html'] .'
+						<input type="hidden" name="'. $el['name'] .'" value="0" />'. $el['html'] .'
 					</dd>';
 					break;
 				case 'select':
@@ -206,7 +206,7 @@ class BreezeForm
 						<br /><span class="smalltext">'. $this->text->getText('user_settings_'.$el['text'] .'_sub') .'</span>
 					</dt>
 					<dd>
-						<input type="hidden" name="default_options['. $el['name'] .']" value="0" />'. $el['html_start'] .'';
+						<input type="hidden" name="'. $el['name'] .'" value="0" />'. $el['html_start'] .'';
 
 					foreach($el['values'] as $k => $v)
 						$this->buffer .= $v .'';
