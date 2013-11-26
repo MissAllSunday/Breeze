@@ -196,10 +196,10 @@ function breezeSettings()
 		3,3
 	);
 
-	// Infinite scroll
+	// Add the load more button.
 	$form->addCheckBox(
-		'infinite_scroll',
-		!empty($context['member']['options']['infinite_scroll']) ? true : false
+		'load_more',
+		!empty($context['member']['options']['load_more']) ? true : false
 	);
 
 	// How many options to be displayed when mentioning

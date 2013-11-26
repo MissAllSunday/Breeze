@@ -407,7 +407,20 @@ class BreezeAjax
 
 	public function userSettings()
 	{
-		$this->_data = Breeze::sGlobals('request');
+		checkSession('request', '', false);
+
+		// Get the values.
+		$this->_data = Breeze::sGlobals('post');
+
+		// We need ALL of them.
+		if (!empty(array_diff_assoc(array_values(Breeze::$userSettings), array_keys($this->_data->getValue('default_options')))))
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'extra' => array('area' => 'breezesettings',),
+				'owner' => $profile_owner,
+			));
+
 	}
 
 	/**
