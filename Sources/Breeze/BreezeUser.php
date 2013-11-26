@@ -183,6 +183,9 @@ function breezeSettings()
 	// Create the form
 	$form = $breezeController->get('form');
 
+	// Session stuff.
+	$form->addHiddenField($context['session_var'], $context['session_id']);
+
 	// Per user master setting
 	$form->addCheckBox(
 		'enable_wall',
