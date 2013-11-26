@@ -116,7 +116,7 @@ class BreezeForm
 		$element['value'] = 1;
 		$element['checked'] = empty($checked) ? '' : 'checked="checked"';
 		$element['text'] = $name;
-		$element['html'] = '<input type="'. $element['type'] .'" name="'. $element['name'] .'" id="default_options['. $element['name'] .']" value="'. (int)$element['value'] .'" '. $element['checked'] .' class="input_check" />';
+		$element['html'] = '<input type="'. $element['type'] .'" name="'. $element['name'] .'" id="'. $element['name'] .'" value="'. (int)$element['value'] .'" '. $element['checked'] .' class="input_check" />';
 
 		return $this->addElement($element);
 	}
