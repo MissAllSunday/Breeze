@@ -338,7 +338,7 @@ class BreezeNotifications
 			afterClose: function() {
 				jQuery.noty.closeAll();
 			},
-			'. (!empty($context['member']['options']['Breeze_clear_noti']) ?  'onShow: function() {window.setTimeout("jQuery.noty.closeAll()", '. $context['member']['options']['Breeze_clear_noti'] * 1000 .');},' : '') .'
+			'. (!empty($context['member']['options']['clear_noti']) ?  'onShow: function() {window.setTimeout("jQuery.noty.closeAll()", '. $context['member']['options']['clear_noti'] * 1000 .');},' : '') .'
 		},
 	});
 ';

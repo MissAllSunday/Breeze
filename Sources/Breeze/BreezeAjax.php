@@ -90,6 +90,7 @@ class BreezeAjax
 			'cleanlog' => 'cleanLog',
 			'fetch' => 'fetchStatus',
 			'fetchc' => 'fetchComment',
+			'usersettings' => 'userSettings',
 		);
 
 		// Build the correct redirect URL
@@ -294,7 +295,7 @@ class BreezeAjax
 							'id' => $params['id'],)
 				);
 
-				// Parse the content
+				// Parse the content.
 				$params['body'] = $this->_parser->display($params['body']);
 
 				// The comment was created, tell the world or just those who want to know...
@@ -324,7 +325,7 @@ class BreezeAjax
 				));
 			}
 
-			// Something wrong with the server
+			// Something wrong with the server.
 			else
 				return $this->setResponse(array('owner' => $commentOwner, 'type' => 'error',));
 		}
@@ -402,6 +403,26 @@ class BreezeAjax
 				'type' => 'error',
 				'owner' => $profile_owner,
 			));
+	}
+
+	public function userSettings()
+	{
+		checkSession('request', '', false);
+
+		// Get the values.
+		$this->_data = Breeze::sGlobals('request');
+
+		// Do the insert already!
+		$this->_query->insertUserSettings($this->_data->getValue('breezeSettings'), $this->_data->getValue('u'));
+
+		// Done! set the redirect.
+		return $this->setResponse(array(
+			'type' => 'success',
+			'message' => 'updated_settings',
+			'owner' => $this->_data->getValue('u'),
+			'extra' => array('area' => 'breezesettings',),
+		));
+
 	}
 
 	/**

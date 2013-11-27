@@ -73,8 +73,8 @@ $txt['Breeze_user_settings_wall_limit'] = 'How many status per page to show?';
 $txt['Breeze_user_settings_wall_limit_sub'] = 'This will be the number of status to show by default, max value is 30, if set it will create a pagination with the rest of your status.';
 $txt['Breeze_user_settings_kick_ignored'] = 'Do not show my wall to users in my ignore list';
 $txt['Breeze_user_settings_kick_ignored_sub'] = 'If this is enable, users on your ignore list will not be able to see your wall or to post on it.';
-$txt['Breeze_user_settings_infinite_scroll'] = 'Use infinite scroll';
-$txt['Breeze_user_settings_infinite_scroll_sub'] = 'This setting will allow you to load previous status on the same page by scrolling down.';
+$txt['Breeze_user_settings_load_more'] = 'Add a "load more button"';
+$txt['Breeze_user_settings_load_more_sub'] = 'This setting will allow you to load the next batch of status by clicking a button.';
 $txt['Breeze_user_settings_pagination_number'] = 'How many status will be displayed per page';
 $txt['Breeze_user_settings_pagination_number_sub'] = 'Enter the number of status you want to display per page on your wall. By default is 5';
 $txt['Breeze_user_settings_enable_wall'] = 'Enable my wall';
@@ -193,6 +193,7 @@ $txt['permissionname_breeze_postComments'] = 'Post new Comments on any wall';
 $txt['permissionname_breeze_edit_settings_any'] = 'Edit the user settings of any wall';
 
 // Ajax strings
+$txt['Breeze_success_updated_settings'] = 'Your settings were updated successfully.';
 $txt['Breeze_feed_error_message'] = 'Breeze couldn\'t connect with the support site';
 $txt['Breeze_error_server'] = 'There was an error, please try again or contact the forum admin.';
 $txt['Breeze_error_wrong_values'] = 'Wrong values were sent, the request couldn\'t be handled.';

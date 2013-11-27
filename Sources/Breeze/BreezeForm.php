@@ -50,10 +50,19 @@ class BreezeForm
 	public $buffer = '';
 	public $onsubmit;
 	public $text;
+	protected $formName;
 
 	function __construct($text)
 	{
 		$this->text = $text;
+	}
+
+	public function setFormName($string)
+	{
+		if (empty($string))
+			return false;
+
+		$this->formName = trim($string);
 	}
 
 	public function returnElementNames()
@@ -94,13 +103,13 @@ class BreezeForm
 		$this->status++;
 	}
 
-	function addSelect($name, $text, $values = array())
+	function addSelect($name,$values = array())
 	{
 		$element['type'] = 'select';
 		$element['name'] = $name;
 		$element['values'] = $values;
-		$element['text']  = $text;
-		$element['html_start'] = '<'. $element['type'] .' name="default_options['. $element['name'] .']">';
+		$element['text']  = $name;
+		$element['html_start'] = '<'. $element['type'] .' name="'. (!empty($this->formName) ? $this->formName .'['. $element['name'] .']' : $element['name']) .'">';
 		$element['html_end'] = '</'. $element['type'] .'>';
 
 		foreach($values as $k => $v)
@@ -109,38 +118,38 @@ class BreezeForm
 		return $this->addElement($element);
 	}
 
-	function addCheckBox($name, $text, $checked = false)
+	function addCheckBox($name,$checked = false)
 	{
 		$element['type'] = 'checkbox';
 		$element['name'] = $name;
 		$element['value'] = 1;
 		$element['checked'] = empty($checked) ? '' : 'checked="checked"';
-		$element['text'] = $text;
-		$element['html'] = '<input type="'. $element['type'] .'" name="default_options['. $element['name'] .']" id="default_options['. $element['name'] .']" value="'. (int)$element['value'] .'" '. $element['checked'] .' class="input_check" />';
+		$element['text'] = $name;
+		$element['html'] = '<input type="'. $element['type'] .'" name="'. (!empty($this->formName) ? $this->formName .'['. $element['name'] .']' : $element['name']) .'" id="'. $element['name'] .'" value="'. (int)$element['value'] .'" '. $element['checked'] .' class="input_check" />';
 
 		return $this->addElement($element);
 	}
 
-	function addText($name, $text, $value, $size = false, $maxlength = false)
+	function addText($name,$value, $size = false, $maxlength = false)
 	{
 		$element['type'] = 'text';
 		$element['name'] = $name;
 		$element['value'] = $value;
-		$element['text'] = $text;
+		$element['text'] = $name;
 		$element['size'] = empty($size) ? 'size="20"' : 'size="' .$size. '"';
 		$element['maxlength'] = empty($maxlength) ? 'maxlength="20"' : 'maxlength="' .$maxlength. '"';
-		$element['html'] = '<input type="'. $element['type'] .'" name="default_options['. $element['name'] .']" id="'. $element['name'] .'" value="'. $element['value'] .'" '. $element['size'] .' '. $element['maxlength'] .' class="input_text" />';
+		$element['html'] = '<input type="'. $element['type'] .'" name="'. (!empty($this->formName) ? $this->formName .'['. $element['name'] .']' : $element['name']) .'" id="'. $element['name'] .'" value="'. $element['value'] .'" '. $element['size'] .' '. $element['maxlength'] .' class="input_text" />';
 
 		return $this->addElement($element);
 	}
 
-	function addTextArea($name, $text, $value)
+	function addTextArea($name,$value)
 	{
 		$element['type'] = 'textarea';
 		$element['name'] = $name;
 		$element['value'] = empty($value) ? '' : $value;
-		$element['text'] = $text;
-		$element['html'] = '<'. $element['type'] .' name="default_options['. $element['name'] .']" id="'. $element['name'] .'">'. $element['value'] .'</'. $element['type'] .'>';
+		$element['text'] = $name;
+		$element['html'] = '<'. $element['type'] .' name="'. (!empty($this->formName) ? $this->formName .'['. $element['name'] .']' : $element['name']) .'" id="'. $element['name'] .'">'. $element['value'] .'</'. $element['type'] .'>';
 
 		return $this->addElement($element);
 	}
@@ -150,7 +159,7 @@ class BreezeForm
 		$element['type'] = 'hidden';
 		$element['name'] = $name;
 		$element['value'] = $value;
-		$element['html'] = '<input type="'. $element['type'] .'" name="default_options['. $element['name'] .']" id="'. $element['name'] .'" value="'. $element['value'] .'" />';
+		$element['html'] = '<input type="'. $element['type'] .'" name="'. $element['name'] .'" id="'. $element['name'] .'" value="'. $element['value'] .'" />';
 
 		return $this->addElement($element);
 	}
@@ -197,7 +206,7 @@ class BreezeForm
 						<br /><span class="smalltext">'. $this->text->getText('user_settings_'. $el['text'] .'_sub') .'</span>
 					</dt>
 					<dd>
-						<input type="hidden" name="default_options['. $el['name'] .']" value="0" />'. $el['html'] .'
+						<input type="hidden" name="'. (!empty($this->formName) ? $this->formName .'['. $el['name'] .']' : $el['name']) .'" value="0" />'. $el['html'] .'
 					</dd>';
 					break;
 				case 'select':
@@ -206,7 +215,7 @@ class BreezeForm
 						<br /><span class="smalltext">'. $this->text->getText('user_settings_'.$el['text'] .'_sub') .'</span>
 					</dt>
 					<dd>
-						<input type="hidden" name="default_options['. $el['name'] .']" value="0" />'. $el['html_start'] .'';
+						<input type="hidden" name="'. (!empty($this->formName) ? $this->formName .'['. $el['name'] .']' : $el['name']) .'" value="0" />'. $el['html_start'] .'';
 
 					foreach($el['values'] as $k => $v)
 						$this->buffer .= $v .'';

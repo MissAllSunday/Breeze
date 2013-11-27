@@ -72,6 +72,12 @@ class BreezeQuery extends Breeze
 		$this->_smcFunc = $smcFunc;
 
 		$this->_tables = array(
+			'options' => array(
+				'name' => 'options',
+				'table' => 'breeze_options',
+				'property' => '_options',
+				'columns' => array('variable', 'value',),
+				),
 			'status' => array(
 				'name' => 'status',
 				'table' => 'breeze_status',
@@ -88,7 +94,7 @@ class BreezeQuery extends Breeze
 				'name' => 'members',
 				'table' => 'members',
 				'property' => '_members',
-				'columns' => array('breeze_profile_views'),
+				'columns' => array('breeze_profile_views', 'pm_ignore_list', 'buddy_list'),
 				),
 			'noti' => array(
 				'name' => 'noti',
@@ -701,46 +707,70 @@ class BreezeQuery extends Breeze
 	 * Gets a unique user setting
 	 * @param int $user
 	 * @param bool $setting
-	 * @return bool|mixed either a boolean false or the requested value which can be a string or a boolean
+	 * @return bool|array Either a boolean false or the requested user data.
 	 */
-	public function getUserSettings($user, $setting = false)
+	public function getUserSettings($user)
 	{
-		$return = array();
-
 		if (!$user)
 			return false;
 
-		$result = $this->_smcFunc['db_query']('', '
-			SELECT th.variable, th.value, mem.pm_ignore_list, mem.buddy_list
-			FROM {db_prefix}themes AS th
-			LEFT JOIN {db_prefix}members AS mem ON (mem.id_member = th.id_member)
-			WHERE th.id_member = {int:user}
-				AND th.variable LIKE {string:breeze}',
-			array(
-				'breeze' => '%Breeze_%',
-				'user' => $user,
-			)
-		);
-		// Populate the array like a boss!
-		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['options']['name'] .'-'. $user,
+			120)) == null)
 		{
-			$variable = str_replace('Breeze_', '', $row['variable']);
-			$value = is_numeric($row['value']) ? (bool) $row['value'] : (string) $row['value'];
-			$return[$variable] = $value;
+			$return = array();
 
-			$return = array(
-				'ignore_list' => explode(',', $row['pm_ignore_list']),
-				'buddy_list' => explode(',', $row['buddy_list']),
+			$result = $this->_smcFunc['db_query']('', '
+				SELECT op.' . (implode(', op.', $this->_tables['options']['columns'])) . ', mem.' . (implode(', mem.', $this->_tables['members']['columns'])) . '
+				FROM {db_prefix}' . ($this->_tables['options']['table']) . ' AS op
+					LEFT JOIN {db_prefix}'. ($this->_tables['members']['table']) .' AS mem ON (mem.id_member = {int:user})
+				WHERE member_id = {int:user}',
+				array(
+					'user' => $user,
+				)
 			);
+
+			// Populate the array like a boss!
+			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+			{
+				$return[$row['variable']] = is_numeric($row['value']) ? (int) $row['value'] : (string) $row['value'];
+
+				$return += array(
+				'buddies' => $row['buddy_list'],
+				'ignored' => $row['pm_ignore_list'],
+				'profile_views' => $row['breeze_profile_views'],
+				);
+			}
+
+			$this->_smcFunc['db_free_result']($result);
+
+			// Cache this beauty.
+			cache_put_data(Breeze::$name .'-' . $this->_tables['options']['name'] .'-'. $user, $return, 120);
 		}
 
-		$this->_smcFunc['db_free_result']($result);
+		return $return;
+	}
 
-		if ($setting && !empty($return[$setting]))
-		return $return[$setting];
+	public function insertUserSettings($array, $userID)
+	{
+		if (empty($array) || empty($userID))
+			return false;
 
-		elseif (empty($setting))
-			return $return;
+		cache_put_data(Breeze::$name .'-' . $this->_tables['options']['name'] .'-'. $userID, null, 120);
+
+		$array = (array) $array;
+		$userID = (int) $userID;
+		$inserts = array();
+
+		foreach ($array as $var => $val)
+			$inserts[] = array($userID, $var, $val);
+
+		if (!empty($inserts))
+			$this->_smcFunc['db_insert']('replace',
+				'{db_prefix}' . ($this->_tables['options']['table']),
+				array('member_id' => 'int', 'variable' => 'string-255', 'value' => 'string-65534'),
+				$inserts,
+				array('member_id')
+			);
 	}
 
 	/**

@@ -64,6 +64,40 @@
 			null
 		);
 
+		// Member options
+		$tables[] = array(
+			'table_name' => '{db_prefix}breeze_options',
+			'columns' => array(
+				array(
+					'name' => 'member_id',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
+				array(
+					'name' => 'variable',
+					'type' => 'varchar',
+					'size' => 255,
+					'default' => '',
+				),
+				array(
+					'name' => 'value',
+					'type' => 'varchar',
+					'size' => 255,
+					'default' => '',
+				),
+			),
+			'indexes' => array(
+				array(
+					'type' => 'primary',
+					'columns' => array('member_id', 'variable')
+				),
+			),
+			'if_exists' => 'ignore',
+			'error' => 'fatal',
+			'parameters' => array(),
+		);
+
 		// Comments
 		$tables[] = array(
 			'table_name' => '{db_prefix}breeze_comments',

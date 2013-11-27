@@ -65,6 +65,8 @@ class Breeze
 	public static $version = '1.0 Beta 3';
 	public static $folder = '/Breeze/';
 	public static $txtpattern = 'Breeze_';
+	public static $permissions = array('postStatus', 'postComments', 'deleteStatus', 'deleteComments',);
+	public static $userSettings = array('enable_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'enable_activityLog', 'enable_buddies', 'enable_visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention',);
 
 	// Support site feed
 	public static $supportStite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
@@ -268,7 +270,6 @@ class Breeze
 				'label' => $text->getText('user_settings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
 				'function' => 'breezeSettings',
-				'sc' => 'post',
 				'permission' => array(
 					'own' => array(
 						'profile_view_own',
