@@ -69,6 +69,12 @@ function breezeWall()
 	if (empty($context['Breeze']['user_info'][$user_info['id']]))
 		$tools->loadUserInfo($user_info['id']);
 
+	// Get the current user info.
+	if (!isset($context['member']['options']))
+		$context['member']['options'] = array();
+
+	$context['member']['options'] += $query->getUserSettings($context['member']['id']);
+
 	// Load al the JS goodies...
 	$tools->profileHeaders();
 
@@ -177,8 +183,11 @@ function breezeSettings()
 		'page_desc' => $breezeController->get('text')->getText('user_settings_enable_desc')
 	);
 
-	// Get the user setitngs.
-	$breezeController->get('query')->getUserSettings($context['member']['id']);
+	// Get the user settings.
+	if (!isset($context['member']['options']))
+		$context['member']['options'] = array();
+
+	$context['member']['options'] += $breezeController->get('query')->getUserSettings($context['member']['id']);
 
 	// Create the form
 	$form = $breezeController->get('form');

@@ -731,7 +731,15 @@ class BreezeQuery extends Breeze
 
 			// Populate the array like a boss!
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+			{
+				$return = array(
+				'buddies' => $row['buddy_list'],
+				'ignored' => $row['pm_ignore_list'],
+				'profile_views' => $row['breeze_profile_views'],
+				);
+
 				$return[$row['variable']] = is_numeric($row['value']) ? (bool) $row['value'] : (string) $row['value'];
+			}
 
 			$this->_smcFunc['db_free_result']($result);
 

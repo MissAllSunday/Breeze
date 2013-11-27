@@ -89,7 +89,7 @@
 			),
 			'indexes' => array(
 				array(
-					'type' => 'primary',
+					'type' => 'key',
 					'columns' => array('member_id')
 				),
 			),
