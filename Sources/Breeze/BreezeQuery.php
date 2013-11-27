@@ -755,6 +755,9 @@ class BreezeQuery extends Breeze
 		if (empty($array) || empty($userID))
 			return false;
 
+		// Remove the cache.
+		cache_put_data(Breeze::$name .'-' . $this->_tables['options']['name'] .'-'. $user, null, 120);
+
 		$array = (array) $array;
 		$userID = (int) $userID;
 		$inserts = array();
