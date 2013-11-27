@@ -183,6 +183,9 @@ function breezeSettings()
 	// Create the form
 	$form = $breezeController->get('form');
 
+	// Group all this values into an array.
+	$form->setFormName('breezeSettings');
+
 	// Session stuff.
 	$form->addHiddenField($context['session_var'], $context['session_id']);
 

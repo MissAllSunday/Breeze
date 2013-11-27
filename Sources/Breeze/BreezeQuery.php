@@ -720,9 +720,9 @@ class BreezeQuery extends Breeze
 			$return = array();
 
 			$result = $this->_smcFunc['db_query']('', '
-				SELECT op.' . (implode(' op', $this->_tables['options']['columns'])) . ' mem' . (implode(' mem.', $this->_tables['members']['columns'])) . '
+				SELECT op.' . (implode(', op.', $this->_tables['options']['columns'])) . ', mem.' . (implode(', mem.', $this->_tables['members']['columns'])) . '
 				FROM {db_prefix}' . ($this->_tables['options']['table']) . ' AS op
-					LEFT JOIN {db_prefix}'. ($this->_tables['members']['table']) .' ON (mem.id_member = op.member_id)
+					LEFT JOIN {db_prefix}'. ($this->_tables['members']['table']) .' AS mem ON (mem.id_member = {int:user})
 				WHERE member_id = {int:user}',
 				array(
 					'user' => $user,

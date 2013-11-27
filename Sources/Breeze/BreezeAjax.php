@@ -295,7 +295,7 @@ class BreezeAjax
 							'id' => $params['id'],)
 				);
 
-				// Parse the content
+				// Parse the content.
 				$params['body'] = $this->_parser->display($params['body']);
 
 				// The comment was created, tell the world or just those who want to know...
@@ -325,7 +325,7 @@ class BreezeAjax
 				));
 			}
 
-			// Something wrong with the server
+			// Something wrong with the server.
 			else
 				return $this->setResponse(array('owner' => $commentOwner, 'type' => 'error',));
 		}
@@ -410,10 +410,10 @@ class BreezeAjax
 		checkSession('request', '', false);
 
 		// Get the values.
-		$this->_data = Breeze::sGlobals('post');
+		$this->_data = Breeze::sGlobals('request');
 
 		// We need ALL of them.
-		if (!empty(array_diff_assoc(array_values(Breeze::$userSettings), array_keys($this->_data->getValue('default_options')))))
+		if (!empty(array_diff_assoc(array_values(Breeze::$userSettings), array_keys($this->_data->getValue('breezeSettings')))))
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
