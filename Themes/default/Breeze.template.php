@@ -345,7 +345,7 @@ function template_member_options()
 
 	// The main containing header.
 	echo '
-		<form action="', $scripturl, '?action=breezeajax;sa=usersettings;rf=profile" method="post" accept-charset="', $context['character_set'], '" name="breezeSettings" id="breezeSettings">
+		<form action="', $scripturl, '?action=breezeajax;sa=usersettings;rf=profile;u=', $context['member']['id'] ,'" method="post" accept-charset="', $context['character_set'], '" name="breezeSettings" id="breezeSettings">
 			<div class="cat_bar">
 				<h3 class="catbg">
 					<span class="ie6_header floatleft">

@@ -412,14 +412,17 @@ class BreezeAjax
 		// Get the values.
 		$this->_data = Breeze::sGlobals('request');
 
-		// We need ALL of them.
-		if (!empty(array_diff_assoc(array_values(Breeze::$userSettings), array_keys($this->_data->getValue('breezeSettings')))))
-			return $this->setResponse(array(
-				'message' => 'wrong_values',
-				'type' => 'error',
-				'extra' => array('area' => 'breezesettings',),
-				'owner' => $profile_owner,
-			));
+		// Do the insert already!
+		$this->_query->insertUserSettings($this->_data->getValue('breezeSettings'), $this->_data->getValue('u'));
+
+		// Done! set the redirect.
+		return $this->setResponse(array(
+			'type' => 'success',
+			'message' => 'updated_settings',
+			'owner' => $this->_data->getValue('u'),
+			'extra' => array('area' => 'breezesettings',),
+		));
+
 	}
 
 	/**

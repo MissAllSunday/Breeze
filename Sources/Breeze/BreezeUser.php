@@ -183,7 +183,7 @@ function breezeSettings()
 	// Create the form
 	$form = $breezeController->get('form');
 
-	// Group all this values into an array.
+	// Group all these values into an array.
 	$form->setFormName('breezeSettings');
 
 	// Session stuff.
