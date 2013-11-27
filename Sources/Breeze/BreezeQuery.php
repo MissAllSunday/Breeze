@@ -732,13 +732,13 @@ class BreezeQuery extends Breeze
 			// Populate the array like a boss!
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 			{
-				$return = array(
+				$return[$row['variable']] = is_numeric($row['value']) ? (int) $row['value'] : (string) $row['value'];
+
+				$return += array(
 				'buddies' => $row['buddy_list'],
 				'ignored' => $row['pm_ignore_list'],
 				'profile_views' => $row['breeze_profile_views'],
 				);
-
-				$return[$row['variable']] = is_numeric($row['value']) ? (bool) $row['value'] : (string) $row['value'];
 			}
 
 			$this->_smcFunc['db_free_result']($result);
@@ -755,8 +755,7 @@ class BreezeQuery extends Breeze
 		if (empty($array) || empty($userID))
 			return false;
 
-		// Remove the cache.
-		cache_put_data(Breeze::$name .'-' . $this->_tables['options']['name'] .'-'. $user, null, 120);
+		cache_put_data(Breeze::$name .'-' . $this->_tables['options']['name'] .'-'. $userID, null, 120);
 
 		$array = (array) $array;
 		$userID = (int) $userID;
@@ -766,7 +765,7 @@ class BreezeQuery extends Breeze
 			$inserts[] = array($userID, $var, $val);
 
 		if (!empty($inserts))
-			$this->_smcFunc['db_insert']('insert',
+			$this->_smcFunc['db_insert']('replace',
 				'{db_prefix}' . ($this->_tables['options']['table']),
 				array('member_id' => 'int', 'variable' => 'string-255', 'value' => 'string-65534'),
 				$inserts,

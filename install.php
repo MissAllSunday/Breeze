@@ -89,8 +89,8 @@
 			),
 			'indexes' => array(
 				array(
-					'type' => 'key',
-					'columns' => array('member_id')
+					'type' => 'primary',
+					'columns' => array('member_id', 'variable')
 				),
 			),
 			'if_exists' => 'ignore',
