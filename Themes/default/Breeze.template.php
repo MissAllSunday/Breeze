@@ -58,7 +58,7 @@ function template_user_wall()
 				<li class="buddies"><a href="#tab-posts" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_posts'] ,'</span></a></li>';
 
 	// Does recent activity is enable?
-	if (!empty($context['member']['breezeOptions']['enable_activityLog']))
+	if (!empty($context['Breeze']['settings']['owner']['enable_activityLog']))
 		echo '
 				<li class="buddies"><a href="#tab-activity" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_activity'] ,'</span></a></li>';
 
@@ -112,7 +112,7 @@ function template_user_wall()
 		</div>';
 
 	// Activity
-	if (!empty($context['member']['breezeOptions']['enable_activityLog']))
+	if (!empty($context['Breeze']['settings']['owner']['enable_activityLog']))
 	{
 		echo '
 		<div id="tab-activity" class="content">';

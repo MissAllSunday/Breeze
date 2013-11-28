@@ -132,59 +132,6 @@ class Breeze
 	}
 
 	/**
-	 * Breeze::headersHook()
-	 *
-	 * Static method used to embed the JavaScript and other bits of code on every page inside SMF.
-	 * @return void
-	 */
-	public static function headersHook()
-	{
-		global $context, $user_info, $breezeController;
-		static $header_done = false;
-
-		// Don't do anything if we are in SSI world
-		if (SMF == 'SSI')
-			return false;
-
-		if (empty($breezeController))
-			$breezeController = new BreezeController();
-
-		// Prevent this from showing twice
-		if (!$header_done)
-		{
-			$breezeSettings = $breezeController->get('settings');
-			$breezeGlobals = Breeze::sGlobals('get');
-			$breezeText = $breezeController->get('text');
-
-			// Define some variables for the ajax stuff
-			$jsVars = array('feed_error_message', 'error_server', 'error_wrong_values', 'success_published', 'success_published_comment', 'error_empty', 'success_delete_status', 'success_delete_comment', 'confirm_delete', 'confirm_yes', 'confirm_cancel', 'error_already_deleted_status', 'error_already_deleted_comment', 'error_already_deleted_noti', 'error_already_marked_noti', 'cannot_postStatus', 'cannot_postComments', 'error_no_valid_action', 'error_no_access', 'success_noti_unmarkasread_after', 'success_noti_markasread_after', 'error_noti_markasreaddeleted_after', 'error_noti_markasreaddeleted', 'success_noti_delete_after', 'success_noti_visitors_clean',  'success_notiMulti_delete_after', 'success_notiMulti_markasread_after', 'success_notiMulti_unmarkasread_after',);
-
-			$context['html_headers'] .= '
-			<script type="text/javascript"><!-- // --><![CDATA[';
-
-			foreach ($jsVars as $var)
-				$context['html_headers'] .= '
-				var breeze_'. $var .' = '. JavaScriptEscape($breezeText->getText($var));
-
-			$context['html_headers'] .= '
-			// ]]></script>';
-
-			// Does the admin wants to add more actions?
-			if ($breezeSettings->enable('allowedActions'))
-				Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $breezeSettings->getSetting('allowedActions')));
-
-			// Stuff for the notifications, don't show this if we aren't on a specified action
-			if (empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
-			{
-				$notifications = $breezeController->get('notifications');
-				$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
-			}
-
-			$header_done = true;
-		}
-	}
-
-	/**
 	 * Breeze::permissions()
 	 *
 	 * There is only permissions to post new status and comments on any profile because people needs to be able to post in their own profiles by default the same goes for deleting, people are able to delete their own status/comments on their own profile page.
@@ -346,7 +293,7 @@ class Breeze
 		Breeze::who();
 
 		// Notifications call
-		Breeze::headersHook();
+		Breeze::notiHeaders();
 	}
 
 	/**
@@ -442,6 +389,69 @@ class Breeze
 				'type_id' => 0,
 				'second_type' => 'register',
 			));
+	}
+
+	/**
+	 * Breeze::notiHeaders()
+	 *
+	 * Static method used to embed the JavaScript and other bits of code on every page inside SMF.
+	 * @return void
+	 */
+	public static function notiHeaders()
+	{
+		global $context, $user_info, $breezeController, $settings;
+		static $header_done = false;
+
+		// Don't do anything if we are in SSI world
+		if (SMF == 'SSI')
+			return false;
+
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
+		// Prevent this from showing twice
+		if (!$header_done)
+		{
+			$breezeSettings = $breezeController->get('settings');
+			$breezeGlobals = Breeze::sGlobals('get');
+			$breezeText = $breezeController->get('text');
+
+			// Define some variables for the ajax stuff
+			$jsVars = array('feed_error_message', 'error_server', 'error_wrong_values', 'success_published', 'success_published_comment', 'error_empty', 'success_delete_status', 'success_delete_comment', 'confirm_delete', 'confirm_yes', 'confirm_cancel', 'error_already_deleted_status', 'error_already_deleted_comment', 'error_already_deleted_noti', 'error_already_marked_noti', 'cannot_postStatus', 'cannot_postComments', 'error_no_valid_action', 'error_no_access', 'success_noti_unmarkasread_after', 'success_noti_markasread_after', 'error_noti_markasreaddeleted_after', 'error_noti_markasreaddeleted', 'success_noti_delete_after', 'success_noti_visitors_clean',  'success_notiMulti_delete_after', 'success_notiMulti_markasread_after', 'success_notiMulti_unmarkasread_after',);
+
+			$context['html_headers'] .= '
+			<script type="text/javascript"><!-- // --><![CDATA[';
+
+			foreach ($jsVars as $var)
+				$context['html_headers'] .= '
+				var breeze_'. $var .' = '. JavaScriptEscape($breezeText->getText($var));
+
+			$context['html_headers'] .= '
+			// ]]></script>';
+
+			// Does the admin wants to add more actions?
+			if ($breezeSettings->enable('allowedActions'))
+				Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $breezeSettings->getSetting('allowedActions')));
+
+			// Stuff for the notifications, don't show this if we aren't on a specified action
+			if (empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
+			{
+				$notifications = $breezeController->get('notifications');
+				$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
+			}
+
+			// Load the notification JS files.
+			$context['insert_after_template'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.hashchange.min.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>';
+
+			$header_done = true;
+		}
 	}
 
 	/**

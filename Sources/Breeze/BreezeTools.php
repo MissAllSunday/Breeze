@@ -281,25 +281,19 @@ class BreezeTools
 	/**
 	 * Breeze::profileHeaders()
 	 *
-	 * Static method, a helper method to load JavaScript code for the profile and wall page
+	 * A helper method to load JavaScript code for the profile and wall page.
 	 * @see BreezeTools
 	 * @return void
 	 */
-	public function profileHeaders()
+	public function profileHeaders($userSettings)
 	{
 		global $context, $settings, $user_info;
 		static $profile_header = false;
-
-		if (empty($breezeController))
-			$breezeController = new BreezeController();
 
 		$breezeGlobals = Breeze::sGlobals('get');
 
 		if (!$profile_header)
 		{
-			// Get this user's settings.
-			$context['member']['breezeOptions'] = $query->getUserSettings($context['member']['id']);
-
 			$context['html_headers'] .= '
 			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
 			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />';
@@ -327,13 +321,13 @@ class BreezeTools
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
 			<script type="text/javascript"><!-- // --><![CDATA[
 				var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
-				var breeze_how_many_mentions = '. (JavaScriptEscape(!empty($context['member']['breezeOptions']['how_many_mentions']) ? $context['member']['options']['Breeze_how_many_mentions'] : 5)) .';
+				var breeze_how_many_mentions = '. (JavaScriptEscape(!empty($userSettings['how_many_mentions']) ? $userSettings['how_many_mentions'] : 5)) .';
 				var breeze_session_id = ' . JavaScriptEscape($context['session_id']) . ';
 				var breeze_session_var = ' . JavaScriptEscape($context['session_var']) . ';
 			// ]]></script>';
 
 			// Does the user wants to use infinite scroll?
-			if (!empty($context['member']['options']['Breeze_infinite_scroll']))
+			if (!empty($userSettings['load_more']))
 				$context['insert_after_template'] .= '
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeScroll.js"></script>';
 

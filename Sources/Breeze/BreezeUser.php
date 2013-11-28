@@ -76,9 +76,8 @@ function breezeWall()
 		'log' => false,
 		'buddiesLog' => false,
 		'commingFrom' => 'profile',
-		'settings' => array();
+		'settings' => array(),
 	);
-
 
 	// Get user settings.
 	$context['Breeze']['settings']['owner'] = $query->getUserSettings($context['member']['id']);
@@ -92,7 +91,7 @@ function breezeWall()
 		$context['Breeze']['settings']['visitor'] = $query->getUserSettings($user_info['id']);
 
 	// Load al the JS goodies...
-	$tools->profileHeaders();
+	$tools->profileHeaders($context['Breeze']['settings']['visitor']);
 
 	// Set all the page stuff
 	$context['sub_template'] = 'user_wall';
