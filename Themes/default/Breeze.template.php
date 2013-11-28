@@ -55,8 +55,14 @@ function template_user_wall()
 		<div id="Breeze_tabs">
 			<ul class="dropmenu breezeTabs">
 				<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>
-				<li class="buddies"><a href="#tab-activity" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_activity'] ,'</span></a></li>
-				<li class="buddies"><a href="#tab-posts" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_posts'] ,'</span></a></li>
+				<li class="buddies"><a href="#tab-posts" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_posts'] ,'</span></a></li>';
+
+	// Does recent activity is enable?
+	if (!empty($context['member']['breezeOptions']['enable_activityLog']))
+		echo '
+				<li class="buddies"><a href="#tab-activity" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_activity'] ,'</span></a></li>';
+
+	echo '
 			</ul>
 		</div>
 		<p class="clear" />';
@@ -75,7 +81,7 @@ function template_user_wall()
 		</div>';
 
 	// This is the status box,  O RLY?
-	if (!empty($context['Breeze']['permissions']['post_status']))
+	if (!empty($context['Breeze']['permissions']['postStatus']))
 			echo '
 			<div class="breeze_user_inner windowbg">
 				<span class="topslice"><span></span></span>
@@ -106,7 +112,16 @@ function template_user_wall()
 		</div>';
 
 	// Activity
+	if (!empty($context['member']['breezeOptions']['enable_activityLog']))
+	{
+		echo '
+		<div id="tab-activity" class="content">';
 
+		var_dump($context['Breeze']['log']);
+
+		echo '
+		</div>';
+	}
 	// Activity end
 
 

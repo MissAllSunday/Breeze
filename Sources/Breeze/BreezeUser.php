@@ -69,11 +69,8 @@ function breezeWall()
 	if (empty($context['Breeze']['user_info'][$user_info['id']]))
 		$tools->loadUserInfo($user_info['id']);
 
-	// Get the current user info.
-	if (!isset($context['member']['options']))
-		$context['member']['options'] = array();
-
-	$context['member']['options'] += $query->getUserSettings($context['member']['id']);
+	// Get the current user's settings.
+	$context['member']['breezeOptions'] = $query->getUserSettings($context['member']['id']);
 
 	// Load al the JS goodies...
 	$tools->profileHeaders();
@@ -126,7 +123,7 @@ function breezeWall()
 	$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name']);
 
 	// Get the profile views
-	if (!$user_info['is_guest'] && !empty($context['member']['options']['enable_visitors_tab']))
+	if (!$user_info['is_guest'] && !empty($context['member']['breezeOptions']['enable_visitors_tab']))
 	{
 		$context['Breeze']['views'] = breezeTrackViews();
 
@@ -136,12 +133,12 @@ function breezeWall()
 	}
 
 	// Show buddies only if there is something to show
-	if (!empty($context['member']['options']['enable_buddies_tab']) && !empty($context['member']['buddies']))
+	if (!empty($context['member']['breezeOptions']['enable_buddies_tab']) && !empty($context['member']['buddies']))
 		$usersToLoad = $usersToLoad + $context['member']['buddies'];
 
 	// Show this user recent activity
-	// some check here
-	$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
+	if (!empty($context['member']['breezeOptions']['enable_activityLog']))
+		$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
 
 	// Need to pass some vars to the browser :(
 	$context['html_headers'] .= '
@@ -596,15 +593,15 @@ function breezeCheckPermissions()
 
 	// This user cannot see his/her own profile and cannot see any profile either
 	if (!allowedTo('profile_view_own') && !allowedTo('profile_view_any'))
-		redirectexit('action=profile;area=static;u='.$context['member']['id']);
+		redirectexit('action=profile;area=static;u='. $context['member']['id']);
 
 	// This user cannot see his/her own profile and it's viewing his/her own profile
 	if (!allowedTo('profile_view_own') && $user_info['id'] == $context['member']['id'])
-		redirectexit('action=profile;area=static;u='.$context['member']['id']);
+		redirectexit('action=profile;area=static;u='. $context['member']['id']);
 
 	// This user cannot see any profile and it's  viewing someone else's wall
 	if (!allowedTo('profile_view_any') && $user_info['id'] != $context['member']['id'])
-		redirectexit('action=profile;area=static;u='.$context['member']['id']);
+		redirectexit('action=profile;area=static;u='. $context['member']['id']);
 
 	// Get the ignored list. @todo turn this into a function or something.
 

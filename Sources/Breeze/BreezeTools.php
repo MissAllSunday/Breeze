@@ -297,6 +297,8 @@ class BreezeTools
 
 		if (!$profile_header)
 		{
+			// Get this user's settings.
+			$context['member']['breezeOptions'] = $query->getUserSettings($context['member']['id']);
 
 			$context['html_headers'] .= '
 			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
