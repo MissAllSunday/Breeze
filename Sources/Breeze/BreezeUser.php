@@ -191,10 +191,7 @@ function breezeSettings()
 	);
 
 	// Get the user settings.
-	if (!isset($context['member']['options']))
-		$context['member']['options'] = array();
-
-	$context['member']['options'] += $breezeController->get('query')->getUserSettings($context['member']['id']);
+	$userSettings = $breezeController->get('query')->getUserSettings($context['member']['id']);
 
 	// Create the form
 	$form = $breezeController->get('form');
@@ -208,51 +205,51 @@ function breezeSettings()
 	// Per user master setting
 	$form->addCheckBox(
 		'enable_wall',
-		!empty($context['member']['options']['enable_wall']) ? true : false
+		!empty($userSettings['enable_wall']) ? true : false
 	);
 
 	// Pagination
 	$form->addText(
 		'pagination_number',
-		!empty($context['member']['options']['pagination_number']) ? $context['member']['options']['pagination_number'] : 0,
+		!empty($userSettings['pagination_number']) ? $context['member']['options']['pagination_number'] : 0,
 		3,3
 	);
 
 	// Add the load more button.
 	$form->addCheckBox(
 		'load_more',
-		!empty($context['member']['options']['load_more']) ? true : false
+		!empty($userSettings['load_more']) ? true : false
 	);
 
 	// How many options to be displayed when mentioning
 	$form->addText(
 		'how_many_mentions',
-		!empty($context['member']['options']['how_many_mentions']) ? $context['member']['options']['how_many_mentions'] : 0,
+		!empty($userSettings['how_many_mentions']) ? $context['member']['options']['how_many_mentions'] : 0,
 		3,3
 	);
 
 	// Allow ignored users
 	$form->addCheckBox(
 		'kick_ignored',
-		!empty($context['member']['options']['kick_ignored']) ? true : false
+		!empty($userSettings['kick_ignored']) ? true : false
 	);
 
 	// Activity Log.
 	$form->addCheckBox(
 		'enable_activityLog',
-		!empty($context['member']['options']['enable_activityLog']) ? true : false
+		!empty($userSettings['enable_activityLog']) ? true : false
 	);
 
 	// Buddies
 	$form->addCheckBox(
 		'enable_buddies',
-		!empty($context['member']['options']['enable_buddies']) ? true : false
+		!empty($userSettings['enable_buddies']) ? true : false
 	);
 
 	// Profile visitors
 	$form->addCheckBox(
 		'enable_visitors',
-		!empty($context['member']['options']['enable_visitors']) ? true : false
+		!empty($userSettings['enable_visitors']) ? true : false
 	);
 
 	// Visitors timeframe
@@ -261,19 +258,19 @@ function breezeSettings()
 		array(
 			'Hour' => array(
 				'visitors_timeframe_hour',
-				!empty($context['member']['options']['visitors_timeframe']) && $context['member']['options']['visitors_timeframe'] == 'Hour' ? 'selected' : ''
+				!empty($userSettings['visitors_timeframe']) && $context['member']['options']['visitors_timeframe'] == 'Hour' ? 'selected' : ''
 			),
 			'Day' => array(
 				'visitors_timeframe_day',
-				!empty($context['member']['options']['visitors_timeframe']) && $context['member']['options']['visitors_timeframe'] == 'Day' ? 'selected' : ''
+				!empty($userSettings['visitors_timeframe']) && $context['member']['options']['visitors_timeframe'] == 'Day' ? 'selected' : ''
 			),
 			'Week' => array(
 				'visitors_timeframe_week',
-				!empty($context['member']['options']['visitors_timeframe']) && $context['member']['options']['visitors_timeframe'] == 'Week' ? 'selected' : ''
+				!empty($userSettings['visitors_timeframe']) && $context['member']['options']['visitors_timeframe'] == 'Week' ? 'selected' : ''
 			),
 			'Month' => array(
 				'visitors_timeframe_month',
-				!empty($context['member']['options']['visitors_timeframe']) && $context['member']['options']['visitors_timeframe'] == 'Month' ? 'selected' : ''
+				!empty($userSettings['visitors_timeframe']) && $context['member']['options']['visitors_timeframe'] == 'Month' ? 'selected' : ''
 			),
 		)
 	);
@@ -287,7 +284,7 @@ function breezeSettings()
 	// How many seconds before closing the notifications?
 	$form->addText(
 		'clear_noti',
-		!empty($context['member']['options']['clear_noti']) ? $context['member']['options']['clear_noti'] : 0,
+		!empty($userSettings['clear_noti']) ? $context['member']['options']['clear_noti'] : 0,
 		3,
 		3
 	);
@@ -298,13 +295,13 @@ function breezeSettings()
 	// Noti on comment
 	$form->addCheckBox(
 		'noti_on_comment',
-		!empty($context['member']['options']['noti_on_comment']) ? true : false
+		!empty($userSettings['noti_on_comment']) ? true : false
 	);
 
 	// Noti on mention
 	$form->addCheckBox(
 		'noti_on_mention',
-		!empty($context['member']['options']['noti_on_mention']) ? true : false
+		!empty($userSettings['noti_on_mention']) ? true : false
 	);
 
 	// Send the form to the template
