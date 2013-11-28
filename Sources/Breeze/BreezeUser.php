@@ -69,12 +69,6 @@ function breezeWall()
 	if (empty($context['Breeze']['user_info'][$user_info['id']]))
 		$tools->loadUserInfo($user_info['id']);
 
-	// Get the current user's settings.
-	$context['member']['breezeOptions'] = $query->getUserSettings($context['member']['id']);
-
-	// Load al the JS goodies...
-	$tools->profileHeaders();
-
 	// Default values
 	$status = array();
 	$context['Breeze'] = array(
@@ -82,7 +76,23 @@ function breezeWall()
 		'log' => false,
 		'buddiesLog' => false,
 		'commingFrom' => 'profile',
+		'settings' => array();
 	);
+
+
+	// Get user settings.
+	$context['Breeze']['settings']['owner'] = $query->getUserSettings($context['member']['id']);
+
+	// Does the current user is also the owner?
+	if ($context['member']['is_owner'])
+		$context['Breeze']['settings']['visitor'] = $context['Breeze']['settings']['owner'];
+
+	// Nope? :(
+	else
+		$context['Breeze']['settings']['visitor'] = $query->getUserSettings($user_info['id']);
+
+	// Load al the JS goodies...
+	$tools->profileHeaders();
 
 	// Set all the page stuff
 	$context['sub_template'] = 'user_wall';
