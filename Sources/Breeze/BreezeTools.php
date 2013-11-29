@@ -303,6 +303,7 @@ class BreezeTools
 			$context['insert_after_template'] .= '
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>
 			<script type="text/javascript"><!-- // --><![CDATA[
 				var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
 				var breeze_how_many_mentions = '. (JavaScriptEscape(!empty($userSettings['how_many_mentions']) ? $userSettings['how_many_mentions'] : 5)) .';

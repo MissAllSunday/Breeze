@@ -114,9 +114,6 @@ function Breeze_Admin_Main()
 
 	// Get the credits
 	$context['Breeze']['credits'] = Breeze::credits();
-
-	// Headers
-	Breeze::headersHook('admin');
 }
 
 function Breeze_Admin_Settings()
