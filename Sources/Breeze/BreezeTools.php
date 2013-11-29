@@ -229,6 +229,8 @@ class BreezeTools
 				var breeze_how_many_mentions = '. (JavaScriptEscape(!empty($userSettings['how_many_mentions']) ? $userSettings['how_many_mentions'] : 5)) .';
 				var breeze_session_id = ' . JavaScriptEscape($context['session_id']) . ';
 				var breeze_session_var = ' . JavaScriptEscape($context['session_var']) . ';
+				var breeze_loadMore = '. JavaScriptEscape($this->text->getText('general_load_more')) .';
+				var breeze_loadMore_no = '. JavaScriptEscape($this->text->getText('general_load_more_no')) .';
 			// ]]></script>';
 
 			// Does the user wants to use infinite scroll?

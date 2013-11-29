@@ -100,6 +100,11 @@ function template_user_wall()
 	// Print out the status if there are any.
 	breeze_status($context['member']['status']);
 
+	// An empty div to append the loaded status via AJAX.
+	echo '
+			<div id="breezeAppendTo" style="display:hide;">
+			</div>';
+
 	// Pagination
 	if (!empty($context['page_index']))
 		echo '

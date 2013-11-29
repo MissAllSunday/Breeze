@@ -110,7 +110,7 @@ function breezeWall()
 		$context['Breeze']['permissions'][$p] = $context['member']['is_owner'] ? true : allowedTo('breeze_'. $p);
 
 	// Set up some vars for pagination
-	$maxIndex = !empty($context['member']['options']['pagination_number']) ? $context['member']['options']['pagination_number'] : 5;
+	$maxIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;
 	$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;
 
 	// Load all the status
@@ -132,7 +132,7 @@ function breezeWall()
 	$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name']);
 
 	// Get the profile views
-	if (!$user_info['is_guest'] && !empty($context['member']['breezeOptions']['enable_visitors_tab']))
+	if (!$user_info['is_guest'] && !empty($context['Breeze']['settings']['owner']['enable_visitors_tab']))
 	{
 		$context['Breeze']['views'] = breezeTrackViews();
 
@@ -142,11 +142,11 @@ function breezeWall()
 	}
 
 	// Show buddies only if there is something to show
-	if (!empty($context['member']['breezeOptions']['enable_buddies_tab']) && !empty($context['member']['buddies']))
+	if (!empty($context['Breeze']['settings']['owner']['enable_buddies_tab']) && !empty($context['member']['buddies']))
 		$usersToLoad = $usersToLoad + $context['member']['buddies'];
 
 	// Show this user recent activity
-	if (!empty($context['member']['breezeOptions']['enable_activityLog']))
+	if (!empty($context['Breeze']['settings']['owner']['enable_activityLog']))
 		$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
 
 	// Need to pass some vars to the browser :(
@@ -157,6 +157,7 @@ function breezeWall()
 		window.breeze_maxIndex = ' . $maxIndex . ';
 		window.breeze_userID = ' . $user_info['id'] . ';
 		window.breeze_totalItems = ' . $data['count'] . ';
+		window.breeze_loadMore = ' . (!empty($context['Breeze']['settings']['visitor']['load_more']) ? 'true' : 'false') . ';
 	// ]]></script>';
 
 	// Lastly, load all the users data from this bunch of user IDs
@@ -176,8 +177,6 @@ function breezeSettings()
 
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
-
-	$breezeController->get('tools')->profileHeaders();
 
 	// Set the page title
 	$context['page_title'] = $breezeController->get('text')->getText('user_settings_name');
@@ -210,7 +209,7 @@ function breezeSettings()
 	// Pagination.
 	$form->addText(
 		'pagination_number',
-		!empty($userSettings['pagination_number']) ? $context['member']['options']['pagination_number'] : 0,
+		!empty($userSettings['pagination_number']) ? $userSettings['pagination_number'] : 0,
 		3,3
 	);
 
@@ -223,7 +222,7 @@ function breezeSettings()
 	// How many options to be displayed when mentioning.
 	$form->addText(
 		'how_many_mentions',
-		!empty($userSettings['how_many_mentions']) ? $context['member']['options']['how_many_mentions'] : 0,
+		!empty($userSettings['how_many_mentions']) ? $userSettings['how_many_mentions'] : 0,
 		3,3
 	);
 
@@ -257,19 +256,19 @@ function breezeSettings()
 		array(
 			'Hour' => array(
 				'visitors_timeframe_hour',
-				!empty($userSettings['visitors_timeframe']) && $context['member']['options']['visitors_timeframe'] == 'Hour' ? 'selected' : ''
+				!empty($userSettings['visitors_timeframe']) && $userSettings['visitors_timeframe'] == 'Hour' ? 'selected' : ''
 			),
 			'Day' => array(
 				'visitors_timeframe_day',
-				!empty($userSettings['visitors_timeframe']) && $context['member']['options']['visitors_timeframe'] == 'Day' ? 'selected' : ''
+				!empty($userSettings['visitors_timeframe']) && $userSettings['visitors_timeframe'] == 'Day' ? 'selected' : ''
 			),
 			'Week' => array(
 				'visitors_timeframe_week',
-				!empty($userSettings['visitors_timeframe']) && $context['member']['options']['visitors_timeframe'] == 'Week' ? 'selected' : ''
+				!empty($userSettings['visitors_timeframe']) && $userSettings['visitors_timeframe'] == 'Week' ? 'selected' : ''
 			),
 			'Month' => array(
 				'visitors_timeframe_month',
-				!empty($userSettings['visitors_timeframe']) && $context['member']['options']['visitors_timeframe'] == 'Month' ? 'selected' : ''
+				!empty($userSettings['visitors_timeframe']) && $userSettings['visitors_timeframe'] == 'Month' ? 'selected' : ''
 			),
 		)
 	);
@@ -283,7 +282,7 @@ function breezeSettings()
 	// How many seconds before closing the notifications?
 	$form->addText(
 		'clear_noti',
-		!empty($userSettings['clear_noti']) ? $context['member']['options']['clear_noti'] : 0,
+		!empty($userSettings['clear_noti']) ? $userSettings['clear_noti'] : 0,
 		3,
 		3
 	);

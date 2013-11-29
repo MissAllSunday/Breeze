@@ -36,27 +36,33 @@
 // Infinite scrolling
 jQuery(document).ready(function(){
 
-	var numberOfEvents = 0;
+	// Fires up the load more thingy
+	if (window.breeze_loadMore){
 
-	// Fires up the infinite scrolling thingy
-	showMoarButton();
+		var numberOfEvents = 0;
+
+		// Hide the normal pagination.
+		jQuery('.pagelinks').hide();
+
+		showMoarButton();
+	}
 
 	function showMoarButton()
 	{
-		jQuery('<div/>', {
-			id: 'tempDIV',
-			class: 'clear',
-			style: 'margin:auto;text-align:center;padding:5px;width: 62%;',
-		}).appendTo('#profileview').show();
-
-		// And also a nice button...
+		// Add a nice button...
 		jQuery('<button/>', {
 			id: 'loadMoar',
 			class: 'clear',
-			text: 'Load moar!!',
+			text: breeze_loadMore,
 			click: function () {
 
 				numberOfEvents++;
+
+				jQuery('<div/>', {
+					id: 'tempDIV_'+ numberOfEvents,
+					class: 'clear',
+					style: '',
+				}).appendTo('#breezeAppendTo').hide();
 
 				jQuery.ajax(
 				{
@@ -68,17 +74,19 @@ jQuery(document).ready(function(){
 					{
 						// The server response as a JSON object
 						if(html.type == 'success'){
+
+							// There are no more data to load!
 							if (html.data != 'end'){
-								jQuery('.breeze_status').append(html.data);
+								jQuery('#tempDIV_'+ numberOfEvents).append(html.data).fadeIn('slow', 'linear', function(){});
 							}
 
 							else{
 								noty({
-									text: 'You Win the Internet!',
+									text: breeze_loadMore_no,
 									timeout: 3500,
 									type: 'success',
 								});
-								jQuery('tempDIV').hide();
+								jQuery('#loadMoar').fadeOut('slow');
 								return;
 							}
 						}
@@ -100,7 +108,7 @@ jQuery(document).ready(function(){
 					},
 				});
 			},
-		}).appendTo('#tempDIV');
+		}).appendTo('#tab-wall');
 	}
 
 	// Check if we are near the end of the page
@@ -110,5 +118,6 @@ jQuery(document).ready(function(){
 		 var height = jQuery(document).height();
 
 		 return Math.round(100*bottom/height);
+
 	}
 });
