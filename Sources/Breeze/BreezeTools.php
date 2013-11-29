@@ -294,31 +294,15 @@ class BreezeTools
 
 		if (!$profile_header)
 		{
-			$context['html_headers'] .= '
-			<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
-			<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />';
 
 			// DUH! winning!
 			if ($this->settings->enable('admin_settings_enable') && ($breezeGlobals->getValue('action') == 'profile' || $breezeGlobals->getValue('action') == 'wall'))
 				$context['insert_after_template'] .= Breeze::who(true);
 
-			// Let's load jquery from CDN only if it hasn't been loaded yet
-			$context['html_headers'] .= '
-			<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
-			<link rel="stylesheet" type="text/css" href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css"/>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>';
-
 			// Generic JS vars and files
 			$context['insert_after_template'] .= '
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.hashchange.min.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
 			<script type="text/javascript"><!-- // --><![CDATA[
 				var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
 				var breeze_how_many_mentions = '. (JavaScriptEscape(!empty($userSettings['how_many_mentions']) ? $userSettings['how_many_mentions'] : 5)) .';
@@ -330,10 +314,6 @@ class BreezeTools
 			if (!empty($userSettings['load_more']))
 				$context['insert_after_template'] .= '
 			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeScroll.js"></script>';
-
-			// Load breeze.js until everyone else is loaded
-			$context['html_headers'] .= '
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
 
 			$profile_header = true;
 		}

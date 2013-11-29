@@ -192,7 +192,7 @@ function breezeSettings()
 	// Get the user settings.
 	$userSettings = $breezeController->get('query')->getUserSettings($context['member']['id']);
 
-	// Create the form
+	// Create the form.
 	$form = $breezeController->get('form');
 
 	// Group all these values into an array.
@@ -201,13 +201,13 @@ function breezeSettings()
 	// Session stuff.
 	$form->addHiddenField($context['session_var'], $context['session_id']);
 
-	// Per user master setting
+	// Per user master setting.
 	$form->addCheckBox(
 		'enable_wall',
 		!empty($userSettings['enable_wall']) ? true : false
 	);
 
-	// Pagination
+	// Pagination.
 	$form->addText(
 		'pagination_number',
 		!empty($userSettings['pagination_number']) ? $context['member']['options']['pagination_number'] : 0,
@@ -220,14 +220,14 @@ function breezeSettings()
 		!empty($userSettings['load_more']) ? true : false
 	);
 
-	// How many options to be displayed when mentioning
+	// How many options to be displayed when mentioning.
 	$form->addText(
 		'how_many_mentions',
 		!empty($userSettings['how_many_mentions']) ? $context['member']['options']['how_many_mentions'] : 0,
 		3,3
 	);
 
-	// Allow ignored users
+	// Allow ignored users.
 	$form->addCheckBox(
 		'kick_ignored',
 		!empty($userSettings['kick_ignored']) ? true : false
@@ -239,19 +239,19 @@ function breezeSettings()
 		!empty($userSettings['enable_activityLog']) ? true : false
 	);
 
-	// Buddies
+	// Buddies.
 	$form->addCheckBox(
 		'enable_buddies',
 		!empty($userSettings['enable_buddies']) ? true : false
 	);
 
-	// Profile visitors
+	// Profile visitors.
 	$form->addCheckBox(
 		'enable_visitors',
 		!empty($userSettings['enable_visitors']) ? true : false
 	);
 
-	// Visitors timeframe
+	// Visitors timeframe.
 	$form->addSelect(
 		'visitors_timeframe',
 		array(
