@@ -55,12 +55,12 @@ function template_user_wall()
 		<div id="Breeze_tabs">
 			<ul class="dropmenu breezeTabs">
 				<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>
-				<li class="buddies"><a href="#tab-posts" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_posts'] ,'</span></a></li>';
+				<li class="posts"><a href="#tab-posts" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_posts'] ,'</span></a></li>';
 
 	// Does recent activity is enable?
 	if (!empty($context['Breeze']['settings']['owner']['enable_activityLog']))
 		echo '
-				<li class="buddies"><a href="#tab-activity" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_activity'] ,'</span></a></li>';
+				<li class="activity"><a href="#tab-activity" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_activity'] ,'</span></a></li>';
 
 	echo '
 			</ul>
@@ -126,7 +126,11 @@ function template_user_wall()
 
 
 	// Posts
+		echo '
+		<div id="tab-posts" class="content">';
 
+		echo '
+		</div>';
 	// Posts end
 
 
