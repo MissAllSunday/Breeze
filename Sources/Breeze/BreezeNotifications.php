@@ -48,6 +48,7 @@ class BreezeNotifications
 	protected $_usersData = array();
 	public $types = array();
 	protected $_currentUser;
+	protected $_currentUserSettings = array();
 	protected $_messages = array();
 	protected $loadedUsers = array();
 
@@ -79,6 +80,9 @@ class BreezeNotifications
 		$this->_query = $query;
 		$this->_tools = $tools;
 		$this->_text = $text;
+
+		// Get the current user preferences.
+		$this->_currentUserSettings = $this->_query->getUserSettings($this->_currentUser);
 	}
 
 	public function getByReceiver($user)
@@ -181,17 +185,6 @@ class BreezeNotifications
 
 		// Load the users data.
 		$this->loadedUsers = $this->_query->loadMinimalData($this->_all['users']);
-
-		// If we aren't in the profile then we must call a function in a source file far far away...
-		if (empty($context['member']['options']))
-		{
-			global $sourcedir;
-
-			require_once($sourcedir . '/Profile-Modify.php');
-
-			// Call and set $context['member']['options']
-			loadThemeOptions($this->_currentUser); // @todo don't depend on this one, build your own.
-		}
 
 		// Do this if there is actually something to show
 		if (!empty($this->_all['data']))
@@ -338,7 +331,7 @@ class BreezeNotifications
 			afterClose: function() {
 				jQuery.noty.closeAll();
 			},
-			'. (!empty($context['member']['options']['clear_noti']) ?  'onShow: function() {window.setTimeout("jQuery.noty.closeAll()", '. $context['member']['options']['clear_noti'] * 1000 .');},' : '') .'
+			'. (!empty($this->_currentUserSettings['clear_noti']) ?  'onShow: function() {window.setTimeout("jQuery.noty.closeAll()", '. $this->_currentUserSettings['clear_noti'] * 1000 .');},' : '') .'
 		},
 	});
 ';
