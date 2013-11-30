@@ -199,7 +199,7 @@ class BreezeAjax
 				unset($logStatus['body']);
 
 				// Send out a log for this postingStatus action.
-				if ($this->_userSettings['enable_activityLog'])
+				if (!empty($this->_userSettings['enable_activityLog']))
 					$this->_notifications->create(array(
 						'sender' => $statusPoster,
 						'receiver' => $statusPoster,
@@ -312,7 +312,7 @@ class BreezeAjax
 				unset($logComment['body']);
 
 				// Send out a log for this postingStatus action.
-				if ($this->_userSettings['enable_activityLog'])
+				if (!empty($this->_userSettings['enable_activityLog']))
 					$this->_notifications->create(array(
 						'sender' => $commentPoster,
 						'receiver' => $commentPoster,
