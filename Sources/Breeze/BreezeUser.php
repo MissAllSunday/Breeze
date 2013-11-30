@@ -79,10 +79,10 @@ function breezeWall()
 		'settings' => array(),
 	);
 
-	// Get user settings.
+	// Get profile owner settings.
 	$context['Breeze']['settings']['owner'] = $query->getUserSettings($context['member']['id']);
 
-	// Does the current user is also the owner?
+	// Does the current user (AKA visitor) is also the owner?
 	if ($context['member']['is_owner'])
 		$context['Breeze']['settings']['visitor'] = $context['Breeze']['settings']['owner'];
 

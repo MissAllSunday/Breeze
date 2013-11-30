@@ -43,6 +43,7 @@ class BreezeAjax
 	protected $noJS = false;
 	protected $redirectURL = '';
 	public $subActions = array();
+	protected $_userSettings = array();
 
 	/**
 	 * BreezeAjax::__construct()
@@ -75,6 +76,8 @@ class BreezeAjax
 	 */
 	public function call()
 	{
+		global $user_info;
+
 		// Handling the subactions
 		$sglobals = Breeze::sGlobals('get');
 
@@ -103,6 +106,9 @@ class BreezeAjax
 		// Not using JavaScript?
 		if (!$sglobals->getValue('js'))
 			$this->noJS = true;
+
+		// Get the current user settings.
+		$this->_userSettings = $this->_query->getUserSettings($user_info['id']);
 
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
@@ -193,16 +199,17 @@ class BreezeAjax
 				unset($logStatus['body']);
 
 				// Send out a log for this postingStatus action.
-				$this->_notifications->create(array(
-					'sender' => $statusPoster,
-					'receiver' => $statusPoster,
-					'type' => 'logStatus',
-					'time' => time(),
-					'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-					'content' => $logStatus,
-					'type_id' => $params['id'],
-					'second_type' => 'status',
-				));
+				if ($this->_userSettings['enable_activityLog'])
+					$this->_notifications->create(array(
+						'sender' => $statusPoster,
+						'receiver' => $statusPoster,
+						'type' => 'logStatus',
+						'time' => time(),
+						'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
+						'content' => $logStatus,
+						'type_id' => $params['id'],
+						'second_type' => 'status',
+					));
 
 				// Send the data back to the browser
 				return $this->setResponse(array(
@@ -305,16 +312,17 @@ class BreezeAjax
 				unset($logComment['body']);
 
 				// Send out a log for this postingStatus action.
-				$this->_notifications->create(array(
-					'sender' => $commentPoster,
-					'receiver' => $commentPoster,
-					'type' => 'logComment',
-					'time' => time(),
-					'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-					'content' => $logComment,
-					'type_id' => $params['id'],
-					'second_type' => 'comment',
-				));
+				if ($this->_userSettings['enable_activityLog'])
+					$this->_notifications->create(array(
+						'sender' => $commentPoster,
+						'receiver' => $commentPoster,
+						'type' => 'logComment',
+						'time' => time(),
+						'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
+						'content' => $logComment,
+						'type_id' => $params['id'],
+						'second_type' => 'comment',
+					));
 
 				// Send the data back to the browser
 				return $this->setResponse(array(

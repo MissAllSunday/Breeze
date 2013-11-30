@@ -337,9 +337,10 @@ class Breeze
 		// We need the almighty power of breezeController!
 		$noti = $breezeController->get('notifications');
 		$text = $breezeController->get('text');
+		$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
 
 		// Cheating, lets insert the notification directly, do it only if the topic was approved
-		if ($topicOptions['is_approved'])
+		if ($topicOptions['is_approved'] && $userSettings['enable_activityLog'])
 			$noti->create(array(
 				'sender' => $posterOptions['id'],
 				'receiver' => $posterOptions['id'],
