@@ -292,8 +292,9 @@ class Breeze
 		// DUH! winning!
 		Breeze::who();
 
-		// Notifications call
-		Breeze::notiHeaders();
+		// Notifications call but not for guests!
+		if (!$user_info['is_guest'])
+			Breeze::notiHeaders();
 	}
 
 	/**
