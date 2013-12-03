@@ -463,6 +463,6 @@ function template_general_wall()
 	echo '
 	</div>';
 
-	// Lastly, print the suers info
+	// Lastly, print the users info.
 	breeze_user_info();
 }
