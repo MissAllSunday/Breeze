@@ -122,7 +122,24 @@ function template_user_wall()
 		echo '
 		<div id="tab-activity" class="content">';
 
-		var_dump($context['Breeze']['log']);
+		echo '
+			<div class="breeze_user_inner windowbg">
+				<span class="topslice"><span></span></span>
+				<div class="content">';
+
+
+		if (empty($context['Breeze']['log']))
+			echo
+					$txt['Breeze_tabs_activity_none'];
+
+		else
+			foreach ($context['Breeze']['log'] as $activity)
+				breeze_activity($activity);
+
+		echo '
+				</div>
+				<span class="botslice"><span></span></span>
+			</div>';
 
 		echo '
 		</div>';

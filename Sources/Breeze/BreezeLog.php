@@ -72,11 +72,14 @@ class BreezeLog
 		foreach ($this->log as $eachUser => $data)
 			foreach ($data as $entry)
 			{
+				// Send all data available!
+				$this->result[$eachUser][$entry['id']] = $entry;
+
 				// If there is a method, call it
-				if (in_array($entry['type'], get_class_methods('BreezeLog')))
+				if (in_array($entry['type'], get_class_methods(__CLASS__)))
 				{
 					$entry['content'] = json_decode($entry['content'], true);
-					$this->result[$eachUser][$entry['id']] = $this->$entry['type']($entry, $eachUser);
+					$this->result[$eachUser][$entry['id']]['content'] = $this->$entry['type']($entry, $eachUser);
 				}
 
 				// No? then pass the content
