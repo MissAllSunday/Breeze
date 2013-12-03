@@ -155,8 +155,6 @@ function template_user_wall()
 		</div>';
 	// Posts end
 
-
-
 	// End of right block
 	echo '
 	</div>';
@@ -169,7 +167,7 @@ function template_user_wall()
 	breeze_profile_owner();
 
 	// Buddies
-	if (!empty($context['member']['options']['enable_buddies']))
+	if (!empty($context['Breeze']['settings']['owner']['enable_buddies']))
 	{
 		echo '
 		<div class="cat_bar">
@@ -200,7 +198,8 @@ function template_user_wall()
 		}
 
 		// No buddies :(
-		else $txt['Breeze_user_modules_buddies_none'];
+		else
+			echo $txt['Breeze_user_modules_buddies_none'];
 
 			echo '
 			</div>
