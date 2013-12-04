@@ -120,7 +120,7 @@ $txt['Breeze_user_settings_notification_wall'] = 'Send me a pm when someone else
 $txt['Breeze_user_settings_notification_wall_sub'] = 'This will only apply for new status.';
 $txt['Breeze_user_permissions_name'] = 'Permissions';
 $txt['Breeze_user_modules_name'] = 'Modules';
-$txt['Breeze_user_modules_visitors'] = 'visitors: ';
+$txt['Breeze_user_modules_visitors'] = 'visits: ';
 $txt['Breeze_user_modules_visitors_none'] = 'There are no recent visitors';
 $txt['Breeze_user_modules_buddies_none'] = 'This user doesn\'t have any buddies';
 

@@ -132,13 +132,13 @@ function breezeWall()
 	$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name']);
 
 	// Get the profile views
-	if (!$user_info['is_guest'] && !empty($context['Breeze']['settings']['owner']['enable_visitors_tab']))
+	if (!$user_info['is_guest'] && !empty($context['Breeze']['settings']['owner']['enable_visitors']))
 	{
 		$context['Breeze']['views'] = breezeTrackViews();
 
 		// Load their data
 		if (!empty($context['Breeze']['views']))
-			$usersToLoad = $usersToLoad + array_keys($context['Breeze']['views']);
+			$usersToLoad = array_merge($usersToLoad, array_keys($context['Breeze']['views']));
 	}
 
 	// Show buddies only if there is something to show
@@ -499,8 +499,6 @@ function breezeTrackViews()
 
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
-
-	$breezeController->get('tools')->profileHeaders();
 
 	// Do this only if t hasn't been done before
 	$views = cache_get_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], 60);

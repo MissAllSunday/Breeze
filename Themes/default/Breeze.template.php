@@ -210,7 +210,7 @@ function template_user_wall()
 	// Buddies end
 
 	// Visitors
-	if (!empty($context['member']['options']['enable_visitors']))
+	if (!empty($context['Breeze']['settings']['owner']['enable_visitors']))
 	{
 
 		echo '
