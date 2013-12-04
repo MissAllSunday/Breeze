@@ -224,6 +224,18 @@ class Breeze
 					),
 				);
 
+			// Notification's settings.
+			$profile_areas['breeze_profile']['areas']['breezeNotiSettings'] = array(
+				'label' => $text->getText('user_settings_name_settings'),
+				'file' => Breeze::$folder . 'BreezeUser.php',
+				'function' => 'breezeNotiSettings',
+				'permission' => array(
+					'own' => array(
+						'profile_view_own',
+						),
+					),
+				);
+
 			// Buddies page
 			// $profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
 				// 'label' => $text->getText('user_buddysettings_name'),

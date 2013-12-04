@@ -279,6 +279,44 @@ function breezeSettings()
 		'<a href="'. $scripturl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['member']['id'] .'">%s</a>'
 	);
 
+	// Send the form to the template
+	$context['Breeze']['UserSettings']['Form'] = $form->display();
+}
+
+function breezeNotiSettings()
+{
+	global $context, $memID, $breezeController, $scripturl, $txt, $user_info;
+
+	loadtemplate(Breeze::$name);
+	loadtemplate(Breeze::$name .'Functions');
+
+	$sg = Breeze::sGlobals('get');
+
+	if (empty($breezeController))
+		$breezeController = new BreezeController();
+
+	// Set the page title
+	$context['page_title'] = $breezeController->get('text')->getText('user_settings_name');
+	$context['sub_template'] = 'member_options';
+	$context['page_desc'] = $breezeController->get('text')->getText('user_settings_enable_desc');
+
+	$context += array(
+		'page_title' => $breezeController->get('text')->getText('user_settings_name'),
+		'page_desc' => $breezeController->get('text')->getText('user_settings_enable_desc')
+	);
+
+	// Get the user settings.
+	$userSettings = $breezeController->get('query')->getUserSettings($context['member']['id']);
+
+	// Create the form.
+	$form = $breezeController->get('form');
+
+	// Group all these values into an array.
+	$form->setFormName('breezeSettings');
+
+	// Notification settings
+	$form->addSection('name_settings');
+
 	// How many seconds before closing the notifications?
 	$form->addText(
 		'clear_noti',
@@ -286,9 +324,6 @@ function breezeSettings()
 		3,
 		3
 	);
-
-	// Notification settings
-	$form->addSection('name_settings');
 
 	// Noti on comment
 	$form->addCheckBox(
