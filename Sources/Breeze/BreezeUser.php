@@ -142,7 +142,7 @@ function breezeWall()
 	}
 
 	// Show buddies only if there is something to show
-	if (!empty($context['Breeze']['settings']['owner']['enable_buddies_tab']) && !empty($context['member']['buddies']))
+	if (!empty($context['Breeze']['settings']['owner']['enable_buddies']) && !empty($context['member']['buddies']))
 		$usersToLoad = $usersToLoad + $context['member']['buddies'];
 
 	// Show this user recent activity
