@@ -428,7 +428,7 @@ class BreezeAjax
 			'type' => 'success',
 			'message' => 'updated_settings',
 			'owner' => $this->_data->getValue('u'),
-			'extra' => array('area' => 'breezesettings',),
+			'extra' => array('area' => $this->_data->getValue('area'),),
 		));
 
 	}

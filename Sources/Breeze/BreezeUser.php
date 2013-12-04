@@ -182,6 +182,7 @@ function breezeSettings()
 	$context['page_title'] = $breezeController->get('text')->getText('user_settings_name');
 	$context['sub_template'] = 'member_options';
 	$context['page_desc'] = $breezeController->get('text')->getText('user_settings_enable_desc');
+	$context['Breeze_redirect'] = '';
 
 	$context += array(
 		'page_title' => $breezeController->get('text')->getText('user_settings_name'),
@@ -283,7 +284,7 @@ function breezeSettings()
 	$context['Breeze']['UserSettings']['Form'] = $form->display();
 }
 
-function breezeNotiSettings()
+function breezenotisettings()
 {
 	global $context, $memID, $breezeController, $scripturl, $txt, $user_info;
 
@@ -304,6 +305,9 @@ function breezeNotiSettings()
 		'page_title' => $breezeController->get('text')->getText('user_settings_name'),
 		'page_desc' => $breezeController->get('text')->getText('user_settings_enable_desc')
 	);
+
+	// Need to tell the form the page it needs to display when redirecting back after saving.
+	$context['Breeze_redirect'] = 'breezenotisettings';
 
 	// Get the user settings.
 	$userSettings = $breezeController->get('query')->getUserSettings($context['member']['id']);

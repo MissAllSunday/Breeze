@@ -225,10 +225,10 @@ class Breeze
 				);
 
 			// Notification's settings.
-			$profile_areas['breeze_profile']['areas']['breezeNotiSettings'] = array(
+			$profile_areas['breeze_profile']['areas']['breezenotisettings'] = array(
 				'label' => $text->getText('user_settings_name_settings'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'breezeNotiSettings',
+				'function' => 'breezenotisettings',
 				'permission' => array(
 					'own' => array(
 						'profile_view_own',
