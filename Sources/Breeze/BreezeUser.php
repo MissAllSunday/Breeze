@@ -69,7 +69,7 @@ function breezeWall()
 	if (empty($context['Breeze']['user_info'][$user_info['id']]))
 		$tools->loadUserInfo($user_info['id']);
 
-	// Default values
+	// Default values.
 	$status = array();
 	$context['Breeze'] = array(
 		'views' => false,
@@ -90,7 +90,7 @@ function breezeWall()
 	else
 		$context['Breeze']['settings']['visitor'] = $query->getUserSettings($user_info['id']);
 
-	// Load al the JS goodies...
+	// Load all the JS goodies...
 	$tools->profileHeaders($context['Breeze']['settings']['visitor']);
 
 	// Set all the page stuff

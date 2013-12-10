@@ -27,7 +27,7 @@
 * The Original Code is http://missallsunday.com code.
 *
 * The Initial Developer of the Original Code is
-* Jessica Gon<áez.
+* Jessica González.
 * Portions created by the Initial Developer are Copyright (c) 2012
 * the Initial Developer. All Rights Reserved.
 *
@@ -320,6 +320,8 @@ class BreezeQuery extends Breeze
 			'pagination' => '',
 		);
 
+		$statusIDs = array();
+
 		// Not worth the effort...
 		if (empty($id) || empty($maxIndex))
 			return $return;
@@ -327,14 +329,14 @@ class BreezeQuery extends Breeze
 		// How many precious little gems do we have?
 		$count = $this->getCount($id, 'status_owner_id = {int:data}');
 
-		// Big query...
+		// Fetch the status.
 		$result = $this->_smcFunc['db_query']('', '
-			SELECT s.status_id, s.status_owner_id, s.status_poster_id, s.status_time, s.status_body, c.comments_id, c.comments_status_id, c.comments_status_owner_id, comments_poster_id, c.comments_profile_id, c.comments_time, c.comments_body
-			FROM {db_prefix}breeze_status AS s
-				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
-			WHERE s.status_owner_id = {int:owner}
-			ORDER BY s.status_time DESC
-			LIMIT {int:start}, {int:maxindex}',
+			SELECT '. implode(', ', $this->_tables['status']['columns']) .'
+			FROM {db_prefix}'. ($this->_tables['status']['table']) .'
+			WHERE status_owner_id = {int:owner}
+			ORDER BY status_id DESC
+			LIMIT {int:start}, {int:maxindex}
+			',
 			array(
 				'start' => $start,
 				'maxindex' => $maxIndex,
@@ -345,6 +347,9 @@ class BreezeQuery extends Breeze
 		// Populate the array like a big heavy boss!
 		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 		{
+			// First things first, collect the status IDs
+			$statusIDs[] = $row['status_id'];
+
 			$return['data'][$row['status_id']] = array(
 				'id' => $row['status_id'],
 				'owner_id' => $row['status_owner_id'],
@@ -355,10 +360,31 @@ class BreezeQuery extends Breeze
 				'comments' => array(),
 			);
 
-			// Comments
-			if (!empty($row['comments_status_id']))
+			// Get the users IDs
+			$return['users'][] = $row['status_owner_id'];
+			$return['users'][] = $row['status_poster_id'];
+		}
+
+		$this->_smcFunc['db_free_result']($result);
+
+		// Now get the comments for each status.
+		if (!empty($statusIDs))
+		{
+			$result = $this->_smcFunc['db_query']('', '
+				SELECT '. implode(', ', $this->_tables['comments']['columns']) .'
+				FROM {db_prefix}'. ($this->_tables['comments']['table']) .'
+				WHERE comments_status_id IN({array_int:status})
+				ORDER BY comments_id DESC
+				',
+				array(
+					'status' => $statusIDs,
+				)
+			);
+
+			// Append the data to our main return array
+			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 			{
-				$c[$row['comments_status_id']][$row['comments_id']] = array(
+				$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']] = array(
 					'id' => $row['comments_id'],
 					'status_id' => $row['comments_status_id'],
 					'status_owner_id' => $row['comments_status_owner_id'],
@@ -369,17 +395,12 @@ class BreezeQuery extends Breeze
 					'body' => $this->parser->display($row['comments_body']),
 				);
 
-				// Merge them both
-				$return['data'][$row['status_id']]['comments'] = $c[$row['comments_status_id']];
+				// Append the users IDs.
+				$return['users'][] = $row['comments_poster_id'];
 			}
 
-			// Get the users IDs
-			$return['users'][] = $row['comments_poster_id'];
-			$return['users'][] = $row['status_owner_id'];
-			$return['users'][] = $row['status_poster_id'];
+			$this->_smcFunc['db_free_result']($result);
 		}
-
-		$this->_smcFunc['db_free_result']($result);
 
 		// Clean it a bit
 		if (!empty($return['users']))

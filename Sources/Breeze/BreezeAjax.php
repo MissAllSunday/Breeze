@@ -669,7 +669,7 @@ class BreezeAjax
 	 */
 	protected function usersMention()
 	{
-		// Just pass the result directly
+		// @todo theres gotta be a better way to handle mentions.
 		return $this->_response = $this->_query->userMention();
 	}
 
