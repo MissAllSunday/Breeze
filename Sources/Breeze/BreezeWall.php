@@ -61,12 +61,11 @@ class BreezeWall
 		$this->_display = $display;
 		$this->_tools = $tools;
 
-		// This will always be true since every member gets their own unique and shiny wall page...
-		$context['member']['is_ower'] = true;
-		$context['user']['is_owner'] = true;
+		// Load the user settings.
+		$context['Breeze']['settings']['owner'] = $query->getUserSettings($user_info['id']);
 
 		// Print the JS bits
-		$this->_tools->profileHeaders();
+		$this->_tools->profileHeaders($context['Breeze']['settings']['owner']);
 
 		// We need to load the current user's data
 		if (empty($context['Breeze']['user_info'][$user_info['id']]))
