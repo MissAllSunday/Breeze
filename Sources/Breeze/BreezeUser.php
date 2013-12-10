@@ -283,7 +283,8 @@ function breezeSettings()
 	// About me textarea.
 	$form->addTextArea(
 		'enable_aboutMe',
-		!empty($userSettings['enable_aboutMe']) ? $userSettings['enable_aboutMe'] : ''
+		!empty($userSettings['enable_aboutMe']) ? $userSettings['enable_aboutMe'] : '',
+		array('rows' => 10, 'cols' => 50)
 	);
 
 	// Send the form to the template
