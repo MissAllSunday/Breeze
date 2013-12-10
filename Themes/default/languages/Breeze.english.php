@@ -99,6 +99,8 @@ $txt['Breeze_user_settings_noti_on_comment'] = 'Notify me when someone comments 
 $txt['Breeze_user_settings_noti_on_comment_sub'] = 'On status made by me on any wall.';
 $txt['Breeze_user_settings_noti_on_mention'] = 'Notify me when someone mentions me.';
 $txt['Breeze_user_settings_noti_on_mention_sub'] = 'On every place where a user can use the mention system.';
+$txt['Breeze_user_settings_enable_aboutMe'] = 'Enable the About me tab';
+$txt['Breeze_user_settings_enable_aboutMe_sub'] = 'Shows info about you, HTML isn\'t allowed but you can use BBC.';
 $txt['Breeze_user_settings_enable_activity'] = 'Show my activity';
 $txt['Breeze_user_settings_enable_activity_sub'] = 'This will add a tab where all your public activity will be showed.';
 $txt['Breeze_user_settings_enable_buddies'] = 'Enable the "Buddies" block.';
@@ -248,7 +250,7 @@ $txt['Breeze_tabs_views'] = 'Profile Visitors';
 $txt['Breeze_tabs_pinfo'] = 'Profile Info';
 $txt['Breeze_tabs_activity'] = 'Recent activity';
 $txt['Breeze_tabs_activity_none'] = 'This user doesn\'t have any activities recorded.';
-$txt['Breeze_tabs_posts'] = 'Recent posts';
+$txt['Breeze_tabs_about'] = 'About me';
 $txt['Breeze_goTop'] = 'Go to top';
 
 // Notifications

@@ -54,8 +54,12 @@ function template_user_wall()
 	echo '
 		<div id="Breeze_tabs">
 			<ul class="dropmenu breezeTabs">
-				<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>
-				<li class="posts"><a href="#tab-posts" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_posts'] ,'</span></a></li>';
+				<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>';
+
+	// The "About me" tab.
+	if (!empty($context['Breeze']['settings']['owner']['enable_aboutMe']))
+		echo '
+				<li class="posts"><a href="#tabs-about" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_about'] ,'</span></a></li>';
 
 	// Does recent activity is enable?
 	if (!empty($context['Breeze']['settings']['owner']['enable_activityLog']))
@@ -147,13 +151,18 @@ function template_user_wall()
 	// Activity end
 
 
-	// Posts
+	// About me
+	if (!empty($context['Breeze']['settings']['owner']['enable_aboutMe']))
+	{
 		echo '
-		<div id="tab-posts" class="content">';
+		<div id="tabs-about" class="content">';
+
+		echo parse_bbc($context['Breeze']['settings']['owner']['enable_aboutMe']);
 
 		echo '
 		</div>';
-	// Posts end
+	}
+	// About me end
 
 	// End of right block
 	echo '

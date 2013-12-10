@@ -280,6 +280,12 @@ function breezeSettings()
 		'<a href="'. $scripturl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['member']['id'] .'">%s</a>'
 	);
 
+	// About me textarea.
+	$form->addTextArea(
+		'enable_aboutMe',
+		!empty($userSettings['enable_aboutMe']) ? $userSettings['enable_aboutMe'] : ''
+	);
+
 	// Send the form to the template
 	$context['Breeze']['UserSettings']['Form'] = $form->display();
 }
