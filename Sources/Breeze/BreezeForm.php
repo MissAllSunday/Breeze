@@ -143,13 +143,13 @@ class BreezeForm
 		return $this->addElement($element);
 	}
 
-	function addTextArea($name,$value)
+	function addTextArea($name, $value, $size = array())
 	{
 		$element['type'] = 'textarea';
 		$element['name'] = $name;
 		$element['value'] = empty($value) ? '' : $value;
 		$element['text'] = $name;
-		$element['html'] = '<'. $element['type'] .' name="'. (!empty($this->formName) ? $this->formName .'['. $element['name'] .']' : $element['name']) .'" id="'. $element['name'] .'">'. $element['value'] .'</'. $element['type'] .'>';
+		$element['html'] = '<'. $element['type'] .' name="'. (!empty($this->formName) ? $this->formName .'['. $element['name'] .']' : $element['name']) .'" id="'. $element['name'] .'" '. (!empty($size) && !empty($size['rows']) && !empty($size['cols']) ? 'rows="'. $size['rows'] .'" cols="'. $size['cols'] .'"' : '') .'>'. $element['value'] .'</'. $element['type'] .'>';
 
 		return $this->addElement($element);
 	}

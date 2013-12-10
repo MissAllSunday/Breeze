@@ -157,7 +157,24 @@ function template_user_wall()
 		echo '
 		<div id="tabs-about" class="content">';
 
+		echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+					', $txt['Breeze_tabs_about'] ,'
+			</h3>
+		</div>';
+
+		echo '
+			<div class="breeze_user_inner windowbg">
+				<span class="topslice"><span></span></span>
+				<div class="content">';
+
 		echo parse_bbc($context['Breeze']['settings']['owner']['enable_aboutMe']);
+
+		echo '
+				</div>
+				<span class="botslice"><span></span></span>
+			</div>';
 
 		echo '
 		</div>';
