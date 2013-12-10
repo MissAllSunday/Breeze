@@ -355,7 +355,9 @@ function breezeNotifications()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	$breezeController->get('tools')->profileHeaders();
+	$context['Breeze']['settings']['owner'] = $query->getUserSettings($context['member']['id']);
+
+	$breezeController->get('tools')->profileHeaders($context['Breeze']['settings']['owner']);
 
 	// Globals...
 	$globals = Breeze::sGlobals('request');
@@ -408,7 +410,9 @@ function breezeBuddyRequest()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	$breezeController->get('tools')->profileHeaders();
+	$context['Breeze']['settings']['owner'] = $query->getUserSettings($context['member']['id']);
+
+	$breezeController->get('tools')->profileHeaders($context['Breeze']['settings']['owner']);
 
 	// Load all we need
 	$buddies = $breezeController->get('buddy');
