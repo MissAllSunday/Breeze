@@ -276,7 +276,13 @@ function breeze_activity($data)
 	foreach ($data as $act)
 	{
 		echo '
-				<li>', $act['content'] ,'</li>';
+				<li>
+						<div class="activityContent">
+							<span class="activityIcon ', $act['type'] ,'"></span>
+							<span class="time_elapsed" title="'. timeformat($act['time_raw'], false) .'">'. $act['time'] .' </span><br />
+							', $act['content'] ,'
+						</div>
+				</li>';
 	}
 
 	// Close the ul
