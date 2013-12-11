@@ -123,13 +123,20 @@ function template_user_wall()
 	// Activity
 	if (!empty($context['Breeze']['settings']['owner']['enable_activityLog']))
 	{
+
 		echo '
 		<div id="tab-activity" class="content">';
 
+		// A nice title bar
 		echo '
-			<div class="breeze_user_inner windowbg">
-				<span class="topslice"><span></span></span>
-				<div class="content">';
+			<div class="cat_bar">
+				<h3 class="catbg">
+						', $txt['Breeze_tabs_activity'] ,'
+				</h3>
+			</div>';
+
+		echo '
+			<div class="content">';
 
 
 		if (empty($context['Breeze']['log']))
@@ -141,8 +148,6 @@ function template_user_wall()
 				breeze_activity($activity);
 
 		echo '
-				</div>
-				<span class="botslice"><span></span></span>
 			</div>';
 
 		echo '
