@@ -131,13 +131,9 @@ function template_user_wall()
 		echo '
 			<div class="cat_bar">
 				<h3 class="catbg">
-						', $txt['Breeze_tabs_activity'] ,'
+					', $txt['Breeze_tabs_activity'] ,'
 				</h3>
 			</div>';
-
-		echo '
-			<div class="content">';
-
 
 		if (empty($context['Breeze']['log']))
 			echo
@@ -146,9 +142,6 @@ function template_user_wall()
 		else
 			foreach ($context['Breeze']['log'] as $activity)
 				breeze_activity($activity);
-
-		echo '
-			</div>';
 
 		echo '
 		</div>';

@@ -269,6 +269,8 @@ function breeze_activity($data)
 	if (empty($data))
 		return false;
 
+	$counter = 1;
+
 	echo '
 		<div class="content">
 			<ul class="reset">';
@@ -276,11 +278,19 @@ function breeze_activity($data)
 	foreach ($data as $act)
 	{
 		echo '
-				<li>
-						<div class="activityContent">
-							<span class="activityIcon ', $act['type'] ,'"></span>
-							<span class="time_elapsed" title="'. timeformat($act['time_raw'], false) .'">'. $act['time'] .' </span><br />
-							', $act['content'] ,'
+				<li class="activityLI">
+						<div class="activityContent windowbg', ($counter = !$counter ? '2' : '') ,'">
+							<span class="topslice">
+								<span> </span>
+							</span>
+							<div class="activityInner">
+								<span class="activityIcon ', $act['type'] ,'"></span>
+								<span class="time_elapsed" title="'. timeformat($act['time_raw'], false) .'">'. $act['time'] .' </span><br />
+								', $act['content'] ,'
+							</div>
+							<span class="botslice">
+								<span> </span>
+							</span>
 						</div>
 				</li>';
 	}

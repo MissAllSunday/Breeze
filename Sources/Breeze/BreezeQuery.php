@@ -1212,6 +1212,7 @@ class BreezeQuery extends Breeze
 			FROM {db_prefix}' . $this->_tables['noti']['table'] . '
 			WHERE receiver IN ({array_int:user})
 				AND viewed = {int:viewed}
+			ORDER BY id DESC
 			', array(
 				'user' => $user,
 				'viewed' => 3, // 3 is a special case indicating this is a log entry.
