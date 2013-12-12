@@ -629,39 +629,6 @@ class BreezeAjax
 			));
 	}
 
-	protected function setLog($type)
-	{
-		if (empty($type))
-			return;
-
-		// A workaround for php5.3 and passing parent object to lambda
-		$passText = $this->getText($type . $this->params['wall_owner'] == $this->params['wall_poster'] ? '_own' : '');
-
-		// Load the users data, one fine day I will count how many times I typed this exact sentence...
-		$loadedUsers = $this->_query->loadMinimalData(array($commentOwner, $commentPoster, $commentStatusPoster));
-
-		// Convert object to regular var
-		$this->_params = $this->params;
-
-		// Send out a log for this postingStatus action
-		$this->_notifications->create(array(
-			'sender' => $commentPoster,
-			'receiver' => $commentPoster,
-			'type' => 'logComment',
-			'time' => time(),
-			'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-			'content' => function() use ($this->_params, $scripturl, $passText, $loadedUsers)
-			{
-				// Own wall?
-				$own = $this->_params['wall_owner'] == $this->_params['wall_poster'];
-
-				return $own ? ($loadedUsers[$this->_params['wall_poster']]['link'] .' '. $passText) : ($loadedUsers[$this->_params['wall_poster']]['link'] .' '. sprintf($passText, $this->_params['wall_owner']));
-			},
-			'type_id' => $this->_params['id'],
-			'second_type' => 'comment',
-		));
-	}
-
 	/**
 	 * BreezeAjax::usersMention()
 	 *
