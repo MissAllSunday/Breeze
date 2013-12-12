@@ -148,7 +148,6 @@ function template_user_wall()
 	}
 	// Activity end
 
-
 	// About me
 	if (!empty($context['Breeze']['settings']['owner']['enable_aboutMe']))
 	{

@@ -94,7 +94,7 @@ class BreezeQuery extends Breeze
 				'name' => 'members',
 				'table' => 'members',
 				'property' => '_members',
-				'columns' => array('breeze_profile_views', 'pm_ignore_list', 'buddy_list'),
+				'columns' => array('breeze_profile_views', 'pm_ignore_list', 'buddy_list', 'gender'),
 				),
 			'noti' => array(
 				'name' => 'noti',
@@ -756,9 +756,10 @@ class BreezeQuery extends Breeze
 				$return[$row['variable']] = is_numeric($row['value']) ? (int) $row['value'] : (string) $row['value'];
 
 				$return += array(
-				'buddies' => $row['buddy_list'],
-				'ignored' => $row['pm_ignore_list'],
-				'profile_views' => $row['breeze_profile_views'],
+					'gender' => $row['gender'],
+					'buddies' => $row['buddy_list'],
+					'ignored' => $row['pm_ignore_list'],
+					'profile_views' => $row['breeze_profile_views'],
 				);
 			}
 
