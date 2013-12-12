@@ -44,6 +44,7 @@ class BreezeAjax
 	protected $redirectURL = '';
 	public $subActions = array();
 	protected $_userSettings = array();
+	protected $_params = array();
 
 	/**
 	 * BreezeAjax::__construct()
@@ -161,7 +162,7 @@ class BreezeAjax
 
 			$body = $statusContent;
 
-			$params = array(
+			$this->_params = array(
 				'owner_id' => $statusOwner,
 				'poster_id' => $statusPoster,
 				'time' => time(),
@@ -169,33 +170,33 @@ class BreezeAjax
 			);
 
 			// Maybe a last minute change before inserting the new status?
-			call_integration_hook('integrate_breeze_before_insertStatus', array(&$params));
+			call_integration_hook('integrate_breeze_before_insertStatus', array(&$this->_params));
 
 			// Store the status
-			$params['id'] = $this->_query->insertStatus($params);
-			$params['time_raw'] = time();
+			$this->_params['id'] = $this->_query->insertStatus($this->_params);
+			$this->_params['time_raw'] = time();
 
 			// All went good or so it seems...
-			if (!empty($params['id']))
+			if (!empty($this->_params['id']))
 			{
 				// Build the notification(s) via BreezeMention
 				$this->_mention->mention(
 					array(
 						'wall_owner' => $statusOwner,
 						'wall_poster' => $statusPoster,
-						'status_id' => $params['id'],),
+						'status_id' => $this->_params['id'],),
 					array(
 							'name' => 'status',
-							'id' => $params['id'],)
+							'id' => $this->_params['id'],)
 				);
 
 				// Parse the content
-				$params['body'] = $this->_parser->display($params['body']);
+				$this->_params['body'] = $this->_parser->display($this->_params['body']);
 
 				// The status was inserted, tell everyone!
-				call_integration_hook('integrate_breeze_after_insertStatus', array($params));
+				call_integration_hook('integrate_breeze_after_insertStatus', array($this->_params));
 
-				$logStatus = $params;
+				$logStatus = $this->_params;
 				unset($logStatus['body']);
 
 				// Send out a log for this postingStatus action.
@@ -207,7 +208,7 @@ class BreezeAjax
 						'time' => time(),
 						'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
 						'content' => $logStatus,
-						'type_id' => $params['id'],
+						'type_id' => $this->_params['id'],
 						'second_type' => 'status',
 					));
 
@@ -215,7 +216,7 @@ class BreezeAjax
 				return $this->setResponse(array(
 					'type' => 'success',
 					'message' => 'published',
-					'data' => $this->_display->HTML($params, 'status', true, $statusPoster),
+					'data' => $this->_display->HTML($this->_params, 'status', true, $statusPoster),
 					'owner' => $statusOwner,
 				));
 			}
@@ -270,7 +271,7 @@ class BreezeAjax
 			$body = $commentContent;
 
 			// Build the params array for the query
-			$params = array(
+			$this->_params = array(
 				'status_id' => $commentStatus,
 				'status_owner_id' => $commentStatusPoster,
 				'poster_id' => $commentPoster,
@@ -280,14 +281,14 @@ class BreezeAjax
 			);
 
 			// Before inserting the comment...
-			call_integration_hook('integrate_breeze_before_insertComment', array(&$params));
+			call_integration_hook('integrate_breeze_before_insertComment', array(&$this->_params));
 
 			// Store the comment
-			$params['id'] = $this->_query->insertComment($params);
-			$params['time_raw'] = time();
+			$this->_params['id'] = $this->_query->insertComment($this->_params);
+			$this->_params['time_raw'] = time();
 
 			// The Comment was inserted
-			if (!empty($params['id']))
+			if (!empty($this->_params['id']))
 			{
 				// Build the notification(s) for this comment via BreezeMention
 				$this->_mention->mention(
@@ -295,20 +296,20 @@ class BreezeAjax
 						'wall_owner' => $commentOwner,
 						'wall_poster' => $commentPoster,
 						'wall_status_owner' => $commentStatusPoster,
-						'comment_id' => $params['id'],
+						'comment_id' => $this->_params['id'],
 						'status_id' => $commentStatus,),
 					array(
 							'name' => 'comments',
-							'id' => $params['id'],)
+							'id' => $this->_params['id'],)
 				);
 
 				// Parse the content.
-				$params['body'] = $this->_parser->display($params['body']);
+				$this->_params['body'] = $this->_parser->display($this->_params['body']);
 
 				// The comment was created, tell the world or just those who want to know...
-				call_integration_hook('integrate_breeze_after_insertComment', array($params));
+				call_integration_hook('integrate_breeze_after_insertComment', array($this->_params));
 
-				$logComment = $params;
+				$logComment = $this->_params;
 				unset($logComment['body']);
 
 				// Send out a log for this postingStatus action.
@@ -320,7 +321,7 @@ class BreezeAjax
 						'time' => time(),
 						'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
 						'content' => $logComment,
-						'type_id' => $params['id'],
+						'type_id' => $this->_params['id'],
 						'second_type' => 'comment',
 					));
 
@@ -328,7 +329,7 @@ class BreezeAjax
 				return $this->setResponse(array(
 					'type' => 'success',
 					'message' => 'published_comment',
-					'data' => $this->_display->HTML($params, 'comment', true, $commentPoster),
+					'data' => $this->_display->HTML($this->_params, 'comment', true, $commentPoster),
 					'owner' => $commentOwner,
 				));
 			}
@@ -640,7 +641,7 @@ class BreezeAjax
 		$loadedUsers = $this->_query->loadMinimalData(array($commentOwner, $commentPoster, $commentStatusPoster));
 
 		// Convert object to regular var
-		$params = $this->params;
+		$this->_params = $this->params;
 
 		// Send out a log for this postingStatus action
 		$this->_notifications->create(array(
@@ -649,14 +650,14 @@ class BreezeAjax
 			'type' => 'logComment',
 			'time' => time(),
 			'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-			'content' => function() use ($params, $scripturl, $passText, $loadedUsers)
+			'content' => function() use ($this->_params, $scripturl, $passText, $loadedUsers)
 			{
 				// Own wall?
-				$own = $params['wall_owner'] == $params['wall_poster'];
+				$own = $this->_params['wall_owner'] == $this->_params['wall_poster'];
 
-				return $own ? ($loadedUsers[$params['wall_poster']]['link'] .' '. $passText) : ($loadedUsers[$params['wall_poster']]['link'] .' '. sprintf($passText, $params['wall_owner']));
+				return $own ? ($loadedUsers[$this->_params['wall_poster']]['link'] .' '. $passText) : ($loadedUsers[$this->_params['wall_poster']]['link'] .' '. sprintf($passText, $this->_params['wall_owner']));
 			},
-			'type_id' => $params['id'],
+			'type_id' => $this->_params['id'],
 			'second_type' => 'comment',
 		));
 	}
