@@ -440,68 +440,86 @@ function template_member_options()
 
 function template_general_wall()
 {
-	global $context, $txt, $scripturl, $settings;
+	global $txt, $context, $settings, $scripturl, $user_info, $modSettings;
 
 	// Print the server response
 	breeze_server_response();
 
+	// Start of profileview div
 	echo '
-	<div id="profileview" class="flow_auto">';
+<div id="profileview" class="flow_auto">';
 
-	// Left block, user's data and blocks
+	// Right block, tabs and block
 	echo '
-		<div id="Breeze_left_block">
-			<div class="cat_bar">
-				<h3 class="catbg">
-					<span id="author">
-						', $txt['Breeze_general_latest_buddy_status'] ,'
-				</h3>
+	<div id="Breeze_right_block">';
+
+	// Wall
+	echo '
+		<div id="tab-wall" class="content">';
+
+
+	// A nice title bar
+	echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+					', $txt['Breeze_general_wall'] ,'
+			</h3>
+		</div>';
+
+	// This is the status box,  O RLY?
+	if (!empty($context['Breeze']['permissions']['postStatus']))
+			echo '
+			<div class="breeze_user_inner windowbg">
+				<span class="topslice"><span></span></span>
+				<div class="breeze_user_statusbox content">
+						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['commingFrom']) ? ';rf='. $context['Breeze']['commingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
+							<textarea cols="40" rows="5" name="statusContent" id="statusContent" rel="atwhoMention"></textarea>
+							<input type="hidden" value="', $user_info['id'] ,'" name="statusPoster" id="statusPoster" />
+							<input type="hidden" value="', $context['member']['id'] ,'" name="statusOwner" id="statusOwner" />
+							<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
+							<br /><input type="submit" value="', $txt['post'] ,'" name="statusSubmit" class="status_button" id="statusSubmit"/>
+						</form>
+				</div>
+				<span class="botslice"><span></span></span>
 			</div>';
 
-		// Print the buddies status
-		if (!empty($context['Breeze']['status']))
-			foreach ($context['Breeze']['status'] as $status)
-				breeze_status($status);
+	// Print out the status if there are any.
+	breeze_status($context['Breeze']['status']);
+
+	// An empty div to append the loaded status via AJAX.
+	echo '
+			<div id="breezeAppendTo" style="display:hide;">
+			</div>';
 
 	// Pagination
 	if (!empty($context['page_index']))
 		echo '
-		<div class="pagelinks">
-			', $txt['pages'], ': ', $context['page_index'], $context['menu_separator'] . ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
-		</div>';
-
-	echo '
-		</div>';
-
-	echo '
-		<div id="Breeze_right_block">';
-
-	echo '
-			<div class="cat_bar">
-				<h3 class="catbg">
-					<span id="author">
-						', $txt['Breeze_general_activity'] ,'
-				</h3>
-			</div>
-			<div class="windowbg2 BreezeBlock">
-				<span class="topslice">
-					<span> </span>
-				</span>';
-
-	if (!empty($context['Breeze']['activity']))
-		foreach ($context['Breeze']['activity'] as $activity)
-			breeze_activity($activity);
-
-	echo '
-			<span class="botslice"><span></span></span>
+			<div class="pagelinks">
+				', $txt['pages'], ': ', $context['page_index'], $context['menu_separator'] . ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
 			</div>';
 
+	// Wall end
 	echo '
 		</div>';
 
+
+	// End of right block
 	echo '
 	</div>';
 
-	// Lastly, print the users info.
+	// Left block, users data and info
+	echo '
+	<div id="Breeze_left_block">';
+
+
+	// End of left block
+	echo '
+		</div>';
+
+	// End of profileview div
+	echo '
+</div>';
+
+	// Don't forget to print the users data
 	breeze_user_info();
 }

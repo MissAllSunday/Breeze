@@ -117,6 +117,7 @@ class BreezeWall
 		if ($user_info['is_guest'])
 			redirectexit();
 
+		// We cannot live without globals...
 		$globals = Breeze::sGlobals('get');
 
 		// Obscure, evil stuff...
