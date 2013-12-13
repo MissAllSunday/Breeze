@@ -172,24 +172,20 @@ class BreezeWall
 	// Show a single status with all it's comments
 	function singleStatus()
 	{
-		global $scripturl, $context, $memberContext, $modSettings,  $user_info, $breezeController;
+		global $scripturl, $context, $memberContext, $modSettings,  $user_info;
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
 
 		$globals = Breeze::sGlobals('get');
 
-		// Fun, fun, fun!
-		if (empty($breezeController))
-			$breezeController = new BreezeController();
-
 		// This is still part of the whole wall stuff.
 		$context['Breeze']['commingFrom'] = 'wall';
 
 		// Display all the JavaScript bits.
-		$context['Breeze']['settings']['owner'] = $breezeController->get('query')->getUserSettings($context['member']['id']);
+		$context['Breeze']['settings']['owner'] = $this->_query->getUserSettings($context['member']['id']);
 
-		$breezeController->get('tools')->profileHeaders($context['Breeze']['settings']['owner']);
+		$this->_tools->profileHeaders($context['Breeze']['settings']['owner']);
 
 		// We are gonna load the status from the user array so we kinda need both the user ID and a status ID
 		if (!$globals->validate('u') || !$globals->validate('bid'))
