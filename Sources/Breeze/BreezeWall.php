@@ -162,6 +162,17 @@ class BreezeWall
 
 		// No buddies huh? worry not! here's the latest status...
 		// coming soon... LOL
+
+		// Need to pass some vars to the browser :(
+		$context['html_headers'] .= '
+		<script type="text/javascript"><!-- // --><![CDATA[
+			window.breeze_profileOwner = '. $user_info['id'] .';
+			window.breeze_commingFrom = ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ';
+			window.breeze_maxIndex = ' . $maxIndex . ';
+			window.breeze_userID = ' . $user_info['id'] . ';
+			window.breeze_totalItems = ' . $data['count'] . ';
+			window.breeze_loadMore = ' . (!empty($context['Breeze']['settings']['visitor']['load_more']) ? 'true' : 'false') . ';
+		// ]]></script>';
 	}
 
 	// Show a single status with all it's comments
