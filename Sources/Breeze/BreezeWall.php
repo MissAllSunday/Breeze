@@ -83,10 +83,10 @@ class BreezeWall
 		is_not_guest($this->_text->getText('error_no_access'));
 
 		// Load the user settings.
-		$context['Breeze']['settings'] = $this->_query->getUserSettings($user_info['id']);
+		$this->userSettings = $this->_query->getUserSettings($user_info['id']);
 
 		// Print the JS bits
-		$this->_tools->profileHeaders($context['Breeze']['settings']);
+		$this->_tools->profileHeaders($this->userSettings);
 
 		// We need to load the current user's data
 		if (empty($context['Breeze']['user_info'][$user_info['id']]))
@@ -124,7 +124,7 @@ class BreezeWall
 		writeLog(true);
 
 		// Pagination max index and current page
-		$maxIndex = !empty($context['Breeze']['settings']['pagination_number']) ? $context['Breeze']['settings']['pagination_number'] : 5;
+		$maxIndex = !empty($this->userSettings['pagination_number']) ? $this->userSettings['pagination_number'] : 5;
 		$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;
 
 		// Set all the page stuff
@@ -142,14 +142,14 @@ class BreezeWall
 		$context['Breeze']['commingFrom'] = 'wall';
 
 		// Time to overheat the server!
-		if (!empty($context['Breeze']['settings']['buddies']))
+		if (!empty($this->userSettings['buddies']))
 		{
 			// Get the latest status
-			$status = $this->_query->getStatusByUser($context['Breeze']['settings']['buddies'], $maxIndex, $currentPage);
+			$status = $this->_query->getStatusByUser($this->userSettings['buddies'], $maxIndex, $currentPage);
 			$context['Breeze']['status'] = $status['data'];
 
 			// Get the latest activity
-			$context['Breeze']['activity'] = $this->_query->getActivityLog($context['Breeze']['settings']['buddies']);
+			$context['Breeze']['activity'] = $this->_query->getActivityLog($this->userSettings['buddies']);
 
 			// Load users data
 			if (!empty($status['users']))
@@ -178,9 +178,9 @@ class BreezeWall
 		$context['Breeze']['commingFrom'] = 'wall';
 
 		// Display all the JavaScript bits.
-		$context['Breeze']['settings'] = $this->_query->getUserSettings($context['member']['id']);
+		$this->userSettings = $this->_query->getUserSettings($context['member']['id']);
 
-		$this->_tools->profileHeaders($context['Breeze']['settings']);
+		$this->_tools->profileHeaders($this->userSettings);
 
 		// We are gonna load the status from the user array so we kinda need both the user ID and a status ID
 		if (!$globals->validate('u') || !$globals->validate('bid'))
@@ -189,10 +189,10 @@ class BreezeWall
 		// Load the single status
 		$data = $this->_query->getStatusByID($globals->getValue('bid'), $globals->getValue('u'));
 
-		if (!empty($context['Breeze']['settings']['buddies']))
+		if (!empty($this->userSettings['buddies']))
 		{
 			// Get the latest activity
-			$context['Breeze']['activity'] = $this->_query->getActivityLog($context['Breeze']['settings']['buddies']);
+			$context['Breeze']['activity'] = $this->_query->getActivityLog($this->userSettings['buddies']);
 
 			// Load users data
 			if (!empty($status['users']))
