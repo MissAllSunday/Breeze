@@ -42,8 +42,6 @@ class BreezeWall
 {
 	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display, $tools)
 	{
-		global $user_info, $memberContext, $context;
-
 		// Needed to show error strings
 		loadLanguage(Breeze::$name);
 
@@ -60,20 +58,12 @@ class BreezeWall
 		$this->_text = $text;
 		$this->_display = $display;
 		$this->_tools = $tools;
-
-		// Load the user settings.
-		$context['Breeze']['settings'] = $query->getUserSettings($user_info['id']);
-
-		// Print the JS bits
-		$this->_tools->profileHeaders($context['Breeze']['settings']);
-
-		// We need to load the current user's data
-		if (empty($context['Breeze']['user_info'][$user_info['id']]))
-			$this->_tools->loadUserInfo($user_info['id'], false, 'profile');
 	}
 
 	public function call()
 	{
+		global $context, $user_info;
+
 		// Handling the subactions
 		$sglobals = Breeze::sGlobals('get');
 
@@ -91,6 +81,16 @@ class BreezeWall
 
 		// Guest aren't allowed, sorry.
 		is_not_guest($this->_text->getText('error_no_access'));
+
+		// Load the user settings.
+		$context['Breeze']['settings'] = $this->_query->getUserSettings($user_info['id']);
+
+		// Print the JS bits
+		$this->_tools->profileHeaders($context['Breeze']['settings']);
+
+		// We need to load the current user's data
+		if (empty($context['Breeze']['user_info'][$user_info['id']]))
+			$this->_tools->loadUserInfo($user_info['id'], false, 'profile');
 
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
@@ -123,7 +123,7 @@ class BreezeWall
 		writeLog(true);
 
 		// Pagination max index and current page
-		$maxIndex = !empty($context['Breeze']['settings']['pagination_number']) ? $context['Breeze']['settings']['Breeze_pagination_number'] : 5;
+		$maxIndex = !empty($context['Breeze']['settings']['pagination_number']) ? $context['Breeze']['settings']['pagination_number'] : 5;
 		$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;
 
 		// Set all the page stuff
