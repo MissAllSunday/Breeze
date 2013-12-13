@@ -179,11 +179,17 @@ class BreezeWall
 
 		$globals = Breeze::sGlobals('get');
 
-		// This is still part of the whole wall stuff
+		// Fun, fun, fun!
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
+		// This is still part of the whole wall stuff.
 		$context['Breeze']['commingFrom'] = 'wall';
 
-		// Display all the JavaScript bits
-		Breeze::headersHook('profile');
+		// Display all the JavaScript bits.
+		$context['Breeze']['settings']['owner'] = $breezeController->get('query')->getUserSettings($context['member']['id']);
+
+		$breezeController->get('tools')->profileHeaders($context['Breeze']['settings']['owner']);
 
 		// We are gonna load the status from the user array so we kinda need both the user ID and a status ID
 		if (!$globals->validate('u') || !$globals->validate('bid'))
