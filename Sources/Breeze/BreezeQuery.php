@@ -423,7 +423,7 @@ class BreezeQuery extends Breeze
 	 * @access public
 	 * @return array An array containing all the status made in X profile page
 	 */
-	public function getStatusByID($id, $user)
+	public function getStatusByID($id)
 	{
 		if (empty($id))
 			return false;
@@ -434,15 +434,12 @@ class BreezeQuery extends Breeze
 			'users' => array(),
 		);
 
-		// For some reason we need to fetch the comments separately
-		$c = array();
+		$statusIDs =array();
 
 		$result = $this->_smcFunc['db_query']('', '
-			SELECT s.status_id, s.status_owner_id, s.status_poster_id, s.status_time, s.status_body, c.comments_id, c.comments_status_id, c.comments_status_owner_id, comments_poster_id, c.comments_profile_id, c.comments_time, c.comments_body
-			FROM {db_prefix}breeze_status AS s
-				LEFT JOIN {db_prefix}breeze_comments AS c ON (c.comments_status_id = s.status_id)
-			WHERE s.status_id = {int:status_id}
-			ORDER BY s.status_time DESC',
+			SELECT '. implode(', ', $this->_tables['status']['columns']) .'
+			FROM {db_prefix}'. ($this->_tables['status']['table']) .'
+			WHERE status_id = {int:status_id}',
 			array(
 				'status_id' => $id
 			)
@@ -451,6 +448,9 @@ class BreezeQuery extends Breeze
 		// Populate the array like a big heavy boss!
 		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 		{
+			// Get the Ids to fetch the comments.
+			$statusIDs[] = $row['status_id'];
+
 			$return['data'][$row['status_id']] = array(
 				'id' => $row['status_id'],
 				'owner_id' => $row['status_owner_id'],
@@ -458,13 +458,32 @@ class BreezeQuery extends Breeze
 				'time' => $this->tools->timeElapsed($row['status_time']),
 				'time_raw' => $row['status_time'],
 				'body' => $this->parser->display($row['status_body']),
-				'comments' => array(),
 			);
 
-			// Comments
-			if (!empty($row['comments_status_id']))
+			$return['users'][] = $row['status_owner_id'];
+			$return['users'][] = $row['status_poster_id'];
+		}
+
+		$this->_smcFunc['db_free_result']($result);
+
+		// Now get the comments for each status.
+		if (!empty($statusIDs))
+		{
+			$result = $this->_smcFunc['db_query']('', '
+				SELECT '. implode(', ', $this->_tables['comments']['columns']) .'
+				FROM {db_prefix}'. ($this->_tables['comments']['table']) .'
+				WHERE comments_status_id IN({array_int:status})
+				ORDER BY comments_id ASC
+				',
+				array(
+					'status' => $statusIDs,
+				)
+			);
+
+			// Append the data to our main return array
+			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 			{
-				$c[$row['comments_id']] = array(
+				$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']] = array(
 					'id' => $row['comments_id'],
 					'status_id' => $row['comments_status_id'],
 					'status_owner_id' => $row['comments_status_owner_id'],
@@ -475,21 +494,14 @@ class BreezeQuery extends Breeze
 					'body' => $this->parser->display($row['comments_body']),
 				);
 
-				// Merge them both
-				$return['data'][$row['status_id']]['comments'] = $c;
+				// Append the users IDs.
+				$return['users'][] = $row['comments_poster_id'];
 			}
 
-			// Get the users IDs
-			if (!empty($row['comments_poster_id']))
-				$return['users'][] = $row['comments_poster_id'];
-
-			$return['users'][] = $row['status_owner_id'];
-			$return['users'][] = $row['status_poster_id'];
+			$this->_smcFunc['db_free_result']($result);
 		}
 
-		$this->_smcFunc['db_free_result']($result);
-
-		// Clean it a bit
+		// Clean it up!
 		$return['users'] = array_filter(array_unique($return['users']));
 
 		return $return;
@@ -498,7 +510,7 @@ class BreezeQuery extends Breeze
 	/**
 	 * BreezeQuery::getStatusByUser()
 	 *
-	 * Get all status made by X user. This returns all the status made by x user, it does not matter on what profile page they were made.
+	 * Get all status made by X user, it does not matter on what profile page they were made.
 	 * @param int $id the ID of the user that you want to fetch the status from.
 	 * @param int $maxIndex The maximum amount of status to fetch.
 	 * @param int $currentPage For working alongside pagination.
