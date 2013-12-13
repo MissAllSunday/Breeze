@@ -110,11 +110,11 @@ class BreezeWall
 	// Get the latest entries of your buddies
 	public function generalWall()
 	{
-		global $txt, $scripturl, $context, $sourcedir;
+		global $txt, $scripturl, $context, $sourcedir, $user_info;
 		global $modSettings;
 
 		// Guest don't have any business here... back off!
-		if ($this->member['is_guest'])
+		if ($user_info['is_guest'])
 			redirectexit();
 
 		$globals = Breeze::sGlobals('get');
@@ -141,14 +141,14 @@ class BreezeWall
 		$context['Breeze']['commingFrom'] = 'wall';
 
 		// Time to overheat the server!
-		if (!empty($this->member['buddies']))
+		if (!empty($context['Breeze']['settings']['buddies']))
 		{
 			// Get the latest status
-			$status = $this->_query->getStatusByUser($this->member['buddies'], $maxIndex, $currentPage);
+			$status = $this->_query->getStatusByUser($context['Breeze']['settings']['buddies'], $maxIndex, $currentPage);
 			$context['Breeze']['status'] = $status['data'];
 
 			// Get the latest activity
-			$context['Breeze']['activity'] = $this->_query->getActivityLog($this->member['buddies']);
+			$context['Breeze']['activity'] = $this->_query->getActivityLog($context['Breeze']['settings']['buddies']);
 
 			// Load users data
 			if (!empty($status['users']))
@@ -188,10 +188,10 @@ class BreezeWall
 		// Load the single status
 		$data = $this->_query->getStatusByID($globals->getValue('bid'), $globals->getValue('u'));
 
-		if (!empty($this->member['buddies']))
+		if (!empty($context['Breeze']['settings']['buddies']))
 		{
 			// Get the latest activity
-			$context['Breeze']['activity'] = $this->_query->getActivityLog($this->member['buddies']);
+			$context['Breeze']['activity'] = $this->_query->getActivityLog($context['Breeze']['settings']['buddies']);
 
 			// Load users data
 			if (!empty($status['users']))
