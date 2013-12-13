@@ -123,7 +123,7 @@ class BreezeWall
 		writeLog(true);
 
 		// Pagination max index and current page
-		$maxIndex = !empty($this->member['options']['Breeze_pagination_number']) ? $this->member['options']['Breeze_pagination_number'] : 5;
+		$maxIndex = !empty($context['Breeze']['settings']['pagination_number']) ? $context['Breeze']['settings']['Breeze_pagination_number'] : 5;
 		$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;
 
 		// Set all the page stuff
