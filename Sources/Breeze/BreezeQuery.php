@@ -587,7 +587,7 @@ class BreezeQuery extends Breeze
 			// Append the data to our main return array
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 			{
-				$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']] = array(
+				$return['data'][$row['comments_status_owner_id']][$row['comments_status_id']]['comments'][$row['comments_id']] = array(
 					'id' => $row['comments_id'],
 					'status_id' => $row['comments_status_id'],
 					'status_owner_id' => $row['comments_status_owner_id'],
