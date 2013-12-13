@@ -62,20 +62,14 @@ class BreezeWall
 		$this->_tools = $tools;
 
 		// Load the user settings.
-		$context['Breeze']['settings']['owner'] = $query->getUserSettings($user_info['id']);
+		$context['Breeze']['settings'] = $query->getUserSettings($user_info['id']);
 
 		// Print the JS bits
-		$this->_tools->profileHeaders($context['Breeze']['settings']['owner']);
+		$this->_tools->profileHeaders($context['Breeze']['settings']);
 
 		// We need to load the current user's data
 		if (empty($context['Breeze']['user_info'][$user_info['id']]))
 			$this->_tools->loadUserInfo($user_info['id'], false, 'profile');
-
-		// The member viewing this page
-		$this->member = $memberContext[$user_info['id']];
-
-		// To make things easier, set a context var
-		$context['member'] = $memberContext[$user_info['id']];
 	}
 
 	public function call()
@@ -183,9 +177,9 @@ class BreezeWall
 		$context['Breeze']['commingFrom'] = 'wall';
 
 		// Display all the JavaScript bits.
-		$context['Breeze']['settings']['owner'] = $this->_query->getUserSettings($context['member']['id']);
+		$context['Breeze']['settings'] = $this->_query->getUserSettings($context['member']['id']);
 
-		$this->_tools->profileHeaders($context['Breeze']['settings']['owner']);
+		$this->_tools->profileHeaders($context['Breeze']['settings']);
 
 		// We are gonna load the status from the user array so we kinda need both the user ID and a status ID
 		if (!$globals->validate('u') || !$globals->validate('bid'))
