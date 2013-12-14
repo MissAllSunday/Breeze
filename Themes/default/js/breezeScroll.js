@@ -66,8 +66,9 @@ jQuery(document).ready(function(){
 
 				jQuery.ajax(
 				{
-					// Yes, this is a VERY large url...
-					url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1;commingFrom='+ window.breeze_commingFrom +';userID='+ window.breeze_userID +';maxIndex='+ window.breeze_maxIndex +';numberTimes='+ numberOfEvents +';totalItems='+ window.breeze_totalItems +';' + window.breeze_session_var + '=' + window.breeze_session_id,
+					// Send the data and oh boy there's a lot of it!
+					url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1;' + window.breeze_session_var + '=' + window.breeze_session_id,
+					data : window.breeze,
 					cache: false,
 					dataType: 'json',
 					success: function(html)
