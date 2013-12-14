@@ -163,16 +163,17 @@ class BreezeWall
 				$context['page_index'] = $status['pagination'];
 
 			// Need to pass some vars to the browser :(
-			$context['html_headers'] .= '
-			<script type="text/javascript"><!-- // --><![CDATA[
-				breeze.profileOwner = '. $user_info['id'] .';
-				breeze.commingFrom = ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ';
-				breeze.maxIndex = ' . $maxIndex . ';
-				breeze.userID = ' . $user_info['id'] . ';
-				breeze.totalItems = ' . $status['count'] . ';
-				breezeloadMore = ' . (!empty($this->userSettings['load_more']) ? 'true' : 'false') . ';
-				breeze.buddies = '. json_encode($this->userSettings['buddies']) .';
-			// ]]></script>';
+			$context['insert_after_template'] .= '
+	<script type="text/javascript"><!-- // --><![CDATA[
+		breezeAjax = {
+			profileOwner : '. $user_info['id'] .',
+			commingFrom : ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ',
+			userID : ' . $user_info['id'] . ',
+			totalItems : ' . $status['count'] . ',
+			loadMore : ' . (!empty($this->userSettings['load_more']) ? 'true' : 'false') . ',
+			buddies : '. json_encode($this->userSettings['buddies']) .',
+		};
+	// ]]></script>';
 		}
 
 		// No buddies huh? worry not! here's the latest status...

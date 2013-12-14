@@ -603,10 +603,13 @@ class BreezeAjax
 		// Calculate the start value
 		$start = $maxIndex * $numberTimes;
 
+		// Pass the user ID or IDs depending where are we comming from....
+		$fetch = $comingFrom == 'wall' ? $globals->getRaw('buddies') : $globals->getRaw('userID');
+
 		// Get the right call to the DB
 		$call = $comingFrom == 'profile' ? 'getStatusByProfile' : 'getStatusByUser';
 
-		$data = $this->_query->$call($id, $maxIndex, $start);
+		$data = $this->_query->$call($fetch, $maxIndex, $start);
 
 		if (!empty($data['data']))
 		{

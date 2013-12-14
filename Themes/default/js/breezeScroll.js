@@ -68,7 +68,7 @@ jQuery(document).ready(function(){
 				{
 					// Send the data and oh boy there's a lot of it!
 					url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1;' + window.breeze_session_var + '=' + window.breeze_session_id,
-					data : window.breeze,
+					data : window.breezeAjax,
 					cache: false,
 					dataType: 'json',
 					success: function(html)

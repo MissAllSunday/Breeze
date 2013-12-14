@@ -150,14 +150,15 @@ function breezeWall()
 		$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
 
 	// Need to pass some vars to the browser :(
-	$context['html_headers'] .= '
+	$context['insert_after_template'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[
-		breeze.profileOwner = '. $context['member']['id'] .';
-		breeze.commingFrom = ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ';
-		breeze.maxIndex = ' . $maxIndex . ';
-		breeze.userID = ' . $user_info['id'] . ';
-		breeze.totalItems = ' . $data['count'] . ';
-		breeze.loadMore = ' . (!empty($context['Breeze']['settings']['visitor']['load_more']) ? 'true' : 'false') . ';
+		breezeAjax = {
+			profileOwner : '. $context['member']['id'] .',
+			commingFrom : ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ',
+			userID : ' . $user_info['id'] . ',
+			totalItems : ' . $data['count'] . ',
+			loadMore : ' . (!empty($context['Breeze']['settings']['visitor']['load_more'] ? 'true' : 'false') . ',
+		};
 	// ]]></script>';
 
 	// Lastly, load all the users data from this bunch of user IDs
