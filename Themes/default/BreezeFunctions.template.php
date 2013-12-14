@@ -288,7 +288,8 @@ function breeze_activity($data)
 							<div class="activityInner">
 								<span class="activityIcon ', $act['type'] ,'"></span>
 								<span class="time_elapsed" title="'. timeformat($act['time_raw'], false) .'">'. $act['time'] .' </span><br />
-								
+								', $act['content']['message'] ,'<br />
+								', $act['content']['link'] ,'
 							</div>
 							<span class="botslice">
 								<span> </span>

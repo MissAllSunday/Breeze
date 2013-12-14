@@ -108,10 +108,10 @@ class BreezeLog
 			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_text->getText('logComment_own');
 
 		else
-			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_text->getText('logComment'), $entry['content']['status_owner_id']);
+			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_text->getText('logComment'), $loadedUsers[$entry['content']['status_owner_id']]['link']);
 
 		// Build a nice link to the status.
-			$return['link'] = $scripturl .'?action=wall;sa=single;bid='. $entry['content']['status_id'];
+		$return['link'] = '<a href="'. $scripturl .'?action=wall;sa=single;bid='. $entry['content']['status_id'] .'#comment_id_'. $entry['content']['id'] .'">'. $this->_text->getText('logComment_view') . '</a>';
 
 		return $return;
 	}

@@ -316,8 +316,10 @@ $txt['Breeze_logTopic'] = 'created a new topic:';
 $txt['Breeze_logRegister'] = 'has just registered!';
 $txt['Breeze_logComment'] = 'made a new comment on %s\'s wall';
 $txt['Breeze_logComment_own'] = 'made a comment on his/her own wall';
+$txt['Breeze_logComment_view'] = 'View comment';
 $txt['Breeze_logStatus'] = 'made a new status on %s\'s wall';
 $txt['Breeze_logStatus_own'] = 'made a new status on his/her own wall';
+$txt['Breeze_logStatus_view'] = 'View status';
 
 // Donate
 $txt['Breeze_donate'] = 'Breeze is a free SMF modification brought to you by a PHP enthusiast on her free time.<p />If you like this modification and would like to show your appreciation, please consider making a <a href="http://missallsunday.com/">donation</a>. Your donation will be used to cover server costs and/or to buy shoes, shoes keeps the developer happy and if she is happy then there will be more updates ;)<p />You can also show your appreciation by letting me know you are using Breeze on your forum, come by, say hi and show me your shiny profile pages powered by Breeze.';
