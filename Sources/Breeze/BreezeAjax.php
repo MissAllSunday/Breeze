@@ -583,6 +583,8 @@ class BreezeAjax
 
 	protected function fetchStatus()
 	{
+		global $context;
+
 		// Get the global vars
 		$globals = Breeze::sGlobals('request');
 
@@ -605,6 +607,9 @@ class BreezeAjax
 
 		// Pass the user ID or IDs depending where are we coming from....
 		$fetch = $comingFrom == 'wall' ? $globals->getRaw('buddies') : $globals->getRaw('userID');
+
+		// Re-globalized!
+		$context['Breeze']['comingFrom'] = $comingFrom;
 
 		// Get the right call to the DB
 		$call = $comingFrom == 'profile' ? 'getStatusByProfile' : 'getStatusByUser';
