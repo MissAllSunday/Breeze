@@ -142,7 +142,7 @@ class BreezeWall
 		$context['Breeze'] = array();
 
 		// We need to log the action we're currently on
-		$context['Breeze']['commingFrom'] = 'wall';
+		$context['Breeze']['comingFrom'] = 'wall';
 
 		// Time to overheat the server!
 		if (!empty($this->userSettings['buddies']))
@@ -166,8 +166,9 @@ class BreezeWall
 			$context['insert_after_template'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[
 		breezeAjax = {
+			maxIndex : '. $maxIndex .',
 			profileOwner : '. $user_info['id'] .',
-			commingFrom : ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ',
+			comingFrom : ' . JavaScriptEscape($context['Breeze']['comingFrom']) . ',
 			userID : ' . $user_info['id'] . ',
 			totalItems : ' . $status['count'] . ',
 			loadMore : ' . (!empty($this->userSettings['load_more']) ? 'true' : 'false') . ',
@@ -192,7 +193,7 @@ class BreezeWall
 		$globals = Breeze::sGlobals('get');
 
 		// This is still part of the whole wall stuff.
-		$context['Breeze']['commingFrom'] = 'wall';
+		$context['Breeze']['comingFrom'] = 'wall';
 
 		// Display all the JavaScript bits.
 		$this->userSettings = $this->_query->getUserSettings($context['member']['id']);

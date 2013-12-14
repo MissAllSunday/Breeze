@@ -64,6 +64,8 @@ jQuery(document).ready(function(){
 					style: '',
 				}).appendTo('#breezeAppendTo').hide();
 
+				window.breezeAjax.numberTimes = numberOfEvents;
+
 				jQuery.ajax(
 				{
 					// Send the data and oh boy there's a lot of it!
@@ -74,7 +76,7 @@ jQuery(document).ready(function(){
 					success: function(html)
 					{
 						// The server response as a JSON object
-						if(html.type == 'success'){
+						if(html.type == 'success'){console.log(html);
 
 							// There are no more data to load!
 							if (html.data != 'end'){
@@ -92,7 +94,7 @@ jQuery(document).ready(function(){
 							}
 						}
 
-						else if(html.type == 'error'){
+						else if(html.type == 'error'){console.log(html);
 							noty({
 								text: html.message,
 								timeout: 3500, type: html.type,

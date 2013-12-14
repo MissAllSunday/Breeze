@@ -75,7 +75,7 @@ function breezeWall()
 		'views' => false,
 		'log' => false,
 		'buddiesLog' => false,
-		'commingFrom' => 'profile',
+		'comingFrom' => 'profile',
 		'settings' => array(),
 	);
 
@@ -153,11 +153,12 @@ function breezeWall()
 	$context['insert_after_template'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[
 		breezeAjax = {
+			maxIndex : '. $maxIndex .',
 			profileOwner : '. $context['member']['id'] .',
-			commingFrom : ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ',
+			comingFrom : ' . JavaScriptEscape($context['Breeze']['comingFrom']) . ',
 			userID : ' . $user_info['id'] . ',
 			totalItems : ' . $data['count'] . ',
-			loadMore : ' . (!empty($context['Breeze']['settings']['visitor']['load_more'] ? 'true' : 'false') . ',
+			loadMore : ' . (!empty($context['Breeze']['settings']['visitor']['load_more']) ? 'true' : 'false') . ',
 		};
 	// ]]></script>';
 
@@ -386,7 +387,7 @@ function breezeNotifications()
 		$context['Breeze']['noti'] = $notifications->getMessages();
 
 	// Tell everyone where we've been
-	$context['Breeze']['commingFrom'] = 'profile';
+	$context['Breeze']['comingFrom'] = 'profile';
 
 	// Set all the page stuff
 	$context['sub_template'] = 'user_notifications';

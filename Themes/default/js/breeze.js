@@ -86,7 +86,7 @@ jQuery(document).ready(function(){
 			// The long, long ajax call...
 			jQuery.ajax({
 				type: 'GET',
-				url: smf_scripturl + '?action=breezeajax;sa=post;js=1' + window.breeze_session_var + '=' + window.breeze_session_id + ';rf=' + window.breeze_commingFrom,
+				url: smf_scripturl + '?action=breezeajax;sa=post;js=1' + window.breeze_session_var + '=' + window.breeze_session_id + ';rf=' + window.breeze_comingFrom,
 				data: status,
 				cache: false,
 				dataType: 'json',
@@ -159,7 +159,7 @@ jQuery(document).ready(function(){
 
 			jQuery.ajax({
 				type: 'GET',
-				url: smf_scripturl + '?action=breezeajax;sa=postcomment;js=1' + window.breeze_session_var + '=' + window.breeze_session_id + ';rf=' + window.breeze_commingFrom,
+				url: smf_scripturl + '?action=breezeajax;sa=postcomment;js=1' + window.breeze_session_var + '=' + window.breeze_session_id + ';rf=' + window.breeze_comingFrom,
 				data: comment,
 				cache: false,
 				dataType: 'json',
@@ -210,7 +210,7 @@ jQuery(document).ready(function(){
 				addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
 					jQuery.ajax({
 						type: 'GET',
-						url: commentUrl + ';js=1' + window.breeze_session_var + '=' + window.breeze_session_id + ';rf=' + window.breeze_commingFrom,
+						url: commentUrl + ';js=1' + window.breeze_session_var + '=' + window.breeze_session_id + ';rf=' + window.breeze_comingFrom,
 						cache: false,
 						dataType: 'json',
 						success: function(html){
@@ -270,7 +270,7 @@ jQuery(document).ready(function(){
 				addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
 					jQuery.ajax({
 						type: 'GET',
-						url: urlParam + ';js=1' + window.breeze_session_var + '=' + window.breeze_session_id + ';rf=' + window.breeze_commingFrom,
+						url: urlParam + ';js=1' + window.breeze_session_var + '=' + window.breeze_session_id + ';rf=' + window.breeze_comingFrom,
 						cache: false,
 						dataType: 'json',
 						success: function(html){

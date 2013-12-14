@@ -589,7 +589,7 @@ class BreezeAjax
 		$id = $globals->getRaw('userID');
 		$maxIndex = $globals->getRaw('maxIndex');
 		$numberTimes = $globals->getRaw('numberTimes');
-		$comingFrom = $globals->getRaw('commingFrom');
+		$comingFrom = $globals->getRaw('comingFrom');
 		$return = '';
 
 		// The usual checks
@@ -603,7 +603,7 @@ class BreezeAjax
 		// Calculate the start value
 		$start = $maxIndex * $numberTimes;
 
-		// Pass the user ID or IDs depending where are we comming from....
+		// Pass the user ID or IDs depending where are we coming from....
 		$fetch = $comingFrom == 'wall' ? $globals->getRaw('buddies') : $globals->getRaw('userID');
 
 		// Get the right call to the DB
