@@ -150,7 +150,7 @@ class BreezeWall
 			// Get the latest status
 			$status = $this->_query->getStatusByUser($this->userSettings['buddies'], $maxIndex, $currentPage);
 			$context['Breeze']['status'] = $status['data'];
-var_dump($status);
+
 			// Get the latest activity
 			$context['Breeze']['activity'] = $this->_query->getActivityLog($this->userSettings['buddies']);
 
