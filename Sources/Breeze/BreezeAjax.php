@@ -589,11 +589,11 @@ class BreezeAjax
 		$id = $globals->getRaw('userID');
 		$maxIndex = $globals->getRaw('maxIndex');
 		$numberTimes = $globals->getRaw('numberTimes');
-		$commingFrom = $globals->getRaw('commingFrom');
+		$comingFrom = $globals->getRaw('commingFrom');
 		$return = '';
 
 		// The usual checks
-		if (empty($id) || empty($maxIndex) || empty($numberTimes) || empty($commingFrom))
+		if (empty($id) || empty($maxIndex) || empty($numberTimes) || empty($comingFrom))
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
@@ -604,13 +604,19 @@ class BreezeAjax
 		$start = $maxIndex * $numberTimes;
 
 		// Get the right call to the DB
-		$call = $commingFrom == 'profile' ? 'getStatusByProfile' : 'getStatusByUser';
+		$call = $comingFrom == 'profile' ? 'getStatusByProfile' : 'getStatusByUser';
 
 		$data = $this->_query->$call($id, $maxIndex, $start);
 
 		if (!empty($data['data']))
 		{
-			$return .= $this->_display->HTML($data['data'], 'status', false, $data['users']);
+			// If we're coming from the general wall we need to do an extra foreach...
+			if ($comingFrom == 'wall')
+				foreach ($data['data'] as $d)
+					$return .= $this->_display->HTML($d, 'status', false, $data['users']);
+
+			else
+				$return .= $this->_display->HTML($data['data'], 'status', false, $data['users']);
 
 			return $this->setResponse(array(
 				'type' => 'success',

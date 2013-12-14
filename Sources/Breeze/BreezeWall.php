@@ -120,6 +120,9 @@ class BreezeWall
 		// We cannot live without globals...
 		$globals = Breeze::sGlobals('get');
 
+		// The (soon to be) huge array...
+		$status = array();
+
 		// Obscure, evil stuff...
 		writeLog(true);
 
@@ -147,32 +150,33 @@ class BreezeWall
 			// Get the latest status
 			$status = $this->_query->getStatusByUser($this->userSettings['buddies'], $maxIndex, $currentPage);
 			$context['Breeze']['status'] = $status['data'];
-
+var_dump($status);
 			// Get the latest activity
 			$context['Breeze']['activity'] = $this->_query->getActivityLog($this->userSettings['buddies']);
 
-			// Load users data
+			// Load users data.
 			if (!empty($status['users']))
 				$this->_tools->loadUserInfo($status['users']);
 
 			// Applying pagination.
 			if (!empty($status['pagination']))
 				$context['page_index'] = $status['pagination'];
+
+			// Need to pass some vars to the browser :(
+			$context['html_headers'] .= '
+			<script type="text/javascript"><!-- // --><![CDATA[
+				window.breeze_profileOwner = '. $user_info['id'] .';
+				window.breeze_commingFrom = ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ';
+				window.breeze_maxIndex = ' . $maxIndex . ';
+				window.breeze_userID = ' . $user_info['id'] . ';
+				window.breeze_totalItems = ' . $status['count'] . ';
+				window.breeze_loadMore = ' . (!empty($this->userSettings['load_more']) ? 'true' : 'false') . ';
+			// ]]></script>';
 		}
 
 		// No buddies huh? worry not! here's the latest status...
 		// coming soon... LOL
 
-		// Need to pass some vars to the browser :(
-		$context['html_headers'] .= '
-		<script type="text/javascript"><!-- // --><![CDATA[
-			window.breeze_profileOwner = '. $user_info['id'] .';
-			window.breeze_commingFrom = ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ';
-			window.breeze_maxIndex = ' . $maxIndex . ';
-			window.breeze_userID = ' . $user_info['id'] . ';
-			window.breeze_totalItems = ' . $status['count'] . ';
-			window.breeze_loadMore = ' . (!empty($context['Breeze']['settings']['visitor']['load_more']) ? 'true' : 'false') . ';
-		// ]]></script>';
 	}
 
 	// Show a single status with all it's comments
