@@ -73,7 +73,8 @@ function breeze_status($data, $returnVar = false)
 				<span class="topslice"><span></span></span>
 					<div class="breeze_user_inner">
 						<div class="breeze_user_status_avatar">
-							'. $context['Breeze']['user_info'][$status['poster_id']]['facebox'] .'
+							'. $context['Breeze']['user_info'][$status['poster_id']]['facebox'] .'<br />
+							'. $context['Breeze']['user_info'][$status['poster_id']]['link'] .'
 						</div>
 						<div class="breeze_user_status_comment">
 							'. $status['body'] .'
@@ -165,6 +166,7 @@ function breeze_comment($comments, $returnVar = false)
 		<li class="windowbg2" id ="comment_id_'. $comment['id'] .'">
 			<div class="breeze_user_comment_avatar">
 					'. $context['Breeze']['user_info'][$comment['poster_id']]['facebox'] .'<br />
+					'. $context['Breeze']['user_info'][$comment['poster_id']]['link'] .'
 			</div>
 			<div class="breeze_user_comment_comment">
 				'. $comment['body'] .'
