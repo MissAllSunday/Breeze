@@ -170,7 +170,7 @@ class BreezeWall
 			window.breeze_commingFrom = ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ';
 			window.breeze_maxIndex = ' . $maxIndex . ';
 			window.breeze_userID = ' . $user_info['id'] . ';
-			window.breeze_totalItems = ' . $data['count'] . ';
+			window.breeze_totalItems = ' . $status['count'] . ';
 			window.breeze_loadMore = ' . (!empty($context['Breeze']['settings']['visitor']['load_more']) ? 'true' : 'false') . ';
 		// ]]></script>';
 	}
