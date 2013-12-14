@@ -610,13 +610,7 @@ class BreezeAjax
 
 		if (!empty($data['data']))
 		{
-			// If we're coming from the general wall we need to do an extra foreach...
-			if ($comingFrom == 'wall')
-				foreach ($data['data'] as $d)
-					$return .= $this->_display->HTML($d, 'status', false, $data['users']);
-
-			else
-				$return .= $this->_display->HTML($data['data'], 'status', false, $data['users']);
+			$return .= $this->_display->HTML($data['data'], 'status', false, $data['users']);
 
 			return $this->setResponse(array(
 				'type' => 'success',

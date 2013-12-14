@@ -483,9 +483,8 @@ function template_general_wall()
 				<span class="botslice"><span></span></span>
 			</div>';
 
-	// We are handling multiple users so we need to do an extra foreach...
-	foreach ($context['Breeze']['status'] as $status)
-		breeze_status($status);
+	// Display the status...
+	breeze_status($context['Breeze']['status']);
 
 	// An empty div to append the loaded status via AJAX.
 	echo '
