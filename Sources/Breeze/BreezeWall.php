@@ -165,12 +165,13 @@ var_dump($status);
 			// Need to pass some vars to the browser :(
 			$context['html_headers'] .= '
 			<script type="text/javascript"><!-- // --><![CDATA[
-				window.breeze_profileOwner = '. $user_info['id'] .';
-				window.breeze_commingFrom = ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ';
-				window.breeze_maxIndex = ' . $maxIndex . ';
-				window.breeze_userID = ' . $user_info['id'] . ';
-				window.breeze_totalItems = ' . $status['count'] . ';
-				window.breeze_loadMore = ' . (!empty($this->userSettings['load_more']) ? 'true' : 'false') . ';
+				breeze.profileOwner = '. $user_info['id'] .';
+				breeze.commingFrom = ' . JavaScriptEscape($context['Breeze']['commingFrom']) . ';
+				breeze.maxIndex = ' . $maxIndex . ';
+				breeze.userID = ' . $user_info['id'] . ';
+				breeze.totalItems = ' . $status['count'] . ';
+				breezeloadMore = ' . (!empty($this->userSettings['load_more']) ? 'true' : 'false') . ';
+				breeze.buddies = '. json_encode($this->userSettings['buddies']) .';
 			// ]]></script>';
 		}
 
