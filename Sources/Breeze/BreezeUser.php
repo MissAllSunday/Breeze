@@ -364,7 +364,7 @@ function breezeNotifications()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	$context['Breeze']['settings']['owner'] = $query->getUserSettings($context['member']['id']);
+	$context['Breeze']['settings']['owner'] = $breezeController->get('query')->getUserSettings($context['member']['id']);
 
 	$breezeController->get('tools')->profileHeaders($context['Breeze']['settings']['owner']);
 
@@ -396,7 +396,7 @@ function breezeNotifications()
 	$context['canonical_url'] = $scripturl . '?action=profile;area=notifications;u=' . $context['member']['id'];
 
 	// Print some jQuery goodies...
-	$context['html_headers'] .= '
+	$context['insert_after_template'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[
 		jQuery(document).on(\'change\', \'input[name="check_all"]\',function() {
 			jQuery(\'.idNoti\').prop("checked" , this.checked);
