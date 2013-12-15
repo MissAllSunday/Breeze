@@ -62,7 +62,7 @@ spl_autoload_register('breeze_autoloader');
 class Breeze
 {
 	public static $name = 'Breeze';
-	public static $version = '1.0 Beta 3';
+	public static $version = '1.0';
 	public static $folder = '/Breeze/';
 	public static $txtpattern = 'Breeze_';
 	public static $permissions = array('postStatus', 'postComments', 'deleteStatus', 'deleteComments',);
