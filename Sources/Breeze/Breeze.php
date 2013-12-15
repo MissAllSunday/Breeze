@@ -304,9 +304,8 @@ class Breeze
 		// DUH! winning!
 		Breeze::who();
 
-		// Notifications call but not for guests!
-		if (!$user_info['is_guest'])
-			Breeze::notiHeaders();
+		// Displat common css and js files.
+		Breeze::notiHeaders();
 	}
 
 	/**
@@ -431,18 +430,22 @@ class Breeze
 			$breezeText = $breezeController->get('text');
 
 			// Define some variables for the ajax stuff
-			$jsVars = array('feed_error_message', 'error_server', 'error_wrong_values', 'success_published', 'success_published_comment', 'error_empty', 'success_delete_status', 'success_delete_comment', 'confirm_delete', 'confirm_yes', 'confirm_cancel', 'error_already_deleted_status', 'error_already_deleted_comment', 'error_already_deleted_noti', 'error_already_marked_noti', 'cannot_postStatus', 'cannot_postComments', 'error_no_valid_action', 'error_no_access', 'success_noti_unmarkasread_after', 'success_noti_markasread_after', 'error_noti_markasreaddeleted_after', 'error_noti_markasreaddeleted', 'success_noti_delete_after', 'success_noti_visitors_clean',  'success_notiMulti_delete_after', 'success_notiMulti_markasread_after', 'success_notiMulti_unmarkasread_after', 'noti_markasread', 'noti_delete', 'noti_cancel',);
+			if (!$user_info['is_guest'])
+			{
+				$jsVars = array('feed_error_message', 'error_server', 'error_wrong_values', 'success_published', 'success_published_comment', 'error_empty', 'success_delete_status', 'success_delete_comment', 'confirm_delete', 'confirm_yes', 'confirm_cancel', 'error_already_deleted_status', 'error_already_deleted_comment', 'error_already_deleted_noti', 'error_already_marked_noti', 'cannot_postStatus', 'cannot_postComments', 'error_no_valid_action', 'error_no_access', 'success_noti_unmarkasread_after', 'success_noti_markasread_after', 'error_noti_markasreaddeleted_after', 'error_noti_markasreaddeleted', 'success_noti_delete_after', 'success_noti_visitors_clean',  'success_notiMulti_delete_after', 'success_notiMulti_markasread_after', 'success_notiMulti_unmarkasread_after', 'noti_markasread', 'noti_delete', 'noti_cancel',);
 
-			$context['html_headers'] .= '
+				$context['html_headers'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[';
 
-			foreach ($jsVars as $var)
+				foreach ($jsVars as $var)
 				$context['html_headers'] .= '
 		var breeze_'. $var .' = '. JavaScriptEscape($breezeText->getText($var));
 
-			$context['html_headers'] .= '
+				$context['html_headers'] .= '
 	// ]]></script>';
+			}
 
+			// Common css and js files.
 			$context['html_headers'] .= '
 	<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
 	<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
@@ -450,7 +453,9 @@ class Breeze
 	<link rel="stylesheet" type="text/css" href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css"/>';
 
 			// Load the notification JS files.
-			$context['insert_after_template'] .= '
+			if (!$user_info['is_guest'])
+			{
+				$context['insert_after_template'] .= '
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.hashchange.min.js"></script>
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
@@ -460,15 +465,16 @@ class Breeze
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
 
-			// Does the admin wants to add more actions?
-			if ($breezeSettings->enable('allowedActions'))
-				Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $breezeSettings->getSetting('allowedActions')));
+				// Does the admin wants to add more actions?
+				if ($breezeSettings->enable('allowedActions'))
+					Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $breezeSettings->getSetting('allowedActions')));
 
-			// Stuff for the notifications, don't show this if we aren't on a specified action
-			if (empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
-			{
-				$notifications = $breezeController->get('notifications');
-				$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
+				// Stuff for the notifications, don't show this if we aren't on a specified action
+				if (empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
+				{
+					$notifications = $breezeController->get('notifications');
+					$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
+				}
 			}
 
 			$header_done = true;
