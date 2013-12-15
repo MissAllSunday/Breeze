@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to identify a mention in a string and convert that to a more easy to use format which will be used by the aprser class later, oh, and create the mention notification..
  * @package Breeze mod
- * @version 1.0 Beta 3
+ * @version 1.0
  * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2013 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
