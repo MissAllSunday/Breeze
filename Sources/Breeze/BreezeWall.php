@@ -229,5 +229,12 @@ class BreezeWall
 
 		// There cannot be any pagination
 		$context['page_index'] = array();
+
+		// Are we showing a comment? if so, hightlight it.
+		if ($globals->getValue('cid'))
+			$context['insert_after_template'] .= '
+	<script type="text/javascript"><!-- // --><![CDATA[;
+		document.getElementById(\'comment_id_'. $globals->getValue('cid') .'\').className = "windowbg3";
+	// ]]></script>';
 	}
 }
