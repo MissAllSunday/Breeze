@@ -118,6 +118,8 @@ class BreezeLog
 
 	protected function logStatus($entry, $user)
 	{
+		global $scripturl;
+
 		// Load the users data, one fine day I will count how many times I typed this exact sentence...
 		$loadedUsers = $this->_query->loadMinimalData(array_unique(array($entry['content']['owner_id'], $entry['content']['poster_id'],)));
 
@@ -125,10 +127,15 @@ class BreezeLog
 		$own = $entry['content']['owner_id'] == $entry['content']['poster_id'];
 
 		if ($own)
-			return $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_text->getText('logStatus_own');
+			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_text->getText('logStatus_own');
 
 		else
-			return $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_text->getText('logStatus'), $entry['content']['owner_id']);
+			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_text->getText('logStatus'), $entry['content']['owner_id']);
+
+		// Build a link to the status.
+		$return['link'] = '<a href="'. $scripturl .'?action=wall;sa=single;bid='. $entry['content']['id'] .'">'. $this->_text->getText('logStatus_view') . '</a>';
+
+		return $return;
 	}
 
 	public function getLog()
