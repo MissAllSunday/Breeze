@@ -185,7 +185,7 @@ class BreezeWall
 	// Show a single status with all it's comments
 	function singleStatus()
 	{
-		global $scripturl, $context, $memberContext, $modSettings,  $user_info;
+		global $scripturl, $context, $modSettings,  $user_info;
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
@@ -196,16 +196,16 @@ class BreezeWall
 		$context['Breeze']['comingFrom'] = 'wall';
 
 		// Display all the JavaScript bits.
-		$this->userSettings = $this->_query->getUserSettings($context['member']['id']);
+		$this->userSettings = $this->_query->getUserSettings($user_info['id']);
 
 		$this->_tools->profileHeaders($this->userSettings);
 
-		// We are gonna load the status from the user array so we kinda need both the user ID and a status ID
-		if (!$globals->validate('u') || !$globals->validate('bid'))
+		// We need the status ID!
+		if (!$globals->validate('bid'))
 			fatal_lang_error('no_access', false);
 
-		// Load the single status
-		$data = $this->_query->getStatusByID($globals->getValue('bid'), $globals->getValue('u'));
+		// Load it.
+		$data = $this->_query->getStatusByID($globals->getValue('bid'));
 
 		if (!empty($this->userSettings['buddies']))
 		{
@@ -220,12 +220,12 @@ class BreezeWall
 		// Load the users data
 		$this->_tools->loadUserInfo($data['users']);
 
-		$context['Breeze']['status'][] = $data['data'];
+		$context['Breeze']['status'] = $data['data'];
 
 		// Set all the page stuff
 		$context['sub_template'] = 'general_wall';
 		$context['page_title'] = $this->_text->getText('singleStatus_pageTitle');
-		$context['canonical_url'] = $scripturl .'?action=wall;area=single;u='. $globals->getValue('u') .';bid='. $globals->getValue('bid');
+		$context['canonical_url'] = $scripturl .'?action=wall;area=single;bid='. $globals->getValue('bid');
 
 		// There cannot be any pagination
 		$context['page_index'] = array();
