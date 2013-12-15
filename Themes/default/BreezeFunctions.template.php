@@ -97,12 +97,11 @@ function breeze_status($data, $returnVar = false)
 							if (!empty($status['comments']))
 									$echo .= breeze_comment($status['comments'], true);
 
-							// Display the new comments
-							$echo .= '
-									<li id="breeze_load_image_comment_'. $status['id'] .'" style="margin:auto; text-align:center;"></li>';
-
 							$echo .= '
 								</ul>';
+
+							$echo .= '
+								<div id="breeze_load_image_comment_'. $status['id'] .'" style="margin:auto; text-align:center;"></div>';
 
 								// Post a new comment
 								if (!empty($post_comment))
