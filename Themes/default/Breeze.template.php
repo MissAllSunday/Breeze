@@ -59,7 +59,7 @@ function template_user_wall()
 	// The "About me" tab.
 	if (!empty($context['Breeze']['settings']['owner']['enable_aboutMe']))
 		echo '
-				<li class="posts"><a href="#tabs-about" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_about'] ,'</span></a></li>';
+				<li class="about"><a href="#tabs-about" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_about'] ,'</span></a></li>';
 
 	// Does recent activity is enable?
 	if (!empty($context['Breeze']['settings']['owner']['enable_activityLog']))

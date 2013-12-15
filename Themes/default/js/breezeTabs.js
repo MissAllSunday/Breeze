@@ -104,16 +104,16 @@
 		return false;
 	});
 
-	// Posts tab
-	jQuery('li.posts a').click(function (e) {
+	// About me tab
+	jQuery('li.about a').click(function (e) {
 
 		// Is it active already?
-		if (tabs['posts'].active == true){
+		if (tabs['about'].active == true){
 			return false;
 		}
 
 		else{
-			tabChange('posts');
+			tabChange('about');
 		}
 
 		e.preventDefault();
