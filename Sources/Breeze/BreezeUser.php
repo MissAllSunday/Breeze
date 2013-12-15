@@ -197,7 +197,7 @@ function breezeSettings()
 	// Create the form.
 	$form = $breezeController->get('form');
 
-	// Group all these values into an array.
+	// Group all these values into an array. Makes it easier to save the changes.
 	$form->setFormName('breezeSettings');
 
 	// Session stuff.
@@ -207,6 +207,12 @@ function breezeSettings()
 	$form->addCheckBox(
 		'enable_wall',
 		!empty($userSettings['enable_wall']) ? true : false
+	);
+
+	// General wall setting.
+	$form->addCheckBox(
+		'enable_general_wall',
+		!empty($userSettings['enable_general_wall']) ? true : false
 	);
 
 	// Pagination.

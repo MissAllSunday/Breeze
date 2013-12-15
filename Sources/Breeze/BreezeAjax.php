@@ -802,6 +802,6 @@ class BreezeAjax
 		// Just a generic "is owner"
 		else
 			if(!$is_owner)
-				fatal_lang_error($this->_text->getText('error_no_valid_action'));
+				fatal_lang_error('Breeze_error_no_valid_action');
 	}
 }

@@ -273,6 +273,7 @@ class Breeze
 
 		$gSettings = $breezeController->get('settings');
 		$gText = $breezeController->get('text');
+		$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
 
 		// Display common css and js files.
 		Breeze::notiHeaders();
@@ -298,7 +299,7 @@ class Breeze
 			array('wall' => array(
 				'title' => $gText->getText('general_wall') . (!empty($context['Breeze']['notifications']) ? ' ['. count($context['Breeze']['notifications']) .']' : ''),
 				'href' => $scripturl . '?action=wall',
-				'show' => ($gSettings->enable('admin_settings_enable') && !$user_info['is_guest']),
+				'show' => ($gSettings->enable('admin_settings_enable') && !$user_info['is_guest'] && !empty($userSettings['enable_general_wall'])),
 				'sub_buttons' => array(
 					'noti' => array(
 						'title' => $gText->getText('user_notisettings_name'),

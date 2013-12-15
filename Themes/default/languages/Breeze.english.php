@@ -79,6 +79,8 @@ $txt['Breeze_user_settings_load_more'] = 'Add a "load more button"';
 $txt['Breeze_user_settings_load_more_sub'] = 'This setting will allow you to load the next batch of status by clicking a button.';
 $txt['Breeze_user_settings_pagination_number'] = 'How many status will be displayed per page';
 $txt['Breeze_user_settings_pagination_number_sub'] = 'Enter the number of status you want to display per page on your wall. By default is 5';
+$txt['Breeze_user_settings_enable_general_wall'] = 'Enable the general wall';
+$txt['Breeze_user_settings_enable_general_wall_sub'] = 'The general wall is a unique page where you can see the status and updates from your buddies. This settinh allows you to enable/disable it.';
 $txt['Breeze_user_settings_enable_wall'] = 'Enable my wall';
 $txt['Breeze_user_settings_enable_wall_sub'] = 'If you want to use your wall, you need to check this option, otherwise your profile will show the default page.';
 $txt['Breeze_user_settings_enable_visitors'] = 'Enable the visitors block?';
@@ -231,6 +233,7 @@ $txt['Breeze_success_notiMulti_unmarkasread_after'] = 'You have successfully mar
 $txt['cannot_breeze_postStatus'] = $txt['Breeze_cannot_postStatus'];
 $txt['cannot_breeze_postComments'] = $txt['Breeze_cannot_postComments'];
 $txt['cannot_breeze_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete Status/Comments.';
+$txt['Breeze_cannot_see_general_wall'] = 'You need to enable your general wall from your <a href="'. $scripturl .'?action=profile;area=breezesettings">wall settings page</a>.';
 
 // Pagination
 $txt['Breeze_pag_previous'] = 'previous';
