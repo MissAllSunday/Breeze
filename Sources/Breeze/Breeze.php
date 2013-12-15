@@ -274,6 +274,9 @@ class Breeze
 		$gSettings = $breezeController->get('settings');
 		$gText = $breezeController->get('text');
 
+		// Display common css and js files.
+		Breeze::notiHeaders();
+
 		// Replace the duplicate profile button
 		if ($gSettings->enable('admin_settings_enable') && !empty($menu_buttons['profile']['sub_buttons']['summary']))
 			$menu_buttons['profile']['sub_buttons']['summary'] = array(
@@ -293,19 +296,25 @@ class Breeze
 		$menu_buttons = array_merge(
 			array_slice($menu_buttons, 0, $counter),
 			array('wall' => array(
-				'title' => $gText->getText('general_wall'),
+				'title' => $gText->getText('general_wall') . (!empty($context['Breeze']['notifications']) ? ' ['. count($context['Breeze']['notifications']) .']' : ''),
 				'href' => $scripturl . '?action=wall',
 				'show' => ($gSettings->enable('admin_settings_enable') && !$user_info['is_guest']),
-				'sub_buttons' => array(),
-			)),
+				'sub_buttons' => array(
+					'noti' => array(
+						'title' => $gText->getText('user_notisettings_name'),
+						'href' => $scripturl . '?action=profile;area=breezenoti',
+						'show' => ($gSettings->enable('admin_settings_enable') && !$user_info['is_guest']),
+						'sub_buttons' => array(),
+						),
+					),
+				),
+			),
 			array_slice($menu_buttons, $counter)
 		);
 
 		// DUH! winning!
 		Breeze::who();
 
-		// Displat common css and js files.
-		Breeze::notiHeaders();
 	}
 
 	/**
@@ -474,6 +483,9 @@ class Breeze
 				{
 					$notifications = $breezeController->get('notifications');
 					$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
+
+					// If someone wants to do something with all this info, let them...
+					$context['Breeze']['notifications'] = $notifications->getMessages();
 				}
 			}
 
