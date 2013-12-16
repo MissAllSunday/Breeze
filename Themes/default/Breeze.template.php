@@ -57,12 +57,12 @@ function template_user_wall()
 				<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>';
 
 	// The "About me" tab.
-	if (!empty($context['Breeze']['settings']['owner']['enable_aboutMe']))
+	if (!empty($context['Breeze']['settings']['owner']['aboutMe']))
 		echo '
 				<li class="about"><a href="#tabs-about" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_about'] ,'</span></a></li>';
 
 	// Does recent activity is enable?
-	if (!empty($context['Breeze']['settings']['owner']['enable_activityLog']))
+	if (!empty($context['Breeze']['settings']['owner']['activityLog']))
 		echo '
 				<li class="activity"><a href="#tab-activity" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_activity'] ,'</span></a></li>';
 
@@ -121,7 +121,7 @@ function template_user_wall()
 		</div>';
 
 	// Activity
-	if (!empty($context['Breeze']['settings']['owner']['enable_activityLog']))
+	if (!empty($context['Breeze']['settings']['owner']['activityLog']))
 	{
 
 		echo '
@@ -148,7 +148,7 @@ function template_user_wall()
 	// Activity end
 
 	// About me
-	if (!empty($context['Breeze']['settings']['owner']['enable_aboutMe']))
+	if (!empty($context['Breeze']['settings']['owner']['aboutMe']))
 	{
 		echo '
 		<div id="tabs-about" class="content">';
@@ -165,7 +165,7 @@ function template_user_wall()
 				<span class="topslice"><span></span></span>
 				<div class="content">';
 
-		echo parse_bbc($context['Breeze']['settings']['owner']['enable_aboutMe']);
+		echo parse_bbc($context['Breeze']['settings']['owner']['aboutMe']);
 
 		echo '
 				</div>
@@ -189,7 +189,7 @@ function template_user_wall()
 	breeze_profile_owner();
 
 	// Buddies
-	if (!empty($context['Breeze']['settings']['owner']['enable_buddies']))
+	if (!empty($context['Breeze']['settings']['owner']['buddies']))
 	{
 		echo '
 		<div class="cat_bar">
@@ -232,7 +232,7 @@ function template_user_wall()
 	// Buddies end
 
 	// Visitors
-	if (!empty($context['Breeze']['settings']['owner']['enable_visitors']))
+	if (!empty($context['Breeze']['settings']['owner']['visitors']))
 	{
 
 		echo '

@@ -66,7 +66,7 @@ class Breeze
 	public static $folder = '/Breeze/';
 	public static $txtpattern = 'Breeze_';
 	public static $permissions = array('postStatus', 'postComments', 'deleteStatus', 'deleteComments',);
-	public static $userSettings = array('enable_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'enable_activityLog', 'enable_buddies', 'enable_visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention',);
+	public static $userSettings = array('wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention',);
 
 	// Support site feed
 	public static $supportStite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
@@ -299,7 +299,7 @@ class Breeze
 			array('wall' => array(
 				'title' => $gText->getText('general_wall') . (!empty($context['Breeze']['notifications']) ? ' ['. count($context['Breeze']['notifications']) .']' : ''),
 				'href' => $scripturl . '?action=wall',
-				'show' => ($gSettings->enable('admin_settings_enable') && !$user_info['is_guest'] && !empty($userSettings['enable_general_wall'])),
+				'show' => ($gSettings->enable('admin_settings_enable') && !$user_info['is_guest'] && !empty($userSettings['general_wall'])),
 				'sub_buttons' => array(
 					'noti' => array(
 						'title' => $gText->getText('user_notisettings_name'),
@@ -362,7 +362,7 @@ class Breeze
 		$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
 
 		// Cheating, lets insert the notification directly, do it only if the topic was approved
-		if ($topicOptions['is_approved'] && $userSettings['enable_activityLog'])
+		if ($topicOptions['is_approved'] && $userSettings['activityLog'])
 			$noti->create(array(
 				'sender' => $posterOptions['id'],
 				'receiver' => $posterOptions['id'],
@@ -438,11 +438,16 @@ class Breeze
 			$breezeSettings = $breezeController->get('settings');
 			$breezeGlobals = Breeze::sGlobals('get');
 			$breezeText = $breezeController->get('text');
+			$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
+
+			// Don't pass the "about me" stuff...
+			if (!empty($userSettings['aboutMe']))
+				unset($userSettings['aboutMe']);
 
 			// Define some variables for the ajax stuff
 			if (!$user_info['is_guest'])
 			{
-				$jsVars = array('feed_error_message', 'error_server', 'error_wrong_values', 'success_published', 'success_published_comment', 'error_empty', 'success_delete_status', 'success_delete_comment', 'confirm_delete', 'confirm_yes', 'confirm_cancel', 'error_already_deleted_status', 'error_already_deleted_comment', 'error_already_deleted_noti', 'error_already_marked_noti', 'cannot_postStatus', 'cannot_postComments', 'error_no_valid_action', 'error_no_access', 'success_noti_unmarkasread_after', 'success_noti_markasread_after', 'error_noti_markasreaddeleted_after', 'error_noti_markasreaddeleted', 'success_noti_delete_after', 'success_noti_visitors_clean',  'success_notiMulti_delete_after', 'success_notiMulti_markasread_after', 'success_notiMulti_unmarkasread_after', 'noti_markasread', 'noti_delete', 'noti_cancel', 'noti_closeAll',);
+				$jsVars = array('feed_error_message', 'error_server', 'error_wrong_values', 'success_published', 'success_published_comment', 'error_empty', 'success_delete_status', 'success_delete_comment', 'confirm_delete', 'confirm_yes', 'confirm_cancel', 'error_already_deleted_status', 'error_already_deleted_comment', 'error_already_deleted_noti', 'error_already_marked_noti', 'cannot_postStatus', 'cannot_postComments', 'error_no_valid_action', 'error_no_access', 'success_noti_unmarkasread_after', 'success_noti_markasread_after', 'error_noti_markasreaddeleted_after', 'error_noti_markasreaddeleted', 'success_noti_delete_after', 'success_noti_visitors_clean',  'success_notiMulti_delete_after', 'success_notiMulti_markasread_after', 'success_notiMulti_unmarkasread_after', 'noti_markasread', 'noti_delete', 'noti_cancel', 'noti_closeAll', 'load_more', 'load_more_no');
 
 				$context['html_headers'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[
@@ -452,14 +457,20 @@ class Breeze
 			text : {},
 			settings : {},
 			ownerSettings : {},
-			visitorSettings : {},
+			currentSettings : {},
 			tools : {},
 			currentUser : '. $user_info['id'] .',
 		};';
 
+				// Populate the text object with all possible text vars this mod uses and there are a lot!
 				foreach ($jsVars as $var)
 				$context['html_headers'] .= '
 		breeze.text.'. $var .' = '. JavaScriptEscape($breezeText->getText($var));
+
+				// Since where here already, load the current User (currentSettings) object
+				foreach ($userSettings as $k => $s)
+					$context['html_headers'] .= '
+		breeze.currentSettings.'. $k .' = '. JavaScriptEscape($s) .';';
 
 				$context['html_headers'] .= '
 	// ]]></script>';
@@ -483,8 +494,8 @@ class Breeze
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeNoti.js"></script>';
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeNoti.js"></script>
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
 
 				// Does the admin wants to add more actions?
 				if ($breezeSettings->enable('allowedActions'))

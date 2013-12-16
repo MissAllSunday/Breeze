@@ -76,7 +76,7 @@ jQuery(document).ready(function(){
 					success: function(html)
 					{
 						// The server response as a JSON object
-						if(html.type == 'success'){console.log(html);
+						if(html.type == 'success'){
 
 							// There are no more data to load!
 							if (html.data != 'end'){
@@ -85,7 +85,7 @@ jQuery(document).ready(function(){
 
 							else{
 								noty({
-									text: breeze_loadMore_no,
+									text: breeze.text.loadMore_no,
 									timeout: 3500,
 									type: 'success',
 								});
@@ -94,7 +94,7 @@ jQuery(document).ready(function(){
 							}
 						}
 
-						else if(html.type == 'error'){console.log(html);
+						else if(html.type == 'error'){
 							noty({
 								text: html.message,
 								timeout: 3500, type: html.type,

@@ -119,7 +119,7 @@ class BreezeWall
 			redirectexit();
 
 		// You actually need to enable this... if you haven't done so, lets tell you about it!
-		if (empty($this->userSettings['enable_general_wall']))
+		if (empty($this->userSettings['_general_wall']))
 			fatal_lang_error('Breeze_cannot_see_general_wall');
 
 		// We cannot live without globals...

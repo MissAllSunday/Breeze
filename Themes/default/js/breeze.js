@@ -239,7 +239,7 @@ jQuery(document).ready(function(){
 					});
 				}
 			},
-				{addClass: 'button_submit', text: breeze.text.confirm_cancel, onClick: function($noty) {
+				{addClass: 'button_submit', text: breeze_confirm_cancel, onClick: function($noty) {
 					$noty.close();
 				}}
 			]
@@ -301,7 +301,7 @@ jQuery(document).ready(function(){
 					});
 				}
 			},
-				{addClass: 'button_submit', text: breeze.text.confirm_cancel, onClick: function($noty) {
+				{addClass: 'button_submit', text: breeze_confirm_cancel, onClick: function($noty) {
 					$noty.close();
 				}}
 			]

@@ -97,7 +97,7 @@ function breezeWall()
 	$context['sub_template'] = 'user_wall';
 	$context += array(
 		'can_send_pm' => allowedTo('pm_send'),
-		'can_have_buddy' => allowedTo('profile_identity_own') && !empty($modSettings['enable_buddylist']),
+		'can_have_buddy' => allowedTo('profile_identity_own') && !empty($modSettings['buddylist']),
 		'can_issue_warning' => in_array('w', $context['admin_features']) && allowedTo('issue_warning') && $modSettings['warning_settings'][0] == 1,
 	);
 	$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
@@ -132,7 +132,7 @@ function breezeWall()
 	$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name']);
 
 	// Get the profile views
-	if (!$user_info['is_guest'] && !empty($context['Breeze']['settings']['owner']['enable_visitors']))
+	if (!$user_info['is_guest'] && !empty($context['Breeze']['settings']['owner']['visitors']))
 	{
 		$context['Breeze']['views'] = breezeTrackViews();
 
@@ -142,11 +142,11 @@ function breezeWall()
 	}
 
 	// Show buddies only if there is something to show
-	if (!empty($context['Breeze']['settings']['owner']['enable_buddies']) && !empty($context['member']['buddies']))
+	if (!empty($context['Breeze']['settings']['owner']['buddies']) && !empty($context['member']['buddies']))
 		$usersToLoad = array_merge($usersToLoad, $context['member']['buddies']);
 
 	// Show this user recent activity
-	if (!empty($context['Breeze']['settings']['owner']['enable_activityLog']))
+	if (!empty($context['Breeze']['settings']['owner']['activityLog']))
 		$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
 
 	// Need to pass some vars to the browser :(
@@ -205,14 +205,14 @@ function breezeSettings()
 
 	// Per user master setting.
 	$form->addCheckBox(
-		'enable_wall',
-		!empty($userSettings['enable_wall']) ? true : false
+		'wall',
+		!empty($userSettings['wall']) ? true : false
 	);
 
 	// General wall setting.
 	$form->addCheckBox(
-		'enable_general_wall',
-		!empty($userSettings['enable_general_wall']) ? true : false
+		'general_wall',
+		!empty($userSettings['general_wall']) ? true : false
 	);
 
 	// Pagination.
@@ -243,20 +243,20 @@ function breezeSettings()
 
 	// Activity Log.
 	$form->addCheckBox(
-		'enable_activityLog',
-		!empty($userSettings['enable_activityLog']) ? true : false
+		'activityLog',
+		!empty($userSettings['activityLog']) ? true : false
 	);
 
 	// Buddies.
 	$form->addCheckBox(
-		'enable_buddies',
-		!empty($userSettings['enable_buddies']) ? true : false
+		'buddies',
+		!empty($userSettings['buddies']) ? true : false
 	);
 
 	// Profile visitors.
 	$form->addCheckBox(
-		'enable_visitors',
-		!empty($userSettings['enable_visitors']) ? true : false
+		'visitors',
+		!empty($userSettings['visitors']) ? true : false
 	);
 
 	// Visitors timeframe.
@@ -290,8 +290,8 @@ function breezeSettings()
 
 	// About me textarea.
 	$form->addTextArea(
-		'enable_aboutMe',
-		!empty($userSettings['enable_aboutMe']) ? $userSettings['enable_aboutMe'] : '',
+		'aboutMe',
+		!empty($userSettings['aboutMe']) ? $userSettings['aboutMe'] : '',
 		array('rows' => 10, 'cols' => 50)
 	);
 
@@ -644,12 +644,12 @@ function breezeCheckPermissions()
 
 	// If we are forcing the wall, lets check the admin setting first
 	if ($breezeSettings->enable('admin_settings_force_enable'))
-		if (!isset($context['member']['options']['enable_wall']))
-			$context['member']['options']['enable_wall'] = 1;
+		if (!isset($context['member']['options']['wall']))
+			$context['member']['options']['wall'] = 1;
 
 	// Do the normal check, do note this is not an elseif check, its separate.
 	else
-		if (empty($context['member']['options']['enable_wall']))
+		if (empty($context['member']['options']['wall']))
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 	// This user cannot see his/her own profile and cannot see any profile either

@@ -201,7 +201,7 @@ class BreezeAjax
 				unset($logStatus['body']);
 
 				// Send out a log for this postingStatus action.
-				if (!empty($this->_userSettings['enable_activityLog']))
+				if (!empty($this->_userSettings['_activityLog']))
 					$this->_notifications->create(array(
 						'sender' => $statusPoster,
 						'receiver' => $statusPoster,
@@ -314,7 +314,7 @@ class BreezeAjax
 				unset($logComment['body']);
 
 				// Send out a log for this postingStatus action.
-				if (!empty($this->_userSettings['enable_activityLog']))
+				if (!empty($this->_userSettings['_activityLog']))
 					$this->_notifications->create(array(
 						'sender' => $commentPoster,
 						'receiver' => $commentPoster,
@@ -727,7 +727,7 @@ class BreezeAjax
 		// Kill anything else
 		ob_end_clean();
 
-		if (!empty($modSettings['enableCompressedOutput']))
+		if (!empty($modSettings['CompressedOutput']))
 			@ob_start('ob_gzhandler');
 
 		else

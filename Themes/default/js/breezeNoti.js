@@ -122,7 +122,7 @@ breezeNotifications.stream = function(currentUser)
 
 			// Show a close all button
 			noty({
-				text: breeze_noti_closeAll,
+				text: noti_closeAll,
 				type: 'warning',
 				dismissQueue: true,
 				layout: 'topRight',
