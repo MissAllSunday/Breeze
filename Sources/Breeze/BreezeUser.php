@@ -149,14 +149,26 @@ function breezeWall()
 	if (!empty($context['Breeze']['settings']['owner']['activityLog']))
 		$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
 
+	// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
+	$context['insert_after_template'] .= '
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
+
+	// Does the user wants to use the load more button?
+	if (!empty($context['Breeze']['settings']['visitor']['load_more']))
+		$context['insert_after_template'] .= '
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeScroll.js"></script>';
+
 	// Need to pass some vars to the browser :(
 	$context['insert_after_template'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[
 		breeze.pagination = {
 			maxIndex : '. $maxIndex .',
-			comingFrom : ' . JavaScriptEscape($context['Breeze']['comingFrom']) . ',
 			totalItems : ' . $data['count'] . ',
-		};';
+		};
+
+		breeze.tools.comingFrom = ' . JavaScriptEscape($context['Breeze']['comingFrom']) . ';';
 
 		// Pass the profile owner settings to the client all minus the about me stuff.
 		$toClient = $context['Breeze']['settings']['visitor'];
