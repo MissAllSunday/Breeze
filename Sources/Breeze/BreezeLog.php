@@ -69,22 +69,21 @@ class BreezeLog
 			return false;
 
 		// Lets decide what should we do with these... call a method or pass it straight?
-		foreach ($this->log as $eachUser => $data)
-			foreach ($data as $entry)
+		foreach ($this->log as $id => $entry)
 			{
 				// Send all data available!
-				$this->result[$eachUser][$entry['id']] = $entry;
+				$this->result[$id] = $entry;
 
 				// If there is a method, call it
 				if (in_array($entry['type'], get_class_methods(__CLASS__)))
 				{
 					$entry['content'] = json_decode($entry['content'], true);
-					$this->result[$eachUser][$entry['id']]['content'] = $this->$entry['type']($entry, $eachUser);
+					$this->result[$id]['content'] = $this->$entry['type']($entry, $eachUser);
 				}
 
 				// No? then pass the content
 				else if (!empty($entry['content']))
-					$this->result[$eachUser][$entry['id']]['content'] = $entry['content'];
+					$this->result[$id]['content'] = $entry['content'];
 			}
 
 		// If everything went well, return the final result

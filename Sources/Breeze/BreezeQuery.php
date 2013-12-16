@@ -1248,7 +1248,7 @@ class BreezeQuery extends Breeze
 
 		// Populate the array like a boss!
 		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-			$return[$row['receiver']][$row['id']] = array(
+			$return[$row['id']] = array(
 				'id' => $row['id'],
 				'sender' => $row['sender'],
 				'receiver' => $row['receiver'],
