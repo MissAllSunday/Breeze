@@ -66,7 +66,7 @@ class Breeze
 	public static $folder = '/Breeze/';
 	public static $txtpattern = 'Breeze_';
 	public static $permissions = array('postStatus', 'postComments', 'deleteStatus', 'deleteComments',);
-	public static $userSettings = array('wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention',);
+	public static $allSettings = array('wall', 'general_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention',);
 
 	// Support site feed
 	public static $supportStite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
@@ -297,7 +297,7 @@ class Breeze
 		$menu_buttons = array_merge(
 			array_slice($menu_buttons, 0, $counter),
 			array('wall' => array(
-				'title' => $gText->getText('general_wall') . (!empty($context['Breeze']['notifications']) ? ' ['. count($context['Breeze']['notifications']) .']' : ''),
+				'title' => $gText->getText('general_wall'),
 				'href' => $scripturl . '?action=wall',
 				'show' => ($gSettings->enable('admin_settings_enable') && !$user_info['is_guest'] && !empty($userSettings['general_wall'])),
 				'sub_buttons' => array(
@@ -315,7 +315,6 @@ class Breeze
 
 		// DUH! winning!
 		Breeze::who();
-
 	}
 
 	/**
@@ -473,9 +472,9 @@ class Breeze
 		breeze.text.'. $var .' = '. JavaScriptEscape($breezeText->getText($var));
 
 				// Since where here already, load the current User (currentSettings) object
-				foreach ($userSettings as $k => $s)
+				foreach (Breeze::$allSettings as $k)
 					$context['html_headers'] .= '
-		breeze.currentSettings.'. $k .' = '. JavaScriptEscape($s) .';';
+		breeze.currentSettings.'. $k .' = '. (isset($userSettings[$k]) ? JavaScriptEscape($userSettings[$k]) : 'false') .';';
 
 				$context['html_headers'] .= '
 	// ]]></script>';

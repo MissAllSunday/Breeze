@@ -41,8 +41,8 @@ global $txt;
 $txt['Breeze_general_wall'] = 'Wall';
 $txt['Breeze_general_wall_page'] = 'page';
 $txt['Breeze_general_summary'] = 'Summary';
-$txt['Breeze_general_load_more'] = 'Load more';
-$txt['Breeze_general_load_more_no'] = 'There isn\'t any more status to load';
+$txt['Breeze_load_more'] = 'Load more';
+$txt['Breeze_load_more_no'] = 'There isn\'t any more status to load';
 
 $txt['Breeze_general_my_wall'] = 'My Wall';
 $txt['Breeze_general_my_wall_settings'] = 'My Wall Settings';
