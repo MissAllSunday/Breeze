@@ -37,7 +37,7 @@
 jQuery(document).ready(function(){
 
 	// Fires up the load more thingy
-	if (window.breeze_loadMore){
+	if (breeze.currentSettings.load_more){
 
 		var numberOfEvents = 0;
 
@@ -53,7 +53,7 @@ jQuery(document).ready(function(){
 		jQuery('<button/>', {
 			id: 'loadMoar',
 			class: 'clear',
-			text: breeze_loadMore,
+			text: breeze.text.load_more,
 			click: function () {
 
 				numberOfEvents++;
