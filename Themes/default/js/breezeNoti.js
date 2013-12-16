@@ -63,7 +63,7 @@ breezeNotifications.stream = function(currentUser)
 					layout: 'topRight',
 					closeWith: ['button'],
 					buttons: [
-						{addClass: 'button_submit', text: breeze_noti_markasread, onClick: function($noty){
+						{addClass: 'button_submit', text: breeze.text.noti_markasread, onClick: function($noty){
 							jQuery.ajax({
 								type: 'POST',
 								url: smf_scripturl + '?action=breezeajax;sa=notimark;js=1;' + window.breeze_session_var + '=' + window.breeze_session_id,
@@ -77,7 +77,7 @@ breezeNotifications.stream = function(currentUser)
 									}
 
 									else if(html.type == 'ok'){
-											noty({text: breeze_noti_markasread_after, timeout: 3500, type: 'success'});
+											noty({text: breeze.text.noti_markasread_after, timeout: 3500, type: 'success'});
 									}
 								},
 								error: function (html){
@@ -87,7 +87,7 @@ breezeNotifications.stream = function(currentUser)
 
 								$noty.close();
 						}},
-						{addClass: 'button_submit', text: breeze_noti_delete, onClick: function($noty){
+						{addClass: 'button_submit', text: breeze.text.noti_delete, onClick: function($noty){
 							jQuery.ajax({
 								type: 'POST',
 								url: smf_scripturl + '?action=breezeajax;sa=notidelete;js=1;' + window.breeze_session_var + '=' + window.breeze_session_id,
@@ -113,7 +113,7 @@ breezeNotifications.stream = function(currentUser)
 							});
 								$noty.close();
 						}},
-						{addClass: 'button_submit', text: breeze_noti_cancel, onClick: function($noty){
+						{addClass: 'button_submit', text: breeze.text.noti_cancel, onClick: function($noty){
 								$noty.close();
 						}}
 					]
@@ -122,7 +122,7 @@ breezeNotifications.stream = function(currentUser)
 
 			// Show a close all button
 			noty({
-				text: noti_closeAll,
+				text: breeze.text.noti_closeAll,
 				type: 'warning',
 				dismissQueue: true,
 				layout: 'topRight',

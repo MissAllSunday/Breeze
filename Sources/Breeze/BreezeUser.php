@@ -160,10 +160,12 @@ function breezeWall()
 
 		// Pass the profile owner settings to the client all minus the about me stuff.
 		$toClient = $context['Breeze']['settings']['visitor'];
-		unset($toClient['aboutMe'])
+		unset($toClient['aboutMe']);
 		foreach ($toClient as $k => $s)
-			$context['html_headers'] .= '
+			$context['insert_after_template'] .= '
 		breeze.ownerSettings.'. $k .' = '. JavaScriptEscape($s) .';';
+
+		unset($toClient);
 
 	// End the js tag
 	$context['insert_after_template'] .= '
