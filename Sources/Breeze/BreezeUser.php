@@ -90,9 +90,6 @@ function breezeWall()
 	else
 		$context['Breeze']['settings']['visitor'] = $query->getUserSettings($user_info['id']);
 
-	// Load all the JS goodies...
-	$tools->profileHeaders($context['Breeze']['settings']['visitor']);
-
 	// Set all the page stuff
 	$context['sub_template'] = 'user_wall';
 	$context += array(
@@ -393,8 +390,6 @@ function breezeNotifications()
 
 	$context['Breeze']['settings']['owner'] = $breezeController->get('query')->getUserSettings($context['member']['id']);
 
-	$breezeController->get('tools')->profileHeaders($context['Breeze']['settings']['owner']);
-
 	// Globals...
 	$globals = Breeze::sGlobals('request');
 
@@ -447,8 +442,6 @@ function breezeBuddyRequest()
 		$breezeController = new BreezeController();
 
 	$context['Breeze']['settings']['owner'] = $query->getUserSettings($context['member']['id']);
-
-	$breezeController->get('tools')->profileHeaders($context['Breeze']['settings']['owner']);
 
 	// Load all we need
 	$buddies = $breezeController->get('buddy');
