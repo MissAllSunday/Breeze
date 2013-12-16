@@ -511,7 +511,7 @@ class Breeze
 					$notifications = $breezeController->get('notifications');
 					$context['insert_after_template'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[
-		breezeNotifications.stream('. $user_info['id'] .');
+		breeze.tools.stream('. $user_info['id'] .');
 	// ]]></script>';
 
 					// If someone wants to do something with all this info, let them...

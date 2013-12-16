@@ -1,5 +1,5 @@
 /**
- * breeze.js
+ * breezeNoti.js
  *
  * The purpose of this file is to fetch notifications for the current user and display them.
  * @package Breeze mod
@@ -33,13 +33,11 @@
  *
  */
 
-breezeNotifications = {};
-
-breezeNotifications.stream = function(currentUser)
+breeze.tools.stream = function(currentUser)
 {
 	var number = 0;
 
-	// Make an ajax call to get all notifications for this user
+	// Make an ajax call to get all notifications for this user.
 	jQuery.ajax({
 		type: 'GET',
 		url: smf_scripturl + '?action=breezeajax;sa=fetchNoti;js=1;' + breeze.session.v + '=' + breeze.session.id + ';u=' + currentUser,
@@ -129,11 +127,11 @@ breezeNotifications.stream = function(currentUser)
 				closeWith: ['click'],
 				callback: {
 					afterClose: function() {
-							jQuery.noty.closeAll();
+						jQuery.noty.closeAll();
 					},
-				onShow: function() {window.setTimeout("jQuery.noty.closeAll()", 5 * 1000 );},
+					onShow: function() {window.setTimeout("jQuery.noty.closeAll()", 5 * 1000 );},
 				},
-					});
+			});
 
 			// Append the number of notifications to the wall button
 			jQuery('#button_wall  a.firstlevel span').append(' ['+ number +']');
