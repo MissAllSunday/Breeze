@@ -51,7 +51,7 @@ breezeNotifications.stream = function(currentUser)
 				return;
 
 			// Loops for everyone!!
-			jQuery.each(noti.data, function(i, item) {
+			jQuery.each(noti.data, function(i, item){
 
 				number++;
 
@@ -61,14 +61,72 @@ breezeNotifications.stream = function(currentUser)
 					type: 'notification',
 					dismissQueue: true,
 					layout: 'topRight',
+					closeWith: ['button'],
+					buttons: [
+						{addClass: 'button_submit', text: breeze_noti_markasread, onClick: function($noty) {
+							jQuery.ajax({
+								type: 'POST',
+								url: smf_scripturl + '?action=breezeajax;sa=notimark;js=1',
+								data: ({content : noti.id, user : noti.user}),
+								cache: false,
+								dataType: 'json',
+								success: function(html){
+
+									if(html.type == 'error'){
+										noty({text: breeze_error_message, timeout: 3500, type: 'error'});
+									}
+
+									else if(html.type == 'ok'){
+											noty({text: breeze_noti_markasread_after, timeout: 3500, type: 'success'});
+									}
+								},
+								error: function (html){
+
+										noty({text: breeze_error_message, timeout: 3500, type: 'error'});
+								},
+							});
+
+								$noty.close();
+						}},
+						{addClass: 'button_submit', text: breeze_noti_delete, onClick: function($noty) {
+							jQuery.ajax({
+								type: 'POST',
+								url: smf_scripturl + '?action=breezeajax;sa=notidelete;js=1',
+								data: ({content : noti.id, user : noti.user}),
+								cache: false,
+								dataType: 'json',
+								success: function(html)
+								{
+									if(html.type == 'error'){
+										noty({text: html.data, timeout: 3500, type: 'error'});
+									}
+
+									else if(html.type == 'deleted'){
+										noty({text: html.data, timeout: 3500, type: 'error'});
+									}
+
+									else if(html.type == 'ok'){
+										noty({text: html.data, timeout: 3500, type: 'success'});
+									}
+								},
+								error: function (html)
+								{
+										noty({text: breeze_error_message, timeout: 3500, type: 'error'});
+								},
+							});
+								$noty.close();
+						}},
+						{addClass: 'button_submit', text: breeze_noti_cancel, onClick: function($noty) {
+								$noty.close();
+						}}
+					]
 				});
 			});
 
 			// Append the number of notifications to the wall button
 			jQuery('#button_wall  a.firstlevel span').append(' ['+ number +']');
 		},
-		error: function (noti)
-		{
+		error: function (noti){
 		},
 	});
 }
