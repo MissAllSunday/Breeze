@@ -86,9 +86,6 @@ class BreezeWall
 		// Load the user settings.
 		$this->userSettings = $this->_query->getUserSettings($user_info['id']);
 
-		// Print the JS bits
-		$this->_tools->profileHeaders($this->userSettings);
-
 		// We need to load the current user's data
 		if (empty($context['Breeze']['user_info'][$user_info['id']]))
 			$this->_tools->loadUserInfo($user_info['id'], false, 'profile');
@@ -112,14 +109,14 @@ class BreezeWall
 	public function generalWall()
 	{
 		global $txt, $scripturl, $context, $sourcedir, $user_info;
-		global $modSettings;
+		global $modSettings, $settings;
 
 		// Guest don't have any business here... back off!
 		if ($user_info['is_guest'])
 			redirectexit();
 
 		// You actually need to enable this... if you haven't done so, lets tell you about it!
-		if (empty($this->userSettings['_general_wall']))
+		if (empty($this->userSettings['general_wall']))
 			fatal_lang_error('Breeze_cannot_see_general_wall');
 
 		// We cannot live without globals...
@@ -167,16 +164,26 @@ class BreezeWall
 			if (!empty($status['pagination']))
 				$context['page_index'] = $status['pagination'];
 
+	// These file are only used here and on the profile wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
+	$context['insert_after_template'] .= '
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
+
+	// Does the user wants to use the load more button?
+	if (!empty($context['Breeze']['settings']['visitor']['load_more']))
+		$context['insert_after_template'] .= '
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeScroll.js"></script>';
+
 			// Need to pass some vars to the browser :(
 			$context['insert_after_template'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[
-		breezeAjax = {
+
+		breeze.tools.comingFrom = ' . JavaScriptEscape($context['Breeze']['comingFrom']) . ';
+
+		breeze.pagination = {
 			maxIndex : '. $maxIndex .',
-			profileOwner : '. $user_info['id'] .',
-			comingFrom : ' . JavaScriptEscape($context['Breeze']['comingFrom']) . ',
-			userID : ' . $user_info['id'] . ',
 			totalItems : ' . $status['count'] . ',
-			loadMore : ' . (!empty($this->userSettings['load_more']) ? 'true' : 'false') . ',
 			buddies : '. json_encode($this->userSettings['buddies']) .',
 		};
 	// ]]></script>';
@@ -200,10 +207,8 @@ class BreezeWall
 		// This is still part of the whole wall stuff.
 		$context['Breeze']['comingFrom'] = 'wall';
 
-		// Display all the JavaScript bits.
+		// user settings.
 		$this->userSettings = $this->_query->getUserSettings($user_info['id']);
-
-		$this->_tools->profileHeaders($this->userSettings);
 
 		// We need the status ID!
 		if (!$globals->validate('bid'))
