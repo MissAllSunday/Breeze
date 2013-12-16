@@ -473,7 +473,8 @@ class Breeze
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeNoti.js"></script>';
 
 				// Does the admin wants to add more actions?
 				if ($breezeSettings->enable('allowedActions'))
@@ -483,7 +484,10 @@ class Breeze
 				if (empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
 				{
 					$notifications = $breezeController->get('notifications');
-					$context['insert_after_template'] .= $notifications->doStream($user_info['id']);
+					$context['insert_after_template'] .= '
+	<script type="text/javascript"><!-- // --><![CDATA[
+		breezeNotifications.stream('. $user_info['id'] .');
+	// ]]></script>';
 
 					// If someone wants to do something with all this info, let them...
 					$context['Breeze']['notifications'] = $notifications->getMessages();

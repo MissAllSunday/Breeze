@@ -641,13 +641,14 @@ class BreezeAjax
 	protected function fetchNoti()
 	{
 		$globals = Breeze::sGlobals('request');
+		$u = $globals->getValue('u');
 
 		// This is easy, get and return all notifications as a json object, don't  worry, the actual query is cached ;)
 		return $this->setResponse(array(
 			'type' => 'success',
 			'message' => 'success',
-			'data' => $this->_notifications->doStream($globals['u']),
-			'owner' => $user_info['id'], // Don't really need this, just send some dummy data.
+			'data' => $this->_notifications->doStream($u),
+			'owner' => $u, // Don't really need this, just send some dummy data.
 		));
 	}
 

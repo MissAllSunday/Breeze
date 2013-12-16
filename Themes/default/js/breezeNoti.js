@@ -43,14 +43,14 @@ breezeNotifications.stream = function(currentUser)
 		url: smf_scripturl + '?action=breezeajax;sa=fetchNoti;js=1;' + window.breeze_session_var + '=' + window.breeze_session_id + ';u=' + currentUser,
 		cache: false,
 		dataType: 'json',
-		success: function(notifications)
+		success: function(noti)
 		{
 			// Loops for everyone!!
-			for (var i = 0; i < notifications.length; i++){
-				console-log(notifications[i]);
-			}
+			jQuery.each(noti.data, function(i, item) {
+				// item.message
+			});
 		},
-		error: function (notifications)
+		error: function (noti)
 		{
 		},
 	});

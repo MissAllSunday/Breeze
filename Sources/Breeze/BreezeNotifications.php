@@ -214,7 +214,7 @@ class BreezeNotifications
 	/**
 	 * BreezeNotifications::doStream()
 	 *
-	 * @param int $user the user ID from where the notifications wil be show
+	 * @param int $user the user ID from where the notifications will be show
 	 * @return
 	 */
 	public function doStream($user)
@@ -225,122 +225,7 @@ class BreezeNotifications
 		if (!$this->prepare($user))
 			return false;
 
-		// Show the notifications
-		if (!empty($this->_messages))
-		{
-			// Make sure its an array
-			$this->_messages = !is_array($this->_messages) ? array($this->_messages) : $this->_messages;
-
-			// Last minute change? yeah, yeah, I'm passing a protected property...
-			call_integration_hook('integrate_breeze_before_ShowNoti', array(&$this->_messages));
-
-			// @todo move this to breeze.js ?
-			$context['insert_after_template'] .= '
-				<script type="text/javascript"><!-- // --><![CDATA[
-		jQuery(document).ready(function()
-		{
-';
-			foreach ($this->_messages as $m)
-				$context['insert_after_template'] .= '
-	var noti_id_' . $m['id'] . ' = \'' . $m['id'] . '\';
-	var user_' . $m['user'] . ' = \'' . $m['user'] . '\';
-	noty({
-		text: ' . JavaScriptEscape($m['message']) . ',
-		type: \'notification\',
-		dismissQueue: true,
-		layout: \'topRight\',
-		closeWith: [\'button\'],
-		buttons: [{
-				addClass: \'button_submit\', text: breeze_noti_markasread, onClick: function($noty) {
-					jQuery.ajax(
-					{
-						type: \'POST\',
-						url: smf_scripturl + \'?action=breezeajax;sa=notimark;js=1\',
-						data: ({content : noti_id_' . $m['id'] . ', user : user_' . $m['user'] . '}),
-						cache: false,
-						dataType: \'json\',
-						success: function(html)
-						{
-							if(html.type == \'error\')
-							{
-								noty({text: breeze_error_message, timeout: 3500, type: \'error\'});
-							}
-
-							else if(html.type == \'ok\')
-							{
-								noty({text: breeze_noti_markasread_after, timeout: 3500, type: \'success\'});
-							}
-						},
-						error: function (html)
-						{
-							noty({text: breeze_error_message, timeout: 3500, type: \'error\'});
-						},
-					});
-
-					$noty.close();
-				}
-			},
-			{addClass: \'button_submit\', text: breeze_noti_delete, onClick: function($noty) {
-					jQuery.ajax(
-					{
-						type: \'POST\',
-						url: smf_scripturl + \'?action=breezeajax;sa=notidelete;js=1\',
-						data: ({content : noti_id_' . $m['id'] . ', user : user_' . $m['user'] . '}),
-						cache: false,
-						dataType: \'json\',
-						success: function(html)
-						{
-							if(html.type == \'error\')
-							{
-								noty({text: html.data, timeout: 3500, type: \'error\'});
-							}
-
-							else if(html.type == \'deleted\')
-							{
-								noty({text: html.data, timeout: 3500, type: \'error\'});
-							}
-
-							else if(html.type == \'ok\')
-							{
-								noty({text: html.data, timeout: 3500, type: \'success\'});
-							}
-						},
-						error: function (html)
-						{
-							noty({text: breeze_error_message, timeout: 3500, type: \'error\'});
-						},
-					});
-				$noty.close();
-			}},
-			{addClass: \'button_submit\', text: breeze_noti_cancel, onClick: function($noty) {
-				$noty.close();
-			  }
-			}
-		  ]
-	});';
-
-			// A close all button
-			$context['insert_after_template'] .=
-		'noty({
-		text: \''. $this->_text->getText('noti_closeAll') .'\',
-		type: \'warning\',
-		dismissQueue: true,
-		layout: \'topRight\',
-		closeWith: [\'click\'],
-		callback: {
-			afterClose: function() {
-				jQuery.noty.closeAll();
-			},
-			'. (!empty($this->_currentUserSettings['clear_noti']) ?  'onShow: function() {window.setTimeout("jQuery.noty.closeAll()", '. $this->_currentUserSettings['clear_noti'] * 1000 .');},' : '') .'
-		},
-	});
-';
-
-			// Close the js call
-			$context['insert_after_template'] .= '
-		});
-		// ]]></script>';
-		}
+		return !is_array($this->_messages) ? array($this->_messages) : $this->_messages;
 	}
 
 	/**
