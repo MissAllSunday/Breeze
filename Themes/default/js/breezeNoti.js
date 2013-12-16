@@ -45,9 +45,18 @@ breezeNotifications.stream = function(currentUser)
 		dataType: 'json',
 		success: function(noti)
 		{
+			if (jQuery.isEmptyObject(noti))
+				return;
+
 			// Loops for everyone!!
 			jQuery.each(noti.data, function(i, item) {
-				// item.message
+				noty({
+					text: item.message,
+					timeout: 3500,
+					type: 'notification',
+					dismissQueue: true,
+					layout: 'topRight',
+						});
 			});
 		},
 		error: function (noti)
