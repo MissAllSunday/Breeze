@@ -197,40 +197,4 @@ class BreezeTools
 		if ($returnID)
 			return $loaded_ids;
 	}
-
-	/**
-	 * Breeze::profileHeaders()
-	 *
-	 * A helper method to load JavaScript code for the profile and wall page.
-	 * @see BreezeTools
-	 * @return void
-	 */
-	public function profileHeaders($userSettings)
-	{
-		global $context, $settings, $user_info;
-		static $profile_header = false;
-
-		$breezeGlobals = Breeze::sGlobals('get');
-
-		if (!$profile_header)
-		{
-
-			// DUH! winning!
-			if ($this->settings->enable('admin_settings_enable') && ($breezeGlobals->getValue('action') == 'profile' || $breezeGlobals->getValue('action') == 'wall'))
-				$context['insert_after_template'] .= Breeze::who(true);
-
-			// Generic JS vars and files
-			$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
-
-			// Does the user wants to use infinite scroll?
-			if (!empty($userSettings['load_more']))
-				$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeScroll.js"></script>';
-
-			$profile_header = true;
-		}
-	}
 }
