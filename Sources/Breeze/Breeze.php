@@ -454,6 +454,7 @@ class Breeze
 			ownerSettings : {},
 			visitorSettings : {},
 			tools : {},
+			currentUser : '. $user_info['id'] .',
 		};';
 
 				foreach ($jsVars as $var)

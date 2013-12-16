@@ -63,7 +63,7 @@ jQuery(document).ready(function(){
 		// You need to type something...
 		if(status.statusContent=='')
 		{
-			breeze.tools.showNoti({message: breeze_empty_message, type : 'error'});
+			breeze.tools.showNoti({message: breeze.text.empty_message, type : 'error'});
 			return false;
 		}
 
@@ -141,7 +141,7 @@ jQuery(document).ready(function(){
 		// Don't be silly...
 		if(comment.commentContent=='')
 		{
-			breeze.tools.showNoti({message: breeze_empty_message, type : 'error'});
+			breeze.tools.showNoti({message: breeze.text.empty_message, type : 'error'});
 			return false;
 		}
 
@@ -203,7 +203,7 @@ jQuery(document).ready(function(){
 			dismissQueue: false,
 			closeWith: ['button'],
 			buttons: [{
-				addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
+				addClass: 'button_submit', text: breeze.text.confirm_yes, onClick: function($noty) {
 					jQuery.ajax({
 						type: 'GET',
 						url: commentUrl + ';js=1' + window.breeze_session_var + '=' + window.breeze_session_id + ';rf=' + window.breeze_comingFrom,
@@ -239,7 +239,7 @@ jQuery(document).ready(function(){
 					});
 				}
 			},
-				{addClass: 'button_submit', text: breeze_confirm_cancel, onClick: function($noty) {
+				{addClass: 'button_submit', text: breeze.text.confirm_cancel, onClick: function($noty) {
 					$noty.close();
 				}}
 			]
@@ -263,7 +263,7 @@ jQuery(document).ready(function(){
 			dismissQueue: false,
 			closeWith: ['button'],
 			buttons: [{
-				addClass: 'button_submit', text: breeze_confirm_yes, onClick: function($noty) {
+				addClass: 'button_submit', text: breeze.text.confirm_yes, onClick: function($noty) {
 					jQuery.ajax({
 						type: 'GET',
 						url: urlParam + ';js=1' + window.breeze_session_var + '=' + window.breeze_session_id + ';rf=' + window.breeze_comingFrom,
@@ -301,7 +301,7 @@ jQuery(document).ready(function(){
 					});
 				}
 			},
-				{addClass: 'button_submit', text: breeze_confirm_cancel, onClick: function($noty) {
+				{addClass: 'button_submit', text: breeze.text.confirm_cancel, onClick: function($noty) {
 					$noty.close();
 				}}
 			]
