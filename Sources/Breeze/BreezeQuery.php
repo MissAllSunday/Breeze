@@ -783,9 +783,9 @@ class BreezeQuery extends Breeze
 
 				$return += array(
 					'gender' => $row['gender'],
-					'buddies' => !empty($row['buddy_list']) ? explode(',', $row['buddy_list']) : array(),
-					'ignored' => $row['pm_ignore_list'],
-					'profile_views' => $row['breeze_profile_views'],
+					'buddiesList' => !empty($row['buddy_list']) ? explode(',', $row['buddy_list']) : array(),
+					'ignoredList' => $row['pm_ignore_list'],
+					'profileViews' => $row['breeze_profile_views'],
 				);
 			}
 

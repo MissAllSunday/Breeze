@@ -66,7 +66,7 @@ class Breeze
 	public static $folder = '/Breeze/';
 	public static $txtpattern = 'Breeze_';
 	public static $permissions = array('postStatus', 'postComments', 'deleteStatus', 'deleteComments',);
-	public static $allSettings = array('wall', 'general_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention',);
+	public static $allSettings = array('wall', 'general_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention', 'gender', 'buddiesList', 'ignoredList', 'profileViews',);
 
 	// Support site feed
 	public static $supportStite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
@@ -474,7 +474,7 @@ class Breeze
 				// Since where here already, load the current User (currentSettings) object
 				foreach (Breeze::$allSettings as $k)
 					$context['html_headers'] .= '
-		breeze.currentSettings.'. $k .' = '. (isset($userSettings[$k]) ? JavaScriptEscape($userSettings[$k]) : 'false') .';';
+		breeze.currentSettings.'. $k .' = '. (isset($userSettings[$k]) ? (is_array($userSettings[$k]) ? json_encode($userSettings[$k]) : JavaScriptEscape($userSettings[$k])) : 'false') .';';
 
 				$context['html_headers'] .= '
 	// ]]></script>';

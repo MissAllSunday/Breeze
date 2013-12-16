@@ -147,14 +147,14 @@ class BreezeWall
 		$context['Breeze']['comingFrom'] = 'wall';
 
 		// Time to overheat the server!
-		if (!empty($this->userSettings['buddies']))
+		if (!empty($this->userSettings['buddiesList']))
 		{
 			// Get the latest status
-			$status = $this->_query->getStatusByUser($this->userSettings['buddies'], $maxIndex, $currentPage);
+			$status = $this->_query->getStatusByUser($this->userSettings['buddiesList'], $maxIndex, $currentPage);
 			$context['Breeze']['status'] = $status['data'];
 
 			// Get the latest activity
-			$context['Breeze']['log'] = $this->log->getActivity($this->userSettings['buddies']);
+			$context['Breeze']['log'] = $this->log->getActivity($this->userSettings['buddiesList']);
 
 			// Load users data.
 			if (!empty($status['users']))
@@ -171,7 +171,7 @@ class BreezeWall
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
 
 	// Does the user wants to use the load more button?
-	if (!empty($context['Breeze']['settings']['visitor']['load_more']))
+	if (!empty($this->userSettings['load_more']))
 		$context['insert_after_template'] .= '
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeScroll.js"></script>';
 
@@ -184,7 +184,7 @@ class BreezeWall
 		breeze.pagination = {
 			maxIndex : '. $maxIndex .',
 			totalItems : ' . $status['count'] . ',
-			buddies : '. json_encode($this->userSettings['buddies']) .',
+			buddies : '. json_encode($this->userSettings['buddiesList']) .',
 		};
 	// ]]></script>';
 		}
