@@ -461,6 +461,10 @@ class Breeze
 			tools : {},
 			pagination : {},
 			currentUser : '. $user_info['id'] .',
+			session : {
+				id : ' . JavaScriptEscape($context['session_id']) . ',
+				v : ' . JavaScriptEscape($context['session_var']) . ',
+			},
 		};';
 
 				// Populate the text object with all possible text vars this mod uses and there are a lot!

@@ -42,7 +42,7 @@ breezeNotifications.stream = function(currentUser)
 	// Make an ajax call to get all notifications for this user
 	jQuery.ajax({
 		type: 'GET',
-		url: smf_scripturl + '?action=breezeajax;sa=fetchNoti;js=1;' + window.breeze_session_var + '=' + window.breeze_session_id + ';u=' + currentUser,
+		url: smf_scripturl + '?action=breezeajax;sa=fetchNoti;js=1;' + breeze.session.v + '=' + breeze.session.id + ';u=' + currentUser,
 		cache: false,
 		dataType: 'json',
 		success: function(noti)
@@ -66,7 +66,7 @@ breezeNotifications.stream = function(currentUser)
 						{addClass: 'button_submit', text: breeze.text.noti_markasread, onClick: function($noty){
 							jQuery.ajax({
 								type: 'POST',
-								url: smf_scripturl + '?action=breezeajax;sa=notimark;js=1;' + window.breeze_session_var + '=' + window.breeze_session_id,
+								url: smf_scripturl + '?action=breezeajax;sa=notimark;js=1;' + breeze.session.v + '=' + breeze.session.id,
 								data: ({content : noti.id, user : noti.user}),
 								cache: false,
 								dataType: 'json',
@@ -90,7 +90,7 @@ breezeNotifications.stream = function(currentUser)
 						{addClass: 'button_submit', text: breeze.text.noti_delete, onClick: function($noty){
 							jQuery.ajax({
 								type: 'POST',
-								url: smf_scripturl + '?action=breezeajax;sa=notidelete;js=1;' + window.breeze_session_var + '=' + window.breeze_session_id,
+								url: smf_scripturl + '?action=breezeajax;sa=notidelete;js=1;' + breeze.session.v + '=' + breeze.session.id,
 								data: ({content : noti.id, user : noti.user}),
 								cache: false,
 								dataType: 'json',
