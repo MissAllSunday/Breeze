@@ -152,14 +152,21 @@ function breezeWall()
 	// Need to pass some vars to the browser :(
 	$context['insert_after_template'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[
-		breezeAjax = {
+		breeze.pagination = {
 			maxIndex : '. $maxIndex .',
-			profileOwner : '. $context['member']['id'] .',
 			comingFrom : ' . JavaScriptEscape($context['Breeze']['comingFrom']) . ',
-			userID : ' . $user_info['id'] . ',
 			totalItems : ' . $data['count'] . ',
-			loadMore : ' . (!empty($context['Breeze']['settings']['visitor']['load_more']) ? 'true' : 'false') . ',
-		};
+		};';
+
+		// Pass the profile owner settings to the client all minus the about me stuff.
+		$toClient = $context['Breeze']['settings']['visitor'];
+		unset($toClient['aboutMe'])
+		foreach ($toClient as $k => $s)
+			$context['html_headers'] .= '
+		breeze.ownerSettings.'. $k .' = '. JavaScriptEscape($s) .';';
+
+	// End the js tag
+	$context['insert_after_template'] .= '
 	// ]]></script>';
 
 	// Lastly, load all the users data from this bunch of user IDs

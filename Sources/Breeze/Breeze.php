@@ -459,6 +459,7 @@ class Breeze
 			ownerSettings : {},
 			currentSettings : {},
 			tools : {},
+			pagination : {},
 			currentUser : '. $user_info['id'] .',
 		};';
 
