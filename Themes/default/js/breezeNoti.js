@@ -37,6 +37,8 @@ breezeNotifications = {};
 
 breezeNotifications.stream = function(currentUser)
 {
+	var number = 0;
+
 	// Make an ajax call to get all notifications for this user
 	jQuery.ajax({
 		type: 'GET',
@@ -50,14 +52,20 @@ breezeNotifications.stream = function(currentUser)
 
 			// Loops for everyone!!
 			jQuery.each(noti.data, function(i, item) {
+
+				number++;
+
 				noty({
 					text: item.message,
 					timeout: 3500,
 					type: 'notification',
 					dismissQueue: true,
 					layout: 'topRight',
-						});
+				});
 			});
+
+			// Append the number of notifications to the wall button
+			jQuery('#button_wall  a.firstlevel span').append(' ['+ number +']');
 		},
 		error: function (noti)
 		{
