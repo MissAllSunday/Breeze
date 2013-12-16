@@ -59,10 +59,6 @@ margin: 2px;
 padding: 2px;
 }
 
-#Breeze_tabs
-{
-}
-
 .BreezeBlock
 {
 	margin-bottom:5px;
@@ -92,22 +88,6 @@ padding: 2px;
 	width: 75px;
 }
 
-#Breeze_right_block div.content dt {
-clear: both;
-float: left;
-font-weight: 700;
-margin: 0px 0px 3px;
-padding: 0px;
-width: 35%;
-}
-
-#Breeze_right_block div.content dd {
-float: left;
-margin: 0px 0px 3px;
-padding: 0px;
-width: 65%;
-}
-
 /* The user wall */
 .breeze_user_left
 {
@@ -122,11 +102,6 @@ margin:2px;
 padding-left:5px;
 padding-right:15px;
 min-height:100px;
-
-}
-
-.breeze_user_left_info
-{
 
 }
 
@@ -158,6 +133,7 @@ padding:5px;
 {
 	list-style-type: none;
 }
+
 *
 {
 	margin: 0;
@@ -172,7 +148,6 @@ padding:5px;
 
 .breeze_user_status_comment:before
 {
-	/* background: url(../images/breeze/comment.png) no-repeat scroll 0 0 transparent; */
     content: "";
     height: 20px;
     margin-left: -18px;
@@ -185,20 +160,12 @@ padding:5px;
 	margin-left:80px;
 	padding: 10px;
 	font-size: 90%;
-/* 	background: #F5F5F5;
-	border: 1px solid #DDDDDD;
-	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset */
 }
 
 .breeze_user_status_comment img, .breeze_user_comment_comment img
 {
 	max-width: 100%;
 	max-height: 100%;
-}
-
-.breeze_user_statusbox textarea
-{
-	border: 1px solid #888;
 }
 
 /* Comments */
@@ -277,6 +244,7 @@ padding:5px;
 	width: 950px;
 	padding: 15px 25px;
 }
+
 #info_message .message_area
 {
 	float: left;
@@ -422,50 +390,6 @@ ul.breeze_top_profile_views
 	float:left;
 }
 
-#breezeTop {
-	position: fixed;
-	bottom: 30px;
-	margin-left: 65%;
-}
-
-#breezeTop a {
-	width: 108px;
-	display: block;
-	text-align: center;
-	font: 11px/100% Arial, Helvetica, sans-serif;
-	text-transform: uppercase;
-	text-decoration: none;
-	color: #bbb;
-
-	/* transition */
-	-webkit-transition: 1s;
-	-moz-transition: 1s;
-	transition: 1s;
-}
-#breezeTop a:hover {
-	color: #000;
-}
-
-/* arrow icon (span tag) */
-#breezeTop span {
-	height: 10px;
-	display: block;
-	background: url(../images/sort_up.gif) no-repeat center center;
-}
-#breezeTop a:hover span {
-}
-
-.pest:before
-{
-	background: url(../images/breeze/status.png) no-repeat scroll 0 0 transparent;
-	background: url(../images/breeze/status.png) no-repeat scroll 0 0 transparent;
-    content: "";
-    height: 20px;
-    margin-left: 8px;
-    margin-top: 15px;
-    position: absolute;
-    width: 9px;
-}
 .status_update textarea
 {
 	margin:5px 0 0 15px;
@@ -484,157 +408,6 @@ ul.breeze_top_profile_views
 {
 	height: 50px;
 	width: 50px;
-}
-
-/*** Styles for Breeze ***/
-#breeze_basicinfo
-{
-	width: 29%;
-	float: right;
-	margin:0;
-	padding:10px;
-	text-align:left;
-	background: #eee;
-	border: 1px solid #DDDDDD;
-	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset
-}
-#breeze_basicinfo div.center
-{
-	text-align: center;
-}
-#breeze_basicinfo .windowbg .content
-{
-	padding-right: 20px;
-}
-#breeze_detailedinfo
-{
-	width: 69%;
-	float: left;
-}
-#blockinfo
-{
-	width: 69%;
-	float: left;
-}
-.btn_profile
-{
-	background: #fcfcfc; /* Old browsers */
-	background: -moz-linear-gradient(top, #fcfcfc 0%, #eeeeee 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fcfcfc), color-stop(100%,#eeeeee)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #fcfcfc 0%,#eeeeee 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #fcfcfc 0%,#eeeeee 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, #fcfcfc 0%,#eeeeee 100%); /* IE10+ */
-	background: linear-gradient(to bottom, #fcfcfc 0%,#eeeeee 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
-    border-color: #CCCCCC #C6C6C6 #AAAAAA;
-    color: #111111;
-    text-shadow: 0 1px 0 #EEEEEE;
-	border-width: 1px;
-	border-style: solid;
-    border-radius: 4px;
-    box-shadow: 0 1px 0 0 #DDDDDD;
-    cursor: pointer;
-    display: inline-block;
-    font-family: Helvetica Neue,Helvetica,Arial;
-    font-size: 12px;
-    font-weight: bold;
-    margin: 3px;
-    padding: 5px 10px;
-}
-.btn_profile a
-{
-	color: #111111;
-	vertical-align: middle;
-}
-.btn_profile a:hover
-{
-	text-decoration: underline;
-	color: #111111;
-}
-.btn_profile:hover
-{
-	background: #ffffff; /* Old browsers */
-	background: -moz-linear-gradient(top, #ffffff 0%, #dddddd 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#dddddd)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #ffffff 0%,#dddddd 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #ffffff 0%,#dddddd 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, #ffffff 0%,#dddddd 100%); /* IE10+ */
-	background: linear-gradient(to bottom, #ffffff 0%,#dddddd 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dddddd',GradientType=0 ); /* IE6-9 */
-}
-#blockinfo .perfil_avatar
-{
-	width: 100px;
-	height: 100px;
-	float: left;
-	padding: 6px;
-	border-radius: 6px;
-	background: #e0e7ef;
-	margin-right: 10px;
-}
-#blockinfo h4.nombre
-{
-	font-size: 16pt;
-	margin-bottom: -10px;
-	margin-left: 135px;
-}
-#breeze_basicinfo h4
-{
-	font-size: 135%;
-	font-weight: 100;
-	line-height: 105%;
-	white-space: pre-wrap;
-	overflow: hidden;
-}
-h4.nombre span.title
-{
-	font-size: 50%;
-	font-weight: normal;
-	margin: -2px 0 0 0;
-}
-#breeze_basicinfo img.avatar
-{
-	display: block;
-	margin: 10px auto 0;
-}
-#breeze_basicinfo ul
-{
-	list-style-type: none;
-	margin: 10px 0 0 0;
-}
-#breeze_basicinfo ul li
-{
-	display: inline;
-	margin-left: 5px;
-	height: 20px;
-}
-#blockinfo ul
-{
-	list-style-type: none;
-	margin: 10px 0 0 0;
-}
-#blockinfo ul li
-{
-	display: block;
-	float: left;
-	margin-left: 5px;
-	height: 20px;
-}
-.frame_on {
-	border: 1px solid #ccc;
-	box-shadow: 0 0 3px #008000;
-}
-.frame_off {
-	border: 1px solid #ccc;
-	box-shadow: 0 0 3px #aaa;
-}
-#blockinfo span#userstatus
-{
-	display: block;
-}
-#blockinfo span#userstatus img
-{
-	vertical-align: middle;
 }
 
 .breeze_avatar
