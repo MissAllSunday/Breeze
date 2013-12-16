@@ -33,11 +33,10 @@
  *
  */
 
-breeze.loadImage = '<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" />';
+breeze.tools.loadImage = '<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" />';
 
 // Helper function to show a notification instance
-breeze.noti = function(params)
-{
+breeze.tools.showNoti = function(params){
 	noty({
 		text: params.message,
 		timeout: 3500, //@todo set this to a user setting
@@ -64,7 +63,7 @@ jQuery(document).ready(function(){
 		// You need to type something...
 		if(status.statusContent=='')
 		{
-			breeze.noti({message: breeze_empty_message, type : 'error'});
+			breeze.tools.showNoti({message: breeze_empty_message, type : 'error'});
 			return false;
 		}
 
@@ -78,7 +77,7 @@ jQuery(document).ready(function(){
 			}
 
 			// Show a nice loading image so people can think we are actually doing some work...
-			jQuery('#breeze_load_image').fadeIn('slow').html(breeze.loadImage);
+			jQuery('#breeze_load_image').fadeIn('slow').html(breeze.tools.loadImage);
 
 			// The long, long ajax call...
 			jQuery.ajax({
@@ -94,7 +93,7 @@ jQuery(document).ready(function(){
 						jQuery('.status_button').removeAttr('disabled');
 
 						// Set the notification
-						breeze.noti(html);
+						breeze.tools.showNoti(html);
 
 						// Do some after work...
 						if (html.type == 'success')
@@ -142,7 +141,7 @@ jQuery(document).ready(function(){
 		// Don't be silly...
 		if(comment.commentContent=='')
 		{
-			breeze.noti({message: breeze_empty_message, type : 'error'});
+			breeze.tools.showNoti({message: breeze_empty_message, type : 'error'});
 			return false;
 		}
 
@@ -152,7 +151,7 @@ jQuery(document).ready(function(){
 			jQuery('#commentSubmit_' + StatusID).attr('disabled', 'disabled');
 
 			// The usual loading image...
-			jQuery('#breeze_load_image_comment_'+ StatusID).fadeIn('slow').html(breeze.loadImage);
+			jQuery('#breeze_load_image_comment_'+ StatusID).fadeIn('slow').html(breeze.tools.loadImage);
 
 			jQuery.ajax({
 				type: 'GET',
@@ -165,7 +164,7 @@ jQuery(document).ready(function(){
 					jQuery('#breeze_load_image_comment_'+ StatusID).fadeOut('slow', 'linear', function(){
 
 						// Send the notification
-						breeze.noti(html);
+						breeze.tools.showNoti(html);
 
 						// Everything went better than expected :)
 						jQuery('#comment_loadplace_'+ StatusID).append(html.data).fadeIn('slow', 'linear', function(){});
@@ -179,7 +178,7 @@ jQuery(document).ready(function(){
 				error: function (html)
 				{
 					jQuery('#breeze_load_image_comment_'+ StatusID).fadeOut('slow');
-					breeze.noti(html);
+					breeze.tools.showNoti(html);
 					jQuery('#commentSubmit_' + StatusID).removeAttr('disabled');
 					jQuery('#commentContent_' + StatusID).val('');
 				},
