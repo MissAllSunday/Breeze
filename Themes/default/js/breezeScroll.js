@@ -64,13 +64,16 @@ jQuery(document).ready(function(){
 					style: '',
 				}).appendTo('#breezeAppendTo').hide();
 
-				window.breezeAjax.numberTimes = numberOfEvents;
+				// Append some more data to breeze.pagination.
+				breeze.pagination.numberTimes = numberOfEvents;
+				breeze.pagination.userID = breeze.currentUser;
+				breeze.pagination.comingFrom = breeze.tools.comingFrom
 
 				jQuery.ajax(
 				{
 					// Send the data and oh boy there's a lot of it!
 					url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1;' + breeze.session.v + '=' + breeze.session.id,
-					data : window.breezeAjax,
+					data : breeze.pagination,
 					cache: false,
 					dataType: 'json',
 					success: function(html)
@@ -85,7 +88,7 @@ jQuery(document).ready(function(){
 
 							else{
 								noty({
-									text: breeze.text.loadMore_no,
+									text: breeze.text.load_more_no,
 									timeout: 3500,
 									type: 'success',
 								});
