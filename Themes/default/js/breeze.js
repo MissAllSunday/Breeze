@@ -33,9 +33,6 @@
  *
  */
 
-// Some re-usable vars
-var breeze = {};
-
 breeze.loadImage = '<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" />';
 
 // Helper function to show a notification instance
