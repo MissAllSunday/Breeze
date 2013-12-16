@@ -449,14 +449,13 @@ function template_general_wall()
 	echo '
 <div id="profileview" class="flow_auto">';
 
-	// Right block, tabs and block
+	// Right block.
 	echo '
 	<div id="Breeze_right_block">';
 
-	// Wall
+	// General wall
 	echo '
 		<div id="tab-wall" class="content">';
-
 
 	// A nice title bar
 	echo '
@@ -502,14 +501,16 @@ function template_general_wall()
 	echo '
 		</div>';
 
-
 	// End of right block
 	echo '
 	</div>';
 
-	// Left block, users data and info
+	// Left block, buddies activity.
 	echo '
 	<div id="Breeze_left_block">';
+
+	if (!empty($context['Breeze']['log']))
+		breeze_activity($context['Breeze']['log']);
 
 
 	// End of left block

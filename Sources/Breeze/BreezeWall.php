@@ -40,7 +40,7 @@ if (!defined('SMF'))
 
 class BreezeWall
 {
-	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display, $tools)
+	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display, $tools, $log)
 	{
 		// Needed to show error strings
 		loadLanguage(Breeze::$name);
@@ -58,6 +58,7 @@ class BreezeWall
 		$this->_text = $text;
 		$this->_display = $display;
 		$this->_tools = $tools;
+		$this->log = $log;
 	}
 
 	public function call()
@@ -156,7 +157,7 @@ class BreezeWall
 			$context['Breeze']['status'] = $status['data'];
 
 			// Get the latest activity
-			$context['Breeze']['activity'] = $this->_query->getActivityLog($this->userSettings['buddies']);
+			$context['Breeze']['log'] = $this->log->getActivity($this->userSettings['buddies']);
 
 			// Load users data.
 			if (!empty($status['users']))
