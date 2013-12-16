@@ -140,8 +140,7 @@ function template_user_wall()
 					$txt['Breeze_tabs_activity_none'];
 
 		else
-			foreach ($context['Breeze']['log'] as $activity)
-				breeze_activity($activity);
+			breeze_activity($context['Breeze']['log']);
 
 		echo '
 		</div>';

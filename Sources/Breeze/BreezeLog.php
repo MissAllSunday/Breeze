@@ -78,7 +78,7 @@ class BreezeLog
 				if (in_array($entry['type'], get_class_methods(__CLASS__)))
 				{
 					$entry['content'] = json_decode($entry['content'], true);
-					$this->result[$id]['content'] = $this->$entry['type']($entry, $eachUser);
+					$this->result[$id]['content'] = $this->$entry['type']($entry);
 				}
 
 				// No? then pass the content
@@ -90,7 +90,7 @@ class BreezeLog
 		return !empty($this->result) ? $this->result : false;
 	}
 
-	protected function logComment($entry, $user)
+	protected function logComment($entry)
 	{
 		global $scripturl;
 
@@ -115,7 +115,7 @@ class BreezeLog
 		return $return;
 	}
 
-	protected function logStatus($entry, $user)
+	protected function logStatus($entry)
 	{
 		global $scripturl;
 
