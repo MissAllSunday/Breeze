@@ -223,15 +223,7 @@ class BreezeTools
 			$context['insert_after_template'] .= '
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>
-	<script type="text/javascript"><!-- // --><![CDATA[
-		var breeze_current_user = '. JavaScriptEscape($user_info['id']) .';
-		var breeze_how_many_mentions = '. (JavaScriptEscape(!empty($userSettings['how_many_mentions']) ? $userSettings['how_many_mentions'] : 5)) .';
-		var breeze_session_id = ' . JavaScriptEscape($context['session_id']) . ';
-		var breeze_session_var = ' . JavaScriptEscape($context['session_var']) . ';
-		var breeze_loadMore = '. JavaScriptEscape($this->text->getText('general_load_more')) .';
-		var breeze_loadMore_no = '. JavaScriptEscape($this->text->getText('general_load_more_no')) .';
-	// ]]></script>';
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
 
 			// Does the user wants to use infinite scroll?
 			if (!empty($userSettings['load_more']))
