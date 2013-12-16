@@ -94,6 +94,7 @@ class BreezeAjax
 			'cleanlog' => 'cleanLog',
 			'fetch' => 'fetchStatus',
 			'fetchc' => 'fetchComment',
+			'fetchNoti' => 'fetchNoti',
 			'usersettings' => 'userSettings',
 		);
 
@@ -635,6 +636,19 @@ class BreezeAjax
 				'data' => 'end',
 				'owner' => $id,
 			));
+	}
+
+	protected function fetchNoti()
+	{
+		global $user_info;
+
+		// This is easy, get and return all notifications as a json object, don't  worry, the actual query is cached ;)
+		return $this->setResponse(array(
+			'type' => 'success',
+			'message' => 'success',
+			'data' => $this->_notifications->doStream($user_info['id']),
+			'owner' => $user_info['id'], // Don't really need this, just send some dummy data.
+		));
 	}
 
 	/**
