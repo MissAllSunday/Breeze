@@ -155,7 +155,7 @@ function breezeWall()
 	// Does the user wants to use the load more button?
 	if (!empty($context['Breeze']['settings']['visitor']['load_more']))
 		$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeScroll.js"></script>';
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeLoadMore.js"></script>';
 
 	// Need to pass some vars to the browser :(
 	$context['insert_after_template'] .= '

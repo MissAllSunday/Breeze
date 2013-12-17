@@ -1,7 +1,7 @@
 /**
- * breeze_scroll.js
+ * breezeLoadMore.js
  *
- * The purpose of this file is to handle all the client side code, the ajax call for the status, comments and other stuff
+ * Loads the next batch of status.
  * @package Breeze mod
  * @version 1.0
  * @author Jessica González <suki@missallsunday.com>
@@ -33,7 +33,6 @@
  *
  */
 
-// Infinite scrolling
 jQuery(document).ready(function(){
 
 	// Fires up the load more thingy
