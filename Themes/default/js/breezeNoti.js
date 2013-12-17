@@ -45,7 +45,7 @@ breeze.tools.stream = function(currentUser)
 		dataType: 'json',
 		success: function(noti)
 		{
-			if (jQuery.isEmptyObject(noti))
+			if (noti.data == '')
 				return;
 
 			// Loops for everyone!!
