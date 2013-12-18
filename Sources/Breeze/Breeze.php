@@ -147,7 +147,27 @@ class Breeze
 			false,
 			'breeze_per_classic',
 			'breeze_per_simple');
+		$permissionList['membergroup']['breeze_deleteStatus'] = array(
+			false,
+			'breeze_per_classic',
+			'breeze_per_simple');
 		$permissionList['membergroup']['breeze_deleteComments'] = array(
+			false,
+			'breeze_per_classic',
+			'breeze_per_simple');
+		$permissionList['membergroup']['breeze_deleteOwnStatus'] = array(
+			false,
+			'breeze_per_classic',
+			'breeze_per_simple');
+		$permissionList['membergroup']['breeze_deleteOwnComments'] = array(
+			false,
+			'breeze_per_classic',
+			'breeze_per_simple');
+		$permissionList['membergroup']['breeze_deleteProfileStatus'] = array(
+			false,
+			'breeze_per_classic',
+			'breeze_per_simple');
+		$permissionList['membergroup']['breeze_deleteProfileComments'] = array(
 			false,
 			'breeze_per_classic',
 			'breeze_per_simple');

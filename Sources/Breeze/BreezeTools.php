@@ -197,4 +197,28 @@ class BreezeTools
 		if ($returnID)
 			return $loaded_ids;
 	}
+
+	public function permissions($name, $userID = false, $profileOwner = false)
+	{
+		global $user_info;
+
+		// Of course you have permission to do nothing...
+		if (empty($name))
+			return true;
+
+		// Poster owner?
+		$isOwner = !empty($userId) ? ($userId == $user_info['id']) : false;
+
+		// Profile owner?
+		$isProfileOwner = !empty($profileOwner) ? ($profileOwner == $user_info['id']) : false;
+
+		// Check for the proper permission
+		if (!$is_owner && !empty($type))
+			isAllowedTo('breeze_'. $type);
+
+		// Just a generic "is owner"
+		else
+			if(!$is_owner)
+				fatal_lang_error('Breeze_error_no_valid_action');
+	}
 }

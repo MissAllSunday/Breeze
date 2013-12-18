@@ -177,10 +177,13 @@ function Breeze_Admin_Permissions()
 
 	$config_vars = array(
 		array('title', Breeze::$txtpattern .'admin_settings_permissions'),
-		array('permissions', 'breeze_deleteComments', 0, $txt['permissionname_breeze_deleteComments']),
-		array('permissions', 'breeze_postStatus', 0, $txt['permissionname_breeze_postStatus']),
-		array('permissions', 'breeze_postComments', 0, $txt['permissionname_breeze_postComments']),
 	);
+
+	// Make it easy to add more permissions.
+	$perm = array('deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', );
+
+	foreach ($perm as $p)
+	$config_vars[] = array('permissions', 'breeze_'. $p, 0, $txt['permissionname_breeze_'. $p]);
 
 	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=permissions;save';
 
