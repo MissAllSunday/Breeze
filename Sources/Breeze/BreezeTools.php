@@ -217,21 +217,17 @@ class BreezeTools
 		// Status owner?
 		$isPosterOwner = $userPoster == $user_info['id'];
 
-		// No poster and no profile owner, must be an admin/mod or something.
-		if (!$isProfileOwner && !$isPosterOwner)
-			$perm['delete'] = allowedTo('breeze_delete'. $type);
+		// Your own data? no problem! delete it, fry it, doesn't matter...
+		if ($isPosterOwner)
+			$perm['delete'] = allowedTo('breeze_deleteOwn'. $type);
 
 		// Nope? then is this your own profile?
 		elseif ($isProfileOwner)
-		{
-			// Own post?
-			if ($isPosterOwner)
-				$perm['delete'] = allowedTo('breeze_deleteOwn'. $type);
-
-			// Nope? then lets see if you can delete anything n your own wall...
-			else
 				$perm['delete'] = allowedTo('breeze_deleteProfile'. $type);
-		}
+
+		// No poster and no profile owner, must be an admin/mod or something.
+		else
+			$perm['delete'] = allowedTo('breeze_delete'. $type);
 
 		// Sorry pal... better luck next time!
 		return $perm;

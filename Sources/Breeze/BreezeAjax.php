@@ -45,7 +45,7 @@ class BreezeAjax
 	public $subActions = array();
 	protected $_userSettings = array();
 	protected $_params = array();
-	protected function $_currentUser;
+	protected $_currentUser;
 
 	/**
 	 * BreezeAjax::__construct()
