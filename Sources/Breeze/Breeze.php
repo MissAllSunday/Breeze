@@ -65,7 +65,7 @@ class Breeze
 	public static $version = '1.0';
 	public static $folder = '/Breeze/';
 	public static $txtpattern = 'Breeze_';
-	public static $permissions = array('postStatus', 'postComments', 'deleteStatus', 'deleteComments',);
+	public static $permissions = array('deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments',);
 	public static $allSettings = array('wall', 'general_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention', 'gender', 'buddiesList', 'ignoredList', 'profileViews',);
 
 	// Support site feed
@@ -143,39 +143,9 @@ class Breeze
 	{
 		$permissionGroups['membergroup']['simple'] = array('breeze_per_simple');
 		$permissionGroups['membergroup']['classic'] = array('breeze_per_classic');
-		$permissionList['membergroup']['breeze_deleteStatus'] = array(
-			false,
-			'breeze_per_classic',
-			'breeze_per_simple');
-		$permissionList['membergroup']['breeze_deleteStatus'] = array(
-			false,
-			'breeze_per_classic',
-			'breeze_per_simple');
-		$permissionList['membergroup']['breeze_deleteComments'] = array(
-			false,
-			'breeze_per_classic',
-			'breeze_per_simple');
-		$permissionList['membergroup']['breeze_deleteOwnStatus'] = array(
-			false,
-			'breeze_per_classic',
-			'breeze_per_simple');
-		$permissionList['membergroup']['breeze_deleteOwnComments'] = array(
-			false,
-			'breeze_per_classic',
-			'breeze_per_simple');
-		$permissionList['membergroup']['breeze_deleteProfileStatus'] = array(
-			false,
-			'breeze_per_classic',
-			'breeze_per_simple');
-		$permissionList['membergroup']['breeze_deleteProfileComments'] = array(
-			false,
-			'breeze_per_classic',
-			'breeze_per_simple');
-		$permissionList['membergroup']['breeze_postStatus'] = array(
-			false,
-			'breeze_per_classic',
-			'breeze_per_simple');
-		$permissionList['membergroup']['breeze_postComments'] = array(
+
+		foreach (Breeze::$permissions as $p)
+			$permissionList['membergroup']['breeze_'. $p] = array(
 			false,
 			'breeze_per_classic',
 			'breeze_per_simple');
