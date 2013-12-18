@@ -212,7 +212,7 @@ class BreezeTools
 		// Profile owner?
 		$isProfileOwner = !empty($profileOwner) ? ($profileOwner == $user_info['id']) : false;
 
-		// Check for the proper permission
+		// Check for the proper permission.
 		if (!$is_owner && !empty($type))
 			isAllowedTo('breeze_'. $type);
 

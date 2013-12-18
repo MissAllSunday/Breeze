@@ -802,21 +802,4 @@ class BreezeAjax
 
 		$this->_redirectURL .= 'action='. $this->comingFrom . $messageString . $extraString . $userString;
 	}
-
-	protected function permissions($type = false, $owner_id = false)
-	{
-		global $user_info;
-
-		// Profile owner?
-		$is_owner = !empty($owner_id) ? ($owner_id == $user_info['id']) : true;
-
-		// Check for the proper permission
-		if (!$is_owner && !empty($type))
-			isAllowedTo('breeze_'. $type);
-
-		// Just a generic "is owner"
-		else
-			if(!$is_owner)
-				fatal_lang_error('Breeze_error_no_valid_action');
-	}
 }
