@@ -195,7 +195,7 @@ $txt['permissionname_breeze_deleteComments'] = 'Delete all comments on any wall<
 $txt['permissionname_breeze_deleteOwnStatus'] = 'Delete their own status.<br /><span class="smalltext">Regardless of where it has been posted.</span>';
 $txt['permissionname_breeze_deleteOwnComments'] = 'Delete their own comments.<br /><span class="smalltext">Regardless of where it has been posted.</span>';
 $txt['permissionname_breeze_deleteProfileStatus'] = 'Delete status made on their own profile.<br /><span class="smalltext">Regardless of who posted them.</span>';
-$txt['permissionname_breeze_deleteProfileComments'] = 'Delete status made on their own profile.<br /><span class="smalltext">Regardless of who posted them.</span>';
+$txt['permissionname_breeze_deleteProfileComments'] = 'Delete comments made on their own profile.<br /><span class="smalltext">Regardless of who posted them.</span>';
 $txt['permissionname_breeze_postStatus'] = 'Post new Status on any wall';
 $txt['permissionname_breeze_postComments'] = 'Post new Comments on any wall';
 $txt['permissionname_breeze_edit_settings_any'] = 'Edit the user settings of any wall';
