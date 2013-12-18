@@ -358,6 +358,7 @@ class BreezeQuery extends Breeze
 				'time_raw' => $row['status_time'],
 				'body' => $this->parser->display($row['status_body']),
 				'comments' => array(),
+				'permissions' => $this->tools->permissions('Status', $row['status_owner_id'], $row['status_poster_id']),
 			);
 
 			// Get the users IDs
@@ -393,6 +394,7 @@ class BreezeQuery extends Breeze
 					'time' => $this->tools->timeElapsed($row['comments_time']),
 					'time_raw' => $row['comments_time'],
 					'body' => $this->parser->display($row['comments_body']),
+					'permissions' => $this->tools->permissions('Comments', $row['status_owner_id'], $row['comments_poster_id']),
 				);
 
 				// Append the users IDs.

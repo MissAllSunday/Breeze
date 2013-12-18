@@ -198,27 +198,48 @@ class BreezeTools
 			return $loaded_ids;
 	}
 
-	public function permissions($name, $userID = false, $profileOwner = false)
+	public function permissions($type, $profileOwner = false, $userPoster = false)
 	{
 		global $user_info;
 
-		// Of course you have permission to do nothing...
-		if (empty($name))
-			return true;
+		// NO! you don't have permission to do nothing...
+		if (empty($userPoster) || empty($profileOwner) || empty($type))
+			return false;
 
-		// Poster owner?
-		$isOwner = !empty($userId) ? ($userId == $user_info['id']) : false;
+		// There are 3 "types" of deletion, any, own and profile. Lets find out who can do what.
+		$perm = array(
+			'post' => allowedTo('breeze_post'. $type),
+			'delete' => false,
+		);
 
 		// Profile owner?
-		$isProfileOwner = !empty($profileOwner) ? ($profileOwner == $user_info['id']) : false;
+		$isProfileOwner = $profileOwner == $user_info['id'];
 
-		// Check for the proper permission.
-		if (!$is_owner && !empty($type))
-			isAllowedTo('breeze_'. $type);
+		// Status owner?
+		$isPosterOwner = $userPoster == $user_info['id'];
 
-		// Just a generic "is owner"
-		else
-			if(!$is_owner)
-				fatal_lang_error('Breeze_error_no_valid_action');
+		// First things first, the "any" permission. If this user has it then it is pointless to check the other two.
+		if (allowedTo('breeze_delete'. $type))
+		{
+			$perm['delete'] = true;
+			return $perm;
+		}
+
+		// Nope? then is this your own profile?
+		if (allowedTo('breeze_deleteProfile'. $type) && $isProfileOwner)
+		{
+			$perm['delete'] = true;
+			return $perm;
+		}
+
+		// Last chance... did you actually wrote this post?
+		if (allowedTo('breeze_deleteOwn'. $type) && $isPosterOwner)
+		{
+			$perm['delete'] = true;
+			return $perm;
+		}
+
+		// Sorry pal... better luck next time!
+		return;
 	}
 }
