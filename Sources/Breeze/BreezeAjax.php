@@ -45,6 +45,7 @@ class BreezeAjax
 	public $subActions = array();
 	protected $_userSettings = array();
 	protected $_params = array();
+	protected function $_currentUser;
 
 	/**
 	 * BreezeAjax::__construct()
@@ -111,6 +112,7 @@ class BreezeAjax
 
 		// Get the current user settings.
 		$this->_userSettings = $this->_query->getUserSettings($user_info['id']);
+		$this->_currentUser = $user_info['id'];
 
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
@@ -155,11 +157,13 @@ class BreezeAjax
 				'owner' => $statusOwner,
 			));
 
+		// Are you the profile owner? no? then feel my wrath!
+		if ($this->_currentUser != $statusOwner)
+			isAllowedTo('postStatus');
+
 		// Do this only if there is something to add to the database
 		if ($this->_data->validateBody('statusContent'))
 		{
-			// You aren't allowed in here, let's show you a nice static page...
-			$this->permissions('postStatus', $statusOwner);
 
 			$body = $statusContent;
 
@@ -260,14 +264,16 @@ class BreezeAjax
 				'owner' => $commentStatusPoster,
 			));
 
+		// Are you the profile owner? no? then feel my wrath!
+		if ($this->_currentUser != $commentOwner)
+			isAllowedTo('postComments');
+
 		// Load all the things we need
 		$temp_id_exists = $this->_query->getSingleValue('status', 'status_id', $commentStatus);
 
 		// The status do exists and the data is valid
 		if ($this->_data->validateBody('commentContent') && !empty($temp_id_exists))
 		{
-			// You aren't allowed in here, let's show you a nice static page...
-			$this->permissions('postComments', $commentOwner);
 
 			$body = $commentContent;
 

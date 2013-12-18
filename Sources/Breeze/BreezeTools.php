@@ -202,24 +202,20 @@ class BreezeTools
 	{
 		global $user_info;
 
+		$perm = array(
+			'edit' => false,
+			'delete' => false,
+		);
+
 		// NO! you don't have permission to do nothing...
 		if ($user_info['is_guest'] || empty($userPoster) || empty($profileOwner) || empty($type))
-			$perm = array(
-			'post' => false,
-			'delete' => 'nada',
-		);
+			return $perm;
 
 		// Profile owner?
 		$isProfileOwner = $profileOwner == $user_info['id'];
 
 		// Status owner?
 		$isPosterOwner = $userPoster == $user_info['id'];
-
-		// There are 3 "types" of deletion, any, own and profile. Lets find out who can do what.
-		$perm = array(
-			'post' => $isProfileOwner ? true : allowedTo('breeze_post'. $type),
-			'delete' => false,
-		);
 
 		// No poster and no profile owner, must be an admin/mod or something.
 		if (!$isProfileOwner && !$isPosterOwner)

@@ -102,9 +102,11 @@ function breezeWall()
 	$context['Breeze']['tools'] = $tools;
 	$context['can_view_warning'] = in_array('w', $context['admin_features']) && (allowedTo('issue_warning') && !$context['member']['is_owner']) || (!empty($modSettings['warning_show']) && ($modSettings['warning_show'] > 1 || $context['member']['is_owner']));
 
-	// You are allowed here but you still need to obey some permissions.
-	foreach (Breeze::$permissions as $p)
-		$context['Breeze']['permissions'][$p] = $context['member']['is_owner'] ? true : allowedTo('breeze_'. $p);
+	// Basic "post" permissions, these are pretty simple, no need for a fancy function...
+	$context['Breeze']['post'] = array(
+		'status' => $context['member']['is_owner'] ? true : allowedTo('breeze_postStatus'),
+		'comments' => $context['member']['is_owner'] ? true : allowedTo('breeze_postComments'),
+	);
 
 	// Set up some vars for pagination
 	$maxIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;
