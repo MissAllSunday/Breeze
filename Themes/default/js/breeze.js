@@ -206,7 +206,7 @@ jQuery(document).ready(function(){
 				addClass: 'button_submit', text: breeze.text.confirm_yes, onClick: function($noty) {
 					jQuery.ajax({
 						type: 'GET',
-						url: commentUrl + ';js=1' + breeze.session.v + '=' + breeze.session.id + ';type=Comments',
+						url: commentUrl + ';js=1' + breeze.session.v + '=' + breeze.session.id,
 						cache: false,
 						dataType: 'json',
 						success: function(html){
@@ -266,7 +266,7 @@ jQuery(document).ready(function(){
 				addClass: 'button_submit', text: breeze.text.confirm_yes, onClick: function($noty) {
 					jQuery.ajax({
 						type: 'GET',
-						url: urlParam + ';js=1' + breeze.session.v + '=' + breeze.session.id + ';type=Status',
+						url: urlParam + ';js=1' + breeze.session.v + '=' + breeze.session.id,
 						cache: false,
 						dataType: 'json',
 						success: function(html){

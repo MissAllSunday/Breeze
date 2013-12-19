@@ -713,7 +713,7 @@ class BreezeQuery extends Breeze
 	/**
 	 * BreezeQuery::deleteCommentByStatusID()
 	 *
-	 * This shouldn't be called as a standalone method, use deleteComment() instead
+	 * This shouldn't be called as a standalone method, use deleteComments() instead
 	 * @param int $id
 	 * @return
 	 */
@@ -725,12 +725,12 @@ class BreezeQuery extends Breeze
 	}
 
 	/**
-	 * BreezeQuery::deleteComment()
+	 * BreezeQuery::deleteComments()
 	 *
 	 * @param int $id
 	 * @return
 	 */
-	public function deleteComment($id, $profile_owner = false)
+	public function deleteComments($id, $profile_owner = false)
 	{
 		// If we know the profile_owner ID we will save an extra query so try to include it as a param please!
 		$this->killCache('comments', $id, $profile_owner);

@@ -380,24 +380,24 @@ class BreezeAjax
 
 			// Die, die my darling!
 			if (!$canHas['delete'])
-				fatal_lang_error('Breeze_error_delete'. $type, false);
+				fatal_lang_error('Breeze_error_delete'. ucfirst($type), false);
 
 			$temp_id_exists = $this->_query->getSingleValue(
-				strtolower($type),
-				strtolower($type) .'_id',
+				$type,
+				$type .'_id',
 				$id
 			);
 
 			// Do this only if the message wasn't deleted already
 			if (!empty($temp_id_exists))
 			{
-				$typeCall = 'delete'. $type;
+				$typeCall = 'delete'. ucfirst($type);
 
 				// Mess up the vars before performing the query
 				call_integration_hook('integrate_breeze_before_delete', array(&$type, &$id, &$profileOwner, &$poster));
 
 				// Do the query dance!
-				$this->_query->$typeCall($id, $profile_owner);
+				$this->_query->$typeCall($id, $profileOwner);
 
 				// Tell everyone what just happened here...
 				call_integration_hook('integrate_breeze_after_delete', array($type, $id, $profileOwner, $poster));
@@ -405,7 +405,7 @@ class BreezeAjax
 				// Send the data back to the browser
 				return $this->setResponse(array(
 					'type' => 'success',
-					'message' => 'delete_'. strtolower($type),
+					'message' => 'delete_'. $type,
 					'owner' => $profileOwner,
 				));
 			}
