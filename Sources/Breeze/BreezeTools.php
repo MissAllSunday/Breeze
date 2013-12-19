@@ -204,11 +204,11 @@ class BreezeTools
 
 		$perm = array(
 			'edit' => false,
-			'delete' => false,
+			'delete' => '',
 		);
 
 		// NO! you don't have permission to do nothing...
-		if ($user_info['is_guest'] || empty($userPoster) || empty($profileOwner) || empty($type))
+		if ($user_info['is_guest'] || !$userPoster || !$profileOwner || empty($type))
 			return $perm;
 
 		// Profile owner?
@@ -217,17 +217,17 @@ class BreezeTools
 		// Status owner?
 		$isPosterOwner = $userPoster == $user_info['id'];
 
-		// Your own data? no problem! delete it, fry it, doesn't matter...
-		if ($isPosterOwner)
-			$perm['delete'] = allowedTo('breeze_deleteOwn'. $type);
+		// Your own data?
+		if ($isPosterOwner && allowedTo('breeze_deleteOwn'. $type))
+			$perm['delete'] = true;
 
 		// Nope? then is this your own profile?
-		elseif ($isProfileOwner)
-				$perm['delete'] = allowedTo('breeze_deleteProfile'. $type);
+		elseif ($isProfileOwner && allowedTo('breeze_deleteProfile'. $type))
+				$perm['delete'] = true;
 
 		// No poster and no profile owner, must be an admin/mod or something.
-		else
-			$perm['delete'] = allowedTo('breeze_delete'. $type);
+		elseif (allowedTo('breeze_delete'. $type))
+			$perm['delete'] = true;
 
 		// Sorry pal... better luck next time!
 		return $perm;

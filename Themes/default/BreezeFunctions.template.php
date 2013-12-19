@@ -50,6 +50,9 @@ function breeze_status($data, $returnVar = false)
 	if (!empty($data))
 		foreach ($data as $status)
 		{
+			// Yep, this is a perfect place to get permissions...
+			$canHas = $context['Breeze']['tools']->permissions('Status', $status['owner_id'], $status['poster_id']);
+
 			$echo .= '
 			<li class="windowbg status_breeze" id ="status_id_'. $status['id'] .'">';
 
@@ -76,7 +79,7 @@ function breeze_status($data, $returnVar = false)
 								<span class="time_elapsed" title="'. timeformat($status['time_raw'], false) .'">'. $status['time'] .' </span>';
 
 							// Delete status
-							if (!empty($status['permissions']['delete']))
+							if ($canHas['delete'])
 								$echo .= '| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $status['id'] .';type=status;profile_owner='. $status['owner_id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .'" id="deleteStatus_'. $status['id'] .'" class="breeze_delete_status">'. $txt['Breeze_general_delete'] .'</a>';
 
 							$echo .= '
@@ -152,6 +155,9 @@ function breeze_comment($comments, $returnVar = false)
 
 	foreach ($comments as $comment)
 	{
+		// Yup, I didn't think about a better place for some logic than a template file... am I awesome or what!
+		$canHas = $context['Breeze']['tools']->permissions('Comments', $comment['profile_id'], $comment['poster_id']);
+var_dump($canHas['delete']);
 		$echo .= '
 		<li class="windowbg2" id ="comment_id_'. $comment['id'] .'">
 			<div class="breeze_user_comment_avatar">
@@ -164,7 +170,7 @@ function breeze_comment($comments, $returnVar = false)
 					<span class="time_elapsed" title="'. timeformat($comment['time_raw'], false) .'">'. $comment['time'] .'</span>';
 
 		// Delete comment
-		if (!empty($comment['permissions']['delete']))
+		if ($canHas['delete'])
 			$echo .= '| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $comment['id'] .';type=comment;profile_owner='. $comment['profile_id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .'" id="deleteComment_'. $comment['id'] .'" class="breeze_delete_comment">'. $txt['Breeze_general_delete'] .'</a>';
 
 		$echo .= '

@@ -175,8 +175,8 @@ jQuery(document).ready(function(){
 					jQuery('#commentContent_' + StatusID).val('');
 
 				},
-				error: function (html)
-				{
+				error: function (html){
+
 					jQuery('#breeze_load_image_comment_'+ StatusID).fadeOut('slow');
 					breeze.tools.showNoti(html);
 					jQuery('#commentSubmit_' + StatusID).removeAttr('disabled');

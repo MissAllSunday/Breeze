@@ -78,7 +78,7 @@ class BreezeAjax
 	 */
 	public function call()
 	{
-		global $user_info;
+		global $user_info, $context;
 
 		// Handling the subactions
 		$sglobals = Breeze::sGlobals('get');
@@ -105,6 +105,9 @@ class BreezeAjax
 		// Master setting is off, back off!
 		if (!$this->_settings->enable('admin_settings_enable'))
 			fatal_lang_error('Breeze_error_no_valid_action', false);
+
+		// Gotta love globals...
+		$context['Breeze']['tools'] = $this->_tools;
 
 		// Not using JavaScript?
 		if (!$sglobals->getValue('js'))
@@ -159,12 +162,11 @@ class BreezeAjax
 
 		// Are you the profile owner? no? then feel my wrath!
 		if ($this->_currentUser != $statusOwner)
-			isAllowedTo('postStatus');
+			allowedTo('breeze_postStatus');
 
 		// Do this only if there is something to add to the database
 		if ($this->_data->validateBody('statusContent'))
 		{
-
 			$body = $statusContent;
 
 			$this->_params = array(
@@ -266,7 +268,7 @@ class BreezeAjax
 
 		// Are you the profile owner? no? then feel my wrath!
 		if ($this->_currentUser != $commentOwner)
-			isAllowedTo('postComments');
+			allowedTo('breeze_postComments');
 
 		// Load all the things we need
 		$temp_id_exists = $this->_query->getSingleValue('status', 'status_id', $commentStatus);
