@@ -203,6 +203,8 @@ $txt['permissionname_breeze_edit_settings_any'] = 'Edit the user settings of any
 // Ajax strings
 $txt['Breeze_success_updated_settings'] = 'Your settings were updated successfully.';
 $txt['Breeze_feed_error_message'] = 'Breeze couldn\'t connect with the support site';
+$txt['Breeze_error_deleteComment'] = 'I\'m sorry,  you aren\'t allowed to delete comments.';
+$txt['Breeze_error_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete status.';
 $txt['Breeze_error_server'] = 'There was an error, please try again or contact the forum admin.';
 $txt['Breeze_error_wrong_values'] = 'Wrong values were sent, the request couldn\'t be handled.';
 $txt['Breeze_success_published'] = 'Your status was successfully published';

@@ -42,6 +42,9 @@ function template_user_wall()
 
 	loadLanguage(Breeze::$name);
 
+	// Get the message from the server
+	breeze_server_response();
+
 	// Start of profileview div
 	echo '
 <div id="profileview" class="flow_auto">';

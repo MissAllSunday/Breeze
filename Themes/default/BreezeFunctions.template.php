@@ -80,7 +80,9 @@ function breeze_status($data, $returnVar = false)
 
 							// Delete status
 							if ($canHas['delete'])
-								$echo .= '| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $status['id'] .';type=status;profile_owner='. $status['owner_id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .'" id="deleteStatus_'. $status['id'] .'" class="breeze_delete_status">'. $txt['Breeze_general_delete'] .'</a>';
+								$echo .= '| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $status['id'] .';type=status;profileOwner='. $status['owner_id'] .';poster='. $status['poster_id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .'" id="deleteStatus_'. $status['id'] .'" class="breeze_delete_status">'. $txt['Breeze_general_delete'] .'</a>';
+
+							// Modify? maybe someday...
 
 							$echo .= '
 							</div>
@@ -157,7 +159,7 @@ function breeze_comment($comments, $returnVar = false)
 	{
 		// Yup, I didn't think about a better place for some logic than a template file... am I awesome or what!
 		$canHas = $context['Breeze']['tools']->permissions('Comments', $comment['profile_id'], $comment['poster_id']);
-var_dump($canHas['delete']);
+
 		$echo .= '
 		<li class="windowbg2" id ="comment_id_'. $comment['id'] .'">
 			<div class="breeze_user_comment_avatar">
@@ -171,7 +173,7 @@ var_dump($canHas['delete']);
 
 		// Delete comment
 		if ($canHas['delete'])
-			$echo .= '| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $comment['id'] .';type=comment;profile_owner='. $comment['profile_id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .'" id="deleteComment_'. $comment['id'] .'" class="breeze_delete_comment">'. $txt['Breeze_general_delete'] .'</a>';
+			$echo .= '| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $comment['id'] .';type=comment;poster='. $comment['poster_id'] .';profileOwner='. $comment['profile_id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .'" id="deleteComment_'. $comment['id'] .'" class="breeze_delete_comment">'. $txt['Breeze_general_delete'] .'</a>';
 
 		$echo .= '
 				</div>

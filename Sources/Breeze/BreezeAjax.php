@@ -207,7 +207,7 @@ class BreezeAjax
 				unset($logStatus['body']);
 
 				// Send out a log for this postingStatus action.
-				if (!empty($this->_userSettings['_activityLog']))
+				if (!empty($this->_userSettings['activityLog']))
 					$this->_notifications->create(array(
 						'sender' => $statusPoster,
 						'receiver' => $statusPoster,
@@ -276,7 +276,7 @@ class BreezeAjax
 		// The status do exists and the data is valid
 		if ($this->_data->validateBody('commentContent') && !empty($temp_id_exists))
 		{
-
+			// Yeah, lets call it body shall we?
 			$body = $commentContent;
 
 			// Build the params array for the query
@@ -296,7 +296,7 @@ class BreezeAjax
 			$this->_params['id'] = $this->_query->insertComment($this->_params);
 			$this->_params['time_raw'] = time();
 
-			// The Comment was inserted
+			// The Comment was inserted ORLY???
 			if (!empty($this->_params['id']))
 			{
 				// Build the notification(s) for this comment via BreezeMention
@@ -322,7 +322,7 @@ class BreezeAjax
 				unset($logComment['body']);
 
 				// Send out a log for this postingStatus action.
-				if (!empty($this->_userSettings['_activityLog']))
+				if (!empty($this->_userSettings['activityLog']))
 					$this->_notifications->create(array(
 						'sender' => $commentPoster,
 						'receiver' => $commentPoster,
@@ -369,39 +369,44 @@ class BreezeAjax
 		// Set some much needed vars
 		$id = $this->_data->getValue('bid');
 		$type = $this->_data->getValue('type');
-		$profile_owner = $this->_data->getValue('profile_owner');
+		$profileOwner = $this->_data->getValue('profileOwner');
+		$poster = $this->_data->getValue('poster');
 
 		// Get the data
 		if ($id != false)
 		{
 			// You aren't allowed in here, let's show you a nice message error...
-			$this->permissions('delete'. ucfirst($this->_data->getValue('type')), false);
+			$canHas = $this->_tools->permissions($type, $profileOwner, $poster);
+
+			// Die, die my darling!
+			if (!$canHas['delete'])
+				fatal_lang_error('Breeze_error_delete'. $type, false);
 
 			$temp_id_exists = $this->_query->getSingleValue(
-				$type,
-				$type .'_id',
+				strtolower($type),
+				strtolower($type) .'_id',
 				$id
 			);
 
 			// Do this only if the message wasn't deleted already
 			if (!empty($temp_id_exists))
 			{
-				$typeCall = 'delete'. ucfirst($type);
+				$typeCall = 'delete'. $type;
 
 				// Mess up the vars before performing the query
-				call_integration_hook('integrate_breeze_before_delete', array(&$type, &$id, &$profile_owner));
+				call_integration_hook('integrate_breeze_before_delete', array(&$type, &$id, &$profileOwner, &$poster));
 
 				// Do the query dance!
 				$this->_query->$typeCall($id, $profile_owner);
 
 				// Tell everyone what just happened here...
-				call_integration_hook('integrate_breeze_after_delete', array($type, $id, $profile_owner));
+				call_integration_hook('integrate_breeze_after_delete', array($type, $id, $profileOwner, $poster));
 
 				// Send the data back to the browser
 				return $this->setResponse(array(
 					'type' => 'success',
-					'message' => 'delete_'. $type,
-					'owner' => $profile_owner,
+					'message' => 'delete_'. strtolower($type),
+					'owner' => $profileOwner,
 				));
 			}
 
@@ -409,8 +414,8 @@ class BreezeAjax
 			else
 				return $this->setResponse(array(
 					'type' => 'error',
-					'message' => 'already_deleted_'. $type,
-					'owner' => $profile_owner,
+					'message' => 'already_deleted_'. strtolower($type),
+					'owner' => $profileOwner,
 				));
 		}
 
@@ -419,7 +424,7 @@ class BreezeAjax
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
-				'owner' => $profile_owner,
+				'owner' => $profileOwner,
 			));
 	}
 
