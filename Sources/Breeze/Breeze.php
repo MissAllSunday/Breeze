@@ -604,6 +604,15 @@ class Breeze
 					),
 				),
 			),
+			'images' => array(
+				'name' => 'Icons',
+				'users' => array(
+					'ikons' => array(
+						'name' => 'ikons from Piotr Kwiatkowski',
+						'site' => 'http://ikons.piotrkwiatkowski.co.uk/',
+					),
+				),
+			),
 		);
 
 		// Oh well, one can dream...
