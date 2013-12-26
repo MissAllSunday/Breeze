@@ -167,15 +167,15 @@ class BreezeWall
 			if (!empty($status['pagination']))
 				$context['page_index'] = $status['pagination'];
 
-	// These file are only used here and on the profile wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-	$context['insert_after_template'] .= '
+			// These file are only used here and on the profile wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
+			$context['insert_after_template'] .= '
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
 
-	// Does the user wants to use the load more button?
-	if (!empty($this->userSettings['load_more']))
-		$context['insert_after_template'] .= '
+			// Does the user wants to use the load more button?
+			if (!empty($this->userSettings['load_more']))
+				$context['insert_after_template'] .= '
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeLoadMore.js"></script>';
 
 			// Need to pass some vars to the browser :(

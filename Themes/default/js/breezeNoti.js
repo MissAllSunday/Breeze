@@ -133,8 +133,11 @@ breeze.tools.stream = function(currentUser)
 				},
 			});
 
-			// Append the number of notifications to the wall button
+			// Append the number of notifications to the wall button.
 			jQuery('#button_wall  a.firstlevel span').append(' ['+ number +']');
+
+			// And to the title tag.
+			jQuery('title').append(' ['+ number +']');
 		},
 		error: function (noti){
 		},
