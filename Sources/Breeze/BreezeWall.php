@@ -146,6 +146,9 @@ class BreezeWall
 		// We need to log the action we're currently on
 		$context['Breeze']['comingFrom'] = 'wall';
 
+		// This isn't nice, however, pass the tools object to the view.
+		$context['Breeze']['tools'] = $this->_tools;
+
 		// Time to overheat the server!
 		if (!empty($this->userSettings['buddiesList']))
 		{
