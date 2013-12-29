@@ -202,6 +202,7 @@ class BreezeTools
 	{
 		global $user_info;
 
+		// Add this bit here to make it easier in the future to add more permissions.
 		$perm = array(
 			'edit' => false,
 			'delete' => '',
@@ -211,6 +212,9 @@ class BreezeTools
 		if ($user_info['is_guest'] || !$userPoster || !$profileOwner || empty($type))
 			return $perm;
 
+		// It all starts with an empty vessel...
+		$allowed = array();
+
 		// Profile owner?
 		$isProfileOwner = $profileOwner == $user_info['id'];
 
@@ -219,15 +223,17 @@ class BreezeTools
 
 		// Your own data?
 		if ($isPosterOwner && allowedTo('breeze_deleteOwn'. $type))
-			$perm['delete'] = true;
+			$allowed[] = 1;
 
 		// Nope? then is this your own profile?
-		elseif ($isProfileOwner && allowedTo('breeze_deleteProfile'. $type))
-				$perm['delete'] = true;
+		if ($isProfileOwner && allowedTo('breeze_deleteProfile'. $type))
+			$allowed[] = 1;
 
 		// No poster and no profile owner, must be an admin/mod or something.
-		elseif (allowedTo('breeze_delete'. $type))
-			$perm['delete'] = true;
+		if (allowedTo('breeze_delete'. $type))
+			$allowed[] = 1;
+
+		$perm['delete'] = in_array(1, $allowed);
 
 		// Sorry pal... better luck next time!
 		return $perm;

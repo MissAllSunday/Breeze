@@ -3,7 +3,7 @@
 /**
  * BreezeController
  *
- * The purpose of this file is to create all dependencies on demand, in a centered, unique class
+ * The purpose of this file is to create all dependencies on demand, in a centred, unique class
  * @package Breeze mod
  * @version 1.0
  * @author Jessica González <suki@missallsunday.com>
