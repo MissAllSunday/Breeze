@@ -198,7 +198,7 @@ jQuery(document).ready(function(){
 
 		// Show a confirmation message
 		noty({
-			text: breeze_confirm_delete,
+			text: breeze.text.confirm_delete,
 			type: 'confirmation',
 			dismissQueue: false,
 			closeWith: ['button'],
@@ -258,7 +258,7 @@ jQuery(document).ready(function(){
 
 		// Show a nice confirmation box
 		noty({
-			text: breeze_confirm_delete,
+			text: breeze.text.confirm_delete,
 			type: 'confirmation',
 			dismissQueue: false,
 			closeWith: ['button'],
