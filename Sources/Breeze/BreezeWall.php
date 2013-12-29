@@ -210,6 +210,9 @@ class BreezeWall
 		// This is still part of the whole wall stuff.
 		$context['Breeze']['comingFrom'] = 'wall';
 
+		// Breaking MVC since 2013!
+		$context['Breeze']['tools'] = $this->_tools;
+
 		// user settings.
 		$this->userSettings = $this->_query->getUserSettings($user_info['id']);
 
