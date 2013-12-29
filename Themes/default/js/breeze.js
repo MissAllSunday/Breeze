@@ -49,6 +49,8 @@ jQuery(document).ready(function(){
 	// Posting a new status
 	jQuery('#form_status').submit(function(event){
 
+		event.preventDefault();
+
 		var status = {};
 
 		// Get the profile owner
@@ -126,6 +128,8 @@ jQuery(document).ready(function(){
 	// Post a new comment
 	jQuery(document).on('submit', '.form_comment', function(event){
 
+		event.preventDefault();
+
 		// The most important thing is... the ID
 		var StatusID = parseInt(jQuery(this).attr('id').replace('form_comment_', ''));
 
@@ -192,6 +196,8 @@ jQuery(document).ready(function(){
 	// Deleting a comment
 	jQuery(document).on('click', '.breeze_delete_comment', function(event){
 
+		event.preventDefault();
+
 		// Get the ID
 		commentID = parseInt(jQuery(this).attr('id').replace('deleteComment_', ''));
 		commentUrl = jQuery(this).attr('href');
@@ -250,6 +256,8 @@ jQuery(document).ready(function(){
 
 	// Deleting a status, pretty much the same as deleting a comment :(
 	jQuery(document).on('click', '.breeze_delete_status', function(event){
+
+		event.preventDefault();
 
 		var element = jQuery(this);
 		var I = parseInt(element.attr('id').replace('deleteStatus_', ''));
