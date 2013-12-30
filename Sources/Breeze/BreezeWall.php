@@ -107,17 +107,15 @@ class BreezeWall
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
 
-		// Does the user wants to use the load more button?
-		if (!empty($this->userSettings['load_more']))
-			$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeLoadMore.js"></script>';
-
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
 
 		// Does the sub-action even exist?
 		if (isset($call[$sglobals->getValue('sa')]))
 		{
+			// Obscure, evil stuff...
+			writeLog(true);
+
 			// This is somehow ugly but its faster.
 			$this->$call[$sglobals->getValue('sa')]();
 		}
@@ -125,6 +123,9 @@ class BreezeWall
 		// By default lets load the general wall
 		else
 			$this->$call['general']();
+
+		// We should see other people...
+		unset($call);
 	}
 
 	// Get the latest entries of your buddies
@@ -145,9 +146,6 @@ class BreezeWall
 
 		// The (soon to be) huge array...
 		$status = array();
-
-		// Obscure, evil stuff...
-		writeLog(true);
 
 		// Pagination max index and current page
 		$maxIndex = !empty($this->userSettings['pagination_number']) ? $this->userSettings['pagination_number'] : 5;
@@ -195,6 +193,11 @@ class BreezeWall
 			buddies : '. json_encode($this->userSettings['buddiesList']) .',
 		};
 	// ]]></script>';
+
+		// Does the user wants to use the load more button?
+		if (!empty($this->userSettings['load_more']))
+			$context['insert_after_template'] .= '
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeLoadMore.js"></script>';
 	}
 
 	// Show a single status with all it's comments
@@ -234,7 +237,7 @@ class BreezeWall
 		// There cannot be any pagination
 		$context['page_index'] = array();
 
-		// Are we showing a comment? if so, hightlight it.
+		// Are we showing a comment? if so, highlight it.
 		if ($globals->getValue('cid'))
 			$context['insert_after_template'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[;
