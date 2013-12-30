@@ -104,7 +104,7 @@ class BreezeLog
 		$own = $entry['content']['status_owner_id'] == $entry['content']['poster_id'];
 
 		if ($own)
-			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_text->getText('logComment_own');
+			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_text->getText('logComment_own_'. $loadedUsers[$entry['content']['poster_id']]['gender']);
 
 		else
 			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_text->getText('logComment'), $loadedUsers[$entry['content']['status_owner_id']]['link']);

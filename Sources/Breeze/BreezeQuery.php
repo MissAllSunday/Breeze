@@ -782,7 +782,7 @@ class BreezeQuery extends Breeze
 				$return[$row['variable']] = is_numeric($row['value']) ? (int) $row['value'] : (string) $row['value'];
 
 				$return += array(
-					'gender' => !empty($row['gender']) ? $row['gender'] : '',
+					'gender' => $row['gender'],
 					'buddiesList' => !empty($row['buddy_list']) ? explode(',', $row['buddy_list']) : array(),
 					'ignoredList' => $row['pm_ignore_list'],
 					'profileViews' => $row['breeze_profile_views'],
@@ -1403,7 +1403,7 @@ class BreezeQuery extends Breeze
 					'id' => $profile['id_member'],
 					'href' => $scripturl . '?action=profile;u=' . $profile['id_member'],
 					'link' => '<a href="' . $scripturl . '?action=profile;u=' . $profile['id_member'] . '" title="' . $txt['profile_of'] . ' ' . $profile['real_name'] . '">' . $profile['real_name'] . '</a>',
-					'gender' => !empty($row['gender']) ? $row['gender'] : '',
+					'gender' => $profile['gender'],
 				);
 
 				unset($profile);
@@ -1418,7 +1418,7 @@ class BreezeQuery extends Breeze
 		if (!empty($toLoad))
 		{
 			$request = $smcFunc['db_query']('', '
-				SELECT id_member, member_name, real_name
+				SELECT id_member, member_name, real_name, gender
 				FROM {db_prefix}members
 				WHERE id_member IN ({array_int:users})',
 				array(
