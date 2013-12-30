@@ -782,7 +782,7 @@ class BreezeQuery extends Breeze
 				$return[$row['variable']] = is_numeric($row['value']) ? (int) $row['value'] : (string) $row['value'];
 
 				$return += array(
-					'gender' => $row['gender'],
+					'gender' => !empty($row['gender']) ? $row['gender'] : '',
 					'buddiesList' => !empty($row['buddy_list']) ? explode(',', $row['buddy_list']) : array(),
 					'ignoredList' => $row['pm_ignore_list'],
 					'profileViews' => $row['breeze_profile_views'],
@@ -1370,7 +1370,7 @@ class BreezeQuery extends Breeze
 	/**
 	 * BreezeQuery::loadMinimalData()
 	 *
-	 * Quick and dirty way to get an user's name and link
+	 * Quick and dirty way to get an user's name, link and if available, gender.
 	 * @param array $user(s) the user ID
 	 * @return array containing the following info:  id as key, name, username, link and id.
 	 */
@@ -1403,6 +1403,7 @@ class BreezeQuery extends Breeze
 					'id' => $profile['id_member'],
 					'href' => $scripturl . '?action=profile;u=' . $profile['id_member'],
 					'link' => '<a href="' . $scripturl . '?action=profile;u=' . $profile['id_member'] . '" title="' . $txt['profile_of'] . ' ' . $profile['real_name'] . '">' . $profile['real_name'] . '</a>',
+					'gender' => !empty($row['gender']) ? $row['gender'] : '',
 				);
 
 				unset($profile);
