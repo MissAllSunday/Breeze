@@ -40,6 +40,8 @@ if (!defined('SMF'))
 
 class BreezeWall
 {
+	protected $userSettings = array();
+
 	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display, $tools, $log)
 	{
 		// Needed to show error strings
@@ -63,7 +65,7 @@ class BreezeWall
 
 	public function call()
 	{
-		global $context, $user_info;
+		global $context, $user_info, $settings;
 
 		// Handling the subactions
 		$sglobals = Breeze::sGlobals('get');
@@ -90,6 +92,26 @@ class BreezeWall
 		if (empty($context['Breeze']['user_info'][$user_info['id']]))
 			$this->_tools->loadUserInfo($user_info['id'], false, 'profile');
 
+		// By default this is set as empty, makes life easier, for me at least...
+		$context['Breeze'] = array();
+
+		// We need to log the action we're currently on
+		$context['Breeze']['comingFrom'] = 'wall';
+
+		// This isn't nice, however, pass the tools object to the view.
+		$context['Breeze']['tools'] = $this->_tools;
+
+		// These file are only used here and on the profile wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
+		$context['insert_after_template'] .= '
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
+
+		// Does the user wants to use the load more button?
+		if (!empty($this->userSettings['load_more']))
+			$context['insert_after_template'] .= '
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeLoadMore.js"></script>';
+
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
 
@@ -108,8 +130,7 @@ class BreezeWall
 	// Get the latest entries of your buddies
 	public function generalWall()
 	{
-		global $txt, $scripturl, $context, $sourcedir, $user_info;
-		global $modSettings, $settings;
+		global $scripturl, $context, $sourcedir, $user_info;
 
 		// Guest don't have any business here... back off!
 		if ($user_info['is_guest'])
@@ -140,15 +161,6 @@ class BreezeWall
 			'name' => $context['page_title'],
 		);
 
-		// By default this is set as empty, makes life easier, for me at least...
-		$context['Breeze'] = array();
-
-		// We need to log the action we're currently on
-		$context['Breeze']['comingFrom'] = 'wall';
-
-		// This isn't nice, however, pass the tools object to the view.
-		$context['Breeze']['tools'] = $this->_tools;
-
 		// Time to overheat the server!
 		if (!empty($this->userSettings['buddiesList']))
 		{
@@ -166,20 +178,13 @@ class BreezeWall
 			// Applying pagination.
 			if (!empty($status['pagination']))
 				$context['page_index'] = $status['pagination'];
+		}
 
-			// These file are only used here and on the profile wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-			$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
+		// No buddies huh? worry not! here's the latest status...
+		// coming soon... LOL
 
-			// Does the user wants to use the load more button?
-			if (!empty($this->userSettings['load_more']))
-				$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeLoadMore.js"></script>';
-
-			// Need to pass some vars to the browser :(
-			$context['insert_after_template'] .= '
+		// Need to pass some vars to the browser :(
+		$context['insert_after_template'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[
 
 		breeze.tools.comingFrom = ' . JavaScriptEscape($context['Breeze']['comingFrom']) . ';
@@ -190,31 +195,14 @@ class BreezeWall
 			buddies : '. json_encode($this->userSettings['buddiesList']) .',
 		};
 	// ]]></script>';
-		}
-
-		// No buddies huh? worry not! here's the latest status...
-		// coming soon... LOL
-
 	}
 
 	// Show a single status with all it's comments
 	function singleStatus()
 	{
-		global $scripturl, $context, $modSettings,  $user_info;
-
-		loadtemplate(Breeze::$name);
-		loadtemplate(Breeze::$name .'Functions');
+		global $scripturl, $context, $user_info;
 
 		$globals = Breeze::sGlobals('get');
-
-		// This is still part of the whole wall stuff.
-		$context['Breeze']['comingFrom'] = 'wall';
-
-		// Breaking MVC since 2013!
-		$context['Breeze']['tools'] = $this->_tools;
-
-		// user settings.
-		$this->userSettings = $this->_query->getUserSettings($user_info['id']);
 
 		// We need the status ID!
 		if (!$globals->validate('bid'))
