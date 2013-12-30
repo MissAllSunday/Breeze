@@ -42,7 +42,6 @@ $txt['Breeze_general_wall'] = 'Wall';
 $txt['Breeze_general_wall_page'] = 'page';
 $txt['Breeze_general_summary'] = 'Summary';
 $txt['Breeze_load_more'] = 'Load more';
-$txt['Breeze_load_more_no'] = 'There isn\'t any more status to load';
 
 $txt['Breeze_general_my_wall'] = 'My Wall';
 $txt['Breeze_general_my_wall_settings'] = 'My Wall Settings';
@@ -257,6 +256,7 @@ $txt['Breeze_tabs_views'] = 'Profile Visitors';
 $txt['Breeze_tabs_pinfo'] = 'Profile Info';
 $txt['Breeze_tabs_activity'] = 'Recent activity';
 $txt['Breeze_tabs_activity_none'] = 'This user doesn\'t have any activities recorded.';
+$txt['Breeze_tabs_activity_buddies_none'] = 'Youre buddies doesn\'t have any activity recorded.';
 $txt['Breeze_tabs_about'] = 'About me';
 $txt['Breeze_goTop'] = 'Go to top';
 
