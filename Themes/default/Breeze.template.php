@@ -40,8 +40,6 @@ function template_user_wall()
 {
 	global $txt, $context, $settings, $scripturl, $user_info, $modSettings;
 
-	loadLanguage(Breeze::$name);
-
 	// Get the message from the server
 	breeze_server_response();
 

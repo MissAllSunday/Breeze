@@ -45,6 +45,7 @@ function breezeWall()
 
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
+	loadLanguage(Breeze::$name);
 
 	// Madness, madness I say!
 	if (empty($breezeController))
