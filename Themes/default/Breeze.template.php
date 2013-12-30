@@ -453,7 +453,21 @@ function template_general_wall()
 
 	// Right block.
 	echo '
-	<div id="Breeze_right_block">';
+	<div>';
+
+	// Tabs
+	echo '
+		<div id="Breeze_tabs">
+			<ul class="dropmenu breezeTabs">
+				<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>';
+
+	echo '
+				<li class="activity"><a href="#tab-activity" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_activity'] ,'</span></a></li>';
+
+	echo '
+			</ul>
+		</div>
+		<p class="clear" />';
 
 	// General wall
 	echo '
@@ -466,23 +480,6 @@ function template_general_wall()
 					', $txt['Breeze_general_wall'] ,'
 			</h3>
 		</div>';
-
-	// This is the status box,  O RLY?
-	if (!empty($context['Breeze']['permissions']['postStatus']))
-			echo '
-			<div class="breeze_user_inner windowbg">
-				<span class="topslice"><span></span></span>
-				<div class="breeze_user_statusbox content">
-						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
-							<textarea cols="40" rows="5" name="statusContent" id="statusContent" rel="atwhoMention"></textarea>
-							<input type="hidden" value="', $user_info['id'] ,'" name="statusPoster" id="statusPoster" />
-							<input type="hidden" value="', $context['member']['id'] ,'" name="statusOwner" id="statusOwner" />
-							<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
-							<br /><input type="submit" value="', $txt['post'] ,'" name="statusSubmit" class="status_button" id="statusSubmit"/>
-						</form>
-				</div>
-				<span class="botslice"><span></span></span>
-			</div>';
 
 	// Display the status...
 	breeze_status($context['Breeze']['status']);
