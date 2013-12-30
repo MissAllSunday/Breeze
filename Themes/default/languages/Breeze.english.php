@@ -281,6 +281,12 @@ $txt['Breeze_noti_checkAll'] = 'Check all';
 $txt['Breeze_noti_check'] = 'check';
 $txt['Breeze_noti_selectedOptions'] = 'With the selected options do: ';
 $txt['Breeze_noti_send'] = 'Send';
+$txt['Breeze_noti_gender_his'] = 'his';
+$txt['Breeze_noti_gender_her'] = 'her';
+$txt['Breeze_noti_gender_his_default'] = 'his/her';
+$txt['Breeze_noti_gender_he'] = 'he';
+$txt['Breeze_noti_gender_she'] = 'she';
+$txt['Breeze_noti_gender_he_default'] = 'he/she';
 
 $txt['Breeze_noti_buddy_message_1_title'] = 'Confirmation required';
 $txt['Breeze_noti_buddy_message_1_message'] = 'User %s hasn\'t either denied or confirmed your buddy request, do you want to wait or force the buddy removal';
