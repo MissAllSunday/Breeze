@@ -131,7 +131,7 @@ class BreezeWall
 	// Get the latest entries of your buddies
 	public function generalWall()
 	{
-		global $scripturl, $context, $sourcedir, $user_info;
+		global $scripturl, $context, $sourcedir, $user_info,  $settings;
 
 		// Guest don't have any business here... back off!
 		if ($user_info['is_guest'])
@@ -152,7 +152,7 @@ class BreezeWall
 		$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;
 
 		// Set all the page stuff
-		$context['page_title'] = $txt['Breeze_general_wall'];
+		$context['page_title'] = $this->_text->getText('general_wall');
 		$context['sub_template'] = 'general_wall';
 		$context['linktree'][] = array(
 			'url' => $scripturl . '?action=wall',

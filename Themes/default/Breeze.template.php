@@ -500,21 +500,25 @@ function template_general_wall()
 	echo '
 		</div>';
 
-	// End of right block
-	echo '
-	</div>';
-
 	// Left block, buddies activity.
 	echo '
-	<div id="Breeze_left_block">';
+	<div id="tab-activity" class="content">';
+
+	// A nice title bar
+	echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+					', $txt['Breeze_tabs_activity'] ,'
+			</h3>
+		</div>';
 
 	if (!empty($context['Breeze']['log']))
 		breeze_activity($context['Breeze']['log']);
 
 
-	// End of left block
+	// End of right block
 	echo '
-		</div>';
+	</div>';
 
 	// End of profileview div
 	echo '
