@@ -40,7 +40,7 @@ breeze.tools.showNoti = function(params){
 	noty({
 		text: params.message,
 		timeout: 3500, //@todo set this to a user setting
-		type: params.type,
+		type: params.type
 	});
 }
 
@@ -114,10 +114,10 @@ jQuery(document).ready(function(){
 					jQuery('#breeze_load_image').slideUp('slow', 'linear', function(){
 						noty({
 							text: html.message,
-							timeout: 3500, type: html.type,
+							timeout: 3500, type: html.type
 						});
 					});
-				},
+				}
 			});
 		}
 
@@ -139,7 +139,7 @@ jQuery(document).ready(function(){
 			'commentOwner' : jQuery('#commentOwner_' + StatusID).val(),
 			'commentPoster' : jQuery('#commentPoster_' + StatusID).val(),
 			'commentStatusPoster' : jQuery('#commentStatusPoster_' + StatusID).val(),
-			'commentContent' : jQuery('#commentContent_' + StatusID).val(),
+			'commentContent' : jQuery('#commentContent_' + StatusID).val()
 		};
 
 		// Don't be silly...
@@ -185,7 +185,7 @@ jQuery(document).ready(function(){
 					breeze.tools.showNoti(html);
 					jQuery('#commentSubmit_' + StatusID).removeAttr('disabled');
 					jQuery('#commentContent_' + StatusID).val('');
-				},
+				}
 			});
 		}
 
@@ -223,14 +223,14 @@ jQuery(document).ready(function(){
 								case 'error':
 									noty({
 										text: html.message,
-										timeout: 3500, type: html.type,
+										timeout: 3500, type: html.type
 									});
 								break;
 								case 'success':
 								jQuery('#comment_id_'+ commentID).fadeOut('slow');
 								noty({
 									text: html.message,
-									timeout: 3500, type: html.type,
+									timeout: 3500, type: html.type
 								});
 								break;
 							}
@@ -239,9 +239,9 @@ jQuery(document).ready(function(){
 							$noty.close();
 							noty({
 								text: html.message,
-								timeout: 3500, type: html.error,
+								timeout: 3500, type: html.error
 							});
-						},
+						}
 					});
 				}
 			},
@@ -285,7 +285,7 @@ jQuery(document).ready(function(){
 									noty({
 										text: html.message,
 										timeout: 3500,
-										type: html.type,
+										type: html.type
 									});
 								break;
 								case 'success':
@@ -293,7 +293,7 @@ jQuery(document).ready(function(){
 									noty({
 										text: html.message,
 										timeout: 3500,
-										type: html.type,
+										type: html.type
 									});
 								break;
 							}
@@ -303,9 +303,9 @@ jQuery(document).ready(function(){
 							noty({
 								text: html.message,
 								timeout: 3500,
-								type: html.type,
+								type: html.type
 							});
-						},
+						}
 					});
 				}
 			},
@@ -336,10 +336,10 @@ jQuery(document).ready(function(){
 							return jQuery.map(data, function(item, i) {
 								return item[search_key].toLowerCase().indexOf(query) < 0 ? null : item
 							})
-						},
+						}
 					}
 				});
-			},
+			}
 		});
 	});
 
