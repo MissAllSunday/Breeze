@@ -80,7 +80,7 @@ breeze.tools.stream = function(currentUser)
 								},
 								error: function (html){
 										noty({text: breeze_error_message, timeout: 3500, type: 'error'});
-								},
+								}
 							});
 
 								$noty.close();
@@ -107,7 +107,7 @@ breeze.tools.stream = function(currentUser)
 								},
 								error: function (html){
 										noty({text: breeze_error_message, timeout: 3500, type: 'error'});
-								},
+								}
 							});
 								$noty.close();
 						}},
@@ -129,8 +129,8 @@ breeze.tools.stream = function(currentUser)
 					afterClose: function() {
 						jQuery.noty.closeAll();
 					},
-					onShow: function() {window.setTimeout("jQuery.noty.closeAll()", ((breeze.currentSettings.clear_noti) ? breeze.currentSettings.clear_noti : 5) * 1000 );},
-				},
+					onShow: function() {window.setTimeout("jQuery.noty.closeAll()", ((breeze.currentSettings.clear_noti) ? breeze.currentSettings.clear_noti : 5) * 1000 );}
+				}
 			});
 
 			// Append the number of notifications to the wall button.
@@ -140,6 +140,6 @@ breeze.tools.stream = function(currentUser)
 			jQuery('title').append(' ['+ number +']');
 		},
 		error: function (noti){
-		},
+		}
 	});
 }

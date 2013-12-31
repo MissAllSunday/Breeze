@@ -60,7 +60,7 @@ jQuery(document).ready(function(){
 				jQuery('<div/>', {
 					id: 'tempDIV_'+ numberOfEvents,
 					class: 'clear',
-					style: '',
+					style: ''
 				}).appendTo('#breezeAppendTo').hide();
 
 				// Append some more data to breeze.pagination.
@@ -89,7 +89,7 @@ jQuery(document).ready(function(){
 								noty({
 									text: breeze.text.load_more_no,
 									timeout: 3500,
-									type: 'success',
+									type: 'success'
 								});
 								jQuery('#loadMoar').fadeOut('slow');
 								return;
@@ -100,7 +100,7 @@ jQuery(document).ready(function(){
 							noty({
 								text: html.message,
 								timeout: 3500, type: html.type,
-								type: html.type,
+								type: html.type
 							});
 						}
 					},
@@ -108,11 +108,11 @@ jQuery(document).ready(function(){
 						noty({
 							text: html,
 							timeout: 3500,
-							type: 'error',
+							type: 'error'
 						});
-					},
+					}
 				});
-			},
+			}
 		}).appendTo('#tab-wall');
 	}
 
