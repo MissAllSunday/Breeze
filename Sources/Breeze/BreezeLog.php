@@ -77,13 +77,20 @@ class BreezeLog
 				// If there is a method, call it
 				if (in_array($entry['type'], get_class_methods(__CLASS__)))
 				{
-					$entry['content'] = json_decode($entry['content'], true);
+					$entry['content'] = is_array($entry['content']) ? json_decode($entry['content'], true) : $entry['content'];
 					$this->result[$id]['content'] = $this->$entry['type']($entry);
 				}
 
 				// No? then pass the content
 				else if (!empty($entry['content']))
-					$this->result[$id]['content'] = $entry['content'];
+				{
+					// All templates expects an array with at least two keys, message and link, 'm lazy so I don't always provide that.... hence this check ;)
+					if (!is_array($entry['content']))
+						$entry['content'] = array('message' => $entry['content']);
+
+					else
+						$this->result[$id]['content'] = $entry['content'];
+				}
 			}
 
 		// If everything went well, return the final result
