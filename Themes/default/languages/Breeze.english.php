@@ -256,7 +256,7 @@ $txt['Breeze_tabs_views'] = 'Profile Visitors';
 $txt['Breeze_tabs_pinfo'] = 'Profile Info';
 $txt['Breeze_tabs_activity'] = 'Recent activity';
 $txt['Breeze_tabs_activity_none'] = 'This user doesn\'t have any activities recorded.';
-$txt['Breeze_tabs_activity_buddies_none'] = 'Youre buddies doesn\'t have any activity recorded.';
+$txt['Breeze_tabs_activity_buddies_none'] = 'Your buddies doesn\'t have any activity recorded.';
 $txt['Breeze_tabs_about'] = 'About me';
 $txt['Breeze_goTop'] = 'Go to top';
 

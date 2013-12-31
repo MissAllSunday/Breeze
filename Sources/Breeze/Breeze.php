@@ -360,7 +360,11 @@ class Breeze
 				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
 				'content' => function() use ($posterOptions, $topicOptions, $msgOptions, $scripturl, $text)
 				{
-					return $posterOptions['name'] .' '. $text->getText('logTopic') .' <a href="'. $scripturl .'?topic='. $topicOptions['id'] .'.0">'. $msgOptions['subject'] .'</a>';
+					$return = array(
+						'message' => $posterOptions['name'] .' '. $text->getText('logTopic'),
+						'link' => '<a href="'. $scripturl .'?topic='. $topicOptions['id'] .'.0">'. $msgOptions['subject'] .'</a>',
+					);
+					return $return;
 				},
 				'type_id' => $topicOptions['id'],
 				'second_type' => 'topics',
