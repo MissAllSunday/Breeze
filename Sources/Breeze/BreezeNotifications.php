@@ -225,7 +225,7 @@ class BreezeNotifications
 		if (!$this->prepare($user))
 			return false;
 
-		return !is_array($this->_messages) ? array($this->_messages) : $this->_messages;
+		return (array) $this->_messages;
 	}
 
 	/**

@@ -83,7 +83,14 @@ class BreezeLog
 
 				// No? then pass the content
 				else if (!empty($entry['content']))
-					$this->result[$id]['content'] = $entry['content'];
+				{
+					// All templates expects an array with at least two keys, message and link, 'm lazy so I don't always provide that.... hence this check ;)
+					if (!is_array($entry['content']))
+						$entry['content'] = array('message' => $entry['content']);
+
+					else
+						$this->result[$id]['content'] = $entry['content'];
+				}
 			}
 
 		// If everything went well, return the final result
@@ -104,7 +111,7 @@ class BreezeLog
 		$own = $entry['content']['status_owner_id'] == $entry['content']['poster_id'];
 
 		if ($own)
-			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_text->getText('logComment_own');
+			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_text->getText('logComment_own_'. $loadedUsers[$entry['content']['poster_id']]['gender']);
 
 		else
 			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_text->getText('logComment'), $loadedUsers[$entry['content']['status_owner_id']]['link']);
@@ -126,7 +133,7 @@ class BreezeLog
 		$own = $entry['content']['owner_id'] == $entry['content']['poster_id'];
 
 		if ($own)
-			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_text->getText('logStatus_own');
+			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_text->getText('logStatus_own_'. $loadedUsers[$entry['content']['poster_id']]['gender']);
 
 		else
 			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_text->getText('logStatus'), $entry['content']['owner_id']);
@@ -135,6 +142,16 @@ class BreezeLog
 		$return['link'] = '<a href="'. $scripturl .'?action=wall;sa=single;bid='. $entry['content']['id'] .'#status_id_'. $entry['content']['id'] .'">'. $this->_text->getText('logStatus_view') . '</a>';
 
 		return $return;
+	}
+
+	protected function logTopic($entry)
+	{
+		global $scripturl;
+
+		return array(
+			'message' => $entry['content']['posterName'] .' '. $this->_text->getText('logTopic'),
+			'link' => '<a href="'. $scripturl .'?topic='. $entry['content']['topicId'] .'.0">'. $entry['content']['subject'] .'</a>',
+		);
 	}
 
 	public function getLog()

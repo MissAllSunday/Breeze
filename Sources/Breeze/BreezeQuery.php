@@ -1370,7 +1370,7 @@ class BreezeQuery extends Breeze
 	/**
 	 * BreezeQuery::loadMinimalData()
 	 *
-	 * Quick and dirty way to get an user's name and link
+	 * Quick and dirty way to get an user's name, link and if available, gender.
 	 * @param array $user(s) the user ID
 	 * @return array containing the following info:  id as key, name, username, link and id.
 	 */
@@ -1403,6 +1403,7 @@ class BreezeQuery extends Breeze
 					'id' => $profile['id_member'],
 					'href' => $scripturl . '?action=profile;u=' . $profile['id_member'],
 					'link' => '<a href="' . $scripturl . '?action=profile;u=' . $profile['id_member'] . '" title="' . $txt['profile_of'] . ' ' . $profile['real_name'] . '">' . $profile['real_name'] . '</a>',
+					'gender' => $profile['gender'],
 				);
 
 				unset($profile);
@@ -1417,7 +1418,7 @@ class BreezeQuery extends Breeze
 		if (!empty($toLoad))
 		{
 			$request = $smcFunc['db_query']('', '
-				SELECT id_member, member_name, real_name
+				SELECT id_member, member_name, real_name, gender
 				FROM {db_prefix}members
 				WHERE id_member IN ({array_int:users})',
 				array(

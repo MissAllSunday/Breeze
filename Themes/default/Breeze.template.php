@@ -138,7 +138,9 @@ function template_user_wall()
 
 		if (empty($context['Breeze']['log']))
 			echo
-					$txt['Breeze_tabs_activity_none'];
+			'<span class="upperframe"><span></span></span>
+			<div class="roundframe">', $txt['Breeze_tabs_activity_none'] ,'</div>
+			<span class="lowerframe"><span></span></span><br />';
 
 		else
 			breeze_activity($context['Breeze']['log']);
@@ -449,10 +451,6 @@ function template_general_wall()
 	echo '
 <div id="profileview" class="flow_auto">';
 
-	// Right block.
-	echo '
-	<div>';
-
 	// Tabs
 	echo '
 		<div id="Breeze_tabs">
@@ -473,19 +471,18 @@ function template_general_wall()
 
 	// A nice title bar
 	echo '
-		<div class="cat_bar">
-			<h3 class="catbg">
-					', $txt['Breeze_general_wall'] ,'
-			</h3>
-		</div>';
+			<div class="cat_bar">
+				<h3 class="catbg">
+						', $txt['Breeze_general_wall'] ,'
+				</h3>
+			</div>';
 
 	// Display the status...
 	breeze_status($context['Breeze']['status']);
 
 	// An empty div to append the loaded status via AJAX.
 	echo '
-			<div id="breezeAppendTo" style="display:hide;">
-			</div>';
+			<div id="breezeAppendTo" style="display:hide;"></div>';
 
 	// Pagination
 	if (!empty($context['page_index']))
@@ -498,25 +495,29 @@ function template_general_wall()
 	echo '
 		</div>';
 
-	// Left block, buddies activity.
 	echo '
-	<div id="tab-activity" class="content">';
+		<div id="tab-activity" class="content">';
 
 	// A nice title bar
 	echo '
-		<div class="cat_bar">
-			<h3 class="catbg">
-					', $txt['Breeze_tabs_activity'] ,'
-			</h3>
-		</div>';
+			<div class="cat_bar">
+				<h3 class="catbg">
+						', $txt['Breeze_tabs_activity'] ,'
+				</h3>
+			</div>';
 
 	if (!empty($context['Breeze']['log']))
 		breeze_activity($context['Breeze']['log']);
 
+	else
+		echo
+			'<span class="upperframe"><span></span></span>
+			<div class="roundframe">', $txt['Breeze_tabs_activity_buddies_none'] ,'</div>
+			<span class="lowerframe"><span></span></span><br />';
 
-	// End of right block
+	// End of activity
 	echo '
-	</div>';
+		</div>';
 
 	// End of profileview div
 	echo '

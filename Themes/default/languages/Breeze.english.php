@@ -42,7 +42,6 @@ $txt['Breeze_general_wall'] = 'Wall';
 $txt['Breeze_general_wall_page'] = 'page';
 $txt['Breeze_general_summary'] = 'Summary';
 $txt['Breeze_load_more'] = 'Load more';
-$txt['Breeze_load_more_no'] = 'There isn\'t any more status to load';
 
 $txt['Breeze_general_my_wall'] = 'My Wall';
 $txt['Breeze_general_my_wall_settings'] = 'My Wall Settings';
@@ -257,6 +256,7 @@ $txt['Breeze_tabs_views'] = 'Profile Visitors';
 $txt['Breeze_tabs_pinfo'] = 'Profile Info';
 $txt['Breeze_tabs_activity'] = 'Recent activity';
 $txt['Breeze_tabs_activity_none'] = 'This user doesn\'t have any activities recorded.';
+$txt['Breeze_tabs_activity_buddies_none'] = 'Your buddies doesn\'t have any activity recorded.';
 $txt['Breeze_tabs_about'] = 'About me';
 $txt['Breeze_goTop'] = 'Go to top';
 
@@ -281,6 +281,12 @@ $txt['Breeze_noti_checkAll'] = 'Check all';
 $txt['Breeze_noti_check'] = 'check';
 $txt['Breeze_noti_selectedOptions'] = 'With the selected options do: ';
 $txt['Breeze_noti_send'] = 'Send';
+$txt['Breeze_noti_gender_his'] = 'his';
+$txt['Breeze_noti_gender_her'] = 'her';
+$txt['Breeze_noti_gender_his_default'] = 'his/her';
+$txt['Breeze_noti_gender_he'] = 'he';
+$txt['Breeze_noti_gender_she'] = 'she';
+$txt['Breeze_noti_gender_he_default'] = 'he/she';
 
 $txt['Breeze_noti_buddy_message_1_title'] = 'Confirmation required';
 $txt['Breeze_noti_buddy_message_1_message'] = 'User %s hasn\'t either denied or confirmed your buddy request, do you want to wait or force the buddy removal';
@@ -322,10 +328,14 @@ $txt['Breeze_singleStatus_pageTitle'] = 'Single Status';
 $txt['Breeze_logTopic'] = 'created a new topic:';
 $txt['Breeze_logRegister'] = 'has just registered!';
 $txt['Breeze_logComment'] = 'made a new comment on %s\'s wall';
-$txt['Breeze_logComment_own'] = 'made a comment on his/her own wall';
+$txt['Breeze_logComment_own_0'] = 'made a comment on his/her own wall';
+$txt['Breeze_logComment_own_1'] = 'made a comment on his own wall';
+$txt['Breeze_logComment_own_2'] = 'made a comment on her own wall';
 $txt['Breeze_logComment_view'] = 'View comment';
 $txt['Breeze_logStatus'] = 'made a new status on %s\'s wall';
-$txt['Breeze_logStatus_own'] = 'made a new status on his/her own wall';
+$txt['Breeze_logStatus_own_0'] = 'made a new status on his/her own wall';
+$txt['Breeze_logStatus_own_1'] = 'made a new status on his own wall';
+$txt['Breeze_logStatus_own_2'] = 'made a new status on her own wall';
 $txt['Breeze_logStatus_view'] = 'View status';
 
 // Donate

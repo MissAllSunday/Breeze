@@ -351,17 +351,18 @@ class Breeze
 		$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
 
 		// Cheating, lets insert the notification directly, do it only if the topic was approved
-		if ($topicOptions['is_approved'] && $userSettings['activityLog'])
+		if ($topicOptions['is_approved'] && !empty($userSettings['activityLog']))
 			$noti->create(array(
 				'sender' => $posterOptions['id'],
 				'receiver' => $posterOptions['id'],
-				'type' => 'topics',
+				'type' => 'logTopic',
 				'time' => time(),
 				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-				'content' => function() use ($posterOptions, $topicOptions, $msgOptions, $scripturl, $text)
-				{
-					return $posterOptions['name'] .' '. $text->getText('logTopic') .' <a href="'. $scripturl .'?topic='. $topicOptions['id'] .'.0">'. $msgOptions['subject'] .'</a>';
-				},
+				'content' => array(
+					'posterName' => $posterOptions['name'],
+					'topicId' => $topicOptions['id'],
+					'subject' => $msgOptions['subject'],
+				),
 				'type_id' => $topicOptions['id'],
 				'second_type' => 'topics',
 			));
