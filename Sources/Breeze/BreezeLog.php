@@ -77,7 +77,7 @@ class BreezeLog
 				// If there is a method, call it
 				if (in_array($entry['type'], get_class_methods(__CLASS__)))
 				{
-					$entry['content'] = is_array($entry['content']) ? json_decode($entry['content'], true) : $entry['content'];
+					$entry['content'] = json_decode($entry['content'], true);
 					$this->result[$id]['content'] = $this->$entry['type']($entry);
 				}
 

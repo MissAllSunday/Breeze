@@ -290,7 +290,7 @@ function breeze_activity($data)
 								', $act['content']['link'] ,'
 							</div>
 							<span class="botslice">
-								<span> </span>
+								<span></span>
 							</span>
 						</div>
 				</li>';
