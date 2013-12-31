@@ -333,7 +333,9 @@ $txt['Breeze_logComment_own_1'] = 'made a comment on his own wall';
 $txt['Breeze_logComment_own_2'] = 'made a comment on her own wall';
 $txt['Breeze_logComment_view'] = 'View comment';
 $txt['Breeze_logStatus'] = 'made a new status on %s\'s wall';
-$txt['Breeze_logStatus_own'] = 'made a new status on his/her own wall';
+$txt['Breeze_logStatus_own_0'] = 'made a new status on his/her own wall';
+$txt['Breeze_logStatus_own_1'] = 'made a new status on his own wall';
+$txt['Breeze_logStatus_own_2'] = 'made a new status on her own wall';
 $txt['Breeze_logStatus_view'] = 'View status';
 
 // Donate
