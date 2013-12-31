@@ -137,6 +137,16 @@ class BreezeLog
 		return $return;
 	}
 
+	protected function logTopic($entry)
+	{
+		global $scripturl;
+
+		return array(
+			'message' => $entry['content']['posterName'] .' '. $this->_text->getText('logTopic'),
+			'link' => '<a href="'. $scripturl .'?topic='. $entry['content']['topicId'] .'.0">'. $entry['content']['subject'] .'</a>',
+		);
+	}
+
 	public function getLog()
 	{
 		return $this->log;
