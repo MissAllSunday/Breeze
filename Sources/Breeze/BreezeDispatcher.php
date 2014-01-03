@@ -58,6 +58,9 @@ abstract class BreezeDispatcher
 			// 'buddy' => array('BreezeBuddy', 'buddy'),  @todo for next version
 		);
 
+		// Want to add some more goodies?
+		call_integration_hook('integrate_breeze_actions', array(&$actions));
+
 		if (in_array($sglobals->getValue('action'), array_keys($actions)))
 		{
 			$controller = $actions[$sglobals->getValue('action')][0];
