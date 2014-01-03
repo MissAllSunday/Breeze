@@ -132,8 +132,11 @@ class BreezeLog
 		//Posting on your own wall?
 		$own = $entry['content']['owner_id'] == $entry['content']['poster_id'];
 
+		// Get the right text string
+		$logStatusString = 'logStatus_own_'. $loadedUsers[$entry['content']['poster_id']]['gender'];
+
 		if ($own)
-			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_text->getText('logStatus_own_'. (!empty($loadedUsers[$entry['content']['poster_id']]['gender']) ? $loadedUsers[$entry['content']['poster_id']]['gender'] : 0));
+			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_text->getText($logStatusString);
 
 		else
 			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_text->getText('logStatus'), $entry['content']['owner_id']);
