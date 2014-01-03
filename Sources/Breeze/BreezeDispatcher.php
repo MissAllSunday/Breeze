@@ -60,25 +60,19 @@ abstract class BreezeDispatcher
 
 		if (in_array($sglobals->getValue('action'), array_keys($actions)))
 		{
-			$controller_name = $actions[$sglobals->getValue('action')][0];
+			$controller = $actions[$sglobals->getValue('action')][0];
 
-			// Should probably use a switch here...
-			switch ($sglobals->getValue('action'))
-			{
-				case 'buddy':
-					$controller = new $controller_name($dependency->get('query'), $dependency->get('notifications'));
-					break;
-				case 'breezeajax':
-				case 'wall':
-					$controller = new $controller_name($dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'), $dependency->get('display'), $dependency->get('tools'), $dependency->get('log'));
-					break;
-				default:
-					fatal_lang_error('Breeze_error_no_valid_action', false);
-			}
+			$method = $actions[$sglobals->getValue('action')][1];
 
-			// Lets call the method
-			$method_name = $actions[$sglobals->getValue('action')][1];
-			call_user_func_array(array($controller, $method_name), array());
+			// Lets do some checks...
+			if (!method_exists($controller, $method) || !is_callable($controller, $method))
+				fatal_lang_error('Breeze_error_no_valid_action', false);
+
+			// Create the instance
+			$object = new $controller($dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'), $dependency->get('display'), $dependency->get('tools'), $dependency->get('log'));
+
+			// Lets call it
+			$object->$method();
 		}
 	}
 }
