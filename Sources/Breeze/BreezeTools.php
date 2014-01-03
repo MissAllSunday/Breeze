@@ -40,13 +40,31 @@ if (!defined('SMF'))
 
 class BreezeTools
 {
-	function __construct($settings, $text)
+	protected $_pattern = Breeze::$name .'_';
+
+	function __construct($settings)
 	{
-		$this->text = $text;
 		$this->settings = $settings;
 
 		// Get globals
 		$this->_data = new BreezeGlobals('request');
+	}
+
+	public function text($var)
+	{
+		global $txt;
+
+		if (empty($var))
+			return false;
+
+		// Load the mod's language file.
+		loadLanguage(Breeze::$name);
+
+		if (!empty($txt[$this->_pattern . $var]))
+			return $txt[$this->_pattern . $var];
+
+		else
+			return false;
 	}
 
 	// Relative dates  http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html
@@ -55,15 +73,15 @@ class BreezeTools
 		$etime = time() - $ptime;
 
 		if ($etime < 1)
-			return $this->text->getText('time_just_now');
+			return $this->text('time_just_now');
 
 		$a = array(
-			12 * 30 * 24 * 60 * 60	=> $this->text->getText('time_year'),
-			30 * 24 * 60 * 60		=> $this->text->getText('time_month'),
-			24 * 60 * 60			=> $this->text->getText('time_day'),
-			60 * 60					=> $this->text->getText('time_hour'),
-			60						=> $this->text->getText('time_minute'),
-			1						=> $this->text->getText('time_second')
+			12 * 30 * 24 * 60 * 60	=> $this->text('time_year'),
+			30 * 24 * 60 * 60		=> $this->text('time_month'),
+			24 * 60 * 60			=> $this->text('time_day'),
+			60 * 60					=> $this->text('time_hour'),
+			60						=> $this->text('time_minute'),
+			1						=> $this->text('time_second')
 		);
 
 		foreach ($a as $secs => $str)
@@ -72,7 +90,7 @@ class BreezeTools
 			if ($d >= 1)
 			{
 				$r = round($d);
-				return $r . ' ' . $str . ($r > 1 ? 's ' : ' '). $this->text->getText('time_ago');
+				return $r . ' ' . $str . ($r > 1 ? 's ' : ' '). $this->text('time_ago');
 			}
 		}
 	}
