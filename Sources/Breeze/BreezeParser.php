@@ -43,9 +43,8 @@ class BreezeParser
 {
 	protected $regex;
 
-	function __construct($settings, $tools)
+	function __construct($tools)
 	{
-		$this->settings = $settings;
 		$this->tools = $tools;
 
 		// Regex stuff

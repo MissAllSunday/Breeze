@@ -57,12 +57,6 @@ class BreezeController
 			return new BreezeGlobals();
 		});
 
-		// Settings
-		$this->container->settings = $this->container->asShared(function ($c)
-		{
-			return new BreezeSettings();
-		});
-
 		// Tools
 		$this->container->tools = $this->container->asShared(function ($c)
 		{
@@ -72,19 +66,19 @@ class BreezeController
 		// Display
 		$this->container->display = $this->container->asShared(function ($c)
 		{
-			return new BreezeDisplay($c->tools, $c->text);
+			return new BreezeDisplay($c->tools);
 		});
 
 		// Parser
 		$this->container->parser = $this->container->asShared(function ($c)
 		{
-			return new BreezeParser($c->settings, $c->tools);
+			return new BreezeParser($c->tools);
 		});
 
 		// Query
 		$this->container->query = $this->container->asShared(function ($c)
 		{
-			return new BreezeQuery($c->settings, $c->text, $c->tools, $c->parser);
+			return new BreezeQuery($c->tools, $c->parser);
 		});
 
 		// Form
@@ -96,25 +90,25 @@ class BreezeController
 		// Notifications
 		$this->container->notifications = $this->container->asShared(function ($c)
 		{
-			return new BreezeNotifications($c->settings, $c->text, $c->tools, $c->query);
+			return new BreezeNotifications($c->tools, $c->query);
 		});
 
 		// Buddy
 		$this->container->buddy = $this->container->asShared(function ($c)
 		{
-			return new BreezeBuddy($c->settings,$c->query, $c->notifications, $c->text);
+			return new BreezeBuddy($c->query, $c->notifications, $c->text);
 		});
 
 		// Mention
 		$this->container->mention = $this->container->asShared(function ($c)
 		{
-			return new BreezeMention($c->settings, $c->query, $c->notifications);
+			return new BreezeMention($c->query, $c->notifications);
 		});
 
 		// Log
 		$this->container->log = $this->container->asShared(function ($c)
 		{
-			return new BreezeLog($c->settings, $c->text, $c->tools, $c->query);
+			return new BreezeLog($c->tools, $c->query);
 		});
 	}
 

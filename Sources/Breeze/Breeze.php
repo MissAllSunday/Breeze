@@ -169,11 +169,10 @@ class Breeze
 			$breezeController = new BreezeController();
 
 		// Settings are required here
-		$gSettings = $breezeController->get('settings');
 		$tools = $breezeController->get('tools');
 
 		// Replace the summary page only if the mod is enable
-		if ($gSettings->enable('admin_settings_enable'))
+		if ($tools->enable('admin_settings_enable'))
 		{
 			$profile_areas['info']['areas']['summary'] = array(
 				'label' => $tools->text('general_wall'),
@@ -261,15 +260,14 @@ class Breeze
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
-		$gSettings = $breezeController->get('settings');
-		$gText = $breezeController->get('text');
+		$tools = $breezeController->get('tools');
 		$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
 
 		// Display common css and js files.
 		Breeze::notiHeaders();
 
 		// Replace the duplicate profile button
-		if ($gSettings->enable('admin_settings_enable') && !empty($menu_buttons['profile']['sub_buttons']['summary']))
+		if ($tools->enable('admin_settings_enable') && !empty($menu_buttons['profile']['sub_buttons']['summary']))
 			$menu_buttons['profile']['sub_buttons']['summary'] = array(
 				'title' => $txt['summary'],
 				'href' => $scripturl . '?action=profile;area=static',
@@ -287,14 +285,14 @@ class Breeze
 		$menu_buttons = array_merge(
 			array_slice($menu_buttons, 0, $counter),
 			array('wall' => array(
-				'title' => $gText->getText('general_wall'),
+				'title' => $tools->text('general_wall'),
 				'href' => $scripturl . '?action=wall',
-				'show' => ($gSettings->enable('admin_settings_enable') && !$user_info['is_guest'] && !empty($userSettings['general_wall'])),
+				'show' => ($tools->enable('admin_settings_enable') && !$user_info['is_guest'] && !empty($userSettings['general_wall'])),
 				'sub_buttons' => array(
 					'noti' => array(
-						'title' => $gText->getText('user_notisettings_name'),
+						'title' => $tools->text('user_notisettings_name'),
 						'href' => $scripturl . '?action=profile;area=breezenoti',
-						'show' => ($gSettings->enable('admin_settings_enable') && !$user_info['is_guest']),
+						'show' => ($tools->enable('admin_settings_enable') && !$user_info['is_guest']),
 						'sub_buttons' => array(),
 						),
 					),
@@ -316,7 +314,7 @@ class Breeze
 	 */
 	public static function actions(&$actions)
 	{
-		// A whole new action just for some ajax calls...
+		// A whole new action just for some ajax calls. Actually, a pretty good chunk of Breeze transactions come through here so...
 		$actions['breezeajax'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
 
 		// The general wall
@@ -347,7 +345,6 @@ class Breeze
 
 		// We need the almighty power of breezeController!
 		$noti = $breezeController->get('notifications');
-		$text = $breezeController->get('text');
 		$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
 
 		// Cheating, lets insert the notification directly, do it only if the topic was approved
@@ -385,7 +382,6 @@ class Breeze
 
 		// We need the almighty power of breezeController!
 		$noti = $breezeController->get('notifications');
-		$text = $breezeController->get('text');
 
 		// Cheating, lets insert the notification directly, do it only if the topic was approved
 		if ($topicOptions['is_approved'])
@@ -425,9 +421,8 @@ class Breeze
 		// Prevent this from showing twice
 		if (!$header_done)
 		{
-			$breezeSettings = $breezeController->get('settings');
+			$tools = $breezeController->get('tools');
 			$breezeGlobals = Breeze::sGlobals('get');
-			$breezeText = $breezeController->get('text');
 			$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
 
 			// Don't pass the "about me" stuff...
@@ -460,7 +455,7 @@ class Breeze
 				// Populate the text object with all possible text vars this mod uses and there are a lot!
 				foreach ($jsVars as $var)
 				$context['html_headers'] .= '
-		breeze.text.'. $var .' = '. JavaScriptEscape($breezeText->getText($var));
+		breeze.text.'. $var .' = '. JavaScriptEscape($tools->text($var));
 
 				// Since where here already, load the current User (currentSettings) object
 				foreach (Breeze::$allSettings as $k)
@@ -493,7 +488,7 @@ class Breeze
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
 
 				// Does the admin wants to add more actions?
-				if ($breezeSettings->enable('allowedActions'))
+				if ($tools->enable('allowedActions'))
 					Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $breezeSettings->getSetting('allowedActions')));
 
 				// Stuff for the notifications, don't show this if we aren't on a specified action
@@ -550,7 +545,7 @@ class Breeze
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
-		$text = $breezeController->get('text');
+		$tools = $breezeController->get('tools');
 
 		$admin_menu['config']['areas']['breezeadmin'] = array(
 			'label' => $tools->text('admin_settings_main'),

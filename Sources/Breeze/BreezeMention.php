@@ -41,18 +41,17 @@ if (!defined('SMF'))
 class BreezeMention
 {
 	protected $_notification;
-	protected $_settings;
 	protected $_string = '';
 	protected $_regex = array();
 	protected $_query;
+	protected $_tools;
 	protected $_searchNames = array();
 	protected $_queryNames = array();
 
-	function __construct($settings, $query, $notifications)
+	function __construct($tools, $query, $notifications)
 	{
 		$this->_regex = '~@\(([\s\w,;-_\[\]\\\/\+\.\~\$\!]+), ([0-9]+)\)~u';
 		$this->_notification = $notifications;
-		$this->_settings = $settings;
 		$this->_query = $query;
 	}
 
@@ -94,7 +93,7 @@ class BreezeMention
 			unset($this->_queryNames[$user_info['id']]);
 
 		// Sorry, theres gotta be a limit you know?
-		$admin_mention_limit = $this->_settings->enable('admin_mention_limit') ? $this->_settings->getSetting('admin_mention_limit') : 10;
+		$admin_mention_limit = $this->_tools->enable('admin_mention_limit') ? $this->_settings->getSetting('admin_mention_limit') : 10;
 
 		// Chop the array off!
 		if (!empty($admin_mention_limit) && count($this->_queryNames) >= $admin_mention_limit)

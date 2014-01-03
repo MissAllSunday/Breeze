@@ -52,7 +52,6 @@ function breezeWall()
 		$breezeController = new BreezeController();
 
 	// We kinda need all this stuff, don't ask why, just nod your head...
-	$breezeSettings = $breezeController->get('settings');
 	$query = $breezeController->get('query');
 	$tools = $breezeController->get('tools');
 	$globals = Breeze::sGlobals('get');
@@ -651,15 +650,15 @@ function breezeCheckPermissions()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	$breezeSettings = $breezeController->get('settings');
+	$tools = $breezeController->get('tools');
 	$query = $breezeController->get('query');
 
 	// Another page already checked the permissions and if the mod is enable, but better be safe...
-	if (!$breezeSettings->enable('admin_settings_enable'))
+	if (!$tools->enable('admin_settings_enable'))
 		redirectexit();
 
 	// If we are forcing the wall, lets check the admin setting first
-	if ($breezeSettings->enable('admin_settings_force_enable'))
+	if ($tools->enable('admin_settings_force_enable'))
 		if (!isset($context['member']['options']['wall']))
 			$context['member']['options']['wall'] = 1;
 

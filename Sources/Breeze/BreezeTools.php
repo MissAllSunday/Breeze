@@ -42,10 +42,8 @@ class BreezeTools
 {
 	protected $_pattern = Breeze::$name .'_';
 
-	function __construct($settings)
+	function __construct()
 	{
-		$this->settings = $settings;
-
 		// Get globals
 		$this->_data = new BreezeGlobals('request');
 	}
@@ -62,6 +60,36 @@ class BreezeTools
 
 		if (!empty($txt[$this->_pattern . $var]))
 			return $txt[$this->_pattern . $var];
+
+		else
+			return false;
+	}
+
+	// Return true if the value do exist, false otherwise, O RLY?
+	protected function enable($var)
+	{
+		global $modSettings;
+
+		if (empty($var))
+			return false;
+
+		if (isset($modSettings[$this->_pattern . $var]) && !empty($modSettings[$this->_pattern . $var]))
+			return true;
+
+		else
+			return false;
+	}
+
+	// Get the requested setting
+	protected function setting($var)
+	{
+		if (empty($var))
+			return false;
+
+		global $modSettings;
+
+		if (true == $this->enable($var))
+			return $modSettings[$this->_pattern . $var];
 
 		else
 			return false;

@@ -95,6 +95,9 @@ function Breeze_Admin_Main()
 
 	loadtemplate('BreezeAdmin');
 
+	if (empty($breezeController))
+		$breezeController = new BreezeController();
+
 	$tools = $breezeController->get('tools');
 
 	// Get the version
@@ -121,8 +124,10 @@ function Breeze_Admin_Settings()
 
 	loadtemplate('Admin');
 
+	if (empty($breezeController))
+		$breezeController = new BreezeController();
+
 	// Load stuff
-	$text = $breezeController->get('text');
 	$globals = Breeze::sGlobals('request');
 	$context['sub_template'] = 'show_settings';
 	$context['page_title'] = $tools->text('admin_settings_main');
@@ -162,8 +167,10 @@ function Breeze_Admin_Permissions()
 
 	loadtemplate('Admin');
 
+	if (empty($breezeController))
+		$breezeController = new BreezeController();
+
 	// Load stuff
-	$text = $breezeController->get('text');
 	$globals = Breeze::sGlobals('request');
 	$context['sub_template'] = 'show_settings';
 	$context['page_title'] = $tools->text('admin_settings_main');

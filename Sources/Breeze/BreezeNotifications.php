@@ -40,7 +40,7 @@ if (!defined('SMF'))
 
 class BreezeNotifications
 {
-	protected $_settings = array();
+	protected $_tools;
 	protected $_params = array();
 	protected $_user = 0;
 	private $_query;
@@ -57,7 +57,7 @@ class BreezeNotifications
 	 *
 	 * @return
 	 */
-	function __construct($settings, $tools, $query)
+	function __construct($tools, $query)
 	{
 		global $user_info;
 
@@ -76,7 +76,6 @@ class BreezeNotifications
 		);
 
 		// We kinda need all this stuff, don't' ask why, just nod your head...
-		$this->_settings = $settings;
 		$this->_query = $query;
 		$this->_tools = $tools;
 

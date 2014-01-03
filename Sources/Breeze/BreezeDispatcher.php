@@ -66,11 +66,11 @@ abstract class BreezeDispatcher
 			switch ($sglobals->getValue('action'))
 			{
 				case 'buddy':
-					$controller = new $controller_name($dependency->get('settings'), $dependency->get('query'), $dependency->get('notifications'));
+					$controller = new $controller_name($dependency->get('query'), $dependency->get('notifications'));
 					break;
 				case 'breezeajax':
 				case 'wall':
-					$controller = new $controller_name($dependency->get('settings'), $dependency->get('text'), $dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'), $dependency->get('display'), $dependency->get('tools'), $dependency->get('log'));
+					$controller = new $controller_name($dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'), $dependency->get('display'), $dependency->get('tools'), $dependency->get('log'));
 					break;
 				default:
 					fatal_lang_error('Breeze_error_no_valid_action', false);

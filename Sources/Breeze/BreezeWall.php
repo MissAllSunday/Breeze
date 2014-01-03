@@ -42,7 +42,7 @@ class BreezeWall
 {
 	protected $userSettings = array();
 
-	public function __construct($settings, $query, $notifications, $parser, $mention, $display, $tools, $log)
+	public function __construct($query, $notifications, $parser, $mention, $display, $tools, $log)
 	{
 		// Needed to show error strings
 		loadLanguage(Breeze::$name);
@@ -55,7 +55,6 @@ class BreezeWall
 		$this->_query = $query;
 		$this->_parser = $parser;
 		$this->_mention = $mention;
-		$this->_settings = $settings;
 		$this->_notifications = $notifications;
 		$this->_display = $display;
 		$this->_tools = $tools;
@@ -78,7 +77,7 @@ class BreezeWall
 		);
 
 		// Master setting is off, back off!
-		if (!$this->_settings->enable('admin_settings_enable'))
+		if (!$this->_tools->enable('admin_settings_enable'))
 			fatal_lang_error('Breeze_error_no_valid_action', false);
 
 		// Guest aren't allowed, sorry.

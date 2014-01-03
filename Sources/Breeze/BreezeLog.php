@@ -43,9 +43,8 @@ class BreezeLog
 	protected $result = array();
 	protected $log = array();
 
-	function __construct($settings, $tools, $query)
+	function __construct($tools, $query)
 	{
-		$this->_settings = $settings;
 		$this->_tools = $tools;
 		$this->_query = $query;
 	}
