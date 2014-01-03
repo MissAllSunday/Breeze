@@ -42,7 +42,7 @@ class BreezeWall
 {
 	protected $userSettings = array();
 
-	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display, $tools, $log)
+	public function __construct($settings, $query, $notifications, $parser, $mention, $display, $tools, $log)
 	{
 		// Needed to show error strings
 		loadLanguage(Breeze::$name);
@@ -57,7 +57,6 @@ class BreezeWall
 		$this->_mention = $mention;
 		$this->_settings = $settings;
 		$this->_notifications = $notifications;
-		$this->_text = $text;
 		$this->_display = $display;
 		$this->_tools = $tools;
 		$this->log = $log;
@@ -83,7 +82,7 @@ class BreezeWall
 			fatal_lang_error('Breeze_error_no_valid_action', false);
 
 		// Guest aren't allowed, sorry.
-		is_not_guest($this->_text->getText('error_no_access'));
+		is_not_guest($this->_tools->text('error_no_access'));
 
 		// Load the user settings.
 		$this->userSettings = $this->_query->getUserSettings($user_info['id']);
@@ -152,7 +151,7 @@ class BreezeWall
 		$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;
 
 		// Set all the page stuff
-		$context['page_title'] = $this->_text->getText('general_wall');
+		$context['page_title'] = $this->_tools->text('general_wall');
 		$context['sub_template'] = 'general_wall';
 		$context['linktree'][] = array(
 			'url' => $scripturl . '?action=wall',
@@ -231,7 +230,7 @@ class BreezeWall
 
 		// Set all the page stuff
 		$context['sub_template'] = 'general_wall';
-		$context['page_title'] = $this->_text->getText('singleStatus_pageTitle');
+		$context['page_title'] = $this->_tools->text('singleStatus_pageTitle');
 		$context['canonical_url'] = $scripturl .'?action=wall;area=single;bid='. $globals->getValue('bid');
 
 		// There cannot be any pagination

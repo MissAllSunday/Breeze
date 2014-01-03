@@ -52,7 +52,7 @@ class BreezeAjax
 	 *
 	 * @return
 	 */
-	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display, $tools)
+	public function __construct($settings, $query, $notifications, $parser, $mention, $display, $tools)
 	{
 		// Needed to show error strings
 		loadLanguage(Breeze::$name);
@@ -63,7 +63,6 @@ class BreezeAjax
 		$this->_mention = $mention;
 		$this->_settings = $settings;
 		$this->_notifications = $notifications;
-		$this->_text = $text;
 		$this->_display = $display;
 		$this->_tools = $tools;
 
@@ -756,7 +755,7 @@ class BreezeAjax
 		// Fall to a generic server error, this should never happen but just want to be sure...
 		else
 			echo json_encode(array(
-				'message' => $this->_text->getText('error_server'),
+				'message' => $this->_tools->text('error_server'),
 				'data' => '',
 				'type' => 'error',
 				'owner' => 0,
@@ -780,7 +779,7 @@ class BreezeAjax
 
 		// If we didn't get all the params, set them to an empty var and don't forget to convert the message to a proper text string
 		$this->_response = array(
-			'message' => !empty($data['message']) ? ($this->noJS == false ? $this->_text->getText($data['type'] .'_'. $data['message']) : $data['message']) : 'server',
+			'message' => !empty($data['message']) ? ($this->noJS == false ? $this->_tools->text($data['type'] .'_'. $data['message']) : $data['message']) : 'server',
 			'data' => !empty($data['data']) ? $data['data'] : '',
 			'type' => $data['type'],
 			'owner' => !empty($data['owner']) ? $data['owner'] : 0,

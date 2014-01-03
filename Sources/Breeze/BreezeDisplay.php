@@ -47,10 +47,9 @@ class BreezeDisplay
 	private $parse;
 	private $type;
 
-	function __construct($tools, $text)
+	function __construct($tools)
 	{
 		$this->tools = $tools;
-		$this->text = $text;
 	}
 
 	public function HTML($params, $type, $single = false, $usersToLoad = false)

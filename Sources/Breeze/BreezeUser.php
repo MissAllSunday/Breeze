@@ -56,7 +56,6 @@ function breezeWall()
 	$query = $breezeController->get('query');
 	$tools = $breezeController->get('tools');
 	$globals = Breeze::sGlobals('get');
-	$text = $breezeController->get('text');
 	$log = $breezeController->get('log');
 	$usersToLoad = array();
 
@@ -129,7 +128,7 @@ function breezeWall()
 		$context['page_index'] = $data['pagination'];
 
 	// Page name depends on pagination
-	$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name']);
+	$context['page_title'] = sprintf($tools->text('profile_of_username'), $context['member']['name']);
 
 	// Get the profile views
 	if (!$user_info['is_guest'] && !empty($context['Breeze']['settings']['owner']['visitors']))
@@ -416,7 +415,7 @@ function breezeNotifications()
 
 	// Set all the page stuff
 	$context['sub_template'] = 'user_notifications';
-	$context['page_title'] = $text->getText('noti_title');
+	$context['page_title'] = $tools->text('noti_title');
 	$context['member']['is_owner'] = $context['member']['id'] == $user_info['id'];
 	$context['canonical_url'] = $scripturl . '?action=profile;area=notifications;u=' . $context['member']['id'];
 
@@ -454,7 +453,7 @@ function breezeBuddyRequest()
 
 	// Set all the page stuff
 	$context['sub_template'] = 'Breeze_buddy_list';
-	$context['page_title'] = $text->getText('noti_title');
+	$context['page_title'] = $tools->text('noti_title');
 	$context['canonical_url'] = $scripturl . '?action=profile;area=breezebuddies;u=' . $context['member']['id'];
 
 	// Show a nice message for confirmation
@@ -462,10 +461,10 @@ function breezeBuddyRequest()
 		switch ($globals->getRaw('inner'))
 		{
 			case 1:
-				$context['Breeze']['inner_message'] = $text->getText('buddyrequest_confirmed_inner_message');
+				$context['Breeze']['inner_message'] = $tools->text('buddyrequest_confirmed_inner_message');
 				break;
 			case 2:
-				$context['Breeze']['inner_message'] = $text->getText('buddyrequest_confirmed_inner_message_de');
+				$context['Breeze']['inner_message'] = $tools->text('buddyrequest_confirmed_inner_message_de');
 				break;
 			default:
 				$context['Breeze']['inner_message'] = '';
@@ -505,8 +504,8 @@ function breezeBuddyRequest()
 		);
 
 		// @todo let the user to send a customized message/title
-		$subject = $text->getText('buddyrequest_confirmed_subject');
-		$message = $text->getText('buddyrequest_confirmed_message');
+		$subject = $tools->text('buddyrequest_confirmed_subject');
+		$message = $tools->text('buddyrequest_confirmed_message');
 		$noti = $globals->getValue('noti');
 
 		sendpm($recipients, $subject, $message, false, $from);
@@ -555,7 +554,7 @@ function breezeBuddyMessage()
 
 	// Set all the page stuff
 	$context['sub_template'] = 'Breeze_buddy_message';
-	$context['page_title'] = $text->getText('noti_title');
+	$context['page_title'] = $tools->text('noti_title');
 	$context['canonical_url'] = $scripturl . '?action=breezebuddyrequest';
 
 	// Linktree here someday!

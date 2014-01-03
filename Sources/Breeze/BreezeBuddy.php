@@ -40,12 +40,12 @@ if (!defined('SMF'))
 
 class BreezeBuddy
 {
-	public function  __construct($settings, $query, $notifications, $text)
+	public function  __construct($settings, $tools, $query, $notifications)
 	{
 		$this->notification = $notifications;
 		$this->settings = $settings;
 		$this->query = $query;
-		$this->text = $text;
+		$this->tools = $tools;
 	}
 
 	public function buddy()

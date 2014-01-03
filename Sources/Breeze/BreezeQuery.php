@@ -58,13 +58,12 @@ class BreezeQuery extends Breeze
 	 * Creates a multidimensional array with all the details about the tables used in Breeze
 	 * @return
 	 */
-	public function __construct($settings, $text, $tools, $parser)
+	public function __construct($settings, $tools, $parser)
 	{
 		global $smcFunc, $scripturl;
 
 		// Set everything
 		$this->settings = $settings;
-		$this->text = $text;
 		$this->tools = $tools;
 		$this->parser = $parser;
 		$this->scripturl = $scripturl;

@@ -170,13 +170,13 @@ class Breeze
 
 		// Settings are required here
 		$gSettings = $breezeController->get('settings');
-		$text = $breezeController->get('text');
+		$tools = $breezeController->get('tools');
 
 		// Replace the summary page only if the mod is enable
 		if ($gSettings->enable('admin_settings_enable'))
 		{
 			$profile_areas['info']['areas']['summary'] = array(
-				'label' => $text->getText('general_wall'),
+				'label' => $tools->text('general_wall'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
 				'function' => 'breezeWall',
 				'permission' => array(
@@ -187,7 +187,7 @@ class Breeze
 
 			// If the mod is enable, then create another page for the default profile page
 			$profile_areas['info']['areas']['static'] = array(
-				'label' => $text->getText('general_summary'),
+				'label' => $tools->text('general_summary'),
 				'file' => 'Profile-View.php',
 				'function' => 'summary',
 				'permission' => array(
@@ -198,13 +198,13 @@ class Breeze
 
 			// Create the area
 			$profile_areas['breeze_profile'] = array(
-				'title' => $text->getText('general_my_wall_settings'),
+				'title' => $tools->text('general_my_wall_settings'),
 				'areas' => array(),
 			);
 
 			// User individual settings, show the button if the mod is enable and the user is the profile owner or the user has the permissions to edit other walls
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
-				'label' => $text->getText('user_settings_name'),
+				'label' => $tools->text('user_settings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
 				'function' => 'breezeSettings',
 				'permission' => array(
@@ -216,7 +216,7 @@ class Breeze
 
 			// Notification's settings.
 			$profile_areas['breeze_profile']['areas']['breezenotisettings'] = array(
-				'label' => $text->getText('user_settings_name_settings'),
+				'label' => $tools->text('user_settings_name_settings'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
 				'function' => 'breezenotisettings',
 				'permission' => array(
@@ -228,7 +228,7 @@ class Breeze
 
 			// Buddies page
 			// $profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
-				// 'label' => $text->getText('user_buddysettings_name'),
+				// 'label' => $tools->text('user_buddysettings_name'),
 				// 'file' => Breeze::$folder . 'BreezeUser.php',
 				// 'function' => 'breezeBuddyRequest',
 				// 'permission' => array('own' => 'profile_view_own', ),
@@ -236,7 +236,7 @@ class Breeze
 
 			// Notifications admin page
 			$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
-				'label' => $text->getText('user_notisettings_name'),
+				'label' => $tools->text('user_notisettings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
 				'function' => 'breezeNotifications',
 				'subsections' => array(),
@@ -397,7 +397,7 @@ class Breeze
 				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
 				'content' => function() use ($regOptions, $scripturl, $text, $scripturl, $user_id)
 					{
-						return '<a href="'. $scripturl .'?action=profile;u='. $user_id . '">'. $regOptions['username'] .'</a> '. $text->getText('logRegister');
+						return '<a href="'. $scripturl .'?action=profile;u='. $user_id . '">'. $regOptions['username'] .'</a> '. $tools->text('logRegister');
 					},
 				'type_id' => 0,
 				'second_type' => 'register',
@@ -553,16 +553,16 @@ class Breeze
 		$text = $breezeController->get('text');
 
 		$admin_menu['config']['areas']['breezeadmin'] = array(
-			'label' => $text->getText('admin_settings_main'),
+			'label' => $tools->text('admin_settings_main'),
 			'file' => 'Breeze/BreezeAdmin.php',
 			'function' => 'Breeze_Admin_Index',
 			'icon' => 'administration.gif',
 			'subsections' => array(
-				'general' => array($text->getText('admin_settings_main')),
-				'settings' => array($text->getText('admin_settings_settings')),
-				'permissions' => array($text->getText('admin_settings_sub_permissions')),
-				'style' => array($text->getText('admin_settings_sub_style')),
-				'donate' => array($text->getText('admin_settings_donate')),
+				'general' => array($tools->text('admin_settings_main')),
+				'settings' => array($tools->text('admin_settings_settings')),
+				'permissions' => array($tools->text('admin_settings_sub_permissions')),
+				'style' => array($tools->text('admin_settings_sub_style')),
+				'donate' => array($tools->text('admin_settings_donate')),
 			),
 		);
 	}
