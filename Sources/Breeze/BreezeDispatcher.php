@@ -72,7 +72,7 @@ abstract class BreezeDispatcher
 				fatal_lang_error('Breeze_error_no_valid_action', false);
 
 			// Create the instance
-			$object = new $controller($dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'), $dependency->get('display'), $dependency->get('tools'), $dependency->get('log'));
+			$object = new $controller($dependency->get('tools'), $dependency->get('display'),  $dependency->get('parser'), $dependency->get('query'), $dependency->get('notifications'), $dependency->get('mention'), $dependency->get('log'));
 
 			// Lets call it
 			$object->$method();
