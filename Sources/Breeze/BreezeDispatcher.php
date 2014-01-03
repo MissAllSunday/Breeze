@@ -61,7 +61,9 @@ abstract class BreezeDispatcher
 		// Want to add some more goodies?
 		call_integration_hook('integrate_breeze_actions', array(&$actions));
 
-		if (in_array($sglobals->getValue('action'), array_keys($actions)))
+		$do = $sglobals->getValue('action');
+
+		if (isset($actions[$do])
 		{
 			$controller = $actions[$sglobals->getValue('action')][0];
 
@@ -77,5 +79,8 @@ abstract class BreezeDispatcher
 			// Lets call it
 			$object->$method();
 		}
+
+		else
+			fatal_lang_error('Breeze_error_no_valid_action', false);
 	}
 }
