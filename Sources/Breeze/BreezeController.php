@@ -63,12 +63,6 @@ class BreezeController
 			return new BreezeSettings();
 		});
 
-		// Text
-		$this->container->text = $this->container->asShared(function ($c)
-		{
-			return new BreezeText();
-		});
-
 		// Tools
 		$this->container->tools = $this->container->asShared(function ($c)
 		{
