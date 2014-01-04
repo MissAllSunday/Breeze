@@ -49,7 +49,11 @@ abstract class BreezeDispatcher
 
 	static function dispatch()
 	{
-		$dependency = new BreezeController();
+		global $breezeController;
+
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
 		$sglobals = Breeze::sGlobals('get');
 
 		$actions = array(
@@ -65,16 +69,16 @@ abstract class BreezeDispatcher
 
 		if (isset($actions[$do])
 		{
-			$controller = $actions[$sglobals->getValue('action')][0];
+			$controller = $actions[$do][0];
 
-			$method = $actions[$sglobals->getValue('action')][1];
+			$method = $actions[$do][1];
 
 			// Lets do some checks...
 			if (!method_exists($controller, $method) || !is_callable($controller, $method))
 				fatal_lang_error('Breeze_error_no_valid_action', false);
 
 			// Create the instance
-			$object = new $controller($dependency->get('tools'), $dependency->get('display'),  $dependency->get('parser'), $dependency->get('query'), $dependency->get('notifications'), $dependency->get('mention'), $dependency->get('log'));
+			$object = new $controller($breezeController->get('tools'), $breezeController->get('display'),  $breezeController->get('parser'), $breezeController->get('query'), $breezeController->get('notifications'), $breezeController->get('mention'), $breezeController->get('log'));
 
 			// Lets call it
 			$object->$method();

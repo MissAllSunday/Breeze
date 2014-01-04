@@ -52,7 +52,7 @@ class BreezeAjax
 	 *
 	 * @return
 	 */
-	public function __construct($query, $notifications, $parser, $mention, $display, $tools)
+	public function __construct($tools, $display, $parser, $query, $notifications, $mention, $log)
 	{
 		// Needed to show error strings
 		loadLanguage(Breeze::$name);

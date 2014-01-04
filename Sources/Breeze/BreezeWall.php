@@ -42,7 +42,7 @@ class BreezeWall
 {
 	protected $userSettings = array();
 
-	public function __construct($query, $notifications, $parser, $mention, $display, $tools, $log)
+	public function __construct($tools, $display, $parser, $query, $notifications, $mention, $log)
 	{
 		// Needed to show error strings
 		loadLanguage(Breeze::$name);

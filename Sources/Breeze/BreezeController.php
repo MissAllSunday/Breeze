@@ -57,6 +57,12 @@ class BreezeController
 			return new BreezeGlobals();
 		});
 
+		// Form
+		$this->container->form = $this->container->asShared(function ($c)
+		{
+			return new BreezeForm($c->tools);
+		});
+
 		// Tools
 		$this->container->tools = $this->container->asShared(function ($c)
 		{
@@ -81,22 +87,10 @@ class BreezeController
 			return new BreezeQuery($c->tools, $c->parser);
 		});
 
-		// Form
-		$this->container->form = $this->container->asShared(function ($c)
-		{
-			return new BreezeForm($c->text);
-		});
-
 		// Notifications
 		$this->container->notifications = $this->container->asShared(function ($c)
 		{
 			return new BreezeNotifications($c->tools, $c->query);
-		});
-
-		// Buddy
-		$this->container->buddy = $this->container->asShared(function ($c)
-		{
-			return new BreezeBuddy($c->query, $c->notifications, $c->text);
 		});
 
 		// Mention
