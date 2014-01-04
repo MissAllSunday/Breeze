@@ -40,13 +40,61 @@ if (!defined('SMF'))
 
 class BreezeTools
 {
-	function __construct($settings, $text)
-	{
-		$this->text = $text;
-		$this->settings = $settings;
+	protected $_pattern;
 
+	function __construct()
+	{
 		// Get globals
 		$this->_data = new BreezeGlobals('request');
+
+		$this->_pattern = Breeze::$name .'_';
+	}
+
+	public function text($var)
+	{
+		global $txt;
+
+		if (empty($var))
+			return false;
+
+		// Load the mod's language file.
+		loadLanguage(Breeze::$name);
+
+		if (!empty($txt[$this->_pattern . $var]))
+			return $txt[$this->_pattern . $var];
+
+		else
+			return false;
+	}
+
+	// Return true if the value do exist, false otherwise, O RLY?
+	public function enable($var)
+	{
+		global $modSettings;
+
+		if (empty($var))
+			return false;
+
+		if (isset($modSettings[$this->_pattern . $var]) && !empty($modSettings[$this->_pattern . $var]))
+			return true;
+
+		else
+			return false;
+	}
+
+	// Get the requested setting
+	public function setting($var)
+	{
+		if (empty($var))
+			return false;
+
+		global $modSettings;
+
+		if (true == $this->enable($var))
+			return $modSettings[$this->_pattern . $var];
+
+		else
+			return false;
 	}
 
 	// Relative dates  http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html
@@ -55,15 +103,15 @@ class BreezeTools
 		$etime = time() - $ptime;
 
 		if ($etime < 1)
-			return $this->text->getText('time_just_now');
+			return $this->text('time_just_now');
 
 		$a = array(
-			12 * 30 * 24 * 60 * 60	=> $this->text->getText('time_year'),
-			30 * 24 * 60 * 60		=> $this->text->getText('time_month'),
-			24 * 60 * 60			=> $this->text->getText('time_day'),
-			60 * 60					=> $this->text->getText('time_hour'),
-			60						=> $this->text->getText('time_minute'),
-			1						=> $this->text->getText('time_second')
+			12 * 30 * 24 * 60 * 60	=> $this->text('time_year'),
+			30 * 24 * 60 * 60		=> $this->text('time_month'),
+			24 * 60 * 60			=> $this->text('time_day'),
+			60 * 60					=> $this->text('time_hour'),
+			60						=> $this->text('time_minute'),
+			1						=> $this->text('time_second')
 		);
 
 		foreach ($a as $secs => $str)
@@ -72,7 +120,7 @@ class BreezeTools
 			if ($d >= 1)
 			{
 				$r = round($d);
-				return $r . ' ' . $str . ($r > 1 ? 's ' : ' '). $this->text->getText('time_ago');
+				return $r . ' ' . $str . ($r > 1 ? 's ' : ' '). $this->text('time_ago');
 			}
 		}
 	}
@@ -235,7 +283,6 @@ class BreezeTools
 
 		$perm['delete'] = in_array(1, $allowed);
 
-		// Sorry pal... better luck next time!
 		return $perm;
 	}
 }

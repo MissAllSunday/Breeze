@@ -43,10 +43,8 @@ class BreezeLog
 	protected $result = array();
 	protected $log = array();
 
-	function __construct($settings, $text, $tools, $query)
+	function __construct($tools, $query)
 	{
-		$this->_settings = $settings;
-		$this->_text = $text;
 		$this->_tools = $tools;
 		$this->_query = $query;
 	}
@@ -107,17 +105,19 @@ class BreezeLog
 		// Load the users data, one fine day I will count how many times I typed this exact sentence...
 		$loadedUsers = $this->_query->loadMinimalData(array_unique(array($entry['content']['status_owner_id'], $entry['content']['poster_id'], $entry['content']['profile_id'])));
 
+		$gender = !empty($loadedUsers[$entry['content']['poster_id']]['gender']) ? $loadedUsers[$entry['content']['poster_id']]['gender'] : '0';
+
 		//Posting on your own wall?
 		$own = $entry['content']['status_owner_id'] == $entry['content']['poster_id'];
 
 		if ($own)
-			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_text->getText('logComment_own_'. $loadedUsers[$entry['content']['poster_id']]['gender']);
+			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_tools->text('logComment_own_'. $gender);
 
 		else
-			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_text->getText('logComment'), $loadedUsers[$entry['content']['status_owner_id']]['link']);
+			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_tools->text('logComment'), $loadedUsers[$entry['content']['status_owner_id']]['link']);
 
 		// Build a nice link to the status.
-		$return['link'] = '<a href="'. $scripturl .'?action=wall;sa=single;bid='. $entry['content']['status_id'] .';cid='. $entry['content']['id'] .'#comment_id_'. $entry['content']['id'] .'">'. $this->_text->getText('logComment_view') . '</a>';
+		$return['link'] = '<a href="'. $scripturl .'?action=wall;sa=single;bid='. $entry['content']['status_id'] .';cid='. $entry['content']['id'] .'#comment_id_'. $entry['content']['id'] .'">'. $this->_tools->text('logComment_view') . '</a>';
 
 		return $return;
 	}
@@ -133,16 +133,17 @@ class BreezeLog
 		$own = $entry['content']['owner_id'] == $entry['content']['poster_id'];
 
 		// Get the right text string
-		$logStatusString = 'logStatus_own_'. $loadedUsers[$entry['content']['poster_id']]['gender'];
+		$gender = !empty($loadedUsers[$entry['content']['poster_id']]['gender']) ? $loadedUsers[$entry['content']['poster_id']]['gender'] : '0';
+		$logStatusString = 'logStatus_own_'. $gender;
 
 		if ($own)
-			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_text->getText($logStatusString);
+			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_tools->text($logStatusString);
 
 		else
-			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_text->getText('logStatus'), $entry['content']['owner_id']);
+			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_tools->text('logStatus'), $entry['content']['owner_id']);
 
 		// Build a link to the status.
-		$return['link'] = '<a href="'. $scripturl .'?action=wall;sa=single;bid='. $entry['content']['id'] .'#status_id_'. $entry['content']['id'] .'">'. $this->_text->getText('logStatus_view') . '</a>';
+		$return['link'] = '<a href="'. $scripturl .'?action=wall;sa=single;bid='. $entry['content']['id'] .'#status_id_'. $entry['content']['id'] .'">'. $this->_tools->text('logStatus_view') . '</a>';
 
 		return $return;
 	}
@@ -152,7 +153,7 @@ class BreezeLog
 		global $scripturl;
 
 		return array(
-			'message' => $entry['content']['posterName'] .' '. $this->_text->getText('logTopic'),
+			'message' => $entry['content']['posterName'] .' '. $this->_tools->text('logTopic'),
 			'link' => '<a href="'. $scripturl .'?topic='. $entry['content']['topicId'] .'.0">'. $entry['content']['subject'] .'</a>',
 		);
 	}

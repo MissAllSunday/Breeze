@@ -120,15 +120,15 @@ class Breeze
 	}
 
 	/**
-	 * Breeze::sGlobals()
+	 * Breeze::data()
 	 *
 	 * A new instance of BreezeGlobals.
 	 * @param string $var Either post, request or get
 	 * @return object Access to BreezeGlobals
 	 */
-	public static function sGlobals($var)
+	public static function data($var)
 	{
-		return new BreezeGlobals($var);
+		return new BreezeData($var);
 	}
 
 	/**
@@ -169,14 +169,13 @@ class Breeze
 			$breezeController = new BreezeController();
 
 		// Settings are required here
-		$gSettings = $breezeController->get('settings');
-		$text = $breezeController->get('text');
+		$tools = $breezeController->get('tools');
 
 		// Replace the summary page only if the mod is enable
-		if ($gSettings->enable('admin_settings_enable'))
+		if ($tools->enable('admin_settings_enable'))
 		{
 			$profile_areas['info']['areas']['summary'] = array(
-				'label' => $text->getText('general_wall'),
+				'label' => $tools->text('general_wall'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
 				'function' => 'breezeWall',
 				'permission' => array(
@@ -187,7 +186,7 @@ class Breeze
 
 			// If the mod is enable, then create another page for the default profile page
 			$profile_areas['info']['areas']['static'] = array(
-				'label' => $text->getText('general_summary'),
+				'label' => $tools->text('general_summary'),
 				'file' => 'Profile-View.php',
 				'function' => 'summary',
 				'permission' => array(
@@ -198,13 +197,13 @@ class Breeze
 
 			// Create the area
 			$profile_areas['breeze_profile'] = array(
-				'title' => $text->getText('general_my_wall_settings'),
+				'title' => $tools->text('general_my_wall_settings'),
 				'areas' => array(),
 			);
 
 			// User individual settings, show the button if the mod is enable and the user is the profile owner or the user has the permissions to edit other walls
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
-				'label' => $text->getText('user_settings_name'),
+				'label' => $tools->text('user_settings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
 				'function' => 'breezeSettings',
 				'permission' => array(
@@ -216,7 +215,7 @@ class Breeze
 
 			// Notification's settings.
 			$profile_areas['breeze_profile']['areas']['breezenotisettings'] = array(
-				'label' => $text->getText('user_settings_name_settings'),
+				'label' => $tools->text('user_settings_name_settings'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
 				'function' => 'breezenotisettings',
 				'permission' => array(
@@ -228,7 +227,7 @@ class Breeze
 
 			// Buddies page
 			// $profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
-				// 'label' => $text->getText('user_buddysettings_name'),
+				// 'label' => $tools->text('user_buddysettings_name'),
 				// 'file' => Breeze::$folder . 'BreezeUser.php',
 				// 'function' => 'breezeBuddyRequest',
 				// 'permission' => array('own' => 'profile_view_own', ),
@@ -236,7 +235,7 @@ class Breeze
 
 			// Notifications admin page
 			$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
-				'label' => $text->getText('user_notisettings_name'),
+				'label' => $tools->text('user_notisettings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
 				'function' => 'breezeNotifications',
 				'subsections' => array(),
@@ -261,15 +260,14 @@ class Breeze
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
-		$gSettings = $breezeController->get('settings');
-		$gText = $breezeController->get('text');
+		$tools = $breezeController->get('tools');
 		$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
 
 		// Display common css and js files.
 		Breeze::notiHeaders();
 
 		// Replace the duplicate profile button
-		if ($gSettings->enable('admin_settings_enable') && !empty($menu_buttons['profile']['sub_buttons']['summary']))
+		if ($tools->enable('admin_settings_enable') && !empty($menu_buttons['profile']['sub_buttons']['summary']))
 			$menu_buttons['profile']['sub_buttons']['summary'] = array(
 				'title' => $txt['summary'],
 				'href' => $scripturl . '?action=profile;area=static',
@@ -287,14 +285,14 @@ class Breeze
 		$menu_buttons = array_merge(
 			array_slice($menu_buttons, 0, $counter),
 			array('wall' => array(
-				'title' => $gText->getText('general_wall'),
+				'title' => $tools->text('general_wall'),
 				'href' => $scripturl . '?action=wall',
-				'show' => ($gSettings->enable('admin_settings_enable') && !$user_info['is_guest'] && !empty($userSettings['general_wall'])),
+				'show' => ($tools->enable('admin_settings_enable') && !$user_info['is_guest'] && !empty($userSettings['general_wall'])),
 				'sub_buttons' => array(
 					'noti' => array(
-						'title' => $gText->getText('user_notisettings_name'),
+						'title' => $tools->text('user_notisettings_name'),
 						'href' => $scripturl . '?action=profile;area=breezenoti',
-						'show' => ($gSettings->enable('admin_settings_enable') && !$user_info['is_guest']),
+						'show' => ($tools->enable('admin_settings_enable') && !$user_info['is_guest']),
 						'sub_buttons' => array(),
 						),
 					),
@@ -316,7 +314,7 @@ class Breeze
 	 */
 	public static function actions(&$actions)
 	{
-		// A whole new action just for some ajax calls...
+		// A whole new action just for some ajax calls. Actually, a pretty good chunk of Breeze transactions come through here so...
 		$actions['breezeajax'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
 
 		// The general wall
@@ -347,7 +345,6 @@ class Breeze
 
 		// We need the almighty power of breezeController!
 		$noti = $breezeController->get('notifications');
-		$text = $breezeController->get('text');
 		$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
 
 		// Cheating, lets insert the notification directly, do it only if the topic was approved
@@ -385,7 +382,6 @@ class Breeze
 
 		// We need the almighty power of breezeController!
 		$noti = $breezeController->get('notifications');
-		$text = $breezeController->get('text');
 
 		// Cheating, lets insert the notification directly, do it only if the topic was approved
 		if ($topicOptions['is_approved'])
@@ -397,7 +393,7 @@ class Breeze
 				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
 				'content' => function() use ($regOptions, $scripturl, $text, $scripturl, $user_id)
 					{
-						return '<a href="'. $scripturl .'?action=profile;u='. $user_id . '">'. $regOptions['username'] .'</a> '. $text->getText('logRegister');
+						return '<a href="'. $scripturl .'?action=profile;u='. $user_id . '">'. $regOptions['username'] .'</a> '. $tools->text('logRegister');
 					},
 				'type_id' => 0,
 				'second_type' => 'register',
@@ -425,9 +421,8 @@ class Breeze
 		// Prevent this from showing twice
 		if (!$header_done)
 		{
-			$breezeSettings = $breezeController->get('settings');
-			$breezeGlobals = Breeze::sGlobals('get');
-			$breezeText = $breezeController->get('text');
+			$tools = $breezeController->get('tools');
+			$breezeGlobals = Breeze::data('get');
 			$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
 
 			// Don't pass the "about me" stuff...
@@ -460,7 +455,7 @@ class Breeze
 				// Populate the text object with all possible text vars this mod uses and there are a lot!
 				foreach ($jsVars as $var)
 				$context['html_headers'] .= '
-		breeze.text.'. $var .' = '. JavaScriptEscape($breezeText->getText($var));
+		breeze.text.'. $var .' = '. JavaScriptEscape($tools->text($var));
 
 				// Since where here already, load the current User (currentSettings) object
 				foreach (Breeze::$allSettings as $k)
@@ -493,11 +488,11 @@ class Breeze
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
 
 				// Does the admin wants to add more actions?
-				if ($breezeSettings->enable('allowedActions'))
-					Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $breezeSettings->getSetting('allowedActions')));
+				if ($tools->enable('allowedActions'))
+					Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $tools->getSetting('allowedActions')));
 
 				// Stuff for the notifications, don't show this if we aren't on a specified action
-				if (empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
+				if (empty($user_info['is_guest']) && (in_array($breezeGlobals->get('action'), Breeze::$_allowedActions) || $breezeGlobals->get('action') == false))
 				{
 					$notifications = $breezeController->get('notifications');
 					$context['insert_after_template'] .= '
@@ -550,19 +545,19 @@ class Breeze
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
-		$text = $breezeController->get('text');
+		$tools = $breezeController->get('tools');
 
 		$admin_menu['config']['areas']['breezeadmin'] = array(
-			'label' => $text->getText('admin_settings_main'),
+			'label' => $tools->text('admin_settings_main'),
 			'file' => 'Breeze/BreezeAdmin.php',
 			'function' => 'Breeze_Admin_Index',
 			'icon' => 'administration.gif',
 			'subsections' => array(
-				'general' => array($text->getText('admin_settings_main')),
-				'settings' => array($text->getText('admin_settings_settings')),
-				'permissions' => array($text->getText('admin_settings_sub_permissions')),
-				'style' => array($text->getText('admin_settings_sub_style')),
-				'donate' => array($text->getText('admin_settings_donate')),
+				'general' => array($tools->text('admin_settings_main')),
+				'settings' => array($tools->text('admin_settings_settings')),
+				'permissions' => array($tools->text('admin_settings_sub_permissions')),
+				'style' => array($tools->text('admin_settings_sub_style')),
+				'donate' => array($tools->text('admin_settings_donate')),
 			),
 		);
 	}

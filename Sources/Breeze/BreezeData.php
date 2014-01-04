@@ -1,9 +1,9 @@
 <?php
 
 /**
- * BreezeGlobals
+ * BreezeData
  *
- * The purpose of this file is
+ * The purpose of this file is get, sanitize and return data from superglobals
  * @package Breeze mod
  * @version 1.0
  * @author Jessica González <suki@missallsunday.com>
@@ -38,41 +38,32 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-class BreezeGlobals
+class BreezeData
 {
 	protected $_request;
 
 	/**
-	 * BreezeGlobals::__construct()
+	 * BreezeData::__construct()
 	 *
-	 * @param mixed $var
+	 * @param string $type
 	 * @return
 	 */
-	public function __construct($var = 'request')
+	public function __construct($type)
 	{
-		switch ($var)
-		{
-			case 'get':
-				$this->_request = $_GET;
-				break;
-			case 'post':
-				$this->_request = $_POST;
-				break;
-			case 'request':
-				$this->_request = $_REQUEST;
-				break;
-			default:
-				$this->_request = $_REQUEST;
-		}
+		$types = array('request' => $_REQUEST, 'get' => $_GET, 'post' => $_POST);
+
+		$this->_request = (empty($type) || !isset($types[$type])) ? $_REQUEST : $types[$type];
+
+		unset($types);
 	}
 
 	/**
-	 * BreezeGlobals::getValue()
+	 * BreezeData::get()
 	 *
 	 * @param mixed $value
 	 * @return
 	 */
-	public function getValue($value)
+	public function get($value)
 	{
 		if ($this->validate($value))
 			return $this->sanitize($this->_request[$value]);
@@ -81,7 +72,7 @@ class BreezeGlobals
 	}
 
 	/**
-	 * BreezeGlobals::getRaw()
+	 * BreezeData::getRaw()
 	 *
 	 * @param mixed $value
 	 * @return
@@ -95,8 +86,13 @@ class BreezeGlobals
 			return false;
 	}
 
+	public function getAll()
+	{
+		return $this->_request;
+	}
+
 	/**
-	 * BreezeGlobals::validate()
+	 * BreezeData::validate()
 	 *
 	 * @param mixed $var
 	 * @return
@@ -110,7 +106,7 @@ class BreezeGlobals
 	}
 
 	/**
-	 * BreezeGlobals::validateBody()
+	 * BreezeData::validateBody()
 	 *
 	 * @param mixed $var
 	 * @return
@@ -133,7 +129,7 @@ class BreezeGlobals
 	}
 
 	/**
-	 * BreezeGlobals::unsetVar()
+	 * BreezeData::unsetVar()
 	 *
 	 * @param mixed $var
 	 * @return
@@ -144,7 +140,7 @@ class BreezeGlobals
 	}
 
 	/**
-	 * BreezeGlobals::sanitize()
+	 * BreezeData::sanitize()
 	 *
 	 * @param mixed $var
 	 * @return

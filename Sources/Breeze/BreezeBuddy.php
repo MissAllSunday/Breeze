@@ -40,12 +40,11 @@ if (!defined('SMF'))
 
 class BreezeBuddy
 {
-	public function  __construct($settings, $query, $notifications, $text)
+	public function  __construct($tools, $query, $notifications)
 	{
 		$this->notification = $notifications;
-		$this->settings = $settings;
 		$this->query = $query;
-		$this->text = $text;
+		$this->tools = $tools;
 	}
 
 	public function buddy()
@@ -58,7 +57,7 @@ class BreezeBuddy
 		is_not_guest();
 
 		// We need all this stuff
-		$sa = Breeze::sGlobals('get');
+		$sa = Breeze::data('get');
 
 		/* @todo theres a lot of ifs here... better split all cases into small methods */
 		$subActions = array(

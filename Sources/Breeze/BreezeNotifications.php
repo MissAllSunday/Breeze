@@ -40,7 +40,7 @@ if (!defined('SMF'))
 
 class BreezeNotifications
 {
-	protected $_settings = array();
+	protected $_tools;
 	protected $_params = array();
 	protected $_user = 0;
 	private $_query;
@@ -57,7 +57,7 @@ class BreezeNotifications
 	 *
 	 * @return
 	 */
-	function __construct($settings, $text, $tools, $query)
+	function __construct($tools, $query)
 	{
 		global $user_info;
 
@@ -76,10 +76,8 @@ class BreezeNotifications
 		);
 
 		// We kinda need all this stuff, don't' ask why, just nod your head...
-		$this->_settings = $settings;
 		$this->_query = $query;
 		$this->_tools = $tools;
-		$this->_text = $text;
 
 		// Get the current user preferences.
 		$this->_currentUserSettings = $this->_query->getUserSettings($this->_currentUser);
@@ -249,7 +247,7 @@ class BreezeNotifications
 		$this->_messages[$noti['id']]['viewed'] = $noti['viewed'];
 
 		// Fill out the messages property
-		$this->_messages[$noti['id']]['message'] = sprintf($this->_text->getText('buddy_messagerequest_message'),
+		$this->_messages[$noti['id']]['message'] = sprintf($this->_tools->text('buddy_messagerequest_message'),
 			$this->loadedUsers[$noti['user']]['link'], $noti['id']);
 	}
 
@@ -283,12 +281,12 @@ class BreezeNotifications
 		{
 			// Is this the same user's wall?
 			if ($noti['content']['wall_owner'] == $noti['receiver'])
-				$text = sprintf($this->_text->getText('mention_message_own_wall_comment'), $statusLink,
+				$text = sprintf($this->_tools->text('mention_message_own_wall_comment'), $statusLink,
 					$this->loadedUsers[$noti['content']['wall_poster']]['link'], $noti['id']);
 
 			// This is someone else's wall, go figure...
 			else
-				$text = sprintf($this->_text->getText('mention_message_comment'), $this->loadedUsers[$noti['content']['wall_poster']]['link'],
+				$text = sprintf($this->_tools->text('mention_message_comment'), $this->loadedUsers[$noti['content']['wall_poster']]['link'],
 					$this->loadedUsers[$noti['content']['wall_owner']]['link'], $statusLink,
 					$noti['id']);
 		}
@@ -298,12 +296,12 @@ class BreezeNotifications
 		{
 			// Is this your own wall?
 			if ($noti['content']['wall_owner'] == $noti['receiver'])
-				$text = sprintf($this->_text->getText('mention_message_own_wall_status'), $statusLink,
+				$text = sprintf($this->_tools->text('mention_message_own_wall_status'), $statusLink,
 					$this->loadedUsers[$noti['content']['wall_poster']]['link'], $noti['id']);
 
 			// No? don't worry, you will get your precious notification anyway
 			elseif ($noti['content']['wall_owner'] != $noti['receiver'])
-				$text = sprintf($this->_text->getText('mention_message_comment'), $this->loadedUsers[$noti['content']['wall_poster']]['link'], $this->loadedUsers[$noti['content']['wall_owner']]['link'], $statusLink, $noti['id']);
+				$text = sprintf($this->_tools->text('mention_message_comment'), $this->loadedUsers[$noti['content']['wall_poster']]['link'], $this->loadedUsers[$noti['content']['wall_owner']]['link'], $statusLink, $noti['id']);
 		}
 
 		// Create the message already

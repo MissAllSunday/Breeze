@@ -42,7 +42,7 @@ class BreezeWall
 {
 	protected $userSettings = array();
 
-	public function __construct($settings, $text, $query, $notifications, $parser, $mention, $display, $tools, $log)
+	public function __construct($tools, $display, $parser, $query, $notifications, $mention, $log)
 	{
 		// Needed to show error strings
 		loadLanguage(Breeze::$name);
@@ -55,9 +55,7 @@ class BreezeWall
 		$this->_query = $query;
 		$this->_parser = $parser;
 		$this->_mention = $mention;
-		$this->_settings = $settings;
 		$this->_notifications = $notifications;
-		$this->_text = $text;
 		$this->_display = $display;
 		$this->_tools = $tools;
 		$this->log = $log;
@@ -68,7 +66,7 @@ class BreezeWall
 		global $context, $user_info, $settings;
 
 		// Handling the subactions
-		$sglobals = Breeze::sGlobals('get');
+		$data = Breeze::data('get');
 
 		// Safety first, hardcode the actions
 		$this->subActions = array(
@@ -79,11 +77,11 @@ class BreezeWall
 		);
 
 		// Master setting is off, back off!
-		if (!$this->_settings->enable('admin_settings_enable'))
+		if (!$this->_tools->enable('admin_settings_enable'))
 			fatal_lang_error('Breeze_error_no_valid_action', false);
 
 		// Guest aren't allowed, sorry.
-		is_not_guest($this->_text->getText('error_no_access'));
+		is_not_guest($this->_tools->text('error_no_access'));
 
 		// Load the user settings.
 		$this->userSettings = $this->_query->getUserSettings($user_info['id']);
@@ -111,13 +109,13 @@ class BreezeWall
 		$call = $this->subActions;
 
 		// Does the sub-action even exist?
-		if (isset($call[$sglobals->getValue('sa')]))
+		if (isset($call[$data->get('sa')]))
 		{
 			// Obscure, evil stuff...
 			writeLog(true);
 
 			// This is somehow ugly but its faster.
-			$this->$call[$sglobals->getValue('sa')]();
+			$this->$call[$data->get('sa')]();
 		}
 
 		// By default lets load the general wall
@@ -142,17 +140,17 @@ class BreezeWall
 			fatal_lang_error('Breeze_cannot_see_general_wall');
 
 		// We cannot live without globals...
-		$globals = Breeze::sGlobals('get');
+		$data = Breeze::data('get');
 
 		// The (soon to be) huge array...
 		$status = array();
 
 		// Pagination max index and current page
 		$maxIndex = !empty($this->userSettings['pagination_number']) ? $this->userSettings['pagination_number'] : 5;
-		$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;
+		$currentPage = $data->validate('start') == true ? $globals->get('start') : 0;
 
 		// Set all the page stuff
-		$context['page_title'] = $this->_text->getText('general_wall');
+		$context['page_title'] = $this->_tools->text('general_wall');
 		$context['sub_template'] = 'general_wall';
 		$context['linktree'][] = array(
 			'url' => $scripturl . '?action=wall',
@@ -205,14 +203,14 @@ class BreezeWall
 	{
 		global $scripturl, $context, $user_info;
 
-		$globals = Breeze::sGlobals('get');
+		$data = Breeze::data('get');
 
 		// We need the status ID!
-		if (!$globals->validate('bid'))
+		if (!$data->validate('bid'))
 			fatal_lang_error('no_access', false);
 
 		// Load it.
-		$data = $this->_query->getStatusByID($globals->getValue('bid'));
+		$data = $this->_query->getStatusByID($globals->get('bid'));
 
 		if (!empty($this->userSettings['buddies']))
 		{
@@ -231,17 +229,17 @@ class BreezeWall
 
 		// Set all the page stuff
 		$context['sub_template'] = 'general_wall';
-		$context['page_title'] = $this->_text->getText('singleStatus_pageTitle');
-		$context['canonical_url'] = $scripturl .'?action=wall;area=single;bid='. $globals->getValue('bid');
+		$context['page_title'] = $this->_tools->text('singleStatus_pageTitle');
+		$context['canonical_url'] = $scripturl .'?action=wall;area=single;bid='. $globals->get('bid');
 
 		// There cannot be any pagination
 		$context['page_index'] = array();
 
 		// Are we showing a comment? if so, highlight it.
-		if ($globals->getValue('cid'))
+		if ($globals->get('cid'))
 			$context['insert_after_template'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[;
-		document.getElementById(\'comment_id_'. $globals->getValue('cid') .'\').className = "windowbg3";
+		document.getElementById(\'comment_id_'. $globals->get('cid') .'\').className = "windowbg3";
 	// ]]></script>';
 	}
 }

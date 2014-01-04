@@ -50,7 +50,7 @@ class BreezeContainer
 	public function __get($id)
 	{
 		if (!isset($this->values[$id]))
-			fatal_lang_error('some text here');
+			fatal_lang_error('Breeze_error_no_property', false, array($id));
 
 		if (is_callable($this->values[$id]))
 			return $this->values[$id]($this);

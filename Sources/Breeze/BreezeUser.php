@@ -52,11 +52,9 @@ function breezeWall()
 		$breezeController = new BreezeController();
 
 	// We kinda need all this stuff, don't ask why, just nod your head...
-	$breezeSettings = $breezeController->get('settings');
 	$query = $breezeController->get('query');
 	$tools = $breezeController->get('tools');
-	$globals = Breeze::sGlobals('get');
-	$text = $breezeController->get('text');
+	$data = Breeze::data('get');
 	$log = $breezeController->get('log');
 	$usersToLoad = array();
 
@@ -111,7 +109,7 @@ function breezeWall()
 
 	// Set up some vars for pagination
 	$maxIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;
-	$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;
+	$currentPage = $data->validate('start') == true ? $globals->get('start') : 0;
 
 	// Load all the status
 	$data = $query->getStatusByProfile($context['member']['id'], $maxIndex, $currentPage);
@@ -129,7 +127,7 @@ function breezeWall()
 		$context['page_index'] = $data['pagination'];
 
 	// Page name depends on pagination
-	$context['page_title'] = sprintf($text->getText('profile_of_username'), $context['member']['name']);
+	$context['page_title'] = sprintf($tools->text('profile_of_username'), $context['member']['name']);
 
 	// Get the profile views
 	if (!$user_info['is_guest'] && !empty($context['Breeze']['settings']['owner']['visitors']))
@@ -196,21 +194,18 @@ function breezeSettings()
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
 
-	$sg = Breeze::sGlobals('get');
+	$sg = Breeze::data('get');
 
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	// Set the page title
-	$context['page_title'] = $breezeController->get('text')->getText('user_settings_name');
-	$context['sub_template'] = 'member_options';
-	$context['page_desc'] = $breezeController->get('text')->getText('user_settings_enable_desc');
-	$context['Breeze_redirect'] = '';
+	$tools = $breezeController->get('tools');
 
-	$context += array(
-		'page_title' => $breezeController->get('text')->getText('user_settings_name'),
-		'page_desc' => $breezeController->get('text')->getText('user_settings_enable_desc')
-	);
+	// Set the page title
+	$context['page_title'] = $tools->text('user_settings_name');
+	$context['sub_template'] = 'member_options';
+	$context['page_desc'] = $tools->text('user_settings_name_desc');
+	$context['Breeze_redirect'] = '';
 
 	// Get the user settings.
 	$userSettings = $breezeController->get('query')->getUserSettings($context['member']['id']);
@@ -327,19 +322,19 @@ function breezenotisettings()
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
 
-	$sg = Breeze::sGlobals('get');
+	$sg = Breeze::data('get');
 
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
 	// Set the page title
-	$context['page_title'] = $breezeController->get('text')->getText('user_settings_name');
+	$context['page_title'] = $breezeController->get('tools')->text('user_settings_name');
 	$context['sub_template'] = 'member_options';
-	$context['page_desc'] = $breezeController->get('text')->getText('user_settings_enable_desc');
+	$context['page_desc'] = $breezeController->get('tools')->text('user_settings_enable_desc');
 
 	$context += array(
-		'page_title' => $breezeController->get('text')->getText('user_settings_name'),
-		'page_desc' => $breezeController->get('text')->getText('user_settings_enable_desc')
+		'page_title' => $breezeController->get('tools')->text('user_settings_name'),
+		'page_desc' => $breezeController->get('tools')->text('user_settings_enable_desc')
 	);
 
 	// Need to tell the form the page it needs to display when redirecting back after saving.
@@ -394,11 +389,10 @@ function breezeNotifications()
 	$context['Breeze']['settings']['owner'] = $breezeController->get('query')->getUserSettings($context['member']['id']);
 
 	// Globals...
-	$globals = Breeze::sGlobals('request');
+	$data = Breeze::data('request');
 
 	// We kinda need all this stuff, don't ask why, just nod your head...
 	$query = $breezeController->get('query');
-	$text = $breezeController->get('text');
 	$notifications = $breezeController->get('notifications');
 	$tools = $breezeController->get('tools');
 	$tempNoti = $query->getNotificationByReceiver($context['member']['id'], true);
@@ -416,7 +410,7 @@ function breezeNotifications()
 
 	// Set all the page stuff
 	$context['sub_template'] = 'user_notifications';
-	$context['page_title'] = $text->getText('noti_title');
+	$context['page_title'] = $tools->text('noti_title');
 	$context['member']['is_owner'] = $context['member']['id'] == $user_info['id'];
 	$context['canonical_url'] = $scripturl . '?action=profile;area=notifications;u=' . $context['member']['id'];
 
@@ -448,24 +442,23 @@ function breezeBuddyRequest()
 
 	// Load all we need
 	$buddies = $breezeController->get('buddy');
-	$text = $breezeController->get('text');
-	$globals = Breeze::sGlobals('request');
+	$data = Breeze::data('request');
 	$query = $breezeController->get('query');
 
 	// Set all the page stuff
 	$context['sub_template'] = 'Breeze_buddy_list';
-	$context['page_title'] = $text->getText('noti_title');
+	$context['page_title'] = $tools->text('noti_title');
 	$context['canonical_url'] = $scripturl . '?action=profile;area=breezebuddies;u=' . $context['member']['id'];
 
 	// Show a nice message for confirmation
-	if ($globals->validate('inner') == true)
+	if ($data->validate('inner') == true)
 		switch ($globals->getRaw('inner'))
 		{
 			case 1:
-				$context['Breeze']['inner_message'] = $text->getText('buddyrequest_confirmed_inner_message');
+				$context['Breeze']['inner_message'] = $tools->text('buddyrequest_confirmed_inner_message');
 				break;
 			case 2:
-				$context['Breeze']['inner_message'] = $text->getText('buddyrequest_confirmed_inner_message_de');
+				$context['Breeze']['inner_message'] = $tools->text('buddyrequest_confirmed_inner_message_de');
 				break;
 			default:
 				$context['Breeze']['inner_message'] = '';
@@ -478,22 +471,22 @@ function breezeBuddyRequest()
 	// Send the buddy request(s) to the template
 	$context['Breeze']['Buddy_Request'] = $buddies->showBuddyRequests($context['member']['id']);
 
-	if ($globals->validate('from') == true && $globals->validate('message') == 'confirm' && $user_info['id'] != $globals->getValue('from'))
+	if ($data->validate('from') == true && $data->validate('message') == 'confirm' && $user_info['id'] != $globals->get('from'))
 	{
 		// Load Subs-Post to use sendpm
 		Breeze::load('Subs-Post');
 
 		// ...and a new friendship is born, yay!
-		$user_info['buddies'][] = $globals->getValue('from');
-		$context['Breeze']['user_info'][$globals->getValue('from')]['buddies'][] = $user_info['id'];
+		$user_info['buddies'][] = $globals->get('from');
+		$context['Breeze']['user_info'][$globals->get('from')]['buddies'][] = $user_info['id'];
 
 		// Update both users buddy array.
 		updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
-		updateMemberData($globals->getValue('from'), array('buddy_list' => implode(',', $context['Breeze']['user_info'][$globals->getValue('from')]['buddies'])));
+		updateMemberData($globals->get('from'), array('buddy_list' => implode(',', $context['Breeze']['user_info'][$globals->get('from')]['buddies'])));
 
 		// Send a pm to the user
 		$recipients = array(
-			'to' => array($globals->getValue('from')),
+			'to' => array($globals->get('from')),
 			'bcc' => array(),
 		);
 
@@ -505,9 +498,9 @@ function breezeBuddyRequest()
 		);
 
 		// @todo let the user to send a customized message/title
-		$subject = $text->getText('buddyrequest_confirmed_subject');
-		$message = $text->getText('buddyrequest_confirmed_message');
-		$noti = $globals->getValue('noti');
+		$subject = $tools->text('buddyrequest_confirmed_subject');
+		$message = $tools->text('buddyrequest_confirmed_message');
+		$noti = $globals->get('noti');
 
 		sendpm($recipients, $subject, $message, false, $from);
 
@@ -519,9 +512,9 @@ function breezeBuddyRequest()
 	}
 
 	// Declined?
-	elseif ($globals->validate('message') == 'decline')
+	elseif ($data->validate('message') == 'decline')
 	{
-		$noti = $globals->getValue('noti');
+		$noti = $globals->get('noti');
 
 		// Destroy the notification
 		$query->deleteNoti($noti, $user_info['id']);
@@ -539,8 +532,8 @@ function breezeBuddyMessage()
 	loadtemplate('BreezeBuddy');
 
 	// Get the params
-	$globals = Breeze::sGlobals('request');
-	$message = $globals->getValue('message')
+	$data = Breeze::data('request');
+	$message = $globals->get('message')
 
 	// Get on the guest list!
 	if (empty($message))
@@ -550,12 +543,9 @@ function breezeBuddyMessage()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	// Load all we need
-	$text = $breezeController->get('text');
-
 	// Set all the page stuff
 	$context['sub_template'] = 'Breeze_buddy_message';
-	$context['page_title'] = $text->getText('noti_title');
+	$context['page_title'] = $tools->text('noti_title');
 	$context['canonical_url'] = $scripturl . '?action=breezebuddyrequest';
 
 	// Linktree here someday!
@@ -652,15 +642,15 @@ function breezeCheckPermissions()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	$breezeSettings = $breezeController->get('settings');
+	$tools = $breezeController->get('tools');
 	$query = $breezeController->get('query');
 
 	// Another page already checked the permissions and if the mod is enable, but better be safe...
-	if (!$breezeSettings->enable('admin_settings_enable'))
+	if (!$tools->enable('admin_settings_enable'))
 		redirectexit();
 
 	// If we are forcing the wall, lets check the admin setting first
-	if ($breezeSettings->enable('admin_settings_force_enable'))
+	if ($tools->enable('admin_settings_force_enable'))
 		if (!isset($context['member']['options']['wall']))
 			$context['member']['options']['wall'] = 1;
 

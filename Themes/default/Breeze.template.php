@@ -415,7 +415,7 @@ function template_member_options()
 				<h3 class="catbg">
 					<span class="ie6_header floatleft">
 						<img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" class="icon" />
-						', $context['page_desc'] , '
+						', $context['page_title'] , '
 					</span>
 				</h3>
 			</div>

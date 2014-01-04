@@ -3,7 +3,7 @@
 /**
  * BreezeParser
  *
- * The purpose of this file is to identify something in a tezt string and convert that to something different, for example, a url into an actual html link.
+ * The purpose of this file is to identify something in a text string and convert that to something different, for example, a url into an actual html link.
  * @package Breeze mod
  * @version 1.0
  * @author Jessica González <suki@missallsunday.com>
@@ -43,9 +43,8 @@ class BreezeParser
 {
 	protected $regex;
 
-	function __construct($settings, $tools)
+	function __construct($tools)
 	{
-		$this->settings = $settings;
 		$this->tools = $tools;
 
 		// Regex stuff

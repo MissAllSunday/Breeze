@@ -49,8 +49,12 @@ abstract class BreezeDispatcher
 
 	static function dispatch()
 	{
-		$dependency = new BreezeController();
-		$sglobals = Breeze::sGlobals('get');
+		global $breezeController;
+
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
+
+		$data = Breeze::data('get');
 
 		$actions = array(
 			'breezeajax' => array('BreezeAjax' , 'call'),
@@ -58,27 +62,29 @@ abstract class BreezeDispatcher
 			// 'buddy' => array('BreezeBuddy', 'buddy'),  @todo for next version
 		);
 
-		if (in_array($sglobals->getValue('action'), array_keys($actions)))
+		// Want to add some more goodies?
+		call_integration_hook('integrate_breeze_actions', array(&$actions));
+
+		$do = $data->get('action');
+
+		if (isset($actions[$do]))
 		{
-			$controller_name = $actions[$sglobals->getValue('action')][0];
+			$controller = $actions[$do][0];
 
-			// Should probably use a switch here...
-			switch ($sglobals->getValue('action'))
-			{
-				case 'buddy':
-					$controller = new $controller_name($dependency->get('settings'), $dependency->get('query'), $dependency->get('notifications'));
-					break;
-				case 'breezeajax':
-				case 'wall':
-					$controller = new $controller_name($dependency->get('settings'), $dependency->get('text'), $dependency->get('query'), $dependency->get('notifications'), $dependency->get('parser'), $dependency->get('mention'), $dependency->get('display'), $dependency->get('tools'), $dependency->get('log'));
-					break;
-				default:
-					fatal_lang_error('Breeze_error_no_valid_action', false);
-			}
+			$method = $actions[$do][1];
 
-			// Lets call the method
-			$method_name = $actions[$sglobals->getValue('action')][1];
-			call_user_func_array(array($controller, $method_name), array());
+			// Lets do some checks...
+			if (!method_exists($controller, $method) || !is_callable($controller, $method))
+				fatal_lang_error('Breeze_error_no_valid_action', false);
+
+			// Create the instance
+			$object = new $controller($breezeController->get('tools'), $breezeController->get('display'),  $breezeController->get('parser'), $breezeController->get('query'), $breezeController->get('notifications'), $breezeController->get('mention'), $breezeController->get('log'));
+
+			// Lets call it
+			$object->$method();
 		}
+
+		else
+			fatal_lang_error('Breeze_error_no_valid_action', false);
 	}
 }
