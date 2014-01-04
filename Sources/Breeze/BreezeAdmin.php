@@ -130,7 +130,7 @@ function Breeze_Admin_Settings()
 	$tools = $breezeController->get('tools');
 
 	// Load stuff
-	$globals = Breeze::sGlobals('request');
+	$data = Breeze::data('request');
 	$context['sub_template'] = 'show_settings';
 	$context['page_title'] = $tools->text('admin_settings_main');
 	$context[$context['admin_menu_name']]['tab_data'] = array(
@@ -153,7 +153,7 @@ function Breeze_Admin_Settings()
 	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=settings;save';
 
 	// Saving?
-	if ($globals->validate('save') == true)
+	if ($data->validate('save') == true)
 	{
 		checkSession();
 		saveDBSettings($config_vars);
@@ -175,7 +175,7 @@ function Breeze_Admin_Permissions()
 	$tools = $breezeController->get('tools');
 
 	// Load stuff
-	$globals = Breeze::sGlobals('request');
+	$data = Breeze::data('request');
 	$context['sub_template'] = 'show_settings';
 	$context['page_title'] = $tools->text('admin_settings_main');
 	$context[$context['admin_menu_name']]['tab_data'] = array(
@@ -195,7 +195,7 @@ function Breeze_Admin_Permissions()
 	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=permissions;save';
 
 	// Saving?
-	if ($globals->validate('save') == true)
+	if ($data->validate('save') == true)
 	{
 		checkSession();
 		saveDBSettings($config_vars);
@@ -213,7 +213,7 @@ function Breeze_Admin_Style()
 
 	// Load stuff
 	$tools = $breezeController->get('tools');
-	$globals = Breeze::sGlobals('request');
+	$data = Breeze::data('request');
 	$context['sub_template'] = 'show_settings';
 	$context['page_title'] = $tools->text('admin_settings_sub_style');
 	$context[$context['admin_menu_name']]['tab_data'] = array(
@@ -231,7 +231,7 @@ function Breeze_Admin_Style()
 	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=style;save';
 
 	// Saving?
-	if ($globals->validate('save') == true)
+	if ($data->validate('save') == true)
 	{
 		checkSession();
 		saveDBSettings($config_vars);

@@ -105,11 +105,13 @@ class BreezeLog
 		// Load the users data, one fine day I will count how many times I typed this exact sentence...
 		$loadedUsers = $this->_query->loadMinimalData(array_unique(array($entry['content']['status_owner_id'], $entry['content']['poster_id'], $entry['content']['profile_id'])));
 
+		$gender = !empty($loadedUsers[$entry['content']['poster_id']]['gender']) ? $loadedUsers[$entry['content']['poster_id']]['gender'] : '0';
+
 		//Posting on your own wall?
 		$own = $entry['content']['status_owner_id'] == $entry['content']['poster_id'];
 
 		if ($own)
-			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_tools->text('logComment_own_'. $loadedUsers[$entry['content']['poster_id']]['gender']);
+			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_tools->text('logComment_own_'. $gender);
 
 		else
 			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_tools->text('logComment'), $loadedUsers[$entry['content']['status_owner_id']]['link']);

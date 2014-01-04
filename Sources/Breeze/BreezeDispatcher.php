@@ -54,7 +54,7 @@ abstract class BreezeDispatcher
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
-		$sglobals = Breeze::sGlobals('get');
+		$data = Breeze::data('get');
 
 		$actions = array(
 			'breezeajax' => array('BreezeAjax' , 'call'),
@@ -65,7 +65,7 @@ abstract class BreezeDispatcher
 		// Want to add some more goodies?
 		call_integration_hook('integrate_breeze_actions', array(&$actions));
 
-		$do = $sglobals->getValue('action');
+		$do = $data->get('action');
 
 		if (isset($actions[$do]))
 		{

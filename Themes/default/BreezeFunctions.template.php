@@ -320,10 +320,10 @@ function breeze_server_response()
 	loadLanguage(Breeze::$name);
 
 	// Get the message from the server
-	$serverResponse = Breeze::sGlobals('get');
+	$serverResponse = Breeze::data('get');
 
-	$type = $serverResponse->getValue('mstype');
-	$message = $serverResponse->getValue('msmessage');
+	$type = $serverResponse->get('mstype');
+	$message = $serverResponse->get('msmessage');
 
 	// Show a nice confirmation message for those without JavaScript
 	if (!empty($type) && !empty($message))

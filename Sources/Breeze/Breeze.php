@@ -120,15 +120,15 @@ class Breeze
 	}
 
 	/**
-	 * Breeze::sGlobals()
+	 * Breeze::data()
 	 *
 	 * A new instance of BreezeGlobals.
 	 * @param string $var Either post, request or get
 	 * @return object Access to BreezeGlobals
 	 */
-	public static function sGlobals($var)
+	public static function data($var)
 	{
-		return new BreezeGlobals($var);
+		return new BreezeData($var);
 	}
 
 	/**
@@ -422,7 +422,7 @@ class Breeze
 		if (!$header_done)
 		{
 			$tools = $breezeController->get('tools');
-			$breezeGlobals = Breeze::sGlobals('get');
+			$breezeGlobals = Breeze::data('get');
 			$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
 
 			// Don't pass the "about me" stuff...
@@ -492,7 +492,7 @@ class Breeze
 					Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $tools->getSetting('allowedActions')));
 
 				// Stuff for the notifications, don't show this if we aren't on a specified action
-				if (empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
+				if (empty($user_info['is_guest']) && (in_array($breezeGlobals->get('action'), Breeze::$_allowedActions) || $breezeGlobals->get('action') == false))
 				{
 					$notifications = $breezeController->get('notifications');
 					$context['insert_after_template'] .= '

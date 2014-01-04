@@ -57,7 +57,7 @@ class BreezeBuddy
 		is_not_guest();
 
 		// We need all this stuff
-		$sa = Breeze::sGlobals('get');
+		$sa = Breeze::data('get');
 
 		/* @todo theres a lot of ifs here... better split all cases into small methods */
 		$subActions = array(

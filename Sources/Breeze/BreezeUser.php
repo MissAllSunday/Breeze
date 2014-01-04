@@ -54,7 +54,7 @@ function breezeWall()
 	// We kinda need all this stuff, don't ask why, just nod your head...
 	$query = $breezeController->get('query');
 	$tools = $breezeController->get('tools');
-	$globals = Breeze::sGlobals('get');
+	$data = Breeze::data('get');
 	$log = $breezeController->get('log');
 	$usersToLoad = array();
 
@@ -109,7 +109,7 @@ function breezeWall()
 
 	// Set up some vars for pagination
 	$maxIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;
-	$currentPage = $globals->validate('start') == true ? $globals->getValue('start') : 0;
+	$currentPage = $data->validate('start') == true ? $globals->get('start') : 0;
 
 	// Load all the status
 	$data = $query->getStatusByProfile($context['member']['id'], $maxIndex, $currentPage);
@@ -194,7 +194,7 @@ function breezeSettings()
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
 
-	$sg = Breeze::sGlobals('get');
+	$sg = Breeze::data('get');
 
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
@@ -322,7 +322,7 @@ function breezenotisettings()
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
 
-	$sg = Breeze::sGlobals('get');
+	$sg = Breeze::data('get');
 
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
@@ -389,7 +389,7 @@ function breezeNotifications()
 	$context['Breeze']['settings']['owner'] = $breezeController->get('query')->getUserSettings($context['member']['id']);
 
 	// Globals...
-	$globals = Breeze::sGlobals('request');
+	$data = Breeze::data('request');
 
 	// We kinda need all this stuff, don't ask why, just nod your head...
 	$query = $breezeController->get('query');
@@ -442,7 +442,7 @@ function breezeBuddyRequest()
 
 	// Load all we need
 	$buddies = $breezeController->get('buddy');
-	$globals = Breeze::sGlobals('request');
+	$data = Breeze::data('request');
 	$query = $breezeController->get('query');
 
 	// Set all the page stuff
@@ -451,7 +451,7 @@ function breezeBuddyRequest()
 	$context['canonical_url'] = $scripturl . '?action=profile;area=breezebuddies;u=' . $context['member']['id'];
 
 	// Show a nice message for confirmation
-	if ($globals->validate('inner') == true)
+	if ($data->validate('inner') == true)
 		switch ($globals->getRaw('inner'))
 		{
 			case 1:
@@ -471,22 +471,22 @@ function breezeBuddyRequest()
 	// Send the buddy request(s) to the template
 	$context['Breeze']['Buddy_Request'] = $buddies->showBuddyRequests($context['member']['id']);
 
-	if ($globals->validate('from') == true && $globals->validate('message') == 'confirm' && $user_info['id'] != $globals->getValue('from'))
+	if ($data->validate('from') == true && $data->validate('message') == 'confirm' && $user_info['id'] != $globals->get('from'))
 	{
 		// Load Subs-Post to use sendpm
 		Breeze::load('Subs-Post');
 
 		// ...and a new friendship is born, yay!
-		$user_info['buddies'][] = $globals->getValue('from');
-		$context['Breeze']['user_info'][$globals->getValue('from')]['buddies'][] = $user_info['id'];
+		$user_info['buddies'][] = $globals->get('from');
+		$context['Breeze']['user_info'][$globals->get('from')]['buddies'][] = $user_info['id'];
 
 		// Update both users buddy array.
 		updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
-		updateMemberData($globals->getValue('from'), array('buddy_list' => implode(',', $context['Breeze']['user_info'][$globals->getValue('from')]['buddies'])));
+		updateMemberData($globals->get('from'), array('buddy_list' => implode(',', $context['Breeze']['user_info'][$globals->get('from')]['buddies'])));
 
 		// Send a pm to the user
 		$recipients = array(
-			'to' => array($globals->getValue('from')),
+			'to' => array($globals->get('from')),
 			'bcc' => array(),
 		);
 
@@ -500,7 +500,7 @@ function breezeBuddyRequest()
 		// @todo let the user to send a customized message/title
 		$subject = $tools->text('buddyrequest_confirmed_subject');
 		$message = $tools->text('buddyrequest_confirmed_message');
-		$noti = $globals->getValue('noti');
+		$noti = $globals->get('noti');
 
 		sendpm($recipients, $subject, $message, false, $from);
 
@@ -512,9 +512,9 @@ function breezeBuddyRequest()
 	}
 
 	// Declined?
-	elseif ($globals->validate('message') == 'decline')
+	elseif ($data->validate('message') == 'decline')
 	{
-		$noti = $globals->getValue('noti');
+		$noti = $globals->get('noti');
 
 		// Destroy the notification
 		$query->deleteNoti($noti, $user_info['id']);
@@ -532,8 +532,8 @@ function breezeBuddyMessage()
 	loadtemplate('BreezeBuddy');
 
 	// Get the params
-	$globals = Breeze::sGlobals('request');
-	$message = $globals->getValue('message')
+	$data = Breeze::data('request');
+	$message = $globals->get('message')
 
 	// Get on the guest list!
 	if (empty($message))

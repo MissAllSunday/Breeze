@@ -79,7 +79,7 @@ class BreezeAjax
 		global $user_info, $context;
 
 		// Handling the subactions
-		$sglobals = Breeze::sGlobals('get');
+		$data = Breeze::data('get');
 
 		// Safety first, hardcode the actions
 		$this->subActions = array(
@@ -98,7 +98,7 @@ class BreezeAjax
 		);
 
 		// Build the correct redirect URL
-		$this->comingFrom = $sglobals->getValue('rf') == true ? $sglobals->getValue('rf') : 'wall';
+		$this->comingFrom = $data->get('rf') == true ? $data->get('rf') : 'wall';
 
 		// Master setting is off, back off!
 		if (!$this->_tools->enable('admin_settings_enable'))
@@ -108,7 +108,7 @@ class BreezeAjax
 		$context['Breeze']['tools'] = $this->_tools;
 
 		// Not using JavaScript?
-		if (!$sglobals->getValue('js'))
+		if (!$data->get('js'))
 			$this->noJS = true;
 
 		// Get the current user settings.
@@ -119,10 +119,10 @@ class BreezeAjax
 		$call = $this->subActions;
 
 		// Does the subaction even exist?
-		if (isset($call[$sglobals->getValue('sa')]))
+		if (isset($call[$data->get('sa')]))
 		{
 			// This is somehow ugly but its faster.
-			$this->$call[$sglobals->getValue('sa')]();
+			$this->$call[$data->get('sa')]();
 
 			// Send the response back to the browser
 			$this->returnResponse();
@@ -143,12 +143,12 @@ class BreezeAjax
 		checkSession('request', '', false);
 
 		// Get the data
-		$this->_data = Breeze::sGlobals('request');
+		$this->_data = Breeze::data('request');
 
 		// Build plain normal vars...
-		$statusOwner = $this->_data->getValue('statusOwner');
-		$statusPoster = $this->_data->getValue('statusPoster');
-		$statusContent = $this->_data->getValue('statusContent');
+		$statusOwner = $this->_data->get('statusOwner');
+		$statusPoster = $this->_data->get('statusPoster');
+		$statusContent = $this->_data->get('statusContent');
 
 		// Sorry, try to play nicer next time
 		if (!$statusOwner || !$statusPoster || !$statusContent)
@@ -247,14 +247,14 @@ class BreezeAjax
 
 		checkSession('request', '', false);
 
-		$this->_data = Breeze::sGlobals('request');
+		$this->_data = Breeze::data('request');
 
 		// Trickery, there's always room for moar!
-		$commentStatus = $this->_data->getValue('commentStatus');
-		$commentStatusPoster = $this->_data->getValue('commentStatusPoster');
-		$commentPoster = $this->_data->getValue('commentPoster');
-		$commentOwner = $this->_data->getValue('commentOwner');
-		$commentContent = $this->_data->getValue('commentContent');
+		$commentStatus = $this->_data->get('commentStatus');
+		$commentStatusPoster = $this->_data->get('commentStatusPoster');
+		$commentPoster = $this->_data->get('commentPoster');
+		$commentOwner = $this->_data->get('commentOwner');
+		$commentContent = $this->_data->get('commentContent');
 
 		// Sorry, try to play nice next time
 		if (!$commentStatus || !$commentStatusPoster || !$commentPoster || !$commentOwner || !$commentContent)
@@ -362,13 +362,13 @@ class BreezeAjax
 		checkSession('request', '', false);
 
 		// Get the global vars
-		$this->_data = Breeze::sGlobals('request');
+		$this->_data = Breeze::data('request');
 
 		// Set some much needed vars
-		$id = $this->_data->getValue('bid');
-		$type = $this->_data->getValue('type');
-		$profileOwner = $this->_data->getValue('profileOwner');
-		$poster = $this->_data->getValue('poster');
+		$id = $this->_data->get('bid');
+		$type = $this->_data->get('type');
+		$profileOwner = $this->_data->get('profileOwner');
+		$poster = $this->_data->get('poster');
 
 		// Get the data
 		if ($id != false)
@@ -431,17 +431,17 @@ class BreezeAjax
 		checkSession('request', '', false);
 
 		// Get the values.
-		$this->_data = Breeze::sGlobals('request');
+		$this->_data = Breeze::data('request');
 
 		// Do the insert already!
-		$this->_query->insertUserSettings($this->_data->getValue('breezeSettings'), $this->_data->getValue('u'));
+		$this->_query->insertUserSettings($this->_data->get('breezeSettings'), $this->_data->get('u'));
 
 		// Done! set the redirect.
 		return $this->setResponse(array(
 			'type' => 'success',
 			'message' => 'updated_settings',
-			'owner' => $this->_data->getValue('u'),
-			'extra' => array('area' => $this->_data->getValue('area'),),
+			'owner' => $this->_data->get('u'),
+			'extra' => array('area' => $this->_data->get('area'),),
 		));
 
 	}
@@ -457,11 +457,11 @@ class BreezeAjax
 		checkSession('request', '', false);
 
 		// Get the global vars
-		$this->_data = Breeze::sGlobals('request');
+		$this->_data = Breeze::data('request');
 
 		// Get the data
-		$noti = $this->_data->getValue('content');
-		$user = $this->_data->getValue('user');
+		$noti = $this->_data->get('content');
+		$user = $this->_data->get('user');
 
 		// Is this valid data?
 		if (empty($noti) || empty($user))
@@ -512,11 +512,11 @@ class BreezeAjax
 		checkSession('request', '', false);
 
 		// Get the global vars
-		$this->_data = Breeze::sGlobals('request');
+		$this->_data = Breeze::data('request');
 
 		// Get the data
-		$noti = $this->_data->getValue('content');
-		$user = $this->_data->getValue('user');
+		$noti = $this->_data->get('content');
+		$user = $this->_data->get('user');
 
 		// Is this valid data?
 		if (empty($noti) || empty($user))
@@ -558,12 +558,12 @@ class BreezeAjax
 		checkSession('request', '', false);
 
 		// Get the global vars
-		$this->_data = Breeze::sGlobals('request');
+		$this->_data = Breeze::data('request');
 
 		// Start with getting the data
-		$do = $this->_data->getValue('multiNotiOption');
-		$idNoti = $this->_data->getValue('idNoti');
-		$user = $this->_data->getValue('user');
+		$do = $this->_data->get('multiNotiOption');
+		$idNoti = $this->_data->get('idNoti');
+		$user = $this->_data->get('user');
 
 		if (empty($do) || empty($idNoti) || empty($user))
 			return $this->setResponse(array(
@@ -598,7 +598,7 @@ class BreezeAjax
 		global $context;
 
 		// Get the global vars
-		$globals = Breeze::sGlobals('request');
+		$data = Breeze::data('request');
 
 		$id = $globals->getRaw('userID');
 		$maxIndex = $globals->getRaw('maxIndex');
@@ -651,8 +651,8 @@ class BreezeAjax
 
 	protected function fetchNoti()
 	{
-		$globals = Breeze::sGlobals('request');
-		$u = $globals->getValue('u');
+		$data = Breeze::data('request');
+		$u = $globals->get('u');
 
 		// This is easy, get and return all notifications as a json object, don't  worry, the actual query is cached ;)
 		return $this->setResponse(array(
@@ -688,11 +688,11 @@ class BreezeAjax
 		checkSession('request', '', false);
 
 		// Get the global vars
-		$this->_data = Breeze::sGlobals('request');
+		$this->_data = Breeze::data('request');
 
 		// Get the data
-		$log = $this->_data->getValue('log');
-		$user = $this->_data->getValue('u');
+		$log = $this->_data->get('log');
+		$user = $this->_data->get('u');
 
 		// An extra check
 		if (empty($log) || empty($user) || $user_info['id'] != $user)
