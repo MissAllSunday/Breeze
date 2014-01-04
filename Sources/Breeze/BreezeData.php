@@ -41,16 +41,19 @@ if (!defined('SMF'))
 class BreezeData
 {
 	protected $_request;
+	protected $_types = array();
 
 	/**
 	 * BreezeData::__construct()
 	 *
-	 * @param mixed $var
+	 * @param string $type
 	 * @return
 	 */
-	public function __construct()
+	public function __construct($type)
 	{
-		$this->_request = $_REQUEST;
+		$this->_types = 'request' => $_REQUEST, 'get' => $_GET, 'post' => $_POST);
+
+		$this->_request = (empty($type) || !isset($this->_types[$type])) ? $_REQUEST : $this->_types[$type];
 	}
 
 	/**
