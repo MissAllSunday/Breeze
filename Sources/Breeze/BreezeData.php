@@ -51,7 +51,7 @@ class BreezeData
 	 */
 	public function __construct($type)
 	{
-		$this->_types = 'request' => $_REQUEST, 'get' => $_GET, 'post' => $_POST);
+		$this->_types = array('request' => $_REQUEST, 'get' => $_GET, 'post' => $_POST);
 
 		$this->_request = (empty($type) || !isset($this->_types[$type])) ? $_REQUEST : $this->_types[$type];
 	}
