@@ -53,6 +53,7 @@ class BreezeMention
 		$this->_regex = '~@\(([\s\w,;-_\[\]\\\/\+\.\~\$\!]+), ([0-9]+)\)~u';
 		$this->_notification = $notifications;
 		$this->_query = $query;
+		$this->_tools = $tools;
 	}
 
 	/*

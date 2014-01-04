@@ -96,7 +96,7 @@ class BreezeController
 		// Mention
 		$this->container->mention = $this->container->asShared(function ($c)
 		{
-			return new BreezeMention($c->query, $c->notifications);
+			return new BreezeMention($c->tools, $c->query, $c->notifications);
 		});
 
 		// Log

@@ -89,7 +89,7 @@ jQuery(document).ready(function(){
 				cache: false,
 				dataType: 'json',
 				success: function(html)
-				{console.log(html);
+				{
 					jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
 						// Enable the button again...
 						jQuery('.status_button').removeAttr('disabled');
@@ -106,7 +106,7 @@ jQuery(document).ready(function(){
 					});
 				},
 				error: function (html)
-				{console.log(html);
+				{
 					// Enable the button again...
 					jQuery('.status_button').removeAttr('disabled');
 					jQuery('#statusContent').val('');
