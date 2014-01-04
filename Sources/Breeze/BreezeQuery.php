@@ -1338,7 +1338,7 @@ class BreezeQuery extends Breeze
 		if (($return = cache_get_data(Breeze::$name .'-Mentions', 7200)) == null)
 		{
 			$return = array();
-			$postsLimit = $this->tools->enable('admin_posts_for_mention') ? (int) $this->settings->getSetting('admin_posts_for_mention') : 1;
+			$postsLimit = $this->tools->enable('admin_posts_for_mention') ? (int) $this->tools->getSetting('admin_posts_for_mention') : 1;
 
 			$result = $smcFunc['db_query']('', '
 				SELECT id_member, member_name, real_name

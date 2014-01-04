@@ -64,6 +64,7 @@ $txt['Breeze_modules_enable_visitors_description'] = 'The last %1$s visitor%2$s 
 // User Individual Settings
 $txt['Breeze_profile'] = 'Wall Settings';
 $txt['Breeze_user_settings_name'] = 'Wall Settings';
+$txt['Breeze_user_settings_name_desc'] = 'Configure your wall and other general settings.';
 $txt['Breeze_user_buddysettings_name'] = 'Buddy Requests';
 $txt['Breeze_user_single_status'] = 'Single Status';
 $txt['Breeze_user_buddyrequestmessage_name'] = 'Buddy message request send';
@@ -221,6 +222,7 @@ $txt['Breeze_error_already_marked_noti'] = 'This notification was marked as read
 $txt['Breeze_cannot_postStatus'] = 'I\'m sorry,  you aren\'t allowed to post new Status.';
 $txt['Breeze_cannot_postComments'] = 'I\'m sorry,  you aren\'t allowed to post new Comments.';
 $txt['Breeze_error_no_valid_action'] = 'This is not a valid action.';
+$txt['Breeze_error_no_property'] = '%s isn\'t a valid call';
 $txt['Breeze_error_no_access'] = 'I\'m sorry, you don\'t have access to this section.';
 $txt['Breeze_success_noti_unmarkasread_after'] = 'You have successfully marked this notification as unread';
 $txt['Breeze_success_noti_markasread_after'] = 'You have successfully marked this notification as read';

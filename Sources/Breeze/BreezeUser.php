@@ -199,16 +199,13 @@ function breezeSettings()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
-	// Set the page title
-	$context['page_title'] = $breezeController->get('text')->getText('user_settings_name');
-	$context['sub_template'] = 'member_options';
-	$context['page_desc'] = $breezeController->get('text')->getText('user_settings_enable_desc');
-	$context['Breeze_redirect'] = '';
+	$tools = $breezeController->get('tools');
 
-	$context += array(
-		'page_title' => $breezeController->get('text')->getText('user_settings_name'),
-		'page_desc' => $breezeController->get('text')->getText('user_settings_enable_desc')
-	);
+	// Set the page title
+	$context['page_title'] = $tools->text('user_settings_name');
+	$context['sub_template'] = 'member_options';
+	$context['page_desc'] = $tools->text('user_settings_name_desc');
+	$context['Breeze_redirect'] = '';
 
 	// Get the user settings.
 	$userSettings = $breezeController->get('query')->getUserSettings($context['member']['id']);
@@ -331,13 +328,13 @@ function breezenotisettings()
 		$breezeController = new BreezeController();
 
 	// Set the page title
-	$context['page_title'] = $breezeController->get('text')->getText('user_settings_name');
+	$context['page_title'] = $breezeController->get('tools')->text('user_settings_name');
 	$context['sub_template'] = 'member_options';
-	$context['page_desc'] = $breezeController->get('text')->getText('user_settings_enable_desc');
+	$context['page_desc'] = $breezeController->get('tools')->text('user_settings_enable_desc');
 
 	$context += array(
-		'page_title' => $breezeController->get('text')->getText('user_settings_name'),
-		'page_desc' => $breezeController->get('text')->getText('user_settings_enable_desc')
+		'page_title' => $breezeController->get('tools')->text('user_settings_name'),
+		'page_desc' => $breezeController->get('tools')->text('user_settings_enable_desc')
 	);
 
 	// Need to tell the form the page it needs to display when redirecting back after saving.
@@ -396,7 +393,6 @@ function breezeNotifications()
 
 	// We kinda need all this stuff, don't ask why, just nod your head...
 	$query = $breezeController->get('query');
-	$text = $breezeController->get('text');
 	$notifications = $breezeController->get('notifications');
 	$tools = $breezeController->get('tools');
 	$tempNoti = $query->getNotificationByReceiver($context['member']['id'], true);
@@ -446,7 +442,6 @@ function breezeBuddyRequest()
 
 	// Load all we need
 	$buddies = $breezeController->get('buddy');
-	$text = $breezeController->get('text');
 	$globals = Breeze::sGlobals('request');
 	$query = $breezeController->get('query');
 
@@ -547,9 +542,6 @@ function breezeBuddyMessage()
 	// Lets stuff the memory!
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
-
-	// Load all we need
-	$text = $breezeController->get('text');
 
 	// Set all the page stuff
 	$context['sub_template'] = 'Breeze_buddy_message';
