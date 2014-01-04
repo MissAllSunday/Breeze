@@ -118,6 +118,9 @@ class BreezeAjax
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
 
+		// Add your ow subactions
+		call_integration_hook('integrate_breeze_ajax_actions', array(&$call));
+
 		// Does the subaction even exist?
 		if (isset($call[$data->get('sa')]))
 		{

@@ -108,6 +108,9 @@ class BreezeWall
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
 
+		// Add your own subactions
+		call_integration_hook('integrate_breeze_wall_actions', array(&$call));
+
 		// Does the sub-action even exist?
 		if (isset($call[$data->get('sa')]))
 		{
