@@ -131,7 +131,8 @@ class BreezeLog
 		$own = $entry['content']['owner_id'] == $entry['content']['poster_id'];
 
 		// Get the right text string
-		$logStatusString = 'logStatus_own_'. $loadedUsers[$entry['content']['poster_id']]['gender'];
+		$gender = !empty($loadedUsers[$entry['content']['poster_id']]['gender']) ? $loadedUsers[$entry['content']['poster_id']]['gender'] : '0';
+		$logStatusString = 'logStatus_own_'. $gender;
 
 		if ($own)
 			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_tools->text($logStatusString);

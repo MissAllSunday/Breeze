@@ -66,7 +66,7 @@ class BreezeController
 		// Tools
 		$this->container->tools = $this->container->asShared(function ($c)
 		{
-			return new BreezeTools($c->settings, $c->text);
+			return new BreezeTools();
 		});
 
 		// Display

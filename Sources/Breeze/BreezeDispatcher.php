@@ -67,7 +67,7 @@ abstract class BreezeDispatcher
 
 		$do = $sglobals->getValue('action');
 
-		if (isset($actions[$do])
+		if (isset($actions[$do]))
 		{
 			$controller = $actions[$do][0];
 

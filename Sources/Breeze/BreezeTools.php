@@ -40,12 +40,14 @@ if (!defined('SMF'))
 
 class BreezeTools
 {
-	protected $_pattern = Breeze::$name .'_';
+	protected $_pattern;
 
 	function __construct()
 	{
 		// Get globals
 		$this->_data = new BreezeGlobals('request');
+
+		$this->_pattern = Breeze::$name .'_';
 	}
 
 	public function text($var)
@@ -66,7 +68,7 @@ class BreezeTools
 	}
 
 	// Return true if the value do exist, false otherwise, O RLY?
-	protected function enable($var)
+	public function enable($var)
 	{
 		global $modSettings;
 
@@ -81,7 +83,7 @@ class BreezeTools
 	}
 
 	// Get the requested setting
-	protected function setting($var)
+	public function setting($var)
 	{
 		if (empty($var))
 			return false;

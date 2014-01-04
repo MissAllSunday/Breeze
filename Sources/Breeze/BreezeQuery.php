@@ -58,12 +58,11 @@ class BreezeQuery extends Breeze
 	 * Creates a multidimensional array with all the details about the tables used in Breeze
 	 * @return
 	 */
-	public function __construct($settings, $tools, $parser)
+	public function __construct($tools, $parser)
 	{
 		global $smcFunc, $scripturl;
 
 		// Set everything
-		$this->settings = $settings;
 		$this->tools = $tools;
 		$this->parser = $parser;
 		$this->scripturl = $scripturl;
@@ -1339,12 +1338,12 @@ class BreezeQuery extends Breeze
 		if (($return = cache_get_data(Breeze::$name .'-Mentions', 7200)) == null)
 		{
 			$return = array();
-			$postsLimit = $this->settings->enable('admin_posts_for_mention') ? (int) $this->settings->getSetting('admin_posts_for_mention') : 1;
+			$postsLimit = $this->tools->enable('admin_posts_for_mention') ? (int) $this->settings->getSetting('admin_posts_for_mention') : 1;
 
 			$result = $smcFunc['db_query']('', '
 				SELECT id_member, member_name, real_name
 				FROM {db_prefix}members
-				' . ($this->settings->enable('admin_posts_for_mention') ? '
+				' . ($this->tools->enable('admin_posts_for_mention') ? '
 				WHERE posts >= {int:p}' : '') .
 				'',array(
 					'p' => $postsLimit,
