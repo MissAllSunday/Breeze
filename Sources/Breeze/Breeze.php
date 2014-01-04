@@ -489,7 +489,7 @@ class Breeze
 
 				// Does the admin wants to add more actions?
 				if ($tools->enable('allowedActions'))
-					Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $breezeSettings->getSetting('allowedActions')));
+					Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $tools->getSetting('allowedActions')));
 
 				// Stuff for the notifications, don't show this if we aren't on a specified action
 				if (empty($user_info['is_guest']) && (in_array($breezeGlobals->getValue('action'), Breeze::$_allowedActions) || $breezeGlobals->getValue('action') == false))
