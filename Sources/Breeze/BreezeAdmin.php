@@ -127,6 +127,8 @@ function Breeze_Admin_Settings()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
+	$tools = $breezeController->get('tools');
+
 	// Load stuff
 	$globals = Breeze::sGlobals('request');
 	$context['sub_template'] = 'show_settings';
@@ -170,6 +172,8 @@ function Breeze_Admin_Permissions()
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
+	$tools = $breezeController->get('tools');
+
 	// Load stuff
 	$globals = Breeze::sGlobals('request');
 	$context['sub_template'] = 'show_settings';
@@ -208,7 +212,7 @@ function Breeze_Admin_Style()
 	loadtemplate('Admin');
 
 	// Load stuff
-	$text = $breezeController->get('text');
+	$tools = $breezeController->get('tools');
 	$globals = Breeze::sGlobals('request');
 	$context['sub_template'] = 'show_settings';
 	$context['page_title'] = $tools->text('admin_settings_sub_style');
@@ -246,10 +250,6 @@ function Breeze_Admin_Donate()
 
 	// Headers
 	$tools = $breezeController->get('tools');
-	Breeze::headersHook('admin');
-
-	// Text strings
-	$text = $breezeController->get('text');
 
 	// Page stuff
 	$context['page_title'] = Breeze::$name .' - '. $tools->text('admin_settings_donate');
