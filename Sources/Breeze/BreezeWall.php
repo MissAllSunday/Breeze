@@ -150,7 +150,7 @@ class BreezeWall
 
 		// Pagination max index and current page
 		$maxIndex = !empty($this->userSettings['pagination_number']) ? $this->userSettings['pagination_number'] : 5;
-		$currentPage = $data->validate('start') == true ? $globals->get('start') : 0;
+		$currentPage = ($data->validate('start') == true) ? $data->get('start') : 0;
 
 		// Set all the page stuff
 		$context['page_title'] = $this->_tools->text('general_wall');
@@ -213,7 +213,7 @@ class BreezeWall
 			fatal_lang_error('no_access', false);
 
 		// Load it.
-		$data = $this->_query->getStatusByID($globals->get('bid'));
+		$status = $this->_query->getStatusByID($data->get('bid'));
 
 		if (!empty($this->userSettings['buddies']))
 		{
@@ -226,23 +226,23 @@ class BreezeWall
 		}
 
 		// Load the users data
-		$this->_tools->loadUserInfo($data['users']);
+		$this->_tools->loadUserInfo($status['users']);
 
-		$context['Breeze']['status'] = $data['data'];
+		$context['Breeze']['status'] = $status['data'];
 
 		// Set all the page stuff
 		$context['sub_template'] = 'general_wall';
 		$context['page_title'] = $this->_tools->text('singleStatus_pageTitle');
-		$context['canonical_url'] = $scripturl .'?action=wall;area=single;bid='. $globals->get('bid');
+		$context['canonical_url'] = $scripturl .'?action=wall;area=single;bid='. $data->get('bid');
 
 		// There cannot be any pagination
 		$context['page_index'] = array();
 
 		// Are we showing a comment? if so, highlight it.
-		if ($globals->get('cid'))
+		if ($data->get('cid'))
 			$context['insert_after_template'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[;
-		document.getElementById(\'comment_id_'. $globals->get('cid') .'\').className = "windowbg3";
+		document.getElementById(\'comment_id_'. $data->get('cid') .'\').className = "windowbg3";
 	// ]]></script>';
 	}
 }
