@@ -603,10 +603,10 @@ class BreezeAjax
 		// Get the global vars
 		$data = Breeze::data('request');
 
-		$id = $globals->getRaw('userID');
-		$maxIndex = $globals->getRaw('maxIndex');
-		$numberTimes = $globals->getRaw('numberTimes');
-		$comingFrom = $globals->getRaw('comingFrom');
+		$id = $data->get('userID');
+		$maxIndex = $data->get('maxIndex');
+		$numberTimes = $data->get('numberTimes');
+		$comingFrom = $data->get('comingFrom');
 		$return = '';
 
 		// The usual checks
@@ -621,7 +621,7 @@ class BreezeAjax
 		$start = $maxIndex * $numberTimes;
 
 		// Pass the user ID or IDs depending where are we coming from....
-		$fetch = $comingFrom == 'wall' ? $globals->getRaw('buddies') : $globals->getRaw('userID');
+		$fetch = $comingFrom == 'wall' ? $data->get('buddies') : $data->get('userID');
 
 		// Re-globalized!
 		$context['Breeze']['comingFrom'] = $comingFrom;
@@ -655,7 +655,7 @@ class BreezeAjax
 	protected function fetchNoti()
 	{
 		$data = Breeze::data('request');
-		$u = $globals->get('u');
+		$u = $data->get('u');
 
 		// This is easy, get and return all notifications as a json object, don't  worry, the actual query is cached ;)
 		return $this->setResponse(array(
