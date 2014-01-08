@@ -87,7 +87,7 @@ function template_user_wall()
 
 	// This is the status box,  O RLY?
 	if (allowedTo('breeze_postStatus'))
-			echo '
+		echo '
 			<div class="breeze_user_inner windowbg">
 				<span class="topslice"><span></span></span>
 				<div class="breeze_user_statusbox content">

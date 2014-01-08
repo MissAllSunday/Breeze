@@ -319,28 +319,28 @@ jQuery(document).ready(function(){
 	});
 
 	// Mentioning
-	jQuery('textarea[rel*=atwhoMention]').bind("focus", function(event){
-		jQuery.ajax({
-			url: smf_scripturl + '?action=breezeajax;sa=usersmention;js=1' + breeze.session.v + '=' + breeze.session.id,
-			type: "GET",
-			dataType: "json",
-			success: function(result)
-			{
-				jQuery('textarea[rel*=atwhoMention]').atwho('@', {
-					search_key: "name",
-					tpl: "<li data-value='(${name}, ${id})'>${name} <small>${id}</small></li>",
-					data: result,
-					limit: breeze.currentSettings.how_many_mentions,
-					callback: {
-						filter: function (query, data, search_key) {
-							return jQuery.map(data, function(item, i) {
-								return item[search_key].toLowerCase().indexOf(query) < 0 ? null : item
-							})
-						}
+	jQuery('textarea[rel*=atwhoMention]').atwho({
+		at: "@",
+		tpl: "<li data-value='@(${name}, ${id})'>${name} <small>${id}</small></li>",
+		callbacks: {
+			remote_filter: function(query, callback) {
+
+				if (query.length <= 2)
+					return {name: '', id:''};
+
+				jQuery.ajax({
+					url: smf_scripturl + '?action=breezeajax;sa=usersmention;js=1' + breeze.session.v + '=' + breeze.session.id,
+					type: "GET",
+					data: query,
+					dataType: "json",
+					success: function(data){
+						callback(data);
+					},
+					error: function(data){
 					}
 				});
 			}
-		});
+		}
 	});
 
 	// Facebox

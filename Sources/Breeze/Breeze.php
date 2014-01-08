@@ -471,6 +471,7 @@ class Breeze
 	<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
 	<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
 	<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />
+	<link href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css"/>';
 
 			// Load the notification JS files.
