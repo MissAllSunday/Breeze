@@ -254,7 +254,7 @@ class BreezeTools
 		$perm = array(
 			'edit' => false,
 			'delete' => '',
-			'post' => false,
+			'post' => allowedTo('breeze_post'. $type)
 		);
 
 		// NO! you don't have permission to do nothing...

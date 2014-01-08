@@ -86,7 +86,7 @@ function template_user_wall()
 		</div>';
 
 	// This is the status box,  O RLY?
-	if (!empty($context['Breeze']['post']['status']))
+	if (allowedTo('breeze_postStatus'))
 			echo '
 			<div class="breeze_user_inner windowbg">
 				<span class="topslice"><span></span></span>
