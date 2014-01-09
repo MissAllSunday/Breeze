@@ -85,7 +85,7 @@ jQuery(document).ready(function(){
 
 			// If there are some mentions, attach them to our main object.
 			if (window.breeze.mentions)
-				status['statusMentions'] = window.breeze.mentions;
+				status['mentions'] = window.breeze.mentions;
 
 			// The long, long ajax call...
 			jQuery.ajax({
@@ -162,6 +162,10 @@ jQuery(document).ready(function(){
 
 			// The usual loading image...
 			jQuery('#breeze_load_image_comment_'+ StatusID).fadeIn('slow').html(breeze.tools.loadImage);
+
+			// Any mentions? add them at once!
+			if (window.breeze.mentions)
+				comment['mentions'] = window.breeze.mentions;
 
 			jQuery.ajax({
 				type: 'GET',

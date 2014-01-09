@@ -155,8 +155,8 @@ class BreezeAjax
 		$statusMentions = array();
 
 		// Any mentions?
-		if ($this->_data->get('statusMentions'))
-			$statusMentions = $this->_data->get('statusMentions');
+		if ($this->_data->get('mentions'))
+			$statusMentions = $this->_data->get('mentions');
 
 		// Sorry, try to play nicer next time
 		if (!$statusOwner || !$statusPoster || !$statusContent)
@@ -263,6 +263,11 @@ class BreezeAjax
 		$commentPoster = $this->_data->get('commentPoster');
 		$commentOwner = $this->_data->get('commentOwner');
 		$commentContent = $this->_data->get('commentContent');
+		$commentMentions = array();
+
+		// So, you're popular huh?
+		if ($this->_data->get('mentions'))
+			$commentMentions = $this->_data->get('mentions');
 
 		// Sorry, try to play nice next time
 		if (!$commentStatus || !$commentStatusPoster || !$commentPoster || !$commentOwner || !$commentContent)
@@ -292,7 +297,7 @@ class BreezeAjax
 				'poster_id' => $commentPoster,
 				'profile_id' => $commentOwner,
 				'time' => time(),
-				'body' => $this->_mention->preMention($body)
+				'body' => $this->_mention->preMention($body, $commentMentions)
 			);
 
 			// Before inserting the comment...
