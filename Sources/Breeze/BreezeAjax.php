@@ -152,6 +152,11 @@ class BreezeAjax
 		$statusOwner = $this->_data->get('statusOwner');
 		$statusPoster = $this->_data->get('statusPoster');
 		$statusContent = $this->_data->get('statusContent');
+		$statusMentions = array();
+
+		// Any mentions?
+		if ($this->_data->get('statusMentions'))
+			$statusMentions = $this->_data->get('statusMentions');
 
 		// Sorry, try to play nicer next time
 		if (!$statusOwner || !$statusPoster || !$statusContent)
@@ -174,7 +179,7 @@ class BreezeAjax
 				'owner_id' => $statusOwner,
 				'poster_id' => $statusPoster,
 				'time' => time(),
-				'body' => $this->_mention->preMention($body),
+				'body' => $this->_mention->preMention($body, $statusMentions),
 			);
 
 			// Maybe a last minute change before inserting the new status?

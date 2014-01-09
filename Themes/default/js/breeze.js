@@ -35,6 +35,8 @@
 
 breeze.tools.loadImage = '<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" />';
 
+window.breeze.mentions = {};
+
 // Helper function to show a notification instance
 breeze.tools.showNoti = function(params){
 	noty({
@@ -80,6 +82,10 @@ jQuery(document).ready(function(){
 
 			// Show a nice loading image so people can think we are actually doing some work...
 			jQuery('#breeze_load_image').fadeIn('slow').html(breeze.tools.loadImage);
+
+			// If there are some mentions, attach them to our main object.
+			if (window.breeze.mentions)
+				status['statusMentions'] = window.breeze.mentions;
 
 			// The long, long ajax call...
 			jQuery.ajax({
@@ -321,7 +327,7 @@ jQuery(document).ready(function(){
 	// Mentioning
 	jQuery('textarea[rel*=atwhoMention]').atwho({
 		at: "@",
-		tpl: "<li data-value='@(${name}, ${id})'>${name} <small>${id}</small></li>",
+		tpl: "<li data-value='@${name}' data-user='${id}'>${name}</li>",
 		callbacks: {
 			remote_filter: function(query, callback) {
 
@@ -339,6 +345,18 @@ jQuery(document).ready(function(){
 					error: function(data){
 					}
 				});
+			},
+			before_insert: function(value, li)
+			{
+				var userID, name;
+
+				userID = li.data('user');
+				name = li.data('value');
+
+				// Set a "global" var to be picked up by the posting functions
+				window.breeze.mentions[userID.toString()] = {'id': userID, 'name': name.replace('@', '')};
+
+				return value;
 			}
 		}
 	});

@@ -49,7 +49,7 @@ class BreezeParser
 
 		// Regex stuff
 		$this->regex = array(
-			'mention' => '~@\(([\s\w,;-_\[\]\\\/\+\.\~\$\!]+), ([0-9]+)\)~u',
+			'mention' => '~\(([\s\w,;-_\[\]\\\/\+\.\~\$\!]+), ([0-9]+)\)~u',
 		);
 	}
 

@@ -50,7 +50,6 @@ class BreezeMention
 
 	function __construct($tools, $query, $notifications)
 	{
-		$this->_regex = '~@\(([\s\w,;-_\[\]\\\/\+\.\~\$\!]+), ([0-9]+)\)~u';
 		$this->_notification = $notifications;
 		$this->_query = $query;
 		$this->_tools = $tools;
@@ -63,14 +62,19 @@ class BreezeMention
 	 * @access public
 	 * @return string
 	 */
-	public function preMention($string)
+	public function preMention($string, $mentions = array())
 	{
 		$this->_string = $string;
 
+		if (empty($mentions))
+			return $this->_string;
+
 		// Search for all possible names
-		if (preg_match_all($this->_regex, $this->_string, $matches, PREG_SET_ORDER))
-			foreach ($matches as $m)
-				$this->_queryNames[$m[2]] = $m;
+		$this->_queryNames = $mentions;
+
+		// We need to replace all the @username with something that can be parsed
+		foreach ($this->_queryNames as $name)
+			$this->_string = str_replace('@'. $name['name'], '('. $name['name'] .', '. $name['id'] .')', $this->_string);
 
 		return $this->_string;
 	}
@@ -103,12 +107,12 @@ class BreezeMention
 		foreach ($this->_queryNames as $name)
 		{
 			// Append the mentioned user ID
-			$noti_info['wall_mentioned'] = $name[2];
+			$noti_info['wall_mentioned'] = $name['id'];
 
 			// Notification here
 			$this->_notification->create(array(
 				'sender' => $user_info['id'],
-				'receiver' => $name[2],
+				'receiver' => $name['id'],
 				'type' => 'mention',
 				'time' => time(),
 				'read' => 0,
