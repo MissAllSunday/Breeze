@@ -600,6 +600,8 @@ class BreezeAjax
 	{
 		global $context;
 
+		checkSession('request', '', false);
+
 		// Get the global vars
 		$data = Breeze::data('request');
 
@@ -654,6 +656,8 @@ class BreezeAjax
 
 	protected function fetchNoti()
 	{
+		checkSession('request', '', false);
+
 		$data = Breeze::data('request');
 		$u = $data->get('u');
 
@@ -674,8 +678,16 @@ class BreezeAjax
 	 */
 	protected function usersMention()
 	{
-		// @todo theres gotta be a better way to handle mentions.
-		return $this->_response = $this->_query->userMention();
+		checkSession('request', '', false);
+
+		// Need it.
+		$data = Breeze::data('get');
+
+		// Get the query to match
+		$match = $data->get('match');
+
+		// Lets see if there are any results for this match.
+		return $this->_response = $this->_query->userMention($match);
 	}
 
 	/**

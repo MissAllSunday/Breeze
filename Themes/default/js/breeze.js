@@ -89,7 +89,7 @@ jQuery(document).ready(function(){
 				cache: false,
 				dataType: 'json',
 				success: function(html)
-				{console.log(html);
+				{
 					jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
 						// Enable the button again...
 						jQuery('.status_button').removeAttr('disabled');
@@ -106,7 +106,7 @@ jQuery(document).ready(function(){
 					});
 				},
 				error: function (html)
-				{console.log(html);
+				{
 					// Enable the button again...
 					jQuery('.status_button').removeAttr('disabled');
 					jQuery('#statusContent').val('');
@@ -331,7 +331,7 @@ jQuery(document).ready(function(){
 				jQuery.ajax({
 					url: smf_scripturl + '?action=breezeajax;sa=usersmention;js=1' + breeze.session.v + '=' + breeze.session.id,
 					type: "GET",
-					data: query,
+					data: {match: query},
 					dataType: "json",
 					success: function(data){
 						callback(data);

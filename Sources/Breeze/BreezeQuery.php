@@ -1330,23 +1330,37 @@ class BreezeQuery extends Breeze
 		);
 	}
 
-	public function userMention()
+	public function userMention($match)
 	{
-		global $smcFunc;
+		// By default we return these empty values
+		$return = array(
+			'name' => '',
+			'id' => ''
+		);
+
+		// meh...
+		if (empty($match))
+			return $return;
+
+		// Cheating...
+		if ($this->_smcFunc['strlen']($match) >= 3)
+			$match = $this->_smcFunc['substr']($match, 0, 3);
 
 		// Let us set a very long-lived cache entry
-		if (($return = cache_get_data(Breeze::$name .'-Mentions', 7200)) == null)
+		if (($return = cache_get_data(Breeze::$name .'-Mentions-'. $match, 7200)) == null)
 		{
 			$return = array();
-			$postsLimit = $this->tools->enable('admin_posts_for_mention') ? (int) $this->tools->getSetting('admin_posts_for_mention') : 1;
+			$postsLimit = $this->tools->enable('admin_posts_for_mention') ? (int) $this->tools->setting('admin_posts_for_mention') : 1;
 
-			$result = $smcFunc['db_query']('', '
+			$result = $this->_smcFunc['db_query']('', '
 				SELECT id_member, member_name, real_name
 				FROM {db_prefix}members
-				' . ($this->tools->enable('admin_posts_for_mention') ? '
-				WHERE posts >= {int:p}' : '') .
+				WHERE member_name LIKE {string:match} OR real_name LIKE {string:match}
+				'. ($this->tools->enable('admin_posts_for_mention') ? '
+					AND posts >= {int:p}' : '') .
 				'',array(
 					'p' => $postsLimit,
+					'match' => $match .'%'
 				)
 			);
 
@@ -1356,10 +1370,10 @@ class BreezeQuery extends Breeze
 					'id' => (int) $row['id_member'],
 				);
 
-			$smcFunc['db_free_result']($result);
+			$this->_smcFunc['db_free_result']($result);
 
 			// Cached and forget about it
-			cache_put_data(Breeze::$name .'-Mentions', $return, 7200);
+			cache_put_data(Breeze::$name .'-Mentions-'. $match, $return, 7200);
 		}
 
 		return $return;
