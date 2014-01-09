@@ -686,7 +686,7 @@ class BreezeAjax
 		// Get the query to match
 		$match = $data->get('match');
 
-		// Lets see if there are any results for this match.
+		// Lets see if there are any results to this search.
 		return $this->_response = $this->_query->userMention($match);
 	}
 
