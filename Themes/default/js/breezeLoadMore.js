@@ -65,7 +65,6 @@ jQuery(document).ready(function(){
 
 				// Append some more data to breeze.pagination.
 				breeze.pagination.numberTimes = numberOfEvents;
-				breeze.pagination.userID = breeze.currentUser;
 				breeze.pagination.comingFrom = breeze.tools.comingFrom
 
 				jQuery.ajax(
