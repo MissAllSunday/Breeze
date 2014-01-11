@@ -86,7 +86,7 @@ jQuery(document).ready(function(){
 
 							else{
 								noty({
-									text: breeze.text.load_more_no,
+									text: breeze.text.page_loading_end,
 									timeout: 3500,
 									type: 'success'
 								});

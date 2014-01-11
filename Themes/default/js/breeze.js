@@ -67,7 +67,7 @@ jQuery(document).ready(function(){
 		// You need to type something...
 		if(status.statusContent=='')
 		{
-			breeze.tools.showNoti({message: breeze.text.empty_message, type : 'error'});
+			breeze.tools.showNoti({message: breeze.text.error_empty, type : 'error'});
 			return false;
 		}
 
