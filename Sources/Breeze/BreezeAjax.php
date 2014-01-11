@@ -507,7 +507,7 @@ class BreezeAjax
 			// All done!
 			return $this->setResponse(array(
 				'type' => 'success',
-				'message' => 'noti_markasread_after',
+				'message' => 'noti_'. ($viewed == 0 ? 'un' : '') .'markasread_after',
 				'owner' => $user,
 				'extra' => array('area' => 'breezenoti',),
 			));

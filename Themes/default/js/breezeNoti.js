@@ -48,7 +48,7 @@ breeze.tools.stream = function(currentUser)
 			if (noti.data == '')
 				return;
 
-			// Loops for everyone!!
+			// (Froot) Loops for everyone!!
 			jQuery.each(noti.data, function(i, item){
 
 				number++;
@@ -65,21 +65,21 @@ breeze.tools.stream = function(currentUser)
 							jQuery.ajax({
 								type: 'POST',
 								url: smf_scripturl + '?action=breezeajax;sa=notimark;js=1;' + breeze.session.v + '=' + breeze.session.id,
-								data: ({content : noti.id, user : noti.user}),
+								data: ({content : item.id, user : item.user}),
 								cache: false,
 								dataType: 'json',
 								success: function(html){
 
 									if(html.type == 'error'){
-										noty({text: breeze_error_message, timeout: 3500, type: 'error'});
+										noty({text: html.message, timeout: 3500, type: 'error'});
 									}
 
-									else if(html.type == 'ok'){
-											noty({text: breeze.text.noti_markasread_after, timeout: 3500, type: 'success'});
+									else if(html.type == 'success'){
+											noty({text: html.message, timeout: 3500, type: 'success'});
 									}
 								},
 								error: function (html){
-										noty({text: breeze_error_message, timeout: 3500, type: 'error'});
+										noty({text: breeze.text.error_wrong_values, timeout: 3500, type: 'error'});
 								}
 							});
 
@@ -89,7 +89,7 @@ breeze.tools.stream = function(currentUser)
 							jQuery.ajax({
 								type: 'POST',
 								url: smf_scripturl + '?action=breezeajax;sa=notidelete;js=1;' + breeze.session.v + '=' + breeze.session.id,
-								data: ({content : noti.id, user : noti.user}),
+								data: ({content : item.id, user : item.user}),
 								cache: false,
 								dataType: 'json',
 								success: function(html){
@@ -106,7 +106,7 @@ breeze.tools.stream = function(currentUser)
 									}
 								},
 								error: function (html){
-										noty({text: breeze_error_message, timeout: 3500, type: 'error'});
+										noty({text: breeze.text.error_wrong_values, timeout: 3500, type: 'error'});
 								}
 							});
 								$noty.close();
