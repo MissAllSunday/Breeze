@@ -158,6 +158,7 @@ function breezeWall()
 		breeze.pagination = {
 			maxIndex : '. $maxIndex .',
 			totalItems : ' . $data['count'] . ',
+			userID : '. $context['member']['id'] .';
 		};
 
 		breeze.tools.comingFrom = ' . JavaScriptEscape($context['Breeze']['comingFrom']) . ';';
