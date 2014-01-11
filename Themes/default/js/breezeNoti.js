@@ -94,15 +94,15 @@ breeze.tools.stream = function(currentUser)
 								dataType: 'json',
 								success: function(html){
 									if(html.type == 'error'){
-										noty({text: html.data, timeout: 3500, type: 'error'});
+										noty({text: html.message, timeout: 3500, type: 'error'});
 									}
 
 									else if(html.type == 'deleted'){
-										noty({text: html.data, timeout: 3500, type: 'error'});
+										noty({text: html.message, timeout: 3500, type: 'error'});
 									}
 
-									else if(html.type == 'ok'){
-										noty({text: html.data, timeout: 3500, type: 'success'});
+									else if(html.type == 'success'){
+										noty({text: html.message, timeout: 3500, type: 'success'});
 									}
 								},
 								error: function (html){
