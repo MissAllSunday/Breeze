@@ -69,14 +69,7 @@ breeze.tools.stream = function(currentUser)
 								cache: false,
 								dataType: 'json',
 								success: function(html){
-
-									if(html.type == 'error'){
-										noty({text: html.message, timeout: 3500, type: 'error'});
-									}
-
-									else if(html.type == 'success'){
-											noty({text: html.message, timeout: 3500, type: 'success'});
-									}
+										noty({text: html.message, timeout: 3500, type: html.type});
 								},
 								error: function (html){
 										noty({text: breeze.text.error_wrong_values, timeout: 3500, type: 'error'});
@@ -93,17 +86,7 @@ breeze.tools.stream = function(currentUser)
 								cache: false,
 								dataType: 'json',
 								success: function(html){
-									if(html.type == 'error'){
-										noty({text: html.message, timeout: 3500, type: 'error'});
-									}
-
-									else if(html.type == 'deleted'){
-										noty({text: html.message, timeout: 3500, type: 'error'});
-									}
-
-									else if(html.type == 'success'){
-										noty({text: html.message, timeout: 3500, type: 'success'});
-									}
+										noty({text: html.message, timeout: 3500, type: html.type});
 								},
 								error: function (html){
 										noty({text: breeze.text.error_wrong_values, timeout: 3500, type: 'error'});
