@@ -50,7 +50,8 @@ class BreezeAjax
 	/**
 	 * BreezeAjax::__construct()
 	 *
-	 * @return
+	 * Sets all the needed vars, loads the language file
+	 * @return void
 	 */
 	public function __construct($tools, $display, $parser, $query, $notifications, $mention, $log)
 	{
@@ -72,7 +73,9 @@ class BreezeAjax
 	/**
 	 * BreezeAjax::call()
 	 *
-	 * @return
+	 * Calls the right method for each subaction, calls returnResponse().
+	 * @see BreezeAjax::returnResponse()
+	 * @return void
 	 */
 	public function call()
 	{
@@ -139,6 +142,7 @@ class BreezeAjax
 	/**
 	 * BreezeAjax::post()
 	 *
+	 * Gets the data from the client and stores a new status in the DB, uses BreezeQuery object. 
 	 * @return
 	 */
 	public function post()
@@ -247,6 +251,7 @@ class BreezeAjax
 	/**
 	 * BreezeAjax::postComment()
 	 *
+	 * Gets the data from the client and stires a new comment in the DB.
 	 * @return
 	 */
 	public function postComment()
@@ -438,7 +443,13 @@ class BreezeAjax
 				'owner' => $profileOwner,
 			));
 	}
-
+	
+	/**
+	 * BreezeAjax::userSettings()
+	 *
+	 * Saves the current user settings into the DB.
+	 * @return
+	 */
 	public function userSettings()
 	{
 		checkSession('request', '', false);
@@ -563,7 +574,7 @@ class BreezeAjax
 	/**
 	 * BreezeAjax::multiNoti()
 	 *
-	 * Handles mass actions, mark as read/unread and deletion of multiple notifications at once
+	 * Handles mass actions, mark as read/unread and deletion of multiple notifications at once.
 	 * @return void
 	 */
 	public function multiNoti()
@@ -606,6 +617,12 @@ class BreezeAjax
 		}
 	}
 
+	/**
+	 * BreezeAjax::fetchStatus()
+	 *
+	 * Used for pagination, gets X amount of status from either a single wall or an array of buddies IDs.
+	 * @return
+	 */
 	protected function fetchStatus()
 	{
 		global $context;
@@ -664,6 +681,12 @@ class BreezeAjax
 			));
 	}
 
+	/**
+	 * BreezeAjax::fetchNoti()
+	 *
+	 * Gets all unread notifications for the passed user ID.
+	 * @return
+	 */
 	protected function fetchNoti()
 	{
 		checkSession('request', '', false);
@@ -703,7 +726,7 @@ class BreezeAjax
 	/**
 	 * BreezeAjax::cleanLog()
 	 *
-	 * Deletes the visitors log
+	 * Deletes the visitors log for each user's wall.
 	 * @return void
 	 */
 	protected function cleanLog()
@@ -742,8 +765,7 @@ class BreezeAjax
 	/**
 	 * BreezeAjax::returnResponse()
 	 *
-	 * Returns a json encoded response back to the browser
-	 * @param array The array that will be sent to the browser
+	 * Returns a json encoded response back to the browser. Check and redirects an user if they aren't using JS.
 	 * @return
 	 */
 	protected function returnResponse()
@@ -789,6 +811,12 @@ class BreezeAjax
 		obExit(false);
 	}
 
+	/**
+	 * BreezeAjax::setResponse()
+	 *
+	 * Creates a valid array with the data provided by each callable method.
+	 * @return
+	 */
 	protected function setResponse($data = array())
 	{
 		// Data is empty, fill out a generic response
@@ -814,9 +842,7 @@ class BreezeAjax
 	/**
 	 * BreezeAjax::setRedirect()
 	 *
-	 * Set a valid url with the params provided
-	 * @param array $message Includes the type and the actual message to send back as a response
-	 * @param int $user If we're coming from the profile area we need to redirect to that specific user's profile page.
+	 * Set a valid url with the params provided.
 	 * @return
 	 */
 	protected function setRedirect()

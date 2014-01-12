@@ -55,8 +55,7 @@ class BreezeQuery extends Breeze
 	/**
 	 * BreezeQuery::__construct()
 	 *
-	 * Creates a multidimensional array with all the details about the tables used in Breeze
-	 * @return
+	 * Creates the needed properties.
 	 */
 	public function __construct($tools, $parser)
 	{
@@ -796,6 +795,13 @@ class BreezeQuery extends Breeze
 		return $return;
 	}
 
+	/**
+	 * BreezeQuery::insertUserSettings()
+	 *
+	 * Creates a new set of user settings.
+	 * @param 
+	 * @param 
+	 */
 	public function insertUserSettings($array, $userID)
 	{
 		if (empty($array) || empty($userID))
@@ -1056,6 +1062,13 @@ class BreezeQuery extends Breeze
 		return $return;
 	}
 
+	/**
+	 * BreezeQuery::getNotificationByReceiverAll()
+	 *
+	 * Gets all notifications, both read and unread from the specified ID
+	 * @param integer $user the user ID
+	 * @return array
+	 */
 	public function getNotificationByReceiverAll($user)
 	{
 		/* There is no notifications */
@@ -1288,6 +1301,13 @@ class BreezeQuery extends Breeze
 		);
 	}
 
+	/**
+	 * BreezeQuery::getViews()
+	 *
+	 * Gets the profile views
+	 * @param integer $user The user ID
+	 * @return string a json string.
+	 */
 	public function getViews($user)
 	{
 		$result = $this->_smcFunc['db_query']('', '
@@ -1330,6 +1350,13 @@ class BreezeQuery extends Breeze
 		);
 	}
 
+	/**
+	 * BreezeQuery::userMention()
+	 *
+	 * Gets a tring and queries the DB looking for any possible matches, caches the result.
+	 * @param string $match a 3 letter string
+	 * @return array the matched IDs and names.
+	 */
 	public function userMention($match)
 	{
 		// By default we return these empty values

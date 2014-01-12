@@ -42,6 +42,12 @@ class BreezeWall
 {
 	protected $userSettings = array();
 
+	/**
+	 * BreezeAjax::__construct()
+	 *
+	 * Sets the needed properties, loads laguage and template files
+	 * @return
+	 */
 	public function __construct($tools, $display, $parser, $query, $notifications, $mention, $log)
 	{
 		// Needed to show error strings
@@ -61,6 +67,12 @@ class BreezeWall
 		$this->log = $log;
 	}
 
+	/**
+	 * BreezeAjax::call()
+	 *
+	 * Master method, calls the appropriated methods depending on the specified subaction.
+	 * @return
+	 */
 	public function call()
 	{
 		global $context, $user_info, $settings;
@@ -129,7 +141,12 @@ class BreezeWall
 		unset($call);
 	}
 
-	// Get the latest entries of your buddies
+	/**
+	 * BreezeAjax::generalWall()
+	 *
+	 * Shows the latest activity form your buddies.
+	 * @return
+	 */
 	public function generalWall()
 	{
 		global $scripturl, $context, $sourcedir, $user_info,  $settings;
@@ -201,7 +218,12 @@ class BreezeWall
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeLoadMore.js"></script>';
 	}
 
-	// Show a single status with all it's comments
+	/**
+	 * BreezeAjax::singleStatus()
+	 *
+	 * Used for notifications mostly, shows a single status/comment and if appropriated, highlights a specific comment.
+	 * @return
+	 */
 	function singleStatus()
 	{
 		global $scripturl, $context, $user_info;

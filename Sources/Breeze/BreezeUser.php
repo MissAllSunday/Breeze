@@ -38,6 +38,12 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
+/**
+ * breezeWall()
+ *
+ * Main function, shows the wall, activity, buddies, visitors and any other possible info.
+ * @return
+ */
 function breezeWall()
 {
 	global $txt, $scripturl, $context, $memberContext, $sourcedir;
@@ -181,7 +187,12 @@ function breezeWall()
 		$tools->loadUserInfo(array_unique($usersToLoad));
 }
 
-// Shows a form for users to set up their wall as needed.
+/**
+ * breezeSettings()
+ *
+ * Creates a form for each user to configure their wall settings.
+ * @return
+ */
 function breezeSettings()
 {
 	global $context, $memID, $breezeController, $scripturl, $txt, $user_info;
@@ -310,6 +321,12 @@ function breezeSettings()
 	$context['Breeze']['UserSettings']['Form'] = $form->display();
 }
 
+/**
+ * breezeNotiSettings()
+ *
+ * Creates notification related settings
+ * @return
+ */
 function breezenotisettings()
 {
 	global $context, $memID, $breezeController, $scripturl, $txt, $user_info;
@@ -371,6 +388,12 @@ function breezenotisettings()
 	$context['Breeze']['UserSettings']['Form'] = $form->display();
 }
 
+/**
+ * breezeNotifications()
+ *
+ * Shows all notifications, both read and unread, options for read, unread and delete.
+ * @return
+ */
 function breezeNotifications()
 {
 	global $context, $user_info, $scripturl, $options, $breezeController;
@@ -418,7 +441,12 @@ function breezeNotifications()
 	// ]]></script>';
 }
 
-// Show the buddy request list
+/**
+ * breezeBuddyRequest()
+ *
+ * Replaces the standard buddy action in SMF.
+ * @return
+ */
 function breezeBuddyRequest()
 {
 	global $context, $user_info, $scripturl, $memberContext, $breezeController;
@@ -547,6 +575,12 @@ function breezeBuddyMessage()
 
 } */
 
+/**
+ * breezeTrackViews()
+ *
+ * Handles profile views, create or update views.
+ * @return
+ */
 function breezeTrackViews()
 {
 	global $user_info, $context, $breezeController;
@@ -630,6 +664,12 @@ function breezeTrackViews()
 	return $views;
 }
 
+/**
+ * breezeCheckPermissions
+ *
+ * Sets and checks different profile related permissions.
+ * @return
+ */
 function breezeCheckPermissions()
 {
 	global $context, $memberContext, $user_info, $breezeController;

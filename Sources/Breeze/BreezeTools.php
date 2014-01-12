@@ -50,6 +50,14 @@ class BreezeTools
 		$this->_pattern = Breeze::$name .'_';
 	}
 
+	/**
+	 * BreezeTools::text()
+	 *
+	 * Gets a string key, and returns the associated text string.
+	 * @param string $var The text string key.
+	 * @global $txt
+	 * @return string|boolean
+	 */
 	public function text($var)
 	{
 		global $txt;
@@ -67,7 +75,14 @@ class BreezeTools
 			return false;
 	}
 
-	// Return true if the value do exist, false otherwise, O RLY?
+	/**
+	 * BreezeTools::enable()
+	 *
+	 * Gets a name and checks if the appropriated settings does exists, returns false otherwise.
+	 * @param string $var the setting's name
+	 * @global $modSettings
+	 * @return boolean
+	 */
 	public function enable($var)
 	{
 		global $modSettings;
@@ -82,7 +97,13 @@ class BreezeTools
 			return false;
 	}
 
-	// Get the requested setting
+	/**
+	 * BreezeTools::setting()
+	 *
+	 * returns the requested setting.
+	 * @param string $var the setting's name
+	 * @return string|boolean
+	 */
 	public function setting($var)
 	{
 		if (empty($var))
@@ -97,7 +118,14 @@ class BreezeTools
 			return false;
 	}
 
-	// Relative dates  http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html
+	/**
+	 * BreezeTools::timeElapsed()
+	 *
+	 * Gets an unix timestamp and returns a relative date from the current time.
+	 * @param boolean $ptime An unix timestamp
+	 * @link http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html
+	 * @return string
+	 */
 	public function timeElapsed($ptime)
 	{
 		$etime = time() - $ptime;
@@ -125,6 +153,13 @@ class BreezeTools
 		}
 	}
 
+	/**
+	 * BreezeTools::isJson()
+	 *
+	 * Checks if a given string is a json string
+	 * @param string $string a text to check
+	 * @return boolean
+	 */
 	public function isJson($string)
 	{
 		json_decode($string);
@@ -149,7 +184,14 @@ class BreezeTools
 		return $string;
 	}
 
-	// Checks if a value on a multidimensional array exists and return the main key
+	/**
+	 * BreezeTools::returnKey()
+	 *
+	 * Checks if a value on a multidimensional array exists and return the main key
+	 * @param string $value The value to check
+	 * @param array $array The array to check against.
+	 * @return string|boolean returns the key if it does exists.
+	 */
 	public function returnKey($value, $array)
 	{
 		if (empty($value) || empty($array))
@@ -177,6 +219,15 @@ class BreezeTools
 		}
 	}
 
+	/**
+	 * BreezeTools::remove()
+	 *
+	 * Removes a key from a multidimensional array.
+	 * @param array $array The array to remove the value from.
+	 * @param string|boolean  the value to remove.
+	 * @param boolean $preserve_keys 
+	 * @return array The modified array.
+	 */
 	public function remove($array, $val, $preserve_keys = true)
 	{
 		if (empty($array) || empty($val) || !is_array($array))
@@ -213,6 +264,14 @@ class BreezeTools
 		return ($preserve_keys === true) ? $array : array_values($array);
 	}
 
+	/**
+	 * BreezeTools::loadUserInfo()
+	 *
+	 * Loads the specified user or users information.
+	 * @param integer|array $id user(s) unique ID.
+	 * @param boolean $returnID return the loaded ID.
+	 * @return integer the loaded IDs
+	 */
 	public function loadUserInfo($id, $returnID = false)
 	{
 		global $memberContext;
@@ -246,6 +305,15 @@ class BreezeTools
 			return $loaded_ids;
 	}
 
+	/**
+	 * BreezeTools::permissions()
+	 *
+	 * Handles status/comments related permissions, it does it on a case per case basics.
+	 * @param string $type Either a comment or a status.
+	 * @param integer $profileOwner the profile where this status/comment was posted.
+	 * @param integer $userPoster The person who posted this status/comment
+	 * @return array all possible permissions as integer values. 0 can't, 1 can.
+	 */
 	public function permissions($type, $profileOwner = false, $userPoster = false)
 	{
 		global $user_info;

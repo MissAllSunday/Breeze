@@ -53,6 +53,13 @@ class BreezeParser
 		);
 	}
 
+	/**
+	 * BreezeParser::display()
+	 *
+	 * Gets a string, calls all methods and returns the modified version of it.
+	 * @param string the text to parse
+	 * @return the parsed text
+	 */
 	public function display($string)
 	{
 		if (empty($string))
@@ -73,6 +80,11 @@ class BreezeParser
 		return $this->s;
 	}
 
+	/**
+	 * BreezeParser::mention()
+	 *
+	 * Scans the text looking for valid mentions, the regex checks for (username, ID)
+	 */
 	protected function mention()
 	{
 		global $scripturl;
@@ -93,6 +105,11 @@ class BreezeParser
 		}
 	}
 
+	/**
+	 * BreezeParser::smf_parser()
+	 *
+	 * Calls and executes Subs::parse_bbc()
+	 */
 	protected function smf_parse()
 	{
 		$this->s = parse_bbc($this->s);
