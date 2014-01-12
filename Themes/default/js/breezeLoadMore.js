@@ -46,8 +46,8 @@ jQuery(document).ready(function(){
 		showMoarButton();
 	}
 
-	function showMoarButton()
-	{
+	function showMoarButton(){
+
 		// Add a nice button...
 		jQuery('<button/>', {
 			id: 'loadMoar',
