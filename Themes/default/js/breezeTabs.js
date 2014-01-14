@@ -75,65 +75,34 @@
 	// Get all available <li> tags
 	jQuery('ul.breezeTabs li').each(function(){
 
-		tabs[jQuery(this).attr('class')] = {
+		var currentName = jQuery(this).attr('class');
+
+		tabs[currentName] = {
 			href : jQuery(this).find('a').attr('href'),
 			name : jQuery(this).attr('class'),
-			active : (jQuery(this).attr('class') == 'wall') ? true : false
+			active : (currentName == 'wall') ? true : false
 		};
 
 		// Hide all tabs by default
-		jQuery(tabs[jQuery(this).attr('class')].href).hide();
+		jQuery(tabs[currentName].href).hide();
 
 		// Make the wall page the active tab...
 		jQuery(tabs['wall'].href).show();
-	});
 
-	// The Wall tab
-	jQuery('li.wall a').click(function (e) {
+		jQuery('li.'+ currentName +' a').on('click', false, function(e){
 
-		// Is it active already?
-		if (tabs['wall'].active == true){
+			// Is it active already?
+			if (tabs[currentName].active == true){
+				return false;
+			}
+
+			else {
+				tabChange(currentName);
+			}
+
+			e.preventDefault();
 			return false;
-		}
-
-		else{
-			tabChange('wall');
-		}
-
-		e.preventDefault();
-		return false;
-	});
-
-	// About me tab
-	jQuery('li.about a').click(function (e) {
-
-		// Is it active already?
-		if (tabs['about'].active == true){
-			return false;
-		}
-
-		else{
-			tabChange('about');
-		}
-
-		e.preventDefault();
-		return false;
-	});
-
-	// Activity tab
-	jQuery('li.activity a').click(function (e) {
-
-		// Is it active already?
-		if (tabs['activity'].active == true){
-			return false;
-		}
-
-		else {
-			tabChange('activity');
-		}
-
-		e.preventDefault();
-		return false;
+		});
 	});
 
 	jQuery(window).hashchange();
