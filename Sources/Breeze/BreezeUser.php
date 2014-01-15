@@ -307,7 +307,7 @@ function breezeSettings()
 	// Clean visitors log
 	$form->addHTML(
 		'clean_visitors',
-		'<a href="'. $scripturl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['member']['id'] .';rf=profile">%s</a>'
+		'<a href="'. $scripturl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['member']['id'] .';rf=profile" class="clean_log">%s</a>'
 	);
 
 	// About me textarea.

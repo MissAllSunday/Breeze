@@ -373,4 +373,24 @@ jQuery(document).ready(function(){
 			closeImage   : smf_images_url + '/breeze/error_close.png'
 		});
 	});
+
+	// Clean the visitors log
+	jQuery('.clean_log').on('click', false, function(event){
+
+		event.preventDefault();
+
+		jQuery.ajax({
+			url: jQuery(this).attr('href') + ';js=1' + breeze.session.v + '=' + breeze.session.id,
+			type: "GET",
+			dataType: "json",
+			success: function(data){
+				breeze.tools.showNoti(data);
+			},
+			error: function(data){
+				breeze.tools.showNoti(data);
+			}
+		});
+
+		return false;
+	});
 });
