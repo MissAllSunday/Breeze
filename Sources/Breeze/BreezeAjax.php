@@ -747,7 +747,7 @@ class BreezeAjax
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
-				'extra' => array('area' => 'breezenoti',),
+				'extra' => array('area' => 'breezesettings',),
 				'owner' => $user,
 			));
 
@@ -756,7 +756,7 @@ class BreezeAjax
 
 		return $this->setResponse(array(
 			'type' => 'success',
-			'message' => 'noti_visits_clean',
+			'message' => 'noti_visitors_clean',
 			'owner' => $user,
 			'extra' => array('area' => 'breezesettings',),
 		));
