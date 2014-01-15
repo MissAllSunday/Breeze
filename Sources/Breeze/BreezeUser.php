@@ -340,14 +340,9 @@ function breezenotisettings()
 		$breezeController = new BreezeController();
 
 	// Set the page title
-	$context['page_title'] = $breezeController->get('tools')->text('user_settings_name');
+	$context['page_title'] = $breezeController->get('tools')->text('user_settings_name_settings');
 	$context['sub_template'] = 'member_options';
-	$context['page_desc'] = $breezeController->get('tools')->text('user_settings_enable_desc');
-
-	$context += array(
-		'page_title' => $breezeController->get('tools')->text('user_settings_name'),
-		'page_desc' => $breezeController->get('tools')->text('user_settings_enable_desc')
-	);
+	$context['page_desc'] = $breezeController->get('tools')->text('user_settings_name_settings_desc');
 
 	// Need to tell the form the page it needs to display when redirecting back after saving.
 	$context['Breeze_redirect'] = 'breezenotisettings';
