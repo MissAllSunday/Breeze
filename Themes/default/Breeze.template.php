@@ -433,7 +433,7 @@ function template_member_options()
 	echo $context['Breeze']['UserSettings']['Form'];
 
 	// Print the save button.
-	echo '<input type="submit" name="submit" value="', $txt['save'] ,'" class="button_submit floatright"/>';
+	echo '<input type="submit" name="submit" value="', $txt['save'] ,'" class="button_submit"/>';
 
 	echo '
 				</div>
