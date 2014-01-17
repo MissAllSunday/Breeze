@@ -113,19 +113,20 @@ class BreezeData
 	 */
 	public function validateBody($var)
 	{
-		if (!isset($this->_request[$var]) || empty($this->_request[$var]))
-			return false;
+		global $sourcedir;
 
 		// You cannot post just spaces
-		if (ctype_space($this->_request[$var]) || $this->_request[$var] == '')
+		if (empty($var) || ctype_space($var) || $var == '')
 			return false;
-
-		elseif (isset($this->_request[$var]) && !empty($this->_request[$var]) && !
-			ctype_space($this->_request[$var]))
-			return true;
 
 		else
-			return false;
+		{
+			require_once($sourcedir.'/Subs-Post.php');
+
+			preparsecode($var);
+
+			return $var;
+		}
 	}
 
 	/**
@@ -147,6 +148,8 @@ class BreezeData
 	 */
 	public function sanitize($var)
 	{
+		global $smcFunc;
+
 		if (is_array($var))
 			return $var;
 
@@ -157,10 +160,7 @@ class BreezeData
 			$var = (int)trim($var);
 
 		elseif (is_string($var))
-			$var = trim(strtr(htmlspecialchars($var, ENT_QUOTES), array(
-				"\r" => '<br />',
-				"\n" => '<br />',
-				"\t" => '&nbsp;&nbsp;&nbsp;&nbsp;')));
+			return $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var), ENT_QUOTES);
 
 		else
 			$var = 'error_' . $var;

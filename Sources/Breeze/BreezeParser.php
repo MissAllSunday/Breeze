@@ -77,7 +77,7 @@ class BreezeParser
 		// ...or after?
 		call_integration_hook('integrate_breeze_after_parser', array(&$this->s));
 
-		return $this->s;
+		return un_htmlspecialchars($this->s);
 	}
 
 	/**

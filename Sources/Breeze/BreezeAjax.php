@@ -142,7 +142,7 @@ class BreezeAjax
 	/**
 	 * BreezeAjax::post()
 	 *
-	 * Gets the data from the client and stores a new status in the DB, uses BreezeQuery object. 
+	 * Gets the data from the client and stores a new status in the DB, uses BreezeQuery object.
 	 * @return
 	 */
 	public function post()
@@ -174,11 +174,11 @@ class BreezeAjax
 		if ($this->_currentUser != $statusOwner)
 			allowedTo('breeze_postStatus');
 
-		// Do this only if there is something to add to the database
-		if ($this->_data->validateBody('statusContent'))
-		{
-			$body = $statusContent;
+		$body = $this->_data->validateBody($statusContent);
 
+		// Do this only if there is something to add to the database
+		if (!empty($body))
+		{
 			$this->_params = array(
 				'owner_id' => $statusOwner,
 				'poster_id' => $statusPoster,
@@ -289,12 +289,11 @@ class BreezeAjax
 		// Load all the things we need
 		$temp_id_exists = $this->_query->getSingleValue('status', 'status_id', $commentStatus);
 
-		// The status do exists and the data is valid
-		if ($this->_data->validateBody('commentContent') && !empty($temp_id_exists))
-		{
-			// Yeah, lets call it body shall we?
-			$body = $commentContent;
+		$body = $this->_data->validateBody($commentContent);
 
+		// The status do exists and the data is valid
+		if (!empty($body) && !empty($temp_id_exists))
+		{
 			// Build the params array for the query
 			$this->_params = array(
 				'status_id' => $commentStatus,
@@ -443,7 +442,7 @@ class BreezeAjax
 				'owner' => $profileOwner,
 			));
 	}
-	
+
 	/**
 	 * BreezeAjax::userSettings()
 	 *
@@ -833,7 +832,7 @@ class BreezeAjax
 		$this->_response = array(
 			'message' => !empty($data['message']) ? ($this->noJS == false ? $this->_tools->text($data['type'] .'_'. $data['message']) : $data['message']) : 'server',
 			'data' => !empty($data['data']) ? $data['data'] : '',
-			'type' => $data['type'],
+			'type' => !empty($data['type']) ? $data['type'] : 'error',
 			'owner' => !empty($data['owner']) ? $data['owner'] : 0,
 			'extra' => !empty($data['extra']) ? $data['extra'] : '',
 		);
