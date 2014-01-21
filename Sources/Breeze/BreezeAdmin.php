@@ -44,12 +44,14 @@ function Breeze_Admin_Index()
 
 		require_once($sourcedir . '/ManageSettings.php');
 		loadLanguage('BreezeAdmin');
+		loadtemplate('Admin');
+
 		$context['page_title'] = $txt['Breeze_page_panel'];
 
-	if (empty($breezeController))
-		$breezeController = new BreezeController();
+		if (empty($breezeController))
+			$breezeController = new BreezeController();
 
-	$tools = $breezeController->get('tools');
+		$tools = $breezeController->get('tools');
 
 		$subActions = array(
 			'general' => 'Breeze_Admin_Main',
@@ -98,8 +100,6 @@ function Breeze_Admin_Main()
 {
 	global $scripturl, $context, $breezeController;
 
-	loadtemplate('BreezeAdmin');
-
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
@@ -126,8 +126,6 @@ function Breeze_Admin_Main()
 function Breeze_Admin_Settings()
 {
 	global $scripturl, $context, $sourcedir, $breezeController;
-
-	loadtemplate('Admin');
 
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
@@ -169,8 +167,6 @@ function Breeze_Admin_Settings()
 function Breeze_Admin_Permissions()
 {
 	global $scripturl, $context, $sourcedir, $breezeController, $txt;
-
-	loadtemplate('Admin');
 
 	// This page needs the general strings
 	loadLanguage('Breeze');
@@ -215,8 +211,6 @@ function Breeze_Admin_Style()
 {
 	global $scripturl, $context, $sourcedir, $breezeController, $txt;
 
-	loadtemplate('Admin');
-
 	// Load stuff
 	$tools = $breezeController->get('tools');
 	$data = Breeze::data('request');
@@ -251,8 +245,6 @@ function Breeze_Admin_Style()
 function Breeze_Admin_Donate()
 {
 	global $context, $scripturl, $breezeController;
-
-	loadtemplate('BreezeAdmin');
 
 	// Headers
 	$tools = $breezeController->get('tools');
