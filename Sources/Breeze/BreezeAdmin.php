@@ -43,8 +43,8 @@ function Breeze_Admin_Index()
 		global $txt, $scripturl, $context, $sourcedir, $settings;
 
 		require_once($sourcedir . '/ManageSettings.php');
-		loadLanguage('Breeze');
-		$context['page_title'] = $txt['Breeze_admin_panel'];
+		loadLanguage('BreezeAdmin');
+		$context['page_title'] = $txt['Breeze_page_panel'];
 
 		$subActions = array(
 			'general' => 'Breeze_Admin_Main',
