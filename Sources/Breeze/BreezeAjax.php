@@ -104,7 +104,7 @@ class BreezeAjax
 		$this->comingFrom = $data->get('rf') == true ? $data->get('rf') : 'wall';
 
 		// Master setting is off, back off!
-		if (!$this->_tools->enable('admin_settings_enable'))
+		if (!$this->_tools->enable('_enable'))
 			fatal_lang_error('Breeze_error_no_valid_action', false);
 
 		// Gotta love globals...

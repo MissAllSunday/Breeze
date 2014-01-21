@@ -89,7 +89,7 @@ class BreezeWall
 		);
 
 		// Master setting is off, back off!
-		if (!$this->_tools->enable('admin_settings_enable'))
+		if (!$this->_tools->enable('_enable'))
 			fatal_lang_error('Breeze_error_no_valid_action', false);
 
 		// Guest aren't allowed, sorry.

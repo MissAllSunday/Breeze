@@ -69,7 +69,7 @@ class Breeze
 	public static $allSettings = array('wall', 'general_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention', 'gender', 'buddiesList', 'ignoredList', 'profileViews',);
 
 	// Support site feed
-	public static $supportStite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
+	public static $supportSite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
 
 	// Its easier to list the allowed actions
 	public static $_allowedActions = array('wall', 'display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who', 'credits',);
@@ -172,7 +172,7 @@ class Breeze
 		$tools = $breezeController->get('tools');
 
 		// Replace the summary page only if the mod is enable
-		if ($tools->enable('admin_settings_enable'))
+		if ($tools->enable('_enable'))
 		{
 			$profile_areas['info']['areas']['summary'] = array(
 				'label' => $tools->text('general_wall'),
@@ -267,7 +267,7 @@ class Breeze
 		Breeze::notiHeaders();
 
 		// Replace the duplicate profile button
-		if ($tools->enable('admin_settings_enable') && !empty($menu_buttons['profile']['sub_buttons']['summary']))
+		if ($tools->enable('_enable') && !empty($menu_buttons['profile']['sub_buttons']['summary']))
 			$menu_buttons['profile']['sub_buttons']['summary'] = array(
 				'title' => $txt['summary'],
 				'href' => $scripturl . '?action=profile;area=static',
@@ -287,12 +287,12 @@ class Breeze
 			array('wall' => array(
 				'title' => $tools->text('general_wall'),
 				'href' => $scripturl . '?action=wall',
-				'show' => ($tools->enable('admin_settings_enable') && !$user_info['is_guest'] && !empty($userSettings['general_wall'])),
+				'show' => ($tools->enable('_enable') && !$user_info['is_guest'] && !empty($userSettings['general_wall'])),
 				'sub_buttons' => array(
 					'noti' => array(
 						'title' => $tools->text('user_notisettings_name'),
 						'href' => $scripturl . '?action=profile;area=breezenoti',
-						'show' => ($tools->enable('admin_settings_enable') && !$user_info['is_guest']),
+						'show' => ($tools->enable('_enable') && !$user_info['is_guest']),
 						'sub_buttons' => array(),
 						),
 					),
@@ -549,16 +549,16 @@ class Breeze
 		$tools = $breezeController->get('tools');
 
 		$admin_menu['config']['areas']['breezeadmin'] = array(
-			'label' => $tools->text('admin_settings_main'),
+			'label' => $tools->text('_main'),
 			'file' => 'Breeze/BreezeAdmin.php',
 			'function' => 'Breeze_Admin_Index',
 			'icon' => 'administration.gif',
 			'subsections' => array(
-				'general' => array($tools->text('admin_settings_main')),
-				'settings' => array($tools->text('admin_settings_settings')),
-				'permissions' => array($tools->text('admin_settings_sub_permissions')),
-				'style' => array($tools->text('admin_settings_sub_style')),
-				'donate' => array($tools->text('admin_settings_donate')),
+				'general' => array($tools->text('_main')),
+				'settings' => array($tools->text('_settings')),
+				'permissions' => array($tools->text('_sub_permissions')),
+				'style' => array($tools->text('_sub_style')),
+				'donate' => array($tools->text('_donate')),
 			),
 		);
 	}
