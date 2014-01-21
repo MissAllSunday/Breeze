@@ -81,7 +81,7 @@ function template_admin_home()
 					<div class="content">
 						<div id="version_details">
 							<strong>', $txt['support_versions'], ':</strong><br />
-							', $txt['Breeze_admin_breeze_version'] , ':
+							', $txt['Breeze_version'] , ':
 							<em id="yourVersion" style="white-space: nowrap;">', $context['Breeze']['version'] , '</em><br />';
 
 		// Some more stuff will be here... eventually
@@ -101,7 +101,7 @@ function template_admin_home()
 			<div class="windowbg nopadding">
 				<span class="topslice"><span></span></span>
 				<div class="content" id="breezelive">
-					<p>', $txt['Breeze_admin_general_credits_decs'] ,'</p>';
+					<p>', $txt['Breeze_page_credits_decs'] ,'</p>';
 
 	// Print the credits array
 	if (!empty($context['Breeze']['credits']))

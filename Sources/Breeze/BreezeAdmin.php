@@ -172,6 +172,9 @@ function Breeze_Admin_Permissions()
 
 	loadtemplate('Admin');
 
+	// This page needs the general strings
+	loadLanguage('Breeze');
+
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
 
@@ -180,16 +183,16 @@ function Breeze_Admin_Permissions()
 	// Load stuff
 	$data = Breeze::data('request');
 	$context['sub_template'] = 'show_settings';
-	$context['page_title'] = $tools->adminText('_main');
+	$context['page_title'] = $tools->adminText('page_permissions');
 	$context[$context['admin_menu_name']]['tab_data'] = array(
-		'title' => Breeze::$name .' - '. $tools->adminText('_permissions'),
-		'description' => $tools->adminText('_permissions_desc'),
+		'title' => Breeze::$name .' - '. $tools->adminText('page_permissions'),
+		'description' => $tools->adminText('page_permissions_desc'),
 	);
 
 	require_once($sourcedir . '/ManageServer.php');
 
 	$config_vars = array(
-		array('title', Breeze::$txtpattern .'_permissions'),
+		array('title', Breeze::$txtpattern .'page_permissions'),
 	);
 
 	foreach (Breeze::$permissions as $p)
