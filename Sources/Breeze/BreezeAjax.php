@@ -55,7 +55,7 @@ class BreezeAjax
 	 */
 	public function __construct($tools, $display, $parser, $query, $notifications, $mention, $log)
 	{
-		// Needed to show error strings
+		// Needed to show some error strings
 		loadLanguage(Breeze::$name);
 
 		// Load all the things we need
@@ -104,7 +104,7 @@ class BreezeAjax
 		$this->comingFrom = $data->get('rf') == true ? $data->get('rf') : 'wall';
 
 		// Master setting is off, back off!
-		if (!$this->_tools->enable('_enable'))
+		if (!$this->_tools->enable('master'))
 			fatal_lang_error('Breeze_error_no_valid_action', false);
 
 		// Gotta love globals...
@@ -142,7 +142,7 @@ class BreezeAjax
 	/**
 	 * BreezeAjax::post()
 	 *
-	 * Gets the data from the client and stores a new status in the DB, uses BreezeQuery object.
+	 * Gets the data from the client and stores a new status in the DB using BreezeQuery object.
 	 * @return
 	 */
 	public function post()

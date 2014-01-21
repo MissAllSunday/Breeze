@@ -677,7 +677,7 @@ function breezeCheckPermissions()
 	$query = $breezeController->get('query');
 
 	// Another page already checked the permissions and if the mod is enable, but better be safe...
-	if (!$tools->enable('_enable'))
+	if (!$tools->enable('master'))
 		redirectexit();
 
 	// If we are forcing the wall, lets check the admin setting first

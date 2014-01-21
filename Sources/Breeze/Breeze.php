@@ -172,7 +172,7 @@ class Breeze
 		$tools = $breezeController->get('tools');
 
 		// Replace the summary page only if the mod is enable
-		if ($tools->enable('_enable'))
+		if ($tools->enable('master'))
 		{
 			$profile_areas['info']['areas']['summary'] = array(
 				'label' => $tools->text('general_wall'),
@@ -267,7 +267,7 @@ class Breeze
 		Breeze::notiHeaders();
 
 		// Replace the duplicate profile button
-		if ($tools->enable('_enable') && !empty($menu_buttons['profile']['sub_buttons']['summary']))
+		if ($tools->enable('master') && !empty($menu_buttons['profile']['sub_buttons']['summary']))
 			$menu_buttons['profile']['sub_buttons']['summary'] = array(
 				'title' => $txt['summary'],
 				'href' => $scripturl . '?action=profile;area=static',
@@ -287,12 +287,12 @@ class Breeze
 			array('wall' => array(
 				'title' => $tools->text('general_wall'),
 				'href' => $scripturl . '?action=wall',
-				'show' => ($tools->enable('_enable') && !$user_info['is_guest'] && !empty($userSettings['general_wall'])),
+				'show' => ($tools->enable('master') && !$user_info['is_guest'] && !empty($userSettings['general_wall'])),
 				'sub_buttons' => array(
 					'noti' => array(
 						'title' => $tools->text('user_notisettings_name'),
 						'href' => $scripturl . '?action=profile;area=breezenoti',
-						'show' => ($tools->enable('_enable') && !$user_info['is_guest']),
+						'show' => ($tools->enable('master') && !$user_info['is_guest']),
 						'sub_buttons' => array(),
 						),
 					),

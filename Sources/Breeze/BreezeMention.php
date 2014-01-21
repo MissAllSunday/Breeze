@@ -3,7 +3,7 @@
 /**
  * BreezeMention
  *
- * The purpose of this file is to identify a mention in a string and convert that to a more easy to use format which will be used by the aprser class later, oh, and create the mention notification..
+ * The purpose of this file is to identify a mention in a string and convert that to a more easy to use format which will be used by the parser class later on, oh, and create the mention notification...
  * @package Breeze mod
  * @version 1.0
  * @author Jessica González <suki@missallsunday.com>
