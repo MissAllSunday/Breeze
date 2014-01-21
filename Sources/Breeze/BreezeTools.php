@@ -170,7 +170,7 @@ class BreezeTools
 	public function truncateString($string, $limit, $break = ' ', $pad = '...')
 	{
 		if(empty($string))
-			return false,
+			return false;
 
 		if(empty($limit))
 			$limit = 30;
@@ -280,7 +280,8 @@ class BreezeTools
 		global $memberContext;
 
 		// If this isn't an array, lets change it to one
-		$id = array($id);
+		if (!is_array($id))
+			$id = array($id);
 
 		// $memberContext gets set and globalized, we're gonna take advantage of it
 		$loaded_ids = loadMemberData($id, false, 'profile');
