@@ -44,14 +44,14 @@ function Breeze_Admin_Index()
 
 		require_once($sourcedir . '/ManageSettings.php');
 		loadLanguage('BreezeAdmin');
-		loadtemplate('Admin');
+		loadtemplate('BreezeAdmin');
 
 		$context['page_title'] = $txt['Breeze_page_panel'];
 
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
-		$tools = $breezeController->get('tools');
+		$context['Breeze']['instance'] = $breezeController->get('tools');
 
 		$subActions = array(
 			'general' => 'Breeze_Admin_Main',
@@ -78,7 +78,7 @@ function Breeze_Admin_Index()
 <script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
 <script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.js" type="text/javascript"></script>
 <script type="text/javascript">
-var breeze_feed_error_message = '. JavaScriptEscape($tools->adminText('feed_error_message')) .';
+var breeze_feed_error_message = '. JavaScriptEscape($context['Breeze']['instance']->adminText('feed_error_message')) .';
 
 $(document).ready(function (){
 	$(\'#breezelive\').rssfeed(\''. Breeze::$supportSite .'\',
@@ -98,12 +98,7 @@ $(document).ready(function (){
 
 function Breeze_Admin_Main()
 {
-	global $scripturl, $context, $breezeController;
-
-	if (empty($breezeController))
-		$breezeController = new BreezeController();
-
-	$tools = $breezeController->get('tools');
+	global $scripturl, $context;
 
 	// Get the version
 	$context['Breeze']['version'] = Breeze::$version;
@@ -112,11 +107,11 @@ function Breeze_Admin_Main()
 	$context['Breeze']['support'] = Breeze::$supportSite;
 
 	// Set all the page stuff
-	$context['page_title'] = $tools->adminText('page_main');
+	$context['page_title'] = $context['Breeze']['instance']->adminText('page_main');
 	$context['sub_template'] = 'admin_home';
 	$context[$context['admin_menu_name']]['tab_data'] = array(
 		'title' => $context['page_title'],
-		'description' => $tools->adminText('page_welcome'),
+		'description' => $context['Breeze']['instance']->adminText('page_welcome'),
 	);
 
 	// Get the credits
@@ -125,30 +120,25 @@ function Breeze_Admin_Main()
 
 function Breeze_Admin_Settings()
 {
-	global $scripturl, $context, $sourcedir, $breezeController;
-
-	if (empty($breezeController))
-		$breezeController = new BreezeController();
-
-	$tools = $breezeController->get('tools');
+	global $scripturl, $context, $sourcedir;
 
 	// Load stuff
 	$data = Breeze::data('request');
 	$context['sub_template'] = 'show_settings';
-	$context['page_title'] = $tools->adminText('page_settings');
+	$context['page_title'] = $context['Breeze']['instance']->adminText('page_settings');
 	$context[$context['admin_menu_name']]['tab_data'] = array(
 		'title' => Breeze::$name .' - '. $context['page_title'],
-		'description' => $tools->adminText('page_settings_desc'),
+		'description' => $context['Breeze']['instance']->adminText('page_settings_desc'),
 	);
 
 	require_once($sourcedir . '/ManageServer.php');
 
 	$config_vars = array(
 		array('title', Breeze::$txtpattern .'page_settings'),
-		array('check', Breeze::$txtpattern .'enable', 'subtext' => $tools->adminText('enable_sub')),
-		array('check', Breeze::$txtpattern .'force_enable', 'subtext' => $tools->adminText('force_enable_sub')),
-		array('text', Breeze::$txtpattern .'allowed_actions', 'size' => 60, 'subtext' => $tools->adminText('allowed_actions_sub')),
-		array('int', Breeze::$txtpattern .'mention_limit', 'size' => 3, 'subtext' => $tools->adminText('mention_limit_sub')),
+		array('check', Breeze::$txtpattern .'enable', 'subtext' => $context['Breeze']['instance']->adminText('enable_sub')),
+		array('check', Breeze::$txtpattern .'force_enable', 'subtext' => $context['Breeze']['instance']->adminText('force_enable_sub')),
+		array('text', Breeze::$txtpattern .'allowed_actions', 'size' => 60, 'subtext' => $context['Breeze']['instance']->adminText('allowed_actions_sub')),
+		array('int', Breeze::$txtpattern .'mention_limit', 'size' => 3, 'subtext' => $context['Breeze']['instance']->adminText('mention_limit_sub')),
 	);
 
 	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=settings;save';
@@ -166,23 +156,18 @@ function Breeze_Admin_Settings()
 
 function Breeze_Admin_Permissions()
 {
-	global $scripturl, $context, $sourcedir, $breezeController, $txt;
+	global $scripturl, $context, $sourcedir, $txt;
 
 	// This page needs the general strings
 	loadLanguage('Breeze');
 
-	if (empty($breezeController))
-		$breezeController = new BreezeController();
-
-	$tools = $breezeController->get('tools');
-
 	// Load stuff
 	$data = Breeze::data('request');
 	$context['sub_template'] = 'show_settings';
-	$context['page_title'] = $tools->adminText('page_permissions');
+	$context['page_title'] = $context['Breeze']['instance']->adminText('page_permissions');
 	$context[$context['admin_menu_name']]['tab_data'] = array(
 		'title' => Breeze::$name .' - '. $context['page_title'],
-		'description' => $tools->adminText('page_permissions_desc'),
+		'description' => $context['Breeze']['instance']->adminText('page_permissions_desc'),
 	);
 
 	require_once($sourcedir . '/ManageServer.php');
@@ -209,23 +194,21 @@ function Breeze_Admin_Permissions()
 
 function Breeze_Admin_Style()
 {
-	global $scripturl, $context, $sourcedir, $breezeController, $txt;
+	global $scripturl, $context, $sourcedir, $txt;
 
-	// Load stuff
-	$tools = $breezeController->get('tools');
 	$data = Breeze::data('request');
 	$context['sub_template'] = 'show_settings';
-	$context['page_title'] = $tools->adminText('page_style');
+	$context['page_title'] = $context['Breeze']['instance']->adminText('page_style');
 	$context[$context['admin_menu_name']]['tab_data'] = array(
 		'title' => Breeze::$name .' - '. $context['page_title'],
-		'description' => $tools->adminText('page_style_desc'),
+		'description' => $context['Breeze']['instance']->adminText('page_style_desc'),
 	);
 
 	require_once($sourcedir . '/ManageServer.php');
 
 	$config_vars = array(
-		array('title', Breeze::$txtpattern .'_sub_style'),
-		array('int', Breeze::$txtpattern .'admin_posts_for_mention', 'size' => 3, 'subtext' => $tools->adminText('admin_posts_for_mention_sub')),
+		array('title', Breeze::$txtpattern .'page_style'),
+		array('int', Breeze::$txtpattern .'posts_for_mention', 'size' => 3, 'subtext' => $context['Breeze']['instance']->adminText('posts_for_mention_sub')),
 	);
 
 	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=style;save';
@@ -244,17 +227,14 @@ function Breeze_Admin_Style()
 // Pay no attention to the girl behind the curtain
 function Breeze_Admin_Donate()
 {
-	global $context, $scripturl, $breezeController;
-
-	// Headers
-	$tools = $breezeController->get('tools');
+	global $context;
 
 	// Page stuff
-	$context['page_title'] = Breeze::$name .' - '. $tools->adminText('_donate');
+	$context['page_title'] = Breeze::$name .' - '. $context['Breeze']['instance']->adminText('page_donate');
 	$context['sub_template'] = 'admin_donate';
-	$context['Breeze']['donate'] = $tools->adminText('donate');
+	$context['Breeze']['donate'] = $context['Breeze']['instance']->adminText('page_donate_exp');
 	$context[$context['admin_menu_name']]['tab_data'] = array(
 		'title' => $context['page_title'],
-		'description' => $tools->adminText('_donate_desc'),
+		'description' => $context['Breeze']['instance']->adminText('page_donate_desc'),
 	);
 }
