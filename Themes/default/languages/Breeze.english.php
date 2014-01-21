@@ -123,54 +123,6 @@ $txt['Breeze_user_modules_visitors'] = 'visits: ';
 $txt['Breeze_user_modules_visitors_none'] = 'There are no recent visitors';
 $txt['Breeze_user_modules_buddies_none'] = 'This user doesn\'t have any buddies';
 
-
-// Admin Settings
-$txt['Breeze_admin_panel'] = 'Breeze Admin Panel';
-$txt['Breeze_admin_welcome'] = 'This is your &quot;Breeze Admin Panel&quot;.  From here, you can edit the settings for Breeze If you have any trouble, feel free to <a href="http://missallsunday.com" target="_blank" class="new_win">ask for support</a> on the author\'s site.';
-$txt['Breeze_main'] = 'Main Breeze Admin Center';
-$txt['Breeze_sub_permissions'] = 'Permissions';
-$txt['Breeze_sub_style'] = 'Style and Layout';
-$txt['Breeze_sub_style_desc'] = 'Some description here';
-$txt['Breeze_settings'] = 'General Settings';
-$txt['Breeze_settings_desc'] = 'This is the general settings page, from here you can enable/disable the mod as well as configuring general settings.';
-$txt['Breeze_permissions'] = 'Permissions';
-$txt['Breeze_permissions_desc'] = 'From here you can add/remove specific Breeze permissions.';
-$txt['Breeze_donate'] = 'Donate';
-$txt['Breeze_donate_desc'] = 'Boring stuff you had curious about it but you\'ll never gonna see it again :P';
-$txt['Breeze_server_needs'] = '<div class="breeze_error_message">Your Server does not support %s, contact your hosting provider and ask for it to be enable, otherwise you won\'t be able to use this mod at full.</div>';
-$txt['Breeze_json'] = 'JSON library';
-$txt['Breeze_php'] = '<div class="breeze_error_message">Your PHP version: ( %s ) is lower than the minimum required by this mod: 5.3, you won\'t be able to use this mod at full.</div>';
-$txt['Breeze_php_ok'] = '<div class="breeze_ok_message">Your PHP version is supported.</div>';
-$txt['Breeze_server_needs_ok'] = '<div class="breeze_ok_message"> %s is supported by your server.</div>';
-$txt['Breeze_tab_server_specs'] = 'Server Requirements';
-$txt['Breeze_tab_admin_logs'] = 'Admin Logs';
-$txt['Breeze_donate'] = 'Donate';
-$txt['Breeze_admin_general_credits_title'] = 'Credits';
-$txt['Breeze_admin_general_credits_decs'] = 'Breeze is brought to you thanks to the following persons and/or scripts:';
-$txt['Breeze_enablegeneralwall'] = 'Enable General Wall';
-$txt['Breeze_enablegeneralwall_sub'] = 'If enable, a general wall will appear, in this general wall the user will be able to see his/her buddie\'s status and recent activity';
-$txt['Breeze_menu_position'] = 'Select the position for the general Wall button.';
-$txt['Breeze_menu_position_sub'] = 'By default is next to the home button.';
-$txt['Breeze_enable'] = 'Enable Breeze mod';
-$txt['Breeze_enable_sub'] = 'The master setting, this must be enable for the mod to work properly.';
-$txt['Breeze_force_enable'] = 'Check to force the enabling of walls.';
-$txt['Breeze_force_enable_sub'] = 'By default the wall is disable and users needs to enable it manually, if you check this option their wall will be enable, keep in mind this option will enable everyone\'s wall including inactive members and bots.<br /> They can still manually disable their wall if they want it, this option only enables it but does not really forces the wall to be always enable.';
-$txt['Breeze_force_enable_on'] = 'Enable';
-$txt['Breeze_force_enable_off'] = 'Disable';
-$txt['Breeze_home'] = 'Home';
-$txt['Breeze_help'] = 'Help';
-$txt['Breeze_profile'] = 'Profile';
-$txt['Breeze_admin_enable_limit'] = 'Enable the query limit';
-$txt['Breeze_admin_enable_limit_sub'] = 'If you have problems with resources, you can enable the query limit, this will load only a fraction of the total of status/comments and can help to reduce server stress.';
-$txt['Breeze_admin_mention_limit'] = 'How many users can the poster mention on a single message?';
-$txt['Breeze_admin_mention_limit_sub'] = 'Leave it blank to not have any restriction, if the user tries to mention more users than allowed, only the first X will be converted to mentions where X is the number you specified. If left empty, the mod will use the default value: 10';
-$txt['Breeze_admin_posts_for_mention'] = 'How many posts are required to appear on the mention list?';
-$txt['Breeze_admin_posts_for_mention_sub'] = 'To avoid having a huge list of users to chose from when mentioning, you can set how many posts does an user needs to have in order to be mentionable, if you leave this setting empty, it will use the default value: 1.<br /> To help with the server load, the mentions list gets cached and it only sets a new list every 2 hours, if you change this setting, make sure to clean your forum cache to see the results.';
-$txt['Breeze_admin_breeze_version'] = 'Breeze version';
-$txt['Breeze_admin_live'] = 'Live from the suport forum...';
-$txt['Breeze_allowedActions'] = 'Write the actions where you wish the notification system shows up';
-$txt['Breeze_allowedActions_sub'] = 'By default, the notification system will appear on the following actions: '. implode(', ', Breeze::$_allowedActions) .'. Plus the BoardIndex, MessageIndex, Topic and Board pages. <br /> Please add your actions in a comma separated list, example: action, action, action, action';
-
 // Time
 $txt['Breeze_time_just_now'] = 'just now.';
 $txt['Breeze_time_second'] = 'second';
