@@ -115,7 +115,7 @@ function Breeze_Admin_Main()
 	$context['page_title'] = $tools->adminText('page_main');
 	$context['sub_template'] = 'admin_home';
 	$context[$context['admin_menu_name']]['tab_data'] = array(
-		'title' => $tools->adminText('page_panel'),
+		'title' => $context['page_title'],
 		'description' => $tools->adminText('page_welcome'),
 	);
 
@@ -137,7 +137,7 @@ function Breeze_Admin_Settings()
 	$context['sub_template'] = 'show_settings';
 	$context['page_title'] = $tools->adminText('page_settings');
 	$context[$context['admin_menu_name']]['tab_data'] = array(
-		'title' => Breeze::$name .' - '. $tools->adminText('page_settings'),
+		'title' => Breeze::$name .' - '. $context['page_title'],
 		'description' => $tools->adminText('page_settings_desc'),
 	);
 
@@ -181,7 +181,7 @@ function Breeze_Admin_Permissions()
 	$context['sub_template'] = 'show_settings';
 	$context['page_title'] = $tools->adminText('page_permissions');
 	$context[$context['admin_menu_name']]['tab_data'] = array(
-		'title' => Breeze::$name .' - '. $tools->adminText('page_permissions'),
+		'title' => Breeze::$name .' - '. $context['page_title'],
 		'description' => $tools->adminText('page_permissions_desc'),
 	);
 
@@ -215,10 +215,10 @@ function Breeze_Admin_Style()
 	$tools = $breezeController->get('tools');
 	$data = Breeze::data('request');
 	$context['sub_template'] = 'show_settings';
-	$context['page_title'] = $tools->adminText('_sub_style');
+	$context['page_title'] = $tools->adminText('page_style');
 	$context[$context['admin_menu_name']]['tab_data'] = array(
-		'title' => Breeze::$name .' - '. $tools->adminText('_sub_style'),
-		'description' => $tools->adminText('_sub_style_desc'),
+		'title' => Breeze::$name .' - '. $context['page_title'],
+		'description' => $tools->adminText('page_style_desc'),
 	);
 
 	require_once($sourcedir . '/ManageServer.php');
