@@ -44,7 +44,7 @@ function Breeze_Admin_Index()
 
 		require_once($sourcedir . '/ManageSettings.php');
 		loadLanguage('Breeze');
-		$context['page_title'] = $txt['Breeze__admin_panel'];
+		$context['page_title'] = $txt['Breeze_admin_panel'];
 
 		$subActions = array(
 			'general' => 'Breeze_Admin_Main',
@@ -134,18 +134,17 @@ function Breeze_Admin_Settings()
 	$context['sub_template'] = 'show_settings';
 	$context['page_title'] = $tools->text('_main');
 	$context[$context['admin_menu_name']]['tab_data'] = array(
-		'title' => Breeze::$name .' - '. $tools->text('_settings'),
-		'description' => $tools->text('_settings_desc'),
+		'title' => Breeze::$name .' - '. $tools->text('settings'),
+		'description' => $tools->text('settings_desc'),
 	);
 
 	require_once($sourcedir . '/ManageServer.php');
 
 	$config_vars = array(
 		array('title', Breeze::$txtpattern .'_settings'),
-		array('check', Breeze::$txtpattern .'_enable', 'subtext' => $tools->text('_enable_sub')),
-		array('check', Breeze::$txtpattern .'_force_enable', 'subtext' => $tools->text('_force_enable_sub')),
-		array('check', Breeze::$txtpattern .'admin_enable_limit', 'subtext' => $tools->text('admin_enable_limit_sub')),
-		array('select', Breeze::$txtpattern .'admin_limit_timeframe', array('hour' => $tools->text('user_settings_time_hour'), 'day' => $tools->text('user_settings_time_day'), 'week' => $tools->text('user_settings_time_week'), 'month' => $tools->text('user_settings_time_month'), 'year' => $tools->text('user_settings_time_year')), 'subtext' => $tools->text('admin_limit_timeframe_sub')),
+		array('check', Breeze::$txtpattern .'_enable', 'subtext' => $tools->text('enable_sub')),
+		array('check', Breeze::$txtpattern .'_force_enable', 'subtext' => $tools->text('force_enable_sub')),
+		array('check', Breeze::$txtpattern .'_enable_limit', 'subtext' => $tools->text('admin_enable_limit_sub')),
 		array('text', Breeze::$txtpattern .'allowedActions', 'size' => 56, 'subtext' => $tools->text('allowedActions_sub')),
 		array('int', Breeze::$txtpattern .'admin_mention_limit', 'size' => 3, 'subtext' => $tools->text('admin_mention_limit_sub')),
 	);
