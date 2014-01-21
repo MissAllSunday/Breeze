@@ -489,8 +489,8 @@ class Breeze
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
 
 				// Does the admin wants to add more actions?
-				if ($tools->enable('allowedActions'))
-					Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $tools->setting('allowedActions')));
+				if ($tools->enable('allowed_actions'))
+					Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $tools->setting('allowed_actions')));
 
 				// Stuff for the notifications, don't show this if we aren't on a specified action
 				if (empty($user_info['is_guest']) && (in_array($breezeGlobals->get('action'), Breeze::$_allowedActions) || $breezeGlobals->get('action') == false))

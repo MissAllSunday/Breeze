@@ -78,7 +78,7 @@ class BreezeTools
 	/**
 	 * BreezeTools::adminText()
 	 *
-	 * Gets a string key, and returns the associated text string fr admin related text.
+	 * Gets a string key, and returns the associated text string for admin related text.
 	 * @param string $var The text string key.
 	 * @global $txt
 	 * @return string|boolean
