@@ -549,16 +549,16 @@ class Breeze
 		$tools = $breezeController->get('tools');
 
 		$admin_menu['config']['areas']['breezeadmin'] = array(
-			'label' => $tools->text('_main'),
+			'label' => $tools->adminText('page_main'),
 			'file' => 'Breeze/BreezeAdmin.php',
 			'function' => 'Breeze_Admin_Index',
 			'icon' => 'administration.gif',
 			'subsections' => array(
-				'general' => array($tools->text('_main')),
-				'settings' => array($tools->text('_settings')),
-				'permissions' => array($tools->text('_sub_permissions')),
-				'style' => array($tools->text('_sub_style')),
-				'donate' => array($tools->text('_donate')),
+				'general' => array($tools->adminText('page_main')),
+				'settings' => array($tools->adminText('page_settings')),
+				'permissions' => array($tools->adminText('page_permissions')),
+				'style' => array($tools->adminText('page_style')),
+				'donate' => array($tools->adminText('page_donate')),
 			),
 		);
 	}
