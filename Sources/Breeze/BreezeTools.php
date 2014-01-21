@@ -122,7 +122,7 @@ class BreezeTools
 	 * BreezeTools::timeElapsed()
 	 *
 	 * Gets an unix timestamp and returns a relative date from the current time.
-	 * @param boolean $ptime An unix timestamp
+	 * @param integer $ptime An unix timestamp
 	 * @link http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html
 	 * @return string
 	 */
@@ -169,6 +169,9 @@ class BreezeTools
 	// A function to cut-off a string
 	public function truncateString($string, $limit, $break = ' ', $pad = '...')
 	{
+		if(empty($string))
+			return false,
+
 		if(empty($limit))
 			$limit = 30;
 
@@ -225,7 +228,7 @@ class BreezeTools
 	 * Removes a key from a multidimensional array.
 	 * @param array $array The array to remove the value from.
 	 * @param string|boolean  the value to remove.
-	 * @param boolean $preserve_keys 
+	 * @param boolean $preserve_keys
 	 * @return array The modified array.
 	 */
 	public function remove($array, $val, $preserve_keys = true)
@@ -277,8 +280,7 @@ class BreezeTools
 		global $memberContext;
 
 		// If this isn't an array, lets change it to one
-		if (!is_array($id))
-			$id = array($id);
+		$id = array($id);
 
 		// $memberContext gets set and globalized, we're gonna take advantage of it
 		$loaded_ids = loadMemberData($id, false, 'profile');
