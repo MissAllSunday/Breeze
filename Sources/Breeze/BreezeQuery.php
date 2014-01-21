@@ -1377,13 +1377,13 @@ class BreezeQuery extends Breeze
 		if (($return = cache_get_data(Breeze::$name .'-Mentions-'. $match, 7200)) == null)
 		{
 			$return = array();
-			$postsLimit = $this->tools->enable('admin_posts_for_mention') ? (int) $this->tools->setting('admin_posts_for_mention') : 1;
+			$postsLimit = $this->tools->enable('posts_for_mention') ? (int) $this->tools->setting('posts_for_mention') : 1;
 
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT id_member, member_name, real_name
 				FROM {db_prefix}members
 				WHERE member_name LIKE {string:match} OR real_name LIKE {string:match}
-				'. ($this->tools->enable('admin_posts_for_mention') ? '
+				'. ($this->tools->enable('posts_for_mention') ? '
 					AND posts >= {int:p}' : '') .
 				'',array(
 					'p' => $postsLimit,

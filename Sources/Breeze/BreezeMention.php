@@ -98,7 +98,7 @@ class BreezeMention
 			unset($this->_queryNames[$user_info['id']]);
 
 		// Sorry, theres gotta be a limit you know?
-		$admin_mention_limit = $this->_tools->enable('admin_mention_limit') ? $this->_tools->setting('admin_mention_limit') : 10;
+		$admin_mention_limit = $this->_tools->enable('mention_limit') ? $this->_tools->setting('mention_limit') : 10;
 
 		// Chop the array off!
 		if (!empty($admin_mention_limit) && count($this->_queryNames) >= $admin_mention_limit)
