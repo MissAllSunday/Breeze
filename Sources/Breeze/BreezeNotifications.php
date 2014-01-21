@@ -69,11 +69,14 @@ class BreezeNotifications
 			'comments',
 			'status',
 			'like',
-			// 'buddy', todo refactors the buddy system
+			// 'buddy', @todo refactor the buddy system
 			'mention',
 			'messages',
 			'topics',
 		);
+
+		// Say what again, I double dare you!
+		call_integration_hook('integrate_breeze_notifications_types', array(&$this->types));
 
 		// We kinda need all this stuff, don't' ask why, just nod your head...
 		$this->_query = $query;
