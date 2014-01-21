@@ -69,3 +69,4 @@ $txt['Breeze_breeze_version'] = 'Breeze version';
 $txt['Breeze_live'] = 'Live from the suport forum...';
 $txt['Breeze_allowed_actions'] = 'Write the actions where you wish the notification system shows up';
 $txt['Breeze_allowed_actions_sub'] = 'By default, the notification system will appear on the following actions: '. implode(', ', Breeze::$_allowedActions) .'. Plus the BoardIndex, MessageIndex, Topic and Board pages. <br /> Please add your actions in a comma separated list, example: action, action, action, action';
+$txt['Breeze_feed_error_message'] = 'Breeze couldn\'t connect with the support site';

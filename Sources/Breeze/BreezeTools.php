@@ -76,6 +76,31 @@ class BreezeTools
 	}
 
 	/**
+	 * BreezeTools::adminText()
+	 *
+	 * Gets a string key, and returns the associated text string fr admin related text.
+	 * @param string $var The text string key.
+	 * @global $txt
+	 * @return string|boolean
+	 */
+	public function adminText($var)
+	{
+		global $txt;
+
+		if (empty($var))
+			return false;
+
+		// Load the mod's language file.
+		loadLanguage(Breeze::$name .'Admin');
+
+		if (!empty($txt[$this->_pattern . $var]))
+			return $txt[$this->_pattern . $var];
+
+		else
+			return false;
+	}
+
+	/**
 	 * BreezeTools::enable()
 	 *
 	 * Gets a name and checks if the appropriated settings does exists, returns false otherwise.
