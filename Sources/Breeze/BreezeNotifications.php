@@ -276,8 +276,8 @@ class BreezeNotifications
 			';bid=' . $noti['content']['status_id'];
 
 		// Sometimes this data hasn't been loaded yet
-		if (empty($this->loadedUsers[$noti['content']['wall_poster']]) || empty($this->loadedUsers[$noti['content']['wall_owner']]))
-			$this->_query->loadMinimalData(array($noti['content']['wall_poster'], $noti['content']['wall_owner']));
+		if (!isset($this->loadedUsers[$noti['content']['wall_poster']]) || !isset($this->loadedUsers[$noti['content']['wall_owner']]) || !isset($this->loadedUsers[$noti['content']['wall_mentioned']]))
+			$this->loadedUsers = array_merge($this->loadedUsers, $this->_query->loadMinimalData(array($noti['content']['wall_poster'], $noti['content']['wall_owner'], $noti['content']['wall_mentioned'])));
 
 		// Is this a mention on a comment?
 		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
