@@ -56,7 +56,7 @@ function template_admin_home()
 			<div id="live_news" class="floatleft">
 				<div class="cat_bar">
 					<h3 class="catbg">
-						<span class="ie6_header floatleft">', $txt['Breeze_admin_live'] , '</span>
+						<span class="ie6_header floatleft">', $txt['Breeze_live'] , '</span>
 					</h3>
 				</div>
 				<div class="windowbg nopadding">
@@ -95,7 +95,7 @@ function template_admin_home()
 		<br class="clear" />
 			<div class="cat_bar">
 				<h3 class="catbg">
-					<span class="ie6_header floatleft">', $txt['Breeze_admin_general_credits_title'] , '</span>
+					<span class="ie6_header floatleft">', $txt['Breeze_page_credits'] , '</span>
 				</h3>
 			</div>
 			<div class="windowbg nopadding">
