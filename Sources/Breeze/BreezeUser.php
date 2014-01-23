@@ -151,8 +151,12 @@ function breezeWall()
 	$context['insert_after_template'] .= '
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeMention.js"></script>
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
+
+	// Are mentions enabled?
+	if ($tools->enable('mention'))
+		$context['insert_after_template'] .= '
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeMention.js"></script>';
 
 	// Does the user wants to use the load more button?
 	if (!empty($context['Breeze']['settings']['visitor']['load_more']))

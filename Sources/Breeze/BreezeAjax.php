@@ -183,7 +183,7 @@ class BreezeAjax
 				'owner_id' => $statusOwner,
 				'poster_id' => $statusPoster,
 				'time' => time(),
-				'body' => $this->_mention->preMention($body, $statusMentions),
+				'body' => $this->_tools->enable('mention') ? $this->_mention->preMention($body, $statusMentions) : $body,
 			);
 
 			// Maybe a last minute change before inserting the new status?
@@ -197,15 +197,16 @@ class BreezeAjax
 			if (!empty($this->_params['id']))
 			{
 				// Build the notification(s) via BreezeMention
-				$this->_mention->mention(
-					array(
-						'wall_owner' => $statusOwner,
-						'wall_poster' => $statusPoster,
-						'status_id' => $this->_params['id'],),
-					array(
-							'name' => 'status',
-							'id' => $this->_params['id'],)
-				);
+				if ($this->_tools->enable('mention'))
+					$this->_mention->mention(
+						array(
+							'wall_owner' => $statusOwner,
+							'wall_poster' => $statusPoster,
+							'status_id' => $this->_params['id'],),
+						array(
+								'name' => 'status',
+								'id' => $this->_params['id'],)
+					);
 
 				// Parse the content
 				$this->_params['body'] = $this->_parser->display($this->_params['body']);
@@ -301,7 +302,7 @@ class BreezeAjax
 				'poster_id' => $commentPoster,
 				'profile_id' => $commentOwner,
 				'time' => time(),
-				'body' => $this->_mention->preMention($body, $commentMentions)
+				'body' => $this->_tools->enable('mention') ? $this->_mention->preMention($body, $statusMentions) : $body
 			);
 
 			// Before inserting the comment...
@@ -315,17 +316,18 @@ class BreezeAjax
 			if (!empty($this->_params['id']))
 			{
 				// Build the notification(s) for this comment via BreezeMention
-				$this->_mention->mention(
-					array(
-						'wall_owner' => $commentOwner,
-						'wall_poster' => $commentPoster,
-						'wall_status_owner' => $commentStatusPoster,
-						'comment_id' => $this->_params['id'],
-						'status_id' => $commentStatus,),
-					array(
-							'name' => 'comments',
-							'id' => $this->_params['id'],)
-				);
+				if ($this->_tools->enable('mention'))
+					$this->_mention->mention(
+						array(
+							'wall_owner' => $commentOwner,
+							'wall_poster' => $commentPoster,
+							'wall_status_owner' => $commentStatusPoster,
+							'comment_id' => $this->_params['id'],
+							'status_id' => $commentStatus,),
+						array(
+								'name' => 'comments',
+								'id' => $this->_params['id'],)
+					);
 
 				// Parse the content.
 				$this->_params['body'] = $this->_parser->display($this->_params['body']);
