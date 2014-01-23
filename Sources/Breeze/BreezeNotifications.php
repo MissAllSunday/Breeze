@@ -104,6 +104,10 @@ class BreezeNotifications
 	 */
 	public function create($params)
 	{
+		// Don't do anything if the feature is disable
+		if (!$this->_tools->enable('notifications'))
+			return false;
+
 		// Before inserting...
 		call_integration_hook('integrate_breeze_before_insertingNoti', array(&$params));
 

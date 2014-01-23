@@ -214,33 +214,28 @@ class Breeze
 				);
 
 			// Notification's settings.
-			$profile_areas['breeze_profile']['areas']['breezenotisettings'] = array(
-				'label' => $tools->text('user_settings_name_settings'),
-				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'breezenotisettings',
-				'permission' => array(
-					'own' => array(
-						'profile_view_own',
+			if ($tools->enable('notifications'))
+			{
+				$profile_areas['breeze_profile']['areas']['breezenotisettings'] = array(
+					'label' => $tools->text('user_settings_name_settings'),
+					'file' => Breeze::$folder . 'BreezeUser.php',
+					'function' => 'breezenotisettings',
+					'permission' => array(
+						'own' => array(
+							'profile_view_own',
+							),
 						),
-					),
-				);
+					);
 
-			// Buddies page
-			// $profile_areas['breeze_profile']['areas']['breezebuddies'] = array(
-				// 'label' => $tools->text('user_buddysettings_name'),
-				// 'file' => Breeze::$folder . 'BreezeUser.php',
-				// 'function' => 'breezeBuddyRequest',
-				// 'permission' => array('own' => 'profile_view_own', ),
-				// );
-
-			// Notifications admin page
-			$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
-				'label' => $tools->text('user_notisettings_name'),
-				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'breezeNotifications',
-				'subsections' => array(),
-				'permission' => array('own' => 'profile_view_own', ),
-				);
+				// Notifications admin page
+				$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
+					'label' => $tools->text('user_notisettings_name'),
+					'file' => Breeze::$folder . 'BreezeUser.php',
+					'function' => 'breezeNotifications',
+					'subsections' => array(),
+					'permission' => array('own' => 'profile_view_own', ),
+					);
+			}
 		}
 		// Done with the hacking...
 	}
