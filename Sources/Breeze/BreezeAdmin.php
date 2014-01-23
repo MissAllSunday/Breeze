@@ -125,9 +125,9 @@ function Breeze_Admin_Settings()
 	// Load stuff
 	$data = Breeze::data('request');
 	$context['sub_template'] = 'show_settings';
-	$context['page_title'] = $context['Breeze']['instance']->adminText('page_settings');
+	$context['page_title'] = Breeze::$name .' - '. $context['Breeze']['instance']->adminText('page_settings');
 	$context[$context['admin_menu_name']]['tab_data'] = array(
-		'title' => Breeze::$name .' - '. $context['page_title'],
+		'title' => $context['page_title'],
 		'description' => $context['Breeze']['instance']->adminText('page_settings_desc'),
 	);
 
@@ -165,9 +165,9 @@ function Breeze_Admin_Permissions()
 	// Load stuff
 	$data = Breeze::data('request');
 	$context['sub_template'] = 'show_settings';
-	$context['page_title'] = $context['Breeze']['instance']->adminText('page_permissions');
+	$context['page_title'] = Breeze::$name .' - '. $context['Breeze']['instance']->adminText('page_permissions');
 	$context[$context['admin_menu_name']]['tab_data'] = array(
-		'title' => Breeze::$name .' - '. $context['page_title'],
+		'title' => $context['page_title'],
 		'description' => $context['Breeze']['instance']->adminText('page_permissions_desc'),
 	);
 
@@ -199,9 +199,9 @@ function Breeze_Admin_Style()
 
 	$data = Breeze::data('request');
 	$context['sub_template'] = 'show_settings';
-	$context['page_title'] = $context['Breeze']['instance']->adminText('page_style');
+	$context['page_title'] = Breeze::$name .' - '. $context['Breeze']['instance']->adminText('page_style');
 	$context[$context['admin_menu_name']]['tab_data'] = array(
-		'title' => Breeze::$name .' - '. $context['page_title'],
+		'title' => $context['page_title'],
 		'description' => $context['Breeze']['instance']->adminText('page_style_desc'),
 	);
 
