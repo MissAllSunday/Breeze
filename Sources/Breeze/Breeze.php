@@ -290,6 +290,12 @@ class Breeze
 						'show' => ($tools->enable('master') && !$user_info['is_guest']),
 						'sub_buttons' => array(),
 						),
+					'admin' => array(
+						'title' => $tools->text('admin'),
+						'href' => $scripturl . '?action=admin;area=breezeadmin',
+						'show' => ($tools->enable('master') && $user_info['is_admin']),
+						'sub_buttons' => array(),
+						),
 					),
 				),
 			),
