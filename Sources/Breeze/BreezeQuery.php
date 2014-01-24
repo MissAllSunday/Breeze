@@ -1353,7 +1353,7 @@ class BreezeQuery extends Breeze
 	/**
 	 * BreezeQuery::userMention()
 	 *
-	 * Gets a tring and queries the DB looking for any possible matches, caches the result.
+	 * Gets a string and queries the DB looking for any possible matches, caches the result.
 	 * @param string $match a 3 letter string
 	 * @return array the matched IDs and names.
 	 */
@@ -1382,10 +1382,8 @@ class BreezeQuery extends Breeze
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT id_member, member_name, real_name
 				FROM {db_prefix}members
-				WHERE member_name LIKE {string:match} OR real_name LIKE {string:match}
-				'. ($this->tools->enable('posts_for_mention') ? '
-					AND posts >= {int:p}' : '') .
-				'',array(
+				WHERE member_name LIKE {string:match} OR real_name LIKE {string:match}',
+				array(
 					'p' => $postsLimit,
 					'match' => $match .'%'
 				)
