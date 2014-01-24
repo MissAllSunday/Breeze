@@ -494,7 +494,7 @@ class Breeze
 					Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $tools->setting('allowed_actions')));
 
 				// Stuff for the notifications, don't show this if we aren't on a specified action
-				if (empty($user_info['is_guest']) && (in_array($breezeGlobals->get('action'), Breeze::$_allowedActions) || $breezeGlobals->get('action') == false))
+				if ($tools->enable('notifications') && empty($user_info['is_guest']) && (in_array($breezeGlobals->get('action'), Breeze::$_allowedActions) || $breezeGlobals->get('action') == false))
 				{
 					$notifications = $breezeController->get('notifications');
 					$context['insert_after_template'] .= '
