@@ -57,7 +57,6 @@ function Breeze_Admin_Index()
 			'general' => 'Breeze_Admin_Main',
 			'settings' => 'Breeze_Admin_Settings',
 			'permissions' => 'Breeze_Admin_Permissions',
-			'style' => 'Breeze_Admin_Style',
 			'donate' => 'Breeze_Admin_Donate',
 		);
 
@@ -189,38 +188,6 @@ function Breeze_Admin_Permissions()
 		checkSession();
 		saveDBSettings($config_vars);
 		redirectexit('action=admin;area=breezeadmin;sa=permissions');
-	}
-
-	prepareDBSettingContext($config_vars);
-}
-
-function Breeze_Admin_Style()
-{
-	global $scripturl, $context, $sourcedir, $txt;
-
-	$data = Breeze::data('request');
-	$context['sub_template'] = 'show_settings';
-	$context['page_title'] = Breeze::$name .' - '. $context['Breeze']['instance']->adminText('page_style');
-	$context[$context['admin_menu_name']]['tab_data'] = array(
-		'title' => $context['page_title'],
-		'description' => $context['Breeze']['instance']->adminText('page_style_desc'),
-	);
-
-	require_once($sourcedir . '/ManageServer.php');
-
-	$config_vars = array(
-		array('title', Breeze::$txtpattern .'page_style'),
-		array('int', Breeze::$txtpattern .'posts_for_mention', 'size' => 3, 'subtext' => $context['Breeze']['instance']->adminText('posts_for_mention_sub')),
-	);
-
-	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=style;save';
-
-	// Saving?
-	if ($data->validate('save') == true)
-	{
-		checkSession();
-		saveDBSettings($config_vars);
-		redirectexit('action=admin;area=breezeadmin;sa=style');
 	}
 
 	prepareDBSettingContext($config_vars);
