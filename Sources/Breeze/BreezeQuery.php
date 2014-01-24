@@ -799,8 +799,8 @@ class BreezeQuery extends Breeze
 	 * BreezeQuery::insertUserSettings()
 	 *
 	 * Creates a new set of user settings.
-	 * @param 
-	 * @param 
+	 * @param
+	 * @param
 	 */
 	public function insertUserSettings($array, $userID)
 	{
@@ -1359,6 +1359,8 @@ class BreezeQuery extends Breeze
 	 */
 	public function userMention($match)
 	{
+		global $sourcedir;
+
 		// By default we return these empty values
 		$return = array(
 			'name' => '',
@@ -1377,23 +1379,28 @@ class BreezeQuery extends Breeze
 		if (($return = cache_get_data(Breeze::$name .'-Mentions-'. $match, 7200)) == null)
 		{
 			$return = array();
-			$postsLimit = $this->tools->enable('posts_for_mention') ? (int) $this->tools->setting('posts_for_mention') : 1;
+
+			// We need a function in a file far far away...
+			require_once($sourcedir . '/Subs-Members.php');
+
+			// Get the members allowed to be mentioned
+			$allowedMembers = array_values(membersAllowedTo('breeze_beMentioned'));
 
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT id_member, member_name, real_name
 				FROM {db_prefix}members
 				WHERE member_name LIKE {string:match} OR real_name LIKE {string:match}',
 				array(
-					'p' => $postsLimit,
 					'match' => $match .'%'
 				)
 			);
 
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-				$return[] = array(
-					'name' => $row['real_name'],
-					'id' => (int) $row['id_member'],
-				);
+				if (isset($allowedMembers[$row['id_member']]))
+					$return[] = array(
+						'name' => $row['real_name'],
+						'id' => (int) $row['id_member'],
+					);
 
 			$this->_smcFunc['db_free_result']($result);
 
