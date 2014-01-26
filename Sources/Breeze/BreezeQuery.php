@@ -1371,6 +1371,9 @@ class BreezeQuery extends Breeze
 		if (empty($match))
 			return $return;
 
+		// Don't be naughty...
+		$match = $this->_smcFunc['htmltrim']($this->_smcFunc['htmlspecialchars']($match), ENT_QUOTES);
+
 		// Cheating...
 		if ($this->_smcFunc['strlen']($match) >= 3)
 			$match = $this->_smcFunc['substr']($match, 0, 3);
@@ -1386,12 +1389,21 @@ class BreezeQuery extends Breeze
 			// Get the members allowed to be mentioned
 			$allowedMembers = array_values(membersAllowedTo('breeze_beMentioned'));
 
+			// Huh? no one is allowed? bummer...
+			if (empty($allowedMembers))
+				return $return;
+
+			// Safety first!
+			$allowedMembers = (array) $allowedMembers;
+
 			$result = $this->_smcFunc['db_query']('', '
 				SELECT id_member, member_name, real_name
 				FROM {db_prefix}members
-				WHERE member_name LIKE {string:match} OR real_name LIKE {string:match}',
+				WHERE id_member IN({array_int:allowed})
+					AND member_name LIKE {string:match} OR real_name LIKE {string:match}',
 				array(
-					'match' => $match .'%'
+					'match' => $match .'%',
+					'allowed' => $allowedMembers
 				)
 			);
 
