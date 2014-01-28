@@ -463,3 +463,8 @@ ul.breeze_top_profile_views
 {
 	background: url(../images/breeze/status.png) no-repeat scroll 0 0 transparent;
 }
+
+.logTopic
+{
+	background: url(../images/breeze/topic.png) no-repeat scroll 0 0 transparent;
+}
