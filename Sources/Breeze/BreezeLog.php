@@ -82,7 +82,7 @@ class BreezeLog
 				// No? then pass the content
 				else if (!empty($entry['content']))
 				{
-					// All templates expects an array with at least two keys, message and link, 'm lazy so I don't always provide that.... hence this check ;)
+					// All templates expects an array with at least two keys, message and link, I'm lazy so I don't always provide those... hence this check ;)
 					if (!is_array($entry['content']))
 						$entry['content'] = array('message' => $entry['content']);
 
