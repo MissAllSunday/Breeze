@@ -274,7 +274,7 @@ function breezeSettings()
 		!empty($userSettings['activityLog']) ? true : false
 	);
 
-	// Buddies.
+	// Buddies block.
 	$form->addCheckBox(
 		'buddies',
 		!empty($userSettings['buddies']) ? true : false

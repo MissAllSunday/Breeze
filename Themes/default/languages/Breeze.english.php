@@ -130,7 +130,7 @@ $txt['Breeze_time_ago'] = 'ago.';
 $txt['Breeze_time_minute'] = 'minute';
 $txt['Breeze_time_hour'] = 'hour';
 $txt['Breeze_time_day'] = 'day';
-$txt['Breeze_time_day'] = 'week';
+$txt['Breeze_time_week'] = 'week';
 $txt['Breeze_time_month'] = 'month';
 $txt['Breeze_time_year'] = 'year';
 
