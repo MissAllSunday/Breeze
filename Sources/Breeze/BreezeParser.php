@@ -112,6 +112,9 @@ class BreezeParser
 	 */
 	protected function smf_parse()
 	{
+		if (!$this->tools->enable('parseBBC'))
+			return;
+
 		$this->s = parse_bbc($this->s);
 	}
 }
