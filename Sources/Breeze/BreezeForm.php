@@ -113,7 +113,7 @@ class BreezeForm
 		$element['html_end'] = '</'. $element['type'] .'>';
 
 		foreach($values as $k => $v)
-			$element['values'][$k] = '<option value="' .$k. '" '. (isset($v[1]) && $v[1] == 'selected' ? 'selected="selected"' : '') .'>'. $this->_tools->text('user_settings_'. $v[0]) .'</option>';
+			$element['values'][$k] = '<option value="' .$k. '" '. (isset($v[1]) && $v[1] == 'selected' ? 'selected="selected"' : '') .'>'. $this->_tools->text($v[0]) .'</option>';
 
 		return $this->addElement($element);
 	}

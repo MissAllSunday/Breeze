@@ -122,6 +122,10 @@ $txt['Breeze_user_modules_name'] = 'Modules';
 $txt['Breeze_user_modules_visitors'] = 'visits: ';
 $txt['Breeze_user_modules_visitors_none'] = 'There are no recent visitors';
 $txt['Breeze_user_modules_buddies_none'] = 'This user doesn\'t have any buddies';
+$txt['Breeze_visitors_timeframe_hour'] = 'Hour';
+$txt['Breeze_visitors_timeframe_day'] = 'Day';
+$txt['Breeze_visitors_timeframe_week'] = 'Week';
+$txt['Breeze_visitors_timeframe_month'] = 'Month';
 
 // Time
 $txt['Breeze_time_just_now'] = 'just now.';
