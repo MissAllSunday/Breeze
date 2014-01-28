@@ -140,6 +140,7 @@ function Breeze_Admin_Settings()
 		array('text', Breeze::$txtpattern .'allowed_actions', 'size' => 60, 'subtext' => $context['Breeze']['instance']->adminText('allowed_actions_sub')),
 		array('check', Breeze::$txtpattern .'mention', 'subtext' => $context['Breeze']['instance']->adminText('mention_sub')),
 		array('int', Breeze::$txtpattern .'mention_limit', 'size' => 3, 'subtext' => $context['Breeze']['instance']->adminText('mention_limit_sub')),
+		array('check', Breeze::$txtpattern .'parseBBC', 'subtext' => $context['Breeze']['instance']->adminText('parseBBC_sub')),
 	);
 
 	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=settings;save';
