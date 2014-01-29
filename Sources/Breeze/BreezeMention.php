@@ -106,20 +106,24 @@ class BreezeMention
 
 		foreach ($this->_queryNames as $name)
 		{
+			// So, we need this user specific settings.
+			$userSettings = $this->_query->getUserSettings($name['id']);
+
 			// Append the mentioned user ID
 			$noti_info['wall_mentioned'] = $name['id'];
 
-			// Notification here
-			$this->_notification->create(array(
-				'sender' => $user_info['id'],
-				'receiver' => $name['id'],
-				'type' => 'mention',
-				'time' => time(),
-				'read' => 0,
-				'content' => $noti_info,
-				'type_id' => !empty($type) && !empty($type['id']) ? $type['id'] : 0,
-				'second_type' => !empty($type) && !empty($type['name']) ? $type['name'] : '',
-			));
+			// Does this user wants to be notified?
+			if (!empty($userSettings['noti_on_mention']))
+				$this->_notification->create(array(
+					'sender' => $user_info['id'],
+					'receiver' => $name['id'],
+					'type' => 'mention',
+					'time' => time(),
+					'read' => 0,
+					'content' => $noti_info,
+					'type_id' => !empty($type) && !empty($type['id']) ? $type['id'] : 0,
+					'second_type' => !empty($type) && !empty($type['name']) ? $type['name'] : '',
+				));
 		}
 	}
 
