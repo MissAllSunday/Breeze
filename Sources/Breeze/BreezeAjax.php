@@ -230,6 +230,25 @@ class BreezeAjax
 						'second_type' => 'status',
 					));
 
+				// Does the wall owner wants to be notified?
+				if ($statusOwner != $statusPoster)
+				{
+					// Get the wall owner's settings.
+					$uSettings = $this->_query->getUserSettings($statusOwner);
+
+					if (!empty($uSettings['noti_on_status']))
+						$this->_notifications->create(array(
+							'sender' => $statusPoster,
+							'receiver' => $statusOwner,
+							'type' => 'onWall',
+							'time' => time(),
+							'viewed' => 0,
+							'content' => $logStatus,
+							'type_id' => $this->_params['id'],
+							'second_type' => 'status',
+						));
+				}
+
 				// Send the data back to the browser
 				return $this->setResponse(array(
 					'type' => 'success',

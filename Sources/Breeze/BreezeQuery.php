@@ -749,13 +749,12 @@ class BreezeQuery extends Breeze
 	 * BreezeQuery::getUserSetting()
 	 *
 	 * Gets a unique user setting
-	 * @param int $user
-	 * @param bool $setting
+	 * @param int $user The user ID
 	 * @return bool|array Either a boolean false or the requested user data.
 	 */
 	public function getUserSettings($user)
 	{
-		if (!$user)
+		if (empty($user))
 			return false;
 
 		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['options']['name'] .'-'. $user,
