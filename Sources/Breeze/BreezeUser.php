@@ -372,6 +372,12 @@ function breezenotisettings()
 		3
 	);
 
+	// Noti on status
+	$form->addCheckBox(
+		'noti_on_status',
+		!empty($userSettings['noti_on_status']) ? true : false
+	);
+
 	// Noti on comment
 	$form->addCheckBox(
 		'noti_on_comment',
