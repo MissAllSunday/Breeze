@@ -327,13 +327,22 @@ class BreezeNotifications
 		if ($noti['receiver'] != $this->_currentUser)
 			return false;
 
-		// Build the status link
-		$statusLink = $scripturl . '?action=wall;sa=single;u=' . $noti['content']['wall_owner'] .
-			';bid=' . $noti['content']['status_id'];
+		// Build the status link.
+		$statusLink = $scripturl . '?action=wall;sa=single;u=' . $noti['content']['owner_id'] .
+			';bid=' . $noti['content']['id'];
 
 		// Sometimes this data hasn't been loaded yet
-		if (!isset($this->loadedUsers[$noti['content']['wall_poster']]) || !isset($this->loadedUsers[$noti['content']['wall_owner']]) || !isset($this->loadedUsers[$noti['content']['wall_mentioned']]))
-			$this->loadedUsers = $this->loadedUsers + $this->_query->loadMinimalData(array($noti['content']['wall_poster'], $noti['content']['wall_owner'], $noti['content']['wall_mentioned']));
+		$loadedUsers = $this->_query->loadMinimalData(array_unique(array($entry['content']['owner_id'], $entry['content']['poster_id'],)));
+
+		// Create the actual text.
+		$text = sprintf($loadedUsers[$entry['content']['poster_id']]['link'], $this->_tools->text('noti_posted_wall'));
+
+		$this->_messages[$noti['id']] = array(
+			'id' => $noti['id'],
+			'user' => $noti['receiver'],
+			'message' => $text,
+			'viewed' => $noti['viewed']
+		);
 	}
 
 	public function getMessages()
