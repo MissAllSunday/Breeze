@@ -323,6 +323,8 @@ class BreezeNotifications
 
 	public function doonWallOwner($noti)
 	{
+		global $scripturl;
+
 		// Extra check
 		if ($noti['receiver'] != $this->_currentUser)
 			return false;
@@ -332,10 +334,10 @@ class BreezeNotifications
 			';bid=' . $noti['content']['id'];
 
 		// Sometimes this data hasn't been loaded yet
-		$loadedUsers = $this->_query->loadMinimalData(array_unique(array($entry['content']['owner_id'], $entry['content']['poster_id'],)));
+		$loadedUsers = $this->_query->loadMinimalData(array($entry['content']['owner_id'], $entry['content']['poster_id'],));
 
 		// Create the actual text.
-		$text = sprintf($loadedUsers[$entry['content']['poster_id']]['link'], $this->_tools->text('noti_posted_wall'));
+		$text = sprintf($loadedUsers[$entry['content']['poster_id']]['link'], $statusLink, $this->_tools->text('noti_posted_wall'));
 
 		$this->_messages[$noti['id']] = array(
 			'id' => $noti['id'],
