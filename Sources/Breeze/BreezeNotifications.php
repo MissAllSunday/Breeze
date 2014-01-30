@@ -73,6 +73,7 @@ class BreezeNotifications
 			'mention',
 			'messages',
 			'topics',
+			'onWallOwner',
 		);
 
 		// Say what again, I double dare you!
@@ -318,6 +319,21 @@ class BreezeNotifications
 			'message' => $text,
 			'viewed' => $noti['viewed']
 		);
+	}
+
+	public function doonWallOwner($noti)
+	{
+		// Extra check
+		if ($noti['receiver'] != $this->_currentUser)
+			return false;
+
+		// Build the status link
+		$statusLink = $scripturl . '?action=wall;sa=single;u=' . $noti['content']['wall_owner'] .
+			';bid=' . $noti['content']['status_id'];
+
+		// Sometimes this data hasn't been loaded yet
+		if (!isset($this->loadedUsers[$noti['content']['wall_poster']]) || !isset($this->loadedUsers[$noti['content']['wall_owner']]) || !isset($this->loadedUsers[$noti['content']['wall_mentioned']]))
+			$this->loadedUsers = $this->loadedUsers + $this->_query->loadMinimalData(array($noti['content']['wall_poster'], $noti['content']['wall_owner'], $noti['content']['wall_mentioned']));
 	}
 
 	public function getMessages()

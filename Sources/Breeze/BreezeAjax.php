@@ -240,7 +240,7 @@ class BreezeAjax
 						$this->_notifications->create(array(
 							'sender' => $statusPoster,
 							'receiver' => $statusOwner,
-							'type' => 'onWall',
+							'type' => 'onWallOwner',
 							'time' => time(),
 							'viewed' => 0,
 							'content' => $logStatus,
