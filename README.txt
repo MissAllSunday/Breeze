@@ -1,9 +1,9 @@
 [center][color=purple][size=15pt]Breeze Social mod[/size][/color] [/center]
 
 
-Created by [url=http://missallsunday.com]Suki[/url] [color=red]important, support for this modification will only be provided by it's author on the developer's site.[/color]
+Created by [url=http://missallsunday.com]Suki[/url]
 
-[b]This mod needs PHP 5.3 and SMF 2.0.x or greater[/b]
+[b]This mod needs PHP 5.3 or greater and SMF 2.0.x or greater[/b]
 
 [color=purple][b][size=12pt]License[/size][/b][/color]
 [code]
@@ -24,7 +24,7 @@ License.[/code]
 
 [size=12pt][color=purple]Introduction[/color][/size]
 
-Breeze is a social mod, it lest youy users to turn their dull profile ages into a dynamic wall where they can post status and comments.
+Breeze is a social mod for your users to turn their dull profile into a dynamic wall where they can post status and comments.
 
 [size=12pt][color=purple]Supported Languages[/color][/size]
 
@@ -37,14 +37,13 @@ I welcome translations, please post it on the support site ;)
 [size=12pt][color=purple]Installation[/color][/size]
 
 Use the package manager to install this modification, Breeze will work with all themes.
-Tested on PHP 5.3 and 5.4, IE8, Opera and Firefox.
+Tested on PHP 5.3 and 5.4, IE8, Opera12 and whatever version Firefox was when I tested it.
 
 
 [size=12pt][color=purple]This mod uses the following scripts[/color][/size]
 
 - [Facebox] (https://github.com/defunkt/facebox)
 - [zRSSFeeds] (http://www.zazar.net/developers/jquery/zrssfeed/)
-- [Brandon Aaron Live query plugin] (http://brandonaaron.net/code/livequery/docs)
 - [needim noty jquery plugin] (http://needim.github.com/noty/)
 - [Paul Irish infinite-scroll] (https://github.com/paulirish/infinite-scroll)
 - [ichord Mentions autocomplete script] (http://ichord.github.com/At.js)
