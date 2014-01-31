@@ -349,7 +349,24 @@ class BreezeNotifications
 
 	public function onCommentStatus($noti)
 	{
+		global $scripturl;
 
+		// Build the status link.
+		$statusLink = $scripturl . '?action=wall;sa=single;u=' . $entry['content']['profile_id'] .
+			';bid=' . $entry['content']['id'];
+
+		// Sometimes this data hasn't been loaded yet
+		$loadedUsers = $this->_query->loadMinimalData(array($entry['content']['profile_id'], $entry['content']['poster_id'], $entry['content']['status_owner_id']));
+
+		// Create the actual text.
+		$text = sprintf($loadedUsers[$entry['content']['poster_id']]['link'], $statusLink, $loadedUsers[$entry['content']['profile_id']]['link'], $this->_tools->text('noti_posted_comment'));
+
+		$this->_messages[$noti['id']] = array(
+			'id' => $noti['id'],
+			'user' => $noti['receiver'],
+			'message' => $text,
+			'viewed' => $noti['viewed']
+		);
 	}
 
 	public function getMessages()
