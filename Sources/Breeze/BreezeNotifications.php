@@ -347,6 +347,11 @@ class BreezeNotifications
 		);
 	}
 
+	public function onCommentStatus($noti)
+	{
+
+	}
+
 	public function getMessages()
 	{
 		if (!empty($this->_messages))
