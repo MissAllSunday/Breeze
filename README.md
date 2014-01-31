@@ -15,13 +15,21 @@ Breeze is powerful social mod for your SMF forum, it allows your users to turn t
 
 - No file edits, works with all themes.
 - Users individual settings, each user defines her/his own settings.
+- Mentions for status and comments.
+- Notifications for several features.
+- General wall page for displaying your buddie's latest activity.
+- Couple of blocks for showing your buddies, visitors, latest activity and about me block.
+- Works with or without JavaScript.
 
 The mod uses the following scripts:
 
+- [jQuery] (http://jquery.com/)
 - [Facebox] (https://github.com/defunkt/facebox)
 - [zRSSFeeds] (http://www.zazar.net/developers/jquery/zrssfeed/)
 - [needim noty jquery plugin] (http://needim.github.com/noty/)
+- [Paul Irish infinite-scroll] (https://github.com/paulirish/infinite-scroll)
 - [ichord Mentions autocomplete script] (http://ichord.github.com/At.js)
+- [ikons from Piotr Kwiatkowski] (http://ikons.piotrkwiatkowski.co.uk)
 
 ######Notes:
 
