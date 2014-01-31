@@ -240,7 +240,7 @@ class BreezeAjax
 						$this->_notifications->create(array(
 							'sender' => $statusPoster,
 							'receiver' => $statusOwner,
-							'type' => 'onWallOwner',
+							'type' => 'WallOwner',
 							'time' => time(),
 							'viewed' => 0,
 							'content' => $logStatus,
@@ -374,7 +374,19 @@ class BreezeAjax
 				// This only applies if the wall owner, the status poster and the comment poster are different persons!
 				if (($commentOwner != $commentPoster) &&  ($commentPoster != $commentStatusPoster))
 				{
-					$uStatusSettings = $this->_query->getUserSettings($statusOwner);
+					$uStatusSettings = $this->_query->getUserSettings($commentStatusPoster);
+
+					if (!empty($uStatusSettings['noti_on_comment']))
+						$this->_notifications->create(array(
+							'sender' => $commentPoster,
+							'receiver' => $commentStatusPoste,
+							'type' => 'CommentStatus',
+							'time' => time(),
+							'viewed' => 0,
+							'content' => $logComment,
+							'type_id' => $this->_params['id'],
+							'second_type' => 'comment',
+						));
 				}
 
 				// Send the data back to the browser
