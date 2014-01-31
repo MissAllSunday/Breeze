@@ -370,6 +370,13 @@ class BreezeAjax
 						'second_type' => 'comment',
 					));
 
+				// Does the Status poster wants to be notified? transitive relation anyone?
+				// This only applies if the wall owner, the status poster and the comment poster are different persons!
+				if (($commentOwner != $commentPoster) &&  ($commentPoster != $commentStatusPoster))
+				{
+					$uStatusSettings = $this->_query->getUserSettings($statusOwner);
+				}
+
 				// Send the data back to the browser
 				return $this->setResponse(array(
 					'type' => 'success',
