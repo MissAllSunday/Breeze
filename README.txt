@@ -37,7 +37,7 @@ I welcome translations, please post it on the support site ;)
 [size=12pt][color=purple]Installation[/color][/size]
 
 Use the package manager to install this modification, Breeze will work with all themes.
-Tested on PHP 5.3 and 5.4, IE8, Opera12 and whatever version Firefox was when I tested it.
+Tested on PHP 5.3 and 5.4, Opera12, IE8 and whatever version Firefox was when I tested it.
 
 
 [size=12pt][color=purple]This mod uses the following scripts[/color][/size]

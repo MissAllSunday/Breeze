@@ -44,9 +44,6 @@ class BreezeTools
 
 	function __construct()
 	{
-		// Get globals
-		$this->_data = new BreezeGlobals('request');
-
 		$this->_pattern = Breeze::$name .'_';
 	}
 
