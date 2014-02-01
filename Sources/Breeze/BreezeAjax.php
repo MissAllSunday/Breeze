@@ -296,7 +296,7 @@ class BreezeAjax
 				'poster_id' => $commentPoster,
 				'profile_id' => $commentOwner,
 				'time' => time(),
-				'body' => $this->_tools->enable('mention') ? $this->_mention->preMention($body, $statusMentions) : $body
+				'body' => $this->_tools->enable('mention') ? $this->_mention->preMention($body, $commentMentions) : $body
 			);
 
 			// Before inserting the comment...
