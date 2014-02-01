@@ -3,7 +3,7 @@
 <package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
 	<id>Suki:breeze</id>
 	<name>Breeze</name>
-	<version>1.0 Beta 3</version>
+	<version>1.0</version>
 	<type>modification</type>
 
 	<install for="2.0 - 2.0.99">
@@ -24,13 +24,22 @@
 		<remove-file name="$themedir/BreezeAdmin.template.php" />
 		<remove-file name="$themedir/BreezeBuddy.template.php" />
 		<remove-file name="$themedir/css/breeze.css" />
+		<remove-file name="$themedir/css/facebox.css" />
+		<remove-file name="$themedir/css/jquery.atwho.css" />
+		<remove-dir name="$imagesdir/breeze" />
+		<remove-dir name="$themedir/js/noty" />
 		<remove-file name="$themedir/js/breeze.js" />
-		<remove-file name="$themedir/js/confirm.js" />
+		<remove-file name="$themedir/js/breezeLoadMore.js" />
+		<remove-file name="$themedir/js/breezeMention.js" />
+		<remove-file name="$themedir/js/breezeNoti.js" />
+		<remove-file name="$themedir/js/breezeTabs.js" />
 		<remove-file name="$themedir/js/facebox.js" />
+		<remove-file name="$themedir/js/jquery.atwho.js" />
+		<remove-file name="$themedir/js/jquery.atwho.js" />
+		<remove-file name="$themedir/js/jquery.hashchange.min.js" />
 		<remove-file name="$themedir/js/jquery.zrssfeed.min.js" />
-		<remove-file name="$themedir/js/jquery_notification.js" />
-		<remove-file name="$themedir/js/livequery.js" />
 		<remove-file name="$languagedir/Breeze.english.php" />
+		<remove-file name="$languagedir/BreezeAdmin.english.php" />
 	</uninstall>
 
 </package-info>
