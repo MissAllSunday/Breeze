@@ -19,7 +19,7 @@ class BreezeNotifications
 	protected $_tools;
 	protected $_params = array();
 	protected $_user = 0;
-	private $_query;
+	protected $_query;
 	protected $_returnArray = array();
 	protected $_usersData = array();
 	public $types = array();

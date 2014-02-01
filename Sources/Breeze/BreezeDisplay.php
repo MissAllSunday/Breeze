@@ -15,13 +15,6 @@ if (!defined('SMF'))
 
 class BreezeDisplay
 {
-	private $returnArray = array();
-	private $params = array();
-	private $UserInfo;
-	private $tools;
-	private $parse;
-	private $type;
-
 	function __construct($tools)
 	{
 		$this->tools = $tools;
