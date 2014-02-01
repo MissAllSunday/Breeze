@@ -668,6 +668,10 @@ function breezeCheckPermissions()
 	if (!$tools->enable('master'))
 		redirectexit();
 
+	// If the owner doesn't have any settings don't show the wall, go straight to the static page.
+	if (empty($context['Breeze']['settings']['owner']))
+		redirectexit('action=profile;area=static;u='.$context['member']['id']);
+
 	// If we are forcing the wall, lets check the admin setting first
 	if ($tools->enable('force_enable'))
 		if (!isset($context['Breeze']['settings']['owner']['wall']))
