@@ -13,19 +13,12 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-class BreezeQuery extends Breeze
+class BreezeQuery
 {
-	private static $_instance;
 	protected $_status = array();
 	protected $_noti = array();
 	protected $_comments = array();
 	protected $_members = array();
-	protected $_temp;
-	private $data = array();
-	private $query_params = array('rows' => '*');
-	private $query_data = array();
-	private $_smcFunc;
-	protected static$usersArray;
 
 	/**
 	 * BreezeQuery::__construct()

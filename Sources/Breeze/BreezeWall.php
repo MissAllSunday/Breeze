@@ -20,7 +20,7 @@ class BreezeWall
 	/**
 	 * BreezeAjax::__construct()
 	 *
-	 * Sets the needed properties, loads laguage and template files
+	 * Sets the needed properties, loads language and template files
 	 * @return
 	 */
 	public function __construct($tools, $display, $parser, $query, $notifications, $mention, $log)
