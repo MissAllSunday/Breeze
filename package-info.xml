@@ -20,9 +20,8 @@
 		<database>install.php</database>
 		<remove-dir name="$sourcedir/Breeze" />
 		<remove-file name="$themedir/Breeze.template.php" />
-		<remove-file name="$themedir/BreezeAjax.template.php" />
 		<remove-file name="$themedir/BreezeAdmin.template.php" />
-		<remove-file name="$themedir/BreezeBuddy.template.php" />
+		<remove-file name="$themedir/BreezeFunctions.template.template.php" />
 		<remove-file name="$themedir/css/breeze.css" />
 		<remove-file name="$themedir/css/facebox.css" />
 		<remove-file name="$themedir/css/jquery.atwho.css" />
@@ -41,5 +40,4 @@
 		<remove-file name="$languagedir/Breeze.english.php" />
 		<remove-file name="$languagedir/BreezeAdmin.english.php" />
 	</uninstall>
-
 </package-info>
