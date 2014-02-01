@@ -39,16 +39,6 @@ function breezeWall()
 	$log = $breezeController->get('log');
 	$usersToLoad = array();
 
-	// Is owner?
-	$context['member']['is_owner'] = $context['member']['id'] == $user_info['id'];
-
-	// Check if this user allowed to be here
-	breezeCheckPermissions();
-
-	// We need to make sure we have all your info...
-	if (empty($context['Breeze']['user_info'][$user_info['id']]))
-		$tools->loadUserInfo($user_info['id']);
-
 	// Default values.
 	$status = array();
 	$context['Breeze'] = array(
@@ -56,11 +46,24 @@ function breezeWall()
 		'log' => false,
 		'buddiesLog' => false,
 		'comingFrom' => 'profile',
-		'settings' => array(),
+		'settings' => array(
+			'owner' => array(),
+			'visitor' => array(),
+		),
 	);
+
+	// Is owner?
+	$context['member']['is_owner'] = $context['member']['id'] == $user_info['id'];
 
 	// Get profile owner settings.
 	$context['Breeze']['settings']['owner'] = $query->getUserSettings($context['member']['id']);
+
+	// Check if this user allowed to be here
+	breezeCheckPermissions();
+
+	// We need to make sure we have all your info...
+	if (empty($context['Breeze']['user_info'][$user_info['id']]))
+		$tools->loadUserInfo($user_info['id']);
 
 	// Does the current user (AKA visitor) is also the owner?
 	if ($context['member']['is_owner'])
@@ -666,13 +669,13 @@ function breezeCheckPermissions()
 		redirectexit();
 
 	// If we are forcing the wall, lets check the admin setting first
-	if ($tools->enable('_force_enable'))
-		if (!isset($context['member']['options']['wall']))
-			$context['member']['options']['wall'] = 1;
+	if ($tools->enable('force_enable'))
+		if (!isset($context['Breeze']['settings']['owner']['wall']))
+			$context['Breeze']['settings']['owner']['wall'] = 1;
 
 	// Do the normal check, do note this is not an elseif check, its separate.
 	else
-		if (empty($context['member']['options']['wall']))
+		if (empty($context['Breeze']['settings']['owner']['wall']))
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
 	// This user cannot see his/her own profile and cannot see any profile either

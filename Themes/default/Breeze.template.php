@@ -496,18 +496,12 @@ function template_general_wall()
 				<div class="pagelinks">
 					', $txt['pages'], ': ', $context['page_index'], $context['menu_separator'] . ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
 				</div>';
-	}
+				
 
 	// An empty div to append the loaded status via AJAX.
 	echo '
 			<div id="breezeAppendTo" style="display:hide;"></div>';
-
-	// Pagination
-	if (!empty($context['page_index']))
-		echo '
-			<div class="pagelinks">
-				', $txt['pages'], ': ', $context['page_index'], $context['menu_separator'] . ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
-			</div>';
+	}
 
 	// Wall end
 	echo '

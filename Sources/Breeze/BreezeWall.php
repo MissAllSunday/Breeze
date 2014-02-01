@@ -179,8 +179,9 @@ class BreezeWall
 		// No buddies huh? worry not! here's the latest status...
 		// coming soon... LOL
 
-		// Need to pass some vars to the browser :(
-		$context['insert_after_template'] .= '
+		// Need to pass some vars to the browser if there is something to pass...
+		if (!empty($status['count']))
+			$context['insert_after_template'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[
 
 		breeze.tools.comingFrom = ' . JavaScriptEscape($context['Breeze']['comingFrom']) . ';
