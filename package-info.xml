@@ -38,6 +38,8 @@
 		<remove-file name="$themedir/js/jquery.hashchange.min.js" />
 		<remove-file name="$themedir/js/jquery.zrssfeed.min.js" />
 		<remove-file name="$languagedir/Breeze.english.php" />
+		<remove-file name="$languagedir/Breeze.englishutf8.php" />
 		<remove-file name="$languagedir/BreezeAdmin.english.php" />
+		<remove-file name="$languagedir/BreezeAdmin.english-utf8.php" />
 	</uninstall>
 </package-info>
