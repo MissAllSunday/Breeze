@@ -103,6 +103,8 @@ class BreezeTools
 	 */
 	public function setting($var)
 	{
+		global $modSettings;
+
 		if (empty($var))
 			return false;
 
