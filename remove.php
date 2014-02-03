@@ -29,7 +29,5 @@
 	);
 
 	// Uninstall please
-	$call = 'remove_integration_function';
-
 	foreach ($hooks as $hook => $function)
-		$call($hook, $function);
+		remove_integration_function($hook, $function);

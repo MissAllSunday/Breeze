@@ -28,7 +28,5 @@
 		// 'integrate_register_after' => 'Breeze::newRegister',  @todo for SMF 2.1
 	);
 
-	$call = 'add_integration_function';
-
 	foreach ($hooks as $hook => $function)
-		$call($hook, $function);
+		add_integration_function($hook, $function);
