@@ -264,29 +264,6 @@ function breezeSettings()
 		!empty($userSettings['visitors']) ? true : false
 	);
 
-	// Visitors timeframe.
-	$form->addSelect(
-		'visitors_timeframe',
-		array(
-			'Hour' => array(
-				'visitors_timeframe_hour',
-				!empty($userSettings['visitors_timeframe']) && $userSettings['visitors_timeframe'] == 'Hour' ? 'selected' : ''
-			),
-			'Day' => array(
-				'visitors_timeframe_day',
-				!empty($userSettings['visitors_timeframe']) && $userSettings['visitors_timeframe'] == 'Day' ? 'selected' : ''
-			),
-			'Week' => array(
-				'visitors_timeframe_week',
-				!empty($userSettings['visitors_timeframe']) && $userSettings['visitors_timeframe'] == 'Week' ? 'selected' : ''
-			),
-			'Month' => array(
-				'visitors_timeframe_month',
-				!empty($userSettings['visitors_timeframe']) && $userSettings['visitors_timeframe'] == 'Month' ? 'selected' : ''
-			),
-		)
-	);
-
 	// Clean visitors log
 	$form->addHTML(
 		'clean_visitors',
