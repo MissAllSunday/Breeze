@@ -324,21 +324,30 @@ class BreezeTools
 		$perm = array(
 			'edit' => false,
 			'delete' => '',
-			'post' => allowedTo('breeze_post'. $type)
+			'post' => false,
 		);
 
 		// NO! you don't have permission to do nothing...
 		if ($user_info['is_guest'] || !$userPoster || !$profileOwner || empty($type))
 			return $perm;
 
-		// It all starts with an empty vessel...
-		$allowed = array();
-
 		// Profile owner?
 		$isProfileOwner = $profileOwner == $user_info['id'];
 
 		// Status owner?
 		$isPosterOwner = $userPoster == $user_info['id'];
+
+
+		// Lets check the posing bit first. Profile owner can always post.
+		if ($isProfileOwner)
+			$perm['post'] = true;
+
+		else
+			$perm['post'] = allowedTo('breeze_post'. $type);
+
+
+		// It all starts with an empty vessel...
+		$allowed = array();
 
 		// Your own data?
 		if ($isPosterOwner && allowedTo('breeze_deleteOwn'. $type))
