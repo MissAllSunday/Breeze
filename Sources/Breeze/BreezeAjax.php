@@ -15,8 +15,8 @@ if (!defined('SMF'))
 
 class BreezeAjax
 {
-	protected $noJS = false;
-	protected $redirectURL = '';
+	protected $_noJS = false;
+	protected $_redirectURL = '';
 	public $subActions = array();
 	protected $_userSettings = array();
 	protected $_params = array();
@@ -87,7 +87,7 @@ class BreezeAjax
 
 		// Not using JavaScript?
 		if (!$data->get('js'))
-			$this->noJS = true;
+			$this->_noJS = true;
 
 		// Get the current user settings.
 		$this->_userSettings = $this->_query->getUserSettings($user_info['id']);
@@ -787,7 +787,7 @@ class BreezeAjax
 		global $modSettings;
 
 		// No JS? fine... jut send them to whatever url they're from
-		if ($this->noJS == true)
+		if ($this->_noJS == true)
 		{
 			// Build the redirect url
 			$this->setRedirect();
@@ -845,7 +845,7 @@ class BreezeAjax
 
 		// If we didn't get all the params, set them to an empty var and don't forget to convert the message to a proper text string
 		$this->_response = array(
-			'message' => !empty($data['message']) ? ($this->noJS == false ? $this->_tools->text($data['type'] .'_'. $data['message']) : $data['message']) : 'server',
+			'message' => !empty($data['message']) ? ($this->_noJS == false ? $this->_tools->text($data['type'] .'_'. $data['message']) : $data['message']) : 'server',
 			'data' => !empty($data['data']) ? $data['data'] : '',
 			'type' => !empty($data['type']) ? $data['type'] : 'error',
 			'owner' => !empty($data['owner']) ? $data['owner'] : 0,
