@@ -1398,7 +1398,7 @@ class BreezeQuery
 	 */
 	public function loadMinimalData($users)
 	{
-		global $smcFunc, $scripturl, $txt;
+		global $smcFunc, $txt;
 
 		if (empty($users))
 			return false;
@@ -1423,8 +1423,8 @@ class BreezeQuery
 					'username' => $profile['member_name'],
 					'name' => $profile['real_name'],
 					'id' => $profile['id_member'],
-					'href' => $scripturl . '?action=profile;u=' . $profile['id_member'],
-					'link' => '<a href="' . $scripturl . '?action=profile;u=' . $profile['id_member'] . '" title="' . $txt['profile_of'] . ' ' . $profile['real_name'] . '">' . $profile['real_name'] . '</a>',
+					'href' => $this->scripturl . '?action=profile;u=' . $profile['id_member'],
+					'link' => '<a href="' . $this->scripturl . '?action=profile;u=' . $profile['id_member'] . '" title="' . $txt['profile_of'] . ' ' . $profile['real_name'] . '">' . $profile['real_name'] . '</a>',
 					'gender' => $profile['gender'],
 				);
 
@@ -1465,8 +1465,8 @@ class BreezeQuery
 					'username' => $profile['member_name'],
 					'name' => $profile['real_name'],
 					'id' => $profile['id_member'],
-					'href' => $scripturl . '?action=profile;u=' . $profile['id_member'],
-					'link' => '<a href="' . $scripturl . '?action=profile;u=' . $profile['id_member'] . '" title="' . $txt['profile_of'] . ' ' . $profile['real_name'] . '">' . $profile['real_name'] . '</a>',
+					'href' => $this->scripturl . '?action=profile;u=' . $profile['id_member'],
+					'link' => '<a href="' . $this->scripturl . '?action=profile;u=' . $profile['id_member'] . '" title="' . $txt['profile_of'] . ' ' . $profile['real_name'] . '">' . $profile['real_name'] . '</a>',
 				);
 			}
 		}
