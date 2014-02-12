@@ -13,11 +13,11 @@
 global $txt;
 
 // Public/General strings
-$txt['Breeze_general_wall'] = 'Wall';
-$txt['Breeze_general_wall_page'] = 'page';
-$txt['Breeze_general_summary'] = 'Summary';
-$txt['Breeze_load_more'] = 'Load more';
-$txt['Breeze_admin'] = 'Admin panel';
+$txt['Breeze_general_wall'] = 'Muro';
+$txt['Breeze_general_wall_page'] = 'página';
+$txt['Breeze_general_summary'] = 'Resumen';
+$txt['Breeze_load_more'] = 'Mostrar más';
+$txt['Breeze_admin'] = 'Panel de administración';
 $txt['Breeze_general_my_wall'] = 'My Wall';
 $txt['Breeze_general_my_wall_settings'] = 'My Wall Settings';
 $txt['Breeze_general_loading'] = 'Loading...';
