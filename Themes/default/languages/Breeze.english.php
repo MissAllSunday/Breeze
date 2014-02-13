@@ -79,8 +79,6 @@ $txt['Breeze_user_settings_visitors_sub'] = 'This will show a block with the lat
 $txt['Breeze_user_settings_how_many_visitors'] = 'How many visitors to display';
 $txt['Breeze_user_settings_how_many_visitors_sub'] = 'If empty it will show the default value 5, max value is %s.';
 $txt['Breeze_user_settings_show_last_visit'] = 'Show the last time the users visited your wall';
-$txt['Breeze_user_settings_notification_wall'] = 'Send me a pm when someone else post a new status on my wall';
-$txt['Breeze_user_settings_notification_wall_sub'] = 'This will only apply for new status.';
 $txt['Breeze_user_permissions_name'] = 'Permissions';
 $txt['Breeze_user_modules_name'] = 'Modules';
 $txt['Breeze_user_modules_visitors'] = 'visits: ';
@@ -103,7 +101,7 @@ $txt['Breeze_time_month'] = 'month';
 $txt['Breeze_time_year'] = 'year';
 
 // Permissions strings
-$txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to this the Wall.';
+$txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to see this Wall.';
 $txt['permissiongroup_simple_breeze_per_simple'] = 'Breeze mod permissions';
 $txt['permissiongroup_breeze_per_classic'] = 'Breeze mod permissions';
 $txt['permissionname_breeze_canMention'] = 'Be able to mention<br /><span class="smalltext">Option to be able to mention other people</span>';
@@ -116,7 +114,6 @@ $txt['permissionname_breeze_deleteProfileStatus'] = 'Delete status made on their
 $txt['permissionname_breeze_deleteProfileComments'] = 'Delete comments made on their own profile.<br /><span class="smalltext">Regardless of who posted them.</span>';
 $txt['permissionname_breeze_postStatus'] = 'Post new Status on any wall<br /><span class="smalltext">By default, the profile owner always has the ability to post on their own wall.</span>';
 $txt['permissionname_breeze_postComments'] = 'Post new Comments on any wall<br /><span class="smalltext">By default, the profile owner always has the ability to post on their own wall.</span>';
-$txt['permissionname_breeze_edit_settings_any'] = 'Edit the user settings of any wall';
 
 // Ajax strings
 $txt['Breeze_success_updated_settings'] = 'Your settings were updated successfully.';
