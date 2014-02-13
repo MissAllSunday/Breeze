@@ -30,12 +30,6 @@ $txt['Breeze_general_activity'] = 'Latest buddie\'s activity';
 $txt['Breeze_general_latest_buddy_status'] = 'Latest buddy status';
 $txt['Breeze_general_posted_on'] = 'Posted on %s\'s Profile';
 
-// Modules
-$txt['Breeze_general_my_wall_modules'] = 'My Wall Modules settings';
-$txt['Breeze_modules_enable_visitors_title'] = 'Recent Visitors';
-$txt['Breeze_modules_enable_visitors_description'] = 'The last %1$s visitor%2$s to this page were: <p />';
-
-
 // User Individual Settings
 $txt['Breeze_profile'] = 'Wall Settings';
 $txt['Breeze_user_settings_name'] = 'Wall Settings';
@@ -46,7 +40,6 @@ $txt['Breeze_user_buddyrequestmessage_name'] = 'Buddy message request send';
 $txt['Breeze_user_notisettings_name'] = 'My Notifications';
 $txt['Breeze_user_settings_name_settings'] = 'Notifications Settings';
 $txt['Breeze_user_settings_name_settings_desc'] = 'You can specify different options for your notifications, including the actions you would like to get notified for or the actions you wish to let your buddies to get notified for.';
-$txt['Breeze_user_settings_desc'] = 'From this page you will be able to set up the different settings for your wall.';
 $txt['Breeze_user_settings_kick_ignored'] = 'Do not show my wall to users in my ignore list';
 $txt['Breeze_user_settings_kick_ignored_sub'] = 'If this is enable, users on your ignore list will not be able to see your wall or to post on it.';
 $txt['Breeze_user_settings_load_more'] = 'Add a "load more button"';
@@ -54,15 +47,13 @@ $txt['Breeze_user_settings_load_more_sub'] = 'This setting will allow you to loa
 $txt['Breeze_user_settings_pagination_number'] = 'How many status will be displayed per page';
 $txt['Breeze_user_settings_pagination_number_sub'] = 'Enter the number of status you want to display per page on your wall. By default is 5';
 $txt['Breeze_user_settings_general_wall'] = 'Enable the general wall';
-$txt['Breeze_user_settings_general_wall_sub'] = 'The general wall is a unique page where you can see the status and updates from your buddies. This settinh allows you to enable/disable it.';
+$txt['Breeze_user_settings_general_wall_sub'] = 'The general wall is a unique page where you can see the status and updates from your buddies. This setting allows you to enable/disable it.';
 $txt['Breeze_user_settings_wall'] = 'Enable my wall';
 $txt['Breeze_user_settings_wall_sub'] = 'If you want to use your wall, you need to check this option, otherwise your profile will show the default page.';
 $txt['Breeze_user_settings_visitors'] = 'Enable the visitors block?';
 $txt['Breeze_user_settings_visitors_sub'] = 'This block will show the latest visitors to your wall.';
 $txt['Breeze_user_settings_how_many_mentions'] = 'How many users will be displayed as options when mentioning an user';
 $txt['Breeze_user_settings_how_many_mentions_sub'] = 'for example, if you set this on 5 then when mentioning you will see 5 possible options to chose from.';
-$txt['Breeze_user_settings_visitors_timeframe'] = 'The time frame to count the visitors from.';
-$txt['Breeze_user_settings_visitors_timeframe_sub'] = 'By default is set to a week, that means the module will show the latest visitors to your wall in the last week.';
 $txt['Breeze_user_settings_clean_visitors'] = 'Clean the visitors log';
 $txt['Breeze_user_settings_clean_visitors_sub'] = 'Removes all visitors from your visitors block.';
 $txt['Breeze_user_settings_clear_noti'] = 'How many seconds do you want the notifications to be displayed before been automatically closed';
@@ -80,20 +71,14 @@ $txt['Breeze_user_settings_activity_sub'] = 'This will add a tab where all your 
 $txt['Breeze_user_settings_buddies'] = 'Enable the "Buddies" block.';
 $txt['Breeze_user_settings_buddies_sub'] = 'This will show a block div showing all your buddies and their info.';
 $txt['Breeze_user_settings_how_many_buddies'] = 'How many buddies to display';
-$txt['Breeze_user_settings_how_many_buddies_sub'] = 'If empty it will show the default value 10, max value is 30.';
+$txt['Breeze_user_settings_how_many_buddies_sub'] = 'If empty it will show the default value 5, max value is %s.';
 $txt['Breeze_user_settings_activityLog'] = 'Enable your activity log.';
 $txt['Breeze_user_settings_activityLog_sub'] = 'This setting will record some of your activities through the forum, this includes posting comments/status and posting forum messages.';
 $txt['Breeze_user_settings_visitors'] = 'Enable the "Latest Visitors" module.';
 $txt['Breeze_user_settings_visitors_sub'] = 'This will show a block with the latest visitors to your wall.';
-$txt['Breeze_user_settings_notification_pm'] = 'Send me a pm when someone else mentions me in any wall.';
-$txt['Breeze_user_settings_notification_pm_sub'] = 'This will send a private message per status or comment.';
 $txt['Breeze_user_settings_how_many_visitors'] = 'How many visitors to display';
-$txt['Breeze_user_settings_how_many_visitors_sub'] = 'If empty it will show the default value 10, max value is 30.';
-$txt['Breeze_user_settings_show_avatar'] = 'Show avatar in list';
-$txt['Breeze_user_settings_show_avatar_sub'] = 'By default it shows the user link only.';
+$txt['Breeze_user_settings_how_many_visitors_sub'] = 'If empty it will show the default value 5, max value is %s.';
 $txt['Breeze_user_settings_show_last_visit'] = 'Show the last time the users visited your wall';
-$txt['Breeze_user_settings_notification_wall'] = 'Send me a pm when someone else post a new status on my wall';
-$txt['Breeze_user_settings_notification_wall_sub'] = 'This will only apply for new status.';
 $txt['Breeze_user_permissions_name'] = 'Permissions';
 $txt['Breeze_user_modules_name'] = 'Modules';
 $txt['Breeze_user_modules_visitors'] = 'visits: ';
@@ -116,7 +101,7 @@ $txt['Breeze_time_month'] = 'month';
 $txt['Breeze_time_year'] = 'year';
 
 // Permissions strings
-$txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to this the Wall.';
+$txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to see this Wall.';
 $txt['permissiongroup_simple_breeze_per_simple'] = 'Breeze mod permissions';
 $txt['permissiongroup_breeze_per_classic'] = 'Breeze mod permissions';
 $txt['permissionname_breeze_canMention'] = 'Be able to mention<br /><span class="smalltext">Option to be able to mention other people</span>';
@@ -129,7 +114,6 @@ $txt['permissionname_breeze_deleteProfileStatus'] = 'Delete status made on their
 $txt['permissionname_breeze_deleteProfileComments'] = 'Delete comments made on their own profile.<br /><span class="smalltext">Regardless of who posted them.</span>';
 $txt['permissionname_breeze_postStatus'] = 'Post new Status on any wall<br /><span class="smalltext">By default, the profile owner always has the ability to post on their own wall.</span>';
 $txt['permissionname_breeze_postComments'] = 'Post new Comments on any wall<br /><span class="smalltext">By default, the profile owner always has the ability to post on their own wall.</span>';
-$txt['permissionname_breeze_edit_settings_any'] = 'Edit the user settings of any wall';
 
 // Ajax strings
 $txt['Breeze_success_updated_settings'] = 'Your settings were updated successfully.';
@@ -220,11 +204,6 @@ $txt['Breeze_noti_gender_he'] = 'he';
 $txt['Breeze_noti_gender_she'] = 'she';
 $txt['Breeze_noti_gender_he_default'] = 'he/she';
 
-$txt['Breeze_noti_buddy_message_1_title'] = 'Confirmation required';
-$txt['Breeze_noti_buddy_message_1_message'] = 'User %s hasn\'t either denied or confirmed your buddy request, do you want to wait or force the buddy removal';
-$txt['Breeze_noti_buddy_message_2_title'] = 'Buddy request sent';
-$txt['Breeze_noti_buddy_message_2_message'] = 'Your request has been submitted, the user will see your request and if he/she accepts it, you will receive a notification via private message.';
-
 // Comment notification
 $txt['Breeze_noti_comment_message'] = '%1$s commented on the status made by %2$s on %3$s\'s wall,<br/> <a href="" class="bbc_link" target="_blank">see the comment</a>';
 $txt['Breeze_noti_comment_message_statusOwner'] = '%1$s commented on your status made in %2$s\'s wall';
@@ -241,23 +220,6 @@ $txt['Breeze_mention_message_status'] = '<a href="%3$s" class="bbc_link" target=
 $txt['Breeze_mention_message_own_wall_status'] = '<a href="%1$s" class="bbc_link" target="_blank">You have been mentioned</a> on your own wall by %2$s!';
 $txt['Breeze_mention_message_comment'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> You have been mentioned on a comment</a> by %1$s on %2$s\'s wall!';
 $txt['Breeze_mention_message_own_wall_comment'] = '<a href="%1$s" class="bbc_link" target="_blank" id="noti_%3$s">You have been mentioned</a> on a comment on your own wall by %2$s!';
-
-// Buddy List
-$txt['Breeze_buddyrequest_error_doublerequest'] = 'You already sent a buddy request, please wait for the user\'s response.';
-$txt['Breeze_buddyrequest_error_dunno'] = 'Something went wrong, please contact the forum admin.';
-$txt['Breeze_buddy_messagerequest_message'] = '%1$s wants to be your buddy! <span id="noti_%2$s"></span>';
-$txt['Breeze_buddy_title'] = 'Buddy List';
-$txt['Breeze_buddy_desc'] = 'From here you can confirm or decline your buddy request. If you confirm the buddy request, a pm on your behalf will be send to the user, if you decline the request the user will not receive anything';
-$txt['Breeze_buddyrequest_title'] = 'Buddy requests';
-$txt['Breeze_buddyrequest_noBuddies'] = 'You currently don\'t have any buddy requests';
-$txt['Breeze_buddyrequest_list_status'] = 'Status';
-$txt['Breeze_buddyrequest_list_message'] = 'Message';
-$txt['Breeze_buddyrequest_list_confirm'] = 'Confirm';
-$txt['Breeze_buddyrequest_list_decline'] = 'Decline';
-$txt['Breeze_buddyrequest_confirmed_subject'] = 'Buddy request accepted.';
-$txt['Breeze_buddyrequest_confirmed_message'] ='I have confirmed and accepted your buddy request';
-$txt['Breeze_buddyrequest_confirmed_inner_message'] = 'You successfully confirmed the request';
-$txt['Breeze_buddyrequest_confirmed_inner_message_de'] = 'You successfully declined the request';
 
 // Single Status
 $txt['Breeze_singleStatus_pageTitle'] = 'Single Status';
