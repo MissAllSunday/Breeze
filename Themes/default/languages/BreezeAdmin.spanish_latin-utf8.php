@@ -14,7 +14,7 @@ global $txt;
 
 // Admin Settings
 $txt['Breeze_page_panel'] = 'Breeze Panel de administración';
-$txt['Breeze_page_welcome'] = 'Este es tu panel de administración.  Dede aquí puedes editar las diversas configuraciones, si tienes algún problema puedes <a href="http://missallsunday.com" target="_blank" class="new_win">solicitar</a> en si sitio de soporte del autor.';
+$txt['Breeze_page_welcome'] = 'Este es tu panel de administración.  Desde aquí puedes editar las diversas configuraciones, si tienes algún problema puedes <a href="http://missallsunday.com" target="_blank" class="new_win">solicitar soporte</a> en el sitio de soporte del autor.';
 $txt['Breeze_page_main'] = 'Página principal panel de administración';
 $txt['Breeze_page_permissions'] = 'Permisos';
 $txt['Breeze_page_permissions_desc'] = 'Desde aquí puedes From here you can add/remove specific Breeze permissions.';
