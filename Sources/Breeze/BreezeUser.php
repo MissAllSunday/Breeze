@@ -277,6 +277,13 @@ function breezeSettings()
 		!empty($userSettings['buddies']) ? true : false
 	);
 
+	// How many visitors are we gonna show?
+	$form->addCheckBox(
+		'how_many_buddies',
+		!empty($userSettings['how_many_buddies']) ? ($maxUsers && $userSettings['how_many_buddies'] >= $maxUsers ? $maxUsers : $userSettings['how_many_buddies']) : 0,
+		3,3
+	);
+
 	// Profile visitors.
 	$form->addCheckBox(
 		'visitors',
@@ -286,7 +293,7 @@ function breezeSettings()
 	// How many visitors are we gonna show?
 	$form->addCheckBox(
 		'how_many_visitors',
-		!empty($userSettings['how_many_visitors']) ? ($maxUsers && $userSettings['how_many_visitors'] >= $maxUsers ? $maxUsers : $userSettings['how_many_visitors']) : false,
+		!empty($userSettings['how_many_visitors']) ? ($maxUsers && $userSettings['how_many_visitors'] >= $maxUsers ? $maxUsers : $userSettings['how_many_visitors']) : 0,
 		3,3
 	);
 
