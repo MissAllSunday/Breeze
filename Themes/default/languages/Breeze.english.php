@@ -30,12 +30,6 @@ $txt['Breeze_general_activity'] = 'Latest buddie\'s activity';
 $txt['Breeze_general_latest_buddy_status'] = 'Latest buddy status';
 $txt['Breeze_general_posted_on'] = 'Posted on %s\'s Profile';
 
-// Modules
-$txt['Breeze_general_my_wall_modules'] = 'My Wall Modules settings';
-$txt['Breeze_modules_enable_visitors_title'] = 'Recent Visitors';
-$txt['Breeze_modules_enable_visitors_description'] = 'The last %1$s visitor%2$s to this page were: <p />';
-
-
 // User Individual Settings
 $txt['Breeze_profile'] = 'Wall Settings';
 $txt['Breeze_user_settings_name'] = 'Wall Settings';
