@@ -27,7 +27,7 @@ $txt['Breeze_general_delete'] = 'Borrar';
 $txt['Breeze_general_unlike'] = 'No me gusta';
 $txt['Breeze_general_plural'] = '(s)';
 $txt['Breeze_general_activity'] = 'Última actividad de mis amigos';
-$txt['Breeze_general_latest_buddy_status'] = 'Últimos status de mis amigos';
+$txt['Breeze_general_latest_buddy_status'] = 'Últimos mensajes de mis amigos';
 $txt['Breeze_general_posted_on'] = 'Escrito en el muro de %s';
 
 // User Individual Settings
@@ -35,7 +35,7 @@ $txt['Breeze_profile'] = 'Configuración de mi muro';
 $txt['Breeze_user_settings_name'] = 'Configuración de mi muro';
 $txt['Breeze_user_settings_name_desc'] = 'Configura tu muro y otras opciones personales.';
 $txt['Breeze_user_buddysettings_name'] = 'Solicitudes de amistad';
-$txt['Breeze_user_single_status'] = 'Status';
+$txt['Breeze_user_single_status'] = 'Mensaje';
 $txt['Breeze_user_buddyrequestmessage_name'] = 'Solicitud enviada';
 $txt['Breeze_user_notisettings_name'] = 'Mis notificaciones';
 $txt['Breeze_user_settings_name_settings'] = 'Configuración de notificaciones';
@@ -44,8 +44,8 @@ $txt['Breeze_user_settings_kick_ignored'] = 'No mostrar mi muro a los usuarios e
 $txt['Breeze_user_settings_kick_ignored_sub'] = 'Si seleccionas esta opción los usuarios en tu lista de ignorados no podrán ver tu muro ni escribir en el.';
 $txt['Breeze_user_settings_load_more'] = 'Activar el botón: "Mostrar más"';
 $txt['Breeze_user_settings_load_more_sub'] = 'Al activar esta opción podrás reemplazar la paginación normal por una basada en AJAX, al dar click en el botón se mostrarán los siguientes mensajes sin necesidad de cambiar de página.';
-$txt['Breeze_user_settings_pagination_number'] = '¿Cuantos status se mostrarán por página?';
-$txt['Breeze_user_settings_pagination_number_sub'] = 'Esta opción controla cuantos status serán mostrados en cada página o cuantos status se cargarán al presionar el botón de "mostrar más". Por defecto se muestran 5 mensajes';
+$txt['Breeze_user_settings_pagination_number'] = '¿Cuantos mensajes se mostrarán por página?';
+$txt['Breeze_user_settings_pagination_number_sub'] = 'Esta opción controla cuantos mensajes serán mostrados en cada página o cuantos mensajes se cargarán al presionar el botón de "mostrar más". Por defecto se muestran 5 mensajes';
 $txt['Breeze_user_settings_general_wall'] = 'Activar el muro general';
 $txt['Breeze_user_settings_general_wall_sub'] = 'El muro general es una página única en donde se muestra la actividad reciente de todos tus amigos.';
 $txt['Breeze_user_settings_wall'] = 'Activar mi muro';
@@ -58,10 +58,10 @@ $txt['Breeze_user_settings_clean_visitors'] = 'Limpiar el registro de visitas';
 $txt['Breeze_user_settings_clean_visitors_sub'] = 'Borra tu actual lista de visitantes.';
 $txt['Breeze_user_settings_clear_noti'] = '¿Durante cuantos segundos se mostrarán las notificaciones antes de ser automáticamente cerradas?';
 $txt['Breeze_user_settings_clear_noti_sub'] = 'Las notificaciones sólo serán cerradas cuando vayas a otra página volverán a aparecer hasta que las marques como leídas o las borres, si dejas esta opción vacia las notificaciones nunca se verrarán y deberás de cerrarlas manualmente.';
-$txt['Breeze_user_settings_noti_on_status'] = 'Notifícame cuando alguien escribe un nuevo status en mi muro.';
+$txt['Breeze_user_settings_noti_on_status'] = 'Notifícame cuando alguien escribe un nuevo mensaje en mi muro.';
 $txt['Breeze_user_settings_noti_on_status_sub'] = 'Cualquier usuario que puede escribir en mi muro.';
-$txt['Breeze_user_settings_noti_on_comment'] = 'Notifícame cuando alguien comenta en alguno de mis status.';
-$txt['Breeze_user_settings_noti_on_comment_sub'] = 'En cualquier status hecho en cualquier muro.';
+$txt['Breeze_user_settings_noti_on_comment'] = 'Notifícame cuando alguien comenta en alguno de mis mensajes.';
+$txt['Breeze_user_settings_noti_on_comment_sub'] = 'En cualquier mensaje hecho en cualquier muro.';
 $txt['Breeze_user_settings_noti_on_mention'] = 'Notifícame cuando alguien me mencione.';
 $txt['Breeze_user_settings_noti_on_mention_sub'] = 'En cualquier lugar en donde se apliquen las menciones.';
 $txt['Breeze_user_settings_aboutMe'] = 'Activa tu bloque "acerca de mi"';
@@ -106,13 +106,13 @@ $txt['permissiongroup_simple_breeze_per_simple'] = 'Breeze mod permisos';
 $txt['permissiongroup_breeze_per_classic'] = 'Breeze mod permisos';
 $txt['permissionname_breeze_canMention'] = 'Poder mencionar<br /><span class="smalltext">Tener la capacidad de crear menciones a otras personas</span>';
 $txt['permissionname_breeze_beMentioned'] = 'Aparecer en la lista de mencionable<br /><span class="smalltext">Si el usuairo puede o no aparecer en la lista de posibles mencionables de otros usuarios</span>';
-$txt['permissionname_breeze_deleteStatus'] = 'Borrar todos los status de cualquier muro<br /><span class="smalltext">Este permiso reemplaza cualquier otro permiso que el usuario puede tener. Borrar un status también borra todos los comentarios asociados a ese status.</span>';
+$txt['permissionname_breeze_deleteStatus'] = 'Borrar todos los mensajes de cualquier muro<br /><span class="smalltext">Este permiso reemplaza cualquier otro permiso que el usuario puede tener. Borrar un mensaje también borra todos los comentarios asociados a ese mensaje.</span>';
 $txt['permissionname_breeze_deleteComments'] = 'Borrar cualquier comentario en cualquier muro<br /><span class="smalltext">El usuario podrá borrar los comentarios hechos por cualquier otro usuario.</span>';
 $txt['permissionname_breeze_deleteOwnStatus'] = 'Borrar sus propios status.<br /><span class="smalltext">Sin importar en cuál muro fueron hechos. Al hacerlo también se borrarán todos los comentarios asociados a ese status.</span>';
 $txt['permissionname_breeze_deleteOwnComments'] = 'Borrar sus propios comentarios.<br /><span class="smalltext">Sin importar en dónde han sido escritos</span>';
-$txt['permissionname_breeze_deleteProfileStatus'] = 'Borrar status hechos en sus propios muros.<br /><span class="smalltext">Sin importar quién los escribió. Esto también borrará cualquier comentario asociado a ese status.</span>';
+$txt['permissionname_breeze_deleteProfileStatus'] = 'Borrar mensajes hechos en sus propios muros.<br /><span class="smalltext">Sin importar quién los escribió. Esto también borrará cualquier comentario asociado a ese status.</span>';
 $txt['permissionname_breeze_deleteProfileComments'] = 'Borrar comentarios hechos en su propio muro.<br /><span class="smalltext">Sin importar quién los escribió.</span>';
-$txt['permissionname_breeze_postStatus'] = 'Escribir nuevos status en cualquier muro<br /><span class="smalltext">Por defecto, el dueño de el muro siempre tiene la posibilidad de escribir en su propio muro.</span>';
+$txt['permissionname_breeze_postStatus'] = 'Escribir nuevos mensajes en cualquier muro<br /><span class="smalltext">Por defecto, el dueño de el muro siempre tiene la posibilidad de escribir en su propio muro.</span>';
 $txt['permissionname_breeze_postComments'] = 'Escribir nuevos comentarios en cualquier muro<br /><span class="smalltext">Por defecto, el dueño del muro siempre tiene la capacidad de escribir comentarios en sus propios muros.</span>';
 
 // Ajax strings
@@ -121,130 +121,108 @@ $txt['Breeze_error_deleteComment'] = 'Lo siento, no se te permite borrar comenta
 $txt['Breeze_error_deleteStatus'] = 'Lo siento, no se te permite borrar status.';
 $txt['Breeze_error_server'] = 'Hubo un error, por favor intenta de nuevo o contacta a el administrador.';
 $txt['Breeze_error_wrong_values'] = 'Datos inválidos, la petición no pudo ser procesada.';
-$txt['Breeze_success_published'] = 'Tu status fué correctamente publicado';
+$txt['Breeze_success_published'] = 'Tu mensaje fué correctamente publicado';
 $txt['Breeze_success_published_comment'] = 'Tu comentario fué correctamente publicado';
 $txt['Breeze_error_empty'] = 'No puedes dejar vacio el cuadro de texto.';
-$txt['Breeze_success_delete_status'] = 'El status ha sido borrado';
+$txt['Breeze_success_delete_status'] = 'El mensaje ha sido borrado';
 $txt['Breeze_success_delete_comments'] = 'El comentario ha sido borrado';
 $txt['Breeze_confirm_delete'] = '¿Realmente quieres borrar este mensaje?';
 $txt['Breeze_confirm_yes'] = 'Si';
 $txt['Breeze_confirm_cancel'] = 'Cancelar';
-$txt['Breeze_error_already_deleted_status'] = 'Este status ya ha sido borrado. Prueba a refrescar tu navegador.';
+$txt['Breeze_error_already_deleted_status'] = 'Este mensaje ya ha sido borrado. Prueba a refrescar tu navegador.';
 $txt['Breeze_error_already_deleted_comment'] = 'Este comentario ya ha sido borrado. Prueba a refrescar tu navegador.';
 $txt['Breeze_error_already_deleted_noti'] = 'Esta notificación ya ha sido borrada. Prueba a refrescar tu navegador.';
 $txt['Breeze_error_already_marked_noti'] = 'Esta notificación ya ha sido marcada como leída. Prueba a refrescar tu navegador.';
-$txt['Breeze_cannot_postStatus'] = 'I\'m sorry,  you aren\'t allowed to post new Status.';
-$txt['Breeze_cannot_postComments'] = 'I\'m sorry,  you aren\'t allowed to post new Comments.';
-$txt['Breeze_error_no_valid_action'] = 'This is not a valid action.';
-$txt['Breeze_error_no_property'] = '%s isn\'t a valid call';
-$txt['Breeze_error_no_access'] = 'I\'m sorry, you don\'t have access to this section.';
-$txt['Breeze_success_noti_unmarkasread_after'] = 'You have successfully marked this notification as unread';
-$txt['Breeze_success_noti_markasread_after'] = 'You have successfully marked this notification as read';
-$txt['Breeze_error_noti_markasreaddeleted_after'] = 'This notification was already deleted or is not a valid entry.';
-$txt['Breeze_error_noti_markasreaddeleted'] = 'This notification was already deleted or is not a valid entry.';
-$txt['Breeze_success_noti_delete_after'] = 'You have successfully deleted this notification';
-$txt['Breeze_success_noti_visitors_clean'] = 'You have successfully cleaned your visitors log';
-$txt['Breeze_success_notiMulti_delete_after'] = 'You have successfully deleted all notifications';
-$txt['Breeze_success_notiMulti_markasread_after'] = 'You have successfully marked as read all notifications';
-$txt['Breeze_success_notiMulti_unmarkasread_after'] = 'You have successfully marked as unread all notifications';
+$txt['Breeze_cannot_postStatus'] = 'Lo siento, no puedes crear nuevos status.';
+$txt['Breeze_cannot_postComments'] = 'Lo siento, no puedes crear nuevos comentarios.';
+$txt['Breeze_error_no_valid_action'] = 'Esta no es una acción válida.';
+$txt['Breeze_error_no_property'] = '%s no es una acción válida';
+$txt['Breeze_error_no_access'] = 'Lo siento, no tienes acceso a esta sección.';
+$txt['Breeze_success_noti_unmarkasread_after'] = 'Has marcado esta notificación como no leída.';
+$txt['Breeze_success_noti_markasread_after'] = 'Has marcado esta notificación como leída';
+$txt['Breeze_error_noti_markasreaddeleted_after'] = 'Esta notificación ya ha sido borrada o no tiene in ID válido.';
+$txt['Breeze_error_noti_markasreaddeleted'] = 'Esta notificación ya ha sido borrada o no tiene in ID válido.';
+$txt['Breeze_success_noti_delete_after'] = 'Has borrado esta notificación';
+$txt['Breeze_success_noti_visitors_clean'] = 'Has borrado el registro de visitantes';
+$txt['Breeze_success_notiMulti_delete_after'] = 'Has borrado todas las notificaciones con éxito';
+$txt['Breeze_success_notiMulti_markasread_after'] = 'Has marcado como leídas todas tus notificaciones';
+$txt['Breeze_success_notiMulti_unmarkasread_after'] = 'Has marcado como no leídas todas tus notificaciones';
 
 // Errors
 $txt['cannot_breeze_postStatus'] = $txt['Breeze_cannot_postStatus'];
 $txt['cannot_breeze_postComments'] = $txt['Breeze_cannot_postComments'];
-$txt['cannot_breeze_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete Status/Comments.';
-$txt['Breeze_cannot_see_general_wall'] = 'You need to enable your general wall from your <a href="'. $scripturl .'?action=profile;area=breezesettings">wall settings page</a>.';
+$txt['cannot_breeze_deleteStatus'] = 'Lo siento, no puedes borrar mensajes y/o comentarios.';
+$txt['Breeze_cannot_see_general_wall'] = 'Necesitas activar tu muro general desde tu <a href="'. $scripturl .'?action=profile;area=breezesettings">página de administración</a>.';
 
 // Pagination
-$txt['Breeze_pag_previous'] = 'previous';
-$txt['Breeze_pag_next'] = 'next';
-$txt['Breeze_pag_first'] = 'First';
-$txt['Breeze_pag_last'] = 'Last';
-$txt['Breeze_pag_pages'] = 'Pages :';
-$txt['Breeze_pag_page'] = '- page ';
-$txt['Breeze_profile_of_username'] = 'Profile of %1$s';
-$txt['Breeze_page_loading'] = 'Loading more status...';
-$txt['Breeze_page_loading_end'] = 'There are no more status to display';
+$txt['Breeze_pag_previous'] = 'previo';
+$txt['Breeze_pag_next'] = 'siguiente';
+$txt['Breeze_pag_first'] = 'Primero';
+$txt['Breeze_pag_last'] = 'Último';
+$txt['Breeze_pag_pages'] = 'Páginas :';
+$txt['Breeze_pag_page'] = '- pagina ';
+$txt['Breeze_profile_of_username'] = 'Pefil de %1$s';
+$txt['Breeze_page_loading'] = 'Cargando más status...';
+$txt['Breeze_page_loading_end'] = 'No hay más mensajes para mostrar';
 
 // Tabs
-$txt['Breeze_tabs_wall'] = 'Wall';
-$txt['Breeze_tabs_buddies'] = 'Buddies';
-$txt['Breeze_tabs_views'] = 'Profile Visitors';
-$txt['Breeze_tabs_pinfo'] = 'Profile Info';
-$txt['Breeze_tabs_activity'] = 'Recent activity';
-$txt['Breeze_tabs_activity_none'] = 'This user doesn\'t have any activities recorded.';
-$txt['Breeze_tabs_activity_buddies_none'] = 'Your buddies doesn\'t have any activity recorded.';
-$txt['Breeze_tabs_about'] = 'About me';
-$txt['Breeze_goTop'] = 'Go to top';
+$txt['Breeze_tabs_wall'] = 'Muro';
+$txt['Breeze_tabs_buddies'] = 'Amigos';
+$txt['Breeze_tabs_views'] = 'Visitantes del perfil';
+$txt['Breeze_tabs_pinfo'] = 'Información';
+$txt['Breeze_tabs_activity'] = 'Actividad reciente';
+$txt['Breeze_tabs_activity_none'] = 'Este usuario no tiene nungina actividad registrada recientemente.';
+$txt['Breeze_tabs_activity_buddies_none'] = 'Tus amigos no tienen ninguna actividad registrada recientemente.';
+$txt['Breeze_tabs_about'] = 'Acerca de mi';
+$txt['Breeze_goTop'] = 'Ir arriba';
 
 // Notifications
-$txt['Breeze_noti_title'] = 'Notifications';
-$txt['Breeze_noti_title_settings'] = 'Notifications settings';
-$txt['Breeze_noti_title_settings_desc'] = 'Enable/disable individual notifications.';
-$txt['Breeze_noti_message'] = 'Message';
-$txt['Breeze_noti_buddy_title'] = 'Buddy notification';
-$txt['Breeze_noti_buddy_message'] = 'User %s has added you as his/her buddy, please confirm this request.';
-$txt['Breeze_noti_markasread'] = 'Mark as read';
-$txt['Breeze_noti_markasunread'] = 'Mark as unread';
-$txt['Breeze_noti_markasread_title'] = 'Mark as read/unread';
-$txt['Breeze_noti_markasread_viewed'] = 'Already marked as read';
-$txt['Breeze_noti_close'] = 'Close';
-$txt['Breeze_noti_delete'] = 'Delete';
-$txt['Breeze_noti_cancel'] = 'Cancel';
-$txt['Breeze_noti_closeAll'] = 'Close all notifications';
-$txt['Breeze_noti_novalid_after'] = 'This isn\'t a valid notification.';
-$txt['Breeze_noti_none'] = 'You don\'t have any notifications';
-$txt['Breeze_noti_checkAll'] = 'Check all';
-$txt['Breeze_noti_check'] = 'check';
-$txt['Breeze_noti_selectedOptions'] = 'With the selected options do: ';
-$txt['Breeze_noti_send'] = 'Send';
-$txt['Breeze_noti_gender_his'] = 'his';
-$txt['Breeze_noti_gender_her'] = 'her';
-$txt['Breeze_noti_gender_his_default'] = 'his/her';
-$txt['Breeze_noti_gender_he'] = 'he';
-$txt['Breeze_noti_gender_she'] = 'she';
-$txt['Breeze_noti_gender_he_default'] = 'he/she';
-
-$txt['Breeze_noti_buddy_message_1_title'] = 'Confirmation required';
-$txt['Breeze_noti_buddy_message_1_message'] = 'User %s hasn\'t either denied or confirmed your buddy request, do you want to wait or force the buddy removal';
-$txt['Breeze_noti_buddy_message_2_title'] = 'Buddy request sent';
-$txt['Breeze_noti_buddy_message_2_message'] = 'Your request has been submitted, the user will see your request and if he/she accepts it, you will receive a notification via private message.';
+$txt['Breeze_noti_title'] = 'Notificaciones';
+$txt['Breeze_noti_title_settings'] = 'Configuración de notificaciones';
+$txt['Breeze_noti_title_settings_desc'] = 'Activar/Desactivar notificaciones individuales.';
+$txt['Breeze_noti_message'] = 'Mensaje';
+$txt['Breeze_noti_buddy_title'] = 'Notificación de amistad';
+$txt['Breeze_noti_buddy_message'] = 'El usuario(a) %s te ha agregado como su amigo(a), por favor confirma esta solicitud.';
+$txt['Breeze_noti_markasread'] = 'Marcar como leído';
+$txt['Breeze_noti_markasunread'] = 'Marcar como no leído';
+$txt['Breeze_noti_markasread_title'] = 'Marcar como no/leído';
+$txt['Breeze_noti_markasread_viewed'] = 'Ya se ha marcado com leído';
+$txt['Breeze_noti_close'] = 'Cerrar';
+$txt['Breeze_noti_delete'] = 'Borrar';
+$txt['Breeze_noti_cancel'] = 'Cancelar';
+$txt['Breeze_noti_closeAll'] = 'Cerrar todas las notificaciones';
+$txt['Breeze_noti_novalid_after'] = 'No es una notificación válida';
+$txt['Breeze_noti_none'] = 'No tienes ninguna notificación';
+$txt['Breeze_noti_checkAll'] = 'Marcar todas';
+$txt['Breeze_noti_check'] = 'marcar';
+$txt['Breeze_noti_selectedOptions'] = 'Hacer lo siguiente con las notificaciones marcadas: ';
+$txt['Breeze_noti_send'] = 'Enviar';
+$txt['Breeze_noti_gender_his'] = 'su';
+$txt['Breeze_noti_gender_her'] = 'su';
+$txt['Breeze_noti_gender_his_default'] = 'su';
+$txt['Breeze_noti_gender_he'] = 'el';
+$txt['Breeze_noti_gender_she'] = 'ella';
+$txt['Breeze_noti_gender_he_default'] = 'el/ella';
 
 // Comment notification
-$txt['Breeze_noti_comment_message'] = '%1$s commented on the status made by %2$s on %3$s\'s wall,<br/> <a href="" class="bbc_link" target="_blank">see the comment</a>';
-$txt['Breeze_noti_comment_message_statusOwner'] = '%1$s commented on your status made in %2$s\'s wall';
-$txt['Breeze_noti_comment_message_wallOwner'] = '%1$s commented on the status made by %2$s on your wall';
+$txt['Breeze_noti_comment_message'] = '%1$s comentó en el mensaje hecho por %2$s en el muro de %3$s,<br/> <a href="" class="bbc_link" target="_blank">ver el comentario</a>';
+$txt['Breeze_noti_comment_message_statusOwner'] = '%1$s comentó en tu mensaje hecho en el muro de %2$s';
+$txt['Breeze_noti_comment_message_wallOwner'] = '%1$s comentó en el mensaje hecho por %2$s en tu muro';
 
 // Someone posted a status on your wall.
-$txt['Breeze_noti_posted_wall'] = '%1$s posted a new status on your wall: %2$s';
+$txt['Breeze_noti_posted_wall'] = '%1$s escribió un nuevo mensaje en tu muro: %2$s';
 
 // Someone commented your status on your own wall
-$txt['Breeze_noti_posted_comment'] = '%1$s commented on your status: %2$s on %3$s\s wall';
+$txt['Breeze_noti_posted_comment'] = '%1$s comentó en tu status: %2$s en el muro de %3$s';
 
 // Mentions
-$txt['Breeze_mention_message_status'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> You have been mentioned</a> by %1$s on %2$s\'s wall!';
-$txt['Breeze_mention_message_own_wall_status'] = '<a href="%1$s" class="bbc_link" target="_blank">You have been mentioned</a> on your own wall by %2$s!';
-$txt['Breeze_mention_message_comment'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> You have been mentioned on a comment</a> by %1$s on %2$s\'s wall!';
-$txt['Breeze_mention_message_own_wall_comment'] = '<a href="%1$s" class="bbc_link" target="_blank" id="noti_%3$s">You have been mentioned</a> on a comment on your own wall by %2$s!';
-
-// Buddy List
-$txt['Breeze_buddyrequest_error_doublerequest'] = 'You already sent a buddy request, please wait for the user\'s response.';
-$txt['Breeze_buddyrequest_error_dunno'] = 'Something went wrong, please contact the forum admin.';
-$txt['Breeze_buddy_messagerequest_message'] = '%1$s wants to be your buddy! <span id="noti_%2$s"></span>';
-$txt['Breeze_buddy_title'] = 'Buddy List';
-$txt['Breeze_buddy_desc'] = 'From here you can confirm or decline your buddy request. If you confirm the buddy request, a pm on your behalf will be send to the user, if you decline the request the user will not receive anything';
-$txt['Breeze_buddyrequest_title'] = 'Buddy requests';
-$txt['Breeze_buddyrequest_noBuddies'] = 'You currently don\'t have any buddy requests';
-$txt['Breeze_buddyrequest_list_status'] = 'Status';
-$txt['Breeze_buddyrequest_list_message'] = 'Message';
-$txt['Breeze_buddyrequest_list_confirm'] = 'Confirm';
-$txt['Breeze_buddyrequest_list_decline'] = 'Decline';
-$txt['Breeze_buddyrequest_confirmed_subject'] = 'Buddy request accepted.';
-$txt['Breeze_buddyrequest_confirmed_message'] ='I have confirmed and accepted your buddy request';
-$txt['Breeze_buddyrequest_confirmed_inner_message'] = 'You successfully confirmed the request';
-$txt['Breeze_buddyrequest_confirmed_inner_message_de'] = 'You successfully declined the request';
+$txt['Breeze_mention_message_status'] = '¡<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> Has sido mencionad(a)</a> por %1$s oen el muro de %2$s!';
+$txt['Breeze_mention_message_own_wall_status'] = '<a href="%1$s" class="bbc_link" target="_blank">Has sido mencionado(a)</a> en tu propio muro por %2$s!';
+$txt['Breeze_mention_message_comment'] = '¡<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> Has sido mencionado en un comentario</a> hecho por %1$s e el muro de %2$s!';
+$txt['Breeze_mention_message_own_wall_comment'] = '¡<a href="%1$s" class="bbc_link" target="_blank" id="noti_%3$s">Has sido mencionado(a)</a> en un comentario en tu propio muro hecho por %2$s!';
 
 // Single Status
-$txt['Breeze_singleStatus_pageTitle'] = 'Single Status';
+$txt['Breeze_singleStatus_pageTitle'] = 'Mensaje';
 
 // Log
 $txt['Breeze_logTopic'] = 'created a new topic:';

@@ -204,11 +204,6 @@ $txt['Breeze_noti_gender_he'] = 'he';
 $txt['Breeze_noti_gender_she'] = 'she';
 $txt['Breeze_noti_gender_he_default'] = 'he/she';
 
-$txt['Breeze_noti_buddy_message_1_title'] = 'Confirmation required';
-$txt['Breeze_noti_buddy_message_1_message'] = 'User %s hasn\'t either denied or confirmed your buddy request, do you want to wait or force the buddy removal';
-$txt['Breeze_noti_buddy_message_2_title'] = 'Buddy request sent';
-$txt['Breeze_noti_buddy_message_2_message'] = 'Your request has been submitted, the user will see your request and if he/she accepts it, you will receive a notification via private message.';
-
 // Comment notification
 $txt['Breeze_noti_comment_message'] = '%1$s commented on the status made by %2$s on %3$s\'s wall,<br/> <a href="" class="bbc_link" target="_blank">see the comment</a>';
 $txt['Breeze_noti_comment_message_statusOwner'] = '%1$s commented on your status made in %2$s\'s wall';
@@ -225,23 +220,6 @@ $txt['Breeze_mention_message_status'] = '<a href="%3$s" class="bbc_link" target=
 $txt['Breeze_mention_message_own_wall_status'] = '<a href="%1$s" class="bbc_link" target="_blank">You have been mentioned</a> on your own wall by %2$s!';
 $txt['Breeze_mention_message_comment'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> You have been mentioned on a comment</a> by %1$s on %2$s\'s wall!';
 $txt['Breeze_mention_message_own_wall_comment'] = '<a href="%1$s" class="bbc_link" target="_blank" id="noti_%3$s">You have been mentioned</a> on a comment on your own wall by %2$s!';
-
-// Buddy List
-$txt['Breeze_buddyrequest_error_doublerequest'] = 'You already sent a buddy request, please wait for the user\'s response.';
-$txt['Breeze_buddyrequest_error_dunno'] = 'Something went wrong, please contact the forum admin.';
-$txt['Breeze_buddy_messagerequest_message'] = '%1$s wants to be your buddy! <span id="noti_%2$s"></span>';
-$txt['Breeze_buddy_title'] = 'Buddy List';
-$txt['Breeze_buddy_desc'] = 'From here you can confirm or decline your buddy request. If you confirm the buddy request, a pm on your behalf will be send to the user, if you decline the request the user will not receive anything';
-$txt['Breeze_buddyrequest_title'] = 'Buddy requests';
-$txt['Breeze_buddyrequest_noBuddies'] = 'You currently don\'t have any buddy requests';
-$txt['Breeze_buddyrequest_list_status'] = 'Status';
-$txt['Breeze_buddyrequest_list_message'] = 'Message';
-$txt['Breeze_buddyrequest_list_confirm'] = 'Confirm';
-$txt['Breeze_buddyrequest_list_decline'] = 'Decline';
-$txt['Breeze_buddyrequest_confirmed_subject'] = 'Buddy request accepted.';
-$txt['Breeze_buddyrequest_confirmed_message'] ='I have confirmed and accepted your buddy request';
-$txt['Breeze_buddyrequest_confirmed_inner_message'] = 'You successfully confirmed the request';
-$txt['Breeze_buddyrequest_confirmed_inner_message_de'] = 'You successfully declined the request';
 
 // Single Status
 $txt['Breeze_singleStatus_pageTitle'] = 'Single Status';
