@@ -225,15 +225,15 @@ $txt['Breeze_mention_message_own_wall_comment'] = '¡<a href="%1$s" class="bbc_l
 $txt['Breeze_singleStatus_pageTitle'] = 'Mensaje';
 
 // Log
-$txt['Breeze_logTopic'] = 'created a new topic:';
-$txt['Breeze_logRegister'] = 'has just registered!';
-$txt['Breeze_logComment'] = 'made a new comment on %s\'s wall';
-$txt['Breeze_logComment_own_0'] = 'made a comment on his/her own wall';
-$txt['Breeze_logComment_own_1'] = 'made a comment on his own wall';
-$txt['Breeze_logComment_own_2'] = 'made a comment on her own wall';
-$txt['Breeze_logComment_view'] = 'View comment';
-$txt['Breeze_logStatus'] = 'made a new status on %s\'s wall';
-$txt['Breeze_logStatus_own_0'] = 'made a new status on his/her own wall';
-$txt['Breeze_logStatus_own_1'] = 'made a new status on his own wall';
-$txt['Breeze_logStatus_own_2'] = 'made a new status on her own wall';
-$txt['Breeze_logStatus_view'] = 'View status';
+$txt['Breeze_logTopic'] = 'creó un nuevo tema:';
+$txt['Breeze_logRegister'] = '¡Se ha registrado!';
+$txt['Breeze_logComment'] = 'hizo un nuevo comentario en el muro de %s';
+$txt['Breeze_logComment_own_0'] = 'hizo un nuevo comentario en su propio muro.';
+$txt['Breeze_logComment_own_1'] = 'hizo un comentario en su propio muro';
+$txt['Breeze_logComment_own_2'] = 'hizo un comentario en su propio muro';
+$txt['Breeze_logComment_view'] = 'Ver comentario';
+$txt['Breeze_logStatus'] = 'creó un nuevo mensaje en el muro de %s';
+$txt['Breeze_logStatus_own_0'] = 'creó un nuevo mensaje en su propio muro.';
+$txt['Breeze_logStatus_own_1'] = 'creó un nuevo mensaje en su propio muro.';
+$txt['Breeze_logStatus_own_2'] = 'creó un nuevo mensaje en su propio muro.';
+$txt['Breeze_logStatus_view'] = 'Ver mensaje';
