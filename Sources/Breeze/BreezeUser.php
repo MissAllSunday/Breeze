@@ -50,6 +50,10 @@ function breezeWall()
 			'owner' => array(),
 			'visitor' => array(),
 		),
+		'compact' => array(
+			'visitors' => false,
+			'buddies' => false,
+		),
 	);
 
 	// Does the admin has set a max limit?
@@ -118,7 +122,7 @@ function breezeWall()
 
 		// If there is a limit then lets count the total so we can know if we are gonna use the compact style.
 		if (!empty($context['Breeze']['max_users']) && count($context['Breeze']['views']) >= $context['Breeze']['max_users'])
-			$context['Breeze']['block_users_compact'] = true;
+			$context['Breeze']['compact']['visitors'] = true;
 
 		// Nope? then use the user defined value
 		else
@@ -135,7 +139,13 @@ function breezeWall()
 
 	// Show buddies only if there is something to show
 	if (!empty($context['Breeze']['settings']['owner']['buddies']) && !empty($context['member']['buddies']))
+	{
+		// Hold your horses!
+		if (!empty($context['Breeze']['max_users']) && count($context['member']['buddies']) >= $context['Breeze']['max_users'])
+			$context['Breeze']['compact']['visitors'] = true;
+
 		$usersToLoad = array_merge($usersToLoad, $context['member']['buddies']);
+	}
 
 	// Show this user recent activity
 	if (!empty($context['Breeze']['settings']['owner']['activityLog']))
