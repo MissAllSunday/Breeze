@@ -52,6 +52,10 @@ function breezeWall()
 		),
 	);
 
+	// Does the admin has set a max limit?
+	if ($tools->setting('allowed_max_num_users'))
+		$context['Breeze']['max_users'] = (int) $tools->setting('allowed_max_num_users');
+
 	// Is owner?
 	$context['member']['is_owner'] = $context['member']['id'] == $user_info['id'];
 
@@ -112,9 +116,17 @@ function breezeWall()
 	{
 		$context['Breeze']['views'] = breezeTrackViews();
 
-		// How many visitors are we gonna show?
-		if (!empty($context['Breeze']['settings']['owner']['how_many_visitors']) && count($context['Breeze']['views']) >= $context['Breeze']['settings']['owner']['how_many_visitors'])
-			$context['Breeze']['views'] = array_slice($context['Breeze']['views'], 0, $context['Breeze']['settings']['owner']['how_many_visitors']);
+		// If there is a limit then lets count the total so we can know if we are gonna use the compact style.
+		if (!empty($context['Breeze']['max_users']) && count($context['Breeze']['views']) >= $context['Breeze']['max_users'])
+			$context['Breeze']['block_users_compact'] = true;
+
+		// Nope? then use the user defined value
+		else
+		{
+			// How many visitors are we gonna show?
+			if (!empty($context['Breeze']['settings']['owner']['how_many_visitors']) && count($context['Breeze']['views']) >= $context['Breeze']['settings']['owner']['how_many_visitors'])
+				$context['Breeze']['views'] = array_slice($context['Breeze']['views'], 0, $context['Breeze']['settings']['owner']['how_many_visitors']);
+		}
 
 		// Load their data
 		if (!empty($context['Breeze']['views']))
@@ -194,6 +206,9 @@ function breezeSettings()
 
 	$tools = $breezeController->get('tools');
 
+	// Is there an admin limit?
+	$maxUsers = $tools->setting('allowed_max_num_users') ? $tools->setting('allowed_max_num_users') : 0;
+
 	// Set the page title
 	$context['page_title'] = $tools->text('user_settings_name');
 	$context['sub_template'] = 'member_options';
@@ -271,7 +286,8 @@ function breezeSettings()
 	// How many visitors are we gonna show?
 	$form->addCheckBox(
 		'how_many_visitors',
-		!empty($userSettings['how_many_visitors']) ? true : false
+		!empty($userSettings['how_many_visitors']) ? ($maxUsers && $userSettings['how_many_visitors'] >= $maxUsers ? $maxUsers : $userSettings['how_many_visitors']) : false,
+		3,3
 	);
 
 	// Clean visitors log

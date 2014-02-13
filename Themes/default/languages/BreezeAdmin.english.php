@@ -51,4 +51,4 @@ $txt['Breeze_allowed_actions'] = 'Write the actions where you wish the notificat
 $txt['Breeze_allowed_actions_sub'] = 'By default, the notification system will appear on the following actions: '. implode(', ', Breeze::$_allowedActions) .'. Plus the BoardIndex, MessageIndex, Topic and Board pages. <br /> Please add your actions in a comma separated list, example: action, action, action, action';
 $txt['Breeze_feed_error_message'] = 'Breeze couldn\'t connect with the support site';
 $txt['Breeze_allowed_max_num_users'] = 'How many users does an user can show on their visitors and buddies block?';
-$txt['Breeze_allowed_max_num_users_sub'] = 'If the user has more users than the specified setting, their entire list will be converted to a links list. if left empty the mod will use the default value: 15.';
+$txt['Breeze_allowed_max_num_users_sub'] = 'If the user has more users than the specified setting, their entire list will be converted to a more compact links list. Leave at 0 to disable this option.';

@@ -177,10 +177,12 @@ class BreezeAjax
 						array(
 							'wall_owner' => $statusOwner,
 							'wall_poster' => $statusPoster,
-							'status_id' => $this->_params['id'],),
+							'status_id' => $this->_params['id'],
+						),
 						array(
-								'name' => 'status',
-								'id' => $this->_params['id'],)
+							'name' => 'status',
+							'id' => $this->_params['id'],
+						)
 					);
 
 				// Parse the content
