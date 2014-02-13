@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breeze.english-utf8
+ * Breeze.spanish_latin-utf8
  *
  * @package Breeze mod
  * @version 1.0
