@@ -112,6 +112,10 @@ function breezeWall()
 	{
 		$context['Breeze']['views'] = breezeTrackViews();
 
+		// How many visitors are we gonna show?
+		if (!empty($context['Breeze']['settings']['owner']['how_many_visitors']) && count($context['Breeze']['views']) >= $context['Breeze']['settings']['owner']['how_many_visitors'])
+			$context['Breeze']['views'] = array_slice($context['Breeze']['views'], 0, $context['Breeze']['settings']['owner']['how_many_visitors']);
+
 		// Load their data
 		if (!empty($context['Breeze']['views']))
 			$usersToLoad = array_merge($usersToLoad, array_keys($context['Breeze']['views']));
@@ -262,6 +266,12 @@ function breezeSettings()
 	$form->addCheckBox(
 		'visitors',
 		!empty($userSettings['visitors']) ? true : false
+	);
+
+	// How many visitors are we gonna show?
+	$form->addCheckBox(
+		'how_many_visitors',
+		!empty($userSettings['how_many_visitors']) ? true : false
 	);
 
 	// Clean visitors log
