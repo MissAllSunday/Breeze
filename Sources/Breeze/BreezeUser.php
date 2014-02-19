@@ -52,7 +52,7 @@ function breezeWall()
 		),
 		'compact' => array(
 			'visitors' => false,
-			'buddies' => false,
+			'buddy' => false,
 		),
 	);
 
@@ -142,7 +142,7 @@ function breezeWall()
 	{
 		// Hold your horses!
 		if (!empty($context['Breeze']['max_users']) && count($context['member']['buddies']) >= $context['Breeze']['max_users'])
-			$context['Breeze']['compact']['visitors'] = true;
+			$context['Breeze']['compact']['buddy'] = true;
 
 		$usersToLoad = array_merge($usersToLoad, $context['member']['buddies']);
 	}

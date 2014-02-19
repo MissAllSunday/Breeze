@@ -79,7 +79,7 @@ function breeze_status($data, $returnVar = false)
 
 		// Delete status
 		if ($canHas['delete'])
-			$echo .= 
+			$echo .=
 								'| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $status['id'] .';type=status;profileOwner='. $status['owner_id'] .';poster='. $status['poster_id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .'" id="deleteStatus_'. $status['id'] .'" class="breeze_delete_status">'. $txt['Breeze_general_delete'] .'</a>';
 
 		// Modify? maybe someday...
@@ -310,6 +310,64 @@ function breeze_user_info()
 		foreach ($context['Breeze']['user_info'] as $userData)
 			if (!empty($userData['data']))
 				echo $userData['data'];
+}
+
+function breeze_user_list($list, $type = 'buddy')
+{
+	global $context, $user_info, $txt;
+
+	// You have too many buddies/visitors pal!
+	if ($context['Breeze']['compact'][$type])
+	{
+
+		echo '<ol>';
+
+		foreach ($list as $u)
+		{
+			// Trickery...
+			$user = $type == 'visitors' ? $u['user'] : $u;
+
+			echo '<li>', $context['Breeze']['user_info'][$user]['link'] ,'</li>';
+		}
+
+		echo '</ul>';
+	}
+
+	// Print a nice Ul
+	else
+	{
+		echo '
+			<ul class="reset">';
+
+		// Show the profile visitors in a big, fat echo!
+		foreach ($list as $u)
+		{
+			// Trickery...
+			$user = $type == 'visitors' ? $u['user'] : $u;
+
+			echo '
+				<li> ', $context['Breeze']['user_info'][$user]['facebox'] ,' <br /> ', $context['Breeze']['user_info'][$user]['link'];
+
+			// Are we showing the visitors? if so, show some more info!
+			if ($type == 'visitors')
+			{
+				echo '
+						<br />',  $context['Breeze']['tools']->timeElapsed($u['last_view']);
+
+				// If you're the profile owner you might want to know how many time this user has visited your profile...
+				if ($context['member']['id'] == $user_info['id'])
+					echo '
+						<br />',  $txt['Breeze_user_modules_visitors'] . $u['views'];
+			}
+
+			// close the li
+			echo '</li>';
+		}
+
+		// End the buddies list
+		echo '
+			</ul>';
+	}
 }
 
 function breeze_server_response()

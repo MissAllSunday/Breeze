@@ -88,6 +88,16 @@ padding: 2px;
 	width: 75px;
 }
 
+/* Compact list */
+.BreezeList ol {
+	list-style-type: none;
+}
+
+.BreezeList ol li{
+	float: left;
+	padding: 2px;
+}
+
 /* The user wall */
 .breeze_user_left
 {
