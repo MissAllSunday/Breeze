@@ -283,6 +283,7 @@ class BreezeQuery
 			'data' => array(),
 			'users' => array(),
 			'pagination' => '',
+			'count' => 0
 		);
 
 		$statusIDs = array();
@@ -491,6 +492,7 @@ class BreezeQuery
 			'data' => array(),
 			'users' => array(),
 			'pagination' => '',
+			'count' => 0
 		);
 
 		$statusIDs = array();

@@ -18,6 +18,10 @@ jQuery(document).ready(function(){
 
 	function showMoarButton(){
 
+	// Don't show anything if there isn't enough items to display...
+	if (breeze.pagination.totalItems <= breeze.pagination.maxIndex)
+		return false;
+
 		// Add a nice button...
 		jQuery('<button/>', {
 			id: 'loadMoar',
