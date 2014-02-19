@@ -128,7 +128,7 @@ function breezeWall()
 		else
 		{
 			// How many visitors are we gonna show?
-			if (!empty($context['Breeze']['settings']['owner']['how_many_visitors']) && count($context['Breeze']['views']) >= $context['Breeze']['settings']['owner']['how_many_visitors'])
+			if (!empty($context['Breeze']['settings']['owner']['how_many_visitors']) && is_array($context['Breeze']['views']) && count($context['Breeze']['views']) >= $context['Breeze']['settings']['owner']['how_many_visitors'])
 				$context['Breeze']['views'] = array_slice($context['Breeze']['views'], 0, $context['Breeze']['settings']['owner']['how_many_visitors']);
 		}
 
