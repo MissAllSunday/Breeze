@@ -115,7 +115,7 @@ class BreezeLog
 			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. $this->_tools->text($logStatusString);
 
 		else
-			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_tools->text('logStatus'), $entry['content']['owner_id']);
+			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_tools->text('logStatus'), $loadedUsers[$entry['content']['owner_id']]['link']);
 
 		// Build a link to the status.
 		$return['link'] = '<a href="'. $scripturl .'?action=wall;sa=single;bid='. $entry['content']['id'] .'#status_id_'. $entry['content']['id'] .'">'. $this->_tools->text('logStatus_view') . '</a>';
