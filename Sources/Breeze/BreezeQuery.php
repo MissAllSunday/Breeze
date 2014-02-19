@@ -544,8 +544,7 @@ class BreezeQuery
 				SELECT '. implode(', ', $this->_tables['comments']['columns']) .'
 				FROM {db_prefix}'. ($this->_tables['comments']['table']) .'
 				WHERE comments_status_id IN({array_int:status})
-				ORDER BY comments_id ASC
-				',
+				ORDER BY comments_id ASC',
 				array(
 					'status' => $statusIDs,
 				)
