@@ -164,6 +164,7 @@ $txt['Breeze_pag_page'] = '- pagina ';
 $txt['Breeze_profile_of_username'] = 'Pefil de %1$s';
 $txt['Breeze_page_loading'] = 'Cargando m&aacute;s status...';
 $txt['Breeze_page_loading_end'] = 'No hay m&aacute;s mensajes para mostrar';
+$txt['Breeze_page_no_status'] = 'No hay mensajes para mostrar';
 
 // Tabs
 $txt['Breeze_tabs_wall'] = 'Muro';

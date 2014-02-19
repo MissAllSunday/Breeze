@@ -181,9 +181,6 @@ class BreezeWall
 				$context['page_index'] = $status['pagination'];
 		}
 
-		// No buddies huh? worry not! here's the latest status...
-		// coming soon... LOL
-
 		// Need to pass some vars to the browser.
 		$context['insert_after_template'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[
