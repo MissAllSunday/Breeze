@@ -287,8 +287,8 @@ function breezeSettings()
 		!empty($userSettings['buddies']) ? true : false
 	);
 
-	// How many visitors are we gonna show?
-	$form->addCheckBox(
+	// How many buddies are we gonna show?
+	$form->addText(
 		'how_many_buddies',
 		!empty($userSettings['how_many_buddies']) ? ($maxUsers && $userSettings['how_many_buddies'] >= $maxUsers ? $maxUsers : $userSettings['how_many_buddies']) : 0,
 		3,3
