@@ -137,7 +137,7 @@ class Breeze
 	 */
 	public static function profile(&$profile_areas)
 	{
-		global $user_info, $context, $breezeController, $memID;
+		global $user_info, $context, $breezeController;
 
 		// Safety
 		if (empty($breezeController))
