@@ -143,15 +143,15 @@ class Breeze
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
-		// We need your settings...
-		$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
-
-		// Settings are required here
+		// General settings are required here
 		$tools = $breezeController->get('tools');
 
 		// Replace the summary page only if the mod is enable
 		if ($tools->enable('master'))
 		{
+			// We need your settings...
+			$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
+
 			$profile_areas['info']['areas']['summary'] = array(
 				'label' => $tools->text('general_wall'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
