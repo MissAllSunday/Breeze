@@ -734,6 +734,9 @@ function breezeCheckPermissions()
 	$tools = $breezeController->get('tools');
 	$query = $breezeController->get('query');
 
+	// DUH! wining!
+	$context['insert_after_template'] .= Breeze::who(true);
+
 	// Another page already checked the permissions and if the mod is enable, but better be safe...
 	if (!$tools->enable('master'))
 		redirectexit();
