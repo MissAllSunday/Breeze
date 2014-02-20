@@ -771,7 +771,7 @@ function breezeCheckPermissions()
 	if (isset($context['Breeze']['settings']['owner']['kick_ignored']) && !empty($context['Breeze']['settings']['owner']['kick_ignored']) && !empty($context['Breeze']['settings']['owner']['ignoredList']))
 	{
 		// Make this an array
-		$ignored = explode(',' $context['Breeze']['settings']['owner']['ignoredList']);
+		$ignored = explode(',', $context['Breeze']['settings']['owner']['ignoredList']);
 
 		if (in_array($user_info['id'], $ignored ))
 			redirectexit('action=profile;area=static;u='.$context['member']['id']);
