@@ -25,7 +25,7 @@ $txt['Breeze_page_donate_desc'] = 'Una página aburrida que tenías curiosidad p
 $txt['Breeze_page_donate_exp'] = 'Breeze es una modificación totalmente gratuita hecha por una entusiasta en su tiempo libre.<p />Si te gustó esta modificación y quieres mostrar tu apreciación, por favor concidera hacer una <a href="http://missallsunday.com/">donación</a>. Tu donación servirá para cubrir los gastos del servicio de hospedaje web o para comprar zapatos. Los zapatos mantienen felíz a la desarrolladora y si ella es felíz entonces habrá más y mejores versiones del mod ;)<p />También puedes mostrar tu apreciación visitando mi sitio y  dejando algún mensaje de agradecimiento y de paso mostrarme tu flamante foro mejorado con Breeze.';
 $txt['Breeze_page_credits'] = 'Creditos';
 $txt['Breeze_page_credits_decs'] = 'Breeze usa los siguientes íconos o scripts:';
-$txt['Breeze_enable_general_wall'] = 'Activar la página "wall" general';
+$txt['Breeze_enable_general_wall'] = 'Activar la página "muro general"';
 $txt['Breeze_enable_general_wall_sub'] = 'Si es activada, esta opción mostrará una nueva página en donde se le mostrará a el usuario los ultimos status y la actividad reciente de sus amigos.';
 $txt['Breeze_menu_position'] = 'Selecciona la posición para el botón de la página general.';
 $txt['Breeze_menu_position_sub'] = 'Por defecto se coloca a un lado del botón "Home".';

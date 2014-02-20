@@ -25,7 +25,7 @@ $txt['Breeze_page_donate_desc'] = 'Una p&aacute;gina aburrida que ten&iacute;as 
 $txt['Breeze_page_donate_exp'] = 'Breeze es una modificaci&oacute;n totalmente gratuita hecha por una entusiasta en su tiempo libre.<p />Si te gust&oacute; esta modificaci&oacute;n y quieres mostrar tu apreciaci&oacute;n, por favor concidera hacer una <a href="http://missallsunday.com/">donaci&oacute;n</a>. Tu donaci&oacute;n servir&aacute; para cubrir los gastos del servicio de hospedaje web o para comprar zapatos. Los zapatos mantienen fel&iacute;z a la desarrolladora y si ella es fel&iacute;z entonces habr&aacute; m&aacute;s y mejores versiones del mod ;)<p />Tambi&eacute;n puedes mostrar tu apreciaci&oacute;n visitando mi sitio y  dejando alg&uacute;n mensaje de agradecimiento y de paso mostrarme tu flamante foro mejorado con Breeze.';
 $txt['Breeze_page_credits'] = 'Creditos';
 $txt['Breeze_page_credits_decs'] = 'Breeze usa los siguientes &iacute;conos o scripts:';
-$txt['Breeze_enable_general_wall'] = 'Activar la p&aacute;gina "wall" general';
+$txt['Breeze_enable_general_wall'] = 'Activar la p&aacute;gina "muro general"';
 $txt['Breeze_enable_general_wall_sub'] = 'Si es activada, esta opci&oacute;n mostrar&aacute; una nueva p&aacute;gina en donde se le mostrar&aacute; a el usuario los ultimos status y la actividad reciente de sus amigos.';
 $txt['Breeze_menu_position'] = 'Selecciona la posici&oacute;n para el bot&oacute;n de la p&aacute;gina general.';
 $txt['Breeze_menu_position_sub'] = 'Por defecto se coloca a un lado del bot&oacute;n "Home".';
