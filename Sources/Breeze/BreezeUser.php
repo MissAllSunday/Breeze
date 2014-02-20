@@ -767,7 +767,15 @@ function breezeCheckPermissions()
 	if (!allowedTo('profile_view_any') && $user_info['id'] != $context['member']['id'])
 		redirectexit('action=profile;area=static;u='. $context['member']['id']);
 
-	// Get the ignored list. @todo turn this into a function or something.
+	// Does an ignored user wants to see your wall? never!!!
+	if (isset($context['Breeze']['settings']['owner']['kick_ignored']) && !empty($context['Breeze']['settings']['owner']['kick_ignored']) && !empty($context['Breeze']['settings']['owner']['ignoredList']))
+	{
+		// Make this an array
+		$ignored = explode(',' $context['Breeze']['settings']['owner']['ignoredList']);
+
+		if (in_array($user_info['id'], $ignored ))
+			redirectexit('action=profile;area=static;u='.$context['member']['id']);
+	}
 
 	// I'm sorry, you aren't allowed in here, but here's a nice static page :)
 	if (!empty($context['member']['ignore_list']) && is_array($context['member']['ignore_list']) && in_array($user_info['id'], $context['member']['ignore_list']) && !empty($context['member']['options']['kick_ignored']))
