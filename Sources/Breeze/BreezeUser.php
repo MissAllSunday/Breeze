@@ -435,6 +435,56 @@ function breezeNotifications()
 	$context['page_title'] = $tools->text('noti_title');
 	$context['member']['is_owner'] = $context['member']['id'] == $user_info['id'];
 	$context['canonical_url'] = $scripturl . '?action=profile;area=notifications;u=' . $context['member']['id'];
+	$context['Breeze']['is_log'] = false;
+
+	// Print some jQuery goodies...
+	$context['insert_after_template'] .= '
+	<script type="text/javascript"><!-- // --><![CDATA[
+		jQuery(document).on(\'change\', \'input[name="check_all"]\',function() {
+			jQuery(\'.idNoti\').prop("checked" , this.checked);
+		});
+	// ]]></script>';
+}
+
+/**
+ * breezeNotiLogs()
+ *
+ * Shows all logs, option to mass delete them.
+ * @return
+ */
+function breezeNotiLogs()
+{
+	global $context, $user_info, $scripturl, $options, $breezeController;
+
+	loadtemplate(Breeze::$name);
+	loadtemplate(Breeze::$name .'Functions');
+
+	if (empty($breezeController))
+		$breezeController = new BreezeController();
+
+	$context['Breeze']['settings']['owner'] = $breezeController->get('query')->getUserSettings($context['member']['id']);
+
+	// Globals...
+	$data = Breeze::data('request');
+
+	// We kinda need all this stuff, don't ask why, just nod your head...
+	$logs = $breezeController->get('log')->getActivity($context['member']['id']);
+	$tools = $breezeController->get('tools');
+
+	// Pass the info to the template
+	$context['Breeze']['noti'] = $logs;
+
+	// Tell everyone where we've been
+	$context['Breeze']['comingFrom'] = 'profile';
+
+	// And tell this is a log page...
+	$context['Breeze']['is_log'] = true;
+
+	// Set all the page stuff
+	$context['sub_template'] = 'user_notifications';
+	$context['page_title'] = $tools->text('user_notilogs_name');
+	$context['member']['is_owner'] = $context['member']['id'] == $user_info['id'];
+	$context['canonical_url'] = $scripturl . '?action=profile;area=breezelogs;u=' . $context['member']['id'];
 
 	// Print some jQuery goodies...
 	$context['insert_after_template'] .= '

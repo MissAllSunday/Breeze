@@ -914,7 +914,7 @@ class BreezeQuery
 			FROM {db_prefix}' . ($this->_tables['noti']['table']) . '
 			WHERE id '. (is_array($id) ? 'IN ({array_int:id})' : '= {int:id}'),
 			array(
-				'id' => (int) $id
+				'id' => $id
 			)
 		);
 	}

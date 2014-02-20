@@ -38,6 +38,7 @@ $txt['Breeze_user_buddysettings_name'] = 'Buddy Requests';
 $txt['Breeze_user_single_status'] = 'Single Status';
 $txt['Breeze_user_buddyrequestmessage_name'] = 'Buddy message request send';
 $txt['Breeze_user_notisettings_name'] = 'My Notifications';
+$txt['Breeze_user_notilogs_name'] = 'My Activity logs';
 $txt['Breeze_user_settings_name_settings'] = 'Notifications Settings';
 $txt['Breeze_user_settings_name_settings_desc'] = 'You can specify different options for your notifications, including the actions you would like to get notified for or the actions you wish to let your buddies to get notified for.';
 $txt['Breeze_user_settings_kick_ignored'] = 'Do not show my wall to users in my ignore list';

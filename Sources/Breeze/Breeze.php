@@ -143,6 +143,9 @@ class Breeze
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
+		// We need your settings...
+		$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
+
 		// Settings are required here
 		$tools = $breezeController->get('tools');
 
@@ -211,6 +214,16 @@ class Breeze
 					'permission' => array('own' => 'profile_view_own', ),
 					);
 			}
+
+			// Logs anyone?
+			if ($userSettings['activityLog'])
+				$profile_areas['breeze_profile']['areas']['breezelogs'] = array(
+					'label' => $tools->text('user_notilogs_name'),
+					'file' => Breeze::$folder . 'BreezeUser.php',
+					'function' => 'breezeNotiLogs',
+					'subsections' => array(),
+					'permission' => array('own' => 'profile_view_own', ),
+					);
 		}
 		// Done with the hacking...
 	}

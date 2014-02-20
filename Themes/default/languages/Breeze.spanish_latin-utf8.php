@@ -38,6 +38,7 @@ $txt['Breeze_user_buddysettings_name'] = 'Solicitudes de amistad';
 $txt['Breeze_user_single_status'] = 'Mensaje';
 $txt['Breeze_user_buddyrequestmessage_name'] = 'Solicitud enviada';
 $txt['Breeze_user_notisettings_name'] = 'Mis notificaciones';
+$txt['Breeze_user_notilogs_name'] = 'Mi registro de actividad';
 $txt['Breeze_user_settings_name_settings'] = 'Configuración de notificaciones';
 $txt['Breeze_user_settings_name_settings_desc'] = 'Puedes configurar las distintas opciones para tus notificciones.';
 $txt['Breeze_user_settings_kick_ignored'] = 'No mostrar mi muro a los usuarios en mi lita de ignorados';

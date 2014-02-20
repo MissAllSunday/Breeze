@@ -562,6 +562,19 @@ class BreezeAjax
 		if (empty($noti) || empty($user))
 			return;
 
+		// Are we dealing with logs? if so, the process gets much much easier for me!
+		if ($this->_data->validate('log'))
+		{
+			$this->_query->deleteNoti($noti, $user);
+
+			return $this->setResponse(array(
+				'type' => 'success',
+				'message' => 'noti_delete_after',
+				'owner' => $user,
+				'extra' => array('area' => 'breezelogs',),
+			));
+		}
+
 		// We must make sure this noti really exists, we just must!!!
 		$noti_temp = $this->_query->getNotificationByReceiver($user, true);
 
@@ -628,7 +641,7 @@ class BreezeAjax
 				'type' => 'success',
 				'message' => $do == 'delete' ? 'notiMulti_delete_after' : ($viewed == 1 ? 'notiMulti_markasread_after' : 'notiMulti_unmarkasread_after'),
 				'owner' => $user,
-				'extra' => array('area' => 'breezenoti',),
+				'extra' => array('area' => $this->_data->validate('log') ? 'breezelogs' : 'breezenoti',),
 			));
 		}
 	}
