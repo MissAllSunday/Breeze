@@ -301,7 +301,7 @@ function breezeSettings()
 	);
 
 	// How many visitors are we gonna show?
-	$form->addCheckBox(
+	$form->addText(
 		'how_many_visitors',
 		!empty($userSettings['how_many_visitors']) ? ($maxUsers && $userSettings['how_many_visitors'] >= $maxUsers ? $maxUsers : $userSettings['how_many_visitors']) : 0,
 		3,3
