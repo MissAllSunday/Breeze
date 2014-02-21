@@ -216,7 +216,7 @@ class Breeze
 			}
 
 			// Logs anyone?
-			if (isset($userSettings['activityLog']) && !empty($userSettings['activityLog']))
+			if (!empty($userSettings['activityLog']))
 				$profile_areas['breeze_profile']['areas']['breezelogs'] = array(
 					'label' => $tools->text('user_notilogs_name'),
 					'file' => Breeze::$folder . 'BreezeUser.php',
