@@ -48,3 +48,6 @@ $txt['Breeze_live'] = 'En vivo desde el sitio de soporte...';
 $txt['Breeze_allowed_actions'] = 'escribe las acciones en donde quieres que aparezcan las notificaciones.';
 $txt['Breeze_allowed_actions_sub'] = 'Por defecto las notificaciones aparecer&aacute;n en las siguientes acciones: '. implode(', ', Breeze::$_allowedActions) .'. adem&aacute;s de el &iacute;ndice de foros, el &iacute;ndice de mensajes en los temas y en los foros. <br /> por favor agrega tus acciones separadas por una coma, ejemplo, acci&oacute;n, acci&oacute;n, acci&oacute;n, acci&oacute;n';
 $txt['Breeze_feed_error_message'] = 'Breeze no pudo conectarse con el sitio de soporte.';
+$txt['Breeze_allowed_maxlength_aboutMe'] = 'El m&aacute;ximo n&uacute;mero de caracteres que el bloque "acerca de mi" puede contener';
+$txt['Breeze_allowed_maxlength_aboutMe_sub'] = 'Si se deja vacio, se usar&aacute; el valor por defecto: 1024';
+

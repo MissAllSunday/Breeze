@@ -117,6 +117,7 @@ function Breeze_Admin_Settings()
 		array('int', Breeze::$txtpattern .'mention_limit', 'size' => 3, 'subtext' => $context['Breeze']['instance']->adminText('mention_limit_sub')),
 		array('int', Breeze::$txtpattern .'allowed_max_num_users', 'size' => 3, 'subtext' => $context['Breeze']['instance']->adminText('allowed_max_num_users_sub')),
 		array('check', Breeze::$txtpattern .'parseBBC', 'subtext' => $context['Breeze']['instance']->adminText('parseBBC_sub')),
+		array('int', Breeze::$txtpattern .'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $context['Breeze']['instance']->adminText('allowed_maxlength_aboutMe_sub')),
 	);
 
 	$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=settings;save';

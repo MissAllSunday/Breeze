@@ -50,3 +50,5 @@ $txt['Breeze_live'] = 'Live from the support forum...';
 $txt['Breeze_allowed_actions'] = 'Write the actions where you wish the notification system shows up';
 $txt['Breeze_allowed_actions_sub'] = 'By default, the notification system will appear on the following actions: '. implode(', ', Breeze::$_allowedActions) .'. Plus the BoardIndex, MessageIndex, Topic and Board pages. <br /> Please add your actions in a comma separated list, example: action, action, action, action';
 $txt['Breeze_feed_error_message'] = 'Breeze couldn\'t connect with the support site';
+$txt['Breeze_allowed_maxlength_aboutMe'] = 'The max length for the "about me" block ';
+$txt['Breeze_allowed_maxlength_aboutMe_sub'] = 'If left empty, the mod will use the default value: 1024';
