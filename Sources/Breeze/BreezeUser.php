@@ -204,7 +204,8 @@ function breezeWall()
  */
 function breezeSettings()
 {
-	global $context, $memID, $breezeController, $scripturl, $txt, $user_info;
+	global $context, $breezeController, $scripturl, $txt, $modSettings;
+	global $user_info;
 
 	loadtemplate(Breeze::$name);
 	loadtemplate(Breeze::$name .'Functions');
@@ -281,18 +282,22 @@ function breezeSettings()
 		!empty($userSettings['activityLog']) ? true : false
 	);
 
-	// Buddies block.
-	$form->addCheckBox(
-		'buddies',
-		!empty($userSettings['buddies']) ? true : false
-	);
+	// Only show this is the admin has enable the buddy feature.
+	if (!empty($modSettings['enable_buddylist']))
+	{
+		// Buddies block.
+		$form->addCheckBox(
+			'buddies',
+			!empty($userSettings['buddies']) ? true : false
+		);
 
-	// How many buddies are we gonna show?
-	$form->addText(
-		'how_many_buddies',
-		!empty($userSettings['how_many_buddies']) ? ($maxUsers && $userSettings['how_many_buddies'] >= $maxUsers ? $maxUsers : $userSettings['how_many_buddies']) : 0,
-		3,3
-	);
+		// How many buddies are we gonna show?
+		$form->addText(
+			'how_many_buddies',
+			!empty($userSettings['how_many_buddies']) ? ($maxUsers && $userSettings['how_many_buddies'] >= $maxUsers ? $maxUsers : $userSettings['how_many_buddies']) : 0,
+			3,3
+		);
+	}
 
 	// Profile visitors.
 	$form->addCheckBox(
