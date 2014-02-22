@@ -57,8 +57,8 @@
 				),
 				array(
 					'name' => 'value',
-					'type' => 'varchar',
-					'size' => 255,
+					'type' => 'text',
+					'size' => '',
 					'default' => '',
 				),
 			),
