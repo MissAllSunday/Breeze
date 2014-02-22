@@ -317,7 +317,7 @@ function breezeSettings()
 	$form->addTextArea(
 		'aboutMe',
 		!empty($userSettings['aboutMe']) ? $userSettings['aboutMe'] : '',
-		array('rows' => 10, 'cols' => 50)
+		array('rows' => 10, 'cols' => 50, 'maxLength' => $tools->setting('allowed_maxlength_aboutMe') ? $tools->setting('allowed_maxlength_aboutMe') : 1024)
 	);
 
 	// Send the form to the template
