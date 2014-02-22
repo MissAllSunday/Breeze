@@ -118,13 +118,19 @@ class BreezeForm
 		return $this->addElement($element);
 	}
 
-	function addTextArea($name, $value, $size = array())
+	function addTextArea($name, $value, $size = array('cols' => 40, 'rows' =>10, 'maxLength' => 1024))
 	{
 		$element['type'] = 'textarea';
 		$element['name'] = $name;
 		$element['value'] = empty($value) ? '' : $value;
 		$element['text'] = $name;
-		$element['html'] = '<'. $element['type'] .' name="'. (!empty($this->formName) ? $this->formName .'['. $element['name'] .']' : $element['name']) .'" id="'. $element['name'] .'" '. (!empty($size) && !empty($size['rows']) && !empty($size['cols']) ? 'rows="'. $size['rows'] .'" cols="'. $size['cols'] .'"' : '') .'>'. $element['value'] .'</'. $element['type'] .'>';
+
+		// To a void having a large and complicate ternary, split these options.
+		$rows = 'rows="'. (!empty($size) && !empty($size['rows']) ? $size['rows'] : 10) .'"';
+		$cols = 'cols="'. (!empty($size) && !empty($size['cols']) ? $size['cols'] : 40) .'"';
+		$maxLength = 'maxlength="'. (!empty($size) && !empty($size['maxLength']) ? $size['maxLength'] : 1024) .'"';
+
+		$element['html'] = '<'. $element['type'] .' name="'. (!empty($this->formName) ? $this->formName .'['. $element['name'] .']' : $element['name']) .'" id="'. $element['name'] .'" '. $rows .' '. $cols .' '. $maxLength .'>'. $element['value'] .'</'. $element['type'] .'>';
 
 		return $this->addElement($element);
 	}
