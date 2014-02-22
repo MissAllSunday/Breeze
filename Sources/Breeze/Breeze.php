@@ -116,6 +116,9 @@ class Breeze
 	 */
 	public static function permissions(&$permissionGroups, &$permissionList)
 	{
+		// We gotta load our language file.
+		loadLanguage(Breeze::$name);
+
 		$permissionGroups['membergroup']['simple'] = array('breeze_per_simple');
 		$permissionGroups['membergroup']['classic'] = array('breeze_per_classic');
 

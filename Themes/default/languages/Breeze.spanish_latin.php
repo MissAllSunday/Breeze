@@ -105,16 +105,16 @@ $txt['Breeze_time_year'] = 'año';
 $txt['cannot_view_general_wall'] = 'Lo siento, no est&aacute;s autorizado(a) para ver este muro.';
 $txt['permissiongroup_simple_breeze_per_simple'] = 'Breeze mod permisos';
 $txt['permissiongroup_breeze_per_classic'] = 'Breeze mod permisos';
-$txt['permissionname_breeze_canMention'] = 'Poder mencionar<br /><span class="smalltext">Tener la capacidad de crear menciones a otras personas</span>';
-$txt['permissionname_breeze_beMentioned'] = 'Aparecer en la lista de mencionable<br /><span class="smalltext">Si el usuairo puede o no aparecer en la lista de posibles mencionables de otros usuarios</span>';
-$txt['permissionname_breeze_deleteStatus'] = 'Borrar todos los mensajes de cualquier muro<br /><span class="smalltext">Este permiso reemplaza cualquier otro permiso que el usuario puede tener. Borrar un mensaje tambi&eacute;n borra todos los comentarios asociados a ese mensaje.</span>';
-$txt['permissionname_breeze_deleteComments'] = 'Borrar cualquier comentario en cualquier muro<br /><span class="smalltext">El usuario podr&aacute; borrar los comentarios hechos por cualquier otro usuario.</span>';
-$txt['permissionname_breeze_deleteOwnStatus'] = 'Borrar sus propios status.<br /><span class="smalltext">Sin importar en cu&aacute;l muro fueron hechos. Al hacerlo tambi&eacute;n se borrar&aacute;n todos los comentarios asociados a ese status.</span>';
-$txt['permissionname_breeze_deleteOwnComments'] = 'Borrar sus propios comentarios.<br /><span class="smalltext">Sin importar en d&oacute;nde han sido escritos</span>';
-$txt['permissionname_breeze_deleteProfileStatus'] = 'Borrar mensajes hechos en sus propios muros.<br /><span class="smalltext">Sin importar qui&eacute;n los escribi&oacute;. Esto tambi&eacute;n borrar&aacute; cualquier comentario asociado a ese status.</span>';
-$txt['permissionname_breeze_deleteProfileComments'] = 'Borrar comentarios hechos en su propio muro.<br /><span class="smalltext">Sin importar qui&eacute;n los escribi&oacute;.</span>';
-$txt['permissionname_breeze_postStatus'] = 'Escribir nuevos mensajes en cualquier muro<br /><span class="smalltext">Por defecto, el dueño de el muro siempre tiene la posibilidad de escribir en su propio muro.</span>';
-$txt['permissionname_breeze_postComments'] = 'Escribir nuevos comentarios en cualquier muro<br /><span class="smalltext">Por defecto, el dueño del muro siempre tiene la capacidad de escribir comentarios en sus propios muros.</span>';
+$txt['permissionname_breeze_canMention'] = 'Poder mencionar<br /><span class="smalltext">  Tener la capacidad de crear menciones a otras personas</span>';
+$txt['permissionname_breeze_beMentioned'] = 'Aparecer en la lista de mencionable<br /><span class="smalltext">  Si el usuairo puede o no aparecer en la lista de posibles mencionables de otros usuarios</span>';
+$txt['permissionname_breeze_deleteStatus'] = 'Borrar todos los mensajes de cualquier muro<br /><span class="smalltext">  Este permiso reemplaza cualquier otro permiso que el usuario puede tener. Borrar un mensaje tambi&eacute;n borra todos los comentarios asociados a ese mensaje.</span>';
+$txt['permissionname_breeze_deleteComments'] = 'Borrar cualquier comentario en cualquier muro<br /><span class="smalltext">  El usuario podr&aacute; borrar los comentarios hechos por cualquier otro usuario.</span>';
+$txt['permissionname_breeze_deleteOwnStatus'] = 'Borrar sus propios status.<br /><span class="smalltext">  Sin importar en cu&aacute;l muro fueron hechos. Al hacerlo tambi&eacute;n se borrar&aacute;n todos los comentarios asociados a ese status.</span>';
+$txt['permissionname_breeze_deleteOwnComments'] = 'Borrar sus propios comentarios.<br /><span class="smalltext">  Sin importar en d&oacute;nde han sido escritos</span>';
+$txt['permissionname_breeze_deleteProfileStatus'] = 'Borrar mensajes hechos en sus propios muros.<br /><span class="smalltext">  Sin importar qui&eacute;n los escribi&oacute;. Esto tambi&eacute;n borrar&aacute; cualquier comentario asociado a ese status.</span>';
+$txt['permissionname_breeze_deleteProfileComments'] = 'Borrar comentarios hechos en su propio muro.<br /><span class="smalltext">  Sin importar qui&eacute;n los escribi&oacute;.</span>';
+$txt['permissionname_breeze_postStatus'] = 'Escribir nuevos mensajes en cualquier muro<br /><span class="smalltext">  Por defecto, el dueño de el muro siempre tiene la posibilidad de escribir en su propio muro.</span>';
+$txt['permissionname_breeze_postComments'] = 'Escribir nuevos comentarios en cualquier muro<br /><span class="smalltext">  Por defecto, el dueño del muro siempre tiene la capacidad de escribir comentarios en sus propios muros.</span>';
 
 // Ajax strings
 $txt['Breeze_success_updated_settings'] = 'Tu configuraci&oacute;n se guardo correctamente.';
