@@ -96,7 +96,7 @@ class BreezeAjax
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
 
-		// Add your ow subactions
+		// Add your own sub-actions
 		call_integration_hook('integrate_breeze_ajax_actions', array(&$call));
 
 		// Does the subaction even exist?
@@ -248,7 +248,7 @@ class BreezeAjax
 	/**
 	 * BreezeAjax::postComment()
 	 *
-	 * Gets the data from the client and stires a new comment in the DB.
+	 * Gets the data from the client and stores a new comment in the DB.
 	 * @return
 	 */
 	public function postComment()
