@@ -470,11 +470,20 @@ class BreezeAjax
 	{
 		checkSession('request', '', false);
 
+		$toSave = array();
+
 		// Get the values.
 		$this->_data = Breeze::data('request');
 
+		// Handling data.
+		$toSave = $this->_data->get('breezeSettings');
+
+		// Gotta make sure the user is respecting the admin limit for the about me block.
+		if ($this->_tools->setting('allowed_maxlength_aboutMe') && !empty($toSave['aboutMe']) && strlen($toSave['aboutMe']) >= $this->_tools->setting('allowed_maxlength_aboutMe'))
+			$toSave['aboutMe'] = substr($toSave['aboutMe'], 0, $this->_tools->setting('allowed_maxlength_aboutMe'));
+
 		// Do the insert already!
-		$this->_query->insertUserSettings($this->_data->get('breezeSettings'), $this->_data->get('u'));
+		$this->_query->insertUserSettings($toSave, $this->_data->get('u'));
 
 		// Done! set the redirect.
 		return $this->setResponse(array(
