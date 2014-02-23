@@ -31,9 +31,9 @@ jQuery(document).ready(function(){
 
 				numberOfEvents++;
 
-				jQuery('<div/>', {
+				jQuery('<ul/>', {
 					id: 'tempDIV_'+ numberOfEvents,
-					class: 'clear',
+					class: 'breeze_status',
 					style: ''
 				}).appendTo('#breezeAppendTo').hide();
 
@@ -53,11 +53,14 @@ jQuery(document).ready(function(){
 						// The server response as a JSON object
 						if(html.type == 'success'){
 
-							// There are no more data to load!
+							// Append the html to our temp DIV.
 							if (html.data != 'end'){
+
+								// Create a unique UL for this very own status, isn't it great?
 								jQuery('#tempDIV_'+ numberOfEvents).append(html.data).fadeIn('slow', 'linear', function(){});
 							}
 
+							// No more data:(
 							else{
 								noty({
 									text: breeze.text.page_loading_end,

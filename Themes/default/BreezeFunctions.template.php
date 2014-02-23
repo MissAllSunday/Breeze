@@ -41,11 +41,6 @@ function breeze_status($data, $returnVar = false)
 
 	$echo = '';
 
-	// New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING and even if you do, DON'T MODIFY THIS
-	$echo .= '
-		<div id="breeze_load_image"></div>
-		<ul class="breeze_status" id="breeze_display_status">';
-
 	// Status and comments
 	foreach ($data as $status)
 	{
@@ -136,10 +131,6 @@ function breeze_status($data, $returnVar = false)
 				<span class="botslice"><span></span></span>
 			</li>';
 	}
-
-	// End of list
-	$echo .= '
-		</ul>';
 
 	// What are we gonna do?
 	if ($returnVar)

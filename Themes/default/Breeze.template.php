@@ -102,15 +102,22 @@ function template_user_wall()
 				<span class="botslice"><span></span></span>
 			</div>';
 
+	// New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING and even if you do, DON'T MODIFY THIS
+	echo '
+			<div id="breeze_load_image"></div>
+				<ul class="breeze_status" id="breeze_display_status">';
+
 	// Print out the status if there are any.
 	if (!empty($context['member']['status']))
-	{
 		breeze_status($context['member']['status']);
 
-		// An empty div to append the loaded status via AJAX.
-		echo '
-				<div id="breezeAppendTo" style="display:hide;">
-				</div>';
+	// End of list
+	echo '
+				</ul>';
+
+	// An empty div to append the loaded status via AJAX.
+	echo '
+			<div id="breezeAppendTo" style="display:hide;"></div>';
 
 		// Pagination
 		if (!empty($context['page_index']))
@@ -118,7 +125,6 @@ function template_user_wall()
 				<div class="pagelinks">
 					', $txt['pages'], ': ', $context['page_index'], $context['menu_separator'] . ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
 				</div>';
-	}
 
 	// Wall end
 	echo '
