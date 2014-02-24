@@ -7,7 +7,7 @@
  * @package Breeze mod
  * @version 1.0
  * @author Jessica Gonzalez <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2014 Jessica González
+ * @copyright Copyright (c) 2011, 2014 Jessica Gonzalez
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -27,7 +27,7 @@
  * The Original Code is http://missallsunday.com code.
  *
  * The Initial Developer of the Original Code is
- * Jessica González.
+ * Jessica Gonzalez.
  * Portions created by the Initial Developer are Copyright (c) 2012
  * the Initial Developer. All Rights Reserved.
  *
