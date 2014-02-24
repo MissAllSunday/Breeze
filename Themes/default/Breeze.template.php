@@ -441,38 +441,31 @@ function template_general_wall()
 				</h3>
 			</div>';
 
+	// Start the list
+	echo '
+			<ul class="breeze_status" id="breeze_display_status">';
+
 	// Display the status...
 	if (!empty($context['Breeze']['status']))
-	{
 		breeze_status($context['Breeze']['status']);
 
+	else
+		echo '<li>', $txt['Breeze_page_no_status'] ,'</li>';
+
+	// End of list
+	echo '
+			</ul>';
+
 		// An empty div to append the loaded status via AJAX.
-		echo '
-				<div id="breezeAppendTo" style="display:hide;">
-				</div>';
-
-		// Pagination
-		if (!empty($context['page_index']))
-			echo '
-				<div class="pagelinks">
-					', $txt['pages'], ': ', $context['page_index'], $context['menu_separator'] . ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
-				</div>';
-
-
-	// An empty div to append the loaded status via AJAX.
 	echo '
 			<div id="breezeAppendTo" style="display:hide;"></div>';
-	}
 
-	else
+	// Pagination
+	if (!empty($context['page_index']))
 		echo '
-		<div class="windowbg2">
-			<span class="topslice"><span> </span></span>
-			<div class="content">
-				', $txt['Breeze_page_no_status'] ,'
-			</div>
-			<span class="botslice"><span> </span></span>
-		</div>';
+			<div class="pagelinks">
+				', $txt['pages'], ': ', $context['page_index'], $context['menu_separator'] . ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
+			</div>';
 
 	// Wall end
 	echo '
