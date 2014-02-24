@@ -42,7 +42,6 @@ function Breeze_Admin_Index()
 				'general' => array(),
 				'settings' => array(),
 				'permissions' => array(),
-				'style' => array(),
 				'donate' => array(),
 			),
 		);

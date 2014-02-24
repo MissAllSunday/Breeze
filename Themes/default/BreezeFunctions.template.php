@@ -98,7 +98,7 @@ function breeze_status($data, $returnVar = false)
 								<div id="breeze_load_image_comment_'. $status['id'] .'" style="margin:auto; text-align:center;"></div>';
 
 		// Post a new comment
-		if ($canHas['post'])
+		if ($canHas['postComments'])
 		{
 			$echo .= '
 								<div class="post_comment">';

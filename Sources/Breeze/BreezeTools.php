@@ -325,6 +325,7 @@ class BreezeTools
 			'edit' => false,
 			'delete' => '',
 			'post' => false,
+			'postComments' => false,
 		);
 
 		// NO! you don't have permission to do nothing...
@@ -340,11 +341,16 @@ class BreezeTools
 
 		// Lets check the posing bit first. Profile owner can always post.
 		if ($isProfileOwner)
+		{
 			$perm['post'] = true;
+			$perm['postComments'] = true;
+		}
 
 		else
+		{
 			$perm['post'] = allowedTo('breeze_post'. $type);
-
+			$perm['postComments'] = allowedTo('breeze_postComments');
+		}
 
 		// It all starts with an empty vessel...
 		$allowed = array();

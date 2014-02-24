@@ -405,10 +405,10 @@ class BreezeAjax
 		$poster = $this->_data->get('poster');
 
 		// Get the data
-		if ($id != false)
+		if (!empty($id))
 		{
 			// You aren't allowed in here, let's show you a nice message error...
-			$canHas = $this->_tools->permissions($type, $profileOwner, $poster);
+			$canHas = $this->_tools->permissions(ucfirst($type), $profileOwner, $poster);
 
 			// Die, die my darling!
 			if (!$canHas['delete'])
@@ -492,7 +492,6 @@ class BreezeAjax
 			'owner' => $this->_data->get('u'),
 			'extra' => array('area' => $this->_data->get('area'),),
 		));
-
 	}
 
 	/**

@@ -118,7 +118,7 @@ $txt['permissionname_breeze_postComments'] = 'Escribir nuevos comentarios en cua
 
 // Ajax strings
 $txt['Breeze_success_updated_settings'] = 'Tu configuración se guardo correctamente.';
-$txt['Breeze_error_deleteComment'] = 'Lo siento, no se te permite borrar comentarios.';
+$txt['Breeze_error_deleteComments'] = 'Lo siento, no se te permite borrar comentarios.';
 $txt['Breeze_error_deleteStatus'] = 'Lo siento, no se te permite borrar status.';
 $txt['Breeze_error_server'] = 'Hubo un error, por favor intenta de nuevo o contacta a el administrador.';
 $txt['Breeze_error_wrong_values'] = 'Datos inválidos, la petición no pudo ser procesada.';
