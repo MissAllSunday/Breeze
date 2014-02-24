@@ -217,7 +217,7 @@ class BreezeAjax
 						$this->_notifications->create(array(
 							'sender' => $statusPoster,
 							'receiver' => $statusOwner,
-							'type' => 'WallOwner',
+							'type' => 'wallOwner',
 							'time' => time(),
 							'viewed' => 0,
 							'content' => $logStatus,
@@ -356,8 +356,8 @@ class BreezeAjax
 					if (!empty($uStatusSettings['noti_on_comment']))
 						$this->_notifications->create(array(
 							'sender' => $commentPoster,
-							'receiver' => $commentStatusPoste,
-							'type' => 'CommentStatus',
+							'receiver' => $commentStatusPoster,
+							'type' => 'commentStatus',
 							'time' => time(),
 							'viewed' => 0,
 							'content' => $logComment,

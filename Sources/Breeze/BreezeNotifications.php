@@ -49,7 +49,8 @@ class BreezeNotifications
 			'mention',
 			'messages',
 			'topics',
-			'onWallOwner',
+			'wallOwner',
+			'commentStatus',
 		);
 
 		// Say what again, I double dare you!
@@ -297,7 +298,7 @@ class BreezeNotifications
 		);
 	}
 
-	public function doonWallOwner($noti)
+	public function doWallOwner($noti)
 	{
 		global $scripturl;
 
@@ -310,10 +311,10 @@ class BreezeNotifications
 			';bid=' . $noti['content']['id'];
 
 		// Sometimes this data hasn't been loaded yet
-		$loadedUsers = $this->_query->loadMinimalData(array($entry['content']['owner_id'], $entry['content']['poster_id'],));
+		$loadedUsers = $this->_query->loadMinimalData(array($noti['content']['owner_id'], $noti['content']['poster_id'],));
 
 		// Create the actual text.
-		$text = sprintf($loadedUsers[$entry['content']['poster_id']]['link'], $statusLink, $this->_tools->text('noti_posted_wall'));
+		$text = sprintf($this->_tools->text('noti_posted_wall'), $loadedUsers[$noti['content']['poster_id']]['link'], $statusLink);
 
 		$this->_messages[$noti['id']] = array(
 			'id' => $noti['id'],
@@ -323,19 +324,22 @@ class BreezeNotifications
 		);
 	}
 
-	public function onCommentStatus($noti)
+	public function doCommentStatus($noti)
 	{
 		global $scripturl;
 
 		// Build the status link.
-		$statusLink = $scripturl . '?action=wall;sa=single;u=' . $entry['content']['profile_id'] .
-			';bid=' . $entry['content']['id'];
+		$statusLink = $scripturl . '?action=wall;sa=single;u=' . $noti['content']['profile_id'] .
+			';bid=' . $noti['content']['id'];
 
 		// Sometimes this data hasn't been loaded yet
-		$loadedUsers = $this->_query->loadMinimalData(array($entry['content']['profile_id'], $entry['content']['poster_id'], $entry['content']['status_owner_id']));
+		$loadedUsers = $this->_query->loadMinimalData(array($noti['content']['profile_id'], $noti['content']['poster_id'], $noti['content']['status_owner_id']));
+
+		// Is this your own wall?
+		$preText = $noti['receiver'] == $noti['content']['profile_id'] ? 'noti_posted_comment_own_wall' : 'noti_posted_comment';
 
 		// Create the actual text.
-		$text = sprintf($loadedUsers[$entry['content']['poster_id']]['link'], $statusLink, $loadedUsers[$entry['content']['profile_id']]['link'], $this->_tools->text('noti_posted_comment'));
+		$text = sprintf($this->_tools->text($preText), $loadedUsers[$noti['content']['poster_id']]['link'], $statusLink, $loadedUsers[$noti['content']['profile_id']]['link']);
 
 		$this->_messages[$noti['id']] = array(
 			'id' => $noti['id'],

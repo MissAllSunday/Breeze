@@ -549,7 +549,6 @@ class Breeze
 				'general' => array($tools->adminText('page_main')),
 				'settings' => array($tools->adminText('page_settings')),
 				'permissions' => array($tools->adminText('page_permissions')),
-				'style' => array($tools->adminText('page_style')),
 				'donate' => array($tools->adminText('page_donate')),
 			),
 		);

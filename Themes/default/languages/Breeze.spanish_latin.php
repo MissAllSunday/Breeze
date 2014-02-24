@@ -212,10 +212,11 @@ $txt['Breeze_noti_comment_message_statusOwner'] = '%1$s coment&oacute; en tu men
 $txt['Breeze_noti_comment_message_wallOwner'] = '%1$s coment&oacute; en el mensaje hecho por %2$s en tu muro';
 
 // Someone posted a status on your wall.
-$txt['Breeze_noti_posted_wall'] = '%1$s escribi&oacute; un nuevo mensaje en tu muro: %2$s';
+$txt['Breeze_noti_posted_wall'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">escribi&oacute; un nuevo mensaje en tu muro</a>';
 
 // Someone commented your status on your own wall
-$txt['Breeze_noti_posted_comment'] = '%1$s coment&oacute; en tu status: %2$s en el muro de %3$s';
+$txt['Breeze_noti_posted_comment'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">coment&oacute; en tu mensaje</a> en el muro de %3$s';
+$txt['Breeze_noti_posted_comment_own_wall'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">coment&oacute; en tu mensaje</a> en tu propio muro';
 
 // Mentions
 $txt['Breeze_mention_message_status'] = '&iexcl;<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> Has sido mencionad(a)</a> por %1$s oen el muro de %2$s!';
