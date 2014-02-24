@@ -6,7 +6,7 @@
  * The purpose of this file is to modularize some of the most used blocks of code, the point is to reduce view code and maximize and re-use as much code as possible
  * @package Breeze mod
  * @version 1.0
- * @author Jessica González <suki@missallsunday.com>
+ * @author Jessica Gonzalez <suki@missallsunday.com>
  * @copyright Copyright (c) 2011, 2014 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
