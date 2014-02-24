@@ -32,7 +32,7 @@
 				'name' => 'breeze_profile_views',
 				'type' => 'text',
 				'size' => '',
-				'default' => '',
+				'default' => null,
 			),
 			array(),
 			'update',
@@ -59,7 +59,7 @@
 					'name' => 'value',
 					'type' => 'text',
 					'size' => '',
-					'default' => '',
+					'default' => null,
 				),
 			),
 			'indexes' => array(
@@ -118,7 +118,7 @@
 					'name' => 'comments_body',
 					'type' => 'text',
 					'size' => '',
-					'default' => '',
+					'default' => null,
 				),
 			),
 			'indexes' => array(
@@ -165,7 +165,7 @@
 					'name' => 'status_body',
 					'type' => 'text',
 					'size' => '',
-					'default' => '',
+					'default' => null,
 				),
 			),
 			'indexes' => array(
@@ -224,7 +224,7 @@
 					'name' => 'content',
 					'type' => 'text',
 					'size' => '',
-					'default' => '',
+					'default' => null,
 				),
 				array(
 					'name' => 'type_id',
