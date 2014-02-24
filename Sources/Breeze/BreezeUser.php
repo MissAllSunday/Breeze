@@ -270,12 +270,6 @@ function breezeSettings()
 		3,3
 	);
 
-	// Allow ignored users.
-	$form->addCheckBox(
-		'kick_ignored',
-		!empty($userSettings['kick_ignored']) ? true : false
-	);
-
 	// Activity Log.
 	$form->addCheckBox(
 		'activityLog',
@@ -285,6 +279,12 @@ function breezeSettings()
 	// Only show this is the admin has enable the buddy feature.
 	if (!empty($modSettings['enable_buddylist']))
 	{
+		// Allow ignored users.
+		$form->addCheckBox(
+			'kick_ignored',
+			!empty($userSettings['kick_ignored']) ? true : false
+		);
+
 		// Buddies block.
 		$form->addCheckBox(
 			'buddies',
