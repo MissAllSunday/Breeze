@@ -15,7 +15,8 @@ if (!defined('SMF'))
 
 function Breeze_Admin_Index()
 {
-		global $txt, $scripturl, $context, $sourcedir, $settings, $breezeController;
+		global $txt, $scripturl, $context, $sourcedir, $settings;
+		global $modSettings, $breezeController;
 
 		require_once($sourcedir . '/ManageSettings.php');
 		loadLanguage('BreezeAdmin');
@@ -60,7 +61,8 @@ $(document).ready(function (){
 		header: false,
 		date: true,
 		linktarget: \'_blank\',
-		errormsg: breeze_feed_error_message
+		errormsg: breeze_feed_error_message,
+		'.(!empty($modSettings['setting_secureCookies']) ? 'ssl: true,' : '').'
    });
 });
  </script>';
