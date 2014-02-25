@@ -156,6 +156,7 @@ class Breeze
 			$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
 
 			if (!empty($userSettings['wall']))
+			{
 				$profile_areas['info']['areas']['summary'] = array(
 					'label' => $tools->text('general_wall'),
 					'file' => Breeze::$folder . 'BreezeUser.php',
@@ -166,16 +167,17 @@ class Breeze
 						),
 					);
 
-			// If the mod is enable, then create another page for the default profile page
-			$profile_areas['info']['areas']['static'] = array(
-				'label' => $tools->text('general_summary'),
-				'file' => 'Profile-View.php',
-				'function' => 'summary',
-				'permission' => array(
-					'own' => 'profile_view_own',
-					'any' => 'profile_view_any',
-					),
-				);
+				// If the mod is enable, then create another page for the default profile page
+				$profile_areas['info']['areas']['static'] = array(
+					'label' => $tools->text('general_summary'),
+					'file' => 'Profile-View.php',
+					'function' => 'summary',
+					'permission' => array(
+						'own' => 'profile_view_own',
+						'any' => 'profile_view_any',
+						),
+					);
+			}
 
 			// Create the area
 			$profile_areas['breeze_profile'] = array(
