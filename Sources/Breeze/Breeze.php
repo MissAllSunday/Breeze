@@ -155,15 +155,16 @@ class Breeze
 			// We need your settings...
 			$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
 
-			$profile_areas['info']['areas']['summary'] = array(
-				'label' => $tools->text('general_wall'),
-				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'breezeWall',
-				'permission' => array(
-					'own' => 'profile_view_own',
-					'any' => 'profile_view_any',
-					),
-				);
+			if (!empty($userSettings['wall']))
+				$profile_areas['info']['areas']['summary'] = array(
+					'label' => $tools->text('general_wall'),
+					'file' => Breeze::$folder . 'BreezeUser.php',
+					'function' => 'breezeWall',
+					'permission' => array(
+						'own' => 'profile_view_own',
+						'any' => 'profile_view_any',
+						),
+					);
 
 			// If the mod is enable, then create another page for the default profile page
 			$profile_areas['info']['areas']['static'] = array(
