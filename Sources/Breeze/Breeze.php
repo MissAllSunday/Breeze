@@ -153,7 +153,7 @@ class Breeze
 		if ($tools->enable('master'))
 		{
 			// We need your settings...
-			$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
+			$userSettings = $breezeController->get('query')->getUserSettings($context['member']);
 
 			if (!empty($userSettings['wall']))
 			{
