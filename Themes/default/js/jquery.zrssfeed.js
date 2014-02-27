@@ -71,7 +71,7 @@
 			options.limit += options.offset;
 
 			// Create Google Feed API address
-			var api = "http"+ s +"://ajax.googleapis.com/ajax/services/feed/load?v=1.0&callback=?&q=" + encodeURIComponent(url);
+			var api = "//ajax.googleapis.com/ajax/services/feed/load?v=1.0&callback=?&q=" + encodeURIComponent(url);
 			api += "&num=" + options.limit;
 			if (options.historical) api += "&scoring=h";
 			if (options.key != null) api += "&key=" + options.key;
