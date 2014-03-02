@@ -332,8 +332,7 @@ class BreezeNotifications
 		global $scripturl;
 
 		// Build the status link.
-		$statusLink = $scripturl . '?action=wall;sa=single;u=' . $noti['content']['profile_id'] .
-			';bid='. $noti['content']['status_id'] .';cid=' . $noti['content']['id'];
+		$statusLink = $scripturl . '?action=wall;sa=single;u=' . $noti['content']['profile_id'] .';bid='. $noti['content']['status_id'] .';cid=' . $noti['content']['id'];
 
 		// Sometimes this data hasn't been loaded yet
 		$loadedUsers = $this->_query->loadMinimalData(array($noti['content']['profile_id'], $noti['content']['poster_id'], $noti['content']['status_owner_id']));
@@ -357,8 +356,8 @@ class BreezeNotifications
 		global $scripturl;
 
 		// Build the status link.
-		$statusLink = $scripturl . '?action=wall;sa=single;u=' . $noti['content']['profile_id'] .
-			';bid=' . $noti['content']['id'];
+		$statusLink = $scripturl . '?action=wall;sa=single;u=' . $noti['content']['profile_id'] .';bid='. $noti['content']['status_id'] .';cid=' . $noti['content']['id'];
+
 
 		// Sometimes this data hasn't been loaded yet
 		$loadedUsers = $this->_query->loadMinimalData(array($noti['content']['profile_id'], $noti['content']['poster_id'], $noti['content']['status_owner_id']));
