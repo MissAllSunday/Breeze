@@ -368,7 +368,19 @@ class BreezeAjax
 
 				else if (($commentOwner != $commentPoster) &&  ($commentOwner != $commentStatusPoster))
 				{
+					$uOwnerSettings = $this->_query->getUserSettings($commentOwner);
 
+					if (!empty($uStatusSettings['noti_on_comment']))
+						$this->_notifications->create(array(
+							'sender' => $commentPoster,
+							'receiver' => $commentStatusPoster,
+							'type' => 'commentStatusOwner',
+							'time' => time(),
+							'viewed' => 0,
+							'content' => $logComment,
+							'type_id' => $this->_params['id'],
+							'second_type' => 'comment',
+						));
 				}
 
 				// Send the data back to the browser
