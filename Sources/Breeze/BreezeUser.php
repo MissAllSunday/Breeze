@@ -390,7 +390,7 @@ function breezenotisettings()
 	// Noti on comment for profile owner
 	$form->addCheckBox(
 		'noti_on_comment_owner',
-		!empty($userSettings['noti_on_comment']) ? true : false
+		!empty($userSettings['noti_on_comment_owner']) ? true : false
 	);
 
 	// Noti on mention
