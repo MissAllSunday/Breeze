@@ -51,6 +51,7 @@ class BreezeNotifications
 			'topics',
 			'wallOwner',
 			'commentStatus',
+			'commentStatusOwner',
 		);
 
 		// Say what again, I double dare you!
@@ -77,7 +78,9 @@ class BreezeNotifications
 	/**
 	 * BreezeNotifications::create()
 	 *
-	 * @param mixed $params
+	 * Take an array, figure it out the content and act according to it. Content can be a string, an array which gets converted to  json string
+	 * or an anonymous function that gets executed right before been saved to the DB.
+	 * @param array $params An array containing all sorts of goodies
 	 * @return
 	 */
 	public function create($params)
@@ -151,7 +154,7 @@ class BreezeNotifications
 	 *
 	 * Fetch all notifications assigned to a given user, loads the member settings if they aren't already loaded.
 	 * Calls the appropriated local method if needed.
-	 * @param int $user the user ID from where the notifications wil be show
+	 * @param int $user the user ID from where the notifications will be show
 	 * @return
 	 */
 	public function prepare($user, $all = false)
@@ -174,7 +177,7 @@ class BreezeNotifications
 		{
 			// Call the methods
 			foreach ($this->_all['data'] as $single)
-				if (in_array($single['type'], $this->types) && $this->_tools->isJson($single['content']))
+				if (isset($this->types[$single['type']]) && $this->_tools->isJson($single['content']))
 				{
 					// We're pretty sure there is a method for this noti and that content is a json string so...
 					$single['content'] = json_decode($single['content'], true);
