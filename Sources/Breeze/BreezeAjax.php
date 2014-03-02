@@ -366,6 +366,11 @@ class BreezeAjax
 						));
 				}
 
+				else if (($commentOwner != $commentPoster) &&  ($commentOwner != $commentStatusPoster))
+				{
+
+				}
+
 				// Send the data back to the browser
 				return $this->setResponse(array(
 					'type' => 'success',
