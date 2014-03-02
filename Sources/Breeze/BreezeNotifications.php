@@ -177,7 +177,7 @@ class BreezeNotifications
 		{
 			// Call the methods
 			foreach ($this->_all['data'] as $single)
-				if (isset($this->types[$single['type']]) && $this->_tools->isJson($single['content']))
+				if (in_array($single['type'], $this->types) && $this->_tools->isJson($single['content']))
 				{
 					// We're pretty sure there is a method for this noti and that content is a json string so...
 					$single['content'] = json_decode($single['content'], true);
