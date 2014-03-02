@@ -370,7 +370,7 @@ class BreezeAjax
 				{
 					$uOwnerSettings = $this->_query->getUserSettings($commentOwner);
 
-					if (!empty($uStatusSettings['noti_on_comment']))
+					if (!empty($uStatusSettings['noti_on_comment_owner']))
 						$this->_notifications->create(array(
 							'sender' => $commentPoster,
 							'receiver' => $commentStatusPoster,
