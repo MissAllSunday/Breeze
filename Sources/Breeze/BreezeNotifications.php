@@ -352,6 +352,28 @@ class BreezeNotifications
 		);
 	}
 
+	public function doCommentStatusOwner($noti)
+	{
+		global $scripturl;
+
+		// Build the status link.
+		$statusLink = $scripturl . '?action=wall;sa=single;u=' . $noti['content']['profile_id'] .
+			';bid=' . $noti['content']['id'];
+
+		// Sometimes this data hasn't been loaded yet
+		$loadedUsers = $this->_query->loadMinimalData(array($noti['content']['profile_id'], $noti['content']['poster_id'], $noti['content']['status_owner_id']));
+
+		// Create the actual text.
+		$text = sprintf($this->_tools->text('noti_posted_comment_owner'), $loadedUsers[$noti['content']['poster_id']]['link'], $statusLink);
+
+		$this->_messages[$noti['id']] = array(
+			'id' => $noti['id'],
+			'user' => $noti['receiver'],
+			'message' => $text,
+			'viewed' => $noti['viewed']
+		);
+	}
+
 	public function getMessages()
 	{
 		if (!empty($this->_messages))
