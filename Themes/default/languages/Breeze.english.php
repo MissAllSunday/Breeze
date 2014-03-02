@@ -220,6 +220,9 @@ $txt['Breeze_noti_posted_wall'] = '%1$s <a href="%2$s" class="bbc_link" target="
 $txt['Breeze_noti_posted_comment'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">commented on your status</a> on %3$s\'s wall';
 $txt['Breeze_noti_posted_comment_own_wall'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">commented on your status</a> on your own wall';
 
+// Someone left a comment on your wall.
+$txt['Breeze_noti_posted_comment_owner'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">commented on a status</a> on your own wall.';
+
 // Mentions
 $txt['Breeze_mention_message_status'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> You have been mentioned</a> by %1$s on %2$s\'s wall!';
 $txt['Breeze_mention_message_own_wall_status'] = '<a href="%1$s" class="bbc_link" target="_blank">You have been mentioned</a> on your own wall by %2$s!';
