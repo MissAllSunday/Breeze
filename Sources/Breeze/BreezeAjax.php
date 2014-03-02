@@ -349,7 +349,7 @@ class BreezeAjax
 
 				// Does the Status poster wants to be notified? transitive relation anyone?
 				// This only applies if the wall owner, the status poster and the comment poster are different persons!
-				if (($commentOwner != $commentPoster) &&  ($commentPoster != $commentStatusPoster))
+				if (($commentOwner != $commentPoster) && ($commentPoster != $commentStatusPoster))
 				{
 					$uStatusSettings = $this->_query->getUserSettings($commentStatusPoster);
 
@@ -366,14 +366,15 @@ class BreezeAjax
 						));
 				}
 
-				else if (($commentOwner != $commentPoster) &&  ($commentOwner != $commentStatusPoster))
+				// Notify the profile owner someone made a comment on their wall, the poster, the profile owner and the status poster needs to be different.
+				if (($commentOwner != $commentPoster) && ($commentOwner != $commentStatusPoster))
 				{
 					$uOwnerSettings = $this->_query->getUserSettings($commentOwner);
 
 					if (!empty($uStatusSettings['noti_on_comment_owner']))
 						$this->_notifications->create(array(
 							'sender' => $commentPoster,
-							'receiver' => $commentStatusPoster,
+							'receiver' => $commentOwner,
 							'type' => 'commentStatusOwner',
 							'time' => time(),
 							'viewed' => 0,
