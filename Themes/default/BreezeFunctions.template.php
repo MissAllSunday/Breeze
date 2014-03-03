@@ -89,7 +89,7 @@ function breeze_status($data, $returnVar = false)
 										<input type="hidden" value="'. $status['poster_id'] .'" name="commentStatusPoster" id="commentStatusPoster_'. $status['id'] .'" />
 										<input type="hidden" value="'. $user_info['id'] .'" name="commentPoster" id="commentPoster_'. $status['id'] .'" />
 										<input type="hidden" value="'. $status['id'] .'" name="commentStatus" id="commentStatus_'. $status['id'] .'" />
-										<input type="hidden" value="'. $context['member']['id'] .'" name="commentOwner" id="commentOwner_'. $status['id'] .'" /><br />
+										<input type="hidden" value="'. $status['owner_id'] .'" name="commentOwner" id="commentOwner_'. $status['id'] .'" /><br />
 										<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
 										<input type="submit" value="'. $txt['post'] .'" class="comment_submit" name="commentSubmit" id="commentSubmit_'. $status['id'] .'" />
 									</form>';
