@@ -85,7 +85,7 @@ function breezeWall()
 	$context['sub_template'] = 'user_wall';
 	$context += array(
 		'can_send_pm' => allowedTo('pm_send'),
-		'can_have_buddy' => allowedTo('profile_identity_own') && !empty($modSettings['buddylist']),
+		'can_have_buddy' => allowedTo('profile_identity_own') && !empty($modSettings['enable_buddylist']),
 		'can_issue_warning' => in_array('w', $context['admin_features']) && allowedTo('issue_warning') && $modSettings['warning_settings'][0] == 1,
 	);
 	$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];

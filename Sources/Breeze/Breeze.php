@@ -165,7 +165,7 @@ class Breeze
 						'own' => 'profile_view_own',
 						'any' => 'profile_view_any',
 						),
-					);
+				);
 
 				// If the mod is enable, then create another page for the default profile page
 				$profile_areas['info']['areas']['static'] = array(
@@ -185,7 +185,7 @@ class Breeze
 				'areas' => array(),
 			);
 
-			// User individual settings, show the button if the mod is enable and the user is the profile owner or the user has the permissions to edit other walls
+			// User individual settings, show the button if the mod is enable and the user is the profile owner.
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $tools->text('user_settings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
