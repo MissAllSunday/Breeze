@@ -57,12 +57,9 @@ class BreezeLog
 				// No? then pass the content
 				else if (!empty($entry['content']))
 				{
-					// All templates expects an array with at least two keys, message and link, I'm lazy so I don't always provide those... hence this check ;)
-					if (!is_array($entry['content']))
-						$entry['content'] = array('message' => $entry['content']);
-
-					else
-						$this->result[$id]['content'] = $entry['content'];
+					// If there isn't a specific method for this log, Breeze will expect a serialized array with a message and link keys.
+					if ($this->_tools->isJson($entry['content']))
+						$this->result[$id]['content'] = json_decode($entry['content'], true);
 				}
 			}
 
