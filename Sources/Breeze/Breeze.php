@@ -155,7 +155,7 @@ class Breeze
 			// We need your settings...
 			$userSettings = $breezeController->get('query')->getUserSettings($context['member']['id']);
 
-			if (!empty($userSettings['wall']))
+			if ($tools->enable('force_enable') || !empty($userSettings['wall']))
 			{
 				$profile_areas['info']['areas']['summary'] = array(
 					'label' => $tools->text('general_wall'),
