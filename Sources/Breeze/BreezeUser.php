@@ -95,7 +95,7 @@ function breezeWall()
 
 	// Set up some vars for pagination
 	$maxIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;
-	$currentPage = $data->validate('start') == true ? $globals->get('start') : 0;
+	$currentPage = $data->validate('start') == true ? $data->get('start') : 0;
 
 	// Load all the status
 	$data = $query->getStatusByProfile($context['member']['id'], $maxIndex, $currentPage);
