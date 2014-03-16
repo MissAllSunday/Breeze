@@ -464,10 +464,7 @@ class Breeze
 			// Common css and js files.
 			$context['html_headers'] .= '
 	<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
-	<link href="'. $settings['default_theme_url'] .'/css/facebox.css" rel="stylesheet" type="text/css" />
-	<link href="'. $settings['default_theme_url'] .'/css/breeze.css" rel="stylesheet" type="text/css" />
-	<link href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" type="text/css" href="'. $settings['default_theme_url'] .'/css/jquery.atwho.css"/>';
+	<link href="'. $settings['default_theme_url'] .'/css/breeze.min.css" rel="stylesheet" type="text/css" />';
 
 			// Load the notification JS files.
 			if (!$user_info['is_guest'])

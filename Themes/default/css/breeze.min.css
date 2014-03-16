@@ -1,0 +1,95 @@
+.breeze_rss_box{float:left;width:60%}
+.breeze_admin_info{float:right;width:35%;height:13.5em}
+.breeze_ok_message{background-attachment:scroll;background-clip:border-box;background-color:#e6efc2;background-image:none;background-origin:padding-box;background-position:0 0;background-repeat:repeat;background-size:auto;border:2px solid #c6d880;color:#264409;margin:1em;padding:.8em}
+.breeze_error_message{background-attachment:scroll;background-clip:border-box;background-color:#f7bcbf;background-image:none;background-origin:padding-box;background-position:0 0;background-repeat:repeat;background-size:auto;border:2px solid #f7262e;color:#8a1f11;margin:1em;padding:.8em}
+#Breeze_left_block{float:left;width:29%}
+#Breeze_right_block{float:right;width:70%;margin:2px;padding:2px}
+.BreezeBlock{margin-bottom:5px}
+.BreezeInfoBlock{float:auto;margin:auto;text-align:center;padding-bottom:5px}
+.BreezeList{height:auto;overflow:hidden}
+.BreezeList ul li{display:inline;float:left;min-height:105px;margin:1px;overflow:hidden;text-align:center;width:75px}
+.BreezeList ol{list-style-type:none}
+.BreezeList ol li{float:left;padding:2px}
+.breeze_user_left{float:left;width:40%}
+.breeze_user_left_avatar{float:left;margin:2px;padding-left:5px;padding-right:15px;min-height:100px}
+ul.breeze_user_left_info{list-style-type:none;margin-left:0;padding-left:5px}
+ul.breeze_user_left_info ul li{display:inline;list-style-type:none}
+.breeze_user_right{float:left;width:55%;margin:5px;padding:5px}
+.breeze_status{list-style-type:none}
+.breeze_user_status_avatar{float:left;margin:3px;padding:3px}
+.breeze_user_status_comment:before{content:"";height:20px;margin-left:-18px;margin-top:8px;position:absolute;width:9px}
+.breeze_user_status_comment{margin-left:80px;padding:10px;font-size:90%}
+.breeze_user_status_comment img,.breeze_user_comment_comment img{max-width:100%;max-height:100%}
+.breeze_comments_list{list-style-type:none}
+.breeze_user_comment_avatar{float:left;margin:3px;padding:3px}
+.breeze_user_comment_comment:before{content:"";height:20px;margin-left:-13px;margin-top:8px;position:absolute;width:9px}
+.breeze_user_comment_comment{margin:3px 3px 3px 75px;padding:5px;text-align:left}
+.post_comment{padding:5px;display:table-cell;vertical-align:middle}
+.post_comment form{padding-left:5px}
+.post_comment img,.post_comment form{display:inline-block}
+#breeze_load_image{text-align:center;margin:auto;padding-bottom:5px}
+#info_message{display:none;width:100%;height:51px;position:absolute;top:0;position:fixed;z-index:50000;margin:0;padding:0}
+.center_auto{margin:0 auto;width:950px;padding:15px 25px}
+#info_message .message_area{float:left;width:98%}
+#info_message .message_area span.link_ribbon{color:#999;text-decoration:underline;cursor:pointer}
+#info_message .button_area{float:left;width:11px;height:10px;margin-top:3px}
+.error_bg{background:url('../images/breeze/error_bg.png') 0 0 repeat-x}
+.error_bg .message_area{font:bold 14px arial;color:#a20510;text-shadow:0 1px 0 #fff}
+.error_bg .button_area{background:url('../images/breeze/error_close.png') 0 0 no-repeat;cursor:pointer}
+.error_bg .info_more_descrption{box-shadow:0 0 5px #b2495b}
+.succ_bg{background:url('../images/breeze/succ_bg.png') 0 0 repeat-x}
+.succ_bg .message_area{font:bold 14px arial;color:#2f7c00;text-shadow:0 1px 0 #fff}
+.succ_bg .button_area{background:url('../images/breeze/succ_close.png') 0 0 no-repeat;cursor:pointer}
+.info_bg{background:url('../images/breeze/info_bg.png') 0 0 repeat-x}
+.info_bg .message_area{font:bold 14px arial;color:#0d9a95;text-shadow:0 1px 0 #fff}
+.info_bg .button_area{background:url('../images/breeze/info_close.png') 0 0 no-repeat;cursor:pointer}
+.warn_bg{background:url('../images/breeze/warn_bg.png') 0 0 repeat-x}
+.warn_bg .message_area{font:bold 14px arial;color:#a39709;text-shadow:0 1px 0 #fff}
+.warn_bg .button_area{background:url('../images/breeze/warn_close.png') 0 0 no-repeat;cursor:pointer}
+.clearboth{clear:both}
+.info_more_descrption{display:none;width:950px;height:300px;background:#fff;margin:0 auto;padding:10px;background:#fbfbfb;overflow:auto}
+.succ_bg .info_more_descrption{box-shadow:0 0 5px #56a25e}
+.breeze_options{padding:10px 5px 10px 5px;text-align:right}
+#breeze_pagination{margin:auto;text-align:center}
+.breeze_user_comment_avatar{padding:5px}
+#breezelive{width:95%;margin:auto}
+#breezelive ul{list-style-type:none;padding:0;margin:0}
+#breezelive ul li{margin-left:10px}
+ul.breeze_top_profile_views{float:left;margin:5px}
+.breeze_profile_views_name{margin-bottom:5px !important}
+.breeze_profile_views_block{float:left;margin:5px !important;border-radius:5px}
+.breeze_profile_views_inner{position:relative;text-align:center;width:170px;float:left}
+.status_update textarea{margin:5px 0 0 15px;padding:5px;text-align:left;background:#fafafa;border:1px solid #444;height:45px;width:70%}
+.status_update .status_button{margin:20px 20px 0 0}
+.breeze_status_post_avatar{height:50px;width:50px}
+.breeze_avatar{margin:3px;padding-right:15px;padding-left:5px;float:left;min-height:100px}
+.breezeActivity{display:block;width:auto}
+.activityContent{overflow:hidden;position:relative}
+.activityInner{padding:0 0 15px 45px}
+.activityLI{padding:0 0 3px 0 !important}
+.activityIcon{min-width:32px;min-height:31px;display:inline-block;position:absolute;top:10px;left:5px;padding:3px;width:32px;height:32px}
+.logComment{background:url(../images/breeze/comment.png) no-repeat scroll 0 0 transparent}
+.logStatus{background:url(../images/breeze/status.png) no-repeat scroll 0 0 transparent}
+.logTopic{background:url(../images/breeze/topic.png) no-repeat scroll 0 0 transparent}
+#facebox{position:absolute;top:0;left:0;z-index:100;text-align:left}
+#facebox .popup{position:relative;border:3px solid rgba(0,0,0,0);-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-webkit-box-shadow:0 0 18px rgba(0,0,0,0.4);-moz-box-shadow:0 0 18px rgba(0,0,0,0.4);box-shadow:0 0 18px rgba(0,0,0,0.4)}
+#facebox .content{display:table;width:370px;padding:5px;background:transparent;border-radius:4px}
+#facebox .content>p:first-child{margin-top:0}
+#facebox .content>p:last-child{margin-bottom:0}
+#facebox .close{position:absolute;top:5px;right:5px;padding:2px;background:transparent}
+#facebox .close img{opacity:.3}
+#facebox .close:hover img{opacity:1.0}
+#facebox .loading{text-align:center}
+#facebox .image{text-align:center}
+#facebox img{border:0;margin:0}
+#facebox_overlay{position:fixed;top:0;left:0;height:100%;width:100%}
+.facebox_hide{z-index:-100}
+.facebox_overlayBG{background-color:#000;z-index:99}
+.atwho-view{position:absolute;top:0;left:0;display:none;margin-top:18px;background:white;border:1px solid #DDD;border-radius:3px;box-shadow:0 0 5px rgba(0,0,0,0.1);min-width:120px;z-index:10}
+.atwho-view .cur{background:#36f;color:white}
+.atwho-view .cur small{color:white}
+.atwho-view strong{color:#36f}
+.atwho-view .cur strong{color:white;font:bold}
+.atwho-view ul{list-style:none;padding:0;margin:auto}
+.atwho-view ul li{display:block;padding:5px 10px;border-bottom:1px solid #DDD;cursor:pointer}
+.atwho-view small{font-size:smaller;color:#777;font-weight:normal}
