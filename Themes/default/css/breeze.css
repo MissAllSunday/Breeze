@@ -473,3 +473,130 @@ ul.breeze_top_profile_views
 {
 	background: url(../images/breeze/topic.png) no-repeat scroll 0 0 transparent;
 }
+
+/* Facebox */
+#facebox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  text-align: left;
+}
+
+#facebox .popup{
+  position:relative;
+  border:3px solid rgba(0,0,0,0);
+  -webkit-border-radius:5px;
+  -moz-border-radius:5px;
+  border-radius:5px;
+  -webkit-box-shadow:0 0 18px rgba(0,0,0,0.4);
+  -moz-box-shadow:0 0 18px rgba(0,0,0,0.4);
+  box-shadow:0 0 18px rgba(0,0,0,0.4);
+}
+
+#facebox .content {
+  display:table;
+  width: 370px;
+  padding: 5px;
+  background: transparent;
+  border-radius:4px;
+}
+
+#facebox .content > p:first-child{
+  margin-top:0;
+}
+#facebox .content > p:last-child{
+  margin-bottom:0;
+}
+
+#facebox .close{
+  position:absolute;
+  top:5px;
+  right:5px;
+  padding:2px;
+  background: transparent;
+}
+#facebox .close img{
+  opacity:0.3;
+}
+#facebox .close:hover img{
+  opacity:1.0;
+}
+
+#facebox .loading {
+  text-align: center;
+}
+
+#facebox .image {
+  text-align: center;
+}
+
+#facebox img {
+  border: 0;
+  margin: 0;
+}
+
+#facebox_overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height:100%;
+  width:100%;
+}
+
+.facebox_hide {
+  z-index:-100;
+}
+
+.facebox_overlayBG {
+  background-color: #000;
+  z-index: 99;
+}
+
+/* atwho */
+.atwho-view {
+    position:absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    margin-top: 18px;
+    background: white;
+    border: 1px solid #DDD;
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    min-width: 120px;
+    z-index: 10;
+}
+
+.atwho-view .cur {
+    background: #3366FF;
+    color: white;
+}
+.atwho-view .cur small {
+    color: white;
+}
+.atwho-view strong {
+    color: #3366FF;
+}
+.atwho-view .cur strong {
+    color: white;
+    font:bold;
+}
+.atwho-view ul {
+    /* width: 100px; */
+    list-style:none;
+    padding:0;
+    margin:auto;
+}
+.atwho-view ul li {
+    display: block;
+    padding: 5px 10px;
+    border-bottom: 1px solid #DDD;
+    cursor: pointer;
+    /* border-top: 1px solid #C8C8C8; */
+}
+.atwho-view small {
+    font-size: smaller;
+    color: #777;
+    font-weight: normal;
+}
