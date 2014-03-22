@@ -1399,7 +1399,7 @@ class BreezeQuery
 	 */
 	public function loadMinimalData($users)
 	{
-		global $smcFunc, $txt;
+		global $txt;
 
 		if (empty($users))
 			return false;
@@ -1440,7 +1440,7 @@ class BreezeQuery
 		// Well well well...
 		if (!empty($toLoad))
 		{
-			$request = $smcFunc['db_query']('', '
+			$request = $this->_smcFunc['db_query']('', '
 				SELECT id_member, member_name, real_name, gender
 				FROM {db_prefix}members
 				WHERE id_member IN ({array_int:users})',
@@ -1474,7 +1474,29 @@ class BreezeQuery
 
 		return $returnData;
 	}
-}
+
+	public function wannaSeeBoards()
+	{
+		global $user_info, $modSettings;
+
+		if (($boards = cache_get_data(Breeze::$name .'-Boards-' . $user_info['id'], 120)) == null)
+		{
+			$request = $this->_smcFunc['db_query']('', '
+				SELECT id_board
+				FROM {db_prefix}boards as b
+				WHERE {query_wanna_see_board}',
+				array()
+			);
+
+			while ($row = $this->_smcFunc['db_fetch_assoc']($request))
+				$boards[] = $row['id_board'];
+
+			$this->_smcFunc['db_free_result']($request);
+			cache_put_data(Breeze::$name .'-Boards-' . $user_info['id'], $boards, 120);
+		}
+
+		return $boards;
+	}
 
 /*
 * Saturday is almost over
