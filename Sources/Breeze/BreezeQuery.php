@@ -1195,7 +1195,7 @@ class BreezeQuery
 	/**
 	 * BreezeQuery::getActivityLog()
 	 *
-	 * Gets all the notifications stored as logs, this type of logs has 3 on the "read" column, this indicates the row a log entry.
+	 * Gets all the notifications stored as logs, this type of logs has 3 on the "read" column, this indicates the row is a log entry.
 	 * @param integer|array $user either a single ID or an array of IDs to get the logs from
 	 * @return bool|array Either An array with data or a boolean false
 	 */
@@ -1477,7 +1477,7 @@ class BreezeQuery
 
 	public function wannaSeeBoards()
 	{
-		global $user_info, $modSettings;
+		global $user_info;
 
 		if (($boards = cache_get_data(Breeze::$name .'-Boards-' . $user_info['id'], 120)) == null)
 		{

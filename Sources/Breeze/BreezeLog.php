@@ -15,8 +15,9 @@ if (!defined('SMF'))
 
 class BreezeLog
 {
-	protected $result = array();
-	protected $log = array();
+	protected $_result = array();
+	protected $_log = array();
+	protected $_boards = array();
 
 	function __construct($tools, $query)
 	{
@@ -35,23 +36,26 @@ class BreezeLog
 		$user = array_unique($user);
 
 		// Lets make queries!
-		$this->log = $this->_query->getActivityLog($user);
+		$this->_log = $this->_query->getActivityLog($user);
 
 		// Nada? :(
-		if (empty($this->log))
+		if (empty($this->_log))
 			return false;
 
+		// Get the boards YOU can see
+		$this->_boards = $this->_query->wannaSeeBoards();
+
 		// Lets decide what should we do with these... call a method or pass it straight?
-		foreach ($this->log as $id => $entry)
+		foreach ($this->_log as $id => $entry)
 			{
 				// Send all data available!
-				$this->result[$id] = $entry;
+				$this->_result[$id] = $entry;
 
 				// If there is a method, call it
 				if (in_array($entry['type'], get_class_methods(__CLASS__)))
 				{
 					$entry['content'] = json_decode($entry['content'], true);
-					$this->result[$id]['content'] = $this->$entry['type']($entry);
+					$this->_result[$id]['content'] = $this->$entry['type']($entry);
 				}
 
 				// No? then pass the content
@@ -59,12 +63,12 @@ class BreezeLog
 				{
 					// If there isn't a specific method for this log, Breeze will expect a serialized array with a message and link keys.
 					if ($this->_tools->isJson($entry['content']))
-						$this->result[$id]['content'] = json_decode($entry['content'], true);
+						$this->_result[$id]['content'] = json_decode($entry['content'], true);
 				}
 			}
 
 		// If everything went well, return the final result
-		return !empty($this->result) ? $this->result : false;
+		return !empty($this->_result) ? $this->_result : false;
 	}
 
 	protected function logComment($entry)
@@ -124,19 +128,21 @@ class BreezeLog
 	{
 		global $scripturl;
 
-		return array(
-			'message' => $entry['content']['posterName'] .' '. $this->_tools->text('logTopic'),
-			'link' => '<a href="'. $scripturl .'?topic='. $entry['content']['topicId'] .'.0">'. $entry['content']['subject'] .'</a>',
-		);
+		// Lets see if you can see this topic.
+		if (!empty($this->_boards) && !empty($entry['content']['board']) && in_array($entry['content']['board'], $this->_boards))
+			return array(
+				'message' => $entry['content']['posterName'] .' '. $this->_tools->text('logTopic'),
+				'link' => '<a href="'. $scripturl .'?topic='. $entry['content']['topicId'] .'.0">'. $entry['content']['subject'] .'</a>',
+			);
 	}
 
 	public function getLog()
 	{
-		return $this->log;
+		return $this->_log;
 	}
 
 	public function getResult()
 	{
-		return $this->result;
+		return $this->_result;
 	}
 }
