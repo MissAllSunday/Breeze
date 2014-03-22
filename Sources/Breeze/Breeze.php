@@ -354,6 +354,7 @@ class Breeze
 					'posterName' => $posterOptions['name'],
 					'topicId' => $topicOptions['id'],
 					'subject' => $msgOptions['subject'],
+					'board' => $topicOptions['board'],
 				),
 				'type_id' => $topicOptions['id'],
 				'second_type' => 'topics',
