@@ -1449,10 +1449,10 @@ class BreezeQuery
 				)
 			);
 
-			while ($row = $smcFunc['db_fetch_assoc']($request))
+			while ($row = $this->_smcFunc['db_fetch_assoc']($request))
 				$toCache[$row['id_member']] = $row;
 
-			$smcFunc['db_free_result']($request);
+			$this->_smcFunc['db_free_result']($request);
 
 			// Yep, another foreach...
 			foreach ($toCache as $k => $v)
@@ -1497,6 +1497,7 @@ class BreezeQuery
 
 		return $boards;
 	}
+}
 
 /*
 * Saturday is almost over
