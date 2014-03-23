@@ -110,7 +110,7 @@ class BreezeLog
 		$loadedUsers = $this->_query->loadMinimalData(array_unique(array($entry['content']['owner_id'], $entry['content']['poster_id'],)));
 
 		//Posting on your own wall?
-		$own = $entry['content']['owner_id'] == $entry['content']['poster_id'];
+		$own = ($entry['content']['owner_id'] == $entry['content']['poster_id']);
 
 		// Get the right text string
 		$gender = !empty($loadedUsers[$entry['content']['poster_id']]['gender']) ? $loadedUsers[$entry['content']['poster_id']]['gender'] : '0';

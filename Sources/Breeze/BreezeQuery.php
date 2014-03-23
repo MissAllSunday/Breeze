@@ -1472,6 +1472,19 @@ class BreezeQuery
 			}
 		}
 
+		// Any guest accounts?
+		foreach ($users as $u)
+			if (!isset($returnData[$u]))
+				$returnData[$u] = array(
+					'username' => $txt['guest_title'],
+					'name' => $txt['guest_title'],
+					'id' => 0,
+					'href' => '',
+					'link' => $txt['guest_title'],
+					'gender' => 0,
+					'guest' => true,
+				);
+
 		return $returnData;
 	}
 
