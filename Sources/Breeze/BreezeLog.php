@@ -56,6 +56,10 @@ class BreezeLog
 				{
 					$entry['content'] = json_decode($entry['content'], true);
 					$this->_result[$id]['content'] = $this->$entry['type']($entry);
+
+					// Got something?
+					if (empty($this->_result[$id]['content']))
+						unset($this->_result[$id]);
 				}
 
 				// No? then pass the content
@@ -134,6 +138,9 @@ class BreezeLog
 				'message' => $entry['content']['posterName'] .' '. $this->_tools->text('logTopic'),
 				'link' => '<a href="'. $scripturl .'?topic='. $entry['content']['topicId'] .'.0">'. $entry['content']['subject'] .'</a>',
 			);
+
+		else
+			return array();
 	}
 
 	public function getLog()
