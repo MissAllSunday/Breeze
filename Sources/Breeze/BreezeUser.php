@@ -154,18 +154,7 @@ function breezeWall()
 	// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
 	$context['insert_after_template'] .= '
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
-
-	// Are mentions enabled?
-	if ($tools->enable('mention'))
-		$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeMention.js"></script>';
-
-	// Does the user wants to use the load more button?
-	if (!empty($context['Breeze']['settings']['visitor']['load_more']))
-		$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeLoadMore.js"></script>';
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>';
 
 	// Need to pass some vars to the browser :(
 	$context['insert_after_template'] .= '

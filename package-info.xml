@@ -23,15 +23,11 @@
 		<remove-file name="$themedir/BreezeAdmin.template.php" />
 		<remove-file name="$themedir/BreezeFunctions.template.template.php" />
 		<remove-file name="$themedir/css/breeze.css" />
-		<remove-file name="$themedir/css/facebox.css" />
-		<remove-file name="$themedir/css/jquery.atwho.css" />
+		<remove-file name="$themedir/css/breeze.min.css" />
 		<remove-dir name="$imagesdir/breeze" />
 		<remove-dir name="$themedir/js/noty" />
 		<remove-file name="$themedir/js/breeze.js" />
-		<remove-file name="$themedir/js/breezeLoadMore.js" />
-		<remove-file name="$themedir/js/breezeMention.js" />
-		<remove-file name="$themedir/js/breezeNoti.js" />
-		<remove-file name="$themedir/js/breezeTabs.js" />
+		<remove-file name="$themedir/js/breeze.min.js" />
 		<remove-file name="$themedir/js/facebox.js" />
 		<remove-file name="$themedir/js/jquery.atwho.js" />
 		<remove-file name="$themedir/js/jquery.atwho.js" />

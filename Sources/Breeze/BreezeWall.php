@@ -89,13 +89,7 @@ class BreezeWall
 		// These file are only used here and on the profile wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
 		$context['insert_after_template'] .= '
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
-
-		// Are mentions enabled?
-		if ($this->_tools->enable('mention'))
-			$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeMention.js"></script>';
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>';
 
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
@@ -193,11 +187,6 @@ class BreezeWall
 			buddies : '. json_encode($this->userSettings['buddiesList']) .',
 		};
 	// ]]></script>';
-
-		// Does the user wants to use the load more button?
-		if (!empty($this->userSettings['load_more']))
-			$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeLoadMore.js"></script>';
 	}
 
 	/**
