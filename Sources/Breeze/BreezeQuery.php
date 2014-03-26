@@ -270,6 +270,108 @@ class BreezeQuery
 	}
 
 	/**
+	 * BreezeQuery::getStatus()
+	 *
+	 * Get all status made by X users. no pagination, no other special code.
+	 * @param int|array $id the ID(s) of the user(s) to get the status from. If left empty the functon will load all available status.
+	 * @param boolean $getComments Whether or not to include comments made on each status.
+	 * @param int $limit How many status do you want to retrieve.
+	 * @param string $sort Sorting for retrieving the data, by default is set to DESC (most recent)
+	 * @return array An array containing all the status made by those users, two keys, data and users
+	 */
+	public function getStatus($id = false, $getComments = false, $limit = 5, $sort = 'status_id DESC')
+	{
+		// Declare some generic vars, mainly to avoid errors
+		$return = array(
+			'data' => array(),
+			'users' => array(),
+		);
+
+		$statusIDs = array();
+
+		$id = !empty($id) ? (array) $id : false;
+
+		// Fetch the status.
+		$result = $this->_smcFunc['db_query']('', '
+			SELECT '. implode(', ', $this->_tables['status']['columns']) .'
+			FROM {db_prefix}'. ($this->_tables['status']['table']) .'
+			'. (!empty($id) ? 'WHERE status_owner_id IN({array_int:owner})' : '') .'
+			ORDER BY {raw:sort}
+			LIMIT {int:limit}',
+			array(
+				'owner' => $id,
+				'sort' => $sort,
+				'limit' => $limit,
+			)
+		);
+
+		// Populate the array like a big heavy boss!
+		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+		{
+			// Are we also fetching comments?
+			if ($getComments)
+				$statusIDs[] = $row['status_id'];
+
+			$return['data'][$row['status_id']] = array(
+				'id' => $row['status_id'],
+				'owner_id' => $row['status_owner_id'],
+				'poster_id' => $row['status_poster_id'],
+				'time' => $this->tools->timeElapsed($row['status_time']),
+				'time_raw' => $row['status_time'],
+				'body' => $this->parser->display($row['status_body']),
+				'comments' => array(),
+			);
+
+			// Get the users IDs
+			$return['users'][] = $row['status_owner_id'];
+			$return['users'][] = $row['status_poster_id'];
+		}
+
+		$this->_smcFunc['db_free_result']($result);
+
+		// Now get the comments for each status.
+		if ($getComments && !empty($statusIDs))
+		{
+			$result = $this->_smcFunc['db_query']('', '
+				SELECT '. implode(', ', $this->_tables['comments']['columns']) .'
+				FROM {db_prefix}'. ($this->_tables['comments']['table']) .'
+				WHERE comments_status_id IN({array_int:status})
+				ORDER BY comments_id ASC
+				',
+				array(
+					'status' => $statusIDs,
+				)
+			);
+
+			// Append the data to our main return array
+			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
+			{
+				$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']] = array(
+					'id' => $row['comments_id'],
+					'status_id' => $row['comments_status_id'],
+					'status_owner_id' => $row['comments_status_owner_id'],
+					'poster_id' => $row['comments_poster_id'],
+					'profile_id' => $row['comments_profile_id'],
+					'time' => $this->tools->timeElapsed($row['comments_time']),
+					'time_raw' => $row['comments_time'],
+					'body' => $this->parser->display($row['comments_body']),
+				);
+
+				// Append the users IDs.
+				$return['users'][] = $row['comments_poster_id'];
+			}
+
+			$this->_smcFunc['db_free_result']($result);
+		}
+
+		// Clean it a bit
+		if (!empty($return['users']))
+			$return['users'] = array_values(array_filter(array_unique($return['users'])));
+
+		return $return;
+	}
+
+	/**
 	 * BreezeQuery::getStatusByProfile()
 	 *
 	 * Get all status made in X profile page. Uses a custom query and store the results on separate cache entries per profile.
@@ -477,7 +579,7 @@ class BreezeQuery
 	 * BreezeQuery::getStatusByUser()
 	 *
 	 * Get all status made by X user, it does not matter on what profile page they were made.
-	 * @param int $id the ID of the user that you want to fetch the status from.
+	 * @param int|array $id the ID of the user(s) that you want to fetch the status from.
 	 * @param int $maxIndex The maximum amount of status to fetch.
 	 * @param int $currentPage For working alongside pagination.
 	 * @return array An array containing all the status made in X profile page
