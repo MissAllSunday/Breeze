@@ -478,8 +478,7 @@ class Breeze
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeNoti.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
+	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.min.js"></script>';
 
 				// Does the admin wants to add more actions?
 				if ($tools->enable('allowed_actions'))
