@@ -16,7 +16,7 @@ if (!defined('SMF'))
 class BreezeController extends Pimple
 {
 	public $app;
-	protected $_services = array('admin', 'ajax', 'data', 'display', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall',);
+	protected $_services = array('admin', 'ajax', 'display', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall',);
 
 	public function __construct()
 	{

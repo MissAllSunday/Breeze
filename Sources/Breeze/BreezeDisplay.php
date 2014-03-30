@@ -15,9 +15,11 @@ if (!defined('SMF'))
 
 class BreezeDisplay
 {
-	function __construct($tools)
+	protected $_app;
+
+	function __construct($app)
 	{
-		$this->tools = $tools;
+		$this->_app = $app;
 	}
 
 	public function HTML($params, $type, $single = false, $usersToLoad = false)
@@ -35,14 +37,14 @@ class BreezeDisplay
 		loadtemplate(Breeze::$name .'Functions');
 
 		if ($single)
-			$params['time'] = $this->tools->timeElapsed($params['time']);
+			$params['time'] = $this->_app['tools']->timeElapsed($params['time']);
 
 		// Let us work with an array
 		$params = $single ? array($params) : $params;
 
 		// If there is something to load, load it then!
 		if ($usersToLoad)
-			$this->tools->loadUserInfo($usersToLoad);
+			$this->_app['tools']->loadUserInfo($usersToLoad);
 
 		// Call the template with return param as true
 		$return = $call($params, true);

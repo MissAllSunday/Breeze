@@ -26,10 +26,11 @@ class BreezeForm
 	public $onsubmit;
 	protected $_tools;
 	protected $formName;
+	protected $_app;
 
-	function __construct($tools)
+	function __construct($app)
 	{
-		$this->_tools = $tools;
+		$this->_app = $app;
 	}
 
 	public function setFormName($string)
@@ -88,7 +89,7 @@ class BreezeForm
 		$element['html_end'] = '</'. $element['type'] .'>';
 
 		foreach($values as $k => $v)
-			$element['values'][$k] = '<option value="' .$k. '" '. (isset($v[1]) && $v[1] == 'selected' ? 'selected="selected"' : '') .'>'. $this->_tools->text($v[0]) .'</option>';
+			$element['values'][$k] = '<option value="' .$k. '" '. (isset($v[1]) && $v[1] == 'selected' ? 'selected="selected"' : '') .'>'. $this->_app['tools']->text($v[0]) .'</option>';
 
 		return $this->addElement($element);
 	}
@@ -183,8 +184,8 @@ class BreezeForm
 				case 'checkbox':
 				case 'text':
 					$this->buffer .= '<dt>
-						<span style="font-weight:bold;">'. $this->_tools->text('user_settings_'. $el['text']) .'</span>
-						<br /><span class="smalltext">'. $this->_tools->text('user_settings_'. $el['text'] .'_sub') .'</span>
+						<span style="font-weight:bold;">'. $this->_app['tools']->text('user_settings_'. $el['text']) .'</span>
+						<br /><span class="smalltext">'. $this->_app['tools']->text('user_settings_'. $el['text'] .'_sub') .'</span>
 					</dt>
 					<dd>
 						<input type="hidden" name="'. (!empty($this->formName) ? $this->formName .'['. $el['name'] .']' : $el['name']) .'" value="0" />'. $el['html'] .'
@@ -192,8 +193,8 @@ class BreezeForm
 					break;
 				case 'select':
 					$this->buffer .= '<dt>
-						<span style="font-weight:bold;">'. $this->_tools->text('user_settings_'. $el['text']) .'</span>
-						<br /><span class="smalltext">'. $this->_tools->text('user_settings_'.$el['text'] .'_sub') .'</span>
+						<span style="font-weight:bold;">'. $this->_app['tools']->text('user_settings_'. $el['text']) .'</span>
+						<br /><span class="smalltext">'. $this->_app['tools']->text('user_settings_'.$el['text'] .'_sub') .'</span>
 					</dt>
 					<dd>
 						<input type="hidden" name="'. (!empty($this->formName) ? $this->formName .'['. $el['name'] .']' : $el['name']) .'" value="0" />'. $el['html_start'] .'';
@@ -218,18 +219,18 @@ class BreezeForm
 					break;
 				case 'html':
 					$this->buffer .= '<dt>
-						<span style="font-weight:bold;">'. $this->_tools->text('user_settings_'. $el['text']) .'</span>
-						<br /><span class="smalltext">'. $this->_tools->text('user_settings_'.$el['text'] .'_sub') .'</span>
+						<span style="font-weight:bold;">'. $this->_app['tools']->text('user_settings_'. $el['text']) .'</span>
+						<br /><span class="smalltext">'. $this->_app['tools']->text('user_settings_'.$el['text'] .'_sub') .'</span>
 					</dt>
 					<dd>
-						'. sprintf($el['html'], $this->_tools->text('user_settings_'. $el['text'])) .'
+						'. sprintf($el['html'], $this->_app['tools']->text('user_settings_'. $el['text'])) .'
 					</dd>';
 					break;
 				case 'section':
 				$this->buffer .= '
 				</dl>
 				<div class="cat_bar">
-					<h3 class="catbg">'. $this->_tools->text('user_settings_'. $el['text']) .'</h3>
+					<h3 class="catbg">'. $this->_app['tools']->text('user_settings_'. $el['text']) .'</h3>
 				</div>
 				<br />
 				<dl class="settings">';
