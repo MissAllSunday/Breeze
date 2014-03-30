@@ -16,10 +16,8 @@ if (!defined('SMF'))
 
 class BreezeNotifications
 {
-	protected $_tools;
 	protected $_params = array();
 	protected $_user = 0;
-	protected $_query;
 	protected $_returnArray = array();
 	protected $_usersData = array();
 	public $types = array();
@@ -27,17 +25,18 @@ class BreezeNotifications
 	protected $_currentUserSettings = array();
 	protected $_messages = array();
 	protected $loadedUsers = array();
+	protected $_app;
 
 	/**
 	 * BreezeNotifications::__construct()
 	 *
 	 * @return
 	 */
-	function __construct($tools, $query)
+	function __construct($app)
 	{
 		global $user_info;
 
-		// Current user
+		// Current user.
 		$this->_currentUser = $user_info['id'];
 
 		// Don't include the log type here since its, well, a log, and we'll retrieve it somewhere else...
@@ -45,7 +44,7 @@ class BreezeNotifications
 			'comments',
 			'status',
 			'like',
-			// 'buddy', @todo refactor the buddy system
+			// 'buddy', @todo refactor the buddy system.
 			'mention',
 			'messages',
 			'topics',
@@ -54,25 +53,24 @@ class BreezeNotifications
 			'commentStatusOwner',
 		);
 
-		// Say what again, I double dare you!
+		// Say what again, I dare you, I double dare you!
 		call_integration_hook('integrate_breeze_notifications_types', array(&$this->types));
 
 		// We kinda need all this stuff, don't' ask why, just nod your head...
-		$this->_query = $query;
-		$this->_tools = $tools;
+		$this->_app = $app;
 
 		// Get the current user preferences.
-		$this->_currentUserSettings = $this->_query->getUserSettings($this->_currentUser);
+		$this->_currentUserSettings = $this->_app['query']->getUserSettings($this->_currentUser);
 	}
 
 	public function getByReceiver($user)
 	{
-		return $this->_query->getNotificationByReceiver($user);
+		return $this->_app['query']->getNotificationByReceiver($user);
 	}
 
 	public function getBySender($user)
 	{
-		return $this->_query->getNotificationBySender($user);
+		return $this->_app['query']->getNotificationBySender($user);
 	}
 
 	/**
@@ -86,7 +84,7 @@ class BreezeNotifications
 	public function create($params)
 	{
 		// Don't do anything if the feature is disable
-		if (!$this->_tools->enable('notifications'))
+		if (!$this->_app['tools']->enable('notifications'))
 			return false;
 
 		// Before inserting...
@@ -103,7 +101,7 @@ class BreezeNotifications
 		$params['type_id'] = !empty($params['type_id']) ? $params['type_id'] : '';
 		$params['second_type'] = !empty($params['second_type']) ? $params['second_type'] : '';
 
-		$this->_query->insertNotification($params);
+		$this->_app['query']->insertNotification($params);
 	}
 
 	/**
@@ -120,7 +118,7 @@ class BreezeNotifications
 		if (!empty($params) && in_array($params['type'], $this->types))
 		{
 			// Doing a quick query will be better than loading the entire notifications array
-			$tempQuery = $this->_query->quickQuery(
+			$tempQuery = $this->_app['query']->quickQuery(
 				array(
 					'table' => 'breeze_notifications',
 					'rows' => 'id',
@@ -167,17 +165,17 @@ class BreezeNotifications
 		$call = 'getNotificationByReceiver'. (!empty($all) ? 'All' : '');
 
 		// Get all the notification for this user
-		$this->_all = $this->_query->$call($user);
+		$this->_all = $this->_app['query']->$call($user);
 
 		// Load the users data.
-		$this->loadedUsers = $this->_query->loadMinimalData($this->_all['users']);
+		$this->loadedUsers = $this->_app['query']->loadMinimalData($this->_all['users']);
 
 		// Do this if there is actually something to show
 		if (!empty($this->_all['data']))
 		{
 			// Call the methods
 			foreach ($this->_all['data'] as $single)
-				if (in_array($single['type'], $this->types) && $this->_tools->isJson($single['content']))
+				if (in_array($single['type'], $this->types) && $this->_app['tools']->isJson($single['content']))
 				{
 					// We're pretty sure there is a method for this noti and that content is a json string so...
 					$single['content'] = json_decode($single['content'], true);
@@ -235,7 +233,7 @@ class BreezeNotifications
 		$this->_messages[$noti['id']]['viewed'] = $noti['viewed'];
 
 		// Fill out the messages property
-		$this->_messages[$noti['id']]['message'] = sprintf($this->_tools->text('buddy_messagerequest_message'),
+		$this->_messages[$noti['id']]['message'] = sprintf($this->_app['tools']->text('buddy_messagerequest_message'),
 			$this->loadedUsers[$noti['user']]['link'], $noti['id']);
 	}
 
@@ -262,19 +260,19 @@ class BreezeNotifications
 
 		// Sometimes this data hasn't been loaded yet
 		if (!isset($this->loadedUsers[$noti['content']['wall_poster']]) || !isset($this->loadedUsers[$noti['content']['wall_owner']]) || !isset($this->loadedUsers[$noti['content']['wall_mentioned']]))
-			$this->loadedUsers = $this->loadedUsers + $this->_query->loadMinimalData(array($noti['content']['wall_poster'], $noti['content']['wall_owner'], $noti['content']['wall_mentioned']));
+			$this->loadedUsers = $this->loadedUsers + $this->_app['query']->loadMinimalData(array($noti['content']['wall_poster'], $noti['content']['wall_owner'], $noti['content']['wall_mentioned']));
 
 		// Is this a mention on a comment?
 		if (isset($noti['comment_id']) && !empty($noti['comment_id']))
 		{
 			// Is this the same user's wall?
 			if ($noti['content']['wall_owner'] == $noti['receiver'])
-				$text = sprintf($this->_tools->text('mention_message_own_wall_comment'), $statusLink,
+				$text = sprintf($this->_app['tools']->text('mention_message_own_wall_comment'), $statusLink,
 					$this->loadedUsers[$noti['content']['wall_poster']]['link'], $noti['id']);
 
 			// This is someone else's wall, go figure...
 			else
-				$text = sprintf($this->_tools->text('mention_message_comment'), $this->loadedUsers[$noti['content']['wall_poster']]['link'],
+				$text = sprintf($this->_app['tools']->text('mention_message_comment'), $this->loadedUsers[$noti['content']['wall_poster']]['link'],
 					$this->loadedUsers[$noti['content']['wall_owner']]['link'], $statusLink,
 					$noti['id']);
 		}
@@ -284,12 +282,12 @@ class BreezeNotifications
 		{
 			// Is this your own wall?
 			if ($noti['content']['wall_owner'] == $noti['receiver'])
-				$text = sprintf($this->_tools->text('mention_message_own_wall_status'), $statusLink,
+				$text = sprintf($this->_app['tools']->text('mention_message_own_wall_status'), $statusLink,
 					$this->loadedUsers[$noti['content']['wall_poster']]['link'], $noti['id']);
 
 			// No? don't worry, you will get your precious notification anyway
 			elseif ($noti['content']['wall_owner'] != $noti['receiver'])
-				$text = sprintf($this->_tools->text('mention_message_comment'), $this->loadedUsers[$noti['content']['wall_poster']]['link'], $this->loadedUsers[$noti['content']['wall_owner']]['link'], $statusLink, $noti['id']);
+				$text = sprintf($this->_app['tools']->text('mention_message_comment'), $this->loadedUsers[$noti['content']['wall_poster']]['link'], $this->loadedUsers[$noti['content']['wall_owner']]['link'], $statusLink, $noti['id']);
 		}
 
 		// Create the message already
@@ -314,10 +312,10 @@ class BreezeNotifications
 			';bid=' . $noti['content']['id'];
 
 		// Sometimes this data hasn't been loaded yet
-		$loadedUsers = $this->_query->loadMinimalData(array($noti['content']['owner_id'], $noti['content']['poster_id'],));
+		$loadedUsers = $this->_app['query']->loadMinimalData(array($noti['content']['owner_id'], $noti['content']['poster_id'],));
 
 		// Create the actual text.
-		$text = sprintf($this->_tools->text('noti_posted_wall'), $loadedUsers[$noti['content']['poster_id']]['link'], $statusLink);
+		$text = sprintf($this->_app['tools']->text('noti_posted_wall'), $loadedUsers[$noti['content']['poster_id']]['link'], $statusLink);
 
 		$this->_messages[$noti['id']] = array(
 			'id' => $noti['id'],
@@ -335,13 +333,13 @@ class BreezeNotifications
 		$statusLink = $scripturl . '?action=wall;sa=single;u=' . $noti['content']['profile_id'] .';bid='. $noti['content']['status_id'] .';cid=' . $noti['content']['id'];
 
 		// Sometimes this data hasn't been loaded yet
-		$loadedUsers = $this->_query->loadMinimalData(array($noti['content']['profile_id'], $noti['content']['poster_id'], $noti['content']['status_owner_id']));
+		$loadedUsers = $this->_app['query']->loadMinimalData(array($noti['content']['profile_id'], $noti['content']['poster_id'], $noti['content']['status_owner_id']));
 
 		// Is this your own wall?
 		$preText = $noti['receiver'] == $noti['content']['profile_id'] ? 'noti_posted_comment_own_wall' : 'noti_posted_comment';
 
 		// Create the actual text.
-		$text = sprintf($this->_tools->text($preText), $loadedUsers[$noti['content']['poster_id']]['link'], $statusLink, $loadedUsers[$noti['content']['profile_id']]['link']);
+		$text = sprintf($this->_app['tools']->text($preText), $loadedUsers[$noti['content']['poster_id']]['link'], $statusLink, $loadedUsers[$noti['content']['profile_id']]['link']);
 
 		$this->_messages[$noti['id']] = array(
 			'id' => $noti['id'],
@@ -360,10 +358,10 @@ class BreezeNotifications
 
 
 		// Sometimes this data hasn't been loaded yet
-		$loadedUsers = $this->_query->loadMinimalData(array($noti['content']['profile_id'], $noti['content']['poster_id'], $noti['content']['status_owner_id']));
+		$loadedUsers = $this->_app['query']->loadMinimalData(array($noti['content']['profile_id'], $noti['content']['poster_id'], $noti['content']['status_owner_id']));
 
 		// Create the actual text.
-		$text = sprintf($this->_tools->text('noti_posted_comment_owner'), $loadedUsers[$noti['content']['poster_id']]['link'], $statusLink);
+		$text = sprintf($this->_app['tools']->text('noti_posted_comment_owner'), $loadedUsers[$noti['content']['poster_id']]['link'], $statusLink);
 
 		$this->_messages[$noti['id']] = array(
 			'id' => $noti['id'],
