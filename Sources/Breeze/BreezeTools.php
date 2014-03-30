@@ -16,10 +16,12 @@ if (!defined('SMF'))
 class BreezeTools
 {
 	protected $_pattern;
+	protected $_app;
 
-	function __construct()
+	function __construct($app)
 	{
 		$this->_pattern = Breeze::$name .'_';
+		$this->_app = $app;
 	}
 
 	/**
