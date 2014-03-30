@@ -249,8 +249,8 @@ class Breeze
 		if (empty($breezeController))
 			$breezeController = new BreezeController();
 
-		$tools = $breezeController->get('tools');
-		$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
+		$tools = $breezeController['tools'];
+		$userSettings = $breezeController['query']->getUserSettings($user_info['id']);
 
 		// Display common css and js files.
 		Breeze::notiHeaders();

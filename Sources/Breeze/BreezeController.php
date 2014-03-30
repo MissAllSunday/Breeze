@@ -13,15 +13,14 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-class BreezeController
+class BreezeController extends Pimple
 {
-	public $app = array();
-	protected $_services = array('admin' 'ajax', 'data', 'display', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall',);
-	protected $_call = 'Breeze';
+	public $app;
+	protected $_services = array('admin', 'ajax', 'data', 'display', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall',);
 
 	public function __construct()
 	{
-		$this->app = new Pimple;
+		parent::__construct();
 		$this->set();
 	}
 
@@ -29,17 +28,11 @@ class BreezeController
 	{
 		foreach($this->_services as $s)
 		{
-			$call = 'Breeze'. ucfirst($s);
-			$this->app[$s] =  function ($c)
+			$this[$s] = function ($c) use ($s)
 			{
-				$call = $this->_call . ucfirst($s);
+				$call = 'Breeze'. ucfirst($s);
 				return new $call($c);
 			};
 		}
-	}
-
-	public function get($var)
-	{
-		return $this->app[$var];
 	}
 }
