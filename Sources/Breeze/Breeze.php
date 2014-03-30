@@ -34,8 +34,9 @@ function breeze_autoloader($class_name)
 
 spl_autoload_register('breeze_autoloader');
 
-class Breeze
+class Breeze extends Pimple
 {
+	protected $_services = array('admin', 'ajax', 'display', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall',);
 	public static $name = 'Breeze';
 	public static $version = '1.0';
 	public static $folder = '/Breeze/';
@@ -54,7 +55,23 @@ class Breeze
 	 *
 	 * @return
 	 */
-	public function __construct(){}
+	public function __construct()
+	{
+		parent::__construct();
+		$this->set();
+	}
+
+	protected function set()
+	{
+		foreach($this->_services as $s)
+		{
+			$this[$s] = function ($c) use ($s)
+			{
+				$call = 'Breeze'. ucfirst($s);
+				return new $call($c);
+			};
+		}
+	}
 
 	/**
 	 * Breeze::load()
