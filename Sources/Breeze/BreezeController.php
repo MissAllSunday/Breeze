@@ -15,74 +15,31 @@ if (!defined('SMF'))
 
 class BreezeController
 {
-	protected $dependencies = array();
+	public $app = array();
+	protected $_services = array('admin' 'ajax', 'data', 'display', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall',);
+	protected $_call = 'Breeze';
 
 	public function __construct()
 	{
-		$this->container = new BreezeContainer();
-
+		$this->app = new Pimple;
 		$this->set();
 	}
 
 	protected function set()
 	{
-		// Globals
-		$this->container->globals = $this->container->asShared(function ($c)
+		foreach($this->_services as $s)
 		{
-			return new BreezeGlobals();
-		});
-
-		// Form
-		$this->container->form = $this->container->asShared(function ($c)
-		{
-			return new BreezeForm($c->tools);
-		});
-
-		// Tools
-		$this->container->tools = $this->container->asShared(function ($c)
-		{
-			return new BreezeTools();
-		});
-
-		// Display
-		$this->container->display = $this->container->asShared(function ($c)
-		{
-			return new BreezeDisplay($c->tools);
-		});
-
-		// Parser
-		$this->container->parser = $this->container->asShared(function ($c)
-		{
-			return new BreezeParser($c->tools);
-		});
-
-		// Query
-		$this->container->query = $this->container->asShared(function ($c)
-		{
-			return new BreezeQuery($c->tools, $c->parser);
-		});
-
-		// Notifications
-		$this->container->notifications = $this->container->asShared(function ($c)
-		{
-			return new BreezeNotifications($c->tools, $c->query);
-		});
-
-		// Mention
-		$this->container->mention = $this->container->asShared(function ($c)
-		{
-			return new BreezeMention($c->tools, $c->query, $c->notifications);
-		});
-
-		// Log
-		$this->container->log = $this->container->asShared(function ($c)
-		{
-			return new BreezeLog($c->tools, $c->query);
-		});
+			$call = 'Breeze'. ucfirst($s);
+			$this->app[$s] =  function ($c)
+			{
+				$call = $this->_call . ucfirst($s);
+				return new $call($c);
+			};
+		}
 	}
 
 	public function get($var)
 	{
-		return $this->container->$var;
+		return $this->app[$var];
 	}
 }
