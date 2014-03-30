@@ -58,7 +58,7 @@ class BreezeQuery
 				'name' => 'members',
 				'table' => 'members',
 				'property' => '_members',
-				'columns' => array('breeze_profile_views', 'pm_ignore_list', 'buddy_list', 'gender'),
+				'columns' => array('breeze_profile_views', 'pm_ignore_list', 'buddy_list',),
 				),
 			'noti' => array(
 				'name' => 'noti',
