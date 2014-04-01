@@ -174,14 +174,15 @@ class Breeze extends Pimple
 		if ($tools->enable('master'))
 		{
 			// We need your settings...
-			$userSettings = $breezeController->get('query')->getUserSettings($context['member']['id']);
+			$userSettings = $this['query']->getUserSettings($context['member']['id']);
 
 			if ($tools->enable('force_enable') || !empty($userSettings['wall']))
 			{
 				$profile_areas['info']['areas']['summary'] = array(
 					'label' => $tools->text('general_wall'),
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'breezeWall',
+					'function' => 'wall',
+					'class' => 'BreezeUser',
 					'permission' => array(
 						'own' => 'profile_view_own',
 						'any' => 'profile_view_any',
@@ -210,7 +211,8 @@ class Breeze extends Pimple
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $tools->text('user_settings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'breezeSettings',
+				'function' => 'settings',
+				'class' => 'BreezeUser',
 				'permission' => array(
 					'own' => array(
 						'profile_view_own',
@@ -224,7 +226,8 @@ class Breeze extends Pimple
 				$profile_areas['breeze_profile']['areas']['breezenotisettings'] = array(
 					'label' => $tools->text('user_settings_name_settings'),
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'breezenotisettings',
+					'function' => 'notiSettings',
+					'class' => 'BreezeUser',
 					'permission' => array(
 						'own' => array(
 							'profile_view_own',
@@ -236,7 +239,8 @@ class Breeze extends Pimple
 				$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
 					'label' => $tools->text('user_notisettings_name'),
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'breezeNotifications',
+					'function' => 'notifications',
+					'class' => 'BreezeUser',
 					'subsections' => array(),
 					'permission' => array('own' => 'profile_view_own', ),
 					);
@@ -247,7 +251,8 @@ class Breeze extends Pimple
 				$profile_areas['breeze_profile']['areas']['breezelogs'] = array(
 					'label' => $tools->text('user_notilogs_name'),
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'breezeNotiLogs',
+					'function' => 'notiLogs',
+					'class' => 'BreezeUser',
 					'subsections' => array(),
 					'permission' => array('own' => 'profile_view_own', ),
 					);
@@ -569,7 +574,7 @@ class Breeze extends Pimple
 			'file' => 'Breeze/BreezeAdmin.php',
 			'function' => 'call',
 			'class' => 'BreezeAdmin',
-			'icon' => 'administration.gif',
+			'icon' => 'packages.png',
 			'subsections' => array(
 				'general' => array($tools->adminText('page_main')),
 				'settings' => array($tools->adminText('page_settings')),
