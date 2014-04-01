@@ -70,7 +70,7 @@ class BreezeUser extends Breeze
 		$context['Breeze']['settings']['owner'] = $query->getUserSettings($context['member']['id']);
 
 		// Check if this user allowed to be here
-		breezeCheckPermissions();
+		$this->checkPermissions();
 
 		// We need to make sure we have all your info...
 		if (empty($context['Breeze']['user_info'][$user_info['id']]))
@@ -121,7 +121,7 @@ class BreezeUser extends Breeze
 		// Get the profile views
 		if (!$user_info['is_guest'] && !empty($context['Breeze']['settings']['owner']['visitors']))
 		{
-			$context['Breeze']['views'] = breezeTrackViews();
+			$context['Breeze']['views'] = $this->trackViews();
 
 			// If there is a limit then lets count the total so we can know if we are gonna use the compact style.
 			if (!empty($context['Breeze']['max_users']) && count($context['Breeze']['views']) >= $context['Breeze']['max_users'])
