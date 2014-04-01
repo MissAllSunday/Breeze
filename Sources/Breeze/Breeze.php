@@ -554,7 +554,7 @@ class Breeze extends Pimple
 	/**
 	 * Breeze::admin()
 	 *
-	 * Creates a new notification everytime an user creates a new topic
+	 * Creates a new section in the admin panel.
 	 * @param array $admin_menu An array with all the admin settings buttons
 	 * @return
 	 */
@@ -568,7 +568,7 @@ class Breeze extends Pimple
 			'label' => $tools->adminText('page_main'),
 			'file' => 'Breeze/BreezeAdmin.php',
 			'function' => 'call',
-			'class' => 'Breeze',
+			'class' => 'BreezeAdmin',
 			'icon' => 'administration.gif',
 			'subsections' => array(
 				'general' => array($tools->adminText('page_main')),
@@ -581,7 +581,7 @@ class Breeze extends Pimple
 
 	public function credits()
 	{
-		// Dear contributor, please feel free to add yourself here
+		// Dear contributor, please feel free to add yourself here.
 		$credits = array(
 			'dev' => array(
 				'name' => 'Developer(s)',

@@ -22,44 +22,39 @@ class BreezeAdmin extends Breeze
 
 	function call()
 	{
-			global $txt, $scripturl, $context, $sourcedir, $settings;
-			global $modSettings;
+		global $txt, $scripturl, $context, $sourcedir, $settings;
+		global $modSettings;
 
-			require_once($sourcedir . '/ManageSettings.php');
-			loadLanguage('BreezeAdmin');
-			loadtemplate('BreezeAdmin');
+		require_once($sourcedir . '/ManageSettings.php');
+		loadLanguage('BreezeAdmin');
+		loadtemplate('BreezeAdmin');
 
-			$context['page_title'] = $txt['Breeze_page_panel'];
+		$context['page_title'] = $txt['Breeze_page_panel'];
 
-			if (empty($breezeController))
-				$breezeController = new BreezeController();
+		$subActions = array(
+			'general' => 'main',
+			'settings' => 'settings',
+			'permissions' => 'permissions',
+			'donate' => 'donate',
+		);
 
-			$context['Breeze']['instance'] = $breezeController->get('tools');
+		loadGeneralSettingParameters($subActions, 'general');
 
-			$subActions = array(
-				'general' => 'main',
-				'settings' => 'settings',
-				'permissions' => 'permissions',
-				'donate' => 'donate',
-			);
+		$context[$context['admin_menu_name']]['tab_data'] = array(
+			'tabs' => array(
+				'general' => array(),
+				'settings' => array(),
+				'permissions' => array(),
+				'donate' => array(),
+			),
+		);
 
-			loadGeneralSettingParameters($subActions, 'general');
-
-			$context[$context['admin_menu_name']]['tab_data'] = array(
-				'tabs' => array(
-					'general' => array(),
-					'settings' => array(),
-					'permissions' => array(),
-					'donate' => array(),
-				),
-			);
-
-			// Admin bits
-			$context['html_headers'] .= '
+		// Admin bits
+		$context['html_headers'] .= '
 	<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
 	<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.js" type="text/javascript"></script>
 	<script type="text/javascript">
-	var breeze_feed_error_message = '. JavaScriptEscape($context['Breeze']['instance']->adminText('feed_error_message')) .';
+	var breeze_feed_error_message = '. JavaScriptEscape($this['tools']->adminText('feed_error_message')) .';
 
 	$(document).ready(function (){
 		$(\'#breezelive\').rssfeed(\''. Breeze::$supportSite .'\',
@@ -74,8 +69,8 @@ class BreezeAdmin extends Breeze
 	});
 	 </script>';
 
-			// Call the sub-action
-			$subActions[$_REQUEST['sa']]();
+		// Call the sub-action.
+		$this->$subActions[$_REQUEST['sa']]();
 	}
 
 	function main()
@@ -89,15 +84,15 @@ class BreezeAdmin extends Breeze
 		$context['Breeze']['support'] = Breeze::$supportSite;
 
 		// Set all the page stuff
-		$context['page_title'] = $context['Breeze']['instance']->adminText('page_main');
+		$context['page_title'] = $this['tools']->adminText('page_main');
 		$context['sub_template'] = 'admin_home';
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
-			'description' => $context['Breeze']['instance']->adminText('page_welcome'),
+			'description' => $this['tools']->adminText('page_welcome'),
 		);
 
-		// Get the credits
-		$context['Breeze']['credits'] = Breeze::credits();
+		// Get the credits.
+		$context['Breeze']['credits'] = $this->credits();
 	}
 
 	function Settings()
@@ -107,25 +102,25 @@ class BreezeAdmin extends Breeze
 		// Load stuff
 		$data = Breeze::data('request');
 		$context['sub_template'] = 'show_settings';
-		$context['page_title'] = Breeze::$name .' - '. $context['Breeze']['instance']->adminText('page_settings');
+		$context['page_title'] = Breeze::$name .' - '. $this['tools']->adminText('page_settings');
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
-			'description' => $context['Breeze']['instance']->adminText('page_settings_desc'),
+			'description' => $this['tools']->adminText('page_settings_desc'),
 		);
 
 		require_once($sourcedir . '/ManageServer.php');
 
 		$config_vars = array(
 			array('title', Breeze::$txtpattern .'page_settings'),
-			array('check', Breeze::$txtpattern .'master', 'subtext' => $context['Breeze']['instance']->adminText('master_sub')),
-			array('check', Breeze::$txtpattern .'force_enable', 'subtext' => $context['Breeze']['instance']->adminText('force_enable_sub')),
-			array('check', Breeze::$txtpattern .'notifications', 'subtext' => $context['Breeze']['instance']->adminText('notifications_sub')),
-			array('text', Breeze::$txtpattern .'allowed_actions', 'size' => 60, 'subtext' => $context['Breeze']['instance']->adminText('allowed_actions_sub')),
-			array('check', Breeze::$txtpattern .'mention', 'subtext' => $context['Breeze']['instance']->adminText('mention_sub')),
-			array('int', Breeze::$txtpattern .'mention_limit', 'size' => 3, 'subtext' => $context['Breeze']['instance']->adminText('mention_limit_sub')),
-			array('int', Breeze::$txtpattern .'allowed_max_num_users', 'size' => 3, 'subtext' => $context['Breeze']['instance']->adminText('allowed_max_num_users_sub')),
-			array('check', Breeze::$txtpattern .'parseBBC', 'subtext' => $context['Breeze']['instance']->adminText('parseBBC_sub')),
-			array('int', Breeze::$txtpattern .'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $context['Breeze']['instance']->adminText('allowed_maxlength_aboutMe_sub')),
+			array('check', Breeze::$txtpattern .'master', 'subtext' => $this['tools']->adminText('master_sub')),
+			array('check', Breeze::$txtpattern .'force_enable', 'subtext' => $this['tools']->adminText('force_enable_sub')),
+			array('check', Breeze::$txtpattern .'notifications', 'subtext' => $this['tools']->adminText('notifications_sub')),
+			array('text', Breeze::$txtpattern .'allowed_actions', 'size' => 60, 'subtext' => $this['tools']->adminText('allowed_actions_sub')),
+			array('check', Breeze::$txtpattern .'mention', 'subtext' => $this['tools']->adminText('mention_sub')),
+			array('int', Breeze::$txtpattern .'mention_limit', 'size' => 3, 'subtext' => $this['tools']->adminText('mention_limit_sub')),
+			array('int', Breeze::$txtpattern .'allowed_max_num_users', 'size' => 3, 'subtext' => $this['tools']->adminText('allowed_max_num_users_sub')),
+			array('check', Breeze::$txtpattern .'parseBBC', 'subtext' => $this['tools']->adminText('parseBBC_sub')),
+			array('int', Breeze::$txtpattern .'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this['tools']->adminText('allowed_maxlength_aboutMe_sub')),
 		);
 
 		$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=settings;save';
@@ -151,10 +146,10 @@ class BreezeAdmin extends Breeze
 		// Load stuff
 		$data = Breeze::data('request');
 		$context['sub_template'] = 'show_settings';
-		$context['page_title'] = Breeze::$name .' - '. $context['Breeze']['instance']->adminText('page_permissions');
+		$context['page_title'] = Breeze::$name .' - '. $this['tools']->adminText('page_permissions');
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
-			'description' => $context['Breeze']['instance']->adminText('page_permissions_desc'),
+			'description' => $this['tools']->adminText('page_permissions_desc'),
 		);
 
 		require_once($sourcedir . '/ManageServer.php');
@@ -179,18 +174,18 @@ class BreezeAdmin extends Breeze
 		prepareDBSettingContext($config_vars);
 	}
 
-	// Pay no attention to the girl behind the curtain
+	// Pay no attention to the girl behind the curtain.
 	function Donate()
 	{
 		global $context;
 
 		// Page stuff
-		$context['page_title'] = Breeze::$name .' - '. $context['Breeze']['instance']->adminText('page_donate');
+		$context['page_title'] = Breeze::$name .' - '. $this['tools']->adminText('page_donate');
 		$context['sub_template'] = 'admin_donate';
-		$context['Breeze']['donate'] = $context['Breeze']['instance']->adminText('page_donate_exp');
+		$context['Breeze']['donate'] = $this['tools']->adminText('page_donate_exp');
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
-			'description' => $context['Breeze']['instance']->adminText('page_donate_desc'),
+			'description' => $this['tools']->adminText('page_donate_desc'),
 		);
 	}
 }
