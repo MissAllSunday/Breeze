@@ -335,7 +335,7 @@ class Breeze extends Pimple
 		// Fool the system and directly inject the main object to breezeAjax and breezeWall, Breeze's final classes
 
 		// A whole new action just for some ajax calls. Actually, a pretty good chunk of Breeze transactions come through here so...
-		$actions['breezeajax'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call');
+		$actions['breezeajax'] = array(Breeze::$folder . 'BreezeAjax.php', 'BreezeAjax::call#');
 
 		// The general wall
 		$actions['wall'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call');
@@ -357,10 +357,15 @@ class Breeze extends Pimple
 	public function call()
 	{
 		// Just some quick code to make sure this works...
-		$a = array('wall' => 'BreezeWall', 'breezeajax' => 'BreezeAjax');
+		$a = array('wall' => 'wall', 'breezeajax' => 'ajax');
 
-		if (in_array(Breeze::data('action'), $a))
-			$a[1]($this);
+		$action = Breeze::data('action');
+
+		if (in_array($action, array_keys($a)))
+		{
+			$call = Breeze::$name . ucfirst($a[$action]);
+			$this[$call]->call();
+		}
 	}
 
 	/**

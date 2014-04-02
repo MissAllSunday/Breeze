@@ -87,14 +87,15 @@ class BreezeUser extends Breeze
 		// Set all the page stuff
 		$context['sub_template'] = 'user_wall';
 		$context += array(
+			'page_title' => sprintf($txt['profile_of_username'], $context['member']['name']),
 			'can_send_pm' => allowedTo('pm_send'),
 			'can_have_buddy' => allowedTo('profile_identity_own') && !empty($modSettings['enable_buddylist']),
-			'can_issue_warning' => in_array('w', $context['admin_features']) && allowedTo('issue_warning') && $modSettings['warning_settings'][0] == 1,
+			'can_issue_warning' => allowedTo('issue_warning') && $modSettings['warning_settings'][0] == 1,
+			'can_view_warning' => (allowedTo('moderate_forum') || allowedTo('issue_warning') || allowedTo('view_warning_any') || ($context['user']['is_owner'] && allowedTo('view_warning_own')) && $modSettings['warning_settings'][0] === 1)
 		);
 		$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
 		$context['member']['status'] = array();
 		$context['Breeze']['tools'] = $tools;
-		$context['can_view_warning'] = in_array('w', $context['admin_features']) && (allowedTo('issue_warning') && !$context['member']['is_owner']) || (!empty($modSettings['warning_show']) && ($modSettings['warning_show'] > 1 || $context['member']['is_owner']));
 
 		// Set up some vars for pagination
 		$maxIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;

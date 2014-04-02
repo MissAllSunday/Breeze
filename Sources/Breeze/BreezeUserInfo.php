@@ -40,7 +40,7 @@ class BreezeUserInfo
 		// The user must exists!
 		if (!isset($user) || empty($user))
 			return false;
-
+// var_dump($user);die;
 		// Sometimes we just want the link
 		if (!empty($user['link']))
 			$context['Breeze']['user_info'][$user['id']]['link'] = $user['link'];
@@ -79,7 +79,7 @@ class BreezeUserInfo
 			if ((empty($settings['hide_post_group']) || $user['group'] == '') && $user['post_group'] != '')
 				$context['Breeze']['user_info'][$user['id']]['data'] .= '<li class="postgroup">'. $user['post_group']. '</li>';
 
-			$context['Breeze']['user_info'][$user['id']]['data'] .= '<li class="stars">'. $user['group_stars']. '</li>';
+			$context['Breeze']['user_info'][$user['id']]['data'] .= '<li class="stars">'. $user['group_icons']. '</li>';
 
 			// Show the member's gender icon?
 			if (!empty($settings['show_gender']) && $user['gender']['image'] != '' && !isset($context['disabled_fields']['gender']))
