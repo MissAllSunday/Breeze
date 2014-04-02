@@ -335,10 +335,10 @@ class Breeze extends Pimple
 		// Fool the system and directly inject the main object to breezeAjax and breezeWall, Breeze's final classes
 
 		// A whole new action just for some ajax calls. Actually, a pretty good chunk of Breeze transactions come through here so...
-		$actions['breezeajax'] = array(Breeze::$folder . 'BreezeAjax.php', 'BreezeAjax::call#');
+		$actions['breezeajax'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call#');
 
 		// The general wall
-		$actions['wall'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call');
+		$actions['wall'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call#');
 
 		// Replace the buddy action @todo for next version
 		// $actions['buddy'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
@@ -350,22 +350,20 @@ class Breeze extends Pimple
 	/**
 	 * Breeze::call()
 	 *
-	 * Wrapper method to call Breeze methods and maintain the dependency injection feature.
-	 * @param array $actions An array containing all possible SMF actions.
+	 * Wrapper method to call Breeze methods while maintaining dependency injection.
 	 * @return void
 	 */
 	public function call()
 	{
 		// Just some quick code to make sure this works...
-		$a = array('wall' => 'wall', 'breezeajax' => 'ajax');
+		$a = array('wall', 'ajax');
+		$action = Breeze::data('get')->get('action');
 
-		$action = Breeze::data('action');
+		// Gotta remove the "breeze" from breezeajax.
+		if ($action == 'breezeajax')
+			$action = str_replace('breeze', '', $action);
 
-		if (in_array($action, array_keys($a)))
-		{
-			$call = Breeze::$name . ucfirst($a[$action]);
-			$this[$call]->call();
-		}
+		$this[$action]->call();
 	}
 
 	/**
@@ -381,7 +379,7 @@ class Breeze extends Pimple
 	{
 		global $context, $txt, $scripturl, $user_info;
 
-		// We need the almighty power of breezeController!
+		// We don't need the almighty power of breezeController anymore!
 		$noti = $this['notifications'];
 		$userSettings = $this['query']->getUserSettings($user_info['id']);
 

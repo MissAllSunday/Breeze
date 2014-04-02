@@ -13,7 +13,7 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-class BreezeAjax extends Breeze
+class BreezeAjax
 {
 	protected $_noJS = false;
 	protected $_redirectURL = '';
@@ -21,6 +21,7 @@ class BreezeAjax extends Breeze
 	protected $_userSettings = array();
 	protected $_params = array();
 	protected $_currentUser;
+	protected $_app;
 
 	/**
 	 * BreezeAjax::__construct()
@@ -28,9 +29,9 @@ class BreezeAjax extends Breeze
 	 * Sets all the needed vars, loads the language file
 	 * @return void
 	 */
-	public function __construct()
+	public function __construct($app)
 	{
-		parent::__construct();
+		$this->_app = $app;
 
 		// Needed to show some error strings
 		loadLanguage(Breeze::$name);
@@ -73,18 +74,18 @@ class BreezeAjax extends Breeze
 		$this->comingFrom = $data->get('rf') == true ? $data->get('rf') : 'wall';
 
 		// Master setting is off, back off!
-		if (!$this['tools']->enable('master'))
+		if (!$this->_app['tools']->enable('master'))
 			fatal_lang_error('Breeze_error_no_valid_action', false);
 
 		// Gotta love globals...
-		$context['Breeze']['tools'] = $this['tools'];
+		$context['Breeze']['tools'] = $this->_app['tools'];
 
 		// Not using JavaScript?
 		if (!$data->get('js'))
 			$this->_noJS = true;
 
 		// Get the current user settings.
-		$this->_userSettings = $this['query']->getUserSettings($user_info['id']);
+		$this->_userSettings = $this->_app['query']->getUserSettings($user_info['id']);
 		$this->_currentUser = $user_info['id'];
 
 		// Temporarily turn this into a normal var
@@ -152,22 +153,22 @@ class BreezeAjax extends Breeze
 				'owner_id' => $statusOwner,
 				'poster_id' => $statusPoster,
 				'time' => time(),
-				'body' => $this['tools']->enable('mention') ? $this['mention']->preMention($body, $statusMentions) : $body,
+				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $statusMentions) : $body,
 			);
 
 			// Maybe a last minute change before inserting the new status?
 			call_integration_hook('integrate_breeze_before_insertStatus', array(&$this->_params));
 
 			// Store the status
-			$this->_params['id'] = $this['query']->insertStatus($this->_params);
+			$this->_params['id'] = $this->_app['query']->insertStatus($this->_params);
 			$this->_params['time_raw'] = time();
 
 			// All went good or so it seems...
 			if (!empty($this->_params['id']))
 			{
 				// Build the notification(s) via BreezeMention
-				if ($this['tools']->enable('mention'))
-					$this['mention']->mention(
+				if ($this->_app['tools']->enable('mention'))
+					$this->_app['mention']->mention(
 						array(
 							'wall_owner' => $statusOwner,
 							'wall_poster' => $statusPoster,
@@ -180,7 +181,7 @@ class BreezeAjax extends Breeze
 					);
 
 				// Parse the content
-				$this->_params['body'] = $this['parser']->display($this->_params['body']);
+				$this->_params['body'] = $this->_app['parser']->display($this->_params['body']);
 
 				// The status was inserted, tell everyone!
 				call_integration_hook('integrate_breeze_after_insertStatus', array($this->_params));
@@ -190,7 +191,7 @@ class BreezeAjax extends Breeze
 
 				// Send out a log for this postingStatus action.
 				if (!empty($this->_userSettings['activityLog']))
-					$this['notifications']->create(array(
+					$this->_app['notifications']->create(array(
 						'sender' => $statusPoster,
 						'receiver' => $statusPoster,
 						'type' => 'logStatus',
@@ -205,10 +206,10 @@ class BreezeAjax extends Breeze
 				if ($statusOwner != $statusPoster)
 				{
 					// Get the wall owner's settings.
-					$uSettings = $this['query']->getUserSettings($statusOwner);
+					$uSettings = $this->_app['query']->getUserSettings($statusOwner);
 
 					if (!empty($uSettings['noti_on_status']))
-						$this['notifications']->create(array(
+						$this->_app['notifications']->create(array(
 							'sender' => $statusPoster,
 							'receiver' => $statusOwner,
 							'type' => 'wallOwner',
@@ -224,7 +225,7 @@ class BreezeAjax extends Breeze
 				return $this->setResponse(array(
 					'type' => 'success',
 					'message' => 'published',
-					'data' => $this['display']->HTML($this->_params, 'status', true, $statusPoster),
+					'data' => $this->_app['display']->HTML($this->_params, 'status', true, $statusPoster),
 					'owner' => $statusOwner,
 				));
 			}
@@ -278,7 +279,7 @@ class BreezeAjax extends Breeze
 			allowedTo('breeze_postComments');
 
 		// Load all the things we need
-		$temp_id_exists = $this['query']->getSingleValue('status', 'status_id', $commentStatus);
+		$temp_id_exists = $this->_app['query']->getSingleValue('status', 'status_id', $commentStatus);
 
 		$body = $this->_data->validateBody($commentContent);
 
@@ -292,22 +293,22 @@ class BreezeAjax extends Breeze
 				'poster_id' => $commentPoster,
 				'profile_id' => $commentOwner,
 				'time' => time(),
-				'body' => $this['tools']->enable('mention') ? $this['mention']->preMention($body, $commentMentions) : $body
+				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $commentMentions) : $body
 			);
 
 			// Before inserting the comment...
 			call_integration_hook('integrate_breeze_before_insertComment', array(&$this->_params));
 
 			// Store the comment
-			$this->_params['id'] = $this['query']->insertComment($this->_params);
+			$this->_params['id'] = $this->_app['query']->insertComment($this->_params);
 			$this->_params['time_raw'] = time();
 
 			// The Comment was inserted ORLY???
 			if (!empty($this->_params['id']))
 			{
 				// Build the notification(s) for this comment via BreezeMention
-				if ($this['tools']->enable('mention'))
-					$this['mention']->mention(
+				if ($this->_app['tools']->enable('mention'))
+					$this->_app['mention']->mention(
 						array(
 							'wall_owner' => $commentOwner,
 							'wall_poster' => $commentPoster,
@@ -320,7 +321,7 @@ class BreezeAjax extends Breeze
 					);
 
 				// Parse the content.
-				$this->_params['body'] = $this['parser']->display($this->_params['body']);
+				$this->_params['body'] = $this->_app['parser']->display($this->_params['body']);
 
 				// The comment was created, tell the world or just those who want to know...
 				call_integration_hook('integrate_breeze_after_insertComment', array($this->_params));
@@ -330,7 +331,7 @@ class BreezeAjax extends Breeze
 
 				// Send out a log for this postingStatus action.
 				if (!empty($this->_userSettings['activityLog']))
-					$this['notifications']->create(array(
+					$this->_app['notifications']->create(array(
 						'sender' => $commentPoster,
 						'receiver' => $commentPoster,
 						'type' => 'logComment',
@@ -345,10 +346,10 @@ class BreezeAjax extends Breeze
 				// This only applies if the wall owner, the status poster and the comment poster are different persons!
 				if (($commentOwner != $commentPoster) && ($commentPoster != $commentStatusPoster))
 				{
-					$uStatusSettings = $this['query']->getUserSettings($commentStatusPoster);
+					$uStatusSettings = $this->_app['query']->getUserSettings($commentStatusPoster);
 
 					if (!empty($uStatusSettings['noti_on_comment']))
-						$this['notifications']->create(array(
+						$this->_app['notifications']->create(array(
 							'sender' => $commentPoster,
 							'receiver' => $commentStatusPoster,
 							'type' => 'commentStatus',
@@ -363,10 +364,10 @@ class BreezeAjax extends Breeze
 				// Notify the profile owner someone made a comment on their wall, the poster, the profile owner and the status poster needs to be different.
 				if (($commentOwner != $commentPoster) && ($commentOwner != $commentStatusPoster))
 				{
-					$uOwnerSettings = $this['query']->getUserSettings($commentOwner);
+					$uOwnerSettings = $this->_app['query']->getUserSettings($commentOwner);
 
 					if (!empty($uStatusSettings['noti_on_comment_owner']))
-						$this['notifications']->create(array(
+						$this->_app['notifications']->create(array(
 							'sender' => $commentPoster,
 							'receiver' => $commentOwner,
 							'type' => 'commentStatusOwner',
@@ -382,7 +383,7 @@ class BreezeAjax extends Breeze
 				return $this->setResponse(array(
 					'type' => 'success',
 					'message' => 'published_comment',
-					'data' => $this['display']->HTML($this->_params, 'comment', true, $commentPoster),
+					'data' => $this->_app['display']->HTML($this->_params, 'comment', true, $commentPoster),
 					'owner' => $commentOwner,
 				));
 			}
@@ -420,13 +421,13 @@ class BreezeAjax extends Breeze
 		if (!empty($id))
 		{
 			// You aren't allowed in here, let's show you a nice message error...
-			$canHas = $this['tools']->permissions(ucfirst($type), $profileOwner, $poster);
+			$canHas = $this->_app['tools']->permissions(ucfirst($type), $profileOwner, $poster);
 
 			// Die, die my darling!
 			if (!$canHas['delete'])
 				fatal_lang_error('Breeze_error_delete'. ucfirst($type), false);
 
-			$temp_id_exists = $this['query']->getSingleValue(
+			$temp_id_exists = $this->_app['query']->getSingleValue(
 				$type,
 				$type .'_id',
 				$id
@@ -441,7 +442,7 @@ class BreezeAjax extends Breeze
 				call_integration_hook('integrate_breeze_before_delete', array(&$type, &$id, &$profileOwner, &$poster));
 
 				// Do the query dance!
-				$this['query']->$typeCall($id, $profileOwner);
+				$this->_app['query']->$typeCall($id, $profileOwner);
 
 				// Tell everyone what just happened here...
 				call_integration_hook('integrate_breeze_after_delete', array($type, $id, $profileOwner, $poster));
@@ -491,11 +492,11 @@ class BreezeAjax extends Breeze
 		$toSave = $this->_data->get('breezeSettings');
 
 		// Gotta make sure the user is respecting the admin limit for the about me block.
-		if ($this['tools']->setting('allowed_maxlength_aboutMe') && !empty($toSave['aboutMe']) && strlen($toSave['aboutMe']) >= $this['tools']->setting('allowed_maxlength_aboutMe'))
-			$toSave['aboutMe'] = substr($toSave['aboutMe'], 0, $this['tools']->setting('allowed_maxlength_aboutMe'));
+		if ($this->_app['tools']->setting('allowed_maxlength_aboutMe') && !empty($toSave['aboutMe']) && strlen($toSave['aboutMe']) >= $this->_app['tools']->setting('allowed_maxlength_aboutMe'))
+			$toSave['aboutMe'] = substr($toSave['aboutMe'], 0, $this->_app['tools']->setting('allowed_maxlength_aboutMe'));
 
 		// Do the insert already!
-		$this['query']->insertUserSettings($toSave, $this->_data->get('u'));
+		$this->_app['query']->insertUserSettings($toSave, $this->_data->get('u'));
 
 		// Done! set the redirect.
 		return $this->setResponse(array(
@@ -533,7 +534,7 @@ class BreezeAjax extends Breeze
 			));
 
 		// We must make sure this noti really exists, we just must!!!
-		$noti_temp = $this['query']->getNotificationByReceiver($user, true);
+		$noti_temp = $this->_app['query']->getNotificationByReceiver($user, true);
 
 		if (empty($noti_temp['data']) || !isset($noti_temp['data'][$noti]))
 			return $this->setResponse(array(
@@ -549,7 +550,7 @@ class BreezeAjax extends Breeze
 			$viewed = !$noti_temp['data'][$noti]['viewed'];
 
 			// All is good, mark this as read
-			$this['query']->markNoti($noti, $user, $viewed);
+			$this->_app['query']->markNoti($noti, $user, $viewed);
 
 			// All done!
 			return $this->setResponse(array(
@@ -585,7 +586,7 @@ class BreezeAjax extends Breeze
 		// Are we dealing with logs? if so, the process gets much much easier for me!
 		if ($this->_data->validate('log'))
 		{
-			$this['query']->deleteNoti($noti, $user);
+			$this->_app['query']->deleteNoti($noti, $user);
 
 			return $this->setResponse(array(
 				'type' => 'success',
@@ -596,7 +597,7 @@ class BreezeAjax extends Breeze
 		}
 
 		// We must make sure this noti really exists, we just must!!!
-		$noti_temp = $this['query']->getNotificationByReceiver($user, true);
+		$noti_temp = $this->_app['query']->getNotificationByReceiver($user, true);
 
 		if (empty($noti_temp['data']) || !array_key_exists($noti, $noti_temp['data']))
 			return $this->setResponse(array(
@@ -609,7 +610,7 @@ class BreezeAjax extends Breeze
 		else
 		{
 			// All good, delete it
-			$this['query']->deleteNoti($noti, $user);
+			$this->_app['query']->deleteNoti($noti, $user);
 
 			return $this->setResponse(array(
 				'type' => 'success',
@@ -655,7 +656,7 @@ class BreezeAjax extends Breeze
 			$viewed = $do == 'read' ? 1 : 0;
 
 			// $set the "viewed" var
-			$this['query']->$call($idNoti, $user, $viewed);
+			$this->_app['query']->$call($idNoti, $user, $viewed);
 
 			return $this->setResponse(array(
 				'type' => 'success',
@@ -707,11 +708,11 @@ class BreezeAjax extends Breeze
 		// Get the right call to the DB
 		$call = $comingFrom == 'profile' ? 'getStatusByProfile' : 'getStatusByUser';
 
-		$data = $this['query']->$call($fetch, $maxIndex, $start);
+		$data = $this->_app['query']->$call($fetch, $maxIndex, $start);
 
 		if (!empty($data['data']))
 		{
-			$return .= $this['display']->HTML($data['data'], 'status', false, $data['users']);
+			$return .= $this->_app['display']->HTML($data['data'], 'status', false, $data['users']);
 
 			return $this->setResponse(array(
 				'type' => 'success',
@@ -747,7 +748,7 @@ class BreezeAjax extends Breeze
 		return $this->setResponse(array(
 			'type' => 'success',
 			'message' => 'success',
-			'data' => $this['notifications']->doStream($u),
+			'data' => $this->_app['notifications']->doStream($u),
 			'owner' => $u, // Don't really need this, just send some dummy data.
 		));
 	}
@@ -769,7 +770,7 @@ class BreezeAjax extends Breeze
 		$match = $data->get('match');
 
 		// Lets see if there are any results to this search.
-		return $this->_response = $this['query']->userMention($match);
+		return $this->_response = $this->_app['query']->userMention($match);
 	}
 
 	/**
@@ -801,7 +802,7 @@ class BreezeAjax extends Breeze
 			));
 
 		// Ready to go!
-		$this['query']->deleteViews($user);
+		$this->_app['query']->deleteViews($user);
 
 		return $this->setResponse(array(
 			'type' => 'success',
@@ -850,7 +851,7 @@ class BreezeAjax extends Breeze
 		// Fall to a generic server error, this should never happen but just want to be sure...
 		else
 			echo json_encode(array(
-				'message' => $this['tools']->text('error_server'),
+				'message' => $this->_app['tools']->text('error_server'),
 				'data' => '',
 				'type' => 'error',
 				'owner' => 0,
@@ -880,7 +881,7 @@ class BreezeAjax extends Breeze
 
 		// If we didn't get all the params, set them to an empty var and don't forget to convert the message to a proper text string
 		$this->_response = array(
-			'message' => !empty($data['message']) ? ($this->_noJS == false ? $this['tools']->text($data['type'] .'_'. $data['message']) : $data['message']) : 'server',
+			'message' => !empty($data['message']) ? ($this->_noJS == false ? $this->_app['tools']->text($data['type'] .'_'. $data['message']) : $data['message']) : 'server',
 			'data' => !empty($data['data']) ? $data['data'] : '',
 			'type' => !empty($data['type']) ? $data['type'] : 'error',
 			'owner' => !empty($data['owner']) ? $data['owner'] : 0,
