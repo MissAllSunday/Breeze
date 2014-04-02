@@ -363,7 +363,8 @@ class Breeze extends Pimple
 		if ($action == 'breezeajax')
 			$action = str_replace('breeze', '', $action);
 
-		$this[$action]->call();
+		if (in_array($action, $a))
+			$this[$action]->call();
 	}
 
 	/**
