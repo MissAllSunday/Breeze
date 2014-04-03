@@ -16,6 +16,7 @@ if (!defined('SMF'))
 class BreezeWall
 {
 	protected $userSettings = array();
+	protected $_app;
 
 	/**
 	 * BreezeAjax::__construct()
@@ -23,7 +24,7 @@ class BreezeWall
 	 * Sets the needed properties, loads language and template files
 	 * @return
 	 */
-	public function __construct($tools, $display, $parser, $query, $notifications, $mention, $log)
+	public function __construct($app)
 	{
 		// Needed to show error strings
 		loadLanguage(Breeze::$name);
@@ -33,13 +34,7 @@ class BreezeWall
 		loadtemplate(Breeze::$name .'Functions');
 
 		// Load all the things we need
-		$this->_query = $query;
-		$this->_parser = $parser;
-		$this->_mention = $mention;
-		$this->_notifications = $notifications;
-		$this->_display = $display;
-		$this->_tools = $tools;
-		$this->log = $log;
+		$this->_app = $app;
 	}
 
 	/**
@@ -64,18 +59,18 @@ class BreezeWall
 		);
 
 		// Master setting is off, back off!
-		if (!$this->_tools->enable('master'))
+		if (!$this->_app['tools']->enable('master'))
 			fatal_lang_error('Breeze_error_no_valid_action', false);
 
 		// Guest aren't allowed, sorry.
-		is_not_guest($this->_tools->text('error_no_access'));
+		is_not_guest($this->_app['tools']->text('error_no_access'));
 
 		// Load the user settings.
-		$this->userSettings = $this->_query->getUserSettings($user_info['id']);
+		$this->userSettings = $this->_app['query']->getUserSettings($user_info['id']);
 
 		// We need to load the current user's data
 		if (empty($context['Breeze']['user_info'][$user_info['id']]))
-			$this->_tools->loadUserInfo($user_info['id'], false, 'profile');
+			$this->_app['tools']->loadUserInfo($user_info['id'], false, 'profile');
 
 		// By default this is set as empty, makes life easier, for me at least...
 		$context['Breeze'] = array();
@@ -84,7 +79,7 @@ class BreezeWall
 		$context['Breeze']['comingFrom'] = 'wall';
 
 		// This isn't nice, however, pass the tools object to the view.
-		$context['Breeze']['tools'] = $this->_tools;
+		$context['Breeze']['tools'] = $this->_app['tools'];
 
 		// These file are only used here and on the profile wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
 		$context['insert_after_template'] .= '
@@ -93,7 +88,7 @@ class BreezeWall
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
 
 		// Are mentions enabled?
-		if ($this->_tools->enable('mention'))
+		if ($this->_app['tools']->enable('mention'))
 			$context['insert_after_template'] .= '
 	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeMention.js"></script>';
 
@@ -155,7 +150,7 @@ class BreezeWall
 		$currentPage = ($data->validate('start') == true) ? $data->get('start') : 0;
 
 		// Set all the page stuff
-		$context['page_title'] = $this->_tools->text('general_wall');
+		$context['page_title'] = $this->_app['tools']->text('general_wall');
 		$context['sub_template'] = 'general_wall';
 		$context['linktree'][] = array(
 			'url' => $scripturl . '?action=wall',
@@ -166,15 +161,15 @@ class BreezeWall
 		if (!empty($this->userSettings['buddiesList']))
 		{
 			// Get the latest status
-			$status = $this->_query->getStatusByUser($this->userSettings['buddiesList'], $maxIndex, $currentPage);
+			$status = $this->_app['query']->getStatusByUser($this->userSettings['buddiesList'], $maxIndex, $currentPage);
 			$context['Breeze']['status'] = $status['data'];
 
 			// Get the latest activity
-			$context['Breeze']['log'] = $this->log->getActivity($this->userSettings['buddiesList']);
+			$context['Breeze']['log'] = $this->_app['log']->getActivity($this->userSettings['buddiesList']);
 
 			// Load users data.
 			if (!empty($status['users']))
-				$this->_tools->loadUserInfo($status['users']);
+				$this->_app['tools']->loadUserInfo($status['users']);
 
 			// Applying pagination.
 			if (!empty($status['pagination']))
@@ -217,26 +212,26 @@ class BreezeWall
 			fatal_lang_error('no_access', false);
 
 		// Load it.
-		$status = $this->_query->getStatusByID($data->get('bid'));
+		$status = $this->_app['query']->getStatusByID($data->get('bid'));
 
 		if (!empty($this->userSettings['buddies']))
 		{
 			// Get the latest activity
-			$context['Breeze']['activity'] = $this->_query->getActivityLog($this->userSettings['buddies']);
+			$context['Breeze']['activity'] = $this->_app['query']->getActivityLog($this->userSettings['buddies']);
 
 			// Load users data
 			if (!empty($status['users']))
-				$this->_tools->loadUserInfo($status['users']);
+				$this->_app['tools']->loadUserInfo($status['users']);
 		}
 
 		// Load the users data
-		$this->_tools->loadUserInfo($status['users']);
+		$this->_app['tools']->loadUserInfo($status['users']);
 
 		$context['Breeze']['status'] = $status['data'];
 
 		// Set all the page stuff
 		$context['sub_template'] = 'general_wall';
-		$context['page_title'] = $this->_tools->text('singleStatus_pageTitle');
+		$context['page_title'] = $this->_app['tools']->text('singleStatus_pageTitle');
 		$context['canonical_url'] = $scripturl .'?action=wall;area=single;bid='. $data->get('bid');
 
 		// There cannot be any pagination

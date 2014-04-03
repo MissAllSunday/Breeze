@@ -15,14 +15,15 @@ if (!defined('SMF'))
 
 class BreezeParser
 {
-	protected $regex;
+	protected $_regex;
+	protected $_app;
 
-	function __construct($tools)
+	function __construct($app)
 	{
-		$this->tools = $tools;
+		$this->_app = $app;
 
 		// Regex stuff
-		$this->regex = array(
+		$this->_regex = array(
 			'mention' => '~\(([\s\w,;-_\[\]\\\/\+\.\~\$\!]+), ([0-9]+)\)~u',
 		);
 	}
@@ -40,7 +41,7 @@ class BreezeParser
 			return false;
 
 		$this->s = $string;
-		$temp = $this->tools->remove(get_class_methods(__CLASS__), array('__construct', 'display'), false);
+		$temp = $this->_app['tools']->remove(get_class_methods(__CLASS__), array('__construct', 'display'), false);
 
 		// We may want to add something before it gets parsed...
 		call_integration_hook('integrate_breeze_before_parser', array(&$this->s));
@@ -64,7 +65,7 @@ class BreezeParser
 		global $scripturl;
 
 		// Search for all possible names
-		if (preg_match_all($this->regex['mention'], $this->s, $matches, PREG_SET_ORDER))
+		if (preg_match_all($this->_regex['mention'], $this->s, $matches, PREG_SET_ORDER))
 		{
 			// Find any instances
 			foreach ($matches as $query)
@@ -86,7 +87,7 @@ class BreezeParser
 	 */
 	protected function smf_parse()
 	{
-		if (!$this->tools->enable('parseBBC'))
+		if (!$this->_app['tools']->enable('parseBBC'))
 			return;
 
 		$this->s = parse_bbc($this->s);

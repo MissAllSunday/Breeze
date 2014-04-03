@@ -15,19 +15,15 @@ if (!defined('SMF'))
 
 class BreezeMention
 {
-	protected $_notification;
 	protected $_string = '';
 	protected $_regex = array();
-	protected $_query;
-	protected $_tools;
 	protected $_searchNames = array();
 	protected $_queryNames = array();
+	protected $_app;
 
-	function __construct($tools, $query, $notifications)
+	function __construct($app)
 	{
-		$this->_notification = $notifications;
-		$this->_query = $query;
-		$this->_tools = $tools;
+		$this->_app = $app;
 	}
 
 	/*
@@ -73,7 +69,7 @@ class BreezeMention
 			unset($this->_queryNames[$user_info['id']]);
 
 		// Sorry, theres gotta be a limit you know?
-		$admin_mention_limit = $this->_tools->enable('mention_limit') ? $this->_tools->setting('mention_limit') : 10;
+		$admin_mention_limit = $this->_app['tools']->enable('mention_limit') ? $this->_app['tools']->setting('mention_limit') : 10;
 
 		// Chop the array off!
 		if (!empty($admin_mention_limit) && count($this->_queryNames) >= $admin_mention_limit)
@@ -82,14 +78,14 @@ class BreezeMention
 		foreach ($this->_queryNames as $name)
 		{
 			// So, we need this user specific settings.
-			$userSettings = $this->_query->getUserSettings($name['id']);
+			$userSettings = $this->_app['query']->getUserSettings($name['id']);
 
 			// Append the mentioned user ID
 			$noti_info['wall_mentioned'] = $name['id'];
 
 			// Does this user wants to be notified?
 			if (!empty($userSettings['noti_on_mention']))
-				$this->_notification->create(array(
+				$this->_app['notifications']->create(array(
 					'sender' => $user_info['id'],
 					'receiver' => $name['id'],
 					'type' => 'mention',

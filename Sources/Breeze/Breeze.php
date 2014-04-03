@@ -23,7 +23,7 @@ function breeze_autoloader($class_name)
 {
 	global $sourcedir;
 
-	$file_path = $sourcedir . Breeze::$folder . $class_name . '.php';
+	$file_path = $sourcedir . '/Breeze/' . $class_name . '.php';
 
 	if (file_exists($file_path))
 		require_once ($file_path);
@@ -34,8 +34,9 @@ function breeze_autoloader($class_name)
 
 spl_autoload_register('breeze_autoloader');
 
-class Breeze
+class Breeze extends Pimple
 {
+	protected $_services = array('admin', 'ajax', 'display', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall',);
 	public static $name = 'Breeze';
 	public static $version = '1.0';
 	public static $folder = '/Breeze/';
@@ -54,7 +55,47 @@ class Breeze
 	 *
 	 * @return
 	 */
-	public function __construct(){}
+	public function __construct()
+	{
+		parent::__construct();
+		$this->set();
+	}
+
+	/**
+	 * Breeze::set()
+	 *
+	 * @return
+	 */
+	protected function set()
+	{
+		foreach($this->_services as $s)
+		{
+			$this[$s] = function ($c) use ($s)
+			{
+				$call = Breeze::$name . ucfirst($s);
+				return new $call($c);
+			};
+		}
+	}
+
+	/**
+	 * Breeze::get()
+	 *
+	 * A short-cut method to get access to services
+	 * @param string $id the name of the service to retrieve.
+	 * @return object an instance of the service.
+	 */
+	public function get($id)
+	{
+		if (!isset($this[$id]))
+			fatal_lang_error('Breeze_error_no_property', false, array($id));
+
+		if (is_callable($this[$id]))
+			return $this[$id]($this);
+
+		else
+			return $this[$id];
+	}
 
 	/**
 	 * Breeze::load()
@@ -63,7 +104,7 @@ class Breeze
 	 * @param array $file a comma separated list of all the file names to be loaded.
 	 * @return
 	 */
-	public static function load($file)
+	public function load($file)
 	{
 		global $sourcedir;
 
@@ -76,22 +117,6 @@ class Breeze
 
 		elseif (!empty($file))
 			require_once ($sourcedir . '/' . $file . '.php');
-	}
-
-	/**
-	 * Breeze::instantiate()
-	 *
-	 *@param string The name of the class
-	 * @return object Access to the class
-	 */
-	public function instantiate($objectName, $param = false)
-	{
-		if (empty($objectName))
-			return false;
-
-		$objectName = ucfirst($objectName);
-		$class = self::$name . $objectName;
-		return new $class($param ? $param : null);
 	}
 
 	/**
@@ -114,7 +139,7 @@ class Breeze
 	 * @param array $permissionList An associative array with all the possible permissions.
 	 * @return void
 	 */
-	public static function permissions(&$permissionGroups, &$permissionList)
+	public function permissions(&$permissionGroups, &$permissionList)
 	{
 		// We gotta load our language file.
 		loadLanguage(Breeze::$name);
@@ -138,29 +163,26 @@ class Breeze
 	 * @param array $profile_areas An array containing all possible tabs for the profile menu.
 	 * @return void
 	 */
-	public static function profile(&$profile_areas)
+	public function profile(&$profile_areas)
 	{
-		global $user_info, $context, $breezeController;
-
-		// Safety
-		if (empty($breezeController))
-			$breezeController = new BreezeController();
+		global $user_info, $context;
 
 		// General settings are required here
-		$tools = $breezeController->get('tools');
+		$tools = $this['tools'];
 
 		// Replace the summary page only if the mod is enable
 		if ($tools->enable('master'))
 		{
 			// We need your settings...
-			$userSettings = $breezeController->get('query')->getUserSettings($context['member']['id']);
+			$userSettings = $this['query']->getUserSettings($context['member']['id']);
 
 			if ($tools->enable('force_enable') || !empty($userSettings['wall']))
 			{
 				$profile_areas['info']['areas']['summary'] = array(
 					'label' => $tools->text('general_wall'),
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'breezeWall',
+					'function' => 'wall',
+					'class' => 'BreezeUser',
 					'permission' => array(
 						'own' => 'profile_view_own',
 						'any' => 'profile_view_any',
@@ -189,7 +211,8 @@ class Breeze
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $tools->text('user_settings_name'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'breezeSettings',
+				'function' => 'settings',
+				'class' => 'BreezeUser',
 				'permission' => array(
 					'own' => array(
 						'profile_view_own',
@@ -203,7 +226,8 @@ class Breeze
 				$profile_areas['breeze_profile']['areas']['breezenotisettings'] = array(
 					'label' => $tools->text('user_settings_name_settings'),
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'breezenotisettings',
+					'function' => 'notiSettings',
+					'class' => 'BreezeUser',
 					'permission' => array(
 						'own' => array(
 							'profile_view_own',
@@ -215,7 +239,8 @@ class Breeze
 				$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
 					'label' => $tools->text('user_notisettings_name'),
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'breezeNotifications',
+					'function' => 'notifications',
+					'class' => 'BreezeUser',
 					'subsections' => array(),
 					'permission' => array('own' => 'profile_view_own', ),
 					);
@@ -226,7 +251,8 @@ class Breeze
 				$profile_areas['breeze_profile']['areas']['breezelogs'] = array(
 					'label' => $tools->text('user_notilogs_name'),
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'breezeNotiLogs',
+					'function' => 'notiLogs',
+					'class' => 'BreezeUser',
 					'subsections' => array(),
 					'permission' => array('own' => 'profile_view_own', ),
 					);
@@ -242,15 +268,12 @@ class Breeze
 	 * @link http://mattzuba.com
 	 * @return void
 	 */
-	public static function menu(&$menu_buttons)
+	public function menu(&$menu_buttons)
 	{
-		global $context, $breezeController, $txt, $scripturl, $user_info;
+		global $context, $txt, $scripturl, $user_info;
 
-		if (empty($breezeController))
-			$breezeController = new BreezeController();
-
-		$tools = $breezeController->get('tools');
-		$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
+		$tools = $this['tools'];
+		$userSettings = $this['query']->getUserSettings($user_info['id']);
 
 		// Display common css and js files.
 		Breeze::notiHeaders();
@@ -309,17 +332,39 @@ class Breeze
 	 */
 	public static function actions(&$actions)
 	{
+		// Fool the system and directly inject the main object to breezeAjax and breezeWall, Breeze's final classes
+
 		// A whole new action just for some ajax calls. Actually, a pretty good chunk of Breeze transactions come through here so...
-		$actions['breezeajax'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
+		$actions['breezeajax'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call#');
 
 		// The general wall
-		$actions['wall'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
+		$actions['wall'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call#');
 
 		// Replace the buddy action @todo for next version
 		// $actions['buddy'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
 
 		// A special action for the buddy request message
 		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'breezeBuddyMessage');
+	}
+
+	/**
+	 * Breeze::call()
+	 *
+	 * Wrapper method to call Breeze methods while maintaining dependency injection.
+	 * @return void
+	 */
+	public function call()
+	{
+		// Just some quick code to make sure this works...
+		$a = array('wall', 'ajax');
+		$action = Breeze::data('get')->get('action');
+
+		// Gotta remove the "breeze" from breezeajax.
+		if ($action == 'breezeajax')
+			$action = str_replace('breeze', '', $action);
+
+		if (in_array($action, $a))
+			$this[$action]->call();
 	}
 
 	/**
@@ -331,16 +376,13 @@ class Breeze
 	 * @param array $posterInfo poster info ...DUH!
 	 * @return
 	 */
-	public static function newTopic($msgOptions, $topicOptions, $posterOptions)
+	public function newTopic($msgOptions, $topicOptions, $posterOptions)
 	{
-		global $context, $breezeController, $txt, $scripturl, $user_info;
+		global $context, $txt, $scripturl, $user_info;
 
-		if (empty($breezeController))
-			$breezeController = new BreezeController();
-
-		// We need the almighty power of breezeController!
-		$noti = $breezeController->get('notifications');
-		$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
+		// We don't need the almighty power of breezeController anymore!
+		$noti = $this['notifications'];
+		$userSettings = $this['query']->getUserSettings($user_info['id']);
 
 		// Cheating, lets insert the notification directly, do it only if the topic was approved
 		if ($topicOptions['is_approved'] && !empty($userSettings['activityLog']))
@@ -371,13 +413,10 @@ class Breeze
 	 */
 	public static function newRegister($regOptions, $user_id)
 	{
-		global $context, $breezeController, $txt, $scripturl, $user_info;
-
-		if (empty($breezeController))
-			$breezeController = new BreezeController();
+		global $context, $txt, $scripturl, $user_info;
 
 		// We need the almighty power of breezeController!
-		$noti = $breezeController->get('notifications');
+		$noti = $this['notifications'];
 
 		// Cheating, lets insert the notification directly, do it only if the topic was approved
 		if ($topicOptions['is_approved'])
@@ -399,27 +438,24 @@ class Breeze
 	/**
 	 * Breeze::notiHeaders()
 	 *
-	 * Static method used to embed the JavaScript and other bits of code on every page inside SMF.
+	 * Used to embed the JavaScript and other bits of code on every page inside SMF.
 	 * @return void
 	 */
-	public static function notiHeaders()
+	public function notiHeaders()
 	{
-		global $context, $user_info, $breezeController, $settings;
+		global $context, $user_info, $settings;
 		static $header_done = false;
 
 		// Don't do anything if we are in SSI world
 		if (SMF == 'SSI')
 			return false;
 
-		if (empty($breezeController))
-			$breezeController = new BreezeController();
-
 		// Prevent this from showing twice
 		if (!$header_done)
 		{
-			$tools = $breezeController->get('tools');
+			$tools = $this['tools'];
 			$breezeGlobals = Breeze::data('get');
-			$userSettings = $breezeController->get('query')->getUserSettings($user_info['id']);
+			$userSettings = $this['query']->getUserSettings($user_info['id']);
 
 			// Don't pass the "about me" stuff...
 			if (!empty($userSettings['aboutMe']))
@@ -488,7 +524,7 @@ class Breeze
 				// Stuff for the notifications, don't show this if we aren't on a specified action
 				if ($tools->enable('notifications') && empty($user_info['is_guest']) && (in_array($breezeGlobals->get('action'), Breeze::$_allowedActions) || $breezeGlobals->get('action') == false))
 				{
-					$notifications = $breezeController->get('notifications');
+					$notifications = $this['notifications'];
 					$context['insert_after_template'] .= '
 	<script type="text/javascript"><!-- // --><![CDATA[
 		breeze.tools.stream('. $user_info['id'] .');
@@ -510,7 +546,7 @@ class Breeze
 	 * @param boolean $return decide between returning a string or append it to a known context var.
 	 * @return string a link for copyright notice
 	 */
-	public static function who($return = false)
+	public function who($return = false)
 	{
 		global $context;
 
@@ -527,25 +563,22 @@ class Breeze
 	/**
 	 * Breeze::admin()
 	 *
-	 * Creates a new notification everytime an user creates a new topic
+	 * Creates a new section in the admin panel.
 	 * @param array $admin_menu An array with all the admin settings buttons
 	 * @return
 	 */
-	public static function admin(&$admin_menu)
+	public function admin(&$admin_menu)
 	{
 		global $breezeController;
 
-		// Time to overheat the server, yay!
-		if (empty($breezeController))
-			$breezeController = new BreezeController();
-
-		$tools = $breezeController->get('tools');
+		$tools = $this['tools'];
 
 		$admin_menu['config']['areas']['breezeadmin'] = array(
 			'label' => $tools->adminText('page_main'),
 			'file' => 'Breeze/BreezeAdmin.php',
-			'function' => 'Breeze_Admin_Index',
-			'icon' => 'administration.gif',
+			'function' => 'call',
+			'class' => 'BreezeAdmin',
+			'icon' => 'packages.png',
 			'subsections' => array(
 				'general' => array($tools->adminText('page_main')),
 				'settings' => array($tools->adminText('page_settings')),
@@ -555,9 +588,9 @@ class Breeze
 		);
 	}
 
-	public static function credits()
+	public function credits()
 	{
-		// Dear contributor, please feel free to add yourself here
+		// Dear contributor, please feel free to add yourself here.
 		$credits = array(
 			'dev' => array(
 				'name' => 'Developer(s)',

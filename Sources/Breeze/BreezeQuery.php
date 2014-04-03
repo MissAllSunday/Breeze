@@ -19,21 +19,20 @@ class BreezeQuery
 	protected $_noti = array();
 	protected $_comments = array();
 	protected $_members = array();
+	protected $_app;
 
 	/**
 	 * BreezeQuery::__construct()
 	 *
 	 * Creates the needed properties.
 	 */
-	public function __construct($tools, $parser)
+	public function __construct($app)
 	{
 		global $smcFunc, $scripturl;
 
 		// Set everything
-		$this->tools = $tools;
-		$this->parser = $parser;
+		$this->_app = $app;
 		$this->scripturl = $scripturl;
-
 		$this->_smcFunc = $smcFunc;
 
 		$this->_tables = array(
@@ -59,7 +58,7 @@ class BreezeQuery
 				'name' => 'members',
 				'table' => 'members',
 				'property' => '_members',
-				'columns' => array('breeze_profile_views', 'pm_ignore_list', 'buddy_list', 'gender'),
+				'columns' => array('breeze_profile_views', 'pm_ignore_list', 'buddy_list',),
 				),
 			'noti' => array(
 				'name' => 'noti',
@@ -316,9 +315,9 @@ class BreezeQuery
 				'id' => $row['status_id'],
 				'owner_id' => $row['status_owner_id'],
 				'poster_id' => $row['status_poster_id'],
-				'time' => $this->tools->timeElapsed($row['status_time']),
+				'time' => $this->_app['tools']->timeElapsed($row['status_time']),
 				'time_raw' => $row['status_time'],
-				'body' => $this->parser->display($row['status_body']),
+				'body' => $this->_app['parser']->display($row['status_body']),
 				'comments' => array(),
 			);
 
@@ -352,9 +351,9 @@ class BreezeQuery
 					'status_owner_id' => $row['comments_status_owner_id'],
 					'poster_id' => $row['comments_poster_id'],
 					'profile_id' => $row['comments_profile_id'],
-					'time' => $this->tools->timeElapsed($row['comments_time']),
+					'time' => $this->_app['tools']->timeElapsed($row['comments_time']),
 					'time_raw' => $row['comments_time'],
-					'body' => $this->parser->display($row['comments_body']),
+					'body' => $this->_app['parser']->display($row['comments_body']),
 				);
 
 				// Append the users IDs.
@@ -422,9 +421,9 @@ class BreezeQuery
 				'id' => $row['status_id'],
 				'owner_id' => $row['status_owner_id'],
 				'poster_id' => $row['status_poster_id'],
-				'time' => $this->tools->timeElapsed($row['status_time']),
+				'time' => $this->_app['tools']->timeElapsed($row['status_time']),
 				'time_raw' => $row['status_time'],
-				'body' => $this->parser->display($row['status_body']),
+				'body' => $this->_app['parser']->display($row['status_body']),
 				'comments' => array(),
 			);
 
@@ -458,9 +457,9 @@ class BreezeQuery
 					'status_owner_id' => $row['comments_status_owner_id'],
 					'poster_id' => $row['comments_poster_id'],
 					'profile_id' => $row['comments_profile_id'],
-					'time' => $this->tools->timeElapsed($row['comments_time']),
+					'time' => $this->_app['tools']->timeElapsed($row['comments_time']),
 					'time_raw' => $row['comments_time'],
-					'body' => $this->parser->display($row['comments_body']),
+					'body' => $this->_app['parser']->display($row['comments_body']),
 				);
 
 				// Append the users IDs.
@@ -523,9 +522,9 @@ class BreezeQuery
 				'id' => $row['status_id'],
 				'owner_id' => $row['status_owner_id'],
 				'poster_id' => $row['status_poster_id'],
-				'time' => $this->tools->timeElapsed($row['status_time']),
+				'time' => $this->_app['tools']->timeElapsed($row['status_time']),
 				'time_raw' => $row['status_time'],
-				'body' => $this->parser->display($row['status_body']),
+				'body' => $this->_app['parser']->display($row['status_body']),
 			);
 
 			$return['users'][] = $row['status_owner_id'];
@@ -557,9 +556,9 @@ class BreezeQuery
 					'status_owner_id' => $row['comments_status_owner_id'],
 					'poster_id' => $row['comments_poster_id'],
 					'profile_id' => $row['comments_profile_id'],
-					'time' => $this->tools->timeElapsed($row['comments_time']),
+					'time' => $this->_app['tools']->timeElapsed($row['comments_time']),
 					'time_raw' => $row['comments_time'],
-					'body' => $this->parser->display($row['comments_body']),
+					'body' => $this->_app['parser']->display($row['comments_body']),
 				);
 
 				// Append the users IDs.
@@ -629,9 +628,9 @@ class BreezeQuery
 				'id' => $row['status_id'],
 				'owner_id' => $row['status_owner_id'],
 				'poster_id' => $row['status_poster_id'],
-				'time' => $this->tools->timeElapsed($row['status_time']),
+				'time' => $this->_app['tools']->timeElapsed($row['status_time']),
 				'time_raw' => $row['status_time'],
-				'body' => $this->parser->display($row['status_body']),
+				'body' => $this->_app['parser']->display($row['status_body']),
 			);
 
 			$return['users'][] = $row['status_owner_id'];
@@ -661,9 +660,9 @@ class BreezeQuery
 					'status_owner_id' => $row['comments_status_owner_id'],
 					'poster_id' => $row['comments_poster_id'],
 					'profile_id' => $row['comments_profile_id'],
-					'time' => $this->tools->timeElapsed($row['comments_time']),
+					'time' => $this->_app['tools']->timeElapsed($row['comments_time']),
 					'time_raw' => $row['comments_time'],
-					'body' => $this->parser->display($row['comments_body']),
+					'body' => $this->_app['parser']->display($row['comments_body']),
 				);
 
 				// Append the users IDs.
@@ -1334,7 +1333,7 @@ class BreezeQuery
 				'sender' => $row['sender'],
 				'receiver' => $row['receiver'],
 				'type' => $row['type'],
-				'time' => $this->tools->timeElapsed($row['time']),
+				'time' => $this->_app['tools']->timeElapsed($row['time']),
 				'time_raw' => $row['time'],
 				'viewed' => $row['viewed'],
 				'content' => $row['content'],
