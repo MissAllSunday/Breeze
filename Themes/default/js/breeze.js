@@ -60,7 +60,7 @@ jQuery(document).ready(function(){
 			// The long, long ajax call...
 			jQuery.ajax({
 				type: 'GET',
-				url: smf_scripturl + '?action=breezeajax;sa=post;js=1' + breeze.session.v + '=' + breeze.session.id + ';rf=' + breeze.tools.comingFrom,
+				url: smf_scripturl + '?action=breezeajax;sa=post;js=1;' + breeze.session.v + '=' + breeze.session.id + ';rf=' + breeze.tools.comingFrom,
 				data: status,
 				cache: false,
 				dataType: 'json',
@@ -139,7 +139,7 @@ jQuery(document).ready(function(){
 
 			jQuery.ajax({
 				type: 'GET',
-				url: smf_scripturl + '?action=breezeajax;sa=postcomment;js=1' + breeze.session.v + '=' + breeze.session.id + ';rf=' + breeze.tools.comingFrom,
+				url: smf_scripturl + '?action=breezeajax;sa=postcomment;js=1;' + breeze.session.v + '=' + breeze.session.id + ';rf=' + breeze.tools.comingFrom,
 				data: comment,
 				cache: false,
 				dataType: 'json',
@@ -192,7 +192,7 @@ jQuery(document).ready(function(){
 				addClass: 'button_submit', text: breeze.text.confirm_yes, onClick: function($noty) {
 					jQuery.ajax({
 						type: 'GET',
-						url: commentUrl + ';js=1' + breeze.session.v + '=' + breeze.session.id,
+						url: commentUrl + ';js=1;' + breeze.session.v + '=' + breeze.session.id,
 						cache: false,
 						dataType: 'json',
 						success: function(html){
@@ -254,7 +254,7 @@ jQuery(document).ready(function(){
 				addClass: 'button_submit', text: breeze.text.confirm_yes, onClick: function($noty) {
 					jQuery.ajax({
 						type: 'GET',
-						url: urlParam + ';js=1' + breeze.session.v + '=' + breeze.session.id,
+						url: urlParam + ';js=1;' + breeze.session.v + '=' + breeze.session.id,
 						cache: false,
 						dataType: 'json',
 						success: function(html){
@@ -313,7 +313,7 @@ jQuery(document).ready(function(){
 		event.preventDefault();
 
 		jQuery.ajax({
-			url: jQuery(this).attr('href') + ';js=1' + breeze.session.v + '=' + breeze.session.id,
+			url: jQuery(this).attr('href') + ';js=1;' + breeze.session.v + '=' + breeze.session.id,
 			type: "GET",
 			dataType: "json",
 			success: function(data){
