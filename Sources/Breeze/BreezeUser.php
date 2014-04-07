@@ -315,7 +315,7 @@ class BreezeUser extends Breeze
 		// Clean visitors log
 		$form->addHTML(
 			'clean_visitors',
-			'<a href="'. $scripturl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['member']['id'] .';rf=profile" class="clean_log">%s</a>'
+			'<a href="'. $scripturl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="clean_log">%s</a>'
 		);
 
 		// About me textarea.

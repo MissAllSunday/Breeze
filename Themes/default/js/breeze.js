@@ -313,7 +313,7 @@ jQuery(document).ready(function(){
 		event.preventDefault();
 
 		jQuery.ajax({
-			url: jQuery(this).attr('href') + ';js=1;' + breeze.session.v + '=' + breeze.session.id,
+			url: jQuery(this).attr('href') + ';js=1',
 			type: "GET",
 			dataType: "json",
 			success: function(data){
