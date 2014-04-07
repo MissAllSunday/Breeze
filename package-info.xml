@@ -37,6 +37,8 @@
 		<remove-file name="$themedir/js/jquery.atwho.js" />
 		<remove-file name="$themedir/js/jquery.hashchange.min.js" />
 		<remove-file name="$themedir/js/jquery.zrssfeed.min.js" />
+		<remove-file name="$themedir/js/livestamp.min.js" />
+		<remove-file name="$themedir/js/moment.min.js" />
 		<remove-file name="$languagedir/Breeze.english.php" />
 		<remove-file name="$languagedir/Breeze.english-utf8.php" />
 		<remove-file name="$languagedir/BreezeAdmin.english.php" />

@@ -637,6 +637,14 @@ class Breeze extends Pimple
 						'name' => 'Mentions autocomplete',
 						'site' => 'http://ichord.github.com/At.js',
 					),
+					'moment' => array(
+						'name' => 'moment.js',
+						'site' => 'http://momentjs.com/',
+					),
+					'livestamp' => array(
+						'name' => 'Livestamp.js',
+						'site' => 'http://mattbradley.github.io/livestampjs/',
+					),
 				),
 			),
 			'images' => array(
