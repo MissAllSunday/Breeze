@@ -45,7 +45,7 @@ function breeze_status($data, $returnVar = false)
 						<div class="breeze_user_status_comment">
 							'. $status['body'] .'
 							<div class="breeze_options">
-								<span class="time_elapsed" title="'. timeformat($status['time_raw'], false) .'">'. $status['time'] .' </span>';
+								<span class="time_elapsed" title="'. timeformat($status['time_raw'], false) .'" data-livestamp="'. $status['time_raw'] .'">'. $status['time'] .' </span>';
 
 		// Delete status
 		if ($canHas['delete'])
