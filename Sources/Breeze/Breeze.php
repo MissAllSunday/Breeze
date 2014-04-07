@@ -6,7 +6,7 @@
  * @package Breeze mod
  * @version 1.0
  * @author Jessica Gonzalez <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2014 Jessica González
+ * @copyright Copyright (c) 2011, 2014 Jessica Gonzalez
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -17,7 +17,8 @@ if (!defined('SMF'))
  * breeze_autoloader()
  *
  * @param mixed $class_name
- * @return
+ *
+ * @return bool
  */
 function breeze_autoloader($class_name)
 {
@@ -33,6 +34,7 @@ function breeze_autoloader($class_name)
 }
 
 spl_autoload_register('breeze_autoloader');
+
 
 class Breeze extends Pimple
 {
@@ -53,7 +55,7 @@ class Breeze extends Pimple
 	/**
 	 * Breeze::__construct()
 	 *
-	 * @return
+	 * @return \Breeze
 	 */
 	public function __construct()
 	{
@@ -64,7 +66,7 @@ class Breeze extends Pimple
 	/**
 	 * Breeze::set()
 	 *
-	 * @return
+	 * @return void
 	 */
 	protected function set()
 	{
@@ -100,9 +102,9 @@ class Breeze extends Pimple
 	/**
 	 * Breeze::load()
 	 *
-	 * @param string $file When $file is a string it contains a single file name.
-	 * @param array $file a comma separated list of all the file names to be loaded.
-	 * @return
+	 * @param string $file a comma separated list of all the file names to be loaded.
+	 *
+	 * @return void
 	 */
 	public function load($file)
 	{
@@ -371,10 +373,12 @@ class Breeze extends Pimple
 	 * Breeze::topic()
 	 *
 	 * Creates a new notification when someone opens a new topic.
-	 * @param array $msgOptions message info.
+	 *
+	 * @param array $msgOptions   message info.
 	 * @param array $topicOptions topic info.
-	 * @param array $posterInfo poster info ...DUH!
-	 * @return
+	 * @param array $posterOptions poster info.
+	 *
+	 * @return void
 	 */
 	public function newTopic($msgOptions, $topicOptions, $posterOptions)
 	{
@@ -407,9 +411,11 @@ class Breeze extends Pimple
 	 * Breeze::newRegister()
 	 *
 	 * Creates a new notification for new registrations
+	 *
 	 * @param array $regOptions An array containing info about the new member.
-	 * @param int $user_id the newly created user ID.
-	 * @return
+	 * @param int   $user_id    the newly created user ID.
+	 *
+	 * @return void
 	 */
 	public static function newRegister($regOptions, $user_id)
 	{
@@ -564,8 +570,10 @@ class Breeze extends Pimple
 	 * Breeze::admin()
 	 *
 	 * Creates a new section in the admin panel.
+	 *
 	 * @param array $admin_menu An array with all the admin settings buttons
-	 * @return
+	 *
+	 * @return void
 	 */
 	public function admin(&$admin_menu)
 	{
@@ -588,6 +596,9 @@ class Breeze extends Pimple
 		);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function credits()
 	{
 		// Dear contributor, please feel free to add yourself here.

@@ -6,19 +6,29 @@
  * @package Breeze mod
  * @version 1.0
  * @author Jessica Gonzalez <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2014 Jessica González
+ * @copyright Copyright (c) 2011, 2014 Jessica Gonzalez
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
 if (!defined('SMF'))
 	die('No direct access...');
 
+/**
+ * Class BreezeQuery
+ */
 class BreezeQuery
 {
+	/**
+	 * @var array
+	 */
 	protected $_status = array();
 	protected $_noti = array();
 	protected $_comments = array();
 	protected $_members = array();
+
+	/**
+	 * @var object
+	 */
 	protected $_app;
 
 	/**
@@ -848,7 +858,7 @@ class BreezeQuery
 				$return[$row['variable']] = is_numeric($row['value']) ? (int) $row['value'] : (string) $row['value'];
 
 				$return += array(
-					'gender' => $row['gender'],
+					// 'gender' => $row['gender'], @todo get the custom profile fields and merge them here
 					'buddiesList' => !empty($row['buddy_list']) ? explode(',', $row['buddy_list']) : array(),
 					'ignoredList' => $row['pm_ignore_list'],
 					'profileViews' => $row['breeze_profile_views'],
@@ -1527,7 +1537,7 @@ class BreezeQuery
 					'id' => $profile['id_member'],
 					'href' => $this->scripturl . '?action=profile;u=' . $profile['id_member'],
 					'link' => '<a href="' . $this->scripturl . '?action=profile;u=' . $profile['id_member'] . '" title="' . $txt['profile_of'] . ' ' . $profile['real_name'] . '">' . $profile['real_name'] . '</a>',
-					'gender' => $profile['gender'],
+					// 'gender' => $profile['gender'],
 				);
 
 				unset($profile);
@@ -1542,7 +1552,7 @@ class BreezeQuery
 		if (!empty($toLoad))
 		{
 			$request = $this->_smcFunc['db_query']('', '
-				SELECT id_member, member_name, real_name, gender
+				SELECT id_member, member_name, real_name
 				FROM {db_prefix}members
 				WHERE id_member IN ({array_int:users})',
 				array(
