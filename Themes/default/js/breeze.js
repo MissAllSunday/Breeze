@@ -60,7 +60,7 @@ jQuery(document).ready(function(){
 			// The long, long ajax call...
 			jQuery.ajax({
 				type: 'GET',
-				url: smf_scripturl + '?action=breezeajax;sa=post;js=1;' + breeze.session.v + '=' + breeze.session.id + ';rf=' + breeze.tools.comingFrom,
+				url: smf_scripturl + '?action=breezeajax;sa=post;js=1;rf=' + breeze.tools.comingFrom,
 				data: status,
 				cache: false,
 				dataType: 'json',
@@ -139,7 +139,7 @@ jQuery(document).ready(function(){
 
 			jQuery.ajax({
 				type: 'GET',
-				url: smf_scripturl + '?action=breezeajax;sa=postcomment;js=1;' + breeze.session.v + '=' + breeze.session.id + ';rf=' + breeze.tools.comingFrom,
+				url: smf_scripturl + '?action=breezeajax;sa=postcomment;js=1;rf=' + breeze.tools.comingFrom,
 				data: comment,
 				cache: false,
 				dataType: 'json',
