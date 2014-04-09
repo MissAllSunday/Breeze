@@ -121,7 +121,7 @@ jQuery(document).ready(function(){
 		// Don't be silly...
 		if(comment.commentContent=='')
 		{
-			breeze.tools.showNoti({message: breeze.text.empty_message, type : 'error'});
+			breeze.tools.showNoti({message: breeze.text.error_empty, type : 'error'});
 			return false;
 		}
 
