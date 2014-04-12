@@ -186,9 +186,9 @@ class Breeze extends Pimple
 					'function' => 'wall',
 					'class' => 'BreezeUser',
 					'permission' => array(
-						'own' => 'profile_view_own',
-						'any' => 'profile_view_any',
-						),
+						'own' => 'is_not_guest',
+						'any' => 'profile_view',
+					),
 				);
 
 				// If the mod is enable, then create another page for the default profile page
@@ -197,10 +197,10 @@ class Breeze extends Pimple
 					'file' => 'Profile-View.php',
 					'function' => 'summary',
 					'permission' => array(
-						'own' => 'profile_view_own',
-						'any' => 'profile_view_any',
-						),
-					);
+						'own' => 'is_not_guest',
+						'any' => 'profile_view',
+					),
+				);
 			}
 
 			// Create the area
@@ -216,11 +216,10 @@ class Breeze extends Pimple
 				'function' => 'settings',
 				'class' => 'BreezeUser',
 				'permission' => array(
-					'own' => array(
-						'profile_view_own',
-						),
-					),
-				);
+					'own' => 'profile_identity_own',
+					'any' => false,
+				),
+			);
 
 			// Notification's settings.
 			if ($tools->enable('notifications'))
@@ -231,11 +230,10 @@ class Breeze extends Pimple
 					'function' => 'notiSettings',
 					'class' => 'BreezeUser',
 					'permission' => array(
-						'own' => array(
-							'profile_view_own',
-							),
-						),
-					);
+						'own' => 'profile_identity_own',
+						'any' => false,
+					),
+				);
 
 				// Notifications admin page
 				$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
@@ -244,8 +242,11 @@ class Breeze extends Pimple
 					'function' => 'notifications',
 					'class' => 'BreezeUser',
 					'subsections' => array(),
-					'permission' => array('own' => 'profile_view_own', ),
-					);
+					'permission' => array(
+						'own' => 'profile_identity_own',
+						'any' => false,
+					),
+				);
 			}
 
 			// Logs anyone?
@@ -256,8 +257,11 @@ class Breeze extends Pimple
 					'function' => 'notiLogs',
 					'class' => 'BreezeUser',
 					'subsections' => array(),
-					'permission' => array('own' => 'profile_view_own', ),
-					);
+					'permission' => array(
+						'own' => 'profile_identity_own',
+						'any' => false,
+					),
+				);
 		}
 		// Done with the hacking...
 	}
