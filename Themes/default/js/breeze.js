@@ -16,6 +16,10 @@ breeze.tools.showNoti = function(params){
 	});
 }
 
+breeze.tools.findWord = function(string, word){
+	return string.match('@' + word) !== null;
+}
+
 jQuery(document).ready(function(){
 
 	// Posting a new status
@@ -54,8 +58,18 @@ jQuery(document).ready(function(){
 			jQuery('#breeze_load_image').fadeIn('slow').html(breeze.tools.loadImage);
 
 			// If there are some mentions, attach them to our main object.
-			if (window.breeze.mentions)
-				status['mentions'] = window.breeze.mentions;
+			if (window.breeze.mentions) {
+
+				// Gotta make sure you really end up mentioning this user.
+				jQuery.each(window.breeze.mentions, function( key, value ) {
+					if (breeze.tools.findWord(status.statusContent, value.name) == false) {
+						delete window.breeze.mentions[key];
+					}
+				});
+
+				// Pass the few survivors...
+				status.mentions = window.breeze.mentions;
+			}
 
 			// The long, long ajax call...
 			jQuery.ajax({
@@ -115,11 +129,12 @@ jQuery(document).ready(function(){
 			'commentOwner' : jQuery('#commentOwner_' + StatusID).val(),
 			'commentPoster' : jQuery('#commentPoster_' + StatusID).val(),
 			'commentStatusPoster' : jQuery('#commentStatusPoster_' + StatusID).val(),
-			'commentContent' : jQuery('#commentContent_' + StatusID).val()
+			'commentContent' : jQuery('#commentContent_' + StatusID).val(),
+			'mentions' : {}
 		};
 
 		// Don't be silly...
-		if(comment.commentContent=='')
+		if(comment.commentContent =='')
 		{
 			breeze.tools.showNoti({message: breeze.text.error_empty, type : 'error'});
 			return false;
@@ -134,8 +149,18 @@ jQuery(document).ready(function(){
 			jQuery('#breeze_load_image_comment_'+ StatusID).fadeIn('slow').html(breeze.tools.loadImage);
 
 			// Any mentions? add them at once!
-			if (window.breeze.mentions)
-				comment['mentions'] = window.breeze.mentions;
+			if (window.breeze.mentions) {
+
+				// Gotta make sure you really end up mentioning this user.
+				jQuery.each(window.breeze.mentions, function( key, value ) {
+					if (breeze.tools.findWord(comment.commentContent, value.name) == false) {
+						delete window.breeze.mentions[key];
+					}
+				});
+
+				// Pass the few survivors...
+				comment.mentions = window.breeze.mentions;
+			}
 
 			jQuery.ajax({
 				type: 'GET',

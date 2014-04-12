@@ -135,7 +135,7 @@ class BreezeAjax
 
 		// Any mentions?
 		if ($this->_data->get('mentions'))
-			$statusMentions = $this->_data->get('mentions');
+			$statusMentions = array_filter($this->_data->get('mentions'));
 
 		// Sorry, try to play nicer next time
 		if (!$statusOwner || !$statusPoster || !$statusContent)
