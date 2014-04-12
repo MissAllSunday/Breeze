@@ -166,20 +166,23 @@ class BreezeQuery
 	 * Gets and return the number of rows from the data provided
 	 * Only works for the status table.
 	 * @param mixed $data either a single ID or an array of IDs to match the query against.
-	 * @param string $where The sql WHERE instruction.
+	 * @param string $column The column name to check the status from, needs to be a column that stores users IDs.
 	 * @return array
 	 */
-	protected function getCount($data, $where)
+	protected function getCount($data, $column)
 	{
 		$count = 0;
 
 		if (empty($data) || empty($where))
 			return $count;
 
+		// Gotta make sure we have and array of integers.
+		$data = array_map('intval', (array) $data);
+
 		$result = $this->_smcFunc['db_query']('', '
 			SELECT status_id
 			FROM {db_prefix}breeze_status
-			WHERE '. ($where),
+			WHERE '. ($column) .' IN ({array_int:data})',
 			array(
 				'data' => $data
 			)
@@ -404,7 +407,7 @@ class BreezeQuery
 			return $return;
 
 		// How many precious little gems do we have?
-		$count = $this->getCount($id, 'status_owner_id = {int:data}');
+		$count = $this->getCount($id, 'status_owner_id');
 
 		// Fetch the status.
 		$result = $this->_smcFunc['db_query']('', '
@@ -612,7 +615,7 @@ class BreezeQuery
 		$id = (array) $id;
 
 		// Count all the possible items we can fetch
-		$count = $this->getCount($id, 'status_poster_id IN ({array_int:data})');
+		$count = $this->getCount($id, 'status_poster_id');
 
 		// Get all the status.
 		$result = $this->_smcFunc['db_query']('', '
