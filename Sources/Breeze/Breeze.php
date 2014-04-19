@@ -453,7 +453,7 @@ class Breeze
 				$context['html_headers'] .= '
 		breeze.text.'. $var .' = '. JavaScriptEscape($tools->text($var));
 
-				// Since where here already, load the current User (currentSettings) object
+				// Since we're here already, load the current User (currentSettings) object
 				foreach (Breeze::$allSettings as $k)
 					$context['html_headers'] .= '
 		breeze.currentSettings.'. $k .' = '. (isset($userSettings[$k]) ? (is_array($userSettings[$k]) ? json_encode($userSettings[$k]) : JavaScriptEscape($userSettings[$k])) : 'false') .';';
