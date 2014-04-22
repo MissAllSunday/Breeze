@@ -173,7 +173,7 @@ class BreezeQuery
 	{
 		$count = 0;
 
-		if (empty($data) || empty($where))
+		if (empty($data) || empty($column))
 			return $count;
 
 		// Gotta make sure we have and array of integers.
@@ -612,7 +612,7 @@ class BreezeQuery
 		$statusIDs = array();
 
 		// Work with arrays
-		$id = (array) $id;
+		$id = array_map('intval', (array) $id);
 
 		// Count all the possible items we can fetch
 		$count = $this->getCount($id, 'status_poster_id');
