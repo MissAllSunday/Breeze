@@ -1538,7 +1538,7 @@ class BreezeQuery
 					'name' => $profile['real_name'],
 					'id' => $profile['id_member'],
 					'href' => $this->scripturl . '?action=profile;u=' . $profile['id_member'],
-					'link' => '<a href="' . $this->scripturl . '?action=profile;u=' . $profile['id_member'] . '" title="' . $txt['profile_of'] . ' ' . $profile['real_name'] . '">' . $profile['member_name'] . '</a>',
+					'link' => '<a href="' . $this->scripturl . '?action=profile;u=' . $profile['id_member'] . '" title="' . $txt['profile_of'] . ' ' . $profile['member_name']. '">' . $profile['member_name'] . '</a>',
 					// 'gender' => $profile['gender'],
 				);
 
