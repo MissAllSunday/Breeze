@@ -1529,13 +1529,8 @@ class BreezeQuery
 					'name' => $profile['real_name'],
 					'id' => $profile['id_member'],
 					'href' => $this->scripturl . '?action=profile;u=' . $profile['id_member'],
-<<<<<<< HEAD
-					'link' => '<a href="' . $this->scripturl . '?action=profile;u=' . $profile['id_member'] . '" title="' . $txt['profile_of'] . ' ' . $profile['real_name'] . '">' . $profile['real_name'] . '</a>',
+					'link' => '<a href="' . $this->scripturl . '?action=profile;u=' . $profile['id_member'] . '" title="' . $txt['profile_of'] . ' ' . $profile['member_name'] . '">' . $profile['member_name'] . '</a>',
 					'gender' => $profile['gender'],
-=======
-					'link' => '<a href="' . $this->scripturl . '?action=profile;u=' . $profile['id_member'] . '" title="' . $txt['profile_of'] . ' ' . $profile['real_name'] . '">' . $profile['member_name'] . '</a>',
-					// 'gender' => $profile['gender'],
->>>>>>> e8d7480... I suppose the username is a more common choice for showing in a link.
 				);
 
 				unset($profile);
