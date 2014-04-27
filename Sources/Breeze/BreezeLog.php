@@ -132,10 +132,13 @@ class BreezeLog
 	{
 		global $scripturl;
 
+		// Load the user info.
+		$user = $this->_query->loadMinimalData($entry['sender']); // Using sender or receiver makes no difference.
+
 		// Lets see if you can see this topic.
 		if (!empty($this->_boards) && !empty($entry['content']['board']) && in_array($entry['content']['board'], $this->_boards))
 			return array(
-				'message' => $entry['content']['posterName'] .' '. $this->_tools->text('logTopic'),
+				'message' => $user[$entry['sender']]['link'] .' '. $this->_tools->text('logTopic'),
 				'link' => '<a href="'. $scripturl .'?topic='. $entry['content']['topicId'] .'.0">'. $entry['content']['subject'] .'</a>',
 			);
 
