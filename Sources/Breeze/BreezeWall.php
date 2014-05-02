@@ -186,6 +186,7 @@ class BreezeWall
 			maxIndex : '. $maxIndex .',
 			totalItems : ' . $status['count'] . ',
 			buddies : '. json_encode($this->userSettings['buddiesList']) .',
+			userID : '. $user_info['id'] .'
 		};
 	// ]]></script>';
 
