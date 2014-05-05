@@ -5,7 +5,7 @@
  *
  * @package Breeze mod
  * @version 1.0
- * @author Jessica Gonzalez <suki@missallsunday.com>
+ * @author Jessica Gonz√°lez <suki@missallsunday.com>
  * @copyright Copyright (c) 2011, 2014 Jessica Gonz·lez
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
