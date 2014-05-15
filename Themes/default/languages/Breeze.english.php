@@ -56,6 +56,7 @@ $txt['Breeze_user_settings_visitors_sub'] = 'This block will show the latest vis
 $txt['Breeze_user_settings_how_many_mentions'] = 'How many users will be displayed as options when mentioning an user';
 $txt['Breeze_user_settings_how_many_mentions_sub'] = 'for example, if you set this on 5 then when mentioning you will see 5 possible options to chose from.';
 $txt['Breeze_user_settings_clean_visitors'] = 'Clean the visitors log';
+$txt['Breeze_user_settings_select_file'] = 'Select file';
 $txt['Breeze_user_settings_clean_visitors_sub'] = 'Removes all visitors from your visitors block.';
 $txt['Breeze_user_settings_clear_noti'] = 'How many seconds do you want the notifications to be displayed before been automatically closed';
 $txt['Breeze_user_settings_clear_noti_sub'] = 'In seconds, If you leave this empty the notifications won\'t be automatically closed and you must manually click the "close all notifications" button.';
