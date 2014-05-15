@@ -68,6 +68,7 @@ class BreezeAjax
 			'fetchc' => 'fetchComment',
 			'fetchNoti' => 'fetchNoti',
 			'usersettings' => 'userSettings',
+			'cover' => 'cover',
 		);
 
 		// Build the correct redirect URL
@@ -810,6 +811,28 @@ class BreezeAjax
 			'owner' => $user,
 			'extra' => array('area' => 'breezesettings',),
 		));
+	}
+
+	/**
+	 * BreezeAjax::cover()
+	 *
+	 * Gets an HTTP request for uploading and storing a new cover image. Checks f the user has permission to do so, checks the image itself and all other possible checks.
+	 * @return
+	 */
+	public function cover()
+	{
+		// Check permissions
+
+		// Check the image, dimensions, etc.
+
+		// Check if there is any cover image already, if not, try to create the user folder for it.
+
+		// Store the new cover or replace the old one.
+
+		// Add a log notification for this change.
+
+
+		// Set a json response.
 	}
 
 	/**
