@@ -350,33 +350,42 @@ class BreezeUser extends Breeze
 		<script type="text/javascript"><!-- // --><![CDATA[
 jQuery(function () {
 	\'use strict\';
-	// Change this to the location of your server-side upload handler:
 	var uploadButton = jQuery(\'<button/>\')
-			.addClass(\'btn btn-primary\')
+			.addClass(\'clear\')
 			.prop(\'disabled\', true)
-			.text(\'Processing...\')
-			.on(\'click\', function (event) {
-				event.preventDefault();
+			.text(\'upload\')
+			.on(\'click\', function (e) {
+				e.preventDefault();
 				var $this = jQuery(this),
 					data = $this.data();
 				$this
 					.off(\'click\')
-					.text(\'Abort\')
+					.text('. JavaScriptEscape($tools->text('confirm_cancel')) .')
 					.on(\'click\', function () {
 						$this.remove();
 						data.abort();
 					});
 				data.submit().always(function () {
-					$this.remove();
 				});
+			});
+	var cancelButton = jQuery(\'<button/>\')
+			.addClass(\'clear\')
+			.text('. JavaScriptEscape($tools->text('confirm_cancel')) .')
+			.on(\'click\', function (e) {
+				e.preventDefault();
+				var $this = jQuery(this),
+					data = $this.data();
+				data.abort();
+				$this.parent().fadeOut(1000);
 			});
 	jQuery(\'#fileupload\').fileupload({
 		url: '. JavaScriptEscape($scripturl .'?action=breezeajax;sa=cover;u='. $context['member']['id'] .';rf=profile;js=1;'. $context['session_var'] .'='. $context['session_id']) .',
 		dataType: \'json\',
 		autoUpload: false,
+		getNumberOfFiles: function () {return 1;},
 		maxNumberOfFiles: 1,
 		acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-		maxFileSize: 5000000, // 5 MB
+		maxFileSize: 5000000, // @todo add a setting here
 		// Enable image resizing, except for Android and Opera,
 		// which actually support image resizing, but fail to
 		// send Blob objects via XHR requests:
@@ -393,7 +402,8 @@ jQuery(function () {
 			if (!index) {
 				node
 					.append(\'<br>\')
-					.append(uploadButton.clone(true).data(data));
+					.append(uploadButton.data(data))
+					.append(cancelButton.data(data));
 			}
 			node.appendTo(data.context);
 		});
@@ -413,7 +423,6 @@ jQuery(function () {
 		}
 		if (index + 1 === data.files.length) {
 			data.context.find(\'button\')
-				.text(\'Upload\')
 				.prop(\'disabled\', !!data.files.error);
 		}
 	}).on(\'fileuploadprogressall\', function (e, data) {
@@ -423,13 +432,15 @@ jQuery(function () {
 			progress + \'%\'
 		);
 	}).on(\'fileuploaddone\', function (e, data) {
-		jQuery.each(data.files, function (index, file) {
+		console.log(data);
+		jQuery.each(data.result.files, function (index, file) {
 			if (file.url) {
 				var link = jQuery(\'<a>\')
 					.attr(\'target\', \'_blank\')
+					.html(\'lol\')
 					.prop(\'href\', file.url);
 				jQuery(data.context.children()[index])
-					.wrap(link);
+					.append(link);
 			} else if (file.error) {
 				var error = jQuery(\'<span class="text-danger"/>\').text(file.error);
 				jQuery(data.context.children()[index])
@@ -438,12 +449,14 @@ jQuery(function () {
 			}
 		});
 	}).on(\'fileuploadfail\', function (e, data) {console.log(data);
-		$.each(data.result.files, function (index, file) {
-			var error = jQuery(\'<span class="text-danger"/>\').text(\'File upload failed.\');
-			jQuery(data.context.children()[index])
-				.append(\'<br>\')
-				.append(error);
-		});
+		if (data.result) {
+			$.each(data.result.files, function (index, file) {
+				var error = jQuery(\'<span class="text-danger"/>\').text(\'File upload failed.\');
+				jQuery(data.context.children()[index])
+					.append(\'<br>\')
+					.append(error);
+			});
+		}
 	}).prop(\'disabled\', !$.support.fileInput)
 		.parent().addClass($.support.fileInput ? undefined : \'disabled\');
 });
