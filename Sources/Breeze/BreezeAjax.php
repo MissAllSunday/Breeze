@@ -821,8 +821,16 @@ class BreezeAjax
 	 */
 	public function cover()
 	{
-		// Check permissions
+		global $boardurl, $boarddir;
 
+		// Check permissions
+		$upload_handler = new UploadHandler(array(
+			'script_url' => $boardurl .'/',
+			'upload_dir' => $boarddir .'/breezeFiles/',
+			'upload_url' => $boardurl .'/breezeFiles/',
+			'user_dirs' => true,
+		));
+		return $this->_response = $upload_handler->get(false);
 		// Check the image, dimensions, etc.
 
 		// Check if there is any cover image already, if not, try to create the user folder for it.
