@@ -76,6 +76,12 @@ class BreezeQuery
 				'property' => '_noti',
 				'columns' => array('id', 'sender', 'receiver', 'type', 'time', 'viewed', 'content', 'type_id', 'second_type',),
 				),
+			'likes' => array(
+				'name' => 'likes',
+				'table' => 'user_likes',
+				'property' => '_likes',
+				'columns' => array('id_member', 'content_type', 'content_id', 'like_time',),
+				),
 		);
 	}
 
@@ -409,10 +415,19 @@ class BreezeQuery
 		// How many precious little gems do we have?
 		$count = $this->getCount($id, 'status_owner_id');
 
+		// Are likes enabled?
+		// if (some setting here)
+			$sql = 'SELECT s.' . (implode(', s.', $this->_tables['status']['columns'])) . ', l.' . (implode(', l.', $this->_tables['likes']['columns'])) . '
+				FROM {db_prefix}' . ($this->_tables['options']['table']) . ' AS s
+					LEFT JOIN {db_prefix}'. ($this->_tables['likes']['table']) .' AS l ON (l.content_id = s.status_id)';
+
+		else
+			$sql =  'SELECT '. implode(', ', $this->_tables['status']['columns']) .'
+			FROM {db_prefix}'. ($this->_tables['status']['table']);
+
 		// Fetch the status.
 		$result = $this->_smcFunc['db_query']('', '
-			SELECT '. implode(', ', $this->_tables['status']['columns']) .'
-			FROM {db_prefix}'. ($this->_tables['status']['table']) .'
+			'. $sql .'
 			WHERE status_owner_id = {int:owner}
 			ORDER BY status_id DESC
 			LIMIT {int:start}, {int:maxindex}

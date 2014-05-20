@@ -49,7 +49,9 @@ function breeze_status($data, $returnVar = false)
 		// Likes.
 		// if (!empty($status['likes']))
 			$echo .=
-								'<span class="like_button"><a href="'. $scripturl .'?action=likes;ltype=breeze_status;sa=like;like='. $status['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breeze_like"><span class="'. ($status['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($status['likes']['already'] ? $txt['unlike'] : $txt['like']) .'</a></span> | ';
+								'<ul class="floatleft">
+									<li class="like_button"><a href="'. $scripturl .'?action=likes;ltype=breeze_status;sa=like;like='. $status['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breeze_like"><span class="'. ($status['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($status['likes']['already'] ? $txt['unlike'] : $txt['like']) .'</a></li>
+								</ul>';
 		// Time.
 		$echo .=
 								'<span class="time_elapsed" title="'. timeformat($status['time_raw'], false) .'" data-livestamp="'. $status['time_raw'] .'">'. $status['time'] .' </span>';
