@@ -1639,6 +1639,39 @@ class BreezeQuery
 
 		return $boards;
 	}
+
+	public function userLikes($type, $user = false)
+	{
+		global $user_info;
+
+		$return = array();
+
+		if (empty($user))
+			$user = $user_info['id'];
+
+		if (($return = cache_get_data(Breeze::$name .'-likes-'. $type .'-'. $user, 120)) == null)
+		{
+			$request = $this->_smcFunc['db_query']('', '
+				SELECT content_id
+				FROM {db_prefix}user_likes
+				WHERE id_member = {int:user}
+					AND content_type = {string:type}',
+				array(
+					'user' => $user,
+					'type' => 'breeze_'. $type,
+				)
+			);
+
+			// @todo fetch all the columns and not just the conten_id, for statistics and stuff...
+			while ($row = $this->_smcFunc['db_fetch_assoc']($request))
+				$return[] = (int) $row['content_id'];
+
+			$this->_smcFunc['db_free_result']($request);
+			cache_put_data(Breeze::$name .'-likes-'. $type .'-'. $user, $return, 120);
+		}
+
+		return $return;
+	}
 }
 
 /*
