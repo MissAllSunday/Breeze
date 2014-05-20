@@ -1672,6 +1672,20 @@ class BreezeQuery
 
 		return $return;
 	}
+
+	public function updateLikes($type, $content, $numLikes)
+	{
+		$this->_smcFunc['db_query']('', '
+			UPDATE {db_prefix}' . ($this->_tables[$type]['table']) . '
+			SET likes = {int:num_likes}
+			WHERE {string:column} = {int:id_msg}',
+			array(
+				'id_content' => content,
+				'num_likes' => $numLikes,
+				'column' => $type .'_id'
+			)
+		);
+	}
 }
 
 /*
