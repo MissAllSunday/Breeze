@@ -364,12 +364,18 @@ class Breeze extends Pimple
 		$data['can_like'] = true;
 		$data['type'] = $type;
 		$data['flush_cache'] = true;
+		$data['callback'] = 'Breeze::likesUpdate#';
 
 		// $extra has my much needed "comming from" json string, without this I cannot redirect users properly.
 		// $redirect = json_decode($extra, true);
 		$data['redirect'] = 'lol';
 
 		return $data;
+	}
+
+	public function likesUpdate($type, $content, $numLikes, $already_liked)
+	{
+		$this['query']->updateLikes($type, $content, $numLikes);
 	}
 
 	/**

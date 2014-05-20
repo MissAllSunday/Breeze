@@ -448,7 +448,7 @@ class BreezeQuery
 
 			// if some setting
 			{
-				$userLikes = $this->userLikes();
+				$userLikes = $this->userLikes('status');
 				$return['data'][$row['status_id']]['likes'] => array(
 					'count' => $row['likes'],
 					'already' => in_array($row['status_id'], $userLikes),
