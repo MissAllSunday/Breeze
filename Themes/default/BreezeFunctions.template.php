@@ -44,13 +44,20 @@ function breeze_status($data, $returnVar = false)
 						</div>
 						<div class="breeze_user_status_comment">
 							'. $status['body'] .'
-							<div class="breeze_options">
-								<span class="time_elapsed" title="'. timeformat($status['time_raw'], false) .'" data-livestamp="'. $status['time_raw'] .'">'. $status['time'] .' </span>';
+							<div class="breeze_options">';
 
-		// Delete status
+		// Likes.
+		// if (!empty($status['likes']))
+			$echo .=
+								'<span class="like_button"><a href="'. $scripturl .'?action=likes;ltype=breeze_status;sa=like;like='. $status['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breeze_like"><span class="'. ($status['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($status['likes']['already'] ? $txt['unlike'] : $txt['like']) .'</a></span> | ';
+		// Time.
+		$echo .=
+								'<span class="time_elapsed" title="'. timeformat($status['time_raw'], false) .'" data-livestamp="'. $status['time_raw'] .'">'. $status['time'] .' </span>';
+
+		// Delete status.
 		if ($canHas['delete'])
 			$echo .=
-								'| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $status['id'] .';type=status;profileOwner='. $status['owner_id'] .';poster='. $status['poster_id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .';'. $context['session_var'] .'='. $context['session_id'] .'" id="deleteStatus_'. $status['id'] .'" class="breeze_delete_status">'. $txt['Breeze_general_delete'] .'</a>';
+								' | <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $status['id'] .';type=status;profileOwner='. $status['owner_id'] .';poster='. $status['poster_id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .';'. $context['session_var'] .'='. $context['session_id'] .'" id="deleteStatus_'. $status['id'] .'" class="breeze_delete_status">'. $txt['Breeze_general_delete'] .'</a>';
 
 		// Modify? maybe someday...
 

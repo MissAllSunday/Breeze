@@ -323,6 +323,30 @@ jQuery(document).ready(function(){
 		return false;
 	});
 
+	// Likes
+	jQuery(document).on('click', '.breeze_like', function(event){
+	var obj = $(this);
+	event.preventDefault();
+	ajax_indicator(true);
+	jQuery.ajax({
+		type: 'GET',
+		url: obj.attr('href') + ';js=1;',
+		cache: false,
+		dataType: 'html',
+		success: function(html)
+		{console.log(html);
+			ajax_indicator(false);
+			obj.closest('ul').replaceWith(html);
+		},
+		error: function (html)
+		{
+			ajax_indicator(false);
+		}
+	});
+
+	return false;
+});
+
 	// Facebox
 	jQuery(document).on('click', 'a[rel*=facebox]', function(event){
 		jQuery(this).facebox(

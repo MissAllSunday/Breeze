@@ -353,14 +353,8 @@ class Breeze extends Pimple
 		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'breezeBuddyMessage');
 	}
 
-	public function likes($type, $content, $sa. $js, $extra)
+	public function likes($type, $content, $sa, $js, $extra)
 	{
-		// List of known Breeze like types
-		$knownLikes = array('breeze_status', 'breeze_comment');
-
-		// Not my business!
-		if (!in_array($type, $knownLikes))
-			return false;
 
 		// Create our returned array
 		$data = array();
@@ -372,8 +366,8 @@ class Breeze extends Pimple
 		$data['flush_cache'] = true;
 
 		// $extra has my much needed "comming from" json string, without this I cannot redirect users properly.
-		$redirect = json_decode($extra, true);
-		$data['redirect'] = 'action='. $redirect['from'] .';u='. $redirect['user'];
+		// $redirect = json_decode($extra, true);
+		$data['redirect'] = 'lol';
 
 		return $data;
 	}
