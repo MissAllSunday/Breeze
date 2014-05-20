@@ -1678,9 +1678,9 @@ class BreezeQuery
 		$this->_smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables[$type]['table']) . '
 			SET likes = {int:num_likes}
-			WHERE {string:column} = {int:id_msg}',
+			WHERE {string:column} = {int:id_content}',
 			array(
-				'id_content' => content,
+				'id_content' => $content,
 				'num_likes' => $numLikes,
 				'column' => $type .'_id'
 			)
