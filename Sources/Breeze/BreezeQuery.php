@@ -56,13 +56,13 @@ class BreezeQuery
 				'name' => 'status',
 				'table' => 'breeze_status',
 				'property' => '_status',
-				'columns' => array('status_id', 'status_owner_id', 'status_poster_id', 'status_time', 'status_body'),
+				'columns' => array('status_id', 'status_owner_id', 'status_poster_id', 'status_time', 'status_body', 'likes',),
 				),
 			'comments' => array(
 				'name' => 'comments',
 				'table' => 'breeze_comments',
 				'property' => '_comments',
-				'columns' => array('comments_id', 'comments_status_id', 'comments_status_owner_id', 'comments_poster_id', 'comments_profile_id', 'comments_time', 'comments_body'),
+				'columns' => array('comments_id', 'comments_status_id', 'comments_status_owner_id', 'comments_poster_id', 'comments_profile_id', 'comments_time', 'comments_body', 'likes'),
 				),
 			'members' => array(
 				'name' => 'members',
@@ -415,19 +415,10 @@ class BreezeQuery
 		// How many precious little gems do we have?
 		$count = $this->getCount($id, 'status_owner_id');
 
-		// Are likes enabled?
-		// if (some setting here)
-			$sql = 'SELECT s.' . (implode(', s.', $this->_tables['status']['columns'])) . ', l.' . (implode(', l.', $this->_tables['likes']['columns'])) . '
-				FROM {db_prefix}' . ($this->_tables['options']['table']) . ' AS s
-					LEFT JOIN {db_prefix}'. ($this->_tables['likes']['table']) .' AS l ON (l.content_id = s.status_id)';
-
-		else
-			$sql =  'SELECT '. implode(', ', $this->_tables['status']['columns']) .'
-			FROM {db_prefix}'. ($this->_tables['status']['table']);
-
 		// Fetch the status.
 		$result = $this->_smcFunc['db_query']('', '
-			'. $sql .'
+			SELECT '. implode(', ', $this->_tables['status']['columns']) .'
+			FROM {db_prefix}'. ($this->_tables['status']['table'] .'
 			WHERE status_owner_id = {int:owner}
 			ORDER BY status_id DESC
 			LIMIT {int:start}, {int:maxindex}
@@ -454,6 +445,16 @@ class BreezeQuery
 				'body' => $this->_app['parser']->display($row['status_body']),
 				'comments' => array(),
 			);
+
+			// if some setting
+			{
+				$userLikes = $this->userLikes();
+				$return['data'][$row['status_id']]['likes'] => array(
+					'count' => $row['likes'],
+					'already' => in_array($row['status_id'], $userLikes),
+					'can_like' => true,
+				);
+			}
 
 			// Get the users IDs
 			$return['users'][] = $row['status_owner_id'];
