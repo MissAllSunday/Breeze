@@ -336,7 +336,7 @@ class Breeze extends Pimple
 	 * @param array $actions An array containing all possible SMF actions.
 	 * @return void
 	 */
-	public static function actions(&$actions)
+	public function actions(&$actions)
 	{
 		// Fool the system and directly inject the main object to breezeAjax and breezeWall, Breeze's final classes
 
@@ -351,6 +351,31 @@ class Breeze extends Pimple
 
 		// A special action for the buddy request message
 		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'breezeBuddyMessage');
+	}
+
+	public function likes($type, $content, $sa. $js, $extra)
+	{
+		// List of known Breeze like types
+		$knownLikes = array('breeze_status', 'breeze_comment');
+
+		// Not my business!
+		if (!in_array($type, $knownLikes))
+			return false;
+
+		// Create our returned array
+		$data = array();
+
+		// @temp for testing.
+		$data['can_see'] = true;
+		$data['can_like'] = true;
+		$data['type'] = $type;
+		$data['flush_cache'] = true;
+
+		// $extra has my much needed "comming from" json string, without this I cannot redirect users properly.
+		$redirect = json_decode($extra, true);
+		$data['redirect'] = 'action='. $redirect['from'] .';u='. $redirect['user'];
+
+		return $data;
 	}
 
 	/**
