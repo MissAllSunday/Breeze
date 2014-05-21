@@ -47,11 +47,31 @@ function breeze_status($data, $returnVar = false)
 							<div class="breeze_options">';
 
 		// Likes.
-		// if (!empty($status['likes']))
+		if (!empty($status['likes']) && $status['likes']['can_like'])
 			$echo .=
 								'<ul class="floatleft">
-									<li class="like_button"><a href="'. $scripturl .'?action=likes;ltype=breSta;sa=like;like='. $status['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breeze_like"><span class="'. ($status['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($status['likes']['already'] ? $txt['unlike'] : $txt['like']) .'</a></li>
-								</ul>';
+									<li class="like_button"><a href="'. $scripturl .'?action=likes;ltype=breSta;sa=like;like='. $status['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breSta_like"><span class="'. ($status['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($status['likes']['already'] ? $txt['unlike'] : $txt['like']) .'</a></li>';
+
+		// Likes count
+		if (!empty($status['likes']['count']))
+		{
+			$context['some_likes'] = true;
+			$count = $status['likes']['count'];
+			$base = 'likes_';
+			if ($status['likes']['already'])
+			{
+				$base = 'you_' . $base;
+				$count--;
+			}
+			$base .= (isset($txt[$base . $count])) ? $count : 'n';
+
+			$echo .= '
+										<li class="like_count smalltext">'. sprintf($txt[$base], $scripturl . '?action=likes;sa=view;ltype=breSta;like=' . $status['id'] .';'. $context['session_var'] .'='. $context['session_id']. (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') , comma_format($count)).'</li>';
+		}
+
+		$echo .=
+								'</ul>';
+
 		// Time.
 		$echo .=
 								'<span class="time_elapsed" title="'. timeformat($status['time_raw'], false) .'" data-livestamp="'. $status['time_raw'] .'">'. $status['time'] .' </span>';

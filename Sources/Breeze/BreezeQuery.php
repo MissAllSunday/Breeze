@@ -451,7 +451,7 @@ class BreezeQuery
 				$userLikes = $this->userLikes('breSta');
 				$return['data'][$row['status_id']]['likes'] = array(
 					'count' => $row['likes'],
-					'already' => in_array($row['status_id'], $userLikes),
+					'already' => in_array($row['status_id'], (array) $userLikes),
 					'can_like' => true,
 				);
 			}
@@ -1678,11 +1678,10 @@ class BreezeQuery
 		$this->_smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables[$type]['table']) . '
 			SET likes = {int:num_likes}
-			WHERE {string:column} = {int:id_content}',
+			WHERE '. ($type) .'_id = {int:id_content}',
 			array(
 				'id_content' => $content,
 				'num_likes' => $numLikes,
-				'column' => $type .'_id'
 			)
 		);
 	}
