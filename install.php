@@ -262,9 +262,48 @@
 			'parameters' => array(),
 		);
 
+		// Is this an old or a clean install? this just vaguely assume you have all required tables already installed.
+		$installed = 0;
+		$request = $smcFunc['db_query']('', '
+			SELECT status_id
+			FROM {db_prefix}breeze_status',
+			array()
+		);
+		$installed = $smcFunc['db_num_rows']($request);
+		$smcFunc['db_free_result']($request);
+
 		// Installing
-		foreach ($tables as $table)
-			$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
+		if (empty($installed))
+			foreach ($tables as $table)
+				$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
+
+		else
+		{
+			$smcFunc['db_add_column'](
+				'{db_prefix}breeze_status',
+				array(
+					'name' => 'likes',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
+				array(),
+				'update',
+				null
+			);
+			$smcFunc['db_add_column'](
+				'{db_prefix}breeze_comments',
+				array(
+					'name' => 'likes',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
+				array(),
+				'update',
+				null
+			);
+		}
 	}
 
 	function BreezeCheck()

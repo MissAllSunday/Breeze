@@ -376,6 +376,8 @@ class Breeze extends Pimple
 	public function likesUpdate($type, $content, $numLikes, $already_liked)
 	{
 		$this['query']->updateLikes($type, $content, $numLikes);
+
+		// @todo this is a nice place to fire up some notifications...
 	}
 
 	/**
