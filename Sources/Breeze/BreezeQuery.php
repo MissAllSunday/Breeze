@@ -448,7 +448,7 @@ class BreezeQuery
 
 			// if some setting
 			{
-				$userLikes = $this->userLikes('status');
+				$userLikes = $this->userLikes('breSta');
 				$return['data'][$row['status_id']]['likes'] = array(
 					'count' => $row['likes'],
 					'already' => in_array($row['status_id'], $userLikes),
@@ -1658,7 +1658,7 @@ class BreezeQuery
 					AND content_type = {string:type}',
 				array(
 					'user' => $user,
-					'type' => 'breeze_'. $type,
+					'type' => $type,
 				)
 			);
 
@@ -1674,7 +1674,7 @@ class BreezeQuery
 	}
 
 	public function updateLikes($type, $content, $numLikes)
-	{echo $type;echo ' --';die;
+	{
 		$this->_smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables[$type]['table']) . '
 			SET likes = {int:num_likes}
