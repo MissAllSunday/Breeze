@@ -417,8 +417,8 @@ class BreezeQuery
 
 		// Fetch the status.
 		$result = $this->_smcFunc['db_query']('', '
-			SELECT '. implode(', ', $this->_tables['status']['columns']) .'
-			FROM {db_prefix}'. ($this->_tables['status']['table'] .'
+			SELECT '. (implode(', ', $this->_tables['status']['columns'])) .'
+			FROM {db_prefix}'. ($this->_tables['status']['table']) .'
 			WHERE status_owner_id = {int:owner}
 			ORDER BY status_id DESC
 			LIMIT {int:start}, {int:maxindex}
@@ -449,7 +449,7 @@ class BreezeQuery
 			// if some setting
 			{
 				$userLikes = $this->userLikes('status');
-				$return['data'][$row['status_id']]['likes'] => array(
+				$return['data'][$row['status_id']]['likes'] = array(
 					'count' => $row['likes'],
 					'already' => in_array($row['status_id'], $userLikes),
 					'can_like' => true,
@@ -1674,7 +1674,7 @@ class BreezeQuery
 	}
 
 	public function updateLikes($type, $content, $numLikes)
-	{
+	{echo $type;echo ' --';die;
 		$this->_smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables[$type]['table']) . '
 			SET likes = {int:num_likes}

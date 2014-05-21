@@ -50,7 +50,7 @@ function breeze_status($data, $returnVar = false)
 		// if (!empty($status['likes']))
 			$echo .=
 								'<ul class="floatleft">
-									<li class="like_button"><a href="'. $scripturl .'?action=likes;ltype=breeze_status;sa=like;like='. $status['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breeze_like"><span class="'. ($status['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($status['likes']['already'] ? $txt['unlike'] : $txt['like']) .'</a></li>
+									<li class="like_button"><a href="'. $scripturl .'?action=likes;ltype=breSta;sa=like;like='. $status['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breeze_like"><span class="'. ($status['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($status['likes']['already'] ? $txt['unlike'] : $txt['like']) .'</a></li>
 								</ul>';
 		// Time.
 		$echo .=

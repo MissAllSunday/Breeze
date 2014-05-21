@@ -375,7 +375,10 @@ class Breeze extends Pimple
 
 	public function likesUpdate($type, $content, $numLikes, $already_liked)
 	{
-		$this['query']->updateLikes($type, $content, $numLikes);
+		// The likes system only accepts 6 characters so convert that weird id into a more familiar one...
+		$convert = array('breSta' => 'status', 'breCom' => 'comments');
+
+		$this['query']->updateLikes($convert[$type], $content, $numLikes);
 
 		// @todo this is a nice place to fire up some notifications...
 	}
