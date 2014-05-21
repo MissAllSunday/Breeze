@@ -120,6 +120,12 @@
 					'size' => '',
 					'default' => null,
 				),
+				array(
+					'name' => 'likes',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
 			),
 			'indexes' => array(
 				array(
@@ -166,6 +172,12 @@
 					'type' => 'text',
 					'size' => '',
 					'default' => null,
+				),
+				array(
+					'name' => 'likes',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
 				),
 			),
 			'indexes' => array(
@@ -252,7 +264,7 @@
 
 		// Installing
 		foreach ($tables as $table)
-		$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
+			$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
 	}
 
 	function BreezeCheck()

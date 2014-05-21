@@ -1662,7 +1662,7 @@ class BreezeQuery
 				)
 			);
 
-			// @todo fetch all the columns and not just the conten_id, for statistics and stuff...
+			// @todo fetch all the columns and not just the content_id, for statistics and stuff...
 			while ($row = $this->_smcFunc['db_fetch_assoc']($request))
 				$return[] = (int) $row['content_id'];
 
