@@ -121,6 +121,7 @@ class BreezeAdmin extends Breeze
 			array('int', Breeze::$txtpattern .'allowed_max_num_users', 'size' => 3, 'subtext' => $this['tools']->adminText('allowed_max_num_users_sub')),
 			array('check', Breeze::$txtpattern .'parseBBC', 'subtext' => $this['tools']->adminText('parseBBC_sub')),
 			array('int', Breeze::$txtpattern .'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this['tools']->adminText('allowed_maxlength_aboutMe_sub')),
+			array('check', Breeze::$txtpattern .'cover', 'subtext' => $this['tools']->adminText('cover_sub')),
 		);
 
 		$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=settings;save';
