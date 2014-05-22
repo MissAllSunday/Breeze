@@ -69,6 +69,7 @@ class BreezeAjax
 			'fetchNoti' => 'fetchNoti',
 			'usersettings' => 'userSettings',
 			'cover' => 'cover',
+			'coverdelete' => 'coverDelete',
 		);
 
 		// Build the correct redirect URL
@@ -854,6 +855,34 @@ class BreezeAjax
 		}
 
 		return $this->_response = $file;
+	}
+
+	public function coverDelete()
+	{
+		global $boarddir;
+
+		// Delete the cover at once!
+		if (!empty($this->_userSettings['cover']))
+		{
+			// Thumbnails first...
+			if (file_exists($boarddir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/'. $this->_userSettings['cover']))
+				@unlink($boarddir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/'. $this->_userSettings['cover']);
+
+			// The main file, basically the same thing.
+			if (file_exists($boarddir . Breeze::$coversFolder . $this->_currentUser . $this->_userSettings['cover']))
+				@unlink($boarddir . Breeze::$coversFolder . $this->_currentUser . $this->_userSettings['cover']);
+		}
+
+		// Remove the setting from the users options.
+		$this->_app['query']->insertUserSettings(array('cover'=> ''), $this->_currentUser);
+
+		// Build the response.
+		return $this->setResponse(array(
+			'type' => 'success',
+			'message' => 'user_settings_cover_deleted',
+			'owner' => $this->_data->get('u'),
+			'extra' => array('area' => 'breezesettings',),
+		));
 	}
 
 	/**

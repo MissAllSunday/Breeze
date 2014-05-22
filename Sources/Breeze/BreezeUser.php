@@ -209,7 +209,7 @@ class BreezeUser extends Breeze
 	function settings()
 	{
 		global $context, $scripturl, $txt, $modSettings;
-		global $user_info, $settings;
+		global $user_info, $settings, $boardurl;
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
@@ -325,9 +325,16 @@ class BreezeUser extends Breeze
 			array('rows' => 10, 'cols' => 50, 'maxLength' => $tools->setting('allowed_maxlength_aboutMe') ? $tools->setting('allowed_maxlength_aboutMe') : 1024)
 		);
 
+		// Remove a cover image.
+		$form->addHTML(
+			'cover_delete',
+			'<a href="'. $scripturl .'?action=breezeajax;sa=coverdelete;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="clean_log">%s</a></br>
+			'. (file_exists($boardurl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']) ? '<img src="'. $boardurl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover'] .'" class ="" />' : '') .''
+		);
+
 		// Cover upload option
 		$form->addHTML(
-			'select_file',
+			'cover_select',
 			'<span class="">
 				<input id="fileupload" type="file" name="files">
 			</span>
@@ -432,7 +439,7 @@ jQuery(function () {
 		jQuery.each(data.result.files, function (index, file) {
 			if (file.url) {
 				jQuery(data.context.children()[index])
-					.replaceWith(\'<div id="profile_success">'. $tools->text('user_settings_select_file_done') .'</div>\');
+					.replaceWith(\'<div id="profile_success">'. $tools->text('user_settings_cover_done') .'</div>\');
 			} else if (file.error) {
 				var error = jQuery(\'<span class="text-danger"/>\').text(file.error);
 				jQuery(data.context.children()[index])
