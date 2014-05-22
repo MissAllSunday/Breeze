@@ -5,7 +5,7 @@
  *
  * @package Breeze mod
  * @version 1.0
- * @author Jessica Gonzalez <suki@missallsunday.com>
+ * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2011, 2014 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
@@ -49,6 +49,11 @@ $txt['Breeze_user_settings_pagination_number'] = 'How many status will be displa
 $txt['Breeze_user_settings_pagination_number_sub'] = 'Enter the number of status you want to display per page on your wall. By default is 5';
 $txt['Breeze_user_settings_general_wall'] = 'Enable the general wall';
 $txt['Breeze_user_settings_general_wall_sub'] = 'The general wall is a unique page where you can see the status and updates from your buddies. This setting allows you to enable/disable it.';
+$txt['Breeze_user_settings_cover_select'] = 'Cover image file';
+$txt['Breeze_user_settings_cover_select_sub'] = 'You can upload an image that will serve as a cover for your own wall, the recommended size is 800 x 300 and the accepted files as jpg, png and gif. Do not that if your gif image has an animation, the animation will be lost.';
+$txt['Breeze_user_settings_cover_done'] = 'Your image was successfully uploaded';
+$txt['Breeze_user_settings_cover_deleted'] = 'Your cover was successfully deleted.';
+$txt['Breeze_user_settings_cover_delete'] = 'Delete your current uploaded cover image';
 $txt['Breeze_user_settings_wall'] = 'Enable my wall';
 $txt['Breeze_user_settings_wall_sub'] = 'If you want to use your wall, you need to check this option, otherwise your profile will show the default page.';
 $txt['Breeze_user_settings_visitors'] = 'Enable the visitors block?';
@@ -107,6 +112,7 @@ $txt['Breeze_time_year'] = 'year';
 $txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to see this Wall.';
 $txt['permissiongroup_simple_breeze_per_simple'] = 'Breeze mod permissions';
 $txt['permissiongroup_breeze_per_classic'] = 'Breeze mod permissions';
+$txt['permissionname_breeze_canCover'] = 'Be able to upload an image as cover for their own wall <br /><span class="smalltext">  The master setting needs to be enable first.</span>';
 $txt['permissionname_breeze_canMention'] = 'Be able to mention<br /><span class="smalltext">  Option to be able to mention other people</span>';
 $txt['permissionname_breeze_beMentioned'] = 'Appear on the mention list<br /><span class="smalltext">  If the user has the permissions, other users will be able to mention this user.</span>';
 $txt['permissionname_breeze_deleteStatus'] = 'Delete all status on any wall<br /><span class="smalltext">  This overwrites any other delete permission the user might have. Deleting a status also deletes all comments associated with it.</span>';

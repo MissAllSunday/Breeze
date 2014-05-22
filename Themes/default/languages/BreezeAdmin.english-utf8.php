@@ -5,8 +5,8 @@
  *
  * @package Breeze mod
  * @version 1.0
- * @author Jessica Gonzalez <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2014 Jessica Gonzalez
+ * @author Jessica González <suki@missallsunday.com>
+ * @copyright Copyright (c) 2011, 2014 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -39,6 +39,8 @@ $txt['Breeze_notifications'] = 'Enable notifications';
 $txt['Breeze_notifications_sub'] = 'If enable your users will be able to receive notifications and will be able to enable/disable them as they see fit.';
 $txt['Breeze_parseBBC'] = 'Enable parsing BBC';
 $txt['Breeze_parseBBC_sub'] = 'If enable, your users will be able to use BBC code on their status/comments.<br />Do note that enabling this option on very busy forums can slow down your server.';
+$txt['Breeze_cover'] = 'Enable the image cover on wall feature.';
+$txt['Breeze_cover_sub'] = 'Your users will be able to upload an image to serve as a cover on their own wall, there is a separate permission for this so be sure to enable this feature and then give the appropriate permissions for your users.';
 $txt['Breeze_mention'] = 'Enable the mention feature.';
 $txt['Breeze_mention_sub'] = 'Turn this on if you want people to be able to mention other users on their status and comments.';
 $txt['Breeze_mention_limit'] = 'How many users can the poster mention on a single message?';
@@ -50,5 +52,7 @@ $txt['Breeze_live'] = 'Live from the support forum...';
 $txt['Breeze_allowed_actions'] = 'Write the actions where you wish the notification system shows up';
 $txt['Breeze_allowed_actions_sub'] = 'By default, the notification system will appear on the following actions: '. implode(', ', Breeze::$_allowedActions) .'. Plus the BoardIndex, MessageIndex, Topic and Board pages. <br /> Please add your actions in a comma separated list, example: action, action, action, action';
 $txt['Breeze_feed_error_message'] = 'Breeze couldn\'t connect with the support site';
+$txt['Breeze_allowed_max_num_users'] = 'How many users does an user can show on their visitors and buddies block?';
+$txt['Breeze_allowed_max_num_users_sub'] = 'If the user has more users than the specified setting, their entire list will be converted to a more compact links list. Leave at 0 to disable this option.';
 $txt['Breeze_allowed_maxlength_aboutMe'] = 'The max length for the "about me" block ';
 $txt['Breeze_allowed_maxlength_aboutMe_sub'] = 'If left empty, the mod will use the default value: 1024';

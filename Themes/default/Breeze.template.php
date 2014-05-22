@@ -21,6 +21,11 @@ function template_user_wall()
 	echo '
 <div id="profileview" class="flow_auto">';
 
+	// The user's cover image.
+	if (!empty($context['Breeze']['cover']))
+		echo '
+		<div><img src="', $context['Breeze']['cover'] ,'" /></div>';
+
 	// Right block, tabs and block
 	echo '
 	<div id="Breeze_right_block">';
