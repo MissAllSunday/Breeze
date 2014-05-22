@@ -824,23 +824,19 @@ class BreezeAjax
 		global $boardurl, $boarddir;
 
 		// Check permissions
-		$upload_handler = new UploadHandler(array(
+		$uploadHandler = new UploadHandler(array(
 			'script_url' => $boardurl .'/',
-			'upload_dir' => $boarddir .'/breezeFiles/',
+			'upload_dir' => $boarddir .Breeze::$coversFolder,
 			'upload_url' => $boardurl .'/breezeFiles/',
 			'user_dirs' => true,
 		));
-		return $this->_response = $upload_handler->get(false);
-		// Check the image, dimensions, etc.
 
-		// Check if there is any cover image already, if not, try to create the user folder for it.
+		// Get the file info.
+		$file = $uploadHandler->get(false);
 
-		// Store the new cover or replace the old one.
-
-		// Add a log notification for this change.
-
-
-		// Set a json response.
+		// Store the cover filename.
+		$this->_app['query']->insertUserSettings(array('cover'=> $file->name), $this->_currentUser);
+		return $this->_response = $file;
 	}
 
 	/**

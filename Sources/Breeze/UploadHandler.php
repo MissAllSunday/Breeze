@@ -193,7 +193,7 @@ class UploadHandler
 
     protected function get_user_id() {
 		global $user_info;
-		
+
 		return $user_info['id'];
     }
 
@@ -1090,7 +1090,7 @@ class UploadHandler
     protected function body($str) {
         echo $str;
     }
-    
+
     protected function header($str) {
         header($str);
     }

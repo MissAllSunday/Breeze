@@ -338,6 +338,9 @@ class BreezeUser extends Breeze
 			<div id="files" class="files"></div>'
 		);
 
+		// If there is a cover, show its thumbnail.
+		$thumbnail = !empty($userSettings['cover']) ? $scripturl . Breeze::$coversFolder . $context['member']['id'] .'/'. $userSettings['cover'];
+
 		// Print some jQuery goodies...
 		$context['insert_after_template'] .= '
 		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.ui.widget.js"></script>
@@ -357,14 +360,7 @@ jQuery(function () {
 			.on(\'click\', function (e) {
 				e.preventDefault();
 				var $this = jQuery(this),
-					data = $this.data();
-				$this
-					.off(\'click\')
-					.text('. JavaScriptEscape($tools->text('confirm_cancel')) .')
-					.on(\'click\', function () {
-						$this.remove();
-						data.abort();
-					});
+				data = $this.data();
 				data.submit().always(function () {
 				});
 			});
@@ -377,12 +373,13 @@ jQuery(function () {
 					data = $this.data();
 				data.abort();
 				$this.parent().fadeOut(1000);
+				$(\'#fileupload\').prop(\'disabled\', false);
 			});
 	jQuery(\'#fileupload\').fileupload({
 		url: '. JavaScriptEscape($scripturl .'?action=breezeajax;sa=cover;u='. $context['member']['id'] .';rf=profile;js=1;'. $context['session_var'] .'='. $context['session_id']) .',
 		dataType: \'json\',
 		autoUpload: false,
-		getNumberOfFiles: function () {return 1;},
+		getNumberOfFiles: 1,
 		maxNumberOfFiles: 1,
 		acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
 		maxFileSize: 5000000, // @todo add a setting here
@@ -411,6 +408,8 @@ jQuery(function () {
 		var index = data.index,
 			file = data.files[index],
 			node = jQuery(data.context.children()[index]);
+
+		$(this).prop(\'disabled\', true);
 		if (file.preview) {
 			node
 				.prepend(\'<br>\')
@@ -435,12 +434,8 @@ jQuery(function () {
 		console.log(data);
 		jQuery.each(data.result.files, function (index, file) {
 			if (file.url) {
-				var link = jQuery(\'<a>\')
-					.attr(\'target\', \'_blank\')
-					.html(\'lol\')
-					.prop(\'href\', file.url);
 				jQuery(data.context.children()[index])
-					.append(link);
+					.replaceWith(\'<div id="profile_success">'. $tools->text('user_settings_select_file_done') .'</div>\');
 			} else if (file.error) {
 				var error = jQuery(\'<span class="text-danger"/>\').text(file.error);
 				jQuery(data.context.children()[index])
