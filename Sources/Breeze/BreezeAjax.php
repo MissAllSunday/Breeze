@@ -826,7 +826,7 @@ class BreezeAjax
 		// Check permissions
 		$uploadHandler = new UploadHandler(array(
 			'script_url' => $boardurl .'/',
-			'upload_dir' => $boarddir .Breeze::$coversFolder,
+			'upload_dir' => $boarddir . Breeze::$coversFolder,
 			'upload_url' => $boardurl .'/breezeFiles/',
 			'user_dirs' => true,
 		));
@@ -834,8 +834,25 @@ class BreezeAjax
 		// Get the file info.
 		$file = $uploadHandler->get(false);
 
-		// Store the cover filename.
-		$this->_app['query']->insertUserSettings(array('cover'=> $file->name), $this->_currentUser);
+		// Do changes only if the image was uploaded.
+		if ($file->name)
+		{
+			// If there is an already uploaded cover, make sure to delete it.
+			if (!empty($this->_userSettings['cover']))
+			{
+				// Thumbnails first...
+				if (file_exists($boarddir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/'. $this->_userSettings['cover']))
+					@unlink($boarddir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/'. $this->_userSettings['cover']);
+
+				// The main file, basically the same thing.
+				if (file_exists($boarddir . Breeze::$coversFolder . $this->_currentUser . $this->_userSettings['cover']))
+					@unlink($boarddir . Breeze::$coversFolder . $this->_currentUser . $this->_userSettings['cover']);
+			}
+
+			// Store the new cover filename.
+			$this->_app['query']->insertUserSettings(array('cover'=> $file->name), $this->_currentUser);
+		}
+
 		return $this->_response = $file;
 	}
 

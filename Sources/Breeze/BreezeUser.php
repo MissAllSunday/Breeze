@@ -338,9 +338,6 @@ class BreezeUser extends Breeze
 			<div id="files" class="files"></div>'
 		);
 
-		// If there is a cover, show its thumbnail.
-		$thumbnail = !empty($userSettings['cover']) ? $scripturl . Breeze::$coversFolder . $context['member']['id'] .'/'. $userSettings['cover'];
-
 		// Print some jQuery goodies...
 		$context['insert_after_template'] .= '
 		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.ui.widget.js"></script>
