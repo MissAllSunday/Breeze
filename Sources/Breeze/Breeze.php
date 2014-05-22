@@ -650,6 +650,10 @@ class Breeze extends Pimple
 						'name' => 'Livestamp.js',
 						'site' => 'http://mattbradley.github.io/livestampjs/',
 					),
+					'fileUpload' => array(
+						'name' => 'jQuery File Upload Plugin',
+						'site' => 'https://github.com/blueimp/jQuery-File-Upload',
+					),
 				),
 			),
 			'images' => array(
