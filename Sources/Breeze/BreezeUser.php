@@ -29,7 +29,8 @@ class BreezeUser extends Breeze
 	function wall()
 	{
 		global $txt, $scripturl, $context, $memberContext, $sourcedir;
-		global $modSettings,  $user_info, $memID, $settings;
+		global $modSettings,  $user_info, $memID, $settings, $boarddir;
+		global $boardurl;
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
@@ -45,6 +46,7 @@ class BreezeUser extends Breeze
 		// Default values.
 		$status = array();
 		$context['Breeze'] = array(
+			'cover' => '',
 			'views' => false,
 			'log' => false,
 			'buddiesLog' => false,
@@ -96,6 +98,10 @@ class BreezeUser extends Breeze
 		$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
 		$context['member']['status'] = array();
 		$context['Breeze']['tools'] = $tools;
+
+		// Can this user have a cover?
+		if ($tools->setting('cover') && allowedTo('breeze_canCover') && !empty($context['Breeze']['settings']['owner']['cover']) && file_exists($boarddir . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']))
+			$context['Breeze']['cover'] = $boardurl . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover'];
 
 		// Set up some vars for pagination
 		$maxIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;
@@ -328,7 +334,6 @@ class BreezeUser extends Breeze
 		// The cover upload settings.
 		if (allowedTo('breeze_canCover') && $tools->setting('cover'))
 		{
-
 			$form->addHr();
 
 			// Remove a cover image.

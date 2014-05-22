@@ -850,7 +850,7 @@ class BreezeAjax
 
 				// The main file, basically the same thing.
 				if (file_exists($boarddir . Breeze::$coversFolder . $this->_currentUser . $this->_userSettings['cover']))
-					@unlink($boarddir . Breeze::$coversFolder . $this->_currentUser . $this->_userSettings['cover']);
+					@unlink($boarddir . Breeze::$coversFolder . $this->_currentUser .'/'. $this->_userSettings['cover']);
 			}
 
 			// Store the new cover filename.
