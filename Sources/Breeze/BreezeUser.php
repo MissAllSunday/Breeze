@@ -209,7 +209,7 @@ class BreezeUser extends Breeze
 	function settings()
 	{
 		global $context, $scripturl, $txt, $modSettings;
-		global $user_info, $settings, $boardurl;
+		global $user_info, $settings, $boardurl, $boarddir;
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
@@ -325,12 +325,15 @@ class BreezeUser extends Breeze
 			array('rows' => 10, 'cols' => 50, 'maxLength' => $tools->setting('allowed_maxlength_aboutMe') ? $tools->setting('allowed_maxlength_aboutMe') : 1024)
 		);
 
+		$form->addHr();
+
 		// Remove a cover image.
-		$form->addHTML(
-			'cover_delete',
-			'<a href="'. $scripturl .'?action=breezeajax;sa=coverdelete;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="clean_log">%s</a></br>
-			'. (file_exists($boardurl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']) ? '<img src="'. $boardurl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover'] .'" class ="" />' : '') .''
-		);
+		if (!empty($userSettings['cover']))
+			$form->addHTML(
+				'cover_delete',
+				'<a href="'. $scripturl .'?action=breezeajax;sa=coverdelete;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="cover_delete">%s</a>
+				'. (file_exists($boarddir . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']) ? '<br /><img src="'. $boardurl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover'] .'" class ="" />' : '') .''
+			);
 
 		// Cover upload option
 		$form->addHTML(

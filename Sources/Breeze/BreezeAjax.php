@@ -835,8 +835,11 @@ class BreezeAjax
 		// Get the file info.
 		$file = $uploadHandler->get(false);
 
+		// Extract the very own file we want...
+		$f = $file['files'][0];
+
 		// Do changes only if the image was uploaded.
-		if ($file->name)
+		if ($f->name)
 		{
 			// If there is an already uploaded cover, make sure to delete it.
 			if (!empty($this->_userSettings['cover']))
@@ -851,7 +854,9 @@ class BreezeAjax
 			}
 
 			// Store the new cover filename.
-			$this->_app['query']->insertUserSettings(array('cover'=> $file->name), $this->_currentUser);
+			$this->_app['query']->insertUserSettings(array('cover'=> $f->name), $this->_currentUser);
+
+			unset($f);
 		}
 
 		return $this->_response = $file;
@@ -860,6 +865,8 @@ class BreezeAjax
 	public function coverDelete()
 	{
 		global $boarddir;
+
+		$this->_data = Breeze::data('request');
 
 		// Delete the cover at once!
 		if (!empty($this->_userSettings['cover']))
