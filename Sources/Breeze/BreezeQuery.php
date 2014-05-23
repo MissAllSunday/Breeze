@@ -205,7 +205,7 @@ class BreezeQuery
 	/**
 	 * BreezeQuery::getSingleValue()
 	 *
-	 * Needs a type, a row and a value, this iterates X array looking for X value in X row. Yes, this can be used to fetch more than one value if you really want to fetch more than 1 value.
+	 * Needs a type, a row and a value, this queries X looking for Y value in Z row. Yes, this can be used to fetch more than one value if you really want to fetch more than 1 value.
 	 * @param string $type the data type
 	 * @param string $row the row where to fetch the value from, should be the actual row name in the array, not the row name in the DB.
 	 * @param mixed $value  Most of the cases will be a int. the int is actually the ID of the particular value you are trying to fetch.
@@ -341,6 +341,13 @@ class BreezeQuery
 				'comments' => array(),
 			);
 
+			// if some setting
+				$return['data'][$row['status_id']]['likes'] = array(
+					'count' => $row['likes'],
+					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
+					'can_like' => true,
+				);
+
 			// Get the users IDs
 			$return['users'][] = $row['status_owner_id'];
 			$return['users'][] = $row['status_poster_id'];
@@ -376,6 +383,13 @@ class BreezeQuery
 					'body' => $this->_app['parser']->display($row['comments_body']),
 				);
 
+				// if some setting
+					$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']]['likes'] = array(
+						'count' => $row['likes'],
+						'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
+						'can_like' => true,
+					);
+
 				// Append the users IDs.
 				$return['users'][] = $row['comments_poster_id'];
 			}
@@ -393,7 +407,7 @@ class BreezeQuery
 	/**
 	 * BreezeQuery::getStatusByProfile()
 	 *
-	 * Get all status made in X profile page. Uses a custom query and store the results on separate cache entries per profile.
+	 * Get all status made in X profile page. Uses a custom query per profile.
 	 * @param int $id the ID of the user that owns the profile page, it does not matter who made that status as long as the status was made in X profile page.
 	 * @return array An array containing all the status made in X profile page
 	 */
@@ -448,14 +462,11 @@ class BreezeQuery
 			);
 
 			// if some setting
-			{
-				$userLikes = $this->userLikes('breSta');
 				$return['data'][$row['status_id']]['likes'] = array(
 					'count' => $row['likes'],
-					'already' => in_array($row['status_id'], (array) $userLikes),
+					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
 					'can_like' => true,
 				);
-			}
 
 			// Get the users IDs
 			$return['users'][] = $row['status_owner_id'];
@@ -491,6 +502,13 @@ class BreezeQuery
 					'time_raw' => $row['comments_time'],
 					'body' => $this->_app['parser']->display($row['comments_body']),
 				);
+
+				// if some setting
+					$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']]['likes'] = array(
+						'count' => $row['likes'],
+						'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
+						'can_like' => true,
+					);
 
 				// Append the users IDs.
 				$return['users'][] = $row['comments_poster_id'];
@@ -557,6 +575,13 @@ class BreezeQuery
 				'body' => $this->_app['parser']->display($row['status_body']),
 			);
 
+			// if some setting
+				$return['data'][$row['status_id']]['likes'] = array(
+					'count' => $row['likes'],
+					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
+					'can_like' => true,
+				);
+
 			$return['users'][] = $row['status_owner_id'];
 			$return['users'][] = $row['status_poster_id'];
 		}
@@ -590,6 +615,13 @@ class BreezeQuery
 					'time_raw' => $row['comments_time'],
 					'body' => $this->_app['parser']->display($row['comments_body']),
 				);
+
+				// if some setting
+					$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']]['likes'] = array(
+						'count' => $row['likes'],
+						'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
+						'can_like' => true,
+					);
 
 				// Append the users IDs.
 				$return['users'][] = $row['comments_poster_id'];
@@ -663,6 +695,13 @@ class BreezeQuery
 				'body' => $this->_app['parser']->display($row['status_body']),
 			);
 
+			// if some setting
+				$return['data'][$row['status_id']]['likes'] = array(
+					'count' => $row['likes'],
+					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
+					'can_like' => true,
+				);
+
 			$return['users'][] = $row['status_owner_id'];
 			$return['users'][] = $row['status_poster_id'];
 		}
@@ -695,6 +734,13 @@ class BreezeQuery
 					'body' => $this->_app['parser']->display($row['comments_body']),
 				);
 
+				// if some setting
+					$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']]['likes'] = array(
+						'count' => $row['likes'],
+						'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
+						'can_like' => true,
+					);
+
 				// Append the users IDs.
 				$return['users'][] = $row['comments_poster_id'];
 			}
@@ -717,8 +763,8 @@ class BreezeQuery
 	/**
 	 * BreezeQuery::getStatusByLast()
 	 *
-	 * Get the latest Status in the Status array. This returns the last status added to the array.
-	 * @return array the last status added to the Status array
+	 * Get the latest Status in the Status array. This returns the last status added to the DB.
+	 * @return array the last status added to the DB.
 	 */
 	public function getStatusByLast()
 	{
@@ -745,13 +791,13 @@ class BreezeQuery
 			'status_body' => 'string',
 			), $array, array('status_id', ));
 
-		// Get the newly created comment ID
+		// Get the newly created status ID
 		$status_id = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comments']['table']), 'status_id');
 
 		//Kill the profile cache
 		$this->killCache('status', $status_id, $array['owner_id']);
 
-		// Return the newly inserted comment ID
+		// Return the newly inserted status ID
 		return $status_id;
 	}
 
