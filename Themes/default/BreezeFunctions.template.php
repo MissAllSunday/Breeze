@@ -48,29 +48,31 @@ function breeze_status($data, $returnVar = false)
 
 		// Likes.
 		if (!empty($status['likes']) && $status['likes']['can_like'])
+		{
 			$echo .=
 								'<ul class="floatleft">
 									<li class="like_button"><a href="'. $scripturl .'?action=likes;ltype=breSta;sa=like;like='. $status['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breSta_like"><span class="'. ($status['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($status['likes']['already'] ? $txt['unlike'] : $txt['like']) .'</a></li>';
 
-		// Likes count
-		if (!empty($status['likes']['count']))
-		{
-			$context['some_likes'] = true;
-			$count = $status['likes']['count'];
-			$base = 'likes_';
-			if ($status['likes']['already'])
+			// Likes count
+			if (!empty($status['likes']['count']))
 			{
-				$base = 'you_' . $base;
-				$count--;
-			}
-			$base .= (isset($txt[$base . $count])) ? $count : 'n';
+				$context['some_likes'] = true;
+				$count = $status['likes']['count'];
+				$base = 'likes_';
+				if ($status['likes']['already'])
+				{
+					$base = 'you_' . $base;
+					$count--;
+				}
+				$base .= (isset($txt[$base . $count])) ? $count : 'n';
 
-			$echo .= '
+				$echo .= '
 										<li class="like_count smalltext">'. sprintf($txt[$base], $scripturl . '?action=likes;sa=view;ltype=breSta;like=' . $status['id'] .';'. $context['session_var'] .'='. $context['session_id']. (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') , comma_format($count)).'</li>';
-		}
+			}
 
-		$echo .=
+			$echo .=
 								'</ul>';
+		}
 
 		// Time.
 		$echo .=
@@ -163,8 +165,39 @@ function breeze_comment($comments, $returnVar = false)
 			</div>
 			<div class="breeze_user_comment_comment">
 				'. $comment['body'] .'
-				<div class="breeze_options">
-					<span class="time_elapsed" title="'. timeformat($comment['time_raw'], false) .'">'. $comment['time'] .'</span>';
+				<div class="breeze_options">';
+
+		// Likes.
+		if (!empty($comment['likes']) && $comment['likes']['can_like'])
+		{
+			$echo .=
+					'<ul class="floatleft">
+						<li class="like_button"><a href="'. $scripturl .'?action=likes;ltype=breCom;sa=like;like='. $comment['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breCom_like"><span class="'. ($comment['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($comment['likes']['already'] ? $txt['unlike'] : $txt['like']) .'</a></li>';
+
+			// Likes count
+			if (!empty($comment['likes']['count']))
+			{
+				$context['some_likes'] = true;
+				$count = $comment['likes']['count'];
+				$base = 'likes_';
+				if ($comment['likes']['already'])
+				{
+					$base = 'you_' . $base;
+					$count--;
+				}
+				$base .= (isset($txt[$base . $count])) ? $count : 'n';
+
+				$echo .= '
+										<li class="like_count smalltext">'. sprintf($txt[$base], $scripturl . '?action=likes;sa=view;ltype=breCom;like=' . $comment['id'] .';'. $context['session_var'] .'='. $context['session_id']. (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') , comma_format($count)).'</li>';
+			}
+
+			$echo .=
+								'</ul>';
+		}
+
+		// Time.
+		$cho .=
+					'<span class="time_elapsed" title="'. timeformat($comment['time_raw'], false) .'">'. $comment['time'] .'</span>';
 
 		// Delete comment
 		if ($canHas['delete'])
