@@ -355,7 +355,6 @@ class Breeze extends Pimple
 
 	public function likes($type, $content, $sa, $js, $extra)
 	{
-
 		// Create our returned array
 		$data = array();
 
@@ -381,6 +380,18 @@ class Breeze extends Pimple
 		$this['query']->updateLikes($convert[$type], $content, $numLikes);
 
 		// @todo this is a nice place to fire up some notifications...
+	}
+
+	public function handleLikes($type, $content)
+	{
+		$data = array();
+		$convert = array('breSta' => 'status', 'breCom' => 'comments');
+		$row = $convert[$type] .'_id';
+		$authorColumn = $convert[$type] .'_poster_id';
+
+		// With the given values, try to find who is the owner of liked content.
+		$data = $this['query']->getSingleValue($convert[$type], $row, $content);
+		return $data[$authorColumn];
 	}
 
 	/**

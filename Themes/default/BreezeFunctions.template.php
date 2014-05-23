@@ -196,10 +196,10 @@ function breeze_comment($comments, $returnVar = false)
 		}
 
 		// Time.
-		$cho .=
+		$echo .=
 					'<span class="time_elapsed" title="'. timeformat($comment['time_raw'], false) .'">'. $comment['time'] .'</span>';
 
-		// Delete comment
+		// Delete comment.
 		if ($canHas['delete'])
 			$echo .= '| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $comment['id'] .';type=comments;poster='. $comment['poster_id'] .';profileOwner='. $comment['profile_id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .';'. $context['session_var'] .'='. $context['session_id'] .'" id="deleteComment_'. $comment['id'] .'" class="breeze_delete_comment">'. $txt['Breeze_general_delete'] .'</a>';
 

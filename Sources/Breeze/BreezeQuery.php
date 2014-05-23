@@ -1716,7 +1716,7 @@ class BreezeQuery
 				$this->_userLikes[$user][$type][] = (int) $row['content_id'];
 
 			$this->_smcFunc['db_free_result']($request);
-			cache_put_data(Breeze::$name .'-likes-'. $type .'-'. $user, $return, 120);
+			cache_put_data(Breeze::$name .'-likes-'. $type .'-'. $user, $this->_userLikes[$user][$type], 120);
 		}
 
 		return $this->_userLikes[$user][$type];
