@@ -207,7 +207,7 @@ class BreezeQuery
 	 *
 	 * Needs a type, a row and a value, this queries X looking for Y value in Z row. Yes, this can be used to fetch more than one value if you really want to fetch more than 1 value.
 	 * @param string $type the data type
-	 * @param string $row the row where to fetch the value from, should be the actual row name in the array, not the row name in the DB.
+	 * @param string $row the row where to fetch the value from.
 	 * @param mixed $value  Most of the cases will be a int. the int is actually the ID of the particular value you are trying to fetch.
 	 * @return array An array with the requested data
 	 */
@@ -219,7 +219,7 @@ class BreezeQuery
 
 		// Get the value directly from the DB
 		$result = $this->_smcFunc['db_query']('', '
-			SELECT '. ($row) .'
+			SELECT '. implode(', ', $this->_tables[$type]['columns']) .'
 			FROM {db_prefix}' . ($this->_tables[$type]['table']) . '
 			WHERE '. ($row) .' = '. ($value) .'
 			', array()

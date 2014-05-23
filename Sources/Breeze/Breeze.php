@@ -386,12 +386,23 @@ class Breeze extends Pimple
 	{
 		$data = array();
 		$convert = array('breSta' => 'status', 'breCom' => 'comments');
+
+		// Don't bother with any other like types...
+		if (!in_array($type, array_keys($convert)))
+			return false;
+
 		$row = $convert[$type] .'_id';
 		$authorColumn = $convert[$type] .'_poster_id';
 
 		// With the given values, try to find who is the owner of liked content.
 		$data = $this['query']->getSingleValue($convert[$type], $row, $content);
-		return $data[$authorColumn];
+
+		if (!empty($data[$authorColumn]))
+			return $data[$authorColumn];
+
+		// Return false if the message is no longer on the DB.
+		else
+			return false;
 	}
 
 	/**

@@ -174,7 +174,7 @@ function breeze_comment($comments, $returnVar = false)
 					'<ul class="floatleft">
 						<li class="like_button"><a href="'. $scripturl .'?action=likes;ltype=breCom;sa=like;like='. $comment['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breCom_like"><span class="'. ($comment['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($comment['likes']['already'] ? $txt['unlike'] : $txt['like']) .'</a></li>';
 
-			// Likes count
+			// Likes count.
 			if (!empty($comment['likes']['count']))
 			{
 				$context['some_likes'] = true;
