@@ -341,7 +341,7 @@ class BreezeQuery
 				'comments' => array(),
 			);
 
-			// if some setting
+			if (!empty($this->_app['tools']->setting('likes')))
 				$return['data'][$row['status_id']]['likes'] = array(
 					'count' => $row['likes'],
 					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
@@ -383,7 +383,7 @@ class BreezeQuery
 					'body' => $this->_app['parser']->display($row['comments_body']),
 				);
 
-				// if some setting
+				if (!empty($this->_app['tools']->setting('likes')))
 					$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']]['likes'] = array(
 						'count' => $row['likes'],
 						'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
@@ -461,7 +461,7 @@ class BreezeQuery
 				'comments' => array(),
 			);
 
-			// if some setting
+			if (!empty($this->_app['tools']->setting('likes')))
 				$return['data'][$row['status_id']]['likes'] = array(
 					'count' => $row['likes'],
 					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
@@ -503,7 +503,7 @@ class BreezeQuery
 					'body' => $this->_app['parser']->display($row['comments_body']),
 				);
 
-				// if some setting
+				if (!empty($this->_app['tools']->setting('likes')))
 					$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']]['likes'] = array(
 						'count' => $row['likes'],
 						'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
@@ -575,7 +575,7 @@ class BreezeQuery
 				'body' => $this->_app['parser']->display($row['status_body']),
 			);
 
-			// if some setting
+			if (!empty($this->_app['tools']->setting('likes')))
 				$return['data'][$row['status_id']]['likes'] = array(
 					'count' => $row['likes'],
 					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
@@ -616,7 +616,7 @@ class BreezeQuery
 					'body' => $this->_app['parser']->display($row['comments_body']),
 				);
 
-				// if some setting
+				if (!empty($this->_app['tools']->setting('likes')))
 					$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']]['likes'] = array(
 						'count' => $row['likes'],
 						'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
@@ -695,7 +695,7 @@ class BreezeQuery
 				'body' => $this->_app['parser']->display($row['status_body']),
 			);
 
-			// if some setting
+			if (!empty($this->_app['tools']->setting('likes')))
 				$return['data'][$row['status_id']]['likes'] = array(
 					'count' => $row['likes'],
 					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
@@ -734,7 +734,7 @@ class BreezeQuery
 					'body' => $this->_app['parser']->display($row['comments_body']),
 				);
 
-				// if some setting
+				if (!empty($this->_app['tools']->setting('likes')))
 					$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']]['likes'] = array(
 						'count' => $row['likes'],
 						'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),

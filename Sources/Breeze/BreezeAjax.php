@@ -155,6 +155,11 @@ class BreezeAjax
 				'poster_id' => $statusPoster,
 				'time' => time(),
 				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $statusMentions) : $body,
+				'likes' => array(
+					'count' => 0,
+					'already' => false,
+					'can_like' => true,
+				),
 			);
 
 			// Maybe a last minute change before inserting the new status?
@@ -294,7 +299,12 @@ class BreezeAjax
 				'poster_id' => $commentPoster,
 				'profile_id' => $commentOwner,
 				'time' => time(),
-				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $commentMentions) : $body
+				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $commentMentions) : $body,
+				'likes' => array(
+					'count' => 0,
+					'already' => false,
+					'can_like' => true,
+				),
 			);
 
 			// Before inserting the comment...
