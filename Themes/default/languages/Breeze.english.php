@@ -56,6 +56,7 @@ $txt['Breeze_user_settings_visitors_sub'] = 'This block will show the latest vis
 $txt['Breeze_user_settings_how_many_mentions'] = 'How many users will be displayed as options when mentioning an user';
 $txt['Breeze_user_settings_how_many_mentions_sub'] = 'for example, if you set this on 5 then when mentioning you will see 5 possible options to chose from.';
 $txt['Breeze_user_settings_clean_visitors'] = 'Clean the visitors log';
+$txt['Breeze_user_settings_select_file'] = 'Select file';
 $txt['Breeze_user_settings_clean_visitors_sub'] = 'Removes all visitors from your visitors block.';
 $txt['Breeze_user_settings_clear_noti'] = 'How many seconds do you want the notifications to be displayed before been automatically closed';
 $txt['Breeze_user_settings_clear_noti_sub'] = 'In seconds, If you leave this empty the notifications won\'t be automatically closed and you must manually click the "close all notifications" button.';
@@ -110,6 +111,7 @@ $txt['permissiongroup_breeze_per_classic'] = 'Breeze mod permissions';
 $txt['permissionname_breeze_canMention'] = 'Be able to mention<br /><span class="smalltext">  Option to be able to mention other people</span>';
 $txt['permissionname_breeze_beMentioned'] = 'Appear on the mention list<br /><span class="smalltext">  If the user has the permissions, other users will be able to mention this user.</span>';
 $txt['permissionname_breeze_deleteStatus'] = 'Delete all status on any wall<br /><span class="smalltext">  This overwrites any other delete permission the user might have. Deleting a status also deletes all comments associated with it.</span>';
+$txt['permissionname_breeze_canLike'] = 'Be able to like a comment or a status on every wall.';
 $txt['permissionname_breeze_deleteComments'] = 'Delete all comments on any wall<br /><span class="smalltext">  This overwrites ant other delete comment permission the user might have.</span>';
 $txt['permissionname_breeze_deleteOwnStatus'] = 'Delete their own status.<br /><span class="smalltext">  Regardless of where it has been posted. Deleting a status also deletes all comments associated with it.</span>';
 $txt['permissionname_breeze_deleteOwnComments'] = 'Delete their own comments.<br /><span class="smalltext">  Regardless of where it has been posted</span>';

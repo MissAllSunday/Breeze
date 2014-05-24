@@ -5,8 +5,8 @@
  *
  * @package Breeze mod
  * @version 1.0
- * @author Jessica Gonzalez <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2014 Jessica Gonzalez
+ * @author Jessica González <suki@missallsunday.com>
+ * @copyright Copyright (c) 2011, 2014 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -68,6 +68,7 @@ class BreezeAjax
 			'fetchc' => 'fetchComment',
 			'fetchNoti' => 'fetchNoti',
 			'usersettings' => 'userSettings',
+			'cover' => 'cover',
 		);
 
 		// Build the correct redirect URL
@@ -166,6 +167,13 @@ class BreezeAjax
 			// All went good or so it seems...
 			if (!empty($this->_params['id']))
 			{
+				// Likes.
+				$this->_params['likes'] =  array(
+					'count' => 0,
+					'already' => false,
+					'can_like' => allowedTo('breeze_canLike'),
+				);
+
 				// Build the notification(s) via BreezeMention
 				if ($this->_app['tools']->enable('mention'))
 					$this->_app['mention']->mention(
@@ -293,7 +301,7 @@ class BreezeAjax
 				'poster_id' => $commentPoster,
 				'profile_id' => $commentOwner,
 				'time' => time(),
-				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $commentMentions) : $body
+				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $commentMentions) : $body,
 			);
 
 			// Before inserting the comment...
@@ -306,6 +314,13 @@ class BreezeAjax
 			// The Comment was inserted ORLY???
 			if (!empty($this->_params['id']))
 			{
+				// Likes.
+				$this->_params['likes'] =  array(
+					'count' => 0,
+					'already' => false,
+					'can_like' => allowedTo('breeze_canLike'),
+				);
+
 				// Build the notification(s) for this comment via BreezeMention
 				if ($this->_app['tools']->enable('mention'))
 					$this->_app['mention']->mention(
@@ -810,6 +825,28 @@ class BreezeAjax
 			'owner' => $user,
 			'extra' => array('area' => 'breezesettings',),
 		));
+	}
+
+	/**
+	 * BreezeAjax::cover()
+	 *
+	 * Gets an HTTP request for uploading and storing a new cover image. Checks f the user has permission to do so, checks the image itself and all other possible checks.
+	 * @return
+	 */
+	public function cover()
+	{
+		// Check permissions
+
+		// Check the image, dimensions, etc.
+
+		// Check if there is any cover image already, if not, try to create the user folder for it.
+
+		// Store the new cover or replace the old one.
+
+		// Add a log notification for this change.
+
+
+		// Set a json response.
 	}
 
 	/**

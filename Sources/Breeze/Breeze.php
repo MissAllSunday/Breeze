@@ -5,8 +5,8 @@
  *
  * @package Breeze mod
  * @version 1.0
- * @author Jessica Gonzalez <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2014 Jessica Gonzalez
+ * @author Jessica González <suki@missallsunday.com>
+ * @copyright Copyright (c) 2011, 2014 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -43,7 +43,7 @@ class Breeze extends Pimple
 	public static $version = '1.0';
 	public static $folder = '/Breeze/';
 	public static $txtpattern = 'Breeze_';
-	public static $permissions = array('deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canMention', 'beMentioned');
+	public static $permissions = array('canLike', 'deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canMention', 'beMentioned');
 	public static $allSettings = array('wall', 'general_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention', 'gender', 'buddiesList', 'ignoredList', 'profileViews',);
 
 	// Support site feed
@@ -336,7 +336,7 @@ class Breeze extends Pimple
 	 * @param array $actions An array containing all possible SMF actions.
 	 * @return void
 	 */
-	public static function actions(&$actions)
+	public function actions(&$actions)
 	{
 		// Fool the system and directly inject the main object to breezeAjax and breezeWall, Breeze's final classes
 
@@ -351,6 +351,58 @@ class Breeze extends Pimple
 
 		// A special action for the buddy request message
 		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'breezeBuddyMessage');
+	}
+
+	public function likes($type, $content, $sa, $js, $extra)
+	{
+		// Create our returned array
+		$data = array();
+
+		// @temp for testing.
+		$data['can_see'] = true;
+		$data['can_like'] = true;
+		$data['type'] = $type;
+		$data['flush_cache'] = true;
+		$data['callback'] = 'Breeze::likesUpdate#';
+
+		// $extra has my much needed "comming from" json string, without this I cannot redirect users properly.
+		// $redirect = json_decode($extra, true);
+		$data['redirect'] = 'lol';
+
+		return $data;
+	}
+
+	public function likesUpdate($type, $content, $numLikes, $already_liked)
+	{
+		// The likes system only accepts 6 characters so convert that weird id into a more familiar one...
+		$convert = array('breSta' => 'status', 'breCom' => 'comments');
+
+		$this['query']->updateLikes($convert[$type], $content, $numLikes);
+
+		// @todo this is a nice place to fire up some notifications...
+	}
+
+	public function handleLikes($type, $content)
+	{
+		$data = array();
+		$convert = array('breSta' => 'status', 'breCom' => 'comments');
+
+		// Don't bother with any other like types...
+		if (!in_array($type, array_keys($convert)))
+			return false;
+
+		$row = $convert[$type] .'_id';
+		$authorColumn = $convert[$type] .'_poster_id';
+
+		// With the given values, try to find who is the owner of the liked content.
+		$data = $this['query']->getSingleValue($convert[$type], $row, $content);
+
+		if (!empty($data[$authorColumn]))
+			return $data[$authorColumn];
+
+		// Return false if the status/comment is no longer on the DB.
+		else
+			return false;
 	}
 
 	/**

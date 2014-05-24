@@ -5,8 +5,8 @@
  *
  * @package Breeze mod
  * @version 1.0
- * @author Jessica Gonzalez <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2014 Jessica Gonzalez
+ * @author Jessica González <suki@missallsunday.com>
+ * @copyright Copyright (c) 2011, 2014 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -186,6 +186,7 @@ class BreezeWall
 			maxIndex : '. $maxIndex .',
 			totalItems : ' . $status['count'] . ',
 			buddies : '. json_encode($this->userSettings['buddiesList']) .',
+			userID : '. $user_info['id'] .'
 		};
 	// ]]></script>';
 

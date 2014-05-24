@@ -5,8 +5,8 @@
  *
  * @package Breeze mod
  * @version 1.0
- * @author Jessica Gonzalez <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2014, Jessica Gonzalez
+ * @author Jessica González <suki@missallsunday.com>
+ * @copyright Copyright (c) 2011, 2014, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -44,13 +44,44 @@ function breeze_status($data, $returnVar = false)
 						</div>
 						<div class="breeze_user_status_comment">
 							'. $status['body'] .'
-							<div class="breeze_options">
-								<span class="time_elapsed" title="'. timeformat($status['time_raw'], false) .'" data-livestamp="'. $status['time_raw'] .'">'. $status['time'] .' </span>';
+							<div class="breeze_options">';
 
-		// Delete status
+		// Likes.
+		if ($context['Breeze']['tools']->setting('likes') && $status['likes']['can_like'])
+		{
+			$echo .=
+								'<ul class="floatleft">
+									<li class="like_button"><a href="'. $scripturl .'?action=likes;ltype=breSta;sa=like;like='. $status['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breSta_like"><span class="'. ($status['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($status['likes']['already'] ? $txt['unlike'] : $txt['like']) .'</a></li>';
+
+			// Likes count
+			if (!empty($status['likes']['count']))
+			{
+				$context['some_likes'] = true;
+				$count = $status['likes']['count'];
+				$base = 'likes_';
+				if ($status['likes']['already'])
+				{
+					$base = 'you_' . $base;
+					$count--;
+				}
+				$base .= (isset($txt[$base . $count])) ? $count : 'n';
+
+				$echo .= '
+										<li class="like_count smalltext">'. sprintf($txt[$base], $scripturl . '?action=likes;sa=view;ltype=breSta;like=' . $status['id'] .';'. $context['session_var'] .'='. $context['session_id']. (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') , comma_format($count)).'</li>';
+			}
+
+			$echo .=
+								'</ul>';
+		}
+
+		// Time.
+		$echo .=
+								'<span class="time_elapsed" title="'. timeformat($status['time_raw'], false) .'" data-livestamp="'. $status['time_raw'] .'">'. $status['time'] .' </span>';
+
+		// Delete status.
 		if ($canHas['delete'])
 			$echo .=
-								'| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $status['id'] .';type=status;profileOwner='. $status['owner_id'] .';poster='. $status['poster_id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .';'. $context['session_var'] .'='. $context['session_id'] .'" id="deleteStatus_'. $status['id'] .'" class="breeze_delete_status">'. $txt['Breeze_general_delete'] .'</a>';
+								' | <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $status['id'] .';type=status;profileOwner='. $status['owner_id'] .';poster='. $status['poster_id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .';'. $context['session_var'] .'='. $context['session_id'] .'" id="deleteStatus_'. $status['id'] .'" class="breeze_delete_status">'. $txt['Breeze_general_delete'] .'</a>';
 
 		// Modify? maybe someday...
 
@@ -134,10 +165,41 @@ function breeze_comment($comments, $returnVar = false)
 			</div>
 			<div class="breeze_user_comment_comment">
 				'. $comment['body'] .'
-				<div class="breeze_options">
-					<span class="time_elapsed" title="'. timeformat($comment['time_raw'], false) .'">'. $comment['time'] .'</span>';
+				<div class="breeze_options">';
 
-		// Delete comment
+		// Likes.
+		if ($context['Breeze']['tools']->setting('likes') && $comment['likes']['can_like'])
+		{
+			$echo .=
+					'<ul class="floatleft">
+						<li class="like_button"><a href="'. $scripturl .'?action=likes;ltype=breCom;sa=like;like='. $comment['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breCom_like"><span class="'. ($comment['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($comment['likes']['already'] ? $txt['unlike'] : $txt['like']) .'</a></li>';
+
+			// Likes count.
+			if (!empty($comment['likes']['count']))
+			{
+				$context['some_likes'] = true;
+				$count = $comment['likes']['count'];
+				$base = 'likes_';
+				if ($comment['likes']['already'])
+				{
+					$base = 'you_' . $base;
+					$count--;
+				}
+				$base .= (isset($txt[$base . $count])) ? $count : 'n';
+
+				$echo .= '
+										<li class="like_count smalltext">'. sprintf($txt[$base], $scripturl . '?action=likes;sa=view;ltype=breCom;like=' . $comment['id'] .';'. $context['session_var'] .'='. $context['session_id']. (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') , comma_format($count)).'</li>';
+			}
+
+			$echo .=
+								'</ul>';
+		}
+
+		// Time.
+		$echo .=
+					'<span class="time_elapsed" title="'. timeformat($comment['time_raw'], false) .'">'. $comment['time'] .'</span>';
+
+		// Delete comment.
 		if ($canHas['delete'])
 			$echo .= '| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $comment['id'] .';type=comments;poster='. $comment['poster_id'] .';profileOwner='. $comment['profile_id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .';'. $context['session_var'] .'='. $context['session_id'] .'" id="deleteComment_'. $comment['id'] .'" class="breeze_delete_comment">'. $txt['Breeze_general_delete'] .'</a>';
 

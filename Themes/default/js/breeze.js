@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2011, 2014 Jessica Gonzalez
+ Copyright (c) 2011, 2014 Jessica González
  @license http://www.mozilla.org/MPL/MPL-1.1.html
 */
 
@@ -322,6 +322,40 @@ jQuery(document).ready(function(){
 
 		return false;
 	});
+
+	// Likes.
+	jQuery(document).on('click', '.breSta_like, .breCom_like', function(event){
+		var obj = jQuery(this);
+		event.preventDefault();
+		ajax_indicator(true);
+		jQuery.ajax({
+			type: 'GET',
+			url: obj.attr('href') + ';js=1;',
+			cache: false,
+			dataType: 'html',
+			success: function(html)
+			{
+				ajax_indicator(false);
+				obj.closest('ul').replaceWith(html);
+			},
+			error: function (html)
+			{
+				ajax_indicator(false);
+			}
+		});
+
+		return false;
+	});
+
+	// Likes count.
+jQuery(function() {
+	jQuery(document).on('click', '.like_count a', function(e){
+		e.preventDefault();
+		var title = jQuery(this).parent().text(),
+			url = jQuery(this).attr('href') + ';js=1';
+		return reqOverlayDiv(url, title);
+	});
+});
 
 	// Facebox
 	jQuery(document).on('click', 'a[rel*=facebox]', function(event){

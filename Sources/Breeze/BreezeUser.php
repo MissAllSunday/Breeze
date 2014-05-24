@@ -5,8 +5,8 @@
  *
  * @package Breeze mod
  * @version 1.0
- * @author Jessica Gonzalez <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2014 Jessica Gonzalez
+ * @author Jessica González <suki@missallsunday.com>
+ * @copyright Copyright (c) 2011, 2014 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -209,7 +209,7 @@ class BreezeUser extends Breeze
 	function settings()
 	{
 		global $context, $scripturl, $txt, $modSettings;
-		global $user_info;
+		global $user_info, $settings;
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
@@ -324,6 +324,46 @@ class BreezeUser extends Breeze
 			!empty($userSettings['aboutMe']) ? $userSettings['aboutMe'] : '',
 			array('rows' => 10, 'cols' => 50, 'maxLength' => $tools->setting('allowed_maxlength_aboutMe') ? $tools->setting('allowed_maxlength_aboutMe') : 1024)
 		);
+
+		// Cover upload option
+		$form->addHTML(
+			'select_file',
+			'<span class="btn btn-success fileinput-button">
+				<input id="fileupload" type="file" name="files[]" multiple>
+			</span>
+			<br />
+			<div id="progress" class="progress">
+				<div class="progress-bar progress-bar-success"></div>
+			</div>'
+		);
+
+		// Print some jQuery goodies...
+		$context['insert_after_template'] .= '
+		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.ui.widget.js"></script>
+		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.iframe-transport.js"></script>
+		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.fileupload.js"></script>
+		<script type="text/javascript"><!-- // --><![CDATA[
+jQuery(function () {
+	jQuery(\'#fileupload\').fileupload({
+		url: '. JavaScriptEscape($scripturl .'?action=breezeajax;sa=cover;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id']) .',
+		dataType: \'json\',
+		limitMultiFileUploads: 1,
+		done: function (e, data) {
+			jQuery.each(data.result.files, function (index, file) {
+				jQuery(\'<p/>\').text(file.name).appendTo(\'#files\');
+			});
+		},
+		progressall: function (e, data) {
+			var progress = parseInt(data.loaded / data.total * 100, 10);
+			jQuery(\'#progress .progress-bar\').css(
+				\'width\',
+				progress + \'%\'
+			);
+		}
+	}).prop(\'disabled\', !jQuery.support.fileInput)
+		.parent().addClass(jQuery.support.fileInput ? undefined : \'disabled\');
+});
+		// ]]></script>';
 
 		// Send the form to the template
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
