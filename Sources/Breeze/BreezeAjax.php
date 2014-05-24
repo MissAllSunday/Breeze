@@ -155,11 +155,6 @@ class BreezeAjax
 				'poster_id' => $statusPoster,
 				'time' => time(),
 				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $statusMentions) : $body,
-				'likes' => array(
-					'count' => 0,
-					'already' => false,
-					'can_like' => allowedTo('breeze_canLike'),
-				),
 			);
 
 			// Maybe a last minute change before inserting the new status?
@@ -172,6 +167,13 @@ class BreezeAjax
 			// All went good or so it seems...
 			if (!empty($this->_params['id']))
 			{
+				// Likes.
+				$this->_params['likes'] =  array(
+					'count' => 0,
+					'already' => false,
+					'can_like' => allowedTo('breeze_canLike'),
+				);
+
 				// Build the notification(s) via BreezeMention
 				if ($this->_app['tools']->enable('mention'))
 					$this->_app['mention']->mention(
@@ -300,11 +302,6 @@ class BreezeAjax
 				'profile_id' => $commentOwner,
 				'time' => time(),
 				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $commentMentions) : $body,
-				'likes' => array(
-					'count' => 0,
-					'already' => false,
-					'can_like' => allowedTo('breeze_canLike'),
-				),
 			);
 
 			// Before inserting the comment...
@@ -317,6 +314,13 @@ class BreezeAjax
 			// The Comment was inserted ORLY???
 			if (!empty($this->_params['id']))
 			{
+				// Likes.
+				$this->_params['likes'] =  array(
+					'count' => 0,
+					'already' => false,
+					'can_like' => allowedTo('breeze_canLike'),
+				);
+
 				// Build the notification(s) for this comment via BreezeMention
 				if ($this->_app['tools']->enable('mention'))
 					$this->_app['mention']->mention(
