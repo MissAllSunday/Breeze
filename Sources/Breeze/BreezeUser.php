@@ -29,7 +29,8 @@ class BreezeUser extends Breeze
 	function wall()
 	{
 		global $txt, $scripturl, $context, $memberContext, $sourcedir;
-		global $modSettings,  $user_info, $memID, $settings;
+		global $modSettings,  $user_info, $memID, $settings, $boarddir;
+		global $boardurl;
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
@@ -45,6 +46,7 @@ class BreezeUser extends Breeze
 		// Default values.
 		$status = array();
 		$context['Breeze'] = array(
+			'cover' => '',
 			'views' => false,
 			'log' => false,
 			'buddiesLog' => false,
@@ -96,6 +98,10 @@ class BreezeUser extends Breeze
 		$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
 		$context['member']['status'] = array();
 		$context['Breeze']['tools'] = $tools;
+
+		// Can this user have a cover?
+		if ($tools->setting('cover') && allowedTo('breeze_canCover') && !empty($context['Breeze']['settings']['owner']['cover']) && file_exists($boarddir . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']))
+			$context['Breeze']['cover'] = $boardurl . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover'];
 
 		// Set up some vars for pagination
 		$maxIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;
@@ -209,7 +215,7 @@ class BreezeUser extends Breeze
 	function settings()
 	{
 		global $context, $scripturl, $txt, $modSettings;
-		global $user_info, $settings;
+		global $user_info, $settings, $boardurl, $boarddir;
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
@@ -325,45 +331,148 @@ class BreezeUser extends Breeze
 			array('rows' => 10, 'cols' => 50, 'maxLength' => $tools->setting('allowed_maxlength_aboutMe') ? $tools->setting('allowed_maxlength_aboutMe') : 1024)
 		);
 
-		// Cover upload option
-		$form->addHTML(
-			'select_file',
-			'<span class="btn btn-success fileinput-button">
-				<input id="fileupload" type="file" name="files[]" multiple>
-			</span>
-			<br />
-			<div id="progress" class="progress">
-				<div class="progress-bar progress-bar-success"></div>
-			</div>'
-		);
+		// The cover upload settings.
+		if (allowedTo('breeze_canCover') && $tools->setting('cover'))
+		{
+			$form->addHr();
 
-		// Print some jQuery goodies...
-		$context['insert_after_template'] .= '
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.ui.widget.js"></script>
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.iframe-transport.js"></script>
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.fileupload.js"></script>
-		<script type="text/javascript"><!-- // --><![CDATA[
-jQuery(function () {
-	jQuery(\'#fileupload\').fileupload({
-		url: '. JavaScriptEscape($scripturl .'?action=breezeajax;sa=cover;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id']) .',
-		dataType: \'json\',
-		limitMultiFileUploads: 1,
-		done: function (e, data) {
-			jQuery.each(data.result.files, function (index, file) {
-				jQuery(\'<p/>\').text(file.name).appendTo(\'#files\');
+			// Remove a cover image.
+			if (!empty($userSettings['cover']))
+				$form->addHTML(
+					'cover_delete',
+					'<a href="'. $scripturl .'?action=breezeajax;sa=coverdelete;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="cover_delete">%s</a>
+					'. (file_exists($boarddir . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']) ? '<br /><img src="'. $boardurl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover'] .'" class ="" />' : '') .''
+				);
+
+			// Cover upload option
+			$form->addHTML(
+				'cover_select',
+				'<span class="">
+					<input id="fileupload" type="file" name="files">
+				</span>
+				<br />
+				<div id="progress" class="progress">
+					<div class="progress-bar progress-bar-success"></div>
+				</div>
+				<div id="files" class="files"></div>'
+			);
+
+			// Print some jQuery goodies...
+			$context['insert_after_template'] .= '
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.ui.widget.js"></script>
+			<script src="http://blueimp.github.io/JavaScript-Load-Image/js/load-image.min.js"></script>
+			<script src="http://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.iframe-transport.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.fileupload.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.fileupload-process.js"></script>
+			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.fileupload-image.js"></script>
+			<script type="text/javascript"><!-- // --><![CDATA[
+	jQuery(function () {
+		\'use strict\';
+		var uploadButton = jQuery(\'<button/>\')
+				.addClass(\'clear\')
+				.prop(\'disabled\', true)
+				.text(\'upload\')
+				.on(\'click\', function (e) {
+					e.preventDefault();
+					var $this = jQuery(this),
+					data = $this.data();
+					data.submit().always(function () {
+					});
+				});
+		var cancelButton = jQuery(\'<button/>\')
+				.addClass(\'clear\')
+				.text('. JavaScriptEscape($tools->text('confirm_cancel')) .')
+				.on(\'click\', function (e) {
+					e.preventDefault();
+					var $this = jQuery(this),
+						data = $this.data();
+					data.abort();
+					$this.parent().fadeOut(1000);
+					$(\'#fileupload\').prop(\'disabled\', false);
+				});
+		jQuery(\'#fileupload\').fileupload({
+			url: '. JavaScriptEscape($scripturl .'?action=breezeajax;sa=cover;u='. $context['member']['id'] .';rf=profile;js=1;'. $context['session_var'] .'='. $context['session_id']) .',
+			dataType: \'json\',
+			autoUpload: false,
+			getNumberOfFiles: 1,
+			maxNumberOfFiles: 1,
+			acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+			maxFileSize: 5000000, // @todo add a setting here
+			// Enable image resizing, except for Android and Opera,
+			// which actually support image resizing, but fail to
+			// send Blob objects via XHR requests:
+			disableImageResize: /Android(?!.*Chrome)|Opera/
+				.test(window.navigator.userAgent),
+			previewMaxWidth: 100,
+			previewMaxHeight: 100,
+			previewCrop: true
+		}).on(\'fileuploadadd\', function (e, data) {
+			data.context = jQuery(\'<div/>\').appendTo(\'#files\');
+			$.each(data.files, function (index, file) {
+				var node = jQuery(\'<p/>\')
+						.append(jQuery(\'<span/>\').text(file.name));
+				if (!index) {
+					node
+						.append(\'<br>\')
+						.append(uploadButton.data(data))
+						.append(cancelButton.data(data));
+				}
+				node.appendTo(data.context);
 			});
-		},
-		progressall: function (e, data) {
+		}).on(\'fileuploadprocessalways\', function (e, data) {
+			var index = data.index,
+				file = data.files[index],
+				node = jQuery(data.context.children()[index]);
+
+			$(this).prop(\'disabled\', true);
+			if (file.preview) {
+				node
+					.prepend(\'<br>\')
+					.prepend(file.preview);
+			}
+			if (file.error) {
+				node
+					.append(\'<br>\')
+					.append(jQuery(\'<span class="text-danger"/>\').text(file.error));
+			}
+			if (index + 1 === data.files.length) {
+				data.context.find(\'button\')
+					.prop(\'disabled\', !!data.files.error);
+			}
+		}).on(\'fileuploadprogressall\', function (e, data) {
 			var progress = parseInt(data.loaded / data.total * 100, 10);
 			jQuery(\'#progress .progress-bar\').css(
 				\'width\',
 				progress + \'%\'
 			);
-		}
-	}).prop(\'disabled\', !jQuery.support.fileInput)
-		.parent().addClass(jQuery.support.fileInput ? undefined : \'disabled\');
-});
-		// ]]></script>';
+		}).on(\'fileuploaddone\', function (e, data) {
+			console.log(data);
+			jQuery.each(data.result.files, function (index, file) {
+				if (file.url) {
+					jQuery(data.context.children()[index])
+						.replaceWith(\'<div id="profile_success">'. $tools->text('user_settings_cover_done') .'</div>\');
+				} else if (file.error) {
+					var error = jQuery(\'<span class="text-danger"/>\').text(file.error);
+					jQuery(data.context.children()[index])
+						.append(\'<br>\')
+						.append(error);
+				}
+			});
+		}).on(\'fileuploadfail\', function (e, data) {console.log(data);
+			if (data.result) {
+				$.each(data.result.files, function (index, file) {
+					var error = jQuery(\'<span class="text-danger"/>\').text(\'File upload failed.\');
+					jQuery(data.context.children()[index])
+						.append(\'<br>\')
+						.append(error);
+				});
+			}
+		}).prop(\'disabled\', !$.support.fileInput)
+			.parent().addClass($.support.fileInput ? undefined : \'disabled\');
+	});
+			// ]]></script>';
+	}
 
 		// Send the form to the template
 		$context['Breeze']['UserSettings']['Form'] = $form->display();

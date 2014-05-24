@@ -366,8 +366,8 @@ jQuery(function() {
 		});
 	});
 
-	// Clean the visitors log
-	jQuery('.clean_log').on('click', false, function(event){
+	// Clean the visitors log/ delete cover image
+	jQuery('.clean_log, .cover_delete').on('click', false, function(event){
 
 		event.preventDefault();
 

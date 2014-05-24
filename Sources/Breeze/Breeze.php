@@ -42,8 +42,9 @@ class Breeze extends Pimple
 	public static $name = 'Breeze';
 	public static $version = '1.0';
 	public static $folder = '/Breeze/';
+	public static $coversFolder = '/breezeFiles/';
 	public static $txtpattern = 'Breeze_';
-	public static $permissions = array('canLike', 'deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canMention', 'beMentioned');
+	public static $permissions = array('deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canMention', 'beMentioned', 'canCover');
 	public static $allSettings = array('wall', 'general_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention', 'gender', 'buddiesList', 'ignoredList', 'profileViews',);
 
 	// Support site feed
@@ -700,6 +701,10 @@ class Breeze extends Pimple
 					'livestamp' => array(
 						'name' => 'Livestamp.js',
 						'site' => 'http://mattbradley.github.io/livestampjs/',
+					),
+					'fileUpload' => array(
+						'name' => 'jQuery File Upload Plugin',
+						'site' => 'https://github.com/blueimp/jQuery-File-Upload',
 					),
 				),
 			),

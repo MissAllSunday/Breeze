@@ -69,6 +69,7 @@ class BreezeAjax
 			'fetchNoti' => 'fetchNoti',
 			'usersettings' => 'userSettings',
 			'cover' => 'cover',
+			'coverdelete' => 'coverDelete',
 		);
 
 		// Build the correct redirect URL
@@ -835,18 +836,74 @@ class BreezeAjax
 	 */
 	public function cover()
 	{
+		global $boardurl, $boarddir;
+
 		// Check permissions
+		$uploadHandler = new UploadHandler(array(
+			'script_url' => $boardurl .'/',
+			'upload_dir' => $boarddir . Breeze::$coversFolder,
+			'upload_url' => $boardurl .'/breezeFiles/',
+			'user_dirs' => true,
+		));
 
-		// Check the image, dimensions, etc.
+		// Get the file info.
+		$file = $uploadHandler->get(false);
 
-		// Check if there is any cover image already, if not, try to create the user folder for it.
+		// Extract the very own file we want...
+		$f = $file['files'][0];
 
-		// Store the new cover or replace the old one.
+		// Do changes only if the image was uploaded.
+		if ($f->name)
+		{
+			// If there is an already uploaded cover, make sure to delete it.
+			if (!empty($this->_userSettings['cover']))
+			{
+				// Thumbnails first...
+				if (file_exists($boarddir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/'. $this->_userSettings['cover']))
+					@unlink($boarddir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/'. $this->_userSettings['cover']);
 
-		// Add a log notification for this change.
+				// The main file, basically the same thing.
+				if (file_exists($boarddir . Breeze::$coversFolder . $this->_currentUser . $this->_userSettings['cover']))
+					@unlink($boarddir . Breeze::$coversFolder . $this->_currentUser .'/'. $this->_userSettings['cover']);
+			}
 
+			// Store the new cover filename.
+			$this->_app['query']->insertUserSettings(array('cover'=> $f->name), $this->_currentUser);
 
-		// Set a json response.
+			unset($f);
+		}
+
+		return $this->_response = $file;
+	}
+
+	public function coverDelete()
+	{
+		global $boarddir;
+
+		$this->_data = Breeze::data('request');
+
+		// Delete the cover at once!
+		if (!empty($this->_userSettings['cover']))
+		{
+			// Thumbnails first...
+			if (file_exists($boarddir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/'. $this->_userSettings['cover']))
+				@unlink($boarddir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/'. $this->_userSettings['cover']);
+
+			// The main file, basically the same thing.
+			if (file_exists($boarddir . Breeze::$coversFolder . $this->_currentUser . $this->_userSettings['cover']))
+				@unlink($boarddir . Breeze::$coversFolder . $this->_currentUser . $this->_userSettings['cover']);
+		}
+
+		// Remove the setting from the users options.
+		$this->_app['query']->insertUserSettings(array('cover'=> ''), $this->_currentUser);
+
+		// Build the response.
+		return $this->setResponse(array(
+			'type' => 'success',
+			'message' => 'user_settings_cover_deleted',
+			'owner' => $this->_data->get('u'),
+			'extra' => array('area' => 'breezesettings',),
+		));
 	}
 
 	/**
