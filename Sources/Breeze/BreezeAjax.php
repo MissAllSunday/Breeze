@@ -158,7 +158,7 @@ class BreezeAjax
 				'likes' => array(
 					'count' => 0,
 					'already' => false,
-					'can_like' => true,
+					'can_like' => allowedTo('breeze_canLike'),
 				),
 			);
 
@@ -303,7 +303,7 @@ class BreezeAjax
 				'likes' => array(
 					'count' => 0,
 					'already' => false,
-					'can_like' => true,
+					'can_like' => allowedTo('breeze_canLike'),
 				),
 			);
 

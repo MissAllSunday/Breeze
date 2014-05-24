@@ -111,6 +111,7 @@ $txt['permissionname_breeze_canMention'] = 'Poder mencionar<br /><span class="sm
 $txt['permissionname_breeze_beMentioned'] = 'Aparecer en la lista de mencionable<br /><span class="smalltext">  Si el usuairo puede o no aparecer en la lista de posibles mencionables de otros usuarios</span>';
 $txt['permissionname_breeze_deleteStatus'] = 'Borrar todos los mensajes de cualquier muro<br /><span class="smalltext">  Este permiso reemplaza cualquier otro permiso que el usuario puede tener. Borrar un mensaje también borra todos los comentarios asociados a ese mensaje.</span>';
 $txt['permissionname_breeze_deleteComments'] = 'Borrar cualquier comentario en cualquier muro<br /><span class="smalltext">  El usuario podrá borrar los comentarios hechos por cualquier otro usuario.</span>';
+$txt['permissionname_breeze_canLike'] = 'Poder hacer clic en "me gusta" en cada status o comentario.';
 $txt['permissionname_breeze_deleteOwnStatus'] = 'Borrar sus propios status.<br /><span class="smalltext">  Sin importar en cuál muro fueron hechos. Al hacerlo también se borrarán todos los comentarios asociados a ese status.</span>';
 $txt['permissionname_breeze_deleteOwnComments'] = 'Borrar sus propios comentarios.<br /><span class="smalltext">  Sin importar en dónde han sido escritos</span>';
 $txt['permissionname_breeze_deleteProfileStatus'] = 'Borrar mensajes hechos en sus propios muros.<br /><span class="smalltext">  Sin importar quién los escribió. Esto también borrará cualquier comentario asociado a ese status.</span>';

@@ -47,7 +47,7 @@ function breeze_status($data, $returnVar = false)
 							<div class="breeze_options">';
 
 		// Likes.
-		if (!empty($context['Breeze']['tools']->setting('likes')) && $status['likes']['can_like'])
+		if ($context['Breeze']['tools']->setting('likes') && $status['likes']['can_like'])
 		{
 			$echo .=
 								'<ul class="floatleft">
@@ -168,7 +168,7 @@ function breeze_comment($comments, $returnVar = false)
 				<div class="breeze_options">';
 
 		// Likes.
-		if (!empty($context['Breeze']['tools']->setting('likes')) && $comment['likes']['can_like'])
+		if ($context['Breeze']['tools']->setting('likes') && $comment['likes']['can_like'])
 		{
 			$echo .=
 					'<ul class="floatleft">
