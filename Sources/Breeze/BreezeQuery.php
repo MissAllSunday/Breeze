@@ -226,7 +226,7 @@ class BreezeQuery
 		);
 
 		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-			$return = $row;
+			$return = $this->generateData($row, $type);
 
 		$this->_smcFunc['db_free_result']($result);
 
@@ -247,13 +247,13 @@ class BreezeQuery
 
 		// Get the value directly from the DB
 		$result = $this->_smcFunc['db_query']('', '
-			SELECT status_id
+			SELECT '. implode(', ', $this->_tables['status']['columns']) .'
 			FROM {db_prefix}' . ($this->_tables['status']['table']) . '
 			ORDER BY {raw:sort}
 			LIMIT {int:limit}', array('sort' => 'status_id DESC', 'limit' => 1));
 
 		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-			$return = $row;
+			$return = $this->generateData($row, 'status');
 
 		$this->_smcFunc['db_free_result']($result);
 
@@ -274,13 +274,13 @@ class BreezeQuery
 
 		// Get the value directly from the DB
 		$result = $this->_smcFunc['db_query']('', '
-			SELECT comments_id
+			SELECT '. implode(', ', $this->_tables['comments']['columns']) .'
 			FROM {db_prefix}' . ($this->_tables['comments']['table']) . '
 			ORDER BY {raw:sort}
 			LIMIT {int:limit}', array('sort' => 'comments_id DESC', 'limit' => 1));
 
 		while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-			$return = $row;
+			$return = $this->generateData($row, 'comments');
 
 		$this->_smcFunc['db_free_result']($result);
 
@@ -331,22 +331,7 @@ class BreezeQuery
 			if ($getComments)
 				$statusIDs[] = $row['status_id'];
 
-			$return['data'][$row['status_id']] = array(
-				'id' => $row['status_id'],
-				'owner_id' => $row['status_owner_id'],
-				'poster_id' => $row['status_poster_id'],
-				'time' => $this->_app['tools']->timeElapsed($row['status_time']),
-				'time_raw' => $row['status_time'],
-				'body' => $this->_app['parser']->display($row['status_body']),
-				'comments' => array(),
-			);
-
-			if ($this->_app['tools']->setting('likes'))
-				$return['data'][$row['status_id']]['likes'] = array(
-					'count' => $row['likes'],
-					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
-					'can_like' => true,
-				);
+			$return['data'][$row['status_id']] = $this->generateData($row, 'status');
 
 			// Get the users IDs
 			$return['users'][] = $row['status_owner_id'];
@@ -372,23 +357,7 @@ class BreezeQuery
 			// Append the data to our main return array
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 			{
-				$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']] = array(
-					'id' => $row['comments_id'],
-					'status_id' => $row['comments_status_id'],
-					'status_owner_id' => $row['comments_status_owner_id'],
-					'poster_id' => $row['comments_poster_id'],
-					'profile_id' => $row['comments_profile_id'],
-					'time' => $this->_app['tools']->timeElapsed($row['comments_time']),
-					'time_raw' => $row['comments_time'],
-					'body' => $this->_app['parser']->display($row['comments_body']),
-				);
-
-				if ($this->_app['tools']->setting('likes'))
-					$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']]['likes'] = array(
-						'count' => $row['likes'],
-						'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
-						'can_like' => true,
-					);
+				$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']] = $this->generateData($row, 'comments');
 
 				// Append the users IDs.
 				$return['users'][] = $row['comments_poster_id'];
@@ -451,22 +420,7 @@ class BreezeQuery
 			// First things first, collect the status IDs
 			$statusIDs[] = $row['status_id'];
 
-			$return['data'][$row['status_id']] = array(
-				'id' => $row['status_id'],
-				'owner_id' => $row['status_owner_id'],
-				'poster_id' => $row['status_poster_id'],
-				'time' => $this->_app['tools']->timeElapsed($row['status_time']),
-				'time_raw' => $row['status_time'],
-				'body' => $this->_app['parser']->display($row['status_body']),
-				'comments' => array(),
-			);
-
-			if ($this->_app['tools']->setting('likes'))
-				$return['data'][$row['status_id']]['likes'] = array(
-					'count' => $row['likes'],
-					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
-					'can_like' => true,
-				);
+			$return['data'][$row['status_id']] = $this->generateData($row, 'status');
 
 			// Get the users IDs
 			$return['users'][] = $row['status_owner_id'];
@@ -492,23 +446,7 @@ class BreezeQuery
 			// Append the data to our main return array
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 			{
-				$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']] = array(
-					'id' => $row['comments_id'],
-					'status_id' => $row['comments_status_id'],
-					'status_owner_id' => $row['comments_status_owner_id'],
-					'poster_id' => $row['comments_poster_id'],
-					'profile_id' => $row['comments_profile_id'],
-					'time' => $this->_app['tools']->timeElapsed($row['comments_time']),
-					'time_raw' => $row['comments_time'],
-					'body' => $this->_app['parser']->display($row['comments_body']),
-				);
-
-				if ($this->_app['tools']->setting('likes'))
-					$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']]['likes'] = array(
-						'count' => $row['likes'],
-						'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
-						'can_like' => true,
-					);
+				$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']] = $this->generateData($row, 'comments');
 
 				// Append the users IDs.
 				$return['users'][] = $row['comments_poster_id'];
@@ -536,7 +474,7 @@ class BreezeQuery
 	 * Get a single status based on the ID. This should return just one value, if it returns more, then we have a bug somewhere or you didn't provide a valid ID
 	 * @param int $id the ID of status you want to fetch.
 	 * @access public
-	 * @return array An array containing all the status made in X profile page
+	 * @return array An array containing all the data related to the single ID given.
 	 */
 	public function getStatusByID($id)
 	{
@@ -566,21 +504,7 @@ class BreezeQuery
 			// Get the Ids to fetch the comments.
 			$statusIDs[] = $row['status_id'];
 
-			$return['data'][$row['status_id']] = array(
-				'id' => $row['status_id'],
-				'owner_id' => $row['status_owner_id'],
-				'poster_id' => $row['status_poster_id'],
-				'time' => $this->_app['tools']->timeElapsed($row['status_time']),
-				'time_raw' => $row['status_time'],
-				'body' => $this->_app['parser']->display($row['status_body']),
-			);
-
-			if ($this->_app['tools']->setting('likes'))
-				$return['data'][$row['status_id']]['likes'] = array(
-					'count' => $row['likes'],
-					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
-					'can_like' => true,
-				);
+			$return['data'][$row['status_id']] = $this->generateData($row, 'status');
 
 			$return['users'][] = $row['status_owner_id'];
 			$return['users'][] = $row['status_poster_id'];
@@ -605,23 +529,7 @@ class BreezeQuery
 			// Append the data to our main return array
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 			{
-				$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']] = array(
-					'id' => $row['comments_id'],
-					'status_id' => $row['comments_status_id'],
-					'status_owner_id' => $row['comments_status_owner_id'],
-					'poster_id' => $row['comments_poster_id'],
-					'profile_id' => $row['comments_profile_id'],
-					'time' => $this->_app['tools']->timeElapsed($row['comments_time']),
-					'time_raw' => $row['comments_time'],
-					'body' => $this->_app['parser']->display($row['comments_body']),
-				);
-
-				if ($this->_app['tools']->setting('likes'))
-					$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']]['likes'] = array(
-						'count' => $row['likes'],
-						'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
-						'can_like' => true,
-					);
+				$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']] = $this->generateData($row, 'comments');
 
 				// Append the users IDs.
 				$return['users'][] = $row['comments_poster_id'];
@@ -686,21 +594,7 @@ class BreezeQuery
 			// Get the Ids to fetch the comments.
 			$statusIDs[] = $row['status_id'];
 
-			$return['data'][$row['status_id']] = array(
-				'id' => $row['status_id'],
-				'owner_id' => $row['status_owner_id'],
-				'poster_id' => $row['status_poster_id'],
-				'time' => $this->_app['tools']->timeElapsed($row['status_time']),
-				'time_raw' => $row['status_time'],
-				'body' => $this->_app['parser']->display($row['status_body']),
-			);
-
-			if ($this->_app['tools']->setting('likes'))
-				$return['data'][$row['status_id']]['likes'] = array(
-					'count' => $row['likes'],
-					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
-					'can_like' => true,
-				);
+			$return['data'][$row['status_id']] = $this->generateData($row, 'status');
 
 			$return['users'][] = $row['status_owner_id'];
 			$return['users'][] = $row['status_poster_id'];
@@ -723,23 +617,7 @@ class BreezeQuery
 			// Append the data to our main return array
 			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
 			{
-				$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']] = array(
-					'id' => $row['comments_id'],
-					'status_id' => $row['comments_status_id'],
-					'status_owner_id' => $row['comments_status_owner_id'],
-					'poster_id' => $row['comments_poster_id'],
-					'profile_id' => $row['comments_profile_id'],
-					'time' => $this->_app['tools']->timeElapsed($row['comments_time']),
-					'time_raw' => $row['comments_time'],
-					'body' => $this->_app['parser']->display($row['comments_body']),
-				);
-
-				if ($this->_app['tools']->setting('likes'))
-					$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']]['likes'] = array(
-						'count' => $row['likes'],
-						'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
-						'can_like' => true,
-					);
+				$return['data'][$row['comments_status_id']]['comments'][$row['comments_id']] = $this->generateData($row, 'comments');
 
 				// Append the users IDs.
 				$return['users'][] = $row['comments_poster_id'];
@@ -758,18 +636,6 @@ class BreezeQuery
 		$return['count'] = $count;
 
 		return $return;
-	}
-
-	/**
-	 * BreezeQuery::getStatusByLast()
-	 *
-	 * Get the latest Status in the Status array. This returns the last status added to the DB.
-	 * @return array the last status added to the DB.
-	 */
-	public function getStatusByLast()
-	{
-		// @todo make this a real query
-		return;
 	}
 
 	// Editing methods
@@ -1733,6 +1599,63 @@ class BreezeQuery
 				'num_likes' => $numLikes,
 			)
 		);
+	}
+
+	protected function generateData($row, $type)
+	{
+		static $canLike;
+
+		// array equals array O RLY???
+		$array = array();
+
+		if (empty($row) || empty($type))
+			return $array();
+
+		if (!isset($canLike))
+			$canLike = allowedTo('breeze_canLike');
+
+		if ($type == 'status')
+		{
+			$array = array(
+				'id' => $row['status_id'],
+				'owner_id' => $row['status_owner_id'],
+				'poster_id' => $row['status_poster_id'],
+				'time' => $this->_app['tools']->timeElapsed($row['status_time']),
+				'time_raw' => $row['status_time'],
+				'body' => $this->_app['parser']->display($row['status_body']),
+				'comments' => array(),
+			);
+
+			if ($this->_app['tools']->setting('likes'))
+				$array['likes'] = array(
+					'count' => $row['likes'],
+					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
+					'can_like' => $canLike,
+				);
+		}
+
+		else if ($type == 'comments')
+		{
+			$array = array(
+				'id' => $row['comments_id'],
+				'status_id' => $row['comments_status_id'],
+				'status_owner_id' => $row['comments_status_owner_id'],
+				'poster_id' => $row['comments_poster_id'],
+				'profile_id' => $row['comments_profile_id'],
+				'time' => $this->_app['tools']->timeElapsed($row['comments_time']),
+				'time_raw' => $row['comments_time'],
+				'body' => $this->_app['parser']->display($row['comments_body']),
+			);
+
+			if ($this->_app['tools']->setting('likes'))
+				$array['likes'] = array(
+					'count' => $row['likes'],
+					'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
+					'can_like' => $canLike,
+				);
+		}
+
+		return $array;
 	}
 }
 

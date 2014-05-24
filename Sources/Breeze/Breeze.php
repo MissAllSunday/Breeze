@@ -394,13 +394,13 @@ class Breeze extends Pimple
 		$row = $convert[$type] .'_id';
 		$authorColumn = $convert[$type] .'_poster_id';
 
-		// With the given values, try to find who is the owner of liked content.
+		// With the given values, try to find who is the owner of the liked content.
 		$data = $this['query']->getSingleValue($convert[$type], $row, $content);
 
 		if (!empty($data[$authorColumn]))
 			return $data[$authorColumn];
 
-		// Return false if the message is no longer on the DB.
+		// Return false if the status/comment is no longer on the DB.
 		else
 			return false;
 	}
