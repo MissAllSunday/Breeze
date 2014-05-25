@@ -16,6 +16,7 @@ if (!defined('SMF'))
 class BreezeMood
 {
 	protected $_app;
+	protected $moodFolder = 'moods';
 
 	function __construct($app)
 	{
@@ -44,5 +45,25 @@ class BreezeMood
 
 		else
 			fatal_lang_error('Breeze_error_no_valid_action', false);
+	}
+
+	public function create()
+	{
+		$this->_app['query']->insertMood($data);
+	}
+
+	public function read()
+	{
+		$this->_app['query']->getMood($data);
+	}
+
+	public function update()
+	{
+		$this->_app['query']->updateMood($data);
+	}
+
+	public funciotn delete(
+	{
+		$this->_app['query']->deleteMood($data);
 	}
 }
