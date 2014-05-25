@@ -24,12 +24,25 @@ class BreezeMood
 
 	function call($app)
 	{
-		// Crud actions
+		$data = Breeze::data('get');
+
+		// Crud actions.
 		$subActions = array(
 			'create',
 			'read',
 			'update',
 			'delete',
 		);
+
+		// Master setting is off, back off!
+		if (!$this->_app['tools']->enable('mood'))
+			return;
+
+		// Does the subaction even exist?
+		if (isset($subActions[$data->get('sa')]))
+			$this->$subActions[$data->get('sa')]();
+
+		else
+			fatal_lang_error('Breeze_error_no_valid_action', false);
 	}
 }
