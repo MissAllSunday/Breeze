@@ -74,10 +74,7 @@ class BreezeData
 	 */
 	public function validate($var)
 	{
-		if (isset($this->_request[$var]))
-			return true;
-		else
-			return false;
+		return (isset($this->_request[$var]));
 	}
 
 	/**
@@ -126,15 +123,16 @@ class BreezeData
 		global $smcFunc;
 
 		if (is_array($var))
-			return $var;
+			foreach ($var as $k => $v)
+				$var[$k] = $this->sanitize($v);
 
-		if (get_magic_quotes_gpc())
+		else if (get_magic_quotes_gpc())
 			$var = stripslashes($var);
 
-		if (is_numeric($var))
+		else if (is_numeric($var))
 			$var = (int)trim($var);
 
-		elseif (is_string($var))
+		else if (is_string($var))
 			return $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var), ENT_QUOTES);
 
 		else
