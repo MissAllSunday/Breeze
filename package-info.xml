@@ -12,6 +12,7 @@
 		<code>hooks.php</code>
 		<require-dir name="Themes" destination="$boarddir">Theme files</require-dir>
 		<require-dir name="Sources/Breeze" destination="$sourcedir">Source files</require-dir>
+		<require-dir name="breezeFiles" destination="$boarddir">Uploaded images</require-dir>
 		<redirect url="$scripturl?action=admin;area=breezeadmin;sa=general" timeout="3000">redirect.txt</redirect>
 	</install>
 
@@ -23,10 +24,12 @@
 		<remove-file name="$themedir/BreezeAdmin.template.php" />
 		<remove-file name="$themedir/BreezeFunctions.template.template.php" />
 		<remove-file name="$themedir/css/breeze.css" />
+		<remove-file name="$themedir/css/breeze.min.css" />
 		<remove-file name="$themedir/css/facebox.css" />
 		<remove-file name="$themedir/css/jquery.atwho.css" />
 		<remove-dir name="$imagesdir/breeze" />
 		<remove-dir name="$themedir/js/noty" />
+		<remove-dir name="$themedir/js/fileUpload" />
 		<remove-file name="$themedir/js/breeze.js" />
 		<remove-file name="$themedir/js/breezeLoadMore.js" />
 		<remove-file name="$themedir/js/breezeMention.js" />
