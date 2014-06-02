@@ -16,7 +16,7 @@ if (!defined('SMF'))
 /**
  * breeze_autoloader()
  *
- * @param mixed $class_name
+ * @param string $class_name
  *
  * @return bool
  */
@@ -365,10 +365,6 @@ class Breeze extends Pimple
 		$data['type'] = $type;
 		$data['flush_cache'] = true;
 		$data['callback'] = 'Breeze::likesUpdate#';
-
-		// $extra has my much needed "comming from" json string, without this I cannot redirect users properly.
-		// $redirect = json_decode($extra, true);
-		$data['redirect'] = 'lol';
 
 		return $data;
 	}
