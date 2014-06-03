@@ -62,8 +62,41 @@ class BreezeMood
 		$this->_app['query']->updateMood($data);
 	}
 
-	public funciotn delete(
+	public function delete(
 	{
 		$this->_app['query']->deleteMood($data);
+	}
+
+	public function checkExt($var)
+	{
+		if (empty($var))
+			return false;
+
+		if (!in_array(strtolower(substr(strrchr($var, '.'), 1)), $this->allowedExtensions))
+			return false;
+
+		else
+			return true;
+	}
+
+	public function checkImage($image)
+	{
+		if (empty($image))
+			return false;
+
+		if (!$this->checkExt($image))
+			return false;
+
+		return file_exists($this->imagesPath .'/'. $image);
+	}
+
+	public function checkDir()
+	{
+		return file_exists($this->imagesPath);
+	}
+
+	public function isDirWritable()
+	{
+		return is_writable($this->imagesPath);
 	}
 }
