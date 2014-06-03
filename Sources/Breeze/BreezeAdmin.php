@@ -34,6 +34,8 @@ class BreezeAdmin extends Breeze
 		$subActions = array(
 			'general' => 'main',
 			'settings' => 'settings',
+			'mood' => 'mood',
+			'moodList' => 'moodList',
 			'permissions' => 'permissions',
 			'donate' => 'donate',
 		);
@@ -44,6 +46,8 @@ class BreezeAdmin extends Breeze
 			'tabs' => array(
 				'general' => array(),
 				'settings' => array(),
+				'mood' => array(),
+				'moodList' => 'moodList',
 				'permissions' => array(),
 				'donate' => array(),
 			),
@@ -95,7 +99,7 @@ class BreezeAdmin extends Breeze
 		$context['Breeze']['credits'] = $this->credits();
 	}
 
-	function Settings()
+	function settings()
 	{
 		global $scripturl, $context, $sourcedir;
 
@@ -138,7 +142,7 @@ class BreezeAdmin extends Breeze
 		prepareDBSettingContext($config_vars);
 	}
 
-	function Permissions()
+	function permissions()
 	{
 		global $scripturl, $context, $sourcedir, $txt;
 
@@ -176,8 +180,24 @@ class BreezeAdmin extends Breeze
 		prepareDBSettingContext($config_vars);
 	}
 
+	public function moodList()
+	{
+		global $context;
+
+		$context['sub_template'] = 'manage_mood';
+
+		// Get out main instance.
+		$mood = $this['mood'];
+
+		// Need to know a few things.
+		$context['mood']['isDirWritable'] = $mood->isDirWritable();
+
+		// Go get some...
+		$mood->getAll(false);
+	}
+
 	// Pay no attention to the girl behind the curtain.
-	function Donate()
+	function donate()
 	{
 		global $context;
 

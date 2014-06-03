@@ -16,35 +16,17 @@ if (!defined('SMF'))
 class BreezeMood
 {
 	protected $_app;
-	protected $moodFolder = 'moods';
+	protected $_moodFolder = 'moods';
+	protected $_imagesPath = '';
+	protected $allowedExtensions = array('gif');
 
 	function __construct($app)
 	{
+		global $boarddir;
+
 		$this->_app = $app;
-	}
 
-	function call($app)
-	{
-		$data = Breeze::data('get');
-
-		// Crud actions.
-		$subActions = array(
-			'create',
-			'read',
-			'update',
-			'delete',
-		);
-
-		// Master setting is off, back off!
-		if (!$this->_app['tools']->enable('mood'))
-			return;
-
-		// Does the subaction even exist?
-		if (isset($subActions[$data->get('sa')]))
-			$this->$subActions[$data->get('sa')]();
-
-		else
-			fatal_lang_error('Breeze_error_no_valid_action', false);
+		$this->_imagesPath = $boarddir . Breeze::$coversFolder . $this->_moodFolder;
 	}
 
 	public function create()
@@ -72,7 +54,7 @@ class BreezeMood
 		if (empty($var))
 			return false;
 
-		if (!in_array(strtolower(substr(strrchr($var, '.'), 1)), $this->allowedExtensions))
+		if (!in_array(strtolower(substr(strrchr($var, '.'), 1)), $this->_allowedExtensions))
 			return false;
 
 		else
@@ -87,16 +69,21 @@ class BreezeMood
 		if (!$this->checkExt($image))
 			return false;
 
-		return file_exists($this->imagesPath .'/'. $image);
+		return file_exists($this->_imagesPath .'/'. $image);
 	}
 
 	public function checkDir()
 	{
-		return file_exists($this->imagesPath);
+		return file_exists($this->_imagesPath);
 	}
 
 	public function isDirWritable()
 	{
-		return is_writable($this->imagesPath);
+		return is_writable($this->_imagesPath);
+	}
+
+	public function getImagesPath()
+	{
+		return $this->_imagesPath;
 	}
 }
