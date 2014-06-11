@@ -38,13 +38,13 @@ spl_autoload_register('breeze_autoloader');
 
 class Breeze extends Pimple
 {
-	protected $_services = array('admin', 'ajax', 'display', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall',);
+	protected $_services = array('admin', 'ajax', 'display', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall', 'mood',);
 	public static $name = 'Breeze';
 	public static $version = '1.0';
 	public static $folder = '/Breeze/';
 	public static $coversFolder = '/breezeFiles/';
 	public static $txtpattern = 'Breeze_';
-	public static $permissions = array('deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canMention', 'beMentioned', 'canCover');
+	public static $permissions = array('deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canMention', 'beMentioned', 'canCover', 'canMood');
 	public static $allSettings = array('wall', 'general_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention', 'gender', 'buddiesList', 'ignoredList', 'profileViews',);
 
 	// Support site feed

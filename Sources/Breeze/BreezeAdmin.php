@@ -34,7 +34,6 @@ class BreezeAdmin extends Breeze
 		$subActions = array(
 			'general' => 'main',
 			'settings' => 'settings',
-			'mood' => 'mood',
 			'moodList' => 'moodList',
 			'permissions' => 'permissions',
 			'donate' => 'donate',
@@ -46,7 +45,6 @@ class BreezeAdmin extends Breeze
 			'tabs' => array(
 				'general' => array(),
 				'settings' => array(),
-				'mood' => array(),
 				'moodList' => 'moodList',
 				'permissions' => array(),
 				'donate' => array(),
@@ -127,6 +125,7 @@ class BreezeAdmin extends Breeze
 			array('int', Breeze::$txtpattern .'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this['tools']->adminText('allowed_maxlength_aboutMe_sub')),
 			array('check', Breeze::$txtpattern .'cover', 'subtext' => $this['tools']->adminText('cover_sub')),
 			array('check', Breeze::$txtpattern .'likes', 'subtext' => $this['tools']->adminText('likes_sub')),
+			array('check', Breeze::$txtpattern .'mood', 'subtext' => $this['tools']->adminText('mood_sub')),
 		);
 
 		$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=settings;save';
@@ -146,8 +145,8 @@ class BreezeAdmin extends Breeze
 	{
 		global $scripturl, $context, $sourcedir, $txt;
 
-		// This page needs the general strings
-		loadLanguage('Breeze');
+		// This page needs the general strings.
+		loadLanguage(Breeze::$name);
 
 		// Load stuff
 		$data = Breeze::data('request');
