@@ -126,17 +126,17 @@ class BreezeData
 			foreach ($var as $k => $v)
 				$var[$k] = $this->sanitize($v);
 
-		else if (get_magic_quotes_gpc())
-			$var = stripslashes($var);
-
-		else if (is_numeric($var))
-			$var = (int)trim($var);
-
-		else if (is_string($var))
-			return $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var), ENT_QUOTES);
-
 		else
-			$var = 'error_' . $var;
+		{
+			if (is_numeric($var))
+				$var = (int)trim($var);
+
+			else if (is_string($var))
+				$var =  $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var), ENT_QUOTES);
+
+			else
+				$var = 'error_' . $var;
+		}
 
 		return $var;
 	}
