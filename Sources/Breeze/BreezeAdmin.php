@@ -192,7 +192,7 @@ class BreezeAdmin extends Breeze
 		$context['mood']['isDirWritable'] = $mood->isDirWritable();
 
 		// Go get some...
-		$mood->getAll(false);
+		$mood->getMoods(true);
 	}
 
 	// Pay no attention to the girl behind the curtain.

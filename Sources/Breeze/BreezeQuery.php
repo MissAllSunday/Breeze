@@ -83,6 +83,12 @@ class BreezeQuery
 				'property' => '_likes',
 				'columns' => array('id_member', 'content_type', 'content_id', 'like_time',),
 				),
+			'moods' => array(
+				'name' => 'moods',
+				'table' => 'breeze_moods',
+				'property' => '_noti',
+				'columns' => array('moods_id', 'name', 'file', 'desc', 'enable',),
+				),
 		);
 	}
 
@@ -1599,6 +1605,27 @@ class BreezeQuery
 				'num_likes' => $numLikes,
 			)
 		);
+	}
+
+	public function getMoods($all = false)
+	{
+		if (($moods = cache_get_data(Breeze::$name .'-moods'. ($all ? '-all' ? ''), 120)) == null)
+		{
+			$moods = array();
+			$request = $this->_smcFunc['db_query']('', '
+				SELECT '. implode(',', $this->_tables['moods']['columns']) .'
+				FROM {db_prefix}' . $this->_tables['moods']['table'],
+				array(
+			);
+
+			while ($row = $this->_smcFunc['db_fetch_assoc']($request))
+				$moods[$row['moods_id']] = $row;
+
+			$this->_smcFunc['db_free_result']($request);
+			cache_put_data(Breeze::$name .'-moods'. ($all ? '-all' ? ''), $moods, 120);
+		}
+
+		return $moods;
 	}
 
 	protected function generateData($row, $type)

@@ -303,6 +303,34 @@
 				'update',
 				null
 			);
+
+			// Current mood.
+			$smcFunc['db_add_column'](
+				'{db_prefix}members',
+				array(
+					'name' => 'breeze_mood',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false
+				),
+				array(),
+				'update',
+				null
+			);
+
+			// Mood history.
+			$smcFunc['db_add_column'](
+				'{db_prefix}members',
+				array(
+					'name' => 'breeze_mood_log',
+					'type' => 'text',
+					'size' => '',
+					'default' => null,
+				),
+				array(),
+				'update',
+				null
+			);
 		}
 
 		$newTables = array();

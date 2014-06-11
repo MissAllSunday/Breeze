@@ -19,6 +19,7 @@ class BreezeMood
 	protected $_moodFolder = 'moods';
 	protected $_imagesPath = '';
 	protected $allowedExtensions = array('gif');
+	protected $_moods;
 
 	function __construct($app)
 	{
@@ -34,9 +35,9 @@ class BreezeMood
 		$this->_app['query']->insertMood($data);
 	}
 
-	public function read()
+	public function read($all = false)
 	{
-		$this->_app['query']->getMood($data);
+		$this->_moods = $this->_app['query']->getMood($all);
 	}
 
 	public function update()
@@ -44,9 +45,36 @@ class BreezeMood
 		$this->_app['query']->updateMood($data);
 	}
 
-	public function delete(
+	public function delete($id)
 	{
-		$this->_app['query']->deleteMood($data);
+		if (empty($id) || !is_int($id))
+			return false;
+
+		$this->_app['query']->deleteMood($id);
+	}
+
+	public function getUserMood($user)
+	{
+		// No ID no fun!
+		if (empty($user) || !is_int($user))
+			return false;
+
+		// Go get 'em, Tiger!
+		$this->read(false);
+	}
+
+	public function getUserHistory($user)
+	{
+		// No ID no fun!
+		if (empty($user) || !is_int($user))
+			return false;
+
+		$history = $this->_app['query']->moodHistory($user);
+
+		// Go get 'em, Tiger!
+		$this->read(false);
+
+		$moods = array_intersect($this->_moods, $history);
 	}
 
 	public function checkExt($var)
