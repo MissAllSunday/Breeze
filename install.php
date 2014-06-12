@@ -303,34 +303,6 @@
 				'update',
 				null
 			);
-
-			// Current mood.
-			$smcFunc['db_add_column'](
-				'{db_prefix}members',
-				array(
-					'name' => 'breeze_mood',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(),
-				'update',
-				null
-			);
-
-			// Mood history.
-			$smcFunc['db_add_column'](
-				'{db_prefix}members',
-				array(
-					'name' => 'breeze_mood_log',
-					'type' => 'text',
-					'size' => '',
-					'default' => null,
-				),
-				array(),
-				'update',
-				null
-			);
 		}
 
 		$newTables = array();
@@ -383,6 +355,23 @@
 
 		foreach ($newTables as $table)
 			$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
+
+		// Lastly, insert the default moods and oh boy there are a lot!!!
+		$moods = array('angel', 'angry', 'bear', 'beer', 'blush', 'brokenheart', 'cash', 'clapping', 'cool', 'crying', 'doh', 'drunk', 'dull', 'envy', 'evil', 'evilgrin', 'giggle', 'happy', 'headbang', 'hi', 'inlove', 'itwasntme', 'kiss', 'lipssealed', 'makeup', 'middlefinger', 'mmm', 'mooning', 'muscle', 'nerd', 'party', 'pizza', 'puke', 'rock', 'sad', 'sleepy', 'smile', 'smoke', 'speechless', 'sunny', 'surprised', 'sweating', 'talking', 'thinking', 'tongueout', 'wait', 'wink', 'wondering', 'worried', 'yawn', );
+
+		foreach ($moods as $m)
+			$smcFunc['db_insert']('replace', '{db_prefix}breeze_moods', array(
+				'moods_id' => 'int',
+				'name' => 'string',
+				'file' => 'string',
+				'desc' => 'string',
+				'enable' => 'int',
+			), array(
+				$m,
+				$m,
+				$m,
+				1
+			), array('moods_id', ));
 	}
 
 	function BreezeCheck()
