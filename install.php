@@ -264,13 +264,8 @@
 
 		// Is this an old or a clean install? this just vaguely assume you have all required tables already installed.
 		$installed = 0;
-		$request = $smcFunc['db_query']('', '
-			SELECT status_id
-			FROM {db_prefix}breeze_status',
-			array()
-		);
-		$installed = $smcFunc['db_num_rows']($request);
-		$smcFunc['db_free_result']($request);
+		$member_columns = $smcFunc['db_list_columns']('{db_prefix}members');
+		$installed = in_array('breeze_profile_views', $member_columns);
 
 		// Installing
 		if (empty($installed))
@@ -361,7 +356,6 @@
 
 		foreach ($moods as $m)
 			$smcFunc['db_insert']('replace', '{db_prefix}breeze_moods', array(
-				'moods_id' => 'int',
 				'name' => 'string',
 				'file' => 'string',
 				'desc' => 'string',
