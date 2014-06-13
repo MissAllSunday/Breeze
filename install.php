@@ -329,7 +329,7 @@
 					'default' => '',
 				),
 				array(
-					'name' => 'desc',
+					'name' => 'description',
 					'type' => 'text',
 					'size' => '',
 					'default' => null,

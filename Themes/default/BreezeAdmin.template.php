@@ -107,7 +107,7 @@ function template_admin_home()
 	<br />';
 }
 
-function template_manage_moods()
+function template_manage_mood()
 {
 	global $context, $txt;
 

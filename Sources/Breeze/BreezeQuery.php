@@ -87,7 +87,7 @@ class BreezeQuery
 				'name' => 'moods',
 				'table' => 'breeze_moods',
 				'property' => '_noti',
-				'columns' => array('moods_id', 'name', 'file', 'desc', 'enable',),
+				'columns' => array('moods_id', 'name', 'file', 'description', 'enable',),
 				),
 		);
 	}
@@ -1613,7 +1613,7 @@ class BreezeQuery
 		{
 			$moods = array();
 			$request = $this->_smcFunc['db_query']('', '
-				SELECT '. (implode(',', $this->_tables['moods']['columns'])) .'
+				SELECT '. (implode(', ', $this->_tables['moods']['columns'])) .'
 				FROM {db_prefix}' . ($this->_tables['moods']['table']),
 				array()
 			);
