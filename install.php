@@ -25,19 +25,6 @@
 
 	if (empty($context['uninstalling']))
 	{
-		// Profile views
-		$smcFunc['db_add_column'](
-			'{db_prefix}members',
-			array(
-				'name' => 'breeze_profile_views',
-				'type' => 'text',
-				'size' => '',
-				'default' => null,
-			),
-			array(),
-			'update',
-			null
-		);
 
 		// Member options
 		$tables[] = array(
@@ -267,10 +254,27 @@
 		$member_columns = $smcFunc['db_list_columns']('{db_prefix}members');
 		$installed = in_array('breeze_profile_views', $member_columns);
 
+
 		// Installing
 		if (empty($installed))
+		{
 			foreach ($tables as $table)
 				$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
+
+			// Profile views
+			$smcFunc['db_add_column'](
+				'{db_prefix}members',
+				array(
+					'name' => 'breeze_profile_views',
+					'type' => 'text',
+					'size' => '',
+					'default' => null,
+				),
+				array(),
+				'update',
+				null
+			);
+		}
 
 		else
 		{

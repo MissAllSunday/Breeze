@@ -1609,20 +1609,20 @@ class BreezeQuery
 
 	public function getMoods($all = false)
 	{
-		if (($moods = cache_get_data(Breeze::$name .'-moods'. ($all ? '-all' ? ''), 120)) == null)
+		if (($moods = cache_get_data(Breeze::$name .'-moods'. ($all ? '-all' : ''), 120)) == null)
 		{
 			$moods = array();
 			$request = $this->_smcFunc['db_query']('', '
-				SELECT '. implode(',', $this->_tables['moods']['columns']) .'
-				FROM {db_prefix}' . $this->_tables['moods']['table'],
-				array(
+				SELECT '. (implode(',', $this->_tables['moods']['columns'])) .'
+				FROM {db_prefix}' . ($this->_tables['moods']['table']),
+				array()
 			);
 
 			while ($row = $this->_smcFunc['db_fetch_assoc']($request))
 				$moods[$row['moods_id']] = $row;
 
 			$this->_smcFunc['db_free_result']($request);
-			cache_put_data(Breeze::$name .'-moods'. ($all ? '-all' ? ''), $moods, 120);
+			cache_put_data(Breeze::$name .'-moods'. ($all ? '-all' : ''), $moods, 120);
 		}
 
 		return $moods;
