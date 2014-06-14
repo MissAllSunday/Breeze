@@ -45,7 +45,7 @@ class BreezeAdmin extends Breeze
 			'tabs' => array(
 				'general' => array(),
 				'settings' => array(),
-				'moodList' => 'moodList',
+				'moodList' => array(),
 				'permissions' => array(),
 				'donate' => array(),
 			),
@@ -182,6 +182,14 @@ class BreezeAdmin extends Breeze
 	public function moodList()
 	{
 		global $context;
+
+		// Set all the page stuff
+		$context['page_title'] = $this['tools']->adminText('page_mood');
+		$context['sub_template'] = 'admin_home';
+		$context[$context['admin_menu_name']]['tab_data'] = array(
+			'title' => $context['page_title'],
+			'description' => $this['tools']->adminText('page_mood_desc'),
+		);
 
 		$context['sub_template'] = 'manage_mood';
 

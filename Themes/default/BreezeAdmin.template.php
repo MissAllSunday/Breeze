@@ -162,6 +162,9 @@ function template_manage_mood()
 			</tbody>
 		</table><hr /><br />';
 	}
+
+	else
+		echo '<div class="errorbox">', $txt['Breeze_page_mood__noList'] ,'</div><br />';
 }
 
 // Boring stuff you will never see...
