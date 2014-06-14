@@ -141,13 +141,13 @@ function template_manage_mood()
 			echo '
 				<tr class="windowbg" style="text-align: center">
 					<td>
-						<img src="', $m['url'] ,'" />
+						<img src="', $context['mood']['imageUrl'] . $m['file'] .'.'. $m['ext'],'" />
 					</td>
 					<td>
 						', $m['name'] ,'
 					</td>
 					<td>
-						', $m['desc'] ,'
+						', $m['description'] ,'
 					</td>
 					<td>
 						edit

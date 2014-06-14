@@ -314,7 +314,8 @@
 					'name' => 'moods_id',
 					'type' => 'int',
 					'size' => 5,
-					'null' => false
+					'null' => false,
+					'auto' => true
 				),
 				array(
 					'name' => 'name',
@@ -324,6 +325,12 @@
 				),
 				array(
 					'name' => 'file',
+					'type' => 'varchar',
+					'size' => 255,
+					'default' => '',
+				),
+				array(
+					'name' => 'ext',
 					'type' => 'varchar',
 					'size' => 255,
 					'default' => '',
@@ -362,11 +369,13 @@
 			$smcFunc['db_insert']('replace', '{db_prefix}breeze_moods', array(
 				'name' => 'string',
 				'file' => 'string',
-				'desc' => 'string',
+				'ext' => 'string',
+				'description' => 'string',
 				'enable' => 'int',
 			), array(
 				$m,
 				$m,
+				'gif',
 				$m,
 				1
 			), array('moods_id', ));

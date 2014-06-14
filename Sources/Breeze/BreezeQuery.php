@@ -87,7 +87,7 @@ class BreezeQuery
 				'name' => 'moods',
 				'table' => 'breeze_moods',
 				'property' => '_noti',
-				'columns' => array('moods_id', 'name', 'file', 'description', 'enable',),
+				'columns' => array('moods_id', 'name', 'file', 'ext', 'description', 'enable',),
 				),
 		);
 	}

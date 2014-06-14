@@ -201,6 +201,7 @@ class BreezeAdmin extends Breeze
 
 		// Go get some...
 		$context['mood']['all'] = $mood->read(true);
+		$context['mood']['imageUrl'] = $mood->getImagesUrl();
 	}
 
 	// Pay no attention to the girl behind the curtain.
