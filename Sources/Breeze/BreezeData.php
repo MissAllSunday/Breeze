@@ -123,8 +123,12 @@ class BreezeData
 		global $smcFunc;
 
 		if (is_array($var))
+		{
 			foreach ($var as $k => $v)
 				$var[$k] = $this->sanitize($v);
+
+			return $var;
+		}
 
 		else
 		{
@@ -132,12 +136,12 @@ class BreezeData
 				$var = (int)trim($var);
 
 			else if (is_string($var))
-				$var =  $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var), ENT_QUOTES);
+				$var = $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var), ENT_QUOTES);
 
 			else
 				$var = 'error_' . $var;
-		}
 
-		return $var;
+			return $var;
+		}
 	}
 }
