@@ -36,14 +36,11 @@ jQuery(document).ready(function(){
 		// Validate everything.
 		breezeStatus.validate();
 
-		if (breezeStatus.data)
-		{
-			breezeStatus.before();
+		if (breezeStatus.data){
 			breezeStatus.save();
-			breezeStatus.after();
 		}
 
-		// Prevent normal behaviour
+		// Prevent normal behaviour.
 		return false;
 	});
 
@@ -52,81 +49,16 @@ jQuery(document).ready(function(){
 
 		event.preventDefault();
 
-		// The most important thing is... the ID
-		var StatusID = parseInt(jQuery(this).attr('id').replace('form_comment_', ''));
+		var breezeComment.prototype = new breezePost('comment', this);
 
-		// Gather all the data we need
-		var comment = {
-			'commentStatus' : StatusID,
-			'commentOwner' : jQuery('#commentOwner_' + StatusID).val(),
-			'commentPoster' : jQuery('#commentPoster_' + StatusID).val(),
-			'commentStatusPoster' : jQuery('#commentStatusPoster_' + StatusID).val(),
-			'commentContent' : jQuery('#commentContent_' + StatusID).val(),
-			'mentions' : {}
-		};
+		// Validate everything.
+		breezeComment.validate();
 
-		// Don't be silly...
-		if(comment.commentContent =='')
-		{
-			breeze.tools.showNoti({message: breeze.text.error_empty, type : 'error'});
-			return false;
+		if (breezeComment.data){
+			breezeComment.save();
 		}
 
-		else
-		{
-			// Disable the button
-			jQuery('#commentSubmit_' + StatusID).attr('disabled', 'disabled');
-
-			// The usual loading image...
-			jQuery('#breeze_load_image_comment_'+ StatusID).fadeIn('slow').html(breeze.tools.loadImage);
-
-			// Any mentions? add them at once!
-			if (window.breeze.mentions) {
-
-				// Gotta make sure you really end up mentioning this user.
-				jQuery.each(window.breeze.mentions, function( key, value ) {
-					if (breeze.tools.findWord(comment.commentContent, value.name) == false) {
-						delete window.breeze.mentions[key];
-					}
-				});
-
-				// Pass the few survivors...
-				comment.mentions = window.breeze.mentions;
-			}
-
-			jQuery.ajax({
-				type: 'GET',
-				url: smf_scripturl + '?action=breezeajax;sa=postcomment;js=1;rf=' + breeze.tools.comingFrom,
-				data: comment,
-				cache: false,
-				dataType: 'json',
-				success: function(html){
-
-					jQuery('#breeze_load_image_comment_'+ StatusID).fadeOut('slow', 'linear', function(){
-
-						// Send the notification
-						breeze.tools.showNoti(html);
-
-						// Everything went better than expected :)
-						jQuery('#comment_loadplace_'+ StatusID).append(html.data).fadeIn('slow', 'linear', function(){});
-					});
-
-					// Enable the button again...
-					jQuery('#commentSubmit_' + StatusID).removeAttr('disabled');
-					jQuery('#commentContent_' + StatusID).val('');
-
-				},
-				error: function (html){
-
-					jQuery('#breeze_load_image_comment_'+ StatusID).fadeOut('slow');
-					breeze.tools.showNoti(html);
-					jQuery('#commentSubmit_' + StatusID).removeAttr('disabled');
-					jQuery('#commentContent_' + StatusID).val('');
-				}
-			});
-		}
-
-		// Prevent normal behaviour
+		// Prevent normal behaviour.
 		return false;
 	});
 

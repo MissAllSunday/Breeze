@@ -28,7 +28,7 @@ var breezePost = function(type form) {
 	this.validate = function()
 	{
 		// Get all the values we need
-		jQuery('#breeze_'+ type + ':input').each(function(){
+		jQuery(form).filter(':input').each(function(){
 			var input = jQuery(this);
 			this.data[input.attr('name')] = input.val();
 		});
@@ -48,6 +48,8 @@ var breezePost = function(type form) {
 	}
 
 	this.save = function() {
+
+		this.before();
 
 		// Shh!
 		if (this.data.content == 'about:Suki')
@@ -92,5 +94,7 @@ var breezePost = function(type form) {
 				});
 			}
 		});
+
+		this.after();
 	};
 };
