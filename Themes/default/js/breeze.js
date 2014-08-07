@@ -31,6 +31,18 @@ jQuery(document).ready(function(){
 
 		event.preventDefault();
 
+		var breezeStatus.prototype = new breezePost('status', this);
+
+		// Validate everything.
+		breezeStatus.validate();
+
+		if (breezeStatus.data)
+		{
+			breezeStatus.before();
+			breezeStatus.save();
+			breezeStatus.after();
+		}
+
 		// Prevent normal behaviour
 		return false;
 	});

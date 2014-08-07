@@ -3,20 +3,26 @@
  @license http://www.mozilla.org/MPL/MPL-1.1.html
 */
 
-var BreezePost = function(type) {
+var breezePost = function(type form) {
 
 	this.type = type;
 	this.data = {};
-	this.showLoading = function(show)
+	this.before = function()
 	{
-		// Show a nice loading image so people can think we are actually doing some work...
-		if (show){
-			jQuery('#breeze_load_image').fadeIn('slow').html('<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" />'); // this should be on the template...
-		}
+		// Show the loading image.
+		jQuery('#breeze_load_image').fadeIn('slow');
 
-		else{
-			jQuery('#breeze_load_image').fadeOut('slow', 'linear');
-		}
+		// Disable the submit button.
+		jQuery('input[type=submit]', form).attr('disabled', 'disabled');
+	};
+
+	this.after = function()
+	{
+		// Enable the button again...
+		jQuery('input[type=submit]', form).removeAttr('disabled');
+
+		// Hide the loading image.
+		jQuery('#breeze_load_image').fadeOut('slow', 'linear');
 	};
 
 	this.validate = function()
@@ -33,6 +39,12 @@ var BreezePost = function(type) {
 			breeze.tools.showNoti({message: breeze.text.error_empty, type : 'error'});
 			return false;
 		}
+
+		// Are we posting a comment? if so, get the status ID.
+		if(this.type == 'comment')
+			this.data.statusID = parseInt(form.attr('id').replace('form_comment_', ''));
+
+		return this.data;
 	}
 
 	this.save = function() {
@@ -55,9 +67,6 @@ var BreezePost = function(type) {
 			dataType: 'json',
 			success: function(html)
 			{
-
-				// Enable the button again...
-				jQuery('.status_button').removeAttr('disabled');
 
 				// Set the notification
 				breeze.tools.showNoti(html);
