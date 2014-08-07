@@ -123,18 +123,6 @@ class Breeze extends Pimple
 	}
 
 	/**
-	 * Breeze::data()
-	 *
-	 * A new instance of BreezeGlobals.
-	 * @param string $var Either post, request or get
-	 * @return object Access to BreezeGlobals
-	 */
-	public static function data($var)
-	{
-		return new BreezeData($var);
-	}
-
-	/**
 	 * Breeze::permissions()
 	 *
 	 * There is only permissions to post new status and comments on any profile because people needs to be able to post in their own profiles by default the same goes for deleting, people are able to delete their own status/comments on their own profile page.
@@ -283,7 +271,7 @@ class Breeze extends Pimple
 		$userSettings = $this['query']->getUserSettings($user_info['id']);
 
 		// Display common css and js files.
-		Breeze::notiHeaders();
+		$this->notiHeaders();
 
 		// Replace the duplicate profile button
 		if ($tools->enable('master') && !empty($menu_buttons['profile']['sub_buttons']['summary']))
@@ -327,7 +315,7 @@ class Breeze extends Pimple
 		);
 
 		// DUH! winning!
-		Breeze::who();
+		$this->who();
 	}
 
 	/**
@@ -352,6 +340,26 @@ class Breeze extends Pimple
 
 		// A special action for the buddy request message
 		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'breezeBuddyMessage');
+	}
+
+	/**
+	 * Breeze::call()
+	 *
+	 * Wrapper method to call Breeze methods while maintaining dependency injection.
+	 * @return void
+	 */
+	public function call()
+	{
+		// Just some quick code to make sure this works...
+		$a = array('wall', 'ajax');
+		$action = $this['data']->get('action');
+
+		// Gotta remove the "breeze" from breezeajax.
+		if ($action == 'breezeajax')
+			$action = str_replace('breeze', '', $action);
+
+		if (in_array($action, $a))
+			$this[$action]->call();
 	}
 
 	public function likes($type, $content, $sa, $js, $extra)
@@ -400,26 +408,6 @@ class Breeze extends Pimple
 		// Return false if the status/comment is no longer on the DB.
 		else
 			return false;
-	}
-
-	/**
-	 * Breeze::call()
-	 *
-	 * Wrapper method to call Breeze methods while maintaining dependency injection.
-	 * @return void
-	 */
-	public function call()
-	{
-		// Just some quick code to make sure this works...
-		$a = array('wall', 'ajax');
-		$action = Breeze::data('get')->get('action');
-
-		// Gotta remove the "breeze" from breezeajax.
-		if ($action == 'breezeajax')
-			$action = str_replace('breeze', '', $action);
-
-		if (in_array($action, $a))
-			$this[$action]->call();
 	}
 
 	/**
