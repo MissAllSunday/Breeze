@@ -63,7 +63,7 @@ var breezePost = function(type form) {
 		// The long, long ajax call...
 		jQuery.ajax({
 			type: 'GET',
-			url: smf_scripturl + '?action=breezeajax;sa=post;js=1;rf=' + breeze.tools.comingFrom,
+			url: form.attr('href') + ';js=1',
 			data: this.data,
 			cache: false,
 			dataType: 'json',
