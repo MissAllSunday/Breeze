@@ -63,13 +63,13 @@ jQuery(document).ready(function(){
 	});
 
 	// Deleting a comment
-	jQuery(document).on('click', '.breeze_delete_comment', function(event){
+	jQuery(document).on('click', '.breeze_delete', function(event){
 
 		event.preventDefault();
 
 		// Get the ID
-		commentID = parseInt(jQuery(this).attr('id').replace('deleteComment_', ''));
-		commentUrl = jQuery(this).attr('href');
+		postId = parseInt(jQuery(this).data('bid'));
+		postUrl = jQuery(this).attr('href');
 
 		// Show a confirmation message
 		noty({
@@ -81,7 +81,7 @@ jQuery(document).ready(function(){
 				addClass: 'button_submit', text: breeze.text.confirm_yes, onClick: function($noty) {
 					jQuery.ajax({
 						type: 'GET',
-						url: commentUrl + ';js=1',
+						url: postUrl + ';js=1',
 						cache: false,
 						dataType: 'json',
 						success: function(html){
@@ -96,7 +96,7 @@ jQuery(document).ready(function(){
 									});
 								break;
 								case 'success':
-								jQuery('#comment_id_'+ commentID).fadeOut('slow');
+								jQuery('#comment_id_'+ postId).fadeOut('slow');
 								noty({
 									text: html.message,
 									timeout: 3500, type: html.type
@@ -109,70 +109,6 @@ jQuery(document).ready(function(){
 							noty({
 								text: html.message,
 								timeout: 3500, type: html.error
-							});
-						}
-					});
-				}
-			},
-				{addClass: 'button_submit', text: breeze.text.confirm_cancel, onClick: function($noty) {
-					$noty.close();
-				}}
-			]
-		});
-
-		return false;
-	});
-
-	// Deleting a status, pretty much the same as deleting a comment :(
-	jQuery(document).on('click', '.breeze_delete_status', function(event){
-
-		event.preventDefault();
-
-		var element = jQuery(this);
-		var I = parseInt(element.attr('id').replace('deleteStatus_', ''));
-		var typeMethod = 'status';
-		var urlParam = element.attr('href');
-
-		// Show a nice confirmation box
-		noty({
-			text: breeze.text.confirm_delete,
-			type: 'confirmation',
-			dismissQueue: false,
-			closeWith: ['button'],
-			buttons: [{
-				addClass: 'button_submit', text: breeze.text.confirm_yes, onClick: function($noty) {
-					jQuery.ajax({
-						type: 'GET',
-						url: urlParam + ';js=1',
-						cache: false,
-						dataType: 'json',
-						success: function(html){
-							$noty.close();
-							switch(html.type)
-							{
-								case 'error':
-									noty({
-										text: html.message,
-										timeout: 3500,
-										type: html.type
-									});
-								break;
-								case 'success':
-									jQuery('#status_id_'+I).fadeOut('slow');
-									noty({
-										text: html.message,
-										timeout: 3500,
-										type: html.type
-									});
-								break;
-							}
-						},
-						error: function (html){
-							$noty.close();
-							noty({
-								text: html.message,
-								timeout: 3500,
-								type: html.type
 							});
 						}
 					});
