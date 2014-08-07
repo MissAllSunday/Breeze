@@ -123,6 +123,18 @@ class Breeze extends Pimple
 	}
 
 	/**
+	 * Breeze::data()
+	 *
+	 * A new instance of BreezeGlobals.
+	 * @param string $var Either post, request or get
+	 * @return object Access to BreezeGlobals
+	 */
+	public  function data($var)
+	{
+		return new BreezeData($var);
+	}
+
+	/**
 	 * Breeze::permissions()
 	 *
 	 * There is only permissions to post new status and comments on any profile because people needs to be able to post in their own profiles by default the same goes for deleting, people are able to delete their own status/comments on their own profile page.
