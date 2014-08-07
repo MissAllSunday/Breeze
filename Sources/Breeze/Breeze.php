@@ -38,7 +38,7 @@ spl_autoload_register('breeze_autoloader');
 
 class Breeze extends Pimple
 {
-	protected $_services = array('admin', 'ajax', 'display', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall',);
+	protected $_services = array('admin', 'ajax', 'display', 'data', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall',);
 	public static $name = 'Breeze';
 	public static $version = '1.1';
 	public static $folder = '/Breeze/';
@@ -503,17 +503,14 @@ class Breeze extends Pimple
 	public function notiHeaders()
 	{
 		global $context, $user_info, $settings;
-		static $header_done = false;
 
-		// Don't do anything if we are in SSI world
-		if (SMF == 'SSI')
-			return false;
+		// The main stuff
+		loadJavascriptFile('breeze.js', $params = array('local' => true, 'default_theme' = true));
 
 		// Prevent this from showing twice
 		if (!$header_done)
 		{
 			$tools = $this['tools'];
-			$breezeGlobals = Breeze::data('get');
 			$userSettings = $this['query']->getUserSettings($user_info['id']);
 
 			// Don't pass the "about me" stuff...

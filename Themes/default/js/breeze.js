@@ -3,22 +3,26 @@
  @license http://www.mozilla.org/MPL/MPL-1.1.html
 */
 
-breeze.tools.loadImage = '<img src="' + smf_default_theme_url + '/images/breeze/loading.gif" />';
-
-window.breeze.mentions = {};
-
-// Helper function to show a notification instance
-breeze.tools.showNoti = function(params){
-	noty({
-		text: params.message,
-		timeout: 3500, //@todo set this to a user setting
-		type: params.type
-	});
-}
-
-breeze.tools.findWord = function(string, word){
-	return string.match('@' + word) !== null;
-}
+// The main breeze JS object.
+var breeze = {
+	text : {},
+	settings : {},
+	ownerSettings : {},
+	currentSettings : {},
+	tools : {
+		showNoti = function(params){
+			noty({
+				text: params.message,
+				timeout: 3500, //@todo set this to a user setting
+				type: params.type
+			});
+		},
+		findWord = function(string, word){
+			return string.match('@' + word) !== null;
+		},
+	},
+	pagination : {},
+};
 
 jQuery(document).ready(function(){
 
@@ -26,90 +30,6 @@ jQuery(document).ready(function(){
 	jQuery('#form_status').submit(function(event){
 
 		event.preventDefault();
-
-		var status = {};
-
-		// Get the profile owner
-		status.statusOwner = window.breeze_profileOwner;
-
-		// Get all the values we need
-		jQuery('#form_status :input').each(function(){
-			var input = jQuery(this);
-			status[input.attr('name')] = input.val();
-		});
-
-		// You need to type something...
-		if(status.statusContent=='')
-		{
-			breeze.tools.showNoti({message: breeze.text.error_empty, type : 'error'});
-			return false;
-		}
-
-		else
-		{
-			// Shh!
-			if (status.statusContent == 'about:Suki')
-			{
-				alert('Y es que tengo un coraz\xF3n t\xE1n necio \n que no comprende que no entiende \n que le hace da\xF1o amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n Y es que tengo un coraz\xF3n t\xE1n necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace da\xF1o \n te sigue amando igual o mucho m\xE1s que ayer \n mucho m\xE1s que ayer... \n');
-				return false;
-			}
-
-			// Show a nice loading image so people can think we are actually doing some work...
-			jQuery('#breeze_load_image').fadeIn('slow').html(breeze.tools.loadImage);
-
-			// If there are some mentions, attach them to our main object.
-			if (window.breeze.mentions) {
-
-				// Gotta make sure you really end up mentioning this user.
-				jQuery.each(window.breeze.mentions, function( key, value ) {
-					if (breeze.tools.findWord(status.statusContent, value.name) == false) {
-						delete window.breeze.mentions[key];
-					}
-				});
-
-				// Pass the few survivors...
-				status.mentions = window.breeze.mentions;
-			}
-
-			// The long, long ajax call...
-			jQuery.ajax({
-				type: 'GET',
-				url: smf_scripturl + '?action=breezeajax;sa=post;js=1;rf=' + breeze.tools.comingFrom,
-				data: status,
-				cache: false,
-				dataType: 'json',
-				success: function(html)
-				{
-					jQuery('#breeze_load_image').fadeOut('slow', 'linear', function(){
-						// Enable the button again...
-						jQuery('.status_button').removeAttr('disabled');
-
-						// Set the notification
-						breeze.tools.showNoti(html);
-
-						// Do some after work...
-						if (html.type == 'success')
-						{
-							jQuery('#statusContent').val('');
-							jQuery('#breeze_display_status').prepend(html.data).fadeIn('slow', 'linear', function(){})
-						}
-					});
-				},
-				error: function (html)
-				{
-					// Enable the button again...
-					jQuery('.status_button').removeAttr('disabled');
-					jQuery('#statusContent').val('');
-
-					jQuery('#breeze_load_image').slideUp('slow', 'linear', function(){
-						noty({
-							text: html.message,
-							timeout: 3500, type: html.type
-						});
-					});
-				}
-			});
-		}
 
 		// Prevent normal behaviour
 		return false;
