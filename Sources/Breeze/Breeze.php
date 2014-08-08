@@ -38,7 +38,7 @@ spl_autoload_register('breeze_autoloader');
 
 class Breeze extends Pimple
 {
-	protected $_services = array('admin', 'ajax', 'display', 'data', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall',);
+	protected $_services = array('admin', 'ajax', 'display', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall',);
 	public static $name = 'Breeze';
 	public static $version = '1.1';
 	public static $folder = '/Breeze/';
@@ -129,7 +129,7 @@ class Breeze extends Pimple
 	 * @param string $var Either post, request or get
 	 * @return object Access to BreezeGlobals
 	 */
-	public  function data($var)
+	public static function data($var)
 	{
 		return new BreezeData($var);
 	}
@@ -364,7 +364,8 @@ class Breeze extends Pimple
 	{
 		// Just some quick code to make sure this works...
 		$a = array('wall', 'ajax');
-		$action = $this['data']->get('action');
+		$data = Breeze::data('get');
+		$action = $data->get('action');
 
 		// Gotta remove the "breeze" from breezeajax.
 		if ($action == 'breezeajax')

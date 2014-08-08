@@ -69,7 +69,6 @@ var breezePost = function(type form) {
 			dataType: 'json',
 			success: function(html)
 			{
-
 				// Set the notification
 				breeze.tools.showNoti(html);
 
