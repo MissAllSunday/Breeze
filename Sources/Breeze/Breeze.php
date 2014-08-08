@@ -550,9 +550,9 @@ class Breeze extends Pimple
 		loadJavascriptFile('facebox.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('moment.min.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('livestamp.min.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('/noty/jquery.noty.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('/noty/layouts/top.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('/noty/layouts/topRight.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('noty/jquery.noty.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('noty/layouts/top.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('noty/layouts/topRight.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('breezeNoti.js', array('local' => true, 'default_theme' => true));
 	}
 
