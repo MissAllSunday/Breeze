@@ -84,7 +84,7 @@ function template_user_wall()
 	// New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING and even if you do, DON'T MODIFY THIS
 	echo '
 			<div id="breeze_load_image">
-				<img src="'. $settings['images_url'] .'/images/breeze/loading.gif" />
+				<img src="'. $settings['images_url'] .'/breeze/loading.gif" />
 			</div>
 				<ul class="breeze_status" id="breeze_display_status">';
 

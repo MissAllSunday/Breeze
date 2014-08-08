@@ -546,7 +546,7 @@ class Breeze extends Pimple
 		addInlineJavascript($jsSettings);
 
 		// Common css and js files.
-		loadCSSFile('breeze.min.css', array('force_current' => false, 'validate' => true));
+		loadCSSFile('breeze.css', array('force_current' => false, 'validate' => true));
 		loadJavascriptFile('facebox.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('moment.min.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('livestamp.min.js', array('local' => true, 'default_theme' => true));
