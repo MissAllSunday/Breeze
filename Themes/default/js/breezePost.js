@@ -3,7 +3,7 @@
  @license http://www.mozilla.org/MPL/MPL-1.1.html
 */
 
-var breezePost = function(type form) {
+var breezePost = function(type, form) {
 
 	this.type = type;
 	this.data = {};

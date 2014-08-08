@@ -509,11 +509,12 @@ class Breeze extends Pimple
 			return;
 
 		// The main stuff
-		loadJavascriptFile('breezePost.js', $params = array('local' => true, 'default_theme' = true));
-		loadJavascriptFile('breeze.js', $params = array('local' => true, 'default_theme' = true));
+		loadJavascriptFile('breezePost.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breeze.js', array('local' => true, 'default_theme' => true));
 
 		$tools = $this['tools'];
 		$userSettings = $this['query']->getUserSettings($user_info['id']);
+		$data = Breeze::data('get');
 
 		$generalSettings = '';
 		$jsSettings = '';
@@ -540,20 +541,20 @@ class Breeze extends Pimple
 
 		// Common css and js files.
 		loadCSSFile('breeze.min.css', array('force_current' => false, 'validate' => true));
-		loadJavascriptFile('facebox.js', $params = array('local' => true, 'default_theme' = true));
-		loadJavascriptFile('moment.min.js', $params = array('local' => true, 'default_theme' = true));
-		loadJavascriptFile('livestamp.min.js', $params = array('local' => true, 'default_theme' = true));
-		loadJavascriptFile('/noty/jquery.noty.js', $params = array('local' => true, 'default_theme' = true));
-		loadJavascriptFile('/noty/layouts/top.js', $params = array('local' => true, 'default_theme' = true));
-		loadJavascriptFile('/noty/layouts/topRight.js', $params = array('local' => true, 'default_theme' = true));
-		loadJavascriptFile('breezeNoti.js', $params = array('local' => true, 'default_theme' = true));
+		loadJavascriptFile('facebox.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('moment.min.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('livestamp.min.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('/noty/jquery.noty.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('/noty/layouts/top.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('/noty/layouts/topRight.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breezeNoti.js', array('local' => true, 'default_theme' => true));
 
 		// Does the admin wants to add more actions?
 		if ($tools->enable('allowed_actions'))
 			Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $tools->setting('allowed_actions')));
 
 		// Stuff for the notifications, don't show this if we aren't on a specified action
-		if ($tools->enable('notifications') && empty($user_info['is_guest']) && (in_array($breezeGlobals->get('action'), Breeze::$_allowedActions) || $breezeGlobals->get('action') == false))
+		if ($tools->enable('notifications') && empty($user_info['is_guest']) && (in_array($data->get('action'), Breeze::$_allowedActions) || $data->get('action') == false))
 		{
 			$notifications = $this['notifications'];
 			addInlineJavascript('
