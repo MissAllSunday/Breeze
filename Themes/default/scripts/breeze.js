@@ -13,6 +13,18 @@ var breeze = {
 	pagination : {},
 };
 
+breeze.tools.showNoti = function(params){
+	noty({
+		text: params.message,
+		timeout: 3500, //@todo set this to a user setting
+		type: params.type
+	});
+};
+
+breeze.tools.findWord = function(string, word){
+	return string.match('@' + word) !== null;
+};
+
 jQuery(document).ready(function(){
 
 	// Posting a new status
