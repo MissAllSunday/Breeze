@@ -183,6 +183,7 @@ class Breeze extends Pimple
 			{
 				$profile_areas['info']['areas']['summary'] = array(
 					'label' => $tools->text('general_wall'),
+					'icon' => 'smiley.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
 					'function' => 'wall',
 					'class' => 'BreezeUser',
@@ -195,6 +196,7 @@ class Breeze extends Pimple
 				// If the mod is enable, then create another page for the default profile page
 				$profile_areas['info']['areas']['static'] = array(
 					'label' => $tools->text('general_summary'),
+					'icon' => 'administration.png',
 					'file' => 'Profile-View.php',
 					'function' => 'summary',
 					'permission' => array(
@@ -213,6 +215,7 @@ class Breeze extends Pimple
 			// User individual settings, show the button if the mod is enable and the user is the profile owner.
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $tools->text('user_settings_name'),
+				'icon' => 'features.png',
 				'file' => Breeze::$folder . 'BreezeUser.php',
 				'function' => 'settings',
 				'class' => 'BreezeUser',
@@ -227,6 +230,7 @@ class Breeze extends Pimple
 			{
 				$profile_areas['breeze_profile']['areas']['breezenotisettings'] = array(
 					'label' => $tools->text('user_settings_name_settings'),
+					'icon' => 'news.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
 					'function' => 'notiSettings',
 					'class' => 'BreezeUser',
@@ -239,6 +243,7 @@ class Breeze extends Pimple
 				// Notifications admin page
 				$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
 					'label' => $tools->text('user_notisettings_name'),
+					'icon' => 'features.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
 					'function' => 'notifications',
 					'class' => 'BreezeUser',
@@ -254,6 +259,7 @@ class Breeze extends Pimple
 			if (!empty($userSettings['activityLog']))
 				$profile_areas['breeze_profile']['areas']['breezelogs'] = array(
 					'label' => $tools->text('user_notilogs_name'),
+					'icon' => 'features.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
 					'function' => 'notiLogs',
 					'class' => 'BreezeUser',
