@@ -364,8 +364,7 @@ class Breeze extends Pimple
 	{
 		// Just some quick code to make sure this works...
 		$a = array('wall', 'ajax');
-		$data = Breeze::data('get');
-		$action = $data->get('action');
+		$action = Breeze::data('get')->get('action');
 
 		// Gotta remove the "breeze" from breezeajax.
 		if ($action == 'breezeajax')
@@ -548,7 +547,6 @@ class Breeze extends Pimple
 		loadJavascriptFile('/noty/layouts/top.js', $params = array('local' => true, 'default_theme' = true));
 		loadJavascriptFile('/noty/layouts/topRight.js', $params = array('local' => true, 'default_theme' = true));
 		loadJavascriptFile('breezeNoti.js', $params = array('local' => true, 'default_theme' = true));
-
 
 		// Does the admin wants to add more actions?
 		if ($tools->enable('allowed_actions'))
