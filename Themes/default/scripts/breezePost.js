@@ -29,36 +29,42 @@ breezePost.prototype.after = function()
 
 breezePost.prototype.validate = function()
 {
-	// Get all the values we need
-	jQuery(this.form).filter(':input').each(function(){
+	// Get all the values we need.
+	var postData = [];
+
+	this.form.find(':input').each(function(){
 		var input = jQuery(this);
-		this.data[input.attr('name')] = input.val();
+		postData[input.attr('name')] = input.val();
 	});
 
 	// You need to type something...
-	if(this.data.content=='')
+	if(postData['content'] =='')
 	{
 		breeze.tools.showNoti({message: breeze.text.error_empty, type : 'error'});
 		return false;
 	}
 
+	// Shh!
+	if (postData['statusContent'] == 'about:Suki')
+	{
+		alert('Y es que tengo un coraz\xF3n t\xE1n necio \n que no comprende que no entiende \n que le hace da\xF1o amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n Y es que tengo un coraz\xF3n t\xE1n necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace da\xF1o \n te sigue amando igual o mucho m\xE1s que ayer \n mucho m\xE1s que ayer... \n');
+
+		return false;
+	}
+
 	// Are we posting a comment? if so, get the status ID.
 	if(this.type == 'comment')
-		this.data.statusID = parseInt(this.form.attr('id').replace('this.form_comment_', ''));
+		postData['statusID'] = parseInt(this.form.attr('id').replace('form_comment_', ''));
 
-	return this.data;
+	// Turn the array into a full object. easier to send to the server.
+	this.data = jQuery.extend({}, postData);
+
+	return true;
 }
 
 breezePost.prototype.save = function() {
 
 	this.before();
-
-	// Shh!
-	if (this.data.content == 'about:Suki')
-	{
-		alert('Y es que tengo un coraz\xF3n t\xE1n necio \n que no comprende que no entiende \n que le hace da\xF1o amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n Y es que tengo un coraz\xF3n t\xE1n necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace da\xF1o \n te sigue amando igual o mucho m\xE1s que ayer \n mucho m\xE1s que ayer... \n');
-		return false;
-	}
 
 	// Append some mentions if there are any.
 

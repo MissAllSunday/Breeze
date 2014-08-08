@@ -23,9 +23,9 @@ jQuery(document).ready(function(){
 		var breezeStatus = new breezePost('status', this);
 
 		// Validate everything.
-		breezeStatus.validate();
+		valid = breezeStatus.validate();
 
-		if (breezeStatus.data){
+		if (valid != false){
 			breezeStatus.save();
 		}
 

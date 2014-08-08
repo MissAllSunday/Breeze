@@ -121,7 +121,7 @@ class BreezeAjax
 	{
 		checkSession('request', '', false);
 
-		// Get the data
+		// Get the data.
 		$this->_data = Breeze::data('request');
 
 		// Build plain normal vars...
