@@ -515,8 +515,8 @@ class Breeze extends Pimple
 			return;
 
 		// The main stuff
-		loadJavascriptFile('breezePost.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('breeze.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breezePost.js', array('local' => true, 'default_theme' => true));
 
 		$tools = $this['tools'];
 		$userSettings = $this['query']->getUserSettings($user_info['id']);

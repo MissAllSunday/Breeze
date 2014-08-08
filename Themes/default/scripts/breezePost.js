@@ -6,7 +6,7 @@
 var breezePost = function(type, form) {
 
 	this.type = type;
-	this.form = form:
+	this.form = jQuery(form);
 	this.data = {};
 };
 
@@ -65,7 +65,7 @@ breezePost.prototype.save = function() {
 	// The long, long ajax call...
 	jQuery.ajax({
 		type: 'GET',
-		url: this.form.attr('href') + ';js=1',
+		url: this.form.attr('action') + ';js=1',
 		data: this.data,
 		cache: false,
 		dataType: 'json',
