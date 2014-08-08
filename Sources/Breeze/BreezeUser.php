@@ -175,28 +175,23 @@ class BreezeUser extends Breeze
 			loadJavascriptFile('breezeLoadMore.js', array('local' => true, 'default_theme' => true));
 
 		// Need to pass some vars to the browser :(
-		$context['insert_after_template'] .= '
-		<script type="text/javascript"><!-- // --><![CDATA[
-			breeze.pagination = {
-				maxIndex : '. $maxIndex .',
-				totalItems : ' . $data['count'] . ',
-				userID : '. $context['member']['id'] .'
-			};
+		addInlineJavascript('
+	breeze.pagination = {
+		maxIndex : '. $maxIndex .',
+		totalItems : ' . $data['count'] . ',
+		userID : '. $context['member']['id'] .'
+	};');
 
-			breeze.tools.comingFrom = ' . JavaScriptEscape($context['Breeze']['comingFrom']) . ';';
+		// Pass the profile owner settings to the client all minus the about me stuff.
+		$toClient = $context['Breeze']['settings']['owner'];
+		unset($toClient['aboutMe']);
+		$bOwnerSettings = '';
+		foreach (Breeze::$allSettings as $k)
+			$bOwnerSettings .= '
+	breeze.ownerSettings.'. $k .' = '. (isset($toClient[$k]) ? (is_array($toClient[$k]) ? json_encode($toClient[$k]) : JavaScriptEscape($toClient[$k])) : 'false') .';';
 
-			// Pass the profile owner settings to the client all minus the about me stuff.
-			$toClient = $context['Breeze']['settings']['owner'];
-			unset($toClient['aboutMe']);
-			foreach (Breeze::$allSettings as $k)
-				$context['insert_after_template'] .= '
-			breeze.ownerSettings.'. $k .' = '. (isset($toClient[$k]) ? (is_array($toClient[$k]) ? json_encode($toClient[$k]) : JavaScriptEscape($toClient[$k])) : 'false') .';';
-
-			unset($toClient);
-
-		// End the js tag
-		$context['insert_after_template'] .= '
-		// ]]></script>';
+		addInlineJavascript($bOwnerSettings);
+		unset($toClient);
 
 		// Lastly, load all the users data from this bunch of user IDs
 		if (!empty($usersToLoad))
