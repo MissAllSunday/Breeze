@@ -162,20 +162,17 @@ class BreezeUser extends Breeze
 			$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
 
 		// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-		$context['insert_after_template'] .= '
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
+		loadJavascriptFile('jquery.caret.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('jquery.atwho.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breezeTabs.js', array('local' => true, 'default_theme' => true));
 
 		// Are mentions enabled?
 		if ($tools->enable('mention'))
-			$context['insert_after_template'] .= '
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeMention.js"></script>';
+			loadJavascriptFile('breezeMention.js', array('local' => true, 'default_theme' => true));
 
 		// Does the user wants to use the load more button?
 		if (!empty($context['Breeze']['settings']['visitor']['load_more']))
-			$context['insert_after_template'] .= '
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeLoadMore.js"></script>';
+			loadJavascriptFile('breezeLoadMore.js', array('local' => true, 'default_theme' => true));
 
 		// Need to pass some vars to the browser :(
 		$context['insert_after_template'] .= '
