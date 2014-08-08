@@ -74,6 +74,4 @@
 			return false;
 		});
 	});
-
-	jQuery(window).hashchange();
- });
+});

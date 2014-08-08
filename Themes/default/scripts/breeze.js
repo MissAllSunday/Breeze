@@ -9,18 +9,7 @@ var breeze = {
 	settings : {},
 	ownerSettings : {},
 	currentSettings : {},
-	tools : {
-		showNoti = function(params){
-			noty({
-				text: params.message,
-				timeout: 3500, //@todo set this to a user setting
-				type: params.type
-			});
-		},
-		findWord = function(string, word){
-			return string.match('@' + word) !== null;
-		},
-	},
+	tools : {},
 	pagination : {},
 };
 
@@ -31,7 +20,7 @@ jQuery(document).ready(function(){
 
 		event.preventDefault();
 
-		var breezeStatus.prototype = new breezePost('status', this);
+		var breezeStatus = new breezePost('status', this);
 
 		// Validate everything.
 		breezeStatus.validate();
@@ -49,7 +38,7 @@ jQuery(document).ready(function(){
 
 		event.preventDefault();
 
-		var breezeComment.prototype = new breezePost('comment', this);
+		var breezeComment = new breezePost('comment', this);
 
 		// Validate everything.
 		breezeComment.validate();

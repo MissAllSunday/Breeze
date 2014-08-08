@@ -554,22 +554,6 @@ class Breeze extends Pimple
 		loadJavascriptFile('/noty/layouts/top.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('/noty/layouts/topRight.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('breezeNoti.js', array('local' => true, 'default_theme' => true));
-
-		// Does the admin wants to add more actions?
-		if ($tools->enable('allowed_actions'))
-			Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $tools->setting('allowed_actions')));
-
-		// Stuff for the notifications, don't show this if we aren't on a specified action
-		if ($tools->enable('notifications') && empty($user_info['is_guest']) && (in_array($data->get('action'), Breeze::$_allowedActions) || $data->get('action') == false))
-		{
-			$notifications = $this['notifications'];
-			addInlineJavascript('
-	breeze.tools.stream('. $user_info['id'] .');
-', true);
-
-			// If someone wants to do something with all this info, let them...
-			$context['Breeze']['notifications'] = $notifications->getMessages();
-		}
 	}
 
 	/**
