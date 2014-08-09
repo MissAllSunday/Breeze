@@ -88,7 +88,7 @@ function breeze_status($data, $returnVar = false)
 		$echo .= '
 							</div>
 							<hr />
-							<div id="comment_flash_'. $status['id'] .'"></div>';
+							<div id="breeze_display_comment_'. $status['id'] .'"></div>';
 
 		$echo .= '
 								<ul class="breeze_comments_list" id="comment_loadplace_'. $status['id'] .'">';
@@ -116,7 +116,7 @@ function breeze_status($data, $returnVar = false)
 			// The actual post form
 				$echo .= '
 									<form action="'. $scripturl .'?action=breezeajax;sa=postcomment'. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .'" method="post" name="form_comment_'. $status['id'] .'" id="form_comment_'. $status['id'] .'" class="form_comment">
-										<textarea name="content" id="commentContent_'. $status['id'] .'" cols="40" rows="2" rel="atwhoMention"></textarea>
+										<textarea name="postContent" id="commentContent_'. $status['id'] .'" cols="40" rows="2" rel="atwhoMention"></textarea>
 										<input type="hidden" value="'. $status['poster_id'] .'" name="commentStatusPoster" id="commentStatusPoster_'. $status['id'] .'" />
 										<input type="hidden" value="'. $user_info['id'] .'" name="commentPoster" id="commentPoster_'. $status['id'] .'" />
 										<input type="hidden" value="'. $status['id'] .'" name="commentStatus" id="commentStatus_'. $status['id'] .'" />

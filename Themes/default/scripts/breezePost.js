@@ -27,6 +27,27 @@ breezePost.prototype.after = function()
 	jQuery('#breeze_load_image').fadeOut('slow', 'linear');
 };
 
+breezePost.prototype.show = function(html){
+
+	if (html.type == 'sucess') {
+
+		// Time to actually show the message.
+		div = '#breeze_display_' + this.type + (html.statusID != false ? '_' + statusID : '');
+
+		jQuery(div).prepend(html.data).fadeIn('slow', 'linear', function(){});
+	}
+
+	// Show a notification.
+	// breeze.tools.showNoti(html);
+
+	// Clean your mess.
+	this.clean();
+};
+
+breezePost.prototype.clean = function(){
+
+};
+
 breezePost.prototype.validate = function()
 {
 	// Get all the values we need.
@@ -38,14 +59,14 @@ breezePost.prototype.validate = function()
 	});
 
 	// You need to type something...
-	if(postData['content'] == '')
+	if(postData['postContent'] == '')
 	{
 		breeze.tools.showNoti({message: breeze.text.error_empty, type : 'error'});
 		return false;
 	}
 
 	// Shh!
-	if (postData['content'] == 'about:Suki')
+	if (postData['postContent'] == 'about:Suki')
 	{
 		alert('Y es que tengo un coraz\xF3n t\xE1n necio \n que no comprende que no entiende \n que le hace da\xF1o amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n Y es que tengo un coraz\xF3n t\xE1n necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace da\xF1o \n te sigue amando igual o mucho m\xE1s que ayer \n mucho m\xE1s que ayer... \n');
 
@@ -60,11 +81,12 @@ breezePost.prototype.validate = function()
 	this.data = jQuery.extend({}, postData);
 
 	return true;
-}
+};
 
 breezePost.prototype.save = function() {
 
 	this.before();
+	var call = this;
 
 	// Append some mentions if there are any.
 
@@ -75,30 +97,11 @@ breezePost.prototype.save = function() {
 		data: this.data,
 		cache: false,
 		dataType: 'json',
-		success: function(html)
-		{
-			// Set the notification
-			breeze.tools.showNoti(html);
-
-			// Do some after work...
-			if (html.type == 'success')
-			{
-				jQuery('#statusContent').val('');
-				jQuery('#breeze_display_status').prepend(html.data).fadeIn('slow', 'linear', function(){})
-			}
+		success: function(html) {
+			call.show(html);
 		},
-		error: function (html)
-		{
-			// Enable the button again...
-			jQuery('.status_button').removeAttr('disabled');
-			jQuery('#statusContent').val('');
-
-			jQuery('#breeze_load_image').slideUp('slow', 'linear', function(){
-				noty({
-					text: html.message,
-					timeout: 3500, type: html.type
-				});
-			});
+		error: function (html) {
+			call.show(html);
 		}
 	});
 
