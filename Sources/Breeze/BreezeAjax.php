@@ -127,7 +127,7 @@ class BreezeAjax
 		// Build plain normal vars...
 		$statusOwner = $this->_data->get('statusOwner');
 		$statusPoster = $this->_data->get('statusPoster');
-		$statusContent = $this->_data->get('statusContent');
+		$statusContent = $this->_data->get('postContent');
 		$statusMentions = array();
 
 		// Any mentions?
@@ -189,7 +189,7 @@ class BreezeAjax
 						)
 					);
 
-				// Parse the content
+				// Parse the content.
 				$this->_params['body'] = $this->_app['parser']->display($this->_params['body']);
 
 				// The status was inserted, tell everyone!
@@ -268,7 +268,7 @@ class BreezeAjax
 		$commentStatusPoster = $this->_data->get('commentStatusPoster');
 		$commentPoster = $this->_data->get('commentPoster');
 		$commentOwner = $this->_data->get('commentOwner');
-		$commentContent = $this->_data->get('commentContent');
+		$commentContent = $this->_data->get('postContent');
 		$commentMentions = array();
 
 		// So, you're popular huh?
@@ -401,6 +401,7 @@ class BreezeAjax
 					'message' => 'published_comment',
 					'data' => $this->_app['display']->HTML($this->_params, 'comment', true, $commentPoster),
 					'owner' => $commentOwner,
+					'statusID' => false,
 				));
 			}
 

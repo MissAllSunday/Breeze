@@ -11,30 +11,29 @@ var breezePost = function(type, form) {
 };
 
 breezePost.prototype.before = function(){
-	// Show the loading image.
-	jQuery('#breeze_load_image').fadeIn('slow');
 
 	// Disable the submit button.
 	jQuery('input[type=submit]', this.form).attr('disabled', 'disabled');
+
+	// Create a nice loading image...
+	this.loadImage = jQuery('<div/>', {
+		id: 'breeze_load_image'
+	}).html('<img src="'+ breeze.tools.loadIcon +'" />').hide();
 };
 
 breezePost.prototype.after = function()
 {
 	// Enable the button again...
 	jQuery('input[type=submit]', this.form).removeAttr('disabled');
-
-	// Hide the loading image.
-	jQuery('#breeze_load_image').fadeOut('slow', 'linear');
 };
 
 breezePost.prototype.show = function(html){
 
-	if (html.type == 'sucess') {
+	if (html.type == 'success') {
 
-		// Time to actually show the message.
-		div = '#breeze_display_' + this.type + (html.statusID != false ? '_' + statusID : '');
-
-		jQuery(div).prepend(html.data).fadeIn('slow', 'linear', function(){});
+		this.loadImage.fadeOut('slow', 'linear', function(){
+			jQuery(div).prepend(html.data).fadeIn('slow');
+		});
 	}
 
 	// Show a notification.
@@ -45,7 +44,7 @@ breezePost.prototype.show = function(html){
 };
 
 breezePost.prototype.clean = function(){
-
+	this.form.find('textarea').val('');
 };
 
 breezePost.prototype.validate = function()
@@ -73,12 +72,12 @@ breezePost.prototype.validate = function()
 		return false;
 	}
 
-	// Are we posting a comment? if so, get the status ID.
-	if(this.type == 'comment')
-		postData['statusID'] = parseInt(this.form.attr('id').replace('form_comment_', ''));
-
 	// Turn the array into a full object. easier to send to the server.
 	this.data = jQuery.extend({}, postData);
+
+	// Fake the status ID for newly created status.
+	if(this.type == 'status')
+		this.data.statusID = false;
 
 	return true;
 };
@@ -89,6 +88,13 @@ breezePost.prototype.save = function() {
 	var call = this;
 
 	// Append some mentions if there are any.
+
+	// Time to actually show the message.
+	div = '#breeze_display_' + this.type + (this.data.statusID != false ? '_' + statusID : '');
+
+	// Show a loading image right where the message is going to appear.
+	jQuery(div).prepend(this.loadImage);
+	this.loadImage.fadeIn('slow');
 
 	// The long, long ajax call...
 	jQuery.ajax({
@@ -101,7 +107,7 @@ breezePost.prototype.save = function() {
 			call.show(html);
 		},
 		error: function (html) {
-			call.show(html);
+			call.error(html);
 		}
 	});
 

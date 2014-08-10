@@ -508,7 +508,7 @@ class Breeze extends Pimple
 	 */
 	public function notiHeaders()
 	{
-		global $context, $user_info;
+		global $context, $user_info, $settings;
 
 		// Don't show this to guest.
 		if ($user_info['is_guest'])
@@ -535,15 +535,19 @@ class Breeze extends Pimple
 		// Populate the text object with all possible text vars this mod uses and there are a lot!
 		foreach ($jsVars as $var)
 			$jsSettings .= '
-	breeze.text.'. $var .' = '. JavaScriptEscape($tools->text($var));
+		breeze.text.'. $var .' = '. JavaScriptEscape($tools->text($var));
 
 		// Since we're here already, load the current User (currentSettings) object
 		foreach (Breeze::$allSettings as $k)
 			$generalSettings = '
-	breeze.currentSettings.'. $k .' = '. (isset($userSettings[$k]) ? (is_array($userSettings[$k]) ? json_encode($userSettings[$k]) : JavaScriptEscape($userSettings[$k])) : 'false') .';';
+		breeze.currentSettings.'. $k .' = '. (isset($userSettings[$k]) ? (is_array($userSettings[$k]) ? json_encode($userSettings[$k]) : JavaScriptEscape($userSettings[$k])) : 'false') .';';
 
 		addInlineJavascript($generalSettings);
 		addInlineJavascript($jsSettings);
+
+		// Add the super important load icon!
+		addInlineJavascript('
+		breeze.tools.loadIcon = "'. $settings['images_url'] .'/breeze/loading.gif";');
 
 		// Common css and js files.
 		loadCSSFile('breeze.css', array('force_current' => false, 'validate' => true));
