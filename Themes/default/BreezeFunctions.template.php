@@ -118,7 +118,7 @@ function breeze_status($data, $returnVar = false)
 									<form action="'. $scripturl .'?action=breezeajax;sa=postcomment'. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .'" method="post" name="form_comment_'. $status['id'] .'" id="form_comment_'. $status['id'] .'" class="form_comment">
 										<textarea name="content" id="commentContent_'. $status['id'] .'" cols="40" rows="2" rel="atwhoMention"></textarea>
 										<input type="hidden" value="'. $status['poster_id'] .'" name="statusPoster" id="commentStatusPoster_'. $status['id'] .'" />
-										<input type="hidden" value="'. $user_info['id'] .'" name="Poster" id="commentPoster_'. $status['id'] .'" />
+										<input type="hidden" value="'. $user_info['id'] .'" name="poster" id="commentPoster_'. $status['id'] .'" />
 										<input type="hidden" value="'. $status['id'] .'" name="statusID" id="commentStatus_'. $status['id'] .'" />
 										<input type="hidden" value="'. $status['owner_id'] .'" name="owner" id="commentOwner_'. $status['id'] .'" /><br />
 										<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />

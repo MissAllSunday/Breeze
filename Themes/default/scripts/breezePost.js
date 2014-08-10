@@ -4,13 +4,12 @@
 */
 
 var breezePost = function(type, form) {
-
 	this.type = type;
 	this.form = jQuery(form);
 	this.data = {};
 };
 
-breezePost.prototype.before = function(){
+breezePost.prototype.before = function() {
 
 	// Disable the submit button.
 	jQuery('input[type=submit]', this.form).attr('disabled', 'disabled');
@@ -21,34 +20,26 @@ breezePost.prototype.before = function(){
 	}).html('<img src="'+ breeze.tools.loadIcon +'" />').hide();
 };
 
-breezePost.prototype.after = function()
-{
+breezePost.prototype.after = function() {
 	// Enable the button again...
 	jQuery('input[type=submit]', this.form).removeAttr('disabled');
-};
 
-breezePost.prototype.show = function(html){
-
-	if (html.type == 'success') {
-
-		this.loadImage.fadeOut('slow', 'linear', function(){
-			jQuery(div).prepend(html.data).fadeIn('slow');
-		});
-	}
-
-	// Show a notification.
-	// breeze.tools.showNoti(html);
-
-	// Clean your mess.
-	this.clean();
-};
-
-breezePost.prototype.clean = function(){
+	// Clean the textarea.
 	this.form.find('textarea').val('');
 };
 
-breezePost.prototype.validate = function()
-{
+breezePost.prototype.show = function(html) {
+
+		this.loadImage.fadeOut('slow', 'linear', function(){
+			if (html.type == 'success')
+				jQuery(div).prepend(html.data).fadeIn('slow');
+		});
+
+	// Show a notification.
+	// breeze.tools.showNoti(html);
+};
+
+breezePost.prototype.validate = function() {
 	// Get all the values we need.
 	var postData = [];
 
@@ -58,15 +49,13 @@ breezePost.prototype.validate = function()
 	});
 
 	// You need to type something...
-	if(postData['postContent'] == '')
-	{
+	if(postData['postContent'] == '') {
 		breeze.tools.showNoti({message: breeze.text.error_empty, type : 'error'});
 		return false;
 	}
 
 	// Shh!
-	if (postData['postContent'] == 'about:Suki')
-	{
+	if (postData['postContent'] == 'about:Suki') {
 		alert('Y es que tengo un coraz\xF3n t\xE1n necio \n que no comprende que no entiende \n que le hace da\xF1o amarte tanto \n no comprende que lo haz olvidado \n sigue aferrado a tu recuerdo y a tu amor \n Y es que tengo un coraz\xF3n t\xE1n necio \n que vive preso a las caricias de tus lindas manos \n al dulce beso de tus labios \n y aunque le hace da\xF1o \n te sigue amando igual o mucho m\xE1s que ayer \n mucho m\xE1s que ayer... \n');
 
 		return false;
@@ -89,10 +78,10 @@ breezePost.prototype.save = function() {
 
 	// Append some mentions if there are any.
 
-	// Time to actually show the message.
-	div = '#breeze_display_' + this.type + (this.data.statusID != false ? '_' + statusID : '');
+	// Get the div where the message is going to appear.
+	div = '#breeze_display_' + this.type + (this.data.statusID != false ? '_' + this.data.statusID : '');
 
-	// Show a loading image right where the message is going to appear.
+	// Show a loading image.
 	jQuery(div).prepend(this.loadImage);
 	this.loadImage.fadeIn('slow');
 

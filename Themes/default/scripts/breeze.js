@@ -30,6 +30,7 @@ jQuery(document).ready(function(){
 	// Posting a new status
 	jQuery('#form_status').submit(function(event){
 
+		// Prevent normal behaviour.
 		event.preventDefault();
 
 		var breezeStatus = new breezePost('status', this);
@@ -37,17 +38,17 @@ jQuery(document).ready(function(){
 		// Validate everything.
 		valid = breezeStatus.validate();
 
-		if (valid != false){
+		// Leeloo Dallas multipass...
+		if (valid != false)
 			breezeStatus.save();
-		}
 
-		// Prevent normal behaviour.
 		return false;
 	});
 
-	// Post a new comment
+	// Post a new comment.
 	jQuery(document).on('submit', '.form_comment', function(event){
 
+		// Prevent normal behaviour.
 		event.preventDefault();
 
 		var breezeComment = new breezePost('comment', this);
