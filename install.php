@@ -250,6 +250,11 @@
 			'parameters' => array(),
 		);
 
+		// Installing
+		foreach ($tables as $table)
+			$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
+
+
 		// Add the extra columns
 		$smcFunc['db_add_column'](
 			'{db_prefix}breeze_status',
@@ -275,7 +280,6 @@
 			'update',
 			null
 		);
-
 	}
 
 	function BreezeCheck()

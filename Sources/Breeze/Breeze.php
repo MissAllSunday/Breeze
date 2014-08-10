@@ -183,6 +183,7 @@ class Breeze extends Pimple
 			{
 				$profile_areas['info']['areas']['summary'] = array(
 					'label' => $tools->text('general_wall'),
+					'icon' => 'smiley.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
 					'function' => 'wall',
 					'class' => 'BreezeUser',
@@ -195,6 +196,7 @@ class Breeze extends Pimple
 				// If the mod is enable, then create another page for the default profile page
 				$profile_areas['info']['areas']['static'] = array(
 					'label' => $tools->text('general_summary'),
+					'icon' => 'administration.png',
 					'file' => 'Profile-View.php',
 					'function' => 'summary',
 					'permission' => array(
@@ -213,6 +215,7 @@ class Breeze extends Pimple
 			// User individual settings, show the button if the mod is enable and the user is the profile owner.
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $tools->text('user_settings_name'),
+				'icon' => 'features.png',
 				'file' => Breeze::$folder . 'BreezeUser.php',
 				'function' => 'settings',
 				'class' => 'BreezeUser',
@@ -227,6 +230,7 @@ class Breeze extends Pimple
 			{
 				$profile_areas['breeze_profile']['areas']['breezenotisettings'] = array(
 					'label' => $tools->text('user_settings_name_settings'),
+					'icon' => 'news.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
 					'function' => 'notiSettings',
 					'class' => 'BreezeUser',
@@ -239,6 +243,7 @@ class Breeze extends Pimple
 				// Notifications admin page
 				$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
 					'label' => $tools->text('user_notisettings_name'),
+					'icon' => 'features.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
 					'function' => 'notifications',
 					'class' => 'BreezeUser',
@@ -254,6 +259,7 @@ class Breeze extends Pimple
 			if (!empty($userSettings['activityLog']))
 				$profile_areas['breeze_profile']['areas']['breezelogs'] = array(
 					'label' => $tools->text('user_notilogs_name'),
+					'icon' => 'features.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
 					'function' => 'notiLogs',
 					'class' => 'BreezeUser',
@@ -283,7 +289,7 @@ class Breeze extends Pimple
 		$userSettings = $this['query']->getUserSettings($user_info['id']);
 
 		// Display common css and js files.
-		Breeze::notiHeaders();
+		$this->notiHeaders();
 
 		// Replace the duplicate profile button
 		if ($tools->enable('master') && !empty($menu_buttons['profile']['sub_buttons']['summary']))
@@ -327,7 +333,7 @@ class Breeze extends Pimple
 		);
 
 		// DUH! winning!
-		Breeze::who();
+		$this->who();
 	}
 
 	/**
@@ -352,6 +358,26 @@ class Breeze extends Pimple
 
 		// A special action for the buddy request message
 		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'breezeBuddyMessage');
+	}
+
+	/**
+	 * Breeze::call()
+	 *
+	 * Wrapper method to call Breeze methods while maintaining dependency injection.
+	 * @return void
+	 */
+	public function call()
+	{
+		// Just some quick code to make sure this works...
+		$a = array('wall', 'ajax');
+		$action = Breeze::data('get')->get('action');
+
+		// Gotta remove the "breeze" from breezeajax.
+		if ($action == 'breezeajax')
+			$action = str_replace('breeze', '', $action);
+
+		if (in_array($action, $a))
+			$this[$action]->call();
 	}
 
 	public function likes($type, $content, $sa, $js, $extra)
@@ -400,26 +426,6 @@ class Breeze extends Pimple
 		// Return false if the status/comment is no longer on the DB.
 		else
 			return false;
-	}
-
-	/**
-	 * Breeze::call()
-	 *
-	 * Wrapper method to call Breeze methods while maintaining dependency injection.
-	 * @return void
-	 */
-	public function call()
-	{
-		// Just some quick code to make sure this works...
-		$a = array('wall', 'ajax');
-		$action = Breeze::data('get')->get('action');
-
-		// Gotta remove the "breeze" from breezeajax.
-		if ($action == 'breezeajax')
-			$action = str_replace('breeze', '', $action);
-
-		if (in_array($action, $a))
-			$this[$action]->call();
 	}
 
 	/**
@@ -503,101 +509,55 @@ class Breeze extends Pimple
 	public function notiHeaders()
 	{
 		global $context, $user_info, $settings;
-		static $header_done = false;
 
-		// Don't do anything if we are in SSI world
-		if (SMF == 'SSI')
-			return false;
+		// Don't show this to guest.
+		if ($user_info['is_guest'])
+			return;
 
-		// Prevent this from showing twice
-		if (!$header_done)
-		{
-			$tools = $this['tools'];
-			$breezeGlobals = Breeze::data('get');
-			$userSettings = $this['query']->getUserSettings($user_info['id']);
+		// The main stuff
+		loadJavascriptFile('breeze.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breezePost.js', array('local' => true, 'default_theme' => true));
 
-			// Don't pass the "about me" stuff...
-			if (!empty($userSettings['aboutMe']))
-				unset($userSettings['aboutMe']);
+		$tools = $this['tools'];
+		$userSettings = $this['query']->getUserSettings($user_info['id']);
+		$data = Breeze::data('get');
 
-			// Define some variables for the ajax stuff
-			if (!$user_info['is_guest'])
-			{
-				$jsVars = array('feed_error_message', 'error_server', 'error_wrong_values', 'success_published', 'success_published_comment', 'error_empty', 'success_delete_status', 'success_delete_comment', 'confirm_delete', 'confirm_yes', 'confirm_cancel', 'error_already_deleted_status', 'error_already_deleted_comment', 'error_already_deleted_noti', 'error_already_marked_noti', 'cannot_postStatus', 'cannot_postComments', 'error_no_valid_action', 'error_no_access', 'success_noti_unmarkasread_after', 'success_noti_markasread_after', 'error_noti_markasreaddeleted_after', 'error_noti_markasreaddeleted', 'success_noti_delete_after', 'success_noti_visitors_clean',  'success_notiMulti_delete_after', 'success_notiMulti_markasread_after', 'success_notiMulti_unmarkasread_after', 'noti_markasread', 'noti_delete', 'noti_cancel', 'noti_closeAll', 'load_more', 'page_loading_end', 'page_loading');
+		$generalSettings = '';
+		$jsSettings = '';
 
-				$context['html_headers'] .= '
-	<script type="text/javascript"><!-- // --><![CDATA[
+		// Don't pass the "about me" stuff...
+		if (!empty($userSettings['aboutMe']))
+			unset($userSettings['aboutMe']);
 
-		// The main breeze JS object.
-		var breeze = {
-			text : {},
-			settings : {},
-			ownerSettings : {},
-			currentSettings : {},
-			tools : {},
-			pagination : {},
-			currentUser : '. $user_info['id'] .',
-			session : {
-				id : ' . JavaScriptEscape($context['session_id']) . ',
-				v : ' . JavaScriptEscape($context['session_var']) . ',
-			},
-		};';
+		// Define some variables for the ajax stuff
+		$jsVars = array('feed_error_message', 'error_server', 'error_wrong_values', 'success_published', 'success_published_comment', 'error_empty', 'success_delete_status', 'success_delete_comment', 'confirm_delete', 'confirm_yes', 'confirm_cancel', 'error_already_deleted_status', 'error_already_deleted_comment', 'error_already_deleted_noti', 'error_already_marked_noti', 'cannot_postStatus', 'cannot_postComments', 'error_no_valid_action', 'error_no_access', 'success_noti_unmarkasread_after', 'success_noti_markasread_after', 'error_noti_markasreaddeleted_after', 'error_noti_markasreaddeleted', 'success_noti_delete_after', 'success_noti_visitors_clean',  'success_notiMulti_delete_after', 'success_notiMulti_markasread_after', 'success_notiMulti_unmarkasread_after', 'noti_markasread', 'noti_delete', 'noti_cancel', 'noti_closeAll', 'load_more', 'page_loading_end', 'page_loading');
 
-				// Populate the text object with all possible text vars this mod uses and there are a lot!
-				foreach ($jsVars as $var)
-				$context['html_headers'] .= '
+		// Populate the text object with all possible text vars this mod uses and there are a lot!
+		foreach ($jsVars as $var)
+			$jsSettings .= '
 		breeze.text.'. $var .' = '. JavaScriptEscape($tools->text($var));
 
-				// Since we're here already, load the current User (currentSettings) object
-				foreach (Breeze::$allSettings as $k)
-					$context['html_headers'] .= '
+		// Since we're here already, load the current User (currentSettings) object
+		foreach (Breeze::$allSettings as $k)
+			$generalSettings = '
 		breeze.currentSettings.'. $k .' = '. (isset($userSettings[$k]) ? (is_array($userSettings[$k]) ? json_encode($userSettings[$k]) : JavaScriptEscape($userSettings[$k])) : 'false') .';';
 
-				$context['html_headers'] .= '
-	// ]]></script>';
-			}
+		addInlineJavascript($generalSettings);
+		addInlineJavascript($jsSettings);
 
-			// Common css and js files.
-			$context['html_headers'] .= '
-	<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
-	<link href="'. $settings['default_theme_url'] .'/css/breeze.min.css" rel="stylesheet" type="text/css" />';
+		// Add the super important load icon!
+		addInlineJavascript('
+		breeze.tools.loadIcon = "'. $settings['images_url'] .'/breeze/loading.gif";');
 
-			// Load the notification JS files.
-			if (!$user_info['is_guest'])
-			{
-				$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/facebox.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/moment.min.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/livestamp.min.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.hashchange.min.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/jquery.noty.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/top.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topLeft.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/layouts/topRight.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/noty/themes/default.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeNoti.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breeze.js"></script>';
-
-				// Does the admin wants to add more actions?
-				if ($tools->enable('allowed_actions'))
-					Breeze::$_allowedActions = array_merge(Breeze::$_allowedActions, explode(',', $tools->setting('allowed_actions')));
-
-				// Stuff for the notifications, don't show this if we aren't on a specified action
-				if ($tools->enable('notifications') && empty($user_info['is_guest']) && (in_array($breezeGlobals->get('action'), Breeze::$_allowedActions) || $breezeGlobals->get('action') == false))
-				{
-					$notifications = $this['notifications'];
-					$context['insert_after_template'] .= '
-	<script type="text/javascript"><!-- // --><![CDATA[
-		breeze.tools.stream('. $user_info['id'] .');
-	// ]]></script>';
-
-					// If someone wants to do something with all this info, let them...
-					$context['Breeze']['notifications'] = $notifications->getMessages();
-				}
-			}
-
-			$header_done = true;
-		}
+		// Common css and js files.
+		loadCSSFile('breeze.css', array('force_current' => false, 'validate' => true));
+		loadJavascriptFile('facebox.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('moment.min.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('livestamp.min.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('noty/jquery.noty.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('noty/layouts/top.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('noty/layouts/topRight.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breezeNoti.js', array('local' => true, 'default_theme' => true));
 	}
 
 	/**

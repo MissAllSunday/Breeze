@@ -23,13 +23,19 @@ class BreezeData
 	 * @param string $type
 	 * @return
 	 */
-	public function __construct($type)
+	public function __construct($type = false)
 	{
-		$types = array('request' => $_REQUEST, 'get' => $_GET, 'post' => $_POST);
+		if (!empty($type))
+		{
+			$types = array('request' => $_REQUEST, 'get' => $_GET, 'post' => $_POST);
 
-		$this->_request = (empty($type) || !isset($types[$type])) ? $_REQUEST : $types[$type];
+			$this->_request = (empty($type) || !isset($types[$type])) ? $_REQUEST : $types[$type];
 
-		unset($types);
+			unset($types);
+		}
+
+		else
+			$this->_request = $_REQUEST;
 	}
 
 	/**

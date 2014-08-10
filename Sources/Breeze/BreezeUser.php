@@ -162,44 +162,36 @@ class BreezeUser extends Breeze
 			$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
 
 		// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-		$context['insert_after_template'] .= '
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
+		loadJavascriptFile('jquery.caret.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('jquery.atwho.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breezeTabs.js', array('local' => true, 'default_theme' => true));
 
 		// Are mentions enabled?
 		if ($tools->enable('mention'))
-			$context['insert_after_template'] .= '
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeMention.js"></script>';
+			loadJavascriptFile('breezeMention.js', array('local' => true, 'default_theme' => true));
 
 		// Does the user wants to use the load more button?
 		if (!empty($context['Breeze']['settings']['visitor']['load_more']))
-			$context['insert_after_template'] .= '
-		<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeLoadMore.js"></script>';
+			loadJavascriptFile('breezeLoadMore.js', array('local' => true, 'default_theme' => true));
 
 		// Need to pass some vars to the browser :(
-		$context['insert_after_template'] .= '
-		<script type="text/javascript"><!-- // --><![CDATA[
-			breeze.pagination = {
-				maxIndex : '. $maxIndex .',
-				totalItems : ' . $data['count'] . ',
-				userID : '. $context['member']['id'] .'
-			};
+		addInlineJavascript('
+	breeze.pagination = {
+		maxIndex : '. $maxIndex .',
+		totalItems : ' . $data['count'] . ',
+		userID : '. $context['member']['id'] .'
+	};');
 
-			breeze.tools.comingFrom = ' . JavaScriptEscape($context['Breeze']['comingFrom']) . ';';
+		// Pass the profile owner settings to the client all minus the about me stuff.
+		$toClient = $context['Breeze']['settings']['owner'];
+		unset($toClient['aboutMe']);
+		$bOwnerSettings = '';
+		foreach (Breeze::$allSettings as $k)
+			$bOwnerSettings .= '
+	breeze.ownerSettings.'. $k .' = '. (isset($toClient[$k]) ? (is_array($toClient[$k]) ? json_encode($toClient[$k]) : JavaScriptEscape($toClient[$k])) : 'false') .';';
 
-			// Pass the profile owner settings to the client all minus the about me stuff.
-			$toClient = $context['Breeze']['settings']['owner'];
-			unset($toClient['aboutMe']);
-			foreach (Breeze::$allSettings as $k)
-				$context['insert_after_template'] .= '
-			breeze.ownerSettings.'. $k .' = '. (isset($toClient[$k]) ? (is_array($toClient[$k]) ? json_encode($toClient[$k]) : JavaScriptEscape($toClient[$k])) : 'false') .';';
-
-			unset($toClient);
-
-		// End the js tag
-		$context['insert_after_template'] .= '
-		// ]]></script>';
+		addInlineJavascript($bOwnerSettings);
+		unset($toClient);
 
 		// Lastly, load all the users data from this bunch of user IDs
 		if (!empty($usersToLoad))

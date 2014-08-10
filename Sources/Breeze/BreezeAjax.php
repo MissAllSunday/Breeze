@@ -121,41 +121,41 @@ class BreezeAjax
 	{
 		checkSession('request', '', false);
 
-		// Get the data
+		// Get the data.
 		$this->_data = Breeze::data('request');
 
 		// Build plain normal vars...
-		$statusOwner = $this->_data->get('statusOwner');
-		$statusPoster = $this->_data->get('statusPoster');
-		$statusContent = $this->_data->get('statusContent');
-		$statusMentions = array();
+		$owner = $this->_data->get('owner');
+		$poster = $this->_data->get('poster');
+		$content = $this->_data->get('content');
+		$mentions = array();
 
 		// Any mentions?
 		if ($this->_data->get('mentions'))
-			$statusMentions = array_filter($this->_data->get('mentions'));
+			$mentions = array_filter($this->_data->get('mentions'));
 
 		// Sorry, try to play nicer next time
-		if (!$statusOwner || !$statusPoster || !$statusContent)
+		if (!$owner || !$poster || !$content)
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
-				'owner' => $statusOwner,
+				'owner' => $owner,
 			));
 
 		// Are you the profile owner? no? then feel my wrath!
-		if ($this->_currentUser != $statusOwner)
+		if ($this->_currentUser != $owner)
 			allowedTo('breeze_postStatus');
 
-		$body = $this->_data->validateBody($statusContent);
+		$body = $this->_data->validateBody($content);
 
 		// Do this only if there is something to add to the database
 		if (!empty($body))
 		{
 			$this->_params = array(
-				'owner_id' => $statusOwner,
-				'poster_id' => $statusPoster,
+				'owner_id' => $owner,
+				'poster_id' => $poster,
 				'time' => time(),
-				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $statusMentions) : $body,
+				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $mentions) : $body,
 			);
 
 			// Maybe a last minute change before inserting the new status?
@@ -179,8 +179,8 @@ class BreezeAjax
 				if ($this->_app['tools']->enable('mention'))
 					$this->_app['mention']->mention(
 						array(
-							'wall_owner' => $statusOwner,
-							'wall_poster' => $statusPoster,
+							'wall_owner' => $owner,
+							'wall_poster' => $poster,
 							'status_id' => $this->_params['id'],
 						),
 						array(
@@ -189,7 +189,7 @@ class BreezeAjax
 						)
 					);
 
-				// Parse the content
+				// Parse the content.
 				$this->_params['body'] = $this->_app['parser']->display($this->_params['body']);
 
 				// The status was inserted, tell everyone!
@@ -201,8 +201,8 @@ class BreezeAjax
 				// Send out a log for this postingStatus action.
 				if (!empty($this->_userSettings['activityLog']))
 					$this->_app['notifications']->create(array(
-						'sender' => $statusPoster,
-						'receiver' => $statusPoster,
+						'sender' => $poster,
+						'receiver' => $poster,
 						'type' => 'logStatus',
 						'time' => time(),
 						'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
@@ -212,15 +212,15 @@ class BreezeAjax
 					));
 
 				// Does the wall owner wants to be notified?
-				if ($statusOwner != $statusPoster)
+				if ($owner != $poster)
 				{
 					// Get the wall owner's settings.
-					$uSettings = $this->_app['query']->getUserSettings($statusOwner);
+					$uSettings = $this->_app['query']->getUserSettings($owner);
 
 					if (!empty($uSettings['noti_on_status']))
 						$this->_app['notifications']->create(array(
-							'sender' => $statusPoster,
-							'receiver' => $statusOwner,
+							'sender' => $poster,
+							'receiver' => $owner,
 							'type' => 'wallOwner',
 							'time' => time(),
 							'viewed' => 0,
@@ -234,19 +234,19 @@ class BreezeAjax
 				return $this->setResponse(array(
 					'type' => 'success',
 					'message' => 'published',
-					'data' => $this->_app['display']->HTML($this->_params, 'status', true, $statusPoster),
-					'owner' => $statusOwner,
+					'data' => $this->_app['display']->HTML($this->_params, 'status', true, $poster),
+					'owner' => $owner,
 				));
 			}
 
 			// Something went terrible wrong!
 			else
-				return $this->setResponse(array('owner' => $statusOwner,));
+				return $this->setResponse(array('owner' => $owner,));
 		}
 
 		// There was an (generic) error
 		else
-			return $this->setResponse(array('owner' => $statusOwner,));
+			return $this->setResponse(array('owner' => $owner,));
 	}
 
 	/**
@@ -264,45 +264,45 @@ class BreezeAjax
 		$this->_data = Breeze::data('request');
 
 		// Trickery, there's always room for moar!
-		$commentStatus = $this->_data->get('commentStatus');
-		$commentStatusPoster = $this->_data->get('commentStatusPoster');
-		$commentPoster = $this->_data->get('commentPoster');
-		$commentOwner = $this->_data->get('commentOwner');
-		$commentContent = $this->_data->get('commentContent');
-		$commentMentions = array();
+		$statusID = $this->_data->get('statusID');
+		$statusPoster = $this->_data->get('statusPoster');
+		$poster = $this->_data->get('poster');
+		$owner = $this->_data->get('owner');
+		$content = $this->_data->get('content');
+		$mentions = array();
 
 		// So, you're popular huh?
 		if ($this->_data->get('mentions'))
-			$commentMentions = $this->_data->get('mentions');
+			$mentions = $this->_data->get('mentions');
 
 		// Sorry, try to play nice next time
-		if (!$commentStatus || !$commentStatusPoster || !$commentPoster || !$commentOwner || !$commentContent)
+		if (!$statusID || !$statusPoster || !$poster || !$owner || !$content)
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
-				'owner' => $commentStatusPoster,
+				'owner' => $poster,
 			));
 
 		// Are you the profile owner? no? then feel my wrath!
-		if ($this->_currentUser != $commentOwner)
+		if ($this->_currentUser != $owner)
 			allowedTo('breeze_postComments');
 
 		// Load all the things we need
-		$temp_id_exists = $this->_app['query']->getSingleValue('status', 'status_id', $commentStatus);
+		$temp_id_exists = $this->_app['query']->getSingleValue('status', 'status_id', $statusID);
 
-		$body = $this->_data->validateBody($commentContent);
+		$body = $this->_data->validateBody($content);
 
 		// The status do exists and the data is valid
 		if (!empty($body) && !empty($temp_id_exists))
 		{
 			// Build the params array for the query
 			$this->_params = array(
-				'status_id' => $commentStatus,
-				'status_owner_id' => $commentStatusPoster,
-				'poster_id' => $commentPoster,
-				'profile_id' => $commentOwner,
+				'status_id' => $statusID,
+				'status_owner_id' => $statusPoster,
+				'poster_id' => $poster,
+				'profile_id' => $owner,
 				'time' => time(),
-				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $commentMentions) : $body,
+				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $mentions) : $body,
 			);
 
 			// Before inserting the comment...
@@ -326,11 +326,11 @@ class BreezeAjax
 				if ($this->_app['tools']->enable('mention'))
 					$this->_app['mention']->mention(
 						array(
-							'wall_owner' => $commentOwner,
-							'wall_poster' => $commentPoster,
-							'wall_status_owner' => $commentStatusPoster,
+							'wall_owner' => $owner,
+							'wall_poster' => $poster,
+							'wall_status_owner' => $poster,
 							'comment_id' => $this->_params['id'],
-							'status_id' => $commentStatus,),
+							'status_id' => $statusID,),
 						array(
 								'name' => 'comments',
 								'id' => $this->_params['id'],)
@@ -348,8 +348,8 @@ class BreezeAjax
 				// Send out a log for this postingStatus action.
 				if (!empty($this->_userSettings['activityLog']))
 					$this->_app['notifications']->create(array(
-						'sender' => $commentPoster,
-						'receiver' => $commentPoster,
+						'sender' => $poster,
+						'receiver' => $poster,
 						'type' => 'logComment',
 						'time' => time(),
 						'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
@@ -360,14 +360,14 @@ class BreezeAjax
 
 				// Does the Status poster wants to be notified? transitive relation anyone?
 				// This only applies if the wall owner, the status poster and the comment poster are different persons!
-				if (($commentOwner != $commentPoster) && ($commentPoster != $commentStatusPoster))
+				if (($owner != $poster) && ($poster != $poster))
 				{
-					$uStatusSettings = $this->_app['query']->getUserSettings($commentStatusPoster);
+					$uStatusSettings = $this->_app['query']->getUserSettings($poster);
 
 					if (!empty($uStatusSettings['noti_on_comment']))
 						$this->_app['notifications']->create(array(
-							'sender' => $commentPoster,
-							'receiver' => $commentStatusPoster,
+							'sender' => $poster,
+							'receiver' => $poster,
 							'type' => 'commentStatus',
 							'time' => time(),
 							'viewed' => 0,
@@ -378,14 +378,14 @@ class BreezeAjax
 				}
 
 				// Notify the profile owner someone made a comment on their wall, the poster, the profile owner and the status poster needs to be different.
-				if (($commentOwner != $commentPoster) && ($commentOwner != $commentStatusPoster))
+				if (($owner != $poster) && ($owner != $poster))
 				{
-					$uOwnerSettings = $this->_app['query']->getUserSettings($commentOwner);
+					$uOwnerSettings = $this->_app['query']->getUserSettings($owner);
 
 					if (!empty($uStatusSettings['noti_on_comment_owner']))
 						$this->_app['notifications']->create(array(
-							'sender' => $commentPoster,
-							'receiver' => $commentOwner,
+							'sender' => $poster,
+							'receiver' => $owner,
 							'type' => 'commentStatusOwner',
 							'time' => time(),
 							'viewed' => 0,
@@ -399,19 +399,20 @@ class BreezeAjax
 				return $this->setResponse(array(
 					'type' => 'success',
 					'message' => 'published_comment',
-					'data' => $this->_app['display']->HTML($this->_params, 'comment', true, $commentPoster),
-					'owner' => $commentOwner,
+					'data' => $this->_app['display']->HTML($this->_params, 'comment', true, $poster),
+					'owner' => $owner,
+					'statusID' => false,
 				));
 			}
 
 			// Something wrong with the server.
 			else
-				return $this->setResponse(array('owner' => $commentOwner, 'type' => 'error',));
+				return $this->setResponse(array('owner' => $owner, 'type' => 'error',));
 		}
 
 		// There was an error
 		else
-			return $this->setResponse(array('owner' => $commentOwner, 'type' => 'error',));
+			return $this->setResponse(array('owner' => $owner, 'type' => 'error',));
 	}
 
 	/**
