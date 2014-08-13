@@ -328,7 +328,7 @@ class BreezeAjax
 						array(
 							'wall_owner' => $owner,
 							'wall_poster' => $poster,
-							'wall_status_owner' => $poster,
+							'wall_status_owner' => $statusPoster,
 							'comment_id' => $this->_params['id'],
 							'status_id' => $statusID,),
 						array(
@@ -345,7 +345,7 @@ class BreezeAjax
 				$logComment = $this->_params;
 				unset($logComment['body']);
 
-				// Send out a log for this postingStatus action.
+				// Send out a log for this posting action.
 				if (!empty($this->_userSettings['activityLog']))
 					$this->_app['notifications']->create(array(
 						'sender' => $poster,
@@ -360,14 +360,14 @@ class BreezeAjax
 
 				// Does the Status poster wants to be notified? transitive relation anyone?
 				// This only applies if the wall owner, the status poster and the comment poster are different persons!
-				if (($owner != $poster) && ($poster != $poster))
+				if (($owner != $poster) && ($poster != $statusPoster))
 				{
 					$uStatusSettings = $this->_app['query']->getUserSettings($poster);
 
 					if (!empty($uStatusSettings['noti_on_comment']))
 						$this->_app['notifications']->create(array(
 							'sender' => $poster,
-							'receiver' => $poster,
+							'receiver' => $statusPoster,
 							'type' => 'commentStatus',
 							'time' => time(),
 							'viewed' => 0,
