@@ -539,7 +539,7 @@ class Breeze extends Pimple
 
 		// Since we're here already, load the current User (currentSettings) object
 		foreach (Breeze::$allSettings as $k)
-			$generalSettings = '
+			$generalSettings .= '
 		breeze.currentSettings.'. $k .' = '. (isset($userSettings[$k]) ? (is_array($userSettings[$k]) ? json_encode($userSettings[$k]) : JavaScriptEscape($userSettings[$k])) : 'false') .';';
 
 		addInlineJavascript($generalSettings);

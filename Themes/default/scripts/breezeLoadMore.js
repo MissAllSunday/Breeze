@@ -39,12 +39,12 @@ jQuery(document).ready(function(){
 
 				// Append some more data to breeze.pagination.
 				breeze.pagination.numberTimes = numberOfEvents;
-				breeze.pagination.comingFrom = breeze.tools.comingFrom
+				breeze.pagination.comingFrom = breeze.tools.comingFrom;
 
 				jQuery.ajax(
 				{
 					// Send the data and oh boy there's a lot of it!
-					url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1;' + breeze.session.v + '=' + breeze.session.id,
+					url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1;' + smf_session_var + '=' + smf_session_id,
 					data : breeze.pagination,
 					cache: false,
 					dataType: 'json',
@@ -65,6 +65,7 @@ jQuery(document).ready(function(){
 								noty({
 									text: breeze.text.page_loading_end,
 									timeout: 3500,
+									theme: 'breezeNoti',
 									type: 'success'
 								});
 								jQuery('#loadMoar').fadeOut('slow');
@@ -73,19 +74,11 @@ jQuery(document).ready(function(){
 						}
 
 						else if(html.type == 'error'){
-							noty({
-								text: html.message,
-								timeout: 3500, type: html.type,
-								type: html.type
-							});
+							breeze.tools.showNoti(html);
 						}
 					},
 					error: function (html){
-						noty({
-							text: html,
-							timeout: 3500,
-							type: 'error'
-						});
+						breeze.tools.showNoti(html);
 					}
 				});
 			}

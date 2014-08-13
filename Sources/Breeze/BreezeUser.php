@@ -182,6 +182,9 @@ class BreezeUser extends Breeze
 		userID : '. $context['member']['id'] .'
 	};');
 
+		addInlineJavascript('
+	breeze.tools.comingFrom = "'. $context['Breeze']['comingFrom'] .'";');
+
 		// Pass the profile owner settings to the client all minus the about me stuff.
 		$toClient = $context['Breeze']['settings']['owner'];
 		unset($toClient['aboutMe']);
