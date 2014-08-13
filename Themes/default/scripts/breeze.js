@@ -69,14 +69,17 @@ jQuery(document).ready(function(){
 
 		event.preventDefault();
 
+		var thisObject = jQuery(this);
+
 		// Get the ID
-		postId = parseInt(jQuery(this).data('bid'));
-		postUrl = jQuery(this).attr('href');
+		postId = parseInt(thisObject.data('bid'));
+		postUrl = thisObject.attr('href');
 
 		// Show a confirmation message
 		noty({
 			text: breeze.text.confirm_delete,
 			type: 'confirmation',
+			theme: 'breezeNoti',
 			dismissQueue: false,
 			closeWith: ['button'],
 			buttons: [{
@@ -89,18 +92,21 @@ jQuery(document).ready(function(){
 						success: function(html){
 							$noty.close();
 
-							switch(html.type)
-							{
+							switch(html.type) {
 								case 'error':
 									noty({
 										text: html.message,
+										type: 'error',
+										theme: 'breezeNoti',
 										timeout: 3500, type: html.type
 									});
 								break;
 								case 'success':
-								jQuery('#comment_id_'+ postId).fadeOut('slow');
+								thisObject.closest('li').fadeOut('slow');
 								noty({
 									text: html.message,
+									type: 'success',
+									theme: 'breezeNoti',
 									timeout: 3500, type: html.type
 								});
 								break;
@@ -110,6 +116,8 @@ jQuery(document).ready(function(){
 							$noty.close();
 							noty({
 								text: html.message,
+								type: 'error',
+								theme: 'breezeNoti',
 								timeout: 3500, type: html.error
 							});
 						}
