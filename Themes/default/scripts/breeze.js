@@ -29,7 +29,7 @@ breeze.tools.findWord = function(string, word){
 jQuery(document).ready(function(){
 
 	// Posting a new status
-	jQuery('#form_status').submit(function(event){
+	jQuery(document).on('submit', '#form_status', function(event){
 
 		// Prevent normal behaviour.
 		event.preventDefault();
@@ -159,14 +159,14 @@ jQuery(document).ready(function(){
 	});
 
 	// Likes count.
-jQuery(function() {
-	jQuery(document).on('click', '.like_count a', function(e){
-		e.preventDefault();
-		var title = jQuery(this).parent().text(),
-			url = jQuery(this).attr('href') + ';js=1';
-		return reqOverlayDiv(url, title);
+	jQuery(function() {
+		jQuery(document).on('click', '.like_count a', function(e){
+			e.preventDefault();
+			var title = jQuery(this).parent().text(),
+				url = jQuery(this).attr('href') + ';js=1';
+			return reqOverlayDiv(url, title);
+		});
 	});
-});
 
 	// Facebox
 	jQuery(document).on('click', 'a[rel*=facebox]', function(event){
