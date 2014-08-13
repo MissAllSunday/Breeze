@@ -36,7 +36,7 @@ breezePost.prototype.show = function(html) {
 		});
 
 	// Show a notification.
-	// breeze.tools.showNoti(html);
+	breeze.tools.showNoti(html);
 };
 
 breezePost.prototype.validate = function() {

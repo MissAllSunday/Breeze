@@ -17,7 +17,8 @@ breeze.tools.showNoti = function(params){
 	noty({
 		text: params.message,
 		timeout: 3500, //@todo set this to a user setting
-		type: params.type
+		type: params.type,
+		theme: 'breezeNoti'
 	});
 };
 
