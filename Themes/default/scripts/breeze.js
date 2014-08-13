@@ -64,7 +64,7 @@ jQuery(document).ready(function(){
 		return false;
 	});
 
-	// Deleting a comment.
+	// Deleting a status/comment.
 	jQuery(document).on('click', '.breeze_delete', function(event){
 
 		event.preventDefault();
