@@ -288,12 +288,12 @@ class BreezeAjax
 			allowedTo('breeze_postComments');
 
 		// Load all the things we need
-		$temp_id_exists = $this->_app['query']->getSingleValue('status', 'status_id', $statusID);
+		$idExists = $this->_app['query']->getSingleValue('status', 'status_id', $statusID);
 
 		$body = $this->_data->validateBody($content);
 
 		// The status do exists and the data is valid
-		if (!empty($body) && !empty($temp_id_exists))
+		if (!empty($body) && !empty($idExists))
 		{
 			// Build the params array for the query
 			$this->_params = array(
@@ -444,14 +444,14 @@ class BreezeAjax
 			if (!$canHas['delete'])
 				fatal_lang_error('Breeze_error_delete'. ucfirst($type), false);
 
-			$temp_id_exists = $this->_app['query']->getSingleValue(
+			$idExists = $this->_app['query']->getSingleValue(
 				$type,
 				$type .'_id',
 				$id
 			);
 
 			// Do this only if the message wasn't deleted already
-			if (!empty($temp_id_exists))
+			if (!empty($idExists))
 			{
 				$typeCall = 'delete'. ucfirst($type);
 
