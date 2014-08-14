@@ -278,10 +278,10 @@ class BreezeTools
 	 */
 	public function loadUserInfo($id, $returnID = false)
 	{
-		global $context, $memberContext, $scripturl;
+		global $context, $memberContext, $scripturl, $txt;
 
 		// If this isn't an array, lets change it to one
-		$id = (array) $id;
+		$id = array_unique((array) $id);
 
 		// $memberContext gets set and globalized, we're gonna take advantage of it
 		$loadedIDs = loadMemberData($id, false, 'profile');
@@ -303,13 +303,8 @@ class BreezeTools
 
 				$user = $memberContext[$u];
 
-				// Sometimes we just want a link...
-				if (!empty($user['link']))
-					$context['Breeze']['user_info'][$user['id']]['link'] = $user['link'];
-
-				// ...or a name.
-				if (!empty($user['name']))
-					$context['Breeze']['user_info'][$user['id']]['name'] = $user['name'];
+				// Pass the entire data array.
+				$context['Breeze']['user_info'][$user['id']] = $user;
 
 				// Build the "breezeFacebox" link. Rename "facebox" to "breezeFacebox" in case there are other mods out there using facebox, specially its a[rel*=facebox] stuff.
 				$context['Breeze']['user_info'][$user['id']]['breezeFacebox'] = '<a href="'. $scripturl .'?action=wall;sa=userdiv;u='. $user['id'] .'" class="avatar" rel="breezeFacebox" data-name="'. (!empty($user['name']) ? $user['name'] : '') .'">'. $user['avatar']['image'] .'</a>';
@@ -317,15 +312,11 @@ class BreezeTools
 
 			// Not a real member, fill out some guest generic vars and be done with it..
 			else
-			{
-				global $txt;
-
 				$context['Breeze']['user_info'][$u] = array(
 					'breezeFacebox' => $txt['guest_title'],
 					'link' => $txt['guest_title'],
 					'name' => $txt['guest_title']
 				);
-			}
 		}
 
 		// Lastly, if the ID was requested, sent it back!
