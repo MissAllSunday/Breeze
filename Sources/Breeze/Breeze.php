@@ -551,7 +551,7 @@ class Breeze extends Pimple
 
 		// Common css and js files.
 		loadCSSFile('breeze.css', array('force_current' => false, 'validate' => true));
-		loadJavascriptFile('facebox.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breezeFacebox.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('moment.min.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('livestamp.min.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('noty/jquery.noty.js', array('local' => true, 'default_theme' => true));
@@ -634,9 +634,9 @@ class Breeze extends Pimple
 						'name' => 'jQuery',
 						'site' => 'http://jquery.com/',
 					),
-					'facebox' => array(
-						'name' => 'Facebox',
-						'site' => 'https://github.com/defunkt/facebox',
+					'breezeFacebox' => array(
+						'name' => 'breezeFacebox',
+						'site' => 'https://github.com/defunkt/breezeFacebox',
 					),
 					'feed' => array(
 						'name' => 'zRSSFeeds',

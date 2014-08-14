@@ -31,7 +31,7 @@ class BreezeUserInfo
 
 		// Set an empty array
 		$context['Breeze']['user_info'][$user['id']] = array(
-			'facebox' => '',
+			'breezeFacebox' => '',
 			'link' => '',
 			'data' => '',
 			'name' => ''
@@ -50,11 +50,11 @@ class BreezeUserInfo
 			$context['Breeze']['user_info'][$user['id']]['name'] = $user['name'];
 
 		// It all starts with the user's avatar or username...
-		$context['Breeze']['user_info'][$user['id']]['facebox'] .= '<a href="#facebox_'. $user['id'] .'" rel="facebox"><img src="'.(!empty($user['avatar']['href']) ? ''.$user['avatar']['href'].'' : $settings['default_theme_url'] .'/images/breeze/default_user.png') . '" width="50px" /></a>';
+		$context['Breeze']['user_info'][$user['id']]['breezeFacebox'] .= '<a href="#breezeFacebox_'. $user['id'] .'" rel="breezeFacebox"><img src="'.(!empty($user['avatar']['href']) ? ''.$user['avatar']['href'].'' : $settings['default_theme_url'] .'/images/breeze/default_user.png') . '" width="50px" /></a>';
 
 		// Set the data
 		$context['Breeze']['user_info'][$user['id']]['data'] = '
-		<div id="facebox_'. $user['id'] .'" style="display:none;">
+		<div id="breezeFacebox_'. $user['id'] .'" style="display:none;">
 			<div class="description">
 				<div style="margin:3px;padding-right:15px;padding-left:5px;float:left;min-height:100px;">
 					'.($user['avatar']['image'] ? $user['avatar']['image'] : '').'<br />'. $user['link'];
@@ -78,7 +78,7 @@ class BreezeUserInfo
 
 		// Guest don't have that many options...
 		$context['Breeze']['user_info'][$u] = array(
-			'facebox' => $txt['guest_title'],
+			'breezeFacebox' => $txt['guest_title'],
 			'link' => $txt['guest_title'],
 			'data' => '',
 			'name' => $txt['guest_title']

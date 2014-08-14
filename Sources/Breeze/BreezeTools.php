@@ -278,7 +278,7 @@ class BreezeTools
 	 */
 	public function loadUserInfo($id, $returnID = false)
 	{
-		global $memberContext;
+		global $context, $memberContext, $scripturl;
 
 		// If this isn't an array, lets change it to one
 		$id = (array) $id;
@@ -286,21 +286,46 @@ class BreezeTools
 		// $memberContext gets set and globalized, we're gonna take advantage of it
 		$loadedIDs = loadMemberData($id, false, 'profile');
 
-		// Set the context var
+		// Set the context var.
 		foreach ($id as $u)
 		{
-			// Avoid SMF showing an awful error message
+			// Set an empty array.
+			$context['Breeze']['user_info'][$user['id']] = array(
+				'breezeFacebox' => '',
+				'link' => '',
+				'name' => ''
+			);
+
+			// Gotta make sure you're only loading info from real existing members...
 			if (is_array($loadedIDs) && in_array($u, $loadedIDs))
 			{
 				loadMemberContext($u);
 
-				// Normal context var
-				BreezeUserInfo::profile($u);
+				$user = $memberContext[$u];
+
+				// Sometimes we just want the link.
+				if (!empty($user['link']))
+					$context['Breeze']['user_info'][$user['id']]['link'] = $user['link'];
+
+				// ...or the name
+				if (!empty($user['name']))
+					$context['Breeze']['user_info'][$user['id']]['name'] = $user['name'];
+
+				// Build the "breezeFacebox" link. Rename "facebox" to "breezeFacebox" in case there are other mods out there using facebox, specially its a[rel*=facebox] stuff.
+				$context['Breeze']['user_info'][$user['id']]['breezeFacebox'] = '<a href="', $scripturl, '?action=wall;sa=userdiv;u='. $user['id'] .'" class="avatar" rel="breezeFacebox">', $context['user']['avatar']['image'], '</a>';
 			}
 
-			// Poster is a guest
+			// Not a real member, fill out some guest generic vars and be done with it..
 			else
-				BreezeUserInfo::guest($u);
+			{
+				global $txt;
+
+				$context['Breeze']['user_info'][$u] = array(
+					'breezeFacebox' => $txt['guest_title'],
+					'link' => $txt['guest_title'],
+					'name' => $txt['guest_title']
+				);
+			}
 		}
 
 		// Lastly, if the ID was requested, sent it back!

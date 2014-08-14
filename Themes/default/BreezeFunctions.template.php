@@ -39,7 +39,7 @@ function breeze_status($data, $returnVar = false)
 				<span class="topslice"><span></span></span>
 					<div class="breeze_user_inner">
 						<div class="breeze_user_status_avatar">
-							'. $context['Breeze']['user_info'][$status['poster_id']]['facebox'] .'<br />
+							'. $context['Breeze']['user_info'][$status['poster_id']]['breezeFacebox'] .'<br />
 							'. $context['Breeze']['user_info'][$status['poster_id']]['link'] .'
 						</div>
 						<div class="breeze_user_status_comment">
@@ -110,8 +110,8 @@ function breeze_status($data, $returnVar = false)
 								<div class="post_comment">';
 
 			// Show a nice avatar next to the post form
-			if (!empty($context['Breeze']['user_info'][$user_info['id']]['facebox']))
-				$echo .=  $context['Breeze']['user_info'][$user_info['id']]['facebox'];
+			if (!empty($context['Breeze']['user_info'][$user_info['id']]['breezeFacebox']))
+				$echo .=  $context['Breeze']['user_info'][$user_info['id']]['breezeFacebox'];
 
 			// The actual post form
 				$echo .= '
@@ -160,7 +160,7 @@ function breeze_comment($comments, $returnVar = false)
 		$echo .= '
 		<li class="windowbg2" id ="comment_id_'. $comment['id'] .'">
 			<div class="breeze_user_comment_avatar">
-					'. $context['Breeze']['user_info'][$comment['poster_id']]['facebox'] .'<br />
+					'. $context['Breeze']['user_info'][$comment['poster_id']]['breezeFacebox'] .'<br />
 					'. $context['Breeze']['user_info'][$comment['poster_id']]['link'] .'
 			</div>
 			<div class="breeze_user_comment_comment">
@@ -370,7 +370,7 @@ function breeze_user_list($list, $type = 'buddy')
 			$user = $type == 'visitors' ? $u['user'] : $u;
 
 			echo '
-				<li> ', $context['Breeze']['user_info'][$user]['facebox'] ,' <br /> ', $context['Breeze']['user_info'][$user]['link'];
+				<li> ', $context['Breeze']['user_info'][$user]['breezeFacebox'] ,' <br /> ', $context['Breeze']['user_info'][$user]['link'];
 
 			// Are we showing the visitors? if so, show some more info!
 			if ($type == 'visitors')

@@ -56,7 +56,7 @@ class BreezeWall
 			'single' => 'singleStatus',
 			'singleComment' => 'singleComment',
 			'log' => 'log',
-			'userDiv' => 'userDiv',
+			'userdiv' => 'userDiv',
 		);
 
 		// Master setting is off, back off!
@@ -245,12 +245,17 @@ class BreezeWall
 	 */
 	function userDiv()
 	{
-		global $context;
+		global $context, $memberContext;
 
 		// We only want to output our little layer here.
 		$context['template_layers'] = array();
+		$context['sub_template'] = 'userDiv';
 
 		$userID = Breeze::data('get')->get('u');
-		$this->_app['tools']->loadUserInfo($status['users']);
+		
+		// By this point the user info should be already loaded, still, better be safe...
+		if(!isset($memberContext[$userID]))
+			$this->_app['tools']->loadUserInfo($userID);
+
 	}
 }

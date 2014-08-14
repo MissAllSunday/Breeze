@@ -168,9 +168,9 @@ jQuery(document).ready(function(){
 		});
 	});
 
-	// Facebox
-	jQuery(document).on('click', 'a[rel*=facebox]', function(event){
-		jQuery(this).facebox(
+	// breezeFacebox
+	jQuery(document).on('click', 'a[rel*=breezeFacebox]', function(event){
+		jQuery(this).breezeFacebox(
 		{
 			loadingImage : smf_images_url + '/breeze/loading.gif',
 			closeImage   : smf_images_url + '/breeze/error_close.png'
