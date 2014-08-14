@@ -629,10 +629,6 @@ class Breeze extends Pimple
 						'name' => 'jQuery',
 						'site' => 'http://jquery.com/',
 					),
-					'breezeFacebox' => array(
-						'name' => 'breezeFacebox',
-						'site' => 'https://github.com/defunkt/breezeFacebox',
-					),
 					'feed' => array(
 						'name' => 'zRSSFeeds',
 						'site' => 'http://www.zazar.net/developers/jquery/zrssfeed',
@@ -640,10 +636,6 @@ class Breeze extends Pimple
 					'noty' => array(
 						'name' => 'noty jquery plugin',
 						'site' => 'http://needim.github.com/noty/',
-					),
-					'mentions' => array(
-						'name' => 'Mentions autocomplete',
-						'site' => 'http://ichord.github.com/At.js',
 					),
 					'moment' => array(
 						'name' => 'moment.js',
