@@ -210,15 +210,15 @@ class BreezeWall
 
 		if (!empty($this->userSettings['buddies']))
 		{
-			// Get the latest activity
+			// Get the latest activity.
 			$context['Breeze']['activity'] = $this->_app['query']->getActivityLog($this->userSettings['buddies']);
 
-			// Load users data
+			// Load users data.
 			if (!empty($status['users']))
 				$this->_app['tools']->loadUserInfo($status['users']);
 		}
 
-		// Load the users data
+		// Load the users data.
 		$this->_app['tools']->loadUserInfo($status['users']);
 
 		$context['Breeze']['status'] = $status['data'];
@@ -228,15 +228,13 @@ class BreezeWall
 		$context['page_title'] = $this->_app['tools']->text('singleStatus_pageTitle');
 		$context['canonical_url'] = $scripturl .'?action=wall;area=single;bid='. $data->get('bid');
 
-		// There cannot be any pagination
+		// There cannot be any pagination.
 		$context['page_index'] = array();
 
 		// Are we showing a comment? if so, highlight it.
 		if ($data->get('cid'))
-			$context['insert_after_template'] .= '
-	<script type="text/javascript"><!-- // --><![CDATA[;
-		document.getElementById(\'comment_id_'. $data->get('cid') .'\').className = "windowbg3";
-	// ]]></script>';
+			addInlineJavascript('
+		document.getElementById(\'comment_id_'. $data->get('cid') .'\').className = "windowbg3";', true;
 	}
 
 	/**
@@ -252,6 +250,5 @@ class BreezeWall
 		// We only want to output our little layer here.
 		$context['template_layers'] = array();
 
-		$context['sub_template'] = 'general_wall';
 	}
 }
