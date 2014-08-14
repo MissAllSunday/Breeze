@@ -248,9 +248,6 @@ function template_user_wall()
 	// End of profileview div
 	echo '
 </div>';
-
-	// Don't forget to print the users data
-	breeze_user_info();
 }
 
 function template_user_notifications()
@@ -479,7 +476,4 @@ function template_general_wall()
 	// End of profileview div
 	echo '
 </div>';
-
-	// Don't forget to print the users data
-	breeze_user_info();
 }

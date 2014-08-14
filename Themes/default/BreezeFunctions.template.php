@@ -326,16 +326,6 @@ function breeze_activity($data)
 		</div>';
 }
 
-function breeze_user_info()
-{
-	global $context;
-
-	if (!empty($context['Breeze']['user_info']))
-		foreach ($context['Breeze']['user_info'] as $userData)
-			if (!empty($userData['data']))
-				echo $userData['data'];
-}
-
 function breeze_user_list($list, $type = 'buddy')
 {
 	global $context, $user_info, $txt;
