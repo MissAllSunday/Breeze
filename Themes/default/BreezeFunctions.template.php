@@ -417,5 +417,22 @@ function breeze_server_response()
 
 function template_userDiv()
 {
-	echo 'something, something';
+	global $context, $settings, $modSettings;
+	echo '<!DOCTYPE html>
+<html', $context['right_to_left'] ? ' dir="rtl"' : '', '>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=', $context['character_set'], '">
+		<meta name="robots" content="noindex">
+		<title>', $context['page_title'], '</title>
+		<link rel="stylesheet" type="text/css" href="', $settings['theme_url'], '/css/index', $context['theme_variant'], '.css', $modSettings['browser_cache'] ,'">
+		<script src="', $settings['default_theme_url'], '/scripts/script.js', $modSettings['browser_cache'] ,'"></script>
+	</head>
+	<body id="likes_popup">
+		<div class="windowbg">
+				something something
+			<br class="clear">
+			<a href="javascript:self.close();">', $txt['close_window'], '</a>
+		</div>
+	</body>
+</html>';
 }

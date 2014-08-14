@@ -165,8 +165,8 @@ class BreezeUser extends Breeze
 		loadJavascriptFile('breezeTabs.js', array('local' => true, 'default_theme' => true));
 
 		// Are mentions enabled?
-		if ($tools->enable('mention'))
-			loadJavascriptFile('breezeMention.js', array('local' => true, 'default_theme' => true));
+		// if ($tools->enable('mention'))
+			// loadJavascriptFile('breezeMention.js', array('local' => true, 'default_theme' => true));
 
 		// Does the user wants to use the load more button?
 		if (!empty($context['Breeze']['settings']['visitor']['load_more']))

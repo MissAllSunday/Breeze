@@ -168,13 +168,12 @@ jQuery(document).ready(function(){
 		});
 	});
 
-	// breezeFacebox
+	// User div.
 	jQuery(document).on('click', 'a[rel*=breezeFacebox]', function(event){
-		jQuery(this).breezeFacebox(
-		{
-			loadingImage : smf_images_url + '/breeze/loading.gif',
-			closeImage   : smf_images_url + '/breeze/error_close.png'
-		});
+		event.preventDefault();
+		var title = jQuery(this).data('name'),
+			url = jQuery(this).attr('href') + ';js=1';
+		return reqOverlayDiv(url, title);
 	});
 
 	// Clean the visitors log/ delete cover image

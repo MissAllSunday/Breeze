@@ -89,8 +89,8 @@ class BreezeWall
 		loadJavascriptFile('breezeTabs.js', array('local' => true, 'default_theme' => true));
 
 		// Are mentions enabled?
-		if ($tools->enable('mention'))
-			loadJavascriptFile('breezeMention.js', array('local' => true, 'default_theme' => true));
+		// if ($this->_app['tools']->enable('mention'))
+			// loadJavascriptFile('breezeMention.js', array('local' => true, 'default_theme' => true));
 
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
@@ -234,7 +234,7 @@ class BreezeWall
 		// Are we showing a comment? if so, highlight it.
 		if ($data->get('cid'))
 			addInlineJavascript('
-		document.getElementById(\'comment_id_'. $data->get('cid') .'\').className = "windowbg3";', true;
+		document.getElementById(\'comment_id_'. $data->get('cid') .'\').className = "windowbg3";', true);
 	}
 
 	/**
@@ -245,11 +245,14 @@ class BreezeWall
 	 */
 	function userDiv()
 	{
-		global $context, $memberContext;
+		global $context, $memberContext, $db_show_debug;
+
+		$db_show_debug = false;
 
 		// We only want to output our little layer here.
 		$context['template_layers'] = array();
 		$context['sub_template'] = 'userDiv';
+		$context['page_title'] = '';
 
 		$userID = Breeze::data('get')->get('u');
 		
