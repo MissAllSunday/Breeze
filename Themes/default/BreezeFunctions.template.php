@@ -407,7 +407,7 @@ function breeze_server_response()
 
 function template_userDiv()
 {
-	global $context, $settings, $modSettings, $txt[;
+	global $context, $settings, $modSettings, $txt;
 
 	echo '<!DOCTYPE html>
 <html', $context['right_to_left'] ? ' dir="rtl"' : '', '>

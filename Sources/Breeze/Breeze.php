@@ -545,10 +545,6 @@ class Breeze extends Pimple
 		addInlineJavascript($generalSettings);
 		addInlineJavascript($jsSettings);
 
-		// Add the super important load icon!
-		addInlineJavascript('
-		breeze.tools.loadIcon = "'. $settings['images_url'] .'/breeze/loading.gif";');
-
 		// Common css and js files.
 		loadCSSFile('breeze.css', array('force_current' => false, 'validate' => true));
 		loadJavascriptFile('moment.min.js', array('local' => true, 'default_theme' => true));
