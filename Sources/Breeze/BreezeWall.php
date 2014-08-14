@@ -250,5 +250,7 @@ class BreezeWall
 		// We only want to output our little layer here.
 		$context['template_layers'] = array();
 
+		$userID = Breeze::data('get')->get('u');
+		$this->_app['tools']->loadUserInfo($status['users']);
 	}
 }

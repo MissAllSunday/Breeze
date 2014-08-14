@@ -281,17 +281,16 @@ class BreezeTools
 		global $memberContext;
 
 		// If this isn't an array, lets change it to one
-		if (!is_array($id))
-			$id = array($id);
+		$id = (array) $id;
 
 		// $memberContext gets set and globalized, we're gonna take advantage of it
-		$loaded_ids = loadMemberData($id, false, 'profile');
+		$loadedIDs = loadMemberData($id, false, 'profile');
 
 		// Set the context var
 		foreach ($id as $u)
 		{
 			// Avoid SMF showing an awful error message
-			if (is_array($loaded_ids) && in_array($u, $loaded_ids))
+			if (is_array($loadedIDs) && in_array($u, $loadedIDs))
 			{
 				loadMemberContext($u);
 
@@ -306,7 +305,7 @@ class BreezeTools
 
 		// Lastly, if the ID was requested, sent it back!
 		if ($returnID)
-			return $loaded_ids;
+			return $loadedIDs;
 	}
 
 	/**
