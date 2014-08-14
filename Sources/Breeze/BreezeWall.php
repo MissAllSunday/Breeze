@@ -56,6 +56,7 @@ class BreezeWall
 			'single' => 'singleStatus',
 			'singleComment' => 'singleComment',
 			'log' => 'log',
+			'userDiv' => 'userDiv',
 		);
 
 		// Master setting is off, back off!
@@ -236,5 +237,21 @@ class BreezeWall
 	<script type="text/javascript"><!-- // --><![CDATA[;
 		document.getElementById(\'comment_id_'. $data->get('cid') .'\').className = "windowbg3";
 	// ]]></script>';
+	}
+
+	/**
+	 * BreezeAjax::userDiv()
+	 *
+	 * Used for notifications mostly, shows a single status/comment and if appropriated, highlights a specific comment.
+	 * @return
+	 */
+	function userDiv()
+	{
+		global $context;
+
+		// We only want to output our little layer here.
+		$context['template_layers'] = array();
+
+		$context['sub_template'] = 'general_wall';
 	}
 }

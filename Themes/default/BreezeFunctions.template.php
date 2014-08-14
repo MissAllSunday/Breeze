@@ -414,3 +414,8 @@ function breeze_server_response()
 			', $txt['Breeze_'. $type .'_'. $message] ,'
 		</div>';
 }
+
+function template_userDiv()
+{
+	echo 'something, something';
+}
