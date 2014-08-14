@@ -162,8 +162,6 @@ class BreezeUser extends Breeze
 			$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
 
 		// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-		loadJavascriptFile('jquery.caret.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('jquery.atwho.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('breezeTabs.js', array('local' => true, 'default_theme' => true));
 
 		// Are mentions enabled?
