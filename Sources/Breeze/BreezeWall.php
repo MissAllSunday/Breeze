@@ -81,16 +81,15 @@ class BreezeWall
 		// This isn't nice, however, pass the tools object to the view.
 		$context['Breeze']['tools'] = $this->_app['tools'];
 
+		addInlineJavascript('
+	breeze.tools.comingFrom = "'. $context['Breeze']['comingFrom'] .'";');
+
 		// These file are only used here and on the profile wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-		$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
+		loadJavascriptFile('breezeTabs.js', array('local' => true, 'default_theme' => true));
 
 		// Are mentions enabled?
-		if ($this->_app['tools']->enable('mention'))
-			$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeMention.js"></script>';
+		if ($tools->enable('mention'))
+			loadJavascriptFile('breezeMention.js', array('local' => true, 'default_theme' => true));
 
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
@@ -176,24 +175,17 @@ class BreezeWall
 				$context['page_index'] = $status['pagination'];
 		}
 
-		// Need to pass some vars to the browser.
-		$context['insert_after_template'] .= '
-	<script type="text/javascript"><!-- // --><![CDATA[
-
-		breeze.tools.comingFrom = ' . JavaScriptEscape($context['Breeze']['comingFrom']) . ';
-
-		breeze.pagination = {
-			maxIndex : '. $maxIndex .',
-			totalItems : ' . $status['count'] . ',
-			buddies : '. json_encode($this->userSettings['buddiesList']) .',
-			userID : '. $user_info['id'] .'
-		};
-	// ]]></script>';
+		// Need to pass some vars to the browser :(
+		addInlineJavascript('
+	breeze.pagination = {
+		maxIndex : '. $maxIndex .',
+		totalItems : ' . $data['count'] . ',
+		userID : '. $context['member']['id'] .'
+	};');
 
 		// Does the user wants to use the load more button?
-		if (!empty($this->userSettings['load_more']))
-			$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeLoadMore.js"></script>';
+		if (!empty($context['Breeze']['settings']['visitor']['load_more']))
+			loadJavascriptFile('breezeLoadMore.js', array('local' => true, 'default_theme' => true));
 	}
 
 	/**
