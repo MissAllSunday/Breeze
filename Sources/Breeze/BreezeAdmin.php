@@ -62,8 +62,10 @@ class BreezeAdmin
 		   });
 		});', true);
 
+		$sa = Breeze::data('get')->get('sa');
+
 		// Call the sub-action.
-		$this->$subActions[$_REQUEST['sa']]();
+		$this->$subActions[$sa]();
 	}
 
 	function main()
