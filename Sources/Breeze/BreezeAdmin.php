@@ -45,24 +45,22 @@ class BreezeAdmin
 		);
 
 		// Admin bits
-		$context['html_headers'] .= '
-	<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
-	<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.js" type="text/javascript"></script>
-	<script type="text/javascript">
-	var breeze_feed_error_message = '. JavaScriptEscape($this['tools']->adminText('feed_error_message')) .';
+		loadJavascriptFile('jquery.zrssfeed.js.js', array('local' => true, 'default_theme' => true));
+		addInlineJavascript('
+		var breeze_feed_error_message = '. JavaScriptEscape($this['tools']->adminText('feed_error_message')) .';', true);
 
-	$(document).ready(function (){
-		$(\'#breezelive\').rssfeed(\''. Breeze::$supportSite .'\',
-		{
-			limit: 5,
-			header: false,
-			date: true,
-			linktarget: \'_blank\',
-			errormsg: breeze_feed_error_message,
-			'.(!empty($modSettings['setting_secureCookies']) ? 'ssl: true,' : '').'
-	   });
-	});
-	 </script>';
+		addInlineJavascript('
+		$(document).ready(function (){
+			$(\'#breezelive\').rssfeed(\''. Breeze::$supportSite .'\',
+			{
+				limit: 5,
+				header: false,
+				date: true,
+				linktarget: \'_blank\',
+				errormsg: breeze_feed_error_message,
+				'.(!empty($modSettings['setting_secureCookies']) ? 'ssl: true,' : '').'
+		   });
+		});', true);
 
 		// Call the sub-action.
 		$this->$subActions[$_REQUEST['sa']]();
