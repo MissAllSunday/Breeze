@@ -185,7 +185,7 @@ class Breeze extends Pimple
 					'label' => $tools->text('general_wall'),
 					'icon' => 'smiley.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'wall',
+					'function' => 'BreezeUser::wall#',
 					'permission' => array(
 						'own' => 'is_not_guest',
 						'any' => 'profile_view',
@@ -216,7 +216,7 @@ class Breeze extends Pimple
 				'label' => $tools->text('user_settings_name'),
 				'icon' => 'features.png',
 				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'settings',
+				'function' => 'BreezeUser::settings#',
 				'permission' => array(
 					'own' => 'profile_identity_own',
 					'any' => false,
@@ -230,7 +230,7 @@ class Breeze extends Pimple
 					'label' => $tools->text('user_settings_name_settings'),
 					'icon' => 'news.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'notiSettings',
+					'function' => 'BreezeUser::notiSettings#',
 					'permission' => array(
 						'own' => 'profile_identity_own',
 						'any' => false,
@@ -242,7 +242,7 @@ class Breeze extends Pimple
 					'label' => $tools->text('user_notisettings_name'),
 					'icon' => 'features.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'notifications',
+					'function' => 'BreezeUser::notifications#',
 					'subsections' => array(),
 					'permission' => array(
 						'own' => 'profile_identity_own',
@@ -257,7 +257,7 @@ class Breeze extends Pimple
 					'label' => $tools->text('user_notilogs_name'),
 					'icon' => 'features.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'notiLogs',
+					'function' => 'BreezeUser::notiLogs#',
 					'subsections' => array(),
 					'permission' => array(
 						'own' => 'profile_identity_own',
@@ -364,7 +364,7 @@ class Breeze extends Pimple
 	public function call()
 	{
 		// Just some quick code to make sure this works...
-		$a = array('wall', 'ajax');
+		$a = array('wall', 'ajax', 'admin');
 		$action = Breeze::data('get')->get('action');
 
 		// Gotta remove the "breeze" from breezeajax.
@@ -589,7 +589,7 @@ class Breeze extends Pimple
 		$admin_menu['config']['areas']['breezeadmin'] = array(
 			'label' => $tools->adminText('page_main'),
 			'file' => 'Breeze/BreezeAdmin.php',
-			'function' => 'call',
+			'function' => 'Breeze::call#',
 			'icon' => 'packages.png',
 			'subsections' => array(
 				'general' => array($tools->adminText('page_main')),

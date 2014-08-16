@@ -13,13 +13,8 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-class BreezeAdmin extends Breeze
+class BreezeAdmin
 {
-	function __construct()
-	{
-		parent::__construct();
-	}
-
 	function call()
 	{
 		global $txt, $scripturl, $context, $sourcedir, $settings;
