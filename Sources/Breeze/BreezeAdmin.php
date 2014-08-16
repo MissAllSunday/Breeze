@@ -65,7 +65,10 @@ class BreezeAdmin
 		$sa = Breeze::data('get')->get('sa');
 
 		// Call the sub-action.
-		$this->$subActions[$sa]();
+		if (isset($subActions[$sa]))
+			$this->$subActions[$sa]();
+
+		// else? sorry, I'm lazy...
 	}
 
 	function main()
