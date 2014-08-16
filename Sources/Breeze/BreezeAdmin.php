@@ -45,7 +45,7 @@ class BreezeAdmin
 		);
 
 		// Admin bits
-		loadJavascriptFile('jquery.zrssfeed.js.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('jquery.zrssfeed.js', array('local' => true, 'default_theme' => true));
 		addInlineJavascript('
 		var breeze_feed_error_message = '. JavaScriptEscape($this['tools']->adminText('feed_error_message')) .';', true);
 
