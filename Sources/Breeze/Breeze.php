@@ -217,9 +217,10 @@ class Breeze extends Pimple
 				'icon' => 'features.png',
 				'file' => Breeze::$folder . 'BreezeUser.php',
 				'function' => 'BreezeUser::settings#',
+				'enabled' => $context['user']['is_owner'],
 				'permission' => array(
 					'own' => 'profile_identity_own',
-					'any' => false,
+					'any' => array(),
 				),
 			);
 
@@ -231,6 +232,7 @@ class Breeze extends Pimple
 					'icon' => 'news.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
 					'function' => 'BreezeUser::notiSettings#',
+					'enabled' => $context['user']['is_owner'],
 					'permission' => array(
 						'own' => 'profile_identity_own',
 						'any' => false,
@@ -243,7 +245,7 @@ class Breeze extends Pimple
 					'icon' => 'features.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
 					'function' => 'BreezeUser::notifications#',
-					'subsections' => array(),
+					'enabled' => $context['user']['is_owner'],
 					'permission' => array(
 						'own' => 'profile_identity_own',
 						'any' => false,
@@ -258,7 +260,7 @@ class Breeze extends Pimple
 					'icon' => 'features.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
 					'function' => 'BreezeUser::notiLogs#',
-					'subsections' => array(),
+					'enabled' => $context['user']['is_owner'],
 					'permission' => array(
 						'own' => 'profile_identity_own',
 						'any' => false,
