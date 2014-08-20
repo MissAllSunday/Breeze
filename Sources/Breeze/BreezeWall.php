@@ -145,6 +145,9 @@ class BreezeWall
 			'count' => 0
 		);
 
+		// Go get your stuff....
+		$context['Breeze']['settings']['visitor'] = $this->_app['query']->getUserSettings($user_info['id']);
+
 		// Pagination max index and current page
 		$maxIndex = !empty($this->userSettings['pagination_number']) ? $this->userSettings['pagination_number'] : 5;
 		$currentPage = ($data->validate('start') == true) ? $data->get('start') : 0;
@@ -174,19 +177,19 @@ class BreezeWall
 			// Applying pagination.
 			if (!empty($status['pagination']))
 				$context['page_index'] = $status['pagination'];
-		}
 
-		// Need to pass some vars to the browser :(
-		addInlineJavascript('
+			// Need to pass some vars to the browser :(
+			addInlineJavascript('
 	breeze.pagination = {
 		maxIndex : '. $maxIndex .',
-		totalItems : ' . $data['count'] . ',
-		userID : '. $context['member']['id'] .'
-	};');
+		totalItems : ' . $status['count'] . ',
+		userID : '. $user_info['id'] .'
+	};', true);
 
-		// Does the user wants to use the load more button?
-		if (!empty($context['Breeze']['settings']['visitor']['load_more']))
-			loadJavascriptFile('breezeLoadMore.js', array('local' => true, 'default_theme' => true));
+			// Does the user wants to use the load more button?
+			if (!empty($context['Breeze']['settings']['visitor']['load_more']))
+				loadJavascriptFile('breezeLoadMore.js', array('local' => true, 'default_theme' => true));
+		}
 	}
 
 	/**
