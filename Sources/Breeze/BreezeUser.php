@@ -162,13 +162,11 @@ class BreezeUser extends Breeze
 			$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
 
 		// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-		loadJavascriptFile('jquery.caret.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('jquery.atwho.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('breezeTabs.js', array('local' => true, 'default_theme' => true));
 
 		// Are mentions enabled?
-		if ($tools->enable('mention'))
-			loadJavascriptFile('breezeMention.js', array('local' => true, 'default_theme' => true));
+		// if ($tools->enable('mention'))
+			// loadJavascriptFile('breezeMention.js', array('local' => true, 'default_theme' => true));
 
 		// Does the user wants to use the load more button?
 		if (!empty($context['Breeze']['settings']['visitor']['load_more']))
@@ -181,6 +179,9 @@ class BreezeUser extends Breeze
 		totalItems : ' . $data['count'] . ',
 		userID : '. $context['member']['id'] .'
 	};');
+
+		addInlineJavascript('
+	breeze.tools.comingFrom = "'. $context['Breeze']['comingFrom'] .'";');
 
 		// Pass the profile owner settings to the client all minus the about me stuff.
 		$toClient = $context['Breeze']['settings']['owner'];

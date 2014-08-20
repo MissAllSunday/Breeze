@@ -17,7 +17,7 @@ breezePost.prototype.before = function() {
 	// Create a nice loading image...
 	this.loadImage = jQuery('<div/>', {
 		id: 'breeze_load_image'
-	}).html('<img src="'+ breeze.tools.loadIcon +'" />').hide();
+	}).html('<img src="' + smf_images_url + '/loading_sm.gif">').hide();
 };
 
 breezePost.prototype.after = function() {
@@ -36,7 +36,7 @@ breezePost.prototype.show = function(html) {
 		});
 
 	// Show a notification.
-	// breeze.tools.showNoti(html);
+	breeze.tools.showNoti(html);
 };
 
 breezePost.prototype.validate = function() {

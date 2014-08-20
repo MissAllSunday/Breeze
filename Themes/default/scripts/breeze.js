@@ -17,7 +17,8 @@ breeze.tools.showNoti = function(params){
 	noty({
 		text: params.message,
 		timeout: 3500, //@todo set this to a user setting
-		type: params.type
+		type: params.type,
+		theme: 'breezeNoti'
 	});
 };
 
@@ -28,7 +29,7 @@ breeze.tools.findWord = function(string, word){
 jQuery(document).ready(function(){
 
 	// Posting a new status
-	jQuery('#form_status').submit(function(event){
+	jQuery(document).on('submit', '#form_status', function(event){
 
 		// Prevent normal behaviour.
 		event.preventDefault();
@@ -64,19 +65,22 @@ jQuery(document).ready(function(){
 		return false;
 	});
 
-	// Deleting a comment.
+	// Deleting a status/comment.
 	jQuery(document).on('click', '.breeze_delete', function(event){
 
 		event.preventDefault();
 
+		var thisObject = jQuery(this);
+
 		// Get the ID
-		postId = parseInt(jQuery(this).data('bid'));
-		postUrl = jQuery(this).attr('href');
+		postId = parseInt(thisObject.data('bid'));
+		postUrl = thisObject.attr('href');
 
 		// Show a confirmation message
 		noty({
 			text: breeze.text.confirm_delete,
 			type: 'confirmation',
+			theme: 'breezeNoti',
 			dismissQueue: false,
 			closeWith: ['button'],
 			buttons: [{
@@ -89,18 +93,21 @@ jQuery(document).ready(function(){
 						success: function(html){
 							$noty.close();
 
-							switch(html.type)
-							{
+							switch(html.type) {
 								case 'error':
 									noty({
 										text: html.message,
+										type: 'error',
+										theme: 'breezeNoti',
 										timeout: 3500, type: html.type
 									});
 								break;
 								case 'success':
-								jQuery('#comment_id_'+ postId).fadeOut('slow');
+								thisObject.closest('li').fadeOut('slow');
 								noty({
 									text: html.message,
+									type: 'success',
+									theme: 'breezeNoti',
 									timeout: 3500, type: html.type
 								});
 								break;
@@ -110,6 +117,8 @@ jQuery(document).ready(function(){
 							$noty.close();
 							noty({
 								text: html.message,
+								type: 'error',
+								theme: 'breezeNoti',
 								timeout: 3500, type: html.error
 							});
 						}
@@ -150,22 +159,21 @@ jQuery(document).ready(function(){
 	});
 
 	// Likes count.
-jQuery(function() {
-	jQuery(document).on('click', '.like_count a', function(e){
-		e.preventDefault();
-		var title = jQuery(this).parent().text(),
+	jQuery(function() {
+		jQuery(document).on('click', '.like_count a', function(e){
+			e.preventDefault();
+			var title = jQuery(this).parent().text(),
+				url = jQuery(this).attr('href') + ';js=1';
+			return reqOverlayDiv(url, title);
+		});
+	});
+
+	// User div.
+	jQuery(document).on('click', 'a[rel*=breezeFacebox]', function(event){
+		event.preventDefault();
+		var title = jQuery(this).data('name'),
 			url = jQuery(this).attr('href') + ';js=1';
 		return reqOverlayDiv(url, title);
-	});
-});
-
-	// Facebox
-	jQuery(document).on('click', 'a[rel*=facebox]', function(event){
-		jQuery(this).facebox(
-		{
-			loadingImage : smf_images_url + '/breeze/loading.gif',
-			closeImage   : smf_images_url + '/breeze/error_close.png'
-		});
 	});
 
 	// Clean the visitors log/ delete cover image

@@ -39,7 +39,7 @@ function breeze_status($data, $returnVar = false)
 				<span class="topslice"><span></span></span>
 					<div class="breeze_user_inner">
 						<div class="breeze_user_status_avatar">
-							'. $context['Breeze']['user_info'][$status['poster_id']]['facebox'] .'<br />
+							'. $context['Breeze']['user_info'][$status['poster_id']]['breezeFacebox'] .'<br />
 							'. $context['Breeze']['user_info'][$status['poster_id']]['link'] .'
 						</div>
 						<div class="breeze_user_status_comment">
@@ -110,8 +110,8 @@ function breeze_status($data, $returnVar = false)
 								<div class="post_comment">';
 
 			// Show a nice avatar next to the post form
-			if (!empty($context['Breeze']['user_info'][$user_info['id']]['facebox']))
-				$echo .=  $context['Breeze']['user_info'][$user_info['id']]['facebox'];
+			if (!empty($context['Breeze']['user_info'][$user_info['id']]['breezeFacebox']))
+				$echo .=  $context['Breeze']['user_info'][$user_info['id']]['breezeFacebox'];
 
 			// The actual post form
 				$echo .= '
@@ -160,7 +160,7 @@ function breeze_comment($comments, $returnVar = false)
 		$echo .= '
 		<li class="windowbg2" id ="comment_id_'. $comment['id'] .'">
 			<div class="breeze_user_comment_avatar">
-					'. $context['Breeze']['user_info'][$comment['poster_id']]['facebox'] .'<br />
+					'. $context['Breeze']['user_info'][$comment['poster_id']]['breezeFacebox'] .'<br />
 					'. $context['Breeze']['user_info'][$comment['poster_id']]['link'] .'
 			</div>
 			<div class="breeze_user_comment_comment">
@@ -326,16 +326,6 @@ function breeze_activity($data)
 		</div>';
 }
 
-function breeze_user_info()
-{
-	global $context;
-
-	if (!empty($context['Breeze']['user_info']))
-		foreach ($context['Breeze']['user_info'] as $userData)
-			if (!empty($userData['data']))
-				echo $userData['data'];
-}
-
 function breeze_user_list($list, $type = 'buddy')
 {
 	global $context, $user_info, $txt;
@@ -370,7 +360,7 @@ function breeze_user_list($list, $type = 'buddy')
 			$user = $type == 'visitors' ? $u['user'] : $u;
 
 			echo '
-				<li> ', $context['Breeze']['user_info'][$user]['facebox'] ,' <br /> ', $context['Breeze']['user_info'][$user]['link'];
+				<li> ', $context['Breeze']['user_info'][$user]['breezeFacebox'] ,' <br /> ', $context['Breeze']['user_info'][$user]['link'];
 
 			// Are we showing the visitors? if so, show some more info!
 			if ($type == 'visitors')
@@ -413,4 +403,27 @@ function breeze_server_response()
 		'<div '. ($type == 'error' ? 'class="errorbox"' : 'id="profile_success"') ,'>
 			', $txt['Breeze_'. $type .'_'. $message] ,'
 		</div>';
+}
+
+function template_userDiv()
+{
+	global $context, $settings, $modSettings, $txt;
+
+	echo '<!DOCTYPE html>
+<html', $context['right_to_left'] ? ' dir="rtl"' : '', '>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=', $context['character_set'], '">
+		<meta name="robots" content="noindex">
+		<title>', $context['page_title'], '</title>
+		<link rel="stylesheet" type="text/css" href="', $settings['theme_url'], '/css/index', $context['theme_variant'], '.css', $modSettings['browser_cache'] ,'">
+		<script src="', $settings['default_theme_url'], '/scripts/script.js', $modSettings['browser_cache'] ,'"></script>
+	</head>
+	<body id="likes_popup">
+		<div class="windowbg">
+				something something
+			<br class="clear">
+			<a href="javascript:self.close();">', $txt['close_window'], '</a>
+		</div>
+	</body>
+</html>';
 }

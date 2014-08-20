@@ -278,35 +278,50 @@ class BreezeTools
 	 */
 	public function loadUserInfo($id, $returnID = false)
 	{
-		global $memberContext;
+		global $context, $memberContext, $scripturl, $txt;
 
 		// If this isn't an array, lets change it to one
-		if (!is_array($id))
-			$id = array($id);
+		$id = array_unique((array) $id);
 
 		// $memberContext gets set and globalized, we're gonna take advantage of it
-		$loaded_ids = loadMemberData($id, false, 'profile');
+		$loadedIDs = loadMemberData($id, false, 'profile');
 
-		// Set the context var
+		// Set the context var.
 		foreach ($id as $u)
 		{
-			// Avoid SMF showing an awful error message
-			if (is_array($loaded_ids) && in_array($u, $loaded_ids))
+			// Set an empty array.
+			$context['Breeze']['user_info'][$u] = array(
+				'breezeFacebox' => '',
+				'link' => '',
+				'name' => ''
+			);
+
+			// Gotta make sure you're only loading info from real existing members...
+			if (is_array($loadedIDs) && in_array($u, $loadedIDs))
 			{
 				loadMemberContext($u);
 
-				// Normal context var
-				BreezeUserInfo::profile($u);
+				$user = $memberContext[$u];
+
+				// Pass the entire data array.
+				$context['Breeze']['user_info'][$user['id']] = $user;
+
+				// Build the "breezeFacebox" link. Rename "facebox" to "breezeFacebox" in case there are other mods out there using facebox, specially its a[rel*=facebox] stuff.
+				$context['Breeze']['user_info'][$user['id']]['breezeFacebox'] = '<a href="'. $scripturl .'?action=wall;sa=userdiv;u='. $user['id'] .'" class="avatar" rel="breezeFacebox" data-name="'. (!empty($user['name']) ? $user['name'] : '') .'">'. $user['avatar']['image'] .'</a>';
 			}
 
-			// Poster is a guest
+			// Not a real member, fill out some guest generic vars and be done with it..
 			else
-				BreezeUserInfo::guest($u);
+				$context['Breeze']['user_info'][$u] = array(
+					'breezeFacebox' => $txt['guest_title'],
+					'link' => $txt['guest_title'],
+					'name' => $txt['guest_title']
+				);
 		}
 
 		// Lastly, if the ID was requested, sent it back!
 		if ($returnID)
-			return $loaded_ids;
+			return $loadedIDs;
 	}
 
 	/**

@@ -185,8 +185,7 @@ class Breeze extends Pimple
 					'label' => $tools->text('general_wall'),
 					'icon' => 'smiley.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'wall',
-					'class' => 'BreezeUser',
+					'function' => 'BreezeUser::wall#',
 					'permission' => array(
 						'own' => 'is_not_guest',
 						'any' => 'profile_view',
@@ -217,11 +216,11 @@ class Breeze extends Pimple
 				'label' => $tools->text('user_settings_name'),
 				'icon' => 'features.png',
 				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'settings',
-				'class' => 'BreezeUser',
+				'function' => 'BreezeUser::settings#',
+				'enabled' => $context['user']['is_owner'],
 				'permission' => array(
 					'own' => 'profile_identity_own',
-					'any' => false,
+					'any' => array(),
 				),
 			);
 
@@ -232,8 +231,8 @@ class Breeze extends Pimple
 					'label' => $tools->text('user_settings_name_settings'),
 					'icon' => 'news.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'notiSettings',
-					'class' => 'BreezeUser',
+					'function' => 'BreezeUser::notiSettings#',
+					'enabled' => $context['user']['is_owner'],
 					'permission' => array(
 						'own' => 'profile_identity_own',
 						'any' => false,
@@ -245,9 +244,8 @@ class Breeze extends Pimple
 					'label' => $tools->text('user_notisettings_name'),
 					'icon' => 'features.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'notifications',
-					'class' => 'BreezeUser',
-					'subsections' => array(),
+					'function' => 'BreezeUser::notifications#',
+					'enabled' => $context['user']['is_owner'],
 					'permission' => array(
 						'own' => 'profile_identity_own',
 						'any' => false,
@@ -261,9 +259,8 @@ class Breeze extends Pimple
 					'label' => $tools->text('user_notilogs_name'),
 					'icon' => 'features.png',
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'notiLogs',
-					'class' => 'BreezeUser',
-					'subsections' => array(),
+					'function' => 'BreezeUser::notiLogs#',
+					'enabled' => $context['user']['is_owner'],
 					'permission' => array(
 						'own' => 'profile_identity_own',
 						'any' => false,
@@ -369,7 +366,7 @@ class Breeze extends Pimple
 	public function call()
 	{
 		// Just some quick code to make sure this works...
-		$a = array('wall', 'ajax');
+		$a = array('wall', 'ajax', 'admin');
 		$action = Breeze::data('get')->get('action');
 
 		// Gotta remove the "breeze" from breezeajax.
@@ -539,19 +536,14 @@ class Breeze extends Pimple
 
 		// Since we're here already, load the current User (currentSettings) object
 		foreach (Breeze::$allSettings as $k)
-			$generalSettings = '
+			$generalSettings .= '
 		breeze.currentSettings.'. $k .' = '. (isset($userSettings[$k]) ? (is_array($userSettings[$k]) ? json_encode($userSettings[$k]) : JavaScriptEscape($userSettings[$k])) : 'false') .';';
 
 		addInlineJavascript($generalSettings);
 		addInlineJavascript($jsSettings);
 
-		// Add the super important load icon!
-		addInlineJavascript('
-		breeze.tools.loadIcon = "'. $settings['images_url'] .'/breeze/loading.gif";');
-
 		// Common css and js files.
 		loadCSSFile('breeze.css', array('force_current' => false, 'validate' => true));
-		loadJavascriptFile('facebox.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('moment.min.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('livestamp.min.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('noty/jquery.noty.js', array('local' => true, 'default_theme' => true));
@@ -599,8 +591,7 @@ class Breeze extends Pimple
 		$admin_menu['config']['areas']['breezeadmin'] = array(
 			'label' => $tools->adminText('page_main'),
 			'file' => 'Breeze/BreezeAdmin.php',
-			'function' => 'call',
-			'class' => 'BreezeAdmin',
+			'function' => 'Breeze::call#',
 			'icon' => 'packages.png',
 			'subsections' => array(
 				'general' => array($tools->adminText('page_main')),
@@ -634,10 +625,6 @@ class Breeze extends Pimple
 						'name' => 'jQuery',
 						'site' => 'http://jquery.com/',
 					),
-					'facebox' => array(
-						'name' => 'Facebox',
-						'site' => 'https://github.com/defunkt/facebox',
-					),
 					'feed' => array(
 						'name' => 'zRSSFeeds',
 						'site' => 'http://www.zazar.net/developers/jquery/zrssfeed',
@@ -645,10 +632,6 @@ class Breeze extends Pimple
 					'noty' => array(
 						'name' => 'noty jquery plugin',
 						'site' => 'http://needim.github.com/noty/',
-					),
-					'mentions' => array(
-						'name' => 'Mentions autocomplete',
-						'site' => 'http://ichord.github.com/At.js',
 					),
 					'moment' => array(
 						'name' => 'moment.js',
