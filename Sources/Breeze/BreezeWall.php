@@ -249,13 +249,16 @@ class BreezeWall
 
 		$db_show_debug = false;
 
+		// Need to load the Help language file, just for a single txt string...
+		loadLanguage('Help');
+
 		// We only want to output our little layer here.
 		$context['template_layers'] = array();
 		$context['sub_template'] = 'userDiv';
 		$context['page_title'] = '';
 
 		$userID = Breeze::data('get')->get('u');
-		
+
 		// By this point the user info should be already loaded, still, better be safe...
 		if(!isset($memberContext[$userID]))
 			$this->_app['tools']->loadUserInfo($userID);
