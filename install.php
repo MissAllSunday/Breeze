@@ -237,6 +237,59 @@
 			'parameters' => array(),
 		);
 
+		// My mood
+		$tables[] = array(
+			'table_name' => '{db_prefix}breeze_moods',
+			'columns' => array(
+				array(
+					'name' => 'moods_id',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false,
+					'auto' => true
+				),
+				array(
+					'name' => 'name',
+					'type' => 'varchar',
+					'size' => 255,
+					'default' => '',
+				),
+				array(
+					'name' => 'file',
+					'type' => 'varchar',
+					'size' => 255,
+					'default' => '',
+				),
+				array(
+					'name' => 'ext',
+					'type' => 'varchar',
+					'size' => 255,
+					'default' => '',
+				),
+				array(
+					'name' => 'description',
+					'type' => 'text',
+					'size' => '',
+					'default' => null,
+				),
+				array(
+					'name' => 'enable',
+					'type' => 'int',
+					'size' => 1,
+					'null' => false
+				),
+			),
+			'indexes' => array(
+				array(
+					'type' => 'primary',
+					'columns' => array('id')
+				),
+			),
+			'if_exists' => 'ignore',
+			'error' => 'fatal',
+			'parameters' => array(),
+		);
+
 		// Installing
 		foreach ($tables as $table)
 			$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
