@@ -250,7 +250,11 @@ class BreezeWall
 	{
 		global $context, $memberContext, $db_show_debug;
 
+		// Don't show nasty things.
 		$db_show_debug = false;
+
+		// Set an empty array, just for fun...
+		$context['BreezeUser']  = array();
 
 		// Need to load the Help language file, just for a single txt string...
 		loadLanguage('Help');
@@ -262,9 +266,15 @@ class BreezeWall
 
 		$userID = Breeze::data('get')->get('u');
 
-		// By this point the user info should be already loaded, still, better be safe...
+		// No ID? shame on you!
+		if (empty($userID))
+			return false;
+
+		// By this point the user info should be loaded already, still, better be safe...
 		if(!isset($memberContext[$userID]))
 			$this->_app['tools']->loadUserInfo($userID);
 
+		// Pass the data to the template.
+		$context['BreezeUser'] = $memberContext[$userID];
 	}
 }

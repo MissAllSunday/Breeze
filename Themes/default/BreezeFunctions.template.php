@@ -419,8 +419,15 @@ function template_userDiv()
 		<script src="', $settings['default_theme_url'], '/scripts/script.js', $modSettings['browser_cache'] ,'"></script>
 	</head>
 	<body id="likes_popup">
-		<div class="windowbg">
-				something something
+		<div class="windowbg">';
+
+		if (!empty($context['BreezeUser']))
+			print_r($context['BreezeUser']);
+
+		// else
+			// some error string here.
+
+	echo '
 			<br class="clear">
 			<a href="javascript:self.close();">', $txt['close_window'], '</a>
 		</div>
