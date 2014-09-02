@@ -282,7 +282,7 @@
 			'indexes' => array(
 				array(
 					'type' => 'primary',
-					'columns' => array('id')
+					'columns' => array('moods_id')
 				),
 			),
 			'if_exists' => 'ignore',
