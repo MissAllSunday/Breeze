@@ -19,7 +19,7 @@ class BreezeMood
 	protected $_moodFolder = 'moods/';
 	protected $_imagesPath = '';
 	protected $_imagesUrl = '';
-	protected $allowedExtensions = array('gif');
+	protected $allowedExtensions = array('gif', 'jpg', 'png');
 	protected $_moods;
 
 	function __construct($app)

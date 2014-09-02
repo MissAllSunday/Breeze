@@ -129,7 +129,7 @@ class BreezeAdmin
 			array('int', Breeze::$txtpattern .'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this->_app['tools']->adminText('allowed_maxlength_aboutMe_sub')),
 			array('check', Breeze::$txtpattern .'cover', 'subtext' => $this->_app['tools']->adminText('cover_sub')),
 			array('check', Breeze::$txtpattern .'likes', 'subtext' => $this->_app['tools']->adminText('likes_sub')),
-			array('check', Breeze::$txtpattern .'mood', 'subtext' => $this['tools']->adminText('mood_sub')),
+			array('check', Breeze::$txtpattern .'mood', 'subtext' => $this->_app['tools']->adminText('mood_sub')),
 		);
 
 		$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=settings;save';
@@ -185,20 +185,20 @@ class BreezeAdmin
 
 	public function moodList()
 	{
-		global $context;
+		global $context, $sourcedir, $txt;
 
 		// Set all the page stuff
-		$context['page_title'] = $this['tools']->adminText('page_mood');
+		$context['page_title'] = $this->_app['tools']->adminText('page_mood');
 		$context['sub_template'] = 'admin_home';
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
-			'description' => $this['tools']->adminText('page_mood_desc'),
+			'description' => $this->_app['tools']->adminText('page_mood_desc'),
 		);
 
 		$context['sub_template'] = 'manage_mood';
 
-		// Get out main instance.
-		$mood = $this['mood'];
+		// Get our main instance.
+		$mood = $this->_app['mood'];
 
 		// Need to know a few things.
 		$context['mood']['isDirWritable'] = $mood->isDirWritable();
@@ -206,6 +206,94 @@ class BreezeAdmin
 		// Go get some...
 		$context['mood']['all'] = $mood->read(true);
 		$context['mood']['imageUrl'] = $mood->getImagesUrl();
+
+		// Lets use SMF's createList...
+		$listOptions = array(
+			'id' => 'breeze_mood_list',
+			'title' => 'some text here',
+			'base_href' => $scripturl . '?action=admin;area=breezeadmin;sa=moodList',
+			'get_items' => array(
+				'function' => function () use ($mood)
+				{
+					return $mood->getMoods();
+				},
+			),
+			'no_items_label' => $txt['icons_no_entries'],
+			'columns' => array(
+				'icon' => array(
+					'data' => array(
+						'function' => function ($rowData)
+						{
+							return $rowData;
+						},
+						'class' => 'centercol',
+					),
+				),
+				'filename' => array(
+					'header' => array(
+						'value' => $txt['smileys_filename'],
+					),
+					'data' => array(
+						'sprintf' => array(
+							'format' => '%1$s',
+							'params' => array(
+								'filename' => true,
+							),
+						),
+					),
+				),
+				'tooltip' => array(
+					'header' => array(
+						'value' => $txt['smileys_description'],
+					),
+					'data' => array(
+						'db_htmlsafe' => 'title',
+					),
+				),
+				'modify' => array(
+					'header' => array(
+						'value' => $txt['smileys_modify'],
+						'class' => 'centercol',
+					),
+					'data' => array(
+						'sprintf' => array(
+							'format' => '<a href="' . $scripturl . '?action=admin;area=smileys;sa=editicon;icon=%1$s">' . $txt['smileys_modify'] . '</a>',
+							'params' => array(
+								'id_icon' => false,
+							),
+						),
+						'class' => 'centercol',
+					),
+				),
+				'check' => array(
+					'header' => array(
+						'value' => '<input type="checkbox" onclick="invertAll(this, this.form);" class="input_check">',
+						'class' => 'centercol',
+					),
+					'data' => array(
+						'sprintf' => array(
+							'format' => '<input type="checkbox" name="checked_icons[]" value="%1$d" class="input_check">',
+							'params' => array(
+								'id_icon' => false,
+							),
+						),
+						'class' => 'centercol',
+					),
+				),
+			),
+			'form' => array(
+				'href' => $scripturl . '?action=admin;area=smileys;sa=editicons',
+			),
+			'additional_rows' => array(
+				array(
+					'position' => 'below_table_data',
+					'value' => '<input type="submit" name="delete" value="' . $txt['quickmod_delete_selected'] . '" class="button_submit"> <a class="button_link" href="' . $scripturl . '?action=admin;area=smileys;sa=editicon">' . $txt['icons_add_new'] . '</a>',
+				),
+			),
+		);
+
+		require_once($sourcedir . '/Subs-List.php');
+		createList($listOptions);
 	}
 
 	// Pay no attention to the girl behind the curtain.
