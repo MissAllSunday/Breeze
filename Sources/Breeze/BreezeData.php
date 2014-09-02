@@ -4,7 +4,7 @@
  * BreezeData
  *
  * @package Breeze mod
- * @version 1.0
+ * @version 1.1
  * @author Jessica GonzÃ¡lez <suki@missallsunday.com>
  * @copyright Copyright (c) 2011, 2014 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -23,13 +23,19 @@ class BreezeData
 	 * @param string $type
 	 * @return
 	 */
-	public function __construct($type)
+	public function __construct($type = false)
 	{
-		$types = array('request' => $_REQUEST, 'get' => $_GET, 'post' => $_POST);
+		if (!empty($type))
+		{
+			$types = array('request' => $_REQUEST, 'get' => $_GET, 'post' => $_POST);
 
-		$this->_request = (empty($type) || !isset($types[$type])) ? $_REQUEST : $types[$type];
+			$this->_request = (empty($type) || !isset($types[$type])) ? $_REQUEST : $types[$type];
 
-		unset($types);
+			unset($types);
+		}
+
+		else
+			$this->_request = $_REQUEST;
 	}
 
 	/**
@@ -74,10 +80,7 @@ class BreezeData
 	 */
 	public function validate($var)
 	{
-		if (isset($this->_request[$var]))
-			return true;
-		else
-			return false;
+		return (isset($this->_request[$var]));
 	}
 
 	/**
@@ -126,20 +129,25 @@ class BreezeData
 		global $smcFunc;
 
 		if (is_array($var))
+		{
+			foreach ($var as $k => $v)
+				$var[$k] = $this->sanitize($v);
+
 			return $var;
-
-		if (get_magic_quotes_gpc())
-			$var = stripslashes($var);
-
-		if (is_numeric($var))
-			$var = (int)trim($var);
-
-		elseif (is_string($var))
-			return $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var), ENT_QUOTES);
+		}
 
 		else
-			$var = 'error_' . $var;
+		{
+			if (is_numeric($var))
+				$var = (int)trim($var);
 
-		return $var;
+			else if (is_string($var))
+				$var = $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var), ENT_QUOTES);
+
+			else
+				$var = 'error_' . $var;
+
+			return $var;
+		}
 	}
 }

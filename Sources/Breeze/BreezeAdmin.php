@@ -4,7 +4,7 @@
  * BreezeAdmin
  *
  * @package Breeze mod
- * @version 1.0
+ * @version 1.1
  * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2011, 2014 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -13,11 +13,11 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-class BreezeAdmin extends Breeze
+class BreezeAdmin
 {
-	function __construct()
+	public function __construct($app)
 	{
-		parent::__construct();
+		$this->_app = $app;
 	}
 
 	function call()
@@ -52,27 +52,31 @@ class BreezeAdmin extends Breeze
 		);
 
 		// Admin bits
-		$context['html_headers'] .= '
-	<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
-	<script src="'. $settings['default_theme_url'] .'/js/jquery.zrssfeed.js" type="text/javascript"></script>
-	<script type="text/javascript">
-	var breeze_feed_error_message = '. JavaScriptEscape($this['tools']->adminText('feed_error_message')) .';
+		loadJavascriptFile('jquery.zrssfeed.js', array('local' => true, 'default_theme' => true));
+		addInlineJavascript('
+		var breeze_feed_error_message = '. JavaScriptEscape($this->_app['tools']->adminText('feed_error_message')) .';', true);
 
-	$(document).ready(function (){
-		$(\'#breezelive\').rssfeed(\''. Breeze::$supportSite .'\',
-		{
-			limit: 5,
-			header: false,
-			date: true,
-			linktarget: \'_blank\',
-			errormsg: breeze_feed_error_message,
-			'.(!empty($modSettings['setting_secureCookies']) ? 'ssl: true,' : '').'
-	   });
-	});
-	 </script>';
+		addInlineJavascript('
+		$(document).ready(function (){
+			$(\'#breezelive\').rssfeed(\''. Breeze::$supportSite .'\',
+			{
+				limit: 5,
+				header: false,
+				date: true,
+				linktarget: \'_blank\',
+				errormsg: breeze_feed_error_message,
+				'.(!empty($modSettings['setting_secureCookies']) ? 'ssl: true,' : '').'
+		   });
+		});', true);
+
+		$sa = Breeze::data('get')->get('sa');
 
 		// Call the sub-action.
-		$this->$subActions[$_REQUEST['sa']]();
+		if (isset($subActions[$sa]))
+			$this->$subActions[$sa]();
+
+		else
+			$this->main();
 	}
 
 	function main()
@@ -86,15 +90,15 @@ class BreezeAdmin extends Breeze
 		$context['Breeze']['support'] = Breeze::$supportSite;
 
 		// Set all the page stuff
-		$context['page_title'] = $this['tools']->adminText('page_main');
+		$context['page_title'] = $this->_app['tools']->adminText('page_main');
 		$context['sub_template'] = 'admin_home';
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
-			'description' => $this['tools']->adminText('page_welcome'),
+			'description' => $this->_app['tools']->adminText('page_welcome'),
 		);
 
 		// Get the credits.
-		$context['Breeze']['credits'] = $this->credits();
+		$context['Breeze']['credits'] = $this->_app->credits();
 	}
 
 	function settings()
@@ -104,27 +108,27 @@ class BreezeAdmin extends Breeze
 		// Load stuff
 		$data = Breeze::data('request');
 		$context['sub_template'] = 'show_settings';
-		$context['page_title'] = Breeze::$name .' - '. $this['tools']->adminText('page_settings');
+		$context['page_title'] = Breeze::$name .' - '. $this->_app['tools']->adminText('page_settings');
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
-			'description' => $this['tools']->adminText('page_settings_desc'),
+			'description' => $this->_app['tools']->adminText('page_settings_desc'),
 		);
 
 		require_once($sourcedir . '/ManageServer.php');
 
 		$config_vars = array(
 			array('title', Breeze::$txtpattern .'page_settings'),
-			array('check', Breeze::$txtpattern .'master', 'subtext' => $this['tools']->adminText('master_sub')),
-			array('check', Breeze::$txtpattern .'force_enable', 'subtext' => $this['tools']->adminText('force_enable_sub')),
-			array('check', Breeze::$txtpattern .'notifications', 'subtext' => $this['tools']->adminText('notifications_sub')),
-			array('text', Breeze::$txtpattern .'allowed_actions', 'size' => 60, 'subtext' => $this['tools']->adminText('allowed_actions_sub')),
-			array('check', Breeze::$txtpattern .'mention', 'subtext' => $this['tools']->adminText('mention_sub')),
-			array('int', Breeze::$txtpattern .'mention_limit', 'size' => 3, 'subtext' => $this['tools']->adminText('mention_limit_sub')),
-			array('int', Breeze::$txtpattern .'allowed_max_num_users', 'size' => 3, 'subtext' => $this['tools']->adminText('allowed_max_num_users_sub')),
-			array('check', Breeze::$txtpattern .'parseBBC', 'subtext' => $this['tools']->adminText('parseBBC_sub')),
-			array('int', Breeze::$txtpattern .'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this['tools']->adminText('allowed_maxlength_aboutMe_sub')),
-			array('check', Breeze::$txtpattern .'cover', 'subtext' => $this['tools']->adminText('cover_sub')),
-			array('check', Breeze::$txtpattern .'likes', 'subtext' => $this['tools']->adminText('likes_sub')),
+			array('check', Breeze::$txtpattern .'master', 'subtext' => $this->_app['tools']->adminText('master_sub')),
+			array('check', Breeze::$txtpattern .'force_enable', 'subtext' => $this->_app['tools']->adminText('force_enable_sub')),
+			array('check', Breeze::$txtpattern .'notifications', 'subtext' => $this->_app['tools']->adminText('notifications_sub')),
+			array('text', Breeze::$txtpattern .'allowed_actions', 'size' => 60, 'subtext' => $this->_app['tools']->adminText('allowed_actions_sub')),
+			array('check', Breeze::$txtpattern .'mention', 'subtext' => $this->_app['tools']->adminText('mention_sub')),
+			array('int', Breeze::$txtpattern .'mention_limit', 'size' => 3, 'subtext' => $this->_app['tools']->adminText('mention_limit_sub')),
+			array('int', Breeze::$txtpattern .'allowed_max_num_users', 'size' => 3, 'subtext' => $this->_app['tools']->adminText('allowed_max_num_users_sub')),
+			array('check', Breeze::$txtpattern .'parseBBC', 'subtext' => $this->_app['tools']->adminText('parseBBC_sub')),
+			array('int', Breeze::$txtpattern .'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this->_app['tools']->adminText('allowed_maxlength_aboutMe_sub')),
+			array('check', Breeze::$txtpattern .'cover', 'subtext' => $this->_app['tools']->adminText('cover_sub')),
+			array('check', Breeze::$txtpattern .'likes', 'subtext' => $this->_app['tools']->adminText('likes_sub')),
 			array('check', Breeze::$txtpattern .'mood', 'subtext' => $this['tools']->adminText('mood_sub')),
 		);
 
@@ -151,10 +155,10 @@ class BreezeAdmin extends Breeze
 		// Load stuff
 		$data = Breeze::data('request');
 		$context['sub_template'] = 'show_settings';
-		$context['page_title'] = Breeze::$name .' - '. $this['tools']->adminText('page_permissions');
+		$context['page_title'] = Breeze::$name .' - '. $this->_app['tools']->adminText('page_permissions');
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
-			'description' => $this['tools']->adminText('page_permissions_desc'),
+			'description' => $this->_app['tools']->adminText('page_permissions_desc'),
 		);
 
 		require_once($sourcedir . '/ManageServer.php');
@@ -210,12 +214,12 @@ class BreezeAdmin extends Breeze
 		global $context;
 
 		// Page stuff
-		$context['page_title'] = Breeze::$name .' - '. $this['tools']->adminText('page_donate');
+		$context['page_title'] = Breeze::$name .' - '. $this->_app['tools']->adminText('page_donate');
 		$context['sub_template'] = 'admin_donate';
-		$context['Breeze']['donate'] = $this['tools']->adminText('page_donate_exp');
+		$context['Breeze']['donate'] = $this->_app['tools']->adminText('page_donate_exp');
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
-			'description' => $this['tools']->adminText('page_donate_desc'),
+			'description' => $this->_app['tools']->adminText('page_donate_desc'),
 		);
 	}
 }

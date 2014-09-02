@@ -4,7 +4,7 @@
  * install.php
  *
  * @package Breeze mod
- * @version 1.0
+ * @version 1.1
  * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2011, 2014, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -107,12 +107,6 @@
 					'size' => '',
 					'default' => null,
 				),
-				array(
-					'name' => 'likes',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
 			),
 			'indexes' => array(
 				array(
@@ -159,12 +153,6 @@
 					'type' => 'text',
 					'size' => '',
 					'default' => null,
-				),
-				array(
-					'name' => 'likes',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
 				),
 			),
 			'indexes' => array(
@@ -249,118 +237,35 @@
 			'parameters' => array(),
 		);
 
-		// Is this an old or a clean install? this just vaguely assume you have all required tables already installed.
-		$installed = 0;
-		$member_columns = $smcFunc['db_list_columns']('{db_prefix}members');
-		$installed = in_array('breeze_profile_views', $member_columns);
-
-
 		// Installing
-		if (empty($installed))
-		{
-			foreach ($tables as $table)
-				$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
-
-			// Profile views
-			$smcFunc['db_add_column'](
-				'{db_prefix}members',
-				array(
-					'name' => 'breeze_profile_views',
-					'type' => 'text',
-					'size' => '',
-					'default' => null,
-				),
-				array(),
-				'update',
-				null
-			);
-		}
-
-		else
-		{
-			$smcFunc['db_add_column'](
-				'{db_prefix}breeze_status',
-				array(
-					'name' => 'likes',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(),
-				'update',
-				null
-			);
-			$smcFunc['db_add_column'](
-				'{db_prefix}breeze_comments',
-				array(
-					'name' => 'likes',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(),
-				'update',
-				null
-			);
-		}
-
-		$newTables = array();
-
-		// Our brand new moods table.
-		$newTables[] = array(
-			'table_name' => '{db_prefix}breeze_moods',
-			'columns' => array(
-				array(
-					'name' => 'moods_id',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false,
-					'auto' => true
-				),
-				array(
-					'name' => 'name',
-					'type' => 'varchar',
-					'size' => 255,
-					'default' => '',
-				),
-				array(
-					'name' => 'file',
-					'type' => 'varchar',
-					'size' => 255,
-					'default' => '',
-				),
-				array(
-					'name' => 'ext',
-					'type' => 'varchar',
-					'size' => 255,
-					'default' => '',
-				),
-				array(
-					'name' => 'description',
-					'type' => 'text',
-					'size' => '',
-					'default' => null,
-				),
-				array(
-					'name' => 'enable',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-			),
-			'indexes' => array(
-				array(
-					'type' => 'primary',
-					'columns' => array('moods_id',)
-				),
-			),
-			'if_exists' => 'ignore',
-			'error' => 'fatal',
-			'parameters' => array(),
-		);
-
-		foreach ($newTables as $table)
+		foreach ($tables as $table)
 			$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
+
+		// Add the extra columns
+		$smcFunc['db_add_column'](
+			'{db_prefix}breeze_status',
+			array(
+				'name' => 'likes',
+				'type' => 'int',
+				'size' => 5,
+				'null' => false
+			),
+			array(),
+			'update',
+			null
+		);
+		$smcFunc['db_add_column'](
+			'{db_prefix}breeze_comments',
+			array(
+				'name' => 'likes',
+				'type' => 'int',
+				'size' => 5,
+				'null' => false
+			),
+			array(),
+			'update',
+			null
+		);
 
 		// Lastly, insert the default moods and oh boy there are a lot!!!
 		$moods = array('angel', 'angry', 'bear', 'beer', 'blush', 'brokenheart', 'cash', 'clapping', 'cool', 'crying', 'doh', 'drunk', 'dull', 'envy', 'evil', 'evilgrin', 'giggle', 'happy', 'headbang', 'hi', 'inlove', 'itwasntme', 'kiss', 'lipssealed', 'makeup', 'middlefinger', 'mmm', 'mooning', 'muscle', 'nerd', 'party', 'pizza', 'puke', 'rock', 'sad', 'sleepy', 'smile', 'smoke', 'speechless', 'sunny', 'surprised', 'sweating', 'talking', 'thinking', 'tongueout', 'wait', 'wink', 'wondering', 'worried', 'yawn', );

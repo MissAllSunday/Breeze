@@ -4,7 +4,7 @@
  * Breeze.template.php
  *
  * @package Breeze mod
- * @version 1.0
+ * @version 1.1
  * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2011, 2014, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -71,9 +71,9 @@ function template_user_wall()
 				<span class="topslice"><span></span></span>
 				<div class="breeze_user_statusbox content">
 						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
-							<textarea cols="40" rows="5" name="statusContent" id="statusContent" rel="atwhoMention"></textarea>
-							<input type="hidden" value="', $user_info['id'] ,'" name="statusPoster" id="statusPoster" />
-							<input type="hidden" value="', $context['member']['id'] ,'" name="statusOwner" id="statusOwner" />
+							<textarea cols="40" rows="5" name="content" id="content" rel="atwhoMention"></textarea>
+							<input type="hidden" value="', $user_info['id'] ,'" name="poster" id="statusPoster" />
+							<input type="hidden" value="', $context['member']['id'] ,'" name="owner" id="statusOwner" />
 							<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
 							<br /><input type="submit" value="', $txt['post'] ,'" name="statusSubmit" class="status_button" id="statusSubmit"/>
 						</form>
@@ -83,7 +83,9 @@ function template_user_wall()
 
 	// New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING and even if you do, DON'T MODIFY THIS
 	echo '
-			<div id="breeze_load_image"></div>
+			<div id="breeze_load_image">
+				<img src="'. $settings['images_url'] .'/breeze/loading.gif" />
+			</div>
 				<ul class="breeze_status" id="breeze_display_status">';
 
 	// Print out the status if there are any.
@@ -246,9 +248,6 @@ function template_user_wall()
 	// End of profileview div
 	echo '
 </div>';
-
-	// Don't forget to print the users data
-	breeze_user_info();
 }
 
 function template_user_notifications()
@@ -477,7 +476,4 @@ function template_general_wall()
 	// End of profileview div
 	echo '
 </div>';
-
-	// Don't forget to print the users data
-	breeze_user_info();
 }

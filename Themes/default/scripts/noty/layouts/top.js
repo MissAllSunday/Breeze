@@ -1,14 +1,17 @@
-;(function($) {
+(function($) {
 
-	$.noty.layouts.inline = {
-		name: 'inline',
+	$.noty.layouts.top = {
+		name: 'top',
 		options: {},
 		container: {
-			object: '<ul id="noty_inline_layout_container" />',
-			selector: 'ul#noty_inline_layout_container',
+			object: '<ul id="noty_top_layout_container" />',
+			selector: 'ul#noty_top_layout_container',
 			style: function() {
 				$(this).css({
-					width: '100%',
+					top: 0,
+					left: '5%',
+					position: 'fixed',
+					width: '90%',
 					height: 'auto',
 					margin: 0,
 					padding: 0,

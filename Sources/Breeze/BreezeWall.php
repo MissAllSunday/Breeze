@@ -4,7 +4,7 @@
  * BreezeWall
  *
  * @package Breeze mod
- * @version 1.0
+ * @version 1.1
  * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2011, 2014 Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -56,6 +56,7 @@ class BreezeWall
 			'single' => 'singleStatus',
 			'singleComment' => 'singleComment',
 			'log' => 'log',
+			'userdiv' => 'userDiv',
 		);
 
 		// Master setting is off, back off!
@@ -81,16 +82,15 @@ class BreezeWall
 		// This isn't nice, however, pass the tools object to the view.
 		$context['Breeze']['tools'] = $this->_app['tools'];
 
+		addInlineJavascript('
+	breeze.tools.comingFrom = "'. $context['Breeze']['comingFrom'] .'";');
+
 		// These file are only used here and on the profile wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-		$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.caret.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/jquery.atwho.js"></script>
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeTabs.js"></script>';
+		loadJavascriptFile('breezeTabs.js', array('local' => true, 'default_theme' => true));
 
 		// Are mentions enabled?
-		if ($this->_app['tools']->enable('mention'))
-			$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeMention.js"></script>';
+		// if ($this->_app['tools']->enable('mention'))
+			// loadJavascriptFile('breezeMention.js', array('local' => true, 'default_theme' => true));
 
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
@@ -145,6 +145,9 @@ class BreezeWall
 			'count' => 0
 		);
 
+		// Go get your stuff....
+		$context['Breeze']['settings']['visitor'] = $this->_app['query']->getUserSettings($user_info['id']);
+
 		// Pagination max index and current page
 		$maxIndex = !empty($this->userSettings['pagination_number']) ? $this->userSettings['pagination_number'] : 5;
 		$currentPage = ($data->validate('start') == true) ? $data->get('start') : 0;
@@ -174,26 +177,19 @@ class BreezeWall
 			// Applying pagination.
 			if (!empty($status['pagination']))
 				$context['page_index'] = $status['pagination'];
+
+			// Need to pass some vars to the browser :(
+			addInlineJavascript('
+	breeze.pagination = {
+		maxIndex : '. $maxIndex .',
+		totalItems : ' . $status['count'] . ',
+		userID : '. $user_info['id'] .'
+	};', true);
+
+			// Does the user wants to use the load more button?
+			if (!empty($context['Breeze']['settings']['visitor']['load_more']))
+				loadJavascriptFile('breezeLoadMore.js', array('local' => true, 'default_theme' => true));
 		}
-
-		// Need to pass some vars to the browser.
-		$context['insert_after_template'] .= '
-	<script type="text/javascript"><!-- // --><![CDATA[
-
-		breeze.tools.comingFrom = ' . JavaScriptEscape($context['Breeze']['comingFrom']) . ';
-
-		breeze.pagination = {
-			maxIndex : '. $maxIndex .',
-			totalItems : ' . $status['count'] . ',
-			buddies : '. json_encode($this->userSettings['buddiesList']) .',
-			userID : '. $user_info['id'] .'
-		};
-	// ]]></script>';
-
-		// Does the user wants to use the load more button?
-		if (!empty($this->userSettings['load_more']))
-			$context['insert_after_template'] .= '
-	<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/breezeLoadMore.js"></script>';
 	}
 
 	/**
@@ -217,15 +213,15 @@ class BreezeWall
 
 		if (!empty($this->userSettings['buddies']))
 		{
-			// Get the latest activity
+			// Get the latest activity.
 			$context['Breeze']['activity'] = $this->_app['query']->getActivityLog($this->userSettings['buddies']);
 
-			// Load users data
+			// Load users data.
 			if (!empty($status['users']))
 				$this->_app['tools']->loadUserInfo($status['users']);
 		}
 
-		// Load the users data
+		// Load the users data.
 		$this->_app['tools']->loadUserInfo($status['users']);
 
 		$context['Breeze']['status'] = $status['data'];
@@ -235,14 +231,50 @@ class BreezeWall
 		$context['page_title'] = $this->_app['tools']->text('singleStatus_pageTitle');
 		$context['canonical_url'] = $scripturl .'?action=wall;area=single;bid='. $data->get('bid');
 
-		// There cannot be any pagination
+		// There cannot be any pagination.
 		$context['page_index'] = array();
 
 		// Are we showing a comment? if so, highlight it.
 		if ($data->get('cid'))
-			$context['insert_after_template'] .= '
-	<script type="text/javascript"><!-- // --><![CDATA[;
-		document.getElementById(\'comment_id_'. $data->get('cid') .'\').className = "windowbg3";
-	// ]]></script>';
+			addInlineJavascript('
+		document.getElementById(\'comment_id_'. $data->get('cid') .'\').className = "windowbg3";', true);
+	}
+
+	/**
+	 * BreezeAjax::userDiv()
+	 *
+	 * Used for notifications mostly, shows a single status/comment and if appropriated, highlights a specific comment.
+	 * @return
+	 */
+	function userDiv()
+	{
+		global $context, $memberContext, $db_show_debug;
+
+		// Don't show nasty things.
+		$db_show_debug = false;
+
+		// Set an empty array, just for fun...
+		$context['BreezeUser']  = array();
+
+		// Need to load the Help language file, just for a single txt string...
+		loadLanguage('Help');
+
+		// We only want to output our little layer here.
+		$context['template_layers'] = array();
+		$context['sub_template'] = 'userDiv';
+		$context['page_title'] = '';
+
+		$userID = Breeze::data('get')->get('u');
+
+		// No ID? shame on you!
+		if (empty($userID))
+			return false;
+
+		// By this point the user info should be loaded already, still, better be safe...
+		if(!isset($memberContext[$userID]))
+			$this->_app['tools']->loadUserInfo($userID);
+
+		// Pass the data to the template.
+		$context['BreezeUser'] = $memberContext[$userID];
 	}
 }

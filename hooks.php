@@ -4,7 +4,7 @@
  * hooks.php
  *
  * @package Breeze mod
- * @version 1.0
+ * @version 1.1
  * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2011, 2014, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -20,7 +20,7 @@
 	$hooks = array(
 		'integrate_pre_include' => '$sourcedir/Breeze/Breeze.php',
 		'integrate_menu_buttons' => '$sourcedir/Breeze/Breeze.php|Breeze::menu#',
-		'integrate_actions' => '$sourcedir/Breeze/Breeze.php|Breeze::actions#',
+		'integrate_actions' => 'Breeze::actions#',
 		'integrate_load_permissions' => 'Breeze::permissions#',
 		'integrate_admin_areas' => '$sourcedir/Breeze/Breeze.php|Breeze::admin#',
 		'integrate_profile_areas' => 'Breeze::profile#',
