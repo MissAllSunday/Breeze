@@ -17,8 +17,8 @@ class BreezeMood
 {
 	protected $_app;
 	protected $_moodFolder = 'moods/';
-	protected $_imagesPath = '';
-	protected $_imagesUrl = '';
+	public $imagesPath = '';
+	public $imagesUrl = '';
 	protected $allowedExtensions = array('gif', 'jpg', 'png');
 	protected $_moods;
 
@@ -28,8 +28,8 @@ class BreezeMood
 
 		$this->_app = $app;
 
-		$this->_imagesPath = $boarddir . Breeze::$coversFolder . $this->_moodFolder;
-		$this->_imageUrl = $boardurl . Breeze::$coversFolder . $this->_moodFolder;
+		$this->imagesPath = $boarddir . Breeze::$coversFolder . $this->_moodFolder;
+		$this->imagesUrl = $boardurl . Breeze::$coversFolder . $this->_moodFolder;
 	}
 
 	public function create()
@@ -87,7 +87,7 @@ class BreezeMood
 					'date' => $this->_app['tools']->timeElapsed($date),
 					'name' => $this->_moods[$id]['name'],
 					'file' => $this->_moods[$id]['file'],
-					'url' => $this->_imageUrl . $this->_moods[$id]['file'],
+					'url' => $this->imagesUrl . $this->_moods[$id]['file'],
 					'desc' => $this->_moods[$id]['desc'],
 				);
 
@@ -114,26 +114,26 @@ class BreezeMood
 		if (!$this->checkExt($image))
 			return false;
 
-		return file_exists($this->_imagesPath . $image);
+		return file_exists($this->imagesPath . $image);
 	}
 
 	public function checkDir()
 	{
-		return file_exists($this->_imagesPath);
+		return file_exists($this->imagesPath);
 	}
 
 	public function isDirWritable()
 	{
-		return is_writable($this->_imagesPath);
+		return is_writable($this->imagesPath);
 	}
 
 	public function getImagesPath()
 	{
-		return $this->_imagesPath;
+		return $this->imagesPath;
 	}
 
 	public function getImagesUrl()
 	{
-		return $this->_imageUrl;
+		return $this->imagesUrl;
 	}
 }

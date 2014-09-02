@@ -185,7 +185,9 @@ class BreezeAdmin
 
 	public function moodList()
 	{
-		global $context, $sourcedir, $txt;
+		global $context, $sourcedir, $txt, $scripturl;
+
+		loadLanguage('ManageSmileys');
 
 		// Set all the page stuff
 		$context['page_title'] = $this->_app['tools']->adminText('page_mood');
@@ -197,34 +199,46 @@ class BreezeAdmin
 
 		$context['sub_template'] = 'manage_mood';
 
-		// Get our main instance.
-		$mood = $this->_app['mood'];
-
 		// Need to know a few things.
-		$context['mood']['isDirWritable'] = $mood->isDirWritable();
+		$context['mood']['isDirWritable'] = $this->_app['mood']->isDirWritable();
 
 		// Go get some...
-		$context['mood']['all'] = $mood->read(true);
-		$context['mood']['imageUrl'] = $mood->getImagesUrl();
+		$context['mood']['all'] = $this->_app['mood']->read(true);
+		$context['mood']['imagesUrl'] = $this->_app['mood']->getImagesUrl();
+		$context['mood']['imagesPath'] = $this->_app['mood']->getImagesPath();
 
 		// Lets use SMF's createList...
 		$listOptions = array(
 			'id' => 'breeze_mood_list',
 			'title' => 'some text here',
 			'base_href' => $scripturl . '?action=admin;area=breezeadmin;sa=moodList',
-			'get_items' => array(
-				'function' => function () use ($mood)
+			'items_per_page' => 10,
+			'get_count' => array(
+				'function' => function () use ($context)
 				{
-					return $mood->getMoods();
+					return count($context['mood']['all']);
+				},
+			),
+			'get_items' => array(
+				'function' => function () use ($context)
+				{
+					return $context['mood']['all'];
 				},
 			),
 			'no_items_label' => $txt['icons_no_entries'],
 			'columns' => array(
 				'icon' => array(
 					'data' => array(
-						'function' => function ($rowData)
+						'function' => function ($rowData) use($context)
 						{
-							return $rowData;
+							$fileUrl = $context['mood']['imagesUrl'] . $rowData['file'] .'.'. $rowData['ext'];  
+							$filePath = $context['mood']['imagesPath'] . $rowData['file'] .'.'. $rowData['ext'];
+
+							if (file_exists($filePath))
+								return '<img src="'. $fileUrl .'" />';
+
+							else
+								return 'file doesn\'t exists';
 						},
 						'class' => 'centercol',
 					),
@@ -237,7 +251,7 @@ class BreezeAdmin
 						'sprintf' => array(
 							'format' => '%1$s',
 							'params' => array(
-								'filename' => true,
+								'file' => true,
 							),
 						),
 					),
@@ -247,7 +261,7 @@ class BreezeAdmin
 						'value' => $txt['smileys_description'],
 					),
 					'data' => array(
-						'db_htmlsafe' => 'title',
+						'db_htmlsafe' => 'description',
 					),
 				),
 				'modify' => array(
@@ -257,9 +271,9 @@ class BreezeAdmin
 					),
 					'data' => array(
 						'sprintf' => array(
-							'format' => '<a href="' . $scripturl . '?action=admin;area=smileys;sa=editicon;icon=%1$s">' . $txt['smileys_modify'] . '</a>',
+							'format' => '<a href="' . $scripturl . '?action=admin;area=breezeadmin;sa=moodList;mood=%1$s">' . $txt['smileys_modify'] . '</a>',
 							'params' => array(
-								'id_icon' => false,
+								'moods_id' => true,
 							),
 						),
 						'class' => 'centercol',
@@ -274,7 +288,7 @@ class BreezeAdmin
 						'sprintf' => array(
 							'format' => '<input type="checkbox" name="checked_icons[]" value="%1$d" class="input_check">',
 							'params' => array(
-								'id_icon' => false,
+								'moods_id' => false,
 							),
 						),
 						'class' => 'centercol',

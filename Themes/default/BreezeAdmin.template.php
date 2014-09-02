@@ -115,56 +115,7 @@ function template_manage_mood()
 	if (!$context['mood']['isDirWritable'])
 		echo '<div class="errorbox">some error text here</div><br />';
 
-	// Show all the images the user has uploaded
-	if (!empty($context['mood']['all']))
-	{
-		echo '
-		<div class="cat_bar">
-			<h3 class="catbg">some description here</h3>
-		</div>';
-
-		echo '
-			<table class="table_grid" cellspacing="0" width="100%">
-				<thead>
-					<tr class="catbg">
-						<th scope="col" class="first_th">Image</th>
-						<th scope="col" >Name</th>
-						<th scope="col">Description</th>
-						<th scope="col">Edit</th>
-						<th scope="col" class="last_th">Delete</th>
-					</tr>
-				</thead>
-			<tbody>';
-
-		foreach($context['mood']['all'] as $m)
-		{
-			echo '
-				<tr class="windowbg" style="text-align: center">
-					<td>
-						<img src="', $context['mood']['imageUrl'] . $m['file'] .'.'. $m['ext'],'" />
-					</td>
-					<td>
-						', $m['name'] ,'
-					</td>
-					<td>
-						', $m['description'] ,'
-					</td>
-					<td>
-						edit
-					</td>
-					<td>
-						delete
-					</td>
-				</tr>';
-		}
-
-		echo '
-			</tbody>
-		</table><hr /><br />';
-	}
-
-	else
-		echo '<div class="errorbox">', $txt['Breeze_page_mood__noList'] ,'</div><br />';
+	template_show_list('breeze_mood_list');
 }
 
 // Boring stuff you will never see...
