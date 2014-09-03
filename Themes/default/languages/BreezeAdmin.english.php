@@ -63,3 +63,8 @@ $txt['Breeze_allowed_max_num_users'] = 'How many users does an user can show on 
 $txt['Breeze_allowed_max_num_users_sub'] = 'If the user has more users than the specified setting, their entire list will be converted to a more compact links list. Leave at 0 to disable this option.';
 $txt['Breeze_allowed_maxlength_aboutMe'] = 'The max length for the "about me" block ';
 $txt['Breeze_allowed_maxlength_aboutMe_sub'] = 'If left empty, the mod will use the default value: 1024';
+
+// My mood feature.
+$txt['Breeze_mood_error_file'] = 'file doesn\'t exists';
+$txt['Breeze_mood_error_path'] = 'The path to the file is incorrect';
+$txt['Breeze_mood_error_extension'] = 'The file doesn\'t have an extension or it has an unvalid one';

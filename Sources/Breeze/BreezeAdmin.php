@@ -194,12 +194,10 @@ class BreezeAdmin
 
 		// Set all the page stuff
 		$context['page_title'] = $this->_app['tools']->adminText('page_mood');
-		$context['sub_template'] = 'admin_home';
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
 			'description' => $this->_app['tools']->adminText('page_mood_desc'),
 		);
-
 		$context['sub_template'] = 'manage_mood';
 
 		// Need to know a few things.
@@ -254,7 +252,7 @@ class BreezeAdmin
 			'columns' => array(
 				'icon' => array(
 					'data' => array(
-						'function' => function ($rowData) use($context)
+						'function' => function ($rowData) use($context, $txt)
 						{
 							$fileUrl = $context['mood']['imagesUrl'] . $rowData['file'] .'.'. $rowData['ext'];
 							$filePath = $context['mood']['imagesPath'] . $rowData['file'] .'.'. $rowData['ext'];
@@ -263,7 +261,7 @@ class BreezeAdmin
 								return '<img src="'. $fileUrl .'" />';
 
 							else
-								return 'file doesn\'t exists';
+								return $txt['Breeze_mood_noFile'];
 						},
 						'class' => 'centercol',
 					),
@@ -351,14 +349,23 @@ class BreezeAdmin
 
 	public function moodEdit($errors = array())
 	{
+		global $context;
+
+		// Set all the page stuff
+		$context['page_title'] = $this->_app['tools']->adminText('page_mood');
+		$context[$context['admin_menu_name']]['tab_data'] = array(
+			'title' => $context['page_title'],
+			'description' => $this->_app['tools']->adminText('page_mood_desc'),
+		);
+		$context['sub_template'] = 'manage_mood_edit';
+
 		$data = Breeze::data('request');
 		$context['mood'] = array();
 		$context['mood']['imagesUrl'] = $this->_app['mood']->getImagesUrl();
 		$context['mood']['imagesPath'] = $this->_app['mood']->getImagesPath();
 
 		// Errors you say? madness!
-		// if (!empty($errors))
-			// pass some context var here or something like that, dunno...
+			$context['mood']['errors'] = !empty($errors) ? $errors : array();
 
 		// Got some?
 		if (!$data->get('mood'))
@@ -369,6 +376,15 @@ class BreezeAdmin
 			// Pass the data to the template.
 			$context['mood'] = $mood;
 		}
+
+		// Create the form.
+		$form = $this->_app['form'];
+
+		// Group all these values into an array. Makes it easier to save the changes.
+		$form->setFormName('mood');
+		
+		// Session stuff.
+		$form->addHiddenField($context['session_var'], $context['session_id']);
 
 		// Saving?
 		if ($data->get('save'))
@@ -404,7 +420,7 @@ class BreezeAdmin
 			if (!empty($errors))
 				return $this->moodEdit($errors);
 
-			// All good, SAve the stuff, provide some default values too.
+			// All good, Save the stuff, provide some default values too.
 			$this->_app['mood']->create(array(
 				'name' => !empty($mood['name']) ? $mood['name'] : $mood['file'],
 				'file' => $image['filename'],

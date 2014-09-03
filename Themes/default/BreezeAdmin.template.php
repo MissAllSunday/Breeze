@@ -109,11 +109,27 @@ function template_admin_home()
 
 function template_manage_mood()
 {
+	template_show_list('breeze_mood_list');
+}
+
+function template_manage_mood_edit()
+{
 	global $context, $txt;
 
-	// The dir is not writeable, tell the admin about it
-	if (!$context['mood']['isDirWritable'])
-		echo '<div class="errorbox">some error text here</div><br />';
+	// There were some errors.
+	if (!empty($context['mood']['errors']))
+	{
+		echo '
+		<div class="errorbox">';
+
+		foreach ($context['mood']['errors'] as $e)
+			echo '<li>', $txt['Breeze_mood_error_'. $e] ,'</li>';
+
+		echo '
+		</div><br />';
+
+		// Some boring HTML here for some boring forms
+	}
 
 	template_show_list('breeze_mood_list');
 }
