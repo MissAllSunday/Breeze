@@ -185,7 +185,7 @@ class BreezeAdmin
 
 	public function moodList()
 	{
-		global $context, $sourcedir, $txt, $scripturl;
+		global $context, $sourcedir, $txt, $scripturl, $smcFunc;
 
 		loadLanguage('ManageSmileys');
 
@@ -203,14 +203,15 @@ class BreezeAdmin
 		$context['mood']['isDirWritable'] = $this->_app['mood']->isDirWritable();
 
 		// Go get some...
-		$context['mood']['all'] = $this->_app['mood']->read(true);
+		$context['mood']['all'] = $this->_app['mood']->read();
 		$context['mood']['imagesUrl'] = $this->_app['mood']->getImagesUrl();
 		$context['mood']['imagesPath'] = $this->_app['mood']->getImagesPath();
+		$start = !empty($_REQUEST['statr']) ? $_REQUEST['statr'] : 0;
 
 		// Lets use SMF's createList...
 		$listOptions = array(
 			'id' => 'breeze_mood_list',
-			'title' => 'some text here',
+			'title' => $this->_app['tools']->adminText('page_mood'),
 			'base_href' => $scripturl . '?action=admin;area=breezeadmin;sa=moodList',
 			'items_per_page' => 10,
 			'get_count' => array(
@@ -220,10 +221,31 @@ class BreezeAdmin
 				},
 			),
 			'get_items' => array(
-				'function' => function () use ($context)
+				'function' => function ($start, $maxIndex) use ($smcFunc)
 				{
-					return $context['mood']['all'];
+					$moods = array();
+					$request = $smcFunc['db_query']('', '
+						SELECT *
+						FROM {db_prefix}breeze_moods
+						LIMIT {int:start}, {int:maxindex}
+						',
+						array(
+							'start' => $start,
+							'maxindex' => $maxIndex,
+						)
+					);
+
+					while ($row = $smcFunc['db_fetch_assoc']($request))
+						$moods[$row['moods_id']] = $row;
+
+					$smcFunc['db_free_result']($request);
+
+					return $moods;
 				},
+				'params' => array(
+					$start,
+					count($context['mood']['all']),
+				),
 			),
 			'no_items_label' => $txt['icons_no_entries'],
 			'columns' => array(
@@ -231,7 +253,7 @@ class BreezeAdmin
 					'data' => array(
 						'function' => function ($rowData) use($context)
 						{
-							$fileUrl = $context['mood']['imagesUrl'] . $rowData['file'] .'.'. $rowData['ext'];  
+							$fileUrl = $context['mood']['imagesUrl'] . $rowData['file'] .'.'. $rowData['ext'];
 							$filePath = $context['mood']['imagesPath'] . $rowData['file'] .'.'. $rowData['ext'];
 
 							if (file_exists($filePath))

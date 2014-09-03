@@ -1607,9 +1607,9 @@ class BreezeQuery
 		);
 	}
 
-	public function getMoods($all = false)
+	public function getAllMoods()
 	{
-		if (($moods = cache_get_data(Breeze::$name .'-moods'. ($all ? '-all' : ''), 120)) == null)
+		if (($moods = cache_get_data(Breeze::$name .'moods-all', 120)) == null)
 		{
 			$moods = array();
 			$request = $this->_smcFunc['db_query']('', '
@@ -1622,7 +1622,7 @@ class BreezeQuery
 				$moods[$row['moods_id']] = $row;
 
 			$this->_smcFunc['db_free_result']($request);
-			cache_put_data(Breeze::$name .'-moods'. ($all ? '-all' : ''), $moods, 120);
+			cache_put_data(Breeze::$name .'-moods-all', $moods, 120);
 		}
 
 		return $moods;

@@ -37,9 +37,9 @@ class BreezeMood
 		$this->_app['query']->insertMood($data);
 	}
 
-	public function read($all = false)
+	public function read()
 	{
-		return $this->_moods = $this->_app['query']->getMoods($all);
+		return $this->_moods = $this->_app['query']->getAllMoods();
 	}
 
 	public function update()
