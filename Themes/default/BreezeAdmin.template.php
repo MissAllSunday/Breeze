@@ -114,7 +114,7 @@ function template_manage_mood()
 
 function template_manage_mood_edit()
 {
-	global $context, $txt;
+	global $context, $txt, $scripturl;
 
 	// There were some errors.
 	if (!empty($context['mood']['errors']))
@@ -128,10 +128,36 @@ function template_manage_mood_edit()
 		echo '
 		</div><br />';
 
-		// Some boring HTML here for some boring forms
-	}
+		// Print out our form.
+		echo '
+		<form action="', $scripturl, '?action=admin;area=breezeadmin;sa=moodList;save" method="post" accept-charset="', $context['character_set'], '" name="mood" id="mood">
+			<div class="cat_bar">
+				<h3 class="catbg">
+					<span class="ie6_header floatleft">
+						', $context['page_title'] , '
+					</span>
+				</h3>
+			</div>
+			<p class="windowbg description">
+				', $context['page_desc'] , '
+			</p>
+			<div class="windowbg2">
+				<span class="topslice"><span></span></span>
+					<div class="content">';
 
-	template_show_list('breeze_mood_list');
+		// Print the form
+		echo $context['Breeze']['UserSettings']['Form'];
+
+		// Print the save button.
+		echo '<input type="submit" name="submit" value="', $txt['save'] ,'" class="button_submit"/>';
+
+		echo '
+				</div>
+				<span class="botslice"><span></span></span>
+			</div>
+			<br />
+		</form>';
+	}
 }
 
 // Boring stuff you will never see...

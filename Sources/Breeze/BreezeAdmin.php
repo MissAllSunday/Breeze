@@ -382,9 +382,44 @@ class BreezeAdmin
 
 		// Group all these values into an array. Makes it easier to save the changes.
 		$form->setFormName('mood');
-		
+
 		// Session stuff.
 		$form->addHiddenField($context['session_var'], $context['session_id']);
+
+		// Set the right prefix.
+		$form->setTextPrefix('mood_', true);
+
+		// Name.
+		$form->addText(
+			'file',
+			!empty($mood['file']) ? $mood['file'] : '',
+			15,15
+		);
+
+		// Filename.
+		$form->addText(
+			'file',
+			!empty($mood['file']) ? $mood['file'] : '',
+			15,15
+		);
+
+		// Description.
+		$form->addTextArea(
+			'description',
+			!empty($mood['description']) ? $mood['description'] : '',
+			array('rows' => 10, 'cols' => 50, 'maxLength' => 1024)
+		);
+
+		// Enable.
+		$form->addCheckBox(
+			'enable',
+			!empty($mood['enable']) ? true : false
+		);
+
+		$form->addHr();
+
+		// Send the form to the template
+		$context['mood']['form'] = $form->display();
 
 		// Saving?
 		if ($data->get('save'))
