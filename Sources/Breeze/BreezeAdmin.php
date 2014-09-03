@@ -207,7 +207,8 @@ class BreezeAdmin
 		$context['mood']['all'] = $this->_app['mood']->read();
 		$context['mood']['imagesUrl'] = $this->_app['mood']->getImagesUrl();
 		$context['mood']['imagesPath'] = $this->_app['mood']->getImagesPath();
-		$start = !empty($_REQUEST['statr']) ? $_REQUEST['statr'] : 0;
+		$start = $data->get('start') ? $data->get('start') : 0;
+		$maxIndex = count($context['mood']['all']);
 
 		// Lets use SMF's createList...
 		$listOptions = array(
@@ -330,7 +331,7 @@ class BreezeAdmin
 		);
 
 		require_once($sourcedir . '/Subs-List.php');
-		createList($listOptions
+		createList($listOptions);
 
 		// So, are we deleting?
 		if ($data->get('delete') && $data->get('checked_icons'))
