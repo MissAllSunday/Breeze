@@ -349,6 +349,72 @@ class BreezeAdmin
 
 	}
 
+	public function moodEdit($errors = array())
+	{
+		$data = Breeze::data('request');
+		$context['mood'] = array();
+		$context['mood']['imagesUrl'] = $this->_app['mood']->getImagesUrl();
+		$context['mood']['imagesPath'] = $this->_app['mood']->getImagesPath();
+
+		// Errors you say? madness!
+		// if (!empty($errors))
+			// pass some context var here or something like that, dunno...
+
+		// Got some?
+		if (!$data->get('mood'))
+		{
+			// Get the data.
+			$mood = $this->_app['query']->getMoodByID($data->get('mood'));
+
+			// Pass the data to the template.
+			$context['mood'] = $mood;
+		}
+
+		// Saving?
+		if ($data->get('save'))
+		{
+			$mood = $data->get('mood');
+			$errors = array();
+
+			// Validate time, this is really simple, ALL images must be on a single place.
+			if (empty($mood['file']))
+				$errors[] = 'file';
+
+			// Gotta make sure the image does exists on the specified folder
+			$filePath = $context['mood']['imagesPath'] . $mood['file'];
+
+			if (!file_exists($filePath))
+				$errors[] = 'path';
+
+			// Do note that this isn't a real check, since all images will have to be uploaded via FTP or cPanel or similar, its assumed that you will indeed put a valid image filename.
+			else
+			{
+				// Get some info out of this image.
+				$image = pathinfo($filePath);
+
+				// No extension? come on!
+				if (empty($image) || empty($image['extension']))
+					$errors[] = 'extension';
+
+				else if (!in_array($image['extension'], $this->_app['mood']->allowedExtensions))
+					$errors[] = 'extension';
+			}
+
+			// Go back and do it again my darling...
+			if (!empty($errors))
+				return $this->moodEdit($errors);
+
+			// All good, SAve the stuff, provide some default values too.
+			$this->_app['mood']->create(array(
+				'name' => !empty($mood['name']) ? $mood['name'] : $mood['file'],
+				'file' => $image['filename'],
+				'ext' => $image['extension'],
+				'description' => !empty($mood['description']) ? $mood['description'] : $mood['file'],
+				'enable' => !empty($mood['enable']) ? 1 : 0,
+			), !$data->get('mood'));
+		}
+	}
+
 	// Pay no attention to the girl behind the curtain.
 	function donate()
 	{

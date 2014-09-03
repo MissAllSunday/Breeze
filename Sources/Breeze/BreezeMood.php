@@ -19,7 +19,7 @@ class BreezeMood
 	protected $_moodFolder = 'moods/';
 	public $imagesPath = '';
 	public $imagesUrl = '';
-	protected $allowedExtensions = array('gif', 'jpg', 'png');
+	public $allowedExtensions = array('gif', 'jpg', 'png');
 	protected $_moods;
 
 	function __construct($app)
@@ -32,19 +32,23 @@ class BreezeMood
 		$this->imagesUrl = $boardurl . Breeze::$coversFolder . $this->_moodFolder;
 	}
 
-	public function create()
+	public function create($data, $update = false)
 	{
-		$this->_app['query']->insertMood($data);
+		if (empty($data))
+			return;
+
+		// Updating or creating?
+		$method = ($update ? 'update' : 'insert') . 'Mood';
+
+		$this->_app['query']->$method($data);
 	}
 
 	public function read()
 	{
-		return $this->_moods = $this->_app['query']->getAllMoods();
-	}
+		if (empty($this->_moods))
+			$this->_app['query']->getAllMoods();
 
-	public function update()
-	{
-		$this->_app['query']->updateMood($data);
+		return $this->_moods;
 	}
 
 	public function delete($id)

@@ -1607,6 +1607,32 @@ class BreezeQuery
 		);
 	}
 
+	public function getMoodByID($data)
+	{
+		if (empty($id))
+			return false;
+
+		// Work with arrays.
+		$data = array_map('intval', (array) $data);
+		$moods = array();
+
+		$request = $this->_smcFunc['db_query']('', '
+			SELECT '. (implode(', ', $this->_tables['moods']['columns'])) .'
+			FROM {db_prefix}' . ($this->_tables['moods']['table']) .'
+			WHERE moods_id IN ({array_int:data})',
+			array(
+				'data' => $data,
+			)
+		);
+
+		while ($row = $this->_smcFunc['db_fetch_assoc']($request))
+			$moods[$row['moods_id']] = $row;
+
+		$this->_smcFunc['db_free_result']($request);
+
+		return $moods;
+	}
+
 	public function getAllMoods()
 	{
 		if (($moods = cache_get_data(Breeze::$name .'moods-all', 120)) == null)
