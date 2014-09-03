@@ -189,6 +189,9 @@ class BreezeAdmin
 
 		loadLanguage('ManageSmileys');
 
+		// Gotta know what we're going to do.
+		$data = Breeze::data('request');
+
 		// Set all the page stuff
 		$context['page_title'] = $this->_app['tools']->adminText('page_mood');
 		$context['sub_template'] = 'admin_home';
@@ -293,7 +296,7 @@ class BreezeAdmin
 					),
 					'data' => array(
 						'sprintf' => array(
-							'format' => '<a href="' . $scripturl . '?action=admin;area=breezeadmin;sa=moodList;mood=%1$s">' . $txt['smileys_modify'] . '</a>',
+							'format' => '<a href="' . $scripturl . '?action=admin;area=breezeadmin;sa=moodEdit;mood=%1$s">' . $txt['smileys_modify'] . '</a>',
 							'params' => array(
 								'moods_id' => true,
 							),
@@ -318,18 +321,32 @@ class BreezeAdmin
 				),
 			),
 			'form' => array(
-				'href' => $scripturl . '?action=admin;area=smileys;sa=editicons',
+				'href' => $scripturl . '?action=admin;area=breezeadmin;sa=moodList;delete',
 			),
 			'additional_rows' => array(
 				array(
 					'position' => 'below_table_data',
-					'value' => '<input type="submit" name="delete" value="' . $txt['quickmod_delete_selected'] . '" class="button_submit"> <a class="button_link" href="' . $scripturl . '?action=admin;area=smileys;sa=editicon">' . $txt['icons_add_new'] . '</a>',
+					'value' => '<input type="submit" name="delete" value="' . $txt['quickmod_delete_selected'] . '" class="button_submit"> <a class="button_link" href="' . $scripturl . '?action=admin;area=breezeadmin;sa=moodEdit">' . $txt['icons_add_new'] . '</a>',
 				),
 			),
 		);
 
 		require_once($sourcedir . '/Subs-List.php');
-		createList($listOptions);
+		createList($listOptions
+
+		// So, are we deleting?
+		if ($data->get('delete') && $data->get('checked_icons'))
+		{
+			// Get the icons delete.
+			$toDelete = $data->get('checked_icons');
+
+			// Call BreezeQuery here.
+
+			// set a nice session message.
+
+			// Force a redirect
+		}
+
 	}
 
 	// Pay no attention to the girl behind the curtain.
