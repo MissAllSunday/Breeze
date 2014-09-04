@@ -1609,7 +1609,7 @@ class BreezeQuery
 
 	public function getMoodByID($data)
 	{
-		if (empty($id))
+		if (empty($data))
 			return false;
 
 		// Work with arrays.

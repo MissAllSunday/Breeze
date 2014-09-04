@@ -127,6 +127,7 @@ function template_manage_mood_edit()
 
 		echo '
 		</div><br />';
+	}
 
 		// Print out our form.
 		echo '
@@ -138,15 +139,12 @@ function template_manage_mood_edit()
 					</span>
 				</h3>
 			</div>
-			<p class="windowbg description">
-				', $context['page_desc'] , '
-			</p>
 			<div class="windowbg2">
 				<span class="topslice"><span></span></span>
 					<div class="content">';
 
 		// Print the form
-		echo $context['Breeze']['UserSettings']['Form'];
+		echo $context['mood']['form'];
 
 		// Print the save button.
 		echo '<input type="submit" name="submit" value="', $txt['save'] ,'" class="button_submit"/>';
@@ -157,7 +155,6 @@ function template_manage_mood_edit()
 			</div>
 			<br />
 		</form>';
-	}
 }
 
 // Boring stuff you will never see...

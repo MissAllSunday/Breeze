@@ -35,6 +35,7 @@ class BreezeAdmin
 			'general' => 'main',
 			'settings' => 'settings',
 			'moodList' => 'moodList',
+			'moodEdit' => 'moodEdit',
 			'permissions' => 'permissions',
 			'donate' => 'donate',
 		);
@@ -364,18 +365,18 @@ class BreezeAdmin
 		$context['mood'] = array();
 		$context['mood']['imagesUrl'] = $this->_app['mood']->getImagesUrl();
 		$context['mood']['imagesPath'] = $this->_app['mood']->getImagesPath();
+		$mood = array();
 
 		// Errors you say? madness!
-			$context['mood']['errors'] = !empty($errors) ? $errors : array();
+		$context['mood']['errors'] = !empty($errors) ? $errors : array();
 
 		// Got some?
-		if (!$data->get('mood'))
+		if ($data->get('mood'))
 		{
-			// Get the data.
 			$mood = $this->_app['query']->getMoodByID($data->get('mood'));
 
-			// Pass the data to the template.
-			$context['mood'] = $mood;
+			// For convenience.
+			$mood = $mood[$data->get('mood')];
 		}
 
 		// Create the form.
@@ -392,8 +393,8 @@ class BreezeAdmin
 
 		// Name.
 		$form->addText(
-			'file',
-			!empty($mood['file']) ? $mood['file'] : '',
+			'name',
+			!empty($mood['name']) ? $mood['name'] : '',
 			15,15
 		);
 
