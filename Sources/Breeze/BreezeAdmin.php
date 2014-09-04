@@ -349,7 +349,7 @@ class BreezeAdmin
 
 	}
 
-	public function moodEdit($errors = array())
+	public function moodEdit()
 	{
 		global $context;
 
@@ -368,10 +368,19 @@ class BreezeAdmin
 		$mood = array();
 
 		// Errors you say? madness!
-		$context['mood']['errors'] = !empty($errors) ? $errors : array();
+		$context['mood']['errors'] = !empty($_SESSION['breeze']) ? $_SESSION['breeze']['errors'] : array();
+
+		// Fill out the edited values so they don't get lost.
+		if (!empty($_SESSION['breeze']))
+		{
+			$mood = $_SESSION['breeze']['data'];
+
+			// Don't need you anymore
+			unset($_SESSION['breeze']);
+		}
 
 		// Got some?
-		if ($data->get('mood'))
+		if ($data->get('mood') && empty($_SESSION['breeze']))
 		{
 			$mood = $this->_app['query']->getMoodByID($data->get('mood'));
 
@@ -401,7 +410,7 @@ class BreezeAdmin
 		// Filename.
 		$form->addText(
 			'file',
-			!empty($mood['file']) ? $mood['file'] : '',
+			!empty($mood['file']) && !empty($mood['ext']) ? ($mood['file'] .'.'. $mood['ext']) : '',
 			15,15
 		);
 
@@ -455,7 +464,15 @@ class BreezeAdmin
 
 			// Go back and do it again my darling...
 			if (!empty($errors))
-				return $this->moodEdit($errors);
+			{
+				// Pass some useful info too...
+				$_SESSION['breeze'] = array(
+					'errors' => $errors,
+					'data' => $mood,
+				);
+				redirectexit('action=admin;area=breezeadmin;sa=moodEdit');
+			}
+
 
 			// All good, Save the stuff, provide some default values too.
 			$this->_app['mood']->create(array(

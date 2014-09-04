@@ -131,7 +131,7 @@ function template_manage_mood_edit()
 
 		// Print out our form.
 		echo '
-		<form action="', $scripturl, '?action=admin;area=breezeadmin;sa=moodList;save" method="post" accept-charset="', $context['character_set'], '" name="mood" id="mood">
+		<form action="', $scripturl, '?action=admin;area=breezeadmin;sa=moodEdit;save=1" method="post" accept-charset="', $context['character_set'], '" name="mood" id="mood">
 			<div class="cat_bar">
 				<h3 class="catbg">
 					<span class="ie6_header floatleft">

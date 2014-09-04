@@ -1607,6 +1607,7 @@ class BreezeQuery
 		);
 	}
 
+	// Just so I don't forget, this method returns an array, AN ARRAY.
 	public function getMoodByID($data)
 	{
 		if (empty($data))
