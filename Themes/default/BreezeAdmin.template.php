@@ -109,6 +109,13 @@ function template_admin_home()
 
 function template_manage_mood()
 {
+	// There were some errors.
+	if (!empty($context['breeze']['response']))
+		echo '
+		<div class="infobox">
+			', $context['breeze']['response'] ,'
+		</div><br />';
+
 	template_show_list('breeze_mood_list');
 }
 

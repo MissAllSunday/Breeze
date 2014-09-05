@@ -193,6 +193,9 @@ class BreezeAdmin
 		// Gotta know what we're going to do.
 		$data = Breeze::data('request');
 
+		// A random session var huh? sounds legit...
+		$context['breeze']['response'] = isset($_SESSION['breeze']) ? $txt['Breeze_mood_deleted'] : '';
+
 		// Set all the page stuff
 		$context['page_title'] = $this->_app['tools']->adminText('page_mood');
 		$context[$context['admin_menu_name']]['tab_data'] = array(
@@ -344,12 +347,14 @@ class BreezeAdmin
 			$toDelete = array_map('intval', (array) $toDelete);
 
 			// Call BreezeQuery here.
+			$this->_app['query']->deleteMood($toDelete);
 
 			// set a nice session message.
+			$_SESSION['breeze'] = 'done_delete';
 
-			// Force a redirect
+			// Force a redirect.
+			return redirectexit('action=admin;area=breezeadmin;sa=moodList');
 		}
-
 	}
 
 	public function moodEdit()
@@ -468,7 +473,7 @@ class BreezeAdmin
 					'errors' => $errors,
 					'data' => $mood,
 				);
-				redirectexit('action=admin;area=breezeadmin;sa=moodEdit'. ($data->get('mood') ? ';mood='. $data->get('mood') : ''));
+				return redirectexit('action=admin;area=breezeadmin;sa=moodEdit'. ($data->get('mood') ? ';mood='. $data->get('mood') : ''));
 			}
 
 

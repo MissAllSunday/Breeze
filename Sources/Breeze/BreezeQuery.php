@@ -1678,7 +1678,7 @@ class BreezeQuery
 
 		// Not much to do here, delete the entries and be done with it.
 		$this->_smcFunc['db_query']('', '
-			DELETE FROM {db_prefix}' . ($this->_tables['status']['table']) . '
+			DELETE FROM {db_prefix}' . ($this->_tables['moods']['table']) . '
 			WHERE moods_id IN ({array_int:data})',
 			array(
 				'data' => $data,
