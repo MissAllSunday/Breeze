@@ -381,6 +381,9 @@ class BreezeAdmin
 		$context['mood']['imagesPath'] = $this->_app['mood']->getImagesPath();
 		$mood = array();
 
+		// If editing, pass the ID to the template.
+		$context['mood']['id'] = $data->get('moodID') ? $data->get('moodID') : false;
+
 		// Mercury has a message for you!
 		$context['mood']['notice'] = !empty($_SESSION['breeze']) ? $_SESSION['breeze'] : array();
 
@@ -471,9 +474,11 @@ class BreezeAdmin
 					$errors[] = 'error_extension';
 			}
 
-			// One last check, if we're adding anew mood, make sure the image associated with it hasn't been already used by another mood.
-			if (!$data->get('moodID') && file_exists($filePath))
-				$errors[] = 'error_already';
+			// One last check, if we're adding a new mood, make sure the image associated with it hasn't been already used by another mood.
+			if (!$data->get('moodID') && file_exists($filePath) && !empty($image))
+				foreach ($this->_app['mood']->read() as $m)
+					if ($m['file'] == $image['filename'])
+						$errors[] = 'error_already';
 
 			// Go back and do it again my darling...
 			if (!empty($errors))
@@ -501,17 +506,16 @@ class BreezeAdmin
 				$saveData['moods_id'] = $data->get('moodID');
 
 			// All good, Save the stuff.
-			$this->_app['mood']->create($saveData, !$data->get('mood'));
+			$this->_app['mood']->create($saveData, $data->get('moodID'));
 
-			// Back to the list page.
-			redirectexit('action=admin;area=breezeadmin;sa=moodList');
-
-			// So, all done, send a message.
-			return $_SESSION['breeze'] = array(
-				'message' => array('success_'. ($data->get('mood') ? 'update' : 'create')),
+			$_SESSION['breeze'] = array(
+				'message' => array('success_'. ($data->get('moodID') ? 'update' : 'create')),
 				'type' => 'info',
 				'data' => $mood,
 			);
+
+			// Back to the list page.
+			return redirectexit('action=admin;area=breezeadmin;sa=moodList');
 		}
 	}
 
