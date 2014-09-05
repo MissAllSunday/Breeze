@@ -1688,6 +1688,16 @@ class BreezeQuery
 		return $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['moods']['table']), 'moods_id');
 	}
 
+	public function updateMood($data)
+	{
+		$this->_smcFunc['db_query']('', '
+			UPDATE {db_prefix}' . ($this->_tables['moods']['table']) . '
+			SET name = {string:name}, file= {string:file}, ext= {string:ext}, description= {string:description}, enable= {string:enable}
+			WHERE moods_id = {int:moods_id}'),
+			$data
+		);
+	}
+
 	public function deleteMood($data)
 	{
 		if (empty($data))

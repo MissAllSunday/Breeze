@@ -479,14 +479,20 @@ class BreezeAdmin
 				return redirectexit('action=admin;area=breezeadmin;sa=moodEdit'. ($data->get('mood') ? ';mood='. $data->get('mood') : ''));
 			}
 
-			// All good, Save the stuff, provide some default values too.
-			$this->_app['mood']->create(array(
+			$data = array(
 				'name' => !empty($mood['name']) ? $mood['name'] : $mood['file'],
 				'file' => $image['filename'],
 				'ext' => $image['extension'],
 				'description' => !empty($mood['description']) ? $mood['description'] : $mood['file'],
 				'enable' => !empty($mood['enable']) ? '1' : '0',
-			), !$data->get('mood'));
+			);
+
+			// Editing? need the ID please!
+			if (data->get('mood'))
+				$data['moods_id'] = data->get('mood');
+
+			// All good, Save the stuff, provide some default values too.
+			$this->_app['mood']->create($data, !$data->get('mood'));
 		}
 	}
 
