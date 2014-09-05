@@ -70,6 +70,7 @@ $txt['Breeze_mood_success_update'] = 'The mood has been updated.';
 $txt['Breeze_mood_success_delete'] = 'The moods have been deleted.';
 $txt['Breeze_mood_errors'] = 'Some errors were identified while trying to save this mood. ';
 $txt['Breeze_mood_error_file'] = 'file doesn\'t exists';
+$txt['Breeze_mood_error_already'] = 'Theres already a mood associated with this filename. Please use another image.';
 $txt['Breeze_mood_error_path'] = 'The path to the file is incorrect';
 $txt['Breeze_mood_error_extension'] = 'The file doesn\'t have an extension or it has an unvalid one';
 $txt['Breeze_mood_file'] = 'Filename';

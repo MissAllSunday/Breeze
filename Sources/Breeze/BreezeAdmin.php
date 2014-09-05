@@ -471,6 +471,10 @@ class BreezeAdmin
 					$errors[] = 'error_extension';
 			}
 
+			// One last check, if we're adding anew mood, make sure the image associated with it hasn't been already used by another mood.
+			if (!$data->get('moodID') && file_exists($filePath))
+				$errors[] = 'error_already';
+
 			// Go back and do it again my darling...
 			if (!empty($errors))
 			{
