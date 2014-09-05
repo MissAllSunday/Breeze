@@ -1690,10 +1690,13 @@ class BreezeQuery
 
 	public function updateMood($data)
 	{
+		if (empty($data))
+			return false;
+
 		$this->_smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables['moods']['table']) . '
-			SET name = {string:name}, file= {string:file}, ext= {string:ext}, description= {string:description}, enable= {string:enable}
-			WHERE moods_id = {int:moods_id}'),
+			SET name = {string:name}, file = {string:file}, ext = {string:ext}, description = {string:description}, enable= {string:enable}
+			WHERE moods_id = {int:moods_id}',
 			$data
 		);
 	}

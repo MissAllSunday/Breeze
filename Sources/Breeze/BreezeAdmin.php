@@ -302,7 +302,7 @@ class BreezeAdmin
 					),
 					'data' => array(
 						'sprintf' => array(
-							'format' => '<a href="' . $scripturl . '?action=admin;area=breezeadmin;sa=moodEdit;mood=%1$s">' . $txt['smileys_modify'] . '</a>',
+							'format' => '<a href="' . $scripturl . '?action=admin;area=breezeadmin;sa=moodEdit;moodID=%1$s">' . $txt['smileys_modify'] . '</a>',
 							'params' => array(
 								'moods_id' => true,
 							),
@@ -391,8 +391,8 @@ class BreezeAdmin
 		}
 
 		// Got some?
-		if ($data->get('mood') && empty($_SESSION['breeze']))
-			$mood = $this->_app['query']->getMoodByID($data->get('mood'), true);
+		if ($data->get('moodID') && empty($_SESSION['breeze']))
+			$mood = $this->_app['query']->getMoodByID($data->get('moodID'), true);
 
 		// Create the form.
 		$form = $this->_app['form'];
@@ -477,7 +477,7 @@ class BreezeAdmin
 					'type' => 'error',
 					'data' => $mood,
 				);
-				return redirectexit('action=admin;area=breezeadmin;sa=moodEdit'. ($data->get('mood') ? ';mood='. $data->get('mood') : ''));
+				return redirectexit('action=admin;area=breezeadmin;sa=moodEdit'. ($data->get('moodID') ? ';moodID='. $data->get('mooID') : ''));
 			}
 
 			// Provide some default values as needed.
@@ -491,7 +491,7 @@ class BreezeAdmin
 
 			// Editing? need the ID please!
 			if ($data->get('mood'))
-				$data['moods_id'] = data->get('mood');
+				$saveData['moods_id'] = $data->get('mood');
 
 			// All good, Save the stuff.
 			$this->_app['mood']->create($saveData, !$data->get('mood'));
@@ -499,7 +499,7 @@ class BreezeAdmin
 			// So, all done, send a message.
 			return $_SESSION['breeze'] = array(
 				'message' => array('success_'. ($data->get('mood') ? 'update' : 'create')),
-				'type' => 'info'
+				'type' => 'info',
 				'data' => $mood,
 			);
 		}
