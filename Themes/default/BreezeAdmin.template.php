@@ -109,7 +109,7 @@ function template_admin_home()
 
 function template_manage_mood()
 {
-	global $context;
+	global $context, $txt;
 
 	// Success YAY!
 	if (!empty($context['mood']['notice']))

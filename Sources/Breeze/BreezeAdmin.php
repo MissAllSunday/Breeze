@@ -194,7 +194,7 @@ class BreezeAdmin
 		$data = Breeze::data('request');
 
 		// A random session var huh? sounds legit...
-		$context['breeze']['response'] = isset($_SESSION['breeze']) ? $txt['Breeze_mood_deleted'] : '';
+		$context['mood']['notice'] = !empty($_SESSION['breeze']) ? $_SESSION['breeze'] : array();
 
 		if (isset($_SESSION['breeze']))
 			unset($_SESSION['breeze']);
@@ -353,7 +353,10 @@ class BreezeAdmin
 			$this->_app['query']->deleteMood($toDelete);
 
 			// set a nice session message.
-			$_SESSION['breeze'] = 'done_delete';
+			$_SESSION['breeze'] = array(
+				'message' => array('success_delete'),
+				'type' => 'info',
+			);
 
 			// Force a redirect.
 			return redirectexit('action=admin;area=breezeadmin;sa=moodList');
@@ -490,11 +493,14 @@ class BreezeAdmin
 			);
 
 			// Editing? need the ID please!
-			if ($data->get('mood'))
-				$saveData['moods_id'] = $data->get('mood');
+			if ($data->get('moodID'))
+				$saveData['moods_id'] = $data->get('moodID');
 
 			// All good, Save the stuff.
 			$this->_app['mood']->create($saveData, !$data->get('mood'));
+
+			// Back to the list page.
+			redirectexit('action=admin;area=breezeadmin;sa=moodList');
 
 			// So, all done, send a message.
 			return $_SESSION['breeze'] = array(
