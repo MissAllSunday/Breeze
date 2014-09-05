@@ -109,7 +109,9 @@ function template_admin_home()
 
 function template_manage_mood()
 {
-	// There were some errors.
+	global $context;
+
+	// Success YAY!
 	if (!empty($context['breeze']['response']))
 		echo '
 		<div class="infobox">

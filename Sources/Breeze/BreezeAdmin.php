@@ -196,7 +196,10 @@ class BreezeAdmin
 		// A random session var huh? sounds legit...
 		$context['breeze']['response'] = isset($_SESSION['breeze']) ? $txt['Breeze_mood_deleted'] : '';
 
-		// Set all the page stuff
+		if (isset($_SESSION['breeze']))
+			unset($_SESSION['breeze']);
+
+		// Set all the page stuff.
 		$context['page_title'] = $this->_app['tools']->adminText('page_mood');
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
