@@ -474,14 +474,14 @@ class BreezeAdmin
 				// Pass some useful info too...
 				$_SESSION['breeze'] = array(
 					'message' => $errors,
-					'type' => 'error'
+					'type' => 'error',
 					'data' => $mood,
 				);
 				return redirectexit('action=admin;area=breezeadmin;sa=moodEdit'. ($data->get('mood') ? ';mood='. $data->get('mood') : ''));
 			}
 
 			// Provide some default values as needed.
-			$data = array(
+			$saveData = array(
 				'name' => !empty($mood['name']) ? $mood['name'] : $mood['file'],
 				'file' => $image['filename'],
 				'ext' => $image['extension'],
@@ -490,11 +490,11 @@ class BreezeAdmin
 			);
 
 			// Editing? need the ID please!
-			if (data->get('mood'))
+			if ($data->get('mood'))
 				$data['moods_id'] = data->get('mood');
 
 			// All good, Save the stuff.
-			$this->_app['mood']->create($data, !$data->get('mood'));
+			$this->_app['mood']->create($saveData, !$data->get('mood'));
 
 			// So, all done, send a message.
 			return $_SESSION['breeze'] = array(
