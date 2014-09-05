@@ -378,15 +378,15 @@ class BreezeAdmin
 		$context['mood']['imagesPath'] = $this->_app['mood']->getImagesPath();
 		$mood = array();
 
-		// Errors you say? madness!
-		$context['mood']['errors'] = !empty($_SESSION['breeze']) ? $_SESSION['breeze']['errors'] : array();
+		// Mercury has a message for you!
+		$context['mood']['notice'] = !empty($_SESSION['breeze']) ? $_SESSION['breeze'] : array();
 
 		// Fill out the edited values so they don't get lost.
 		if (!empty($_SESSION['breeze']))
 		{
 			$mood = $_SESSION['breeze']['data'];
 
-			// Don't need you anymore
+			// Don't need you anymore.
 			unset($_SESSION['breeze']);
 		}
 
@@ -439,20 +439,20 @@ class BreezeAdmin
 		$context['mood']['form'] = $form->display();
 
 		// Saving?
-		if ($data->get('save'))
+		if ($data->get('save') && $data->get('mood'))
 		{
 			$mood = $data->get('mood');
 			$errors = array();
 
 			// Validate time, this is really simple, ALL images must be on a single place.
 			if (empty($mood['file']))
-				$errors[] = 'file';
+				$errors[] = 'error_file';
 
 			// Gotta make sure the image does exists on the specified folder
 			$filePath = $context['mood']['imagesPath'] . $mood['file'];
 
 			if (!file_exists($filePath))
-				$errors[] = 'path';
+				$errors[] = 'error_path';
 
 			// Do note that this isn't a real check, since all images will have to be uploaded via FTP or cPanel or similar, its assumed that you will indeed put a valid image filename.
 			else
@@ -462,10 +462,10 @@ class BreezeAdmin
 
 				// No extension? come on!
 				if (empty($image) || empty($image['extension']))
-					$errors[] = 'extension';
+					$errors[] = 'error_extension';
 
 				else if (!in_array($image['extension'], $this->_app['mood']->allowedExtensions))
-					$errors[] = 'extension';
+					$errors[] = 'error_extension';
 			}
 
 			// Go back and do it again my darling...
@@ -473,12 +473,14 @@ class BreezeAdmin
 			{
 				// Pass some useful info too...
 				$_SESSION['breeze'] = array(
-					'errors' => $errors,
+					'message' => $errors,
+					'type' => 'error'
 					'data' => $mood,
 				);
 				return redirectexit('action=admin;area=breezeadmin;sa=moodEdit'. ($data->get('mood') ? ';mood='. $data->get('mood') : ''));
 			}
 
+			// Provide some default values as needed.
 			$data = array(
 				'name' => !empty($mood['name']) ? $mood['name'] : $mood['file'],
 				'file' => $image['filename'],
@@ -491,8 +493,15 @@ class BreezeAdmin
 			if (data->get('mood'))
 				$data['moods_id'] = data->get('mood');
 
-			// All good, Save the stuff, provide some default values too.
+			// All good, Save the stuff.
 			$this->_app['mood']->create($data, !$data->get('mood'));
+
+			// So, all done, send a message.
+			return $_SESSION['breeze'] = array(
+				'message' => array('success_'. ($data->get('mood') ? 'update' : 'create')),
+				'type' => 'info'
+				'data' => $mood,
+			);
 		}
 	}
 

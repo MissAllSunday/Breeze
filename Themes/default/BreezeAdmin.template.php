@@ -112,11 +112,17 @@ function template_manage_mood()
 	global $context;
 
 	// Success YAY!
-	if (!empty($context['breeze']['response']))
+	if (!empty($context['mood']['notice']))
+	{
 		echo '
-		<div class="infobox">
-			', $context['breeze']['response'] ,'
+		<div class="'. $context['mood']['notice']['type'] .'box">';
+
+		foreach ($context['mood']['notice']['message'] as $m)
+			echo '', $txt['Breeze_mood_'. $m] ,'';
+
+		echo '
 		</div><br />';
+	}
 
 	template_show_list('breeze_mood_list');
 }
@@ -126,14 +132,14 @@ function template_manage_mood_edit()
 	global $context, $txt, $scripturl;
 
 	// There were some errors.
-	if (!empty($context['mood']['errors']))
+	if (!empty($context['mood']['notice']))
 	{
 		echo '
 		<div class="errorbox">
 		<p>'. $txt['Breeze_mood_errors'] .'</p>';
 
-		foreach ($context['mood']['errors'] as $e)
-			echo '<li>', $txt['Breeze_mood_error_'. $e] ,'</li>';
+		foreach ($context['mood']['notice']['message'] as $e)
+			echo '<li>', $txt['Breeze_mood_'. $e] ,'</li>';
 
 		echo '
 		</div><br />';
