@@ -120,7 +120,8 @@ function template_manage_mood_edit()
 	if (!empty($context['mood']['errors']))
 	{
 		echo '
-		<div class="errorbox">';
+		<div class="errorbox">
+		<p>'. $txt['Breeze_mood_errors'] .'</p>';
 
 		foreach ($context['mood']['errors'] as $e)
 			echo '<li>', $txt['Breeze_mood_error_'. $e] ,'</li>';

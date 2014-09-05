@@ -65,6 +65,7 @@ $txt['Breeze_allowed_maxlength_aboutMe'] = 'The max length for the "about me" bl
 $txt['Breeze_allowed_maxlength_aboutMe_sub'] = 'If left empty, the mod will use the default value: 1024';
 
 // My mood feature.
+$txt['Breeze_mood_errors'] = 'Some errors were identified while trying to save this mood. ';
 $txt['Breeze_mood_error_file'] = 'file doesn\'t exists';
 $txt['Breeze_mood_error_path'] = 'The path to the file is incorrect';
 $txt['Breeze_mood_error_extension'] = 'The file doesn\'t have an extension or it has an unvalid one';

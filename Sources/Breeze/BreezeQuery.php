@@ -1607,8 +1607,15 @@ class BreezeQuery
 		);
 	}
 
-	// Just so I don't forget, this method returns an array, AN ARRAY.
-	public function getMoodByID($data)
+	/**
+	 * BreezeQuery::getMoodByID()
+	 *
+	 * Returns the info from 1 or more moods.
+	 * @param array|integer $data the user ID, could be an integer or an array of IDs,the function converts it to an array.
+	 * @params boolean To indicate if you want to retrieve 1 result only, if false, it will return an associative array with the mood ID as key.
+	 * @return array.
+	 */
+	public function getMoodByID($data, $single = false)
 	{
 		if (empty($data))
 			return false;
@@ -1627,7 +1634,13 @@ class BreezeQuery
 		);
 
 		while ($row = $this->_smcFunc['db_fetch_assoc']($request))
-			$moods[$row['moods_id']] = $row;
+		{
+			if($single)
+				$moods = $row;
+
+			else
+				$moods[$row['moods_id']] = $row;
+		}
 
 		$this->_smcFunc['db_free_result']($request);
 
@@ -1653,6 +1666,24 @@ class BreezeQuery
 		}
 
 		return $moods;
+	}
+
+	public function deleteMood($data)
+	{
+		if (empty($data))
+			return false;
+
+		// Work with arrays.
+		$data = array_map('intval', (array) $data);
+
+		// Not much to do here, delete the entries and be done with it.
+		$this->_smcFunc['db_query']('', '
+			DELETE FROM {db_prefix}' . ($this->_tables['status']['table']) . '
+			WHERE moods_id IN ({array_int:data})',
+			array(
+				'data' => $data,
+			)
+		);
 	}
 
 	protected function generateData($row, $type)

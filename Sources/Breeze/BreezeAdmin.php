@@ -321,7 +321,7 @@ class BreezeAdmin
 				),
 			),
 			'form' => array(
-				'href' => $scripturl . '?action=admin;area=breezeadmin;sa=moodList;delete',
+				'href' => $scripturl . '?action=admin;area=breezeadmin;sa=moodList;delete=1',
 			),
 			'additional_rows' => array(
 				array(
@@ -337,8 +337,11 @@ class BreezeAdmin
 		// So, are we deleting?
 		if ($data->get('delete') && $data->get('checked_icons'))
 		{
-			// Get the icons delete.
+			// Get the icons to delete.
 			$toDelete = $data->get('checked_icons');
+
+			// They all are IDs right?
+			$toDelete = array_map('intval', (array) $toDelete);
 
 			// Call BreezeQuery here.
 
@@ -381,12 +384,7 @@ class BreezeAdmin
 
 		// Got some?
 		if ($data->get('mood') && empty($_SESSION['breeze']))
-		{
-			$mood = $this->_app['query']->getMoodByID($data->get('mood'));
-
-			// For convenience.
-			$mood = $mood[$data->get('mood')];
-		}
+			$mood = $this->_app['query']->getMoodByID($data->get('mood'), true);
 
 		// Create the form.
 		$form = $this->_app['form'];
@@ -470,7 +468,7 @@ class BreezeAdmin
 					'errors' => $errors,
 					'data' => $mood,
 				);
-				redirectexit('action=admin;area=breezeadmin;sa=moodEdit');
+				redirectexit('action=admin;area=breezeadmin;sa=moodEdit'. ($data->get('mood') ? ';mood='. $data->get('mood') : ''));
 			}
 
 
