@@ -47,6 +47,7 @@ class BreezeAdmin
 				'general' => array(),
 				'settings' => array(),
 				'moodList' => array(),
+				'moodEdit' => array(),
 				'permissions' => array(),
 				'donate' => array(),
 			),
@@ -367,22 +368,22 @@ class BreezeAdmin
 	{
 		global $context;
 
+		$data = Breeze::data('request');
+
+		// If editing, pass the ID to the template.
+		$context['mood']['id'] = $data->get('moodID') ? $data->get('moodID') : false;
+
 		// Set all the page stuff
-		$context['page_title'] = $this->_app['tools']->adminText('page_mood');
+		$context['page_title'] = $this->_app['tools']->adminText('page_mood_edit_'.($context['mood']['id'] ? 'update' : 'create'));
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
-			'description' => $this->_app['tools']->adminText('page_mood_desc'),
+			'description' => $this->_app['tools']->adminText('page_mood_edit_'.($context['mood']['id'] ? 'update' : 'create') .'_desc'),
 		);
 		$context['sub_template'] = 'manage_mood_edit';
-
-		$data = Breeze::data('request');
 		$context['mood'] = array();
 		$context['mood']['imagesUrl'] = $this->_app['mood']->getImagesUrl();
 		$context['mood']['imagesPath'] = $this->_app['mood']->getImagesPath();
 		$mood = array();
-
-		// If editing, pass the ID to the template.
-		$context['mood']['id'] = $data->get('moodID') ? $data->get('moodID') : false;
 
 		// Mercury has a message for you!
 		$context['mood']['notice'] = !empty($_SESSION['breeze']) ? $_SESSION['breeze'] : array();

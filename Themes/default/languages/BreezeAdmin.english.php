@@ -23,7 +23,12 @@ $txt['Breeze_page_settings_desc'] = 'This is the general settings page, from her
 $txt['Breeze_page_donate'] = 'Donate';
 $txt['Breeze_page_donate_desc'] = 'Boring stuff you were curious about it but you\'ll never gonna see it again :P';
 $txt['Breeze_page_mood'] = 'Mood List';
-$txt['Breeze_page_mood_desc'] = 'Mood list';
+$txt['Breeze_page_mood_desc'] = 'A list showing all the current moods available, from here you can add/edit and delete moods.<br>Remember that you need to upload your images to the correct folder <strong>before</strong> adding new moods.';
+$txt['Breeze_page_mood_create'] = 'Add a new mood';
+$txt['Breeze_page_mood_edit_create'] = 'Creating a new mood';
+$txt['Breeze_page_mood_edit_create_desc'] = 'Remember that you need to upload your images to the correct folder <strong>before</strong> adding new moods';
+$txt['Breeze_page_mood_edit_update'] = 'Editing a mood';
+$txt['Breeze_page_mood_edit_update_desc'] = 'Remember that you need to upload your images to the correct folder <strong>before</strong> adding new moods'; 
 $txt['Breeze_page_mood__noList'] = 'There aren\'t any moods to display';
 $txt['Breeze_page_donate_exp'] = 'Breeze is a free SMF modification brought to you by a PHP enthusiast on her free time.<p />If you like this modification and would like to show your appreciation, please consider making a <a href="http://missallsunday.com/">donation</a>. Your donation will be used to cover server costs and/or to buy shoes, shoes keeps the developer happy and if she is happy then there will be more updates ;)<p />You can also show your appreciation by letting me know you are using Breeze on your forum, come by, say hi and show me your shiny profile pages powered by Breeze.';
 $txt['Breeze_page_credits'] = 'Credits';

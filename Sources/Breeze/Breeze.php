@@ -597,6 +597,7 @@ class Breeze extends Pimple
 				'general' => array($tools->adminText('page_main')),
 				'settings' => array($tools->adminText('page_settings')),
 				'moodList' => array($tools->adminText('page_mood')),
+				'moodEdit' => array($tools->adminText('page_mood_create')),
 				'permissions' => array($tools->adminText('page_permissions')),
 				'donate' => array($tools->adminText('page_donate')),
 			),
