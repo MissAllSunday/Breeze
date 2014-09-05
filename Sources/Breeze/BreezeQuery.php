@@ -664,7 +664,7 @@ class BreezeQuery
 			), $array, array('status_id', ));
 
 		// Get the newly created status ID
-		$status_id = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comments']['table']), 'status_id');
+		$status_id = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['status']['table']), 'status_id');
 
 		//Kill the profile cache
 		$this->killCache('status', $status_id, $array['owner_id']);
@@ -1666,6 +1666,26 @@ class BreezeQuery
 		}
 
 		return $moods;
+	}
+
+	public function insertMood($data)
+	{
+		// Just the usual empty check, the data should already be properly handled by someone else.
+		if (empty($data))
+			return false;
+
+		// Insert!
+		$this->_smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['moods']['table']) .
+			'', array(
+			'name' => 'string',
+			'file' => 'string',
+			'ext' => 'string',
+			'description' => 'string',
+			'enable' => 'string'
+			), $data, array('moods_id', ));
+
+		// Return the newly created ID.
+		return $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['moods']['table']), 'moods_id');
 	}
 
 	public function deleteMood($data)
