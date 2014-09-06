@@ -189,6 +189,10 @@ class BreezeAdmin
 	{
 		global $context, $sourcedir, $txt, $scripturl, $smcFunc;
 
+		// Gotta respect the master setting.
+		if (!$this->_app['tools']->enable('mood'))
+			redirectexit('action=admin;area=breezeadmin');
+
 		loadLanguage('ManageSmileys');
 
 		// Gotta know what we're going to do.
@@ -367,6 +371,10 @@ class BreezeAdmin
 	public function moodEdit()
 	{
 		global $context;
+
+		// Gotta respect the master setting.
+		if (!$this->_app['tools']->enable('mood'))
+			redirectexit('action=admin;area=breezeadmin');
 
 		$data = Breeze::data('request');
 

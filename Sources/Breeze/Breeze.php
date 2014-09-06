@@ -602,6 +602,14 @@ class Breeze extends Pimple
 				'donate' => array($tools->adminText('page_donate')),
 			),
 		);
+
+		// Gotta respect the master mood setting.
+		if (!$this->_app['tools']->enable('mood'))
+			$admin_menu['config']['areas']['breezeadmin']['subsections'] = array(
+				'moodList' => array($tools->adminText('page_mood')),
+				'moodEdit' => array($tools->adminText('page_mood_create')),
+			);
+		);
 	}
 
 	/**
