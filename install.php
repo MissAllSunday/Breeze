@@ -25,6 +25,19 @@
 
 	if (empty($context['uninstalling']))
 	{
+		// Profile views
+		$smcFunc['db_add_column'](
+			'{db_prefix}members',
+			array(
+				'name' => 'breeze_profile_views',
+				'type' => 'text',
+				'size' => '',
+				'default' => null,
+			),
+			array(),
+			'update',
+			null
+		);
 
 		// Member options
 		$tables[] = array(
