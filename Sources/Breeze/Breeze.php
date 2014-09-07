@@ -596,19 +596,18 @@ class Breeze extends Pimple
 			'subsections' => array(
 				'general' => array($tools->adminText('page_main')),
 				'settings' => array($tools->adminText('page_settings')),
-				'moodList' => array($tools->adminText('page_mood')),
-				'moodEdit' => array($tools->adminText('page_mood_create')),
 				'permissions' => array($tools->adminText('page_permissions')),
 				'donate' => array($tools->adminText('page_donate')),
 			),
 		);
 
 		// Gotta respect the master mood setting.
-		if (!$tools->enable('mood'))
-			$admin_menu['config']['areas']['breezeadmin']['subsections'] = array(
-				'moodList' => array($tools->adminText('page_mood')),
-				'moodEdit' => array($tools->adminText('page_mood_create')),
-			);
+		if ($tools->enable('mood'))
+		{
+			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodList'] = array($tools->adminText('page_mood'));
+			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodEdit'] = array($tools->adminText('page_mood_create'));
+		}
+
 	}
 
 	/**
