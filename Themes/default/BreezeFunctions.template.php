@@ -412,7 +412,7 @@ function template_userDiv()
 	echo '<!DOCTYPE html>
 <html', $context['right_to_left'] ? ' dir="rtl"' : '', '>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=', $context['character_set'], '">
+		<meta charset="', $context['character_set'], '">
 		<meta name="robots" content="noindex">
 		<title>', $context['page_title'], '</title>
 		<link rel="stylesheet" type="text/css" href="', $settings['theme_url'], '/css/index', $context['theme_variant'], '.css', $modSettings['browser_cache'] ,'">
@@ -443,4 +443,30 @@ function template_mood_image($mood)
 function template_mood_noImage()
 {
 	return '<a href="" rel="breezeMood">something here</a>';
+}
+
+function template_mood_change()
+{
+	global $context, $settings, $modSettings, $txt;
+
+	echo '<!DOCTYPE html>
+<html', $context['right_to_left'] ? ' dir="rtl"' : '', '>
+	<head>
+		<meta charset="', $context['character_set'], '">
+		<meta name="robots" content="noindex">
+		<title>', $context['page_title'], '</title>
+		<link rel="stylesheet" type="text/css" href="', $settings['theme_url'], '/css/index', $context['theme_variant'], '.css', $modSettings['browser_cache'] ,'">
+		<script src="', $settings['default_theme_url'], '/scripts/script.js', $modSettings['browser_cache'] ,'"></script>
+	</head>
+	<body id="breeze_mood_popup">
+		<div class="windowbg">';
+
+		echo 'some table here';
+
+	echo '
+			<br class="clear">
+			<a href="javascript:self.close();">', $txt['close_window'], '</a>
+		</div>
+	</body>
+</html>';
 }

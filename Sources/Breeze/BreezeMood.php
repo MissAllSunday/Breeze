@@ -33,6 +33,17 @@ class BreezeMood
 		$this->imagesUrl = $boardurl . Breeze::$coversFolder . $this->_moodFolder;
 	}
 
+	public function call()
+	{
+		// Pass the currently active moods
+		$context['moods'] = $this->getActive();
+
+		// Wild Mood Swings... a highly underrated album if you ask me ;)
+		loadtemplate(Breeze::$name .'Functions');
+		$context['template_layers'] = array();
+		$context['sub_template'] = 'mood_change';
+	}
+
 	public function getActive()
 	{
 		$this->read();
