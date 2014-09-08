@@ -21,6 +21,7 @@ class BreezeMood
 	public $imagesUrl = '';
 	public $allowedExtensions = array('gif', 'jpg', 'png');
 	protected $_moods;
+	protected static $active = array();
 
 	function __construct($app)
 	{
@@ -30,6 +31,19 @@ class BreezeMood
 
 		$this->imagesPath = $boarddir . Breeze::$coversFolder . $this->_moodFolder;
 		$this->imagesUrl = $boardurl . Breeze::$coversFolder . $this->_moodFolder;
+	}
+
+	public function getActive()
+	{
+		$this->create();
+
+		// Do this only if needed.
+		if (empty(static::$active))
+			foreach ($this->_moods as $m)
+				if (!empty($m['enable']))
+					static::$active[$m['moods_id']] = $m;
+
+		return static::$active;
 	}
 
 	public function create($data, $update = false)

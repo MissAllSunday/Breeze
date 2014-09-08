@@ -552,6 +552,23 @@ class Breeze extends Pimple
 		loadJavascriptFile('breezeNoti.js', array('local' => true, 'default_theme' => true));
 	}
 
+	public function mood(&$output, &$message)
+	{
+		// Don't do anything if the feature is disable.
+		if (!$this['tools']->enable('mood'))
+			return;
+
+		// Get the currently active moods
+		$moods = $this['mood']->getActive();
+
+		// Get this user options.
+		$userSettings = $this['query']->getUserSettings($output['member']['id']);
+
+		// Get the image.
+		$image = !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']]['image'] : '';
+
+	}
+
 	/**
 	 * Breeze::who()
 	 *
