@@ -121,12 +121,15 @@ class BreezeMood
 		// Gotta load our template.
 		loadtemplate(Breeze::$name .'Functions');
 
+		// Pass the imageUrl
+		$mood['url'] = $this->imagesUrl;
+
 		// Build the needed HTML.
 		return array(
 			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : '',
 			'col_name' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : '',
 			'value' => template_mood_image($mood),
-			'placement' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : 0,
+			'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->enable('mood_placement') : 0,
 		);
 	}
 

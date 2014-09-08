@@ -434,3 +434,8 @@ function template_userDiv()
 	</body>
 </html>';
 }
+
+function template_mood_image($mood)
+{
+	return '<img src="'. $mood['url'] . $mood['file'] . $mood['ext']'" alt="'. $mood['description'] .'" />';
+}

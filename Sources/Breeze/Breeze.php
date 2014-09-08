@@ -565,8 +565,11 @@ class Breeze extends Pimple
 		$userSettings = $this['query']->getUserSettings($output['member']['id']);
 
 		// Get the image.
-		$image = !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']]['image'] : '';
+		$image = !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : '';
 
+		// Append the result to the  cus fields array.
+		if (!empty($image))
+			$output['member']['custom_fields'][] = $image;
 	}
 
 	/**
