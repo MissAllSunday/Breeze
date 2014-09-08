@@ -445,15 +445,17 @@ function template_mood_image($mood)
 	if (empty($mood))
 		return '<a href="'. $scripturl .'?action=breezemood" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'">'. $txt['Breeze_moodChange'] .'</a>';
 
-	// Got a mood but no link?
+	// Got a mood, show it!
 	else
-		return '<a href="'. $scripturl .'?action=breezemood" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'"><img src="'. $context['moodUrl'] . $mood['file'] .'.'. $mood['ext'] .'" alt="'. $mood['description'] .'" /></a>';
+		return '<a href="'. $scripturl .'?action=breezemood" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'"><img src="'. $context['moodUrl'] . $mood['file'] .'.'. $mood['ext'] .'" alt="'. $mood['name'] .'" title="'. $mood['description'] .'" class="breeze_mood_image" /></a>';
 }
 
 
 function template_mood_change()
 {
 	global $context, $settings, $modSettings, $txt;
+
+	$count = 0;
 
 	echo '<!DOCTYPE html>
 <html', $context['right_to_left'] ? ' dir="rtl"' : '', '>
@@ -465,11 +467,27 @@ function template_mood_change()
 		<script src="', $settings['default_theme_url'], '/scripts/script.js', $modSettings['browser_cache'] ,'"></script>
 	</head>
 	<body id="breeze_mood_popup">
-		<div class="windowbg">';
+		<div class="windowbg">
+			<table class="bbc_table">
+				<tr>';
 
-		echo 'some table here';
+		foreach ($context['moods'] as $m)
+		{
+			$count++;
+
+			if ($count % 5 == 1)
+				echo '</tr><tr>';
+
+			echo '
+					<td>
+						'. $m['image_html'] .'
+						'. (!empty($m['name']) ? '<p>'. $m['name'] .'</p>' : '') .'
+					</td>';
+		}
 
 	echo '
+			</tr>
+			</table>
 			<br class="clear">
 			<a href="javascript:self.close();">', $txt['close_window'], '</a>
 		</div>

@@ -1659,7 +1659,13 @@ class BreezeQuery
 			);
 
 			while ($row = $this->_smcFunc['db_fetch_assoc']($request))
+			{
 				$moods[$row['moods_id']] = $row;
+
+				// Save some headaches by adding a nice formatted image url.
+				$moods[$row['moods_id']]['image_url'] = $this->_app['mood']->imagesUrl . $row['file'] .'.'. $row['ext'];
+				$moods[$row['moods_id']]['image_html'] = '<img src="'. $this->_app['mood']->imagesUrl . $row['file'] .'.'. $row['ext'] .'" alt="'. $row['name'] .'" title="'. $row['description'] .'" class="breeze_mood_image" />';
+			}
 
 			$this->_smcFunc['db_free_result']($request);
 			cache_put_data(Breeze::$name .'-moods-all', $moods, 120);
