@@ -476,11 +476,13 @@ function template_mood_change()
 			$count++;
 
 			if ($count % 5 == 1)
-				echo '</tr><tr>';
+				echo '
+				</tr>
+				<tr>';
 
 			echo '
 					<td>
-						'. $m['image_html'] .'
+						<a href="'. $scripturl .'?action=breezemood;save=1" rel="breezeMoodSave" data-id="'. $m['moods_id'] .'">'. $m['image_html'] .'</a>
 						'. (!empty($m['name']) ? '<p>'. $m['name'] .'</p>' : '') .'
 					</td>';
 		}

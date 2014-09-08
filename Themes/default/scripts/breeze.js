@@ -203,4 +203,26 @@ jQuery(document).ready(function(){
 			url = jQuery(this).attr('href') + ';js=1';
 		return reqOverlayDiv(url, title);
 	});
+
+	// Changing moods.
+	jQuery(document).on('click', 'a[rel*=breezeMoodSave]', function(event){
+		event.preventDefault();
+		var moodID = jQuery(this).data('id'),
+			url = jQuery(this).attr('href') + ';js=1';
+
+		// Lets make a quick ajax call here...
+		jQuery.ajax({
+			type: 'GET',
+			url: url,
+			data: {moodId: moodID},
+			cache: false,
+			dataType: 'json',
+			success: function(html) {
+				console.log();
+			},
+			error: function (html) {
+				console.log();
+			}
+		});
+	});
 });

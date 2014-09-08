@@ -257,3 +257,4 @@ $txt['Breeze_logStatus_view'] = 'View status';
 // Mood feature.
 $txt['Breeze_moodLabel'] = 'mood';
 $txt['Breeze_moodChange'] = 'Change your mood';
+$txt['Breeze_moodChanged'] = 'Your mood has been changed';
