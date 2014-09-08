@@ -195,4 +195,12 @@ jQuery(document).ready(function(){
 
 		return false;
 	});
+
+	// My mood!
+	jQuery(document).on('click', 'a[rel*=breezeMood]', function(event){
+		event.preventDefault();
+		var title = jQuery(this).data('name'),
+			url = jQuery(this).attr('href') + ';js=1';
+		return reqOverlayDiv(url, title);
+	});
 });

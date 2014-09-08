@@ -567,7 +567,7 @@ class Breeze extends Pimple
 		// Get the image.
 		$image = !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : '';
 
-		// Append the result to the  cus fields array.
+		// Append the result to the  custom fields array.
 		if (!empty($image))
 			$output['member']['custom_fields'][] = $image;
 	}
