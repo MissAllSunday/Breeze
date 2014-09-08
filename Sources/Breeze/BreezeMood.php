@@ -133,6 +133,20 @@ class BreezeMood
 		);
 	}
 
+	public function noImage()
+	{
+		// Gotta load our template.
+		loadtemplate(Breeze::$name .'Functions');
+
+		// Build the needed HTML.
+		return array(
+			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : '',
+			'col_name' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : '',
+			'value' => template_mood_noImage(),
+			'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->enable('mood_placement') : 0,
+		);
+	}
+
 	public function checkExt($var)
 	{
 		if (empty($var))
