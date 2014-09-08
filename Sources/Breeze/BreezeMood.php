@@ -35,7 +35,7 @@ class BreezeMood
 
 	public function getActive()
 	{
-		$this->create();
+		$this->read();
 
 		// Do this only if needed.
 		if (empty(static::$active))

@@ -573,7 +573,7 @@ class Breeze extends Pimple
 
 		// User doesn't have a mood, let's show a nice anchor link then...
 		else
-			$this['mood']->noImage();
+			$output['member']['custom_fields'][] = $this['mood']->noImage();
 	}
 
 	/**
