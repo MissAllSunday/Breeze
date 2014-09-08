@@ -355,6 +355,9 @@ class Breeze extends Pimple
 
 		// A special action for the buddy request message
 		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'breezeBuddyMessage');
+
+		// Action used when an user wnats to change their mood.
+		$actions['breezemood'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call#');
 	}
 
 	/**

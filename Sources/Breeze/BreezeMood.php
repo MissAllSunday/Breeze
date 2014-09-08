@@ -35,6 +35,8 @@ class BreezeMood
 
 	public function call()
 	{
+		global $context;
+
 		// Pass the currently active moods
 		$context['moods'] = $this->getActive();
 

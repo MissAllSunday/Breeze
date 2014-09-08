@@ -437,12 +437,16 @@ function template_userDiv()
 
 function template_mood_image($mood)
 {
-	return '<a href="" rel="breezeMood"><img src="'. $mood['url'] . $mood['file'] .'.'. $mood['ext'] .'" alt="'. $mood['description'] .'" /></a>';
+	global $scripturl;
+
+	return '<a href="'. $scripturl .'?action=breezemood" rel="breezeMood"><img src="'. $mood['url'] . $mood['file'] .'.'. $mood['ext'] .'" alt="'. $mood['description'] .'" /></a>';
 }
 
 function template_mood_noImage()
 {
-	return '<a href="" rel="breezeMood">something here</a>';
+	global $scripturl;
+
+	return '<a href="'. $scripturl .'?action=breezemood" rel="breezeMood">something here</a>';
 }
 
 function template_mood_change()
