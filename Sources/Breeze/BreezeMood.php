@@ -41,7 +41,7 @@ class BreezeMood
 		if (empty(static::$active))
 			foreach ($this->_moods as $m)
 				if (!empty($m['enable']))
-					static::$active[$m['moods_id']] = $m;
+					static::$active[$m['moods_id']] = $this->formatImage($m);
 
 		return static::$active;
 	}
@@ -110,6 +110,24 @@ class BreezeMood
 				);
 
 		return $return;
+	}
+
+	public function formatImage($mood)
+	{
+		// The usual check
+		if (empty($mood))
+			return false;
+
+		// Gotta load our template.
+		loadtemplate(Breeze::$name .'Functions');
+
+		// Build the needed HTML.
+		return array(
+			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : '',
+			'col_name' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : '',
+			'value' => template_mood_image($mood),
+			'placement' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : 0,
+		);
 	}
 
 	public function checkExt($var)
