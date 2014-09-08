@@ -253,3 +253,7 @@ $txt['Breeze_logStatus_own_0'] = 'made a new status on his/her own wall';
 $txt['Breeze_logStatus_own_1'] = 'made a new status on his own wall';
 $txt['Breeze_logStatus_own_2'] = 'made a new status on her own wall';
 $txt['Breeze_logStatus_view'] = 'View status';
+
+// Mood feature.
+$txt['Breeze_moodLabel'] = 'mood';
+$txt['Breeze_moodChange'] = 'Change your mood';

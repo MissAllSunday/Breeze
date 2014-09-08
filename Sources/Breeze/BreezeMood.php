@@ -37,6 +37,8 @@ class BreezeMood
 	{
 		global $context;
 
+		loadLanguage('Help');
+
 		// Pass the currently active moods
 		$context['moods'] = $this->getActive();
 
@@ -139,8 +141,8 @@ class BreezeMood
 
 		// Build the needed HTML.
 		return array(
-			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : '',
-			'col_name' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : '',
+			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : $this->_app['tools']->text('moodLabel'),
+			'col_name' => $this->_app['tools']->text('moodLabel'),
 			'value' => template_mood_image($mood),
 			'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->enable('mood_placement') : 0,
 		);
@@ -153,8 +155,8 @@ class BreezeMood
 
 		// Build the needed HTML.
 		return array(
-			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : '',
-			'col_name' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : '',
+			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : $this->_app['tools']->text('moodLabel'),
+			'col_name' => $this->_app['tools']->text('moodLabel'),
 			'value' => template_mood_noImage(),
 			'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->enable('mood_placement') : 0,
 		);

@@ -105,7 +105,7 @@ class BreezeAdmin
 
 	function settings()
 	{
-		global $scripturl, $context, $sourcedir;
+		global $scripturl, $context, $sourcedir, $txt;
 
 		// Load stuff
 		$data = Breeze::data('request');
@@ -132,6 +132,20 @@ class BreezeAdmin
 			array('check', Breeze::$txtpattern .'cover', 'subtext' => $this->_app['tools']->adminText('cover_sub')),
 			array('check', Breeze::$txtpattern .'likes', 'subtext' => $this->_app['tools']->adminText('likes_sub')),
 			array('check', Breeze::$txtpattern .'mood', 'subtext' => $this->_app['tools']->adminText('mood_sub')),
+			array('check', Breeze::$txtpattern .'mood_label', 'subtext' => $this->_app['tools']->adminText('mood_label_sub')),
+			array('select', Breeze::$txtpattern .'mood_label_placement',
+			array(
+				$txt['custom_edit_placement_standard'],
+				$txt['custom_edit_placement_with_icons'],
+				$txt['custom_edit_placement_above_signature'],
+				$txt['custom_profile_placement_below_signature'],
+				$txt['custom_profile_placement_below_avatar'],
+				$txt['custom_profile_placement_above_name'],
+				$txt['custom_profile_placement_bottom'],
+			),
+			'subtext' => $this->_app['tools']->adminText('mood_placement_sub'),
+			'multiple' => false,
+		),
 		);
 
 		$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=settings;save';

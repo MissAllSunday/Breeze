@@ -1,12 +1,12 @@
 <?php
 
 /**
- * BreezeAdmin.english-utf8
+ * BreezeAdmin.english
  *
  * @package Breeze mod
  * @version 1.1
- * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2014 Jessica González
+ * @author Jessica Gonzalez <suki@missallsunday.com>
+ * @copyright Copyright (c) 2011, 2014 Jessica Gonzalez
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -22,6 +22,14 @@ $txt['Breeze_page_settings'] = 'General Settings';
 $txt['Breeze_page_settings_desc'] = 'This is the general settings page, from here you can enable/disable the mod as well as configuring general settings.';
 $txt['Breeze_page_donate'] = 'Donate';
 $txt['Breeze_page_donate_desc'] = 'Boring stuff you were curious about it but you\'ll never gonna see it again :P';
+$txt['Breeze_page_mood'] = 'Mood List';
+$txt['Breeze_page_mood_desc'] = 'A list showing all the current moods available, from here you can add/edit and delete moods.<br>Remember that you need to upload your images to the correct folder <strong>before</strong> adding new moods.';
+$txt['Breeze_page_mood_create'] = 'Add a new mood';
+$txt['Breeze_page_mood_edit_create'] = 'Creating a new mood';
+$txt['Breeze_page_mood_edit_create_desc'] = 'Remember that you need to upload your images to the correct folder <strong>before</strong> adding new moods';
+$txt['Breeze_page_mood_edit_update'] = 'Editing a mood';
+$txt['Breeze_page_mood_edit_update_desc'] = 'Remember that you need to upload your images to the correct folder <strong>before</strong> adding new moods'; 
+$txt['Breeze_page_mood__noList'] = 'There aren\'t any moods to display';
 $txt['Breeze_page_donate_exp'] = 'Breeze is a free SMF modification brought to you by a PHP enthusiast on her free time.<p />If you like this modification and would like to show your appreciation, please consider making a <a href="http://missallsunday.com/">donation</a>. Your donation will be used to cover server costs and/or to buy shoes, shoes keeps the developer happy and if she is happy then there will be more updates ;)<p />You can also show your appreciation by letting me know you are using Breeze on your forum, come by, say hi and show me your shiny profile pages powered by Breeze.';
 $txt['Breeze_page_credits'] = 'Credits';
 $txt['Breeze_page_credits_decs'] = 'Breeze is brought to you by the following persons and/or scripts:';
@@ -60,3 +68,21 @@ $txt['Breeze_allowed_max_num_users'] = 'How many users does an user can show on 
 $txt['Breeze_allowed_max_num_users_sub'] = 'If the user has more users than the specified setting, their entire list will be converted to a more compact links list. Leave at 0 to disable this option.';
 $txt['Breeze_allowed_maxlength_aboutMe'] = 'The max length for the "about me" block ';
 $txt['Breeze_allowed_maxlength_aboutMe_sub'] = 'If left empty, the mod will use the default value: 1024';
+
+// My mood feature.
+$txt['Breeze_mood_success_create'] = 'The mood has been created.';
+$txt['Breeze_mood_success_update'] = 'The mood has been updated.';
+$txt['Breeze_mood_success_delete'] = 'The moods have been deleted.';
+$txt['Breeze_mood_errors'] = 'Some errors were identified while trying to save this mood. ';
+$txt['Breeze_mood_error_file'] = 'file doesn\'t exists';
+$txt['Breeze_mood_error_already'] = 'Theres already a mood associated with this filename. Please use another image.';
+$txt['Breeze_mood_error_path'] = 'The path to the file is incorrect';
+$txt['Breeze_mood_error_extension'] = 'The file doesn\'t have an extension or it has an unvalid one';
+$txt['Breeze_mood_file'] = 'Filename';
+$txt['Breeze_mood_file_sub'] = 'The exact filename including the extension, remember, the file already has to be uploaded to your moods folder. This field is mandatory';
+$txt['Breeze_mood_name'] = 'Name';
+$txt['Breeze_mood_name_sub'] = 'Optional. A name to help identify the icon. If left empty, the mod will use the filename.';
+$txt['Breeze_mood_description'] = 'Description';
+$txt['Breeze_mood_description_sub'] = 'Optional. A description that will appear whenever an user hover over the image, Don\'t use HTML. If left empty, the mod will use the filename.';
+$txt['Breeze_mood_enable'] = 'Enable';
+$txt['Breeze_mood_enable_sub'] = 'To enable/disable this mood, if let empty the user won\'t be able to select this mood.';

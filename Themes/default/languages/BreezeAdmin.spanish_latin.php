@@ -56,4 +56,3 @@ $txt['Breeze_allowed_actions_sub'] = 'Por defecto las notificaciones aparecer&aa
 $txt['Breeze_feed_error_message'] = 'Breeze no pudo conectarse con el sitio de soporte.';
 $txt['Breeze_allowed_maxlength_aboutMe'] = 'El m&aacute;ximo n&uacute;mero de caracteres que el bloque "acerca de mi" puede contener';
 $txt['Breeze_allowed_maxlength_aboutMe_sub'] = 'Si se deja vacio, se usar&aacute; el valor por defecto: 1024';
-
