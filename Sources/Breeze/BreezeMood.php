@@ -56,7 +56,7 @@ class BreezeMood
 		if (empty(static::$active))
 			foreach ($this->_moods as $m)
 				if (!empty($m['enable']))
-					static::$active[$m['moods_id']] = $this->formatImage($m);
+					static::$active[$m['moods_id']] = $m;
 
 		return static::$active;
 	}
@@ -127,23 +127,20 @@ class BreezeMood
 		return $return;
 	}
 
-	public function formatImage($mood)
+	public function show($mood, $user)
 	{
-		// The usual check
-		if (empty($mood))
-			return false;
+		global $context;
 
 		// Gotta load our template.
 		loadtemplate(Breeze::$name .'Functions');
 
-		// Pass the imageUrl
-		$mood['url'] = $this->imagesUrl;
+		// Pass the imageUrl and this user
+		$context['moodUrl'] = $this->imagesUrl;
 
-		// Build the needed HTML.
 		return array(
 			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : $this->_app['tools']->text('moodLabel'),
 			'col_name' => $this->_app['tools']->text('moodLabel'),
-			'value' => template_mood_image($mood),
+			'value' => template_mood_image($mood, $user),
 			'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->enable('mood_placement') : 0,
 		);
 	}

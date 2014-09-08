@@ -557,6 +557,8 @@ class Breeze extends Pimple
 
 	public function mood(&$output, &$message)
 	{
+		global $user_info;
+
 		// Don't do anything if the feature is disable.
 		if (!$this['tools']->enable('mood'))
 			return;
@@ -568,15 +570,14 @@ class Breeze extends Pimple
 		$userSettings = $this['query']->getUserSettings($output['member']['id']);
 
 		// Get the image.
-		$image = !empty($userSettings['mood']) && !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : '';
+		$currentMood = !empty($userSettings['mood']) && !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : false;
 
-		// Append the result to the  custom fields array.
-		if (!empty($image))
-			$output['member']['custom_fields'][] = $image;
+		// This should be a good place to add some permissions...
+		$currentUser = ($output['member']['id'] == $user_info['id']);
 
-		// User doesn't have a mood, let's show a nice anchor link then...
-		else
-			$output['member']['custom_fields'][] = $this['mood']->noImage();
+		// Append the result to the  custom fields array. You need to be able to edit your own moods.
+		if ($currentUser)
+			$output['member']['custom_fields'][] = $this['mood']->show($currentMood);
 	}
 
 	/**

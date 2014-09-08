@@ -437,17 +437,19 @@ function template_userDiv()
 
 function template_mood_image($mood)
 {
-	global $scripturl, $txt;
+	global $scripturl, $txt, $context;
 
-	return '<a href="'. $scripturl .'?action=breezemood" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'"><img src="'. $mood['url'] . $mood['file'] .'.'. $mood['ext'] .'" alt="'. $mood['description'] .'" /></a>';
+	// There are 2 possible cases here: mood and link and no mood at all...
+
+	// First case, no mood and no link.
+	if (empty($mood))
+		return '<a href="'. $scripturl .'?action=breezemood" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'">'. $txt['Breeze_moodChange'] .'</a>';
+
+	// Got a mood but no link?
+	else
+		return '<a href="'. $scripturl .'?action=breezemood" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'"><img src="'. $context['moodUrl'] . $mood['file'] .'.'. $mood['ext'] .'" alt="'. $mood['description'] .'" /></a>';
 }
 
-function template_mood_noImage()
-{
-	global $scripturl, $txt;
-
-	return '<a href="'. $scripturl .'?action=breezemood" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'">'. $txt['Breeze_moodChange'] .'</a>';
-}
 
 function template_mood_change()
 {
