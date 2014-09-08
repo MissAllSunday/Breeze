@@ -366,11 +366,11 @@ class Breeze extends Pimple
 	public function call()
 	{
 		// Just some quick code to make sure this works...
-		$a = array('wall', 'ajax', 'admin');
+		$a = array('wall', 'ajax', 'admin', 'mood');
 		$action = Breeze::data('get')->get('action');
 
-		// Gotta remove the "breeze" from breezeajax.
-		if ($action == 'breezeajax')
+		// Gotta remove the "breeze" from the actions.
+		if ($action == 'breezeajax' || $action == 'breezemood')
 			$action = str_replace('breeze', '', $action);
 
 		if (in_array($action, $a))
