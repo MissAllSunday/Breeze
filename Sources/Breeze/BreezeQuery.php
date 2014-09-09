@@ -83,6 +83,12 @@ class BreezeQuery
 				'property' => '_likes',
 				'columns' => array('id_member', 'content_type', 'content_id', 'like_time',),
 				),
+			'moods' => array(
+				'name' => 'moods',
+				'table' => 'breeze_moods',
+				'property' => '_noti',
+				'columns' => array('moods_id', 'name', 'file', 'ext', 'description', 'enable',),
+				),
 		);
 	}
 
@@ -658,7 +664,7 @@ class BreezeQuery
 			), $array, array('status_id', ));
 
 		// Get the newly created status ID
-		$status_id = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comments']['table']), 'status_id');
+		$status_id = $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['status']['table']), 'status_id');
 
 		//Kill the profile cache
 		$this->killCache('status', $status_id, $array['owner_id']);
@@ -1597,6 +1603,124 @@ class BreezeQuery
 			array(
 				'id_content' => $content,
 				'num_likes' => $numLikes,
+			)
+		);
+	}
+
+	/**
+	 * BreezeQuery::getMoodByID()
+	 *
+	 * Returns the info from 1 or more moods.
+	 * @param array|integer $data the user ID, could be an integer or an array of IDs,the function converts it to an array.
+	 * @params boolean To indicate if you want to retrieve 1 result only, if false, it will return an associative array with the mood ID as key.
+	 * @return array.
+	 */
+	public function getMoodByID($data, $single = false)
+	{
+		if (empty($data))
+			return false;
+
+		// Work with arrays.
+		$data = array_map('intval', (array) $data);
+		$moods = array();
+
+		$request = $this->_smcFunc['db_query']('', '
+			SELECT '. (implode(', ', $this->_tables['moods']['columns'])) .'
+			FROM {db_prefix}' . ($this->_tables['moods']['table']) .'
+			WHERE moods_id IN ({array_int:data})',
+			array(
+				'data' => $data,
+			)
+		);
+
+		while ($row = $this->_smcFunc['db_fetch_assoc']($request))
+		{
+			if($single)
+				$moods = $row;
+
+			else
+				$moods[$row['moods_id']] = $row;
+		}
+
+		$this->_smcFunc['db_free_result']($request);
+
+		return $moods;
+	}
+
+	public function getAllMoods()
+	{
+		if (($moods = cache_get_data(Breeze::$name .'moods-all', 120)) == null)
+		{
+			$moods = array();
+			$request = $this->_smcFunc['db_query']('', '
+				SELECT '. (implode(', ', $this->_tables['moods']['columns'])) .'
+				FROM {db_prefix}' . ($this->_tables['moods']['table']),
+				array()
+			);
+
+			while ($row = $this->_smcFunc['db_fetch_assoc']($request))
+			{
+				$moods[$row['moods_id']] = $row;
+
+				// Save some headaches by adding a nice formatted image url.
+				$moods[$row['moods_id']]['image_url'] = $this->_app['mood']->imagesUrl . $row['file'] .'.'. $row['ext'];
+				$moods[$row['moods_id']]['image_html'] = '<img src="'. $this->_app['mood']->imagesUrl . $row['file'] .'.'. $row['ext'] .'" alt="'. $row['name'] .'" title="'. $row['description'] .'" class="breeze_mood_image" />';
+			}
+
+			$this->_smcFunc['db_free_result']($request);
+			cache_put_data(Breeze::$name .'-moods-all', $moods, 120);
+		}
+
+		return $moods;
+	}
+
+	public function insertMood($data)
+	{
+		// Just the usual empty check, the data should already be properly handled by someone else.
+		if (empty($data))
+			return false;
+
+		// Insert!
+		$this->_smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['moods']['table']) .
+			'', array(
+			'name' => 'string',
+			'file' => 'string',
+			'ext' => 'string',
+			'description' => 'string',
+			'enable' => 'string'
+			), $data, array('moods_id', ));
+
+		// Return the newly created ID.
+		return $this->_smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['moods']['table']), 'moods_id');
+	}
+
+	public function updateMood($data)
+	{
+		if (empty($data))
+			return false;
+
+		$this->_smcFunc['db_query']('', '
+			UPDATE {db_prefix}' . ($this->_tables['moods']['table']) . '
+			SET name = {string:name}, file = {string:file}, ext = {string:ext}, description = {string:description}, enable= {string:enable}
+			WHERE moods_id = {int:moods_id}',
+			$data
+		);
+	}
+
+	public function deleteMood($data)
+	{
+		if (empty($data))
+			return false;
+
+		// Work with arrays.
+		$data = array_map('intval', (array) $data);
+
+		// Not much to do here, delete the entries and be done with it.
+		$this->_smcFunc['db_query']('', '
+			DELETE FROM {db_prefix}' . ($this->_tables['moods']['table']) . '
+			WHERE moods_id IN ({array_int:data})',
+			array(
+				'data' => $data,
 			)
 		);
 	}

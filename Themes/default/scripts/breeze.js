@@ -195,4 +195,37 @@ jQuery(document).ready(function(){
 
 		return false;
 	});
+
+	// My mood!
+	jQuery(document).on('click', 'a[rel*=breezeMood]', function(event){
+		event.preventDefault();
+		var title = jQuery(this).data('name'),
+			url = jQuery(this).attr('href') + ';js=1';
+		return reqOverlayDiv(url, title);
+	});
+
+	// Changing moods.
+	jQuery(document).on('click', 'a[rel*=breezeMoodSave]', function(event){
+		event.preventDefault();
+		var moodID = jQuery(this).data('id'),
+			url = jQuery(this).attr('href') + ';js=1';
+
+		// Lets make a quick ajax call here...
+		jQuery.ajax({
+			type: 'GET',
+			url: url,
+			data: {},
+			cache: false,
+			dataType: 'json',
+			success: function(response){
+				breeze.tools.showNoti(response);
+				response.data = jQuery.parseJSON(response.data);
+				// Find all mood images from this user.
+				jQuery(document).find('[data-user=' + response.data.user + ']').html(response.data.image);
+			},
+			error: function(response){
+				breeze.tools.showNoti(response);console.log(response);
+			}
+		});
+	});
 });

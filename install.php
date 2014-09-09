@@ -250,10 +250,62 @@
 			'parameters' => array(),
 		);
 
+		// My mood
+		$tables[] = array(
+			'table_name' => '{db_prefix}breeze_moods',
+			'columns' => array(
+				array(
+					'name' => 'moods_id',
+					'type' => 'int',
+					'size' => 5,
+					'null' => false,
+					'auto' => true
+				),
+				array(
+					'name' => 'name',
+					'type' => 'varchar',
+					'size' => 255,
+					'default' => '',
+				),
+				array(
+					'name' => 'file',
+					'type' => 'varchar',
+					'size' => 255,
+					'default' => '',
+				),
+				array(
+					'name' => 'ext',
+					'type' => 'varchar',
+					'size' => 255,
+					'default' => '',
+				),
+				array(
+					'name' => 'description',
+					'type' => 'text',
+					'size' => '',
+					'default' => null,
+				),
+				array(
+					'name' => 'enable',
+					'type' => 'int',
+					'size' => 1,
+					'null' => false
+				),
+			),
+			'indexes' => array(
+				array(
+					'type' => 'primary',
+					'columns' => array('moods_id')
+				),
+			),
+			'if_exists' => 'ignore',
+			'error' => 'fatal',
+			'parameters' => array(),
+		);
+
 		// Installing
 		foreach ($tables as $table)
 			$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
-
 
 		// Add the extra columns
 		$smcFunc['db_add_column'](
@@ -280,6 +332,24 @@
 			'update',
 			null
 		);
+
+		// Lastly, insert the default moods and oh boy there are a lot!!!
+		$moods = array('angel', 'angry', 'bear', 'beer', 'blush', 'brokenheart', 'cash', 'clapping', 'cool', 'crying', 'doh', 'drunk', 'dull', 'envy', 'evil', 'evilgrin', 'giggle', 'happy', 'headbang', 'hi', 'inlove', 'itwasntme', 'kiss', 'lipssealed', 'makeup', 'middlefinger', 'mmm', 'mooning', 'muscle', 'nerd', 'party', 'pizza', 'puke', 'rock', 'sad', 'sleepy', 'smile', 'smoke', 'speechless', 'sunny', 'surprised', 'sweating', 'talking', 'thinking', 'tongueout', 'wait', 'wink', 'wondering', 'worried', 'yawn', );
+
+		foreach ($moods as $m)
+			$smcFunc['db_insert']('replace', '{db_prefix}breeze_moods', array(
+				'name' => 'string',
+				'file' => 'string',
+				'ext' => 'string',
+				'description' => 'string',
+				'enable' => 'int',
+			), array(
+				$m,
+				$m,
+				'gif',
+				$m,
+				1
+			), array('moods_id', ));
 	}
 
 	function BreezeCheck()

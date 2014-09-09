@@ -27,6 +27,8 @@ class BreezeForm
 	protected $_tools;
 	protected $formName;
 	protected $_app;
+	protected $_textPrefix = 'user_settings_';
+	protected $languageMethod = 'text';
 
 	function __construct($app)
 	{
@@ -39,6 +41,23 @@ class BreezeForm
 			return false;
 
 		$this->formName = trim($string);
+	}
+
+	public function setTextPrefix($string, $adminText = false)
+	{
+		$this->_textPrefix = $string;
+
+		if ($adminText)
+		{
+			$this->languageMethod = 'adminText';
+			loadLanguage('BreezeAdmin');
+		}
+	}
+
+	private function setText($text)
+	{
+		$method = $this->languageMethod;
+		return $this->_app['tools']->$method($this->_textPrefix . $text);
 	}
 
 	public function returnElementNames()
@@ -184,8 +203,8 @@ class BreezeForm
 				case 'checkbox':
 				case 'text':
 					$this->buffer .= '<dt>
-						<span style="font-weight:bold;">'. $this->_app['tools']->text('user_settings_'. $el['text']) .'</span>
-						<br /><span class="smalltext">'. $this->_app['tools']->text('user_settings_'. $el['text'] .'_sub') .'</span>
+						<span style="font-weight:bold;">'. $this->setText($el['text']) .'</span>
+						<br /><span class="smalltext">'. $this->_app['tools']->text($this->_textPrefix . $el['text'] .'_sub') .'</span>
 					</dt>
 					<dd>
 						<input type="hidden" name="'. (!empty($this->formName) ? $this->formName .'['. $el['name'] .']' : $el['name']) .'" value="0" />'. $el['html'] .'
@@ -193,8 +212,8 @@ class BreezeForm
 					break;
 				case 'select':
 					$this->buffer .= '<dt>
-						<span style="font-weight:bold;">'. $this->_app['tools']->text('user_settings_'. $el['text']) .'</span>
-						<br /><span class="smalltext">'. $this->_app['tools']->text('user_settings_'.$el['text'] .'_sub') .'</span>
+						<span style="font-weight:bold;">'. $this->setText($el['text']) .'</span>
+						<br /><span class="smalltext">'. $this->setText($el['text'] .'_sub') .'</span>
 					</dt>
 					<dd>
 						<input type="hidden" name="'. (!empty($this->formName) ? $this->formName .'['. $el['name'] .']' : $el['name']) .'" value="0" />'. $el['html_start'] .'';
@@ -219,18 +238,18 @@ class BreezeForm
 					break;
 				case 'html':
 					$this->buffer .= '<dt>
-						<span style="font-weight:bold;">'. $this->_app['tools']->text('user_settings_'. $el['text']) .'</span>
-						<br /><span class="smalltext">'. $this->_app['tools']->text('user_settings_'.$el['text'] .'_sub') .'</span>
+						<span style="font-weight:bold;">'. $this->setText($el['text']) .'</span>
+						<br /><span class="smalltext">'. $this->setText($el['text'] .'_sub') .'</span>
 					</dt>
 					<dd>
-						'. sprintf($el['html'], $this->_app['tools']->text('user_settings_'. $el['text'])) .'
+						'. sprintf($el['html'], $this->setText($el['text'])) .'
 					</dd>';
 					break;
 				case 'section':
 				$this->buffer .= '
 				</dl>
 				<div class="cat_bar">
-					<h3 class="catbg">'. $this->_app['tools']->text('user_settings_'. $el['text']) .'</h3>
+					<h3 class="catbg">'. $this->setText($el['text']) .'</h3>
 				</div>
 				<br />
 				<dl class="settings">';

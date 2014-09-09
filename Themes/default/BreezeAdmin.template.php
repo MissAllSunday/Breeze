@@ -107,6 +107,72 @@ function template_admin_home()
 	<br />';
 }
 
+function template_manage_mood()
+{
+	global $context, $txt;
+
+	// Success YAY!
+	if (!empty($context['mood']['notice']))
+	{
+		echo '
+		<div class="'. $context['mood']['notice']['type'] .'box">';
+
+		foreach ($context['mood']['notice']['message'] as $m)
+			echo '', $txt['Breeze_mood_'. $m] ,'';
+
+		echo '
+		</div><br />';
+	}
+
+	template_show_list('breeze_mood_list');
+}
+
+function template_manage_mood_edit()
+{
+	global $context, $txt, $scripturl;
+
+	// There were some errors.
+	if (!empty($context['mood']['notice']))
+	{
+		echo '
+		<div class="errorbox">
+		<p>'. $txt['Breeze_mood_errors'] .'</p>';
+
+		foreach ($context['mood']['notice']['message'] as $e)
+			echo '<li>', $txt['Breeze_mood_'. $e] ,'</li>';
+
+		echo '
+		</div><br />';
+	}
+
+		// Print out our form.
+		echo '
+		<form action="', $scripturl, '?action=admin;area=breezeadmin;sa=moodEdit;save=1'. (!empty($context['mood']['id']) ? ';moodID='. $context['mood']['id'] .'' : '') .'" method="post" accept-charset="', $context['character_set'], '" name="mood" id="mood">
+			<div class="cat_bar">
+				<h3 class="catbg">
+					<span class="ie6_header floatleft">
+						', $context['page_title'] , '
+					</span>
+				</h3>
+			</div>
+			<div class="windowbg2">
+				<span class="topslice"><span></span></span>
+					<div class="content">';
+
+		// Print the form
+		echo $context['mood']['form'];
+
+		// Print the save button.
+		echo '<input type="submit" name="submit" value="', $txt['save'] ,'" class="button_submit"/>';
+
+		echo '
+				</div>
+				<span class="botslice"><span></span></span>
+			</div>
+			<br />
+		</form>';
+}
+
 // Boring stuff you will never see...
 function template_admin_donate()
 {

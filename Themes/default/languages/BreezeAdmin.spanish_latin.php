@@ -36,7 +36,9 @@ $txt['Breeze_force_enable_sub'] = 'Por defecto, el muro de cada usuario est&aacu
 $txt['Breeze_force_enable_on'] = 'Activar';
 $txt['Breeze_force_enable_off'] = 'Desactivar';
 $txt['Breeze_likes'] = 'Activar la opci&oacute;n "me gusta" en los status y comentarios.';
-$txt['Breeze_likes_sub'] = 'Tus usuarios podr&aacute;n usar la funci&oacute;n en cualquier estatus o comentario y si los usuarios tienen activadas sus preferencias de alertas, recibir&aacute;n una alerta cada vez que alguien le guste un comentario o estatus.';
+$txt['Breeze_likes_sub'] = 'Tus usuarios podr&aacute;n usar la funci&oacute;n en cualquier status o comentario y si los usuarios tienen activadas sus preferencias de alertas, recibir&aacute;n una alerta cada vez que alguien le guste un comentario o estatus.<br /> La opci&oacute;n de dar likes debe de estar activada y los usuarios deben de poder dar likes a cualquier contenido (permisos)';
+$txt['Breeze_mood'] = 'Activar la opci&oacute;n "mi estado"';
+$txt['Breeze_mood_sub'] = 'El usuario tiene que tener JavaScript activado en su navegador para que esta opci&oacute;n funcione.';
 $txt['Breeze_notifications'] = 'Habilitar notificaciones';
 $txt['Breeze_notifications_sub'] = 'Tus usuarios podr&aacute;n activar sus propias notificaciones para eventos espec&iacute;ficos.';
 $txt['Breeze_parseBBC'] = 'Activar el parser de SMF';
@@ -54,4 +56,3 @@ $txt['Breeze_allowed_actions_sub'] = 'Por defecto las notificaciones aparecer&aa
 $txt['Breeze_feed_error_message'] = 'Breeze no pudo conectarse con el sitio de soporte.';
 $txt['Breeze_allowed_maxlength_aboutMe'] = 'El m&aacute;ximo n&uacute;mero de caracteres que el bloque "acerca de mi" puede contener';
 $txt['Breeze_allowed_maxlength_aboutMe_sub'] = 'Si se deja vacio, se usar&aacute; el valor por defecto: 1024';
-

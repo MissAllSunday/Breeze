@@ -412,7 +412,7 @@ function template_userDiv()
 	echo '<!DOCTYPE html>
 <html', $context['right_to_left'] ? ' dir="rtl"' : '', '>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=', $context['character_set'], '">
+		<meta charset="', $context['character_set'], '">
 		<meta name="robots" content="noindex">
 		<title>', $context['page_title'], '</title>
 		<link rel="stylesheet" type="text/css" href="', $settings['theme_url'], '/css/index', $context['theme_variant'], '.css', $modSettings['browser_cache'] ,'">
@@ -428,6 +428,68 @@ function template_userDiv()
 			// some error string here.
 
 	echo '
+			<br class="clear">
+			<a href="javascript:self.close();">', $txt['close_window'], '</a>
+		</div>
+	</body>
+</html>';
+}
+
+function template_mood_image($mood, $user)
+{
+	global $scripturl, $txt, $context;
+
+	// There are 2 possible cases here: mood and link and no mood at all...
+
+	// First case, no mood and no link.
+	if (empty($mood))
+		return '<a href="'. $scripturl .'?action=breezemood;user='. $user .'" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'" data-user="'. $user .'">'. $txt['Breeze_moodChange'] .'</a>';
+
+	// Got a mood, show it!
+	else
+		return '<a href="'. $scripturl .'?action=breezemood;user='. $user .'" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'" data-user="'. $user .'">'. $mood['image_html'] .'</a>';
+}
+
+
+function template_mood_change()
+{
+	global $context, $settings, $modSettings, $txt, $scripturl;
+
+	$count = 0;
+
+	echo '<!DOCTYPE html>
+<html', $context['right_to_left'] ? ' dir="rtl"' : '', '>
+	<head>
+		<meta charset="', $context['character_set'], '">
+		<meta name="robots" content="noindex">
+		<title>', $context['page_title'], '</title>
+		<link rel="stylesheet" type="text/css" href="', $settings['theme_url'], '/css/index', $context['theme_variant'], '.css', $modSettings['browser_cache'] ,'">
+		<script src="', $settings['default_theme_url'], '/scripts/script.js', $modSettings['browser_cache'] ,'"></script>
+	</head>
+	<body id="breeze_mood_popup">
+		<div class="windowbg">
+			<table class="bbc_table">
+				<tr>';
+
+		foreach ($context['moods'] as $m)
+		{
+			$count++;
+
+			if ($count % 5 == 1)
+				echo '
+				</tr>
+				<tr>';
+
+			echo '
+					<td>
+						<a href="'. $scripturl .'?action=breezeajax;sa=moodchange;user='. $context['moodUser'] .';moodID='. $m['moods_id'] .'" rel="breezeMoodSave" data-id="'. $m['moods_id'] .'">'. $m['image_html'] .'</a>
+						'. (!empty($m['name']) ? '<p>'. $m['name'] .'</p>' : '') .'
+					</td>';
+		}
+
+	echo '
+			</tr>
+			</table>
 			<br class="clear">
 			<a href="javascript:self.close();">', $txt['close_window'], '</a>
 		</div>

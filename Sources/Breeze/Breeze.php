@@ -38,13 +38,13 @@ spl_autoload_register('breeze_autoloader');
 
 class Breeze extends Pimple
 {
-	protected $_services = array('admin', 'ajax', 'display', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall',);
+	protected $_services = array('admin', 'ajax', 'display', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall', 'mood',);
 	public static $name = 'Breeze';
 	public static $version = '1.1';
 	public static $folder = '/Breeze/';
 	public static $coversFolder = '/breezeFiles/';
 	public static $txtpattern = 'Breeze_';
-	public static $permissions = array('deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canMention', 'beMentioned', 'canCover');
+	public static $permissions = array('deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canMention', 'beMentioned', 'canCover', 'canMood');
 	public static $allSettings = array('wall', 'general_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention', 'gender', 'buddiesList', 'ignoredList', 'profileViews',);
 
 	// Support site feed
@@ -129,9 +129,9 @@ class Breeze extends Pimple
 	 * @param string $var Either post, request or get
 	 * @return object Access to BreezeGlobals
 	 */
-	public static function data($var)
+	public static function data($var = false)
 	{
-		return new BreezeData($var);
+		return new BreezeData($var = false);
 	}
 
 	/**
@@ -355,6 +355,9 @@ class Breeze extends Pimple
 
 		// A special action for the buddy request message
 		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'breezeBuddyMessage');
+
+		// Action used when an user wants to change their mood.
+		$actions['breezemood'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call#');
 	}
 
 	/**
@@ -366,11 +369,11 @@ class Breeze extends Pimple
 	public function call()
 	{
 		// Just some quick code to make sure this works...
-		$a = array('wall', 'ajax', 'admin');
+		$a = array('wall', 'ajax', 'admin', 'mood');
 		$action = Breeze::data('get')->get('action');
 
-		// Gotta remove the "breeze" from breezeajax.
-		if ($action == 'breezeajax')
+		// Gotta remove the "breeze" from the actions.
+		if (strpos($action, 'breeze') !== false)
 			$action = str_replace('breeze', '', $action);
 
 		if (in_array($action, $a))
@@ -552,6 +555,31 @@ class Breeze extends Pimple
 		loadJavascriptFile('breezeNoti.js', array('local' => true, 'default_theme' => true));
 	}
 
+	public function mood(&$output, &$message)
+	{
+		global $user_info;
+
+		// Don't do anything if the feature is disable.
+		if (!$this['tools']->enable('mood'))
+			return;
+
+		// Get the currently active moods
+		$moods = $this['mood']->getActive();
+
+		// Get this user options.
+		$userSettings = $this['query']->getUserSettings($output['member']['id']);
+
+		// Get the image.
+		$currentMood = !empty($userSettings['mood']) && !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : false;
+
+		// This should be a good place to add some permissions...
+		$currentUser = ($output['member']['id'] == $user_info['id']);
+
+		// Append the result to the  custom fields array. You need to be able to edit your own moods.
+		if ($currentUser && !isset($output['member']['custom_fields']['breeze_mood']))
+			$output['member']['custom_fields']['breeze_mood'] = $this['mood']->show($currentMood, $output['member']['id']);
+	}
+
 	/**
 	 * Breeze::who()
 	 *
@@ -600,6 +628,14 @@ class Breeze extends Pimple
 				'donate' => array($tools->adminText('page_donate')),
 			),
 		);
+
+		// Gotta respect the master mood setting.
+		if ($tools->enable('mood'))
+		{
+			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodList'] = array($tools->adminText('page_mood'));
+			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodEdit'] = array($tools->adminText('page_mood_create'));
+		}
+
 	}
 
 	/**
@@ -653,6 +689,10 @@ class Breeze extends Pimple
 					'ikons' => array(
 						'name' => 'ikons from Piotr Kwiatkowski',
 						'site' => 'http://ikons.piotrkwiatkowski.co.uk/',
+					),
+					'skype' => array(
+						'name' => 'skype icons',
+						'site' => 'http://blogs.skype.com/2006/09/01/icons-and-strings',
 					),
 				),
 			),

@@ -54,7 +54,7 @@ class BreezeAjax
 		// Handling the subactions
 		$data = Breeze::data('get');
 
-		// Safety first, hardcode the actions
+		// Safety first, hardcode the actions and oh boy there are a lot!!!
 		$this->subActions = array(
 			'post' => 'post',
 			'postcomment' => 'postComment',
@@ -70,6 +70,7 @@ class BreezeAjax
 			'usersettings' => 'userSettings',
 			'cover' => 'cover',
 			'coverdelete' => 'coverDelete',
+			'moodchange' => 'moodChange',
 		);
 
 		// Build the correct redirect URL
@@ -832,7 +833,7 @@ class BreezeAjax
 	/**
 	 * BreezeAjax::cover()
 	 *
-	 * Gets an HTTP request for uploading and storing a new cover image. Checks f the user has permission to do so, checks the image itself and all other possible checks.
+	 * Gets an HTTP request for uploading and storing a new cover image. Checks if the user has permission to do so, checks the image itself and all other possible checks.
 	 * @return
 	 */
 	public function cover()
@@ -905,6 +906,73 @@ class BreezeAjax
 			'owner' => $this->_data->get('u'),
 			'extra' => array('area' => 'breezesettings',),
 		));
+	}
+
+	public function moodChange()
+	{
+		$this->_data = Breeze::data();
+
+		// Get the mood ID, can't work without it...
+		if ($this->_data->get('moodID'))
+		{
+			// Go ahead and just save the var...
+			$this->_app['query']->insertUserSettings(array('mood'=> $this->_data->get('moodID')), $this->_currentUser);
+
+			// Get the image.
+			$allMoods = $this->_app['mood']->getActive();
+			$image = $allMoods[$this->_data->get('moodID')]['image_html'];
+
+			$moodHistory = !empty($this->_userSettings['moodHistory']) ? json_decode($this->_userSettings['moodHistory'], true) : array();
+
+			// User has no history, go make one then!
+			if (empty($moodHistory))
+				$moodHistory[] = array(
+					'date' => time(),
+					'id' => $this->_data->get('moodID'),
+				);
+
+			else
+			{
+				// Gotta make sure the last added item is different than the one we're trying to add.
+				$lastItem = end($moodHistory);
+
+				if ($lastItem['id'] == $this->_data->get('moodID'))
+					$moodHistory = array();
+
+				// Nope! its a different one!
+				else
+					$moodHistory[] = array(
+					'date' => time(),
+					'id' => $this->_data->get('moodID'),
+				);
+
+				// One last thing we need to do, cut off old entries.
+				if (count($moodHistory) > 20)
+					$moodHistory = array_slice($moodHistory, -20);
+			}
+
+			// Anyway, save the values and move on...
+			if (!empty($moodHistory))
+				$this->_app['query']->insertUserSettings(array('moodHistory'=> json_encode($moodHistory)), $this->_currentUser);
+
+			// Build the response.
+			return $this->setResponse(array(
+				'type' => 'success',
+				'message' => 'moodChanged',
+				'data' => json_encode(array('user' => $this->_data->get('user'), 'image' => $image)),
+				'owner' => $this->_currentUser,
+				'extra' => array('area' => 'breezesettings',),
+			));
+		}
+
+		// Something happen :(
+		else
+			return $this->setResponse(array(
+				'message' => $this->_app['tools']->text('error_server'),
+				'data' => '',
+				'type' => 'error',
+				'owner' => $this->_currentUser,
+			));
 	}
 
 	/**

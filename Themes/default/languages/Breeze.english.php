@@ -113,6 +113,7 @@ $txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to see this 
 $txt['permissiongroup_simple_breeze_per_simple'] = 'Breeze mod permissions';
 $txt['permissiongroup_breeze_per_classic'] = 'Breeze mod permissions';
 $txt['permissionname_breeze_canCover'] = 'Be able to upload an image as cover for their own wall <br /><span class="smalltext">  The master setting needs to be enable first.</span>';
+$txt['permissionname_breeze_canMood'] = 'Be able to set a mood<br /><span class="smalltext">  The master setting needs to be enable first.</span>';
 $txt['permissionname_breeze_canMention'] = 'Be able to mention<br /><span class="smalltext">  Option to be able to mention other people</span>';
 $txt['permissionname_breeze_beMentioned'] = 'Appear on the mention list<br /><span class="smalltext">  If the user has the permissions, other users will be able to mention this user.</span>';
 $txt['permissionname_breeze_deleteStatus'] = 'Delete all status on any wall<br /><span class="smalltext">  This overwrites any other delete permission the user might have. Deleting a status also deletes all comments associated with it.</span>';
@@ -252,3 +253,8 @@ $txt['Breeze_logStatus_own_0'] = 'made a new status on his/her own wall';
 $txt['Breeze_logStatus_own_1'] = 'made a new status on his own wall';
 $txt['Breeze_logStatus_own_2'] = 'made a new status on her own wall';
 $txt['Breeze_logStatus_view'] = 'View status';
+
+// Mood feature.
+$txt['Breeze_moodLabel'] = 'mood';
+$txt['Breeze_moodChange'] = 'Change your mood';
+$txt['Breeze_moodChanged'] = 'Your mood has been changed';
