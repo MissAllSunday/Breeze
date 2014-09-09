@@ -52,11 +52,11 @@ Tested on PHP 5.3 and 5.4, Opera12, IE8 and whatever version Firefox was when I 
 [size=12pt][color=purple]This mod uses the following scripts[/color][/size]
 
 - [jQuery] (http://jquery.com/)
-- [Facebox] (https://github.com/defunkt/facebox)
 - [zRSSFeeds] (http://www.zazar.net/developers/jquery/zrssfeed/)
 - [needim noty jquery plugin] (http://needim.github.com/noty/)
 - [ichord Mentions autocomplete script] (http://ichord.github.com/At.js)
 - [ikons from Piotr Kwiatkowski] (http://ikons.piotrkwiatkowski.co.uk)
+- [Skype Component License](http://blogs.skype.com/2006/09/01/icons-and-strings)
 
 
 [size=12pt][color=purple]Changelog[/color][/size]

@@ -690,6 +690,10 @@ class Breeze extends Pimple
 						'name' => 'ikons from Piotr Kwiatkowski',
 						'site' => 'http://ikons.piotrkwiatkowski.co.uk/',
 					),
+					'skype' => array(
+						'name' => 'skype icons',
+						'site' => 'http://blogs.skype.com/2006/09/01/icons-and-strings',
+					),
 				),
 			),
 		);

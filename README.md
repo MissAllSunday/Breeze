@@ -24,11 +24,11 @@ Breeze is powerful social mod for your SMF forum, it allows your users to turn t
 The mod uses the following scripts:
 
 - [jQuery] (http://jquery.com/)
-- [Facebox] (https://github.com/defunkt/facebox)
 - [zRSSFeeds] (http://www.zazar.net/developers/jquery/zrssfeed/)
 - [needim noty jquery plugin] (http://needim.github.com/noty/)
 - [ichord Mentions autocomplete script] (http://ichord.github.com/At.js)
 - [ikons from Piotr Kwiatkowski] (http://ikons.piotrkwiatkowski.co.uk)
+- [Skype Component License](http://blogs.skype.com/2006/09/01/icons-and-strings)
 
 ######Notes:
 
