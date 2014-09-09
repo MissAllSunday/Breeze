@@ -945,6 +945,10 @@ class BreezeAjax
 					'date' => time(),
 					'id' => $this->_data->get('moodID'),
 				);
+
+				// One last thing we need to do, cut off old entries.
+				if (count($moodHistory) > 20)
+					$moodHistory = array_slice($moodHistory, 20);
 			}
 
 			// Anyway, save the values and move on...
