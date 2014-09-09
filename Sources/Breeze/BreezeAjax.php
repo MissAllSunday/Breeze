@@ -922,7 +922,7 @@ class BreezeAjax
 			$allMoods = $this->_app['mood']->getActive();
 			$image = $allMoods[$this->_data->get('moodID')]['image_html'];
 
-			$moodHistory = $this->_userSettings['moodHistory'];
+			$moodHistory = json_decode($this->_userSettings['moodHistory'], true);
 
 			// User has no history, go make one then!
 			if (empty($moodHistory))

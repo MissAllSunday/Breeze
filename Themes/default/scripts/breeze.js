@@ -214,17 +214,17 @@ jQuery(document).ready(function(){
 		jQuery.ajax({
 			type: 'GET',
 			url: url,
-			data: {moodId: moodID},
+			data: {},
 			cache: false,
 			dataType: 'json',
 			success: function(response){
 				breeze.tools.showNoti(response);
-
+				response.data = jQuery.parseJSON(response.data);
 				// Find all mood images from this user.
-				jQuery('a').find('[data-slide=' + response.data.user + ']').html(response.data.image);
+				jQuery(document).find('[data-user=' + response.data.user + ']').html(response.data.image);
 			},
 			error: function(response){
-				breeze.tools.showNoti(response);
+				breeze.tools.showNoti(response);console.log(response);
 			}
 		});
 	});

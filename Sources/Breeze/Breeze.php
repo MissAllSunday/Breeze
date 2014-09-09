@@ -129,9 +129,9 @@ class Breeze extends Pimple
 	 * @param string $var Either post, request or get
 	 * @return object Access to BreezeGlobals
 	 */
-	public static function data($var)
+	public static function data($var = false)
 	{
-		return new BreezeData($var);
+		return new BreezeData($var = false);
 	}
 
 	/**

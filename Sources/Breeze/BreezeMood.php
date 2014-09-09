@@ -40,7 +40,7 @@ class BreezeMood
 		loadLanguage('Help');
 
 		// Get the user.
-		$context['moodUser'] = Breeze::$data->get('user');
+		$context['moodUser'] = Breeze::data()->get('user');
 
 		// Pass the currently active moods
 		$context['moods'] = $this->getActive();
