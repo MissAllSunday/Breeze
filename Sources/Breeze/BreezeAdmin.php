@@ -133,7 +133,7 @@ class BreezeAdmin
 			array('check', Breeze::$txtpattern .'likes', 'subtext' => $this->_app['tools']->adminText('likes_sub')),
 			array('check', Breeze::$txtpattern .'mood', 'subtext' => $this->_app['tools']->adminText('mood_sub')),
 			array('check', Breeze::$txtpattern .'mood_label', 'subtext' => $this->_app['tools']->adminText('mood_label_sub')),
-			array('select', Breeze::$txtpattern .'mood_label_placement',
+			array('select', Breeze::$txtpattern .'mood_placement',
 			array(
 				$txt['custom_edit_placement_standard'],
 				$txt['custom_edit_placement_with_icons'],

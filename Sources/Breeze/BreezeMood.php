@@ -141,10 +141,10 @@ class BreezeMood
 		$context['moodUrl'] = $this->imagesUrl;
 
 		return array(
-			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : $this->_app['tools']->text('moodLabel'),
+			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
 			'col_name' => $this->_app['tools']->text('moodLabel'),
 			'value' => template_mood_image($mood, $user),
-			'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->enable('mood_placement') : 0,
+			'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->setting('mood_placement') : 0,
 		);
 	}
 
@@ -155,10 +155,10 @@ class BreezeMood
 
 		// Build the needed HTML.
 		return array(
-			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : $this->_app['tools']->text('moodLabel'),
+			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
 			'col_name' => $this->_app['tools']->text('moodLabel'),
 			'value' => template_mood_noImage(),
-			'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->enable('mood_placement') : 0,
+			'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->setting('mood_placement') : 0,
 		);
 	}
 
