@@ -39,6 +39,9 @@ class BreezeMood
 
 		loadLanguage('Help');
 
+		// Get the user.
+		$context['moodUser'] = Breeze::$data->get('user');
+
 		// Pass the currently active moods
 		$context['moods'] = $this->getActive();
 
@@ -127,7 +130,7 @@ class BreezeMood
 		return $return;
 	}
 
-	public function show($mood)
+	public function show($mood, $user)
 	{
 		global $context;
 
@@ -140,7 +143,7 @@ class BreezeMood
 		return array(
 			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->enable('mood_label') : $this->_app['tools']->text('moodLabel'),
 			'col_name' => $this->_app['tools']->text('moodLabel'),
-			'value' => template_mood_image($mood),
+			'value' => template_mood_image($mood, $user),
 			'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->enable('mood_placement') : 0,
 		);
 	}

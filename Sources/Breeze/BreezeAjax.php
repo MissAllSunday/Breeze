@@ -918,6 +918,10 @@ class BreezeAjax
 			// Go ahead and just save the var...
 			$this->_app['query']->insertUserSettings(array('mood'=> $this->_data->get('moodID')), $this->_currentUser);
 
+			// Get the image.
+			$allMoods = $this->_app['mood']->getActive();
+			$image = $allMoods[$this->_data->get('moodID')]['image_html'];
+
 			$moodHistory = $this->_userSettings['moodHistory'];
 
 			// User has no history, go make one then!
@@ -951,7 +955,8 @@ class BreezeAjax
 			return $this->setResponse(array(
 				'type' => 'success',
 				'message' => 'moodChanged',
-				'owner' => $this->_data->get('u'),
+				'data' => json_encode(array('user' => $this->_data->get('user'), 'image' => $image)),
+				'owner' => $this->_currentUser,
 				'extra' => array('area' => 'breezesettings',),
 			));
 		}

@@ -577,7 +577,7 @@ class Breeze extends Pimple
 
 		// Append the result to the  custom fields array. You need to be able to edit your own moods.
 		if ($currentUser && !isset($output['member']['custom_fields']['breeze_mood']))
-			$output['member']['custom_fields']['breeze_mood'] = $this['mood']->show($currentMood);
+			$output['member']['custom_fields']['breeze_mood'] = $this['mood']->show($currentMood, $output['member']['id']);
 	}
 
 	/**

@@ -435,7 +435,7 @@ function template_userDiv()
 </html>';
 }
 
-function template_mood_image($mood)
+function template_mood_image($mood, $user)
 {
 	global $scripturl, $txt, $context;
 
@@ -443,11 +443,11 @@ function template_mood_image($mood)
 
 	// First case, no mood and no link.
 	if (empty($mood))
-		return '<a href="'. $scripturl .'?action=breezemood" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'">'. $txt['Breeze_moodChange'] .'</a>';
+		return '<a href="'. $scripturl .'?action=breezemood;user='. $user .'" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'" data-user="'. $user .'">'. $txt['Breeze_moodChange'] .'</a>';
 
 	// Got a mood, show it!
 	else
-		return '<a href="'. $scripturl .'?action=breezemood" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'"><img src="'. $context['moodUrl'] . $mood['file'] .'.'. $mood['ext'] .'" alt="'. $mood['name'] .'" title="'. $mood['description'] .'" class="breeze_mood_image" /></a>';
+		return '<a href="'. $scripturl .'?action=breezemood;user='. $user .'" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'" data-user="'. $user .'">'. $mood['image_html'] .'</a>';
 }
 
 
@@ -482,7 +482,7 @@ function template_mood_change()
 
 			echo '
 					<td>
-						<a href="'. $scripturl .'?action=breezemood;save=1" rel="breezeMoodSave" data-id="'. $m['moods_id'] .'">'. $m['image_html'] .'</a>
+						<a href="'. $scripturl .'?action=breezemood;save=1;user='. $context['moodUser'] .'" rel="breezeMoodSave" data-id="'. $m['moods_id'] .'">'. $m['image_html'] .'</a>
 						'. (!empty($m['name']) ? '<p>'. $m['name'] .'</p>' : '') .'
 					</td>';
 		}
