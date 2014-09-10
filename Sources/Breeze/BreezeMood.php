@@ -130,7 +130,7 @@ class BreezeMood
 		return $return;
 	}
 
-	public function show($mood, $user)
+	public function show($mood, $user, $currentUser)
 	{
 		global $context;
 
@@ -143,7 +143,7 @@ class BreezeMood
 		return array(
 			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
 			'col_name' => $this->_app['tools']->text('moodLabel'),
-			'value' => template_mood_image($mood, $user),
+			'value' => template_mood_image($mood, $user, $currentUser),
 			'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->setting('mood_placement') : 0,
 		);
 	}
