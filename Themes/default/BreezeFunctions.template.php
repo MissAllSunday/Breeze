@@ -435,19 +435,22 @@ function template_userDiv()
 </html>';
 }
 
-function template_mood_image($mood, $user)
+function template_mood_image($mood, $user, $currentUser)
 {
 	global $scripturl, $txt, $context;
 
-	// There are 2 possible cases here: mood and link and no mood at all...
 
 	// First case, no mood and no link.
-	if (empty($mood))
+	if (empty($mood) && $currentUser)
 		return '<a href="'. $scripturl .'?action=breezemood;user='. $user .'" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'" data-user="'. $user .'">'. $txt['Breeze_moodChange'] .'</a>';
 
 	// Got a mood, show it!
-	else
+	elseif ($currentUser)
 		return '<a href="'. $scripturl .'?action=breezemood;user='. $user .'" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'" data-user="'. $user .'">'. $mood['image_html'] .'</a>';
+
+	// Just show the image...
+	else
+		return $mood['image_html'];
 }
 
 
