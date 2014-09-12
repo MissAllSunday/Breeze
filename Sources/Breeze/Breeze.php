@@ -223,49 +223,6 @@ class Breeze extends Pimple
 					'any' => array(),
 				),
 			);
-
-			// Notification's settings.
-			if ($tools->enable('notifications'))
-			{
-				$profile_areas['breeze_profile']['areas']['breezenotisettings'] = array(
-					'label' => $tools->text('user_settings_name_settings'),
-					'icon' => 'news.png',
-					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'BreezeUser::notiSettings#',
-					'enabled' => $context['user']['is_owner'],
-					'permission' => array(
-						'own' => 'profile_identity_own',
-						'any' => false,
-					),
-				);
-
-				// Notifications admin page
-				$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
-					'label' => $tools->text('user_notisettings_name'),
-					'icon' => 'features.png',
-					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'BreezeUser::notifications#',
-					'enabled' => $context['user']['is_owner'],
-					'permission' => array(
-						'own' => 'profile_identity_own',
-						'any' => false,
-					),
-				);
-			}
-
-			// Logs anyone?
-			if (!empty($userSettings['activityLog']))
-				$profile_areas['breeze_profile']['areas']['breezelogs'] = array(
-					'label' => $tools->text('user_notilogs_name'),
-					'icon' => 'features.png',
-					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'BreezeUser::notiLogs#',
-					'enabled' => $context['user']['is_owner'],
-					'permission' => array(
-						'own' => 'profile_identity_own',
-						'any' => false,
-					),
-				);
 		}
 		// Done with the hacking...
 	}
@@ -426,78 +383,6 @@ class Breeze extends Pimple
 		// Return false if the status/comment is no longer on the DB.
 		else
 			return false;
-	}
-
-	/**
-	 * Breeze::topic()
-	 *
-	 * Creates a new notification when someone opens a new topic.
-	 *
-	 * @param array $msgOptions   message info.
-	 * @param array $topicOptions topic info.
-	 * @param array $posterOptions poster info.
-	 *
-	 * @return void
-	 */
-	public function newTopic($msgOptions, $topicOptions, $posterOptions)
-	{
-		global $context, $txt, $scripturl, $user_info;
-
-		// We don't need the almighty power of breezeController anymore!
-		$noti = $this['notifications'];
-		$userSettings = $this['query']->getUserSettings($user_info['id']);
-
-		// Cheating, lets insert the notification directly, do it only if the topic was approved
-		if ($topicOptions['is_approved'] && !empty($userSettings['activityLog']))
-			$noti->create(array(
-				'sender' => $posterOptions['id'],
-				'receiver' => $posterOptions['id'],
-				'type' => 'logTopic',
-				'time' => time(),
-				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-				'content' => array(
-					'posterName' => $posterOptions['name'],
-					'topicId' => $topicOptions['id'],
-					'subject' => $msgOptions['subject'],
-					'board' => $topicOptions['board'],
-				),
-				'type_id' => $topicOptions['id'],
-				'second_type' => 'topics',
-			));
-	}
-
-	/**
-	 * Breeze::newRegister()
-	 *
-	 * Creates a new notification for new registrations
-	 *
-	 * @param array $regOptions An array containing info about the new member.
-	 * @param int   $user_id    the newly created user ID.
-	 *
-	 * @return void
-	 */
-	public static function newRegister($regOptions, $user_id)
-	{
-		global $context, $txt, $scripturl, $user_info;
-
-		// We need the almighty power of breezeController!
-		$noti = $this['notifications'];
-
-		// Cheating, lets insert the notification directly, do it only if the topic was approved
-		if ($topicOptions['is_approved'])
-			$noti->create(array(
-				'sender' => $user_id,
-				'receiver' => $user_id,
-				'type' => 'register',
-				'time' => time(),
-				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-				'content' => function() use ($regOptions, $scripturl, $text, $scripturl, $user_id)
-					{
-						return '<a href="'. $scripturl .'?action=profile;u='. $user_id . '">'. $regOptions['username'] .'</a> '. $tools->text('logRegister');
-					},
-				'type_id' => 0,
-				'second_type' => 'register',
-			));
 	}
 
 	/**
