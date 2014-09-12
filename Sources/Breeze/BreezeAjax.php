@@ -59,14 +59,10 @@ class BreezeAjax
 			'post' => 'post',
 			'postcomment' => 'postComment',
 			'delete' => 'delete',
-			'notimark' => 'notimark',
-			'notidelete' => 'notidelete',
-			'multiNoti' => 'multiNoti',
 			'usersmention' => 'usersMention',
 			'cleanlog' => 'cleanLog',
 			'fetch' => 'fetchStatus',
 			'fetchc' => 'fetchComment',
-			'fetchNoti' => 'fetchNoti',
 			'usersettings' => 'userSettings',
 			'cover' => 'cover',
 			'coverdelete' => 'coverDelete',
@@ -176,60 +172,11 @@ class BreezeAjax
 					'can_like' => allowedTo('breeze_canLike'),
 				);
 
-				// Build the notification(s) via BreezeMention
-				if ($this->_app['tools']->enable('mention'))
-					$this->_app['mention']->mention(
-						array(
-							'wall_owner' => $owner,
-							'wall_poster' => $poster,
-							'status_id' => $this->_params['id'],
-						),
-						array(
-							'name' => 'status',
-							'id' => $this->_params['id'],
-						)
-					);
-
 				// Parse the content.
 				$this->_params['body'] = $this->_app['parser']->display($this->_params['body']);
 
 				// The status was inserted, tell everyone!
 				call_integration_hook('integrate_breeze_after_insertStatus', array($this->_params));
-
-				$logStatus = $this->_params;
-				unset($logStatus['body']);
-
-				// Send out a log for this postingStatus action.
-				if (!empty($this->_userSettings['activityLog']))
-					$this->_app['notifications']->create(array(
-						'sender' => $poster,
-						'receiver' => $poster,
-						'type' => 'logStatus',
-						'time' => time(),
-						'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-						'content' => $logStatus,
-						'type_id' => $this->_params['id'],
-						'second_type' => 'status',
-					));
-
-				// Does the wall owner wants to be notified?
-				if ($owner != $poster)
-				{
-					// Get the wall owner's settings.
-					$uSettings = $this->_app['query']->getUserSettings($owner);
-
-					if (!empty($uSettings['noti_on_status']))
-						$this->_app['notifications']->create(array(
-							'sender' => $poster,
-							'receiver' => $owner,
-							'type' => 'wallOwner',
-							'time' => time(),
-							'viewed' => 0,
-							'content' => $logStatus,
-							'type_id' => $this->_params['id'],
-							'second_type' => 'status',
-						));
-				}
 
 				// Send the data back to the browser
 				return $this->setResponse(array(
@@ -323,78 +270,11 @@ class BreezeAjax
 					'can_like' => allowedTo('breeze_canLike'),
 				);
 
-				// Build the notification(s) for this comment via BreezeMention
-				if ($this->_app['tools']->enable('mention'))
-					$this->_app['mention']->mention(
-						array(
-							'wall_owner' => $owner,
-							'wall_poster' => $poster,
-							'wall_status_owner' => $statusPoster,
-							'comment_id' => $this->_params['id'],
-							'status_id' => $statusID,),
-						array(
-								'name' => 'comments',
-								'id' => $this->_params['id'],)
-					);
-
 				// Parse the content.
 				$this->_params['body'] = $this->_app['parser']->display($this->_params['body']);
 
 				// The comment was created, tell the world or just those who want to know...
 				call_integration_hook('integrate_breeze_after_insertComment', array($this->_params));
-
-				$logComment = $this->_params;
-				unset($logComment['body']);
-
-				// Send out a log for this posting action.
-				if (!empty($this->_userSettings['activityLog']))
-					$this->_app['notifications']->create(array(
-						'sender' => $poster,
-						'receiver' => $poster,
-						'type' => 'logComment',
-						'time' => time(),
-						'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-						'content' => $logComment,
-						'type_id' => $this->_params['id'],
-						'second_type' => 'comment',
-					));
-
-				// Does the Status poster wants to be notified? transitive relation anyone?
-				// This only applies if the wall owner, the status poster and the comment poster are different persons!
-				if (($owner != $poster) && ($poster != $statusPoster))
-				{
-					$uStatusSettings = $this->_app['query']->getUserSettings($poster);
-
-					if (!empty($uStatusSettings['noti_on_comment']))
-						$this->_app['notifications']->create(array(
-							'sender' => $poster,
-							'receiver' => $statusPoster,
-							'type' => 'commentStatus',
-							'time' => time(),
-							'viewed' => 0,
-							'content' => $logComment,
-							'type_id' => $this->_params['id'],
-							'second_type' => 'comment',
-						));
-				}
-
-				// Notify the profile owner someone made a comment on their wall, the poster, the profile owner and the status poster needs to be different.
-				if (($owner != $poster) && ($owner != $poster))
-				{
-					$uOwnerSettings = $this->_app['query']->getUserSettings($owner);
-
-					if (!empty($uStatusSettings['noti_on_comment_owner']))
-						$this->_app['notifications']->create(array(
-							'sender' => $poster,
-							'receiver' => $owner,
-							'type' => 'commentStatusOwner',
-							'time' => time(),
-							'viewed' => 0,
-							'content' => $logComment,
-							'type_id' => $this->_params['id'],
-							'second_type' => 'comment',
-						));
-				}
 
 				// Send the data back to the browser
 				return $this->setResponse(array(
@@ -526,166 +406,6 @@ class BreezeAjax
 	}
 
 	/**
-	 * BreezeAjax::notimark()
-	 *
-	 * Mark a notification as read
-	 * @return
-	 */
-	public function notimark()
-	{
-		checkSession('request', '', false);
-
-		// Get the global vars
-		$this->_data = Breeze::data('request');
-
-		// Get the data
-		$noti = $this->_data->get('content');
-		$user = $this->_data->get('user');
-
-		// Is this valid data?
-		if (empty($noti) || empty($user))
-			return $this->setResponse(array(
-				'message' => 'wrong_values',
-				'type' => 'error',
-				'extra' => array('area' => 'breezenoti',),
-				'owner' => $user,
-			));
-
-		// We must make sure this noti really exists, we just must!!!
-		$noti_temp = $this->_app['query']->getNotificationByReceiver($user, true);
-
-		if (empty($noti_temp['data']) || !isset($noti_temp['data'][$noti]))
-			return $this->setResponse(array(
-				'message' => 'already_deleted_noti',
-				'type' => 'error',
-				'extra' => array('area' => 'breezenoti',),
-				'owner' => $user,
-			));
-
-		else
-		{
-			// Whatever you choose, I'll do the opposite!
-			$viewed = !$noti_temp['data'][$noti]['viewed'];
-
-			// All is good, mark this as read
-			$this->_app['query']->markNoti($noti, $user, $viewed);
-
-			// All done!
-			return $this->setResponse(array(
-				'type' => 'success',
-				'message' => 'noti_'. ($viewed == 0 ? 'un' : '') .'markasread_after',
-				'owner' => $user,
-				'extra' => array('area' => 'breezenoti',),
-			));
-		}
-	}
-
-	/**
-	 * BreezeAjax::notidelete()
-	 *
-	 * Deletes a notification by ID
-	 * @return
-	 */
-	public function notidelete()
-	{
-		checkSession('request', '', false);
-
-		// Get the global vars
-		$this->_data = Breeze::data('request');
-
-		// Get the data
-		$noti = $this->_data->get('content');
-		$user = $this->_data->get('user');
-
-		// Is this valid data?
-		if (empty($noti) || empty($user))
-			return;
-
-		// Are we dealing with logs? if so, the process gets much much easier for me!
-		if ($this->_data->validate('log'))
-		{
-			$this->_app['query']->deleteNoti($noti, $user);
-
-			return $this->setResponse(array(
-				'type' => 'success',
-				'message' => 'noti_delete_after',
-				'owner' => $user,
-				'extra' => array('area' => 'breezelogs',),
-			));
-		}
-
-		// We must make sure this noti really exists, we just must!!!
-		$noti_temp = $this->_app['query']->getNotificationByReceiver($user, true);
-
-		if (empty($noti_temp['data']) || !array_key_exists($noti, $noti_temp['data']))
-			return $this->setResponse(array(
-				'message' => 'wrong_values',
-				'type' => 'error',
-				'extra' => array('area' => 'breezenoti',),
-				'owner' => $user,
-			));
-
-		else
-		{
-			// All good, delete it
-			$this->_app['query']->deleteNoti($noti, $user);
-
-			return $this->setResponse(array(
-				'type' => 'success',
-				'message' => 'noti_delete_after',
-				'owner' => $user,
-				'extra' => array('area' => 'breezenoti',),
-			));
-		}
-	}
-
-	/**
-	 * BreezeAjax::multiNoti()
-	 *
-	 * Handles mass actions, mark as read/unread and deletion of multiple notifications at once.
-	 * @return void
-	 */
-	public function multiNoti()
-	{
-		checkSession('request', '', false);
-
-		// Get the global vars
-		$this->_data = Breeze::data('request');
-
-		// Start with getting the data
-		$do = $this->_data->get('multiNotiOption');
-		$idNoti = $this->_data->get('idNoti');
-		$user = $this->_data->get('user');
-
-		if (empty($do) || empty($idNoti) || empty($user))
-			return $this->setResponse(array(
-				'message' => 'wrong_values',
-				'type' => 'error',
-				'extra' => array('area' => 'breezenoti',),
-				'owner' => $user,
-			));
-
-		else
-		{
-			// Figure it out what we're gonna do
-			$call = ($do == 'delete' ? 'delete' : 'mark') . 'Noti';
-
-			// Set the "viewed" var
-			$viewed = $do == 'read' ? 1 : 0;
-
-			// $set the "viewed" var
-			$this->_app['query']->$call($idNoti, $user, $viewed);
-
-			return $this->setResponse(array(
-				'type' => 'success',
-				'message' => $do == 'delete' ? 'notiMulti_delete_after' : ($viewed == 1 ? 'notiMulti_markasread_after' : 'notiMulti_unmarkasread_after'),
-				'owner' => $user,
-				'extra' => array('area' => $this->_data->validate('log') ? 'breezelogs' : 'breezenoti',),
-			));
-		}
-	}
-
-	/**
 	 * BreezeAjax::fetchStatus()
 	 *
 	 * Used for pagination, gets X amount of status from either a single wall or an array of buddies IDs.
@@ -750,28 +470,6 @@ class BreezeAjax
 	}
 
 	/**
-	 * BreezeAjax::fetchNoti()
-	 *
-	 * Gets all unread notifications for the passed user ID.
-	 * @return
-	 */
-	protected function fetchNoti()
-	{
-		checkSession('request', '', false);
-
-		$data = Breeze::data('request');
-		$u = $data->get('u');
-
-		// This is easy, get and return all notifications as a json object, don't  worry, the actual query is cached ;)
-		return $this->setResponse(array(
-			'type' => 'success',
-			'message' => 'success',
-			'data' => $this->_app['notifications']->doStream($u),
-			'owner' => $u, // Don't really need this, just send some dummy data.
-		));
-	}
-
-	/**
 	 * BreezeAjax::usersMention()
 	 *
 	 * Creates an array of searchable users
@@ -789,45 +487,6 @@ class BreezeAjax
 
 		// Lets see if there are any results to this search.
 		return $this->_response = $this->_app['query']->userMention($match);
-	}
-
-	/**
-	 * BreezeAjax::cleanLog()
-	 *
-	 * Deletes the visitors log for each user's wall.
-	 * @return void
-	 */
-	protected function cleanLog()
-	{
-		global $user_info;
-
-		checkSession('request', '', false);
-
-		// Get the global vars
-		$this->_data = Breeze::data('request');
-
-		// Get the data
-		$log = $this->_data->get('log');
-		$user = $this->_data->get('u');
-
-		// An extra check
-		if (empty($log) || empty($user) || $user_info['id'] != $user)
-			return $this->setResponse(array(
-				'message' => 'wrong_values',
-				'type' => 'error',
-				'extra' => array('area' => 'breezesettings',),
-				'owner' => $user,
-			));
-
-		// Ready to go!
-		$this->_app['query']->deleteViews($user);
-
-		return $this->setResponse(array(
-			'type' => 'success',
-			'message' => 'noti_visitors_clean',
-			'owner' => $user,
-			'extra' => array('area' => 'breezesettings',),
-		));
 	}
 
 	/**
