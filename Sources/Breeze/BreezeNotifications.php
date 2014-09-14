@@ -16,15 +16,6 @@ if (!defined('SMF'))
 
 class BreezeNotifications
 {
-	protected $_params = array();
-	protected $_user = 0;
-	protected $_returnArray = array();
-	protected $_usersData = array();
-	public $types = array();
-	protected $_currentUser;
-	protected $_currentUserSettings = array();
-	protected $_messages = array();
-	protected $loadedUsers = array();
 	protected $_app;
 
 	/**
@@ -37,5 +28,17 @@ class BreezeNotifications
 
 		// We kinda need all this stuff, don't' ask why, just nod your head...
 		$this->_app = $app;
+	}
+
+	public function insertTask($data)
+	{
+		global $smcFunc;
+
+		$smcFunc['db_insert']('insert',
+			'{db_prefix}background_tasks',
+			array('task_file' => 'string', 'task_class' => 'string', 'task_data' => 'string', 'claimed_time' => 'int'),
+			array('$sourcedir/tasks/Breeze-Notify.php', 'call', serialize($data), 0),
+			array('id_task')
+		);
 	}
 }
