@@ -16,30 +16,27 @@ if (!defined('SMF'))
 class BreezeNoti
 {
 	protected $_app;
-	protected $taskName;
 	protected $_details;
 
 	public function __construct($app)
 	{
-		global $smcFunc;
-
 		$this->_app = $app;
-		$this->_smcFunc = $smcFunc;
-		$thi->_taskName = '';
 	}
 
 	public function insert($params, $type)
 	{
+		global $smcFunc;
+
 		if (empty($params) || empty($type))
 			return false;
 
 		// Gotta append a type so we can pretend to know what we're doing...
-		$params['type'] = $type;
+		$params['bType'] = $type;
 
-		$this->_smcFunc['db_insert']('insert',
+		$smcFunc['db_insert']('insert',
 			'{db_prefix}background_tasks',
 			array('task_file' => 'string', 'task_class' => 'string', 'task_data' => 'string', 'claimed_time' => 'int'),
-			array('$sourcedir/tasks/Likes-Notify.php', 'Likes_Notify_Background', serialize($params), 0),
+			array('$sourcedir/tasks/Breeze_Notify.php', 'Breeze_Notify_Background', serialize($params), 0),
 			array('id_task')
 		);
 	}
@@ -50,5 +47,26 @@ class BreezeNoti
 			return false;
 
 		$this->_details = $details;
+
+		// Call the appropriated method.
+		if (in_array($this->_details['bType'], get_class_methods(__CLASS__)))
+			$details['bType']();
+
+		// else fir some error log, dunno...
+	}
+
+	protected function status()
+	{
+
+	}
+
+	protected function comment()
+	{
+
+	}
+
+	protected function cover()
+	{
+
 	}
 }
