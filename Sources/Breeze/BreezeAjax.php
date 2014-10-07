@@ -165,6 +165,9 @@ class BreezeAjax
 			// All went good or so it seems...
 			if (!empty($this->_params['id']))
 			{
+				// Time to fire up some notifications...
+				$this->_app['noti']->insert($this->_params, 'status');
+
 				// Likes.
 				$this->_params['likes'] =  array(
 					'count' => 0,
@@ -263,6 +266,9 @@ class BreezeAjax
 			// The Comment was inserted ORLY???
 			if (!empty($this->_params['id']))
 			{
+				// Time to fire up some notifications...
+				$this->_app['noti']->insert($this->_params, 'status');
+
 				// Likes.
 				$this->_params['likes'] =  array(
 					'count' => 0,

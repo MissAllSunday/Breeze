@@ -38,7 +38,7 @@ spl_autoload_register('breeze_autoloader');
 
 class Breeze extends Pimple
 {
-	protected $_services = array('admin', 'ajax', 'display', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall', 'mood',);
+	protected $_services = array('admin', 'ajax', 'display', 'form', 'log', 'mention', 'noti', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall', 'mood',);
 	public static $name = 'Breeze';
 	public static $version = '1.1';
 	public static $folder = '/Breeze/';
