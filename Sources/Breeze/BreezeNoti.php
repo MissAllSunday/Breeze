@@ -36,7 +36,7 @@ class BreezeNoti
 		$smcFunc['db_insert']('insert',
 			'{db_prefix}background_tasks',
 			array('task_file' => 'string', 'task_class' => 'string', 'task_data' => 'string', 'claimed_time' => 'int'),
-			array('$sourcedir/tasks/Breeze_Notify.php', 'Breeze_Notify_Background', serialize($params), 0),
+			array('$sourcedir/tasks/Breeze-Notify.php', 'Breeze_Notify_Background', serialize($params), 0),
 			array('id_task')
 		);
 	}
