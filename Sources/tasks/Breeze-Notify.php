@@ -12,13 +12,13 @@
 
 class Breeze_Notify_Background extends SMF_BackgroundTask
 {
-	function __construct()
-	{
-		// Performance my ass...
-		$this->_app = new Breeze();
-	}
-
 	public function execute()
 	{
+		// Performance my ass...
+		$app = new Breeze();
+		$app['noti']->call($this->_details);
+		unset($app);
+
+		return true;
 	}
 }
