@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breeze-Notify.php
+ * BreezeNoti
  *
  * @package Breeze mod
  * @version 1.1
@@ -10,15 +10,21 @@
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
-class Breeze_Notify_Background extends SMF_BackgroundTask
+if (!defined('SMF'))
+	die('No direct access...');
+
+class BreezeNoti
 {
-	function __construct()
+	public function __construct($app)
 	{
-		// Performance my ass...
-		$this->_app = new Breeze();
+		global $smcFunc;
+
+		$this->_app = $app;
+		$this->_smcFunc = $smcFunc;
 	}
 
-	public function execute()
+	public function insertMessage($params)
 	{
+
 	}
 }
