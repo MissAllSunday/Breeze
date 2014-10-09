@@ -886,50 +886,47 @@ class BreezeQuery
 			)
 		);
 
-		$result = ($smcFunc['db_num_rows']($request) > 0)
+		list($result) = $this->_smcFunc['db_fetch_row']($request);
+
 		$smcFunc['db_free_result']($request);
 
 		return $result;
 	}
-	public function insertNotification($array)
-	{
-		// We don't need this no more
-		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Receiver-'. $array['receiver'], '');
-		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Sender-'. $array['sender'], '');
 
-		$this->_smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['noti']['table']) .
-			'', array(
-			'sender' => 'int',
-			'receiver' => 'int',
-			'type' => 'string',
-			'time' => 'int',
-			'viewed' => 'int',
-			'content' => 'string',
-			'type_id' => 'int',
-			'second_type' => 'string',
-			), $array, array('id'));
+	public function createAlert($params)
+	{
+		if (empty($params))
+			return false;
+
+		$this->_smcFunc['db_insert']('insert', '{db_prefix}user_alerts', array('alert_time' => 'int', 'id_member' => 'int', 'id_member_started' => 'int', 'member_name' => 'string',
+				'content_type' => 'string', 'content_id' => 'int', 'content_action' => 'string', 'is_read' => 'int', 'extra' => 'string'), $params, array('id_alert'));
 	}
 
 	/**
-	 * BreezeQuery::markNoti()
+	 * BreezeQuery::updateAlert()
 	 *
-	 * Marks the specific notification entry as either read/unread 1 = read, 0 = unread
-	 * @param int $id The notification ID
+	 * Updates an existing user alert with new data
+	 * @param array a column => new value array
+	 * @param int|array a single ID or an array of IDs
 	 * @return
 	 */
-	public function markNoti($id, $user, $viewed)
+	public function updateAlert($params, $id)
 	{
-		// We don't need this no more
-		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Receiver-'. $user, '');
-		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Sender-'. $user, '');
+		if ((empty($params) || !is_array($params)) || empty($id))
+			return false;
+
+		// Create a nice formatted string.
+		$string = '';
+
+		foreach ($params as $column => $newValue)
+			$string .= ', '. $column .' = '. $newValue;
 
 		// Mark as viewed
 		$this->_smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables['noti']['table']) . '
-			SET viewed = {int:viewed}
+			SET '. ($string) .'
 			WHERE id '. (is_array($id) ? 'IN ({array_int:id})' : '= {int:id}'),
 			array(
-				'viewed' => (int) $viewed,
 				'id' => $id,
 			)
 		);
