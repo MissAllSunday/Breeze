@@ -52,18 +52,28 @@ class BreezeNoti
 
 		// User does not want to be notified...
 		if (empty($prefs[$this->_details['owner_id']][$this->_details['content_type'] . '_owner']))
-			return true;
+			return;
 
 		// Check if the same poster has already posted a status...
 		$spam = checkSpam($this->_details['owner_id'], 'like_owner', $this->_details['poster_id']);
 
 		// Theres a status already, just update the time...
 		if ($spam)
-			$this->_app['query']->updateAlert('alert_time', $this->_details['time_raw']);
+			$this->_app['query']->updateAlert(array('alert_time' => $this->_details['time_raw']), $spam);
 
 		// Nope! create the alert!
 		else
-			$this->_app['query']->createAlert();
+			$this->_app['query']->createAlert(array(
+				'alert_time' => $this->_details['time_raw'],
+				'id_member' => $this->_details['owner_id'],
+				'id_member_started' => $this->_details['poster_id'],
+				'member_name' => '',
+				'content_type' => $this->_details['content_type'] . '_owner',
+				'content_id' => $this->_details['id'],
+				'content_action' => '',
+				'is_read' => 0,
+				'extra' => ''
+			));
 	}
 
 	protected function comment()
