@@ -59,7 +59,7 @@ class BreezeNoti
 		// else fire some error log, dunno...
 	}
 
-	protected function checkSpam($user, $action)
+	protected function checkSpam($user, $action, $sender = false)
 	{
 		global $smcFunc;
 
@@ -74,12 +74,14 @@ class BreezeNoti
 				AND is_read = 0
 				AND content_type = {string:content_type}
 				AND content_id = {int:content_id}
-				AND content_action = {string:content_action}',
+				AND content_action = {string:content_action}
+				'. ($sender ? 'AND id_member_started = {int:sender}' : '') .'',
 			array(
 				'id_member' => $user,
 				'content_type' => $this->_details['content_type'],
 				'content_id' => $this->_details['id'],
 				'content_action' => $action,
+				'sender' => $sender,
 			)
 		);
 
@@ -91,7 +93,7 @@ class BreezeNoti
 
 	protected function status()
 	{
-		// Useless to fire you a notification for something you posted...
+		// Useless to fire you an alert for something you did...
 		if ($this->_details['owner_id'] == $this->_details['poster_id'])
 			return;
 
@@ -102,8 +104,20 @@ class BreezeNoti
 		if (empty($prefs[$this->_details['owner_id']][$this->_details['content_type'] . '_owner']))
 			return true;
 
-		// I will probably have to write an admin setting for this... I foresee way too many people asking why they don't get notified for each new status...
-		// Does the profile owner have any unread notifications for this same action?
+		// Check if the same poster has already posted a status...
+		$spam = checkSpam($this->_details['owner_id'], 'like_owner', $this->_details['poster_id']);
+
+		// Theres a status already, just update the time...
+		if ($spam)
+		{
+
+		}
+
+		// Nope! create the alert!
+		else
+		{
+
+		}
 	}
 
 	protected function comment()
