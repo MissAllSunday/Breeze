@@ -855,24 +855,42 @@ class BreezeQuery
 	}
 
 	/**
-	 * BreezeQuery::getNotifications()
+	 * BreezeQuery::notiSpam()
 	 *
-	 * Calls BreezeQuery::noti() if its corresponding property is empty
-	 * @see BreezeQuery::noti()
-	 * @return bool|array Either an boolean false or An array of data
+	 * Give the data given, checks if an alert has already been add tot the DB.
+	 * @param int $user The alert "receiver".
+	 * @param string $type a unique identifier.
+	 * @param int $id the unique ID for a given "action" if true, it means the mod will look for that very specific content, if not, the method will look for all contents.
+	 * @param int $sender the person who fired up the alert, commonly know as the "sender".
+	 * @return bool true if there is a match.
 	 */
-	public function getNotifications()
+	public function notiSpam($user, $type, $id = false, $sender = false)
 	{
-		return !empty($this->_noti) ? $this->_noti : $this->noti();
-	}
+		// No user? no action? no fun...
+		if (empty($user) || empty($action))
+			return true;
 
-	/**
-	 * BreezeQuery::insertNotification()
-	 *
-	 * Inserts a notification entry on the DB
-	 * @param array $array
-	 * @return void
-	 */
+		$request = $this->_smcFunc['db_query']('', '
+			SELECT id_alert
+			FROM {db_prefix}user_alerts
+			WHERE id_member = {int:id_member}
+				AND is_read = 0
+				AND content_type = {string:content_type}
+				'. ($id ? 'AND content_id = {int:content_id}' : '') .'
+				'. ($sender ? 'AND id_member_started = {int:sender}' : '') .'',
+			array(
+				'id_member' => $user,
+				'content_type' => $type,
+				'content_id' => $id,
+				'sender' => $sender,
+			)
+		);
+
+		$result = ($smcFunc['db_num_rows']($request) > 0)
+		$smcFunc['db_free_result']($request);
+
+		return $result;
+	}
 	public function insertNotification($array)
 	{
 		// We don't need this no more

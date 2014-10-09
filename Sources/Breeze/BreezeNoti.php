@@ -41,38 +41,6 @@ class BreezeNoti
 		// else fire some error log, dunno...
 	}
 
-	protected function checkSpam($user, $action, $sender = false)
-	{
-		global $smcFunc;
-
-		// No user? no action? no fun...
-		if (empty($user) || empty($action))
-			return true;
-
-		$request = $smcFunc['db_query']('', '
-			SELECT id_alert
-			FROM {db_prefix}user_alerts
-			WHERE id_member = {int:id_member}
-				AND is_read = 0
-				AND content_type = {string:content_type}
-				AND content_id = {int:content_id}
-				AND content_action = {string:content_action}
-				'. ($sender ? 'AND id_member_started = {int:sender}' : '') .'',
-			array(
-				'id_member' => $user,
-				'content_type' => $this->_details['content_type'],
-				'content_id' => $this->_details['id'],
-				'content_action' => $action,
-				'sender' => $sender,
-			)
-		);
-
-		$result = ($smcFunc['db_num_rows']($request) > 0)
-		$smcFunc['db_free_result']($request);
-
-		return $result;
-	}
-
 	protected function status()
 	{
 		// Useless to fire you an alert for something you did...
