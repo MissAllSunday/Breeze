@@ -20,7 +20,11 @@ class BreezeNoti
 
 	public function __construct($app)
 	{
+		global $sourcedir;
+
 		$this->_app = $app;
+
+		require_once($sourcedir . '/Subs-Notify.php');
 	}
 
 	public function insert($params, $type)
@@ -31,7 +35,7 @@ class BreezeNoti
 			return false;
 
 		// Gotta append a type so we can pretend to know what we're doing...
-		$params['bType'] = $type;
+		$params['content_type'] = $type;
 
 		$smcFunc['db_insert']('insert',
 			'{db_prefix}background_tasks',
@@ -49,15 +53,57 @@ class BreezeNoti
 		$this->_details = $details;
 
 		// Call the appropriated method.
-		if (in_array($this->_details['bType'], get_class_methods(__CLASS__)))
-			$details['bType']();
+		if (in_array($this->_details['content_type'], get_class_methods(__CLASS__)))
+			$details['content_type']();
 
-		// else fir some error log, dunno...
+		// else fire some error log, dunno...
+	}
+
+	protected function checkSpam($user, $action)
+	{
+		global $smcFunc;
+
+		// No user? no action? no fun...
+		if (empty($user) || empty($action))
+			return true;
+
+		$request = $smcFunc['db_query']('', '
+			SELECT id_alert
+			FROM {db_prefix}user_alerts
+			WHERE id_member = {int:id_member}
+				AND is_read = 0
+				AND content_type = {string:content_type}
+				AND content_id = {int:content_id}
+				AND content_action = {string:content_action}',
+			array(
+				'id_member' => $user,
+				'content_type' => $this->_details['content_type'],
+				'content_id' => $this->_details['id'],
+				'content_action' => $action,
+			)
+		);
+
+		$result = ($smcFunc['db_num_rows']($request) > 0)
+		$smcFunc['db_free_result']($request);
+
+		return $result;
 	}
 
 	protected function status()
 	{
+		// Useless to fire you a notification for something you posted...
+		if ($this->_details['owner_id'] == $this->_details['poster_id'])
+			return;
 
+		// Get the preferences for the profile owner
+		$prefs = getNotifyPrefs($this->_details['owner_id'], $this->_details['content_type'] . '_owner', true);
+
+		// User does not want to be notified...
+		if (empty($prefs[$this->_details['owner_id']][$this->_details['content_type'] . '_owner']))
+			return true;
+
+		// I will probably have to write an admin setting for this... I foresee way too many people asking why they don't get notified for each new status...
+		// Does the profile owner have any unread notifications for this same action?
 	}
 
 	protected function comment()
