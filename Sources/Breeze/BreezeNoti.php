@@ -27,24 +27,6 @@ class BreezeNoti
 		require_once($sourcedir . '/Subs-Notify.php');
 	}
 
-	public function insert($params, $type)
-	{
-		global $smcFunc;
-
-		if (empty($params) || empty($type))
-			return false;
-
-		// Gotta append a type so we can pretend to know what we're doing...
-		$params['content_type'] = $type;
-
-		$smcFunc['db_insert']('insert',
-			'{db_prefix}background_tasks',
-			array('task_file' => 'string', 'task_class' => 'string', 'task_data' => 'string', 'claimed_time' => 'int'),
-			array('$sourcedir/tasks/Breeze-Notify.php', 'Breeze_Notify_Background', serialize($params), 0),
-			array('id_task')
-		);
-	}
-
 	public function call($details)
 	{
 		if (empty($details) || !is_array($details))

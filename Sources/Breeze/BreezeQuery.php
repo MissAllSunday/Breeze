@@ -831,42 +831,27 @@ class BreezeQuery
 	}
 
 	/**
-	 * BreezeQuery::noti()
+	 * BreezeQuery::insertNoti()
 	 *
-	 * Loads all the notifications, uses cache when possible
-	 * @return array
+	 * Inserts all Breeze related background tasks.
+	 * @param array $params An array of params, DOH!
+	 * @params string $type a unique identifier.
+	 * @return void
 	 */
-	protected function noti()
+	public function insertNoti($params, $type)
 	{
-		// Use the cache please...
-		if (($this->_noti = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'],
-			120)) == null)
-		{
-			$result = $this->_smcFunc['db_query']('', '
-				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
-				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
-				', array()
-			);
+		if (empty($params) || empty($type))
+			return false;
 
-			// Populate the array like a boss!
-			while ($row = $this->_smcFunc['db_fetch_assoc']($result))
-				$this->_noti[$row['id']] = array(
-					'id' => $row['id'],
-					'sender' => $row['sender'],
-					'receiver' => $row['receiver'],
-					'type' => $row['type'],
-					'time' => $row['time'],
-					'viewed' => $row['viewed'],
-					'content' => !empty($row['content']) ? $row['content'] : array(),
-				);
+		// Gotta append a type so we can pretend to know what we're doing...
+		$params['content_type'] = $type;
 
-			$this->_smcFunc['db_free_result']($result);
-
-			// Cache this beauty
-			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'], $this->_noti, 120);
-		}
-
-		return $this->_noti;
+		$this->_smcFunc['db_insert']('insert',
+			'{db_prefix}background_tasks',
+			array('task_file' => 'string', 'task_class' => 'string', 'task_data' => 'string', 'claimed_time' => 'int'),
+			array('$sourcedir/tasks/Breeze-Notify.php', 'Breeze_Notify_Background', serialize($params), 0),
+			array('id_task')
+		);
 	}
 
 	/**
