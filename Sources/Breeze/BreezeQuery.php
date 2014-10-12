@@ -870,6 +870,9 @@ class BreezeQuery
 		if (empty($user) || empty($action))
 			return true;
 
+		// Append the "Breeze_" stuff to know this is, well, a Breeze alert...
+		$type = Breeze::$txtpattern . $type;
+
 		$request = $this->_smcFunc['db_query']('', '
 			SELECT id_alert
 			FROM {db_prefix}user_alerts

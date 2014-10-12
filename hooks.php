@@ -26,9 +26,8 @@
 		'integrate_profile_areas' => 'Breeze::profile#',
 		'integrate_valid_likes' => 'Breeze::likes#',
 		'integrate_find_like_author' => 'Breeze::handleLikes#',
-		'integrate_create_topic' => 'Breeze::newTopic#',
 		'integrate_prepare_display_context' => '$sourcedir/Breeze/Breeze.php|Breeze::mood#',
-		// 'integrate_register_after' => 'Breeze::newRegister',  @todo for SMF 2.1
+		'integrate_fetch_alerts' => '$sourcedir/Breeze/Breeze.php|Breeze::alerts#',
 	);
 
 	foreach ($hooks as $hook => $function)
