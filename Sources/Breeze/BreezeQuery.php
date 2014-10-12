@@ -901,6 +901,9 @@ class BreezeQuery
 		if (empty($params))
 			return false;
 
+		// Append the "Breeze_" stuff to know this is, well, a Breeze alert...
+		$params['content_type'] = Breeze::$txtpattern . $params['content_type'];
+
 		$this->_smcFunc['db_insert']('insert', '{db_prefix}user_alerts', array('alert_time' => 'int', 'id_member' => 'int', 'id_member_started' => 'int', 'member_name' => 'string', 'content_type' => 'string', 'content_id' => 'int', 'content_action' => 'string', 'is_read' => 'int', 'extra' => 'string'), $params, array('id_alert'));
 	}
 
