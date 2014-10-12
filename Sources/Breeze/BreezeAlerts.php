@@ -55,7 +55,7 @@ class BreezeAlerts
 			return;
 
 		// Check if the same poster has already posted a status...
-		$spam = checkSpam($this->_details['owner_id'], 'like_owner', $this->_details['poster_id']);
+		$spam = $this->_app['query']->notiSpam($this->_details['owner_id'], 'like_owner', $this->_details['poster_id']);
 
 		// Theres a status already, just update the time...
 		if ($spam)
@@ -83,7 +83,7 @@ class BreezeAlerts
 			return;
 
 		// Before getting all hyped up, lets see if the poster hasn't commented already.
-		$spam = checkSpam($this->_details['poster_id'], 'like_owner', $this->_details['poster_id']);
+		$spam = $this->_app['query']->notiSpam($this->_details['poster_id'], 'like_owner', $this->_details['poster_id']);
 
 		// OK, there's actually two people we need to alert and two different alert preferences, the profile owner and the status owner.
 		// I could probably make this even messier by adding a "notify me on replies to my status made on my own wall" or "notify me on replies to my status on any wall..."
