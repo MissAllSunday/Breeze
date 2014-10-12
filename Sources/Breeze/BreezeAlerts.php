@@ -18,6 +18,12 @@ class BreezeAlerts
 
 	public function __construct($app)
 	{
+		$this->_app = $app;
+	}
+
+	public function call($alerts)
+	{
+		// What type are we gonna show?
 	}
 
 

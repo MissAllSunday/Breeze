@@ -38,7 +38,7 @@ spl_autoload_register('breeze_autoloader');
 
 class Breeze extends Pimple
 {
-	protected $_services = array('admin', 'ajax', 'display', 'form', 'log', 'mention', 'noti', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall', 'mood',);
+	protected $_services = array('admin', 'ajax', 'alerts', 'display', 'form', 'log', 'mention', 'noti', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall', 'mood',);
 	public static $name = 'Breeze';
 	public static $version = '1.1';
 	public static $folder = '/Breeze/';
@@ -335,6 +335,24 @@ class Breeze extends Pimple
 
 		if (in_array($action, $a))
 			$this[$action]->call();
+	}
+
+	public function alerts(&$alerts)
+	{
+		$bAlerts = array();
+		$results = array();
+
+		// Get only what we want...
+		foreach ($alerts as $id => $a)
+			if (strpos($a['content_type'], Breeze::$txtpattern) !== false)
+				$bAlerts[$id] = $a;
+
+		// Get the results back from BreezeAlerts.
+		$results = $this['alerts']->call($bAlerts);
+
+		// Make sure BreezeAlerts returned an array...
+		if (!empty($results) && is_array($results))
+			$alerts = array_merge_recursive($alerts, $results);
 	}
 
 	public function likes($type, $content, $sa, $js, $extra)
