@@ -17,11 +17,26 @@ class BreezeTools
 {
 	protected $_pattern;
 	protected $_app;
+	public $sourceDir;
+	public $scriptUrl;
+	public $smcFunc;
+	public $settings;
+	public $boardDir;
+	public $boardUrl;
 
 	function __construct($app)
 	{
+		global $sourcedir, $scripturl, $smcFunc;
+		global $settings, $boarddir, $boardurl;
+
 		$this->_pattern = Breeze::$name .'_';
 		$this->_app = $app;
+		$this->sourceDir = $sourcedir;
+		$this->scriptUrl = $scripturl;
+		$this->smcFunc = $smcFunc;
+		$this->settings = $settings;
+		$this->boardDir = $boardir;
+		$this->boardUrl = $boardurl;
 	}
 
 	/**
