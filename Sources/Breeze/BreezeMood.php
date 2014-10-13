@@ -25,12 +25,10 @@ class BreezeMood
 
 	function __construct($app)
 	{
-		global $boarddir, $boardurl;
-
 		$this->_app = $app;
 
-		$this->imagesPath = $boarddir . Breeze::$coversFolder . $this->_moodFolder;
-		$this->imagesUrl = $boardurl . Breeze::$coversFolder . $this->_moodFolder;
+		$this->imagesPath = $this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_moodFolder;
+		$this->imagesUrl = $this->_app['tools']->boardUrl . Breeze::$coversFolder . $this->_moodFolder;
 	}
 
 	public function call()
