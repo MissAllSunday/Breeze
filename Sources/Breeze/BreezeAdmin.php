@@ -22,10 +22,9 @@ class BreezeAdmin
 
 	function call()
 	{
-		global $txt, $scripturl, $context, $sourcedir, $settings;
-		global $modSettings;
+		global $txt, $context, $modSettings;
 
-		require_once($sourcedir . '/ManageSettings.php');
+		require_once($this->_app['tools']->sourceDir . '/ManageSettings.php');
 		loadLanguage('BreezeAdmin');
 		loadtemplate('BreezeAdmin');
 
@@ -83,7 +82,7 @@ class BreezeAdmin
 
 	function main()
 	{
-		global $scripturl, $context;
+		global $context;
 
 		// Get the version
 		$context['Breeze']['version'] = Breeze::$version;
@@ -105,7 +104,7 @@ class BreezeAdmin
 
 	function settings()
 	{
-		global $scripturl, $context, $sourcedir, $txt;
+		global $context, $txt;
 
 		// Load stuff
 		$data = Breeze::data('request');
@@ -116,7 +115,7 @@ class BreezeAdmin
 			'description' => $this->_app['tools']->adminText('page_settings_desc'),
 		);
 
-		require_once($sourcedir . '/ManageServer.php');
+		require_once($this->_app['tools']->sourceDir . '/ManageServer.php');
 
 		$config_vars = array(
 			array('title', Breeze::$txtpattern .'page_settings'),
@@ -148,7 +147,7 @@ class BreezeAdmin
 		),
 		);
 
-		$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=settings;save';
+		$context['post_url'] = $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=settings;save';
 
 		// Saving?
 		if ($data->validate('save') == true)
@@ -163,7 +162,7 @@ class BreezeAdmin
 
 	function permissions()
 	{
-		global $scripturl, $context, $sourcedir, $txt;
+		global $context, $txt;
 
 		// This page needs the general strings.
 		loadLanguage(Breeze::$name);
@@ -177,7 +176,7 @@ class BreezeAdmin
 			'description' => $this->_app['tools']->adminText('page_permissions_desc'),
 		);
 
-		require_once($sourcedir . '/ManageServer.php');
+		require_once($this->_app['tools']->sourceDir . '/ManageServer.php');
 
 		$config_vars = array(
 			array('title', Breeze::$txtpattern .'page_permissions'),
@@ -186,7 +185,7 @@ class BreezeAdmin
 		foreach (Breeze::$permissions as $p)
 			$config_vars[] = array('permissions', 'breeze_'. $p, 0, $txt['permissionname_breeze_'. $p]);
 
-		$context['post_url'] = $scripturl . '?action=admin;area=breezeadmin;sa=permissions;save';
+		$context['post_url'] = $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=permissions;save';
 
 		// Saving?
 		if ($data->validate('save') == true)
@@ -201,7 +200,7 @@ class BreezeAdmin
 
 	public function moodList()
 	{
-		global $context, $sourcedir, $txt, $scripturl, $smcFunc;
+		global $context, $txt, $smcFunc;
 
 		// Gotta respect the master setting.
 		if (!$this->_app['tools']->enable('mood'))
@@ -240,7 +239,7 @@ class BreezeAdmin
 		$listOptions = array(
 			'id' => 'breeze_mood_list',
 			'title' => $this->_app['tools']->adminText('page_mood'),
-			'base_href' => $scripturl . '?action=admin;area=breezeadmin;sa=moodList',
+			'base_href' => $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodList',
 			'items_per_page' => 10,
 			'get_count' => array(
 				'function' => function () use ($context)
@@ -321,7 +320,7 @@ class BreezeAdmin
 					),
 					'data' => array(
 						'sprintf' => array(
-							'format' => '<a href="' . $scripturl . '?action=admin;area=breezeadmin;sa=moodEdit;moodID=%1$s">' . $txt['smileys_modify'] . '</a>',
+							'format' => '<a href="' . $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodEdit;moodID=%1$s">' . $txt['smileys_modify'] . '</a>',
 							'params' => array(
 								'moods_id' => true,
 							),
@@ -346,17 +345,17 @@ class BreezeAdmin
 				),
 			),
 			'form' => array(
-				'href' => $scripturl . '?action=admin;area=breezeadmin;sa=moodList;delete=1',
+				'href' => $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodList;delete=1',
 			),
 			'additional_rows' => array(
 				array(
 					'position' => 'below_table_data',
-					'value' => '<input type="submit" name="delete" value="' . $txt['quickmod_delete_selected'] . '" class="button_submit"> <a class="button_link" href="' . $scripturl . '?action=admin;area=breezeadmin;sa=moodEdit">' . $txt['icons_add_new'] . '</a>',
+					'value' => '<input type="submit" name="delete" value="' . $txt['quickmod_delete_selected'] . '" class="button_submit"> <a class="button_link" href="' . $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodEdit">' . $txt['icons_add_new'] . '</a>',
 				),
 			),
 		);
 
-		require_once($sourcedir . '/Subs-List.php');
+		require_once($this->_app['tools']->sourceDir . '/Subs-List.php');
 		createList($listOptions);
 
 		// So, are we deleting?
