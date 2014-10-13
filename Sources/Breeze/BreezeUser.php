@@ -28,9 +28,8 @@ class BreezeUser extends Breeze
 	 */
 	function wall()
 	{
-		global $txt, $scripturl, $context, $memberContext, $sourcedir;
-		global $modSettings,  $user_info, $memID, $settings, $boarddir;
-		global $boardurl;
+		global $txt, $context, $memberContext;
+		global $modSettings,  $user_info, $memID;
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
@@ -95,13 +94,13 @@ class BreezeUser extends Breeze
 			'can_issue_warning' => allowedTo('issue_warning') && $modSettings['warning_settings'][0] == 1,
 			'can_view_warning' => (allowedTo('moderate_forum') || allowedTo('issue_warning') || allowedTo('view_warning_any') || ($context['user']['is_owner'] && allowedTo('view_warning_own')) && $modSettings['warning_settings'][0] === 1)
 		);
-		$context['canonical_url'] = $scripturl . '?action=profile;u=' . $context['member']['id'];
+		$context['canonical_url'] = $this['tools']->scriptUrl . '?action=profile;u=' . $context['member']['id'];
 		$context['member']['status'] = array();
 		$context['Breeze']['tools'] = $tools;
 
 		// Can this user have a cover?
-		if ($tools->setting('cover') && allowedTo('breeze_canCover') && !empty($context['Breeze']['settings']['owner']['cover']) && file_exists($boarddir . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']))
-			$context['Breeze']['cover'] = $boardurl . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover'];
+		if ($tools->setting('cover') && allowedTo('breeze_canCover') && !empty($context['Breeze']['settings']['owner']['cover']) && file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']))
+			$context['Breeze']['cover'] = $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover'];
 
 		// Set up some vars for pagination
 		$maxIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;
@@ -207,8 +206,7 @@ class BreezeUser extends Breeze
 	 */
 	function settings()
 	{
-		global $context, $scripturl, $txt, $modSettings;
-		global $user_info, $settings, $boardurl, $boarddir;
+		global $context, $txt, $modSettings, $user_info;
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
@@ -314,7 +312,7 @@ class BreezeUser extends Breeze
 		// Clean visitors log
 		$form->addHTML(
 			'clean_visitors',
-			'<a href="'. $scripturl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="clean_log">%s</a>'
+			'<a href="'. $this['tools']->scriptUrl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="clean_log">%s</a>'
 		);
 
 		// About me textarea.
@@ -333,8 +331,8 @@ class BreezeUser extends Breeze
 			if (!empty($userSettings['cover']))
 				$form->addHTML(
 					'cover_delete',
-					'<a href="'. $scripturl .'?action=breezeajax;sa=coverdelete;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="cover_delete">%s</a>
-					'. (file_exists($boarddir . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']) ? '<br /><img src="'. $boardurl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover'] .'" class ="" />' : '') .''
+					'<a href="'. $this['tools']->scriptUrl .'?action=breezeajax;sa=coverdelete;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="cover_delete">%s</a>
+					'. (file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']) ? '<br /><img src="'. $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover'] .'" class ="" />' : '') .''
 				);
 
 			// Cover upload option
@@ -352,13 +350,13 @@ class BreezeUser extends Breeze
 
 			// Print some jQuery goodies...
 			$context['insert_after_template'] .= '
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.ui.widget.js"></script>
+			<script type="text/javascript" src="'. $this['tools']->settings['default_theme_url'] .'/js/fileUpload/jquery.ui.widget.js"></script>
 			<script src="http://blueimp.github.io/JavaScript-Load-Image/js/load-image.min.js"></script>
 			<script src="http://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.iframe-transport.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.fileupload.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.fileupload-process.js"></script>
-			<script type="text/javascript" src="'. $settings['default_theme_url'] .'/js/fileUpload/jquery.fileupload-image.js"></script>
+			<script type="text/javascript" src="'. $this['tools']->settings['default_theme_url'] .'/js/fileUpload/jquery.iframe-transport.js"></script>
+			<script type="text/javascript" src="'. $this['tools']->settings['default_theme_url'] .'/js/fileUpload/jquery.fileupload.js"></script>
+			<script type="text/javascript" src="'. $this['tools']->settings['default_theme_url'] .'/js/fileUpload/jquery.fileupload-process.js"></script>
+			<script type="text/javascript" src="'. $this['tools']->settings['default_theme_url'] .'/js/fileUpload/jquery.fileupload-image.js"></script>
 			<script type="text/javascript"><!-- // --><![CDATA[
 	jQuery(function () {
 		\'use strict\';
@@ -385,7 +383,7 @@ class BreezeUser extends Breeze
 					$(\'#fileupload\').prop(\'disabled\', false);
 				});
 		jQuery(\'#fileupload\').fileupload({
-			url: '. JavaScriptEscape($scripturl .'?action=breezeajax;sa=cover;u='. $context['member']['id'] .';rf=profile;js=1;'. $context['session_var'] .'='. $context['session_id']) .',
+			url: '. JavaScriptEscape($this['tools']->scriptUrl .'?action=breezeajax;sa=cover;u='. $context['member']['id'] .';rf=profile;js=1;'. $context['session_var'] .'='. $context['session_id']) .',
 			dataType: \'json\',
 			autoUpload: false,
 			getNumberOfFiles: 1,
@@ -479,7 +477,7 @@ class BreezeUser extends Breeze
 	 */
 	function notiSettings()
 	{
-		global $context, $memID, $scripturl, $txt, $user_info;
+		global $context, $memID, $txt, $user_info;
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
@@ -550,7 +548,7 @@ class BreezeUser extends Breeze
 	 */
 	function notifications()
 	{
-		global $context, $user_info, $scripturl, $options;
+		global $context, $user_info, $options;
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
@@ -581,7 +579,7 @@ class BreezeUser extends Breeze
 		$context['sub_template'] = 'user_notifications';
 		$context['page_title'] = $tools->text('noti_title');
 		$context['member']['is_owner'] = $context['member']['id'] == $user_info['id'];
-		$context['canonical_url'] = $scripturl . '?action=profile;area=notifications;u=' . $context['member']['id'];
+		$context['canonical_url'] = $this['tools']->scriptUrl . '?action=profile;area=notifications;u=' . $context['member']['id'];
 		$context['Breeze']['is_log'] = false;
 
 		// Print some jQuery goodies...
@@ -601,7 +599,7 @@ class BreezeUser extends Breeze
 	 */
 	function notiLogs()
 	{
-		global $context, $user_info, $scripturl, $options;
+		global $context, $user_info, $options;
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
@@ -628,7 +626,7 @@ class BreezeUser extends Breeze
 		$context['sub_template'] = 'user_notifications';
 		$context['page_title'] = $tools->text('user_notilogs_name');
 		$context['member']['is_owner'] = $context['member']['id'] == $user_info['id'];
-		$context['canonical_url'] = $scripturl . '?action=profile;area=breezelogs;u=' . $context['member']['id'];
+		$context['canonical_url'] = $this['tools']->scriptUrl . '?action=profile;area=breezelogs;u=' . $context['member']['id'];
 
 		// Print some jQuery goodies...
 		$context['insert_after_template'] .= '
@@ -647,7 +645,7 @@ class BreezeUser extends Breeze
 	 */
 	function breezeBuddyRequest()
 	{
-		global $context, $user_info, $scripturl, $memberContext, $breezeController;
+		global $context, $user_info, $memberContext, $breezeController;
 
 		// Do a quick check to ensure people aren't getting here illegally!
 		if (!$context['member']['is_owner'])
@@ -669,7 +667,7 @@ class BreezeUser extends Breeze
 		// Set all the page stuff
 		$context['sub_template'] = 'Breeze_buddy_list';
 		$context['page_title'] = $tools->text('noti_title');
-		$context['canonical_url'] = $scripturl . '?action=profile;area=breezebuddies;u=' . $context['member']['id'];
+		$context['canonical_url'] = $this['tools']->scriptUrl . '?action=profile;area=breezebuddies;u=' . $context['member']['id'];
 
 		// Show a nice message for confirmation
 		if ($data->validate('inner') == true)
@@ -748,7 +746,7 @@ class BreezeUser extends Breeze
 	/* // Show all possible message regarding the buddy system
 	function breezeBuddyMessage()
 	{
-		global $context, $scripturl, $breezeController;
+		global $context, $breezeController;
 
 		loadtemplate('BreezeBuddy');
 
@@ -767,7 +765,7 @@ class BreezeUser extends Breeze
 		// Set all the page stuff
 		$context['sub_template'] = 'Breeze_buddy_message';
 		$context['page_title'] = $tools->text('noti_title');
-		$context['canonical_url'] = $scripturl . '?action=breezebuddyrequest';
+		$context['canonical_url'] = $this['tools']->scriptUrl . '?action=breezebuddyrequest';
 
 		// Linktree here someday!
 
