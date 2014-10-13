@@ -1372,8 +1372,6 @@ class BreezeQuery
 	 */
 	public function userMention($match)
 	{
-		global $sourcedir;
-
 		// By default we return these empty values
 		$return = array(
 			'name' => '',
@@ -1397,7 +1395,7 @@ class BreezeQuery
 			$return = array();
 
 			// We need a function in a file far far away...
-			require_once($sourcedir . '/Subs-Members.php');
+			require_once($this->_app['tools']->sourceDir . '/Subs-Members.php');
 
 			// Get the members allowed to be mentioned
 			$allowedMembers = array_values(membersAllowedTo('breeze_beMentioned'));
