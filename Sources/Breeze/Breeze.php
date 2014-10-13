@@ -345,7 +345,10 @@ class Breeze extends Pimple
 		// Get only what we want...
 		foreach ($alerts as $id => $a)
 			if (strpos($a['content_type'], Breeze::$txtpattern) !== false)
+			{
+				$a['content_type'] = str_replace(Breeze::$txtpattern, '', $a['content_type']);
 				$bAlerts[$id] = $a;
+			}
 
 		// Get the results back from BreezeAlerts.
 		$results = $this['alerts']->call($bAlerts);
