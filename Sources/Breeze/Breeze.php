@@ -380,7 +380,7 @@ class Breeze extends Pimple
 
 		$this['query']->updateLikes($convert[$type], $content, $numLikes);
 
-		// @todo this is a nice place to fire up some notifications...
+		// Set some needed alerts...
 	}
 
 	public function handleLikes($type, $content)

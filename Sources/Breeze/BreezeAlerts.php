@@ -16,9 +16,16 @@ if (!defined('SMF'))
 class BreezeAlerts
 {
 	protected $_alerts;
+	protected $_app;
+	protected $_usersData;
+	protected $_scriptUrl;
 
 	public function __construct($app)
 	{
+		global $memberContext, $scripturl;
+
+		$this->_usersData = $memberContext;
+		$this->
 		$this->_app = $app;
 	}
 
@@ -39,7 +46,8 @@ class BreezeAlerts
 	// Weird name, I know...
 	protected function status_owner()
 	{
-
+		// Build a link to it.
+		$link =
 	}
 
 	protected function comment_status_owner()
