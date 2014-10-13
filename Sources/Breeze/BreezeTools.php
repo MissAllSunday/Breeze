@@ -35,7 +35,7 @@ class BreezeTools
 		$this->scriptUrl = $scripturl;
 		$this->smcFunc = $smcFunc;
 		$this->settings = $settings;
-		$this->boardDir = $boardir;
+		$this->boardDir = $boarddir;
 		$this->boardUrl = $boardurl;
 	}
 
