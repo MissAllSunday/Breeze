@@ -339,23 +339,8 @@ class Breeze extends Pimple
 
 	public function alerts(&$alerts)
 	{
-		$bAlerts = array();
-		$results = array();
-
-		// Get only what we want...
-		foreach ($alerts as $id => $a)
-			if (strpos($a['content_type'], Breeze::$txtpattern) !== false)
-			{
-				$a['content_type'] = str_replace(Breeze::$txtpattern, '', $a['content_type']);
-				$bAlerts[$id] = $a;
-			}
-
 		// Get the results back from BreezeAlerts.
-		$results = $this['alerts']->call($bAlerts);
-
-		// Make sure BreezeAlerts returned an array...
-		if (!empty($results) && is_array($results))
-			$alerts = array_merge_recursive($alerts, $results);
+		$this['alerts']->call($alerts);
 	}
 
 	public function likes($type, $content, $sa, $js, $extra)

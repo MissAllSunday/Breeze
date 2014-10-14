@@ -31,32 +31,28 @@ class BreezeAlerts
 		$this->_app['tools']->loadLanguage('alerts');
 	}
 
-	public function call($alerts)
+	public function call(&$alerts)
 	{
 		$this->_alerts = $alerts;
 
 		// What type are we gonna handle? oh boy there are a lot!
 		foreach ($alerts as $id => $a)
-			if(method_exists($this, $a['content_type']))
-				$this->$a['content_type']($id);
-
-		// Fill out an error, dunno...
-
-		// Don't forget to return the array.
-		return $this->_alerts;
+			if (strpos($a['content_type'], Breeze::$txtpattern) !== false)
+			{
+				$a['content_type'] = str_replace(Breeze::$txtpattern, '', $a['content_type']);
+				if(method_exists($this, $a['content_type']))
+					$alerts[$id]['text'] = $this->$a['content_type']($id);
+			}
 	}
 
 	// Weird name, I know...
 	protected function status_owner($id)
 	{
-		if (empty($id))
-			return;
-
 		// Build a link to it.
-		$link = = $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['id_member'] .
+		$link = $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['sender_id'] .
 			';bid=' . $this->_alerts[$id]['content_id'];
 
-		$this->_alerts[$id]['text'] = sprintf($this->_app['tools']->text('noti_posted_wall'), $this->_usersData[$this->_alerts[$id]['sender_id']]['link'], $link);
+		return sprintf($this->_app['tools']->text('noti_posted_wall'), $this->_usersData[$this->_alerts[$id]['sender_id']]['link'], $link);
 	}
 
 	protected function comment_status_owner()
