@@ -842,7 +842,7 @@ class BreezeQuery
 		// Gotta append a type so we can pretend to know what we're doing...
 		$params['content_type'] = $type;
 
-		$this->_smcFunc['db_insert']('insert',
+		$this->_app['tools']->smcFunc['db_insert']('insert',
 			'{db_prefix}background_tasks',
 			array('task_file' => 'string', 'task_class' => 'string', 'task_data' => 'string', 'claimed_time' => 'int'),
 			array('$sourcedir/tasks/Breeze-Notify.php', 'Breeze_Notify_Background', serialize($params), 0),
@@ -869,7 +869,7 @@ class BreezeQuery
 		// Append the "Breeze_" stuff to know this is, well, a Breeze alert...
 		$type = Breeze::$txtpattern . $type;
 
-		$request = $this->_smcFunc['db_query']('', '
+		$request = $this->_app['tools']->smcFunc['db_query']('', '
 			SELECT id_alert
 			FROM {db_prefix}user_alerts
 			WHERE id_member = {int:id_member}
@@ -885,7 +885,7 @@ class BreezeQuery
 			)
 		);
 
-		list($result) = $this->_smcFunc['db_fetch_row']($request);
+		list($result) = $this->_app['tools']->smcFunc['db_fetch_row']($request);
 
 		$smcFunc['db_free_result']($request);
 
@@ -900,7 +900,7 @@ class BreezeQuery
 		// Append the "Breeze_" stuff to know this is, well, a Breeze alert...
 		$params['content_type'] = Breeze::$txtpattern . $params['content_type'];
 
-		$this->_smcFunc['db_insert']('insert', '{db_prefix}user_alerts', array('alert_time' => 'int', 'id_member' => 'int', 'id_member_started' => 'int', 'member_name' => 'string', 'content_type' => 'string', 'content_id' => 'int', 'content_action' => 'string', 'is_read' => 'int', 'extra' => 'string'), $params, array('id_alert'));
+		$this->_app['tools']->smcFunc['db_insert']('insert', '{db_prefix}user_alerts', array('alert_time' => 'int', 'id_member' => 'int', 'id_member_started' => 'int', 'member_name' => 'string', 'content_type' => 'string', 'content_id' => 'int', 'content_action' => 'string', 'is_read' => 'int', 'extra' => 'string'), $params, array('id_alert'));
 	}
 
 	/**
