@@ -26,6 +26,9 @@ class BreezeAlerts
 
 		$this->_usersData = $memberContext;
 		$this->_app = $app;
+
+		// We are gonna need some alerts language strings...
+		$this->_app['tools']->loadLanguage('alerts');
 	}
 
 	public function call($alerts)
@@ -52,6 +55,8 @@ class BreezeAlerts
 		// Build a link to it.
 		$link = = $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['id_member'] .
 			';bid=' . $this->_alerts[$id]['content_id'];
+
+		$this->_alerts[$id]['text'] = sprintf($this->_app['tools']->text('noti_posted_wall'), $this->_usersData[$this->_alerts[$id]['sender_id']]['link'], $link);
 	}
 
 	protected function comment_status_owner()

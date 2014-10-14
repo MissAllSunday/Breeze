@@ -543,7 +543,6 @@ class Breeze extends Pimple
 			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodList'] = array($tools->text('page_mood'));
 			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodEdit'] = array($tools->text('page_mood_create'));
 		}
-
 	}
 
 	/**
