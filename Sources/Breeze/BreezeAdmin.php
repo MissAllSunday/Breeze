@@ -18,6 +18,9 @@ class BreezeAdmin
 	public function __construct($app)
 	{
 		$this->_app = $app;
+
+		// We are gonna need some admin language strings...
+		$this->_app['tools']->loadLanguage('admin');
 	}
 
 	function call()
@@ -55,7 +58,7 @@ class BreezeAdmin
 		// Admin bits
 		loadJavascriptFile('jquery.zrssfeed.js', array('local' => true, 'default_theme' => true));
 		addInlineJavascript('
-		var breeze_feed_error_message = '. JavaScriptEscape($this->_app['tools']->adminText('feed_error_message')) .';', true);
+		var breeze_feed_error_message = '. JavaScriptEscape($this->_app['tools']->text('feed_error_message')) .';', true);
 
 		addInlineJavascript('
 		$(document).ready(function (){
@@ -91,11 +94,11 @@ class BreezeAdmin
 		$context['Breeze']['support'] = Breeze::$supportSite;
 
 		// Set all the page stuff
-		$context['page_title'] = $this->_app['tools']->adminText('page_main');
+		$context['page_title'] = $this->_app['tools']->text('page_main');
 		$context['sub_template'] = 'admin_home';
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
-			'description' => $this->_app['tools']->adminText('page_welcome'),
+			'description' => $this->_app['tools']->text('page_welcome'),
 		);
 
 		// Get the credits.
@@ -109,29 +112,29 @@ class BreezeAdmin
 		// Load stuff
 		$data = Breeze::data('request');
 		$context['sub_template'] = 'show_settings';
-		$context['page_title'] = Breeze::$name .' - '. $this->_app['tools']->adminText('page_settings');
+		$context['page_title'] = Breeze::$name .' - '. $this->_app['tools']->text('page_settings');
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
-			'description' => $this->_app['tools']->adminText('page_settings_desc'),
+			'description' => $this->_app['tools']->text('page_settings_desc'),
 		);
 
 		require_once($this->_app['tools']->sourceDir . '/ManageServer.php');
 
 		$config_vars = array(
 			array('title', Breeze::$txtpattern .'page_settings'),
-			array('check', Breeze::$txtpattern .'master', 'subtext' => $this->_app['tools']->adminText('master_sub')),
-			array('check', Breeze::$txtpattern .'force_enable', 'subtext' => $this->_app['tools']->adminText('force_enable_sub')),
-			array('check', Breeze::$txtpattern .'notifications', 'subtext' => $this->_app['tools']->adminText('notifications_sub')),
-			array('text', Breeze::$txtpattern .'allowed_actions', 'size' => 60, 'subtext' => $this->_app['tools']->adminText('allowed_actions_sub')),
-			array('check', Breeze::$txtpattern .'mention', 'subtext' => $this->_app['tools']->adminText('mention_sub')),
-			array('int', Breeze::$txtpattern .'mention_limit', 'size' => 3, 'subtext' => $this->_app['tools']->adminText('mention_limit_sub')),
-			array('int', Breeze::$txtpattern .'allowed_max_num_users', 'size' => 3, 'subtext' => $this->_app['tools']->adminText('allowed_max_num_users_sub')),
-			array('check', Breeze::$txtpattern .'parseBBC', 'subtext' => $this->_app['tools']->adminText('parseBBC_sub')),
-			array('int', Breeze::$txtpattern .'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this->_app['tools']->adminText('allowed_maxlength_aboutMe_sub')),
-			array('check', Breeze::$txtpattern .'cover', 'subtext' => $this->_app['tools']->adminText('cover_sub')),
-			array('check', Breeze::$txtpattern .'likes', 'subtext' => $this->_app['tools']->adminText('likes_sub')),
-			array('check', Breeze::$txtpattern .'mood', 'subtext' => $this->_app['tools']->adminText('mood_sub')),
-			array('check', Breeze::$txtpattern .'mood_label', 'subtext' => $this->_app['tools']->adminText('mood_label_sub')),
+			array('check', Breeze::$txtpattern .'master', 'subtext' => $this->_app['tools']->text('master_sub')),
+			array('check', Breeze::$txtpattern .'force_enable', 'subtext' => $this->_app['tools']->text('force_enable_sub')),
+			array('check', Breeze::$txtpattern .'notifications', 'subtext' => $this->_app['tools']->text('notifications_sub')),
+			array('text', Breeze::$txtpattern .'allowed_actions', 'size' => 60, 'subtext' => $this->_app['tools']->text('allowed_actions_sub')),
+			array('check', Breeze::$txtpattern .'mention', 'subtext' => $this->_app['tools']->text('mention_sub')),
+			array('int', Breeze::$txtpattern .'mention_limit', 'size' => 3, 'subtext' => $this->_app['tools']->text('mention_limit_sub')),
+			array('int', Breeze::$txtpattern .'allowed_max_num_users', 'size' => 3, 'subtext' => $this->_app['tools']->text('allowed_max_num_users_sub')),
+			array('check', Breeze::$txtpattern .'parseBBC', 'subtext' => $this->_app['tools']->text('parseBBC_sub')),
+			array('int', Breeze::$txtpattern .'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this->_app['tools']->text('allowed_maxlength_aboutMe_sub')),
+			array('check', Breeze::$txtpattern .'cover', 'subtext' => $this->_app['tools']->text('cover_sub')),
+			array('check', Breeze::$txtpattern .'likes', 'subtext' => $this->_app['tools']->text('likes_sub')),
+			array('check', Breeze::$txtpattern .'mood', 'subtext' => $this->_app['tools']->text('mood_sub')),
+			array('check', Breeze::$txtpattern .'mood_label', 'subtext' => $this->_app['tools']->text('mood_label_sub')),
 			array('select', Breeze::$txtpattern .'mood_placement',
 			array(
 				$txt['custom_edit_placement_standard'],
@@ -142,7 +145,7 @@ class BreezeAdmin
 				$txt['custom_profile_placement_above_name'],
 				$txt['custom_profile_placement_bottom'],
 			),
-			'subtext' => $this->_app['tools']->adminText('mood_placement_sub'),
+			'subtext' => $this->_app['tools']->text('mood_placement_sub'),
 			'multiple' => false,
 		),
 		);
@@ -170,10 +173,10 @@ class BreezeAdmin
 		// Load stuff
 		$data = Breeze::data('request');
 		$context['sub_template'] = 'show_settings';
-		$context['page_title'] = Breeze::$name .' - '. $this->_app['tools']->adminText('page_permissions');
+		$context['page_title'] = Breeze::$name .' - '. $this->_app['tools']->text('page_permissions');
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
-			'description' => $this->_app['tools']->adminText('page_permissions_desc'),
+			'description' => $this->_app['tools']->text('page_permissions_desc'),
 		);
 
 		require_once($this->_app['tools']->sourceDir . '/ManageServer.php');
@@ -218,10 +221,10 @@ class BreezeAdmin
 			unset($_SESSION['breeze']);
 
 		// Set all the page stuff.
-		$context['page_title'] = $this->_app['tools']->adminText('page_mood');
+		$context['page_title'] = $this->_app['tools']->text('page_mood');
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
-			'description' => $this->_app['tools']->adminText('page_mood_desc'),
+			'description' => $this->_app['tools']->text('page_mood_desc'),
 		);
 		$context['sub_template'] = 'manage_mood';
 
@@ -238,7 +241,7 @@ class BreezeAdmin
 		// Lets use SMF's createList...
 		$listOptions = array(
 			'id' => 'breeze_mood_list',
-			'title' => $this->_app['tools']->adminText('page_mood'),
+			'title' => $this->_app['tools']->text('page_mood'),
 			'base_href' => $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodList',
 			'items_per_page' => 10,
 			'get_count' => array(
@@ -395,10 +398,10 @@ class BreezeAdmin
 		$context['mood']['id'] = $data->get('moodID') ? $data->get('moodID') : false;
 
 		// Set all the page stuff
-		$context['page_title'] = $this->_app['tools']->adminText('page_mood_edit_'.($context['mood']['id'] ? 'update' : 'create'));
+		$context['page_title'] = $this->_app['tools']->text('page_mood_edit_'.($context['mood']['id'] ? 'update' : 'create'));
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
-			'description' => $this->_app['tools']->adminText('page_mood_edit_'.($context['mood']['id'] ? 'update' : 'create') .'_desc'),
+			'description' => $this->_app['tools']->text('page_mood_edit_'.($context['mood']['id'] ? 'update' : 'create') .'_desc'),
 		);
 		$context['sub_template'] = 'manage_mood_edit';
 		$context['mood'] = array();
@@ -547,12 +550,12 @@ class BreezeAdmin
 		global $context;
 
 		// Page stuff
-		$context['page_title'] = Breeze::$name .' - '. $this->_app['tools']->adminText('page_donate');
+		$context['page_title'] = Breeze::$name .' - '. $this->_app['tools']->text('page_donate');
 		$context['sub_template'] = 'admin_donate';
-		$context['Breeze']['donate'] = $this->_app['tools']->adminText('page_donate_exp');
+		$context['Breeze']['donate'] = $this->_app['tools']->text('page_donate_exp');
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
-			'description' => $this->_app['tools']->adminText('page_donate_desc'),
+			'description' => $this->_app['tools']->text('page_donate_desc'),
 		);
 	}
 }

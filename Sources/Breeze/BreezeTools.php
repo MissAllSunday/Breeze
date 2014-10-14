@@ -42,7 +42,7 @@ class BreezeTools
 		loadLanguage(Breeze::$name);
 	}
 
-	public function setTextType($type)
+	public function loadLanguage($type)
 	{
 		if (empty($type))
 			return;

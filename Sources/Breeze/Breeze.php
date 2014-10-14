@@ -522,24 +522,26 @@ class Breeze extends Pimple
 
 		$tools = $this['tools'];
 
+		$tools->loadLanguage('admin');
+
 		$admin_menu['config']['areas']['breezeadmin'] = array(
-			'label' => $tools->adminText('page_main'),
+			'label' => $tools->text('page_main'),
 			'file' => 'Breeze/BreezeAdmin.php',
 			'function' => 'Breeze::call#',
 			'icon' => 'packages.png',
 			'subsections' => array(
-				'general' => array($tools->adminText('page_main')),
-				'settings' => array($tools->adminText('page_settings')),
-				'permissions' => array($tools->adminText('page_permissions')),
-				'donate' => array($tools->adminText('page_donate')),
+				'general' => array($tools->text('page_main')),
+				'settings' => array($tools->text('page_settings')),
+				'permissions' => array($tools->text('page_permissions')),
+				'donate' => array($tools->text('page_donate')),
 			),
 		);
 
 		// Gotta respect the master mood setting.
 		if ($tools->enable('mood'))
 		{
-			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodList'] = array($tools->adminText('page_mood'));
-			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodEdit'] = array($tools->adminText('page_mood_create'));
+			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodList'] = array($tools->text('page_mood'));
+			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodEdit'] = array($tools->text('page_mood_create'));
 		}
 
 	}
