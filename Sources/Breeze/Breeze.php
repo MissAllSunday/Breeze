@@ -219,8 +219,8 @@ class Breeze extends Pimple
 				'function' => 'BreezeUser::settings#',
 				'enabled' => $context['user']['is_owner'],
 				'permission' => array(
-					'own' => 'profile_identity_own',
-					'any' => array(),
+					'own' => 'is_not_guest',
+					'any' => 'profile_view',
 				),
 			);
 		}
