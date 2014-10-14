@@ -45,7 +45,7 @@ class BreezeWall
 	 */
 	public function call()
 	{
-		global $context, $user_info, $settings;
+		global $context, $user_info;
 
 		// Handling the subactions
 		$data = Breeze::data('get');
@@ -124,7 +124,7 @@ class BreezeWall
 	 */
 	public function generalWall()
 	{
-		global $scripturl, $context, $sourcedir, $user_info,  $settings;
+		global $context, $user_info;
 
 		// Guest don't have any business here... back off!
 		if ($user_info['is_guest'])
@@ -156,7 +156,7 @@ class BreezeWall
 		$context['page_title'] = $this->_app['tools']->text('general_wall');
 		$context['sub_template'] = 'general_wall';
 		$context['linktree'][] = array(
-			'url' => $scripturl . '?action=wall',
+			'url' => $this->_app['tools']->scriptUrl . '?action=wall',
 			'name' => $context['page_title'],
 		);
 
@@ -200,7 +200,7 @@ class BreezeWall
 	 */
 	function singleStatus()
 	{
-		global $scripturl, $context, $user_info;
+		global $context, $user_info;
 
 		$data = Breeze::data('get');
 
@@ -229,7 +229,7 @@ class BreezeWall
 		// Set all the page stuff
 		$context['sub_template'] = 'general_wall';
 		$context['page_title'] = $this->_app['tools']->text('singleStatus_pageTitle');
-		$context['canonical_url'] = $scripturl .'?action=wall;area=single;bid='. $data->get('bid');
+		$context['canonical_url'] = $this->_app['tools']->scriptUrl .'?action=wall;area=single;bid='. $data->get('bid');
 
 		// There cannot be any pagination.
 		$context['page_index'] = array();

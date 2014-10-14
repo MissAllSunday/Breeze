@@ -22,10 +22,9 @@ class BreezeAlerts
 
 	public function __construct($app)
 	{
-		global $memberContext, $scripturl;
+		global $memberContext;
 
 		$this->_usersData = $memberContext;
-		$this->
 		$this->_app = $app;
 	}
 

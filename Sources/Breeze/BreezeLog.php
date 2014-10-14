@@ -77,8 +77,6 @@ class BreezeLog
 
 	protected function logComment($entry)
 	{
-		global $scripturl;
-
 		// We're gonna return an array of info.
 		$return = array();
 
@@ -97,15 +95,13 @@ class BreezeLog
 			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_app['tools']->text('logComment'), $loadedUsers[$entry['content']['status_owner_id']]['link']);
 
 		// Build a nice link to the status.
-		$return['link'] = '<a href="'. $scripturl .'?action=wall;sa=single;bid='. $entry['content']['status_id'] .';cid='. $entry['content']['id'] .'#comment_id_'. $entry['content']['id'] .'">'. $this->_app['tools']->text('logComment_view') . '</a>';
+		$return['link'] = '<a href="'. $this->_app['tools']->scriptUrl .'?action=wall;sa=single;bid='. $entry['content']['status_id'] .';cid='. $entry['content']['id'] .'#comment_id_'. $entry['content']['id'] .'">'. $this->_app['tools']->text('logComment_view') . '</a>';
 
 		return $return;
 	}
 
 	protected function logStatus($entry)
 	{
-		global $scripturl;
-
 		// Load the users data, one fine day I will count how many times I typed this exact sentence...
 		$loadedUsers = $this->_app['query']->loadMinimalData(array_unique(array($entry['content']['owner_id'], $entry['content']['poster_id'],)));
 
@@ -123,20 +119,18 @@ class BreezeLog
 			$return['message'] = $loadedUsers[$entry['content']['poster_id']]['link'] .' '. sprintf($this->_app['tools']->text('logStatus'), $loadedUsers[$entry['content']['owner_id']]['link']);
 
 		// Build a link to the status.
-		$return['link'] = '<a href="'. $scripturl .'?action=wall;sa=single;bid='. $entry['content']['id'] .'#status_id_'. $entry['content']['id'] .'">'. $this->_app['tools']->text('logStatus_view') . '</a>';
+		$return['link'] = '<a href="'. $this->_app['tools']->scriptUrl .'?action=wall;sa=single;bid='. $entry['content']['id'] .'#status_id_'. $entry['content']['id'] .'">'. $this->_app['tools']->text('logStatus_view') . '</a>';
 
 		return $return;
 	}
 
 	protected function logTopic($entry)
 	{
-		global $scripturl;
-
 		// Lets see if you can see this topic.
 		if (!empty($this->_boards) && !empty($entry['content']['board']) && in_array($entry['content']['board'], $this->_boards))
 			return array(
 				'message' => $entry['content']['posterName'] .' '. $this->_app['tools']->text('logTopic'),
-				'link' => '<a href="'. $scripturl .'?topic='. $entry['content']['topicId'] .'.0">'. $entry['content']['subject'] .'</a>',
+				'link' => '<a href="'. $this->_app['tools']->scriptUrl .'?topic='. $entry['content']['topicId'] .'.0">'. $entry['content']['subject'] .'</a>',
 			);
 
 		else

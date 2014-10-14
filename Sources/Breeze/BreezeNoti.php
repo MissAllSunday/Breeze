@@ -20,11 +20,9 @@ class BreezeNoti
 
 	public function __construct($app)
 	{
-		global $sourcedir;
-
 		$this->_app = $app;
 
-		require_once($sourcedir . '/Subs-Notify.php');
+		require_once($$this->_app['tools']->sourceDir . '/Subs-Notify.php');
 	}
 
 	public function call($details)
