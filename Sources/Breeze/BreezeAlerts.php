@@ -33,8 +33,9 @@ class BreezeAlerts
 		$this->_alerts = $alerts;
 
 		// What type are we gonna handle? oh boy there are a lot!
-		if(method_exists($this, $alerts['content_type']))
-			$this->$alerts['content_type']();
+		foreach ($alerts as $id => $a)
+			if(method_exists($this, $a['content_type']))
+				$this->$a['content_type']($id);
 
 		// Fill out an error, dunno...
 
@@ -43,10 +44,14 @@ class BreezeAlerts
 	}
 
 	// Weird name, I know...
-	protected function status_owner()
+	protected function status_owner($id)
 	{
+		if (empty($id))
+			return;
+
 		// Build a link to it.
-		$link =
+		$link = = $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['id_member'] .
+			';bid=' . $this->_alerts[$id]['content_id'];
 	}
 
 	protected function comment_status_owner()
