@@ -72,6 +72,9 @@ class BreezeNoti
 				'is_read' => 0,
 				'extra' => ''
 			));
+
+		// Lastly, update the counter.
+		updateMemberData($this->_details['owner_id'], array('alerts' => '+'));
 	}
 
 	protected function comment()
