@@ -879,7 +879,7 @@ class BreezeQuery
 
 		$request = $this->_app['tools']->smcFunc['db_query']('', '
 			SELECT id_alert
-			FROM {db_prefix}user_alerts
+			FROM {db_prefix}' . ($this->_tables['alerts']['table']) .'
 			WHERE id_member = {int:id_member}
 				AND is_read = 0
 				AND content_type = {string:content_type}
@@ -908,7 +908,7 @@ class BreezeQuery
 		// Append the "Breeze_" stuff to know this is, well, a Breeze alert...
 		$params['content_type'] = Breeze::$txtpattern . $params['content_type'];
 
-		$this->_app['tools']->smcFunc['db_insert']('insert', '{db_prefix}user_alerts', array('alert_time' => 'int', 'id_member' => 'int', 'id_member_started' => 'int', 'member_name' => 'string', 'content_type' => 'string', 'content_id' => 'int', 'content_action' => 'string', 'is_read' => 'int', 'extra' => 'string'), $params, array('id_alert'));
+		$this->_app['tools']->smcFunc['db_insert']('insert', '{db_prefix}' . ($this->_tables['alerts']['table']) .'', array('alert_time' => 'int', 'id_member' => 'int', 'id_member_started' => 'int', 'member_name' => 'string', 'content_type' => 'string', 'content_id' => 'int', 'content_action' => 'string', 'is_read' => 'int', 'extra' => 'string'), $params, array('id_alert'));
 	}
 
 	/**
@@ -932,7 +932,7 @@ class BreezeQuery
 
 		// Mark as viewed
 		$this->_app['tools']->smcFunc['db_query']('', '
-			UPDATE {db_prefix}' . ($this->_tables['noti']['table']) . '
+			UPDATE {db_prefix}' . ($this->_tables['alerts']['table']) . '
 			SET '. ($string) .'
 			WHERE id '. (is_array($id) ? 'IN ({array_int:id})' : '= {int:id}'),
 			array(
