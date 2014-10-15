@@ -42,8 +42,8 @@ class BreezeNoti
 	protected function status()
 	{
 		// Useless to fire you an alert for something you did...
-		// if ($this->_details['owner_id'] == $this->_details['poster_id'])
-			// return;
+		if ($this->_details['owner_id'] == $this->_details['poster_id'])
+		return;
 
 		// Get the preferences for the profile owner
 		// $prefs = getNotifyPrefs($this->_details['owner_id'], $this->_details['content_type'] . '_owner', true);

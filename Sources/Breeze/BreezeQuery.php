@@ -858,13 +858,15 @@ class BreezeQuery
 	 * @param string $type a unique identifier.
 	 * @param int $id the unique ID for a given "action" if true, it means the mod will look for that very specific content, if not, the method will look for all contents.
 	 * @param int $sender the person who fired up the alert, commonly know as the "sender".
-	 * @return bool true if there is a match.
+	 * @return integer The ID if there is a match, 0 if there is none.
 	 */
 	public function notiSpam($user, $type, $id = false, $sender = false)
 	{
-		// No user? no action? no fun...
-		if (empty($user) || empty($action))
+		// No user? no type? no fun...
+		if (empty($user) || empty($type))
 			return true;
+
+		$result = false;
 
 		// Append the "Breeze_" stuff to know this is, well, a Breeze alert...
 		$type = Breeze::$txtpattern . $type;
@@ -887,9 +889,9 @@ class BreezeQuery
 
 		list($result) = $this->_app['tools']->smcFunc['db_fetch_row']($request);
 
-		$smcFunc['db_free_result']($request);
+		$this->_app['tools']->smcFunc['db_free_result']($request);
 
-		return $result;
+		return (int) $result;
 	}
 
 	public function createAlert($params)
