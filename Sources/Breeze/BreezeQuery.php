@@ -79,6 +79,12 @@ class BreezeQuery
 				'property' => '_noti',
 				'columns' => array('moods_id', 'name', 'file', 'ext', 'description', 'enable',),
 				),
+			'alerts' => array(
+				'name' => 'alerts',
+				'table' => 'user_alerts',
+				'property' => '_alerts',
+				'columns' => array('id_alert', 'alert_time', 'id_member', 'id_member_started', 'member_name', 'content_type', 'content_id', 'content_action', 'is_read', 'extra'),
+			),
 		);
 	}
 
