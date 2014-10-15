@@ -930,7 +930,6 @@ class BreezeQuery
 		foreach ($params as $column => $newValue)
 			$string .= $column .' = '. $newValue . ($newValue != end($params) ? ', ' : '');
 
-		// Mark as viewed
 		$this->_app['tools']->smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables['alerts']['table']) . '
 			SET '. ($string) .'
