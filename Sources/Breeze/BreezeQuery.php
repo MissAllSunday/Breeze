@@ -928,13 +928,13 @@ class BreezeQuery
 		$string = '';
 
 		foreach ($params as $column => $newValue)
-			$string .= ', '. $column .' = '. $newValue;
+			$string .= $column .' = '. $newValue . ($newValue != end($params) ? ', ' : '');
 
 		// Mark as viewed
 		$this->_app['tools']->smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables['alerts']['table']) . '
 			SET '. ($string) .'
-			WHERE id '. (is_array($id) ? 'IN ({array_int:id})' : '= {int:id}'),
+			WHERE id_alert '. (is_array($id) ? 'IN ({array_int:id})' : '= {int:id}'),
 			array(
 				'id' => $id,
 			)
