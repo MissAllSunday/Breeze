@@ -53,11 +53,11 @@ class BreezeNoti
 			// return;
 
 		// Check if the same poster has already posted a status...
-		// $spam = $this->_app['query']->notiSpam($this->_details['owner_id'], 'like_owner', $this->_details['poster_id']);
+		$spam = $this->_app['query']->notiSpam($this->_details['owner_id'], 'status_owner', $this->_details['poster_id']);
 
 		// Theres a status already, just update the time...
-		// if ($spam)
-			// $this->_app['query']->updateAlert(array('alert_time' => $this->_details['time_raw']), $spam);
+		if ($spam)
+			$this->_app['query']->updateAlert(array('alert_time' => $this->_details['time_raw']), $spam);
 
 		// Nope! create the alert!
 		// else
