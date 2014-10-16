@@ -343,6 +343,20 @@ class Breeze extends Pimple
 		$this['alerts']->call($alerts);
 	}
 
+	public function alertsPref(&$alert_types, &$group_options, &$disabled_options)
+	{
+		// Gonna need some strings
+		$this['tools']->loadLanguage('alerts');
+
+		$alert_types = array(
+			'breeze' => array(
+				'status_owner' => array('alert' => 'yes', 'email' => 'never'),
+				'comment_status_owner' => array('alert' => 'yes', 'email' => 'yes'),
+				'comment_profile_owner' => array('alert' => 'yes', 'email' => 'yes'),
+			),
+		);
+	}
+
 	public function likes($type, $content, $sa, $js, $extra)
 	{
 		// Create our returned array
