@@ -80,3 +80,6 @@ $txt['Breeze_logStatus_view'] = 'View status';
 
 // Settings.
 $txt['alert_group_breeze'] = 'Breeze alert settings';
+$txt['alert_status_owner'] = 'When someone post a status on my wall';
+$txt['alert_comment_status_owner'] = 'When someone comment on a status I made';
+$txt['alert_comment_profile_owner'] = 'When someone comment on a status made on my wall';

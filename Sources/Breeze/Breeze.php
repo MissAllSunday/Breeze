@@ -348,12 +348,10 @@ class Breeze extends Pimple
 		// Gonna need some strings
 		$this['tools']->loadLanguage('alerts');
 
-		$alert_types = array(
-			'breeze' => array(
-				'status_owner' => array('alert' => 'yes', 'email' => 'never'),
-				'comment_status_owner' => array('alert' => 'yes', 'email' => 'yes'),
-				'comment_profile_owner' => array('alert' => 'yes', 'email' => 'yes'),
-			),
+		$alert_types['breeze'] = array(
+			'status_owner' => array('alert' => 'yes', 'email' => 'never'),
+			'comment_status_owner' => array('alert' => 'yes', 'email' => 'never'),
+			'comment_profile_owner' => array('alert' => 'yes', 'email' => 'never'),
 		);
 	}
 
