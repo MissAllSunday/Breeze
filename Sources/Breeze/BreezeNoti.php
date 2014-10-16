@@ -46,11 +46,11 @@ class BreezeNoti
 		return;
 
 		// Get the preferences for the profile owner
-		// $prefs = getNotifyPrefs($this->_details['owner_id'], $this->_details['content_type'] . '_owner', true);
+		$prefs = getNotifyPrefs($this->_details['owner_id'], $this->_details['content_type'] . '_owner', true);
 
 		// User does not want to be notified...
-		// if (empty($prefs[$this->_details['owner_id']][$this->_details['content_type'] . '_owner']))
-			// return;
+		if (empty($prefs[$this->_details['owner_id']][$this->_details['content_type'] . '_owner']))
+			return;
 
 		// Check if the same poster has already posted a status...
 		$spam = $this->_app['query']->notiSpam($this->_details['owner_id'], 'status_owner', $this->_details['poster_id']);
