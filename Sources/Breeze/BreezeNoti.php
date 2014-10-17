@@ -60,7 +60,8 @@ class BreezeNoti
 			$this->_app['query']->updateAlert(array('alert_time' => $this->_details['time_raw']), $spam);
 
 		// Nope! create the alert!
-		// else
+		else
+		{
 			$this->_app['query']->createAlert(array(
 				'alert_time' => $this->_details['time_raw'],
 				'id_member' => $this->_details['owner_id'],
@@ -73,8 +74,9 @@ class BreezeNoti
 				'extra' => ''
 			));
 
-		// Lastly, update the counter.
-		updateMemberData($this->_details['owner_id'], array('alerts' => '+'));
+			// Lastly, update the counter.
+			updateMemberData($this->_details['owner_id'], array('alerts' => '+'));
+		}
 	}
 
 	protected function comment()
@@ -82,6 +84,9 @@ class BreezeNoti
 		// You posted a comment on your own wall, no need to tell you that.
 		if ($this->_details['poster_id'] == $this->_details['profile_id'])
 			return;
+
+		$samePerson = false;
+		$alreadySent = false;
 
 		// Before getting all hyped up, lets see if the poster hasn't commented already.
 		$spam = $this->_app['query']->notiSpam($this->_details['poster_id'], 'like_owner', $this->_details['poster_id']);
@@ -91,7 +96,29 @@ class BreezeNoti
 		$prefStatus = getNotifyPrefs($this->_details['status_owner_id'], $this->_details['content_type'] . '_status_owner', true);
 		$prefProfile = getNotifyPrefs($this->_details['profile_id'], $this->_details['content_type'] . '_profile_owner', true);
 
+		// What if the status owner and profile owner are the same person? well, in that case go to the profile owner preferences. Of course this means the user has to have the profile owner pref enable...
+		if ($this->_details['profile_id'] == $this->_details['status_owner_id'])
+			$samePerson = true;
+
 		// Does the status poster wants to be notified?
+		if (!empty($prefs[$this->_details['profile_id']][$this->_details['content_type'] . '_profile_owner']))
+		{
+			// Spam check.
+
+			// Update the alert.
+
+
+			// Create the alert.
+
+			// If this is the same person, tell everyone the alert has been sent.
+			if ($samePerson)
+				$alreadySent = true;
+
+			// Lastly, update the counter.
+			updateMemberData($this->_details['profile_id'], array('alerts' => '+'));
+		}
+
+		// Does the profile owner wants to be notified?
 	}
 
 	protected function cover()
