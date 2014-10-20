@@ -39,19 +39,22 @@ class BreezeNoti
 		// else fire some error log, dunno...
 	}
 
-	protected function innerCreate($type, $params)
+	protected function innerCreate($params)
 	{
+		if (empty($params) || !is_array($params))
+			return false;
+
 		$spam = false;
 
 		// Get the preferences for the profile owner
-		$prefs = getNotifyPrefs($params['id_member'], $type, true);
+		$prefs = getNotifyPrefs($params['id_member'], $params['content_type'], true);
 
 		// User does not want to be notified...
-		if (empty($prefs[$params['id_member']][$type]))
+		if (empty($prefs[$params['id_member']][$params['content_type']]))
 			return;
 
 		// Check if the same poster has already posted a status...
-		$spam = $this->_app['query']->notiSpam($params['id_member'], $type, $params['id_member_started']);
+		$spam = $this->_app['query']->notiSpam($params['id_member'], $params['content_type'], $params['id_member_started']);
 
 		// Theres a status already, just update the time...
 		if ($spam)
@@ -73,7 +76,7 @@ class BreezeNoti
 		if ($this->_details['owner_id'] == $this->_details['poster_id'])
 		return;
 
-		$this->innerCreate($this->_details['content_type'] . '_owner', array(
+		$this->innerCreate(array(
 			'alert_time' => $this->_details['time_raw'],
 			'id_member' => $this->_details['owner_id'],
 			'id_member_started' => $this->_details['poster_id'],
