@@ -98,7 +98,7 @@ class BreezeNoti
 			$samePerson = true;
 
 		// Does the status poster wants to be notified?
-		if (!empty($prefs[$this->_details['profile_id']][$this->_details['content_type'] . '_profile_owner']))
+		if (!empty($prefStatus[$this->_details['status_owner_id']][$this->_details['content_type'] . '_status_owner']))
 		{
 			// Spam check.
 			$spam = $this->_app['query']->notiSpam($this->_details['status_owner_id'], $this->_details['content_type'] . '_status_owner', $this->_details['poster_id']);
@@ -131,7 +131,35 @@ class BreezeNoti
 				$alreadySent = true;
 		}
 
-		// Does the profile owner wants to be notified?
+		// Does the profile owner wants to be notified? Has been alerted already?
+		if (!empty($prefStatus[$this->_details['profile_id']][$this->_details['content_type'] . '_profile_owner']) && !$alreadySent)
+		{
+			// Spam check.
+			$spam = $this->_app['query']->notiSpam($this->_details['profile_id'], $this->_details['content_type'] . '_profile_owner', $this->_details['poster_id']);
+
+			// Update the alert.
+			if ($spam)
+				$this->_app['query']->updateAlert(array('alert_time' => $this->_details['time_raw']), $spam);
+
+			// Create the alert.
+			else
+			{
+				$this->_app['query']->createAlert(array(
+					'alert_time' => $this->_details['time_raw'],
+					'id_member' => $this->_details['status_owner_id'],
+					'id_member_started' => $this->_details['poster_id'],
+					'member_name' => '',
+					'content_type' => $this->_details['content_type'] . '_status_owner',
+					'content_id' => $this->_details['id'],
+					'content_action' => '',
+					'is_read' => 0,
+					'extra' => ''
+				));
+
+				// Lastly, update the counter.
+				updateMemberData($this->_details['status_owner_id'], array('alerts' => '+'));
+			}
+		}
 	}
 
 	protected function cover()
