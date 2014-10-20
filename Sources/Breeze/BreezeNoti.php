@@ -39,44 +39,51 @@ class BreezeNoti
 		// else fire some error log, dunno...
 	}
 
+	protected function innerCreate($type, $params)
+	{
+		$spam = false;
+
+		// Get the preferences for the profile owner
+		$prefs = getNotifyPrefs($params['id_member'], $type, true);
+
+		// User does not want to be notified...
+		if (empty($prefs[$params['id_member']][$type]))
+			return;
+
+		// Check if the same poster has already posted a status...
+		$spam = $this->_app['query']->notiSpam($params['id_member'], $type, $params['id_member_started']);
+
+		// Theres a status already, just update the time...
+		if ($spam)
+			$this->_app['query']->updateAlert(array('alert_time' => $params['alert_time']), $spam);
+
+		// Nope! create the alert!
+		else
+		{
+			$this->_app['query']->createAlert($params);
+
+			// Lastly, update the counter.
+			updateMemberData($params['id_member'], array('alerts' => '+'));
+		}
+	}
+
 	protected function status()
 	{
 		// Useless to fire you an alert for something you did...
 		if ($this->_details['owner_id'] == $this->_details['poster_id'])
 		return;
 
-		// Get the preferences for the profile owner
-		$prefs = getNotifyPrefs($this->_details['owner_id'], $this->_details['content_type'] . '_owner', true);
-
-		// User does not want to be notified...
-		if (empty($prefs[$this->_details['owner_id']][$this->_details['content_type'] . '_owner']))
-			return;
-
-		// Check if the same poster has already posted a status...
-		$spam = $this->_app['query']->notiSpam($this->_details['owner_id'], 'status_owner', $this->_details['poster_id']);
-
-		// Theres a status already, just update the time...
-		if ($spam)
-			$this->_app['query']->updateAlert(array('alert_time' => $this->_details['time_raw']), $spam);
-
-		// Nope! create the alert!
-		else
-		{
-			$this->_app['query']->createAlert(array(
-				'alert_time' => $this->_details['time_raw'],
-				'id_member' => $this->_details['owner_id'],
-				'id_member_started' => $this->_details['poster_id'],
-				'member_name' => '',
-				'content_type' => $this->_details['content_type'] . '_owner',
-				'content_id' => $this->_details['id'],
-				'content_action' => '',
-				'is_read' => 0,
-				'extra' => ''
-			));
-
-			// Lastly, update the counter.
-			updateMemberData($this->_details['owner_id'], array('alerts' => '+'));
-		}
+		$this->innerCreate($this->_details['content_type'] . '_owner', array(
+			'alert_time' => $this->_details['time_raw'],
+			'id_member' => $this->_details['owner_id'],
+			'id_member_started' => $this->_details['poster_id'],
+			'member_name' => '',
+			'content_type' => $this->_details['content_type'] . '_owner',
+			'content_id' => $this->_details['id'],
+			'content_action' => '',
+			'is_read' => 0,
+			'extra' => ''
+		));
 	}
 
 	protected function comment()
