@@ -88,9 +88,6 @@ class BreezeNoti
 		$samePerson = false;
 		$alreadySent = false;
 
-		// Before getting all hyped up, lets see if the poster hasn't commented already.
-		$spam = $this->_app['query']->notiSpam($this->_details['poster_id'], 'like_owner', $this->_details['poster_id']);
-
 		// OK, there's actually two people we need to alert and two different alert preferences, the profile owner and the status owner.
 		// I could probably make this even messier by adding a "notify me on replies to my status made on my own wall" or "notify me on replies to my status on any wall..."
 		$prefStatus = getNotifyPrefs($this->_details['status_owner_id'], $this->_details['content_type'] . '_status_owner', true);
@@ -104,18 +101,34 @@ class BreezeNoti
 		if (!empty($prefs[$this->_details['profile_id']][$this->_details['content_type'] . '_profile_owner']))
 		{
 			// Spam check.
+			$spam = $this->_app['query']->notiSpam($this->_details['status_owner_id'], $this->_details['content_type'] . '_status_owner', $this->_details['poster_id']);
 
 			// Update the alert.
-
+			if ($spam)
+				$this->_app['query']->updateAlert(array('alert_time' => $this->_details['time_raw']), $spam);
 
 			// Create the alert.
+			else
+			{
+				$this->_app['query']->createAlert(array(
+					'alert_time' => $this->_details['time_raw'],
+					'id_member' => $this->_details['status_owner_id'],
+					'id_member_started' => $this->_details['poster_id'],
+					'member_name' => '',
+					'content_type' => $this->_details['content_type'] . '_status_owner',
+					'content_id' => $this->_details['id'],
+					'content_action' => '',
+					'is_read' => 0,
+					'extra' => ''
+				));
+
+				// Lastly, update the counter.
+				updateMemberData($this->_details['status_owner_id'], array('alerts' => '+'));
+			}
 
 			// If this is the same person, tell everyone the alert has been sent.
 			if ($samePerson)
 				$alreadySent = true;
-
-			// Lastly, update the counter.
-			updateMemberData($this->_details['profile_id'], array('alerts' => '+'));
 		}
 
 		// Does the profile owner wants to be notified?
