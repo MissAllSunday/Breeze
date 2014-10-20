@@ -51,7 +51,7 @@ class BreezeNoti
 
 		// User does not want to be notified...
 		if (empty($prefs[$params['id_member']][$params['content_type']]))
-			return;
+			return false;
 
 		// Check if the same poster has already posted a status...
 		$spam = $this->_app['query']->notiSpam($params['id_member'], $params['content_type'], $params['id_member_started']);
@@ -68,6 +68,8 @@ class BreezeNoti
 			// Lastly, update the counter.
 			updateMemberData($params['id_member'], array('alerts' => '+'));
 		}
+
+		return true;
 	}
 
 	protected function status()
@@ -107,69 +109,32 @@ class BreezeNoti
 		if ($this->_details['profile_id'] == $this->_details['status_owner_id'])
 			$samePerson = true;
 
-		// Does the status poster wants to be notified?
-		if (!empty($prefStatus[$this->_details['status_owner_id']][$this->_details['content_type'] . '_status_owner']))
-		{
-			// Spam check.
-			$spam = $this->_app['query']->notiSpam($this->_details['status_owner_id'], $this->_details['content_type'] . '_status_owner', $this->_details['poster_id']);
-
-			// Update the alert.
-			if ($spam)
-				$this->_app['query']->updateAlert(array('alert_time' => $this->_details['time_raw']), $spam);
-
-			// Create the alert.
-			else
-			{
-				$this->_app['query']->createAlert(array(
-					'alert_time' => $this->_details['time_raw'],
-					'id_member' => $this->_details['status_owner_id'],
-					'id_member_started' => $this->_details['poster_id'],
-					'member_name' => '',
-					'content_type' => $this->_details['content_type'] . '_status_owner',
-					'content_id' => $this->_details['id'],
-					'content_action' => '',
-					'is_read' => 0,
-					'extra' => ''
-				));
-
-				// Lastly, update the counter.
-				updateMemberData($this->_details['status_owner_id'], array('alerts' => '+'));
-			}
-
-			// If this is the same person, tell everyone the alert has been sent.
-			if ($samePerson)
-				$alreadySent = true;
-		}
-
 		// Does the profile owner wants to be notified? Has been alerted already?
-		if (!empty($prefStatus[$this->_details['profile_id']][$this->_details['content_type'] . '_profile_owner']) && !$alreadySent)
-		{
-			// Spam check.
-			$spam = $this->_app['query']->notiSpam($this->_details['profile_id'], $this->_details['content_type'] . '_profile_owner', $this->_details['poster_id']);
+		$alreadySent = $this->innerCreate(array(
+			'alert_time' => $this->_details['time_raw'],
+			'id_member' => $this->_details['profile_id'],
+			'id_member_started' => $this->_details['poster_id'],
+			'member_name' => '',
+			'content_type' => $this->_details['content_type'] . '_profile_owner',
+			'content_id' => $this->_details['id'],
+			'content_action' => '',
+			'is_read' => 0,
+			'extra' => ''
+		));
 
-			// Update the alert.
-			if ($spam)
-				$this->_app['query']->updateAlert(array('alert_time' => $this->_details['time_raw']), $spam);
-
-			// Create the alert.
-			else
-			{
-				$this->_app['query']->createAlert(array(
-					'alert_time' => $this->_details['time_raw'],
-					'id_member' => $this->_details['status_owner_id'],
-					'id_member_started' => $this->_details['poster_id'],
-					'member_name' => '',
-					'content_type' => $this->_details['content_type'] . '_status_owner',
-					'content_id' => $this->_details['id'],
-					'content_action' => '',
-					'is_read' => 0,
-					'extra' => ''
-				));
-
-				// Lastly, update the counter.
-				updateMemberData($this->_details['status_owner_id'], array('alerts' => '+'));
-			}
-		}
+		// Does the status poster wants to be notified?
+		if (!$alreadySent || !$samePerson)
+			$this->innerCreate(array(
+				'alert_time' => $this->_details['time_raw'],
+				'id_member' => $this->_details['status_owner_id'],
+				'id_member_started' => $this->_details['poster_id'],
+				'member_name' => '',
+				'content_type' => $this->_details['content_type'] . '_status_owner',
+				'content_id' => $this->_details['id'],
+				'content_action' => '',
+				'is_read' => 0,
+				'extra' => ''
+			));
 	}
 
 	protected function cover()
