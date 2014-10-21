@@ -100,11 +100,6 @@ class BreezeNoti
 		$samePerson = false;
 		$alreadySent = false;
 
-		// OK, there's actually two people we need to alert and two different alert preferences, the profile owner and the status owner.
-		// I could probably make this even messier by adding a "notify me on replies to my status made on my own wall" or "notify me on replies to my status on any wall..."
-		$prefStatus = getNotifyPrefs($this->_details['status_owner_id'], $this->_details['content_type'] . '_status_owner', true);
-		$prefProfile = getNotifyPrefs($this->_details['profile_id'], $this->_details['content_type'] . '_profile_owner', true);
-
 		// What if the status owner and profile owner are the same person? well, in that case go to the profile owner preferences. Of course this means the user has to have the profile owner pref enable...
 		if ($this->_details['profile_id'] == $this->_details['status_owner_id'])
 			$samePerson = true;
