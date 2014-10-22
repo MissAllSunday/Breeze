@@ -57,6 +57,7 @@ Tested on PHP 5.3 and 5.4, Opera12, IE8 and whatever version Firefox was when I 
 - [ichord Mentions autocomplete script] (http://ichord.github.com/At.js)
 - [ikons from Piotr Kwiatkowski] (http://ikons.piotrkwiatkowski.co.uk)
 - [Skype Component License](http://blogs.skype.com/2006/09/01/icons-and-strings)
+- [DOMPurify] (https://github.com/cure53/DOMPurify)
 
 
 [size=12pt][color=purple]Changelog[/color][/size]

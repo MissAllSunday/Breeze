@@ -682,6 +682,10 @@ class Breeze extends Pimple
 						'name' => 'jQuery File Upload Plugin',
 						'site' => 'https://github.com/blueimp/jQuery-File-Upload',
 					),
+					'purify' => array(
+						'name' => 'purify.js',
+						'site' => 'https://github.com/cure53/DOMPurify',
+					),
 				),
 			),
 			'images' => array(
