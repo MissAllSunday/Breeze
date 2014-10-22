@@ -16,6 +16,10 @@ breeze.tools.showNoti = function(params){
 	});
 }
 
+breeze.tools.purify = function(toSanitize){
+	return DOMPurify.sanitize(toSanitize);
+}
+
 breeze.tools.findWord = function(string, word){
 	return string.match('@' + word) !== null;
 }
@@ -35,7 +39,7 @@ jQuery(document).ready(function(){
 		// Get all the values we need
 		jQuery('#form_status :input').each(function(){
 			var input = jQuery(this);
-			status[input.attr('name')] = input.val();
+			status[input.attr('name')] = breeze.tools.purify(input.val());
 		});
 
 		// You need to type something...
@@ -91,7 +95,7 @@ jQuery(document).ready(function(){
 						if (html.type == 'success')
 						{
 							jQuery('#statusContent').val('');
-							jQuery('#breeze_display_status').prepend(html.data).fadeIn('slow', 'linear', function(){})
+							jQuery('#breeze_display_status').prepend(breeze.tools.purify(html.data)).fadeIn('slow', 'linear', function(){})
 						}
 					});
 				},
@@ -125,11 +129,11 @@ jQuery(document).ready(function(){
 
 		// Gather all the data we need
 		var comment = {
-			'commentStatus' : StatusID,
-			'commentOwner' : jQuery('#commentOwner_' + StatusID).val(),
-			'commentPoster' : jQuery('#commentPoster_' + StatusID).val(),
-			'commentStatusPoster' : jQuery('#commentStatusPoster_' + StatusID).val(),
-			'commentContent' : jQuery('#commentContent_' + StatusID).val(),
+			'commentStatus' : breeze.tools.purify(StatusID),
+			'commentOwner' : breeze.tools.purify(jQuery('#commentOwner_' + StatusID).val()),
+			'commentPoster' : breeze.tools.purify(jQuery('#commentPoster_' + StatusID).val()),
+			'commentStatusPoster' : breeze.tools.purify(jQuery('#commentStatusPoster_' + StatusID).val()),
+			'commentContent' : breeze.tools.purify(jQuery('#commentContent_' + StatusID).val()),
 			'mentions' : {}
 		};
 
@@ -176,7 +180,7 @@ jQuery(document).ready(function(){
 						breeze.tools.showNoti(html);
 
 						// Everything went better than expected :)
-						jQuery('#comment_loadplace_'+ StatusID).append(html.data).fadeIn('slow', 'linear', function(){});
+						jQuery('#comment_loadplace_'+ StatusID).append(breeze.tools.purify(html.data)).fadeIn('slow', 'linear', function(){});
 					});
 
 					// Enable the button again...
