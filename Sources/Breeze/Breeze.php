@@ -514,7 +514,8 @@ class Breeze extends Pimple
 		if ($user_info['is_guest'])
 			return;
 
-		// The main stuff
+		// The main stuff.
+		loadJavascriptFile('purify.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('breeze.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('breezePost.js', array('local' => true, 'default_theme' => true));
 

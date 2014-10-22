@@ -32,7 +32,7 @@ breezePost.prototype.show = function(html) {
 
 		this.loadImage.fadeOut('slow', 'linear', function(){
 			if (html.type == 'success')
-				jQuery(div).prepend(html.data).fadeIn('slow');
+				jQuery(div).prepend(DOMPurify.sanitize(html.data)).fadeIn('slow');
 		});
 
 	// Show a notification.
@@ -45,7 +45,7 @@ breezePost.prototype.validate = function() {
 
 	this.form.find(':input').each(function(){
 		var input = jQuery(this);
-		postData[input.attr('name')] = input.val();
+		postData[input.attr('name')] = DOMPurify.sanitize(input.val());
 	});
 
 	// You need to type something...
