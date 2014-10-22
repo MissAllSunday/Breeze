@@ -28,6 +28,7 @@
 		<remove-dir name="$imagesdir/breeze" />
 		<remove-dir name="$themedir/js/noty" />
 		<remove-file name="$themedir/js/breeze.js" />
+		<remove-file name="$themedir/js/purify.js" />
 		<remove-file name="$themedir/js/breezeLoadMore.js" />
 		<remove-file name="$themedir/js/breezeMention.js" />
 		<remove-file name="$themedir/js/breezeNoti.js" />
