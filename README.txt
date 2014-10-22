@@ -57,6 +57,7 @@ Tested on PHP 5.3 and 5.4, Opera12, IE8 and whatever version Firefox was when I 
 - [needim noty jquery plugin] (http://needim.github.com/noty/)
 - [ichord Mentions autocomplete script] (http://ichord.github.com/At.js)
 - [ikons from Piotr Kwiatkowski] (http://ikons.piotrkwiatkowski.co.uk)
+- [DOMPurify] (https://github.com/cure53/DOMPurify)
 
 
 [size=12pt][color=purple]Changelog[/color][/size]

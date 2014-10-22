@@ -592,6 +592,10 @@ class Breeze
 						'name' => 'Mentions autocomplete',
 						'site' => 'http://ichord.github.com/At.js',
 					),
+					'purify' => array(
+						'name' => 'purify.js',
+						'site' => 'https://github.com/cure53/DOMPurify',
+					),
 				),
 			),
 			'images' => array(

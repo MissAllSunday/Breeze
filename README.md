@@ -29,6 +29,7 @@ The mod uses the following scripts:
 - [needim noty jquery plugin] (http://needim.github.com/noty/)
 - [ichord Mentions autocomplete script] (http://ichord.github.com/At.js)
 - [ikons from Piotr Kwiatkowski] (http://ikons.piotrkwiatkowski.co.uk)
+- [DOMPurify] (https://github.com/cure53/DOMPurify)
 
 ######Notes:
 
