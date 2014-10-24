@@ -29,6 +29,7 @@ The mod uses the following scripts:
 - [ichord Mentions autocomplete script] (http://ichord.github.com/At.js)
 - [ikons from Piotr Kwiatkowski] (http://ikons.piotrkwiatkowski.co.uk)
 - [Skype Component License](http://blogs.skype.com/2006/09/01/icons-and-strings)
+- [DOMPurify] (https://github.com/cure53/DOMPurify)
 
 ######Notes:
 

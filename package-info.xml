@@ -31,6 +31,7 @@
 		<remove-dir name="$themedir/scripts/noty" />
 		<remove-dir name="$themedir/scripts/fileUpload" />
 		<remove-file name="$themedir/scripts/breeze.js" />
+		<remove-file name="$themedir/scripts/purify.js" />
 		<remove-file name="$themedir/scripts/breezeLoadMore.js" />
 		<remove-file name="$themedir/scripts/breezeMention.js" />
 		<remove-file name="$themedir/scripts/breezeNoti.js" />
