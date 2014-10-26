@@ -935,30 +935,6 @@ class BreezeQuery
 	}
 
 	/**
-	 * BreezeQuery::deleteNoti()
-	 *
-	 * Deletes the specific notification entry from the DB
-	 * @param int $id the notification ID
-	 * @return void
-	 */
-	public function deleteNoti($id, $user)
-	{
-		// We don't need this no more
-		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Receiver-'. $user, '');
-		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Sender-'. $user, '');
-
-		// Delete!
-		$this->_app['tools']->smcFunc['db_query']('', '
-			DELETE
-			FROM {db_prefix}' . ($this->_tables['noti']['table']) . '
-			WHERE id '. (is_array($id) ? 'IN ({array_int:id})' : '= {int:id}'),
-			array(
-				'id' => $id
-			)
-		);
-	}
-
-	/**
 	 * BreezeQuery::updateProfileViews()
 	 *
 	 * Updates the member profile views count
