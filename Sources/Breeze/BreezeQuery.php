@@ -874,6 +874,8 @@ class BreezeQuery
 
 		$result = false;
 
+		$type = Breeze::$txtpattern . $type;
+
 		$request = $this->_app['tools']->smcFunc['db_query']('', '
 			SELECT id_alert
 			FROM {db_prefix}' . ($this->_tables['alerts']['table']) .'
@@ -901,6 +903,9 @@ class BreezeQuery
 	{
 		if (empty($params))
 			return false;
+
+		// Add the unique identifier.
+		$params['content_type'] = Breeze::$txtpattern . $params['content_type'];
 
 		$this->_app['tools']->smcFunc['db_insert']('insert', '{db_prefix}' . ($this->_tables['alerts']['table']) .'', array('alert_time' => 'int', 'id_member' => 'int', 'id_member_started' => 'int', 'member_name' => 'string', 'content_type' => 'string', 'content_id' => 'int', 'content_action' => 'string', 'is_read' => 'int', 'extra' => 'string'), $params, array('id_alert'));
 	}
