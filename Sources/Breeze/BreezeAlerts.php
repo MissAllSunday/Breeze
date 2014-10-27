@@ -67,11 +67,11 @@ class BreezeAlerts
 	// Weird name, I know...
 	protected function status_owner($id)
 	{
-		// Build a link to it.
-		$link = $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['sender_id'] .
-			';bid=' . $this->_alerts[$id]['content_id'];
-
-		return sprintf($this->_app['tools']->text('noti_posted_wall'), $this->_usersData[$this->_alerts[$id]['sender_id']]['link'], $link);
+		return $this->parser($this->_app['tools']->text('alert_status_owner'), array(
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['sender_id'] .
+			';bid=' . $this->_alerts[$id]['content_id'],
+			'poster' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link']
+		));
 	}
 
 	protected function comment_status_owner()
