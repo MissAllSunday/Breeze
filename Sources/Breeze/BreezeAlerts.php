@@ -22,9 +22,6 @@ class BreezeAlerts
 
 	public function __construct($app)
 	{
-		global $memberContext;
-
-		$this->_usersData = $memberContext;
 		$this->_app = $app;
 
 		// We are gonna need some alerts language strings...
@@ -33,7 +30,21 @@ class BreezeAlerts
 
 	public function call(&$alerts)
 	{
+		global $memberContext;
+
 		$this->_alerts = $alerts;
+
+		// Don't rely on Profile-View loading the senders data because we need some custom_profile stuff and we need to load other user's data anyway.
+		$toLoad = array();
+
+		foreach ($alerts as $id => $a)
+			if (!empty($a['extra']['toLoad']))
+				$toLoad += $a['extra']['toLoad'];
+
+		$this->_app['tools']->loadUserInfo($toLoad, $returnID = false);
+
+		// Pass the people's data.
+		$this->_usersData = $memberContext;
 
 		// What type are we gonna handle? oh boy there are a lot!
 		foreach ($alerts as $id => $a)
@@ -49,12 +60,6 @@ class BreezeAlerts
 	{
 		if (empty($text) || empty($replacements) || !is_array($replacements))
 			return false;
-
-		// Do we need to load the gender stuff? :(
-		if (array_intersect(array_keys($replacements), array('gender_possessive', 'gender_pronoun')))
-		{
-			// Something here...
-		}
 
 		// Split the replacements up into two arrays, for use with str_replace.
 		$find = array();
@@ -76,7 +81,7 @@ class BreezeAlerts
 		return $this->parser($this->_app['tools']->text('alert_status_owner'), array(
 			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['sender_id'] .
 			';bid=' . $this->_alerts[$id]['content_id'],
-			'poster' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link']
+			'poster' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link'],
 		));
 	}
 
@@ -86,7 +91,14 @@ class BreezeAlerts
 		if (empty($this->_alerts[$id]['extra']['text']))
 			return '';
 
+		// Gotta load some other people's data.
+
 		// There are multiple variants of this same alert, however, all that logic was already decided elsewhere...
+		return $this->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
+			'href' => '',
+			'poster' => '',
+			'wall_owner' => '',
+		));
 
 	}
 

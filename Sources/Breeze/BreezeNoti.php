@@ -32,9 +32,12 @@ class BreezeNoti
 
 		$this->_details = $details;
 
+		// Gotta remove the identifier...
+		$call = str_replace(Breeze::$txtpattern, '', $this->_details['content_type']);
+
 		// Call the appropriated method.
-		if (in_array($this->_details['content_type'], get_class_methods(__CLASS__)))
-			$this->$details['content_type']();
+		if (in_array($call, get_class_methods(__CLASS__)))
+			$this->$call();
 
 		// else fire some error log, dunno...
 	}
@@ -44,13 +47,11 @@ class BreezeNoti
 		if (empty($params) || !is_array($params))
 			return false;
 
-		$spam = false;
-
 		// Get the preferences for the profile owner
-		$prefs = getNotifyPrefs($params['id_member'], $params['content_type'], true);
+		$prefs = getNotifyPrefs($params['id_member'], Breeze::$txtpattern . $params['content_type'], true);
 
 		// User does not want to be notified...
-		if (empty($prefs[$params['id_member']][$params['content_type']]))
+		if (empty($prefs[$params['id_member']][Breeze::$txtpattern . $params['content_type']]))
 			return false;
 
 		// Check if the same poster has already fired a notification.
@@ -108,7 +109,8 @@ class BreezeNoti
 				'is_read' => 1,
 				'extra' => serialize(array(
 					'buddy_alert' => true,
-					'buddy_text' => 'comment_poster_own_wall'
+					'buddy_text' => 'comment_poster_own_wall',
+					'toLoad' => array($this->_details['profile_id']),
 				)),
 			), false);
 
@@ -130,6 +132,7 @@ class BreezeNoti
 				'extra' => serialize(array(
 					'buddy_text' => 'comment_status_owner_buddy',
 					'text' => 'comment_status_owner',
+					'toLoad' => array($this->_details['profile_id']),
 				)),
 			));
 
@@ -148,9 +151,10 @@ class BreezeNoti
 					'content_action' => '',
 					'is_read' => 0,
 					'extra' => serialize(array(
-						'text' => 'comment_status_owner_own_wall'
+						'text' => 'comment_status_owner_own_wall',
 						'buddy_text' => 'comment_status_owner_buddy',
-					))
+						'toLoad' => array($this->_details['profile_id']),
+					)),
 				));
 
 			// Nope? then fire 2 alerts.
@@ -169,13 +173,14 @@ class BreezeNoti
 					'extra' => serialize(array(
 						'text' => 'comment_different_owner',
 						'buddy_text' => 'comment_status_owner_buddy',
-					))
+						'toLoad' => array($this->_details['status_owner_id']),
+					)),
 				));
 
 				// The status owner gets notified too!
 				$this->innerCreate(array(
 					'alert_time' => $this->_details['time_raw'],
-					'id_member' => $this->_details['profile_id'],
+					'id_member' => $this->_details['status_owner_id'],
 					'id_member_started' => $this->_details['poster_id'],
 					'member_name' => '',
 					'content_type' => $this->_details['content_type'] . '_status_owner',
@@ -185,7 +190,8 @@ class BreezeNoti
 					'extra' => serialize(array(
 						'text' => 'comment_status_owner',
 						'buddy_text' => 'comment_status_owner_buddy',
-					))
+						'toLoad' => array($this->_details['profile_id']),
+					)),
 				));
 			}
 		}

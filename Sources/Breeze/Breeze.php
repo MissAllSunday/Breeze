@@ -349,9 +349,9 @@ class Breeze extends Pimple
 		$this['tools']->loadLanguage('alerts');
 
 		$alert_types['breeze'] = array(
-			'status_owner' => array('alert' => 'yes', 'email' => 'never'),
-			'comment_status_owner' => array('alert' => 'yes', 'email' => 'never'),
-			'comment_profile_owner' => array('alert' => 'yes', 'email' => 'never'),
+			''. Breeze::$txtpattern . 'status_owner' => array('alert' => 'yes', 'email' => 'never'),
+			''. Breeze::$txtpattern . 'comment_status_owner' => array('alert' => 'yes', 'email' => 'never'),
+			''. Breeze::$txtpattern . 'comment_profile_owner' => array('alert' => 'yes', 'email' => 'never'),
 		);
 	}
 
