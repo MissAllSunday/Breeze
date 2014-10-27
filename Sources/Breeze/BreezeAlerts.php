@@ -50,6 +50,12 @@ class BreezeAlerts
 		if (empty($text) || empty($replacements) || !is_array($replacements))
 			return false;
 
+		// Do we need to load the gender stuff? :(
+		if (array_intersect(array_keys($replacements), array('gender_possessive', 'gender_pronoun')))
+		{
+			// Something here...
+		}
+
 		// Split the replacements up into two arrays, for use with str_replace.
 		$find = array();
 		$replace = array();
@@ -74,9 +80,17 @@ class BreezeAlerts
 		));
 	}
 
-	protected function comment_status_owner()
+	protected function comment_status_owner($id)
 	{
+		// This heavily relies on the "extra" field so make sure it exists.
+		if (empty($this->_alerts[$id]['extra']['text']))
+			return '';
 
+		// There are multiple variants of this same alert, however, all that logic was already decided elsewhere...
+		return $this->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
+			'href' => ,
+			'poster
+		));
 	}
 
 	protected function comment_profile_owner()

@@ -110,7 +110,7 @@ class BreezeNoti
 					'buddy_alert' => true,
 					'buddy_text' => 'comment_poster_own_wall'
 				)),
-			));
+			), false);
 
 			// No need to go further.
 			return;
