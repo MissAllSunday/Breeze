@@ -132,13 +132,13 @@ class BreezeNoti
 			'content_id' => $this->_details['id'],
 			'content_action' => '',
 			'is_read' => 0,
-			'extra' => serialize(array(
+			'extra' => array(
 					'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
 					'wall_owner' => $this->_details['profile_id'],
 					'poster' => $this->_details['poster_id'],
 					'status_owner' => $this->_details['status_owner_id'],
 					'status_id' => $this->_details['status_id'],
-			)),
+			),
 		);
 
 		// You posted a comment on somebody else status on your wall? then just notify that "somebody"
@@ -172,7 +172,7 @@ class BreezeNoti
 					'content_action' => '',
 					'is_read' => 0,
 					'extra' => serialize(array(
-						'text' => 'comment_different_owner',
+						'text' => 'comment_different_owner_own_wall',
 						'buddy_text' => 'comment_status_owner_buddy',
 						'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
 						'wall_owner' => $this->_details['profile_id'],
@@ -187,6 +187,9 @@ class BreezeNoti
 				$toCreate['extra']['text'] = 'comment_status_owner';
 			}
 		}
+
+		// Before doing anything, serialize the "extra" array.
+		$toCreate['extra'] = serialize($toCreate['extra']);
 
 		// Create the alert already!
 		$this->innerCreate($toCreate);
