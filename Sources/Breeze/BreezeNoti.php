@@ -39,7 +39,7 @@ class BreezeNoti
 		// else fire some error log, dunno...
 	}
 
-	protected function innerCreate($params)
+	protected function innerCreate($params, $checkSpam = true)
 	{
 		if (empty($params) || !is_array($params))
 			return false;
@@ -53,8 +53,9 @@ class BreezeNoti
 		if (empty($prefs[$params['id_member']][$params['content_type']]))
 			return false;
 
-		// Check if the same poster has already posted a status...
-		$spam = $this->_app['query']->notiSpam($params['id_member'], $params['content_type'], $params['id_member_started']);
+		// Check if the same poster has already fired a notification.
+		if ($checkSpam)
+			$spam = $this->_app['query']->notiSpam($params['id_member'], $params['content_type'], $params['id_member_started']);
 
 		// Theres a status already, just update the time...
 		if ($spam)
