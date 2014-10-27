@@ -45,6 +45,25 @@ class BreezeAlerts
 			}
 	}
 
+	public function parser($text, $replacements = array())
+	{
+		if (empty($text) || empty($replacements) || !is_array($replacements))
+			return false;
+
+		// Split the replacements up into two arrays, for use with str_replace.
+		$find = array();
+		$replace = array();
+
+		foreach ($replacements as $f => $r)
+		{
+			$find[] = '{' . $f . '}';
+			$replace[] = $r;
+		}
+
+		// Do the variable replacements.
+		return str_replace($find, $replace, $text);
+	}
+
 	// Weird name, I know...
 	protected function status_owner($id)
 	{
