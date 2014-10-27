@@ -93,21 +93,30 @@ class BreezeNoti
 
 	protected function comment()
 	{
-		// You posted a comment on your own status on your own wall, no need to tell you that...
+		// You posted a comment on your own status on your own wall, no need to tell you that. However, fire an alert for your buddies.
 		if (($this->_details['poster_id'] == $this->_details['profile_id']) && ($this->_details['profile_id'] == $this->_details['status_owner_id']))
-			return;
+		{
+			$this->innerCreate(array(
+				'alert_time' => $this->_details['time_raw'],
+				'id_member' => $this->_details['status_owner_id'],
+				'id_member_started' => $this->_details['poster_id'],
+				'member_name' => '',
+				'content_type' => $this->_details['content_type'] . '_poster_own_wall',
+				'content_id' => $this->_details['id'],
+				'content_action' => '',
+				'is_read' => 0,
+				'extra' => serialize(array(
+					'buddy_alert' => true,
+					'buddy_text' => 'comment_poster_own_wall'
+				)),
+			));
 
-		// Gotta keep track on who has been notified already.
-		$posterAlready = false;
-		$statusAlready = false;
-		$wallAlready = false;
+			// No need to go further.
+			return;
+		}
 
 		// You posted a comment on somebody else status on your wall? then just notify that "somebody"
 		if (($this->_details['poster_id'] == $this->_details['profile_id']) && ($this->_details['poster_id'] != $this->_details['status_owner_id']))
-		{
-			// innerCreate will check if the user wants to be notified, we just want to know if the notification was sent.
-			$statusAlready = true;
-
 			$this->innerCreate(array(
 				'alert_time' => $this->_details['time_raw'],
 				'id_member' => $this->_details['status_owner_id'],
@@ -117,33 +126,39 @@ class BreezeNoti
 				'content_id' => $this->_details['id'],
 				'content_action' => '',
 				'is_read' => 0,
-				'extra' => '',
+				'extra' => serialize(array(
+					'buddy_text' => 'comment_status_owner_buddy',
+					'text' => 'comment_status_owner',
+				)),
 			));
-		}
 
 		// You posted a comment on someone's status on someone's wall?
 		elseif (($this->_details['poster_id'] != $this->_details['profile_id']) && ($this->_details['poster_id'] != $this->_details['status_owner_id']))
 		{
 			// Are the profile owner and status owner the same person?
 			if ($this->_details['profile_id'] == $this->_details['status_owner_id'])
-		
+				$this->innerCreate(array(
+					'alert_time' => $this->_details['time_raw'],
+					'id_member' => $this->_details['status_owner_id'],
+					'id_member_started' => $this->_details['poster_id'],
+					'member_name' => '',
+					'content_type' => $this->_details['content_type'] . '_status_owner_own_wall',
+					'content_id' => $this->_details['id'],
+					'content_action' => '',
+					'is_read' => 0,
+					'extra' => serialize(array(
+						'text' => 'comment_status_owner_own_wall'
+					))
+				));
+
+			// Nope? then fire 2 alerts.
+			else
+			{
+
+			}
+
 		}
 
-
-
-		// Does the status poster wants to be notified? Does the status owner is the same person as the comment poster?
-		if ((!$alreadySent || !$samePerson) && $this->_details['poster_id'] != $this->_details['status_owner_id'])
-			$this->innerCreate(array(
-				'alert_time' => $this->_details['time_raw'],
-				'id_member' => $this->_details['status_owner_id'],
-				'id_member_started' => $this->_details['poster_id'],
-				'member_name' => '',
-				'content_type' => $this->_details['content_type'] . '_status_owner',
-				'content_id' => $this->_details['id'],
-				'content_action' => '',
-				'is_read' => 0,
-				'extra' => ''
-			));
 	}
 
 	protected function cover()

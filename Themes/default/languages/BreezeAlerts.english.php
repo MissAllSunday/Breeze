@@ -42,14 +42,15 @@ $txt['Breeze_noti_gender_he_default'] = 'he/she';
 
 // Comment notification
 $txt['Breeze_alert_comment_different_owner'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on the status made by {status_poster} on {wall_owner}\'s wall';
-$txt['Breeze_alert_comment_status_owner'] = '{poster} commented on your status made in {wall_owner}\'s wall';
-$txt['Breeze_alert_comment_status_owner_buddy'] = '{poster} commented on {status_poster}\'s status made in {wall_owner}\'s wall';
-$txt['Breeze_alert_comment_status_owner_own_wall'] = '%1$s commented on your status made on your own wall';
-$txt['Breeze_alert_comment_poster_own_wall'] = '{poster} commented on {gender_possessive} status on {gender_possessive} own wall';
-$txt['Breeze_noti_comment_message_wallOwner'] = '%1$s commented on the status made by %2$s on your wall';
+$txt['Breeze_alert_comment_status_owner'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on your status made in {wall_owner}\'s wall';
+$txt['Breeze_alert_comment_status_owner_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on {status_poster}\'s status made in {wall_owner}\'s wall';
+$txt['Breeze_alert_comment_status_owner_own_wall'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on your status made on your own wall';
+$txt['Breeze_alert_comment_poster_own_wall'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on {gender_possessive} status on {gender_possessive} own wall';
+$txt['Breeze_noti_comment_message_wallOwner'] = '%1$s <a href="{href}" class="bbc_link" target="_blank">commented</a> on the status made by %2$s on your wall';
 
 // Someone posted a status on your wall.
-$txt['Breeze_noti_posted_wall'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">posted a new status on your wall</a>';
+$txt['Breeze_alert_status_owner'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">posted a new status on your wall</a>';
+$txt['Breeze_alert_status_owner_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">posted a new status</a> on {wall_owner}\'s wall';
 
 // Someone commented your status on your own wall
 $txt['Breeze_noti_posted_comment'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">commented on your status</a> on %3$s\'s wall';
