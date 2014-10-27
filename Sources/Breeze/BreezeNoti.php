@@ -110,7 +110,10 @@ class BreezeNoti
 				'extra' => serialize(array(
 					'buddy_alert' => true,
 					'buddy_text' => 'comment_poster_own_wall',
-					'toLoad' => array($this->_details['profile_id']),
+					'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
+					'wall_owner' => $this->_details['profile_id'],
+					'poster' => $this->_details['poster_id'],
+					'status_owner' => $this->_details['status_owner_id'],
 				)),
 			), false);
 
@@ -132,7 +135,10 @@ class BreezeNoti
 				'extra' => serialize(array(
 					'buddy_text' => 'comment_status_owner_buddy',
 					'text' => 'comment_status_owner',
-					'toLoad' => array($this->_details['profile_id']),
+						'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
+						'wall_owner' => $this->_details['profile_id'],
+						'poster' => $this->_details['poster_id'],
+						'status_owner' => $this->_details['status_owner_id'],
 				)),
 			));
 
@@ -153,7 +159,10 @@ class BreezeNoti
 					'extra' => serialize(array(
 						'text' => 'comment_status_owner_own_wall',
 						'buddy_text' => 'comment_status_owner_buddy',
-						'toLoad' => array($this->_details['profile_id']),
+						'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
+						'wall_owner' => $this->_details['profile_id'],
+						'poster' => $this->_details['poster_id'],
+						'status_owner' => $this->_details['status_owner_id'],
 					)),
 				));
 
@@ -173,7 +182,10 @@ class BreezeNoti
 					'extra' => serialize(array(
 						'text' => 'comment_different_owner',
 						'buddy_text' => 'comment_status_owner_buddy',
-						'toLoad' => array($this->_details['status_owner_id']),
+						'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
+						'wall_owner' => $this->_details['profile_id'],
+						'poster' => $this->_details['poster_id'],
+						'status_owner' => $this->_details['status_owner_id'],
 					)),
 				));
 
@@ -190,7 +202,10 @@ class BreezeNoti
 					'extra' => serialize(array(
 						'text' => 'comment_status_owner',
 						'buddy_text' => 'comment_status_owner_buddy',
-						'toLoad' => array($this->_details['profile_id']),
+						'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
+						'wall_owner' => $this->_details['profile_id'],
+						'poster' => $this->_details['poster_id'],
+						'status_owner' => $this->_details['status_owner_id'],
 					)),
 				));
 			}
