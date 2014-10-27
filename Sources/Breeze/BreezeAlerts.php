@@ -103,17 +103,17 @@ class BreezeAlerts
 	}
 
 	protected function comment_profile_owner($id)
-	{echo '<pre>';print_r($this->_alerts[$id]);echo '</pre>';
+	{
 		// This heavily relies on the "extra" field so make sure it exists.
 		if (empty($this->_alerts[$id]['extra']['text']))
 			return '';
 
 		return $this->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['id_member'] .
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
 			';bid=' . $this->_alerts[$id]['content_id'],
-			'poster' => $this->_usersData[$this->_alerts[$id]['id_member']]['link'],
-			'status_poster' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link'],
-			'wall_owner' => $this->_usersData[$this->_alerts[$id]['id_member']]['link'],
+			'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
+			'status_poster' => $this->_usersData[$this->_alerts[$id]['extra']['status_owner']]['link'],
+			'wall_owner' => $this->_usersData[$this->_alerts[$id]['extra']['wall_owner']]['link'],
 		));
 	}
 

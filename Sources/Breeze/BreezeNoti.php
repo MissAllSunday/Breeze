@@ -114,6 +114,7 @@ class BreezeNoti
 					'wall_owner' => $this->_details['profile_id'],
 					'poster' => $this->_details['poster_id'],
 					'status_owner' => $this->_details['status_owner_id'],
+					'status_id' => $this->_details['status_id'], 
 				)),
 			), false);
 
@@ -139,6 +140,7 @@ class BreezeNoti
 						'wall_owner' => $this->_details['profile_id'],
 						'poster' => $this->_details['poster_id'],
 						'status_owner' => $this->_details['status_owner_id'],
+						'status_id' => $this->_details['status_id'], 
 				)),
 			));
 
@@ -163,6 +165,7 @@ class BreezeNoti
 						'wall_owner' => $this->_details['profile_id'],
 						'poster' => $this->_details['poster_id'],
 						'status_owner' => $this->_details['status_owner_id'],
+						'status_id' => $this->_details['status_id'], 
 					)),
 				));
 
@@ -186,6 +189,7 @@ class BreezeNoti
 						'wall_owner' => $this->_details['profile_id'],
 						'poster' => $this->_details['poster_id'],
 						'status_owner' => $this->_details['status_owner_id'],
+						'status_id' => $this->_details['status_id'], 
 					)),
 				));
 
@@ -206,6 +210,7 @@ class BreezeNoti
 						'wall_owner' => $this->_details['profile_id'],
 						'poster' => $this->_details['poster_id'],
 						'status_owner' => $this->_details['status_owner_id'],
+						'status_id' => $this->_details['status_id'], 
 					)),
 				));
 			}
