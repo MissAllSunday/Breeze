@@ -33,12 +33,12 @@ $txt['Breeze_noti_checkAll'] = 'Check all';
 $txt['Breeze_noti_check'] = 'check';
 $txt['Breeze_noti_selectedOptions'] = 'With the selected options do: ';
 $txt['Breeze_noti_send'] = 'Send';
-$txt['Breeze_noti_gender_his'] = 'his';
-$txt['Breeze_noti_gender_her'] = 'her';
-$txt['Breeze_noti_gender_his_default'] = 'his/her';
-$txt['Breeze_noti_gender_he'] = 'he';
-$txt['Breeze_noti_gender_she'] = 'she';
-$txt['Breeze_noti_gender_he_default'] = 'he/she';
+$txt['Breeze_alert_gender_possessive_Female'] = 'her';
+$txt['Breeze_alert_gender_possessive_Male'] = 'his';
+$txt['Breeze_alert_gender_possessive_None'] = 'his/her';
+$txt['Breeze_alert_gender_pronoun_Male'] = 'he';
+$txt['Breeze_alert_gender_pronoun_Female'] = 'she';
+$txt['Breeze_alert_gender_pronoun_None'] = 'he/she';
 
 // Comment notification.
 $txt['Breeze_alert_comment_different_owner'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on the status made by {status_poster} on {wall_owner}\'s wall';

@@ -87,10 +87,7 @@ class BreezeAlerts
 			return '';
 
 		// There are multiple variants of this same alert, however, all that logic was already decided elsewhere...
-		return $this->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
-			'href' => ,
-			'poster
-		));
+
 	}
 
 	protected function comment_profile_owner()
