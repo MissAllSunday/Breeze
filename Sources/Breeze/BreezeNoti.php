@@ -104,7 +104,7 @@ class BreezeNoti
 				'content_type' => $this->_details['content_type'] . '_poster_own_wall',
 				'content_id' => $this->_details['id'],
 				'content_action' => '',
-				'is_read' => 0,
+				'is_read' => 1,
 				'extra' => serialize(array(
 					'buddy_alert' => true,
 					'buddy_text' => 'comment_poster_own_wall'
@@ -142,23 +142,52 @@ class BreezeNoti
 					'id_member' => $this->_details['status_owner_id'],
 					'id_member_started' => $this->_details['poster_id'],
 					'member_name' => '',
-					'content_type' => $this->_details['content_type'] . '_status_owner_own_wall',
+					'content_type' => $this->_details['content_type'] . '_status_owner',
 					'content_id' => $this->_details['id'],
 					'content_action' => '',
 					'is_read' => 0,
 					'extra' => serialize(array(
 						'text' => 'comment_status_owner_own_wall'
+						'buddy_text' => 'comment_status_owner_buddy',
 					))
 				));
 
 			// Nope? then fire 2 alerts.
 			else
 			{
+				// This is for the wall owner.
+				$this->innerCreate(array(
+					'alert_time' => $this->_details['time_raw'],
+					'id_member' => $this->_details['profile_id'],
+					'id_member_started' => $this->_details['poster_id'],
+					'member_name' => '',
+					'content_type' => $this->_details['content_type'] . '_profile_owner',
+					'content_id' => $this->_details['id'],
+					'content_action' => '',
+					'is_read' => 0,
+					'extra' => serialize(array(
+						'text' => 'comment_different_owner',
+						'buddy_text' => 'comment_status_owner_buddy',
+					))
+				));
 
+				// The status owner gets notified too!
+				$this->innerCreate(array(
+					'alert_time' => $this->_details['time_raw'],
+					'id_member' => $this->_details['profile_id'],
+					'id_member_started' => $this->_details['poster_id'],
+					'member_name' => '',
+					'content_type' => $this->_details['content_type'] . '_status_owner',
+					'content_id' => $this->_details['id'],
+					'content_action' => '',
+					'is_read' => 0,
+					'extra' => serialize(array(
+						'text' => 'comment_status_owner',
+						'buddy_text' => 'comment_status_owner_buddy',
+					))
+				));
 			}
-
 		}
-
 	}
 
 	protected function cover()

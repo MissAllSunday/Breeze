@@ -40,7 +40,7 @@ $txt['Breeze_noti_gender_he'] = 'he';
 $txt['Breeze_noti_gender_she'] = 'she';
 $txt['Breeze_noti_gender_he_default'] = 'he/she';
 
-// Comment notification
+// Comment notification.
 $txt['Breeze_alert_comment_different_owner'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on the status made by {status_poster} on {wall_owner}\'s wall';
 $txt['Breeze_alert_comment_status_owner'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on your status made in {wall_owner}\'s wall';
 $txt['Breeze_alert_comment_status_owner_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on {status_poster}\'s status made in {wall_owner}\'s wall';
