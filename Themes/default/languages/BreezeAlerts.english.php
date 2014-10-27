@@ -52,12 +52,11 @@ $txt['Breeze_alert_comment_poster_own_wall'] = '{poster} <a href="{href}" class=
 $txt['Breeze_alert_status_owner'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">posted a new status on your wall</a>';
 $txt['Breeze_alert_status_owner_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">posted a new status</a> on {wall_owner}\'s wall';
 
-// Someone commented your status on your own wall
-$txt['Breeze_noti_posted_comment'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">commented on your status</a> on %3$s\'s wall';
-$txt['Breeze_noti_posted_comment_own_wall'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">commented on your status</a> on your own wall';
-
-// Someone left a comment on your wall.
-$txt['Breeze_noti_posted_comment_owner'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">commented on a status</a> on your own wall.';
+// Likes
+$txt['Breeze_alert_likes_comment'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> your comment';
+$txt['Breeze_alert_likes_comment_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> {comment_owner}\'s comment';
+$txt['Breeze_alert_likes_status'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> your status';
+$txt['Breeze_alert_likes_status_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> {comment_owner}\'s status';
 
 // Mentions
 $txt['Breeze_mention_message_status'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> You have been mentioned</a> by %1$s on %2$s\'s wall!';
