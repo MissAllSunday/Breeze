@@ -93,32 +93,46 @@ class BreezeNoti
 
 	protected function comment()
 	{
-		// You posted a comment on your own wall, no need to tell you that.
-		if ($this->_details['poster_id'] == $this->_details['profile_id'])
+		// You posted a comment on your own status on your own wall, no need to tell you that...
+		if (($this->_details['poster_id'] == $this->_details['profile_id']) && ($this->_details['profile_id'] == $this->_details['status_owner_id']))
 			return;
 
-		$samePerson = false;
-		$alreadySent = false;
+		// Gotta keep track on who has been notified already.
+		$posterAlready = false;
+		$statusAlready = false;
+		$wallAlready = false;
 
-		// What if the status owner and profile owner are the same person? well, in that case go to the profile owner preferences. Of course this means the user has to have the profile owner pref enable...
-		if ($this->_details['profile_id'] == $this->_details['status_owner_id'])
-			$samePerson = true;
+		// You posted a comment on somebody else status on your wall? then just notify that "somebody"
+		if (($this->_details['poster_id'] == $this->_details['profile_id']) && ($this->_details['poster_id'] != $this->_details['status_owner_id']))
+		{
+			// innerCreate will check if the user wants to be notified, we just want to know if the notification was sent.
+			$statusAlready = true;
 
-		// Does the profile owner wants to be notified? Has been alerted already?
-		$alreadySent = $this->innerCreate(array(
-			'alert_time' => $this->_details['time_raw'],
-			'id_member' => $this->_details['profile_id'],
-			'id_member_started' => $this->_details['poster_id'],
-			'member_name' => '',
-			'content_type' => $this->_details['content_type'] . '_profile_owner',
-			'content_id' => $this->_details['id'],
-			'content_action' => '',
-			'is_read' => 0,
-			'extra' => ''
-		));
+			$this->innerCreate(array(
+				'alert_time' => $this->_details['time_raw'],
+				'id_member' => $this->_details['status_owner_id'],
+				'id_member_started' => $this->_details['poster_id'],
+				'member_name' => '',
+				'content_type' => $this->_details['content_type'] . '_status_owner',
+				'content_id' => $this->_details['id'],
+				'content_action' => '',
+				'is_read' => 0,
+				'extra' => '',
+			));
+		}
 
-		// Does the status poster wants to be notified?
-		if (!$alreadySent || !$samePerson)
+		// You posted a comment on someone's status on someone's wall?
+		elseif (($this->_details['poster_id'] != $this->_details['profile_id']) && ($this->_details['poster_id'] != $this->_details['status_owner_id']))
+		{
+			// Are the profile owner and status owner the same person?
+			if ($this->_details['profile_id'] == $this->_details['status_owner_id'])
+		
+		}
+
+
+
+		// Does the status poster wants to be notified? Does the status owner is the same person as the comment poster?
+		if ((!$alreadySent || !$samePerson) && $this->_details['poster_id'] != $this->_details['status_owner_id'])
 			$this->innerCreate(array(
 				'alert_time' => $this->_details['time_raw'],
 				'id_member' => $this->_details['status_owner_id'],
