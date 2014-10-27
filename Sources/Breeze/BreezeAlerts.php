@@ -38,10 +38,11 @@ class BreezeAlerts
 		$toLoad = array();
 
 		foreach ($alerts as $id => $a)
-			if (!empty($a['extra']['toLoad']))
+			if (strpos($a['content_type'], Breeze::$txtpattern) !== false && !empty($a['extra']['toLoad']))
 				$toLoad = array_merge($toLoad, $a['extra']['toLoad']);
 
-		$this->_app['tools']->loadUserInfo($toLoad, $returnID = false);
+		if (!empty($toLoad))
+			$this->_app['tools']->loadUserInfo($toLoad, $returnID = false);
 
 		// Pass the people's data.
 		$this->_usersData = $memberContext;
@@ -95,9 +96,11 @@ class BreezeAlerts
 
 		// There are multiple variants of this same alert, however, all that logic was already decided elsewhere...
 		return $this->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
-			'href' => '',
-			'poster' => '',
-			'wall_owner' => '',
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
+			';bid=' . $this->_alerts[$id]['content_id'],
+			'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
+			'status_poster' => $this->_usersData[$this->_alerts[$id]['extra']['status_owner']]['link'],
+			'wall_owner' => $this->_usersData[$this->_alerts[$id]['extra']['wall_owner']]['link'],
 		));
 
 	}
