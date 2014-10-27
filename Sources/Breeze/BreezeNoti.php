@@ -114,7 +114,7 @@ class BreezeNoti
 					'wall_owner' => $this->_details['profile_id'],
 					'poster' => $this->_details['poster_id'],
 					'status_owner' => $this->_details['status_owner_id'],
-					'status_id' => $this->_details['status_id'], 
+					'status_id' => $this->_details['status_id'],
 				)),
 			), false);
 
@@ -122,57 +122,46 @@ class BreezeNoti
 			return;
 		}
 
+		// Set a basic array. Despise all the different alternatives this notification has, only a few things actually change...
+		$toCreate = array(
+			'alert_time' => $this->_details['time_raw'],
+			'id_member' => $this->_details['status_owner_id'],
+			'id_member_started' => $this->_details['poster_id'],
+			'member_name' => '',
+			'content_type' => $this->_details['content_type'] . '_status_owner',
+			'content_id' => $this->_details['id'],
+			'content_action' => '',
+			'is_read' => 0,
+			'extra' => serialize(array(
+					'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
+					'wall_owner' => $this->_details['profile_id'],
+					'poster' => $this->_details['poster_id'],
+					'status_owner' => $this->_details['status_owner_id'],
+					'status_id' => $this->_details['status_id'],
+			)),
+		);
+
 		// You posted a comment on somebody else status on your wall? then just notify that "somebody"
 		if (($this->_details['poster_id'] == $this->_details['profile_id']) && ($this->_details['poster_id'] != $this->_details['status_owner_id']))
-			$this->innerCreate(array(
-				'alert_time' => $this->_details['time_raw'],
-				'id_member' => $this->_details['status_owner_id'],
-				'id_member_started' => $this->_details['poster_id'],
-				'member_name' => '',
-				'content_type' => $this->_details['content_type'] . '_status_owner',
-				'content_id' => $this->_details['id'],
-				'content_action' => '',
-				'is_read' => 0,
-				'extra' => serialize(array(
-					'buddy_text' => 'comment_status_owner_buddy',
-					'text' => 'comment_status_owner',
-						'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
-						'wall_owner' => $this->_details['profile_id'],
-						'poster' => $this->_details['poster_id'],
-						'status_owner' => $this->_details['status_owner_id'],
-						'status_id' => $this->_details['status_id'], 
-				)),
-			));
+		{
+			$toCreate['extra']['buddy_text'] = 'comment_status_owner_buddy';
+			$toCreate['extra']['text'] = 'comment_status_owner';
+		}
 
 		// You posted a comment on someone's status on someone's wall?
 		elseif (($this->_details['poster_id'] != $this->_details['profile_id']) && ($this->_details['poster_id'] != $this->_details['status_owner_id']))
 		{
 			// Are the profile owner and status owner the same person?
 			if ($this->_details['profile_id'] == $this->_details['status_owner_id'])
-				$this->innerCreate(array(
-					'alert_time' => $this->_details['time_raw'],
-					'id_member' => $this->_details['status_owner_id'],
-					'id_member_started' => $this->_details['poster_id'],
-					'member_name' => '',
-					'content_type' => $this->_details['content_type'] . '_status_owner',
-					'content_id' => $this->_details['id'],
-					'content_action' => '',
-					'is_read' => 0,
-					'extra' => serialize(array(
-						'text' => 'comment_status_owner_own_wall',
-						'buddy_text' => 'comment_status_owner_buddy',
-						'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
-						'wall_owner' => $this->_details['profile_id'],
-						'poster' => $this->_details['poster_id'],
-						'status_owner' => $this->_details['status_owner_id'],
-						'status_id' => $this->_details['status_id'], 
-					)),
-				));
+			{
+				$toCreate['extra']['buddy_text'] = 'comment_status_owner_buddy';
+				$toCreate['extra']['text'] = 'comment_status_owner_own_wall';
+			}
 
 			// Nope? then fire 2 alerts.
 			else
 			{
-				// This is for the wall owner.
+				// This is for the wall owner. A completely separate alert actually...
 				$this->innerCreate(array(
 					'alert_time' => $this->_details['time_raw'],
 					'id_member' => $this->_details['profile_id'],
@@ -189,32 +178,18 @@ class BreezeNoti
 						'wall_owner' => $this->_details['profile_id'],
 						'poster' => $this->_details['poster_id'],
 						'status_owner' => $this->_details['status_owner_id'],
-						'status_id' => $this->_details['status_id'], 
+						'status_id' => $this->_details['status_id'],
 					)),
 				));
 
 				// The status owner gets notified too!
-				$this->innerCreate(array(
-					'alert_time' => $this->_details['time_raw'],
-					'id_member' => $this->_details['status_owner_id'],
-					'id_member_started' => $this->_details['poster_id'],
-					'member_name' => '',
-					'content_type' => $this->_details['content_type'] . '_status_owner',
-					'content_id' => $this->_details['id'],
-					'content_action' => '',
-					'is_read' => 0,
-					'extra' => serialize(array(
-						'text' => 'comment_status_owner',
-						'buddy_text' => 'comment_status_owner_buddy',
-						'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
-						'wall_owner' => $this->_details['profile_id'],
-						'poster' => $this->_details['poster_id'],
-						'status_owner' => $this->_details['status_owner_id'],
-						'status_id' => $this->_details['status_id'], 
-					)),
-				));
+				$toCreate['extra']['buddy_text'] = 'comment_status_owner_buddy';
+				$toCreate['extra']['text'] = 'comment_status_owner';
 			}
 		}
+
+		// Create the alert already!
+		$this->innerCreate($toCreate);
 	}
 
 	protected function cover()
