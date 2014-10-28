@@ -353,6 +353,13 @@ class Breeze extends Pimple
 			''. Breeze::$txtpattern . 'comment_status_owner' => array('alert' => 'yes', 'email' => 'never'),
 			''. Breeze::$txtpattern . 'comment_profile_owner' => array('alert' => 'yes', 'email' => 'never'),
 		);
+
+		// Are likes enable?
+		if ($this['tools']->enable('likes'))
+		{
+			$alert_types['breeze'][Breeze::$txtpattern . 'like_comment'] = array('alert' => 'yes', 'email' => 'never');
+			$alert_types['breeze'][Breeze::$txtpattern . 'like_status'] = array('alert' => 'yes', 'email' => 'never');
+		}
 	}
 
 	public function likes($type, $content, $sa, $js, $extra)
@@ -375,10 +382,18 @@ class Breeze extends Pimple
 		// The likes system only accepts 6 characters so convert that weird id into a more familiar one...
 		$convert = array('breSta' => 'status', 'breCom' => 'comments');
 
-		$this['query']->updateLikes($convert[$object->_type], $object->_content, $object->_numLikes);
+		$this['query']->updateLikes($convert[$object->get('type')], $object->get('content'), $object->get('numLikes'));
 
-		// Fire up a notification
-		$this['query']->insertNoti($this->_params, 'comment');
+		// Fire up a notification.
+		$this['query']->insertNoti(array(
+			'user' => $object->get('user'),
+			'type' => $object->get('type'),
+			'content' => $object->get('content'),
+			'numLikes' => $object->get('numLikes'),
+			'extra' => $object->get('extra'),
+			'alreadyLiked' => $object->get('alreadyLiked'),
+			'validLikes' => $object->get('validLikes'),
+		), 'like');
 	}
 
 	public function handleLikes($type, $content)

@@ -53,10 +53,10 @@ $txt['Breeze_alert_status_owner'] = '{poster} <a href="{href}" class="bbc_link" 
 $txt['Breeze_alert_status_owner_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">posted a new status</a> on {wall_owner}\'s wall';
 
 // Likes
-$txt['Breeze_alert_likes_comment'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> your comment';
-$txt['Breeze_alert_likes_comment_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> {comment_owner}\'s comment';
-$txt['Breeze_alert_likes_status'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> your status';
-$txt['Breeze_alert_likes_status_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> {comment_owner}\'s status';
+$txt['Breeze_alert_like_comment'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> your comment';
+$txt['Breeze_alert_like_comment_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> {comment_owner}\'s comment';
+$txt['Breeze_alert_like_status'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> your status';
+$txt['Breeze_alert_like_status_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> {comment_owner}\'s status';
 
 // Mentions
 $txt['Breeze_mention_message_status'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> You have been mentioned</a> by %1$s on %2$s\'s wall!';
@@ -82,7 +82,9 @@ $txt['Breeze_logStatus_own_2'] = 'made a new status on her own wall';
 $txt['Breeze_logStatus_view'] = 'View status';
 
 // Settings.
-$txt['alert_group_breeze'] = 'Breeze alert settings';
+$txt['alert_group_breeze'] = 'My wall alert settings';
 $txt['alert_Breeze_status_owner'] = 'When someone post a status on my wall';
 $txt['alert_Breeze_comment_status_owner'] = 'When someone comment on a status I made';
 $txt['alert_Breeze_comment_profile_owner'] = 'When someone comment on a status made on my wall';
+$txt['alert_Breeze_like_comment'] = 'When someone likes a comment I made';
+$txt['alert_Breeze_like_status'] = 'When someone likes a status I made';
