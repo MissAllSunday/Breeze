@@ -58,6 +58,10 @@ class BreezeNoti
 		if ($checkSpam)
 			$spam = $this->_app['query']->notiSpam($params['id_member'], $params['content_type'], $params['id_member_started']);
 
+		// Before doing anything, serialize the "extra" array.
+		if (!empty($params['extra']))
+			$params['extra'] = serialize($params['extra']);
+
 		// Theres a status already, just update the time...
 		if ($spam)
 			$this->_app['query']->updateAlert(array('alert_time' => $params['alert_time']), $spam);
@@ -135,7 +139,7 @@ class BreezeNoti
 				'content_id' => $this->_details['id'],
 				'content_action' => '',
 				'is_read' => 1,
-				'extra' => serialize(array(
+				'extra' => array(
 					'buddy_alert' => true,
 					'buddy_text' => 'comment_poster_own_wall',
 					'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['profile_id']),
@@ -143,7 +147,7 @@ class BreezeNoti
 					'poster' => $this->_details['poster_id'],
 					'status_owner' => $this->_details['status_owner_id'],
 					'status_id' => $this->_details['status_id'],
-				)),
+				),
 			), false);
 
 			// No need to go further.
@@ -199,7 +203,7 @@ class BreezeNoti
 					'content_id' => $this->_details['id'],
 					'content_action' => '',
 					'is_read' => 0,
-					'extra' => serialize(array(
+					'extra' => array(
 						'text' => 'comment_different_owner_own_wall',
 						'buddy_text' => 'comment_status_owner_buddy',
 						'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
@@ -207,7 +211,7 @@ class BreezeNoti
 						'poster' => $this->_details['poster_id'],
 						'status_owner' => $this->_details['status_owner_id'],
 						'status_id' => $this->_details['status_id'],
-					)),
+					),
 				));
 
 				// The status owner gets notified too!
@@ -215,9 +219,6 @@ class BreezeNoti
 				$toCreate['extra']['text'] = 'comment_status_owner';
 			}
 		}
-
-		// Before doing anything, serialize the "extra" array.
-		$toCreate['extra'] = serialize($toCreate['extra']);
 
 		// Create the alert already!
 		$this->innerCreate($toCreate);
