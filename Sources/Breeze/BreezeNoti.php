@@ -49,7 +49,7 @@ class BreezeNoti
 
 		$spam = false;
 
-		// Get the preferences for the profile owner
+		// Get the preferences for the person whos gonna receive this alert.
 		$prefs = getNotifyPrefs($params['id_member'], Breeze::$txtpattern . $params['content_type'], true);
 
 		// User does not want to be notified...
@@ -64,7 +64,7 @@ class BreezeNoti
 		if (!empty($params['extra']))
 			$params['extra'] = serialize($params['extra']);
 
-		// Theres a status already, just update the time...
+		// Theres an alert already, just update the time...
 		if ($spam)
 			$this->_app['query']->updateAlert(array('alert_time' => $params['alert_time']), $spam);
 
