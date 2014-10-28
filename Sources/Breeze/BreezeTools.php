@@ -37,6 +37,18 @@ class BreezeTools
 		$this->settings = $settings;
 		$this->boardDir = $boarddir;
 		$this->boardUrl = $boardurl;
+
+		// Load the mod's language file.
+		loadLanguage(Breeze::$name);
+	}
+
+	public function loadLanguage($type)
+	{
+		if (empty($type))
+			return;
+
+		// Load the mod's language file.
+		loadLanguage(Breeze::$name . ucfirst($type));
 	}
 
 	/**
@@ -53,34 +65,6 @@ class BreezeTools
 
 		if (empty($var))
 			return false;
-
-		// Load the mod's language file.
-		loadLanguage(Breeze::$name);
-
-		if (!empty($txt[$this->_pattern . $var]))
-			return $txt[$this->_pattern . $var];
-
-		else
-			return false;
-	}
-
-	/**
-	 * BreezeTools::adminText()
-	 *
-	 * Gets a string key, and returns the associated text string for admin related text.
-	 * @param string $var The text string key.
-	 * @global $txt
-	 * @return string|boolean
-	 */
-	public function adminText($var)
-	{
-		global $txt;
-
-		if (empty($var))
-			return false;
-
-		// Load the mod's language file.
-		loadLanguage(Breeze::$name .'Admin');
 
 		if (!empty($txt[$this->_pattern . $var]))
 			return $txt[$this->_pattern . $var];

@@ -47,7 +47,7 @@ function breeze_status($data, $returnVar = false)
 							<div class="breeze_options">';
 
 		// Likes.
-		if ($context['Breeze']['tools']->setting('likes') && $status['likes']['can_like'])
+		if ($context['Breeze']['tools']->enable('likes') && $status['likes']['can_like'])
 		{
 			$echo .=
 								'<ul class="floatleft">

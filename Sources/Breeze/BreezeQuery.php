@@ -67,12 +67,6 @@ class BreezeQuery
 				'property' => '_members',
 				'columns' => array('breeze_profile_views', 'pm_ignore_list', 'buddy_list',),
 				),
-			'noti' => array(
-				'name' => 'noti',
-				'table' => 'breeze_notifications',
-				'property' => '_noti',
-				'columns' => array('id', 'sender', 'receiver', 'type', 'time', 'viewed', 'content', 'type_id', 'second_type',),
-				),
 			'likes' => array(
 				'name' => 'likes',
 				'table' => 'user_likes',
@@ -85,6 +79,12 @@ class BreezeQuery
 				'property' => '_noti',
 				'columns' => array('moods_id', 'name', 'file', 'ext', 'description', 'enable',),
 				),
+			'alerts' => array(
+				'name' => 'alerts',
+				'table' => 'user_alerts',
+				'property' => '_alerts',
+				'columns' => array('id_alert', 'alert_time', 'id_member', 'id_member_started', 'member_name', 'content_type', 'content_id', 'content_action', 'is_read', 'extra'),
+			),
 		);
 	}
 
@@ -211,9 +211,10 @@ class BreezeQuery
 	 * @param string $type the data type
 	 * @param string $row the row where to fetch the value from.
 	 * @param mixed $value  Most of the cases will be a int. the int is actually the ID of the particular value you are trying to fetch.
+	 * @param boolean $raw If false, the data from the request will be passed to BreezeQuery::generateData() to further process it.
 	 * @return array An array with the requested data
 	 */
-	public function getSingleValue($type, $row, $value)
+	public function getSingleValue($type, $row, $value, $raw = false)
 	{
 		// The usual checks
 		if (empty($type) || empty($row) || empty($value))
@@ -228,7 +229,7 @@ class BreezeQuery
 		);
 
 		while ($row = $this->_app['tools']->smcFunc['db_fetch_assoc']($result))
-			$return = $this->generateData($row, $type);
+			$return = $raw ? $row : $this->generateData($row, $type);
 
 		$this->_app['tools']->smcFunc['db_free_result']($result);
 
@@ -712,9 +713,6 @@ class BreezeQuery
 		// Ladies first
 		$this->deleteCommentByStatusID($id);
 
-		// We need to delete all possible notifications tied up with this status
-		$this->deleteNotiByType('status', $id);
-
 		// Same for status
 		$this->_app['tools']->smcFunc['db_query']('', '
 			DELETE FROM {db_prefix}' . ($this->_tables['status']['table']) . '
@@ -745,9 +743,6 @@ class BreezeQuery
 	{
 		// If we know the profile_owner ID we will save an extra query so try to include it as a param please!
 		$this->killCache('comments', $id, $profile_owner);
-
-		// We need to delete all possible notifications tied up with this status
-		$this->deleteNotiByType('comments', $id);
 
 		// Delete!
 		$this->_app['tools']->smcFunc['db_query']('', '
@@ -839,455 +834,110 @@ class BreezeQuery
 	}
 
 	/**
-	 * BreezeQuery::noti()
+	 * BreezeQuery::insertNoti()
 	 *
-	 * Loads all the notifications, uses cache when possible
-	 * @return array
-	 */
-	protected function noti()
-	{
-		// Use the cache please...
-		if (($this->_noti = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'],
-			120)) == null)
-		{
-			$result = $this->_app['tools']->smcFunc['db_query']('', '
-				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
-				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
-				', array()
-			);
-
-			// Populate the array like a boss!
-			while ($row = $this->_app['tools']->smcFunc['db_fetch_assoc']($result))
-				$this->_noti[$row['id']] = array(
-					'id' => $row['id'],
-					'sender' => $row['sender'],
-					'receiver' => $row['receiver'],
-					'type' => $row['type'],
-					'time' => $row['time'],
-					'viewed' => $row['viewed'],
-					'content' => !empty($row['content']) ? $row['content'] : array(),
-				);
-
-			$this->_app['tools']->smcFunc['db_free_result']($result);
-
-			// Cache this beauty
-			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'], $this->_noti, 120);
-		}
-
-		return $this->_noti;
-	}
-
-	/**
-	 * BreezeQuery::getNotifications()
-	 *
-	 * Calls BreezeQuery::noti() if its corresponding property is empty
-	 * @see BreezeQuery::noti()
-	 * @return bool|array Either an boolean false or An array of data
-	 */
-	public function getNotifications()
-	{
-		return !empty($this->_noti) ? $this->_noti : $this->noti();
-	}
-
-	/**
-	 * BreezeQuery::insertNotification()
-	 *
-	 * Inserts a notification entry on the DB
-	 * @param array $array
+	 * Inserts all Breeze related background tasks.
+	 * @param array $params An array of params, DOH!
+	 * @params string $type a unique identifier.
 	 * @return void
 	 */
-	public function insertNotification($array)
+	public function insertNoti($params, $type)
 	{
-		// We don't need this no more
-		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Receiver-'. $array['receiver'], '');
-		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Sender-'. $array['sender'], '');
-
-		$this->_app['tools']->smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['noti']['table']) .
-			'', array(
-			'sender' => 'int',
-			'receiver' => 'int',
-			'type' => 'string',
-			'time' => 'int',
-			'viewed' => 'int',
-			'content' => 'string',
-			'type_id' => 'int',
-			'second_type' => 'string',
-			), $array, array('id'));
-	}
-
-	/**
-	 * BreezeQuery::markNoti()
-	 *
-	 * Marks the specific notification entry as either read/unread 1 = read, 0 = unread
-	 * @param int $id The notification ID
-	 * @return
-	 */
-	public function markNoti($id, $user, $viewed)
-	{
-		// We don't need this no more
-		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Receiver-'. $user, '');
-		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Sender-'. $user, '');
-
-		// Mark as viewed
-		$this->_app['tools']->smcFunc['db_query']('', '
-			UPDATE {db_prefix}' . ($this->_tables['noti']['table']) . '
-			SET viewed = {int:viewed}
-			WHERE id '. (is_array($id) ? 'IN ({array_int:id})' : '= {int:id}'),
-			array(
-				'viewed' => (int) $viewed,
-				'id' => $id,
-			)
-		);
-	}
-
-	/**
-	 * BreezeQuery::deleteNoti()
-	 *
-	 * Deletes the specific notification entry from the DB
-	 * @param int $id the notification ID
-	 * @return void
-	 */
-	public function deleteNoti($id, $user)
-	{
-		// We don't need this no more
-		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Receiver-'. $user, '');
-		cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Sender-'. $user, '');
-
-		// Delete!
-		$this->_app['tools']->smcFunc['db_query']('', '
-			DELETE
-			FROM {db_prefix}' . ($this->_tables['noti']['table']) . '
-			WHERE id '. (is_array($id) ? 'IN ({array_int:id})' : '= {int:id}'),
-			array(
-				'id' => $id
-			)
-		);
-	}
-
-	/**
-	 * BreezeQuery::deleteNotiByType()
-	 *
-	 * Deletes the specific notification entry from the DB if it contains an specific type or second_type and matched the ID provided.
-	 * @param string $type The actual name of the type, could be comments, status, topics or messages, in plural
-	 * @param int $id The type_id, helps to build associations between comments/staus and notifications
-	 * @param $user The user ID to clean the right cache entry.
-	 * @return void
-	 */
-	public function deleteNotiByType($type, $id)
-	{
-		$sender = 0;
-		$receiver = 0;
-
-		// Lets get both the sender and receiver IDs
-		$result = $this->_app['tools']->smcFunc['db_query']('', '
-			SELECT sender, receiver
-			FROM {db_prefix}' . ($this->_tables['noti']['table']) . '
-			WHERE type_id = {int:id}
-				AND (second_type = {string:type}
-				OR type = {string:type})',
-			array(
-				'id' => $id,
-				'type' => $type,)
-		);
-
-		while ($row = $this->_app['tools']->smcFunc['db_fetch_assoc']($result))
-		{
-			$sender = $row['sender'];
-			$receiver = $row['receiver'];
-		}
-
-		$this->_app['tools']->smcFunc['db_free_result']($result);
-
-		// We got em, delete their cache entries
-		if (!empty($sender) && !empty($receiver))
-		{
-			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Receiver-'. $receiver, '');
-			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] .'-Sender-'. $sender, '');
-		}
-
-		// Delete!
-		$this->_app['tools']->smcFunc['db_query']('', '
-			DELETE
-			FROM {db_prefix}' . ($this->_tables['noti']['table']) . '
-			WHERE type_id = {int:id}
-				AND (type = {string:type}
-				OR second_type = {string:type})',
-			array(
-				'id' => (int) $id,
-				'type' => $type,)
-		);
-	}
-
-	/**
-	 * BreezeQuery::getNotificationByReceiver()
-	 *
-	 * @param int $user The user from where the notifications will be fetched
-	 * @return array
-	 */
-	public function getNotificationByReceiver($user)
-	{
-		// Use the cache please...
-		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Receiver-'. $user, 120)) == null)
-		{
-			/* There is no notifications */
-			$return['users'] = array();
-			$return['data'] = array();
-
-			$result = $this->_app['tools']->smcFunc['db_query']('', '
-				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
-				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
-				WHERE receiver = {int:receiver}
-					AND viewed = 0
-				', array(
-					'receiver' => (int) $user,
-				)
-			);
-
-			// Populate the array like a boss!
-			while ($row = $this->_app['tools']->smcFunc['db_fetch_assoc']($result))
-			{
-				$return['data'][$row['id']] = array(
-					'id' => $row['id'],
-					'sender' => $row['sender'],
-					'receiver' => $row['receiver'],
-					'type' => $row['type'],
-					'time' => $row['time'],
-					'viewed' => $row['viewed'],
-					'content' => !empty($row['content']) ? $row['content'] : array(),
-					'type_id' => $row['type_id'],
-					'second_type' => $row['second_type'],
-				);
-
-				// Fill out the users IDs
-				$return['users'][] = $row['sender'];
-				$return['users'][] = $row['receiver'];
-			}
-
-			$this->_app['tools']->smcFunc['db_free_result']($result);
-
-			// Delete duplicate IDs
-			$return['users'] = array_filter(array_unique($return['users']));
-
-			// Cache this beauty for the most used stream feature
-			cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Receiver-'. $user, $return, 120);
-		}
-
-		return $return;
-	}
-
-	/**
-	 * BreezeQuery::getNotificationByReceiverAll()
-	 *
-	 * Gets all notifications, both read and unread from the specified ID
-	 * @param integer $user the user ID
-	 * @return array
-	 */
-	public function getNotificationByReceiverAll($user)
-	{
-		/* There is no notifications */
-		$return['users'] = array();
-		$return['data'] = array();
-
-		$result = $this->_app['tools']->smcFunc['db_query']('', '
-			SELECT '. implode(',', $this->_tables['noti']['columns']) .'
-			FROM {db_prefix}' . $this->_tables['noti']['table'] . '
-			WHERE receiver = {int:receiver}
-			', array(
-				'receiver' => (int) $user,
-			)
-		);
-
-		// Populate the array like a boss!
-		while ($row = $this->_app['tools']->smcFunc['db_fetch_assoc']($result))
-		{
-			$return['data'][$row['id']] = array(
-				'id' => $row['id'],
-				'sender' => $row['sender'],
-				'receiver' => $row['receiver'],
-				'type' => $row['type'],
-				'time' => $row['time'],
-				'viewed' => $row['viewed'],
-				'content' => !empty($row['content']) ? $row['content'] : array(),
-				'type_id' => $row['type_id'],
-				'second_type' => $row['second_type'],
-			);
-
-			// Fill out the users IDs
-			$return['users'][] = $row['sender'];
-			$return['users'][] = $row['receiver'];
-		}
-
-		$this->_app['tools']->smcFunc['db_free_result']($result);
-
-		// Delete duplicate IDs
-		$return['users'] = array_filter(array_unique($return['users']));
-
-		return $return;
-	}
-
-	/**
-	 * BreezeQuery::getNotificationBySender()
-	 *
-	 * @param int $user The user from where the notifications will be fetched
-	 * @return array
-	 */
-	public function getNotificationBySender($user, $all = false)
-	{
-		// Use the cache please...
-		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Sender-'. $user, 120)) == null)
-		{
-			/* There is no notifications */
-			$return['users'] = array();
-			$return['data'] = array();
-
-			$result = $this->_app['tools']->smcFunc['db_query']('', '
-				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
-				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
-				WHERE sender = {int:sender}
-				'. (empty($all) ? 'AND viewed = 0' : '') .'
-				', array(
-					'sender' => (int) $user,
-				)
-			);
-
-			// Populate the array like a boss!
-			while ($row = $this->_app['tools']->smcFunc['db_fetch_assoc']($result))
-			{
-				$return['data'][$row['id']] = array(
-					'id' => $row['id'],
-					'sender' => $row['sender'],
-					'receiver' => $row['receiver'],
-					'type' => $row['type'],
-					'time' => $row['time'],
-					'viewed' => $row['viewed'],
-					'content' => !empty($row['content']) ? $row['content'] : array(),
-					'type_id' => $row['type_id'],
-					'second_type' => $row['second_type'],
-				);
-
-				// Fill out the users IDs
-				$return['users'][] = $row['sender'];
-				$return['users'][] = $row['receiver'];
-			}
-
-			$this->_app['tools']->smcFunc['db_free_result']($result);
-
-			// Delete duplicate IDs
-			$return['users'] = array_filter(array_unique($return['users']));
-
-			// Cache this beauty for the most used stream feature
-			if (empty($all))
-				cache_put_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Sender-'. $user, $return, 120);
-		}
-
-		return $return;
-	}
-
-	/**
-	 * BreezeQuery::getNotificationByType()
-	 *
-	 * Gets all the notifications stored under an specific type, it will fetch the receivers
-	 * @param string $type the notification type
-	 * @param integer|array $user either an integer or an array that holds the receiver user ID(s) for this specific notification
-	 * @return bool|array Either An array with data or a boolean false
-	 */
-	public function getNotificationByType($type, $user = false)
-	{
-		if (empty($user) || empty($type))
+		if (empty($params) || empty($type))
 			return false;
 
-		// Check the cache, you might get lucky tonight...
-		if (($return = cache_get_data(Breeze::$name .'-' . $this->_tables['noti']['name'] . '-Receiver-'. $user, 120)) == null)
-		{
+		// Gotta append a type so we can pretend to know what we're doing...
+		$params['content_type'] = $type;
 
-			$result = $this->_app['tools']->smcFunc['db_query']('', '
-				SELECT '. implode(',', $this->_tables['noti']['columns']) .'
-				FROM {db_prefix}' . $this->_tables['noti']['table'] . '
-				WHERE receiver '. (is_array($user) ? 'IN ({array_int:user})' : '= {int:user}') .'
-					AND type = {string:type}
-				', array(
-					'user' => $user,
-					'type' => $type,
-				)
-			);
-
-			// Populate the array like a boss!
-			while ($row = $this->_app['tools']->smcFunc['db_fetch_assoc']($result))
-				$return[$row['receiver']][$row['id']] = array(
-					'id' => $row['id'],
-					'sender' => $row['sender'],
-					'receiver' => $row['receiver'],
-					'type' => $row['type'],
-					'time' => $row['time'],
-					'viewed' => $row['viewed'],
-					'content' => !empty($row['content']) ? $row['content'] : array(),
-					'type_id' => $row['type_id'],
-					'second_type' => $row['second_type'],
-				);
-
-			$this->_app['tools']->smcFunc['db_free_result']($result);
-		}
-
-		// There is a cache entry, lets use it!
-		else
-			foreach ($return as $r)
-				if ($r['type'] != $type)
-					unset($return[$r]);
-
-		return $return;
+		$this->_app['tools']->smcFunc['db_insert']('insert',
+			'{db_prefix}background_tasks',
+			array('task_file' => 'string', 'task_class' => 'string', 'task_data' => 'string', 'claimed_time' => 'int'),
+			array('$sourcedir/tasks/Breeze-Notify.php', 'Breeze_Notify_Background', serialize($params), 0),
+			array('id_task')
+		);
 	}
 
 	/**
-	 * BreezeQuery::getActivityLog()
+	 * BreezeQuery::notiSpam()
 	 *
-	 * Gets all the notifications stored as logs, this type of logs has 3 on the "read" column, this indicates the row is a log entry.
-	 * @param integer|array $user either a single ID or an array of IDs to get the logs from
-	 * @return bool|array Either An array with data or a boolean false
+	 * Give the data given, checks if an alert has already been add tot the DB.
+	 * @param int $user The alert "receiver".
+	 * @param string $type a unique identifier.
+	 * @param int $id the unique ID for a given "action" if true, it means the mod will look for that very specific content, if not, the method will look for all contents.
+	 * @param int $sender the person who fired up the alert, commonly know as the "sender".
+	 * @return integer The ID if there is a match, 0 if there is none.
 	 */
-	public function getActivityLog($user = false)
+	public function notiSpam($user, $type, $id = false, $sender = false)
 	{
-		// We start with nothing!
-		$return = false;
+		// No user? no type? no fun...
+		if (empty($user) || empty($type))
+			return true;
 
-		// The usual check..
-		if (empty($user))
-			return $return;
+		$result = false;
 
-		// Work with arrays.
-		$user = (array) $user;
-		$user = array_unique($user);
+		$type = Breeze::$txtpattern . $type;
 
-		// Unfortunately, there is no cache for this one... maybe someday... with an ugly foreach to check every single user and compare...
-		$result = $this->_app['tools']->smcFunc['db_query']('', '
-			SELECT '. implode(',', $this->_tables['noti']['columns']) .'
-			FROM {db_prefix}' . $this->_tables['noti']['table'] . '
-			WHERE receiver IN ({array_int:user})
-				AND viewed = {int:viewed}
-			ORDER BY id DESC
-			', array(
-				'user' => $user,
-				'viewed' => 3, // 3 is a special case indicating this is a log entry.
+		$request = $this->_app['tools']->smcFunc['db_query']('', '
+			SELECT id_alert
+			FROM {db_prefix}' . ($this->_tables['alerts']['table']) .'
+			WHERE id_member = {int:id_member}
+				AND is_read = 0
+				AND content_type = {string:content_type}
+				'. ($id ? 'AND content_id = {int:content_id}' : '') .'
+				'. ($sender ? 'AND id_member_started = {int:sender}' : '') .'',
+			array(
+				'id_member' => $user,
+				'content_type' => $type,
+				'content_id' => $id,
+				'sender' => $sender,
 			)
 		);
 
-		// Populate the array like a boss!
-		while ($row = $this->_app['tools']->smcFunc['db_fetch_assoc']($result))
-			$return[$row['id']] = array(
-				'id' => $row['id'],
-				'sender' => $row['sender'],
-				'receiver' => $row['receiver'],
-				'type' => $row['type'],
-				'time' => $this->_app['tools']->timeElapsed($row['time']),
-				'time_raw' => $row['time'],
-				'viewed' => $row['viewed'],
-				'content' => $row['content'],
-				'type_id' => $row['type_id'],
-				'second_type' => $row['second_type'],
-			);
+		list($result) = $this->_app['tools']->smcFunc['db_fetch_row']($request);
 
-		$this->_app['tools']->smcFunc['db_free_result']($result);
+		$this->_app['tools']->smcFunc['db_free_result']($request);
 
-		return $return;
+		return (int) $result;
+	}
+
+	public function createAlert($params)
+	{
+		if (empty($params))
+			return false;
+
+		// Add the unique identifier.
+		$params['content_type'] = Breeze::$txtpattern . $params['content_type'];
+
+		$this->_app['tools']->smcFunc['db_insert']('insert', '{db_prefix}' . ($this->_tables['alerts']['table']) .'', array('alert_time' => 'int', 'id_member' => 'int', 'id_member_started' => 'int', 'member_name' => 'string', 'content_type' => 'string', 'content_id' => 'int', 'content_action' => 'string', 'is_read' => 'int', 'extra' => 'string'), $params, array('id_alert'));
+	}
+
+	/**
+	 * BreezeQuery::updateAlert()
+	 *
+	 * Updates an existing user alert with new data
+	 * @param array a column => new value array
+	 * @param int|array a single ID or an array of IDs
+	 * @return
+	 */
+	public function updateAlert($params, $id)
+	{
+		if ((empty($params) || !is_array($params)) || empty($id))
+			return false;
+
+		// Create a nice formatted string.
+		$string = '';
+
+		foreach ($params as $column => $newValue)
+			$string .= $column .' = '. $newValue . ($newValue != end($params) ? ', ' : '');
+
+		$this->_app['tools']->smcFunc['db_query']('', '
+			UPDATE {db_prefix}' . ($this->_tables['alerts']['table']) . '
+			SET '. ($string) .'
+			WHERE id_alert '. (is_array($id) ? 'IN ({array_int:id})' : '= {int:id}'),
+			array(
+				'id' => $id,
+			)
+		);
 	}
 
 	/**

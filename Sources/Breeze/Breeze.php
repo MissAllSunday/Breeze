@@ -38,13 +38,13 @@ spl_autoload_register('breeze_autoloader');
 
 class Breeze extends Pimple
 {
-	protected $_services = array('admin', 'ajax', 'display', 'form', 'log', 'mention', 'notifications', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall', 'mood',);
+	protected $_services = array('admin', 'ajax', 'alerts', 'display', 'form', 'log', 'mention', 'noti', 'parser', 'query', 'tools', 'user', 'userInfo', 'wall', 'mood',);
 	public static $name = 'Breeze';
 	public static $version = '1.1';
 	public static $folder = '/Breeze/';
 	public static $coversFolder = '/breezeFiles/';
 	public static $txtpattern = 'Breeze_';
-	public static $permissions = array('deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canMention', 'beMentioned', 'canCover', 'canMood');
+	public static $permissions = array('deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canMention', 'beMentioned', 'canCover', 'canMood', 'canLike');
 	public static $allSettings = array('wall', 'general_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention', 'gender', 'buddiesList', 'ignoredList', 'profileViews',);
 
 	// Support site feed
@@ -219,53 +219,10 @@ class Breeze extends Pimple
 				'function' => 'BreezeUser::settings#',
 				'enabled' => $context['user']['is_owner'],
 				'permission' => array(
-					'own' => 'profile_identity_own',
-					'any' => array(),
+					'own' => 'is_not_guest',
+					'any' => 'profile_view',
 				),
 			);
-
-			// Notification's settings.
-			if ($tools->enable('notifications'))
-			{
-				$profile_areas['breeze_profile']['areas']['breezenotisettings'] = array(
-					'label' => $tools->text('user_settings_name_settings'),
-					'icon' => 'news.png',
-					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'BreezeUser::notiSettings#',
-					'enabled' => $context['user']['is_owner'],
-					'permission' => array(
-						'own' => 'profile_identity_own',
-						'any' => false,
-					),
-				);
-
-				// Notifications admin page
-				$profile_areas['breeze_profile']['areas']['breezenoti'] = array(
-					'label' => $tools->text('user_notisettings_name'),
-					'icon' => 'features.png',
-					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'BreezeUser::notifications#',
-					'enabled' => $context['user']['is_owner'],
-					'permission' => array(
-						'own' => 'profile_identity_own',
-						'any' => false,
-					),
-				);
-			}
-
-			// Logs anyone?
-			if (!empty($userSettings['activityLog']))
-				$profile_areas['breeze_profile']['areas']['breezelogs'] = array(
-					'label' => $tools->text('user_notilogs_name'),
-					'icon' => 'features.png',
-					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'BreezeUser::notiLogs#',
-					'enabled' => $context['user']['is_owner'],
-					'permission' => array(
-						'own' => 'profile_identity_own',
-						'any' => false,
-					),
-				);
 		}
 		// Done with the hacking...
 	}
@@ -380,6 +337,28 @@ class Breeze extends Pimple
 			$this[$action]->call();
 	}
 
+	public function alerts(&$alerts)
+	{
+		// Get the results back from BreezeAlerts.
+		$this['alerts']->call($alerts);
+	}
+
+	public function alertsPref(&$alert_types, &$group_options, &$disabled_options)
+	{
+		// Gonna need some strings
+		$this['tools']->loadLanguage('alerts');
+
+		$alert_types['breeze'] = array(
+			''. Breeze::$txtpattern . 'status_owner' => array('alert' => 'yes', 'email' => 'never'),
+			''. Breeze::$txtpattern . 'comment_status_owner' => array('alert' => 'yes', 'email' => 'never'),
+			''. Breeze::$txtpattern . 'comment_profile_owner' => array('alert' => 'yes', 'email' => 'never'),
+		);
+
+		// Are likes enable?
+		if ($this['tools']->enable('likes'))
+			$alert_types['breeze'][Breeze::$txtpattern . 'like'] = array('alert' => 'yes', 'email' => 'never');
+	}
+
 	public function likes($type, $content, $sa, $js, $extra)
 	{
 		// Create our returned array
@@ -395,14 +374,24 @@ class Breeze extends Pimple
 		return $data;
 	}
 
-	public function likesUpdate($type, $content, $numLikes, $already_liked)
+	public function likesUpdate($object)
 	{
 		// The likes system only accepts 6 characters so convert that weird id into a more familiar one...
 		$convert = array('breSta' => 'status', 'breCom' => 'comments');
 
-		$this['query']->updateLikes($convert[$type], $content, $numLikes);
+		$this['query']->updateLikes($convert[$object->get('type')], $object->get('content'), $object->get('numLikes'));
 
-		// @todo this is a nice place to fire up some notifications...
+		// Fire up a notification.
+		$this['query']->insertNoti(array(
+			'user' => $object->get('user'),
+			'like_type' => $convert[$object->get('type')],
+			'content' => $object->get('content'),
+			'numLikes' => $object->get('numLikes'),
+			'extra' => $object->get('extra'),
+			'alreadyLiked' => $object->get('alreadyLiked'),
+			'validLikes' => $object->get('validLikes'),
+			'time' => time(),
+		), 'like');
 	}
 
 	public function handleLikes($type, $content)
@@ -426,78 +415,6 @@ class Breeze extends Pimple
 		// Return false if the status/comment is no longer on the DB.
 		else
 			return false;
-	}
-
-	/**
-	 * Breeze::topic()
-	 *
-	 * Creates a new notification when someone opens a new topic.
-	 *
-	 * @param array $msgOptions   message info.
-	 * @param array $topicOptions topic info.
-	 * @param array $posterOptions poster info.
-	 *
-	 * @return void
-	 */
-	public function newTopic($msgOptions, $topicOptions, $posterOptions)
-	{
-		global $context, $txt, $scripturl, $user_info;
-
-		// We don't need the almighty power of breezeController anymore!
-		$noti = $this['notifications'];
-		$userSettings = $this['query']->getUserSettings($user_info['id']);
-
-		// Cheating, lets insert the notification directly, do it only if the topic was approved
-		if ($topicOptions['is_approved'] && !empty($userSettings['activityLog']))
-			$noti->create(array(
-				'sender' => $posterOptions['id'],
-				'receiver' => $posterOptions['id'],
-				'type' => 'logTopic',
-				'time' => time(),
-				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-				'content' => array(
-					'posterName' => $posterOptions['name'],
-					'topicId' => $topicOptions['id'],
-					'subject' => $msgOptions['subject'],
-					'board' => $topicOptions['board'],
-				),
-				'type_id' => $topicOptions['id'],
-				'second_type' => 'topics',
-			));
-	}
-
-	/**
-	 * Breeze::newRegister()
-	 *
-	 * Creates a new notification for new registrations
-	 *
-	 * @param array $regOptions An array containing info about the new member.
-	 * @param int   $user_id    the newly created user ID.
-	 *
-	 * @return void
-	 */
-	public static function newRegister($regOptions, $user_id)
-	{
-		global $context, $txt, $scripturl, $user_info;
-
-		// We need the almighty power of breezeController!
-		$noti = $this['notifications'];
-
-		// Cheating, lets insert the notification directly, do it only if the topic was approved
-		if ($topicOptions['is_approved'])
-			$noti->create(array(
-				'sender' => $user_id,
-				'receiver' => $user_id,
-				'type' => 'register',
-				'time' => time(),
-				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-				'content' => function() use ($regOptions, $scripturl, $text, $scripturl, $user_id)
-					{
-						return '<a href="'. $scripturl .'?action=profile;u='. $user_id . '">'. $regOptions['username'] .'</a> '. $tools->text('logRegister');
-					},
-				'type_id' => 0,
-				'second_type' => 'register',
-			));
 	}
 
 	/**
@@ -617,26 +534,27 @@ class Breeze extends Pimple
 
 		$tools = $this['tools'];
 
+		$tools->loadLanguage('admin');
+
 		$admin_menu['config']['areas']['breezeadmin'] = array(
-			'label' => $tools->adminText('page_main'),
+			'label' => $tools->text('page_main'),
 			'file' => 'Breeze/BreezeAdmin.php',
 			'function' => 'Breeze::call#',
 			'icon' => 'packages.png',
 			'subsections' => array(
-				'general' => array($tools->adminText('page_main')),
-				'settings' => array($tools->adminText('page_settings')),
-				'permissions' => array($tools->adminText('page_permissions')),
-				'donate' => array($tools->adminText('page_donate')),
+				'general' => array($tools->text('page_main')),
+				'settings' => array($tools->text('page_settings')),
+				'permissions' => array($tools->text('page_permissions')),
+				'donate' => array($tools->text('page_donate')),
 			),
 		);
 
 		// Gotta respect the master mood setting.
 		if ($tools->enable('mood'))
 		{
-			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodList'] = array($tools->adminText('page_mood'));
-			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodEdit'] = array($tools->adminText('page_mood_create'));
+			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodList'] = array($tools->text('page_mood'));
+			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodEdit'] = array($tools->text('page_mood_create'));
 		}
-
 	}
 
 	/**
