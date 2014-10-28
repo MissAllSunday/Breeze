@@ -105,7 +105,7 @@ class BreezeNoti
 				'extra' => array(
 					'text' => 'like_'. $this->_details['like_type'],
 					'buddy_text' => 'like_'. $this->_details['like_type'] .'_buddy',
-					'toLoad' => array($messageOwner, $this->_details['user']),
+					'toLoad' => array($messageOwner, $this->_details['user']['id']),
 					'status_id' => $data[($this->_details['like_type'] == 'comments' ? $this->_details['like_type'] .'_' : '') . 'status_id'],
 					'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,
 					'wall_owner' => $data[$this->_details['like_type'] == 'comments' ? 'comments_profile_id' : 'status_owner_id'],
