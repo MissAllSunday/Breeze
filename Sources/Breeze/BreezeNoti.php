@@ -74,6 +74,34 @@ class BreezeNoti
 		return true;
 	}
 
+	protected function like()
+	{
+		$row = $this->_details['type'] .'_id';
+		$authorColumn = $this->_details['type'] .'_poster_id';
+
+		// With the given values, try to find who is the owner of the liked content.
+		$data = $this->_app['query']->getSingleValue($this->_details['type'], $row, $content);
+
+		// So, whos gonna receive this alert?
+		$messageOwner = !empty($data) ? $data['poster_id'] : 0;
+
+		// Two types of alerts, either a comment ar a status.
+		$this->innerCreate(array(
+			'alert_time' => $this->_details['time'],
+			'id_member' => $messageOwner,
+			'id_member_started' => $this->_details['user'],
+			'member_name' => '',
+			'content_type' => $this->_details['content_type'],
+			'content_id' => $this->_details['content'],
+			'content_action' => '',
+			'is_read' => 0,
+			'extra' => array(
+				'text' => 'like_'. $this->_details['type'],
+				'buddy_text' => 'like_'. $this->_details['type'] .'_buddy',
+			),
+		));
+	}
+
 	protected function status()
 	{
 		// Useless to fire you an alert for something you did...
