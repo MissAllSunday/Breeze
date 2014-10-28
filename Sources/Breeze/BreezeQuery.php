@@ -211,9 +211,10 @@ class BreezeQuery
 	 * @param string $type the data type
 	 * @param string $row the row where to fetch the value from.
 	 * @param mixed $value  Most of the cases will be a int. the int is actually the ID of the particular value you are trying to fetch.
+	 * @param boolean $raw If false, the data from the request will be passed to BreezeQuery::generateData() to further process it.
 	 * @return array An array with the requested data
 	 */
-	public function getSingleValue($type, $row, $value)
+	public function getSingleValue($type, $row, $value, $raw = false)
 	{
 		// The usual checks
 		if (empty($type) || empty($row) || empty($value))
@@ -228,7 +229,7 @@ class BreezeQuery
 		);
 
 		while ($row = $this->_app['tools']->smcFunc['db_fetch_assoc']($result))
-			$return = $this->generateData($row, $type);
+			$return = $raw ? $row : $this->generateData($row, $type);
 
 		$this->_app['tools']->smcFunc['db_free_result']($result);
 

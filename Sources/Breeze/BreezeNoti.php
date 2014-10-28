@@ -86,10 +86,10 @@ class BreezeNoti
 		$authorColumn = $this->_details['like_type'] .'_poster_id';
 
 		// With the given values, try to find who is the owner of the liked content.
-		$data = $this->_app['query']->getSingleValue($this->_details['like_type'], $row, $content);
+		$data = $this->_app['query']->getSingleValue($this->_details['like_type'], $row, $this->_details['content'], true);
 
 		// So, whos gonna receive this alert?
-		$messageOwner = !empty($data) ? $data['poster_id'] : 0;
+		$messageOwner = !empty($data) ? $data[$this->_details['like_type'] .'_poster_id'] : 0;
 
 		// Two types of alerts, either a comment or a status.
 		$this->innerCreate(array(
@@ -105,16 +105,16 @@ class BreezeNoti
 				'text' => 'like_'. $this->_details['like_type'],
 				'buddy_text' => 'like_'. $this->_details['like_type'] .'_buddy',
 				'toLoad' => array($messageOwner, $this->_details['user']),
-				'status_id' => $this->_details['like_type'] == 'status' ? $this->_details['content'] : $data['status_id'],
+				'status_id' => $data[($this->_details['like_type'] == 'comments' ? $this->_details['like_type'] .'_' : '') . 'status_id'],
 				'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,
-				'wall_owner' => $data[$this->_details['like_type'] == 'comments' ? 'profile_id' : 'owner_id'],
+				'wall_owner' => $data[$this->_details['like_type'] == 'comments' ? 'comments_profile_id' : 'status_owner_id'],
 			),
 		));
 	}
 
 	protected function status()
 	{
-		// Useless to fire you an alert for something you did...
+		// Useless to fire you an alert for something you did.
 		if ($this->_details['owner_id'] == $this->_details['poster_id'])
 		return;
 

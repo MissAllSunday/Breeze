@@ -86,5 +86,5 @@ $txt['alert_group_breeze'] = 'My wall alert settings';
 $txt['alert_Breeze_status_owner'] = 'When someone post a status on my wall';
 $txt['alert_Breeze_comment_status_owner'] = 'When someone comment on a status I made';
 $txt['alert_Breeze_comment_profile_owner'] = 'When someone comment on a status made on my wall';
-$txt['alert_Breeze_like_comment'] = 'When someone likes a comment I made';
+$txt['alert_Breeze_like_comments'] = 'When someone likes a comment I made';
 $txt['alert_Breeze_like_status'] = 'When someone likes a status I made';
