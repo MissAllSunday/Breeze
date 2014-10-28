@@ -102,8 +102,12 @@ class BreezeNoti
 			'content_action' => '',
 			'is_read' => 0,
 			'extra' => array(
-				'text' => 'like_'. $this->_details['type'],
+				'text' => 'like_'. $this->_details['like_type'],
 				'buddy_text' => 'like_'. $this->_details['type'] .'_buddy',
+				'toLoad' => array($messageOwner, $this->_details['user']),
+				'status_id' => $this->_details['like_type'] == 'status' ? $this->_details['content'] : $data['status_id'],
+				'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,
+				'wall_owner' => $data[$this->_details['like_type'] == 'comments' ? 'profile_id' : 'owner_id'],
 			),
 		));
 	}

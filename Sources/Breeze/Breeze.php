@@ -387,7 +387,7 @@ class Breeze extends Pimple
 		// Fire up a notification.
 		$this['query']->insertNoti(array(
 			'user' => $object->get('user'),
-			'type' => $convert[$object->get('type')],
+			'like_type' => $convert[$object->get('type')],
 			'content' => $object->get('content'),
 			'numLikes' => $object->get('numLikes'),
 			'extra' => $object->get('extra'),
