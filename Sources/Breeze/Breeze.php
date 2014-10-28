@@ -356,10 +356,7 @@ class Breeze extends Pimple
 
 		// Are likes enable?
 		if ($this['tools']->enable('likes'))
-		{
-			$alert_types['breeze'][Breeze::$txtpattern . 'like_comments'] = array('alert' => 'yes', 'email' => 'never');
-			$alert_types['breeze'][Breeze::$txtpattern . 'like_status'] = array('alert' => 'yes', 'email' => 'never');
-		}
+			$alert_types['breeze'][Breeze::$txtpattern . 'like'] = array('alert' => 'yes', 'email' => 'never');
 	}
 
 	public function likes($type, $content, $sa, $js, $extra)

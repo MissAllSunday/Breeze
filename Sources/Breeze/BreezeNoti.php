@@ -91,25 +91,27 @@ class BreezeNoti
 		// So, whos gonna receive this alert?
 		$messageOwner = !empty($data) ? $data[$this->_details['like_type'] .'_poster_id'] : 0;
 
-		// Two types of alerts, either a comment or a status.
-		$this->innerCreate(array(
-			'alert_time' => $this->_details['time'],
-			'id_member' => $messageOwner,
-			'id_member_started' => $this->_details['user'],
-			'member_name' => '',
-			'content_type' => $this->_details['content_type'],
-			'content_id' => $this->_details['content'],
-			'content_action' => '',
-			'is_read' => 0,
-			'extra' => array(
-				'text' => 'like_'. $this->_details['like_type'],
-				'buddy_text' => 'like_'. $this->_details['like_type'] .'_buddy',
-				'toLoad' => array($messageOwner, $this->_details['user']),
-				'status_id' => $data[($this->_details['like_type'] == 'comments' ? $this->_details['like_type'] .'_' : '') . 'status_id'],
-				'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,
-				'wall_owner' => $data[$this->_details['like_type'] == 'comments' ? 'comments_profile_id' : 'status_owner_id'],
-			),
-		));
+		// Two types of alerts, either a comment or a status. We only want to record the likes.
+		if (!$this->_details['alreadyLiked'])
+			$this->innerCreate(array(
+				'alert_time' => $this->_details['time'],
+				'id_member' => $messageOwner,
+				'id_member_started' => $this->_details['user']['id'],
+				'member_name' => '',
+				'content_type' => $this->_details['content_type'],
+				'content_id' => $this->_details['content'],
+				'content_action' => '',
+				'is_read' => 0,
+				'extra' => array(
+					'text' => 'like_'. $this->_details['like_type'],
+					'buddy_text' => 'like_'. $this->_details['like_type'] .'_buddy',
+					'toLoad' => array($messageOwner, $this->_details['user']),
+					'status_id' => $data[($this->_details['like_type'] == 'comments' ? $this->_details['like_type'] .'_' : '') . 'status_id'],
+					'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,
+					'wall_owner' => $data[$this->_details['like_type'] == 'comments' ? 'comments_profile_id' : 'status_owner_id'],
+					'like_type' => $this->_details['like_type'],
+				),
+			));
 	}
 
 	protected function status()
