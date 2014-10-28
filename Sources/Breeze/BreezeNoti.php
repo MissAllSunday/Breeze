@@ -47,6 +47,8 @@ class BreezeNoti
 		if (empty($params) || !is_array($params))
 			return false;
 
+		$spam = false;
+
 		// Get the preferences for the profile owner
 		$prefs = getNotifyPrefs($params['id_member'], Breeze::$txtpattern . $params['content_type'], true);
 
