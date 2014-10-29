@@ -28,7 +28,6 @@ class BreezeForm
 	protected $formName;
 	protected $_app;
 	protected $_textPrefix = 'user_settings_';
-	protected $languageMethod = 'text';
 
 	function __construct($app)
 	{
@@ -43,21 +42,17 @@ class BreezeForm
 		$this->formName = trim($string);
 	}
 
-	public function setTextPrefix($string, $adminText = false)
+	public function setTextPrefix($string, $loadLanguage = false)
 	{
 		$this->_textPrefix = $string;
 
-		if ($adminText)
-		{
-			$this->languageMethod = 'adminText';
-			loadLanguage('BreezeAdmin');
-		}
+		if ($loadLanguage)
+			$this->_app['tools']->loadLanguage($loadLanguage);
 	}
 
 	private function setText($text)
 	{
-		$method = $this->languageMethod;
-		return $this->_app['tools']->$method($this->_textPrefix . $text);
+		return $this->_app['tools']->text($this->_textPrefix . $text);
 	}
 
 	public function returnElementNames()

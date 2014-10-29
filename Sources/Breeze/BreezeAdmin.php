@@ -434,7 +434,7 @@ class BreezeAdmin
 		$form->addHiddenField($context['session_var'], $context['session_id']);
 
 		// Set the right prefix.
-		$form->setTextPrefix('mood_', true);
+		$form->setTextPrefix('mood_', 'admin');
 
 		// Name.
 		$form->addText(
