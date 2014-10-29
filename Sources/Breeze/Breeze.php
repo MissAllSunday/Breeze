@@ -350,7 +350,7 @@ class Breeze extends Pimple
 		if (!$this['tools']->enable('alerts'))
 			return;
 
-		// Gonna need some strings
+		// Gonna need some strings.
 		$this['tools']->loadLanguage('alerts');
 
 		$alert_types['breeze'] = array(
@@ -366,6 +366,10 @@ class Breeze extends Pimple
 
 	public function likes($type, $content, $sa, $js, $extra)
 	{
+		// Don't do anything if the feature is disable.
+		if (!$this['tools']->enable('likes'))
+			return;
+
 		// Create our returned array
 		$data = array();
 
@@ -381,6 +385,10 @@ class Breeze extends Pimple
 
 	public function likesUpdate($object)
 	{
+		// Don't do anything if the feature is disable.
+		if (!$this['tools']->enable('likes'))
+			return;
+
 		// The likes system only accepts 6 characters so convert that weird id into a more familiar one...
 		$convert = array('breSta' => 'status', 'breCom' => 'comments');
 
@@ -401,6 +409,10 @@ class Breeze extends Pimple
 
 	public function handleLikes($type, $content)
 	{
+		// Don't do anything if the feature is disable.
+		if (!$this['tools']->enable('likes'))
+			return;
+
 		$data = array();
 		$convert = array('breSta' => 'status', 'breCom' => 'comments');
 
