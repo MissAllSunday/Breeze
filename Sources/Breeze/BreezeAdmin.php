@@ -125,7 +125,6 @@ class BreezeAdmin
 			array('check', Breeze::$txtpattern .'master', 'subtext' => $this->_app['tools']->text('master_sub')),
 			array('check', Breeze::$txtpattern .'force_enable', 'subtext' => $this->_app['tools']->text('force_enable_sub')),
 			array('check', Breeze::$txtpattern .'notifications', 'subtext' => $this->_app['tools']->text('notifications_sub')),
-			array('text', Breeze::$txtpattern .'allowed_actions', 'size' => 60, 'subtext' => $this->_app['tools']->text('allowed_actions_sub')),
 			array('check', Breeze::$txtpattern .'mention', 'subtext' => $this->_app['tools']->text('mention_sub')),
 			array('int', Breeze::$txtpattern .'mention_limit', 'size' => 3, 'subtext' => $this->_app['tools']->text('mention_limit_sub')),
 			array('int', Breeze::$txtpattern .'allowed_max_num_users', 'size' => 3, 'subtext' => $this->_app['tools']->text('allowed_max_num_users_sub')),

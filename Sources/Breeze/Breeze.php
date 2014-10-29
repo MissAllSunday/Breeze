@@ -50,9 +50,6 @@ class Breeze extends Pimple
 	// Support site feed
 	public static $supportSite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
 
-	// Its easier to list the allowed actions
-	public static $_allowedActions = array('wall', 'display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who', 'credits',);
-
 	/**
 	 * Breeze::__construct()
 	 *
@@ -469,7 +466,6 @@ class Breeze extends Pimple
 		loadJavascriptFile('livestamp.min.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('noty/jquery.noty.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('noty/layouts/top.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('noty/layouts/topRight.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('breezeNoti.js', array('local' => true, 'default_theme' => true));
 	}
 
