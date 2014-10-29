@@ -336,12 +336,20 @@ class Breeze extends Pimple
 
 	public function alerts(&$alerts)
 	{
+		// Don't do anything if the feature is disable.
+		if (!$this['tools']->enable('alerts'))
+			return;
+
 		// Get the results back from BreezeAlerts.
 		$this['alerts']->call($alerts);
 	}
 
 	public function alertsPref(&$alert_types, &$group_options, &$disabled_options)
 	{
+		// Don't do anything if the feature is disable.
+		if (!$this['tools']->enable('alerts'))
+			return;
+
 		// Gonna need some strings
 		$this['tools']->loadLanguage('alerts');
 
