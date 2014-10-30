@@ -55,24 +55,6 @@ class BreezeAdmin
 			),
 		);
 
-		// Admin bits
-		loadJavascriptFile('jquery.zrssfeed.js', array('local' => true, 'default_theme' => true));
-		addInlineJavascript('
-		var breeze_feed_error_message = '. JavaScriptEscape($this->_app['tools']->text('feed_error_message')) .';', true);
-
-		addInlineJavascript('
-		$(document).ready(function (){
-			$(\'#breezelive\').rssfeed(\''. Breeze::$supportSite .'\',
-			{
-				limit: 5,
-				header: false,
-				date: true,
-				linktarget: \'_blank\',
-				errormsg: breeze_feed_error_message,
-				'.(!empty($modSettings['setting_secureCookies']) ? 'ssl: true,' : '').'
-		   });
-		});', true);
-
 		$sa = Breeze::data('get')->get('sa');
 
 		// Call the sub-action.
@@ -103,6 +85,24 @@ class BreezeAdmin
 
 		// Get the credits.
 		$context['Breeze']['credits'] = $this->_app->credits();
+
+		// Admin bits
+		loadJavascriptFile('breeze/jquery.zrssfeed.js', array('local' => true, 'default_theme' => true));
+		addInlineJavascript('
+		var breeze_feed_error_message = '. JavaScriptEscape($this->_app['tools']->text('feed_error_message')) .';', true);
+
+		addInlineJavascript('
+		$(document).ready(function (){
+			$(\'#breezelive\').rssfeed(\''. Breeze::$supportSite .'\',
+			{
+				limit: 5,
+				header: false,
+				date: true,
+				linktarget: \'_blank\',
+				errormsg: breeze_feed_error_message,
+				'.(!empty($modSettings['setting_secureCookies']) ? 'ssl: true,' : '').'
+		   });
+		});', true);
 	}
 
 	function settings()

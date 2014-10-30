@@ -227,7 +227,7 @@ class Breeze extends Pimple
 					'label' => $tools->text('user_settings_name_cover'),
 					'icon' => 'administration',
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'BreezeUser::settings#',
+					'function' => 'BreezeUser::coverSettings#',
 					'enabled' => $context['user']['is_owner'],
 					'permission' => array(
 						'own' => 'is_not_guest',
@@ -484,7 +484,7 @@ class Breeze extends Pimple
 		// Populate the text object with all possible text vars this mod uses and there are a lot!
 		foreach ($jsVars as $var)
 			$jsSettings .= '
-		breeze.text.'. $var .' = '. JavaScriptEscape($tools->text($var));
+		breeze.text.'. $var .' = '. JavaScriptEscape($tools->text($var)) .';';
 
 		// Since we're here already, load the current User (currentSettings) object
 		foreach (Breeze::$allSettings as $k)

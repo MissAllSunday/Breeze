@@ -337,7 +337,7 @@ class BreezeUser extends Breeze
 		global $context, $memID, $txt, $user_info;
 
 		// Another check just in case.
-		if (!$tools->enable('cover') || !allowedTo('breeze_canCover'))
+		if (!$this['tools']->enable('cover') || !allowedTo('breeze_canCover'))
 			redirectexit();
 
 		loadtemplate(Breeze::$name);
@@ -383,32 +383,35 @@ class BreezeUser extends Breeze
 			<div id="files" class="files"></div>'
 		);
 
-		// Noti on status
-		$form->addCheckBox(
-			'noti_on_status',
-			!empty($userSettings['noti_on_status']) ? true : false
-		);
-
-		// Noti on comment
-		$form->addCheckBox(
-			'noti_on_comment',
-			!empty($userSettings['noti_on_comment']) ? true : false
-		);
-
-		// Noti on comment for profile owner
-		$form->addCheckBox(
-			'noti_on_comment_owner',
-			!empty($userSettings['noti_on_comment_owner']) ? true : false
-		);
-
-		// Noti on mention
-		$form->addCheckBox(
-			'noti_on_mention',
-			!empty($userSettings['noti_on_mention']) ? true : false
-		);
-
 		// Send the form to the template
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
+
+		loadJavascriptFile('breeze/fileUpload/vendor/jquery.ui.widget.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breeze/fileUpload/load-image.all.min.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breeze/fileUpload/canvas-to-blob.min.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breeze/fileUpload/jquery.iframe-transport.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breeze/fileUpload/jquery.fileupload.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-process.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-image.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-validate.js', array('local' => true, 'default_theme' => true));
+		addInlineJavascript('
+	$(function () {
+		$(\'#fileupload\').fileupload({
+			dataType: \'json\',
+			add: function (e, data) {
+				url : '. $this['tools']->scriptUrl .'?action=breezeajax;sa=usersettings;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings') .';
+				data.context = $(\'<button/>\').text(\'Upload\')
+					.appendTo(document.body)
+					.click(function () {
+						data.context = $(\'<p/>\').text(\'Uploading...\').replaceAll($(this));
+						data.submit();
+					});
+			},
+			done: function (e, data) {
+				data.context.text(\'Upload finished.\');
+			}
+		});
+	});', true);
 	}
 
 	/**
