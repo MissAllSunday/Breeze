@@ -180,7 +180,7 @@ class Breeze extends Pimple
 			{
 				$profile_areas['info']['areas']['summary'] = array(
 					'label' => $tools->text('general_wall'),
-					'icon' => 'smiley.png',
+					'icon' => 'members',
 					'file' => Breeze::$folder . 'BreezeUser.php',
 					'function' => 'BreezeUser::wall#',
 					'permission' => array(
@@ -211,7 +211,7 @@ class Breeze extends Pimple
 			// User individual settings, show the button if the mod is enable and the user is the profile owner.
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $tools->text('user_settings_name'),
-				'icon' => 'features.png',
+				'icon' => 'maintain',
 				'file' => Breeze::$folder . 'BreezeUser.php',
 				'function' => 'BreezeUser::settings#',
 				'enabled' => $context['user']['is_owner'],
@@ -220,6 +220,20 @@ class Breeze extends Pimple
 					'any' => 'profile_view',
 				),
 			);
+
+			// Cover settings page.
+			if ($tools->enable('cover'))
+				$profile_areas['breeze_profile']['areas']['breezecover'] = array(
+					'label' => $tools->text('user_settings_name_cover'),
+					'icon' => 'administration',
+					'file' => Breeze::$folder . 'BreezeUser.php',
+					'function' => 'BreezeUser::settings#',
+					'enabled' => $context['user']['is_owner'],
+					'permission' => array(
+						'own' => 'is_not_guest',
+						'any' => 'profile_view',
+					),
+				);
 		}
 		// Done with the hacking...
 	}
