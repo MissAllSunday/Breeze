@@ -322,6 +322,8 @@ class BreezeUser extends Breeze
 			array('rows' => 10, 'cols' => 50, 'maxLength' => $tools->setting('allowed_maxlength_aboutMe') ? $tools->setting('allowed_maxlength_aboutMe') : 1024)
 		);
 
+		$form->addButton('submit');
+
 		// Send the form to the template
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
 	}
@@ -383,6 +385,9 @@ class BreezeUser extends Breeze
 			<div id="files" class="files"></div>'
 		);
 
+		$form->addButton('submit');
+		$form->addButton('cancel');
+
 		// Send the form to the template
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
 
@@ -398,18 +403,47 @@ class BreezeUser extends Breeze
 	$(function () {
 		$(\'#fileupload\').fileupload({
 			dataType: \'json\',
+			url : '. JavaScriptEscape($this['tools']->scriptUrl .'?action=breezeajax;sa=usersettings;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings')) .',
+			autoUpload: false,
+			getNumberOfFiles: 1,
+			disableImageResize: /Android(?!.*Chrome)|Opera/
+				.test(window.navigator.userAgent),
+			previewMaxWidth: 100,
+			previewMaxHeight: 100,
+			previewCrop: true,
+			maxNumberOfFiles: 1,
 			add: function (e, data) {
-				url : '. $this['tools']->scriptUrl .'?action=breezeajax;sa=usersettings;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings') .';
-				data.context = $(\'<button/>\').text(\'Upload\')
-					.appendTo(document.body)
-					.click(function () {
-						data.context = $(\'<p/>\').text(\'Uploading...\').replaceAll($(this));
-						data.submit();
-					});
-			},
-			done: function (e, data) {
-				data.context.text(\'Upload finished.\');
+			data.context = jQuery(\'[name="Submit"]\')
+				.on(\'click\', function (e) {
+					e.preventDefault();
+					var $this = jQuery(this),
+						data = $this.data();
+
+					$this.parent().fadeOut(1000);
+					jQuery(\'#fileupload\').prop(\'disabled\', false);
+					jQuery(\'.boton_subir\').remove();
+					jQuery(\'.errorbox\').fadeOut("slow");
+					$this.prop(\'disabled\', true);
+					$this.remove();
+					data.abort();
+
+					return false;
+				}).data(data);
 			}
+		}).on(\'fileuploadadd\', function (e, data) {
+			data.context = jQuery(\'<div/>\').appendTo(\'#files\');
+			$.each(data.files, function (index, file) {
+
+				var node = jQuery(\'<p/>\')
+						.append(\'<img src="\' + URL.createObjectURL(file) + \'"/ style="max-width: 300px;">\');
+
+				node.appendTo(data.context);
+			});
+		}).on(\'fileuploaddone\', function (e, data) {
+
+			jQuery.each(data.result.files, function (index, file) {
+			});
+		}).on(\'fileuploadfail\', function (e, data) {
 		});
 	});', true);
 	}

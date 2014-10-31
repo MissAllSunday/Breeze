@@ -198,8 +198,9 @@ class UploadHandler
     }
 
     protected function get_user_id() {
-        @session_start();
-        return session_id();
+        global $user_info;
+
+        return $user_info['id'];
     }
 
     protected function get_user_path() {

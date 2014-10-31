@@ -507,16 +507,18 @@ class BreezeAjax
 			'upload_dir' => $this->_app['tools']->boardDir . Breeze::$coversFolder,
 			'upload_url' => $this->_app['tools']->boardUrl .'/breezeFiles/',
 			'user_dirs' => true,
+			'max_file_size' => 40000,
+			'max_width' => 300,
+			'max_height' => 300,
+			'print_response' => false,
 		));
 
 		// Get the file info.
-		$file = $uploadHandler->get(false);
-
-		// Extract the very own file we want...
-		$f = $file['files'][0];
+		$fileResponse = $uploadHandler->get_response();
+		$file = $fileResponse['files'][0];
 
 		// Do changes only if the image was uploaded.
-		if ($f->name)
+		if ($file->name)
 		{
 			// If there is an already uploaded cover, make sure to delete it.
 			if (!empty($this->_userSettings['cover']))

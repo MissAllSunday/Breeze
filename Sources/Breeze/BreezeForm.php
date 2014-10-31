@@ -177,6 +177,14 @@ class BreezeForm
 		return $this->addElement($element);
 	}
 
+	function addButton($text)
+	{
+		$element['type'] = 'button';
+		$element['text'] = $text;
+
+		return $this->addElement($element);
+	}
+
 	function addSection($text)
 	{
 		$element['type'] = 'section';
@@ -253,6 +261,11 @@ class BreezeForm
 		}
 
 		$this->buffer .= '</dl>';
+
+		// Any buttons?
+		foreach($this->elements as $el)
+			if ($el['type'] == 'button')
+				$this->buffer .= '<input type="submit" name="'. $this->setText($el['text']) .'" value="'. $this->setText($el['text']) .'" class="button_submit"/>';
 
 		return $this->buffer;
 	}

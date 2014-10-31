@@ -50,7 +50,8 @@ $txt['Breeze_user_settings_pagination_number_sub'] = 'Enter the number of status
 $txt['Breeze_user_settings_general_wall'] = 'Enable the general wall';
 $txt['Breeze_user_settings_general_wall_sub'] = 'The general wall is a unique page where you can see the status and updates from your buddies. This setting allows you to enable/disable it.';
 $txt['Breeze_user_settings_cover_select'] = 'Cover image file';
-$txt['Breeze_user_settings_cover_select'] = 'Cover image file';
+$txt['Breeze_user_settings_submit'] = 'Submit';
+$txt['Breeze_user_settings_cancel'] = 'Cancel';
 $txt['Breeze_user_settings_cover_select_sub'] = 'You can upload an image that will serve as a cover for your own wall, the recommended size is 800 x 300 and the accepted files are jpg, png and gif. Do not that if your gif image has an animation, the animation will be lost.';
 $txt['Breeze_user_settings_cover_done'] = 'Your image was successfully uploaded';
 $txt['Breeze_user_settings_cover_deleted'] = 'Your cover was successfully deleted.';
@@ -194,3 +195,25 @@ $txt['Breeze_goTop'] = 'Go to top';
 $txt['Breeze_moodLabel'] = 'mood';
 $txt['Breeze_moodChange'] = 'Change your mood';
 $txt['Breeze_moodChanged'] = 'Your mood has been changed';
+
+// Cover error messages.
+$txt['Breeze_cover_errors'] = array(
+	1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
+	2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
+	3 => 'The uploaded file was only partially uploaded',
+	4 => 'No file was uploaded',
+	6 => 'Missing a temporary folder',
+	7 => 'Failed to write file to disk',
+	8 => 'A PHP extension stopped the file upload',
+	'post_max_size' => 'The uploaded file exceeds the post_max_size directive in php.ini',
+	'max_file_size' => 'File is too big',
+	'min_file_size' => 'File is too small',
+	'accept_file_types' => 'Filetype not allowed',
+	'max_number_of_files' => 'Maximum number of files exceeded',
+	'max_width' => 'Image exceeds maximum width',
+	'min_width' => 'Image requires a minimum width',
+	'max_height' => 'Image exceeds maximum height',
+	'min_height' => 'Image requires a minimum height',
+	'abort' => 'File upload aborted',
+	'image_resize' => 'Failed to resize image'
+);

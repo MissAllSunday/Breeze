@@ -40,6 +40,7 @@ class BreezeAdmin
 			'moodEdit' => 'moodEdit',
 			'permissions' => 'permissions',
 			'donate' => 'donate',
+			'cover' => 'cover',
 		);
 
 		loadGeneralSettingParameters($subActions, 'general');
@@ -130,7 +131,6 @@ class BreezeAdmin
 			array('int', Breeze::$txtpattern .'allowed_max_num_users', 'size' => 3, 'subtext' => $this->_app['tools']->text('allowed_max_num_users_sub')),
 			array('check', Breeze::$txtpattern .'parseBBC', 'subtext' => $this->_app['tools']->text('parseBBC_sub')),
 			array('int', Breeze::$txtpattern .'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this->_app['tools']->text('allowed_maxlength_aboutMe_sub')),
-			array('check', Breeze::$txtpattern .'cover', 'subtext' => $this->_app['tools']->text('cover_sub')),
 			array('check', Breeze::$txtpattern .'likes', 'subtext' => $this->_app['tools']->text('likes_sub')),
 			array('check', Breeze::$txtpattern .'mood', 'subtext' => $this->_app['tools']->text('mood_sub')),
 			array('text', Breeze::$txtpattern .'mood_label', 'subtext' => $this->_app['tools']->text('mood_label_sub')),
@@ -152,7 +152,7 @@ class BreezeAdmin
 		$context['post_url'] = $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=settings;save';
 
 		// Saving?
-		if ($data->validate('save') == true)
+		if ($data->validate('save'))
 		{
 			checkSession();
 			saveDBSettings($config_vars);
@@ -190,7 +190,7 @@ class BreezeAdmin
 		$context['post_url'] = $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=permissions;save';
 
 		// Saving?
-		if ($data->validate('save') == true)
+		if ($data->validate('save'))
 		{
 			checkSession();
 			saveDBSettings($config_vars);
@@ -541,6 +541,40 @@ class BreezeAdmin
 			// Back to the list page.
 			return redirectexit('action=admin;area=breezeadmin;sa=moodList');
 		}
+	}
+	
+	function cover()
+	{
+		global $context, $txt;
+
+		// Load stuff
+		$data = Breeze::data('request');
+		$context['page_title'] = Breeze::$name .' - '. $this->_app['tools']->text('page_cover');
+		$context[$context['admin_menu_name']]['tab_data'] = array(
+			'title' => $context['page_title'],
+			'description' => $this->_app['tools']->text('page_cover_desc'),
+		);
+
+		require_once($this->_app['tools']->sourceDir . '/ManageServer.php');
+
+		$config_vars = array(
+			array('check', Breeze::$txtpattern .'cover', 'subtext' => $this->_app['tools']->text('cover_sub')),
+			array('int', Breeze::$txtpattern .'cover_max_image_size', 'size' => 3, 'subtext' => $this->_app['tools']->text('cover_max_image_size_sub')),
+			array('int', Breeze::$txtpattern .'cover_max_image_width', 'size' => 4, 'subtext' => $this->_app['tools']->text('cover_max_image_width_sub')),
+			array('int', Breeze::$txtpattern .'cover_max_image_height', 'size' => 3, 'subtext' => $this->_app['tools']->text('cover_max_image_height_sub')),
+		);
+
+		$context['post_url'] = $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=cover;save';
+
+		// Saving?
+		if ($data->validate('save'))
+		{
+			checkSession();
+			saveDBSettings($config_vars);
+			redirectexit('action=admin;area=breezeadmin;sa=cover');
+		}
+
+		prepareDBSettingContext($config_vars);
 	}
 
 	// Pay no attention to the girl behind the curtain.
