@@ -501,44 +501,84 @@ class BreezeAjax
 	 */
 	public function cover()
 	{
-		// Check permissions
+		$data = Breeze::data('get');
+
+		// This feature needs to be enable.
+		if (!$this->_app['tools']->enable('cover'))
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $this->_currentUser,
+			));
+
+		// This makes things easier.
+		$folder = $this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/';
+		$folderThumbnail = $this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/';
+		$folderThumbnailUrl = $this->_app['tools']->boardUrl . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/';
+
+		// Get the image.
 		$uploadHandler = new UploadHandler(array(
 			'script_url' => $this->_app['tools']->boardUrl .'/',
 			'upload_dir' => $this->_app['tools']->boardDir . Breeze::$coversFolder,
 			'upload_url' => $this->_app['tools']->boardUrl .'/breezeFiles/',
 			'user_dirs' => true,
-			'max_file_size' => 40000,
-			'max_width' => 300,
-			'max_height' => 300,
+			'max_file_size' => $this->_app['tools']->enable('cover_max_size') ? $this->_app['tools']->setting('cover_max_size') : 80000,
+			'max_width' => $this->_app['tools']->enable('cover_max_width') ? $this->_app['tools']->setting('cover_max_width') : 1500,
+			'max_height' => $this->_app['tools']->enable('cover_max_height') ? $this->_app['tools']->setting('cover_max_height') : 500,
 			'print_response' => false,
+			'thumbnail' => array(
+				'crop' => true,
+				'max_width' => 160,
+				'max_height' => 90,
+			)
 		));
 
 		// Get the file info.
 		$fileResponse = $uploadHandler->get_response();
 		$file = $fileResponse['files'][0];
 
+		// Is there any errors? this uses the server error response in a weird way...
+		if (!empty($file->error))
+			return $this->_noJS ? $this->setResponse(array(
+				'message' => $file->error,
+				'type' => 'cover_error',
+				'owner' => $this->_currentUser,
+			)) : $file;
+
 		// Do changes only if the image was uploaded.
 		if ($file->name)
 		{
+			// Check the file.
+			require_once($this->_app['tools']->sourceDir . '/Subs-Graphics.php');
+
+			if (!checkImageContents($folder . $file->name, $true))
+				return $this->setResponse(array(
+					'message' => 'wrong_values',
+					'type' => 'error',
+					'owner' => $this->_currentUser,
+				));
+
 			// If there is an already uploaded cover, make sure to delete it.
 			if (!empty($this->_userSettings['cover']))
 			{
 				// Thumbnails first...
-				if (file_exists($this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/'. $this->_userSettings['cover']))
-					@unlink($this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/'. $this->_userSettings['cover']);
+				if (file_exists($folderThumbnail . $this->_userSettings['cover']))
+					@unlink($folderThumbnail . $this->_userSettings['cover']);
 
 				// The main file, basically the same thing.
-				if (file_exists($this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser . $this->_userSettings['cover']))
-					@unlink($this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/'. $this->_userSettings['cover']);
+				if (file_exists($folder . $this->_userSettings['cover']))
+					@unlink($folder . $this->_userSettings['cover']);
 			}
 
-			// Store the new cover filename.
-			$this->_app['query']->insertUserSettings(array('cover'=> $f->name), $this->_currentUser);
+			$fileInfo = json_encode(pathinfo($folder . $file->name));
 
-			unset($f);
+			// Store the new cover info.
+			$this->_app['query']->insertUserSettings(array('cover'=> $fileInfo), $this->_currentUser);
+
+			unset($file);
+
+			return $this->_response = $file;
 		}
-
-		return $this->_response = $file;
 	}
 
 	public function coverDelete()

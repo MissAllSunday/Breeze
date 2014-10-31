@@ -386,7 +386,6 @@ class BreezeUser extends Breeze
 		);
 
 		$form->addButton('submit');
-		$form->addButton('cancel');
 
 		// Send the form to the template
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
@@ -413,22 +412,12 @@ class BreezeUser extends Breeze
 			previewCrop: true,
 			maxNumberOfFiles: 1,
 			add: function (e, data) {
-			data.context = jQuery(\'[name="Submit"]\')
-				.on(\'click\', function (e) {
-					e.preventDefault();
-					var $this = jQuery(this),
-						data = $this.data();
-
-					$this.parent().fadeOut(1000);
-					jQuery(\'#fileupload\').prop(\'disabled\', false);
-					jQuery(\'.boton_subir\').remove();
-					jQuery(\'.errorbox\').fadeOut("slow");
-					$this.prop(\'disabled\', true);
-					$this.remove();
-					data.abort();
-
-					return false;
-				}).data(data);
+				data.context = data.context = $(\'<button/>\').text(\'Upload\')
+                .appendTo(document.body)
+                .click(function () {
+                    data.context = $(\'<p/>\').text(\'Uploading...\').replaceAll($(this));
+                    data.submit();
+                });
 			}
 		}).on(\'fileuploadadd\', function (e, data) {
 			data.context = jQuery(\'<div/>\').appendTo(\'#files\');

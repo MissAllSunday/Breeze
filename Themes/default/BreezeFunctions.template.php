@@ -397,11 +397,17 @@ function breeze_server_response()
 	$type = $serverResponse->get('mstype');
 	$message = $serverResponse->get('msmessage');
 
-	// Show a nice confirmation message for those without JavaScript
-	if (!empty($type) && !empty($message))
+	// Show a nice confirmation message for those without JavaScript.
+	if (!empty($type) && !empty($message) && isset($txt['Breeze_'. $type .'_'. $message]) && $type != 'cover_errors')
 		echo
 		'<div '. ($type == 'error' ? 'class="errorbox"' : 'id="profile_success"') ,'>
 			', $txt['Breeze_'. $type .'_'. $message] ,'
+		</div>';
+
+	elseif ($type == 'cover_errors')
+		echo
+		'<div '. ($type == 'error' ? 'class="errorbox"' : 'id="profile_success"') ,'>
+			', $txt['Breeze_'. $type][$message] ,'
 		</div>';
 }
 
