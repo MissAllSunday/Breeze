@@ -102,18 +102,18 @@ class BreezeUser extends Breeze
 		if ($tools->enable('cover') && allowedTo('breeze_canCover') && !empty($context['Breeze']['settings']['owner']['cover']) && file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']['basename']))
 			$context['Breeze']['cover'] = $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']['basename'];
 
-		// Set up some vars for pagination
+		// Set up some vars for pagination.
 		$maxIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;
 		$currentPage = $data->validate('start') == true ? $data->get('start') : 0;
 
-		// Load all the status
+		// Load all the status.
 		$data = $query->getStatusByProfile($context['member']['id'], $maxIndex, $currentPage);
 
-		// Load users data
+		// Load users data.
 		if (!empty($data['users']))
 			$usersToLoad = $usersToLoad + $data['users'];
 
-		// Pass the status info
+		// Pass the status info.
 		if (!empty($data['data']))
 			$context['member']['status'] = $data['data'];
 
@@ -121,10 +121,10 @@ class BreezeUser extends Breeze
 		if (!empty($data['pagination']))
 			$context['page_index'] = $data['pagination'];
 
-		// Page name depends on pagination
+		// Page name depends on pagination.
 		$context['page_title'] = sprintf($tools->text('profile_of_username'), $context['member']['name']);
 
-		// Get the profile views
+		// Get the profile views.
 		if (!$user_info['is_guest'] && !empty($context['Breeze']['settings']['owner']['visitors']))
 		{
 			$context['Breeze']['views'] = $this->trackViews();
@@ -146,7 +146,7 @@ class BreezeUser extends Breeze
 				$usersToLoad = array_merge($usersToLoad, array_keys($context['Breeze']['views']));
 		}
 
-		// Show buddies only if there is something to show
+		// Show buddies only if there is something to show.
 		if (!empty($context['Breeze']['settings']['owner']['buddies']) && !empty($context['member']['buddies']))
 		{
 			// Hold your horses!
@@ -156,7 +156,7 @@ class BreezeUser extends Breeze
 			$usersToLoad = array_merge($usersToLoad, $context['member']['buddies']);
 		}
 
-		// Show this user recent activity
+		// Show this user recent activity.
 		if (!empty($context['Breeze']['settings']['owner']['activityLog']))
 			$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
 
@@ -362,13 +362,16 @@ class BreezeUser extends Breeze
 		$userSettings = $this['query']->getUserSettings($context['member']['id']);
 
 				// Set a nice url for the form.
-		$context['form']['url'] = $this['tools']->scriptUrl .'?action=breezeajax;sa=usersettings;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings');
+		$context['form']['url'] = $this['tools']->scriptUrl .'?action=breezeajax;sa=cover;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings');
 
 		// Create the form.
 		$form = $this['form'];
 
 		// Group all these values into an array.
 		$form->setFormName('breezeSettings');
+
+		// Session stuff.
+		$form->addHiddenField($context['session_var'], $context['session_id']);
 
 		// Remove a cover image.
 		if (!empty($userSettings['cover']))
@@ -421,7 +424,6 @@ class BreezeUser extends Breeze
 				data.context = jQuery(\'[name="Submit"]\')
 					.on(\'click\', function (e) {
 						e.preventDefault();
-						data.context = $(\'<p/>\').text(\'Uploading...\').replaceAll($(this));
 						data.submit();
 						return false;
 					}).data(data);
@@ -430,17 +432,21 @@ class BreezeUser extends Breeze
 			data.context = jQuery(\'<div/>\').appendTo(\'#files\');
 			$.each(data.files, function (index, file) {
 
-				var node = jQuery(\'<p/>\')
-						.append(\'<img src="\' + URL.createObjectURL(file) + \'"/ style="max-width: 300px;">\');
+				var node = jQuery(\'<div/>\')
+						.append(\'<p class="b_cover_preview"><img src="\' + URL.createObjectURL(file) + \'"/ style="max-width: 300px;"></p>\');
 
 				node.appendTo(data.context);
 			});
 		}).on(\'fileuploaddone\', function (e, data) {
-console.log(data);
-			jQuery.each(data.result.files, function (index, file) {
-			});
+
+			if (data.result.error) {
+				$(\'.b_cover_preview\').replaceWith(\'<div class="errorbox">\' + data.result.error + \'</div>\');
+				data.abort();
+			}
 		}).on(\'fileuploadfail\', function (e, data) {
-		console.log(data);
+
+		}).on(\'always\', function (e, data) {
+
 		});
 	});', true);
 	}
