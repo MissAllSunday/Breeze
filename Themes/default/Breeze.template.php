@@ -345,7 +345,7 @@ function template_user_notifications()
 
 function template_member_options()
 {
-	global $context, $settings, $options, $scripturl, $modSettings, $txt;
+	global $context;
 
 	// Get the message from the server
 	breeze_server_response();
@@ -354,11 +354,8 @@ function template_member_options()
 	echo '
 		<form action="', $context['form']['url'] ,'" method="post" accept-charset="', $context['character_set'], '" name="breezeSettings" id="breezeSettings">
 			<div class="cat_bar">
-				<h3 class="catbg">
-					<span class="ie6_header floatleft">
-						<img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" class="icon" />
+				<h3 class="catbg profile_hd">
 						', $context['page_title'] , '
-					</span>
 				</h3>
 			</div>
 			<p class="windowbg description">
