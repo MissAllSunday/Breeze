@@ -786,6 +786,10 @@ class BreezeQuery
 			{
 				$return[$row['variable']] = is_numeric($row['value']) ? (int) $row['value'] : (string) $row['value'];
 
+				// Special case for the cover image info.
+				if ($row['variable'] == 'cover')
+					$return[$row['variable']] = !empty($row['value']) ? json_decode($row['value'], true) : array();
+
 				$return += array(
 					// 'gender' => $row['gender'], @todo get the custom profile fields and merge them here
 					'buddiesList' => !empty($row['buddy_list']) ? explode(',', $row['buddy_list']) : array(),

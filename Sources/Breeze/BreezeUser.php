@@ -61,7 +61,7 @@ class BreezeUser extends Breeze
 		);
 
 		// Does the admin has set a max limit?
-		if ($tools->setting('allowed_max_num_users'))
+		if ($tools->enable('allowed_max_num_users'))
 			$context['Breeze']['max_users'] = (int) $tools->setting('allowed_max_num_users');
 
 		// Is owner?
@@ -226,6 +226,9 @@ class BreezeUser extends Breeze
 		// Get the user settings.
 		$userSettings = $this['query']->getUserSettings($context['member']['id']);
 
+		// Set a nice url for the form.
+		$context['form']['url'] = $this['tools']->scriptUrl .'?action=breezeajax;sa=usersettings;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings');
+
 		// Create the form.
 		$form = $this['form'];
 
@@ -369,7 +372,7 @@ class BreezeUser extends Breeze
 			$form->addHTML(
 				'cover_delete',
 				'<a href="'. $this['tools']->scriptUrl .'?action=breezeajax;sa=coverdelete;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="cover_delete">%s</a>
-				'. (file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']) ? '<br /><img src="'. $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover'] .'" class ="" />' : '') .''
+				'. (file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename']) ? '<br /><img src="'. $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename'] .'" class ="" />' : '') .''
 			);
 
 		// Cover upload option
@@ -402,7 +405,7 @@ class BreezeUser extends Breeze
 	$(function () {
 		$(\'#fileupload\').fileupload({
 			dataType: \'json\',
-			url : '. JavaScriptEscape($this['tools']->scriptUrl .'?action=breezeajax;sa=usersettings;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings')) .',
+			url : '. JavaScriptEscape($this['tools']->scriptUrl .'?action=breezeajax;sa=cover;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings') .';'. $context['session_var'] .'='. $context['session_id'] .';js=1') .',
 			autoUpload: false,
 			getNumberOfFiles: 1,
 			disableImageResize: /Android(?!.*Chrome)|Opera/
@@ -412,12 +415,13 @@ class BreezeUser extends Breeze
 			previewCrop: true,
 			maxNumberOfFiles: 1,
 			add: function (e, data) {
-				data.context = data.context = $(\'<button/>\').text(\'Upload\')
-                .appendTo(document.body)
-                .click(function () {
-                    data.context = $(\'<p/>\').text(\'Uploading...\').replaceAll($(this));
-                    data.submit();
-                });
+				data.context = jQuery(\'[name="Submit"]\')
+					.on(\'click\', function (e) {
+						e.preventDefault();
+						data.context = $(\'<p/>\').text(\'Uploading...\').replaceAll($(this));
+						data.submit();
+						return false;
+					}).data(data);
 			}
 		}).on(\'fileuploadadd\', function (e, data) {
 			data.context = jQuery(\'<div/>\').appendTo(\'#files\');
@@ -429,10 +433,11 @@ class BreezeUser extends Breeze
 				node.appendTo(data.context);
 			});
 		}).on(\'fileuploaddone\', function (e, data) {
-
+console.log(data);
 			jQuery.each(data.result.files, function (index, file) {
 			});
 		}).on(\'fileuploadfail\', function (e, data) {
+		console.log(data);
 		});
 	});', true);
 	}

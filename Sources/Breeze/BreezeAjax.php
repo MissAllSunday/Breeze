@@ -504,7 +504,7 @@ class BreezeAjax
 		$data = Breeze::data('get');
 
 		// This feature needs to be enable.
-		if (!$this->_app['tools']->enable('cover'))
+		if (!$this->_app['tools']->enable('cover') || empty($data))
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
@@ -528,8 +528,8 @@ class BreezeAjax
 			'print_response' => false,
 			'thumbnail' => array(
 				'crop' => true,
-				'max_width' => 160,
-				'max_height' => 90,
+				'max_width' => 300,
+				'max_height' => 100,
 			)
 		));
 
@@ -539,11 +539,17 @@ class BreezeAjax
 
 		// Is there any errors? this uses the server error response in a weird way...
 		if (!empty($file->error))
-			return $this->_noJS ? $this->setResponse(array(
+		{
+			if ($this->_noJS)
+				return $this->setResponse(array(
 				'message' => $file->error,
 				'type' => 'cover_error',
 				'owner' => $this->_currentUser,
-			)) : $file;
+			));
+
+			else
+				return $this->_response = $file;
+		}
 
 		// Do changes only if the image was uploaded.
 		if ($file->name)
@@ -551,7 +557,7 @@ class BreezeAjax
 			// Check the file.
 			require_once($this->_app['tools']->sourceDir . '/Subs-Graphics.php');
 
-			if (!checkImageContents($folder . $file->name, $true))
+			if (!checkImageContents($folder . $file->name, true))
 				return $this->setResponse(array(
 					'message' => 'wrong_values',
 					'type' => 'error',
@@ -562,22 +568,32 @@ class BreezeAjax
 			if (!empty($this->_userSettings['cover']))
 			{
 				// Thumbnails first...
-				if (file_exists($folderThumbnail . $this->_userSettings['cover']))
-					@unlink($folderThumbnail . $this->_userSettings['cover']);
+				if (file_exists($folderThumbnail . $this->_userSettings['cover']['basename']))
+					@unlink($folderThumbnail . $this->_userSettings['cover']['basename']);
 
 				// The main file, basically the same thing.
-				if (file_exists($folder . $this->_userSettings['cover']))
-					@unlink($folder . $this->_userSettings['cover']);
+				if (file_exists($folder . $this->_userSettings['cover']['basename']))
+					@unlink($folder . $this->_userSettings['cover']['basename']);
 			}
 
-			$fileInfo = json_encode(pathinfo($folder . $file->name));
+			$fileInfo = pathinfo($folder . $file->name);
+			$newFile = sha1($file->name) .'.'. $fileInfo['extension'];
+
+			// Just so we don't end with some silly names..
+			rename($folder . $file->name, $folder . $newFile);
+			rename($folderThumbnail . $file->name, $folderThumbnail . $newFile);
+
+			// And again get the file info...
+			$fileInfo = pathinfo($folder . $newFile);
 
 			// Store the new cover info.
-			$this->_app['query']->insertUserSettings(array('cover'=> $fileInfo), $this->_currentUser);
+			$this->_app['query']->insertUserSettings(array('cover'=> json_encode($fileInfo)), $this->_currentUser);
+
+			$this->_response = $file;
 
 			unset($file);
 
-			return $this->_response = $file;
+			return;
 		}
 	}
 
