@@ -99,8 +99,8 @@ class BreezeUser extends Breeze
 		$context['Breeze']['tools'] = $tools;
 
 		// Can this user have a cover?
-		if ($tools->enable('cover') && allowedTo('breeze_canCover') && !empty($context['Breeze']['settings']['owner']['cover']) && file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']))
-			$context['Breeze']['cover'] = $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover'];
+		if ($tools->enable('cover') && allowedTo('breeze_canCover') && !empty($context['Breeze']['settings']['owner']['cover']) && file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']['basename']))
+			$context['Breeze']['cover'] = $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']['basename'];
 
 		// Set up some vars for pagination
 		$maxIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;
