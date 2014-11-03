@@ -356,10 +356,13 @@ class BreezeUser extends Breeze
 		$context['page_desc'] = $this['tools']->text('user_settings_name_cover_desc');
 
 		// Need to tell the form the page it needs to display when redirecting back after saving.
-		$context['Breeze_redirect'] = 'breezecoversettings';
+		$context['Breeze_redirect'] = 'breezecover';
 
 		// Get the user settings.
 		$userSettings = $this['query']->getUserSettings($context['member']['id']);
+
+				// Set a nice url for the form.
+		$context['form']['url'] = $this['tools']->scriptUrl .'?action=breezeajax;sa=usersettings;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings');
 
 		// Create the form.
 		$form = $this['form'];
@@ -405,7 +408,7 @@ class BreezeUser extends Breeze
 	$(function () {
 		$(\'#fileupload\').fileupload({
 			dataType: \'json\',
-			url : '. JavaScriptEscape($this['tools']->scriptUrl .'?action=breezeajax;sa=cover;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings') .';'. $context['session_var'] .'='. $context['session_id'] .';js=1') .',
+			url : '. JavaScriptEscape($context['form']['url'].';js=1') .',
 			autoUpload: false,
 			getNumberOfFiles: 1,
 			disableImageResize: /Android(?!.*Chrome)|Opera/
