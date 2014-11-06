@@ -605,12 +605,12 @@ class BreezeAjax
 		if (!empty($this->_userSettings['cover']))
 		{
 			// Thumbnails first...
-			if (file_exists($this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/'. $this->_userSettings['cover']))
-				@unlink($this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/'. $this->_userSettings['cover']);
+			if (file_exists($this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/'. $this->_userSettings['cover']['basename']))
+				@unlink($this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/'. $this->_userSettings['cover']['basename']);
 
 			// The main file, basically the same thing.
-			if (file_exists($this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser . $this->_userSettings['cover']))
-				@unlink($this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser . $this->_userSettings['cover']);
+			if (file_exists($this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser . $this->_userSettings['cover']['basename']))
+				@unlink($this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser . $this->_userSettings['cover']['basename']);
 		}
 
 		// Remove the setting from the users options.

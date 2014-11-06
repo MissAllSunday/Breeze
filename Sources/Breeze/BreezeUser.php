@@ -361,7 +361,7 @@ class BreezeUser extends Breeze
 		// Get the user settings.
 		$userSettings = $this['query']->getUserSettings($context['member']['id']);
 
-				// Set a nice url for the form.
+		// Set a nice url for the form.
 		$context['form']['url'] = $this['tools']->scriptUrl .'?action=breezeajax;sa=cover;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings');
 
 		// Create the form.
@@ -409,6 +409,10 @@ class BreezeUser extends Breeze
 		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-validate.js', array('local' => true, 'default_theme' => true));
 		addInlineJavascript('
 	$(function () {
+		$(\'#fileupload\').on(\'click\', function (e) {
+			$(\'#files\').empty();
+		});
+
 		$(\'#fileupload\').fileupload({
 			dataType: \'json\',
 			url : '. JavaScriptEscape($context['form']['url'].';js=1') .',
@@ -442,6 +446,11 @@ class BreezeUser extends Breeze
 			if (data.result.error) {
 				$(\'.b_cover_preview\').replaceWith(\'<div class="errorbox">\' + data.result.error + \'</div>\');
 				data.abort();
+			}
+
+			else {
+				$(\'.b_cover_preview\').replaceWith(\'<div class="errorbox">\' + data.result.error + \'</div>\');
+				console.log(data.result);
 			}
 		}).on(\'fileuploadfail\', function (e, data) {
 
