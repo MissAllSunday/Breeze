@@ -589,11 +589,13 @@ class BreezeAjax
 			// Store the new cover info.
 			$this->_app['query']->insertUserSettings(array('cover'=> json_encode($fileInfo)), $this->_currentUser);
 
-			$this->_response = $file;
-
 			unset($file);
 
-			return;
+			return $this->setResponse(array(
+				'message' => 'user_settings_cover_done',
+				'type' => 'success',
+				'owner' => $this->_currentUser,
+			));
 		}
 	}
 
@@ -721,7 +723,7 @@ class BreezeAjax
 		else
 			ob_start();
 
-		// Send the header
+		// Set the header.
 		header('Content-Type: application/json');
 
 		// Is there a custom message? Use it
@@ -752,7 +754,7 @@ class BreezeAjax
 		// Data is empty, fill out a generic response
 		if (empty($data))
 			$data = array(
-				'message' => 'server',
+				'message' => $this->_app['tools']->text('error_server'),
 				'data' => '',
 				'type' => 'error',
 				'owner' => 0,
@@ -761,7 +763,7 @@ class BreezeAjax
 
 		// If we didn't get all the params, set them to an empty var and don't forget to convert the message to a proper text string
 		$this->_response = array(
-			'message' => !empty($data['message']) ? ($this->_noJS == false ? $this->_app['tools']->text($data['type'] .'_'. $data['message']) : $data['message']) : 'server',
+			'message' => !empty($data['message']) ? $this->_app['tools']->text($data['type'] .'_'. $data['message']) : $this->_app['tools']->text('error_server'),
 			'data' => !empty($data['data']) ? $data['data'] : '',
 			'type' => !empty($data['type']) ? $data['type'] : 'error',
 			'owner' => !empty($data['owner']) ? $data['owner'] : 0,
@@ -781,10 +783,10 @@ class BreezeAjax
 		$userString = '';
 		$extraString = '';
 
-		// Build the strings as a valid syntax to pass by $_GET
 		if (!empty($this->_response['message']) && !empty($this->_response['type']))
-				$messageString .= ';mstype='. $this->_response['type'] .';msmessage='. $this->_response['message'];
+			$this['tools']->setResponse($this->_response['message'], $this->_response['type']);
 
+		// Build the strings as a valid syntax to pass by $_GET
 		$userString = $this->comingFrom == 'profile' ? ';u='. $this->_response['owner'] : '';
 
 		// A special area perhaps?

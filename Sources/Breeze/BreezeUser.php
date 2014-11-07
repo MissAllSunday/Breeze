@@ -449,7 +449,7 @@ class BreezeUser extends Breeze
 			}
 
 			else {
-				$(\'.b_cover_preview\').replaceWith(\'<div class="errorbox">\' + data.result.error + \'</div>\');
+				$(\'.b_cover_preview\').replaceWith(\'<div class="errorbox">'. $this['tools']->text('user_settings_cover_done') .'</div>\');
 				console.log(data.result);
 			}
 		}).on(\'fileuploadfail\', function (e, data) {
