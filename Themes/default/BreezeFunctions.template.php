@@ -404,6 +404,8 @@ function breeze_server_response()
 			', $message ,'
 		</div>';
 
+	// Ugly, I know...
+	unset($_SESSION['Breeze']['response']);
 }
 
 function template_userDiv()
