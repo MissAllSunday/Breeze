@@ -183,7 +183,7 @@ class BreezeAjax
 
 				// Send the data back to the browser
 				return $this->setResponse(array(
-					'type' => 'success',
+					'type' => 'info',
 					'message' => 'published',
 					'data' => $this->_app['display']->HTML($this->_params, 'status', true, $poster),
 					'owner' => $owner,
@@ -282,7 +282,7 @@ class BreezeAjax
 
 				// Send the data back to the browser
 				return $this->setResponse(array(
-					'type' => 'success',
+					'type' => 'info',
 					'message' => 'published_comment',
 					'data' => $this->_app['display']->HTML($this->_params, 'comment', true, $poster),
 					'owner' => $owner,
@@ -351,7 +351,7 @@ class BreezeAjax
 
 				// Send the data back to the browser
 				return $this->setResponse(array(
-					'type' => 'success',
+					'type' => 'info',
 					'message' => 'delete_'. $type,
 					'owner' => $profileOwner,
 				));
@@ -402,7 +402,7 @@ class BreezeAjax
 
 		// Done! set the redirect.
 		return $this->setResponse(array(
-			'type' => 'success',
+			'type' => 'info',
 			'message' => 'updated_settings',
 			'owner' => $this->_data->get('u'),
 			'extra' => array('area' => $this->_data->get('area'),),
@@ -457,7 +457,7 @@ class BreezeAjax
 			$return .= $this->_app['display']->HTML($data['data'], 'status', false, $data['users']);
 
 			return $this->setResponse(array(
-				'type' => 'success',
+				'type' => 'info',
 				'message' => '',
 				'data' => $return,
 				'owner' => $id,
@@ -466,7 +466,7 @@ class BreezeAjax
 
 		else
 			return $this->setResponse(array(
-				'type' => 'success',
+				'type' => 'info',
 				'message' => 'end',
 				'data' => 'end',
 				'owner' => $id,
@@ -593,7 +593,7 @@ class BreezeAjax
 
 			return $this->setResponse(array(
 				'message' => 'user_settings_cover_done',
-				'type' => 'success',
+				'type' => 'info',
 				'owner' => $this->_currentUser,
 			));
 		}
@@ -620,7 +620,7 @@ class BreezeAjax
 
 		// Build the response.
 		return $this->setResponse(array(
-			'type' => 'success',
+			'type' => 'info',
 			'message' => 'user_settings_cover_deleted',
 			'owner' => $this->_data->get('u'),
 			'extra' => array('area' => 'breezesettings',),
@@ -676,7 +676,7 @@ class BreezeAjax
 
 			// Build the response.
 			return $this->setResponse(array(
-				'type' => 'success',
+				'type' => 'info',
 				'message' => 'moodChanged',
 				'data' => json_encode(array('user' => $this->_data->get('user'), 'image' => $image)),
 				'owner' => $this->_currentUser,
