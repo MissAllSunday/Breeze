@@ -27,7 +27,7 @@ class BreezeData
 	{
 		if (!empty($type))
 		{
-			$types = array('request' => $_REQUEST, 'get' => $_GET, 'post' => $_POST);
+			$types = array('request' => $_REQUEST, 'get' => $_GET, 'post' => $_POST, 'session' => $_SESSION);
 
 			$this->_request = (empty($type) || !isset($types[$type])) ? $_REQUEST : $types[$type];
 

@@ -392,23 +392,18 @@ function breeze_server_response()
 	loadLanguage(Breeze::$name);
 
 	// Get the message from the server
-	$serverResponse = Breeze::data('get');
+	$serverResponse = Breeze::data('session');
 
-	$type = $serverResponse->get('mstype');
-	$message = $serverResponse->get('msmessage');
+	$type = $serverResponse->get('type');
+	$message = $serverResponse->get('message');
 
 	// Show a nice confirmation message for those without JavaScript.
-	if (!empty($type) && !empty($message) && isset($txt['Breeze_'. $type .'_'. $message]) && $type != 'cover_errors')
+	if (!empty($type) && !empty($message))
 		echo
-		'<div '. ($type == 'error' ? 'class="errorbox"' : 'id="profile_success"') ,'>
-			', $txt['Breeze_'. $type .'_'. $message] ,'
+		'<div class="', $type ,'box">
+			', $message ,'
 		</div>';
 
-	elseif ($type == 'cover_errors')
-		echo
-		'<div '. ($type == 'error' ? 'class="errorbox"' : 'id="profile_success"') ,'>
-			', $txt['Breeze_'. $type][$message] ,'
-		</div>';
 }
 
 function template_userDiv()

@@ -794,6 +794,6 @@ class BreezeAjax
 			foreach ($this->_response['extra'] as $k => $v)
 				$extraString .= ';'. $k .'='. $v;
 
-		$this->_redirectURL .= 'action='. $this->comingFrom . $messageString . $extraString . $userString;
+		$this->_redirectURL .= 'action='. $this->comingFrom . $extraString . $userString;
 	}
 }
