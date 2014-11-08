@@ -31,7 +31,7 @@ breezePost.prototype.after = function() {
 breezePost.prototype.show = function(html) {
 
 		this.loadImage.fadeOut('slow', 'linear', function(){
-			if (html.type == 'success')
+			if (html.type == 'info')
 				jQuery(div).prepend(DOMPurify.sanitize(html.data)).fadeIn('slow');
 		});
 
