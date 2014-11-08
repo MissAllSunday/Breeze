@@ -396,7 +396,7 @@ class BreezeTools
 		// Yeah, a nice session var...
 		$_SESSION['Breeze']['response'] = array(
 			'message' => $message,
-			'type' => $type;
+			'type' => $type,
 		);
 	}
 
