@@ -129,16 +129,16 @@ $txt['permissionname_breeze_postStatus'] = 'Post new Status on any wall<br /><sp
 $txt['permissionname_breeze_postComments'] = 'Post new Comments on any wall<br /><span class="smalltext">  By default, the profile owner always has the ability to post on their own wall.</span>';
 
 // Ajax strings
-$txt['Breeze_success_updated_settings'] = 'Your settings were updated successfully.';
+$txt['Breeze_info_updated_settings'] = 'Your settings were updated successfully.';
 $txt['Breeze_error_deleteComments'] = 'I\'m sorry,  you aren\'t allowed to delete comments.';
 $txt['Breeze_error_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete status.';
 $txt['Breeze_error_server'] = 'There was an error, please try again or contact the forum admin.';
 $txt['Breeze_error_wrong_values'] = 'Wrong values were sent, the request couldn\'t be handled.';
-$txt['Breeze_success_published'] = 'Your status was successfully published';
-$txt['Breeze_success_published_comment'] = 'Your comment was successfully published';
+$txt['Breeze_info_published'] = 'Your status was successfully published';
+$txt['Breeze_info_published_comment'] = 'Your comment was successfully published';
 $txt['Breeze_error_empty'] = 'You need to type something in the textbox.';
-$txt['Breeze_success_delete_status'] = 'Your status has been deleted';
-$txt['Breeze_success_delete_comments'] = 'Your comment has been deleted';
+$txt['Breeze_info_delete_status'] = 'Your status has been deleted';
+$txt['Breeze_info_delete_comments'] = 'Your comment has been deleted';
 $txt['Breeze_confirm_delete'] = 'Do you really want to delete this?';
 $txt['Breeze_confirm_yes'] = 'Yes';
 $txt['Breeze_confirm_cancel'] = 'Cancel';
@@ -151,15 +151,15 @@ $txt['Breeze_cannot_postComments'] = 'I\'m sorry,  you aren\'t allowed to post n
 $txt['Breeze_error_no_valid_action'] = 'This is not a valid action.';
 $txt['Breeze_error_no_property'] = '%s isn\'t a valid call';
 $txt['Breeze_error_no_access'] = 'I\'m sorry, you don\'t have access to this section.';
-$txt['Breeze_success_noti_unmarkasread_after'] = 'You have successfully marked this notification as unread';
-$txt['Breeze_success_noti_markasread_after'] = 'You have successfully marked this notification as read';
+$txt['Breeze_info_noti_unmarkasread_after'] = 'You have successfully marked this notification as unread';
+$txt['Breeze_info_noti_markasread_after'] = 'You have successfully marked this notification as read';
 $txt['Breeze_error_noti_markasreaddeleted_after'] = 'This notification was already deleted or is not a valid entry.';
 $txt['Breeze_error_noti_markasreaddeleted'] = 'This notification was already deleted or is not a valid entry.';
-$txt['Breeze_success_noti_delete_after'] = 'You have successfully deleted this notification';
-$txt['Breeze_success_noti_visitors_clean'] = 'You have successfully cleaned your visitors log';
-$txt['Breeze_success_notiMulti_delete_after'] = 'You have successfully deleted all notifications';
-$txt['Breeze_success_notiMulti_markasread_after'] = 'You have successfully marked as read all notifications';
-$txt['Breeze_success_notiMulti_unmarkasread_after'] = 'You have successfully marked as unread all notifications';
+$txt['Breeze_info_noti_delete_after'] = 'You have successfully deleted this notification';
+$txt['Breeze_info_noti_visitors_clean'] = 'You have successfully cleaned your visitors log';
+$txt['Breeze_info_notiMulti_delete_after'] = 'You have successfully deleted all notifications';
+$txt['Breeze_info_notiMulti_markasread_after'] = 'You have successfully marked as read all notifications';
+$txt['Breeze_info_notiMulti_unmarkasread_after'] = 'You have successfully marked as unread all notifications';
 
 // Errors
 $txt['cannot_breeze_postStatus'] = $txt['Breeze_cannot_postStatus'];
