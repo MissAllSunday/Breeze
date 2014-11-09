@@ -378,7 +378,7 @@ class BreezeUser extends Breeze
 			$form->addHTML(
 				'cover_delete',
 				'<a href="'. $this['tools']->scriptUrl .'?action=breezeajax;sa=coverdelete;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="cover_delete">%s</a>
-				'. (file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename']) ? '<br /><img src="'. $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename'] .'" class ="" />' : '') .''
+				'. (file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename']) ? '<br /><img src="'. $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename'] .'" class ="current_cover" />' : '') .''
 			);
 
 		// Cover upload option
@@ -449,11 +449,12 @@ class BreezeUser extends Breeze
 			}
 
 			else {
-				$(\'.b_cover_preview\').replaceWith(\'<div class="errorbox">'. $this['tools']->text('user_settings_cover_done') .'</div>\');
+				$(\'.b_cover_preview\').replaceWith(\'<div class="infobox">'. $this['tools']->text('user_settings_cover_done') .'</div>\');
 				console.log(data.result);
 			}
 		}).on(\'fileuploadfail\', function (e, data) {
-
+				$(\'.b_cover_preview\').replaceWith(\'<div class="errorbox">'. $this['tools']->text('error_server') .'</div>\');
+				data.abort();
 		}).on(\'always\', function (e, data) {
 
 		});

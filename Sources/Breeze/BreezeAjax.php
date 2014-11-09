@@ -589,13 +589,18 @@ class BreezeAjax
 			// Store the new cover info.
 			$this->_app['query']->insertUserSettings(array('cover'=> json_encode($fileInfo)), $this->_currentUser);
 
-			unset($file);
-
-			return $this->setResponse(array(
+			$this->setResponse(array(
 				'message' => 'user_settings_cover_done',
 				'type' => 'info',
 				'owner' => $this->_currentUser,
+				'data' => json_encode($file),
 			));
+
+			// Don't need this.
+			unset($file);
+
+			// All done.
+			return;
 		}
 	}
 
