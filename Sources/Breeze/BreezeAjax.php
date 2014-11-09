@@ -557,7 +557,7 @@ class BreezeAjax
 			// Check the file.
 			require_once($this->_app['tools']->sourceDir . '/Subs-Graphics.php');
 
-			if (!checkImageContents($folder . $file->name, true))
+			if (!checkImageContents($folder . $file->name))
 			{
 				// Gotta delete the uploaded image.
 				$this->_app['tools']->deleteCover($file->name, $this->_currentUser);
