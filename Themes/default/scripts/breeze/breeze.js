@@ -176,7 +176,7 @@ jQuery(document).ready(function(){
 		return reqOverlayDiv(url, title);
 	});
 
-	// Clean the visitors log/ delete cover image
+	// Clean the visitors log/ delete cover image.
 	jQuery('.clean_log, .cover_delete').on('click', false, function(event){
 
 		event.preventDefault();
@@ -186,10 +186,18 @@ jQuery(document).ready(function(){
 			type: "GET",
 			dataType: "json",
 			success: function(data){
+				console.log(data);
 				breeze.tools.showNoti(data);
+
+				// Hide the current cover preview.
+				jQuery('.current_cover').fadeOut();
 			},
 			error: function(data){
+				console.log(data);
 				breeze.tools.showNoti(data);
+
+				// Hide the current cover preview.
+				jQuery('.current_cover').fadeOut();
 			}
 		});
 
@@ -224,7 +232,7 @@ jQuery(document).ready(function(){
 				jQuery(document).find('[data-user=' + response.data.user + ']').html(response.data.image);
 			},
 			error: function(response){
-				breeze.tools.showNoti(response);console.log(response);
+				breeze.tools.showNoti(response);
 			}
 		});
 	});

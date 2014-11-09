@@ -558,23 +558,21 @@ class BreezeAjax
 			require_once($this->_app['tools']->sourceDir . '/Subs-Graphics.php');
 
 			if (!checkImageContents($folder . $file->name, true))
+			{
+				// Gotta delete the uploaded image.
+				$this->_app['tools']->deleteCover($file->name, $this->_currentUser);
+
+				// Return a nice error message.
 				return $this->setResponse(array(
-					'message' => 'wrong_values',
+					'message' => 'cover_error_check',
 					'type' => 'error',
 					'owner' => $this->_currentUser,
 				));
+			}
 
 			// If there is an already uploaded cover, make sure to delete it.
 			if (!empty($this->_userSettings['cover']))
-			{
-				// Thumbnails first...
-				if (file_exists($folderThumbnail . $this->_userSettings['cover']['basename']))
-					@unlink($folderThumbnail . $this->_userSettings['cover']['basename']);
-
-				// The main file, basically the same thing.
-				if (file_exists($folder . $this->_userSettings['cover']['basename']))
-					@unlink($folder . $this->_userSettings['cover']['basename']);
-			}
+				$this->_app['tools']->deleteCover($this->_userSettings['cover']['basename'], $this->_currentUser);
 
 			$fileInfo = pathinfo($folder . $file->name);
 			$newFile = sha1($file->name) .'.'. $fileInfo['extension'];
@@ -590,7 +588,7 @@ class BreezeAjax
 			$this->_app['query']->insertUserSettings(array('cover'=> json_encode($fileInfo)), $this->_currentUser);
 
 			$this->setResponse(array(
-				'message' => 'user_settings_cover_done',
+				'message' => 'cover_done',
 				'type' => 'info',
 				'owner' => $this->_currentUser,
 				'data' => json_encode($file),
@@ -610,15 +608,7 @@ class BreezeAjax
 
 		// Delete the cover at once!
 		if (!empty($this->_userSettings['cover']))
-		{
-			// Thumbnails first...
-			if (file_exists($this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/'. $this->_userSettings['cover']['basename']))
-				@unlink($this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/'. $this->_userSettings['cover']['basename']);
-
-			// The main file, basically the same thing.
-			if (file_exists($this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser . $this->_userSettings['cover']['basename']))
-				@unlink($this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser . $this->_userSettings['cover']['basename']);
-		}
+			$this->_app['tools']->deleteCover($this->_userSettings['cover']['basename'], $this->_currentUser);
 
 		// Remove the setting from the users options.
 		$this->_app['query']->insertUserSettings(array('cover'=> ''), $this->_currentUser);
@@ -626,7 +616,7 @@ class BreezeAjax
 		// Build the response.
 		return $this->setResponse(array(
 			'type' => 'info',
-			'message' => 'user_settings_cover_deleted',
+			'message' => 'cover_deleted',
 			'owner' => $this->_data->get('u'),
 			'extra' => array('area' => 'breezesettings',),
 		));

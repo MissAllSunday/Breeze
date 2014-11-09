@@ -410,4 +410,20 @@ class BreezeTools
 
 		return $response;
 	}
+
+	public function deleteCover($image, $user)
+	{
+		if (empty($image) || empty($user))
+			return;
+
+		// This makes things easier.
+		$folder = $this->boardDir . Breeze::$coversFolder . $user .'/';
+		$folderThumbnail = $this->boardDir . Breeze::$coversFolder . $user .'/thumbnail/';
+
+		if (file_exists($folderThumbnail . $image))
+			@unlink($folderThumbnail . $image);
+
+		if (file_exists($folderThumbnail . $image))
+			@unlink($folderThumbnail . $image);
+	}
 }
