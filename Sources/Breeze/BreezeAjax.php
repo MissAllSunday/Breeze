@@ -608,18 +608,29 @@ class BreezeAjax
 
 		// Delete the cover at once!
 		if (!empty($this->_userSettings['cover']))
+		{
 			$this->_app['tools']->deleteCover($this->_userSettings['cover']['basename'], $this->_currentUser);
 
-		// Remove the setting from the users options.
-		$this->_app['query']->insertUserSettings(array('cover'=> ''), $this->_currentUser);
+			// Remove the setting from the users options.
+			$this->_app['query']->insertUserSettings(array('cover'=> ''), $this->_currentUser);
 
-		// Build the response.
-		return $this->setResponse(array(
-			'type' => 'info',
-			'message' => 'cover_deleted',
-			'owner' => $this->_data->get('u'),
-			'extra' => array('area' => 'breezesettings',),
-		));
+			// Build the response.
+			return $this->setResponse(array(
+				'type' => 'info',
+				'message' => 'cover_deleted',
+				'owner' => $this->_data->get('u'),
+				'extra' => array('area' => 'breezesettings',),
+			));
+		}
+
+		// Nothing to delete...
+		else
+			return $this->setResponse(array(
+				'type' => 'error',
+				'message' => 'no_cover_deleted',
+				'owner' => $this->_data->get('u'),
+				'extra' => array('area' => 'breezesettings',),
+			));
 	}
 
 	public function moodChange()
