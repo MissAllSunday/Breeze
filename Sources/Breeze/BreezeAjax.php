@@ -522,7 +522,7 @@ class BreezeAjax
 			'upload_dir' => $this->_app['tools']->boardDir . Breeze::$coversFolder,
 			'upload_url' => $this->_app['tools']->boardUrl .'/breezeFiles/',
 			'user_dirs' => true,
-			'max_file_size' => $this->_app['tools']->enable('cover_max_size') ? $this->_app['tools']->setting('cover_max_size') : 80000,
+			'max_file_size' => $this->_app['tools']->enable('cover_max_size') ? ($this->_app['tools']->setting('cover_max_size') .'000') : 250000,
 			'max_width' => $this->_app['tools']->enable('cover_max_width') ? $this->_app['tools']->setting('cover_max_width') : 1500,
 			'max_height' => $this->_app['tools']->enable('cover_max_height') ? $this->_app['tools']->setting('cover_max_height') : 500,
 			'print_response' => false,
