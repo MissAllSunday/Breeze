@@ -835,6 +835,9 @@ class BreezeQuery
 				$inserts,
 				array('member_id')
 			);
+
+		// Force getting the new settings.
+		return $this->getUserSettings($userID);
 	}
 
 	/**
