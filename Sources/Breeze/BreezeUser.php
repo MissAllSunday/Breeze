@@ -445,13 +445,24 @@ class BreezeUser extends Breeze
 
 			if (data.result.error) {
 				$(\'.b_cover_preview\').replaceWith(\'<div class="errorbox">\' + data.result.error + \'</div>\');
-				data.abort();
 			}
 
 			else {
-				$(\'.b_cover_preview\').replaceWith(\'<div class="infobox">\' + data.message + \'</div>\');
-				console.log(data.result);
+				$(\'.b_cover_preview\').replaceWith(\'<div class="\'+ data.result.type +\'box">\' + data.result.message + \'</div>\');
+
+				// Replace the old cover preview with the new one.
+				if (data.result.type == \'info\') {
+					var image = JSON.parse(data.result.data);
+					// Gotta make sure it exists...
+					var imgsrc = \''. $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/\' + image.basename;
+					var imgcheck = imgsrc.width;
+
+					if (imgcheck != 0)
+						$(\'.current_cover\').attr(\'src\', imgsrc);
+				}
 			}
+
+			data.abort();
 		}).on(\'fileuploadfail\', function (e, data) {
 				$(\'.b_cover_preview\').replaceWith(\'<div class="errorbox">'. $this['tools']->text('error_server') .'</div>\');
 				data.abort();

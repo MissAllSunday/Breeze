@@ -423,7 +423,7 @@ class BreezeTools
 		if (file_exists($folderThumbnail . $image))
 			@unlink($folderThumbnail . $image);
 
-		if (file_exists($folderThumbnail . $image))
-			@unlink($folderThumbnail . $image);
+		if (file_exists($folder . $image))
+			@unlink($folder . $image);
 	}
 }

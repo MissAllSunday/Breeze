@@ -56,6 +56,7 @@ $txt['Breeze_user_settings_cover_select_sub'] = 'You can upload an image that wi
 $txt['Breeze_info_cover_done'] = 'Your image was successfully uploaded';
 $txt['Breeze_error_cover_error_check'] = 'Your image didn\'t pass the security checks, please use another image.';
 $txt['Breeze_info_cover_deleted'] = 'Your cover was successfully deleted.';
+$txt['Breeze_error_no_cover_deleted'] = 'There isn\'t anything to delete.';
 $txt['Breeze_user_settings_cover_delete'] = 'Delete your current uploaded cover image';
 $txt['Breeze_user_settings_wall'] = 'Enable my wall';
 $txt['Breeze_user_settings_wall_sub'] = 'If you want to use your wall, you need to check this option, otherwise your profile will show the default page.';

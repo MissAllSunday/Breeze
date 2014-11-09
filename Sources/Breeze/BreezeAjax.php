@@ -543,7 +543,7 @@ class BreezeAjax
 			if ($this->_noJS)
 				return $this->setResponse(array(
 				'message' => $file->error,
-				'type' => 'cover_error',
+				'type' => 'error',
 				'owner' => $this->_currentUser,
 			));
 
@@ -567,6 +567,7 @@ class BreezeAjax
 					'message' => 'cover_error_check',
 					'type' => 'error',
 					'owner' => $this->_currentUser,
+					'data' => $folder . $file->name,
 				));
 			}
 
@@ -591,7 +592,7 @@ class BreezeAjax
 				'message' => 'cover_done',
 				'type' => 'info',
 				'owner' => $this->_currentUser,
-				'data' => json_encode($file),
+				'data' => json_encode($fileInfo),
 			));
 
 			// Don't need this.
