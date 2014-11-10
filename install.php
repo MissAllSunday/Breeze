@@ -181,23 +181,17 @@
 
 		// Notifications
 		$tables[] = array(
-			'table_name' => '{db_prefix}breeze_notifications',
+			'table_name' => '{db_prefix}breeze_alerts',
 			'columns' => array(
 				array(
-					'name' => 'id',
+					'name' => 'id_alert',
 					'type' => 'int',
-					'size' => 5,
+					'size' => 10,
 					'null' => false,
 					'auto' => true
 				),
 				array(
-					'name' => 'sender',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(
-					'name' => 'receiver',
+					'name' => 'member',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
@@ -209,34 +203,23 @@
 					'default' => '',
 				),
 				array(
+					'name' => 'content_id',
+					'type' => 'int',
+					'size' => 10,
+					'null' => false,
+					'auto' => true
+				),
+				array(
 					'name' => 'time',
 					'type' => 'int',
 					'size' => 5,
 					'null' => false
 				),
 				array(
-					'name' => 'viewed',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(
-					'name' => 'content',
+					'name' => 'extra',
 					'type' => 'text',
 					'size' => '',
 					'default' => null,
-				),
-				array(
-					'name' => 'type_id',
-					'type' => 'int',
-					'size' => 5,
-					'null' => false
-				),
-				array(
-					'name' => 'second_type',
-					'type' => 'varchar',
-					'size' => 255,
-					'default' => '',
 				),
 			),
 			'indexes' => array(
