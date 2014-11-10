@@ -179,9 +179,9 @@
 			'parameters' => array(),
 		);
 
-		// Notifications
+		// Breeze own alert tables.
 		$tables[] = array(
-			'table_name' => '{db_prefix}breeze_alerts',
+			'table_name' => '{db_prefix}breeze_logs',
 			'columns' => array(
 				array(
 					'name' => 'id_alert',
@@ -197,7 +197,7 @@
 					'null' => false
 				),
 				array(
-					'name' => 'type',
+					'name' => 'content_type',
 					'type' => 'varchar',
 					'size' => 255,
 					'default' => '',
