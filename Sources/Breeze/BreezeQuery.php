@@ -85,6 +85,12 @@ class BreezeQuery
 				'property' => '_alerts',
 				'columns' => array('id_alert', 'alert_time', 'id_member', 'id_member_started', 'member_name', 'content_type', 'content_id', 'content_action', 'is_read', 'extra'),
 			),
+			'logs' => array(
+				'name' => 'logs',
+				'table' => 'breeze_logs',
+				'property' => '_logs',
+				'columns' => array('id_log', 'member', 'content_type', 'content_id', 'time', 'extra'),
+			),
 		);
 	}
 

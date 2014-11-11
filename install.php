@@ -184,7 +184,7 @@
 			'table_name' => '{db_prefix}breeze_logs',
 			'columns' => array(
 				array(
-					'name' => 'id_alert',
+					'name' => 'id_log',
 					'type' => 'int',
 					'size' => 10,
 					'null' => false,
@@ -225,7 +225,7 @@
 			'indexes' => array(
 				array(
 					'type' => 'primary',
-					'columns' => array('id')
+					'columns' => array('id_log')
 				),
 			),
 			'if_exists' => 'ignore',
