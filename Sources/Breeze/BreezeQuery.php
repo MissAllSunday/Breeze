@@ -846,7 +846,7 @@ class BreezeQuery
 		return $this->getUserSettings($userID);
 	}
 
-	public function createLog($params)
+	public function getLog()
 	{
 		if (empty($params))
 			return false;
@@ -854,9 +854,21 @@ class BreezeQuery
 
 	}
 
-	public function getLog()
+	public function insertLog($params)
 	{
+		// Meh...
+		if (empty($params))
+			return false;
 
+		// Make sure we got the extra stuff...
+		$params['extra'] = !empty($params['extra']) ? serialize($params['extra']) : '';
+
+		$this->_app['tools']->smcFunc['db_insert']('insert',
+			'{db_prefix}background_tasks',
+			array('member' => 'int', 'content_type' => 'string', 'content_id' => 'int', 'time' => 'int', 'extra' => 'string',),
+			$params),
+			array('id_log')
+		);
 	}
 
 	/**
