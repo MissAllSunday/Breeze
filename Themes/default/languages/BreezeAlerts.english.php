@@ -68,18 +68,18 @@ $txt['Breeze_mention_message_own_wall_comment'] = '<a href="%1$s" class="bbc_lin
 $txt['Breeze_singleStatus_pageTitle'] = 'Single Status';
 
 // Log
-$txt['Breeze_logTopic'] = 'created a new topic:';
-$txt['Breeze_logRegister'] = 'has just registered!';
-$txt['Breeze_logComment'] = 'made a new comment on %s\'s wall';
-$txt['Breeze_logComment_own_0'] = 'made a comment on his/her own wall';
-$txt['Breeze_logComment_own_1'] = 'made a comment on his own wall';
-$txt['Breeze_logComment_own_2'] = 'made a comment on her own wall';
-$txt['Breeze_logComment_view'] = 'View comment';
-$txt['Breeze_logStatus'] = 'made a new status on %s\'s wall';
-$txt['Breeze_logStatus_own_0'] = 'made a new status on his/her own wall';
-$txt['Breeze_logStatus_own_1'] = 'made a new status on his own wall';
-$txt['Breeze_logStatus_own_2'] = 'made a new status on her own wall';
-$txt['Breeze_logStatus_view'] = 'View status';
+$txt['Breeze_log__topic'] = 'created a new topic:';
+$txt['Breeze_log_Register'] = 'has just registered!';
+$txt['Breeze_log_Comment'] = 'made a new comment on %s\'s wall';
+$txt['Breeze_log_Comment_own_0'] = 'made a comment on his/her own wall';
+$txt['Breeze_log_Comment_own_1'] = 'made a comment on his own wall';
+$txt['Breeze_log_Comment_own_2'] = 'made a comment on her own wall';
+$txt['Breeze_log_Comment_view'] = 'View comment';
+$txt['Breeze_log_Status'] = 'made a new status on %s\'s wall';
+$txt['Breeze_log_Status_own_0'] = 'made a new status on his/her own wall';
+$txt['Breeze_log_Status_own_1'] = 'made a new status on his own wall';
+$txt['Breeze_log_Status_own_2'] = 'made a new status on her own wall';
+$txt['Breeze_log_Status_view'] = 'View status';
 
 // Settings.
 $txt['alert_group_breeze'] = 'My wall alert settings';

@@ -840,6 +840,19 @@ class BreezeQuery
 		return $this->getUserSettings($userID);
 	}
 
+	public function createLog($params)
+	{
+		if (empty($params))
+			return false;
+
+
+	}
+
+	public function getLog()
+	{
+
+	}
+
 	/**
 	 * BreezeQuery::insertNoti()
 	 *
@@ -1000,7 +1013,7 @@ class BreezeQuery
 	}
 
 	/**
-	 * BreezeQuery::deletevLog()
+	 * BreezeQuery::deleteViews()
 	 *
 	 * Deletes the specific visitors log entry from the DB
 	 * @param int $user the user ID

@@ -22,6 +22,9 @@ class BreezeLog
 	function __construct($app)
 	{
 		$this->_app = $app;
+
+		// We are gonna need some alerts language strings...
+		$this->_app['tools']->loadLanguage('alerts');
 	}
 
 	public function get($users, $max, $start = 0, $limit = 10)
@@ -31,7 +34,7 @@ class BreezeLog
 
 		$this->_users = (array) $users;
 
-		$this->_raw = $this->_app['query']->getLogs($this->_users, $max, $start, $limit);
+		$this->_data = $this->_app['query']->getLogs($this->_users, $max, $start, $limit);
 
 		// Parse the raw data.
 		$this->call();
@@ -45,14 +48,14 @@ class BreezeLog
 		global $memberContext;
 
 		// Kinda need this...
-		if (empty($this->_raw) || !is_array($this->_raw))
+		if (empty($this->_data) || !is_array($this->_data))
 			return;
 
 		// The users to load.
 		$toLoad = array();
 
 		// Get the users before anything gets parsed.
-		foreach ($this->_raw as $idUser => $data)
+		foreach ($this->_data as $idUser => $data)
 				$toLoad = array_merge($toLoad, $a['extra']['toLoad']);
 
 		if (!empty($toLoad))
@@ -61,9 +64,32 @@ class BreezeLog
 		// Pass people's data.
 		$this->_usersData = $memberContext;
 
-		// What type are we gonna handle? oh boy there are a lot!
-		foreach ($this->_raw as $idUser => $data)
-			if(method_exists($this, $data['content_type']))
-				$this->_data[$idUser][$data['id_alert']]['text'] = $this->$data['content_type']($data['id_alert']);
+		// A few foreaches LOL
+		foreach ($this->_data as $idUser => $data)
+			$this->_data[$idUser][$data['id_alert']] = $this->$data['content_type']($data);
+	}
+
+	public function parser($text, $replacements = array())
+	{
+		if (empty($text) || empty($replacements) || !is_array($replacements))
+			return false;
+
+		// Split the replacements up into two arrays, for use with str_replace.
+		$find = array();
+		$replace = array();
+
+		foreach ($replacements as $f => $r)
+		{
+			$find[] = '{' . $f . '}';
+			$replace[] = $r;
+		}
+
+		// Do the variable replacements.
+		return str_replace($find, $replace, $text);
+	}
+
+	public function cover()
+	{
+
 	}
 }
