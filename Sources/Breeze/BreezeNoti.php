@@ -85,6 +85,11 @@ class BreezeNoti
 
 	protected function like()
 	{
+		// Don't do anything if this is an "unlike" action.
+		if ($this->_details['alreadyLiked'])
+			return;
+
+		// Prepare some stuff.
 		$row = $this->_details['like_type'] .'_id';
 		$authorColumn = $this->_details['like_type'] .'_poster_id';
 
@@ -94,27 +99,37 @@ class BreezeNoti
 		// So, whos gonna receive this alert?
 		$messageOwner = !empty($data) ? $data[$this->_details['like_type'] .'_poster_id'] : 0;
 
-		// Two types of alerts, either a comment or a status. We only want to record the likes.
-		if (!$this->_details['alreadyLiked'])
-			$this->innerCreate(array(
-				'alert_time' => $this->_details['time'],
-				'id_member' => $messageOwner,
-				'id_member_started' => $this->_details['user']['id'],
-				'member_name' => '',
-				'content_type' => $this->_details['content_type'],
-				'content_id' => $this->_details['content'],
-				'content_action' => '',
-				'is_read' => 0,
-				'extra' => array(
-					'text' => 'like_'. $this->_details['like_type'],
-					'buddy_text' => 'like_'. $this->_details['like_type'] .'_buddy',
-					'toLoad' => array($messageOwner, $this->_details['user']['id']),
-					'status_id' => $data[($this->_details['like_type'] == 'comments' ? $this->_details['like_type'] .'_' : '') . 'status_id'],
-					'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,
-					'wall_owner' => $data[$this->_details['like_type'] == 'comments' ? 'comments_profile_id' : 'status_owner_id'],
-					'like_type' => $this->_details['like_type'],
-				),
-			));
+		$this->innerCreate(array(
+			'alert_time' => $this->_details['time'],
+			'id_member' => $messageOwner,
+			'id_member_started' => $this->_details['user']['id'],
+			'member_name' => '',
+			'content_type' => $this->_details['content_type'],
+			'content_id' => $this->_details['content'],
+			'content_action' => '',
+			'is_read' => 0,
+			'extra' => array(
+				'text' => 'like_'. $this->_details['like_type'],
+				'buddy_text' => 'like_status_buddy',
+				'toLoad' => array($messageOwner, $this->_details['user']['id']),
+				'status_id' => $data[($this->_details['like_type'] == 'comments' ? $this->_details['like_type'] .'_' : '') . 'status_id'],
+				'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,
+				'wall_owner' => $data[$this->_details['like_type'] == 'comments' ? 'comments_profile_id' : 'status_owner_id'],
+				'like_type' => $this->_details['like_type'],
+			),
+		));
+
+		// Don't forget the inner alert.
+		$this->_app['query']->insertLog(array(
+			'member' => $this->_details['poster_id'],
+			'content_type' => 'status',
+			'content_id' => $this->_details['id'],
+			'time' => $this->_details['time_raw'],
+			'extra' => array(
+				'buddy_text' => 'status_owner_buddy',
+				'toLoad' => array($messageOwner, $this->_details['user']['id']),
+			),
+		));
 	}
 
 	protected function status()
@@ -135,14 +150,14 @@ class BreezeNoti
 			'extra' => ''
 		));
 
-		// And our very own alert too..
+		// And our very own alert too.
 		$this->_app['query']->insertLog(array(
 			'member' => $this->_details['poster_id'],
 			'content_type' => 'status',
 			'content_id' => $this->_details['id'],
 			'time' => $this->_details['time_raw'],
 			'extra' => array(
-				'buddy_text' => 'alert_status_owner_buddy',
+				'buddy_text' => 'status_owner_buddy',
 				'toLoad' => array($this->_details['poster_id'], $this->_details['owner_id']),
 				'wall_owner' => $this->_details['profile_id'],
 				'poster' => $this->_details['poster_id'],

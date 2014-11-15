@@ -58,6 +58,9 @@ $txt['Breeze_alert_like_comments_buddy'] = '{poster} <a href="{href}" class="bbc
 $txt['Breeze_alert_like_status'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> your status';
 $txt['Breeze_alert_like_status_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> {comment_owner}\'s status';
 
+// Cover
+$txt['Breeze_alert_cover'] = '{poster} changed {gender_possessive} cover image<br>{cover}';
+
 // Mentions
 $txt['Breeze_mention_message_status'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> You have been mentioned</a> by %1$s on %2$s\'s wall!';
 $txt['Breeze_mention_message_own_wall_status'] = '<a href="%1$s" class="bbc_link" target="_blank">You have been mentioned</a> on your own wall by %2$s!';

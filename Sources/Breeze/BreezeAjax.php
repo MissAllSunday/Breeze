@@ -588,6 +588,18 @@ class BreezeAjax
 			// Store the new cover info.
 			$this->_app['query']->insertUserSettings(array('cover'=> json_encode($fileInfo)), $this->_currentUser);
 
+			// Create an inner alert for this.
+			$this->_app['query']->insertLog(array(
+				'member' => $this->_currentUser,
+				'content_type' => 'cover',
+				'content_id' => 0,
+				'time' => time(),
+				'extra' => array(
+					'buddy_text' => 'cover',
+					'toLoad' => array($this->_currentUser),
+				),
+			));
+
 			$this->setResponse(array(
 				'message' => 'cover_done',
 				'type' => 'info',
