@@ -139,25 +139,24 @@ class BreezeNoti
 	protected function comment()
 	{
 		// You posted a comment on your own status on your own wall, no need to tell you that. However, fire an alert for your buddies.
-		if (($this->_details['poster_id'] == $this->_details['profile_id']) && ($this->_details['profile_id'] == $this->_details['status_owner_id']))
-		{
-			$this->_app['query']->insertLog(array(
-				'member' => $this->_details['poster_id'], 
-				'content_type' => 'comment', 
-				'content_id' => $this->_details['id'], 
-				'time' => $this->_details['time_raw'], 
-				'extra' => array(
-					'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
-					'wall_owner' => $this->_details['profile_id'],
-					'poster' => $this->_details['poster_id'],
-					'status_owner' => $this->_details['status_owner_id'],
-					'status_id' => $this->_details['status_id'],
+		$this->_app['query']->insertLog(array(
+			'member' => $this->_details['poster_id'],
+			'content_type' => 'comment',
+			'content_id' => $this->_details['id'],
+			'time' => $this->_details['time_raw'],
+			'extra' => array(
+				'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
+				'wall_owner' => $this->_details['profile_id'],
+				'poster' => $this->_details['poster_id'],
+				'status_owner' => $this->_details['status_owner_id'],
+				'status_id' => $this->_details['status_id'],
 			),
-			));
+		));
 
-			// No need to go further.
+		// No need to go further.
+		if (($this->_details['poster_id'] == $this->_details['profile_id']) && ($this->_details['profile_id'] == $this->_details['status_owner_id']))
 			return;
-		}
+
 
 		// Set a basic array. Despise all the different alternatives this notification has, only a few things actually change...
 		$toCreate = array(
