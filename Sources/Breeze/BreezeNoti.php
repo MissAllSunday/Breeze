@@ -141,25 +141,19 @@ class BreezeNoti
 		// You posted a comment on your own status on your own wall, no need to tell you that. However, fire an alert for your buddies.
 		if (($this->_details['poster_id'] == $this->_details['profile_id']) && ($this->_details['profile_id'] == $this->_details['status_owner_id']))
 		{
-			$this->innerCreate(array(
-				'alert_time' => $this->_details['time_raw'],
-				'id_member' => $this->_details['status_owner_id'],
-				'id_member_started' => $this->_details['poster_id'],
-				'member_name' => '',
-				'content_type' => $this->_details['content_type'] . '_poster_own_wall',
-				'content_id' => $this->_details['id'],
-				'content_action' => '',
-				'is_read' => 1,
+			$this->_app['query']->insertLog(array(
+				'member' => $this->_details['poster_id'], 
+				'content_type' => 'comment', 
+				'content_id' => $this->_details['id'], 
+				'time' => $this->_details['time_raw'], 
 				'extra' => array(
-					'buddy_alert' => true,
-					'buddy_text' => 'comment_poster_own_wall',
-					'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['profile_id']),
+					'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
 					'wall_owner' => $this->_details['profile_id'],
 					'poster' => $this->_details['poster_id'],
 					'status_owner' => $this->_details['status_owner_id'],
 					'status_id' => $this->_details['status_id'],
-				),
-			), false);
+			),
+			));
 
 			// No need to go further.
 			return;
@@ -176,6 +170,7 @@ class BreezeNoti
 			'content_action' => '',
 			'is_read' => 0,
 			'extra' => array(
+					'buddy_text' => 'comment_status_owner_buddy',
 					'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
 					'wall_owner' => $this->_details['profile_id'],
 					'poster' => $this->_details['poster_id'],

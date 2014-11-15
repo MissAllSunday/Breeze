@@ -846,12 +846,10 @@ class BreezeQuery
 		return $this->getUserSettings($userID);
 	}
 
-	public function getLog()
+	public function getLog($users, $max, $start = 0, $limit = 10)
 	{
 		if (empty($params))
 			return false;
-
-
 	}
 
 	public function insertLog($params)
