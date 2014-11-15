@@ -134,6 +134,22 @@ class BreezeNoti
 			'is_read' => 0,
 			'extra' => ''
 		));
+
+		// And our very own alert too..
+		$this->_app['query']->insertLog(array(
+			'member' => $this->_details['poster_id'],
+			'content_type' => 'status',
+			'content_id' => $this->_details['id'],
+			'time' => $this->_details['time_raw'],
+			'extra' => array(
+				'buddy_text' => 'alert_status_owner_buddy',
+				'toLoad' => array($this->_details['poster_id'], $this->_details['owner_id']),
+				'wall_owner' => $this->_details['profile_id'],
+				'poster' => $this->_details['poster_id'],
+				'status_owner' => $this->_details['status_owner_id'],
+				'status_id' => $this->_details['status_id'],
+			),
+		));
 	}
 
 	protected function comment()
@@ -145,6 +161,7 @@ class BreezeNoti
 			'content_id' => $this->_details['id'],
 			'time' => $this->_details['time_raw'],
 			'extra' => array(
+				'buddy_text' => 'comment_status_owner_buddy',
 				'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
 				'wall_owner' => $this->_details['profile_id'],
 				'poster' => $this->_details['poster_id'],
@@ -156,7 +173,6 @@ class BreezeNoti
 		// No need to go further.
 		if (($this->_details['poster_id'] == $this->_details['profile_id']) && ($this->_details['profile_id'] == $this->_details['status_owner_id']))
 			return;
-
 
 		// Set a basic array. Despise all the different alternatives this notification has, only a few things actually change...
 		$toCreate = array(
