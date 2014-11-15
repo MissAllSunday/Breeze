@@ -691,7 +691,21 @@ class BreezeAjax
 
 			// Anyway, save the values and move on...
 			if (!empty($moodHistory))
+			{
 				$this->_app['query']->insertUserSettings(array('moodHistory'=> json_encode($moodHistory)), $this->_currentUser);
+
+				// Create an inner alert for this.
+				$this->_app['query']->insertLog(array(
+					'member' => $this->_currentUser,
+					'content_type' => 'mood',
+					'content_id' => $this->_data->get('moodID'),
+					'time' => time(),
+					'extra' => array(
+						'buddy_text' => 'mood',
+						'toLoad' => array($this->_currentUser),
+					),
+				));
+			}
 
 			// Build the response.
 			return $this->setResponse(array(

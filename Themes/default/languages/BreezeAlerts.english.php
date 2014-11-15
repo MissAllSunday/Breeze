@@ -59,7 +59,10 @@ $txt['Breeze_alert_like_status'] = '{poster} <a href="{href}" class="bbc_link" t
 $txt['Breeze_alert_like_status_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> {comment_owner}\'s status';
 
 // Cover
-$txt['Breeze_alert_cover'] = '{poster} changed {gender_possessive} cover image<br>{cover}';
+$txt['Breeze_alert_cover'] = '{poster} changed {gender_possessive} cover image<br>{image}';
+
+// Mood change.
+$txt['Breeze_alert_mood'] = '{poster} changed {gender_possessive} mood<br>{image}';
 
 // Mentions
 $txt['Breeze_mention_message_status'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> You have been mentioned</a> by %1$s on %2$s\'s wall!';
