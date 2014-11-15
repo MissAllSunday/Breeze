@@ -244,9 +244,4 @@ class BreezeNoti
 		// Create the alert already!
 		$this->innerCreate($toCreate);
 	}
-
-	protected function cover()
-	{
-		return;
-	}
 }
