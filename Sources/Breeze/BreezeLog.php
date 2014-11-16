@@ -34,7 +34,7 @@ class BreezeLog
 
 		$this->_users = (array) $users;
 
-		$this->_data = $this->_app['query']->getLogs($this->_users, $max, $start, $limit);
+		$this->_data = $this->_app['query']->getLog($this->_users, $max, $start, $limit);
 
 		// Parse the raw data.
 		$this->call();

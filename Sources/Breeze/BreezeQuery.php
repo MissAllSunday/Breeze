@@ -846,10 +846,39 @@ class BreezeQuery
 		return $this->getUserSettings($userID);
 	}
 
-	public function getLog($users, $max, $start = 0, $limit = 10)
+	public function getLog($users, $pagination = array())
 	{
-		if (empty($params))
+		if (empty($users))
 			return false;
+
+		$users = (array) $users;
+		$alerts = array();
+
+		$result = $this->_app['tools']->smcFunc['db_query']('', '
+			SELECT '. implode(', ', $this->_tables['logs']['table']) .'
+			FROM {db_prefix}'. ($this->_tables['status']['table']) .'
+			WHERE member IN ({array_int:users})
+			ORDER BY id_log DESC' . (!empty($pagination) ? '
+		LIMIT {int:start}, {int:maxIndex}' : ''),
+			array(
+				'start' => $pagination['start'],
+				'maxindex' => $pagination['maxIndex'],
+				'id' => $id
+			)
+		);
+
+		while ($row = $smcFunc['db_fetch_assoc']($request))
+			$alerts[$row['id_log']] = array(
+				'id' => $row['id_log'],
+				'member' => $row['member'],
+				'content_type' => $row['content_type'],
+				'content_id' => $row['content_id'],
+				'time' => timeformat($row['time']),
+				'extra' => !empty($row['extra']) ? @unserialize($row['extra']) : array();
+			
+			);
+
+		$smcFunc['db_free_result']($request);
 	}
 
 	public function insertLog($params)
