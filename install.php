@@ -207,7 +207,6 @@
 					'type' => 'int',
 					'size' => 10,
 					'null' => false,
-					'auto' => true
 				),
 				array(
 					'name' => 'time',

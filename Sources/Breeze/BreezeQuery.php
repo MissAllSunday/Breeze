@@ -862,9 +862,9 @@ class BreezeQuery
 		$params['extra'] = !empty($params['extra']) ? serialize($params['extra']) : '';
 
 		$this->_app['tools']->smcFunc['db_insert']('insert',
-			'{db_prefix}background_tasks',
+			'{db_prefix}' . ($this->_tables['logs']['table']) . '',
 			array('member' => 'int', 'content_type' => 'string', 'content_id' => 'int', 'time' => 'int', 'extra' => 'string',),
-			$params),
+			$params,
 			array('id_log')
 		);
 	}
