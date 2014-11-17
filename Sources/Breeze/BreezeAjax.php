@@ -527,7 +527,7 @@ class BreezeAjax
 			'max_height' => $this->_app['tools']->enable('cover_max_height') ? $this->_app['tools']->setting('cover_max_height') : 500,
 			'print_response' => false,
 			'thumbnail' => array(
-				'crop' => true,
+				'crop' => false,
 				'max_width' => 300,
 				'max_height' => 100,
 			)
@@ -597,6 +597,7 @@ class BreezeAjax
 				'extra' => array(
 					'buddy_text' => 'cover',
 					'toLoad' => array($this->_currentUser),
+					'image' => $folderThumbnailUrl . $newFile,
 				),
 			));
 

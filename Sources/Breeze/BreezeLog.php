@@ -100,7 +100,7 @@ class BreezeLog
 		$gender_possessive = $this->_app['tools']->text('alert_gender_possessive_'. $gender) ? $this->_app['tools']->text('alert_gender_possessive_'. $gender) : $this->_app['tools']->text('alert_gender_possessive_None');
 
 		// Get the mood.
-		$data['extra']['moodHistory'] = unserialize($data['extra']['moodHistory']);
+		$data['extra']['moodHistory'] = @unserialize($data['extra']['moodHistory']);
 		$mood = !empty($data['extra']['moodHistory']['id']) ? $this->_app['query']->getMoodByID($data['extra']['moodHistory']['id'], true) : array();
 
 		// Return the formatted string.
@@ -113,7 +113,33 @@ class BreezeLog
 
 	public function cover($data)
 	{
+		// Get the right gender stuff.
+		$gender = !empty($this->_usersData[$data['member']]['options']['cust_gender']) ? $this->_usersData[$data['member']]['options']['cust_gender'] : 'None';
 
+		$gender_possessive = $this->_app['tools']->text('alert_gender_possessive_'. $gender) ? $this->_app['tools']->text('alert_gender_possessive_'. $gender) : $this->_app['tools']->text('alert_gender_possessive_None');
+
+		// Gotta know if the image still exists.
+		$filename = !empty($data['extra']['image']) ? $data['extra']['image'] : '';
+		$file =  true;
+
+		if (!empty($filename))
+		{
+			$file_headers = @get_headers($filename);
+
+			if(empty($file_headers) || $file_headers[0] == 'HTTP/1.0 404 Not Found' || $file_headers[0] == 'HTTP/1.0 302 Found' || $file_headers[7] == 'HTTP/1.0 404 Not Found')
+				$file = false;
+		}
+
+		else
+			$file = false;
+
+
+
+		return $this->parser($this->_app['tools']->text('alert_cover'), array(
+			'poster' => $this->_usersData[$data['member']]['link'],
+			'gender_possessive' => $gender_possessive,
+			'image' => $file ? ('<img src="'. $data['extra']['image'] .'" />') : '',
+		));
 	}
 
 	public function status($data)

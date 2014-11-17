@@ -33,6 +33,8 @@ $txt['Breeze_noti_checkAll'] = 'Check all';
 $txt['Breeze_noti_check'] = 'check';
 $txt['Breeze_noti_selectedOptions'] = 'With the selected options do: ';
 $txt['Breeze_noti_send'] = 'Send';
+
+// Gender related stuff.
 $txt['Breeze_alert_gender_possessive_Female'] = 'her';
 $txt['Breeze_alert_gender_possessive_Male'] = 'his';
 $txt['Breeze_alert_gender_possessive_None'] = 'his/her';
