@@ -100,13 +100,34 @@ class BreezeLog
 		$gender_possessive = $this->_app['tools']->text('alert_gender_possessive_'. $gender) ? $this->_app['tools']->text('alert_gender_possessive_'. $gender) : $this->_app['tools']->text('alert_gender_possessive_None');
 
 		// Get the mood.
+		$data['extra']['moodHistory'] = unserialize($data['extra']['moodHistory']);
 		$mood = !empty($data['extra']['moodHistory']['id']) ? $this->_app['query']->getMoodByID($data['extra']['moodHistory']['id'], true) : array();
 
 		// Return the formatted string.
-		return $this->parser($this->_app['tools']->text('alert_cover'), array(
+		return $this->parser($this->_app['tools']->text('alert_mood'), array(
 			'poster' => $this->_usersData[$data['member']]['link'],
 			'gender_possessive' => $gender_possessive,
 			'image' => !empty($mood) && !empty($mood['image_html']) ? $mood['image_html'] : '',
 		));
+	}
+
+	public function cover($data)
+	{
+
+	}
+
+	public function status($data)
+	{
+
+	}
+
+	public function comment($data)
+	{
+
+	}
+
+	public function like($data)
+	{
+
 	}
 }

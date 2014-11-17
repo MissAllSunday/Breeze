@@ -128,7 +128,7 @@ class BreezeMood
 		return $return;
 	}
 
-	public funciton getSingleMood($id)
+	public function getSingleMood($id)
 	{
 		if (empty($id))
 			return false;
@@ -143,7 +143,7 @@ class BreezeMood
 		}
 
 		else
-			retunr false;
+			return false;
 	}
 
 	public function show($mood, $user, $currentUser)

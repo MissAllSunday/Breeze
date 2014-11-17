@@ -122,7 +122,7 @@ class BreezeNoti
 		// Don't forget the inner alert.
 		$this->_app['query']->insertLog(array(
 			'member' => $this->_details['poster_id'],
-			'content_type' => 'status',
+			'content_type' => 'like',
 			'content_id' => $this->_details['id'],
 			'time' => $this->_details['time_raw'],
 			'extra' => array(
