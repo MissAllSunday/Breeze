@@ -27,20 +27,24 @@ class BreezeLog
 		$this->_app['tools']->loadLanguage('alerts');
 	}
 
-	public function get($users, $max, $start = 0, $limit = 10)
+	public function get($users, $maxIndex, $start)
 	{
-		if (empty($user) || empty($max))
+		if (empty($users))
 			return array();
 
 		$this->_users = (array) $users;
+		$this->_logCount =  $this->_app['query']->logCount($this->_users);
 
-		$this->_data = $this->_app['query']->getLog($this->_users, $max, $start, $limit);
+		$this->_data = $this->_app['query']->getLog($this->_users, $maxIndex, $start);
 
 		// Parse the raw data.
 		$this->call();
 
 		// Return the formatted data.
-		return $this->_data;
+		return array(
+			'count' => $this->_logCount,
+			'data' => $this->_data,
+		);
 	}
 
 	protected function call()
@@ -56,7 +60,7 @@ class BreezeLog
 
 		// Get the users before anything gets parsed.
 		foreach ($this->_data as $idUser => $data)
-				$toLoad = array_merge($toLoad, $a['extra']['toLoad']);
+				$toLoad = array_merge($toLoad, $data['extra']['toLoad']);
 
 		if (!empty($toLoad))
 			$this->_app['tools']->loadUserInfo($toLoad, false);
@@ -65,8 +69,8 @@ class BreezeLog
 		$this->_usersData = $memberContext;
 
 		// A few foreaches LOL
-		foreach ($this->_data as $idUser => $data)
-			$this->_data[$idUser][$data['id_alert']] = $this->$data['content_type']($data);
+		foreach ($this->_data as $id => $data)
+			$this->_data[$id]['text'] = $this->$data['content_type']($data);
 	}
 
 	public function parser($text, $replacements = array())
@@ -88,8 +92,21 @@ class BreezeLog
 		return str_replace($find, $replace, $text);
 	}
 
-	public function cover()
+	public function mood($data)
 	{
+		// Get the right gender stuff.
+		$gender = !empty($this->_usersData[$data['member']]['options']['cust_gender']) ? $this->_usersData[$data['member']]['options']['cust_gender'] : 'None';
 
+		$gender_possessive = $this->_app['tools']->text('alert_gender_possessive_'. $gender) ? $this->_app['tools']->text('alert_gender_possessive_'. $gender) : $this->_app['tools']->text('alert_gender_possessive_None');
+
+		// Get the mood.
+		$mood = !empty($data['extra']['moodHistory']['id']) ? $this->_app['query']->getMoodByID($data['extra']['moodHistory']['id'], true) : array();
+
+		// Return the formatted string.
+		return $this->parser($this->_app['tools']->text('alert_cover'), array(
+			'poster' => $this->_usersData[$data['member']]['link'],
+			'gender_possessive' => $gender_possessive,
+			'image' => !empty($mood) && !empty($mood['image_html']) ? $mood['image_html'] : '',
+		));
 	}
 }

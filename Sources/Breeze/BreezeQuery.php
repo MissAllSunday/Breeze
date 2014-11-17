@@ -846,39 +846,63 @@ class BreezeQuery
 		return $this->getUserSettings($userID);
 	}
 
-	public function getLog($users, $pagination = array())
+	public function logCount($users)
 	{
 		if (empty($users))
+			return false;
+
+		$users = (array) $users;
+		$count = 0;
+
+		$request = $this->_app['tools']->smcFunc['db_query']('', '
+			SELECT id_log
+			FROM {db_prefix}'. ($this->_tables['logs']['table']) .'
+			WHERE member IN ({array_int:users})',
+			array(
+				'users' => $users,
+			)
+		);
+		$count =  $this->_app['tools']->smcFunc['db_num_rows']($request);
+		$this->_app['tools']->smcFunc['db_free_result']($request);
+
+		return $count;
+	}
+
+	public function getLog($users, $maxIndex, $start)
+	{
+		if (empty($users) || empty($maxIndex))
 			return false;
 
 		$users = (array) $users;
 		$alerts = array();
 
 		$result = $this->_app['tools']->smcFunc['db_query']('', '
-			SELECT '. implode(', ', $this->_tables['logs']['table']) .'
-			FROM {db_prefix}'. ($this->_tables['status']['table']) .'
+			SELECT '. implode(', ', $this->_tables['logs']['columns']) .'
+			FROM {db_prefix}'. ($this->_tables['logs']['table']) .'
 			WHERE member IN ({array_int:users})
-			ORDER BY id_log DESC' . (!empty($pagination) ? '
-		LIMIT {int:start}, {int:maxIndex}' : ''),
+			ORDER BY id_log DESC
+			LIMIT {int:start}, {int:maxindex}',
 			array(
-				'start' => $pagination['start'],
-				'maxindex' => $pagination['maxIndex'],
-				'id' => $id
+				'start' => $start,
+				'maxindex' => $maxIndex,
+				'users' => $users
 			)
 		);
 
-		while ($row = $smcFunc['db_fetch_assoc']($request))
+		while ($row = $this->_app['tools']->smcFunc['db_fetch_assoc']($result))
 			$alerts[$row['id_log']] = array(
 				'id' => $row['id_log'],
 				'member' => $row['member'],
 				'content_type' => $row['content_type'],
 				'content_id' => $row['content_id'],
 				'time' => timeformat($row['time']),
-				'extra' => !empty($row['extra']) ? @unserialize($row['extra']) : array();
-			
+				'time_raw' => $row['time'],
+				'extra' => !empty($row['extra']) ? @unserialize($row['extra']) : array(),
 			);
 
-		$smcFunc['db_free_result']($request);
+		$this->_app['tools']->smcFunc['db_free_result']($result);
+
+		return $alerts;
 	}
 
 	public function insertLog($params)
@@ -1345,10 +1369,20 @@ class BreezeQuery
 		while ($row = $this->_app['tools']->smcFunc['db_fetch_assoc']($request))
 		{
 			if($single)
+			{
 				$moods = $row;
+
+				// Save some headaches by adding a nice formatted image url.
+				$moods['image_url'] = $this->_app['mood']->imagesUrl . $row['file'] .'.'. $row['ext'];
+				$moods['image_html'] = '<img src="'. $this->_app['mood']->imagesUrl . $row['file'] .'.'. $row['ext'] .'" alt="'. $row['name'] .'" title="'. $row['description'] .'" class="breeze_mood_image" />';
+			}
 
 			else
 				$moods[$row['moods_id']] = $row;
+
+				// Save some headaches by adding a nice formatted image url.
+				$moods[$row['moods_id']]['image_url'] = $this->_app['mood']->imagesUrl . $row['file'] .'.'. $row['ext'];
+				$moods[$row['moods_id']]['image_html'] = '<img src="'. $this->_app['mood']->imagesUrl . $row['file'] .'.'. $row['ext'] .'" alt="'. $row['name'] .'" title="'. $row['description'] .'" class="breeze_mood_image" />';
 		}
 
 		$this->_app['tools']->smcFunc['db_free_result']($request);

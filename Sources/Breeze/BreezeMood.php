@@ -128,6 +128,24 @@ class BreezeMood
 		return $return;
 	}
 
+	public funciton getSingleMood($id)
+	{
+		if (empty($id))
+			return false;
+
+		$mood = $this->_app['query']->getMoodByID($id, true);
+
+		if (!empty($mood) && $mood['enable'])
+		{
+			$mood['url'] = $this->imagesUrl . $mood['file'];
+
+			return $mood;
+		}
+
+		else
+			retunr false;
+	}
+
 	public function show($mood, $user, $currentUser)
 	{
 		global $context;
