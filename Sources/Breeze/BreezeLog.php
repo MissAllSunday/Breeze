@@ -70,7 +70,14 @@ class BreezeLog
 
 		// A few foreaches LOL
 		foreach ($this->_data as $id => $data)
+		{
+			// Get the right gender stuff.
+			$data['gender'] = !empty($this->_usersData[$data['member']]['options']['cust_gender']) ? $this->_usersData[$data['member']]['options']['cust_gender'] : 'None';
+
+			$data['gender_possessive'] = $this->_app['tools']->text('alert_gender_possessive_'. $gender) ? $this->_app['tools']->text('alert_gender_possessive_'. $gender) : $this->_app['tools']->text('alert_gender_possessive_None');
+
 			$this->_data[$id]['text'] = $this->$data['content_type']($data);
+		}
 	}
 
 	public function parser($text, $replacements = array())
@@ -94,11 +101,6 @@ class BreezeLog
 
 	public function mood($data)
 	{
-		// Get the right gender stuff.
-		$gender = !empty($this->_usersData[$data['member']]['options']['cust_gender']) ? $this->_usersData[$data['member']]['options']['cust_gender'] : 'None';
-
-		$gender_possessive = $this->_app['tools']->text('alert_gender_possessive_'. $gender) ? $this->_app['tools']->text('alert_gender_possessive_'. $gender) : $this->_app['tools']->text('alert_gender_possessive_None');
-
 		// Get the mood.
 		$data['extra']['moodHistory'] = @unserialize($data['extra']['moodHistory']);
 		$mood = !empty($data['extra']['moodHistory']['id']) ? $this->_app['query']->getMoodByID($data['extra']['moodHistory']['id'], true) : array();
@@ -106,18 +108,13 @@ class BreezeLog
 		// Return the formatted string.
 		return $this->parser($this->_app['tools']->text('alert_mood'), array(
 			'poster' => $this->_usersData[$data['member']]['link'],
-			'gender_possessive' => $gender_possessive,
+			'gender_possessive' => $data['gender_possessive'],
 			'image' => !empty($mood) && !empty($mood['image_html']) ? $mood['image_html'] : '',
 		));
 	}
 
 	public function cover($data)
 	{
-		// Get the right gender stuff.
-		$gender = !empty($this->_usersData[$data['member']]['options']['cust_gender']) ? $this->_usersData[$data['member']]['options']['cust_gender'] : 'None';
-
-		$gender_possessive = $this->_app['tools']->text('alert_gender_possessive_'. $gender) ? $this->_app['tools']->text('alert_gender_possessive_'. $gender) : $this->_app['tools']->text('alert_gender_possessive_None');
-
 		// Gotta know if the image still exists.
 		$filename = !empty($data['extra']['image']) ? $data['extra']['image'] : '';
 		$file =  true;
@@ -133,11 +130,9 @@ class BreezeLog
 		else
 			$file = false;
 
-
-
 		return $this->parser($this->_app['tools']->text('alert_cover'), array(
 			'poster' => $this->_usersData[$data['member']]['link'],
-			'gender_possessive' => $gender_possessive,
+			'gender_possessive' => $data['gender_possessive'],
 			'image' => $file ? ('<img src="'. $data['extra']['image'] .'" />') : '',
 		));
 	}
