@@ -274,14 +274,17 @@ class BreezeUser extends Breeze
 		// Get the user settings.
 		$userSettings = $this['query']->getUserSettings($context['member']['id']);
 
-		// Set a nice url for the form.
-		$context['form']['url'] = $this['tools']->scriptUrl .'?action=breezeajax;sa=usersettings;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings');
-
 		// Create the form.
 		$form = $this['form'];
 
 		// Group all these values into an array. Makes it easier to save the changes.
-		$form->setFormName('breezeSettings');
+		$form->setOptions(array(
+			'name' => 'breezeSettings',
+			'url' => $this['tools']->scriptUrl .'?action=breezeajax;sa=usersettings;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings'),
+			'character_set' => $context['character_set'],
+			'title' => $context['page_title'],
+			'desc' => $context['page_desc'],
+		));
 
 		// Session stuff.
 		$form->addHiddenField($context['session_var'], $context['session_id']);
@@ -409,14 +412,17 @@ class BreezeUser extends Breeze
 		// Get the user settings.
 		$userSettings = $this['query']->getUserSettings($context['member']['id']);
 
-		// Set a nice url for the form.
-		$context['form']['url'] = $this['tools']->scriptUrl .'?action=breezeajax;sa=cover;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings');
-
 		// Create the form.
 		$form = $this['form'];
 
-		// Group all these values into an array.
-		$form->setFormName('breezeSettings');
+		// Group all these values into an array. Makes it easier to save the changes.
+		$form->setOptions(array(
+			'name' => 'breezeSettings',
+			'url' => $this['tools']->scriptUrl .'?action=breezeajax;sa=cover;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings'),
+			'character_set' => $context['character_set'],
+			'title' => $context['page_title'],
+			'desc' => $context['page_desc'],
+		));
 
 		// Session stuff.
 		$form->addHiddenField($context['session_var'], $context['session_id']);

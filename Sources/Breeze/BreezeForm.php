@@ -32,7 +32,7 @@ class BreezeForm
 	function __construct($app)
 	{
 		$this->_app = $app;
-		$this->_options = array('name' => '', 'url' => '', 'page_title' => ''; 'page_desc' => '', 'character_set' => '',);
+		$this->_options = array('name' => '', 'url' => '', 'title' => '', 'desc' => '', 'character_set' => '',);
 	}
 
 	public function setOptions($options)
@@ -40,7 +40,7 @@ class BreezeForm
 		if (empty($options))
 			return false;
 
-		$this->_options += $options;
+		$this->_options = array_merge($this->_options, $options);
 	}
 
 	public function setTextPrefix($string, $loadLanguage = false)
@@ -197,7 +197,7 @@ class BreezeForm
 	function display()
 	{
 		$this->buffer = '
-<form action="'. $this->options['url'] .'" method="post" accept-charset="'. $this->options['character_set'] .'" name="'. $this->options['name'] .'" id="'. $this->options['name'] .'">';
+<form action="'. $this->_options['url'] .'" method="post" accept-charset="'. $this->_options['character_set'] .'" name="'. $this->_options['name'] .'" id="'. $this->_options['name'] .'">';
 
 		// Any title and/or description?
 		if (!empty($this->_options['title']))
@@ -302,7 +302,7 @@ class BreezeForm
 	</div>
 	<br />
 </form>';
-
+print_r($this->_options);
 		return $this->buffer;
 	}
 }
