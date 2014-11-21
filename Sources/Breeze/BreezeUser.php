@@ -199,6 +199,44 @@ class BreezeUser extends Breeze
 	}
 
 	/**
+	 * BreezeUser::alerts()
+	 *
+	 * Creates alert settings and configuration pages.
+	 * @return
+	 */
+	function alerts()
+	{
+		global $context;
+
+		$data = Breeze::data('get');
+		$tools = $this['tools'];
+
+		// Create the tabs for the template.
+		$context[$context['profile_menu_name']]['tab_data'] = array(
+			'title' => $txt['showPosts'],
+			'description' => $txt['showPosts_help'],
+			'icon' => 'profile_hd.png',
+			'tabs' => array(
+				'settings' => array(
+				),
+				'edit' => array(
+				),
+			),
+		);
+
+		$context['page_title'] = !empty($data['sa']) && $tools->text('user_settings_name_alerts_'. $data['sa']) ? $tools->text('user_settings_name_alerts_'. $data['sa']) : $tools->text('user_settings_name_alerts_settings');
+
+		// Call the right action.
+		$call = 'alert' .(!empty($data['sa']) ? ucfirst($data['sa']) : 'Settings');
+
+		// Get the right template.
+		$context['sub_template'] = $call;
+
+		else
+			$this->$call();
+	}
+
+	/**
 	 * BreezeUser::settings()
 	 *
 	 * Creates a form for each user to configure their wall settings.
