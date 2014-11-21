@@ -222,20 +222,20 @@ class Breeze extends Pimple
 			);
 
 			// Inner alert settings page.
-			$profile_areas['breeze_profile']['areas']['alerts'] => array(
-					'label' => $tools->text('user_settings_name_alerts'),
-					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'BreezeUser::alerts#',
-					'icon' => 'maintain',
-					'subsections' => array(
-						'settings' => array($tools->text('user_settings_name_alerts_settings'), array('is_not_guest', 'profile_view')),
-						'edit' => array($tools->text('user_settings_name_alerts_edit'), array('is_not_guest', 'profile_view')),
-					),
-					'permission' => array(
-						'own' => 'is_not_guest',
-						'any' => 'profile_view',
-					),
+			$profile_areas['breeze_profile']['areas']['alerts'] = array(
+				'label' => $tools->text('user_settings_name_alerts'),
+				'file' => Breeze::$folder . 'BreezeUser.php',
+				'function' => 'BreezeUser::alerts#',
+				'icon' => 'maintain',
+				'subsections' => array(
+					'settings' => array($tools->text('user_settings_name_alerts_settings'), array('is_not_guest', 'profile_view')),
+					'edit' => array($tools->text('user_settings_name_alerts_edit'), array('is_not_guest', 'profile_view')),
 				),
+				'permission' => array(
+					'own' => 'is_not_guest',
+					'any' => 'profile_view',
+				),
+			);
 
 			// Cover settings page.
 			if ($tools->enable('cover'))
