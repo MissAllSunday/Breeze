@@ -208,6 +208,9 @@ class BreezeUser extends Breeze
 	{
 		global $context;
 
+		loadtemplate(Breeze::$name);
+		loadtemplate(Breeze::$name .'Functions');
+
 		$data = Breeze::data('get');
 		$tools = $this['tools'];
 
@@ -225,12 +228,10 @@ class BreezeUser extends Breeze
 		);
 
 		$context['page_title'] = !empty($data->get('sa')) && $tools->text('user_settings_name_alerts_'. $data->get('sa')) ? $tools->text('user_settings_name_alerts_'. $data->get('sa')) : $tools->text('user_settings_name_alerts_settings');
+		$context['page_desc'] = $context['page_title'];
 
 		// Call the right action.
 		$call = 'alert' .(!empty($data->get('sa')) ? ucfirst($data->get('sa')) : 'Settings');
-
-		// Get the right template.
-		$context['sub_template'] = $call;
 
 		// Call the right function.
 			$this->$call();
@@ -238,7 +239,40 @@ class BreezeUser extends Breeze
 
 	public function alertSettings()
 	{
-		echo 'stuff!';
+		global $context;
+
+		$context['Breeze_redirect'] = 'alerts';
+		$context['sub_template'] = 'member_options';
+
+		// Get the user settings.
+		$userSettings = $this['query']->getUserSettings($context['member']['id']);
+
+		// Create the form.
+		$form = $this['form'];
+
+		// Group all these values into an array. Makes it easier to save the changes.
+		$form->setOptions(array(
+			'name' => 'breezeSettings',
+			'url' => $this['tools']->scriptUrl .'?action=breezeajax;sa=usersettings;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings'),
+			'character_set' => $context['character_set'],
+			'title' => $context['page_title'],
+			'desc' => $context['page_desc'],
+		));
+
+		// Get all inner alerts.
+		foreach ($this['log']->alerts as $a)
+			$form->addCheckBox(
+				'alert_'. $a,
+				!empty($userSettings['alert_'. $a]) ? true : false
+			);
+
+		// Session stuff.
+		$form->addHiddenField($context['session_var'], $context['session_id']);
+
+		$form->addButton('submit');
+
+		// Send the form to the template
+		$context['Breeze']['UserSettings']['Form'] = $form->display();
 	}
 
 	public function alertEdit()
@@ -469,7 +503,7 @@ class BreezeUser extends Breeze
 
 		$(\'#fileupload\').fileupload({
 			dataType: \'json\',
-			url : $(\'#breezesettings\').attr(\'href\') + \';js=1\',
+			url : '. JavaScriptEscape($this['tools']->scriptUrl .'?action=breezeajax;sa=cover;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings') .';js=1') .',
 			autoUpload: false,
 			getNumberOfFiles: 1,
 			disableImageResize: /Android(?!.*Chrome)|Opera/

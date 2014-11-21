@@ -589,17 +589,18 @@ class BreezeAjax
 			$this->_app['query']->insertUserSettings(array('cover'=> json_encode($fileInfo)), $this->_currentUser);
 
 			// Create an inner alert for this.
-			$this->_app['query']->insertLog(array(
-				'member' => $this->_currentUser,
-				'content_type' => 'cover',
-				'content_id' => 0,
-				'time' => time(),
-				'extra' => array(
-					'buddy_text' => 'cover',
-					'toLoad' => array($this->_currentUser),
-					'image' => $folderThumbnailUrl . $newFile,
-				),
-			));
+			if (!empty($this->_userSettings['alert_cover']))
+				$this->_app['query']->insertLog(array(
+					'member' => $this->_currentUser,
+					'content_type' => 'cover',
+					'content_id' => 0,
+					'time' => time(),
+					'extra' => array(
+						'buddy_text' => 'cover',
+						'toLoad' => array($this->_currentUser),
+						'image' => $folderThumbnailUrl . $newFile,
+					),
+				));
 
 			$this->setResponse(array(
 				'message' => 'cover_done',
@@ -696,17 +697,18 @@ class BreezeAjax
 				$this->_app['query']->insertUserSettings(array('moodHistory'=> json_encode($moodHistory)), $this->_currentUser);
 
 				// Create an inner alert for this.
-				$this->_app['query']->insertLog(array(
-					'member' => $this->_currentUser,
-					'content_type' => 'mood',
-					'content_id' => $this->_data->get('moodID'),
-					'time' => time(),
-					'extra' => array(
-						'buddy_text' => 'mood',
-						'toLoad' => array($this->_currentUser),
-						'moodHistory' => serialize(end($moodHistory)),
-					),
-				));
+				if (!empty($this->_userSettings['alert_mood']))
+					$this->_app['query']->insertLog(array(
+						'member' => $this->_currentUser,
+						'content_type' => 'mood',
+						'content_id' => $this->_data->get('moodID'),
+						'time' => time(),
+						'extra' => array(
+							'buddy_text' => 'mood',
+							'toLoad' => array($this->_currentUser),
+							'moodHistory' => serialize(end($moodHistory)),
+						),
+					));
 			}
 
 			// Build the response.
