@@ -277,17 +277,18 @@ class BreezeUser extends Breeze
 
 	public function alertEdit()
 	{
-		global $context, $scripturl;
+		global $context, $scripturl, $txt;
 
+		$context['sub_template'] = 'alert_edit';
 		$data = Breeze::data();
 		$maxIndex = 10;
 		$start = (int) isset($_REQUEST['start']) ? $_REQUEST['start'] : 0;
-		$count =  $this['query']->logCount($context['member']['id']);
+		$alerts =  $this['log']->get($context['member']['id'], $maxIndex, $start);
+		$count = $alerts['count'];
 
 		// Get the alerts.
-		$context['alerts'] = getLog($context['member']['id'], $maxIndex, $start);
+		$context['alerts'] = $alerts['data'];
 		$toMark = false;
-		$action = '';
 
 		// Create the pagination.
 		$context['pagination'] = constructPageIndex($scripturl . '?action=profile;area=alerts;sa=edit;u=' . $context['member']['id'], $start, $count, $maxIndex, false);
@@ -314,32 +315,25 @@ class BreezeUser extends Breeze
 
 		// Saving multiple changes?
 		if ($data->get('save') && $data->get('mark'))
-		{
-			// Get the values.
-			$toMark = array_map('intval', $_POST['mark']);
-			// Which action?
-			$action = !empty($_POST['mark_as']) ? $smcFunc['htmlspecialchars']($smcFunc['htmltrim']($_POST['mark_as'])) : '';
-		}
+			$toMark = $data->get('mark');
 
 		// A single change.
-		if (!empty($_GET['do']) && !empty($_GET['aid']))
-		{
-			$toMark = (int) $_GET['aid'];
-			$action = $smcFunc['htmlspecialchars']($smcFunc['htmltrim']($_GET['do']));
-		}
+		if ($data->get('delete') && $data->get('aid'))
+			$toMark = $data->get('aid');
+
 		// Save the changes.
-		if (!empty($toMark) && !empty($action))
+		if (!empty($toMark))
 		{
 			checkSession('request');
+
 			// Call it!
-			if ($action == 'remove')
-				alert_delete($toMark, $memID);
-			else
-				alert_mark($memID, $toMark, $action == 'read' ? 1 : 0);
+			$this['query']->deleteLog($toMark);
+
 			// Set a nice update message.
 			$_SESSION['update_message'] = true;
+
 			// Redirect.
-			redirectexit('action=profile;area=showalerts;u=' . $memID);
+			redirectexit('action=profile;area=alerts;sa=edit;u=' . $context['member']['id']);
 		}
 	}
 

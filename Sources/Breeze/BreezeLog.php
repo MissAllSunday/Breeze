@@ -124,7 +124,7 @@ class BreezeLog
 		{
 			$file_headers = @get_headers($filename);
 
-			if(empty($file_headers) || $file_headers[0] == 'HTTP/1.0 404 Not Found' || $file_headers[0] == 'HTTP/1.0 302 Found' || $file_headers[7] == 'HTTP/1.0 404 Not Found')
+			if(empty($file_headers) || $file_headers[0] == 'HTTP/1.0 404 Not Found' || $file_headers[0] == 'HTTP/1.0 302 Found')
 				$file = false;
 		}
 

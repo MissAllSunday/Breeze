@@ -922,6 +922,22 @@ class BreezeQuery
 		);
 	}
 
+	public function deleteLog($id)
+	{
+		if (empty($id))
+			return false;
+
+		$id = (array) $id;
+
+		$this->_app['tools']->smcFunc['db_query']('', '
+			DELETE FROM {db_prefix}' . ($this->_tables['logs']['table']) . '
+			WHERE id_log IN ({array_int:data})',
+			array(
+				'data' => $id,
+			)
+		);
+	}
+
 	/**
 	 * BreezeQuery::insertNoti()
 	 *

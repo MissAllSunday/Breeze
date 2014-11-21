@@ -382,7 +382,7 @@ function template_alert_edit()
 	{
 		// Start the form.
 		echo '
-		<form action="', $scripturl, '?action=profile;u=', $context['id_member'], ';area=alerts;sa=edit;save" method="post" accept-charset="', $context['character_set'], '" id="mark_all">';
+		<form action="', $scripturl, '?action=profile;u=', $context['id_member'], ';area=alerts;sa=edit;save=1" method="post" accept-charset="', $context['character_set'], '" id="mark_all">';
 
 		$alt = false;
 		$counter = 1;
@@ -394,8 +394,7 @@ function template_alert_edit()
 			<div class="', $alt ? 'windowbg' : 'windowbg2', '">
 				<div class="topic_details floatleft">', $alert['time'], '</div>
 				<ul class="quickbuttons">
-					<li><a href="', $scripturl, '?action=profile;u=', $context['id_member'], ';area=showalerts;do=remove;aid= ', $id ,';', $context['session_var'], '=', $context['session_id'], '">', $txt['delete'] ,'</a></li>
-					<li><a href="', $scripturl, '?action=profile;u=', $context['id_member'], ';area=showalerts;do=', ($alert['is_read'] != 0 ? 'unread' : 'read') ,';aid= ', $id ,';', $context['session_var'], '=', $context['session_id'], '">', ($alert['is_read'] != 0 ? $txt['mark_unread'] : $txt['mark_read_short']),'</a></li>
+					<li><a href="', $scripturl, '?action=profile;u=', $context['id_member'], ';area=alerts;sa=edit;delete=1;aid=', $id ,';', $context['session_var'], '=', $context['session_id'], '">', $txt['delete'] ,'</a></li>
 					<li><input type="checkbox" name="mark[', $id ,']" value="', $id ,'"></li>
 				</ul>
 				<div class="list_posts clear">', $alert['text'], '</div>
@@ -410,8 +409,6 @@ function template_alert_edit()
 				<div class="floatright">
 					', $txt['check_all'] ,': <input type="checkbox" name="select_all" id="select_all">
 					<select name="mark_as">
-						<option value="read">', $txt['quick_mod_markread'] ,'</option>
-						<option value="unread">', $txt['quick_mod_markunread'] ,'</option>
 						<option value="remove">', $txt['quick_mod_remove'] ,'</option>
 					</select>
 					<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '">
