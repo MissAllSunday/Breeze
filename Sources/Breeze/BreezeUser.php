@@ -435,7 +435,7 @@ class BreezeUser extends Breeze
 				'. (file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename']) ? '<br /><img src="'. $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename'] .'" class ="current_cover" />' : '') .''
 			);
 
-		// Cover upload option
+		// Cover upload option.
 		$form->addHTML(
 			'cover_select',
 			'<span class="">
@@ -469,7 +469,7 @@ class BreezeUser extends Breeze
 
 		$(\'#fileupload\').fileupload({
 			dataType: \'json\',
-			url : '. JavaScriptEscape($context['form']['url'].';js=1') .',
+			url : $(\'#breezesettings\').attr(\'href\') + \';js=1\',
 			autoUpload: false,
 			getNumberOfFiles: 1,
 			disableImageResize: /Android(?!.*Chrome)|Opera/
