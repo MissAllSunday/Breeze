@@ -232,7 +232,7 @@ class BreezeUser extends Breeze
 		// Get the right template.
 		$context['sub_template'] = $call;
 
-		// Call the right fucntion.
+		// Call the right function.
 			$this->$call();
 	}
 

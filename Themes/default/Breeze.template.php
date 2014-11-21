@@ -350,30 +350,8 @@ function template_member_options()
 	// Get the message from the server
 	breeze_server_response();
 
-	// The main containing header.
-	echo '
-		<form action="', $context['form']['url'] ,'" method="post" accept-charset="', $context['character_set'], '" name="breezeSettings" id="breezeSettings">
-			<div class="cat_bar">
-				<h3 class="catbg profile_hd">
-						', $context['page_title'] , '
-				</h3>
-			</div>
-			<p class="windowbg description">
-				', $context['page_desc'] , '
-			</p>
-			<div class="windowbg2">
-				<span class="topslice"><span></span></span>
-					<div class="content">';
-
-		// Print the form
+	// Print the form
 	echo $context['Breeze']['UserSettings']['Form'];
-
-	echo '
-				</div>
-				<span class="botslice"><span></span></span>
-			</div>
-			<br />
-		</form>';
 }
 
 function template_general_wall()

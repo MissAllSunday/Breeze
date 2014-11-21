@@ -32,14 +32,15 @@ class BreezeForm
 	function __construct($app)
 	{
 		$this->_app = $app;
+		$this->_options = array('name' => '', 'url' => '', 'page_title' => ''; 'page_desc' => '', 'character_set' => '',);
 	}
 
-	public function setFormName($string)
+	public function setOptions($options)
 	{
-		if (empty($string))
+		if (empty($options))
 			return false;
 
-		$this->formName = trim($string);
+		$this->_options += $options;
 	}
 
 	public function setTextPrefix($string, $loadLanguage = false)
@@ -99,7 +100,7 @@ class BreezeForm
 		$element['name'] = $name;
 		$element['values'] = $values;
 		$element['text']  = $name;
-		$element['html_start'] = '<'. $element['type'] .' name="'. (!empty($this->formName) ? $this->formName .'['. $element['name'] .']' : $element['name']) .'">';
+		$element['html_start'] = '<'. $element['type'] .' name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $element['name'] .']' : $element['name']) .'">';
 		$element['html_end'] = '</'. $element['type'] .'>';
 
 		foreach($values as $k => $v)
@@ -115,7 +116,7 @@ class BreezeForm
 		$element['value'] = 1;
 		$element['checked'] = empty($checked) ? '' : 'checked="checked"';
 		$element['text'] = $name;
-		$element['html'] = '<input type="'. $element['type'] .'" name="'. (!empty($this->formName) ? $this->formName .'['. $element['name'] .']' : $element['name']) .'" id="'. $element['name'] .'" value="'. (int)$element['value'] .'" '. $element['checked'] .' class="input_check" />';
+		$element['html'] = '<input type="'. $element['type'] .'" name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $element['name'] .']' : $element['name']) .'" id="'. $element['name'] .'" value="'. (int)$element['value'] .'" '. $element['checked'] .' class="input_check" />';
 
 		return $this->addElement($element);
 	}
@@ -128,7 +129,7 @@ class BreezeForm
 		$element['text'] = $name;
 		$element['size'] = empty($size) ? 'size="20"' : 'size="' .$size. '"';
 		$element['maxlength'] = empty($maxlength) ? 'maxlength="20"' : 'maxlength="' .$maxlength. '"';
-		$element['html'] = '<input type="'. $element['type'] .'" name="'. (!empty($this->formName) ? $this->formName .'['. $element['name'] .']' : $element['name']) .'" id="'. $element['name'] .'" value="'. $element['value'] .'" '. $element['size'] .' '. $element['maxlength'] .' class="input_text" />';
+		$element['html'] = '<input type="'. $element['type'] .'" name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $element['name'] .']' : $element['name']) .'" id="'. $element['name'] .'" value="'. $element['value'] .'" '. $element['size'] .' '. $element['maxlength'] .' class="input_text" />';
 
 		return $this->addElement($element);
 	}
@@ -145,7 +146,7 @@ class BreezeForm
 		$cols = 'cols="'. (!empty($size) && !empty($size['cols']) ? $size['cols'] : 40) .'"';
 		$maxLength = 'maxlength="'. (!empty($size) && !empty($size['maxLength']) ? $size['maxLength'] : 1024) .'"';
 
-		$element['html'] = '<'. $element['type'] .' name="'. (!empty($this->formName) ? $this->formName .'['. $element['name'] .']' : $element['name']) .'" id="'. $element['name'] .'" '. $rows .' '. $cols .' '. $maxLength .'>'. $element['value'] .'</'. $element['type'] .'>';
+		$element['html'] = '<'. $element['type'] .' name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $element['name'] .']' : $element['name']) .'" id="'. $element['name'] .'" '. $rows .' '. $cols .' '. $maxLength .'>'. $element['value'] .'</'. $element['type'] .'>';
 
 		return $this->addElement($element);
 	}
@@ -195,7 +196,29 @@ class BreezeForm
 
 	function display()
 	{
-		$this->buffer .= '<dl class="settings">';
+		$this->buffer = '
+<form action="'. $this->options['url'] .'" method="post" accept-charset="'. $this->options['character_set'] .'" name="'. $this->options['name'] .'" id="'. $this->options['name'] .'">';
+
+		// Any title and/or description?
+		if (!empty($this->_options['title']))
+			$this->buffer .= '
+	<div class="cat_bar">
+		<h3 class="catbg profile_hd">
+				'. $this->_options['title'] .'
+		</h3>
+	</div>';
+
+		if (!empty($this->_options['title']))
+			$this->buffer .= '
+	<p class="windowbg description">
+		'. $this->_options['desc'] .'
+	</p>';
+
+		$this->buffer .= '
+	<div class="windowbg2">
+		<div class="content">
+			<dl class="settings">';
+
 		$element = $this->getNextElement();
 
 		foreach($this->elements as $el)
@@ -205,48 +228,53 @@ class BreezeForm
 				case 'textarea':
 				case 'checkbox':
 				case 'text':
-					$this->buffer .= '<dt>
-						<span style="font-weight:bold;">'. $this->setText($el['text']) .'</span>
-						<br /><span class="smalltext">'. $this->_app['tools']->text($this->_textPrefix . $el['text'] .'_sub') .'</span>
-					</dt>
-					<dd>
-						<input type="hidden" name="'. (!empty($this->formName) ? $this->formName .'['. $el['name'] .']' : $el['name']) .'" value="0" />'. $el['html'] .'
-					</dd>';
+					$this->buffer .= '
+				<dt>
+					<span style="font-weight:bold;">'. $this->setText($el['text']) .'</span>
+					<br /><span class="smalltext">'. $this->_app['tools']->text($this->_textPrefix . $el['text'] .'_sub') .'</span>
+				</dt>
+				<dd>
+					<input type="hidden" name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $el['name'] .']' : $el['name']) .'" value="0" />'. $el['html'] .'
+				</dd>';
 					break;
 				case 'select':
-					$this->buffer .= '<dt>
-						<span style="font-weight:bold;">'. $this->setText($el['text']) .'</span>
-						<br /><span class="smalltext">'. $this->setText($el['text'] .'_sub') .'</span>
-					</dt>
-					<dd>
-						<input type="hidden" name="'. (!empty($this->formName) ? $this->formName .'['. $el['name'] .']' : $el['name']) .'" value="0" />'. $el['html_start'] .'';
+					$this->buffer .= '
+				<dt>
+					<span style="font-weight:bold;">'. $this->setText($el['text']) .'</span>
+					<br /><span class="smalltext">'. $this->setText($el['text'] .'_sub') .'</span>
+				</dt>
+				<dd>
+					<input type="hidden" name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $el['name'] .']' : $el['name']) .'" value="0" />'. $el['html_start'] .'';
 
 					foreach($el['values'] as $k => $v)
 						$this->buffer .= $v .'';
 
 					$this->buffer .= $el['html_end'] .'
-					</dd>';
+				</dd>';
 					break;
 				case 'hidden':
 				case 'submit':
-					$this->buffer .= '<dt></dt>
-					<dd>
-						'. $el['html'] .'
-					</dd>';
+					$this->buffer .= '
+				<dt></dt>
+				<dd>
+					'. $el['html'] .'
+				</dd>';
 					break;
 				case 'hr':
-					$this->buffer .= '</dl>
-						'. $el['html'] .'
-					<dl class="settings">';
+					$this->buffer .= '
+				</dl>
+					'. $el['html'] .'
+				<dl class="settings">';
 					break;
 				case 'html':
-					$this->buffer .= '<dt>
-						<span style="font-weight:bold;">'. $this->setText($el['text']) .'</span>
-						<br /><span class="smalltext">'. $this->setText($el['text'] .'_sub') .'</span>
-					</dt>
-					<dd>
-						'. sprintf($el['html'], $this->setText($el['text'])) .'
-					</dd>';
+					$this->buffer .= '
+				<dt>
+					<span style="font-weight:bold;">'. $this->setText($el['text']) .'</span>
+					<br /><span class="smalltext">'. $this->setText($el['text'] .'_sub') .'</span>
+				</dt>
+				<dd>
+					'. sprintf($el['html'], $this->setText($el['text'])) .'
+				</dd>';
 					break;
 				case 'section':
 				$this->buffer .= '
@@ -260,12 +288,20 @@ class BreezeForm
 			}
 		}
 
-		$this->buffer .= '</dl>';
+		$this->buffer .= '
+			</dl>';
 
 		// Any buttons?
 		foreach($this->elements as $el)
 			if ($el['type'] == 'button')
 				$this->buffer .= '<input type="submit" name="'. $this->setText($el['text']) .'" value="'. $this->setText($el['text']) .'" class="button_submit"/>';
+				
+		// Close it.
+		$this->buffer .= '
+		</div>
+	</div>
+	<br />
+</form>';
 
 		return $this->buffer;
 	}
