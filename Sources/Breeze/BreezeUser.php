@@ -277,7 +277,70 @@ class BreezeUser extends Breeze
 
 	public function alertEdit()
 	{
-		echo 'stuff!';
+		global $context, $scripturl;
+
+		$data = Breeze::data();
+		$maxIndex = 10;
+		$start = (int) isset($_REQUEST['start']) ? $_REQUEST['start'] : 0;
+		$count =  $this['query']->logCount($context['member']['id']);
+
+		// Get the alerts.
+		$context['alerts'] = getLog($context['member']['id'], $maxIndex, $start);
+		$toMark = false;
+		$action = '';
+
+		// Create the pagination.
+		$context['pagination'] = constructPageIndex($scripturl . '?action=profile;area=alerts;sa=edit;u=' . $context['member']['id'], $start, $count, $maxIndex, false);
+
+		addInlineJavascript('
+	$(function(){
+		$(\'#select_all\').on(\'change\', function() {
+			var checkboxes = $(\'#mark_all\').find(\':checkbox\');
+			if($(this).prop(\'checked\')) {
+				checkboxes.prop(\'checked\', true);
+			}
+			else {
+				checkboxes.prop(\'checked\', false);
+			}
+		});
+	});', true);
+
+		// Set a nice message.
+		if (!empty($_SESSION['update_message']))
+		{
+			$context['update_message'] = $txt['profile_updated_own'];
+			unset($_SESSION['update_message']);
+		}
+
+		// Saving multiple changes?
+		if ($data->get('save') && $data->get('mark'))
+		{
+			// Get the values.
+			$toMark = array_map('intval', $_POST['mark']);
+			// Which action?
+			$action = !empty($_POST['mark_as']) ? $smcFunc['htmlspecialchars']($smcFunc['htmltrim']($_POST['mark_as'])) : '';
+		}
+
+		// A single change.
+		if (!empty($_GET['do']) && !empty($_GET['aid']))
+		{
+			$toMark = (int) $_GET['aid'];
+			$action = $smcFunc['htmlspecialchars']($smcFunc['htmltrim']($_GET['do']));
+		}
+		// Save the changes.
+		if (!empty($toMark) && !empty($action))
+		{
+			checkSession('request');
+			// Call it!
+			if ($action == 'remove')
+				alert_delete($toMark, $memID);
+			else
+				alert_mark($memID, $toMark, $action == 'read' ? 1 : 0);
+			// Set a nice update message.
+			$_SESSION['update_message'] = true;
+			// Redirect.
+			redirectexit('action=profile;area=showalerts;u=' . $memID);
+		}
 	}
 
 	/**
