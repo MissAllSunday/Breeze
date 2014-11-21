@@ -120,16 +120,19 @@ class BreezeNoti
 		));
 
 		// Don't forget the inner alert.
-		$this->_app['query']->insertLog(array(
-			'member' => $this->_details['poster_id'],
-			'content_type' => 'like',
-			'content_id' => $this->_details['id'],
-			'time' => $this->_details['time_raw'],
-			'extra' => array(
-				'buddy_text' => 'status_owner_buddy',
-				'toLoad' => array($messageOwner, $this->_details['user']['id']),
-			),
-		));
+		$uSettings = $this->_app['query']->getUserSettings($this->_details['poster_id']);
+
+		if (!empty($uSettings['alert_like']))
+			$this->_app['query']->insertLog(array(
+				'member' => $this->_details['poster_id'],
+				'content_type' => 'like',
+				'content_id' => $this->_details['id'],
+				'time' => $this->_details['time_raw'],
+				'extra' => array(
+					'buddy_text' => 'status_owner_buddy',
+					'toLoad' => array($messageOwner, $this->_details['user']['id']),
+				),
+			));
 	}
 
 	protected function status()
@@ -151,39 +154,45 @@ class BreezeNoti
 		));
 
 		// And our very own alert too.
-		$this->_app['query']->insertLog(array(
-			'member' => $this->_details['poster_id'],
-			'content_type' => 'status',
-			'content_id' => $this->_details['id'],
-			'time' => $this->_details['time_raw'],
-			'extra' => array(
-				'buddy_text' => 'status_owner_buddy',
-				'toLoad' => array($this->_details['poster_id'], $this->_details['owner_id']),
-				'wall_owner' => $this->_details['profile_id'],
-				'poster' => $this->_details['poster_id'],
-				'status_owner' => $this->_details['status_owner_id'],
-				'status_id' => $this->_details['status_id'],
-			),
-		));
+		$uSettings = $this->_app['query']->getUserSettings($this->_details['poster_id']);
+
+		if (!empty($uSettings['alert_status']))
+			$this->_app['query']->insertLog(array(
+				'member' => $this->_details['poster_id'],
+				'content_type' => 'status',
+				'content_id' => $this->_details['id'],
+				'time' => $this->_details['time_raw'],
+				'extra' => array(
+					'buddy_text' => 'status_owner_buddy',
+					'toLoad' => array($this->_details['poster_id'], $this->_details['owner_id']),
+					'wall_owner' => $this->_details['profile_id'],
+					'poster' => $this->_details['poster_id'],
+					'status_owner' => $this->_details['status_owner_id'],
+					'status_id' => $this->_details['status_id'],
+				),
+			));
 	}
 
 	protected function comment()
 	{
 		// You posted a comment on your own status on your own wall, no need to tell you that. However, fire an alert for your buddies.
-		$this->_app['query']->insertLog(array(
-			'member' => $this->_details['poster_id'],
-			'content_type' => 'comment',
-			'content_id' => $this->_details['id'],
-			'time' => $this->_details['time_raw'],
-			'extra' => array(
-				'buddy_text' => 'comment_status_owner_buddy',
-				'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
-				'wall_owner' => $this->_details['profile_id'],
-				'poster' => $this->_details['poster_id'],
-				'status_owner' => $this->_details['status_owner_id'],
-				'status_id' => $this->_details['status_id'],
-			),
-		));
+		$uSettings = $this->_app['query']->getUserSettings($this->_details['poster_id']);
+
+		if (!empty($uSettings['alert_comment']))
+			$this->_app['query']->insertLog(array(
+				'member' => $this->_details['poster_id'],
+				'content_type' => 'comment',
+				'content_id' => $this->_details['id'],
+				'time' => $this->_details['time_raw'],
+				'extra' => array(
+					'buddy_text' => 'comment_status_owner_buddy',
+					'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
+					'wall_owner' => $this->_details['profile_id'],
+					'poster' => $this->_details['poster_id'],
+					'status_owner' => $this->_details['status_owner_id'],
+					'status_id' => $this->_details['status_id'],
+				),
+			));
 
 		// No need to go further.
 		if (($this->_details['poster_id'] == $this->_details['profile_id']) && ($this->_details['profile_id'] == $this->_details['status_owner_id']))
