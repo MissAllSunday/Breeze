@@ -217,7 +217,7 @@ class BreezeUser extends Breeze
 		// Create the tabs for the template.
 		$context[$context['profile_menu_name']]['tab_data'] = array(
 			'title' => $tools->text('user_settings_name_alerts'),
-			'description' => $tools->text('user_settings_name_alerts'),
+			'description' => $tools->text('user_settings_name_alerts_desc'),
 			'icon' => 'profile_hd.png',
 			'tabs' => array(
 				'settings' => array(
@@ -228,7 +228,7 @@ class BreezeUser extends Breeze
 		);
 
 		$context['page_title'] = !empty($data->get('sa')) && $tools->text('user_settings_name_alerts_'. $data->get('sa')) ? $tools->text('user_settings_name_alerts_'. $data->get('sa')) : $tools->text('user_settings_name_alerts_settings');
-		$context['page_desc'] = $context['page_title'];
+		$context['page_desc'] = !empty($data->get('sa')) && $tools->text('user_settings_name_alerts_'. $data->get('sa') .'_desc') ? $tools->text('user_settings_name_alerts_'. $data->get('sa') .'_desc') : $tools->text('user_settings_name_alerts_settings_desc');
 
 		// Call the right action.
 		$call = 'alert' .(!empty($data->get('sa')) ? ucfirst($data->get('sa')) : 'Settings');

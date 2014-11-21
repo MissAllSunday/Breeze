@@ -371,7 +371,10 @@ function template_alert_edit()
 			<h3 class="catbg">
 				', $txt['alerts'], ' - ', $context['member']['name'], '
 			</h3>
-		</div>';
+		</div>
+		<p class="windowbg description">
+		', $context['page_desc'] ,'
+		</p>';
 
 	if (empty($context['alerts']))
 		echo '
