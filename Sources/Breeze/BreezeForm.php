@@ -302,7 +302,7 @@ class BreezeForm
 	</div>
 	<br />
 </form>';
-print_r($this->_options);
+
 		return $this->buffer;
 	}
 }

@@ -819,7 +819,7 @@ class BreezeAjax
 		$extraString = '';
 
 		if (!empty($this->_response['message']) && !empty($this->_response['type']))
-			$this['tools']->setResponse($this->_response['message'], $this->_response['type']);
+			$this->_app['tools']->setResponse($this->_response['message'], $this->_response['type']);
 
 		// Build the strings as a valid syntax to pass by $_GET
 		$userString = $this->comingFrom == 'profile' ? ';u='. $this->_response['owner'] : '';

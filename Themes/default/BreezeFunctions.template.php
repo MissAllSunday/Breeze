@@ -391,11 +391,11 @@ function breeze_server_response()
 	// Just to be sure...
 	loadLanguage(Breeze::$name);
 
-	// Get the message from the server
-	$serverResponse = Breeze::data('session');
+	// Get the message from the server, FUGLY.
+	$serverResponse = $_SESSION['Breeze']['response'];
 
-	$type = $serverResponse->get('type');
-	$message = $serverResponse->get('message');
+	$type = $serverResponse['type'];
+	$message = $serverResponse['message'];
 
 	// Show a nice confirmation message for those without JavaScript.
 	if (!empty($type) && !empty($message))
