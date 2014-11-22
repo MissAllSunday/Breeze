@@ -156,9 +156,14 @@ class BreezeUser extends Breeze
 			$usersToLoad = array_merge($usersToLoad, $context['member']['buddies']);
 		}
 
-		// Show this user recent activity.
+		// @todo this is a temp thing...
 		if (!empty($context['Breeze']['settings']['owner']['activityLog']))
-			$context['Breeze']['log'] = $log->getActivity($context['member']['id']);
+		{
+			$maxIndex = 5;
+			$start = (int) isset($_REQUEST['start']) ? $_REQUEST['start'] : 0;
+			$alerts =  $this['log']->get($context['member']['id'], $maxIndex, $start);
+			$context['Breeze']['log'] = $alerts['data'];
+		}
 
 		// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
 		loadJavascriptFile('breezeTabs.js', array('local' => true, 'default_theme' => true));
