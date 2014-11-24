@@ -86,6 +86,7 @@ class BreezeUser extends Breeze
 			$context['Breeze']['settings']['visitor'] = $query->getUserSettings($user_info['id']);
 
 		// Set all the page stuff
+		$context['template_layers'] = array();
 		$context['sub_template'] = 'user_wall';
 		$context += array(
 			'page_title' => sprintf($txt['profile_of_username'], $context['member']['name']),
