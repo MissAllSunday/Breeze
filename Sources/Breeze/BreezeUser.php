@@ -101,7 +101,12 @@ class BreezeUser extends Breeze
 
 		// Can this user have a cover?
 		if ($tools->enable('cover') && allowedTo('breeze_canCover') && !empty($context['Breeze']['settings']['owner']['cover']) && file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']['basename']))
+		{
 			$context['Breeze']['cover'] = $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']['basename'];
+
+			$context['html_headers'] .= '
+	<style type="text/css">.header {background-image: url('. $context['Breeze']['cover'] .'); height:500px;;}</style>';
+		}
 
 		// Set up some vars for pagination.
 		$maxIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;

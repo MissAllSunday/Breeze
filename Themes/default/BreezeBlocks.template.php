@@ -14,29 +14,240 @@ function template_user_wall()
 {
 	global $txt, $context, $settings, $scripturl, $user_info, $modSettings;
 
-	template_html_above();
-
-	template_top();
-
-	echo '
-	<div class="header">
-		<div class="container">
-			<div class="avatar windowbg">
-				'. $context['member']['avatar']['image'] .'
-			</div>
-			<div class="username">
-				<h2>Zim!</h2>
-				<div>
-				230 posts| 2k followers
-				</div>
-			</div>
-		</div>
-	</div>
-	<br><p>';
-
 	// Get the message from the server
 	breeze_server_response();
 
+	// Start of profileview div
+	echo '
+<div id="profileview" class="flow_auto">';
+
+	// The user's cover image.
+	if (!empty($context['Breeze']['cover']))
+		echo '
+		<div><img src="', $context['Breeze']['cover'] ,'" /></div>';
+
+	// Right block, tabs and block
+	echo '
+	<div id="Breeze_right_block">';
+
+	// Tabs
+	echo '
+		<div id="Breeze_tabs">
+			<ul class="dropmenu breezeTabs">
+				<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>';
+
+	// The "About me" tab.
+	if (!empty($context['Breeze']['settings']['owner']['aboutMe']))
+		echo '
+				<li class="about"><a href="#tabs-about" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_about'] ,'</span></a></li>';
+
+	// Does recent activity is enable?
+	if (!empty($context['Breeze']['settings']['owner']['activityLog']))
+		echo '
+				<li class="activity"><a href="#tab-activity" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_activity'] ,'</span></a></li>';
+
+	echo '
+			</ul>
+		</div>
+		<p class="clear" />';
+
+	// Wall
+	echo '
+		<div id="tab-wall" class="content">';
+
+
+	// A nice title bar
+	echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+					', $txt['Breeze_general_wall'] ,'
+			</h3>
+		</div>';
+
+	// This is the status box,  O RLY?
+	if ($context['member']['is_owner'] || allowedTo('breeze_postStatus'))
+		echo '
+			<div class="breeze_user_inner windowbg">
+				<span class="topslice"><span></span></span>
+				<div class="breeze_user_statusbox content">
+						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
+							<textarea cols="40" rows="5" name="content" id="content" rel="atwhoMention"></textarea>
+							<input type="hidden" value="', $user_info['id'] ,'" name="poster" id="statusPoster" />
+							<input type="hidden" value="', $context['member']['id'] ,'" name="owner" id="statusOwner" />
+							<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
+							<br /><input type="submit" value="', $txt['post'] ,'" name="statusSubmit" class="status_button" id="statusSubmit"/>
+						</form>
+				</div>
+				<span class="botslice"><span></span></span>
+			</div>';
+
+	// New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING and even if you do, DON'T MODIFY THIS
+	echo '
+			<div id="breeze_load_image">
+				<img src="'. $settings['images_url'] .'/breeze/loading.gif" />
+			</div>
+				<ul class="breeze_status" id="breeze_display_status">';
+
+	// Print out the status if there are any.
+	if (!empty($context['member']['status']))
+		breeze_status($context['member']['status']);
+
+	// End of list
+	echo '
+				</ul>';
+
+	// An empty div to append the loaded status via AJAX.
+	echo '
+			<div id="breezeAppendTo" style="display:hide;"></div>';
+
+		// Pagination
+		if (!empty($context['page_index']))
+			echo '
+				<div class="pagelinks">
+					', $txt['pages'], ': ', $context['page_index'], $context['menu_separator'] . ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
+				</div>';
+
+	// Wall end
+	echo '
+		</div>';
+
+	// Activity
+	if (!empty($context['Breeze']['settings']['owner']['activityLog']))
+	{
+
+		echo '
+		<div id="tab-activity" class="content">';
+
+		// A nice title bar
+		echo '
+			<div class="cat_bar">
+				<h3 class="catbg">
+					', $txt['Breeze_tabs_activity'] ,'
+				</h3>
+			</div>';
+
+		if (empty($context['Breeze']['log']))
+			echo
+			'<span class="upperframe"><span></span></span>
+			<div class="roundframe">', $txt['Breeze_tabs_activity_none'] ,'</div>
+			<span class="lowerframe"><span></span></span><br />';
+
+		else
+			breeze_activity($context['Breeze']['log']);
+
+		echo '
+		</div>';
+	}
+	// Activity end
+
+	// About me
+	if (!empty($context['Breeze']['settings']['owner']['aboutMe']))
+	{
+		echo '
+		<div id="tabs-about" class="content">';
+
+		echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+					', $txt['Breeze_tabs_about'] ,'
+			</h3>
+		</div>';
+
+		echo '
+			<div class="breeze_user_inner windowbg">
+				<span class="topslice"><span></span></span>
+				<div class="content">';
+
+		echo parse_bbc($context['Breeze']['settings']['owner']['aboutMe']);
+
+		echo '
+				</div>
+				<span class="botslice"><span></span></span>
+			</div>';
+
+		echo '
+		</div>';
+	}
+	// About me end
+
+	// End of right block
+	echo '
+	</div>';
+
+	// Left block, users data and info
+	echo '
+	<div id="Breeze_left_block">';
+
+	// Profile owner details
+	breeze_profile_owner();
+
+	// Buddies
+	if (!empty($context['Breeze']['settings']['owner']['buddies']))
+	{
+		echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+				'. $txt['Breeze_tabs_buddies'] .'
+			</h3>
+		</div>';
+
+		echo '
+		<div class="windowbg2">
+			<span class="topslice"><span> </span></span>
+			<div class="content BreezeList">';
+
+		if (!empty($context['member']['buddies']))
+			breeze_user_list($context['member']['buddies'], 'buddy');
+
+		// No buddies :(
+		else
+			echo $txt['Breeze_user_modules_buddies_none'];
+
+			echo '
+			</div>
+			<span class="botslice"><span> </span></span>
+		</div>';
+
+	}
+	// Buddies end
+
+	// Visitors
+	if (!empty($context['Breeze']['settings']['owner']['visitors']))
+	{
+
+		echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+				'. $txt['Breeze_tabs_views'] .'
+			</h3>
+		</div>';
+
+		echo '
+		<div class="windowbg2">
+			<span class="topslice"><span> </span></span>
+			<div class="content BreezeList">';
+
+		if (!empty($context['Breeze']['views']))
+			breeze_user_list($context['Breeze']['views'], 'visitors');
+
+		// No visitors :(
+		else
+			echo $txt['Breeze_user_modules_visitors_none'];
+
+		echo '
+			</div>
+			<span class="botslice"><span> </span></span>
+		</div>';
+	}
+	// Visitor end
+
+	// End of left block
+	echo '
+		</div>';
+
+	// End of profileview div
+	echo '
+</div>';
 }
 
 function template_user_notifications()
