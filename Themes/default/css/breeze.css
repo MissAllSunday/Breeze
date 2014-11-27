@@ -1,5 +1,6 @@
 
 .header{
+z-index: 1;
 overflow: visible;
 text-align: center;
 position: relative;
@@ -8,28 +9,26 @@ left: 0;
 bottom: 0;
 right: 0;
 height: 100px;
-	background-position: center center;
+	background-position: top center;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
-	background-size: cover;
+	background-size: auto;
+	margin-bottom:50px;
 }
 .header div.container{
 	height: 100%;
 width: 977px;
 margin: 0 auto;
 position: relative;
-border-color:#000;
-border-style: solid;
-border-width: 5px;
 overflow: visible;
 }
 .header div.username{
 position: absolute;
 bottom: -25px;
 height: auto;
-width: 100%;
+width: 50%;
 left: 0;
-margin-left : 160px;
+margin-left : 260px;
 float:left;
 text-align:left;
 }
@@ -52,7 +51,8 @@ width: 50%;
 	position: absolute;
 	bottom: -40px;
 	left: 0;
-	width: 140px;
+	width: 240px;
+	max-width: 240px;
 	height:auto;
 	z-index: 3;
 	margin-left : 5px;

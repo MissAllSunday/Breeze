@@ -105,7 +105,7 @@ class BreezeUser extends Breeze
 			$context['Breeze']['cover'] = $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']['basename'];
 
 			$context['html_headers'] .= '
-	<style type="text/css">.header {background-image: url('. $context['Breeze']['cover'] .'); height:500px;;}</style>';
+	<style type="text/css">.header {background-image: url('. $context['Breeze']['cover'] .'); height:377px;}</style>';
 		}
 
 		// Set up some vars for pagination.
@@ -726,9 +726,6 @@ class BreezeUser extends Breeze
 
 		$tools = $this['tools'];
 		$query = $this['query'];
-
-		// DUH! winning!
-		$context['insert_after_template'] .= Breeze::who(true);
 
 		// Another page already checked the permissions and if the mod is enable, but better be safe...
 		if (!$tools->enable('master'))

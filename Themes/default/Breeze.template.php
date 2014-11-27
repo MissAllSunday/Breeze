@@ -25,17 +25,50 @@ function template_user_wall()
 				'. $context['member']['avatar']['image'] .'
 			</div>
 			<div class="username">
-				<h2>Zim!</h2>
+				<h2>Manzanita!</h2>
 				<div>
 				230 posts| 2k followers
 				</div>
 			</div>
 		</div>
 	</div>
-	<br><p>';
+	<p class="clear">';
+
+	echo '
+	<div id="wrapper">';
+
+	theme_linktree();
+
+	echo '
+		<div class="blocks">
+			blocks here
+		</div>
+		<div class="content">';
+
+	// Tabs
+	echo '
+		<div id="Breeze_tabs">
+			<ul class="dropmenu breezeTabs">
+				<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>';
+	// The "About me" tab.
+	if (!empty($context['Breeze']['settings']['owner']['aboutMe']))
+		echo '
+				<li class="about"><a href="#tabs-about" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_about'] ,'</span></a></li>';
+	// Does recent activity is enable?
+	if (!empty($context['Breeze']['settings']['owner']['activityLog']))
+		echo '
+				<li class="activity"><a href="#tab-activity" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_activity'] ,'</span></a></li>';
+	echo '
+			</ul>
+		</div>
+		<p class="clear" />';
+
+	echo '
+		</div>
+	</div>';
 
 	// Get the message from the server
-	breeze_server_response();
+	template_html_below();
 
 }
 
