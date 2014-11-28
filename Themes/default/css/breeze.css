@@ -57,3 +57,15 @@ width: 50%;
 	z-index: 3;
 	margin-left : 5px;
 }
+
+.blocks{
+	float:left;
+	max-width:30%;
+	width:30%;
+}
+
+.content{
+	max-width: 69%;
+	width:69%;
+	float:right;
+}

@@ -25,14 +25,13 @@ function template_user_wall()
 				'. $context['member']['avatar']['image'] .'
 			</div>
 			<div class="username">
-				<h2>Manzanita!</h2>
+				<h2>Lerdo!</h2>
 				<div>
 				230 posts| 2k followers
 				</div>
 			</div>
 		</div>
-	</div>
-	<p class="clear">';
+	</div>';
 
 	echo '
 	<div id="wrapper">';
@@ -40,31 +39,107 @@ function template_user_wall()
 	theme_linktree();
 
 	echo '
-		<div class="blocks">
-			blocks here
+		<div class="windowbg2 blocks">
+			<div class="cat_bar">
+				<h3 class="catbg">
+					some text
+				</h3>
+			</div>
+			<div class="information">
+				some content
+			</div>
+			<div class="cat_bar">
+				<h3 class="catbg">
+					some text
+				</h3>
+			</div>
+			<div class="information">
+				some content
+			</div>
+			<div class="cat_bar">
+				<h3 class="catbg">
+					some text
+				</h3>
+			</div>
+			<div class="information">
+				some content
+			</div>
 		</div>
-		<div class="content">';
+		<div class="content windowbg2">';
 
 	// Tabs
 	echo '
-		<div id="Breeze_tabs">
-			<ul class="dropmenu breezeTabs">
-				<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>';
+			<div id="Breeze_tabs">
+				<ul class="dropmenu breezeTabs">
+					<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>';
 	// The "About me" tab.
 	if (!empty($context['Breeze']['settings']['owner']['aboutMe']))
 		echo '
-				<li class="about"><a href="#tabs-about" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_about'] ,'</span></a></li>';
+					<li class="about"><a href="#tabs-about" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_about'] ,'</span></a></li>';
 	// Does recent activity is enable?
 	if (!empty($context['Breeze']['settings']['owner']['activityLog']))
 		echo '
-				<li class="activity"><a href="#tab-activity" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_activity'] ,'</span></a></li>';
+					<li class="activity"><a href="#tab-activity" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_activity'] ,'</span></a></li>';
 	echo '
-			</ul>
-		</div>
-		<p class="clear" />';
+				</ul>
+			</div>
+			<p class="clear" />';
+
+// Wall
+	echo '
+		<div id="tab-wall">';
+	// A nice title bar
+	echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+					', $txt['Breeze_general_wall'] ,'
+			</h3>
+		</div>';
+	// This is the status box,  O RLY?
+	if ($context['member']['is_owner'] || allowedTo('breeze_postStatus'))
+		echo '
+			<div class="breeze_user_inner windowbg">
+				<div class="breeze_user_statusbox content">
+						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
+							<textarea cols="40" rows="5" name="statusContent" id="statusContent" rel="atwhoMention"></textarea>
+							<input type="hidden" value="', $user_info['id'] ,'" name="statusPoster" id="statusPoster" />
+							<input type="hidden" value="', $context['member']['id'] ,'" name="statusOwner" id="statusOwner" />
+							<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
+							<br /><input type="submit" value="', $txt['post'] ,'" name="statusSubmit" class="status_button" id="statusSubmit"/>
+						</form>
+				</div>
+			</div>';
+
+	// New ajax status here DO NOT MODIFY THIS UNLESS YOU KNOW WHAT YOU'RE DOING and even if you do, DON'T MODIFY THIS
+	echo '
+			<div id="breeze_load_image"></div>
+				<ul class="breeze_status" id="breeze_display_status">';
+
+	// Print out the status if there are any.
+	if (!empty($context['member']['status']))
+		breeze_status($context['member']['status']);
+
+	// End of list
+	echo '
+				</ul>';
+
+	// An empty div to append the loaded status via AJAX.
+	echo '
+			<div id="breezeAppendTo" style="display:hide;"></div>';
+
+	// Pagination
+	if (!empty($context['page_index']))
+			echo '
+			<div class="pagelinks floatleft">
+					', $context['page_index'], ' &nbsp;&nbsp;<a href="#wrapper"><strong>' . $txt['go_up'] . '</strong></a>
+			</div>';
+	// Wall end
+	echo '
+		</div>';
 
 	echo '
 		</div>
+		<p class="clear" />
 	</div>';
 
 	// Get the message from the server
