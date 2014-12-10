@@ -23,7 +23,7 @@ function breeze_status($data, $returnVar = false)
 		$canHas = $context['Breeze']['tools']->permissions('Status', $status['owner_id'], $status['poster_id']);
 
 		$echo .= '
-			<li class="windowbg status_breeze" id ="status_id_'. $status['id'] .'">';
+			<li class="windowbg stripes status_breeze" id ="status_id_'. $status['id'] .'">';
 
 		// If we're on the general wall, show a nice bar indicating where this status come from...
 		if (!empty($context['Breeze']['comingFrom']) && $context['Breeze']['comingFrom'] == 'wall')
@@ -158,7 +158,7 @@ function breeze_comment($comments, $returnVar = false)
 		$canHas = $context['Breeze']['tools']->permissions('Comments', $comment['profile_id'], $comment['poster_id']);
 
 		$echo .= '
-		<li class="windowbg2" id ="comment_id_'. $comment['id'] .'">
+		<li class="windowbg2 stripes" id ="comment_id_'. $comment['id'] .'">
 			<div class="breeze_user_comment_avatar">
 					'. $context['Breeze']['user_info'][$comment['poster_id']]['breezeFacebox'] .'<br />
 					'. $context['Breeze']['user_info'][$comment['poster_id']]['link'] .'

@@ -25,7 +25,7 @@ function template_user_wall()
 				'. $context['member']['avatar']['image'] .'
 			</div>
 			<div class="username">
-				<h2>Lerdo!</h2>
+				<h2>', $context['member']['name'] ,'</h2>
 				<div>
 				230 posts| 2k followers
 				</div>
@@ -39,29 +39,20 @@ function template_user_wall()
 	theme_linktree();
 
 	echo '
-		<div class="windowbg2 blocks">
-			<div class="cat_bar">
-				<h3 class="catbg">
-					some text
-				</h3>
-			</div>
-			<div class="information">
+		<div id="forumposts" class="blocks">
+			<div class="windowbg stripes">
 				some content
 			</div>
-			<div class="cat_bar">
-				<h3 class="catbg">
-					some text
-				</h3>
-			</div>
-			<div class="information">
+			<div class="windowbg2">
 				some content
 			</div>
-			<div class="cat_bar">
-				<h3 class="catbg">
-					some text
-				</h3>
+			<div class="windowbg stripes">
+				some content
 			</div>
-			<div class="information">
+			<div class="windowbg stripes">
+				some content
+			</div>
+			<div class="windowbg stripes">
 				some content
 			</div>
 		</div>
@@ -98,7 +89,7 @@ function template_user_wall()
 	// This is the status box,  O RLY?
 	if ($context['member']['is_owner'] || allowedTo('breeze_postStatus'))
 		echo '
-			<div class="breeze_user_inner windowbg">
+			<div class="breeze_user_inner windowbg alternative2">
 				<div class="breeze_user_statusbox content">
 						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
 							<textarea cols="40" rows="5" name="statusContent" id="statusContent" rel="atwhoMention"></textarea>
