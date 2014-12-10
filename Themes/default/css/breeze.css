@@ -62,10 +62,16 @@ width: 50%;
 	float:left;
 	max-width:30%;
 	width:30%;
+	margin: 0px 5px 0px 5px;
 }
 
 .content{
-	max-width: 69%;
-	width:69%;
+	max-width: 68%;
+	width:68%;
 	float:right;
+	margin: 0px 5px 0px 5px;
+}
+
+#Breeze_tabs{
+	padding:20px 0px 30px 0px;
 }

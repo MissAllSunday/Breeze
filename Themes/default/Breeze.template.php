@@ -39,7 +39,7 @@ function template_user_wall()
 	theme_linktree();
 
 	echo '
-		<div id="forumposts" class="blocks">
+		<div class="blocks">
 			<div class="windowbg stripes">
 				some content
 			</div>
@@ -56,7 +56,7 @@ function template_user_wall()
 				some content
 			</div>
 		</div>
-		<div class="content windowbg2">';
+		<div class="content">';
 
 	// Tabs
 	echo '
