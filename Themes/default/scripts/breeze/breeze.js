@@ -56,9 +56,9 @@ jQuery(document).ready(function(){
 		var breezeComment = new breezePost('comment', this);
 
 		// Validate everything.
-		breezeComment.validate();
+		valid = breezeComment.validate();
 
-		if (breezeComment.data){
+		if (valid != false && breezeComment.data){
 			breezeComment.save();
 		}
 
