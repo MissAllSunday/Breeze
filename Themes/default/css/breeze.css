@@ -75,3 +75,24 @@ width: 50%;
 #Breeze_tabs{
 	padding:20px 0px 30px 0px;
 }
+
+.user_avatar{
+	float:left;
+	width:70px;
+	max-width:70px;
+	margin:2px;
+	padding:2px;
+}
+.user_avatar img{
+	width:60px;
+	max-width:60px;
+}
+
+.status{
+	float:right;
+	width:85%;
+}
+
+.status div.body, .comment div.body{
+	min-height: 100px;
+}

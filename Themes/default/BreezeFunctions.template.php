@@ -38,12 +38,14 @@ function breeze_status($data, $returnVar = false)
 		$echo .= '
 				<span class="topslice"><span></span></span>
 					<div class="breeze_user_inner">
-						<div class="breeze_user_status_avatar">
+						<div class="user_avatar">
 							'. $context['Breeze']['user_info'][$status['poster_id']]['breezeFacebox'] .'<br />
 							'. $context['Breeze']['user_info'][$status['poster_id']]['link'] .'
 						</div>
-						<div class="breeze_user_status_comment">
-							'. $status['body'] .'
+						<div class="status">
+							<div class="body">
+								'. $status['body'] .'
+							</div>
 							<div class="breeze_options">';
 
 		// Likes.
@@ -111,7 +113,7 @@ function breeze_status($data, $returnVar = false)
 
 			// Show a nice avatar next to the post form
 			if (!empty($context['Breeze']['user_info'][$user_info['id']]['breezeFacebox']))
-				$echo .=  $context['Breeze']['user_info'][$user_info['id']]['breezeFacebox'];
+				$echo .=  '<div class="user_avatar">'. $context['Breeze']['user_info'][$user_info['id']]['breezeFacebox'] .'</div>';
 
 			// The actual post form
 				$echo .= '
@@ -159,12 +161,14 @@ function breeze_comment($comments, $returnVar = false)
 
 		$echo .= '
 		<li class="windowbg2 stripes" id ="comment_id_'. $comment['id'] .'">
-			<div class="breeze_user_comment_avatar">
+			<div class="user_avatar">
 					'. $context['Breeze']['user_info'][$comment['poster_id']]['breezeFacebox'] .'<br />
 					'. $context['Breeze']['user_info'][$comment['poster_id']]['link'] .'
 			</div>
-			<div class="breeze_user_comment_comment">
+			<div class="comment">
+				<div class="body">
 				'. $comment['body'] .'
+				</div>
 				<div class="breeze_options">';
 
 		// Likes.
