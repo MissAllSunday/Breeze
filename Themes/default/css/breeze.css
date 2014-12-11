@@ -60,8 +60,8 @@ width: 50%;
 
 .blocks{
 	float:left;
-	max-width:30%;
-	width:30%;
+	max-width:29%;
+	width:29%;
 	margin: 0px 5px 0px 5px;
 }
 
@@ -95,4 +95,9 @@ width: 50%;
 
 .status div.body, .comment div.body{
 	min-height: 100px;
+}
+
+.options{
+	text-align:right;
+	padding:10px;
 }

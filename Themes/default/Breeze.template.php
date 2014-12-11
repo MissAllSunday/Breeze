@@ -90,9 +90,9 @@ function template_user_wall()
 	if ($context['member']['is_owner'] || allowedTo('breeze_postStatus'))
 		echo '
 			<div class="breeze_user_inner windowbg alternative2">
-				<div class="breeze_user_statusbox content">
+				<div class="breeze_user_statusbox">
 						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
-							<textarea cols="40" rows="5" name="statusContent" id="statusContent" rel="atwhoMention"></textarea>
+							<textarea cols="60" rows="8" name="statusContent" id="statusContent" rel="atwhoMention"></textarea>
 							<input type="hidden" value="', $user_info['id'] ,'" name="statusPoster" id="statusPoster" />
 							<input type="hidden" value="', $context['member']['id'] ,'" name="statusOwner" id="statusOwner" />
 							<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />

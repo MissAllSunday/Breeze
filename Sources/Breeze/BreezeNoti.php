@@ -74,7 +74,7 @@ class BreezeNoti
 			$this->_app['query']->createAlert($params);
 
 			// Set an alert for the sender too.
-			$this->_app['query']->createNoti($params);
+			$this->_app['query']->insertLog($params);
 
 			// Lastly, update the counter.
 			updateMemberData($params['id_member'], array('alerts' => '+'));

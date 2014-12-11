@@ -126,8 +126,6 @@ class BreezeData
 	 */
 	public function sanitize($var)
 	{
-		global $smcFunc;
-
 		if (is_array($var))
 		{
 			foreach ($var as $k => $v)
@@ -138,16 +136,15 @@ class BreezeData
 
 		else
 		{
-			if (is_numeric($var))
-				$var = (int)trim($var);
+			$var = (string) $this->smcFunc['htmltrim']($this->smcFunc['htmlspecialchars']($var), ENT_QUOTES);
 
-			else if (is_string($var))
-				$var = $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var), ENT_QUOTES);
+			if (ctype_digit($var))
+				$var = (int) $var;
 
-			else
-				$var = 'error_' . $var;
-
-			return $var;
+			if (empty($var))
+				$var = false;
 		}
+
+		return $var;
 	}
 }

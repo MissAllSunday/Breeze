@@ -46,7 +46,7 @@ function breeze_status($data, $returnVar = false)
 							<div class="body">
 								'. $status['body'] .'
 							</div>
-							<div class="breeze_options">';
+							<div class="options">';
 
 		// Likes.
 		if ($context['Breeze']['tools']->enable('likes') && $status['likes']['can_like'])
@@ -169,7 +169,7 @@ function breeze_comment($comments, $returnVar = false)
 				<div class="body">
 				'. $comment['body'] .'
 				</div>
-				<div class="breeze_options">';
+				<div class="options">';
 
 		// Likes.
 		if ($context['Breeze']['tools']->setting('likes') && $comment['likes']['can_like'])
