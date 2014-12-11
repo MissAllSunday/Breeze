@@ -50,7 +50,7 @@ breezePost.prototype.validate = function() {
 
 	// You need to type something...
 	if(postData['content'] == '') {
-		breeze.tools.showNoti({message: breeze.text.error_empty, type : 'error', layout: 'center'});
+		breeze.tools.showNoti({message: breeze.text.error_empty, type : 'error'});
 		return false;
 	}
 

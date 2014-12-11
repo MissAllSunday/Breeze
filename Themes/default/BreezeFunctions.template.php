@@ -160,7 +160,7 @@ function breeze_comment($comments, $returnVar = false)
 		$canHas = $context['Breeze']['tools']->permissions('Comments', $comment['profile_id'], $comment['poster_id']);
 
 		$echo .= '
-		<li class="windowbg2 stripes" id ="comment_id_'. $comment['id'] .'">
+		<li class="windowbg2 stripes" id ="comments_id_'. $comment['id'] .'">
 			<div class="user_avatar">
 					'. $context['Breeze']['user_info'][$comment['poster_id']]['breezeFacebox'] .'<br />
 					'. $context['Breeze']['user_info'][$comment['poster_id']]['link'] .'

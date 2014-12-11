@@ -74,14 +74,15 @@ jQuery(document).ready(function(){
 		var thisObject = jQuery(this);
 
 		// Get the ID
-		postId = parseInt(thisObject.data('bid'));
-		postUrl = thisObject.attr('href');
+		postId = DOMPurify.sanitize(parseInt(thisObject.data('bid')));
+		postUrl = DOMPurify.sanitize(thisObject.attr('href'));
 
 		// Show a confirmation message
 		noty({
 			text: breeze.text.confirm_delete,
-			type: 'confirmation',
-			theme: 'breezeNoti',
+			type: 'confirm',
+			theme: 'relax',
+			layout: 'center',
 			dismissQueue: false,
 			closeWith: ['button'],
 			buttons: [{
@@ -93,34 +94,26 @@ jQuery(document).ready(function(){
 						dataType: 'json',
 						success: function(html){
 							$noty.close();
-
-							switch(html.type) {
-								case 'error':
-									noty({
-										text: html.message,
-										type: 'error',
-										theme: 'breezeNoti',
-										timeout: 3500, type: html.type
-									});
-								break;
-								case 'success':
-								thisObject.closest('li').fadeOut('slow');
-								noty({
-									text: html.message,
-									type: 'success',
-									theme: 'breezeNoti',
-									timeout: 3500, type: html.type
-								});
-								break;
+console.log(html);
+							if (typeof(html.type) !== 'undefined' && html.type == 'info') {
+								jQuery('#' + html.data).fadeOut('slow');
 							}
+
+							// Show a message.
+							noty({
+								text: html.message,
+								type: html.type,
+								theme: 'relax',
+								timeout: 3500
+							});
 						},
 						error: function (html){
 							$noty.close();
 							noty({
 								text: html.message,
 								type: 'error',
-								theme: 'breezeNoti',
-								timeout: 3500, type: html.error
+								theme: 'relax',
+								timeout: 3500
 							});
 						}
 					});
@@ -142,7 +135,7 @@ jQuery(document).ready(function(){
 		ajax_indicator(true);
 		jQuery.ajax({
 			type: 'GET',
-			url: obj.attr('href') + ';js=1;',
+			url: DOMPurify.sanitize(obj.attr('href') + ';js=1;'),
 			cache: false,
 			dataType: 'html',
 			success: function(html)
@@ -164,7 +157,7 @@ jQuery(document).ready(function(){
 		jQuery(document).on('click', '.like_count a', function(e){
 			e.preventDefault();
 			var title = jQuery(this).parent().text(),
-				url = jQuery(this).attr('href') + ';js=1';
+				url = DOMPurify.sanitize(jQuery(this).attr('href') + ';js=1');
 			return reqOverlayDiv(url, title);
 		});
 	});
@@ -172,8 +165,8 @@ jQuery(document).ready(function(){
 	// User div.
 	jQuery(document).on('click', 'a[rel*=breezeFacebox]', function(event){
 		event.preventDefault();
-		var title = jQuery(this).data('name'),
-			url = jQuery(this).attr('href') + ';js=1';
+		var title = DOMPurify.sanitize(jQuery(this).data('name')),
+			url = DOMPurify.sanitize(jQuery(this).attr('href') + ';js=1');
 		return reqOverlayDiv(url, title);
 	});
 
@@ -183,7 +176,7 @@ jQuery(document).ready(function(){
 		event.preventDefault();
 
 		jQuery.ajax({
-			url: jQuery(this).attr('href') + ';js=1',
+			url: DOMPurify.sanitize(jQuery(this).attr('href') + ';js=1'),
 			type: "GET",
 			dataType: "json",
 			success: function(data){
@@ -208,16 +201,16 @@ jQuery(document).ready(function(){
 	// My mood!
 	jQuery(document).on('click', 'a[rel*=breezeMood]', function(event){
 		event.preventDefault();
-		var title = jQuery(this).data('name'),
-			url = jQuery(this).attr('href') + ';js=1';
+		var title = DOMPurify.sanitize(jQuery(this).data('name')),
+			url = DOMPurify.sanitize(jQuery(this).attr('href') + ';js=1');
 		return reqOverlayDiv(url, title);
 	});
 
 	// Changing moods.
 	jQuery(document).on('click', 'a[rel*=breezeMoodSave]', function(event){
 		event.preventDefault();
-		var moodID = jQuery(this).data('id'),
-			url = jQuery(this).attr('href') + ';js=1';
+		var moodID = DOMPurify.sanitize(jQuery(this).data('id')),
+			url = DOMPurify.sanitize(jQuery(this).attr('href') + ';js=1');
 
 		// Lets make a quick ajax call here...
 		jQuery.ajax({

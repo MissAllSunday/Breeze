@@ -354,6 +354,7 @@ class BreezeAjax
 					'type' => 'info',
 					'message' => 'delete_'. $type,
 					'owner' => $profileOwner,
+					'data' => $type .'_id_'.$id,
 				));
 			}
 

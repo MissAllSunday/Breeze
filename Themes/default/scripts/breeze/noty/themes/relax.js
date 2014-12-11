@@ -135,6 +135,10 @@ $.noty.themes.relax = {
                 this.$bar.css({backgroundColor: '#BCF5BC', borderColor: '#7cdd77', color: 'darkgreen'});
                 this.$buttons.css({borderTop: '1px solid #50C24E'});
                 break;
+            case 'info':
+                this.$bar.css({backgroundColor: '#BCF5BC', borderColor: '#7cdd77', color: 'darkgreen'});
+                this.$buttons.css({borderTop: '1px solid #50C24E'});
+                break;
             default:
                 this.$bar.css({backgroundColor: '#FFF', borderColor: '#CCC', color: '#444'});
                 break;
