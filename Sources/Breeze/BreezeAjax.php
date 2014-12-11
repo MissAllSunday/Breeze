@@ -542,10 +542,10 @@ class BreezeAjax
 		{
 			if ($this->_noJS)
 				return $this->setResponse(array(
-				'message' => $file->error,
-				'type' => 'error',
-				'owner' => $this->_currentUser,
-			));
+					'message' => $file->error,
+					'type' => 'error',
+					'owner' => $this->_currentUser,
+				));
 
 			else
 				return $this->_response = $file;
@@ -655,7 +655,7 @@ class BreezeAjax
 		// Get the mood ID, can't work without it...
 		if ($this->_data->get('moodID'))
 		{
-			// Go ahead and just save the var...
+			// @todo Actually, I need to make sure this ID really exists....
 			$this->_app['query']->insertUserSettings(array('mood'=> $this->_data->get('moodID')), $this->_currentUser);
 
 			// Get the image.
