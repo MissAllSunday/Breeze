@@ -18,7 +18,8 @@ breeze.tools.showNoti = function(params){
 		text: params.message,
 		timeout: 3500, //@todo set this to a user setting
 		type: params.type,
-		theme: 'breezeNoti'
+		theme: 'relax',
+		layout: (typeof(params.layout) !== 'undefined' ? 'top' : params.layout),
 	});
 };
 
