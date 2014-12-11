@@ -122,8 +122,8 @@ class BreezeAjax
 		$this->_data = Breeze::data('request');
 
 		// Build plain normal vars...
-		$owner = $this->_data->get('owner');
-		$poster = $this->_data->get('poster');
+		$owner = $this->_data->get('statusOwner');
+		$poster = $this->_data->get('statusPoster');
 		$content = $this->_data->get('content');
 		$mentions = array();
 

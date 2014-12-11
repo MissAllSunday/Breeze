@@ -417,8 +417,8 @@ class BreezeQuery
 			LIMIT {int:start}, {int:maxindex}
 			',
 			array(
-				'start' => $start,
-				'maxindex' => $maxIndex,
+				'start' => (int) $start,
+				'maxindex' => (int) $maxIndex,
 				'owner' => $id
 			)
 		);
