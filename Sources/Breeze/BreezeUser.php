@@ -172,6 +172,7 @@ class BreezeUser extends Breeze
 		}
 
 		// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
+		loadJavascriptFile('breeze/breezePost.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 		loadJavascriptFile('breeze/breezeTabs.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 
 		// Are mentions enabled?
