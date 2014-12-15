@@ -27,7 +27,7 @@ breeze.tools.findWord = function(string, word){
 	return string.match('@' + word) !== null;
 };
 
-jQuery(document).ready(function(){
+$(function() {
 
 	// Posting a new status
 	jQuery(document).on('submit', '#form_status', function(event){

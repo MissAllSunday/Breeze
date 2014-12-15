@@ -56,7 +56,7 @@ function template_user_wall()
 				some content
 			</div>
 		</div>
-		<div class="content">';
+		<div class="wallContent">';
 
 	// Tabs
 	echo '

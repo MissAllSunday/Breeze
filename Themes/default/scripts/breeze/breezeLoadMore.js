@@ -3,7 +3,7 @@
  @license http://www.mozilla.org/MPL/MPL-1.1.html
 */
 
-jQuery(document).ready(function(){
+$(function() {
 
 	// Fires up the load more thingy
 	if (breeze.currentSettings.load_more){
@@ -83,15 +83,5 @@ jQuery(document).ready(function(){
 				});
 			}
 		}).appendTo('#tab-wall');
-	}
-
-	// Check if we are near the end of the page
-	function GetScrollPercent()
-	{
-		 var bottom = jQuery(window).height() + jQuery(window).scrollTop();
-		 var height = jQuery(document).height();
-
-		 return Math.round(100*bottom/height);
-
 	}
 });

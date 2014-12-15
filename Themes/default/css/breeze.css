@@ -65,7 +65,7 @@ width: 50%;
 	margin: 0px 5px 0px 5px;
 }
 
-.content{
+.wallContent{
 	max-width: 68%;
 	width:68%;
 	float:right;
@@ -100,4 +100,11 @@ width: 50%;
 .options{
 	text-align:right;
 	padding:10px;
+}
+
+.like_button{
+	float:right;
+}
+.like_button a{
+	padding:5px;
 }
