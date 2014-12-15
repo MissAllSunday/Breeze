@@ -17,7 +17,9 @@ breezePost.prototype.before = function() {
 	// Create a nice loading image...
 	this.loadImage = jQuery('<div/>', {
 		id: 'breeze_load_image'
-	}).html('<img src="' + smf_images_url + '/loading_sm.gif">').hide();
+	}).html('<img src="' + smf_images_url + '/loading_sm.gif">').hide().css({
+		'margin': 'auto',
+		'text-align' : 'center'});
 };
 
 breezePost.prototype.after = function() {

@@ -129,6 +129,16 @@ function template_user_wall()
 		</div>';
 
 	echo '
+	<div id="tab-activity">
+		something here
+	</div>';
+
+	echo '
+	<div id="tab-about">
+		about me!
+	</div>';
+
+	echo '
 		</div>
 		<p class="clear" />
 	</div>';

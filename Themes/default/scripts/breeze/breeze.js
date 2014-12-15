@@ -94,7 +94,7 @@ jQuery(document).ready(function(){
 						dataType: 'json',
 						success: function(html){
 							$noty.close();
-console.log(html);
+
 							if (typeof(html.type) !== 'undefined' && html.type == 'info') {
 								jQuery('#' + html.data).fadeOut('slow');
 							}

@@ -3,7 +3,7 @@
  @license http://www.mozilla.org/MPL/MPL-1.1.html
 */
 
- jQuery(document).ready(function(){
+$(function() {
 
 	var tabs = {};
 
