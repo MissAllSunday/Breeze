@@ -61,7 +61,7 @@ function template_user_wall()
 	// Tabs
 	echo '
 			<div id="Breeze_tabs">
-				<ul class="dropmenu breezeTabs">
+				<ul class="breezeTabs dropmenu">
 					<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>';
 	// The "About me" tab.
 	if (!empty($context['Breeze']['settings']['owner']['aboutMe']))

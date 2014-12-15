@@ -183,6 +183,9 @@ class BreezeUser extends Breeze
 		if (!empty($context['Breeze']['settings']['visitor']['load_more']))
 			loadJavascriptFile('breeze/breezeLoadMore.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 
+		addInlineJavascript('
+	var bTabs = new breezeTabs(\'ul.breezeTabs\', \'wall\');', true);
+
 		// Need to pass some vars to the browser :(
 		addInlineJavascript('
 	breeze.pagination = {

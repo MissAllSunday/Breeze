@@ -3,30 +3,64 @@
  @license http://www.mozilla.org/MPL/MPL-1.1.html
 */
 
-$(function() {
+var breezeTabs = function(list, defaultTab){
+	this.list = $(list);
+	this.defaultTab = defaultTab;
 
-	var tabs = {};
+	// Make it happen!
+	this.init();
+};
 
-	var tabChange = function (newTab){
+breezeTabs.prototype.init = function(){
 
-		currentActive = getCurrentActive();
+	var tabs = [],
+		listObject = this;
 
-		// Tell whatever tab is active at the moment to get lost...
-		tabs[currentActive].active = false;
-		jQuery(tabs[currentActive].href).fadeOut('slow', function() {
+	this.list.children('li').each(function(){
 
-			// Remove the active class and add it to the newtab
-			jQuery('li.'+ currentActive +' a').removeClass('active');
-			jQuery('li.'+ newTab +' a').addClass('active');
+		var currentName = $(this).attr('class');
 
-			jQuery(tabs[newTab].href).fadeIn('slow', function() {});
+		tabs[currentName] = {
+			href : $(this).find('a').attr('href'),
+			name : currentName,
+			active : (currentName == listObject.defaultTab)
+		};
+
+		// Hide all tabs by default
+		if (tabs[currentName].active != true){
+			$(tabs[currentName].href).hide();
+		}
+
+		$(this).find('a').on('click', false, function(e){
+
+			var thisAnchor = $(this);
+
+			// Is it active already?
+			if (tabs[currentName].active != true){
+				currentActive = listObject.getCurrentActive(tabs);
+
+				// Tell whatever tab is active at the moment to get lost...
+				tabs[currentActive].active = false;
+				$(tabs[currentActive].href).fadeOut('slow', function() {
+
+					// Remove the active class and add it to the newtab
+					$('.'+ currentActive).find('a').removeClass('active');
+					thisAnchor.addClass('active');
+
+					$(tabs[currentName].href).fadeIn('slow');
+				});
+
+				// And set this as the active one...
+				tabs[currentName].active = true;
+			}
+
+			e.preventDefault();
+			return false;
 		});
+	});
+};
 
-		// And set this as the active one...
-		tabs[newTab].active = true;
-	}
-
-	var getCurrentActive = function (){
+breezeTabs.prototype.getCurrentActive = function (tabs){
 
 		var output = null,
 			key;
@@ -41,37 +75,3 @@ $(function() {
 
 		return output;
 	};
-
-	// Get all available <li> tags
-	jQuery('ul.breezeTabs li').each(function(){
-
-		var currentName = jQuery(this).attr('class');
-
-		tabs[currentName] = {
-			href : jQuery(this).find('a').attr('href'),
-			name : jQuery(this).attr('class'),
-			active : (currentName == 'wall') ? true : false
-		};
-
-		// Hide all tabs by default
-		jQuery(tabs[currentName].href).hide();
-
-		// Make the wall page the active tab...
-		jQuery(tabs['wall'].href).show();
-
-		jQuery('li.'+ currentName +' a').on('click', false, function(e){
-
-			// Is it active already?
-			if (tabs[currentName].active == true){
-				return false;
-			}
-
-			else {
-				tabChange(currentName);
-			}
-
-			e.preventDefault();
-			return false;
-		});
-	});
-});
