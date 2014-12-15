@@ -479,9 +479,9 @@ class Breeze extends Pimple
 			return;
 
 		// The main stuff.
-		loadJavascriptFile('breeze/purify.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/breeze.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/breezePost.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breeze/purify.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/breeze.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/breezePost.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 
 		$tools = $this['tools'];
 		$userSettings = $this['query']->getUserSettings($user_info['id']);
@@ -512,13 +512,13 @@ class Breeze extends Pimple
 
 		// Common css and js files.
 		loadCSSFile('breeze.css', array('force_current' => false, 'validate' => true));
-		loadJavascriptFile('breeze/moment.min.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/livestamp.min.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/noty/jquery.noty.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/noty/layouts/top.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/noty/layouts/center.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/noty/themes/relax.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/breezeNoti.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breeze/moment.min.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/livestamp.min.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/noty/jquery.noty.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/noty/layouts/top.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/noty/layouts/center.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/noty/themes/relax.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/breezeNoti.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 	}
 
 	public function mood(&$output, &$message)

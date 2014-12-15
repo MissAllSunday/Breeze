@@ -172,7 +172,7 @@ class BreezeUser extends Breeze
 		}
 
 		// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-		loadJavascriptFile('breeze/breezeTabs.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breeze/breezeTabs.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 
 		// Are mentions enabled?
 		// if ($tools->enable('mention'))
@@ -180,7 +180,7 @@ class BreezeUser extends Breeze
 
 		// Does the user wants to use the load more button?
 		if (!empty($context['Breeze']['settings']['visitor']['load_more']))
-			loadJavascriptFile('breeze/breezeLoadMore.js', array('local' => true, 'default_theme' => true));
+			loadJavascriptFile('breeze/breezeLoadMore.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 
 		// Need to pass some vars to the browser :(
 		addInlineJavascript('
