@@ -11,7 +11,7 @@ $(function() {
 		var numberOfEvents = 0;
 
 		// Hide the normal pagination.
-		jQuery('.pagelinks').hide();
+		$('.pagelinks').hide();
 
 		showMoarButton();
 	}
@@ -23,15 +23,13 @@ $(function() {
 		return false;
 
 		// Add a nice button...
-		jQuery('<button/>', {
+		$('<button/>', {
 			id: 'loadMoar',
-			class: 'clear',
 			text: breeze.text.load_more,
 			click: function () {
-
 				numberOfEvents++;
 
-				jQuery('<ul/>', {
+				$('<ul/>', {
 					id: 'tempDIV_'+ numberOfEvents,
 					class: 'breeze_status',
 					style: ''
@@ -41,8 +39,7 @@ $(function() {
 				breeze.pagination.numberTimes = numberOfEvents;
 				breeze.pagination.comingFrom = breeze.tools.comingFrom;
 
-				jQuery.ajax(
-				{
+				$.ajax({
 					// Send the data and oh boy there's a lot of it!
 					url: smf_scripturl + '?action=breezeajax;sa=fetch;js=1;' + smf_session_var + '=' + smf_session_id,
 					data : breeze.pagination,
@@ -51,13 +48,13 @@ $(function() {
 					success: function(html)
 					{
 						// The server response as a JSON object
-						if(html.type == 'success'){
+						if(html.type == 'info'){
 
 							// Append the html to our temp DIV.
 							if (html.data != 'end'){
 
 								// Create a unique UL for this very own status, isn't it great?
-								jQuery('#tempDIV_'+ numberOfEvents).append(html.data).fadeIn('slow', 'linear', function(){});
+								$('#tempDIV_'+ numberOfEvents).append(html.data).fadeIn('slow', 'linear', function(){});
 							}
 
 							// No more data:(
@@ -65,10 +62,10 @@ $(function() {
 								noty({
 									text: breeze.text.page_loading_end,
 									timeout: 3500,
-									theme: 'breezeNoti',
+									theme: 'relax',
 									type: 'success'
 								});
-								jQuery('#loadMoar').fadeOut('slow');
+								$('#loadMoar').fadeOut('slow');
 								return;
 							}
 						}
@@ -85,3 +82,12 @@ $(function() {
 		}).appendTo('#tab-wall');
 	}
 });
+
+
+
+
+
+
+
+
+

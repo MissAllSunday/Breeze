@@ -32,7 +32,7 @@ margin-left : 260px;
 float:left;
 text-align:left;
 }
-div.username h2{
+div.username h1, div.username h1 a{
 height: 50px;
 color: #fff;
 font-size: 40px;
@@ -107,4 +107,12 @@ width: 50%;
 }
 .like_button a{
 	padding:5px;
+}
+
+#loadMoar{
+	margin:5px;
+	text-align:center;
+	position:relative;
+	top:50%; 
+	left:50%;
 }

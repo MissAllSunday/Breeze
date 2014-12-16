@@ -25,7 +25,7 @@ function template_user_wall()
 				'. $context['member']['avatar']['image'] .'
 			</div>
 			<div class="username">
-				<h2>', $context['member']['name'] ,'</h2>
+				<h1>', $context['member']['link'] ,'</h1>
 				<div>
 				230 posts| 2k followers
 				</div>
@@ -116,7 +116,7 @@ function template_user_wall()
 
 	// An empty div to append the loaded status via AJAX.
 	echo '
-			<div id="breezeAppendTo" style="display:hide;"></div>';
+			<div id="breezeAppendTo"></div>';
 
 	// Pagination
 	if (!empty($context['page_index']))

@@ -422,7 +422,7 @@ class BreezeAjax
 
 		checkSession('request', '', false);
 
-		// Get the global vars
+		// Get the global vars.
 		$data = Breeze::data('request');
 
 		$id = $data->get('userID');
@@ -431,7 +431,7 @@ class BreezeAjax
 		$comingFrom = $data->get('comingFrom');
 		$return = '';
 
-		// The usual checks
+		// The usual checks.
 		if (empty($id) || empty($maxIndex) || empty($numberTimes) || empty($comingFrom))
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
@@ -439,7 +439,7 @@ class BreezeAjax
 				'owner' => $id,
 			));
 
-		// Calculate the start value
+		// Calculate the start value.
 		$start = $maxIndex * $numberTimes;
 
 		// Pass the user ID or IDs depending where are we coming from....
@@ -448,7 +448,7 @@ class BreezeAjax
 		// Re-globalized!
 		$context['Breeze']['comingFrom'] = $comingFrom;
 
-		// Get the right call to the DB
+		// Get the right call to the DB.
 		$call = $comingFrom == 'profile' ? 'getStatusByProfile' : 'getStatusByUser';
 
 		$data = $this->_app['query']->$call($fetch, $maxIndex, $start);
