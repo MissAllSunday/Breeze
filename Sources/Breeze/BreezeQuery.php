@@ -1486,6 +1486,7 @@ class BreezeQuery
 
 	protected function generateData($row, $type)
 	{
+		global $user_info;
 		static $canLike;
 
 		// array equals array O RLY???
@@ -1513,7 +1514,7 @@ class BreezeQuery
 				$array['likes'] = array(
 					'count' => $row['likes'],
 					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
-					'can_like' => $canLike,
+					'can_like' => $canLike && $user_info['id'] != $row['status_poster_id'],
 				);
 		}
 
@@ -1534,7 +1535,7 @@ class BreezeQuery
 				$array['likes'] = array(
 					'count' => $row['likes'],
 					'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
-					'can_like' => $canLike,
+					'can_like' => $canLike && $user_info['id'] != $row['comments_poster_id'],
 				);
 		}
 

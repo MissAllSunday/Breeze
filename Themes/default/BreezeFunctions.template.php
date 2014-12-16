@@ -69,7 +69,7 @@ function breeze_status($data, $returnVar = false)
 				$base .= (isset($txt[$base . $count])) ? $count : 'n';
 
 				$echo .= '
-										<li class="like_count smalltext">'. sprintf($txt[$base], $scripturl . '?action=likes;sa=view;ltype=breSta;like=' . $status['id'] .';'. $context['session_var'] .'='. $context['session_id']. (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') , comma_format($count)).'</li>';
+									<li class="like_count smalltext">'. sprintf($txt[$base], $scripturl . '?action=likes;sa=view;ltype=breSta;like=' . $status['id'] .';'. $context['session_var'] .'='. $context['session_id']. (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') , comma_format($count)).'</li>';
 			}
 
 			$echo .=
@@ -77,8 +77,9 @@ function breeze_status($data, $returnVar = false)
 		}
 
 		// Time.
-		$echo .=
-								'<span class="time_elapsed" title="'. timeformat($status['time_raw'], false) .'" data-livestamp="'. $status['time_raw'] .'">'. $status['time'] .' </span>';
+		$echo .= '
+								<div class="floatright">
+									<span class="time_elapsed" title="'. timeformat($status['time_raw'], false) .'" data-livestamp="'. $status['time_raw'] .'">'. $status['time'] .' </span>';
 
 		// Delete status.
 		if ($canHas['delete'])
@@ -88,6 +89,8 @@ function breeze_status($data, $returnVar = false)
 		// Modify? maybe someday...
 
 		$echo .= '
+								</div>
+								<div class="clear"></div>
 							</div>
 							<hr />
 							<div id="breeze_display_comment_'. $status['id'] .'"></div>';
@@ -176,7 +179,11 @@ function breeze_comment($comments, $returnVar = false)
 		{
 			$echo .=
 					'<ul class="floatleft">
-						<li class="like_button"><a href="'. $scripturl .'?action=likes;ltype=breCom;sa=like;like='. $comment['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breCom_like"><span class="'. ($comment['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($comment['likes']['already'] ? $txt['unlike'] : $txt['like']) .'</a></li>';
+						<li class="like_button">
+							<a href="'. $scripturl .'?action=likes;ltype=breCom;sa=like;like='. $comment['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breCom_like">
+								<span class="'. ($comment['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($comment['likes']['already'] ? $txt['unlike'] : $txt['like']) .'
+							</a>
+						</li>';
 
 			// Likes count.
 			if (!empty($comment['likes']['count']))
@@ -192,22 +199,25 @@ function breeze_comment($comments, $returnVar = false)
 				$base .= (isset($txt[$base . $count])) ? $count : 'n';
 
 				$echo .= '
-										<li class="like_count smalltext">'. sprintf($txt[$base], $scripturl . '?action=likes;sa=view;ltype=breCom;like=' . $comment['id'] .';'. $context['session_var'] .'='. $context['session_id']. (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') , comma_format($count)).'</li>';
+						<li class="like_count smalltext">'. sprintf($txt[$base], $scripturl . '?action=likes;sa=view;ltype=breCom;like=' . $comment['id'] .';'. $context['session_var'] .'='. $context['session_id']. (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') , comma_format($count)).'</li>';
 			}
 
 			$echo .=
-								'</ul>';
+					'</ul>';
 		}
 
 		// Time.
-		$echo .=
-					'<span class="time_elapsed" title="'. timeformat($comment['time_raw'], false) .'">'. $comment['time'] .'</span>';
+		$echo .= '
+					<div class="floatright">
+						<span class="time_elapsed" title="'. timeformat($comment['time_raw'], false) .'">'. $comment['time'] .'</span>';
 
 		// Delete comment.
 		if ($canHas['delete'])
 			$echo .= '| <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $comment['id'] .';type=comments;poster='. $comment['poster_id'] .';profileOwner='. $comment['profile_id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .';'. $context['session_var'] .'='. $context['session_id'] .'" id="deleteComment_'. $comment['id'] .'" class="breeze_delete" data-bid="'. $comment['id'] .'">'. $txt['Breeze_general_delete'] .'</a>';
 
 		$echo .= '
+					</div>
+					<div class="clear"></div>
 				</div>
 			</div>
 			<div class="clear"></div>

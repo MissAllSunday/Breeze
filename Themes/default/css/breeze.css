@@ -98,15 +98,7 @@ width: 50%;
 }
 
 .options{
-	text-align:right;
 	padding:10px;
-}
-
-.like_button{
-	float:right;
-}
-.like_button a{
-	padding:5px;
 }
 
 #loadMoar{
