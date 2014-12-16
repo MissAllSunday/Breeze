@@ -1508,6 +1508,7 @@ class BreezeQuery
 				'time_raw' => $row['status_time'],
 				'body' => $this->_app['parser']->display($row['status_body']),
 				'comments' => array(),
+				'canHas' => $this->_app['tools']->permissions('Status', $row['status_owner_id'], $row['status_poster_id'])
 			);
 
 			if ($this->_app['tools']->setting('likes'))
@@ -1529,6 +1530,7 @@ class BreezeQuery
 				'time' => $this->_app['tools']->timeElapsed($row['comments_time']),
 				'time_raw' => $row['comments_time'],
 				'body' => $this->_app['parser']->display($row['comments_body']),
+				'canHas' => $this->_app['tools']->permissions('Comments', $row['comments_profile_id'], $row['comments_poster_id']),
 			);
 
 			if ($this->_app['tools']->setting('likes'))
