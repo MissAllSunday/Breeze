@@ -74,7 +74,7 @@ class BreezeNoti
 			$this->_app['query']->createAlert($params);
 
 			// Set an alert for the sender too.
-			$this->_app['query']->insertLog($params);
+			$this->_app['query']->createLog($params);
 
 			// Lastly, update the counter.
 			updateMemberData($params['id_member'], array('alerts' => '+'));
@@ -123,7 +123,7 @@ class BreezeNoti
 		$uSettings = $this->_app['query']->getUserSettings($this->_details['poster_id']);
 
 		if (!empty($uSettings['alert_like']))
-			$this->_app['query']->insertLog(array(
+			$this->_app['query']->createLog(array(
 				'member' => $this->_details['poster_id'],
 				'content_type' => 'like',
 				'content_id' => $this->_details['id'],
@@ -157,7 +157,7 @@ class BreezeNoti
 		$uSettings = $this->_app['query']->getUserSettings($this->_details['poster_id']);
 
 		if (!empty($uSettings['alert_status']))
-			$this->_app['query']->insertLog(array(
+			$this->_app['query']->createLog(array(
 				'member' => $this->_details['poster_id'],
 				'content_type' => 'status',
 				'content_id' => $this->_details['id'],
@@ -179,7 +179,7 @@ class BreezeNoti
 		$uSettings = $this->_app['query']->getUserSettings($this->_details['poster_id']);
 
 		if (!empty($uSettings['alert_comment']))
-			$this->_app['query']->insertLog(array(
+			$this->_app['query']->createLog(array(
 				'member' => $this->_details['poster_id'],
 				'content_type' => 'comment',
 				'content_id' => $this->_details['id'],

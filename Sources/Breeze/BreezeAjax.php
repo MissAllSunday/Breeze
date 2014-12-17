@@ -591,7 +591,7 @@ class BreezeAjax
 
 			// Create an inner alert for this.
 			if (!empty($this->_userSettings['alert_cover']))
-				$this->_app['query']->insertLog(array(
+				$this->_app['query']->createLog(array(
 					'member' => $this->_currentUser,
 					'content_type' => 'cover',
 					'content_id' => 0,
@@ -699,7 +699,7 @@ class BreezeAjax
 
 				// Create an inner alert for this.
 				if (!empty($this->_userSettings['alert_mood']))
-					$this->_app['query']->insertLog(array(
+					$this->_app['query']->createLog(array(
 						'member' => $this->_currentUser,
 						'content_type' => 'mood',
 						'content_id' => $this->_data->get('moodID'),

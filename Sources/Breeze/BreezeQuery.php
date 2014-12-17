@@ -905,7 +905,7 @@ class BreezeQuery
 		return $alerts;
 	}
 
-	public function insertLog($params)
+	public function createLog($params)
 	{
 		// Meh...
 		if (empty($params))
