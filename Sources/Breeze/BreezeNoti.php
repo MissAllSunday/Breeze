@@ -64,7 +64,7 @@ class BreezeNoti
 		if (!empty($params['extra']))
 			$params['extra'] = serialize($params['extra']);
 
-		// Theres an alert already, just update the time...
+		// There's an alert already, just update the time...
 		if ($spam)
 			$this->_app['query']->updateAlert(array('alert_time' => $params['alert_time']), $spam);
 
@@ -138,20 +138,18 @@ class BreezeNoti
 	protected function status()
 	{
 		// Useless to fire you an alert for something you did.
-		if ($this->_details['owner_id'] == $this->_details['poster_id'])
-		return;
-
-		$this->innerCreate(array(
-			'alert_time' => $this->_details['time_raw'],
-			'id_member' => $this->_details['owner_id'],
-			'id_member_started' => $this->_details['poster_id'],
-			'member_name' => '',
-			'content_type' => $this->_details['content_type'] . '_owner',
-			'content_id' => $this->_details['id'],
-			'content_action' => '',
-			'is_read' => 0,
-			'extra' => ''
-		));
+		if ($this->_details['owner_id'] != $this->_details['poster_id'])
+			$this->innerCreate(array(
+				'alert_time' => $this->_details['time_raw'],
+				'id_member' => $this->_details['owner_id'],
+				'id_member_started' => $this->_details['poster_id'],
+				'member_name' => '',
+				'content_type' => $this->_details['content_type'] . '_owner',
+				'content_id' => $this->_details['id'],
+				'content_action' => '',
+				'is_read' => 0,
+				'extra' => ''
+			));
 
 		// And our very own alert too.
 		$uSettings = $this->_app['query']->getUserSettings($this->_details['poster_id']);

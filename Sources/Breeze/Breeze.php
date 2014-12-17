@@ -434,7 +434,7 @@ class Breeze extends Pimple
 			'alreadyLiked' => $object->get('alreadyLiked'),
 			'validLikes' => $object->get('validLikes'),
 			'time' => time(),
-		), 'like');
+		), Breeze::$txtpattern .'like');
 	}
 
 	public function handleLikes($type, $content)
