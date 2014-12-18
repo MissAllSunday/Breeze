@@ -117,7 +117,7 @@ class BreezeNoti
 		));
 
 		// Don't forget the inner alert.
-		$uSettings = $this->_app['query']->getUserSettings($this->_details['poster_id']);
+		$uSettings = $this->_app['query']->getUserSettings($this->_details['user']['id']);
 
 		if (!empty($uSettings['alert_like']))
 			$this->_app['query']->createLog(array(

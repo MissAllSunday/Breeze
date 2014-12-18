@@ -656,11 +656,22 @@ class BreezeAjax
 		// Get the mood ID, can't work without it...
 		if ($this->_data->get('moodID'))
 		{
-			// @todo Actually, I need to make sure this ID really exists....
+			// Get the moods array.
+			$allMoods = $this->_app['mood']->getActive();
+
+			// There isn't a mood with the selected ID.
+			if (!in_array($this->_data->get('moodID'), array_keys($allMoods)))
+				return $this->setResponse(array(
+				'message' => $this->_app['tools']->text('error_server'),
+				'data' => '',
+				'type' => 'error',
+				'owner' => $this->_currentUser,
+			));
+
+			// Go ahead and store the new ID.
 			$this->_app['query']->insertUserSettings(array('mood'=> $this->_data->get('moodID')), $this->_currentUser);
 
 			// Get the image.
-			$allMoods = $this->_app['mood']->getActive();
 			$image = $allMoods[$this->_data->get('moodID')]['image_html'];
 
 			$moodHistory = !empty($this->_userSettings['moodHistory']) ? json_decode($this->_userSettings['moodHistory'], true) : array();
