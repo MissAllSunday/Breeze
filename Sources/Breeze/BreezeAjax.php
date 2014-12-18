@@ -153,6 +153,7 @@ class BreezeAjax
 				'poster_id' => $poster,
 				'time' => time(),
 				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $mentions) : $body,
+				'canHas' => $this->_app['tools']->permissions('Status', $owner, $poster),
 			);
 
 			// Maybe a last minute change before inserting the new status?
@@ -252,6 +253,7 @@ class BreezeAjax
 				'profile_id' => $owner,
 				'time' => time(),
 				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $mentions) : $body,
+				'canHas' => $this->_app['tools']->permissions('Comments', $owner, $poster),
 			);
 
 			// Before inserting the comment...
