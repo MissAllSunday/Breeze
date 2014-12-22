@@ -243,12 +243,12 @@ class BreezeWall
 	/**
 	 * BreezeAjax::userDiv()
 	 *
-	 * Used for notifications mostly, shows a single status/comment and if appropriated, highlights a specific comment.
+	 * Shows user information.
 	 * @return
 	 */
 	function userDiv()
 	{
-		global $context, $memberContext, $db_show_debug;
+		global $context, $memberContext, $db_show_debug, $user_info;
 
 		// Don't show nasty things.
 		$db_show_debug = false;
@@ -256,8 +256,9 @@ class BreezeWall
 		// Set an empty array, just for fun...
 		$context['BreezeUser']  = array();
 
-		// Need to load the Help language file, just for a single txt string...
+		// Need to load a bunch of language files, mostly just for one single txt string
 		loadLanguage('Help');
+		loadLanguage('Profile');
 
 		// We only want to output our little layer here.
 		$context['template_layers'] = array();
@@ -276,5 +277,7 @@ class BreezeWall
 
 		// Pass the data to the template.
 		$context['BreezeUser'] = $memberContext[$userID];
+
+		$context['user']['is_owner'] = ($context['BreezeUser'] == $user_info['id']);
 	}
 }

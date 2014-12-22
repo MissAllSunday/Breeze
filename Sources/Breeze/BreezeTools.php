@@ -298,7 +298,7 @@ class BreezeTools
 			// Gotta make sure you're only loading info from real existing members...
 			if (is_array($loadedIDs) && in_array($u, $loadedIDs))
 			{
-				loadMemberContext($u);
+				loadMemberContext($u, true);
 
 				$user = $memberContext[$u];
 
