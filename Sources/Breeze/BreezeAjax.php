@@ -153,7 +153,6 @@ class BreezeAjax
 				'poster_id' => $poster,
 				'time' => time(),
 				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $mentions) : $body,
-				'canHas' => $this->_app['tools']->permissions('Status', $owner, $poster),
 			);
 
 			// Maybe a last minute change before inserting the new status?
@@ -161,6 +160,7 @@ class BreezeAjax
 
 			// Store the status
 			$this->_params['id'] = $this->_app['query']->insertStatus($this->_params);
+			$this->_params['canHas'] = $this->_app['tools']->permissions('Status', $owner, $poster),
 			$this->_params['time_raw'] = time();
 
 			// All went good or so it seems...
@@ -253,7 +253,6 @@ class BreezeAjax
 				'profile_id' => $owner,
 				'time' => time(),
 				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $mentions) : $body,
-				'canHas' => $this->_app['tools']->permissions('Comments', $owner, $poster),
 			);
 
 			// Before inserting the comment...
@@ -262,6 +261,7 @@ class BreezeAjax
 			// Store the comment
 			$this->_params['id'] = $this->_app['query']->insertComment($this->_params);
 			$this->_params['time_raw'] = time();
+			$this->_params'canHas'] = $this->_app['tools']->permissions('Comments', $owner, $poster),
 
 			// The Comment was inserted ORLY???
 			if (!empty($this->_params['id']))

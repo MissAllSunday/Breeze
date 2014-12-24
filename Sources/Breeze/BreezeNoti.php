@@ -164,7 +164,7 @@ class BreezeNoti
 				'content_id' => $this->_details['id'],
 				'time' => $this->_details['time_raw'],
 				'extra' => array(
-					'buddy_text' => 'status_owner_buddy',
+					'buddy_text' => 'alert_status_owner_buddy',
 					'toLoad' => array($this->_details['poster_id'], $this->_details['owner_id']),
 					'wall_owner' => $this->_details['profile_id'],
 					'poster' => $this->_details['poster_id'],

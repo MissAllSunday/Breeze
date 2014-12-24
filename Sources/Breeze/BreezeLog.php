@@ -77,7 +77,9 @@ class BreezeLog
 
 			$data['gender_possessive'] = $this->_app['tools']->text('alert_gender_possessive_'. $data['gender']) ? $this->_app['tools']->text('alert_gender_possessive_'. $data['gender']) : $this->_app['tools']->text('alert_gender_possessive_None');
 
-			$this->_data[$id]['text'] = $this->$data['content_type']($data);
+			// Make sure we hav a valid method for this.
+			if (in_array($data['content_type'], get_class_methods(__CLASS__)))
+				$this->_data[$id]['text'] = $this->$data['content_type']($data);
 		}
 	}
 
@@ -140,7 +142,12 @@ class BreezeLog
 
 	public function status($data)
 	{
-
+		return $this->parser($this->_app['tools']->text($data['extra']['buddy_text']), array(
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $data['wall_owner'] .
+			';bid=' . $data['content_id'],
+			'poster' => $this->_usersData[$data['poster']]['link'],
+			'wall_owner' => $data['wall_owner'],
+		));
 	}
 
 	public function comment($data)
