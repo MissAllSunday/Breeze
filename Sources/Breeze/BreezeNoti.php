@@ -107,7 +107,7 @@ class BreezeNoti
 			'is_read' => 0,
 			'extra' => array(
 				'text' => 'like_'. $this->_details['like_type'],
-				'buddy_text' => 'like_status_buddy',
+				'comment_owner' => $messageOwner,
 				'toLoad' => array($messageOwner, $this->_details['user']['id']),
 				'status_id' => $data[($this->_details['like_type'] == 'comments' ? $this->_details['like_type'] .'_' : '') . 'status_id'],
 				'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,
@@ -127,7 +127,8 @@ class BreezeNoti
 				'time' => $this->_details['time_raw'],
 				'extra' => array(
 					'text' => 'like_'. $this->_details['like_type'],
-					'buddy_text' => 'like_status_buddy',
+					'buddy_text' => 'like_'. $this->_details['like_type'] .'_buddy',
+					'comment_owner' => $messageOwner,
 					'toLoad' => array($messageOwner, $this->_details['user']['id']),
 					'status_id' => $data[($this->_details['like_type'] == 'comments' ? $this->_details['like_type'] .'_' : '') . 'status_id'],
 					'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,

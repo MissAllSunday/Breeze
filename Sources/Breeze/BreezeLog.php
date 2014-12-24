@@ -150,12 +150,11 @@ class BreezeLog
 
 	public function like($data)
 	{
-		return $this->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
-			';bid=' . $this->_alerts[$id]['extra']['status_id'] .';cid=' . $this->_alerts[$id]['content_id'] .'#comment_id_' . $this->_alerts[$id]['content_id'],
-			'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
-			'status_poster' => $this->_usersData[$this->_alerts[$id]['extra']['status_owner']]['link'],
-			'wall_owner' => $this->_usersData[$this->_alerts[$id]['extra']['wall_owner']]['link'],
+		return $this->parser($this->_app['tools']->text($data['extra']['buddy_text']), array(
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $data['extra']['wall_owner'] .';bid=' . $data['extra']['status_id'] .';cid=' . $data['content_id'] .'#comment_id_' . $data['content_id'],
+			'poster' => $this->_usersData[$data['extra']['poster']]['link'],
+			'status_poster' => $this->_usersData[$data['extra']['status_owner']]['link'],
+			'wall_owner' => $this->_usersData[$data['extra']['wall_owner']]['link'],
 		));
 	}
 }
