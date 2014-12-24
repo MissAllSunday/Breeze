@@ -76,7 +76,7 @@ function template_user_wall()
 			</div>
 			<p class="clear" />';
 
-// Wall
+	// Wall
 	echo '
 		<div id="tab-wall">';
 	// A nice title bar
