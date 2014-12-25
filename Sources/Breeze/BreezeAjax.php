@@ -160,7 +160,7 @@ class BreezeAjax
 
 			// Store the status
 			$this->_params['id'] = $this->_app['query']->insertStatus($this->_params);
-			$this->_params['canHas'] = $this->_app['tools']->permissions('Status', $owner, $poster),
+			$this->_params['canHas'] = $this->_app['tools']->permissions('Status', $owner, $poster);
 			$this->_params['time_raw'] = time();
 
 			// All went good or so it seems...
@@ -261,7 +261,7 @@ class BreezeAjax
 			// Store the comment
 			$this->_params['id'] = $this->_app['query']->insertComment($this->_params);
 			$this->_params['time_raw'] = time();
-			$this->_params'canHas'] = $this->_app['tools']->permissions('Comments', $owner, $poster),
+			$this->_params['canHas'] = $this->_app['tools']->permissions('Comments', $owner, $poster);
 
 			// The Comment was inserted ORLY???
 			if (!empty($this->_params['id']))
