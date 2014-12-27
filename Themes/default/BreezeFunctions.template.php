@@ -262,9 +262,9 @@ function breeze_profile_owner()
 	if (!empty($context['custom_fields']))
 	{
 		foreach ($context['custom_fields'] as $field)
-			if (($field['placement'] == 1 || empty($field['output_html'])) && !empty($field['value']))
+			if (($field['placement'] == 1 || empty($field['value'])) && !empty($field['value']))
 				echo '
-					<li class="custom_field">', $field['output_html'], '</li>';
+					<li class="custom_field">', $field['value'], '</li>';
 	}
 
 	echo '
@@ -429,9 +429,8 @@ function template_userDiv()
 		<link rel="stylesheet" type="text/css" href="', $settings['theme_url'], '/css/index', $context['theme_variant'], '.css', $modSettings['browser_cache'] ,'">
 		<script src="', $settings['default_theme_url'], '/scripts/script.js', $modSettings['browser_cache'] ,'"></script>
 	</head>
-	<body id="likes_popup">
+	<body id="breeze_popup">
 		<div class="windowbg">';
-
 	if (!empty($context['BreezeUser']))
 	{
 		echo '
@@ -442,17 +441,14 @@ function template_userDiv()
 				', $context['BreezeUser']['group_icons'] ,'<br>
 				', $context['BreezeUser']['avatar']['image'], '
 				<ul class="reset">';
-
 		// Email is only visible if it's your profile or you have the moderate_forum permission
 		if ($context['BreezeUser']['show_email'])
 			echo '
 					<li><a href="mailto:', $context['BreezeUser']['email'], '" title="', $context['BreezeUser']['email'], '" rel="nofollow"><span class="generic_icons mail" title="' . $txt['email'] . '"></span></a></li>';
-
 		// Don't show an icon if they haven't specified a website.
 		if ($context['BreezeUser']['website']['url'] !== '' && !isset($context['disabled_fields']['website']))
 			echo '
 					<li><a href="', $context['BreezeUser']['website']['url'], '" title="' . $context['BreezeUser']['website']['title'] . '" target="_blank" class="new_win">', ($settings['use_image_buttons'] ? '<span class="generic_icons www" title="' . $context['BreezeUser']['website']['title'] . '"></span>' : $txt['www']), '</a></li>';
-
 		// Are there any custom profile fields for as icons?
 		if (!empty($context['BreezeUser']['custom_fields']))
 		{
@@ -461,101 +457,80 @@ function template_userDiv()
 					echo '
 						<li class="custom_field">', $field['value'], '</li>';
 		}
-
 		echo '
 				</ul>
 				<span id="userstatus">', $settings['use_image_buttons'] ? '<span class="' . ($context['BreezeUser']['online']['is_online'] == 1 ? 'on' : 'off') . '" title="' . $context['BreezeUser']['online']['text'] . '"></span>' : $context['BreezeUser']['online']['label'], $settings['use_image_buttons'] ? '<span class="smalltext"> ' . $context['BreezeUser']['online']['label'] . '</span>' : '';
-
 		echo '
 				</span>
 			</div>
 			<div id="detailedinfo">
 				<dl>';
-
 	if ($context['user']['is_owner'] || $context['user']['is_admin'])
 		echo '
 					<dt>', $txt['username'], ': </dt>
 					<dd>', $context['BreezeUser']['username'], '</dd>';
-
 	if (!isset($context['disabled_fields']['posts']))
 		echo '
 					<dt>', $txt['profile_posts'], ': </dt>
 					<dd>', $context['BreezeUser']['posts'], '</dd>';
-
 	if (!empty($modSettings['titlesEnable']) && !empty($context['BreezeUser']['title']))
 		echo '
 					<dt>', $txt['custom_title'], ': </dt>
 					<dd>', $context['BreezeUser']['title'], '</dd>';
-
 	if (!empty($context['BreezeUser']['blurb']))
 		echo '
 					<dt>', $txt['personal_text'], ': </dt>
 					<dd>', $context['BreezeUser']['blurb'], '</dd>';
-
 	echo '
 				</dl>';
-
 	// Any custom fields for standard placement?
 	if (!empty($context['BreezeUser']['custom_fields']))
 	{
 		echo '
 				<dl>';
-
 		foreach ($context['BreezeUser']['custom_fields'] as $field)
-			if ($field['placement'] == 0 || empty($field['output_html']))
+			if ($field['placement'] == 0 || empty($field['value']))
 				echo '
 					<dt>', $field['name'], ':</dt>
-					<dd>', $field['output_html'], '</dd>';
-
+					<dd>', $field['value'], '</dd>';
 		echo '
 				</dl>';
 	}
-
 	echo '
 				<dl class="noborder">';
-
 	echo '
 					<dt>', $txt['date_registered'], ': </dt>
 					<dd>', $context['BreezeUser']['registered'], '</dd>';
-
 	echo '
 					<dt>', $txt['local_time'], ':</dt>
 					<dd>', $context['BreezeUser']['local_time'], '</dd>';
-
 	if ($context['BreezeUser']['online']['is_online'])
 		echo '
 					<dt>', $txt['lastLoggedIn'], ': </dt>
 					<dd>', $context['BreezeUser']['last_login'], (!empty($context['BreezeUser']['is_hidden']) ? ' (' . $txt['hidden'] . ')' : ''), '</dd>';
-
 	echo '
 				</dl>';
-
 	// Are there any custom profile fields for the summary?
 	if (!empty($context['BreezeUser']['custom_fields']))
 	{
 		echo '
 				<div class="custom_fields_above_signature">
 					<ul class="reset nolist">';
-
 		foreach ($context['BreezeUser']['custom_fields'] as $field)
-			if ($field['placement'] == 2 || empty($field['output_html']))
+			if ($field['placement'] == 2 || empty($field['value']))
 				echo '
-						<li>', $field['output_html'], '</li>';
-
+						<li>', $field['value'], '</li>';
 		echo '
 					</ul>
 				</div>';
 	}
-
 	echo '
 				</div>
 			</div>
 		<div class="clear"></div>';
 	}
-
 		// else
 			// some error string here.
-
 	echo '
 			<a href="javascript:self.close();">', $txt['close_window'], '</a>
 		</div>
