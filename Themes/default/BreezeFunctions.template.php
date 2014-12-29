@@ -46,14 +46,17 @@ function breeze_status($data, $returnVar = false)
 							<div class="options">';
 
 		// Likes.
-		if ($context['Breeze']['tools']->enable('likes') && $status['likes']['can_like'])
+		if ($context['Breeze']['tools']->enable('likes') && !empty($status['likes']) && ($status['likes']['can_view_like'] || $status['likes']['can_like']))
 		{
 			$echo .=
-								'<ul class="floatleft">
+								'<ul class="floatleft">';
+
+			if (!empty($status['likes']['can_like']))
+				$echo .= '
 									<li class="like_button"><a href="'. $scripturl .'?action=likes;ltype=breSta;sa=like;like='. $status['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breSta_like"><span class="'. ($status['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($status['likes']['already'] ? $txt['unlike'] : $txt['like']) .'</a></li>';
 
 			// Likes count
-			if (!empty($status['likes']['count']))
+			if (!empty($status['likes']['count']) && !empty($status['likes']['can_view_like']))
 			{
 				$context['some_likes'] = true;
 				$count = $status['likes']['count'];
@@ -169,10 +172,13 @@ function breeze_comment($comments, $returnVar = false)
 				<div class="options">';
 
 		// Likes.
-		if ($context['Breeze']['tools']->setting('likes') && $comment['likes']['can_like'])
+		if ($context['Breeze']['tools']->setting('likes') && !empty($comment['likes']) && ($comment['likes']['can_view_like'] || $comment['likes']['can_like']))
 		{
-			$echo .=
-					'<ul class="floatleft">
+			$echo .= '
+					<ul class="floatleft">';
+
+			if (!empty($comment['likes']['can_like']))
+				$echo .= '
 						<li class="like_button">
 							<a href="'. $scripturl .'?action=likes;ltype=breCom;sa=like;like='. $comment['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breCom_like">
 								<span class="'. ($comment['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($comment['likes']['already'] ? $txt['unlike'] : $txt['like']) .'
@@ -180,7 +186,7 @@ function breeze_comment($comments, $returnVar = false)
 						</li>';
 
 			// Likes count.
-			if (!empty($comment['likes']['count']))
+			if (!empty($comment['likes']['count']) && !empty($comment['likes']['can_view_like']))
 			{
 				$context['some_likes'] = true;
 				$count = $comment['likes']['count'];
@@ -445,6 +451,7 @@ function template_userDiv()
 		if ($context['BreezeUser']['show_email'])
 			echo '
 					<li><a href="mailto:', $context['BreezeUser']['email'], '" title="', $context['BreezeUser']['email'], '" rel="nofollow"><span class="generic_icons mail" title="' . $txt['email'] . '"></span></a></li>';
+
 		// Don't show an icon if they haven't specified a website.
 		if ($context['BreezeUser']['website']['url'] !== '' && !isset($context['disabled_fields']['website']))
 			echo '

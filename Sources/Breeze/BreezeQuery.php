@@ -1488,6 +1488,7 @@ class BreezeQuery
 	{
 		global $user_info;
 		static $canLike;
+		static $canViewLike;
 
 		// array equals array O RLY???
 		$array = array();
@@ -1496,7 +1497,10 @@ class BreezeQuery
 			return $array();
 
 		if (!isset($canLike))
-			$canLike = allowedTo('breeze_canLike');
+			$canLike = allowedTo('likes_like');
+
+		if (!isset($canViewLike))
+			$canViewLike = allowedTo('likes_view');
 
 		if ($type == 'status')
 		{
@@ -1509,6 +1513,7 @@ class BreezeQuery
 				'body' => $this->_app['parser']->display($row['status_body']),
 				'comments' => array(),
 				'canHas' => $this->_app['tools']->permissions('Status', $row['status_owner_id'], $row['status_poster_id']),
+				'likes' => array(),
 			);
 
 			if ($this->_app['tools']->setting('likes'))
@@ -1516,6 +1521,7 @@ class BreezeQuery
 					'count' => $row['likes'],
 					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
 					'can_like' => $canLike && $user_info['id'] != $row['status_poster_id'],
+					'can_view_like' => $canViewLike,
 				);
 		}
 
@@ -1531,6 +1537,7 @@ class BreezeQuery
 				'time_raw' => $row['comments_time'],
 				'body' => $this->_app['parser']->display($row['comments_body']),
 				'canHas' => $this->_app['tools']->permissions('Comments', $row['comments_profile_id'], $row['comments_poster_id']),
+				'likes' => array(),
 			);
 
 			if ($this->_app['tools']->setting('likes'))
@@ -1538,6 +1545,7 @@ class BreezeQuery
 					'count' => $row['likes'],
 					'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
 					'can_like' => $canLike && $user_info['id'] != $row['comments_poster_id'],
+					'can_view_like' => $canViewLike,
 				);
 		}
 
