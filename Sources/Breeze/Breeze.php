@@ -51,6 +51,7 @@ class Breeze extends Pimple\Container
 	public static $txtpattern = 'Breeze_';
 	public static $permissions = array('deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canMention', 'beMentioned', 'canCover', 'canMood', 'canLike');
 	public static $allSettings = array('wall', 'general_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention', 'gender', 'buddiesList', 'ignoredList', 'profileViews',);
+	public $_likeTypes = array('breSta' => 'status', 'breCom' => 'comments');
 
 	// Support site feed
 	public static $supportSite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
@@ -405,17 +406,18 @@ class Breeze extends Pimple\Container
 		if (!$this['tools']->enable('likes'))
 			return;
 
+		// Don't bother with any other like types.
+		if (!in_array($type, array_keys($this->_likeTypes)))
+			return false;
+
 		// Create our returned array
-		$data = array();
-
-		// @temp for testing.
-		$data['can_see'] = true;
-		$data['can_like'] = true;
-		$data['type'] = $type;
-		$data['flush_cache'] = true;
-		$data['callback'] = 'Breeze::likesUpdate#';
-
-		return $data;
+		return array(
+			'can_see' => allowedTo('likes_view'),
+			'can_like' => allowedTo('likes_like'),
+			'type' => $type,
+			'flush_cache' => true,
+			'callback' => 'Breeze::likesUpdate#',
+		);
 	}
 
 	public function likesUpdate($object)
@@ -424,10 +426,7 @@ class Breeze extends Pimple\Container
 		if (!$this['tools']->enable('likes'))
 			return;
 
-		// The likes system only accepts 6 characters so convert that weird id into a more familiar one...
-		$convert = array('breSta' => 'status', 'breCom' => 'comments');
-
-		$this['query']->updateLikes($convert[$object->get('type')], $object->get('content'), $object->get('numLikes'));
+		$this['query']->updateLikes($this->_likeTypes[$object->get('type')], $object->get('content'), $object->get('numLikes'));
 
 		// Fire up a notification.
 		$this['query']->insertNoti(array(
@@ -449,10 +448,9 @@ class Breeze extends Pimple\Container
 			return;
 
 		$data = array();
-		$convert = array('breSta' => 'status', 'breCom' => 'comments');
 
 		// Don't bother with any other like types...
-		if (!in_array($type, array_keys($convert)))
+		if (!in_array($type, array_keys($this->_likeTypes)))
 			return false;
 
 		$row = $convert[$type] .'_id';
