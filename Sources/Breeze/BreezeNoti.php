@@ -121,10 +121,10 @@ class BreezeNoti
 
 		if (!empty($uSettings['alert_like']))
 			$this->_app['query']->createLog(array(
-				'member' => $this->_details['poster_id'],
+				'member' => $this->_details['user']['id'],
 				'content_type' => 'like',
-				'content_id' => $this->_details['id'],
-				'time' => $this->_details['time_raw'],
+				'content_id' => $this->_details['content'],
+				'time' => $this->_details['time'],
 				'extra' => array(
 					'text' => 'like_'. $this->_details['like_type'],
 					'buddy_text' => 'like_'. $this->_details['like_type'] .'_buddy',
