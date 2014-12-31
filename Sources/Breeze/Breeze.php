@@ -431,7 +431,7 @@ class Breeze extends Pimple\Container
 		// Fire up a notification.
 		$this['query']->insertNoti(array(
 			'user' => $object->get('user'),
-			'like_type' => $convert[$object->get('type')],
+			'like_type' => $this->_likeTypes[$object->get('type')],
 			'content' => $object->get('content'),
 			'numLikes' => $object->get('numLikes'),
 			'extra' => $object->get('extra'),
@@ -453,11 +453,11 @@ class Breeze extends Pimple\Container
 		if (!in_array($type, array_keys($this->_likeTypes)))
 			return false;
 
-		$row = $convert[$type] .'_id';
-		$authorColumn = $convert[$type] .'_poster_id';
+		$row = $this->_likeTypes[$type] .'_id';
+		$authorColumn = $this->_likeTypes[$type] .'_poster_id';
 
 		// With the given values, try to find who is the owner of the liked content.
-		$data = $this['query']->getSingleValue($convert[$type], $row, $content);
+		$data = $this['query']->getSingleValue($this->_likeTypes[$type], $row, $content);
 
 		if (!empty($data[$authorColumn]))
 			return $data[$authorColumn];
