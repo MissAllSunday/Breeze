@@ -174,6 +174,7 @@ class BreezeAjax
 					'count' => 0,
 					'already' => false,
 					'can_like' => allowedTo('likes_like') && ($this->_currentUser != $poster),
+					'can_view_like' => allowedTo('likes_view'),
 				);
 
 				// Parse the content.
@@ -274,6 +275,7 @@ class BreezeAjax
 					'count' => 0,
 					'already' => false,
 					'can_like' => allowedTo('likes_like')  && ($this->_currentUser != $poster),
+					'can_view_like' => allowedTo('likes_view'),
 				);
 
 				// Parse the content.
