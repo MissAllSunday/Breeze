@@ -79,10 +79,14 @@ class BreezeAlerts
 	// Weird name, I know...
 	protected function status_owner($id)
 	{
+		// This heavily relies on the "extra" field so make sure it exists.
+		if (empty($this->_alerts[$id]['extra']))
+			return '';
+
 		return $this->parser($this->_app['tools']->text('alert_status_owner'), array(
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['sender_id'] .
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['owner'] .
 			';bid=' . $this->_alerts[$id]['content_id'],
-			'poster' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link'],
+			'poster' => $this->_usersData[$this->_alerts[$id]['owner']]['link'],
 		));
 	}
 

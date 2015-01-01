@@ -151,7 +151,12 @@ class BreezeNoti
 				'content_id' => $this->_details['id'],
 				'content_action' => '',
 				'is_read' => 0,
-				'extra' => ''
+				'extra' => array(
+					'text' => 'alert_status_owner',
+					'toLoad' => array($this->_details['poster_id'], $this->_details['owner_id']),
+					'poster' => $this->_details['poster_id'],
+					'owner' => $this->_details['owner_id'],
+				),
 			));
 
 		// And our very own alert too.
