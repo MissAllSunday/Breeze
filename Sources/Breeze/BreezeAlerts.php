@@ -35,6 +35,8 @@ class BreezeAlerts
 		// Don't rely on Profile-View loading the senders data because we need some custom_profile stuff and we need to load other user's data anyway.
 		$toLoad = array();
 
+		$this->_alerts = $alerts;
+
 		foreach ($alerts as $id => $a)
 			if (strpos($a['content_type'], Breeze::$txtpattern) !== false && !empty($a['extra']['toLoad']))
 				$toLoad = array_merge($toLoad, $a['extra']['toLoad']);
@@ -82,9 +84,9 @@ class BreezeAlerts
 			return '';
 
 		return $this->parser($this->_app['tools']->text('alert_status_owner'), array(
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['owner'] .
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['owner'] .
 			';bid=' . $this->_alerts[$id]['content_id'],
-			'poster' => $this->_usersData[$this->_alerts[$id]['owner']]['link'],
+			'poster' => $this->_usersData[$this->_alerts[$id]['extra']['owner']]['link'],
 		));
 	}
 
