@@ -32,8 +32,6 @@ class BreezeAlerts
 	{
 		global $memberContext;
 
-		$this->_alerts = $alerts;
-
 		// Don't rely on Profile-View loading the senders data because we need some custom_profile stuff and we need to load other user's data anyway.
 		$toLoad = array();
 

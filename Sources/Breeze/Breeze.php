@@ -372,10 +372,6 @@ class Breeze extends Pimple\Container
 
 	public function alerts(&$alerts)
 	{
-		// Don't do anything if the feature is disable.
-		if (!$this['tools']->enable('alerts'))
-			return;
-
 		// Get the results back from BreezeAlerts.
 		$this['alerts']->call($alerts);
 	}
