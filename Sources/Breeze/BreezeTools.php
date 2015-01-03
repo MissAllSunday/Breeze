@@ -118,6 +118,20 @@ class BreezeTools
 			return false;
 	}
 
+	public function modSetting($var)
+	{
+		global $modSettings;
+		// This should be extended by somebody else...
+		if (empty($this->name))
+			return false;
+		if (empty($var))
+			return false;
+		if (isset($modSettings[$var]))
+			return $modSettings[$var];
+		else
+			return false;
+	}
+
 	/**
 	 * BreezeTools::timeElapsed()
 	 *

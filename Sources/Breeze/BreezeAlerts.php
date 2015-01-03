@@ -86,7 +86,7 @@ class BreezeAlerts
 		return $this->parser($this->_app['tools']->text('alert_status_owner'), array(
 			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['owner'] .
 			';bid=' . $this->_alerts[$id]['content_id'],
-			'poster' => $this->_usersData[$this->_alerts[$id]['extra']['owner']]['link'],
+			'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
 		));
 	}
 

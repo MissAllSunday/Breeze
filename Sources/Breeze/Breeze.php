@@ -359,14 +359,10 @@ class Breeze extends Pimple\Container
 	public function call()
 	{
 		// Just some quick code to make sure this works...
-		$a = array('wall', 'ajax', 'admin', 'mood');
+		$wrapperActions = array('wall', 'ajax', 'admin', 'mood');
 		$action = Breeze::data('get')->get('action');
 
-		// Gotta remove the "breeze" from the actions.
-		if (strpos($action, 'breeze') !== false)
-			$action = str_replace('breeze', '', $action);
-
-		if (in_array($action, $a))
+		if (!empty($action) && in_array(str_replace('breeze', '', $action), $wrapperActions))
 			$this[$action]->call();
 	}
 
