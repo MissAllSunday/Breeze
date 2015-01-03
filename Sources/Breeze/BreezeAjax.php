@@ -49,7 +49,7 @@ class BreezeAjax
 	 */
 	public function call()
 	{
-		global $user_info, $context;
+		global $user_info, $context, $db_show_debug;
 
 		// Handling the subactions
 		$data = Breeze::data('get');
@@ -82,6 +82,10 @@ class BreezeAjax
 		// Not using JavaScript?
 		if (!$data->get('js'))
 			$this->_noJS = true;
+
+		// Don't show da stuffz!.
+		if ($this->_noJS)
+			$db_show_debug = false;
 
 		// Get the current user settings.
 		$this->_userSettings = $this->_app['query']->getUserSettings($user_info['id']);
