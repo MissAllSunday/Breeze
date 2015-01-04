@@ -134,18 +134,18 @@ class BreezeAdmin
 			array('check', Breeze::$txtpattern .'mood', 'subtext' => $this->_app['tools']->text('mood_sub')),
 			array('text', Breeze::$txtpattern .'mood_label', 'subtext' => $this->_app['tools']->text('mood_label_sub')),
 			array('select', Breeze::$txtpattern .'mood_placement',
-			array(
-				$txt['custom_profile_placement_standard'],
-				$txt['custom_profile_placement_icons'],
-				$txt['custom_profile_placement_above_signature'],
-				$txt['custom_profile_placement_below_signature'],
-				$txt['custom_profile_placement_below_avatar'],
-				$txt['custom_profile_placement_above_member'],
-				$txt['custom_profile_placement_bottom_poster'],
+				array(
+					$txt['custom_profile_placement_standard'],
+					$txt['custom_profile_placement_icons'],
+					$txt['custom_profile_placement_above_signature'],
+					$txt['custom_profile_placement_below_signature'],
+					$txt['custom_profile_placement_below_avatar'],
+					$txt['custom_profile_placement_above_member'],
+					$txt['custom_profile_placement_bottom_poster'],
+				),
+				'subtext' => $this->_app['tools']->text('mood_placement_sub'),
+				'multiple' => false,
 			),
-			'subtext' => $this->_app['tools']->text('mood_placement_sub'),
-			'multiple' => false,
-		),
 		);
 
 		$context['post_url'] = $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=settings;save';
