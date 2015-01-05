@@ -164,8 +164,13 @@ class BreezeAjax
 
 			// Store the status
 			$this->_params['id'] = $this->_app['query']->insertStatus($this->_params);
-			$this->_params['canHas'] = $this->_app['tools']->permissions('Status', $owner, $poster);
-			$this->_params['time_raw'] = time();
+
+			// Aftermath stuff.
+			$this->_params .= array(
+				'canHas' => $this->_app['tools']->permissions('Status', $owner, $poster),
+				'time_raw' => time(),
+				'likes' => array(),
+			);
 
 			// All went good or so it seems...
 			if (!empty($this->_params['id']))
@@ -174,12 +179,13 @@ class BreezeAjax
 				$this->_app['query']->insertNoti($this->_params, 'status');
 
 				// Likes.
-				$this->_params['likes'] =  array(
-					'count' => 0,
-					'already' => false,
-					'can_like' => allowedTo('likes_like') && ($this->_currentUser != $poster),
-					'can_view_like' => allowedTo('likes_view'),
-				);
+				if (!empty($this->_app['tools']->modSettings('enable_likes')))
+					$this->_params['likes'] =  array(
+						'count' => 0,
+						'already' => false,
+						'can_like' => allowedTo('likes_like') && ($this->_currentUser != $poster),
+						'can_view_like' => allowedTo('likes_view'),
+					);
 
 				// Parse the content.
 				$this->_params['body'] = $this->_app['parser']->display($this->_params['body']);
@@ -265,8 +271,13 @@ class BreezeAjax
 
 			// Store the comment
 			$this->_params['id'] = $this->_app['query']->insertComment($this->_params);
-			$this->_params['time_raw'] = time();
-			$this->_params['canHas'] = $this->_app['tools']->permissions('Comments', $owner, $poster);
+
+			// Aftermath stuff.
+			$this->_params .= array(
+				'time_raw' => time(),
+				'canHas' => $this->_app['tools']->permissions('Comments', $owner, $poster),
+				'likes' => array(),
+			);
 
 			// The Comment was inserted ORLY???
 			if (!empty($this->_params['id']))
@@ -275,12 +286,13 @@ class BreezeAjax
 				$this->_app['query']->insertNoti($this->_params, 'comment');
 
 				// Likes.
-				$this->_params['likes'] =  array(
-					'count' => 0,
-					'already' => false,
-					'can_like' => allowedTo('likes_like')  && ($this->_currentUser != $poster),
-					'can_view_like' => allowedTo('likes_view'),
-				);
+				if (!empty($this->_app['tools']->modSettings('enable_likes')))
+					$this->_params['likes'] =  array(
+						'count' => 0,
+						'already' => false,
+						'can_like' => allowedTo('likes_like')  && ($this->_currentUser != $poster),
+						'can_view_like' => allowedTo('likes_view'),
+					);
 
 				// Parse the content.
 				$this->_params['body'] = $this->_app['parser']->display($this->_params['body']);
