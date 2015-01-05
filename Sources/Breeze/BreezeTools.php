@@ -118,7 +118,7 @@ class BreezeTools
 			return false;
 	}
 
-	public function modSetting($var)
+	public function modSettings($var)
 	{
 		global $modSettings;
 
