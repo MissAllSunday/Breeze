@@ -1516,7 +1516,7 @@ class BreezeQuery
 				'likes' => array(),
 			);
 
-			if ($this->_app['tools']->setting('likes'))
+			if (!empty($this->_app['tools']->modSettings('enable_likes')))
 				$array['likes'] = array(
 					'count' => $row['likes'],
 					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
@@ -1540,7 +1540,7 @@ class BreezeQuery
 				'likes' => array(),
 			);
 
-			if ($this->_app['tools']->setting('likes'))
+			if (!empty($this->_app['tools']->modSettings('enable_likes')))
 				$array['likes'] = array(
 					'count' => $row['likes'],
 					'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
