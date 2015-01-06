@@ -166,7 +166,7 @@ class BreezeAjax
 			$this->_params['id'] = $this->_app['query']->insertStatus($this->_params);
 
 			// Aftermath stuff.
-			$this->_params .= array(
+			$this->_params += array(
 				'canHas' => $this->_app['tools']->permissions('Status', $owner, $poster),
 				'time_raw' => time(),
 				'likes' => array(),
@@ -273,7 +273,7 @@ class BreezeAjax
 			$this->_params['id'] = $this->_app['query']->insertComment($this->_params);
 
 			// Aftermath stuff.
-			$this->_params .= array(
+			$this->_params += array(
 				'time_raw' => time(),
 				'canHas' => $this->_app['tools']->permissions('Comments', $owner, $poster),
 				'likes' => array(),

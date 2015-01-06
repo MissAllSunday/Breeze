@@ -360,9 +360,9 @@ class Breeze extends Pimple\Container
 	{
 		// Just some quick code to make sure this works...
 		$wrapperActions = array('wall', 'ajax', 'admin', 'mood');
-		$action = Breeze::data('get')->get('action');
+		$action = str_replace('breeze', '', Breeze::data('get')->get('action'));
 
-		if (!empty($action) && in_array(str_replace('breeze', '', $action), $wrapperActions))
+		if (!empty($action) && in_array($action, $wrapperActions))
 			$this[$action]->call();
 	}
 
