@@ -77,9 +77,13 @@ class BreezeLog
 
 			$data['gender_possessive'] = $this->_app['tools']->text('alert_gender_possessive_'. $data['gender']) ? $this->_app['tools']->text('alert_gender_possessive_'. $data['gender']) : $this->_app['tools']->text('alert_gender_possessive_None');
 
-			// Make sure we hav a valid method for this.
-			if (in_array($data['content_type'], get_class_methods(__CLASS__)))
+			// Make sure we have a valid method for this and valid data too!
+			if (method_exists($this, $data['content_type']) && !empty($data['extra']) && is_array($data['extra']))
 				$this->_data[$id]['text'] = $this->$data['content_type']($data);
+
+			// Add an empty text string.
+			else
+				$this->_data[$id]['text'] = '';
 		}
 	}
 

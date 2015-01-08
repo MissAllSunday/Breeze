@@ -52,8 +52,12 @@ class BreezeAlerts
 			if (strpos($a['content_type'], Breeze::$txtpattern) !== false)
 			{
 				$a['content_type'] = str_replace(Breeze::$txtpattern, '', $a['content_type']);
-				if(method_exists($this, $a['content_type']))
+
+				if(method_exists($this, $a['content_type']) && !empty($this->_alerts[$id]['extra'] && is_array($this->_alerts[$id]['extra']))
 					$alerts[$id]['text'] = $this->$a['content_type']($id);
+
+				else
+					$alerts[$id]['text'] = '';
 			}
 	}
 
@@ -79,10 +83,6 @@ class BreezeAlerts
 	// Weird name, I know...
 	protected function status_owner($id)
 	{
-		// This heavily relies on the "extra" field so make sure it exists.
-		if (empty($this->_alerts[$id]['extra']))
-			return '';
-
 		return $this->parser($this->_app['tools']->text('alert_status_owner'), array(
 			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['owner'] .
 			';bid=' . $this->_alerts[$id]['content_id'],
@@ -92,10 +92,6 @@ class BreezeAlerts
 
 	protected function comment_status_owner($id)
 	{
-		// This heavily relies on the "extra" field so make sure it exists.
-		if (empty($this->_alerts[$id]['extra']['text']))
-			return '';
-
 		// There are multiple variants of this same alert, however, all that logic was already decided elsewhere...
 		return $this->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
 			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
@@ -108,10 +104,6 @@ class BreezeAlerts
 
 	protected function comment_profile_owner($id)
 	{
-		// This heavily relies on the "extra" field so make sure it exists.
-		if (empty($this->_alerts[$id]['extra']['text']))
-			return '';
-
 		return $this->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
 			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
 			';bid=' . $this->_alerts[$id]['extra']['status_id'] .';cid=' . $this->_alerts[$id]['content_id'] .'#comment_id_' . $this->_alerts[$id]['content_id'],
@@ -123,10 +115,6 @@ class BreezeAlerts
 
 	protected function like($id)
 	{
-		// This heavily relies on the "extra" field so make sure it exists.
-		if (empty($this->_alerts[$id]['extra']['text']))
-			return '';
-
 		return $this->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
 			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
 			';bid=' . $this->_alerts[$id]['extra']['status_id'] .(!empty($this->_alerts[$id]['extra']['comment_id']) ? (';cid=' . $this->_alerts[$id]['content_id'] .'#comment_id_' . $this->_alerts[$id]['content_id']) : ''),
