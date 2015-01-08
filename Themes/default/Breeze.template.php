@@ -27,7 +27,7 @@ function template_user_wall()
 			<div class="username">
 				<h1>', $context['member']['link'] ,'</h1>
 				<div>
-				230 posts| 2k followers
+				', template_generic_menu_dropdown_above() . template_generic_menu_dropdown_below() ,'
 				</div>
 			</div>
 		</div>
