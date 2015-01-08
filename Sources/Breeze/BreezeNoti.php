@@ -171,10 +171,9 @@ class BreezeNoti
 				'extra' => array(
 					'buddy_text' => 'alert_status_owner_buddy',
 					'toLoad' => array($this->_details['poster_id'], $this->_details['owner_id']),
-					'wall_owner' => $this->_details['profile_id'],
+					'wall_owner' => $this->_details['owner_id'],
 					'poster' => $this->_details['poster_id'],
-					'status_owner' => $this->_details['status_owner_id'],
-					'status_id' => $this->_details['status_id'],
+					'status_id' => $this->_details['id'],
 				),
 			));
 	}
