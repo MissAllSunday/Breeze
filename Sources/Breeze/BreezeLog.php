@@ -128,10 +128,10 @@ class BreezeLog
 	public function status($data)
 	{
 		return $this->_app['tools']->parser($this->_app['tools']->text($data['extra']['buddy_text']), array(
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $data['wall_owner'] .
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $data['extra']['wall_owner'] .
 			';bid=' . $data['content_id'],
-			'poster' => $this->_usersData[$data['poster']]['link'],
-			'wall_owner' => $data['wall_owner'],
+			'poster' => $this->_usersData[$data['extra']['poster']]['link'],
+			'wall_owner' => $this->_usersData[$data['extra']['wall_owner']]['link'],
 		));
 	}
 
