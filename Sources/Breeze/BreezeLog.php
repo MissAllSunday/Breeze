@@ -87,25 +87,6 @@ class BreezeLog
 		}
 	}
 
-	public function parser($text, $replacements = array())
-	{
-		if (empty($text) || empty($replacements) || !is_array($replacements))
-			return false;
-
-		// Split the replacements up into two arrays, for use with str_replace.
-		$find = array();
-		$replace = array();
-
-		foreach ($replacements as $f => $r)
-		{
-			$find[] = '{' . $f . '}';
-			$replace[] = $r;
-		}
-
-		// Do the variable replacements.
-		return str_replace($find, $replace, $text);
-	}
-
 	public function mood($data)
 	{
 		// Get the mood.
@@ -113,7 +94,7 @@ class BreezeLog
 		$mood = !empty($data['extra']['moodHistory']['id']) ? $this->_app['query']->getMoodByID($data['extra']['moodHistory']['id'], true) : array();
 
 		// Return the formatted string.
-		return $this->parser($this->_app['tools']->text('alert_mood'), array(
+		return $this->_app['tools']->parser($this->_app['tools']->text('alert_mood'), array(
 			'poster' => $this->_usersData[$data['member']]['link'],
 			'gender_possessive' => $data['gender_possessive'],
 			'image' => !empty($mood) && !empty($mood['image_html']) ? $mood['image_html'] : '',
@@ -137,7 +118,7 @@ class BreezeLog
 		else
 			$file = false;
 
-		return $this->parser($this->_app['tools']->text('alert_cover'), array(
+		return $this->_app['tools']->parser($this->_app['tools']->text('alert_cover'), array(
 			'poster' => $this->_usersData[$data['member']]['link'],
 			'gender_possessive' => $data['gender_possessive'],
 			'image' => $file ? ('<img src="'. $data['extra']['image'] .'" />') : '',
@@ -146,7 +127,7 @@ class BreezeLog
 
 	public function status($data)
 	{
-		return $this->parser($this->_app['tools']->text($data['extra']['buddy_text']), array(
+		return $this->_app['tools']->parser($this->_app['tools']->text($data['extra']['buddy_text']), array(
 			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $data['wall_owner'] .
 			';bid=' . $data['content_id'],
 			'poster' => $this->_usersData[$data['poster']]['link'],
@@ -161,7 +142,7 @@ class BreezeLog
 
 	public function like($data)
 	{
-		return $this->parser($this->_app['tools']->text($data['extra']['buddy_text']), array(
+		return $this->_app['tools']->parser($this->_app['tools']->text($data['extra']['buddy_text']), array(
 			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $data['extra']['wall_owner'] .';bid=' . $data['extra']['status_id'] .';cid=' . $data['content_id'] .'#comment_id_' . $data['content_id'],
 			'poster' => $this->_usersData[$data['extra']['poster']]['link'],
 			'status_poster' => $this->_usersData[$data['extra']['status_owner']]['link'],

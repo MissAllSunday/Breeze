@@ -61,29 +61,10 @@ class BreezeAlerts
 			}
 	}
 
-	public function parser($text, $replacements = array())
-	{
-		if (empty($text) || empty($replacements) || !is_array($replacements))
-			return false;
-
-		// Split the replacements up into two arrays, for use with str_replace.
-		$find = array();
-		$replace = array();
-
-		foreach ($replacements as $f => $r)
-		{
-			$find[] = '{' . $f . '}';
-			$replace[] = $r;
-		}
-
-		// Do the variable replacements.
-		return str_replace($find, $replace, $text);
-	}
-
 	// Weird name, I know...
 	protected function status_owner($id)
 	{
-		return $this->parser($this->_app['tools']->text('alert_status_owner'), array(
+		return $this->_app['tools']->parser($this->_app['tools']->text('alert_status_owner'), array(
 			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['owner'] .
 			';bid=' . $this->_alerts[$id]['content_id'],
 			'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
@@ -93,7 +74,7 @@ class BreezeAlerts
 	protected function comment_status_owner($id)
 	{
 		// There are multiple variants of this same alert, however, all that logic was already decided elsewhere...
-		return $this->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
+		return $this->_app['tools']->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
 			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
 			';bid=' . $this->_alerts[$id]['extra']['status_id'] .';cid=' . $this->_alerts[$id]['content_id'] .'#comment_id_' . $this->_alerts[$id]['content_id'],
 			'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
@@ -104,7 +85,7 @@ class BreezeAlerts
 
 	protected function comment_profile_owner($id)
 	{
-		return $this->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
+		return $this->_app['tools']->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
 			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
 			';bid=' . $this->_alerts[$id]['extra']['status_id'] .';cid=' . $this->_alerts[$id]['content_id'] .'#comment_id_' . $this->_alerts[$id]['content_id'],
 			'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
@@ -115,7 +96,7 @@ class BreezeAlerts
 
 	protected function like($id)
 	{
-		return $this->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
+		return $this->_app['tools']->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
 			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
 			';bid=' . $this->_alerts[$id]['extra']['status_id'] .(!empty($this->_alerts[$id]['extra']['comment_id']) ? (';cid=' . $this->_alerts[$id]['content_id'] .'#comment_id_' . $this->_alerts[$id]['content_id']) : ''),
 			'poster' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link'],

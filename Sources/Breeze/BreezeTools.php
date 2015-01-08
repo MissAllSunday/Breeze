@@ -440,4 +440,23 @@ class BreezeTools
 		if (file_exists($folder . $image))
 			@unlink($folder . $image);
 	}
+
+	public function parser($text, $replacements = array())
+	{
+		if (empty($text) || empty($replacements) || !is_array($replacements))
+			return '';
+
+		// Split the replacements up into two arrays, for use with str_replace.
+		$find = array();
+		$replace = array();
+
+		foreach ($replacements as $f => $r)
+		{
+			$find[] = '{' . $f . '}';
+			$replace[] = $r;
+		}
+
+		// Do the variable replacements.
+		return str_replace($find, $replace, $text);
+	}
 }
