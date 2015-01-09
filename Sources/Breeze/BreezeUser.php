@@ -165,8 +165,8 @@ class BreezeUser extends Breeze
 		// @todo this is a temp thing...
 		if (!empty($context['Breeze']['settings']['owner']['activityLog']))
 		{
-			$maxIndex = 5;
-			$start = (int) isset($_REQUEST['start']) ? $_REQUEST['start'] : 0;
+			$maxIndex = 10;
+			$start = 0;
 			$alerts =  $this['log']->get($context['member']['id'], $maxIndex, $start);
 			$context['Breeze']['log'] = $alerts['data'];
 		}

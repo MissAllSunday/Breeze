@@ -128,10 +128,31 @@ function template_user_wall()
 	echo '
 		</div>';
 
-	echo '
-	<div id="tab-activity">
-		something here
-	</div>';
+	if (!empty($context['Breeze']['settings']['owner']['activityLog']))
+	{
+		echo '
+		<div id="tab-activity">';
+
+		// A nice title bar
+		echo '
+			<div class="cat_bar">
+				<h3 class="catbg">
+					', $txt['Breeze_tabs_activity'] ,'
+				</h3>
+			</div>';
+
+		if (empty($context['Breeze']['log']))
+			echo '
+			<div class="roundframe">'
+				, $txt['Breeze_tabs_activity_none'] ,'
+			</div><br />';
+
+		else
+			breeze_activity($context['Breeze']['log']);
+
+		echo '
+		</div>';
+	}
 
 	echo '
 	<div id="tab-about">

@@ -322,10 +322,9 @@ function breeze_activity($data)
 								<span> </span>
 							</span>
 							<div class="activityInner">
-								<span class="activityIcon ', $act['type'] ,'"></span>
-								<span class="time_elapsed" title="'. timeformat($act['time_raw'], false) .'" data-livestamp="'. $act['time_raw'] .'">', $act['time'] ,'</span><br />
-								', $act['content']['message'] ,'<br />
-								', $act['content']['link'] ,'
+								<span class="activityIcon ', $act['content_type'] ,'"></span>
+								<span class="time_elapsed" title="'. $act['time'] .'" data-livestamp="'. $act['time_raw'] .'">', $act['time'] ,'</span><br />
+								', $act['text'] ,'<br />
 							</div>
 							<span class="botslice">
 								<span></span>
