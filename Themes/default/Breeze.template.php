@@ -154,10 +154,26 @@ function template_user_wall()
 		</div>';
 	}
 
-	echo '
-	<div id="tab-about">
-		about me!
-	</div>';
+	// About me
+	if (!empty($context['Breeze']['settings']['owner']['aboutMe']))
+	{
+		echo '
+		<div id="tabs-about">
+			<div class="cat_bar">
+				<h3 class="catbg">
+					', $txt['Breeze_tabs_about'] ,'
+				</h3>
+			</div>
+			<div class="breeze_user_inner windowbg">
+				<div class="content">';
+
+		echo parse_bbc($context['Breeze']['settings']['owner']['aboutMe']);
+
+		echo '
+				</div>
+			</div>
+		</div>';
+	}
 
 	echo '
 		</div>
