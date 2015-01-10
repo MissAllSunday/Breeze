@@ -134,7 +134,7 @@ class BreezeWall
 		if (empty($this->userSettings['general_wall']))
 			fatal_lang_error('Breeze_cannot_see_general_wall');
 
-		// We cannot live without globals...
+		// Get some stuffz
 		$data = Breeze::data('get');
 
 		// The (soon to be) huge array...
@@ -145,14 +145,14 @@ class BreezeWall
 			'count' => 0
 		);
 
-		// Go get your stuff....
-		$context['Breeze']['settings']['visitor'] = $this->_app['query']->getUserSettings($user_info['id']);
+		// Pass your settings to the template.
+		$context['Breeze']['settings']['visitor'] = $this->userSettings;
 
-		// Pagination max index and current page
+		// Pagination max index and current page.
 		$maxIndex = !empty($this->userSettings['pagination_number']) ? $this->userSettings['pagination_number'] : 5;
 		$currentPage = ($data->validate('start') == true) ? $data->get('start') : 0;
 
-		// Set all the page stuff
+		// Set all the page stuff.
 		$context['page_title'] = $this->_app['tools']->text('general_wall');
 		$context['sub_template'] = 'general_wall';
 		$context['linktree'][] = array(
@@ -168,7 +168,7 @@ class BreezeWall
 			$context['Breeze']['status'] = $status['data'];
 
 			// Get the latest activity
-			$context['Breeze']['log'] = $this->_app['log']->getActivity($this->userSettings['buddiesList']);
+			$context['Breeze']['log'] = $this->_app['log']->get($this->userSettings['buddiesList'], 10, 0);
 
 			// Load users data.
 			if (!empty($status['users']))

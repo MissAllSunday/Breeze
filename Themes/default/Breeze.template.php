@@ -182,7 +182,6 @@ function template_user_wall()
 
 	// Get the message from the server
 	template_html_below();
-
 }
 
 function template_user_notifications()
