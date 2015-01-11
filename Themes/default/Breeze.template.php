@@ -370,17 +370,21 @@ function template_general_wall()
 
 	// Tabs
 	echo '
-		<div id="Breeze_tabs">
-			<ul class="dropmenu breezeTabs">
-				<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>';
-
+			<div id="Breeze_tabs">
+				<ul class="breezeTabs dropmenu">
+					<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>';
+	// The "About me" tab.
+	if (!empty($context['Breeze']['settings']['owner']['aboutMe']))
+		echo '
+					<li class="about"><a href="#tabs-about" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_about'] ,'</span></a></li>';
+	// Does recent activity is enable?
+	if (!empty($context['Breeze']['settings']['owner']['activityLog']))
+		echo '
+					<li class="activity"><a href="#tab-activity" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_activity'] ,'</span></a></li>';
 	echo '
-				<li class="activity"><a href="#tab-activity" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_activity'] ,'</span></a></li>';
-
-	echo '
-			</ul>
-		</div>
-		<p class="clear" />';
+				</ul>
+			</div>
+			<p class="clear" />';
 
 	// General wall
 	echo '
