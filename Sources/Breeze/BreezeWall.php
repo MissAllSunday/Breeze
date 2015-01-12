@@ -137,6 +137,10 @@ class BreezeWall
 		// Get some stuffz
 		$data = Breeze::data('get');
 
+		// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
+		loadJavascriptFile('breeze/breezePost.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/breezeTabs.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+
 		// The (soon to be) huge array...
 		$status = array(
 			'data' => array(),
@@ -177,19 +181,23 @@ class BreezeWall
 			// Applying pagination.
 			if (!empty($status['pagination']))
 				$context['page_index'] = $status['pagination'];
+		}
 
-			// Need to pass some vars to the browser :(
-			addInlineJavascript('
+		// The tabs script.
+		addInlineJavascript('
+	var bTabs = new breezeTabs(\'ul.breezeTabs\', \'wall\');', true);
+
+		// Need to pass some vars to the browser :(
+		addInlineJavascript('
 	breeze.pagination = {
 		maxIndex : '. $maxIndex .',
 		totalItems : ' . $status['count'] . ',
 		userID : '. $user_info['id'] .'
 	};', true);
 
-			// Does the user wants to use the load more button?
-			if (!empty($context['Breeze']['settings']['visitor']['load_more']))
-				loadJavascriptFile('breezeLoadMore.js', array('local' => true, 'default_theme' => true));
-		}
+		// Does the user wants to use the load more button?
+		if (!empty($context['Breeze']['settings']['visitor']['load_more']))
+			loadJavascriptFile('breezeLoadMore.js', array('local' => true, 'default_theme' => true));
 	}
 
 	/**

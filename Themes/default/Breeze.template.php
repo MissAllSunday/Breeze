@@ -373,13 +373,10 @@ function template_general_wall()
 			<div id="Breeze_tabs">
 				<ul class="breezeTabs dropmenu">
 					<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>';
-	// The "About me" tab.
-	if (!empty($context['Breeze']['settings']['owner']['aboutMe']))
-		echo '
-					<li class="about"><a href="#tabs-about" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_about'] ,'</span></a></li>';
-	// Does recent activity is enable?
-	if (!empty($context['Breeze']['settings']['owner']['activityLog']))
-		echo '
+
+
+	// Your buddies activity.
+	echo '
 					<li class="activity"><a href="#tab-activity" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_activity'] ,'</span></a></li>';
 	echo '
 				</ul>
@@ -407,7 +404,7 @@ function template_general_wall()
 		breeze_status($context['Breeze']['status']);
 
 	else
-		echo '<li>', $txt['Breeze_page_no_status'] ,'</li>';
+		echo '<li class="windowbg">', $txt['Breeze_page_no_status'] ,'</li>';
 
 	// End of list
 	echo '
@@ -443,10 +440,11 @@ function template_general_wall()
 		breeze_activity($context['Breeze']['log']);
 
 	else
-		echo
-			'<span class="upperframe"><span></span></span>
-			<div class="roundframe">', $txt['Breeze_tabs_activity_buddies_none'] ,'</div>
-			<span class="lowerframe"><span></span></span><br />';
+		echo '
+			<div class="roundframe">
+				', $txt['Breeze_tabs_activity_buddies_none'] ,'
+			</div>
+			<br />';
 
 	// End of activity
 	echo '
