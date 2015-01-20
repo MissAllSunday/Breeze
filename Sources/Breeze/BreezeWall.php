@@ -154,7 +154,7 @@ class BreezeWall
 
 		// Pagination max index and current page.
 		$maxIndex = !empty($this->userSettings['pagination_number']) ? $this->userSettings['pagination_number'] : 5;
-		$currentPage = ($data->validate('start') == true) ? $data->get('start') : 0;
+		$currentPage = (int) (($data->validate('start') == true) ? $data->get('start') : 0);
 
 		// Set all the page stuff.
 		$context['page_title'] = $this->_app['tools']->text('general_wall');
@@ -163,7 +163,7 @@ class BreezeWall
 			'url' => $this->_app['tools']->scriptUrl . '?action=wall',
 			'name' => $context['page_title'],
 		);
-
+var_dump($currentPage);
 		// Time to overheat the server!
 		if (!empty($this->userSettings['buddiesList']))
 		{
