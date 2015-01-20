@@ -163,7 +163,7 @@ class BreezeWall
 			'url' => $this->_app['tools']->scriptUrl . '?action=wall',
 			'name' => $context['page_title'],
 		);
-var_dump($currentPage);
+
 		// Time to overheat the server!
 		if (!empty($this->userSettings['buddiesList']))
 		{
@@ -172,7 +172,8 @@ var_dump($currentPage);
 			$context['Breeze']['status'] = $status['data'];
 
 			// Get the latest activity
-			$context['Breeze']['log'] = $this->_app['log']->get($this->userSettings['buddiesList'], 10, 0);
+			$alerts = $this->_app['log']->get($this->userSettings['buddiesList'], 10, 0);
+			$context['Breeze']['log'] = $alerts['data'];
 
 			// Load users data.
 			if (!empty($status['users']))
