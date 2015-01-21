@@ -22,7 +22,7 @@ function template_user_wall()
 	<div class="header">
 		<div class="container">
 			<div class="avatar windowbg">
-				'. $context['member']['avatar']['image'] .'
+				<a href="', $scripturl, '?action=profile;area=static;u=', $context['member']['id'] ,'">', $context['member']['avatar']['image'] ,'</a>
 			</div>
 			<div class="username">
 				<h1 class="forumtitle">', $context['member']['link'] ,'</h1>
