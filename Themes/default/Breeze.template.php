@@ -89,7 +89,7 @@ function template_user_wall()
 	// This is the status box,  O RLY?
 	if ($context['member']['is_owner'] || allowedTo('breeze_postStatus'))
 		echo '
-			<div class="breeze_user_inner windowbg alternative2">
+			<div class="breeze_user_inner information">
 				<div class="breeze_user_statusbox">
 						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
 							<textarea cols="60" rows="8" name="content" id="statusContent" rel="atwhoMention"></textarea>

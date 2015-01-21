@@ -108,3 +108,14 @@ width: 50%;
 	top:50%; 
 	left:50%;
 }
+
+@media screen and (max-width: 720px) {
+
+	.blocks{
+		display: none;
+	}
+	.wallContent {
+	max-width: 98%;
+	width: 98%;
+	}
+}
