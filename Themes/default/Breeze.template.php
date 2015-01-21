@@ -25,11 +25,12 @@ function template_user_wall()
 				'. $context['member']['avatar']['image'] .'
 			</div>
 			<div class="username">
-				<h1>', $context['member']['link'] ,'</h1>
+				<h1 class="forumtitle">', $context['member']['link'] ,'</h1>
 				<div>
 				', template_generic_menu_dropdown_above() . template_generic_menu_dropdown_below() ,'
 				</div>
 			</div>
+			<div class="clear"></div>
 		</div>
 	</div>';
 

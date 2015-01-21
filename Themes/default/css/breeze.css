@@ -1,14 +1,14 @@
 
 .header{
-z-index: 1;
-overflow: visible;
-text-align: center;
-position: relative;
-top: 0;
-left: 0;
-bottom: 0;
-right: 0;
-height: 100px;
+	z-index: 1;
+	overflow: visible;
+	text-align: center;
+	position: relative;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	height: 100px;
 	background-position: top center;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
@@ -16,46 +16,32 @@ height: 100px;
 	margin-bottom:50px;
 }
 .header div.container{
-	height: 100%;
-width: 977px;
-margin: 0 auto;
-position: relative;
-overflow: visible;
+	overflow: visible;
+	position: absolute;
+	bottom: -40px;
+	left:10%;
+	margin: 0 auto;
+	min-width: 720px;
+	height:auto;
 }
 .header div.username{
-position: absolute;
-bottom: -25px;
-height: auto;
-width: 50%;
-left: 0;
-margin-left : 260px;
-float:left;
-text-align:left;
+	position: absolute;
+	bottom: 0;
+	left:20%;
 }
 div.username h1, div.username h1 a{
-height: 50px;
-color: #fff;
-font-size: 40px;
-font-family: GoodWeb-Light,"Helvetica Neue",Helvetica,Arial,sans-serif;
-}
-
-.container div.userinfo{
-position: relative;
-left: 180px;
-height: 31px;
-background-color: #f7f7f7;
-width: 50%;
+	text-align:left;
+	display:block;
+	min-width: 70%;
+	margin:3px;
 }
 
 .header div.avatar{
-	position: absolute;
-	bottom: -40px;
-	left: 0;
-	width: 240px;
-	max-width: 240px;
-	height:auto;
 	z-index: 3;
-	margin-left : 5px;
+	float:left;
+	min-width: 140px;
+	max-width: 240px;
+	margin-right:10px;
 }
 
 .blocks{
@@ -105,7 +91,7 @@ width: 50%;
 	margin:5px;
 	text-align:center;
 	position:relative;
-	top:50%; 
+	top:50%;
 	left:50%;
 }
 
@@ -115,7 +101,32 @@ width: 50%;
 		display: none;
 	}
 	.wallContent {
-	max-width: 98%;
-	width: 98%;
+		max-width: 98%;
+		width: 98%;
+	}
+
+	.header div.container{
+		margin: 0 auto;
+		min-width: 90%;
+		height:60%;
+		left:0;
+	}
+
+	.header div.username{
+		text-align:left;
+		display:block;
+		margin:3px;
+		float:none;
+	}
+
+	div.username h1, div.username h1 a{
+		display:block;
+		min-width: 90%;
+	}
+
+	.header div.avatar{
+		display:inline-table;
+		margin: 0 auto;
+		float:none;
 	}
 }
