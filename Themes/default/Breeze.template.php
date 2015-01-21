@@ -64,10 +64,12 @@ function template_user_wall()
 			<div id="Breeze_tabs">
 				<ul class="breezeTabs dropmenu">
 					<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>';
+
 	// The "About me" tab.
 	if (!empty($context['Breeze']['settings']['owner']['aboutMe']))
 		echo '
 					<li class="about"><a href="#tabs-about" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_about'] ,'</span></a></li>';
+
 	// Does recent activity is enable?
 	if (!empty($context['Breeze']['settings']['owner']['activityLog']))
 		echo '
@@ -90,14 +92,14 @@ function template_user_wall()
 	// This is the status box,  O RLY?
 	if ($context['member']['is_owner'] || allowedTo('breeze_postStatus'))
 		echo '
-			<div class="breeze_user_inner information">
+			<div class="inside information">
 				<div class="breeze_user_statusbox">
 						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
-							<textarea cols="60" rows="8" name="content" id="statusContent" rel="atwhoMention"></textarea>
+							<textarea name="content" id="statusContent" rel="atwhoMention"></textarea>
 							<input type="hidden" value="', $user_info['id'] ,'" name="statusPoster" id="statusPoster" />
 							<input type="hidden" value="', $context['member']['id'] ,'" name="statusOwner" id="statusOwner" />
 							<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
-							<br /><input type="submit" value="', $txt['post'] ,'" name="statusSubmit" class="status_button" id="statusSubmit"/>
+							<br><input type="submit" value="', $txt['post'] ,'" name="statusSubmit" class="button_submit" id="statusSubmit"/>
 						</form>
 				</div>
 			</div>';
@@ -165,7 +167,7 @@ function template_user_wall()
 					', $txt['Breeze_tabs_about'] ,'
 				</h3>
 			</div>
-			<div class="breeze_user_inner windowbg">
+			<div class="inside windowbg">
 				<div class="content">';
 
 		echo parse_bbc($context['Breeze']['settings']['owner']['aboutMe']);

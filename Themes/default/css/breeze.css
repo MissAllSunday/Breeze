@@ -21,13 +21,14 @@
 	bottom: -40px;
 	left:10%;
 	margin: 0 auto;
-	min-width: 720px;
+	max-width: 700px;
+	width:600px;
 	height:auto;
 }
 .header div.username{
 	position: absolute;
 	bottom: 0;
-	left:20%;
+	left:25%;
 }
 div.username h1, div.username h1 a{
 	text-align:left;
@@ -65,32 +66,36 @@ div.username h1, div.username h1 a{
 .breeze_user_statusbox textarea{
 	box-sizing: border-box;
 	width: 100%;
+	height:150px;
+	margin-bottom: 5px;
 }
 
 .post_comment textarea{
 	box-sizing: border-box;
 	width: 80%;
+	height: 100px;
+	margin: 5px 0 5px 0;
+	float:right;
 }
 
 .user_avatar{
 	float:left;
-	width:70px;
-	max-width:70px;
-	margin:2px;
-	padding:2px;
+	width:60px;
+	max-width:60px;
 }
 .user_avatar img{
 	width:60px;
 	max-width:60px;
 }
 
-.status{
+.status, .comment{
 	float:right;
 	width:85%;
 }
 
 .status div.body, .comment div.body{
-	min-height: 100px;
+	min-height: 50px;
+	margin:5px;
 }
 
 .options{
@@ -107,21 +112,27 @@ div.username h1, div.username h1 a{
 
 @media screen and (max-width: 720px) {
 
+	/* Hide the sidebar. */
 	.blocks{
 		display: none;
 	}
+
+	/* And make the wall content wider. */
 	.wallContent {
 		max-width: 98%;
 		width: 98%;
 	}
 
+	/* Make the header stuff cetralized. */
 	.header div.container{
 		margin: 0 auto;
 		min-width: 90%;
+		width: 90%;
 		height:60%;
 		left:0;
 	}
 
+	/* The username needs to behave like a block */
 	.header div.username{
 		text-align:left;
 		display:block;
@@ -134,18 +145,43 @@ div.username h1, div.username h1 a{
 		min-width: 90%;
 	}
 
+	/* Remove the position absolute stuff */
 	.header div.avatar{
 		display:inline-table;
 		margin: 0 auto;
 		float:none;
 	}
 
+	/* Make the comment textarea wider. */
 	.post_comment textarea{
 		box-sizing: border-box;
 		width: 100%;
 	}
 
+	/* Hide the avatar next to the comment textarea */
 	.post_comment div.user_avatar{
 		display:none;
+	}
+
+	/* Hide the avatar from all comments */
+	li.breezeComment div.user_avatar img, li.breezeStatus div.user_avatar img{
+		display:none;
+	}
+
+	li.breezeComment div.user_avatar, li.breezeStatus div.user_avatar{
+		display:inline-block;
+		float:none;
+		max-width:100%;
+		width:100%;
+	}
+
+	/* Made the body text to look cleaner */
+	.status, .comment{
+		float:none;
+		width:99%;
+	}
+
+	.status div.body, .comment div.body{
+		margin:0;
 	}
 }

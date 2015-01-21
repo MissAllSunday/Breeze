@@ -20,7 +20,7 @@ function breeze_status($data, $returnVar = false)
 	foreach ($data as $status)
 	{
 		$echo .= '
-			<li class="windowbg stripes status_breeze" id ="status_id_'. $status['id'] .'">';
+			<li class="windowbg stripes breezeStatus" id ="status_id_'. $status['id'] .'">';
 
 		// If we're on the general wall, show a nice bar indicating where this status come from...
 		if (!empty($context['Breeze']['comingFrom']) && $context['Breeze']['comingFrom'] == 'wall')
@@ -33,8 +33,7 @@ function breeze_status($data, $returnVar = false)
 				</div>';
 
 		$echo .= '
-				<span class="topslice"><span></span></span>
-					<div class="breeze_user_inner">
+					<div class="inside">
 						<div class="user_avatar">
 							'. $context['Breeze']['user_info'][$status['poster_id']]['breezeFacebox'] .'<br />
 							'. $context['Breeze']['user_info'][$status['poster_id']]['link'] .'
@@ -121,13 +120,13 @@ function breeze_status($data, $returnVar = false)
 			// The actual post form
 				$echo .= '
 									<form action="'. $scripturl .'?action=breezeajax;sa=postcomment'. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .'" method="post" name="form_comment_'. $status['id'] .'" id="form_comment_'. $status['id'] .'" class="form_comment">
-										<textarea name="content" id="commentContent_'. $status['id'] .'" cols="40" rows="2" rel="atwhoMention"></textarea>
+										<textarea name="content" id="commentContent_'. $status['id'] .'" rel="atwhoMention"></textarea>
 										<input type="hidden" value="'. $status['poster_id'] .'" name="statusPoster" id="commentStatusPoster_'. $status['id'] .'" />
 										<input type="hidden" value="'. $user_info['id'] .'" name="poster" id="commentPoster_'. $status['id'] .'" />
 										<input type="hidden" value="'. $status['id'] .'" name="statusID" id="commentStatus_'. $status['id'] .'" />
 										<input type="hidden" value="'. $status['owner_id'] .'" name="owner" id="commentOwner_'. $status['id'] .'" /><br />
 										<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
-										<input type="submit" value="'. $txt['post'] .'" class="comment_submit" name="commentSubmit" id="commentSubmit_'. $status['id'] .'" />
+										<input type="submit" value="'. $txt['post'] .'" class="button_submit clear" name="commentSubmit" id="commentSubmit_'. $status['id'] .'" />
 									</form>';
 
 			// End of div post_comment
@@ -139,7 +138,6 @@ function breeze_status($data, $returnVar = false)
 						</div>
 						<div class="clear"></div>
 					</div>
-				<span class="botslice"><span></span></span>
 			</li>';
 	}
 
@@ -160,7 +158,7 @@ function breeze_comment($comments, $returnVar = false)
 	foreach ($comments as $comment)
 	{
 		$echo .= '
-		<li class="windowbg2 stripes" id ="comments_id_'. $comment['id'] .'">
+		<li class="windowbg2 stripes breezeComment" id ="comments_id_'. $comment['id'] .'">
 			<div class="user_avatar">
 					'. $context['Breeze']['user_info'][$comment['poster_id']]['breezeFacebox'] .'<br />
 					'. $context['Breeze']['user_info'][$comment['poster_id']]['link'] .'
@@ -169,7 +167,7 @@ function breeze_comment($comments, $returnVar = false)
 				<div class="body">
 				'. $comment['body'] .'
 				</div>
-				<div class="options">';
+				<div class="options clear">';
 
 		// Likes.
 		if (!empty($context['Breeze']['tools']->modSettings('enable_likes')) && !empty($comment['likes']) && ($comment['likes']['can_view_like'] || $comment['likes']['can_like']))
@@ -321,7 +319,7 @@ function breeze_activity($data)
 							<span class="topslice">
 								<span> </span>
 							</span>
-							<div class="activityInner">
+							<div class="activityinside">
 								<span class="activityIcon ', $act['content_type'] ,'"></span>
 								<span class="time_elapsed" title="'. $act['time'] .'" data-livestamp="'. $act['time_raw'] .'">', $act['time'] ,'</span><br />
 								', $act['text'] ,'<br />
