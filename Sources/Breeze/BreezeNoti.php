@@ -190,7 +190,7 @@ class BreezeNoti
 				'content_id' => $this->_details['id'],
 				'time' => $this->_details['time_raw'],
 				'extra' => array(
-					'buddy_text' => 'comment_status_owner_buddy',
+					'buddy_text' => 'alert_comment_status_owner_buddy',
 					'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
 					'wall_owner' => $this->_details['profile_id'],
 					'poster' => $this->_details['poster_id'],
@@ -214,7 +214,7 @@ class BreezeNoti
 			'content_action' => '',
 			'is_read' => 0,
 			'extra' => array(
-					'buddy_text' => 'comment_status_owner_buddy',
+					'buddy_text' => 'alert_comment_status_owner_buddy',
 					'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
 					'wall_owner' => $this->_details['profile_id'],
 					'poster' => $this->_details['poster_id'],
@@ -226,7 +226,7 @@ class BreezeNoti
 		// You posted a comment on somebody else status on your wall? then just notify that "somebody"
 		if (($this->_details['poster_id'] == $this->_details['profile_id']) && ($this->_details['poster_id'] != $this->_details['status_owner_id']))
 		{
-			$toCreate['extra']['buddy_text'] = 'comment_status_owner_buddy';
+			$toCreate['extra']['buddy_text'] = 'alert_comment_status_owner_buddy';
 			$toCreate['extra']['text'] = 'comment_status_owner';
 		}
 
@@ -236,7 +236,7 @@ class BreezeNoti
 			// Are the profile owner and status owner the same person?
 			if ($this->_details['profile_id'] == $this->_details['status_owner_id'])
 			{
-				$toCreate['extra']['buddy_text'] = 'comment_status_owner_buddy';
+				$toCreate['extra']['buddy_text'] = 'alert_comment_status_owner_buddy';
 				$toCreate['extra']['text'] = 'comment_status_owner_own_wall';
 			}
 
@@ -255,7 +255,7 @@ class BreezeNoti
 					'is_read' => 0,
 					'extra' => array(
 						'text' => 'comment_different_owner_own_wall',
-						'buddy_text' => 'comment_status_owner_buddy',
+						'buddy_text' => 'alert_comment_status_owner_buddy',
 						'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
 						'wall_owner' => $this->_details['profile_id'],
 						'poster' => $this->_details['poster_id'],
@@ -265,7 +265,7 @@ class BreezeNoti
 				));
 
 				// The status owner gets notified too!
-				$toCreate['extra']['buddy_text'] = 'comment_status_owner_buddy';
+				$toCreate['extra']['buddy_text'] = 'alert_comment_status_owner_buddy';
 				$toCreate['extra']['text'] = 'comment_status_owner';
 			}
 		}

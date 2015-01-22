@@ -137,7 +137,13 @@ class BreezeLog
 
 	public function comment($data)
 	{
-
+		return $this->_app['tools']->parser($this->_app['tools']->text($data['extra']['buddy_text']), array(
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $data['extra']['wall_owner'] .
+			';bid=' . $data['extra']['status_id'],
+			'poster' => $this->_usersData[$data['extra']['poster']]['link'],
+			'status_owner' => $this->_usersData[$data['extra']['status_owner']]['link'],
+			'wall_owner' => $this->_usersData[$data['extra']['wall_owner']]['link'],
+		));
 	}
 
 	public function like($data)

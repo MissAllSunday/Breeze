@@ -46,7 +46,7 @@ $txt['Breeze_alert_gender_pronoun_None'] = 'he/she';
 $txt['Breeze_alert_comment_different_owner'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on the status made by {status_poster} on {wall_owner}\'s wall';
 $txt['Breeze_alert_comment_different_owner_own_wall'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on the status made by {status_poster} on your own wall';
 $txt['Breeze_alert_comment_status_owner'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on your status made in {wall_owner}\'s wall';
-$txt['Breeze_alert_comment_status_owner_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on {status_poster}\'s status made in {wall_owner}\'s wall';
+$txt['Breeze_alert_comment_status_owner_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on {status_owner}\'s status made in {wall_owner}\'s wall';
 $txt['Breeze_alert_comment_status_owner_own_wall'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on your status made on your own wall';
 $txt['Breeze_alert_comment_poster_own_wall'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on {gender_possessive} status on {gender_possessive} own wall';
 
