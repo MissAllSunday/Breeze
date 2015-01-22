@@ -88,6 +88,9 @@ class BreezeWall
 		// These file are only used here and on the profile wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
 		loadJavascriptFile('breezeTabs.js', array('local' => true, 'default_theme' => true));
 
+		// Load the icon's css.
+		loadCSSFile('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', array('external' => true));
+
 		// Are mentions enabled?
 		// if ($this->_app['tools']->enable('mention'))
 			// loadJavascriptFile('breezeMention.js', array('local' => true, 'default_theme' => true));

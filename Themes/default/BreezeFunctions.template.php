@@ -314,20 +314,16 @@ function breeze_activity($data)
 	foreach ($data as $act)
 	{
 		echo '
-				<li class="activityLI">
-						<div class="activityContent windowbg', ($counter = !$counter ? '2' : '') ,'">
-							<span class="topslice">
-								<span> </span>
-							</span>
-							<div class="activityinside">
-								<span class="activityIcon ', $act['content_type'] ,'"></span>
+				<li class="breezeActivity windowbg', ($counter = !$counter ? '2' : '') ,'">
+						<div class="activityIcon floatleft">
+							<span class="fa fa-', (!empty($act['icon']) ? $act['icon'] : 'archive') ,' fa-3x"></span>
+						</div>
+						<div class="activityContent floatright">
 								<span class="time_elapsed" title="'. $act['time'] .'" data-livestamp="'. $act['time_raw'] .'">', $act['time'] ,'</span><br />
 								', $act['text'] ,'<br />
 							</div>
-							<span class="botslice">
-								<span></span>
-							</span>
 						</div>
+						<div class="clear"></div>
 				</li>';
 	}
 

@@ -652,9 +652,9 @@ class Breeze extends Pimple\Container
 			'images' => array(
 				'name' => 'Icons',
 				'users' => array(
-					'ikons' => array(
-						'name' => 'ikons from Piotr Kwiatkowski',
-						'site' => 'http://ikons.piotrkwiatkowski.co.uk/',
+					'metro' => array(
+						'name' => 'Font Awesome',
+						'site' => 'http://fortawesome.github.io/Font-Awesome/',
 					),
 					'skype' => array(
 						'name' => 'skype icons',
