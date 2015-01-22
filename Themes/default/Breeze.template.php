@@ -25,7 +25,7 @@ function template_user_wall()
 				<a href="', $scripturl, '?action=profile;area=static;u=', $context['member']['id'] ,'">', $context['member']['avatar']['image'] ,'</a>
 			</div>
 			<div class="username">
-				<h1 class="forumtitle">', $context['member']['link'] ,'</h1>
+				<h1 class="forumtitle"><a href="', $scripturl, '?action=profile;area=static;u=', $context['member']['id'] ,'">', $context['member']['name'] ,'</a></h1>
 				<div>
 				', template_generic_menu_dropdown_above() . template_generic_menu_dropdown_below() ,'
 				</div>

@@ -151,6 +151,7 @@ class BreezeWall
 
 		// Pass your settings to the template.
 		$context['Breeze']['settings']['visitor'] = $this->userSettings;
+		$context['Breeze']['log'] = array();
 
 		// Pagination max index and current page.
 		$maxIndex = !empty($this->userSettings['pagination_number']) ? $this->userSettings['pagination_number'] : 5;
