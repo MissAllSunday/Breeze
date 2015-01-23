@@ -109,6 +109,14 @@ div.username h1, div.username h1 a{
 	left:50%;
 }
 
+/* Activity/logs */
+ul.breezeActivity li{
+	margin:5px;
+}
+.activityIcon{
+	margin:5px 10px 5px 5px;
+}
+
 @media screen and (max-width: 720px) {
 
 	/* Hide the sidebar. */
