@@ -38,8 +38,14 @@ class BreezeLog
 
 		$this->_data = $this->_app['query']->getLog($this->_users, $maxIndex, $start);
 
+		// Perhaps modify the main data before been processed.
+		call_integration_hook('integrate_breeze_log_before', array(&$this->_data, &$this->_users, &$this->_logCount, &$this->alerts));
+
 		// Parse the raw data.
 		$this->call();
+
+		// Or after?
+		call_integration_hook('integrate_breeze_log_after', array($this->_data, $this->_users, $this->_logCount, $this->alerts));
 
 		// Return the formatted data.
 		return array(
@@ -78,10 +84,10 @@ class BreezeLog
 			$this->_data[$id]['gender_possessive'] = $this->_app['tools']->text('alert_gender_possessive_'. $this->_data[$id]['gender']) ? $this->_app['tools']->text('alert_gender_possessive_'. $this->_data[$id]['gender']) : $this->_app['tools']->text('alert_gender_possessive_None');
 
 			// Make sure we have a valid method for this and valid data too!
-			if (method_exists($this, $data['content_type']) && !empty($this->_data[$id]['extra']) && is_array($this->_data[$id]['extra']))
+			if (method_exists($this, $data['content_type']) && !empty($this->_data[$id]['extra']) && is_array($this->_data[$id]['extra']) && empty($this->_data[$id]['text']))
 				$this->{$data['content_type']}($id);
 
-			// Add an empty text string fi the method failed to properly set one...
+			// Add an empty text string if the method failed to properly set one...
 			elseif (empty($this->_data[$id]['text']))
 				$this->_data[$id]['text'] = '';
 		}
