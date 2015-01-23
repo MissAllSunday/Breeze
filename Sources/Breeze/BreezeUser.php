@@ -172,8 +172,11 @@ class BreezeUser extends Breeze
 		}
 
 		// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-		loadJavascriptFile('breeze/breezePost.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breeze/breezeTabs.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/breezePost.js', array('default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/breezeTabs.js', array('default_theme' => true, 'defer' => true,));
+
+		// Load the icon's css.
+		loadCSSFile('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', array('external' => true));
 
 		// Are mentions enabled?
 		// if ($tools->enable('mention'))

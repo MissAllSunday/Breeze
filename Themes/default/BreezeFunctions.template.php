@@ -321,6 +321,7 @@ function breeze_activity($data)
 								<span class="time_elapsed" title="', $act['time'] ,'" data-livestamp="', $act['time_raw'] ,'">', $act['time'] ,'</span><br />
 								', $act['text'] ,'<br />
 						</div>
+						<div class="clear"></div>
 				</li>';
 
 	// Close the ul
