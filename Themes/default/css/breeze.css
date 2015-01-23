@@ -191,4 +191,13 @@ ul.breezeActivity li{
 	.status div.body, .comment div.body{
 		margin:0;
 	}
+
+	/* Activity/logs */
+	.activityIcon{
+		display:none;
+	}
+
+	.activityContent{
+		margin:5px;
+	}
 }
