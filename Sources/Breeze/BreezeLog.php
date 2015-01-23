@@ -60,8 +60,8 @@ class BreezeLog
 		$toLoad = array();
 
 		// Get the users before anything gets parsed.
-		foreach ($this->_data as $idUser => $data)
-				$toLoad = array_merge($toLoad, $data['extra']['toLoad']);
+		foreach ($this->_data as $id => $data)
+				$toLoad = array_merge($toLoad, $this->_data[$id]['extra']['toLoad']);
 
 		if (!empty($toLoad))
 			$this->_app['tools']->loadUserInfo($toLoad, false);
@@ -73,38 +73,44 @@ class BreezeLog
 		foreach ($this->_data as $id => $data)
 		{
 			// Get the right gender stuff.
-			$data['gender'] = !empty($this->_usersData[$data['member']]['options']['cust_gender']) ? $this->_usersData[$data['member']]['options']['cust_gender'] : 'None';
+			$this->_data[$id]['gender'] = !empty($this->_usersData[$this->_data[$id]['member']]['options']['cust_gender']) ? $this->_usersData[$this->_data[$id]['member']]['options']['cust_gender'] : 'None';
 
-			$data['gender_possessive'] = $this->_app['tools']->text('alert_gender_possessive_'. $data['gender']) ? $this->_app['tools']->text('alert_gender_possessive_'. $data['gender']) : $this->_app['tools']->text('alert_gender_possessive_None');
+			$this->_data[$id]['gender_possessive'] = $this->_app['tools']->text('alert_gender_possessive_'. $this->_data[$id]['gender']) ? $this->_app['tools']->text('alert_gender_possessive_'. $this->_data[$id]['gender']) : $this->_app['tools']->text('alert_gender_possessive_None');
 
 			// Make sure we have a valid method for this and valid data too!
-			if (method_exists($this, $data['content_type']) && !empty($data['extra']) && is_array($data['extra']))
-				$this->_data[$id]['text'] = $this->$data['content_type']($data);
+			if (method_exists($this, $data['content_type']) && !empty($this->_data[$id]['extra']) && is_array($this->_data[$id]['extra']))
+				$this->{$data['content_type']}($id);
 
-			// Add an empty text string.
-			else
+			// Add an empty text string fi the method failed to properly set one...
+			elseif (empty($this->_data[$id]['text']))
 				$this->_data[$id]['text'] = '';
 		}
 	}
 
-	public function mood($data)
+	public function mood($id)
 	{
+		// Add the custom icon.
+		$this->_data[$id]['icon'] = 'smile-o';
+
 		// Get the mood.
-		$data['extra']['moodHistory'] = @unserialize($data['extra']['moodHistory']);
-		$mood = !empty($data['extra']['moodHistory']['id']) ? $this->_app['query']->getMoodByID($data['extra']['moodHistory']['id'], true) : array();
+		$this->_data[$id]['extra']['moodHistory'] = @unserialize($this->_data[$id]['extra']['moodHistory']);
+		$mood = !empty($this->_data[$id]['extra']['moodHistory']['id']) ? $this->_app['query']->getMoodByID($this->_data[$id]['extra']['moodHistory']['id'], true) : array();
 
 		// Return the formatted string.
-		return $this->_app['tools']->parser($this->_app['tools']->text('alert_mood'), array(
-			'poster' => $this->_usersData[$data['member']]['link'],
-			'gender_possessive' => $data['gender_possessive'],
+		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_mood'), array(
+			'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
+			'gender_possessive' => $this->_data[$id]['gender_possessive'],
 			'image' => !empty($mood) && !empty($mood['image_html']) ? $mood['image_html'] : '',
 		));
 	}
 
-	public function cover($data)
+	public function cover($id)
 	{
+		// Add the custom icon.
+		$this->_data[$id]['icon'] = 'photo';
+
 		// Gotta know if the image still exists.
-		$filename = !empty($data['extra']['image']) ? $data['extra']['image'] : '';
+		$filename = !empty($this->_data[$id]['extra']['image']) ? $this->_data[$id]['extra']['image'] : '';
 		$file =  true;
 
 		if (!empty($filename))
@@ -118,41 +124,50 @@ class BreezeLog
 		else
 			$file = false;
 
-		return $this->_app['tools']->parser($this->_app['tools']->text('alert_cover'), array(
-			'poster' => $this->_usersData[$data['member']]['link'],
-			'gender_possessive' => $data['gender_possessive'],
-			'image' => $file ? ('<img src="'. $data['extra']['image'] .'" />') : '',
+		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_cover'), array(
+			'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
+			'gender_possessive' => $this->_data[$id]['gender_possessive'],
+			'image' => $file ? ('<img src="'. $this->_data[$id]['extra']['image'] .'" />') : '',
 		));
 	}
 
-	public function status($data)
+	public function status($id)
 	{
-		return $this->_app['tools']->parser($this->_app['tools']->text($data['extra']['buddy_text']), array(
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $data['extra']['wall_owner'] .
-			';bid=' . $data['content_id'],
-			'poster' => $this->_usersData[$data['extra']['poster']]['link'],
-			'wall_owner' => $this->_usersData[$data['extra']['wall_owner']]['link'],
+		// Add the custom icon.
+		$this->_data[$id]['icon'] = 'comment';
+
+		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text($this->_data[$id]['extra']['buddy_text']), array(
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['wall_owner'] .
+			';bid=' . $this->_data[$id]['content_id'],
+			'poster' => $this->_usersData[$this->_data[$id]['extra']['poster']]['link'],
+			'wall_owner' => $this->_usersData[$this->_data[$id]['extra']['wall_owner']]['link'],
 		));
 	}
 
-	public function comment($data)
+	public function comment($id)
 	{
-		return $this->_app['tools']->parser($this->_app['tools']->text($data['extra']['buddy_text']), array(
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $data['extra']['wall_owner'] .
-			';bid=' . $data['extra']['status_id'],
-			'poster' => $this->_usersData[$data['extra']['poster']]['link'],
-			'status_owner' => $this->_usersData[$data['extra']['status_owner']]['link'],
-			'wall_owner' => $this->_usersData[$data['extra']['wall_owner']]['link'],
+		// Add the custom icon.
+		$this->_data[$id]['icon'] = 'comments';
+
+		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text($this->_data[$id]['extra']['buddy_text']), array(
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['wall_owner'] .
+			';bid=' . $this->_data[$id]['extra']['status_id'],
+			'poster' => $this->_usersData[$this->_data[$id]['extra']['poster']]['link'],
+			'status_owner' => $this->_usersData[$this->_data[$id]['extra']['status_owner']]['link'],
+			'wall_owner' => $this->_usersData[$this->_data[$id]['extra']['wall_owner']]['link'],
 		));
 	}
 
-	public function like($data)
+	public function like($id)
 	{
-		return $this->_app['tools']->parser($this->_app['tools']->text($data['extra']['buddy_text']), array(
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $data['extra']['wall_owner'] .';bid=' . $data['extra']['status_id'] .';cid=' . $data['content_id'] .'#comment_id_' . $data['content_id'],
-			'poster' => $this->_usersData[$data['extra']['poster']]['link'],
-			'status_poster' => $this->_usersData[$data['extra']['status_owner']]['link'],
-			'wall_owner' => $this->_usersData[$data['extra']['wall_owner']]['link'],
+		// Add the custom icon.
+		$this->_data[$id]['icon'] = 'thumbs-o-up';
+
+		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text($this->_data[$id]['extra']['buddy_text']), array(
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['wall_owner'] .';bid=' . $this->_data[$id]['extra']['status_id'] .';cid=' . $this->_data[$id]['content_id'] .'#comment_id_' . $this->_data[$id]['content_id'],
+			'poster' => $this->_usersData[$this->_data[$id]['extra']['poster']]['link'],
+			'status_poster' => $this->_usersData[$this->_data[$id]['extra']['status_owner']]['link'],
+			'wall_owner' => $this->_usersData[$this->_data[$id]['extra']['wall_owner']]['link'],
 		));
 	}
 }
