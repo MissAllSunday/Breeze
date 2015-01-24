@@ -19,4 +19,14 @@ class BreezeTrackActions extends Breeze
 	{
 		parent::__construct();
 	}
+
+	public function createTopic()
+	{
+
+	}
+
+	public function createPost()
+	{
+
+	}
 }
