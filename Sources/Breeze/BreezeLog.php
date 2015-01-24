@@ -75,7 +75,6 @@ class BreezeLog
 		// Pass people's data.
 		$this->_usersData = $memberContext;
 
-		// A few foreaches LOL
 		foreach ($this->_data as $id => $data)
 		{
 			// Get the right gender stuff.
