@@ -56,7 +56,7 @@ class BreezeLog
 
 	protected function call()
 	{
-		global $memberContext;
+		global $context;
 
 		// Kinda need this...
 		if (empty($this->_data) || !is_array($this->_data))
@@ -73,7 +73,7 @@ class BreezeLog
 			$this->_app['tools']->loadUserInfo($toLoad, false);
 
 		// Pass people's data.
-		$this->_usersData = $memberContext;
+		$this->_usersData = $context['Breeze']['user_info'];
 
 		foreach ($this->_data as $id => $data)
 		{
