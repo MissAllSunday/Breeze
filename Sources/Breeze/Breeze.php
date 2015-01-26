@@ -53,7 +53,6 @@ class Breeze extends Pimple\Container
 	public static $allSettings = array('wall', 'general_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention', 'gender', 'buddiesList', 'ignoredList', 'profileViews',);
 	public $_likeTypes = array('breSta' => 'status', 'breCom' => 'comments');
 	public $trackHooks = array(
-		'integrate_after_create_post' => 'createPost',
 		'integrate_create_topic' => 'createTopic'
 	);
 
@@ -379,7 +378,7 @@ class Breeze extends Pimple\Container
 	public function trackHooks()
 	{
 		foreach ($this->trackHooks as $hook => $function)
-			add_integration_function($hook, $function, $permanent = true, '$sourcedir/Breeze/BreeTrackActions.php', $object = true)
+			add_integration_function($hook, $function, $permanent = true, '$sourcedir/Breeze/BreezeTrackActions.php', $object = true);
 	}
 
 	public function alerts(&$alerts)
