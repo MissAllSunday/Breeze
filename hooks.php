@@ -29,6 +29,7 @@
 		'integrate_prepare_display_context' => '$sourcedir/Breeze/Breeze.php|Breeze::mood#',
 		'integrate_fetch_alerts' => '$sourcedir/Breeze/Breeze.php|Breeze::alerts#',
 		'integrate_alert_types' => '$sourcedir/Breeze/Breeze.php|Breeze::alertsPref#',
+		'integrate_pre_load' => '$sourcedir/Breeze/Breeze.php|Breeze::trackHooks#',
 	);
 
 	foreach ($hooks as $hook => $function)
