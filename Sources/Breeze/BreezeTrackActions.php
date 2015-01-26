@@ -20,13 +20,21 @@ class BreezeTrackActions extends Breeze
 		parent::__construct();
 	}
 
-	public function createTopic()
+	public function createTopic(&$msgOptions, &$topicOptions, &$posterOptions)
 	{
+		// Get the poster's options.
+		$options = $this['query']->getUserSettings($posterOptions['id']);
 
-	}
-
-	public function createPost()
-	{
-
+		// Does the user wants to log this? does the new topic has been approved?
+		if (!empty($options['alert_'. __FUNCTION__]) && !empty($topicOptions['is_approved']))
+			$this['query']->createLog(array(
+				'member' => $posterOptions['id'],
+				'content_type' => 'topic',
+				'content_id' => $topicOptions['id'],
+				'time' => time(),
+				'extra' => array(
+					'subject' => $msgOptions['subject'],
+					'toLoad' => array($this->_currentUser),),
+			));
 	}
 }
