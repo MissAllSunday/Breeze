@@ -52,6 +52,10 @@ class Breeze extends Pimple\Container
 	public static $permissions = array('deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canMention', 'beMentioned', 'canCover', 'canMood', 'canLike');
 	public static $allSettings = array('wall', 'general_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention', 'gender', 'buddiesList', 'ignoredList', 'profileViews',);
 	public $_likeTypes = array('breSta' => 'status', 'breCom' => 'comments');
+	public $trackHooks = array(
+		'integrate_after_create_post' => 'createPost',
+		'integrate_create_topic' => 'createTopic'
+	);
 
 	// Support site feed
 	public static $supportSite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
@@ -364,6 +368,18 @@ class Breeze extends Pimple\Container
 
 		if (!empty($action) && in_array($action, $wrapperActions))
 			$this[$action]->call();
+	}
+
+	/**
+	 * Breeze::trackHooks()
+	 *
+	 * Creates a list of hooks used to track user actions.
+	 * @return void
+	 */
+	public function trackHooks()
+	{
+		foreach ($this->trackHooks as $hook => $function)
+			add_integration_function($hook, $function, $permanent = true, '$sourcedir/Breeze/BreeTrackActions.php', $object = true)
 	}
 
 	public function alerts(&$alerts)
