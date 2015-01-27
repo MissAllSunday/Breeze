@@ -175,4 +175,15 @@ class BreezeLog
 			'wall_owner' => $this->_usersData[$this->_data[$id]['extra']['wall_owner']]['link'],
 		));
 	}
+
+	public function topic($id)
+	{
+		$this->_data[$id]['icon'] = 'comment-o';
+
+		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_topic'), array(
+			'href' => $this->_app['tools']->scriptUrl . '?topic=' . $this->_data[$id]['content_id'],
+			'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
+			'subject' => $this->_data[$id]['extra']['subject'],
+		));
+	}
 }
