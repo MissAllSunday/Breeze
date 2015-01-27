@@ -423,15 +423,15 @@ class Breeze extends Pimple\Container
 			'can_like' => allowedTo('likes_like'),
 			'type' => $type,
 			'flush_cache' => true,
-			'callback' => 'Breeze::likesUpdate#',
+			'callback' => '$sourcedir/Breeze/Breeze.php|Breeze::likesUpdate#',
 		);
 	}
 
 	public function likesUpdate($object)
 	{
 		// Don't do anything if the feature is disable.
-		if (!$this['tools']->enable('likes'))
-			return;
+		// if (!$this['tools']->enable('likes'))
+			// return;
 
 		$this['query']->updateLikes($this->_likeTypes[$object->get('type')], $object->get('content'), $object->get('numLikes'));
 
