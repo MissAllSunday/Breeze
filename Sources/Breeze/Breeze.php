@@ -430,14 +430,20 @@ class Breeze extends Pimple\Container
 	public function likesUpdate($object)
 	{
 		// Don't do anything if the feature is disable.
-		// if (!$this['tools']->enable('likes'))
-			// return;
+		if (!$this['tools']->enable('likes'))
+			return;
 
 		$this['query']->updateLikes($this->_likeTypes[$object->get('type')], $object->get('content'), $object->get('numLikes'));
 
+		// Get the userdata
+		$user = $object->get('user');
+
+		// Get the user's options.
+		$uOptions = $this['query']->getUserSettings($user_info['id']);
+
 		// Fire up a notification.
 		$this['query']->insertNoti(array(
-			'user' => $object->get('user'),
+			'user' => $user['id'],
 			'like_type' => $this->_likeTypes[$object->get('type')],
 			'content' => $object->get('content'),
 			'numLikes' => $object->get('numLikes'),
@@ -446,6 +452,19 @@ class Breeze extends Pimple\Container
 			'validLikes' => $object->get('validLikes'),
 			'time' => time(),
 		), Breeze::$txtpattern .'like');
+
+		// Insert an inner alert if the user wants to.
+		if (!empty($uOptions['alert_like']))
+			$this->_app['query']->createLog(array(
+				'member' => $user['id'],
+				'content_type' => 'like',
+				'content_id' => $object->get('content'),
+				'time' => time(),
+				'extra' => array(
+					'like_type' => $this->_likeTypes[$object->get('type')],
+					'toLoad' => array($user['id']),
+				),
+			));
 	}
 
 	public function handleLikes($type, $content)
