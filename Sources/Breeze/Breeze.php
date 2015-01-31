@@ -438,9 +438,6 @@ class Breeze extends Pimple\Container
 		// Get the userdata
 		$user = $object->get('user');
 
-		// Get the user's options.
-		$uOptions = $this['query']->getUserSettings($user_info['id']);
-
 		// Fire up a notification.
 		$this['query']->insertNoti(array(
 			'user' => $user['id'],
@@ -453,18 +450,35 @@ class Breeze extends Pimple\Container
 			'time' => time(),
 		), Breeze::$txtpattern .'like');
 
+		// Get the user's options.
+		$uOptions = $this['query']->getUserSettings($user_info['id']);
+
 		// Insert an inner alert if the user wants to.
 		if (!empty($uOptions['alert_like']))
+		{
+			// Try and get the user who posted this content.
+			$originalAuthor = false;
+			$row = $this->_likeTypes[$type] .'_id';
+			$authorColumn = $this->_likeTypes[$type] .'_poster_id';
+
+			// With the given values, try to find who is the owner of the liked content.
+			$originalAuthor = $this['query']->getSingleValue($this->_likeTypes[$object->get('type')], $row, $object->get('content'));
+
+			if (!empty($originalAuthor[$authorColumn]))
+				$originalAuthor = $originalAuthor[$authorColumn];
+
 			$this->_app['query']->createLog(array(
 				'member' => $user['id'],
 				'content_type' => 'like',
 				'content_id' => $object->get('content'),
 				'time' => time(),
 				'extra' => array(
+					'originalAuthor' = $originalAuthor ? $originalAuthor : 0,
 					'like_type' => $this->_likeTypes[$object->get('type')],
-					'toLoad' => array($user['id']),
+					'toLoad' => array($user['id'], $originalAuthor),
 				),
 			));
+		}
 	}
 
 	public function handleLikes($type, $content)
