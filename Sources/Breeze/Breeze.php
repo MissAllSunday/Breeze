@@ -429,8 +429,8 @@ class Breeze extends Pimple\Container
 
 	public function likesUpdate($object)
 	{
-		// Don't do anything if the feature is disable.
-		if (!$this['tools']->enable('likes'))
+		// Don't do anything if the feature is disable. Or if this is an "unlike" action.
+		if (!$this['tools']->enable('likes') || $object->get('alreadyLiked'))
 			return;
 
 		$this['query']->updateLikes($this->_likeTypes[$object->get('type')], $object->get('content'), $object->get('numLikes'));
