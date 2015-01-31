@@ -473,7 +473,7 @@ class Breeze extends Pimple\Container
 				'content_id' => $object->get('content'),
 				'time' => time(),
 				'extra' => array(
-					'originalAuthor' = $originalAuthor ? $originalAuthor : 0,
+					'originalAuthor' => $originalAuthor ? $originalAuthor : 0,
 					'like_type' => $this->_likeTypes[$object->get('type')],
 					'toLoad' => array($user['id'], $originalAuthor),
 				),
