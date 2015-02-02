@@ -429,7 +429,7 @@ class Breeze extends Pimple\Container
 
 	public function likesUpdate($object)
 	{
-		// Don't do anything if the feature is disable. Or if this is an "unlike" action.
+		// Don't do anything if the feature is disable or if this is an "unlike" action.
 		if (!$this['tools']->enable('likes') || $object->get('alreadyLiked'))
 			return;
 
@@ -450,23 +450,22 @@ class Breeze extends Pimple\Container
 			'time' => time(),
 		), Breeze::$txtpattern .'like');
 
+		// Try and get the user who posted this content.
+		$originalAuthor = false;
+		$row = $this->_likeTypes[$type] .'_id';
+		$authorColumn = $this->_likeTypes[$type] .'_poster_id';
+
+		// With the given values, try to find who is the owner of the liked content.
+		$originalAuthor = $this['query']->getSingleValue($this->_likeTypes[$object->get('type')], $row, $object->get('content'));
+
+		if (!empty($originalAuthor[$authorColumn]))
+			$originalAuthor = $originalAuthor[$authorColumn];
+
 		// Get the user's options.
-		$uOptions = $this['query']->getUserSettings($user_info['id']);
+		$uOptions = $this['query']->getUserSettings($originalAuthor);
 
 		// Insert an inner alert if the user wants to.
 		if (!empty($uOptions['alert_like']))
-		{
-			// Try and get the user who posted this content.
-			$originalAuthor = false;
-			$row = $this->_likeTypes[$type] .'_id';
-			$authorColumn = $this->_likeTypes[$type] .'_poster_id';
-
-			// With the given values, try to find who is the owner of the liked content.
-			$originalAuthor = $this['query']->getSingleValue($this->_likeTypes[$object->get('type')], $row, $object->get('content'));
-
-			if (!empty($originalAuthor[$authorColumn]))
-				$originalAuthor = $originalAuthor[$authorColumn];
-
 			$this->_app['query']->createLog(array(
 				'member' => $user['id'],
 				'content_type' => 'like',
@@ -478,7 +477,6 @@ class Breeze extends Pimple\Container
 					'toLoad' => array($user['id'], $originalAuthor),
 				),
 			));
-		}
 	}
 
 	public function handleLikes($type, $content)
