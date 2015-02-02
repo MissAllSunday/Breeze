@@ -451,7 +451,7 @@ class Breeze extends Pimple\Container
 		), Breeze::$txtpattern .'like');
 
 		// Try and get the user who posted this content.
-		$originalAuthor = false;
+		$originalAuthor = 0;
 		$row = $this->_likeTypes[$type] .'_id';
 		$authorColumn = $this->_likeTypes[$type] .'_poster_id';
 
