@@ -433,18 +433,20 @@ class Breeze extends Pimple\Container
 		if (!$this['tools']->enable('likes') || !is_object($object) || $object->get('alreadyLiked'))
 			return;
 
+		$type = $object->get('type');
+
 		// Try and get the user who posted this content.
 		$originalAuthor = 0;
 		$row = $this->_likeTypes[$type] .'_id';
 		$authorColumn = $this->_likeTypes[$type] .'_poster_id';
 
 		// With the given values, try to find who is the owner of the liked content.
-		$originalAuthor = $this['query']->getSingleValue($this->_likeTypes[$object->get('type')], $row, $object->get('content'));
+		$originalAuthor = $this['query']->getSingleValue($this->_likeTypes[$type], $row, $object->get('content'));
 
 		if (!empty($originalAuthor[$authorColumn]))
 			$originalAuthor = $originalAuthor[$authorColumn];
 
-		// Get the userdata
+		// Get the userdata.
 		$user = $object->get('user');
 
 		// Get the user's options.
@@ -459,7 +461,7 @@ class Breeze extends Pimple\Container
 				'time' => time(),
 				'extra' => array(
 					'originalAuthor' => $originalAuthor ? $originalAuthor : 0,
-					'like_type' => $this->_likeTypes[$object->get('type')],
+					'like_type' => $this->_likeTypes[$type],
 					'toLoad' => array($user['id'], $originalAuthor),
 				),
 			));
@@ -467,7 +469,7 @@ class Breeze extends Pimple\Container
 		// Fire up a notification.
 		$this['query']->insertNoti(array(
 			'user' => $user['id'],
-			'like_type' => $this->_likeTypes[$object->get('type')],
+			'like_type' => $this->_likeTypes[$type],
 			'content' => $object->get('content'),
 			'numLikes' => $object->get('numLikes'),
 			'extra' => $object->get('extra'),
@@ -476,7 +478,7 @@ class Breeze extends Pimple\Container
 			'time' => time(),
 		), Breeze::$txtpattern .'like');
 
-		$this['query']->updateLikes($this->_likeTypes[$object->get('type')], $object->get('content'), $object->get('numLikes'));
+		$this['query']->updateLikes($this->_likeTypes[$type], $object->get('content'), $object->get('numLikes'));
 	}
 
 	public function handleLikes($type, $content)
