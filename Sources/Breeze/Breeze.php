@@ -430,25 +430,8 @@ class Breeze extends Pimple\Container
 	public function likesUpdate($object)
 	{
 		// Don't do anything if the feature is disable or if this is an "unlike" action.
-		if (!$this['tools']->enable('likes') || $object->get('alreadyLiked'))
+		if (!$this['tools']->enable('likes') || !is_object($object) || $object->get('alreadyLiked'))
 			return;
-
-		$this['query']->updateLikes($this->_likeTypes[$object->get('type')], $object->get('content'), $object->get('numLikes'));
-
-		// Get the userdata
-		$user = $object->get('user');
-
-		// Fire up a notification.
-		$this['query']->insertNoti(array(
-			'user' => $user['id'],
-			'like_type' => $this->_likeTypes[$object->get('type')],
-			'content' => $object->get('content'),
-			'numLikes' => $object->get('numLikes'),
-			'extra' => $object->get('extra'),
-			'alreadyLiked' => $object->get('alreadyLiked'),
-			'validLikes' => $object->get('validLikes'),
-			'time' => time(),
-		), Breeze::$txtpattern .'like');
 
 		// Try and get the user who posted this content.
 		$originalAuthor = 0;
@@ -461,8 +444,11 @@ class Breeze extends Pimple\Container
 		if (!empty($originalAuthor[$authorColumn]))
 			$originalAuthor = $originalAuthor[$authorColumn];
 
+		// Get the userdata
+		$user = $object->get('user');
+
 		// Get the user's options.
-		$uOptions = $this['query']->getUserSettings($originalAuthor);
+		$uOptions = $this['query']->getUserSettings($user['id']);
 
 		// Insert an inner alert if the user wants to.
 		if (!empty($uOptions['alert_like']))
@@ -477,6 +463,20 @@ class Breeze extends Pimple\Container
 					'toLoad' => array($user['id'], $originalAuthor),
 				),
 			));
+
+		// Fire up a notification.
+		$this['query']->insertNoti(array(
+			'user' => $user['id'],
+			'like_type' => $this->_likeTypes[$object->get('type')],
+			'content' => $object->get('content'),
+			'numLikes' => $object->get('numLikes'),
+			'extra' => $object->get('extra'),
+			'alreadyLiked' => $object->get('alreadyLiked'),
+			'validLikes' => $object->get('validLikes'),
+			'time' => time(),
+		), Breeze::$txtpattern .'like');
+
+		$this['query']->updateLikes($this->_likeTypes[$object->get('type')], $object->get('content'), $object->get('numLikes'));
 	}
 
 	public function handleLikes($type, $content)
