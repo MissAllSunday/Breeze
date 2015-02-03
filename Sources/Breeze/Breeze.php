@@ -434,17 +434,21 @@ class Breeze extends Pimple\Container
 			return;
 
 		$type = $object->get('type');
+		$content = $object->get('content');
+		$extra = $object->get('extra');
+		$numLikes = $object->get('numLikes');
 
 		// Try and get the user who posted this content.
 		$originalAuthor = 0;
+		$originalAuthorData = array();
 		$row = $this->_likeTypes[$type] .'_id';
 		$authorColumn = $this->_likeTypes[$type] .'_poster_id';
 
 		// With the given values, try to find who is the owner of the liked content.
-		$originalAuthor = $this['query']->getSingleValue($this->_likeTypes[$type], $row, $object->get('content'));
+		$originalAuthorData = $this['query']->getSingleValue($this->_likeTypes[$type], $row, $content);
 
-		if (!empty($originalAuthor[$authorColumn]))
-			$originalAuthor = $originalAuthor[$authorColumn];
+		if (!empty($originalAuthorData[$authorColumn]))
+			$originalAuthor = $originalAuthorData[$authorColumn];
 
 		// Get the userdata.
 		$user = $object->get('user');
@@ -454,13 +458,14 @@ class Breeze extends Pimple\Container
 
 		// Insert an inner alert if the user wants to.
 		if (!empty($uOptions['alert_like']))
-			$this->_app['query']->createLog(array(
+			$this['query']->createLog(array(
 				'member' => $user['id'],
 				'content_type' => 'like',
-				'content_id' => $object->get('content'),
+				'content_id' => $content,
 				'time' => time(),
 				'extra' => array(
 					'originalAuthor' => $originalAuthor ? $originalAuthor : 0,
+					'oroginalData' => $originalAuthorData,
 					'like_type' => $this->_likeTypes[$type],
 					'toLoad' => array($user['id'], $originalAuthor),
 				),
@@ -470,15 +475,15 @@ class Breeze extends Pimple\Container
 		$this['query']->insertNoti(array(
 			'user' => $user['id'],
 			'like_type' => $this->_likeTypes[$type],
-			'content' => $object->get('content'),
-			'numLikes' => $object->get('numLikes'),
-			'extra' => $object->get('extra'),
+			'content' => $content,
+			'numLikes' => $numLikes,
+			'extra' => $extra,
 			'alreadyLiked' => $object->get('alreadyLiked'),
 			'validLikes' => $object->get('validLikes'),
 			'time' => time(),
 		), Breeze::$txtpattern .'like');
 
-		$this['query']->updateLikes($this->_likeTypes[$type], $object->get('content'), $object->get('numLikes'));
+		$this['query']->updateLikes($this->_likeTypes[$type], $content, $numLikes);
 	}
 
 	public function handleLikes($type, $content)
