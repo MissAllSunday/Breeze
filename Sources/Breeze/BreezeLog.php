@@ -171,12 +171,15 @@ class BreezeLog
 		if (empty($this->_data[$id]['extra']['contentData']))
 			return;
 
+		// Need to identify the correct key for the wall owner ID.
+		$profileKey = !empty($this->_data[$id]['extra']['contentData']['status_id']) ? 'profile_id' : 'owner_id';
+
 		// If there is no status_id key it means the content was a comment.
 		$url = !empty($this->_data[$id]['extra']['contentData']['status_id']) ? ($this->_data[$id]['extra']['contentData']['status_id'] .';cid='. $this->_data[$id]['extra']['contentData']['id']) : $this->_data[$id]['extra']['contentData']['id'];
 
 		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_like_buddy'), array(
 			'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['contentData']['profile_id'] .';bid=' . $url,
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['contentData'][$profileKey] .';bid=' . $url,
 			'contentOwner' => $this->_usersData[$this->_data[$id]['extra']['contentData']['poster_id']]['link'],
 			'type' => $this->_data[$id]['extra']['type'],
 		));
