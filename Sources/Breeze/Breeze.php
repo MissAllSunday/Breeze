@@ -442,9 +442,9 @@ class Breeze extends Pimple\Container
 		$originalAuthor = 0;
 		$originalAuthorData = array();
 		$row = $this->_likeTypes[$type] .'_id';
-		$authorColumn = $this->_likeTypes[$type] .'_poster_id';
+		$authorColumn = 'poster_id';
 
-		// With the given values, try to find who is the owner of the liked content.
+		// With the given values, try to fetch the data of the liked content.
 		$originalAuthorData = $this['query']->getSingleValue($this->_likeTypes[$type], $row, $content);
 
 		if (!empty($originalAuthorData[$authorColumn]))
@@ -456,17 +456,15 @@ class Breeze extends Pimple\Container
 		// Get the user's options.
 		$uOptions = $this['query']->getUserSettings($user['id']);
 
-		// Insert an inner alert if the user wants to.
-		if (!empty($uOptions['alert_like']))
+		// Insert an inner alert if the user wants to and if the data still is there...
+		if (!empty($uOptions['alert_like']) && !empty($originalAuthorData))
 			$this['query']->createLog(array(
 				'member' => $user['id'],
 				'content_type' => 'like',
 				'content_id' => $content,
 				'time' => time(),
 				'extra' => array(
-					'originalAuthor' => $originalAuthor ? $originalAuthor : 0,
-					'oroginalData' => $originalAuthorData,
-					'like_type' => $this->_likeTypes[$type],
+					'contentData' => $originalAuthorData,
 					'toLoad' => array($user['id'], $originalAuthor),
 				),
 			));
@@ -499,7 +497,7 @@ class Breeze extends Pimple\Container
 			return false;
 
 		$row = $this->_likeTypes[$type] .'_id';
-		$authorColumn = $this->_likeTypes[$type] .'_poster_id';
+		$authorColumn = 'poster_id';
 
 		// With the given values, try to find who is the owner of the liked content.
 		$data = $this['query']->getSingleValue($this->_likeTypes[$type], $row, $content);
