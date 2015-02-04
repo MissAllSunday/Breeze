@@ -155,8 +155,7 @@ class BreezeLog
 		$this->_data[$id]['icon'] = 'comments';
 
 		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text($this->_data[$id]['extra']['buddy_text']), array(
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['wall_owner'] .
-			';bid=' . $this->_data[$id]['extra']['status_id'],
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['wall_owner'] .';bid=' . $this->_data[$id]['extra']['status_id'],
 			'poster' => $this->_usersData[$this->_data[$id]['extra']['poster']]['link'],
 			'status_owner' => $this->_usersData[$this->_data[$id]['extra']['status_owner']]['link'],
 			'wall_owner' => $this->_usersData[$this->_data[$id]['extra']['wall_owner']]['link'],
@@ -168,11 +167,18 @@ class BreezeLog
 		// Add the custom icon.
 		$this->_data[$id]['icon'] = 'thumbs-o-up';
 
-		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text($this->_data[$id]['extra']['buddy_text']), array(
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['wall_owner'] .';bid=' . $this->_data[$id]['extra']['status_id'] .';cid=' . $this->_data[$id]['content_id'] .'#comment_id_' . $this->_data[$id]['content_id'],
-			'poster' => $this->_usersData[$this->_data[$id]['extra']['poster']]['link'],
-			'status_poster' => $this->_usersData[$this->_data[$id]['extra']['status_owner']]['link'],
-			'wall_owner' => $this->_usersData[$this->_data[$id]['extra']['wall_owner']]['link'],
+		// This heavily relies on the liked content data.
+		if (empty($this->_data[$id]['extra']['contentData']))
+			return;
+
+		// If there is no status_id key it means the content was a comment.
+		$url = !empty($this->_data[$id]['extra']['contentData']['status_id']) ? ($this->_data[$id]['extra']['contentData']['status_id'] .';cid='. $this->_data[$id]['extra']['contentData']['id']) : $this->_data[$id]['extra']['contentData']['id'];
+
+		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_like_buddy'), array(
+			'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['contentData']['profile_id'] .';bid=' . $url,
+			'contentOwner' => $this->_usersData[$this->_data[$id]['extra']['contentData']['poster_id']]['link'],
+			'type' => $this->_data[$id]['extra']['type'],
 		));
 	}
 

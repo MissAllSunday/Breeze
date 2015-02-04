@@ -56,7 +56,7 @@ $txt['Breeze_alert_status_owner_buddy'] = '{poster} <a href="{href}" class="bbc_
 
 // Likes
 $txt['Breeze_alert_like'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> your {type}';
-$txt['Breeze_alert_like_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> {comment_owner}\'s {type}';
+$txt['Breeze_alert_like_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> {contentOwner}\'s {type}';
 
 // Cover
 $txt['Breeze_alert_cover'] = '{poster} changed {gender_possessive} cover image<br>{image}';
