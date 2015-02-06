@@ -377,8 +377,9 @@ class Breeze extends Pimple\Container
 	 */
 	public function trackHooks()
 	{
+		// Been the last on the line is cool!
 		foreach ($this->trackHooks as $hook => $function)
-			add_integration_function($hook, 'BreezeTrackActions::'. $function, $permanent = false, '$sourcedir/Breeze/BreezeTrackActions.php', $object = true);
+			add_integration_function($hook, 'BreezeTrackActions::'. $function, false, '$sourcedir/Breeze/BreezeTrackActions.php', true);
 	}
 
 	public function alerts(&$alerts)
