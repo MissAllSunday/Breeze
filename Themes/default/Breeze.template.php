@@ -146,7 +146,7 @@ function template_user_wall()
 
 		if (empty($context['Breeze']['log']))
 			echo '
-			<div class="roundframe">'
+			<div class="information">'
 				, $txt['Breeze_tabs_activity_none'] ,'
 			</div><br />';
 
@@ -407,7 +407,7 @@ function template_general_wall()
 		breeze_status($context['Breeze']['status']);
 
 	else
-		echo '<li class="windowbg">', $txt['Breeze_page_no_status'] ,'</li>';
+		echo '<li class="information">', $txt['Breeze_page_no_status'] ,'</li>';
 
 	// End of list
 	echo '
@@ -444,7 +444,7 @@ function template_general_wall()
 
 	else
 		echo '
-			<div class="roundframe">
+			<div class="information">
 				', $txt['Breeze_tabs_activity_buddies_none'] ,'
 			</div>
 			<br />';
