@@ -167,7 +167,7 @@ function template_user_wall()
 					', $txt['Breeze_tabs_about'] ,'
 				</h3>
 			</div>
-			<div class="inside windowbg">
+			<div class="inside information">
 				<div class="content">';
 
 		echo parse_bbc($context['Breeze']['settings']['owner']['aboutMe']);
