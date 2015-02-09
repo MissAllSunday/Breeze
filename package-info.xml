@@ -28,6 +28,8 @@
 		<remove-dir name="$themedir/scripts/breeze" />
 		<remove-file name="$languagedir/Breeze.english.php" />
 		<remove-file name="$languagedir/Breeze.english-utf8.php" />
+		<remove-file name="$languagedir/BreezeAlerts.english.php" />
+		<remove-file name="$languagedir/BreezeAlerts.english-utf8.php" />
 		<remove-file name="$languagedir/BreezeAdmin.english.php" />
 		<remove-file name="$languagedir/BreezeAdmin.english-utf8.php" />
 	</uninstall>
