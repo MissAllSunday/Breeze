@@ -224,16 +224,6 @@ class BreezeWall
 		// Load it.
 		$status = $this->_app['query']->getStatusByID($data->get('bid'));
 
-		if (!empty($this->userSettings['buddies']))
-		{
-			// Get the latest activity.
-			$context['Breeze']['activity'] = $this->_app['query']->getActivityLog($this->userSettings['buddies']);
-
-			// Load users data.
-			if (!empty($status['users']))
-				$this->_app['tools']->loadUserInfo($status['users']);
-		}
-
 		// Load the users data.
 		$this->_app['tools']->loadUserInfo($status['users']);
 
