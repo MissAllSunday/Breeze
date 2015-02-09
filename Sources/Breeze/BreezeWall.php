@@ -217,6 +217,9 @@ class BreezeWall
 
 		$data = Breeze::data('get');
 
+		// Disable the activity tab
+		$context['Breeze']['disableTabs'] = true;
+
 		// We need the status ID!
 		if (!$data->validate('bid'))
 			fatal_lang_error('no_access', false);

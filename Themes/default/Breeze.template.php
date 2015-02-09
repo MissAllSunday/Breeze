@@ -379,7 +379,8 @@ function template_general_wall()
 
 
 	// Your buddies activity.
-	echo '
+	if (!isset($context['Breeze']['disableTabs']))
+		echo '
 					<li class="activity"><a href="#tab-activity" class="firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_activity'] ,'</span></a></li>';
 	echo '
 				</ul>
@@ -428,30 +429,33 @@ function template_general_wall()
 	echo '
 		</div>';
 
-	echo '
+	if (!isset($context['Breeze']['disableTabs']))
+	{
+		echo '
 		<div id="tab-activity" class="content">';
 
-	// A nice title bar
-	echo '
+		// A nice title bar
+		echo '
 			<div class="cat_bar">
 				<h3 class="catbg">
 						', $txt['Breeze_tabs_activity'] ,'
 				</h3>
 			</div>';
 
-	if (!empty($context['Breeze']['log']))
-		breeze_activity($context['Breeze']['log']);
+		if (!empty($context['Breeze']['log']))
+			breeze_activity($context['Breeze']['log']);
 
-	else
-		echo '
+		else
+			echo '
 			<div class="information">
 				', $txt['Breeze_tabs_activity_buddies_none'] ,'
 			</div>
 			<br />';
 
-	// End of activity
-	echo '
+		// End of activity
+		echo '
 		</div>';
+	}
 
 	// End of profileview div
 	echo '
