@@ -31,15 +31,13 @@ function template_admin_home()
 			<div id="live_news" class="floatleft">
 				<div class="cat_bar">
 					<h3 class="catbg">
-						<span class="ie6_header floatleft">', $txt['Breeze_live'] , '</span>
+						', $txt['Breeze_live'] , '
 					</h3>
 				</div>
-				<div class="windowbg nopadding">
-					<span class="topslice"><span></span></span>
+				<div class="information">
 					<div class="content" id="breezelive">
 						<div id="breezelive"></div>
 					</div>
-					<span class="botslice"><span></span></span>
 				</div>
 			</div>';
 
@@ -51,8 +49,7 @@ function template_admin_home()
 						', $txt['support_title'], '
 					</h3>
 				</div>
-				<div class="windowbg nopadding">
-					<span class="topslice"><span></span></span>
+				<div class="information">
 					<div class="content">
 						<div id="version_details">
 							<strong>', $txt['support_versions'], ':</strong><br />
@@ -64,17 +61,15 @@ function template_admin_home()
 	echo '
 						</div>
 					</div>
-					<span class="botslice"><span></span></span>
 				</div>
 			</div>
-		<br class="clear" />
+		<div class="clear" />
 			<div class="cat_bar">
 				<h3 class="catbg">
-					<span class="ie6_header floatleft">', $txt['Breeze_page_credits'] , '</span>
+					', $txt['Breeze_page_credits'] , '
 				</h3>
 			</div>
-			<div class="windowbg nopadding">
-				<span class="topslice"><span></span></span>
+			<div class="information">
 				<div class="content" id="breezelive">
 					<p>', $txt['Breeze_page_credits_decs'] ,'</p>';
 
@@ -100,7 +95,6 @@ function template_admin_home()
 
 	echo '
 				</div>
-				<span class="botslice"><span></span></span>
 			</div>
 		</div>
 	</div>
