@@ -19,6 +19,7 @@
 	<uninstall for="2.0 - 2.0.99">
 		<code>remove.php</code>
 		<database>install.php</database>
+		<remove-dir name="$boarddir/breezeFiles/moods" />
 		<remove-dir name="$sourcedir/Breeze" />
 		<remove-file name="$themedir/Breeze.template.php" />
 		<remove-file name="$themedir/BreezeAdmin.template.php" />

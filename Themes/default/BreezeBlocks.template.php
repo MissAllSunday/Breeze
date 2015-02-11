@@ -25,7 +25,7 @@ function template_breeze_buddies()
 		</div>';
 
 		echo '
-		<div class="windowbg2">
+		<div class="information">
 			<div class="BreezeList">';
 
 		if (!empty($context['member']['buddies']))
@@ -56,7 +56,7 @@ function template_breeze_visitors()
 		</div>';
 
 		echo '
-		<div class="windowbg2">
+		<div class="information">
 			<div class="BreezeList">';
 
 		if (!empty($context['Breeze']['views']))

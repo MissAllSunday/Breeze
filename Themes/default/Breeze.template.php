@@ -39,28 +39,20 @@ function template_user_wall()
 
 	theme_linktree();
 
+	// Begins block's div.
 	echo '
-		<div class="blocks">
-			<div class="windowbg stripes">
-				some content
-			</div>
-			<div class="windowbg2">
-				some content
-			</div>
-			<div class="windowbg stripes">
-				some content
-			</div>
-			<div class="windowbg stripes">
-				some content
-			</div>
-			<div class="windowbg stripes">
-				some content
-			</div>
-		</div>
-		<div class="wallContent">';
+		<div class="blocks">';
+
+	template_breeze_buddies();
+	template_breeze_visitors();
+
+	// Ends block's div.
+	echo '
+		</div>';
 
 	// Tabs
 	echo '
+		<div class="wallContent">
 			<div id="Breeze_tabs">
 				<ul class="breezeTabs dropmenu">
 					<li class="wall"><a href="#tab-wall" class="active firstlevel"><span class="firstlevel">', $txt['Breeze_tabs_wall'] ,'</span></a></li>';

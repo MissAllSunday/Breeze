@@ -33,6 +33,7 @@ class BreezeUser extends Breeze
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
+		loadtemplate(Breeze::$name .'Blocks');
 		loadLanguage(Breeze::$name);
 
 		// We kinda need all this stuff, don't ask why, just nod your head...

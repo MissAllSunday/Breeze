@@ -48,7 +48,8 @@ div.username h1, div.username h1 a{
 	float:left;
 	max-width:29%;
 	width:29%;
-	margin: 0px 5px 0px 5px;
+	margin: 0px 0 0px 5px;
+	padding: 20px 0 0 0;
 }
 
 .wallContent{
