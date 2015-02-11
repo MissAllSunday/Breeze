@@ -116,9 +116,12 @@ function template_user_wall()
 	// Pagination
 	if (!empty($context['page_index']))
 			echo '
-			<div class="pagelinks floatleft">
+			<div class="floatleft">
+				<div class="pagesection">
 					', $context['page_index'], ' &nbsp;&nbsp;<a href="#wrapper"><strong>' . $txt['go_up'] . '</strong></a>
-			</div>';
+				</div>
+			</div>
+			<br>';
 	// Wall end
 	echo '
 		</div>';

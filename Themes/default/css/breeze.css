@@ -25,9 +25,6 @@
 	height:auto;
 }
 .header div.username{
-	position: absolute;
-	bottom: 0;
-	left:25%;
 }
 div.username h1, div.username h1 a{
 	text-align:left;
@@ -39,8 +36,6 @@ div.username h1, div.username h1 a{
 .header div.avatar{
 	z-index: 3;
 	float:left;
-	min-width: 140px;
-	max-width: 240px;
 	margin-right:10px;
 }
 
