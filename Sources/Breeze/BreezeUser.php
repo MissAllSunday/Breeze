@@ -43,6 +43,9 @@ class BreezeUser extends Breeze
 		$log = $this['log'];
 		$usersToLoad = array();
 
+		// do not show the load time stuff.
+		$context['show_load_time'] = false;
+
 		// Default values.
 		$status = array();
 		$context['Breeze'] = array(

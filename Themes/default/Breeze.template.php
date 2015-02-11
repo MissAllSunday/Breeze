@@ -43,6 +43,7 @@ function template_user_wall()
 	echo '
 		<div class="blocks">';
 
+	template_breeze_info();
 	template_breeze_buddies();
 	template_breeze_visitors();
 
