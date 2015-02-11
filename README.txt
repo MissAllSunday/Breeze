@@ -3,7 +3,7 @@
 
 Created by [url=http://missallsunday.com]Suki[/url]
 
-[b]This mod needs PHP 5.3 or greater and SMF 2.0.x or greater[/b]
+[b]This mod needs PHP 5.3 or greater and SMF 2.1 or greater[/b]
 
 [color=purple][b][size=12pt]License[/size][/b][/color]
 [code]
@@ -30,6 +30,9 @@ Breeze is a social mod for your users to turn their dull profile into a dynamic 
 - Users individual settings, each user defines her/his own settings.
 - Mentions for status and comments.
 - Notifications for several features.
+- Alerts for status and mentions.
+- My mood feature.
+- Cover upload to their wall.
 - General wall page for displaying your buddies latest activity.
 - Couple of blocks for showing your buddies, visitors, latest activity and about me block.
 - Works with or without JavaScript.
