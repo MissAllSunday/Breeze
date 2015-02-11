@@ -176,6 +176,7 @@ function template_user_wall()
 	</div>';
 
 	// Get the message from the server
+	template_body_below();
 	template_html_below();
 }
 
