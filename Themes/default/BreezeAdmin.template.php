@@ -144,14 +144,11 @@ function template_manage_mood_edit()
 		<form action="', $scripturl, '?action=admin;area=breezeadmin;sa=moodEdit;save=1'. (!empty($context['mood']['id']) ? ';moodID='. $context['mood']['id'] .'' : '') .'" method="post" accept-charset="', $context['character_set'], '" name="mood" id="mood">
 			<div class="cat_bar">
 				<h3 class="catbg">
-					<span class="ie6_header floatleft">
-						', $context['page_title'] , '
-					</span>
+					', $context['page_title'] , '
 				</h3>
 			</div>
 			<div class="windowbg2">
-				<span class="topslice"><span></span></span>
-					<div class="content">';
+				<div class="content">';
 
 		// Print the form
 		echo $context['mood']['form'];
@@ -161,7 +158,6 @@ function template_manage_mood_edit()
 
 		echo '
 				</div>
-				<span class="botslice"><span></span></span>
 			</div>
 			<br />
 		</form>';
@@ -176,17 +172,8 @@ function template_admin_donate()
 		<div class="cat_bar">
 			<h3 class="catbg">', $context['page_title'] ,'</h3>
 		</div>
-		<span class="clear upperframe">
-			<span></span>
-		</span>
-		<div class="roundframe rfix">
-			<div class="innerframe">
-				<div class="content">
-					',$context['Breeze']['donate'],'
-				</div>
-			</div>
+		<div class="information">
+			',$context['Breeze']['donate'],'
 		</div>
-		<span class="lowerframe">
-			<span></span>
-		</span><br />';
+		<br />';
 }
