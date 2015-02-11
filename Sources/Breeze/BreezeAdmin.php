@@ -427,7 +427,10 @@ class BreezeAdmin
 		$form = $this->_app['form'];
 
 		// Group all these values into an array. Makes it easier to save the changes.
-		$form->setFormName('mood');
+		$form->setOptions(array(
+			'name' => 'mood',
+			'character_set' => $context['character_set'],
+		));
 
 		// Session stuff.
 		$form->addHiddenField($context['session_var'], $context['session_id']);
