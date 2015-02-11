@@ -278,6 +278,9 @@ class BreezeAdmin
 			'no_items_label' => $txt['icons_no_entries'],
 			'columns' => array(
 				'icon' => array(
+					'header' => array(
+						'value' => $this->_app['tools']->text('mood_image'),
+					),
 					'data' => array(
 						'function' => function ($rowData) use($context, $txt)
 						{
@@ -289,6 +292,19 @@ class BreezeAdmin
 
 							else
 								return $txt['Breeze_mood_noFile'];
+						},
+						'class' => 'centercol',
+					),
+				),
+				'enable' => array(
+					'header' => array(
+						'value' => $this->_app['tools']->text('mood_enable'),
+					),
+					'data' => array(
+						'function' => function ($rowData) use($txt)
+						{
+								$enable = !empty($rowData['enable']) ? 'enable' : 'disable';
+								return $txt['Breeze_mood_'. $enable];
 						},
 						'class' => 'centercol',
 					),
@@ -391,6 +407,7 @@ class BreezeAdmin
 			redirectexit('action=admin;area=breezeadmin');
 
 		$data = Breeze::data('request');
+		$context['mood'] = array();
 
 		// If editing, pass the ID to the template.
 		$context['mood']['id'] = $data->get('moodID') ? $data->get('moodID') : false;
@@ -402,7 +419,6 @@ class BreezeAdmin
 			'description' => $this->_app['tools']->text('page_mood_edit_'.($context['mood']['id'] ? 'update' : 'create') .'_desc'),
 		);
 		$context['sub_template'] = 'manage_mood_edit';
-		$context['mood'] = array();
 		$context['mood']['imagesUrl'] = $this->_app['mood']->getImagesUrl();
 		$context['mood']['imagesPath'] = $this->_app['mood']->getImagesPath();
 		$mood = array();
@@ -430,14 +446,11 @@ class BreezeAdmin
 		$form->setOptions(array(
 			'name' => 'mood',
 			'character_set' => $context['character_set'],
+			'url' => $this->_app['tools']->scriptUrl .'?action=admin;area=breezeadmin;sa=moodEdit;save=1'. (!empty($context['mood']['id']) ? ';moodID='. $context['mood']['id'] .'' : '') .'',
 		));
-
-		// Session stuff.
-		$form->addHiddenField($context['session_var'], $context['session_id']);
 
 		// Set the right prefix.
 		$form->setTextPrefix('mood_', 'admin');
-
 		// Name.
 		$form->addText(
 			'name',
@@ -465,7 +478,12 @@ class BreezeAdmin
 			!empty($mood['enable']) ? true : false
 		);
 
+		// Session stuff.
+		$form->addHiddenField($context['session_var'], $context['session_id']);
+
 		$form->addHr();
+
+		$form->addButton('submit');
 
 		// Send the form to the template
 		$context['mood']['form'] = $form->display();
@@ -515,7 +533,7 @@ class BreezeAdmin
 					'type' => 'error',
 					'data' => $mood,
 				);
-				return redirectexit('action=admin;area=breezeadmin;sa=moodEdit'. ($data->get('moodID') ? ';moodID='. $data->get('mooID') : ''));
+				return redirectexit('action=admin;area=breezeadmin;sa=moodEdit'. ($data->get('moodID') ? ';moodID='. $data->get('moodID') : ''));
 			}
 
 			// Provide some default values as needed.
@@ -544,7 +562,7 @@ class BreezeAdmin
 			return redirectexit('action=admin;area=breezeadmin;sa=moodList');
 		}
 	}
-	
+
 	function cover()
 	{
 		global $context, $txt;

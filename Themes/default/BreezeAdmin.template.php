@@ -139,28 +139,8 @@ function template_manage_mood_edit()
 		</div><br />';
 	}
 
-		// Print out our form.
-		echo '
-		<form action="', $scripturl, '?action=admin;area=breezeadmin;sa=moodEdit;save=1'. (!empty($context['mood']['id']) ? ';moodID='. $context['mood']['id'] .'' : '') .'" method="post" accept-charset="', $context['character_set'], '" name="mood" id="mood">
-			<div class="cat_bar">
-				<h3 class="catbg">
-					', $context['page_title'] , '
-				</h3>
-			</div>
-			<div class="windowbg2">
-				<div class="content">';
-
-		// Print the form
-		echo $context['mood']['form'];
-
-		// Print the save button.
-		echo '<input type="submit" name="submit" value="', $txt['save'] ,'" class="button_submit"/>';
-
-		echo '
-				</div>
-			</div>
-			<br />
-		</form>';
+	// Print the form
+	echo $context['mood']['form'];
 }
 
 // Boring stuff you will never see...

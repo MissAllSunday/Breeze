@@ -48,6 +48,7 @@ class BreezeData
 	{
 		if ($this->validate($value))
 			return $this->sanitize($this->_request[$value]);
+
 		else
 			return false;
 	}
