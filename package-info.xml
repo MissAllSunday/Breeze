@@ -6,7 +6,7 @@
 	<version>1.1</version>
 	<type>modification</type>
 
-	<install for="2.0 - 2.0.99">
+	<install for="2.1, 2.1 Beta 1">
 	<readme parsebbc="true">README.txt</readme>
 		<code>hooks.php</code>
 		<database>install.php</database>
@@ -16,7 +16,7 @@
 		<redirect url="$scripturl?action=admin;area=breezeadmin;sa=general" timeout="3000">redirect.txt</redirect>
 	</install>
 
-	<uninstall for="2.0 - 2.0.99">
+	<uninstall for="2.1, 2.1 Beta 1">
 		<code>remove.php</code>
 		<database>install.php</database>
 		<remove-dir name="$boarddir/breezeFiles/moods" />
@@ -24,7 +24,7 @@
 		<remove-file name="$themedir/Breeze.template.php" />
 		<remove-file name="$themedir/BreezeAdmin.template.php" />
 		<remove-file name="$themedir/BreezeBlocks.template.php" />
-		<remove-file name="$themedir/BreezeFunctions.template.template.php" />
+		<remove-file name="$themedir/BreezeFunctions.template.php" />
 		<remove-file name="$themedir/css/breeze.css" />
 		<remove-dir name="$themedir/scripts/breeze" />
 		<remove-file name="$languagedir/Breeze.english.php" />
