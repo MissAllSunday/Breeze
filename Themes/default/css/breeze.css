@@ -58,7 +58,6 @@ div.username h1, div.username h1 a{
 /* Replace the evil overflow: hidden! */
 .infoList {
 	width:100%;
-	float:none;
 }
 .infoList h4 {
 	font-size: 1.4em;

@@ -167,6 +167,7 @@ $(function() {
 		event.preventDefault();
 		var title = DOMPurify.sanitize(jQuery(this).data('name')),
 			url = DOMPurify.sanitize(jQuery(this).attr('href') + ';js=1');
+
 		return reqOverlayDiv(url, title);
 	});
 

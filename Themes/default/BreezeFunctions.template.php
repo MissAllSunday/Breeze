@@ -230,74 +230,6 @@ function breeze_comment($comments, $returnVar = false)
 		echo $echo;
 }
 
-function breeze_profile_owner()
-{
-	global $context, $txt, $settings, $scripturl;
-
-	// User info, details
-	echo '
-	<div class="cat_bar">
-		<h3 class="catbg">
-			<span id="author">
-				', $txt['Breeze_tabs_pinfo'], '
-		</h3>
-	</div>
-	<div class="windowbg BreezeBlock">
-		<span class="topslice">
-		<span> </span>
-		</span>
-		<div class="content BreezeInfoBlock">';
-	echo '
-				<div class="username"><h4>', $context['member']['name'] ,'<br/><span class="position">', (!empty($context['member']['group']) ? $context['member']['group'] : $context['member']['post_group']), '</span></h4></div>
-				', $context['member']['avatar']['image'], '
-				<ul class="reset">';
-
-	// What about if we allow email only via the forum??
-	if ($context['member']['show_email'] === 'yes' || $context['member']['show_email'] === 'no_through_forum' || $context['member']['show_email'] === 'yes_permission_override')
-		echo '
-					<li><a href="', $scripturl, '?action=emailuser;sa=email;uid=', $context['member']['id'], '" title="', $context['member']['show_email'] == 'yes' || $context['member']['show_email'] == 'yes_permission_override' ? $context['member']['email'] : '', '" rel="nofollow"><img src="', $settings['images_url'], '/email_sm.gif" alt="', $txt['email'], '" /></a></li>';
-
-	// Don't show an icon if they haven't specified a website.
-	if ($context['member']['website']['url'] !== '' && !isset($context['disabled_fields']['website']))
-		echo '
-					<li><a href="', $context['member']['website']['url'], '" title="' . $context['member']['website']['title'] . '" target="_blank" class="new_win">', ($settings['use_image_buttons'] ? '<img src="' . $settings['images_url'] . '/www_sm.gif" alt="' . $context['member']['website']['title'] . '" />' : $txt['www']), '</a></li>';
-
-	// Are there any custom profile fields for the summary?
-	if (!empty($context['custom_fields']))
-	{
-		foreach ($context['custom_fields'] as $field)
-			if (($field['placement'] == 1 || empty($field['value'])) && !empty($field['value']))
-				echo '
-					<li class="custom_field">', $field['value'], '</li>';
-	}
-
-	echo '
-			</ul>
-			<span id="userstatus">', $context['can_send_pm'] ? $context['member']['online']['link'] : $context['member']['online']['text'];
-
-	// Can they add this member as a buddy?
-	if (!empty($context['can_have_buddy']) && !$context['member']['is_owner'])
-		echo '
-			<br /><a href="', $scripturl, '?action=buddy;u=', $context['id_member'], ';', $context['session_var'], '=', $context['session_id'], '">[', $txt['buddy_' . ($context['member']['is_buddy'] ? 'remove' : 'add')], ']</a>';
-
-	if (!$context['member']['is_owner'] && $context['can_send_pm'])
-		echo '
-			<br /><a href="', $scripturl, '?action=pm;sa=send;u=', $context['id_member'], '">', $txt['profile_sendpm_short'], '</a>';
-	echo '
-			<br /><a href="', $scripturl, '?action=profile;area=showposts;u=', $context['id_member'], '">', $txt['showPosts'], '</a><br />
-			<a href="', $scripturl, '?action=profile;area=statistics;u=', $context['id_member'], '">', $txt['statPanel'], '</a>';
-
-	echo '
-			<br /></span>';
-
-	echo'
-		</div>
-		<span class="botslice">
-		<span> </span>
-		</span>
-	</div>';
-}
-
 function breeze_activity($data)
 {
 	global $context, $txt;
@@ -414,8 +346,9 @@ function breeze_server_response()
 
 function template_userDiv()
 {
-	global $context, $settings, $modSettings, $txt, $scripturl;
+	global $context, $settings, $modSettings, $txt, $scripturl, $modSettings;
 
+	// Since this is a popup of its own we need to start the html, etc.
 	echo '<!DOCTYPE html>
 <html', $context['right_to_left'] ? ' dir="rtl"' : '', '>
 	<head>
@@ -425,11 +358,8 @@ function template_userDiv()
 		<link rel="stylesheet" type="text/css" href="', $settings['theme_url'], '/css/index', $context['theme_variant'], '.css', $modSettings['browser_cache'] ,'">
 		<script src="', $settings['default_theme_url'], '/scripts/script.js', $modSettings['browser_cache'] ,'"></script>
 	</head>
-	<body id="breeze_popup">
-		<div class="windowbg">';
-	if (!empty($context['BreezeUser']))
-	{
-		echo '
+	<body id="help_popup">
+		<div class="description">
 			<div id="basicinfo">
 				<div class="username">
 					<h4>', $context['BreezeUser']['link_color'], '<span class="position">', (!empty($context['BreezeUser']['group']) ? $context['BreezeUser']['group'] : $context['BreezeUser']['post_group']), '</span></h4>
@@ -522,13 +452,10 @@ function template_userDiv()
 				</div>';
 	}
 	echo '
-				</div>
 			</div>
-		<div class="clear"></div>';
-	}
-		// else
-			// some error string here.
-	echo '
+		</div>
+		<div class="clear"></div>
+			<br>
 			<a href="javascript:self.close();">', $txt['close_window'], '</a>
 		</div>
 	</body>

@@ -271,7 +271,8 @@ class BreezeWall
 		$context['sub_template'] = 'userDiv';
 		$context['page_title'] = '';
 
-		$userID = Breeze::data('get')->get('u');
+		$data = Breeze::data('request');
+		$userID = $data->get('u');
 
 		// No ID? shame on you!
 		if (empty($userID))

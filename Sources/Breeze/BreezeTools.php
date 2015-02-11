@@ -320,7 +320,7 @@ class BreezeTools
 				$context['Breeze']['user_info'][$user['id']] = $user;
 
 				// Build the "breezeFacebox" link. Rename "facebox" to "breezeFacebox" in case there are other mods out there using facebox, specially its a[rel*=facebox] stuff.
-				$context['Breeze']['user_info'][$user['id']]['breezeFacebox'] = '<a href="'. $this->scriptUrl .'?action=wall;sa=userdiv;u='. $user['id'] .'" class="avatar" rel="breezeFacebox" data-name="'. (!empty($user['name']) ? $user['name'] : '') .'">'. $user['avatar']['image'] .'</a>';
+				$context['Breeze']['user_info'][$user['id']]['breezeFacebox'] = '<a href="'. $this->scriptUrl .'?action=wall;sa=userdiv;u='. $u .'" class="avatar" rel="breezeFacebox" data-name="'. (!empty($user['name']) ? $user['name'] : '') .'">'. $user['avatar']['image'] .'</a>';
 			}
 
 			// Not a real member, fill out some guest generic vars and be done with it..
