@@ -682,7 +682,7 @@ class BreezeAjax
 			// There isn't a mood with the selected ID.
 			if (!in_array($this->_data->get('moodID'), array_keys($allMoods)))
 				return $this->setResponse(array(
-				'message' => $this->_app['tools']->text('error_server'),
+				'message' => 'error_server',
 				'data' => '',
 				'type' => 'error',
 				'owner' => $this->_currentUser,
@@ -756,7 +756,7 @@ class BreezeAjax
 		// Something happen :(
 		else
 			return $this->setResponse(array(
-				'message' => $this->_app['tools']->text('error_server'),
+				'message' => 'error_server',
 				'data' => '',
 				'type' => 'error',
 				'owner' => $this->_currentUser,
@@ -802,7 +802,7 @@ class BreezeAjax
 		// Fall to a generic server error, this should never happen but just want to be sure...
 		else
 			echo json_encode(array(
-				'message' => $this->_app['tools']->text('error_server'),
+				'message' => 'error_server',
 				'data' => '',
 				'type' => 'error',
 				'owner' => 0,
@@ -823,7 +823,7 @@ class BreezeAjax
 		// Data is empty, fill out a generic response
 		if (empty($data))
 			$data = array(
-				'message' => $this->_app['tools']->text('error_server'),
+				'message' => 'error_server',
 				'data' => '',
 				'type' => 'error',
 				'owner' => 0,

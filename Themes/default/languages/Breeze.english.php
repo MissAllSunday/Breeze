@@ -214,7 +214,7 @@ $txt['Breeze_goTop'] = 'Go to top';
 // Mood feature.
 $txt['Breeze_moodLabel'] = 'mood';
 $txt['Breeze_moodChange'] = 'Change your mood';
-$txt['Breeze_moodChanged'] = 'Your mood has been changed';
+$txt['Breeze_info_moodChanged'] = 'Your mood has been changed';
 
 // Cover error messages.
 $txt['Breeze_cover_errors'] = array(
