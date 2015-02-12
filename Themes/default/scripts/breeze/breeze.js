@@ -225,9 +225,15 @@ $(function() {
 				response.data = jQuery.parseJSON(response.data);
 				// Find all mood images from this user.
 				jQuery(document).find('[data-user=' + response.data.user + ']').html(response.data.image);
+
+				// Close the pop up.
+				jQuery('#smf_popup').fadeOut(300, function(){ $(this).remove(); });
 			},
 			error: function(response){
 				breeze.tools.showNoti(response);
+
+				// Close the pop up.
++				jQuery('#smf_popup').fadeOut(300, function(){ $(this).remove(); });
 			}
 		});
 	});
