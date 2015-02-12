@@ -153,7 +153,7 @@ class BreezeMood
 		// Gotta load our template.
 		loadtemplate(Breeze::$name .'Functions');
 
-		// Pass the imageUrl and this user
+		// Pass the imageUrl and this user.
 		$context['moodUrl'] = $this->imagesUrl;
 
 		return array(
