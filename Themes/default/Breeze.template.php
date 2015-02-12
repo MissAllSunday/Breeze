@@ -88,7 +88,7 @@ function template_user_wall()
 			<div class="inside information">
 				<div class="breeze_user_statusbox">
 						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
-							<textarea name="content" id="statusContent" rel="atwhoMention"></textarea>
+							<textarea name="message" id="statusContent" rel="atwhoMention"></textarea>
 							<input type="hidden" value="', $user_info['id'] ,'" name="statusPoster" id="statusPoster" />
 							<input type="hidden" value="', $context['member']['id'] ,'" name="statusOwner" id="statusOwner" />
 							<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
