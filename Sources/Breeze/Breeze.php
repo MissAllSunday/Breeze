@@ -189,7 +189,7 @@ class Breeze extends Pimple\Container
 			{
 				$profile_areas['info']['areas']['summary'] = array(
 					'label' => $tools->text('general_wall'),
-					'icon' => 'members',
+					'icon' => 'smiley',
 					'file' => Breeze::$folder . 'BreezeUser.php',
 					'function' => 'BreezeUser::wall#',
 					'permission' => array(
@@ -201,7 +201,7 @@ class Breeze extends Pimple\Container
 				// If the mod is enable, then create another page for the default profile page
 				$profile_areas['info']['areas']['static'] = array(
 					'label' => $tools->text('general_summary'),
-					'icon' => 'administration.png',
+					'icon' => 'members',
 					'file' => 'Profile-View.php',
 					'function' => 'summary',
 					'permission' => array(
@@ -294,7 +294,7 @@ class Breeze extends Pimple\Container
 		$counter = 0;
 
 		foreach ($menu_buttons as $area => $dummy)
-			if (++$counter && $area == $insert )
+			if (++$counter && $area == $insert)
 				break;
 
 		$menu_buttons = array_merge(
@@ -380,6 +380,29 @@ class Breeze extends Pimple\Container
 		// Been the last on the line is cool!
 		foreach ($this->trackHooks as $hook => $function)
 			add_integration_function($hook, 'BreezeTrackActions::'. $function, false, '$sourcedir/Breeze/BreezeTrackActions.php', true);
+	}
+
+	/**
+	 * Breeze::profilePopUp()
+	 *
+	 * Adds a few new entries on the pop up menu stuff.
+	 * @return void
+	 */
+	public function profilePopUp(&$profile_items)
+	{
+		global $user_info, $txt;
+
+		// Can't do much is the master setting is off.
+		if (!$this['tools']->enable('master'))
+			return;
+
+		$userSettings = $this['query']->getUserSettings($user_info['id']);
+
+		// Gotta replace the Summary link with the static one if the wall is enable.
+		if ($this['tools']->enable('force_enable') || !empty($userSettings['wall']))
+			foreach ($profile_items as &$item)
+				if ($item['area'] == 'summary')
+					$item['area'] = 'static';
 	}
 
 	public function alerts(&$alerts)

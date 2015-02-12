@@ -30,6 +30,7 @@
 		'integrate_fetch_alerts' => '$sourcedir/Breeze/Breeze.php|Breeze::alerts#',
 		'integrate_alert_types' => '$sourcedir/Breeze/Breeze.php|Breeze::alertsPref#',
 		'integrate_pre_load' => '$sourcedir/Breeze/Breeze.php|Breeze::trackHooks#',
+		'integrate_profile_popup' => '$sourcedir/Breeze/Breeze.php|Breeze::profilePopUp#',
 	);
 
 	// Uninstall please
