@@ -239,7 +239,7 @@ function template_user_notifications()
 
 		// Print the select box
 		echo'
-			<div style="float:right;">
+			<div class="floatright">
 				', $txt['Breeze_noti_selectedOptions'] ,'
 				<select id="multiNotiOption" name="multiNotiOption">
 					', (!$context['Breeze']['is_log'] ? '<option value="">&nbsp;&nbsp;&nbsp;</option>
@@ -262,13 +262,9 @@ function template_user_notifications()
 	{
 		echo '
 		<div class="windowbg2">
-			<span class="topslice"><span></span></span>
 			<div class="content">
 				', $txt['Breeze_noti_none'] ,'
 			</div>
-			<span class="botslice">
-				<span></span>
-			</span>
 		</div>';
 	}
 
@@ -364,7 +360,7 @@ function template_general_wall()
 	// Print the server response
 	breeze_server_response();
 
-	// Start of profileview div
+	// Start of profileview div.
 	echo '
 <div id="profileview" class="flow_auto">';
 
@@ -418,9 +414,12 @@ function template_general_wall()
 	// Pagination
 	if (!empty($context['page_index']))
 		echo '
-			<div class="pagelinks">
-				', $txt['pages'], ': ', $context['page_index'], $context['menu_separator'] . ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
-			</div>';
+			<div class="floatleft">
+				<div class="pagesection">
+					', $context['page_index'], ' &nbsp;&nbsp;<a href="#profileview"><strong>' . $txt['go_up'] . '</strong></a>
+				</div>
+			</div>
+			<br>';
 
 	// Wall end
 	echo '

@@ -29,6 +29,7 @@ function breeze_status($data, $returnVar = false)
 					<h3 class="catbg">
 						<span id="author">
 							'. sprintf($txt['Breeze_general_posted_on'], $context['Breeze']['user_info'][$status['owner_id']]['link']) .'
+						</span>
 					</h3>
 				</div>';
 
