@@ -122,6 +122,8 @@ class BreezeAjax
 	{
 		checkSession('request', '', false);
 
+		require_once($this->_app['tools']->sourceDir . '/Mentions.php');
+
 		// Get the data.
 		$this->_data = Breeze::data('request');
 
@@ -129,11 +131,7 @@ class BreezeAjax
 		$owner = $this->_data->get('statusOwner');
 		$poster = $this->_data->get('statusPoster');
 		$content = $this->_data->get('message');
-		$mentions = array();
-
-		// Any mentions?
-		if ($this->_data->get('mentions'))
-			$mentions = array_filter($this->_data->get('mentions'));
+		$mentionedUsers = array();
 
 		// Sorry, try to play nicer next time
 		if (!$owner || !$poster || !$content)
@@ -147,6 +145,13 @@ class BreezeAjax
 		if ($this->_currentUser != $owner)
 			allowedTo('breeze_postStatus');
 
+		// Any mentions?
+		if ($this->_app['tools']->modSettings('enable_mentions') && allowedTo('mention'))
+		{
+			$mentionedUsers = Mentions::getMentionedMembers($msgOptions['body']);
+			$content = Mentions::getBody($content, $mentionedUsers);
+		}
+
 		$body = $this->_data->validateBody($content);
 
 		// Do this only if there is something to add to the database
@@ -156,7 +161,7 @@ class BreezeAjax
 				'owner_id' => $owner,
 				'poster_id' => $poster,
 				'time' => time(),
-				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $mentions) : $body,
+				'body' => $body,
 			);
 
 			// Maybe a last minute change before inserting the new status?
@@ -177,6 +182,21 @@ class BreezeAjax
 			{
 				// Time to fire up some notifications...
 				$this->_app['query']->insertNoti($this->_params, 'status');
+
+				// Any mentions? fire up some notifications.
+				if (!empty($mentionedUsers))
+				{
+					$mentionData = $this->_params;
+
+					// Add the mentioned users.
+					$mentionData['users'] = $mentionedUsers;
+
+					// Don't really need the body.
+					unset($mentionData['body']);
+
+					// Done!
+					$this->_app['query']->insertNoti($mentionData, 'mention');
+				}
 
 				// Likes.
 				if (!empty($this->_app['tools']->modSettings('enable_likes')))
