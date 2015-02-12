@@ -179,12 +179,14 @@ class BreezeUser extends Breeze
 		loadJavascriptFile('breeze/breezePost.js', array('default_theme' => true, 'defer' => true,));
 		loadJavascriptFile('breeze/breezeTabs.js', array('default_theme' => true, 'defer' => true,));
 
+		if (!empty($modSettings['enable_mentions']) && allowedTo('mention'))
+		{
+			loadJavascriptFile('jquery.atwho.js', array('default_theme' => true, 'defer' => true), 'smf_atwho');
+			loadJavascriptFile('mentions.js', array('default_theme' => true, 'defer' => true), 'smf_mention');
+		}
+
 		// Load the icon's css.
 		loadCSSFile('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', array('external' => true));
-
-		// Are mentions enabled?
-		// if ($tools->enable('mention'))
-			// loadJavascriptFile('breezeMention.js', array('local' => true, 'default_theme' => true));
 
 		// Does the user wants to use the load more button?
 		if (!empty($context['Breeze']['settings']['visitor']['load_more']))

@@ -45,7 +45,7 @@ class BreezeWall
 	 */
 	public function call()
 	{
-		global $context, $user_info;
+		global $context, $user_info, $modSettings;
 
 		// Handling the subactions
 		$data = Breeze::data('get');
@@ -86,14 +86,17 @@ class BreezeWall
 	breeze.tools.comingFrom = "'. $context['Breeze']['comingFrom'] .'";');
 
 		// These file are only used here and on the profile wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
+		loadJavascriptFile('breeze/breezePost.js', array('default_theme' => true, 'defer' => true,));
 		loadJavascriptFile('breezeTabs.js', array('local' => true, 'default_theme' => true));
+
+		if (!empty($modSettings['enable_mentions']) && allowedTo('mention'))
+		{
+			loadJavascriptFile('jquery.atwho.js', array('default_theme' => true, 'defer' => true), 'smf_atwho');
+			loadJavascriptFile('mentions.js', array('default_theme' => true, 'defer' => true), 'smf_mention');
+		}
 
 		// Load the icon's css.
 		loadCSSFile('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', array('external' => true));
-
-		// Are mentions enabled?
-		// if ($this->_app['tools']->enable('mention'))
-			// loadJavascriptFile('breezeMention.js', array('local' => true, 'default_theme' => true));
 
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
