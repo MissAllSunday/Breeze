@@ -1510,7 +1510,7 @@ class BreezeQuery
 				'poster_id' => $row['status_poster_id'],
 				'time' => $this->_app['tools']->timeElapsed($row['status_time']),
 				'time_raw' => $row['status_time'],
-				'body' => $this->_app['parser']->display($row['status_body']),
+				'body' => parse_bbc($row['status_body']),
 				'comments' => array(),
 				'canHas' => $this->_app['tools']->permissions('Status', $row['status_owner_id'], $row['status_poster_id']),
 				'likes' => array(),
@@ -1535,7 +1535,7 @@ class BreezeQuery
 				'profile_id' => $row['comments_profile_id'],
 				'time' => $this->_app['tools']->timeElapsed($row['comments_time']),
 				'time_raw' => $row['comments_time'],
-				'body' => $this->_app['parser']->display($row['comments_body']),
+				'body' => parse_bbc($row['comments_body']),
 				'canHas' => $this->_app['tools']->permissions('Comments', $row['comments_profile_id'], $row['comments_poster_id']),
 				'likes' => array(),
 			);
