@@ -158,7 +158,7 @@ class BreezeAjax
 		if (!empty($body))
 		{
 			$this->_params = array(
-				'owner_id' => $owner,
+				'profile_id' => $owner,
 				'poster_id' => $poster,
 				'time' => time(),
 				'body' => $body,
