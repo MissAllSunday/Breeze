@@ -136,8 +136,6 @@ $txt['permissiongroup_simple_breeze_per_simple'] = 'Breeze mod permissions';
 $txt['permissiongroup_breeze_per_classic'] = 'Breeze mod permissions';
 $txt['permissionname_breeze_canCover'] = 'Be able to upload an image as cover for their own wall <br /><span class="smalltext">  The master setting needs to be enable first.</span>';
 $txt['permissionname_breeze_canMood'] = 'Be able to set a mood<br /><span class="smalltext">  The master setting needs to be enable first.</span>';
-$txt['permissionname_breeze_canMention'] = 'Be able to mention<br /><span class="smalltext">  Option to be able to mention other people</span>';
-$txt['permissionname_breeze_beMentioned'] = 'Appear on the mention list<br /><span class="smalltext">  If the user has the permissions, other users will be able to mention this user.</span>';
 $txt['permissionname_breeze_deleteStatus'] = 'Delete all status on any wall<br /><span class="smalltext">  This overwrites any other delete permission the user might have. Deleting a status also deletes all comments associated with it.</span>';
 $txt['permissionname_breeze_canLike'] = 'Be able to like a comment or a status on every wall.';
 $txt['permissionname_breeze_deleteComments'] = 'Delete all comments on any wall<br /><span class="smalltext">  This overwrites ant other delete comment permission the user might have.</span>';
