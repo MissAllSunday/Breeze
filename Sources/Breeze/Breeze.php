@@ -421,19 +421,12 @@ class Breeze extends Pimple\Container
 			''. Breeze::$txtpattern . 'comment_status_owner' => array('alert' => 'yes', 'email' => 'never'),
 			''. Breeze::$txtpattern . 'comment_profile_owner' => array('alert' => 'yes', 'email' => 'never'),
 			''. Breeze::$txtpattern . 'mention' => array('alert' => 'yes', 'email' => 'never'),
+			''. Breeze::$txtpattern . 'like' => array('alert' => 'yes', 'email' => 'never'),
 		);
-
-		// Are likes enable?
-		if ($this['tools']->enable('likes'))
-			$alert_types['breeze'][Breeze::$txtpattern . 'like'] = array('alert' => 'yes', 'email' => 'never');
 	}
 
 	public function likes($type, $content, $sa, $js, $extra)
 	{
-		// Don't do anything if the feature is disable.
-		if (!$this['tools']->enable('likes'))
-			return;
-
 		// Don't bother with any other like types.
 		if (!in_array($type, array_keys($this->_likeTypes)))
 			return false;
@@ -450,10 +443,6 @@ class Breeze extends Pimple\Container
 
 	public function likesUpdate($object)
 	{
-		// Don't do anything if the feature is disable or if this is an "unlike" action.
-		if (!$this['tools']->enable('likes') || !is_object($object) || $object->get('alreadyLiked'))
-			return;
-
 		$type = $object->get('type');
 		$content = $object->get('content');
 		$extra = $object->get('extra');
@@ -508,10 +497,6 @@ class Breeze extends Pimple\Container
 
 	public function handleLikes($type, $content)
 	{
-		// Don't do anything if the feature is disable.
-		if (!$this['tools']->enable('likes'))
-			return;
-
 		$data = array();
 
 		// Don't bother with any other like types...

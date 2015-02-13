@@ -130,7 +130,6 @@ class BreezeAdmin
 			array('int', Breeze::$txtpattern .'allowed_max_num_users', 'size' => 3, 'subtext' => $this->_app['tools']->text('allowed_max_num_users_sub')),
 			array('check', Breeze::$txtpattern .'parseBBC', 'subtext' => $this->_app['tools']->text('parseBBC_sub')),
 			array('int', Breeze::$txtpattern .'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this->_app['tools']->text('allowed_maxlength_aboutMe_sub')),
-			array('check', Breeze::$txtpattern .'likes', 'subtext' => $this->_app['tools']->text('likes_sub')),
 			array('check', Breeze::$txtpattern .'mood', 'subtext' => $this->_app['tools']->text('mood_sub')),
 			array('text', Breeze::$txtpattern .'mood_label', 'subtext' => $this->_app['tools']->text('mood_label_sub')),
 			array('select', Breeze::$txtpattern .'mood_placement',
