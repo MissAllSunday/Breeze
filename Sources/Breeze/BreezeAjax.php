@@ -191,11 +191,15 @@ class BreezeAjax
 					// Add the mentioned users.
 					$mentionData['users'] = $mentionedUsers;
 
+					// The inner type.
+					$mentionedUsers['innerType'] = 'sta';
+
 					// Don't really need the body.
 					unset($mentionData['body']);
 
 					// Done!
 					$this->_app['query']->insertNoti($mentionData, 'mention');
+					unset($mentionData);
 				}
 
 				// Likes.
@@ -250,11 +254,7 @@ class BreezeAjax
 		$poster = $this->_data->get('poster');
 		$owner = $this->_data->get('owner');
 		$content = $this->_data->get('message');
-		$mentions = array();
-
-		// So, you're popular huh?
-		if ($this->_data->get('mentions'))
-			$mentions = $this->_data->get('mentions');
+		$mentionedUsers = array();
 
 		// Sorry, try to play nice next time
 		if (!$statusID || !$statusPoster || !$poster || !$owner || !$content)
@@ -268,12 +268,19 @@ class BreezeAjax
 		if ($this->_currentUser != $owner)
 			allowedTo('breeze_postComments');
 
-		// Load all the things we need
+		// So, you're popular huh?
+		if ($this->_app['tools']->modSettings('enable_mentions') && allowedTo('mention'))
+		{
+			$mentionedUsers = Mentions::getMentionedMembers($msgOptions['body']);
+			$content = Mentions::getBody($content, $mentionedUsers);
+		}
+
+		// Load all the things we need.
 		$idExists = $this->_app['query']->getSingleValue('status', 'status_id', $statusID);
 
 		$body = $this->_data->validateBody($content);
 
-		// The status do exists and the data is valid
+		// The status do exists and the data is valid.
 		if (!empty($body) && !empty($idExists))
 		{
 			// Build the params array for the query
@@ -304,6 +311,25 @@ class BreezeAjax
 			{
 				// Time to fire up some notifications...
 				$this->_app['query']->insertNoti($this->_params, 'comment');
+
+				// Any mentions? fire up some notifications.
+				if (!empty($mentionedUsers))
+				{
+					$mentionData = $this->_params;
+
+					// Add the mentioned users.
+					$mentionData['users'] = $mentionedUsers;
+
+					// The inner type.
+					$mentionedUsers['innerType'] = 'com';
+
+					// Don't really need the body.
+					unset($mentionData['body']);
+
+					// Done!
+					$this->_app['query']->insertNoti($mentionData, 'mention');
+					unset($mentionData);
+				}
 
 				// Likes.
 				if (!empty($this->_app['tools']->modSettings('enable_likes')))

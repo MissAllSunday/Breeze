@@ -273,4 +273,44 @@ class BreezeNoti
 		// Create the alert already!
 		$this->innerCreate($toCreate);
 	}
+
+	protected function mention()
+	{
+		global $language;
+
+		require_once($this->_app['tools']->sourceDir . '/Subs-Post.php');
+		require_once($this->_app['tools']->sourceDir . '/Mentions.php');
+
+		// Insert the mention.
+		Mentions::insertMentions(Breeze::$txtpattern . $this->_details['innerType'], $this->_details['id'], $this->_details['users'], $this->_details['poster_id']);
+
+		// Get the preferences of those who were mentioned.
+		$prefs = getNotifyPrefs($this->_details['users'], Breeze::$txtpattern . $this->_details['content_type'], true);
+
+		$mentionedMembers = Mentions::getMentionsByContent(Breeze::$txtpattern . $this->_details['innerType'], $this->_details['id'], array_keys($this->_details['users']));
+
+		if (!empty($mentionedMembers))
+			foreach ($mentionedMembers as $id => $member)
+			{
+				// Does this user wants to be notified?
+				if (empty($prefs[$id][Breeze::$txtpattern . $this->_details['content_type']]))
+					continue;
+
+				$this->_app['query']->createAlert(array(
+					'alert_time' => time(),
+					'id_member' => $member['id'],
+					'id_member_started' => $member['mentioned_by']['id'],
+					'member_name' => $member['mentioned_by']['name'],
+					'content_type' => 'mention',
+					'content_id' => $this->_details['id'],
+					'content_action' => 'mention',
+					'is_read' => 0,
+					'extra' => serialize($this->_details),
+				));
+
+				// Lastly, update the counter.
+				updateMemberData($params['id_member'], array('alerts' => '+'));
+			}
+
+	}
 }
