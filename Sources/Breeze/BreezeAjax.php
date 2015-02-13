@@ -211,9 +211,6 @@ class BreezeAjax
 						'can_view_like' => allowedTo('likes_view'),
 					);
 
-				// Parse the content.
-				$this->_params['body'] = $this->_app['parser']->display($this->_params['body']);
-
 				// The status was inserted, tell everyone!
 				call_integration_hook('integrate_breeze_after_insertStatus', array($this->_params));
 
@@ -221,7 +218,7 @@ class BreezeAjax
 				return $this->setResponse(array(
 					'type' => 'info',
 					'message' => 'published',
-					'data' => $this->_app['display']->HTML($this->_params, 'status', true, $poster),
+					'data' => $this->_app['display']->HTML($this->_params, 'status', true, $poster, false),
 					'owner' => $owner,
 				));
 			}
@@ -340,9 +337,6 @@ class BreezeAjax
 						'can_view_like' => allowedTo('likes_view'),
 					);
 
-				// Parse the content.
-				$this->_params['body'] = $this->_app['parser']->display($this->_params['body']);
-
 				// The comment was created, tell the world or just those who want to know...
 				call_integration_hook('integrate_breeze_after_insertComment', array($this->_params));
 
@@ -350,7 +344,7 @@ class BreezeAjax
 				return $this->setResponse(array(
 					'type' => 'info',
 					'message' => 'published_comment',
-					'data' => $this->_app['display']->HTML($this->_params, 'comment', true, $poster),
+					'data' => $this->_app['display']->HTML($this->_params, 'comment', true, $poster, false),
 					'owner' => $owner,
 					'statusID' => false,
 				));
@@ -521,7 +515,7 @@ class BreezeAjax
 
 		if (!empty($data['data']))
 		{
-			$return .= $this->_app['display']->HTML($data['data'], 'status', false, $data['users']);
+			$return .= $this->_app['display']->HTML($data['data'], 'status', false, $data['users'], true);
 
 			return $this->setResponse(array(
 				'type' => 'info',

@@ -22,7 +22,7 @@ class BreezeDisplay
 		$this->_app = $app;
 	}
 
-	public function HTML($params, $type, $single = false, $usersToLoad = false)
+	public function HTML($params, $type, $single = false, $usersToLoad = false, $alreadyParsed = false)
 	{
 		global $context;
 
@@ -35,6 +35,10 @@ class BreezeDisplay
 
 		// Functions template
 		loadtemplate(Breeze::$name .'Functions');
+
+		// Parse the content.
+		if (!$alreadyParsed)
+			$params['body'] = parse_bbc($params['body']);
 
 		if ($single)
 			$params['time'] = $this->_app['tools']->timeElapsed($params['time']);
