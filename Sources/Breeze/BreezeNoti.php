@@ -297,13 +297,15 @@ class BreezeNoti
 					continue;
 
 				$url = '?action=wall;sa=single;u=' . $this->_details['profile_id'] .';bid='!empty($this->_details['status_id']) ? ($this->_details['status_id'] .';cid='. $this->_details['id']) : $this->_details['id'];
+				$text = '';
+				$toload = array($member['mentioned_by']['id'], $member['id'], $this->_details['poster_id']);
 
-				// Figure it out which text string is going to be used.
+				// Add the status poster to the array of to load IDs.
 				if ($this->_details['innerType'] == 'sta')
-				{
-					// Is it your own wall?
-					if ($member['id'] == )
-				}
+					$toLoad[] = $this->_details['status_owner_id'];
+
+				// Is it your own wall? Ternary abuse time!
+				$text = 'alert_mention_'. ($member['id'] == $this->_details['profile_id'] ? 'own_' : '') . ($this->_details['innerType'] == 'sta' ? 'status' : 'comment');
 
 				$this->_app['query']->createAlert(array(
 					'alert_time' => time(),
@@ -314,7 +316,11 @@ class BreezeNoti
 					'content_id' => $this->_details['id'],
 					'content_action' => 'mention',
 					'is_read' => 0,
-					'extra' => serialize($this->_details),
+					'extra' => serialize(
+						'text' => $text,
+						'url' => $url,
+						'toLoad' => $toload,
+					),
 				));
 
 				// Lastly, update the counter.
