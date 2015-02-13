@@ -22,7 +22,7 @@ class BreezeDisplay
 		$this->_app = $app;
 	}
 
-	public function HTML($params, $type, $single = false, $usersToLoad = false, $alreadyParsed = false)
+	public function HTML(array $params, $type, $single = false, $usersToLoad = false, $alreadyParsed = false)
 	{
 		global $context;
 
@@ -33,7 +33,7 @@ class BreezeDisplay
 		$users = array();
 		$call = 'breeze_'. $type;
 
-		// Functions template
+		// Functions template.
 		loadtemplate(Breeze::$name .'Functions');
 
 		// Parse the content.

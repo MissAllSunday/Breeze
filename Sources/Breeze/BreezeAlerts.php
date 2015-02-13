@@ -102,4 +102,9 @@ class BreezeAlerts
 			'poster' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link'],
 		));
 	}
+
+	protected function mention($id)
+	{
+
+	}
 }

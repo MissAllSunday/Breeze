@@ -296,6 +296,17 @@ class BreezeNoti
 				if (empty($prefs[$id][Breeze::$txtpattern . $this->_details['content_type']]))
 					continue;
 
+				// Need to do lots and lots of trickery to get the right url, damn you past self! damn you!
+				$profileKey = !empty($this->_details['status_id']) ? 'profile_id' : 'owner_id';
+				$url = '?action=wall;sa=single;u=' . $this->_details[$profileKey] .';bid='!empty($this->_details['status_id']) ? ($this->_details['status_id'] .';cid='. $this->_details['id']) : $this->_details['id'];
+
+				// Figure it out which text string is going to be used.
+				if ($this->_details['innerType'] == 'sta')
+				{
+					// Is it your own wall?
+					if ($member['id'] == )
+				}
+
 				$this->_app['query']->createAlert(array(
 					'alert_time' => time(),
 					'id_member' => $member['id'],
