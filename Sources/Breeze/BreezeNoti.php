@@ -305,7 +305,7 @@ class BreezeNoti
 					$toLoad[] = $this->_details['status_owner_id'];
 
 				// Is it your own wall? Ternary abuse time!
-				$text = 'alert_mention_'. ($member['id'] == $this->_details['profile_id'] ? 'own_' : '') . ($this->_details['innerType'] == 'sta' ? 'status' : 'comment');
+				$text = 'mention_'. ($member['id'] == $this->_details['profile_id'] ? 'own_' : '') . ($this->_details['innerType'] == 'sta' ? 'status' : 'comment');
 
 				$this->_app['query']->createAlert(array(
 					'alert_time' => time(),
@@ -320,6 +320,7 @@ class BreezeNoti
 						'text' => $text,
 						'url' => $url,
 						'toLoad' => $toload,
+						'profile_owner' => ($member['id'] == $this->_details['profile_id'] ? $member['id'] : 0),
 					),
 				));
 

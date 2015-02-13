@@ -105,6 +105,15 @@ class BreezeAlerts
 
 	protected function mention($id)
 	{
+		$toParse = array(
+			'poster' => $this->_usersData[$$this->_alerts[$id]['extra']['id_member_started']['link'],
+			'url' => $this->_app['tools']->scriptUrl . $this->_alerts[$id]['extra']['url'];
+		);
 
+		// Is there a wall owner?
+		if (!empty($this->_alerts[$id]['extra']['profile_owner']))
+			$toParse['wall_owner'] = $this->_usersData[$$this->_alerts[$id]['extra']['profile_owner']]['link'];
+
+		return $this->_app['tools']->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), $toParse);
 	}
 }
