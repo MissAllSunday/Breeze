@@ -28,7 +28,7 @@ function breeze_status($data, $returnVar = false)
 				<div class="cat_bar">
 					<h3 class="catbg">
 						<span id="author">
-							'. sprintf($txt['Breeze_general_posted_on'], $context['Breeze']['user_info'][$status['owner_id']]['link']) .'
+							'. sprintf($txt['Breeze_general_posted_on'], $context['Breeze']['user_info'][$status['profile_id']]['link']) .'
 						</span>
 					</h3>
 				</div>';
@@ -84,7 +84,7 @@ function breeze_status($data, $returnVar = false)
 		// Delete status.
 		if ($status['canHas']['delete'])
 			$echo .=
-								' | <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $status['id'] .';type=status;profileOwner='. $status['owner_id'] .';poster='. $status['poster_id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .';'. $context['session_var'] .'='. $context['session_id'] .'" id="deleteStatus_'. $status['id'] .'" class="breeze_delete" data-bid="'. $status['id'] .'">'. $txt['Breeze_general_delete'] .'</a>';
+								' | <a href="'. $scripturl .'?action=breezeajax;sa=delete;bid='. $status['id'] .';type=status;profileOwner='. $status['profile_id'] .';poster='. $status['poster_id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .';'. $context['session_var'] .'='. $context['session_id'] .'" id="deleteStatus_'. $status['id'] .'" class="breeze_delete" data-bid="'. $status['id'] .'">'. $txt['Breeze_general_delete'] .'</a>';
 
 		// Modify? maybe someday...
 
@@ -125,7 +125,7 @@ function breeze_status($data, $returnVar = false)
 										<input type="hidden" value="'. $status['poster_id'] .'" name="statusPoster" id="commentStatusPoster_'. $status['id'] .'" />
 										<input type="hidden" value="'. $user_info['id'] .'" name="poster" id="commentPoster_'. $status['id'] .'" />
 										<input type="hidden" value="'. $status['id'] .'" name="statusID" id="commentStatus_'. $status['id'] .'" />
-										<input type="hidden" value="'. $status['owner_id'] .'" name="owner" id="commentOwner_'. $status['id'] .'" /><br />
+										<input type="hidden" value="'. $status['profile_id'] .'" name="owner" id="commentOwner_'. $status['id'] .'" /><br />
 										<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
 										<input type="submit" value="'. $txt['post'] .'" class="button_submit clear" name="commentSubmit" id="commentSubmit_'. $status['id'] .'" />
 									</form>';

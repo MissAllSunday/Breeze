@@ -670,7 +670,7 @@ class BreezeQuery
 		$status_id = $this->_app['tools']->smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['status']['table']), 'status_id');
 
 		//Kill the profile cache
-		$this->killCache('status', $status_id, $array['owner_id']);
+		$this->killCache('status', $status_id, $array['profile_id']);
 
 		// Return the newly inserted status ID
 		return $status_id;
@@ -1506,7 +1506,7 @@ class BreezeQuery
 		{
 			$array = array(
 				'id' => $row['status_id'],
-				'owner_id' => $row['status_owner_id'],
+				'profile_id' => $row['status_owner_id'],
 				'poster_id' => $row['status_poster_id'],
 				'time' => $this->_app['tools']->timeElapsed($row['status_time']),
 				'time_raw' => $row['status_time'],

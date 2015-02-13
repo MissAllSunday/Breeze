@@ -141,10 +141,10 @@ class BreezeNoti
 	protected function status()
 	{
 		// Useless to fire you an alert for something you did.
-		if ($this->_details['owner_id'] != $this->_details['poster_id'])
+		if ($this->_details['profile_id'] != $this->_details['poster_id'])
 			$this->innerCreate(array(
 				'alert_time' => $this->_details['time_raw'],
-				'id_member' => $this->_details['owner_id'],
+				'id_member' => $this->_details['profile_id'],
 				'id_member_started' => $this->_details['poster_id'],
 				'member_name' => '',
 				'content_type' => $this->_details['content_type'] . '_owner',
@@ -153,9 +153,9 @@ class BreezeNoti
 				'is_read' => 0,
 				'extra' => array(
 					'text' => 'alert_status_owner',
-					'toLoad' => array($this->_details['poster_id'], $this->_details['owner_id']),
+					'toLoad' => array($this->_details['poster_id'], $this->_details['profile_id']),
 					'poster' => $this->_details['poster_id'],
-					'owner' => $this->_details['owner_id'],
+					'owner' => $this->_details['profile_id'],
 				),
 			));
 
@@ -170,8 +170,8 @@ class BreezeNoti
 				'time' => $this->_details['time_raw'],
 				'extra' => array(
 					'buddy_text' => 'alert_status_owner_buddy',
-					'toLoad' => array($this->_details['poster_id'], $this->_details['owner_id']),
-					'wall_owner' => $this->_details['owner_id'],
+					'toLoad' => array($this->_details['poster_id'], $this->_details['profile_id']),
+					'wall_owner' => $this->_details['profile_id'],
 					'poster' => $this->_details['poster_id'],
 					'status_id' => $this->_details['id'],
 				),
