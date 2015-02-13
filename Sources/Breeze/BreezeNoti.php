@@ -311,6 +311,5 @@ class BreezeNoti
 				// Lastly, update the counter.
 				updateMemberData($params['id_member'], array('alerts' => '+'));
 			}
-
 	}
 }

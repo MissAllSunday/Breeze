@@ -413,10 +413,6 @@ class Breeze extends Pimple\Container
 
 	public function alertsPref(&$alert_types, &$group_options, &$disabled_options)
 	{
-		// Don't do anything if the feature is disable.
-		if (!$this['tools']->enable('alerts'))
-			return;
-
 		// Gonna need some strings.
 		$this['tools']->loadLanguage('alerts');
 
@@ -424,6 +420,7 @@ class Breeze extends Pimple\Container
 			''. Breeze::$txtpattern . 'status_owner' => array('alert' => 'yes', 'email' => 'never'),
 			''. Breeze::$txtpattern . 'comment_status_owner' => array('alert' => 'yes', 'email' => 'never'),
 			''. Breeze::$txtpattern . 'comment_profile_owner' => array('alert' => 'yes', 'email' => 'never'),
+			''. Breeze::$txtpattern . 'mention' => array('alert' => 'yes', 'email' => 'never'),
 		);
 
 		// Are likes enable?
