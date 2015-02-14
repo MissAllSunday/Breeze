@@ -148,7 +148,7 @@ class BreezeAjax
 		// Any mentions?
 		if ($this->_app['tools']->modSettings('enable_mentions') && allowedTo('mention'))
 		{
-			$mentionedUsers = Mentions::getMentionedMembers($msgOptions['body']);
+			$mentionedUsers = Mentions::getMentionedMembers($content);
 			$content = Mentions::getBody($content, $mentionedUsers);
 		}
 
@@ -268,7 +268,7 @@ class BreezeAjax
 		// So, you're popular huh?
 		if ($this->_app['tools']->modSettings('enable_mentions') && allowedTo('mention'))
 		{
-			$mentionedUsers = Mentions::getMentionedMembers($msgOptions['body']);
+			$mentionedUsers = Mentions::getMentionedMembers($content);
 			$content = Mentions::getBody($content, $mentionedUsers);
 		}
 
