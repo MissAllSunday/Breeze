@@ -192,7 +192,7 @@ class BreezeAjax
 					$mentionData['users'] = $mentionedUsers;
 
 					// The inner type.
-					$mentionedUsers['innerType'] = 'sta';
+					$mentionData['innerType'] = 'sta';
 
 					// Don't really need the body.
 					unset($mentionData['body']);

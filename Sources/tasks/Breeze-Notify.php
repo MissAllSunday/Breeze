@@ -18,7 +18,6 @@ class Breeze_Notify_Background extends SMF_BackgroundTask
 		$app = new Breeze();
 		$app['noti']->call($this->_details);
 
-		$app->__destruct();
 		unset($app);
 
 		return true;

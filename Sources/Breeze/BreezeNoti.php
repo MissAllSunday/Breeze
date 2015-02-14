@@ -285,7 +285,7 @@ class BreezeNoti
 		Mentions::insertMentions(Breeze::$txtpattern . $this->_details['innerType'], $this->_details['id'], $this->_details['users'], $this->_details['poster_id']);
 
 		// Get the preferences of those who were mentioned.
-		$prefs = getNotifyPrefs($this->_details['users'], Breeze::$txtpattern . $this->_details['content_type'], true);
+		$prefs = getNotifyPrefs(array_keys($this->_details['users']), Breeze::$txtpattern . $this->_details['content_type'], true);
 
 		$mentionedMembers = Mentions::getMentionsByContent(Breeze::$txtpattern . $this->_details['innerType'], $this->_details['id'], array_keys($this->_details['users']));
 
@@ -296,12 +296,12 @@ class BreezeNoti
 				if (empty($prefs[$id][Breeze::$txtpattern . $this->_details['content_type']]))
 					continue;
 
-				$url = '?action=wall;sa=single;u=' . $this->_details['profile_id'] .';bid='!empty($this->_details['status_id']) ? ($this->_details['status_id'] .';cid='. $this->_details['id']) : $this->_details['id'];
+				$url = '?action=wall;sa=single;u=' . $this->_details['profile_id'] .';bid='. (!empty($this->_details['status_id']) ? ($this->_details['status_id'] .';cid='. $this->_details['id']) : $this->_details['id']);
 				$text = '';
 				$toload = array($member['mentioned_by']['id'], $member['id'], $this->_details['poster_id']);
 
 				// Add the status poster to the array of to load IDs.
-				if ($this->_details['innerType'] == 'sta')
+				if ($this->_details['innerType'] == 'com')
 					$toLoad[] = $this->_details['status_owner_id'];
 
 				// Is it your own wall? Ternary abuse time!
@@ -316,16 +316,16 @@ class BreezeNoti
 					'content_id' => $this->_details['id'],
 					'content_action' => 'mention',
 					'is_read' => 0,
-					'extra' => serialize(
+					'extra' => serialize(array(
 						'text' => $text,
 						'url' => $url,
 						'toLoad' => $toload,
 						'profile_owner' => ($member['id'] == $this->_details['profile_id'] ? $member['id'] : 0),
-					),
+					)),
 				));
 
 				// Lastly, update the counter.
-				updateMemberData($params['id_member'], array('alerts' => '+'));
+				updateMemberData($member['id'], array('alerts' => '+'));
 			}
 	}
 }
