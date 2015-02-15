@@ -320,7 +320,7 @@ class BreezeNoti
 						'text' => $text,
 						'url' => $url,
 						'toLoad' => $toload,
-						'profile_owner' => ($member['id'] == $this->_details['profile_id'] ? $member['id'] : 0),
+						'profile_owner' => $this->_details['profile_id']),
 					)),
 				));
 

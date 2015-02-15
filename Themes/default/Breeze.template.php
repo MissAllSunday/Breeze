@@ -299,43 +299,41 @@ function template_alert_edit()
 	echo '
 		<div class="cat_bar">
 			<h3 class="catbg">
-				', $txt['alerts'], ' - ', $context['member']['name'], '
+			', $txt['alerts'], ' - ', $context['member']['name'], '
 			</h3>
-		</div>
-		<p class="windowbg description">
-		', $context['page_desc'] ,'
-		</p>';
+		</div>';
 
 	if (empty($context['alerts']))
 		echo '
-		<div class="tborder windowbg2 centertext">
+		<div class="information">
 			', $txt['alerts_none'], '
 		</div>';
+
 	else
 	{
 		// Start the form.
 		echo '
-		<form action="', $scripturl, '?action=profile;u=', $context['id_member'], ';area=alerts;sa=edit;save=1" method="post" accept-charset="', $context['character_set'], '" id="mark_all">';
+		<form action="', $scripturl, '?action=profile;u=', $context['id_member'], ';area=alerts;sa=edit;save=1" method="post" accept-charset="', $context['character_set'], '" id="mark_all">
+			<table id="alerts" class="table_grid">';
 
-		$alt = false;
-		$counter = 1;
 		foreach ($context['alerts'] as $id => $alert)
 		{
-			$alt = !$alt;
-
 			echo '
-			<div class="', $alt ? 'windowbg' : 'windowbg2', '">
-				<div class="topic_details floatleft">', $alert['time'], '</div>
-				<ul class="quickbuttons">
-					<li><a href="', $scripturl, '?action=profile;u=', $context['id_member'], ';area=alerts;sa=edit;delete=1;aid=', $id ,';', $context['session_var'], '=', $context['session_id'], '">', $txt['delete'] ,'</a></li>
-					<li><input type="checkbox" name="mark[', $id ,']" value="', $id ,'"></li>
-				</ul>
-				<div class="list_posts clear">', $alert['text'], '</div>
-			</div>';
+				<tr class="windowbg">
+					<td>', $alert['text'], '</td>
+					<td>', $alert['time'], '</td>
+					<td>
+						<ul class="quickbuttons">
+							<li><a href="', $scripturl, '?action=profile;u=', $context['id_member'], ';area=alerts;sa=edit;delete=1;aid=', $id ,';', $context['session_var'], '=', $context['session_id'], '" class="remove_button you_sure">', $txt['delete'] ,'</a></li>
+						<li><input type="checkbox" name="mark[', $id ,']" value="', $id ,'"></li>
+						</ul>
+					</td>
+				</tr>';
 		}
 
 		echo '
-			<div class="roundframe">
+			</table>
+			<div class="pagesection">
 				<div class="floatleft">
 					', $context['pagination'] ,'
 				</div>
@@ -345,7 +343,7 @@ function template_alert_edit()
 						<option value="remove">', $txt['quick_mod_remove'] ,'</option>
 					</select>
 					<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '">
-					<input type="submit" name="req" value="', $txt['quick_mod_go'] ,'" onclick="return confirm(\'' . $txt['quickmod_confirm'] . '\');" class="button_submit">
+					<input type="submit" name="req" value="', $txt['quick_mod_go'] ,'" class="button_submit you_sure">
 				</div>
 			</div>
 		</form>';

@@ -320,7 +320,7 @@ class BreezeUser extends Breeze
 		addInlineJavascript('
 	$(function(){
 		$(\'#select_all\').on(\'change\', function() {
-			var checkboxes = $(\'#mark_all\').find(\':checkbox\');
+			var checkboxes = $(\'ul.quickbuttons\').find(\':checkbox\');
 			if($(this).prop(\'checked\')) {
 				checkboxes.prop(\'checked\', true);
 			}
