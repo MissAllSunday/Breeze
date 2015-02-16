@@ -487,10 +487,10 @@ class Breeze extends Pimple\Container
 			'content' => $content,
 			'numLikes' => $numLikes,
 			'extra' => $extra,
-			'alreadyLiked' => $object->get('alreadyLiked'),
+			'alreadyLiked' => (bool) $object->get('alreadyLiked'),
 			'validLikes' => $object->get('validLikes'),
 			'time' => time(),
-		), Breeze::$txtpattern .'like');
+		), 'like');
 
 		$this['query']->updateLikes($this->_likeTypes[$type], $content, $numLikes);
 	}

@@ -50,10 +50,10 @@ class BreezeNoti
 		$spam = false;
 
 		// Get the preferences for the person whos gonna receive this alert.
-		$prefs = getNotifyPrefs($params['id_member'], Breeze::$txtpattern . $params['content_type'], true);
+		$prefs = getNotifyPrefs($params['id_member'], $params['content_type'], true);
 
 		// User does not want to be notified...
-		if (empty($prefs[$params['id_member']][Breeze::$txtpattern . $params['content_type']]))
+		if (empty($prefs[$params['id_member']][$params['content_type']]))
 			return false;
 
 		// Check if the same poster has already fired a notification.
@@ -320,8 +320,8 @@ class BreezeNoti
 						'text' => $text,
 						'url' => $url,
 						'toLoad' => $toload,
-						'profile_owner' => $this->_details['profile_id']),
-					)),
+						'profile_owner' => $this->_details['profile_id'],
+						)),
 				));
 
 				// Lastly, update the counter.

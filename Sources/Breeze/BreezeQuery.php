@@ -952,7 +952,7 @@ class BreezeQuery
 			return false;
 
 		// Gotta append a type so we can pretend to know what we're doing...
-		$params['content_type'] = $type;
+		$params['content_type'] = Breeze::$txtpattern . $type;
 
 		$this->_app['tools']->smcFunc['db_insert']('insert',
 			'{db_prefix}background_tasks',
