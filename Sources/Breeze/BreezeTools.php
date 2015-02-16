@@ -368,7 +368,6 @@ class BreezeTools
 		// Status owner?
 		$isPosterOwner = $userPoster == $user_info['id'];
 
-
 		// Lets check the posing bit first. Profile owner can always post.
 		if ($isProfileOwner)
 		{

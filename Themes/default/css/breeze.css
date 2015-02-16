@@ -139,12 +139,12 @@ ul.breezeActivity li{
 		width: 98%;
 	}
 
-	/* Make the header stuff cetralized. */
+	/* Make the header stuff centralized. */
 	.header div.container{
-		margin: 0 auto;
+		margin: auto;
 		min-width: 90%;
 		width: 90%;
-		height:60%;
+		position:inherit;
 		left:0;
 	}
 
@@ -169,7 +169,7 @@ ul.breezeActivity li{
 	}
 
 	/* Make the comment textarea wider. */
-	.post_comment textarea{
+	.post_comment textarea, .breeze_user_statusbox textarea{
 		box-sizing: border-box;
 		width: 100%;
 	}
