@@ -452,7 +452,16 @@ class BreezeAjax
 		$this->_data = Breeze::data('request');
 
 		// Handling data.
-		$toSave = $this->_data->get('breezeSettings');
+		foreach ($this->_data->get('breezeSettings') as $k => $v)
+		{
+			// Checkboxes and alert settings. Either 1 or 0, nothing more.
+			if (strpos($k, 'alert_') !== false || Breeze::$allSettings[$k] == 'CheckBox')
+				$toSave[$k] = $v === 1 ? $v : 0;
+
+			// Integers, BreezeData should return any numeric value casted as integer so do check thats indeed the case.
+			elseif (Breeze::$allSettings[$k] == 'Int')
+				$toSave[$k] = is_int($v) ? $v : 0;
+		}
 
 		// Gotta make sure the user is respecting the admin limit for the about me block.
 		if ($this->_app['tools']->setting('allowed_maxlength_aboutMe') && !empty($toSave['aboutMe']) && strlen($toSave['aboutMe']) >= $this->_app['tools']->setting('allowed_maxlength_aboutMe'))

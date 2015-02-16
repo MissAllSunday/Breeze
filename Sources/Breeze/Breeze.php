@@ -50,7 +50,20 @@ class Breeze extends Pimple\Container
 	public static $coversFolder = '/breezeFiles/';
 	public static $txtpattern = 'Breeze_';
 	public static $permissions = array('deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canCover', 'canMood');
-	public static $allSettings = array('wall', 'general_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention', 'gender', 'buddiesList', 'ignoredList', 'profileViews',);
+	public static $allSettings = array(
+		'wall' => 'CheckBox',
+		'general_wall' => 'CheckBox',
+		'pagination_number' => 'Int',
+		'load_more' => 'CheckBox',
+		'activityLog' => 'CheckBox',
+		'kick_ignored' => 'CheckBox',
+		'buddies' => 'CheckBox',
+		'how_many_buddies' => 'Int',
+		'visitors' => 'CheckBox',
+		'how_many_visitors' => 'Int',
+		'clear_noti' => 'HTML',
+		'aboutMe' => 'TextArea',
+	);
 	public $_likeTypes = array('breSta' => 'status', 'breCom' => 'comments');
 	public $trackHooks = array(
 		'integrate_create_topic' => 'createTopic'
@@ -555,7 +568,7 @@ class Breeze extends Pimple\Container
 		breeze.text.'. $var .' = '. JavaScriptEscape($tools->text($var)) .';';
 
 		// Since we're here already, load the current User (currentSettings) object
-		foreach (Breeze::$allSettings as $k)
+		foreach (Breeze::$allSettings as $k => $v)
 			$generalSettings .= '
 		breeze.currentSettings.'. $k .' = '. (isset($userSettings[$k]) ? (is_array($userSettings[$k]) ? json_encode($userSettings[$k]) : JavaScriptEscape($userSettings[$k])) : 'false') .';';
 

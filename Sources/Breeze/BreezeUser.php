@@ -429,13 +429,6 @@ class BreezeUser extends Breeze
 			!empty($userSettings['load_more']) ? true : false
 		);
 
-		// How many options to be displayed when mentioning.
-		$form->addText(
-			'how_many_mentions',
-			!empty($userSettings['how_many_mentions']) ? $userSettings['how_many_mentions'] : 0,
-			3,3
-		);
-
 		// Activity Log.
 		$form->addCheckBox(
 			'activityLog',
