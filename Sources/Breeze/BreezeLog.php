@@ -116,18 +116,15 @@ class BreezeLog
 
 		// Gotta know if the image still exists.
 		$filename = !empty($this->_data[$id]['extra']['image']) ? $this->_data[$id]['extra']['image'] : '';
-		$file =  true;
+		$file =  false;
 
 		if (!empty($filename))
 		{
 			$file_headers = @get_headers($filename);
 
-			if(empty($file_headers) || $file_headers[0] == 'HTTP/1.0 404 Not Found' || $file_headers[0] == 'HTTP/1.0 302 Found')
-				$file = false;
+			if(!empty($file_headers) && ($file_headers[0] == 'HTTP/1.1 200 OK' || $file_headers[0] == 'HTTP/1.0 200 OK'))
+				$file = true;
 		}
-
-		else
-			$file = false;
 
 		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_cover'), array(
 			'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
