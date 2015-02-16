@@ -100,6 +100,7 @@ class BreezeAlerts
 			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
 			';bid=' . $this->_alerts[$id]['extra']['status_id'] .(!empty($this->_alerts[$id]['extra']['comment_id']) ? (';cid=' . $this->_alerts[$id]['content_id'] .'#comment_id_' . $this->_alerts[$id]['content_id']) : ''),
 			'poster' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link'],
+			'type' => $this->_alerts[$id]['extra']['like_type'],
 		));
 	}
 
