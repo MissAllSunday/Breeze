@@ -109,7 +109,7 @@ class BreezeUser extends Breeze
 			$context['Breeze']['cover'] = $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']['basename'];
 
 			$context['html_headers'] .= '
-	<style type="text/css">.header {background-image: url('. $context['Breeze']['cover'] .'); height:377px;}</style>';
+	<style type="text/css">.header {background-image: url('. $context['Breeze']['cover'] .'); height:380px;}</style>';
 		}
 
 		// Set up some vars for pagination.
