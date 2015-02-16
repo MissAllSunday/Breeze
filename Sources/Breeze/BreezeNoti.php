@@ -99,7 +99,7 @@ class BreezeNoti
 		$this->innerCreate(array(
 			'alert_time' => $this->_details['time'],
 			'id_member' => $messageOwner,
-			'id_member_started' => $this->_details['user']['id'],
+			'id_member_started' => $this->_details['user'],
 			'member_name' => '',
 			'content_type' => $this->_details['content_type'],
 			'content_id' => $this->_details['content'],
@@ -108,7 +108,7 @@ class BreezeNoti
 			'extra' => array(
 				'text' => 'like_'. $this->_details['like_type'],
 				'comment_owner' => $messageOwner,
-				'toLoad' => array($messageOwner, $this->_details['user']['id']),
+				'toLoad' => array($messageOwner, $this->_details['user']),
 				'status_id' => $data[($this->_details['like_type'] == 'comments' ? $this->_details['like_type'] .'_' : '') . 'status_id'],
 				'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,
 				'wall_owner' => $data[$this->_details['like_type'] == 'comments' ? 'comments_profile_id' : 'status_owner_id'],
