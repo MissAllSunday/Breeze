@@ -249,6 +249,7 @@ class Breeze extends Pimple\Container
 				'label' => $tools->text('user_settings_name_alerts'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
 				'function' => 'BreezeUser::alerts#',
+				'enabled' => $context['user']['is_owner'],
 				'icon' => 'maintain',
 				'subsections' => array(
 					'settings' => array($tools->text('user_settings_name_alerts_settings'), array('is_not_guest', 'profile_view')),
