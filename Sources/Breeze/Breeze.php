@@ -63,6 +63,7 @@ class Breeze extends Pimple\Container
 		'how_many_visitors' => 'Int',
 		'clear_noti' => 'HTML',
 		'aboutMe' => 'TextArea',
+		'cover_height' => 'Int',
 	);
 	public $_likeTypes = array('breSta' => 'status', 'breCom' => 'comments');
 	public $trackHooks = array(

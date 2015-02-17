@@ -109,7 +109,7 @@ class BreezeUser extends Breeze
 			$context['Breeze']['cover'] = $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']['basename'];
 
 			$context['html_headers'] .= '
-	<style type="text/css">.header {background-image: url('. $context['Breeze']['cover'] .'); height:380px;}</style>';
+	<style type="text/css">.header {background-image: url('. $context['Breeze']['cover'] .'); height:'. (!empty($context['Breeze']['settings']['owner']['cover_height']) ? $context['Breeze']['settings']['owner']['cover_height'] : '380') .'px;}</style>';
 		}
 
 		// Set up some vars for pagination.
@@ -210,7 +210,7 @@ class BreezeUser extends Breeze
 		$toClient = $context['Breeze']['settings']['owner'];
 		unset($toClient['aboutMe']);
 		$bOwnerSettings = '';
-		foreach (Breeze::$allSettings as $k)
+		foreach (Breeze::$allSettings as $k => $v)
 			$bOwnerSettings .= '
 	breeze.ownerSettings.'. $k .' = '. (isset($toClient[$k]) ? (is_array($toClient[$k]) ? json_encode($toClient[$k]) : JavaScriptEscape($toClient[$k])) : 'false') .';';
 
@@ -483,6 +483,14 @@ class BreezeUser extends Breeze
 			!empty($userSettings['aboutMe']) ? $userSettings['aboutMe'] : '',
 			array('rows' => 10, 'cols' => 50, 'maxLength' => $tools->setting('allowed_maxlength_aboutMe') ? $tools->setting('allowed_maxlength_aboutMe') : 1024)
 		);
+
+		// Cover height.
+		if ($tools->enable('cover'))
+			$form->addText(
+				'cover_height',
+				!empty($userSettings['cover_height']) ? $userSettings['cover_height'] : 0,
+				3,3
+			);
 
 		$form->addButton('submit');
 
