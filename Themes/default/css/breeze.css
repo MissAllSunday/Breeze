@@ -7,12 +7,13 @@
 	left: 0;
 	bottom: 0;
 	right: 0;
-	min-height: 100px;
 	background-position: top center;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	background-size: auto;
 	margin-bottom:50px;
+	min-height: 180px;
+	max-height: 580px;
 }
 .header div.container{
 	overflow: visible;
