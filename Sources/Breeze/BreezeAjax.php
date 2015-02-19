@@ -203,7 +203,7 @@ class BreezeAjax
 				}
 
 				// Likes.
-				if (!empty($this->_app['tools']->modSettings('enable_likes')))
+				if ($this->_app['tools']->modSettings('enable_likes'))
 					$this->_params['likes'] =  array(
 						'count' => 0,
 						'already' => false,
@@ -329,7 +329,7 @@ class BreezeAjax
 				}
 
 				// Likes.
-				if (!empty($this->_app['tools']->modSettings('enable_likes')))
+				if ($this->_app['tools']->modSettings('enable_likes'))
 					$this->_params['likes'] =  array(
 						'count' => 0,
 						'already' => false,

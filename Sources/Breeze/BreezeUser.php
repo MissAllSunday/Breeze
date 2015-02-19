@@ -251,11 +251,11 @@ class BreezeUser extends Breeze
 			),
 		);
 
-		$context['page_title'] = !empty($data->get('sa')) && $tools->text('user_settings_name_alerts_'. $data->get('sa')) ? $tools->text('user_settings_name_alerts_'. $data->get('sa')) : $tools->text('user_settings_name_alerts_settings');
-		$context['page_desc'] = !empty($data->get('sa')) && $tools->text('user_settings_name_alerts_'. $data->get('sa') .'_desc') ? $tools->text('user_settings_name_alerts_'. $data->get('sa') .'_desc') : $tools->text('user_settings_name_alerts_settings_desc');
+		$context['page_title'] = $data->get('sa') && $tools->text('user_settings_name_alerts_'. $data->get('sa')) ? $tools->text('user_settings_name_alerts_'. $data->get('sa')) : $tools->text('user_settings_name_alerts_settings');
+		$context['page_desc'] = $data->get('sa') && $tools->text('user_settings_name_alerts_'. $data->get('sa') .'_desc') ? $tools->text('user_settings_name_alerts_'. $data->get('sa') .'_desc') : $tools->text('user_settings_name_alerts_settings_desc');
 
 		// Call the right action.
-		$call = 'alert' .(!empty($data->get('sa')) ? ucfirst($data->get('sa')) : 'Settings');
+		$call = 'alert' .($data->get('sa') ? ucfirst($data->get('sa')) : 'Settings');
 
 		// Call the right function.
 			$this->$call();
