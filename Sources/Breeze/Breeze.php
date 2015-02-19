@@ -13,6 +13,8 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
+require_once $sourcedir . '/Breeze/Pimple/Container.php';
+
 /**
  * breeze_autoloader()
  *
@@ -25,14 +27,9 @@ function breeze_autoloader($class_name)
 	global $sourcedir;
 
 	$file_path = $sourcedir . '/Breeze/' . $class_name . '.php';
-	$pimple = $sourcedir . '/Breeze/Pimple/' . $class_name . '.php';
 
 	if (file_exists($file_path))
 		require_once ($file_path);
-
-	// Quick and dirty trick for Pimple.
-	elseif (file_exists($pimple))
-		require_once ($pimple);
 
 	else
 		return false;
