@@ -361,12 +361,52 @@ function template_userDiv()
 	</head>
 	<body id="help_popup">
 		<div class="description">
-			<div id="basicinfo">
+			<div id="basicinfo">';
+
+	// Are there any custom profile fields for above the name?
+	if (!empty($context['print_custom_fields']['above_member']))
+	{
+		echo '
+			<div class="custom_fields_above_name">
+				<ul >';
+
+		foreach ($context['print_custom_fields']['above_member'] as $field)
+			if (!empty($field['output_html']))
+				echo '
+					<li>', $field['output_html'], '</li>';
+
+		echo '
+				</ul>
+			</div>
+			<br>';
+	}
+
+	echo '
 				<div class="username">
 					<h4>', $context['BreezeUser']['link_color'], '<span class="position">', (!empty($context['BreezeUser']['group']) ? $context['BreezeUser']['group'] : $context['BreezeUser']['post_group']), '</span></h4>
 				</div>
 				', $context['BreezeUser']['group_icons'] ,'<br>
-				', $context['BreezeUser']['avatar']['image'], '
+				', $context['BreezeUser']['avatar']['image'];
+
+	// Are there any custom profile fields for below the avatar?
+	if (!empty($context['print_custom_fields']['below_avatar']))
+	{
+		echo '
+			<div class="custom_fields_below_avatar">
+				<ul >';
+
+		foreach ($context['print_custom_fields']['below_avatar'] as $field)
+			if (!empty($field['output_html']))
+				echo '
+					<li>', $field['output_html'], '</li>';
+
+		echo '
+				</ul>
+			</div>
+			<br>';
+	}
+
+	echo '
 				<ul class="reset">';
 		// Email is only visible if it's your profile or you have the moderate_forum permission
 		if ($context['BreezeUser']['show_email'])
@@ -441,20 +481,49 @@ function template_userDiv()
 					<dd>', $context['BreezeUser']['last_login'], (!empty($context['BreezeUser']['is_hidden']) ? ' (' . $txt['hidden'] . ')' : ''), '</dd>';
 	echo '
 				</dl>';
-	// Are there any custom profile fields for the summary?
-	if (!empty($context['BreezeUser']['custom_fields']))
+
+	// Are there any custom profile fields for above the signature?
+	if (!empty($context['print_custom_fields']['above_signature']))
 	{
 		echo '
 				<div class="custom_fields_above_signature">
 					<ul class="reset nolist">';
-		foreach ($context['BreezeUser']['custom_fields'] as $field)
-			if ($field['placement'] == 2 || empty($field['value']))
+
+		foreach ($context['print_custom_fields']['above_signature'] as $field)
+			if (!empty($field['output_html']))
 				echo '
-						<li>', $field['value'], '</li>';
+						<li>', $field['output_html'], '</li>';
+
 		echo '
 					</ul>
 				</div>';
 	}
+
+	// Show the users signature.
+	if ($context['signature_enabled'] && !empty($context['member']['signature']))
+		echo '
+				<div class="signature">
+					<h5>', $txt['signature'], ':</h5>
+					', $context['member']['signature'], '
+				</div>';
+
+	// Are there any custom profile fields for below the signature?
+	if (!empty($context['print_custom_fields']['below_signature']))
+	{
+		echo '
+				<div class="custom_fields_below_signature">
+					<ul class="reset nolist">';
+
+		foreach ($context['print_custom_fields']['below_signature'] as $field)
+			if (!empty($field['output_html']))
+				echo '
+						<li>', $field['output_html'], '</li>';
+
+		echo '
+					</ul>
+				</div>';
+	}
+
 	echo '
 			</div>
 		</div>
