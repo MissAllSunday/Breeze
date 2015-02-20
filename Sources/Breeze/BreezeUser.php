@@ -759,16 +759,8 @@ class BreezeUser extends Breeze
 			if (empty($context['Breeze']['settings']['owner']['wall']))
 				redirectexit('action=profile;area=static;u='.$context['member']['id']);
 
-		// This user cannot see his/her own profile and cannot see any profile either
-		if (!allowedTo('profile_view_own') && !allowedTo('profile_view_any'))
-			redirectexit('action=profile;area=static;u='. $context['member']['id']);
-
-		// This user cannot see his/her own profile and it's viewing his/her own profile
-		if (!allowedTo('profile_view_own') && $user_info['id'] == $context['member']['id'])
-			redirectexit('action=profile;area=static;u='. $context['member']['id']);
-
-		// This user cannot see any profile and it's  viewing someone else's wall
-		if (!allowedTo('profile_view_any') && $user_info['id'] != $context['member']['id'])
+		// This user cannot see any profile.
+		if (!allowedTo('profile_view'))
 			redirectexit('action=profile;area=static;u='. $context['member']['id']);
 
 		// Does an ignored user wants to see your wall? never!!!
