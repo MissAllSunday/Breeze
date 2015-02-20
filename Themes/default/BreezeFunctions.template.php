@@ -377,13 +377,14 @@ function template_userDiv()
 		if ($context['BreezeUser']['website']['url'] !== '' && !isset($context['disabled_fields']['website']))
 			echo '
 					<li><a href="', $context['BreezeUser']['website']['url'], '" title="' . $context['BreezeUser']['website']['title'] . '" target="_blank" class="new_win">', ($settings['use_image_buttons'] ? '<span class="generic_icons www" title="' . $context['BreezeUser']['website']['title'] . '"></span>' : $txt['www']), '</a></li>';
-		// Are there any custom profile fields for as icons?
-		if (!empty($context['BreezeUser']['custom_fields']))
+
+		// Are there any custom profile fields as icons?
+		if (!empty($context['print_custom_fields']['icons']))
 		{
-			foreach ($context['BreezeUser']['custom_fields'] as $field)
-				if (($field['placement'] == 1 || empty($field['value'])) && !empty($field['value']))
+			foreach ($context['print_custom_fields']['icons'] as $field)
+				if (!empty($field['output_html']))
 					echo '
-						<li class="custom_field">', $field['value'], '</li>';
+						<li class="custom_field">', $field['output_html'], '</li>';
 		}
 		echo '
 				</ul>
@@ -412,15 +413,17 @@ function template_userDiv()
 	echo '
 				</dl>';
 	// Any custom fields for standard placement?
-	if (!empty($context['BreezeUser']['custom_fields']))
+	if (!empty($context['print_custom_fields']['standard']))
 	{
 		echo '
 				<dl>';
-		foreach ($context['BreezeUser']['custom_fields'] as $field)
-			if ($field['placement'] == 0 || empty($field['value']))
+
+		foreach ($context['print_custom_fields']['standard'] as $field)
+			if (!empty($field['output_html']))
 				echo '
 					<dt>', $field['name'], ':</dt>
-					<dd>', $field['value'], '</dd>';
+					<dd>', $field['output_html'], '</dd>';
+
 		echo '
 				</dl>';
 	}

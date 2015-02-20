@@ -24,14 +24,24 @@
 	max-width: 700px;
 	width:600px;
 	height:auto;
+	padding:5px;
 }
 .header div.username{
+	float:left;
 }
 div.username h1, div.username h1 a{
 	text-align:left;
 	display:block;
-	min-width: 70%;
-	margin:3px;
+	position: relative;
+	font-size: 2.0em;
+}
+
+div.username div
+{
+	position: absolute;
+	bottom: 5px;
+	display:block;
+	min-width:70%;
 }
 
 .header div.avatar{
