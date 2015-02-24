@@ -105,6 +105,8 @@ class BreezeQuery
 	 */
 	public function quickQuery($params, $data, $key = false, $single = false)
 	{
+		global $smcFunc;
+
 		$dataResult = array();
 
 		$query = $smcFunc['db_query']('', '
@@ -146,6 +148,8 @@ class BreezeQuery
 	 */
 	public function killCache($type, $id, $profile_owner = false)
 	{
+		global $smcFunc;
+
 		// If we didn't get a profile owner, lets get it from the data provided...
 		if (!$profile_owner)
 		{
@@ -186,6 +190,8 @@ class BreezeQuery
 	 */
 	protected function getCount($data, $column)
 	{
+		global $smcFunc;
+
 		$count = 0;
 
 		if (empty($data) || empty($column))
@@ -222,6 +228,8 @@ class BreezeQuery
 	 */
 	public function getSingleValue($type, $row, $value, $raw = false)
 	{
+		global $smcFunc;
+
 		// The usual checks
 		if (empty($type) || empty($row) || empty($value))
 			return false;
@@ -252,6 +260,8 @@ class BreezeQuery
 	 */
 	public function getLastStatus()
 	{
+		global $smcFunc;
+
 		$return = '';
 
 		// Get the value directly from the DB
@@ -279,6 +289,8 @@ class BreezeQuery
 	 */
 	public function getLastComment()
 	{
+		global $smcFunc;
+
 		$return = '';
 
 		// Get the value directly from the DB
@@ -309,6 +321,8 @@ class BreezeQuery
 	 */
 	public function getStatus($id = false, $getComments = false, $limit = 5, $sort = 'status_id DESC')
 	{
+		global $smcFunc;
+
 		// Declare some generic vars, mainly to avoid errors
 		$return = array(
 			'data' => array(),
@@ -391,6 +405,8 @@ class BreezeQuery
 	 */
 	public function getStatusByProfile($id, $maxIndex, $start)
 	{
+		global $smcFunc;
+
 		// Declare some generic vars, mainly to avoid errors
 		$return = array(
 			'data' => array(),
@@ -487,6 +503,8 @@ class BreezeQuery
 	 */
 	public function getStatusByID($id)
 	{
+		global $smcFunc;
+
 		if (empty($id))
 			return false;
 
@@ -564,6 +582,8 @@ class BreezeQuery
 	 */
 	public function getStatusByUser($id, $maxIndex, $start)
 	{
+		global $smcFunc;
+
 		if (empty($id))
 			return false;
 
@@ -657,6 +677,8 @@ class BreezeQuery
 	 */
 	public function insertStatus($array)
 	{
+		global $smcFunc;
+
 		// Insert!
 		$smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['status']['table']) .
 			'', array(
@@ -684,6 +706,8 @@ class BreezeQuery
 	 */
 	public function insertComment($array)
 	{
+		global $smcFunc;
+
 		// Insert!
 		$smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['comments']['table']) .
 			'', array(
@@ -713,6 +737,8 @@ class BreezeQuery
 	 */
 	public function deleteStatus($id, $profile_owner = false)
 	{
+		global $smcFunc;
+
 		// We know the profile_owner, pass it to avoid an extra query
 		$this->killCache('status', $id, $profile_owner);
 
@@ -734,6 +760,8 @@ class BreezeQuery
 	 */
 	public function deleteCommentByStatusID($id)
 	{
+		global $smcFunc;
+
 		$smcFunc['db_query']('', '
 			DELETE FROM {db_prefix}' . ($this->_tables['comments']['table']) . '
 			WHERE comments_status_id = {int:id}', array('id' => $id, ));
@@ -747,6 +775,8 @@ class BreezeQuery
 	 */
 	public function deleteComments($id, $profile_owner = false)
 	{
+		global $smcFunc;
+
 		// If we know the profile_owner ID we will save an extra query so try to include it as a param please!
 		$this->killCache('comments', $id, $profile_owner);
 
@@ -769,6 +799,8 @@ class BreezeQuery
 	 */
 	public function getUserSettings($user)
 	{
+		global $smcFunc;
+
 		if (empty($user))
 			return false;
 
@@ -822,6 +854,8 @@ class BreezeQuery
 	 */
 	public function insertUserSettings($array, $userID)
 	{
+		global $smcFunc;
+
 		if (empty($array) || empty($userID))
 			return false;
 
@@ -848,6 +882,8 @@ class BreezeQuery
 
 	public function logCount($users)
 	{
+		global $smcFunc;
+
 		if (empty($users))
 			return false;
 
@@ -870,6 +906,8 @@ class BreezeQuery
 
 	public function getLog($users, $maxIndex, $start)
 	{
+		global $smcFunc;
+
 		if (empty($users) || empty($maxIndex))
 			return false;
 
@@ -907,6 +945,8 @@ class BreezeQuery
 
 	public function createLog($params)
 	{
+		global $smcFunc;
+
 		// Meh...
 		if (empty($params))
 			return false;
@@ -924,6 +964,8 @@ class BreezeQuery
 
 	public function deleteLog($id)
 	{
+		global $smcFunc;
+
 		if (empty($id))
 			return false;
 
@@ -948,6 +990,8 @@ class BreezeQuery
 	 */
 	public function insertNoti($params, $type)
 	{
+		global $smcFunc;
+
 		if (empty($params) || empty($type))
 			return false;
 
@@ -974,6 +1018,8 @@ class BreezeQuery
 	 */
 	public function notiSpam($user, $type, $id = false, $sender = false)
 	{
+		global $smcFunc;
+
 		// No user? no type? no fun...
 		if (empty($user) || empty($type))
 			return true;
@@ -1007,6 +1053,8 @@ class BreezeQuery
 
 	public function createAlert($params)
 	{
+		global $smcFunc;
+
 		if (empty($params))
 			return false;
 
@@ -1023,6 +1071,8 @@ class BreezeQuery
 	 */
 	public function updateAlert($params, $id)
 	{
+		global $smcFunc;
+
 		if ((empty($params) || !is_array($params)) || empty($id))
 			return false;
 
@@ -1051,6 +1101,8 @@ class BreezeQuery
 	 */
 	public function updateProfileViews($id, $json_string)
 	{
+		global $smcFunc;
+
 		// Do not waste my time
 		if (empty($id) || empty($json_string))
 			return false;
@@ -1075,6 +1127,8 @@ class BreezeQuery
 	 */
 	public function getViews($user)
 	{
+		global $smcFunc;
+
 		$result = $smcFunc['db_query']('', '
 			SELECT breeze_profile_views
 			FROM {db_prefix}' . $this->_tables['members']['table'] . '
@@ -1103,6 +1157,8 @@ class BreezeQuery
 	 */
 	public function deleteViews($user)
 	{
+		global $smcFunc;
+
 		// Delete!
 		$smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . $this->_tables['members']['table'] . '
@@ -1124,6 +1180,8 @@ class BreezeQuery
 	 */
 	public function userMention($match)
 	{
+		global $smcFunc;
+
 		// By default we return these empty values
 		$return = array(
 			'name' => '',
@@ -1194,7 +1252,7 @@ class BreezeQuery
 	 */
 	public function loadMinimalData($users)
 	{
-		global $txt;
+		global $txt, $smcFunc;
 
 		if (empty($users))
 			return false;
@@ -1284,7 +1342,7 @@ class BreezeQuery
 
 	public function wannaSeeBoards()
 	{
-		global $user_info;
+		global $user_info, $smcFunc;
 
 		if (($boards = cache_get_data(Breeze::$name .'-Boards-' . $user_info['id'], 120)) == null)
 		{
@@ -1307,7 +1365,7 @@ class BreezeQuery
 
 	public function userLikes($type, $user = false)
 	{
-		global $user_info;
+		global $user_info, $smcFunc;
 
 		if (empty($user))
 			$user = $user_info['id'];
@@ -1342,6 +1400,8 @@ class BreezeQuery
 
 	public function updateLikes($type, $content, $numLikes)
 	{
+		global $smcFunc;
+
 		$smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables[$type]['table']) . '
 			SET likes = {int:num_likes}
@@ -1363,6 +1423,8 @@ class BreezeQuery
 	 */
 	public function getMoodByID($data, $single = false)
 	{
+		global $smcFunc;
+
 		if (empty($data))
 			return false;
 
@@ -1405,6 +1467,8 @@ class BreezeQuery
 
 	public function getAllMoods()
 	{
+		global $smcFunc;
+
 		if (($moods = cache_get_data(Breeze::$name .'moods-all', 120)) == null)
 		{
 			$moods = array();
@@ -1432,6 +1496,8 @@ class BreezeQuery
 
 	public function insertMood($data)
 	{
+		global $smcFunc;
+
 		// Just the usual empty check, the data should already be properly handled by someone else.
 		if (empty($data))
 			return false;
@@ -1452,6 +1518,8 @@ class BreezeQuery
 
 	public function updateMood($data)
 	{
+		global $smcFunc;
+
 		if (empty($data))
 			return false;
 
@@ -1465,6 +1533,8 @@ class BreezeQuery
 
 	public function deleteMood($data)
 	{
+		global $smcFunc;
+
 		if (empty($data))
 			return false;
 
@@ -1483,7 +1553,7 @@ class BreezeQuery
 
 	protected function generateData($row, $type)
 	{
-		global $user_info;
+		global $user_info, $smcFunc;
 		static $canLike;
 		static $canViewLike;
 
