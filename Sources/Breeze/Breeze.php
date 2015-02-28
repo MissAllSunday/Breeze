@@ -588,7 +588,7 @@ class Breeze extends Pimple\Container
 
 	public function mood(&$output, &$message)
 	{
-		global $user_info, $context;
+		global $context;
 
 		// Don't do anything if the feature is disable.
 		if (!$this['tools']->enable('mood'))
@@ -606,12 +606,9 @@ class Breeze extends Pimple\Container
 		// Get the default placement.
 		$placement = $this['tools']->enable('mood_placement') ? $this['tools']->setting('mood_placement') : 0;
 
-		// This should be a good place to add some permissions...
-		$currentUser = ($output['member']['id'] == $user_info['id']);
-
 		// Append the result to the custom fields array. You need to be able to edit your own moods.
-		if (!isset($output['custom_fields'][$context['cust_profile_fields_placement'][$placement]]))
-			$output['custom_fields'][$context['cust_profile_fields_placement'][$placement]]['breeze_mood'] = $this['mood']->show($currentMood, $output['member']['id'], $currentUser);
+		if (!isset($output['custom_fields'][$context['cust_profile_fields_placement'][$placement]]['breeze_mood']))
+			$output['custom_fields'][$context['cust_profile_fields_placement'][$placement]]['breeze_mood'] = $this['mood']->show($currentMood, $output['member']['id']);
 	}
 
 	/**

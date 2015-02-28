@@ -535,10 +535,12 @@ function template_userDiv()
 </html>';
 }
 
-function template_mood_image($mood, $user, $currentUser)
+function template_mood_image($mood, $user)
 {
-	global $scripturl, $txt, $context;
+	global $scripturl, $txt, $context, $user_info;
 
+	// This should be a good place to add some permissions...
+	$currentUser = ($user == $user_info['id']);
 
 	// First case, no mood and no link.
 	if (empty($mood) && $currentUser)
