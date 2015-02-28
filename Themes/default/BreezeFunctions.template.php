@@ -504,7 +504,7 @@ function template_userDiv()
 		echo '
 				<div class="signature">
 					<h5>', $txt['signature'], ':</h5>
-					', $context['member']['signature'], '
+					', $context['BreezeUser']['signature'] ,'
 				</div>';
 
 	// Are there any custom profile fields for below the signature?
