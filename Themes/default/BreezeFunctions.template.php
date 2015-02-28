@@ -547,7 +547,7 @@ function template_mood_image($mood, $user)
 		return '<a href="'. $scripturl .'?action=breezemood;user='. $user .'" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'" data-user="'. $user .'">'. $txt['Breeze_moodChange'] .'</a>';
 
 	// Got a mood, show it!
-	elseif ($currentUser)
+	elseif (!empty($mood) && $currentUser)
 		return '<a href="'. $scripturl .'?action=breezemood;user='. $user .'" rel="breezeMood" data-name="'. $txt['Breeze_moodChange'] .'" data-user="'. $user .'">'. $mood['image_html'] .'</a>';
 
 	// Just show the image...
