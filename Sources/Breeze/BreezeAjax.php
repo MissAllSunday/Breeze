@@ -287,7 +287,7 @@ class BreezeAjax
 				'poster_id' => $poster,
 				'profile_id' => $owner,
 				'time' => time(),
-				'body' => $this->_app['tools']->enable('mention') ? $this->_app['mention']->preMention($body, $mentions) : $body,
+				'body' => $body,
 			);
 
 			// Before inserting the comment...
@@ -379,61 +379,53 @@ class BreezeAjax
 		$profileOwner = $this->_data->get('profileOwner');
 		$poster = $this->_data->get('poster');
 
-		// Get the data
-		if (!empty($id))
-		{
-			// You aren't allowed in here, let's show you a nice message error...
-			$canHas = $this->_app['tools']->permissions(ucfirst($type), $profileOwner, $poster);
-
-			// Die, die my darling!
-			if (!$canHas['delete'])
-				fatal_lang_error('Breeze_error_delete'. ucfirst($type), false);
-
-			$idExists = $this->_app['query']->getSingleValue(
-				$type,
-				$type .'_id',
-				$id
-			);
-
-			// Do this only if the message wasn't deleted already
-			if (!empty($idExists))
-			{
-				$typeCall = 'delete'. ucfirst($type);
-
-				// Mess up the vars before performing the query
-				call_integration_hook('integrate_breeze_before_delete', array(&$type, &$id, &$profileOwner, &$poster));
-
-				// Do the query dance!
-				$this->_app['query']->$typeCall($id, $profileOwner);
-
-				// Tell everyone what just happened here...
-				call_integration_hook('integrate_breeze_after_delete', array($type, $id, $profileOwner, $poster));
-
-				// Send the data back to the browser
-				return $this->setResponse(array(
-					'type' => 'info',
-					'message' => 'delete_'. $type,
-					'owner' => $profileOwner,
-					'data' => $type .'_id_'.$id,
-				));
-			}
-
-			// Tell them someone has deleted the message already
-			else
-				return $this->setResponse(array(
-					'type' => 'error',
-					'message' => 'already_deleted_'. strtolower($type),
-					'owner' => $profileOwner,
-				));
-		}
-
 		// No valid ID, no candy for you!
-		else
+		if (empty($id))
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
 				'owner' => $profileOwner,
 			));
+
+		// You aren't allowed in here, let's show you a nice message error...
+		$canHas = $this->_app['tools']->permissions(ucfirst($type), $profileOwner, $poster);
+
+		// Die, die my darling!
+		if (!$canHas['delete'])
+			fatal_lang_error('Breeze_error_delete'. ucfirst($type), false);
+
+		$idExists = $this->_app['query']->getSingleValue(
+			$type,
+			$type .'_id',
+			$id
+		);
+
+		// Tell them someone has deleted the message already
+		if (empty($idExists))
+			return $this->setResponse(array(
+				'type' => 'error',
+				'message' => 'already_deleted_'. strtolower($type),
+				'owner' => $profileOwner,
+			));
+
+		$typeCall = 'delete'. ucfirst($type);
+
+		// Mess up the vars before performing the query
+		call_integration_hook('integrate_breeze_before_delete', array(&$type, &$id, &$profileOwner, &$poster));
+
+		// Do the query dance!
+		$this->_app['query']->{$typeCall}($id, $profileOwner);
+
+		// Tell everyone what just happened here...
+		call_integration_hook('integrate_breeze_after_delete', array($type, $id, $profileOwner, $poster));
+
+		// Send the data back to the browser
+		return $this->setResponse(array(
+			'type' => 'info',
+			'message' => 'delete_'. $type,
+			'owner' => $profileOwner,
+			'data' => $type .'_id_'.$id,
+		));
 	}
 
 	/**
