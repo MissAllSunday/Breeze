@@ -263,64 +263,6 @@ function breeze_activity($data)
 		</div>';
 }
 
-function breeze_user_list($list, $type = 'buddy')
-{
-	global $context, $user_info, $txt;
-
-	// You have too many buddies/visitors pal!
-	if ($context['Breeze']['compact'][$type])
-	{
-
-		echo '<ol>';
-
-		foreach ($list as $u)
-		{
-			// Trickery...
-			$user = $type == 'visitors' ? $u['user'] : $u;
-
-			echo '<li>', $context['Breeze']['user_info'][$user]['link'] ,'</li>';
-		}
-
-		echo '</ul>';
-	}
-
-	// Print a nice Ul
-	else
-	{
-		echo '
-			<ul class="reset">';
-
-		// Show the profile visitors in a big, fat echo!
-		foreach ($list as $u)
-		{
-			// Trickery...
-			$user = $type == 'visitors' ? $u['user'] : $u;
-
-			echo '
-				<li> ', $context['Breeze']['user_info'][$user]['breezeFacebox'] ,' <br /> ', $context['Breeze']['user_info'][$user]['link'];
-
-			// Are we showing the visitors? if so, show some more info!
-			if ($type == 'visitors')
-			{
-				echo '
-						<br />',  $context['Breeze']['tools']->timeElapsed($u['last_view']);
-
-				// If you're the profile owner you might want to know how many time this user has visited your profile...
-				if ($context['member']['id'] == $user_info['id'])
-					echo '
-						<br />',  $txt['Breeze_user_modules_visitors'] . $u['views'];
-			}
-
-			// close the li
-			echo '</li>';
-		}
-
-		// End the buddies list
-		echo '
-			</ul>';
-	}
-}
-
 function breeze_server_response()
 {
 	global $txt;

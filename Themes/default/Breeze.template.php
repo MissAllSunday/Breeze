@@ -44,8 +44,12 @@ function template_user_wall()
 		<div class="blocks">';
 
 	template_breeze_info();
-	template_breeze_buddies();
-	template_breeze_visitors();
+
+	if (!empty($context['Breeze']['settings']['owner']['buddies']))
+		template_breeze_buddies();
+
+	if (!empty($context['Breeze']['settings']['owner']['visitors']))
+		template_breeze_visitors();
 
 	// Ends block's div.
 	echo '

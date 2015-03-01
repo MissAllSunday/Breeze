@@ -138,60 +138,72 @@ function template_breeze_buddies()
 {
 	global $context, $txt;
 
-	// Buddies
-	if (!empty($context['Breeze']['settings']['owner']['buddies']))
-	{
-		echo '
+	echo '
 		<div class="cat_bar">
 			<h3 class="catbg">
 				'. $txt['Breeze_tabs_buddies'] .'
 			</h3>
 		</div>';
 
-		echo '
+	echo '
 		<div class="information">
 			<div class="BreezeList">';
 
-		if (!empty($context['member']['buddies']))
-			breeze_user_list($context['member']['buddies'], 'buddy');
+	if (!empty($context['member']['buddies']))
+	{
+			echo '
+				<ul class="reset user_list">';
 
-		// No buddies :(
-		else
-			echo $txt['Breeze_user_modules_buddies_none'];
+			foreach ($context['member']['buddies'] as $id)
+				echo '
+					<li>', $context['Breeze']['user_info'][$id]['breezeFacebox'] ,'</li>';
 
 			echo '
+				</ul>';
+	}
+
+	// No buddies :(
+	else
+		echo $txt['Breeze_user_modules_buddies_none'];
+
+		echo '
 			</div>
 		</div>';
-	}
 }
 
 function template_breeze_visitors()
 {
 	global $context, $txt;
 
-	if (!empty($context['Breeze']['settings']['owner']['visitors']))
-	{
-
-		echo '
+	echo '
 		<div class="cat_bar">
 			<h3 class="catbg">
 				'. $txt['Breeze_tabs_views'] .'
 			</h3>
 		</div>';
 
-		echo '
+	echo '
 		<div class="information">
 			<div class="BreezeList">';
 
-		if (!empty($context['Breeze']['views']))
-			breeze_user_list($context['Breeze']['views'], 'visitors');
+	if (!empty($context['Breeze']['views']))
+	{
+		echo '
+				<ul class="reset user_list">';
 
-		// No visitors :(
-		else
-			echo $txt['Breeze_user_modules_visitors_none'];
+		foreach ($context['Breeze']['views'] as $id => $data)
+			echo '
+					<li>', $context['Breeze']['user_info'][$id]['breezeFacebox'] ,'</li>';
 
 		echo '
+				</ul>';
+	}
+
+	// No visitors :(
+	else
+		echo $txt['Breeze_user_modules_visitors_none'];
+
+	echo '
 			</div>
 		</div>';
-	}
 }

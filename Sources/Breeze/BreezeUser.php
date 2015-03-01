@@ -140,28 +140,27 @@ class BreezeUser extends Breeze
 			$context['Breeze']['views'] = $this->trackViews();
 
 			// If there is a limit then lets count the total so we can know if we are gonna use the compact style.
-			if (!empty($context['Breeze']['max_users']) && count($context['Breeze']['views']) >= $context['Breeze']['max_users'])
-				$context['Breeze']['compact']['visitors'] = true;
+			$maxVisitors = !empty($context['Breeze']['max_users'] && $context['Breeze']['settings']['owner']['how_many_visitors'] ? max((int) $context['Breeze']['max_users'], (int) $context['Breeze']['settings']['owner']['how_many_visitors']) : 5;
 
-			// Nope? then use the user defined value
-			else
+
+			// How many visitors are we gonna show?
+			if (!empty($context['Breeze']['views']) && is_array($context['Breeze']['views']) && count($context['Breeze']['views']) >= $maxVisitors)
 			{
-				// How many visitors are we gonna show?
-				if (!empty($context['Breeze']['settings']['owner']['how_many_visitors']) && is_array($context['Breeze']['views']) && count($context['Breeze']['views']) >= $context['Breeze']['settings']['owner']['how_many_visitors'])
-					$context['Breeze']['views'] = array_slice($context['Breeze']['views'], 0, $context['Breeze']['settings']['owner']['how_many_visitors']);
-			}
+				$context['Breeze']['views'] = array_slice($context['Breeze']['views'], 0, $maxVisitors);
 
-			// Load their data
-			if (!empty($context['Breeze']['views']))
+				// Load their data
 				$usersToLoad = array_merge($usersToLoad, array_keys($context['Breeze']['views']));
+			}
 		}
 
 		// Show buddies only if there is something to show.
 		if (!empty($context['Breeze']['settings']['owner']['buddies']) && !empty($context['member']['buddies']))
 		{
 			// Hold your horses!
-			if (!empty($context['Breeze']['max_users']) && count($context['member']['buddies']) >= $context['Breeze']['max_users'])
-				$context['Breeze']['compact']['buddy'] = true;
+			$maxBuddies = !empty($context['Breeze']['max_users'] && $context['Breeze']['settings']['owner']['how_many_buddies'] ? max((int) $context['Breeze']['max_users'], (int) $context['Breeze']['settings']['owner']['how_many_buddies']) : 5;
+
+			if (count($context['member']['buddies']) >= $maxBuddies)
+				$context['member']['buddies'] = array_slice($context['member']['buddies'], 0, $maxBuddies);
 
 			$usersToLoad = array_merge($usersToLoad, $context['member']['buddies']);
 		}

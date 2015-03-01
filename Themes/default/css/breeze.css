@@ -52,7 +52,7 @@ div.username div
 
 .blocks{
 	float:left;
-	width: 30%;
+	width: 29%;
 	padding: 20px 0 0 5px;
 }
 
@@ -135,6 +135,26 @@ ul.breezeActivity li{
 }
 .activityIcon{
 	margin:5px 10px 5px 5px;
+}
+
+.buddy_list li {
+	display:inline;
+	float:left;
+	width:22%;
+	margin-left:0%;
+	margin-right:0%;
+	margin-top:5%;
+	text-align: center;
+}
+
+.buddy_list a {
+	display:block;
+	text-decoration:none;
+	text-align: center
+}
+
+.buddy_list li img{
+	max-width : 40px;
 }
 
 @media screen and (max-width: 720px) {
