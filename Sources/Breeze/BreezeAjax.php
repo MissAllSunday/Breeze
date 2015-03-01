@@ -122,8 +122,6 @@ class BreezeAjax
 	 */
 	public function post()
 	{
-		require_once($this->_app['tools']->sourceDir . '/Mentions.php');
-
 		// Get the data.
 		$this->_data = Breeze::data('request');
 
@@ -148,6 +146,7 @@ class BreezeAjax
 		// Any mentions?
 		if ($this->_app['tools']->modSettings('enable_mentions') && allowedTo('mention'))
 		{
+			require_once($this->_app['tools']->sourceDir . '/Mentions.php');
 			$mentionedUsers = Mentions::getMentionedMembers($content);
 			$content = Mentions::getBody($content, $mentionedUsers);
 		}
@@ -266,6 +265,7 @@ class BreezeAjax
 		// So, you're popular huh?
 		if ($this->_app['tools']->modSettings('enable_mentions') && allowedTo('mention'))
 		{
+			require_once($this->_app['tools']->sourceDir . '/Mentions.php');
 			$mentionedUsers = Mentions::getMentionedMembers($content);
 			$content = Mentions::getBody($content, $mentionedUsers);
 		}
