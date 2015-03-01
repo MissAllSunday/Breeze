@@ -87,6 +87,8 @@ class BreezeAjax
 		if ($this->_noJS)
 			$db_show_debug = false;
 
+		checkSession('request');
+
 		// Get the current user settings.
 		$this->_userSettings = $this->_app['query']->getUserSettings($user_info['id']);
 		$this->_currentUser = $user_info['id'];
@@ -120,8 +122,6 @@ class BreezeAjax
 	 */
 	public function post()
 	{
-		checkSession('request', '', false);
-
 		require_once($this->_app['tools']->sourceDir . '/Mentions.php');
 
 		// Get the data.
@@ -241,8 +241,6 @@ class BreezeAjax
 	 */
 	public function postComment()
 	{
-		checkSession('request', '', false);
-
 		$this->_data = Breeze::data('request');
 
 		// Trickery, there's always room for moar!
@@ -368,8 +366,6 @@ class BreezeAjax
 	 */
 	public function delete()
 	{
-		checkSession('request', '', false);
-
 		// Get the global vars
 		$this->_data = Breeze::data('request');
 
@@ -436,8 +432,6 @@ class BreezeAjax
 	 */
 	public function userSettings()
 	{
-		checkSession('request', '', false);
-
 		$toSave = array();
 
 		// Get the values.
@@ -480,8 +474,6 @@ class BreezeAjax
 	protected function fetchStatus()
 	{
 		global $context;
-
-		checkSession('request', '', false);
 
 		// Get the global vars.
 		$data = Breeze::data('request');
@@ -543,8 +535,6 @@ class BreezeAjax
 	 */
 	protected function usersMention()
 	{
-		checkSession('request', '', false);
-
 		// Need it.
 		$data = Breeze::data('get');
 
@@ -790,7 +780,6 @@ class BreezeAjax
 				'message' => 'moodChanged',
 				'data' => json_encode(array('user' => $this->_data->get('user'), 'image' => $image)),
 				'owner' => $this->_currentUser,
-				'extra' => array('area' => 'breezesettings',),
 			));
 		}
 

@@ -587,7 +587,7 @@ function template_mood_change()
 
 			echo '
 					<td>
-						<a href="'. $scripturl .'?action=breezeajax;sa=moodchange;user='. $context['moodUser'] .';moodID='. $m['moods_id'] .'" rel="breezeMoodSave" data-id="'. $m['moods_id'] .'">'. $m['image_html'] .'</a>
+						<a href="'. $scripturl .'?action=breezeajax;sa=moodchange;user='. $context['moodUser'] .';moodID='. $m['moods_id'] .';'. $context['session_var'] .'='. $context['session_id'] .'" rel="breezeMoodSave" data-id="'. $m['moods_id'] .'">'. $m['image_html'] .'</a>
 						'. (!empty($m['name']) ? '<p>'. $m['name'] .'</p>' : '') .'
 					</td>';
 		}

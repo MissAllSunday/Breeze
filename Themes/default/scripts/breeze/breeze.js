@@ -157,7 +157,7 @@ $(function() {
 		jQuery(document).on('click', '.like_count a', function(e){
 			e.preventDefault();
 			var title = jQuery(this).parent().text(),
-				url = DOMPurify.sanitize(jQuery(this).attr('href') + ';js=1');
+				url = jQuery(this).attr('href') + ';js=1';
 			return reqOverlayDiv(url, title);
 		});
 	});
@@ -166,7 +166,7 @@ $(function() {
 	jQuery(document).on('click', 'a[rel*=breezeFacebox]', function(event){
 		event.preventDefault();
 		var title = DOMPurify.sanitize(jQuery(this).data('name')),
-			url = DOMPurify.sanitize(jQuery(this).attr('href') + ';js=1');
+			url = jQuery(this).attr('href') + ';js=1';
 
 		return reqOverlayDiv(url, title);
 	});
@@ -200,18 +200,18 @@ $(function() {
 	});
 
 	// My mood!
-	jQuery(document).on('click', 'a[rel*=breezeMood]', function(event){
+	jQuery(document).one('click', 'a[rel*=breezeMood]', function(event){
 		event.preventDefault();
 		var title = DOMPurify.sanitize(jQuery(this).data('name')),
-			url = DOMPurify.sanitize(jQuery(this).attr('href') + ';js=1');
+			url = jQuery(this).attr('href') + ';js=1';
 		return reqOverlayDiv(url, title);
 	});
 
 	// Changing moods.
-	jQuery(document).on('click', 'a[rel*=breezeMoodSave]', function(event){
+	jQuery(document).one('click', 'a[rel*=breezeMoodSave]', function(event){
 		event.preventDefault();
 		var moodID = DOMPurify.sanitize(jQuery(this).data('id')),
-			url = DOMPurify.sanitize(jQuery(this).attr('href') + ';js=1');
+			url = jQuery(this).attr('href') + ';js=1';
 
 		// Lets make a quick ajax call here...
 		jQuery.ajax({
@@ -229,11 +229,10 @@ $(function() {
 				// Close the pop up.
 				jQuery('#smf_popup').fadeOut(300, function(){ $(this).remove(); });
 			},
-			error: function(response){
-				breeze.tools.showNoti(response);
+			error: function(response, textStatus, errorThrown){
 
 				// Close the pop up.
-+				jQuery('#smf_popup').fadeOut(300, function(){ $(this).remove(); });
+				jQuery('#smf_popup').fadeOut(300, function(){ $(this).remove(); });
 			}
 		});
 	});
