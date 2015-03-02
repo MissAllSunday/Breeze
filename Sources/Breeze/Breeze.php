@@ -314,24 +314,24 @@ class Breeze extends Pimple\Container
 			array_slice($menu_buttons, 0, $counter),
 			array('wall' => array(
 				'title' => $tools->text('general_wall'),
+				'icon' => 'smiley',
 				'href' => $scripturl . '?action=wall',
 				'show' => ($tools->enable('master') && !$user_info['is_guest'] && !empty($userSettings['general_wall'])),
 				'sub_buttons' => array(
 					'noti' => array(
 						'title' => $tools->text('user_notisettings_name'),
-						'href' => $scripturl . '?action=profile;area=breezenoti',
+						'href' => $scripturl . '?action=profile;area=alerts;sa=edit;u='. $user_info['id'],
 						'show' => ($tools->enable('master') && !$user_info['is_guest']),
 						'sub_buttons' => array(),
-						),
+					),
 					'admin' => array(
 						'title' => $tools->text('admin'),
 						'href' => $scripturl . '?action=admin;area=breezeadmin',
 						'show' => ($tools->enable('master') && $user_info['is_admin']),
 						'sub_buttons' => array(),
-						),
 					),
 				),
-			),
+			)),
 			array_slice($menu_buttons, $counter)
 		);
 
