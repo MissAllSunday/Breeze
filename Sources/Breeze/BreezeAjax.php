@@ -674,92 +674,88 @@ class BreezeAjax
 	public function moodChange()
 	{
 		// Get the mood ID, can't work without it...
-		if ($this->_data->get('moodID'))
-		{
-			// Get the moods array.
-			$allMoods = $this->_app['mood']->getActive();
-
-			// There isn't a mood with the selected ID.
-			if (!in_array($this->_data->get('moodID'), array_keys($allMoods)))
-				return $this->setResponse(array(
+		if (!$this->_data->get('moodID'))
+			return $this->setResponse(array(
 				'message' => 'error_server',
 				'data' => '',
 				'type' => 'error',
 				'owner' => $this->_currentUser,
 			));
 
-			// Go ahead and store the new ID.
-			$this->_app['query']->insertUserSettings(array('mood'=> $this->_data->get('moodID')), $this->_currentUser);
+		// Get the moods array.
+		$allMoods = $this->_app['mood']->getActive();
 
-			// Get the image.
-			$image = $allMoods[$this->_data->get('moodID')]['image_html'];
-
-			$moodHistory = !empty($this->_userSettings['moodHistory']) ? json_decode($this->_userSettings['moodHistory'], true) : array();
-
-			// User has no history, go make one then!
-			if (empty($moodHistory))
-				$moodHistory[] = array(
-					'date' => time(),
-					'id' => $this->_data->get('moodID'),
-				);
-
-			else
-			{
-				// Gotta make sure the last added item is different than the one we're trying to add.
-				$lastItem = end($moodHistory);
-
-				if ($lastItem['id'] == $this->_data->get('moodID'))
-					$moodHistory = array();
-
-				// Nope! its a different one!
-				else
-					$moodHistory[] = array(
-					'date' => time(),
-					'id' => $this->_data->get('moodID'),
-				);
-
-				// One last thing we need to do, cut off old entries.
-				if (count($moodHistory) > 20)
-					$moodHistory = array_slice($moodHistory, -20);
-			}
-
-			// Anyway, save the values and move on...
-			if (!empty($moodHistory))
-			{
-				$this->_app['query']->insertUserSettings(array('moodHistory'=> json_encode($moodHistory)), $this->_currentUser);
-
-				// Create an inner alert for this.
-				if (!empty($this->_userSettings['alert_mood']))
-					$this->_app['query']->createLog(array(
-						'member' => $this->_currentUser,
-						'content_type' => 'mood',
-						'content_id' => $this->_data->get('moodID'),
-						'time' => time(),
-						'extra' => array(
-							'buddy_text' => 'mood',
-							'toLoad' => array($this->_currentUser),
-							'moodHistory' => serialize(end($moodHistory)),
-						),
-					));
-			}
-
-			// Build the response.
+		// There isn't a mood with the selected ID.
+		if (!in_array($this->_data->get('moodID'), array_keys($allMoods)))
 			return $this->setResponse(array(
-				'type' => 'info',
-				'message' => 'moodChanged',
-				'data' => json_encode(array('user' => $this->_data->get('user'), 'image' => $image)),
-				'owner' => $this->_currentUser,
-			));
+			'message' => 'error_server',
+			'data' => '',
+			'type' => 'error',
+			'owner' => $this->_currentUser,
+		));
+
+		// Go ahead and store the new ID.
+		$this->_app['query']->insertUserSettings(array('mood'=> $this->_data->get('moodID')), $this->_currentUser);
+
+		// Get the image.
+		$image = $allMoods[$this->_data->get('moodID')]['image_html'];
+
+		$moodHistory = !empty($this->_userSettings['moodHistory']) ? json_decode($this->_userSettings['moodHistory'], true) : array();
+
+		// User has no history, go make one then!
+		if (empty($moodHistory))
+			$moodHistory[] = array(
+				'date' => time(),
+				'id' => $this->_data->get('moodID'),
+			);
+
+		else
+		{
+			// Gotta make sure the last added item is different than the one we're trying to add.
+			$lastItem = end($moodHistory);
+
+			if ($lastItem['id'] == $this->_data->get('moodID'))
+				$moodHistory = array();
+
+			// Nope! its a different one!
+			else
+				$moodHistory[] = array(
+				'date' => time(),
+				'id' => $this->_data->get('moodID'),
+			);
+
+			// One last thing we need to do, cut off old entries.
+			if (count($moodHistory) > 20)
+				$moodHistory = array_slice($moodHistory, -20);
 		}
 
-		// Something happen :(
-		else
-			return $this->setResponse(array(
-				'message' => 'error_server',
-				'data' => '',
-				'type' => 'error',
-				'owner' => $this->_currentUser,
-			));
+		// Anyway, save the values and move on...
+		if (!empty($moodHistory))
+		{
+			$this->_app['query']->insertUserSettings(array('moodHistory'=> json_encode($moodHistory)), $this->_currentUser);
+
+			// Create an inner alert for this.
+			if (!empty($this->_userSettings['alert_mood']))
+				$this->_app['query']->createLog(array(
+					'member' => $this->_currentUser,
+					'content_type' => 'mood',
+					'content_id' => $this->_data->get('moodID'),
+					'time' => time(),
+					'extra' => array(
+						'buddy_text' => 'mood',
+						'toLoad' => array($this->_currentUser),
+						'moodHistory' => serialize(end($moodHistory)),
+					),
+				));
+		}
+
+		// Build the response.
+		return $this->setResponse(array(
+			'type' => 'info',
+			'message' => 'moodChanged',
+			'data' => json_encode(array('user' => $this->_data->get('user'), 'image' => $image)),
+			'owner' => $this->_currentUser,
+		));
 	}
 
 	/**
@@ -819,24 +815,22 @@ class BreezeAjax
 	 */
 	protected function setResponse($data = array())
 	{
-		// Data is empty, fill out a generic response
-		if (empty($data))
-			$data = array(
-				'message' => 'error_server',
-				'data' => '',
-				'type' => 'error',
-				'owner' => 0,
-				'extra' => '',
-			);
-
-		// If we didn't get all the params, set them to an empty var and don't forget to convert the message to a proper text string
+		// Fill out a generic response.
 		$this->_response = array(
-			'message' => !empty($data['message']) ? $this->_app['tools']->text($data['type'] .'_'. $data['message']) : $this->_app['tools']->text('error_server'),
-			'data' => !empty($data['data']) ? $data['data'] : '',
-			'type' => !empty($data['type']) ? $data['type'] : 'error',
-			'owner' => !empty($data['owner']) ? $data['owner'] : 0,
-			'extra' => !empty($data['extra']) ? $data['extra'] : '',
+			'message' => 'error_server',
+			'data' => '',
+			'type' => 'error',
+			'owner' => 0,
+			'extra' => '',
 		);
+
+		// Overwrite the generic response with the actual data.
+		if (!empty($data) && is_array($data))
+			$this->_response = $data + $this->_response;
+
+
+		// Get the actual message. If there is no text string then assume the called method already filled the key with an appropriated message.
+		$this->_response['message'] = !empty($data['message']) ? $this->_app['tools']->text($data['type'] .'_'. $data['message']) : $data['message'];
 	}
 
 	/**
