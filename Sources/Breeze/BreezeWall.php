@@ -207,8 +207,8 @@ class BreezeWall
 		if (!empty($context['Breeze']['settings']['visitor']['load_more']))
 		{
 			addInlineJavascript('
-	breeze.text.load_more = '. JavaScriptEscape($tools->text('load_more')) .';
-	breeze.text.page_loading_end = '. JavaScriptEscape($tools->text('page_loading_end')) .';', true);
+	breeze.text.load_more = '. JavaScriptEscape($this->_app['tools']->text('load_more')) .';
+	breeze.text.page_loading_end = '. JavaScriptEscape($this->_app['tools']->text('page_loading_end')) .';', true);
 			loadJavascriptFile('breezeLoadMore.js', array('local' => true, 'default_theme' => true));
 		}
 	}
