@@ -205,7 +205,12 @@ class BreezeWall
 
 		// Does the user wants to use the load more button?
 		if (!empty($context['Breeze']['settings']['visitor']['load_more']))
+		{
+			addInlineJavascript('
+	breeze.text.load_more = '. JavaScriptEscape($tools->text('load_more')) .';
+	breeze.text.page_loading_end = '. JavaScriptEscape($tools->text('page_loading_end')) .';', true);
 			loadJavascriptFile('breezeLoadMore.js', array('local' => true, 'default_theme' => true));
+		}
 	}
 
 	/**

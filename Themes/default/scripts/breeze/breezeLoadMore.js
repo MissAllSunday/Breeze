@@ -11,7 +11,7 @@ $(function() {
 		var numberOfEvents = 0;
 
 		// Hide the normal pagination.
-		$('.pagelinks').hide();
+		$('.pagesection').hide();
 
 		showMoarButton();
 	}
@@ -19,8 +19,8 @@ $(function() {
 	function showMoarButton(){
 
 	// Don't show anything if there isn't enough items to display...
-	if (breeze.pagination.totalItems <= breeze.pagination.maxIndex)
-		return false;
+	// if (breeze.pagination.totalItems <= breeze.pagination.maxIndex)
+		// return false;
 
 		// Add a nice button...
 		$('<button/>', {

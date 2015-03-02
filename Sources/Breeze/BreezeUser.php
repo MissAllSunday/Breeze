@@ -58,10 +58,6 @@ class BreezeUser extends Breeze
 				'owner' => array(),
 				'visitor' => array(),
 			),
-			'compact' => array(
-				'visitors' => false,
-				'buddy' => false,
-			),
 		);
 
 		// Does the admin has set a max limit?
@@ -113,23 +109,23 @@ class BreezeUser extends Breeze
 		}
 
 		// Set up some vars for pagination.
-		$maxIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;
+		$maxStatusIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;
 		$currentPage = $data->validate('start') == true ? $data->get('start') : 0;
 
 		// Load all the status.
-		$data = $query->getStatusByProfile($context['member']['id'], $maxIndex, $currentPage);
+		$status = $query->getStatusByProfile($context['member']['id'], $maxStatusIndex, $currentPage);
 
 		// Load users data.
-		if (!empty($data['users']))
-			$usersToLoad = $usersToLoad + $data['users'];
+		if (!empty($status['users']))
+			$usersToLoad = $usersToLoad + $status['users'];
 
 		// Pass the status info.
-		if (!empty($data['data']))
-			$context['member']['status'] = $data['data'];
+		if (!empty($status['data']))
+			$context['member']['status'] = $status['data'];
 
 		// Applying pagination.
-		if (!empty($data['pagination']))
-			$context['page_index'] = $data['pagination'];
+		if (!empty($status['pagination']))
+			$context['page_index'] = $status['pagination'];
 
 		// Page name depends on pagination.
 		$context['page_title'] = sprintf($tools->text('profile_of_username'), $context['member']['name']);
@@ -168,9 +164,9 @@ class BreezeUser extends Breeze
 		// @todo this is a temp thing...
 		if (!empty($context['Breeze']['settings']['owner']['activityLog']))
 		{
-			$maxIndex = 10;
+			$maxAlertsIndex = 10;
 			$start = 0;
-			$alerts =  $this['log']->get($context['member']['id'], $maxIndex, $start);
+			$alerts =  $this['log']->get($context['member']['id'], $maxAlertsIndex, $start);
 			$context['Breeze']['log'] = $alerts['data'];
 		}
 
@@ -189,7 +185,12 @@ class BreezeUser extends Breeze
 
 		// Does the user wants to use the load more button?
 		if (!empty($context['Breeze']['settings']['visitor']['load_more']))
+		{
+			addInlineJavascript('
+	breeze.text.load_more = '. JavaScriptEscape($tools->text('load_more')) .';
+	breeze.text.page_loading_end = '. JavaScriptEscape($tools->text('page_loading_end')) .';', true);
 			loadJavascriptFile('breeze/breezeLoadMore.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		}
 
 		addInlineJavascript('
 	var bTabs = new breezeTabs(\'ul.breezeTabs\', \'wall\');', true);
@@ -197,8 +198,8 @@ class BreezeUser extends Breeze
 		// Need to pass some vars to the browser :(
 		addInlineJavascript('
 	breeze.pagination = {
-		maxIndex : '. $maxIndex .',
-		totalItems : ' . $data['count'] . ',
+		maxIndex : '. $maxStatusIndex .',
+		totalItems : ' . $status['count'] . ',
 		userID : '. $context['member']['id'] .'
 	};');
 

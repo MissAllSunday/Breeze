@@ -13,6 +13,7 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
+// Manually load Pimple :()
 require_once $sourcedir . '/Breeze/Pimple/Container.php';
 
 /**
