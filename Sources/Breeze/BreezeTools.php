@@ -22,7 +22,6 @@ class BreezeTools
 	public $settings;
 	public $boardDir;
 	public $boardUrl;
-	protected static $_jsFile;
 
 	function __construct($app)
 	{
@@ -456,69 +455,5 @@ class BreezeTools
 
 		// Do the variable replacements.
 		return str_replace($find, $replace, $text);
-	}
-
-	public function appendJS($string)
-	{
-		if (empty($string))
-			return false;
-
-		static::$_jsFile .= $string;
-	}
-
-	public function createJSFile()
-	{
-		// Gotta have something to work with...
-		if (empty(static::$_jsFile))
-			return false;
-
-		// The file already exists.
-		if (file_exists($filename))
-			return true;
-
-		$filename = $this->settings['default_theme_dir'] .'/scripts/breeze/breezaData.js';
-
-		// We need a far far away file...
-		require_once($this->sourceDir .'/Subs-Package.php');
-
-		// This will only create the file...
-		$done = package_put_contents($filename, '', false);
-
-		// Open a resource on the hopefully created file.
-		if (!empty($done))
-		{
-			$fp = @fopen($filename, 'wb');
-
-			// Well, it failed miserably... time to roll out plan B!
-			if (!$fp)
-			{
-				addInlineJavascript(static::$_jsFile);
-
-				// Main purpose was to create a file and that didn't happen soo...
-				return false;
-			}
-
-			// Attempt to make the file writable.
-			package_chmod($filename);
-			$write = fwrite($fp, static::$_jsFile);
-			fclose($fp);
-
-			// Meh...
-			if (empty($write)
-			{
-				addInlineJavascript(static::$_jsFile);
-				return false;
-			}
-
-			// Yay!
-			return true;
-		}
-
-		// The creation failed miserably, plan B!
-		else
-		{
-			addInlineJavascript(static::$_jsFile);
-			return false;
-		}
 	}
 }
