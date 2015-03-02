@@ -469,10 +469,10 @@ class BreezeAjax
 	{
 		global $context;
 
-		$id = $data->get('userID');
-		$maxIndex = $data->get('maxIndex');
-		$numberTimes = $data->get('numberTimes');
-		$comingFrom = $data->get('comingFrom');
+		$id = $this->_data->get('userID');
+		$maxIndex = $this->_data->get('maxIndex');
+		$numberTimes = $this->_data->get('numberTimes');
+		$comingFrom = $this->_data->get('comingFrom');
 		$return = '';
 
 		// The usual checks.
@@ -487,7 +487,7 @@ class BreezeAjax
 		$start = $maxIndex * $numberTimes;
 
 		// Pass the user ID or IDs depending where are we coming from....
-		$fetch = $comingFrom == 'wall' ? $data->get('buddies') : $data->get('userID');
+		$fetch = $comingFrom == 'wall' ? $this->_data->get('buddies') : $this->_data->get('userID');
 
 		// Re-globalized!
 		$context['Breeze']['comingFrom'] = $comingFrom;
