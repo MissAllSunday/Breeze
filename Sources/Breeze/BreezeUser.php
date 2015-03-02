@@ -140,7 +140,7 @@ class BreezeUser extends Breeze
 			$context['Breeze']['views'] = $this->trackViews();
 
 			// If there is a limit then lets count the total so we can know if we are gonna use the compact style.
-			$maxVisitors = !empty($context['Breeze']['max_users'] && $context['Breeze']['settings']['owner']['how_many_visitors'] ? max((int) $context['Breeze']['max_users'], (int) $context['Breeze']['settings']['owner']['how_many_visitors']) : 5;
+			$maxVisitors = !empty($context['Breeze']['max_users']) && $context['Breeze']['settings']['owner']['how_many_visitors'] ? max((int) $context['Breeze']['max_users'], (int) $context['Breeze']['settings']['owner']['how_many_visitors']) : 5;
 
 
 			// How many visitors are we gonna show?
@@ -157,7 +157,7 @@ class BreezeUser extends Breeze
 		if (!empty($context['Breeze']['settings']['owner']['buddies']) && !empty($context['member']['buddies']))
 		{
 			// Hold your horses!
-			$maxBuddies = !empty($context['Breeze']['max_users'] && $context['Breeze']['settings']['owner']['how_many_buddies'] ? max((int) $context['Breeze']['max_users'], (int) $context['Breeze']['settings']['owner']['how_many_buddies']) : 5;
+			$maxBuddies = !empty($context['Breeze']['max_users']) && $context['Breeze']['settings']['owner']['how_many_buddies'] ? max((int) $context['Breeze']['max_users'], (int) $context['Breeze']['settings']['owner']['how_many_buddies']) : 5;
 
 			if (count($context['member']['buddies']) >= $maxBuddies)
 				$context['member']['buddies'] = array_slice($context['member']['buddies'], 0, $maxBuddies);

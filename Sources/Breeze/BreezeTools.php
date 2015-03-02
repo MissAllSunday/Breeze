@@ -22,6 +22,7 @@ class BreezeTools
 	public $settings;
 	public $boardDir;
 	public $boardUrl;
+	protected static $_jsFile;
 
 	function __construct($app)
 	{
@@ -455,5 +456,38 @@ class BreezeTools
 
 		// Do the variable replacements.
 		return str_replace($find, $replace, $text);
+	}
+
+	public function appendJS($string)
+	{
+		if (empty($string))
+			return false;
+
+		static::_file .= $string;
+	}
+
+	public function createJSFile()
+	{
+		// Gotta have something to work with...
+		if (empty(static::_file))
+			return false;
+
+		// We need a far far away file...
+		require_once($this->boardDir .'/Subs-Package.php');
+
+		// Try to create a file.
+		$done = package_put_contents($this->settings['default_theme_dir'] .'/scripts/breeze/breezaData.js', static::_file, true);
+
+		// Well, it failed miserably... time to roll out plan B!
+		if (empty($done))
+		{
+			addInlineJavascript(static::_file);
+
+			// Main purpose was to create a file and that didn't happen soo...
+			return false;
+		}
+
+		// Yay!
+		return $done;
 	}
 }
