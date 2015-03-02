@@ -336,9 +336,6 @@ class Breeze extends Pimple\Container
 
 		// DUH! winning!
 		$this->who();
-
-		if ($tools->createJSFile())
-			loadJavascriptFile('breeze/breezaData.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 	}
 
 	/**
@@ -565,21 +562,12 @@ class Breeze extends Pimple\Container
 		if (!empty($userSettings['aboutMe']))
 			unset($userSettings['aboutMe']);
 
-		// Define some variables for the ajax stuff
-		$jsVars = array('feed_error_message', 'error_server', 'error_wrong_values', 'success_published', 'success_published_comment', 'error_empty', 'success_delete_status', 'success_delete_comment', 'confirm_delete', 'confirm_yes', 'confirm_cancel', 'error_already_deleted_status', 'error_already_deleted_comment', 'error_already_deleted_noti', 'error_already_marked_noti', 'cannot_postStatus', 'cannot_postComments', 'error_no_valid_action', 'error_no_access', 'success_noti_unmarkasread_after', 'success_noti_markasread_after', 'error_noti_markasreaddeleted_after', 'error_noti_markasreaddeleted', 'success_noti_delete_after', 'success_noti_visitors_clean',  'success_notiMulti_delete_after', 'success_notiMulti_markasread_after', 'success_notiMulti_unmarkasread_after', 'noti_markasread', 'noti_delete', 'noti_cancel', 'noti_closeAll', 'load_more', 'page_loading_end', 'page_loading');
-
-		// Populate the text object with all possible text vars this mod uses and there are a lot!
-		foreach ($jsVars as $var)
-			$jsSettings .= '
-breeze.text.'. $var .' = '. JavaScriptEscape($tools->text($var)) .';';
-
 		// Since we're here already, load the current User (currentSettings) object
 		foreach (Breeze::$allSettings as $k => $v)
 			$generalSettings .= '
 		breeze.currentSettings.'. $k .' = '. (isset($userSettings[$k]) ? (is_array($userSettings[$k]) ? json_encode($userSettings[$k]) : JavaScriptEscape($userSettings[$k])) : 'false') .';';
 
 		addInlineJavascript($generalSettings);
-		$tools->appendJS($jsSettings);
 
 		// Common css and js files.
 		loadJavascriptFile('breeze/noty/jquery.noty.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
