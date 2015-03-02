@@ -33,7 +33,7 @@ class BreezeAjax
 	{
 		$this->_app = $app;
 
-		// Needed to show some error strings
+		// Needed to show some error strings.
 		loadLanguage(Breeze::$name);
 
 		// Set an empty var, by default lets pretend everything went wrong...
@@ -102,8 +102,11 @@ class BreezeAjax
 		// Does the subaction even exist?
 		if (isset($call[$data->get('sa')]))
 		{
+			// Get the data.
+			$this->_data = Breeze::data('request');
+
 			// This is somehow ugly but its faster.
-			$this->$call[$data->get('sa')]();
+			$this->{$call[$data->get('sa')]}();
 
 			// Send the response back to the browser
 			$this->returnResponse();
@@ -122,9 +125,6 @@ class BreezeAjax
 	 */
 	public function post()
 	{
-		// Get the data.
-		$this->_data = Breeze::data('request');
-
 		// Build plain normal vars...
 		$owner = $this->_data->get('statusOwner');
 		$poster = $this->_data->get('statusPoster');
@@ -316,7 +316,7 @@ class BreezeAjax
 					$mentionData['users'] = $mentionedUsers;
 
 					// The inner type.
-					$mentionedUsers['innerType'] = 'com';
+					$mentionData['innerType'] = 'com';
 
 					// Don't really need the body.
 					unset($mentionData['body']);
@@ -366,9 +366,6 @@ class BreezeAjax
 	 */
 	public function delete()
 	{
-		// Get the global vars
-		$this->_data = Breeze::data('request');
-
 		// Set some much needed vars
 		$id = $this->_data->get('bid');
 		$type = $this->_data->get('type');
@@ -434,9 +431,6 @@ class BreezeAjax
 	{
 		$toSave = array();
 
-		// Get the values.
-		$this->_data = Breeze::data('request');
-
 		// Handling data.
 		foreach ($this->_data->get('breezeSettings') as $k => $v)
 		{
@@ -474,9 +468,6 @@ class BreezeAjax
 	protected function fetchStatus()
 	{
 		global $context;
-
-		// Get the global vars.
-		$data = Breeze::data('request');
 
 		$id = $data->get('userID');
 		$maxIndex = $data->get('maxIndex');
@@ -525,24 +516,6 @@ class BreezeAjax
 				'data' => 'end',
 				'owner' => $id,
 			));
-	}
-
-	/**
-	 * BreezeAjax::usersMention()
-	 *
-	 * Creates an array of searchable users
-	 * @return void
-	 */
-	protected function usersMention()
-	{
-		// Need it.
-		$data = Breeze::data('get');
-
-		// Get the query to match
-		$match = $data->get('match');
-
-		// Lets see if there are any results to this search.
-		return $this->_response = $this->_app['query']->userMention($match);
 	}
 
 	/**
@@ -671,8 +644,6 @@ class BreezeAjax
 
 	public function coverDelete()
 	{
-		$this->_data = Breeze::data('request');
-
 		// Delete the cover at once!
 		if (!empty($this->_userSettings['cover']))
 		{
@@ -702,8 +673,6 @@ class BreezeAjax
 
 	public function moodChange()
 	{
-		$this->_data = Breeze::data();
-
 		// Get the mood ID, can't work without it...
 		if ($this->_data->get('moodID'))
 		{
