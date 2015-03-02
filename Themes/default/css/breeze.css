@@ -137,7 +137,7 @@ ul.breezeActivity li{
 	margin:5px 10px 5px 5px;
 }
 
-.buddy_list li {
+.user_list li {
 	display:inline;
 	float:left;
 	width:22%;
@@ -147,13 +147,13 @@ ul.breezeActivity li{
 	text-align: center;
 }
 
-.buddy_list a {
+.user_list a {
 	display:block;
 	text-decoration:none;
 	text-align: center
 }
 
-.buddy_list li img{
+.user_list li img{
 	max-width : 40px;
 }
 
