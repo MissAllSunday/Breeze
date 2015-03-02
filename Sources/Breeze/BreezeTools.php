@@ -463,31 +463,62 @@ class BreezeTools
 		if (empty($string))
 			return false;
 
-		static::_file .= $string;
+		static::$_jsFile .= $string;
 	}
 
 	public function createJSFile()
 	{
 		// Gotta have something to work with...
-		if (empty(static::_file))
+		if (empty(static::$_jsFile))
 			return false;
+
+		// The file already exists.
+		if (file_exists($filename))
+			return true;
+
+		$filename = $this->settings['default_theme_dir'] .'/scripts/breeze/breezaData.js';
 
 		// We need a far far away file...
-		require_once($this->boardDir .'/Subs-Package.php');
+		require_once($this->sourceDir .'/Subs-Package.php');
 
-		// Try to create a file.
-		$done = package_put_contents($this->settings['default_theme_dir'] .'/scripts/breeze/breezaData.js', static::_file, true);
+		// This will only create the file...
+		$done = package_put_contents($filename, '', false);
 
-		// Well, it failed miserably... time to roll out plan B!
-		if (empty($done))
+		// Open a resource on the hopefully created file.
+		if (!empty($done))
 		{
-			addInlineJavascript(static::_file);
+			$fp = @fopen($filename, 'wb');
 
-			// Main purpose was to create a file and that didn't happen soo...
-			return false;
+			// Well, it failed miserably... time to roll out plan B!
+			if (!$fp)
+			{
+				addInlineJavascript(static::$_jsFile);
+
+				// Main purpose was to create a file and that didn't happen soo...
+				return false;
+			}
+
+			// Attempt to make the file writable.
+			package_chmod($filename);
+			$write = fwrite($fp, static::$_jsFile);
+			fclose($fp);
+
+			// Meh...
+			if (empty($write)
+			{
+				addInlineJavascript(static::$_jsFile);
+				return false;
+			}
+
+			// Yay!
+			return true;
 		}
 
-		// Yay!
-		return $done;
+		// The creation failed miserably, plan B!
+		else
+		{
+			addInlineJavascript(static::$_jsFile);
+			return false;
+		}
 	}
 }

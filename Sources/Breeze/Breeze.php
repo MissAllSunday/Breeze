@@ -336,6 +336,9 @@ class Breeze extends Pimple\Container
 
 		// DUH! winning!
 		$this->who();
+
+		if ($tools->createJSFile())
+			loadJavascriptFile('breeze/breezaData.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 	}
 
 	/**
@@ -568,7 +571,7 @@ class Breeze extends Pimple\Container
 		// Populate the text object with all possible text vars this mod uses and there are a lot!
 		foreach ($jsVars as $var)
 			$jsSettings .= '
-		breeze.text.'. $var .' = '. JavaScriptEscape($tools->text($var)) .';';
+breeze.text.'. $var .' = '. JavaScriptEscape($tools->text($var)) .';';
 
 		// Since we're here already, load the current User (currentSettings) object
 		foreach (Breeze::$allSettings as $k => $v)
@@ -576,7 +579,7 @@ class Breeze extends Pimple\Container
 		breeze.currentSettings.'. $k .' = '. (isset($userSettings[$k]) ? (is_array($userSettings[$k]) ? json_encode($userSettings[$k]) : JavaScriptEscape($userSettings[$k])) : 'false') .';';
 
 		addInlineJavascript($generalSettings);
-		addInlineJavascript($jsSettings);
+		$tools->appendJS($jsSettings);
 
 		// Common css and js files.
 		loadJavascriptFile('breeze/noty/jquery.noty.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
