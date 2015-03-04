@@ -26,7 +26,7 @@ class BreezeTrackActions extends Breeze
 		$options = $this['query']->getUserSettings($posterOptions['id']);
 
 		// Does the user wants to log this? does the new topic has been approved?
-		if (!empty($options['alert_topic') && !empty($topicOptions['is_approved']))
+		if (!empty($options['alert_topic']) && !empty($topicOptions['is_approved']))
 			$this['query']->createLog(array(
 				'member' => $posterOptions['id'],
 				'content_type' => 'topic',
@@ -36,5 +36,13 @@ class BreezeTrackActions extends Breeze
 					'subject' => $msgOptions['subject'],
 					'toLoad' => array($posterOptions['id']),),
 			));
+	}
+	
+	public function editAvatar(&$profile_vars, &$post_errors, $memID, $cur_profile, $current_area)
+	{global $user_info;
+		echo '<pre>';
+		print_r($profile_vars);echo '</pre><hr><pre>';
+		print_r($user_info);
+		die;
 	}
 }

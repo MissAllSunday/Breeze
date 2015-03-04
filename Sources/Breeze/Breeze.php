@@ -13,7 +13,7 @@
 if (!defined('SMF'))
 	die('No direct access...');
 
-// Manually load Pimple :()
+// Manually load Pimple :(
 require_once $sourcedir . '/Breeze/Pimple/Container.php';
 
 /**
@@ -65,7 +65,8 @@ class Breeze extends Pimple\Container
 	);
 	public $_likeTypes = array('breSta' => 'status', 'breCom' => 'comments');
 	public $trackHooks = array(
-		'integrate_create_topic' => 'createTopic'
+		'integrate_create_topic' => 'createTopic',
+		'integrate_profile_save' => 'editAvatar',
 	);
 
 	// Support site feed
@@ -385,7 +386,7 @@ class Breeze extends Pimple\Container
 	/**
 	 * Breeze::trackHooks()
 	 *
-	 * Creates a list of hooks used to track user actions.
+	 * Creates a list of hooks used to track user actions. Should really make sure Breeze is the last hook added.
 	 * @return void
 	 */
 	public function trackHooks()
@@ -645,7 +646,7 @@ class Breeze extends Pimple\Container
 			'label' => $tools->text('page_main'),
 			'file' => 'Breeze/BreezeAdmin.php',
 			'function' => 'Breeze::call#',
-			'icon' => 'packages.png',
+			'icon' => 'smiley',
 			'subsections' => array(
 				'general' => array($tools->text('page_main')),
 				'settings' => array($tools->text('page_settings')),

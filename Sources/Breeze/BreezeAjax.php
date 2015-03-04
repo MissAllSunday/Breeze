@@ -441,6 +441,10 @@ class BreezeAjax
 			// Integers, BreezeData should return any numeric value casted as integer so do check thats indeed the case.
 			elseif (Breeze::$allSettings[$k] == 'Int')
 				$toSave[$k] = is_int($v) ? $v : 0;
+
+			// The rest.
+			else
+				$toSave[$k] = $v;
 		}
 
 		// Gotta make sure the user is respecting the admin limit for the about me block.
@@ -495,7 +499,7 @@ class BreezeAjax
 		// Get the right call to the DB.
 		$call = $comingFrom == 'profile' ? 'getStatusByProfile' : 'getStatusByUser';
 
-		$data = $this->_app['query']->$call($fetch, $maxIndex, $start);
+		$data = $this->_app['query']->{$call}($fetch, $maxIndex, $start);
 
 		if (!empty($data['data']))
 		{
