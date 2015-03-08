@@ -155,7 +155,8 @@ function template_breeze_buddies()
 				<ul class="reset user_list">';
 
 			foreach ($context['member']['buddies'] as $id)
-				echo '
+				if (!empty($context['Breeze']['user_info'][$id]['breezeFacebox']))
+					echo '
 					<li>', $context['Breeze']['user_info'][$id]['breezeFacebox'] ,'</li>';
 
 			echo '
@@ -192,7 +193,8 @@ function template_breeze_visitors()
 				<ul class="reset user_list">';
 
 		foreach ($context['Breeze']['views'] as $id => $data)
-			echo '
+			if (!empty($context['Breeze']['user_info'][$id]['breezeFacebox']))
+				echo '
 					<li>', $context['Breeze']['user_info'][$id]['breezeFacebox'] ,'</li>';
 
 		echo '
