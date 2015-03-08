@@ -585,7 +585,7 @@ class BreezeUser extends Breeze
 
 		$(\'#fileupload\').fileupload({
 			dataType: \'json\',
-			url : '. JavaScriptEscape($this['tools']->scriptUrl .'?action=breezeajax;sa=cover;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings') .';js=1') .',
+			url : '. JavaScriptEscape($this['tools']->scriptUrl .'?action=breezeajax;sa=cover;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings') .';js=1;'. $context['session_var'] .'='. $context['session_id']) .',
 			autoUpload: false,
 			getNumberOfFiles: 1,
 			disableImageResize: /Android(?!.*Chrome)|Opera/
