@@ -598,6 +598,7 @@ class BreezeUser extends Breeze
 				data.context = jQuery(\'[name="Submit"]\')
 					.on(\'click\', function (e) {
 						e.preventDefault();
+						ajax_indicator(true);
 						data.submit();
 						return false;
 					}).data(data);
@@ -613,6 +614,7 @@ class BreezeUser extends Breeze
 			});
 		}).on(\'fileuploaddone\', function (e, data) {
 
+			ajax_indicator(false);
 			if (data.result.error) {
 				$(\'.b_cover_preview\').replaceWith(\'<div class="errorbox">\' + data.result.error + \'</div>\');
 			}
@@ -634,6 +636,7 @@ class BreezeUser extends Breeze
 
 			data.abort();
 		}).on(\'fileuploadfail\', function (e, data) {
+				ajax_indicator(false);
 				$(\'.b_cover_preview\').replaceWith(\'<div class="errorbox">'. $this['tools']->text('error_server') .'</div>\');
 				data.abort();
 		}).on(\'always\', function (e, data) {
