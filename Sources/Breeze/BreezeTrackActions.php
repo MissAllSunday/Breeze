@@ -37,12 +37,8 @@ class BreezeTrackActions extends Breeze
 					'toLoad' => array($posterOptions['id']),),
 			));
 	}
-	
-	public function editAvatar(&$profile_vars, &$post_errors, $memID, $cur_profile, $current_area)
-	{global $user_info;
-		echo '<pre>';
-		print_r($profile_vars);echo '</pre><hr><pre>';
-		print_r($user_info);
-		die;
+
+	public function editProfile(&$profile_vars, &$post_errors, $memID, $cur_profile, $current_area)
+	{
 	}
 }

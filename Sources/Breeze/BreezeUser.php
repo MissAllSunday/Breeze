@@ -598,6 +598,7 @@ class BreezeUser extends Breeze
 				data.context = jQuery(\'[name="Submit"]\')
 					.on(\'click\', function (e) {
 						e.preventDefault();
+						$(e).prop(\'disabled\',true);
 						ajax_indicator(true);
 						data.submit();
 						return false;

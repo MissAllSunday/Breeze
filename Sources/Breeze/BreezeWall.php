@@ -138,7 +138,7 @@ class BreezeWall
 
 		// You actually need to enable this... if you haven't done so, lets tell you about it!
 		if (empty($this->userSettings['general_wall']))
-			fatal_lang_error('Breeze_cannot_see_general_wall');
+			fatal_lang_error('Breeze_cannot_see_general_wall', false);
 
 		// Get some stuffz
 		$data = Breeze::data('get');

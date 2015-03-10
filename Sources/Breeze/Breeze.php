@@ -66,7 +66,7 @@ class Breeze extends Pimple\Container
 	public $_likeTypes = array('breSta' => 'status', 'breCom' => 'comments');
 	public $trackHooks = array(
 		'integrate_create_topic' => 'createTopic',
-		'integrate_profile_save' => 'editAvatar',
+		'integrate_profile_save' => 'editProfile',
 	);
 
 	// Support site feed
