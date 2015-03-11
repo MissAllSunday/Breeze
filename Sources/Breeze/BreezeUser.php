@@ -215,14 +215,6 @@ class BreezeUser extends Breeze
 		addInlineJavascript('
 	var bTabs = new breezeTabs(\'ul.breezeTabs\', \'wall\');', true);
 
-		// Need to pass some vars to the browser :(
-		addInlineJavascript('
-	breeze.pagination = {
-		maxIndex : '. $maxStatusIndex .',
-		totalItems : ' . $status['count'] . ',
-		userID : '. $context['member']['id'] .'
-	};');
-
 		addInlineJavascript('
 	breeze.tools.comingFrom = "'. $context['Breeze']['comingFrom'] .'";');
 
