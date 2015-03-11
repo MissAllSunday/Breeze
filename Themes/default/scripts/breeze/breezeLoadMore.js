@@ -29,7 +29,7 @@ breezeLoadMore.prototype.showMoarButton = function()
 		id: this.options.button.id,
 		class : 'button_submit loadMoar',
 		text: this.options.button.text,
-	}).appendTo(this.options.button.appendTo).on('click', function(){console.log(oObject);
+	}).appendTo(this.options.button.appendTo).on('click', function(){
 		oObject.clickButton();
 	});
 }

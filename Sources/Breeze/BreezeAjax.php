@@ -469,7 +469,7 @@ class BreezeAjax
 	 * Used for pagination, gets X amount of status from either a single wall or an array of buddies IDs.
 	 * @return
 	 */
-	protected function fetchStatus()
+	public function fetchStatus()
 	{
 		global $context;
 
@@ -520,6 +520,28 @@ class BreezeAjax
 				'data' => 'end',
 				'owner' => $id,
 			));
+	}
+
+	public function fetchLog()
+	{
+		global $context;
+
+		$id = $this->_data->get('userID');
+		$maxIndex = $this->_data->get('maxIndex');
+		$numberTimes = $this->_data->get('numberTimes');
+		$comingFrom = $this->_data->get('comingFrom');
+		$return = '';
+
+		// The usual checks.
+		if (empty($id) || empty($maxIndex) || empty($numberTimes) || empty($comingFrom))
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $id,
+			));
+
+		// Calculate the start value.
+		$start = $maxIndex * $numberTimes;
 	}
 
 	/**
