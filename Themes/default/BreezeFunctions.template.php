@@ -241,7 +241,6 @@ function breeze_activity($data)
 	$counter = 1;
 
 	echo '
-		<div class="content">
 			<ul class="reset breezeActivity">';
 
 	foreach ($data as $act)
@@ -259,8 +258,7 @@ function breeze_activity($data)
 
 	// Close the ul
 	echo '
-			</ul>
-		</div>';
+			</ul>';
 }
 
 function breeze_server_response()

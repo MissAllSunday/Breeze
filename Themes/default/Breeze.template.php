@@ -441,7 +441,13 @@ function template_general_wall()
 			</div>';
 
 		if (!empty($context['Breeze']['log']))
+		{
+			echo '
+		<div class="content">';
 			breeze_activity($context['Breeze']['log']);
+			echo '
+		</div>';
+		}
 
 		else
 			echo '
