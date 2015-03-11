@@ -186,12 +186,32 @@ class BreezeUser extends Breeze
 		// Does the user wants to use the load more button?
 		if (!empty($context['Breeze']['settings']['visitor']['load_more']))
 		{
-			addInlineJavascript('
-	breeze.text.load_more = '. JavaScriptEscape($tools->text('load_more')) .';
-	breeze.text.page_loading_end = '. JavaScriptEscape($tools->text('page_loading_end')) .';', true);
 			loadJavascriptFile('breeze/breezeLoadMore.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+			// Let us pass a lot of data to the client and I mean a lot!
+			addInlineJavascript('
+	var statusLoad = new breezeLoadMore({
+		pagination : {
+			maxIndex : '. $maxStatusIndex .',
+			totalItems : ' . $status['count'] . ',
+			userID : '. $context['member']['id'] .'
+		},
+		button : {
+			id: \'statusLoad\',
+			text : '. JavaScriptEscape($tools->text('load_more')) .',
+			appendTo : \'#tab-wall\'
+		},
+		target : {
+			css : \'breeze_status\',
+			appendTo : \'#breezeAppendTo\'
+		},
+		endText : '. JavaScriptEscape($tools->text('load_more')) .',
+		urlSa : \'fetch\',
+		paginationClass : \'.pagesection\'
+	});
+	', true);
 		}
 
+		// Initialize the tabs.
 		addInlineJavascript('
 	var bTabs = new breezeTabs(\'ul.breezeTabs\', \'wall\');', true);
 
