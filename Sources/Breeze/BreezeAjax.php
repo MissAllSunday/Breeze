@@ -478,6 +478,7 @@ class BreezeAjax
 		$numberTimes = $this->_data->get('numberTimes');
 		$comingFrom = $this->_data->get('comingFrom');
 		$return = '';
+		$data = array();
 
 		// The usual checks.
 		if (empty($id) || empty($maxIndex) || empty($numberTimes) || empty($comingFrom))
@@ -497,11 +498,11 @@ class BreezeAjax
 		$context['Breeze']['comingFrom'] = $comingFrom;
 
 		// Get the right call to the DB.
-		$call = $comingFrom == 'profile' ? 'getStatusByProfile' : 'getStatusByUser';
+		$call = ($comingFrom == 'profile' ? 'getStatusByProfile' : 'getStatusByUser');
 
 		$data = $this->_app['query']->{$call}($fetch, $maxIndex, $start);
 
-		if (!empty($data['data']))
+		if (!empty($data) && !empty($data['data']))
 		{
 			$return .= $this->_app['display']->HTML($data['data'], 'status', false, $data['users'], true);
 
@@ -531,6 +532,7 @@ class BreezeAjax
 		$numberTimes = $this->_data->get('numberTimes');
 		$comingFrom = $this->_data->get('comingFrom');
 		$return = '';
+		$data = array();
 
 		// The usual checks.
 		if (empty($id) || empty($maxIndex) || empty($numberTimes) || empty($comingFrom))
@@ -542,6 +544,25 @@ class BreezeAjax
 
 		// Calculate the start value.
 		$start = $maxIndex * $numberTimes;
+
+		// With the given values, fetch the alerts!
+		$data = $this->_app['log']->get($id, $maxIndex, $start);
+
+		// Got something?
+		if (!empty($data) && !empty($data['data']))
+		{
+			// Load the right template.
+			loadtemplate(Breeze::$name .'Functions');
+
+			$return .= $this->_app['display']->HTML($data['data'], 'status', false, $data['users'], true);
+
+			return $this->setResponse(array(
+				'type' => 'info',
+				'message' => '',
+				'data' => $return,
+				'owner' => $id,
+			));
+		}
 	}
 
 	/**

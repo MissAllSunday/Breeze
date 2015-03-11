@@ -436,7 +436,7 @@ function template_general_wall()
 		echo '
 			<div class="cat_bar">
 				<h3 class="catbg">
-						', $txt['Breeze_tabs_activity'] ,'
+					', $txt['Breeze_tabs_activity'] ,'
 				</h3>
 			</div>';
 
