@@ -161,18 +161,13 @@ class BreezeUser extends Breeze
 			$usersToLoad = array_merge($usersToLoad, $context['member']['buddies']);
 		}
 
-		// @todo this is a temp thing...
-		if (!empty($context['Breeze']['settings']['owner']['activityLog']))
-		{
-			$maxAlertsIndex = 10;
-			$start = 0;
-			$alerts =  $this['log']->get($context['member']['id'], $maxAlertsIndex, $start);
-			$context['Breeze']['log'] = $alerts['data'];
-		}
+		// Load the icon's css.
+		loadCSSFile('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', array('external' => true));
 
 		// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
 		loadJavascriptFile('breeze/breezePost.js', array('default_theme' => true, 'defer' => true,));
 		loadJavascriptFile('breeze/breezeTabs.js', array('default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/breezeLoadMore.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 
 		if (!empty($modSettings['enable_mentions']) && allowedTo('mention'))
 		{
@@ -180,13 +175,40 @@ class BreezeUser extends Breeze
 			loadJavascriptFile('mentions.js', array('default_theme' => true, 'defer' => true), 'smf_mention');
 		}
 
-		// Load the icon's css.
-		loadCSSFile('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', array('external' => true));
+		// Setup the log activity.
+		if (!empty($context['Breeze']['settings']['owner']['activityLog']))
+		{
+			$maxAlertsIndex = 10;
+			$alerts =  $this['log']->get($context['member']['id'], $maxAlertsIndex, 0);
+			$context['Breeze']['log'] = $alerts['data'];
+
+			// Loadmore for log alerts.
+			addInlineJavascript('
+	var logLoad = new breezeLoadMore({
+		pagination : {
+			maxIndex : '. $maxAlertsIndex .',
+			totalItems : ' . $alerts['count'] . ',
+			userID : '. $context['member']['id'] .'
+		},
+		button : {
+			id: \'alertLoad\',
+			text : '. JavaScriptEscape($tools->text('load_more')) .',
+			appendTo : \'#tab-activity\'
+		},
+		target : {
+			css : \'breezeActivity\',
+			appendTo : \'#breezeAppendToLog\'
+		},
+		endText : '. JavaScriptEscape($tools->text('page_loading_end')) .',
+		urlSa : \'fetchLog\',
+		hidePagination : false
+	});
+	', true);
+		}
 
 		// Does the user wants to use the load more button?
 		if (!empty($context['Breeze']['settings']['visitor']['load_more']))
 		{
-			loadJavascriptFile('breeze/breezeLoadMore.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 			// Let us pass a lot of data to the client and I mean a lot!
 			addInlineJavascript('
 	var statusLoad = new breezeLoadMore({

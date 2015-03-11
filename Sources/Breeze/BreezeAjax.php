@@ -63,6 +63,7 @@ class BreezeAjax
 			'cleanlog' => 'cleanLog',
 			'fetch' => 'fetchStatus',
 			'fetchc' => 'fetchComment',
+			'fetchLog' => 'fetchLog',
 			'usersettings' => 'userSettings',
 			'cover' => 'cover',
 			'coverdelete' => 'coverDelete',
@@ -554,7 +555,7 @@ class BreezeAjax
 			// Load the right template.
 			loadtemplate(Breeze::$name .'Functions');
 
-			$return .= $this->_app['display']->HTML($data['data'], 'status', false, $data['users'], true);
+			$return .= breeze_activity($data['data'], $returnVar = false);
 
 			return $this->setResponse(array(
 				'type' => 'info',

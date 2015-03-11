@@ -152,6 +152,10 @@ function template_user_wall()
 
 		else
 			breeze_activity($context['Breeze']['log']);
+		
+	// An empty div to append the loaded status via AJAX.
+	echo '
+			<div id="breezeAppendToLog"></div>';
 
 		echo '
 		</div>';

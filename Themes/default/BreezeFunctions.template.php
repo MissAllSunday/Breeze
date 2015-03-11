@@ -239,20 +239,20 @@ function breeze_activity($data, $returnVar = false)
 		return false;
 
 	$counter = 1;
-	$echo '';
+	$echo = '';
 
 	$echo .= '
 			<ul class="reset breezeActivity">';
 
 	foreach ($data as $act)
 		$echo .= '
-				<li class="windowbg', ($counter = !$counter ? '2' : '') ,'">
+				<li class="windowbg">
 						<div class="activityIcon floatleft">
-							<span class="fa fa-', (!empty($act['icon']) ? $act['icon'] : 'envelope') ,' fa-3x"></span>
+							<span class="fa fa-'. (!empty($act['icon']) ? $act['icon'] : 'envelope') .' fa-3x"></span>
 						</div>
 						<div class="activityContent">
-								<span class="time_elapsed" title="', $act['time'] ,'" data-livestamp="', $act['time_raw'] ,'">', $act['time'] ,'</span><br />
-								', $act['text'] ,'<br />
+								<span class="time_elapsed" title="'. $act['time'] .'" data-livestamp="'. $act['time_raw'] .'">'. $act['time'] .'</span><br />
+								'. $act['text'] .'<br />
 						</div>
 						<div class="clear"></div>
 				</li>';
@@ -260,7 +260,7 @@ function breeze_activity($data, $returnVar = false)
 	// Close the ul
 	$echo .= '
 			</ul>';
-			
+
 	// What are we going to do?
 	if ($returnVar)
 		return $echo;
