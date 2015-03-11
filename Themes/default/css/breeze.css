@@ -121,10 +121,11 @@ div.username div
 	padding:10px;
 }
 
-#loadMoar{
-	margin:5px;
+.loadMoar{
+	margin-bottom:5px;
 	text-align:center;
 	position:relative;
+	float:none;
 	top:50%;
 	left:50%;
 }

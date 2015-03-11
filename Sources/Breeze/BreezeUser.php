@@ -204,9 +204,9 @@ class BreezeUser extends Breeze
 			css : \'breeze_status\',
 			appendTo : \'#breezeAppendTo\'
 		},
-		endText : '. JavaScriptEscape($tools->text('load_more')) .',
+		endText : '. JavaScriptEscape($tools->text('page_loading_end')) .',
 		urlSa : \'fetch\',
-		paginationClass : \'.pagesection\'
+		hidePagination : true
 	});
 	', true);
 		}

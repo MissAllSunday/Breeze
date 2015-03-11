@@ -21,14 +21,17 @@ breezeLoadMore.prototype.showMoarButton = function()
 		return false;
 
 	// Replacing any pagination div?
-	if (this.options.paginationClass)
-		$(this.options.paginationClass).hide();
+	if (this.options.hidePagination)
+		$('.pagesection').hide();
 
 	// The rest is pretty straight forward...
 	$('<button/>', {
 		id: this.options.button.id,
+		class : 'button_submit loadMoar',
 		text: this.options.button.text,
-	}).appendTo(this.options.button.appendTo).on('click', oObject.clickButton());
+	}).appendTo(this.options.button.appendTo).on('click', function(){console.log(oObject);
+		oObject.clickButton();
+	});
 }
 
 breezeLoadMore.prototype.clickButton = function()
@@ -55,7 +58,7 @@ breezeLoadMore.prototype.clickButton = function()
 
 	$.ajax({
 		// Send the data and oh boy there's a lot of it!
-		url: smf_scripturl + '?action=breezeajax;sa='+ oObject.urlSa +';js=1;' + smf_session_var + '=' + smf_session_id,
+		url: smf_scripturl + '?action=breezeajax;sa='+ oObject.options.urlSa +';js=1;' + smf_session_var + '=' + smf_session_id,
 		data : passingData,
 		cache: false,
 		dataType: 'json',
