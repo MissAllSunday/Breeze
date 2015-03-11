@@ -231,7 +231,7 @@ function breeze_comment($comments, $returnVar = false)
 		echo $echo;
 }
 
-function breeze_activity($data)
+function breeze_activity($data, $returnVar = false)
 {
 	global $context, $txt;
 
@@ -239,12 +239,13 @@ function breeze_activity($data)
 		return false;
 
 	$counter = 1;
+	$echo '';
 
-	echo '
+	$echo .= '
 			<ul class="reset breezeActivity">';
 
 	foreach ($data as $act)
-		echo '
+		$echo .= '
 				<li class="windowbg', ($counter = !$counter ? '2' : '') ,'">
 						<div class="activityIcon floatleft">
 							<span class="fa fa-', (!empty($act['icon']) ? $act['icon'] : 'envelope') ,' fa-3x"></span>
@@ -257,8 +258,15 @@ function breeze_activity($data)
 				</li>';
 
 	// Close the ul
-	echo '
+	$echo .= '
 			</ul>';
+			
+	// What are we going to do?
+	if ($returnVar)
+		return $echo;
+
+	else
+		echo $echo;
 }
 
 function breeze_server_response()
