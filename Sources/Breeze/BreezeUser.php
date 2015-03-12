@@ -199,7 +199,6 @@ class BreezeUser extends Breeze
 			css : \'breezeActivity\',
 			appendTo : \'#breezeAppendToLog\'
 		},
-		endText : '. JavaScriptEscape($tools->text('page_loading_end')) .',
 		urlSa : \'fetchLog\',
 		hidePagination : false
 	});
@@ -226,7 +225,6 @@ class BreezeUser extends Breeze
 			css : \'breeze_status\',
 			appendTo : \'#breezeAppendTo\'
 		},
-		endText : '. JavaScriptEscape($tools->text('page_loading_end')) .',
 		urlSa : \'fetch\',
 		hidePagination : true
 	});

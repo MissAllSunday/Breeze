@@ -52,7 +52,8 @@ breezeLoadMore.prototype.clickButton = function()
 	passingData = {
 		numberTimes : this.numberOfEvents,
 		comingFrom : breeze.tools.comingFrom,
-};
+	};
+
 	// And fill the rest with options.pagination object.
 	$.extend(passingData, this.options.pagination);
 
@@ -87,7 +88,7 @@ breezeLoadMore.prototype.onSuccess = function(html)
 		// No more data:(
 		else{
 			noty({
-				text: this.options.endText,
+				text: html.message,
 				timeout: 3500,
 				theme: 'relax',
 				type: 'success'

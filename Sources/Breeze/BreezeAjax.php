@@ -518,7 +518,7 @@ class BreezeAjax
 		else
 			return $this->setResponse(array(
 				'type' => 'info',
-				'message' => 'end',
+				'message' => $this->_app['tools']->text('page_loading_end'),
 				'data' => 'end',
 				'owner' => $id,
 			));
@@ -555,7 +555,7 @@ class BreezeAjax
 			// Load the right template.
 			loadtemplate(Breeze::$name .'Functions');
 
-			$return .= breeze_activity($data['data'], $returnVar = false);
+			$return .= breeze_activity($data['data'], true);
 
 			return $this->setResponse(array(
 				'type' => 'info',
@@ -564,6 +564,14 @@ class BreezeAjax
 				'owner' => $id,
 			));
 		}
+
+		else
+			return $this->setResponse(array(
+				'type' => 'info',
+				'message' => $this->_app['tools']->text('page_loadingAlerts_end'),
+				'data' => 'end',
+				'owner' => $id,
+			));
 	}
 
 	/**
