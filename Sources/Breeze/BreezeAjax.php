@@ -596,6 +596,9 @@ class BreezeAjax
 		$folder = $this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/';
 		$folderThumbnail = $this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/';
 		$folderThumbnailUrl = $this->_app['tools']->boardUrl . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/';
+		$maxFileSize = $this->_app['tools']->enable('cover_max_size') ? ($this->_app['tools']->setting('cover_max_size') .'000') : 250000;
+		$maxFileWidth = $this->_app['tools']->enable('cover_max_image_width') ? $this->_app['tools']->setting('cover_max_image_width') : 1500;
+		$maxFileHeight = $this->_app['tools']->enable('cover_max_image_height') ? $this->_app['tools']->setting('cover_max_image_height') : 500;
 
 		// Get the image.
 		$uploadHandler = new UploadHandler(array(
@@ -603,16 +606,16 @@ class BreezeAjax
 			'upload_dir' => $this->_app['tools']->boardDir . Breeze::$coversFolder,
 			'upload_url' => $this->_app['tools']->boardUrl .'/breezeFiles/',
 			'user_dirs' => true,
-			'max_file_size' => $this->_app['tools']->enable('cover_max_size') ? ($this->_app['tools']->setting('cover_max_size') .'000') : 250000,
-			'max_width' => $this->_app['tools']->enable('cover_max_image_width') ? $this->_app['tools']->setting('cover_max_image_width') : 1500,
-			'max_height' => $this->_app['tools']->enable('cover_max_image_height') ? $this->_app['tools']->setting('cover_max_image_height') : 500,
+			'max_file_size' => $maxFileSize,
+			'max_width' => $maxFileWidth,
+			'max_height' => $maxFileHeight,
 			'print_response' => false,
 			'thumbnail' => array(
 				'crop' => false,
 				'max_width' => 300,
 				'max_height' => 100,
 			)
-		));
+		), true, $this->_app['tools']->text('cover_errors'));
 
 		// Get the file info.
 		$fileResponse = $uploadHandler->get_response();
@@ -621,9 +624,12 @@ class BreezeAjax
 		// Is there any errors? this uses the server error response in a weird way...
 		if (!empty($file->error))
 		{
+			// Give some more info.
+			$replaceValues = array('size' => $this->_app['tools']->formatBytes($maxFileSize), 'height' => $this->_app['tools']->formatBytes($maxFileHeight), 'width' => $this->_app['tools']->formatBytes($maxFileWidth));
+
 			if ($this->_noJS)
 				return $this->setResponse(array(
-					'message' => $file->error,
+					'message' => $this->_app['tools']->parser($file->error, $replaceValues),
 					'type' => 'error',
 					'owner' => $this->_currentUser,
 				));

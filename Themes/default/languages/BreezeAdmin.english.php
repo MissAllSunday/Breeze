@@ -54,11 +54,11 @@ $txt['Breeze_mood_placement_sub'] = 'The mod will display all possible locations
 $txt['Breeze_cover'] = 'Enable the image cover on wall feature.';
 $txt['Breeze_cover_sub'] = 'Your users will be able to upload an image to serve as a cover on their own wall, there is a separate permission for this so be sure to enable this feature and then give the appropriate permissions for your users.';
 $txt['Breeze_cover_max_image_size'] = 'The max file size an uploaded image can has.';
-$txt['Breeze_cover_max_image_size_sub'] = 'In Kb, if no size is given, the mod will use the default value: 250.';
+$txt['Breeze_cover_max_image_size_sub'] = 'In KiB (kibibyte, 1 KiB = 1024 bytes), if no size is given, the mod will use the default value: 250.';
 $txt['Breeze_cover_max_image_width'] = 'The max width size an uploaded image can has.';
-$txt['Breeze_cover_max_image_width_sub'] = 'If no value is given, the mod will use the default value: 1500';
+$txt['Breeze_cover_max_image_width_sub'] = 'In KiB (kibibyte, 1 KiB = 1024 bytes), If no value is given, the mod will use the default value: 1500';
 $txt['Breeze_cover_max_image_height'] = 'The max height size an uploaded image can has.';
-$txt['Breeze_cover_max_image_height_sub'] = 'If no value is given, the mod will use the default value: 500';
+$txt['Breeze_cover_max_image_height_sub'] = 'In KiB (kibibyte, 1 KiB = 1024 bytes), If no value is given, the mod will use the default value: 500';
 $txt['Breeze_posts_for_mention'] = 'How many posts are required to appear on the mention list?';
 $txt['Breeze_posts_for_mention_sub'] = 'To avoid having spammer/bot accounts appearing on the mention list you can set how many posts does an user needs to have in order to be mentionable, if you leave this setting empty, it will use the default value: 1.<br /> To help with the server load, the mentions list gets cached, if you change this setting, make sure to clean your forum cache to see the results.';
 $txt['Breeze_version'] = 'Breeze version';
