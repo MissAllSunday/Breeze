@@ -21,7 +21,7 @@ breezeLoadMore.prototype.showMoarButton = function()
 		return false;
 
 	// Replacing any pagination div?
-	if (this.options.hidePagination)
+	if (typeof this.options.hidePagination !== 'undefined' && this.options.hidePagination)
 		$('.pagesection').hide();
 
 	// The rest is pretty straight forward...

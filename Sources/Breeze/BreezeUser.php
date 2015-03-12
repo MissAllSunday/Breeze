@@ -627,7 +627,7 @@ class BreezeUser extends Breeze
 			previewCrop: true,
 			maxNumberOfFiles: 1,
 			add: function (e, data) {
-				data.context = jQuery(\'[name="Submit"]\')
+				data.context = $(\'[name="Submit"]\')
 					.on(\'click\', function (e) {
 						e.preventDefault();
 						$(e).prop(\'disabled\',true);
@@ -637,10 +637,10 @@ class BreezeUser extends Breeze
 					}).data(data);
 			}
 		}).on(\'fileuploadadd\', function (e, data) {
-			data.context = jQuery(\'<div/>\').appendTo(\'#files\');
+			data.context = $(\'<div/>\').appendTo(\'#files\');
 			$.each(data.files, function (index, file) {
 
-				var node = jQuery(\'<div/>\')
+				var node = $(\'<div/>\')
 						.append(\'<p class="b_cover_preview"><img src="\' + URL.createObjectURL(file) + \'"/ style="max-width: 300px;"></p>\');
 
 				node.appendTo(data.context);

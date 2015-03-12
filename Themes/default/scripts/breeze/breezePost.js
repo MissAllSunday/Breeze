@@ -5,17 +5,17 @@
 
 var breezePost = function(type, form) {
 	this.type = type;
-	this.form = jQuery(form);
+	this.form = $(form);
 	this.data = {};
 };
 
 breezePost.prototype.before = function() {
 
 	// Disable the submit button.
-	jQuery('input[type=submit]', this.form).attr('disabled', 'disabled');
+	$('input[type=submit]', this.form).attr('disabled', 'disabled');
 
 	// Create a nice loading image...
-	this.loadImage = jQuery('<div/>', {
+	this.loadImage = $('<div/>', {
 		id: 'breeze_load_image'
 	}).html('<img src="' + smf_images_url + '/loading_sm.gif">').hide().css({
 		'margin': 'auto',
@@ -24,7 +24,7 @@ breezePost.prototype.before = function() {
 
 breezePost.prototype.after = function() {
 	// Enable the button again...
-	jQuery('input[type=submit]', this.form).removeAttr('disabled');
+	$('input[type=submit]', this.form).removeAttr('disabled');
 
 	// Clean the textarea.
 	this.form.find('textarea').val('');
@@ -34,7 +34,7 @@ breezePost.prototype.show = function(html) {
 
 		this.loadImage.fadeOut('slow', 'linear', function(){
 			if (html.type == 'info')
-				jQuery(div).prepend(DOMPurify.sanitize(html.data)).fadeIn('slow');
+				$(div).prepend(DOMPurify.sanitize(html.data)).fadeIn('slow');
 		});
 
 	// Show a notification.
@@ -46,7 +46,7 @@ breezePost.prototype.validate = function() {
 	var postData = [];
 
 	this.form.find(':input').each(function(){
-		var input = jQuery(this);
+		var input = $(this);
 		postData[input.attr('name')] = DOMPurify.sanitize(input.val());
 	});
 
@@ -84,7 +84,7 @@ breezePost.prototype.save = function() {
 	div = '#breeze_display_' + this.type + (this.data.statusID != false ? '_' + this.data.statusID : '');
 
 	// Show a loading image.
-	jQuery(div).prepend(this.loadImage);
+	$(div).prepend(this.loadImage);
 	this.loadImage.fadeIn('slow');
 
 	// The long, long ajax call...
