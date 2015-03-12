@@ -109,11 +109,11 @@ class BreezeUser extends Breeze
 		}
 
 		// Set up some vars for pagination.
-		$maxStatusIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;
+		$maxIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;
 		$currentPage = $data->validate('start') == true ? $data->get('start') : 0;
 
 		// Load all the status.
-		$status = $query->getStatusByProfile($context['member']['id'], $maxStatusIndex, $currentPage);
+		$status = $query->getStatusByProfile($context['member']['id'], $maxIndex, $currentPage);
 
 		// Load users data.
 		if (!empty($status['users']))
@@ -178,15 +178,16 @@ class BreezeUser extends Breeze
 		// Setup the log activity.
 		if (!empty($context['Breeze']['settings']['owner']['activityLog']))
 		{
-			$maxAlertsIndex = 10;
-			$alerts =  $this['log']->get($context['member']['id'], $maxAlertsIndex, 0);
+			$maxIndexAlert = $maxIndex = !empty($context['Breeze']['settings']['visitor']['alert_number']) ? $context['Breeze']['settings']['visitor']['alert_number'] : 5;
+			$alerts =  $this['log']->get($context['member']['id'], $maxIndexAlert, 0);
 			$context['Breeze']['log'] = $alerts['data'];
 
-			// Loadmore for log alerts.
-			addInlineJavascript('
+			// Loadmore for log alerts. Don't show this if there aren't enough items to display.
+			if ($alerts['count'] >= $maxIndexAlert)
+				addInlineJavascript('
 	var logLoad = new breezeLoadMore({
 		pagination : {
-			maxIndex : '. $maxAlertsIndex .',
+			maxIndex : '. $maxIndexAlert .',
 			totalItems : ' . $alerts['count'] . ',
 			userID : '. $context['member']['id'] .'
 		},
@@ -212,7 +213,7 @@ class BreezeUser extends Breeze
 			addInlineJavascript('
 	var statusLoad = new breezeLoadMore({
 		pagination : {
-			maxIndex : '. $maxStatusIndex .',
+			maxIndex : '. $maxIndex .',
 			totalItems : ' . $status['count'] . ',
 			userID : '. $context['member']['id'] .'
 		},
@@ -290,7 +291,7 @@ class BreezeUser extends Breeze
 		$call = 'alert' .($data->get('sa') ? ucfirst($data->get('sa')) : 'Settings');
 
 		// Call the right function.
-			$this->$call();
+			$this->{$call}();
 	}
 
 	public function alertSettings()
@@ -455,6 +456,13 @@ class BreezeUser extends Breeze
 			3,3
 		);
 
+		// Number of alerts in recent activity page.
+		$form->addText(
+			'alert_number',
+			!empty($userSettings['alert_number']) ? $userSettings['alert_number'] : 0,
+			3,3
+		);
+
 		// Add the load more button.
 		$form->addCheckBox(
 			'load_more',
@@ -601,6 +609,7 @@ class BreezeUser extends Breeze
 		// Send the form to the template
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
 
+		// Need a lot of Js files :(
 		loadJavascriptFile('breeze/fileUpload/vendor/jquery.ui.widget.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('breeze/fileUpload/load-image.all.min.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('breeze/fileUpload/canvas-to-blob.min.js', array('local' => true, 'default_theme' => true));

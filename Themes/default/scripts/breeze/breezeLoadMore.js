@@ -39,6 +39,9 @@ breezeLoadMore.prototype.clickButton = function()
 	// Add one to the number of iterations, pretty important!
 	this.numberOfEvents++;
 
+	// Lets show the world we are actually working...
+	ajax_indicator(true);
+
 	// Need to keep a reference...
 	var oObject = this;
 
@@ -71,6 +74,9 @@ breezeLoadMore.prototype.clickButton = function()
 			breeze.tools.showNoti(html);
 		}
 	});
+
+	// All done.
+	ajax_indicator(false);
 }
 
 breezeLoadMore.prototype.onSuccess = function(html)
@@ -86,7 +92,7 @@ breezeLoadMore.prototype.onSuccess = function(html)
 		}
 
 		// No more data:(
-		else{console.log(html);
+		else{
 			noty({
 				text: html.message,
 				timeout: 3500,

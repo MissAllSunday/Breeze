@@ -884,9 +884,10 @@ class BreezeAjax
 		if (!empty($data) && is_array($data))
 			$this->_response = $data + $this->_response;
 
+		$message = $this->_app['tools']->text($data['type'] .'_'. $data['message']);
 
 		// Get the actual message. If there is no text string then assume the called method already filled the key with an appropriated message.
-		$this->_response['message'] = !empty($this->_app['tools']->text($data['type'] .'_'. $data['message'])) ? $this->_app['tools']->text($data['type'] .'_'. $data['message']) : $data['message'];
+		$this->_response['message'] = !empty($message) ? $message : $data['message'];
 	}
 
 	/**
