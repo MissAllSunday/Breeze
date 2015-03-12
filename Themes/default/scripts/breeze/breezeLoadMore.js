@@ -72,11 +72,9 @@ breezeLoadMore.prototype.clickButton = function()
 		},
 		error: function (html){
 			breeze.tools.showNoti(html);
+			ajax_indicator(false);
 		}
 	});
-
-	// All done.
-	ajax_indicator(false);
 }
 
 breezeLoadMore.prototype.onSuccess = function(html)
@@ -106,6 +104,8 @@ breezeLoadMore.prototype.onSuccess = function(html)
 	else if(html.type == 'error'){
 		breeze.tools.showNoti(html);
 	}
+
+	ajax_indicator(false);
 }
 
 
