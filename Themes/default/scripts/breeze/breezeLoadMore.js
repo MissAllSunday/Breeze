@@ -47,7 +47,7 @@ breezeLoadMore.prototype.clickButton = function()
 
 	$('<ul/>', {
 		id: 'tempDIV_'+ this.numberOfEvents,
-		class: this.options.target.css,
+		class: this.options.target.css + this.numberOfEvents,
 		style: ''
 	}).appendTo(this.options.target.appendTo).hide();
 
@@ -86,7 +86,7 @@ breezeLoadMore.prototype.onSuccess = function(html)
 		if (html.data != 'end'){
 
 			// Create a unique UL for this very own status, isn't it great?
-			$('#tempDIV_'+ this.numberOfEvents).append(html.data).fadeIn('slow', 'linear', function(){});
+			$('.'+ this.options.target.css + this.numberOfEvents).append(html.data).fadeIn('slow', 'linear', function(){});
 		}
 
 		// No more data:(
