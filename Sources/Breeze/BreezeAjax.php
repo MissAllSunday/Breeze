@@ -601,7 +601,7 @@ class BreezeAjax
 		$maxFileHeight = $this->_app['tools']->enable('cover_max_image_height') ? $this->_app['tools']->setting('cover_max_image_height') : 500;
 
 		// Get the image.
-		$uploadHandler = new UploadHandler(array(
+		$uploadHandler = new BreezeUpload(array(
 			'script_url' => $this->_app['tools']->boardUrl .'/',
 			'upload_dir' => $this->_app['tools']->boardDir . Breeze::$coversFolder,
 			'upload_url' => $this->_app['tools']->boardUrl .'/breezeFiles/',

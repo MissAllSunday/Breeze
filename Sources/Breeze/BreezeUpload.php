@@ -1,4 +1,35 @@
 <?php
+
+/**
+ * BreezeUpload
+ *
+ * @package Breeze mod
+ * @version 1.1
+ * @author Jessica González <suki@missallsunday.com>
+ * @copyright Copyright (c) 2011, 2014 Jessica González
+ * @license http://www.mozilla.org/MPL/MPL-1.1.html
+ */
+
+if (!defined('SMF'))
+	die('No direct access...');
+
+class BreezeUpload extends UploadHandler
+{
+	public function __construct($options = null, $initialize = true, $error_messages = null)
+	{
+		parent::__construct($options = null, $initialize = true, $error_messages = null);
+	}
+
+	// Replace the Session system with SMF's user_info data.
+	protected function get_user_id()
+	{
+		global $user_info;
+
+		return $user_info['id'];
+	}
+}
+
+
 /*
  * jQuery File Upload Plugin PHP Class 8.2.3
  * https://github.com/blueimp/jQuery-File-Upload
@@ -198,9 +229,8 @@ class UploadHandler
     }
 
     protected function get_user_id() {
-        global $user_info;
-
-        return $user_info['id'];
+        @session_start();
+        return session_id();
     }
 
     protected function get_user_path() {
