@@ -13,12 +13,6 @@
 global $txt;
 
 // Notifications
-$txt['Breeze_noti_title'] = 'Notifications';
-$txt['Breeze_noti_title_settings'] = 'Notifications settings';
-$txt['Breeze_noti_title_settings_desc'] = 'Enable/disable individual notifications.';
-$txt['Breeze_noti_message'] = 'Message';
-$txt['Breeze_noti_buddy_title'] = 'Buddy notification';
-$txt['Breeze_noti_buddy_message'] = 'User %s has added you as his/her buddy, please confirm this request.';
 $txt['Breeze_noti_markasread'] = 'Mark as read';
 $txt['Breeze_noti_markasunread'] = 'Mark as unread';
 $txt['Breeze_noti_markasread_title'] = 'Mark as read/unread';
@@ -26,9 +20,6 @@ $txt['Breeze_noti_markasread_viewed'] = 'Already marked as read';
 $txt['Breeze_noti_close'] = 'Close';
 $txt['Breeze_noti_delete'] = 'Delete';
 $txt['Breeze_noti_cancel'] = 'Cancel';
-$txt['Breeze_noti_closeAll'] = 'Close all notifications';
-$txt['Breeze_noti_novalid_after'] = 'This isn\'t a valid notification.';
-$txt['Breeze_noti_none'] = 'You don\'t have any notifications';
 $txt['Breeze_noti_checkAll'] = 'Check all';
 $txt['Breeze_noti_check'] = 'check';
 $txt['Breeze_noti_selectedOptions'] = 'With the selected options do: ';

@@ -22,13 +22,8 @@ $txt['Breeze_general_my_wall'] = 'My Wall';
 $txt['Breeze_general_my_wall_settings'] = 'My Wall Settings';
 $txt['Breeze_general_loading'] = 'Loading...';
 $txt['Breeze_general_like'] = 'Like';
-$txt['Breeze_general_last_view'] = 'Last view';
 $txt['Breeze_general_delete'] = 'Delete';
-$txt['Breeze_general_unlike'] = 'Unlike';
-$txt['Breeze_general_plural'] = '(s)';
-$txt['Breeze_general_activity'] = 'Latest buddie\'s activity';
-$txt['Breeze_general_latest_buddy_status'] = 'Latest buddy status';
-$txt['Breeze_general_posted_on'] = 'Posted on %s\'s Profile';
+$txt['Breeze_general_posted_on'] = 'Posted on %s\'s Wall';
 
 // User Individual Settings
 $txt['Breeze_profile'] = 'Wall Settings';
@@ -36,7 +31,6 @@ $txt['Breeze_user_settings_name'] = 'Wall Settings';
 $txt['Breeze_user_settings_name_desc'] = 'Configure your wall and other general settings.';
 $txt['Breeze_user_buddysettings_name'] = 'Buddy Requests';
 $txt['Breeze_user_single_status'] = 'Single Status';
-$txt['Breeze_user_buddyrequestmessage_name'] = 'Buddy message request send';
 $txt['Breeze_user_notisettings_name'] = 'My wall alerts';
 $txt['Breeze_user_notilogs_name'] = 'My Activity logs';
 $txt['Breeze_user_settings_name_cover'] = 'Cover image upload';
@@ -102,8 +96,6 @@ $txt['Breeze_user_settings_how_many_visitors'] = 'How many visitors to display';
 $txt['Breeze_user_settings_how_many_visitors_sub'] = 'If empty it will show the default value.';
 $txt['Breeze_user_settings_show_last_visit'] = 'Show the last time the users visited your wall';
 $txt['Breeze_user_permissions_name'] = 'Permissions';
-$txt['Breeze_user_modules_name'] = 'Modules';
-$txt['Breeze_user_modules_visitors'] = 'visits: ';
 $txt['Breeze_user_modules_visitors_none'] = 'There are no recent visitors';
 $txt['Breeze_user_modules_buddies_none'] = 'This user doesn\'t have any buddies';
 
@@ -172,15 +164,8 @@ $txt['cannot_breeze_postComments'] = $txt['Breeze_cannot_postComments'];
 $txt['cannot_breeze_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete Status/Comments.';
 $txt['Breeze_cannot_see_general_wall'] = 'You need to enable your general wall from your <a href="'. $scripturl .'?action=profile;area=breezesettings">wall settings page</a>.';
 
-// Pagination
-$txt['Breeze_pag_previous'] = 'previous';
-$txt['Breeze_pag_next'] = 'next';
-$txt['Breeze_pag_first'] = 'First';
-$txt['Breeze_pag_last'] = 'Last';
-$txt['Breeze_pag_pages'] = 'Pages :';
-$txt['Breeze_pag_page'] = '- page ';
+// Loading text.
 $txt['Breeze_profile_of_username'] = 'Profile of %1$s';
-$txt['Breeze_page_loading'] = 'Loading more status...';
 $txt['Breeze_info_loading_end'] = 'There are no more status to display';
 $txt['Breeze_info_loadingAlerts_end'] = 'There are no more alerts to display';
 $txt['Breeze_page_no_status'] = 'There are no status to display';
@@ -212,13 +197,13 @@ $txt['Breeze_cover_errors'] = array(
 	7 => 'Failed to write file to disk',
 	8 => 'A PHP extension stopped the file upload',
 	'post_max_size' => 'The uploaded file exceeds the post_max_size directive in php.ini',
-	'max_file_size' => 'File is too big',
+	'max_file_size' => 'File is too big, the max size value is {size}',
 	'min_file_size' => 'File is too small',
 	'accept_file_types' => 'Filetype not allowed',
 	'max_number_of_files' => 'Maximum number of files exceeded',
-	'max_width' => 'Image exceeds maximum width',
+	'max_width' => 'Image exceeds maximum width, the max width value is {width}',
 	'min_width' => 'Image requires a minimum width',
-	'max_height' => 'Image exceeds maximum height',
+	'max_height' => 'Image exceeds maximum height, the max height value is {height}',
 	'min_height' => 'Image requires a minimum height',
 	'abort' => 'File upload aborted',
 	'image_resize' => 'Failed to resize image'
