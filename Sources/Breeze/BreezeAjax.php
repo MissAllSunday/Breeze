@@ -518,7 +518,7 @@ class BreezeAjax
 		else
 			return $this->setResponse(array(
 				'type' => 'info',
-				'message' => $this->_app['tools']->text('page_loading_end'),
+				'message' => 'loading_end',
 				'data' => 'end',
 				'owner' => $id,
 			));
@@ -568,7 +568,7 @@ class BreezeAjax
 		else
 			return $this->setResponse(array(
 				'type' => 'info',
-				'message' => $this->_app['tools']->text('page_loadingAlerts_end'),
+				'message' => 'loadingAlerts_end',
 				'data' => 'end',
 				'owner' => $id,
 			));
@@ -886,7 +886,7 @@ class BreezeAjax
 
 
 		// Get the actual message. If there is no text string then assume the called method already filled the key with an appropriated message.
-		$this->_response['message'] = !empty($data['message']) ? $this->_app['tools']->text($data['type'] .'_'. $data['message']) : $data['message'];
+		$this->_response['message'] = !empty($this->_app['tools']->text($data['type'] .'_'. $data['message'])) ? $this->_app['tools']->text($data['type'] .'_'. $data['message']) : $data['message'];
 	}
 
 	/**

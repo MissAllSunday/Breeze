@@ -86,7 +86,7 @@ breezeLoadMore.prototype.onSuccess = function(html)
 		}
 
 		// No more data:(
-		else{
+		else{console.log(html);
 			noty({
 				text: html.message,
 				timeout: 3500,

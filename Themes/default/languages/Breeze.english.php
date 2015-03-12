@@ -179,8 +179,8 @@ $txt['Breeze_pag_pages'] = 'Pages :';
 $txt['Breeze_pag_page'] = '- page ';
 $txt['Breeze_profile_of_username'] = 'Profile of %1$s';
 $txt['Breeze_page_loading'] = 'Loading more status...';
-$txt['Breeze_page_loading_end'] = 'There are no more status to display';
-$txt['Breeze_page_loadingAlerts_end'] = 'There are no more alerts to display';
+$txt['Breeze_info_loading_end'] = 'There are no more status to display';
+$txt['Breeze_info_loadingAlerts_end'] = 'There are no more alerts to display';
 $txt['Breeze_page_no_status'] = 'There are no status to display';
 
 // Tabs
