@@ -181,14 +181,12 @@ $(function() {
 			type: "GET",
 			dataType: "json",
 			success: function(data){
-				console.log(data);
 				breeze.tools.showNoti(data);
 
 				// Hide the current cover preview.
 				jQuery('.current_cover').fadeOut();
 			},
 			error: function(data){
-				console.log(data);
 				breeze.tools.showNoti(data);
 
 				// Hide the current cover preview.

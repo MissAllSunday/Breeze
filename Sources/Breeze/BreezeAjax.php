@@ -596,7 +596,7 @@ class BreezeAjax
 		$folder = $this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/';
 		$folderThumbnail = $this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/';
 		$folderThumbnailUrl = $this->_app['tools']->boardUrl . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/';
-		$maxFileSize = $this->_app['tools']->enable('cover_max_size') ? ($this->_app['tools']->setting('cover_max_size') .'000') : 250000;
+		$maxFileSize = $this->_app['tools']->enable('cover_max_image_size') ? ($this->_app['tools']->setting('cover_max_image_size') .'000') : 250000;
 		$maxFileWidth = $this->_app['tools']->enable('cover_max_image_width') ? $this->_app['tools']->setting('cover_max_image_width') : 1500;
 		$maxFileHeight = $this->_app['tools']->enable('cover_max_image_height') ? $this->_app['tools']->setting('cover_max_image_height') : 500;
 
@@ -625,7 +625,7 @@ class BreezeAjax
 		if (!empty($file->error))
 		{
 			// Give some more info.
-			$replaceValues = array('size' => $this->_app['tools']->formatBytes($maxFileSize), 'height' => $this->_app['tools']->formatBytes($maxFileHeight), 'width' => $this->_app['tools']->formatBytes($maxFileWidth));
+			$replaceValues = array('size' => $this->_app['tools']->formatBytes($maxFileSize), 'height' => $maxFileHeight, 'width' => $maxFileWidth);
 
 			if ($this->_noJS)
 				return $this->setResponse(array(
@@ -635,7 +635,10 @@ class BreezeAjax
 				));
 
 			else
+			{
+				$file->error = $this->_app['tools']->parser($file->error, $replaceValues);
 				return $this->_response = $file;
+			}
 		}
 
 		// Do changes only if the image was uploaded.
