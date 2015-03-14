@@ -359,11 +359,8 @@ class Breeze extends Pimple\Container
 		// The general wall
 		$actions['wall'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call#');
 
-		// Replace the buddy action @todo for next version
+		// Replace the buddy action.
 		$actions['buddy'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call#');
-
-		// A special action for the buddy request message
-		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'breezeBuddyMessage');
 
 		// Action used when an user wants to change their mood.
 		$actions['breezemood'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call#');
