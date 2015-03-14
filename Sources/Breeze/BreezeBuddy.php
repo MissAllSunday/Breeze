@@ -41,7 +41,41 @@ class BreezeBuddy
 	 */
 	public function call()
 	{
+		global $user_info;
+
+		checkSession('get');
+
+		isAllowedTo('profile_identity_own');
+		is_not_guest();
+
 		$data = Breeze::data('get');
+		$user = $data->get('u');
+
+		// Make sure we got something.
+		if (empty($user))
+			fatal_lang_error('no_access', false);
+
+		// Figure it out what are we gonna do...
+
+	}
+
+	public function add()
+	{
+
+	}
+
+	public function delete()
+	{
+
+	}
+
+	public function confirm()
+	{
+
+	}
+
+	public function deny()
+	{
 
 	}
 }
