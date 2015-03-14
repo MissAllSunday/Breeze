@@ -41,7 +41,7 @@ spl_autoload_register('breeze_autoloader');
 
 class Breeze extends Pimple\Container
 {
-	protected $_services = array('admin', 'ajax', 'alerts', 'display', 'form', 'log', 'noti', 'query', 'tools', 'user', 'userInfo', 'wall', 'mood',);
+	protected $_services = array('admin', 'ajax', 'alerts', 'buddy', 'display', 'form', 'log', 'noti', 'query', 'tools', 'user', 'userInfo', 'wall', 'mood',);
 	public static $name = 'Breeze';
 	public static $version = '1.1';
 	public static $folder = '/Breeze/';
@@ -64,11 +64,12 @@ class Breeze extends Pimple\Container
 		'aboutMe' => 'TextArea',
 		'cover_height' => 'Int',
 	);
-	public $_likeTypes = array('breSta' => 'status', 'breCom' => 'comments');
+	public $likeTypes = array('breSta' => 'status', 'breCom' => 'comments');
 	public $trackHooks = array(
 		'integrate_create_topic' => 'createTopic',
 		'integrate_profile_save' => 'editProfile',
 	);
+	public $wrapperActions = array('wall', 'ajax', 'admin', 'mood', 'buddy');
 
 	// Support site feed
 	public static $supportSite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
@@ -359,7 +360,7 @@ class Breeze extends Pimple\Container
 		$actions['wall'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call#');
 
 		// Replace the buddy action @todo for next version
-		// $actions['buddy'] = array(Breeze::$folder . 'BreezeDispatcher.php', 'BreezeDispatcher::dispatch');
+		$actions['buddy'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call#');
 
 		// A special action for the buddy request message
 		$actions['breezebuddyrequest'] = array(Breeze::$folder . 'BreezeUser.php', 'breezeBuddyMessage');
@@ -377,10 +378,9 @@ class Breeze extends Pimple\Container
 	public function call()
 	{
 		// Just some quick code to make sure this works...
-		$wrapperActions = array('wall', 'ajax', 'admin', 'mood');
 		$action = str_replace('breeze', '', Breeze::data('get')->get('action'));
 
-		if (!empty($action) && in_array($action, $wrapperActions))
+		if (!empty($action) && in_array($action, $this->wrapperActions))
 			$this[$action]->call();
 	}
 
@@ -443,7 +443,7 @@ class Breeze extends Pimple\Container
 	public function likes($type, $content, $sa, $js, $extra)
 	{
 		// Don't bother with any other like types.
-		if (!in_array($type, array_keys($this->_likeTypes)))
+		if (!in_array($type, array_keys($this->likeTypes)))
 			return false;
 
 		// Create our returned array
@@ -466,11 +466,11 @@ class Breeze extends Pimple\Container
 		// Try and get the user who posted this content.
 		$originalAuthor = 0;
 		$originalAuthorData = array();
-		$row = $this->_likeTypes[$type] .'_id';
+		$row = $this->likeTypes[$type] .'_id';
 		$authorColumn = 'poster_id';
 
 		// With the given values, try to fetch the data of the liked content.
-		$originalAuthorData = $this['query']->getSingleValue($this->_likeTypes[$type], $row, $content);
+		$originalAuthorData = $this['query']->getSingleValue($this->likeTypes[$type], $row, $content);
 
 		if (!empty($originalAuthorData[$authorColumn]))
 			$originalAuthor = $originalAuthorData[$authorColumn];
@@ -490,7 +490,7 @@ class Breeze extends Pimple\Container
 				'time' => time(),
 				'extra' => array(
 					'contentData' => $originalAuthorData,
-					'type' => $this->_likeTypes[$type],
+					'type' => $this->likeTypes[$type],
 					'toLoad' => array($user['id'], $originalAuthor),
 				),
 			));
@@ -498,7 +498,7 @@ class Breeze extends Pimple\Container
 		// Fire up a notification.
 		$this['query']->insertNoti(array(
 			'user' => $user['id'],
-			'like_type' => $this->_likeTypes[$type],
+			'like_type' => $this->likeTypes[$type],
 			'content' => $content,
 			'numLikes' => $numLikes,
 			'extra' => $extra,
@@ -507,7 +507,7 @@ class Breeze extends Pimple\Container
 			'time' => time(),
 		), 'like');
 
-		$this['query']->updateLikes($this->_likeTypes[$type], $content, $numLikes);
+		$this['query']->updateLikes($this->likeTypes[$type], $content, $numLikes);
 	}
 
 	public function handleLikes($type, $content)
@@ -515,14 +515,14 @@ class Breeze extends Pimple\Container
 		$data = array();
 
 		// Don't bother with any other like types...
-		if (!in_array($type, array_keys($this->_likeTypes)))
+		if (!in_array($type, array_keys($this->likeTypes)))
 			return false;
 
-		$row = $this->_likeTypes[$type] .'_id';
+		$row = $this->likeTypes[$type] .'_id';
 		$authorColumn = 'poster_id';
 
 		// With the given values, try to find who is the owner of the liked content.
-		$data = $this['query']->getSingleValue($this->_likeTypes[$type], $row, $content);
+		$data = $this['query']->getSingleValue($this->likeTypes[$type], $row, $content);
 
 		if (!empty($data[$authorColumn]))
 			return $data[$authorColumn];
