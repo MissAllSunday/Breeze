@@ -440,8 +440,13 @@ class BreezeTools
 
 	public function parser($text, $replacements = array())
 	{
+		global $context;
+
 		if (empty($text) || empty($replacements) || !is_array($replacements))
 			return '';
+
+		// Inject the session.
+		$s = ';'. $context['session_var'] .'='. $context['session_id'];
 
 		// Split the replacements up into two arrays, for use with str_replace.
 		$find = array();
@@ -450,7 +455,7 @@ class BreezeTools
 		foreach ($replacements as $f => $r)
 		{
 			$find[] = '{' . $f . '}';
-			$replace[] = $r;
+			$replace[] = $r .($f == 'href' ? $s : '');
 		}
 
 		// Do the variable replacements.
