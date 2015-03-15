@@ -1057,6 +1057,10 @@ class BreezeQuery
 		if (empty($params))
 			return false;
 
+		// Check if the noti added the unique identifier, if not, added it!
+		if (strpos($params['content_type'], Breeze::$txtpattern) !== false)
+			$params['content_type'] = Breeze::$txtpattern . $params['content_type'];
+
 		$smcFunc['db_insert']('insert', '{db_prefix}' . ($this->_tables['alerts']['table']) .'', array('alert_time' => 'int', 'id_member' => 'int', 'id_member_started' => 'int', 'member_name' => 'string', 'content_type' => 'string', 'content_id' => 'int', 'content_action' => 'string', 'is_read' => 'int', 'extra' => 'string'), $params, array('id_alert'));
 	}
 

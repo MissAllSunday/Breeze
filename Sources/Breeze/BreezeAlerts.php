@@ -35,8 +35,6 @@ class BreezeAlerts
 		// Don't rely on Profile-View loading the senders data because we need some custom_profile stuff and we need to load other user's data anyway.
 		$toLoad = array();
 
-		$this->_alerts = $alerts;
-
 		foreach ($alerts as $id => $a)
 			if (strpos($a['content_type'], Breeze::$txtpattern) !== false && !empty($a['extra']['toLoad']))
 				$toLoad = array_merge($toLoad, $a['extra']['toLoad']);
@@ -46,6 +44,8 @@ class BreezeAlerts
 
 		// Pass the people's data.
 		$this->_usersData = $memberContext;
+
+		$this->_alerts = $alerts;
 
 		// What type are we gonna handle? oh boy there are a lot!
 		foreach ($alerts as $id => $a)
@@ -121,11 +121,11 @@ class BreezeAlerts
 	protected function buddyConfirm($id)
 	{
 		// Build the link.
-		$confirmLink = $this->_app['tools']->scriptUrl . '?action=buddy;sa=confirm;sender=' . $this->_alerts[$id]['id_member_started'];
+		$confirmLink = $this->_app['tools']->scriptUrl . '?action=buddy;sa=confirm;sender=' . $this->_alerts[$id]['sender_id'];
 
 		return $this->_app['tools']->parser($this->_app['tools']->text('alert_buddy_confirm'), array(
 			'href' => $confirmLink,
-			'sender' => $this->_usersData[$this->_alerts[$id]['id_member_started']]['link'],
+			'sender' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link'],
 		));
 	}
 }

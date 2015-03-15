@@ -312,7 +312,7 @@ class BreezeNoti
 					'id_member' => $member['id'],
 					'id_member_started' => $member['mentioned_by']['id'],
 					'member_name' => $member['mentioned_by']['name'],
-					'content_type' => 'mention',
+					'content_type' => $this->_details['content_type'] .'mention',
 					'content_id' => $this->_details['id'],
 					'content_action' => 'mention',
 					'is_read' => 0,
@@ -333,17 +333,20 @@ class BreezeNoti
 	{
 		// Do not check for preferences, just send the alert straight away!
 		$this->_app['query']->createAlert(array(
-			'alert_time' => $this->_details['time'],
+			'alert_time' => !empty($this->_details['time']) ? $this->_details['time'] : time(),
 			'id_member' => $this->_details['receiver_id'],
 			'id_member_started' => $this->_details['id_member'],
 			'member_name' => $this->_details['member_name'],
-			'content_type' => 'buddyConfirm',
-			'content_action' => '',
+			'content_type' => $this->_details['content_type'],
+			'content_id' => 0,
+			'content_action' => 'buddy',
 			'is_read' => 0,
 			'extra' => serialize(array(
 				'toLoad' => array($this->_details['receiver_id'], $this->_details['id_member']),
 			)),
 		));
 
+		// Lastly, update the counter.
+		updateMemberData($member['id'], array('alerts' => '+'));
 	}
 }
