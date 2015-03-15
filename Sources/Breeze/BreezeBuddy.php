@@ -48,8 +48,6 @@ class BreezeBuddy
 		global $user_info;
 
 		checkSession('get');
-
-		isAllowedTo('profile_identity_own');
 		is_not_guest();
 
 		$this->_data = Breeze::data('request');
@@ -61,10 +59,6 @@ class BreezeBuddy
 			'block',
 		);
 
-		// Make sure we got something.
-		if (empty($user))
-			fatal_lang_error('no_access', false);
-
 		// Figure it out what are we gonna do... check the subactions first!
 		if ($this->_call && in_array($this->_call, $subActions))
 			$this->{$this->_data->get('sa')}();
@@ -75,6 +69,10 @@ class BreezeBuddy
 			// To avoid confusions, set these properties here.
 			$this->_userReceiver = $this->_data->get('u');
 			$this->_userSender = $user_info;
+
+			// Make sure we got something.
+			if (!$this->_userReceiver)
+				fatal_lang_error('no_access', false);
 
 			// Remove if it's already there...
 			if (in_array($this->_userReceiver, $this->_userSender['buddies']))

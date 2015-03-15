@@ -664,3 +664,8 @@ function template_top()
 		</div>
 	</div>';
 }
+
+function template_buddy_request()
+{
+	echo 'LOL!';
+}
