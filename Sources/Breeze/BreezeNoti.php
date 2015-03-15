@@ -42,19 +42,22 @@ class BreezeNoti
 		// else fire some error log, dunno...
 	}
 
-	protected function innerCreate($params, $checkSpam = true)
+	protected function innerCreate($params, $checkSpam = true, $checkPrefs = true)
 	{
 		if (empty($params) || !is_array($params))
 			return false;
 
 		$spam = false;
 
-		// Get the preferences for the person whos gonna receive this alert.
-		$prefs = getNotifyPrefs($params['id_member'], $params['content_type'], true);
+		if ($checkPrefs)
+		{
+			// Get the preferences for the person whos gonna receive this alert.
+			$prefs = getNotifyPrefs($params['id_member'], $params['content_type'], true);
 
-		// User does not want to be notified...
-		if (empty($prefs[$params['id_member']][$params['content_type']]))
-			return false;
+			// User does not want to be notified...
+			if (empty($prefs[$params['id_member']][$params['content_type']]))
+				return false;
+		}
 
 		// Check if the same poster has already fired a notification.
 		if ($checkSpam)
@@ -331,35 +334,18 @@ class BreezeNoti
 
 	protected function buddyConfirm()
 	{
-		// Do not check for preferences, just send the alert straight away! but do check if there is already an alert!
-		$spam = false;
-
-		// Check if the same poster has already fired a notification.
-		$spam = $this->_app['query']->notiSpam($this->_details['receiver_id'], $this->_details['content_type'], $this->_details['id_member']);
-
-
-		// There's an alert already, just update the time...
-		if ($spam)
-			$this->_app['query']->updateAlert(array('alert_time' => !empty($this->_details['time']) ? $this->_details['time'] : time()), $spam);
-
-		else
-		{
-			$this->_app['query']->createAlert(array(
-				'alert_time' => !empty($this->_details['time']) ? $this->_details['time'] : time(),
-				'id_member' => $this->_details['receiver_id'],
-				'id_member_started' => $this->_details['id_member'],
-				'member_name' => $this->_details['member_name'],
-				'content_type' => $this->_details['content_type'],
-				'content_id' => 0,
-				'content_action' => 'buddy',
-				'is_read' => 0,
-				'extra' => serialize(array(
-					'toLoad' => array($this->_details['receiver_id'], $this->_details['id_member']),
-				)),
-			));
-
-			// Lastly, update the counter.
-			updateMemberData($this->_details['receiver_id'], array('alerts' => '+'));
-		}
+		$this->innerCreate(array(
+			'alert_time' => !empty($this->_details['time']) ? $this->_details['time'] : time(),
+			'id_member' => $this->_details['receiver_id'],
+			'id_member_started' => $this->_details['id_member'],
+			'member_name' => $this->_details['member_name'],
+			'content_type' => $this->_details['content_type'],
+			'content_id' => 0,
+			'content_action' => 'buddy',
+			'is_read' => 0,
+			'extra' => array(
+				'toLoad' => array($this->_details['receiver_id'], $this->_details['id_member']),
+			),
+		), true, false);
 	}
 }
