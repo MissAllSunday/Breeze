@@ -108,7 +108,7 @@ class BreezeBuddy
 
 		// I actually need to use $context['Breeze']['user_info'] a lot more...
 		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_confirm'), array(
-			'receiver' => $context['Breeze']['user_info']['link'],
+			'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
 		));
 	}
 

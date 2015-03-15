@@ -189,7 +189,7 @@ $txt['Breeze_info_moodChanged'] = 'Your mood has been changed';
 
 // Buddy request.
 $txt['Breeze_buddy_title'] = 'Buddy request';
-$txt['Breeze_buddy_confirm'] = 'The invitation has been sent, {receiver} will receive an alert.';
+$txt['Breeze_buddy_confirm'] = 'The invitation has been sent, {receiver} will soon receive an alert.';
 $txt['Breeze_buddy_confirmed'] = 'you and {sender} have become buddies!.';
 $txt['Breeze_buddy_denied'] = 'You cannot send an invitation to this user.';
 
