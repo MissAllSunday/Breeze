@@ -829,9 +829,8 @@ class BreezeQuery
 					$return[$row['variable']] = !empty($row['value']) ? json_decode($row['value'], true) : array();
 
 				$return += array(
-					// 'gender' => $row['gender'], @todo get the custom profile fields and merge them here
 					'buddiesList' => !empty($row['buddy_list']) ? explode(',', $row['buddy_list']) : array(),
-					'ignoredList' => $row['pm_ignore_list'],
+					'ignoredList' => !empty($row['pm_ignore_list']) ? explode(',', $row['pm_ignore_list']) : array(),
 					'profileViews' => $row['breeze_profile_views'],
 				);
 			}

@@ -187,6 +187,12 @@ $txt['Breeze_moodLabel'] = 'mood';
 $txt['Breeze_moodChange'] = 'Change your mood';
 $txt['Breeze_info_moodChanged'] = 'Your mood has been changed';
 
+// Buddy request.
+$txt['Breeze_buddy_title'] = 'Buddy request';
+$txt['Breeze_buddy_confirm'] = 'The invitation has been sent, {receiver} will receive an alert.';
+$txt['Breeze_buddy_confirmed'] = 'you and {sender} have become buddies!.';
+$txt['Breeze_buddy_denied'] = 'You cannot send an invitation to this user.';
+
 // Cover error messages.
 $txt['Breeze_cover_errors'] = array(
 	1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',

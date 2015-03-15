@@ -18,6 +18,7 @@ class BreezeBuddy
 
 	protected $_app;
 	protected $_userReceiver = 0;
+	protected $_userSender = 0;
 	protected $_call = '';
 	protected $_data = false;
 
@@ -52,12 +53,11 @@ class BreezeBuddy
 		is_not_guest();
 
 		$this->_data = Breeze::data('request');
-		$this->_userReceiver = $this->_data->get('u');
 		$this->_call = $this->_data->get('sa');
 		$subActions = array(
 			'confirm',
+			'confirmed',
 			'deny',
-			'denied',
 		);
 
 		// Make sure we got something.
@@ -71,22 +71,62 @@ class BreezeBuddy
 		// An standard add/delete call.
 		else
 		{
+			// To avoid confusions, set these properties here.
+			$this->_userReceiver = $this->_data->get('u');
+			$this->_userSender = $user_info;
+
 			// Remove if it's already there...
-			if (in_array($this->_userReceiver, $user_info['buddies']))
+			if (in_array($this->_userReceiver, $this->_userSender['buddies']))
 				$this->delete();
 
 			// ...or add if it's not and if it's not you.
-			elseif ($user_info['id'] != $this->_userReceiver)
+			elseif ($this->_userSender != $this->_userReceiver)
 				$this->confirm();
 		}
 
 		// Anyway, show a nice landing page.
-		$this->done();
+		$this->setResponse();
 	}
 
 	public function add()
 	{
+		// Ran the request through some checks...
+		if ($this->denied() == true)
+			return;
 
+		// Create a nice alert to let the user know you want to be his/her buddy!
+		$this->_app['query']->insertNoti(array(
+			'receiver_id' => $this->_userReceiver,
+			'id_member' => $this->_userSender['id'],
+			'member_name' => $this->_userSender['username'],
+			'time' => time(),
+		), 'buddyConfirm');
+
+		$this->response = __FUNCTION__;
+	}
+
+	/**
+	 * BreezeAjax::denied()
+	 *
+	 * Checks if the receiver does indeed want you as his/her buddy.
+	 * @return boolean True is you are blocked, false if you're good boy/girl!
+	 */
+	public function denied()
+	{
+		// Get the receiver's user settings.
+		$receiverSettings = $this->_app['query']->getUserSettings($this->_userReceiver);
+
+		// Are you on his/her ignore list?
+		if ($receiverSettings['blockIgnoredInvites'] && !empty($receiverSettings['ignoredList']) && !in_array($this->_userSender['id'], $receiverSettings['ignoredList']))
+			return false;
+
+		// Are you in his/her block list?
+		if (!empty($receiverSettings['blockList']) && !in_array($this->_userSender['id'], $receiverSettings['blockList'])
+			return false;
+
+		// Well it looks like this user does not want to be your buddy, sorry...
+		$this->response = __FUNCTION__;
+		return true;
 	}
 
 	public function delete()
@@ -112,15 +152,21 @@ class BreezeBuddy
 
 	}
 
-	// When the receiver user denied the petitioner and the petitioner got added to the receiver "block list".
-	public function denied()
-	{
-
-	}
-
 	// Whatever the action performed, show a landing "done" page.
-	protected function done()
+	protected function setResponse()
 	{
+		global $context;
 
+		// Get the template anf language files.
+		loadLanguage(Breeze::$name);
+		loadtemplate(Breeze::$name .'Functions');
+
+		// All the generic stuff.
+		$context['page_title'] = $this->_app['tools']->text('buddy_title');
+		$context['sub_template'] = 'buddy_request';
+		$context['linktree'][] = array(
+			'url' => $this->_app['tools']->scriptUrl . '?action=buddy'. (!empty($this->_call) ? ';sa='. $this->_call : ''),
+			'name' => $context['page_title'],
+		);
 	}
 }

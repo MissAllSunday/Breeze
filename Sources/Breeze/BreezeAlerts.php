@@ -54,7 +54,7 @@ class BreezeAlerts
 				$a['content_type'] = str_replace(Breeze::$txtpattern, '', $a['content_type']);
 
 				if(method_exists($this, $a['content_type']) && !empty($this->_alerts[$id]['extra']) && is_array($this->_alerts[$id]['extra']))
-					$alerts[$id]['text'] = $this->$a['content_type']($id);
+					$alerts[$id]['text'] = {$this->$a['content_type']}($id);
 
 				else
 					$alerts[$id]['text'] = '';
