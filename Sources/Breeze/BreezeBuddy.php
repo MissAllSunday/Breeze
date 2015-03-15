@@ -56,8 +56,9 @@ class BreezeBuddy
 		$this->_call = $this->_data->get('sa');
 		$subActions = array(
 			'confirm',
-			'confirmed',
+			'confirmed'
 			'deny',
+			'block',
 		);
 
 		// Make sure we got something.
@@ -109,7 +110,7 @@ class BreezeBuddy
 	 * Checks if the receiver does indeed want you as his/her buddy.
 	 * @return boolean True if you are blocked, false if you're good boy/girl!
 	 */
-	public function denied()
+	protected function denied()
 	{
 		// Get the receiver's user settings.
 		$receiverSettings = $this->_app['query']->getUserSettings($this->_userReceiver);
@@ -143,8 +144,20 @@ class BreezeBuddy
 
 	}
 
+	// When receiver confirmed the friendship!
+	public function confirmed()
+	{
+
+	}
+
 	// When the receiver user denies the request DUH!
 	public function deny()
+	{
+
+	}
+
+	// When you want to block the sender from ever invite you agian!
+	public function block()
 	{
 
 	}

@@ -321,11 +321,27 @@ class BreezeNoti
 						'url' => $url,
 						'toLoad' => $toload,
 						'profile_owner' => $this->_details['profile_id'],
-						)),
+					)),
 				));
 
 				// Lastly, update the counter.
 				updateMemberData($member['id'], array('alerts' => '+'));
 			}
+	}
+
+	protected function buddyConfirm()
+	{
+		// Do not check for preferences, just send the alert straight away!
+		$this->_app['query']->createAlert(array(
+			'alert_time' => $this->_details['time'],
+			'id_member' => $this->_details['receiver_id'],
+			'id_member_started' => $this->_details['id_member'],
+			'member_name' => $this->_details['member_name'],
+			'content_type' => 'buddy_request',
+			'content_action' => '',
+			'is_read' => 0,
+			'extra' => '',
+		));
+
 	}
 }
