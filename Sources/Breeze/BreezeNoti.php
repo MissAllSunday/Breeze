@@ -337,10 +337,12 @@ class BreezeNoti
 			'id_member' => $this->_details['receiver_id'],
 			'id_member_started' => $this->_details['id_member'],
 			'member_name' => $this->_details['member_name'],
-			'content_type' => 'buddy_request',
+			'content_type' => 'buddyConfirm',
 			'content_action' => '',
 			'is_read' => 0,
-			'extra' => '',
+			'extra' => serialize(array(
+				'toLoad' => array($this->_details['receiver_id'], $this->_details['id_member']),
+			)),
 		));
 
 	}

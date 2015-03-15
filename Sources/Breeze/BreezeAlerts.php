@@ -117,4 +117,15 @@ class BreezeAlerts
 
 		return $this->_app['tools']->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), $toParse);
 	}
+
+	protected function buddyConfirm($id)
+	{
+		// Build the link.
+		$confirmLink = $this->_app['tools']->scriptUrl . '?action=buddy;sa=confirm;sender=' . $this->_alerts[$id]['id_member_started'];
+
+		return $this->_app['tools']->parser($this->_app['tools']->text('alert_buddy_confirm'), array(
+			'href' => $confirmLink,
+			'sender' => $this->_usersData[$this->_alerts[$id]['id_member_started']]['link'],
+		));
+	}
 }
