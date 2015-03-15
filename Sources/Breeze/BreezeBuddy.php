@@ -81,7 +81,7 @@ class BreezeBuddy
 
 			// ...or add if it's not and if it's not you.
 			elseif ($this->_userSender != $this->_userReceiver)
-				$this->confirm();
+				$this->add();
 		}
 
 		// Anyway, show a nice landing page.
@@ -101,15 +101,13 @@ class BreezeBuddy
 			'member_name' => $this->_userSender['username'],
 			'time' => time(),
 		), 'buddyConfirm');
-
-		$this->response = __FUNCTION__;
 	}
 
 	/**
 	 * BreezeAjax::denied()
 	 *
 	 * Checks if the receiver does indeed want you as his/her buddy.
-	 * @return boolean True is you are blocked, false if you're good boy/girl!
+	 * @return boolean True if you are blocked, false if you're good boy/girl!
 	 */
 	public function denied()
 	{
@@ -117,16 +115,15 @@ class BreezeBuddy
 		$receiverSettings = $this->_app['query']->getUserSettings($this->_userReceiver);
 
 		// Are you on his/her ignore list?
-		if ($receiverSettings['blockIgnoredInvites'] && !empty($receiverSettings['ignoredList']) && !in_array($this->_userSender['id'], $receiverSettings['ignoredList']))
-			return false;
+		if (!empty($receiverSettings['blockIgnoredInvites']) && !empty($receiverSettings['ignoredList']) && in_array($this->_userSender['id'], $receiverSettings['ignoredList']))
+			return true;
 
 		// Are you in his/her block list?
-		if (!empty($receiverSettings['blockList']) && !in_array($this->_userSender['id'], $receiverSettings['blockList'])
-			return false;
+		if (!empty($receiverSettings['blockList']) && in_array($this->_userSender['id'], $receiverSettings['blockList'])
+			return true;
 
-		// Well it looks like this user does not want to be your buddy, sorry...
-		$this->response = __FUNCTION__;
-		return true;
+		// And you passed the test!
+		return false;
 	}
 
 	public function delete()

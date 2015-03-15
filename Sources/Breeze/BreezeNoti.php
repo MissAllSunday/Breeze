@@ -36,8 +36,8 @@ class BreezeNoti
 		$call = str_replace(Breeze::$txtpattern, '', $this->_details['content_type']);
 
 		// Call the appropriated method.
-		if (in_array($call, get_class_methods(__CLASS__)))
-			$this->$call();
+		if (method_exists($this, $call))
+			$this->{$call}();
 
 		// else fire some error log, dunno...
 	}
