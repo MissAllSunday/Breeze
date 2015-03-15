@@ -56,7 +56,7 @@ class BreezeBuddy
 		$this->_call = $this->_data->get('sa');
 		$subActions = array(
 			'confirm',
-			'confirmed'
+			'confirmed',
 			'deny',
 			'block',
 		);
@@ -120,7 +120,7 @@ class BreezeBuddy
 			return true;
 
 		// Are you in his/her block list?
-		if (!empty($receiverSettings['blockList']) && in_array($this->_userSender['id'], $receiverSettings['blockList'])
+		if (!empty($receiverSettings['blockList']) && in_array($this->_userSender['id'], $receiverSettings['blockList']))
 			return true;
 
 		// And you passed the test!

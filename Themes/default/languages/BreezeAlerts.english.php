@@ -65,7 +65,7 @@ $txt['Breeze_alert_mention_own_comment'] = '<a href="{href}" class="bbc_link" ta
 $txt['Breeze_alert_mention_own_comment'] = '<a href="{href}" class="bbc_link" target="_blank">You have been mentioned</a> on a comment on your own wall by {poster}!';
 
 // Buddy request.
-$txt]['Breeze_alert_buddy_confirm'] = '{sender} wants to be your buddy!<br><a href="{href}">Confirm/Deny the invitation</a>';
+$txt['Breeze_alert_buddy_confirm'] = '{sender} wants to be your buddy!<br><a href="{href}">Confirm/Deny the invitation</a>';
 
 // Single Status
 $txt['Breeze_singleStatus_pageTitle'] = 'Single Status';
