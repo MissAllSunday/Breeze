@@ -667,5 +667,20 @@ function template_top()
 
 function template_buddy_request()
 {
-	echo 'LOL!';
+	global $context;
+
+	echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+				'. $context['page_title'] .'
+			</h3>
+		</div>';
+
+	echo '
+		<div class="information">';
+
+	echo $context['response'];
+
+		echo '
+		</div>';
 }

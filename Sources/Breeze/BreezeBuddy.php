@@ -89,6 +89,8 @@ class BreezeBuddy
 
 	public function add()
 	{
+		global $context;
+
 		// Ran the request through some checks...
 		if ($this->denied() == true)
 			return;
@@ -100,6 +102,14 @@ class BreezeBuddy
 			'member_name' => $this->_userSender['username'],
 			'time' => time(),
 		), 'buddyConfirm');
+
+		// Get the receiver's link
+		$this->_app['tools']->loadUserInfo($this->_userReceiver);
+
+		// I actually need to use $context['Breeze']['user_info'] a lot more...
+		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_confirm'), array(
+			'receiver' => $context['Breeze']['user_info']['link'],
+		));
 	}
 
 	/**
@@ -154,7 +164,7 @@ class BreezeBuddy
 
 	}
 
-	// When you want to block the sender from ever invite you agian!
+	// When you want to block the sender from ever invite you again!
 	public function block()
 	{
 
@@ -176,5 +186,6 @@ class BreezeBuddy
 			'url' => $this->_app['tools']->scriptUrl . '?action=buddy'. (!empty($this->_call) ? ';sa='. $this->_call : ''),
 			'name' => $context['page_title'],
 		);
+		$context['response'] = $this->_response;
 	}
 }
