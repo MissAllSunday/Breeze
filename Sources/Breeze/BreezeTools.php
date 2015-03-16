@@ -455,7 +455,7 @@ class BreezeTools
 		foreach ($replacements as $f => $r)
 		{
 			$find[] = '{' . $f . '}';
-			$replace[] = $r .($f == 'href' ? $s : '');
+			$replace[] = $r .((strpos($f,'href') !== false) ? $s : '';
 		}
 
 		// Do the variable replacements.
