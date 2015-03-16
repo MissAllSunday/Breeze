@@ -15,10 +15,11 @@ if (!defined('SMF'))
 
 class BreezeBuddy
 {
-
 	protected $_app;
 	protected $_userReceiver = 0;
 	protected $_userSender = 0;
+	protected $_senderConfirm = 0;
+	protected $_receiverConfirm = 0;
 	protected $_call = '';
 	protected $_data = false;
 
@@ -61,7 +62,16 @@ class BreezeBuddy
 
 		// Figure it out what are we gonna do... check the subactions first!
 		if ($this->_call && in_array($this->_call, $subActions))
+		{
+			// We need a "sender" ID.
+			$this->_senderConfirm = $this->_data->get('sender');
+			$this->_receiverConfirm = $user_info;
+
+			if (!$this->_senderConfirm)
+				fatal_lang_error('no_access', false);
+
 			$this->{$this->_data->get('sa')}();
+		}
 
 		// An standard add/delete call.
 		else
@@ -91,25 +101,32 @@ class BreezeBuddy
 	{
 		global $context;
 
-		// Ran the request through some checks...
-		if ($this->denied() == true)
-			return;
+		// Don't do this that often..
+		if ((cache_get_data('Buddy-sent-'. $this->_userSender['id'] .'-'. $this->_userReceiver, 86400)) == null)
+		{
+			// Ran the request through some checks...
+			if ($this->denied() == true)
+				return;
 
-		// Create a nice alert to let the user know you want to be his/her buddy!
-		$this->_app['query']->insertNoti(array(
-			'receiver_id' => $this->_userReceiver,
-			'id_member' => $this->_userSender['id'],
-			'member_name' => $this->_userSender['username'],
-			'time' => time(),
-		), 'buddyConfirm');
+			// Create a nice alert to let the user know you want to be his/her buddy!
+			$this->_app['query']->insertNoti(array(
+				'receiver_id' => $this->_userReceiver,
+				'id_member' => $this->_userSender['id'],
+				'member_name' => $this->_userSender['username'],
+				'time' => time(),
+			), 'buddyConfirm');
 
-		// Get the receiver's link
-		$this->_app['tools']->loadUserInfo($this->_userReceiver);
+			// Get the receiver's link
+			$this->_app['tools']->loadUserInfo($this->_userReceiver);
 
-		// I actually need to use $context['Breeze']['user_info'] a lot more...
-		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_confirm'), array(
-			'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
-		));
+			// I actually need to use $context['Breeze']['user_info'] a lot more...
+			$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_confirm'), array(
+				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
+			));
+
+			// Store this in a cache entry to avoid creating multiple alerts. Give it a long life cycle.
+			cache_put_data('Buddy-sent-'. $this->_userSender['id'] .'-'. $this->_userReceiver, '1', 86400);
+		}
 	}
 
 	/**
