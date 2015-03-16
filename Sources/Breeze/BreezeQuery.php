@@ -828,6 +828,10 @@ class BreezeQuery
 				if ($row['variable'] == 'cover')
 					$return[$row['variable']] = !empty($row['value']) ? json_decode($row['value'], true) : array();
 
+				// Another special case...
+				if ($row['variable'] == 'blockList')
+					$return[$row['variable']] = !empty($row['value']) ? explode(',', $row['value']) : array();
+
 				$return += array(
 					'buddiesList' => !empty($row['buddy_list']) ? explode(',', $row['buddy_list']) : array(),
 					'ignoredList' => !empty($row['pm_ignore_list']) ? explode(',', $row['pm_ignore_list']) : array(),

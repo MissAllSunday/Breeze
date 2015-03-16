@@ -421,7 +421,7 @@ class BreezeUser extends Breeze
 
 		// Get the user settings.
 		$userSettings = $this['query']->getUserSettings($context['member']['id']);
-
+echo '<pre>';print_r($userSettings);die;
 		// Create the form.
 		$form = $this['form'];
 
@@ -482,6 +482,13 @@ class BreezeUser extends Breeze
 			$form->addCheckBox(
 				'kick_ignored',
 				!empty($userSettings['kick_ignored']) ? true : false
+			);
+
+			// Number of alerts in recent activity page.
+			$form->addText(
+				'blockList',
+				!empty($userSettings['blockList']) ? implode(',', $userSettings['blockList']) : '',
+				20,90
 			);
 
 			// Buddies block.

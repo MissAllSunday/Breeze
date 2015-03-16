@@ -448,6 +448,20 @@ class BreezeAjax
 				$toSave[$k] = $v;
 		}
 
+		// blockList only allows numbers and commas.
+		if (!empty($toSave['blockList']))
+		{
+			$tempList = explode(',', preg_replace('/[^0-9,]/', '', $toSave['blockList']));
+
+			foreach ($tempList as $key => $value)
+				if ($value == '')
+					unset($tempList[$key]);
+
+			$toSave['blockList'] = implode(',', $tempList);
+
+			unset($tempList);
+		}
+
 		// Gotta make sure the user is respecting the admin limit for the about me block.
 		if ($this->_app['tools']->setting('allowed_maxlength_aboutMe') && !empty($toSave['aboutMe']) && strlen($toSave['aboutMe']) >= $this->_app['tools']->setting('allowed_maxlength_aboutMe'))
 			$toSave['aboutMe'] = substr($toSave['aboutMe'], 0, $this->_app['tools']->setting('allowed_maxlength_aboutMe'));

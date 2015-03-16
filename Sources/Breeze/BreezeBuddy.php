@@ -141,7 +141,7 @@ class BreezeBuddy
 		$receiverSettings = $this->_app['query']->getUserSettings($this->_userReceiver);
 
 		// Are you on his/her ignore list?
-		if (!empty($receiverSettings['blockIgnoredInvites']) && !empty($receiverSettings['ignoredList']) && in_array($this->_userSender['id'], $receiverSettings['ignoredList']))
+		if (!empty($receiverSettings['ignoredList']) && in_array($this->_userSender['id'], $receiverSettings['ignoredList']))
 			return true;
 
 		// Are you in his/her block list?
@@ -194,13 +194,27 @@ class BreezeBuddy
 	// When the receiver user denies the request DUH!
 	public function decline()
 	{
-		Offer an option to mark this 
+		// Offer an option to block this person
+		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_decline'), array(
+			'href' => $this->_app['tools']->scriptUrl . '?action=buddy;sa=block;sender=' . $this->_senderConfirm,
+		));
 	}
 
 	// When you want to block the sender from ever invite you again!
 	public function block()
 	{
+		// Get the current user settings.
+		$currentSettings = $this->_app['query']->getUserSettings($this->_receiverConfirm);
 
+		// Add this person to the user's "block" list.
+		$blockList = !empty($currentSettings['blockList']) ? json_decode($currentSettings['blockList'], true) : array();
+
+		// Add the user.
+		$blockList[] = $this->_senderConfirm;
+
+		$this->_app['query']->insertUserSettings(array('blockList' => implode(',', $blockList)), $this->_receiverConfirm);
+
+		$this->_response = $this->_app['tools']->text('buddy_blocked_done');
 	}
 
 	// Whatever the action performed, show a landing "done" page.
@@ -219,6 +233,7 @@ class BreezeBuddy
 			'url' => $this->_app['tools']->scriptUrl . '?action=buddy'. (!empty($this->_call) ? ';sa='. $this->_call : '') . (!empty($this->_senderConfirm) ? ';sender='. $this->_senderConfirm : '') . (!empty($this->_userReceiver) ? ';u='. $this->_senderConfirm : '') .';'. $context['session_var'] .'='. $context['session_id'],
 			'name' => $context['page_title'],
 		);
-		$context['response'] = $this->_response;
+
+		$context['response'] = !empty($this->_response) ? $this->_response : '';
 	}
 }

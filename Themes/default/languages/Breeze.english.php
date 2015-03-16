@@ -55,6 +55,8 @@ $txt['Breeze_user_settings_alert_topic_sub'] = '';
 $txt['Breeze_user_settings_name_cover_desc'] = 'You can upload an image to be used as a cover page for your wall.';
 $txt['Breeze_user_settings_kick_ignored'] = 'Do not show my wall to users in my ignore list';
 $txt['Breeze_user_settings_kick_ignored_sub'] = 'If this is enable, users on your ignore list will not be able to see your wall or to post on it.';
+$txt['Breeze_user_settings_blockList'] = 'List of users unable to send you buddy invites';
+$txt['Breeze_user_settings_blockList_sub'] = 'Leave empty to disable. put the user ID in a comma separated list, this is different than your ignore list, the users listed here WILL NOT be ignored, this list merely prevent the users on it to send you buddy invites.<br>The users will not know about this.';
 $txt['Breeze_user_settings_load_more'] = 'Add a "load more button"';
 $txt['Breeze_user_settings_load_more_sub'] = 'This setting will allow you to load the next batch of status by clicking a button.';
 $txt['Breeze_user_settings_pagination_number'] = 'How many status will be displayed per page';
@@ -191,7 +193,9 @@ $txt['Breeze_buddy_title'] = 'Buddy request';
 $txt['Breeze_buddy_confirm'] = 'The invitation has been sent, {receiver} will soon receive an alert.';
 $txt['Breeze_buddy_chose'] = '{sender} wants to be your buddy, please <br> <a href="{href_confirm}"><i class="fa fa-user-plus fa-2x"></i> confirm</a> or <a href="{href_decline}"><i class="fa fa-user-times fa-2x"></i> decline</a> the invitation.';
 $txt['Breeze_buddy_confirmed'] = '{receiver} and {sender} have become buddies!.';
-$txt['Breeze_buddy_denied'] = 'You cannot send an invitation to this user.';
+$txt['Breeze_buddy_blocked'] = 'You cannot send an invitation to this user.';
+$txt['Breeze_buddy_decline'] = 'You have declined the invitation<br>Do you want to block this person from sending you more invites? this WILL NOT put this person on your ignore list, it will merely prevent this user from sending you a buddy invite<br><a href="{href}">yes, block this user</a>';
+$txt['Breeze_buddy_blocked_done'] = 'You have successfully blocked this user';
 
 // Cover error messages.
 $txt['Breeze_cover_errors'] = array(
