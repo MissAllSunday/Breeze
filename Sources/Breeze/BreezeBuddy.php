@@ -102,10 +102,10 @@ class BreezeBuddy
 		global $context;
 
 		// Don't do this that often..
-		if ((cache_get_data('Buddy-sent-'. $this->_userSender['id'] .'-'. $this->_userReceiver, 86400)) == null)
+		if (cache_get_data('Buddy-sent-'. $this->_userSender['id'] .'-'. $this->_userReceiver, 86400) == null)
 		{
 			// Ran the request through some checks...
-			if ($this->denied() == true)
+			if ($this->check() == true)
 				return;
 
 			// Create a nice alert to let the user know you want to be his/her buddy!
@@ -129,7 +129,8 @@ class BreezeBuddy
 		}
 
 		// Let this user know that an alert has already been sent...
-		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('already_sent'), array(
+		else
+			$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('already_sent'), array(
 			'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
 		));
 	}
@@ -140,18 +141,17 @@ class BreezeBuddy
 	 * Checks if the receiver does indeed want you as his/her buddy.
 	 * @return boolean True if you are blocked, false if you're good boy/girl!
 	 */
-	protected function denied()
+	protected function check()
 	{
 		// Get the receiver's user settings.
 		$receiverSettings = $this->_app['query']->getUserSettings($this->_userReceiver);
 
-		// Are you on his/her ignore list?
-		if (!empty($receiverSettings['ignoredList']) && in_array($this->_userSender['id'], $receiverSettings['ignoredList']))
+		// Are you on his/her ignore/block list?
+		if ((!empty($receiverSettings['ignoredList']) && in_array($this->_userSender['id'], $receiverSettings['ignoredList'])) || (!empty($receiverSettings['blockList']) && in_array($this->_userSender['id'], $receiverSettings['blockList'])))
+		{
+			$this->_response = $this->_app['tools']->text('buddy_blocked');
 			return true;
-
-		// Are you in his/her block list?
-		if (!empty($receiverSettings['blockList']) && in_array($this->_userSender['id'], $receiverSettings['blockList']))
-			return true;
+		}
 
 		// And you passed the test!
 		return false;
@@ -212,7 +212,7 @@ class BreezeBuddy
 		$currentSettings = $this->_app['query']->getUserSettings($this->_receiverConfirm['id']);
 
 		// Add this person to the user's "block" list.
-		$blockList = !empty($currentSettings['blockList']) ? json_decode($currentSettings['blockList'], true) : array();
+		$blockList = !empty($currentSettings['blockList']) ? $currentSettings['blockList'] : array();
 
 		// Add the user.
 		$blockList[] = $this->_senderConfirm;

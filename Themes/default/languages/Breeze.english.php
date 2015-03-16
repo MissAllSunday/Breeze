@@ -194,7 +194,7 @@ $txt['Breeze_buddy_confirm'] = 'The invitation has been sent, {receiver} will so
 $txt['Breeze_buddy_chose'] = '{sender} wants to be your buddy, please <br> <a href="{href_confirm}"><i class="fa fa-user-plus fa-2x"></i> confirm</a> or <a href="{href_decline}"><i class="fa fa-user-times fa-2x"></i> decline</a> the invitation.';
 $txt['Breeze_buddy_confirmed'] = '{receiver} and {sender} have become buddies!.';
 $txt['Breeze_buddy_blocked'] = 'You cannot send an invitation to this user.';
-$txt['Breeze_buddy_decline'] = 'You have declined the invitation<br>Do you want to block this person from sending you more invites? this WILL NOT put this person on your ignore list, it will merely prevent this user from sending you a buddy invite<br><a href="{href}">yes, block this user</a>';
+$txt['Breeze_buddy_decline'] = 'You have declined the invitation.<br>Do you want to block this person from sending you more invites? this WILL NOT put this person on your ignore list, it will merely prevent this user from sending you a buddy invite<br><a href="{href}">yes, block this user</a>';
 $txt['Breeze_buddy_blocked_done'] = 'You have successfully blocked this user';
 $txt['Breeze_buddy_already_sent'] = 'You already sent an invitation, please wait for {receiver} to respond';
 

@@ -421,7 +421,7 @@ class BreezeUser extends Breeze
 
 		// Get the user settings.
 		$userSettings = $this['query']->getUserSettings($context['member']['id']);
-echo '<pre>';print_r($userSettings);die;
+
 		// Create the form.
 		$form = $this['form'];
 
