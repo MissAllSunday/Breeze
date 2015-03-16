@@ -24,9 +24,9 @@ class BreezeBuddy
 	protected $_data = false;
 
 	/**
-	 * BreezeAjax::__construct()
+	 * BreezeBuddy::__construct()
 	 *
-	 * Sets all the needed vars, loads the language file
+	 * Sets all the needed vars, loads the language file.
 	 * @return void
 	 */
 	public function __construct($app)
@@ -40,8 +40,8 @@ class BreezeBuddy
 	/**
 	 * BreezeAjax::call()
 	 *
-	 * Calls the right method for each subaction, calls returnResponse().
-	 * @see BreezeAjax::returnResponse()
+	 * Calls the right method for each subaction, calls setResponse().
+	 * @see BreezeBuddy::setResponse()
 	 * @return void
 	 */
 	public function call()
@@ -56,7 +56,7 @@ class BreezeBuddy
 		$subActions = array(
 			'confirm',
 			'confirmed',
-			'deny',
+			'decline',
 			'block',
 		);
 
@@ -166,7 +166,23 @@ class BreezeBuddy
 	// When the petitioner wants to add the receiver as friend
 	public function confirm()
 	{
+		global $context;
 
+		// Load the icon's css.
+		loadCSSFile('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', array('external' => true));
+
+		// Load the sender's data.
+		$this->_app['tools']->loadUserInfo($this->_senderConfirm);
+
+		// Prepare the options.
+		$confirm = $this->_app['tools']->scriptUrl . '?action=buddy;sa=confirmed;sender=' . $this->_senderConfirm;
+		$decline = $this->_app['tools']->scriptUrl . '?action=buddy;sa=decline;sender=' . $this->_senderConfirm;
+
+		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_chose'), array(
+			'href_confirm' => $confirm,
+			'href_decline' => $decline,
+			'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['link'],
+		));
 	}
 
 	// When receiver confirmed the friendship!
@@ -176,9 +192,9 @@ class BreezeBuddy
 	}
 
 	// When the receiver user denies the request DUH!
-	public function deny()
+	public function decline()
 	{
-
+		Offer an option to mark this 
 	}
 
 	// When you want to block the sender from ever invite you again!
@@ -200,7 +216,7 @@ class BreezeBuddy
 		$context['page_title'] = $this->_app['tools']->text('buddy_title');
 		$context['sub_template'] = 'buddy_request';
 		$context['linktree'][] = array(
-			'url' => $this->_app['tools']->scriptUrl . '?action=buddy'. (!empty($this->_call) ? ';sa='. $this->_call : ''),
+			'url' => $this->_app['tools']->scriptUrl . '?action=buddy'. (!empty($this->_call) ? ';sa='. $this->_call : '') . (!empty($this->_senderConfirm) ? ';sender='. $this->_senderConfirm : '') . (!empty($this->_userReceiver) ? ';u='. $this->_senderConfirm : '') .';'. $context['session_var'] .'='. $context['session_id'],
 			'name' => $context['page_title'],
 		);
 		$context['response'] = $this->_response;
