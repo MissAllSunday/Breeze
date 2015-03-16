@@ -127,6 +127,11 @@ class BreezeBuddy
 			// Store this in a cache entry to avoid creating multiple alerts. Give it a long life cycle.
 			cache_put_data('Buddy-sent-'. $this->_userSender['id'] .'-'. $this->_userReceiver, '1', 86400);
 		}
+
+		// Let this user know that an alert has already been sent...
+		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('already_sent'), array(
+			'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
+		));
 	}
 
 	/**
@@ -204,7 +209,7 @@ class BreezeBuddy
 	public function block()
 	{
 		// Get the current user settings.
-		$currentSettings = $this->_app['query']->getUserSettings($this->_receiverConfirm);
+		$currentSettings = $this->_app['query']->getUserSettings($this->_receiverConfirm['id']);
 
 		// Add this person to the user's "block" list.
 		$blockList = !empty($currentSettings['blockList']) ? json_decode($currentSettings['blockList'], true) : array();
@@ -212,7 +217,7 @@ class BreezeBuddy
 		// Add the user.
 		$blockList[] = $this->_senderConfirm;
 
-		$this->_app['query']->insertUserSettings(array('blockList' => implode(',', $blockList)), $this->_receiverConfirm);
+		$this->_app['query']->insertUserSettings(array('blockList' => implode(',', $blockList)), $this->_receiverConfirm['id']);
 
 		$this->_response = $this->_app['tools']->text('buddy_blocked_done');
 	}

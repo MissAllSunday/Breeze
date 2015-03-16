@@ -196,6 +196,7 @@ $txt['Breeze_buddy_confirmed'] = '{receiver} and {sender} have become buddies!.'
 $txt['Breeze_buddy_blocked'] = 'You cannot send an invitation to this user.';
 $txt['Breeze_buddy_decline'] = 'You have declined the invitation<br>Do you want to block this person from sending you more invites? this WILL NOT put this person on your ignore list, it will merely prevent this user from sending you a buddy invite<br><a href="{href}">yes, block this user</a>';
 $txt['Breeze_buddy_blocked_done'] = 'You have successfully blocked this user';
+$txt['Breeze_buddy_already_sent'] = 'You already sent an invitation, please wait for {receiver} to respond';
 
 // Cover error messages.
 $txt['Breeze_cover_errors'] = array(
