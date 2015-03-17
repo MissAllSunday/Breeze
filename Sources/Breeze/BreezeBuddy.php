@@ -214,6 +214,10 @@ class BreezeBuddy
 		// Add this person to the user's "block" list.
 		$blockList = !empty($currentSettings['blockList']) ? $currentSettings['blockList'] : array();
 
+		// There might be the possibility that you already are blocking this user...
+		if (in_array($this->_senderConfirm, $blockList))
+			return $this->_response = $this->_app['tools']->text('buddy_already_blocked');
+
 		// Add the user.
 		$blockList[] = $this->_senderConfirm;
 
@@ -227,7 +231,7 @@ class BreezeBuddy
 	{
 		global $context;
 
-		// Get the template anf language files.
+		// Get the template and language files.
 		loadLanguage(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
 
