@@ -150,37 +150,9 @@ class BreezeMood
 			return false;
 	}
 
-	public function show($mood, $user)
+	public function show($user)
 	{
 		global $context;
-
-		// Don't do anything if the feature is disable.
-		if (!$this->_app['tools']->enable('mood'))
-			return;
-
-		// Gotta load our template.
-		loadtemplate(Breeze::$name .'Functions');
-
-		// Pass the imageUrl and this user.
-		$context['moodUrl'] = $this->imagesUrl;
-
-		return array(
-			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
-			'col_name' => $this->_app['tools']->text('moodLabel'),
-			'value' => template_mood_image($mood, $user),
-			'placement' => $this->placementField,
-		);
-	}
-
-	public function showProfile($memID, $area)
-	{
-		global $context;
-
-		// its easier to list the areas where we want this to be displayed.
-		$profileAreas = array('summary', 'static');
-
-		if (!in_array($area, $profileAreas))
-			return;
 
 		// Don't do anything if the feature is disable.
 		if (!$this->_app['tools']->enable('mood'))
@@ -195,6 +167,35 @@ class BreezeMood
 		// Get the image.
 		$currentMood = !empty($userSettings['mood']) && !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : false;
 
+		return array(
+			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
+			'col_name' => $this->_app['tools']->text('moodLabel'),
+			'value' => template_mood_image($currentMood, $user),
+			'placement' => $this->placementField,
+		);
+	}
+
+	public function showProfile($memID, $area)
+	{
+		global $context;
+
+		// its easier to list the areas where we want this to be displayed.
+		$profileAreas = array('summary', 'static');
+
+		// Don't do anything if the feature is disable.
+		if (!$this->_app['tools']->enable('mood') || !in_array($area, $profileAreas))
+			return;
+
+		// Get the currently active moods.
+		$moods = $this['mood']->getActive();
+
+		// Get this user options.
+		$userSettings = $this['query']->getUserSettings($memID);
+
+		// Get the image.
+		$currentMood = !empty($userSettings['mood']) && !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : false;
+
+		// Gotta love globals...
 		$context['custom_fields'][] = array(
 			'name' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
 			'placement' => $this->placementField,
