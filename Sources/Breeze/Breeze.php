@@ -600,29 +600,11 @@ class Breeze extends Pimple\Container
 
 	public function moodProfile($memID, $area)
 	{
-		global $context;
-
 		// Don't do anything if the feature is disable.
 		if (!$this['tools']->enable('mood'))
 			return;
 
-		// its easier to list the areas where we want this to be displayed.
-		$profileAreas = array('summary', 'static');
-
-		// Eww, why do I need to abuse global scope like this... gross :(
-		if (in_array($area, $profileAreas))
-		{
-			// Get the currently active moods.
-			$moods = $this['mood']->getActive();
-
-			// Get this user options.
-			$userSettings = $this['query']->getUserSettings($user);
-
-			// Get the image.
-			$currentMood = !empty($userSettings['mood']) && !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : false;
-
-			$context['custom_fields'][] = $this['mood']->showProfile($memID);
-		}
+		$this['mood']->showProfile($memID, $area);
 	}
 
 	/**
