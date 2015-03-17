@@ -26,15 +26,19 @@ class BreezeUser extends Breeze
 	 * Main function, shows the wall, activity, buddies, visitors and any other possible info.
 	 * @return
 	 */
-	function wall()
+	function wall($memID)
 	{
 		global $txt, $context, $memberContext;
-		global $modSettings,  $user_info, $memID;
+		global $modSettings,  $user_info;
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
 		loadtemplate(Breeze::$name .'Blocks');
 		loadLanguage(Breeze::$name);
+
+		// Weird I know!!
+		require_once($this['tools']->sourceDir . '/Profile-View.php');
+		summary($memID);
 
 		// We kinda need all this stuff, don't ask why, just nod your head...
 		$query = $this['query'];
@@ -43,7 +47,8 @@ class BreezeUser extends Breeze
 		$log = $this['log'];
 		$usersToLoad = array();
 
-		// Do not show the load time stuff.
+		// Don't show this.
+		unset($context[$context['profile_menu_name']]['tab_data']);
 		$context['show_load_time'] = false;
 
 		// Default values.
@@ -63,9 +68,6 @@ class BreezeUser extends Breeze
 		// Does the admin has set a max limit?
 		if ($tools->enable('allowed_max_num_users'))
 			$context['Breeze']['max_users'] = (int) $tools->setting('allowed_max_num_users');
-
-		// Is owner?
-		$context['member']['is_owner'] = $context['member']['id'] == $user_info['id'];
 
 		// Get profile owner settings.
 		$context['Breeze']['settings']['owner'] = $query->getUserSettings($context['member']['id']);
@@ -88,13 +90,6 @@ class BreezeUser extends Breeze
 		// Set all the page stuff
 		$context['template_layers'] = array();
 		$context['sub_template'] = 'user_wall';
-		$context += array(
-			'page_title' => sprintf($txt['profile_of_username'], $context['member']['name']),
-			'can_send_pm' => allowedTo('pm_send'),
-			'can_have_buddy' => allowedTo('profile_identity_own') && !empty($modSettings['enable_buddylist']),
-			'can_issue_warning' => allowedTo('issue_warning') && $modSettings['warning_settings'][0] == 1,
-			'can_view_warning' => (allowedTo('moderate_forum') || allowedTo('issue_warning') || allowedTo('view_warning_any') || ($context['user']['is_owner'] && allowedTo('view_warning_own')) && $modSettings['warning_settings'][0] === 1)
-		);
 		$context['canonical_url'] = $this['tools']->scriptUrl . '?action=profile;u=' . $context['member']['id'];
 		$context['member']['status'] = array();
 		$context['Breeze']['tools'] = $tools;

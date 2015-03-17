@@ -38,14 +38,14 @@ class BreezeMood
 
 		loadLanguage('Help');
 
+		// Wild Mood Swings... a highly underrated album if you ask me ;)
+		loadtemplate(Breeze::$name .'Functions');
+
 		// Get the user.
 		$context['moodUser'] = Breeze::data()->get('user');
 
 		// Pass the currently active moods
 		$context['moods'] = $this->getActive();
-
-		// Wild Mood Swings... a highly underrated album if you ask me ;)
-		loadtemplate(Breeze::$name .'Functions');
 
 		// Pass the imageUrl.
 		$context['moodUrl'] = $this->imagesUrl;
@@ -158,11 +158,14 @@ class BreezeMood
 		if (!$this->_app['tools']->enable('mood'))
 			return;
 
+		// Wild Mood Swings... a highly underrated album if you ask me ;)
+		loadtemplate(Breeze::$name .'Functions');
+
 		// Get the currently active moods.
 		$moods = $this->getActive();
 
 		// Get this user options.
-		$userSettings = $this['query']->getUserSettings($memID);
+		$userSettings = $this->_app['query']->getUserSettings($user);
 
 		// Get the image.
 		$currentMood = !empty($userSettings['mood']) && !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : false;
@@ -175,22 +178,25 @@ class BreezeMood
 		);
 	}
 
-	public function showProfile($memID, $area)
+	public function showProfile($user, $area)
 	{
 		global $context;
 
 		// its easier to list the areas where we want this to be displayed.
 		$profileAreas = array('summary', 'static');
 
-		// Don't do anything if the feature is disable.
+		// Don't do anything if the feature is disable or we are in an area we don't care...
 		if (!$this->_app['tools']->enable('mood') || !in_array($area, $profileAreas))
 			return;
+
+		// Wild Mood Swings... a highly underrated album if you ask me ;)
+		loadtemplate(Breeze::$name .'Functions');
 
 		// Get the currently active moods.
 		$moods = $this->getActive();
 
 		// Get this user options.
-		$userSettings = $this['query']->getUserSettings($memID);
+		$userSettings = $this->_app['query']->getUserSettings($user);
 
 		// Get the image.
 		$currentMood = !empty($userSettings['mood']) && !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : false;
@@ -199,7 +205,7 @@ class BreezeMood
 		$context['custom_fields'][] = array(
 			'name' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
 			'placement' => $this->placementField,
-			'output_html' => template_mood_image($currentMood, $memID),
+			'output_html' => template_mood_image($currentMood, $user),
 			'show_reg' => false,
 		);
 	}
