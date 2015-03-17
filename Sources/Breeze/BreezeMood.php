@@ -159,7 +159,7 @@ class BreezeMood
 			return;
 
 		// Get the currently active moods.
-		$moods = $this['mood']->getActive();
+		$moods = $this->getActive();
 
 		// Get this user options.
 		$userSettings = $this['query']->getUserSettings($memID);
@@ -187,7 +187,7 @@ class BreezeMood
 			return;
 
 		// Get the currently active moods.
-		$moods = $this['mood']->getActive();
+		$moods = $this->getActive();
 
 		// Get this user options.
 		$userSettings = $this['query']->getUserSettings($memID);

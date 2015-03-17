@@ -579,31 +579,13 @@ class Breeze extends Pimple\Container
 
 	public function mood(&$data, $user, $display_custom_fields)
 	{
-		global $context;
-
-		// Don't do anything if the feature is disable.
-		if (!$this['tools']->enable('mood'))
-			return;
-
-		// Get the currently active moods.
-		$moods = $this['mood']->getActive();
-
-		// Get this user options.
-		$userSettings = $this['query']->getUserSettings($user);
-
-		// Get the image.
-		$currentMood = !empty($userSettings['mood']) && !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : false;
-
-		// Append the result to the custom fields array.
-		$data['custom_fields'][] =  $this['mood']->show($currentMood, $user);
+		// Append the result to the custom fields array. Totally ignore the $display_custom_fields check :P
+		$data['custom_fields'][] =  $this['mood']->show($user);
 	}
 
 	public function moodProfile($memID, $area)
 	{
-		// Don't do anything if the feature is disable.
-		if (!$this['tools']->enable('mood'))
-			return;
-
+		// Let BreezeMood handle this...
 		$this['mood']->showProfile($memID, $area);
 	}
 
