@@ -577,7 +577,7 @@ class Breeze extends Pimple\Container
 		loadJavascriptFile('breeze/breezeNoti.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 	}
 
-	public function mood(&$output, &$message)
+	public function mood(&$data, $user, $display_custom_fields)
 	{
 		global $context;
 
@@ -589,17 +589,13 @@ class Breeze extends Pimple\Container
 		$moods = $this['mood']->getActive();
 
 		// Get this user options.
-		$userSettings = $this['query']->getUserSettings($output['member']['id']);
+		$userSettings = $this['query']->getUserSettings($user);
 
 		// Get the image.
 		$currentMood = !empty($userSettings['mood']) && !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : false;
 
-		// Get the default placement.
-		$placement = $this['tools']->enable('mood_placement') ? $this['tools']->setting('mood_placement') : 0;
-
-		// Append the result to the custom fields array. You need to be able to edit your own moods.
-		if (!isset($output['custom_fields'][$context['cust_profile_fields_placement'][$placement]]['breeze_mood']))
-			$output['custom_fields'][$context['cust_profile_fields_placement'][$placement]]['breeze_mood'] = $this['mood']->show($currentMood, $output['member']['id']);
+		// Append the result to the custom fields array.
+		$data['custom_fields'][] =  $this['mood']->show($currentMood, $user);
 	}
 
 	/**

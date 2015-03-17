@@ -27,6 +27,7 @@
 		'integrate_valid_likes' => 'Breeze::likes#',
 		'integrate_find_like_author' => 'Breeze::handleLikes#',
 		'integrate_member_context' => '$sourcedir/Breeze/Breeze.php|Breeze::mood#',
+		'integrate_load_custom_profile_fields' => '$sourcedir/Breeze/Breeze.php|Breeze::moodProfile#',
 		'integrate_fetch_alerts' => '$sourcedir/Breeze/Breeze.php|Breeze::alerts#',
 		'integrate_alert_types' => '$sourcedir/Breeze/Breeze.php|Breeze::alertsPref#',
 		'integrate_pre_load' => '$sourcedir/Breeze/Breeze.php|Breeze::trackHooks#',
