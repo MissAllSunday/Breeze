@@ -29,6 +29,7 @@ class BreezeMood
 
 		$this->imagesPath = $this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_moodFolder;
 		$this->imagesUrl = $this->_app['tools']->boardUrl . Breeze::$coversFolder . $this->_moodFolder;
+		$this->placementField = $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->setting('mood_placement') : 0;
 	}
 
 	public function call()
@@ -45,6 +46,9 @@ class BreezeMood
 
 		// Wild Mood Swings... a highly underrated album if you ask me ;)
 		loadtemplate(Breeze::$name .'Functions');
+
+		// Pass the imageUrl.
+		$context['moodUrl'] = $this->imagesUrl;
 		$context['template_layers'] = array();
 		$context['sub_template'] = 'mood_change';
 	}
@@ -150,6 +154,10 @@ class BreezeMood
 	{
 		global $context;
 
+		// Don't do anything if the feature is disable.
+		if (!$this->_app['tools']->enable('mood'))
+			return;
+
 		// Gotta load our template.
 		loadtemplate(Breeze::$name .'Functions');
 
@@ -160,7 +168,38 @@ class BreezeMood
 			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
 			'col_name' => $this->_app['tools']->text('moodLabel'),
 			'value' => template_mood_image($mood, $user),
-			'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->setting('mood_placement') : 0,
+			'placement' => $this->placementField,
+		);
+	}
+
+	public function showProfile($memID, $area)
+	{
+		global $context;
+
+		// its easier to list the areas where we want this to be displayed.
+		$profileAreas = array('summary', 'static');
+
+		if (!in_array($area, $profileAreas))
+			return;
+
+		// Don't do anything if the feature is disable.
+		if (!$this->_app['tools']->enable('mood'))
+			return;
+
+		// Get the currently active moods.
+		$moods = $this['mood']->getActive();
+
+		// Get this user options.
+		$userSettings = $this['query']->getUserSettings($memID);
+
+		// Get the image.
+		$currentMood = !empty($userSettings['mood']) && !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : false;
+
+		$context['custom_fields'][] = array(
+			'name' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
+			'placement' => $this->placementField,
+			'output_html' => template_mood_image($currentMood, $memID),
+			'show_reg' => false,
 		);
 	}
 
