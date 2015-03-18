@@ -36,16 +36,16 @@ class BreezeUser extends Breeze
 		loadtemplate(Breeze::$name .'Blocks');
 		loadLanguage(Breeze::$name);
 
-		// Weird I know!!
-		require_once($this['tools']->sourceDir . '/Profile-View.php');
-		summary($memID);
-
 		// We kinda need all this stuff, don't ask why, just nod your head...
 		$query = $this['query'];
 		$tools = $this['tools'];
 		$data = Breeze::data('get');
 		$log = $this['log'];
 		$usersToLoad = array();
+
+		// Weird I know!!
+		require_once($tools->sourceDir . '/Profile-View.php');
+		summary($memID);
 
 		// Don't show this.
 		unset($context[$context['profile_menu_name']]['tab_data']);
