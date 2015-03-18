@@ -193,7 +193,39 @@ class BreezeBuddy
 	// When receiver confirmed the friendship!
 	public function confirmed()
 	{
+		// Royal Entrance Fanfare please!
+		$senderSettings = $this->_app['query']->getUserSettings($this->_senderConfirm);
+		$receiverSettings = $this->_app['query']->getUserSettings($this->_receiverConfirm['id']);
 
+		// Let the sender know the receiver gladly accepted the invitation.
+
+		// Does the sender wants the world to take note of this great achievement?
+		if (!empty($senderSettings['alert_buddy_confirmed']))
+			$this->_app['query']->createLog(array(
+				'member' => $this->_senderConfirm,
+				'content_type' => 'buddy_confirmed',
+				'content_id' => 0,
+				'time' => time(),
+				'extra' => array(
+					'sender' => $this->_senderConfirm,
+					'receiver' => $this->_receiverConfirm['id'],
+					'toLoad' => array($this->_receiverConfirm['id'], $this->_senderConfirm),
+				),
+			));
+
+		// How about the receiver?
+		if (!empty($receiverSettings['alert_buddy_confirmed']))
+			$this->_app['query']->createLog(array(
+				'member' => $this->_receiverConfirm,
+				'content_type' => 'buddy_confirmed',
+				'content_id' => 0,
+				'time' => time(),
+				'extra' => array(
+					'sender' => $this->_senderConfirm,
+					'receiver' => $this->_receiverConfirm['id'],
+					'toLoad' => array($this->_receiverConfirm['id'], $this->_senderConfirm),
+				),
+			));
 	}
 
 	// When the receiver user denies the request DUH!
