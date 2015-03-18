@@ -345,6 +345,9 @@ class BreezeNoti
 			'is_read' => 0,
 			'extra' => array(
 				'toLoad' => array($this->_details['receiver_id'], $this->_details['id_member']),
+				'text' => $this->_details['text'],
+				'sender' => $this->_details['sender'],
+				'receiver' => $this->_details['receiver'],
 			),
 		), true, false);
 	}

@@ -120,12 +120,18 @@ class BreezeAlerts
 
 	protected function buddyConfirm($id)
 	{
+		// Need this.
+		if (empty($this->_alerts[$id]['extra']['text']))
+			return;
+
 		// Build the link.
 		$confirmLink = $this->_app['tools']->scriptUrl . '?action=buddy;sa=confirm;sender=' . $this->_alerts[$id]['sender_id'];
 
-		return $this->_app['tools']->parser($this->_app['tools']->text('alert_buddy_confirm'), array(
+		// Gotta do some magic.
+		return $this->_app['tools']->parser($this->_app['tools']->text('alert_buddy_'. $this->_alerts[$id]['extra']['text']), array(
 			'href' => $confirmLink,
-			'sender' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link'],
+			'sender' => $this->_usersData[$this->_alerts[$id]['extra']['sender']]['link'],
+			'receiver' => $this->_usersData[$this->_alerts[$id]['extra']['receiver']]['link'],
 		));
 	}
 }

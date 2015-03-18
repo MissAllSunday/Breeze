@@ -66,7 +66,7 @@ $txt['Breeze_alert_mention_own_comment'] = '<a href="{href}" class="bbc_link" ta
 
 // Buddy request.
 $txt['Breeze_alert_buddy_confirm'] = '{sender} wants to be your buddy!<br><a href="{href}">Confirm/Deny the invitation</a>';
-$txt['Breeze_alert_buddy_confirmed'] = '{sender} and receiver are now buddies!';
+$txt['Breeze_alert_buddy_confirmed'] = '{receiver} confirmed your invitation!';
 
 // Single Status
 $txt['Breeze_singleStatus_pageTitle'] = 'Single Status';

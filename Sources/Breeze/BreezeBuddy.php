@@ -114,6 +114,9 @@ class BreezeBuddy
 				'id_member' => $this->_userSender['id'],
 				'member_name' => $this->_userSender['username'],
 				'time' => time(),
+				'text' => 'confirm',
+				'sender' => $this->_userSender['id'],
+				'receiver' => $this->_userReceiver,
 			), 'buddyConfirm');
 
 			// Get the receiver's link
@@ -203,6 +206,9 @@ class BreezeBuddy
 			'id_member' => $this->_receiverConfirm['id'],
 			'member_name' => $this->_receiverConfirm['username'],
 			'time' => time(),
+			'text' => 'confirmed',
+			'sender' => $this->_senderConfirm,
+			'receiver' => $this->_receiverConfirm['id'],
 		), 'buddyConfirm');
 
 		// Does the sender wants the world to take note of this great achievement?
