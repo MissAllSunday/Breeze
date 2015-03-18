@@ -87,7 +87,7 @@ function template_user_wall()
 			</h3>
 		</div>';
 	// This is the status box,  O RLY?
-	if ($context['member']['is_owner'] || allowedTo('breeze_postStatus'))
+	if ($context['user']['is_owner'] || allowedTo('breeze_postStatus'))
 		echo '
 			<div class="inside information">
 				<div class="breeze_user_statusbox">

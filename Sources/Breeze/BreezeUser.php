@@ -80,7 +80,7 @@ class BreezeUser extends Breeze
 			$tools->loadUserInfo($user_info['id']);
 
 		// Does the current user (AKA visitor) is also the owner?
-		if ($context['member']['is_owner'])
+		if ($context['user']['is_owner'])
 			$context['Breeze']['settings']['visitor'] = $context['Breeze']['settings']['owner'];
 
 		// Nope? :(
