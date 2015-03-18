@@ -203,7 +203,7 @@ class BreezeBuddy
 			'id_member' => $this->_receiverConfirm['id'],
 			'member_name' => $this->_receiverConfirm['username'],
 			'time' => time(),
-		), 'buddyConfirmed');
+		), 'buddyConfirm');
 
 		// Does the sender wants the world to take note of this great achievement?
 		if (!empty($senderSettings['alert_buddy_confirmed']))
