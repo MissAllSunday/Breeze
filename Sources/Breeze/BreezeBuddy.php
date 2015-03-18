@@ -198,6 +198,12 @@ class BreezeBuddy
 		$receiverSettings = $this->_app['query']->getUserSettings($this->_receiverConfirm['id']);
 
 		// Let the sender know the receiver gladly accepted the invitation.
+		$this->_app['query']->insertNoti(array(
+			'receiver_id' => $this->_senderConfirm,
+			'id_member' => $this->_receiverConfirm['id'],
+			'member_name' => $this->_receiverConfirm['username'],
+			'time' => time(),
+		), 'buddyConfirmed');
 
 		// Does the sender wants the world to take note of this great achievement?
 		if (!empty($senderSettings['alert_buddy_confirmed']))
