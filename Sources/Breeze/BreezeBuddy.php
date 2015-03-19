@@ -247,7 +247,7 @@ class BreezeBuddy
 		if (!empty($senderSettings['alert_buddyConfirmation']))
 			$this->_app['query']->createLog(array(
 				'member' => $this->_senderConfirm,
-				'content_type' => 'buddy_confirmed',
+				'content_type' => 'buddyConfirmed',
 				'content_id' => 0,
 				'time' => time(),
 				'extra' => array(
@@ -261,7 +261,7 @@ class BreezeBuddy
 		if (!empty($receiverSettings['alert_buddyConfirmation']))
 			$this->_app['query']->createLog(array(
 				'member' => $this->_receiverConfirm,
-				'content_type' => 'buddy_confirmed',
+				'content_type' => 'buddyConfirmed',
 				'content_id' => 0,
 				'time' => time(),
 				'extra' => array(

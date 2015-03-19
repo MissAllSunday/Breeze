@@ -189,4 +189,15 @@ class BreezeLog
 			'subject' => $this->_data[$id]['extra']['subject'],
 		));
 	}
+
+	public function buddyConfirm($id)
+	{
+		// Add the custom icon.
+		$this->_data[$id]['icon'] = 'users';
+
+		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_buddy_done'), array(
+			'sender' => $this->_usersData[$this->_data[$id]['extra']['sender']]['link'],
+			'receiver' => $this->_usersData[$this->_data[$id]['extra']['receiver']]['link'],
+		));
+	}
 }
