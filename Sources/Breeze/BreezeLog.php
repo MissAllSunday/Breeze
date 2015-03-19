@@ -18,7 +18,7 @@ class BreezeLog
 	protected $_users = array();
 	protected $_data = array();
 	protected $_app;
-	public $alerts = array('cover', 'mood', 'like', 'status', 'comment', 'topic',);
+	public $alerts = array('cover', 'mood', 'like', 'status', 'comment', 'topic', 'buddyConfirmation');
 
 	function __construct($app)
 	{

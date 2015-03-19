@@ -52,6 +52,8 @@ $txt['Breeze_user_settings_alert_comment'] = 'Alert people when I make a comment
 $txt['Breeze_user_settings_alert__sub'] = '';
 $txt['Breeze_user_settings_alert_topic'] = 'Alert people when I create a new topic.';
 $txt['Breeze_user_settings_alert_topic_sub'] = '';
+$txt['Breeze_user_settings_alert_buddyConfirmation'] = 'Alert people when I or a person I sent a buddy invitation to accept and confirms the buddy invitation';
+$txt['Breeze_user_settings_alert_buddyConfirmation_sub'] = '';
 $txt['Breeze_user_settings_name_cover_desc'] = 'You can upload an image to be used as a cover page for your wall.';
 $txt['Breeze_user_settings_kick_ignored'] = 'Do not show my wall to users in my ignore list';
 $txt['Breeze_user_settings_kick_ignored_sub'] = 'If this is enable, users on your ignore list will not be able to see your wall or to post on it.';
@@ -192,7 +194,6 @@ $txt['Breeze_info_moodChanged'] = 'Your mood has been changed';
 $txt['Breeze_buddy_title'] = 'Buddy request';
 $txt['Breeze_buddy_confirm'] = 'The invitation has been sent, {receiver} will soon receive an alert.';
 $txt['Breeze_buddy_chose'] = '{sender} wants to be your buddy, please <br> <a href="{href_confirm}"><i class="fa fa-user-plus fa-2x"></i> confirm</a> or <a href="{href_decline}"><i class="fa fa-user-times fa-2x"></i> decline</a> the invitation.';
-$txt['Breeze_buddy_confirmed'] = '{receiver} and {sender} have become buddies!.';
 $txt['Breeze_buddy_blocked'] = 'You cannot send an invitation to this user.';
 $txt['Breeze_buddy_already_blocked'] = 'You already added this user to your block list.';
 $txt['Breeze_buddy_decline'] = 'You have declined the invitation.<br>Do you want to block this person from sending you more invites? this WILL NOT put this person on your ignore list, it will merely prevent this user from sending you a buddy invite<br><a href="{href}">yes, block this user</a>';
