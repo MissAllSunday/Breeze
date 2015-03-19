@@ -227,7 +227,6 @@ class BreezeBuddy
 			updateMemberData($this->_senderConfirm, array('buddy_list' => implode(',', $senderSettings['buddyList'])));
 		}
 
-
 		// Let the sender know the receiver gladly accepted the invitation.
 		$this->_app['query']->insertNoti(array(
 			'receiver_id' => $this->_senderConfirm,
@@ -266,6 +265,9 @@ class BreezeBuddy
 					'toLoad' => array($this->_receiverConfirm['id'], $this->_senderConfirm),
 				),
 			));
+
+		// Lastly, set a nice confirmed message.
+		$this->_response = $this->_app['tools']->text('buddy_confirmed_done');
 	}
 
 	// When the receiver user denies the request DUH!
