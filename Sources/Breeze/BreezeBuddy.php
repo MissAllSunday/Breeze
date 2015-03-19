@@ -207,9 +207,26 @@ class BreezeBuddy
 	// When receiver confirmed the friendship!
 	public function confirmed()
 	{
+		global $user_info;
+
 		// Royal Entrance Fanfare please!
 		$senderSettings = $this->_app['query']->getUserSettings($this->_senderConfirm);
 		$receiverSettings = $this->_app['query']->getUserSettings($this->_receiverConfirm['id']);
+
+		// Gotta use $user_info instead of $this->_receiverConfirm because we want this change to take effect immediately!
+		if (empty($user_info['buddies']) || (!empty($user_info['buddies']) && !in_array($this->_senderConfirm, $user_info['buddies'])))
+		{
+			$user_info['buddies'][] = $this->_senderConfirm;
+			updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
+		}
+
+		// Now update the sender's buddy list. Gotta check if the receiver isn't already there BUT we need to be careful since the sender's buddy list can be empty!
+		if (empty($senderSettings['buddyList']) || (!empty($senderSettings['buddyList']) && !in_array($this->_receiverConfirm['id'], $senderSettings['buddyList'])))
+		{
+			$senderSettings['buddyList'][] = $this->_receiverConfirm['id'];
+			updateMemberData($this->_senderConfirm, array('buddy_list' => implode(',', $senderSettings['buddyList'])));
+		}
+
 
 		// Let the sender know the receiver gladly accepted the invitation.
 		$this->_app['query']->insertNoti(array(
