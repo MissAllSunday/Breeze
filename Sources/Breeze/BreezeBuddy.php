@@ -260,7 +260,7 @@ class BreezeBuddy
 		// How about the receiver?
 		if (!empty($receiverSettings['alert_buddyConfirmation']))
 			$this->_app['query']->createLog(array(
-				'member' => $this->_receiverConfirm,
+				'member' => $this->_receiverConfirm['id'],
 				'content_type' => 'buddyConfirmed',
 				'content_id' => 0,
 				'time' => time(),

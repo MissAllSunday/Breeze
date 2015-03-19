@@ -190,7 +190,7 @@ class BreezeLog
 		));
 	}
 
-	public function buddyConfirm($id)
+	public function buddyConfirmed($id)
 	{
 		// Add the custom icon.
 		$this->_data[$id]['icon'] = 'users';
