@@ -212,7 +212,7 @@ class BreezeBuddy
 		), 'buddyConfirm');
 
 		// Does the sender wants the world to take note of this great achievement?
-		if (!empty($senderSettings['alert_buddy_confirmed']))
+		if (!empty($senderSettings['alert_buddyConfirmation']))
 			$this->_app['query']->createLog(array(
 				'member' => $this->_senderConfirm,
 				'content_type' => 'buddy_confirmed',
@@ -226,7 +226,7 @@ class BreezeBuddy
 			));
 
 		// How about the receiver?
-		if (!empty($receiverSettings['alert_buddy_confirmed']))
+		if (!empty($receiverSettings['alert_buddyConfirmation']))
 			$this->_app['query']->createLog(array(
 				'member' => $this->_receiverConfirm,
 				'content_type' => 'buddy_confirmed',
