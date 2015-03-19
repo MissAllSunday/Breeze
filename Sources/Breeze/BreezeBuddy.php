@@ -169,6 +169,17 @@ class BreezeBuddy
 
 		// Update the settings.
 		updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
+
+		// Now, get the receiver's buddy list and delete the sender from it.
+		$receiverSettings = $this->_app['query']->getUserSettings($this->_userReceiver);
+
+		if (!empty($receiverSettings['buddiesList']))
+		{
+			$receiverSettings['buddiesList'] = array_diff($receiverSettings['buddiesList'], array($this->_userSender['id']));
+			updateMemberData($this->_userReceiver, array('buddy_list' => implode(',', $receiverSettings['buddiesList'])));
+		}
+
+		// @todo set $this->_response
 	}
 
 	// When the petitioner wants to add the receiver as friend
