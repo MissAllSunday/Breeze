@@ -198,6 +198,7 @@ $txt['Breeze_buddy_blocked'] = 'You cannot send an invitation to this user.';
 $txt['Breeze_buddy_already_blocked'] = 'You already added this user to your block list.';
 $txt['Breeze_buddy_decline'] = 'You have declined the invitation.<br>Do you want to block this person from sending you more invites? this WILL NOT put this person on your ignore list, it will merely prevent this user from sending you a buddy invite<br><a href="{href}">yes, block this user</a>';
 $txt['Breeze_buddy_blocked_done'] = 'You have successfully blocked this user';
+$txt['Breeze_buddy_delete_done'] = 'You and {receiver} are no longer buddies.';
 $txt['Breeze_buddy_confirmed_done'] = 'You have successfully confirmed the buddy request.';
 $txt['Breeze_buddy_already_sent'] = 'You already sent an invitation, please wait for {receiver} to respond';
 

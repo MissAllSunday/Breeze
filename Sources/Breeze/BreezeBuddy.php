@@ -162,7 +162,7 @@ class BreezeBuddy
 
 	public function delete()
 	{
-		global $user_info;
+		global $user_info, $context;
 
 		// Easy, just delete the entry and be done with it.
 		$user_info['buddies'] = array_diff($user_info['buddies'], array($this->_userReceiver));
@@ -179,7 +179,12 @@ class BreezeBuddy
 			updateMemberData($this->_userReceiver, array('buddy_list' => implode(',', $receiverSettings['buddiesList'])));
 		}
 
-		// @todo set $this->_response
+		// Get the receiver's data.
+		$this->_app['tools']->loadUserInfo($this->_userReceiver);
+
+		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_delete_done'), array(
+			'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
+		));
 	}
 
 	// When the petitioner wants to add the receiver as friend
