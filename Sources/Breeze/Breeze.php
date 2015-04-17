@@ -556,6 +556,7 @@ class Breeze extends Pimple\Container
 		$data = Breeze::data('get');
 
 		$generalSettings = '';
+		$generalText = '';
 		$jsSettings = '';
 
 		// Don't pass the "about me" stuff...
@@ -565,9 +566,18 @@ class Breeze extends Pimple\Container
 		// Since we're here already, load the current User (currentSettings) object
 		foreach (Breeze::$allSettings as $k => $v)
 			$generalSettings .= '
-		breeze.currentSettings.'. $k .' = '. (isset($userSettings[$k]) ? (is_array($userSettings[$k]) ? json_encode($userSettings[$k]) : JavaScriptEscape($userSettings[$k])) : 'false') .';';
+	breeze.currentSettings.'. $k .' = '. (isset($userSettings[$k]) ? (is_array($userSettings[$k]) ? json_encode($userSettings[$k]) : JavaScriptEscape($userSettings[$k])) : 'false') .';';
 
 		addInlineJavascript($generalSettings);
+
+		// We still need to pass some text strings to the client.
+		$clientText = array('error_empty', 'noti_markasread', 'error_wrong_values', 'noti_delete', 'noti_cancel', 'noti_closeAll', 'noti_checkAll', 'confirm_yes', 'confirm_cancel');
+
+		foreach ($clientText as $ct)
+			$generalText .= '
+	breeze.text.'. $ct .' = '. JavaScriptEscape($tools->text($ct)) .';';
+
+		addInlineJavascript($generalText);
 
 		// Common css and js files.
 		loadJavascriptFile('breeze/noty/jquery.noty.js', array('local' => true, 'default_theme' => true, 'defer' => true,));

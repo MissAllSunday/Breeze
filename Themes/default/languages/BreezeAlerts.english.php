@@ -21,6 +21,7 @@ $txt['Breeze_noti_close'] = 'Close';
 $txt['Breeze_noti_delete'] = 'Delete';
 $txt['Breeze_noti_cancel'] = 'Cancel';
 $txt['Breeze_noti_checkAll'] = 'Check all';
+$txt['Breeze_noti_closeAll'] = 'Close all';
 $txt['Breeze_noti_check'] = 'check';
 $txt['Breeze_noti_selectedOptions'] = 'With the selected options do: ';
 $txt['Breeze_noti_send'] = 'Send';
