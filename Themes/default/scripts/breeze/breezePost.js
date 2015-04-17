@@ -37,6 +37,12 @@ breezePost.prototype.show = function(html) {
 				$(div).prepend(DOMPurify.sanitize(html.data)).fadeIn('slow');
 		});
 
+	// Do you also have the Ohara youtube installed? Kudos!!!
+	if (typeof oh_refresh === 'function') {
+		// Lets give it some more time...
+		oh_refresh(5000);
+	}
+
 	// Show a notification.
 	breeze.tools.showNoti(html);
 };

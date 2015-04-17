@@ -206,25 +206,26 @@ class BreezeUser extends Breeze
 		{
 			// Let us pass a lot of data to the client and I mean a lot!
 			addInlineJavascript('
-	var statusLoad = new breezeLoadMore({
-		pagination : {
-			maxIndex : '. $maxIndex .',
-			totalItems : ' . $status['count'] . ',
-			userID : '. $context['member']['id'] .'
-		},
-		button : {
-			id: \'statusLoad\',
-			text : '. JavaScriptEscape($tools->text('load_more')) .',
-			appendTo : \'#tab-wall\'
-		},
-		target : {
-			css : \'breeze_status\',
-			appendTo : \'#breezeAppendTo\'
-		},
-		urlSa : \'fetch\',
-		hidePagination : true
-	});
-	', true);
+	$(function(){
+		var statusLoad = new breezeLoadMore({
+			pagination : {
+				maxIndex : '. $maxIndex .',
+				totalItems : ' . $status['count'] . ',
+				userID : '. $context['member']['id'] .'
+			},
+			button : {
+				id: \'statusLoad\',
+				text : '. JavaScriptEscape($tools->text('load_more')) .',
+				appendTo : \'#tab-wall\'
+			},
+			target : {
+				css : \'breeze_status\',
+				appendTo : \'#breezeAppendTo\'
+			},
+			urlSa : \'fetch\',
+			hidePagination : true
+		});
+	});', true);
 		}
 
 		// Initialize the tabs.

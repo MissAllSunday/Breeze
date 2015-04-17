@@ -21,7 +21,7 @@ breezeLoadMore.prototype.showMoarButton = function()
 		return false;
 
 	// Replacing any pagination div?
-	if (typeof this.options.hidePagination !== 'undefined' && this.options.hidePagination)
+	if ((typeof this.options.hidePagination !== 'undefined') && this.options.hidePagination)
 		$('.pagesection').hide();
 
 	// The rest is pretty straight forward...
@@ -99,6 +99,12 @@ breezeLoadMore.prototype.onSuccess = function(html)
 			});
 			$('#' + this.options.button.id).fadeOut('slow');
 		}
+
+		// Do you also have the Ohara youtube installed? Kudos!!!
+		if (typeof oh_refresh === 'function') {
+			// Lets give it some more time...
+			oh_refresh(5000);
+		}
 	}
 
 	else if(html.type == 'error'){
@@ -107,10 +113,3 @@ breezeLoadMore.prototype.onSuccess = function(html)
 
 	ajax_indicator(false);
 }
-
-
-
-
-
-
-
