@@ -26,10 +26,10 @@ breezeLoadMore.prototype.showMoarButton = function()
 
 	// The rest is pretty straight forward...
 	$('<button/>', {
-		id: this.options.button.id,
+		id: oObject.options.button.id,
 		class : 'button_submit loadMoar',
-		text: this.options.button.text,
-	}).appendTo(this.options.button.appendTo).on('click', function(){
+		text: oObject.options.button.text,
+	}).appendTo(oObject.options.button.appendTo).on('click', function(){
 		oObject.clickButton();
 	});
 }
