@@ -38,7 +38,7 @@ class BreezeDisplay
 
 		// Parse the content.
 		if (!$alreadyParsed)
-			$params['body'] = parse_bbc($params['body']);
+			$params['body'] = un_htmlspecialchars(parse_bbc($params['body']));
 
 		if ($single)
 			$params['time'] = $this->_app['tools']->timeElapsed($params['time']);
