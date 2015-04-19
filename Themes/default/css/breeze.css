@@ -188,9 +188,17 @@ ul.breezeActivity li{
 		float:none;
 	}
 
+	div.username div
+	{
+		position: relative;
+		bottom: 0;
+		display:block;
+	}
+
 	div.username h1, div.username h1 a{
 		display:block;
 		min-width: 90%;
+		margin: 0 0 5px 0;
 	}
 
 	/* Remove the position absolute stuff */
