@@ -173,7 +173,7 @@ class BreezeUser extends Breeze
 		// Setup the log activity.
 		if (!empty($context['Breeze']['settings']['owner']['activityLog']))
 		{
-			$maxIndexAlert = $maxIndex = !empty($context['Breeze']['settings']['visitor']['alert_number']) ? $context['Breeze']['settings']['visitor']['alert_number'] : 5;
+			$maxIndexAlert = $maxIndex = !empty($context['Breeze']['settings']['visitor']['number_alert']) ? $context['Breeze']['settings']['visitor']['number_alert'] : 5;
 			$alerts =  $this['log']->get($context['member']['id'], $maxIndexAlert, 0);
 			$context['Breeze']['log'] = $alerts['data'];
 
@@ -454,8 +454,8 @@ class BreezeUser extends Breeze
 
 		// Number of alerts in recent activity page.
 		$form->addText(
-			'alert_number',
-			!empty($userSettings['alert_number']) ? $userSettings['alert_number'] : 0,
+			'number_alert',
+			!empty($userSettings['number_alert']) ? $userSettings['number_alert'] : 0,
 			3,3
 		);
 

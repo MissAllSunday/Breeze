@@ -791,7 +791,7 @@ class BreezeQuery
 	}
 
 	/**
-	 * BreezeQuery::getUserSetting()
+	 * BreezeQuery::getUserSettings()
 	 *
 	 * Gets a unique user setting
 	 * @param int $user The user ID

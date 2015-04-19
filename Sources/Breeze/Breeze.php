@@ -51,7 +51,7 @@ class Breeze extends Pimple\Container
 		'wall' => 'CheckBox',
 		'general_wall' => 'CheckBox',
 		'pagination_number' => 'Int',
-		'alert_number' => 'Int',
+		'number_alert' => 'Int',
 		'load_more' => 'CheckBox',
 		'activityLog' => 'CheckBox',
 		'kick_ignored' => 'CheckBox',
