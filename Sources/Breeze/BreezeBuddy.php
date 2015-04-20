@@ -101,6 +101,15 @@ class BreezeBuddy
 	{
 		global $context;
 
+		// Show a nice template for this.
+		$context['sub_template'] = 'buddy_message';
+
+	}
+
+	public function addTwo()
+	{
+		global $context;
+
 		// Don't do this that often..
 		if (cache_get_data('Buddy-sent-'. $this->_userSender['id'] .'-'. $this->_userReceiver, 86400) == null)
 		{
@@ -316,7 +325,10 @@ class BreezeBuddy
 
 		// All the generic stuff.
 		$context['page_title'] = $this->_app['tools']->text('buddy_title');
-		$context['sub_template'] = 'buddy_request';
+
+		if (!isset($context['sub_template']))
+			$context['sub_template'] = 'buddy_request';
+
 		$context['linktree'][] = array(
 			'url' => $this->_app['tools']->scriptUrl . '?action=buddy'. (!empty($this->_call) ? ';sa='. $this->_call : '') . (!empty($this->_senderConfirm) ? ';sender='. $this->_senderConfirm : '') . (!empty($this->_userReceiver) ? ';u='. $this->_senderConfirm : '') .';'. $context['session_var'] .'='. $context['session_id'],
 			'name' => $context['page_title'],
