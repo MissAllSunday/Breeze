@@ -108,11 +108,20 @@ class BreezeBuddy
 			if ($this->check() == true)
 				return;
 
-			// Get the receiver's link
-			$this->_app['tools']->loadUserInfo($this->_userReceiver);
+			$this->_app['form']->setOptions(array(
+				'name' => 'breezeBuddy',
+				'url' => $this['tools']->scriptUrl .'?action=buddy;sa=addTwo;u='. $this->_userReceiver,
+				'character_set' => $context['character_set'],
+				'title' => $context['page_title'],
+				'desc' => $context['page_desc'],
+			));
 
-			// Show a nice template for this.
-			$context['sub_template'] = 'buddy_message';
+			// Session stuff.
+			$this->_app['form']->addHiddenField($context['session_var'], $context['session_id']);
+
+			$this->_app['form']->addButton('submit');
+
+			$this->_response = $this->_app['form']->display();
 
 			// Store this in a cache entry to avoid creating multiple alerts. Give it a long life cycle.
 			cache_put_data('Buddy-sent-'. $this->_userSender['id'] .'-'. $this->_userReceiver, '1', 86400);
