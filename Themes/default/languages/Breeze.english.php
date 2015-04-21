@@ -201,6 +201,7 @@ $txt['Breeze_buddy_blocked_done'] = 'You have successfully blocked this user';
 $txt['Breeze_buddy_delete_done'] = 'You and {receiver} are no longer buddies.';
 $txt['Breeze_buddy_confirmed_done'] = 'You have successfully confirmed the buddy request.';
 $txt['Breeze_buddy_already_sent'] = 'You already sent an invitation, please wait for {receiver} to respond';
+$txt['Breeze_buddy_error'] = 'There was an error, please try again.';
 
 // Cover error messages.
 $txt['Breeze_cover_errors'] = array(
