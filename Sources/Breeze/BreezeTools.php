@@ -15,7 +15,7 @@ if (!defined('SMF'))
 
 class BreezeTools
 {
-	protected $_pattern;
+	public $_pattern;
 	protected $_app;
 	public $sourceDir;
 	public $scriptUrl;

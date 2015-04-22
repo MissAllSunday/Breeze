@@ -665,6 +665,14 @@ function template_top()
 	</div>';
 }
 
+function template_buddy_message()
+{
+	global $context;
+
+	echo $context['response'];
+
+}
+
 function template_buddy_request()
 {
 	global $context;

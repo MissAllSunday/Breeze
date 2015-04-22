@@ -202,6 +202,7 @@ $txt['Breeze_buddy_delete_done'] = 'You and {receiver} are no longer buddies.';
 $txt['Breeze_buddy_confirmed_done'] = 'You have successfully confirmed the buddy request.';
 $txt['Breeze_buddy_already_sent'] = 'You already sent an invitation, please wait for {receiver} to respond';
 $txt['Breeze_buddy_error'] = 'There was an error, please try again.';
+$txt['Breeze_buddy_message_desc'] = 'You can send {receiver} a message along with your buddy invite. <br> no HTML or BBC is allowed. Or just hit the button to send the invitation.';
 
 // Cover error messages.
 $txt['Breeze_cover_errors'] = array(

@@ -287,7 +287,7 @@ class BreezeUser extends Breeze
 		$call = 'alert' .($data->get('sa') ? ucfirst($data->get('sa')) : 'Settings');
 
 		// Call the right function.
-			$this->{$call}();
+		$this->{$call}();
 	}
 
 	public function alertSettings()
