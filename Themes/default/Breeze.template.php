@@ -7,7 +7,7 @@
  * @version 1.1
  * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2011, 2014, Jessica González
- * @license http://www.mozilla.org/MPL/MPL-1.1.html
+ * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 // User's wall.
 function template_user_wall()

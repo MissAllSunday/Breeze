@@ -7,7 +7,7 @@
  * @version 1.1
  * @author Jessica Gonzalez <suki@missallsunday.com>
  * @copyright Copyright (c) 2011, 2014 Jessica Gonzalez
- * @license http://www.mozilla.org/MPL/MPL-1.1.html
+ * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
 global $txt;

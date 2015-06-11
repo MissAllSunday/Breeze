@@ -5,22 +5,6 @@ Created by [url=http://missallsunday.com]Suki[/url]
 
 [b]This mod needs PHP 5.3 or greater and SMF 2.1 or greater[/b]
 
-[color=purple][b][size=12pt]License[/size][/b][/color]
-[code]
-This Source Code Form is subject to the terms of the Mozilla Public License, v. 1.1.
-If a copy of the MPL was not distributed with this file,
-You can obtain one at http://mozilla.org/MPL/
-
-The contents of this package are subject to the Mozilla Public License Version
-1.1 (the "License"); you may not use this package except in compliance with
-the License. You may obtain a copy of the License at
-http://www.mozilla.org/MPL/
- *
-Software distributed under the License is distributed on an "AS IS" basis,
-WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
-for the specific language governing rights and limitations under the
-License.[/code]
-
 
 [size=12pt][color=purple]Introduction[/color][/size]
 
