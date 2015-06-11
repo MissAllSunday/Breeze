@@ -102,6 +102,7 @@ $txt['Breeze_user_settings_show_last_visit'] = 'Show the last time the users vis
 $txt['Breeze_user_permissions_name'] = 'Permissions';
 $txt['Breeze_user_modules_visitors_none'] = 'There are no recent visitors';
 $txt['Breeze_user_modules_buddies_none'] = 'This user doesn\'t have any buddies';
+$txt['Breeze_noti_none'] = 'You don\'t have any alerts yet.';
 
 // Time
 $txt['Breeze_time_just_now'] = 'just now.';

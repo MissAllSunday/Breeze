@@ -314,7 +314,7 @@ function template_alert_edit()
 	if (empty($context['alerts']))
 		echo '
 		<div class="information">
-			', $$txt['Breeze_noti_none'] ,'
+			', $txt['Breeze_noti_none'] ,'
 		</div>';
 
 	else
