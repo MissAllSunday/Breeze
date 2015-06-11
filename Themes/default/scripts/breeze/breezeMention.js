@@ -4,8 +4,8 @@
 */
 
  // Mentioning
-jQuery(document).ready(function(){
-	jQuery('textarea[rel*=atwhoMention]').atwho({
+$(document).ready(function(){
+	$('textarea[rel*=atwhoMention]').atwho({
 		at: "@",
 		tpl: "<li data-value='@${name}' data-user='${id}'>${name}</li>",
 		callbacks: {
@@ -14,7 +14,7 @@ jQuery(document).ready(function(){
 				if (query.length <= 2)
 					return {name: '', id:''};
 
-				jQuery.ajax({
+				$.ajax({
 					url: smf_scripturl + '?action=breezeajax;sa=usersmention;js=1' + breeze.session.v + '=' + breeze.session.id,
 					type: "GET",
 					data: {match: query},

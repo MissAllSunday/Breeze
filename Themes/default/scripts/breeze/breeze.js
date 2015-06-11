@@ -30,7 +30,7 @@ breeze.tools.findWord = function(string, word){
 $(function() {
 
 	// Posting a new status
-	jQuery(document).on('submit', '#form_status', function(event){
+	$(document).on('submit', '#form_status', function(event){
 
 		// Prevent normal behaviour.
 		event.preventDefault();
@@ -48,7 +48,7 @@ $(function() {
 	});
 
 	// Post a new comment.
-	jQuery(document).on('submit', '.form_comment', function(event){
+	$(document).on('submit', '.form_comment', function(event){
 
 		// Prevent normal behaviour.
 		event.preventDefault();
@@ -67,11 +67,11 @@ $(function() {
 	});
 
 	// Deleting a status/comment.
-	jQuery(document).on('click', '.breeze_delete', function(event){
+	$(document).on('click', '.breeze_delete', function(event){
 
 		event.preventDefault();
 
-		var thisObject = jQuery(this);
+		var thisObject = $(this);
 
 		// Get the ID
 		postId = DOMPurify.sanitize(parseInt(thisObject.data('bid')));
@@ -87,7 +87,7 @@ $(function() {
 			closeWith: ['button'],
 			buttons: [{
 				addClass: 'button_submit', text: breeze.text.confirm_yes, onClick: function($noty) {
-					jQuery.ajax({
+					$.ajax({
 						type: 'GET',
 						url: postUrl + ';js=1',
 						cache: false,
@@ -96,7 +96,7 @@ $(function() {
 							$noty.close();
 
 							if (typeof(html.type) !== 'undefined' && html.type == 'info') {
-								jQuery('#' + html.data).fadeOut('slow');
+								$('#' + html.data).fadeOut('slow');
 							}
 
 							// Show a message.
@@ -129,11 +129,11 @@ $(function() {
 	});
 
 	// Likes.
-	jQuery(document).on('click', '.breSta_like, .breCom_like', function(event){
-		var obj = jQuery(this);
+	$(document).on('click', '.breSta_like, .breCom_like', function(event){
+		var obj = $(this);
 		event.preventDefault();
 		ajax_indicator(true);
-		jQuery.ajax({
+		$.ajax({
 			type: 'GET',
 			url: DOMPurify.sanitize(obj.attr('href') + ';js=1;'),
 			cache: false,
@@ -153,44 +153,44 @@ $(function() {
 	});
 
 	// Likes count.
-	jQuery(function() {
-		jQuery(document).on('click', '.like_count a', function(e){
+	$(function() {
+		$(document).on('click', '.like_count a', function(e){
 			e.preventDefault();
-			var title = jQuery(this).parent().text(),
-				url = jQuery(this).attr('href') + ';js=1';
+			var title = $(this).parent().text(),
+				url = $(this).attr('href') + ';js=1';
 			return reqOverlayDiv(url, title);
 		});
 	});
 
 	// User div.
-	jQuery(document).on('click', 'a[rel*=breezeFacebox]', function(event){
+	$(document).on('click', 'a[rel*=breezeFacebox]', function(event){
 		event.preventDefault();
-		var title = DOMPurify.sanitize(jQuery(this).data('name')),
-			url = jQuery(this).attr('href') + ';js=1';
+		var title = DOMPurify.sanitize($(this).data('name')),
+			url = $(this).attr('href') + ';js=1';
 
 		return reqOverlayDiv(url, title);
 	});
 
 	// Clean the visitors log/ delete cover image.
-	jQuery('.clean_log, .cover_delete').on('click', false, function(event){
+	$('.clean_log, .cover_delete').on('click', false, function(event){
 
 		event.preventDefault();
 
-		jQuery.ajax({
-			url: DOMPurify.sanitize(jQuery(this).attr('href') + ';js=1'),
+		$.ajax({
+			url: DOMPurify.sanitize($(this).attr('href') + ';js=1'),
 			type: "GET",
 			dataType: "json",
 			success: function(data){
 				breeze.tools.showNoti(data);
 
 				// Hide the current cover preview.
-				jQuery('.current_cover').fadeOut();
+				$('.current_cover').fadeOut();
 			},
 			error: function(data){
 				breeze.tools.showNoti(data);
 
 				// Hide the current cover preview.
-				jQuery('.current_cover').fadeOut();
+				$('.current_cover').fadeOut();
 			}
 		});
 
@@ -198,21 +198,21 @@ $(function() {
 	});
 
 	// My mood!
-	jQuery(document).one('click', 'a[rel*=breezeMood]', function(event){
+	$(document).one('click', 'a[rel*=breezeMood]', function(event){
 		event.preventDefault();
-		var title = DOMPurify.sanitize(jQuery(this).data('name')),
-			url = jQuery(this).attr('href') + ';js=1';
+		var title = DOMPurify.sanitize($(this).data('name')),
+			url = $(this).attr('href') + ';js=1';
 		return reqOverlayDiv(url, title);
 	});
 
 	// Changing moods.
-	jQuery(document).one('click', 'a[rel*=breezeMoodSave]', function(event){
+	$(document).one('click', 'a[rel*=breezeMoodSave]', function(event){
 		event.preventDefault();
-		var moodID = DOMPurify.sanitize(jQuery(this).data('id')),
-			url = jQuery(this).attr('href') + ';js=1';
+		var moodID = DOMPurify.sanitize($(this).data('id')),
+			url = $(this).attr('href') + ';js=1';
 
 		// Lets make a quick ajax call here...
-		jQuery.ajax({
+		$.ajax({
 			type: 'GET',
 			url: url,
 			data: {},
@@ -220,17 +220,17 @@ $(function() {
 			dataType: 'json',
 			success: function(response){
 				breeze.tools.showNoti(response);
-				response.data = jQuery.parseJSON(response.data);
+				response.data = $.parseJSON(response.data);
 				// Find all mood images from this user.
-				jQuery(document).find('[data-user=' + response.data.user + ']').html(response.data.image);
+				$(document).find('[data-user=' + response.data.user + ']').html(response.data.image);
 
 				// Close the pop up.
-				jQuery('#smf_popup').fadeOut(300, function(){ $(this).remove(); });
+				$('#smf_popup').fadeOut(300, function(){ $(this).remove(); });
 			},
 			error: function(response, textStatus, errorThrown){
 
 				// Close the pop up.
-				jQuery('#smf_popup').fadeOut(300, function(){ $(this).remove(); });
+				$('#smf_popup').fadeOut(300, function(){ $(this).remove(); });
 			}
 		});
 	});

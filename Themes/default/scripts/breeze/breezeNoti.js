@@ -8,7 +8,7 @@ breeze.tools.stream = function(currentUser)
 	var number = 0;
 
 	// Make an ajax call to get all notifications for this user.
-	jQuery.ajax({
+	$.ajax({
 		type: 'GET',
 		url: smf_scripturl + '?action=breezeajax;sa=fetchNoti;js=1;' + breeze.session.v + '=' + breeze.session.id + ';u=' + currentUser,
 		cache: false,
@@ -19,7 +19,7 @@ breeze.tools.stream = function(currentUser)
 				return;
 
 			// (Froot) Loops for everyone!!
-			jQuery.each(noti.data, function(i, item){
+			$.each(noti.data, function(i, item){
 
 				number++;
 
@@ -32,7 +32,7 @@ breeze.tools.stream = function(currentUser)
 					closeWith: ['button'],
 					buttons: [
 						{addClass: 'button_submit', text: breeze.text.noti_markasread, onClick: function($noty){
-							jQuery.ajax({
+							$.ajax({
 								type: 'POST',
 								url: smf_scripturl + '?action=breezeajax;sa=notimark;js=1;' + breeze.session.v + '=' + breeze.session.id,
 								data: ({content : item.id, user : item.user}),
@@ -49,7 +49,7 @@ breeze.tools.stream = function(currentUser)
 								$noty.close();
 						}},
 						{addClass: 'button_submit', text: breeze.text.noti_delete, onClick: function($noty){
-							jQuery.ajax({
+							$.ajax({
 								type: 'POST',
 								url: smf_scripturl + '?action=breezeajax;sa=notidelete;js=1;' + breeze.session.v + '=' + breeze.session.id,
 								data: ({content : item.id, user : item.user}),
@@ -80,17 +80,17 @@ breeze.tools.stream = function(currentUser)
 				closeWith: ['click'],
 				callback: {
 					afterClose: function() {
-						jQuery.noty.closeAll();
+						$.noty.closeAll();
 					},
-					onShow: function() {window.setTimeout("jQuery.noty.closeAll()", ((breeze.currentSettings.clear_noti) ? breeze.currentSettings.clear_noti : 5) * 1000 );}
+					onShow: function() {window.setTimeout("$.noty.closeAll()", ((breeze.currentSettings.clear_noti) ? breeze.currentSettings.clear_noti : 5) * 1000 );}
 				}
 			});
 
 			// Append the number of notifications to the wall button.
-			jQuery('#button_wall  a.firstlevel span').append(' ['+ number +']');
+			$('#button_wall  a.firstlevel span').append(' ['+ number +']');
 
 			// And to the title tag.
-			jQuery('title').append(' ['+ number +']');
+			$('title').append(' ['+ number +']');
 		},
 		error: function (noti){
 		}

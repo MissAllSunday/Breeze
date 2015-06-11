@@ -70,7 +70,7 @@ breezePost.prototype.validate = function() {
 	}
 
 	// Turn the array into a full object. easier to send to the server.
-	this.data = jQuery.extend({}, postData);
+	this.data = $.extend({}, postData);
 
 	// Fake the status ID for newly created status.
 	if(this.type == 'status')
@@ -94,7 +94,7 @@ breezePost.prototype.save = function() {
 	this.loadImage.fadeIn('slow');
 
 	// The long, long ajax call...
-	jQuery.ajax({
+	$.ajax({
 		type: 'GET',
 		url: this.form.attr('action') + ';js=1',
 		data: this.data,
