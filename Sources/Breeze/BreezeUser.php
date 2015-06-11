@@ -93,8 +93,9 @@ class BreezeUser extends Breeze
 		$context['canonical_url'] = $this['tools']->scriptUrl . '?action=profile;u=' . $context['member']['id'];
 		$context['member']['status'] = array();
 		$context['Breeze']['tools'] = $tools;
+		$context['insert_after_template'] .= $this->who();
 
-		// Can this user have a cover?
+		// I can haz cover?
 		if ($tools->enable('cover') && !empty($context['Breeze']['settings']['owner']['cover']) && file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']['basename']))
 		{
 			$context['Breeze']['cover'] = $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']['basename'];
