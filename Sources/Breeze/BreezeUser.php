@@ -87,13 +87,18 @@ class BreezeUser extends Breeze
 		else
 			$context['Breeze']['settings']['visitor'] = $query->getUserSettings($user_info['id']);
 
-		// Set all the page stuff
+		// Need to wipe out all currently loaded layers and readd some of them in a very specific order...
 		$context['template_layers'] = array();
-		$context['sub_template'] = 'user_wall';
+		$context['template_layers'][] = 'html';
+		$context['template_layers'][] = 'user_wall';
+		$context['template_layers'][] = 'generic_menu_dropdown';
+
+		// Avoid SMF to call the default subtemplate.
+		$context['sub_template'] = 'user_wall_dummy';
+
 		$context['canonical_url'] = $this['tools']->scriptUrl . '?action=profile;u=' . $context['member']['id'];
 		$context['member']['status'] = array();
 		$context['Breeze']['tools'] = $tools;
-		$context['insert_after_template'] .= $this->who();
 
 		// I can haz cover?
 		if ($tools->enable('cover') && !empty($context['Breeze']['settings']['owner']['cover']) && file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']['basename']))

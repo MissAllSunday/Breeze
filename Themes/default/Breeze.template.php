@@ -9,13 +9,15 @@
  * @copyright Copyright (c) 2011, 2014, Jessica González
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
-// User's wall.
-function template_user_wall()
+
+// Dummy template function is dummy!
+function template_user_wall_dummy(){}
+
+function template_user_wall_above()
 {
-	global $txt, $context, $settings, $scripturl, $user_info, $modSettings;
+	global $context, $scripturl;
 
-	template_html_above();
-
+	// This little fella replaces template_body_above()
 	template_top();
 
 	echo '
@@ -26,8 +28,16 @@ function template_user_wall()
 			</div>
 			<div class="username">
 				<h1 class="forumtitle"><a href="', $scripturl, '?action=profile;area=static;u=', $context['member']['id'] ,'">', $context['member']['name'] ,'</a></h1>
-				<div>
-				', template_generic_menu_dropdown_above() . template_generic_menu_dropdown_below() ,'
+				<div>';
+}
+
+// User's wall.
+function template_user_wall_below()
+{
+	global $txt, $context, $settings, $scripturl, $user_info, $modSettings;
+
+	// Close the div
+	echo '
 				</div>
 			</div>
 			<div class="clear"></div>
@@ -152,7 +162,7 @@ function template_user_wall()
 
 		else
 			breeze_activity($context['Breeze']['log']);
-		
+
 	// An empty div to append the loaded status via AJAX.
 	echo '
 			<div id="breezeAppendToLog"></div>';
@@ -184,13 +194,13 @@ function template_user_wall()
 
 	echo '
 		</div>
-		<p class="clear" />
+		<div style="margin:auto; text-align:center" class="clear"><a href="http://missallsunday.com" title="Free SMF Mods">Breeze mod &copy Suki</a></div>
 	</div>';
 
-	// Get the message from the server
+	// Yep, ugly, I know...
 	template_body_below();
-	template_html_below();
 }
+
 
 function template_user_notifications()
 {
