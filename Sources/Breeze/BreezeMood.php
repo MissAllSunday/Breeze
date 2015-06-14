@@ -154,10 +154,6 @@ class BreezeMood
 	{
 		global $context;
 
-		// Don't do anything if the feature is disable.
-		if (!$this->_app['tools']->enable('mood'))
-			return;
-
 		// Wild Mood Swings... a highly underrated album if you ask me ;)
 		loadtemplate(Breeze::$name .'Functions');
 

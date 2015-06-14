@@ -87,7 +87,7 @@ class BreezeUser extends Breeze
 		else
 			$context['Breeze']['settings']['visitor'] = $query->getUserSettings($user_info['id']);
 
-		// Need to wipe out all currently loaded layers and readd some of them in a very specific order...
+		// Need to wipe out all currently loaded layers and re-add some of them in a very specific order...
 		$context['template_layers'] = array();
 		$context['template_layers'][] = 'html';
 		$context['template_layers'][] = 'user_wall';
