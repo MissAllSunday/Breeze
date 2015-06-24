@@ -512,25 +512,13 @@ class BreezeAjax
 				'owner' => $id,
 			));
 
-		// If this is an user's wall request, we need to check if the fetching user is on the user's wall ignore list.
-		if (!empty($comingFrom) && $comingFrom == 'wall')
-		{
-			// Get the user's wall ignore list.
-			$userWallSettings = $this->_app['query']->getUserSettings($this->_data->get('userID'));
-
-			// The user "requesting" this data is on the ignore list, thus, no candy.
-			if (!empty($userWallSettings['kick_ignored']) && !empty($userWallSettings['ignoredList']))
-			{
-				$ignored = explode(',', $userWallSettings['ignoredList']);
-
-				if (in_array($this->_currentUser, $ignored))
+		// If this is an user's wall request, we need to check if the current user is on the user's wall ignore list.
+		if (!empty($comingFrom) && $comingFrom == 'wall' && $this->stalkingCheck($id))
 					return $this->setResponse(array(
 						'message' => 'wrong_values',
 						'type' => 'error',
 						'owner' => $this->_currentUser,
 					));
-			}
-		}
 
 		// Calculate the start value.
 		$start = $maxIndex * $numberTimes;
@@ -585,6 +573,7 @@ class BreezeAjax
 				'type' => 'error',
 				'owner' => $id,
 			));
+
 
 		// Calculate the start value.
 		$start = $maxIndex * $numberTimes;
@@ -966,5 +955,34 @@ class BreezeAjax
 				$extraString .= ';'. $k .'='. $v;
 
 		$this->_redirectURL .= 'action='. $this->comingFrom . $extraString . $userString;
+	}
+
+	/**
+	 * BreezeAjax::stalkingCheck()
+	 *
+	 * @param integer $fetchedUser the user to check against.
+	 * Checks if the current user has been added in someone's ignored list.
+	 * @return boolean
+	 */
+	protected function stalkingCheck($fetchedUser = 0)
+	{
+		// But of course you can stalk non-existent users!
+		if (empty($fetchedUser))
+			return true;
+
+		// Get the staled user settings.
+		$stalkedSettings = $this->_app['query']->getUserSettings($fetchedUser);
+
+		// Check if the stalker has been added in stalkee's ignore list.
+		if (!empty($stalkedSettings['kick_ignored']) && !empty($stalkedSettings['ignoredList']))
+		{
+			$ignored = explode(',', $stalkedSettings['ignoredList']);
+
+			return in_array($this->_currentUser, $ignored);
+		}
+
+		// Lucky you!
+		else
+			return false;
 	}
 }
