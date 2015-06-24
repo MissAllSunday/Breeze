@@ -138,7 +138,7 @@ class BreezeAjax
 			$statusMentions = array_filter($this->_data->get('mentions'));
 
 		// Sorry, try to play nicer next time
-		if (!$statusOwner || !$statusPoster || !$statusContent)
+		if (!$statusOwner || !$statusPoster || !$statusContent || ($this->_currentUser != $statusPoster))
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
@@ -272,7 +272,7 @@ class BreezeAjax
 			$commentMentions = $this->_data->get('mentions');
 
 		// Sorry, try to play nice next time
-		if (!$commentStatus || !$commentStatusPoster || !$commentPoster || !$commentOwner || !$commentContent)
+		if (!$commentStatus || !$commentStatusPoster || !$commentPoster || !$commentOwner || !$commentContent || ($this->_currentUser != $commentPoster))
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
@@ -493,6 +493,14 @@ class BreezeAjax
 		// Get the values.
 		$this->_data = Breeze::data('request');
 
+		// Nope!
+		if  ($this->_currentUser != $this->_data->get('u'))
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $this->_currentUser,
+			));
+
 		// Handling data.
 		$toSave = $this->_data->get('breezeSettings');
 
@@ -525,12 +533,20 @@ class BreezeAjax
 		// Get the global vars
 		$this->_data = Breeze::data('request');
 
+		// Nope!
+		if  ($this->_currentUser != $this->_data->get('user'))
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $this->_currentUser,
+			));
+
 		// Get the data
 		$noti = $this->_data->get('content');
 		$user = $this->_data->get('user');
 
 		// Is this valid data?
-		if (empty($noti) || empty($user))
+		if (empty($noti) || empty($user) || ($this->_currentUser != $user))
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
@@ -585,8 +601,12 @@ class BreezeAjax
 		$user = $this->_data->get('user');
 
 		// Is this valid data?
-		if (empty($noti) || empty($user))
-			return;
+		if (empty($noti) || empty($user) || ($this->_currentUser != $user))
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $profileOwner,
+			));
 
 		// Are we dealing with logs? if so, the process gets much much easier for me!
 		if ($this->_data->validate('log'))
@@ -644,7 +664,7 @@ class BreezeAjax
 		$idNoti = $this->_data->get('idNoti');
 		$user = $this->_data->get('user');
 
-		if (empty($do) || empty($idNoti) || empty($user))
+		if (empty($do) || empty($idNoti) || empty($user) || ($this->_currentUser != $user))
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
@@ -786,8 +806,6 @@ class BreezeAjax
 	 */
 	protected function cleanLog()
 	{
-		global $user_info;
-
 		checkSession('request', '', false);
 
 		// Get the global vars
@@ -798,7 +816,7 @@ class BreezeAjax
 		$user = $this->_data->get('u');
 
 		// An extra check
-		if (empty($log) || empty($user) || $user_info['id'] != $user)
+		if (empty($log) || empty($user) || ($this->_currentUser != $user))
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
