@@ -128,7 +128,7 @@ class BreezeAjax
 	{
 		// Build plain normal vars...
 		$owner = $this->_data->get('statusOwner');
-		$poster = $this->_data->get('statusPoster');
+		$poster = $this->_currentUser;
 		$content = $this->_data->get('message');
 		$mentionedUsers = array();
 
@@ -246,7 +246,7 @@ class BreezeAjax
 		// Trickery, there's always room for moar!
 		$statusID = $this->_data->get('statusID');
 		$statusPoster = $this->_data->get('statusPoster');
-		$poster = $this->_data->get('poster');
+		$poster = $this->_currentUser;
 		$owner = $this->_data->get('owner');
 		$content = $this->_data->get('message');
 		$mentionedUsers = array();
@@ -448,7 +448,7 @@ class BreezeAjax
 				$toSave[$k] = $v;
 		}
 
-		// blockList only allows numbers and commas.
+		// BlockList only allows numbers and commas.
 		if (!empty($toSave['blockList']))
 		{
 			$tempList = explode(',', preg_replace('/[^0-9,]/', '', $toSave['blockList']));
