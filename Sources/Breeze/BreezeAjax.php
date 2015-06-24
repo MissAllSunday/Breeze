@@ -431,6 +431,15 @@ class BreezeAjax
 	public function userSettings()
 	{
 		$toSave = array();
+		$user = $this->_data->get('u');
+
+		// Make sure we have the correct user.
+		if (empty($user) || $this->_currentUser != $user)
+			return $this->setResponse(array(
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $this->_currentUser,
+			));
 
 		// Handling data.
 		foreach ($this->_data->get('breezeSettings') as $k => $v)
@@ -467,7 +476,7 @@ class BreezeAjax
 			$toSave['aboutMe'] = substr($toSave['aboutMe'], 0, $this->_app['tools']->setting('allowed_maxlength_aboutMe'));
 
 		// Do the insert already!
-		$this->_app['query']->insertUserSettings($toSave, $this->_data->get('u'));
+		$this->_app['query']->insertUserSettings($toSave, $user);
 
 		// Done! set the redirect.
 		return $this->setResponse(array(
