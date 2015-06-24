@@ -513,12 +513,17 @@ class BreezeAjax
 			));
 
 		// If this is an user's wall request, we need to check if the current user is on the user's wall ignore list.
-		if (!empty($comingFrom) && $comingFrom == 'wall' && $this->stalkingCheck($id))
-					return $this->setResponse(array(
-						'message' => 'wrong_values',
-						'type' => 'error',
-						'owner' => $this->_currentUser,
-					));
+		if (!empty($comingFrom) && $comingFrom == 'wall')
+		{
+			$stalk = $this->stalkingCheck($id);
+
+			if (!empty($stalk))
+				return $this->setResponse(array(
+					'message' => 'wrong_values',
+					'type' => 'error',
+					'owner' => $this->_currentUser,
+				));
+		}
 
 		// Calculate the start value.
 		$start = $maxIndex * $numberTimes;
