@@ -512,6 +512,26 @@ class BreezeAjax
 				'owner' => $id,
 			));
 
+		// If this is an user's wall request, we need to check if the fetching user is on the user's wall ignore list.
+		if (!empty($comingFrom) && $comingFrom == 'wall')
+		{
+			// Get the user's wall ignore list.
+			$userWallSettings = $this->_app['query']->getUserSettings($this->_data->get('userID'));
+
+			// The user "requesting" this data is on the ignore list, thus, no candy.
+			if (!empty($userWallSettings['kick_ignored']) && !empty($userWallSettings['ignoredList']))
+			{
+				$ignored = explode(',', $userWallSettings['ignoredList']);
+
+				if (in_array($this->_currentUser, $ignored))
+					return $this->setResponse(array(
+						'message' => 'wrong_values',
+						'type' => 'error',
+						'owner' => $this->_currentUser,
+					));
+			}
+		}
+
 		// Calculate the start value.
 		$start = $maxIndex * $numberTimes;
 
