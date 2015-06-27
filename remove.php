@@ -4,7 +4,7 @@
  * remove.php
  *
  * @package Breeze mod
- * @version 1.0.7
+ * @version 1.0.8
  * @author Jessica Gonzalez <suki@missallsunday.com>
  * @copyright Copyright (c) 2011, 2014, Jessica González
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
@@ -25,7 +25,6 @@
 		'integrate_admin_areas' => 'Breeze::admin',
 		'integrate_profile_areas' => 'Breeze::profile',
 		'integrate_create_topic' => 'Breeze::newTopic',
-		// 'integrate_register_after' => 'Breeze::newRegister',  @todo for SMF 2.1
 	);
 
 	// Uninstall please
