@@ -63,8 +63,50 @@ Tested on PHP 5.3 and 5.4, Opera12, IE8 and whatever version Firefox was when I 
 [size=12pt][color=purple]Changelog[/color][/size]
 
 [code]
+1.0.8 Jun 29, 2015
+- Fix a security issue allowing users to post status and messages as another user. Thanks to JSX3 for reporting it.
 
-[b]1.0[/b] - Windmill
+1.0.7 Oct 22, 2014
+This release adds a new security layer by implementing the DOMPurify library to both comments and status messages.
+
+It also fixes a wrong version on package-info.xml as well as adding the current version to the version tag on all files.
+
+1.0.6 Jul 3, 2014
+- This release fixes a bug introduced in the 1.0.5 version which prevented users from saving their options, it also improves the security fix introduced in the 1.0.5 release.
+
+1.0.5  May 30, 2014
+- !Make BreezeData::sanitize() a recursive functions for handling arrays.
+
+1.0.4 May 4, 2014
+- Fixed checking a wrong variable on BreezeQuery:getCount() which prevented to get the real count.
+- Convert to an array of integers the passed value on BreezeQuery:getCount() to prevent weird servers to give errors.
+- The load more feature on the general wall wasn't working because userID wasn't defined.
+- On the createTopic log and any other log, use the username instead of the real name.
+
+1.0.3 Apr 12, 2014
+- Add BreezeQuery::getStatus() to allow users to get status data directly from the DB
+- Fixed silly bugs with error strings
+- BreezeQuery::getCount() now work with arrays, each element gets casted as integer before passing the array to avoid errors. It also removes the need to pass sql code, it now needs the column name only.
+
+1.0.2  Mar 23, 2014
+- Fixes an issue where users will get notified about new topics on boards they cannot see. Thanks to br360 for the report.
+- Add support for accounts that were deleted but still has activity recorded.
+- Css files were merged and minified, thanks to Antes
+- Other small fixes/improvements.
+
+1.0.1 Mar 2, 2014
+- Notifications were pretty broken and with unfinished code.
+- Changed the value column in breeze_options to a text field
+- Weird css on breeze.css was interfering with the forum's style.
+- Missed a text string for permissions and fixed a logic issue as well, users weren't able to post new comments even though they have the appropriated permissions to do so.
+- New status were appended to a non-existent div.
+- Disabling the wall didn't hide the button on the profile menu.
+- Support feed url uses a scheme-less url for servers using https
+- Typos and corrections on language strings.
+- Fixed a logic issue when posting a new comment, the code wrongly assumed the poster and the profile owner were the same person.
+- Added a new notification for the profile owner when someone made a comment on any status on their own wall.
+
+1.0 - Windmill
 Initial release
 
 [/code]
