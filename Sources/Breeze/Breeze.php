@@ -379,12 +379,12 @@ class Breeze extends Pimple\Container
 	 */
 	public function call()
 	{
-		// Don't do anything if the mod off
-		if (!$this['tools']->enable('master'))
-			return;
-
 		// Just some quick code to make sure this works...
 		$action = str_replace('breeze', '', Breeze::data('get')->get('action'));
+
+		// Don't do anything if the mod off
+		if (!$this['tools']->enable('master') && $action != 'admin')
+			return;
 
 		if (!empty($action) && in_array($action, $this->wrapperActions))
 			$this[$action]->call();
