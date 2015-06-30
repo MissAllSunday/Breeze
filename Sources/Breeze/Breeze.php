@@ -291,6 +291,10 @@ class Breeze extends Pimple\Container
 	{
 		global $context, $txt, $scripturl, $user_info;
 
+		// Don't do anything if the mod off
+		if (!$this['tools']->enable('master'))
+			return;
+
 		$tools = $this['tools'];
 		$userSettings = $this['query']->getUserSettings($user_info['id']);
 
@@ -298,7 +302,7 @@ class Breeze extends Pimple\Container
 		$this->notiHeaders();
 
 		// Replace the duplicate profile button
-		if ($tools->enable('master') && !empty($menu_buttons['profile']['sub_buttons']['summary']))
+		if (!empty($menu_buttons['profile']['sub_buttons']['summary']))
 			$menu_buttons['profile']['sub_buttons']['summary'] = array(
 				'title' => $txt['summary'],
 				'href' => $scripturl . '?action=profile;area=static',
@@ -348,6 +352,10 @@ class Breeze extends Pimple\Container
 	 */
 	public function actions(&$actions)
 	{
+		// Don't do anything if the mod off
+		if (!$this['tools']->enable('master'))
+			return;
+
 		// Fool the system and directly inject the main object to breezeAjax and breezeWall, Breeze's final classes
 
 		// A whole new action just for some ajax calls. Actually, a pretty good chunk of Breeze transactions come through here so...
@@ -371,6 +379,10 @@ class Breeze extends Pimple\Container
 	 */
 	public function call()
 	{
+		// Don't do anything if the mod off
+		if (!$this['tools']->enable('master'))
+			return;
+
 		// Just some quick code to make sure this works...
 		$action = str_replace('breeze', '', Breeze::data('get')->get('action'));
 
@@ -401,7 +413,7 @@ class Breeze extends Pimple\Container
 	{
 		global $user_info, $txt;
 
-		// Can't do much is the master setting is off.
+		// Can't do much if the master setting is off.
 		if (!$this['tools']->enable('master'))
 			return;
 
@@ -416,12 +428,20 @@ class Breeze extends Pimple\Container
 
 	public function alerts(&$alerts)
 	{
+		// Don't do anything if the mod off
+		if (!$this['tools']->enable('master'))
+			return;
+
 		// Get the results back from BreezeAlerts.
 		$this['alerts']->call($alerts);
 	}
 
 	public function alertsPref(&$alert_types, &$group_options, &$disabled_options)
 	{
+		// Don't do anything if the mod off
+		if (!$this['tools']->enable('master'))
+			return;
+
 		// Gonna need some strings.
 		$this['tools']->loadLanguage('alerts');
 
@@ -437,7 +457,7 @@ class Breeze extends Pimple\Container
 	public function likes($type, $content, $sa, $js, $extra)
 	{
 		// Don't bother with any other like types.
-		if (!in_array($type, array_keys($this->likeTypes)))
+		if (!$this['tools']->enable('master') || !in_array($type, array_keys($this->likeTypes)))
 			return false;
 
 		// Create our returned array
@@ -587,7 +607,7 @@ class Breeze extends Pimple\Container
 	public function mood(&$data, $user, $display_custom_fields)
 	{
 		// Don't do anything if the feature is disable or custom fields aren't being loaded.
-		if (!$this['tools']->enable('mood')|| empty($display_custom_fields))
+		if (!$this['tools']->enable('master') || !$this['tools']->enable('mood')|| empty($display_custom_fields))
 			return;
 
 		// Append the result to the custom fields array.
@@ -596,6 +616,10 @@ class Breeze extends Pimple\Container
 
 	public function moodProfile($memID, $area)
 	{
+		// Don't do anything if the mod off
+		if (!$this['tools']->enable('master'))
+			return;
+
 		// Let BreezeMood handle this...
 		$this['mood']->showProfile($memID, $area);
 	}
