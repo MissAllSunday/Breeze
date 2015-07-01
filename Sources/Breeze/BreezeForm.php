@@ -15,17 +15,8 @@ if (!defined('SMF'))
 
 class BreezeForm
 {
-	public $method;
-	public $action;
-	public $name;
-	public $id_css;
-	public $class;
 	public $elements = array();
-	public $status = 0;
 	public $buffer = '';
-	public $onsubmit;
-	protected $_tools;
-	protected $formName;
 	protected $_app;
 	protected $_textPrefix = 'user_settings_';
 
