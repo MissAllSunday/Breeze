@@ -102,7 +102,7 @@ class BreezeBuddy
 		global $context;
 
 		// Don't do this that often..
-		if (cache_get_data('Buddy-sent-'. $this->_userSender['id'] .'-'. $this->_userReceiver, 86400) == null)
+		if (cache_get_data('Buddy-sent-'. $this->_userSender['id'] .'-'. $this->_userReceiver, 604800) == null)
 		{
 			// Ran the request through some checks...
 			if ($this->check() == true)
@@ -160,7 +160,7 @@ class BreezeBuddy
 			$this->_response = $this->_app['form']->display();
 
 			// Store this in a cache entry to avoid creating multiple alerts. Give it a long life cycle.
-			cache_put_data('Buddy-sent-'. $this->_userSender['id'] .'-'. $this->_userReceiver, '1', 86400);
+			cache_put_data('Buddy-sent-'. $this->_userSender['id'] .'-'. $this->_userReceiver, '1', 604800);
 		}
 
 		// Let this user know that an alert has already been sent...
