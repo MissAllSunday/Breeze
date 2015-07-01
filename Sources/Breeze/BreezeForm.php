@@ -241,8 +241,8 @@ class BreezeForm
 				case 'text':
 					$this->buffer .= '
 				<dt>
-					<span style="font-weight:bold;">'. $this->setText($el['text']) .'</span>
-					<br /><span class="smalltext">'. $this->_app['tools']->text($this->_textPrefix . $el['text'] .'_sub') .'</span>
+					<span style="font-weight:bold;">'. $el['text'] .'</span>
+					<br /><span class="smalltext">'. $el['desc'] .'</span>
 				</dt>
 				<dd>
 					<input type="hidden" name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $el['name'] .']' : $el['name']) .'" value="0" />'. $el['html'] .'
@@ -251,8 +251,8 @@ class BreezeForm
 				case 'select':
 					$this->buffer .= '
 				<dt>
-					<span style="font-weight:bold;">'. $this->setText($el['text']) .'</span>
-					<br /><span class="smalltext">'. $this->setText($el['text'] .'_sub') .'</span>
+					<span style="font-weight:bold;">'. $el['text'] .'</span>
+					<br /><span class="smalltext">'. $el['desc'] .'</span>
 				</dt>
 				<dd>
 					<input type="hidden" name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $el['name'] .']' : $el['name']) .'" value="0" />'. $el['html_start'] .'';
@@ -280,18 +280,18 @@ class BreezeForm
 				case 'html':
 					$this->buffer .= '
 				<dt>
-					<span style="font-weight:bold;">'. $this->setText($el['text']) .'</span>
-					<br /><span class="smalltext">'. $this->setText($el['text'] .'_sub') .'</span>
+					<span style="font-weight:bold;">'. $el['text'] .'</span>
+					<br /><span class="smalltext">'. $el['desc'] .'</span>
 				</dt>
 				<dd>
-					'. sprintf($el['html'], $this->setText($el['text'])) .'
+					'. $el['html'] .'
 				</dd>';
 					break;
 				case 'section':
 				$this->buffer .= '
 				</dl>
 				<div class="cat_bar">
-					<h3 class="catbg">'. $this->setText($el['text']) .'</h3>
+					<h3 class="catbg">'. $el['text'] .'</h3>
 				</div>
 				<br />
 				<dl class="settings">';
@@ -305,7 +305,7 @@ class BreezeForm
 		// Any buttons?
 		foreach($this->elements as $el)
 			if ($el['type'] == 'button')
-				$this->buffer .= '<input type="submit" name="'. $this->setText($el['text']) .'" value="'. $this->setText($el['text']) .'" class="button_submit"/>';
+				$this->buffer .= '<input type="submit" name="'. $el['name'] .'" value="'. $el['text'] .'" class="button_submit"/>';
 
 		// Close it.
 		$this->buffer .= '
