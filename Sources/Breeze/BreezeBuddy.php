@@ -143,18 +143,19 @@ class BreezeBuddy
 			));
 
 			// The actual textarea...
-			$this->_app['form']->addTextArea(
-				'buddyMessage',
-				'',
-				array('rows' => 10, 'cols' => 60, 'maxLength' => 2048),
-				$this->_app['tools']->parser($this->_app['tools']->text('buddy_message_desc'), array(
+			$this->_app['form']->addTextArea(array(
+				'name' => 'buddyMessage',
+				'value' => '',
+				'size' => array('rows' => 10, 'cols' => 60, 'maxLength' => 2048),
+				'fullText' => $this->_app['tools']->text('buddy_message'),
+				'fullDesc' => $this->_app['tools']->parser($this->_app['tools']->text('buddy_message_desc'), array(
 					'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
-				))
-			);
+				)),
+			));
 
 			// Session stuff.
 			$this->_app['form']->addHiddenField($context['session_var'], $context['session_id']);
-			$this->_app['form']->addButton('submit');
+			$this->_app['form']->addButton(array('name' => 'submit'));
 
 			$this->_response = $this->_app['form']->display();
 

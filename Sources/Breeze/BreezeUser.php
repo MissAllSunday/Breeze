@@ -320,10 +320,10 @@ class BreezeUser extends Breeze
 
 		// Get all inner alerts.
 		foreach ($this['log']->alerts as $a)
-			$form->addCheckBox(
+			$form->addCheckBox(array(
 				'name' => 'alert_'. $a,
 				'checked' => !empty($userSettings['alert_'. $a]) ? true : false
-			);
+			));
 
 		// Session stuff.
 		$form->addHiddenField($context['session_var'], $context['session_id']);
@@ -440,112 +440,112 @@ class BreezeUser extends Breeze
 		$form->addHiddenField($context['session_var'], $context['session_id']);
 
 		// Per user master setting.
-		$form->addCheckBox(
+		$form->addCheckBox(array(
 			'name' => 'wall',
 			'checked' => !empty($userSettings['wall']) ? true : false,
-		);
+		));
 
 		// General wall setting.
-		$form->addCheckBox(
+		$form->addCheckBox(array(
 			'name' => 'general_wall',
 			'checked' => !empty($userSettings['general_wall']) ? true : false,
-		);
+		));
 
 		// Pagination.
-		$form->addText(
+		$form->addText(array(
 			'name' => 'pagination_number',
 			'value' => !empty($userSettings['pagination_number']) ? $userSettings['pagination_number'] : 0,
 			'size' => 3,
 			'maxlength' => 3,
-		);
+		));
 
 		// Number of alerts in recent activity page.
-		$form->addText(
+		$form->addText(array(
 			'name' => 'number_alert',
 			'value' => !empty($userSettings['number_alert']) ? $userSettings['number_alert'] : 0,
 			'size' => 3,
 			'maxlength' => 3,
-		);
+		));
 
 		// Add the load more button.
-		$form->addCheckBox(
+		$form->addCheckBox(array(
 			'name' => 'load_more',
 			'checked' => !empty($userSettings['load_more']) ? true : false
-		);
+		));
 
 		// Activity Log.
-		$form->addCheckBox(
+		$form->addCheckBox(array(
 			'name' => 'activityLog',
 			'checked' => !empty($userSettings['activityLog']) ? true : false
-		);
+		));
 
 		// Only show this is the admin has enable the buddy feature.
 		if (!empty($modSettings['enable_buddylist']))
 		{
 			// Allow ignored users.
-			$form->addCheckBox(
+			$form->addCheckBox(array(
 				'name' => 'kick_ignored',
 				'checked' => !empty($userSettings['kick_ignored']) ? true : false
-			);
+			));
 
 			// Number of alerts in recent activity page.
-			$form->addText(
+			$form->addText(array(
 				'name' => 'blockList',
 				'value' => !empty($userSettings['blockList']) ? implode(',', $userSettings['blockList']) : '',
 				'size' => 20,
 				'maxlength' => 90,
-			);
+			));
 
 			// Buddies block.
-			$form->addCheckBox(
+			$form->addCheckBox(array(
 				'name' => 'buddies',
 				'checked' => !empty($userSettings['buddies']) ? true : false
-			);
+			));
 
 			// How many buddies are we gonna show?
-			$form->addText(
+			$form->addText(array(
 				'name' => 'how_many_buddies',
 				'value' => !empty($userSettings['how_many_buddies']) ? ($maxUsers && $userSettings['how_many_buddies'] >= $maxUsers ? $maxUsers : $userSettings['how_many_buddies']) : 0,
 				'size' => 3,
 				'maxlength' => 3,
-			);
+			));
 		}
 
 		// Profile visitors.
-		$form->addCheckBox(
+		$form->addCheckBox(array(
 			'name' => 'visitors',
 			'checked' => !empty($userSettings['visitors']) ? true : false
-		);
+		));
 
 		// How many visitors are we gonna show?
-		$form->addText(
+		$form->addText(array(
 			'name' => 'how_many_visitors',
 			'value' => !empty($userSettings['how_many_visitors']) ? ($maxUsers && $userSettings['how_many_visitors'] >= $maxUsers ? $maxUsers : $userSettings['how_many_visitors']) : 0,
 			'size' => 3,
 			'maxlength' => 3,
-		);
+		));
 
 		// Clean visitors log
-		$form->addHTML(
+		$form->addHTML(array(
 			'name' => 'clean_visitors',
 			'html' => '<a href="'. $this['tools']->scriptUrl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="clean_log">%s</a>'
-		);
+		));
 
 		// About me textarea.
-		$form->addTextArea(
+		$form->addTextArea(array(
 			'name' => 'aboutMe',
 			'value' => !empty($userSettings['aboutMe']) ? $userSettings['aboutMe'] : '',
 			'size' => array('rows' => 10, 'cols' => 50, 'maxLength' => $tools->setting('allowed_maxlength_aboutMe') ? $tools->setting('allowed_maxlength_aboutMe') : 1024)
-		);
+		));
 
 		// Cover height.
 		if ($tools->enable('cover'))
-			$form->addText(
+			$form->addText(array(
 				'name' => 'cover_height',
 				'value' => !empty($userSettings['cover_height']) ? $userSettings['cover_height'] : 0,
 				'size' => 3,
 				'maxlength' => 3,
-			);
+			));
 
 		$form->addButton(array('name' => 'submit'));
 
@@ -600,14 +600,14 @@ class BreezeUser extends Breeze
 
 		// Remove a cover image.
 		if (!empty($userSettings['cover']))
-			$form->addHTML(
+			$form->addHTML(array(
 				'name' => 'cover_delete',
 				'html' => '<a href="'. $this['tools']->scriptUrl .'?action=breezeajax;sa=coverdelete;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="cover_delete you_sure">%s</a>
 				'. (file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename']) ? '<br /><img src="'. $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename'] .'" class ="current_cover" />' : '') .''
-			);
+			));
 
 		// Cover upload option.
-		$form->addHTML(
+		$form->addHTML(array(
 			'name' => 'cover_select',
 			'html' => '<span class="">
 				<input id="fileupload" type="file" name="files">
@@ -617,9 +617,9 @@ class BreezeUser extends Breeze
 				<div class="progress-bar progress-bar-success"></div>
 			</div>
 			<div id="files" class="files"></div>'
-		);
+		));
 
-		$form->addButton('submit');
+		$form->addButton(array('name' => 'submit'));
 
 		// Send the form to the template
 		$context['Breeze']['UserSettings']['Form'] = $form->display();

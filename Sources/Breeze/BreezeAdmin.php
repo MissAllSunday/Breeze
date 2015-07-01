@@ -479,7 +479,7 @@ class BreezeAdmin
 
 		$form->addHr();
 
-		$form->addButton('submit');
+		$form->addButton(array('name' => 'submit'));
 
 		// Send the form to the template
 		$context['mood']['form'] = $form->display();
