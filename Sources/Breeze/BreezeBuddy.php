@@ -140,16 +140,16 @@ class BreezeBuddy
 				'url' => $this->_app['tools']->scriptUrl .'?action=buddy;sa=addTwo;u='. $this->_userReceiver,
 				'character_set' => $context['character_set'],
 				'title' => $this->_app['tools']->text('buddy_title'),
-				'desc' => $this->_app['tools']->parser($this->_app['tools']->text('buddy_message_desc'), array(
-					'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
-				)),
 			));
 
 			// The actual textarea...
 			$this->_app['form']->addTextArea(
 				'buddyMessage',
 				'',
-				array('rows' => 10, 'cols' => 60, 'maxLength' => 2048)
+				array('rows' => 10, 'cols' => 60, 'maxLength' => 2048),
+				$this->_app['tools']->parser($this->_app['tools']->text('buddy_message_desc'), array(
+					'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
+				))
 			);
 
 			// Session stuff.

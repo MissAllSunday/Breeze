@@ -94,6 +94,17 @@ class BreezeForm
 		$this->status++;
 	}
 
+	protected function setParamValues(&$param)
+	{
+		// No text? use the name as a $txt key then!
+		if (empty($param['text']))
+			$param['text'] = $param['name'];
+
+		// Give it a chance to use a full text string.
+		$param['text']  = !empty($param['fullText']) ? $param['fullText'] : $this->setText($param['text']);
+		$param['desc']  = !empty($param['fullDesc']) ? $param['fullDesc'] : $this->setText($param['text'] .'_sub');
+	}
+
 	function addSelect($name,$values = array())
 	{
 		$element['type'] = 'select';
@@ -295,7 +306,7 @@ class BreezeForm
 		foreach($this->elements as $el)
 			if ($el['type'] == 'button')
 				$this->buffer .= '<input type="submit" name="'. $this->setText($el['text']) .'" value="'. $this->setText($el['text']) .'" class="button_submit"/>';
-				
+
 		// Close it.
 		$this->buffer .= '
 		</div>
