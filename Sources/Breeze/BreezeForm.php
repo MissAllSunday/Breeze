@@ -68,104 +68,127 @@ class BreezeForm
 		$param['desc']  = !empty($param['fullDesc']) ? $param['fullDesc'] : $this->setText($param['text'] .'_sub');
 	}
 
-	function addSelect($name,$values = array())
+	function addSelect($param = array())
 	{
-		$element['type'] = 'select';
-		$element['name'] = $name;
-		$element['values'] = $values;
-		$element['text']  = $name;
-		$element['html_start'] = '<'. $element['type'] .' name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $element['name'] .']' : $element['name']) .'">';
-		$element['html_end'] = '</'. $element['type'] .'>';
+		// Kinda needs this...
+		if (empty($param) || empty($param['name']))
+			return;
+
+		$this->setParamValues($param);
+		$param['type'] = 'select';
+		$param['html_start'] = '<'. $param['type'] .' name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $param['name'] .']' : $param['name']) .'">';
+		$param['html_end'] = '</'. $param['type'] .'>';
 
 		foreach($values as $k => $v)
-			$element['values'][$k] = '<option value="' .$k. '" '. (isset($v[1]) && $v[1] == 'selected' ? 'selected="selected"' : '') .'>'. $this->_app['tools']->text($v[0]) .'</option>';
+			$param['values'][$k] = '<option value="' .$k. '" '. (isset($v[1]) && $v[1] == 'selected' ? 'selected="selected"' : '') .'>'. $this->_app['tools']->text($v[0]) .'</option>';
 
-		return $this->addElement($element);
+		return $this->addElement($param);
 	}
 
-	function addCheckBox($name,$checked = false)
+	function addCheckBox($param = array())
 	{
-		$element['type'] = 'checkbox';
-		$element['name'] = $name;
-		$element['value'] = 1;
-		$element['checked'] = empty($checked) ? '' : 'checked="checked"';
-		$element['text'] = $name;
-		$element['html'] = '<input type="'. $element['type'] .'" name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $element['name'] .']' : $element['name']) .'" id="'. $element['name'] .'" value="'. (int)$element['value'] .'" '. $element['checked'] .' class="input_check" />';
+		// Kinda needs this...
+		if (empty($param) || empty($param['name']))
+			return;
 
-		return $this->addElement($element);
+		$this->setParamValues($param);
+		$param['type'] = 'checkbox';
+		$param['value'] = 1;
+		$param['checked'] = empty($param['checked']) ? '' : 'checked="checked"';
+		$param['html'] = '<input type="'. $param['type'] .'" name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $param['name'] .']' : $param['name']) .'" id="'. $param['name'] .'" value="'. $param['value'] .'" '. $param['checked'] .' class="input_check" />';
+
+		return $this->addElement($param);
 	}
 
-	function addText($name,$value, $size = false, $maxlength = false)
+	function addText($param = array())
 	{
-		$element['type'] = 'text';
-		$element['name'] = $name;
-		$element['value'] = $value;
-		$element['text'] = $name;
-		$element['size'] = empty($size) ? 'size="20"' : 'size="' .$size. '"';
-		$element['maxlength'] = empty($maxlength) ? 'maxlength="20"' : 'maxlength="' .$maxlength. '"';
-		$element['html'] = '<input type="'. $element['type'] .'" name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $element['name'] .']' : $element['name']) .'" id="'. $element['name'] .'" value="'. $element['value'] .'" '. $element['size'] .' '. $element['maxlength'] .' class="input_text" />';
+		// Kinda needs this...
+		if (empty($param) || empty($param['name']))
+			return;
 
-		return $this->addElement($element);
+		$this->setParamValues($param);
+		$param['type'] = 'text';
+		$param['size'] = empty($param['size'] ) ? 'size="20"' : 'size="'. $param['size'] .'"';
+		$param['maxlength'] = empty($param['maxlength']) ? 'maxlength="20"' : 'maxlength="'. $param['maxlength'] .'"';
+		$param['html'] = '<input type="'. $param['type'] .'" name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $param['name'] .']' : $param['name']) .'" id="'. $param['name'] .'" value="'. $param['value'] .'" '. $param['size'] .' '. $param['maxlength'] .' class="input_text" />';
+
+		return $this->addElement($param);
 	}
 
-	function addTextArea($name, $value, $size = array('cols' => 40, 'rows' =>10, 'maxLength' => 1024))
+	function addTextArea($param = array())
 	{
-		$element['type'] = 'textarea';
-		$element['name'] = $name;
-		$element['value'] = empty($value) ? '' : $value;
-		$element['text'] = $name;
+		// Kinda needs this...
+		if (empty($param) || empty($param['name']))
+			return;
+
+		$this->setParamValues($param);
+		$param['type'] = 'textarea';
+		$param['value'] = empty($param['value']) ? '' : $param['value'];
 
 		// To a void having a large and complicate ternary, split these options.
-		$rows = 'rows="'. (!empty($size) && !empty($size['rows']) ? $size['rows'] : 10) .'"';
-		$cols = 'cols="'. (!empty($size) && !empty($size['cols']) ? $size['cols'] : 40) .'"';
-		$maxLength = 'maxlength="'. (!empty($size) && !empty($size['maxLength']) ? $size['maxLength'] : 1024) .'"';
+		$rows = 'rows="'. (!empty($param['size'] ) && !empty($param['size'] ['rows']) ? $param['size'] ['rows'] : 10) .'"';
+		$cols = 'cols="'. (!empty($param['size'] ) && !empty($param['size'] ['cols']) ? $param['size'] ['cols'] : 40) .'"';
+		$param['maxlength'] = 'maxlength="'. (!empty($param['size'] ) && !empty($param['size'] ['maxLength']) ? $param['size'] ['maxLength'] : 1024) .'"';
 
-		$element['html'] = '<'. $element['type'] .' name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $element['name'] .']' : $element['name']) .'" id="'. $element['name'] .'" '. $rows .' '. $cols .' '. $maxLength .'>'. $element['value'] .'</'. $element['type'] .'>';
+		$param['html'] = '<'. $param['type'] .' name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $param['name'] .']' : $param['name']) .'" id="'. $param['name'] .'" '. $rows .' '. $cols .' '. $param['maxlength'] .'>'. $param['value'] .'</'. $param['type'] .'>';
 
-		return $this->addElement($element);
+		return $this->addElement($param);
 	}
 
-	function addHiddenField($name, $value)
+	function addHiddenField($param = array())
 	{
-		$element['type'] = 'hidden';
-		$element['name'] = $name;
-		$element['value'] = $value;
-		$element['html'] = '<input type="'. $element['type'] .'" name="'. $element['name'] .'" id="'. $element['name'] .'" value="'. $element['value'] .'" />';
+		// Kinda needs this...
+		if (empty($param))
+			return;
 
-		return $this->addElement($element);
+		$param['type'] = 'hidden';
+		$param['html'] = '<input type="'. $param['type'] .'" name="'. $param['name'] .'" id="'. $param['name'] .'" value="'. $param['value'] .'" />';
+
+		return $this->addElement($param);
 	}
 
 	function addHr()
 	{
-		$element['type'] = 'hr';
-		$element['html'] = '<br /><hr /><br />';
+		$param['type'] = 'hr';
+		$param['html'] = '<br /><hr /><br />';
 
-		return $this->addElement($element);
+		return $this->addElement($param);
 	}
 
-	function addHTML($text, $html)
+	function addHTML($param = array())
 	{
-		$element['type'] = 'html';
-		$element['text'] = $text;
-		$element['html'] = $html;
+		// Kinda needs this...
+		if (empty($param) || empty($param['name']))
+			return;
 
-		return $this->addElement($element);
+		$this->setParamValues($param);
+		$param['type'] = 'html';
+
+		return $this->addElement($param);
 	}
 
-	function addButton($text)
+	function addButton($param = array())
 	{
-		$element['type'] = 'button';
-		$element['text'] = $text;
+		// Kinda needs this...
+		if (empty($param) || empty($param['name']))
+			return;
 
-		return $this->addElement($element);
+		$this->setParamValues($param);
+		$param['type'] = 'button';
+
+		return $this->addElement($param);
 	}
 
-	function addSection($text)
+	function addSection($param = array())
 	{
-		$element['type'] = 'section';
-		$element['text'] = $text;
+		// Kinda needs this...
+		if (empty($param) || empty($param['name']))
+			return;
 
-		return $this->addElement($element);
+		$this->setParamValues($param);
+		$param['type'] = 'section';
+
+		return $this->addElement($param);
 	}
 
 	function display()

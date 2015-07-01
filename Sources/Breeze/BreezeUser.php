@@ -595,15 +595,15 @@ class BreezeUser extends Breeze
 		// Remove a cover image.
 		if (!empty($userSettings['cover']))
 			$form->addHTML(
-				'cover_delete',
-				'<a href="'. $this['tools']->scriptUrl .'?action=breezeajax;sa=coverdelete;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="cover_delete you_sure">%s</a>
+				'name' => 'cover_delete',
+				'html' => '<a href="'. $this['tools']->scriptUrl .'?action=breezeajax;sa=coverdelete;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="cover_delete you_sure">%s</a>
 				'. (file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename']) ? '<br /><img src="'. $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename'] .'" class ="current_cover" />' : '') .''
 			);
 
 		// Cover upload option.
 		$form->addHTML(
-			'cover_select',
-			'<span class="">
+			'name' => 'cover_select',
+			'html' => '<span class="">
 				<input id="fileupload" type="file" name="files">
 			</span>
 			<br />
