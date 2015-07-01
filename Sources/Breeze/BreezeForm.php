@@ -126,23 +126,23 @@ class BreezeForm
 		$param['value'] = empty($param['value']) ? '' : $param['value'];
 
 		// To a void having a large and complicate ternary, split these options.
-		$rows = 'rows="'. (!empty($param['size'] ) && !empty($param['size'] ['rows']) ? $param['size'] ['rows'] : 10) .'"';
-		$cols = 'cols="'. (!empty($param['size'] ) && !empty($param['size'] ['cols']) ? $param['size'] ['cols'] : 40) .'"';
-		$param['maxlength'] = 'maxlength="'. (!empty($param['size'] ) && !empty($param['size'] ['maxLength']) ? $param['size'] ['maxLength'] : 1024) .'"';
+		$rows = 'rows="'. (!empty($param['size'] ) && !empty($param['size']['rows']) ? $param['size']['rows'] : 10) .'"';
+		$cols = 'cols="'. (!empty($param['size'] ) && !empty($param['size']['cols']) ? $param['size']['cols'] : 40) .'"';
+		$param['maxlength'] = 'maxlength="'. (!empty($param['size'] ) && !empty($param['size']['maxlength']) ? $param['size']['maxlength'] : 1024) .'"';
 
 		$param['html'] = '<'. $param['type'] .' name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $param['name'] .']' : $param['name']) .'" id="'. $param['name'] .'" '. $rows .' '. $cols .' '. $param['maxlength'] .'>'. $param['value'] .'</'. $param['type'] .'>';
 
 		return $this->addElement($param);
 	}
 
-	function addHiddenField($param = array())
+	function addHiddenField($name, $value)
 	{
 		// Kinda needs this...
 		if (empty($param))
 			return;
 
 		$param['type'] = 'hidden';
-		$param['html'] = '<input type="'. $param['type'] .'" name="'. $param['name'] .'" id="'. $param['name'] .'" value="'. $param['value'] .'" />';
+		$param['html'] = '<input type="'. $param['type'] .'" name="'. $name .'" id="'. $name .'" value="'. $value .'" />';
 
 		return $this->addElement($param);
 	}
