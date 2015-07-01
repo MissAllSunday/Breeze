@@ -219,9 +219,9 @@ class BreezeForm
 		</h3>
 	</div>';
 
-		if (!empty($this->_options['title']))
+		if (!empty($this->_options['desc']))
 			$this->buffer .= '
-	<p class="windowbg description">
+	<p class="info">
 		'. $this->_options['desc'] .'
 	</p>';
 
