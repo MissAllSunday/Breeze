@@ -56,42 +56,14 @@ class BreezeForm
 		return $this->_app['tools']->text($this->_textPrefix . $text);
 	}
 
-	public function returnElementNames()
-	{
-		$this->returnelementsnames = array();
-
-		if (!empty($this->elements))
-			foreach ($this->elements as $e)
-				if (isset($e['name']) && !empty($e['name']))
-					$this->returnelementsnames[$e['name']] = $e['name'];
-
-		return $this->returnelementsnames;
-	}
-
 	private function addElement($element)
 	{
-		$plus = $this->countElements();
-		$element['id'] = $this->countElements();
-		$this->elements[$element['id']] = $element;
-	}
-
-	private function countElements()
-	{
-		return count($this->elements);
+		$this->elements[] = $element;
 	}
 
 	private function getElement($id)
 	{
 		return $this->elements[$id];
-	}
-
-	private function getNextElement()
-	{
-		if( $this->status == $this->countElements())
-			$this->status = 0;
-
-		$element = $this->getElement($this->status);
-		$this->status++;
 	}
 
 	protected function setParamValues(&$param)
@@ -229,8 +201,6 @@ class BreezeForm
 	<div class="windowbg2">
 		<div class="content">
 			<dl class="settings">';
-
-		$element = $this->getNextElement();
 
 		foreach($this->elements as $el)
 		{
