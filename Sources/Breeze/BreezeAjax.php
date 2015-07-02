@@ -714,7 +714,7 @@ class BreezeAjax
 				$this->_app['tools']->deleteCover($this->_userSettings['cover']['basename'], $this->_currentUser);
 
 			$fileInfo = pathinfo($folder . $file->name);
-			$newFile = sha1($file->name) .'.'. $fileInfo['extension'];
+			$newFile = sha1($file->name) .'.dat';
 
 			// Just so we don't end with some silly names..
 			rename($folder . $file->name, $folder . $newFile);
