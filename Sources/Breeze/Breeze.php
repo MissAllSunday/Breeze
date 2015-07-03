@@ -407,6 +407,52 @@ class Breeze extends Pimple\Container
 	}
 
 	/**
+	 * Breeze::displayCover()
+	 *
+	 * Creates and prints an user cover. If the suer does not have a cover it returns false.
+	 * @return void
+	 */
+	public function displayCover()
+	{
+		global $smcFunc, $modSettings, $maintenance;
+
+		// Get the user ID.
+		$useriD = Breeze::data('get')->get('u');
+
+		// Kinda need this!
+		if (!$this['tools']->enable('cover') || empty($useriD))
+		{
+			header('HTTP/1.0 404 File Not Found');
+			die('404 File Not Found');
+		}
+
+		// Get the user's settings.
+		$userSettings = $this['query']->getUserSettings($useriD);
+
+		// Lots and lots of checks!
+		if (!$userSettings['cover'] || (!empty($maintenance) && $maintenance == 2))
+		{
+			header('HTTP/1.0 404 File Not Found');
+			die('404 File Not Found');
+		}
+
+		// This is done to clear any output that was made before now.
+		if(!empty($modSettings['enableCompressedOutput']) && !headers_sent() && ob_get_length() == 0)
+		{
+			if(@ini_get('zlib.output_compression') == '1' || @ini_get('output_handler') == 'ob_gzhandler')
+				$modSettings['enableCompressedOutput'] = 0;
+			else
+				ob_start('ob_gzhandler');
+		}
+
+		if(empty($modSettings['enableCompressedOutput']))
+		{
+			ob_start();
+			header('Content-Encoding: none');
+		}
+	}
+
+	/**
 	 * Breeze::profilePopUp()
 	 *
 	 * Adds a few new entries on the pop up menu stuff.
