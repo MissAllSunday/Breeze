@@ -430,7 +430,7 @@ class Breeze extends Pimple\Container
 		$userSettings = $this['query']->getUserSettings($useriD);
 
 		// Lots and lots of checks!
-		if (!$userSettings['cover'] || (!empty($maintenance) && $maintenance == 2))
+		if ((!empty($maintenance) && $maintenance == 2) || !$userSettings['cover'] || file_exists($this['tools']->boardDir . Breeze::$coversFolder . $userID .'/'. $userSettings['cover']['basename']))
 		{
 			header('HTTP/1.0 404 File Not Found');
 			die('404 File Not Found');
@@ -449,6 +449,20 @@ class Breeze extends Pimple\Container
 		{
 			ob_start();
 			header('Content-Encoding: none');
+		}
+
+		// If it hasn't been modified since the last time this attachment was retrieved, there's no need to display it again.
+		if (!empty($_SERVER['HTTP_IF_MODIFIED_SINCE']))
+		{
+			list($modified_since) = explode(';', $_SERVER['HTTP_IF_MODIFIED_SINCE']);
+			if (strtotime($modified_since) >= filemtime($file['filename']))
+			{
+				ob_end_clean();
+
+				// Answer the question - no, it hasn't been modified ;).
+				header('HTTP/1.1 304 Not Modified');
+				exit;
+			}
 		}
 	}
 
