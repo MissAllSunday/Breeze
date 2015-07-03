@@ -428,9 +428,11 @@ class Breeze extends Pimple\Container
 
 		// Get the user's settings.
 		$userSettings = $this['query']->getUserSettings($useriD);
+		$file = $this['tools']->boardDir . Breeze::$coversFolder . $userID .'/'. $userSettings['cover']['basename'];
+		$fileTime = filemtime($file);
 
 		// Lots and lots of checks!
-		if ((!empty($maintenance) && $maintenance == 2) || !$userSettings['cover'] || file_exists($this['tools']->boardDir . Breeze::$coversFolder . $userID .'/'. $userSettings['cover']['basename']))
+		if ((!empty($maintenance) && $maintenance == 2) || !$userSettings['cover'] || file_exists($file))
 		{
 			header('HTTP/1.0 404 File Not Found');
 			die('404 File Not Found');
@@ -455,7 +457,7 @@ class Breeze extends Pimple\Container
 		if (!empty($_SERVER['HTTP_IF_MODIFIED_SINCE']))
 		{
 			list($modified_since) = explode(';', $_SERVER['HTTP_IF_MODIFIED_SINCE']);
-			if (strtotime($modified_since) >= filemtime($file['filename']))
+			if (strtotime($modified_since) >= $fileTime)
 			{
 				ob_end_clean();
 
@@ -464,6 +466,14 @@ class Breeze extends Pimple\Container
 				exit;
 			}
 		}
+
+		header('Pragma: ');
+		header('Expires: '. gmdate('D, d M Y H:i:s', time() + 31536000). ' GMT');
+		header('Last-Modified: '. gmdate('D, d M Y H:i:s', $fileTime). ' GMT');
+		header('Accept-Ranges: bytes');
+		header('Connection: close');
+		header('ETag: '. md5($fileTime));
+		header('Content-Type: '. $file['mime_type']);
 	}
 
 	/**
