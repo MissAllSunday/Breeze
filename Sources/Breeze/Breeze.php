@@ -369,6 +369,9 @@ class Breeze extends Pimple\Container
 
 		// Action used when an user wants to change their mood.
 		$actions['breezemood'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call#');
+
+		// Displaying the users cover/thumbnail.
+		$actions['breezecover'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::displayCover#');
 	}
 
 	/**
