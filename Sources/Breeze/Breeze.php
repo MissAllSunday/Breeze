@@ -419,6 +419,9 @@ class Breeze extends Pimple\Container
 		// Get the user ID.
 		$useriD = Breeze::data('get')->get('u');
 
+		// Thumbnail?
+		$thumb = Breeze::data('get')->get('thumb');
+
 		// Kinda need this!
 		if (!$this['tools']->enable('cover') || empty($useriD))
 		{
@@ -428,7 +431,11 @@ class Breeze extends Pimple\Container
 
 		// Get the user's settings.
 		$userSettings = $this['query']->getUserSettings($useriD);
-		$file = $this['tools']->boardDir . Breeze::$coversFolder . $userID .'/'. $userSettings['cover']['basename'];
+
+		// Gotta work with paths.
+		$folder = $this['tools']->boardDir . Breeze::$coversFolder . $useriD .'/' .($thumb ? 'thumbnail/' : '');
+
+		$file = $folder . $userSettings['cover']['basename'];
 		$fileTime = filemtime($file);
 
 		// Lots and lots of checks!
