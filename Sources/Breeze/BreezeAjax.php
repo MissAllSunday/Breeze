@@ -716,9 +716,16 @@ class BreezeAjax
 			$fileInfo = pathinfo($folder . $file->name);
 			$newFile = sha1($file->name) .'.dat';
 
+			// Get a not so reliable mimetype.
+			$fileInfo['mime'] = 'image/' . $fileInfo['extension'];
+
+			// Hay Bibi, ¿Por qué no eres una niña normal?
+			if (function_exists('exif_imagetype'))
+				$fileInfo['mime'] = image_type_to_mime_type(exif_imagetype($folder . $file->name));
+
 			// Just so we don't end with some silly names..
-			rename($folder . $file->name, $folder . $newFile);
-			rename($folderThumbnail . $file->name, $folderThumbnail . $newFile);
+			@rename($folder . $file->name, $folder . $newFile);
+			@rename($folderThumbnail . $file->name, $folderThumbnail . $newFile);
 
 			// And again get the file info...
 			$fileInfo = pathinfo($folder . $newFile);

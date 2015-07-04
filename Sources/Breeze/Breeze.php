@@ -483,7 +483,7 @@ class Breeze extends Pimple\Container
 		header('Accept-Ranges: bytes');
 		header('Connection: close');
 		header('ETag: '. md5($fileTime));
-		header('Content-Type: '. image_type_to_mime_type(exif_imagetype($file)));
+		header('Content-Type: '. $userSettings['cover']['mime']);
 
 		// Since we don't do output compression for files this large...
 		if (filesize($file) > 4194304)
