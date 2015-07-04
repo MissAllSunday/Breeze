@@ -101,9 +101,9 @@ class BreezeUser extends Breeze
 		$context['Breeze']['tools'] = $tools;
 
 		// I can haz cover?
-		if ($tools->enable('cover') && !empty($context['Breeze']['settings']['owner']['cover']) && file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']['basename']))
+		if ($tools->enable('cover') && !empty($context['Breeze']['settings']['owner']['cover']))
 		{
-			$context['Breeze']['cover'] = $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/'. $context['Breeze']['settings']['owner']['cover']['basename'];
+			$context['Breeze']['cover'] = $this['tools']->scriptUrl . '?action=breezecover;u=' . $context['member']['id'];
 
 			$context['html_headers'] .= '
 	<style type="text/css">.header {background-image: url('. $context['Breeze']['cover'] .'); height:'. (!empty($context['Breeze']['settings']['owner']['cover_height']) ? $context['Breeze']['settings']['owner']['cover_height'] : '380') .'px;}</style>';
@@ -279,10 +279,8 @@ class BreezeUser extends Breeze
 			'description' => $tools->text('user_settings_name_alerts_desc'),
 			'icon' => 'profile_hd.png',
 			'tabs' => array(
-				'settings' => array(
-				),
-				'edit' => array(
-				),
+				'settings' => array(),
+				'edit' => array(),
 			),
 		);
 
