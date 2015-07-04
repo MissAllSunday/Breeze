@@ -105,8 +105,8 @@ class BreezeUser extends Breeze
 		{
 			$context['Breeze']['cover'] = $this['tools']->scriptUrl . '?action=breezecover;u=' . $context['member']['id'];
 
-			$context['html_headers'] .= '
-	<style type="text/css">.header {background-image: url('. $context['Breeze']['cover'] .'); height:'. (!empty($context['Breeze']['settings']['owner']['cover_height']) ? $context['Breeze']['settings']['owner']['cover_height'] : '380') .'px;}</style>';
+			addInlineCss('
+.header {background-image: url('. $context['Breeze']['cover'] .'); height:'. (!empty($context['Breeze']['settings']['owner']['cover_height']) ? $context['Breeze']['settings']['owner']['cover_height'] : '380') .'px;}');
 		}
 
 		// Set up some vars for pagination.
