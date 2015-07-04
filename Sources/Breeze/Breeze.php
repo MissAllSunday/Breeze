@@ -435,11 +435,11 @@ class Breeze extends Pimple\Container
 		// Gotta work with paths.
 		$folder = $this['tools']->boardDir . Breeze::$coversFolder . $useriD .'/' .($thumb ? 'thumbnail/' : '');
 
-		$file = $folder . $userSettings['cover']['basename'];
-		$fileTime = filemtime($file);
+		// False if there is no image.
+		$file = empty($userSettings['cover']) ? false : $folder . $userSettings['cover']['basename'];
 
 		// Lots and lots of checks!
-		if ((!empty($maintenance) && $maintenance == 2) || !$userSettings['cover'] || file_exists($file))
+		if ((!empty($maintenance) && $maintenance == 2) || empty($file) || file_exists($file))
 		{
 			header('HTTP/1.0 404 File Not Found');
 			die('404 File Not Found');
@@ -459,6 +459,9 @@ class Breeze extends Pimple\Container
 			ob_start();
 			header('Content-Encoding: none');
 		}
+
+		// Get some info.
+		$fileTime = filemtime($file);
 
 		// If it hasn't been modified since the last time this attachment was retrieved, there's no need to display it again.
 		if (!empty($_SERVER['HTTP_IF_MODIFIED_SINCE']))
