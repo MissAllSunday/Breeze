@@ -476,13 +476,13 @@ class Breeze extends Pimple\Container
 		header('Content-Type: '. image_type_to_mime_type(exif_imagetype($file)));
 
 		// Since we don't do output compression for files this large...
-		if (filesize($file['filename']) > 4194304)
+		if (filesize($file) > 4194304)
 		{
 			// Forcibly end any output buffering going on.
 			while (@ob_get_level() > 0)
 				@ob_end_clean();
 
-			$fp = fopen($file['filename'], 'rb');
+			$fp = fopen($file, 'rb');
 			while (!feof($fp))
 			{
 				echo fread($fp, 8192);
@@ -492,8 +492,8 @@ class Breeze extends Pimple\Container
 		}
 
 		// On some of the less-bright hosts, readfile() is disabled.  It's just a faster, more byte safe, version of what's in the if.
-		elseif (@readfile($file['filename']) === null)
-			echo file_get_contents($file['filename']);
+		elseif (@readfile($file) === null)
+			echo file_get_contents($file);
 
 		die();
 	}
