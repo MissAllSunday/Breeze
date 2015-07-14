@@ -526,7 +526,9 @@ class BreezeUser extends Breeze
 		// Clean visitors log
 		$form->addHTML(array(
 			'name' => 'clean_visitors',
-			'html' => '<a href="'. $this['tools']->scriptUrl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="clean_log">%s</a>'
+			'html' => $this['tools']->parser('<a href="{href}" class="clean_log">'. $this['tools']->text('user_settings_clean_visitors') .'</a>', array(
+				'href' => $this['tools']->scriptUrl .'?action=breezeajax;sa=cleanlog;log=visitors;u='. $context['member']['id'] .';rf=profile',
+			))
 		));
 
 		// About me textarea.
