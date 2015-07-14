@@ -693,7 +693,7 @@ class Breeze extends Pimple\Container
 		addInlineJavascript($generalSettings);
 
 		// We still need to pass some text strings to the client.
-		$clientText = array('error_empty', 'noti_markasread', 'error_wrong_values', 'noti_delete', 'noti_cancel', 'noti_closeAll', 'noti_checkAll', 'confirm_yes', 'confirm_cancel');
+		$clientText = array('error_empty', 'noti_markasread', 'error_wrong_values', 'noti_delete', 'noti_cancel', 'noti_closeAll', 'noti_checkAll', 'confirm_yes', 'confirm_cancel', 'confirm_delete');
 
 		foreach ($clientText as $ct)
 			$generalText .= '
