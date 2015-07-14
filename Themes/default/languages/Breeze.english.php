@@ -170,7 +170,7 @@ $txt['cannot_breeze_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete
 $txt['Breeze_cannot_see_general_wall'] = 'You need to enable your general wall from your <a href="'. $scripturl .'?action=profile;area=breezesettings">wall settings page</a>.';
 
 // Loading text.
-$txt['Breeze_profile_of_username'] = 'Profile of %1$s';
+$txt['Breeze_profile_of_username'] = 'Profile of {name}';
 $txt['Breeze_info_loading_end'] = 'There are no more status to display';
 $txt['Breeze_info_loadingAlerts_end'] = 'There are no more alerts to display';
 $txt['Breeze_page_no_status'] = 'There are no status to display';

@@ -129,7 +129,9 @@ class BreezeUser extends Breeze
 			$context['page_index'] = $status['pagination'];
 
 		// Page name depends on pagination.
-		$context['page_title'] = sprintf($tools->text('profile_of_username'), $context['member']['name']);
+		$context['page_title'] = $this['tools']->parser($tools->text('profile_of_username'), array(
+			'name' => $context['member']['name']
+		));
 
 		// Get the profile views.
 		if (!$user_info['is_guest'] && !empty($context['Breeze']['settings']['owner']['visitors']))
