@@ -16,7 +16,7 @@ if (!defined('SMF'))
 class BreezeMood
 {
 	protected $_app;
-	protected $_moodFolder = 'moods/';
+	protected $_moodFolder = 'breezeMoods/';
 	public $imagesPath = '';
 	public $imagesUrl = '';
 	public $allowedExtensions = array('gif', 'jpg', 'png');
@@ -27,8 +27,8 @@ class BreezeMood
 	{
 		$this->_app = $app;
 
-		$this->imagesPath = $this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_moodFolder;
-		$this->imagesUrl = $this->_app['tools']->boardUrl . Breeze::$coversFolder . $this->_moodFolder;
+		$this->imagesPath = $this->_app['tools']->settings['default_theme_dir'] .'/images/' . $this->_moodFolder;
+		$this->imagesUrl = $this->_app['tools']->settings['default_images_url'] .'/'. $this->_moodFolder;
 		$this->placementField = $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->setting('mood_placement') : 0;
 	}
 

@@ -129,7 +129,7 @@ class BreezeLog
 		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_cover'), array(
 			'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
 			'gender_possessive' => $this->_data[$id]['gender_possessive'],
-			'image' => $file ? ('<img src="'. $this->_app['tools']->scriptUrl .'?action=breezecover;thumb;u=' $this->_data[$id]['member'] .'" />') : '',
+			'image' => $file ? ('<img src="'. $this->_app['tools']->scriptUrl .'?action=breezecover;thumb;u='. $this->_data[$id]['member'] .'" />') : '',
 		));
 	}
 
