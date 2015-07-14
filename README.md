@@ -1,6 +1,6 @@
 **Breeze**, http://missallsunday.com
 
-The software is licensed under [MPL 1.1 license](http://www.mozilla.org/MPL/MPL-1.1.html).
+The software is licensed under [MPL 2.0 license](https://www.mozilla.org/MPL/).
 
 ######What is Breeze:
 
