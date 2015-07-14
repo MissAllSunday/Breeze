@@ -489,7 +489,7 @@ class BreezeTools
 		if (empty($fetchedUser))
 			return true;
 
-		// Get the staled user settings.
+		// Get the "stalkee" user settings.
 		$stalkedSettings = $this->_app['query']->getUserSettings($fetchedUser);
 
 		// Check if the stalker has been added in stalkee's ignore list.

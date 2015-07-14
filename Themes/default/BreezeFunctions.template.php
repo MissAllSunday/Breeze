@@ -92,8 +92,7 @@ function breeze_status($data, $returnVar = false)
 								</div>
 								<div class="clear"></div>
 							</div>
-							<hr />
-							<div id="breeze_display_comment_'. $status['id'] .'"></div>';
+							<hr />';
 
 		$echo .= '
 								<ul class="breeze_comments_list" id="comment_loadplace_'. $status['id'] .'">';
@@ -106,7 +105,7 @@ function breeze_status($data, $returnVar = false)
 								</ul>';
 
 		$echo .= '
-								<div id="breeze_load_image_comment_'. $status['id'] .'" style="margin:auto; text-align:center;"></div>';
+								<div id="breeze_display_comment_'. $status['id'] .'"></div>';
 
 		// Post a new comment
 		if ($status['canHas']['postComments'])

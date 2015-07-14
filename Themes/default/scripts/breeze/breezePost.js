@@ -33,8 +33,15 @@ breezePost.prototype.after = function() {
 breezePost.prototype.show = function(html) {
 
 		this.loadImage.fadeOut('slow', 'linear', function(){
-			if (html.type == 'info')
-				$(div).prepend(DOMPurify.sanitize(html.data)).fadeIn('slow');
+			if (html.type == 'info'){
+				if(this.type == 'status'){
+					$(bInnerDiv).prepend(DOMPurify.sanitize(html.data)).fadeIn('slow');
+				}
+
+				else{
+					$(bInnerDiv).append(DOMPurify.sanitize(html.data)).fadeIn('slow');
+				}
+			}
 		});
 
 	// Do you also have the Ohara youtube installed? Kudos!!!
@@ -87,10 +94,17 @@ breezePost.prototype.save = function() {
 	// Append some mentions if there are any.
 
 	// Get the div where the message is going to appear.
-	div = '#breeze_display_' + this.type + (this.data.statusID != false ? '_' + this.data.statusID : '');
+	bInnerDiv = '#breeze_display_' + this.type + (this.data.statusID != false ? '_' + this.data.statusID : '');
 
 	// Show a loading image.
-	$(div).prepend(this.loadImage);
+	if(this.type == 'status'){
+		$(bInnerDiv).prepend(this.loadImage);
+	}
+
+	else{
+		$(bInnerDiv).append(this.loadImage);
+	}
+
 	this.loadImage.fadeIn('slow');
 
 	// The long, long ajax call...
