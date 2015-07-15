@@ -16,7 +16,7 @@ var breeze = {
 breeze.tools.showNoti = function(params){
 	noty({
 		text: params.message,
-		timeout: 3500, //@todo set this to a user setting
+		timeout: 3500, //@todo set this to an user setting.
 		type: params.type,
 		theme: 'relax',
 		layout: (typeof(params.layout) === 'undefined' ? 'top' : params.layout),

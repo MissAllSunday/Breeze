@@ -101,67 +101,62 @@ class BreezeBuddy
 	{
 		global $context;
 
-		// Don't do this that often..
-		if (cache_get_data('Buddy-sent-'. $this->_userSender['id'] .'-'. $this->_userReceiver, 604800) == null)
+		// @todo set an user setting to identify if this user has already asked for friendship.
+
+		// Ran the request through some checks...
+		if ($this->check() == true)
+			return;
+
+		// Do we want to show the message or the confirmation page?
+		if ($this->_data->get('confirmed'))
 		{
-			// Ran the request through some checks...
-			if ($this->check() == true)
-				return;
+			// Create a nice alert to let the user know you want to be his/her buddy!
+			$this->_app['query']->insertNoti(array(
+				'receiver_id' => $this->_userReceiver,
+				'id_member' => $this->_userSender['id'],
+				'member_name' => $this->_userSender['username'],
+				'time' => time(),
+				'text' => 'confirm',
+				'sender' => $this->_userSender['id'],
+				'receiver' => $this->_userReceiver,
+			), 'buddyConfirm');
 
-			// Do we want to show the message or the confirmation page?
-			if ($this->_data->get('confirmed'))
-			{
-				// Create a nice alert to let the user know you want to be his/her buddy!
-				$this->_app['query']->insertNoti(array(
-					'receiver_id' => $this->_userReceiver,
-					'id_member' => $this->_userSender['id'],
-					'member_name' => $this->_userSender['username'],
-					'time' => time(),
-					'text' => 'confirm',
-					'sender' => $this->_userSender['id'],
-					'receiver' => $this->_userReceiver,
-				), 'buddyConfirm');
-
-				// Get the receiver's link
-				$this->_app['tools']->loadUserInfo($this->_userReceiver);
-
-				// I actually need to use $context['Breeze']['user_info'] a lot more...
-				return $this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_confirm'), array(
-					'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
-				));
-			}
-
-			$context['sub_template'] = 'buddy_message';
-
+			// Get the receiver's link
 			$this->_app['tools']->loadUserInfo($this->_userReceiver);
 
-			$this->_app['form']->setOptions(array(
-				'name' => 'breezeBuddy',
-				'url' => $this->_app['tools']->scriptUrl .'?action=buddy;sa=addTwo;u='. $this->_userReceiver,
-				'character_set' => $context['character_set'],
-				'title' => $this->_app['tools']->text('buddy_title'),
+			// I actually need to use $context['Breeze']['user_info'] a lot more...
+			return $this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_confirm'), array(
+				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
 			));
-
-			// The actual textarea...
-			$this->_app['form']->addTextArea(array(
-				'name' => 'buddyMessage',
-				'value' => '',
-				'size' => array('rows' => 10, 'cols' => 60, 'maxLength' => 2048),
-				'fullText' => $this->_app['tools']->text('buddy_message'),
-				'fullDesc' => $this->_app['tools']->parser($this->_app['tools']->text('buddy_message_desc'), array(
-					'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
-				)),
-			));
-
-			// Session stuff.
-			$this->_app['form']->addHiddenField($context['session_var'], $context['session_id']);
-			$this->_app['form']->addButton(array('name' => 'submit'));
-
-			$this->_response = $this->_app['form']->display();
-
-			// Store this in a cache entry to avoid creating multiple alerts. Give it a long life cycle.
-			cache_put_data('Buddy-sent-'. $this->_userSender['id'] .'-'. $this->_userReceiver, '1', 604800);
 		}
+
+		$context['sub_template'] = 'buddy_message';
+
+		$this->_app['tools']->loadUserInfo($this->_userReceiver);
+
+		$this->_app['form']->setOptions(array(
+			'name' => 'breezeBuddy',
+			'url' => $this->_app['tools']->scriptUrl .'?action=buddy;sa=addTwo;u='. $this->_userReceiver,
+			'character_set' => $context['character_set'],
+			'title' => $this->_app['tools']->text('buddy_title'),
+		));
+
+		// The actual textarea...
+		$this->_app['form']->addTextArea(array(
+			'name' => 'buddyMessage',
+			'value' => '',
+			'size' => array('rows' => 10, 'cols' => 60, 'maxLength' => 2048),
+			'fullText' => $this->_app['tools']->text('buddy_message'),
+			'fullDesc' => $this->_app['tools']->parser($this->_app['tools']->text('buddy_message_desc'), array(
+				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
+			)),
+		));
+
+		// Session stuff.
+		$this->_app['form']->addHiddenField($context['session_var'], $context['session_id']);
+		$this->_app['form']->addButton(array('name' => 'submit'));
+
+		$this->_response = $this->_app['form']->display();
 
 		// Let this user know that an alert has already been sent...
 		else
