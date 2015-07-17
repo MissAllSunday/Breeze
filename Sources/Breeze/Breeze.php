@@ -291,7 +291,7 @@ class Breeze extends Pimple\Container
 	{
 		global $context, $txt, $scripturl, $user_info;
 
-		// Don't do anything if the mod off
+		// Don't do anything if the mod is off
 		if (!$this['tools']->enable('master'))
 			return;
 
@@ -352,7 +352,7 @@ class Breeze extends Pimple\Container
 	 */
 	public function actions(&$actions)
 	{
-		// Don't do anything if the mod off
+		// Don't do anything if the mod is off
 		if (!$this['tools']->enable('master'))
 			return;
 
@@ -385,7 +385,7 @@ class Breeze extends Pimple\Container
 		// Just some quick code to make sure this works...
 		$action = str_replace('breeze', '', Breeze::data('get')->get('action'));
 
-		// Don't do anything if the mod off
+		// Don't do anything if the mod is off
 		if (!$this['tools']->enable('master') && $action != 'admin')
 			return;
 
@@ -533,7 +533,7 @@ class Breeze extends Pimple\Container
 
 	public function alerts(&$alerts)
 	{
-		// Don't do anything if the mod off
+		// Don't do anything if the mod is off
 		if (!$this['tools']->enable('master'))
 			return;
 
@@ -543,7 +543,7 @@ class Breeze extends Pimple\Container
 
 	public function alertsPref(&$alert_types, &$group_options, &$disabled_options)
 	{
-		// Don't do anything if the mod off
+		// Don't do anything if the mod is off
 		if (!$this['tools']->enable('master'))
 			return;
 
@@ -721,7 +721,7 @@ class Breeze extends Pimple\Container
 
 	public function moodProfile($memID, $area)
 	{
-		// Don't do anything if the mod off
+		// Don't do anything if the mod is off
 		if (!$this['tools']->enable('master'))
 			return;
 
