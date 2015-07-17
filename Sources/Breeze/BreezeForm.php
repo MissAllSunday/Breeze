@@ -65,7 +65,7 @@ class BreezeForm
 
 		// Give it a chance to use a full text string.
 		$param['text']  = !empty($param['fullText']) ? $param['fullText'] : $this->setText($param['text']);
-		$param['desc']  = !empty($param['fullDesc']) ? $param['fullDesc'] : $this->setText($param['text'] .'_sub');
+		$param['desc']  = !empty($param['fullDesc']) ? $param['fullDesc'] : $this->setText($param['name'] .'_sub');
 	}
 
 	function addSelect($param = array())
@@ -207,7 +207,7 @@ class BreezeForm
 
 		if (!empty($this->_options['desc']))
 			$this->buffer .= '
-	<p class="info">
+	<p class="information">
 		'. $this->_options['desc'] .'
 	</p>';
 
