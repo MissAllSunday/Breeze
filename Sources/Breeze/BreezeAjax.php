@@ -714,10 +714,13 @@ class BreezeAjax
 				$this->_app['tools']->deleteCover($this->_userSettings['cover']['basename'], $this->_currentUser);
 
 			$fileInfo = pathinfo($folder . $file->name);
+
+
 			$newFile = sha1($file->name) .'.dat';
 
 			// Get a not so reliable mimetype.
-			$fileInfo['mime'] = 'image/' . $fileInfo['extension'];
+			if (!empty($fileInfo['extension']))
+				$fileInfo['mime'] = 'image/' . $fileInfo['extension'];
 
 			// Hay Bibi, ¿Por qué no eres una niña normal?
 			if (function_exists('exif_imagetype'))

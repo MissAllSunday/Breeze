@@ -621,8 +621,6 @@ class BreezeUser extends Breeze
 			<div id="files" class="files"></div>'
 		));
 
-		$form->addButton(array('name' => 'submit'));
-
 		// Send the form to the template
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
 
@@ -637,6 +635,15 @@ class BreezeUser extends Breeze
 		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-validate.js', array('local' => true, 'default_theme' => true));
 		addInlineJavascript('
 	$(function () {
+	var uploadButton = $(\'<a/>\')
+		.addClass(\'button_submit uploadButton\')
+		.prop(\'disabled\', true)
+		.text(\'upload\')
+		.one(\'click\', function (e) {
+			e.preventDefault();
+			$(this).data().submit();
+		});
+
 		$(\'#fileupload\').on(\'click\', function (e) {
 			$(\'#files\').empty();
 		});
@@ -653,14 +660,7 @@ class BreezeUser extends Breeze
 			previewCrop: true,
 			maxNumberOfFiles: 1,
 			add: function (e, data) {
-				data.context = $(\'[name="Submit"]\')
-					.on(\'click\', function (e) {
-						e.preventDefault();
-						$(e).prop(\'disabled\',true);
-						ajax_indicator(true);
-						data.submit();
-						return false;
-					}).data(data);
+
 			}
 		}).on(\'fileuploadadd\', function (e, data) {
 			data.context = $(\'<div/>\').appendTo(\'#files\');
@@ -668,6 +668,7 @@ class BreezeUser extends Breeze
 
 				var node = $(\'<div/>\')
 						.append(\'<p class="b_cover_preview"><img src="\' + URL.createObjectURL(file) + \'"/ style="max-width: 300px;"></p>\');
+				node.append(uploadButton.clone(true).data(data));
 
 				node.appendTo(data.context);
 			});
