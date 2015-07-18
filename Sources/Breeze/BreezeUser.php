@@ -653,6 +653,7 @@ class BreezeUser extends Breeze
 			$(\'.b_cover_preview\').fadeOut(\'slow\', function() {
 				$(\'#files\').empty();
 				delete inData.files;
+				$(\'#fileupload\').prop(\'disabled\', false);
 			});
 		});
 
@@ -669,7 +670,7 @@ class BreezeUser extends Breeze
 			maxNumberOfFiles: 1,
 			add: function (e, data) {
 				data.context = $(\'#files\');
-
+				$(\'#fileupload\').prop(\'disabled\', true);
 				$.each(data.files, function (index, file) {
 
 					var node = $(\'<p/>\').addClass(\'b_cover_preview\').append(\'<img src="\' + URL.createObjectURL(file) + \'"/ style="max-width: 300px;">\');
@@ -680,6 +681,7 @@ class BreezeUser extends Breeze
 			}
 		}).on(\'fileuploaddone\', function (e, data) {
 
+			$(\'#fileupload\').prop(\'disabled\', false);
 			ajax_indicator(false);
 			if (data.result.error) {
 				data.abort();
