@@ -137,10 +137,6 @@ class BreezeForm
 
 	function addHiddenField($name, $value)
 	{
-		// Kinda needs this...
-		if (empty($param))
-			return;
-
 		$param['type'] = 'hidden';
 		$param['html'] = '<input type="'. $param['type'] .'" name="'. $name .'" id="'. $name .'" value="'. $value .'" />';
 
