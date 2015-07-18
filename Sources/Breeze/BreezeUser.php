@@ -650,11 +650,10 @@ class BreezeUser extends Breeze
 		.one(\'click\', function (e) {
 			e.preventDefault();
 			var inData = $(this).data();
-			inData.abort();console.log(inData);
-		});
-
-		$(\'#fileupload\').on(\'click\', function (e) {
-			$(\'#files\').empty();
+			$(\'.b_cover_preview\').fadeOut(\'slow\', function() {
+				$(\'#files\').empty();
+				delete inData.files;
+			});
 		});
 
 		$(\'#fileupload\').fileupload({
@@ -669,19 +668,16 @@ class BreezeUser extends Breeze
 			previewCrop: true,
 			maxNumberOfFiles: 1,
 			add: function (e, data) {
+				data.context = $(\'#files\');
 
+				$.each(data.files, function (index, file) {
+
+					var node = $(\'<p/>\').addClass(\'b_cover_preview\').append(\'<img src="\' + URL.createObjectURL(file) + \'"/ style="max-width: 300px;">\');
+					node.appendTo(data.context);
+				});
+				data.context.append(uploadButton.clone(true).data(data));
+				data.context.append(cancelButton.clone(true).data(data));
 			}
-		}).on(\'fileuploadadd\', function (e, data) {
-			data.context = $(\'#files\');
-			$.each(data.files, function (index, file) {
-
-				var node = $(\'<div/>\').addClass(\'fileDiv\')
-						.append(\'<p class="b_cover_preview"><img src="\' + URL.createObjectURL(file) + \'"/ style="max-width: 300px;"></p>\');
-				node.append(uploadButton.clone(true).data(data));
-				node.append(cancelButton.clone(true).data(data));
-
-				node.appendTo(data.context);
-			});
 		}).on(\'fileuploaddone\', function (e, data) {
 
 			ajax_indicator(false);
