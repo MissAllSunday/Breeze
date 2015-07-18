@@ -715,7 +715,6 @@ class BreezeAjax
 
 			$fileInfo = pathinfo($folder . $file->name);
 
-
 			$newFile = sha1($file->name) .'.dat';
 
 			// Get a not so reliable mimetype.

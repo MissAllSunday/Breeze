@@ -642,6 +642,15 @@ class BreezeUser extends Breeze
 		.one(\'click\', function (e) {
 			e.preventDefault();
 			$(this).data().submit();
+		}),
+	cancelButton = $(\'<a/>\')
+		.addClass(\'button_submit cancelButton\')
+		.prop(\'disabled\', false)
+		.text(\'cancel\')
+		.one(\'click\', function (e) {
+			e.preventDefault();
+			var inData = $(this).data();
+			inData.abort();console.log(inData);
 		});
 
 		$(\'#fileupload\').on(\'click\', function (e) {
@@ -663,12 +672,13 @@ class BreezeUser extends Breeze
 
 			}
 		}).on(\'fileuploadadd\', function (e, data) {
-			data.context = $(\'<div/>\').appendTo(\'#files\');
+			data.context = $(\'#files\');
 			$.each(data.files, function (index, file) {
 
-				var node = $(\'<div/>\')
+				var node = $(\'<div/>\').addClass(\'fileDiv\')
 						.append(\'<p class="b_cover_preview"><img src="\' + URL.createObjectURL(file) + \'"/ style="max-width: 300px;"></p>\');
 				node.append(uploadButton.clone(true).data(data));
+				node.append(cancelButton.clone(true).data(data));
 
 				node.appendTo(data.context);
 			});
@@ -676,6 +686,7 @@ class BreezeUser extends Breeze
 
 			ajax_indicator(false);
 			if (data.result.error) {
+				data.abort();
 				$(\'.b_cover_preview\').replaceWith(\'<div class="errorbox">\' + data.result.error + \'</div>\');
 			}
 
