@@ -607,7 +607,7 @@ class BreezeUser extends Breeze
 				'html' => $this['tools']->parser('<a href="{href}" class="cover_delete you_sure">{text}</a>', array(
 					'text' => $this['tools']->text('user_settings_cover_delete'),
 					'href' => $this['tools']->scriptUrl .'?action=breezeajax;sa=coverdelete;u='. $context['member']['id'] .';rf=profile',
-				)). (file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename']) ? '<br /><img src="'. $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename'] .'" class ="current_cover" />' : '') .''
+				)). '<br /><img src="'. $this['tools']->scriptUrl .'?action=breezecover;u='. $context['member']['id'] .';thumb=1" class ="current_cover" />'
 			));
 
 		// Cover upload option.
@@ -699,7 +699,7 @@ class BreezeUser extends Breeze
 				if (data.result.type == \'info\') {
 					var image = JSON.parse(data.result.data);
 					// Gotta make sure it exists...
-					var imgsrc = \''. $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/\' + image.basename;
+					var imgsrc = \''. $this['tools']->scriptUrl .'?action=breezecover;u='. $context['member']['id'] .';thumb=1\';
 					var imgcheck = imgsrc.width;
 
 					if (imgcheck != 0)
