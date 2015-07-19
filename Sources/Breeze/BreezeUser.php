@@ -633,6 +633,8 @@ class BreezeUser extends Breeze
 		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-process.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-image.js', array('local' => true, 'default_theme' => true));
 		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-validate.js', array('local' => true, 'default_theme' => true));
+
+		// @todo replace the hardcoded text strings
 		addInlineJavascript('
 	$(function () {
 	var uploadButton = $(\'<a/>\')

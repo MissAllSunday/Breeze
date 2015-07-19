@@ -439,11 +439,14 @@ class Breeze extends Pimple\Container
 		$file = empty($userSettings['cover']) ? false : $folder . $userSettings['cover']['basename'];
 
 		// Lots and lots of checks!
-		if ((!empty($maintenance) && $maintenance == 2) || empty($file) || file_exists($file))
+		if ((!empty($maintenance) && $maintenance == 2) || empty($file) || !file_exists($file))
 		{
 			header('HTTP/1.0 404 File Not Found');
 			die('404 File Not Found');
 		}
+
+		// Kill anything else
+		ob_end_clean();
 
 		// This is done to clear any output that was made before now.
 		if(!empty($modSettings['enableCompressedOutput']) && !headers_sent() && ob_get_length() == 0)
