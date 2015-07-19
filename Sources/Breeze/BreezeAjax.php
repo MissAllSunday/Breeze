@@ -760,6 +760,7 @@ class BreezeAjax
 
 			// Don't need this.
 			unset($file);
+			unset($fileInfo);
 
 			// All done.
 			return;

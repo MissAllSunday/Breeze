@@ -437,7 +437,7 @@ class Breeze extends Pimple\Container
 
 		// False if there is no image.
 		$file = empty($userSettings['cover']) ? false : $folder . $userSettings['cover']['basename'];
-
+echo '<pre>';print_r($file);die;
 		// Lots and lots of checks!
 		if ((!empty($maintenance) && $maintenance == 2) || empty($file) || !file_exists($file))
 		{

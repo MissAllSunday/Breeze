@@ -604,8 +604,10 @@ class BreezeUser extends Breeze
 		if (!empty($userSettings['cover']))
 			$form->addHTML(array(
 				'name' => 'cover_delete',
-				'html' => '<a href="'. $this['tools']->scriptUrl .'?action=breezeajax;sa=coverdelete;u='. $context['member']['id'] .';rf=profile;'. $context['session_var'] .'='. $context['session_id'] .'" class="cover_delete you_sure">%s</a>
-				'. (file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename']) ? '<br /><img src="'. $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename'] .'" class ="current_cover" />' : '') .''
+				'html' => $this['tools']->parser('<a href="{href}" class="cover_delete you_sure">{text}</a>', array(
+					'text' => $this['tools']->text('user_settings_cover_delete'),
+					'href' => $this['tools']->scriptUrl .'?action=breezeajax;sa=coverdelete;u='. $context['member']['id'] .';rf=profile',
+				)). (file_exists($this['tools']->boardDir . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename']) ? '<br /><img src="'. $this['tools']->boardUrl . Breeze::$coversFolder . $context['member']['id'] .'/thumbnail/'. $userSettings['cover']['basename'] .'" class ="current_cover" />' : '') .''
 			));
 
 		// Cover upload option.
