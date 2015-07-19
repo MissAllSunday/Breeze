@@ -729,8 +729,8 @@ class BreezeAjax
 			@rename($folder . $file->name, $folder . $newFile);
 			@rename($folderThumbnail . $file->name, $folderThumbnail . $newFile);
 
-			// And again get the file info...
-			$fileInfo = pathinfo($folder . $newFile);
+			// And again get the file info, overwrite some stuff.
+			$fileInfo = array_merge($fileInfo, pathinfo($folder . $newFile));
 
 			// Store the new cover info.
 			$this->_app['query']->insertUserSettings(array('cover'=> json_encode($fileInfo)), $this->_currentUser);
