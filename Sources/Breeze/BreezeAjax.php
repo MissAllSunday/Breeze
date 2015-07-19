@@ -715,7 +715,7 @@ class BreezeAjax
 
 			$fileInfo = pathinfo($folder . $file->name);
 
-			$newFile = sha1($file->name) .'.dat';
+			$newFile = sha1($this->_app->data()->normalizeString($fileInfo['filename'])) .'.dat';
 
 			// Get a not so reliable mimetype.
 			if (!empty($fileInfo['extension']))
@@ -725,14 +725,12 @@ class BreezeAjax
 			if (function_exists('exif_imagetype'))
 				$fileInfo['mime'] = image_type_to_mime_type(exif_imagetype($folder . $file->name));
 
-			// Just so we don't end with some silly names.
-			$file->name = $this->_app->data()->normalizeString($file->name);
+			rename($folder . $file->name, $folder . $newFile);
+			rename($folderThumbnail . $file->name, $folderThumbnail . $newFile);
 
-			@rename($folder . $file->name, $folder . $newFile);
-			@rename($folderThumbnail . $file->name, $folderThumbnail . $newFile);
-
-			// And again get the file info, overwrite some stuff.
-			$fileInfo = array_merge($fileInfo, pathinfo($folder . $newFile));
+			// And again get the file info, this time just get what we need.
+			$fileInfo['basename'] = pathinfo($folder . $newFile, PATHINFO_BASENAME);
+			$fileInfo['filename'] = pathinfo($folder . $newFile, PATHINFO_FILENAME);
 
 			// Store the new cover info.
 			$this->_app['query']->insertUserSettings(array('cover'=> json_encode($fileInfo)), $this->_currentUser);
