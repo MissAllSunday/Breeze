@@ -725,7 +725,9 @@ class BreezeAjax
 			if (function_exists('exif_imagetype'))
 				$fileInfo['mime'] = image_type_to_mime_type(exif_imagetype($folder . $file->name));
 
-			// Just so we don't end with some silly names..
+			// Just so we don't end with some silly names.
+			$file->name = $this->_app->data()->normalizeString($file->name);
+
 			@rename($folder . $file->name, $folder . $newFile);
 			@rename($folderThumbnail . $file->name, $folderThumbnail . $newFile);
 
