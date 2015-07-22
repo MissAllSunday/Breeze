@@ -91,6 +91,12 @@ class BreezeQuery
 				'property' => '_logs',
 				'columns' => array('id_log', 'member', 'content_type', 'content_id', 'time', 'extra'),
 			),
+			'peti' => array(
+				'name' => 'peti',
+				'table' => 'breeze_petitions',
+				'property' => '_peti',
+				'columns' => array('member', 'data'),
+			),
 		);
 	}
 
@@ -886,16 +892,10 @@ class BreezeQuery
 	public function getUserPetitions($userID = 0)
 	{
 		global $smcFunc;
-		
-			$result = $smcFunc['db_query']('', '
-				SELECT op.' . (implode(', op.', $this->_tables['options']['columns'])) . ', mem.' . (implode(', mem.', $this->_tables['members']['columns'])) . '
-				FROM {db_prefix}' . ($this->_tables['options']['table']) . ' AS op
-					LEFT JOIN {db_prefix}'. ($this->_tables['members']['table']) .' AS mem ON (mem.id_member = {int:user})
-				WHERE member_id = {int:user}',
-				array(
-					'user' => $user,
-				)
-			);
+
+		$result = $smcFunc['db_query']('', '
+				SELECT '. implode(', ', $this->_tables['peti']['columns']) .'
+				FROM {db_prefix}' . ($this->_tables['peti']['table']), array());
 	}
 
 	public function logCount($users)
