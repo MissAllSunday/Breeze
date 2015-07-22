@@ -103,12 +103,12 @@ class BreezeBuddy
 
 		// @todo set an user setting to identify if this user has already asked for friendship.
 
-		// Ran the request through some checks...
+		// Ran the request through some checks.
 		if ($this->check() == true)
 			return;
 
 		// Do we want to show the message or the confirmation page?
-		if ($this->_data->get('confirmed'))
+		if ($this->_data->get('msent'))
 		{
 			// Create a nice alert to let the user know you want to be his/her buddy!
 			$this->_app['query']->insertNoti(array(
@@ -136,7 +136,7 @@ class BreezeBuddy
 
 		$this->_app['form']->setOptions(array(
 			'name' => 'breezeBuddy',
-			'url' => $this->_app['tools']->scriptUrl .'?action=buddy;sa=addTwo;u='. $this->_userReceiver,
+			'url' => $this->_app['tools']->scriptUrl .'?action=buddy;msent=1;u='. $this->_userReceiver,
 			'character_set' => $context['character_set'],
 			'title' => $this->_app['tools']->text('buddy_title'),
 		));
@@ -166,10 +166,10 @@ class BreezeBuddy
 	}
 
 	/**
-	 * BreezeAjax::denied()
+	 * BreezeAjax::check()
 	 *
 	 * Checks if the receiver does indeed want you as his/her buddy.
-	 * @return boolean True if you are blocked, false if you're good boy/girl!
+	 * @return boolean True if you are blocked, false if you're a good boy/girl!
 	 */
 	protected function check()
 	{
