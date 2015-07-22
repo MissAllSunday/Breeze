@@ -110,6 +110,11 @@ class BreezeBuddy
 		// Do we want to show the message or the confirmation page?
 		if ($this->_data->get('msent'))
 		{
+			// Get the message and store it on the receiver's petition list.
+			$buddyMessage = $this->_data->get('buddyMessage');
+
+			// @todo low level method to store petition lists.
+
 			// Create a nice alert to let the user know you want to be his/her buddy!
 			$this->_app['query']->insertNoti(array(
 				'receiver_id' => $this->_userReceiver,
