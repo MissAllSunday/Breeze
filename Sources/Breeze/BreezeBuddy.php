@@ -157,12 +157,6 @@ class BreezeBuddy
 		$this->_app['form']->addButton(array('name' => 'submit'));
 
 		$this->_response = $this->_app['form']->display();
-
-		// Let this user know that an alert has already been sent...
-		else
-			$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('already_sent'), array(
-			'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
-		));
 	}
 
 	/**
@@ -180,6 +174,16 @@ class BreezeBuddy
 		if ((!empty($receiverSettings['ignoredList']) && in_array($this->_userSender['id'], $receiverSettings['ignoredList'])) || (!empty($receiverSettings['blockList']) && in_array($this->_userSender['id'], $receiverSettings['blockList'])))
 		{
 			$this->_response = $this->_app['tools']->text('buddy_blocked');
+			return true;
+		}
+
+		// So, you're not blocked, lets see if you already sent a petition.
+		if (!empty($receiverSettings['petitionList']) && in_array($this->_userSender['id'], $receiverSettings['petitionList']))
+		{
+			// Let this user know that an alert has already been sent.
+			$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('already_sent'), array(
+				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
+			));
 			return true;
 		}
 
