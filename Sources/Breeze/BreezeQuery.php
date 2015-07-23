@@ -91,12 +91,6 @@ class BreezeQuery
 				'property' => '_logs',
 				'columns' => array('id_log', 'member', 'content_type', 'content_id', 'time', 'extra'),
 			),
-			'peti' => array(
-				'name' => 'peti',
-				'table' => 'breeze_petitions',
-				'property' => '_peti',
-				'columns' => array('member', 'data'),
-			),
 		);
 	}
 
@@ -830,8 +824,8 @@ class BreezeQuery
 			{
 				$return[$row['variable']] = is_numeric($row['value']) ? (int) $row['value'] : (string) $row['value'];
 
-				// Special case for the cover image info.
-				if ($row['variable'] == 'cover')
+				// Special case for the cover image info and/or buddy petitions.
+				if ($row['variable'] == 'cover' || $row['variable'] == 'peti')
 					$return[$row['variable']] = !empty($row['value']) ? json_decode($row['value'], true) : array();
 
 				// Another special case...
@@ -887,15 +881,6 @@ class BreezeQuery
 
 		// Force getting the new settings.
 		return $this->getUserSettings($userID);
-	}
-
-	public function getUserPetitions($userID = 0)
-	{
-		global $smcFunc;
-
-		$result = $smcFunc['db_query']('', '
-				SELECT '. implode(', ', $this->_tables['peti']['columns']) .'
-				FROM {db_prefix}' . ($this->_tables['peti']['table']), array());
 	}
 
 	public function logCount($users)
