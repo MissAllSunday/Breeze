@@ -173,17 +173,17 @@ class BreezeBuddy
 	protected function check()
 	{
 		// Get the receiver's user settings.
-		$receiverSettings = $this->_app['query']->getUserSettings($this->_userReceiver);
+		$this->receiverSettings = $this->_app['query']->getUserSettings($this->_userReceiver);
 
 		// Are you on his/her ignore/block list?
-		if ((!empty($receiverSettings['ignoredList']) && in_array($this->_userSender['id'], $receiverSettings['ignoredList'])) || (!empty($receiverSettings['blockList']) && in_array($this->_userSender['id'], $receiverSettings['blockList'])))
+		if ((!empty($this->receiverSettings['ignoredList']) && in_array($this->_userSender['id'], $this->receiverSettings['ignoredList'])) || (!empty($this->receiverSettings['blockList']) && in_array($this->_userSender['id'], $this->receiverSettings['blockList'])))
 		{
 			$this->_response = $this->_app['tools']->text('buddy_blocked');
 			return true;
 		}
 
 		// So, you're not blocked, lets see if you already sent a petition.
-		if (!empty($receiverSettings['petitionList']) && in_array($this->_userSender['id'], $receiverSettings['petitionList']))
+		if (!empty($this->receiverSettings['petitionList']) && in_array($this->_userSender['id'], $this->receiverSettings['petitionList']))
 		{
 			// Let this user know that an alert has already been sent.
 			$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('already_sent'), array(
@@ -207,12 +207,12 @@ class BreezeBuddy
 		updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
 
 		// Now, get the receiver's buddy list and delete the sender from it.
-		$receiverSettings = $this->_app['query']->getUserSettings($this->_userReceiver);
+		$this->receiverSettings = $this->_app['query']->getUserSettings($this->_userReceiver);
 
-		if (!empty($receiverSettings['buddiesList']))
+		if (!empty($this->receiverSettings['buddiesList']))
 		{
-			$receiverSettings['buddiesList'] = array_diff($receiverSettings['buddiesList'], array($this->_userSender['id']));
-			updateMemberData($this->_userReceiver, array('buddy_list' => implode(',', $receiverSettings['buddiesList'])));
+			$this->receiverSettings['buddiesList'] = array_diff($this->receiverSettings['buddiesList'], array($this->_userSender['id']));
+			updateMemberData($this->_userReceiver, array('buddy_list' => implode(',', $this->receiverSettings['buddiesList'])));
 		}
 
 		// Get the receiver's data.
@@ -252,7 +252,7 @@ class BreezeBuddy
 
 		// Royal Entrance Fanfare please!
 		$senderSettings = $this->_app['query']->getUserSettings($this->_senderConfirm);
-		$receiverSettings = $this->_app['query']->getUserSettings($this->_receiverConfirm['id']);
+		$this->receiverSettings = $this->_app['query']->getUserSettings($this->_receiverConfirm['id']);
 
 		// Gotta use $user_info instead of $this->_receiverConfirm because we want this change to take effect immediately!
 		if (empty($user_info['buddies']) || (!empty($user_info['buddies']) && !in_array($this->_senderConfirm, $user_info['buddies'])))
@@ -294,7 +294,7 @@ class BreezeBuddy
 			));
 
 		// How about the receiver?
-		if (!empty($receiverSettings['alert_buddyConfirmation']))
+		if (!empty($this->receiverSettings['alert_buddyConfirmation']))
 			$this->_app['query']->createLog(array(
 				'member' => $this->_receiverConfirm['id'],
 				'content_type' => 'buddyConfirmed',
