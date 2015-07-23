@@ -113,7 +113,11 @@ class BreezeBuddy
 			// Get the message and store it on the receiver's petition list.
 			$buddyMessage = $this->_data->get('buddyMessage');
 
-			// @todo low level method to store petition lists.
+			// Gotta add the sender to the receiver's petition list...
+			$this->receiverSettings['petitionList'][$this->_userSender['id']] = !empty($buddyMessage) ? $buddyMessage : '';
+
+			// Store the new petition list.
+			$this->_app['query']->insertUserSettings(array('petitionList' => $this->receiverSettings['petitionList']), $this->_userReceiver);
 
 			// Create a nice alert to let the user know you want to be his/her buddy!
 			$this->_app['query']->insertNoti(array(

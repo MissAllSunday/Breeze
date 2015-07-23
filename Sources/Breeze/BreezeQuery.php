@@ -825,7 +825,7 @@ class BreezeQuery
 				$return[$row['variable']] = is_numeric($row['value']) ? (int) $row['value'] : (string) $row['value'];
 
 				// Special case for the cover image info and/or buddy petitions.
-				if ($row['variable'] == 'cover' || $row['variable'] == 'peti')
+				if ($row['variable'] == 'cover' || $row['variable'] == 'petitionList')
 					$return[$row['variable']] = !empty($row['value']) ? json_decode($row['value'], true) : array();
 
 				// Another special case...
