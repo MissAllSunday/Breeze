@@ -238,6 +238,9 @@ class BreezeBuddy
 		// Load the sender's data.
 		$this->_app['tools']->loadUserInfo($this->_senderConfirm);
 
+		// Get this user's buddy message
+		$this->_receiverConfirmSettings = $this->_app['query']->getUserSettings($this->_receiverConfirm);
+
 		// Prepare the options.
 		$confirm = $this->_app['tools']->scriptUrl . '?action=buddy;sa=confirmed;sender=' . $this->_senderConfirm;
 		$decline = $this->_app['tools']->scriptUrl . '?action=buddy;sa=decline;sender=' . $this->_senderConfirm;
