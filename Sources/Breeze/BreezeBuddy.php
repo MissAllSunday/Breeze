@@ -235,11 +235,22 @@ class BreezeBuddy
 		// Load the icon's css.
 		loadCSSFile('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', array('external' => true));
 
+		$context['sub_template'] = 'buddy_message';
+
 		// Load the sender's data.
 		$this->_app['tools']->loadUserInfo($this->_senderConfirm);
 
 		// Get this user's buddy message
 		$this->_receiverConfirmSettings = $this->_app['query']->getUserSettings($this->_receiverConfirm);
+
+		$receiverPetiList = $this->_receiverConfirmSettings['petitionList'];
+
+		// If there is a message, show it, else show a generic standard message.
+		$context['buddyMessage'] = !empty($receiverPetiList) && !empty($receiverPetiList[$this->_senderConfirm]) ? un_htmlspecialchars(parse_bbc($receiverPetiList[$this->_senderConfirm])) : false;
+
+		$context['buddy_message_title'] = $this->_app['tools']->parser($this->_app['tools']->text('buddy_sender_message_title'), array(
+			'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['link'],
+		));
 
 		// Prepare the options.
 		$confirm = $this->_app['tools']->scriptUrl . '?action=buddy;sa=confirmed;sender=' . $this->_senderConfirm;

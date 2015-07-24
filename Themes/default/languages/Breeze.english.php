@@ -194,6 +194,7 @@ $txt['Breeze_info_moodChanged'] = 'Your mood has been changed';
 // Buddy request.
 $txt['Breeze_buddy_title'] = 'Buddy request';
 $txt['Breeze_buddy_confirm'] = 'The invitation has been sent, {receiver} will soon receive an alert.';
+$txt['Breeze_buddy_sender_message_title'] = '{sender} sent the following message';
 $txt['Breeze_buddy_chose'] = '{sender} wants to be your buddy, please <br> <a href="{href_confirm}"><i class="fa fa-user-plus fa-2x"></i> confirm</a> or <a href="{href_decline}"><i class="fa fa-user-times fa-2x"></i> decline</a> the invitation.';
 $txt['Breeze_buddy_blocked'] = 'You cannot send an invitation to this user.';
 $txt['Breeze_buddy_already_blocked'] = 'You already added this user to your block list.';
