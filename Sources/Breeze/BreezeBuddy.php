@@ -48,7 +48,7 @@ class BreezeBuddy
 	{
 		global $user_info;
 
-		checkSession('get');
+		checkSession('request');
 		is_not_guest();
 
 		$this->_data = Breeze::data('request');
