@@ -111,10 +111,10 @@ class BreezeBuddy
 		if ($this->_data->get('msent'))
 		{
 			// Get the message and store it on the receiver's petition list.
-			$buddyMessage = $this->_data->get('buddyMessage');
+			$buddyMessage = $this->_data->get('breezeBuddyMessage');
 
 			// Gotta add the sender to the receiver's petition list...
-			$this->receiverSettings['petitionList'][$this->_userSender['id']] = !empty($buddyMessage) ? $buddyMessage : '';
+			$this->receiverSettings['petitionList'][$this->_userSender['id']] = !empty($buddyMessage['content']) ? $buddyMessage['content'] : '';
 
 			// Store the new petition list.
 			$this->_app['query']->insertUserSettings(array('petitionList' => $this->receiverSettings['petitionList']), $this->_userReceiver);
@@ -144,7 +144,7 @@ class BreezeBuddy
 		$this->_app['tools']->loadUserInfo($this->_userReceiver);
 
 		$this->_app['form']->setOptions(array(
-			'name' => 'breezeBuddy',
+			'name' => 'breezeBuddyMessage',
 			'url' => $this->_app['tools']->scriptUrl .'?action=buddy;msent=1;u='. $this->_userReceiver,
 			'character_set' => $context['character_set'],
 			'title' => $this->_app['tools']->text('buddy_title'),
@@ -152,7 +152,7 @@ class BreezeBuddy
 
 		// The actual textarea...
 		$this->_app['form']->addTextArea(array(
-			'name' => 'buddyMessage',
+			'name' => 'content',
 			'value' => '',
 			'size' => array('rows' => 10, 'cols' => 60, 'maxLength' => 2048),
 			'fullText' => $this->_app['tools']->text('buddy_message'),
