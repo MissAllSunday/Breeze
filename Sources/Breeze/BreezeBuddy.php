@@ -241,7 +241,7 @@ class BreezeBuddy
 		$this->_app['tools']->loadUserInfo($this->_senderConfirm);
 
 		// Get this user's buddy message
-		$this->_receiverConfirmSettings = $this->_app['query']->getUserSettings($this->_receiverConfirm);
+		$this->_receiverConfirmSettings = $this->_app['query']->getUserSettings($this->_receiverConfirm['id']);
 
 		$receiverPetiList = $this->_receiverConfirmSettings['petitionList'];
 
