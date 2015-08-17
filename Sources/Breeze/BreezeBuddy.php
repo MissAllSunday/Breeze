@@ -176,6 +176,8 @@ class BreezeBuddy
 	 */
 	protected function check()
 	{
+		global $context;
+
 		// Get the receiver's user settings.
 		$this->receiverSettings = $this->_app['query']->getUserSettings($this->_userReceiver);
 
@@ -187,10 +189,12 @@ class BreezeBuddy
 		}
 
 		// So, you're not blocked, lets see if you already sent a petition.
-		if (!empty($this->receiverSettings['petitionList']) && in_array($this->_userSender['id'], $this->receiverSettings['petitionList']))
+		if (!empty($this->receiverSettings['petitionList']) && in_array($this->_userSender['id'], array_keys($this->receiverSettings['petitionList'])))
 		{
+			$this->_app['tools']->loadUserInfo($this->_userReceiver);
+
 			// Let this user know that an alert has already been sent.
-			$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('already_sent'), array(
+			$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_already_sent'), array(
 				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
 			));
 			return true;
