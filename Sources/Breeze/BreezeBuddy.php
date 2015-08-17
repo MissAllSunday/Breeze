@@ -117,7 +117,7 @@ class BreezeBuddy
 			$this->receiverSettings['petitionList'][$this->_userSender['id']] = !empty($buddyMessage['content']) ? $buddyMessage['content'] : '';
 
 			// Store the new petition list.
-			$this->_app['query']->insertUserSettings(array('petitionList' => $this->receiverSettings['petitionList']), $this->_userReceiver);
+			$this->_app['query']->insertUserSettings(array('petitionList' => implode(',', $this->receiverSettings['petitionList'])), $this->_userReceiver);
 
 			// Create a nice alert to let the user know you want to be his/her buddy!
 			$this->_app['query']->insertNoti(array(
