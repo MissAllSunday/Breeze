@@ -133,7 +133,7 @@ class BreezeBuddy
 
 			// I actually need to use $context['Breeze']['user_info'] a lot more...
 			return $this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_confirm'), array(
-				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
+				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
 			));
 		}
 
@@ -155,7 +155,7 @@ class BreezeBuddy
 			'size' => array('rows' => 10, 'cols' => 60, 'maxLength' => 2048),
 			'fullText' => $this->_app['tools']->text('buddy_message'),
 			'fullDesc' => $this->_app['tools']->parser($this->_app['tools']->text('buddy_message_desc'), array(
-				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
+				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
 			)),
 		));
 
@@ -193,7 +193,7 @@ class BreezeBuddy
 
 			// Let this user know that an alert has already been sent.
 			$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_already_sent'), array(
-				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
+				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
 			));
 			return true;
 		}
@@ -225,7 +225,7 @@ class BreezeBuddy
 		$this->_app['tools']->loadUserInfo($this->_userReceiver);
 
 		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_delete_done'), array(
-			'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['link'],
+			'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
 		));
 	}
 
@@ -252,12 +252,12 @@ class BreezeBuddy
 
 		// An explicatory title.
 		$context['buddy_message_title'] = $this->_app['tools']->parser($this->_app['tools']->text('buddy_sender_message_title'), array(
-			'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['link'],
+			'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['linkFacebox'],
 		));
 
 		// Set a nice an unique page title.
 		$context['page_title'] = $this->_app['tools']->parser($this->_app['tools']->text('buddy_chose_title'), array(
-			'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['link'],
+			'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['linkFacebox'],
 		));
 
 		// Prepare the options.
