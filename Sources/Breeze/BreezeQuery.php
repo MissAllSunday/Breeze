@@ -1116,13 +1116,15 @@ class BreezeQuery
 	 * @param int $id the user ID
 	 * @param string $json_string a json string
 	 */
-	public function updateProfileViews($id, $json_string)
+	public function updateProfileViews($id, $array)
 	{
 		global $smcFunc;
 
 		// Do not waste my time
-		if (empty($id) || empty($json_string))
+		if (empty($id) || empty($array))
 			return false;
+
+		$array = (array) $array;
 
 		$smcFunc['db_query']('', '
 			UPDATE {db_prefix}members
@@ -1130,7 +1132,7 @@ class BreezeQuery
 			WHERE id_member = ({int:id})',
 			array(
 				'id' => (int) $id,
-				'json_string' => $json_string,
+				'json_string' => json_decode($array),
 			)
 		);
 	}
@@ -1142,9 +1144,12 @@ class BreezeQuery
 	 * @param integer $user The user ID
 	 * @return string a json string.
 	 */
-	public function getViews($user)
+	public function getViews($user = 0)
 	{
 		global $smcFunc;
+
+		if (empty($user))
+			return array();
 
 		$result = $smcFunc['db_query']('', '
 			SELECT breeze_profile_views
@@ -1156,13 +1161,13 @@ class BreezeQuery
 		);
 
 		// Populate the array like a boss!
-		while ($row = $smcFunc['db_fetch_row']($result))
-			$return = $row[0];
+		list($views) = $smcFunc['db_fetch_row']($result);
+		$views = !empty($views) ? json_decode($views, true) : array();
 
 		$smcFunc['db_free_result']($result);
 
 		// Return the data
-		return $return;
+		return $views;
 	}
 
 	/**

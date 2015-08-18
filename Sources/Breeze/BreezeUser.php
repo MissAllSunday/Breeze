@@ -744,7 +744,7 @@ class BreezeUser extends Breeze
 
 			// Don't track own views
 			if ($context['member']['id'] == $user_info['id'])
-				return !empty($views) ? json_decode($views, true) : false;
+				return $views;
 
 			// Don't have any views yet?
 			if (empty($views))
@@ -769,9 +769,6 @@ class BreezeUser extends Breeze
 				return $views;
 			}
 
-			// Get the data
-			$views = json_decode($views, true);
-
 			// Does this member has been here before?
 			if (!empty($views[$user_info['id']]))
 			{
@@ -791,8 +788,8 @@ class BreezeUser extends Breeze
 				);
 			}
 
-			// Either way, update the table
-			updateMemberData($context['member']['id'], array('breeze_profile_views' => json_encode($views)));
+			// Either way, update the table.
+			$this['query']->updateProfileViews($context['member']['id'], $views);
 
 			// ...and set the temp cache
 			cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], $views, 60);
