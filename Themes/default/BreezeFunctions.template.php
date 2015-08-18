@@ -667,6 +667,18 @@ function template_buddy_message()
 {
 	global $context;
 
+		echo '
+		<div class="cat_bar">
+			<h3 class="catbg">
+				', $context['page_title'] ,'
+			</h3>
+		</div>';
+
+		echo '
+		<div class="information">
+			', $context['response'] ,'
+		</div>';
+
 	if (!empty($context['buddyMessage']))
 	{
 		echo '
@@ -678,12 +690,9 @@ function template_buddy_message()
 
 		echo '
 		<div class="information">
-			',$context['buddyMessage'] ,'
+			', $context['buddyMessage'] ,'
 		</div>';
 	}
-
-	echo $context['response'];
-
 }
 
 function template_buddy_request()

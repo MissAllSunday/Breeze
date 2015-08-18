@@ -101,8 +101,6 @@ class BreezeBuddy
 	{
 		global $context;
 
-		// @todo set an user setting to identify if this user has already asked for friendship.
-
 		// Ran the request through some checks.
 		if ($this->check() == true)
 			return;
@@ -252,7 +250,13 @@ class BreezeBuddy
 		// If there is a message, show it, else show a generic standard message.
 		$context['buddyMessage'] = !empty($receiverPetiList) && !empty($receiverPetiList[$this->_senderConfirm]) ? un_htmlspecialchars(parse_bbc($receiverPetiList[$this->_senderConfirm])) : false;
 
+		// An explicatory title.
 		$context['buddy_message_title'] = $this->_app['tools']->parser($this->_app['tools']->text('buddy_sender_message_title'), array(
+			'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['link'],
+		));
+
+		// Set a nice an unique page title.
+		$context['page_title'] = $this->_app['tools']->parser($this->_app['tools']->text('buddy_chose_title'), array(
 			'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['link'],
 		));
 
@@ -263,7 +267,6 @@ class BreezeBuddy
 		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_chose'), array(
 			'href_confirm' => $confirm,
 			'href_decline' => $decline,
-			'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['link'],
 		));
 	}
 
@@ -373,7 +376,8 @@ class BreezeBuddy
 		loadtemplate(Breeze::$name .'Functions');
 
 		// All the generic stuff.
-		$context['page_title'] = $this->_app['tools']->text('buddy_title');
+		if (!isset($context['page_title']))
+			$context['page_title'] = $this->_app['tools']->text('buddy_title');
 
 		if (!isset($context['sub_template']))
 			$context['sub_template'] = 'buddy_request';
