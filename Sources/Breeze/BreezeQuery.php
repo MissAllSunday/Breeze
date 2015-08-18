@@ -26,6 +26,7 @@ class BreezeQuery
 	protected $_comments = array();
 	protected $_members = array();
 	protected $_userLikes = array();
+	protected $_needJSON = array();
 
 	/**
 	 * @var object
@@ -92,6 +93,9 @@ class BreezeQuery
 				'columns' => array('id_log', 'member', 'content_type', 'content_id', 'time', 'extra'),
 			),
 		);
+
+		// Define a list of user settings that require been en/decoded.
+		$this->_needJSON = array('cover', 'petitionList');
 	}
 
 	/**
@@ -824,8 +828,8 @@ class BreezeQuery
 			{
 				$return[$row['variable']] = is_numeric($row['value']) ? (int) $row['value'] : (string) $row['value'];
 
-				// Special case for the cover image info and/or buddy petitions.
-				if ($row['variable'] == 'cover' || $row['variable'] == 'petitionList')
+				// Special case for those values that require been decoded.
+				if (in_array($row['variable'], $this->_needJSON))
 					$return[$row['variable']] = !empty($row['value']) ? json_decode($row['value'], true) : array();
 
 				// Another special case...
@@ -869,7 +873,13 @@ class BreezeQuery
 		$inserts = array();
 
 		foreach ($array as $var => $val)
+		{
+			// Does the value needs to be encoded?
+			if (in_array($var, $this->_needJSON))
+				$val = !empty($val) ? json_encode($val) : '';
+
 			$inserts[] = array($userID, $var, $val);
+		}
 
 		if (!empty($inserts))
 			$smcFunc['db_insert']('replace',
