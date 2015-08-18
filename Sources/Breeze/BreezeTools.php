@@ -304,7 +304,8 @@ class BreezeTools
 			$context['Breeze']['user_info'][$u] = array(
 				'breezeFacebox' => '',
 				'link' => '',
-				'name' => ''
+				'name' => '',
+				'linkFacebox' => '',
 			);
 
 			// Gotta make sure you're only loading info from real existing members...
@@ -329,7 +330,8 @@ class BreezeTools
 				$context['Breeze']['user_info'][$u] = array(
 					'breezeFacebox' => $txt['guest_title'],
 					'link' => $txt['guest_title'],
-					'name' => $txt['guest_title']
+					'name' => $txt['guest_title'],
+					'linkFacebox' => $txt['guest_title'],
 				);
 		}
 
