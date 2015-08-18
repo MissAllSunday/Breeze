@@ -733,7 +733,7 @@ class BreezeAjax
 			$fileInfo['filename'] = pathinfo($folder . $newFile, PATHINFO_FILENAME);
 
 			// Store the new cover info.
-			$this->_app['query']->insertUserSettings(array('cover'=> json_encode($fileInfo)), $this->_currentUser);
+			$this->_app['query']->insertUserSettings(array('cover'=> $fileInfo), $this->_currentUser);
 
 			// Create an inner alert for this.
 			if (!empty($this->_userSettings['alert_cover']))
@@ -855,7 +855,7 @@ class BreezeAjax
 		// Anyway, save the values and move on...
 		if (!empty($moodHistory))
 		{
-			$this->_app['query']->insertUserSettings(array('moodHistory'=> json_encode($moodHistory)), $this->_currentUser);
+			$this->_app['query']->insertUserSettings(array('moodHistory'=> $moodHistory), $this->_currentUser);
 
 			// Create an inner alert for this.
 			if (!empty($this->_userSettings['alert_mood']))

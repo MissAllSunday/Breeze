@@ -95,7 +95,7 @@ class BreezeQuery
 		);
 
 		// Define a list of user settings that require been en/decoded.
-		$this->_needJSON = array('cover', 'petitionList');
+		$this->_needJSON = array('cover', 'petitionList', 'moodHistory');
 	}
 
 	/**
