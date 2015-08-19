@@ -409,7 +409,7 @@ class Breeze extends Pimple\Container
 	/**
 	 * Breeze::displayCover()
 	 *
-	 * Creates and prints an user cover. If the suer does not have a cover it returns false.
+	 * Creates and prints an user cover. If the user does not have a cover it returns false.
 	 * @return void
 	 */
 	public function displayCover()
@@ -532,6 +532,14 @@ class Breeze extends Pimple\Container
 			foreach ($profile_items as &$item)
 				if ($item['area'] == 'summary')
 					$item['area'] = 'static';
+
+		// Add a nice link to the user's wall settings page.
+		$profile_items[] = array(
+			'menu' => 'breeze_profile',
+			'area' => 'alerts',
+			'url' => $this['tools']->scriptUrl . '?action=profile;area=breezesettings;u='. $user_info['id'],
+			'title' => $this['tools']->text('general_my_wall_settings'),
+		);
 	}
 
 	public function alerts(&$alerts)
