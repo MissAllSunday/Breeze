@@ -325,6 +325,12 @@ class BreezeUser extends Breeze
 				'checked' => !empty($userSettings['alert_'. $a]) ? true : false
 			));
 
+		// Add a nice "check all" link.
+		$form->addHTML(array(
+			'name' => 'checkAll',
+			'html' => '<a id="select_all">'. $this['tools']->text('user_settings_checkAll') .'</a>',
+		));
+
 		// Session stuff.
 		$form->addHiddenField($context['session_var'], $context['session_id']);
 
@@ -332,6 +338,14 @@ class BreezeUser extends Breeze
 
 		// Send the form to the template
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
+
+		addInlineJavascript('
+	$(function(){
+		$(\'#select_all\').on(\'click\', function() {
+			var checkboxes = $(\'form[name="breezeSettings"]\').find(\':checkbox\');
+			checkboxes.prop("checked", !checkboxes.prop("checked"));
+		});
+	});', true);
 	}
 
 	public function alertEdit()
