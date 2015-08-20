@@ -22,6 +22,7 @@ class BreezeTools
 	public $settings;
 	public $boardDir;
 	public $boardUrl;
+	static $_users = array();
 
 	function __construct($app)
 	{
@@ -291,17 +292,24 @@ class BreezeTools
 	{
 		global $context, $memberContext, $txt;
 
-		// If this isn't an array, lets change it to one
-		$id = array_unique((array) $id);
+		// If this isn't an array, lets change it to one.
+		$id = (array) $id;
+		$toLoad = array();
+
+		// Only load those that haven't been loaded yet.
+		if (!empty(static::$_users))
+			foreach (array_unique($id) as $k => $v)
+				if (empty(static::$_users[$v]))
+					$toLoad[] = (int) $v;
 
 		// $memberContext gets set and globalized, we're gonna take advantage of it
-		$loadedIDs = loadMemberData($id, false, 'profile');
+		$loadedIDs = loadMemberData($toLoad, false, 'profile');
 
 		// Set the context var.
 		foreach ($id as $u)
 		{
 			// Set an empty array.
-			$context['Breeze']['user_info'][$u] = array(
+			static::$_users[$u] = array(
 				'breezeFacebox' => '',
 				'link' => '',
 				'name' => '',
@@ -316,24 +324,26 @@ class BreezeTools
 				$user = $memberContext[$u];
 
 				// Pass the entire data array.
-				$context['Breeze']['user_info'][$user['id']] = $user;
+				static::$_users[$user['id']] = $user;
 
 				// Build the "breezeFacebox" link. Rename "facebox" to "breezeFacebox" in case there are other mods out there using facebox, specially its a[rel*=facebox] stuff.
-				$context['Breeze']['user_info'][$user['id']]['breezeFacebox'] = '<a href="'. $this->scriptUrl .'?action=wall;sa=userdiv;u='. $u .'" class="avatar" rel="breezeFacebox" data-name="'. (!empty($user['name']) ? $user['name'] : '') .'">'. $user['avatar']['image'] .'</a>';
+				static::$_users[$user['id']]['breezeFacebox'] = '<a href="'. $this->scriptUrl .'?action=wall;sa=userdiv;u='. $u .'" class="avatar" rel="breezeFacebox" data-name="'. (!empty($user['name']) ? $user['name'] : '') .'">'. $user['avatar']['image'] .'</a>';
 
 				// Also provide a no avatar facebox link.
-				$context['Breeze']['user_info'][$user['id']]['linkFacebox'] = '<a href="'. $this->scriptUrl .'?action=wall;sa=userdiv;u='. $u .'" class="avatar" rel="breezeFacebox" data-name="'. (!empty($user['name']) ? $user['name'] : '') .'">'. $user['name'] .'</a>';
+				static::$_users[$user['id']]['linkFacebox'] = '<a href="'. $this->scriptUrl .'?action=wall;sa=userdiv;u='. $u .'" class="avatar" rel="breezeFacebox" data-name="'. (!empty($user['name']) ? $user['name'] : '') .'">'. $user['name'] .'</a>';
 			}
 
 			// Not a real member, fill out some guest generic vars and be done with it..
 			else
-				$context['Breeze']['user_info'][$u] = array(
+				static::$_users[$u] = array(
 					'breezeFacebox' => $txt['guest_title'],
 					'link' => $txt['guest_title'],
 					'name' => $txt['guest_title'],
 					'linkFacebox' => $txt['guest_title'],
 				);
 		}
+
+		$context['Breeze']['user_info'] = static::$_users;
 
 		// Lastly, if the ID was requested, sent it back!
 		if ($returnID)
