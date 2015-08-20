@@ -179,6 +179,25 @@ class BreezeBuddy
 		// Get the receiver's user settings.
 		$this->receiverSettings = $this->_app['query']->getUserSettings($this->_userReceiver);
 
+		// Theres always the chance you are already friends...
+		if (in_array($this->_userSender['id'], $this->receiverSettings['buddiesList']))
+		{
+			// Perhaps it is YOU the one who doens't have the receiver as friend? if so, just add the receiver to your buddy list.
+			if (!in_array($this->_userReceiver, $this->_userSender['buddies']))
+			{
+				$this->_userSender['buddies'][] = $this->_userReceiver;
+				updateMemberData($this->_userSender['id'], array('buddy_list' => implode(',', $this->_userSender['buddies'])));
+			}
+
+			// Tell the user you are already friends.
+			$this->_app['tools']->loadUserInfo($this->_userReceiver);
+
+			$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_already_buddy'), array(
+				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
+			));
+			return true;
+		}
+
 		// Are you on his/her ignore/block list?
 		if ((!empty($this->receiverSettings['ignoredList']) && in_array($this->_userSender['id'], $this->receiverSettings['ignoredList'])) || (!empty($this->receiverSettings['blockList']) && in_array($this->_userSender['id'], $this->receiverSettings['blockList'])))
 		{
