@@ -294,19 +294,26 @@ class BreezeTools
 
 		// If this isn't an array, lets change it to one.
 		$id = (array) $id;
-		$toLoad = array();
+		$id = array_unique($id);
 
 		// Only load those that haven't been loaded yet.
 		if (!empty(static::$_users))
-			foreach (array_unique($id) as $k => $v)
-				if (empty(static::$_users[$v]))
-					$toLoad[] = (int) $v;
+			foreach ($id as $k => $v)
+				if (!empty(static::$_users[$v]))
+					unset($id[$k]);
+
+		// Got nothing to load.
+		if (empty($id))
+		{
+			$context['Breeze']['user_info'] = static::$_users;
+			return $returnID ? array_keys(static::$_users) : false;
+		}
 
 		// $memberContext gets set and globalized, we're gonna take advantage of it
-		$loadedIDs = loadMemberData($toLoad, false, 'profile');
+		$loadedIDs = loadMemberData($id, false, 'profile');
 
 		// Set the context var.
-		foreach ($id as $u)
+		foreach ($id as $k => $u)
 		{
 			// Set an empty array.
 			static::$_users[$u] = array(
