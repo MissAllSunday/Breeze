@@ -299,8 +299,7 @@ class Breeze extends Pimple\Container
 		$userSettings = $this['query']->getUserSettings($user_info['id']);
 
 		// Display the js and css files.
-		if ($tools->enable('mood'))
-			$this->notiHeaders();
+		$this->notiHeaders();
 
 		// Replace the duplicate profile button
 		if (!empty($menu_buttons['profile']['sub_buttons']['summary']))
@@ -673,34 +672,41 @@ class Breeze extends Pimple\Container
 	{
 		global $context, $user_info, $settings;
 
-		loadJavascriptFile('breeze/breeze.js', array('local' => true, 'default_theme' => true));
-
 		// Some files are only needed on specific places.
 		$action = str_replace('breeze', '', Breeze::data('get')->get('action'));
 
-		if (!empty($action) && in_array($action, $this->wrapperActions))
+		// Only display these if we are in a "beeze action" or the mood feature is enable.
+		if (empty($action) || !in_array($action, $this->wrapperActions) || !$tools->enable('mood'))
+			return false;
+
+		// So, what are we going to do?
+		$doAction = in_array($action, $this->wrapperActions);
+		$doMood = $tools->enable('mood');
+
+		// Always display these.
+		loadJavascriptFile('breeze/breeze.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breeze/purify.js', array('local' => true, 'default_theme' => true));
+
+		// Only needed on certain actions.
+		if ($doAction)
 		{
 			loadCSSFile('breeze.css', array('force_current' => false, 'validate' => true));
 			loadJavascriptFile('breeze/moment.min.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 			loadJavascriptFile('breeze/livestamp.min.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-
-			// Common css and js files.
-			if (!$user_info['is_guest'])
-			{
-				loadJavascriptFile('breeze/noty/jquery.noty.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-				loadJavascriptFile('breeze/noty/layouts/top.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-				loadJavascriptFile('breeze/noty/layouts/center.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-				loadJavascriptFile('breeze/noty/themes/relax.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-				loadJavascriptFile('breeze/breezeNoti.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-			}
 		}
 
 		// Up to here for guest.
 		if ($user_info['is_guest'])
 			return;
 
-		// The main stuff.
-		loadJavascriptFile('breeze/purify.js', array('local' => true, 'default_theme' => true));
+		// The main stuff. Always displayed.
+		loadJavascriptFile('breeze/noty/jquery.noty.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/noty/layouts/top.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/noty/layouts/center.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/noty/themes/relax.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+
+		if (!$doAction)
+			return false;
 
 		$tools = $this['tools'];
 		$userSettings = $this['query']->getUserSettings($user_info['id']);
