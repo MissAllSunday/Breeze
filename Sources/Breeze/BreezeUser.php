@@ -49,7 +49,6 @@ class BreezeUser extends Breeze
 
 		// Don't show this.
 		unset($context[$context['profile_menu_name']]['tab_data']);
-		$context['show_load_time'] = false;
 
 		// Default values.
 		$status = array();
@@ -170,7 +169,7 @@ class BreezeUser extends Breeze
 		// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
 		loadJavascriptFile('breeze/breezePost.js', array('default_theme' => true, 'defer' => true,));
 		loadJavascriptFile('breeze/breezeTabs.js', array('default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breeze/breezeLoadMore.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/breezeLoadMore.js', array('external' => false, 'default_theme' => true, 'defer' => true,));
 
 		if (!empty($modSettings['enable_mentions']) && allowedTo('mention'))
 		{
@@ -641,14 +640,14 @@ class BreezeUser extends Breeze
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
 
 		// Need a lot of Js files :(
-		loadJavascriptFile('breeze/fileUpload/vendor/jquery.ui.widget.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/fileUpload/load-image.all.min.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/fileUpload/canvas-to-blob.min.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/fileUpload/jquery.iframe-transport.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/fileUpload/jquery.fileupload.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-process.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-image.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-validate.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breeze/fileUpload/vendor/jquery.ui.widget.js', array('external' => false, 'default_theme' => true));
+		loadJavascriptFile('breeze/fileUpload/load-image.all.min.js', array('external' => false, 'default_theme' => true));
+		loadJavascriptFile('breeze/fileUpload/canvas-to-blob.min.js', array('external' => false, 'default_theme' => true));
+		loadJavascriptFile('breeze/fileUpload/jquery.iframe-transport.js', array('external' => false, 'default_theme' => true));
+		loadJavascriptFile('breeze/fileUpload/jquery.fileupload.js', array('external' => false, 'default_theme' => true));
+		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-process.js', array('external' => false, 'default_theme' => true));
+		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-image.js', array('external' => false, 'default_theme' => true));
+		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-validate.js', array('external' => false, 'default_theme' => true));
 
 		// @todo replace the hardcoded text strings
 		addInlineJavascript('

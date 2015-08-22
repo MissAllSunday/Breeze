@@ -74,7 +74,7 @@ class BreezeMood
 		// Updating or creating?
 		$method = ($update ? 'update' : 'insert') . 'Mood';
 
-		$this->_app['query']->$method($data);
+		$this->_app['query']->{$method}($data);
 	}
 
 	public function read()

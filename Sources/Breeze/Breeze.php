@@ -298,8 +298,9 @@ class Breeze extends Pimple\Container
 		$tools = $this['tools'];
 		$userSettings = $this['query']->getUserSettings($user_info['id']);
 
-		// Display common css and js files.
-		$this->notiHeaders();
+		// Display the js and css files.
+		if ($tools->enable('mood'))
+			$this->notiHeaders();
 
 		// Replace the duplicate profile button
 		if (!empty($menu_buttons['profile']['sub_buttons']['summary']))
@@ -672,12 +673,29 @@ class Breeze extends Pimple\Container
 	{
 		global $context, $user_info, $settings;
 
-		loadCSSFile('breeze.css', array('force_current' => false, 'validate' => true));
 		loadJavascriptFile('breeze/breeze.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/moment.min.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breeze/livestamp.min.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 
-		// Don't show this to guest.
+		// Some files are only needed on specific places.
+		$action = str_replace('breeze', '', Breeze::data('get')->get('action'));
+
+		if (!empty($action) && in_array($action, $this->wrapperActions))
+		{
+			loadCSSFile('breeze.css', array('force_current' => false, 'validate' => true));
+			loadJavascriptFile('breeze/moment.min.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+			loadJavascriptFile('breeze/livestamp.min.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+
+			// Common css and js files.
+			if (!$user_info['is_guest'])
+			{
+				loadJavascriptFile('breeze/noty/jquery.noty.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+				loadJavascriptFile('breeze/noty/layouts/top.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+				loadJavascriptFile('breeze/noty/layouts/center.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+				loadJavascriptFile('breeze/noty/themes/relax.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+				loadJavascriptFile('breeze/breezeNoti.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+			}
+		}
+
+		// Up to here for guest.
 		if ($user_info['is_guest'])
 			return;
 
@@ -711,13 +729,6 @@ class Breeze extends Pimple\Container
 	breeze.text.'. $ct .' = '. JavaScriptEscape($tools->text($ct)) .';';
 
 		addInlineJavascript($generalText);
-
-		// Common css and js files.
-		loadJavascriptFile('breeze/noty/jquery.noty.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breeze/noty/layouts/top.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breeze/noty/layouts/center.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breeze/noty/themes/relax.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breeze/breezeNoti.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 	}
 
 	public function mood(&$data, $user, $display_custom_fields)
