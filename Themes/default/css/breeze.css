@@ -171,6 +171,12 @@ ul.breezeActivity li{
 		width: 98%;
 	}
 
+	/* Don't show the margin bottom. */
+	.header
+	{
+		margin-bottom: 0px;
+	}
+
 	/* Make the header stuff centralized. */
 	.header div.container{
 		margin: auto;
