@@ -675,13 +675,13 @@ class Breeze extends Pimple\Container
 		// Some files are only needed on specific places.
 		$action = str_replace('breeze', '', Breeze::data('get')->get('action'));
 
-		// Only display these if we are in a "beeze action" or the mood feature is enable.
-		if (empty($action) || !in_array($action, $this->wrapperActions) || !$tools->enable('mood'))
-			return false;
-
 		// So, what are we going to do?
-		$doAction = in_array($action, $this->wrapperActions);
-		$doMood = $tools->enable('mood');
+		$doAction = in_array($action, $this->wrapperActions) || $action == 'profile';
+		$doMood = $this['tools']->enable('mood');
+
+		// Only display these if we are in a "beeze action" or the mood feature is enable.
+		if ((!$doAction && !$doMood))
+			return false;
 
 		// Always display these.
 		loadJavascriptFile('breeze/breeze.js', array('local' => true, 'default_theme' => true));
