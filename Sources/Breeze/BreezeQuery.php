@@ -1132,7 +1132,7 @@ class BreezeQuery
 			WHERE id_member = ({int:id})',
 			array(
 				'id' => (int) $id,
-				'json_string' => json_decode($array),
+				'json_string' => json_encode($array),
 			)
 		);
 	}

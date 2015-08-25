@@ -12,7 +12,7 @@
 	background-attachment: fixed;
 	background-size: auto;
 	margin-bottom:50px;
-	min-height: 80px;
+	min-height: 280px;
 	max-height: 580px;
 }
 .header div.container{
@@ -182,8 +182,8 @@ ul.breezeActivity li{
 		margin: auto;
 		min-width: 90%;
 		width: 90%;
-		position:inherit;
 		left:0;
+		top:0;
 	}
 
 	/* The username needs to behave like a block */
@@ -204,7 +204,7 @@ ul.breezeActivity li{
 	div.username h1, div.username h1 a{
 		display:block;
 		min-width: 90%;
-		margin: 0 0 5px 0;
+		margin: 0 0 15px 0;
 	}
 
 	/* Remove the position absolute stuff */
