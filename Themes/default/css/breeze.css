@@ -158,6 +158,15 @@ ul.breezeActivity li{
 	max-width : 40px;
 }
 
+/* Breeze pop up user info. */
+.breezeInfo div#basicinfo{
+	width: 30%;
+}
+
+.breezeInfo div#detailedinfo{
+	width: 69.5%;
+}
+
 @media screen and (max-width: 720px) {
 
 	/* Hide the sidebar. */

@@ -306,7 +306,7 @@ function template_userDiv()
 		<script src="', $settings['default_theme_url'], '/scripts/script.js', $modSettings['browser_cache'] ,'"></script>
 	</head>
 	<body id="help_popup">
-		<div class="description">
+		<div class="description breezeInfo">
 			<div id="basicinfo">';
 
 	// Are there any custom profile fields for above the name?
