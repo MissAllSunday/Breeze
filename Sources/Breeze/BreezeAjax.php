@@ -717,13 +717,13 @@ class BreezeAjax
 
 			$newFile = sha1($this->_app->data()->normalizeString($fileInfo['filename'])) .'.dat';
 
-			// Get a not so reliable mimetype.
-			if (!empty($fileInfo['extension']))
-				$fileInfo['mime'] = 'image/' . $fileInfo['extension'];
-
 			// Hay Bibi, ¿Por qué no eres una niña normal?
 			if (function_exists('exif_imagetype'))
 				$fileInfo['mime'] = image_type_to_mime_type(exif_imagetype($folder . $file->name));
+
+			// Get a not so reliable mimetype.
+			if (!empty($fileInfo['extension']) && empty($fileInfo['mime']))
+				$fileInfo['mime'] = 'image/' . $fileInfo['extension'];
 
 			rename($folder . $file->name, $folder . $newFile);
 			rename($folderThumbnail . $file->name, $folderThumbnail . $newFile);
