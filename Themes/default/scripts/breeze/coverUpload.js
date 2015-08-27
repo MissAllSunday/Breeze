@@ -49,6 +49,20 @@ $(function () {
 				data.context.append(uploadButton.clone(true).data(data));
 				data.context.append(cancelButton.clone(true).data(data));
 			}
+		}).on('fileuploadprocessalways', function (e, data) {
+			$.each(data.files, function (index, file) {
+				// @todo find the correct node, change the div to errorbox, show a cancel button.
+				if (file.error)
+				{
+					// Check if the file is too large or too heavy or doens't have an allowed extension and inform the user about it.
+				}
+
+				// Show a nice preview.
+				else{
+
+				}
+
+			});
 		}).on('fileuploaddone', function (e, data) {
 
 			$('#fileupload').prop('disabled', false);
