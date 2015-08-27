@@ -86,8 +86,8 @@ class BreezeWall
 	breeze.tools.comingFrom = "'. $context['Breeze']['comingFrom'] .'";');
 
 		// These file are only used here and on the profile wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-		loadJavascriptFile('breeze/breezePost.js', array('default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breezeTabs.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breeze/post.js', array('default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('tabs.js', array('local' => true, 'default_theme' => true));
 
 		if (!empty($modSettings['enable_mentions']) && allowedTo('mention'))
 		{
@@ -144,8 +144,8 @@ class BreezeWall
 		$data = Breeze::data('get');
 
 		// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-		loadJavascriptFile('breeze/breezePost.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breeze/breezeTabs.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/post.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/tabs.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 
 		// The (soon to be) huge array...
 		$status = array(
@@ -209,7 +209,7 @@ class BreezeWall
 			addInlineJavascript('
 	breeze.text.load_more = '. JavaScriptEscape($this->_app['tools']->text('load_more')) .';
 	breeze.text.page_loading_end = '. JavaScriptEscape($this->_app['tools']->text('page_loading_end')) .';', true);
-			loadJavascriptFile('breezeLoadMore.js', array('local' => true, 'default_theme' => true));
+			loadJavascriptFile('loadMore.js', array('local' => true, 'default_theme' => true));
 		}
 	}
 

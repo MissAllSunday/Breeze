@@ -167,9 +167,9 @@ class BreezeUser extends Breeze
 		loadCSSFile('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', array('external' => true));
 
 		// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-		loadJavascriptFile('breeze/breezePost.js', array('default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breeze/breezeTabs.js', array('default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breeze/breezeLoadMore.js', array('external' => false, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/post.js', array('default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/tabs.js', array('default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/loadMore.js', array('external' => false, 'default_theme' => true, 'defer' => true,));
 
 		if (!empty($modSettings['enable_mentions']) && allowedTo('mention'))
 		{
