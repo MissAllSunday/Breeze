@@ -58,7 +58,7 @@ $(function () {
 				}
 
 				// Show a nice preview.
-				else{
+				else {
 
 				}
 

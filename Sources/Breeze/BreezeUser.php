@@ -640,14 +640,7 @@ class BreezeUser extends Breeze
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
 
 		// Need a lot of Js files :(
-		loadJavascriptFile('breeze/fileUpload/vendor/jquery.ui.widget.js', array('external' => false, 'default_theme' => true));
-		loadJavascriptFile('breeze/fileUpload/load-image.all.min.js', array('external' => false, 'default_theme' => true));
-		loadJavascriptFile('breeze/fileUpload/canvas-to-blob.min.js', array('external' => false, 'default_theme' => true));
-		loadJavascriptFile('breeze/fileUpload/jquery.iframe-transport.js', array('external' => false, 'default_theme' => true));
-		loadJavascriptFile('breeze/fileUpload/jquery.fileupload.js', array('external' => false, 'default_theme' => true));
-		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-process.js', array('external' => false, 'default_theme' => true));
-		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-image.js', array('external' => false, 'default_theme' => true));
-		loadJavascriptFile('breeze/fileUpload/jquery.fileupload-validate.js', array('external' => false, 'default_theme' => true));
+
 
 		// @todo replace the hardcoded text strings
 		addInlineJavascript('
