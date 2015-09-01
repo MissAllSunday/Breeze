@@ -626,29 +626,80 @@ class BreezeUser extends Breeze
 		// Cover upload option.
 		$form->addHTML(array(
 			'name' => 'cover_select',
-			'html' => '<span class="">
-				<input id="fileupload" type="file" name="files">
-			</span>
-			<br />
-			<div id="progress" class="progress">
-				<div class="progress-bar progress-bar-success"></div>
+			'html' => '
+<div class="dropzone" id="coverUpload"></div>
+	<div id="actions" class="row">
+		<div class="col-lg-7">
+		<!-- The fileinput-button span is used to style the file input field as button -->
+		<span class="btn btn-success fileinput-button">
+			<i class="glyphicon glyphicon-plus"></i>
+			<span>Add files...</span>
+		</span>
+		<button type="submit" class="btn btn-primary start">
+			<i class="glyphicon glyphicon-upload"></i>
+			<span>Start upload</span>
+		</button>
+		<button type="reset" class="btn btn-warning cancel">
+			<i class="glyphicon glyphicon-ban-circle"></i>
+			<span>Cancel upload</span>
+		</button>
+		</div>
+
+		<div class="col-lg-5">
+		<!-- The global file processing state -->
+		<span class="fileupload-process">
+			<div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+			<div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
 			</div>
-			<div id="files" class="files"></div>'
+		</span>
+		</div>
+	</div>
+<div class="table table-striped" class="files" id="previews">
+	<div id="template" class="file-row">
+		<!-- This is used as the file preview template -->
+		<div>
+				<span class="preview"><img data-dz-thumbnail /></span>
+		</div>
+		<div>
+				<p class="name" data-dz-name></p>
+				<strong class="error text-danger" data-dz-errormessage></strong>
+		</div>
+		<div>
+				<p class="size" data-dz-size></p>
+				<div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+					<div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+				</div>
+		</div>
+		<div>
+			<button class="btn btn-primary start">
+				<span>Start</span>
+			</button>
+			<button data-dz-remove class="btn btn-warning cancel">
+				<span>Cancel</span>
+			</button>
+			<button data-dz-remove class="btn btn-danger delete">
+				<span>Delete</span>
+			</button>
+		</div>
+	</div>
+</div>'
 		));
 
 		// Send the form to the template
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
 
 		// Need a lot of Js files :(
-
+		loadJavascriptFile('breeze/dropzone.min.js', array('external' => false, 'default_theme' => true));
 
 		// @todo replace the hardcoded text strings
 		addInlineJavascript('
-	var _coverUpload = [
+	var _coverUpload = {
 		url: '. JavaScriptEscape($this['tools']->scriptUrl .'?action=breezeajax;sa=cover;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings') .';js=1;'. $context['session_var'] .'='. $context['session_id']) .',
-		imgsrc: '. $this['tools']->scriptUrl .'?action=breezecover;u='. $context['member']['id'] .';thumb=1,
-		error: '. $this['tools']->text('error_server') .',
-	];', true);
+		imgsrc: \''. $this['tools']->scriptUrl .'?action=breezecover;u='. $context['member']['id'] .';thumb=1\',
+		error: \''. $this['tools']->text('error_server') .'\',
+	};', false);
+
+		loadJavascriptFile('breeze/coverUpload.js', array('external' => false, 'default_theme' => true, 'defer' => true,));
 	}
 
 	/**
