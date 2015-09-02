@@ -627,26 +627,15 @@ class BreezeUser extends Breeze
 		$form->addHTML(array(
 			'name' => 'cover_select',
 			'html' => '
-<div class="dropzone" id="coverUpload"></div>
-	<div id="actions" class="row">
-		<div class="col-lg-7">
-		<!-- The fileinput-button span is used to style the file input field as button -->
-		<span class="btn btn-success fileinput-button">
-			<i class="glyphicon glyphicon-plus"></i>
-			<span>Add files...</span>
-		</span>
-		<button type="submit" class="btn btn-primary start">
-			<i class="glyphicon glyphicon-upload"></i>
-			<span>Start upload</span>
-		</button>
-		<button type="reset" class="btn btn-warning cancel">
-			<i class="glyphicon glyphicon-ban-circle"></i>
-			<span>Cancel upload</span>
-		</button>
+	<div id="coverUpload"></div>
+	<div id="actions">
+		<div>
+			<a class="button_submit cancel">Cancel upload</a>
+			<a class="button_submit start">Start upload</a>
+			<a class="button_submit fileinput-button">Add files...</a>
 		</div>
 
-		<div class="col-lg-5">
-		<!-- The global file processing state -->
+		<div>
 		<span class="fileupload-process">
 			<div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
 			<div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
@@ -654,35 +643,28 @@ class BreezeUser extends Breeze
 		</span>
 		</div>
 	</div>
-<div class="table table-striped" class="files" id="previews">
-	<div id="template" class="file-row">
-		<!-- This is used as the file preview template -->
-		<div>
+	<div class="files" id="previews">
+		<div id="template">
+			<div>
 				<span class="preview"><img data-dz-thumbnail /></span>
-		</div>
-		<div>
+			</div>
+			<div>
 				<p class="name" data-dz-name></p>
-				<strong class="error text-danger" data-dz-errormessage></strong>
-		</div>
-		<div>
+				<strong class="error" data-dz-errormessage></strong>
+			</div>
+			<div>
 				<p class="size" data-dz-size></p>
 				<div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
 					<div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
 				</div>
+			</div>
+			<div>
+				<a class="button_submit start">Start</a>
+				<a data-dz-remove class="button_submit cancel">Cancel</a>
+				<a data-dz-remove class="button_submit delete">Delete</a>
+			</div>
 		</div>
-		<div>
-			<button class="btn btn-primary start">
-				<span>Start</span>
-			</button>
-			<button data-dz-remove class="btn btn-warning cancel">
-				<span>Cancel</span>
-			</button>
-			<button data-dz-remove class="btn btn-danger delete">
-				<span>Delete</span>
-			</button>
-		</div>
-	</div>
-</div>'
+	</div>'
 		));
 
 		// Send the form to the template
