@@ -484,16 +484,16 @@ class BreezeTools
 		return str_replace($find, $replace, $text);
 	}
 
-	public function formatBytes($bytes)
+	public function formatBytes($bytes, $showUnits = false)
 	{
-		$units = array('B', 'KiB', 'MiB', 'GiB', 'TiB');
+		$units = array('B', 'KB', 'MB', 'GB', 'TB');
 
 		$bytes = max($bytes, 0);
 		$pow = floor(($bytes ? log($bytes) : 0) / log(1024));
 		$pow = min($pow, count($units) - 1);
-		$bytes /= pow(1024, $pow);
+		$bytes /= (1 << (10 * $pow));
 
-		return round($bytes, 4) . ' ' . $units[$pow];
+		return round($bytes, 4) . ($showUnits ? ' ' . $units[$pow] : '');
 	}
 
 	/**

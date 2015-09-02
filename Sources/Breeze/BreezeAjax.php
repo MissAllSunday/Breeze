@@ -673,7 +673,7 @@ class BreezeAjax
 		if (!empty($file->error))
 		{
 			// Give some more info.
-			$replaceValues = array('size' => $this->_app['tools']->formatBytes($maxFileSize), 'height' => $maxFileHeight, 'width' => $maxFileWidth);
+			$replaceValues = array('size' => $this->_app['tools']->formatBytes($maxFileSize, true), 'height' => $maxFileHeight, 'width' => $maxFileWidth);
 
 			if ($this->_noJS)
 				return $this->setResponse(array(
