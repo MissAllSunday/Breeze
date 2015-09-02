@@ -685,7 +685,7 @@ class BreezeUser extends Breeze
 		maxFilewidth: '. ($this['tools']->setting('cover_max_image_width') ? $this['tools']->setting('cover_max_image_width') : '1500') .',
 		maxFileheight: '. ($this['tools']->setting('cover_max_image_height') ? $this['tools']->setting('cover_max_image_height') : '500') .',
 		acceptedFiles: '. JavaScriptEscape($acceptedFiles) .',
-		imgsrc: \''. $this['tools']->scriptUrl .'?action=breezecover;u='. $context['member']['id'] .';thumb=1\'
+		baseImgsrc: \''. $this['tools']->scriptUrl .'?action=breezecover;u='. $context['member']['id'] .';thumb=1\'
 	};', false);
 	}
 

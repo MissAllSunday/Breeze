@@ -15,8 +15,8 @@ $(function() {
 		uploadMultiple:false,
 		maxFiles:1,
 		acceptedFiles: '',
-		thumbnailWidth: 80,
-		thumbnailHeight: 'auto',
+		thumbnailWidth: 300,
+		thumbnailHeight: null,
 		parallelUploads: 3,
 		previewTemplate: previewTemplate,
 		autoQueue: false,
@@ -28,13 +28,13 @@ $(function() {
 
 	$.extend(true, dOptions, dzOptions);
 
-	console.log(dOptions);
-
 	var myDropzone = new Dropzone('div#coverUpload', dOptions);
 
 	myDropzone.on('addedfile', function(file) {
 		// Hookup the start button
 		file.previewElement.querySelector('.start').onclick = function() { myDropzone.enqueueFile(file); };
+		
+		console.log(file);
 	});
 
 	// Update the total progress bar
@@ -56,7 +56,7 @@ $(function() {
 
 		// If there wasn't any error, change the current cover.
 		if (responseText.type == 'info'){
-			document.querySelector('.current_cover').src = _coverUpload.imgsrc;
+			document.querySelector('.current_cover').src = dOptions.baseImgsrc;
 		}
 	});
 
