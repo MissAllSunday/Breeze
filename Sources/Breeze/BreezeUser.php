@@ -627,7 +627,7 @@ class BreezeUser extends Breeze
 		$form->addHTML(array(
 			'name' => 'cover_select',
 			'html' => '
-	<div id="coverUpload"></div>
+	<div id="coverUpload" class="descbox"></div>
 	<div id="actions">
 		<div>
 			<a class="button_submit fileinput-button">Add files...</a>
@@ -673,8 +673,12 @@ class BreezeUser extends Breeze
 
 		// @todo replace the hardcoded text strings
 		addInlineJavascript('
-	var _coverUpload = {
+	var oOptions = {
 		url: '. JavaScriptEscape($this['tools']->scriptUrl .'?action=breezeajax;sa=cover;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings') .';js=1;'. $context['session_var'] .'='. $context['session_id']) .',
+		maxFilesize: '. ($this['tools']->setting('cover_max_image_size') ? $this['tools']->setting('cover_max_image_size') : '250') .',
+		maxFilewidth: '. ($this['tools']->setting('cover_max_image_width') ? $this['tools']->setting('cover_max_image_width') : '1500') .',
+		maxFileheight: '. ($this['tools']->setting('cover_max_image_height') ? $this['tools']->setting('cover_max_image_height') : '500') .',
+		acceptedFiles: '. ($this['tools']->setting('cover_image_types') ? $this['tools']->setting('cover_image_types') : 'jpg,jpeg,png') .',
 		imgsrc: \''. $this['tools']->scriptUrl .'?action=breezecover;u='. $context['member']['id'] .';thumb=1\',
 		error: \''. $this['tools']->text('error_server') .'\',
 	};', false);
