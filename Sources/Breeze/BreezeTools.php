@@ -526,4 +526,16 @@ class BreezeTools
 		else
 			return false;
 	}
+
+	public function commaSeparated($string)
+	{
+		return empty($string) ? false : implode(',', array_filter(explode(',', preg_replace(
+			array(
+				'/[^\d,]/',
+				'/(?<=,),+/',
+				'/^,+/',
+				'/,+$/'
+			), '', $string
+		))));
+	}
 }
