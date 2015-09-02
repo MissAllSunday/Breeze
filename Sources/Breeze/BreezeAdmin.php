@@ -587,6 +587,11 @@ class BreezeAdmin
 		if ($data->validate('save'))
 		{
 			checkSession();
+
+			// Gotta make sure this is indeed a comma separated list....
+			if (!empty($_POST[Breeze::$txtpattern .'cover_image_types']))
+				$_POST[Breeze::$txtpattern .'cover_image_types'] = $this->_app['tools']->commaSeparated($_POST[Breeze::$txtpattern .'cover_image_types'], 'alpha');
+
 			saveDBSettings($config_vars);
 			redirectexit('action=admin;area=breezeadmin;sa=cover');
 		}

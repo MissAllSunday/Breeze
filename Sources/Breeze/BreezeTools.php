@@ -527,11 +527,24 @@ class BreezeTools
 			return false;
 	}
 
-	public function commaSeparated($string)
+	public function commaSeparated($string, $type = 'alphanumeric')
 	{
+		switch ($type) {
+			case 'numeric':
+				$t = '\d';
+				break;
+			case 'alpha':
+				$t = '[:alpha:]';
+				break;
+			case 'alphanumeric':
+			default:
+				$t = '[:alnum:]';
+				break;
+		}
+
 		return empty($string) ? false : implode(',', array_filter(explode(',', preg_replace(
 			array(
-				'/[^\d,]/',
+				'/[^'. $t .',]/',
 				'/(?<=,),+/',
 				'/^,+/',
 				'/,+$/'
