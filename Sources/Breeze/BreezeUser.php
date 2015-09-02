@@ -630,8 +630,6 @@ class BreezeUser extends Breeze
 	<div id="coverUpload"></div>
 	<div id="actions">
 		<div>
-			<a class="button_submit cancel">Cancel upload</a>
-			<a class="button_submit start">Start upload</a>
 			<a class="button_submit fileinput-button">Add files...</a>
 		</div>
 
