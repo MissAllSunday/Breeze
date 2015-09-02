@@ -657,9 +657,9 @@ class BreezeUser extends Breeze
 				</div>
 			</div>
 			<div>
-				<a class="button_submit start">Start</a>
-				<a data-dz-remove class="button_submit cancel">Cancel</a>
-				<a data-dz-remove class="button_submit delete">Delete</a>
+				<a class="button_submit attach-ui start">Start</a>
+				<a data-dz-remove class="button_submit attach-ui cancel">Cancel</a>
+				<a data-dz-remove class="button_submit attach-ui delete">Delete</a>
 			</div>
 		</div>
 	</div>'
@@ -670,22 +670,23 @@ class BreezeUser extends Breeze
 
 		// Need a lot of Js files :(
 		loadJavascriptFile('breeze/dropzone.min.js', array('external' => false, 'default_theme' => true));
+		loadJavascriptFile('breeze/coverUpload.js', array('external' => false, 'default_theme' => true, 'defer' => true,));
 
 		// dropzone handles mb only...
 		$maxFilesize = ($this['tools']->setting('cover_max_image_size') ? $this['tools']->setting('cover_max_image_size') : '250') * 0.001;
 
+		// Add the dot to the allowed extensions
+		$acceptedFiles = implode(',', array_map(function($val) { return '.'. $val;} , explode(',', $this['tools']->setting('cover_image_types') ? $this['tools']->setting('cover_image_types') : 'jpg,jpeg,png')));
+
 		addInlineJavascript('
-		coverUpload(oOptions = {
+		var dzOptions = {
 		url: '. JavaScriptEscape($this['tools']->scriptUrl .'?action=breezeajax;sa=cover;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings') .';js=1;'. $context['session_var'] .'='. $context['session_id']) .',
 		maxFilesize: '. $maxFilesize .',
 		maxFilewidth: '. ($this['tools']->setting('cover_max_image_width') ? $this['tools']->setting('cover_max_image_width') : '1500') .',
 		maxFileheight: '. ($this['tools']->setting('cover_max_image_height') ? $this['tools']->setting('cover_max_image_height') : '500') .',
-		acceptedFiles: '. JavaScriptEscape($this['tools']->setting('cover_image_types') ? $this['tools']->setting('cover_image_types') : 'jpg,jpeg,png') .',
-		imgsrc: \''. $this['tools']->scriptUrl .'?action=breezecover;u='. $context['member']['id'] .';thumb=1\',
-		error: \''. $this['tools']->text('error_server') .'\',
-	});', true);
-
-		loadJavascriptFile('breeze/coverUpload.js', array('external' => false, 'default_theme' => true, 'defer' => true,));
+		acceptedFiles: '. JavaScriptEscape($acceptedFiles) .',
+		imgsrc: \''. $this['tools']->scriptUrl .'?action=breezecover;u='. $context['member']['id'] .';thumb=1\'
+	};', false);
 	}
 
 	/**
