@@ -15,7 +15,7 @@ $(function() {
 		uploadMultiple:false,
 		maxFiles:1,
 		acceptedFiles: '',
-		thumbnailWidth: 300,
+		thumbnailWidth: 100,
 		thumbnailHeight: null,
 		parallelUploads: 3,
 		previewTemplate: previewTemplate,
@@ -33,7 +33,7 @@ $(function() {
 	myDropzone.on('addedfile', function(file) {
 		// Hookup the start button
 		file.previewElement.querySelector('.start').onclick = function() { myDropzone.enqueueFile(file); };
-		
+
 		console.log(file);
 	});
 
@@ -53,6 +53,9 @@ $(function() {
 	myDropzone.on('success', function(file, responseText, e) {
 		// Do whatever we need to do with the server response.
 		file.previewElement.setAttribute("class", "" + responseText.type +"box");
+
+		// Remove the ui buttons.
+		file.previewElement.querySelector('.attach-ui').remove();
 
 		// If there wasn't any error, change the current cover.
 		if (responseText.type == 'info'){
