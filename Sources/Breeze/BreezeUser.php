@@ -627,12 +627,11 @@ class BreezeUser extends Breeze
 		$form->addHTML(array(
 			'name' => 'cover_select',
 			'html' => '
-	<div id="coverUpload" class="descbox"></div>
-	<div id="actions">
+	<div id="coverUpload" class="descbox">
+		<h5>Drag and drop your files here</h5>
 		<div>
 			<a class="button_submit fileinput-button">Add files...</a>
 		</div>
-
 		<div>
 		<span class="fileupload-process">
 			<div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
@@ -641,25 +640,23 @@ class BreezeUser extends Breeze
 		</span>
 		</div>
 	</div>
-	<div class="files" id="previews">
-		<div id="template">
-			<div>
+	<div id="actions" class="cu-actions">
+	</div>
+	<div class="files cu-files" id="cu-previews">
+		<div id="template" class="descbox">
+			<div class="cu-fileInfo">
 				<span class="preview"><img data-dz-thumbnail /></span>
-			</div>
-			<div>
 				<p class="name" data-dz-name></p>
-				<strong class="error" data-dz-errormessage></strong>
-			</div>
-			<div>
+				<p><strong class="error" data-dz-errormessage></strong></p>
 				<p class="size" data-dz-size></p>
-				<div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-					<div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-				</div>
+				<p>
+					<a class="button_submit attach-ui start">Start</a>
+					<a data-dz-remove class="button_submit attach-ui cancel">Cancel</a>
+					<a data-dz-remove class="button_submit attach-ui delete">Delete</a>
+				</p>
 			</div>
-			<div>
-				<a class="button_submit attach-ui start">Start</a>
-				<a data-dz-remove class="button_submit attach-ui cancel">Cancel</a>
-				<a data-dz-remove class="button_submit attach-ui delete">Delete</a>
+			<div class="floatnone progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+				<div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
 			</div>
 		</div>
 	</div>'

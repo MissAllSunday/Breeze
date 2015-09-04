@@ -167,7 +167,19 @@ ul.breezeActivity li{
 	width: 69.5%;
 }
 
-
+/* Cover upload stuff */
+#coverUpload{
+	display:block;
+	min-height:50px;
+	width:auto;
+	text-align:center;
+	margin:auto;
+}
+.cu-actions, .cu-files, .dz-image-preview{
+	display:inline-block;
+	width:95%;
+	min-height:30px;
+}
 
 @media screen and (max-width: 720px) {
 

@@ -20,7 +20,7 @@ $(function() {
 		parallelUploads: 3,
 		previewTemplate: previewTemplate,
 		autoQueue: false,
-		previewsContainer: '#previews',
+		previewsContainer: '#cu-previews',
 		clickable: '.fileinput-button',
 		dictDefaultMessage: 'Drop files here to upload',
 		paramName: 'files',
@@ -34,7 +34,8 @@ $(function() {
 		// Hookup the start button
 		file.previewElement.querySelector('.start').onclick = function() { myDropzone.enqueueFile(file); };
 
-		console.log(file);
+		/* Show the main stuff! */
+		file.previewElement.setAttribute("class", "descbox");
 	});
 
 	// Update the total progress bar
@@ -47,6 +48,7 @@ $(function() {
 		file.previewElement.querySelector('.start').remove();
 
 		// Set a nice css class to make it more obvious theres an error.
+		file.previewElement.removeAttribute("class", "descbox");
 		file.previewElement.setAttribute("class", "errorbox");
 	});
 
