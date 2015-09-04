@@ -34,7 +34,7 @@ $(function() {
 		// Hookup the start button
 		file.previewElement.querySelector('.start').onclick = function() { myDropzone.enqueueFile(file); };
 
-		/* Show the main stuff! */
+		// Show the main stuff!
 		file.previewElement.setAttribute("class", "descbox");
 	});
 
