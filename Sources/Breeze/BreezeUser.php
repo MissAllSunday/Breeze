@@ -645,9 +645,9 @@ class BreezeUser extends Breeze
 			'name' => 'cover_select',
 			'html' => '
 	<div id="coverUpload" class="descbox">
-		<h5>Drag and drop your files here</h5>
+		<h5>'. $this['tools']->text('cu_dictDefaultMessage') .'</h5>
 		<div>
-			<a class="button_submit fileinput-button">Add files...</a>
+			<a class="button_submit fileinput-button">'. $this['tools']->text('cu_add') .'</a>
 		</div>
 		<div>
 		<span class="fileupload-process">
@@ -667,8 +667,8 @@ class BreezeUser extends Breeze
 				<p><strong class="error" data-dz-errormessage></strong></p>
 				<p class="size" data-dz-size></p>
 				<p class="attach-ui">
-					<a class="button_submit attach-ui start">Start</a>
-					<a data-dz-remove class="button_submit attach-ui delete">Delete</a>
+					<a data-dz-remove class="button_submit attach-ui delete">'. $this['tools']->text('general_delete') .'</a>
+					<a class="button_submit attach-ui start">'. $this['tools']->text('general_upload') .'</a>
 				</p>
 			</div>
 			<div class="floatnone progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
@@ -698,7 +698,12 @@ class BreezeUser extends Breeze
 		maxFilewidth: '. ($maxFilewidth) .',
 		maxFileheight: '. $maxFileheight .',
 		acceptedFiles: '. JavaScriptEscape($acceptedFiles) .',
-		baseImgsrc: \''. $this['tools']->scriptUrl .'?action=breezecover;u='. $context['member']['id'] .';thumb=1\'
+		baseImgsrc: \''. $this['tools']->scriptUrl .'?action=breezecover;u='. $context['member']['id'] .';thumb=1\',
+		dictResponseError: '. (JavaScriptEscape($this['tools']->text('error_wrong_values'))) .',
+		dictMaxFilesExceeded: '. (JavaScriptEscape($this['tools']->text('cu_dictMaxFilesExceeded'))) .',
+		dictFileTooBig: '. (JavaScriptEscape($this['tools']->text('cu_dictFileTooBig'))) .',
+		dictInvalidFileType: '. (JavaScriptEscape($this['tools']->text('cu_dictInvalidFileType'))) .',
+		dictFallbackMessage: '. (JavaScriptEscape($this['tools']->text('cu_dictFallbackMessage'))) .',
 	};', false);
 	}
 

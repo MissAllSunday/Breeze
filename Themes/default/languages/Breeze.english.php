@@ -23,7 +23,17 @@ $txt['Breeze_general_my_wall_settings'] = 'My Wall Settings';
 $txt['Breeze_general_loading'] = 'Loading...';
 $txt['Breeze_general_like'] = 'Like';
 $txt['Breeze_general_delete'] = 'Delete';
+$txt['Breeze_general_upload'] = 'Upload';
 $txt['Breeze_general_posted_on'] = 'Posted on %s\'s Wall';
+
+// Cover upload strings
+$txt['Breeze_cu_dictDefaultMessage'] = 'Drag and drop your files here';
+$txt['Breeze_cu_add'] = 'Add files...';
+$txt['Breeze_cu_dictFallbackMessage'] = 'Your browser does not support Drag and drop file uploads';
+$txt['Breeze_cu_dictInvalidFileType'] = 'You can\'t upload files of this type.';
+$txt['Breeze_cu_dictFileTooBig'] = 'File is too big. Max file size is: {{maxFilesize}} and your file is: {{filesize}}. Please chose a smaller one.';
+$txt['Breeze_cu_dictMaxFilesExceeded'] = 'You can not upload any more files.';
+
 
 // User Individual Settings
 $txt['Breeze_profile'] = 'Wall Settings';
