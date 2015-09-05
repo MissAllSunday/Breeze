@@ -65,7 +65,16 @@ $(function() {
 		}
 	});
 
+	myDropzone.on('complete', function(file, responseText, e) {
+		// Doesn't matter what the result was, remove the ajax indicator.
+		ajax_indicator(false);
+	});
+
 	myDropzone.on('sending', function(file) {
+
+		// Hey! we are actually doing something!
+		ajax_indicator(true);
+
 		// Show the total progress bar when upload starts
 		document.querySelector('#total-progress').style.opacity = '1';
 		// And disable the start button
