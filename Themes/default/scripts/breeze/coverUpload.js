@@ -53,19 +53,28 @@ $(function() {
 	});
 
 	myDropzone.on('success', function(file, responseText, e) {
-		// Do whatever we need to do with the server response.
-		file.previewElement.setAttribute("class", "" + responseText.type +"box");
+			var _thisElement = $(file.previewElement);
 
-		// Remove the ui buttons.
-		file.previewElement.querySelector('.attach-ui').remove();
+		// The request was complete but the server returned an error.
+		if (typeof(responseText.error) != "undefined"){
+
+			_thisElement.toggleClass("descbox errorbox");
+
+			// Show the server error.
+			_thisElement.find('p.error').append(responseText.error);
+
+			// Remove the "start" button.
+			_thisElement.find('.start').remove();
+		}
 
 		// If there wasn't any error, change the current cover.
 		if (responseText.type == 'info'){
-			document.querySelector('.current_cover').src = dOptions.baseImgsrc;
+			_thisElement.toggleClass("descbox infobox");
 		}
 	});
 
-	myDropzone.on('complete', function(file, responseText, e) {
+	myDropzone.on('complete', function(file) {
+
 		// Doesn't matter what the result was, remove the ajax indicator.
 		ajax_indicator(false);
 	});

@@ -624,9 +624,9 @@ class BreezeUser extends Breeze
 			));
 
 		// Prepare some image max values.
-		$maxFilesize = ($this['tools']->setting('cover_max_image_size') ? $this['tools']->setting('cover_max_image_size') : '250');
-		$maxFilewidth = ($this['tools']->setting('cover_max_image_width') ? $this['tools']->setting('cover_max_image_width') : '1500');
-		$maxFileheight = ($this['tools']->setting('cover_max_image_height') ? $this['tools']->setting('cover_max_image_height') : '500');
+		$maxFileSize = ($this['tools']->setting('cover_max_image_size') ? $this['tools']->setting('cover_max_image_size') : '250');
+		$maxFileWidth = ($this['tools']->setting('cover_max_image_width') ? $this['tools']->setting('cover_max_image_width') : '1500');
+		$maxFileHeight = ($this['tools']->setting('cover_max_image_height') ? $this['tools']->setting('cover_max_image_height') : '500');
 
 		// Add the dot to the allowed extensions.
 		$acceptedFiles = implode(',', array_map(function($val) { return '.'. $val;} , explode(',', $this['tools']->setting('cover_image_types') ? $this['tools']->setting('cover_image_types') : 'jpg,jpeg,png')));
@@ -637,9 +637,9 @@ class BreezeUser extends Breeze
 				$this['tools']->text('user_settings_cover_select_sub'),
 				array(
 					'fileTypes' => $acceptedFiles,
-					'width' => $maxFilewidth,
-					'height' => $maxFileheight,
-					'size' => $maxFilesize,
+					'width' => $maxFileWidth,
+					'height' => $maxFileHeight,
+					'size' => $maxFileSize,
 				)
 			),
 			'name' => 'cover_select',
@@ -664,7 +664,7 @@ class BreezeUser extends Breeze
 			<div class="cu-fileInfo">
 				<span class="preview"><img data-dz-thumbnail /></span>
 				<p class="name" data-dz-name></p>
-				<p><strong class="error" data-dz-errormessage></strong></p>
+				<p class="error" data-dz-errormessage></p>
 				<p class="size" data-dz-size></p>
 				<p class="attach-ui">
 					<a data-dz-remove class="button_submit attach-ui delete">'. $this['tools']->text('general_delete') .'</a>
@@ -686,7 +686,7 @@ class BreezeUser extends Breeze
 		loadJavascriptFile('breeze/coverUpload.js', array('external' => false, 'default_theme' => true, 'defer' => true,));
 
 		// dropzone handles mb only...
-		$maxFilesize = $maxFilesize * 0.001;
+		$maxFileSize = $maxFileSize * 0.001;
 
 		// Add the dot to the allowed extensions.
 		$acceptedFiles = implode(',', array_map(function($val) { return '.'. $val;} , explode(',', $this['tools']->setting('cover_image_types') ? $this['tools']->setting('cover_image_types') : 'jpg,jpeg,png')));
@@ -694,9 +694,9 @@ class BreezeUser extends Breeze
 		addInlineJavascript('
 		var dzOptions = {
 		url: '. JavaScriptEscape($this['tools']->scriptUrl .'?action=breezeajax;sa=cover;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings') .';js=1;'. $context['session_var'] .'='. $context['session_id']) .',
-		maxFilesize: '. $maxFilesize .',
-		maxFilewidth: '. ($maxFilewidth) .',
-		maxFileheight: '. $maxFileheight .',
+		maxFilesize: '. $maxFileSize .',
+		maxFilewidth: '. ($maxFileWidth) .',
+		maxFileheight: '. $maxFileHeight .',
 		acceptedFiles: '. JavaScriptEscape($acceptedFiles) .',
 		baseImgsrc: \''. $this['tools']->scriptUrl .'?action=breezecover;u='. $context['member']['id'] .';thumb=1\',
 		dictResponseError: '. (JavaScriptEscape($this['tools']->text('error_wrong_values'))) .',

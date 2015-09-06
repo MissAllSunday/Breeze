@@ -644,9 +644,9 @@ class BreezeAjax
 		$folder = $this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/';
 		$folderThumbnail = $this->_app['tools']->boardDir . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/';
 		$folderThumbnailUrl = $this->_app['tools']->boardUrl . Breeze::$coversFolder . $this->_currentUser .'/thumbnail/';
-		$maxFileSize = $this->_app['tools']->enable('cover_max_image_size') ? ($this->_app['tools']->setting('cover_max_image_size') .'000') : 250000;
-		$maxFileWidth = $this->_app['tools']->enable('cover_max_image_width') ? $this->_app['tools']->setting('cover_max_image_width') : 1500;
-		$maxFileHeight = $this->_app['tools']->enable('cover_max_image_height') ? $this->_app['tools']->setting('cover_max_image_height') : 500;
+		$maxFileSize = ($this->_app['tools']->setting('cover_max_image_size') ? $this->_app['tools']->setting('cover_max_image_size') : '250') * 1000;
+		$maxFileWidth = ($this->_app['tools']->setting('cover_max_image_width') ? $this->_app['tools']->setting('cover_max_image_width') : '1500');
+		$maxFileHeight = ($this->_app['tools']->setting('cover_max_image_height') ? $this->_app['tools']->setting('cover_max_image_height') : '500');
 
 		// Get the image.
 		$uploadHandler = new BreezeUpload(array(

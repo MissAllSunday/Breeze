@@ -181,6 +181,11 @@ ul.breezeActivity li{
 	min-height:30px;
 }
 
+.attach-ui
+{
+	display:inline-block;
+}
+
 @media screen and (max-width: 720px) {
 
 	/* Hide the sidebar. */
