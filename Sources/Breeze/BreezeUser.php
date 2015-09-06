@@ -704,6 +704,18 @@ class BreezeUser extends Breeze
 		dictFileTooBig: '. (JavaScriptEscape($this['tools']->text('cu_dictFileTooBig'))) .',
 		dictInvalidFileType: '. (JavaScriptEscape($this['tools']->text('cu_dictInvalidFileType'))) .',
 		dictFallbackMessage: '. (JavaScriptEscape($this['tools']->text('cu_dictFallbackMessage'))) .',
+		maxWidthMessage: '. JavaScriptEscape($this['tools']->parser(
+				$this['tools']->text('cu_max_width'),
+				array(
+					'width' => $maxFileWidth,
+				)
+			)) .',
+		maxHeightMessage: '. JavaScriptEscape($this['tools']->parser(
+				$this['tools']->text('cu_max_height'),
+				array(
+					'height' => $maxFileHeight,
+				)
+			)) .',
 	};', false);
 	}
 

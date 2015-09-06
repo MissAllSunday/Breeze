@@ -33,6 +33,8 @@ $txt['Breeze_cu_dictFallbackMessage'] = 'Your browser does not support Drag and 
 $txt['Breeze_cu_dictInvalidFileType'] = 'You can\'t upload files of this type.';
 $txt['Breeze_cu_dictFileTooBig'] = 'File is too big. Max file size is: {{maxFilesize}} and your file is: {{filesize}}. Please chose a smaller one.';
 $txt['Breeze_cu_dictMaxFilesExceeded'] = 'You can not upload any more files.';
+$txt['Breeze_cu_max_width'] = 'Image exceeds maximum width, the max width value is {width}px';
+$txt['Breeze_cu_max_height'] = 'Image exceeds maximum height, the max height value is {height}px';
 
 
 // User Individual Settings
@@ -234,9 +236,9 @@ $txt['Breeze_cover_errors'] = array(
 	'min_file_size' => 'File is too small',
 	'accept_file_types' => 'Filetype not allowed',
 	'max_number_of_files' => 'Maximum number of files exceeded',
-	'max_width' => 'Image exceeds maximum width, the max width value is {width}',
+	'max_width' => 'Image exceeds maximum width, the max width value is {width}px',
 	'min_width' => 'Image requires a minimum width',
-	'max_height' => 'Image exceeds maximum height, the max height value is {height}',
+	'max_height' => 'Image exceeds maximum height, the max height value is {height}px',
 	'min_height' => 'Image requires a minimum height',
 	'abort' => 'File upload aborted',
 	'image_resize' => 'Failed to resize image'

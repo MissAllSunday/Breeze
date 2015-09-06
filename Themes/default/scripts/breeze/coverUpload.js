@@ -30,6 +30,20 @@ $(function() {
 
 	var myDropzone = new Dropzone('div#coverUpload', dOptions);
 
+	myDropzone.on('accept', function(file, done) {
+
+		// We do have a max width and height, lets check that out!
+		if (file.width > dOptions.maxImageWidth) {
+			done(dOptions.maxWidthMessage);
+		}
+		else if (file.height > dOptions.maxImageHeight){
+			done(dOptions.maxHeightMessage);
+		}
+		else {
+			done();
+		}
+	});
+
 	myDropzone.on('addedfile', function(file) {
 		// Hookup the start button
 		file.previewElement.querySelector('.start').onclick = function() { myDropzone.enqueueFile(file); };
@@ -58,7 +72,7 @@ $(function() {
 		// The request was complete but the server returned an error.
 		if (typeof(responseText.error) != "undefined"){
 
-			_thisElement.toggleClass("descbox errorbox");
+			_thisElement.toggleClass("errorbox");
 
 			// Show the server error.
 			_thisElement.find('p.error').append(responseText.error);
@@ -69,7 +83,7 @@ $(function() {
 
 		// If there wasn't any error, change the current cover.
 		if (responseText.type == 'info'){
-			_thisElement.toggleClass("descbox infobox");
+			_thisElement.toggleClass("infobox");
 		}
 	});
 
