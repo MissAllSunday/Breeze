@@ -692,11 +692,10 @@ class BreezeUser extends Breeze
 		$acceptedFiles = implode(',', array_map(function($val) { return '.'. $val;} , explode(',', $this['tools']->setting('cover_image_types') ? $this['tools']->setting('cover_image_types') : 'jpg,jpeg,png')));
 
 		addInlineJavascript('
-		var dzOptions = {
-		url: '. JavaScriptEscape($this['tools']->scriptUrl .'?action=breezeajax;sa=cover;rf=profile;u='. $context['member']['id'] .';area='. (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings') .';js=1;'. $context['session_var'] .'='. $context['session_id']) .',
+	var dzOptions = {
 		maxFilesize: '. $maxFileSize .',
-		maxFilewidth: '. ($maxFileWidth) .',
-		maxFileheight: '. $maxFileHeight .',
+		maxFileWidth: '. ($maxFileWidth) .',
+		maxFileHeight: '. $maxFileHeight .',
 		acceptedFiles: '. JavaScriptEscape($acceptedFiles) .',
 		baseImgsrc: \''. $this['tools']->scriptUrl .'?action=breezecover;u='. $context['member']['id'] .';thumb=1\',
 		dictResponseError: '. (JavaScriptEscape($this['tools']->text('error_wrong_values'))) .',

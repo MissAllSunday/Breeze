@@ -10,7 +10,7 @@ $(function() {
 	previewNode.parentNode.removeChild(previewNode);
 
 	var dOptions = {
-		url: '',
+		url: smf_scripturl + '?action=breezeajax;sa=cover;rf=profile;u='+ smf_member_id +';area=breezecover;js=1;'+ smf_session_var +'='+ smf_session_id,
 		maxFilesize: 1,
 		uploadMultiple:false,
 		maxFiles:1,
@@ -24,27 +24,32 @@ $(function() {
 		clickable: '.fileinput-button',
 		dictDefaultMessage: 'Drop files here to upload',
 		paramName: 'files',
+		accept: function(file, done) {
+
+			file.acceptDimensions = done;
+			file.rejectDimensions = function(eText) { done(eText); };
+		}
 	};
 
 	$.extend(true, dOptions, dzOptions);
 
 	var myDropzone = new Dropzone('div#coverUpload', dOptions);
 
-	myDropzone.on('accept', function(file, done) {
+	myDropzone.on('thumbnail', function(file) {
 
-		// We do have a max width and height, lets check that out!
-		if (file.width > dOptions.maxImageWidth) {
-			done(dOptions.maxWidthMessage);
+		if (file.width > myDropzone.options.maxFileWidth) {
+			file.rejectDimensions(myDropzone.options.maxWidthMessage);
 		}
-		else if (file.height > dOptions.maxImageHeight){
-			done(dOptions.maxHeightMessage);
+		else if (file.height > myDropzone.options.maxFileHeight){
+			file.rejectDimensions(myDropzone.options.maxHeightMessage);
 		}
 		else {
-			done();
+			file.acceptDimensions();
 		}
 	});
 
 	myDropzone.on('addedfile', function(file) {
+
 		// Hookup the start button
 		file.previewElement.querySelector('.start').onclick = function() { myDropzone.enqueueFile(file); };
 
