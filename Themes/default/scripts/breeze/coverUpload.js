@@ -50,34 +50,36 @@ $(function() {
 
 	myDropzone.on('addedfile', function(file) {
 
-		// Hookup the start button
-		file.previewElement.querySelector('.start').onclick = function() { myDropzone.enqueueFile(file); };
+		_thisElement = $(file.previewElement);
+
+		// Hookup the start button.
+		_thisElement.find('.start').on( 'click', function() {
+			myDropzone.enqueueFile(file);
+		});
 
 		// Show the main stuff!
-		file.previewElement.setAttribute("class", "descbox");
-	});
-
-	// Update the total progress bar
-	myDropzone.on('totaluploadprogress', function(progress) {
-		document.querySelector('#total-progress .progress-bar').style.width = progress + '%';
+		_thisElement.addClass('descbox');
 	});
 
 	myDropzone.on('error', function(file, errorMessage, xhr) {
+
+		_thisElement = $(file.previewElement);
+
 		// Remove the "start" button.
-		file.previewElement.querySelector('.start').remove();
+		_thisElement.find('.start').remove();
 
 		// Set a nice css class to make it more obvious theres an error.
-		file.previewElement.removeAttribute("class", "descbox");
-		file.previewElement.setAttribute("class", "errorbox");
+		_thisElement.removeClass('infobox').addClass('errorbox');
 	});
 
 	myDropzone.on('success', function(file, responseText, e) {
-			var _thisElement = $(file.previewElement);
+
+		_thisElement = $(file.previewElement);
 
 		// The request was complete but the server returned an error.
 		if (typeof(responseText.error) != "undefined"){
 
-			_thisElement.toggleClass("errorbox");
+			_thisElement.removeClass('descbox').addClass('errorbox');
 
 			// Show the server error.
 			_thisElement.find('p.error').append(responseText.error);
@@ -88,7 +90,7 @@ $(function() {
 
 		// If there wasn't any error, change the current cover.
 		if (responseText.type == 'info'){
-			_thisElement.toggleClass("infobox");
+			_thisElement.removeClass('descboxbox').addClass('infobox');
 		}
 	});
 
@@ -100,17 +102,12 @@ $(function() {
 
 	myDropzone.on('sending', function(file) {
 
+		_thisElement = $(file.previewElement);
+
 		// Hey! we are actually doing something!
 		ajax_indicator(true);
 
-		// Show the total progress bar when upload starts
-		document.querySelector('#total-progress').style.opacity = '1';
 		// And disable the start button
-		file.previewElement.querySelector('.start').setAttribute('disabled', 'disabled');
-	});
-
-	// Hide the total progress bar when nothing's uploading anymore
-	myDropzone.on('queuecomplete', function(progress) {
-		document.querySelector('#total-progress').style.opacity = '0';
+		_thisElement.find('.start').prop('disabled', true);
 	});
 });
