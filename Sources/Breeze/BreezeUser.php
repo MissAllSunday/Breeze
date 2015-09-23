@@ -660,6 +660,7 @@ class BreezeUser extends Breeze
 				<p class="name" data-dz-name></p>
 				<p class="size" data-dz-size></p>
 				<p class="error" data-dz-errormessage></p>
+				<p class="message" data-dz-message></p>
 				<p class="attach-ui">
 					<a data-dz-remove class="button_submit attach-ui delete">'. $this['tools']->text('general_delete') .'</a>
 					<a class="button_submit attach-ui start">'. $this['tools']->text('general_upload') .'</a>

@@ -79,7 +79,6 @@ $(function() {
 	myDropzone.on('success', function(file, responseText, e) {
 
 		_thisElement = $(file.previewElement);
-
 		// The request was complete but the server returned an error.
 		if (typeof(responseText.error) != "undefined"){
 
@@ -94,7 +93,9 @@ $(function() {
 
 		// If there wasn't any error, change the current cover.
 		if (responseText.type == 'info'){
-			_thisElement.removeClass('descboxbox').addClass('infobox');
+			_thisElement.removeClass('descbox').addClass('infobox');
+
+			_thisElement.find('p.message').append(responseText.message);
 		}
 	});
 
@@ -112,6 +113,11 @@ $(function() {
 
 		// Hide the progress bar.
 		_thisElement.find('p.progressBar').fadeOut();
+
+		// Remove the upload and cancel buttons.
+		_thisElement.find('p.attach-ui').fadeOut( "slow", function() {
+			$(this).remove();
+		});
 
 		// Doesn't matter what the result was, remove the ajax indicator.
 		ajax_indicator(false);
