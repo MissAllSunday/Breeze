@@ -15,14 +15,13 @@ $(function() {
 		uploadMultiple:false,
 		maxFiles:1,
 		acceptedFiles: '',
-		thumbnailWidth: 100,
+		thumbnailWidth: 150,
 		thumbnailHeight: null,
-		parallelUploads: 3,
+		parallelUploads: 1,
 		previewTemplate: previewTemplate,
 		autoQueue: false,
 		previewsContainer: '#cu-previews',
 		clickable: '.fileinput-button',
-		dictDefaultMessage: 'Drop files here to upload',
 		paramName: 'files',
 		accept: function(file, done) {
 
@@ -37,10 +36,10 @@ $(function() {
 
 	myDropzone.on('thumbnail', function(file) {
 
-		if (file.width > myDropzone.options.maxFileWidth) {
+		if (file.width > myDropzone.options.maxFileWidth && file.rejectDimensions) {
 			file.rejectDimensions(myDropzone.options.maxWidthMessage);
 		}
-		else if (file.height > myDropzone.options.maxFileHeight){
+		else if (file.height > myDropzone.options.maxFileHeight && file.rejectDimensions){
 			file.rejectDimensions(myDropzone.options.maxHeightMessage);
 		}
 		else {
@@ -69,7 +68,7 @@ $(function() {
 		_thisElement.find('.start').remove();
 
 		// Set a nice css class to make it more obvious theres an error.
-		_thisElement.removeClass('infobox').addClass('errorbox');
+		_thisElement.removeClass('descbox').addClass('errorbox');
 	});
 
 	myDropzone.on('success', function(file, responseText, e) {

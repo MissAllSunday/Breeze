@@ -651,12 +651,12 @@ class BreezeUser extends Breeze
 	<div id="actions" class="cu-actions">
 	</div>
 	<div class="files cu-files" id="cu-previews">
-		<div id="template" class="descbox">
+		<div id="template">
 			<div class="cu-fileInfo">
 				<p class="preview"><img data-dz-thumbnail /></p>
 				<p class="progressBar" role="progressBar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></p>
 			</div>
-			<div>
+			<div class="cu-fileUI">
 				<p class="name" data-dz-name></p>
 				<p class="size" data-dz-size></p>
 				<p class="error" data-dz-errormessage></p>

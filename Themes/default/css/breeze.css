@@ -175,15 +175,14 @@ ul.breezeActivity li{
 	text-align:center;
 	margin:auto;
 }
-.cu-actions, .cu-files, .dz-image-preview{
+.cu-fileInfo, .cu-fileUI{
 	display:inline-block;
-	width:95%;
-	min-height:30px;
+	width:48%;
+	vertical-align: middle;
 }
 
-.attach-ui
-{
-	display:inline-block;
+div.cu-fileInfo p.progressBar{
+	display:none;
 }
 
 @media screen and (max-width: 720px) {
