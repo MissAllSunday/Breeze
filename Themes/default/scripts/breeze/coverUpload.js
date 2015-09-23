@@ -94,7 +94,20 @@ $(function() {
 		}
 	});
 
+	myDropzone.on('uploadprogress', function(file, progress, bytesSent) {
+
+		_thisElement = $(file.previewElement);
+
+		// Get the current file box progress bar, set its inner span's width accordingly.
+		_thisElement.find('p.progressBar span').width(progress + '%');
+	});
+
 	myDropzone.on('complete', function(file) {
+
+		_thisElement = $(file.previewElement);
+
+		// Hide the progress bar.
+		_thisElement.find('p.progressBar').fadeOut();
 
 		// Doesn't matter what the result was, remove the ajax indicator.
 		ajax_indicator(false);
@@ -103,6 +116,9 @@ $(function() {
 	myDropzone.on('sending', function(file) {
 
 		_thisElement = $(file.previewElement);
+
+		// Show the progress bar when upload starts.
+		_thisElement.find('p.progressBar').fadeIn();
 
 		// Hey! we are actually doing something!
 		ajax_indicator(true);
