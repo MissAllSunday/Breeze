@@ -91,11 +91,14 @@ $(function() {
 			_thisElement.find('.start').remove();
 		}
 
-		// If there wasn't any error, change the current cover.
+		// Show a nice sucess message.
 		if (responseText.type == 'info'){
 			_thisElement.removeClass('descbox').addClass('infobox');
 
 			_thisElement.find('p.message').append(responseText.message);
+
+			// Change the current cover src.
+			$('.current_cover').attr('src', myDropzone.options.baseImgsrc);
 		}
 	});
 
