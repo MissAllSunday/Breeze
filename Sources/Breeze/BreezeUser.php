@@ -646,33 +646,24 @@ class BreezeUser extends Breeze
 			'html' => '
 	<div id="coverUpload" class="descbox">
 		<h5>'. $this['tools']->text('cu_dictDefaultMessage') .'</h5>
-		<div>
 			<a class="button_submit fileinput-button">'. $this['tools']->text('cu_add') .'</a>
-		</div>
-		<div>
-		<span class="fileupload-process">
-			<div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-			<div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-			</div>
-		</span>
-		</div>
 	</div>
 	<div id="actions" class="cu-actions">
 	</div>
 	<div class="files cu-files" id="cu-previews">
 		<div id="template" class="descbox">
 			<div class="cu-fileInfo">
-				<span class="preview"><img data-dz-thumbnail /></span>
+				<p class="preview"><img data-dz-thumbnail /></p>
+				<p class="progressBar" role="progressBar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></p>
+			</div>
+			<div>
 				<p class="name" data-dz-name></p>
-				<p class="error" data-dz-errormessage></p>
 				<p class="size" data-dz-size></p>
+				<p class="error" data-dz-errormessage></p>
 				<p class="attach-ui">
 					<a data-dz-remove class="button_submit attach-ui delete">'. $this['tools']->text('general_delete') .'</a>
 					<a class="button_submit attach-ui start">'. $this['tools']->text('general_upload') .'</a>
 				</p>
-			</div>
-			<div class="floatnone progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-				<div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
 			</div>
 		</div>
 	</div>'
