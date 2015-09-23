@@ -42,7 +42,7 @@ $(function() {
 		else if (file.height > myDropzone.options.maxFileHeight && file.rejectDimensions){
 			file.rejectDimensions(myDropzone.options.maxHeightMessage);
 		}
-		else {
+		else if (file.acceptDimensions) {
 			file.acceptDimensions();
 		}
 	});
@@ -53,6 +53,11 @@ $(function() {
 
 		// Hookup the start button.
 		_thisElement.find('.start').on( 'click', function() {
+
+			if (!confirm(smf_you_sure)){
+				return;
+			}
+
 			myDropzone.enqueueFile(file);
 		});
 

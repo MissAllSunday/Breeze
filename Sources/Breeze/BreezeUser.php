@@ -653,7 +653,7 @@ class BreezeUser extends Breeze
 	<div class="files cu-files" id="cu-previews">
 		<div id="template">
 			<div class="cu-fileInfo">
-				<p class="preview"><img data-dz-thumbnail /></p>
+				<img data-dz-thumbnail />
 				<p class="progressBar" role="progressBar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></p>
 			</div>
 			<div class="cu-fileUI">
@@ -677,21 +677,21 @@ class BreezeUser extends Breeze
 		loadJavascriptFile('breeze/coverUpload.js', array('external' => false, 'default_theme' => true, 'defer' => true,));
 
 		// dropzone handles mb only...
-		$maxFileSize = $maxFileSize * 0.001;
+		$maxFileSizeMB = $maxFileSize * 0.001;
 
 		// Add the dot to the allowed extensions.
 		$acceptedFiles = implode(',', array_map(function($val) { return '.'. $val;} , explode(',', $this['tools']->setting('cover_image_types') ? $this['tools']->setting('cover_image_types') : 'jpg,jpeg,png')));
 
 		addInlineJavascript('
 	var dzOptions = {
-		maxFilesize: '. $maxFileSize .',
+		maxFilesize: '. $maxFileSizeMB .',
 		maxFileWidth: '. ($maxFileWidth) .',
 		maxFileHeight: '. $maxFileHeight .',
 		acceptedFiles: '. JavaScriptEscape($acceptedFiles) .',
 		baseImgsrc: \''. $this['tools']->scriptUrl .'?action=breezecover;u='. $context['member']['id'] .';thumb=1\',
 		dictResponseError: '. (JavaScriptEscape($this['tools']->text('error_wrong_values'))) .',
 		dictMaxFilesExceeded: '. (JavaScriptEscape($this['tools']->text('cu_dictMaxFilesExceeded'))) .',
-		dictFileTooBig: '. (JavaScriptEscape($this['tools']->text('cu_dictFileTooBig'))) .',
+		dictFileTooBig: '. (JavaScriptEscape($this['tools']->parser($this['tools']->text('cu_dictFileTooBig'), array('maxFilesize' => $maxFileSize)))) .',
 		dictInvalidFileType: '. (JavaScriptEscape($this['tools']->text('cu_dictInvalidFileType'))) .',
 		dictFallbackMessage: '. (JavaScriptEscape($this['tools']->text('cu_dictFallbackMessage'))) .',
 		maxWidthMessage: '. JavaScriptEscape($this['tools']->parser(
