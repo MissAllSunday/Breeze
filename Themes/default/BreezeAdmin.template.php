@@ -140,7 +140,10 @@ function template_manage_mood_edit()
 	}
 
 	// Print the form.
-	echo $context['mood']['form'];
+	echo 
+	''
+		, $context['mood']['form'] ,
+	'';
 }
 
 // Boring stuff you will never see...

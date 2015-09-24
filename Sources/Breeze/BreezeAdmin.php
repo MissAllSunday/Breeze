@@ -443,36 +443,39 @@ class BreezeAdmin
 			'name' => 'mood',
 			'character_set' => $context['character_set'],
 			'url' => $this->_app['tools']->scriptUrl .'?action=admin;area=breezeadmin;sa=moodEdit;save=1'. (!empty($context['mood']['id']) ? ';moodID='. $context['mood']['id'] .'' : '') .'',
+			'title' => $context['page_title'],
 		));
 
 		// Set the right prefix.
 		$form->setTextPrefix('mood_', 'admin');
 		// Name.
-		$form->addText(
-			'name',
-			!empty($mood['name']) ? $mood['name'] : '',
-			15,15
-		);
+		$form->addText(array(
+			'name' => 'name',
+			'value' => !empty($mood['name']) ? $mood['name'] : '',
+			'size' => 15,
+			'maxlength' => 15,
+		));
 
 		// Filename.
-		$form->addText(
-			'file',
-			!empty($mood['file']) && !empty($mood['ext']) ? ($mood['file'] .'.'. $mood['ext']) : '',
-			15,15
-		);
+		$form->addText(array(
+			'name' => 'file',
+			'value' => !empty($mood['file']) && !empty($mood['ext']) ? ($mood['file'] .'.'. $mood['ext']) : '',
+			'size' => 15,
+			'maxlength' => 15,
+		));
 
 		// Description.
-		$form->addTextArea(
-			'description',
-			!empty($mood['description']) ? $mood['description'] : '',
-			array('rows' => 10, 'cols' => 50, 'maxLength' => 1024)
-		);
+		$form->addTextArea(array(
+			'name' => 'description',
+			'value' => !empty($mood['description']) ? $mood['description'] : '',
+			'size' => array('rows' => 10, 'cols' => 50, 'maxLength' => 1024)
+		));
 
 		// Enable.
-		$form->addCheckBox(
-			'enable',
-			!empty($mood['enable']) ? true : false
-		);
+		$form->addCheckBox(array(
+			'name' => 'enable',
+			'value' => !empty($mood['enable']) ? true : false
+		));
 
 		// Session stuff.
 		$form->addHiddenField($context['session_var'], $context['session_id']);
