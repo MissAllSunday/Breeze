@@ -420,7 +420,7 @@ class Breeze extends Pimple\Container
 		$useriD = Breeze::data('get')->get('u');
 
 		// Thumbnail?
-		$thumb = Breeze::data('get')->get('thumb');
+		$thumb = Breeze::data('get')->validate('thumb');
 
 		// Kinda need this!
 		if (!$this['tools']->enable('cover') || empty($useriD))
