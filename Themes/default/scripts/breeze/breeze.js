@@ -218,19 +218,23 @@ $(function() {
 			data: {},
 			cache: false,
 			dataType: 'json',
+			beforeSend: function () {
+				ajax_indicator(true);
+			},
+			complete: function(jqXHR, textStatus){
+				ajax_indicator(false);
+
+				// Close the pop up.
+				$('#smf_popup').fadeOut(300, function(){ $(this).remove(); });
+			},
 			success: function(response){
 				breeze.tools.showNoti(response);
 				response.data = $.parseJSON(response.data);
 				// Find all mood images from this user.
 				$(document).find('[data-user=' + response.data.user + ']').html(response.data.image);
-
-				// Close the pop up.
-				$('#smf_popup').fadeOut(300, function(){ $(this).remove(); });
 			},
 			error: function(response, textStatus, errorThrown){
-
-				// Close the pop up.
-				$('#smf_popup').fadeOut(300, function(){ $(this).remove(); });
+				// @todo show some error message.
 			}
 		});
 	});
