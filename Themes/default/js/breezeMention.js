@@ -15,7 +15,7 @@ jQuery(document).ready(function(){
 					return {name: '', id:''};
 
 				jQuery.ajax({
-					url: smf_scripturl + '?action=breezeajax;sa=usersmention;js=1' + breeze.session.v + '=' + breeze.session.id,
+					url: smf_scripturl + '?action=breezeajax;sa=usersmention;js=1;' + breeze.session.v + '=' + breeze.session.id,
 					type: "GET",
 					data: {match: query},
 					dataType: "json",
