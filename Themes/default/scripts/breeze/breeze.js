@@ -138,14 +138,19 @@ $(function() {
 			url: DOMPurify.sanitize(obj.attr('href') + ';js=1;'),
 			cache: false,
 			dataType: 'html',
+			beforeSend: function(){
+				ajax_indicator(true);
+			},
+			complete: function(jqXHR, textStatus){
+				ajax_indicator(false);
+			},
 			success: function(html)
 			{
-				ajax_indicator(false);
 				obj.closest('ul').replaceWith(html);
 			},
 			error: function (html)
 			{
-				ajax_indicator(false);
+				breeze.tools.showNoti({type: 'error', message: 'wrong_values'});
 			}
 		});
 
@@ -153,13 +158,11 @@ $(function() {
 	});
 
 	// Likes count.
-	$(function() {
-		$(document).on('click', '.like_count a', function(e){
-			e.preventDefault();
-			var title = $(this).parent().text(),
-				url = $(this).attr('href') + ';js=1';
-			return reqOverlayDiv(url, title);
-		});
+	$(document).on('click', '.like_count a', function(e){
+		e.preventDefault();
+		var title = $(this).parent().text(),
+			url = $(this).attr('href') + ';js=1';
+		return reqOverlayDiv(url, title);
 	});
 
 	// User div.
@@ -234,7 +237,7 @@ $(function() {
 				$(document).find('[data-user=' + response.data.user + ']').html(response.data.image);
 			},
 			error: function(response, textStatus, errorThrown){
-				// @todo show some error message.
+				breeze.tools.showNoti({type: 'error', message: 'wrong_values'});
 			}
 		});
 	});
