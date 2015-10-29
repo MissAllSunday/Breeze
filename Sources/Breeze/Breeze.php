@@ -37,7 +37,7 @@ spl_autoload_register('breeze_autoloader');
 class Breeze
 {
 	public static $name = 'Breeze';
-	public static $version = '1.0';
+	public static $version = '1.0.9';
 	public static $folder = '/Breeze/';
 	public static $txtpattern = 'Breeze_';
 	public static $permissions = array('deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canMention', 'beMentioned');
