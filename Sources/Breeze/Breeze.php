@@ -552,7 +552,7 @@ class Breeze extends Pimple\Container
 		$this['alerts']->call($alerts);
 	}
 
-	public function alertsPref(&$alert_types, &$group_options, &$disabled_options)
+	public function alertsPref(&$alert_types, &$group_options)
 	{
 		// Don't do anything if the mod is off
 		if (!$this['tools']->enable('master'))
