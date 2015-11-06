@@ -51,7 +51,11 @@ class BreezeAlerts
 		foreach ($alerts as $id => $a)
 			if (strpos($a['content_type'], Breeze::$txtpattern) !== false)
 			{
+				// Need to remove the Breeze identifier.
 				$a['content_type'] = str_replace(Breeze::$txtpattern, '', $a['content_type']);
+
+				// Append the sender's avtar if ther eis one.
+				$alerts[$id]['sender'] = !empty($this->_usersData[$a['sender_id']]) ? $this->_usersData[$a['sender_id']] : array();
 
 				if (method_exists($this, $a['content_type']) && !empty($this->_alerts[$id]['extra']) && is_array($this->_alerts[$id]['extra']))
 					$alerts[$id]['text'] = $this->{$a['content_type']}($id);
