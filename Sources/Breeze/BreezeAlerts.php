@@ -54,7 +54,7 @@ class BreezeAlerts
 				// Need to remove the Breeze identifier.
 				$a['content_type'] = str_replace(Breeze::$txtpattern, '', $a['content_type']);
 
-				// Append the sender's avtar if ther eis one.
+				// Append the sender's avatar if there is one.
 				$alerts[$id]['sender'] = !empty($this->_usersData[$a['sender_id']]) ? $this->_usersData[$a['sender_id']] : array();
 
 				if (method_exists($this, $a['content_type']) && !empty($this->_alerts[$id]['extra']) && is_array($this->_alerts[$id]['extra']))
@@ -129,7 +129,7 @@ class BreezeAlerts
 			return;
 
 		// Build the link.
-		$confirmLink = $this->_app['tools']->scriptUrl . '?action=buddy;sa=confirm;sender=' . $this->_alerts[$id]['sender_id'];
+		$confirmLink = $this->_app['tools']->scriptUrl . '?action=buddy;sa=confirm;sender=' . $this->_alerts[$id]['sender_id'] .';aid='. $id;
 
 		// Gotta do some magic.
 		return $this->_app['tools']->parser($this->_app['tools']->text('alert_buddy_'. $this->_alerts[$id]['extra']['text']), array(
