@@ -35,6 +35,18 @@ class BreezeBuddy
 
 		// Needed to show some strings.
 		loadLanguage(Breeze::$name);
+
+		// Easily delete our alerts.
+		$this->_deleteAlert = function($alertID = 0, $userID = 0){
+			global $sourcedir;
+
+			if (empty($alertID) || empty($userID))
+				return false;
+
+			require_once($sourcedir . '/Profile-Modify.php');
+
+			return alert_delete($alertID, $userID);
+		};
 	}
 
 	/**
@@ -281,8 +293,8 @@ class BreezeBuddy
 		));
 
 		// Prepare the options.
-		$confirm = $this->_app['tools']->scriptUrl . '?action=buddy;sa=confirmed;sender=' . $this->_senderConfirm;
-		$decline = $this->_app['tools']->scriptUrl . '?action=buddy;sa=decline;sender=' . $this->_senderConfirm;
+		$confirm = $this->_app['tools']->scriptUrl . '?action=buddy;sa=confirmed;sender=' . $this->_senderConfirm . (!empty($this->_alertID) ? ';aid='. $this->_alertID : '');
+		$decline = $this->_app['tools']->scriptUrl . '?action=buddy;sa=decline;sender=' . $this->_senderConfirm . (!empty($this->_alertID) ? ';aid='. $this->_alertID : '');
 
 		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_chose'), array(
 			'href_confirm' => $confirm,
@@ -352,7 +364,14 @@ class BreezeBuddy
 				),
 			));
 
-		// Delete the alert.
+		// Can't directly call closures from object poperties :(
+		if ($this->_alertID)
+		{
+			$_deleteAlert = $this->_deleteAlert;
+
+			// Delete the alert.
+			$_deleteAlert($this->_alertID, $user_info['id']);
+		}
 
 		// Lastly, set a nice confirmed message.
 		$this->_response = $this->_app['tools']->text('buddy_confirmed_done');
@@ -361,6 +380,15 @@ class BreezeBuddy
 	// When the receiver user denies the request DUH!
 	public function decline()
 	{
+		// Can't directly call closures from object poperties :(
+		if ($this->_alertID)
+		{
+			$_deleteAlert = $this->_deleteAlert;
+
+			// Delete the alert.
+			$_deleteAlert($this->_alertID, $user_info['id']);
+		}
+
 		// Offer an option to block this person
 		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_decline'), array(
 			'href' => $this->_app['tools']->scriptUrl . '?action=buddy;sa=block;sender=' . $this->_senderConfirm,
