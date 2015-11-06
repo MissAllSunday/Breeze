@@ -26,6 +26,18 @@ class BreezeAlerts
 
 		// We are gonna need some alerts language strings...
 		$this->_app['tools']->loadLanguage('alerts');
+
+		// Easily delete our alerts.
+		$this->_deleteAlert = function($alertID = 0, $userID = 0){
+			global $sourcedir;
+
+			if (empty($alertID) || empty($userID)
+				return false;
+
+			require_once($sourcedir . '/Profile-Modify.php');
+
+			return alert_delete($alertID, $userID);
+		};
 	}
 
 	public function call(&$alerts)

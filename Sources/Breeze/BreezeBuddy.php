@@ -53,6 +53,7 @@ class BreezeBuddy
 
 		$this->_data = Breeze::data('request');
 		$this->_call = $this->_data->get('sa');
+		$this->_alertID = $this->_data->get('aid');
 		$subActions = array(
 			'confirm',
 			'confirmed',
@@ -351,6 +352,8 @@ class BreezeBuddy
 				),
 			));
 
+		// Delete the alert.
+
 		// Lastly, set a nice confirmed message.
 		$this->_response = $this->_app['tools']->text('buddy_confirmed_done');
 	}
@@ -402,7 +405,7 @@ class BreezeBuddy
 			$context['sub_template'] = 'buddy_request';
 
 		$context['linktree'][] = array(
-			'url' => $this->_app['tools']->scriptUrl . '?action=buddy'. (!empty($this->_call) ? ';sa='. $this->_call : '') . (!empty($this->_senderConfirm) ? ';sender='. $this->_senderConfirm : '') . (!empty($this->_userReceiver) ? ';u='. $this->_senderConfirm : '') .';'. $context['session_var'] .'='. $context['session_id'],
+			'url' => $this->_app['tools']->scriptUrl . '?action=buddy'. (!empty($this->_call) ? ';sa='. $this->_call : '') . (!empty($this->_senderConfirm) ? ';sender='. $this->_senderConfirm : '') . (!empty($this->_userReceiver) ? ';u='. $this->_senderConfirm : '') .';'. $context['session_var'] .'='. $context['session_id'] .(!empty($this->_alertID) ? ';aid='. $this->_alertID : ''),
 			'name' => $context['page_title'],
 		);
 
