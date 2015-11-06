@@ -276,7 +276,7 @@ class BreezeBuddy
 
 		// Set a nice an unique page title.
 		$context['page_title'] = $this->_app['tools']->parser($this->_app['tools']->text('buddy_chose_title'), array(
-			'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['linkFacebox'],
+			'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['name'],
 		));
 
 		// Prepare the options.
