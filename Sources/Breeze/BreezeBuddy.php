@@ -364,7 +364,7 @@ class BreezeBuddy
 				),
 			));
 
-		// Can't directly call closures from object poperties :(
+		// Can't directly call closures from object properties :(
 		if ($this->_alertID)
 		{
 			$_deleteAlert = $this->_deleteAlert;
@@ -380,13 +380,30 @@ class BreezeBuddy
 	// When the receiver user denies the request DUH!
 	public function decline()
 	{
-		// Can't directly call closures from object poperties :(
+		global $user_info;
+
+		// Can't directly call closures from object properties :(
 		if ($this->_alertID)
 		{
 			$_deleteAlert = $this->_deleteAlert;
 
 			// Delete the alert.
 			$_deleteAlert($this->_alertID, $user_info['id']);
+		}
+
+		// Gotta check if any of both users were added as friends prior to this invite, if so, remove it.
+		$user_info['buddies'] = array_diff($user_info['buddies'], array($this->_senderConfirm));
+
+		// Update the settings.
+		updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
+
+		// Now, get the receiver's buddy list and delete the receiver from it.
+		$senderSettings = $this->_app['query']->getUserSettings($this->_senderConfirm);
+
+		if (!empty($senderSettings['buddiesList']))
+		{
+			$this->receiverSettings['buddiesList'] = array_diff($this->receiverSettings['buddiesList'], array($user_info['id']));
+			updateMemberData($this->_senderConfirm, array('buddy_list' => implode(',', $senderSettings['buddiesList'])));
 		}
 
 		// Offer an option to block this person
