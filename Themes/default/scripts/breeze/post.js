@@ -31,10 +31,10 @@ breezePost.prototype.after = function() {
 };
 
 breezePost.prototype.show = function(html) {
-
-		this.loadImage.fadeOut('slow', 'linear', function(){
+		$this = this;
+		$this.loadImage.fadeOut('slow', 'linear', function(){
 			if (html.type == 'info'){
-				if(this.type == 'status'){
+				if($this.type == 'status'){
 					$(bInnerDiv).prepend(DOMPurify.sanitize(html.data)).fadeIn('slow');
 				}
 
