@@ -675,8 +675,8 @@ class BreezeUser extends Breeze
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
 
 		// Need a lot of Js files :(
-		loadJavascriptFile('breeze/dropzone.min.js', array('external' => false, 'default_theme' => true));
-		loadJavascriptFile('breeze/coverUpload.js', array('external' => false, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('dropzone.min.js', array('defer' => true), 'smf_dropzone');
+		loadJavascriptFile('breeze/coverUpload.js', array('external' => false, 'default_theme' => true, 'defer' => true,), 'breeze_cover');
 
 		// dropzone handles mb only...
 		$maxFileSizeMB = $maxFileSize * 0.001;
