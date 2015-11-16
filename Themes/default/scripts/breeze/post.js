@@ -31,23 +31,26 @@ breezePost.prototype.after = function() {
 };
 
 breezePost.prototype.show = function(html) {
-		$this = this;
-		$this.loadImage.fadeOut('slow', 'linear', function(){
+		breezePostObject = this;
+		breezePostObject.loadImage.fadeOut('slow', 'linear', function(){
 			if (html.type == 'info'){
-				if($this.type == 'status'){
+				if(breezePostObject.type == 'status'){
 					$(bInnerDiv).prepend(DOMPurify.sanitize(html.data)).fadeIn('slow');
 				}
 
 				else{
 					$(bInnerDiv).append(DOMPurify.sanitize(html.data)).fadeIn('slow');
 				}
+
+				// Delete this element.
+				$(this).remove();
 			}
 		});
 
 	// Do you also have the Ohara youtube installed? Kudos!!!
 	if (typeof oh_refresh === 'function') {
 		// Lets give it some more time...
-		oh_refresh(5000);
+		oh_refresh(5E3);
 	}
 
 	// Show a notification.
@@ -89,7 +92,7 @@ breezePost.prototype.validate = function() {
 breezePost.prototype.save = function() {
 
 	this.before();
-	var call = this;
+	var breezePostObjectCall = this;
 
 	// Append some mentions if there are any.
 
@@ -115,10 +118,10 @@ breezePost.prototype.save = function() {
 		cache: false,
 		dataType: 'json',
 		success: function(html) {
-			call.show(html);
+			breezePostObjectCall.show(html);
 		},
 		error: function (html) {
-			call.error(html);
+			breezePostObjectCall.error(html);
 		}
 	});
 
