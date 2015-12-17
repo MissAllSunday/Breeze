@@ -740,7 +740,7 @@ class Breeze extends Pimple\Container
 	public function mood(&$data, $user, $display_custom_fields)
 	{
 		// Don't do anything if the feature is disable or custom fields aren't being loaded.
-		if (!$this['tools']->enable('master') || !$this['tools']->enable('mood')|| empty($display_custom_fields))
+		if (!$this['tools']->enable('master') || !$this['tools']->enable('mood'))
 			return;
 
 		// Append the result to the custom fields array.
