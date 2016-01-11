@@ -27,33 +27,32 @@ function breeze_status($data, $returnVar = false)
 			$echo .= '
 				<div class="cat_bar">
 					<h3 class="catbg">
-						<span id="author">
+						<span class="author">
 							'. sprintf($txt['Breeze_general_posted_on'], $context['Breeze']['user_info'][$status['profile_id']]['link']) .'
 						</span>
 					</h3>
 				</div>';
 
 		$echo .= '
-					<div class="inside">
-						<div class="user_avatar">
-							'. $context['Breeze']['user_info'][$status['poster_id']]['breezeFacebox'] .'<br />
-							'. $context['Breeze']['user_info'][$status['poster_id']]['link'] .'
-						</div>
-						<div class="status">
-							<div class="body">
-								'. $status['body'] .'
-							</div>
-							<div class="options">';
+				<div class="user_avatar">
+					'. $context['Breeze']['user_info'][$status['poster_id']]['breezeFacebox'] .'<br />
+					'. $context['Breeze']['user_info'][$status['poster_id']]['link'] .'
+				</div>
+				<div class="status">
+					<div class="post">
+						'. $status['body'] .'
+					</div>
+					<div class="options">';
 
 		// Likes.
 		if ($context['Breeze']['tools']->modSettings('enable_likes') && !empty($status['likes']) && ($status['likes']['can_view_like'] || $status['likes']['can_like']))
 		{
 			$echo .=
-								'<ul class="floatleft">';
+						'<ul class="floatleft">';
 
 			if (!empty($status['likes']['can_like']))
 				$echo .= '
-									<li class="like_button"><a href="'. $scripturl .'?action=likes;ltype=breSta;sa=like;like='. $status['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breSta_like"><span class="generic_icons '. ($status['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($status['likes']['already'] ? $txt['unlike'] : $txt['like']) .'</a></li>';
+							<li class="like_button"><a href="'. $scripturl .'?action=likes;ltype=breSta;sa=like;like='. $status['id'] .';'. $context['session_var'] .'='. $context['session_id'] . (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') .'" class="breSta_like"><span class="generic_icons '. ($status['likes']['already'] ? 'unlike' : 'like') .'"></span>'. ($status['likes']['already'] ? $txt['unlike'] : $txt['like']) .'</a></li>';
 
 			// Likes count
 			if (!empty($status['likes']['count']) && !empty($status['likes']['can_view_like']))
@@ -69,17 +68,17 @@ function breeze_status($data, $returnVar = false)
 				$base .= (isset($txt[$base . $count])) ? $count : 'n';
 
 				$echo .= '
-									<li class="like_count smalltext">'. sprintf($txt[$base], $scripturl . '?action=likes;sa=view;ltype=breSta;like=' . $status['id'] .';'. $context['session_var'] .'='. $context['session_id']. (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') , comma_format($count)).'</li>';
+							<li class="like_count smalltext">'. sprintf($txt[$base], $scripturl . '?action=likes;sa=view;ltype=breSta;like=' . $status['id'] .';'. $context['session_var'] .'='. $context['session_id']. (!empty($context['Breeze']['comingFrom']) ? ';extra='. $context['Breeze']['comingFrom'] : '') , comma_format($count)).'</li>';
 			}
 
 			$echo .=
-								'</ul>';
+						'</ul>';
 		}
 
 		// Time.
 		$echo .= '
-								<div class="floatright">
-									<span class="time_elapsed" title="'. timeformat($status['time_raw'], false) .'" data-livestamp="'. $status['time_raw'] .'">'. $status['time'] .' </span>';
+						<div class="floatright">
+							<span class="time_elapsed" title="'. timeformat($status['time_raw'], false) .'" data-livestamp="'. $status['time_raw'] .'">'. $status['time'] .' </span>';
 
 		// Delete status.
 		if ($status['canHas']['delete'])
@@ -89,29 +88,29 @@ function breeze_status($data, $returnVar = false)
 		// Modify? maybe someday...
 
 		$echo .= '
-								</div>
-								<div class="clear"></div>
-							</div>
-							<hr />';
+						</div>
+						<div class="clear"></div>
+					</div>
+					<hr />';
 
 		$echo .= '
-								<ul class="breeze_comments_list" id="comment_loadplace_'. $status['id'] .'">';
+					<ul class="breeze_comments_list" id="comment_loadplace_'. $status['id'] .'">';
 
 		// Print out the comments
 		if (!empty($status['comments']))
 				$echo .= breeze_comment($status['comments'], true);
 
 		$echo .= '
-								</ul>';
+					</ul>';
 
 		$echo .= '
-								<div id="breeze_display_comment_'. $status['id'] .'"></div>';
+					<div id="breeze_display_comment_'. $status['id'] .'"></div>';
 
 		// Post a new comment
 		if ($status['canHas']['postComments'])
 		{
 			$echo .= '
-								<div class="post_comment">';
+						<div class="post_comment">';
 
 			// Show a nice avatar next to the post form
 			if (!empty($context['Breeze']['user_info'][$user_info['id']]['breezeFacebox']))
@@ -119,24 +118,23 @@ function breeze_status($data, $returnVar = false)
 
 			// The actual post form
 				$echo .= '
-									<form action="'. $scripturl .'?action=breezeajax;sa=postcomment'. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .'" method="post" name="form_comment_'. $status['id'] .'" id="form_comment_'. $status['id'] .'" class="form_comment">
-										<textarea name="message" id="commentContent_'. $status['id'] .'" rel="atwhoMention"></textarea>
-										<input type="hidden" value="'. $status['poster_id'] .'" name="statusPoster" id="commentStatusPoster_'. $status['id'] .'" />
-										<input type="hidden" value="'. $status['id'] .'" name="statusID" id="commentStatus_'. $status['id'] .'" />
-										<input type="hidden" value="'. $status['profile_id'] .'" name="owner" id="commentOwner_'. $status['profile_id'] .'" /><br />
-										<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
-										<input type="submit" value="'. $txt['post'] .'" class="button_submit clear" name="commentSubmit" id="commentSubmit_'. $status['id'] .'" />
-									</form>';
+							<form action="'. $scripturl .'?action=breezeajax;sa=postcomment'. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .'" method="post" name="form_comment_'. $status['id'] .'" id="form_comment_'. $status['id'] .'" class="form_comment">
+								<textarea name="message" id="commentContent_'. $status['id'] .'" rel="atwhoMention"></textarea>
+								<input type="hidden" value="'. $status['poster_id'] .'" name="statusPoster" id="commentStatusPoster_'. $status['id'] .'" />
+								<input type="hidden" value="'. $status['id'] .'" name="statusID" id="commentStatus_'. $status['id'] .'" />
+								<input type="hidden" value="'. $status['profile_id'] .'" name="owner" id="commentOwner_'. $status['profile_id'] .'" /><br />
+								<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
+								<input type="submit" value="'. $txt['post'] .'" class="button_submit clear" name="commentSubmit" id="commentSubmit_'. $status['id'] .'" />
+							</form>';
 
 			// End of div post_comment
 				$echo .= '
-								</div>';
+						</div>';
 		}
 
 			$echo .= '
-						</div>
-						<div class="clear"></div>
-					</div>
+				</div>
+				<div class="clear"></div>
 			</li>';
 	}
 
@@ -163,7 +161,7 @@ function breeze_comment($comments, $returnVar = false)
 					'. $context['Breeze']['user_info'][$comment['poster_id']]['link'] .'
 			</div>
 			<div class="comment">
-				<div class="body">
+				<div class="post">
 				'. $comment['body'] .'
 				</div>
 				<div class="options clear">';
