@@ -867,7 +867,7 @@ class BreezeAjax
 					'extra' => array(
 						'buddy_text' => 'mood',
 						'toLoad' => array($this->_currentUser),
-						'moodHistory' => serialize(end($moodHistory)),
+						'moodHistory' => json_encode(end($moodHistory)),
 					),
 				));
 		}

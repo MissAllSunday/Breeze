@@ -965,7 +965,7 @@ class BreezeQuery
 			return false;
 
 		// Make sure we got the extra stuff...
-		$params['extra'] = !empty($params['extra']) ? serialize($params['extra']) : '';
+		$params['extra'] = !empty($params['extra']) ? json_encode($params['extra']) : '';
 
 		$smcFunc['db_insert']('insert',
 			'{db_prefix}' . ($this->_tables['logs']['table']) . '',
@@ -1014,7 +1014,7 @@ class BreezeQuery
 		$smcFunc['db_insert']('insert',
 			'{db_prefix}background_tasks',
 			array('task_file' => 'string', 'task_class' => 'string', 'task_data' => 'string', 'claimed_time' => 'int'),
-			array('$sourcedir/tasks/Breeze-Notify.php', 'Breeze_Notify_Background', serialize($params), 0),
+			array('$sourcedir/tasks/Breeze-Notify.php', 'Breeze_Notify_Background', json_encode($params), 0),
 			array('id_task')
 		);
 	}

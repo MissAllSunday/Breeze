@@ -63,9 +63,9 @@ class BreezeNoti
 		if ($checkSpam)
 			$spam = $this->_app['query']->notiSpam($params['id_member'], $params['content_type'], $params['id_member_started']);
 
-		// Before doing anything, serialize the "extra" array.
+		// Before doing anything, "json_encode" the "extra" array.
 		if (!empty($params['extra']))
-			$params['extra'] = serialize($params['extra']);
+			$params['extra'] = json_encode($params['extra']);
 
 		// There's an alert already, just update the time...
 		if ($spam)
@@ -319,7 +319,7 @@ class BreezeNoti
 					'content_id' => $this->_details['id'],
 					'content_action' => 'mention',
 					'is_read' => 0,
-					'extra' => serialize(array(
+					'extra' => json_encode(array(
 						'text' => $text,
 						'url' => $url,
 						'toLoad' => $toload,
