@@ -98,7 +98,7 @@ class BreezeLog
 		$this->_data[$id]['icon'] = 'smile-o';
 
 		// Get the mood.
-		$this->_data[$id]['extra']['moodHistory'] = @unserialize($this->_data[$id]['extra']['moodHistory']);
+		$this->_data[$id]['extra']['moodHistory'] = json_decode($this->_data[$id]['extra']['moodHistory'], true);
 		$mood = !empty($this->_data[$id]['extra']['moodHistory']['id']) ? $this->_app['query']->getMoodByID($this->_data[$id]['extra']['moodHistory']['id'], true) : array();
 
 		// Return the formatted string.

@@ -948,7 +948,7 @@ class BreezeQuery
 				'content_id' => $row['content_id'],
 				'time' => timeformat($row['time']),
 				'time_raw' => $row['time'],
-				'extra' => !empty($row['extra']) ? @unserialize($row['extra']) : array(),
+				'extra' => !empty($row['extra']) ? json_decode($row['extra'], true) : array(),
 			);
 
 		$smcFunc['db_free_result']($result);
