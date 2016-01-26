@@ -67,7 +67,7 @@ class BreezeLog
 
 		// Get the users before anything gets parsed.
 		foreach ($this->_data as $id => $data)
-				$toLoad = array_merge($toLoad, $this->_data[$id]['extra']['toLoad']);
+			$toLoad = array_merge($toLoad, $this->_data[$id]['extra']['toLoad']);
 
 		if (!empty($toLoad))
 			$this->_app['tools']->loadUserInfo($toLoad, false);
