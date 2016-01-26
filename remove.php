@@ -23,7 +23,7 @@
 		'integrate_actions' => 'Breeze::actions#',
 		'integrate_load_permissions' => 'Breeze::permissions#',
 		'integrate_admin_areas' => '$sourcedir/Breeze/Breeze.php|Breeze::admin#',
-		'integrate_profile_areas' => 'Breeze::profile#',
+		'integrate_pre_profile_areas' => 'Breeze::profile#',
 		'integrate_valid_likes' => 'Breeze::likes#',
 		'integrate_find_like_author' => 'Breeze::handleLikes#',
 		'integrate_member_context' => '$sourcedir/Breeze/Breeze.php|Breeze::mood#',
