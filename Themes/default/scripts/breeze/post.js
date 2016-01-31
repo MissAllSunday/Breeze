@@ -121,7 +121,7 @@ breezePost.prototype.save = function() {
 			breezePostObjectCall.show(html);
 		},
 		error: function (html) {
-			breezePostObjectCall.error(html);
+			breeze.tools.showNoti(html);
 		}
 	});
 
