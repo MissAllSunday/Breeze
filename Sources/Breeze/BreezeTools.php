@@ -503,7 +503,7 @@ class BreezeTools
 	 * Checks if the current user has been added in someone's ignored list.
 	 * @return boolean
 	 */
-	protected function stalkingCheck($fetchedUser = 0)
+	public function stalkingCheck($fetchedUser = 0)
 	{
 		global $user_info;
 

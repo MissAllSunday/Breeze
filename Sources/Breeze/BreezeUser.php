@@ -243,7 +243,7 @@ class BreezeUser extends Breeze
 		addInlineJavascript('
 	breeze.tools.comingFrom = "'. $context['Breeze']['comingFrom'] .'";');
 
-		// Pass the profile owner settings to the client all minus the about me stuff.
+		// Pass the profile owner settings to the client, all minus the about me stuff.
 		$toClient = $context['Breeze']['settings']['owner'];
 		unset($toClient['aboutMe']);
 		$bOwnerSettings = '';
@@ -254,7 +254,7 @@ class BreezeUser extends Breeze
 		addInlineJavascript($bOwnerSettings);
 		unset($toClient);
 
-		// Lastly, load all the users data from this bunch of user IDs
+		// Lastly, load all the users data from this bunch of user IDs.
 		if (!empty($usersToLoad))
 			$tools->loadUserInfo(array_unique($usersToLoad));
 	}
