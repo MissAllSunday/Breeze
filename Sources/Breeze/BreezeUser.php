@@ -167,15 +167,15 @@ class BreezeUser extends Breeze
 		loadCSSFile('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', array('external' => true));
 
 		// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-		loadJavascriptFile('breeze/post.js', array('default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breeze/tabs.js', array('default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breeze/loadMore.js', array('external' => false, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/post.js', array('default_theme' => true, 'defer' => true, 'async' => true));
+		loadJavascriptFile('breeze/tabs.js', array('default_theme' => true, 'defer' => true));
+		loadJavascriptFile('breeze/loadMore.js', array('external' => false, 'default_theme' => true, 'defer' => true));
 
 		if (!empty($modSettings['enable_mentions']) && allowedTo('mention'))
 		{
-			loadJavascriptFile('jquery.atwho.min.js', array('default_theme' => true, 'defer' => true), 'smf_atwho');
-			loadJavascriptFile('jquery.caret.min.js', array('default_theme' => true, 'defer' => true), 'smf_caret');
-			loadJavascriptFile('mentions.js', array('default_theme' => true, 'defer' => true), 'smf_mention');
+			loadJavascriptFile('jquery.atwho.min.js', array('default_theme' => true, 'defer' => true, 'async' => true), 'smf_atwho');
+			loadJavascriptFile('jquery.caret.min.js', array('default_theme' => true, 'defer' => true, 'async' => true), 'smf_caret');
+			loadJavascriptFile('mentions.js', array('default_theme' => true, 'defer' => true, 'async' => true), 'smf_mention');
 		}
 
 		// Setup the log activity.

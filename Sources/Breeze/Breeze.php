@@ -684,15 +684,15 @@ class Breeze extends Pimple\Container
 			return false;
 
 		// Always display these.
-		loadJavascriptFile('breeze/breeze.js', array('local' => true, 'default_theme' => true));
-		loadJavascriptFile('breeze/purify.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breeze/breeze.js', array('local' => true, 'default_theme' => true, 'minimize' => true));
+		loadJavascriptFile('breeze/purify.js', array('local' => true, 'default_theme' => true, 'minimize' => true, 'async' => true));
 
 		// Only needed on certain actions.
 		if ($doAction)
 		{
 			loadCSSFile('breeze.css', array('force_current' => false, 'validate' => true));
-			loadJavascriptFile('breeze/moment.min.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-			loadJavascriptFile('breeze/livestamp.min.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+			loadJavascriptFile('breeze/moment.min.js', array('local' => true, 'default_theme' => true, 'defer' => true));
+			loadJavascriptFile('breeze/livestamp.min.js', array('local' => true, 'default_theme' => true, 'defer' => true, 'async' => true));
 		}
 
 		// Up to here for guest.
@@ -700,10 +700,10 @@ class Breeze extends Pimple\Container
 			return;
 
 		// The main stuff. Always displayed.
-		loadJavascriptFile('breeze/noty/jquery.noty.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breeze/noty/layouts/top.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breeze/noty/layouts/center.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breeze/noty/themes/relax.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/noty/jquery.noty.js', array('local' => true, 'default_theme' => true, 'defer' => true, 'async' => true));
+		loadJavascriptFile('breeze/noty/layouts/top.js', array('local' => true, 'default_theme' => true, 'defer' => true, 'async' => true));
+		loadJavascriptFile('breeze/noty/layouts/center.js', array('local' => true, 'default_theme' => true, 'defer' => true, 'async' => true));
+		loadJavascriptFile('breeze/noty/themes/relax.js', array('local' => true, 'default_theme' => true, 'defer' => true, 'async' => true));
 
 		if (!$doAction)
 			return false;
