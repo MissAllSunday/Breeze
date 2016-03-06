@@ -26,7 +26,7 @@ class BreezeUser extends Breeze
 	 * Main function, shows the wall, activity, buddies, visitors and any other possible info.
 	 * @return
 	 */
-	function wall($memID)
+	function userWall($memID)
 	{
 		global $txt, $context, $memberContext;
 		global $modSettings,  $user_info;
@@ -265,7 +265,7 @@ class BreezeUser extends Breeze
 	 * Creates alert settings and configuration pages.
 	 * @return
 	 */
-	function alerts()
+	function userAlerts()
 	{
 		global $context;
 
@@ -416,7 +416,7 @@ class BreezeUser extends Breeze
 	 * Creates a form for each user to configure their wall settings.
 	 * @return
 	 */
-	function settings()
+	function userSettings()
 	{
 		global $context, $txt, $modSettings, $user_info;
 
@@ -575,7 +575,7 @@ class BreezeUser extends Breeze
 	 * Uploads an user image for their wall.
 	 * @return
 	 */
-	function coverSettings()
+	function userCoverSettings()
 	{
 		global $context, $memID, $txt, $user_info;
 

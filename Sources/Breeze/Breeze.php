@@ -206,7 +206,7 @@ class Breeze extends Pimple\Container
 					'label' => $tools->text('general_wall'),
 					'icon' => 'smiley',
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'BreezeUser::wall#',
+					'function' => 'BreezeUser::userWall#',
 					'permission' => array(
 						'own' => 'is_not_guest',
 						'any' => 'profile_view',
@@ -237,7 +237,7 @@ class Breeze extends Pimple\Container
 				'label' => $tools->text('user_settings_name'),
 				'icon' => 'maintain',
 				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'BreezeUser::settings#',
+				'function' => 'BreezeUser::userSettings#',
 				'enabled' => $context['user']['is_owner'],
 				'permission' => array(
 					'own' => 'is_not_guest',
@@ -249,7 +249,7 @@ class Breeze extends Pimple\Container
 			$profile_areas['breeze_profile']['areas']['alerts'] = array(
 				'label' => $tools->text('user_settings_name_alerts'),
 				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'BreezeUser::alerts#',
+				'function' => 'BreezeUser::userAlerts#',
 				'enabled' => $context['user']['is_owner'],
 				'icon' => 'maintain',
 				'subsections' => array(
@@ -268,7 +268,7 @@ class Breeze extends Pimple\Container
 					'label' => $tools->text('user_settings_name_cover'),
 					'icon' => 'administration',
 					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'BreezeUser::coverSettings#',
+					'function' => 'BreezeUser::userCoverSettings#',
 					'enabled' => $context['user']['is_owner'],
 					'permission' => array(
 						'own' => 'is_not_guest',
