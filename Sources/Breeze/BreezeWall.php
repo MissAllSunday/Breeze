@@ -116,9 +116,9 @@ class BreezeWall
 
 		// By default lets load the general wall
 		else
-			$this->$call['general']();
+			$this->generalWall();
 
-		// We should see other people...
+		// I think we should see other people...
 		unset($call);
 	}
 
@@ -143,7 +143,7 @@ class BreezeWall
 		// Get some stuffz
 		$data = Breeze::data('get');
 
-		// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
+		// These files are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
 		loadJavascriptFile('breeze/post.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 		loadJavascriptFile('breeze/tabs.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
 
