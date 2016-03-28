@@ -34,7 +34,8 @@ class BreezeTrackActions extends Breeze
 				'time' => time(),
 				'extra' => array(
 					'subject' => $msgOptions['subject'],
-					'toLoad' => array($posterOptions['id']),),
+					'toLoad' => array($posterOptions['id']),
+					'topicOptions' => $topicOptions),
 			));
 	}
 
