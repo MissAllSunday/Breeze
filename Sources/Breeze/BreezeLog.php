@@ -56,7 +56,7 @@ class BreezeLog
 
 	protected function call()
 	{
-		global $context;
+		global $context, $smcFunc;
 
 		// Kinda need this...
 		if (empty($this->_data) || !is_array($this->_data))
@@ -64,13 +64,52 @@ class BreezeLog
 
 		// The users to load.
 		$toLoad = array();
+		$checkMsg = array();
+		$seeMsg = array();
 
 		// Get the users before anything gets parsed.
 		foreach ($this->_data as $id => $data)
+		{
 			$toLoad = array_merge($toLoad, $this->_data[$id]['extra']['toLoad']);
+
+			// If there are "topic" notifications, we need to make sure the current user can see them.
+			if ($this->_data[$id]['content_type'] == 'topic' && !empty($this->_data[$id]['extra']['messageID']))
+				$checkMsg[$id] = $this->_data[$id]['extra']['messageID'];
+		}
 
 		if (!empty($toLoad))
 			$this->_app['tools']->loadUserInfo($toLoad, false);
+
+		// Check if the user can see the message.
+		if (!empty($checkMsg))
+		{
+			$request = $smcFunc['db_query']('', '
+				SELECT m.id_msg
+				FROM {db_prefix}messages AS m
+					INNER JOIN {db_prefix}boards AS b ON (b.id_board = m.id_board AND {query_see_board})
+				WHERE m.id_msg IN ({array_int:messages})' . (!$this->_app['tools']->modSettings('postmod_active') || allowedTo('approve_posts') ? '' : '
+					AND m.approved = {int:is_approved}') . '
+				LIMIT 1',
+				array(
+					'messages' => array_values($checkMsg),
+					'is_approved' => 1,
+				)
+			);
+
+			// Get the messages this user CAN see.
+			if ($smcFunc['db_num_rows']($request) != 0)
+			{
+				while ($row = $smcFunc['db_fetch_assoc']($request))
+					$seeMsg[] = $row['id_msg'];
+
+				$checkMsg = array_intersect($seeMsg, $checkMsg);
+			}
+
+			$smcFunc['db_free_result']($request);
+
+			// Remove the hidden ones.
+			$this->_data = array_diff_key($this->_data, $checkMsg);
+		}
 
 		// Pass people's data.
 		$this->_usersData = $context['Breeze']['user_info'];
