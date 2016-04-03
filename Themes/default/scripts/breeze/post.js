@@ -63,7 +63,7 @@ breezePost.prototype.validate = function() {
 
 	this.form.find(':input').each(function(){
 		var input = $(this);
-		postData[input.attr('name')] = DOMPurify.sanitize(input.val());
+		postData[input.attr('name')] = DOMPurify.sanitize(input.val().php_to8bit().php_urlencode());
 	});
 
 	// You need to type something...
