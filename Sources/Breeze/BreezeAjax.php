@@ -97,8 +97,14 @@ class BreezeAjax
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
 
-		// Add your own sub-actions
-		call_integration_hook('integrate_breeze_ajax_actions', array(&$call));
+		$externalHandler = false;
+
+		// So you think you can do it better huh?
+		$externalHandler = call_integration_hook('integrate_breeze_ajax_actions', array($this));
+
+		// Somebody else has done all the dirty work for us YAY!
+		if ($externalHandler)
+			return;
 
 		// Does the subaction even exist?
 		if (isset($call[$data->get('sa')]))
