@@ -34,12 +34,12 @@ jQuery(document).ready(function(){
 		var status = {};
 
 		// Get the profile owner
-		status.statusOwner = window.breeze_profileOwner;
+		status.statusOwner = breeze.tools.purify(window.breeze_profileOwner);
 
 		// Get all the values we need
 		jQuery('#form_status :input').each(function(){
 			var input = jQuery(this);
-			status[input.attr('name')] = breeze.tools.purify(input.val());
+			status[input.attr('name')] = input.val();
 		});
 
 		// You need to type something...
@@ -133,7 +133,7 @@ jQuery(document).ready(function(){
 			'commentOwner' : breeze.tools.purify(jQuery('#commentOwner_' + StatusID).val()),
 			'commentPoster' : breeze.tools.purify(jQuery('#commentPoster_' + StatusID).val()),
 			'commentStatusPoster' : breeze.tools.purify(jQuery('#commentStatusPoster_' + StatusID).val()),
-			'commentContent' : breeze.tools.purify(jQuery('#commentContent_' + StatusID).val()),
+			'commentContent' : jQuery('#commentContent_' + StatusID).val(),
 			'mentions' : {}
 		};
 
