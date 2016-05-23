@@ -684,8 +684,8 @@ class Breeze extends Pimple\Container
 			return false;
 
 		// Always display these.
-		loadJavascriptFile('breeze/breeze.js', array('local' => true, 'default_theme' => true, 'minimize' => true));
-		loadJavascriptFile('breeze/purify.js', array('local' => true, 'default_theme' => true, 'minimize' => true, 'async' => true));
+		loadJavascriptFile('breeze/breeze.js', array('local' => true, 'force_current' => false, 'minimize' => true));
+		loadJavascriptFile('breeze/purify.js', array('local' => true, 'force_current' => false, 'minimize' => true, 'async' => true));
 
 		// Only needed on certain actions.
 		if ($doAction)
