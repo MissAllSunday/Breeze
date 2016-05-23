@@ -182,6 +182,10 @@ div.cu-fileInfo p.progressBar{
 	display:none;
 }
 
+div.username div div.popup_container, div.username div a.menu_icon{
+	display:none;
+}
+
 @media screen and (max-width: 720px) {
 
 	/* Hide the sidebar. */
