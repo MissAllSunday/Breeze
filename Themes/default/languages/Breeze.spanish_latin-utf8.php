@@ -4,9 +4,9 @@
  * Breeze.spanish_latin-utf8
  *
  * @package Breeze mod
- * @version 1.0.8
+ * @version 1.0.10
  * @author Jessica Gonzalez <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2014 Jessica Gonzalez
+ * @copyright Copyright (c) 2011, 2016 Jessica Gonzalez
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
