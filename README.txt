@@ -63,6 +63,11 @@ Tested on PHP 5.3 and 5.4, Opera12, IE8 and whatever version Firefox was when I 
 [size=12pt][color=purple]Changelog[/color][/size]
 
 [code]
+1.0.10 May 24, 2016
+- Update atwho and caret, use min versions.
+- Add support for Ohara youtube mod.
+- Remove purify call on submitted content to prevent double encoding.
+
 1.0.9 Oct 29, 2015
 - Fix a missing semicolon preventing users form using the mentions feature on their walls.
 - Replace $this->_smcFunc with global $smcFunc.
