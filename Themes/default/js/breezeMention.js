@@ -7,9 +7,9 @@
 jQuery(document).ready(function(){
 	jQuery('textarea[rel*=atwhoMention]').atwho({
 		at: "@",
-		tpl: "<li data-value='@${name}' data-user='${id}'>${name}</li>",
+		displayTpl: "<li data-value='@${name}' data-user='${id}'>${name}</li>",
 		callbacks: {
-			remote_filter: function(query, callback) {
+			remoteFilter: function(query, callback) {
 
 				if (query.length <= 2)
 					return {name: '', id:''};
@@ -26,12 +26,14 @@ jQuery(document).ready(function(){
 					}
 				});
 			},
-			before_insert: function(value, li)
+			beforeInsert: function(value, li)
 			{
-				var userID, name;
+				var userID,
+					name,
+					tempObj = jQuery(li[0]);
 
-				userID = li.data('user');
-				name = li.data('value');
+				userID = tempObj.data('user');
+				name = tempObj.data('value');
 
 				// Set a "global" var to be picked up by the posting functions
 				window.breeze.mentions[userID.toString()] = {'id': userID, 'name': name.replace('@', '')};

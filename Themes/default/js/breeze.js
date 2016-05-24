@@ -95,13 +95,15 @@ jQuery(document).ready(function(){
 						if (html.type == 'success')
 						{
 							jQuery('#statusContent').val('');
-							jQuery('#breeze_display_status').prepend(breeze.tools.purify(html.data)).fadeIn('slow', 'linear', function(){});
+							jQuery('#breeze_display_status').prepend(breeze.tools.purify(html.data)).fadeIn('slow', 'linear', function(){
 
 							// Add support for Ohara youtube mod.
 							if (typeof _oh !== 'undefined') {
 								var _ohObject = new _oh();
-								setTimeout(function(){_ohObject.refresh();},12000);
+								setTimeout(function(){_ohObject.refresh();},5000);
 							}
+
+							});
 						}
 					});
 				},
@@ -186,13 +188,14 @@ jQuery(document).ready(function(){
 						breeze.tools.showNoti(html);
 
 						// Everything went better than expected :)
-						jQuery('#comment_loadplace_'+ StatusID).append(breeze.tools.purify(html.data)).fadeIn('slow', 'linear', function(){});
+						jQuery('#comment_loadplace_'+ StatusID).append(breeze.tools.purify(html.data)).fadeIn('slow', 'linear', function(){
 
-						// Add support for Ohara youtube mod.
-						if (typeof _oh !== 'undefined') {
-							var _ohObject = new _oh();
-							setTimeout(function(){_ohObject.refresh();},12000);
-						}
+							// Add support for Ohara youtube mod.
+							if (typeof _oh !== 'undefined') {
+								var _ohObject = new _oh();
+								setTimeout(function(){_ohObject.refresh();},5000);
+							}
+						});
 					});
 
 					// Enable the button again...
