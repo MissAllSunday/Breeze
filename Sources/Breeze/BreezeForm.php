@@ -189,111 +189,15 @@ class BreezeForm
 
 	function display()
 	{
-		$this->buffer = '
-<form action="'. $this->_options['url'] .'" method="post" accept-charset="'. $this->_options['character_set'] .'" name="'. $this->_options['name'] .'" id="'. $this->_options['name'] .'">';
+		global $context;
 
-		// Any title and/or description?
-		if (!empty($this->_options['title']))
-			$this->buffer .= '
-	<div class="cat_bar">
-		<h3 class="catbg profile_hd">
-				'. $this->_options['title'] .'
-		</h3>
-	</div>';
+		loadtemplate(Breeze::$name .'Form');
 
-		if (!empty($this->_options['desc']))
-			$this->buffer .= '
-	<p class="information">
-		'. $this->_options['desc'] .'
-	</p>';
+		$context['form'] = array(
+			'options' => $this->_options,
+			'elements' => $this->elements,
+		);
 
-		$this->buffer .= '
-	<div class="windowbg2">
-		<div class="content">
-			<dl class="settings">';
-
-		foreach($this->elements as $el)
-		{
-			switch($el['type'])
-			{
-				case 'textarea':
-				case 'checkbox':
-				case 'text':
-					$this->buffer .= '
-				<dt>
-					<span style="font-weight:bold;">'. $el['text'] .'</span>
-					<br /><span class="smalltext">'. $el['desc'] .'</span>
-				</dt>
-				<dd>
-					<input type="hidden" name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $el['name'] .']' : $el['name']) .'" value="0" />'. $el['html'] .'
-				</dd>';
-					break;
-				case 'select':
-					$this->buffer .= '
-				<dt>
-					<span style="font-weight:bold;">'. $el['text'] .'</span>
-					<br /><span class="smalltext">'. $el['desc'] .'</span>
-				</dt>
-				<dd>
-					<input type="hidden" name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $el['name'] .']' : $el['name']) .'" value="0" />'. $el['html_start'] .'';
-
-					foreach($el['values'] as $k => $v)
-						$this->buffer .= $v .'';
-
-					$this->buffer .= $el['html_end'] .'
-				</dd>';
-					break;
-				case 'hidden':
-				case 'submit':
-					$this->buffer .= '
-				<dt></dt>
-				<dd>
-					'. $el['html'] .'
-				</dd>';
-					break;
-				case 'hr':
-					$this->buffer .= '
-				</dl>
-					'. $el['html'] .'
-				<dl class="settings">';
-					break;
-				case 'html':
-					$this->buffer .= '
-				<dt>
-					<span style="font-weight:bold;">'. $el['text'] .'</span>
-					<br /><span class="smalltext">'. $el['desc'] .'</span>
-				</dt>
-				<dd>
-					'. $el['html'] .'
-				</dd>';
-					break;
-				case 'section':
-				$this->buffer .= '
-				</dl>
-				<div class="cat_bar">
-					<h3 class="catbg">'. $el['text'] .'</h3>
-				</div>
-				<br />
-				<dl class="settings">';
-					break;
-			}
-		}
-
-		$this->buffer .= '
-			</dl>';
-
-		// Any buttons?
-		foreach($this->elements as $el)
-			if ($el['type'] == 'button')
-				$this->buffer .= '<input type="submit" name="'. $el['name'] .'" value="'. $el['text'] .'" class="button_submit"/>';
-
-		// Close it.
-		$this->buffer .= '
-		</div>
-	</div>
-	<br />
-</form>';
-
-		return $this->buffer;
+		return template_breeze_form();
 	}
 }
