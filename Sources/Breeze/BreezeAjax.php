@@ -135,7 +135,7 @@ class BreezeAjax
 		// Build plain normal vars...
 		$owner = $this->_data->get('statusOwner');
 		$poster = $this->_currentUser;
-		$content = urldecode($this->_data->get('message'));
+		$content = $this->_data->get('message');
 		$mentionedUsers = array();
 
 		// Sorry, try to play nicer next time

@@ -3,16 +3,16 @@
  @license http://www.mozilla.org/MPL/ MPL 2.0
 */
 
-var breezePost = function(type, form) {
+var breezePost = function(type, bForm) {
 	this.type = type;
-	this.form = $(form);
+	this.bForm = $(bForm);
 	this.data = {};
 };
 
 breezePost.prototype.before = function() {
 
 	// Disable the submit button.
-	$('input[type=submit]', this.form).attr('disabled', 'disabled');
+	$('input[type=submit]', this.bForm).attr('disabled', 'disabled');
 
 	// Create a nice loading image...
 	this.loadImage = $('<div/>', {
@@ -24,31 +24,32 @@ breezePost.prototype.before = function() {
 
 breezePost.prototype.after = function() {
 	// Enable the button again...
-	$('input[type=submit]', this.form).removeAttr('disabled');
+	$('input[type=submit]', this.bForm).removeAttr('disabled');
 
 	// Clean the textarea.
-	this.form.find('textarea').val('');
+	this.bForm.find('textarea').val('');
 };
 
 breezePost.prototype.show = function(html) {
-		breezePostObject = this;
-		breezePostObject.loadImage.fadeOut('slow', 'linear', function(){
-			if (html.type == 'info'){
-				if(breezePostObject.type == 'status'){
-					$(bInnerDiv).prepend(DOMPurify.sanitize(html.data)).fadeIn('slow');
-				}
-
-				else{
-					$(bInnerDiv).append(DOMPurify.sanitize(html.data)).fadeIn('slow');
-				}
-
-				// Delete this element.
-				$(this).remove();
+	breezePostObject = this;
+	breezePostObject.loadImage.fadeOut('slow', 'linear', function(){
+		if (html.type == 'info'){
+			if(breezePostObject.type == 'status'){
+				$(bInnerDiv).prepend(DOMPurify.sanitize(html.data, {SAFE_FOR_JQUERY: true})).fadeIn('slow');
 			}
-		});
+
+			else{
+				$(bInnerDiv).append(DOMPurify.sanitize(html.data, {SAFE_FOR_JQUERY: true})).fadeIn('slow');
+			}
+
+			// Delete this element.
+			$(this).remove();
+		}
+	});
 
 	// Do you also have the Ohara youtube installed? Kudos!!!
 	if (typeof oh_refresh === 'function') {
+
 		// Lets give it some more time...
 		oh_refresh(5E3);
 	}
@@ -61,9 +62,9 @@ breezePost.prototype.validate = function() {
 	// Get all the values we need.
 	var postData = [];
 
-	this.form.find(':input').each(function(){
+	this.bForm.find(':input').each(function(){
 		var input = $(this);
-		postData[input.attr('name')] = DOMPurify.sanitize(input.val().php_to8bit().php_urlencode());
+		postData[input.attr('name')] = input.val();
 	});
 
 	// You need to type something...
@@ -113,7 +114,7 @@ breezePost.prototype.save = function() {
 	// The long, long ajax call...
 	$.ajax({
 		type: 'GET',
-		url: this.form.attr('action') + ';js=1',
+		url: this.bForm.attr('action') + ';js=1',
 		data: this.data,
 		cache: false,
 		dataType: 'json',
