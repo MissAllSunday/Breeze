@@ -86,10 +86,10 @@ class BreezeLog
 			$request = $smcFunc['db_query']('', '
 				SELECT m.id_msg
 				FROM {db_prefix}messages AS m
-					INNER JOIN {db_prefix}boards AS b ON (b.id_board = m.id_board AND {query_see_board})
-				WHERE m.id_msg IN ({array_int:messages})' . (!$this->_app['tools']->modSettings('postmod_active') || allowedTo('approve_posts') ? '' : '
-					AND m.approved = {int:is_approved}') . '
-				LIMIT 1',
+					INNER JOIN {db_prefix}boards AS b ON (b.id_board = m.id_board)
+				WHERE m.id_msg IN ({array_int:messages})
+					AND {query_wanna_see_board}' . (!$this->_app['tools']->modSettings('postmod_active') || allowedTo('approve_posts') ? '' : '
+					AND m.approved = {int:is_approved}') . '',
 				array(
 					'messages' => array_values($checkMsg),
 					'is_approved' => 1,
@@ -100,9 +100,9 @@ class BreezeLog
 			if ($smcFunc['db_num_rows']($request) != 0)
 			{
 				while ($row = $smcFunc['db_fetch_assoc']($request))
-					$seeMsg[] = $row['id_msg'];
+					$seeMsg[] = (int) $row['id_msg'];
 
-				$checkMsg = array_intersect($seeMsg, $checkMsg);
+				$checkMsg = array_diff($checkMsg, $seeMsg);
 			}
 
 			$smcFunc['db_free_result']($request);

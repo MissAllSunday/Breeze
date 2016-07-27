@@ -770,16 +770,13 @@ class BreezeUser extends Breeze
 				$views[$user_info['id']]['views'] = $views[$user_info['id']]['views'] + 1;
 			}
 
-			// First time huh?
+			// First time huh? I'll be gentle...
 			else
-			{
-				// Build the array
 				$views[$user_info['id']] = array(
 					'user' => $user_info['id'],
 					'last_view' => time(),
 					'views' => 1,
 				);
-			}
 
 			// Either way, update the table.
 			$this['query']->updateProfileViews($context['member']['id'], $views);
