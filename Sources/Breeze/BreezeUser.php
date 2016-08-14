@@ -663,7 +663,6 @@ class BreezeUser extends Breeze
 				<p class="error" data-dz-errormessage></p>
 				<p class="message" data-dz-message></p>
 				<p class="attach-ui">
-					<a data-dz-remove class="button_submit attach-ui delete">'. $this['tools']->text('general_delete') .'</a>
 					<a class="button_submit attach-ui start">'. $this['tools']->text('general_upload') .'</a>
 				</p>
 			</div>
@@ -691,6 +690,7 @@ class BreezeUser extends Breeze
 		maxFileHeight: '. $maxFileHeight .',
 		acceptedFiles: '. JavaScriptEscape($acceptedFiles) .',
 		baseImgsrc: \''. $this['tools']->scriptUrl .'?action=breezecover;u='. $context['member']['id'] .';thumb=1\',
+		dictRemoveFile: '. (JavaScriptEscape($this['tools']->text('general_cancel'))) .',
 		dictResponseError: '. (JavaScriptEscape($this['tools']->text('error_wrong_values'))) .',
 		dictMaxFilesExceeded: '. (JavaScriptEscape($this['tools']->text('cu_dictMaxFilesExceeded'))) .',
 		dictFileTooBig: '. (JavaScriptEscape($this['tools']->parser($this['tools']->text('cu_dictFileTooBig'), array('maxFilesize' => $maxFileSize)))) .',

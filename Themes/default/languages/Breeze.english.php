@@ -24,6 +24,7 @@ $txt['Breeze_general_loading'] = 'Loading...';
 $txt['Breeze_general_like'] = 'Like';
 $txt['Breeze_general_delete'] = 'Delete';
 $txt['Breeze_general_upload'] = 'Upload';
+$txt['Breeze_general_cancel'] = 'Cancel';
 $txt['Breeze_general_posted_on'] = 'Posted on %s\'s Wall';
 
 // Cover upload strings

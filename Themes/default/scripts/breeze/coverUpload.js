@@ -23,6 +23,7 @@ $(function() {
 		previewsContainer: '#cu-previews',
 		clickable: '.fileinput-button',
 		paramName: 'files',
+		addRemoveLinks: true,
 		accept: function(file, done) {
 
 			file.acceptDimensions = done;
@@ -63,6 +64,7 @@ $(function() {
 
 		// Show the main stuff!
 		_thisElement.addClass('descbox');
+
 	});
 
 	myDropzone.on('error', function(file, errorMessage, xhr) {
