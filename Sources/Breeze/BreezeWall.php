@@ -100,18 +100,19 @@ class BreezeWall
 
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
+		$subAction = $data->get('sa');
 
 		// Add your own subactions
 		call_integration_hook('integrate_breeze_wall_actions', array(&$call));
 
 		// Does the sub-action even exist?
-		if (isset($call[$data->get('sa')]))
+		if (isset($call[$subAction]))
 		{
 			// Obscure, evil stuff...
 			writeLog(true);
 
 			// This is somehow ugly but its faster.
-			$this->$call[$data->get('sa')]();
+			$this->{$call[$subAction]}();
 		}
 
 		// By default lets load the general wall
