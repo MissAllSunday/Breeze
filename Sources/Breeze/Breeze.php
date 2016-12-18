@@ -685,7 +685,6 @@ class Breeze extends Pimple\Container
 
 		// Always display these.
 		loadJavascriptFile('breeze/breeze.js', array('local' => true, 'force_current' => false, 'minimize' => true));
-		loadJavascriptFile('breeze/purify.js', array('local' => true, 'force_current' => false, 'minimize' => true, 'async' => true));
 
 		// Only needed on certain actions.
 		if ($doAction)
@@ -840,10 +839,6 @@ class Breeze extends Pimple\Container
 					'fileUpload' => array(
 						'name' => 'jQuery File Upload Plugin',
 						'site' => 'https://github.com/blueimp/jQuery-File-Upload',
-					),
-					'purify' => array(
-						'name' => 'purify.js',
-						'site' => 'https://github.com/cure53/DOMPurify',
 					),
 				),
 			),
