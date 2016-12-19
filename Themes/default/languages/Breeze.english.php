@@ -150,6 +150,7 @@ $txt['Breeze_error_deleteComments'] = 'I\'m sorry,  you aren\'t allowed to delet
 $txt['Breeze_error_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete status.';
 $txt['Breeze_error_server'] = 'There was an error, please try again or contact the forum admin.';
 $txt['Breeze_error_wrong_values'] = 'Wrong values were sent, the request couldn\'t be handled.';
+$txt['Breeze_error_flood'] = 'You have already reached the amount of messages you can post, please try again later.';
 $txt['Breeze_info_published'] = 'Your status was successfully published';
 $txt['Breeze_info_published_comment'] = 'Your comment was successfully published';
 $txt['Breeze_error_empty'] = 'You need to type something in the textbox.';

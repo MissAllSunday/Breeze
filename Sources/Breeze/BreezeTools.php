@@ -527,6 +527,56 @@ class BreezeTools
 			return false;
 	}
 
+	/**
+	 * BreezeTools::floodControl()
+	 *
+	 * @param integer $user Thew user ID to check.
+	 * Checks if the current user has not surpassed the amount of times an user can post per minute.
+	 * @return boolean  True if the user can post, false otherwise ORLY?
+	 */
+	public function floodControl($user = 0)
+	{
+		global $user_info;
+
+		// No param? use the current user then.
+		$user = !empty($user) ? $user : $user_info['id'];
+
+		// Has it been defined yet?
+		if (!isset($_SESSION['Breeze_floodControl'][$user]))
+		{
+			$_SESSION['Breeze_floodControl'][$user] = array(
+				'time' => time(),
+				'msg' => 0,
+			);
+
+			// Then avoid further checks and let it pass.
+			return true;
+		}
+
+		// Keep track of it. Curious enough, += is somehow faster than ++
+		$_SESSION['Breeze_floodControl'][$user] += 1;
+
+		// Short name.
+		$flood = $_SESSION['Breeze_floodControl'][$user];
+
+		// Set some needed stuff.
+		$seconds = 60 * ($this->setting('flood_minutes') ? $this->setting('flood_minutes') : 5);
+		$messages = $this->setting('flood_messages') ? $this->setting('flood_messages') : 10;
+
+		// Chatty one huh?
+		if ($flood['msg'] >= $messages && (time() + $seconds) <= $flood['time'])
+			return false;
+
+		// Enough time has passed, give the user some rest.
+		if ((time() + $seconds) >= $flood['time'])
+			$_SESSION['Breeze_floodControl'][$user] = array(
+				'time' => time(),
+				'msg' => 0,
+			);
+
+		return true;
+	}
+
 	public function commaSeparated($string, $type = 'alphanumeric')
 	{
 		switch ($type) {

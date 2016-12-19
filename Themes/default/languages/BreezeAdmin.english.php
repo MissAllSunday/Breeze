@@ -70,6 +70,10 @@ $txt['Breeze_allowed_max_num_users'] = 'How many users does an user can show on 
 $txt['Breeze_allowed_max_num_users_sub'] = 'If the user has more users than the specified setting, their entire list will be converted to a more compact links list. Leave at 0 to disable this option.';
 $txt['Breeze_allowed_maxlength_aboutMe'] = 'The max length for the "about me" block ';
 $txt['Breeze_allowed_maxlength_aboutMe_sub'] = 'If left empty, the mod will use the default value: 1024';
+$txt['Breeze_flood_messages'] = 'How many messages can an user make';
+$txt['Breeze_flood_messages_sub'] = 'The amount of total messages, including status and messages across all walls an user can make. Defaults to 10';
+$txt['Breeze_flood_minutes'] = 'The time frame for the amount of messages an user can make';
+$txt['Breeze_flood_minutes_sub'] = 'Defaults to 5 minutes. If you leave both options empty it will mean an user cannot make more than 10 messages in 5 minutes across all walls';
 
 // My mood feature.
 $txt['Breeze_mood_success_create'] = 'The mood has been created.';

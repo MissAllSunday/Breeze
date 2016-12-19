@@ -146,6 +146,14 @@ class BreezeAjax
 				'owner' => $owner,
 			));
 
+		// Flood control.
+		if (!$this->_app['tools']->floodControl())
+			return $this->setResponse(array(
+				'message' => 'flood',
+				'type' => 'error',
+				'owner' => $owner,
+			));
+
 		// Are you the profile owner? no? then feel my wrath!
 		if ($this->_currentUser != $owner)
 			allowedTo('breeze_postStatus');

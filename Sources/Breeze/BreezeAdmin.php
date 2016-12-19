@@ -60,7 +60,7 @@ class BreezeAdmin
 
 		// Call the sub-action.
 		if (isset($subActions[$sa]))
-			$this->$subActions[$sa]();
+			$this->{$subActions[$sa]}();
 
 		else
 			$this->main();
@@ -142,6 +142,8 @@ class BreezeAdmin
 				'subtext' => $this->_app['tools']->text('mood_placement_sub'),
 				'multiple' => false,
 			),
+			array('int', Breeze::$txtpattern .'flood_messages', 'size' => 3, 'subtext' => $this->_app['tools']->text('flood_messages_sub')),
+			array('int', Breeze::$txtpattern .'flood_minutes', 'size' => 3, 'subtext' => $this->_app['tools']->text('flood_minutes_sub')),
 		);
 
 		$context['post_url'] = $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=settings;save';
