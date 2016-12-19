@@ -281,7 +281,6 @@ class BreezeAjax
 				'owner' => $owner,
 			));
 
-
 		// Are you the profile owner? no? then feel my wrath!
 		if ($this->_currentUser != $owner)
 			allowedTo('breeze_postComments');

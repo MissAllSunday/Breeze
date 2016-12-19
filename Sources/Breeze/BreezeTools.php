@@ -541,38 +541,30 @@ class BreezeTools
 		// No param? use the current user then.
 		$user = !empty($user) ? $user : $user_info['id'];
 
-		// Has it been defined yet?
-		if (!isset($_SESSION['Breeze_floodControl'][$user]))
-		{
-			$_SESSION['Breeze_floodControl'][$user] = array(
-				'time' => time(),
-				'msg' => 0,
-			);
-
-			// Then avoid further checks and let it pass.
-			return true;
-		}
-
-		// Keep track of it. Curious enough, += is somehow faster than ++
-		$_SESSION['Breeze_floodControl'][$user] += 1;
-
-		// Short name.
-		$flood = $_SESSION['Breeze_floodControl'][$user];
-
 		// Set some needed stuff.
 		$seconds = 60 * ($this->setting('flood_minutes') ? $this->setting('flood_minutes') : 5);
 		$messages = $this->setting('flood_messages') ? $this->setting('flood_messages') : 10;
 
+		// Has it been defined yet?
+		if (!isset($_SESSION['Breeze_floodControl'. $user]))
+			$_SESSION['Breeze_floodControl'. $user] = array(
+				'time' => time() + $seconds,
+				'msg' => 0,
+			);
+
+		// Keep track of it.
+		$_SESSION['Breeze_floodControl'. $user]['msg']++;
+
+		// Short name.
+		$flood = $_SESSION['Breeze_floodControl'. $user];
+
 		// Chatty one huh?
-		if ($flood['msg'] >= $messages && (time() + $seconds) <= $flood['time'])
+		if ($flood['msg'] >= $messages && time() <= $flood['time'])
 			return false;
 
 		// Enough time has passed, give the user some rest.
-		if ((time() + $seconds) >= $flood['time'])
-			$_SESSION['Breeze_floodControl'][$user] = array(
-				'time' => time(),
-				'msg' => 0,
-			);
+		if (time() >= $flood['time'])
+			unset($_SESSION['Breeze_floodControl'. $user]);
 
 		return true;
 	}

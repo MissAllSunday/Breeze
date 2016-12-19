@@ -35,11 +35,11 @@ breezePost.prototype.show = function(html) {
 	breezePostObject.loadImage.fadeOut('slow', 'linear', function(){
 		if (html.type == 'info'){
 			if(breezePostObject.type == 'status'){
-				$(bInnerDiv).prepend(DOMPurify.sanitize(html.data, {SAFE_FOR_JQUERY: true})).fadeIn('slow');
+				$(bInnerDiv).prepend(html.data).fadeIn('slow');
 			}
 
 			else{
-				$(bInnerDiv).append(DOMPurify.sanitize(html.data, {SAFE_FOR_JQUERY: true})).fadeIn('slow');
+				$(bInnerDiv).append(html.data).fadeIn('slow');
 			}
 
 			// Delete this element.

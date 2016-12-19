@@ -74,8 +74,8 @@ $(function() {
 		var thisObject = $(this);
 
 		// Get the ID
-		postId = DOMPurify.sanitize(parseInt(thisObject.data('bid')));
-		postUrl = DOMPurify.sanitize(thisObject.attr('href'));
+		postId = parseInt(thisObject.data('bid'));
+		postUrl = thisObject.attr('href');
 
 		// Show a confirmation message
 		noty({
@@ -135,7 +135,7 @@ $(function() {
 		ajax_indicator(true);
 		$.ajax({
 			type: 'GET',
-			url: DOMPurify.sanitize(obj.attr('href') + ';js=1;'),
+			url: obj.attr('href') + ';js=1;',
 			cache: false,
 			dataType: 'html',
 			beforeSend: function(){
@@ -168,7 +168,7 @@ $(function() {
 	// User div.
 	$(document).on('click', 'a[rel*=breezeFacebox]', function(event){
 		event.preventDefault();
-		var title = DOMPurify.sanitize($(this).data('name')),
+		var title = $(this).data('name'),
 			url = $(this).attr('href') + ';js=1';
 
 		return reqOverlayDiv(url, title);
@@ -180,7 +180,7 @@ $(function() {
 		event.preventDefault();
 
 		$.ajax({
-			url: DOMPurify.sanitize($(this).attr('href') + ';js=1'),
+			url: $(this).attr('href') + ';js=1',
 			type: "GET",
 			dataType: "json",
 			success: function(data){
@@ -203,7 +203,7 @@ $(function() {
 	// My mood!
 	$(document).one('click', 'a[rel*=breezeMood]', function(event){
 		event.preventDefault();
-		var title = DOMPurify.sanitize($(this).data('name')),
+		var title = $(this).data('name'),
 			url = $(this).attr('href') + ';js=1';
 		return reqOverlayDiv(url, title);
 	});
@@ -211,7 +211,7 @@ $(function() {
 	// Changing moods.
 	$(document).one('click', 'a[rel*=breezeMoodSave]', function(event){
 		event.preventDefault();
-		var moodID = DOMPurify.sanitize($(this).data('id')),
+		var moodID = $(this).data('id'),
 			url = $(this).attr('href') + ';js=1';
 
 		// Lets make a quick ajax call here...
