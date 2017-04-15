@@ -39,7 +39,19 @@
 		<remove-file name="$themedir/js/jquery.hashchange.min.js" />
 		<remove-file name="$languagedir/Breeze.english.php" />
 		<remove-file name="$languagedir/Breeze.english-utf8.php" />
+		<remove-file name="$languagedir/Breeze.spanish_latin-utf8.php" />
+		<remove-file name="$languagedir/Breeze.spanish_latin.php" />
+		<remove-file name="$languagedir/Breeze.turkish-utf8.php" />
+		<remove-file name="$languagedir/Breeze.turkish.php" />
+		<remove-file name="$languagedir/Breeze.pt-br-utf8.php" />
+		<remove-file name="$languagedir/Breeze.pt-br-utf8.php" />
 		<remove-file name="$languagedir/BreezeAdmin.english.php" />
 		<remove-file name="$languagedir/BreezeAdmin.english-utf8.php" />
+		<remove-file name="$languagedir/BreezeAdmin.spanish_latin-utf8.php" />
+		<remove-file name="$languagedir/BreezeAdmin.spanish_latin.php" />
+		<remove-file name="$languagedir/BreezeAdmin.turkish-utf8.php" />
+		<remove-file name="$languagedir/BreezeAdmin.turkish.php" />
+		<remove-file name="$languagedir/BreezeAdmin.pt-br-utf8.php" />
+		<remove-file name="$languagedir/BreezeAdmin.pt-br.php" />
 	</uninstall>
 </package-info>
