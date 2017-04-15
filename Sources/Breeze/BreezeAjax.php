@@ -262,7 +262,7 @@ class BreezeAjax
 		$statusPoster = $this->_data->get('statusPoster');
 		$poster = $this->_currentUser;
 		$owner = $this->_data->get('owner');
-		$content = urldecode($this->_data->get('message'));
+		$content = $this->_data->get('message');
 		$mentionedUsers = array();
 
 		// Sorry, try to play nice next time

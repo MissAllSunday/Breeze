@@ -22,7 +22,7 @@ class BreezeDisplay
 		$this->_app = $app;
 	}
 
-	public function HTML(array $params, $type, $single = false, $usersToLoad = false, $alreadyParsed = false)
+	public function HTML($params, $type, $single = false, $usersToLoad = false, $alreadyParsed = false)
 	{
 		global $context;
 

@@ -127,7 +127,7 @@ class BreezeData
 	 */
 	public function sanitize($var)
 	{
-		global $smcFunc, $context;
+		global $smcFunc;
 
 		if (is_array($var))
 		{
@@ -139,7 +139,7 @@ class BreezeData
 
 		else
 		{
-			$var = (string) $smcFunc['htmlspecialchars']($smcFunc['htmltrim']($var), ENT_QUOTES, $context['character_set']);
+			$var = (string) $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var), ENT_QUOTES);
 
 			if (ctype_digit($var))
 				$var = (int) $var;
