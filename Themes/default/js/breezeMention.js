@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2011 - 2017 Jessica González
- @license http://www.mozilla.org/MPL/MPL-1.1.html
+ @license //www.mozilla.org/MPL/MPL-1.1.html
 */
 
  // Mentioning

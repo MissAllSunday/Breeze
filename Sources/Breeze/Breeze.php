@@ -7,7 +7,7 @@
  * @version 1.0.11
  * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2011 - 2017 Jessica González
- * @license http://www.mozilla.org/MPL/MPL-1.1.html
+ * @license //www.mozilla.org/MPL/MPL-1.1.html
  */
 
 if (!defined('SMF'))
@@ -239,7 +239,7 @@ class Breeze
 	 *
 	 * Insert a Wall button on the menu buttons array
 	 * @param array $menu_buttons An array containing all possible tabs for the main menu.
-	 * @link http://mattzuba.com
+	 * @link //mattzuba.com
 	 * @return void
 	 */
 	public static function menu(&$menu_buttons)
@@ -461,7 +461,7 @@ class Breeze
 
 			// Common css and js files.
 			$context['html_headers'] .= '
-	<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="http://code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
+	<script type="text/javascript">!window.jQuery && document.write(unescape(\'%3Cscript src="//code.jquery.com/jquery-1.9.1.min.js"%3E%3C/script%3E\'))</script>
 	<link href="'. $settings['default_theme_url'] .'/css/breeze.min.css" rel="stylesheet" type="text/css" />';
 
 			// Load the notification JS files.
@@ -571,23 +571,23 @@ class Breeze
 				'users' => array(
 					'jQuery' => array(
 						'name' => 'jQuery',
-						'site' => 'http://jquery.com/',
+						'site' => '//jquery.com/',
 					),
 					'facebox' => array(
 						'name' => 'Facebox',
-						'site' => 'https://github.com/defunkt/facebox',
+						'site' => '//github.com/defunkt/facebox',
 					),
 					'noty' => array(
 						'name' => 'noty jquery plugin',
-						'site' => 'http://needim.github.com/noty/',
+						'site' => '//needim.github.com/noty/',
 					),
 					'mentions' => array(
 						'name' => 'Mentions autocomplete',
-						'site' => 'http://ichord.github.com/At.js',
+						'site' => '//ichord.github.com/At.js',
 					),
 					'purify' => array(
 						'name' => 'purify.js',
-						'site' => 'https://github.com/cure53/DOMPurify',
+						'site' => '//github.com/cure53/DOMPurify',
 					),
 				),
 			),
@@ -596,7 +596,7 @@ class Breeze
 				'users' => array(
 					'ikons' => array(
 						'name' => 'ikons from Piotr Kwiatkowski',
-						'site' => 'http://ikons.piotrkwiatkowski.co.uk/',
+						'site' => '//ikons.piotrkwiatkowski.co.uk/',
 					),
 				),
 			),
