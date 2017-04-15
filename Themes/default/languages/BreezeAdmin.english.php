@@ -4,9 +4,9 @@
  * BreezeAdmin.english
  *
  * @package Breeze mod
- * @version 1.0.10
+ * @version 1.0.11
  * @author Jessica Gonzalez <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2016 Jessica Gonzalez
+ * @copyright Copyright (c) 2011 - 2017 Jessica Gonzalez
  * @license http://www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -14,7 +14,7 @@ global $txt;
 
 // Admin Settings
 $txt['Breeze_page_panel'] = 'Breeze Admin Panel';
-$txt['Breeze_page_welcome'] = 'This is your &quot;Breeze Admin Panel&quot;.  From here, you can edit the settings for Breeze If you have any trouble, feel free to <a href="http://missallsunday.com" target="_blank" class="new_win">ask for support</a> on the author\'s site.';
+$txt['Breeze_page_welcome'] = 'This is your &quot;Breeze Admin Panel&quot;.  From here, you can edit the settings for Breeze If you have any trouble, feel free to <a href="//missallsunday.com" target="_blank" class="new_win">ask for support</a> on the author\'s site.';
 $txt['Breeze_page_main'] = 'Main Breeze Admin Center';
 $txt['Breeze_page_permissions'] = 'Permissions';
 $txt['Breeze_page_permissions_desc'] = 'From here you can add/remove specific Breeze permissions.';
@@ -22,7 +22,7 @@ $txt['Breeze_page_settings'] = 'General Settings';
 $txt['Breeze_page_settings_desc'] = 'This is the general settings page, from here you can enable/disable the mod as well as configuring general settings.';
 $txt['Breeze_page_donate'] = 'Donate';
 $txt['Breeze_page_donate_desc'] = 'Boring stuff you were curious about it but you\'ll never gonna see it again :P';
-$txt['Breeze_page_donate_exp'] = 'Breeze is a free SMF modification brought to you by a PHP enthusiast on her free time.<p />If you like this modification and would like to show your appreciation, please consider making a <a href="http://missallsunday.com/">donation</a>. Your donation will be used to cover server costs and/or to buy shoes, shoes keeps the developer happy and if she is happy then there will be more updates ;)<p />You can also show your appreciation by letting me know you are using Breeze on your forum, come by, say hi and show me your shiny profile pages powered by Breeze.';
+$txt['Breeze_page_donate_exp'] = 'Breeze is a free SMF modification brought to you by a PHP enthusiast on her free time.<p />If you like this modification and would like to show your appreciation, please consider making a <a href="//missallsunday.com/">donation</a>. Your donation will be used to cover server costs and/or to buy shoes, shoes keeps the developer happy and if she is happy then there will be more updates ;)<p />You can also show your appreciation by letting me know you are using Breeze on your forum, come by, say hi and show me your shiny profile pages powered by Breeze.';
 $txt['Breeze_page_credits'] = 'Credits';
 $txt['Breeze_page_credits_decs'] = 'Breeze is brought to you by the following persons and/or scripts:';
 $txt['Breeze_enable_general_wall'] = 'Enable General Wall';

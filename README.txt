@@ -1,7 +1,7 @@
 [center][color=purple][size=15pt]Breeze Social mod[/size][/color] [/center]
 
 
-Created by [url=http://missallsunday.com]Suki[/url]
+Created by [url=//missallsunday.com]Suki[/url]
 
 [b]This mod needs PHP 5.3 or greater and SMF 2.0.x or greater[/b]
 
