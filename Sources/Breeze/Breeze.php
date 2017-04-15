@@ -44,7 +44,7 @@ class Breeze
 	public static $allSettings = array('wall', 'general_wall', 'pagination_number', 'load_more', 'how_many_mentions', 'kick_ignored', 'activityLog', 'buddies', 'visitors', 'visitors_timeframe', 'clear_noti', 'noti_on_comment', 'noti_on_mention', 'gender', 'buddiesList', 'ignoredList', 'profileViews',);
 
 	// Support site feed
-	public static $supportSite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
+	public static $supportSite = '//missallsunday.com';
 
 	// Its easier to list the allowed actions
 	public static $_allowedActions = array('wall', 'display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who', 'credits',);

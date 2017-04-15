@@ -37,7 +37,7 @@ function template_admin_home()
 				<div class="windowbg nopadding">
 					<span class="topslice"><span></span></span>
 					<div class="content" id="breezelive">
-						<div id="breezelive">', $txt['Breeze_live'] , '</div>
+						<div id="breezelive">', $txt['Breeze_feed_error_message'] , '</div>
 					</div>
 					<span class="botslice"><span></span></span>
 				</div>

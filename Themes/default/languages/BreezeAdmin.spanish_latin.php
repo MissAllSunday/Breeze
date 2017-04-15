@@ -14,16 +14,16 @@ global $txt;
 
 // Admin Settings
 $txt['Breeze_page_panel'] = 'Breeze Panel de administraci&oacute;n';
-$txt['Breeze_page_welcome'] = 'Este es tu panel de administraci&oacute;n.  Desde aqu&iacute; puedes editar las diversas configuraciones, si tienes alg&uacute;n problema puedes <a href="http://missallsunday.com" target="_blank" class="new_win">solicitar soporte</a> en el sitio de soporte del autor.';
+$txt['Breeze_page_welcome'] = 'Este es tu panel de administraci&oacute;n.  Desde aqu&iacute; puedes editar las diversas configuraciones, si tienes alg&uacute;n problema puedes <a href="', Breeze::$supportSite ,'" target="_blank" class="new_win">solicitar soporte</a> en el sitio de soporte del autor.';
 $txt['Breeze_page_main'] = 'P&aacute;gina principal panel de administraci&oacute;n';
 $txt['Breeze_page_permissions'] = 'Permisos';
 $txt['Breeze_page_permissions_desc'] = 'Desde aqu&iacute; puedes From here you can add/remove specific Breeze permissions.';
 $txt['Breeze_page_settings'] = 'Configuraci&oacute;n general';
-$txt['Breeze_page_settings_desc'] = 'Esta es la p&aacute;gina de configuraci&oacute;n general, como su nombre lo indica, desde aqu&iacute; puedes configurar las diversas opciones que tienenel mod.';
+$txt['Breeze_page_settings_desc'] = 'Esta es la p&aacute;gina de configuraci&oacute;n general, como su nombre lo indica, desde aqu&iacute; puedes configurar las diversas opciones que tiene el mod.';
 $txt['Breeze_page_donate'] = 'Donar';
 $txt['Breeze_page_donate_desc'] = 'Una p&aacute;gina aburrida que ten&iacute;as curiosidad por ver y ahora que ya lo has hecho jam&aacute;s vas a volver a verla :P';
-$txt['Breeze_page_donate_exp'] = 'Breeze es una modificaci&oacute;n totalmente gratuita hecha por una entusiasta en su tiempo libre.<p />Si te gust&oacute; esta modificaci&oacute;n y quieres mostrar tu apreciaci&oacute;n, por favor concidera hacer una <a href="http://missallsunday.com/">donaci&oacute;n</a>. Tu donaci&oacute;n servir&aacute; para cubrir los gastos del servicio de hospedaje web o para comprar zapatos. Los zapatos mantienen fel&iacute;z a la desarrolladora y si ella es fel&iacute;z entonces habr&aacute; m&aacute;s y mejores versiones del mod ;)<p />Tambi&eacute;n puedes mostrar tu apreciaci&oacute;n visitando mi sitio y  dejando alg&uacute;n mensaje de agradecimiento y de paso mostrarme tu flamante foro mejorado con Breeze.';
-$txt['Breeze_page_credits'] = 'Creditos';
+$txt['Breeze_page_donate_exp'] = 'Breeze es una modificaci&oacute;n totalmente gratuita hecha por una entusiasta en su tiempo libre.<p />Si te gust&oacute; esta modificaci&oacute;n y quieres mostrar tu apreciaci&oacute;n, por favor considera hacer una <a href="', Breeze::$supportSite ,'">donaci&oacute;n</a>. Tu donaci&oacute;n servir&aacute; para cubrir los gastos del servicio de hospedaje web o para comprar zapatos. Los zapatos mantienen fel&iacute;z a la desarrolladora y si ella es fel&iacute;z entonces habr&aacute; m&aacute;s y mejores versiones del mod ;)<p />Tambi&eacute;n puedes mostrar tu apreciaci&oacute;n visitando mi sitio y  dejando alg&uacute;n mensaje de agradecimiento y de paso mostrarme tu flamante foro mejorado con Breeze.';
+$txt['Breeze_page_credits'] = 'Cr&eacute;ditos';
 $txt['Breeze_page_credits_decs'] = 'Breeze usa los siguientes &iacute;conos o scripts:';
 $txt['Breeze_enable_general_wall'] = 'Activar la p&aacute;gina "muro general"';
 $txt['Breeze_enable_general_wall_sub'] = 'Si es activada, esta opci&oacute;n mostrar&aacute; una nueva p&aacute;gina en donde se le mostrar&aacute; a el usuario los ultimos status y la actividad reciente de sus amigos.';
@@ -50,4 +50,3 @@ $txt['Breeze_allowed_actions_sub'] = 'Por defecto las notificaciones aparecer&aa
 $txt['Breeze_feed_error_message'] = 'Breeze no pudo conectarse con el sitio de soporte.';
 $txt['Breeze_allowed_maxlength_aboutMe'] = 'El m&aacute;ximo n&uacute;mero de caracteres que el bloque "acerca de mi" puede contener';
 $txt['Breeze_allowed_maxlength_aboutMe_sub'] = 'Si se deja vacio, se usar&aacute; el valor por defecto: 1024';
-
