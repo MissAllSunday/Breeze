@@ -39,6 +39,8 @@ Breeze is a social mod for your users to turn their dull profile into a dynamic 
 
 o English/utf8
 o Spanish_latin/utf8
+o Portuguese_Brazilian/utf8
+o Turkish/utf8
 
 I welcome translations, please post it on the support site ;)
 
@@ -62,6 +64,11 @@ Tested on PHP 5.3 and 5.4, Opera12, IE8 and whatever version Firefox was when I 
 [size=12pt][color=purple]Changelog[/color][/size]
 
 [code]
+1.0.11 April 15, 2017
+- Add Turkish and Portuguese_Brazilian translations
+- Normalize and schemaless the support url
+- Remove the "live from the support site" rss box
+
 1.0.10 May 24, 2016
 - Update atwho and caret, use min versions.
 - Add support for Ohara youtube mod.
