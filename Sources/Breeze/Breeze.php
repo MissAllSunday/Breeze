@@ -577,10 +577,6 @@ class Breeze
 						'name' => 'Facebox',
 						'site' => 'https://github.com/defunkt/facebox',
 					),
-					'feed' => array(
-						'name' => 'zRSSFeeds',
-						'site' => 'http://www.zazar.net/developers/jquery/zrssfeed',
-					),
 					'noty' => array(
 						'name' => 'noty jquery plugin',
 						'site' => 'http://needim.github.com/noty/',

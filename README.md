@@ -25,7 +25,6 @@ The mod uses the following scripts:
 
 - [jQuery] (http://jquery.com/)
 - [Facebox] (https://github.com/defunkt/facebox)
-- [zRSSFeeds] (http://www.zazar.net/developers/jquery/zrssfeed/)
 - [needim noty jquery plugin] (http://needim.github.com/noty/)
 - [ichord Mentions autocomplete script] (http://ichord.github.com/At.js)
 - [ikons from Piotr Kwiatkowski] (http://ikons.piotrkwiatkowski.co.uk)
