@@ -14,7 +14,7 @@ global $txt;
 
 // Admin Settings
 $txt['Breeze_page_panel'] = 'Breeze Painel de administra&#231;&#227;o';
-$txt['Breeze_page_welcome'] = 'Este &#233; seu painel de administra&#231;&#227;o.  Apartir daqui pode realizar diversas configura&#231;&#245;es, se tiver algum problema pode <a href="', Breeze::$supportSite ,'" target="_blank" class="new_win">solicitar soporte</a> no site de suporte do autor.';
+$txt['Breeze_page_welcome'] = 'Este &#233; seu painel de administra&#231;&#227;o.  Apartir daqui pode realizar diversas configura&#231;&#245;es, se tiver algum problema pode <a href="'. Breeze::$supportSite .'" target="_blank" class="new_win">solicitar soporte</a> no site de suporte do autor.';
 $txt['Breeze_page_main'] = 'P&#225;gina principal do painel administrativo';
 $txt['Breeze_page_permissions'] = 'Permiss&#245;es';
 $txt['Breeze_page_permissions_desc'] = 'Apartir daqui voc&#234; pode add/remove especificas do Breeze Mod.';
@@ -22,7 +22,7 @@ $txt['Breeze_page_settings'] = 'Configura&#231;&#227;o geral';
 $txt['Breeze_page_settings_desc'] = 'Esta &#233; a p&#225;gina de configura&#231;&#227;o geral, como seu nome indica, apartir daqu&#237; pode configurar as diversas op&#231;&#245;es que existem no mod.';
 $txt['Breeze_page_donate'] = 'Doar';
 $txt['Breeze_page_donate_desc'] = 'Uma p&#225;gina in&#250;til que teve a curiosidade de ver e agora que fez isso jamais vai voltar a visita-la :P';
-$txt['Breeze_page_donate_exp'] = 'Breeze &#233; uma modifica&#231;&#227;o totalmente gratuita feita por uma entusiasta em seu tempo livre.<p />Se gostou desta modifica&#231;&#227;o e quer mostrar sua gratid&#227;o, por favor concidere fazer uma <a href="', Breeze::$supportSite ,'">doa&#231;&#227;o</a>. Sua doa&#231;&#227;o servir&#225; para cubrir os gastos de servi&#231;o de hospedagem web ou para comprar sapatos. Os sapatos mantem fel&#237;z a criadora e se ela &#233; fel&#237;z ent&#227;o haver&#225; mais e melhores vers&#245;es do mod ;)<p />Tambem pode mostrar sua gratid&#227;o visitando meu site e  deixando alguma mensagem de agradecimiento e de b&#244;nus mostrar seu f&#243;rum melhorado com Breeze.';
+$txt['Breeze_page_donate_exp'] = 'Breeze &#233; uma modifica&#231;&#227;o totalmente gratuita feita por uma entusiasta em seu tempo livre.<p />Se gostou desta modifica&#231;&#227;o e quer mostrar sua gratid&#227;o, por favor concidere fazer uma <a href="'. Breeze::$supportSite .'">doa&#231;&#227;o</a>. Sua doa&#231;&#227;o servir&#225; para cubrir os gastos de servi&#231;o de hospedagem web ou para comprar sapatos. Os sapatos mantem fel&#237;z a criadora e se ela &#233; fel&#237;z ent&#227;o haver&#225; mais e melhores vers&#245;es do mod ;)<p />Tambem pode mostrar sua gratid&#227;o visitando meu site e  deixando alguma mensagem de agradecimiento e de b&#244;nus mostrar seu f&#243;rum melhorado com Breeze.';
 $txt['Breeze_page_credits'] = 'Creditos';
 $txt['Breeze_page_credits_decs'] = 'Breeze usa os seguintes icones e scripts:';
 $txt['Breeze_enable_general_wall'] = 'Ativar a p&#225;gina "mural geral"';

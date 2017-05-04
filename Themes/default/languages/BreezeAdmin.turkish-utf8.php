@@ -17,7 +17,7 @@ global $txt;
 
 // Admin Settings
 $txt['Breeze_page_panel'] = 'Breeze modunu etkinleştir';
-$txt['Breeze_page_welcome'] = '&quot;Breeze Yönetici Paneli&quot;.   Buradan Breeze ayarlarını düzenleyebilirsiniz. Herhangi bir sorunuz varsa <a href="', Breeze::$supportSite ,'" target="_blank" class="new_win">Yazarın sitesinden</a> destek istemekten çekinmeyin.';
+$txt['Breeze_page_welcome'] = '&quot;Breeze Yönetici Paneli&quot;.   Buradan Breeze ayarlarını düzenleyebilirsiniz. Herhangi bir sorunuz varsa <a href="'. Breeze::$supportSite .'" target="_blank" class="new_win">Yazarın sitesinden</a> destek istemekten çekinmeyin.';
 $txt['Breeze_page_main'] = 'Breeze Yönetim Merkezi';
 $txt['Breeze_page_permissions'] = 'İzinler';
 $txt['Breeze_page_permissions_desc'] = 'Buradan belirli Breeze izinlerini ekleyebilir / kaldırabilirsiniz.';
@@ -25,7 +25,7 @@ $txt['Breeze_page_settings'] = 'Genel Ayarlar';
 $txt['Breeze_page_settings_desc'] = 'Bu genel ayarlar sayfasıdır, buradan modu etkinleştirebileceğiniz / devre dışı bırakabileceğiniz gibi genel ayarları yapılandırmanız da mümkündür.';
 $txt['Breeze_page_donate'] = 'Bağış';
 $txt['Breeze_page_donate_desc'] = 'Boring stuff you were curious about it but you\'ll never gonna see it again :P';
-$txt['Breeze_page_donate_exp'] = 'Breeze, serbest zamanında bir PHP meraklısı tarafından getirilen ücretsiz bir SMF modifikasyonudur.<p /> Bu modifikasyonu beğenirseniz ve takdirinizi göstermek istiyorsanız, lütfen bir <a href="', Breeze::$supportSite ,'">bağış yapın</a>.  Bağışınız sunucu giderlerini karşılamak ve / veya ayakkabı satın almak,
+$txt['Breeze_page_donate_exp'] = 'Breeze, serbest zamanında bir PHP meraklısı tarafından getirilen ücretsiz bir SMF modifikasyonudur.<p /> Bu modifikasyonu beğenirseniz ve takdirinizi göstermek istiyorsanız, lütfen bir <a href="'. Breeze::$supportSite .'">bağış yapın</a>.  Bağışınız sunucu giderlerini karşılamak ve / veya ayakkabı satın almak,
 Ayakkabı geliştiriciyi mutlu ediyor ve eğer mutluysa daha fazla güncelleme olacak;)<p />Forumunuzda Breezeyi kullandığınızdan bana haber verin, merhaba de, Breezeden güç alan profil sayfalarınızı bana gösterin, teşekkürlerinizi gösterin..';
 $txt['Breeze_page_credits'] = 'Yapımcılar';
 $txt['Breeze_page_credits_decs'] = 'Breeze size aşağıdaki kişiler ve / veya scriptler tarafından getirilir:';
