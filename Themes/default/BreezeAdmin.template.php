@@ -37,7 +37,9 @@ function template_admin_home()
 				<div class="windowbg nopadding">
 					<span class="topslice"><span></span></span>
 					<div class="content" id="breezelive">
-						<div id="breezelive">', $txt['Breeze_feed_error_message'] , '</div>
+						<div id="smfAnnouncements">',
+							$txt['Breeze_feed_error_message'] , '
+						</div>
 					</div>
 					<span class="botslice"><span></span></span>
 				</div>
@@ -104,7 +106,40 @@ function template_admin_home()
 			</div>
 		</div>
 	</div>
-	<br />';
+	<br />
+	<script>
+	$(document).ready(function(){
+		$.ajax({
+			type: "GET",
+			url: ', JavaScriptEscape(Breeze::$supportFeed) ,',
+			cache: false,
+			dataType: "xml",
+			success: function(xml){
+
+				var breezelive = $("#smfAnnouncements");
+				var dl = $("<dl />").appendTo(breezelive);
+				breezelive.html(dl);
+				$(xml).find("entry").each(function () {
+					var item = $(this),
+						title = $("<a />", {
+							text: item.find("title").text(),
+							href: "//github.com" + item.find("link").attr("href")
+						}),
+						parsedTime = new Date(item.find("updated").text().replace("T", " ").split("+")[0]),
+						updated = $("<span />").text(" | " + parsedTime.toDateString()),
+						content = $("<div/>").html(item.find("content")).text(),
+						dt = $("<dt />").html(title),
+						dd = $("<dd />").html(content);
+
+						updated.appendTo(dt);
+						dt.appendTo(dl);
+						dd.appendTo(dl);
+				});
+			},
+			error: function (html){}
+		});
+	});
+	</script>';
 }
 
 // Boring stuff you will never see...
