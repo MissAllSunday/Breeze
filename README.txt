@@ -67,6 +67,8 @@ Tested on PHP 5.3 and 5.4, Opera12, IE8 and whatever version Firefox was when I 
 1.0.12 May 5, 2017
 - Concatenation on $txt strings
 - Add a "live from the support site" atom box
+- Use caret and atwho min versions on single status page
+- Update atwho.js
 
 1.0.11 April 15, 2017
 - Add Turkish and Portuguese_Brazilian translations
