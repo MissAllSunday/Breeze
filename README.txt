@@ -64,6 +64,10 @@ Tested on PHP 5.3 and 5.4, Opera12, IE8 and whatever version Firefox was when I 
 [size=12pt][color=purple]Changelog[/color][/size]
 
 [code]
+1.0.12 May 5, 2017
+- Concatenation on $txt strings
+- Add a "live from the support site" atom box
+
 1.0.11 April 15, 2017
 - Add Turkish and Portuguese_Brazilian translations
 - Normalize and schemaless the support url

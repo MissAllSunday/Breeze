@@ -45,7 +45,7 @@ class Breeze
 
 	// Support site feed
 	public static $supportSite = '//missallsunday.com';
-	public static $supportFeed = '//github.com/MissAllSunday/Breeze/releases.atom';
+	public static $supportFeed = '//crossorigin.me/https://github.com/MissAllSunday/Breeze/releases.atom';
 
 	// Its easier to list the allowed actions
 	public static $_allowedActions = array('wall', 'display', 'unread', 'unreadreplies', 'viewprofile', 'profile', 'who', 'credits',);
