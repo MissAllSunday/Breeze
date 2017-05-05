@@ -4,58 +4,58 @@
  * BreezeAdmin.turkish
  *
  * @package Breeze mod
- * @version 1.0.11
+ * @version 1.0.12
  * @author Jessica Gonzalez <suki@missallsunday.com>
  * @copyright Copyright (c) 2011 - 2017 Jessica Gonzalez
  * @license //www.mozilla.org/MPL/MPL-1.1.html
  */
 /**
- *  @trke eviri snrj
+ *  @tï¿½rkï¿½e ï¿½eviri snrj
  *  @http://smf.konusal.com/
  */
 global $txt;
 
 // Admin Settings
-$txt['Breeze_page_panel'] = 'Breeze modunu etkinletir';
-$txt['Breeze_page_welcome'] = '&quot;Breeze Ynetici Paneli&quot;.   Buradan Breeze ayarlarn dzenleyebilirsiniz. Herhangi bir sorunuz varsa <a href="'. Breeze::$supportSite .'" target="_blank" class="new_win">Yazarn sitesinden</a> destek istemekten ekinmeyin.';
-$txt['Breeze_page_main'] = 'Breeze Ynetim Merkezi';
-$txt['Breeze_page_permissions'] = 'zinler';
-$txt['Breeze_page_permissions_desc'] = 'Buradan belirli Breeze izinlerini ekleyebilir / kaldrabilirsiniz.';
+$txt['Breeze_page_panel'] = 'Breeze modunu etkinleï¿½tir';
+$txt['Breeze_page_welcome'] = '&quot;Breeze Yï¿½netici Paneli&quot;.   Buradan Breeze ayarlarï¿½nï¿½ dï¿½zenleyebilirsiniz. Herhangi bir sorunuz varsa <a href="'. Breeze::$supportSite .'" target="_blank" class="new_win">Yazarï¿½n sitesinden</a> destek istemekten ï¿½ekinmeyin.';
+$txt['Breeze_page_main'] = 'Breeze Yï¿½netim Merkezi';
+$txt['Breeze_page_permissions'] = 'ï¿½zinler';
+$txt['Breeze_page_permissions_desc'] = 'Buradan belirli Breeze izinlerini ekleyebilir / kaldï¿½rabilirsiniz.';
 $txt['Breeze_page_settings'] = 'Genel Ayarlar';
-$txt['Breeze_page_settings_desc'] = 'Bu genel ayarlar sayfasdr, buradan modu etkinletirebileceiniz / devre d brakabileceiniz gibi genel ayarlar yaplandrmanz da mmkndr.';
-$txt['Breeze_page_donate'] = 'Ba';
+$txt['Breeze_page_settings_desc'] = 'Bu genel ayarlar sayfasï¿½dï¿½r, buradan modu etkinleï¿½tirebileceï¿½iniz / devre dï¿½ï¿½ï¿½ bï¿½rakabileceï¿½iniz gibi genel ayarlarï¿½ yapï¿½landï¿½rmanï¿½z da mï¿½mkï¿½ndï¿½r.';
+$txt['Breeze_page_donate'] = 'Baï¿½ï¿½ï¿½';
 $txt['Breeze_page_donate_desc'] = 'Boring stuff you were curious about it but you\'ll never gonna see it again :P';
-$txt['Breeze_page_donate_exp'] = 'Breeze, serbest zamannda bir PHP merakls tarafndan getirilen cretsiz bir SMF modifikasyonudur.<p /> Bu modifikasyonu beenirseniz ve takdirinizi gstermek istiyorsanz, ltfen bir <a href="'. Breeze::$supportSite .'">ba yapn</a>.  Banz sunucu giderlerini karlamak ve / veya ayakkab satn almak,
-Ayakkab gelitiriciyi mutlu ediyor ve eer mutluysa daha fazla gncelleme olacak;)<p />Forumunuzda Breezeyi kullandnzdan bana haber verin, merhaba de, Breezeden g alan profil sayfalarnz bana gsterin, teekkrlerinizi gsterin..';
-$txt['Breeze_page_credits'] = 'Yapmclar';
-$txt['Breeze_page_credits_decs'] = 'Breeze size aadaki kiiler ve / veya scriptler tarafndan getirilir:';
-$txt['Breeze_enable_general_wall'] = 'Genel Duvar Etkinletir';
-$txt['Breeze_enable_general_wall_sub'] = 'Etkinletirilirse, genel bir duvar ortaya kacak ve bu genel duvarda kullanc arkadann durumunu ve son etkinliini grebilecektir';
-$txt['Breeze_menu_position'] = 'Genel Duvar dmesinin konumunu sein.';
-$txt['Breeze_menu_position_sub'] = 'Varsaylan olarak anasayfa dmesinin yannda.';
-$txt['Breeze_master'] = 'Breeze modunu etkinletir';
-$txt['Breeze_master_sub'] = 'Ana ayar, modun dzgn alabilmesi iin bu etkinletirilmelidir.';
-$txt['Breeze_force_enable'] = 'Duvarlarn etkinletirilmesini zorunlu klmak iin iaretleyin.';
-$txt['Breeze_force_enable_sub'] = 'Varsaylan olarak duvar devre ddr ve kullanclarn elle etkinletirmesi gerekir; eer bu seenei iaretlerseniz duvarlar etkinletirilir, unutulmamaldr ki bu seenek aktif olmayan yeler ve botlar da dahil olmak zere herkesin duvarn etkinletirir<br /> stenirse yine de duvarlarn manuel olarak devre d brakabilirler, bu seenek yalnzca onu etkinletirir ancak duvarn her zaman etkinletirilmesini zorlamaz..';
-$txt['Breeze_force_enable_on'] = 'Etkinletir';
-$txt['Breeze_force_enable_off'] = 'Devre d brak';
-$txt['Breeze_notifications'] = 'Bildirimleri etkinletir';
-$txt['Breeze_notifications_sub'] = 'Etkinletirilirse, kullanclarnza bildirim alabilecek ve uygun grdkleri ekilde onlar etkinletirebilecek / devre d brakabilecek.';
-$txt['Breeze_parseBBC'] = 'BBCyi ayrtrmay etkinletir';
-$txt['Breeze_parseBBC_sub'] = 'Etkinletirirseniz, kullanclarnz durumlar / yorumlar konusunda BBC kodunu kullanabilecektir. <br /> ok megul forumlarda bu seenein etkinletirilmesinin sunucunuzu yavalatabileceine dikkat edin.';
-$txt['Breeze_mention'] = 'Mention (Bahsetme) zelliini etkinletir.';
-$txt['Breeze_mention_sub'] = 'nsanlara dier kullanclardan durumlar ve yorumlarnda Mention(Bahsetme) belirtmelerini istiyorsanz bu zellii an.';
-$txt['Breeze_mention_limit'] = 'Tek bir mesajda ka kullancdan Bahsedebilir?';
-$txt['Breeze_mention_limit_sub'] = 'Kullanc izin verilen saydan daha fazla kullancdan bahsetmeye alrsa,
-Yalnzca ilk X szlere dntrlecektir, burada X belirttiiniz saydr. Eer bo braklrsa,Mod varsaylan deeri kullanacaktr: 10';
-$txt['Breeze_posts_for_mention'] = 'Mention (Bahsetme) listesinde ka adet yayn bulunmas istiyorsunuz?';
-$txt['Breeze_posts_for_mention_sub'] = 'Szleme listesinde spamc / bot hesaplarnn grnmesini nlemek iin bir kullancnn sz edilebilir olabilmesi iin ka mesaj yaynlayacan ayarlayabilir, bu ayar bo brakrsanz varsaylan deeri kullanr: 1. <br /> Sunucu ykyle birlikte yardmc olmas iin, bahis listesinde nbellek alnr; bu ayar deitirirseniz sonularn grmek iin forum nbelleinizi temizlediinizden emin olun..';
+$txt['Breeze_page_donate_exp'] = 'Breeze, serbest zamanï¿½nda bir PHP meraklï¿½sï¿½ tarafï¿½ndan getirilen ï¿½cretsiz bir SMF modifikasyonudur.<p /> Bu modifikasyonu beï¿½enirseniz ve takdirinizi gï¿½stermek istiyorsanï¿½z, lï¿½tfen bir <a href="'. Breeze::$supportSite .'">baï¿½ï¿½ï¿½ yapï¿½n</a>.  Baï¿½ï¿½ï¿½ï¿½nï¿½z sunucu giderlerini karï¿½ï¿½lamak ve / veya ayakkabï¿½ satï¿½n almak,
+Ayakkabï¿½ geliï¿½tiriciyi mutlu ediyor ve eï¿½er mutluysa daha fazla gï¿½ncelleme olacak;)<p />Forumunuzda Breezeyi kullandï¿½ï¿½ï¿½nï¿½zdan bana haber verin, merhaba de, Breezeden gï¿½ï¿½ alan profil sayfalarï¿½nï¿½zï¿½ bana gï¿½sterin, teï¿½ekkï¿½rlerinizi gï¿½sterin..';
+$txt['Breeze_page_credits'] = 'Yapï¿½mcï¿½lar';
+$txt['Breeze_page_credits_decs'] = 'Breeze size aï¿½aï¿½ï¿½daki kiï¿½iler ve / veya scriptler tarafï¿½ndan getirilir:';
+$txt['Breeze_enable_general_wall'] = 'Genel Duvarï¿½ Etkinleï¿½tir';
+$txt['Breeze_enable_general_wall_sub'] = 'Etkinleï¿½tirilirse, genel bir duvar ortaya ï¿½ï¿½kacak ve bu genel duvarda kullanï¿½cï¿½ arkadaï¿½ï¿½nï¿½n durumunu ve son etkinliï¿½ini gï¿½rebilecektir';
+$txt['Breeze_menu_position'] = 'Genel Duvar dï¿½ï¿½mesinin konumunu seï¿½in.';
+$txt['Breeze_menu_position_sub'] = 'Varsayï¿½lan olarak anasayfa dï¿½ï¿½mesinin yanï¿½nda.';
+$txt['Breeze_master'] = 'Breeze modunu etkinleï¿½tir';
+$txt['Breeze_master_sub'] = 'Ana ayar, modun dï¿½zgï¿½n ï¿½alï¿½ï¿½abilmesi iï¿½in bu etkinleï¿½tirilmelidir.';
+$txt['Breeze_force_enable'] = 'Duvarlarï¿½n etkinleï¿½tirilmesini zorunlu kï¿½lmak iï¿½in iï¿½aretleyin.';
+$txt['Breeze_force_enable_sub'] = 'Varsayï¿½lan olarak duvar devre dï¿½ï¿½ï¿½dï¿½r ve kullanï¿½cï¿½larï¿½n elle etkinleï¿½tirmesi gerekir; eï¿½er bu seï¿½eneï¿½i iï¿½aretlerseniz duvarlarï¿½ etkinleï¿½tirilir, unutulmamalï¿½dï¿½r ki bu seï¿½enek aktif olmayan ï¿½yeler ve botlar da dahil olmak ï¿½zere herkesin duvarï¿½nï¿½ etkinleï¿½tirir<br /> ï¿½stenirse yine de duvarlarï¿½nï¿½ manuel olarak devre dï¿½ï¿½ï¿½ bï¿½rakabilirler, bu seï¿½enek yalnï¿½zca onu etkinleï¿½tirir ancak duvarï¿½n her zaman etkinleï¿½tirilmesini zorlamaz..';
+$txt['Breeze_force_enable_on'] = 'Etkinleï¿½tir';
+$txt['Breeze_force_enable_off'] = 'Devre dï¿½ï¿½ï¿½ bï¿½rak';
+$txt['Breeze_notifications'] = 'Bildirimleri etkinleï¿½tir';
+$txt['Breeze_notifications_sub'] = 'Etkinleï¿½tirilirse, kullanï¿½cï¿½larï¿½nï¿½za bildirim alabilecek ve uygun gï¿½rdï¿½kleri ï¿½ekilde onlarï¿½ etkinleï¿½tirebilecek / devre dï¿½ï¿½ï¿½ bï¿½rakabilecek.';
+$txt['Breeze_parseBBC'] = 'BBCyi ayrï¿½ï¿½tï¿½rmayï¿½ etkinleï¿½tir';
+$txt['Breeze_parseBBC_sub'] = 'Etkinleï¿½tirirseniz, kullanï¿½cï¿½larï¿½nï¿½z durumlarï¿½ / yorumlarï¿½ konusunda BBC kodunu kullanabilecektir. <br /> ï¿½ok meï¿½gul forumlarda bu seï¿½eneï¿½in etkinleï¿½tirilmesinin sunucunuzu yavaï¿½latabileceï¿½ine dikkat edin.';
+$txt['Breeze_mention'] = 'Mention (Bahsetme) ï¿½zelliï¿½ini etkinleï¿½tir.';
+$txt['Breeze_mention_sub'] = 'ï¿½nsanlara diï¿½er kullanï¿½cï¿½lardan durumlarï¿½ ve yorumlarï¿½nda Mention(Bahsetme) belirtmelerini istiyorsanï¿½z bu ï¿½zelliï¿½i aï¿½ï¿½n.';
+$txt['Breeze_mention_limit'] = 'Tek bir mesajda kaï¿½ kullanï¿½cï¿½dan Bahsedebilir?';
+$txt['Breeze_mention_limit_sub'] = 'Kullanï¿½cï¿½ izin verilen sayï¿½dan daha fazla kullanï¿½cï¿½dan bahsetmeye ï¿½alï¿½ï¿½ï¿½rsa,
+Yalnï¿½zca ilk X sï¿½zlere dï¿½nï¿½ï¿½tï¿½rï¿½lecektir, burada X belirttiï¿½iniz sayï¿½dï¿½r. Eï¿½er boï¿½ bï¿½rakï¿½lï¿½rsa,Mod varsayï¿½lan deï¿½eri kullanacaktï¿½r: 10';
+$txt['Breeze_posts_for_mention'] = 'Mention (Bahsetme) listesinde kaï¿½ adet yayï¿½n bulunmasï¿½ istiyorsunuz?';
+$txt['Breeze_posts_for_mention_sub'] = 'Sï¿½zleï¿½me listesinde spamcï¿½ / bot hesaplarï¿½nï¿½n gï¿½rï¿½nmesini ï¿½nlemek iï¿½in bir kullanï¿½cï¿½nï¿½n sï¿½z edilebilir olabilmesi iï¿½in kaï¿½ mesaj yayï¿½nlayacaï¿½ï¿½nï¿½ ayarlayabilir, bu ayarï¿½ boï¿½ bï¿½rakï¿½rsanï¿½z varsayï¿½lan deï¿½eri kullanï¿½r: 1. <br /> Sunucu yï¿½kï¿½yle birlikte yardï¿½mcï¿½ olmasï¿½ iï¿½in, bahis listesinde ï¿½nbellek alï¿½nï¿½r; bu ayarï¿½ deï¿½iï¿½tirirseniz sonuï¿½larï¿½nï¿½ gï¿½rmek iï¿½in forum ï¿½nbelleï¿½inizi temizlediï¿½inizden emin olun..';
 $txt['Breeze_version'] = 'Breeze versiyon';
-$txt['Breeze_live'] = 'Canl destek forumundan...';
-$txt['Breeze_allowed_actions'] = 'Bildirim sisteminin gsterilmesini istediiniz eylemleri yazn';
-$txt['Breeze_allowed_actions_sub'] = 'Varsaylan olarak, bildirim sistemi aadaki ilemlerde grnr: '. implode(', ', Breeze::$_allowedActions) .'. Art BoardIndex, MessageIndex, Konu ve Kurul sayfalar. <br /> Ltfen hareketlerinizi virglle ayrlm bir listeye ekleyin, rnein: eylem, eylem, eylem, eylem';
-$txt['Breeze_feed_error_message'] = 'Breeze destek sitesine balanamad.';
-$txt['Breeze_allowed_maxlength_aboutMe'] = '"Hakkmda" blounun maksimum uzunluu ';
-$txt['Breeze_allowed_maxlength_aboutMe_sub'] = 'Eer bo braklrsa, mod varsaylan deeri kullanacaktr: 1024';
-$txt['Breeze_allowed_max_num_users'] = 'Bir kullanc ziyaretileri ve arkadalar engellediinde ka kullanc gsterebilir?';
-$txt['Breeze_allowed_max_num_users_sub'] = 'Kullancnn belirtilen ayardan daha fazla kullancs varsa, tm listeleri daha kompakt bir balant listesine dntrlecektir. Bu seenei devre d brakmak iin 0 deerinde brakn.';
+$txt['Breeze_live'] = 'Canlï¿½ destek forumundan...';
+$txt['Breeze_allowed_actions'] = 'Bildirim sisteminin gï¿½sterilmesini istediï¿½iniz eylemleri yazï¿½n';
+$txt['Breeze_allowed_actions_sub'] = 'Varsayï¿½lan olarak, bildirim sistemi aï¿½aï¿½ï¿½daki iï¿½lemlerde gï¿½rï¿½nï¿½r: '. implode(', ', Breeze::$_allowedActions) .'. Artï¿½ BoardIndex, MessageIndex, Konu ve Kurul sayfalarï¿½. <br /> Lï¿½tfen hareketlerinizi virgï¿½lle ayrï¿½lmï¿½ï¿½ bir listeye ekleyin, ï¿½rneï¿½in: eylem, eylem, eylem, eylem';
+$txt['Breeze_feed_error_message'] = 'Breeze destek sitesine baï¿½lanamadï¿½.';
+$txt['Breeze_allowed_maxlength_aboutMe'] = '"Hakkï¿½mda" bloï¿½unun maksimum uzunluï¿½u ';
+$txt['Breeze_allowed_maxlength_aboutMe_sub'] = 'Eï¿½er boï¿½ bï¿½rakï¿½lï¿½rsa, mod varsayï¿½lan deï¿½eri kullanacaktï¿½r: 1024';
+$txt['Breeze_allowed_max_num_users'] = 'Bir kullanï¿½cï¿½ ziyaretï¿½ileri ve arkadaï¿½larï¿½ engellediï¿½inde kaï¿½ kullanï¿½cï¿½ gï¿½sterebilir?';
+$txt['Breeze_allowed_max_num_users_sub'] = 'Kullanï¿½cï¿½nï¿½n belirtilen ayardan daha fazla kullanï¿½cï¿½sï¿½ varsa, tï¿½m listeleri daha kompakt bir baï¿½lantï¿½ listesine dï¿½nï¿½ï¿½tï¿½rï¿½lecektir. Bu seï¿½eneï¿½i devre dï¿½ï¿½ï¿½ bï¿½rakmak iï¿½in 0 deï¿½erinde bï¿½rakï¿½n.';

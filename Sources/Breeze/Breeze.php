@@ -4,7 +4,7 @@
  * Breeze
  *
  * @package Breeze mod
- * @version 1.0.11
+ * @version 1.0.12
  * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2011 - 2017 Jessica González
  * @license //www.mozilla.org/MPL/MPL-1.1.html
@@ -37,7 +37,7 @@ spl_autoload_register('breeze_autoloader');
 class Breeze
 {
 	public static $name = 'Breeze';
-	public static $version = '1.0.11';
+	public static $version = '1.0.12';
 	public static $folder = '/Breeze/';
 	public static $txtpattern = 'Breeze_';
 	public static $permissions = array('deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canMention', 'beMentioned');
