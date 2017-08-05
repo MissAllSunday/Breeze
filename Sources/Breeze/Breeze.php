@@ -72,7 +72,7 @@ class Breeze extends Pimple\Container
 	public $wrapperActions = array('wall', 'ajax', 'admin', 'mood', 'buddy');
 
 	// Support site feed
-	public static $supportSite = 'http://missallsunday.com/index.php?action=.xml;sa=news;board=11;limit=10;type=rss2';
+	public static $supportSite = 'https://github.com/MissAllSunday/Breeze/releases.atom';
 
 	/**
 	 * Breeze::__construct()
@@ -372,6 +372,8 @@ class Breeze extends Pimple\Container
 
 		// Displaying the users cover/thumbnail.
 		$actions['breezecover'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::displayCover#');
+
+		$actions['breezefeed'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::getFeed#');
 	}
 
 	/**
@@ -795,6 +797,33 @@ class Breeze extends Pimple\Container
 			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodList'] = array($tools->text('page_mood'));
 			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodEdit'] = array($tools->text('page_mood_create'));
 		}
+	}
+
+	/**
+	 * Breeze::getFeed()
+	 *
+	 * Proxy function to avoid Cross-origin errors.
+	 *
+	 * @param array $admin_menu An array with all the admin settings buttons
+	 *
+	 * @return void
+	 */
+	public function getFeed()
+	{
+		global $sourcedir, $smcFunc, $context;
+
+		require_once($sourcedir . '/Class-CurlFetchWeb.php');
+
+		$fetch = new curl_fetch_web_data();
+		$fetch->get_url_data(Breeze::$supportSite);
+
+		if ($fetch->result('code') == 200 && !$fetch->result('error'))
+			$data = $fetch->result('body');
+
+		else
+			return '';
+
+		smf_serverResponse($data, 'Content-type: text/xml');
 	}
 
 	/**

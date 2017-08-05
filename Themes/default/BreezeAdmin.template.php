@@ -140,7 +140,7 @@ function template_manage_mood_edit()
 	}
 
 	// Print the form.
-	echo 
+	echo
 	''
 		, $context['mood']['form'] ,
 	'';

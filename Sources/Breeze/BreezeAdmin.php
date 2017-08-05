@@ -73,9 +73,6 @@ class BreezeAdmin
 		// Get the version
 		$context['Breeze']['version'] = Breeze::$version;
 
-		// The support site RSS feed
-		$context['Breeze']['support'] = Breeze::$supportSite;
-
 		// Set all the page stuff
 		$context['page_title'] = $this->_app['tools']->text('page_main');
 		$context['sub_template'] = 'admin_home';
