@@ -15,7 +15,7 @@ class Breeze_Notify_Background extends SMF_BackgroundTask
 	public function execute()
 	{
 		// Performance my ass...
-		$app = new Breeze();
+		$app = new \Breeze\Breeze();
 		$app['noti']->call($this->_details);
 
 		unset($app);

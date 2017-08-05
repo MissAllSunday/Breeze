@@ -10,35 +10,15 @@
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
+namespace Breeze;
+
 if (!defined('SMF'))
 	die('No direct access...');
 
-// Manually load Pimple :(
+// Still need to manually load Pimple :(
 require_once $sourcedir . '/Breeze/Pimple/Container.php';
 
-/**
- * breeze_autoloader()
- *
- * @param string $class_name
- *
- * @return bool
- */
-function breeze_autoloader($class_name)
-{
-	global $sourcedir;
-
-	$file_path = $sourcedir . '/Breeze/' . $class_name . '.php';
-
-	if (file_exists($file_path))
-		require_once ($file_path);
-
-	else
-		return false;
-}
-
-spl_autoload_register('breeze_autoloader');
-
-class Breeze extends Pimple\Container
+class Breeze extends \Pimple\Container
 {
 	protected $_services = array('admin', 'ajax', 'alerts', 'buddy', 'display', 'form', 'log', 'noti', 'query', 'tools', 'user', 'userInfo', 'wall', 'mood',);
 	public static $name = 'Breeze';
@@ -75,7 +55,7 @@ class Breeze extends Pimple\Container
 	public static $supportSite = 'https://github.com/MissAllSunday/Breeze/releases.atom';
 
 	/**
-	 * Breeze::__construct()
+	 * \Breeze\Breeze::__construct()
 	 *
 	 * @return \Breeze
 	 */
@@ -85,8 +65,13 @@ class Breeze extends Pimple\Container
 		$this->set();
 	}
 
+	public function autoLoad(&$classMap)
+	{
+		$classMap['Breeze\\'] = 'Breeze/';
+	}
+
 	/**
-	 * Breeze::set()
+	 * \Breeze\Breeze::set()
 	 *
 	 * @return void
 	 */
@@ -96,14 +81,14 @@ class Breeze extends Pimple\Container
 		{
 			$this[$s] = function ($c) use ($s)
 			{
-				$call = Breeze::$name . ucfirst($s);
+				$call = __NAMESPACE__ . '\\'. \Breeze\Breeze::$name . ucfirst($s);
 				return new $call($c);
 			};
 		}
 	}
 
 	/**
-	 * Breeze::get()
+	 * \Breeze\Breeze::get()
 	 *
 	 * A short-cut method to get access to services
 	 * @param string $id the name of the service to retrieve.
@@ -122,7 +107,7 @@ class Breeze extends Pimple\Container
 	}
 
 	/**
-	 * Breeze::load()
+	 * \Breeze\Breeze::load()
 	 *
 	 * @param string $file a comma separated list of all the file names to be loaded.
 	 *
@@ -144,7 +129,7 @@ class Breeze extends Pimple\Container
 	}
 
 	/**
-	 * Breeze::data()
+	 * \Breeze\Breeze::data()
 	 *
 	 * A new instance of BreezeGlobals.
 	 * @param string $var Either post, request or get
@@ -156,7 +141,7 @@ class Breeze extends Pimple\Container
 	}
 
 	/**
-	 * Breeze::permissions()
+	 * \Breeze\Breeze::permissions()
 	 *
 	 * There is only permissions to post new status and comments on any profile because people needs to be able to post in their own profiles by default the same goes for deleting, people are able to delete their own status/comments on their own profile page.
 	 * @param array $permissionGroups An array containing all possible permissions groups.
@@ -166,12 +151,12 @@ class Breeze extends Pimple\Container
 	public function permissions(&$permissionGroups, &$permissionList)
 	{
 		// We gotta load our language file.
-		loadLanguage(Breeze::$name);
+		loadLanguage(\Breeze\Breeze::$name);
 
 		$permissionGroups['membergroup']['simple'] = array('breeze_per_simple');
 		$permissionGroups['membergroup']['classic'] = array('breeze_per_classic');
 
-		foreach (Breeze::$permissions as $p)
+		foreach (\Breeze\Breeze::$permissions as $p)
 			$permissionList['membergroup']['breeze_'. $p] = array(
 			false,
 			'breeze_per_classic',
@@ -179,7 +164,7 @@ class Breeze extends Pimple\Container
 	}
 
 	/**
-	 * Breeze::profile()
+	 * \Breeze\Breeze::profile()
 	 *
 	 * Replace the summary action with the action created by Breeze
 	 *
@@ -205,8 +190,8 @@ class Breeze extends Pimple\Container
 				$profile_areas['info']['areas']['summary'] = array(
 					'label' => $tools->text('general_wall'),
 					'icon' => 'smiley',
-					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'BreezeUser::userWall#',
+					'file' => \Breeze\Breeze::$folder . 'BreezeUser.php',
+					'function' => __NAMESPACE__ .'\BreezeUser::userWall#',
 					'permission' => array(
 						'own' => 'is_not_guest',
 						'any' => 'profile_view',
@@ -236,8 +221,8 @@ class Breeze extends Pimple\Container
 			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
 				'label' => $tools->text('user_settings_name'),
 				'icon' => 'maintain',
-				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'BreezeUser::userSettings#',
+				'file' => \Breeze\Breeze::$folder . 'BreezeUser.php',
+				'function' => __NAMESPACE__ .'\BreezeUser::userSettings#',
 				'enabled' => $context['user']['is_owner'],
 				'permission' => array(
 					'own' => 'is_not_guest',
@@ -248,8 +233,8 @@ class Breeze extends Pimple\Container
 			// Inner alert settings page.
 			$profile_areas['breeze_profile']['areas']['alerts'] = array(
 				'label' => $tools->text('user_settings_name_alerts'),
-				'file' => Breeze::$folder . 'BreezeUser.php',
-				'function' => 'BreezeUser::userAlerts#',
+				'file' => \Breeze\Breeze::$folder . 'BreezeUser.php',
+				'function' => __NAMESPACE__ .'\BreezeUser::userAlerts#',
 				'enabled' => $context['user']['is_owner'],
 				'icon' => 'maintain',
 				'subsections' => array(
@@ -267,8 +252,8 @@ class Breeze extends Pimple\Container
 				$profile_areas['breeze_profile']['areas']['breezecover'] = array(
 					'label' => $tools->text('user_settings_name_cover'),
 					'icon' => 'administration',
-					'file' => Breeze::$folder . 'BreezeUser.php',
-					'function' => 'BreezeUser::userCoverSettings#',
+					'file' => \Breeze\Breeze::$folder . 'BreezeUser.php',
+					'function' => __NAMESPACE__ .'\BreezeUser::userCoverSettings#',
 					'enabled' => $context['user']['is_owner'],
 					'permission' => array(
 						'own' => 'is_not_guest',
@@ -280,7 +265,7 @@ class Breeze extends Pimple\Container
 	}
 
 	/**
-	 * Breeze::menu()
+	 * \Breeze\Breeze::menu()
 	 *
 	 * Insert a Wall button on the menu buttons array
 	 * @param array $menu_buttons An array containing all possible tabs for the main menu.
@@ -344,7 +329,7 @@ class Breeze extends Pimple\Container
 	}
 
 	/**
-	 * Breeze::actions()
+	 * \Breeze\Breeze::actions()
 	 *
 	 * Insert the actions needed by this mod
 	 * @param array $actions An array containing all possible SMF actions.
@@ -359,25 +344,26 @@ class Breeze extends Pimple\Container
 		// Fool the system and directly inject the main object to breezeAjax and breezeWall, Breeze's final classes
 
 		// A whole new action just for some ajax calls. Actually, a pretty good chunk of Breeze transactions come through here so...
-		$actions['breezeajax'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call#');
+		$actions['breezeajax'] = array(\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::call#');
 
 		// The general wall
-		$actions['wall'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call#');
+		$actions['wall'] = array(\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::call#');
 
 		// Replace the buddy action.
-		$actions['buddy'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call#');
+		$actions['buddy'] = array(\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::call#');
 
 		// Action used when an user wants to change their mood.
-		$actions['breezemood'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::call#');
+		$actions['breezemood'] = array(\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::call#');
 
 		// Displaying the users cover/thumbnail.
-		$actions['breezecover'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::displayCover#');
+		$actions['breezecover'] = array(\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::displayCover#');
 
-		$actions['breezefeed'] = array(Breeze::$folder . 'Breeze.php', 'Breeze::getFeed#');
+		// proxy
+		$actions['breezefeed'] = array(\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::getFeed#');
 	}
 
 	/**
-	 * Breeze::call()
+	 * \Breeze\Breeze::call()
 	 *
 	 * Wrapper method to call Breeze methods while maintaining dependency injection.
 	 * @return void
@@ -385,7 +371,7 @@ class Breeze extends Pimple\Container
 	public function call()
 	{
 		// Just some quick code to make sure this works...
-		$action = str_replace('breeze', '', Breeze::data('get')->get('action'));
+		$action = str_replace('breeze', '', \Breeze\Breeze::data('get')->get('action'));
 
 		// Don't do anything if the mod is off
 		if (!$this['tools']->enable('master') && $action != 'admin')
@@ -396,7 +382,7 @@ class Breeze extends Pimple\Container
 	}
 
 	/**
-	 * Breeze::trackHooks()
+	 * \Breeze\Breeze::trackHooks()
 	 *
 	 * Creates a list of hooks used to track user actions. Should really make sure Breeze is the last hook added.
 	 * @return void
@@ -409,7 +395,7 @@ class Breeze extends Pimple\Container
 	}
 
 	/**
-	 * Breeze::displayCover()
+	 * \Breeze\Breeze::displayCover()
 	 *
 	 * Creates and prints an user cover. If the user does not have a cover it returns false.
 	 * @return void
@@ -419,10 +405,10 @@ class Breeze extends Pimple\Container
 		global $smcFunc, $modSettings, $maintenance;
 
 		// Get the user ID.
-		$useriD = Breeze::data('get')->get('u');
+		$useriD = \Breeze\Breeze::data('get')->get('u');
 
 		// Thumbnail?
-		$thumb = Breeze::data('get')->validate('thumb');
+		$thumb = \Breeze\Breeze::data('get')->validate('thumb');
 
 		// Kinda need this!
 		if (!$this['tools']->enable('cover') || empty($useriD))
@@ -435,7 +421,7 @@ class Breeze extends Pimple\Container
 		$userSettings = $this['query']->getUserSettings($useriD);
 
 		// Gotta work with paths.
-		$folder = $this['tools']->boardDir . Breeze::$coversFolder . $useriD .'/' .($thumb ? 'thumbnail/' : '');
+		$folder = $this['tools']->boardDir . \Breeze\Breeze::$coversFolder . $useriD .'/' .($thumb ? 'thumbnail/' : '');
 
 		// False if there is no image.
 		$file = empty($userSettings['cover']) ? false : $folder . $userSettings['cover']['basename'];
@@ -514,7 +500,7 @@ class Breeze extends Pimple\Container
 	}
 
 	/**
-	 * Breeze::profilePopUp()
+	 * \Breeze\Breeze::profilePopUp()
 	 *
 	 * Adds a few new entries on the pop up menu stuff.
 	 * @return void
@@ -564,11 +550,11 @@ class Breeze extends Pimple\Container
 		$this['tools']->loadLanguage('alerts');
 
 		$alert_types['breeze'] = array(
-			''. Breeze::$txtpattern . 'status_owner' => array('alert' => 'yes', 'email' => 'never'),
-			''. Breeze::$txtpattern . 'comment_status_owner' => array('alert' => 'yes', 'email' => 'never'),
-			''. Breeze::$txtpattern . 'comment_profile_owner' => array('alert' => 'yes', 'email' => 'never'),
-			''. Breeze::$txtpattern . 'mention' => array('alert' => 'yes', 'email' => 'never'),
-			''. Breeze::$txtpattern . 'like' => array('alert' => 'yes', 'email' => 'never'),
+			''. \Breeze\Breeze::$txtpattern . 'status_owner' => array('alert' => 'yes', 'email' => 'never'),
+			''. \Breeze\Breeze::$txtpattern . 'comment_status_owner' => array('alert' => 'yes', 'email' => 'never'),
+			''. \Breeze\Breeze::$txtpattern . 'comment_profile_owner' => array('alert' => 'yes', 'email' => 'never'),
+			''. \Breeze\Breeze::$txtpattern . 'mention' => array('alert' => 'yes', 'email' => 'never'),
+			''. \Breeze\Breeze::$txtpattern . 'like' => array('alert' => 'yes', 'email' => 'never'),
 		);
 	}
 
@@ -584,7 +570,7 @@ class Breeze extends Pimple\Container
 			'can_like' => allowedTo('likes_like'),
 			'type' => $type,
 			'flush_cache' => true,
-			'callback' => '$sourcedir/Breeze/Breeze.php|Breeze::likesUpdate#',
+			'callback' => '$sourcedir/Breeze/Breeze.php|\Breeze\Breeze::likesUpdate#',
 		);
 	}
 
@@ -665,7 +651,7 @@ class Breeze extends Pimple\Container
 	}
 
 	/**
-	 * Breeze::notiHeaders()
+	 * \Breeze\Breeze::notiHeaders()
 	 *
 	 * Used to embed the JavaScript and other bits of code on every page inside SMF.
 	 * @return void
@@ -675,7 +661,7 @@ class Breeze extends Pimple\Container
 		global $context, $user_info, $settings;
 
 		// Some files are only needed on specific places.
-		$action = str_replace('breeze', '', Breeze::data('get')->get('action'));
+		$action = str_replace('breeze', '', \Breeze\Breeze::data('get')->get('action'));
 
 		// So, what are we going to do?
 		$doAction = in_array($action, $this->wrapperActions) || $action == 'profile';
@@ -711,7 +697,7 @@ class Breeze extends Pimple\Container
 
 		$tools = $this['tools'];
 		$userSettings = $this['query']->getUserSettings($user_info['id']);
-		$data = Breeze::data('get');
+		$data = \Breeze\Breeze::data('get');
 
 		$generalSettings = '';
 		$generalText = '';
@@ -722,7 +708,7 @@ class Breeze extends Pimple\Container
 			unset($userSettings['aboutMe']);
 
 		// Since we're here already, load the current User (currentSettings) object
-		foreach (Breeze::$allSettings as $k => $v)
+		foreach (\Breeze\Breeze::$allSettings as $k => $v)
 			$generalSettings .= '
 	breeze.currentSettings.'. $k .' = '. (isset($userSettings[$k]) ? (is_array($userSettings[$k]) ? json_encode($userSettings[$k]) : JavaScriptEscape($userSettings[$k])) : 'false') .';';
 
@@ -761,7 +747,7 @@ class Breeze extends Pimple\Container
 	// It's all about Admin settings from now on
 
 	/**
-	 * Breeze::admin()
+	 * \Breeze\Breeze::admin()
 	 *
 	 * Creates a new section in the admin panel.
 	 *
@@ -780,7 +766,7 @@ class Breeze extends Pimple\Container
 		$admin_menu['config']['areas']['breezeadmin'] = array(
 			'label' => $tools->text('page_main'),
 			'file' => 'Breeze/BreezeAdmin.php',
-			'function' => 'Breeze::call#',
+			'function' => '\Breeze\Breeze::call#',
 			'icon' => 'smiley',
 			'subsections' => array(
 				'general' => array($tools->text('page_main')),
@@ -800,7 +786,7 @@ class Breeze extends Pimple\Container
 	}
 
 	/**
-	 * Breeze::getFeed()
+	 * \Breeze\Breeze::getFeed()
 	 *
 	 * Proxy function to avoid Cross-origin errors.
 	 *
@@ -814,8 +800,8 @@ class Breeze extends Pimple\Container
 
 		require_once($sourcedir . '/Class-CurlFetchWeb.php');
 
-		$fetch = new curl_fetch_web_data();
-		$fetch->get_url_data(Breeze::$supportSite);
+		$fetch = new \curl_fetch_web_data();
+		$fetch->get_url_data(\Breeze\Breeze::$supportSite);
 
 		if ($fetch->result('code') == 200 && !$fetch->result('error'))
 			$data = $fetch->result('body');
@@ -838,7 +824,7 @@ class Breeze extends Pimple\Container
 				'users' => array(
 					'suki' => array(
 						'name' => 'Jessica "Suki" Gonz&aacute;lez',
-						'site' => 'http://missallsunday.com',
+						'site' => 'https://missallsunday.com',
 					),
 				),
 			),

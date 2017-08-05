@@ -10,6 +10,8 @@
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
+namespace Breeze;
+
 if (!defined('SMF'))
 	die('No direct access...');
 
