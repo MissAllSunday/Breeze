@@ -35,8 +35,10 @@ function template_admin_home()
 					</h3>
 				</div>
 				<div class="information">
-					<div class="content" id="breezelive">
-						<div id="breezelive"></div>
+					<div class="windowbg nopadding">
+						<div id="smfAnnouncements">',
+							$txt['Breeze_feed_error_message'] , '
+						</div>
 					</div>
 				</div>
 			</div>';

@@ -849,10 +849,6 @@ class Breeze extends Pimple\Container
 						'name' => 'jQuery',
 						'site' => 'http://jquery.com/',
 					),
-					'feed' => array(
-						'name' => 'zRSSFeeds',
-						'site' => 'http://www.zazar.net/developers/jquery/zrssfeed',
-					),
 					'noty' => array(
 						'name' => 'noty jquery plugin',
 						'site' => 'http://needim.github.com/noty/',

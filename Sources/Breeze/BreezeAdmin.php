@@ -90,17 +90,37 @@ class BreezeAdmin
 		var breeze_feed_error_message = '. JavaScriptEscape($this->_app['tools']->text('feed_error_message')) .';', true);
 
 		addInlineJavascript('
-		$(document).ready(function (){
-			$(\'#breezelive\').rssfeed(\''. Breeze::$supportSite .'\',
-			{
-				limit: 5,
-				header: false,
-				date: true,
-				linktarget: \'_blank\',
-				errormsg: breeze_feed_error_message,
-				'.(!empty($modSettings['setting_secureCookies']) ? 'ssl: true,' : '').'
-		   });
-		});', true);
+$(function(){
+	var breezelive = $("#smfAnnouncements");
+	$.ajax({
+		type: "GET",
+		url: '. JavaScriptEscape($this->_app['tools']->scriptUrl . '?action=breezefeed') .',
+		cache: false,
+		dataType: "xml",
+		success: function(xml){
+			var dl = $("<dl />");
+			$(xml).find("entry").each(function () {
+				var item = $(this),
+					title = $("<a />", {
+						text: item.find("title").text(),
+						href: "//github.com" + item.find("link").attr("href")
+					}),
+					parsedTime = new Date(item.find("updated").text().replace("T", " ").split("+")[0]),
+					updated = $("<span />").text( parsedTime.toDateString()),
+					content = $("<div/>").html(item.find("content")).text(),
+					dt = $("<dt />").html(title),
+					dd = $("<dd />").html(content);
+					updated.appendTo(dt);
+					dt.appendTo(dl);
+					dd.appendTo(dl);
+			});
+
+			breezelive.html(dl);
+		},
+		error: function (html){}
+	});
+});
+', true);
 	}
 
 	function settings()
