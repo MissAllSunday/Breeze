@@ -17,10 +17,10 @@ if (!defined('SMF'))
 
 class BreezeLog
 {
-	protected $_users = array();
-	protected $_data = array();
+	protected $_users = [];
+	protected $_data = [];
 	protected $_app;
-	public $alerts = array('cover', 'mood', 'like', 'status', 'comment', 'topic', 'buddyConfirmation');
+	public $alerts = ['cover', 'mood', 'like', 'status', 'comment', 'topic', 'buddyConfirmation'];
 
 	function __construct($app)
 	{
@@ -33,7 +33,7 @@ class BreezeLog
 	public function get($users, $maxIndex, $start)
 	{
 		if (empty($users))
-			return array();
+			return [];
 
 		$this->_users = (array) $users;
 		$this->_logCount =  $this->_app['query']->logCount($this->_users);
@@ -41,13 +41,13 @@ class BreezeLog
 		$this->_data = $this->_app['query']->getLog($this->_users, $maxIndex, $start);
 
 		// Perhaps modify the main data before been processed.
-		call_integration_hook('integrate_breeze_log_before', array(&$this->_data, &$this->_users, &$this->_logCount, &$this->alerts));
+		call_integration_hook('integrate_breeze_log_before', [&$this->_data, &$this->_users, &$this->_logCount, &$this->alerts]);
 
 		// Parse the raw data.
 		$this->call();
 
 		// Or after?
-		call_integration_hook('integrate_breeze_log_after', array($this->_data, $this->_users, $this->_logCount, $this->alerts));
+		call_integration_hook('integrate_breeze_log_after', [$this->_data, $this->_users, $this->_logCount, $this->alerts]);
 
 		// Return the formatted data.
 		return array(
@@ -65,9 +65,9 @@ class BreezeLog
 			return;
 
 		// The users to load.
-		$toLoad = array();
-		$checkMsg = array();
-		$seeMsg = array();
+		$toLoad = [];
+		$checkMsg = [];
+		$seeMsg = [];
 
 		// Get the users before anything gets parsed.
 		foreach ($this->_data as $id => $data)
@@ -140,7 +140,7 @@ class BreezeLog
 
 		// Get the mood.
 		$this->_data[$id]['extra']['moodHistory'] = json_decode($this->_data[$id]['extra']['moodHistory'], true);
-		$mood = !empty($this->_data[$id]['extra']['moodHistory']['id']) ? $this->_app['query']->getMoodByID($this->_data[$id]['extra']['moodHistory']['id'], true) : array();
+		$mood = !empty($this->_data[$id]['extra']['moodHistory']['id']) ? $this->_app['query']->getMoodByID($this->_data[$id]['extra']['moodHistory']['id'], true) : [];
 
 		// Return the formatted string.
 		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_mood'), array(

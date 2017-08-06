@@ -24,7 +24,7 @@ class BreezeTools
 	public $settings;
 	public $boardDir;
 	public $boardUrl;
-	static $_users = array();
+	static $_users = [];
 
 	function __construct($app)
 	{
@@ -404,7 +404,7 @@ class BreezeTools
 		}
 
 		// It all starts with an empty vessel...
-		$allowed = array();
+		$allowed = [];
 
 		// Your own data?
 		if ($isPosterOwner && allowedTo('breeze_deleteOwn'. $type))
@@ -462,7 +462,7 @@ class BreezeTools
 			@unlink($folder . $image);
 	}
 
-	public function parser($text, $replacements = array())
+	public function parser($text, $replacements = [])
 	{
 		global $context;
 
@@ -473,8 +473,8 @@ class BreezeTools
 		$s = ';'. $context['session_var'] .'='. $context['session_id'];
 
 		// Split the replacements up into two arrays, for use with str_replace.
-		$find = array();
-		$replace = array();
+		$find = [];
+		$replace = [];
 
 		foreach ($replacements as $f => $r)
 		{
@@ -488,7 +488,7 @@ class BreezeTools
 
 	public function formatBytes($bytes, $showUnits = false)
 	{
-		$units = array('B', 'KB', 'MB', 'GB', 'TB');
+		$units = ['B', 'KB', 'MB', 'GB', 'TB'];
 
 		$bytes = max($bytes, 0);
 		$pow = floor(($bytes ? log($bytes) : 0) / log(1024));

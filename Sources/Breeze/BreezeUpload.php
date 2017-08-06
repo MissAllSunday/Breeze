@@ -18,7 +18,7 @@ if (!defined('SMF'))
 class BreezeUpload extends UploadHandler
 {
 	function __construct($options = null, $initialize = true, $error_messages = null) {
-		$this->response = array();
+		$this->response = [];
 		$this->options = array(
 			'script_url' => $this->get_full_url().'/',
 			'upload_dir' => dirname($this->get_server_var('SCRIPT_FILENAME')).'/files/',
@@ -188,10 +188,10 @@ class UploadHandler
         'image_resize' => 'Failed to resize image'
     );
 
-    protected $image_objects = array();
+    protected $image_objects = [];
 
     function __construct($options = null, $initialize = true, $error_messages = null) {
-        $this->response = array();
+        $this->response = [];
         $this->options = array(
             'script_url' => $this->get_full_url().'/',
             'upload_dir' => dirname($this->get_server_var('SCRIPT_FILENAME')).'/files/',
@@ -471,7 +471,7 @@ class UploadHandler
     protected function get_file_objects($iteration_method = 'get_file_object') {
         $upload_dir = $this->get_upload_path();
         if (!is_dir($upload_dir)) {
-            return array();
+            return [];
         }
         return array_values(array_filter(array_map(
             array($this, $iteration_method),
@@ -615,13 +615,13 @@ class UploadHandler
                 function_exists('exif_imagetype')) {
             switch(@exif_imagetype($file_path)){
                 case IMAGETYPE_JPEG:
-                    $extensions = array('jpg', 'jpeg');
+                    $extensions = ['jpg', 'jpeg'];
                     break;
                 case IMAGETYPE_PNG:
-                    $extensions = array('png');
+                    $extensions = ['png'];
                     break;
                 case IMAGETYPE_GIF:
-                    $extensions = array('gif');
+                    $extensions = ['gif'];
                     break;
             }
             // Adjust incorrect image file extensions:
@@ -682,7 +682,7 @@ class UploadHandler
         } else {
             $new_file_path = $file_path;
         }
-        return array($file_path, $new_file_path);
+        return [$file_path, $new_file_path];
     }
 
     protected function gd_get_image_object($file_path, $func, $no_cache = false) {
@@ -1102,7 +1102,7 @@ class UploadHandler
                 $image = new \Imagick();
                 try {
                     if (@$image->pingImage($file_path)) {
-                        $dimensions = array($image->getImageWidth(), $image->getImageHeight());
+                        $dimensions = [$image->getImageWidth(), $image->getImageHeight()];
                         $image->destroy();
                         return $dimensions;
                     }
@@ -1159,7 +1159,7 @@ class UploadHandler
     }
 
     protected function handle_image_file($file_path, $file) {
-        $failed_versions = array();
+        $failed_versions = [];
         foreach($this->options['image_versions'] as $version => $options) {
             if ($this->create_scaled_image($file->name, $version, $options)) {
                 if (!empty($version)) {
@@ -1278,7 +1278,7 @@ class UploadHandler
 
     protected function get_file_names_params() {
         $params = isset($_REQUEST[$this->options['param_name']]) ?
-            $_REQUEST[$this->options['param_name']] : array();
+            $_REQUEST[$this->options['param_name']] : [];
         foreach ($params as $key => $value) {
             $params[$key] = basename(stripslashes($value));
         }
@@ -1436,7 +1436,7 @@ class UploadHandler
         $content_range = $this->get_server_var('HTTP_CONTENT_RANGE') ?
             preg_split('/[^0-9]+/', $this->get_server_var('HTTP_CONTENT_RANGE')) : null;
         $size =  $content_range ? $content_range[3] : null;
-        $files = array();
+        $files = [];
         if ($upload && is_array($upload['tmp_name'])) {
             // param_name is an array identifier like "files[]",
             // $_FILES is a multi-dimensional array:
@@ -1467,16 +1467,16 @@ class UploadHandler
                 $content_range
             );
         }
-        $response = array($this->options['param_name'] => $files);
+        $response = [$this->options['param_name'] => $files];
         return $this->generate_response($response, $print_response);
     }
 
     public function delete($print_response = true) {
         $file_names = $this->get_file_names_params();
         if (empty($file_names)) {
-            $file_names = array($this->get_file_name_param());
+            $file_names = [$this->get_file_name_param()];
         }
-        $response = array();
+        $response = [];
         foreach($file_names as $file_name) {
             $file_path = $this->get_upload_path($file_name);
             $success = is_file($file_path) && $file_name[0] !== '.' && unlink($file_path);

@@ -43,7 +43,7 @@ class BreezeUser extends Breeze
 		$tools = $this['tools'];
 		$data = Breeze::data('get');
 		$log = $this['log'];
-		$usersToLoad = array();
+		$usersToLoad = [];
 
 		// Weird I know!!
 		require_once($tools->sourceDir . '/Profile-View.php');
@@ -53,7 +53,7 @@ class BreezeUser extends Breeze
 		unset($context[$context['profile_menu_name']]['tab_data']);
 
 		// Default values.
-		$status = array();
+		$status = [];
 		$context['Breeze'] = array(
 			'cover' => '',
 			'views' => false,
@@ -61,8 +61,8 @@ class BreezeUser extends Breeze
 			'buddiesLog' => false,
 			'comingFrom' => 'profile',
 			'settings' => array(
-				'owner' => array(),
-				'visitor' => array(),
+				'owner' => [],
+				'visitor' => [],
 			),
 		);
 
@@ -89,7 +89,7 @@ class BreezeUser extends Breeze
 			$context['Breeze']['settings']['visitor'] = $query->getUserSettings($user_info['id']);
 
 		// Need to wipe out all currently loaded layers and re-add some of them in a very specific order...
-		$context['template_layers'] = array();
+		$context['template_layers'] = [];
 		$context['template_layers'][] = 'html';
 		$context['template_layers'][] = 'user_wall';
 		$context['template_layers'][] = 'generic_menu_dropdown';
@@ -98,7 +98,7 @@ class BreezeUser extends Breeze
 		$context['sub_template'] = 'user_wall_dummy';
 
 		$context['canonical_url'] = $this['tools']->scriptUrl . '?action=profile;u=' . $context['member']['id'];
-		$context['member']['status'] = array();
+		$context['member']['status'] = [];
 		$context['Breeze']['tools'] = $tools;
 
 		// I can haz cover?
@@ -166,18 +166,18 @@ class BreezeUser extends Breeze
 		}
 
 		// Load the icon's css.
-		loadCSSFile('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', array('external' => true));
+		loadCSSFile('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', ['external' => true]);
 
 		// These file are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-		loadJavascriptFile('breeze/post.js', array('default_theme' => true, 'defer' => true, 'async' => true));
-		loadJavascriptFile('breeze/tabs.js', array('default_theme' => true, 'defer' => true));
-		loadJavascriptFile('breeze/loadMore.js', array('external' => false, 'default_theme' => true, 'defer' => true));
+		loadJavascriptFile('breeze/post.js', ['default_theme' => true, 'defer' => true, 'async' => true]);
+		loadJavascriptFile('breeze/tabs.js', ['default_theme' => true, 'defer' => true]);
+		loadJavascriptFile('breeze/loadMore.js', ['external' => false, 'default_theme' => true, 'defer' => true]);
 
 		if (!empty($modSettings['enable_mentions']) && allowedTo('mention'))
 		{
-			loadJavascriptFile('jquery.atwho.min.js', array('default_theme' => true, 'defer' => true, 'async' => true), 'smf_atwho');
-			loadJavascriptFile('jquery.caret.min.js', array('default_theme' => true, 'defer' => true, 'async' => true), 'smf_caret');
-			loadJavascriptFile('mentions.js', array('default_theme' => true, 'defer' => true, 'async' => true), 'smf_mention');
+			loadJavascriptFile('jquery.atwho.min.js', ['default_theme' => true, 'defer' => true, 'async' => true], 'smf_atwho');
+			loadJavascriptFile('jquery.caret.min.js', ['default_theme' => true, 'defer' => true, 'async' => true], 'smf_caret');
+			loadJavascriptFile('mentions.js', ['default_theme' => true, 'defer' => true, 'async' => true], 'smf_mention');
 		}
 
 		// Setup the log activity.
@@ -283,8 +283,8 @@ class BreezeUser extends Breeze
 			'description' => $tools->text('user_settings_name_alerts_desc'),
 			'icon' => 'profile_hd.png',
 			'tabs' => array(
-				'settings' => array(),
-				'edit' => array(),
+				'settings' => [],
+				'edit' => [],
 			),
 		);
 
@@ -336,7 +336,7 @@ class BreezeUser extends Breeze
 		// Session stuff.
 		$form->addHiddenField($context['session_var'], $context['session_id']);
 
-		$form->addButton(array('name' => 'submit'));
+		$form->addButton(['name' => 'submit']);
 
 		// Send the form to the template
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
@@ -565,7 +565,7 @@ class BreezeUser extends Breeze
 				'maxlength' => 3,
 			));
 
-		$form->addButton(array('name' => 'submit'));
+		$form->addButton(['name' => 'submit']);
 
 		// Send the form to the template
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
@@ -676,8 +676,8 @@ class BreezeUser extends Breeze
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
 
 		// Need a lot of Js files :(
-		loadJavascriptFile('dropzone.min.js', array('defer' => true), 'smf_dropzone');
-		loadJavascriptFile('breeze/coverUpload.js', array('external' => false, 'default_theme' => true, 'defer' => true,), 'breeze_cover');
+		loadJavascriptFile('dropzone.min.js', ['defer' => true], 'smf_dropzone');
+		loadJavascriptFile('breeze/coverUpload.js', ['external' => false, 'default_theme' => true, 'defer' => true,], 'breeze_cover');
 
 		// dropzone handles mb only...
 		$maxFileSizeMB = $maxFileSize * 0.001;
@@ -723,7 +723,7 @@ class BreezeUser extends Breeze
 	{
 		global $user_info, $context;
 
-		$data = array();
+		$data = [];
 
 		// Don't log guest views
 		if ($user_info['is_guest'] == true)
@@ -752,7 +752,7 @@ class BreezeUser extends Breeze
 				);
 
 				// Insert the data
-				updateMemberData($context['member']['id'], array('breeze_profile_views' => json_encode($views)));
+				updateMemberData($context['member']['id'], ['breeze_profile_views' => json_encode($views)]);
 
 				// Set the temp cache
 				cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], $views, 60);

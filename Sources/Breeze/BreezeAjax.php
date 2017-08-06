@@ -19,9 +19,9 @@ class BreezeAjax
 {
 	protected $_noJS = false;
 	protected $_redirectURL = '';
-	public $subActions = array();
-	protected $_userSettings = array();
-	protected $_params = array();
+	public $subActions = [];
+	protected $_userSettings = [];
+	protected $_params = [];
 	protected $_currentUser;
 	protected $_app;
 
@@ -102,7 +102,7 @@ class BreezeAjax
 		$externalHandler = false;
 
 		// So you think you can do it better huh?
-		$externalHandler = call_integration_hook('integrate_breeze_ajax_actions', array($this));
+		$externalHandler = call_integration_hook('integrate_breeze_ajax_actions', [$this]);
 
 		// Somebody else has done all the dirty work for us YAY!
 		if ($externalHandler)
@@ -138,7 +138,7 @@ class BreezeAjax
 		$owner = $this->_data->get('statusOwner');
 		$poster = $this->_currentUser;
 		$content = $this->_data->get('message');
-		$mentionedUsers = array();
+		$mentionedUsers = [];
 
 		// Sorry, try to play nicer next time
 		if (!$owner || !$poster || !$content)
@@ -181,7 +181,7 @@ class BreezeAjax
 			);
 
 			// Maybe a last minute change before inserting the new status?
-			call_integration_hook('integrate_breeze_before_insertStatus', array(&$this->_params));
+			call_integration_hook('integrate_breeze_before_insertStatus', [&$this->_params]);
 
 			// Store the status
 			$this->_params['id'] = $this->_app['query']->insertStatus($this->_params);
@@ -190,7 +190,7 @@ class BreezeAjax
 			$this->_params += array(
 				'canHas' => $this->_app['tools']->permissions('Status', $owner, $poster),
 				'time_raw' => time(),
-				'likes' => array(),
+				'likes' => [],
 			);
 
 			// All went good or so it seems...
@@ -228,7 +228,7 @@ class BreezeAjax
 					);
 
 				// The status was inserted, tell everyone!
-				call_integration_hook('integrate_breeze_after_insertStatus', array($this->_params));
+				call_integration_hook('integrate_breeze_after_insertStatus', [$this->_params]);
 
 				// Send the data back to the browser
 				return $this->setResponse(array(
@@ -241,12 +241,12 @@ class BreezeAjax
 
 			// Something went terrible wrong!
 			else
-				return $this->setResponse(array('owner' => $owner,));
+				return $this->setResponse(['owner' => $owner,]);
 		}
 
 		// There was an (generic) error
 		else
-			return $this->setResponse(array('owner' => $owner,));
+			return $this->setResponse(['owner' => $owner,]);
 	}
 
 	/**
@@ -265,7 +265,7 @@ class BreezeAjax
 		$poster = $this->_currentUser;
 		$owner = $this->_data->get('owner');
 		$content = $this->_data->get('message');
-		$mentionedUsers = array();
+		$mentionedUsers = [];
 
 		// Sorry, try to play nice next time
 		if (!$statusID || !$statusPoster || !$poster || !$owner || !$content)
@@ -314,7 +314,7 @@ class BreezeAjax
 			);
 
 			// Before inserting the comment...
-			call_integration_hook('integrate_breeze_before_insertComment', array(&$this->_params));
+			call_integration_hook('integrate_breeze_before_insertComment', [&$this->_params]);
 
 			// Store the comment
 			$this->_params['id'] = $this->_app['query']->insertComment($this->_params);
@@ -323,7 +323,7 @@ class BreezeAjax
 			$this->_params += array(
 				'time_raw' => time(),
 				'canHas' => $this->_app['tools']->permissions('Comments', $owner, $poster),
-				'likes' => array(),
+				'likes' => [],
 			);
 
 			// The Comment was inserted ORLY???
@@ -361,7 +361,7 @@ class BreezeAjax
 					);
 
 				// The comment was created, tell the world or just those who want to know...
-				call_integration_hook('integrate_breeze_after_insertComment', array($this->_params));
+				call_integration_hook('integrate_breeze_after_insertComment', [$this->_params]);
 
 				// Send the data back to the browser
 				return $this->setResponse(array(
@@ -375,12 +375,12 @@ class BreezeAjax
 
 			// Something wrong with the server.
 			else
-				return $this->setResponse(array('owner' => $owner, 'type' => 'error',));
+				return $this->setResponse(['owner' => $owner, 'type' => 'error',]);
 		}
 
 		// There was an error
 		else
-			return $this->setResponse(array('owner' => $owner, 'type' => 'error',));
+			return $this->setResponse(['owner' => $owner, 'type' => 'error',]);
 	}
 
 	/**
@@ -429,13 +429,13 @@ class BreezeAjax
 		$typeCall = 'delete'. ucfirst($type);
 
 		// Mess up the vars before performing the query
-		call_integration_hook('integrate_breeze_before_delete', array(&$type, &$id, &$profileOwner, &$poster));
+		call_integration_hook('integrate_breeze_before_delete', [&$type, &$id, &$profileOwner, &$poster]);
 
 		// Do the query dance!
 		$this->_app['query']->{$typeCall}($id, $profileOwner);
 
 		// Tell everyone what just happened here...
-		call_integration_hook('integrate_breeze_after_delete', array($type, $id, $profileOwner, $poster));
+		call_integration_hook('integrate_breeze_after_delete', [$type, $id, $profileOwner, $poster]);
 
 		// Send the data back to the browser
 		return $this->setResponse(array(
@@ -454,7 +454,7 @@ class BreezeAjax
 	 */
 	public function userSettings()
 	{
-		$toSave = array();
+		$toSave = [];
 		$user = $this->_data->get('u');
 
 		// Make sure we have the correct user.
@@ -526,7 +526,7 @@ class BreezeAjax
 		$numberTimes = $this->_data->get('numberTimes');
 		$comingFrom = $this->_data->get('comingFrom');
 		$return = '';
-		$data = array();
+		$data = [];
 
 		// The usual checks.
 		if (empty($id) || empty($maxIndex) || empty($numberTimes) || empty($comingFrom))
@@ -593,7 +593,7 @@ class BreezeAjax
 		$numberTimes = $this->_data->get('numberTimes');
 		$comingFrom = $this->_data->get('comingFrom');
 		$return = '';
-		$data = array();
+		$data = [];
 
 		// The usual checks.
 		if (empty($id) || empty($maxIndex) || empty($numberTimes) || empty($comingFrom))
@@ -697,7 +697,7 @@ class BreezeAjax
 		if (!empty($file->error))
 		{
 			// Give some more info.
-			$replaceValues = array('size' => $this->_app['tools']->formatBytes($maxFileSize, true), 'height' => $maxFileHeight, 'width' => $maxFileWidth);
+			$replaceValues = ['size' => $this->_app['tools']->formatBytes($maxFileSize, true), 'height' => $maxFileHeight, 'width' => $maxFileWidth];
 
 			if ($this->_noJS)
 				return $this->setResponse(array(
@@ -757,7 +757,7 @@ class BreezeAjax
 			$fileInfo['filename'] = pathinfo($folder . $newFile, PATHINFO_FILENAME);
 
 			// Store the new cover info.
-			$this->_app['query']->insertUserSettings(array('cover'=> $fileInfo), $this->_currentUser);
+			$this->_app['query']->insertUserSettings(['cover'=> $fileInfo], $this->_currentUser);
 
 			// Create an inner alert for this.
 			if (!empty($this->_userSettings['alert_cover']))
@@ -797,7 +797,7 @@ class BreezeAjax
 			$this->_app['tools']->deleteCover($this->_userSettings['cover']['basename'], $this->_currentUser);
 
 			// Remove the setting from the users options.
-			$this->_app['query']->insertUserSettings(array('cover'=> ''), $this->_currentUser);
+			$this->_app['query']->insertUserSettings(['cover'=> ''], $this->_currentUser);
 
 			// Build the response.
 			return $this->setResponse(array(
@@ -842,12 +842,12 @@ class BreezeAjax
 		));
 
 		// Go ahead and store the new ID.
-		$this->_app['query']->insertUserSettings(array('mood'=> $this->_data->get('moodID')), $this->_currentUser);
+		$this->_app['query']->insertUserSettings(['mood'=> $this->_data->get('moodID')], $this->_currentUser);
 
 		// Get the image.
 		$image = $allMoods[$this->_data->get('moodID')]['image_html'];
 
-		$moodHistory = !empty($this->_userSettings['moodHistory']) ? $this->_userSettings['moodHistory'] : array();
+		$moodHistory = !empty($this->_userSettings['moodHistory']) ? $this->_userSettings['moodHistory'] : [];
 
 		// User has no history, go make one then!
 		if (empty($moodHistory))
@@ -862,7 +862,7 @@ class BreezeAjax
 			$lastItem = end($moodHistory);
 
 			if ($lastItem['id'] == $this->_data->get('moodID'))
-				$moodHistory = array();
+				$moodHistory = [];
 
 			// Nope! its a different one!
 			else
@@ -879,7 +879,7 @@ class BreezeAjax
 		// Anyway, save the values and move on...
 		if (!empty($moodHistory))
 		{
-			$this->_app['query']->insertUserSettings(array('moodHistory'=> $moodHistory), $this->_currentUser);
+			$this->_app['query']->insertUserSettings(['moodHistory'=> $moodHistory], $this->_currentUser);
 
 			// Create an inner alert for this.
 			if (!empty($this->_userSettings['alert_mood']))
@@ -960,7 +960,7 @@ class BreezeAjax
 	 * Creates a valid array with the data provided by each callable method.
 	 * @return
 	 */
-	protected function setResponse($data = array())
+	protected function setResponse($data = [])
 	{
 		// Fill out a generic response.
 		$this->_response = array(

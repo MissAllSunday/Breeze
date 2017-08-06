@@ -1,4 +1,4 @@
-**Breeze**, http://missallsunday.com
+**Breeze**, https://missallsunday.com
 
 The software is licensed under [MPL 2.0 license](https://www.mozilla.org/MPL/).
 
@@ -8,8 +8,7 @@ Breeze is powerful social mod for your SMF forum, it allows your users to turn t
 
 ######Requirements:
 
-- SMF 2.0.x or greater.
-- PHP 5.3 or greater.
+- SMF 2.1.x
 
 ######Features:
 
@@ -24,7 +23,6 @@ Breeze is powerful social mod for your SMF forum, it allows your users to turn t
 The mod uses the following scripts:
 
 - [jQuery] (http://jquery.com/)
-- [zRSSFeeds] (http://www.zazar.net/developers/jquery/zrssfeed/)
 - [needim noty jquery plugin] (http://needim.github.com/noty/)
 - [ichord Mentions autocomplete script] (http://ichord.github.com/At.js)
 - [Skype Component License](http://blogs.skype.com/2006/09/01/icons-and-strings)

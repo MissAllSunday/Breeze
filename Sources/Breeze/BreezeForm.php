@@ -17,7 +17,7 @@ if (!defined('SMF'))
 
 class BreezeForm
 {
-	public $elements = array();
+	public $elements = [];
 	public $buffer = '';
 	protected $_app;
 	protected $_textPrefix = 'user_settings_';
@@ -25,7 +25,7 @@ class BreezeForm
 	function __construct($app)
 	{
 		$this->_app = $app;
-		$this->_options = array('name' => '', 'url' => '', 'title' => '', 'desc' => '', 'character_set' => '',);
+		$this->_options = ['name' => '', 'url' => '', 'title' => '', 'desc' => '', 'character_set' => '',];
 	}
 
 	public function setOptions($options)
@@ -70,7 +70,7 @@ class BreezeForm
 		$param['desc']  = !empty($param['fullDesc']) ? $param['fullDesc'] : $this->setText($param['name'] .'_sub');
 	}
 
-	function addSelect($param = array())
+	function addSelect($param = [])
 	{
 		// Kinda needs this...
 		if (empty($param) || empty($param['name']))
@@ -87,7 +87,7 @@ class BreezeForm
 		return $this->addElement($param);
 	}
 
-	function addCheckBox($param = array())
+	function addCheckBox($param = [])
 	{
 		// Kinda needs this...
 		if (empty($param) || empty($param['name']))
@@ -102,7 +102,7 @@ class BreezeForm
 		return $this->addElement($param);
 	}
 
-	function addText($param = array())
+	function addText($param = [])
 	{
 		// Kinda needs this...
 		if (empty($param) || empty($param['name']))
@@ -117,7 +117,7 @@ class BreezeForm
 		return $this->addElement($param);
 	}
 
-	function addTextArea($param = array())
+	function addTextArea($param = [])
 	{
 		// Kinda needs this...
 		if (empty($param) || empty($param['name']))
@@ -153,7 +153,7 @@ class BreezeForm
 		return $this->addElement($param);
 	}
 
-	function addHTML($param = array())
+	function addHTML($param = [])
 	{
 		// Kinda needs this...
 		if (empty($param) || empty($param['name']))
@@ -165,7 +165,7 @@ class BreezeForm
 		return $this->addElement($param);
 	}
 
-	function addButton($param = array())
+	function addButton($param = [])
 	{
 		// Kinda needs this...
 		if (empty($param) || empty($param['name']))
@@ -177,7 +177,7 @@ class BreezeForm
 		return $this->addElement($param);
 	}
 
-	function addSection($param = array())
+	function addSection($param = [])
 	{
 		// Kinda needs this...
 		if (empty($param) || empty($param['name']))

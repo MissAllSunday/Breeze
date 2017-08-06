@@ -17,7 +17,7 @@ if (!defined('SMF'))
 
 class BreezeWall
 {
-	protected $userSettings = array();
+	protected $userSettings = [];
 	protected $_app;
 
 	/**
@@ -76,7 +76,7 @@ class BreezeWall
 			$this->_app['tools']->loadUserInfo($user_info['id'], false, 'profile');
 
 		// By default this is set as empty, makes life easier, for me at least...
-		$context['Breeze'] = array();
+		$context['Breeze'] = [];
 
 		// We need to log the action we're currently on
 		$context['Breeze']['comingFrom'] = 'wall';
@@ -88,24 +88,24 @@ class BreezeWall
 	breeze.tools.comingFrom = "'. $context['Breeze']['comingFrom'] .'";');
 
 		// These file are only used here and on the profile wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-		loadJavascriptFile('breeze/post.js', array('default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('tabs.js', array('local' => true, 'default_theme' => true));
+		loadJavascriptFile('breeze/post.js', ['default_theme' => true, 'defer' => true,]);
+		loadJavascriptFile('tabs.js', ['local' => true, 'default_theme' => true]);
 
 		if (!empty($modSettings['enable_mentions']) && allowedTo('mention'))
 		{
-			loadJavascriptFile('jquery.atwho.js', array('default_theme' => true, 'defer' => true), 'smf_atwho');
-			loadJavascriptFile('mentions.js', array('default_theme' => true, 'defer' => true), 'smf_mention');
+			loadJavascriptFile('jquery.atwho.js', ['default_theme' => true, 'defer' => true), 'smf_atwho'];
+			loadJavascriptFile('mentions.js', ['default_theme' => true, 'defer' => true), 'smf_mention'];
 		}
 
 		// Load the icon's css.
-		loadCSSFile('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', array('external' => true));
+		loadCSSFile('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', ['external' => true]);
 
 		// Temporarily turn this into a normal var
 		$call = $this->subActions;
 		$subAction = $data->get('sa');
 
 		// Add your own subactions
-		call_integration_hook('integrate_breeze_wall_actions', array(&$call));
+		call_integration_hook('integrate_breeze_wall_actions', [&$call]);
 
 		// Does the sub-action even exist?
 		if (isset($call[$subAction]))
@@ -147,20 +147,20 @@ class BreezeWall
 		$data = Breeze::data('get');
 
 		// These files are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
-		loadJavascriptFile('breeze/post.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
-		loadJavascriptFile('breeze/tabs.js', array('local' => true, 'default_theme' => true, 'defer' => true,));
+		loadJavascriptFile('breeze/post.js', ['local' => true, 'default_theme' => true, 'defer' => true,]);
+		loadJavascriptFile('breeze/tabs.js', ['local' => true, 'default_theme' => true, 'defer' => true,]);
 
 		// The (soon to be) huge array...
 		$status = array(
-			'data' => array(),
-			'users' => array(),
+			'data' => [],
+			'users' => [],
 			'pagination' => '',
 			'count' => 0
 		);
 
 		// Pass your settings to the template.
 		$context['Breeze']['settings']['visitor'] = $this->userSettings;
-		$context['Breeze']['log'] = array();
+		$context['Breeze']['log'] = [];
 
 		// Pagination max index and current page.
 		$maxIndex = !empty($this->userSettings['pagination_number']) ? $this->userSettings['pagination_number'] : 5;
@@ -212,7 +212,7 @@ class BreezeWall
 			addInlineJavascript('
 	breeze.text.load_more = '. JavaScriptEscape($this->_app['tools']->text('load_more')) .';
 	breeze.text.page_loading_end = '. JavaScriptEscape($this->_app['tools']->text('page_loading_end')) .';', true);
-			loadJavascriptFile('loadMore.js', array('local' => true, 'default_theme' => true));
+			loadJavascriptFile('loadMore.js', ['local' => true, 'default_theme' => true]);
 		}
 	}
 
@@ -249,7 +249,7 @@ class BreezeWall
 		$context['canonical_url'] = $this->_app['tools']->scriptUrl .'?action=wall;area=single;bid='. $data->get('bid');
 
 		// There cannot be any pagination.
-		$context['page_index'] = array();
+		$context['page_index'] = [];
 
 		// Are we showing a comment? if so, highlight it.
 		if ($data->get('cid'))
@@ -271,14 +271,14 @@ class BreezeWall
 		$db_show_debug = false;
 
 		// Set an empty array, just for fun...
-		$context['BreezeUser']  = array();
+		$context['BreezeUser']  = [];
 
 		// Need to load a bunch of language files, mostly just for one single txt string
 		loadLanguage('Help');
 		loadLanguage('Profile');
 
 		// We only want to output our little layer here.
-		$context['template_layers'] = array();
+		$context['template_layers'] = [];
 		$context['sub_template'] = 'userDiv';
 		$context['page_title'] = '';
 

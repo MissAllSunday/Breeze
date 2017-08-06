@@ -1,9 +1,9 @@
 [center][color=purple][size=15pt]Breeze Social mod[/size][/color] [/center]
 
 
-Created by [url=http://missallsunday.com]Suki[/url]
+Created by [url=https://missallsunday.com]Suki[/url]
 
-[b]This mod needs PHP 5.3 or greater and SMF 2.1 or greater[/b]
+[b]This mod needs SMF 2.1 or greater[/b]
 
 
 [size=12pt][color=purple]Introduction[/color][/size]
@@ -39,7 +39,6 @@ Tested on PHP 5.3 and 5.4, Opera12, IE8 and whatever version Firefox was when I 
 [size=12pt][color=purple]This mod uses the following scripts[/color][/size]
 
 - [jQuery] (http://jquery.com/)
-- [zRSSFeeds] (http://www.zazar.net/developers/jquery/zrssfeed/)
 - [needim noty jquery plugin] (http://needim.github.com/noty/)
 - [ichord Mentions autocomplete script] (http://ichord.github.com/At.js)
 - [Skype Component License](http://blogs.skype.com/2006/09/01/icons-and-strings)

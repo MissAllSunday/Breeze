@@ -49,12 +49,12 @@ class BreezeAdmin
 
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'tabs' => array(
-				'general' => array(),
-				'settings' => array(),
-				'moodList' => array(),
-				'moodEdit' => array(),
-				'permissions' => array(),
-				'donate' => array(),
+				'general' => [],
+				'settings' => [],
+				'moodList' => [],
+				'moodEdit' => [],
+				'permissions' => [],
+				'donate' => [],
 			),
 		);
 
@@ -197,7 +197,7 @@ $(function(){
 		);
 
 		foreach (\Breeze\Breeze::$permissions as $p)
-			$config_vars[] = array('permissions', 'breeze_'. $p, 0, $txt['permissionname_breeze_'. $p]);
+			$config_vars[] = ['permissions', 'breeze_'. $p, 0, $txt['permissionname_breeze_'. $p]];
 
 		$context['post_url'] = $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=permissions;save';
 
@@ -226,7 +226,7 @@ $(function(){
 		$data = \Breeze\Breeze::data('request');
 
 		// A random session var huh? sounds legit...
-		$context['mood']['notice'] = !empty($_SESSION['breeze']) ? $_SESSION['breeze'] : array();
+		$context['mood']['notice'] = !empty($_SESSION['breeze']) ? $_SESSION['breeze'] : [];
 
 		if (isset($_SESSION['breeze']))
 			unset($_SESSION['breeze']);
@@ -264,7 +264,7 @@ $(function(){
 			'get_items' => array(
 				'function' => function ($start, $maxIndex) use ($smcFunc)
 				{
-					$moods = array();
+					$moods = [];
 					$request = $smcFunc['db_query']('', '
 						SELECT *
 						FROM {db_prefix}breeze_moods
@@ -420,7 +420,7 @@ $(function(){
 			redirectexit('action=admin;area=breezeadmin');
 
 		$data = \Breeze\Breeze::data('request');
-		$context['mood'] = array();
+		$context['mood'] = [];
 
 		// If editing, pass the ID to the template.
 		$context['mood']['id'] = $data->get('moodID') ? $data->get('moodID') : false;
@@ -434,10 +434,10 @@ $(function(){
 		$context['sub_template'] = 'manage_mood_edit';
 		$context['mood']['imagesUrl'] = $this->_app['mood']->getImagesUrl();
 		$context['mood']['imagesPath'] = $this->_app['mood']->getImagesPath();
-		$mood = array();
+		$mood = [];
 
 		// Mercury has a message for you!
-		$context['mood']['notice'] = !empty($_SESSION['breeze']) ? $_SESSION['breeze'] : array();
+		$context['mood']['notice'] = !empty($_SESSION['breeze']) ? $_SESSION['breeze'] : [];
 
 		// Fill out the edited values so they don't get lost.
 		if (!empty($_SESSION['breeze']))
@@ -499,7 +499,7 @@ $(function(){
 
 		$form->addHr();
 
-		$form->addButton(array('name' => 'submit'));
+		$form->addButton(['name' => 'submit')];
 
 		// Send the form to the template
 		$context['mood']['form'] = $form->display();
@@ -508,7 +508,7 @@ $(function(){
 		if ($data->get('save') && $data->get('mood'))
 		{
 			$mood = $data->get('mood');
-			$errors = array();
+			$errors = [];
 
 			// Validate time, this is really simple, ALL images must be on a single place.
 			if (empty($mood['file']))

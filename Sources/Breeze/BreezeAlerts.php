@@ -35,7 +35,7 @@ class BreezeAlerts
 		global $memberContext;
 
 		// Don't rely on Profile-View loading the senders data because we need some custom_profile stuff and we need to load other user's data anyway.
-		$toLoad = array();
+		$toLoad = [];
 
 		foreach ($alerts as $id => $a)
 			if (strpos($a['content_type'], Breeze::$txtpattern) !== false && !empty($a['extra']['toLoad']))
@@ -57,7 +57,7 @@ class BreezeAlerts
 				$a['content_type'] = str_replace(Breeze::$txtpattern, '', $a['content_type']);
 
 				// Append the sender's avatar if there is one.
-				$alerts[$id]['sender'] = !empty($this->_usersData[$a['sender_id']]) ? $this->_usersData[$a['sender_id']] : array();
+				$alerts[$id]['sender'] = !empty($this->_usersData[$a['sender_id']]) ? $this->_usersData[$a['sender_id']] : [];
 
 				if (method_exists($this, $a['content_type']) && !empty($this->_alerts[$id]['extra']) && is_array($this->_alerts[$id]['extra']))
 					$alerts[$id]['text'] = $this->{$a['content_type']}($id);

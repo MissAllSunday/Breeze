@@ -20,13 +20,13 @@ require_once $sourcedir . '/Breeze/Pimple/Container.php';
 
 class Breeze extends \Pimple\Container
 {
-	protected $_services = array('admin', 'ajax', 'alerts', 'buddy', 'display', 'form', 'log', 'noti', 'query', 'tools', 'user', 'userInfo', 'wall', 'mood',);
+	protected $_services = ['admin', 'ajax', 'alerts', 'buddy', 'display', 'form', 'log', 'noti', 'query', 'tools', 'user', 'userInfo', 'wall', 'mood',];
 	public static $name = 'Breeze';
 	public static $version = '1.1';
 	public static $folder = '/Breeze/';
 	public static $coversFolder = '/breezeFiles/';
 	public static $txtpattern = 'Breeze_';
-	public static $permissions = array('deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canCover', 'canMood');
+	public static $permissions = ['deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canCover', 'canMood'];
 	public static $allSettings = array(
 		'wall' => 'CheckBox',
 		'general_wall' => 'CheckBox',
@@ -44,12 +44,12 @@ class Breeze extends \Pimple\Container
 		'aboutMe' => 'TextArea',
 		'cover_height' => 'Int',
 	);
-	public $likeTypes = array('breSta' => 'status', 'breCom' => 'comments');
+	public $likeTypes = ['breSta' => 'status', 'breCom' => 'comments'];
 	public $trackHooks = array(
 		'integrate_create_topic' => 'createTopic',
 		'integrate_profile_save' => 'editProfile',
 	);
-	public $wrapperActions = array('wall', 'ajax', 'admin', 'mood', 'buddy');
+	public $wrapperActions = ['wall', 'ajax', 'admin', 'mood', 'buddy'];
 
 	// Support site feed
 	public static $supportSite = 'https://github.com/MissAllSunday/Breeze/releases.atom';
@@ -97,7 +97,7 @@ class Breeze extends \Pimple\Container
 	public function get($id)
 	{
 		if (!isset($this[$id]))
-			fatal_lang_error('Breeze_error_no_property', false, array($id));
+			fatal_lang_error('Breeze_error_no_property', false, [$id]);
 
 		if (is_callable($this[$id]))
 			return $this[$id]($this);
@@ -153,8 +153,8 @@ class Breeze extends \Pimple\Container
 		// We gotta load our language file.
 		loadLanguage(\Breeze\Breeze::$name);
 
-		$permissionGroups['membergroup']['simple'] = array('breeze_per_simple');
-		$permissionGroups['membergroup']['classic'] = array('breeze_per_classic');
+		$permissionGroups['membergroup']['simple'] = ['breeze_per_simple'];
+		$permissionGroups['membergroup']['classic'] = ['breeze_per_classic'];
 
 		foreach (\Breeze\Breeze::$permissions as $p)
 			$permissionList['membergroup']['breeze_'. $p] = array(
@@ -214,7 +214,7 @@ class Breeze extends \Pimple\Container
 			// Create the area
 			$profile_areas['breeze_profile'] = array(
 				'title' => $tools->text('general_my_wall_settings'),
-				'areas' => array(),
+				'areas' => [],
 			);
 
 			// User individual settings, show the button if the mod is enable and the user is the profile owner.
@@ -314,13 +314,13 @@ class Breeze extends \Pimple\Container
 						'title' => $tools->text('user_notisettings_name'),
 						'href' => $scripturl . '?action=profile;area=alerts;sa=edit;u='. $user_info['id'],
 						'show' => ($tools->enable('master') && !$user_info['is_guest']),
-						'sub_buttons' => array(),
+						'sub_buttons' => [],
 					),
 					'admin' => array(
 						'title' => $tools->text('admin'),
 						'href' => $scripturl . '?action=admin;area=breezeadmin',
 						'show' => ($tools->enable('master') && $user_info['is_admin']),
-						'sub_buttons' => array(),
+						'sub_buttons' => [],
 					),
 				),
 			)),
@@ -344,22 +344,22 @@ class Breeze extends \Pimple\Container
 		// Fool the system and directly inject the main object to breezeAjax and breezeWall, Breeze's final classes
 
 		// A whole new action just for some ajax calls. Actually, a pretty good chunk of Breeze transactions come through here so...
-		$actions['breezeajax'] = array(\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::call#');
+		$actions['breezeajax'] = [\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::call#'];
 
 		// The general wall
-		$actions['wall'] = array(\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::call#');
+		$actions['wall'] = [\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::call#'];
 
 		// Replace the buddy action.
-		$actions['buddy'] = array(\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::call#');
+		$actions['buddy'] = [\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::call#'];
 
 		// Action used when an user wants to change their mood.
-		$actions['breezemood'] = array(\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::call#');
+		$actions['breezemood'] = [\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::call#'];
 
 		// Displaying the users cover/thumbnail.
-		$actions['breezecover'] = array(\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::displayCover#');
+		$actions['breezecover'] = [\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::displayCover#'];
 
 		// proxy
-		$actions['breezefeed'] = array(\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::getFeed#');
+		$actions['breezefeed'] = [\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::getFeed#'];
 	}
 
 	/**
@@ -583,7 +583,7 @@ class Breeze extends \Pimple\Container
 
 		// Try and get the user who posted this content.
 		$originalAuthor = 0;
-		$originalAuthorData = array();
+		$originalAuthorData = [];
 		$row = $this->likeTypes[$type] .'_id';
 		$authorColumn = 'poster_id';
 
@@ -630,7 +630,7 @@ class Breeze extends \Pimple\Container
 
 	public function handleLikes($type, $content)
 	{
-		$data = array();
+		$data = [];
 
 		// Don't bother with any other like types...
 		if (!in_array($type, array_keys($this->likeTypes)))
@@ -672,14 +672,14 @@ class Breeze extends \Pimple\Container
 			return false;
 
 		// Always display these.
-		loadJavascriptFile('breeze/breeze.js', array('local' => true, 'force_current' => false, 'minimize' => true));
+		loadJavascriptFile('breeze/breeze.js', ['local' => true, 'force_current' => false, 'minimize' => true]);
 
 		// Only needed on certain actions.
 		if ($doAction)
 		{
-			loadCSSFile('breeze.css', array('force_current' => false, 'validate' => true));
-			loadJavascriptFile('breeze/moment.min.js', array('local' => true, 'default_theme' => true, 'defer' => true));
-			loadJavascriptFile('breeze/livestamp.min.js', array('local' => true, 'default_theme' => true, 'defer' => true, 'async' => true));
+			loadCSSFile('breeze.css', ['force_current' => false, 'validate' => true]);
+			loadJavascriptFile('breeze/moment.min.js', ['local' => true, 'default_theme' => true, 'defer' => true]);
+			loadJavascriptFile('breeze/livestamp.min.js', ['local' => true, 'default_theme' => true, 'defer' => true, 'async' => true]);
 		}
 
 		// Up to here for guest.
@@ -687,10 +687,10 @@ class Breeze extends \Pimple\Container
 			return;
 
 		// The main stuff. Always displayed.
-		loadJavascriptFile('breeze/noty/jquery.noty.js', array('local' => true, 'default_theme' => true, 'defer' => true, 'async' => true));
-		loadJavascriptFile('breeze/noty/layouts/top.js', array('local' => true, 'default_theme' => true, 'defer' => true, 'async' => true));
-		loadJavascriptFile('breeze/noty/layouts/center.js', array('local' => true, 'default_theme' => true, 'defer' => true, 'async' => true));
-		loadJavascriptFile('breeze/noty/themes/relax.js', array('local' => true, 'default_theme' => true, 'defer' => true, 'async' => true));
+		loadJavascriptFile('breeze/noty/jquery.noty.js', ['local' => true, 'default_theme' => true, 'defer' => true, 'async' => true]);
+		loadJavascriptFile('breeze/noty/layouts/top.js', ['local' => true, 'default_theme' => true, 'defer' => true, 'async' => true]);
+		loadJavascriptFile('breeze/noty/layouts/center.js', ['local' => true, 'default_theme' => true, 'defer' => true, 'async' => true]);
+		loadJavascriptFile('breeze/noty/themes/relax.js', ['local' => true, 'default_theme' => true, 'defer' => true, 'async' => true]);
 
 		if (!$doAction)
 			return false;
@@ -715,7 +715,7 @@ class Breeze extends \Pimple\Container
 		addInlineJavascript($generalSettings);
 
 		// We still need to pass some text strings to the client.
-		$clientText = array('error_empty', 'noti_markasread', 'error_wrong_values', 'noti_delete', 'noti_cancel', 'noti_closeAll', 'noti_checkAll', 'confirm_yes', 'confirm_cancel', 'confirm_delete');
+		$clientText = ['error_empty', 'noti_markasread', 'error_wrong_values', 'noti_delete', 'noti_cancel', 'noti_closeAll', 'noti_checkAll', 'confirm_yes', 'confirm_cancel', 'confirm_delete'];
 
 		foreach ($clientText as $ct)
 			$generalText .= '
@@ -780,8 +780,8 @@ class Breeze extends \Pimple\Container
 		// Gotta respect the master mood setting.
 		if ($tools->enable('mood'))
 		{
-			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodList'] = array($tools->text('page_mood'));
-			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodEdit'] = array($tools->text('page_mood_create'));
+			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodList'] = [$tools->text('page_mood')];
+			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodEdit'] = [$tools->text('page_mood_create')];
 		}
 	}
 
@@ -869,7 +869,7 @@ class Breeze extends \Pimple\Container
 		);
 
 		// Oh well, one can dream...
-		call_integration_hook('integrate_breeze_credits', array(&$credits));
+		call_integration_hook('integrate_breeze_credits', [&$credits]);
 
 		return $credits;
 	}

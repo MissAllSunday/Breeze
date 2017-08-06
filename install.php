@@ -34,7 +34,7 @@
 				'size' => '',
 				'default' => null,
 			),
-			array(),
+			[],
 			'update',
 			null
 		);
@@ -70,7 +70,7 @@
 			),
 			'if_exists' => 'ignore',
 			'error' => 'fatal',
-			'parameters' => array(),
+			'parameters' => [],
 		);
 
 		// Comments
@@ -129,7 +129,7 @@
 			),
 			'if_exists' => 'ignore',
 			'error' => 'fatal',
-			'parameters' => array(),
+			'parameters' => [],
 		);
 
 		// Status
@@ -176,7 +176,7 @@
 			),
 			'if_exists' => 'ignore',
 			'error' => 'fatal',
-			'parameters' => array(),
+			'parameters' => [],
 		);
 
 		// Breeze own alert tables.
@@ -229,7 +229,7 @@
 			),
 			'if_exists' => 'ignore',
 			'error' => 'fatal',
-			'parameters' => array(),
+			'parameters' => [],
 		);
 
 		// My mood
@@ -282,7 +282,7 @@
 			),
 			'if_exists' => 'ignore',
 			'error' => 'fatal',
-			'parameters' => array(),
+			'parameters' => [],
 		);
 
 		// Installing
@@ -298,7 +298,7 @@
 				'size' => 5,
 				'null' => false
 			),
-			array(),
+			[],
 			'update',
 			null
 		);
@@ -310,13 +310,13 @@
 				'size' => 5,
 				'null' => false
 			),
-			array(),
+			[],
 			'update',
 			null
 		);
 
 		// Lastly, insert the default moods and oh boy there are a lot!!!
-		$moods = array('angel', 'angry', 'bear', 'beer', 'blush', 'brokenheart', 'cash', 'clapping', 'cool', 'crying', 'doh', 'drunk', 'dull', 'envy', 'evil', 'evilgrin', 'giggle', 'happy', 'headbang', 'hi', 'inlove', 'itwasntme', 'kiss', 'lipssealed', 'makeup', 'middlefinger', 'mmm', 'mooning', 'muscle', 'nerd', 'party', 'pizza', 'puke', 'rock', 'sad', 'sleepy', 'smile', 'smoke', 'speechless', 'sunny', 'surprised', 'sweating', 'talking', 'thinking', 'tongueout', 'wait', 'wink', 'wondering', 'worried', 'yawn', );
+		$moods = ['angel', 'angry', 'bear', 'beer', 'blush', 'brokenheart', 'cash', 'clapping', 'cool', 'crying', 'doh', 'drunk', 'dull', 'envy', 'evil', 'evilgrin', 'giggle', 'happy', 'headbang', 'hi', 'inlove', 'itwasntme', 'kiss', 'lipssealed', 'makeup', 'middlefinger', 'mmm', 'mooning', 'muscle', 'nerd', 'party', 'pizza', 'puke', 'rock', 'sad', 'sleepy', 'smile', 'smoke', 'speechless', 'sunny', 'surprised', 'sweating', 'talking', 'thinking', 'tongueout', 'wait', 'wink', 'wondering', 'worried', 'yawn', ];
 
 		foreach ($moods as $m)
 			$smcFunc['db_insert']('replace', '{db_prefix}breeze_moods', array(
@@ -331,7 +331,7 @@
 				'gif',
 				$m,
 				1
-			), array('moods_id', ));
+			), ['moods_id', ]);
 	}
 
 	function BreezeCheck()

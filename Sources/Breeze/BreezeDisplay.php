@@ -31,8 +31,8 @@ class BreezeDisplay
 		if (empty($params) || empty($type))
 			return false;
 
-		$return = array();
-		$users = array();
+		$return = [];
+		$users = [];
 		$call = 'breeze_'. $type;
 
 		// Functions template.

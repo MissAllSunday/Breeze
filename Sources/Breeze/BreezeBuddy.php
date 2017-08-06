@@ -130,7 +130,7 @@ class BreezeBuddy
 			$this->receiverSettings['petitionList'][$this->_userSender['id']] = !empty($buddyMessage['content']) ? $buddyMessage['content'] : '';
 
 			// Store the new petition list.
-			$this->_app['query']->insertUserSettings(array('petitionList' => $this->receiverSettings['petitionList']), $this->_userReceiver);
+			$this->_app['query']->insertUserSettings(['petitionList' => $this->receiverSettings['petitionList']), $this->_userReceiver];
 
 			// Create a nice alert to let the user know you want to be his/her buddy!
 			$this->_app['query']->insertNoti(array(
@@ -176,7 +176,7 @@ class BreezeBuddy
 
 		// Session stuff.
 		$this->_app['form']->addHiddenField($context['session_var'], $context['session_id']);
-		$this->_app['form']->addButton(array('name' => 'submit'));
+		$this->_app['form']->addButton(['name' => 'submit')];
 
 		$this->_response = $this->_app['form']->display();
 	}
@@ -201,7 +201,7 @@ class BreezeBuddy
 			if (!in_array($this->_userReceiver, $this->_userSender['buddies']))
 			{
 				$this->_userSender['buddies'][] = $this->_userReceiver;
-				updateMemberData($this->_userSender['id'], array('buddy_list' => implode(',', $this->_userSender['buddies'])));
+				updateMemberData($this->_userSender['id'], ['buddy_list' => implode(',', $this->_userSender['buddies'])]);
 			}
 
 			// Tell the user you are already friends.
@@ -241,18 +241,18 @@ class BreezeBuddy
 		global $user_info, $context;
 
 		// Easy, just delete the entry and be done with it.
-		$user_info['buddies'] = array_diff($user_info['buddies'], array($this->_userReceiver));
+		$user_info['buddies'] = array_diff($user_info['buddies'], [$this->_userReceiver]);
 
 		// Update the settings.
-		updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
+		updateMemberData($user_info['id'], ['buddy_list' => implode(',', $user_info['buddies'])]);
 
 		// Now, get the receiver's buddy list and delete the sender from it.
 		$this->receiverSettings = $this->_app['query']->getUserSettings($this->_userReceiver);
 
 		if (!empty($this->receiverSettings['buddiesList']))
 		{
-			$this->receiverSettings['buddiesList'] = array_diff($this->receiverSettings['buddiesList'], array($this->_userSender['id']));
-			updateMemberData($this->_userReceiver, array('buddy_list' => implode(',', $this->receiverSettings['buddiesList'])));
+			$this->receiverSettings['buddiesList'] = array_diff($this->receiverSettings['buddiesList'], [$this->_userSender['id']]);
+			updateMemberData($this->_userReceiver, ['buddy_list' => implode(',', $this->receiverSettings['buddiesList'])]);
 		}
 
 		// Get the receiver's data.
@@ -269,7 +269,7 @@ class BreezeBuddy
 		global $context;
 
 		// Load the icon's css.
-		loadCSSFile('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', array('external' => true));
+		loadCSSFile('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css', ['external' => true]);
 
 		$context['sub_template'] = 'buddy_message';
 
@@ -317,14 +317,14 @@ class BreezeBuddy
 		if (empty($user_info['buddies']) || (!empty($user_info['buddies']) && !in_array($this->_senderConfirm, $user_info['buddies'])))
 		{
 			$user_info['buddies'][] = $this->_senderConfirm;
-			updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
+			updateMemberData($user_info['id'], ['buddy_list' => implode(',', $user_info['buddies'])]);
 		}
 
 		// Now update the sender's buddy list. Gotta check if the receiver isn't already there BUT we need to be careful since the sender's buddy list can be empty!
 		if (empty($senderSettings['buddyList']) || (!empty($senderSettings['buddyList']) && !in_array($this->_receiverConfirm['id'], $senderSettings['buddyList'])))
 		{
 			$senderSettings['buddyList'][] = $this->_receiverConfirm['id'];
-			updateMemberData($this->_senderConfirm, array('buddy_list' => implode(',', $senderSettings['buddyList'])));
+			updateMemberData($this->_senderConfirm, ['buddy_list' => implode(',', $senderSettings['buddyList'])]);
 		}
 
 		// Let the sender know the receiver gladly accepted the invitation.
@@ -394,18 +394,18 @@ class BreezeBuddy
 		}
 
 		// Gotta check if any of both users were added as friends prior to this invite, if so, remove it.
-		$user_info['buddies'] = array_diff($user_info['buddies'], array($this->_senderConfirm));
+		$user_info['buddies'] = array_diff($user_info['buddies'], [$this->_senderConfirm]);
 
 		// Update the settings.
-		updateMemberData($user_info['id'], array('buddy_list' => implode(',', $user_info['buddies'])));
+		updateMemberData($user_info['id'], ['buddy_list' => implode(',', $user_info['buddies'])]);
 
 		// Now, get the receiver's buddy list and delete the receiver from it.
 		$senderSettings = $this->_app['query']->getUserSettings($this->_senderConfirm);
 
 		if (!empty($senderSettings['buddiesList']))
 		{
-			$this->receiverSettings['buddiesList'] = array_diff($this->receiverSettings['buddiesList'], array($user_info['id']));
-			updateMemberData($this->_senderConfirm, array('buddy_list' => implode(',', $senderSettings['buddiesList'])));
+			$this->receiverSettings['buddiesList'] = array_diff($this->receiverSettings['buddiesList'], [$user_info['id']]);
+			updateMemberData($this->_senderConfirm, ['buddy_list' => implode(',', $senderSettings['buddiesList'])]);
 		}
 
 		// Offer an option to block this person
@@ -421,7 +421,7 @@ class BreezeBuddy
 		$currentSettings = $this->_app['query']->getUserSettings($this->_receiverConfirm['id']);
 
 		// Add this person to the user's "block" list.
-		$blockList = !empty($currentSettings['blockList']) ? $currentSettings['blockList'] : array();
+		$blockList = !empty($currentSettings['blockList']) ? $currentSettings['blockList'] : [];
 
 		// There might be the possibility that you already are blocking this user...
 		if (in_array($this->_senderConfirm, $blockList))
@@ -430,7 +430,7 @@ class BreezeBuddy
 		// Add the user.
 		$blockList[] = $this->_senderConfirm;
 
-		$this->_app['query']->insertUserSettings(array('blockList' => implode(',', $blockList)), $this->_receiverConfirm['id']);
+		$this->_app['query']->insertUserSettings(['blockList' => implode(',', $blockList)), $this->_receiverConfirm['id']];
 
 		$this->_response = $this->_app['tools']->text('buddy_blocked_done');
 	}

@@ -21,9 +21,9 @@ class BreezeMood
 	protected $_moodFolder = 'breezeMoods/';
 	public $imagesPath = '';
 	public $imagesUrl = '';
-	public $allowedExtensions = array('gif', 'jpg', 'png');
+	public $allowedExtensions = ['gif', 'jpg', 'png'];
 	protected $_moods;
-	protected static $active = array();
+	protected static $active = [];
 
 	function __construct($app)
 	{
@@ -51,7 +51,7 @@ class BreezeMood
 
 		// Pass the imageUrl.
 		$context['moodUrl'] = $this->imagesUrl;
-		$context['template_layers'] = array();
+		$context['template_layers'] = [];
 		$context['sub_template'] = 'mood_change';
 	}
 
@@ -111,7 +111,7 @@ class BreezeMood
 		if (empty($user) || !is_int($user))
 			return false;
 
-		$return = array();
+		$return = [];
 
 		$temp = $this->_app['query']->getUserSettings($user);
 		$history = $temp['moodHistory'];
@@ -181,7 +181,7 @@ class BreezeMood
 		global $context;
 
 		// its easier to list the areas where we want this to be displayed.
-		$profileAreas = array('summary', 'static');
+		$profileAreas = ['summary', 'static'];
 
 		// Don't do anything if the feature is disable or we are in an area we don't care...
 		if (!$this->_app['tools']->enable('mood') || !in_array($area, $profileAreas))

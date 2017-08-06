@@ -71,7 +71,7 @@ class BreezeNoti
 
 		// There's an alert already, just update the time...
 		if ($spam)
-			$this->_app['query']->updateAlert(array('alert_time' => $params['alert_time']), $spam);
+			$this->_app['query']->updateAlert(['alert_time' => $params['alert_time']), $spam];
 
 		// Nope! create the alert!
 		else
@@ -79,7 +79,7 @@ class BreezeNoti
 			$this->_app['query']->createAlert($params);
 
 			// Lastly, update the counter.
-			updateMemberData($params['id_member'], array('alerts' => '+'));
+			updateMemberData($params['id_member'], ['alerts' => '+']);
 		}
 
 		return true;
@@ -303,7 +303,7 @@ class BreezeNoti
 
 				$url = '?action=wall;sa=single;u=' . $this->_details['profile_id'] .';bid='. (!empty($this->_details['status_id']) ? ($this->_details['status_id'] .';cid='. $this->_details['id']) : $this->_details['id']);
 				$text = '';
-				$toload = array($member['mentioned_by']['id'], $member['id'], $this->_details['poster_id']);
+				$toload = [$member['mentioned_by']['id'], $member['id'], $this->_details['poster_id']];
 
 				// Add the status poster to the array of to load IDs.
 				if ($this->_details['innerType'] == 'com')
@@ -330,7 +330,7 @@ class BreezeNoti
 				));
 
 				// Lastly, update the counter.
-				updateMemberData($member['id'], array('alerts' => '+'));
+				updateMemberData($member['id'], ['alerts' => '+']);
 			}
 	}
 
