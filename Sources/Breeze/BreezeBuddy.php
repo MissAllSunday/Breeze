@@ -65,7 +65,7 @@ class BreezeBuddy
 		checkSession('request');
 		is_not_guest();
 
-		$this->_data = Breeze::data('request');
+		$this->_data = $this->_app->data('request');
 		$this->_call = $this->_data->get('sa');
 		$this->_alertID = $this->_data->get('aid');
 		$subActions = array(

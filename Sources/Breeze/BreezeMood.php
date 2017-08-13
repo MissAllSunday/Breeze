@@ -44,7 +44,7 @@ class BreezeMood
 		loadtemplate(Breeze::$name .'Functions');
 
 		// Get the user.
-		$context['moodUser'] = Breeze::data()->get('user');
+		$context['moodUser'] = $this->_app->data()->get('user');
 
 		// Pass the currently active moods
 		$context['moods'] = $this->getActive();

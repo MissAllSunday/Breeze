@@ -54,7 +54,7 @@ class BreezeAjax
 		global $user_info, $context, $db_show_debug;
 
 		// Handling the subactions
-		$data = Breeze::data('get');
+		$data = $this->_app->data('get');
 
 		// Safety first, hardcode the actions and oh boy there are a lot!!!
 		$this->subActions = array(
@@ -112,7 +112,7 @@ class BreezeAjax
 		if (isset($call[$data->get('sa')]))
 		{
 			// Get the data.
-			$this->_data = Breeze::data('request');
+			$this->_data = $this->_app->data('request');
 
 			// This is somehow ugly but its faster.
 			$this->{$call[$data->get('sa')]}();
@@ -257,7 +257,7 @@ class BreezeAjax
 	 */
 	public function postComment()
 	{
-		$this->_data = Breeze::data('request');
+		$this->_data = $this->_app->data('request');
 
 		// Trickery, there's always room for moar!
 		$statusID = $this->_data->get('statusID');
@@ -654,7 +654,7 @@ class BreezeAjax
 	 */
 	public function cover()
 	{
-		$data = Breeze::data('get');
+		$data = $this->_app->data('get');
 
 		// This feature needs to be enable.
 		if (!$this->_app['tools']->enable('cover') || empty($data))

@@ -50,7 +50,7 @@ class BreezeWall
 		global $context, $user_info, $modSettings;
 
 		// Handling the subactions
-		$data = Breeze::data('get');
+		$data = $this->_app->data('get');
 
 		// Safety first, hardcode the actions
 		$this->subActions = array(
@@ -144,7 +144,7 @@ class BreezeWall
 			fatal_lang_error('Breeze_cannot_see_general_wall', false);
 
 		// Get some stuffz
-		$data = Breeze::data('get');
+		$data = $this->_app->data('get');
 
 		// These files are only used here and on the general wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
 		loadJavascriptFile('breeze/post.js', ['local' => true, 'default_theme' => true, 'defer' => true,]);
@@ -226,7 +226,7 @@ class BreezeWall
 	{
 		global $context, $user_info;
 
-		$data = Breeze::data('get');
+		$data = $this->_app->data('get');
 
 		// Disable the activity tab
 		$context['Breeze']['disableTabs'] = true;
@@ -282,7 +282,7 @@ class BreezeWall
 		$context['sub_template'] = 'userDiv';
 		$context['page_title'] = '';
 
-		$data = Breeze::data('request');
+		$data = $this->_app->data('request');
 		$userID = $data->get('u');
 
 		// No ID? shame on you!

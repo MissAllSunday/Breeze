@@ -58,7 +58,7 @@ class BreezeAdmin
 			),
 		);
 
-		$sa = \Breeze\Breeze::data('get')->get('sa');
+		$sa = $this->_app->data('get')->get('sa');
 
 		// Call the sub-action.
 		if (isset($subActions[$sa]))
@@ -126,7 +126,7 @@ $(function(){
 		global $context, $txt;
 
 		// Load stuff
-		$data = \Breeze\Breeze::data('request');
+		$data = $this->_app->data('request');
 		$context['sub_template'] = 'show_settings';
 		$context['page_title'] = \Breeze\Breeze::$name .' - '. $this->_app['tools']->text('page_settings');
 		$context[$context['admin_menu_name']]['tab_data'] = array(
@@ -137,14 +137,14 @@ $(function(){
 		require_once($this->_app['tools']->sourceDir . '/ManageServer.php');
 
 		$config_vars = array(
-			array('title', \Breeze\Breeze::$txtpattern .'page_settings'),
-			array('check', \Breeze\Breeze::$txtpattern .'master', 'subtext' => $this->_app['tools']->text('master_sub')),
-			array('check', \Breeze\Breeze::$txtpattern .'force_enable', 'subtext' => $this->_app['tools']->text('force_enable_sub')),
-			array('int', \Breeze\Breeze::$txtpattern .'allowed_max_num_users', 'size' => 3, 'subtext' => $this->_app['tools']->text('allowed_max_num_users_sub')),
-			array('int', \Breeze\Breeze::$txtpattern .'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this->_app['tools']->text('allowed_maxlength_aboutMe_sub')),
-			array('check', \Breeze\Breeze::$txtpattern .'mood', 'subtext' => $this->_app['tools']->text('mood_sub')),
-			array('text', \Breeze\Breeze::$txtpattern .'mood_label', 'subtext' => $this->_app['tools']->text('mood_label_sub')),
-			array('select', \Breeze\Breeze::$txtpattern .'mood_placement',
+			array('title', $this->_app->txtpattern .'page_settings'),
+			array('check', $this->_app->txtpattern .'master', 'subtext' => $this->_app['tools']->text('master_sub')),
+			array('check', $this->_app->txtpattern .'force_enable', 'subtext' => $this->_app['tools']->text('force_enable_sub')),
+			array('int', $this->_app->txtpattern .'allowed_max_num_users', 'size' => 3, 'subtext' => $this->_app['tools']->text('allowed_max_num_users_sub')),
+			array('int', $this->_app->txtpattern .'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this->_app['tools']->text('allowed_maxlength_aboutMe_sub')),
+			array('check', $this->_app->txtpattern .'mood', 'subtext' => $this->_app['tools']->text('mood_sub')),
+			array('text', $this->_app->txtpattern .'mood_label', 'subtext' => $this->_app['tools']->text('mood_label_sub')),
+			array('select', $this->_app->txtpattern .'mood_placement',
 				array(
 					$txt['custom_profile_placement_standard'],
 					$txt['custom_profile_placement_icons'],
@@ -157,8 +157,8 @@ $(function(){
 				'subtext' => $this->_app['tools']->text('mood_placement_sub'),
 				'multiple' => false,
 			),
-			array('int', \Breeze\Breeze::$txtpattern .'flood_messages', 'size' => 3, 'subtext' => $this->_app['tools']->text('flood_messages_sub')),
-			array('int', \Breeze\Breeze::$txtpattern .'flood_minutes', 'size' => 3, 'subtext' => $this->_app['tools']->text('flood_minutes_sub')),
+			array('int', $this->_app->txtpattern .'flood_messages', 'size' => 3, 'subtext' => $this->_app['tools']->text('flood_messages_sub')),
+			array('int', $this->_app->txtpattern .'flood_minutes', 'size' => 3, 'subtext' => $this->_app['tools']->text('flood_minutes_sub')),
 		);
 
 		$context['post_url'] = $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=settings;save';
@@ -182,7 +182,7 @@ $(function(){
 		loadLanguage(\Breeze\Breeze::$name);
 
 		// Load stuff
-		$data = \Breeze\Breeze::data('request');
+		$data = $this->_app->data('request');
 		$context['sub_template'] = 'show_settings';
 		$context['page_title'] = \Breeze\Breeze::$name .' - '. $this->_app['tools']->text('page_permissions');
 		$context[$context['admin_menu_name']]['tab_data'] = array(
@@ -193,7 +193,7 @@ $(function(){
 		require_once($this->_app['tools']->sourceDir . '/ManageServer.php');
 
 		$config_vars = array(
-			array('title', \Breeze\Breeze::$txtpattern .'page_permissions'),
+			array('title', $this->_app->txtpattern .'page_permissions'),
 		);
 
 		foreach (\Breeze\Breeze::$permissions as $p)
@@ -223,7 +223,7 @@ $(function(){
 		loadLanguage('ManageSmileys');
 
 		// Gotta know what we're going to do.
-		$data = \Breeze\Breeze::data('request');
+		$data = $this->_app->data('request');
 
 		// A random session var huh? sounds legit...
 		$context['mood']['notice'] = !empty($_SESSION['breeze']) ? $_SESSION['breeze'] : [];
@@ -419,7 +419,7 @@ $(function(){
 		if (!$this->_app['tools']->enable('mood'))
 			redirectexit('action=admin;area=breezeadmin');
 
-		$data = \Breeze\Breeze::data('request');
+		$data = $this->_app->data('request');
 		$context['mood'] = [];
 
 		// If editing, pass the ID to the template.
@@ -499,7 +499,7 @@ $(function(){
 
 		$form->addHr();
 
-		$form->addButton(['name' => 'submit')];
+		$form->addButton(['name' => 'submit']);
 
 		// Send the form to the template
 		$context['mood']['form'] = $form->display();
@@ -584,7 +584,7 @@ $(function(){
 		global $context, $txt;
 
 		// Load stuff
-		$data = \Breeze\Breeze::data('request');
+		$data = $this->_app->data('request');
 		$context['page_title'] = \Breeze\Breeze::$name .' - '. $this->_app['tools']->text('page_cover');
 		$context[$context['admin_menu_name']]['tab_data'] = array(
 			'title' => $context['page_title'],
@@ -594,11 +594,11 @@ $(function(){
 		require_once($this->_app['tools']->sourceDir . '/ManageServer.php');
 
 		$config_vars = array(
-			array('check', \Breeze\Breeze::$txtpattern .'cover', 'subtext' => $this->_app['tools']->text('cover_sub')),
-			array('int', \Breeze\Breeze::$txtpattern .'cover_max_image_size', 'size' => 3, 'subtext' => $this->_app['tools']->text('cover_max_image_size_sub')),
-			array('int', \Breeze\Breeze::$txtpattern .'cover_max_image_width', 'size' => 4, 'subtext' => $this->_app['tools']->text('cover_max_image_width_sub')),
-			array('int', \Breeze\Breeze::$txtpattern .'cover_max_image_height', 'size' => 3, 'subtext' => $this->_app['tools']->text('cover_max_image_height_sub')),
-			array('text', \Breeze\Breeze::$txtpattern .'cover_image_types', 'size' => 25, 'subtext' => $this->_app['tools']->text('cover_image_types_sub')),
+			array('check', $this->_app->txtpattern .'cover', 'subtext' => $this->_app['tools']->text('cover_sub')),
+			array('int', $this->_app->txtpattern .'cover_max_image_size', 'size' => 3, 'subtext' => $this->_app['tools']->text('cover_max_image_size_sub')),
+			array('int', $this->_app->txtpattern .'cover_max_image_width', 'size' => 4, 'subtext' => $this->_app['tools']->text('cover_max_image_width_sub')),
+			array('int', $this->_app->txtpattern .'cover_max_image_height', 'size' => 3, 'subtext' => $this->_app['tools']->text('cover_max_image_height_sub')),
+			array('text', $this->_app->txtpattern .'cover_image_types', 'size' => 25, 'subtext' => $this->_app['tools']->text('cover_image_types_sub')),
 		);
 
 		$context['post_url'] = $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=cover;save';
@@ -609,8 +609,8 @@ $(function(){
 			checkSession();
 
 			// Gotta make sure this is indeed a comma separated list....
-			if (!empty($_POST[\Breeze\Breeze::$txtpattern .'cover_image_types']))
-				$_POST[\Breeze\Breeze::$txtpattern .'cover_image_types'] = $this->_app['tools']->commaSeparated($_POST[\Breeze\Breeze::$txtpattern .'cover_image_types'], 'alpha');
+			if (!empty($_POST[$this->_app->txtpattern .'cover_image_types']))
+				$_POST[$this->_app->txtpattern .'cover_image_types'] = $this->_app['tools']->commaSeparated($_POST[$this->_app->txtpattern .'cover_image_types'], 'alpha');
 
 			saveDBSettings($config_vars);
 			redirectexit('action=admin;area=breezeadmin;sa=cover');

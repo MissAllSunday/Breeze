@@ -20,7 +20,7 @@ require_once $sourcedir . '/Breeze/Pimple/Container.php';
 
 class Breeze extends \Pimple\Container
 {
-	protected $_services = ['admin', 'ajax', 'alerts', 'buddy', 'display', 'form', 'log', 'noti', 'query', 'tools', 'user', 'userInfo', 'wall', 'mood',];
+	protected $_services = ['admin', 'ajax', 'alerts', 'buddy', 'data', 'display', 'form', 'log', 'noti', 'query', 'tools', 'user', 'userInfo', 'wall', 'mood',];
 	public static $name = 'Breeze';
 	public static $version = '1.1';
 	public static $folder = '/Breeze/';
@@ -129,7 +129,7 @@ class Breeze extends \Pimple\Container
 	}
 
 	/**
-	 * \Breeze\Breeze::data()
+	 * $this->_app->data()
 	 *
 	 * A new instance of BreezeGlobals.
 	 * @param string $var Either post, request or get
@@ -371,7 +371,7 @@ class Breeze extends \Pimple\Container
 	public function call()
 	{
 		// Just some quick code to make sure this works...
-		$action = str_replace('breeze', '', \Breeze\Breeze::data('get')->get('action'));
+		$action = str_replace('breeze', '', $this->_app->data('get')->get('action'));
 
 		// Don't do anything if the mod is off
 		if (!$this['tools']->enable('master') && $action != 'admin')
@@ -405,10 +405,10 @@ class Breeze extends \Pimple\Container
 		global $smcFunc, $modSettings, $maintenance;
 
 		// Get the user ID.
-		$useriD = \Breeze\Breeze::data('get')->get('u');
+		$useriD = $this->_app->data('get')->get('u');
 
 		// Thumbnail?
-		$thumb = \Breeze\Breeze::data('get')->validate('thumb');
+		$thumb = $this->_app->data('get')->validate('thumb');
 
 		// Kinda need this!
 		if (!$this['tools']->enable('cover') || empty($useriD))
@@ -550,11 +550,11 @@ class Breeze extends \Pimple\Container
 		$this['tools']->loadLanguage('alerts');
 
 		$alert_types['breeze'] = array(
-			''. \Breeze\Breeze::$txtpattern . 'status_owner' => array('alert' => 'yes', 'email' => 'never'),
-			''. \Breeze\Breeze::$txtpattern . 'comment_status_owner' => array('alert' => 'yes', 'email' => 'never'),
-			''. \Breeze\Breeze::$txtpattern . 'comment_profile_owner' => array('alert' => 'yes', 'email' => 'never'),
-			''. \Breeze\Breeze::$txtpattern . 'mention' => array('alert' => 'yes', 'email' => 'never'),
-			''. \Breeze\Breeze::$txtpattern . 'like' => array('alert' => 'yes', 'email' => 'never'),
+			''. $this->txtpattern . 'status_owner' => array('alert' => 'yes', 'email' => 'never'),
+			''. $this->txtpattern . 'comment_status_owner' => array('alert' => 'yes', 'email' => 'never'),
+			''. $this->txtpattern . 'comment_profile_owner' => array('alert' => 'yes', 'email' => 'never'),
+			''. $this->txtpattern . 'mention' => array('alert' => 'yes', 'email' => 'never'),
+			''. $this->txtpattern . 'like' => array('alert' => 'yes', 'email' => 'never'),
 		);
 	}
 
@@ -661,7 +661,7 @@ class Breeze extends \Pimple\Container
 		global $context, $user_info, $settings;
 
 		// Some files are only needed on specific places.
-		$action = str_replace('breeze', '', \Breeze\Breeze::data('get')->get('action'));
+		$action = str_replace('breeze', '', $this->_app->data('get')->get('action'));
 
 		// So, what are we going to do?
 		$doAction = in_array($action, $this->wrapperActions) || $action == 'profile';
@@ -697,7 +697,7 @@ class Breeze extends \Pimple\Container
 
 		$tools = $this['tools'];
 		$userSettings = $this['query']->getUserSettings($user_info['id']);
-		$data = \Breeze\Breeze::data('get');
+		$data = $this->_app->data('get');
 
 		$generalSettings = '';
 		$generalText = '';
