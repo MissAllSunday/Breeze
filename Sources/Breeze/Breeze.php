@@ -344,22 +344,22 @@ class Breeze extends \Pimple\Container
 		// Fool the system and directly inject the main object to breezeAjax and breezeWall, Breeze's final classes
 
 		// A whole new action just for some ajax calls. Actually, a pretty good chunk of Breeze transactions come through here so...
-		$actions['breezeajax'] = [\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::call#'];
+		$actions['breezeajax'] = [false, '\Breeze\Breeze::call#'];
 
 		// The general wall
-		$actions['wall'] = [\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::call#'];
+		$actions['wall'] = [false, '\Breeze\Breeze::call#'];
 
 		// Replace the buddy action.
-		$actions['buddy'] = [\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::call#'];
+		$actions['buddy'] = [false, '\Breeze\Breeze::call#'];
 
 		// Action used when an user wants to change their mood.
-		$actions['breezemood'] = [\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::call#'];
+		$actions['breezemood'] = [false, '\Breeze\Breeze::call#'];
 
 		// Displaying the users cover/thumbnail.
-		$actions['breezecover'] = [\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::displayCover#'];
+		$actions['breezecover'] = [false, '\Breeze\Breeze::displayCover#'];
 
 		// proxy
-		$actions['breezefeed'] = [\Breeze\Breeze::$folder . 'Breeze.php', '\Breeze\Breeze::getFeed#'];
+		$actions['breezefeed'] = [false, '\Breeze\Breeze::getFeed#'];
 	}
 
 	/**
