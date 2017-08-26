@@ -50,10 +50,10 @@ class BreezeLog
 		call_integration_hook('integrate_breeze_log_after', [$this->_data, $this->_users, $this->_logCount, $this->alerts]);
 
 		// Return the formatted data.
-		return array(
+		return [
 			'count' => $this->_logCount,
 			'data' => $this->_data,
-		);
+		];
 	}
 
 	protected function call()

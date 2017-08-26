@@ -17,7 +17,8 @@ if (!defined('SMF'))
 
 class BreezeUpload extends UploadHandler
 {
-	function __construct($options = null, $initialize = true, $error_messages = null) {
+	function __construct($options = null, $initialize = true, $error_messages = null)
+	{
 		$this->response = [];
 		$this->options = array(
 			'script_url' => $this->get_full_url().'/',

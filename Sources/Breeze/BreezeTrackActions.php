@@ -29,7 +29,7 @@ class BreezeTrackActions extends Breeze
 
 		// Does the user wants to log this? does the new topic has been approved?
 		if (!empty($options['alert_topic']) && !empty($topicOptions['is_approved']))
-			$this['query']->createLog(array(
+			$this['query']->createLog([
 				'member' => $posterOptions['id'],
 				'content_type' => 'topic',
 				'content_id' => $topicOptions['id'],
@@ -40,7 +40,7 @@ class BreezeTrackActions extends Breeze
 					'topicOptions' => $topicOptions,
 					'messageID' => $msgOptions['id']
 				),
-			));
+			]);
 	}
 
 	public function editProfile(&$profile_vars, &$post_errors, $memID, $cur_profile, $current_area)

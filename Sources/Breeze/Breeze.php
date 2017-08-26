@@ -20,13 +20,40 @@ require_once $sourcedir . '/Breeze/Pimple/Container.php';
 
 class Breeze extends \Pimple\Container
 {
-	protected $_services = ['admin', 'ajax', 'alerts', 'buddy', 'data', 'display', 'form', 'log', 'noti', 'query', 'tools', 'user', 'userInfo', 'wall', 'mood',];
+	protected $_services = [
+		'admin',
+		'ajax',
+		'alerts',
+		'buddy',
+		'data',
+		'display',
+		'form',
+		'log',
+		'noti',
+		'query',
+		'tools',
+		'user',
+		'userInfo',
+		'wall',
+		'mood',
+	];
 	public static $name = 'Breeze';
 	public static $version = '1.1';
 	public static $folder = '/Breeze/';
 	public static $coversFolder = '/breezeFiles/';
 	public static $txtpattern = 'Breeze_';
-	public static $permissions = ['deleteComments', 'deleteOwnComments', 'deleteProfileComments', 'deleteStatus', 'deleteOwnStatus', 'deleteProfileStatus', 'postStatus', 'postComments', 'canCover', 'canMood'];
+	public static $permissions = [
+		'deleteComments',
+		'deleteOwnComments',
+		'deleteProfileComments',
+		'deleteStatus',
+		'deleteOwnStatus',
+		'deleteProfileStatus',
+		'postStatus',
+		'postComments',
+		'canCover',
+		'canMood'
+	];
 	public static $allSettings = array(
 		'wall' => 'CheckBox',
 		'general_wall' => 'CheckBox',

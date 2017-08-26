@@ -68,12 +68,12 @@ class BreezeBuddy
 		$this->_data = $this->_app->data('request');
 		$this->_call = $this->_data->get('sa');
 		$this->_alertID = $this->_data->get('aid');
-		$subActions = array(
+		$subActions = [
 			'confirm',
 			'confirmed',
 			'decline',
 			'block',
-		);
+		];
 
 		// Figure it out what are we gonna do... check the subactions first!
 		if ($this->_call && in_array($this->_call, $subActions))
@@ -133,7 +133,7 @@ class BreezeBuddy
 			$this->_app['query']->insertUserSettings(['petitionList' => $this->receiverSettings['petitionList']), $this->_userReceiver];
 
 			// Create a nice alert to let the user know you want to be his/her buddy!
-			$this->_app['query']->insertNoti(array(
+			$this->_app['query']->insertNoti([
 				'receiver_id' => $this->_userReceiver,
 				'id_member' => $this->_userSender['id'],
 				'member_name' => $this->_userSender['username'],
@@ -141,7 +141,7 @@ class BreezeBuddy
 				'text' => 'confirm',
 				'sender' => $this->_userSender['id'],
 				'receiver' => $this->_userReceiver,
-			), 'buddyConfirm');
+			), 'buddyConfirm'];
 
 			// Get the receiver's link
 			$this->_app['tools']->loadUserInfo($this->_userReceiver);
@@ -156,23 +156,23 @@ class BreezeBuddy
 
 		$this->_app['tools']->loadUserInfo($this->_userReceiver);
 
-		$this->_app['form']->setOptions(array(
+		$this->_app['form']->setOptions([
 			'name' => 'breezeBuddyMessage',
 			'url' => $this->_app['tools']->scriptUrl .'?action=buddy;msent=1;u='. $this->_userReceiver,
 			'character_set' => $context['character_set'],
 			'title' => $this->_app['tools']->text('buddy_title'),
-		));
+		]);
 
 		// The actual textarea...
-		$this->_app['form']->addTextArea(array(
+		$this->_app['form']->addTextArea([
 			'name' => 'content',
 			'value' => '',
-			'size' => array('rows' => 10, 'cols' => 60, 'maxLength' => 2048),
+			'size' => ['rows' => 10, 'cols' => 60, 'maxLength' => 2048],
 			'fullText' => $this->_app['tools']->text('buddy_message'),
 			'fullDesc' => $this->_app['tools']->parser($this->_app['tools']->text('buddy_message_desc'), array(
 				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
 			)),
-		));
+		]);
 
 		// Session stuff.
 		$this->_app['form']->addHiddenField($context['session_var'], $context['session_id']);
@@ -197,7 +197,7 @@ class BreezeBuddy
 		// Theres always the chance you are already friends...
 		if (in_array($this->_userSender['id'], $this->receiverSettings['buddiesList']))
 		{
-			// Perhaps it is YOU the one who doens't have the receiver as friend? if so, just add the receiver to your buddy list.
+			// Perhaps it is YOU the one who doesn't have the receiver as friend? if so, just add the receiver to your buddy list.
 			if (!in_array($this->_userReceiver, $this->_userSender['buddies']))
 			{
 				$this->_userSender['buddies'][] = $this->_userReceiver;
@@ -207,9 +207,10 @@ class BreezeBuddy
 			// Tell the user you are already friends.
 			$this->_app['tools']->loadUserInfo($this->_userReceiver);
 
-			$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_already_buddy'), array(
+			$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_already_buddy'), [
 				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
-			));
+			]);
+
 			return true;
 		}
 
@@ -217,6 +218,7 @@ class BreezeBuddy
 		if ((!empty($this->receiverSettings['ignoredList']) && in_array($this->_userSender['id'], $this->receiverSettings['ignoredList'])) || (!empty($this->receiverSettings['blockList']) && in_array($this->_userSender['id'], $this->receiverSettings['blockList'])))
 		{
 			$this->_response = $this->_app['tools']->text('buddy_blocked');
+
 			return true;
 		}
 
@@ -226,9 +228,10 @@ class BreezeBuddy
 			$this->_app['tools']->loadUserInfo($this->_userReceiver);
 
 			// Let this user know that an alert has already been sent.
-			$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_already_sent'), array(
+			$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_already_sent'), [
 				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
-			));
+			]);
+
 			return true;
 		}
 
@@ -258,9 +261,9 @@ class BreezeBuddy
 		// Get the receiver's data.
 		$this->_app['tools']->loadUserInfo($this->_userReceiver);
 
-		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_delete_done'), array(
+		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_delete_done'), [
 			'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
-		));
+		]);
 	}
 
 	// When the petitioner wants to add the receiver as friend
@@ -285,23 +288,23 @@ class BreezeBuddy
 		$context['buddyMessage'] = !empty($receiverPetiList) && !empty($receiverPetiList[$this->_senderConfirm]) ? un_htmlspecialchars(parse_bbc($receiverPetiList[$this->_senderConfirm])) : false;
 
 		// An explicatory title.
-		$context['buddy_message_title'] = $this->_app['tools']->parser($this->_app['tools']->text('buddy_sender_message_title'), array(
+		$context['buddy_message_title'] = $this->_app['tools']->parser($this->_app['tools']->text('buddy_sender_message_title'), [
 			'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['linkFacebox'],
-		));
+		]);
 
 		// Set a nice an unique page title.
-		$context['page_title'] = $this->_app['tools']->parser($this->_app['tools']->text('buddy_chose_title'), array(
+		$context['page_title'] = $this->_app['tools']->parser($this->_app['tools']->text('buddy_chose_title'), [
 			'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['name'],
-		));
+		]);
 
 		// Prepare the options.
 		$confirm = $this->_app['tools']->scriptUrl . '?action=buddy;sa=confirmed;sender=' . $this->_senderConfirm . (!empty($this->_alertID) ? ';aid='. $this->_alertID : '');
 		$decline = $this->_app['tools']->scriptUrl . '?action=buddy;sa=decline;sender=' . $this->_senderConfirm . (!empty($this->_alertID) ? ';aid='. $this->_alertID : '');
 
-		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_chose'), array(
+		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_chose'), [
 			'href_confirm' => $confirm,
 			'href_decline' => $decline,
-		));
+		]);
 	}
 
 	// When receiver confirmed the friendship!
@@ -328,7 +331,7 @@ class BreezeBuddy
 		}
 
 		// Let the sender know the receiver gladly accepted the invitation.
-		$this->_app['query']->insertNoti(array(
+		$this->_app['query']->insertNoti([
 			'receiver_id' => $this->_senderConfirm,
 			'id_member' => $this->_receiverConfirm['id'],
 			'member_name' => $this->_receiverConfirm['username'],
@@ -336,21 +339,21 @@ class BreezeBuddy
 			'text' => 'confirmed',
 			'sender' => $this->_senderConfirm,
 			'receiver' => $this->_receiverConfirm['id'],
-		), 'buddyConfirm');
+		], 'buddyConfirm');
 
 		// Does the sender wants the world to take note of this great achievement?
 		if (!empty($senderSettings['alert_buddyConfirmation']))
-			$this->_app['query']->createLog(array(
+			$this->_app['query']->createLog([
 				'member' => $this->_senderConfirm,
 				'content_type' => 'buddyConfirmed',
 				'content_id' => 0,
 				'time' => time(),
-				'extra' => array(
+				'extra' => [
 					'sender' => $this->_senderConfirm,
 					'receiver' => $this->_receiverConfirm['id'],
-					'toLoad' => array($this->_receiverConfirm['id'], $this->_senderConfirm),
-				),
-			));
+					'toLoad' => [$this->_receiverConfirm['id'], $this->_senderConfirm],
+				],
+			]);
 
 		// How about the receiver?
 		if (!empty($this->receiverSettings['alert_buddyConfirmation']))
@@ -359,11 +362,11 @@ class BreezeBuddy
 				'content_type' => 'buddyConfirmed',
 				'content_id' => 0,
 				'time' => time(),
-				'extra' => array(
+				'extra' => [
 					'sender' => $this->_senderConfirm,
 					'receiver' => $this->_receiverConfirm['id'],
-					'toLoad' => array($this->_receiverConfirm['id'], $this->_senderConfirm),
-				),
+					'toLoad' => [$this->_receiverConfirm['id'], $this->_senderConfirm],
+				],
 			));
 
 		// Can't directly call closures from object properties :(
@@ -409,9 +412,9 @@ class BreezeBuddy
 		}
 
 		// Offer an option to block this person
-		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_decline'), array(
+		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_decline'), [
 			'href' => $this->_app['tools']->scriptUrl . '?action=buddy;sa=block;sender=' . $this->_senderConfirm,
-		));
+		]);
 	}
 
 	// When you want to block the sender from ever invite you again!

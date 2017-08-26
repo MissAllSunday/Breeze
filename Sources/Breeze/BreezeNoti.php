@@ -101,7 +101,7 @@ class BreezeNoti
 		// So, whos gonna receive this alert?
 		$messageOwner = !empty($data) ? $data[$this->_details['like_type'] .'_poster_id'] : 0;
 
-		$this->innerCreate(array(
+		$this->innerCreate([
 			'alert_time' => $this->_details['time'],
 			'id_member' => $messageOwner,
 			'id_member_started' => $this->_details['user'],
@@ -110,16 +110,16 @@ class BreezeNoti
 			'content_id' => $this->_details['content'],
 			'content_action' => '',
 			'is_read' => 0,
-			'extra' => array(
+			'extra' => [
 				'text' => 'like',
 				'comment_owner' => $messageOwner,
-				'toLoad' => array($messageOwner, $this->_details['user']),
+				'toLoad' => [$messageOwner, $this->_details['user']],
 				'status_id' => $data[($this->_details['like_type'] == 'comments' ? $this->_details['like_type'] .'_' : '') . 'status_id'],
 				'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,
 				'wall_owner' => $data[$this->_details['like_type'] == 'comments' ? 'comments_profile_id' : 'status_owner_id'],
 				'like_type' => $this->_details['like_type'],
-			),
-		));
+			],
+		]);
 
 		// Don't forget the inner alert.
 		$uSettings = $this->_app['query']->getUserSettings($this->_details['user']['id']);
@@ -147,7 +147,7 @@ class BreezeNoti
 	{
 		// Useless to fire you an alert for something you did.
 		if ($this->_details['profile_id'] != $this->_details['poster_id'])
-			$this->innerCreate(array(
+			$this->innerCreate([
 				'alert_time' => $this->_details['time_raw'],
 				'id_member' => $this->_details['profile_id'],
 				'id_member_started' => $this->_details['poster_id'],
@@ -162,7 +162,7 @@ class BreezeNoti
 					'poster' => $this->_details['poster_id'],
 					'owner' => $this->_details['profile_id'],
 				),
-			));
+			]);
 
 		// And our very own alert too.
 		$uSettings = $this->_app['query']->getUserSettings($this->_details['poster_id']);
@@ -249,7 +249,7 @@ class BreezeNoti
 			else
 			{
 				// This is for the wall owner. A completely separate alert actually...
-				$this->innerCreate(array(
+				$this->innerCreate([
 					'alert_time' => $this->_details['time_raw'],
 					'id_member' => $this->_details['profile_id'],
 					'id_member_started' => $this->_details['poster_id'],
@@ -267,7 +267,7 @@ class BreezeNoti
 						'status_owner' => $this->_details['status_owner_id'],
 						'status_id' => $this->_details['status_id'],
 					),
-				));
+				]);
 
 				// The status owner gets notified too!
 				$toCreate['extra']['buddy_text'] = 'alert_comment_status_owner_buddy';
@@ -336,7 +336,7 @@ class BreezeNoti
 
 	protected function buddyConfirm()
 	{
-		$this->innerCreate(array(
+		$this->innerCreate([
 			'alert_time' => !empty($this->_details['time']) ? $this->_details['time'] : time(),
 			'id_member' => $this->_details['receiver_id'],
 			'id_member_started' => $this->_details['id_member'],
@@ -345,12 +345,12 @@ class BreezeNoti
 			'content_id' => 0,
 			'content_action' => 'buddy',
 			'is_read' => 0,
-			'extra' => array(
-				'toLoad' => array($this->_details['receiver_id'], $this->_details['id_member']),
+			'extra' => [
+				'toLoad' => [$this->_details['receiver_id'], $this->_details['id_member']],
 				'text' => $this->_details['text'],
 				'sender' => $this->_details['sender'],
 				'receiver' => $this->_details['receiver'],
-			),
-		), true, false);
+			],
+		], true, false);
 	}
 }

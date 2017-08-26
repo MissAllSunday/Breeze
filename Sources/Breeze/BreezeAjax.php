@@ -55,9 +55,10 @@ class BreezeAjax
 
 		// Handling the subactions
 		$data = $this->_app->data('get');
+		$sa = $data->get('sa');
 
 		// Safety first, hardcode the actions and oh boy there are a lot!!!
-		$this->subActions = array(
+		$this->subActions = [
 			'post' => 'post',
 			'postcomment' => 'postComment',
 			'delete' => 'delete',
@@ -70,7 +71,7 @@ class BreezeAjax
 			'cover' => 'cover',
 			'coverdelete' => 'coverDelete',
 			'moodchange' => 'moodChange',
-		);
+		];
 
 		// Build the correct redirect URL
 		$this->comingFrom = $data->get('rf') == true ? $data->get('rf') : 'wall';
@@ -109,13 +110,13 @@ class BreezeAjax
 			return;
 
 		// Does the subaction even exist?
-		if (isset($call[$data->get('sa')]))
+		if (isset($call[$sa]))
 		{
 			// Get the data.
 			$this->_data = $this->_app->data('request');
 
 			// This is somehow ugly but its faster.
-			$this->{$call[$data->get('sa')]}();
+			$this->{$call[$sa]}();
 
 			// Send the response back to the browser
 			$this->returnResponse();
