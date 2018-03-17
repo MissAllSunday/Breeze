@@ -4,9 +4,9 @@
  * BreezeAdmin.turkish
  *
  * @package Breeze mod
- * @version 1.0.12
+ * @version 1.0.13
  * @author Jessica Gonzalez <suki@missallsunday.com>
- * @copyright Copyright (c) 2011 - 2017 Jessica Gonzalez
+ * @copyright Copyright (c) 2011 - 2018 Jessica Gonzalez
  * @license //www.mozilla.org/MPL/MPL-1.1.html
  */
 /**
