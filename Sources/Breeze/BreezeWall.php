@@ -126,7 +126,7 @@ class BreezeWall
 	}
 
 	/**
-	 * BreezeAjax::generalWall()
+	 * BreezeWall::generalWall()
 	 *
 	 * Shows the latest activity form your buddies.
 	 * @return
@@ -169,12 +169,19 @@ class BreezeWall
 		// Time to overheat the server!
 		if (!empty($this->userSettings['buddiesList']))
 		{
+			// Doesn't make much sense to have the same user as buddy and on their ignored list but meh...
+			if (!empty($this->userSettings['ignoredList']))
+				$buddies = array_diff($this->userSettings['buddiesList'], explode(',', $this->userSettings['ignoredList']));
+
+			else
+				$buddies = $this->userSettings['buddiesList'];
+
 			// Get the latest status
-			$status = $this->_query->getStatusByUser($this->userSettings['buddiesList'], $maxIndex, $currentPage);
+			$status = $this->_query->getStatusByUser($buddies, $maxIndex, $currentPage);
 			$context['Breeze']['status'] = $status['data'];
 
 			// Get the latest activity
-			$context['Breeze']['log'] = $this->log->getActivity($this->userSettings['buddiesList']);
+			$context['Breeze']['log'] = $this->log->getActivity($buddies);
 
 			// Load users data.
 			if (!empty($status['users']))
