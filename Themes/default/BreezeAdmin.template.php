@@ -4,9 +4,9 @@
  * BreezeAdmin.template.php
  *
  * @package Breeze mod
- * @version 1.0.12
+ * @version 1.0.13
  * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2011 - 2017, Jessica González
+ * @copyright Copyright (c) 2011 - 2018, Jessica González
  * @license //www.mozilla.org/MPL/MPL-1.1.html
  */
 

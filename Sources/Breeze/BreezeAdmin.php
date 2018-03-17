@@ -6,7 +6,7 @@
  * @package Breeze mod
  * @version 1.0.11
  * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2011 - 2017 Jessica González
+ * @copyright Copyright (c) 2011 - 2018 Jessica González
  * @license //www.mozilla.org/MPL/MPL-1.1.html
  */
 
@@ -91,6 +91,7 @@ function Breeze_Admin_Settings()
 	$config_vars = array(
 		array('title', Breeze::$txtpattern .'page_settings'),
 		array('check', Breeze::$txtpattern .'master', 'subtext' => $context['Breeze']['instance']->adminText('master_sub')),
+		array('check', Breeze::$txtpattern .'enable_general_wall', 'subtext' => $context['Breeze']['instance']->adminText('enable_general_wall_sub')),
 		array('check', Breeze::$txtpattern .'force_enable', 'subtext' => $context['Breeze']['instance']->adminText('force_enable_sub')),
 		array('check', Breeze::$txtpattern .'notifications', 'subtext' => $context['Breeze']['instance']->adminText('notifications_sub')),
 		array('text', Breeze::$txtpattern .'allowed_actions', 'size' => 60, 'subtext' => $context['Breeze']['instance']->adminText('allowed_actions_sub')),

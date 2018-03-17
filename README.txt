@@ -64,6 +64,10 @@ Tested on PHP 5.3 and 5.4, Opera12, IE8 and whatever version Firefox was when I 
 [size=12pt][color=purple]Changelog[/color][/size]
 
 [code]
+1.0.13 March 17, 2018
+- Add admin setting for the general wall
+- Prevent loading status and activity from users on your ignored list.
+
 1.0.12 May 5, 2017
 - Concatenation on $txt strings
 - Add a "live from the support site" atom box
