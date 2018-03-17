@@ -67,6 +67,10 @@ class BreezeWall
 		if (!$this->_tools->enable('master'))
 			fatal_lang_error('Breeze_error_no_valid_action', false);
 
+		// The general wall needs to be enable
+		if (!$this->_tools->enable('enable_general_wall'))
+			fatal_lang_error('Breeze_error_no_valid_action', false);
+
 		// Guest aren't allowed, sorry.
 		is_not_guest($this->_tools->text('error_no_access'));
 

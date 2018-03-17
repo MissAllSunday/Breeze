@@ -277,7 +277,7 @@ class Breeze
 			array('wall' => array(
 				'title' => $tools->text('general_wall'),
 				'href' => $scripturl . '?action=wall',
-				'show' => ($tools->enable('master') && !$user_info['is_guest'] && !empty($userSettings['general_wall'])),
+				'show' => ($tools->enable('master') && !$user_info['is_guest'] && !empty($userSettings['general_wall']) && $tools->enable('enable_general_wall')),
 				'sub_buttons' => array(
 					'noti' => array(
 						'title' => $tools->text('user_notisettings_name'),
