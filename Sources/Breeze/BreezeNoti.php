@@ -71,7 +71,7 @@ class BreezeNoti
 
 		// There's an alert already, just update the time...
 		if ($spam)
-			$this->_app['query']->updateAlert(['alert_time' => $params['alert_time']), $spam];
+			$this->_app['query']->updateAlert(['alert_time' => $params['alert_time']], $spam);
 
 		// Nope! create the alert!
 		else

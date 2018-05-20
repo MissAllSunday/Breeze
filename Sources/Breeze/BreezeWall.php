@@ -93,8 +93,8 @@ class BreezeWall
 
 		if (!empty($modSettings['enable_mentions']) && allowedTo('mention'))
 		{
-			loadJavascriptFile('jquery.atwho.js', ['default_theme' => true, 'defer' => true), 'smf_atwho'];
-			loadJavascriptFile('mentions.js', ['default_theme' => true, 'defer' => true), 'smf_mention'];
+			loadJavascriptFile('jquery.atwho.js', ['default_theme' => true, 'defer' => true], 'smf_atwho');
+			loadJavascriptFile('mentions.js', ['default_theme' => true, 'defer' => true], 'smf_mention');
 		}
 
 		// Load the icon's css.
