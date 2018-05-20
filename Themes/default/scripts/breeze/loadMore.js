@@ -52,7 +52,7 @@ breezeLoadMore.prototype.clickButton = function()
 	}).appendTo(this.options.target.appendTo).hide();
 
 	// Let us pass some data to the server.
-	passingData = {
+	var passingData = {
 		numberTimes : this.numberOfEvents,
 		comingFrom : breeze.tools.comingFrom,
 	};
