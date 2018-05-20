@@ -35,11 +35,12 @@ class BreezeQuery
 	 */
 	protected $_app;
 
-	/**
-	 * BreezeQuery::__construct()
-	 *
-	 * Creates the needed properties.
-	 */
+    /**
+     * BreezeQuery::__construct()
+     *
+     * Creates the needed properties.
+     * @param $app
+     */
 	public function __construct($app)
 	{
 		// Set everything
@@ -144,14 +145,16 @@ class BreezeQuery
 		return $dataResult;
 	}
 
-	/**
-	 * BreezeQuery::killCache()
-	 *
-	 * Disclaimer: Killing in breeze world means replace the existing cache data with a null value so SMF generates a new cache...
-	 * With the data provided, we need to clean the main cache entry, which is the per profile cache
-	 * @param string $type the name of value(s) to be deleted
-	 * @return void
-	 */
+    /**
+     * BreezeQuery::killCache()
+     *
+     * Disclaimer: Killing in breeze world means replace the existing cache data with a null value so SMF generates a new cache...
+     * With the data provided, we need to clean the main cache entry, which is the per profile cache
+     * @param string $type the name of value(s) to be deleted
+     * @param $id
+     * @param bool $profile_owner
+     * @return bool
+     */
 	public function killCache($type, $id, $profile_owner = false)
 	{
 		global $smcFunc;
@@ -185,15 +188,15 @@ class BreezeQuery
 		// Clean any other cache too
 	}
 
-	/**
-	 * BreezeQuery::getCount()
-	 *
-	 * Gets and return the number of rows from the data provided
-	 * Only works for the status table.
-	 * @param mixed $data either a single ID or an array of IDs to match the query against.
-	 * @param string $column The column name to check the status from, needs to be a column that stores users IDs.
-	 * @return array
-	 */
+    /**
+     * BreezeQuery::getCount()
+     *
+     * Gets and return the number of rows from the data provided
+     * Only works for the status table.
+     * @param mixed $data either a single ID or an array of IDs to match the query against.
+     * @param string $column The column name to check the status from, needs to be a column that stores users IDs.
+     * @return int
+     */
 	protected function getCount($data, $column)
 	{
 		global $smcFunc;
@@ -315,16 +318,16 @@ class BreezeQuery
 		return $return;
 	}
 
-	/**
-	 * BreezeQuery::getStatus()
-	 *
-	 * Get all status made by X users. no pagination, no other special code.
-	 * @param int|array $id the ID(s) of the user(s) to get the status from. If left empty the functon will load all available status.
-	 * @param boolean $getComments Whether or not to include comments made on each status.
-	 * @param int $limit How many status do you want to retrieve.
-	 * @param string $sort Sorting for retrieving the data, by default is set to DESC (most recent)
-	 * @return array An array containing all the status made by those users, two keys, data and users
-	 */
+    /**
+     * BreezeQuery::getStatus()
+     *
+     * Get all status made by X users. no pagination, no other special code.
+     * @param bool $id the ID(s) of the user(s) to get the status from. If left empty the functon will load all available status.
+     * @param boolean $getComments Whether or not to include comments made on each status.
+     * @param int $limit How many status do you want to retrieve.
+     * @param string $sort Sorting for retrieving the data, by default is set to DESC (most recent)
+     * @return array An array containing all the status made by those users, two keys, data and users
+     */
 	public function getStatus($id = false, $getComments = false, $limit = 5, $sort = 'status_id DESC')
 	{
 		global $smcFunc;
@@ -402,13 +405,15 @@ class BreezeQuery
 		return $return;
 	}
 
-	/**
-	 * BreezeQuery::getStatusByProfile()
-	 *
-	 * Get all status made in X profile page. Uses a custom query per profile.
-	 * @param int $id the ID of the user that owns the profile page, it does not matter who made that status as long as the status was made in X profile page.
-	 * @return array An array containing all the status made in X profile page
-	 */
+    /**
+     * BreezeQuery::getStatusByProfile()
+     *
+     * Get all status made in X profile page. Uses a custom query per profile.
+     * @param int $id the ID of the user that owns the profile page, it does not matter who made that status as long as the status was made in X profile page.
+     * @param $maxIndex
+     * @param $start
+     * @return array An array containing all the status made in X profile page
+     */
 	public function getStatusByProfile($id, $maxIndex, $start)
 	{
 		global $smcFunc;
@@ -577,15 +582,15 @@ class BreezeQuery
 		return $return;
 	}
 
-	/**
-	 * BreezeQuery::getStatusByUser()
-	 *
-	 * Get all status made by X user, it does not matter on what profile page they were made.
-	 * @param int|array $id the ID of the user(s) that you want to fetch the status from.
-	 * @param int $maxIndex The maximum amount of status to fetch.
-	 * @param int $currentPage For working alongside pagination.
-	 * @return array An array containing all the status made in X profile page
-	 */
+    /**
+     * BreezeQuery::getStatusByUser()
+     *
+     * Get all status made by X user, it does not matter on what profile page they were made.
+     * @param int|array $id the ID of the user(s) that you want to fetch the status from.
+     * @param int $maxIndex The maximum amount of status to fetch.
+     * @param $start
+     * @return array An array containing all the status made in X profile page
+     */
 	public function getStatusByUser($id, $maxIndex, $start)
 	{
 		global $smcFunc;
@@ -675,12 +680,12 @@ class BreezeQuery
 
 	// Editing methods
 
-	/**
-	 * BreezeQuery::insertStatus()
-	 *
-	 * @param mixed $array
-	 * @return
-	 */
+    /**
+     * BreezeQuery::insertStatus()
+     *
+     * @param mixed $array
+     * @return mixed
+     */
 	public function insertStatus($array)
 	{
 		global $smcFunc;
@@ -704,12 +709,12 @@ class BreezeQuery
 		return $status_id;
 	}
 
-	/**
-	 * BreezeQuery::insertComment()
-	 *
-	 * @param mixed $array
-	 * @return
-	 */
+    /**
+     * BreezeQuery::insertComment()
+     *
+     * @param mixed $array
+     * @return mixed
+     */
 	public function insertComment($array)
 	{
 		global $smcFunc;
@@ -735,12 +740,13 @@ class BreezeQuery
 		return $comment_id;
 	}
 
-	/**
-	 * BreezeQuery::deleteStatus()
-	 *
-	 * @param int $id
-	 * @return
-	 */
+    /**
+     * BreezeQuery::deleteStatus()
+     *
+     * @param int $id
+     * @param bool $profile_owner
+     * @return void
+     */
 	public function deleteStatus($id, $profile_owner = false)
 	{
 		global $smcFunc;
@@ -757,13 +763,13 @@ class BreezeQuery
 			WHERE status_id = {int:id}', ['id' => $id, ]);
 	}
 
-	/**
-	 * BreezeQuery::deleteCommentByStatusID()
-	 *
-	 * This shouldn't be called as a standalone method, use deleteComments() instead
-	 * @param int $id
-	 * @return
-	 */
+    /**
+     * BreezeQuery::deleteCommentByStatusID()
+     *
+     * This shouldn't be called as a standalone method, use deleteComments() instead
+     * @param int $id
+     * @return void
+     */
 	public function deleteCommentByStatusID($id)
 	{
 		global $smcFunc;
@@ -773,12 +779,13 @@ class BreezeQuery
 			WHERE comments_status_id = {int:id}', ['id' => $id, ]);
 	}
 
-	/**
-	 * BreezeQuery::deleteComments()
-	 *
-	 * @param int $id
-	 * @return
-	 */
+    /**
+     * BreezeQuery::deleteComments()
+     *
+     * @param int $id
+     * @param bool $profile_owner
+     * @return void
+     */
 	public function deleteComments($id, $profile_owner = false)
 	{
 		global $smcFunc;
@@ -854,13 +861,14 @@ class BreezeQuery
 		return $return;
 	}
 
-	/**
-	 * BreezeQuery::insertUserSettings()
-	 *
-	 * Creates a new set of user settings.
-	 * @param
-	 * @param
-	 */
+    /**
+     * BreezeQuery::insertUserSettings()
+     *
+     * Creates a new set of user settings.
+     * @param
+     * @param
+     * @return array|bool
+     */
 	public function insertUserSettings($array, $userID)
 	{
 		global $smcFunc;
@@ -995,14 +1003,15 @@ class BreezeQuery
 		);
 	}
 
-	/**
-	 * BreezeQuery::insertNoti()
-	 *
-	 * Inserts all Breeze related background tasks.
-	 * @param array $params An array of params, DOH!
-	 * @params string $type a unique identifier.
-	 * @return void
-	 */
+    /**
+     * BreezeQuery::insertNoti()
+     *
+     * Inserts all Breeze related background tasks.
+     * @param array $params An array of params, DOH!
+     * @param $type
+     * @return bool
+     * @params string $type a unique identifier.
+     */
 	public function insertNoti($params, $type)
 	{
 		global $smcFunc;
@@ -1021,16 +1030,16 @@ class BreezeQuery
 		);
 	}
 
-	/**
-	 * BreezeQuery::notiSpam()
-	 *
-	 * Give the data given, checks if an alert has already been add tot the DB.
-	 * @param int $user The alert "receiver".
-	 * @param string $type a unique identifier.
-	 * @param int $id the unique ID for a given "action" if true, it means the mod will look for that very specific content, if not, the method will look for all contents.
-	 * @param int $sender the person who fired up the alert, commonly know as the "sender".
-	 * @return integer The ID if there is a match, 0 if there is none.
-	 */
+    /**
+     * BreezeQuery::notiSpam()
+     *
+     * Give the data given, checks if an alert has already been add tot the DB.
+     * @param int $user The alert "receiver".
+     * @param string $type a unique identifier.
+     * @param bool $id the unique ID for a given "action" if true, it means the mod will look for that very specific content, if not, the method will look for all contents.
+     * @param bool $sender the person who fired up the alert, commonly know as the "sender".
+     * @return integer The ID if there is a match, 0 if there is none.
+     */
 	public function notiSpam($user, $type, $id = false, $sender = false)
 	{
 		global $smcFunc;
@@ -1090,14 +1099,14 @@ class BreezeQuery
 		], $params, ['id_alert']);
 	}
 
-	/**
-	 * BreezeQuery::updateAlert()
-	 *
-	 * Updates an existing user alert with new data
-	 * @param array a column => new value array
-	 * @param int|array a single ID or an array of IDs
-	 * @return
-	 */
+    /**
+     * BreezeQuery::updateAlert()
+     *
+     * Updates an existing user alert with new data
+     * @param $params
+     * @param $id
+     * @return bool
+     */
 	public function updateAlert($params, $id)
 	{
 		global $smcFunc;
@@ -1121,13 +1130,14 @@ class BreezeQuery
 		);
 	}
 
-	/**
-	 * BreezeQuery::updateProfileViews()
-	 *
-	 * Updates the member profile views count
-	 * @param int $id the user ID
-	 * @param string $json_string a json string
-	 */
+    /**
+     * BreezeQuery::updateProfileViews()
+     *
+     * Updates the member profile views count
+     * @param int $id the user ID
+     * @param $array
+     * @return bool
+     */
 	public function updateProfileViews($id, $array)
 	{
 		global $smcFunc;
@@ -1277,13 +1287,13 @@ class BreezeQuery
 		return $return;
 	}
 
-	/**
-	 * BreezeQuery::loadMinimalData()
-	 *
-	 * Quick and dirty way to get an user's name, link and if available, gender.
-	 * @param array $user(s) the user ID
-	 * @return array containing the following info:  id as key, name, username, link and id.
-	 */
+    /**
+     * BreezeQuery::loadMinimalData()
+     *
+     * Quick and dirty way to get an user's name, link and if available, gender.
+     * @param $users
+     * @return array containing the following info:  id as key, name, username, link and id.
+     */
 	public function loadMinimalData($users)
 	{
 		global $txt, $smcFunc;

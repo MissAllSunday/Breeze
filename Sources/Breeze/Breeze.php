@@ -154,13 +154,13 @@ class Breeze extends \Pimple\Container
 			require_once ($sourcedir . '/' . $file . '.php');
 	}
 
-	/**
-	 * $this->_app->data()
-	 *
-	 * A new instance of BreezeGlobals.
-	 * @param string $var Either post, request or get
-	 * @return object Access to BreezeGlobals
-	 */
+    /**
+     * $this->_app->data()
+     *
+     * A new instance of BreezeGlobals.
+     * @param bool $var Either post, request or get
+     * @return object Access to BreezeGlobals
+     */
 	public static function data($var = false)
 	{
 		return new BreezeData($var = false);
@@ -525,12 +525,13 @@ class Breeze extends \Pimple\Container
 		die();
 	}
 
-	/**
-	 * \Breeze\Breeze::profilePopUp()
-	 *
-	 * Adds a few new entries on the pop up menu stuff.
-	 * @return void
-	 */
+    /**
+     * \Breeze\Breeze::profilePopUp()
+     *
+     * Adds a few new entries on the pop up menu stuff.
+     * @param $profile_items
+     * @return void
+     */
 	public function profilePopUp(&$profile_items)
 	{
 		global $user_info, $txt;
@@ -811,14 +812,13 @@ class Breeze extends \Pimple\Container
 		}
 	}
 
-	/**
-	 * \Breeze\Breeze::getFeed()
-	 *
-	 * Proxy function to avoid Cross-origin errors.
-	 *
-	 * @param array $admin_menu An array with all the admin settings buttons
-	 *
-	 */
+    /**
+     * \Breeze\Breeze::getFeed()
+     *
+     * Proxy function to avoid Cross-origin errors.
+     *
+     * @return string
+     */
 	public function getFeed()
 	{
 		global $sourcedir;

@@ -19,12 +19,11 @@ class BreezeData
 {
 	protected $_request;
 
-	/**
-	 * BreezeData::__construct()
-	 *
-	 * @param string $type
-	 * @return
-	 */
+    /**
+     * BreezeData::__construct()
+     *
+     * @param bool $type
+     */
 	public function __construct($type = false)
 	{
 		if (!empty($type))
@@ -40,12 +39,12 @@ class BreezeData
 			$this->_request = $_REQUEST;
 	}
 
-	/**
-	 * BreezeData::get()
-	 *
-	 * @param mixed $value
-	 * @return
-	 */
+    /**
+     * BreezeData::get()
+     *
+     * @param mixed $value
+     * @return array|bool|int|mixed|string
+     */
 	public function get($value)
 	{
 		if ($this->validate($value))
@@ -55,12 +54,12 @@ class BreezeData
 			return false;
 	}
 
-	/**
-	 * BreezeData::getRaw()
-	 *
-	 * @param mixed $value
-	 * @return
-	 */
+    /**
+     * BreezeData::getRaw()
+     *
+     * @param mixed $value
+     * @return bool
+     */
 	public function getRaw($value)
 	{
 		if (isset($this->_request[$value]))
@@ -75,23 +74,23 @@ class BreezeData
 		return $this->_request;
 	}
 
-	/**
-	 * BreezeData::validate()
-	 *
-	 * @param mixed $var
-	 * @return
-	 */
+    /**
+     * BreezeData::validate()
+     *
+     * @param mixed $var
+     * @return bool
+     */
 	public function validate($var)
 	{
 		return (isset($this->_request[$var]));
 	}
 
-	/**
-	 * BreezeData::validateBody()
-	 *
-	 * @param mixed $var
-	 * @return
-	 */
+    /**
+     * BreezeData::validateBody()
+     *
+     * @param mixed $var
+     * @return bool|mixed
+     */
 	public function validateBody($var)
 	{
 		global $sourcedir;
@@ -110,23 +109,23 @@ class BreezeData
 		}
 	}
 
-	/**
-	 * BreezeData::unsetVar()
-	 *
-	 * @param mixed $var
-	 * @return
-	 */
+    /**
+     * BreezeData::unsetVar()
+     *
+     * @param mixed $var
+     * @return void
+     */
 	public function unsetVar($var)
 	{
 		unset($this->_request[$var]);
 	}
 
-	/**
-	 * BreezeData::sanitize()
-	 *
-	 * @param mixed $var
-	 * @return
-	 */
+    /**
+     * BreezeData::sanitize()
+     *
+     * @param mixed $var
+     * @return array|bool|int|mixed|string
+     */
 	public function sanitize($var)
 	{
 		global $smcFunc;

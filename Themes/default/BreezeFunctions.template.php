@@ -10,6 +10,7 @@
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
+
 function breeze_status($data, $returnVar = false)
 {
 	global $context, $txt, $user_info, $scripturl;
