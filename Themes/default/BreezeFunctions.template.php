@@ -301,11 +301,11 @@ function template_userDiv()
 		<meta name="robots" content="noindex">
 		<title>', $context['page_title'], '</title>
 		<link rel="stylesheet" type="text/css" href="', $settings['theme_url'], '/css/index', $context['theme_variant'], '.css', $modSettings['browser_cache'] ,'">
-		<script src="', $settings['default_theme_url'], '/scripts/script.js', $modSettings['browser_cache'] ,'"></script>
+		<script src="', $settings['default_theme_url'], '/scripts/script.js', $modSettings['browser_cache'] , '"></script>
 	</head>
-	<body id="help_popup">
-		<div class="description breezeInfo">
-			<div id="basicinfo">';
+	<body; id="help_popup">
+		<div; class="description breezeInfo">
+			<div; id="basicinfo">';
 
 	// Are there any custom profile fields for above the name?
 	if (!empty($context['print_custom_fields']['above_member']))
@@ -513,11 +513,11 @@ function template_mood_change()
 		<meta name="robots" content="noindex">
 		<title>', $context['page_title'], '</title>
 		<link rel="stylesheet" type="text/css" href="', $settings['theme_url'], '/css/index', $context['theme_variant'], '.css', $modSettings['browser_cache'] ,'">
-		<script src="', $settings['default_theme_url'], '/scripts/script.js', $modSettings['browser_cache'] ,'"></script>
+		<script src="', $settings['default_theme_url'], '/scripts/script.js', $modSettings['browser_cache'] , '"></script>
 	</head>
-	<body id="breeze_mood_popup">
-		<div class="windowbg">
-			<table class="bbc_table">
+	<body; id="breeze_mood_popup">
+		<div; class="windowbg">
+			<table; class="bbc_table">
 				<tr>';
 
 		foreach ($context['moods'] as $m)
