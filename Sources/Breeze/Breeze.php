@@ -84,7 +84,6 @@ class Breeze extends \Pimple\Container
 	/**
 	 * \Breeze\Breeze::__construct()
 	 *
-	 * @return \Breeze
 	 */
 	public function __construct()
 	{
@@ -681,7 +680,7 @@ class Breeze extends \Pimple\Container
 	 * \Breeze\Breeze::notiHeaders()
 	 *
 	 * Used to embed the JavaScript and other bits of code on every page inside SMF.
-	 * @return void
+	 * @return boolean
 	 */
 	public function notiHeaders()
 	{
@@ -819,11 +818,10 @@ class Breeze extends \Pimple\Container
 	 *
 	 * @param array $admin_menu An array with all the admin settings buttons
 	 *
-	 * @return void
 	 */
 	public function getFeed()
 	{
-		global $sourcedir, $smcFunc, $context;
+		global $sourcedir;
 
 		require_once($sourcedir . '/Class-CurlFetchWeb.php');
 
