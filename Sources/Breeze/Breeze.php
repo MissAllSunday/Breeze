@@ -41,7 +41,7 @@ class Breeze extends \Pimple\Container
 	public static $version = '1.1';
 	public static $folder = '/Breeze/';
 	public static $coversFolder = '/breezeFiles/';
-	public static $txtpattern = 'Breeze_';
+	public $txtpattern = 'Breeze_';
 	public static $permissions = [
 		'deleteComments',
 		'deleteOwnComments',
@@ -156,7 +156,7 @@ class Breeze extends \Pimple\Container
 	}
 
 	/**
-	 * $this->_app->data()
+	 * $this->data()
 	 *
 	 * A new instance of BreezeGlobals.
 	 * @param string $var Either post, request or get
@@ -365,10 +365,8 @@ class Breeze extends \Pimple\Container
 	public function actions(&$actions)
 	{
 		// Don't do anything if the mod is off
-		if (!$this['tools']->enable('master'))
-			return;
-
-		// Fool the system and directly inject the main object to breezeAjax and breezeWall, Breeze's final classes
+//		if (!$this['tools']->enable('master'))
+//			return;
 
 		// A whole new action just for some ajax calls. Actually, a pretty good chunk of Breeze transactions come through here so...
 		$actions['breezeajax'] = [false, '\Breeze\Breeze::call#'];
@@ -432,10 +430,10 @@ class Breeze extends \Pimple\Container
 		global $smcFunc, $modSettings, $maintenance;
 
 		// Get the user ID.
-		$useriD = $this->_app->data('get')->get('u');
+		$useriD = $this->data('get')->get('u');
 
 		// Thumbnail?
-		$thumb = $this->_app->data('get')->validate('thumb');
+		$thumb = $this->data('get')->validate('thumb');
 
 		// Kinda need this!
 		if (!$this['tools']->enable('cover') || empty($useriD))
@@ -688,7 +686,7 @@ class Breeze extends \Pimple\Container
 		global $context, $user_info, $settings;
 
 		// Some files are only needed on specific places.
-		$action = str_replace('breeze', '', $this->_app->data('get')->get('action'));
+		$action = str_replace('breeze', '', $this->data('get')->get('action'));
 
 		// So, what are we going to do?
 		$doAction = in_array($action, $this->wrapperActions) || $action == 'profile';
@@ -724,7 +722,7 @@ class Breeze extends \Pimple\Container
 
 		$tools = $this['tools'];
 		$userSettings = $this['query']->getUserSettings($user_info['id']);
-		$data = $this->_app->data('get');
+		$data = $this->data('get');
 
 		$generalSettings = '';
 		$generalText = '';
@@ -816,14 +814,11 @@ class Breeze extends \Pimple\Container
 	 * \Breeze\Breeze::getFeed()
 	 *
 	 * Proxy function to avoid Cross-origin errors.
-	 *
-	 * @param array $admin_menu An array with all the admin settings buttons
-	 *
-	 * @return void
+	 * @return string
 	 */
 	public function getFeed()
 	{
-		global $sourcedir, $smcFunc, $context;
+		global $sourcedir;
 
 		require_once($sourcedir . '/Class-CurlFetchWeb.php');
 

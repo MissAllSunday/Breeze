@@ -17,7 +17,7 @@ if (!defined('SMF'))
 
 class BreezeAdmin
 {
-	public function __construct($app)
+	public function __construct(Breeze $app)
 	{
 		$this->_app = $app;
 
