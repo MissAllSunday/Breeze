@@ -398,7 +398,7 @@ class Breeze extends \Pimple\Container
 	public function call()
 	{
 		// Just some quick code to make sure this works...
-		$action = str_replace('breeze', '', $this->_app->data('get')->get('action'));
+		$action = str_replace('breeze', '', $this->data('get')->get('action'));
 
 		// Don't do anything if the mod is off
 		if (!$this['tools']->enable('master') && $action != 'admin')
