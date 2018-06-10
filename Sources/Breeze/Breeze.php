@@ -364,9 +364,14 @@ class Breeze extends \Pimple\Container
 	 */
 	public function actions(&$actions)
 	{
+
+
+		// proxy, allow this action even if the master setting is off
+		$actions['breezefeed'] = [false, '\Breeze\Breeze::getFeed#'];
+
 		// Don't do anything if the mod is off
-//		if (!$this['tools']->enable('master'))
-//			return;
+		if (!$this['tools']->enable('master'))
+			return;
 
 		// A whole new action just for some ajax calls. Actually, a pretty good chunk of Breeze transactions come through here so...
 		$actions['breezeajax'] = [false, '\Breeze\Breeze::call#'];
@@ -382,9 +387,6 @@ class Breeze extends \Pimple\Container
 
 		// Displaying the users cover/thumbnail.
 		$actions['breezecover'] = [false, '\Breeze\Breeze::displayCover#'];
-
-		// proxy
-		$actions['breezefeed'] = [false, '\Breeze\Breeze::getFeed#'];
 	}
 
 	/**
