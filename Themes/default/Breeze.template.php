@@ -424,7 +424,7 @@ function template_general_wall()
 
 		// An empty div to append the loaded status via AJAX.
 	echo '
-			<div id="breezeAppendTo" style="display:hide;"></div>';
+			<div id="breezeAppendTo" style="display:none;"></div>';
 
 	// Pagination
 	if (!empty($context['page_index']))

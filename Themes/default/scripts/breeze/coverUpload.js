@@ -50,7 +50,7 @@ $(function() {
 
 	myDropzone.on('addedfile', function(file) {
 
-		_thisElement = $(file.previewElement);
+		var _thisElement = $(file.previewElement);
 
 		// Hookup the start button.
 		_thisElement.find('.start').on( 'click', function() {
@@ -69,7 +69,7 @@ $(function() {
 
 	myDropzone.on('error', function(file, errorMessage, xhr) {
 
-		_thisElement = $(file.previewElement);
+		var _thisElement = $(file.previewElement);
 
 		// Remove the "start" button.
 		_thisElement.find('.start').remove();
@@ -80,7 +80,7 @@ $(function() {
 
 	myDropzone.on('success', function(file, responseText, e) {
 
-		_thisElement = $(file.previewElement);
+		var _thisElement = $(file.previewElement);
 		// The request was complete but the server returned an error.
 		if (typeof(responseText.error) != "undefined"){
 
@@ -106,7 +106,7 @@ $(function() {
 
 	myDropzone.on('uploadprogress', function(file, progress, bytesSent) {
 
-		_thisElement = $(file.previewElement);
+		var _thisElement = $(file.previewElement);
 
 		// Get the current file box progress bar, set its inner span's width accordingly.
 		_thisElement.find('p.progressBar span').width(progress + '%');
@@ -114,7 +114,7 @@ $(function() {
 
 	myDropzone.on('complete', function(file) {
 
-		_thisElement = $(file.previewElement);
+		var _thisElement = $(file.previewElement);
 
 		// Hide the progress bar.
 		_thisElement.find('p.progressBar').fadeOut();
@@ -130,7 +130,7 @@ $(function() {
 
 	myDropzone.on('sending', function(file) {
 
-		_thisElement = $(file.previewElement);
+		var _thisElement = $(file.previewElement);
 
 		// Show the progress bar when upload starts.
 		_thisElement.find('p.progressBar').fadeIn();

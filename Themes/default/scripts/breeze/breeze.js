@@ -38,10 +38,10 @@ $(function() {
 		var breezeStatus = new breezePost('status', this);
 
 		// Validate everything.
-		valid = breezeStatus.validate();
+		var valid = breezeStatus.validate();
 
 		// Leeloo Dallas multipass...
-		if (valid != false)
+		if (valid !== false)
 			breezeStatus.save();
 
 		return false;
@@ -56,9 +56,9 @@ $(function() {
 		var breezeComment = new breezePost('comment', this);
 
 		// Validate everything.
-		valid = breezeComment.validate();
+		var valid = breezeComment.validate();
 
-		if (valid != false && breezeComment.data){
+		if (valid !== false && breezeComment.data){
 			breezeComment.save();
 		}
 
@@ -74,8 +74,8 @@ $(function() {
 		var thisObject = $(this);
 
 		// Get the ID
-		postId = parseInt(thisObject.data('bid'));
-		postUrl = thisObject.attr('href');
+		var postId = parseInt(thisObject.data('bid'));
+		var postUrl = thisObject.attr('href');
 
 		// Show a confirmation message
 		noty({
@@ -95,7 +95,7 @@ $(function() {
 						success: function(html){
 							$noty.close();
 
-							if (typeof(html.type) !== 'undefined' && html.type == 'info') {
+							if (typeof(html.type) !== 'undefined' && html.type === 'info') {
 								$('#' + html.data).fadeOut('slow');
 							}
 

@@ -25,12 +25,12 @@ class BreezeBuddy
 	protected $_call = '';
 	protected $_data = false;
 
-	/**
-	 * BreezeBuddy::__construct()
-	 *
-	 * Sets all the needed vars, loads the language file.
-	 * @return void
-	 */
+    /**
+     * BreezeBuddy::__construct()
+     *
+     * Sets all the needed vars, loads the language file.
+     * @param $app
+     */
 	public function __construct($app)
 	{
 		$this->_app = $app;
@@ -130,7 +130,7 @@ class BreezeBuddy
 			$this->receiverSettings['petitionList'][$this->_userSender['id']] = !empty($buddyMessage['content']) ? $buddyMessage['content'] : '';
 
 			// Store the new petition list.
-			$this->_app['query']->insertUserSettings(['petitionList' => $this->receiverSettings['petitionList']), $this->_userReceiver];
+			$this->_app['query']->insertUserSettings(['petitionList' => $this->receiverSettings['petitionList']], $this->_userReceiver);
 
 			// Create a nice alert to let the user know you want to be his/her buddy!
 			$this->_app['query']->insertNoti([
@@ -141,7 +141,7 @@ class BreezeBuddy
 				'text' => 'confirm',
 				'sender' => $this->_userSender['id'],
 				'receiver' => $this->_userReceiver,
-			), 'buddyConfirm'];
+			], 'buddyConfirm');
 
 			// Get the receiver's link
 			$this->_app['tools']->loadUserInfo($this->_userReceiver);
@@ -176,7 +176,7 @@ class BreezeBuddy
 
 		// Session stuff.
 		$this->_app['form']->addHiddenField($context['session_var'], $context['session_id']);
-		$this->_app['form']->addButton(['name' => 'submit')];
+		$this->_app['form']->addButton(['name' => 'submit']);
 
 		$this->_response = $this->_app['form']->display();
 	}
@@ -433,7 +433,7 @@ class BreezeBuddy
 		// Add the user.
 		$blockList[] = $this->_senderConfirm;
 
-		$this->_app['query']->insertUserSettings(['blockList' => implode(',', $blockList)), $this->_receiverConfirm['id']];
+		$this->_app['query']->insertUserSettings(['blockList' => implode(',', $blockList)], $this->_receiverConfirm['id']);
 
 		$this->_response = $this->_app['tools']->text('buddy_blocked_done');
 	}

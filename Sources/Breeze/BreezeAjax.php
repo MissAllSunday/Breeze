@@ -25,12 +25,12 @@ class BreezeAjax
 	protected $_currentUser;
 	protected $_app;
 
-	/**
-	 * BreezeAjax::__construct()
-	 *
-	 * Sets all the needed vars, loads the language file
-	 * @return void
-	 */
+    /**
+     * BreezeAjax::__construct()
+     *
+     * Sets all the needed vars, loads the language file
+     * @param $app
+     */
 	public function __construct($app)
 	{
 		$this->_app = $app;
@@ -127,12 +127,12 @@ class BreezeAjax
 			fatal_lang_error('Breeze_error_no_valid_action', false);
 	}
 
-	/**
-	 * BreezeAjax::post()
-	 *
-	 * Gets the data from the client and stores a new status in the DB using BreezeQuery object.
-	 * @return
-	 */
+    /**
+     * BreezeAjax::post()
+     *
+     * Gets the data from the client and stores a new status in the DB using BreezeQuery object.
+     * @return void
+     */
 	public function post()
 	{
 		// Build plain normal vars...
@@ -250,12 +250,12 @@ class BreezeAjax
 			return $this->setResponse(['owner' => $owner,]);
 	}
 
-	/**
-	 * BreezeAjax::postComment()
-	 *
-	 * Gets the data from the client and stores a new comment in the DB.
-	 * @return
-	 */
+    /**
+     * BreezeAjax::postComment()
+     *
+     * Gets the data from the client and stores a new comment in the DB.
+     * @return void
+     */
 	public function postComment()
 	{
 		$this->_data = $this->_app->data('request');
@@ -384,12 +384,12 @@ class BreezeAjax
 			return $this->setResponse(['owner' => $owner, 'type' => 'error',]);
 	}
 
-	/**
-	 * BreezeAjax::delete()
-	 *
-	 * Handles the deletion of both comments an status
-	 * @return
-	 */
+    /**
+     * BreezeAjax::delete()
+     *
+     * Handles the deletion of both comments an status
+     * @return void
+     */
 	public function delete()
 	{
 		// Set some much needed vars
@@ -447,12 +447,12 @@ class BreezeAjax
 		));
 	}
 
-	/**
-	 * BreezeAjax::userSettings()
-	 *
-	 * Saves the current user settings into the DB.
-	 * @return
-	 */
+    /**
+     * BreezeAjax::userSettings()
+     *
+     * Saves the current user settings into the DB.
+     * @return void
+     */
 	public function userSettings()
 	{
 		$toSave = [];
@@ -512,12 +512,12 @@ class BreezeAjax
 		));
 	}
 
-	/**
-	 * BreezeAjax::fetchStatus()
-	 *
-	 * Used for pagination, gets X amount of status from either a single wall or an array of buddies IDs.
-	 * @return
-	 */
+    /**
+     * BreezeAjax::fetchStatus()
+     *
+     * Used for pagination, gets X amount of status from either a single wall or an array of buddies IDs.
+     * @return void
+     */
 	public function fetchStatus()
 	{
 		global $context;
@@ -647,12 +647,12 @@ class BreezeAjax
 			));
 	}
 
-	/**
-	 * BreezeAjax::cover()
-	 *
-	 * Gets an HTTP request for uploading and storing a new cover image. Checks if the user has permission to do so, checks the image itself and all other possible checks.
-	 * @return
-	 */
+    /**
+     * BreezeAjax::cover()
+     *
+     * Gets an HTTP request for uploading and storing a new cover image. Checks if the user has permission to do so, checks the image itself and all other possible checks.
+     * @return void
+     */
 	public function cover()
 	{
 		$data = $this->_app->data('get');
@@ -906,12 +906,12 @@ class BreezeAjax
 		));
 	}
 
-	/**
-	 * BreezeAjax::returnResponse()
-	 *
-	 * Returns a json encoded response back to the browser. Check and redirects an user if they aren't using JS.
-	 * @return
-	 */
+    /**
+     * BreezeAjax::returnResponse()
+     *
+     * Returns a json encoded response back to the browser. Check and redirects an user if they aren't using JS.
+     * @return
+     */
 	protected function returnResponse()
 	{
 		global $modSettings;
@@ -955,12 +955,13 @@ class BreezeAjax
 		obExit(false);
 	}
 
-	/**
-	 * BreezeAjax::setResponse()
-	 *
-	 * Creates a valid array with the data provided by each callable method.
-	 * @return
-	 */
+    /**
+     * BreezeAjax::setResponse()
+     *
+     * Creates a valid array with the data provided by each callable method.
+     * @param array $data
+     * @return void
+     */
 	protected function setResponse($data = [])
 	{
 		// Fill out a generic response.
@@ -982,12 +983,12 @@ class BreezeAjax
 		$this->_response['message'] = !empty($message) ? $message : $data['message'];
 	}
 
-	/**
-	 * BreezeAjax::setRedirect()
-	 *
-	 * Set a valid url with the params provided.
-	 * @return
-	 */
+    /**
+     * BreezeAjax::setRedirect()
+     *
+     * Set a valid url with the params provided.
+     * @return void
+     */
 	protected function setRedirect()
 	{
 		$messageString = '';

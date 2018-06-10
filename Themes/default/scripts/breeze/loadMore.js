@@ -32,7 +32,7 @@ breezeLoadMore.prototype.showMoarButton = function()
 	}).appendTo(oObject.options.button.appendTo).on('click', function(){
 		oObject.clickButton();
 	});
-}
+};
 
 breezeLoadMore.prototype.clickButton = function()
 {
@@ -52,7 +52,7 @@ breezeLoadMore.prototype.clickButton = function()
 	}).appendTo(this.options.target.appendTo).hide();
 
 	// Let us pass some data to the server.
-	passingData = {
+	var passingData = {
 		numberTimes : this.numberOfEvents,
 		comingFrom : breeze.tools.comingFrom,
 	};
@@ -75,7 +75,7 @@ breezeLoadMore.prototype.clickButton = function()
 			ajax_indicator(false);
 		}
 	});
-}
+};
 
 breezeLoadMore.prototype.onSuccess = function(html)
 {
@@ -112,4 +112,4 @@ breezeLoadMore.prototype.onSuccess = function(html)
 	}
 
 	ajax_indicator(false);
-}
+};

@@ -102,7 +102,7 @@ class BreezeMood
 			return false;
 
 		// Go get 'em, Tiger!
-		$this->read(false);
+		$this->read();
 	}
 
 	public function getUserHistory($user)
@@ -118,7 +118,7 @@ class BreezeMood
 		unset($temp);
 
 		// Go get 'em, Tiger!
-		$this->read(false);
+		$this->read();
 
 		foreach ($history as $id => $date)
 			if (isset($this->_moods[$id]) && $this->_moods[$id]['enable'] && $this->checkImage($this->_moods[$id]['file']))

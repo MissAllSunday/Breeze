@@ -359,15 +359,15 @@ class BreezeTools
 			return $loadedIDs;
 	}
 
-	/**
-	 * BreezeTools::permissions()
-	 *
-	 * Handles status/comments related permissions, it does it on a case per case basics.
-	 * @param string $type Either a comment or a status.
-	 * @param integer $profileOwner the profile where this status/comment was posted.
-	 * @param integer $userPoster The person who posted this status/comment
-	 * @return array all possible permissions as integer values. 0 can't, 1 can.
-	 */
+    /**
+     * BreezeTools::permissions()
+     *
+     * Handles status/comments related permissions, it does it on a case per case basics.
+     * @param string $type Either a comment or a status.
+     * @param bool $profileOwner the profile where this status/comment was posted.
+     * @param bool $userPoster The person who posted this status/comment
+     * @return array all possible permissions as integer values. 0 can't, 1 can.
+     */
 	public function permissions($type, $profileOwner = false, $userPoster = false)
 	{
 		global $user_info;

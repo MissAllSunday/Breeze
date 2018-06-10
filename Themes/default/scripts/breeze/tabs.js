@@ -23,20 +23,21 @@ breezeTabs.prototype.init = function(){
 		tabs[currentName] = {
 			href : $(this).find('a').attr('href'),
 			name : currentName,
-			active : (currentName == listObject.defaultTab)
+			active : (currentName === listObject.defaultTab)
 		};
 
 		// Hide all tabs by default
-		if (tabs[currentName].active != true){
+		if (tabs[currentName].active !== true){
 			$(tabs[currentName].href).hide();
 		}
 
 		$(this).find('a').on('click', false, function(e){
 
-			var thisAnchor = $(this);
+			var thisAnchor = $(this),
+                currentActive;
 
 			// Is it active already?
-			if (tabs[currentName].active != true){
+			if (tabs[currentName].active !== true){
 				currentActive = listObject.getCurrentActive(tabs);
 
 				// Tell whatever tab is active at the moment to get lost...
@@ -67,7 +68,7 @@ breezeTabs.prototype.getCurrentActive = function (tabs){
 
 		for (key in tabs) {
 			if (tabs.hasOwnProperty(key)) {
-				if (tabs[key].active == true){
+				if (tabs[key].active === true){
 					output = tabs[key].name;
 				}
 			}

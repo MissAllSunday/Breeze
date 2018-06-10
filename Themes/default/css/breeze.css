@@ -7,10 +7,9 @@
 	left: 0;
 	bottom: 0;
 	right: 0;
-	background-position: top center;
-	background-repeat: no-repeat;
-	background-attachment: inherit;
-	background-size: cover;
+    background: no-repeat top center;
+    background-attachment: inherit;
+    background-size: cover;
 	margin-bottom:50px;
 	min-height: 280px;
 	max-height: 580px;
