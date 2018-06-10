@@ -684,9 +684,9 @@ class BreezeQuery
      * BreezeQuery::insertStatus()
      *
      * @param mixed $array
-     * @return mixed
+     * @return int
      */
-	public function insertStatus($array)
+	public function insertStatus($array): int
 	{
 		global $smcFunc;
 
@@ -697,6 +697,7 @@ class BreezeQuery
 			'status_poster_id' => 'int',
 			'status_time' => 'int',
 			'status_body' => 'string',
+			'likes' => 'int',
 			), $array, ['status_id', ]);
 
 		// Get the newly created status ID

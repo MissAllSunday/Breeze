@@ -179,6 +179,7 @@ class BreezeAjax
 				'poster_id' => $poster,
 				'time' => time(),
 				'body' => $body,
+				'likes' => 0,
 			);
 
 			// Maybe a last minute change before inserting the new status?
