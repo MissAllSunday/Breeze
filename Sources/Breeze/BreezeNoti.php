@@ -35,7 +35,7 @@ class BreezeNoti
 		$this->_details = $details;
 
 		// Gotta remove the identifier...
-		$call = str_replace(Breeze::$txtpattern, '', $this->_details['content_type']);
+		$call = str_replace($this->_app->txtpattern, '', $this->_details['content_type']);
 
 		// Call the appropriated method.
 		if (method_exists($this, $call))
@@ -287,18 +287,18 @@ class BreezeNoti
 		require_once($this->_app['tools']->sourceDir . '/Mentions.php');
 
 		// Insert the mention.
-		Mentions::insertMentions(Breeze::$txtpattern . $this->_details['innerType'], $this->_details['id'], $this->_details['users'], $this->_details['poster_id']);
+		Mentions::insertMentions($this->_app->txtpattern . $this->_details['innerType'], $this->_details['id'], $this->_details['users'], $this->_details['poster_id']);
 
 		// Get the preferences of those who were mentioned.
-		$prefs = getNotifyPrefs(array_keys($this->_details['users']), Breeze::$txtpattern . $this->_details['content_type'], true);
+		$prefs = getNotifyPrefs(array_keys($this->_details['users']), $this->_app->txtpattern . $this->_details['content_type'], true);
 
-		$mentionedMembers = Mentions::getMentionsByContent(Breeze::$txtpattern . $this->_details['innerType'], $this->_details['id'], array_keys($this->_details['users']));
+		$mentionedMembers = Mentions::getMentionsByContent($this->_app->txtpattern . $this->_details['innerType'], $this->_details['id'], array_keys($this->_details['users']));
 
 		if (!empty($mentionedMembers))
 			foreach ($mentionedMembers as $id => $member)
 			{
 				// Does this user wants to be notified?
-				if (empty($prefs[$id][Breeze::$txtpattern . $this->_details['content_type']]))
+				if (empty($prefs[$id][$this->_app->txtpattern . $this->_details['content_type']]))
 					continue;
 
 				$url = '?action=wall;sa=single;u=' . $this->_details['profile_id'] .';bid='. (!empty($this->_details['status_id']) ? ($this->_details['status_id'] .';cid='. $this->_details['id']) : $this->_details['id']);

@@ -729,6 +729,7 @@ class BreezeQuery
 			'comments_profile_id' => 'int',
 			'comments_time' => 'int',
 			'comments_body' => 'string',
+			'likes' => 'int',
 			), $array, ['comments_id', ]);
 
 		// Get the newly created comment ID
@@ -1021,7 +1022,7 @@ class BreezeQuery
 			return false;
 
 		// Gotta append a type so we can pretend to know what we're doing...
-		$params['content_type'] = Breeze::$txtpattern . $type;
+		$params['content_type'] = $this->_app->txtpattern . $type;
 
 		$smcFunc['db_insert']('insert',
 			'{db_prefix}background_tasks',
@@ -1051,7 +1052,7 @@ class BreezeQuery
 
 		$result = false;
 
-		$type = Breeze::$txtpattern . $type;
+		$type = $this->_app->txtpattern . $type;
 
 		$request = $smcFunc['db_query']('', '
 			SELECT id_alert
@@ -1084,8 +1085,8 @@ class BreezeQuery
 			return false;
 
 		// Check if the noti added the unique identifier, if not, added it!
-		if (strpos($params['content_type'], Breeze::$txtpattern) !== false)
-			$params['content_type'] = Breeze::$txtpattern . $params['content_type'];
+		if (strpos($params['content_type'], $this->_app->txtpattern) !== false)
+			$params['content_type'] = $this->_app->txtpattern . $params['content_type'];
 
 		$smcFunc['db_insert']('insert', '{db_prefix}' . ($this->_tables['alerts']['table']) .'', [
 			'alert_time' => 'int', 

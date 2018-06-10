@@ -38,7 +38,7 @@ class BreezeAlerts
 		$toLoad = [];
 
 		foreach ($alerts as $id => $a)
-			if (strpos($a['content_type'], Breeze::$txtpattern) !== false && !empty($a['extra']['toLoad']))
+			if (strpos($a['content_type'], $this->_app->txtpattern) !== false && !empty($a['extra']['toLoad']))
 				$toLoad = array_merge($toLoad, $a['extra']['toLoad']);
 
 		if (!empty($toLoad))
@@ -51,10 +51,10 @@ class BreezeAlerts
 
 		// What type are we gonna handle? oh boy there are a lot!
 		foreach ($alerts as $id => $a)
-			if (strpos($a['content_type'], Breeze::$txtpattern) !== false)
+			if (strpos($a['content_type'], $this->_app->txtpattern) !== false)
 			{
 				// Need to remove the Breeze identifier.
-				$a['content_type'] = str_replace(Breeze::$txtpattern, '', $a['content_type']);
+				$a['content_type'] = str_replace($this->_app->txtpattern, '', $a['content_type']);
 
 				// Append the sender's avatar if there is one.
 				$alerts[$id]['sender'] = !empty($this->_usersData[$a['sender_id']]) ? $this->_usersData[$a['sender_id']] : [];

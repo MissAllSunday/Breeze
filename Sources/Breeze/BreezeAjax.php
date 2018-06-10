@@ -313,6 +313,7 @@ class BreezeAjax
 				'profile_id' => $owner,
 				'time' => time(),
 				'body' => $body,
+				'likes' => 0,
 			);
 
 			// Before inserting the comment...
