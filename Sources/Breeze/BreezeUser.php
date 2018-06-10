@@ -42,7 +42,7 @@ class BreezeUser extends Breeze
 		// We kinda need all this stuff, don't ask why, just nod your head...
 		$query = $this['query'];
 		$tools = $this['tools'];
-		$data = $this->_app->data('get');
+		$data = $this->data('get');
 		$log = $this['log'];
 		$usersToLoad = [];
 
@@ -275,7 +275,7 @@ class BreezeUser extends Breeze
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
 
-		$data = $this->_app->data('get');
+		$data = $this->data('get');
 		$tools = $this['tools'];
 
 		// Create the tabs for the template.
@@ -356,7 +356,7 @@ class BreezeUser extends Breeze
 		global $context, $scripturl, $txt;
 
 		$context['sub_template'] = 'alert_edit';
-		$data = $this->_app->data();
+		$data = $this->data();
 		$maxIndex = 10;
 		$start = (int) isset($_REQUEST['start']) ? $_REQUEST['start'] : 0;
 		$alerts =  $this['log']->get($context['member']['id'], $maxIndex, $start);
@@ -426,7 +426,7 @@ class BreezeUser extends Breeze
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
 
-		$data = $this->_app->data('get');
+		$data = $this->data('get');
 		$tools = $this['tools'];
 
 		// Is there an admin limit?
@@ -589,7 +589,7 @@ class BreezeUser extends Breeze
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
 
-		$data = $this->_app->data('get');
+		$data = $this->data('get');
 
 		// Set the page title
 		$context['page_title'] = $this['tools']->text('user_settings_name_cover');

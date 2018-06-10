@@ -31,7 +31,7 @@ class BreezeBuddy
      * Sets all the needed vars, loads the language file.
      * @param $app
      */
-	public function __construct($app)
+	public function __construct(Breeze $app)
 	{
 		$this->_app = $app;
 

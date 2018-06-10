@@ -26,7 +26,7 @@ class BreezeWall
      * Sets the needed properties, loads language and template files
      * @param $app
      */
-	public function __construct($app)
+	public function __construct(Breeze $app)
 	{
 		// Needed to show error strings
 		loadLanguage(Breeze::$name);

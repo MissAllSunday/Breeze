@@ -25,7 +25,7 @@ class BreezeMood
 	protected $_moods;
 	protected static $active = [];
 
-	function __construct($app)
+	function __construct(Breeze $app)
 	{
 		$this->_app = $app;
 

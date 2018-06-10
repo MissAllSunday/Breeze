@@ -26,7 +26,7 @@ class BreezeTools
 	public $boardUrl;
 	static $_users = [];
 
-	function __construct($app)
+	function __construct(Breeze $app)
 	{
 		global $sourcedir, $scripturl, $boardurl;
 		global $settings, $boarddir;

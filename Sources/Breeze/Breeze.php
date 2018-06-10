@@ -364,8 +364,6 @@ class Breeze extends \Pimple\Container
 	 */
 	public function actions(&$actions)
 	{
-
-
 		// proxy, allow this action even if the master setting is off
 		$actions['breezefeed'] = [false, '\Breeze\Breeze::getFeed#'];
 

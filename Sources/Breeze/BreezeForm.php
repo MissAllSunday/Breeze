@@ -22,7 +22,7 @@ class BreezeForm
 	protected $_app;
 	protected $_textPrefix = 'user_settings_';
 
-	function __construct($app)
+	function __construct(Breeze $app)
 	{
 		$this->_app = $app;
 		$this->_options = ['name' => '', 'url' => '', 'title' => '', 'desc' => '', 'character_set' => '',];

@@ -20,7 +20,7 @@ class BreezeNoti
 	protected $_app;
 	protected $_details;
 
-	public function __construct($app)
+	public function __construct(Breeze $app)
 	{
 		$this->_app = $app;
 

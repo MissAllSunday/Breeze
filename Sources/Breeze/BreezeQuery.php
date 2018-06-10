@@ -41,7 +41,7 @@ class BreezeQuery
      * Creates the needed properties.
      * @param $app
      */
-	public function __construct($app)
+	public function __construct(Breeze $app)
 	{
 		// Set everything
 		$this->_app = $app;
