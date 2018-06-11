@@ -703,7 +703,7 @@ class Breeze extends \Pimple\Container
 		if ($doAction)
 		{
 			loadCSSFile('breeze.css', ['force_current' => false, 'validate' => true]);
-			loadJavascriptFile('breeze/moment.min.js', ['local' => true, 'default_theme' => true, 'defer' => true]);
+			loadJavascriptFile('breeze/moment.min.js', ['local' => true, 'default_theme' => true, 'defer' => true, 'async' => true]);
 			loadJavascriptFile('breeze/livestamp.min.js', ['local' => true, 'default_theme' => true, 'defer' => true, 'async' => true]);
 		}
 

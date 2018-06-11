@@ -90,8 +90,8 @@ div.username div
 
 .post_comment textarea{
 	box-sizing: border-box;
-	width: 80%;
-	height: 100px;
+	width: 100%;
+	min-height: 100px;
 	margin: 5px 0 5px 0;
 	float:right;
 }

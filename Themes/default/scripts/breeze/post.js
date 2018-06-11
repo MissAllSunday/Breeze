@@ -32,6 +32,10 @@ breezePost.prototype.after = function() {
 
 breezePost.prototype.show = function(html) {
 	var breezePostObject = this;
+
+    // Get the div where the message is going to appear.
+    var bInnerDiv = '#breeze_display_' + this.type + (this.data.statusID != false ? '_' + this.data.statusID : '');
+
 	breezePostObject.loadImage.fadeOut('slow', 'linear', function(){
 		if (html.type == 'info'){
 			if(breezePostObject.type == 'status'){
@@ -122,8 +126,10 @@ breezePost.prototype.save = function() {
 			breezePostObjectCall.show(html);
 		},
 		error: function (html) {
-			breeze.tools.showNoti(html);
-		}
+		},
+		complete: function (html) {
+            breeze.tools.showNoti(html);
+        }
 	});
 
 	this.after();
