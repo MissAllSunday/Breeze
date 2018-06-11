@@ -1,5 +1,7 @@
 <?php
 
+use Breeze\Breeze;
+
 /**
  * BreezeFunctions.template.php
  *
