@@ -30,9 +30,9 @@
 			'{db_prefix}members',
 			array(
 				'name' => 'breeze_profile_views',
-				'type' => 'text',
-				'size' => '',
-				'default' => null,
+				'type' => 'int',
+				'size' => 5,
+				'null' => false
 			),
 			[],
 			'update',
