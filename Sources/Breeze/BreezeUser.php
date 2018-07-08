@@ -823,7 +823,7 @@ class BreezeUser extends Breeze
 		// Do the normal check, do note this is not an elseif check, its separate.
 		else
 			if (empty($context['Breeze']['settings']['owner']['wall']))
-				redirectexit('action=profile;area=static;u='.$context['member']['id']);
+				redirectexit('action=profile;area=static;u='. $context['member']['id']);
 
 		// This user cannot see any profile.
 		if (!allowedTo('profile_view'))
@@ -838,5 +838,9 @@ class BreezeUser extends Breeze
 			if (in_array($user_info['id'], $ignored ))
 				redirectexit('action=profile;area=static;u='.$context['member']['id']);
 		}
+
+
+		// All passed, se a nice session var to make sure you are really you!
+		$_SESSION['Breeze']['owner'] = $context['member']['id'];
 	}
 }

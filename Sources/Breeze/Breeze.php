@@ -104,6 +104,7 @@ class Breeze extends \Pimple\Container
 	 */
 	protected function set()
 	{
+		// Set all of our services
 		foreach($this->_services as $s)
 		{
 			$this[$s] = function ($c) use ($s)
@@ -112,6 +113,9 @@ class Breeze extends \Pimple\Container
 				return new $call($c);
 			};
 		}
+
+		// ...and a nice session var, for reasons...
+		$_SESSION['Breeze'] = [];
 	}
 
 	/**

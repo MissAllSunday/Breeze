@@ -142,7 +142,7 @@ class BreezeAjax
 		$mentionedUsers = [];
 
 		// Sorry, try to play nicer next time
-		if (!$owner || !$poster || !$content)
+		if (!$owner || !$poster || !$content || $owner != $_SESSION['Breeze']['owner'])
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
@@ -169,7 +169,7 @@ class BreezeAjax
 			$content = Mentions::getBody($content, $mentionedUsers);
 		}
 
-		$body = $this->_data->validateBody($content);
+		$body = $this->_app['data']->validateBody($content);
 
 		// Do this only if there is something to add to the database
 		if (!empty($body))
@@ -270,7 +270,7 @@ class BreezeAjax
 		$mentionedUsers = [];
 
 		// Sorry, try to play nice next time
-		if (!$statusID || !$statusPoster || !$poster || !$owner || !$content)
+		if (!$statusID || !$statusPoster || !$poster || !$owner || !$content || $owner != $_SESSION['Breeze']['owner'])
 			return $this->setResponse(array(
 				'message' => 'wrong_values',
 				'type' => 'error',
