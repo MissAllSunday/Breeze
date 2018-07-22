@@ -440,10 +440,16 @@ class BreezeUser extends Breeze
 		$context['Breeze_redirect'] = '';
 
 		// Get the user settings.
-		$userSettings = $this['query']->getUserSettings($context['member']['id']);
+		$context['Breeze']['UserSettings'] = $userSettings = $this['query']->getUserSettings($context['member']['id']);
 
 		// Create the form.
 		$form = $this['form'];
+
+		// Load the user's info.
+		$tools->loadUserInfo(array_unique($userSettings['blockList']));
+
+		// We only need the block list users
+		$context['Breeze']['UserSettings']['blockListUserData'] = array_intersect_key($context['Breeze']['user_info'], array_flip($userSettings['blockList']));
 
 		// Group all these values into an array. Makes it easier to save the changes.
 		$form->setOptions(array(
@@ -460,13 +466,13 @@ class BreezeUser extends Breeze
 		// Per user master setting.
 		$form->addCheckBox(array(
 			'name' => 'wall',
-			'checked' => !empty($userSettings['wall']) ? true : false,
+			'checked' => !empty($userSettings['wall']),
 		));
 
 		// General wall setting.
 		$form->addCheckBox(array(
 			'name' => 'general_wall',
-			'checked' => !empty($userSettings['general_wall']) ? true : false,
+			'checked' => !empty($userSettings['general_wall']),
 		));
 
 		// Pagination.
@@ -488,13 +494,13 @@ class BreezeUser extends Breeze
 		// Add the load more button.
 		$form->addCheckBox(array(
 			'name' => 'load_more',
-			'checked' => !empty($userSettings['load_more']) ? true : false
+			'checked' => !empty($userSettings['load_more'])
 		));
 
 		// Activity Log.
 		$form->addCheckBox(array(
 			'name' => 'activityLog',
-			'checked' => !empty($userSettings['activityLog']) ? true : false
+			'checked' => !empty($userSettings['activityLog'])
 		));
 
 		// Only show this is the admin has enable the buddy feature.
@@ -503,15 +509,17 @@ class BreezeUser extends Breeze
 			// Allow ignored users.
 			$form->addCheckBox(array(
 				'name' => 'kick_ignored',
-				'checked' => !empty($userSettings['kick_ignored']) ? true : false
+				'checked' => !empty($userSettings['kick_ignored'])
 			));
 
 			// Block list.
-			$form->addText(array(
+			$form->addHTML(array(
 				'name' => 'blockList',
-				'value' => !empty($userSettings['blockList']) ? implode(',', $userSettings['blockList']) : '',
-				'size' => 20,
-				'maxlength' => 90,
+				'html' => '
+					<input type="text" name="breezeSettings[blockList]" id="blockList" value="" size="30">
+					<div id="to_item_list_container"></div>',
+				'size' => 30,
+				'maxlength' => 900,
 			));
 
 			// Buddies block.

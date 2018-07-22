@@ -307,11 +307,36 @@ function template_member_options()
 			sSelf: 'oBlockSuggest',
 			sSessionId: smf_session_id,
 			sSessionVar: smf_session_var,
-			sSuggestId: 'blockList',
+			sSuggestId: 'breezeSettings[blockList]',
 			sControlId: 'blockList',
 			sSearchType: 'member',
+			sPostName: 'breezeSettings[blockListIDs]',
+			sURLMask: 'action=profile;u=%item_id%',
 			sTextDeleteItem: '". $txt['autosuggest_delete_item'] ."',
-			bItemList: false
+			bItemList: true,
+			sItemListContainerId: 'to_item_list_container'";
+
+	if (!empty($context['Breeze']['UserSettings']['blockListUserData']))
+	{
+		echo ",
+			aListItems: [";
+
+		$blockIds = array_keys($context['Breeze']['UserSettings']['blockListUserData']);
+		$lastUserID = key($blockIds);
+
+		foreach ($context['Breeze']['UserSettings']['blockListUserData'] as $id => $userData)
+			echo '
+				{
+					sItemId: ', JavaScriptEscape($id), ',
+					sItemName: ', JavaScriptEscape($userData['name']), '
+				}', $id == $lastUserID ? '' : ',';
+
+		echo "
+			]";
+	}
+
+
+	echo "
 		});
 	</script>";
 }

@@ -484,18 +484,14 @@ class BreezeAjax
 				$toSave[$k] = $v;
 		}
 
-		// BlockList only allows numbers and commas.
-		if (!empty($toSave['blockList']))
+		// BlockList should be an array of IDs.
+		if (!empty($toSave['blockListIDs']))
 		{
-			$tempList = explode(',', preg_replace('/[^0-9,]/', '', $toSave['blockList']));
+			// Cast and remove empty values
+			$toSave['blockListIDs'] = array_map('intval', array_filter($toSave['blockListIDs']));
 
-			foreach ($tempList as $key => $value)
-				if ($value == '')
-					unset($tempList[$key]);
-
-			$toSave['blockList'] = implode(',', $tempList);
-
-			unset($tempList);
+			// Convert it to comma separated values
+			$toSave['blockList'] = implode(',', $toSave['blockListIDs']);
 		}
 
 		// Gotta make sure the user is respecting the admin limit for the about me block.
