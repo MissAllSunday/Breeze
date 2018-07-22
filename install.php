@@ -30,10 +30,10 @@
 			'{db_prefix}members',
 			[
 				'name' => 'breeze_profile_views',
-				'type' => 'varchar',
-				'size' => 255,
-				'Default' => '0',
-				'null' => false
+				'type' => 'int',
+				'size' => 5,
+				'null' => false,
+				'default' => 0
 			]
 		);
 
