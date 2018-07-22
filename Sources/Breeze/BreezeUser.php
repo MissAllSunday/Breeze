@@ -446,10 +446,10 @@ class BreezeUser extends Breeze
 		$form = $this['form'];
 
 		// Load the user's info.
-		$tools->loadUserInfo(array_unique($userSettings['blockList']));
+		$tools->loadUserInfo(array_unique($userSettings['blockListIDs']));
 
 		// We only need the block list users
-		$context['Breeze']['UserSettings']['blockListUserData'] = array_intersect_key($context['Breeze']['user_info'], array_flip($userSettings['blockList']));
+		$context['Breeze']['UserSettings']['blockListUserData'] = array_intersect_key($context['Breeze']['user_info'], array_flip($userSettings['blockListIDs']));
 
 		// Group all these values into an array. Makes it easier to save the changes.
 		$form->setOptions(array(

@@ -491,7 +491,7 @@ class BreezeAjax
 			$toSave['blockListIDs'] = array_map('intval', array_filter($toSave['blockListIDs']));
 
 			// Convert it to comma separated values
-			$toSave['blockList'] = implode(',', $toSave['blockListIDs']);
+			$toSave['blockListIDs'] = implode(',', $toSave['blockListIDs']);
 		}
 
 		// Gotta make sure the user is respecting the admin limit for the about me block.

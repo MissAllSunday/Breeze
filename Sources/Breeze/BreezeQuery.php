@@ -844,7 +844,7 @@ class BreezeQuery
 					$return[$row['variable']] = !empty($row['value']) ? json_decode($row['value'], true) : [];
 
 				// Another special case...
-				if ($row['variable'] == 'blockList')
+				if ($row['variable'] == 'blockListIDs')
 					$return[$row['variable']] = !empty($row['value']) ? explode(',', $row['value']) : [];
 
 				$return += array(
@@ -1126,12 +1126,9 @@ class BreezeQuery
 
 		$smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables['alerts']['table']) . '
-			SET {raw:update}
+			SET '. ($string) .'
 			WHERE id_alert '. (is_array($id) ? 'IN ({array_int:id})' : '= {int:id}'),
-			array(
-				'id' => $id,
-				'update' => $string
-			)
+			['id' => $id]
 		);
 	}
 

@@ -63,6 +63,7 @@ class Breeze extends \Pimple\Container
 		'activityLog' => 'CheckBox',
 		'kick_ignored' => 'CheckBox',
 		'blockList' => 'Text',
+		'blockListIDs' => 'Array',
 		'buddies' => 'CheckBox',
 		'how_many_buddies' => 'Int',
 		'visitors' => 'CheckBox',
