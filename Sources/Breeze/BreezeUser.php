@@ -425,6 +425,7 @@ class BreezeUser extends Breeze
 
 		loadtemplate(Breeze::$name);
 		loadtemplate(Breeze::$name .'Functions');
+		loadJavaScriptFile('suggest.js', array('minimize' => true), 'smf_suggest');
 
 		$data = $this->data('get');
 		$tools = $this['tools'];
@@ -505,7 +506,7 @@ class BreezeUser extends Breeze
 				'checked' => !empty($userSettings['kick_ignored']) ? true : false
 			));
 
-			// Number of alerts in recent activity page.
+			// Block list.
 			$form->addText(array(
 				'name' => 'blockList',
 				'value' => !empty($userSettings['blockList']) ? implode(',', $userSettings['blockList']) : '',

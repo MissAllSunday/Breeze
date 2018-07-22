@@ -292,13 +292,28 @@ function template_user_notifications()
 
 function template_member_options()
 {
-	global $context;
+	global $context, $txt;
 
 	// Get the message from the server
 	breeze_server_response();
 
 	// Print the form
 	echo $context['Breeze']['UserSettings']['Form'];
+
+	// SMF autosuggest
+	echo "
+	<script>
+		var oBlockSuggest = new smc_AutoSuggest({
+			sSelf: 'oBlockSuggest',
+			sSessionId: smf_session_id,
+			sSessionVar: smf_session_var,
+			sSuggestId: 'blockList',
+			sControlId: 'blockList',
+			sSearchType: 'member',
+			sTextDeleteItem: '". $txt['autosuggest_delete_item'] ."',
+			bItemList: false
+		});
+	</script>";
 }
 
 // This is pretty much the same as template_showAlerts()

@@ -14,12 +14,12 @@ License, v. 2.0. If a copy of the MPL was not distributed with this
 file, You can obtain one at http://mozilla.org/MPL/2.0/.
 		</license>
 		<credits url="http://missallsunday.com" license="MPL 2.0" copyright="Suki" licenseurl="https://www.mozilla.org/MPL/2.0/">Breeze mod</credits>
-		<code>hooks.php</code>
 		<database>install.php</database>
 		<require-dir name="Themes" destination="$boarddir">Theme files</require-dir>
 		<require-dir name="Sources/Breeze" destination="$sourcedir">Source files</require-dir>
 		<require-dir name="Sources/tasks" destination="$sourcedir">Notification tasks</require-dir>
 		<require-dir name="breezeFiles" destination="$boarddir">Uploaded images</require-dir>
+		<code>hooks.php</code>
 		<redirect url="$scripturl?action=admin;area=breezeadmin;sa=general" timeout="3000">redirect.txt</redirect>
 	</install>
 

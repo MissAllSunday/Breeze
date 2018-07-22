@@ -28,15 +28,13 @@
 		// Profile views
 		$smcFunc['db_add_column'](
 			'{db_prefix}members',
-			array(
+			[
 				'name' => 'breeze_profile_views',
-				'type' => 'int',
-				'size' => 5,
+				'type' => 'varchar',
+				'size' => 255,
+				'Default' => '0',
 				'null' => false
-			),
-			[],
-			'update',
-			null
+			]
 		);
 
 		// Member options
