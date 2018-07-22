@@ -1118,16 +1118,19 @@ class BreezeQuery
 
 		// Create a nice formatted string.
 		$string = '';
+		$paramKeys = array_keys($params);
+		$lastKey = key($paramKeys);
 
 		foreach ($params as $column => $newValue)
-			$string .= $column .' = '. $newValue . ($newValue != end($params) ? ', ' : '');
+			$string .= $column .' = '. $newValue . ($column != $lastKey ? ', ' : '');
 
 		$smcFunc['db_query']('', '
 			UPDATE {db_prefix}' . ($this->_tables['alerts']['table']) . '
-			SET '. ($string) .'
+			SET {raw:update}
 			WHERE id_alert '. (is_array($id) ? 'IN ({array_int:id})' : '= {int:id}'),
 			array(
 				'id' => $id,
+				'update' => $string
 			)
 		);
 	}
