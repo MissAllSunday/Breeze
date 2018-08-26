@@ -55,7 +55,7 @@ class BreezeLog
 				if (in_array($entry['type'], get_class_methods(__CLASS__)))
 				{
 					$entry['content'] = json_decode($entry['content'], true);
-					$this->_result[$id]['content'] = $this->$entry['type']($entry);
+					$this->_result[$id]['content'] = $this->{$entry['type']}($entry);
 
 					// Got something?
 					if (empty($this->_result[$id]['content']))

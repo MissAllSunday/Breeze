@@ -83,6 +83,6 @@ class BreezeController
 
 	public function get($var)
 	{
-		return $this->container->$var;
+		return $this->container->{$var};
 	}
 }

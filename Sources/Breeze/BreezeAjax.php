@@ -103,7 +103,7 @@ class BreezeAjax
 		if (isset($call[$data->get('sa')]))
 		{
 			// This is somehow ugly but its faster.
-			$this->$call[$data->get('sa')]();
+			$this->{$call[$data->get('sa')]}();
 
 			// Send the response back to the browser
 			$this->returnResponse();
@@ -447,7 +447,7 @@ class BreezeAjax
 				call_integration_hook('integrate_breeze_before_delete', array(&$type, &$id, &$profileOwner, &$poster));
 
 				// Do the query dance!
-				$this->_query->$typeCall($id, $profileOwner);
+				$this->_query->{$typeCall}($id, $profileOwner);
 
 				// Tell everyone what just happened here...
 				call_integration_hook('integrate_breeze_after_delete', array($type, $id, $profileOwner, $poster));
@@ -681,7 +681,7 @@ class BreezeAjax
 			$viewed = $do == 'read' ? 1 : 0;
 
 			// $set the "viewed" var
-			$this->_query->$call($idNoti, $user, $viewed);
+			$this->_query->{$call}($idNoti, $user, $viewed);
 
 			return $this->setResponse(array(
 				'type' => 'success',
@@ -733,7 +733,7 @@ class BreezeAjax
 		// Get the right call to the DB
 		$call = $comingFrom == 'profile' ? 'getStatusByProfile' : 'getStatusByUser';
 
-		$data = $this->_query->$call($fetch, $maxIndex, $start);
+		$data = $this->_query->{$call}($fetch, $maxIndex, $start);
 
 		if (!empty($data['data']))
 		{

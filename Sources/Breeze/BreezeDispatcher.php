@@ -56,7 +56,7 @@ abstract class BreezeDispatcher
 			$object = new $controller($breezeController->get('tools'), $breezeController->get('display'),  $breezeController->get('parser'), $breezeController->get('query'), $breezeController->get('notifications'), $breezeController->get('mention'), $breezeController->get('log'));
 
 			// Lets call it
-			$object->$method();
+			$object->{$method}();
 		}
 
 		else

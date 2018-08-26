@@ -46,7 +46,7 @@ class BreezeParser
 		call_integration_hook('integrate_breeze_before_parser', array(&$this->s));
 
 		foreach ($temp as $t)
-			$this->$t();
+			$this->{$t}();
 
 		// ...or after?
 		call_integration_hook('integrate_breeze_after_parser', array(&$this->s));

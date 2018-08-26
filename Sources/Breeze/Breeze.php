@@ -385,7 +385,7 @@ class Breeze
 				'type' => 'register',
 				'time' => time(),
 				'viewed' => 3, // 3 is a special case to indicate that this is a log entry, cannot be seen or unseen
-				'content' => function() use ($regOptions, $scripturl, $text, $scripturl, $user_id)
+				'content' => function() use ($regOptions, $scripturl, $user_id)
 					{
 						return '<a href="'. $scripturl .'?action=profile;u='. $user_id . '">'. $regOptions['username'] .'</a> '. $tools->text('logRegister');
 					},

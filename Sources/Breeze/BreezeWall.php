@@ -114,12 +114,12 @@ class BreezeWall
 			writeLog(true);
 
 			// This is somehow ugly but its faster.
-			$this->$call[$data->get('sa')]();
+			$this->{$call[$data->get('sa')]}();
 		}
 
 		// By default lets load the general wall
 		else
-			$this->$call['general']();
+			$this->{$call['general']}();
 
 		// We should see other people...
 		unset($call);

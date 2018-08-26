@@ -167,7 +167,7 @@ class BreezeNotifications
 		$call = 'getNotificationByReceiver'. (!empty($all) ? 'All' : '');
 
 		// Get all the notification for this user
-		$this->_all = $this->_query->$call($user);
+		$this->_all = $this->_query->{$call}($user);
 
 		// Load the users data.
 		$this->loadedUsers = $this->_query->loadMinimalData($this->_all['users']);
@@ -185,7 +185,7 @@ class BreezeNotifications
 					$call = 'do' . ucfirst($single['type']);
 
 					// Call the right method
-					$this->$call($single);
+					$this->{$call}($single);
 				}
 
 			// Let them know everything went better than expected!
