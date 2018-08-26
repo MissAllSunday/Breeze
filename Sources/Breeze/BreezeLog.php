@@ -4,7 +4,7 @@
  * BreezeLog
  *
  * @package Breeze mod
- * @version 1.0.11
+ * @version 1.0.14
  * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2011 - 2018 Jessica González
  * @license //www.mozilla.org/MPL/MPL-1.1.html
@@ -55,7 +55,7 @@ class BreezeLog
 				if (in_array($entry['type'], get_class_methods(__CLASS__)))
 				{
 					$entry['content'] = json_decode($entry['content'], true);
-					$this->_result[$id]['content'] = $this->$entry['type']($entry);
+					$this->_result[$id]['content'] = $this->{$entry['type']}($entry);
 
 					// Got something?
 					if (empty($this->_result[$id]['content']))

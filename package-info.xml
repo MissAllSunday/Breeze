@@ -3,7 +3,7 @@
 <package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
 	<id>Suki:breeze</id>
 	<name>Breeze</name>
-	<version>1.0.13</version>
+	<version>1.0.14</version>
 	<type>modification</type>
 
 	<install for="2.0 - 2.0.99">

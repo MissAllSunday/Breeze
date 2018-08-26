@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to fetch all notifications for X user
  * @package Breeze mod
- * @version 1.0.11
+ * @version 1.0.14
  * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2011 - 2018 Jessica González
  * @license //www.mozilla.org/MPL/MPL-1.1.html
@@ -167,7 +167,7 @@ class BreezeNotifications
 		$call = 'getNotificationByReceiver'. (!empty($all) ? 'All' : '');
 
 		// Get all the notification for this user
-		$this->_all = $this->_query->$call($user);
+		$this->_all = $this->_query->{$call}($user);
 
 		// Load the users data.
 		$this->loadedUsers = $this->_query->loadMinimalData($this->_all['users']);
@@ -185,7 +185,7 @@ class BreezeNotifications
 					$call = 'do' . ucfirst($single['type']);
 
 					// Call the right method
-					$this->$call($single);
+					$this->{$call}($single);
 				}
 
 			// Let them know everything went better than expected!

@@ -4,7 +4,7 @@
  * BreezeParser
  *
  * @package Breeze mod
- * @version 1.0.11
+ * @version 1.0.14
  * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2011 - 2018 Jessica González
  * @license //www.mozilla.org/MPL/MPL-1.1.html
@@ -46,7 +46,7 @@ class BreezeParser
 		call_integration_hook('integrate_breeze_before_parser', array(&$this->s));
 
 		foreach ($temp as $t)
-			$this->$t();
+			$this->{$t}();
 
 		// ...or after?
 		call_integration_hook('integrate_breeze_after_parser', array(&$this->s));
