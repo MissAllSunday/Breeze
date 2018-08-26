@@ -5,7 +5,7 @@
  *
  * The purpose of this file is to fetch all notifications for X user
  * @package Breeze mod
- * @version 1.0.11
+ * @version 1.0.14
  * @author Jessica González <suki@missallsunday.com>
  * @copyright Copyright (c) 2011 - 2018 Jessica González
  * @license //www.mozilla.org/MPL/MPL-1.1.html

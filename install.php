@@ -4,7 +4,7 @@
  * install.php
  *
  * @package Breeze mod
- * @version 1.0.11
+ * @version 1.0.14
  * @author Jessica Gonzalez <suki@missallsunday.com>
  * @copyright Copyright (c) 2011 - 2018, Jessica Gonzalez
  * @license //www.mozilla.org/MPL/MPL-1.1.html
