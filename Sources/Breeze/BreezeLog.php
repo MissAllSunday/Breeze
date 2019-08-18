@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * BreezeLog
  *
@@ -51,8 +53,8 @@ class BreezeLog
 
 		// Return the formatted data.
 		return [
-			'count' => $this->_logCount,
-			'data' => $this->_data,
+		    'count' => $this->_logCount,
+		    'data' => $this->_data,
 		];
 	}
 
@@ -85,17 +87,19 @@ class BreezeLog
 		// Check if the user can see the message.
 		if (!empty($checkMsg))
 		{
-			$request = $smcFunc['db_query']('', '
+			$request = $smcFunc['db_query'](
+			    '',
+			    '
 				SELECT m.id_msg
 				FROM {db_prefix}messages AS m
 					INNER JOIN {db_prefix}boards AS b ON (b.id_board = m.id_board)
 				WHERE m.id_msg IN ({array_int:messages})
 					AND {query_wanna_see_board}' . (!$this->_app['tools']->modSettings('postmod_active') || allowedTo('approve_posts') ? '' : '
 					AND m.approved = {int:is_approved}') . '',
-				array(
-					'messages' => array_values($checkMsg),
-					'is_approved' => 1,
-				)
+			    [
+			        'messages' => array_values($checkMsg),
+			        'is_approved' => 1,
+			    ]
 			);
 
 			// Get the messages this user CAN see.
@@ -121,7 +125,7 @@ class BreezeLog
 			// Get the right gender stuff.
 			$this->_data[$id]['gender'] = !empty($this->_usersData[$this->_data[$id]['member']]['options']['cust_gender']) ? $this->_usersData[$this->_data[$id]['member']]['options']['cust_gender'] : 'None';
 
-			$this->_data[$id]['gender_possessive'] = $this->_app['tools']->text('alert_gender_possessive_'. $this->_data[$id]['gender']) ? $this->_app['tools']->text('alert_gender_possessive_'. $this->_data[$id]['gender']) : $this->_app['tools']->text('alert_gender_possessive_None');
+			$this->_data[$id]['gender_possessive'] = $this->_app['tools']->text('alert_gender_possessive_' . $this->_data[$id]['gender']) ? $this->_app['tools']->text('alert_gender_possessive_' . $this->_data[$id]['gender']) : $this->_app['tools']->text('alert_gender_possessive_None');
 
 			// Make sure we have a valid method for this and valid data too!
 			if (method_exists($this, $data['content_type']) && !empty($this->_data[$id]['extra']) && is_array($this->_data[$id]['extra']) && empty($this->_data[$id]['text']))
@@ -143,11 +147,11 @@ class BreezeLog
 		$mood = !empty($this->_data[$id]['extra']['moodHistory']['id']) ? $this->_app['query']->getMoodByID($this->_data[$id]['extra']['moodHistory']['id'], true) : [];
 
 		// Return the formatted string.
-		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_mood'), array(
-			'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
-			'gender_possessive' => $this->_data[$id]['gender_possessive'],
-			'image' => !empty($mood) && !empty($mood['image_html']) ? $mood['image_html'] : '',
-		));
+		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_mood'), [
+		    'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
+		    'gender_possessive' => $this->_data[$id]['gender_possessive'],
+		    'image' => !empty($mood) && !empty($mood['image_html']) ? $mood['image_html'] : '',
+		]);
 	}
 
 	public function cover($id)
@@ -155,11 +159,11 @@ class BreezeLog
 		// Add the custom icon.
 		$this->_data[$id]['icon'] = 'photo';
 
-		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_cover'), array(
-			'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
-			'gender_possessive' => $this->_data[$id]['gender_possessive'],
-			'image' => '<img src="'. $this->_app['tools']->scriptUrl .'?action=breezecover;thumb;u='. $this->_data[$id]['member'] .'" />',
-		));
+		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_cover'), [
+		    'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
+		    'gender_possessive' => $this->_data[$id]['gender_possessive'],
+		    'image' => '<img src="' . $this->_app['tools']->scriptUrl . '?action=breezecover;thumb;u=' . $this->_data[$id]['member'] . '" />',
+		]);
 	}
 
 	public function status($id)
@@ -167,12 +171,12 @@ class BreezeLog
 		// Add the custom icon.
 		$this->_data[$id]['icon'] = 'comment';
 
-		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text($this->_data[$id]['extra']['buddy_text']), array(
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['wall_owner'] .
-			';bid=' . $this->_data[$id]['content_id'],
-			'poster' => $this->_usersData[$this->_data[$id]['extra']['poster']]['link'],
-			'wall_owner' => $this->_usersData[$this->_data[$id]['extra']['wall_owner']]['link'],
-		));
+		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text($this->_data[$id]['extra']['buddy_text']), [
+		    'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['wall_owner'] .
+		    ';bid=' . $this->_data[$id]['content_id'],
+		    'poster' => $this->_usersData[$this->_data[$id]['extra']['poster']]['link'],
+		    'wall_owner' => $this->_usersData[$this->_data[$id]['extra']['wall_owner']]['link'],
+		]);
 	}
 
 	public function comment($id)
@@ -180,12 +184,12 @@ class BreezeLog
 		// Add the custom icon.
 		$this->_data[$id]['icon'] = 'comments';
 
-		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text($this->_data[$id]['extra']['buddy_text']), array(
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['wall_owner'] .';bid=' . $this->_data[$id]['extra']['status_id'],
-			'poster' => $this->_usersData[$this->_data[$id]['extra']['poster']]['link'],
-			'status_owner' => $this->_usersData[$this->_data[$id]['extra']['status_owner']]['link'],
-			'wall_owner' => $this->_usersData[$this->_data[$id]['extra']['wall_owner']]['link'],
-		));
+		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text($this->_data[$id]['extra']['buddy_text']), [
+		    'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['wall_owner'] . ';bid=' . $this->_data[$id]['extra']['status_id'],
+		    'poster' => $this->_usersData[$this->_data[$id]['extra']['poster']]['link'],
+		    'status_owner' => $this->_usersData[$this->_data[$id]['extra']['status_owner']]['link'],
+		    'wall_owner' => $this->_usersData[$this->_data[$id]['extra']['wall_owner']]['link'],
+		]);
 	}
 
 	public function like($id)
@@ -198,25 +202,25 @@ class BreezeLog
 			return;
 
 		// If there is no status_id key it means the content was a comment.
-		$url = !empty($this->_data[$id]['extra']['contentData']['status_id']) ? ($this->_data[$id]['extra']['contentData']['status_id'] .';cid='. $this->_data[$id]['extra']['contentData']['id']) : $this->_data[$id]['extra']['contentData']['id'];
+		$url = !empty($this->_data[$id]['extra']['contentData']['status_id']) ? ($this->_data[$id]['extra']['contentData']['status_id'] . ';cid=' . $this->_data[$id]['extra']['contentData']['id']) : $this->_data[$id]['extra']['contentData']['id'];
 
-		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_like_buddy'), array(
-			'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['contentData']['profile_id'] .';bid=' . $url,
-			'contentOwner' => $this->_usersData[$this->_data[$id]['extra']['contentData']['poster_id']]['link'],
-			'type' => $this->_data[$id]['extra']['type'],
-		));
+		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_like_buddy'), [
+		    'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
+		    'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['contentData']['profile_id'] . ';bid=' . $url,
+		    'contentOwner' => $this->_usersData[$this->_data[$id]['extra']['contentData']['poster_id']]['link'],
+		    'type' => $this->_data[$id]['extra']['type'],
+		]);
 	}
 
 	public function topic($id)
 	{
 		$this->_data[$id]['icon'] = 'comment-o';
 
-		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_topic'), array(
-			'href' => $this->_app['tools']->scriptUrl . '?topic=' . $this->_data[$id]['content_id'],
-			'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
-			'subject' => $this->_data[$id]['extra']['subject'],
-		));
+		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_topic'), [
+		    'href' => $this->_app['tools']->scriptUrl . '?topic=' . $this->_data[$id]['content_id'],
+		    'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
+		    'subject' => $this->_data[$id]['extra']['subject'],
+		]);
 	}
 
 	public function buddyConfirmed($id)
@@ -224,9 +228,9 @@ class BreezeLog
 		// Add the custom icon.
 		$this->_data[$id]['icon'] = 'users';
 
-		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_buddy_done'), array(
-			'sender' => $this->_usersData[$this->_data[$id]['extra']['sender']]['link'],
-			'receiver' => $this->_usersData[$this->_data[$id]['extra']['receiver']]['link'],
-		));
+		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_buddy_done'), [
+		    'sender' => $this->_usersData[$this->_data[$id]['extra']['sender']]['link'],
+		    'receiver' => $this->_usersData[$this->_data[$id]['extra']['receiver']]['link'],
+		]);
 	}
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * BreezeData
  *
@@ -42,7 +44,6 @@ class BreezeData
     /**
      * BreezeData::get()
      *
-     * @param mixed $value
      * @return array|bool|int|mixed|string
      */
 	public function get($value)
@@ -50,14 +51,13 @@ class BreezeData
 		if ($this->validate($value))
 			return $this->sanitize($this->_request[$value]);
 
-		else
+		
 			return false;
 	}
 
     /**
      * BreezeData::getRaw()
      *
-     * @param mixed $value
      * @return bool
      */
 	public function getRaw($value)
@@ -65,7 +65,7 @@ class BreezeData
 		if (isset($this->_request[$value]))
 			return $this->_request[$value];
 
-		else
+		
 			return false;
 	}
 
@@ -77,7 +77,6 @@ class BreezeData
     /**
      * BreezeData::validate()
      *
-     * @param mixed $var
      * @return bool
      */
 	public function validate($var)
@@ -88,7 +87,6 @@ class BreezeData
     /**
      * BreezeData::validateBody()
      *
-     * @param mixed $var
      * @return bool|mixed
      */
 	public function validateBody($var)
@@ -99,20 +97,19 @@ class BreezeData
 		if (empty($var) || ctype_space($var) || $var == '')
 			return false;
 
-		else
-		{
-			require_once($sourcedir.'/Subs-Post.php');
+		
+		
+			require_once($sourcedir . '/Subs-Post.php');
 
 			preparsecode($var);
 
 			return $var;
-		}
+		
 	}
 
     /**
      * BreezeData::unsetVar()
      *
-     * @param mixed $var
      * @return void
      */
 	public function unsetVar($var)
@@ -123,7 +120,6 @@ class BreezeData
     /**
      * BreezeData::sanitize()
      *
-     * @param mixed $var
      * @return array|bool|int|mixed|string
      */
 	public function sanitize($var)
@@ -138,8 +134,8 @@ class BreezeData
 			return $var;
 		}
 
-		else
-		{
+		
+		
 			$var = (string) $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var), ENT_QUOTES);
 
 			if (ctype_digit($var))
@@ -147,7 +143,7 @@ class BreezeData
 
 			if (empty($var))
 				$var = false;
-		}
+		
 
 		return $var;
 	}

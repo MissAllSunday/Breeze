@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Pimple.
  *
@@ -85,9 +87,9 @@ class Container implements \ArrayAccess
      *
      * @param string $id The unique identifier for the parameter or object
      *
+     * @throws \InvalidArgumentException if the identifier is not defined
      * @return mixed The value of the parameter or an object
      *
-     * @throws \InvalidArgumentException if the identifier is not defined
      */
     public function offsetGet($id)
     {
@@ -150,9 +152,9 @@ class Container implements \ArrayAccess
      *
      * @param callable $callable A service definition to be used as a factory
      *
+     * @throws \InvalidArgumentException Service definition has to be a closure of an invokable object
      * @return callable The passed callable
      *
-     * @throws \InvalidArgumentException Service definition has to be a closure of an invokable object
      */
     public function factory($callable)
     {
@@ -172,9 +174,9 @@ class Container implements \ArrayAccess
      *
      * @param callable $callable A callable to protect from being evaluated
      *
+     * @throws \InvalidArgumentException Service definition has to be a closure of an invokable object
      * @return callable The passed callable
      *
-     * @throws \InvalidArgumentException Service definition has to be a closure of an invokable object
      */
     public function protect($callable)
     {
@@ -192,9 +194,9 @@ class Container implements \ArrayAccess
      *
      * @param string $id The unique identifier for the parameter or object
      *
+     * @throws \InvalidArgumentException if the identifier is not defined
      * @return mixed The value of the parameter or the closure defining an object
      *
-     * @throws \InvalidArgumentException if the identifier is not defined
      */
     public function raw($id)
     {
@@ -218,9 +220,9 @@ class Container implements \ArrayAccess
      * @param string   $id       The unique identifier for the object
      * @param callable $callable A service definition to extend the original
      *
+     * @throws \InvalidArgumentException if the identifier is not defined or not a service definition
      * @return callable The wrapped callable
      *
-     * @throws \InvalidArgumentException if the identifier is not defined or not a service definition
      */
     public function extend($id, $callable)
     {

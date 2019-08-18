@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * BreezeAjax
  *
@@ -69,10 +71,10 @@ class BreezeBuddy
 		$this->_call = $this->_data->get('sa');
 		$this->_alertID = $this->_data->get('aid');
 		$subActions = [
-			'confirm',
-			'confirmed',
-			'decline',
-			'block',
+		    'confirm',
+		    'confirmed',
+		    'decline',
+		    'block',
 		];
 
 		// Figure it out what are we gonna do... check the subactions first!
@@ -134,22 +136,22 @@ class BreezeBuddy
 
 			// Create a nice alert to let the user know you want to be his/her buddy!
 			$this->_app['query']->insertNoti([
-				'receiver_id' => $this->_userReceiver,
-				'id_member' => $this->_userSender['id'],
-				'member_name' => $this->_userSender['username'],
-				'time' => time(),
-				'text' => 'confirm',
-				'sender' => $this->_userSender['id'],
-				'receiver' => $this->_userReceiver,
+			    'receiver_id' => $this->_userReceiver,
+			    'id_member' => $this->_userSender['id'],
+			    'member_name' => $this->_userSender['username'],
+			    'time' => time(),
+			    'text' => 'confirm',
+			    'sender' => $this->_userSender['id'],
+			    'receiver' => $this->_userReceiver,
 			], 'buddyConfirm');
 
 			// Get the receiver's link
 			$this->_app['tools']->loadUserInfo($this->_userReceiver);
 
 			// I actually need to use $context['Breeze']['user_info'] a lot more...
-			return $this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_confirm'), array(
-				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
-			));
+			return $this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_confirm'), [
+			    'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
+			]);
 		}
 
 		$context['sub_template'] = 'buddy_message';
@@ -157,21 +159,21 @@ class BreezeBuddy
 		$this->_app['tools']->loadUserInfo($this->_userReceiver);
 
 		$this->_app['form']->setOptions([
-			'name' => 'breezeBuddyMessage',
-			'url' => $this->_app['tools']->scriptUrl .'?action=buddy;msent=1;u='. $this->_userReceiver,
-			'character_set' => $context['character_set'],
-			'title' => $this->_app['tools']->text('buddy_title'),
+		    'name' => 'breezeBuddyMessage',
+		    'url' => $this->_app['tools']->scriptUrl . '?action=buddy;msent=1;u=' . $this->_userReceiver,
+		    'character_set' => $context['character_set'],
+		    'title' => $this->_app['tools']->text('buddy_title'),
 		]);
 
 		// The actual textarea...
 		$this->_app['form']->addTextArea([
-			'name' => 'content',
-			'value' => '',
-			'size' => ['rows' => 10, 'cols' => 60, 'maxLength' => 2048],
-			'fullText' => $this->_app['tools']->text('buddy_message'),
-			'fullDesc' => $this->_app['tools']->parser($this->_app['tools']->text('buddy_message_desc'), array(
-				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
-			)),
+		    'name' => 'content',
+		    'value' => '',
+		    'size' => ['rows' => 10, 'cols' => 60, 'maxLength' => 2048],
+		    'fullText' => $this->_app['tools']->text('buddy_message'),
+		    'fullDesc' => $this->_app['tools']->parser($this->_app['tools']->text('buddy_message_desc'), [
+		        'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
+		    ]),
 		]);
 
 		// Session stuff.
@@ -208,7 +210,7 @@ class BreezeBuddy
 			$this->_app['tools']->loadUserInfo($this->_userReceiver);
 
 			$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_already_buddy'), [
-				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
+			    'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
 			]);
 
 			return true;
@@ -229,7 +231,7 @@ class BreezeBuddy
 
 			// Let this user know that an alert has already been sent.
 			$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_already_sent'), [
-				'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
+			    'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
 			]);
 
 			return true;
@@ -262,7 +264,7 @@ class BreezeBuddy
 		$this->_app['tools']->loadUserInfo($this->_userReceiver);
 
 		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_delete_done'), [
-			'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
+		    'receiver' => $context['Breeze']['user_info'][$this->_userReceiver]['linkFacebox'],
 		]);
 	}
 
@@ -289,21 +291,21 @@ class BreezeBuddy
 
 		// An explicatory title.
 		$context['buddy_message_title'] = $this->_app['tools']->parser($this->_app['tools']->text('buddy_sender_message_title'), [
-			'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['linkFacebox'],
+		    'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['linkFacebox'],
 		]);
 
 		// Set a nice an unique page title.
 		$context['page_title'] = $this->_app['tools']->parser($this->_app['tools']->text('buddy_chose_title'), [
-			'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['name'],
+		    'sender' => $context['Breeze']['user_info'][$this->_senderConfirm]['name'],
 		]);
 
 		// Prepare the options.
-		$confirm = $this->_app['tools']->scriptUrl . '?action=buddy;sa=confirmed;sender=' . $this->_senderConfirm . (!empty($this->_alertID) ? ';aid='. $this->_alertID : '');
-		$decline = $this->_app['tools']->scriptUrl . '?action=buddy;sa=decline;sender=' . $this->_senderConfirm . (!empty($this->_alertID) ? ';aid='. $this->_alertID : '');
+		$confirm = $this->_app['tools']->scriptUrl . '?action=buddy;sa=confirmed;sender=' . $this->_senderConfirm . (!empty($this->_alertID) ? ';aid=' . $this->_alertID : '');
+		$decline = $this->_app['tools']->scriptUrl . '?action=buddy;sa=decline;sender=' . $this->_senderConfirm . (!empty($this->_alertID) ? ';aid=' . $this->_alertID : '');
 
 		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_chose'), [
-			'href_confirm' => $confirm,
-			'href_decline' => $decline,
+		    'href_confirm' => $confirm,
+		    'href_decline' => $decline,
 		]);
 	}
 
@@ -332,42 +334,42 @@ class BreezeBuddy
 
 		// Let the sender know the receiver gladly accepted the invitation.
 		$this->_app['query']->insertNoti([
-			'receiver_id' => $this->_senderConfirm,
-			'id_member' => $this->_receiverConfirm['id'],
-			'member_name' => $this->_receiverConfirm['username'],
-			'time' => time(),
-			'text' => 'confirmed',
-			'sender' => $this->_senderConfirm,
-			'receiver' => $this->_receiverConfirm['id'],
+		    'receiver_id' => $this->_senderConfirm,
+		    'id_member' => $this->_receiverConfirm['id'],
+		    'member_name' => $this->_receiverConfirm['username'],
+		    'time' => time(),
+		    'text' => 'confirmed',
+		    'sender' => $this->_senderConfirm,
+		    'receiver' => $this->_receiverConfirm['id'],
 		], 'buddyConfirm');
 
 		// Does the sender wants the world to take note of this great achievement?
 		if (!empty($senderSettings['alert_buddyConfirmation']))
 			$this->_app['query']->createLog([
-				'member' => $this->_senderConfirm,
-				'content_type' => 'buddyConfirmed',
-				'content_id' => 0,
-				'time' => time(),
-				'extra' => [
-					'sender' => $this->_senderConfirm,
-					'receiver' => $this->_receiverConfirm['id'],
-					'toLoad' => [$this->_receiverConfirm['id'], $this->_senderConfirm],
-				],
+			    'member' => $this->_senderConfirm,
+			    'content_type' => 'buddyConfirmed',
+			    'content_id' => 0,
+			    'time' => time(),
+			    'extra' => [
+			        'sender' => $this->_senderConfirm,
+			        'receiver' => $this->_receiverConfirm['id'],
+			        'toLoad' => [$this->_receiverConfirm['id'], $this->_senderConfirm],
+			    ],
 			]);
 
 		// How about the receiver?
 		if (!empty($this->receiverSettings['alert_buddyConfirmation']))
-			$this->_app['query']->createLog(array(
-				'member' => $this->_receiverConfirm['id'],
-				'content_type' => 'buddyConfirmed',
-				'content_id' => 0,
-				'time' => time(),
-				'extra' => [
-					'sender' => $this->_senderConfirm,
-					'receiver' => $this->_receiverConfirm['id'],
-					'toLoad' => [$this->_receiverConfirm['id'], $this->_senderConfirm],
-				],
-			));
+			$this->_app['query']->createLog([
+			    'member' => $this->_receiverConfirm['id'],
+			    'content_type' => 'buddyConfirmed',
+			    'content_id' => 0,
+			    'time' => time(),
+			    'extra' => [
+			        'sender' => $this->_senderConfirm,
+			        'receiver' => $this->_receiverConfirm['id'],
+			        'toLoad' => [$this->_receiverConfirm['id'], $this->_senderConfirm],
+			    ],
+			]);
 
 		// Can't directly call closures from object properties :(
 		if ($this->_alertID)
@@ -413,7 +415,7 @@ class BreezeBuddy
 
 		// Offer an option to block this person
 		$this->_response = $this->_app['tools']->parser($this->_app['tools']->text('buddy_decline'), [
-			'href' => $this->_app['tools']->scriptUrl . '?action=buddy;sa=block;sender=' . $this->_senderConfirm,
+		    'href' => $this->_app['tools']->scriptUrl . '?action=buddy;sa=block;sender=' . $this->_senderConfirm,
 		]);
 	}
 
@@ -445,7 +447,7 @@ class BreezeBuddy
 
 		// Get the template and language files.
 		loadLanguage(Breeze::$name);
-		loadtemplate(Breeze::$name .'Functions');
+		loadtemplate(Breeze::$name . 'Functions');
 
 		// All the generic stuff.
 		if (!isset($context['page_title']))
@@ -454,10 +456,10 @@ class BreezeBuddy
 		if (!isset($context['sub_template']))
 			$context['sub_template'] = 'buddy_request';
 
-		$context['linktree'][] = array(
-			'url' => $this->_app['tools']->scriptUrl . '?action=buddy'. (!empty($this->_call) ? ';sa='. $this->_call : '') . (!empty($this->_senderConfirm) ? ';sender='. $this->_senderConfirm : '') . (!empty($this->_userReceiver) ? ';u='. $this->_senderConfirm : '') .';'. $context['session_var'] .'='. $context['session_id'] .(!empty($this->_alertID) ? ';aid='. $this->_alertID : ''),
-			'name' => $context['page_title'],
-		);
+		$context['linktree'][] = [
+		    'url' => $this->_app['tools']->scriptUrl . '?action=buddy' . (!empty($this->_call) ? ';sa=' . $this->_call : '') . (!empty($this->_senderConfirm) ? ';sender=' . $this->_senderConfirm : '') . (!empty($this->_userReceiver) ? ';u=' . $this->_senderConfirm : '') . ';' . $context['session_var'] . '=' . $context['session_id'] . (!empty($this->_alertID) ? ';aid=' . $this->_alertID : ''),
+		    'name' => $context['page_title'],
+		];
 
 		$context['response'] = !empty($this->_response) ? $this->_response : '';
 	}

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * BreezeNoti
  *
@@ -92,55 +94,55 @@ class BreezeNoti
 			return;
 
 		// Prepare some stuff.
-		$row = $this->_details['like_type'] .'_id';
-		$authorColumn = $this->_details['like_type'] .'_poster_id';
+		$row = $this->_details['like_type'] . '_id';
+		$authorColumn = $this->_details['like_type'] . '_poster_id';
 
 		// With the given values, try to find who is the owner of the liked content.
 		$data = $this->_app['query']->getSingleValue($this->_details['like_type'], $row, $this->_details['content'], true);
 
 		// So, whos gonna receive this alert?
-		$messageOwner = !empty($data) ? $data[$this->_details['like_type'] .'_poster_id'] : 0;
+		$messageOwner = !empty($data) ? $data[$this->_details['like_type'] . '_poster_id'] : 0;
 
 		$this->innerCreate([
-			'alert_time' => $this->_details['time'],
-			'id_member' => $messageOwner,
-			'id_member_started' => $this->_details['user'],
-			'member_name' => '',
-			'content_type' => $this->_details['content_type'],
-			'content_id' => $this->_details['content'],
-			'content_action' => '',
-			'is_read' => 0,
-			'extra' => [
-				'text' => 'like',
-				'comment_owner' => $messageOwner,
-				'toLoad' => [$messageOwner, $this->_details['user']],
-				'status_id' => $data[($this->_details['like_type'] == 'comments' ? $this->_details['like_type'] .'_' : '') . 'status_id'],
-				'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,
-				'wall_owner' => $data[$this->_details['like_type'] == 'comments' ? 'comments_profile_id' : 'status_owner_id'],
-				'like_type' => $this->_details['like_type'],
-			],
+		    'alert_time' => $this->_details['time'],
+		    'id_member' => $messageOwner,
+		    'id_member_started' => $this->_details['user'],
+		    'member_name' => '',
+		    'content_type' => $this->_details['content_type'],
+		    'content_id' => $this->_details['content'],
+		    'content_action' => '',
+		    'is_read' => 0,
+		    'extra' => [
+		        'text' => 'like',
+		        'comment_owner' => $messageOwner,
+		        'toLoad' => [$messageOwner, $this->_details['user']],
+		        'status_id' => $data[($this->_details['like_type'] == 'comments' ? $this->_details['like_type'] . '_' : '') . 'status_id'],
+		        'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,
+		        'wall_owner' => $data[$this->_details['like_type'] == 'comments' ? 'comments_profile_id' : 'status_owner_id'],
+		        'like_type' => $this->_details['like_type'],
+		    ],
 		]);
 
 		// Don't forget the inner alert.
 		$uSettings = $this->_app['query']->getUserSettings($this->_details['user']['id']);
 
 		if (!empty($uSettings['alert_like']))
-			$this->_app['query']->createLog(array(
-				'member' => $this->_details['user']['id'],
-				'content_type' => 'like',
-				'content_id' => $this->_details['content'],
-				'time' => $this->_details['time'],
-				'extra' => array(
-					'text' => 'like_'. $this->_details['like_type'],
-					'buddy_text' => 'like_'. $this->_details['like_type'] .'_buddy',
-					'comment_owner' => $messageOwner,
-					'toLoad' => array($messageOwner, $this->_details['user']['id']),
-					'status_id' => $data[($this->_details['like_type'] == 'comments' ? $this->_details['like_type'] .'_' : '') . 'status_id'],
-					'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,
-					'wall_owner' => $data[$this->_details['like_type'] == 'comments' ? 'comments_profile_id' : 'status_owner_id'],
-					'like_type' => $this->_details['like_type'],
-				),
-			));
+			$this->_app['query']->createLog([
+			    'member' => $this->_details['user']['id'],
+			    'content_type' => 'like',
+			    'content_id' => $this->_details['content'],
+			    'time' => $this->_details['time'],
+			    'extra' => [
+			        'text' => 'like_' . $this->_details['like_type'],
+			        'buddy_text' => 'like_' . $this->_details['like_type'] . '_buddy',
+			        'comment_owner' => $messageOwner,
+			        'toLoad' => [$messageOwner, $this->_details['user']['id']],
+			        'status_id' => $data[($this->_details['like_type'] == 'comments' ? $this->_details['like_type'] . '_' : '') . 'status_id'],
+			        'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,
+			        'wall_owner' => $data[$this->_details['like_type'] == 'comments' ? 'comments_profile_id' : 'status_owner_id'],
+			        'like_type' => $this->_details['like_type'],
+			    ],
+			]);
 	}
 
 	protected function status()
@@ -148,39 +150,39 @@ class BreezeNoti
 		// Useless to fire you an alert for something you did.
 		if ($this->_details['profile_id'] != $this->_details['poster_id'])
 			$this->innerCreate([
-				'alert_time' => $this->_details['time_raw'],
-				'id_member' => $this->_details['profile_id'],
-				'id_member_started' => $this->_details['poster_id'],
-				'member_name' => '',
-				'content_type' => $this->_details['content_type'] . '_owner',
-				'content_id' => $this->_details['id'],
-				'content_action' => '',
-				'is_read' => 0,
-				'extra' => array(
-					'text' => 'alert_status_owner',
-					'toLoad' => array($this->_details['poster_id'], $this->_details['profile_id']),
-					'poster' => $this->_details['poster_id'],
-					'owner' => $this->_details['profile_id'],
-				),
+			    'alert_time' => $this->_details['time_raw'],
+			    'id_member' => $this->_details['profile_id'],
+			    'id_member_started' => $this->_details['poster_id'],
+			    'member_name' => '',
+			    'content_type' => $this->_details['content_type'] . '_owner',
+			    'content_id' => $this->_details['id'],
+			    'content_action' => '',
+			    'is_read' => 0,
+			    'extra' => [
+			        'text' => 'alert_status_owner',
+			        'toLoad' => [$this->_details['poster_id'], $this->_details['profile_id']],
+			        'poster' => $this->_details['poster_id'],
+			        'owner' => $this->_details['profile_id'],
+			    ],
 			]);
 
 		// And our very own alert too.
 		$uSettings = $this->_app['query']->getUserSettings($this->_details['poster_id']);
 
 		if (!empty($uSettings['alert_status']))
-			$this->_app['query']->createLog(array(
-				'member' => $this->_details['poster_id'],
-				'content_type' => 'status',
-				'content_id' => $this->_details['id'],
-				'time' => $this->_details['time_raw'],
-				'extra' => array(
-					'buddy_text' => 'alert_status_owner_buddy',
-					'toLoad' => array($this->_details['poster_id'], $this->_details['profile_id']),
-					'wall_owner' => $this->_details['profile_id'],
-					'poster' => $this->_details['poster_id'],
-					'status_id' => $this->_details['id'],
-				),
-			));
+			$this->_app['query']->createLog([
+			    'member' => $this->_details['poster_id'],
+			    'content_type' => 'status',
+			    'content_id' => $this->_details['id'],
+			    'time' => $this->_details['time_raw'],
+			    'extra' => [
+			        'buddy_text' => 'alert_status_owner_buddy',
+			        'toLoad' => [$this->_details['poster_id'], $this->_details['profile_id']],
+			        'wall_owner' => $this->_details['profile_id'],
+			        'poster' => $this->_details['poster_id'],
+			        'status_id' => $this->_details['id'],
+			    ],
+			]);
 	}
 
 	protected function comment()
@@ -189,44 +191,44 @@ class BreezeNoti
 		$uSettings = $this->_app['query']->getUserSettings($this->_details['poster_id']);
 
 		if (!empty($uSettings['alert_comment']))
-			$this->_app['query']->createLog(array(
-				'member' => $this->_details['poster_id'],
-				'content_type' => 'comment',
-				'content_id' => $this->_details['id'],
-				'time' => $this->_details['time_raw'],
-				'extra' => array(
-					'buddy_text' => 'alert_comment_status_owner_buddy',
-					'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
-					'wall_owner' => $this->_details['profile_id'],
-					'poster' => $this->_details['poster_id'],
-					'status_owner' => $this->_details['status_owner_id'],
-					'status_id' => $this->_details['status_id'],
-				),
-			));
+			$this->_app['query']->createLog([
+			    'member' => $this->_details['poster_id'],
+			    'content_type' => 'comment',
+			    'content_id' => $this->_details['id'],
+			    'time' => $this->_details['time_raw'],
+			    'extra' => [
+			        'buddy_text' => 'alert_comment_status_owner_buddy',
+			        'toLoad' => [$this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']],
+			        'wall_owner' => $this->_details['profile_id'],
+			        'poster' => $this->_details['poster_id'],
+			        'status_owner' => $this->_details['status_owner_id'],
+			        'status_id' => $this->_details['status_id'],
+			    ],
+			]);
 
 		// No need to go further.
 		if (($this->_details['poster_id'] == $this->_details['profile_id']) && ($this->_details['profile_id'] == $this->_details['status_owner_id']))
 			return;
 
 		// Set a basic array. Despise all the different alternatives this notification has, only a few things actually change...
-		$toCreate = array(
-			'alert_time' => $this->_details['time_raw'],
-			'id_member' => $this->_details['status_owner_id'],
-			'id_member_started' => $this->_details['poster_id'],
-			'member_name' => '',
-			'content_type' => $this->_details['content_type'] . '_status_owner',
-			'content_id' => $this->_details['id'],
-			'content_action' => '',
-			'is_read' => 0,
-			'extra' => array(
-					'buddy_text' => 'alert_comment_status_owner_buddy',
-					'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
-					'wall_owner' => $this->_details['profile_id'],
-					'poster' => $this->_details['poster_id'],
-					'status_owner' => $this->_details['status_owner_id'],
-					'status_id' => $this->_details['status_id'],
-			),
-		);
+		$toCreate = [
+		    'alert_time' => $this->_details['time_raw'],
+		    'id_member' => $this->_details['status_owner_id'],
+		    'id_member_started' => $this->_details['poster_id'],
+		    'member_name' => '',
+		    'content_type' => $this->_details['content_type'] . '_status_owner',
+		    'content_id' => $this->_details['id'],
+		    'content_action' => '',
+		    'is_read' => 0,
+		    'extra' => [
+		        'buddy_text' => 'alert_comment_status_owner_buddy',
+		        'toLoad' => [$this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']],
+		        'wall_owner' => $this->_details['profile_id'],
+		        'poster' => $this->_details['poster_id'],
+		        'status_owner' => $this->_details['status_owner_id'],
+		        'status_id' => $this->_details['status_id'],
+		    ],
+		];
 
 		// You posted a comment on somebody else status on your wall? then just notify that "somebody"
 		if (($this->_details['poster_id'] == $this->_details['profile_id']) && ($this->_details['poster_id'] != $this->_details['status_owner_id']))
@@ -250,23 +252,23 @@ class BreezeNoti
 			{
 				// This is for the wall owner. A completely separate alert actually...
 				$this->innerCreate([
-					'alert_time' => $this->_details['time_raw'],
-					'id_member' => $this->_details['profile_id'],
-					'id_member_started' => $this->_details['poster_id'],
-					'member_name' => '',
-					'content_type' => $this->_details['content_type'] . '_profile_owner',
-					'content_id' => $this->_details['id'],
-					'content_action' => '',
-					'is_read' => 0,
-					'extra' => array(
-						'text' => 'comment_different_owner_own_wall',
-						'buddy_text' => 'alert_comment_status_owner_buddy',
-						'toLoad' => array($this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']),
-						'wall_owner' => $this->_details['profile_id'],
-						'poster' => $this->_details['poster_id'],
-						'status_owner' => $this->_details['status_owner_id'],
-						'status_id' => $this->_details['status_id'],
-					),
+				    'alert_time' => $this->_details['time_raw'],
+				    'id_member' => $this->_details['profile_id'],
+				    'id_member_started' => $this->_details['poster_id'],
+				    'member_name' => '',
+				    'content_type' => $this->_details['content_type'] . '_profile_owner',
+				    'content_id' => $this->_details['id'],
+				    'content_action' => '',
+				    'is_read' => 0,
+				    'extra' => [
+				        'text' => 'comment_different_owner_own_wall',
+				        'buddy_text' => 'alert_comment_status_owner_buddy',
+				        'toLoad' => [$this->_details['status_owner_id'], $this->_details['poster_id'], $this->_details['status_owner_id']],
+				        'wall_owner' => $this->_details['profile_id'],
+				        'poster' => $this->_details['poster_id'],
+				        'status_owner' => $this->_details['status_owner_id'],
+				        'status_id' => $this->_details['status_id'],
+				    ],
 				]);
 
 				// The status owner gets notified too!
@@ -301,7 +303,7 @@ class BreezeNoti
 				if (empty($prefs[$id][$this->_app->txtpattern . $this->_details['content_type']]))
 					continue;
 
-				$url = '?action=wall;sa=single;u=' . $this->_details['profile_id'] .';bid='. (!empty($this->_details['status_id']) ? ($this->_details['status_id'] .';cid='. $this->_details['id']) : $this->_details['id']);
+				$url = '?action=wall;sa=single;u=' . $this->_details['profile_id'] . ';bid=' . (!empty($this->_details['status_id']) ? ($this->_details['status_id'] . ';cid=' . $this->_details['id']) : $this->_details['id']);
 				$text = '';
 				$toload = [$member['mentioned_by']['id'], $member['id'], $this->_details['poster_id']];
 
@@ -310,24 +312,24 @@ class BreezeNoti
 					$toLoad[] = $this->_details['status_owner_id'];
 
 				// Is it your own wall? Ternary abuse time!
-				$text = 'mention_'. ($member['id'] == $this->_details['profile_id'] ? 'own_' : '') . ($this->_details['innerType'] == 'sta' ? 'status' : 'comment');
+				$text = 'mention_' . ($member['id'] == $this->_details['profile_id'] ? 'own_' : '') . ($this->_details['innerType'] == 'sta' ? 'status' : 'comment');
 
-				$this->_app['query']->createAlert(array(
-					'alert_time' => time(),
-					'id_member' => $member['id'],
-					'id_member_started' => $member['mentioned_by']['id'],
-					'member_name' => $member['mentioned_by']['name'],
-					'content_type' => $this->_details['content_type'] .'mention',
-					'content_id' => $this->_details['id'],
-					'content_action' => 'mention',
-					'is_read' => 0,
-					'extra' => json_encode(array(
-						'text' => $text,
-						'url' => $url,
-						'toLoad' => $toload,
-						'profile_owner' => $this->_details['profile_id'],
-					)),
-				));
+				$this->_app['query']->createAlert([
+				    'alert_time' => time(),
+				    'id_member' => $member['id'],
+				    'id_member_started' => $member['mentioned_by']['id'],
+				    'member_name' => $member['mentioned_by']['name'],
+				    'content_type' => $this->_details['content_type'] . 'mention',
+				    'content_id' => $this->_details['id'],
+				    'content_action' => 'mention',
+				    'is_read' => 0,
+				    'extra' => json_encode([
+				        'text' => $text,
+				        'url' => $url,
+				        'toLoad' => $toload,
+				        'profile_owner' => $this->_details['profile_id'],
+				    ]),
+				]);
 
 				// Lastly, update the counter.
 				updateMemberData($member['id'], ['alerts' => '+']);
@@ -337,20 +339,20 @@ class BreezeNoti
 	protected function buddyConfirm()
 	{
 		$this->innerCreate([
-			'alert_time' => !empty($this->_details['time']) ? $this->_details['time'] : time(),
-			'id_member' => $this->_details['receiver_id'],
-			'id_member_started' => $this->_details['id_member'],
-			'member_name' => $this->_details['member_name'],
-			'content_type' => $this->_details['content_type'],
-			'content_id' => 0,
-			'content_action' => 'buddy',
-			'is_read' => 0,
-			'extra' => [
-				'toLoad' => [$this->_details['receiver_id'], $this->_details['id_member']],
-				'text' => $this->_details['text'],
-				'sender' => $this->_details['sender'],
-				'receiver' => $this->_details['receiver'],
-			],
+		    'alert_time' => !empty($this->_details['time']) ? $this->_details['time'] : time(),
+		    'id_member' => $this->_details['receiver_id'],
+		    'id_member_started' => $this->_details['id_member'],
+		    'member_name' => $this->_details['member_name'],
+		    'content_type' => $this->_details['content_type'],
+		    'content_id' => 0,
+		    'content_action' => 'buddy',
+		    'is_read' => 0,
+		    'extra' => [
+		        'toLoad' => [$this->_details['receiver_id'], $this->_details['id_member']],
+		        'text' => $this->_details['text'],
+		        'sender' => $this->_details['sender'],
+		        'receiver' => $this->_details['receiver'],
+		    ],
 		], true, false);
 	}
 }

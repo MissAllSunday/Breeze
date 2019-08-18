@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * BreezeForm
  *
@@ -67,7 +69,7 @@ class BreezeForm
 
 		// Give it a chance to use a full text string.
 		$param['text']  = !empty($param['fullText']) ? $param['fullText'] : $this->setText($param['text']);
-		$param['desc']  = !empty($param['fullDesc']) ? $param['fullDesc'] : $this->setText($param['name'] .'_sub');
+		$param['desc']  = !empty($param['fullDesc']) ? $param['fullDesc'] : $this->setText($param['name'] . '_sub');
 	}
 
 	function addSelect($param = [])
@@ -78,11 +80,11 @@ class BreezeForm
 
 		$this->setParamValues($param);
 		$param['type'] = 'select';
-		$param['html_start'] = '<'. $param['type'] .' name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $param['name'] .']' : $param['name']) .'">';
-		$param['html_end'] = '</'. $param['type'] .'>';
+		$param['html_start'] = '<' . $param['type'] . ' name="' . (!empty($this->_options['name']) ? $this->_options['name'] . '[' . $param['name'] . ']' : $param['name']) . '">';
+		$param['html_end'] = '</' . $param['type'] . '>';
 
 		foreach($values as $k => $v)
-			$param['values'][$k] = '<option value="' .$k. '" '. (isset($v[1]) && $v[1] == 'selected' ? 'selected="selected"' : '') .'>'. $this->_app['tools']->text($v[0]) .'</option>';
+			$param['values'][$k] = '<option value="' . $k . '" ' . (isset($v[1]) && $v[1] == 'selected' ? 'selected="selected"' : '') . '>' . $this->_app['tools']->text($v[0]) . '</option>';
 
 		return $this->addElement($param);
 	}
@@ -97,7 +99,7 @@ class BreezeForm
 		$param['type'] = 'checkbox';
 		$param['value'] = 1;
 		$param['checked'] = empty($param['checked']) ? '' : 'checked="checked"';
-		$param['html'] = '<input type="'. $param['type'] .'" name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $param['name'] .']' : $param['name']) .'" id="'. $param['name'] .'" value="'. $param['value'] .'" '. $param['checked'] .' class="input_check" />';
+		$param['html'] = '<input type="' . $param['type'] . '" name="' . (!empty($this->_options['name']) ? $this->_options['name'] . '[' . $param['name'] . ']' : $param['name']) . '" id="' . $param['name'] . '" value="' . $param['value'] . '" ' . $param['checked'] . ' class="input_check" />';
 
 		return $this->addElement($param);
 	}
@@ -110,9 +112,9 @@ class BreezeForm
 
 		$this->setParamValues($param);
 		$param['type'] = 'text';
-		$param['size'] = empty($param['size'] ) ? 'size="20"' : 'size="'. $param['size'] .'"';
-		$param['maxlength'] = empty($param['maxlength']) ? 'maxlength="20"' : 'maxlength="'. $param['maxlength'] .'"';
-		$param['html'] = '<input type="'. $param['type'] .'" name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $param['name'] .']' : $param['name']) .'" id="'. $param['name'] .'" value="'. $param['value'] .'" '. $param['size'] .' '. $param['maxlength'] .' class="input_text" />';
+		$param['size'] = empty($param['size'] ) ? 'size="20"' : 'size="' . $param['size'] . '"';
+		$param['maxlength'] = empty($param['maxlength']) ? 'maxlength="20"' : 'maxlength="' . $param['maxlength'] . '"';
+		$param['html'] = '<input type="' . $param['type'] . '" name="' . (!empty($this->_options['name']) ? $this->_options['name'] . '[' . $param['name'] . ']' : $param['name']) . '" id="' . $param['name'] . '" value="' . $param['value'] . '" ' . $param['size'] . ' ' . $param['maxlength'] . ' class="input_text" />';
 
 		return $this->addElement($param);
 	}
@@ -128,11 +130,11 @@ class BreezeForm
 		$param['value'] = empty($param['value']) ? '' : $param['value'];
 
 		// To a void having a large and complicate ternary, split these options.
-		$rows = 'rows="'. (!empty($param['size'] ) && !empty($param['size']['rows']) ? $param['size']['rows'] : 10) .'"';
-		$cols = 'cols="'. (!empty($param['size'] ) && !empty($param['size']['cols']) ? $param['size']['cols'] : 40) .'"';
-		$param['maxlength'] = 'maxlength="'. (!empty($param['size'] ) && !empty($param['size']['maxlength']) ? $param['size']['maxlength'] : 1024) .'"';
+		$rows = 'rows="' . (!empty($param['size'] ) && !empty($param['size']['rows']) ? $param['size']['rows'] : 10) . '"';
+		$cols = 'cols="' . (!empty($param['size'] ) && !empty($param['size']['cols']) ? $param['size']['cols'] : 40) . '"';
+		$param['maxlength'] = 'maxlength="' . (!empty($param['size'] ) && !empty($param['size']['maxlength']) ? $param['size']['maxlength'] : 1024) . '"';
 
-		$param['html'] = '<'. $param['type'] .' name="'. (!empty($this->_options['name']) ? $this->_options['name'] .'['. $param['name'] .']' : $param['name']) .'" id="'. $param['name'] .'" '. $rows .' '. $cols .' '. $param['maxlength'] .'>'. $param['value'] .'</'. $param['type'] .'>';
+		$param['html'] = '<' . $param['type'] . ' name="' . (!empty($this->_options['name']) ? $this->_options['name'] . '[' . $param['name'] . ']' : $param['name']) . '" id="' . $param['name'] . '" ' . $rows . ' ' . $cols . ' ' . $param['maxlength'] . '>' . $param['value'] . '</' . $param['type'] . '>';
 
 		return $this->addElement($param);
 	}
@@ -140,7 +142,7 @@ class BreezeForm
 	function addHiddenField($name, $value)
 	{
 		$param['type'] = 'hidden';
-		$param['html'] = '<input type="'. $param['type'] .'" name="'. $name .'" id="'. $name .'" value="'. $value .'" />';
+		$param['html'] = '<input type="' . $param['type'] . '" name="' . $name . '" id="' . $name . '" value="' . $value . '" />';
 
 		return $this->addElement($param);
 	}
@@ -193,12 +195,12 @@ class BreezeForm
 	{
 		global $context;
 
-		loadtemplate(Breeze::$name .'Form');
+		loadtemplate(Breeze::$name . 'Form');
 
-		$context['form'] = array(
-			'options' => $this->_options,
-			'elements' => $this->elements,
-		);
+		$context['form'] = [
+		    'options' => $this->_options,
+		    'elements' => $this->elements,
+		];
 
 		return template_breeze_form();
 	}

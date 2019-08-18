@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * BreezeTrackActions
  *
@@ -30,16 +32,16 @@ class BreezeTrackActions extends Breeze
 		// Does the user wants to log this? does the new topic has been approved?
 		if (!empty($options['alert_topic']) && !empty($topicOptions['is_approved']))
 			$this['query']->createLog([
-				'member' => $posterOptions['id'],
-				'content_type' => 'topic',
-				'content_id' => $topicOptions['id'],
-				'time' => time(),
-				'extra' => array(
-					'subject' => $msgOptions['subject'],
-					'toLoad' => array($posterOptions['id']),
-					'topicOptions' => $topicOptions,
-					'messageID' => $msgOptions['id']
-				),
+			    'member' => $posterOptions['id'],
+			    'content_type' => 'topic',
+			    'content_id' => $topicOptions['id'],
+			    'time' => time(),
+			    'extra' => [
+			        'subject' => $msgOptions['subject'],
+			        'toLoad' => [$posterOptions['id']],
+			        'topicOptions' => $topicOptions,
+			        'messageID' => $msgOptions['id']
+			    ],
 			]);
 	}
 

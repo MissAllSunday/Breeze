@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * BreezeDisplay
  *
@@ -33,10 +35,10 @@ class BreezeDisplay
 
 		$return = [];
 		$users = [];
-		$call = 'breeze_'. $type;
+		$call = 'breeze_' . $type;
 
 		// Functions template.
-		loadtemplate(Breeze::$name .'Functions');
+		loadtemplate(Breeze::$name . 'Functions');
 
 		// Parse the content.
 		if (!$alreadyParsed)
@@ -46,7 +48,7 @@ class BreezeDisplay
 			$params['time'] = $this->_app['tools']->timeElapsed($params['time']);
 
 		// Let us work with an array
-		$params = $single ? array($params) : $params;
+		$params = $single ? [$params] : $params;
 
 		// If there is something to load, load it then!
 		if ($usersToLoad)

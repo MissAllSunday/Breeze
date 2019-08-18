@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * BreezeMood
  *
@@ -29,8 +31,8 @@ class BreezeMood
 	{
 		$this->_app = $app;
 
-		$this->imagesPath = $this->_app['tools']->settings['default_theme_dir'] .'/images/' . $this->_moodFolder;
-		$this->imagesUrl = $this->_app['tools']->settings['default_images_url'] .'/'. $this->_moodFolder;
+		$this->imagesPath = $this->_app['tools']->settings['default_theme_dir'] . '/images/' . $this->_moodFolder;
+		$this->imagesUrl = $this->_app['tools']->settings['default_images_url'] . '/' . $this->_moodFolder;
 		$this->placementField = $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->setting('mood_placement') : 0;
 	}
 
@@ -41,7 +43,7 @@ class BreezeMood
 		loadLanguage('Help');
 
 		// Wild Mood Swings... a highly underrated album if you ask me ;)
-		loadtemplate(Breeze::$name .'Functions');
+		loadtemplate(Breeze::$name . 'Functions');
 
 		// Get the user.
 		$context['moodUser'] = $this->_app->data()->get('user');
@@ -122,14 +124,14 @@ class BreezeMood
 
 		foreach ($history as $id => $date)
 			if (isset($this->_moods[$id]) && $this->_moods[$id]['enable'] && $this->checkImage($this->_moods[$id]['file']))
-				$return[$id] = array(
-					'id' => $id,
-					'date' => $this->_app['tools']->timeElapsed($date),
-					'name' => $this->_moods[$id]['name'],
-					'file' => $this->_moods[$id]['file'],
-					'url' => $this->imagesUrl . $this->_moods[$id]['file'],
-					'desc' => $this->_moods[$id]['desc'],
-				);
+				$return[$id] = [
+				    'id' => $id,
+				    'date' => $this->_app['tools']->timeElapsed($date),
+				    'name' => $this->_moods[$id]['name'],
+				    'file' => $this->_moods[$id]['file'],
+				    'url' => $this->imagesUrl . $this->_moods[$id]['file'],
+				    'desc' => $this->_moods[$id]['desc'],
+				];
 
 		return $return;
 	}
@@ -148,7 +150,7 @@ class BreezeMood
 			return $mood;
 		}
 
-		else
+		
 			return false;
 	}
 
@@ -157,7 +159,7 @@ class BreezeMood
 		global $context;
 
 		// Wild Mood Swings... a highly underrated album if you ask me ;)
-		loadtemplate(Breeze::$name .'Functions');
+		loadtemplate(Breeze::$name . 'Functions');
 
 		// Get the currently active moods.
 		$moods = $this->getActive();
@@ -168,12 +170,12 @@ class BreezeMood
 		// Get the image.
 		$currentMood = !empty($userSettings['mood']) && !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : false;
 
-		return array(
-			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
-			'col_name' => $this->_app['tools']->text('moodLabel'),
-			'value' => template_mood_image($currentMood, $user),
-			'placement' => $this->placementField,
-		);
+		return [
+		    'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
+		    'col_name' => $this->_app['tools']->text('moodLabel'),
+		    'value' => template_mood_image($currentMood, $user),
+		    'placement' => $this->placementField,
+		];
 	}
 
 	public function showProfile($user, $area)
@@ -188,7 +190,7 @@ class BreezeMood
 			return;
 
 		// Wild Mood Swings... a highly underrated album if you ask me ;)
-		loadtemplate(Breeze::$name .'Functions');
+		loadtemplate(Breeze::$name . 'Functions');
 
 		// Get the currently active moods.
 		$moods = $this->getActive();
@@ -200,26 +202,26 @@ class BreezeMood
 		$currentMood = !empty($userSettings['mood']) && !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : false;
 
 		// Gotta love globals...
-		$context['custom_fields'][] = array(
-			'name' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
-			'placement' => $this->placementField,
-			'output_html' => template_mood_image($currentMood, $user),
-			'show_reg' => false,
-		);
+		$context['custom_fields'][] = [
+		    'name' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
+		    'placement' => $this->placementField,
+		    'output_html' => template_mood_image($currentMood, $user),
+		    'show_reg' => false,
+		];
 	}
 
 	public function noImage()
 	{
 		// Gotta load our template.
-		loadtemplate(Breeze::$name .'Functions');
+		loadtemplate(Breeze::$name . 'Functions');
 
 		// Build the needed HTML.
-		return array(
-			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
-			'col_name' => $this->_app['tools']->text('moodLabel'),
-			'value' => template_mood_noImage(),
-			'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->setting('mood_placement') : 0,
-		);
+		return [
+		    'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
+		    'col_name' => $this->_app['tools']->text('moodLabel'),
+		    'value' => template_mood_noImage(),
+		    'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->setting('mood_placement') : 0,
+		];
 	}
 
 	public function checkExt($var)
@@ -230,7 +232,7 @@ class BreezeMood
 		if (!in_array(strtolower(substr(strrchr($var, '.'), 1)), $this->_allowedExtensions))
 			return false;
 
-		else
+		
 			return true;
 	}
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * BreezeAlerts
  *
@@ -70,58 +72,58 @@ class BreezeAlerts
 	// Weird name, I know...
 	protected function status_owner($id)
 	{
-		return $this->_app['tools']->parser($this->_app['tools']->text('alert_status_owner'), array(
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['owner'] .
-			';bid=' . $this->_alerts[$id]['content_id'],
-			'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
-		));
+		return $this->_app['tools']->parser($this->_app['tools']->text('alert_status_owner'), [
+		    'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['owner'] .
+		    ';bid=' . $this->_alerts[$id]['content_id'],
+		    'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
+		]);
 	}
 
 	protected function comment_status_owner($id)
 	{
 		// There are multiple variants of this same alert, however, all that logic was already decided elsewhere...
-		return $this->_app['tools']->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
-			';bid=' . $this->_alerts[$id]['extra']['status_id'] .';cid=' . $this->_alerts[$id]['content_id'] .'#comment_id_' . $this->_alerts[$id]['content_id'],
-			'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
-			'status_poster' => $this->_usersData[$this->_alerts[$id]['extra']['status_owner']]['link'],
-			'wall_owner' => $this->_usersData[$this->_alerts[$id]['extra']['wall_owner']]['link'],
-		));
+		return $this->_app['tools']->parser($this->_app['tools']->text('alert_' . $this->_alerts[$id]['extra']['text']), [
+		    'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
+		    ';bid=' . $this->_alerts[$id]['extra']['status_id'] . ';cid=' . $this->_alerts[$id]['content_id'] . '#comment_id_' . $this->_alerts[$id]['content_id'],
+		    'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
+		    'status_poster' => $this->_usersData[$this->_alerts[$id]['extra']['status_owner']]['link'],
+		    'wall_owner' => $this->_usersData[$this->_alerts[$id]['extra']['wall_owner']]['link'],
+		]);
 	}
 
 	protected function comment_profile_owner($id)
 	{
-		return $this->_app['tools']->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
-			';bid=' . $this->_alerts[$id]['extra']['status_id'] .';cid=' . $this->_alerts[$id]['content_id'] .'#comment_id_' . $this->_alerts[$id]['content_id'],
-			'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
-			'status_poster' => $this->_usersData[$this->_alerts[$id]['extra']['status_owner']]['link'],
-			'wall_owner' => $this->_usersData[$this->_alerts[$id]['extra']['wall_owner']]['link'],
-		));
+		return $this->_app['tools']->parser($this->_app['tools']->text('alert_' . $this->_alerts[$id]['extra']['text']), [
+		    'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
+		    ';bid=' . $this->_alerts[$id]['extra']['status_id'] . ';cid=' . $this->_alerts[$id]['content_id'] . '#comment_id_' . $this->_alerts[$id]['content_id'],
+		    'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
+		    'status_poster' => $this->_usersData[$this->_alerts[$id]['extra']['status_owner']]['link'],
+		    'wall_owner' => $this->_usersData[$this->_alerts[$id]['extra']['wall_owner']]['link'],
+		]);
 	}
 
 	protected function like($id)
 	{
-		return $this->_app['tools']->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), array(
-			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
-			';bid=' . $this->_alerts[$id]['extra']['status_id'] .(!empty($this->_alerts[$id]['extra']['comment_id']) ? (';cid=' . $this->_alerts[$id]['content_id'] .'#comment_id_' . $this->_alerts[$id]['content_id']) : ''),
-			'poster' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link'],
-			'type' => $this->_alerts[$id]['extra']['like_type'],
-		));
+		return $this->_app['tools']->parser($this->_app['tools']->text('alert_' . $this->_alerts[$id]['extra']['text']), [
+		    'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
+		    ';bid=' . $this->_alerts[$id]['extra']['status_id'] . (!empty($this->_alerts[$id]['extra']['comment_id']) ? (';cid=' . $this->_alerts[$id]['content_id'] . '#comment_id_' . $this->_alerts[$id]['content_id']) : ''),
+		    'poster' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link'],
+		    'type' => $this->_alerts[$id]['extra']['like_type'],
+		]);
 	}
 
 	protected function mention($id)
 	{
-		$toParse = array(
-			'poster' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link'],
-			'url' => $this->_app['tools']->scriptUrl . $this->_alerts[$id]['extra']['url'],
-		);
+		$toParse = [
+		    'poster' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link'],
+		    'url' => $this->_app['tools']->scriptUrl . $this->_alerts[$id]['extra']['url'],
+		];
 
 		// Is there a wall owner?
 		if (!empty($this->_alerts[$id]['extra']['profile_owner']))
 			$toParse['wall_owner'] = $this->_usersData[$this->_alerts[$id]['extra']['profile_owner']]['link'];
 
-		return $this->_app['tools']->parser($this->_app['tools']->text('alert_'. $this->_alerts[$id]['extra']['text']), $toParse);
+		return $this->_app['tools']->parser($this->_app['tools']->text('alert_' . $this->_alerts[$id]['extra']['text']), $toParse);
 	}
 
 	protected function buddyConfirm($id)
@@ -131,13 +133,13 @@ class BreezeAlerts
 			return;
 
 		// Build the link.
-		$confirmLink = $this->_app['tools']->scriptUrl . '?action=buddy;sa=confirm;sender=' . $this->_alerts[$id]['sender_id'] .';aid='. $id;
+		$confirmLink = $this->_app['tools']->scriptUrl . '?action=buddy;sa=confirm;sender=' . $this->_alerts[$id]['sender_id'] . ';aid=' . $id;
 
 		// Gotta do some magic.
-		return $this->_app['tools']->parser($this->_app['tools']->text('alert_buddy_'. $this->_alerts[$id]['extra']['text']), array(
-			'href' => $confirmLink,
-			'sender' => $this->_usersData[$this->_alerts[$id]['extra']['sender']]['link'],
-			'receiver' => $this->_usersData[$this->_alerts[$id]['extra']['receiver']]['link'],
-		));
+		return $this->_app['tools']->parser($this->_app['tools']->text('alert_buddy_' . $this->_alerts[$id]['extra']['text']), [
+		    'href' => $confirmLink,
+		    'sender' => $this->_usersData[$this->_alerts[$id]['extra']['sender']]['link'],
+		    'receiver' => $this->_usersData[$this->_alerts[$id]['extra']['receiver']]['link'],
+		]);
 	}
 }

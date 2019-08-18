@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Breeze
  *
@@ -21,21 +23,21 @@ require_once $sourcedir . '/Breeze/Pimple/Container.php';
 class Breeze extends \Pimple\Container
 {
 	protected $_services = [
-		'admin',
-		'ajax',
-		'alerts',
-		'buddy',
-		'data',
-		'display',
-		'form',
-		'log',
-		'noti',
-		'query',
-		'tools',
-		'user',
-		'userInfo',
-		'wall',
-		'mood',
+	    'admin',
+	    'ajax',
+	    'alerts',
+	    'buddy',
+	    'data',
+	    'display',
+	    'form',
+	    'log',
+	    'noti',
+	    'query',
+	    'tools',
+	    'user',
+	    'userInfo',
+	    'wall',
+	    'mood',
 	];
 	public static $name = 'Breeze';
 	public static $version = '1.1';
@@ -43,40 +45,40 @@ class Breeze extends \Pimple\Container
 	public static $coversFolder = '/breezeFiles/';
 	public $txtpattern = 'Breeze_';
 	public static $permissions = [
-		'deleteComments',
-		'deleteOwnComments',
-		'deleteProfileComments',
-		'deleteStatus',
-		'deleteOwnStatus',
-		'deleteProfileStatus',
-		'postStatus',
-		'postComments',
-		'canCover',
-		'canMood'
+	    'deleteComments',
+	    'deleteOwnComments',
+	    'deleteProfileComments',
+	    'deleteStatus',
+	    'deleteOwnStatus',
+	    'deleteProfileStatus',
+	    'postStatus',
+	    'postComments',
+	    'canCover',
+	    'canMood'
 	];
-	public static $allSettings = array(
-		'wall' => 'CheckBox',
-		'general_wall' => 'CheckBox',
-		'pagination_number' => 'Int',
-		'number_alert' => 'Int',
-		'load_more' => 'CheckBox',
-		'activityLog' => 'CheckBox',
-		'kick_ignored' => 'CheckBox',
-		'blockList' => 'Text',
-		'blockListIDs' => 'Array',
-		'buddies' => 'CheckBox',
-		'how_many_buddies' => 'Int',
-		'visitors' => 'CheckBox',
-		'how_many_visitors' => 'Int',
-		'clear_noti' => 'HTML',
-		'aboutMe' => 'TextArea',
-		'cover_height' => 'Int',
-	);
+	public static $allSettings = [
+	    'wall' => 'CheckBox',
+	    'general_wall' => 'CheckBox',
+	    'pagination_number' => 'Int',
+	    'number_alert' => 'Int',
+	    'load_more' => 'CheckBox',
+	    'activityLog' => 'CheckBox',
+	    'kick_ignored' => 'CheckBox',
+	    'blockList' => 'Text',
+	    'blockListIDs' => 'Array',
+	    'buddies' => 'CheckBox',
+	    'how_many_buddies' => 'Int',
+	    'visitors' => 'CheckBox',
+	    'how_many_visitors' => 'Int',
+	    'clear_noti' => 'HTML',
+	    'aboutMe' => 'TextArea',
+	    'cover_height' => 'Int',
+	];
 	public $likeTypes = ['breSta' => 'status', 'breCom' => 'comments'];
-	public $trackHooks = array(
-		'integrate_create_topic' => 'createTopic',
-		'integrate_profile_save' => 'editProfile',
-	);
+	public $trackHooks = [
+	    'integrate_create_topic' => 'createTopic',
+	    'integrate_profile_save' => 'editProfile',
+	];
 	public $wrapperActions = ['wall', 'ajax', 'admin', 'mood', 'buddy'];
 
 	// Support site feed
@@ -110,7 +112,7 @@ class Breeze extends \Pimple\Container
 		{
 			$this[$s] = function ($c) use ($s)
 			{
-				$call = __NAMESPACE__ . '\\'. \Breeze\Breeze::$name . ucfirst($s);
+				$call = __NAMESPACE__ . '\\' . \Breeze\Breeze::$name . ucfirst($s);
 				return new $call($c);
 			};
 		}
@@ -134,7 +136,6 @@ class Breeze extends \Pimple\Container
 		if (is_callable($this[$id]))
 			return $this[$id]($this);
 
-		else
 			return $this[$id];
 	}
 
@@ -189,10 +190,10 @@ class Breeze extends \Pimple\Container
 		$permissionGroups['membergroup']['classic'] = ['breeze_per_classic'];
 
 		foreach (\Breeze\Breeze::$permissions as $p)
-			$permissionList['membergroup']['breeze_'. $p] = array(
-			false,
-			'breeze_per_classic',
-			'breeze_per_simple');
+			$permissionList['membergroup']['breeze_' . $p] = [
+			    false,
+			    'breeze_per_classic',
+			    'breeze_per_simple'];
 	}
 
 	/**
@@ -219,79 +220,79 @@ class Breeze extends \Pimple\Container
 
 			if ($tools->enable('force_enable') || !empty($userSettings['wall']))
 			{
-				$profile_areas['info']['areas']['summary'] = array(
-					'label' => $tools->text('general_wall'),
-					'icon' => 'smiley',
-					'file' => \Breeze\Breeze::$folder . 'BreezeUser.php',
-					'function' => __NAMESPACE__ .'\BreezeUser::userWall#',
-					'permission' => array(
-						'own' => 'is_not_guest',
-						'any' => 'profile_view',
-					),
-				);
+				$profile_areas['info']['areas']['summary'] = [
+				    'label' => $tools->text('general_wall'),
+				    'icon' => 'smiley',
+				    'file' => \Breeze\Breeze::$folder . 'BreezeUser.php',
+				    'function' => __NAMESPACE__ . '\BreezeUser::userWall#',
+				    'permission' => [
+				        'own' => 'is_not_guest',
+				        'any' => 'profile_view',
+				    ],
+				];
 
 				// If the mod is enable, then create another page for the default profile page
-				$profile_areas['info']['areas']['static'] = array(
-					'label' => $tools->text('general_summary'),
-					'icon' => 'members',
-					'file' => 'Profile-View.php',
-					'function' => 'summary',
-					'permission' => array(
-						'own' => 'is_not_guest',
-						'any' => 'profile_view',
-					),
-				);
+				$profile_areas['info']['areas']['static'] = [
+				    'label' => $tools->text('general_summary'),
+				    'icon' => 'members',
+				    'file' => 'Profile-View.php',
+				    'function' => 'summary',
+				    'permission' => [
+				        'own' => 'is_not_guest',
+				        'any' => 'profile_view',
+				    ],
+				];
 			}
 
 			// Create the area
-			$profile_areas['breeze_profile'] = array(
-				'title' => $tools->text('general_my_wall_settings'),
-				'areas' => [],
-			);
+			$profile_areas['breeze_profile'] = [
+			    'title' => $tools->text('general_my_wall_settings'),
+			    'areas' => [],
+			];
 
 			// User individual settings, show the button if the mod is enable and the user is the profile owner.
-			$profile_areas['breeze_profile']['areas']['breezesettings'] = array(
-				'label' => $tools->text('user_settings_name'),
-				'icon' => 'maintain',
-				'file' => \Breeze\Breeze::$folder . 'BreezeUser.php',
-				'function' => __NAMESPACE__ .'\BreezeUser::userSettings#',
-				'enabled' => $context['user']['is_owner'],
-				'permission' => array(
-					'own' => 'is_not_guest',
-					'any' => 'profile_view',
-				),
-			);
+			$profile_areas['breeze_profile']['areas']['breezesettings'] = [
+			    'label' => $tools->text('user_settings_name'),
+			    'icon' => 'maintain',
+			    'file' => \Breeze\Breeze::$folder . 'BreezeUser.php',
+			    'function' => __NAMESPACE__ . '\BreezeUser::userSettings#',
+			    'enabled' => $context['user']['is_owner'],
+			    'permission' => [
+			        'own' => 'is_not_guest',
+			        'any' => 'profile_view',
+			    ],
+			];
 
 			// Inner alert settings page.
-			$profile_areas['breeze_profile']['areas']['alerts'] = array(
-				'label' => $tools->text('user_settings_name_alerts'),
-				'file' => \Breeze\Breeze::$folder . 'BreezeUser.php',
-				'function' => __NAMESPACE__ .'\BreezeUser::userAlerts#',
-				'enabled' => $context['user']['is_owner'],
-				'icon' => 'maintain',
-				'subsections' => array(
-					'settings' => array($tools->text('user_settings_name_alerts_settings'), array('is_not_guest', 'profile_view')),
-					'edit' => array($tools->text('user_settings_name_alerts_edit'), array('is_not_guest', 'profile_view')),
-				),
-				'permission' => array(
-					'own' => 'is_not_guest',
-					'any' => 'profile_view',
-				),
-			);
+			$profile_areas['breeze_profile']['areas']['alerts'] = [
+			    'label' => $tools->text('user_settings_name_alerts'),
+			    'file' => \Breeze\Breeze::$folder . 'BreezeUser.php',
+			    'function' => __NAMESPACE__ . '\BreezeUser::userAlerts#',
+			    'enabled' => $context['user']['is_owner'],
+			    'icon' => 'maintain',
+			    'subsections' => [
+			        'settings' => [$tools->text('user_settings_name_alerts_settings'), ['is_not_guest', 'profile_view']],
+			        'edit' => [$tools->text('user_settings_name_alerts_edit'), ['is_not_guest', 'profile_view']],
+			    ],
+			    'permission' => [
+			        'own' => 'is_not_guest',
+			        'any' => 'profile_view',
+			    ],
+			];
 
 			// Cover settings page.
 			if ($tools->enable('cover'))
-				$profile_areas['breeze_profile']['areas']['breezecover'] = array(
-					'label' => $tools->text('user_settings_name_cover'),
-					'icon' => 'administration',
-					'file' => \Breeze\Breeze::$folder . 'BreezeUser.php',
-					'function' => __NAMESPACE__ .'\BreezeUser::userCoverSettings#',
-					'enabled' => $context['user']['is_owner'],
-					'permission' => array(
-						'own' => 'is_not_guest',
-						'any' => 'profile_view',
-					),
-				);
+				$profile_areas['breeze_profile']['areas']['breezecover'] = [
+				    'label' => $tools->text('user_settings_name_cover'),
+				    'icon' => 'administration',
+				    'file' => \Breeze\Breeze::$folder . 'BreezeUser.php',
+				    'function' => __NAMESPACE__ . '\BreezeUser::userCoverSettings#',
+				    'enabled' => $context['user']['is_owner'],
+				    'permission' => [
+				        'own' => 'is_not_guest',
+				        'any' => 'profile_view',
+				    ],
+				];
 		}
 		// Done with the hacking...
 	}
@@ -320,11 +321,11 @@ class Breeze extends \Pimple\Container
 
 		// Replace the duplicate profile button
 		if (!empty($menu_buttons['profile']['sub_buttons']['summary']))
-			$menu_buttons['profile']['sub_buttons']['summary'] = array(
-				'title' => $txt['summary'],
-				'href' => $scripturl . '?action=profile;area=static',
-				'show' => true,
-			);
+			$menu_buttons['profile']['sub_buttons']['summary'] = [
+			    'title' => $txt['summary'],
+			    'href' => $scripturl . '?action=profile;area=static',
+			    'show' => true,
+			];
 
 		// The Wall link
 		$insert = 'home'; // for now lets use the home button as reference...
@@ -335,28 +336,28 @@ class Breeze extends \Pimple\Container
 				break;
 
 		$menu_buttons = array_merge(
-			array_slice($menu_buttons, 0, $counter),
-			array('wall' => array(
-				'title' => $tools->text('general_wall'),
-				'icon' => 'smiley',
-				'href' => $scripturl . '?action=wall',
-				'show' => ($tools->enable('master') && !$user_info['is_guest'] && !empty($userSettings['general_wall'])),
-				'sub_buttons' => array(
-					'noti' => array(
-						'title' => $tools->text('user_notisettings_name'),
-						'href' => $scripturl . '?action=profile;area=alerts;sa=edit;u='. $user_info['id'],
-						'show' => ($tools->enable('master') && !$user_info['is_guest']),
-						'sub_buttons' => [],
-					),
-					'admin' => array(
-						'title' => $tools->text('admin'),
-						'href' => $scripturl . '?action=admin;area=breezeadmin',
-						'show' => ($tools->enable('master') && $user_info['is_admin']),
-						'sub_buttons' => [],
-					),
-				),
-			)),
-			array_slice($menu_buttons, $counter)
+		    array_slice($menu_buttons, 0, $counter),
+		    ['wall' => [
+		        'title' => $tools->text('general_wall'),
+		        'icon' => 'smiley',
+		        'href' => $scripturl . '?action=wall',
+		        'show' => ($tools->enable('master') && !$user_info['is_guest'] && !empty($userSettings['general_wall'])),
+		        'sub_buttons' => [
+		            'noti' => [
+		                'title' => $tools->text('user_notisettings_name'),
+		                'href' => $scripturl . '?action=profile;area=alerts;sa=edit;u=' . $user_info['id'],
+		                'show' => ($tools->enable('master') && !$user_info['is_guest']),
+		                'sub_buttons' => [],
+		            ],
+		            'admin' => [
+		                'title' => $tools->text('admin'),
+		                'href' => $scripturl . '?action=admin;area=breezeadmin',
+		                'show' => ($tools->enable('master') && $user_info['is_admin']),
+		                'sub_buttons' => [],
+		            ],
+		        ],
+		    ]],
+		    array_slice($menu_buttons, $counter)
 		);
 	}
 
@@ -421,7 +422,7 @@ class Breeze extends \Pimple\Container
 	{
 		// Been the last on the line is cool!
 		foreach ($this->trackHooks as $hook => $function)
-			add_integration_function($hook, 'BreezeTrackActions::'. $function, false, '$sourcedir/Breeze/BreezeTrackActions.php', true);
+			add_integration_function($hook, 'BreezeTrackActions::' . $function, false, '$sourcedir/Breeze/BreezeTrackActions.php', true);
 	}
 
 	/**
@@ -451,7 +452,7 @@ class Breeze extends \Pimple\Container
 		$userSettings = $this['query']->getUserSettings($useriD);
 
 		// Gotta work with paths.
-		$folder = $this['tools']->boardDir . \Breeze\Breeze::$coversFolder . $useriD .'/' .($thumb ? 'thumbnail/' : '');
+		$folder = $this['tools']->boardDir . \Breeze\Breeze::$coversFolder . $useriD . '/' . ($thumb ? 'thumbnail/' : '');
 
 		// False if there is no image.
 		$file = empty($userSettings['cover']) ? false : $folder . $userSettings['cover']['basename'];
@@ -487,7 +488,7 @@ class Breeze extends \Pimple\Container
 		// If it hasn't been modified since the last time this attachment was retrieved, there's no need to display it again.
 		if (!empty($_SERVER['HTTP_IF_MODIFIED_SINCE']))
 		{
-			list($modified_since) = explode(';', $_SERVER['HTTP_IF_MODIFIED_SINCE']);
+			[$modified_since] = explode(';', $_SERVER['HTTP_IF_MODIFIED_SINCE']);
 			if (strtotime($modified_since) >= $fileTime)
 			{
 				ob_end_clean();
@@ -499,12 +500,12 @@ class Breeze extends \Pimple\Container
 		}
 
 		header('Pragma: ');
-		header('Expires: '. gmdate('D, d M Y H:i:s', time() + 31536000). ' GMT');
-		header('Last-Modified: '. gmdate('D, d M Y H:i:s', $fileTime). ' GMT');
+		header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 31536000) . ' GMT');
+		header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $fileTime) . ' GMT');
 		header('Accept-Ranges: bytes');
 		header('Connection: close');
-		header('ETag: '. md5($fileTime));
-		header('Content-Type: '. $userSettings['cover']['mime']);
+		header('ETag: ' . md5($fileTime));
+		header('Content-Type: ' . $userSettings['cover']['mime']);
 
 		// Since we don't do output compression for files this large...
 		if (filesize($file) > 4194304)
@@ -552,12 +553,12 @@ class Breeze extends \Pimple\Container
 					$item['area'] = 'static';
 
 		// Add a nice link to the user's wall settings page.
-		$profile_items[] = array(
-			'menu' => 'breeze_profile',
-			'area' => 'alerts',
-			'url' => $this['tools']->scriptUrl . '?action=profile;area=breezesettings;u='. $user_info['id'],
-			'title' => $this['tools']->text('general_my_wall_settings'),
-		);
+		$profile_items[] = [
+		    'menu' => 'breeze_profile',
+		    'area' => 'alerts',
+		    'url' => $this['tools']->scriptUrl . '?action=profile;area=breezesettings;u=' . $user_info['id'],
+		    'title' => $this['tools']->text('general_my_wall_settings'),
+		];
 	}
 
 	public function alerts(&$alerts)
@@ -579,13 +580,13 @@ class Breeze extends \Pimple\Container
 		// Gonna need some strings.
 		$this['tools']->loadLanguage('alerts');
 
-		$alert_types['breeze'] = array(
-			''. $this->txtpattern . 'status_owner' => array('alert' => 'yes', 'email' => 'never'),
-			''. $this->txtpattern . 'comment_status_owner' => array('alert' => 'yes', 'email' => 'never'),
-			''. $this->txtpattern . 'comment_profile_owner' => array('alert' => 'yes', 'email' => 'never'),
-			''. $this->txtpattern . 'mention' => array('alert' => 'yes', 'email' => 'never'),
-			''. $this->txtpattern . 'like' => array('alert' => 'yes', 'email' => 'never'),
-		);
+		$alert_types['breeze'] = [
+		    '' . $this->txtpattern . 'status_owner' => ['alert' => 'yes', 'email' => 'never'],
+		    '' . $this->txtpattern . 'comment_status_owner' => ['alert' => 'yes', 'email' => 'never'],
+		    '' . $this->txtpattern . 'comment_profile_owner' => ['alert' => 'yes', 'email' => 'never'],
+		    '' . $this->txtpattern . 'mention' => ['alert' => 'yes', 'email' => 'never'],
+		    '' . $this->txtpattern . 'like' => ['alert' => 'yes', 'email' => 'never'],
+		];
 	}
 
 	public function likes($type, $content, $sa, $js, $extra)
@@ -595,13 +596,13 @@ class Breeze extends \Pimple\Container
 			return false;
 
 		// Create our returned array
-		return array(
-			'can_see' => allowedTo('likes_view'),
-			'can_like' => allowedTo('likes_like'),
-			'type' => $type,
-			'flush_cache' => true,
-			'callback' => '$sourcedir/Breeze/Breeze.php|\Breeze\Breeze::likesUpdate#',
-		);
+		return [
+		    'can_see' => allowedTo('likes_view'),
+		    'can_like' => allowedTo('likes_like'),
+		    'type' => $type,
+		    'flush_cache' => true,
+		    'callback' => '$sourcedir/Breeze/Breeze.php|\Breeze\Breeze::likesUpdate#',
+		];
 	}
 
 	public function likesUpdate($object)
@@ -614,7 +615,7 @@ class Breeze extends \Pimple\Container
 		// Try and get the user who posted this content.
 		$originalAuthor = 0;
 		$originalAuthorData = [];
-		$row = $this->likeTypes[$type] .'_id';
+		$row = $this->likeTypes[$type] . '_id';
 		$authorColumn = 'poster_id';
 
 		// With the given values, try to fetch the data of the liked content.
@@ -631,29 +632,29 @@ class Breeze extends \Pimple\Container
 
 		// Insert an inner alert if the user wants to and if the data still is there...
 		if (!empty($uOptions['alert_like']) && !empty($originalAuthorData))
-			$this['query']->createLog(array(
-				'member' => $user['id'],
-				'content_type' => 'like',
-				'content_id' => $content,
-				'time' => time(),
-				'extra' => array(
-					'contentData' => $originalAuthorData,
-					'type' => $this->likeTypes[$type],
-					'toLoad' => array($user['id'], $originalAuthor),
-				),
-			));
+			$this['query']->createLog([
+			    'member' => $user['id'],
+			    'content_type' => 'like',
+			    'content_id' => $content,
+			    'time' => time(),
+			    'extra' => [
+			        'contentData' => $originalAuthorData,
+			        'type' => $this->likeTypes[$type],
+			        'toLoad' => [$user['id'], $originalAuthor],
+			    ],
+			]);
 
 		// Fire up a notification.
-		$this['query']->insertNoti(array(
-			'user' => $user['id'],
-			'like_type' => $this->likeTypes[$type],
-			'content' => $content,
-			'numLikes' => $numLikes,
-			'extra' => $extra,
-			'alreadyLiked' => (bool) $object->get('alreadyLiked'),
-			'validLikes' => $object->get('validLikes'),
-			'time' => time(),
-		), 'like');
+		$this['query']->insertNoti([
+		    'user' => $user['id'],
+		    'like_type' => $this->likeTypes[$type],
+		    'content' => $content,
+		    'numLikes' => $numLikes,
+		    'extra' => $extra,
+		    'alreadyLiked' => (bool) $object->get('alreadyLiked'),
+		    'validLikes' => $object->get('validLikes'),
+		    'time' => time(),
+		], 'like');
 
 		$this['query']->updateLikes($this->likeTypes[$type], $content, $numLikes);
 	}
@@ -666,7 +667,7 @@ class Breeze extends \Pimple\Container
 		if (!in_array($type, array_keys($this->likeTypes)))
 			return false;
 
-		$row = $this->likeTypes[$type] .'_id';
+		$row = $this->likeTypes[$type] . '_id';
 		$authorColumn = 'poster_id';
 
 		// With the given values, try to find who is the owner of the liked content.
@@ -676,7 +677,7 @@ class Breeze extends \Pimple\Container
 			return $data[$authorColumn];
 
 		// Return false if the status/comment is no longer on the DB.
-		else
+		
 			return false;
 	}
 
@@ -740,7 +741,7 @@ class Breeze extends \Pimple\Container
 		// Since we're here already, load the current User (currentSettings) object
 		foreach (\Breeze\Breeze::$allSettings as $k => $v)
 			$generalSettings .= '
-	breeze.currentSettings.'. $k .' = '. (isset($userSettings[$k]) ? (is_array($userSettings[$k]) ? json_encode($userSettings[$k]) : JavaScriptEscape($userSettings[$k])) : 'false') .';';
+	breeze.currentSettings.' . $k . ' = ' . (isset($userSettings[$k]) ? (is_array($userSettings[$k]) ? json_encode($userSettings[$k]) : JavaScriptEscape($userSettings[$k])) : 'false') . ';';
 
 		addInlineJavascript($generalSettings);
 
@@ -749,7 +750,7 @@ class Breeze extends \Pimple\Container
 
 		foreach ($clientText as $ct)
 			$generalText .= '
-	breeze.text.'. $ct .' = '. JavaScriptEscape($tools->text($ct)) .';';
+	breeze.text.' . $ct . ' = ' . JavaScriptEscape($tools->text($ct)) . ';';
 
 		addInlineJavascript($generalText);
 	}
@@ -793,19 +794,19 @@ class Breeze extends \Pimple\Container
 
 		$tools->loadLanguage('admin');
 
-		$admin_menu['config']['areas']['breezeadmin'] = array(
-			'label' => $tools->text('page_main'),
-			'file' => 'Breeze/BreezeAdmin.php',
-			'function' => '\Breeze\Breeze::call#',
-			'icon' => 'smiley',
-			'subsections' => array(
-				'general' => array($tools->text('page_main')),
-				'settings' => array($tools->text('page_settings')),
-				'permissions' => array($tools->text('page_permissions')),
-				'cover' => array($tools->text('page_cover')),
-				'donate' => array($tools->text('page_donate')),
-			),
-		);
+		$admin_menu['config']['areas']['breezeadmin'] = [
+		    'label' => $tools->text('page_main'),
+		    'file' => 'Breeze/BreezeAdmin.php',
+		    'function' => '\Breeze\Breeze::call#',
+		    'icon' => 'smiley',
+		    'subsections' => [
+		        'general' => [$tools->text('page_main')],
+		        'settings' => [$tools->text('page_settings')],
+		        'permissions' => [$tools->text('page_permissions')],
+		        'cover' => [$tools->text('page_cover')],
+		        'donate' => [$tools->text('page_donate')],
+		    ],
+		];
 
 		// Gotta respect the master mood setting.
 		if ($tools->enable('mood'))
@@ -845,55 +846,55 @@ class Breeze extends \Pimple\Container
 	public function credits()
 	{
 		// Dear contributor, please feel free to add yourself here.
-		$credits = array(
-			'dev' => array(
-				'name' => 'Developer(s)',
-				'users' => array(
-					'suki' => array(
-						'name' => 'Jessica "Suki" Gonz&aacute;lez',
-						'site' => 'https://missallsunday.com',
-					),
-				),
-			),
-			'scripts' => array(
-				'name' => 'Third Party Scripts',
-				'users' => array(
-					'jQuery' => array(
-						'name' => 'jQuery',
-						'site' => 'http://jquery.com/',
-					),
-					'noty' => array(
-						'name' => 'noty jquery plugin',
-						'site' => 'http://needim.github.com/noty/',
-					),
-					'moment' => array(
-						'name' => 'moment.js',
-						'site' => 'http://momentjs.com/',
-					),
-					'livestamp' => array(
-						'name' => 'Livestamp.js',
-						'site' => 'http://mattbradley.github.io/livestampjs/',
-					),
-					'fileUpload' => array(
-						'name' => 'jQuery File Upload Plugin',
-						'site' => 'https://github.com/blueimp/jQuery-File-Upload',
-					),
-				),
-			),
-			'images' => array(
-				'name' => 'Icons',
-				'users' => array(
-					'metro' => array(
-						'name' => 'Font Awesome',
-						'site' => 'http://fortawesome.github.io/Font-Awesome/',
-					),
-					'skype' => array(
-						'name' => 'skype icons',
-						'site' => 'http://blogs.skype.com/2006/09/01/icons-and-strings',
-					),
-				),
-			),
-		);
+		$credits = [
+		    'dev' => [
+		        'name' => 'Developer(s)',
+		        'users' => [
+		            'suki' => [
+		                'name' => 'Jessica "Suki" Gonz&aacute;lez',
+		                'site' => 'https://missallsunday.com',
+		            ],
+		        ],
+		    ],
+		    'scripts' => [
+		        'name' => 'Third Party Scripts',
+		        'users' => [
+		            'jQuery' => [
+		                'name' => 'jQuery',
+		                'site' => 'http://jquery.com/',
+		            ],
+		            'noty' => [
+		                'name' => 'noty jquery plugin',
+		                'site' => 'http://needim.github.com/noty/',
+		            ],
+		            'moment' => [
+		                'name' => 'moment.js',
+		                'site' => 'http://momentjs.com/',
+		            ],
+		            'livestamp' => [
+		                'name' => 'Livestamp.js',
+		                'site' => 'http://mattbradley.github.io/livestampjs/',
+		            ],
+		            'fileUpload' => [
+		                'name' => 'jQuery File Upload Plugin',
+		                'site' => 'https://github.com/blueimp/jQuery-File-Upload',
+		            ],
+		        ],
+		    ],
+		    'images' => [
+		        'name' => 'Icons',
+		        'users' => [
+		            'metro' => [
+		                'name' => 'Font Awesome',
+		                'site' => 'http://fortawesome.github.io/Font-Awesome/',
+		            ],
+		            'skype' => [
+		                'name' => 'skype icons',
+		                'site' => 'http://blogs.skype.com/2006/09/01/icons-and-strings',
+		            ],
+		        ],
+		    ],
+		];
 
 		// Oh well, one can dream...
 		call_integration_hook('integrate_breeze_credits', [&$credits]);

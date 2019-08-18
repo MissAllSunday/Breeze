@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * BreezeWall
  *
@@ -33,7 +35,7 @@ class BreezeWall
 
 		// Load the templates
 		loadtemplate(Breeze::$name);
-		loadtemplate(Breeze::$name .'Functions');
+		loadtemplate(Breeze::$name . 'Functions');
 
 		// Load all the things we need
 		$this->_app = $app;
@@ -53,13 +55,13 @@ class BreezeWall
 		$data = $this->_app->data('get');
 
 		// Safety first, hardcode the actions
-		$this->subActions = array(
-			'general' => 'generalWall',
-			'single' => 'singleStatus',
-			'singleComment' => 'singleComment',
-			'log' => 'log',
-			'userdiv' => 'userDiv',
-		);
+		$this->subActions = [
+		    'general' => 'generalWall',
+		    'single' => 'singleStatus',
+		    'singleComment' => 'singleComment',
+		    'log' => 'log',
+		    'userdiv' => 'userDiv',
+		];
 
 		// Master setting is off, back off!
 		if (!$this->_app['tools']->enable('master'))
@@ -85,7 +87,7 @@ class BreezeWall
 		$context['Breeze']['tools'] = $this->_app['tools'];
 
 		addInlineJavascript('
-	breeze.tools.comingFrom = "'. $context['Breeze']['comingFrom'] .'";');
+	breeze.tools.comingFrom = "' . $context['Breeze']['comingFrom'] . '";');
 
 		// These file are only used here and on the profile wall thats why I'm stuffing them here rather than in Breeze::notiHeaders()
 		loadJavascriptFile('breeze/post.js', ['default_theme' => true, 'defer' => true,]);
@@ -151,12 +153,12 @@ class BreezeWall
 		loadJavascriptFile('breeze/tabs.js', ['local' => true, 'default_theme' => true, 'defer' => true,]);
 
 		// The (soon to be) huge array...
-		$status = array(
-			'data' => [],
-			'users' => [],
-			'pagination' => '',
-			'count' => 0
-		);
+		$status = [
+		    'data' => [],
+		    'users' => [],
+		    'pagination' => '',
+		    'count' => 0
+		];
 
 		// Pass your settings to the template.
 		$context['Breeze']['settings']['visitor'] = $this->userSettings;
@@ -169,10 +171,10 @@ class BreezeWall
 		// Set all the page stuff.
 		$context['page_title'] = $this->_app['tools']->text('general_wall');
 		$context['sub_template'] = 'general_wall';
-		$context['linktree'][] = array(
-			'url' => $this->_app['tools']->scriptUrl . '?action=wall',
-			'name' => $context['page_title'],
-		);
+		$context['linktree'][] = [
+		    'url' => $this->_app['tools']->scriptUrl . '?action=wall',
+		    'name' => $context['page_title'],
+		];
 
 		// Time to overheat the server!
 		if (!empty($this->userSettings['buddiesList']))
@@ -201,17 +203,17 @@ class BreezeWall
 		// Need to pass some vars to the browser :(
 		addInlineJavascript('
 	breeze.pagination = {
-		maxIndex : '. $maxIndex .',
+		maxIndex : ' . $maxIndex . ',
 		totalItems : ' . $status['count'] . ',
-		userID : '. $user_info['id'] .'
+		userID : ' . $user_info['id'] . '
 	};', true);
 
 		// Does the user wants to use the load more button?
 		if (!empty($context['Breeze']['settings']['visitor']['load_more']))
 		{
 			addInlineJavascript('
-	breeze.text.load_more = '. JavaScriptEscape($this->_app['tools']->text('load_more')) .';
-	breeze.text.page_loading_end = '. JavaScriptEscape($this->_app['tools']->text('page_loading_end')) .';', true);
+	breeze.text.load_more = ' . JavaScriptEscape($this->_app['tools']->text('load_more')) . ';
+	breeze.text.page_loading_end = ' . JavaScriptEscape($this->_app['tools']->text('page_loading_end')) . ';', true);
 			loadJavascriptFile('loadMore.js', ['local' => true, 'default_theme' => true]);
 		}
 	}
@@ -246,7 +248,7 @@ class BreezeWall
 		// Set all the page stuff
 		$context['sub_template'] = 'general_wall';
 		$context['page_title'] = $this->_app['tools']->text('singleStatus_pageTitle');
-		$context['canonical_url'] = $this->_app['tools']->scriptUrl .'?action=wall;area=single;bid='. $data->get('bid');
+		$context['canonical_url'] = $this->_app['tools']->scriptUrl . '?action=wall;area=single;bid=' . $data->get('bid');
 
 		// There cannot be any pagination.
 		$context['page_index'] = [];
@@ -254,7 +256,7 @@ class BreezeWall
 		// Are we showing a comment? if so, highlight it.
 		if ($data->get('cid'))
 			addInlineJavascript('
-		document.getElementById(\'comment_id_'. $data->get('cid') .'\').className = "windowbg3";', true);
+		document.getElementById(\'comment_id_' . $data->get('cid') . '\').className = "windowbg3";', true);
 	}
 
     /**

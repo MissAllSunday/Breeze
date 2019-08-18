@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * BreezeAdmin
  *
@@ -35,28 +37,28 @@ class BreezeAdmin
 
 		$context['page_title'] = $txt['Breeze_page_panel'];
 
-		$subActions = array(
-			'general' => 'main',
-			'settings' => 'settings',
-			'moodList' => 'moodList',
-			'moodEdit' => 'moodEdit',
-			'permissions' => 'permissions',
-			'donate' => 'donate',
-			'cover' => 'cover',
-		);
+		$subActions = [
+		    'general' => 'main',
+		    'settings' => 'settings',
+		    'moodList' => 'moodList',
+		    'moodEdit' => 'moodEdit',
+		    'permissions' => 'permissions',
+		    'donate' => 'donate',
+		    'cover' => 'cover',
+		];
 
 		loadGeneralSettingParameters($subActions, 'general');
 
-		$context[$context['admin_menu_name']]['tab_data'] = array(
-			'tabs' => array(
-				'general' => [],
-				'settings' => [],
-				'moodList' => [],
-				'moodEdit' => [],
-				'permissions' => [],
-				'donate' => [],
-			),
-		);
+		$context[$context['admin_menu_name']]['tab_data'] = [
+		    'tabs' => [
+		        'general' => [],
+		        'settings' => [],
+		        'moodList' => [],
+		        'moodEdit' => [],
+		        'permissions' => [],
+		        'donate' => [],
+		    ],
+		];
 
 		$sa = $this->_app->data('get')->get('sa');
 
@@ -78,10 +80,10 @@ class BreezeAdmin
 		// Set all the page stuff
 		$context['page_title'] = $this->_app['tools']->text('page_main');
 		$context['sub_template'] = 'admin_home';
-		$context[$context['admin_menu_name']]['tab_data'] = array(
-			'title' => $context['page_title'],
-			'description' => $this->_app['tools']->text('page_welcome'),
-		);
+		$context[$context['admin_menu_name']]['tab_data'] = [
+		    'title' => $context['page_title'],
+		    'description' => $this->_app['tools']->text('page_welcome'),
+		];
 
 		// Get the credits.
 		$context['Breeze']['credits'] = $this->_app->credits();
@@ -92,7 +94,7 @@ $(function(){
 	var breezelive = $("#smfAnnouncements");
 	$.ajax({
 		type: "GET",
-		url: '. JavaScriptEscape($this->_app['tools']->scriptUrl . '?action=breezefeed') .',
+		url: ' . JavaScriptEscape($this->_app['tools']->scriptUrl . '?action=breezefeed') . ',
 		cache: false,
 		dataType: "xml",
 		success: function(xml){
@@ -128,38 +130,38 @@ $(function(){
 		// Load stuff
 		$data = $this->_app->data('request');
 		$context['sub_template'] = 'show_settings';
-		$context['page_title'] = \Breeze\Breeze::$name .' - '. $this->_app['tools']->text('page_settings');
-		$context[$context['admin_menu_name']]['tab_data'] = array(
-			'title' => $context['page_title'],
-			'description' => $this->_app['tools']->text('page_settings_desc'),
-		);
+		$context['page_title'] = \Breeze\Breeze::$name . ' - ' . $this->_app['tools']->text('page_settings');
+		$context[$context['admin_menu_name']]['tab_data'] = [
+		    'title' => $context['page_title'],
+		    'description' => $this->_app['tools']->text('page_settings_desc'),
+		];
 
 		require_once($this->_app['tools']->sourceDir . '/ManageServer.php');
 
-		$config_vars = array(
-			array('title', $this->_app->txtpattern .'page_settings'),
-			array('check', $this->_app->txtpattern .'master', 'subtext' => $this->_app['tools']->text('master_sub')),
-			array('check', $this->_app->txtpattern .'force_enable', 'subtext' => $this->_app['tools']->text('force_enable_sub')),
-			array('int', $this->_app->txtpattern .'allowed_max_num_users', 'size' => 3, 'subtext' => $this->_app['tools']->text('allowed_max_num_users_sub')),
-			array('int', $this->_app->txtpattern .'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this->_app['tools']->text('allowed_maxlength_aboutMe_sub')),
-			array('check', $this->_app->txtpattern .'mood', 'subtext' => $this->_app['tools']->text('mood_sub')),
-			array('text', $this->_app->txtpattern .'mood_label', 'subtext' => $this->_app['tools']->text('mood_label_sub')),
-			array('select', $this->_app->txtpattern .'mood_placement',
-				array(
-					$txt['custom_profile_placement_standard'],
-					$txt['custom_profile_placement_icons'],
-					$txt['custom_profile_placement_above_signature'],
-					$txt['custom_profile_placement_below_signature'],
-					$txt['custom_profile_placement_below_avatar'],
-					$txt['custom_profile_placement_above_member'],
-					$txt['custom_profile_placement_bottom_poster'],
-				),
-				'subtext' => $this->_app['tools']->text('mood_placement_sub'),
-				'multiple' => false,
-			),
-			array('int', $this->_app->txtpattern .'flood_messages', 'size' => 3, 'subtext' => $this->_app['tools']->text('flood_messages_sub')),
-			array('int', $this->_app->txtpattern .'flood_minutes', 'size' => 3, 'subtext' => $this->_app['tools']->text('flood_minutes_sub')),
-		);
+		$config_vars = [
+		    ['title', $this->_app->txtpattern . 'page_settings'],
+		    ['check', $this->_app->txtpattern . 'master', 'subtext' => $this->_app['tools']->text('master_sub')],
+		    ['check', $this->_app->txtpattern . 'force_enable', 'subtext' => $this->_app['tools']->text('force_enable_sub')],
+		    ['int', $this->_app->txtpattern . 'allowed_max_num_users', 'size' => 3, 'subtext' => $this->_app['tools']->text('allowed_max_num_users_sub')],
+		    ['int', $this->_app->txtpattern . 'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this->_app['tools']->text('allowed_maxlength_aboutMe_sub')],
+		    ['check', $this->_app->txtpattern . 'mood', 'subtext' => $this->_app['tools']->text('mood_sub')],
+		    ['text', $this->_app->txtpattern . 'mood_label', 'subtext' => $this->_app['tools']->text('mood_label_sub')],
+		    ['select', $this->_app->txtpattern . 'mood_placement',
+		        [
+		            $txt['custom_profile_placement_standard'],
+		            $txt['custom_profile_placement_icons'],
+		            $txt['custom_profile_placement_above_signature'],
+		            $txt['custom_profile_placement_below_signature'],
+		            $txt['custom_profile_placement_below_avatar'],
+		            $txt['custom_profile_placement_above_member'],
+		            $txt['custom_profile_placement_bottom_poster'],
+		        ],
+		        'subtext' => $this->_app['tools']->text('mood_placement_sub'),
+		        'multiple' => false,
+		    ],
+		    ['int', $this->_app->txtpattern . 'flood_messages', 'size' => 3, 'subtext' => $this->_app['tools']->text('flood_messages_sub')],
+		    ['int', $this->_app->txtpattern . 'flood_minutes', 'size' => 3, 'subtext' => $this->_app['tools']->text('flood_minutes_sub')],
+		];
 
 		$context['post_url'] = $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=settings;save';
 
@@ -184,20 +186,20 @@ $(function(){
 		// Load stuff
 		$data = $this->_app->data('request');
 		$context['sub_template'] = 'show_settings';
-		$context['page_title'] = \Breeze\Breeze::$name .' - '. $this->_app['tools']->text('page_permissions');
-		$context[$context['admin_menu_name']]['tab_data'] = array(
-			'title' => $context['page_title'],
-			'description' => $this->_app['tools']->text('page_permissions_desc'),
-		);
+		$context['page_title'] = \Breeze\Breeze::$name . ' - ' . $this->_app['tools']->text('page_permissions');
+		$context[$context['admin_menu_name']]['tab_data'] = [
+		    'title' => $context['page_title'],
+		    'description' => $this->_app['tools']->text('page_permissions_desc'),
+		];
 
 		require_once($this->_app['tools']->sourceDir . '/ManageServer.php');
 
-		$config_vars = array(
-			array('title', $this->_app->txtpattern .'page_permissions'),
-		);
+		$config_vars = [
+		    ['title', $this->_app->txtpattern . 'page_permissions'],
+		];
 
 		foreach (\Breeze\Breeze::$permissions as $p)
-			$config_vars[] = ['permissions', 'breeze_'. $p, 0, $txt['permissionname_breeze_'. $p]];
+			$config_vars[] = ['permissions', 'breeze_' . $p, 0, $txt['permissionname_breeze_' . $p]];
 
 		$context['post_url'] = $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=permissions;save';
 
@@ -233,10 +235,10 @@ $(function(){
 
 		// Set all the page stuff.
 		$context['page_title'] = $this->_app['tools']->text('page_mood');
-		$context[$context['admin_menu_name']]['tab_data'] = array(
-			'title' => $context['page_title'],
-			'description' => $this->_app['tools']->text('page_mood_desc'),
-		);
+		$context[$context['admin_menu_name']]['tab_data'] = [
+		    'title' => $context['page_title'],
+		    'description' => $this->_app['tools']->text('page_mood_desc'),
+		];
 		$context['sub_template'] = 'manage_mood';
 
 		// Need to know a few things.
@@ -250,140 +252,142 @@ $(function(){
 		$maxIndex = count($context['mood']['all']);
 
 		// Lets use SMF's createList...
-		$listOptions = array(
-			'id' => 'breeze_mood_list',
-			'title' => $this->_app['tools']->text('page_mood'),
-			'base_href' => $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodList',
-			'items_per_page' => 10,
-			'get_count' => array(
-				'function' => function () use ($context)
-				{
-					return count($context['mood']['all']);
-				},
-			),
-			'get_items' => array(
-				'function' => function ($start, $maxIndex) use ($smcFunc)
-				{
-					$moods = [];
-					$request = $smcFunc['db_query']('', '
+		$listOptions = [
+		    'id' => 'breeze_mood_list',
+		    'title' => $this->_app['tools']->text('page_mood'),
+		    'base_href' => $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodList',
+		    'items_per_page' => 10,
+		    'get_count' => [
+		        'function' => function () use ($context)
+		        {
+		        	return count($context['mood']['all']);
+		        },
+		    ],
+		    'get_items' => [
+		        'function' => function ($start, $maxIndex) use ($smcFunc)
+		        {
+		        	$moods = [];
+		        	$request = $smcFunc['db_query'](
+		        	    '',
+		        	    '
 						SELECT *
 						FROM {db_prefix}breeze_moods
 						LIMIT {int:start}, {int:maxindex}
 						',
-						array(
-							'start' => $start,
-							'maxindex' => $maxIndex,
-						)
-					);
+		        	    [
+		        	        'start' => $start,
+		        	        'maxindex' => $maxIndex,
+		        	    ]
+		        	);
 
-					while ($row = $smcFunc['db_fetch_assoc']($request))
-						$moods[$row['moods_id']] = $row;
+		        	while ($row = $smcFunc['db_fetch_assoc']($request))
+		        		$moods[$row['moods_id']] = $row;
 
-					$smcFunc['db_free_result']($request);
+		        	$smcFunc['db_free_result']($request);
 
-					return $moods;
-				},
-				'params' => array(
-					$start,
-					count($context['mood']['all']),
-				),
-			),
-			'no_items_label' => $txt['icons_no_entries'],
-			'columns' => array(
-				'icon' => array(
-					'header' => array(
-						'value' => $this->_app['tools']->text('mood_image'),
-					),
-					'data' => array(
-						'function' => function ($rowData) use($context, $txt)
-						{
-							$fileUrl = $context['mood']['imagesUrl'] . $rowData['file'] .'.'. $rowData['ext'];
-							$filePath = $context['mood']['imagesPath'] . $rowData['file'] .'.'. $rowData['ext'];
+		        	return $moods;
+		        },
+		        'params' => [
+		            $start,
+		            count($context['mood']['all']),
+		        ],
+		    ],
+		    'no_items_label' => $txt['icons_no_entries'],
+		    'columns' => [
+		        'icon' => [
+		            'header' => [
+		                'value' => $this->_app['tools']->text('mood_image'),
+		            ],
+		            'data' => [
+		                'function' => function ($rowData) use($context, $txt)
+		                {
+		                	$fileUrl = $context['mood']['imagesUrl'] . $rowData['file'] . '.' . $rowData['ext'];
+		                	$filePath = $context['mood']['imagesPath'] . $rowData['file'] . '.' . $rowData['ext'];
 
-							if (file_exists($filePath))
-								return '<img src="'. $fileUrl .'" />';
+		                	if (file_exists($filePath))
+		                		return '<img src="' . $fileUrl . '" />';
 
-							else
-								return $txt['Breeze_mood_noFile'];
-						},
-						'class' => 'centercol',
-					),
-				),
-				'enable' => array(
-					'header' => array(
-						'value' => $this->_app['tools']->text('mood_enable'),
-					),
-					'data' => array(
-						'function' => function ($rowData) use($txt)
-						{
-								$enable = !empty($rowData['enable']) ? 'enable' : 'disable';
-								return $txt['Breeze_mood_'. $enable];
-						},
-						'class' => 'centercol',
-					),
-				),
-				'filename' => array(
-					'header' => array(
-						'value' => $txt['smileys_filename'],
-					),
-					'data' => array(
-						'sprintf' => array(
-							'format' => '%1$s',
-							'params' => array(
-								'file' => true,
-							),
-						),
-					),
-				),
-				'tooltip' => array(
-					'header' => array(
-						'value' => $txt['smileys_description'],
-					),
-					'data' => array(
-						'db_htmlsafe' => 'description',
-					),
-				),
-				'modify' => array(
-					'header' => array(
-						'value' => $txt['smileys_modify'],
-						'class' => 'centercol',
-					),
-					'data' => array(
-						'sprintf' => array(
-							'format' => '<a href="' . $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodEdit;moodID=%1$s">' . $txt['smileys_modify'] . '</a>',
-							'params' => array(
-								'moods_id' => true,
-							),
-						),
-						'class' => 'centercol',
-					),
-				),
-				'check' => array(
-					'header' => array(
-						'value' => '<input type="checkbox" onclick="invertAll(this, this.form);" class="input_check">',
-						'class' => 'centercol',
-					),
-					'data' => array(
-						'sprintf' => array(
-							'format' => '<input type="checkbox" name="checked_icons[]" value="%1$d" class="input_check">',
-							'params' => array(
-								'moods_id' => false,
-							),
-						),
-						'class' => 'centercol',
-					),
-				),
-			),
-			'form' => array(
-				'href' => $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodList;delete=1',
-			),
-			'additional_rows' => array(
-				array(
-					'position' => 'below_table_data',
-					'value' => '<input type="submit" name="delete" value="' . $txt['quickmod_delete_selected'] . '" class="button_submit"> <a class="button_link" href="' . $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodEdit">' . $txt['icons_add_new'] . '</a>',
-				),
-			),
-		);
+							
+		                		return $txt['Breeze_mood_noFile'];
+		                },
+		                'class' => 'centercol',
+		            ],
+		        ],
+		        'enable' => [
+		            'header' => [
+		                'value' => $this->_app['tools']->text('mood_enable'),
+		            ],
+		            'data' => [
+		                'function' => function ($rowData) use($txt)
+		                {
+		                		$enable = !empty($rowData['enable']) ? 'enable' : 'disable';
+		                		return $txt['Breeze_mood_' . $enable];
+		                },
+		                'class' => 'centercol',
+		            ],
+		        ],
+		        'filename' => [
+		            'header' => [
+		                'value' => $txt['smileys_filename'],
+		            ],
+		            'data' => [
+		                'sprintf' => [
+		                    'format' => '%1$s',
+		                    'params' => [
+		                        'file' => true,
+		                    ],
+		                ],
+		            ],
+		        ],
+		        'tooltip' => [
+		            'header' => [
+		                'value' => $txt['smileys_description'],
+		            ],
+		            'data' => [
+		                'db_htmlsafe' => 'description',
+		            ],
+		        ],
+		        'modify' => [
+		            'header' => [
+		                'value' => $txt['smileys_modify'],
+		                'class' => 'centercol',
+		            ],
+		            'data' => [
+		                'sprintf' => [
+		                    'format' => '<a href="' . $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodEdit;moodID=%1$s">' . $txt['smileys_modify'] . '</a>',
+		                    'params' => [
+		                        'moods_id' => true,
+		                    ],
+		                ],
+		                'class' => 'centercol',
+		            ],
+		        ],
+		        'check' => [
+		            'header' => [
+		                'value' => '<input type="checkbox" onclick="invertAll(this, this.form);" class="input_check">',
+		                'class' => 'centercol',
+		            ],
+		            'data' => [
+		                'sprintf' => [
+		                    'format' => '<input type="checkbox" name="checked_icons[]" value="%1$d" class="input_check">',
+		                    'params' => [
+		                        'moods_id' => false,
+		                    ],
+		                ],
+		                'class' => 'centercol',
+		            ],
+		        ],
+		    ],
+		    'form' => [
+		        'href' => $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodList;delete=1',
+		    ],
+		    'additional_rows' => [
+		        [
+		            'position' => 'below_table_data',
+		            'value' => '<input type="submit" name="delete" value="' . $txt['quickmod_delete_selected'] . '" class="button_submit"> <a class="button_link" href="' . $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodEdit">' . $txt['icons_add_new'] . '</a>',
+		        ],
+		    ],
+		];
 
 		require_once($this->_app['tools']->sourceDir . '/Subs-List.php');
 		createList($listOptions);
@@ -401,10 +405,10 @@ $(function(){
 			$this->_app['query']->deleteMood($toDelete);
 
 			// set a nice session message.
-			$_SESSION['breeze'] = array(
-				'message' => array('success_delete'),
-				'type' => 'info',
-			);
+			$_SESSION['breeze'] = [
+			    'message' => ['success_delete'],
+			    'type' => 'info',
+			];
 
 			// Force a redirect.
 			return redirectexit('action=admin;area=breezeadmin;sa=moodList');
@@ -426,11 +430,11 @@ $(function(){
 		$context['mood']['id'] = $data->get('moodID') ? $data->get('moodID') : false;
 
 		// Set all the page stuff
-		$context['page_title'] = $this->_app['tools']->text('page_mood_edit_'.($context['mood']['id'] ? 'update' : 'create'));
-		$context[$context['admin_menu_name']]['tab_data'] = array(
-			'title' => $context['page_title'],
-			'description' => $this->_app['tools']->text('page_mood_edit_'.($context['mood']['id'] ? 'update' : 'create') .'_desc'),
-		);
+		$context['page_title'] = $this->_app['tools']->text('page_mood_edit_' . ($context['mood']['id'] ? 'update' : 'create'));
+		$context[$context['admin_menu_name']]['tab_data'] = [
+		    'title' => $context['page_title'],
+		    'description' => $this->_app['tools']->text('page_mood_edit_' . ($context['mood']['id'] ? 'update' : 'create') . '_desc'),
+		];
 		$context['sub_template'] = 'manage_mood_edit';
 		$context['mood']['imagesUrl'] = $this->_app['mood']->getImagesUrl();
 		$context['mood']['imagesPath'] = $this->_app['mood']->getImagesPath();
@@ -456,43 +460,43 @@ $(function(){
 		$form = $this->_app['form'];
 
 		// Group all these values into an array. Makes it easier to save the changes.
-		$form->setOptions(array(
-			'name' => 'mood',
-			'character_set' => $context['character_set'],
-			'url' => $this->_app['tools']->scriptUrl .'?action=admin;area=breezeadmin;sa=moodEdit;save=1'. (!empty($context['mood']['id']) ? ';moodID='. $context['mood']['id'] .'' : '') .'',
-			'title' => $context['page_title'],
-		));
+		$form->setOptions([
+		    'name' => 'mood',
+		    'character_set' => $context['character_set'],
+		    'url' => $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodEdit;save=1' . (!empty($context['mood']['id']) ? ';moodID=' . $context['mood']['id'] . '' : '') . '',
+		    'title' => $context['page_title'],
+		]);
 
 		// Set the right prefix.
 		$form->setTextPrefix('mood_', 'admin');
 		// Name.
-		$form->addText(array(
-			'name' => 'name',
-			'value' => !empty($mood['name']) ? $mood['name'] : '',
-			'size' => 15,
-			'maxlength' => 15,
-		));
+		$form->addText([
+		    'name' => 'name',
+		    'value' => !empty($mood['name']) ? $mood['name'] : '',
+		    'size' => 15,
+		    'maxlength' => 15,
+		]);
 
 		// Filename.
-		$form->addText(array(
-			'name' => 'file',
-			'value' => !empty($mood['file']) && !empty($mood['ext']) ? ($mood['file'] .'.'. $mood['ext']) : '',
-			'size' => 15,
-			'maxlength' => 15,
-		));
+		$form->addText([
+		    'name' => 'file',
+		    'value' => !empty($mood['file']) && !empty($mood['ext']) ? ($mood['file'] . '.' . $mood['ext']) : '',
+		    'size' => 15,
+		    'maxlength' => 15,
+		]);
 
 		// Description.
-		$form->addTextArea(array(
-			'name' => 'description',
-			'value' => !empty($mood['description']) ? $mood['description'] : '',
-			'size' => array('rows' => 10, 'cols' => 50, 'maxLength' => 1024)
-		));
+		$form->addTextArea([
+		    'name' => 'description',
+		    'value' => !empty($mood['description']) ? $mood['description'] : '',
+		    'size' => ['rows' => 10, 'cols' => 50, 'maxLength' => 1024]
+		]);
 
 		// Enable.
-		$form->addCheckBox(array(
-			'name' => 'enable',
-			'value' => !empty($mood['enable']) ? true : false
-		));
+		$form->addCheckBox([
+		    'name' => 'enable',
+		    'value' => !empty($mood['enable']) ? true : false
+		]);
 
 		// Session stuff.
 		$form->addHiddenField($context['session_var'], $context['session_id']);
@@ -544,22 +548,22 @@ $(function(){
 			if (!empty($errors))
 			{
 				// Pass some useful info too...
-				$_SESSION['breeze'] = array(
-					'message' => $errors,
-					'type' => 'error',
-					'data' => $mood,
-				);
-				return redirectexit('action=admin;area=breezeadmin;sa=moodEdit'. ($data->get('moodID') ? ';moodID='. $data->get('moodID') : ''));
+				$_SESSION['breeze'] = [
+				    'message' => $errors,
+				    'type' => 'error',
+				    'data' => $mood,
+				];
+				return redirectexit('action=admin;area=breezeadmin;sa=moodEdit' . ($data->get('moodID') ? ';moodID=' . $data->get('moodID') : ''));
 			}
 
 			// Provide some default values as needed.
-			$saveData = array(
-				'name' => !empty($mood['name']) ? $mood['name'] : $mood['file'],
-				'file' => $image['filename'],
-				'ext' => $image['extension'],
-				'description' => !empty($mood['description']) ? $mood['description'] : $mood['file'],
-				'enable' => !empty($mood['enable']) ? '1' : '0',
-			);
+			$saveData = [
+			    'name' => !empty($mood['name']) ? $mood['name'] : $mood['file'],
+			    'file' => $image['filename'],
+			    'ext' => $image['extension'],
+			    'description' => !empty($mood['description']) ? $mood['description'] : $mood['file'],
+			    'enable' => !empty($mood['enable']) ? '1' : '0',
+			];
 
 			// Editing? need the ID please!
 			if ($data->get('moodID'))
@@ -568,11 +572,11 @@ $(function(){
 			// All good, Save the stuff.
 			$this->_app['mood']->create($saveData, $data->get('moodID'));
 
-			$_SESSION['breeze'] = array(
-				'message' => array('success_'. ($data->get('moodID') ? 'update' : 'create')),
-				'type' => 'info',
-				'data' => $mood,
-			);
+			$_SESSION['breeze'] = [
+			    'message' => ['success_' . ($data->get('moodID') ? 'update' : 'create')],
+			    'type' => 'info',
+			    'data' => $mood,
+			];
 
 			// Back to the list page.
 			return redirectexit('action=admin;area=breezeadmin;sa=moodList');
@@ -585,21 +589,21 @@ $(function(){
 
 		// Load stuff
 		$data = $this->_app->data('request');
-		$context['page_title'] = \Breeze\Breeze::$name .' - '. $this->_app['tools']->text('page_cover');
-		$context[$context['admin_menu_name']]['tab_data'] = array(
-			'title' => $context['page_title'],
-			'description' => $this->_app['tools']->text('page_cover_desc'),
-		);
+		$context['page_title'] = \Breeze\Breeze::$name . ' - ' . $this->_app['tools']->text('page_cover');
+		$context[$context['admin_menu_name']]['tab_data'] = [
+		    'title' => $context['page_title'],
+		    'description' => $this->_app['tools']->text('page_cover_desc'),
+		];
 
 		require_once($this->_app['tools']->sourceDir . '/ManageServer.php');
 
-		$config_vars = array(
-			array('check', $this->_app->txtpattern .'cover', 'subtext' => $this->_app['tools']->text('cover_sub')),
-			array('int', $this->_app->txtpattern .'cover_max_image_size', 'size' => 3, 'subtext' => $this->_app['tools']->text('cover_max_image_size_sub')),
-			array('int', $this->_app->txtpattern .'cover_max_image_width', 'size' => 4, 'subtext' => $this->_app['tools']->text('cover_max_image_width_sub')),
-			array('int', $this->_app->txtpattern .'cover_max_image_height', 'size' => 3, 'subtext' => $this->_app['tools']->text('cover_max_image_height_sub')),
-			array('text', $this->_app->txtpattern .'cover_image_types', 'size' => 25, 'subtext' => $this->_app['tools']->text('cover_image_types_sub')),
-		);
+		$config_vars = [
+		    ['check', $this->_app->txtpattern . 'cover', 'subtext' => $this->_app['tools']->text('cover_sub')],
+		    ['int', $this->_app->txtpattern . 'cover_max_image_size', 'size' => 3, 'subtext' => $this->_app['tools']->text('cover_max_image_size_sub')],
+		    ['int', $this->_app->txtpattern . 'cover_max_image_width', 'size' => 4, 'subtext' => $this->_app['tools']->text('cover_max_image_width_sub')],
+		    ['int', $this->_app->txtpattern . 'cover_max_image_height', 'size' => 3, 'subtext' => $this->_app['tools']->text('cover_max_image_height_sub')],
+		    ['text', $this->_app->txtpattern . 'cover_image_types', 'size' => 25, 'subtext' => $this->_app['tools']->text('cover_image_types_sub')],
+		];
 
 		$context['post_url'] = $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=cover;save';
 
@@ -609,8 +613,8 @@ $(function(){
 			checkSession();
 
 			// Gotta make sure this is indeed a comma separated list....
-			if (!empty($_POST[$this->_app->txtpattern .'cover_image_types']))
-				$_POST[$this->_app->txtpattern .'cover_image_types'] = $this->_app['tools']->commaSeparated($_POST[$this->_app->txtpattern .'cover_image_types'], 'alpha');
+			if (!empty($_POST[$this->_app->txtpattern . 'cover_image_types']))
+				$_POST[$this->_app->txtpattern . 'cover_image_types'] = $this->_app['tools']->commaSeparated($_POST[$this->_app->txtpattern . 'cover_image_types'], 'alpha');
 
 			saveDBSettings($config_vars);
 			redirectexit('action=admin;area=breezeadmin;sa=cover');
@@ -625,12 +629,12 @@ $(function(){
 		global $context;
 
 		// Page stuff
-		$context['page_title'] = \Breeze\Breeze::$name .' - '. $this->_app['tools']->text('page_donate');
+		$context['page_title'] = \Breeze\Breeze::$name . ' - ' . $this->_app['tools']->text('page_donate');
 		$context['sub_template'] = 'admin_donate';
 		$context['Breeze']['donate'] = $this->_app['tools']->text('page_donate_exp');
-		$context[$context['admin_menu_name']]['tab_data'] = array(
-			'title' => $context['page_title'],
-			'description' => $this->_app['tools']->text('page_donate_desc'),
-		);
+		$context[$context['admin_menu_name']]['tab_data'] = [
+		    'title' => $context['page_title'],
+		    'description' => $this->_app['tools']->text('page_donate_desc'),
+		];
 	}
 }

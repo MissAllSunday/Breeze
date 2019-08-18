@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * BreezeTools
  *
@@ -31,7 +33,7 @@ class BreezeTools
 		global $sourcedir, $scripturl, $boardurl;
 		global $settings, $boarddir;
 
-		$this->_pattern = Breeze::$name .'_';
+		$this->_pattern = Breeze::$name . '_';
 		$this->_app = $app;
 		$this->sourceDir = $sourcedir;
 		$this->scriptUrl = $scripturl;
@@ -70,7 +72,7 @@ class BreezeTools
 		if (!empty($txt[$this->_pattern . $var]))
 			return $txt[$this->_pattern . $var];
 
-		else
+		
 			return false;
 	}
 
@@ -92,7 +94,7 @@ class BreezeTools
 		if (isset($modSettings[$this->_pattern . $var]) && !empty($modSettings[$this->_pattern . $var]))
 			return true;
 
-		else
+		
 			return false;
 	}
 
@@ -112,10 +114,10 @@ class BreezeTools
 
 		global $modSettings;
 
-		if (true == $this->enable($var))
+		if ($this->enable($var) == true)
 			return $modSettings[$this->_pattern . $var];
 
-		else
+		
 			return false;
 	}
 
@@ -129,7 +131,7 @@ class BreezeTools
 		if (isset($modSettings[$var]))
 			return $modSettings[$var];
 
-		else
+		
 			return false;
 	}
 
@@ -148,14 +150,14 @@ class BreezeTools
 		if ($etime < 1)
 			return $this->text('time_just_now');
 
-		$a = array(
-			12 * 30 * 24 * 60 * 60	=> $this->text('time_year'),
-			30 * 24 * 60 * 60		=> $this->text('time_month'),
-			24 * 60 * 60			=> $this->text('time_day'),
-			60 * 60					=> $this->text('time_hour'),
-			60						=> $this->text('time_minute'),
-			1						=> $this->text('time_second')
-		);
+		$a = [
+		    12 * 30 * 24 * 60 * 60	=> $this->text('time_year'),
+		    30 * 24 * 60 * 60		=> $this->text('time_month'),
+		    24 * 60 * 60			=> $this->text('time_day'),
+		    60 * 60					=> $this->text('time_hour'),
+		    60						=> $this->text('time_minute'),
+		    1						=> $this->text('time_second')
+		];
 
 		foreach ($a as $secs => $str)
 		{
@@ -163,7 +165,7 @@ class BreezeTools
 			if ($d >= 1)
 			{
 				$r = round($d);
-				return $r . ' ' . $str . ($r > 1 ? 's ' : ' '). $this->text('time_ago');
+				return $r . ' ' . $str . ($r > 1 ? 's ' : ' ') . $this->text('time_ago');
 			}
 		}
 	}
@@ -195,7 +197,7 @@ class BreezeTools
 			return $string;
 
 		// is $break present between $limit and the end of the string?
-		if(false !== ($breakpoint = strpos($string, $break, $limit)))
+		if(($breakpoint = strpos($string, $break, $limit)) !== false)
 			if($breakpoint < strlen($string) - 1)
 				$string = substr($string, 0, $breakpoint) . $pad;
 
@@ -222,18 +224,18 @@ class BreezeTools
 				if (in_array($value, $v))
 					return $k;
 
-					else
+					
 						return false;
 			}
 
-			else
-			{
+			
+			
 				if ($v == $value)
 					return $k;
 
-				else
+				
 					return false;
-			}
+			
 		}
 	}
 
@@ -318,12 +320,12 @@ class BreezeTools
 		foreach ($id as $k => $u)
 		{
 			// Set an empty array.
-			static::$_users[$u] = array(
-				'breezeFacebox' => '',
-				'link' => '',
-				'name' => '',
-				'linkFacebox' => '',
-			);
+			static::$_users[$u] = [
+			    'breezeFacebox' => '',
+			    'link' => '',
+			    'name' => '',
+			    'linkFacebox' => '',
+			];
 
 			// Gotta make sure you're only loading info from real existing members...
 			if (is_array($loadedIDs) && in_array($u, $loadedIDs))
@@ -336,20 +338,20 @@ class BreezeTools
 				static::$_users[$user['id']] = $user;
 
 				// Build the "breezeFacebox" link. Rename "facebox" to "breezeFacebox" in case there are other mods out there using facebox, specially its a[rel*=facebox] stuff.
-				static::$_users[$user['id']]['breezeFacebox'] = '<a href="'. $this->scriptUrl .'?action=wall;sa=userdiv;u='. $u .'" class="avatar" rel="breezeFacebox" data-name="'. (!empty($user['name']) ? $user['name'] : '') .'">'. $user['avatar']['image'] .'</a>';
+				static::$_users[$user['id']]['breezeFacebox'] = '<a href="' . $this->scriptUrl . '?action=wall;sa=userdiv;u=' . $u . '" class="avatar" rel="breezeFacebox" data-name="' . (!empty($user['name']) ? $user['name'] : '') . '">' . $user['avatar']['image'] . '</a>';
 
 				// Also provide a no avatar facebox link.
-				static::$_users[$user['id']]['linkFacebox'] = '<a href="'. $this->scriptUrl .'?action=wall;sa=userdiv;u='. $u .'" class="avatar" rel="breezeFacebox" data-name="'. (!empty($user['name']) ? $user['name'] : '') .'">'. $user['name'] .'</a>';
+				static::$_users[$user['id']]['linkFacebox'] = '<a href="' . $this->scriptUrl . '?action=wall;sa=userdiv;u=' . $u . '" class="avatar" rel="breezeFacebox" data-name="' . (!empty($user['name']) ? $user['name'] : '') . '">' . $user['name'] . '</a>';
 			}
 
 			// Not a real member, fill out some guest generic vars and be done with it..
 			else
-				static::$_users[$u] = array(
-					'breezeFacebox' => $txt['guest_title'],
-					'link' => $txt['guest_title'],
-					'name' => $txt['guest_title'],
-					'linkFacebox' => $txt['guest_title'],
-				);
+				static::$_users[$u] = [
+				    'breezeFacebox' => $txt['guest_title'],
+				    'link' => $txt['guest_title'],
+				    'name' => $txt['guest_title'],
+				    'linkFacebox' => $txt['guest_title'],
+				];
 		}
 
 		$context['Breeze']['user_info'] = static::$_users;
@@ -373,12 +375,12 @@ class BreezeTools
 		global $user_info;
 
 		// Add this bit here to make it easier in the future to add more permissions.
-		$perm = array(
-			'edit' => false,
-			'delete' => '',
-			'post' => false,
-			'postComments' => false,
-		);
+		$perm = [
+		    'edit' => false,
+		    'delete' => '',
+		    'post' => false,
+		    'postComments' => false,
+		];
 
 		// NO! you don't have permission to do nothing...
 		if ($user_info['is_guest'] || !$userPoster || !$profileOwner || empty($type))
@@ -399,7 +401,7 @@ class BreezeTools
 
 		else
 		{
-			$perm['post'] = allowedTo('breeze_post'. $type);
+			$perm['post'] = allowedTo('breeze_post' . $type);
 			$perm['postComments'] = allowedTo('breeze_postComments');
 		}
 
@@ -407,15 +409,15 @@ class BreezeTools
 		$allowed = [];
 
 		// Your own data?
-		if ($isPosterOwner && allowedTo('breeze_deleteOwn'. $type))
+		if ($isPosterOwner && allowedTo('breeze_deleteOwn' . $type))
 			$allowed[] = 1;
 
 		// Nope? then is this your own profile?
-		if ($isProfileOwner && allowedTo('breeze_deleteProfile'. $type))
+		if ($isProfileOwner && allowedTo('breeze_deleteProfile' . $type))
 			$allowed[] = 1;
 
 		// No poster and no profile owner, must be an admin/mod or something.
-		if (allowedTo('breeze_delete'. $type))
+		if (allowedTo('breeze_delete' . $type))
 			$allowed[] = 1;
 
 		$perm['delete'] = in_array(1, $allowed);
@@ -429,10 +431,10 @@ class BreezeTools
 			return;
 
 		// Yeah, a nice session var...
-		$_SESSION['Breeze']['response'] = array(
-			'message' => $message,
-			'type' => $type,
-		);
+		$_SESSION['Breeze']['response'] = [
+		    'message' => $message,
+		    'type' => $type,
+		];
 	}
 
 	public function getResponse()
@@ -452,8 +454,8 @@ class BreezeTools
 			return;
 
 		// This makes things easier.
-		$folder = $this->boardDir . Breeze::$coversFolder . $user .'/';
-		$folderThumbnail = $this->boardDir . Breeze::$coversFolder . $user .'/thumbnail/';
+		$folder = $this->boardDir . Breeze::$coversFolder . $user . '/';
+		$folderThumbnail = $this->boardDir . Breeze::$coversFolder . $user . '/thumbnail/';
 
 		if (file_exists($folderThumbnail . $image))
 			@unlink($folderThumbnail . $image);
@@ -470,7 +472,7 @@ class BreezeTools
 			return '';
 
 		// Inject the session.
-		$s = ';'. $context['session_var'] .'='. $context['session_id'];
+		$s = ';' . $context['session_var'] . '=' . $context['session_id'];
 
 		// Split the replacements up into two arrays, for use with str_replace.
 		$find = [];
@@ -479,7 +481,7 @@ class BreezeTools
 		foreach ($replacements as $f => $r)
 		{
 			$find[] = '{' . $f . '}';
-			$replace[] = $r . ((strpos($f,'href') !== false) ? $s : '');
+			$replace[] = $r . ((strpos($f, 'href') !== false) ? $s : '');
 		}
 
 		// Do the variable replacements.
@@ -525,7 +527,7 @@ class BreezeTools
 		}
 
 		// Lucky you!
-		else
+		
 			return false;
 	}
 
@@ -548,17 +550,17 @@ class BreezeTools
 		$messages = $this->setting('flood_messages') ? $this->setting('flood_messages') : 10;
 
 		// Has it been defined yet?
-		if (!isset($_SESSION['Breeze_floodControl'. $user]))
-			$_SESSION['Breeze_floodControl'. $user] = array(
-				'time' => time() + $seconds,
-				'msg' => 0,
-			);
+		if (!isset($_SESSION['Breeze_floodControl' . $user]))
+			$_SESSION['Breeze_floodControl' . $user] = [
+			    'time' => time() + $seconds,
+			    'msg' => 0,
+			];
 
 		// Keep track of it.
-		$_SESSION['Breeze_floodControl'. $user]['msg']++;
+		$_SESSION['Breeze_floodControl' . $user]['msg']++;
 
 		// Short name.
-		$flood = $_SESSION['Breeze_floodControl'. $user];
+		$flood = $_SESSION['Breeze_floodControl' . $user];
 
 		// Chatty one huh?
 		if ($flood['msg'] >= $messages && time() <= $flood['time'])
@@ -566,7 +568,7 @@ class BreezeTools
 
 		// Enough time has passed, give the user some rest.
 		if (time() >= $flood['time'])
-			unset($_SESSION['Breeze_floodControl'. $user]);
+			unset($_SESSION['Breeze_floodControl' . $user]);
 
 		return true;
 	}
@@ -587,12 +589,14 @@ class BreezeTools
 		}
 
 		return empty($string) ? false : implode(',', array_filter(explode(',', preg_replace(
-			array(
-				'/[^'. $t .',]/',
-				'/(?<=,),+/',
-				'/^,+/',
-				'/,+$/'
-			), '', $string
+		    [
+		        '/[^' . $t . ',]/',
+		        '/(?<=,),+/',
+		        '/^,+/',
+		        '/,+$/'
+		    ],
+		    '',
+		    $string
 		))));
 	}
 }
