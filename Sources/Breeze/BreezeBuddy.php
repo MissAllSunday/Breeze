@@ -8,7 +8,7 @@ declare(strict_types=1);
  * @package Breeze mod
  * @version 1.1
  * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2011 - 2017, Jessica González
+ * @copyright Copyright (c) 2019, Jessica González
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
@@ -38,7 +38,7 @@ class BreezeBuddy
 		$this->_app = $app;
 
 		// Needed to show some strings.
-		loadLanguage(Breeze::$name);
+		loadLanguage(Breeze::NAME);
 
 		// Easily delete our alerts.
 		$this->_deleteAlert = function($alertID = 0, $userID = 0){
@@ -446,8 +446,8 @@ class BreezeBuddy
 		global $context;
 
 		// Get the template and language files.
-		loadLanguage(Breeze::$name);
-		loadtemplate(Breeze::$name . 'Functions');
+		loadLanguage(Breeze::NAME);
+		loadtemplate(Breeze::NAME . 'Functions');
 
 		// All the generic stuff.
 		if (!isset($context['page_title']))

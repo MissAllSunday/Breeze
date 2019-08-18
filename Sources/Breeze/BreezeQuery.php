@@ -8,7 +8,7 @@ declare(strict_types=1);
  * @package Breeze mod
  * @version 1.1
  * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2011 - 2017, Jessica González
+ * @copyright Copyright (c) 2019, Jessica González
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
@@ -187,7 +187,7 @@ class BreezeQuery
 		$profile_owner = (array) $profile_owner;
 
 		foreach ($profile_owner as $owner)
-			cache_put_data(Breeze::$name . '-Profile-' . $owner, '');
+			cache_put_data(Breeze::NAME . '-Profile-' . $owner, '');
 
 		// Clean any other cache too
 	}
@@ -843,7 +843,7 @@ class BreezeQuery
 			return false;
 
 		if (($return = cache_get_data(
-		    Breeze::$name . '-' . $this->_tables['options']['name'] . '-' . $user,
+		    Breeze::NAME . '-' . $this->_tables['options']['name'] . '-' . $user,
 		    120
 		)) == null)
 		{
@@ -884,7 +884,7 @@ class BreezeQuery
 			$smcFunc['db_free_result']($result);
 
 			// Cache this beauty.
-			cache_put_data(Breeze::$name . '-' . $this->_tables['options']['name'] . '-' . $user, $return, 120);
+			cache_put_data(Breeze::NAME . '-' . $this->_tables['options']['name'] . '-' . $user, $return, 120);
 		}
 
 		return $return;
@@ -905,7 +905,7 @@ class BreezeQuery
 		if (empty($array) || empty($userID))
 			return false;
 
-		cache_put_data(Breeze::$name . '-' . $this->_tables['options']['name'] . '-' . $userID, null, 120);
+		cache_put_data(Breeze::NAME . '-' . $this->_tables['options']['name'] . '-' . $userID, null, 120);
 
 		$array = (array) $array;
 		$userID = (int) $userID;
@@ -1293,7 +1293,7 @@ class BreezeQuery
 			$match = $smcFunc['substr']($match, 0, 3);
 
 		// Let us set a very long-lived cache entry
-		if (($return = cache_get_data(Breeze::$name . '-Mentions-' . $match, 7200)) == null)
+		if (($return = cache_get_data(Breeze::NAME . '-Mentions-' . $match, 7200)) == null)
 		{
 			$return = [];
 
@@ -1332,7 +1332,7 @@ class BreezeQuery
 			$smcFunc['db_free_result']($result);
 
 			// Cached and forget about it
-			cache_put_data(Breeze::$name . '-Mentions-' . $match, $return, 7200);
+			cache_put_data(Breeze::NAME . '-Mentions-' . $match, $return, 7200);
 		}
 
 		return $return;
@@ -1363,9 +1363,9 @@ class BreezeQuery
 		{
 			$u = (int) $u;
 
-			if (cache_get_data(Breeze::$name . '-' . $u . '-MinimalData', 360))
+			if (cache_get_data(Breeze::NAME . '-' . $u . '-MinimalData', 360))
 			{
-				$profile = cache_get_data(Breeze::$name . '-' . $u . '-MinimalData', 360);
+				$profile = cache_get_data(Breeze::NAME . '-' . $u . '-MinimalData', 360);
 
 				$returnData[$u] = [
 				    'username' => $profile['member_name'],
@@ -1406,7 +1406,7 @@ class BreezeQuery
 			// Yep, another foreach...
 			foreach ($toCache as $k => $v)
 			{
-				cache_put_data(Breeze::$name . '-' . $k . '-MinimalData', $toCache[$k], 360);
+				cache_put_data(Breeze::NAME . '-' . $k . '-MinimalData', $toCache[$k], 360);
 
 				$profile = $toCache[$k];
 
@@ -1441,7 +1441,7 @@ class BreezeQuery
 	{
 		global $user_info, $smcFunc;
 
-		if (($boards = cache_get_data(Breeze::$name . '-Boards-' . $user_info['id'], 120)) == null)
+		if (($boards = cache_get_data(Breeze::NAME . '-Boards-' . $user_info['id'], 120)) == null)
 		{
 			$request = $smcFunc['db_query'](
 			    '',
@@ -1456,7 +1456,7 @@ class BreezeQuery
 				$boards[] = $row['id_board'];
 
 			$smcFunc['db_free_result']($request);
-			cache_put_data(Breeze::$name . '-Boards-' . $user_info['id'], $boards, 120);
+			cache_put_data(Breeze::NAME . '-Boards-' . $user_info['id'], $boards, 120);
 		}
 
 		return $boards;
@@ -1473,7 +1473,7 @@ class BreezeQuery
 		if (!empty($this->_userLikes[$user][$type]))
 			return $this->_userLikes[$user][$type];
 
-		if (($this->_userLikes[$user][$type] = cache_get_data(Breeze::$name . '-likes-' . $type . '-' . $user, 120)) == null)
+		if (($this->_userLikes[$user][$type] = cache_get_data(Breeze::NAME . '-likes-' . $type . '-' . $user, 120)) == null)
 		{
 			$request = $smcFunc['db_query'](
 			    '',
@@ -1493,7 +1493,7 @@ class BreezeQuery
 				$this->_userLikes[$user][$type][] = (int) $row['content_id'];
 
 			$smcFunc['db_free_result']($request);
-			cache_put_data(Breeze::$name . '-likes-' . $type . '-' . $user, $this->_userLikes[$user][$type], 120);
+			cache_put_data(Breeze::NAME . '-likes-' . $type . '-' . $user, $this->_userLikes[$user][$type], 120);
 		}
 
 		return $this->_userLikes[$user][$type];
@@ -1574,7 +1574,7 @@ class BreezeQuery
 	{
 		global $smcFunc;
 
-		if (($moods = cache_get_data(Breeze::$name . 'moods-all', 120)) == null)
+		if (($moods = cache_get_data(Breeze::NAME . 'moods-all', 120)) == null)
 		{
 			$moods = [];
 			$request = $smcFunc['db_query'](
@@ -1595,7 +1595,7 @@ class BreezeQuery
 			}
 
 			$smcFunc['db_free_result']($request);
-			cache_put_data(Breeze::$name . '-moods-all', $moods, 120);
+			cache_put_data(Breeze::NAME . '-moods-all', $moods, 120);
 		}
 
 		return $moods;

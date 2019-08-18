@@ -8,7 +8,7 @@ declare(strict_types=1);
  * @package Breeze mod
  * @version 1.1
  * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2011 - 2017, Jessica González
+ * @copyright Copyright (c) 2019, Jessica González
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
@@ -36,10 +36,10 @@ class BreezeUser extends Breeze
 		global $txt, $context, $memberContext;
 		global $modSettings,  $user_info;
 
-		loadtemplate(Breeze::$name);
-		loadtemplate(Breeze::$name . 'Functions');
-		loadtemplate(Breeze::$name . 'Blocks');
-		loadLanguage(Breeze::$name);
+		loadtemplate(Breeze::NAME);
+		loadtemplate(Breeze::NAME . 'Functions');
+		loadtemplate(Breeze::NAME . 'Blocks');
+		loadLanguage(Breeze::NAME);
 
 		// We kinda need all this stuff, don't ask why, just nod your head...
 		$query = $this['query'];
@@ -274,8 +274,8 @@ class BreezeUser extends Breeze
 	{
 		global $context;
 
-		loadtemplate(Breeze::$name);
-		loadtemplate(Breeze::$name . 'Functions');
+		loadtemplate(Breeze::NAME);
+		loadtemplate(Breeze::NAME . 'Functions');
 
 		$data = $this->data('get');
 		$tools = $this['tools'];
@@ -425,8 +425,8 @@ class BreezeUser extends Breeze
 	{
 		global $context, $txt, $modSettings, $user_info;
 
-		loadtemplate(Breeze::$name);
-		loadtemplate(Breeze::$name . 'Functions');
+		loadtemplate(Breeze::NAME);
+		loadtemplate(Breeze::NAME . 'Functions');
 		loadJavaScriptFile('suggest.js', ['minimize' => true], 'smf_suggest');
 
 		$data = $this->data('get');
@@ -597,8 +597,8 @@ class BreezeUser extends Breeze
 		if (!$this['tools']->enable('cover') || !allowedTo('breeze_canCover'))
 			redirectexit();
 
-		loadtemplate(Breeze::$name);
-		loadtemplate(Breeze::$name . 'Functions');
+		loadtemplate(Breeze::NAME);
+		loadtemplate(Breeze::NAME . 'Functions');
 
 		$data = $this->data('get');
 
@@ -742,7 +742,7 @@ class BreezeUser extends Breeze
 			return false;
 
 		// Do this only if t hasn't been done before
-		$views = cache_get_data(Breeze::$name . '-tempViews-' . $context['member']['id'] . '-by-' . $user_info['id'], 60);
+		$views = cache_get_data(Breeze::NAME . '-tempViews-' . $context['member']['id'] . '-by-' . $user_info['id'], 60);
 
 		if (empty($views))
 		{
@@ -767,7 +767,7 @@ class BreezeUser extends Breeze
 				updateMemberData($context['member']['id'], ['breeze_profile_views' => json_encode($views)]);
 
 				// Set the temp cache
-				cache_put_data(Breeze::$name . '-tempViews-' . $context['member']['id'] . '-by-' . $user_info['id'], $views, 60);
+				cache_put_data(Breeze::NAME . '-tempViews-' . $context['member']['id'] . '-by-' . $user_info['id'], $views, 60);
 
 				// Load the visitors data
 				$this['tools']->loadUserInfo(array_keys($views));
@@ -796,7 +796,7 @@ class BreezeUser extends Breeze
 			$this['query']->updateProfileViews($context['member']['id'], $views);
 
 			// ...and set the temp cache
-			cache_put_data(Breeze::$name . '-tempViews-' . $context['member']['id'] . '-by-' . $user_info['id'], $views, 60);
+			cache_put_data(Breeze::NAME . '-tempViews-' . $context['member']['id'] . '-by-' . $user_info['id'], $views, 60);
 		}
 
 		// Don't forget to load the visitors data

@@ -8,7 +8,7 @@ declare(strict_types=1);
  * @package Breeze mod
  * @version 1.1
  * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2011 - 2017, Jessica González
+ * @copyright Copyright (c) 2019, Jessica González
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
@@ -31,11 +31,11 @@ class BreezeWall
 	public function __construct(Breeze $app)
 	{
 		// Needed to show error strings
-		loadLanguage(Breeze::$name);
+		loadLanguage(Breeze::NAME);
 
 		// Load the templates
-		loadtemplate(Breeze::$name);
-		loadtemplate(Breeze::$name . 'Functions');
+		loadtemplate(Breeze::NAME);
+		loadtemplate(Breeze::NAME . 'Functions');
 
 		// Load all the things we need
 		$this->_app = $app;

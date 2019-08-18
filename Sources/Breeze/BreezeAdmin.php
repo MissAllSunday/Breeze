@@ -8,7 +8,7 @@ declare(strict_types=1);
  * @package Breeze mod
  * @version 1.1
  * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2011 - 2017, Jessica González
+ * @copyright Copyright (c) 2019, Jessica González
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
@@ -75,7 +75,7 @@ class BreezeAdmin
 		global $context;
 
 		// Get the version
-		$context['Breeze']['version'] = \Breeze\Breeze::$version;
+		$context['Breeze']['version'] = \Breeze\Breeze::VERSION;
 
 		// Set all the page stuff
 		$context['page_title'] = $this->_app['tools']->text('page_main');
@@ -130,7 +130,7 @@ $(function(){
 		// Load stuff
 		$data = $this->_app->data('request');
 		$context['sub_template'] = 'show_settings';
-		$context['page_title'] = \Breeze\Breeze::$name . ' - ' . $this->_app['tools']->text('page_settings');
+		$context['page_title'] = \Breeze\Breeze::NAME . ' - ' . $this->_app['tools']->text('page_settings');
 		$context[$context['admin_menu_name']]['tab_data'] = [
 		    'title' => $context['page_title'],
 		    'description' => $this->_app['tools']->text('page_settings_desc'),
@@ -181,12 +181,12 @@ $(function(){
 		global $context, $txt;
 
 		// This page needs the general strings.
-		loadLanguage(\Breeze\Breeze::$name);
+		loadLanguage(\Breeze\Breeze::NAME);
 
 		// Load stuff
 		$data = $this->_app->data('request');
 		$context['sub_template'] = 'show_settings';
-		$context['page_title'] = \Breeze\Breeze::$name . ' - ' . $this->_app['tools']->text('page_permissions');
+		$context['page_title'] = \Breeze\Breeze::NAME . ' - ' . $this->_app['tools']->text('page_permissions');
 		$context[$context['admin_menu_name']]['tab_data'] = [
 		    'title' => $context['page_title'],
 		    'description' => $this->_app['tools']->text('page_permissions_desc'),
@@ -589,7 +589,7 @@ $(function(){
 
 		// Load stuff
 		$data = $this->_app->data('request');
-		$context['page_title'] = \Breeze\Breeze::$name . ' - ' . $this->_app['tools']->text('page_cover');
+		$context['page_title'] = \Breeze\Breeze::NAME . ' - ' . $this->_app['tools']->text('page_cover');
 		$context[$context['admin_menu_name']]['tab_data'] = [
 		    'title' => $context['page_title'],
 		    'description' => $this->_app['tools']->text('page_cover_desc'),
@@ -629,7 +629,7 @@ $(function(){
 		global $context;
 
 		// Page stuff
-		$context['page_title'] = \Breeze\Breeze::$name . ' - ' . $this->_app['tools']->text('page_donate');
+		$context['page_title'] = \Breeze\Breeze::NAME . ' - ' . $this->_app['tools']->text('page_donate');
 		$context['sub_template'] = 'admin_donate';
 		$context['Breeze']['donate'] = $this->_app['tools']->text('page_donate_exp');
 		$context[$context['admin_menu_name']]['tab_data'] = [

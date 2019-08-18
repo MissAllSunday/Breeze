@@ -8,11 +8,13 @@ declare(strict_types=1);
  * @package Breeze mod
  * @version 1.1
  * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2011 - 2017, Jessica González
+ * @copyright Copyright (c) 2019, Jessica González
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
 namespace Breeze;
+
+use Pimple\Container as Container;
 
 if (!defined('SMF'))
 	die('No direct access...');
@@ -20,8 +22,11 @@ if (!defined('SMF'))
 // Still need to manually load Pimple :(
 require_once $sourcedir . '/Breeze/Pimple/Container.php';
 
-class Breeze extends \Pimple\Container
+class Breeze extends Container
 {
+	const NAME = 'Breeze';
+	const VERSION = '1.1';
+
 	protected $_services = [
 	    'admin',
 	    'ajax',
@@ -39,8 +44,7 @@ class Breeze extends \Pimple\Container
 	    'wall',
 	    'mood',
 	];
-	public static $name = 'Breeze';
-	public static $version = '1.1';
+
 	public static $folder = '/Breeze/';
 	public static $coversFolder = '/breezeFiles/';
 	public $txtpattern = 'Breeze_';
@@ -112,7 +116,7 @@ class Breeze extends \Pimple\Container
 		{
 			$this[$s] = function ($c) use ($s)
 			{
-				$call = __NAMESPACE__ . '\\' . \Breeze\Breeze::$name . ucfirst($s);
+				$call = __NAMESPACE__ . '\\' . Breeze::NAME . ucfirst($s);
 				return new $call($c);
 			};
 		}
@@ -184,7 +188,7 @@ class Breeze extends \Pimple\Container
 	public function permissions(&$permissionGroups, &$permissionList)
 	{
 		// We gotta load our language file.
-		loadLanguage(\Breeze\Breeze::$name);
+		loadLanguage(\Breeze\Breeze::NAME);
 
 		$permissionGroups['membergroup']['simple'] = ['breeze_per_simple'];
 		$permissionGroups['membergroup']['classic'] = ['breeze_per_classic'];

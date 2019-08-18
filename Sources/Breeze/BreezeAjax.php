@@ -8,7 +8,7 @@ declare(strict_types=1);
  * @package Breeze mod
  * @version 1.1
  * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2011 - 2017, Jessica González
+ * @copyright Copyright (c) 2019, Jessica González
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
@@ -38,7 +38,7 @@ class BreezeAjax
 		$this->_app = $app;
 
 		// Needed to show some error strings.
-		loadLanguage(Breeze::$name);
+		loadLanguage(Breeze::NAME);
 
 		// Set an empty var, by default lets pretend everything went wrong...
 		$this->_response = '';
@@ -626,7 +626,7 @@ class BreezeAjax
 		if (!empty($data) && !empty($data['data']))
 		{
 			// Load the right template.
-			loadtemplate(Breeze::$name . 'Functions');
+			loadtemplate(Breeze::NAME . 'Functions');
 
 			$return .= breeze_activity($data['data'], true);
 

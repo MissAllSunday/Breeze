@@ -275,7 +275,7 @@ function breeze_server_response()
 	global $txt;
 
 	// Just to be sure...
-	loadLanguage(Breeze::$name);
+	loadLanguage(Breeze::NAME);
 
 	// Get the message from the server, FUGLY.
 	$serverResponse = !empty($_SESSION['Breeze']['response']) ? $_SESSION['Breeze']['response'] : array('type' => false, 'message' => false);

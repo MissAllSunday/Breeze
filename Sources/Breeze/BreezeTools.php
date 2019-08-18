@@ -8,7 +8,7 @@ declare(strict_types=1);
  * @package Breeze mod
  * @version 1.1
  * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2011 - 2017, Jessica González
+ * @copyright Copyright (c) 2019, Jessica González
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
@@ -33,7 +33,7 @@ class BreezeTools
 		global $sourcedir, $scripturl, $boardurl;
 		global $settings, $boarddir;
 
-		$this->_pattern = Breeze::$name . '_';
+		$this->_pattern = Breeze::NAME . '_';
 		$this->_app = $app;
 		$this->sourceDir = $sourcedir;
 		$this->scriptUrl = $scripturl;
@@ -42,7 +42,7 @@ class BreezeTools
 		$this->boardUrl = $boardurl;
 
 		// Load the mod's language file.
-		loadLanguage(Breeze::$name);
+		loadLanguage(Breeze::NAME);
 	}
 
 	public function loadLanguage($type)
@@ -51,7 +51,7 @@ class BreezeTools
 			return;
 
 		// Load the mod's language file.
-		loadLanguage(Breeze::$name . ucfirst($type));
+		loadLanguage(Breeze::NAME . ucfirst($type));
 	}
 
 	/**

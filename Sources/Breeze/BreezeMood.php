@@ -8,7 +8,7 @@ declare(strict_types=1);
  * @package Breeze mod
  * @version 1.0
  * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2011 - 2017, Jessica González
+ * @copyright Copyright (c) 2019, Jessica González
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
@@ -43,7 +43,7 @@ class BreezeMood
 		loadLanguage('Help');
 
 		// Wild Mood Swings... a highly underrated album if you ask me ;)
-		loadtemplate(Breeze::$name . 'Functions');
+		loadtemplate(Breeze::NAME . 'Functions');
 
 		// Get the user.
 		$context['moodUser'] = $this->_app->data()->get('user');
@@ -159,7 +159,7 @@ class BreezeMood
 		global $context;
 
 		// Wild Mood Swings... a highly underrated album if you ask me ;)
-		loadtemplate(Breeze::$name . 'Functions');
+		loadtemplate(Breeze::NAME . 'Functions');
 
 		// Get the currently active moods.
 		$moods = $this->getActive();
@@ -190,7 +190,7 @@ class BreezeMood
 			return;
 
 		// Wild Mood Swings... a highly underrated album if you ask me ;)
-		loadtemplate(Breeze::$name . 'Functions');
+		loadtemplate(Breeze::NAME . 'Functions');
 
 		// Get the currently active moods.
 		$moods = $this->getActive();
@@ -213,7 +213,7 @@ class BreezeMood
 	public function noImage()
 	{
 		// Gotta load our template.
-		loadtemplate(Breeze::$name . 'Functions');
+		loadtemplate(Breeze::NAME . 'Functions');
 
 		// Build the needed HTML.
 		return [
