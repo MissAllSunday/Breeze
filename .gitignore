@@ -39,3 +39,6 @@ Thumbs.db
 /nbproject/
 /.project
 /.idea
+
+# Dev stuff
+.php_cs.cache

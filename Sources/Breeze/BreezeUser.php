@@ -715,7 +715,7 @@ class BreezeUser extends Breeze
 		    [
 		        'width' => $maxFileWidth,
 		    ]
-			)) . ',
+		)) . ',
 		maxHeightMessage: ' . JavaScriptEscape($this['tools']->parser(
 			    $this['tools']->text('cu_max_height'),
 			    [

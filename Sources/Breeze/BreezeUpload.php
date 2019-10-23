@@ -882,7 +882,7 @@ class UploadHandler
         if (!empty($options['auto_orient']) && $this->gd_orient_image(
             $file_path,
             $src_img
-            )) {
+        )) {
             $image_oriented = true;
             $src_img = $this->gd_get_image_object(
                 $file_path,
