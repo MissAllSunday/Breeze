@@ -269,64 +269,6 @@ class BreezeQuery
 		return !empty($return) ? $return : false;
 	}
 
-	/**
-	 * BreezeQuery::getLastStatus()
-	 *
-	 * It is not reliable to use the cache array for this one so let's do a query here.
-	 * @see BreezeAjax
-	 * @return array An array with the last status ID.
-	 */
-	public function getLastStatus()
-	{
-		global $smcFunc;
-
-		$return = '';
-
-		// Get the value directly from the DB
-		$result = $smcFunc['db_query']('', '
-			SELECT ' . implode(', ', $this->_tables['status']['columns']) . '
-			FROM {db_prefix}' . ($this->_tables['status']['table']) . '
-			ORDER BY {raw:sort}
-			LIMIT {int:limit}', ['sort' => 'status_id DESC', 'limit' => 1]);
-
-		while ($row = $smcFunc['db_fetch_assoc']($result))
-			$return = $this->generateData($row, 'status');
-
-		$smcFunc['db_free_result']($result);
-
-		// Done?
-		return $return;
-	}
-
-	/**
-	 * BreezeQuery::getLastComment()
-	 *
-	 * Basically the same as the method above, query the DB to get the last comment added, ID only.
-	 * @see BreezeAjax
-	 * @return array An array with the last status ID.
-	 */
-	public function getLastComment()
-	{
-		global $smcFunc;
-
-		$return = '';
-
-		// Get the value directly from the DB
-		$result = $smcFunc['db_query']('', '
-			SELECT ' . implode(', ', $this->_tables['comments']['columns']) . '
-			FROM {db_prefix}' . ($this->_tables['comments']['table']) . '
-			ORDER BY {raw:sort}
-			LIMIT {int:limit}', ['sort' => 'comments_id DESC', 'limit' => 1]);
-
-		while ($row = $smcFunc['db_fetch_assoc']($result))
-			$return = $this->generateData($row, 'comments');
-
-		$smcFunc['db_free_result']($result);
-
-		// Done?
-		return $return;
-	}
-
     /**
      * BreezeQuery::getStatus()
      *
@@ -703,35 +645,6 @@ class BreezeQuery
 		return $return;
 	}
 
-	// Editing methods
-
-    /**
-     * BreezeQuery::insertStatus()
-     *
-     */
-	public function insertStatus($array): int
-	{
-		global $smcFunc;
-
-		// Insert!
-		$smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['status']['table']) .
-			'', [
-			    'status_owner_id' => 'int',
-			    'status_poster_id' => 'int',
-			    'status_time' => 'int',
-			    'status_body' => 'string',
-			    'likes' => 'int',
-			], $array, ['status_id', ]);
-
-		// Get the newly created status ID
-		$status_id = $smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['status']['table']), 'status_id');
-
-		//Kill the profile cache
-		$this->killCache('status', $status_id, $array['profile_id']);
-
-		// Return the newly inserted status ID
-		return $status_id;
-	}
 
     /**
      * BreezeQuery::insertComment()

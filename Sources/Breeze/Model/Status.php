@@ -11,9 +11,23 @@ class Status extends Base
 	{
 	}
 
-	function insert(): bool
+	function insert(array $data): int
 	{
-		// TODO: Implement insert() method.
+		$id = 0;
+
+		$this->db['db_insert']('replace', '{db_prefix}' . $this->getTableName() .
+			'', [
+			'status_owner_id' => 'int',
+			'status_poster_id' => 'int',
+			'status_time' => 'int',
+			'status_body' => 'string',
+			'likes' => 'int',
+		], $data, [$this->getColumnId()]);
+
+		// Get the newly created status ID
+		$id = $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
+
+		return $id;
 	}
 
 	function update(int $id): array

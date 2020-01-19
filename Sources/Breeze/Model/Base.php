@@ -44,7 +44,7 @@ abstract class Base
 		return true;
 	}
 
-	abstract function insert(): bool;
+	abstract function insert(array $data): int;
 	abstract function update(int $id): array;
 	abstract function getSingleValue(int $id): array;
 	abstract function getById(int $id): array;
