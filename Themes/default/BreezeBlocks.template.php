@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Breeze.template.php
  *
@@ -18,7 +20,7 @@ function template_breeze_info()
 	echo '
 		<div class="cat_bar">
 			<h3 class="catbg">
-				'. $txt['summary'] .'
+				' . $txt['summary'] . '
 			</h3>
 		</div>
 		<div class="roundframe flow_auto" id="profileview">
@@ -141,7 +143,7 @@ function template_breeze_buddies()
 	echo '
 		<div class="cat_bar">
 			<h3 class="catbg">
-				'. $txt['Breeze_tabs_buddies'] .'
+				' . $txt['Breeze_tabs_buddies'] . '
 			</h3>
 		</div>';
 
@@ -179,7 +181,7 @@ function template_breeze_visitors()
 	echo '
 		<div class="cat_bar">
 			<h3 class="catbg">
-				'. $txt['Breeze_tabs_views'] .'
+				' . $txt['Breeze_tabs_views'] . '
 			</h3>
 		</div>';
 

@@ -717,10 +717,10 @@ class BreezeUser extends Breeze
 		    ]
 		)) . ',
 		maxHeightMessage: ' . JavaScriptEscape($this['tools']->parser(
-			    $this['tools']->text('cu_max_height'),
-			    [
-			        'height' => $maxFileHeight,
-			    ]
+		    $this['tools']->text('cu_max_height'),
+		    [
+		        'height' => $maxFileHeight,
+		    ]
 			)) . ',
 	};', false);
 	}

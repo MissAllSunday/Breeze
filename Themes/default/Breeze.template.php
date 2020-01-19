@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Breeze.template.php
  *
@@ -101,10 +103,10 @@ function template_user_wall_below()
 		echo '
 			<div class="inside information">
 				<div class="breeze_user_statusbox">
-						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
+						<form method="post" action="', $scripturl, '?action=breezeajax;sa=post', !empty($context['Breeze']['comingFrom']) ? ';rf=' . $context['Breeze']['comingFrom'] : '' ,'" id="form_status" name="form_status" class="form_status">
 							<textarea name="message" id="statusContent" rel="atwhoMention"></textarea>
 							<input type="hidden" value="', $context['member']['id'] ,'" name="statusOwner" id="statusOwner" />
-							<input type="hidden" id="'. $context['session_var'] .'" name="'. $context['session_var'] .'" value="'. $context['session_id'] .'" />
+							<input type="hidden" id="' . $context['session_var'] . '" name="' . $context['session_var'] . '" value="' . $context['session_id'] . '" />
 							<br><input type="submit" value="', $txt['post'] ,'" name="statusSubmit" class="button_submit" id="statusSubmit"/>
 						</form>
 				</div>
@@ -216,12 +218,12 @@ function template_user_notifications()
 	if (!empty($context['Breeze']['noti']))
 	{
 		echo '
-		<form action="', $scripturl , '?action=breezeajax;sa=multiNoti;user=', $user_info['id'] ,'', (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') ,'', ($context['Breeze']['is_log'] ? ';log' : '') ,'" method="post" name="multiNoti" id="multiNoti">
+		<form action="', $scripturl , '?action=breezeajax;sa=multiNoti;user=', $user_info['id'] ,'', (!empty($context['Breeze']['comingFrom']) ? ';rf=' . $context['Breeze']['comingFrom'] : '') ,'', ($context['Breeze']['is_log'] ? ';log' : '') ,'" method="post" name="multiNoti" id="multiNoti">
 			<table class="table_grid" cellspacing="0" width="100%">
 				<thead>
 					<tr class="catbg">
 						<th scope="col" class="first_th">', $txt['Breeze_noti_message'] ,'</th>
-						', (!$context['Breeze']['is_log'] ? '<th scope="col">'. $txt['Breeze_noti_markasread_title'] .'</th>' : '') ,'
+						', (!$context['Breeze']['is_log'] ? '<th scope="col">' . $txt['Breeze_noti_markasread_title'] . '</th>' : '') ,'
 						<th scope="col">', $txt['Breeze_general_delete'] ,'</th>
 						<th scope="col" class="last_th">
 							', $txt['Breeze_noti_checkAll'] ,' <input type="checkbox" name="check_all">
@@ -238,10 +240,10 @@ function template_user_notifications()
 						', ($context['Breeze']['is_log'] ? $noti['content']['message'] : $noti['message']) ,'
 					</td>
 					', (!$context['Breeze']['is_log'] ? '<td>
-					<a href="'. $scripturl .'?action=breezeajax;sa=notimark;content='. $noti['id'] .';user='. $user_info['id'] .''. (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') .'">'. (!empty($noti['viewed']) ? $txt['Breeze_noti_markasunread'] : $txt['Breeze_noti_markasread']) .'</a>' : '') ,'
+					<a href="' . $scripturl . '?action=breezeajax;sa=notimark;content=' . $noti['id'] . ';user=' . $user_info['id'] . '' . (!empty($context['Breeze']['comingFrom']) ? ';rf=' . $context['Breeze']['comingFrom'] : '') . '">' . (!empty($noti['viewed']) ? $txt['Breeze_noti_markasunread'] : $txt['Breeze_noti_markasread']) . '</a>' : '') ,'
 					</td>
 					<td>
-					<a href="', $scripturl ,'?action=breezeajax;sa=notidelete;content=', $noti['id'] ,';user='. $user_info['id'] ,'', (!empty($context['Breeze']['comingFrom']) ? ';rf='. $context['Breeze']['comingFrom'] : '') ,'', ($context['Breeze']['is_log'] ? ';log' : '') ,'">', $txt['Breeze_general_delete'] ,'</a>
+					<a href="', $scripturl ,'?action=breezeajax;sa=notidelete;content=', $noti['id'] ,';user=' . $user_info['id'] ,'', (!empty($context['Breeze']['comingFrom']) ? ';rf=' . $context['Breeze']['comingFrom'] : '') ,'', ($context['Breeze']['is_log'] ? ';log' : '') ,'">', $txt['Breeze_general_delete'] ,'</a>
 					</td>
 					<td>
 						<input type="checkbox" name="idNoti[]" class="idNoti" value="', $noti['id'] ,'">
@@ -260,8 +262,8 @@ function template_user_notifications()
 				', $txt['Breeze_noti_selectedOptions'] ,'
 				<select id="multiNotiOption" name="multiNotiOption">
 					', (!$context['Breeze']['is_log'] ? '<option value="">&nbsp;&nbsp;&nbsp;</option>
-					<option value="read">'. $txt['Breeze_noti_markasread']  .'</option>
-					<option value="unread">'. $txt['Breeze_noti_markasunread'] .'</option>' : '') ,'
+					<option value="read">' . $txt['Breeze_noti_markasread'] . '</option>
+					<option value="unread">' . $txt['Breeze_noti_markasunread'] . '</option>' : '') ,'
 					<option value="delete">', $txt['Breeze_general_delete'] ,'</option>
 				</select>
 				<input type="hidden" id="', $context['session_var'], '" name="', $context['session_var'], '" value="', $context['session_id'], '" />
@@ -312,7 +314,7 @@ function template_member_options()
 			sSearchType: 'member',
 			sPostName: 'breezeSettings[blockListIDs]',
 			sURLMask: 'action=profile;u=%item_id%',
-			sTextDeleteItem: '". $txt['autosuggest_delete_item'] ."',
+			sTextDeleteItem: '" . $txt['autosuggest_delete_item'] . "',
 			bItemList: true,
 			sItemListContainerId: 'to_item_list_container'";
 

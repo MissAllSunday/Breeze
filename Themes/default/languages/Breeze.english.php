@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Breeze.english
  *
@@ -182,7 +184,7 @@ $txt['Breeze_info_notiMulti_unmarkasread_after'] = 'You have successfully marked
 $txt['cannot_breeze_postStatus'] = $txt['Breeze_cannot_postStatus'];
 $txt['cannot_breeze_postComments'] = $txt['Breeze_cannot_postComments'];
 $txt['cannot_breeze_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete Status/Comments.';
-$txt['Breeze_cannot_see_general_wall'] = 'You need to enable your general wall from your <a href="'. $scripturl .'?action=profile;area=breezesettings">wall settings page</a>.';
+$txt['Breeze_cannot_see_general_wall'] = 'You need to enable your general wall from your <a href="' . $scripturl . '?action=profile;area=breezesettings">wall settings page</a>.';
 
 // Loading text.
 $txt['Breeze_profile_of_username'] = 'Profile of {name}';
@@ -225,23 +227,23 @@ $txt['Breeze_buddy_message'] = 'Buddy message';
 $txt['Breeze_buddy_message_desc'] = 'You can send {receiver} a message along with your buddy invite. <br> no HTML or BBC is allowed. Leave the field empty if you do not want to send a message.';
 
 // Cover error messages.
-$txt['Breeze_cover_errors'] = array(
-	1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
-	2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
-	3 => 'The uploaded file was only partially uploaded',
-	4 => 'No file was uploaded',
-	6 => 'Missing a temporary folder',
-	7 => 'Failed to write file to disk',
-	8 => 'A PHP extension stopped the file upload',
-	'post_max_size' => 'The uploaded file exceeds the post_max_size directive in php.ini',
-	'max_file_size' => 'File is too big, the max size value is {size}',
-	'min_file_size' => 'File is too small',
-	'accept_file_types' => 'Filetype not allowed',
-	'max_number_of_files' => 'Maximum number of files exceeded',
-	'max_width' => 'Image exceeds maximum width, the max width value is {width}px',
-	'min_width' => 'Image requires a minimum width',
-	'max_height' => 'Image exceeds maximum height, the max height value is {height}px',
-	'min_height' => 'Image requires a minimum height',
-	'abort' => 'File upload aborted',
-	'image_resize' => 'Failed to resize image'
-);
+$txt['Breeze_cover_errors'] = [
+    1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
+    2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
+    3 => 'The uploaded file was only partially uploaded',
+    4 => 'No file was uploaded',
+    6 => 'Missing a temporary folder',
+    7 => 'Failed to write file to disk',
+    8 => 'A PHP extension stopped the file upload',
+    'post_max_size' => 'The uploaded file exceeds the post_max_size directive in php.ini',
+    'max_file_size' => 'File is too big, the max size value is {size}',
+    'min_file_size' => 'File is too small',
+    'accept_file_types' => 'Filetype not allowed',
+    'max_number_of_files' => 'Maximum number of files exceeded',
+    'max_width' => 'Image exceeds maximum width, the max width value is {width}px',
+    'min_width' => 'Image requires a minimum width',
+    'max_height' => 'Image exceeds maximum height, the max height value is {height}px',
+    'min_height' => 'Image requires a minimum height',
+    'abort' => 'File upload aborted',
+    'image_resize' => 'Failed to resize image'
+];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * BreezeAdmin.template.php
  *
@@ -111,10 +113,10 @@ function template_manage_mood()
 	if (!empty($context['mood']['notice']))
 	{
 		echo '
-		<div class="'. $context['mood']['notice']['type'] .'box">';
+		<div class="' . $context['mood']['notice']['type'] . 'box">';
 
 		foreach ($context['mood']['notice']['message'] as $m)
-			echo '', $txt['Breeze_mood_'. $m] ,'';
+			echo '', $txt['Breeze_mood_' . $m] ,'';
 
 		echo '
 		</div><br />';
@@ -132,10 +134,10 @@ function template_manage_mood_edit()
 	{
 		echo '
 		<div class="errorbox">
-		<p>'. $txt['Breeze_mood_errors'] .'</p>';
+		<p>' . $txt['Breeze_mood_errors'] . '</p>';
 
 		foreach ($context['mood']['notice']['message'] as $e)
-			echo '<li>', $txt['Breeze_mood_'. $e] ,'</li>';
+			echo '<li>', $txt['Breeze_mood_' . $e] ,'</li>';
 
 		echo '
 		</div><br />';

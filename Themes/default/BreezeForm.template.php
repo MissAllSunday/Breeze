@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Breeze.template.php
  *
@@ -17,21 +19,21 @@ function template_breeze_form()
 	$return = '';
 
 	$return .= '
-<form action="'. $context['form']['options']['url'] .'" method="post" accept-charset="'. $context['form']['options']['character_set'] .'" name="'. $context['form']['options']['name'] .'" id="'. $context['form']['options']['name'] .'">';
+<form action="' . $context['form']['options']['url'] . '" method="post" accept-charset="' . $context['form']['options']['character_set'] . '" name="' . $context['form']['options']['name'] . '" id="' . $context['form']['options']['name'] . '">';
 
 		// Any title and/or description?
 		if (!empty($context['form']['options']['title']))
 			$return .= '
 	<div class="cat_bar">
 		<h3 class="catbg profile_hd">
-				'. $context['form']['options']['title'] .'
+				' . $context['form']['options']['title'] . '
 		</h3>
 	</div>';
 
 		if (!empty($context['form']['options']['desc']))
 			$return .= '
 	<p class="information">
-		'. $context['form']['options']['desc'] .'
+		' . $context['form']['options']['desc'] . '
 	</p>';
 
 		$return .= '
@@ -48,26 +50,26 @@ function template_breeze_form()
 				case 'text':
 					$return .= '
 				<dt>
-					<span style="font-weight:bold;">'. $el['text'] .'</span>
-					<br /><span class="smalltext">'. $el['desc'] .'</span>
+					<span style="font-weight:bold;">' . $el['text'] . '</span>
+					<br /><span class="smalltext">' . $el['desc'] . '</span>
 				</dt>
 				<dd>
-					<input type="hidden" name="'. (!empty($context['form']['options']['name']) ? $context['form']['options']['name'] .'['. $el['name'] .']' : $el['name']) .'" value="0" />'. $el['html'] .'
+					<input type="hidden" name="' . (!empty($context['form']['options']['name']) ? $context['form']['options']['name'] . '[' . $el['name'] . ']' : $el['name']) . '" value="0" />' . $el['html'] . '
 				</dd>';
 					break;
 				case 'select':
 					$return .= '
 				<dt>
-					<span style="font-weight:bold;">'. $el['text'] .'</span>
-					<br /><span class="smalltext">'. $el['desc'] .'</span>
+					<span style="font-weight:bold;">' . $el['text'] . '</span>
+					<br /><span class="smalltext">' . $el['desc'] . '</span>
 				</dt>
 				<dd>
-					<input type="hidden" name="'. (!empty($context['form']['options']['name']) ? $context['form']['options']['name'] .'['. $el['name'] .']' : $el['name']) .'" value="0" />'. $el['html_start'] .'';
+					<input type="hidden" name="' . (!empty($context['form']['options']['name']) ? $context['form']['options']['name'] . '[' . $el['name'] . ']' : $el['name']) . '" value="0" />' . $el['html_start'] . '';
 
 					foreach($el['values'] as $k => $v)
-						$return .= $v .'';
+						$return .= $v . '';
 
-					$return .= $el['html_end'] .'
+					$return .= $el['html_end'] . '
 				</dd>';
 					break;
 				case 'hidden':
@@ -75,30 +77,30 @@ function template_breeze_form()
 					$return .= '
 				<dt></dt>
 				<dd>
-					'. $el['html'] .'
+					' . $el['html'] . '
 				</dd>';
 					break;
 				case 'hr':
 					$return .= '
 				</dl>
-					'. $el['html'] .'
+					' . $el['html'] . '
 				<dl class="settings">';
 					break;
 				case 'html':
 					$return .= '
 				<dt>
-					<span style="font-weight:bold;">'. $el['text'] .'</span>
-					<br /><span class="smalltext">'. $el['desc'] .'</span>
+					<span style="font-weight:bold;">' . $el['text'] . '</span>
+					<br /><span class="smalltext">' . $el['desc'] . '</span>
 				</dt>
 				<dd>
-					'. $el['html'] .'
+					' . $el['html'] . '
 				</dd>';
 					break;
 				case 'section':
 				$return .= '
 				</dl>
 				<div class="cat_bar">
-					<h3 class="catbg">'. $el['text'] .'</h3>
+					<h3 class="catbg">' . $el['text'] . '</h3>
 				</div>
 				<br />
 				<dl class="settings">';
@@ -112,7 +114,7 @@ function template_breeze_form()
 		// Any buttons?
 		foreach($context['form']['elements'] as $el)
 			if ($el['type'] == 'button')
-				$return .= '<input type="submit" name="'. $el['name'] .'" value="'. $el['text'] .'" class="button_submit"/>';
+				$return .= '<input type="submit" name="' . $el['name'] . '" value="' . $el['text'] . '" class="button_submit"/>';
 
 		// Close it.
 		$return .= '
