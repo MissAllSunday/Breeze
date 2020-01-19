@@ -710,6 +710,7 @@ class BreezeAjax
 			
 			
 				$file->error = $this->_app['tools']->parser($file->error, $replaceValues);
+
 				return $this->_response = $file;
 			
 		}
@@ -754,8 +755,8 @@ class BreezeAjax
 			rename($folderThumbnail . $file->name, $folderThumbnail . $newFile);
 
 			// And again get the file info, this time just get what we need.
-			$fileInfo['basename'] = pathinfo($folder . $newFile, PATHINFO_BASENAME);
-			$fileInfo['filename'] = pathinfo($folder . $newFile, PATHINFO_FILENAME);
+			$fileInfo['basename'] = pathinfo($folder . $newFile, \PATHINFO_BASENAME);
+			$fileInfo['filename'] = pathinfo($folder . $newFile, \PATHINFO_FILENAME);
 
 			// Store the new cover info.
 			$this->_app['query']->insertUserSettings(['cover'=> $fileInfo], $this->_currentUser);

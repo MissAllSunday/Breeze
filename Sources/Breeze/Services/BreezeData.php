@@ -136,7 +136,7 @@ class BreezeData
 
 		
 		
-			$var = (string) $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var), ENT_QUOTES);
+			$var = (string) $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var), \ENT_QUOTES);
 
 			if (ctype_digit($var))
 				$var = (int) $var;
@@ -155,9 +155,9 @@ class BreezeData
 		if (empty($string))
 			return '';
 
-		$string = $smcFunc['htmlspecialchars']($string, ENT_QUOTES, $context['character_set']);
+		$string = $smcFunc['htmlspecialchars']($string, \ENT_QUOTES, $context['character_set']);
 		$string = preg_replace('~&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', $string);
-		$string = html_entity_decode($string, ENT_QUOTES, $context['character_set']);
+		$string = html_entity_decode($string, \ENT_QUOTES, $context['character_set']);
 		$string = preg_replace(['~[^0-9a-z]~i', '~[ -]+~'], ' ', $string);
 
 		return trim($string, ' -');

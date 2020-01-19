@@ -165,6 +165,7 @@ class BreezeTools
 			if ($d >= 1)
 			{
 				$r = round($d);
+
 				return $r . ' ' . $str . ($r > 1 ? 's ' : ' ') . $this->text('time_ago');
 			}
 		}
@@ -180,7 +181,8 @@ class BreezeTools
 	public function isJson($string)
 	{
 		json_decode($string);
-		return (json_last_error() == JSON_ERROR_NONE);
+
+		return (json_last_error() == \JSON_ERROR_NONE);
 	}
 
 	// A function to cut-off a string
@@ -310,6 +312,7 @@ class BreezeTools
 		if (empty($id))
 		{
 			$context['Breeze']['user_info'] = static::$_users;
+
 			return $returnID ? array_keys(static::$_users) : false;
 		}
 

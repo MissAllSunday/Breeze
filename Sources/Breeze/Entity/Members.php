@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-
 class Members extends Base
 {
 	const COLUMN_PROFILE_VIEWS = 'breeze_profile_views';

@@ -14,18 +14,16 @@ class Comment extends Base
 
 		$this->db['db_insert']('replace', '{db_prefix}' . $this->getTableName() .
 			'', [
-			'comments_status_id' => 'int',
-			'comments_status_owner_id' => 'int',
-			'comments_poster_id' => 'int',
-			'comments_profile_id' => 'int',
-			'comments_time' => 'int',
-			'comments_body' => 'string',
-			'likes' => 'int',
-		], $data, [$this->getColumnId()]);
+			    'comments_status_id' => 'int',
+			    'comments_status_owner_id' => 'int',
+			    'comments_poster_id' => 'int',
+			    'comments_profile_id' => 'int',
+			    'comments_time' => 'int',
+			    'comments_body' => 'string',
+			    'likes' => 'int',
+			], $data, [$this->getColumnId()]);
 
-		$id = $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
-
-		return $id;
+		return $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
 	}
 
 	public function deleteByStatusID(array $ids): bool

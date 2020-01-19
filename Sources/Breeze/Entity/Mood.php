@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-
 class Mood extends Base
 {
 	const COLUMN_ID = 'moods_id';

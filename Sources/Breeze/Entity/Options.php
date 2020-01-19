@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-
 class Options extends Base
 {
 	const TABLE = 'breeze_options';

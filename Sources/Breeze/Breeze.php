@@ -117,6 +117,7 @@ class Breeze extends Container
 			$this[$s] = function ($c) use ($s)
 			{
 				$call = __NAMESPACE__ . '\\' . Breeze::NAME . ucfirst($s);
+
 				return new $call($c);
 			};
 		}

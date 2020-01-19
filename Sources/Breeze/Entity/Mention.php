@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-
 class Mention extends Base
 {
 	const TABLE = 'mentions';

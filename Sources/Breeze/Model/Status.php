@@ -17,17 +17,15 @@ class Status extends Base
 
 		$this->db['db_insert']('replace', '{db_prefix}' . $this->getTableName() .
 			'', [
-			'status_owner_id' => 'int',
-			'status_poster_id' => 'int',
-			'status_time' => 'int',
-			'status_body' => 'string',
-			'likes' => 'int',
-		], $data, [$this->getColumnId()]);
+			    'status_owner_id' => 'int',
+			    'status_poster_id' => 'int',
+			    'status_time' => 'int',
+			    'status_body' => 'string',
+			    'likes' => 'int',
+			], $data, [$this->getColumnId()]);
 
 		// Get the newly created status ID
-		$id = $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
-
-		return $id;
+		return $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
 	}
 
 	function update(int $id): array

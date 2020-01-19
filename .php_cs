@@ -2,11 +2,19 @@
 
 return PhpCsFixer\Config::create()
     ->setRules([
+    	'blank_line_after_namespace' => true,
+        'blank_line_after_opening_tag' => true,
         'array_indentation' => true,
         'array_syntax' => ['syntax' => 'short'],
-        'blank_line_after_opening_tag' => true,
+        'blank_line_before_return' => true,
         'concat_space' => ['spacing' => 'one'],
         'declare_strict_types' => true,
+        'elseif' => true,
+        'encoding' => true,
+        'line_ending' => true,
+        'lowercase_cast' => true,
+        'lowercase_constants' => true,
+        'native_constant_invocation' => true,
         'increment_style' => ['style' => 'post'],
         'is_null' => ['use_yoda_style' => false],
         'list_syntax' => ['syntax' => 'short'],

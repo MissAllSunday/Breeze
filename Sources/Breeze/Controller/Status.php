@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Actions;
 
-
 class Status
 {
 	const CREATE = 'create';

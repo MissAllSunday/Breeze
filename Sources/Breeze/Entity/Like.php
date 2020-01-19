@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-
 class Like extends Base
 {
 	const COLUMN_ID_MEMBER = 'id_member';

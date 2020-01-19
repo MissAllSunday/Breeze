@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-
 class Status extends Base
 {
 	const TABLE = 'breeze_status';

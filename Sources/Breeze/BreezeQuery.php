@@ -1161,7 +1161,7 @@ class BreezeQuery
 			return $return;
 
 		// Don't be naughty...
-		$match = $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($match), ENT_QUOTES);
+		$match = $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($match), \ENT_QUOTES);
 
 		// Cheating...
 		if ($smcFunc['strlen']($match) >= 3)
@@ -1578,7 +1578,7 @@ class BreezeQuery
 				];
 		}
 
-		else if ($type == 'comments')
+		elseif ($type == 'comments')
 		{
 			$array = [
 			    'id' => $row['comments_id'],

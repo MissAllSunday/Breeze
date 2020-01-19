@@ -832,8 +832,7 @@ class BreezeUser extends Breeze
 				$context['Breeze']['settings']['owner']['wall'] = 1;
 
 		// Do the normal check, do note this is not an elseif check, its separate.
-		else
-			if (empty($context['Breeze']['settings']['owner']['wall']))
+		elseif (empty($context['Breeze']['settings']['owner']['wall']))
 				redirectexit('action=profile;area=static;u=' . $context['member']['id']);
 
 		// This user cannot see any profile.
