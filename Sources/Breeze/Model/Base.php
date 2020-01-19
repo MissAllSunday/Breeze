@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 abstract class Base
 {
 	protected $db;
@@ -45,7 +44,6 @@ abstract class Base
 
 	abstract function insert(array $data, int $id = 0): int;
 	abstract function update(array $data, int $id = 0): array;
-	abstract function generateData($row): array;
 	abstract function getTableName(): string;
 	abstract function getColumnId(): string;
 	abstract function getColumns(): array;

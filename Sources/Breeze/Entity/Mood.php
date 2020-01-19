@@ -17,12 +17,12 @@ class Mood extends Base
 	public static function getColumns(): array
 	{
 		return [
-			self::COLUMN_ID,
-			self::COLUMN_NAME,
-			self::COLUMN_FILE,
-			self::COLUMN_EXT,
-			self::COLUMN_DESC,
-			self::COLUMN_ENABLE,
+		    self::COLUMN_ID,
+		    self::COLUMN_NAME,
+		    self::COLUMN_FILE,
+		    self::COLUMN_EXT,
+		    self::COLUMN_DESC,
+		    self::COLUMN_ENABLE,
 		];
 	}
 }

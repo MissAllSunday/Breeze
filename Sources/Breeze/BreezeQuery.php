@@ -809,130 +809,6 @@ class BreezeQuery
 		return (int) $result;
 	}
 
-    /**
-     * BreezeQuery::updateAlert()
-     *
-     * Updates an existing user alert with new data
-     * @param $params
-     * @param $id
-     * @return bool
-     */
-	public function updateAlert($params, $id)
-	{
-		global $smcFunc;
-
-		if ((empty($params) || !is_array($params)) || empty($id))
-			return false;
-
-		// Create a nice formatted string.
-		$string = '';
-		$paramKeys = array_keys($params);
-		$lastKey = key($paramKeys);
-
-		foreach ($params as $column => $newValue)
-			$string .= $column . ' = ' . $newValue . ($column != $lastKey ? ', ' : '');
-
-		$smcFunc['db_query'](
-		    '',
-		    '
-			UPDATE {db_prefix}' . ($this->_tables['alerts']['table']) . '
-			SET ' . ($string) . '
-			WHERE id_alert ' . (is_array($id) ? 'IN ({array_int:id})' : '= {int:id}'),
-		    ['id' => $id]
-		);
-	}
-
-    /**
-     * BreezeQuery::updateProfileViews()
-     *
-     * Updates the member profile views count
-     * @param int $id the user ID
-     * @param $array
-     * @return bool
-     */
-	public function updateProfileViews($id, $array)
-	{
-		global $smcFunc;
-
-		// Do not waste my time
-		if (empty($id) || empty($array))
-			return false;
-
-		$array = (array) $array;
-
-		$smcFunc['db_query'](
-		    '',
-		    '
-			UPDATE {db_prefix}members
-			SET breeze_profile_views = {string:json_string}
-			WHERE id_member = ({int:id})',
-		    [
-		        'id' => (int) $id,
-		        'json_string' => json_encode($array),
-		    ]
-		);
-	}
-
-	/**
-	 * BreezeQuery::getViews()
-	 *
-	 * Gets the profile views
-	 * @param integer $user The user ID
-	 * @return string a json string.
-	 */
-	public function getViews($user = 0)
-	{
-		global $smcFunc;
-
-		if (empty($user))
-			return [];
-
-		$result = $smcFunc['db_query'](
-		    '',
-		    '
-			SELECT breeze_profile_views
-			FROM {db_prefix}' . $this->_tables['members']['table'] . '
-			WHERE id_member = {int:user}
-			',
-		    [
-		        'user' => (int) $user,
-		    ]
-		);
-
-		// Populate the array like a boss!
-		[$views] = $smcFunc['db_fetch_row']($result);
-		$views = !empty($views) ? json_decode($views, true) : [];
-
-		$smcFunc['db_free_result']($result);
-
-		// Return the data
-		return $views;
-	}
-
-	/**
-	 * BreezeQuery::deleteViews()
-	 *
-	 * Deletes the specific visitors log entry from the DB
-	 * @param int $user the user ID
-	 * @return void
-	 */
-	public function deleteViews($user)
-	{
-		global $smcFunc;
-
-		// Delete!
-		$smcFunc['db_query'](
-		    '',
-		    '
-			UPDATE {db_prefix}' . $this->_tables['members']['table'] . '
-			SET breeze_profile_views = {string:empty}
-			WHERE id_member = {int:id}',
-		    [
-		        'id' => (int) $user,
-		        'empty' => ''
-		    ]
-		);
-	}
 
 	/**
 	 * BreezeQuery::userMention()
@@ -941,7 +817,7 @@ class BreezeQuery
 	 * @param string $match a 3 letter string
 	 * @return array the matched IDs and names.
 	 */
-	public function userMention($match)
+	public function userMention($match): array
 	{
 		global $smcFunc;
 
@@ -1107,30 +983,6 @@ class BreezeQuery
 		return $returnData;
 	}
 
-	public function wannaSeeBoards()
-	{
-		global $user_info, $smcFunc;
-
-		if (($boards = cache_get_data(Breeze::NAME . '-Boards-' . $user_info['id'], 120)) == null)
-		{
-			$request = $smcFunc['db_query'](
-			    '',
-			    '
-				SELECT id_board
-				FROM {db_prefix}boards as b
-				WHERE {query_wanna_see_board}',
-			    []
-			);
-
-			while ($row = $smcFunc['db_fetch_assoc']($request))
-				$boards[] = $row['id_board'];
-
-			$smcFunc['db_free_result']($request);
-			cache_put_data(Breeze::NAME . '-Boards-' . $user_info['id'], $boards, 120);
-		}
-
-		return $boards;
-	}
 
 	public function userLikes($type, $user = false)
 	{

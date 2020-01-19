@@ -1,6 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
+use Breeze\Breeze;
 use Breeze\Entity\Member as MemberEntity;
 use Breeze\Entity\Options as OptionsEntity;
 
@@ -26,13 +28,13 @@ class User extends Base
 
 		if (!empty($inserts))
 			$this->db['db_insert'](
-				'replace',
-				'{db_prefix}' . OptionsEntity::TABLE,
-				[$this->getColumnId() => 'int',
-					OptionsEntity::COLUMN_VARIABLE => 'string-255',
-					OptionsEntity::COLUMN_VALUE => 'string-65534'],
-				$inserts,
-				[$this->getColumnId()]
+			    'replace',
+			    '{db_prefix}' . OptionsEntity::TABLE,
+			    [$this->getColumnId() => 'int',
+			        OptionsEntity::COLUMN_VARIABLE => 'string-255',
+			        OptionsEntity::COLUMN_VALUE => 'string-65534'],
+			    $inserts,
+			    [$this->getColumnId()]
 			);
 
 		return 1;
@@ -44,21 +46,38 @@ class User extends Base
 		// TODO: Implement update() method.
 	}
 
+	public function updateProfileViews(array $data, $userId): bool
+	{
+		if (empty($data) || empty($userId))
+			return false;
+
+		return $this->db['db_query'](
+		    '',
+		    'UPDATE {db_prefix}' . $this->getTableName() . '
+			SET ' . MemberEntity::COLUMN_PROFILE_VIEWS . ' = {string:jsonData}
+			WHERE ' . $this->getColumnId() . ' = ({int:userId})',
+		    [
+		        'userId' => (int) $userId,
+		        'jsonData' => json_encode($data),
+		    ]
+		);
+	}
+
 	public function getUserSettings(int $userId)
 	{
 		$data = [];
 
 		$result = $this->db['db_query'](
-			'',
-			'SELECT op.' . (implode(', op.', OptionsEntity::getColumns())) . ', 
+		    '',
+		    'SELECT op.' . (implode(', op.', OptionsEntity::getColumns())) . ', 
 			mem.' . (implode(', mem.', $this->getColumns())) . '
 			FROM {db_prefix}' . OptionsEntity::TABLE . ' AS op
 				LEFT JOIN {db_prefix}' . $this->getTableName() . ' 
-				AS mem ON (mem.'. $this->getColumnId() .' = {int:user})
-			WHERE '. $this->getColumnId() .' = {int:userId}',
-			[
-				'userId' => $userId,
-			]
+				AS mem ON (mem.' . $this->getColumnId() . ' = {int:user})
+			WHERE ' . $this->getColumnId() . ' = {int:userId}',
+		    [
+		        'userId' => $userId,
+		    ]
 		);
 
 		while ($row = $this->db['db_fetch_assoc']($result))
@@ -75,11 +94,11 @@ class User extends Base
 					explode(',', $row[OptionsEntity::COLUMN_VALUE]) : [];
 
 			$data += [
-				'buddiesList' => !empty($row[MemberEntity::COLUMN_BUDDY_LIST]) ?
-					explode(',', $row[MemberEntity::COLUMN_BUDDY_LIST]) : [],
-				'ignoredList' => !empty($row[MemberEntity::COLUMN_IGNORE_LIST]) ?
-					explode(',', $row[MemberEntity::COLUMN_IGNORE_LIST]) : [],
-				'profileViews' => $row[MemberEntity::COLUMN_PROFILE_VIEWS],
+			    'buddiesList' => !empty($row[MemberEntity::COLUMN_BUDDY_LIST]) ?
+			    	explode(',', $row[MemberEntity::COLUMN_BUDDY_LIST]) : [],
+			    'ignoredList' => !empty($row[MemberEntity::COLUMN_IGNORE_LIST]) ?
+			    	explode(',', $row[MemberEntity::COLUMN_IGNORE_LIST]) : [],
+			    'profileViews' => $row[MemberEntity::COLUMN_PROFILE_VIEWS],
 			];
 		}
 
@@ -88,10 +107,61 @@ class User extends Base
 		return $data;
 	}
 
-
-	function generateData($row): array
+	public function getViews($userId = 0): array
 	{
-		// TODO: Implement generateData() method.
+		$views = [];
+
+		if (empty($userId))
+			return $views;
+
+		$result = $this->db['db_query'](
+		    '',
+		    'SELECT ' . MemberEntity::COLUMN_PROFILE_VIEWS . '
+			FROM {db_prefix}' . $this->getTableName() . '
+			WHERE ' . $this->getColumnId() . ' = {int:userId}',
+		    ['userId' => (int) $userId]
+		);
+
+		$views = $this->db['db_fetch_row']($result);
+		$views = !empty($views) ? json_decode($views, true) : [];
+
+		$this->db['db_free_result']($result);
+
+		return $views;
+	}
+
+	public function deleteViews($userId)
+	{
+		$this->db['db_query'](
+		    '',
+		    'UPDATE {db_prefix}' . $this->getTableName() . '
+			SET ' . MemberEntity::COLUMN_PROFILE_VIEWS . ' = {string:empty}
+			WHERE ' . MemberEntity::COLUMN_ID . ' = {int:userId}',
+		    [
+		        'userId' => (int) $userId,
+		        'empty' => ''
+		    ]
+		);
+	}
+
+	public function wannaSeeBoards(): array
+	{
+		$boards = [];
+
+		$request = $this->db['db_query'](
+		    '',
+		    'SELECT id_board
+			FROM {db_prefix}boards as b
+			WHERE {query_wanna_see_board}',
+		    []
+		);
+
+		while ($row = $this->db['db_fetch_assoc']($request))
+			$boards[] = $row['id_board'];
+
+		$this->db['db_free_result']($request);
+
+		return $boards;
 	}
 
 	function getTableName(): string

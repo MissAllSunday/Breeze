@@ -16,10 +16,10 @@ class Member extends Base
 	public static function getColumns(): array
 	{
 		return [
-			self::COLUMN_ID,
-			self::COLUMN_PROFILE_VIEWS,
-			self::COLUMN_IGNORE_LIST,
-			self::COLUMN_BUDDY_LIST
+		    self::COLUMN_ID,
+		    self::COLUMN_PROFILE_VIEWS,
+		    self::COLUMN_IGNORE_LIST,
+		    self::COLUMN_BUDDY_LIST
 		];
 
 	}

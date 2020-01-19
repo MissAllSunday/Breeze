@@ -7,6 +7,7 @@ namespace Breeze\Entity;
 
 class Like extends Base
 {
+	const TABLE = 'user_likes';
 	const COLUMN_ID_MEMBER = 'id_member';
 	const COLUMN_CONTENT_TYPE = 'content_type';
 	const COLUMN_CONTENT_ID = 'content_id';
@@ -15,10 +16,10 @@ class Like extends Base
 	public static function getColumns(): array
 	{
 		return [
-			self::COLUMN_ID_MEMBER,
-			self::COLUMN_CONTENT_TYPE,
-			self::COLUMN_CONTENT_ID,
-			self::COLUMN_LIKE_TIME,
+		    self::COLUMN_ID_MEMBER,
+		    self::COLUMN_CONTENT_TYPE,
+		    self::COLUMN_CONTENT_ID,
+		    self::COLUMN_LIKE_TIME,
 		];
 	}
 }

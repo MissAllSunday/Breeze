@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 use Breeze\Entity\Status as StatusEntity;
 
 class Status extends Base
@@ -24,22 +23,6 @@ class Status extends Base
 	function update(array $data, int $statusId = 0): array
 	{
 		// TODO: Implement update() method.
-	}
-
-
-	function getSingleValue(int $id): array
-	{
-
-	}
-
-	function getById(int $id): array
-	{
-
-	}
-
-	function generateData($row): array
-	{
-		// TODO: Implement generateData() method.
 	}
 
 	function getTableName(): string

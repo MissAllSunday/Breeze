@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-
 use Breeze\Entity\Comment as CommentEntity;
 
 class Comment extends Base
 {
-
 	function insert(array $data, int $commentID = 0): int
 	{
 		$this->db['db_insert']('replace', '{db_prefix}' . $this->getTableName() .
@@ -38,12 +36,6 @@ class Comment extends Base
 		// TODO: Implement update() method.
 	}
 
-	function getSingleValue(int $id): array
-	{
-		// TODO: Implement getSingleValue() method.
-	}
-
-
 	function getTableName(): string
 	{
 		return CommentEntity::TABLE;
@@ -57,10 +49,5 @@ class Comment extends Base
 	function getColumns(): array
 	{
 		return CommentEntity::getColumns();
-	}
-
-	function generateData($row): array
-	{
-		// TODO: Implement generateData() method.
 	}
 }

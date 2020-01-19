@@ -15,8 +15,8 @@ class Options extends Base
  public static function getColumns(): array
 	{
 		return [
-			self::COLUMN_VARIABLE,
-			self::COLUMN_VALUE,
+		    self::COLUMN_VARIABLE,
+		    self::COLUMN_VALUE,
 		];
 	}
 }
