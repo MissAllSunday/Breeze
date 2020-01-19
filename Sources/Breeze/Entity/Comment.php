@@ -16,17 +16,17 @@ class Comment extends Base
 	const COLUMN_BODY = 'comments_body';
 	const COLUMN_LIKES = 'likes';
 
-	function getColumns(): array
+	public static function getColumns(): array
 	{
 		return [
-		    self::COLUMN_ID,
-		    self::COLUMN_STATUS_ID,
-		    self::COLUMN_STATUS_OWNER_ID,
-		    self::COLUMN_POSTER_ID,
-		    self::COLUMN_PROFILE_ID,
-		    self::COLUMN_TIME,
-		    self::COLUMN_BODY,
-		    self::COLUMN_LIKES,
+			self::COLUMN_ID,
+			self::COLUMN_STATUS_ID,
+			self::COLUMN_STATUS_OWNER_ID,
+			self::COLUMN_POSTER_ID,
+			self::COLUMN_PROFILE_ID,
+			self::COLUMN_TIME,
+			self::COLUMN_BODY,
+			self::COLUMN_LIKES,
 		];
 	}
 }

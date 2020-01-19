@@ -13,7 +13,6 @@ abstract class Base
 		global $smcFunc;
 
 		$this->db = $smcFunc;
-		$this->setEntity();
 	}
 
 	function getLastValue(): array
@@ -44,14 +43,9 @@ abstract class Base
 		return true;
 	}
 
-	abstract function insert(array $data): int;
-	abstract function update(int $id): array;
-	abstract function getSingleValue(int $id): array;
-	abstract function getById(int $id): array;
-	abstract function getCount(): int;
+	abstract function insert(array $data, int $id = 0): int;
+	abstract function update(array $data, int $id = 0): array;
 	abstract function generateData($row): array;
-	abstract function setEntity(): void;
-	abstract function getEntity();
 	abstract function getTableName(): string;
 	abstract function getColumnId(): string;
 	abstract function getColumns(): array;

@@ -7,10 +7,10 @@ namespace Breeze\Entity;
 
 abstract class Base
 {
-	function getName(): string
+	function getTableName(): string
 	{
 		return static::TABLE;
 	}
 
-	abstract function getColumns(): array;
+	public abstract static function getColumns(): array;
 }

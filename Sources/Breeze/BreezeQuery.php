@@ -646,168 +646,6 @@ class BreezeQuery
 	}
 
 
-    /**
-     * BreezeQuery::insertComment()
-     *
-     */
-	public function insertComment($array)
-	{
-		global $smcFunc;
-
-		// Insert!
-		$smcFunc['db_insert']('replace', '{db_prefix}' . ($this->_tables['comments']['table']) .
-			'', [
-			    'comments_status_id' => 'int',
-			    'comments_status_owner_id' => 'int',
-			    'comments_poster_id' => 'int',
-			    'comments_profile_id' => 'int',
-			    'comments_time' => 'int',
-			    'comments_body' => 'string',
-			    'likes' => 'int',
-			], $array, ['comments_id', ]);
-
-		// Get the newly created comment ID
-		$comment_id = $smcFunc['db_insert_id']('{db_prefix}' . ($this->_tables['comments']['table']), 'comments_id');
-
-		//Kill the profile cache
-		$this->killCache('comments', $comment_id, $array['profile_id']);
-
-		// Return the newly inserted comment ID
-		return $comment_id;
-	}
-
-
-    /**
-     * BreezeQuery::deleteComments()
-     *
-     * @param int $id
-     * @param bool $profile_owner
-     * @return void
-     */
-	public function deleteComments($id, $profile_owner = false)
-	{
-		global $smcFunc;
-
-		// If we know the profile_owner ID we will save an extra query so try to include it as a param please!
-		$this->killCache('comments', $id, $profile_owner);
-
-		// Delete!
-		$smcFunc['db_query'](
-		    '',
-		    '
-			DELETE FROM {db_prefix}' . ($this->_tables['comments']['table']) . '
-			WHERE comments_id = {int:id}',
-		    [
-		        'id' => (int) $id,
-		    ]
-		);
-	}
-
-	/**
-	 * BreezeQuery::getUserSettings()
-	 *
-	 * Gets a unique user setting
-	 * @param int $user The user ID
-	 * @return bool|array Either a boolean false or the requested user data.
-	 */
-	public function getUserSettings($user)
-	{
-		global $smcFunc;
-
-		if (empty($user))
-			return false;
-
-		if (($return = cache_get_data(
-		    Breeze::NAME . '-' . $this->_tables['options']['name'] . '-' . $user,
-		    120
-		)) == null)
-		{
-			$return = [];
-
-			$result = $smcFunc['db_query'](
-			    '',
-			    '
-				SELECT op.' . (implode(', op.', $this->_tables['options']['columns'])) . ', mem.' . (implode(', mem.', $this->_tables['members']['columns'])) . '
-				FROM {db_prefix}' . ($this->_tables['options']['table']) . ' AS op
-					LEFT JOIN {db_prefix}' . ($this->_tables['members']['table']) . ' AS mem ON (mem.id_member = {int:user})
-				WHERE member_id = {int:user}',
-			    [
-			        'user' => $user,
-			    ]
-			);
-
-			// Populate the array like a boss!
-			while ($row = $smcFunc['db_fetch_assoc']($result))
-			{
-				$return[$row['variable']] = is_numeric($row['value']) ? (int) $row['value'] : (string) $row['value'];
-
-				// Special case for those values that require been decoded.
-				if (in_array($row['variable'], $this->_needJSON))
-					$return[$row['variable']] = !empty($row['value']) ? json_decode($row['value'], true) : [];
-
-				// Another special case...
-				if ($row['variable'] == 'blockListIDs')
-					$return[$row['variable']] = !empty($row['value']) ? explode(',', $row['value']) : [];
-
-				$return += [
-				    'buddiesList' => !empty($row['buddy_list']) ? explode(',', $row['buddy_list']) : [],
-				    'ignoredList' => !empty($row['pm_ignore_list']) ? explode(',', $row['pm_ignore_list']) : [],
-				    'profileViews' => $row['breeze_profile_views'],
-				];
-			}
-
-			$smcFunc['db_free_result']($result);
-
-			// Cache this beauty.
-			cache_put_data(Breeze::NAME . '-' . $this->_tables['options']['name'] . '-' . $user, $return, 120);
-		}
-
-		return $return;
-	}
-
-    /**
-     * BreezeQuery::insertUserSettings()
-     *
-     * Creates a new set of user settings.
-     * @param
-     * @param
-     * @return array|bool
-     */
-	public function insertUserSettings($array, $userID)
-	{
-		global $smcFunc;
-
-		if (empty($array) || empty($userID))
-			return false;
-
-		cache_put_data(Breeze::NAME . '-' . $this->_tables['options']['name'] . '-' . $userID, null, 120);
-
-		$array = (array) $array;
-		$userID = (int) $userID;
-		$inserts = [];
-
-		foreach ($array as $var => $val)
-		{
-			// Does the value needs to be encoded?
-			if (in_array($var, $this->_needJSON))
-				$val = !empty($val) ? json_encode($val) : '';
-
-			$inserts[] = [$userID, $var, $val];
-		}
-
-		if (!empty($inserts))
-			$smcFunc['db_insert'](
-			    'replace',
-			    '{db_prefix}' . ($this->_tables['options']['table']),
-			    ['member_id' => 'int', 'variable' => 'string-255', 'value' => 'string-65534'],
-			    $inserts,
-			    ['member_id']
-			);
-
-		// Force getting the new settings.
-		return $this->getUserSettings($userID);
-	}
-
 	public function logCount($users)
 	{
 		global $smcFunc;
@@ -895,25 +733,6 @@ class BreezeQuery
 		);
 	}
 
-	public function deleteLog($id)
-	{
-		global $smcFunc;
-
-		if (empty($id))
-			return false;
-
-		$id = (array) $id;
-
-		$smcFunc['db_query'](
-		    '',
-		    '
-			DELETE FROM {db_prefix}' . ($this->_tables['logs']['table']) . '
-			WHERE id_log IN ({array_int:data})',
-		    [
-		        'data' => $id,
-		    ]
-		);
-	}
 
     /**
      * BreezeQuery::insertNoti()
@@ -988,30 +807,6 @@ class BreezeQuery
 		$smcFunc['db_free_result']($request);
 
 		return (int) $result;
-	}
-
-	public function createAlert($params)
-	{
-		global $smcFunc;
-
-		if (empty($params))
-			return false;
-
-		// Check if the noti added the unique identifier, if not, added it!
-		if (strpos($params['content_type'], $this->_app->txtpattern) !== false)
-			$params['content_type'] = $this->_app->txtpattern . $params['content_type'];
-
-		$smcFunc['db_insert']('insert', '{db_prefix}' . ($this->_tables['alerts']['table']) . '', [
-		    'alert_time' => 'int', 
-		    'id_member' => 'int', 
-		    'id_member_started' => 'int', 
-		    'member_name' => 'string', 
-		    'content_type' => 'string', 
-		    'content_id' => 'int', 
-		    'content_action' => 'string', 
-		    'is_read' => 'int', 
-		    'extra' => 'string'
-		], $params, ['id_alert']);
 	}
 
     /**
@@ -1173,7 +968,7 @@ class BreezeQuery
 			$return = [];
 
 			// We need a function in a file far far away...
-			require_once($this->_app['tools']->sourceDir . '/Subs-Members.php');
+			require_once($this->_app['tools']->sourceDir . '/Subs-Member.php');
 
 			// Get the members allowed to be mentioned
 			$allowedMembers = array_values(membersAllowedTo('breeze_beMentioned'));

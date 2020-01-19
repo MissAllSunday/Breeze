@@ -7,14 +7,8 @@ use Breeze\Entity\Status as StatusEntity;
 
 class Status extends Base
 {
-	function getCount(): int
+	function insert(array $data, int $statusId = 0): int
 	{
-	}
-
-	function insert(array $data): int
-	{
-		$id = 0;
-
 		$this->db['db_insert']('replace', '{db_prefix}' . $this->getTableName() .
 			'', [
 			    'status_owner_id' => 'int',
@@ -24,11 +18,10 @@ class Status extends Base
 			    'likes' => 'int',
 			], $data, [$this->getColumnId()]);
 
-		// Get the newly created status ID
 		return $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
 	}
 
-	function update(int $id): array
+	function update(array $data, int $statusId = 0): array
 	{
 		// TODO: Implement update() method.
 	}
@@ -49,28 +42,18 @@ class Status extends Base
 		// TODO: Implement generateData() method.
 	}
 
-	function setEntity(): void
-	{
-		$this->entity = new StatusEntity();
-	}
-
-	function getEntity(): StatusEntity
-	{
-		return $this->entity;
-	}
-
 	function getTableName(): string
 	{
-		// TODO: Implement getTableName() method.
+		return StatusEntity::TABLE;
 	}
 
 	function getColumnId(): string
 	{
-		// TODO: Implement getColumnId() method.
+		return StatusEntity::COLUMN_ID;
 	}
 
 	function getColumns(): array
 	{
-		// TODO: Implement getColumns() method.
+		return StatusEntity::getColumns();
 	}
 }

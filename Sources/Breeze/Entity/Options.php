@@ -12,11 +12,11 @@ class Options extends Base
 	const COLUMN_VALUE = 'value';
 
 
-	function getColumns(): array
+ public static function getColumns(): array
 	{
 		return [
-		    self::COLUMN_VARIABLE,
-		    self::COLUMN_VALUE,
+			self::COLUMN_VARIABLE,
+			self::COLUMN_VALUE,
 		];
 	}
 }

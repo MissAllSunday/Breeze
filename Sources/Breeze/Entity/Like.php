@@ -12,13 +12,13 @@ class Like extends Base
 	const COLUMN_CONTENT_ID = 'content_id';
 	const COLUMN_LIKE_TIME = 'like_time';
 
-	function getColumns(): array
+	public static function getColumns(): array
 	{
 		return [
-		    self::COLUMN_ID_MEMBER,
-		    self::COLUMN_CONTENT_TYPE,
-		    self::COLUMN_CONTENT_ID,
-		    self::COLUMN_LIKE_TIME,
+			self::COLUMN_ID_MEMBER,
+			self::COLUMN_CONTENT_TYPE,
+			self::COLUMN_CONTENT_ID,
+			self::COLUMN_LIKE_TIME,
 		];
 	}
 }

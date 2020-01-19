@@ -14,7 +14,7 @@ class Status extends Base
 	const COLUMN_BODY = 'body';
 	const COLUMN_LIKES = 'likes';
 
-	public function getColumns(): array
+	public static function getColumns(): array
 	{
 		return [
 		    self::COLUMN_ID,

@@ -8,10 +8,8 @@ use Breeze\Entity\Comment as CommentEntity;
 class Comment extends Base
 {
 
-	function insert(array $data): int
+	function insert(array $data, int $commentID = 0): int
 	{
-		$id = 0;
-
 		$this->db['db_insert']('replace', '{db_prefix}' . $this->getTableName() .
 			'', [
 			    'comments_status_id' => 'int',
@@ -35,7 +33,7 @@ class Comment extends Base
 		return true;
 	}
 
-	function update(int $id): array
+	function update(array $data, int $id = 0): array
 	{
 		// TODO: Implement update() method.
 	}
@@ -45,30 +43,6 @@ class Comment extends Base
 		// TODO: Implement getSingleValue() method.
 	}
 
-	function getById(int $id): array
-	{
-		// TODO: Implement getById() method.
-	}
-
-	function getCount(): int
-	{
-		// TODO: Implement getCount() method.
-	}
-
-	function generateData($row): array
-	{
-		// TODO: Implement generateData() method.
-	}
-
-	function setEntity(): void
-	{
-		$this->entity = new CommentEntity();
-	}
-
-	function getEntity(): CommentEntity
-	{
-		return $this->entity;
-	}
 
 	function getTableName(): string
 	{
@@ -82,6 +56,11 @@ class Comment extends Base
 
 	function getColumns(): array
 	{
-		return $this->getEntity()->getColumns();
+		return CommentEntity::getColumns();
+	}
+
+	function generateData($row): array
+	{
+		// TODO: Implement generateData() method.
 	}
 }

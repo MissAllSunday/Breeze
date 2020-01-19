@@ -7,6 +7,7 @@ namespace Breeze\Entity;
 
 class Alert extends Base
 {
+	const TABLE = 'user_alerts';
 	const COLUMN_ID = 'id_alert';
 	const COLUMN_ALERT_TIME = 'alert_time';
 	const COLUMN_ID_MEMBER = 'id_member';
@@ -19,7 +20,7 @@ class Alert extends Base
 	const COLUMN_EXTRA = 'extra';
 
 
-	function getColumns(): array
+	public static function getColumns(): array
 	{
 		return [
 		    self::COLUMN_ID,

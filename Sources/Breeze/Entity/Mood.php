@@ -14,15 +14,15 @@ class Mood extends Base
 	const COLUMN_DESC = 'description';
 	const COLUMN_ENABLE = 'enable';
 
-	function getColumns(): array
+	public static function getColumns(): array
 	{
 		return [
-		    self::COLUMN_ID,
-		    self::COLUMN_NAME,
-		    self::COLUMN_FILE,
-		    self::COLUMN_EXT,
-		    self::COLUMN_DESC,
-		    self::COLUMN_ENABLE,
+			self::COLUMN_ID,
+			self::COLUMN_NAME,
+			self::COLUMN_FILE,
+			self::COLUMN_EXT,
+			self::COLUMN_DESC,
+			self::COLUMN_ENABLE,
 		];
 	}
 }

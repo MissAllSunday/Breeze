@@ -26,6 +26,7 @@ class Breeze extends Container
 {
 	const NAME = 'Breeze';
 	const VERSION = '1.1';
+	const PATTERN = self::NAME . '_';
 
 	protected $_services = [
 	    'admin',
