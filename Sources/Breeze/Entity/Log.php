@@ -7,6 +7,7 @@ namespace Breeze\Entity;
 
 class Log extends Base
 {
+	const TABLE = 'breeze_logs';
 	const COLUMN_ID = 'id_log';
 	const COLUMN_MEMBER = 'member';
 	const COLUMN_CONTENT_TYPE = 'content_type';

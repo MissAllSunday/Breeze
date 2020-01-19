@@ -25,6 +25,7 @@ class Status extends Base
 		// TODO: Implement update() method.
 	}
 
+
 	function getTableName(): string
 	{
 		return StatusEntity::TABLE;

@@ -42,6 +42,20 @@ abstract class Base
 		return true;
 	}
 
+	public function updateLikes(int $contentId, int $numLikes)
+	{
+		$this->db['db_query'](
+			'',
+			'UPDATE {db_prefix}' . $this->getTableName() . '
+			SET likes = {int:num_likes}
+			WHERE ' . $this->getColumnId() . ' = {int:id_content}',
+			[
+				'id_content' => $contentId,
+				'num_likes' => $numLikes,
+			]
+		);
+	}
+
 	abstract function insert(array $data, int $id = 0): int;
 	abstract function update(array $data, int $id = 0): array;
 	abstract function getTableName(): string;

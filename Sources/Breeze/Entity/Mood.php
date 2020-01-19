@@ -7,6 +7,7 @@ namespace Breeze\Entity;
 
 class Mood extends Base
 {
+	const TABLE = 'breeze_moods';
 	const COLUMN_ID = 'moods_id';
 	const COLUMN_NAME = 'name';
 	const COLUMN_FILE = 'file';
