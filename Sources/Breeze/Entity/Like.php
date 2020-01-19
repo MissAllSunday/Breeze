@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace Breeze\Entity;
 
@@ -14,10 +16,10 @@ class Like extends Base
 	function getColumns(): array
 	{
 		return [
-			self::COLUMN_ID_MEMBER,
-			self::COLUMN_CONTENT_TYPE,
-			self::COLUMN_CONTENT_ID,
-			self::COLUMN_LIKE_TIME,
+		    self::COLUMN_ID_MEMBER,
+		    self::COLUMN_CONTENT_TYPE,
+		    self::COLUMN_CONTENT_ID,
+		    self::COLUMN_LIKE_TIME,
 		];
 	}
 }

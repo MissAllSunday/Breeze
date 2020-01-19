@@ -6,6 +6,7 @@ namespace Breeze\Entity;
 
 class Comment extends Base
 {
+	const TABLE = 'breeze_comments';
 	const COLUMN_ID ='comments_id';
 	const COLUMN_STATUS_ID = 'comments_status_id';
 	const COLUMN_STATUS_OWNER_ID = 'comments_status_owner_id';

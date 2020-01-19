@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace Breeze\Entity;
 
@@ -16,12 +18,12 @@ class Mood extends Base
 	function getColumns(): array
 	{
 		return [
-			self::COLUMN_ID,
-			self::COLUMN_NAME,
-			self::COLUMN_FILE,
-			self::COLUMN_EXT,
-			self::COLUMN_DESC,
-			self::COLUMN_ENABLE,
+		    self::COLUMN_ID,
+		    self::COLUMN_NAME,
+		    self::COLUMN_FILE,
+		    self::COLUMN_EXT,
+		    self::COLUMN_DESC,
+		    self::COLUMN_ENABLE,
 		];
 	}
 }

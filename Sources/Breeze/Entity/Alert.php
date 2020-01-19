@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace Breeze\Entity;
 
@@ -21,16 +23,16 @@ class Alert extends Base
 	function getColumns(): array
 	{
 		return [
-			self::COLUMN_ID,
-			self::COLUMN_ALERT_TIME,
-			self::COLUMN_ID_MEMBER,
-			self::COLUMN_ID_MEMBER_STARTED,
-			self::COLUMN_MEMBER_NAME,
-			self::COLUMN_CONTENT_TYPE,
-			self::COLUMN_CONTENT_ID,
-			self::COLUMN_CONTENT_ACTION,
-			self::COLUMN_IS_READ,
-			self::COLUMN_EXTRA,
+		    self::COLUMN_ID,
+		    self::COLUMN_ALERT_TIME,
+		    self::COLUMN_ID_MEMBER,
+		    self::COLUMN_ID_MEMBER_STARTED,
+		    self::COLUMN_MEMBER_NAME,
+		    self::COLUMN_CONTENT_TYPE,
+		    self::COLUMN_CONTENT_ID,
+		    self::COLUMN_CONTENT_ACTION,
+		    self::COLUMN_IS_READ,
+		    self::COLUMN_EXTRA,
 		];
 	}
 }

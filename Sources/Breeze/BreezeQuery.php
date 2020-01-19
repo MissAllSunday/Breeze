@@ -763,44 +763,6 @@ class BreezeQuery
 		return $comment_id;
 	}
 
-    /**
-     * BreezeQuery::deleteStatus()
-     *
-     * @param int $id
-     * @param bool $profile_owner
-     * @return void
-     */
-	public function deleteStatus($id, $profile_owner = false)
-	{
-		global $smcFunc;
-
-		// We know the profile_owner, pass it to avoid an extra query
-		$this->killCache('status', $id, $profile_owner);
-
-		// Ladies first
-		$this->deleteCommentByStatusID($id);
-
-		// Same for status
-		$smcFunc['db_query']('', '
-			DELETE FROM {db_prefix}' . ($this->_tables['status']['table']) . '
-			WHERE status_id = {int:id}', ['id' => $id, ]);
-	}
-
-    /**
-     * BreezeQuery::deleteCommentByStatusID()
-     *
-     * This shouldn't be called as a standalone method, use deleteComments() instead
-     * @param int $id
-     * @return void
-     */
-	public function deleteCommentByStatusID($id)
-	{
-		global $smcFunc;
-
-		$smcFunc['db_query']('', '
-			DELETE FROM {db_prefix}' . ($this->_tables['comments']['table']) . '
-			WHERE comments_status_id = {int:id}', ['id' => $id, ]);
-	}
 
     /**
      * BreezeQuery::deleteComments()
