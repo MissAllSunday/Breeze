@@ -15,11 +15,6 @@ class Mention extends Base
 	const COLUMN_ID_MEMBER= 'time';
 	const COLUMN_TIME = 'body';
 
-	function getName(): string
-	{
-		RETURN self::TABLE;
-	}
-
 	function getColumns(): array
 	{
 		return [

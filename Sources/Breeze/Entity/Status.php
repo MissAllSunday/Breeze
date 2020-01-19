@@ -26,9 +26,4 @@ class Status extends Base
 		    self::COLUMN_LIKES,
 		];
 	}
-
-	public function getName(): string
-	{
-		return self::TABLE;
-	}
 }
