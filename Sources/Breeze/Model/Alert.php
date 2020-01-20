@@ -53,6 +53,37 @@ class Alert extends Base
 		return $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
 	}
 
+	public function checkAlert(int $userId, string $alertType, int $alertId = 0, string $alertSender = ''): bool
+	{
+		$alreadySent = false;
+
+		if (empty($userId) || empty($alertType))
+			return $alreadySent;
+
+		$request = $this->db['db_query'](
+			'',
+			'SELECT '. AlertEntity::COLUMN_ID .'
+			FROM {db_prefix}' . AlertEntity::TABLE . '
+			WHERE '. AlertEntity::COLUMN_ID_MEMBER .' = {int:userId}
+				AND '. AlertEntity::COLUMN_IS_READ .' = 0
+				AND '. AlertEntity::COLUMN_CONTENT_TYPE .' = {string:alertType}
+				' . ($alertId ? 'AND '. AlertEntity::COLUMN_CONTENT_ID .' = {int:alertId}' : '') . '
+				' . ($alertSender ? 'AND '. AlertEntity::COLUMN_ID_MEMBER_STARTED .' = {int:alertSender}' : '') . '',
+			[
+				'userId' => $userId,
+				'alertType' => $alertType,
+				'alertId' => $alertId,
+				'alertSender' => $alertSender,
+			]
+		);
+
+		$result = $this->db['db_fetch_row']($request);
+
+		$this->db['db_free_result']($request);
+
+		return (bool) $result;
+	}
+
 	function getTableName(): string
 	{
 		return AlertEntity::TABLE;

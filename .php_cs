@@ -35,6 +35,7 @@ return PhpCsFixer\Config::create()
         'single_line_comment_style' => true,
         'ternary_to_null_coalescing' => true,
         'yoda_style' => ['equal' => false, 'identical' => false, 'less_and_greater' => false],
+		'single_blank_line_at_eof' => true,
     ])
     ->setUsingCache(true)
     ->setRiskyAllowed(true);

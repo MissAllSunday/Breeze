@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Breeze\Breeze;
 use Breeze\Entity\Member as MemberEntity;
 use Breeze\Entity\Options as OptionsEntity;
 
@@ -44,6 +43,38 @@ class User extends Base
 	function update(array $data, int $userId = 0): array
 	{
 		// TODO: Implement update() method.
+	}
+
+	public function loadMinData(array $userIds): array
+	{
+		$userIds = array_unique($userIds);
+		$loadedUsers = [];
+
+		if (empty($userIds))
+			return $loadedUsers;
+
+		$request = $this->db['db_query'](
+		    '',
+		    'SELECT ' . implode(', ', $this->getColumns()) . '
+			FROM {db_prefix}' . $this->getTableName() . '
+			WHERE ' . $this->getColumnId() . ' IN ({array_int:userIds})',
+		    ['userIds' => $userIds]
+		);
+
+		while ($row = $this->db['db_fetch_assoc']($request))
+			$loadedUsers[$row[MemberEntity::COLUMN_ID]] = [
+			    'username' => $row[MemberEntity::COLUMN_MEMBER_NAME],
+			    'name' => $row[MemberEntity::COLUMN_REAL_NAME],
+			    'id' => $row[MemberEntity::COLUMN_ID],
+			];
+
+		$this->db['db_free_result']($request);
+
+		foreach ($userIds as $userId)
+			if (!isset($loadedUsers[$userId]))
+				$loadedUsers[$userId] = [];
+
+		return $loadedUsers;
 	}
 
 	public function updateProfileViews(array $data, $userId): bool

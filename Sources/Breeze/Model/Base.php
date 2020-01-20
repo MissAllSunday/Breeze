@@ -37,7 +37,7 @@ abstract class Base
 		$this->db['db_query']('', '
 			DELETE 
 			FROM {db_prefix}' . $this->getTableName() . '
-			WHERE ' . $this->getColumnId() . ' IN({array_int:ids})', ['id' => $ids, ]);
+			WHERE ' . $this->getColumnId() . ' IN({array_int:ids})', ['ids' => array_map('intval', $ids), ]);
 
 		return true;
 	}
@@ -45,14 +45,14 @@ abstract class Base
 	public function updateLikes(int $contentId, int $numLikes)
 	{
 		$this->db['db_query'](
-			'',
-			'UPDATE {db_prefix}' . $this->getTableName() . '
+		    '',
+		    'UPDATE {db_prefix}' . $this->getTableName() . '
 			SET likes = {int:num_likes}
 			WHERE ' . $this->getColumnId() . ' = {int:id_content}',
-			[
-				'id_content' => $contentId,
-				'num_likes' => $numLikes,
-			]
+		    [
+		        'id_content' => $contentId,
+		        'num_likes' => $numLikes,
+		    ]
 		);
 	}
 

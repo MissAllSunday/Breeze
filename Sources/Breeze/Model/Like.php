@@ -19,14 +19,14 @@ class Like extends Base
 		global $smcFunc;
 
 		$smcFunc['db_query'](
-			'',
-			'UPDATE {db_prefix}' . ($this->_tables[$type]['table']) . '
+		    '',
+		    'UPDATE {db_prefix}' . ($this->_tables[$type]['table']) . '
 			SET likes = {int:num_likes}
 			WHERE ' . ($type) . '_id = {int:id_content}',
-			[
-				'id_content' => $content,
-				'num_likes' => $numLikes,
-			]
+		    [
+		        'id_content' => $content,
+		        'num_likes' => $numLikes,
+		    ]
 		);
 	}
 
@@ -35,15 +35,15 @@ class Like extends Base
 		$likes = [];
 
 		$request = $this->db['db_query'](
-			'',
-			'SELECT '. LikeEntity::COLUMN_CONTENT_ID .'
-			FROM {db_prefix}'. $this->getTableName() .'
-			WHERE '. $this->getColumnId() .' = {int:userId}
-				AND '. LikeEntity::COLUMN_CONTENT_TYPE .' = {string:type}',
-			[
-				'userId' => $userId,
-				'type' => $type,
-			]
+		    '',
+		    'SELECT ' . LikeEntity::COLUMN_CONTENT_ID . '
+			FROM {db_prefix}' . $this->getTableName() . '
+			WHERE ' . $this->getColumnId() . ' = {int:userId}
+				AND ' . LikeEntity::COLUMN_CONTENT_TYPE . ' = {string:type}',
+		    [
+		        'userId' => $userId,
+		        'type' => $type,
+		    ]
 		);
 
 		// @todo fetch all the columns and not just the content_id, for statistics and stuff...
