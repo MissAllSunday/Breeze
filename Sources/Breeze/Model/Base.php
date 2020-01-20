@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Breeze\Breeze;
+
 abstract class Base
 {
 	protected $db;
@@ -12,6 +14,19 @@ abstract class Base
 		global $smcFunc;
 
 		$this->db = $smcFunc;
+	}
+
+	public function getCache(string $key, int $timeToLive = 360): ?array
+	{
+		return cache_get_data(
+			Breeze::PATTERN . $key,
+			$timeToLive
+		);
+	}
+
+	public function setCache(string $key, $data, $timeToLive = 360): void
+	{
+		cache_put_data(Breeze::PATTERN . $key, $data, $timeToLive);
 	}
 
 	function getLastValue(): array
