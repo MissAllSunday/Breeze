@@ -19,8 +19,8 @@ abstract class Base
 	public function getCache(string $key, int $timeToLive = 360): ?array
 	{
 		return cache_get_data(
-			Breeze::PATTERN . $key,
-			$timeToLive
+		    Breeze::PATTERN . $key,
+		    $timeToLive
 		);
 	}
 

@@ -61,20 +61,20 @@ class Alert extends Base
 			return $alreadySent;
 
 		$request = $this->db['db_query'](
-			'',
-			'SELECT '. AlertEntity::COLUMN_ID .'
+		    '',
+		    'SELECT ' . AlertEntity::COLUMN_ID . '
 			FROM {db_prefix}' . AlertEntity::TABLE . '
-			WHERE '. AlertEntity::COLUMN_ID_MEMBER .' = {int:userId}
-				AND '. AlertEntity::COLUMN_IS_READ .' = 0
-				AND '. AlertEntity::COLUMN_CONTENT_TYPE .' = {string:alertType}
-				' . ($alertId ? 'AND '. AlertEntity::COLUMN_CONTENT_ID .' = {int:alertId}' : '') . '
-				' . ($alertSender ? 'AND '. AlertEntity::COLUMN_ID_MEMBER_STARTED .' = {int:alertSender}' : '') . '',
-			[
-				'userId' => $userId,
-				'alertType' => $alertType,
-				'alertId' => $alertId,
-				'alertSender' => $alertSender,
-			]
+			WHERE ' . AlertEntity::COLUMN_ID_MEMBER . ' = {int:userId}
+				AND ' . AlertEntity::COLUMN_IS_READ . ' = 0
+				AND ' . AlertEntity::COLUMN_CONTENT_TYPE . ' = {string:alertType}
+				' . ($alertId ? 'AND ' . AlertEntity::COLUMN_CONTENT_ID . ' = {int:alertId}' : '') . '
+				' . ($alertSender ? 'AND ' . AlertEntity::COLUMN_ID_MEMBER_STARTED . ' = {int:alertSender}' : '') . '',
+		    [
+		        'userId' => $userId,
+		        'alertType' => $alertType,
+		        'alertId' => $alertId,
+		        'alertSender' => $alertSender,
+		    ]
 		);
 
 		$result = $this->db['db_fetch_row']($request);

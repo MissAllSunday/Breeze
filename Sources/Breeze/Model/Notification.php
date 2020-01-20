@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 use Breeze\Entity\Notification as NotificationEntity;
 
@@ -14,16 +16,16 @@ class Notification extends Base
 			return false;
 
 		$smcFunc['db_insert'](
-			'insert',
-			'{db_prefix}'. NotificationEntity::TABLE .'',
-			[
-				NotificationEntity::COLUMN_TASK_FILE => 'string',
-				NotificationEntity::COLUMN_TASK_CLASS => 'string',
-				NotificationEntity::COLUMN_TASK_DATA => 'string',
-				NotificationEntity::COLUMN_CLAIMED_TIME => 'int'
-			],
-			$data,
-			[NotificationEntity::COLUMN_ID]
+		    'insert',
+		    '{db_prefix}' . NotificationEntity::TABLE . '',
+		    [
+		        NotificationEntity::COLUMN_TASK_FILE => 'string',
+		        NotificationEntity::COLUMN_TASK_CLASS => 'string',
+		        NotificationEntity::COLUMN_TASK_DATA => 'string',
+		        NotificationEntity::COLUMN_CLAIMED_TIME => 'int'
+		    ],
+		    $data,
+		    [NotificationEntity::COLUMN_ID]
 		);
 
 		return $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
