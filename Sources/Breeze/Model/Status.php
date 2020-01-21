@@ -22,7 +22,7 @@ class Status extends Base
 
 	function update(array $data, int $statusId = 0): array
 	{
-		// TODO: Implement update() method.
+		return [];
 	}
 
 
