@@ -1,5 +1,9 @@
 <?php
 
+$finder = PhpCsFixer\Finder::create()
+	->exclude('Breeze/Pimple/')
+	->in(__DIR__ . '/Sources/');
+
 return PhpCsFixer\Config::create()
     ->setRules([
 		'@PHP71Migration:risky' => true,
@@ -41,5 +45,6 @@ return PhpCsFixer\Config::create()
         'native_constant_invocation' => true,
         'method_argument_space' => ['ensure_fully_multiline' => true],
     ])
+	->setFinder($finder)
     ->setUsingCache(true)
     ->setRiskyAllowed(true);
