@@ -6,11 +6,17 @@ namespace Breeze\Database;
 
 interface ClientInterface
 {
-	public function fetch(): array;
+	public function query(string $query, array $bindParams);
 
-	public function insert(string $tableName, array $columns, array $data, array $bindParams): int;
+	public function fetchAssoc($result): array;
+
+	public function numRows($result): int;
+
+	public function freeResult($result): void;
+
+	public function insert(string $tableName, array $columns, array $data, int $columnId): void;
+
+	public function getInsertedId(string $tableName, string $columnIdName): int;
 
 	public function update(string $tableName, string $queryString, array $bindParams): int;
-
-	public function delete(): int;
 }

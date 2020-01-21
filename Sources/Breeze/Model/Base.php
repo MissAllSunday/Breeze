@@ -2,19 +2,16 @@
 
 declare(strict_types=1);
 
-use Breeze\Breeze;
+use Breeze\Breeze as Breeze;
+use Breeze\Database\Client as DatabaseClient;
 
 abstract class Base
 {
 	protected $db;
 
-	protected $entity;
-
 	public function __construct()
 	{
-		global $smcFunc;
-
-		$this->db = $smcFunc;
+		$this->db = new DatabaseClient();
 	}
 
 	public function getCache(string $key, int $timeToLive = 360): ?array
@@ -32,7 +29,7 @@ abstract class Base
 
 	public function getInsertedId(): int
 	{
-		return $this->getInsertedId();
+		return $this->db->getInsertedId($this->getTableName(), $this->getColumnId());
 	}
 
 	function getLastValue(): array
