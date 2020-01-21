@@ -28,6 +28,10 @@ abstract class Base
 	{
 		cache_put_data(Breeze::PATTERN . $key, $data, $timeToLive);
 	}
+	public function getInsertedId(): int
+	{
+		return $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
+	}
 
 	function getLastValue(): array
 	{

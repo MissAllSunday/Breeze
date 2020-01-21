@@ -10,13 +10,13 @@ class Comment extends Base
 	{
 		$this->db['db_insert']('replace', '{db_prefix}' . $this->getTableName() .
 			'', [
-			    'comments_status_id' => 'int',
-			    'comments_status_owner_id' => 'int',
-			    'comments_poster_id' => 'int',
-			    'comments_profile_id' => 'int',
-			    'comments_time' => 'int',
-			    'comments_body' => 'string',
-			    'likes' => 'int',
+			    CommentEntity::COLUMN_STATUS_ID => 'int',
+			    CommentEntity::COLUMN_STATUS_OWNER_ID => 'int',
+			    CommentEntity::COLUMN_POSTER_ID => 'int',
+			    CommentEntity::COLUMN_PROFILE_ID => 'int',
+			    CommentEntity::COLUMN_TIME => 'int',
+			    CommentEntity::COLUMN_BODY => 'string',
+			    CommentEntity::COLUMN_LIKES => 'int',
 			], $data, [$this->getColumnId()]);
 
 		return $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
@@ -26,14 +26,14 @@ class Comment extends Base
 	{
 		$this->db['db_query']('', '
 			DELETE FROM {db_prefix}' . CommentEntity::TABLE . '
-			WHERE ' . CommentEntity::COLUMN_STATUS_ID . ' = {array_int:ids}', ['ids' => $ids, ]);
+			WHERE ' . CommentEntity::COLUMN_STATUS_ID . ' IN({array_int:ids})', ['ids' => $ids]);
 
 		return true;
 	}
 
 	function update(array $data, int $id = 0): array
 	{
-		// TODO: Implement update() method.
+		return [];
 	}
 
 	function getTableName(): string
