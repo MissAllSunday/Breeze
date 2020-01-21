@@ -30,7 +30,7 @@ abstract class Base
 	}
 	public function getInsertedId(): int
 	{
-		return $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
+		return $this->getInsertedId();
 	}
 
 	function getLastValue(): array

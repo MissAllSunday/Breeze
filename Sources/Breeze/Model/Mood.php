@@ -23,7 +23,7 @@ class Mood extends Base
 			], $data, [MoodEntity::COLUMN_ID]);
 
 		// Return the newly created ID.
-		return $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
+		return $this->getInsertedId();
 	}
 
 	function update(array $data, int $id = 0): array
@@ -43,7 +43,7 @@ class Mood extends Base
 			WHERE ' . MoodEntity::COLUMN_ID . ' = {int:moods_id}',
 		    $data
 		);
-		
+
 		return $this->getMoodByID([$id])[0];
 	}
 

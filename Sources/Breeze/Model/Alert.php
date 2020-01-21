@@ -27,7 +27,7 @@ class Alert extends Base
 		    'extra' => 'string'
 		], $data, [$this->getColumnId()]);
 
-		return $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
+		return $this->getInsertedId();
 	}
 
 	function update(array $data, int $alertId = 0): array
@@ -50,7 +50,7 @@ class Alert extends Base
 		    ['id' => $alertId]
 		);
 
-		return $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
+		return $this->getInsertedId();
 	}
 
 	public function checkAlert(int $userId, string $alertType, int $alertId = 0, string $alertSender = ''): bool

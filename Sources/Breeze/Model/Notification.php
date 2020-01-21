@@ -28,7 +28,7 @@ class Notification extends Base
 		    [NotificationEntity::COLUMN_ID]
 		);
 
-		return $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
+		return $this->getInsertedId();
 	}
 
 	function update(array $data, int $id = 0): array

@@ -17,7 +17,7 @@ class Status extends Base
 			    StatusEntity::COLUMN_LIKES => 'int',
 			], $data, [$this->getColumnId()]);
 
-		return $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
+		return $this->getInsertedId();
 	}
 
 	function update(array $data, int $statusId = 0): array

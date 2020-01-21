@@ -19,7 +19,7 @@ class Comment extends Base
 			    CommentEntity::COLUMN_LIKES => 'int',
 			], $data, [$this->getColumnId()]);
 
-		return $this->db['db_insert_id']('{db_prefix}' . $this->getTableName(), $this->getColumnId());
+		return $this->getInsertedId();
 	}
 
 	public function deleteByStatusID(array $ids): bool
