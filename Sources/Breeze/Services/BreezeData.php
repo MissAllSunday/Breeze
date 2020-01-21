@@ -94,7 +94,7 @@ class BreezeData
 		global $sourcedir;
 
 		// You cannot post just spaces
-		if (empty($var) || ctype_space($var) || $var == '')
+		if (empty($var) || ctype_space($var) || '' == $var)
 			return false;
 
 		
@@ -110,9 +110,8 @@ class BreezeData
     /**
      * BreezeData::unsetVar()
      *
-     * @return void
      */
-	public function unsetVar($var)
+	public function unsetVar($var): void
 	{
 		unset($this->_request[$var]);
 	}

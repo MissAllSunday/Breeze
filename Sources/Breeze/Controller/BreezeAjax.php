@@ -20,11 +20,17 @@ if (!defined('SMF'))
 class BreezeAjax
 {
 	protected $_noJS = false;
+
 	protected $_redirectURL = '';
+
 	public $subActions = [];
+
 	protected $_userSettings = [];
+
 	protected $_params = [];
+
 	protected $_currentUser;
+
 	protected $_app;
 
     /**
@@ -49,9 +55,8 @@ class BreezeAjax
 	 *
 	 * Calls the right method for each subaction, calls returnResponse().
 	 * @see BreezeAjax::returnResponse()
-	 * @return void
 	 */
-	public function call()
+	public function call(): void
 	{
 		global $user_info, $context, $db_show_debug;
 
@@ -76,7 +81,7 @@ class BreezeAjax
 		];
 
 		// Build the correct redirect URL
-		$this->comingFrom = $data->get('rf') == true ? $data->get('rf') : 'wall';
+		$this->comingFrom = true == $data->get('rf') ? $data->get('rf') : 'wall';
 
 		// Master setting is off, back off!
 		if (!$this->_app['tools']->enable('master'))
@@ -474,11 +479,11 @@ class BreezeAjax
 		foreach ($this->_data->get('breezeSettings') as $k => $v)
 		{
 			// Checkboxes and alert settings. Either 1 or 0, nothing more.
-			if (strpos($k, 'alert_') !== false || Breeze::$allSettings[$k] == 'CheckBox')
-				$toSave[$k] = $v === 1 ? $v : 0;
+			if (false !== strpos($k, 'alert_') || 'CheckBox' == Breeze::$allSettings[$k])
+				$toSave[$k] = 1 === $v ? $v : 0;
 
 			// Integers, BreezeData should return any numeric value casted as integer so do check thats indeed the case.
-			elseif (Breeze::$allSettings[$k] == 'Int')
+			elseif ('Int' == Breeze::$allSettings[$k])
 				$toSave[$k] = is_int($v) ? $v : 0;
 
 			// The rest.
@@ -538,7 +543,7 @@ class BreezeAjax
 			]);
 
 		// If this is an user's wall request, we need to check if the current user is on the user's wall ignore list.
-		if (!empty($comingFrom) && $comingFrom == 'wall' && $this->_currentUser != $id)
+		if (!empty($comingFrom) && 'wall' == $comingFrom && $this->_currentUser != $id)
 		{
 			$stalk = $this->_app['tools']->stalkingCheck($id);
 
@@ -554,13 +559,13 @@ class BreezeAjax
 		$start = $maxIndex * $numberTimes;
 
 		// Pass the user ID or IDs depending where are we coming from....
-		$fetch = $comingFrom == 'wall' ? $this->_data->get('buddies') : $this->_data->get('userID');
+		$fetch = 'wall' == $comingFrom ? $this->_data->get('buddies') : $this->_data->get('userID');
 
 		// Re-globalized!
 		$context['Breeze']['comingFrom'] = $comingFrom;
 
 		// Get the right call to the DB.
-		$call = ($comingFrom == 'profile' ? 'getStatusByProfile' : 'getStatusByUser');
+		$call = ('profile' == $comingFrom ? 'getStatusByProfile' : 'getStatusByUser');
 
 		$data = $this->_app['query']->{$call}($fetch, $maxIndex, $start);
 
@@ -874,7 +879,7 @@ class BreezeAjax
 				];
 
 			// One last thing we need to do, cut off old entries.
-			if (count($moodHistory) > 20)
+			if (20 < count($moodHistory))
 				$moodHistory = array_slice($moodHistory, -20);
 		}
 
@@ -918,7 +923,7 @@ class BreezeAjax
 		global $modSettings;
 
 		// No JS? fine... jut send them to whatever url they're from
-		if ($this->_noJS == true)
+		if (true == $this->_noJS)
 		{
 			// Build the redirect url
 			$this->setRedirect();
@@ -961,9 +966,8 @@ class BreezeAjax
      *
      * Creates a valid array with the data provided by each callable method.
      * @param array $data
-     * @return void
      */
-	protected function setResponse($data = [])
+	protected function setResponse($data = []): void
 	{
 		// Fill out a generic response.
 		$this->_response = [
@@ -988,9 +992,8 @@ class BreezeAjax
      * BreezeAjax::setRedirect()
      *
      * Set a valid url with the params provided.
-     * @return void
      */
-	protected function setRedirect()
+	protected function setRedirect(): void
 	{
 		$messageString = '';
 		$userString = '';
@@ -1000,7 +1003,7 @@ class BreezeAjax
 			$this->_app['tools']->setResponse($this->_response['message'], $this->_response['type']);
 
 		// Build the strings as a valid syntax to pass by $_GET
-		$userString = $this->comingFrom == 'profile' ? ';u=' . $this->_response['owner'] : '';
+		$userString = 'profile' == $this->comingFrom ? ';u=' . $this->_response['owner'] : '';
 
 		// A special area perhaps?
 		if (!empty($this->_response['extra']))

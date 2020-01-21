@@ -39,7 +39,6 @@ class User extends Base
 		return 1;
 	}
 
-
 	function update(array $data, int $userId = 0): array
 	{
 		// TODO: Implement update() method.
@@ -161,7 +160,7 @@ class User extends Base
 		return $views;
 	}
 
-	public function deleteViews($userId)
+	public function deleteViews($userId): void
 	{
 		$this->db['db_query'](
 		    '',

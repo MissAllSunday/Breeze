@@ -27,7 +27,7 @@ class BreezeAdmin
 		$this->_app['tools']->loadLanguage('admin');
 	}
 
-	function call()
+	function call(): void
 	{
 		global $txt, $context, $modSettings;
 
@@ -70,7 +70,7 @@ class BreezeAdmin
 			$this->main();
 	}
 
-	function main()
+	function main(): void
 	{
 		global $context;
 
@@ -123,7 +123,7 @@ $(function(){
 ', true);
 	}
 
-	function settings()
+	function settings(): void
 	{
 		global $context, $txt;
 
@@ -176,7 +176,7 @@ $(function(){
 		prepareDBSettingContext($config_vars);
 	}
 
-	function permissions()
+	function permissions(): void
 	{
 		global $context, $txt;
 
@@ -585,7 +585,7 @@ $(function(){
 		}
 	}
 
-	function cover()
+	function cover(): void
 	{
 		global $context, $txt;
 
@@ -626,7 +626,7 @@ $(function(){
 	}
 
 	// Pay no attention to the girl behind the curtain.
-	function donate()
+	function donate(): void
 	{
 		global $context;
 

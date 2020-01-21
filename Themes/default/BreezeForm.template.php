@@ -113,7 +113,7 @@ function template_breeze_form()
 
 		// Any buttons?
 		foreach($context['form']['elements'] as $el)
-			if ($el['type'] == 'button')
+			if ('button' == $el['type'])
 				$return .= '<input type="submit" name="' . $el['name'] . '" value="' . $el['text'] . '" class="button_submit"/>';
 
 		// Close it.

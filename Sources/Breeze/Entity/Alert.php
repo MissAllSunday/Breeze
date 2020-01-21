@@ -19,7 +19,6 @@ class Alert extends Base
 	const COLUMN_IS_READ = 'is_read';
 	const COLUMN_EXTRA = 'extra';
 
-
 	public static function getColumns(): array
 	{
 		return [

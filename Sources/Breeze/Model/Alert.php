@@ -12,7 +12,7 @@ class Alert extends Base
 		if (empty($data))
 			return 0;
 
-		if (strpos($data['content_type'], Breeze::PATTERN) !== false)
+		if (false !== strpos($data['content_type'], Breeze::PATTERN))
 			$params['content_type'] = Breeze::PATTERN . $data['content_type'];
 
 		$this->db['db_insert']('insert', '{db_prefix}' . $this->getTableName() . '', [

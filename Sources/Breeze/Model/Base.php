@@ -7,6 +7,7 @@ use Breeze\Breeze;
 abstract class Base
 {
 	protected $db;
+
 	protected $entity;
 
 	public function __construct()
@@ -28,6 +29,7 @@ abstract class Base
 	{
 		cache_put_data(Breeze::PATTERN . $key, $data, $timeToLive);
 	}
+
 	public function getInsertedId(): int
 	{
 		return $this->getInsertedId();
@@ -61,7 +63,7 @@ abstract class Base
 		return true;
 	}
 
-	public function updateLikes(int $contentId, int $numLikes)
+	public function updateLikes(int $contentId, int $numLikes): void
 	{
 		$this->db['db_query'](
 		    '',
@@ -76,8 +78,12 @@ abstract class Base
 	}
 
 	abstract function insert(array $data, int $id = 0): int;
+
 	abstract function update(array $data, int $id = 0): array;
+
 	abstract function getTableName(): string;
+
 	abstract function getColumnId(): string;
+
 	abstract function getColumns(): array;
 }

@@ -20,12 +20,19 @@ if (!defined('SMF'))
 class BreezeTools
 {
 	public $_pattern;
+
 	protected $_app;
+
 	public $sourceDir;
+
 	public $scriptUrl;
+
 	public $settings;
+
 	public $boardDir;
+
 	public $boardUrl;
+
 	static $_users = [];
 
 	function __construct(Breeze $app)
@@ -45,7 +52,7 @@ class BreezeTools
 		loadLanguage(Breeze::NAME);
 	}
 
-	public function loadLanguage($type)
+	public function loadLanguage($type): void
 	{
 		if (empty($type))
 			return;
@@ -114,7 +121,7 @@ class BreezeTools
 
 		global $modSettings;
 
-		if ($this->enable($var) == true)
+		if (true == $this->enable($var))
 			return $modSettings[$this->_pattern . $var];
 
 		
@@ -147,7 +154,7 @@ class BreezeTools
 	{
 		$etime = time() - $ptime;
 
-		if ($etime < 1)
+		if (1 > $etime)
 			return $this->text('time_just_now');
 
 		$a = [
@@ -162,11 +169,11 @@ class BreezeTools
 		foreach ($a as $secs => $str)
 		{
 			$d = $etime / $secs;
-			if ($d >= 1)
+			if (1 <= $d)
 			{
 				$r = round($d);
 
-				return $r . ' ' . $str . ($r > 1 ? 's ' : ' ') . $this->text('time_ago');
+				return $r . ' ' . $str . (1 < $r ? 's ' : ' ') . $this->text('time_ago');
 			}
 		}
 	}
@@ -182,7 +189,7 @@ class BreezeTools
 	{
 		json_decode($string);
 
-		return (json_last_error() == \JSON_ERROR_NONE);
+		return (\JSON_ERROR_NONE == json_last_error());
 	}
 
 	// A function to cut-off a string
@@ -199,7 +206,7 @@ class BreezeTools
 			return $string;
 
 		// is $break present between $limit and the end of the string?
-		if(($breakpoint = strpos($string, $break, $limit)) !== false)
+		if(false !== ($breakpoint = strpos($string, $break, $limit)))
 			if($breakpoint < strlen($string) - 1)
 				$string = substr($string, 0, $breakpoint) . $pad;
 
@@ -283,7 +290,7 @@ class BreezeTools
 		else
 			return false;
 
-		return ($preserve_keys === true) ? $array : array_values($array);
+		return (true === $preserve_keys) ? $array : array_values($array);
 	}
 
 	/**
@@ -428,7 +435,7 @@ class BreezeTools
 		return $perm;
 	}
 
-	public function setResponse($message, $type)
+	public function setResponse($message, $type): void
 	{
 		if (empty($message) || empty($type))
 			return;
@@ -451,7 +458,7 @@ class BreezeTools
 		return $response;
 	}
 
-	public function deleteCover($image, $user)
+	public function deleteCover($image, $user): void
 	{
 		if (empty($image) || empty($user))
 			return;
@@ -484,7 +491,7 @@ class BreezeTools
 		foreach ($replacements as $f => $r)
 		{
 			$find[] = '{' . $f . '}';
-			$replace[] = $r . ((strpos($f, 'href') !== false) ? $s : '');
+			$replace[] = $r . ((false !== strpos($f, 'href')) ? $s : '');
 		}
 
 		// Do the variable replacements.

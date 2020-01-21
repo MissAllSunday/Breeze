@@ -334,7 +334,7 @@ declare(strict_types=1);
 			], ['moods_id', ]);
 	}
 
-	function BreezeCheck()
+	function BreezeCheck(): void
 	{
 		if (version_compare(\PHP_VERSION, '5.3.0', '<'))
 			fatal_error('This mod needs PHP 5.3 or greater. You will not be able to install/use this mod, contact your host and ask for a php upgrade.');

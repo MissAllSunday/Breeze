@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Breeze\Database;
+
 class Client implements ClientInterface
 {
 	protected $db;
@@ -16,9 +20,15 @@ class Client implements ClientInterface
 		// TODO: Implement fetch() method.
 	}
 
-	public function insert(): int
+	public function insert(string $tableName, array $columns, array $data, array $columnIndex): int
 	{
-		// TODO: Implement insert() method.
+		$this->db['db_insert'](
+		    'insert',
+		    '{db_prefix}' . $tableName . '',
+		    $columns,
+		    $data,
+		    $columnIndex
+		);
 	}
 
 	public function update(): int

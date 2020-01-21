@@ -7,7 +7,6 @@ use Breeze\Entity\Notification as NotificationEntity;
 
 class Notification extends Base
 {
-
 	function insert(array $data, int $id = 0): int
 	{
 		global $smcFunc;

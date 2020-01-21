@@ -11,7 +11,6 @@ class Options extends Base
 	const COLUMN_VARIABLE = 'variable';
 	const COLUMN_VALUE = 'value';
 
-
  public static function getColumns(): array
 	{
 		return [

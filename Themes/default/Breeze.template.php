@@ -13,9 +13,9 @@ declare(strict_types=1);
  */
 
 // Dummy template function is dummy!
-function template_user_wall_dummy(){}
+function template_user_wall_dummy(): void{}
 
-function template_user_wall_above()
+function template_user_wall_above(): void
 {
 	global $context, $scripturl;
 
@@ -34,7 +34,7 @@ function template_user_wall_above()
 }
 
 // User's wall.
-function template_user_wall_below()
+function template_user_wall_below(): void
 {
 	global $txt, $context, $settings, $scripturl, $user_info, $modSettings;
 
@@ -203,7 +203,7 @@ function template_user_wall_below()
 }
 
 
-function template_user_notifications()
+function template_user_notifications(): void
 {
 	global $context, $txt, $scripturl, $user_info;
 
@@ -292,7 +292,7 @@ function template_user_notifications()
 		<br />';
 }
 
-function template_member_options()
+function template_member_options(): void
 {
 	global $context, $txt;
 
@@ -344,7 +344,7 @@ function template_member_options()
 }
 
 // This is pretty much the same as template_showAlerts()
-function template_alert_edit()
+function template_alert_edit(): void
 {
 	global $context, $txt, $scripturl;
 
@@ -410,7 +410,7 @@ function template_alert_edit()
 }
 
 // @todo move this to its own template file. Abstract some things...
-function template_general_wall()
+function template_general_wall(): void
 {
 	global $txt, $context, $settings, $scripturl, $user_info, $modSettings;
 

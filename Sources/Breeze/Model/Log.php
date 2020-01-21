@@ -7,7 +7,6 @@ use Breeze\Entity\Log as LogEntity;
 
 class Log extends Base
 {
-
 	function insert(array $data, int $id = 0): int
 	{
 		if (empty($data))

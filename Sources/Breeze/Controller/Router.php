@@ -15,7 +15,7 @@ class Router
 
 	/**
 	 */
-	public function call(Breeze $breeze)
+	public function call(Breeze $breeze): void
 	{
 		$this->breeze = $breeze;
 	}

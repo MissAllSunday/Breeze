@@ -25,7 +25,6 @@ class Status extends Base
 		return [];
 	}
 
-
 	function getTableName(): string
 	{
 		return StatusEntity::TABLE;

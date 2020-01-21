@@ -47,8 +47,11 @@ class Breeze extends Container
 	];
 
 	public static $folder = '/Breeze/';
+
 	public static $coversFolder = '/breezeFiles/';
+
 	public $txtpattern = 'Breeze_';
+
 	public static $permissions = [
 	    'deleteComments',
 	    'deleteOwnComments',
@@ -61,6 +64,7 @@ class Breeze extends Container
 	    'canCover',
 	    'canMood'
 	];
+
 	public static $allSettings = [
 	    'wall' => 'CheckBox',
 	    'general_wall' => 'CheckBox',
@@ -79,11 +83,14 @@ class Breeze extends Container
 	    'aboutMe' => 'TextArea',
 	    'cover_height' => 'Int',
 	];
+
 	public $likeTypes = ['breSta' => 'status', 'breCom' => 'comments'];
+
 	public $trackHooks = [
 	    'integrate_create_topic' => 'createTopic',
 	    'integrate_profile_save' => 'editProfile',
 	];
+
 	public $wrapperActions = ['wall', 'ajax', 'admin', 'mood', 'buddy'];
 
 	// Support site feed
@@ -100,7 +107,7 @@ class Breeze extends Container
 		$this->set();
 	}
 
-	public function autoLoad(&$classMap)
+	public function autoLoad(&$classMap): void
 	{
 		$classMap['Breeze\\'] = 'Breeze/';
 	}
@@ -108,9 +115,8 @@ class Breeze extends Container
 	/**
 	 * \Breeze\Breeze::set()
 	 *
-	 * @return void
 	 */
-	protected function set()
+	protected function set(): void
 	{
 		// Set all of our services
 		foreach($this->_services as $s)
@@ -150,9 +156,8 @@ class Breeze extends Container
 	 *
 	 * @param string $file a comma separated list of all the file names to be loaded.
 	 *
-	 * @return void
 	 */
-	public function load($file)
+	public function load($file): void
 	{
 		global $sourcedir;
 
@@ -185,9 +190,8 @@ class Breeze extends Container
 	 * There is only permissions to post new status and comments on any profile because people needs to be able to post in their own profiles by default the same goes for deleting, people are able to delete their own status/comments on their own profile page.
 	 * @param array $permissionGroups An array containing all possible permissions groups.
 	 * @param array $permissionList An associative array with all the possible permissions.
-	 * @return void
 	 */
-	public function permissions(&$permissionGroups, &$permissionList)
+	public function permissions(&$permissionGroups, &$permissionList): void
 	{
 		// We gotta load our language file.
 		loadLanguage(\Breeze\Breeze::NAME);
@@ -209,9 +213,8 @@ class Breeze extends Container
 	 *
 	 * @see BreezeUser::wall()
 	 * @param array $profile_areas An array containing all possible tabs for the profile menu.
-	 * @return void
 	 */
-	public function profile(&$profile_areas)
+	public function profile(&$profile_areas): void
 	{
 		global $user_info, $context;
 
@@ -309,9 +312,8 @@ class Breeze extends Container
 	 * Insert a Wall button on the menu buttons array
 	 * @param array $menu_buttons An array containing all possible tabs for the main menu.
 	 * @link http://mattzuba.com
-	 * @return void
 	 */
-	public function menu(&$menu_buttons)
+	public function menu(&$menu_buttons): void
 	{
 		global $context, $txt, $scripturl, $user_info;
 
@@ -372,9 +374,8 @@ class Breeze extends Container
 	 *
 	 * Insert the actions needed by this mod
 	 * @param array $actions An array containing all possible SMF actions.
-	 * @return void
 	 */
-	public function actions(&$actions)
+	public function actions(&$actions): void
 	{
 		// proxy, allow this action even if the master setting is off
 		$actions['breezefeed'] = [false, '\Breeze\Breeze::getFeed#'];
@@ -403,15 +404,14 @@ class Breeze extends Container
 	 * \Breeze\Breeze::call()
 	 *
 	 * Wrapper method to call Breeze methods while maintaining dependency injection.
-	 * @return void
 	 */
-	public function call()
+	public function call(): void
 	{
 		// Just some quick code to make sure this works...
 		$action = str_replace('breeze', '', $this->data('get')->get('action'));
 
 		// Don't do anything if the mod is off
-		if (!$this['tools']->enable('master') && $action != 'admin')
+		if (!$this['tools']->enable('master') && 'admin' != $action)
 			return;
 
 		if (!empty($action) && in_array($action, $this->wrapperActions))
@@ -422,9 +422,8 @@ class Breeze extends Container
 	 * \Breeze\Breeze::trackHooks()
 	 *
 	 * Creates a list of hooks used to track user actions. Should really make sure Breeze is the last hook added.
-	 * @return void
 	 */
-	public function trackHooks()
+	public function trackHooks(): void
 	{
 		// Been the last on the line is cool!
 		foreach ($this->trackHooks as $hook => $function)
@@ -435,9 +434,8 @@ class Breeze extends Container
 	 * \Breeze\Breeze::displayCover()
 	 *
 	 * Creates and prints an user cover. If the user does not have a cover it returns false.
-	 * @return void
 	 */
-	public function displayCover()
+	public function displayCover(): void
 	{
 		global $smcFunc, $modSettings, $maintenance;
 
@@ -464,7 +462,7 @@ class Breeze extends Container
 		$file = empty($userSettings['cover']) ? false : $folder . $userSettings['cover']['basename'];
 
 		// Lots and lots of checks!
-		if ((!empty($maintenance) && $maintenance == 2) || empty($file) || !file_exists($file))
+		if ((!empty($maintenance) && 2 == $maintenance) || empty($file) || !file_exists($file))
 		{
 			header('HTTP/1.0 404 File Not Found');
 			die('404 File Not Found');
@@ -474,9 +472,9 @@ class Breeze extends Container
 		ob_end_clean();
 
 		// This is done to clear any output that was made before now.
-		if(!empty($modSettings['enableCompressedOutput']) && !headers_sent() && ob_get_length() == 0)
+		if(!empty($modSettings['enableCompressedOutput']) && !headers_sent() && 0 == ob_get_length())
 		{
-			if(@ini_get('zlib.output_compression') == '1' || @ini_get('output_handler') == 'ob_gzhandler')
+			if('1' == @ini_get('zlib.output_compression') || 'ob_gzhandler' == @ini_get('output_handler'))
 				$modSettings['enableCompressedOutput'] = 0;
 			else
 				ob_start('ob_gzhandler');
@@ -514,10 +512,10 @@ class Breeze extends Container
 		header('Content-Type: ' . $userSettings['cover']['mime']);
 
 		// Since we don't do output compression for files this large...
-		if (filesize($file) > 4194304)
+		if (4194304 < filesize($file))
 		{
 			// Forcibly end any output buffering going on.
-			while (@ob_get_level() > 0)
+			while (0 < @ob_get_level())
 				@ob_end_clean();
 
 			$fp = fopen($file, 'rb');
@@ -530,7 +528,7 @@ class Breeze extends Container
 		}
 
 		// On some of the less-bright hosts, readfile() is disabled.  It's just a faster, more byte safe, version of what's in the if.
-		elseif (@readfile($file) === null)
+		elseif (null === @readfile($file))
 			echo file_get_contents($file);
 
 		die();
@@ -540,9 +538,8 @@ class Breeze extends Container
 	 * \Breeze\Breeze::profilePopUp()
 	 *
 	 * Adds a few new entries on the pop up menu stuff.
-	 * @return void
 	 */
-	public function profilePopUp(&$profile_items)
+	public function profilePopUp(&$profile_items): void
 	{
 		global $user_info, $txt;
 
@@ -555,7 +552,7 @@ class Breeze extends Container
 		// Gotta replace the Summary link with the static one if the wall is enable.
 		if ($this['tools']->enable('force_enable') || !empty($userSettings['wall']))
 			foreach ($profile_items as &$item)
-				if ($item['area'] == 'summary')
+				if ('summary' == $item['area'])
 					$item['area'] = 'static';
 
 		// Add a nice link to the user's wall settings page.
@@ -567,7 +564,7 @@ class Breeze extends Container
 		];
 	}
 
-	public function alerts(&$alerts)
+	public function alerts(&$alerts): void
 	{
 		// Don't do anything if the mod is off
 		if (!$this['tools']->enable('master'))
@@ -577,7 +574,7 @@ class Breeze extends Container
 		$this['alerts']->call($alerts);
 	}
 
-	public function alertsPref(&$alert_types, &$group_options)
+	public function alertsPref(&$alert_types, &$group_options): void
 	{
 		// Don't do anything if the mod is off
 		if (!$this['tools']->enable('master'))
@@ -611,7 +608,7 @@ class Breeze extends Container
 		];
 	}
 
-	public function likesUpdate($object)
+	public function likesUpdate($object): void
 	{
 		$type = $object->get('type');
 		$content = $object->get('content');
@@ -701,7 +698,7 @@ class Breeze extends Container
 		$action = str_replace('breeze', '', $this->data('get')->get('action'));
 
 		// So, what are we going to do?
-		$doAction = in_array($action, $this->wrapperActions) || $action == 'profile';
+		$doAction = in_array($action, $this->wrapperActions) || 'profile' == $action;
 		$doMood = $this['tools']->enable('mood');
 
 		// Only display these if we are in a "beeze action" or the mood feature is enable.
@@ -761,7 +758,7 @@ class Breeze extends Container
 		addInlineJavascript($generalText);
 	}
 
-	public function mood(&$data, $user, $display_custom_fields)
+	public function mood(&$data, $user, $display_custom_fields): void
 	{
 		// Don't do anything if the feature is disable or custom fields aren't being loaded.
 		if (!$this['tools']->enable('master') || !$this['tools']->enable('mood'))
@@ -771,7 +768,7 @@ class Breeze extends Container
 		$data['custom_fields'][] =  $this['mood']->show($user);
 	}
 
-	public function moodProfile($memID, $area)
+	public function moodProfile($memID, $area): void
 	{
 		// Don't do anything if the mod is off
 		if (!$this['tools']->enable('master'))
@@ -790,9 +787,8 @@ class Breeze extends Container
 	 *
 	 * @param array $admin_menu An array with all the admin settings buttons
 	 *
-	 * @return void
 	 */
-	public function admin(&$admin_menu)
+	public function admin(&$admin_menu): void
 	{
 		global $breezeController;
 
@@ -837,7 +833,7 @@ class Breeze extends Container
 		$fetch = new \curl_fetch_web_data();
 		$fetch->get_url_data(\Breeze\Breeze::$supportSite);
 
-		if ($fetch->result('code') == 200 && !$fetch->result('error'))
+		if (200 == $fetch->result('code') && !$fetch->result('error'))
 			$data = $fetch->result('body');
 
 		else

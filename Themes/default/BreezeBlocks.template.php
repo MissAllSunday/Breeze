@@ -12,7 +12,7 @@ declare(strict_types=1);
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
-function template_breeze_info()
+function template_breeze_info(): void
 {
 	global $context, $txt, $scripturl, $settings;
 
@@ -75,7 +75,7 @@ function template_breeze_info()
 					<li><a href="mailto:', $context['member']['email'], '" title="', $context['member']['email'], '" rel="nofollow"><span class="generic_icons mail" title="' . $txt['email'] . '"></span></a></li>';
 
 	// Don't show an icon if they haven't specified a website.
-	if ($context['member']['website']['url'] !== '' && !isset($context['disabled_fields']['website']))
+	if ('' !== $context['member']['website']['url'] && !isset($context['disabled_fields']['website']))
 		echo '
 					<li><a href="', $context['member']['website']['url'], '" title="' . $context['member']['website']['title'] . '" target="_blank" class="new_win">', ($settings['use_image_buttons'] ? '<span class="generic_icons www" title="' . $context['member']['website']['title'] . '"></span>' : $txt['www']), '</a></li>';
 
@@ -90,7 +90,7 @@ function template_breeze_info()
 
 	echo '
 				</ul>
-				<span id="userstatus">', $context['can_send_pm'] ? '<a href="' . $context['member']['online']['href'] . '" title="' . $context['member']['online']['text'] . '" rel="nofollow">' : '', $settings['use_image_buttons'] ? '<span class="' . ($context['member']['online']['is_online'] == 1 ? 'on' : 'off') . '" title="' . $context['member']['online']['text'] . '"></span>' : $context['member']['online']['label'], $context['can_send_pm'] ? '</a>' : '', $settings['use_image_buttons'] ? '<span class="smalltext"> ' . $context['member']['online']['label'] . '</span>' : '';
+				<span id="userstatus">', $context['can_send_pm'] ? '<a href="' . $context['member']['online']['href'] . '" title="' . $context['member']['online']['text'] . '" rel="nofollow">' : '', $settings['use_image_buttons'] ? '<span class="' . (1 == $context['member']['online']['is_online'] ? 'on' : 'off') . '" title="' . $context['member']['online']['text'] . '"></span>' : $context['member']['online']['label'], $context['can_send_pm'] ? '</a>' : '', $settings['use_image_buttons'] ? '<span class="smalltext"> ' . $context['member']['online']['label'] . '</span>' : '';
 
 	// Can they add this member as a buddy?
 	if (!empty($context['can_have_buddy']) && !$context['user']['is_owner'])
@@ -136,7 +136,7 @@ function template_breeze_info()
 	</div>';
 }
 
-function template_breeze_buddies()
+function template_breeze_buddies(): void
 {
 	global $context, $txt;
 
@@ -174,7 +174,7 @@ function template_breeze_buddies()
 		</div>';
 }
 
-function template_breeze_visitors()
+function template_breeze_visitors(): void
 {
 	global $context, $txt;
 

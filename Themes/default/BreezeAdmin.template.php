@@ -13,7 +13,7 @@ declare(strict_types=1);
  */
 
 // The admin panel where the news and other very useful stuff is displayed
-function template_admin_home()
+function template_admin_home(): void
 {
 	global $txt, $context;
 
@@ -105,7 +105,7 @@ function template_admin_home()
 	<br />';
 }
 
-function template_manage_mood()
+function template_manage_mood(): void
 {
 	global $context, $txt;
 
@@ -125,7 +125,7 @@ function template_manage_mood()
 	template_show_list('breeze_mood_list');
 }
 
-function template_manage_mood_edit()
+function template_manage_mood_edit(): void
 {
 	global $context, $txt, $scripturl;
 
@@ -151,7 +151,7 @@ function template_manage_mood_edit()
 }
 
 // Boring stuff you will never see...
-function template_admin_donate()
+function template_admin_donate(): void
 {
 	global $context;
 

@@ -28,7 +28,7 @@ function breeze_status($data, $returnVar = false)
 			<li class="windowbg stripes breezeStatus" id ="status_id_' . $status['id'] . '">';
 
 		// If we're on the general wall, show a nice bar indicating where this status come from...
-		if (!empty($context['Breeze']['comingFrom']) && $context['Breeze']['comingFrom'] == 'wall')
+		if (!empty($context['Breeze']['comingFrom']) && 'wall' == $context['Breeze']['comingFrom'])
 			$echo .= '
 				<div class="cat_bar">
 					<h3 class="catbg">
@@ -272,7 +272,7 @@ function breeze_activity($data, $returnVar = false)
 		echo $echo;
 }
 
-function breeze_server_response()
+function breeze_server_response(): void
 {
 	global $txt;
 
@@ -296,7 +296,7 @@ function breeze_server_response()
 	unset($_SESSION['Breeze']['response']);
 }
 
-function template_userDiv()
+function template_userDiv(): void
 {
 	global $context, $settings, $modSettings, $txt, $scripturl, $modSettings;
 
@@ -365,7 +365,7 @@ function template_userDiv()
 					<li><a href="mailto:', $context['BreezeUser']['email'], '" title="', $context['BreezeUser']['email'], '" rel="nofollow"><span class="generic_icons mail" title="' . $txt['email'] . '"></span></a></li>';
 
 		// Don't show an icon if they haven't specified a website.
-		if ($context['BreezeUser']['website']['url'] !== '' && !isset($context['disabled_fields']['website']))
+		if ('' !== $context['BreezeUser']['website']['url'] && !isset($context['disabled_fields']['website']))
 			echo '
 					<li><a href="', $context['BreezeUser']['website']['url'], '" title="' . $context['BreezeUser']['website']['title'] . '" target="_blank" class="new_win">', ($settings['use_image_buttons'] ? '<span class="generic_icons www" title="' . $context['BreezeUser']['website']['title'] . '"></span>' : $txt['www']), '</a></li>';
 
@@ -379,7 +379,7 @@ function template_userDiv()
 		}
 		echo '
 				</ul>
-				<span id="userstatus">', $settings['use_image_buttons'] ? '<span class="' . ($context['BreezeUser']['online']['is_online'] == 1 ? 'on' : 'off') . '" title="' . $context['BreezeUser']['online']['text'] . '"></span>' : $context['BreezeUser']['online']['label'], $settings['use_image_buttons'] ? '<span class="smalltext"> ' . $context['BreezeUser']['online']['label'] . '</span>' : '';
+				<span id="userstatus">', $settings['use_image_buttons'] ? '<span class="' . (1 == $context['BreezeUser']['online']['is_online'] ? 'on' : 'off') . '" title="' . $context['BreezeUser']['online']['text'] . '"></span>' : $context['BreezeUser']['online']['label'], $settings['use_image_buttons'] ? '<span class="smalltext"> ' . $context['BreezeUser']['online']['label'] . '</span>' : '';
 		echo '
 				</span>
 			</div>
@@ -507,7 +507,7 @@ function template_mood_image($mood, $user)
 }
 
 
-function template_mood_change()
+function template_mood_change(): void
 {
 	global $context, $settings, $modSettings, $txt, $scripturl;
 
@@ -531,7 +531,7 @@ function template_mood_change()
 		{
 			$count++;
 
-			if ($count % 5 == 1)
+			if (1 == $count % 5)
 				echo '
 				</tr>
 				<tr>';
@@ -553,7 +553,7 @@ function template_mood_change()
 </html>';
 }
 
-function template_top()
+function template_top(): void
 {
 	global $context, $scripturl, $txt;
 
@@ -633,19 +633,19 @@ function template_top()
 
 		echo '
 			<select name="search_selection">
-				<option value="all"', ($selected == 'all' ? ' selected' : ''), '>', $txt['search_entireforum'], ' </option>';
+				<option value="all"', ('all' == $selected ? ' selected' : ''), '>', $txt['search_entireforum'], ' </option>';
 
 		// Can't limit it to a specific topic if we are not in one
 		if (!empty($context['current_topic']))
 			echo '
-				<option value="topic"', ($selected == 'current_topic' ? ' selected' : ''), '>', $txt['search_thistopic'], '</option>';
+				<option value="topic"', ('current_topic' == $selected ? ' selected' : ''), '>', $txt['search_thistopic'], '</option>';
 
 		// Can't limit it to a specific board if we are not in one
 		if (!empty($context['current_board']))
 			echo '
-					<option value="board"', ($selected == 'current_board' ? ' selected' : ''), '>', $txt['search_thisbrd'], '</option>';
+					<option value="board"', ('current_board' == $selected ? ' selected' : ''), '>', $txt['search_thisbrd'], '</option>';
 			echo '
-					<option value="members"', ($selected == 'members' ? ' selected' : ''), '>', $txt['search_members'], ' </option>
+					<option value="members"', ('members' == $selected ? ' selected' : ''), '>', $txt['search_members'], ' </option>
 				</select>';
 
 		// Search within current topic?
@@ -668,7 +668,7 @@ function template_top()
 	</div>';
 }
 
-function template_buddy_message()
+function template_buddy_message(): void
 {
 	global $context;
 
@@ -700,7 +700,7 @@ function template_buddy_message()
 	}
 }
 
-function template_buddy_request()
+function template_buddy_request(): void
 {
 	global $context;
 

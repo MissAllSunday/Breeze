@@ -26,10 +26,15 @@ class BreezeQuery
 	 * @var array
 	 */
 	protected $_status = [];
+
 	protected $_noti = [];
+
 	protected $_comments = [];
+
 	protected $_members = [];
+
 	protected $_userLikes = [];
+
 	protected $_needJSON = [];
 
 	/**
@@ -166,7 +171,7 @@ class BreezeQuery
 		// If we didn't get a profile owner, lets get it from the data provided...
 		if (!$profile_owner)
 		{
-			$columnName = ($type == 'comments' ? 'comments_profile' : 'status') . '_owner_id';
+			$columnName = ('comments' == $type ? 'comments_profile' : 'status') . '_owner_id';
 
 			$result = $smcFunc['db_query']('', '
 				SELECT ' . ($columnName) . '
@@ -645,7 +650,6 @@ class BreezeQuery
 		return $return;
 	}
 
-
 	protected function generateData($row, $type)
 	{
 		global $user_info, $smcFunc;
@@ -664,7 +668,7 @@ class BreezeQuery
 		if (!isset($canViewLike))
 			$canViewLike = allowedTo('likes_view');
 
-		if ($type == 'status')
+		if ('status' == $type)
 		{
 			$array = [
 			    'id' => $row['status_id'],
@@ -687,7 +691,7 @@ class BreezeQuery
 				];
 		}
 
-		elseif ($type == 'comments')
+		elseif ('comments' == $type)
 		{
 			$array = [
 			    'id' => $row['comments_id'],

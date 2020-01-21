@@ -20,11 +20,17 @@ if (!defined('SMF'))
 class BreezeBuddy
 {
 	protected $_app;
+
 	protected $_userReceiver = 0;
+
 	protected $_userSender = 0;
+
 	protected $_senderConfirm = 0;
+
 	protected $_receiverConfirm = 0;
+
 	protected $_call = '';
+
 	protected $_data = false;
 
     /**
@@ -58,9 +64,8 @@ class BreezeBuddy
 	 *
 	 * Calls the right method for each subaction, calls setResponse().
 	 * @see BreezeBuddy::setResponse()
-	 * @return void
 	 */
-	public function call()
+	public function call(): void
 	{
 		global $user_info;
 
@@ -119,7 +124,7 @@ class BreezeBuddy
 		global $context;
 
 		// Ran the request through some checks.
-		if ($this->check() == true)
+		if (true == $this->check())
 			return;
 
 		// Do we want to show the message or the confirmation page?
@@ -241,7 +246,7 @@ class BreezeBuddy
 		return false;
 	}
 
-	public function delete()
+	public function delete(): void
 	{
 		global $user_info, $context;
 
@@ -269,7 +274,7 @@ class BreezeBuddy
 	}
 
 	// When the petitioner wants to add the receiver as friend
-	public function confirm()
+	public function confirm(): void
 	{
 		global $context;
 
@@ -310,7 +315,7 @@ class BreezeBuddy
 	}
 
 	// When receiver confirmed the friendship!
-	public function confirmed()
+	public function confirmed(): void
 	{
 		global $user_info;
 
@@ -385,7 +390,7 @@ class BreezeBuddy
 	}
 
 	// When the receiver user denies the request DUH!
-	public function decline()
+	public function decline(): void
 	{
 		global $user_info;
 
@@ -441,7 +446,7 @@ class BreezeBuddy
 	}
 
 	// Whatever the action performed, show a landing "done" page.
-	protected function setResponse()
+	protected function setResponse(): void
 	{
 		global $context;
 

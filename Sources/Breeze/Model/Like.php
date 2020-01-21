@@ -8,7 +8,6 @@ use Breeze\Entity\Like as LikeEntity;
 
 class Like extends Base
 {
-
 	function insert(array $data, int $id = 0): int
 	{
 		// TODO: Implement insert() method.

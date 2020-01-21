@@ -7,10 +7,10 @@ declare(strict_types=1);
  */
 
 // Look for Settings.php....
-if (file_exists(dirname(dirname(__FILE__)) . '/Settings.php'))
+if (file_exists(dirname(__FILE__, 2) . '/Settings.php'))
 {
 	// Found it!
-	require(dirname(dirname(__FILE__)) . '/Settings.php');
+	require(dirname(__FILE__, 2) . '/Settings.php');
 	header('Location: ' . $boardurl);
 }
 // Can't find it... just forget it.

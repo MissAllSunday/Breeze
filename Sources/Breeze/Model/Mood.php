@@ -7,7 +7,6 @@ use Breeze\Entity\Mood as MoodEntity;
 
 class Mood extends Base
 {
-
 	function insert(array $data, int $id = 0): int
 	{
 		if (empty($data))

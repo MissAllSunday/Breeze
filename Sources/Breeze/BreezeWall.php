@@ -20,6 +20,7 @@ if (!defined('SMF'))
 class BreezeWall
 {
 	protected $userSettings = [];
+
 	protected $_app;
 
     /**
@@ -45,9 +46,8 @@ class BreezeWall
      * BreezeAjax::call()
      *
      * Master method, calls the appropriated methods depending on the specified subaction.
-     * @return void
      */
-	public function call()
+	public function call(): void
 	{
 		global $context, $user_info, $modSettings;
 
@@ -131,9 +131,8 @@ class BreezeWall
      * BreezeAjax::generalWall()
      *
      * Shows the latest activity form your buddies.
-     * @return void
      */
-	public function generalWall()
+	public function generalWall(): void
 	{
 		global $context, $user_info;
 
@@ -166,7 +165,7 @@ class BreezeWall
 
 		// Pagination max index and current page.
 		$maxIndex = !empty($this->userSettings['pagination_number']) ? $this->userSettings['pagination_number'] : 5;
-		$currentPage = (int) (($data->validate('start') == true) ? $data->get('start') : 0);
+		$currentPage = (int) ((true == $data->validate('start')) ? $data->get('start') : 0);
 
 		// Set all the page stuff.
 		$context['page_title'] = $this->_app['tools']->text('general_wall');
@@ -222,9 +221,8 @@ class BreezeWall
      * BreezeAjax::singleStatus()
      *
      * Used for notifications mostly, shows a single status/comment and if appropriated, highlights a specific comment.
-     * @return void
      */
-	function singleStatus()
+	function singleStatus(): void
 	{
 		global $context, $user_info;
 
