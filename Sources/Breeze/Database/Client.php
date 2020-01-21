@@ -31,9 +31,14 @@ class Client implements ClientInterface
 		);
 	}
 
-	public function update(): int
+	public function update(string $tableName, string $queryString, array $bindParams): int
 	{
-		// TODO: Implement update() method.
+		return $this->db['db_query'](
+			'',
+			'UPDATE {db_prefix}' . $tableName . '
+			'. $queryString,
+			$bindParams
+		);
 	}
 
 	public function delete(): int

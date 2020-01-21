@@ -10,7 +10,7 @@ interface ClientInterface
 
 	public function insert(string $tableName, array $columns, array $data, array $bindParams): int;
 
-	public function update(): int;
+	public function update(string $tableName, string $queryString, array $bindParams): int;
 
 	public function delete(): int;
 }
