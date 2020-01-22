@@ -8,14 +8,13 @@ class Status extends Base
 {
 	function insert(array $data, int $statusId = 0): int
 	{
-		$this->db['db_insert']('replace', '{db_prefix}' . $this->getTableName() .
-			'', [
-			    StatusEntity::COLUMN_OWNER_ID => 'int',
-			    StatusEntity::COLUMN_POSTER_ID => 'int',
-			    StatusEntity::COLUMN_TIME => 'int',
-			    StatusEntity::COLUMN_BODY => 'string',
-			    StatusEntity::COLUMN_LIKES => 'int',
-			], $data, [$this->getColumnId()]);
+		$this->db->insert(StatusEntity::TABLE, [
+		    StatusEntity::COLUMN_OWNER_ID => 'int',
+		    StatusEntity::COLUMN_POSTER_ID => 'int',
+		    StatusEntity::COLUMN_TIME => 'int',
+		    StatusEntity::COLUMN_BODY => 'string',
+		    StatusEntity::COLUMN_LIKES => 'int',
+		], $data, StatusEntity::COLUMN_ID);
 
 		return $this->getInsertedId();
 	}

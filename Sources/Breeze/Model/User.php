@@ -25,15 +25,17 @@ class User extends Base
 			$inserts[] = [$userId, $variable, $value];
 		}
 
+		// @todo implement replace db insert
 		if (!empty($inserts))
 			$this->db['db_insert'](
-			    'replace',
-			    '{db_prefix}' . OptionsEntity::TABLE,
-			    [$this->getColumnId() => 'int',
-			        OptionsEntity::COLUMN_VARIABLE => 'string-255',
-			        OptionsEntity::COLUMN_VALUE => 'string-65534'],
+			    OptionsEntity::TABLE,
+			    [
+			        MemberEntity::COLUMN_ID => 'int',
+			        OptionsEntity::COLUMN_VARIABLE => 'string',
+			        OptionsEntity::COLUMN_VALUE => 'string'
+			    ],
 			    $inserts,
-			    [$this->getColumnId()]
+			    [MemberEntity::COLUMN_ID]
 			);
 
 		return 1;
@@ -41,7 +43,7 @@ class User extends Base
 
 	function update(array $data, int $userId = 0): array
 	{
-		// TODO: Implement update() method.
+		return [];
 	}
 
 	public function loadMinData(array $userIds): array
@@ -52,22 +54,24 @@ class User extends Base
 		if (empty($userIds))
 			return $loadedUsers;
 
-		$request = $this->db['db_query'](
-		    '',
-		    'SELECT ' . implode(', ', $this->getColumns()) . '
-			FROM {db_prefix}' . $this->getTableName() . '
-			WHERE ' . $this->getColumnId() . ' IN ({array_int:userIds})',
-		    ['userIds' => $userIds]
+		$request = $this->db->query(
+		    '
+			SELECT ' . implode(', ', MemberEntity::getColumns()) . '
+			FROM {db_prefix}' . MemberEntity::TABLE . '
+			WHERE ' . MemberEntity::COLUMN_ID . ' IN ({array_int:userIds})',
+		    [
+		        'userIds' => array_map('intval', $userIds)
+		    ]
 		);
 
-		while ($row = $this->db['db_fetch_assoc']($request))
+		while ($row = $this->db->fetchAssoc($request))
 			$loadedUsers[$row[MemberEntity::COLUMN_ID]] = [
 			    'username' => $row[MemberEntity::COLUMN_MEMBER_NAME],
 			    'name' => $row[MemberEntity::COLUMN_REAL_NAME],
 			    'id' => $row[MemberEntity::COLUMN_ID],
 			];
 
-		$this->db['db_free_result']($request);
+		$this->db->freeResult($request);
 
 		foreach ($userIds as $userId)
 			if (!isset($loadedUsers[$userId]))
@@ -76,16 +80,16 @@ class User extends Base
 		return $loadedUsers;
 	}
 
-	public function updateProfileViews(array $data, $userId): bool
+	public function updateProfileViews(array $data, int $userId): int
 	{
 		if (empty($data) || empty($userId))
-			return false;
+			return 0;
 
-		return $this->db['db_query'](
-		    '',
-		    'UPDATE {db_prefix}' . $this->getTableName() . '
+		return $this->db->update(
+		    MemberEntity::TABLE,
+		    '
 			SET ' . MemberEntity::COLUMN_PROFILE_VIEWS . ' = {string:jsonData}
-			WHERE ' . $this->getColumnId() . ' = ({int:userId})',
+			WHERE ' . MemberEntity::COLUMN_ID . ' = ({int:userId})',
 		    [
 		        'userId' => (int) $userId,
 		        'jsonData' => json_encode($data),
@@ -93,24 +97,23 @@ class User extends Base
 		);
 	}
 
-	public function getUserSettings(int $userId)
+	public function getUserSettings(int $userId): array
 	{
 		$data = [];
 
-		$result = $this->db['db_query'](
-		    '',
+		$result = $this->db->query(
 		    'SELECT op.' . (implode(', op.', OptionsEntity::getColumns())) . ', 
-			mem.' . (implode(', mem.', $this->getColumns())) . '
+			mem.' . (implode(', mem.', MemberEntity::getColumns())) . '
 			FROM {db_prefix}' . OptionsEntity::TABLE . ' AS op
-				LEFT JOIN {db_prefix}' . $this->getTableName() . ' 
-				AS mem ON (mem.' . $this->getColumnId() . ' = {int:user})
-			WHERE ' . $this->getColumnId() . ' = {int:userId}',
+				LEFT JOIN {db_prefix}' . MemberEntity::TABLE . ' 
+				AS mem ON (mem.' . MemberEntity::COLUMN_ID . ' = {int:user})
+			WHERE ' . MemberEntity::COLUMN_ID . ' = {int:userId}',
 		    [
 		        'userId' => $userId,
 		    ]
 		);
 
-		while ($row = $this->db['db_fetch_assoc']($result))
+		while ($row = $this->db->fetchAssoc($result))
 		{
 			$data[$row[OptionsEntity::COLUMN_VARIABLE]] = is_numeric($row[OptionsEntity::COLUMN_VALUE]) ?
 				(int) $row[OptionsEntity::COLUMN_VALUE] : (string) $row[OptionsEntity::COLUMN_VALUE];
@@ -132,7 +135,7 @@ class User extends Base
 			];
 		}
 
-		$this->db['db_free_result']($result);
+		$this->db->freeResult($result);
 
 		return $data;
 	}
@@ -144,27 +147,29 @@ class User extends Base
 		if (empty($userId))
 			return $views;
 
-		$result = $this->db['db_query'](
-		    '',
-		    'SELECT ' . MemberEntity::COLUMN_PROFILE_VIEWS . '
-			FROM {db_prefix}' . $this->getTableName() . '
-			WHERE ' . $this->getColumnId() . ' = {int:userId}',
-		    ['userId' => (int) $userId]
+		$result = $this->db->query(
+		    '
+			SELECT ' . MemberEntity::COLUMN_PROFILE_VIEWS . '
+			FROM {db_prefix}' . MemberEntity::TABLE . '
+			WHERE ' . MemberEntity::COLUMN_ID . ' = {int:userId}',
+		    [
+		        'userId' => (int) $userId
+		    ]
 		);
 
-		$views = $this->db['db_fetch_row']($result);
-		$views = !empty($views) ? json_decode($views, true) : [];
+		$views = $this->db->fetchAssoc($result);
+		$views = !empty($views) ? json_decode($views[0], true) : [];
 
-		$this->db['db_free_result']($result);
+		$this->db->freeResult($result);
 
 		return $views;
 	}
 
 	public function deleteViews($userId): void
 	{
-		$this->db['db_query'](
-		    '',
-		    'UPDATE {db_prefix}' . $this->getTableName() . '
+		$this->db->update(
+		    MemberEntity::TABLE,
+		    '
 			SET ' . MemberEntity::COLUMN_PROFILE_VIEWS . ' = {string:empty}
 			WHERE ' . MemberEntity::COLUMN_ID . ' = {int:userId}',
 		    [
@@ -178,18 +183,18 @@ class User extends Base
 	{
 		$boards = [];
 
-		$request = $this->db['db_query'](
-		    '',
-		    'SELECT id_board
+		$request = $this->db->query(
+		    '
+			SELECT id_board
 			FROM {db_prefix}boards as b
 			WHERE {query_wanna_see_board}',
 		    []
 		);
 
-		while ($row = $this->db['db_fetch_assoc']($request))
+		while ($row = $this->db->fetchAssoc($request))
 			$boards[] = $row['id_board'];
 
-		$this->db['db_free_result']($request);
+		$this->db->freeResult($request);
 
 		return $boards;
 	}

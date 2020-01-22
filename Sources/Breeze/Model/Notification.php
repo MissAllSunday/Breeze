@@ -9,14 +9,11 @@ class Notification extends Base
 {
 	function insert(array $data, int $id = 0): int
 	{
-		global $smcFunc;
-
 		if (empty($data))
-			return false;
+			return 0;
 
-		$smcFunc['db_insert'](
-		    'insert',
-		    '{db_prefix}' . NotificationEntity::TABLE . '',
+		$this->db->insert(
+		    NotificationEntity::TABLE,
 		    [
 		        NotificationEntity::COLUMN_TASK_FILE => 'string',
 		        NotificationEntity::COLUMN_TASK_CLASS => 'string',
@@ -24,7 +21,7 @@ class Notification extends Base
 		        NotificationEntity::COLUMN_CLAIMED_TIME => 'int'
 		    ],
 		    $data,
-		    [NotificationEntity::COLUMN_ID]
+		    NotificationEntity::COLUMN_ID
 		);
 
 		return $this->getInsertedId();
