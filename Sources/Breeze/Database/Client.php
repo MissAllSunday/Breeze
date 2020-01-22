@@ -17,13 +17,11 @@ class Client implements ClientInterface
 
 	public function query(string $query, array $bindParams)
 	{
-		$result = $this->db['db_query'](
+		return $this->db['db_query'](
 		    '',
 		    $query,
 		    $bindParams
 		);
-
-		return $result;
 	}
 
 	public function fetchAssoc($result): array
@@ -41,14 +39,14 @@ class Client implements ClientInterface
 		return $this->db['db_free_result']($result);
 	}
 
-	public function insert(string $tableName, array $columns, array $data, int $columnId): void
+	public function insert(string $tableName, array $columns, array $data, string $columnIdName): void
 	{
 		$this->db['db_insert'](
 		    'insert',
-		    '{db_prefix}' . $tableName. '',
+		    '{db_prefix}' . $tableName . '',
 		    $columns,
 		    $data,
-		    [$columnId]
+		    [$columnIdName]
 		);
 	}
 
@@ -67,8 +65,14 @@ class Client implements ClientInterface
 		);
 	}
 
-	public function delete(): int
+	public function delete(string $tableName, string $queryString, array $bindParams): void
 	{
-		// TODO: Implement delete() method.
+		return $this->db['db_query'](
+		    '',
+		    'DELETE 
+			FROM {db_prefix}' . $tableName . '
+			' . $queryString,
+		    $bindParams
+		);
 	}
 }

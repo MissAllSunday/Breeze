@@ -36,35 +36,37 @@ abstract class Base
 	{
 		$data = [];
 
-		$result = $this->db['db_query']('', '
+		$result = $this->db->query('
 			SELECT ' . implode(', ', $this->getColumns()) . '
 			FROM {db_prefix}' . $this->getTableName() . '
 			ORDER BY {raw:sort}
 			LIMIT {int:limit}', ['sort' => $this->getColumnId() . ' DESC', 'limit' => 1]);
 
-		while ($row = $this->db['db_fetch_assoc']($result))
-			$data = $this->generateData($row);
+		while ($row = $this->db->fetchAssoc($result))
+			$data = $row;
 
-		$this->db['db_free_result']($result);
+		$this->db->freeResult($result);
 
 		return $data;
 	}
 
 	function delete(array $ids): bool
 	{
-		$this->db['db_query']('', '
-			DELETE 
-			FROM {db_prefix}' . $this->getTableName() . '
-			WHERE ' . $this->getColumnId() . ' IN({array_int:ids})', ['ids' => array_map('intval', $ids), ]);
+		$this->db->delete(
+		    $this->getTableName(),
+		    '
+			WHERE ' . $this->getColumnId() . ' IN({array_int:ids})',
+		    ['ids' => array_map('intval', $ids), ]
+		);
 
 		return true;
 	}
 
 	public function updateLikes(int $contentId, int $numLikes): void
 	{
-		$this->db['db_query'](
-		    '',
-		    'UPDATE {db_prefix}' . $this->getTableName() . '
+		$this->db->update(
+		    $this->getTableName(),
+		    '
 			SET likes = {int:num_likes}
 			WHERE ' . $this->getColumnId() . ' = {int:id_content}',
 		    [

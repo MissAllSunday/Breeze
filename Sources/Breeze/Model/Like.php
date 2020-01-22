@@ -2,42 +2,38 @@
 
 declare(strict_types=1);
 
-
-use Breeze\Breeze;
 use Breeze\Entity\Like as LikeEntity;
 
 class Like extends Base
 {
 	function insert(array $data, int $id = 0): int
 	{
-		// TODO: Implement insert() method.
+		return 1;
 	}
 
-	function update(array $data, int $id = 0): array
+	function update(array $data, int $idContent = 0): array
 	{
-		global $smcFunc;
-
-		$smcFunc['db_query'](
-		    '',
-		    'UPDATE {db_prefix}' . ($this->_tables[$type]['table']) . '
-			SET likes = {int:num_likes}
-			WHERE ' . ($type) . '_id = {int:id_content}',
+		$this->db->update(
+		    LikeEntity::TABLE,
+		    'SET likes = {int:num_likes}
+			WHERE ' . LikeEntity::COLUMN_CONTENT_ID . ' = {int:idContent}',
 		    [
-		        'id_content' => $content,
-		        'num_likes' => $numLikes,
+		        'idContent' => $idContent,
 		    ]
 		);
+
+		return [];
 	}
 
 	public function userLikes(string $type, int $userId = 0): array
 	{
 		$likes = [];
 
-		$request = $this->db['db_query'](
-		    '',
-		    'SELECT ' . LikeEntity::COLUMN_CONTENT_ID . '
-			FROM {db_prefix}' . $this->getTableName() . '
-			WHERE ' . $this->getColumnId() . ' = {int:userId}
+		$request = $this->db->query(
+		    '
+			SELECT ' . LikeEntity::COLUMN_CONTENT_ID . '
+			FROM {db_prefix}' . LikeEntity::TABLE . '
+			WHERE ' . LikeEntity::COLUMN_ID_MEMBER . ' = {int:userId}
 				AND ' . LikeEntity::COLUMN_CONTENT_TYPE . ' = {string:type}',
 		    [
 		        'userId' => $userId,
@@ -46,10 +42,10 @@ class Like extends Base
 		);
 
 		// @todo fetch all the columns and not just the content_id, for statistics and stuff...
-		while ($row = $this->db['db_fetch_assoc']($request))
+		while ($row = $this->db->fetchAssoc($request))
 			$likes[$userId][$type][] = (int) $row[LikeEntity::COLUMN_CONTENT_ID];
 
-		$this->db['db_free_result']($request);
+		$this->db->freeResult($request);
 
 		return $likes;
 	}

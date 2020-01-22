@@ -15,17 +15,17 @@ class Alert extends Base
 		if (false !== strpos($data['content_type'], Breeze::PATTERN))
 			$params['content_type'] = Breeze::PATTERN . $data['content_type'];
 
-		$this->db['db_insert']('insert', '{db_prefix}' . $this->getTableName() . '', [
-		    'alert_time' => 'int',
-		    'id_member' => 'int',
-		    'id_member_started' => 'int',
-		    'member_name' => 'string',
-		    'content_type' => 'string',
-		    'content_id' => 'int',
-		    'content_action' => 'string',
-		    'is_read' => 'int',
-		    'extra' => 'string'
-		], $data, [$this->getColumnId()]);
+		$this->db->insert(AlertEntity::TABLE, [
+		    AlertEntity::COLUMN_ALERT_TIME => 'int',
+		    AlertEntity::COLUMN_ID_MEMBER => 'int',
+		    AlertEntity::COLUMN_ID_MEMBER_STARTED => 'int',
+		    AlertEntity::COLUMN_MEMBER_NAME => 'string',
+		    AlertEntity::COLUMN_CONTENT_TYPE => 'string',
+		    AlertEntity::COLUMN_CONTENT_ID => 'int',
+		    AlertEntity::COLUMN_CONTENT_ACTION => 'string',
+		    AlertEntity::COLUMN_IS_READ => 'int',
+		    AlertEntity::COLUMN_EXTRA => 'string'
+		], $data, $this->getColumnId());
 
 		return $this->getInsertedId();
 	}
@@ -42,15 +42,19 @@ class Alert extends Base
 		foreach ($data as $column => $newValue)
 			$updateString .= $column . ' = ' . $newValue . ($column != $lastKey ? ', ' : '');
 
-		$this->db['db_query'](
-		    '',
-		    'UPDATE {db_prefix}' . $this->getTableName() . '
-			SET ' . ($updateString) . '
+		$this->db->update(
+		    AlertEntity::TABLE,
+		    'SET ' . ($updateString) . '
 			WHERE ' . $this->getColumnId() . ' = {int:id}',
 		    ['id' => $alertId]
 		);
 
-		return $this->getInsertedId();
+		return $this->getAlertById($alertId);
+	}
+
+	public function getAlertById(int $alertId): array
+	{
+		return [$alertId];
 	}
 
 	public function checkAlert(int $userId, string $alertType, int $alertId = 0, string $alertSender = ''): bool
@@ -60,9 +64,9 @@ class Alert extends Base
 		if (empty($userId) || empty($alertType))
 			return $alreadySent;
 
-		$request = $this->db['db_query'](
-		    '',
-		    'SELECT ' . AlertEntity::COLUMN_ID . '
+		$request = $this->db->query(
+		    '
+			SELECT ' . AlertEntity::COLUMN_ID . '
 			FROM {db_prefix}' . AlertEntity::TABLE . '
 			WHERE ' . AlertEntity::COLUMN_ID_MEMBER . ' = {int:userId}
 				AND ' . AlertEntity::COLUMN_IS_READ . ' = 0
@@ -77,9 +81,9 @@ class Alert extends Base
 		    ]
 		);
 
-		$result = $this->db['db_fetch_row']($request);
+		$result = $this->db->fetchAssoc($request);
 
-		$this->db['db_free_result']($request);
+		$this->db->freeResult($request);
 
 		return (bool) $result;
 	}

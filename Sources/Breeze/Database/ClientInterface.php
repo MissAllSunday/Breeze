@@ -14,9 +14,11 @@ interface ClientInterface
 
 	public function freeResult($result): void;
 
-	public function insert(string $tableName, array $columns, array $data, int $columnId): void;
+	public function insert(string $tableName, array $columns, array $data, string $columnIdName): void;
 
 	public function getInsertedId(string $tableName, string $columnIdName): int;
 
 	public function update(string $tableName, string $queryString, array $bindParams): int;
+
+	public function delete(string $tableName, string $queryString, array $bindParams): void;
 }

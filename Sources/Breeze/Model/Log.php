@@ -14,9 +14,8 @@ class Log extends Base
 
 		$data['extra'] = !empty($data['extra']) ? json_encode($data['extra']) : '';
 
-		$this->db['db_insert'](
-		    'insert',
-		    '{db_prefix}' . $this->getTableName() . '',
+		$this->db->insert(
+		    $this->getTableName(),
 		    [
 		        LogEntity::COLUMN_MEMBER => 'int',
 		        LogEntity::COLUMN_CONTENT_TYPE => 'string',
@@ -25,7 +24,7 @@ class Log extends Base
 		        LogEntity::COLUMN_EXTRA => 'string'
 		    ],
 		    $data,
-		    [LogEntity::COLUMN_ID]
+		    LogEntity::COLUMN_ID
 		);
 
 		return $this->getInsertedId();
@@ -33,7 +32,7 @@ class Log extends Base
 
 	function update(array $data, int $id = 0): array
 	{
-		// TODO: Implement update() method.
+		return [];
 	}
 
 	public function logCount(array $userIds): int
@@ -43,16 +42,17 @@ class Log extends Base
 		if (empty($userIds))
 			return $count;
 
-		$request = $this->db['db_query'](
-		    '',
-		    'SELECT id_log
-			FROM {db_prefix}' . $this->getTableName() . '
+		$request = $this->db->query(
+		    '
+			SELECT id_log
+			FROM {db_prefix}' . LogEntity::TABLE . '
 			WHERE ' . LogEntity::COLUMN_MEMBER . ' IN ({array_int:userIds})',
 		    ['userIds' => $userIds]
 		);
-		$count =  $this->db['db_num_rows']($request);
 
-		$this->db['db_free_result']($request);
+		$count =  $this->db->numRows($request);
+
+		$this->db->freeResult($request);
 
 		return $count;
 	}
@@ -64,9 +64,9 @@ class Log extends Base
 		if (empty($userIds) || empty($maxIndex))
 			return $logs;
 
-		$result = $this->db['db_query'](
-		    '',
-		    'SELECT ' . implode(', ', $this->getColumns()) . '
+		$result = $this->db->query(
+		    '
+			SELECT ' . implode(', ', $this->getColumns()) . '
 			FROM {db_prefix}' . $this->getTableName() . '
 			WHERE ' . LogEntity::COLUMN_MEMBER . ' IN ({array_int:userIds})
 			ORDER BY ' . $this->getColumnId() . ' DESC
@@ -78,7 +78,7 @@ class Log extends Base
 		    ]
 		);
 
-		while ($row = $this->db['db_fetch_assoc']($result))
+		while ($row = $this->db->fetchAssoc($result))
 			$logs[$row[LogEntity::COLUMN_ID]] = [
 			    'id' => $row[LogEntity::COLUMN_ID],
 			    'member' => $row[LogEntity::COLUMN_MEMBER],
@@ -90,7 +90,7 @@ class Log extends Base
 			    	json_decode($row[LogEntity::COLUMN_EXTRA], true) : [],
 			];
 
-		$this->db['db_free_result']($result);
+		$this->db->freeResult($result);
 
 		return $logs;
 	}
@@ -107,6 +107,6 @@ class Log extends Base
 
 	function getColumns(): array
 	{
-		LogEntity::getColumns();
+		return LogEntity::getColumns();
 	}
 }

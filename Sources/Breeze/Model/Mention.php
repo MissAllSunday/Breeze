@@ -9,6 +9,7 @@ class Mention extends Base
 {
 	public function userMention(string $match): array
 	{
+		// @todo figure what to do with requiring SMF files
 		require_once($this->_app['tools']->sourceDir . '/Subs-Member.php');
 
 		$mention = [
@@ -19,6 +20,7 @@ class Mention extends Base
 		if (empty($match))
 			return $mention;
 
+		// @todo create sanitize/request service or something like that
 		$match = $this->db['htmltrim']($this->db['htmlspecialchars']($match), \ENT_QUOTES);
 
 		if ($this->db['strlen']($match) >= 3)
@@ -29,8 +31,6 @@ class Mention extends Base
 		if (empty($allowedMembers))
 			return $mention;
 
-		$allowedMembers = (array) $allowedMembers;
-
 		$result = $this->db['db_query'](
 		    '',
 		    'SELECT ' . implode(', ', MemberEntity::getColumns()) . '
@@ -40,29 +40,29 @@ class Mention extends Base
 				OR ' . MemberEntity::COLUMN_REAL_NAME . ' LIKE {string:match}',
 		    [
 		        'match' => $match . '%',
-		        'allowedMembers' => $allowedMembers
+		        'allowedMembers' => array_map('intval', $allowedMembers)
 		    ]
 		);
 
-		while ($row = $this->db['db_fetch_assoc']($result))
+		while ($row = $this->db->fetchAssoc($result))
 			$mention[] = [
 			    'name' => $row[MemberEntity::COLUMN_MEMBER_NAME],
 			    'id' => (int) $row[MemberEntity::COLUMN_ID],
 			];
 
-		$this->db['db_free_result']($result);
+		$this->db->freeResult($result);
 
 		return $mention;
 	}
 
 	function insert(array $data, int $id = 0): int
 	{
-		// TODO: Implement insert() method.
+		return 1;
 	}
 
 	function update(array $data, int $id = 0): array
 	{
-		// TODO: Implement update() method.
+		return [];
 	}
 
 	function getTableName(): string

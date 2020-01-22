@@ -8,25 +8,31 @@ class Comment extends Base
 {
 	function insert(array $data, int $commentID = 0): int
 	{
-		$this->db['db_insert']('replace', '{db_prefix}' . $this->getTableName() .
-			'', [
-			    CommentEntity::COLUMN_STATUS_ID => 'int',
-			    CommentEntity::COLUMN_STATUS_OWNER_ID => 'int',
-			    CommentEntity::COLUMN_POSTER_ID => 'int',
-			    CommentEntity::COLUMN_PROFILE_ID => 'int',
-			    CommentEntity::COLUMN_TIME => 'int',
-			    CommentEntity::COLUMN_BODY => 'string',
-			    CommentEntity::COLUMN_LIKES => 'int',
-			], $data, [$this->getColumnId()]);
+		$this->db->insert(
+		    $this->getTableName(),
+		    [
+		        CommentEntity::COLUMN_STATUS_ID => 'int',
+		        CommentEntity::COLUMN_STATUS_OWNER_ID => 'int',
+		        CommentEntity::COLUMN_POSTER_ID => 'int',
+		        CommentEntity::COLUMN_PROFILE_ID => 'int',
+		        CommentEntity::COLUMN_TIME => 'int',
+		        CommentEntity::COLUMN_BODY => 'string',
+		        CommentEntity::COLUMN_LIKES => 'int',
+		    ],
+		    $data,
+		    $this->getColumnId()
+		);
 
 		return $this->getInsertedId();
 	}
 
 	public function deleteByStatusID(array $ids): bool
 	{
-		$this->db['db_query']('', '
-			DELETE FROM {db_prefix}' . CommentEntity::TABLE . '
-			WHERE ' . CommentEntity::COLUMN_STATUS_ID . ' IN({array_int:ids})', ['ids' => $ids]);
+		$this->db->delete(
+		    CommentEntity::TABLE,
+		    'WHERE ' . CommentEntity::COLUMN_STATUS_ID . ' IN({array_int:ids})',
+		    ['ids' => $ids]
+		);
 
 		return true;
 	}
