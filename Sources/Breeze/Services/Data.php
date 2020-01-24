@@ -19,14 +19,6 @@ class Data extends Base
 	    return isset($this->request[$value]) ? $this->sanitize($this->request[$value]) : false;
 	}
 
-	public function getAll()
-	{
-		return array_map(function($k, $v)
-		{
-			return $this->sanitize($v);
-		}, $this->request);
-	}
-
 	public function sanitize($variable)
 	{
 		$smcFunc = $this->global('smcFunc');
@@ -39,7 +31,7 @@ class Data extends Base
 			return $variable;
 		}
 
-		$var = (string) $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($variable, \ENT_QUOTES));
+		$var = (string) $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($variable, ENT_QUOTES));
 
 		if (ctype_digit($var))
 			$var = (int) $var;

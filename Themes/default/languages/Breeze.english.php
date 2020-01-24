@@ -115,7 +115,7 @@ $txt['Breeze_user_settings_visitors_sub'] = 'This will show a block with the lat
 $txt['Breeze_user_settings_how_many_visitors'] = 'How many visitors to display';
 $txt['Breeze_user_settings_how_many_visitors_sub'] = 'If empty it will show the default value.';
 $txt['Breeze_user_settings_show_last_visit'] = 'Show the last time the users visited your wall';
-$txt['Breeze_user_permissions_name'] = 'Permissions';
+$txt['Breeze_user_permissions_name'] = 'Validate';
 $txt['Breeze_user_modules_visitors_none'] = 'There are no recent visitors';
 $txt['Breeze_user_modules_buddies_none'] = 'This user doesn\'t have any buddies';
 $txt['Breeze_noti_none'] = 'You don\'t have any alerts yet.';
@@ -131,7 +131,7 @@ $txt['Breeze_time_week'] = 'week';
 $txt['Breeze_time_month'] = 'month';
 $txt['Breeze_time_year'] = 'year';
 
-// Permissions strings
+// Validate strings
 $txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to see this Wall.';
 $txt['permissiongroup_simple_breeze_per_simple'] = 'Breeze mod permissions';
 $txt['permissiongroup_breeze_per_classic'] = 'Breeze mod permissions';

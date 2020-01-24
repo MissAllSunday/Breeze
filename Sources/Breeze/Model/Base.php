@@ -16,19 +16,6 @@ abstract class Base
 		$this->db = new DatabaseClient();
 	}
 
-	public function getCache(string $key, int $timeToLive = 360): ?array
-	{
-		return cache_get_data(
-		    Breeze::PATTERN . $key,
-		    $timeToLive
-		);
-	}
-
-	public function setCache(string $key, $data, $timeToLive = 360): void
-	{
-		cache_put_data(Breeze::PATTERN . $key, $data, $timeToLive);
-	}
-
 	public function getInsertedId(): int
 	{
 		return $this->db->getInsertedId($this->getTableName(), $this->getColumnId());

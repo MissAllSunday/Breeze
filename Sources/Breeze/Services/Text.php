@@ -5,25 +5,15 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-class Text
+class Text extends Base
 {
-	/**
-	 * @var Tools
-	 */
-	protected $tools;
-
-	public function __construct(Tools $tools)
-	{
-		$this->tools = $tools;
-	}
-
-	public function setLanguage(): void
+	public function setLanguage(string $languageName): void
 	{
 	}
 
 	public function get(string $textKey): string
 	{
-		$txt = $this->tools->global('txt');
+		$txt = $this->global('txt');
 
 		return $txt[$textKey];
 	}
@@ -83,9 +73,9 @@ class Text
 		if (empty($string))
 			return '';
 
-		$string = $smcFunc['htmlspecialchars']($string, \ENT_QUOTES);
+		$string = $smcFunc['htmlspecialchars']($string, ENT_QUOTES);
 		$string = preg_replace('~&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', $string);
-		$string = html_entity_decode($string, \ENT_QUOTES);
+		$string = html_entity_decode($string, ENT_QUOTES);
 		$string = preg_replace(['~[^0-9a-z]~i', '~[ -]+~'], ' ', $string);
 
 		return trim($string, ' -');
@@ -123,8 +113,9 @@ class Text
 
 	public function timeElapsed($ptime): string
 	{
-		$txt = $this->tools->global('txt');
+		$txt = $this->global('txt');
 		$etime = time() - $ptime;
+		$timeElapsed = '';
 
 		if (1 > $etime)
 			return $txt['time_just_now'];
@@ -145,8 +136,11 @@ class Text
 			{
 				$r = round($d);
 
-				return $r . ' ' . $str . (1 < $r ? 's ' : ' ') . $txt['time_ago'];
+				$timeElapsed = $r . ' ' . $str . (1 < $r ? 's ' : ' ') . $txt['time_ago'];
+				break;
 			}
 		}
+
+		return $timeElapsed;
 	}
 }

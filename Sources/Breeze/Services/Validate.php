@@ -5,13 +5,12 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-class Permissions
+class Validate extends Base
 {
-	public function permissions($type, $profileOwner = false, $userPoster = false)
+	public function permissions($type, int $profileOwner = 0, int $userPoster = 0)
 	{
-		global $user_info;
+		$user_info = $this->global('user_info');
 
-		// Add this bit here to make it easier in the future to add more permissions.
 		$perm = [
 		    'edit' => false,
 		    'delete' => '',

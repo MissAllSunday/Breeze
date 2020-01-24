@@ -5,36 +5,38 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\User;
 
-use Breeze\Service\Tools;
+
+use Breeze\Service\Settings as Settings;
 
 class Cover
 {
 	const COVER_FOLDER = '/breezeFiles/';
+	const THUMB_FOLDER = '/thumbnail/';
 
 	/**
-	 * @var Tools
+	 * @var Settings
 	 */
-	protected $tools;
+	protected $settings;
 
-	public function __construct(Tools $tools)
+	public function __construct(Settings $settings)
 	{
-		$this->tools = $tools;
+		$this->settings = $settings;
 	}
 
-	public function deleteCover(string $imageFileName, int $userId): bool
+	public function deleteCover(string $fileName, int $userId): bool
 	{
 		if (empty($imageFileName) || empty($userId))
 			return false;
 
-		$boardDir = $this->tools->global('board_dir');
+		$boardDir = $this->settings->global('board_dir');
 		$folder = $boardDir . self::COVER_FOLDER . $userId . '/';
-		$folderThumbnail = $this->boardDir . Breeze::$coversFolder . $user . '/thumbnail/';
+		$folderThumbnail = $boardDir . self::COVER_FOLDER . $userId . self::THUMB_FOLDER;
 
-		if (file_exists($folderThumbnail . $image))
-			@unlink($folderThumbnail . $image);
+		if (file_exists($folderThumbnail . $fileName))
+			@unlink($folderThumbnail . $fileName);
 
-		if (file_exists($folder . $image))
-			@unlink($folder . $image);
+		if (file_exists($folder . $fileName))
+			@unlink($folder . $fileName);
 
 		return true;
 	}

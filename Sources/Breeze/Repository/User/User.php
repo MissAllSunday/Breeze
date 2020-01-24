@@ -4,82 +4,89 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\User;
 
+use Breeze\Model\User as UserModel;
+use Breeze\Service\Settings;
+
 class User
 {
-	public function stalkingCheck($fetchedUser = 0)
-	{
-		global $user_info;
+	/**
+	 * @var UserModel
+	 */
+	protected $userModel;
 
-		// But of course you can stalk non-existent users!
-		if (empty($fetchedUser))
+	/**
+	 * @var Settings
+	 */
+	protected $settings;
+
+	public function __construct(UserModel $userModel, Settings $settings)
+	{
+		$this->userModel = $userModel;
+		$this->settings = $settings;
+	}
+
+	public function stalkingCheck(int $userStalkedId = 0): bool
+	{
+		$user_info = $this->settings->global('user_info');
+
+		if (empty($userId))
 			return true;
 
-		// Get the "stalkee" user settings.
-		$stalkedSettings = $this->_app['query']->getUserSettings($fetchedUser);
+		$userStalkedSettings = $this->userModel->getUserSettings($userStalkedId);
 
-		// Check if the stalker has been added in stalkee's ignore list.
-		if (!empty($stalkedSettings['kick_ignored']) && !empty($stalkedSettings['ignoredList']))
+		if (!empty($userStalkedSettings['kick_ignored']) && !empty($userStalkedSettings['ignoredList']))
 		{
-			$ignored = explode(',', $stalkedSettings['ignoredList']);
+			$ignored = explode(',', $userStalkedSettings['ignoredList']);
 
 			return in_array($user_info['id'], $ignored);
 		}
 
-		// Lucky you!
-
 		return false;
 	}
 
-	public function floodControl($user = 0)
+	public function floodControl(int $userId = 0): bool
 	{
-		global $user_info;
+		if (empty($userId))
+			return false;
 
-		// No param? use the current user then.
-		$user = !empty($user) ? $user : $user_info['id'];
-
-		// Set some needed stuff.
-		$seconds = 60 * ($this->setting('flood_minutes') ? $this->setting('flood_minutes') : 5);
-		$messages = $this->setting('flood_messages') ? $this->setting('flood_messages') : 10;
+		$seconds = 60 * ($this->settings->get('flood_minutes', 5));
+		$messages = $this->settings->get('flood_messages', 10);
 
 		// Has it been defined yet?
-		if (!isset($_SESSION['Breeze_floodControl' . $user]))
-			$_SESSION['Breeze_floodControl' . $user] = [
+		if (!isset($_SESSION['Breeze_floodControl' . $userId]))
+			$_SESSION['Breeze_floodControl' . $userId] = [
 			    'time' => time() + $seconds,
-			    'msg' => 0,
+			    'messagesCount' => 0,
 			];
 
-		// Keep track of it.
-		$_SESSION['Breeze_floodControl' . $user]['msg']++;
+		$_SESSION['Breeze_floodControl' . $userId]['messagesCount']++;
 
 		// Short name.
-		$flood = $_SESSION['Breeze_floodControl' . $user];
+		$flood = $_SESSION['Breeze_floodControl' . $userId];
 
 		// Chatty one huh?
-		if ($flood['msg'] >= $messages && time() <= $flood['time'])
+		if ($flood['messagesCount'] >= $messages && time() <= $flood['time'])
 			return false;
 
 		// Enough time has passed, give the user some rest.
 		if (time() >= $flood['time'])
-			unset($_SESSION['Breeze_floodControl' . $user]);
+			unset($_SESSION['Breeze_floodControl' . $userId]);
 
 		return true;
 	}
 
-	public function loadUserInfo($id, $returnID = false)
+	public function loadUserInfo(array $userIds, $returnId = false)
 	{
-		global $context, $memberContext, $txt;
+		static $loadedUserIds = [];
 
-		// If this isn't an array, lets change it to one.
-		$id = (array) $id;
-		$id = array_unique($id);
+		$memberContext = $this->settings->global('memberContext');
+		$userIds = array_unique($userIds);
 
-		// Only load those that haven't been loaded yet.
-		if (!empty(static::$_users))
-			foreach ($id as $k => $v)
-				if (!empty(static::$_users[$v]))
-					unset($id[$k]);
+		if (!empty($loadedUserIds))
+			foreach ($userIds as $userId)
+				if (!empty($loadedUserIdss[$userId]))
+					unset($userIds[$userId]);
 
-		// Got nothing to load.
 		if (empty($id))
 		{
 			$context['Breeze']['user_info'] = static::$_users;

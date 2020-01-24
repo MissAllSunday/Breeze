@@ -9,7 +9,7 @@ use Breeze\Breeze;
 
 class Settings extends Base
 {
-	public function setting(string $settingName, $fallBack = false)
+	public function get(string $settingName, $fallBack = false)
 	{
 		$modSettings = $this->global('modSettings');
 
@@ -44,6 +44,6 @@ class Settings extends Base
 	{
 		json_decode($string);
 
-		return (\JSON_ERROR_NONE === json_last_error());
+		return (JSON_ERROR_NONE === json_last_error());
 	}
 }

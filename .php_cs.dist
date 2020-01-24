@@ -42,7 +42,7 @@ return PhpCsFixer\Config::create()
         'line_ending' => true,
         'lowercase_cast' => true,
         'lowercase_constants' => true,
-        'native_constant_invocation' => true,
+        'native_constant_invocation' => false,
         'method_argument_space' => ['ensure_fully_multiline' => true],
     ])
 	->setFinder($finder)
