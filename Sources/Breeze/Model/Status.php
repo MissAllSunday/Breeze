@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Breeze\Model;
+
 use Breeze\Entity\Status as StatusEntity;
 
 class Status extends Base

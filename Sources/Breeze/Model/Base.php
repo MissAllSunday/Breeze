@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Breeze\Model;
+
 use Breeze\Breeze as Breeze;
 use Breeze\Database\Client as DatabaseClient;
 

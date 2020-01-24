@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Breeze\Model;
+
 use \Breeze\Entity\Member as MemberEntity;
 use Breeze\Entity\Mention as MentionEntity;
 

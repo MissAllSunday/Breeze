@@ -50,6 +50,17 @@ class Client implements ClientInterface
 		);
 	}
 
+	public function replace(string $tableName, array $columns, array $data, string $columnIdName): void
+	{
+		$this->db['db_insert'](
+			'replace',
+			'{db_prefix}' . $tableName . '',
+			$columns,
+			$data,
+			[$columnIdName]
+		);
+	}
+
 	public function getInsertedId(string $tableName, string $columnIdName): int
 	{
 		return $this->db['db_insert_id']('{db_prefix}' . $tableName, $columnIdName);

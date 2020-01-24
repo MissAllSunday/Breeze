@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Breeze\Model;
+
 use Breeze\Entity\Member as MemberEntity;
 use Breeze\Entity\Options as OptionsEntity;
 
@@ -25,9 +27,8 @@ class User extends Base
 			$inserts[] = [$userId, $variable, $value];
 		}
 
-		// @todo implement replace db insert
 		if (!empty($inserts))
-			$this->db['db_insert'](
+			$this->db->replace(
 			    OptionsEntity::TABLE,
 			    [
 			        MemberEntity::COLUMN_ID => 'int',
@@ -35,7 +36,7 @@ class User extends Base
 			        OptionsEntity::COLUMN_VALUE => 'string'
 			    ],
 			    $inserts,
-			    [MemberEntity::COLUMN_ID]
+			    MemberEntity::COLUMN_ID
 			);
 
 		return 1;
@@ -54,8 +55,7 @@ class User extends Base
 		if (empty($userIds))
 			return $loadedUsers;
 
-		$request = $this->db->query(
-		    '
+		$request = $this->db->query('
 			SELECT ' . implode(', ', MemberEntity::getColumns()) . '
 			FROM {db_prefix}' . MemberEntity::TABLE . '
 			WHERE ' . MemberEntity::COLUMN_ID . ' IN ({array_int:userIds})',

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Breeze\Model;
+
 use Breeze\Entity\Comment as CommentEntity;
 
 class Comment extends Base

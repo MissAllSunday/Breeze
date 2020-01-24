@@ -2,149 +2,37 @@
 
 declare(strict_types=1);
 
-/**
- * BreezeData
- *
- * @package Breeze mod
- * @version 1.1
- * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2019, Jessica González
- * @license http://www.mozilla.org/MPL/ MPL 2.0
- */
 
-namespace Breeze;
+namespace Breeze\Service;
 
-if (!defined('SMF'))
-	die('No direct access...');
 
-class BreezeData
+class Data
 {
-	protected $_request;
+	protected $request;
 
     /**
-     * BreezeData::__construct()
-     *
-     * @param bool $type
+     * @var Tools
      */
-	public function __construct($type = false)
+    protected $tools;
+
+    public function __construct(Tools $tools)
 	{
-		if (!empty($type))
-		{
-			$types = ['request' => $_REQUEST, 'get' => $_GET, 'post' => $_POST, 'session' => $_SESSION];
+		$this->request = $_REQUEST;
+        $this->tools = $tools;
+    }
 
-			$this->_request = (empty($type) || !isset($types[$type])) ? $_REQUEST : $types[$type];
 
-			unset($types);
-		}
-
-		else
-			$this->_request = $_REQUEST;
-	}
-
-    /**
-     * BreezeData::get()
-     *
-     * @return array|bool|int|mixed|string
-     */
-	public function get($value)
+	public function get(string $value)
 	{
-		if ($this->validate($value))
-			return $this->sanitize($this->_request[$value]);
-
-		
-			return false;
-	}
-
-    /**
-     * BreezeData::getRaw()
-     *
-     * @return bool
-     */
-	public function getRaw($value)
-	{
-		if (isset($this->_request[$value]))
-			return $this->_request[$value];
-
-		
-			return false;
+	    return isset($this->request[$value]) ? $this->tools->sanitize($this->request[$value]) : false;
 	}
 
 	public function getAll()
 	{
-		return $this->_request;
-	}
-
-    /**
-     * BreezeData::validate()
-     *
-     * @return bool
-     */
-	public function validate($var)
-	{
-		return (isset($this->_request[$var]));
-	}
-
-    /**
-     * BreezeData::validateBody()
-     *
-     * @return bool|mixed
-     */
-	public function validateBody($var)
-	{
-		global $sourcedir;
-
-		// You cannot post just spaces
-		if (empty($var) || ctype_space($var) || '' == $var)
-			return false;
-
-		
-		
-			require_once($sourcedir . '/Subs-Post.php');
-
-			preparsecode($var);
-
-			return $var;
-		
-	}
-
-    /**
-     * BreezeData::unsetVar()
-     *
-     */
-	public function unsetVar($var): void
-	{
-		unset($this->_request[$var]);
-	}
-
-    /**
-     * BreezeData::sanitize()
-     *
-     * @return array|bool|int|mixed|string
-     */
-	public function sanitize($var)
-	{
-		global $smcFunc;
-
-		if (is_array($var))
+		return array_map(function($k, $v)
 		{
-			foreach ($var as $k => $v)
-				$var[$k] = $this->sanitize($v);
-
-			return $var;
-		}
-
-		
-		
-			$var = (string) $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var), \ENT_QUOTES);
-
-			if (ctype_digit($var))
-				$var = (int) $var;
-
-			if (empty($var))
-				$var = false;
-		
-
-		return $var;
+			return $this->tools->sanitize($v);
+		}, $this->request);
 	}
 
 	public function normalizeString($string = '')
