@@ -43,6 +43,7 @@ abstract class Base
 	public function getResponse()
 	{
 		if (empty($_SESSION['Breeze']['response']))
+
 			return false;
 
 		$response = $_SESSION['Breeze']['response'];

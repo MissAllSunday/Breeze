@@ -5,7 +5,7 @@ use Breeze\Breeze as Breeze;
 
 trait Cache
 {
-	public function getCache(string $key, int $timeToLive = 360): ?array
+	public function get(string $key, int $timeToLive = 360): ?array
 	{
 		return cache_get_data(
 			Breeze::PATTERN . $key,
@@ -13,7 +13,7 @@ trait Cache
 		);
 	}
 
-	public function setCache(string $key, $data, $timeToLive = 360): void
+	public function set(string $key, array $data, int $timeToLive = 360): void
 	{
 		cache_put_data(Breeze::PATTERN . $key, $data, $timeToLive);
 	}
