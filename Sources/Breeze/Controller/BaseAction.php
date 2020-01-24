@@ -28,7 +28,6 @@ abstract class Base
 	    self::MOOD,
 	];
 
-
 	public function setResponse($message, $type): void
 	{
 		if (empty($message) || empty($type))
@@ -36,8 +35,8 @@ abstract class Base
 
 		// Yeah, a nice session var...
 		$_SESSION['Breeze']['response'] = [
-			'message' => $message,
-			'type' => $type,
+		    'message' => $message,
+		    'type' => $type,
 		];
 	}
 

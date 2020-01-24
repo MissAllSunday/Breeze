@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace Breeze\Service;
-
 
 class Permissions
 {
@@ -12,10 +13,10 @@ class Permissions
 
 		// Add this bit here to make it easier in the future to add more permissions.
 		$perm = [
-			'edit' => false,
-			'delete' => '',
-			'post' => false,
-			'postComments' => false,
+		    'edit' => false,
+		    'delete' => '',
+		    'post' => false,
+		    'postComments' => false,
 		];
 
 		// NO! you don't have permission to do nothing...
@@ -60,5 +61,4 @@ class Permissions
 
 		return $perm;
 	}
-
 }

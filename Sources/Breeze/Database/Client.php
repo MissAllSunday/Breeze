@@ -53,11 +53,11 @@ class Client implements ClientInterface
 	public function replace(string $tableName, array $columns, array $data, string $columnIdName): void
 	{
 		$this->db['db_insert'](
-			'replace',
-			'{db_prefix}' . $tableName . '',
-			$columns,
-			$data,
-			[$columnIdName]
+		    'replace',
+		    '{db_prefix}' . $tableName . '',
+		    $columns,
+		    $data,
+		    [$columnIdName]
 		);
 	}
 

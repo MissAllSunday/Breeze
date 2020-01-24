@@ -5,48 +5,48 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-
-class Data
+class Data extends Base
 {
 	protected $request;
 
-    /**
-     * @var Tools
-     */
-    protected $tools;
-
-    public function __construct(Tools $tools)
+    public function __construct()
 	{
 		$this->request = $_REQUEST;
-        $this->tools = $tools;
     }
-
 
 	public function get(string $value)
 	{
-	    return isset($this->request[$value]) ? $this->tools->sanitize($this->request[$value]) : false;
+	    return isset($this->request[$value]) ? $this->sanitize($this->request[$value]) : false;
 	}
 
 	public function getAll()
 	{
 		return array_map(function($k, $v)
 		{
-			return $this->tools->sanitize($v);
+			return $this->sanitize($v);
 		}, $this->request);
 	}
 
-	public function normalizeString($string = '')
+	public function sanitize($variable)
 	{
-		global $context, $smcFunc;
+		$smcFunc = $this->global('smcFunc');
 
-		if (empty($string))
-			return '';
+		if (is_array($variable))
+		{
+			foreach ($variable as $k => $v)
+				$variable[$k] = $this->sanitize($v);
 
-		$string = $smcFunc['htmlspecialchars']($string, \ENT_QUOTES, $context['character_set']);
-		$string = preg_replace('~&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', $string);
-		$string = html_entity_decode($string, \ENT_QUOTES, $context['character_set']);
-		$string = preg_replace(['~[^0-9a-z]~i', '~[ -]+~'], ' ', $string);
+			return $variable;
+		}
 
-		return trim($string, ' -');
+		$var = (string) $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($variable, \ENT_QUOTES));
+
+		if (ctype_digit($var))
+			$var = (int) $var;
+
+		if (empty($var))
+			$var = false;
+
+		return $var;
 	}
 }

@@ -55,7 +55,8 @@ class User extends Base
 		if (empty($userIds))
 			return $loadedUsers;
 
-		$request = $this->db->query('
+		$request = $this->db->query(
+		    '
 			SELECT ' . implode(', ', MemberEntity::getColumns()) . '
 			FROM {db_prefix}' . MemberEntity::TABLE . '
 			WHERE ' . MemberEntity::COLUMN_ID . ' IN ({array_int:userIds})',

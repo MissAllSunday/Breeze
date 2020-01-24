@@ -1,44 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace Breeze\Service;
 
-
 use Breeze\Breeze;
 
-class Settings
+class Settings extends Base
 {
-	/**
-	 * @var Tools
-	 */
-	protected $tools;
-
-	public function __construct(Tools $tools)
-	{
-		$this->tools = $tools;
-	}
-
 	public function setting(string $settingName, $fallBack = false)
 	{
-		$modSettings = $this->tools->global('modSettings');
+		$modSettings = $this->global('modSettings');
 
 		if (empty($setting))
 			return $fallBack;
-
 
 		return $this->enable($settingName) ? [$modSettings[Breeze::PATTERN . $settingName]] : $fallBack;
 	}
 
 	public function enable(string $settingName): bool
 	{
-		$modSettings = $this->tools->global('modSettings');
+		$modSettings = $this->global('modSettings');
 
 		return isset($modSettings[Breeze::PATTERN . $settingName]) && !empty([$modSettings[Breeze::PATTERN . $settingName]]);
 	}
 
 	public function modSetting(string $settingName, $fallBack = false)
 	{
-		$modSettings = $this->tools->global('modSettings');
+		$modSettings = $this->global('modSettings');
 
 		if (empty($setting))
 			return $fallBack;
@@ -48,5 +38,12 @@ class Settings
 
 
 		return $fallBack;
+	}
+
+	public function isJson(string $string): bool
+	{
+		json_decode($string);
+
+		return (\JSON_ERROR_NONE === json_last_error());
 	}
 }

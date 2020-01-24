@@ -1,20 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace Breeze\Repository\User;
 
-
-use Breeze\Breeze;
+use Breeze\Service\Tools;
 
 class Cover
 {
-	public function deleteCover($image, $user): void
-	{
-		if (empty($image) || empty($user))
-			return;
+	const COVER_FOLDER = '/breezeFiles/';
 
-		// This makes things easier.
-		$folder = $this->boardDir . Breeze::$coversFolder . $user . '/';
+	/**
+	 * @var Tools
+	 */
+	protected $tools;
+
+	public function __construct(Tools $tools)
+	{
+		$this->tools = $tools;
+	}
+
+	public function deleteCover(string $imageFileName, int $userId): bool
+	{
+		if (empty($imageFileName) || empty($userId))
+			return false;
+
+		$boardDir = $this->tools->global('board_dir');
+		$folder = $boardDir . self::COVER_FOLDER . $userId . '/';
 		$folderThumbnail = $this->boardDir . Breeze::$coversFolder . $user . '/thumbnail/';
 
 		if (file_exists($folderThumbnail . $image))
@@ -22,5 +35,7 @@ class Cover
 
 		if (file_exists($folder . $image))
 			@unlink($folder . $image);
+
+		return true;
 	}
 }
