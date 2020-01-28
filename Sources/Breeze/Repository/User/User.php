@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\User;
 
+use Breeze\Controller\User\Wall;
 use Breeze\Model\User as UserModel;
 use Breeze\Service\Settings;
+use Breeze\Service\Text;
 
 class User
 {
@@ -19,60 +21,16 @@ class User
 	 */
 	protected $settings;
 
-	public function __construct(UserModel $userModel, Settings $settings)
+	/**
+	 * @var Text
+	 */
+	protected $text;
+
+	public function __construct(UserModel $userModel, Settings $settings, Text $text)
 	{
 		$this->userModel = $userModel;
 		$this->settings = $settings;
-	}
-
-	public function stalkingCheck(int $userStalkedId = 0): bool
-	{
-		$user_info = $this->settings->global('user_info');
-
-		if (empty($userId))
-			return true;
-
-		$userStalkedSettings = $this->userModel->getUserSettings($userStalkedId);
-
-		if (!empty($userStalkedSettings['kick_ignored']) && !empty($userStalkedSettings['ignoredList']))
-		{
-			$ignored = explode(',', $userStalkedSettings['ignoredList']);
-
-			return in_array($user_info['id'], $ignored);
-		}
-
-		return false;
-	}
-
-	public function floodControl(int $userId = 0): bool
-	{
-		if (empty($userId))
-			return false;
-
-		$seconds = 60 * ($this->settings->get('flood_minutes', 5));
-		$messages = $this->settings->get('flood_messages', 10);
-
-		// Has it been defined yet?
-		if (!isset($_SESSION['Breeze_floodControl' . $userId]))
-			$_SESSION['Breeze_floodControl' . $userId] = [
-			    'time' => time() + $seconds,
-			    'messagesCount' => 0,
-			];
-
-		$_SESSION['Breeze_floodControl' . $userId]['messagesCount']++;
-
-		// Short name.
-		$flood = $_SESSION['Breeze_floodControl' . $userId];
-
-		// Chatty one huh?
-		if ($flood['messagesCount'] >= $messages && time() <= $flood['time'])
-			return false;
-
-		// Enough time has passed, give the user some rest.
-		if (time() >= $flood['time'])
-			unset($_SESSION['Breeze_floodControl' . $userId]);
-
-		return true;
+		$this->text = $text;
 	}
 
 	public function loadUserInfo(array $userIds, $returnId = false)

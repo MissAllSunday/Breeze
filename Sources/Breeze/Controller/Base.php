@@ -4,27 +4,13 @@ declare(strict_types=1);
 
 namespace Breeze\Controller;
 
-use League\Container\Container as Container;
-use League\Container\ReflectionContainer as ReflectionContainer;
+use Breeze\Repository\User\Cover as CoverRepository;
+use Breeze\Service\Data;
 
 abstract class Base
 {
 	const CREATE = 'create';
 	const DELETE = 'delete';
-
-	/**
-	 * @var Container
-	 */
-	protected $container;
-
-	public function __construct()
-	{
-		$this->container = new Container;
-
-		$this->container->delegate(
-		    new ReflectionContainer
-		);
-	}
 
 	public function getActions(): array {
 		return [

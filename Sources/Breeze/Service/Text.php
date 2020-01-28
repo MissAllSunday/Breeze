@@ -9,6 +9,7 @@ class Text extends Base
 {
 	public function setLanguage(string $languageName): void
 	{
+		return loadLanguage($languageName);
 	}
 
 	public function get(string $textKey): string

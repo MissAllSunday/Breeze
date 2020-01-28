@@ -15,19 +15,19 @@ declare(strict_types=1);
 global $txt;
 
 // Public/General strings
-$txt['Breeze_general_wall'] = 'Wall';
+$txt['Breeze_general_wall'] = 'User';
 $txt['Breeze_general_wall_page'] = 'page';
 $txt['Breeze_general_summary'] = 'Summary';
 $txt['Breeze_load_more'] = 'Load more';
 $txt['Breeze_admin'] = 'Admin panel';
-$txt['Breeze_general_my_wall'] = 'My Wall';
-$txt['Breeze_general_my_wall_settings'] = 'My Wall Settings';
+$txt['Breeze_general_my_wall'] = 'My User';
+$txt['Breeze_general_my_wall_settings'] = 'My User General';
 $txt['Breeze_general_loading'] = 'Loading...';
 $txt['Breeze_general_like'] = 'Like';
 $txt['Breeze_general_delete'] = 'Delete';
 $txt['Breeze_general_upload'] = 'Upload';
 $txt['Breeze_general_cancel'] = 'Cancel';
-$txt['Breeze_general_posted_on'] = 'Posted on %s\'s Wall';
+$txt['Breeze_general_posted_on'] = 'Posted on %s\'s User';
 
 // Cover upload strings
 $txt['Breeze_cu_dictDefaultMessage'] = 'Drag and drop your files here';
@@ -40,9 +40,9 @@ $txt['Breeze_cu_max_width'] = 'Image exceeds maximum width, the max width value 
 $txt['Breeze_cu_max_height'] = 'Image exceeds maximum height, the max height value is {height}px';
 
 
-// User Individual Settings
-$txt['Breeze_profile'] = 'Wall Settings';
-$txt['Breeze_user_settings_name'] = 'Wall Settings';
+// User Individual General
+$txt['Breeze_profile'] = 'User General';
+$txt['Breeze_user_settings_name'] = 'User General';
 $txt['Breeze_user_settings_name_desc'] = 'Configure your wall and other general settings.';
 $txt['Breeze_user_buddysettings_name'] = 'Buddy Requests';
 $txt['Breeze_user_single_status'] = 'Single Status';
@@ -51,7 +51,7 @@ $txt['Breeze_user_notilogs_name'] = 'My Activity logs';
 $txt['Breeze_user_settings_name_cover'] = 'Cover image upload';
 $txt['Breeze_user_settings_name_alerts'] = 'My wall alerts';
 $txt['Breeze_user_settings_name_alerts_desc'] = 'Enable/disable single alerts, delete single/all alerts.';
-$txt['Breeze_user_settings_name_alerts_settings'] = 'Alert Settings';
+$txt['Breeze_user_settings_name_alerts_settings'] = 'Alert General';
 $txt['Breeze_user_settings_name_alerts_settings_desc'] = 'From here you can control which alerts you want other people to see.';
 $txt['Breeze_user_settings_name_alerts_edit'] = 'My Alerts';
 $txt['Breeze_user_settings_name_alerts_edit_desc'] = 'Delete your own alerts, if an alerts gets deleted, your buddies/other users won\'t be able to see them.';
@@ -132,7 +132,7 @@ $txt['Breeze_time_month'] = 'month';
 $txt['Breeze_time_year'] = 'year';
 
 // Validate strings
-$txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to see this Wall.';
+$txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to see this User.';
 $txt['permissiongroup_simple_breeze_per_simple'] = 'Breeze mod permissions';
 $txt['permissiongroup_breeze_per_classic'] = 'Breeze mod permissions';
 $txt['permissionname_breeze_canCover'] = 'Be able to upload an image as cover for their own wall <br /><span class="smalltext">  The master setting needs to be enable first.</span>';
@@ -193,7 +193,7 @@ $txt['Breeze_info_loadingAlerts_end'] = 'There are no more alerts to display';
 $txt['Breeze_page_no_status'] = 'There are no status to display';
 
 // Tabs
-$txt['Breeze_tabs_wall'] = 'Wall';
+$txt['Breeze_tabs_wall'] = 'User';
 $txt['Breeze_tabs_buddies'] = 'Buddies';
 $txt['Breeze_tabs_views'] = 'Profile Visitors';
 $txt['Breeze_tabs_pinfo'] = 'Profile Info';

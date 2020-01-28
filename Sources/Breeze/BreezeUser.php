@@ -293,7 +293,7 @@ class BreezeUser extends Breeze
 		$context['page_desc'] = $data->get('sa') && $tools->text('user_settings_name_alerts_' . $data->get('sa') . '_desc') ? $tools->text('user_settings_name_alerts_' . $data->get('sa') . '_desc') : $tools->text('user_settings_name_alerts_settings_desc');
 
 		// Call the right action.
-		$call = 'alert' . ($data->get('sa') ? ucfirst($data->get('sa')) : 'Settings');
+		$call = 'alert' . ($data->get('sa') ? ucfirst($data->get('sa')) : 'General');
 
 		// Call the right function.
 		$this->{$call}();

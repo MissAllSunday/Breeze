@@ -2,16 +2,6 @@
 
 declare(strict_types=1);
 
-/**
- * Breeze
- *
- * @package Breeze mod
- * @version 1.1
- * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2019, Jessica González
- * @license http://www.mozilla.org/MPL/ MPL 2.0
- */
-
 namespace Breeze;
 
 use Breeze\Controller\Buddy;
@@ -19,8 +9,13 @@ use Breeze\Controller\Comment;
 use Breeze\Controller\Cover;
 use Breeze\Controller\Mood;
 use Breeze\Controller\Status;
-use Breeze\Controller\Wall;
-use Pimple\Container as Container;
+use Breeze\Controller\User\Wall;
+use Breeze\Service\Permissions;
+use Breeze\Service\Settings;
+use Breeze\Service\Text;
+use Breeze\Service\User as UserService;
+use League\Container\Container as Container;
+use League\Container\ReflectionContainer as ReflectionContainer;
 
 if (!defined('SMF'))
 	die('No direct access...');
@@ -30,326 +25,95 @@ class Breeze
 	const NAME = 'Breeze';
 	const VERSION = '1.1';
 	const PATTERN = self::NAME . '_';
-
-	protected $_services = [
-	    'admin',
-	    'ajax',
-	    'alerts',
-	    'buddy',
-	    'data',
-	    'display',
-	    'form',
-	    'log',
-	    'noti',
-	    'query',
-	    'tools',
-	    'user',
-	    'userInfo',
-	    'wall',
-	    'mood',
-	];
-
-	public static $folder = '/Breeze/';
-
-	public static $coversFolder = '/breezeFiles/';
-
-	public $txtpattern = 'Breeze_';
-
-	public static $permissions = [
-	    'deleteComments',
-	    'deleteOwnComments',
-	    'deleteProfileComments',
-	    'deleteStatus',
-	    'deleteOwnStatus',
-	    'deleteProfileStatus',
-	    'postStatus',
-	    'postComments',
-	    'canCover',
-	    'canMood'
-	];
-
-	public static $allSettings = [
-	    'wall' => 'CheckBox',
-	    'general_wall' => 'CheckBox',
-	    'pagination_number' => 'Int',
-	    'number_alert' => 'Int',
-	    'load_more' => 'CheckBox',
-	    'activityLog' => 'CheckBox',
-	    'kick_ignored' => 'CheckBox',
-	    'blockList' => 'Text',
-	    'blockListIDs' => 'Array',
-	    'buddies' => 'CheckBox',
-	    'how_many_buddies' => 'Int',
-	    'visitors' => 'CheckBox',
-	    'how_many_visitors' => 'Int',
-	    'clear_noti' => 'HTML',
-	    'aboutMe' => 'TextArea',
-	    'cover_height' => 'Int',
-	];
-
-	public $likeTypes = ['breSta' => 'status', 'breCom' => 'comments'];
-
-	public $trackHooks = [
-	    'integrate_create_topic' => 'createTopic',
-	    'integrate_profile_save' => 'editProfile',
-	];
-
-	public $wrapperActions = ['wall', 'ajax', 'admin', 'mood', 'buddy'];
-
-	// Support site feed
-	public static $supportSite = 'https://github.com/MissAllSunday/Breeze/releases.atom';
+	const FEED = '//github.com/MissAllSunday/Breeze/releases.atom';
 
 	/**
-	 * \Breeze\Breeze::__construct()
-	 *
-	 * @return \Breeze
+	 * @var Settings
 	 */
+	protected $settings;
+
+	/**
+	 * @var Text
+	 */
+	protected $text;
+
+	/**
+	 * @var Container
+	 */
+	protected $container;
+
 	public function __construct()
 	{
+		$this->container = new Container;
+
+		$this->container->delegate(
+		    new ReflectionContainer
+		);
+
+		$this->settings = $this->container->get(Settings::class);
+		$this->text = $this->container->get(Text::class);
 	}
 
-	public function autoLoad(&$classMap): void
-	{
-		$classMap['Breeze\\'] = 'Breeze/';
-	}
-
-	/**
-	 * \Breeze\Breeze::set()
-	 *
-	 */
-	protected function set(): void
-	{
-		// Set all of our services
-		foreach($this->_services as $s)
-		{
-			$this[$s] = function ($c) use ($s)
-			{
-				$call = __NAMESPACE__ . '\\' . Breeze::NAME . ucfirst($s);
-
-				return new $call($c);
-			};
-		}
-
-		// ...and a nice session var, for reasons...
-		$_SESSION['Breeze'] = [];
-	}
-
-	/**
-	 * \Breeze\Breeze::get()
-	 *
-	 * A short-cut method to get access to services
-	 * @param string $id the name of the service to retrieve.
-	 * @return object an instance of the service.
-	 */
-	public function get($id)
-	{
-		if (!isset($this[$id]))
-			fatal_lang_error('Breeze_error_no_property', false, [$id]);
-
-		if (is_callable($this[$id]))
-			return $this[$id]($this);
-
-			return $this[$id];
-	}
-
-	/**
-	 * \Breeze\Breeze::load()
-	 *
-	 * @param string $file a comma separated list of all the file names to be loaded.
-	 *
-	 */
-	public function load($file): void
-	{
-		global $sourcedir;
-
-		if (empty($file))
-			return;
-
-		if (is_array($file) && !empty($file))
-			foreach ($file as $f)
-				require_once ($sourcedir . '/' . $f . '.php');
-
-		elseif (!empty($file))
-			require_once ($sourcedir . '/' . $file . '.php');
-	}
-
-	/**
-	 * \Breeze\Breeze::permissions()
-	 *
-	 * There is only permissions to post new status and comments on any profile because people needs to be able to post in their own profiles by default the same goes for deleting, people are able to delete their own status/comments on their own profile page.
-	 * @param array $permissionGroups An array containing all possible permissions groups.
-	 * @param array $permissionList An associative array with all the possible permissions.
-	 */
 	public function permissions(&$permissionGroups, &$permissionList): void
 	{
-		// We gotta load our language file.
-		loadLanguage(\Breeze\Breeze::NAME);
-
-		$permissionGroups['membergroup']['simple'] = ['breeze_per_simple'];
-		$permissionGroups['membergroup']['classic'] = ['breeze_per_classic'];
-
-		foreach (\Breeze\Breeze::$permissions as $p)
-			$permissionList['membergroup']['breeze_' . $p] = [
-			    false,
-			    'breeze_per_classic',
-			    'breeze_per_simple'];
+		$this->container->get(Permissions::class)->hookPermissions($permissionGroups, $permissionList);
 	}
 
-	/**
-	 * \Breeze\Breeze::profile()
-	 *
-	 * Replace the summary action with the action created by Breeze
-	 *
-	 * @see BreezeUser::wall()
-	 * @param array $profile_areas An array containing all possible tabs for the profile menu.
-	 */
 	public function profile(&$profile_areas): void
 	{
-		global $user_info, $context;
-
-		// General settings are required here
-		$tools = $this['tools'];
-
-		// Replace the summary page only if the mod is enable
-		if ($tools->enable('master'))
-		{
-			// We need your settings...
-			$userSettings = $this['query']->getUserSettings($context['member']['id']);
-
-			if ($tools->enable('force_enable') || !empty($userSettings['wall']))
-			{
-				$profile_areas['info']['areas']['summary'] = [
-				    'label' => $tools->text('general_wall'),
-				    'icon' => 'smiley',
-				    'file' => \Breeze\Breeze::$folder . 'BreezeUser.php',
-				    'function' => __NAMESPACE__ . '\BreezeUser::userWall#',
-				    'permission' => [
-				        'own' => 'is_not_guest',
-				        'any' => 'profile_view',
-				    ],
-				];
-
-				// If the mod is enable, then create another page for the default profile page
-				$profile_areas['info']['areas']['static'] = [
-				    'label' => $tools->text('general_summary'),
-				    'icon' => 'members',
-				    'file' => 'Profile-View.php',
-				    'function' => 'summary',
-				    'permission' => [
-				        'own' => 'is_not_guest',
-				        'any' => 'profile_view',
-				    ],
-				];
-			}
-
-			// Create the area
-			$profile_areas['breeze_profile'] = [
-			    'title' => $tools->text('general_my_wall_settings'),
-			    'areas' => [],
-			];
-
-			// User individual settings, show the button if the mod is enable and the user is the profile owner.
-			$profile_areas['breeze_profile']['areas']['breezesettings'] = [
-			    'label' => $tools->text('user_settings_name'),
-			    'icon' => 'maintain',
-			    'file' => \Breeze\Breeze::$folder . 'BreezeUser.php',
-			    'function' => __NAMESPACE__ . '\BreezeUser::userSettings#',
-			    'enabled' => $context['user']['is_owner'],
-			    'permission' => [
-			        'own' => 'is_not_guest',
-			        'any' => 'profile_view',
-			    ],
-			];
-
-			// Inner alert settings page.
-			$profile_areas['breeze_profile']['areas']['alerts'] = [
-			    'label' => $tools->text('user_settings_name_alerts'),
-			    'file' => \Breeze\Breeze::$folder . 'BreezeUser.php',
-			    'function' => __NAMESPACE__ . '\BreezeUser::userAlerts#',
-			    'enabled' => $context['user']['is_owner'],
-			    'icon' => 'maintain',
-			    'subsections' => [
-			        'settings' => [$tools->text('user_settings_name_alerts_settings'), ['is_not_guest', 'profile_view']],
-			        'edit' => [$tools->text('user_settings_name_alerts_edit'), ['is_not_guest', 'profile_view']],
-			    ],
-			    'permission' => [
-			        'own' => 'is_not_guest',
-			        'any' => 'profile_view',
-			    ],
-			];
-
-			// Cover settings page.
-			if ($tools->enable('cover'))
-				$profile_areas['breeze_profile']['areas']['breezecover'] = [
-				    'label' => $tools->text('user_settings_name_cover'),
-				    'icon' => 'administration',
-				    'file' => \Breeze\Breeze::$folder . 'BreezeUser.php',
-				    'function' => __NAMESPACE__ . '\BreezeUser::userCoverSettings#',
-				    'enabled' => $context['user']['is_owner'],
-				    'permission' => [
-				        'own' => 'is_not_guest',
-				        'any' => 'profile_view',
-				    ],
-				];
-		}
-		// Done with the hacking...
+		$this->container->get(UserService::class)->hookProfileMenu($profile_areas);
 	}
 
 	/**
 	 * \Breeze\Breeze::menu()
 	 *
-	 * Insert a Wall button on the menu buttons array
+	 * Insert a User button on the menu buttons array
 	 * @param array $menu_buttons An array containing all possible tabs for the main menu.
 	 * @link http://mattzuba.com
 	 */
 	public function menu(&$menu_buttons): void
 	{
-		global $context, $txt, $scripturl, $user_info;
-
-		// Don't do anything if the mod is off
-		if (!$this['tools']->enable('master'))
+		if (!$this->settings->enable('master'))
 			return;
 
-		$tools = $this['tools'];
-		$userSettings = $this['query']->getUserSettings($user_info['id']);
+		$scriptUrl = $this->settings->global('scripturl');
+		$currentUserInfo = $this->settings->global('user_info');
+		$currentUserSettings = $this->container->get(UserService::class)->getCurrentUserSettings();
 
-		// Display the js and css files.
-		$this->notiHeaders();
-
-		// Replace the duplicate profile button
 		if (!empty($menu_buttons['profile']['sub_buttons']['summary']))
 			$menu_buttons['profile']['sub_buttons']['summary'] = [
-			    'title' => $txt['summary'],
-			    'href' => $scripturl . '?action=profile;area=static',
+			    'title' => $this->text->get('summary'),
+			    'href' => $scriptUrl . '?action=profile;area=static',
 			    'show' => true,
 			];
 
-		// The Wall link
-		$insert = 'home'; // for now lets use the home button as reference...
+		$menuReference = 'home';
 		$counter = 0;
 
 		foreach ($menu_buttons as $area => $dummy)
-			if (++$counter && $area == $insert)
+			if (++$counter && $area == $menuReference)
 				break;
 
 		$menu_buttons = array_merge(
 		    array_slice($menu_buttons, 0, $counter),
 		    ['wall' => [
-		        'title' => $tools->text('general_wall'),
+		        'title' => $this->text->get('general_wall'),
 		        'icon' => 'smiley',
-		        'href' => $scripturl . '?action=wall',
-		        'show' => ($tools->enable('master') && !$user_info['is_guest'] && !empty($userSettings['general_wall'])),
+		        'href' => $scriptUrl . '?action=wall',
+		        'show' => ($this->settings->enable('master') &&
+					!$currentUserInfo['is_guest'] &&
+					!empty($currentUserSettings['general_wall'])),
 		        'sub_buttons' => [
 		            'noti' => [
-		                'title' => $tools->text('user_notisettings_name'),
-		                'href' => $scripturl . '?action=profile;area=alerts;sa=edit;u=' . $user_info['id'],
-		                'show' => ($tools->enable('master') && !$user_info['is_guest']),
+		                'title' => $this->text->get('user_notisettings_name'),
+		                'href' => $scriptUrl . '?action=profile;area=alerts;sa=edit;u=' . $currentUserInfo['id'],
+		                'show' => ($this->settings->enable('master') && !$currentUserInfo['is_guest']),
 		                'sub_buttons' => [],
 		            ],
 		            'admin' => [
-		                'title' => $tools->text('admin'),
-		                'href' => $scripturl . '?action=admin;area=breezeadmin',
-		                'show' => ($tools->enable('master') && $user_info['is_admin']),
+		                'title' => $this->text->get('admin'),
+		                'href' => $scriptUrl . '?action=admin;area=breezeadmin',
+		                'show' => ($this->settings->enable('master') && $currentUserInfo['is_admin']),
 		                'sub_buttons' => [],
 		            ],
 		        ],
@@ -381,196 +145,14 @@ class Breeze
 		$actions['breezeCover'] = [false, Cover::class . '::do#'];
 	}
 
-	/**
-	 * \Breeze\Breeze::call()
-	 *
-	 * Wrapper method to call Breeze methods while maintaining dependency injection.
-	 */
-	public function call(): void
-	{
-		// Just some quick code to make sure this works...
-		$action = str_replace('breeze', '', $this->data('get')->get('action'));
-
-		// Don't do anything if the mod is off
-		if (!$this['tools']->enable('master') && 'admin' != $action)
-			return;
-
-		if (!empty($action) && in_array($action, $this->wrapperActions))
-			$this[$action]->call();
-	}
-
-	/**
-	 * \Breeze\Breeze::trackHooks()
-	 *
-	 * Creates a list of hooks used to track user actions. Should really make sure Breeze is the last hook added.
-	 */
-	public function trackHooks(): void
-	{
-		// Been the last on the line is cool!
-		foreach ($this->trackHooks as $hook => $function)
-			add_integration_function($hook, 'BreezeTrackActions::' . $function, false, '$sourcedir/Breeze/BreezeTrackActions.php', true);
-	}
-
-	/**
-	 * \Breeze\Breeze::displayCover()
-	 *
-	 * Creates and prints an user cover. If the user does not have a cover it returns false.
-	 */
-	public function displayCover(): void
-	{
-		global $smcFunc, $modSettings, $maintenance;
-
-		// Get the user ID.
-		$useriD = $this->data('get')->get('u');
-
-		// Thumbnail?
-		$thumb = $this->data('get')->validate('thumb');
-
-		// Kinda need this!
-		if (!$this['tools']->enable('cover') || empty($useriD))
-		{
-			header('HTTP/1.0 404 File Not Found');
-			die('404 File Not Found');
-		}
-
-		// Get the user's settings.
-		$userSettings = $this['query']->getUserSettings($useriD);
-
-		// Gotta work with paths.
-		$folder = $this['tools']->boardDir . \Breeze\Breeze::$coversFolder . $useriD . '/' . ($thumb ? 'thumbnail/' : '');
-
-		// False if there is no image.
-		$file = empty($userSettings['cover']) ? false : $folder . $userSettings['cover']['basename'];
-
-		// Lots and lots of checks!
-		if ((!empty($maintenance) && 2 == $maintenance) || empty($file) || !file_exists($file))
-		{
-			header('HTTP/1.0 404 File Not Found');
-			die('404 File Not Found');
-		}
-
-		// Kill anything else
-		ob_end_clean();
-
-		// This is done to clear any output that was made before now.
-		if(!empty($modSettings['enableCompressedOutput']) && !headers_sent() && 0 == ob_get_length())
-		{
-			if('1' == @ini_get('zlib.output_compression') || 'ob_gzhandler' == @ini_get('output_handler'))
-				$modSettings['enableCompressedOutput'] = 0;
-			else
-				ob_start('ob_gzhandler');
-		}
-
-		if(empty($modSettings['enableCompressedOutput']))
-		{
-			ob_start();
-			header('Content-Encoding: none');
-		}
-
-		// Get some info.
-		$fileTime = filemtime($file);
-
-		// If it hasn't been modified since the last time this attachment was retrieved, there's no need to display it again.
-		if (!empty($_SERVER['HTTP_IF_MODIFIED_SINCE']))
-		{
-			[$modified_since] = explode(';', $_SERVER['HTTP_IF_MODIFIED_SINCE']);
-			if (strtotime($modified_since) >= $fileTime)
-			{
-				ob_end_clean();
-
-				// Answer the question - no, it hasn't been modified ;).
-				header('HTTP/1.1 304 Not Modified');
-				exit;
-			}
-		}
-
-		header('Pragma: ');
-		header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 31536000) . ' GMT');
-		header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $fileTime) . ' GMT');
-		header('Accept-Ranges: bytes');
-		header('Connection: close');
-		header('ETag: ' . md5($fileTime));
-		header('Content-Type: ' . $userSettings['cover']['mime']);
-
-		// Since we don't do output compression for files this large...
-		if (4194304 < filesize($file))
-		{
-			// Forcibly end any output buffering going on.
-			while (0 < @ob_get_level())
-				@ob_end_clean();
-
-			$fp = fopen($file, 'rb');
-			while (!feof($fp))
-			{
-				echo fread($fp, 8192);
-				flush();
-			}
-			fclose($fp);
-		}
-
-		// On some of the less-bright hosts, readfile() is disabled.  It's just a faster, more byte safe, version of what's in the if.
-		elseif (null === @readfile($file))
-			echo file_get_contents($file);
-
-		die();
-	}
-
-	/**
-	 * \Breeze\Breeze::profilePopUp()
-	 *
-	 * Adds a few new entries on the pop up menu stuff.
-	 */
 	public function profilePopUp(&$profile_items): void
 	{
-		global $user_info, $txt;
-
-		// Can't do much if the master setting is off.
-		if (!$this['tools']->enable('master'))
-			return;
-
-		$userSettings = $this['query']->getUserSettings($user_info['id']);
-
-		// Gotta replace the Summary link with the static one if the wall is enable.
-		if ($this['tools']->enable('force_enable') || !empty($userSettings['wall']))
-			foreach ($profile_items as &$item)
-				if ('summary' == $item['area'])
-					$item['area'] = 'static';
-
-		// Add a nice link to the user's wall settings page.
-		$profile_items[] = [
-		    'menu' => 'breeze_profile',
-		    'area' => 'alerts',
-		    'url' => $this['tools']->scriptUrl . '?action=profile;area=breezesettings;u=' . $user_info['id'],
-		    'title' => $this['tools']->text('general_my_wall_settings'),
-		];
-	}
-
-	public function alerts(&$alerts): void
-	{
-		// Don't do anything if the mod is off
-		if (!$this['tools']->enable('master'))
-			return;
-
-		// Get the results back from BreezeAlerts.
-		$this['alerts']->call($alerts);
+		$this->container->get(UserService::class)->hookProfilePopUp($profile_items);
 	}
 
 	public function alertsPref(&$alert_types, &$group_options): void
 	{
-		// Don't do anything if the mod is off
-		if (!$this['tools']->enable('master'))
-			return;
-
-		// Gonna need some strings.
-		$this['tools']->loadLanguage('alerts');
-
-		$alert_types['breeze'] = [
-		    '' . $this->txtpattern . 'status_owner' => ['alert' => 'yes', 'email' => 'never'],
-		    '' . $this->txtpattern . 'comment_status_owner' => ['alert' => 'yes', 'email' => 'never'],
-		    '' . $this->txtpattern . 'comment_profile_owner' => ['alert' => 'yes', 'email' => 'never'],
-		    '' . $this->txtpattern . 'mention' => ['alert' => 'yes', 'email' => 'never'],
-		    '' . $this->txtpattern . 'like' => ['alert' => 'yes', 'email' => 'never'],
-		];
+		$this->container->get(UserService::class)->hookAlertsPref($alert_types);
 	}
 
 	public function likes($type, $content, $sa, $js, $extra)

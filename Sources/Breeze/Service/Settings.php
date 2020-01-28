@@ -9,6 +9,25 @@ use Breeze\Breeze;
 
 class Settings extends Base
 {
+	public static $allSettings = [
+	    'wall' => 'CheckBox',
+	    'general_wall' => 'CheckBox',
+	    'pagination_number' => 'Int',
+	    'number_alert' => 'Int',
+	    'load_more' => 'CheckBox',
+	    'activityLog' => 'CheckBox',
+	    'kick_ignored' => 'CheckBox',
+	    'blockList' => 'Text',
+	    'blockListIDs' => 'Array',
+	    'buddies' => 'CheckBox',
+	    'how_many_buddies' => 'Int',
+	    'visitors' => 'CheckBox',
+	    'how_many_visitors' => 'Int',
+	    'clear_noti' => 'HTML',
+	    'aboutMe' => 'TextArea',
+	    'cover_height' => 'Int',
+	];
+
 	public function get(string $settingName, $fallBack = false)
 	{
 		$modSettings = $this->global('modSettings');

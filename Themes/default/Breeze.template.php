@@ -88,7 +88,7 @@ function template_user_wall_below(): void
 			</div>
 			<p class="clear" />';
 
-	// Wall
+	// User
 	echo '
 		<div id="tab-wall">';
 	// A nice title bar
@@ -138,7 +138,7 @@ function template_user_wall_below(): void
 				</div>
 			</div>
 			<br>';
-	// Wall end
+	// User end
 	echo '
 		</div>';
 
@@ -478,7 +478,7 @@ function template_general_wall(): void
 			</div>
 			<br>';
 
-	// Wall end
+	// User end
 	echo '
 		</div>';
 
