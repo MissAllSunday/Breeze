@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\User;
 
-
 use Breeze\Service\Settings as Settings;
 
 class Cover

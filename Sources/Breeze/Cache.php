@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 use Breeze\Breeze as Breeze;
 
@@ -8,8 +10,8 @@ trait Cache
 	public function get(string $key, int $timeToLive = 360): ?array
 	{
 		return cache_get_data(
-			Breeze::PATTERN . $key,
-			$timeToLive
+		    Breeze::PATTERN . $key,
+		    $timeToLive
 		);
 	}
 
@@ -17,5 +19,4 @@ trait Cache
 	{
 		cache_put_data(Breeze::PATTERN . $key, $data, $timeToLive);
 	}
-
 }

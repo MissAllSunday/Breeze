@@ -14,15 +14,18 @@ declare(strict_types=1);
 
 namespace Breeze;
 
+use Breeze\Controller\Buddy;
+use Breeze\Controller\Comment;
+use Breeze\Controller\Cover;
+use Breeze\Controller\Mood;
+use Breeze\Controller\Status;
+use Breeze\Controller\Wall;
 use Pimple\Container as Container;
 
 if (!defined('SMF'))
 	die('No direct access...');
 
-// Still need to manually load Pimple :(
-require_once $sourcedir . '/Breeze/Pimple/Container.php';
-
-class Breeze extends Container
+class Breeze
 {
 	const NAME = 'Breeze';
 	const VERSION = '1.1';
@@ -103,8 +106,6 @@ class Breeze extends Container
 	 */
 	public function __construct()
 	{
-		parent::__construct();
-		$this->set();
 	}
 
 	public function autoLoad(&$classMap): void
@@ -170,18 +171,6 @@ class Breeze extends Container
 
 		elseif (!empty($file))
 			require_once ($sourcedir . '/' . $file . '.php');
-	}
-
-	/**
-	 * $this->data()
-	 *
-	 * A new instance of BreezeGlobals.
-	 * @param string $var Either post, request or get
-	 * @return object Access to BreezeGlobals
-	 */
-	public static function data($var = false)
-	{
-		return new BreezeData($var = false);
 	}
 
 	/**
@@ -384,20 +373,12 @@ class Breeze extends Container
 		if (!$this['tools']->enable('master'))
 			return;
 
-		// A whole new action just for some ajax calls. Actually, a pretty good chunk of Breeze transactions come through here so...
-		$actions['breezeajax'] = [false, '\Breeze\Breeze::call#'];
-
-		// The general wall
-		$actions['wall'] = [false, '\Breeze\Breeze::call#'];
-
-		// Replace the buddy action.
-		$actions['buddy'] = [false, '\Breeze\Breeze::call#'];
-
-		// Action used when an user wants to change their mood.
-		$actions['breezemood'] = [false, '\Breeze\Breeze::call#'];
-
-		// Displaying the users cover/thumbnail.
-		$actions['breezecover'] = [false, '\Breeze\Breeze::displayCover#'];
+		$actions['breezeStatus'] = [false,  Status::class . '::do#'];
+		$actions['breezeComment'] = [false, Comment::class . '::do#'];
+		$actions['breezeWall'] = [false, Wall::class . '::do#'];
+		$actions['breezeBuddy'] = [false, Buddy::class . '::do#'];
+		$actions['breezeMood'] = [false, Mood::class . '::do#'];
+		$actions['breezeCover'] = [false, Cover::class . '::do#'];
 	}
 
 	/**
@@ -680,7 +661,7 @@ class Breeze extends Container
 			return $data[$authorColumn];
 
 		// Return false if the status/comment is no longer on the DB.
-		
+
 			return false;
 	}
 

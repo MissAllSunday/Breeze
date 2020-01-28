@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/**
- * BreezeAjax
- *
- * @package Breeze mod
- * @version 1.1
- * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2019, Jessica González
- * @license http://www.mozilla.org/MPL/ MPL 2.0
- */
 
 namespace Breeze;
 
@@ -249,12 +240,12 @@ class BreezeAjax
 			}
 
 			// Something went terrible wrong!
-			
+
 				return $this->setResponse(['owner' => $owner,]);
 		}
 
 		// There was an (generic) error
-		
+
 			return $this->setResponse(['owner' => $owner,]);
 	}
 
@@ -384,12 +375,12 @@ class BreezeAjax
 			}
 
 			// Something wrong with the server.
-			
+
 				return $this->setResponse(['owner' => $owner, 'type' => 'error',]);
 		}
 
 		// There was an error
-		
+
 			return $this->setResponse(['owner' => $owner, 'type' => 'error',]);
 	}
 
@@ -581,7 +572,7 @@ class BreezeAjax
 			]);
 		}
 
-		
+
 			return $this->setResponse([
 			    'type' => 'info',
 			    'message' => 'loading_end',
@@ -643,7 +634,7 @@ class BreezeAjax
 			]);
 		}
 
-		
+
 			return $this->setResponse([
 			    'type' => 'info',
 			    'message' => 'loadingAlerts_end',
@@ -712,12 +703,12 @@ class BreezeAjax
 				    'owner' => $this->_currentUser,
 				]);
 
-			
-			
+
+
 				$file->error = $this->_app['tools']->parser($file->error, $replaceValues);
 
 				return $this->_response = $file;
-			
+
 		}
 
 		// Do changes only if the image was uploaded.
@@ -816,7 +807,7 @@ class BreezeAjax
 		}
 
 		// Nothing to delete...
-		
+
 			return $this->setResponse([
 			    'type' => 'error',
 			    'message' => 'no_cover_deleted',
