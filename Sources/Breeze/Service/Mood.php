@@ -4,21 +4,32 @@
 namespace Breeze\Service;
 
 
-use Breeze\Repository\Mood as MoodRepository $moodRepository;
+use Breeze\Repository\Mood as MoodRepository;
 
 class Mood extends Base
 {
-	public function __construct(MoodRepository $moodRepository)
+	/**
+	 * @var MoodRepository
+	 */
+	protected $moodRepository;
+
+	/**
+	 * @var Settings
+	 */
+	protected $settings;
+
+	public function __construct(MoodRepository $moodRepository, Settings $settings)
 	{
+		$this->moodRepository = $moodRepository;
+		$this->settings = $settings;
 	}
 
 	public function displayMood(array &$data, int $userId): void
 	{
-		if (!$this['tools']->enable('master') || !$this['tools']->enable('mood'))
+		if (!$this->settings->enable('master') || !$this->settings->enable('mood'))
 			return;
 
-		// Append the result to the custom fields array.
-		$data['custom_fields'][] =  $this['mood']->show($user);
+		$data['custom_fields'][] =  $this->moodRepository->getMood($userId);
 	}
 
 	public function moodProfile($memID, $area): void
