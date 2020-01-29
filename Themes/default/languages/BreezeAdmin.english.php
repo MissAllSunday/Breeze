@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * BreezeAdmin.english
  *
@@ -12,13 +14,13 @@
 
 global $txt;
 
-// Admin Settings
+// Admin General
 $txt['Breeze_page_panel'] = 'Breeze Admin Panel';
 $txt['Breeze_page_welcome'] = 'This is your &quot;Breeze Admin Panel&quot;.  From here, you can edit the settings for Breeze If you have any trouble, feel free to <a href="http://missallsunday.com" target="_blank" class="new_win">ask for support</a> on the author\'s site.';
 $txt['Breeze_page_main'] = 'Main Breeze Admin Center';
-$txt['Breeze_page_permissions'] = 'Permissions';
+$txt['Breeze_page_permissions'] = 'Validate';
 $txt['Breeze_page_permissions_desc'] = 'From here you can add/remove specific Breeze permissions.';
-$txt['Breeze_page_settings'] = 'General Settings';
+$txt['Breeze_page_settings'] = 'General General';
 $txt['Breeze_page_settings_desc'] = 'This is the general settings page, from here you can enable/disable the mod as well as configuring general settings.';
 $txt['Breeze_page_donate'] = 'Donate';
 $txt['Breeze_page_donate_desc'] = 'Boring stuff you were curious about it but you\'ll never gonna see it again :P';
@@ -30,14 +32,14 @@ $txt['Breeze_page_mood_create'] = 'Add a new mood';
 $txt['Breeze_page_mood_edit_create'] = 'Creating a new mood';
 $txt['Breeze_page_mood_edit_create_desc'] = 'Remember that you need to upload your images to the correct folder <strong>before</strong> adding new moods';
 $txt['Breeze_page_mood_edit_update'] = 'Editing a mood';
-$txt['Breeze_page_mood_edit_update_desc'] = 'Remember that you need to upload your images to the correct folder <strong>before</strong> adding new moods'; 
+$txt['Breeze_page_mood_edit_update_desc'] = 'Remember that you need to upload your images to the correct folder <strong>before</strong> adding new moods';
 $txt['Breeze_page_mood__noList'] = 'There aren\'t any moods to display';
 $txt['Breeze_page_donate_exp'] = 'Breeze is a free SMF modification brought to you by a PHP enthusiast on her free time.<p />If you like this modification and would like to show your appreciation, please consider making a <a href="http://missallsunday.com/">donation</a>. Your donation will be used to cover server costs and/or to buy shoes, shoes keeps the developer happy and if she is happy then there will be more updates ;)<p />You can also show your appreciation by letting me know you are using Breeze on your forum, come by, say hi and show me your shiny profile pages powered by Breeze.';
 $txt['Breeze_page_credits'] = 'Credits';
 $txt['Breeze_page_credits_decs'] = 'Breeze is brought to you by the following persons and/or scripts:';
-$txt['Breeze_enable_general_wall'] = 'Enable General Wall';
+$txt['Breeze_enable_general_wall'] = 'Enable General User';
 $txt['Breeze_enable_general_wall_sub'] = 'If enable, a general wall will appear, in this general wall the user will be able to see his/her buddie\'s status and recent activity';
-$txt['Breeze_menu_position'] = 'Select the position for the general Wall button.';
+$txt['Breeze_menu_position'] = 'Select the position for the general User button.';
 $txt['Breeze_menu_position_sub'] = 'By default is next to the home button.';
 $txt['Breeze_master'] = 'Enable Breeze mod';
 $txt['Breeze_master_sub'] = 'The master setting, this must be enable for the mod to work properly.';

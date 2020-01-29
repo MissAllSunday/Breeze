@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * BreezeAdmin.template.php
  *
@@ -11,7 +13,7 @@
  */
 
 // The admin panel where the news and other very useful stuff is displayed
-function template_admin_home()
+function template_admin_home(): void
 {
 	global $txt, $context;
 
@@ -103,7 +105,7 @@ function template_admin_home()
 	<br />';
 }
 
-function template_manage_mood()
+function template_manage_mood(): void
 {
 	global $context, $txt;
 
@@ -111,10 +113,10 @@ function template_manage_mood()
 	if (!empty($context['mood']['notice']))
 	{
 		echo '
-		<div class="'. $context['mood']['notice']['type'] .'box">';
+		<div class="' . $context['mood']['notice']['type'] . 'box">';
 
 		foreach ($context['mood']['notice']['message'] as $m)
-			echo '', $txt['Breeze_mood_'. $m] ,'';
+			echo '', $txt['Breeze_mood_' . $m] ,'';
 
 		echo '
 		</div><br />';
@@ -123,7 +125,7 @@ function template_manage_mood()
 	template_show_list('breeze_mood_list');
 }
 
-function template_manage_mood_edit()
+function template_manage_mood_edit(): void
 {
 	global $context, $txt, $scripturl;
 
@@ -132,10 +134,10 @@ function template_manage_mood_edit()
 	{
 		echo '
 		<div class="errorbox">
-		<p>'. $txt['Breeze_mood_errors'] .'</p>';
+		<p>' . $txt['Breeze_mood_errors'] . '</p>';
 
 		foreach ($context['mood']['notice']['message'] as $e)
-			echo '<li>', $txt['Breeze_mood_'. $e] ,'</li>';
+			echo '<li>', $txt['Breeze_mood_' . $e] ,'</li>';
 
 		echo '
 		</div><br />';
@@ -149,7 +151,7 @@ function template_manage_mood_edit()
 }
 
 // Boring stuff you will never see...
-function template_admin_donate()
+function template_admin_donate(): void
 {
 	global $context;
 

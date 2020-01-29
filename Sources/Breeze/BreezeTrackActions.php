@@ -24,7 +24,7 @@ class BreezeTrackActions extends Breeze
 		parent::__construct();
 	}
 
-	public function createTopic(&$msgOptions, &$topicOptions, &$posterOptions)
+	public function createTopic(&$msgOptions, &$topicOptions, &$posterOptions): void
 	{
 		// Get the poster's options.
 		$options = $this['query']->getUserSettings($posterOptions['id']);
@@ -45,7 +45,7 @@ class BreezeTrackActions extends Breeze
 			]);
 	}
 
-	public function editProfile(&$profile_vars, &$post_errors, $memID, $cur_profile, $current_area)
+	public function editProfile(&$profile_vars, &$post_errors, $memID, $cur_profile, $current_area): void
 	{
 	}
 }

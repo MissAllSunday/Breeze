@@ -20,8 +20,11 @@ if (!defined('SMF'))
 class BreezeLog
 {
 	protected $_users = [];
+
 	protected $_data = [];
+
 	protected $_app;
+
 	public $alerts = ['cover', 'mood', 'like', 'status', 'comment', 'topic', 'buddyConfirmation'];
 
 	function __construct(Breeze $app)
@@ -58,7 +61,7 @@ class BreezeLog
 		];
 	}
 
-	protected function call()
+	protected function call(): void
 	{
 		global $context, $smcFunc;
 
@@ -77,7 +80,7 @@ class BreezeLog
 			$toLoad = array_merge($toLoad, $this->_data[$id]['extra']['toLoad']);
 
 			// If there are "topic" notifications, we need to make sure the current user can see them.
-			if ($this->_data[$id]['content_type'] == 'topic' && !empty($this->_data[$id]['extra']['messageID']))
+			if ('topic' == $this->_data[$id]['content_type'] && !empty($this->_data[$id]['extra']['messageID']))
 				$checkMsg[$id] = $this->_data[$id]['extra']['messageID'];
 		}
 
@@ -137,7 +140,7 @@ class BreezeLog
 		}
 	}
 
-	public function mood($id)
+	public function mood($id): void
 	{
 		// Add the custom icon.
 		$this->_data[$id]['icon'] = 'smile-o';
@@ -154,7 +157,7 @@ class BreezeLog
 		]);
 	}
 
-	public function cover($id)
+	public function cover($id): void
 	{
 		// Add the custom icon.
 		$this->_data[$id]['icon'] = 'photo';
@@ -166,7 +169,7 @@ class BreezeLog
 		]);
 	}
 
-	public function status($id)
+	public function status($id): void
 	{
 		// Add the custom icon.
 		$this->_data[$id]['icon'] = 'comment';
@@ -179,7 +182,7 @@ class BreezeLog
 		]);
 	}
 
-	public function comment($id)
+	public function comment($id): void
 	{
 		// Add the custom icon.
 		$this->_data[$id]['icon'] = 'comments';
@@ -192,7 +195,7 @@ class BreezeLog
 		]);
 	}
 
-	public function like($id)
+	public function like($id): void
 	{
 		// Add the custom icon.
 		$this->_data[$id]['icon'] = 'thumbs-o-up';
@@ -212,7 +215,7 @@ class BreezeLog
 		]);
 	}
 
-	public function topic($id)
+	public function topic($id): void
 	{
 		$this->_data[$id]['icon'] = 'comment-o';
 
@@ -223,7 +226,7 @@ class BreezeLog
 		]);
 	}
 
-	public function buddyConfirmed($id)
+	public function buddyConfirmed($id): void
 	{
 		// Add the custom icon.
 		$this->_data[$id]['icon'] = 'users';

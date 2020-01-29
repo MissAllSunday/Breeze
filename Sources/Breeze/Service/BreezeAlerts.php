@@ -20,8 +20,11 @@ if (!defined('SMF'))
 class BreezeAlerts
 {
 	protected $_alerts;
+
 	protected $_app;
+
 	protected $_usersData;
+
 	protected $_scriptUrl;
 
 	public function __construct(Breeze $app)
@@ -32,7 +35,7 @@ class BreezeAlerts
 		$this->_app['tools']->loadLanguage('alerts');
 	}
 
-	public function call(&$alerts)
+	public function call(&$alerts): void
 	{
 		global $memberContext;
 
@@ -40,7 +43,7 @@ class BreezeAlerts
 		$toLoad = [];
 
 		foreach ($alerts as $id => $a)
-			if (strpos($a['content_type'], $this->_app->txtpattern) !== false && !empty($a['extra']['toLoad']))
+			if (false !== strpos($a['content_type'], $this->_app->txtpattern) && !empty($a['extra']['toLoad']))
 				$toLoad = array_merge($toLoad, $a['extra']['toLoad']);
 
 		if (!empty($toLoad))
@@ -53,7 +56,7 @@ class BreezeAlerts
 
 		// What type are we gonna handle? oh boy there are a lot!
 		foreach ($alerts as $id => $a)
-			if (strpos($a['content_type'], $this->_app->txtpattern) !== false)
+			if (false !== strpos($a['content_type'], $this->_app->txtpattern))
 			{
 				// Need to remove the Breeze identifier.
 				$a['content_type'] = str_replace($this->_app->txtpattern, '', $a['content_type']);

@@ -29,9 +29,8 @@ class BreezeUser extends Breeze
      *
      * Main function, shows the wall, activity, buddies, visitors and any other possible info.
      * @param $memID
-     * @return void
      */
-	function userWall($memID)
+	function userWall($memID): void
 	{
 		global $txt, $context, $memberContext;
 		global $modSettings,  $user_info;
@@ -115,7 +114,7 @@ class BreezeUser extends Breeze
 
 		// Set up some vars for pagination.
 		$maxIndex = !empty($context['Breeze']['settings']['visitor']['pagination_number']) ? $context['Breeze']['settings']['visitor']['pagination_number'] : 5;
-		$currentPage = $data->validate('start') == true ? $data->get('start') : 0;
+		$currentPage = true == $data->validate('start') ? $data->get('start') : 0;
 
 		// Load all the status.
 		$status = $query->getStatusByProfile($context['member']['id'], $maxIndex, $currentPage);
@@ -268,9 +267,8 @@ class BreezeUser extends Breeze
      * BreezeUser::alerts()
      *
      * Creates alert settings and configuration pages.
-     * @return void
      */
-	function userAlerts()
+	function userAlerts(): void
 	{
 		global $context;
 
@@ -295,13 +293,13 @@ class BreezeUser extends Breeze
 		$context['page_desc'] = $data->get('sa') && $tools->text('user_settings_name_alerts_' . $data->get('sa') . '_desc') ? $tools->text('user_settings_name_alerts_' . $data->get('sa') . '_desc') : $tools->text('user_settings_name_alerts_settings_desc');
 
 		// Call the right action.
-		$call = 'alert' . ($data->get('sa') ? ucfirst($data->get('sa')) : 'Settings');
+		$call = 'alert' . ($data->get('sa') ? ucfirst($data->get('sa')) : 'General');
 
 		// Call the right function.
 		$this->{$call}();
 	}
 
-	public function alertSettings()
+	public function alertSettings(): void
 	{
 		global $context;
 
@@ -353,7 +351,7 @@ class BreezeUser extends Breeze
 	});', true);
 	}
 
-	public function alertEdit()
+	public function alertEdit(): void
 	{
 		global $context, $scripturl, $txt;
 
@@ -419,9 +417,8 @@ class BreezeUser extends Breeze
      * BreezeUser::settings()
      *
      * Creates a form for each user to configure their wall settings.
-     * @return void
      */
-	function userSettings()
+	function userSettings(): void
 	{
 		global $context, $txt, $modSettings, $user_info;
 
@@ -587,9 +584,8 @@ class BreezeUser extends Breeze
      * BreezeUser::coverSettings()
      *
      * Uploads an user image for their wall.
-     * @return void
      */
-	function userCoverSettings()
+	function userCoverSettings(): void
 	{
 		global $context, $memID, $txt, $user_info;
 
@@ -717,11 +713,11 @@ class BreezeUser extends Breeze
 		    ]
 		)) . ',
 		maxHeightMessage: ' . JavaScriptEscape($this['tools']->parser(
-			    $this['tools']->text('cu_max_height'),
-			    [
-			        'height' => $maxFileHeight,
-			    ]
-			)) . ',
+		    $this['tools']->text('cu_max_height'),
+		    [
+		        'height' => $maxFileHeight,
+		    ]
+		)) . ',
 	};', false);
 	}
 
@@ -738,7 +734,7 @@ class BreezeUser extends Breeze
 		$data = [];
 
 		// Don't log guest views
-		if ($user_info['is_guest'] == true)
+		if (true == $user_info['is_guest'])
 			return false;
 
 		// Do this only if t hasn't been done before
@@ -809,9 +805,8 @@ class BreezeUser extends Breeze
      * BreezeUser::checkPermissions
      *
      * Sets and checks different profile related permissions.
-     * @return void
      */
-	function checkPermissions()
+	function checkPermissions(): void
 	{
 		global $context, $memberContext, $user_info;
 
@@ -832,8 +827,7 @@ class BreezeUser extends Breeze
 				$context['Breeze']['settings']['owner']['wall'] = 1;
 
 		// Do the normal check, do note this is not an elseif check, its separate.
-		else
-			if (empty($context['Breeze']['settings']['owner']['wall']))
+		elseif (empty($context['Breeze']['settings']['owner']['wall']))
 				redirectexit('action=profile;area=static;u=' . $context['member']['id']);
 
 		// This user cannot see any profile.

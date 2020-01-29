@@ -20,6 +20,7 @@ if (!defined('SMF'))
 class BreezeNoti
 {
 	protected $_app;
+
 	protected $_details;
 
 	public function __construct(Breeze $app)
@@ -87,7 +88,7 @@ class BreezeNoti
 		return true;
 	}
 
-	protected function like()
+	protected function like(): void
 	{
 		// Don't do anything if this is an "unlike" action.
 		if ($this->_details['alreadyLiked'])
@@ -116,9 +117,9 @@ class BreezeNoti
 		        'text' => 'like',
 		        'comment_owner' => $messageOwner,
 		        'toLoad' => [$messageOwner, $this->_details['user']],
-		        'status_id' => $data[($this->_details['like_type'] == 'comments' ? $this->_details['like_type'] . '_' : '') . 'status_id'],
-		        'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,
-		        'wall_owner' => $data[$this->_details['like_type'] == 'comments' ? 'comments_profile_id' : 'status_owner_id'],
+		        'status_id' => $data[('comments' == $this->_details['like_type'] ? $this->_details['like_type'] . '_' : '') . 'status_id'],
+		        'comment_id' => 'comments' == $this->_details['like_type'] ? $this->_details['content'] : 0,
+		        'wall_owner' => $data['comments' == $this->_details['like_type'] ? 'comments_profile_id' : 'status_owner_id'],
 		        'like_type' => $this->_details['like_type'],
 		    ],
 		]);
@@ -137,15 +138,15 @@ class BreezeNoti
 			        'buddy_text' => 'like_' . $this->_details['like_type'] . '_buddy',
 			        'comment_owner' => $messageOwner,
 			        'toLoad' => [$messageOwner, $this->_details['user']['id']],
-			        'status_id' => $data[($this->_details['like_type'] == 'comments' ? $this->_details['like_type'] . '_' : '') . 'status_id'],
-			        'comment_id' => $this->_details['like_type'] == 'comments' ? $this->_details['content'] : 0,
-			        'wall_owner' => $data[$this->_details['like_type'] == 'comments' ? 'comments_profile_id' : 'status_owner_id'],
+			        'status_id' => $data[('comments' == $this->_details['like_type'] ? $this->_details['like_type'] . '_' : '') . 'status_id'],
+			        'comment_id' => 'comments' == $this->_details['like_type'] ? $this->_details['content'] : 0,
+			        'wall_owner' => $data['comments' == $this->_details['like_type'] ? 'comments_profile_id' : 'status_owner_id'],
 			        'like_type' => $this->_details['like_type'],
 			    ],
 			]);
 	}
 
-	protected function status()
+	protected function status(): void
 	{
 		// Useless to fire you an alert for something you did.
 		if ($this->_details['profile_id'] != $this->_details['poster_id'])
@@ -185,7 +186,7 @@ class BreezeNoti
 			]);
 	}
 
-	protected function comment()
+	protected function comment(): void
 	{
 		// You posted a comment on your own status on your own wall, no need to tell you that. However, fire an alert for your buddies.
 		$uSettings = $this->_app['query']->getUserSettings($this->_details['poster_id']);
@@ -281,7 +282,7 @@ class BreezeNoti
 		$this->innerCreate($toCreate);
 	}
 
-	protected function mention()
+	protected function mention(): void
 	{
 		global $language;
 
@@ -308,11 +309,11 @@ class BreezeNoti
 				$toload = [$member['mentioned_by']['id'], $member['id'], $this->_details['poster_id']];
 
 				// Add the status poster to the array of to load IDs.
-				if ($this->_details['innerType'] == 'com')
+				if ('com' == $this->_details['innerType'])
 					$toLoad[] = $this->_details['status_owner_id'];
 
 				// Is it your own wall? Ternary abuse time!
-				$text = 'mention_' . ($member['id'] == $this->_details['profile_id'] ? 'own_' : '') . ($this->_details['innerType'] == 'sta' ? 'status' : 'comment');
+				$text = 'mention_' . ($member['id'] == $this->_details['profile_id'] ? 'own_' : '') . ('sta' == $this->_details['innerType'] ? 'status' : 'comment');
 
 				$this->_app['query']->createAlert([
 				    'alert_time' => time(),
@@ -336,7 +337,7 @@ class BreezeNoti
 			}
 	}
 
-	protected function buddyConfirm()
+	protected function buddyConfirm(): void
 	{
 		$this->innerCreate([
 		    'alert_time' => !empty($this->_details['time']) ? $this->_details['time'] : time(),

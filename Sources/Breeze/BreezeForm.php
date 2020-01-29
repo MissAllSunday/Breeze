@@ -20,8 +20,11 @@ if (!defined('SMF'))
 class BreezeForm
 {
 	public $elements = [];
+
 	public $buffer = '';
+
 	protected $_app;
+
 	protected $_textPrefix = 'user_settings_';
 
 	function __construct(Breeze $app)
@@ -38,7 +41,7 @@ class BreezeForm
 		$this->_options = array_merge($this->_options, $options);
 	}
 
-	public function setTextPrefix($string, $loadLanguage = false)
+	public function setTextPrefix($string, $loadLanguage = false): void
 	{
 		$this->_textPrefix = $string;
 
@@ -51,7 +54,7 @@ class BreezeForm
 		return $this->_app['tools']->text($this->_textPrefix . $text);
 	}
 
-	private function addElement($element)
+	private function addElement($element): void
 	{
 		$this->elements[] = $element;
 	}
@@ -61,7 +64,7 @@ class BreezeForm
 		return $this->elements[$id];
 	}
 
-	protected function setParamValues(&$param)
+	protected function setParamValues(&$param): void
 	{
 		// No text? use the name as a $txt key then!
 		if (empty($param['text']))
@@ -84,7 +87,7 @@ class BreezeForm
 		$param['html_end'] = '</' . $param['type'] . '>';
 
 		foreach($values as $k => $v)
-			$param['values'][$k] = '<option value="' . $k . '" ' . (isset($v[1]) && $v[1] == 'selected' ? 'selected="selected"' : '') . '>' . $this->_app['tools']->text($v[0]) . '</option>';
+			$param['values'][$k] = '<option value="' . $k . '" ' . (isset($v[1]) && 'selected' == $v[1] ? 'selected="selected"' : '') . '>' . $this->_app['tools']->text($v[0]) . '</option>';
 
 		return $this->addElement($param);
 	}

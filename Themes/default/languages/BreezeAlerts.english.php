@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * BreezeAlerts.english
  *
@@ -87,7 +89,7 @@ $txt['Breeze_log_Status_own_1'] = 'made a new status on his own wall';
 $txt['Breeze_log_Status_own_2'] = 'made a new status on her own wall';
 $txt['Breeze_log_Status_view'] = 'View status';
 
-// Settings.
+// General.
 $txt['alert_group_breeze'] = 'My wall alert settings';
 $txt['alert_Breeze_status_owner'] = 'When someone post a status on my wall';
 $txt['alert_Breeze_comment_status_owner'] = 'When someone comment on a status I made';

@@ -27,7 +27,7 @@ class BreezeAdmin
 		$this->_app['tools']->loadLanguage('admin');
 	}
 
-	function call()
+	function call(): void
 	{
 		global $txt, $context, $modSettings;
 
@@ -70,7 +70,7 @@ class BreezeAdmin
 			$this->main();
 	}
 
-	function main()
+	function main(): void
 	{
 		global $context;
 
@@ -123,7 +123,7 @@ $(function(){
 ', true);
 	}
 
-	function settings()
+	function settings(): void
 	{
 		global $context, $txt;
 
@@ -176,7 +176,7 @@ $(function(){
 		prepareDBSettingContext($config_vars);
 	}
 
-	function permissions()
+	function permissions(): void
 	{
 		global $context, $txt;
 
@@ -321,6 +321,7 @@ $(function(){
 		                'function' => function ($rowData) use($txt)
 		                {
 		                		$enable = !empty($rowData['enable']) ? 'enable' : 'disable';
+
 		                		return $txt['Breeze_mood_' . $enable];
 		                },
 		                'class' => 'centercol',
@@ -534,7 +535,7 @@ $(function(){
 				if (empty($image) || empty($image['extension']))
 					$errors[] = 'error_extension';
 
-				else if (!in_array($image['extension'], $this->_app['mood']->allowedExtensions))
+				elseif (!in_array($image['extension'], $this->_app['mood']->allowedExtensions))
 					$errors[] = 'error_extension';
 			}
 
@@ -553,6 +554,7 @@ $(function(){
 				    'type' => 'error',
 				    'data' => $mood,
 				];
+
 				return redirectexit('action=admin;area=breezeadmin;sa=moodEdit' . ($data->get('moodID') ? ';moodID=' . $data->get('moodID') : ''));
 			}
 
@@ -583,7 +585,7 @@ $(function(){
 		}
 	}
 
-	function cover()
+	function cover(): void
 	{
 		global $context, $txt;
 
@@ -624,7 +626,7 @@ $(function(){
 	}
 
 	// Pay no attention to the girl behind the curtain.
-	function donate()
+	function donate(): void
 	{
 		global $context;
 

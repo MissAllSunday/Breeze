@@ -20,11 +20,17 @@ if (!defined('SMF'))
 class BreezeMood
 {
 	protected $_app;
+
 	protected $_moodFolder = 'breezeMoods/';
+
 	public $imagesPath = '';
+
 	public $imagesUrl = '';
+
 	public $allowedExtensions = ['gif', 'jpg', 'png'];
+
 	protected $_moods;
+
 	protected static $active = [];
 
 	function __construct(Breeze $app)
@@ -36,7 +42,7 @@ class BreezeMood
 		$this->placementField = $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->setting('mood_placement') : 0;
 	}
 
-	public function call()
+	public function call(): void
 	{
 		global $context;
 
@@ -70,7 +76,7 @@ class BreezeMood
 		return static::$active;
 	}
 
-	public function create($data, $update = false)
+	public function create($data, $update = false): void
 	{
 		if (empty($data))
 			return;
@@ -178,7 +184,7 @@ class BreezeMood
 		];
 	}
 
-	public function showProfile($user, $area)
+	public function showProfile($user, $area): void
 	{
 		global $context;
 
