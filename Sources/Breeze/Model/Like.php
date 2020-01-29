@@ -32,15 +32,15 @@ class Like extends Base
 		$likes = [];
 
 		$request = $this->db->query(
-			'
+		    '
 			SELECT ' . implode(', ', LikeEntity::getColumns()) . '
 			FROM {db_prefix}' . LikeEntity::TABLE . '
 			WHERE ' . LikeEntity::COLUMN_CONTENT_TYPE . ' = {string:type}
 				AND ' . LikeEntity::COLUMN_CONTENT_ID . ' = {int:contentId}',
-			[
-				'contentId' => $contentId,
-				'type' => $type,
-			]
+		    [
+		        'contentId' => $contentId,
+		        'type' => $type,
+		    ]
 		);
 
 		while ($row = $this->db->fetchAssoc($request))
@@ -50,6 +50,7 @@ class Like extends Base
 
 		return $likes;
 	}
+
 	public function userLikes(string $type, int $userId = 0): array
 	{
 		$likes = [];

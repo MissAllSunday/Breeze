@@ -5,57 +5,71 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\Like;
 
+use Breeze\Model\Like as LikeModel;
+use Breeze\Model\Log as LogModel;
+use Breeze\Model\Notification as NotificationModel;
+use Breeze\Model\Status as StatusModel;
+use Breeze\Model\User as UserModel;
+
+
 class Status extends Base
 {
-	public function likesUpdate($smfLikesObject): void
+	/**
+	 * @var StatusModel
+	 */
+	protected $statusModel;
+
+	public function __construct(
+	    LikeModel $likeModel,
+	    UserModel $userModel,
+	    NotificationModel $notificationModel,
+	    StatusModel $statusModel,
+	    LogModel $logModel
+	)
 	{
-		$type = $smfLikesObject->get('type');
-		$content = $smfLikesObject->get('content');
-		$extra = $smfLikesObject->get('extra');
-		$numLikes = $smfLikesObject->get('numLikes');
+		parent::__construct($likeModel, $userModel, $notificationModel, $logModel);
 
-		// Try and get the user who posted this content.
-		$originalAuthor = 0;
-		$originalAuthorData = [];
-		$row = $this->likeTypes[$type] . '_id';
-		$authorColumn = 'poster_id';
+		$this->statusModel = $statusModel;
+	}
 
-		// With the given values, try to fetch the data of the liked content.
-		$originalAuthorData = $this['query']->getSingleValue($this->likeTypes[$type], $row, $content);
+	public function update($smfLikesObject): void
+	{
+		$likedType = $smfLikesObject->get('type');
+		$statusId = $smfLikesObject->get('content');
+		$likedExtraParams = $smfLikesObject->get('extra');
+		$likedNumLikes = $smfLikesObject->get('numLikes');
+		$likedUserData = $smfLikesObject->get('user');
 
-		if (!empty($originalAuthorData[$authorColumn]))
-			$originalAuthor = $originalAuthorData[$authorColumn];
+		$originalLikedData = $this->statusModel->getById([$statusId]);
 
-		// Get the userdata.
-		$user = $object->get('user');
+		if (!empty($originalLikedData[$this->statusModel->getColumnPosterId()]))
+			$originalLikedAuthorId = $originalLikedData[$this->statusModel->getColumnPosterId()];
 
-		// Get the user's options.
-		$uOptions = $this['query']->getUserSettings($user['id']);
+		$likedUserSettings = $this->userModel->getUserSettings($likedUserData['id']);
 
-		// Insert an inner alert if the user wants to and if the data still is there...
-		if (!empty($uOptions['alert_like']) && !empty($originalAuthorData))
+		if (!empty($likedUserSettings['alert_like']) && !empty($originalLikedData))
 			$this['query']->createLog([
-				'member' => $user['id'],
-				'content_type' => 'like',
-				'content_id' => $content,
-				'time' => time(),
-				'extra' => [
-					'contentData' => $originalAuthorData,
-					'type' => $this->likeTypes[$type],
-					'toLoad' => [$user['id'], $originalAuthor],
-				],
+			    'member' => $user['id'],
+			    'content_type' => 'like',
+			    'content_id' => $content,
+			    'time' => time(),
+			    'extra' => [
+			        'contentData' => $originalAuthorData,
+			        'type' => $this->likeTypes[$type],
+			        'toLoad' => [$user['id'], $originalAuthor],
+			    ],
 			]);
 
 		// Fire up a notification.
 		$this['query']->insertNoti([
-			'user' => $user['id'],
-			'like_type' => $this->likeTypes[$type],
-			'content' => $content,
-			'numLikes' => $numLikes,
-			'extra' => $extra,
-			'alreadyLiked' => (bool) $object->get('alreadyLiked'),
-			'validLikes' => $object->get('validLikes'),
-			'time' => time(),
+		    'user' => $user['id'],
+		    'like_type' => $this->likeTypes[$type],
+		    'content' => $content,
+		    'numLikes' => $numLikes,
+		    'extra' => $extra,
+		    'alreadyLiked' => (bool) $object->get('alreadyLiked'),
+		    'validLikes' => $object->get('validLikes'),
+		    'time' => time(),
 		], 'like');
 
 		$this['query']->updateLikes($this->likeTypes[$type], $content, $numLikes);

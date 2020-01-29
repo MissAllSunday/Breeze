@@ -13,6 +13,8 @@ use Breeze\Controller\User\Wall;
 use Breeze\Repository\Like\Base as LikeRepository;
 use Breeze\Repository\Like\Comment as LikeCommentRepository;
 use Breeze\Repository\Like\Status as LikeStatusRepository;
+use Breeze\Service\Admin as AdminService;
+use Breeze\Service\Mood as MoodService;
 use Breeze\Service\Permissions;
 use Breeze\Service\Settings;
 use Breeze\Service\Text;
@@ -121,7 +123,7 @@ class Breeze
 	public function actions(&$actions): void
 	{
 		// proxy, allow this action even if the master setting is off
-		$actions['breezefeed'] = [false, '\Breeze\Breeze::getFeed#'];
+		$actions['breezeFeed'] = [false, '\Breeze\Breeze::getFeed#'];
 
 		// Don't do anything if the mod is off
 		if (!$this['tools']->enable('master'))
@@ -154,6 +156,7 @@ class Breeze
 		{
 			case LikeStatusRepository::LIKE_TYPE_STATUS:
 				$likes = $this->container->get(LikeStatusRepository::class);
+
 			case LikeCommentRepository::LIKE_TYPE_COMMENT:
 				$likes = $this->container->get(LikeCommentRepository::class);
 		}
@@ -165,95 +168,19 @@ class Breeze
 		    'can_like' => $permissions->get('likes_like'),
 		    'type' => $type,
 		    'flush_cache' => true,
-		    'callback' => $likes->likesUpdate(),
+		    'callback' => $likes->update(),
 		];
 	}
 
-	/**
-	 * \Breeze\Breeze::notiHeaders()
-	 *
-	 * Used to embed the JavaScript and other bits of code on every page inside SMF.
-	 * @return void
-	 */
-	public function notiHeaders()
+	public function displayMoodWrapper( array &$data, int $userId, $displayCustomFields): void
 	{
-		global $context, $user_info, $settings;
+		/** @var MoodService */
+		$moodService = $this->container->get(MoodService::class);
 
-		// Some files are only needed on specific places.
-		$action = str_replace('breeze', '', $this->data('get')->get('action'));
-
-		// So, what are we going to do?
-		$doAction = in_array($action, $this->wrapperActions) || 'profile' == $action;
-		$doMood = $this['tools']->enable('mood');
-
-		// Only display these if we are in a "beeze action" or the mood feature is enable.
-		if ((!$doAction && !$doMood))
-			return false;
-
-		// Always display these.
-		loadJavascriptFile('breeze/breeze.js', ['local' => true, 'force_current' => false, 'minimize' => true]);
-
-		// Only needed on certain actions.
-		if ($doAction)
-		{
-			loadCSSFile('breeze.css', ['force_current' => false, 'validate' => true]);
-			loadJavascriptFile('breeze/moment.min.js', ['local' => true, 'default_theme' => true, 'defer' => true, 'async' => true]);
-			loadJavascriptFile('breeze/livestamp.min.js', ['local' => true, 'default_theme' => true, 'defer' => true, 'async' => true]);
-		}
-
-		// Up to here for guest.
-		if ($user_info['is_guest'])
-			return;
-
-		// The main stuff. Always displayed.
-		loadJavascriptFile('breeze/noty/jquery.noty.js', ['local' => true, 'default_theme' => true, 'defer' => true, 'async' => true]);
-		loadJavascriptFile('breeze/noty/layouts/top.js', ['local' => true, 'default_theme' => true, 'defer' => true, 'async' => true]);
-		loadJavascriptFile('breeze/noty/layouts/center.js', ['local' => true, 'default_theme' => true, 'defer' => true, 'async' => true]);
-		loadJavascriptFile('breeze/noty/themes/relax.js', ['local' => true, 'default_theme' => true, 'defer' => true, 'async' => true]);
-
-		if (!$doAction)
-			return false;
-
-		$tools = $this['tools'];
-		$userSettings = $this['query']->getUserSettings($user_info['id']);
-		$data = $this->data('get');
-
-		$generalSettings = '';
-		$generalText = '';
-		$jsSettings = '';
-
-		// Don't pass the "about me" stuff...
-		if (!empty($userSettings['aboutMe']))
-			unset($userSettings['aboutMe']);
-
-		// Since we're here already, load the current User (currentSettings) object
-		foreach (\Breeze\Breeze::$allSettings as $k => $v)
-			$generalSettings .= '
-	breeze.currentSettings.' . $k . ' = ' . (isset($userSettings[$k]) ? (is_array($userSettings[$k]) ? json_encode($userSettings[$k]) : JavaScriptEscape($userSettings[$k])) : 'false') . ';';
-
-		addInlineJavascript($generalSettings);
-
-		// We still need to pass some text strings to the client.
-		$clientText = ['error_empty', 'noti_markasread', 'error_wrong_values', 'noti_delete', 'noti_cancel', 'noti_closeAll', 'noti_checkAll', 'confirm_yes', 'confirm_cancel', 'confirm_delete'];
-
-		foreach ($clientText as $ct)
-			$generalText .= '
-	breeze.text.' . $ct . ' = ' . JavaScriptEscape($tools->text($ct)) . ';';
-
-		addInlineJavascript($generalText);
+		$moodService->displayMood($data, $userId);
 	}
 
-	public function mood(&$data, $user, $display_custom_fields): void
-	{
-		// Don't do anything if the feature is disable or custom fields aren't being loaded.
-		if (!$this['tools']->enable('master') || !$this['tools']->enable('mood'))
-			return;
-
-		// Append the result to the custom fields array.
-		$data['custom_fields'][] =  $this['mood']->show($user);
-	}
-
-	public function moodProfile($memID, $area): void
+	public function displayMoodProfileWrapper($memID, $area): void
 	{
 		// Don't do anything if the mod is off
 		if (!$this['tools']->enable('master'))
@@ -263,83 +190,24 @@ class Breeze
 		$this['mood']->showProfile($memID, $area);
 	}
 
-	// It's all about Admin settings from now on
 
-	/**
-	 * \Breeze\Breeze::admin()
-	 *
-	 * Creates a new section in the admin panel.
-	 *
-	 * @param array $admin_menu An array with all the admin settings buttons
-	 *
-	 */
-	public function admin(&$admin_menu): void
+	public function admin(array &$adminMenu): void
 	{
-		global $breezeController;
+		/** @var AdminService */
+		$adminService = $this->container->get(AdminService::class);
 
-		$tools = $this['tools'];
-
-		$tools->loadLanguage('admin');
-
-		$admin_menu['config']['areas']['breezeadmin'] = [
-		    'label' => $tools->text('page_main'),
-		    'file' => 'Breeze/BreezeAdmin.php',
-		    'function' => '\Breeze\Breeze::call#',
-		    'icon' => 'smiley',
-		    'subsections' => [
-		        'general' => [$tools->text('page_main')],
-		        'settings' => [$tools->text('page_settings')],
-		        'permissions' => [$tools->text('page_permissions')],
-		        'cover' => [$tools->text('page_cover')],
-		        'donate' => [$tools->text('page_donate')],
-		    ],
-		];
-
-		// Gotta respect the master mood setting.
-		if ($tools->enable('mood'))
-		{
-			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodList'] = [$tools->text('page_mood')];
-			$admin_menu['config']['areas']['breezeadmin']['subsections']['moodEdit'] = [$tools->text('page_mood_create')];
-		}
+		$adminService->hookAdminMenu($adminMenu);
 	}
 
-	/**
-	 * \Breeze\Breeze::getFeed()
-	 *
-	 * Proxy function to avoid Cross-origin errors.
-	 * @return string
-	 */
-	public function getFeed()
+	public function credits(): array
 	{
-		global $sourcedir;
-
-		require_once($sourcedir . '/Class-CurlFetchWeb.php');
-
-		$fetch = new \curl_fetch_web_data();
-		$fetch->get_url_data(\Breeze\Breeze::$supportSite);
-
-		if (200 == $fetch->result('code') && !$fetch->result('error'))
-			$data = $fetch->result('body');
-
-		else
-			return '';
-
-		smf_serverResponse($data, 'Content-type: text/xml');
-	}
-
-	/**
-	 * @return array
-	 */
-	public function credits()
-	{
-		// Dear contributor, please feel free to add yourself here.
-		$credits = [
+		return [
 		    'dev' => [
 		        'name' => 'Developer(s)',
 		        'users' => [
 		            'suki' => [
 		                'name' => 'Jessica "Suki" Gonz&aacute;lez',
-		                'site' => 'https://missallsunday.com',
+		                'site' => '//missallsunday.com',
 		            ],
 		        ],
 		    ],
@@ -382,11 +250,6 @@ class Breeze
 		        ],
 		    ],
 		];
-
-		// Oh well, one can dream...
-		call_integration_hook('integrate_breeze_credits', [&$credits]);
-
-		return $credits;
 	}
 }
 

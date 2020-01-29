@@ -8,7 +8,7 @@ use Breeze\Entity\Status as StatusEntity;
 
 class Status extends Base
 {
-	function insert(array $data, int $statusId = 0): int
+	public function insert(array $data, int $statusId = 0): int
 	{
 		$this->db->insert(StatusEntity::TABLE, [
 		    StatusEntity::COLUMN_OWNER_ID => 'int',
@@ -21,22 +21,50 @@ class Status extends Base
 		return $this->getInsertedId();
 	}
 
-	function update(array $data, int $statusId = 0): array
+	public function getById(array $statusIds): array
+	{
+		$status = [];
+
+		if (empty($statusIds))
+			return $status;
+
+		$request = $this->db->query(
+		    '
+			SELECT ' . implode(', ', StatusEntity::getColumns()) . '
+			FROM {db_prefix}' . StatusEntity::TABLE . '
+			WHERE ' . StatusEntity::COLUMN_ID . ' IN ({array_int:statusIds})',
+		    ['statusIds' => array_map('intval', $statusIds)]
+		);
+
+		while ($row = $this->db->fetchAssoc($request))
+			$moods[$row[StatusEntity::COLUMN_ID]] = $row;
+
+		$this->db->freeResult($request);
+
+		return $status;
+	}
+
+	public function update(array $data, int $statusId = 0): array
 	{
 		return [];
 	}
 
-	function getTableName(): string
+	public function getTableName(): string
 	{
 		return StatusEntity::TABLE;
 	}
 
-	function getColumnId(): string
+	public function getColumnId(): string
 	{
 		return StatusEntity::COLUMN_ID;
 	}
 
-	function getColumns(): array
+	public function getColumnPosterId(): string
+	{
+		return StatusEntity::COLUMN_POSTER_ID;
+	}
+
+	public function getColumns(): array
 	{
 		return StatusEntity::getColumns();
 	}

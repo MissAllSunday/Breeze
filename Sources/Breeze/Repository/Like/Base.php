@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Repository\Like;
 
 use Breeze\Model\Like as LikeModel;
+use Breeze\Model\Log as LogModel;
 use Breeze\Model\Notification as NotificationModel;
 use Breeze\Model\User as UserModel;
 
@@ -17,23 +18,29 @@ abstract class Base
 	/**
 	 * @var LikeModel
 	 */
-	private $likeModel;
+	protected $likeModel;
 
 	/**
 	 * @var UserModel
 	 */
-	private $userModel;
+	protected $userModel;
 
 	/**
 	 * @var NotificationModel
 	 */
-	private $notificationModel;
+	protected $notificationModel;
 
-	public function __construct(LikeModel $likeModel, UserModel $userModel, NotificationModel $notificationModel)
+	/**
+	 * @var LogModel
+	 */
+	private $logModel;
+
+	public function __construct(LikeModel $likeModel, UserModel $userModel, NotificationModel $notificationModel, LogModel $logModel)
 	{
 		$this->likeModel = $likeModel;
 		$this->userModel = $userModel;
 		$this->notificationModel = $notificationModel;
+		$this->logModel = $logModel;
 	}
 
 	public function handleLikes($type, $content): array

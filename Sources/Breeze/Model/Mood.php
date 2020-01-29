@@ -53,9 +53,9 @@ class Mood extends Base
 
 		$request = $this->db->query(
 		    '
-			SELECT ' . implode(', ', $this->getColumns()) . '
-			FROM {db_prefix}' . $this->getTableName() . '
-			WHERE ' . $this->$this->getColumnId() . ' IN ({array_int:moodIds})',
+			SELECT ' . implode(', ', MoodEntity::getColumns()) . '
+			FROM {db_prefix}' . MoodEntity::TABLE . '
+			WHERE ' . MoodEntity::COLUMN_ID . ' IN ({array_int:moodIds})',
 		    ['moodIds' => array_map('intval', $moodIds)]
 		);
 

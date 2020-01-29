@@ -10,4 +10,11 @@ class Base
 	{
 		return $GLOBALS[$variableName] ?? false;
 	}
+
+	public function requireOnce(string $fileName, string $dir = ''): void
+	{
+		$sourceDir = $dir ?? $this->global('sourcedir');
+
+		require_once($sourceDir . '/' . $fileName . '.php');
+	}
 }
