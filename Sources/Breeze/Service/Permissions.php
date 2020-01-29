@@ -44,7 +44,12 @@ class Permissions extends Base
 			    'breeze_per_simple'];
 	}
 
-	public static function getAll(): array
+	public function get(string $permissionName): bool
+	{
+		return allowedTo($permissionName);
+	}
+
+	public static function getAllNames(): array
 	{
 		return [
 		    self::DELETE_COMMENTS,

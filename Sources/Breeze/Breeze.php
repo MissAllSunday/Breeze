@@ -10,6 +10,9 @@ use Breeze\Controller\Cover;
 use Breeze\Controller\Mood;
 use Breeze\Controller\Status;
 use Breeze\Controller\User\Wall;
+use Breeze\Repository\Like\Base as LikeRepository;
+use Breeze\Repository\Like\Comment as LikeCommentRepository;
+use Breeze\Repository\Like\Status as LikeStatusRepository;
 use Breeze\Service\Permissions;
 use Breeze\Service\Settings;
 use Breeze\Service\Text;
@@ -22,10 +25,10 @@ if (!defined('SMF'))
 
 class Breeze
 {
-	const NAME = 'Breeze';
-	const VERSION = '1.1';
-	const PATTERN = self::NAME . '_';
-	const FEED = '//github.com/MissAllSunday/Breeze/releases.atom';
+	public const NAME = 'Breeze';
+	public const VERSION = '1.1';
+	public const PATTERN = self::NAME . '_';
+	public const FEED = '//github.com/MissAllSunday/Breeze/releases.atom';
 
 	/**
 	 * @var Settings
@@ -64,13 +67,6 @@ class Breeze
 		$this->container->get(UserService::class)->hookProfileMenu($profile_areas);
 	}
 
-	/**
-	 * \Breeze\Breeze::menu()
-	 *
-	 * Insert a User button on the menu buttons array
-	 * @param array $menu_buttons An array containing all possible tabs for the main menu.
-	 * @link http://mattzuba.com
-	 */
 	public function menu(&$menu_buttons): void
 	{
 		if (!$this->settings->enable('master'))
@@ -122,12 +118,6 @@ class Breeze
 		);
 	}
 
-	/**
-	 * \Breeze\Breeze::actions()
-	 *
-	 * Insert the actions needed by this mod
-	 * @param array $actions An array containing all possible SMF actions.
-	 */
 	public function actions(&$actions): void
 	{
 		// proxy, allow this action even if the master setting is off
@@ -157,94 +147,26 @@ class Breeze
 
 	public function likes($type, $content, $sa, $js, $extra)
 	{
-		// Don't bother with any other like types.
-		if (!$this['tools']->enable('master') || !in_array($type, array_keys($this->likeTypes)))
+		if (!$this->settings->enable('master') || !in_array($type, LikeRepository::getAllTypes()))
 			return false;
 
-		// Create our returned array
+		switch ($type)
+		{
+			case LikeStatusRepository::LIKE_TYPE_STATUS:
+				$likes = $this->container->get(LikeStatusRepository::class);
+			case LikeCommentRepository::LIKE_TYPE_COMMENT:
+				$likes = $this->container->get(LikeCommentRepository::class);
+		}
+
+		$permissions = $this->container->get(Permissions::class);
+
 		return [
-		    'can_see' => allowedTo('likes_view'),
-		    'can_like' => allowedTo('likes_like'),
+		    'can_see' => $permissions->get('likes_view'),
+		    'can_like' => $permissions->get('likes_like'),
 		    'type' => $type,
 		    'flush_cache' => true,
-		    'callback' => '$sourcedir/Breeze/Breeze.php|\Breeze\Breeze::likesUpdate#',
+		    'callback' => $likes->likesUpdate(),
 		];
-	}
-
-	public function likesUpdate($object): void
-	{
-		$type = $object->get('type');
-		$content = $object->get('content');
-		$extra = $object->get('extra');
-		$numLikes = $object->get('numLikes');
-
-		// Try and get the user who posted this content.
-		$originalAuthor = 0;
-		$originalAuthorData = [];
-		$row = $this->likeTypes[$type] . '_id';
-		$authorColumn = 'poster_id';
-
-		// With the given values, try to fetch the data of the liked content.
-		$originalAuthorData = $this['query']->getSingleValue($this->likeTypes[$type], $row, $content);
-
-		if (!empty($originalAuthorData[$authorColumn]))
-			$originalAuthor = $originalAuthorData[$authorColumn];
-
-		// Get the userdata.
-		$user = $object->get('user');
-
-		// Get the user's options.
-		$uOptions = $this['query']->getUserSettings($user['id']);
-
-		// Insert an inner alert if the user wants to and if the data still is there...
-		if (!empty($uOptions['alert_like']) && !empty($originalAuthorData))
-			$this['query']->createLog([
-			    'member' => $user['id'],
-			    'content_type' => 'like',
-			    'content_id' => $content,
-			    'time' => time(),
-			    'extra' => [
-			        'contentData' => $originalAuthorData,
-			        'type' => $this->likeTypes[$type],
-			        'toLoad' => [$user['id'], $originalAuthor],
-			    ],
-			]);
-
-		// Fire up a notification.
-		$this['query']->insertNoti([
-		    'user' => $user['id'],
-		    'like_type' => $this->likeTypes[$type],
-		    'content' => $content,
-		    'numLikes' => $numLikes,
-		    'extra' => $extra,
-		    'alreadyLiked' => (bool) $object->get('alreadyLiked'),
-		    'validLikes' => $object->get('validLikes'),
-		    'time' => time(),
-		], 'like');
-
-		$this['query']->updateLikes($this->likeTypes[$type], $content, $numLikes);
-	}
-
-	public function handleLikes($type, $content)
-	{
-		$data = [];
-
-		// Don't bother with any other like types...
-		if (!in_array($type, array_keys($this->likeTypes)))
-			return false;
-
-		$row = $this->likeTypes[$type] . '_id';
-		$authorColumn = 'poster_id';
-
-		// With the given values, try to find who is the owner of the liked content.
-		$data = $this['query']->getSingleValue($this->likeTypes[$type], $row, $content);
-
-		if (!empty($data[$authorColumn]))
-			return $data[$authorColumn];
-
-		// Return false if the status/comment is no longer on the DB.
-
-			return false;
 	}
 
 	/**

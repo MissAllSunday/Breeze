@@ -27,6 +27,29 @@ class Like extends Base
 		return [];
 	}
 
+	public function getByContent(string $type, int $contentId): array
+	{
+		$likes = [];
+
+		$request = $this->db->query(
+			'
+			SELECT ' . implode(', ', LikeEntity::getColumns()) . '
+			FROM {db_prefix}' . LikeEntity::TABLE . '
+			WHERE ' . LikeEntity::COLUMN_CONTENT_TYPE . ' = {string:type}
+				AND ' . LikeEntity::COLUMN_CONTENT_ID . ' = {int:contentId}',
+			[
+				'contentId' => $contentId,
+				'type' => $type,
+			]
+		);
+
+		while ($row = $this->db->fetchAssoc($request))
+			$likes[] = $row;
+
+		$this->db->freeResult($request);
+
+		return $likes;
+	}
 	public function userLikes(string $type, int $userId = 0): array
 	{
 		$likes = [];
@@ -43,7 +66,6 @@ class Like extends Base
 		    ]
 		);
 
-		// @todo fetch all the columns and not just the content_id, for statistics and stuff...
 		while ($row = $this->db->fetchAssoc($request))
 			$likes[$userId][$type][] = (int) $row[LikeEntity::COLUMN_CONTENT_ID];
 

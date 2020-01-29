@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/**
- * hooks.php
- *
- * @package Breeze mod
- * @version 1.1
- * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2019, Jessica González
- * @license http://www.mozilla.org/MPL/ MPL 2.0
- */
 
 	if (file_exists(dirname(__FILE__) . '/SSI.php') && !defined('SMF'))
 		require_once(dirname(__FILE__) . '/SSI.php');
