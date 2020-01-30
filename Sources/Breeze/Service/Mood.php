@@ -33,13 +33,11 @@ class Mood extends Base
 		$data['custom_fields'][] =  $this->moodRepository->getMood($userId);
 	}
 
-	public function moodProfile($memID, $area): void
+	public function moodProfile(int $memID, array $area): void
 	{
-		// Don't do anything if the mod is off
-		if (!$this['tools']->enable('master'))
+		if (!$this->settings->enable('master'))
 			return;
 
-		// Let BreezeMood handle this...
-		$this['mood']->showProfile($memID, $area);
+		$this->moodRepository->getMoodProfile($memID, $area);
 	}
 }
