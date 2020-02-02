@@ -5,7 +5,7 @@
          verbose="true"
          bootstrap="tests/bootstrap.php">
     <testsuites>
-        <testsuite name="Breeze Test Suite">
+        <testsuite name="Breeze">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>

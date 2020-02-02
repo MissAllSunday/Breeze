@@ -42,12 +42,12 @@ final class SettingsTest extends TestCase
 		        'fallback' => 'Luffy',
 		        'expected' => 'Luffy'
 		    ],
-			'empty setting name' =>
-				[
-					'settingName' => '',
-					'fallback' => 'Nami',
-					'expected' => 'Nami'
-				],
+		    'empty setting name' =>
+		    [
+		        'settingName' => '',
+		        'fallback' => 'Nami',
+		        'expected' => 'Nami'
+		    ],
 		];
 	}
 
@@ -65,16 +65,16 @@ final class SettingsTest extends TestCase
 	public function enableProvider(): array
 	{
 		return [
-			'setting enable' =>
-				[
-					'settingName' => 'master',
-					'expected' => true
-				],
-			'setting disabled' =>
-				[
-					'settingName' => 'time_machine',
-					'expected' => false
-				],
+		    'setting enable' =>
+		    [
+		        'settingName' => 'master',
+		        'expected' => true
+		    ],
+		    'setting disabled' =>
+		    [
+		        'settingName' => 'time_machine',
+		        'expected' => false
+		    ],
 		];
 	}
 
@@ -91,31 +91,31 @@ final class SettingsTest extends TestCase
 	public function modSettingProvider(): array
 	{
 		return [
-			'modSetting exists' =>
-				[
-					'settingName' => 'CompressedOutput',
-					'fallback' => false,
-					'expected' => false
-				],
-			'modSetting doesnt exists' =>
-				[
-					'settingName' => 'nope',
-					'fallback' => 'Luffy',
-					'expected' => 'Luffy'
-				],
-			'empty modSetting' =>
-				[
-					'settingName' => '',
-					'fallback' => 'Nami',
-					'expected' => 'Nami'
-				],
+		    'modSetting exists' =>
+		    [
+		        'settingName' => 'CompressedOutput',
+		        'fallback' => false,
+		        'expected' => false
+		    ],
+		    'modSetting doesnt exists' =>
+		    [
+		        'settingName' => 'nope',
+		        'fallback' => 'Luffy',
+		        'expected' => 'Luffy'
+		    ],
+		    'empty modSetting' =>
+		    [
+		        'settingName' => '',
+		        'fallback' => 'Nami',
+		        'expected' => 'Nami'
+		    ],
 		];
 	}
 
 	/**
 	 * @dataProvider isJsonProvider
 	 */
-	public function testIsJson($json, $expected)
+	public function testIsJson($json, $expected): void
 	{
 		$isJson = $this->settingsService->isJson($json);
 
@@ -125,23 +125,21 @@ final class SettingsTest extends TestCase
 	public function isJsonProvider(): array
 	{
 		return [
-			'is json' =>
-				[
-					'json' => json_encode(['Ace', 'Luffy', 'Sabo']),
-					'expected' => true
-				],
-			'is not json' =>
-				[
-					'json' => 'Im Jason!',
-					'expected' => false
-				],
-			'empty json' =>
-				[
-					'json' => json_encode([]),
-					'expected' => true
-				],
+		    'is json' =>
+		    [
+		        'json' => json_encode(['Ace', 'Luffy', 'Sabo']),
+		        'expected' => true
+		    ],
+		    'is not json' =>
+		    [
+		        'json' => 'Im Jason!',
+		        'expected' => false
+		    ],
+		    'empty json' =>
+		    [
+		        'json' => json_encode([]),
+		        'expected' => true
+		    ],
 		];
 	}
-
 }
-
