@@ -77,8 +77,6 @@ class Text extends Base
 
 	public function normalizeString(string $string = ''): string
 	{
-		$smcFunc = $this->global('smcFunc');
-
 		if (empty($string))
 			return '';
 
@@ -101,13 +99,10 @@ class Text extends Base
 		return round($bytes, 4) . ($showUnits ? ' ' . $units[$pow] : '');
 	}
 
-	public function truncate(string $string, int $limit, string $break = ' ', string $pad = '...'): string
+	public function truncate(string $string, int $limit = 30, string $break = ' ', string $pad = '...'): string
 	{
 		if(empty($string))
 			return '';
-
-		if(empty($limit))
-			$limit = 30;
 
 		if(strlen($string) <= $limit)
 			return $string;
@@ -119,16 +114,16 @@ class Text extends Base
 		return $string;
 	}
 
-	public function timeElapsed($ptime): string
+	public function timeElapsed(int $timeInSeconds): string
 	{
 		$txt = $this->global('txt');
-		$etime = time() - $ptime;
+		$sinceTime = time() - $timeInSeconds;
 		$timeElapsed = '';
 
-		if (1 > $etime)
+		if (1 > $sinceTime)
 			return $txt['time_just_now'];
 
-		$a = [
+		$timePeriods = [
 		    12 * 30 * 24 * 60 * 60	=> $txt['time_year'],
 		    30 * 24 * 60 * 60		=> $txt['time_month'],
 		    24 * 60 * 60			=> $txt['time_day'],
@@ -137,14 +132,14 @@ class Text extends Base
 		    1						=> $txt['time_second']
 		];
 
-		foreach ($a as $secs => $str)
+		foreach ($timePeriods as $seconds => $timeString)
 		{
-			$d = $etime / $secs;
-			if (1 <= $d)
+			$timeCount = $sinceTime / $seconds;
+			if (1 <= $timeCount)
 			{
-				$r = round($d);
+				$timeCountRounded = round($timeCount);
 
-				$timeElapsed = $r . ' ' . $str . (1 < $r ? 's ' : ' ') . $txt['time_ago'];
+				$timeElapsed = $timeCountRounded . ' ' . $timeString . (1 < $timeCountRounded ? 's ' : ' ') . $txt['time_ago'];
 				break;
 			}
 		}
