@@ -12,12 +12,12 @@ global $boarddir, $boardurl, $context, $txt, $smcFunc;
 // Function DB
 $smcFunc['htmltrim'] = function($value)
 {
-	return $value;
+	return trim($value);
 };
 
 $smcFunc['htmlspecialchars'] = function($value)
 {
-	return $value;
+	return htmlspecialchars($value, ENT_QUOTES);
 };
 
 // Mock functions

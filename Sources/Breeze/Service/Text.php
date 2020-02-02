@@ -25,8 +25,11 @@ class Text extends Base
 	{
 		$context = $this->global('context');
 
-		if (empty($text) || empty($replacements) || !is_array($replacements))
+		if (empty($text))
 			return '';
+
+		if (empty($replacements) || !is_array($replacements))
+			return $text;
 
 		$s = ';' . $context['session_var'] . '=' . $context['session_id'];
 
@@ -42,8 +45,11 @@ class Text extends Base
 		return str_replace($find, $replace, $text);
 	}
 
-	public function commaSeparated(string $string, string $type = 'alphanumeric'): string
+	public function commaSeparated(string $dirtyString, string $type = 'alphanumeric'): string
 	{
+		if (!is_string($dirtyString))
+			return '';
+
 		switch ($type) {
 			case 'numeric':
 				$t = '\d';
@@ -57,7 +63,7 @@ class Text extends Base
 				break;
 		}
 
-		return empty($string) ? '' : implode(',', array_filter(explode(',', preg_replace(
+		return empty($dirtyString) ? '' : implode(',', array_filter(explode(',', preg_replace(
 		    [
 		        '/[^' . $t . ',]/',
 		        '/(?<=,),+/',
@@ -65,7 +71,7 @@ class Text extends Base
 		        '/,+$/'
 		    ],
 		    '',
-		    $string
+		    $dirtyString
 		))));
 	}
 
@@ -76,12 +82,11 @@ class Text extends Base
 		if (empty($string))
 			return '';
 
-		$string = $smcFunc['htmlspecialchars']($string, ENT_QUOTES);
-		$string = preg_replace('~&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', $string);
-		$string = html_entity_decode($string, ENT_QUOTES);
-		$string = preg_replace(['~[^0-9a-z]~i', '~[ -]+~'], ' ', $string);
+		$string = htmlentities($string, ENT_QUOTES);
 
-		return trim($string, ' -');
+		$string = preg_replace('~&([a-z]{1,2})(amp|acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', $string);
+
+		return trim($string);
 	}
 
 	public function formatBytes(int $bytes, bool $showUnits = false): string
