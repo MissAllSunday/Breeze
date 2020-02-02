@@ -34,15 +34,15 @@ final class TextTest extends TestCase
 	{
 		return [
 		    'text exists' =>
-		    [
-		        'textKeyName' => 'time_year',
-		        'expected' => 'year'
-		    ],
+				[
+				    'textKeyName' => 'time_year',
+				    'expected' => 'year'
+				],
 		    'text doesnt exists' =>
-		    [
-		        'textKeyName' => 'nope!',
-		        'expected' => ''
-		    ]
+				[
+				    'textKeyName' => 'nope!',
+				    'expected' => ''
+				]
 		];
 	}
 
@@ -60,11 +60,11 @@ final class TextTest extends TestCase
 	{
 		return [
 		    'empty text' =>
-		    [
-		        'textToParse' => '',
-		        'replacements' => [],
-		        'expected' => ''
-		    ],
+				[
+				    'textToParse' => '',
+				    'replacements' => [],
+				    'expected' => ''
+				],
 		    'no replacement' =>
 		    	[
 		    	    'textToParse' => 'Non nobis solum',
@@ -105,11 +105,11 @@ final class TextTest extends TestCase
 
 		return [
 		    'alphanumeric' =>
-		    [
-		        'string' => $dirtyString,
-		        'type' => 'alphanumeric',
-		        'expected' => 'QWE,5,V,BB3,666'
-		    ],
+				[
+				    'string' => $dirtyString,
+				    'type' => 'alphanumeric',
+				    'expected' => 'QWE,5,V,BB3,666'
+				],
 		    'alpha' =>
 		    	[
 		    	    'string' => $dirtyString,
@@ -159,11 +159,11 @@ final class TextTest extends TestCase
 	{
 		return [
 		    'happy path' =>
-		    [
-		        'bytes' => 13516800,
-		        'showUnit' => true,
-		        'expected' => '12.8906 MB'
-		    ],
+				[
+				    'bytes' => 13516800,
+				    'showUnit' => true,
+				    'expected' => '12.8906 MB'
+				],
 		    'no unit' =>
 		    	[
 		    	    'bytes' => 666666666666,
@@ -187,13 +187,13 @@ final class TextTest extends TestCase
 	{
 		return [
 		    'happy path' =>
-		    [
-		        'stringToTruncate' => 'Contritium praecedit superbia',
-		        'limit' => 8,
-		        'break' => ' ',
-		        'pad' => '...',
-		        'expected' => 'Contritium...'
-		    ],
+				[
+				    'stringToTruncate' => 'Contritium praecedit superbia',
+				    'limit' => 8,
+				    'break' => ' ',
+				    'pad' => '...',
+				    'expected' => 'Contritium...'
+				],
 		    'smaller than limit' =>
 		    	[
 		    	    'stringToTruncate' => 'Fidite Nemini',
@@ -240,20 +240,20 @@ final class TextTest extends TestCase
 		    	    'expected' => 'just now'
 		    	],
 		    'years ago' =>
-		    		[
-		    		    'timeInSeconds' => time() - 60489000,
-		    		    'expected' => '2 years ago'
-		    		],
+				[
+				    'timeInSeconds' => time() - 60489000,
+				    'expected' => '2 years ago'
+				],
 		    'hours' =>
-		    		[
-		    		    'timeInSeconds' => time() - 82800,
-		    		    'expected' => '23 hours ago'
-		    		],
+				[
+				    'timeInSeconds' => time() - 82800,
+				    'expected' => '23 hours ago'
+				],
 		    'minute' =>
-		    		[
-		    		    'timeInSeconds' => time() - 62,
-		    		    'expected' => '1 minute ago'
-		    		],
+				[
+				    'timeInSeconds' => time() - 62,
+				    'expected' => '1 minute ago'
+				],
 		];
 	}
 }
