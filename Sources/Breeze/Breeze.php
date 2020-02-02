@@ -190,7 +190,6 @@ class Breeze
 		$this['mood']->showProfile($memID, $area);
 	}
 
-
 	public function admin(array &$adminMenu): void
 	{
 		/** @var AdminService */

@@ -5,9 +5,9 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-class Data extends Base
+class Request extends Base
 {
-	protected $request;
+	private $request;
 
     public function __construct()
 	{
@@ -40,5 +40,10 @@ class Data extends Base
 			$var = false;
 
 		return $var;
+	}
+
+	public function __destruct()
+	{
+		$this->request = [];
 	}
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Controller;
 
 use Breeze\Repository\User\Cover as CoverRepository;
-use Breeze\Service\Data;
+use Breeze\Service\Request;
 
 abstract class Base
 {

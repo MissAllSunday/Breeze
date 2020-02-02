@@ -32,31 +32,27 @@ class Settings extends Base
 	{
 		$modSettings = $this->global('modSettings');
 
-		if (empty($setting))
+		if (empty($settingName))
 			return $fallBack;
 
-		return $this->enable($settingName) ? [$modSettings[Breeze::PATTERN . $settingName]] : $fallBack;
+		return $this->enable($settingName) ? $modSettings[Breeze::PATTERN . $settingName] : $fallBack;
 	}
 
 	public function enable(string $settingName): bool
 	{
 		$modSettings = $this->global('modSettings');
 
-		return isset($modSettings[Breeze::PATTERN . $settingName]) && !empty([$modSettings[Breeze::PATTERN . $settingName]]);
+		return !empty($modSettings[Breeze::PATTERN . $settingName]);
 	}
 
 	public function modSetting(string $settingName, $fallBack = false)
 	{
 		$modSettings = $this->global('modSettings');
 
-		if (empty($setting))
+		if (empty($settingName))
 			return $fallBack;
 
-		if (isset($modSettings[Breeze::PATTERN . $settingName]) && !empty($modSettings[$modSettings[Breeze::PATTERN . $settingName]]))
-			return true;
-
-
-		return $fallBack;
+		return !empty($modSettings[$settingName]) ? $modSettings[$settingName] : $fallBack;
 	}
 
 	public function isJson(string $string): bool

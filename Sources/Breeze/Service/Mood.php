@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace Breeze\Service;
-
 
 use Breeze\Repository\Mood as MoodRepository;
 

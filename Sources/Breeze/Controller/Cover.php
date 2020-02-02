@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Controller;
 
 use Breeze\Repository\User\Cover as CoverRepository;
-use Breeze\Service\Data;
+use Breeze\Service\Request;
 
 class Cover extends Base implements BaseInterface
 {
@@ -16,11 +16,11 @@ class Cover extends Base implements BaseInterface
 	private $coverRepository;
 
 	/**
-	 * @var Data
+	 * @var Request
 	 */
 	private $data;
 
-	public function __construct(Data $data, CoverRepository $coverRepository)
+	public function __construct(Request $data, CoverRepository $coverRepository)
 	{
 		$this->data = $data;
 		$this->coverRepository = $coverRepository;
