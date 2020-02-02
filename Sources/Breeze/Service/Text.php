@@ -7,16 +7,18 @@ namespace Breeze\Service;
 
 class Text extends Base
 {
+	protected const SESSION_PARSER = 'href';
+
 	public function setLanguage(string $languageName): void
 	{
-		return loadLanguage($languageName);
+		loadLanguage($languageName);
 	}
 
 	public function get(string $textKey): string
 	{
 		$txt = $this->global('txt');
 
-		return $txt[$textKey];
+		return !empty($txt[$textKey]) ? $txt[$textKey] : '';
 	}
 
 	public function parser(string $text, array $replacements = []): string
@@ -34,7 +36,7 @@ class Text extends Base
 		foreach ($replacements as $f => $r)
 		{
 			$find[] = '{' . $f . '}';
-			$replace[] = $r . ((false !== strpos($f, 'href')) ? $s : '');
+			$replace[] = $r . ((false !== strpos($f, self::SESSION_PARSER)) ? $s : '');
 		}
 
 		return str_replace($find, $replace, $text);

@@ -142,4 +142,33 @@ final class SettingsTest extends TestCase
 		    ],
 		];
 	}
+
+	/**
+	 * @dataProvider globalProvider
+	 */
+	public function testGlobal(string $globalName, $expected): void
+	{
+		$global = $this->settingsService->global($globalName);
+
+		$this->assertSame($expected, $global);
+	}
+
+	public function globalProvider(): array
+	{
+		return [
+		    'global exists' =>
+		    [
+		        'globalName' => 'context',
+		        'expected' => [
+		            'session_var' => 'foo',
+		            'session_id' => 'baz',
+		        ]
+		    ],
+		    'global doesnt exists' =>
+		    [
+		        'globalName' => 'Invader Zim',
+		        'expected' => false
+		    ]
+		];
+	}
 }
