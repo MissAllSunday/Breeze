@@ -19,6 +19,9 @@ jobs:
     - name: Check lint
       run: composer lint:check
     
-    - name: Run Test suite
+    - name: Run test suite
       run: composer phpunit
+
+    - name: Run static analysis
+      run: composer phpstan
   

@@ -36,7 +36,7 @@ class Client implements ClientInterface
 
 	public function freeResult($result): void
 	{
-		return $this->db['db_free_result']($result);
+		$this->db['db_free_result']($result);
 	}
 
 	public function insert(string $tableName, array $columns, array $data, string $columnIdName): void
@@ -78,7 +78,7 @@ class Client implements ClientInterface
 
 	public function delete(string $tableName, string $queryString, array $bindParams): void
 	{
-		return $this->db['db_query'](
+		$this->db['db_query'](
 		    '',
 		    'DELETE 
 			FROM {db_prefix}' . $tableName . '
