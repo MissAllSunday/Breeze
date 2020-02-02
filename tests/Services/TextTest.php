@@ -5,6 +5,9 @@ declare(strict_types=1);
 use Breeze\Service\Text as TextService;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers TextService
+ */
 final class TextTest extends TestCase
 {
 	/**
