@@ -55,5 +55,10 @@ $txt = [
     'time_just_now' => 'just now'
 ];
 
+$_REQUEST = [
+	'xss' => '<script>alert("XSS")</script>',
+	'foo' => 'baz',
+];
+
 // Composer-Autoloader
 require_once $_SERVER['DOCUMENT_ROOT'] . "./vendor/autoload.php";
