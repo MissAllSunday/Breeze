@@ -141,9 +141,9 @@ class Breeze
 		$this->container->get(UserService::class)->hookProfilePopUp($profile_items);
 	}
 
-	public function alertsPrefWrapper(&$alert_types, &$group_options): void
+	public function alertsPrefWrapper( array &$alertTypes, &$groupOptions): void
 	{
-		$this->container->get(UserService::class)->hookAlertsPref($alert_types);
+		$this->container->get(UserService::class)->hookAlertsPref($alertTypes);
 	}
 
 	public function updateLikesWrapper($type, $content, $sa, $js, $extra)
