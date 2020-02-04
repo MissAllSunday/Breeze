@@ -56,8 +56,8 @@ $txt = [
 ];
 
 $_REQUEST = [
-	'xss' => '<script>alert("XSS")</script>',
-	'foo' => 'baz',
+    'xss' => '<script>alert("XSS")</script>',
+    'foo' => 'baz',
 ];
 
 // Composer-Autoloader
