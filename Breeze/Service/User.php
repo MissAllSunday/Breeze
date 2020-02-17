@@ -148,19 +148,34 @@ class User
 			];
 	}
 
-	public function hookAlertsPref(array $alert_types): void
+	public function hookAlertsPref(array $alertTypes): void
 	{
 		if (!$this->settings->enable('master'))
 			return;
 
 		$this->text->setLanguage('alerts');
 
-		$alert_types['breeze'] = [
-		    '' . Breeze::PATTERN . 'status_owner' => ['alert' => 'yes', 'email' => 'never'],
-		    '' . Breeze::PATTERN . 'comment_status_owner' => ['alert' => 'yes', 'email' => 'never'],
-		    '' . Breeze::PATTERN . 'comment_profile_owner' => ['alert' => 'yes', 'email' => 'never'],
-		    '' . Breeze::PATTERN . 'mention' => ['alert' => 'yes', 'email' => 'never'],
-		    '' . Breeze::PATTERN . 'like' => ['alert' => 'yes', 'email' => 'never'],
+		$alertTypes['breeze'] = [
+		    '' . Breeze::PATTERN . 'status_owner' => [
+		        'alert' => 'yes',
+		        'email' => 'never'
+		    ],
+		    '' . Breeze::PATTERN . 'comment_status_owner' => [
+		        'alert' => 'yes',
+		        'email' => 'never'
+		    ],
+		    '' . Breeze::PATTERN . 'comment_profile_owner' => [
+		        'alert' => 'yes',
+		        'email' => 'never'
+		    ],
+		    '' . Breeze::PATTERN . 'mention' => [
+		        'alert' => 'yes',
+		        'email' => 'never'
+		    ],
+		    '' . Breeze::PATTERN . 'like' => [
+		        'alert' => 'yes',
+		        'email' => 'never'
+		    ],
 		];
 	}
 

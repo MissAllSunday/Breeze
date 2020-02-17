@@ -1,0 +1,43 @@
+{
+    "name": "suki/breeze",
+    "type": "smf-module",
+    "description": "SMF modification for posting status and comments on user's walls.",
+    "keywords": ["SMF","modifications", "Social"],
+    "homepage": "https://github.com/MissAllSunday/Breeze",
+    "license": "MPL-2.0",
+    "authors": [
+        {
+            "name": "Jessica González",
+            "email": "suki@missallsunday.com",
+            "homepage": "https://missallsunday.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "league/container": "^3.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "phpstan/phpstan": "^0.12.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Breeze\\": "Breeze/"
+        }
+    },
+    "scripts": {
+        "lint": "php-cs-fixer fix --verbose --show-progress=estimating",
+        "lint:check": [
+            "php-cs-fixer fix --dry-run --verbose --show-progress=estimating"
+        ],
+        "phpunit": "phpunit -c phpunit.xml.dist --bootstrap ./tests/bootstrap.php --testsuite Breeze",
+        "phpstan": "phpstan analyze",
+        "serve": "bin/server",
+        "test": [
+            "@lint:check",
+            "@phpunit",
+            "@phpstan"
+        ]
+    }
+}

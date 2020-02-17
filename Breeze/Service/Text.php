@@ -7,24 +7,29 @@ namespace Breeze\Service;
 
 class Text extends Base
 {
+	protected const SESSION_PARSER = 'href';
+
 	public function setLanguage(string $languageName): void
 	{
-		return loadLanguage($languageName);
+		loadLanguage($languageName);
 	}
 
 	public function get(string $textKey): string
 	{
 		$txt = $this->global('txt');
 
-		return $txt[$textKey];
+		return !empty($txt[$textKey]) ? $txt[$textKey] : '';
 	}
 
 	public function parser(string $text, array $replacements = []): string
 	{
 		$context = $this->global('context');
 
-		if (empty($text) || empty($replacements) || !is_array($replacements))
+		if (empty($text))
 			return '';
+
+		if (empty($replacements) || !is_array($replacements))
+			return $text;
 
 		$s = ';' . $context['session_var'] . '=' . $context['session_id'];
 
@@ -34,14 +39,17 @@ class Text extends Base
 		foreach ($replacements as $f => $r)
 		{
 			$find[] = '{' . $f . '}';
-			$replace[] = $r . ((false !== strpos($f, 'href')) ? $s : '');
+			$replace[] = $r . ((false !== strpos($f, self::SESSION_PARSER)) ? $s : '');
 		}
 
 		return str_replace($find, $replace, $text);
 	}
 
-	public function commaSeparated(string $string, string $type = 'alphanumeric'): string
+	public function commaSeparated(string $dirtyString, string $type = 'alphanumeric'): string
 	{
+		if (!is_string($dirtyString))
+			return '';
+
 		switch ($type) {
 			case 'numeric':
 				$t = '\d';
@@ -55,7 +63,7 @@ class Text extends Base
 				break;
 		}
 
-		return empty($string) ? '' : implode(',', array_filter(explode(',', preg_replace(
+		return empty($dirtyString) ? '' : implode(',', array_filter(explode(',', preg_replace(
 		    [
 		        '/[^' . $t . ',]/',
 		        '/(?<=,),+/',
@@ -63,23 +71,20 @@ class Text extends Base
 		        '/,+$/'
 		    ],
 		    '',
-		    $string
+		    $dirtyString
 		))));
 	}
 
 	public function normalizeString(string $string = ''): string
 	{
-		$smcFunc = $this->global('smcFunc');
-
 		if (empty($string))
 			return '';
 
-		$string = $smcFunc['htmlspecialchars']($string, ENT_QUOTES);
-		$string = preg_replace('~&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', $string);
-		$string = html_entity_decode($string, ENT_QUOTES);
-		$string = preg_replace(['~[^0-9a-z]~i', '~[ -]+~'], ' ', $string);
+		$string = htmlentities($string, ENT_QUOTES);
 
-		return trim($string, ' -');
+		$string = preg_replace('~&([a-z]{1,2})(amp|acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', $string);
+
+		return trim($string);
 	}
 
 	public function formatBytes(int $bytes, bool $showUnits = false): string
@@ -94,13 +99,10 @@ class Text extends Base
 		return round($bytes, 4) . ($showUnits ? ' ' . $units[$pow] : '');
 	}
 
-	public function truncate(string $string, int $limit, string $break = ' ', string $pad = '...'): string
+	public function truncate(string $string, int $limit = 30, string $break = ' ', string $pad = '...'): string
 	{
 		if(empty($string))
 			return '';
-
-		if(empty($limit))
-			$limit = 30;
 
 		if(strlen($string) <= $limit)
 			return $string;
@@ -112,16 +114,16 @@ class Text extends Base
 		return $string;
 	}
 
-	public function timeElapsed($ptime): string
+	public function timeElapsed(int $timeInSeconds): string
 	{
 		$txt = $this->global('txt');
-		$etime = time() - $ptime;
+		$sinceTime = time() - $timeInSeconds;
 		$timeElapsed = '';
 
-		if (1 > $etime)
+		if (1 > $sinceTime)
 			return $txt['time_just_now'];
 
-		$a = [
+		$timePeriods = [
 		    12 * 30 * 24 * 60 * 60	=> $txt['time_year'],
 		    30 * 24 * 60 * 60		=> $txt['time_month'],
 		    24 * 60 * 60			=> $txt['time_day'],
@@ -130,14 +132,14 @@ class Text extends Base
 		    1						=> $txt['time_second']
 		];
 
-		foreach ($a as $secs => $str)
+		foreach ($timePeriods as $seconds => $timeString)
 		{
-			$d = $etime / $secs;
-			if (1 <= $d)
+			$timeCount = $sinceTime / $seconds;
+			if (1 <= $timeCount)
 			{
-				$r = round($d);
+				$timeCountRounded = round($timeCount);
 
-				$timeElapsed = $r . ' ' . $str . (1 < $r ? 's ' : ' ') . $txt['time_ago'];
+				$timeElapsed = $timeCountRounded . ' ' . $timeString . (1 < $timeCountRounded ? 's ' : ' ') . $txt['time_ago'];
 				break;
 			}
 		}

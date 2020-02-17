@@ -11,8 +11,7 @@ declare(strict_types=1);
 
 	// Everybody likes hooks
 	$hooks = [
-	    'integrate_pre_include' => '$sourcedir/Breeze/Breeze.php',
-	    'integrate_autoload' => '$sourcedir/Breeze/Breeze.php|\Breeze\Breeze::autoLoad#',
+	    'integrate_pre_include' => '$boarddir/vendor/autoload.php',
 	    'integrate_menu_buttons' => '$sourcedir/Breeze/Breeze.php|\Breeze\Breeze::menu#',
 	    'integrate_actions' => '\Breeze\Breeze::actions#',
 	    'integrate_load_permissions' => '\Breeze\Breeze::permissions#',

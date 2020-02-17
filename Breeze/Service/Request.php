@@ -5,18 +5,18 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-class Data extends Base
+class Request extends Base
 {
-	protected $request;
+	private $request;
 
     public function __construct()
 	{
 		$this->request = $_REQUEST;
     }
 
-	public function get(string $value)
+	public function get(string $variableName)
 	{
-	    return isset($this->request[$value]) ? $this->sanitize($this->request[$value]) : false;
+	    return isset($this->request[$variableName]) ? $this->sanitize($this->request[$variableName]) : false;
 	}
 
 	public function sanitize($variable)
@@ -40,5 +40,10 @@ class Data extends Base
 			$var = false;
 
 		return $var;
+	}
+
+	public function __destruct()
+	{
+		$this->request = [];
 	}
 }

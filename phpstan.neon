@@ -1,0 +1,9 @@
+parameters:
+  level: 5
+  bootstrap: tests/bootstrap.php
+  paths:
+    - Breeze
+  ignoreErrors:
+    - '/Function allowedTo not found./'
+  autoload_files:
+    - %currentWorkingDirectory%/vendor/autoload.php
