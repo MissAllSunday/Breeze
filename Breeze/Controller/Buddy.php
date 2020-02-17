@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Controller;
 
-class Buddy extends Base implements BaseInterface
+class Buddy extends Base implements ControllerInterface
 {
 	public function do(): void
 	{

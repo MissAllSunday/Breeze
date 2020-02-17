@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Controller;
 
-class Mood extends Base implements BaseInterface
+class Mood extends Base implements ControllerInterface
 {
 	public function do(): void
 	{

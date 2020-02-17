@@ -8,7 +8,7 @@ namespace Breeze\Controller;
 use Breeze\Repository\User\Cover as CoverRepository;
 use Breeze\Service\Request;
 
-class Cover extends Base implements BaseInterface
+class Cover extends Base implements ControllerInterface
 {
 	/**
 	 * @var CoverRepository

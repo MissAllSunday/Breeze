@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze;
 
-use Breeze\Controller\Admin\Feed;
+use Breeze\Controller\Admin as AdminController;
 use Breeze\Controller\Buddy;
 use Breeze\Controller\Comment;
 use Breeze\Controller\Cover;
@@ -14,7 +14,6 @@ use Breeze\Controller\User\Wall;
 use Breeze\Repository\Like\Base as LikeRepository;
 use Breeze\Repository\Like\Comment as LikeCommentRepository;
 use Breeze\Repository\Like\Status as LikeStatusRepository;
-use Breeze\Service\Admin as AdminService;
 use Breeze\Service\Mood as MoodService;
 use Breeze\Service\Permissions;
 use Breeze\Service\Settings;
@@ -191,10 +190,23 @@ class Breeze
 
 	public function adminMenuWrapper(array &$adminMenu): void
 	{
-		/** @var AdminService */
-		$adminService = $this->container->get(AdminService::class);
+		/** @var AdminController */
+		$adminController = $this->container->get(AdminController::class);
 
-		$adminService->hookAdminMenu($adminMenu);
+        $this->text->setLanguage('BreezeAdmin');
+
+        $adminMenu['config']['areas']['breezeAdmin'] = [
+            'label' => $this->text->get('page_main'),
+            'function' => [$adminController, 'do'],
+            'icon' => 'smiley',
+            'subsections' => $adminController->getSubActions(),
+        ];
+
+        if ($this->settings->enable('mood'))
+        {
+            $admin_menu['config']['areas']['breezeAdmin']['subsections']['moodList'] = [$this->text->get('page_mood')];
+            $admin_menu['config']['areas']['breezeAdmin']['subsections']['moodEdit'] = [$this->text->get('page_mood_create')];
+        }
 	}
 
 	public function credits(): array

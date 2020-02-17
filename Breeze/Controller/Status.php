@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Controller;
 
-class Status extends Base implements BaseInterface
+class Status extends Base implements ControllerInterface
 {
 	const CREATE = 'create';
 	const DELETE = 'delete';

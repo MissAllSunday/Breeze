@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Controller;
 
-class Comment extends Base implements BaseInterface
+class Comment extends Base implements ControllerInterface
 {
 	public function do(): void
 	{

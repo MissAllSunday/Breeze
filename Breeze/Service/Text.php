@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Breeze;
+
 class Text extends Base
 {
 	protected const SESSION_PARSER = 'href';
@@ -18,8 +20,15 @@ class Text extends Base
 	{
 		$txt = $this->global('txt');
 
-		return !empty($txt[$textKey]) ? $txt[$textKey] : '';
+		return !empty($txt[Breeze::PATTERN . $textKey]) ? $txt[Breeze::PATTERN . $textKey] : '';
 	}
+
+    public function getSmf(string $textKey): string
+    {
+        $txt = $this->global('txt');
+
+        return !empty($txt[$textKey]) ? $txt[$textKey] : '';
+    }
 
 	public function parser(string $text, array $replacements = []): string
 	{
