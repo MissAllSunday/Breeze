@@ -49,10 +49,10 @@ class Breeze
 
 	public function __construct()
 	{
-		$this->container = new Container;
+		$this->container = new Container();
 
 		$this->container->delegate(
-		    new ReflectionContainer
+		    new ReflectionContainer()
 		);
 
 		$this->settings = $this->container->get(Settings::class);

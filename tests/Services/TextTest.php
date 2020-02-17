@@ -21,16 +21,16 @@ final class TextTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider getProvider
+	 * @dataProvider getSmfProvider
 	 */
-	public function testGet(string $textKeyName, string $expected): void
+	public function testGetSmf(string $textKeyName, string $expected): void
 	{
-		$text = $this->textService->get($textKeyName);
+		$text = $this->textService->getSmf($textKeyName);
 
 		$this->assertEquals($expected, $text);
 	}
 
-	public function getProvider(): array
+	public function getSmfProvider(): array
 	{
 		return [
 		    'text exists' =>
@@ -43,6 +43,32 @@ final class TextTest extends TestCase
 				    'textKeyName' => 'nope!',
 				    'expected' => ''
 				]
+		];
+	}
+
+	/**
+	 * @dataProvider getProvider
+	 */
+	public function testGet(string $textKeyName, string $expected): void
+	{
+		$text = $this->textService->get('lol');
+
+		$this->assertEquals('lol', $text);
+	}
+
+	public function getProvider(): array
+	{
+		return [
+		    'text exists' =>
+		    	[
+		    	    'textKeyName' => 'lol',
+		    	    'expected' => 'lol'
+		    	],
+		    'text doesnt exists' =>
+		    	[
+		    	    'textKeyName' => 'nope!',
+		    	    'expected' => ''
+		    	]
 		];
 	}
 

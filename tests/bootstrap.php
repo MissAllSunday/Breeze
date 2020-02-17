@@ -52,7 +52,8 @@ $txt = [
     'time_minute' => 'minute',
     'time_second' => 'second',
     'time_ago' => 'ago',
-    'time_just_now' => 'just now'
+    'time_just_now' => 'just now',
+    'Breeze_lol' => 'lol',
 ];
 
 $_REQUEST = [

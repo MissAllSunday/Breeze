@@ -6,7 +6,7 @@ namespace Breeze\Controller;
 
 class Admin extends Base implements ControllerInterface
 {
-    public function doAction()
+    public function doAction(): void
     {
         echo 'lol';
     }

@@ -10,5 +10,4 @@ interface ControllerInterface
 	public function doAction();
 
 	public function getSubActions(): array;
-
 }
