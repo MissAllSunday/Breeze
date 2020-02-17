@@ -1,7 +1,7 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-	->in(__DIR__ . '/Sources/')
+	->in(__DIR__ . '/Breeze/')
 	->in(__DIR__ . '/tests/');
 
 return PhpCsFixer\Config::create()
