@@ -2,7 +2,7 @@ parameters:
   level: 5
   bootstrap: tests/bootstrap.php
   paths:
-    - Breeze
+    - Sources/Breeze
   ignoreErrors:
     - '/Function allowedTo not found./'
   autoload_files:
