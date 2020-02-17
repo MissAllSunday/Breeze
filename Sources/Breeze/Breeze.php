@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze;
 
+use Breeze\Controller\Admin\Feed;
 use Breeze\Controller\Buddy;
 use Breeze\Controller\Comment;
 use Breeze\Controller\Cover;
@@ -28,7 +29,7 @@ if (!defined('SMF'))
 class Breeze
 {
 	public const NAME = 'Breeze';
-	public const VERSION = '1.1';
+	public const VERSION = '2.0';
 	public const PATTERN = self::NAME . '_';
 	public const FEED = '//github.com/MissAllSunday/Breeze/releases.atom';
 
@@ -59,12 +60,12 @@ class Breeze
 		$this->text = $this->container->get(Text::class);
 	}
 
-	public function permissions(&$permissionGroups, &$permissionList): void
+	public function permissionsWrapper(&$permissionGroups, &$permissionList): void
 	{
 		$this->container->get(Permissions::class)->hookPermissions($permissionGroups, $permissionList);
 	}
 
-	public function profile(&$profile_areas): void
+	public function profileMenuWrapper(&$profile_areas): void
 	{
 		$this->container->get(UserService::class)->hookProfileMenu($profile_areas);
 	}
@@ -122,11 +123,9 @@ class Breeze
 
 	public function actions(&$actions): void
 	{
-		// proxy, allow this action even if the master setting is off
-		$actions['breezeFeed'] = [false, '\Breeze\Breeze::getFeed#'];
+		$actions['breezeFeed'] = [false, Feed::class . '::do#'];
 
-		// Don't do anything if the mod is off
-		if (!$this['tools']->enable('master'))
+		if (!$this->settings->enable('master'))
 			return;
 
 		$actions['breezeStatus'] = [false,  Status::class . '::do#'];
@@ -137,17 +136,17 @@ class Breeze
 		$actions['breezeCover'] = [false, Cover::class . '::do#'];
 	}
 
-	public function profilePopUp(&$profile_items): void
+	public function profilePopUpWrapper(&$profile_items): void
 	{
 		$this->container->get(UserService::class)->hookProfilePopUp($profile_items);
 	}
 
-	public function alertsPref(&$alert_types, &$group_options): void
+	public function alertsPrefWrapper( array &$alertTypes, &$groupOptions): void
 	{
-		$this->container->get(UserService::class)->hookAlertsPref($alert_types);
+		$this->container->get(UserService::class)->hookAlertsPref($alertTypes);
 	}
 
-	public function likes($type, $content, $sa, $js, $extra)
+	public function updateLikesWrapper($type, $content, $sa, $js, $extra)
 	{
 		if (!$this->settings->enable('master') || !in_array($type, LikeRepository::getAllTypes()))
 			return false;
@@ -190,7 +189,7 @@ class Breeze
 		$this['mood']->showProfile($memID, $area);
 	}
 
-	public function admin(array &$adminMenu): void
+	public function adminMenuWrapper(array &$adminMenu): void
 	{
 		/** @var AdminService */
 		$adminService = $this->container->get(AdminService::class);

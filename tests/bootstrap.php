@@ -45,13 +45,19 @@ $modSettings = [
 ];
 
 $txt = [
-    'time_year' => 'years',
-    'time_month' => 'months',
-    'time_day' => 'days',
-    'time_hour' => 'hours',
-    'time_minute' => 'minutes',
-    'time_second' => 'seconds',
+    'time_year' => 'year',
+    'time_month' => 'month',
+    'time_day' => 'day',
+    'time_hour' => 'hour',
+    'time_minute' => 'minute',
+    'time_second' => 'second',
     'time_ago' => 'ago',
+    'time_just_now' => 'just now'
+];
+
+$_REQUEST = [
+    'xss' => '<script>alert("XSS")</script>',
+    'foo' => 'baz',
 ];
 
 // Composer-Autoloader

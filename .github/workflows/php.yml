@@ -15,10 +15,9 @@ jobs:
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
-      
+
     - name: Check lint
       run: composer lint:check
-    
-    - name: Run Test suite
+
+    - name: Run test suite
       run: composer phpunit
-  

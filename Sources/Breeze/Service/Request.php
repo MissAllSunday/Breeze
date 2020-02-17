@@ -14,9 +14,9 @@ class Request extends Base
 		$this->request = $_REQUEST;
     }
 
-	public function get(string $value)
+	public function get(string $variableName)
 	{
-	    return isset($this->request[$value]) ? $this->sanitize($this->request[$value]) : false;
+	    return isset($this->request[$variableName]) ? $this->sanitize($this->request[$variableName]) : false;
 	}
 
 	public function sanitize($variable)
