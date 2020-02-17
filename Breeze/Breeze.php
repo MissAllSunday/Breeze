@@ -182,7 +182,7 @@ class Breeze
 	public function displayMoodProfileWrapper($memID, $area): void
 	{
 		// Don't do anything if the mod is off
-		if (!$this['tools']->enable('master'))
+		if (!$this->settings->enable('master'))
 			return;
 
 		// Let BreezeMood handle this...

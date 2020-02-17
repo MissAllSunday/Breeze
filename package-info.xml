@@ -13,9 +13,10 @@ This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
 file, You can obtain one at http://mozilla.org/MPL/2.0/.
 		</license>
-		<credits url="https://missallsunday.com" license="MPL 2.0" copyright="Suki" licenseurl="https://www.mozilla.org/MPL/2.0/">Breeze mod</credits>
+		<credits url="//missallsunday.com" license="MPL 2.0" copyright="Suki" licenseurl="//www.mozilla.org/MPL/2.0/">Breeze mod</credits>
 		<database>install.php</database>
 		<require-dir name="Themes" destination="$boarddir">Theme files</require-dir>
+		<require-dir name="vendor" destination="$boarddir">Dependencies files</require-dir>
 		<require-dir name="Breeze" destination="$sourcedir">Source files</require-dir>
 		<require-dir name="tasks" destination="$sourcedir">Notification tasks</require-dir>
 		<require-dir name="BreezeFiles" destination="$boarddir">Uploaded images</require-dir>
@@ -28,6 +29,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 		<database>install.php</database>
 		<remove-dir name="$themedir/images/breezeMoods" />
 		<remove-dir name="$sourcedir/Breeze" />
+		<remove-dir name="$boarddir/vendor" />
 		<remove-file name="$sourcedir/tasks/Breeze-Notify.php" />
 		<remove-file name="$themedir/Breeze.template.php" />
 		<remove-file name="$themedir/BreezeAdmin.template.php" />
