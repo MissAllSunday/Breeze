@@ -197,9 +197,15 @@ class Breeze
 
         $adminMenu['config']['areas']['breezeAdmin'] = [
             'label' => $this->text->get('page_main'),
-            'function' => [$adminController, 'do'],
+            'function' => [$adminController, 'dispatch'],
             'icon' => 'smiley',
-            'subsections' => $adminController->getSubActions(),
+            'subsections' => [
+				'general' => [$this->text->get('page_main')],
+				'settings' => [$this->text->get('page_settings')],
+				'permissions' => [$this->text->get('page_permissions')],
+				'cover' => [$this->text->get('page_cover')],
+				'donate' => [$this->text->get('page_donate')],
+			],
         ];
 
         if ($this->settings->enable('mood'))

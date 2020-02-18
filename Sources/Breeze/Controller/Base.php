@@ -4,29 +4,24 @@ declare(strict_types=1);
 
 namespace Breeze\Controller;
 
-use Breeze\Repository\User\Cover as CoverRepository;
 use Breeze\Service\Request;
-use Breeze\Service\Settings;
-use Breeze\Service\Text;
 
-abstract class Base
+abstract class Base implements ControllerInterface
 {
-	const CREATE = 'create';
-	const DELETE = 'delete';
+	/**
+	 * @var Request
+	 */
+	protected $request;
 
-    /**
-     * @var Text
-     */
-    protected $text;
+	public function subActionCall()
+	{
+		$subActions = array_keys($this->getSubActions());
+		$subAction = $this->request->get('sa');
 
-    /**
-     * @var Settings
-     */
-    protected $settings;
+		if (in_array($subAction, $subActions))
+			$this->$subAction();
 
-    public function __construct(Text $text, Settings $settings)
-    {
-        $this->text = $text;
-        $this->settings = $settings;
-    }
+		else
+			$this->general();
+	}
 }

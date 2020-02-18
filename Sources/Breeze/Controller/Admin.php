@@ -4,21 +4,42 @@ declare(strict_types=1);
 
 namespace Breeze\Controller;
 
+use Breeze\Service\Admin as AdminService;
+use Breeze\Service\Request;
+
 class Admin extends Base implements ControllerInterface
 {
-    public function doAction(): void
+	/**
+	 * @var AdminService
+	 */
+	private $adminService;
+
+	public function __construct(Request $request, AdminService $adminService)
+	{
+		$this->request = $request;
+		$this->adminService = $adminService;
+	}
+
+    public function dispatch(): void
     {
-        echo 'lol';
+        $this->adminService->initSettingsPage($this->getSubActions());
     }
 
     public function getSubActions(): array
     {
         return [
-            'general' => [$this->text->get('page_main')],
-            'settings' => [$this->text->get('page_settings')],
-            'permissions' => [$this->text->get('page_permissions')],
-            'cover' => [$this->text->get('page_cover')],
-            'donate' => [$this->text->get('page_donate')],
+            'general',
+            'settings',
+            'permissions',
+            'cover',
+            'donate',
+			'moodList',
+			'moodEdit',
         ];
     }
+
+	public function general(): void
+	{
+		// TODO: Implement main() method.
+	}
 }

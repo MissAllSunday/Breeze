@@ -5,10 +5,9 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-use Breeze\Controller\Admin\Admin;
-
-class Admin extends Base
+class Admin extends Base implements ServiceInterface
 {
+	public const IDENTIFIER = 'BreezeAdmin';
 	/**
 	 * @var Settings
 	 */
@@ -25,10 +24,28 @@ class Admin extends Base
 		$this->text = $text;
 	}
 
-	public function hookAdminMenu(array &$adminMenu): array
+	public function initSettingsPage($subActions)
 	{
+		$context = $this->global('context');
 
+		$this->requireOnce('ManageSettings');
+		$this->text->setLanguage(self::IDENTIFIER);
+		$this->settings->setTemplate(self::IDENTIFIER);
 
-		return $adminMenu;
+		loadGeneralSettingParameters(array_combine($subActions, $subActions), 'general');
+
+		$context[$context['admin_menu_name']]['tab_data'] = [
+			'tabs' => [
+				'general' => [],
+				'settings' => [],
+				'moodList' => [],
+				'moodEdit' => [],
+				'permissions' => [],
+				'donate' => [],
+			],
+		];
+
+		$this->setGlobal('context', $context);
+
 	}
 }

@@ -7,7 +7,9 @@ namespace Breeze\Controller;
 
 interface ControllerInterface
 {
-	public function doAction();
+	public function dispatch();
 
 	public function getSubActions(): array;
+
+	public function general(): void;
 }
