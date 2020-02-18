@@ -46,6 +46,10 @@ class Admin extends Base implements ServiceInterface
 		];
 
 		$this->setGlobal('context', $context);
+	}
 
+	public function setGeneralPageContent(): void
+	{
+		$context = $this->global('context');
 	}
 }

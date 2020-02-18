@@ -7,7 +7,7 @@ namespace Breeze\Controller;
 use Breeze\Service\Admin as AdminService;
 use Breeze\Service\Request;
 
-class Admin extends Base implements ControllerInterface
+class Admin extends BaseController implements ControllerInterface
 {
 	/**
 	 * @var AdminService
@@ -23,23 +23,31 @@ class Admin extends Base implements ControllerInterface
     public function dispatch(): void
     {
         $this->adminService->initSettingsPage($this->getSubActions());
+
+        $this->subActionCall();
     }
 
-    public function getSubActions(): array
-    {
-        return [
-            'general',
-            'settings',
-            'permissions',
-            'cover',
-            'donate',
-			'moodList',
-			'moodEdit',
-        ];
-    }
 
 	public function general(): void
 	{
-		// TODO: Implement main() method.
+		$this->adminService->setGeneralPageContent();
+	}
+
+	public function render(string $subTemplate, array $params): void
+	{
+		// TODO: Implement render() method.
+	}
+
+	public function getSubActions(): array
+	{
+		return [
+			'general',
+			'settings',
+			'permissions',
+			'cover',
+			'donate',
+			'moodList',
+			'moodEdit',
+		];
 	}
 }

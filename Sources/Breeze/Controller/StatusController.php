@@ -5,11 +5,19 @@ declare(strict_types=1);
 
 namespace Breeze\Controller;
 
-class Mood extends Base implements ControllerInterface
+class Status extends BaseController implements ControllerInterface
 {
+	const CREATE = 'create';
+	const DELETE = 'delete';
+
+	const ACTIONS = [
+	    self::CREATE,
+	    self::DELETE,
+	];
+
 	public function do(): void
 	{
-		// TODO: Implement do() method.
+
 	}
 
 	public function create(): void

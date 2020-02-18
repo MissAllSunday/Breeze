@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Controller\Admin;
 
 use Breeze\Breeze as Breeze;
-use Breeze\Controller\Base as BaseController;
+use Breeze\Controller\BaseController as BaseController;
 use Breeze\Repository\Mood as MoodRepository;
 use Breeze\Service\Settings as SettingsService;
 

@@ -5,11 +5,11 @@ declare(strict_types=1);
 
 namespace Breeze\Controller;
 
-class Comment extends Base implements ControllerInterface
+class Buddy extends BaseController implements ControllerInterface
 {
 	public function do(): void
 	{
-
+		// TODO: Implement do() method.
 	}
 
 	public function create(): void

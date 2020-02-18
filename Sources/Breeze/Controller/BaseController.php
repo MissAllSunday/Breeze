@@ -6,7 +6,7 @@ namespace Breeze\Controller;
 
 use Breeze\Service\Request;
 
-abstract class Base implements ControllerInterface
+abstract class BaseController implements ControllerInterface
 {
 	/**
 	 * @var Request
