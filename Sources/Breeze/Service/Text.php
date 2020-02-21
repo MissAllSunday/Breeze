@@ -7,7 +7,7 @@ namespace Breeze\Service;
 
 use Breeze\Breeze;
 
-class Text extends Base
+class Text extends BaseService
 {
 	protected const SESSION_PARSER = 'href';
 

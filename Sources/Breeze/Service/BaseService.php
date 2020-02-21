@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-class Base
+class BaseService
 {
 	public function global(string $variableName)
 	{
@@ -13,12 +13,15 @@ class Base
 
 	public function setGlobal($globalName, $globalValue): void
 	{
-		$GLOBALS[$globalName][$globalVariable] = $globalValue;
+		$GLOBALS[$globalName] = $globalValue;
 	}
 
 	public function requireOnce(string $fileName, string $dir = ''): void
 	{
-		$sourceDir = $dir ?? $this->global('sourcedir');
+		if (empty($fileName))
+			return;
+
+		$sourceDir = !empty($dir) ? $dir : $this->global('sourcedir');
 
 		require_once($sourceDir . '/' . $fileName . '.php');
 	}

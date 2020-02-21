@@ -7,7 +7,7 @@ namespace Breeze\Service;
 
 use Breeze\Breeze;
 
-class Settings extends Base
+class Settings extends BaseService
 {
 	public static $allSettings = [
 	    'wall' => 'CheckBox',

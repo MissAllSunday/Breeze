@@ -7,7 +7,7 @@ namespace Breeze\Service;
 
 use Breeze\Breeze;
 
-class Permissions extends Base
+class Permissions extends BaseService
 {
 	public const DELETE_COMMENTS = 'deleteComments';
 	public const DELETE_OWN_COMMENTS = 'deleteOwnComments';

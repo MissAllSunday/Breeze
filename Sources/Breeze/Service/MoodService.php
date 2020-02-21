@@ -7,7 +7,7 @@ namespace Breeze\Service;
 
 use Breeze\Repository\Mood as MoodRepository;
 
-class Mood extends Base
+class Mood extends BaseService
 {
 	/**
 	 * @var MoodRepository

@@ -200,12 +200,12 @@ class Breeze
             'function' => [$adminController, 'dispatch'],
             'icon' => 'smiley',
             'subsections' => [
-				'general' => [$this->text->get('page_main')],
-				'settings' => [$this->text->get('page_settings')],
-				'permissions' => [$this->text->get('page_permissions')],
-				'cover' => [$this->text->get('page_cover')],
-				'donate' => [$this->text->get('page_donate')],
-			],
+                'general' => [$this->text->get('page_main')],
+                'settings' => [$this->text->get('page_settings')],
+                'permissions' => [$this->text->get('page_permissions')],
+                'cover' => [$this->text->get('page_cover')],
+                'donate' => [$this->text->get('page_donate')],
+            ],
         ];
 
         if ($this->settings->enable('mood'))
@@ -215,7 +215,7 @@ class Breeze
         }
 	}
 
-	public function credits(): array
+	public static function credits(): array
 	{
 		return [
 		    'dev' => [

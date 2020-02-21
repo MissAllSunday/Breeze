@@ -8,7 +8,10 @@ namespace Breeze\Controller;
 interface ControllerInterface
 {
 	public function dispatch();
+
 	public function getSubActions(): array;
+
 	public function general(): void;
+
 	public function render(string $subTemplate, array $params): void;
 }
