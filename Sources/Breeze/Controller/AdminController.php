@@ -37,6 +37,15 @@ class Admin extends BaseController implements ControllerInterface
 		]);
 	}
 
+	public function settings()
+	{
+		$this->adminService->requireOnce('ManageServer');
+
+		$this->render('show_settings', [
+
+		]);
+	}
+
 	public function render(string $subTemplate, array $params): void
 	{
 		$context = $this->adminService->global('context');

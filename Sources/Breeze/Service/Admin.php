@@ -49,15 +49,18 @@ class Admin extends BaseService implements ServiceInterface
 		$this->setGlobal('context', $context);
 	}
 
-	public function setSubActionContent(): void
+	public function setSubActionContent(string $actionName): void
 	{
+		if (empty($actionName))
+			return;
+
 		$context = $this->global('context');
 
-		$context['page_title'] = $this->text->get('page_main');
-		$context['sub_template'] = 'admin_home';
+		$context['page_title'] = $this->text->get('page_'. $actionName .'_title');
+		$context['sub_template'] = $actionName;
 		$context[$context['admin_menu_name']]['tab_data'] = [
 		    'title' => $context['page_title'],
-		    'description' => $this->text->get('page_welcome'),
+		    'description' => $this->text->get('page_'. $actionName .'_description'),
 		];
 	}
 }
