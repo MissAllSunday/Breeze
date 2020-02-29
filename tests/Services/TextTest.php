@@ -34,15 +34,15 @@ final class TextTest extends TestCase
 	{
 		return [
 		    'text exists' =>
-				[
-				    'textKeyName' => 'time_year',
-				    'expected' => 'year'
-				],
+		    [
+		        'textKeyName' => 'time_year',
+		        'expected' => 'year'
+		    ],
 		    'text doesnt exists' =>
-				[
-				    'textKeyName' => 'nope!',
-				    'expected' => ''
-				]
+		    [
+		        'textKeyName' => 'nope!',
+		        'expected' => ''
+		    ]
 		];
 	}
 
@@ -60,15 +60,15 @@ final class TextTest extends TestCase
 	{
 		return [
 		    'text exists' =>
-		    	[
-		    	    'textKeyName' => 'lol',
-		    	    'expected' => 'lol'
-		    	],
+		    [
+		        'textKeyName' => 'lol',
+		        'expected' => 'lol'
+		    ],
 		    'text doesnt exists' =>
-		    	[
-		    	    'textKeyName' => 'nope!',
-		    	    'expected' => ''
-		    	]
+		    [
+		        'textKeyName' => 'nope!',
+		        'expected' => ''
+		    ]
 		];
 	}
 
@@ -86,32 +86,32 @@ final class TextTest extends TestCase
 	{
 		return [
 		    'empty text' =>
-				[
-				    'textToParse' => '',
-				    'replacements' => [],
-				    'expected' => ''
-				],
+		    [
+		        'textToParse' => '',
+		        'replacements' => [],
+		        'expected' => ''
+		    ],
 		    'no replacement' =>
-		    	[
-		    	    'textToParse' => 'Non nobis solum',
-		    	    'replacements' => [],
-		    	    'expected' => 'Non nobis solum'
-		    	],
+		    [
+		        'textToParse' => 'Non nobis solum',
+		        'replacements' => [],
+		        'expected' => 'Non nobis solum'
+		    ],
 		    'normal text' =>
-				[
-				    'textToParse' => 'Hello {general_kenobi}',
-				    'replacements' => ['general_kenobi' => 'there!'],
-				    'expected' => 'Hello there!'
-				],
+		    [
+		        'textToParse' => 'Hello {general_kenobi}',
+		        'replacements' => ['general_kenobi' => 'there!'],
+		        'expected' => 'Hello there!'
+		    ],
 		    'href text' =>
-		    	[
-		    	    'textToParse' => '<a href="{href}">{zim}</a>',
-		    	    'replacements' => [
-		    	        'href' => 'https://www.youtube.com/watch?v=waEC-8GFTP4',
-		    	        'zim' => 'Ain\'t Nobody Got Time For That'
-		    	    ],
-		    	    'expected' => '<a href="https://www.youtube.com/watch?v=waEC-8GFTP4;foo=baz">Ain\'t Nobody Got Time For That</a>'
-		    	],
+		    [
+		        'textToParse' => '<a href="{href}">{zim}</a>',
+		        'replacements' => [
+		            'href' => 'https://www.youtube.com/watch?v=waEC-8GFTP4',
+		            'zim' => 'Ain\'t Nobody Got Time For That'
+		        ],
+		        'expected' => '<a href="https://www.youtube.com/watch?v=waEC-8GFTP4;foo=baz">Ain\'t Nobody Got Time For That</a>'
+		    ],
 		];
 	}
 
@@ -131,35 +131,35 @@ final class TextTest extends TestCase
 
 		return [
 		    'alphanumeric' =>
-				[
-				    'string' => $dirtyString,
-				    'type' => 'alphanumeric',
-				    'expected' => 'QWE,5,V,BB3,666'
-				],
+		    [
+		        'string' => $dirtyString,
+		        'type' => 'alphanumeric',
+		        'expected' => 'QWE,5,V,BB3,666'
+		    ],
 		    'alpha' =>
-		    	[
-		    	    'string' => $dirtyString,
-		    	    'type' => 'alpha',
-		    	    'expected' => 'QWE,V,BB'
-		    	],
+		    [
+		        'string' => $dirtyString,
+		        'type' => 'alpha',
+		        'expected' => 'QWE,V,BB'
+		    ],
 		    'numeric' =>
-		    	[
-		    	    'string' => $dirtyString,
-		    	    'type' => 'numeric',
-		    	    'expected' => '5,3,666'
-		    	],
+		    [
+		        'string' => $dirtyString,
+		        'type' => 'numeric',
+		        'expected' => '5,3,666'
+		    ],
 		    'empty' =>
-		    	[
-		    	    'string' => '',
-		    	    'type' => '',
-		    	    'expected' => ''
-		    	],
+		    [
+		        'string' => '',
+		        'type' => '',
+		        'expected' => ''
+		    ],
 		    'no type' =>
-		    	[
-		    	    'string' => $dirtyString,
-		    	    'type' => '',
-		    	    'expected' => 'QWE,5,V,BB3,666'
-		    	],
+		    [
+		        'string' => $dirtyString,
+		        'type' => '',
+		        'expected' => 'QWE,5,V,BB3,666'
+		    ],
 		];
 	}
 
@@ -185,17 +185,17 @@ final class TextTest extends TestCase
 	{
 		return [
 		    'happy path' =>
-				[
-				    'bytes' => 13516800,
-				    'showUnit' => true,
-				    'expected' => '12.8906 MB'
-				],
+		    [
+		        'bytes' => 13516800,
+		        'showUnit' => true,
+		        'expected' => '12.8906 MB'
+		    ],
 		    'no unit' =>
-		    	[
-		    	    'bytes' => 666666666666,
-		    	    'showUnits' => false,
-		    	    'expected' =>'620.8817'
-		    	],
+		    [
+		        'bytes' => 666666666666,
+		        'showUnits' => false,
+		        'expected' =>'620.8817'
+		    ],
 		];
 	}
 
@@ -213,37 +213,37 @@ final class TextTest extends TestCase
 	{
 		return [
 		    'happy path' =>
-				[
-				    'stringToTruncate' => 'Contritium praecedit superbia',
-				    'limit' => 8,
-				    'break' => ' ',
-				    'pad' => '...',
-				    'expected' => 'Contritium...'
-				],
+		    [
+		        'stringToTruncate' => 'Contritium praecedit superbia',
+		        'limit' => 8,
+		        'break' => ' ',
+		        'pad' => '...',
+		        'expected' => 'Contritium...'
+		    ],
 		    'smaller than limit' =>
-		    	[
-		    	    'stringToTruncate' => 'Fidite Nemini',
-		    	    'limit' => 666,
-		    	    'break' => '',
-		    	    'pad' => '',
-		    	    'expected' => 'Fidite Nemini'
-		    	],
+		    [
+		        'stringToTruncate' => 'Fidite Nemini',
+		        'limit' => 666,
+		        'break' => '',
+		        'pad' => '',
+		        'expected' => 'Fidite Nemini'
+		    ],
 		    'different pad' =>
-		    	[
-		    	    'stringToTruncate' => 'Mendacem memorem esse oportet',
-		    	    'limit' => 12,
-		    	    'break' => ' ',
-		    	    'pad' => '---',
-		    	    'expected' => 'Mendacem memorem---'
-		    	],
+		    [
+		        'stringToTruncate' => 'Mendacem memorem esse oportet',
+		        'limit' => 12,
+		        'break' => ' ',
+		        'pad' => '---',
+		        'expected' => 'Mendacem memorem---'
+		    ],
 		    'no string' =>
-		    	[
-		    	    'stringToTruncate' => '',
-		    	    'limit' => 0,
-		    	    'break' => '',
-		    	    'pad' => '',
-		    	    'expected' => ''
-		    	],
+		    [
+		        'stringToTruncate' => '',
+		        'limit' => 0,
+		        'break' => '',
+		        'pad' => '',
+		        'expected' => ''
+		    ],
 		];
 	}
 
@@ -261,25 +261,25 @@ final class TextTest extends TestCase
 	{
 		return [
 		    'just now' =>
-		    	[
-		    	    'timeInSeconds' => time(),
-		    	    'expected' => 'just now'
-		    	],
+		    [
+		        'timeInSeconds' => time(),
+		        'expected' => 'just now'
+		    ],
 		    'years ago' =>
-				[
-				    'timeInSeconds' => time() - 60489000,
-				    'expected' => '2 years ago'
-				],
+		    [
+		        'timeInSeconds' => time() - 60489000,
+		        'expected' => '2 years ago'
+		    ],
 		    'hours' =>
-				[
-				    'timeInSeconds' => time() - 82800,
-				    'expected' => '23 hours ago'
-				],
+		    [
+		        'timeInSeconds' => time() - 82800,
+		        'expected' => '23 hours ago'
+		    ],
 		    'minute' =>
-				[
-				    'timeInSeconds' => time() - 62,
-				    'expected' => '1 minute ago'
-				],
+		    [
+		        'timeInSeconds' => time() - 62,
+		        'expected' => '1 minute ago'
+		    ],
 		];
 	}
 }

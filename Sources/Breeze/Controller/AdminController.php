@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Controller;
 
 use Breeze\Breeze;
-use Breeze\Service\Admin as AdminService;
+use Breeze\Service\AdminService;
 use Breeze\Service\Request;
 
 class Admin extends BaseController implements ControllerInterface
@@ -41,9 +41,12 @@ class Admin extends BaseController implements ControllerInterface
 	{
 		$this->adminService->requireOnce('ManageServer');
 
-		$this->render('show_settings', [
+		$this->render('settings', [
 
 		]);
+
+		if ($this->request->get('save'))
+			$this->adminService->saveConfigVars();
 	}
 
 	public function render(string $subTemplate, array $params): void
@@ -51,6 +54,12 @@ class Admin extends BaseController implements ControllerInterface
 		$context = $this->adminService->global('context');
 
 		$context['sub_template'] = $subTemplate;
+		$context['page_title'] = \Breeze\Breeze::NAME . ' - ' . $this->_app['tools']->text('page_settings');
+		$context[$context['admin_menu_name']]['tab_data'] = [
+			'title' => $context['page_title'],
+			'description' => $this->_app['tools']->text('page_settings_desc'),
+		];
+
 
 		$context[$subTemplate] = $params;
 

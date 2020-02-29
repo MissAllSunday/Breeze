@@ -31,15 +31,15 @@ final class RequestTest extends TestCase
 	{
 		return [
 		    'sanitized' =>
-		    	[
-		    	    'variableName' => 'xss',
-		    	    'expected' => '&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;'
-		    	],
+		    [
+		        'variableName' => 'xss',
+		        'expected' => '&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;'
+		    ],
 		    'not found' =>
-		    	[
-		    	    'variableName' => 'Cornholio',
-		    	    'expected' => false
-		    	]
+		    [
+		        'variableName' => 'Cornholio',
+		        'expected' => false
+		    ]
 		];
 	}
 
@@ -57,20 +57,20 @@ final class RequestTest extends TestCase
 	{
 		return [
 		    'sanitized' =>
-				[
-				    'dirty' => '<script>alert("XSS");</script>',
-				    'expected' => '&lt;script&gt;alert(&quot;XSS&quot;);&lt;/script&gt;'
-				],
+		    [
+		        'dirty' => '<script>alert("XSS");</script>',
+		        'expected' => '&lt;script&gt;alert(&quot;XSS&quot;);&lt;/script&gt;'
+		    ],
 		    'int' =>
-				[
-				    'variable' => '666',
-				    'expected' => 666
-				],
+		    [
+		        'variable' => '666',
+		        'expected' => 666
+		    ],
 		    'empty' =>
-		    	[
-		    	    'variable' => '0',
-		    	    'expected' => false
-		    	],
+		    [
+		        'variable' => '0',
+		        'expected' => false
+		    ],
 		];
 	}
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-class BaseService
+abstract class BaseService
 {
 	public function global(string $variableName)
 	{
@@ -29,5 +29,11 @@ class BaseService
 	public function setTemplate(string $templateName): void
 	{
 		loadtemplate($templateName);
+	}
+
+	public function redirect(string $urlName): void
+	{
+		if(!empty($urlName))
+			redirectexit($urlName);
 	}
 }
