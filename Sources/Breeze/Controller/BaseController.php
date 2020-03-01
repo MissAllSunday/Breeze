@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Controller;
 
 use Breeze\Service\Request;
+use Breeze\Service\ServiceInterface;
 
 abstract class BaseController implements ControllerInterface
 {
@@ -12,6 +13,17 @@ abstract class BaseController implements ControllerInterface
 	 * @var Request
 	 */
 	protected $request;
+
+	/**
+	 * @var ServiceInterface
+	 */
+	protected $service;
+
+	public function __construct(Request $request, ServiceInterface $service)
+	{
+		$this->request = $request;
+		$this->service = $service;
+	}
 
 	public function subActionCall(): void
 	{
@@ -23,5 +35,10 @@ abstract class BaseController implements ControllerInterface
 
 		else
 			$this->general();
+	}
+
+	public function getSubActions(): array
+	{
+		return self::SUB_ACTIONS;
 	}
 }

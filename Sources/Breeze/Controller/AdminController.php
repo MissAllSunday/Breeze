@@ -10,20 +10,24 @@ use Breeze\Service\Request;
 
 class Admin extends BaseController implements ControllerInterface
 {
+	public const SUB_ACTIONS = [
+		'general',
+		'settings',
+		'permissions',
+		'cover',
+		'donate',
+		'moodList',
+		'moodEdit',
+	];
+
 	/**
 	 * @var AdminService
 	 */
 	protected $adminService;
 
-	public function __construct(Request $request, AdminService $service)
-	{
-		$this->request = $request;
-		$this->adminService = $service;
-	}
-
 	public function dispatch(): void
     {
-        $this->adminService->initSettingsPage($this->getSubActions());
+        $this->service->initSettingsPage($this->getSubActions());
 
         $this->subActionCall();
     }
@@ -59,18 +63,5 @@ class Admin extends BaseController implements ControllerInterface
 		$this->adminService->setGlobal('context', $context);
 
 		$this->adminService->setSubActionContent($subTemplate);
-	}
-
-	public function getSubActions(): array
-	{
-		return [
-		    'general',
-		    'settings',
-		    'permissions',
-		    'cover',
-		    'donate',
-		    'moodList',
-		    'moodEdit',
-		];
 	}
 }
