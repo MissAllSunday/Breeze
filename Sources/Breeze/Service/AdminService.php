@@ -60,7 +60,6 @@ class AdminService extends BaseService implements ServiceInterface
 	public function configVars(): void
 	{
 		$this->requireOnce('ManageServer');
-		$scriptUrl = $this->global('scripturl');
 
 		$this->configVars = [
 		    ['title', Breeze::PATTERN . 'page_settings'],
@@ -87,9 +86,6 @@ class AdminService extends BaseService implements ServiceInterface
 		    ['int', Breeze::PATTERN . 'flood_minutes', 'size' => 3, 'subtext' => $this->text->get('flood_minutes_sub')],
 		];
 
-		$context['post_url'] = $scriptUrl . '?' . self::POST_URL .';save';
-
-
 		prepareDBSettingContext($this->configVars);
 	}
 
@@ -114,5 +110,7 @@ class AdminService extends BaseService implements ServiceInterface
 		    'title' => $context['page_title'],
 		    'description' => $this->text->get('page_' . $actionName . '_description'),
 		];
+
+		$this->setGlobal('context', $context);
 	}
 }

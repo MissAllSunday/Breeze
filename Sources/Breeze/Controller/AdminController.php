@@ -30,20 +30,21 @@ class Admin extends BaseController implements ControllerInterface
 
 	public function general(): void
 	{
-		$this->adminService->setSubActionContent();
-
 		$this->render('admin_home', [
-		    'credits' => Breeze::credits(),
+			'credits' => Breeze::credits(),
 		]);
 	}
 
-	public function settings()
+	public function settings(): void
 	{
 		$this->adminService->requireOnce('ManageServer');
+		$scriptUrl = $this->adminService->global('scripturl');
 
 		$this->render('settings', [
-
+			'post_url' => $scriptUrl . '?' . AdminService::POST_URL . ';save',
 		]);
+
+		$this->adminService->configVars();
 
 		if ($this->request->get('save'))
 			$this->adminService->saveConfigVars();
@@ -53,17 +54,11 @@ class Admin extends BaseController implements ControllerInterface
 	{
 		$context = $this->adminService->global('context');
 
-		$context['sub_template'] = $subTemplate;
-		$context['page_title'] = \Breeze\Breeze::NAME . ' - ' . $this->_app['tools']->text('page_settings');
-		$context[$context['admin_menu_name']]['tab_data'] = [
-			'title' => $context['page_title'],
-			'description' => $this->_app['tools']->text('page_settings_desc'),
-		];
-
-
 		$context[$subTemplate] = $params;
 
 		$this->adminService->setGlobal('context', $context);
+
+		$this->adminService->setSubActionContent($subTemplate);
 	}
 
 	public function getSubActions(): array
