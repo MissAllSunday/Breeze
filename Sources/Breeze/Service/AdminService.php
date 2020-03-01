@@ -25,27 +25,6 @@ class AdminService extends BaseService implements ServiceInterface
 	'canMood'
 ];
 
-	/**
-	 * @var Settings
-	 */
-	protected $settings;
-
-	/**
-	 * @var Text
-	 */
-	protected $text;
-
-	/**
-	 * @var array
-	 */
-	private $configVars = [];
-
-	public function __construct(Settings $settings, Text $text)
-	{
-		$this->settings = $settings;
-		$this->text = $text;
-	}
-
 	public function initSettingsPage($subActions): void
 	{
 		$context = $this->global('context');
@@ -137,5 +116,18 @@ class AdminService extends BaseService implements ServiceInterface
 		];
 
 		$this->setGlobal('context', $context);
+	}
+
+	public function isEnableFeature(string $featureName = '', string $redirectUrl = ''): bool
+	{
+		if (empty($featureName))
+			return false;
+
+		$feature = $this->settings->get($featureName);
+
+		if (empty($feature) && !empty($redirectUrl))
+			$this->redirect($redirectUrl);
+
+		return (bool) $feature;
 	}
 }

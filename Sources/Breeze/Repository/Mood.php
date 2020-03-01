@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
-class Mood extends Base
+class Mood extends BaseRepository
 {
 
 }

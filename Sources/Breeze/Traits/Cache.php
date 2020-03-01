@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+namespace Breeze\Traits;
 
 use Breeze\Breeze as Breeze;
 

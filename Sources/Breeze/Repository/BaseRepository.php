@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
-class Base
+class BaseRepository
 {
 
 }
