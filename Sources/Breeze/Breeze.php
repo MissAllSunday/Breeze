@@ -15,10 +15,12 @@ use Breeze\Repository\Like\Base as LikeRepository;
 use Breeze\Repository\Like\Comment as LikeCommentRepository;
 use Breeze\Repository\Like\Status as LikeStatusRepository;
 use Breeze\Service\Mood as MoodService;
+use Breeze\Service\MoodService;
 use Breeze\Service\Permissions;
-use Breeze\Service\Settings;
-use Breeze\Service\Text;
+
+
 use Breeze\Service\User as UserService;
+use Breeze\Traits\Text;
 use League\Container\Container as Container;
 use League\Container\ReflectionContainer as ReflectionContainer;
 
@@ -27,20 +29,12 @@ if (!defined('SMF'))
 
 class Breeze
 {
+	use Text;
+	
 	public const NAME = 'Breeze';
 	public const VERSION = '2.0';
 	public const PATTERN = self::NAME . '_';
 	public const FEED = '//github.com/MissAllSunday/Breeze/releases.atom';
-
-	/**
-	 * @var Settings
-	 */
-	protected $settings;
-
-	/**
-	 * @var Text
-	 */
-	protected $text;
 
 	/**
 	 * @var Container
@@ -54,9 +48,6 @@ class Breeze
 		$this->container->delegate(
 		    new ReflectionContainer()
 		);
-
-		$this->settings = $this->container->get(Settings::class);
-		$this->text = $this->container->get(Text::class);
 	}
 
 	public function permissionsWrapper(&$permissionGroups, &$permissionList): void
@@ -71,16 +62,16 @@ class Breeze
 
 	public function menu(&$menu_buttons): void
 	{
-		if (!$this->settings->enable('master'))
+		if (!$this->enable('master'))
 			return;
 
-		$scriptUrl = $this->settings->global('scripturl');
-		$currentUserInfo = $this->settings->global('user_info');
+		$scriptUrl = $this->global('scripturl');
+		$currentUserInfo = $this->global('user_info');
 		$currentUserSettings = $this->container->get(UserService::class)->getCurrentUserSettings();
 
 		if (!empty($menu_buttons['profile']['sub_buttons']['summary']))
 			$menu_buttons['profile']['sub_buttons']['summary'] = [
-			    'title' => $this->text->get('summary'),
+			    'title' => $this->getText('summary'),
 			    'href' => $scriptUrl . '?action=profile;area=static',
 			    'show' => true,
 			];
@@ -95,23 +86,23 @@ class Breeze
 		$menu_buttons = array_merge(
 		    array_slice($menu_buttons, 0, $counter),
 		    ['wall' => [
-		        'title' => $this->text->get('general_wall'),
+		        'title' => $this->getText('general_wall'),
 		        'icon' => 'smiley',
 		        'href' => $scriptUrl . '?action=wall',
-		        'show' => ($this->settings->enable('master') &&
+		        'show' => ($this->enable('master') &&
 					!$currentUserInfo['is_guest'] &&
 					!empty($currentUserSettings['general_wall'])),
 		        'sub_buttons' => [
 		            'noti' => [
-		                'title' => $this->text->get('user_notisettings_name'),
+		                'title' => $this->getText('user_notisettings_name'),
 		                'href' => $scriptUrl . '?action=profile;area=alerts;sa=edit;u=' . $currentUserInfo['id'],
-		                'show' => ($this->settings->enable('master') && !$currentUserInfo['is_guest']),
+		                'show' => ($this->enable('master') && !$currentUserInfo['is_guest']),
 		                'sub_buttons' => [],
 		            ],
 		            'admin' => [
-		                'title' => $this->text->get('admin'),
+		                'title' => $this->getText('admin'),
 		                'href' => $scriptUrl . '?action=admin;area=breezeadmin',
-		                'show' => ($this->settings->enable('master') && $currentUserInfo['is_admin']),
+		                'show' => ($this->enable('master') && $currentUserInfo['is_admin']),
 		                'sub_buttons' => [],
 		            ],
 		        ],
@@ -124,7 +115,7 @@ class Breeze
 	{
 		$actions['breezeFeed'] = [false, Feed::class . '::do#'];
 
-		if (!$this->settings->enable('master'))
+		if (!$this->enable('master'))
 			return;
 
 		$actions['breezeStatus'] = [false,  Status::class . '::do#'];
@@ -147,7 +138,7 @@ class Breeze
 
 	public function updateLikesWrapper($type, $content, $sa, $js, $extra)
 	{
-		if (!$this->settings->enable('master') || !in_array($type, LikeRepository::getAllTypes()))
+		if (!$this->enable('master') || !in_array($type, LikeRepository::getAllTypes()))
 			return false;
 
 		switch ($type)
@@ -181,7 +172,7 @@ class Breeze
 	public function displayMoodProfileWrapper($memID, $area): void
 	{
 		// Don't do anything if the mod is off
-		if (!$this->settings->enable('master'))
+		if (!$this->enable('master'))
 			return;
 
 		// Let BreezeMood handle this...
@@ -196,22 +187,22 @@ class Breeze
         $this->text->setLanguage('BreezeAdmin');
 
         $adminMenu['config']['areas']['breezeAdmin'] = [
-            'label' => $this->text->get('page_main'),
+            'label' => $this->getText('page_main'),
             'function' => [$adminController, 'dispatch'],
             'icon' => 'smiley',
             'subsections' => [
-                'general' => [$this->text->get('page_main')],
-                'settings' => [$this->text->get('page_settings')],
-                'permissions' => [$this->text->get('page_permissions')],
-                'cover' => [$this->text->get('page_cover')],
-                'donate' => [$this->text->get('page_donate')],
+                'general' => [$this->getText('page_main')],
+                'settings' => [$this->getText('page_settings')],
+                'permissions' => [$this->getText('page_permissions')],
+                'cover' => [$this->getText('page_cover')],
+                'donate' => [$this->getText('page_donate')],
             ],
         ];
 
-        if ($this->settings->enable('mood'))
+        if ($this->enable('mood'))
         {
-            $admin_menu['config']['areas']['breezeAdmin']['subsections']['moodList'] = [$this->text->get('page_mood')];
-            $admin_menu['config']['areas']['breezeAdmin']['subsections']['moodEdit'] = [$this->text->get('page_mood_create')];
+            $admin_menu['config']['areas']['breezeAdmin']['subsections']['moodList'] = [$this->getText('page_mood')];
+            $admin_menu['config']['areas']['breezeAdmin']['subsections']['moodEdit'] = [$this->getText('page_mood_create')];
         }
 	}
 

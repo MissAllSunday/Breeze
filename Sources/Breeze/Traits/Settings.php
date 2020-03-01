@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Service;
+namespace Breeze\Traits;
 
 use Breeze\Breeze;
 
-class Settings extends BaseService
+trait Settings
 {
 	public static $allSettings = [
 	    'wall' => 'CheckBox',
@@ -28,7 +28,17 @@ class Settings extends BaseService
 	    'cover_height' => 'Int',
 	];
 
-	public function get(string $settingName, $fallBack = false)
+	public function global(string $variableName)
+	{
+		return $GLOBALS[$variableName] ?? false;
+	}
+
+	public function setGlobal($globalName, $globalValue): void
+	{
+		$GLOBALS[$globalName] = $globalValue;
+	}
+
+	public function getSetting(string $settingName, $fallBack = false)
 	{
 		$modSettings = $this->global('modSettings');
 

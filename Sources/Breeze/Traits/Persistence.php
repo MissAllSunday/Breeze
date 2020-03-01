@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Breeze\Traits;
 
-
 use Breeze\Breeze;
 
 trait Persistence

@@ -3,34 +3,36 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Service;
+namespace Breeze\Traits;
 
 use Breeze\Breeze;
 
-class Text extends BaseService
+trait Text
 {
-	protected const SESSION_PARSER = 'href';
+	use Settings;
+
+	private static $session_parser = 'href';
 
 	public function setLanguage(string $languageName): void
 	{
 		loadLanguage($languageName);
 	}
 
-	public function get(string $textKey): string
+	public function getText(string $textKey): string
 	{
 		$txt = $this->global('txt');
 
 		return !empty($txt[Breeze::PATTERN . $textKey]) ? $txt[Breeze::PATTERN . $textKey] : '';
 	}
 
-    public function getSmf(string $textKey): string
+    public function getSmfText(string $textKey): string
     {
         $txt = $this->global('txt');
 
         return !empty($txt[$textKey]) ? $txt[$textKey] : '';
     }
 
-	public function parser(string $text, array $replacements = []): string
+	public function parserText(string $text, array $replacements = []): string
 	{
 		$context = $this->global('context');
 
@@ -40,18 +42,18 @@ class Text extends BaseService
 		if (empty($replacements) || !is_array($replacements))
 			return $text;
 
-		$s = ';' . $context['session_var'] . '=' . $context['session_id'];
+		$session_var = ';' . $context['session_var'] . '=' . $context['session_id'];
 
-		$find = [];
-		$replace = [];
+		$toFind = [];
+		$replaceWith = [];
 
-		foreach ($replacements as $f => $r)
+		foreach ($replacements as $find => $replace)
 		{
-			$find[] = '{' . $f . '}';
-			$replace[] = $r . ((false !== strpos($f, self::SESSION_PARSER)) ? $s : '');
+			$find[] = '{' . $find . '}';
+			$replaceWith[] = $replace . ((false !== strpos($find, self::$session_parser)) ? $session_var : '');
 		}
 
-		return str_replace($find, $replace, $text);
+		return str_replace($toFind, $replaceWith, $text);
 	}
 
 	public function commaSeparated(string $dirtyString, string $type = 'alphanumeric'): string
@@ -108,7 +110,7 @@ class Text extends BaseService
 		return round($bytes, 4) . ($showUnits ? ' ' . $units[$pow] : '');
 	}
 
-	public function truncate(string $string, int $limit = 30, string $break = ' ', string $pad = '...'): string
+	public function truncateText(string $string, int $limit = 30, string $break = ' ', string $pad = '...'): string
 	{
 		if(empty($string))
 			return '';

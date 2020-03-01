@@ -5,24 +5,13 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-use Breeze\Repository\Mood as MoodRepository;
 
-class Mood extends BaseService implements ServiceInterface
+class MoodService extends BaseService implements ServiceInterface
 {
-	/**
-	 * @var MoodRepository
-	 */
-	protected $moodRepository;
 
-	/**
-	 * @var Settings
-	 */
-	protected $settings;
-
-	public function __construct(MoodRepository $moodRepository, Settings $settings)
+	public function showMoodList()
 	{
-		$this->moodRepository = $moodRepository;
-		$this->settings = $settings;
+
 	}
 
 	public function displayMood(array &$data, int $userId): void
