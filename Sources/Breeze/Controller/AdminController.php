@@ -33,6 +33,7 @@ class Admin extends BaseController implements ControllerInterface
 
 	public function general(): void
 	{
+		$this->service->setSubActionContent(__FUNCTION__);
 		$this->render('admin_home', [
 		    'credits' => Breeze::credits(),
 		]);
@@ -40,17 +41,38 @@ class Admin extends BaseController implements ControllerInterface
 
 	public function settings(): void
 	{
-		$this->adminService->requireOnce('ManageServer');
 		$scriptUrl = $this->adminService->global('scripturl');
 
-		$this->render('settings', [
-		    'post_url' => $scriptUrl . '?' . AdminService::POST_URL . ';save',
+		$this->service->setSubActionContent(__FUNCTION__);
+		$this->render(__FUNCTION__, [
+		    'post_url' => $scriptUrl . '?' . AdminService::POST_URL . __FUNCTION__ . ';save',
 		]);
 
 		$this->adminService->configVars();
 
 		if ($this->request->get('save'))
+		{
 			$this->adminService->saveConfigVars();
+			$this->adminService->redirect(AdminService::POST_URL . __FUNCTION__);
+		}
+	}
+
+	public function permissions()
+	{
+		$scriptUrl = $this->adminService->global('scripturl');
+
+		$this->service->setSubActionContent(__FUNCTION__);
+		$this->render(__FUNCTION__, [
+			'post_url' => $scriptUrl . '?' . AdminService::POST_URL . __FUNCTION__ .';save',
+		]);
+
+		$this->adminService->permissionsConfigVars();
+
+		if ($this->request->get('save'))
+		{
+			$this->adminService->saveConfigVars();
+			$this->adminService->redirect( AdminService::POST_URL . __FUNCTION__ );
+		}
 	}
 
 	public function render(string $subTemplate, array $params): void

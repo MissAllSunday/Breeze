@@ -10,7 +10,20 @@ use Breeze\Breeze;
 class AdminService extends BaseService implements ServiceInterface
 {
 	public const IDENTIFIER = 'BreezeAdmin';
-	public const POST_URL = 'action=admin;area=breezeadmin;sa=settings';
+	public const POST_URL = 'action=admin;area=breezeadmin;sa=';
+
+	public const PERMISSIONS = [
+	'deleteComments',
+	'deleteOwnComments',
+	'deleteProfileComments',
+	'deleteStatus',
+	'deleteOwnStatus',
+	'deleteProfileStatus',
+	'postStatus',
+	'postComments',
+	'canCover',
+	'canMood'
+];
 
 	/**
 	 * @var Settings
@@ -38,6 +51,8 @@ class AdminService extends BaseService implements ServiceInterface
 		$context = $this->global('context');
 
 		$this->requireOnce('ManageSettings');
+		$this->requireOnce('ManageServer');
+
 		$this->text->setLanguage(self::IDENTIFIER);
 		$this->settings->setTemplate(self::IDENTIFIER);
 
@@ -89,12 +104,22 @@ class AdminService extends BaseService implements ServiceInterface
 		prepareDBSettingContext($this->configVars);
 	}
 
+	public function permissionsConfigVars(): void
+	{
+		$this->configVars = [
+			['title', Breeze::PATTERN . 'page_permissions'],
+		];
+
+		foreach (self::PERMISSIONS as $permission)
+			$this->configVars[] = ['permissions', 'breeze_' . $permission, 0, $this->text->get('permissionname_breeze_' . $permission)];
+
+		prepareDBSettingContext($this->configVars);
+	}
+
 	public function saveConfigVars(): void
 	{
 		checkSession();
 		saveDBSettings($this->configVars);
-
-		$this->redirect(self::POST_URL);
 	}
 
 	public function setSubActionContent(string $actionName): void
