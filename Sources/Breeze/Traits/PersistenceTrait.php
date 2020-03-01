@@ -6,7 +6,7 @@ namespace Breeze\Traits;
 
 use Breeze\Breeze;
 
-trait Persistence
+trait PersistenceTrait
 {
 	public function setMessage($message, $type): void
 	{

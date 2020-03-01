@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Repository\RepositoryInterface;
-use Breeze\Traits\Text;
+use Breeze\Traits\TextTrait;
 
 abstract class BaseService
 {
-	use Text;
+	use TextTrait;
 
 	/**
 	 * @var RepositoryInterface

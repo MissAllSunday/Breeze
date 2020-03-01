@@ -14,13 +14,12 @@ use Breeze\Controller\User\Wall;
 use Breeze\Repository\Like\Base as LikeRepository;
 use Breeze\Repository\Like\Comment as LikeCommentRepository;
 use Breeze\Repository\Like\Status as LikeStatusRepository;
-use Breeze\Service\Mood as MoodService;
 use Breeze\Service\MoodService;
 use Breeze\Service\Permissions;
 
 
 use Breeze\Service\User as UserService;
-use Breeze\Traits\Text;
+use Breeze\Traits\TextTrait;
 use League\Container\Container as Container;
 use League\Container\ReflectionContainer as ReflectionContainer;
 
@@ -29,7 +28,7 @@ if (!defined('SMF'))
 
 class Breeze
 {
-	use Text;
+	use TextTrait;
 	
 	public const NAME = 'Breeze';
 	public const VERSION = '2.0';

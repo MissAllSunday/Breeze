@@ -5,11 +5,9 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-
 class MoodService extends BaseService implements ServiceInterface
 {
-
-	public function showMoodList()
+	public function showMoodList(): void
 	{
 
 	}

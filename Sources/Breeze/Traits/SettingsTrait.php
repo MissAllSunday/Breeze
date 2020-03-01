@@ -7,7 +7,7 @@ namespace Breeze\Traits;
 
 use Breeze\Breeze;
 
-trait Settings
+trait SettingsTrait
 {
 	public static $allSettings = [
 	    'wall' => 'CheckBox',
@@ -17,7 +17,7 @@ trait Settings
 	    'load_more' => 'CheckBox',
 	    'activityLog' => 'CheckBox',
 	    'kick_ignored' => 'CheckBox',
-	    'blockList' => 'Text',
+	    'blockList' => 'TextTrait',
 	    'blockListIDs' => 'Array',
 	    'buddies' => 'CheckBox',
 	    'how_many_buddies' => 'Int',

@@ -7,9 +7,9 @@ namespace Breeze\Traits;
 
 use Breeze\Breeze;
 
-trait Text
+trait TextTrait
 {
-	use Settings;
+	use SettingsTrait;
 
 	private static $session_parser = 'href';
 
@@ -49,7 +49,7 @@ trait Text
 
 		foreach ($replacements as $find => $replace)
 		{
-			$find[] = '{' . $find . '}';
+			$toFind[] = '{' . $find . '}';
 			$replaceWith[] = $replace . ((false !== strpos($find, self::$session_parser)) ? $session_var : '');
 		}
 

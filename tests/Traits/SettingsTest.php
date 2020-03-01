@@ -2,32 +2,32 @@
 
 declare(strict_types=1);
 
-use Breeze\Service\Settings as SettingsService;
+use Breeze\Traits\SettingsTrait;
 use PHPUnit\Framework\TestCase;
 
 final class SettingsTest extends TestCase
 {
 	/**
-	 * @var SettingsService
+	 * @var SettingsTrait
 	 */
-	private $settingsService;
+	private $settingsTrait;
 
 	protected function setUp(): void
 	{
-		$this->settingsService = new SettingsService();
+		$this->settingsTrait = $this->getMockForTrait(SettingsTrait::class);
 	}
 
 	/**
-	 * @dataProvider getProvider
+	 * @dataProvider getSettingProvider
 	 */
-	public function testGet(string $settingName, $fallBack, $expected): void
+	public function testGetSetting(string $settingName, $fallBack, $expected): void
 	{
-		$setting = $this->settingsService->get($settingName, $fallBack);
+		$setting = $this->settingsTrait->getSetting($settingName, $fallBack);
 
 		$this->assertEquals($expected, $setting);
 	}
 
-	public function getProvider(): array
+	public function getSettingProvider(): array
 	{
 		return [
 		    'string exists' =>
@@ -56,7 +56,7 @@ final class SettingsTest extends TestCase
 	 */
 	public function testEnable(string $settingName, bool $expected): void
 	{
-		$enable = $this->settingsService->enable($settingName);
+		$enable = $this->settingsTrait->enable($settingName);
 
 		$this->assertIsBool($expected);
 		$this->assertEquals($expected, $enable);
@@ -83,7 +83,7 @@ final class SettingsTest extends TestCase
 	 */
 	public function testModSetting(string $settingName, $fallBack, $expected): void
 	{
-		$modSetting = $this->settingsService->modSetting($settingName, $fallBack);
+		$modSetting = $this->settingsTrait->modSetting($settingName, $fallBack);
 
 		$this->assertEquals($expected, $modSetting);
 	}
@@ -117,7 +117,7 @@ final class SettingsTest extends TestCase
 	 */
 	public function testIsJson($json, $expected): void
 	{
-		$isJson = $this->settingsService->isJson($json);
+		$isJson = $this->settingsTrait->isJson($json);
 
 		$this->assertEquals( $expected, $isJson);
 	}
@@ -148,7 +148,7 @@ final class SettingsTest extends TestCase
 	 */
 	public function testGlobal(string $globalName, $expected): void
 	{
-		$global = $this->settingsService->global($globalName);
+		$global = $this->settingsTrait->global($globalName);
 
 		$this->assertSame($expected, $global);
 	}

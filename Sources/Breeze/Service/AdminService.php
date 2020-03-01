@@ -110,10 +110,10 @@ class AdminService extends BaseService implements ServiceInterface
 
 		foreach (self::PERMISSIONS as $permission)
 			$this->configVars[] = [
-				'permissions',
-				'breeze_' . $permission,
-				0,
-				$this->getText('permissionname_breeze_' . $permission)
+			    'permissions',
+			    'breeze_' . $permission,
+			    0,
+			    $this->getText('permissionname_breeze_' . $permission)
 			];
 
 		prepareDBSettingContext($this->configVars);

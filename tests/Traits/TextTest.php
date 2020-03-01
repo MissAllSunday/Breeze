@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Breeze\Service\Text as TextService;
+use Breeze\Traits\TextTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -11,13 +11,13 @@ use PHPUnit\Framework\TestCase;
 final class TextTest extends TestCase
 {
 	/**
-	 * @var TextService
+	 * @var TextTrait
 	 */
-	private $textService;
+	private $textTrait;
 
 	protected function setUp(): void
 	{
-		$this->textService = new TextService();
+		$this->textTrait = $this->getMockForTrait(TextTrait::class);
 	}
 
 	/**
@@ -25,7 +25,7 @@ final class TextTest extends TestCase
 	 */
 	public function testGetSmf(string $textKeyName, string $expected): void
 	{
-		$text = $this->textService->getSmf($textKeyName);
+		$text = $this->textTrait->getSmfText($textKeyName);
 
 		$this->assertEquals($expected, $text);
 	}
@@ -47,16 +47,16 @@ final class TextTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider getProvider
+	 * @dataProvider getTextProvider
 	 */
-	public function testGet(string $textKeyName, string $expected): void
+	public function testGetText(string $textKeyName, string $expected): void
 	{
-		$text = $this->textService->get('lol');
+		$text = $this->textTrait->getText($textKeyName);
 
-		$this->assertEquals('lol', $text);
+		$this->assertEquals($expected, $text);
 	}
 
-	public function getProvider(): array
+	public function getTextProvider(): array
 	{
 		return [
 		    'text exists' =>
@@ -73,16 +73,16 @@ final class TextTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider parserProvider
+	 * @dataProvider parserTextProvider
 	 */
-	public function testParser(string $textToParse, array $replacements, string  $expected): void
+	public function testParserText(string $textToParse, array $replacements, string  $expected): void
 	{
-		$parsedText = $this->textService->parser($textToParse, $replacements);
+		$parsedText = $this->textTrait->parserText($textToParse, $replacements);
 
 		$this->assertEquals($expected, $parsedText);
 	}
 
-	public function parserProvider(): array
+	public function parserTextProvider(): array
 	{
 		return [
 		    'empty text' =>
@@ -120,7 +120,7 @@ final class TextTest extends TestCase
 	 */
 	public function testCommaSeparated(string  $string, string  $type, string  $expected): void
 	{
-		$commaSeparatedString = $this->textService->commaSeparated($string, $type);
+		$commaSeparatedString = $this->textTrait->commaSeparated($string, $type);
 
 		$this->assertEquals($expected, $commaSeparatedString);
 	}
@@ -165,7 +165,7 @@ final class TextTest extends TestCase
 
 	public function testNormalizeString(): void
 	{
-		$normal = $this->textService->normalizeString("\xC3\x85 á é í ó ú");
+		$normal = $this->textTrait->normalizeString("\xC3\x85 á é í ó ú");
 
 		$this->assertEquals('A a e i o u', $normal);
 	}
@@ -173,9 +173,9 @@ final class TextTest extends TestCase
 	/**
 	 * @dataProvider formatBytesProvider
 	 */
-	public function testformatBytes(int $bytes, bool $showUnit, string  $expected): void
+	public function testFormatBytes(int $bytes, bool $showUnit, string  $expected): void
 	{
-		$formattedBytes = $this->textService->formatBytes($bytes, $showUnit);
+		$formattedBytes = $this->textTrait->formatBytes($bytes, $showUnit);
 
 		$this->assertEquals($expected, $formattedBytes);
 
@@ -200,16 +200,22 @@ final class TextTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider truncateProvider
+	 * @dataProvider truncateTextProvider
 	 */
-	public function testTruncate(string $stringToTruncate, int $limit, string $break, string $pad, string $expected): void
+	public function testTruncateText(
+	    string $stringToTruncate,
+	    int $limit,
+	    string $break,
+	    string $pad,
+	    string $expected
+	): void
 	{
-		$truncatedString = $this->textService->truncate($stringToTruncate, $limit, $break, $pad);
+		$truncatedString = $this->textTrait->truncateText($stringToTruncate, $limit, $break, $pad);
 
 		$this->assertEquals($expected, $truncatedString);
 	}
 
-	public function truncateProvider(): array
+	public function truncateTextProvider(): array
 	{
 		return [
 		    'happy path' =>
@@ -252,7 +258,7 @@ final class TextTest extends TestCase
 	 */
 	public function testTimeElapsed(int $timeInSeconds, string $expected): void
 	{
-		$timeAgo = $this->textService->timeElapsed($timeInSeconds);
+		$timeAgo = $this->textTrait->timeElapsed($timeInSeconds);
 
 		$this->assertEquals($expected, $timeAgo);
 	}

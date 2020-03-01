@@ -6,7 +6,7 @@ namespace Breeze\Traits;
 
 use Breeze\Breeze as Breeze;
 
-trait Cache
+trait CacheTrait
 {
 	public function get(string $key, int $timeToLive = 360): ?array
 	{

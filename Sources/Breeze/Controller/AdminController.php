@@ -6,11 +6,11 @@ namespace Breeze\Controller;
 
 use Breeze\Breeze;
 use Breeze\Service\AdminService;
-use Breeze\Traits\Persistence as Persistence;
+use Breeze\Traits\PersistenceTrait as Persistence;
 
 class Admin extends BaseController implements ControllerInterface
 {
-	use Persistence;
+	use PersistenceTrait;
 
 	public const SUB_ACTIONS = [
 	    'general',
