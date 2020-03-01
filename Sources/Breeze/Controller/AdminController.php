@@ -6,18 +6,17 @@ namespace Breeze\Controller;
 
 use Breeze\Breeze;
 use Breeze\Service\AdminService;
-use Breeze\Service\Request;
 
 class Admin extends BaseController implements ControllerInterface
 {
 	public const SUB_ACTIONS = [
-		'general',
-		'settings',
-		'permissions',
-		'cover',
-		'donate',
-		'moodList',
-		'moodEdit',
+	    'general',
+	    'settings',
+	    'permissions',
+	    'cover',
+	    'donate',
+	    'moodList',
+	    'moodEdit',
 	];
 
 	/**
@@ -35,7 +34,7 @@ class Admin extends BaseController implements ControllerInterface
 	public function general(): void
 	{
 		$this->render('admin_home', [
-			'credits' => Breeze::credits(),
+		    'credits' => Breeze::credits(),
 		]);
 	}
 
@@ -45,7 +44,7 @@ class Admin extends BaseController implements ControllerInterface
 		$scriptUrl = $this->adminService->global('scripturl');
 
 		$this->render('settings', [
-			'post_url' => $scriptUrl . '?' . AdminService::POST_URL . ';save',
+		    'post_url' => $scriptUrl . '?' . AdminService::POST_URL . ';save',
 		]);
 
 		$this->adminService->configVars();
