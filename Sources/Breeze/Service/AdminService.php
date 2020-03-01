@@ -154,4 +154,20 @@ class AdminService extends BaseService implements ServiceInterface
 
 		return (bool) $feature;
 	}
+
+	public function showMoodList($listId, int $start = 0): void
+	{
+		$scriptUrl = $this->global('scripturl');
+
+		$listOptions = $this->moodService->getMoodList([
+		    'id' => $listId,
+		    'title' => $this->getText('page_' . $listId . '_title'),
+		    'base_href' => $scriptUrl . '?' . self::POST_URL . $listId,
+		    'items_per_page' => 10,
+		], $start);
+
+		$this->requireOnce('Subs-List');
+
+		createList($listOptions);
+	}
 }

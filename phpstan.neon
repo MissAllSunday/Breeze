@@ -22,5 +22,6 @@ parameters:
     - '/Function cache_get_data not found./'
     - '/Function loadtemplate not found./'
     - '/Function constructPageIndex not found./'
+    - '/Function createList not found./'
   autoload_files:
     - %currentWorkingDirectory%/vendor/autoload.php
