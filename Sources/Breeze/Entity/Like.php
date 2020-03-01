@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class Like extends Base
+class Like extends BaseEntity
 {
 	const TABLE = 'user_likes';
 	const COLUMN_ID_MEMBER = 'id_member';

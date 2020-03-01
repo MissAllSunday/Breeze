@@ -55,7 +55,7 @@ $txt['Breeze_alert_like_buddy'] = '{poster} <a href="{href}" class="bbc_link" ta
 // Cover
 $txt['Breeze_alert_cover'] = '{poster} changed {gender_possessive} cover image<br>{image}';
 
-// Mood change.
+// MoodRepository change.
 $txt['Breeze_alert_mood'] = '{poster} changed {gender_possessive} mood<br>{image}';
 
 // New topic.

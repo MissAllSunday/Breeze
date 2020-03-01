@@ -48,7 +48,7 @@ class BreezeMood
 
 		loadLanguage('Help');
 
-		// Wild Mood Swings... a highly underrated album if you ask me ;)
+		// Wild MoodRepository Swings... a highly underrated album if you ask me ;)
 		loadtemplate(Breeze::NAME . 'Functions');
 
 		// Get the user.
@@ -82,7 +82,7 @@ class BreezeMood
 			return;
 
 		// Updating or creating?
-		$method = ($update ? 'update' : 'insert') . 'Mood';
+		$method = ($update ? 'update' : 'insert') . 'MoodRepository';
 
 		$this->_app['query']->{$method}($data);
 	}
@@ -164,7 +164,7 @@ class BreezeMood
 	{
 		global $context;
 
-		// Wild Mood Swings... a highly underrated album if you ask me ;)
+		// Wild MoodRepository Swings... a highly underrated album if you ask me ;)
 		loadtemplate(Breeze::NAME . 'Functions');
 
 		// Get the currently active moods.
@@ -195,7 +195,7 @@ class BreezeMood
 		if (!$this->_app['tools']->enable('mood') || !in_array($area, $profileAreas))
 			return;
 
-		// Wild Mood Swings... a highly underrated album if you ask me ;)
+		// Wild MoodRepository Swings... a highly underrated album if you ask me ;)
 		loadtemplate(Breeze::NAME . 'Functions');
 
 		// Get the currently active moods.

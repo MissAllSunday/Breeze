@@ -6,7 +6,7 @@ namespace Breeze\Controller\Admin;
 
 use Breeze\Breeze as Breeze;
 use Breeze\Controller\BaseController as BaseController;
-use Breeze\Repository\Mood as MoodRepository;
+use Breeze\Repository\MoodRepository as MoodRepository;
 use Breeze\Service\Settings as SettingsService;
 
 class Feed extends BaseController

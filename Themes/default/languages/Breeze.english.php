@@ -203,7 +203,7 @@ $txt['Breeze_tabs_activity_buddies_none'] = 'Your buddies doesn\'t have any acti
 $txt['Breeze_tabs_about'] = 'About me';
 $txt['Breeze_goTop'] = 'Go to top';
 
-// Mood feature.
+// MoodRepository feature.
 $txt['Breeze_moodLabel'] = 'mood';
 $txt['Breeze_moodChange'] = 'Change your mood';
 $txt['Breeze_info_moodChanged'] = 'Your mood has been changed';

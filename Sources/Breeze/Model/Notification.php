@@ -6,7 +6,7 @@ namespace Breeze\Model;
 
 use Breeze\Entity\Notification as NotificationEntity;
 
-class Notification extends Base
+class Notification extends BaseModel
 {
 	function insert(array $data, int $id = 0): int
 	{

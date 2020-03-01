@@ -7,7 +7,7 @@ namespace Breeze\Model;
 use \Breeze\Entity\Member as MemberEntity;
 use Breeze\Entity\Mention as MentionEntity;
 
-class Mention extends Base
+class Mention extends BaseModel
 {
 	public function userMention(string $match): array
 	{

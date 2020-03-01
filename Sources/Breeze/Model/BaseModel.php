@@ -7,7 +7,7 @@ namespace Breeze\Model;
 use Breeze\Breeze as Breeze;
 use Breeze\Database\Client as DatabaseClient;
 
-abstract class Base
+abstract class BaseModel
 {
 	protected $db;
 

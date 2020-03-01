@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class Mood extends Base
+class Mood extends BaseEntity implements EntityInterface
 {
 	const TABLE = 'breeze_moods';
 	const COLUMN_ID = 'moods_id';

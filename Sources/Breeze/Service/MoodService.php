@@ -14,15 +14,12 @@ class MoodService extends BaseService implements ServiceInterface
 			return [];
 		
 		return  array_merge([
-		    'id' => 'breeze_mood_list',
-		    'title' => $this->getText('page_mood'),
-		    'base_href' => $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodList',
+		    'id' => '',
+		    'title' => '',
+		    'base_href' => '',
 		    'items_per_page' => 10,
 		    'get_count' => [
-		        'function' => function () use ($context)
-		        {
-		        	return count($context['mood']['all']);
-		        },
+		        'function' => $this->repository->getCount(),
 		    ],
 		    'get_items' => [
 		        'function' => function ($start, $maxIndex) use ($smcFunc)
