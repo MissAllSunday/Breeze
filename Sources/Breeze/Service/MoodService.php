@@ -14,6 +14,7 @@ class MoodService extends BaseService implements ServiceInterface
 		if (empty($listParams))
 			return [];
 
+		$scriptUrl = $this->global('scripturl');
 		$maxIndex = $this->repository->getCount();
 		$itemsPerPage = $this->repository->getChunk($start, $maxIndex);
 
@@ -35,37 +36,36 @@ class MoodService extends BaseService implements ServiceInterface
 		                'value' => $this->getText('mood_image'),
 		            ],
 		            'data' => [
-		                'function' => function ($rowData) use($context, $txt)
+		                'function' => function ($rowData)
 		                {
-		                	$fileUrl = $context['mood']['imagesUrl'] . $rowData['file'] . '.' . $rowData['ext'];
-		                	$filePath = $context['mood']['imagesPath'] . $rowData['file'] . '.' . $rowData['ext'];
+		                	$fileUrl = $this->getMoodsUrl() . $rowData['file'] . '.' . $rowData['ext'];
+		                	$filePath = $this->getMoodsPath() . $rowData['file'] . '.' . $rowData['ext'];
 
 		                	if (file_exists($filePath))
 		                		return '<img src="' . $fileUrl . '" />';
 
-
-		                	return $txt['Breeze_mood_noFile'];
+		                	return $this->getText('mood_noFile');
 		                },
 		                'class' => 'centercol',
 		            ],
 		        ],
 		        'enable' => [
 		            'header' => [
-		                'value' => $this->_app['tools']->text('mood_enable'),
+		                'value' => $this->getText('mood_enable'),
 		            ],
 		            'data' => [
-		                'function' => function ($rowData) use($txt)
+		                'function' => function ($rowData)
 		                {
 		                	$enable = !empty($rowData['enable']) ? 'enable' : 'disable';
 
-		                	return $txt['Breeze_mood_' . $enable];
+		                	return $this->getText('mood_' . $enable);
 		                },
 		                'class' => 'centercol',
 		            ],
 		        ],
 		        'filename' => [
 		            'header' => [
-		                'value' => $txt['smileys_filename'],
+		                'value' => $this->getSmfText('smileys_filename'),
 		            ],
 		            'data' => [
 		                'sprintf' => [
@@ -78,7 +78,7 @@ class MoodService extends BaseService implements ServiceInterface
 		        ],
 		        'tooltip' => [
 		            'header' => [
-		                'value' => $txt['smileys_description'],
+		                'value' => $this->getText('smileys_description'),
 		            ],
 		            'data' => [
 		                'db_htmlsafe' => 'description',
@@ -86,12 +86,14 @@ class MoodService extends BaseService implements ServiceInterface
 		        ],
 		        'modify' => [
 		            'header' => [
-		                'value' => $txt['smileys_modify'],
+		                'value' => $this->getSmfText('smileys_modify'),
 		                'class' => 'centercol',
 		            ],
 		            'data' => [
 		                'sprintf' => [
-		                    'format' => '<a href="' . $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodEdit;moodID=%1$s">' . $txt['smileys_modify'] . '</a>',
+		                    'format' => '<a href="' . $scriptUrl .
+								'?action=admin;area=breezeadmin;sa=moodEdit;moodID=%1$s">' .
+								$this->getSmfText('smileys_modify') . '</a>',
 		                    'params' => [
 		                        'moods_id' => true,
 		                    ],
@@ -106,7 +108,8 @@ class MoodService extends BaseService implements ServiceInterface
 		            ],
 		            'data' => [
 		                'sprintf' => [
-		                    'format' => '<input type="checkbox" name="checked_icons[]" value="%1$d" class="input_check">',
+		                    'format' =>
+								'<input type="checkbox" name="checked_icons[]" value="%1$d" class="input_check">',
 		                    'params' => [
 		                        'moods_id' => false,
 		                    ],
@@ -116,12 +119,16 @@ class MoodService extends BaseService implements ServiceInterface
 		        ],
 		    ],
 		    'form' => [
-		        'href' => $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodList;delete=1',
+		        'href' => $scriptUrl . '?action=admin;area=breezeadmin;sa=moodList;delete=1',
 		    ],
 		    'additional_rows' => [
 		        [
 		            'position' => 'below_table_data',
-		            'value' => '<input type="submit" name="delete" value="' . $txt['quickmod_delete_selected'] . '" class="button_submit"> <a class="button_link" href="' . $this->_app['tools']->scriptUrl . '?action=admin;area=breezeadmin;sa=moodEdit">' . $txt['icons_add_new'] . '</a>',
+		            'value' => '<input type="submit" name="delete" value="' .
+						$this->getSmfText('quickmod_delete_selected') .
+						'" class="button_submit"> <a class="button_link" href="' .
+						$scriptUrl . '?action=admin;area=breezeadmin;sa=moodEdit">' .
+						$this->getSmfText('icons_add_new') . '</a>',
 		        ],
 		    ],
 		], $listParams);

@@ -27,7 +27,7 @@ abstract class BaseController implements ControllerInterface
 
 	public function subActionCall(): void
 	{
-		$subActions = array_keys($this->getSubActions());
+		$subActions = $this->getSubActions();
 		$subAction = $this->request->get('sa');
 
 		if (in_array($subAction, $subActions))
