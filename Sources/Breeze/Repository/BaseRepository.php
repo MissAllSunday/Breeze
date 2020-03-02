@@ -27,6 +27,11 @@ class BaseRepository implements RepositoryInterface
 
 	public function getCount(): int
 	{
-		// TODO: Implement getCount() method.
+		return $this->model->getCount();
+	}
+
+	public function getChunk(int $start, int $maxIndex): array
+	{
+		return $this->model->getChunk($start, $maxIndex);
 	}
 }

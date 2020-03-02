@@ -7,54 +7,32 @@ namespace Breeze\Service;
 
 class MoodService extends BaseService implements ServiceInterface
 {
+	public const FOLDER = 'breezeMoods';
+
 	public function getMoodList(array $listParams, $start = 0): array
 	{
-
 		if (empty($listParams))
 			return [];
-		
+
+		$maxIndex = $this->repository->getCount();
+		$itemsPerPage = $this->repository->getChunk($start, $maxIndex);
+
 		return  array_merge([
 		    'id' => '',
 		    'title' => '',
 		    'base_href' => '',
 		    'items_per_page' => 10,
 		    'get_count' => [
-		        'function' => $this->repository->getCount(),
+		        'function' => $maxIndex,
 		    ],
 		    'get_items' => [
-		        'function' => function ($start, $maxIndex) use ($smcFunc)
-		        {
-		        	$moods = [];
-		        	$request = $smcFunc['db_query'](
-		        	    '',
-		        	    '
-						SELECT *
-						FROM {db_prefix}breeze_moods
-						LIMIT {int:start}, {int:maxindex}
-						',
-		        	    [
-		        	        'start' => $start,
-		        	        'maxindex' => $maxIndex,
-		        	    ]
-		        	);
-
-		        	while ($row = $smcFunc['db_fetch_assoc']($request))
-		        		$moods[$row['moods_id']] = $row;
-
-		        	$smcFunc['db_free_result']($request);
-
-		        	return $moods;
-		        },
-		        'params' => [
-		            $start,
-		            count($context['mood']['all']),
-		        ],
+		        'function' => $itemsPerPage,
 		    ],
-		    'no_items_label' => $txt['icons_no_entries'],
+		    'no_items_label' => $this->getSmfText('icons_no_entries'),
 		    'columns' => [
 		        'icon' => [
 		            'header' => [
-		                'value' => $this->_app['tools']->text('mood_image'),
+		                'value' => $this->getText('mood_image'),
 		            ],
 		            'data' => [
 		                'function' => function ($rowData) use($context, $txt)
@@ -147,6 +125,25 @@ class MoodService extends BaseService implements ServiceInterface
 		        ],
 		    ],
 		], $listParams);
+	}
+
+	public function getMoodsPath(): string
+	{
+		$smfSettings = $this->global('settings');
+
+		return $smfSettings['default_theme_dir'] . '/images/' . self::FOLDER;
+	}
+
+	public function getMoodsUrl(): string
+	{
+		$smfSettings = $this->global('settings');
+
+		return $smfSettings['default_images_url'] . '/' . self::FOLDER;
+	}
+
+	public function getPlacementField(): int
+	{
+		return (int) $this->getSetting('mood_placement', 0);
 	}
 
 	public function displayMood(array &$data, int $userId): void

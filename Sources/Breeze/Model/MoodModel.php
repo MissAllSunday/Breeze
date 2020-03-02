@@ -6,14 +6,14 @@ namespace Breeze\Model;
 
 use Breeze\Entity\Mood as MoodEntity;
 
-class Mood extends BaseModel
+class MoodModel extends BaseModel
 {
 	function insert(array $data, int $id = 0): int
 	{
 		if (empty($data))
 			return 0;
 
-		$this->db->insert(MoodEntity::TABLE, [
+		$this->dbClient->insert(MoodEntity::TABLE, [
 		    MoodEntity::COLUMN_NAME => 'string',
 		    MoodEntity::COLUMN_FILE => 'string',
 		    MoodEntity::COLUMN_EXT => 'string',
@@ -29,7 +29,7 @@ class Mood extends BaseModel
 		if (empty($data))
 			return [];
 
-		$this->db->update(
+		$this->dbClient->update(
 		    MoodEntity::TABLE,
 		    'SET 
 				' . MoodEntity::COLUMN_NAME . ' = {string:name}, 
@@ -51,7 +51,7 @@ class Mood extends BaseModel
 		if (empty($moodIds))
 			return $moods;
 
-		$request = $this->db->query(
+		$request = $this->dbClient->query(
 		    '
 			SELECT ' . implode(', ', MoodEntity::getColumns()) . '
 			FROM {db_prefix}' . MoodEntity::TABLE . '
@@ -59,10 +59,10 @@ class Mood extends BaseModel
 		    ['moodIds' => array_map('intval', $moodIds)]
 		);
 
-		while ($row = $this->db->fetchAssoc($request))
+		while ($row = $this->dbClient->fetchAssoc($request))
 			$moods[$row[MoodEntity::COLUMN_ID]] = $row;
 
-		$this->db->freeResult($request);
+		$this->dbClient->freeResult($request);
 
 		return $moods;
 	}
@@ -71,17 +71,17 @@ class Mood extends BaseModel
 	{
 		$moods = [];
 
-		$request = $this->db['db_query'](
+		$request = $this->dbClient['db_query'](
 		    '',
 		    'SELECT ' . implode(', ', $this->getColumns()) . '
 			FROM {db_prefix}' . $this->getTableName(),
 		    []
 		);
 
-		while ($row = $this->db['db_fetch_assoc']($request))
+		while ($row = $this->dbClient['db_fetch_assoc']($request))
 			$moods[$row['moods_id']] = $row;
 
-		$this->db['db_free_result']($request);
+		$this->dbClient['db_free_result']($request);
 
 		return $moods;
 	}

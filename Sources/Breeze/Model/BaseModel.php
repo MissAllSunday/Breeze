@@ -4,44 +4,46 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use Breeze\Breeze as Breeze;
-use Breeze\Database\Client as DatabaseClient;
+use Breeze\Database\ClientInterface;
 
 abstract class BaseModel
 {
-	protected $db;
+	/**
+	 * @var ClientInterface
+	 */
+	protected $dbClient;
 
-	public function __construct()
+	public function __construct(ClientInterface $client)
 	{
-		$this->db = new DatabaseClient();
+		$this->dbClient = $client;
 	}
 
 	public function getInsertedId(): int
 	{
-		return $this->db->getInsertedId($this->getTableName(), $this->getColumnId());
+		return $this->dbClient->getInsertedId($this->getTableName(), $this->getColumnId());
 	}
 
 	function getLastValue(): array
 	{
 		$data = [];
 
-		$result = $this->db->query('
+		$result = $this->dbClient->query('
 			SELECT ' . implode(', ', $this->getColumns()) . '
 			FROM {db_prefix}' . $this->getTableName() . '
 			ORDER BY {raw:sort}
 			LIMIT {int:limit}', ['sort' => $this->getColumnId() . ' DESC', 'limit' => 1]);
 
-		while ($row = $this->db->fetchAssoc($result))
+		while ($row = $this->dbClient->fetchAssoc($result))
 			$data = $row;
 
-		$this->db->freeResult($result);
+		$this->dbClient->freeResult($result);
 
 		return $data;
 	}
 
 	function delete(array $ids): bool
 	{
-		$this->db->delete(
+		$this->dbClient->delete(
 		    $this->getTableName(),
 		    '
 			WHERE ' . $this->getColumnId() . ' IN({array_int:ids})',
@@ -53,7 +55,7 @@ abstract class BaseModel
 
 	public function updateLikes(int $contentId, int $numLikes): void
 	{
-		$this->db->update(
+		$this->dbClient->update(
 		    $this->getTableName(),
 		    '
 			SET likes = {int:num_likes}
@@ -65,13 +67,40 @@ abstract class BaseModel
 		);
 	}
 
-	abstract function insert(array $data, int $id = 0): int;
+	public function getChunk(int $start = 0, int $maxIndex = 0): array
+	{
+		$items = [];
 
-	abstract function update(array $data, int $id = 0): array;
+		$request = $this->dbClient->query(
+			'
+			SELECT ' . implode(', ', $this->getColumns()) . '
+			FROM {db_prefix}' . $this->getTableName() . '
+			LIMIT {int:start}, {int:maxIndex}',
+			[
+				'start' => $start,
+				'maxIndex' => $maxIndex,
+			]
+		);
 
-	abstract function getTableName(): string;
+		while ($row = $this->dbClient->fetchAssoc($request))
+			$items[$row[$this->getColumnId()]] = $row;
 
-	abstract function getColumnId(): string;
+		$this->dbClient->freeResult($request);
 
-	abstract function getColumns(): array;
+		return $items;
+	}
+
+	public function getCount(): int
+	{
+		$rowCount = 0;
+		$result = $this->dbClient->query('
+			SELECT ' . implode(', ', $this->getColumns()) . '
+			FROM {db_prefix}' . $this->getTableName(), []);
+
+		$rowCount = $this->dbClient->numRows($result);
+
+		$this->dbClient->freeResult($result);
+
+		return $rowCount;
+	}
 }
