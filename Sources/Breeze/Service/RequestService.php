@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-class Request extends BaseService
+class RequestService extends BaseService
 {
 	private $request;
 

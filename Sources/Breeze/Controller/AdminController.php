@@ -6,7 +6,7 @@ namespace Breeze\Controller;
 
 use Breeze\Breeze;
 use Breeze\Service\AdminService;
-use Breeze\Traits\PersistenceTrait as Persistence;
+use Breeze\Traits\PersistenceTrait;
 
 class Admin extends BaseController implements ControllerInterface
 {

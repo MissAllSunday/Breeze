@@ -72,14 +72,14 @@ abstract class BaseModel
 		$items = [];
 
 		$request = $this->dbClient->query(
-			'
+		    '
 			SELECT ' . implode(', ', $this->getColumns()) . '
 			FROM {db_prefix}' . $this->getTableName() . '
 			LIMIT {int:start}, {int:maxIndex}',
-			[
-				'start' => $start,
-				'maxIndex' => $maxIndex,
-			]
+		    [
+		        'start' => $start,
+		        'maxIndex' => $maxIndex,
+		    ]
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($request))

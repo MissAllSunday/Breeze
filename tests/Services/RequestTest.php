@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Breeze\Service\Request as RequestService;
+use Breeze\Service\RequestService as RequestService;
 use PHPUnit\Framework\TestCase;
 
 final class RequestTest extends TestCase
