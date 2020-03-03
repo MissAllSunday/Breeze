@@ -6,7 +6,7 @@ namespace Breeze\Model;
 
 use Breeze\Entity\StatusEntity as StatusEntity;
 
-class Status extends BaseModel
+class StatusModel extends BaseModel
 {
 	public function insert(array $data, int $statusId = 0): int
 	{

@@ -6,7 +6,7 @@ namespace Breeze\Model;
 
 use Breeze\Entity\CommentEntity as CommentEntity;
 
-class Comment extends BaseModel
+class CommentModel extends BaseModel
 {
 	function insert(array $data, int $commentID = 0): int
 	{

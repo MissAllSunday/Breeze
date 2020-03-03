@@ -6,7 +6,7 @@ namespace Breeze\Model;
 
 use Breeze\Database\ClientInterface;
 
-abstract class BaseModel
+abstract class BaseModel implements ModelInterface
 {
 	/**
 	 * @var ClientInterface

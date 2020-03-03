@@ -6,7 +6,7 @@ namespace Breeze\Model;
 
 use Breeze\Entity\LogEntity as LogEntity;
 
-class Log extends BaseModel
+class LogModel extends BaseModel
 {
 	function insert(array $data, int $id = 0): int
 	{

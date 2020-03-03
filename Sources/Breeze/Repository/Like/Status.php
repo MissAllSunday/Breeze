@@ -5,11 +5,11 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\Like;
 
-use Breeze\Model\Like as LikeModel;
-use Breeze\Model\Log as LogModel;
-use Breeze\Model\Notification as NotificationModel;
-use Breeze\Model\Status as StatusModel;
-use Breeze\Model\User as UserModel;
+use Breeze\Model\LikeModel as LikeModel;
+use Breeze\Model\LogModel as LogModel;
+use Breeze\Model\NotificationModel as NotificationModel;
+use Breeze\Model\StatusModel as StatusModel;
+use Breeze\Model\UserModel as UserModel;
 
 
 class Status extends Base

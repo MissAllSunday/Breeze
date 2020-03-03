@@ -9,7 +9,7 @@ use Breeze\Controller\User\Settings\Alerts as AlertSettingsController;
 use Breeze\Controller\User\Settings\Cover as CoverSettingsController;
 use Breeze\Controller\User\Settings\General as GeneralSettingsController;
 use Breeze\Controller\User\Wall as WallController;
-use Breeze\Model\User as UserModel;
+use Breeze\Model\UserModel as UserModel;
 
 class User
 {

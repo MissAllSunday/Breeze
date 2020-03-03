@@ -7,7 +7,7 @@ namespace Breeze\Model;
 use Breeze\Entity\MemberEntity as MemberEntity;
 use Breeze\Entity\OptionsEntity as OptionsEntity;
 
-class User extends BaseModel
+class UserModel extends BaseModel
 {
 	const JSON_VALUES = ['cover', 'petitionList', 'moodHistory'];
 	const ARRAY_VALUES = ['blockListIDs'];

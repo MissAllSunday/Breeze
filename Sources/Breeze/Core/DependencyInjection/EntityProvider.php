@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Breeze\Core\DependencyInjection;
 
 use Breeze\Entity\AlertEntity;
@@ -17,23 +19,19 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
 class EntityProvider extends AbstractServiceProvider
 {
 	protected $provides = [
-		AlertEntity::class,
-		CommentEntity::class,
-		LikeEntity::class,
-		LogEntity::class,
-		MemberEntity::class,
-		MentionEntity::class,
-		MoodEntity::class,
-		NotificationEntity::class,
-		OptionsEntity::class,
-		StatusEntity::class,
+	    AlertEntity::class,
+	    CommentEntity::class,
+	    LikeEntity::class,
+	    LogEntity::class,
+	    MemberEntity::class,
+	    MentionEntity::class,
+	    MoodEntity::class,
+	    NotificationEntity::class,
+	    OptionsEntity::class,
+	    StatusEntity::class,
 	];
 
-	/**
-	 *
-	 * @return void
-	 */
-	public function register()
+	public function register(): void
 	{
 		foreach ($this->provides as $entity)
 			$this->getContainer()->add($entity);

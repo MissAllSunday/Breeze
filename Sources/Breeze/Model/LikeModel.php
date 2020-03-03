@@ -6,7 +6,7 @@ namespace Breeze\Model;
 
 use Breeze\Entity\LikeEntity as LikeEntity;
 
-class Like extends BaseModel
+class LikeModel extends BaseModel
 {
 	function insert(array $data, int $id = 0): int
 	{

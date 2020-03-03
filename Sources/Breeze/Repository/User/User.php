@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Repository\User;
 
 use Breeze\Controller\User\Wall;
-use Breeze\Model\User as UserModel;
+use Breeze\Model\UserModel as UserModel;
 use Breeze\Service\Settings;
 use Breeze\Service\Text;
 
