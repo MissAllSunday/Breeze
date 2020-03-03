@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Model;
 
 use Breeze\Breeze as Breeze;
-use Breeze\Entity\Alert as AlertEntity;
+use Breeze\Entity\AlertEntity as AlertEntity;
 
 class Alert extends BaseModel
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use Breeze\Entity\Mood as MoodEntity;
+use Breeze\Entity\MoodEntity as MoodEntity;
 
 class MoodModel extends BaseModel
 {

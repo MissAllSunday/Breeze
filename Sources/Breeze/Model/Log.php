@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use Breeze\Entity\Log as LogEntity;
+use Breeze\Entity\LogEntity as LogEntity;
 
 class Log extends BaseModel
 {

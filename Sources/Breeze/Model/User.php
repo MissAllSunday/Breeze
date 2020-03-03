@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use Breeze\Entity\Member as MemberEntity;
-use Breeze\Entity\Options as OptionsEntity;
+use Breeze\Entity\MemberEntity as MemberEntity;
+use Breeze\Entity\OptionsEntity as OptionsEntity;
 
 class User extends BaseModel
 {

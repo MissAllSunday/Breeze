@@ -29,7 +29,7 @@ if (!defined('SMF'))
 class Breeze
 {
 	use TextTrait;
-	
+
 	public const NAME = 'Breeze';
 	public const VERSION = '2.0';
 	public const PATTERN = self::NAME . '_';
@@ -183,7 +183,7 @@ class Breeze
 		/** @var AdminController */
 		$adminController = $this->container->get(AdminController::class);
 
-        $this->text->setLanguage('BreezeAdmin');
+        $this->setLanguage('BreezeAdmin');
 
         $adminMenu['config']['areas']['breezeAdmin'] = [
             'label' => $this->getText('page_main'),

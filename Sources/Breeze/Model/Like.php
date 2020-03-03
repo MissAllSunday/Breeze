@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use Breeze\Entity\Like as LikeEntity;
+use Breeze\Entity\LikeEntity as LikeEntity;
 
 class Like extends BaseModel
 {
