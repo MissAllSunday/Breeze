@@ -9,7 +9,7 @@ use Breeze\Model\UserModel as UserModel;
 use Breeze\Service\Settings;
 use Breeze\Service\Text;
 
-class User
+class UserRepository
 {
 	/**
 	 * @var UserModel

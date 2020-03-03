@@ -7,7 +7,7 @@ namespace Breeze\Model;
 use Breeze\Breeze as Breeze;
 use Breeze\Entity\AlertEntity as AlertEntity;
 
-class AlertModel extends BaseModel
+class AlertModel extends BaseModel implements ModelInterface
 {
 	function insert(array $data, int $id = 0): int
 	{

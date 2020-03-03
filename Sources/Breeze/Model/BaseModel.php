@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use Breeze\Database\ClientInterface;
+use Breeze\Database\DatabaseClient;
 
 abstract class BaseModel implements ModelInterface
 {
 	/**
-	 * @var ClientInterface
+	 * @var DatabaseClient
 	 */
 	protected $dbClient;
 
-	public function __construct(ClientInterface $client)
+	public function __construct(DatabaseClient $databaseClient)
 	{
-		$this->dbClient = $client;
+		$this->dbClient = $databaseClient;
 	}
 
 	public function getInsertedId(): int
@@ -92,7 +92,6 @@ abstract class BaseModel implements ModelInterface
 
 	public function getCount(): int
 	{
-		$rowCount = 0;
 		$result = $this->dbClient->query('
 			SELECT ' . implode(', ', $this->getColumns()) . '
 			FROM {db_prefix}' . $this->getTableName(), []);

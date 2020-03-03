@@ -7,5 +7,4 @@ namespace Breeze\Repository;
 
 interface RepositoryInterface
 {
-	public function getCount(): int;
 }

@@ -7,7 +7,7 @@ namespace Breeze\Repository\User;
 
 use Breeze\Service\Settings as Settings;
 
-class Cover
+class CoverRepository
 {
 	const COVER_FOLDER = '/breezeFiles/';
 	const THUMB_FOLDER = '/thumbnail/';

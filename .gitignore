@@ -45,3 +45,4 @@ Thumbs.db
 .php_cs
 phpunit.xml
 /vendor
+/breezeVendor

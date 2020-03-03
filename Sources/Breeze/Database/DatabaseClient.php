@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Database;
 
-class Client implements ClientInterface
+class DatabaseClient implements ClientInterface
 {
 	protected $db = false;
 

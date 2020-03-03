@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Controller;
 
-use Breeze\Repository\User\Cover as CoverRepository;
+use Breeze\Repository\User\CoverRepository as CoverRepository;
 use Breeze\Service\RequestService;
 
 class Cover extends BaseController implements ControllerInterface

@@ -2,13 +2,17 @@
 
 declare(strict_types=1);
 
+
 namespace Breeze\Repository;
 
 use Breeze\Entity\EntityInterface;
 use Breeze\Model\ModelInterface;
 
-class BaseRepository implements RepositoryInterface
+abstract class BaseRepository implements RepositoryInterface
 {
+	public const LIKE_TYPE_STATUS = 'breSta';
+	public const LIKE_TYPE_COMMENT = 'breCom';
+
 	/**
 	 * @var ModelInterface
 	 */
@@ -19,19 +23,21 @@ class BaseRepository implements RepositoryInterface
 	 */
 	protected $entity;
 
-	public function __construct(ModelInterface $model, EntityInterface $entity)
+	public function __construct(EntityInterface $entity, ModelInterface $model)
 	{
 		$this->model = $model;
 		$this->entity = $entity;
 	}
 
-	public function getCount(): int
+	public function handleLikes($type, $content): array
 	{
-		return $this->model->getCount();
 	}
 
-	public function getChunk(int $start, int $maxIndex): array
+	public static function getAllTypes(): array
 	{
-		return $this->model->getChunk($start, $maxIndex);
+		return [
+		    self::LIKE_TYPE_STATUS,
+		    self::LIKE_TYPE_COMMENT
+		];
 	}
 }

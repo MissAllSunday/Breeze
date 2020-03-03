@@ -13,7 +13,11 @@
             "role": "Developer"
         }
     ],
+    "config": {
+        "vendor-dir": "breezeVendor"
+    },
     "require": {
+        "php": ">=7.3.0",
         "league/container": "^3.3"
     },
     "require-dev": {
