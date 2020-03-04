@@ -11,7 +11,7 @@ use Breeze\Service\MoodService;
 return [
 	'service.mood' => [
 		'class' => MoodService::class,
-		'arguments'=> ['Breeze\Database\DatabaseClient\\']
+		'arguments'=> ['repository.mood']
 	],
 	'service.admin' => [
 		'class' => AdminService::class,
