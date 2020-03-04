@@ -19,7 +19,7 @@ $entities = [
 
 foreach ($entities as $entity)
 	$mapper['entity.' . $entity] = [
-		'class' => 'Breeze\Entity\\' . ucfirst($entity) . 'Entity',
+	    'class' => 'Breeze\Entity\\' . ucfirst($entity) . 'Entity',
 	];
 
 return $mapper;

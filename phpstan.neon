@@ -23,5 +23,8 @@ parameters:
     - '/Function loadtemplate not found./'
     - '/Function constructPageIndex not found./'
     - '/Function createList not found./'
+    - '/Function updateMemberData not found./'
+    - '/Function parse_bbc not found./'
+    - '/Function un_htmlspecialchars not found./'
   autoload_files:
     - %currentWorkingDirectory%/breezeVendor/autoload.php
