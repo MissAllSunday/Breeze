@@ -109,7 +109,7 @@ class MoodService extends BaseService implements ServiceInterface
 		            'data' => [
 		                'sprintf' => [
 		                    'format' =>
-								'<input type="checkbox" name="checked_icons[]" value="%1$d" class="input_check">',
+		                    '<input type="checkbox" name="checked_icons[]" value="%1$d" class="input_check">',
 		                    'params' => [
 		                        'moods_id' => false,
 		                    ],
