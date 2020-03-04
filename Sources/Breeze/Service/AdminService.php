@@ -36,9 +36,8 @@ class AdminService extends BaseService implements ServiceInterface
 	 */
 	protected $moodService;
 
-	public function __construct(RepositoryInterface $repository, MoodService $moodService)
+	public function __construct(RepositoryInterface $repository, ServiceInterface $moodService)
 	{
-		$this->repository = $repository;
 		$this->moodService = $moodService;
 
 		parent::__construct($repository);
