@@ -36,45 +36,45 @@ class AdminController extends BaseController implements ControllerInterface
 
 	public function general(): void
 	{
-		$this->service->setSubActionContent(__FUNCTION__);
-		$this->render('admin_home', [
+		$this->render(__FUNCTION__, [
 		    'credits' => Breeze::credits(),
+			'version' => Breeze::VERSION,
 		]);
 	}
 
 	public function settings(): void
 	{
-		$scriptUrl = $this->adminService->global('scripturl');
+		$scriptUrl = $this->service->global('scripturl');
 
 		$this->service->setSubActionContent(__FUNCTION__);
 		$this->render(__FUNCTION__, [
 		    'post_url' => $scriptUrl . '?' . AdminService::POST_URL . __FUNCTION__ . ';save',
 		]);
 
-		$this->adminService->configVars();
+		$this->service->configVars();
 
 		if ($this->request->get('save'))
 		{
-			$this->adminService->saveConfigVars();
-			$this->adminService->redirect(AdminService::POST_URL . __FUNCTION__);
+			$this->service->saveConfigVars();
+			$this->service->redirect(AdminService::POST_URL . __FUNCTION__);
 		}
 	}
 
 	public function permissions(): void
 	{
-		$scriptUrl = $this->adminService->global('scripturl');
+		$scriptUrl = $this->service->global('scripturl');
 
 		$this->service->setSubActionContent(__FUNCTION__);
 		$this->render(__FUNCTION__, [
 		    'post_url' => $scriptUrl . '?' . AdminService::POST_URL . __FUNCTION__ . ';save',
 		]);
 
-		$this->adminService->permissionsConfigVars();
+		$this->service->permissionsConfigVars();
 
 		if ($this->request->get('save'))
 		{
-			$this->adminService->saveConfigVars();
-			$this->adminService->redirect( AdminService::POST_URL . __FUNCTION__ );
+			$this->service->saveConfigVars();
+			$this->service->redirect( AdminService::POST_URL . __FUNCTION__ );
 		}
 	}
 
@@ -119,12 +119,11 @@ class AdminController extends BaseController implements ControllerInterface
 
 	public function render(string $subTemplate, array $params): void
 	{
-		$context = $this->adminService->global('context');
+		$this->service->setSubActionContent($subTemplate, $params);
+	}
 
-		$context[$subTemplate] = $params;
-
-		$this->adminService->setGlobal('context', $context);
-
-		$this->adminService->setSubActionContent($subTemplate);
+	public function getSubActions(): array
+	{
+		return self::SUB_ACTIONS;
 	}
 }

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use Breeze\Database\DatabaseClient;
+use Breeze\Database\ClientInterface;
 
 abstract class BaseModel implements ModelInterface
 {
 	/**
-	 * @var DatabaseClient
+	 * @var ClientInterface
 	 */
 	protected $dbClient;
 
-	public function __construct(DatabaseClient $databaseClient)
+	public function __construct( $databaseClient)
 	{
 		$this->dbClient = $databaseClient;
 	}

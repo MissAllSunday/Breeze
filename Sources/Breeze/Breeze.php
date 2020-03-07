@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze;
 
-use Breeze\Controller\Admin as AdminController;
+use Breeze\Config\MapperAggregate;
+use Breeze\Controller\AdminController;
 use Breeze\Controller\Buddy;
 use Breeze\Controller\Comment;
 use Breeze\Controller\Cover;
@@ -16,12 +17,9 @@ use Breeze\Repository\Like\Comment as LikeCommentRepository;
 use Breeze\Repository\Like\Status as LikeStatusRepository;
 use Breeze\Service\MoodService;
 use Breeze\Service\Permissions;
-
-
 use Breeze\Service\User as UserService;
 use Breeze\Traits\TextTrait;
 use League\Container\Container as Container;
-use League\Container\ReflectionContainer as ReflectionContainer;
 
 if (!defined('SMF'))
 	die('No direct access...');
@@ -43,10 +41,20 @@ class Breeze
 	public function __construct()
 	{
 		$this->container = new Container();
+		$mappers = (new MapperAggregate())->getMappers();
 
-		$this->container->delegate(
-		    new ReflectionContainer()
-		);
+		foreach ($mappers as $mapperFile)
+			foreach ($mapperFile as $mapperAlias => $mapperInfo)
+			{
+				if (empty($mapperInfo['class']))
+					continue;
+
+				if (!empty($mapperInfo['arguments']))
+					$this->container->add($mapperInfo['class'])->addArguments($mapperInfo['arguments']);
+
+				else
+					$this->container->add($mapperInfo['class']);
+			}
 	}
 
 	public function permissionsWrapper(&$permissionGroups, &$permissionList): void
@@ -61,7 +69,7 @@ class Breeze
 
 	public function menu(&$menu_buttons): void
 	{
-		if (!$this->enable('master'))
+		//if (!$this->enable('master'))
 			return;
 
 		$scriptUrl = $this->global('scripturl');
@@ -114,7 +122,7 @@ class Breeze
 	{
 		$actions['breezeFeed'] = [false, Feed::class . '::do#'];
 
-		if (!$this->enable('master'))
+		//if (!$this->enable('master'))
 			return;
 
 		$actions['breezeStatus'] = [false,  Status::class . '::do#'];

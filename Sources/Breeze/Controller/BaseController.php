@@ -37,8 +37,5 @@ abstract class BaseController implements ControllerInterface
 			$this->general();
 	}
 
-	public function getSubActions(): array
-	{
-		return self::SUB_ACTIONS;
-	}
+	public abstract function getSubActions(): array;
 }

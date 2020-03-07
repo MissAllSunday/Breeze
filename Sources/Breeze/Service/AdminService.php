@@ -124,12 +124,17 @@ class AdminService extends BaseService implements ServiceInterface
 		saveDBSettings($this->configVars);
 	}
 
-	public function setSubActionContent(string $actionName): void
+	public function setSubActionContent(string $actionName, array $templateParams): void
 	{
+		global $context;
+
 		if (empty($actionName))
 			return;
 
-		$context = $this->global('context');
+		if (!isset($context[Breeze::NAME]))
+			$context[Breeze::NAME] = [];
+
+		$context[Breeze::NAME][$actionName] = $templateParams;
 
 		$context['page_title'] = $this->getText('page_' . $actionName . '_title');
 		$context['sub_template'] = $actionName;
@@ -137,8 +142,6 @@ class AdminService extends BaseService implements ServiceInterface
 		    'title' => $context['page_title'],
 		    'description' => $this->getText('page_' . $actionName . '_description'),
 		];
-
-		$this->setGlobal('context', $context);
 	}
 
 	public function isEnableFeature(string $featureName = '', string $redirectUrl = ''): bool

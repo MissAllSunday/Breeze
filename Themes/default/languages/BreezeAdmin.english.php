@@ -3,12 +3,6 @@
 declare(strict_types=1);
 
 /**
- * BreezeAdmin.english
- *
- * @package Breeze mod
- * @version 1.1
- * @author Jessica Gonzalez <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2015, Jessica Gonzalez
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
@@ -66,7 +60,7 @@ $txt['Breeze_cover_image_types_sub'] = 'A comma separated list of valid image ty
 $txt['Breeze_posts_for_mention'] = 'How many posts are required to appear on the mention list?';
 $txt['Breeze_posts_for_mention_sub'] = 'To avoid having spammer/bot accounts appearing on the mention list you can set how many posts does an user needs to have in order to be mentionable, if you leave this setting empty, it will use the default value: 1.<br /> To help with the server load, the mentions list gets cached, if you change this setting, make sure to clean your forum cache to see the results.';
 $txt['Breeze_version'] = 'Breeze version';
-$txt['Breeze_live'] = 'Live from the support forum...';
+$txt['Breeze_live'] = 'Live from the mod\'s repository...';
 $txt['Breeze_feed_error_message'] = 'Breeze couldn\'t connect with the support site';
 $txt['Breeze_allowed_max_num_users'] = 'How many users does an user can show on their visitors and buddies block?';
 $txt['Breeze_allowed_max_num_users_sub'] = 'If the user has more users than the specified setting, their entire list will be converted to a more compact links list. Leave at 0 to disable this option.';

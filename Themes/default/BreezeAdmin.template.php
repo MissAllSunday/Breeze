@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 
 // The admin panel where the news and other very useful stuff is displayed
-function template_admin_home(): void
+function template_general(): void
 {
 	global $txt, $context;
 
@@ -19,7 +19,7 @@ function template_admin_home(): void
 	echo '
 		<div id="admin_main_section">';
 
-	// Display the "live news" from missallsunday.com.
+	// Display the "live news" from Breeze's repository.
 	echo '
 			<div id="live_news" class="floatleft">
 				<div class="cat_bar">
@@ -38,7 +38,7 @@ function template_admin_home(): void
 
 	// Show the Breeze version.
 	echo '
-			<div id="supportVersionsTable" class="floatright">
+			<div id="support_info" class="floatright">
 				<div class="cat_bar">
 					<h3 class="catbg">
 						', $txt['support_title'], '
@@ -70,18 +70,18 @@ function template_admin_home(): void
 
 	// Print the credits array
 	if (!empty($context['Breeze']['credits']))
-		foreach ($context['Breeze']['credits'] as $c)
+		foreach ($context['Breeze']['credits'] as $credit)
 		{
 			echo '
 					<dl>
 						<dt>
-							<strong>', $c['name'], ':</strong>
+							<strong>', $credit['name'], ':</strong>
 						</dt>';
 
-			foreach ($c['users'] as $u)
+			foreach ($credit['users'] as $user)
 				echo '
 						<dd>
-							<a href="', $u['site'] ,'">', $u['name'] ,'</a>
+							<a href="', $user['site'] ,'">', $user['name'] ,'</a>
 						</dd>';
 
 			echo '

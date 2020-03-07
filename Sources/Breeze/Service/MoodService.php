@@ -155,17 +155,17 @@ class MoodService extends BaseService implements ServiceInterface
 
 	public function displayMood(array &$data, int $userId): void
 	{
-		if (!$this->settings->enable('master') || !$this->settings->enable('mood'))
+		if (!$this->getSetting('master') || !$this->getSetting('mood'))
 			return;
 
-		$data['custom_fields'][] =  $this->moodRepository->getMood($userId);
+		$data['custom_fields'][] =  $this->repository->getMood($userId);
 	}
 
 	public function moodProfile(int $memID, array $area): void
 	{
-		if (!$this->settings->enable('master'))
+		if (!$this->getSetting('master'))
 			return;
 
-		$this->moodRepository->getMoodProfile($memID, $area);
+		$this->repository->getMoodProfile($memID, $area);
 	}
 }

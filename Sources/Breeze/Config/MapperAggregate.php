@@ -6,23 +6,26 @@ namespace Breeze\Config;
 
 class MapperAggregate
 {
-	const MAPPERS_FOLDER = 'Mappers';
+	const MAPPERS_FOLDER =  __DIR__ . '/Mappers';
+	const MAPPER_KEY = 'Mapper';
 
 	protected $mappers = [];
 
-	public function getMappers(): void
+	public function getMappers(): array
 	{
 		$scannedMappers = $this->scanMappersFolder();
 
 		foreach ($scannedMappers as $mapperFile)
-			$this->mappers[] = include $mapperFile;
+		{
+			$mapperFileInfo = pathinfo($mapperFile, PATHINFO_FILENAME);
+			$this->mappers[str_replace(self::MAPPER_KEY, '', $mapperFileInfo)] = include(self::MAPPERS_FOLDER . '/' . $mapperFile);
+		}
 
+		return $this->mappers;
 	}
 
 	protected function scanMappersFolder(): array
 	{
-		 $mappersFolder = __DIR__ . '/' . self::MAPPERS_FOLDER;
-
-		return array_diff(scandir($mappersFolder), ['..', '.']);
+		return array_diff(scandir(self::MAPPERS_FOLDER), ['..', '.']);
 	}
 }

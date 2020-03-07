@@ -19,7 +19,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 		<require-dir name="breezeVendor" destination="$boarddir">Dependencies files</require-dir>
 		<require-dir name="Sources/Breeze" destination="$sourcedir">Source files</require-dir>
 		<require-dir name="tasks" destination="$sourcedir">Notification tasks</require-dir>
-		<require-dir name="BreezeFiles" destination="$boarddir">Uploaded images</require-dir>
+		<require-dir name="breezeFiles" destination="$boarddir">Uploaded images</require-dir>
 		<code>hooks.php</code>
 		<redirect url="$scripturl?action=admin;area=breezeadmin;sa=general" timeout="3000">redirect.txt</redirect>
 	</install>
