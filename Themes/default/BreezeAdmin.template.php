@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 
 // The admin panel where the news and other very useful stuff is displayed
-function template_general(): void
+function template_breezeAdmin_general(): void
 {
 	global $txt, $context;
 
@@ -19,7 +19,7 @@ function template_general(): void
 	echo '
 		<div id="admin_main_section">';
 
-	// Display the "live news" from Breeze's repository.
+	// Display the "live news"
 	echo '
 			<div id="live_news" class="floatleft">
 				<div class="cat_bar">
@@ -27,12 +27,8 @@ function template_general(): void
 						', $txt['Breeze_live'] , '
 					</h3>
 				</div>
-				<div class="information">
-					<div class="windowbg nopadding">
-						<div id="smfAnnouncements">',
-							$txt['Breeze_feed_error_message'] , '
-						</div>
-					</div>
+				<div id="smfAnnouncements" class="information">
+					', $txt['Breeze_feed_error_message'] , '
 				</div>
 			</div>';
 
@@ -46,19 +42,22 @@ function template_general(): void
 				</div>
 				<div class="information">
 					<div class="content">
-						<div id="version_details">
-							<strong>', $txt['support_versions'], ':</strong><br />
+						<div id="version_details" class="padding">
+							<strong>', $txt['support_versions'], ':</strong>
+							<br>
 							', $txt['Breeze_version'] , ':
-							<em id="yourVersion" style="white-space: nowrap;">', $context['Breeze']['version'] , '</em><br />';
+							<em>
+								', $context['Breeze']['general']['version'] , '
+							</em>';
 
-		// Some more stuff will be here... eventually
+	// Some more stuff will be here... eventually
 
 	echo '
 						</div>
 					</div>
 				</div>
 			</div>
-		<div class="clear" />
+			<div class="clear" />
 			<div class="cat_bar">
 				<h3 class="catbg">
 					', $txt['Breeze_page_credits'] , '
@@ -69,8 +68,8 @@ function template_general(): void
 					<p>', $txt['Breeze_page_credits_decs'] ,'</p>';
 
 	// Print the credits array
-	if (!empty($context['Breeze']['credits']))
-		foreach ($context['Breeze']['credits'] as $credit)
+	if (!empty($context['Breeze']['general']['credits']))
+		foreach ($context['Breeze']['general']['credits'] as $credit)
 		{
 			echo '
 					<dl>
@@ -137,7 +136,7 @@ function template_manage_mood_edit(): void
 	// Print the form.
 	echo
 	''
-		, $context['mood']['form'] ,
+	, $context['mood']['form'] ,
 	'';
 }
 
