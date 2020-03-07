@@ -33,7 +33,7 @@ function template_user_wall_above(): void
 				<div>';
 }
 
-// User's wall.
+// UserService's wall.
 function template_user_wall_below(): void
 {
 	global $txt, $context, $settings, $scripturl, $user_info, $modSettings;
@@ -88,7 +88,7 @@ function template_user_wall_below(): void
 			</div>
 			<p class="clear" />';
 
-	// User
+	// UserService
 	echo '
 		<div id="tab-wall">';
 	// A nice title bar
@@ -138,7 +138,7 @@ function template_user_wall_below(): void
 				</div>
 			</div>
 			<br>';
-	// User end
+	// UserService end
 	echo '
 		</div>';
 
@@ -478,7 +478,7 @@ function template_general_wall(): void
 			</div>
 			<br>';
 
-	// User end
+	// UserService end
 	echo '
 		</div>';
 

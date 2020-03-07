@@ -57,18 +57,18 @@ class BreezeAjax
 
 		// Safety first, hardcode the actions and oh boy there are a lot!!!
 		$this->subActions = [
-		    'post' => 'post',
-		    'postcomment' => 'postComment',
-		    'delete' => 'delete',
-		    'usersmention' => 'usersMention',
-		    'cleanlog' => 'cleanLog',
-		    'fetch' => 'fetchStatus',
-		    'fetchc' => 'fetchComment',
-		    'fetchLog' => 'fetchLog',
-		    'usersettings' => 'userSettings',
-		    'cover' => 'cover',
-		    'coverdelete' => 'coverDelete',
-		    'moodchange' => 'moodChange',
+			'post' => 'post',
+			'postcomment' => 'postComment',
+			'delete' => 'delete',
+			'usersmention' => 'usersMention',
+			'cleanlog' => 'cleanLog',
+			'fetch' => 'fetchStatus',
+			'fetchc' => 'fetchComment',
+			'fetchLog' => 'fetchLog',
+			'usersettings' => 'userSettings',
+			'cover' => 'cover',
+			'coverdelete' => 'coverDelete',
+			'moodchange' => 'moodChange',
 		];
 
 		// Build the correct redirect URL
@@ -142,17 +142,17 @@ class BreezeAjax
 		// Sorry, try to play nicer next time
 		if (!$owner || !$poster || !$content || $owner != $_SESSION['Breeze']['owner'])
 			return $this->setResponse([
-			    'message' => 'wrong_values',
-			    'type' => 'error',
-			    'owner' => $owner,
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $owner,
 			]);
 
 		// Flood control.
 		if (!$this->_app['tools']->floodControl())
 			return $this->setResponse([
-			    'message' => 'flood',
-			    'type' => 'error',
-			    'owner' => $owner,
+				'message' => 'flood',
+				'type' => 'error',
+				'owner' => $owner,
 			]);
 
 		// Are you the profile owner? no? then feel my wrath!
@@ -173,11 +173,11 @@ class BreezeAjax
 		if (!empty($body))
 		{
 			$this->_params = [
-			    'profile_id' => $owner,
-			    'poster_id' => $poster,
-			    'time' => time(),
-			    'body' => $body,
-			    'likes' => 0,
+				'profile_id' => $owner,
+				'poster_id' => $poster,
+				'time' => time(),
+				'body' => $body,
+				'likes' => 0,
 			];
 
 			// Maybe a last minute change before inserting the new status?
@@ -188,9 +188,9 @@ class BreezeAjax
 
 			// Aftermath stuff.
 			$this->_params += [
-			    'canHas' => $this->_app['tools']->permissions('Status', $owner, $poster),
-			    'time_raw' => time(),
-			    'likes' => [],
+				'canHas' => $this->_app['tools']->permissions('Status', $owner, $poster),
+				'time_raw' => time(),
+				'likes' => [],
 			];
 
 			// All went good or so it seems...
@@ -221,10 +221,10 @@ class BreezeAjax
 				// Likes.
 				if ($this->_app['tools']->modSettings('enable_likes'))
 					$this->_params['likes'] =  [
-					    'count' => 0,
-					    'already' => false,
-					    'can_like' => allowedTo('likes_like') && ($this->_currentUser != $poster),
-					    'can_view_like' => allowedTo('likes_view'),
+						'count' => 0,
+						'already' => false,
+						'can_like' => allowedTo('likes_like') && ($this->_currentUser != $poster),
+						'can_view_like' => allowedTo('likes_view'),
 					];
 
 				// The status was inserted, tell everyone!
@@ -232,10 +232,10 @@ class BreezeAjax
 
 				// Send the data back to the browser
 				return $this->setResponse([
-				    'type' => 'info',
-				    'message' => 'published',
-				    'data' => $this->_app['display']->HTML($this->_params, 'status', true, $poster, false),
-				    'owner' => $owner,
+					'type' => 'info',
+					'message' => 'published',
+					'data' => $this->_app['display']->HTML($this->_params, 'status', true, $poster, false),
+					'owner' => $owner,
 				]);
 			}
 
@@ -270,17 +270,17 @@ class BreezeAjax
 		// Sorry, try to play nice next time
 		if (!$statusID || !$statusPoster || !$poster || !$owner || !$content || $owner != $_SESSION['Breeze']['owner'])
 			return $this->setResponse([
-			    'message' => 'wrong_values',
-			    'type' => 'error',
-			    'owner' => $poster,
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $poster,
 			]);
 
 		// Flood control.
 		if (!$this->_app['tools']->floodControl())
 			return $this->setResponse([
-			    'message' => 'flood',
-			    'type' => 'error',
-			    'owner' => $owner,
+				'message' => 'flood',
+				'type' => 'error',
+				'owner' => $owner,
 			]);
 
 		// Are you the profile owner? no? then feel my wrath!
@@ -305,13 +305,13 @@ class BreezeAjax
 		{
 			// Build the params array for the query
 			$this->_params = [
-			    'status_id' => $statusID,
-			    'status_owner_id' => $statusPoster,
-			    'poster_id' => $poster,
-			    'profile_id' => $owner,
-			    'time' => time(),
-			    'body' => $body,
-			    'likes' => 0,
+				'status_id' => $statusID,
+				'status_owner_id' => $statusPoster,
+				'poster_id' => $poster,
+				'profile_id' => $owner,
+				'time' => time(),
+				'body' => $body,
+				'likes' => 0,
 			];
 
 			// Before inserting the comment...
@@ -322,9 +322,9 @@ class BreezeAjax
 
 			// Aftermath stuff.
 			$this->_params += [
-			    'time_raw' => time(),
-			    'canHas' => $this->_app['tools']->permissions('Comments', $owner, $poster),
-			    'likes' => [],
+				'time_raw' => time(),
+				'canHas' => $this->_app['tools']->permissions('Comments', $owner, $poster),
+				'likes' => [],
 			];
 
 			// The Comment was inserted ORLY???
@@ -355,10 +355,10 @@ class BreezeAjax
 				// Likes.
 				if ($this->_app['tools']->modSettings('enable_likes'))
 					$this->_params['likes'] =  [
-					    'count' => 0,
-					    'already' => false,
-					    'can_like' => allowedTo('likes_like')  && ($this->_currentUser != $poster),
-					    'can_view_like' => allowedTo('likes_view'),
+						'count' => 0,
+						'already' => false,
+						'can_like' => allowedTo('likes_like')  && ($this->_currentUser != $poster),
+						'can_view_like' => allowedTo('likes_view'),
 					];
 
 				// The comment was created, tell the world or just those who want to know...
@@ -366,11 +366,11 @@ class BreezeAjax
 
 				// Send the data back to the browser
 				return $this->setResponse([
-				    'type' => 'info',
-				    'message' => 'published_comment',
-				    'data' => $this->_app['display']->HTML($this->_params, 'comment', true, $poster, false),
-				    'owner' => $owner,
-				    'statusID' => false,
+					'type' => 'info',
+					'message' => 'published_comment',
+					'data' => $this->_app['display']->HTML($this->_params, 'comment', true, $poster, false),
+					'owner' => $owner,
+					'statusID' => false,
 				]);
 			}
 
@@ -401,9 +401,9 @@ class BreezeAjax
 		// No valid ID, no candy for you!
 		if (empty($id))
 			return $this->setResponse([
-			    'message' => 'wrong_values',
-			    'type' => 'error',
-			    'owner' => $profileOwner,
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $profileOwner,
 			]);
 
 		// You aren't allowed in here, let's show you a nice message error...
@@ -414,17 +414,17 @@ class BreezeAjax
 			fatal_lang_error('Breeze_error_delete' . ucfirst($type), false);
 
 		$idExists = $this->_app['query']->getSingleValue(
-		    $type,
-		    $type . '_id',
-		    $id
+			$type,
+			$type . '_id',
+			$id
 		);
 
 		// Tell them someone has deleted the message already
 		if (empty($idExists))
 			return $this->setResponse([
-			    'type' => 'error',
-			    'message' => 'already_deleted_' . strtolower($type),
-			    'owner' => $profileOwner,
+				'type' => 'error',
+				'message' => 'already_deleted_' . strtolower($type),
+				'owner' => $profileOwner,
 			]);
 
 		$typeCall = 'delete' . ucfirst($type);
@@ -440,10 +440,10 @@ class BreezeAjax
 
 		// Send the data back to the browser
 		return $this->setResponse([
-		    'type' => 'info',
-		    'message' => 'delete_' . $type,
-		    'owner' => $profileOwner,
-		    'data' => $type . '_id_' . $id,
+			'type' => 'info',
+			'message' => 'delete_' . $type,
+			'owner' => $profileOwner,
+			'data' => $type . '_id_' . $id,
 		]);
 	}
 
@@ -461,9 +461,9 @@ class BreezeAjax
 		// Make sure we have the correct user.
 		if (empty($user) || $this->_currentUser != $user)
 			return $this->setResponse([
-			    'message' => 'wrong_values',
-			    'type' => 'error',
-			    'owner' => $this->_currentUser,
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $this->_currentUser,
 			]);
 
 		// Handling data.
@@ -501,10 +501,10 @@ class BreezeAjax
 
 		// Done! set the redirect.
 		return $this->setResponse([
-		    'type' => 'info',
-		    'message' => 'updated_settings',
-		    'owner' => $this->_data->get('u'),
-		    'extra' => ['area' => $this->_data->get('area'),],
+			'type' => 'info',
+			'message' => 'updated_settings',
+			'owner' => $this->_data->get('u'),
+			'extra' => ['area' => $this->_data->get('area'),],
 		]);
 	}
 
@@ -528,9 +528,9 @@ class BreezeAjax
 		// The usual checks.
 		if (empty($id) || empty($maxIndex) || empty($numberTimes) || empty($comingFrom))
 			return $this->setResponse([
-			    'message' => 'wrong_values',
-			    'type' => 'error',
-			    'owner' => $id,
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $id,
 			]);
 
 		// If this is an user's wall request, we need to check if the current user is on the user's wall ignore list.
@@ -540,9 +540,9 @@ class BreezeAjax
 
 			if (!empty($stalk))
 				return $this->setResponse([
-				    'message' => 'wrong_values',
-				    'type' => 'error',
-				    'owner' => $this->_currentUser,
+					'message' => 'wrong_values',
+					'type' => 'error',
+					'owner' => $this->_currentUser,
 				]);
 		}
 
@@ -565,19 +565,19 @@ class BreezeAjax
 			$return .= $this->_app['display']->HTML($data['data'], 'status', false, $data['users'], true);
 
 			return $this->setResponse([
-			    'type' => 'info',
-			    'message' => '',
-			    'data' => $return,
-			    'owner' => $id,
+				'type' => 'info',
+				'message' => '',
+				'data' => $return,
+				'owner' => $id,
 			]);
 		}
 
 
 			return $this->setResponse([
-			    'type' => 'info',
-			    'message' => 'loading_end',
-			    'data' => 'end',
-			    'owner' => $id,
+				'type' => 'info',
+				'message' => 'loading_end',
+				'data' => 'end',
+				'owner' => $id,
 			]);
 	}
 
@@ -595,9 +595,9 @@ class BreezeAjax
 		// The usual checks.
 		if (empty($id) || empty($maxIndex) || empty($numberTimes) || empty($comingFrom))
 			return $this->setResponse([
-			    'message' => 'wrong_values',
-			    'type' => 'error',
-			    'owner' => $id,
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $id,
 			]);
 
 		if ($this->_currentUser != $id)
@@ -606,9 +606,9 @@ class BreezeAjax
 
 			if (!empty($stalk))
 				return $this->setResponse([
-				    'message' => 'wrong_values',
-				    'type' => 'error',
-				    'owner' => $this->_currentUser,
+					'message' => 'wrong_values',
+					'type' => 'error',
+					'owner' => $this->_currentUser,
 				]);
 		}
 
@@ -627,19 +627,19 @@ class BreezeAjax
 			$return .= breeze_activity($data['data'], true);
 
 			return $this->setResponse([
-			    'type' => 'info',
-			    'message' => '',
-			    'data' => $return,
-			    'owner' => $id,
+				'type' => 'info',
+				'message' => '',
+				'data' => $return,
+				'owner' => $id,
 			]);
 		}
 
 
 			return $this->setResponse([
-			    'type' => 'info',
-			    'message' => 'loadingAlerts_end',
-			    'data' => 'end',
-			    'owner' => $id,
+				'type' => 'info',
+				'message' => 'loadingAlerts_end',
+				'data' => 'end',
+				'owner' => $id,
 			]);
 	}
 
@@ -656,9 +656,9 @@ class BreezeAjax
 		// This feature needs to be enable.
 		if (!$this->_app['tools']->enable('cover') || empty($data))
 			return $this->setResponse([
-			    'message' => 'wrong_values',
-			    'type' => 'error',
-			    'owner' => $this->_currentUser,
+				'message' => 'wrong_values',
+				'type' => 'error',
+				'owner' => $this->_currentUser,
 			]);
 
 		// This makes things easier.
@@ -671,19 +671,19 @@ class BreezeAjax
 
 		// Get the image.
 		$uploadHandler = new BreezeUpload([
-		    'script_url' => $this->_app['tools']->boardUrl . '/',
-		    'upload_dir' => $this->_app['tools']->boardDir . Breeze::$coversFolder,
-		    'upload_url' => $this->_app['tools']->boardUrl . '/breezeFiles/',
-		    'user_dirs' => true,
-		    'max_file_size' => $maxFileSize,
-		    'max_width' => $maxFileWidth,
-		    'max_height' => $maxFileHeight,
-		    'print_response' => false,
-		    'thumbnail' => [
-		        'crop' => false,
-		        'max_width' => 300,
-		        'max_height' => 100,
-		    ]
+			'script_url' => $this->_app['tools']->boardUrl . '/',
+			'upload_dir' => $this->_app['tools']->boardDir . Breeze::$coversFolder,
+			'upload_url' => $this->_app['tools']->boardUrl . '/breezeFiles/',
+			'user_dirs' => true,
+			'max_file_size' => $maxFileSize,
+			'max_width' => $maxFileWidth,
+			'max_height' => $maxFileHeight,
+			'print_response' => false,
+			'thumbnail' => [
+				'crop' => false,
+				'max_width' => 300,
+				'max_height' => 100,
+			]
 		], true, $this->_app['tools']->text('cover_errors'));
 
 		// Get the file info.
@@ -698,9 +698,9 @@ class BreezeAjax
 
 			if ($this->_noJS)
 				return $this->setResponse([
-				    'message' => $this->_app['tools']->parser($file->error, $replaceValues),
-				    'type' => 'error',
-				    'owner' => $this->_currentUser,
+					'message' => $this->_app['tools']->parser($file->error, $replaceValues),
+					'type' => 'error',
+					'owner' => $this->_currentUser,
 				]);
 
 
@@ -724,10 +724,10 @@ class BreezeAjax
 
 				// Return a nice error message.
 				return $this->setResponse([
-				    'message' => 'cover_error_check',
-				    'type' => 'error',
-				    'owner' => $this->_currentUser,
-				    'data' => $folder . $file->name,
+					'message' => 'cover_error_check',
+					'type' => 'error',
+					'owner' => $this->_currentUser,
+					'data' => $folder . $file->name,
 				]);
 			}
 
@@ -760,22 +760,22 @@ class BreezeAjax
 			// Create an inner alert for this.
 			if (!empty($this->_userSettings['alert_cover']))
 				$this->_app['query']->createLog([
-				    'member' => $this->_currentUser,
-				    'content_type' => 'cover',
-				    'content_id' => 0,
-				    'time' => time(),
-				    'extra' => [
-				        'buddy_text' => 'cover',
-				        'toLoad' => [$this->_currentUser],
-				        'image' => $folderThumbnailUrl . $newFile,
-				    ],
+					'member' => $this->_currentUser,
+					'content_type' => 'cover',
+					'content_id' => 0,
+					'time' => time(),
+					'extra' => [
+						'buddy_text' => 'cover',
+						'toLoad' => [$this->_currentUser],
+						'image' => $folderThumbnailUrl . $newFile,
+					],
 				]);
 
 			$this->setResponse([
-			    'message' => 'cover_done',
-			    'type' => 'info',
-			    'owner' => $this->_currentUser,
-			    'data' => json_encode($fileInfo),
+				'message' => 'cover_done',
+				'type' => 'info',
+				'owner' => $this->_currentUser,
+				'data' => json_encode($fileInfo),
 			]);
 
 			// Don't need this.
@@ -799,20 +799,20 @@ class BreezeAjax
 
 			// Build the response.
 			return $this->setResponse([
-			    'type' => 'info',
-			    'message' => 'cover_deleted',
-			    'owner' => $this->_data->get('u'),
-			    'extra' => ['area' => 'breezesettings',],
+				'type' => 'info',
+				'message' => 'cover_deleted',
+				'owner' => $this->_data->get('u'),
+				'extra' => ['area' => 'breezesettings',],
 			]);
 		}
 
 		// Nothing to delete...
 
 			return $this->setResponse([
-			    'type' => 'error',
-			    'message' => 'no_cover_deleted',
-			    'owner' => $this->_data->get('u'),
-			    'extra' => ['area' => 'breezesettings',],
+				'type' => 'error',
+				'message' => 'no_cover_deleted',
+				'owner' => $this->_data->get('u'),
+				'extra' => ['area' => 'breezesettings',],
 			]);
 	}
 
@@ -821,10 +821,10 @@ class BreezeAjax
 		// Get the mood ID, can't work without it...
 		if (!$this->_data->get('moodID'))
 			return $this->setResponse([
-			    'message' => 'error_server',
-			    'data' => '',
-			    'type' => 'error',
-			    'owner' => $this->_currentUser,
+				'message' => 'error_server',
+				'data' => '',
+				'type' => 'error',
+				'owner' => $this->_currentUser,
 			]);
 
 		// Get the moods array.
@@ -833,10 +833,10 @@ class BreezeAjax
 		// There isn't a mood with the selected ID.
 		if (!in_array($this->_data->get('moodID'), array_keys($allMoods)))
 			return $this->setResponse([
-			    'message' => 'error_server',
-			    'data' => '',
-			    'type' => 'error',
-			    'owner' => $this->_currentUser,
+				'message' => 'error_server',
+				'data' => '',
+				'type' => 'error',
+				'owner' => $this->_currentUser,
 			]);
 
 		// Go ahead and store the new ID.
@@ -847,11 +847,11 @@ class BreezeAjax
 
 		$moodHistory = !empty($this->_userSettings['moodHistory']) ? $this->_userSettings['moodHistory'] : [];
 
-		// User has no history, go make one then!
+		// UserService has no history, go make one then!
 		if (empty($moodHistory))
 			$moodHistory[] = [
-			    'date' => time(),
-			    'id' => $this->_data->get('moodID'),
+				'date' => time(),
+				'id' => $this->_data->get('moodID'),
 			];
 
 		else
@@ -865,8 +865,8 @@ class BreezeAjax
 			// Nope! its a different one!
 			else
 				$moodHistory[] = [
-				    'date' => time(),
-				    'id' => $this->_data->get('moodID'),
+					'date' => time(),
+					'id' => $this->_data->get('moodID'),
 				];
 
 			// One last thing we need to do, cut off old entries.
@@ -882,24 +882,24 @@ class BreezeAjax
 			// Create an inner alert for this.
 			if (!empty($this->_userSettings['alert_mood']))
 				$this->_app['query']->createLog([
-				    'member' => $this->_currentUser,
-				    'content_type' => 'mood',
-				    'content_id' => $this->_data->get('moodID'),
-				    'time' => time(),
-				    'extra' => [
-				        'buddy_text' => 'mood',
-				        'toLoad' => [$this->_currentUser],
-				        'moodHistory' => json_encode(end($moodHistory)),
-				    ],
+					'member' => $this->_currentUser,
+					'content_type' => 'mood',
+					'content_id' => $this->_data->get('moodID'),
+					'time' => time(),
+					'extra' => [
+						'buddy_text' => 'mood',
+						'toLoad' => [$this->_currentUser],
+						'moodHistory' => json_encode(end($moodHistory)),
+					],
 				]);
 		}
 
 		// Build the response.
 		return $this->setResponse([
-		    'type' => 'info',
-		    'message' => 'moodChanged',
-		    'data' => json_encode(['user' => $this->_data->get('user'), 'image' => $image]),
-		    'owner' => $this->_currentUser,
+			'type' => 'info',
+			'message' => 'moodChanged',
+			'data' => json_encode(['user' => $this->_data->get('user'), 'image' => $image]),
+			'owner' => $this->_currentUser,
 		]);
 	}
 
@@ -942,10 +942,10 @@ class BreezeAjax
 		// Fall to a generic server error, this should never happen but just want to be sure...
 		else
 			echo json_encode([
-			    'message' => 'error_server',
-			    'data' => '',
-			    'type' => 'error',
-			    'owner' => 0,
+				'message' => 'error_server',
+				'data' => '',
+				'type' => 'error',
+				'owner' => 0,
 			]);
 
 		// Done
@@ -962,11 +962,11 @@ class BreezeAjax
 	{
 		// Fill out a generic response.
 		$this->_response = [
-		    'message' => 'error_server',
-		    'data' => '',
-		    'type' => 'error',
-		    'owner' => 0,
-		    'extra' => '',
+			'message' => 'error_server',
+			'data' => '',
+			'type' => 'error',
+			'owner' => 0,
+			'extra' => '',
 		];
 
 		// Overwrite the generic response with the actual data.

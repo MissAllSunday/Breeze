@@ -17,12 +17,12 @@ class NotificationEntity extends BaseEntity
 	public static function getColumns(): array
 	{
 		return [
-		    self::TABLE ,
-		    self::COLUMN_ID,
-		    self::COLUMN_TASK_FILE,
-		    self::COLUMN_TASK_CLASS,
-		    self::COLUMN_TASK_DATA,
-		    self::COLUMN_CLAIMED_TIME,
+			self::TABLE ,
+			self::COLUMN_ID,
+			self::COLUMN_TASK_FILE,
+			self::COLUMN_TASK_CLASS,
+			self::COLUMN_TASK_DATA,
+			self::COLUMN_CLAIMED_TIME,
 		];
 	}
 }

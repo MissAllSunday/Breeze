@@ -36,8 +36,8 @@ abstract class BaseRepository implements RepositoryInterface
 	public static function getAllTypes(): array
 	{
 		return [
-		    self::LIKE_TYPE_STATUS,
-		    self::LIKE_TYPE_COMMENT
+			self::LIKE_TYPE_STATUS,
+			self::LIKE_TYPE_COMMENT
 		];
 	}
 }

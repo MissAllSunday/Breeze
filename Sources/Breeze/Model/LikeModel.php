@@ -16,12 +16,12 @@ class LikeModel extends BaseModel
 	function update(array $data, int $idContent = 0): array
 	{
 		$this->db->update(
-		    LikeEntity::TABLE,
-		    'SET likes = {int:num_likes}
+			LikeEntity::TABLE,
+			'SET likes = {int:num_likes}
 			WHERE ' . LikeEntity::COLUMN_CONTENT_ID . ' = {int:idContent}',
-		    [
-		        'idContent' => $idContent,
-		    ]
+			[
+				'idContent' => $idContent,
+			]
 		);
 
 		return [];
@@ -32,15 +32,15 @@ class LikeModel extends BaseModel
 		$likes = [];
 
 		$request = $this->db->query(
-		    '
+			'
 			SELECT ' . implode(', ', LikeEntity::getColumns()) . '
 			FROM {db_prefix}' . LikeEntity::TABLE . '
 			WHERE ' . LikeEntity::COLUMN_CONTENT_TYPE . ' = {string:type}
 				AND ' . LikeEntity::COLUMN_CONTENT_ID . ' = {int:contentId}',
-		    [
-		        'contentId' => $contentId,
-		        'type' => $type,
-		    ]
+			[
+				'contentId' => $contentId,
+				'type' => $type,
+			]
 		);
 
 		while ($row = $this->db->fetchAssoc($request))
@@ -56,15 +56,15 @@ class LikeModel extends BaseModel
 		$likes = [];
 
 		$request = $this->db->query(
-		    '
+			'
 			SELECT ' . LikeEntity::COLUMN_CONTENT_ID . '
 			FROM {db_prefix}' . LikeEntity::TABLE . '
 			WHERE ' . LikeEntity::COLUMN_ID_MEMBER . ' = {int:userId}
 				AND ' . LikeEntity::COLUMN_CONTENT_TYPE . ' = {string:type}',
-		    [
-		        'userId' => $userId,
-		        'type' => $type,
-		    ]
+			[
+				'userId' => $userId,
+				'type' => $type,
+			]
 		);
 
 		while ($row = $this->db->fetchAssoc($request))

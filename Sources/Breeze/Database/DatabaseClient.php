@@ -18,9 +18,9 @@ class DatabaseClient implements ClientInterface
 	public function query(string $query, array $bindParams)
 	{
 		return $this->db['db_query'](
-		    '',
-		    $query,
-		    $bindParams
+			'',
+			$query,
+			$bindParams
 		);
 	}
 
@@ -42,22 +42,22 @@ class DatabaseClient implements ClientInterface
 	public function insert(string $tableName, array $columns, array $data, string $columnIdName): void
 	{
 		$this->db['db_insert'](
-		    'insert',
-		    '{db_prefix}' . $tableName . '',
-		    $columns,
-		    $data,
-		    [$columnIdName]
+			'insert',
+			'{db_prefix}' . $tableName . '',
+			$columns,
+			$data,
+			[$columnIdName]
 		);
 	}
 
 	public function replace(string $tableName, array $columns, array $data, string $columnIdName): void
 	{
 		$this->db['db_insert'](
-		    'replace',
-		    '{db_prefix}' . $tableName . '',
-		    $columns,
-		    $data,
-		    [$columnIdName]
+			'replace',
+			'{db_prefix}' . $tableName . '',
+			$columns,
+			$data,
+			[$columnIdName]
 		);
 	}
 
@@ -69,21 +69,21 @@ class DatabaseClient implements ClientInterface
 	public function update(string $tableName, string $queryString, array $bindParams): int
 	{
 		return $this->db['db_query'](
-		    '',
-		    'UPDATE {db_prefix}' . $tableName . '
+			'',
+			'UPDATE {db_prefix}' . $tableName . '
 			' . $queryString,
-		    $bindParams
+			$bindParams
 		);
 	}
 
 	public function delete(string $tableName, string $queryString, array $bindParams): void
 	{
 		$this->db['db_query'](
-		    '',
-		    'DELETE 
+			'',
+			'DELETE 
 			FROM {db_prefix}' . $tableName . '
 			' . $queryString,
-		    $bindParams
+			$bindParams
 		);
 	}
 }

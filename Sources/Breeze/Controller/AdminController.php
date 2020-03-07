@@ -13,13 +13,13 @@ class AdminController extends BaseController implements ControllerInterface
 	use PersistenceTrait;
 
 	public const SUB_ACTIONS = [
-	    'general',
-	    'settings',
-	    'permissions',
-	    'cover',
-	    'donate',
-	    'moodList',
-	    'moodEdit',
+		'general',
+		'settings',
+		'permissions',
+		'cover',
+		'donate',
+		'moodList',
+		'moodEdit',
 	];
 
 	/**
@@ -28,16 +28,16 @@ class AdminController extends BaseController implements ControllerInterface
 	protected $adminService;
 
 	public function dispatch(): void
-    {
-        $this->service->initSettingsPage($this->getSubActions());
+	{
+		$this->service->initSettingsPage($this->getSubActions());
 
-        $this->subActionCall();
-    }
+		$this->subActionCall();
+	}
 
 	public function general(): void
 	{
 		$this->render(__FUNCTION__, [
-		    'credits' => Breeze::credits(),
+			'credits' => Breeze::credits(),
 			'version' => Breeze::VERSION,
 		]);
 	}
@@ -46,9 +46,8 @@ class AdminController extends BaseController implements ControllerInterface
 	{
 		$scriptUrl = $this->service->global('scripturl');
 
-		$this->service->setSubActionContent(__FUNCTION__);
 		$this->render(__FUNCTION__, [
-		    'post_url' => $scriptUrl . '?' . AdminService::POST_URL . __FUNCTION__ . ';save',
+			'post_url' => $scriptUrl . '?' . AdminService::POST_URL . __FUNCTION__ . ';save',
 		]);
 
 		$this->service->configVars();
@@ -66,7 +65,7 @@ class AdminController extends BaseController implements ControllerInterface
 
 		$this->service->setSubActionContent(__FUNCTION__);
 		$this->render(__FUNCTION__, [
-		    'post_url' => $scriptUrl . '?' . AdminService::POST_URL . __FUNCTION__ . ';save',
+			'post_url' => $scriptUrl . '?' . AdminService::POST_URL . __FUNCTION__ . ';save',
 		]);
 
 		$this->service->permissionsConfigVars();
@@ -84,7 +83,7 @@ class AdminController extends BaseController implements ControllerInterface
 
 		$this->service->setSubActionContent(__FUNCTION__);
 		$this->render(__FUNCTION__, [
-		    'notice' => $this->getMessage(),
+			'notice' => $this->getMessage(),
 		]);
 
 		$this->service->setSubActionContent(__FUNCTION__);
@@ -108,8 +107,8 @@ class AdminController extends BaseController implements ControllerInterface
 
 			// set a nice session message.
 			$_SESSION['breeze'] = [
-			    'message' => ['success_delete'],
-			    'type' => 'info',
+				'message' => ['success_delete'],
+				'type' => 'info',
 			];
 
 			// Force a redirect.

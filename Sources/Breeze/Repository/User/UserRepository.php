@@ -60,10 +60,10 @@ class UserRepository
 		{
 			// Set an empty array.
 			static::$_users[$u] = [
-			    'breezeFacebox' => '',
-			    'link' => '',
-			    'name' => '',
-			    'linkFacebox' => '',
+				'breezeFacebox' => '',
+				'link' => '',
+				'name' => '',
+				'linkFacebox' => '',
 			];
 
 			// Gotta make sure you're only loading info from real existing members...
@@ -86,10 +86,10 @@ class UserRepository
 			// Not a real member, fill out some guest generic vars and be done with it..
 			else
 				static::$_users[$u] = [
-				    'breezeFacebox' => $txt['guest_title'],
-				    'link' => $txt['guest_title'],
-				    'name' => $txt['guest_title'],
-				    'linkFacebox' => $txt['guest_title'],
+					'breezeFacebox' => $txt['guest_title'],
+					'link' => $txt['guest_title'],
+					'name' => $txt['guest_title'],
+					'linkFacebox' => $txt['guest_title'],
 				];
 		}
 

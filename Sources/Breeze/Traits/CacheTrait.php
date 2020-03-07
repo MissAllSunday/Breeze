@@ -11,8 +11,8 @@ trait CacheTrait
 	public function get(string $key, int $timeToLive = 360): ?array
 	{
 		return cache_get_data(
-		    Breeze::PATTERN . $key,
-		    $timeToLive
+			Breeze::PATTERN . $key,
+			$timeToLive
 		);
 	}
 

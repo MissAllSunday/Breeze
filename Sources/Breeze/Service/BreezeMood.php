@@ -131,12 +131,12 @@ class BreezeMood
 		foreach ($history as $id => $date)
 			if (isset($this->_moods[$id]) && $this->_moods[$id]['enable'] && $this->checkImage($this->_moods[$id]['file']))
 				$return[$id] = [
-				    'id' => $id,
-				    'date' => $this->_app['tools']->timeElapsed($date),
-				    'name' => $this->_moods[$id]['name'],
-				    'file' => $this->_moods[$id]['file'],
-				    'url' => $this->imagesUrl . $this->_moods[$id]['file'],
-				    'desc' => $this->_moods[$id]['desc'],
+					'id' => $id,
+					'date' => $this->_app['tools']->timeElapsed($date),
+					'name' => $this->_moods[$id]['name'],
+					'file' => $this->_moods[$id]['file'],
+					'url' => $this->imagesUrl . $this->_moods[$id]['file'],
+					'desc' => $this->_moods[$id]['desc'],
 				];
 
 		return $return;
@@ -177,10 +177,10 @@ class BreezeMood
 		$currentMood = !empty($userSettings['mood']) && !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : false;
 
 		return [
-		    'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
-		    'col_name' => $this->_app['tools']->text('moodLabel'),
-		    'value' => template_mood_image($currentMood, $user),
-		    'placement' => $this->placementField,
+			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
+			'col_name' => $this->_app['tools']->text('moodLabel'),
+			'value' => template_mood_image($currentMood, $user),
+			'placement' => $this->placementField,
 		];
 	}
 
@@ -209,10 +209,10 @@ class BreezeMood
 
 		// Gotta love globals...
 		$context['custom_fields'][] = [
-		    'name' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
-		    'placement' => $this->placementField,
-		    'output_html' => template_mood_image($currentMood, $user),
-		    'show_reg' => false,
+			'name' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
+			'placement' => $this->placementField,
+			'output_html' => template_mood_image($currentMood, $user),
+			'show_reg' => false,
 		];
 	}
 
@@ -223,10 +223,10 @@ class BreezeMood
 
 		// Build the needed HTML.
 		return [
-		    'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
-		    'col_name' => $this->_app['tools']->text('moodLabel'),
-		    'value' => template_mood_noImage(),
-		    'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->setting('mood_placement') : 0,
+			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
+			'col_name' => $this->_app['tools']->text('moodLabel'),
+			'value' => template_mood_noImage(),
+			'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->setting('mood_placement') : 0,
 		];
 	}
 

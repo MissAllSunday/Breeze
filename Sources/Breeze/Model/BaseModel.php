@@ -44,10 +44,10 @@ abstract class BaseModel implements ModelInterface
 	function delete(array $ids): bool
 	{
 		$this->dbClient->delete(
-		    $this->getTableName(),
-		    '
+			$this->getTableName(),
+			'
 			WHERE ' . $this->getColumnId() . ' IN({array_int:ids})',
-		    ['ids' => array_map('intval', $ids), ]
+			['ids' => array_map('intval', $ids), ]
 		);
 
 		return true;
@@ -56,14 +56,14 @@ abstract class BaseModel implements ModelInterface
 	public function updateLikes(int $contentId, int $numLikes): void
 	{
 		$this->dbClient->update(
-		    $this->getTableName(),
-		    '
+			$this->getTableName(),
+			'
 			SET likes = {int:num_likes}
 			WHERE ' . $this->getColumnId() . ' = {int:id_content}',
-		    [
-		        'id_content' => $contentId,
-		        'num_likes' => $numLikes,
-		    ]
+			[
+				'id_content' => $contentId,
+				'num_likes' => $numLikes,
+			]
 		);
 	}
 
@@ -72,14 +72,14 @@ abstract class BaseModel implements ModelInterface
 		$items = [];
 
 		$request = $this->dbClient->query(
-		    '
+			'
 			SELECT ' . implode(', ', $this->getColumns()) . '
 			FROM {db_prefix}' . $this->getTableName() . '
 			LIMIT {int:start}, {int:maxIndex}',
-		    [
-		        'start' => $start,
-		        'maxIndex' => $maxIndex,
-		    ]
+			[
+				'start' => $start,
+				'maxIndex' => $maxIndex,
+			]
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($request))

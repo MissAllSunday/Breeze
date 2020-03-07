@@ -56,8 +56,8 @@ class BreezeLog
 
 		// Return the formatted data.
 		return [
-		    'count' => $this->_logCount,
-		    'data' => $this->_data,
+			'count' => $this->_logCount,
+			'data' => $this->_data,
 		];
 	}
 
@@ -91,18 +91,18 @@ class BreezeLog
 		if (!empty($checkMsg))
 		{
 			$request = $smcFunc['db_query'](
-			    '',
-			    '
+				'',
+				'
 				SELECT m.id_msg
 				FROM {db_prefix}messages AS m
 					INNER JOIN {db_prefix}boards AS b ON (b.id_board = m.id_board)
 				WHERE m.id_msg IN ({array_int:messages})
 					AND {query_wanna_see_board}' . (!$this->_app['tools']->modSettings('postmod_active') || allowedTo('approve_posts') ? '' : '
 					AND m.approved = {int:is_approved}') . '',
-			    [
-			        'messages' => array_values($checkMsg),
-			        'is_approved' => 1,
-			    ]
+				[
+					'messages' => array_values($checkMsg),
+					'is_approved' => 1,
+				]
 			);
 
 			// Get the messages this user CAN see.
@@ -151,9 +151,9 @@ class BreezeLog
 
 		// Return the formatted string.
 		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_mood'), [
-		    'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
-		    'gender_possessive' => $this->_data[$id]['gender_possessive'],
-		    'image' => !empty($mood) && !empty($mood['image_html']) ? $mood['image_html'] : '',
+			'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
+			'gender_possessive' => $this->_data[$id]['gender_possessive'],
+			'image' => !empty($mood) && !empty($mood['image_html']) ? $mood['image_html'] : '',
 		]);
 	}
 
@@ -163,9 +163,9 @@ class BreezeLog
 		$this->_data[$id]['icon'] = 'photo';
 
 		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_cover'), [
-		    'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
-		    'gender_possessive' => $this->_data[$id]['gender_possessive'],
-		    'image' => '<img src="' . $this->_app['tools']->scriptUrl . '?action=breezecover;thumb;u=' . $this->_data[$id]['member'] . '" />',
+			'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
+			'gender_possessive' => $this->_data[$id]['gender_possessive'],
+			'image' => '<img src="' . $this->_app['tools']->scriptUrl . '?action=breezecover;thumb;u=' . $this->_data[$id]['member'] . '" />',
 		]);
 	}
 
@@ -175,10 +175,10 @@ class BreezeLog
 		$this->_data[$id]['icon'] = 'comment';
 
 		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text($this->_data[$id]['extra']['buddy_text']), [
-		    'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['wall_owner'] .
-		    ';bid=' . $this->_data[$id]['content_id'],
-		    'poster' => $this->_usersData[$this->_data[$id]['extra']['poster']]['link'],
-		    'wall_owner' => $this->_usersData[$this->_data[$id]['extra']['wall_owner']]['link'],
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['wall_owner'] .
+			';bid=' . $this->_data[$id]['content_id'],
+			'poster' => $this->_usersData[$this->_data[$id]['extra']['poster']]['link'],
+			'wall_owner' => $this->_usersData[$this->_data[$id]['extra']['wall_owner']]['link'],
 		]);
 	}
 
@@ -188,10 +188,10 @@ class BreezeLog
 		$this->_data[$id]['icon'] = 'comments';
 
 		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text($this->_data[$id]['extra']['buddy_text']), [
-		    'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['wall_owner'] . ';bid=' . $this->_data[$id]['extra']['status_id'],
-		    'poster' => $this->_usersData[$this->_data[$id]['extra']['poster']]['link'],
-		    'status_owner' => $this->_usersData[$this->_data[$id]['extra']['status_owner']]['link'],
-		    'wall_owner' => $this->_usersData[$this->_data[$id]['extra']['wall_owner']]['link'],
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['wall_owner'] . ';bid=' . $this->_data[$id]['extra']['status_id'],
+			'poster' => $this->_usersData[$this->_data[$id]['extra']['poster']]['link'],
+			'status_owner' => $this->_usersData[$this->_data[$id]['extra']['status_owner']]['link'],
+			'wall_owner' => $this->_usersData[$this->_data[$id]['extra']['wall_owner']]['link'],
 		]);
 	}
 
@@ -208,10 +208,10 @@ class BreezeLog
 		$url = !empty($this->_data[$id]['extra']['contentData']['status_id']) ? ($this->_data[$id]['extra']['contentData']['status_id'] . ';cid=' . $this->_data[$id]['extra']['contentData']['id']) : $this->_data[$id]['extra']['contentData']['id'];
 
 		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_like_buddy'), [
-		    'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
-		    'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['contentData']['profile_id'] . ';bid=' . $url,
-		    'contentOwner' => $this->_usersData[$this->_data[$id]['extra']['contentData']['poster_id']]['link'],
-		    'type' => $this->_data[$id]['extra']['type'],
+			'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_data[$id]['extra']['contentData']['profile_id'] . ';bid=' . $url,
+			'contentOwner' => $this->_usersData[$this->_data[$id]['extra']['contentData']['poster_id']]['link'],
+			'type' => $this->_data[$id]['extra']['type'],
 		]);
 	}
 
@@ -220,9 +220,9 @@ class BreezeLog
 		$this->_data[$id]['icon'] = 'comment-o';
 
 		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_topic'), [
-		    'href' => $this->_app['tools']->scriptUrl . '?topic=' . $this->_data[$id]['content_id'],
-		    'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
-		    'subject' => $this->_data[$id]['extra']['subject'],
+			'href' => $this->_app['tools']->scriptUrl . '?topic=' . $this->_data[$id]['content_id'],
+			'poster' => $this->_usersData[$this->_data[$id]['member']]['link'],
+			'subject' => $this->_data[$id]['extra']['subject'],
 		]);
 	}
 
@@ -232,8 +232,8 @@ class BreezeLog
 		$this->_data[$id]['icon'] = 'users';
 
 		$this->_data[$id]['text'] = $this->_app['tools']->parser($this->_app['tools']->text('alert_buddy_done'), [
-		    'sender' => $this->_usersData[$this->_data[$id]['extra']['sender']]['link'],
-		    'receiver' => $this->_usersData[$this->_data[$id]['extra']['receiver']]['link'],
+			'sender' => $this->_usersData[$this->_data[$id]['extra']['sender']]['link'],
+			'receiver' => $this->_usersData[$this->_data[$id]['extra']['receiver']]['link'],
 		]);
 	}
 }

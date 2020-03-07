@@ -56,11 +56,11 @@ class BreezeWall
 
 		// Safety first, hardcode the actions
 		$this->subActions = [
-		    'general' => 'generalWall',
-		    'single' => 'singleStatus',
-		    'singleComment' => 'singleComment',
-		    'log' => 'log',
-		    'userdiv' => 'userDiv',
+			'general' => 'generalWall',
+			'single' => 'singleStatus',
+			'singleComment' => 'singleComment',
+			'log' => 'log',
+			'userdiv' => 'userDiv',
 		];
 
 		// Master setting is off, back off!
@@ -153,10 +153,10 @@ class BreezeWall
 
 		// The (soon to be) huge array...
 		$status = [
-		    'data' => [],
-		    'users' => [],
-		    'pagination' => '',
-		    'count' => 0
+			'data' => [],
+			'users' => [],
+			'pagination' => '',
+			'count' => 0
 		];
 
 		// Pass your settings to the template.
@@ -171,8 +171,8 @@ class BreezeWall
 		$context['page_title'] = $this->_app['tools']->text('general_wall');
 		$context['sub_template'] = 'general_wall';
 		$context['linktree'][] = [
-		    'url' => $this->_app['tools']->scriptUrl . '?action=wall',
-		    'name' => $context['page_title'],
+			'url' => $this->_app['tools']->scriptUrl . '?action=wall',
+			'name' => $context['page_title'],
 		];
 
 		// Time to overheat the server!

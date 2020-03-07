@@ -10,8 +10,8 @@ use Breeze\Service\AdminService;
 use Breeze\Service\RequestService;
 
 return [
-    'controller.admin' => [
-        'class' => AdminController::class,
-        'arguments'=> [RequestService::class, AdminService::class]
-    ]
+	'controller.admin' => [
+		'class' => AdminController::class,
+		'arguments'=> [RequestService::class, AdminService::class]
+	]
 ];

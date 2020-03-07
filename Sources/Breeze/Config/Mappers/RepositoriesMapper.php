@@ -11,12 +11,12 @@ use Breeze\Repository\AdminRepository;
 use Breeze\Repository\User\MoodRepository;
 
 return [
-    'repo.user.mood' => [
-        'class' => MoodRepository::class,
-        'arguments'=> [MoodEntity::class, MoodModel::class]
-    ],
-    'repo.admin' => [
-        'class' => AdminRepository::class,
-        'arguments'=> [MoodEntity::class, MoodModel::class]
-    ],
+	'repo.user.mood' => [
+		'class' => MoodRepository::class,
+		'arguments'=> [MoodEntity::class, MoodModel::class]
+	],
+	'repo.admin' => [
+		'class' => AdminRepository::class,
+		'arguments'=> [MoodEntity::class, MoodModel::class]
+	],
 ];

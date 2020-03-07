@@ -15,31 +15,31 @@ use Breeze\Entity\OptionsEntity;
 use Breeze\Entity\StatusEntity;
 
 return [
-    'entity.alert' => [
-        'class' => AlertEntity::class,
-    ],
-    'entity.comment' => [
-        'class' => CommentEntity::class,
-    ],
-    'entity.like' => [
-        'class' => LikeEntity::class,
-    ],
-    'entity.log' => [
-        'class' => LogEntity::class,
-    ],
-    'entity.member' => [
-        'class' => MemberEntity::class,
-    ],
-    'entity.mood' => [
-        'class' => MoodEntity::class,
-    ],
-    'entity.notification' => [
-        'class' => NotificationEntity::class,
-    ],
-    'entity.options' => [
-        'class' => OptionsEntity::class,
-    ],
-    'entity.status' => [
-        'class' => StatusEntity::class,
-    ],
+	'entity.alert' => [
+		'class' => AlertEntity::class,
+	],
+	'entity.comment' => [
+		'class' => CommentEntity::class,
+	],
+	'entity.like' => [
+		'class' => LikeEntity::class,
+	],
+	'entity.log' => [
+		'class' => LogEntity::class,
+	],
+	'entity.member' => [
+		'class' => MemberEntity::class,
+	],
+	'entity.mood' => [
+		'class' => MoodEntity::class,
+	],
+	'entity.notification' => [
+		'class' => NotificationEntity::class,
+	],
+	'entity.options' => [
+		'class' => OptionsEntity::class,
+	],
+	'entity.status' => [
+		'class' => StatusEntity::class,
+	],
 ];

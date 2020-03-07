@@ -34,31 +34,31 @@ $sourcedir = $scripturl = $boarddir = $boardurl = ROOT;
 
 // Mock some SMF arrays.
 $context = [
-    'session_var' => 'foo',
-    'session_id' => 'baz',
+	'session_var' => 'foo',
+	'session_id' => 'baz',
 ];
 $modSettings = [
-    'CompressedOutput' => false,
-    'Breeze_someSetting' => 666,
-    'Breeze_master' => true,
-    'Breeze_time_machine' => false
+	'CompressedOutput' => false,
+	'Breeze_someSetting' => 666,
+	'Breeze_master' => true,
+	'Breeze_time_machine' => false
 ];
 
 $txt = [
-    'time_year' => 'year',
-    'time_month' => 'month',
-    'time_day' => 'day',
-    'time_hour' => 'hour',
-    'time_minute' => 'minute',
-    'time_second' => 'second',
-    'time_ago' => 'ago',
-    'time_just_now' => 'just now',
-    'Breeze_lol' => 'lol',
+	'time_year' => 'year',
+	'time_month' => 'month',
+	'time_day' => 'day',
+	'time_hour' => 'hour',
+	'time_minute' => 'minute',
+	'time_second' => 'second',
+	'time_ago' => 'ago',
+	'time_just_now' => 'just now',
+	'Breeze_lol' => 'lol',
 ];
 
 $_REQUEST = [
-    'xss' => '<script>alert("XSS")</script>',
-    'foo' => 'baz',
+	'xss' => '<script>alert("XSS")</script>',
+	'foo' => 'baz',
 ];
 
 // Composer-Autoloader

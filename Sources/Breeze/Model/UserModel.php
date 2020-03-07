@@ -29,14 +29,14 @@ class UserModel extends BaseModel
 
 		if (!empty($inserts))
 			$this->db->replace(
-			    OptionsEntity::TABLE,
-			    [
-			        MemberEntity::COLUMN_ID => 'int',
-			        OptionsEntity::COLUMN_VARIABLE => 'string',
-			        OptionsEntity::COLUMN_VALUE => 'string'
-			    ],
-			    $inserts,
-			    MemberEntity::COLUMN_ID
+				OptionsEntity::TABLE,
+				[
+					MemberEntity::COLUMN_ID => 'int',
+					OptionsEntity::COLUMN_VARIABLE => 'string',
+					OptionsEntity::COLUMN_VALUE => 'string'
+				],
+				$inserts,
+				MemberEntity::COLUMN_ID
 			);
 
 		return 1;
@@ -56,20 +56,20 @@ class UserModel extends BaseModel
 			return $loadedUsers;
 
 		$request = $this->db->query(
-		    '
+			'
 			SELECT ' . implode(', ', MemberEntity::getColumns()) . '
 			FROM {db_prefix}' . MemberEntity::TABLE . '
 			WHERE ' . MemberEntity::COLUMN_ID . ' IN ({array_int:userIds})',
-		    [
-		        'userIds' => array_map('intval', $userIds)
-		    ]
+			[
+				'userIds' => array_map('intval', $userIds)
+			]
 		);
 
 		while ($row = $this->db->fetchAssoc($request))
 			$loadedUsers[$row[MemberEntity::COLUMN_ID]] = [
-			    'username' => $row[MemberEntity::COLUMN_MEMBER_NAME],
-			    'name' => $row[MemberEntity::COLUMN_REAL_NAME],
-			    'id' => $row[MemberEntity::COLUMN_ID],
+				'username' => $row[MemberEntity::COLUMN_MEMBER_NAME],
+				'name' => $row[MemberEntity::COLUMN_REAL_NAME],
+				'id' => $row[MemberEntity::COLUMN_ID],
 			];
 
 		$this->db->freeResult($request);
@@ -87,14 +87,14 @@ class UserModel extends BaseModel
 			return 0;
 
 		return $this->db->update(
-		    MemberEntity::TABLE,
-		    '
+			MemberEntity::TABLE,
+			'
 			SET ' . MemberEntity::COLUMN_PROFILE_VIEWS . ' = {string:jsonData}
 			WHERE ' . MemberEntity::COLUMN_ID . ' = ({int:userId})',
-		    [
-		        'userId' => (int) $userId,
-		        'jsonData' => json_encode($data),
-		    ]
+			[
+				'userId' => (int) $userId,
+				'jsonData' => json_encode($data),
+			]
 		);
 	}
 
@@ -103,15 +103,15 @@ class UserModel extends BaseModel
 		$data = [];
 
 		$result = $this->db->query(
-		    'SELECT op.' . (implode(', op.', OptionsEntity::getColumns())) . ', 
+			'SELECT op.' . (implode(', op.', OptionsEntity::getColumns())) . ', 
 			mem.' . (implode(', mem.', MemberEntity::getColumns())) . '
 			FROM {db_prefix}' . OptionsEntity::TABLE . ' AS op
 				LEFT JOIN {db_prefix}' . MemberEntity::TABLE . ' 
 				AS mem ON (mem.' . MemberEntity::COLUMN_ID . ' = {int:user})
 			WHERE ' . MemberEntity::COLUMN_ID . ' = {int:userId}',
-		    [
-		        'userId' => $userId,
-		    ]
+			[
+				'userId' => $userId,
+			]
 		);
 
 		while ($row = $this->db->fetchAssoc($result))
@@ -128,11 +128,11 @@ class UserModel extends BaseModel
 					explode(',', $row[OptionsEntity::COLUMN_VALUE]) : [];
 
 			$data += [
-			    'buddiesList' => !empty($row[MemberEntity::COLUMN_BUDDY_LIST]) ?
-			    	explode(',', $row[MemberEntity::COLUMN_BUDDY_LIST]) : [],
-			    'ignoredList' => !empty($row[MemberEntity::COLUMN_IGNORE_LIST]) ?
-			    	explode(',', $row[MemberEntity::COLUMN_IGNORE_LIST]) : [],
-			    'profileViews' => $row[MemberEntity::COLUMN_PROFILE_VIEWS],
+				'buddiesList' => !empty($row[MemberEntity::COLUMN_BUDDY_LIST]) ?
+					explode(',', $row[MemberEntity::COLUMN_BUDDY_LIST]) : [],
+				'ignoredList' => !empty($row[MemberEntity::COLUMN_IGNORE_LIST]) ?
+					explode(',', $row[MemberEntity::COLUMN_IGNORE_LIST]) : [],
+				'profileViews' => $row[MemberEntity::COLUMN_PROFILE_VIEWS],
 			];
 		}
 
@@ -149,13 +149,13 @@ class UserModel extends BaseModel
 			return $views;
 
 		$result = $this->db->query(
-		    '
+			'
 			SELECT ' . MemberEntity::COLUMN_PROFILE_VIEWS . '
 			FROM {db_prefix}' . MemberEntity::TABLE . '
 			WHERE ' . MemberEntity::COLUMN_ID . ' = {int:userId}',
-		    [
-		        'userId' => (int) $userId
-		    ]
+			[
+				'userId' => (int) $userId
+			]
 		);
 
 		$views = $this->db->fetchAssoc($result);
@@ -169,14 +169,14 @@ class UserModel extends BaseModel
 	public function deleteViews($userId): void
 	{
 		$this->db->update(
-		    MemberEntity::TABLE,
-		    '
+			MemberEntity::TABLE,
+			'
 			SET ' . MemberEntity::COLUMN_PROFILE_VIEWS . ' = {string:empty}
 			WHERE ' . MemberEntity::COLUMN_ID . ' = {int:userId}',
-		    [
-		        'userId' => (int) $userId,
-		        'empty' => ''
-		    ]
+			[
+				'userId' => (int) $userId,
+				'empty' => ''
+			]
 		);
 	}
 
@@ -185,11 +185,11 @@ class UserModel extends BaseModel
 		$boards = [];
 
 		$request = $this->db->query(
-		    '
+			'
 			SELECT id_board
 			FROM {db_prefix}boards as b
 			WHERE {query_wanna_see_board}',
-		    []
+			[]
 		);
 
 		while ($row = $this->db->fetchAssoc($request))

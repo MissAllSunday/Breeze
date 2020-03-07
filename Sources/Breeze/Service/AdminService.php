@@ -19,16 +19,16 @@ class AdminService extends BaseService implements ServiceInterface
 	protected $configVars = [];
 
 	public const PERMISSIONS = [
-	    'deleteComments',
-	    'deleteOwnComments',
-	    'deleteProfileComments',
-	    'deleteStatus',
-	    'deleteOwnStatus',
-	    'deleteProfileStatus',
-	    'postStatus',
-	    'postComments',
-	    'canCover',
-	    'canMood'
+		'deleteComments',
+		'deleteOwnComments',
+		'deleteProfileComments',
+		'deleteStatus',
+		'deleteOwnStatus',
+		'deleteProfileStatus',
+		'postStatus',
+		'postComments',
+		'canCover',
+		'canMood'
 	];
 
 	/**
@@ -56,14 +56,14 @@ class AdminService extends BaseService implements ServiceInterface
 		loadGeneralSettingParameters(array_combine($subActions, $subActions), 'general');
 
 		$context[$context['admin_menu_name']]['tab_data'] = [
-		    'tabs' => [
-		        'general' => [],
-		        'settings' => [],
-		        'moodList' => [],
-		        'moodEdit' => [],
-		        'permissions' => [],
-		        'donate' => [],
-		    ],
+			'tabs' => [
+				'general' => [],
+				'settings' => [],
+				'moodList' => [],
+				'moodEdit' => [],
+				'permissions' => [],
+				'donate' => [],
+			],
 		];
 
 		$this->setGlobal('context', $context);
@@ -74,28 +74,28 @@ class AdminService extends BaseService implements ServiceInterface
 		$this->requireOnce('ManageServer');
 
 		$this->configVars = [
-		    ['title', Breeze::PATTERN . 'page_settings'],
-		    ['check', Breeze::PATTERN . 'master', 'subtext' => $this->getText('master_sub')],
-		    ['check', Breeze::PATTERN . 'force_enable', 'subtext' => $this->getText('force_enable_sub')],
-		    ['int', Breeze::PATTERN . 'allowed_max_num_users', 'size' => 3, 'subtext' => $this->getText('allowed_max_num_users_sub')],
-		    ['int', Breeze::PATTERN . 'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this->getText('allowed_maxlength_aboutMe_sub')],
-		    ['check', Breeze::PATTERN . 'mood', 'subtext' => $this->getText('mood_sub')],
-		    ['text', Breeze::PATTERN . 'mood_label', 'subtext' => $this->getText('mood_label_sub')],
-		    ['select', Breeze::PATTERN . 'mood_placement',
-		        [
-		            $this->getSmfText('custom_profile_placement_standard'),
-		            $this->getSmfText('custom_profile_placement_icons'),
-		            $this->getSmfText('custom_profile_placement_above_signature'),
-		            $this->getSmfText('custom_profile_placement_below_signature'),
-		            $this->getSmfText('custom_profile_placement_below_avatar'),
-		            $this->getSmfText('custom_profile_placement_above_member'),
-		            $this->getSmfText('custom_profile_placement_bottom_poster'),
-		        ],
-		        'subtext' => $this->getText('mood_placement_sub'),
-		        'multiple' => false,
-		    ],
-		    ['int', Breeze::PATTERN . 'flood_messages', 'size' => 3, 'subtext' => $this->getText('flood_messages_sub')],
-		    ['int', Breeze::PATTERN . 'flood_minutes', 'size' => 3, 'subtext' => $this->getText('flood_minutes_sub')],
+			['title', Breeze::PATTERN . 'page_settings'],
+			['check', Breeze::PATTERN . 'master', 'subtext' => $this->getText('master_sub')],
+			['check', Breeze::PATTERN . 'force_enable', 'subtext' => $this->getText('force_enable_sub')],
+			['int', Breeze::PATTERN . 'allowed_max_num_users', 'size' => 3, 'subtext' => $this->getText('allowed_max_num_users_sub')],
+			['int', Breeze::PATTERN . 'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this->getText('allowed_maxlength_aboutMe_sub')],
+			['check', Breeze::PATTERN . 'mood', 'subtext' => $this->getText('mood_sub')],
+			['text', Breeze::PATTERN . 'mood_label', 'subtext' => $this->getText('mood_label_sub')],
+			['select', Breeze::PATTERN . 'mood_placement',
+				[
+					$this->getSmfText('custom_profile_placement_standard'),
+					$this->getSmfText('custom_profile_placement_icons'),
+					$this->getSmfText('custom_profile_placement_above_signature'),
+					$this->getSmfText('custom_profile_placement_below_signature'),
+					$this->getSmfText('custom_profile_placement_below_avatar'),
+					$this->getSmfText('custom_profile_placement_above_member'),
+					$this->getSmfText('custom_profile_placement_bottom_poster'),
+				],
+				'subtext' => $this->getText('mood_placement_sub'),
+				'multiple' => false,
+			],
+			['int', Breeze::PATTERN . 'flood_messages', 'size' => 3, 'subtext' => $this->getText('flood_messages_sub')],
+			['int', Breeze::PATTERN . 'flood_minutes', 'size' => 3, 'subtext' => $this->getText('flood_minutes_sub')],
 		];
 
 		prepareDBSettingContext($this->configVars);
@@ -104,15 +104,15 @@ class AdminService extends BaseService implements ServiceInterface
 	public function permissionsConfigVars(): void
 	{
 		$this->configVars = [
-		    ['title', Breeze::PATTERN . 'page_permissions'],
+			['title', Breeze::PATTERN . 'page_permissions'],
 		];
 
 		foreach (self::PERMISSIONS as $permission)
 			$this->configVars[] = [
-			    'permissions',
-			    'breeze_' . $permission,
-			    0,
-			    $this->getText('permissionname_breeze_' . $permission)
+				'permissions',
+				'breeze_' . $permission,
+				0,
+				$this->getText('permissionname_breeze_' . $permission)
 			];
 
 		prepareDBSettingContext($this->configVars);
@@ -137,10 +137,10 @@ class AdminService extends BaseService implements ServiceInterface
 		$context[Breeze::NAME][$actionName] = $templateParams;
 
 		$context['page_title'] = $this->getText('page_' . $actionName . '_title');
-		$context['sub_template'] = self::IDENTIFIER .'_'. $actionName;
+		$context['sub_template'] = self::IDENTIFIER . '_' . $actionName;
 		$context[$context['admin_menu_name']]['tab_data'] = [
-		    'title' => $context['page_title'],
-		    'description' => $this->getText('page_' . $actionName . '_description'),
+			'title' => $context['page_title'],
+			'description' => $this->getText('page_' . $actionName . '_description'),
 		];
 
 		$this->setGlobal('context', $context);
@@ -164,10 +164,10 @@ class AdminService extends BaseService implements ServiceInterface
 		$scriptUrl = $this->global('scripturl');
 
 		$listOptions = $this->moodService->getMoodList([
-		    'id' => $listId,
-		    'title' => $this->getText('page_' . $listId . '_title'),
-		    'base_href' => $scriptUrl . '?' . self::POST_URL . $listId,
-		    'items_per_page' => 10,
+			'id' => $listId,
+			'title' => $this->getText('page_' . $listId . '_title'),
+			'base_href' => $scriptUrl . '?' . self::POST_URL . $listId,
+			'items_per_page' => 10,
 		], $start);
 
 		$this->requireOnce('Subs-List');

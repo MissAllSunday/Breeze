@@ -18,12 +18,12 @@ class LogEntity extends BaseEntity
 	public static function getColumns(): array
 	{
 		return [
-		    self::COLUMN_ID,
-		    self::COLUMN_MEMBER,
-		    self::COLUMN_CONTENT_TYPE,
-		    self::COLUMN_CONTENT_ID,
-		    self::COLUMN_TIME,
-		    self::COLUMN_EXTRA,
+			self::COLUMN_ID,
+			self::COLUMN_MEMBER,
+			self::COLUMN_CONTENT_TYPE,
+			self::COLUMN_CONTENT_ID,
+			self::COLUMN_TIME,
+			self::COLUMN_EXTRA,
 		];
 	}
 }

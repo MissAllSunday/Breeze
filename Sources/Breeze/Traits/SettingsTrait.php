@@ -10,22 +10,22 @@ use Breeze\Breeze;
 trait SettingsTrait
 {
 	public static $allSettings = [
-	    'wall' => 'CheckBox',
-	    'general_wall' => 'CheckBox',
-	    'pagination_number' => 'Int',
-	    'number_alert' => 'Int',
-	    'load_more' => 'CheckBox',
-	    'activityLog' => 'CheckBox',
-	    'kick_ignored' => 'CheckBox',
-	    'blockList' => 'TextTrait',
-	    'blockListIDs' => 'Array',
-	    'buddies' => 'CheckBox',
-	    'how_many_buddies' => 'Int',
-	    'visitors' => 'CheckBox',
-	    'how_many_visitors' => 'Int',
-	    'clear_noti' => 'HTML',
-	    'aboutMe' => 'TextArea',
-	    'cover_height' => 'Int',
+		'wall' => 'CheckBox',
+		'general_wall' => 'CheckBox',
+		'pagination_number' => 'Int',
+		'number_alert' => 'Int',
+		'load_more' => 'CheckBox',
+		'activityLog' => 'CheckBox',
+		'kick_ignored' => 'CheckBox',
+		'blockList' => 'TextTrait',
+		'blockListIDs' => 'Array',
+		'buddies' => 'CheckBox',
+		'how_many_buddies' => 'Int',
+		'visitors' => 'CheckBox',
+		'how_many_visitors' => 'Int',
+		'clear_noti' => 'HTML',
+		'aboutMe' => 'TextArea',
+		'cover_height' => 'Int',
 	];
 
 	public function global(string $variableName)

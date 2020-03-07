@@ -54,54 +54,54 @@ class BreezeQuery
 		$this->_app = $app;
 
 		$this->_tables = [
-		    'options' => [
-		        'name' => 'options',
-		        'table' => 'breeze_options',
-		        'property' => '_options',
-		        'columns' => ['variable', 'value',],
-		    ],
-		    'status' => [
-		        'name' => 'status',
-		        'table' => 'breeze_status',
-		        'property' => '_status',
-		        'columns' => ['status_id', 'status_owner_id', 'status_poster_id', 'status_time', 'status_body', 'likes',],
-		    ],
-		    'comments' => [
-		        'name' => 'comments',
-		        'table' => 'breeze_comments',
-		        'property' => '_comments',
-		        'columns' => ['comments_id', 'comments_status_id', 'comments_status_owner_id', 'comments_poster_id', 'comments_profile_id', 'comments_time', 'comments_body', 'likes'],
-		    ],
-		    'members' => [
-		        'name' => 'members',
-		        'table' => 'members',
-		        'property' => '_members',
-		        'columns' => ['breeze_profile_views', 'pm_ignore_list', 'buddy_list',],
-		    ],
-		    'likes' => [
-		        'name' => 'likes',
-		        'table' => 'user_likes',
-		        'property' => '_likes',
-		        'columns' => ['id_member', 'content_type', 'content_id', 'like_time',],
-		    ],
-		    'moods' => [
-		        'name' => 'moods',
-		        'table' => 'breeze_moods',
-		        'property' => '_noti',
-		        'columns' => ['moods_id', 'name', 'file', 'ext', 'description', 'enable',],
-		    ],
-		    'alerts' => [
-		        'name' => 'alerts',
-		        'table' => 'user_alerts',
-		        'property' => '_alerts',
-		        'columns' => ['id_alert', 'alert_time', 'id_member', 'id_member_started', 'member_name', 'content_type', 'content_id', 'content_action', 'is_read', 'extra'],
-		    ],
-		    'logs' => [
-		        'name' => 'logs',
-		        'table' => 'breeze_logs',
-		        'property' => '_logs',
-		        'columns' => ['id_log', 'member', 'content_type', 'content_id', 'time', 'extra'],
-		    ],
+			'options' => [
+				'name' => 'options',
+				'table' => 'breeze_options',
+				'property' => '_options',
+				'columns' => ['variable', 'value',],
+			],
+			'status' => [
+				'name' => 'status',
+				'table' => 'breeze_status',
+				'property' => '_status',
+				'columns' => ['status_id', 'status_owner_id', 'status_poster_id', 'status_time', 'status_body', 'likes',],
+			],
+			'comments' => [
+				'name' => 'comments',
+				'table' => 'breeze_comments',
+				'property' => '_comments',
+				'columns' => ['comments_id', 'comments_status_id', 'comments_status_owner_id', 'comments_poster_id', 'comments_profile_id', 'comments_time', 'comments_body', 'likes'],
+			],
+			'members' => [
+				'name' => 'members',
+				'table' => 'members',
+				'property' => '_members',
+				'columns' => ['breeze_profile_views', 'pm_ignore_list', 'buddy_list',],
+			],
+			'likes' => [
+				'name' => 'likes',
+				'table' => 'user_likes',
+				'property' => '_likes',
+				'columns' => ['id_member', 'content_type', 'content_id', 'like_time',],
+			],
+			'moods' => [
+				'name' => 'moods',
+				'table' => 'breeze_moods',
+				'property' => '_noti',
+				'columns' => ['moods_id', 'name', 'file', 'ext', 'description', 'enable',],
+			],
+			'alerts' => [
+				'name' => 'alerts',
+				'table' => 'user_alerts',
+				'property' => '_alerts',
+				'columns' => ['id_alert', 'alert_time', 'id_member', 'id_member_started', 'member_name', 'content_type', 'content_id', 'content_action', 'is_read', 'extra'],
+			],
+			'logs' => [
+				'name' => 'logs',
+				'table' => 'breeze_logs',
+				'property' => '_logs',
+				'columns' => ['id_log', 'member', 'content_type', 'content_id', 'time', 'extra'],
+			],
 		];
 
 		// Define a list of user settings that require been en/decoded.
@@ -124,8 +124,8 @@ class BreezeQuery
 		$dataResult = [];
 
 		$query = $smcFunc['db_query'](
-		    '',
-		    '
+			'',
+			'
 			SELECT ' . $params['rows'] . '
 			FROM {db_prefix}' . $params['table'] . '
 			' . (!empty($params['join']) ? 'LEFT JOIN ' . $params['join'] : '') . '
@@ -134,7 +134,7 @@ class BreezeQuery
 				' . (!empty($params['andTwo']) ? 'AND ' . $params['andTwo'] : '') . '
 			' . (!empty($params['order']) ? 'ORDER BY ' . $params['order'] : '') . '
 			' . (!empty($params['limit']) ? 'LIMIT ' . $params['limit'] : '') . '',
-		    $data
+			$data
 		);
 
 		if (!empty($single))
@@ -219,14 +219,14 @@ class BreezeQuery
 		$data = array_map('intval', (array) $data);
 
 		$result = $smcFunc['db_query'](
-		    '',
-		    '
+			'',
+			'
 			SELECT status_id
 			FROM {db_prefix}breeze_status
 			WHERE ' . ($column) . ' IN ({array_int:data})',
-		    [
-		        'data' => $data
-		    ]
+			[
+				'data' => $data
+			]
 		);
 
 		$count =  $smcFunc['db_num_rows']($result);
@@ -256,13 +256,13 @@ class BreezeQuery
 
 		// Get the value directly from the DB
 		$result = $smcFunc['db_query'](
-		    '',
-		    '
+			'',
+			'
 			SELECT ' . implode(', ', $this->_tables[$type]['columns']) . '
 			FROM {db_prefix}' . ($this->_tables[$type]['table']) . '
 			WHERE ' . ($row) . ' = ' . ($value) . '
 			',
-		    []
+			[]
 		);
 
 		while ($row = $smcFunc['db_fetch_assoc']($result))
@@ -290,8 +290,8 @@ class BreezeQuery
 
 		// Declare some generic vars, mainly to avoid errors
 		$return = [
-		    'data' => [],
-		    'users' => [],
+			'data' => [],
+			'users' => [],
 		];
 
 		$statusIDs = [];
@@ -300,18 +300,18 @@ class BreezeQuery
 
 		// Fetch the status.
 		$result = $smcFunc['db_query'](
-		    '',
-		    '
+			'',
+			'
 			SELECT ' . implode(', ', $this->_tables['status']['columns']) . '
 			FROM {db_prefix}' . ($this->_tables['status']['table']) . '
 			' . (!empty($id) ? 'WHERE status_owner_id IN({array_int:owner})' : '') . '
 			ORDER BY {raw:sort}
 			LIMIT {int:limit}',
-		    [
-		        'owner' => $id,
-		        'sort' => $sort,
-		        'limit' => $limit,
-		    ]
+			[
+				'owner' => $id,
+				'sort' => $sort,
+				'limit' => $limit,
+			]
 		);
 
 		// Populate the array like a big heavy boss!
@@ -334,16 +334,16 @@ class BreezeQuery
 		if ($getComments && !empty($statusIDs))
 		{
 			$result = $smcFunc['db_query'](
-			    '',
-			    '
+				'',
+				'
 				SELECT ' . implode(', ', $this->_tables['comments']['columns']) . '
 				FROM {db_prefix}' . ($this->_tables['comments']['table']) . '
 				WHERE comments_status_id IN({array_int:status})
 				ORDER BY comments_id ASC
 				',
-			    [
-			        'status' => $statusIDs,
-			    ]
+				[
+					'status' => $statusIDs,
+				]
 			);
 
 			// Append the data to our main return array
@@ -380,10 +380,10 @@ class BreezeQuery
 
 		// Declare some generic vars, mainly to avoid errors
 		$return = [
-		    'data' => [],
-		    'users' => [],
-		    'pagination' => '',
-		    'count' => 0
+			'data' => [],
+			'users' => [],
+			'pagination' => '',
+			'count' => 0
 		];
 
 		$statusIDs = [];
@@ -397,19 +397,19 @@ class BreezeQuery
 
 		// Fetch the status.
 		$result = $smcFunc['db_query'](
-		    '',
-		    '
+			'',
+			'
 			SELECT ' . (implode(', ', $this->_tables['status']['columns'])) . '
 			FROM {db_prefix}' . ($this->_tables['status']['table']) . '
 			WHERE status_owner_id = {int:owner}
 			ORDER BY status_id DESC
 			LIMIT {int:start}, {int:maxindex}
 			',
-		    [
-		        'start' => (int) $start,
-		        'maxindex' => (int) $maxIndex,
-		        'owner' => $id
-		    ]
+			[
+				'start' => (int) $start,
+				'maxindex' => (int) $maxIndex,
+				'owner' => $id
+			]
 		);
 
 		// Populate the array like a big heavy boss!
@@ -431,16 +431,16 @@ class BreezeQuery
 		if (!empty($statusIDs))
 		{
 			$result = $smcFunc['db_query'](
-			    '',
-			    '
+				'',
+				'
 				SELECT ' . implode(', ', $this->_tables['comments']['columns']) . '
 				FROM {db_prefix}' . ($this->_tables['comments']['table']) . '
 				WHERE comments_status_id IN({array_int:status})
 				ORDER BY comments_id ASC
 				',
-			    [
-			        'status' => $statusIDs,
-			    ]
+				[
+					'status' => $statusIDs,
+				]
 			);
 
 			// Append the data to our main return array
@@ -485,21 +485,21 @@ class BreezeQuery
 
 		// Set some empty arrays to a void errors
 		$return = [
-		    'data' => [],
-		    'users' => [],
+			'data' => [],
+			'users' => [],
 		];
 
 		$statusIDs =[];
 
 		$result = $smcFunc['db_query'](
-		    '',
-		    '
+			'',
+			'
 			SELECT ' . implode(', ', $this->_tables['status']['columns']) . '
 			FROM {db_prefix}' . ($this->_tables['status']['table']) . '
 			WHERE status_id = {int:status_id}',
-		    [
-		        'status_id' => $id
-		    ]
+			[
+				'status_id' => $id
+			]
 		);
 
 		// Populate the array like a big heavy boss!
@@ -520,16 +520,16 @@ class BreezeQuery
 		if (!empty($statusIDs))
 		{
 			$result = $smcFunc['db_query'](
-			    '',
-			    '
+				'',
+				'
 				SELECT ' . implode(', ', $this->_tables['comments']['columns']) . '
 				FROM {db_prefix}' . ($this->_tables['comments']['table']) . '
 				WHERE comments_status_id IN({array_int:status})
 				ORDER BY comments_id ASC
 				',
-			    [
-			        'status' => $statusIDs,
-			    ]
+				[
+					'status' => $statusIDs,
+				]
 			);
 
 			// Append the data to our main return array
@@ -568,10 +568,10 @@ class BreezeQuery
 
 		// Set some empty arrays to a void errors
 		$return = [
-		    'data' => [],
-		    'users' => [],
-		    'pagination' => '',
-		    'count' => 0
+			'data' => [],
+			'users' => [],
+			'pagination' => '',
+			'count' => 0
 		];
 
 		$statusIDs = [];
@@ -584,18 +584,18 @@ class BreezeQuery
 
 		// Get all the status.
 		$result = $smcFunc['db_query'](
-		    '',
-		    '
+			'',
+			'
 			SELECT ' . implode(', ', $this->_tables['status']['columns']) . '
 			FROM {db_prefix}' . ($this->_tables['status']['table']) . '
 			WHERE status_poster_id IN ({array_int:id})
 			ORDER BY status_id DESC
 			LIMIT {int:start}, {int:maxindex}',
-		    [
-		        'start' => $start,
-		        'maxindex' => $maxIndex,
-		        'id' => $id
-		    ]
+			[
+				'start' => $start,
+				'maxindex' => $maxIndex,
+				'id' => $id
+			]
 		);
 
 		// Populate the array like a big heavy boss!
@@ -615,15 +615,15 @@ class BreezeQuery
 		if (!empty($statusIDs))
 		{
 			$result = $smcFunc['db_query'](
-			    '',
-			    '
+				'',
+				'
 				SELECT ' . implode(', ', $this->_tables['comments']['columns']) . '
 				FROM {db_prefix}' . ($this->_tables['comments']['table']) . '
 				WHERE comments_status_id IN({array_int:status})
 				ORDER BY comments_id ASC',
-			    [
-			        'status' => $statusIDs,
-			    ]
+				[
+					'status' => $statusIDs,
+				]
 			);
 
 			// Append the data to our main return array
@@ -671,47 +671,47 @@ class BreezeQuery
 		if ('status' == $type)
 		{
 			$array = [
-			    'id' => $row['status_id'],
-			    'profile_id' => $row['status_owner_id'],
-			    'poster_id' => $row['status_poster_id'],
-			    'time' => $this->_app['tools']->timeElapsed($row['status_time']),
-			    'time_raw' => $row['status_time'],
-			    'body' => parse_bbc($row['status_body']),
-			    'comments' => [],
-			    'canHas' => $this->_app['tools']->permissions('Status', $row['status_owner_id'], $row['status_poster_id']),
-			    'likes' => [],
+				'id' => $row['status_id'],
+				'profile_id' => $row['status_owner_id'],
+				'poster_id' => $row['status_poster_id'],
+				'time' => $this->_app['tools']->timeElapsed($row['status_time']),
+				'time_raw' => $row['status_time'],
+				'body' => parse_bbc($row['status_body']),
+				'comments' => [],
+				'canHas' => $this->_app['tools']->permissions('Status', $row['status_owner_id'], $row['status_poster_id']),
+				'likes' => [],
 			];
 
 			if ($this->_app['tools']->modSettings('enable_likes'))
 				$array['likes'] = [
-				    'count' => $row['likes'],
-				    'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
-				    'can_like' => $canLike && $user_info['id'] != $row['status_poster_id'],
-				    'can_view_like' => $canViewLike,
+					'count' => $row['likes'],
+					'already' => in_array($row['status_id'], (array) $this->userLikes('breSta')),
+					'can_like' => $canLike && $user_info['id'] != $row['status_poster_id'],
+					'can_view_like' => $canViewLike,
 				];
 		}
 
 		elseif ('comments' == $type)
 		{
 			$array = [
-			    'id' => $row['comments_id'],
-			    'status_id' => $row['comments_status_id'],
-			    'status_owner_id' => $row['comments_status_owner_id'],
-			    'poster_id' => $row['comments_poster_id'],
-			    'profile_id' => $row['comments_profile_id'],
-			    'time' => $this->_app['tools']->timeElapsed($row['comments_time']),
-			    'time_raw' => $row['comments_time'],
-			    'body' => parse_bbc($row['comments_body']),
-			    'canHas' => $this->_app['tools']->permissions('Comments', $row['comments_profile_id'], $row['comments_poster_id']),
-			    'likes' => [],
+				'id' => $row['comments_id'],
+				'status_id' => $row['comments_status_id'],
+				'status_owner_id' => $row['comments_status_owner_id'],
+				'poster_id' => $row['comments_poster_id'],
+				'profile_id' => $row['comments_profile_id'],
+				'time' => $this->_app['tools']->timeElapsed($row['comments_time']),
+				'time_raw' => $row['comments_time'],
+				'body' => parse_bbc($row['comments_body']),
+				'canHas' => $this->_app['tools']->permissions('Comments', $row['comments_profile_id'], $row['comments_poster_id']),
+				'likes' => [],
 			];
 
 			if ($this->_app['tools']->modSettings('enable_likes'))
 				$array['likes'] = [
-				    'count' => $row['likes'],
-				    'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
-				    'can_like' => $canLike && $user_info['id'] != $row['comments_poster_id'],
-				    'can_view_like' => $canViewLike,
+					'count' => $row['likes'],
+					'already' => in_array($row['comments_id'], (array) $this->userLikes('breCom')),
+					'can_like' => $canLike && $user_info['id'] != $row['comments_poster_id'],
+					'can_view_like' => $canViewLike,
 				];
 		}
 

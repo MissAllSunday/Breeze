@@ -11,8 +11,8 @@ class Status extends BaseController implements ControllerInterface
 	const DELETE = 'delete';
 
 	const ACTIONS = [
-	    self::CREATE,
-	    self::DELETE,
+		self::CREATE,
+		self::DELETE,
 	];
 
 	public function do(): void

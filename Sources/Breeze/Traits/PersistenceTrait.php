@@ -14,8 +14,8 @@ trait PersistenceTrait
 			return;
 
 		$_SESSION[Breeze::NAME] = [
-		    'message' => $message,
-		    'type' => $type,
+			'message' => $message,
+			'type' => $type,
 		];
 	}
 

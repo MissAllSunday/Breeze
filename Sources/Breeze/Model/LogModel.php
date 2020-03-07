@@ -16,16 +16,16 @@ class LogModel extends BaseModel
 		$data['extra'] = !empty($data['extra']) ? json_encode($data['extra']) : '';
 
 		$this->db->insert(
-		    $this->getTableName(),
-		    [
-		        LogEntity::COLUMN_MEMBER => 'int',
-		        LogEntity::COLUMN_CONTENT_TYPE => 'string',
-		        LogEntity::COLUMN_CONTENT_ID => 'int',
-		        LogEntity::COLUMN_TIME => 'int',
-		        LogEntity::COLUMN_EXTRA => 'string'
-		    ],
-		    $data,
-		    LogEntity::COLUMN_ID
+			$this->getTableName(),
+			[
+				LogEntity::COLUMN_MEMBER => 'int',
+				LogEntity::COLUMN_CONTENT_TYPE => 'string',
+				LogEntity::COLUMN_CONTENT_ID => 'int',
+				LogEntity::COLUMN_TIME => 'int',
+				LogEntity::COLUMN_EXTRA => 'string'
+			],
+			$data,
+			LogEntity::COLUMN_ID
 		);
 
 		return $this->getInsertedId();
@@ -44,11 +44,11 @@ class LogModel extends BaseModel
 			return $count;
 
 		$request = $this->db->query(
-		    '
+			'
 			SELECT id_log
 			FROM {db_prefix}' . LogEntity::TABLE . '
 			WHERE ' . LogEntity::COLUMN_MEMBER . ' IN ({array_int:userIds})',
-		    ['userIds' => $userIds]
+			['userIds' => $userIds]
 		);
 
 		$count =  $this->db->numRows($request);
@@ -66,29 +66,29 @@ class LogModel extends BaseModel
 			return $logs;
 
 		$result = $this->db->query(
-		    '
+			'
 			SELECT ' . implode(', ', $this->getColumns()) . '
 			FROM {db_prefix}' . $this->getTableName() . '
 			WHERE ' . LogEntity::COLUMN_MEMBER . ' IN ({array_int:userIds})
 			ORDER BY ' . $this->getColumnId() . ' DESC
 			LIMIT {int:start}, {int:maxIndex}',
-		    [
-		        'start' => $start,
-		        'maxIndex' => $maxIndex,
-		        'userIds' => $userIds
-		    ]
+			[
+				'start' => $start,
+				'maxIndex' => $maxIndex,
+				'userIds' => $userIds
+			]
 		);
 
 		while ($row = $this->db->fetchAssoc($result))
 			$logs[$row[LogEntity::COLUMN_ID]] = [
-			    'id' => $row[LogEntity::COLUMN_ID],
-			    'member' => $row[LogEntity::COLUMN_MEMBER],
-			    'content_type' => $row[LogEntity::COLUMN_CONTENT_TYPE],
-			    'content_id' => $row[LogEntity::COLUMN_CONTENT_ID],
-			    'time' => timeformat($row[LogEntity::COLUMN_TIME]),
-			    'time_raw' => $row[LogEntity::COLUMN_TIME],
-			    'extra' => !empty($row[LogEntity::COLUMN_EXTRA]) ?
-			    	json_decode($row[LogEntity::COLUMN_EXTRA], true) : [],
+				'id' => $row[LogEntity::COLUMN_ID],
+				'member' => $row[LogEntity::COLUMN_MEMBER],
+				'content_type' => $row[LogEntity::COLUMN_CONTENT_TYPE],
+				'content_id' => $row[LogEntity::COLUMN_CONTENT_ID],
+				'time' => timeformat($row[LogEntity::COLUMN_TIME]),
+				'time_raw' => $row[LogEntity::COLUMN_TIME],
+				'extra' => !empty($row[LogEntity::COLUMN_EXTRA]) ?
+					json_decode($row[LogEntity::COLUMN_EXTRA], true) : [],
 			];
 
 		$this->db->freeResult($result);

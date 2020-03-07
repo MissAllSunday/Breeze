@@ -75,14 +75,14 @@ trait TextTrait
 		}
 
 		return empty($dirtyString) ? '' : implode(',', array_filter(explode(',', preg_replace(
-		    [
-		        '/[^' . $t . ',]/',
-		        '/(?<=,),+/',
-		        '/^,+/',
-		        '/,+$/'
-		    ],
-		    '',
-		    $dirtyString
+			[
+				'/[^' . $t . ',]/',
+				'/(?<=,),+/',
+				'/^,+/',
+				'/,+$/'
+			],
+			'',
+			$dirtyString
 		))));
 	}
 
@@ -135,12 +135,12 @@ trait TextTrait
 			return $txt['time_just_now'];
 
 		$timePeriods = [
-		    12 * 30 * 24 * 60 * 60	=> $txt['time_year'],
-		    30 * 24 * 60 * 60		=> $txt['time_month'],
-		    24 * 60 * 60			=> $txt['time_day'],
-		    60 * 60					=> $txt['time_hour'],
-		    60						=> $txt['time_minute'],
-		    1						=> $txt['time_second']
+			12 * 30 * 24 * 60 * 60	=> $txt['time_year'],
+			30 * 24 * 60 * 60		=> $txt['time_month'],
+			24 * 60 * 60			=> $txt['time_day'],
+			60 * 60					=> $txt['time_hour'],
+			60						=> $txt['time_minute'],
+			1						=> $txt['time_second']
 		];
 
 		foreach ($timePeriods as $seconds => $timeString)

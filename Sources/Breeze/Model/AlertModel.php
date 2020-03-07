@@ -18,15 +18,15 @@ class AlertModel extends BaseModel implements ModelInterface
 			$params['content_type'] = Breeze::PATTERN . $data['content_type'];
 
 		$this->db->insert(AlertEntity::TABLE, [
-		    AlertEntity::COLUMN_ALERT_TIME => 'int',
-		    AlertEntity::COLUMN_ID_MEMBER => 'int',
-		    AlertEntity::COLUMN_ID_MEMBER_STARTED => 'int',
-		    AlertEntity::COLUMN_MEMBER_NAME => 'string',
-		    AlertEntity::COLUMN_CONTENT_TYPE => 'string',
-		    AlertEntity::COLUMN_CONTENT_ID => 'int',
-		    AlertEntity::COLUMN_CONTENT_ACTION => 'string',
-		    AlertEntity::COLUMN_IS_READ => 'int',
-		    AlertEntity::COLUMN_EXTRA => 'string'
+			AlertEntity::COLUMN_ALERT_TIME => 'int',
+			AlertEntity::COLUMN_ID_MEMBER => 'int',
+			AlertEntity::COLUMN_ID_MEMBER_STARTED => 'int',
+			AlertEntity::COLUMN_MEMBER_NAME => 'string',
+			AlertEntity::COLUMN_CONTENT_TYPE => 'string',
+			AlertEntity::COLUMN_CONTENT_ID => 'int',
+			AlertEntity::COLUMN_CONTENT_ACTION => 'string',
+			AlertEntity::COLUMN_IS_READ => 'int',
+			AlertEntity::COLUMN_EXTRA => 'string'
 		], $data, $this->getColumnId());
 
 		return $this->getInsertedId();
@@ -45,10 +45,10 @@ class AlertModel extends BaseModel implements ModelInterface
 			$updateString .= $column . ' = ' . $newValue . ($column != $lastKey ? ', ' : '');
 
 		$this->db->update(
-		    AlertEntity::TABLE,
-		    'SET ' . ($updateString) . '
+			AlertEntity::TABLE,
+			'SET ' . ($updateString) . '
 			WHERE ' . $this->getColumnId() . ' = {int:id}',
-		    ['id' => $alertId]
+			['id' => $alertId]
 		);
 
 		return $this->getAlertById($alertId);
@@ -67,7 +67,7 @@ class AlertModel extends BaseModel implements ModelInterface
 			return $alreadySent;
 
 		$request = $this->db->query(
-		    '
+			'
 			SELECT ' . AlertEntity::COLUMN_ID . '
 			FROM {db_prefix}' . AlertEntity::TABLE . '
 			WHERE ' . AlertEntity::COLUMN_ID_MEMBER . ' = {int:userId}
@@ -75,12 +75,12 @@ class AlertModel extends BaseModel implements ModelInterface
 				AND ' . AlertEntity::COLUMN_CONTENT_TYPE . ' = {string:alertType}
 				' . ($alertId ? 'AND ' . AlertEntity::COLUMN_CONTENT_ID . ' = {int:alertId}' : '') . '
 				' . ($alertSender ? 'AND ' . AlertEntity::COLUMN_ID_MEMBER_STARTED . ' = {int:alertSender}' : '') . '',
-		    [
-		        'userId' => $userId,
-		        'alertType' => $alertType,
-		        'alertId' => $alertId,
-		        'alertSender' => $alertSender,
-		    ]
+			[
+				'userId' => $userId,
+				'alertType' => $alertType,
+				'alertId' => $alertId,
+				'alertSender' => $alertSender,
+			]
 		);
 
 		$result = $this->db->fetchAssoc($request);

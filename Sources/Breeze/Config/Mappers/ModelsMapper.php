@@ -17,10 +17,10 @@ use Breeze\Model\UserModel;
 
 
 return [
-    'model.mood' => [
-        'class' => MoodModel::class,
-        'arguments'=> [DatabaseClient::class]
-    ],
+	'model.mood' => [
+		'class' => MoodModel::class,
+		'arguments'=> [DatabaseClient::class]
+	],
 	'model.alert' => [
 		'class' => AlertModel::class,
 		'arguments'=> [DatabaseClient::class]

@@ -165,7 +165,7 @@ $(function() {
 		return reqOverlayDiv(url, title);
 	});
 
-	// User div.
+	// UserService div.
 	$(document).on('click', 'a[rel*=breezeFacebox]', function(event){
 		event.preventDefault();
 		var title = $(this).data('name'),

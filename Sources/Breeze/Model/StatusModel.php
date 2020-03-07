@@ -11,11 +11,11 @@ class StatusModel extends BaseModel
 	public function insert(array $data, int $statusId = 0): int
 	{
 		$this->db->insert(StatusEntity::TABLE, [
-		    StatusEntity::COLUMN_OWNER_ID => 'int',
-		    StatusEntity::COLUMN_POSTER_ID => 'int',
-		    StatusEntity::COLUMN_TIME => 'int',
-		    StatusEntity::COLUMN_BODY => 'string',
-		    StatusEntity::COLUMN_LIKES => 'int',
+			StatusEntity::COLUMN_OWNER_ID => 'int',
+			StatusEntity::COLUMN_POSTER_ID => 'int',
+			StatusEntity::COLUMN_TIME => 'int',
+			StatusEntity::COLUMN_BODY => 'string',
+			StatusEntity::COLUMN_LIKES => 'int',
 		], $data, StatusEntity::COLUMN_ID);
 
 		return $this->getInsertedId();
@@ -29,11 +29,11 @@ class StatusModel extends BaseModel
 			return $status;
 
 		$request = $this->db->query(
-		    '
+			'
 			SELECT ' . implode(', ', StatusEntity::getColumns()) . '
 			FROM {db_prefix}' . StatusEntity::TABLE . '
 			WHERE ' . StatusEntity::COLUMN_ID . ' IN ({array_int:statusIds})',
-		    ['statusIds' => array_map('intval', $statusIds)]
+			['statusIds' => array_map('intval', $statusIds)]
 		);
 
 		while ($row = $this->db->fetchAssoc($request))

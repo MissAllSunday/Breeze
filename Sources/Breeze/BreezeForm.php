@@ -201,8 +201,8 @@ class BreezeForm
 		loadtemplate(Breeze::NAME . 'Form');
 
 		$context['form'] = [
-		    'options' => $this->_options,
-		    'elements' => $this->elements,
+			'options' => $this->_options,
+			'elements' => $this->elements,
 		];
 
 		return template_breeze_form();

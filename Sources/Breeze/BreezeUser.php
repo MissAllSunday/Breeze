@@ -57,15 +57,15 @@ class BreezeUser extends Breeze
 		// Default values.
 		$status = [];
 		$context['Breeze'] = [
-		    'cover' => '',
-		    'views' => false,
-		    'log' => false,
-		    'buddiesLog' => false,
-		    'comingFrom' => 'profile',
-		    'settings' => [
-		        'owner' => [],
-		        'visitor' => [],
-		    ],
+			'cover' => '',
+			'views' => false,
+			'log' => false,
+			'buddiesLog' => false,
+			'comingFrom' => 'profile',
+			'settings' => [
+				'owner' => [],
+				'visitor' => [],
+			],
 		];
 
 		// Does the admin has set a max limit?
@@ -133,7 +133,7 @@ class BreezeUser extends Breeze
 
 		// Page name depends on pagination.
 		$context['page_title'] = $this['tools']->parser($tools->text('profile_of_username'), [
-		    'name' => $context['member']['name']
+			'name' => $context['member']['name']
 		]);
 
 		// Get the profile views.
@@ -280,13 +280,13 @@ class BreezeUser extends Breeze
 
 		// Create the tabs for the template.
 		$context[$context['profile_menu_name']]['tab_data'] = [
-		    'title' => $tools->text('user_settings_name_alerts'),
-		    'description' => $tools->text('user_settings_name_alerts_desc'),
-		    'icon' => 'profile_hd.png',
-		    'tabs' => [
-		        'settings' => [],
-		        'edit' => [],
-		    ],
+			'title' => $tools->text('user_settings_name_alerts'),
+			'description' => $tools->text('user_settings_name_alerts_desc'),
+			'icon' => 'profile_hd.png',
+			'tabs' => [
+				'settings' => [],
+				'edit' => [],
+			],
 		];
 
 		$context['page_title'] = $data->get('sa') && $tools->text('user_settings_name_alerts_' . $data->get('sa')) ? $tools->text('user_settings_name_alerts_' . $data->get('sa')) : $tools->text('user_settings_name_alerts_settings');
@@ -314,24 +314,24 @@ class BreezeUser extends Breeze
 
 		// Group all these values into an array. Makes it easier to save the changes.
 		$form->setOptions([
-		    'name' => 'breezeSettings',
-		    'url' => $this['tools']->scriptUrl . '?action=breezeajax;sa=usersettings;rf=profile;u=' . $context['member']['id'] . ';area=' . (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings'),
-		    'character_set' => $context['character_set'],
-		    'title' => $context['page_title'],
-		    'desc' => $context['page_desc'],
+			'name' => 'breezeSettings',
+			'url' => $this['tools']->scriptUrl . '?action=breezeajax;sa=usersettings;rf=profile;u=' . $context['member']['id'] . ';area=' . (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings'),
+			'character_set' => $context['character_set'],
+			'title' => $context['page_title'],
+			'desc' => $context['page_desc'],
 		]);
 
 		// Get all inner alerts.
 		foreach ($this['log']->alerts as $a)
 			$form->addCheckBox([
-			    'name' => 'alert_' . $a,
-			    'checked' => !empty($userSettings['alert_' . $a]) ? true : false
+				'name' => 'alert_' . $a,
+				'checked' => !empty($userSettings['alert_' . $a]) ? true : false
 			]);
 
 		// Add a nice "check all" link.
 		$form->addHTML([
-		    'name' => 'checkAll',
-		    'html' => '<a id="select_all">' . $this['tools']->text('user_settings_checkAll') . '</a>',
+			'name' => 'checkAll',
+			'html' => '<a id="select_all">' . $this['tools']->text('user_settings_checkAll') . '</a>',
 		]);
 
 		// Session stuff.
@@ -452,11 +452,11 @@ class BreezeUser extends Breeze
 
 		// Group all these values into an array. Makes it easier to save the changes.
 		$form->setOptions([
-		    'name' => 'breezeSettings',
-		    'url' => $this['tools']->scriptUrl . '?action=breezeajax;sa=usersettings;rf=profile;u=' . $context['member']['id'] . ';area=' . (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings'),
-		    'character_set' => $context['character_set'],
-		    'title' => $context['page_title'],
-		    'desc' => $context['page_desc'],
+			'name' => 'breezeSettings',
+			'url' => $this['tools']->scriptUrl . '?action=breezeajax;sa=usersettings;rf=profile;u=' . $context['member']['id'] . ';area=' . (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings'),
+			'character_set' => $context['character_set'],
+			'title' => $context['page_title'],
+			'desc' => $context['page_desc'],
 		]);
 
 		// Session stuff.
@@ -464,42 +464,42 @@ class BreezeUser extends Breeze
 
 		// Per user master setting.
 		$form->addCheckBox([
-		    'name' => 'wall',
-		    'checked' => !empty($userSettings['wall']),
+			'name' => 'wall',
+			'checked' => !empty($userSettings['wall']),
 		]);
 
 		// General wall setting.
 		$form->addCheckBox([
-		    'name' => 'general_wall',
-		    'checked' => !empty($userSettings['general_wall']),
+			'name' => 'general_wall',
+			'checked' => !empty($userSettings['general_wall']),
 		]);
 
 		// Pagination.
 		$form->addText([
-		    'name' => 'pagination_number',
-		    'value' => !empty($userSettings['pagination_number']) ? $userSettings['pagination_number'] : 0,
-		    'size' => 3,
-		    'maxlength' => 3,
+			'name' => 'pagination_number',
+			'value' => !empty($userSettings['pagination_number']) ? $userSettings['pagination_number'] : 0,
+			'size' => 3,
+			'maxlength' => 3,
 		]);
 
 		// Number of alerts in recent activity page.
 		$form->addText([
-		    'name' => 'number_alert',
-		    'value' => !empty($userSettings['number_alert']) ? $userSettings['number_alert'] : 0,
-		    'size' => 3,
-		    'maxlength' => 3,
+			'name' => 'number_alert',
+			'value' => !empty($userSettings['number_alert']) ? $userSettings['number_alert'] : 0,
+			'size' => 3,
+			'maxlength' => 3,
 		]);
 
 		// Add the load more button.
 		$form->addCheckBox([
-		    'name' => 'load_more',
-		    'checked' => !empty($userSettings['load_more'])
+			'name' => 'load_more',
+			'checked' => !empty($userSettings['load_more'])
 		]);
 
 		// Activity Log.
 		$form->addCheckBox([
-		    'name' => 'activityLog',
-		    'checked' => !empty($userSettings['activityLog'])
+			'name' => 'activityLog',
+			'checked' => !empty($userSettings['activityLog'])
 		]);
 
 		// Only show this is the admin has enable the buddy feature.
@@ -507,71 +507,71 @@ class BreezeUser extends Breeze
 		{
 			// Allow ignored users.
 			$form->addCheckBox([
-			    'name' => 'kick_ignored',
-			    'checked' => !empty($userSettings['kick_ignored'])
+				'name' => 'kick_ignored',
+				'checked' => !empty($userSettings['kick_ignored'])
 			]);
 
 			// Block list.
 			$form->addHTML([
-			    'name' => 'blockList',
-			    'html' => '
+				'name' => 'blockList',
+				'html' => '
 					<input type="text" name="breezeSettings[blockList]" id="blockList" value="" size="30">
 					<div id="to_item_list_container"></div>',
-			    'size' => 30,
-			    'maxlength' => 900,
+				'size' => 30,
+				'maxlength' => 900,
 			]);
 
 			// Buddies block.
 			$form->addCheckBox([
-			    'name' => 'buddies',
-			    'checked' => !empty($userSettings['buddies']) ? true : false
+				'name' => 'buddies',
+				'checked' => !empty($userSettings['buddies']) ? true : false
 			]);
 
 			// How many buddies are we gonna show?
 			$form->addText([
-			    'name' => 'how_many_buddies',
-			    'value' => !empty($userSettings['how_many_buddies']) ? ($maxUsers && $userSettings['how_many_buddies'] >= $maxUsers ? $maxUsers : $userSettings['how_many_buddies']) : 0,
-			    'size' => 3,
-			    'maxlength' => 3,
+				'name' => 'how_many_buddies',
+				'value' => !empty($userSettings['how_many_buddies']) ? ($maxUsers && $userSettings['how_many_buddies'] >= $maxUsers ? $maxUsers : $userSettings['how_many_buddies']) : 0,
+				'size' => 3,
+				'maxlength' => 3,
 			]);
 		}
 
 		// Profile visitors.
 		$form->addCheckBox([
-		    'name' => 'visitors',
-		    'checked' => !empty($userSettings['visitors']) ? true : false
+			'name' => 'visitors',
+			'checked' => !empty($userSettings['visitors']) ? true : false
 		]);
 
 		// How many visitors are we gonna show?
 		$form->addText([
-		    'name' => 'how_many_visitors',
-		    'value' => !empty($userSettings['how_many_visitors']) ? ($maxUsers && $userSettings['how_many_visitors'] >= $maxUsers ? $maxUsers : $userSettings['how_many_visitors']) : 0,
-		    'size' => 3,
-		    'maxlength' => 3,
+			'name' => 'how_many_visitors',
+			'value' => !empty($userSettings['how_many_visitors']) ? ($maxUsers && $userSettings['how_many_visitors'] >= $maxUsers ? $maxUsers : $userSettings['how_many_visitors']) : 0,
+			'size' => 3,
+			'maxlength' => 3,
 		]);
 
 		// Clean visitors log
 		$form->addHTML([
-		    'name' => 'clean_visitors',
-		    'html' => $this['tools']->parser('<a href="{href}" class="clean_log">' . $this['tools']->text('user_settings_clean_visitors') . '</a>', [
-		        'href' => $this['tools']->scriptUrl . '?action=breezeajax;sa=cleanlog;log=visitors;u=' . $context['member']['id'] . ';rf=profile',
-		    ])
+			'name' => 'clean_visitors',
+			'html' => $this['tools']->parser('<a href="{href}" class="clean_log">' . $this['tools']->text('user_settings_clean_visitors') . '</a>', [
+				'href' => $this['tools']->scriptUrl . '?action=breezeajax;sa=cleanlog;log=visitors;u=' . $context['member']['id'] . ';rf=profile',
+			])
 		]);
 
 		// About me textarea.
 		$form->addTextArea([
-		    'name' => 'aboutMe',
-		    'value' => !empty($userSettings['aboutMe']) ? $userSettings['aboutMe'] : '',
-		    'size' => ['rows' => 10, 'cols' => 50, 'maxLength' => $tools->setting('allowed_maxlength_aboutMe') ? $tools->setting('allowed_maxlength_aboutMe') : 1024]
+			'name' => 'aboutMe',
+			'value' => !empty($userSettings['aboutMe']) ? $userSettings['aboutMe'] : '',
+			'size' => ['rows' => 10, 'cols' => 50, 'maxLength' => $tools->setting('allowed_maxlength_aboutMe') ? $tools->setting('allowed_maxlength_aboutMe') : 1024]
 		]);
 
 		// Cover height.
 		if ($tools->enable('cover'))
 			$form->addText([
-			    'name' => 'cover_height',
-			    'value' => !empty($userSettings['cover_height']) ? $userSettings['cover_height'] : 0,
-			    'size' => 3,
-			    'maxlength' => 3,
+				'name' => 'cover_height',
+				'value' => !empty($userSettings['cover_height']) ? $userSettings['cover_height'] : 0,
+				'size' => 3,
+				'maxlength' => 3,
 			]);
 
 		$form->addButton(['name' => 'submit']);
@@ -614,11 +614,11 @@ class BreezeUser extends Breeze
 
 		// Group all these values into an array. Makes it easier to save the changes.
 		$form->setOptions([
-		    'name' => 'breezeSettings',
-		    'url' => $this['tools']->scriptUrl . '?action=breezeajax;sa=cover;rf=profile;u=' . $context['member']['id'] . ';area=' . (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings'),
-		    'character_set' => $context['character_set'],
-		    'title' => $context['page_title'],
-		    'desc' => $context['page_desc'],
+			'name' => 'breezeSettings',
+			'url' => $this['tools']->scriptUrl . '?action=breezeajax;sa=cover;rf=profile;u=' . $context['member']['id'] . ';area=' . (!empty($context['Breeze_redirect']) ? $context['Breeze_redirect'] : 'breezesettings'),
+			'character_set' => $context['character_set'],
+			'title' => $context['page_title'],
+			'desc' => $context['page_desc'],
 		]);
 
 		// Session stuff.
@@ -627,11 +627,11 @@ class BreezeUser extends Breeze
 		// Remove a cover image.
 		if (!empty($userSettings['cover']))
 			$form->addHTML([
-			    'name' => 'cover_delete',
-			    'html' => $this['tools']->parser('<a href="{href}" class="cover_delete you_sure">{text}</a>', [
-			        'text' => $this['tools']->text('user_settings_cover_delete'),
-			        'href' => $this['tools']->scriptUrl . '?action=breezeajax;sa=coverdelete;u=' . $context['member']['id'] . ';rf=profile',
-			    ]) . '<br /><img src="' . $this['tools']->scriptUrl . '?action=breezecover;u=' . $context['member']['id'] . ';thumb=1" class ="current_cover" />'
+				'name' => 'cover_delete',
+				'html' => $this['tools']->parser('<a href="{href}" class="cover_delete you_sure">{text}</a>', [
+					'text' => $this['tools']->text('user_settings_cover_delete'),
+					'href' => $this['tools']->scriptUrl . '?action=breezeajax;sa=coverdelete;u=' . $context['member']['id'] . ';rf=profile',
+				]) . '<br /><img src="' . $this['tools']->scriptUrl . '?action=breezecover;u=' . $context['member']['id'] . ';thumb=1" class ="current_cover" />'
 			]);
 
 		// Prepare some image max values.
@@ -644,17 +644,17 @@ class BreezeUser extends Breeze
 
 		// Cover upload option.
 		$form->addHTML([
-		    'fullDesc' => $this['tools']->parser(
-		        $this['tools']->text('user_settings_cover_select_sub'),
-		        [
-		            'fileTypes' => $acceptedFiles,
-		            'width' => $maxFileWidth,
-		            'height' => $maxFileHeight,
-		            'size' => $maxFileSize,
-		        ]
-		    ),
-		    'name' => 'cover_select',
-		    'html' => '
+			'fullDesc' => $this['tools']->parser(
+				$this['tools']->text('user_settings_cover_select_sub'),
+				[
+					'fileTypes' => $acceptedFiles,
+					'width' => $maxFileWidth,
+					'height' => $maxFileHeight,
+					'size' => $maxFileSize,
+				]
+			),
+			'name' => 'cover_select',
+			'html' => '
 	<div id="coverUpload" class="descbox">
 		<h5>' . $this['tools']->text('cu_dictDefaultMessage') . '</h5>
 			<a class="button_submit fileinput-button">' . $this['tools']->text('cu_add') . '</a>
@@ -707,16 +707,16 @@ class BreezeUser extends Breeze
 		dictInvalidFileType: ' . (JavaScriptEscape($this['tools']->text('cu_dictInvalidFileType'))) . ',
 		dictFallbackMessage: ' . (JavaScriptEscape($this['tools']->text('cu_dictFallbackMessage'))) . ',
 		maxWidthMessage: ' . JavaScriptEscape($this['tools']->parser(
-		    $this['tools']->text('cu_max_width'),
-		    [
-		        'width' => $maxFileWidth,
-		    ]
+			$this['tools']->text('cu_max_width'),
+			[
+				'width' => $maxFileWidth,
+			]
 		)) . ',
 		maxHeightMessage: ' . JavaScriptEscape($this['tools']->parser(
-		    $this['tools']->text('cu_max_height'),
-		    [
-		        'height' => $maxFileHeight,
-		    ]
+			$this['tools']->text('cu_max_height'),
+			[
+				'height' => $maxFileHeight,
+			]
 		)) . ',
 	};', false);
 	}
@@ -754,9 +754,9 @@ class BreezeUser extends Breeze
 			{
 				// Build the array
 				$views[$user_info['id']] = [
-				    'user' => $user_info['id'],
-				    'last_view' => time(),
-				    'views' => 1,
+					'user' => $user_info['id'],
+					'last_view' => time(),
+					'views' => 1,
 				];
 
 				// Insert the data
@@ -783,9 +783,9 @@ class BreezeUser extends Breeze
 			// First time huh? I'll be gentle...
 			else
 				$views[$user_info['id']] = [
-				    'user' => $user_info['id'],
-				    'last_view' => time(),
-				    'views' => 1,
+					'user' => $user_info['id'],
+					'last_view' => time(),
+					'views' => 1,
 				];
 
 			// Either way, update the table.

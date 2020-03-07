@@ -17,7 +17,7 @@ use Breeze\Repository\Like\Comment as LikeCommentRepository;
 use Breeze\Repository\Like\Status as LikeStatusRepository;
 use Breeze\Service\MoodService;
 use Breeze\Service\Permissions;
-use Breeze\Service\User as UserService;
+use Breeze\Service\UserService;
 use Breeze\Traits\TextTrait;
 use League\Container\Container as Container;
 
@@ -78,9 +78,9 @@ class Breeze
 
 		if (!empty($menu_buttons['profile']['sub_buttons']['summary']))
 			$menu_buttons['profile']['sub_buttons']['summary'] = [
-			    'title' => $this->getText('summary'),
-			    'href' => $scriptUrl . '?action=profile;area=static',
-			    'show' => true,
+				'title' => $this->getText('summary'),
+				'href' => $scriptUrl . '?action=profile;area=static',
+				'show' => true,
 			];
 
 		$menuReference = 'home';
@@ -91,30 +91,30 @@ class Breeze
 				break;
 
 		$menu_buttons = array_merge(
-		    array_slice($menu_buttons, 0, $counter),
-		    ['wall' => [
-		        'title' => $this->getText('general_wall'),
-		        'icon' => 'smiley',
-		        'href' => $scriptUrl . '?action=wall',
-		        'show' => ($this->enable('master') &&
+			array_slice($menu_buttons, 0, $counter),
+			['wall' => [
+				'title' => $this->getText('general_wall'),
+				'icon' => 'smiley',
+				'href' => $scriptUrl . '?action=wall',
+				'show' => ($this->enable('master') &&
 					!$currentUserInfo['is_guest'] &&
 					!empty($currentUserSettings['general_wall'])),
-		        'sub_buttons' => [
-		            'noti' => [
-		                'title' => $this->getText('user_notisettings_name'),
-		                'href' => $scriptUrl . '?action=profile;area=alerts;sa=edit;u=' . $currentUserInfo['id'],
-		                'show' => ($this->enable('master') && !$currentUserInfo['is_guest']),
-		                'sub_buttons' => [],
-		            ],
-		            'admin' => [
-		                'title' => $this->getText('admin'),
-		                'href' => $scriptUrl . '?action=admin;area=breezeadmin',
-		                'show' => ($this->enable('master') && $currentUserInfo['is_admin']),
-		                'sub_buttons' => [],
-		            ],
-		        ],
-		    ]],
-		    array_slice($menu_buttons, $counter)
+				'sub_buttons' => [
+					'noti' => [
+						'title' => $this->getText('user_notisettings_name'),
+						'href' => $scriptUrl . '?action=profile;area=alerts;sa=edit;u=' . $currentUserInfo['id'],
+						'show' => ($this->enable('master') && !$currentUserInfo['is_guest']),
+						'sub_buttons' => [],
+					],
+					'admin' => [
+						'title' => $this->getText('admin'),
+						'href' => $scriptUrl . '?action=admin;area=breezeadmin',
+						'show' => ($this->enable('master') && $currentUserInfo['is_admin']),
+						'sub_buttons' => [],
+					],
+				],
+			]],
+			array_slice($menu_buttons, $counter)
 		);
 	}
 
@@ -160,11 +160,11 @@ class Breeze
 		$permissions = $this->container->get(Permissions::class);
 
 		return [
-		    'can_see' => $permissions->get('likes_view'),
-		    'can_like' => $permissions->get('likes_like'),
-		    'type' => $type,
-		    'flush_cache' => true,
-		    'callback' => $likes->update(),
+			'can_see' => $permissions->get('likes_view'),
+			'can_like' => $permissions->get('likes_like'),
+			'type' => $type,
+			'flush_cache' => true,
+			'callback' => $likes->update(),
 		];
 	}
 
@@ -194,16 +194,16 @@ class Breeze
         $this->setLanguage('BreezeAdmin');
 
         $adminMenu['config']['areas']['breezeAdmin'] = [
-            'label' => $this->getText('page_main'),
-            'function' => [$adminController, 'dispatch'],
-            'icon' => 'smiley',
-            'subsections' => [
-                'general' => [$this->getText('page_main')],
-                'settings' => [$this->getText('page_settings')],
-                'permissions' => [$this->getText('page_permissions')],
-                'cover' => [$this->getText('page_cover')],
-                'donate' => [$this->getText('page_donate')],
-            ],
+        	'label' => $this->getText('page_main'),
+        	'function' => [$adminController, 'dispatch'],
+        	'icon' => 'smiley',
+        	'subsections' => [
+        		'general' => [$this->getText('page_main')],
+        		'settings' => [$this->getText('page_settings')],
+        		'permissions' => [$this->getText('page_permissions')],
+        		'cover' => [$this->getText('page_cover')],
+        		'donate' => [$this->getText('page_donate')],
+        	],
         ];
 
         if ($this->enable('mood'))
@@ -216,53 +216,53 @@ class Breeze
 	public static function credits(): array
 	{
 		return [
-		    'dev' => [
-		        'name' => 'Developer(s)',
-		        'users' => [
-		            'suki' => [
-		                'name' => 'Jessica "Suki" Gonz&aacute;lez',
-		                'site' => '//missallsunday.com',
-		            ],
-		        ],
-		    ],
-		    'scripts' => [
-		        'name' => 'Third Party Scripts',
-		        'users' => [
-		            'jQuery' => [
-		                'name' => 'jQuery',
-		                'site' => 'http://jquery.com/',
-		            ],
-		            'noty' => [
-		                'name' => 'noty jquery plugin',
-		                'site' => 'http://needim.github.com/noty/',
-		            ],
-		            'moment' => [
-		                'name' => 'moment.js',
-		                'site' => 'http://momentjs.com/',
-		            ],
-		            'livestamp' => [
-		                'name' => 'Livestamp.js',
-		                'site' => 'http://mattbradley.github.io/livestampjs/',
-		            ],
-		            'fileUpload' => [
-		                'name' => 'jQuery File Upload Plugin',
-		                'site' => 'https://github.com/blueimp/jQuery-File-Upload',
-		            ],
-		        ],
-		    ],
-		    'images' => [
-		        'name' => 'Icons',
-		        'users' => [
-		            'metro' => [
-		                'name' => 'Font Awesome',
-		                'site' => 'http://fortawesome.github.io/Font-Awesome/',
-		            ],
-		            'skype' => [
-		                'name' => 'skype icons',
-		                'site' => 'http://blogs.skype.com/2006/09/01/icons-and-strings',
-		            ],
-		        ],
-		    ],
+			'dev' => [
+				'name' => 'Developer(s)',
+				'users' => [
+					'suki' => [
+						'name' => 'Jessica "Suki" Gonz&aacute;lez',
+						'site' => '//missallsunday.com',
+					],
+				],
+			],
+			'scripts' => [
+				'name' => 'Third Party Scripts',
+				'users' => [
+					'jQuery' => [
+						'name' => 'jQuery',
+						'site' => 'http://jquery.com/',
+					],
+					'noty' => [
+						'name' => 'noty jquery plugin',
+						'site' => 'http://needim.github.com/noty/',
+					],
+					'moment' => [
+						'name' => 'moment.js',
+						'site' => 'http://momentjs.com/',
+					],
+					'livestamp' => [
+						'name' => 'Livestamp.js',
+						'site' => 'http://mattbradley.github.io/livestampjs/',
+					],
+					'fileUpload' => [
+						'name' => 'jQuery File Upload Plugin',
+						'site' => 'https://github.com/blueimp/jQuery-File-Upload',
+					],
+				],
+			],
+			'images' => [
+				'name' => 'Icons',
+				'users' => [
+					'metro' => [
+						'name' => 'Font Awesome',
+						'site' => 'http://fortawesome.github.io/Font-Awesome/',
+					],
+					'skype' => [
+						'name' => 'skype icons',
+						'site' => 'http://blogs.skype.com/2006/09/01/icons-and-strings',
+					],
+				],
+			],
 		];
 	}
 }

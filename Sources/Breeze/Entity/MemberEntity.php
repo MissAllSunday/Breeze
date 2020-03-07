@@ -18,12 +18,12 @@ class MemberEntity extends BaseEntity
 	public static function getColumns(): array
 	{
 		return [
-		    self::COLUMN_ID,
-		    self::COLUMN_MEMBER_NAME,
-		    self::COLUMN_REAL_NAME,
-		    self::COLUMN_PROFILE_VIEWS,
-		    self::COLUMN_IGNORE_LIST,
-		    self::COLUMN_BUDDY_LIST
+			self::COLUMN_ID,
+			self::COLUMN_MEMBER_NAME,
+			self::COLUMN_REAL_NAME,
+			self::COLUMN_PROFILE_VIEWS,
+			self::COLUMN_IGNORE_LIST,
+			self::COLUMN_BUDDY_LIST
 		];
 
 	}

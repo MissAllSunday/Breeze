@@ -45,6 +45,8 @@ return PhpCsFixer\Config::create()
         'native_constant_invocation' => false,
         'method_argument_space' => ['ensure_fully_multiline' => true],
     ])
+    ->setIndent("\t")
+    ->setLineEnding("\n")
 	->setFinder($finder)
     ->setUsingCache(true)
     ->setRiskyAllowed(true);

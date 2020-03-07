@@ -12,10 +12,10 @@ class Validate extends BaseService
 		$user_info = $this->global('user_info');
 
 		$perm = [
-		    'edit' => false,
-		    'delete' => '',
-		    'post' => false,
-		    'postComments' => false,
+			'edit' => false,
+			'delete' => '',
+			'post' => false,
+			'postComments' => false,
 		];
 
 		// NO! you don't have permission to do nothing...

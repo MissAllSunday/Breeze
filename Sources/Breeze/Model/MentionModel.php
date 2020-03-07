@@ -15,8 +15,8 @@ class MentionModel extends BaseModel
 		require_once($this->_app['tools']->sourceDir . '/Subs-Member.php');
 
 		$mention = [
-		    'name' => '',
-		    'id' => ''
+			'name' => '',
+			'id' => ''
 		];
 
 		if (empty($match))
@@ -34,22 +34,22 @@ class MentionModel extends BaseModel
 			return $mention;
 
 		$result = $this->db['db_query'](
-		    '',
-		    'SELECT ' . implode(', ', MemberEntity::getColumns()) . '
+			'',
+			'SELECT ' . implode(', ', MemberEntity::getColumns()) . '
 			FROM {db_prefix}' . $this->getTableName() . '
 			WHERE ' . MemberEntity::COLUMN_ID . ' IN({array_int:allowedMembers})
 				AND ' . MemberEntity::COLUMN_MEMBER_NAME . ' LIKE {string:match} 
 				OR ' . MemberEntity::COLUMN_REAL_NAME . ' LIKE {string:match}',
-		    [
-		        'match' => $match . '%',
-		        'allowedMembers' => array_map('intval', $allowedMembers)
-		    ]
+			[
+				'match' => $match . '%',
+				'allowedMembers' => array_map('intval', $allowedMembers)
+			]
 		);
 
 		while ($row = $this->db->fetchAssoc($result))
 			$mention[] = [
-			    'name' => $row[MemberEntity::COLUMN_MEMBER_NAME],
-			    'id' => (int) $row[MemberEntity::COLUMN_ID],
+				'name' => $row[MemberEntity::COLUMN_MEMBER_NAME],
+				'id' => (int) $row[MemberEntity::COLUMN_ID],
 			];
 
 		$this->db->freeResult($result);

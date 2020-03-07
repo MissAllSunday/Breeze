@@ -33,16 +33,16 @@ final class TextTest extends TestCase
 	public function getSmfProvider(): array
 	{
 		return [
-		    'text exists' =>
-		    [
-		        'textKeyName' => 'time_year',
-		        'expected' => 'year'
-		    ],
-		    'text doesnt exists' =>
-		    [
-		        'textKeyName' => 'nope!',
-		        'expected' => ''
-		    ]
+			'text exists' =>
+			[
+				'textKeyName' => 'time_year',
+				'expected' => 'year'
+			],
+			'text doesnt exists' =>
+			[
+				'textKeyName' => 'nope!',
+				'expected' => ''
+			]
 		];
 	}
 
@@ -59,16 +59,16 @@ final class TextTest extends TestCase
 	public function getTextProvider(): array
 	{
 		return [
-		    'text exists' =>
-		    [
-		        'textKeyName' => 'lol',
-		        'expected' => 'lol'
-		    ],
-		    'text doesnt exists' =>
-		    [
-		        'textKeyName' => 'nope!',
-		        'expected' => ''
-		    ]
+			'text exists' =>
+			[
+				'textKeyName' => 'lol',
+				'expected' => 'lol'
+			],
+			'text doesnt exists' =>
+			[
+				'textKeyName' => 'nope!',
+				'expected' => ''
+			]
 		];
 	}
 
@@ -85,33 +85,33 @@ final class TextTest extends TestCase
 	public function parserTextProvider(): array
 	{
 		return [
-		    'empty text' =>
-		    [
-		        'textToParse' => '',
-		        'replacements' => [],
-		        'expected' => ''
-		    ],
-		    'no replacement' =>
-		    [
-		        'textToParse' => 'Non nobis solum',
-		        'replacements' => [],
-		        'expected' => 'Non nobis solum'
-		    ],
-		    'normal text' =>
-		    [
-		        'textToParse' => 'Hello {general_kenobi}',
-		        'replacements' => ['general_kenobi' => 'there!'],
-		        'expected' => 'Hello there!'
-		    ],
-		    'href text' =>
-		    [
-		        'textToParse' => '<a href="{href}">{zim}</a>',
-		        'replacements' => [
-		            'href' => 'https://www.youtube.com/watch?v=waEC-8GFTP4',
-		            'zim' => 'Ain\'t Nobody Got Time For That'
-		        ],
-		        'expected' => '<a href="https://www.youtube.com/watch?v=waEC-8GFTP4;foo=baz">Ain\'t Nobody Got Time For That</a>'
-		    ],
+			'empty text' =>
+			[
+				'textToParse' => '',
+				'replacements' => [],
+				'expected' => ''
+			],
+			'no replacement' =>
+			[
+				'textToParse' => 'Non nobis solum',
+				'replacements' => [],
+				'expected' => 'Non nobis solum'
+			],
+			'normal text' =>
+			[
+				'textToParse' => 'Hello {general_kenobi}',
+				'replacements' => ['general_kenobi' => 'there!'],
+				'expected' => 'Hello there!'
+			],
+			'href text' =>
+			[
+				'textToParse' => '<a href="{href}">{zim}</a>',
+				'replacements' => [
+					'href' => 'https://www.youtube.com/watch?v=waEC-8GFTP4',
+					'zim' => 'Ain\'t Nobody Got Time For That'
+				],
+				'expected' => '<a href="https://www.youtube.com/watch?v=waEC-8GFTP4;foo=baz">Ain\'t Nobody Got Time For That</a>'
+			],
 		];
 	}
 
@@ -130,36 +130,36 @@ final class TextTest extends TestCase
 		$dirtyString = 'QWE,"#$5,#$%V,B$%B&3,666';
 
 		return [
-		    'alphanumeric' =>
-		    [
-		        'string' => $dirtyString,
-		        'type' => 'alphanumeric',
-		        'expected' => 'QWE,5,V,BB3,666'
-		    ],
-		    'alpha' =>
-		    [
-		        'string' => $dirtyString,
-		        'type' => 'alpha',
-		        'expected' => 'QWE,V,BB'
-		    ],
-		    'numeric' =>
-		    [
-		        'string' => $dirtyString,
-		        'type' => 'numeric',
-		        'expected' => '5,3,666'
-		    ],
-		    'empty' =>
-		    [
-		        'string' => '',
-		        'type' => '',
-		        'expected' => ''
-		    ],
-		    'no type' =>
-		    [
-		        'string' => $dirtyString,
-		        'type' => '',
-		        'expected' => 'QWE,5,V,BB3,666'
-		    ],
+			'alphanumeric' =>
+			[
+				'string' => $dirtyString,
+				'type' => 'alphanumeric',
+				'expected' => 'QWE,5,V,BB3,666'
+			],
+			'alpha' =>
+			[
+				'string' => $dirtyString,
+				'type' => 'alpha',
+				'expected' => 'QWE,V,BB'
+			],
+			'numeric' =>
+			[
+				'string' => $dirtyString,
+				'type' => 'numeric',
+				'expected' => '5,3,666'
+			],
+			'empty' =>
+			[
+				'string' => '',
+				'type' => '',
+				'expected' => ''
+			],
+			'no type' =>
+			[
+				'string' => $dirtyString,
+				'type' => '',
+				'expected' => 'QWE,5,V,BB3,666'
+			],
 		];
 	}
 
@@ -184,18 +184,18 @@ final class TextTest extends TestCase
 	public function formatBytesProvider(): array
 	{
 		return [
-		    'happy path' =>
-		    [
-		        'bytes' => 13516800,
-		        'showUnit' => true,
-		        'expected' => '12.8906 MB'
-		    ],
-		    'no unit' =>
-		    [
-		        'bytes' => 666666666666,
-		        'showUnits' => false,
-		        'expected' =>'620.8817'
-		    ],
+			'happy path' =>
+			[
+				'bytes' => 13516800,
+				'showUnit' => true,
+				'expected' => '12.8906 MB'
+			],
+			'no unit' =>
+			[
+				'bytes' => 666666666666,
+				'showUnits' => false,
+				'expected' =>'620.8817'
+			],
 		];
 	}
 
@@ -203,11 +203,11 @@ final class TextTest extends TestCase
 	 * @dataProvider truncateTextProvider
 	 */
 	public function testTruncateText(
-	    string $stringToTruncate,
-	    int $limit,
-	    string $break,
-	    string $pad,
-	    string $expected
+		string $stringToTruncate,
+		int $limit,
+		string $break,
+		string $pad,
+		string $expected
 	): void
 	{
 		$truncatedString = $this->textTrait->truncateText($stringToTruncate, $limit, $break, $pad);
@@ -218,38 +218,38 @@ final class TextTest extends TestCase
 	public function truncateTextProvider(): array
 	{
 		return [
-		    'happy path' =>
-		    [
-		        'stringToTruncate' => 'Contritium praecedit superbia',
-		        'limit' => 8,
-		        'break' => ' ',
-		        'pad' => '...',
-		        'expected' => 'Contritium...'
-		    ],
-		    'smaller than limit' =>
-		    [
-		        'stringToTruncate' => 'Fidite Nemini',
-		        'limit' => 666,
-		        'break' => '',
-		        'pad' => '',
-		        'expected' => 'Fidite Nemini'
-		    ],
-		    'different pad' =>
-		    [
-		        'stringToTruncate' => 'Mendacem memorem esse oportet',
-		        'limit' => 12,
-		        'break' => ' ',
-		        'pad' => '---',
-		        'expected' => 'Mendacem memorem---'
-		    ],
-		    'no string' =>
-		    [
-		        'stringToTruncate' => '',
-		        'limit' => 0,
-		        'break' => '',
-		        'pad' => '',
-		        'expected' => ''
-		    ],
+			'happy path' =>
+			[
+				'stringToTruncate' => 'Contritium praecedit superbia',
+				'limit' => 8,
+				'break' => ' ',
+				'pad' => '...',
+				'expected' => 'Contritium...'
+			],
+			'smaller than limit' =>
+			[
+				'stringToTruncate' => 'Fidite Nemini',
+				'limit' => 666,
+				'break' => '',
+				'pad' => '',
+				'expected' => 'Fidite Nemini'
+			],
+			'different pad' =>
+			[
+				'stringToTruncate' => 'Mendacem memorem esse oportet',
+				'limit' => 12,
+				'break' => ' ',
+				'pad' => '---',
+				'expected' => 'Mendacem memorem---'
+			],
+			'no string' =>
+			[
+				'stringToTruncate' => '',
+				'limit' => 0,
+				'break' => '',
+				'pad' => '',
+				'expected' => ''
+			],
 		];
 	}
 
@@ -266,26 +266,26 @@ final class TextTest extends TestCase
 	public function timeElapsedProvider(): array
 	{
 		return [
-		    'just now' =>
-		    [
-		        'timeInSeconds' => time(),
-		        'expected' => 'just now'
-		    ],
-		    'years ago' =>
-		    [
-		        'timeInSeconds' => time() - 60489000,
-		        'expected' => '2 years ago'
-		    ],
-		    'hours' =>
-		    [
-		        'timeInSeconds' => time() - 82800,
-		        'expected' => '23 hours ago'
-		    ],
-		    'minute' =>
-		    [
-		        'timeInSeconds' => time() - 62,
-		        'expected' => '1 minute ago'
-		    ],
+			'just now' =>
+			[
+				'timeInSeconds' => time(),
+				'expected' => 'just now'
+			],
+			'years ago' =>
+			[
+				'timeInSeconds' => time() - 60489000,
+				'expected' => '2 years ago'
+			],
+			'hours' =>
+			[
+				'timeInSeconds' => time() - 82800,
+				'expected' => '23 hours ago'
+			],
+			'minute' =>
+			[
+				'timeInSeconds' => time() - 62,
+				'expected' => '1 minute ago'
+			],
 		];
 	}
 }

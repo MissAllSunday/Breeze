@@ -39,9 +39,9 @@ class Permissions extends BaseService
 
 		foreach (self::getAll() as $permissionName)
 			$permissionList['membergroup']['breeze_' . $permissionName] = [
-			    false,
-			    'breeze_per_classic',
-			    'breeze_per_simple'];
+				false,
+				'breeze_per_classic',
+				'breeze_per_simple'];
 	}
 
 	public function get(string $permissionName): bool
@@ -52,16 +52,16 @@ class Permissions extends BaseService
 	public static function getAllNames(): array
 	{
 		return [
-		    self::DELETE_COMMENTS,
-		    self::DELETE_OWN_COMMENTS,
-		    self::DELETE_OWN_PROFILE_COMMENTS,
-		    self::DELETE_STATUS,
-		    self::DELETE_OWN_STATUS,
-		    self::DELETE_OWN_PROFILE_STATUS,
-		    self::POST_STATUS,
-		    self::POST_COMMENTS,
-		    self::USE_COVER,
-		    self::USE_MOOD,
+			self::DELETE_COMMENTS,
+			self::DELETE_OWN_COMMENTS,
+			self::DELETE_OWN_PROFILE_COMMENTS,
+			self::DELETE_STATUS,
+			self::DELETE_OWN_STATUS,
+			self::DELETE_OWN_PROFILE_STATUS,
+			self::POST_STATUS,
+			self::POST_COMMENTS,
+			self::USE_COVER,
+			self::USE_MOOD,
 		];
 	}
 }

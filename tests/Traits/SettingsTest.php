@@ -30,24 +30,24 @@ final class SettingsTest extends TestCase
 	public function getSettingProvider(): array
 	{
 		return [
-		    'string exists' =>
-		    [
-		        'settingName' => 'someSetting',
-		        'fallback' => false,
-		        'expected' => 666
-		    ],
-		    'use fallback' =>
-		    [
-		        'settingName' => 'nope',
-		        'fallback' => 'Luffy',
-		        'expected' => 'Luffy'
-		    ],
-		    'empty setting name' =>
-		    [
-		        'settingName' => '',
-		        'fallback' => 'Nami',
-		        'expected' => 'Nami'
-		    ],
+			'string exists' =>
+			[
+				'settingName' => 'someSetting',
+				'fallback' => false,
+				'expected' => 666
+			],
+			'use fallback' =>
+			[
+				'settingName' => 'nope',
+				'fallback' => 'Luffy',
+				'expected' => 'Luffy'
+			],
+			'empty setting name' =>
+			[
+				'settingName' => '',
+				'fallback' => 'Nami',
+				'expected' => 'Nami'
+			],
 		];
 	}
 
@@ -65,16 +65,16 @@ final class SettingsTest extends TestCase
 	public function enableProvider(): array
 	{
 		return [
-		    'setting enable' =>
-		    [
-		        'settingName' => 'master',
-		        'expected' => true
-		    ],
-		    'setting disabled' =>
-		    [
-		        'settingName' => 'time_machine',
-		        'expected' => false
-		    ],
+			'setting enable' =>
+			[
+				'settingName' => 'master',
+				'expected' => true
+			],
+			'setting disabled' =>
+			[
+				'settingName' => 'time_machine',
+				'expected' => false
+			],
 		];
 	}
 
@@ -91,24 +91,24 @@ final class SettingsTest extends TestCase
 	public function modSettingProvider(): array
 	{
 		return [
-		    'modSetting exists' =>
-		    [
-		        'settingName' => 'CompressedOutput',
-		        'fallback' => false,
-		        'expected' => false
-		    ],
-		    'modSetting doesnt exists' =>
-		    [
-		        'settingName' => 'nope',
-		        'fallback' => 'Luffy',
-		        'expected' => 'Luffy'
-		    ],
-		    'empty modSetting' =>
-		    [
-		        'settingName' => '',
-		        'fallback' => 'Nami',
-		        'expected' => 'Nami'
-		    ],
+			'modSetting exists' =>
+			[
+				'settingName' => 'CompressedOutput',
+				'fallback' => false,
+				'expected' => false
+			],
+			'modSetting doesnt exists' =>
+			[
+				'settingName' => 'nope',
+				'fallback' => 'Luffy',
+				'expected' => 'Luffy'
+			],
+			'empty modSetting' =>
+			[
+				'settingName' => '',
+				'fallback' => 'Nami',
+				'expected' => 'Nami'
+			],
 		];
 	}
 
@@ -125,21 +125,21 @@ final class SettingsTest extends TestCase
 	public function isJsonProvider(): array
 	{
 		return [
-		    'is json' =>
-		    [
-		        'json' => json_encode(['Ace', 'Luffy', 'Sabo']),
-		        'expected' => true
-		    ],
-		    'is not json' =>
-		    [
-		        'json' => 'Im Jason!',
-		        'expected' => false
-		    ],
-		    'empty json' =>
-		    [
-		        'json' => json_encode([]),
-		        'expected' => true
-		    ],
+			'is json' =>
+			[
+				'json' => json_encode(['Ace', 'Luffy', 'Sabo']),
+				'expected' => true
+			],
+			'is not json' =>
+			[
+				'json' => 'Im Jason!',
+				'expected' => false
+			],
+			'empty json' =>
+			[
+				'json' => json_encode([]),
+				'expected' => true
+			],
 		];
 	}
 
@@ -156,19 +156,19 @@ final class SettingsTest extends TestCase
 	public function globalProvider(): array
 	{
 		return [
-		    'global exists' =>
-		    [
-		        'globalName' => 'context',
-		        'expected' => [
-		            'session_var' => 'foo',
-		            'session_id' => 'baz',
-		        ]
-		    ],
-		    'global doesnt exists' =>
-		    [
-		        'globalName' => 'Invader Zim',
-		        'expected' => false
-		    ]
+			'global exists' =>
+			[
+				'globalName' => 'context',
+				'expected' => [
+					'session_var' => 'foo',
+					'session_id' => 'baz',
+				]
+			],
+			'global doesnt exists' =>
+			[
+				'globalName' => 'Invader Zim',
+				'expected' => false
+			]
 		];
 	}
 }

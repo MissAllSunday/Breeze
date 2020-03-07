@@ -76,9 +76,9 @@ class BreezeAlerts
 	protected function status_owner($id)
 	{
 		return $this->_app['tools']->parser($this->_app['tools']->text('alert_status_owner'), [
-		    'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['owner'] .
-		    ';bid=' . $this->_alerts[$id]['content_id'],
-		    'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['owner'] .
+			';bid=' . $this->_alerts[$id]['content_id'],
+			'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
 		]);
 	}
 
@@ -86,40 +86,40 @@ class BreezeAlerts
 	{
 		// There are multiple variants of this same alert, however, all that logic was already decided elsewhere...
 		return $this->_app['tools']->parser($this->_app['tools']->text('alert_' . $this->_alerts[$id]['extra']['text']), [
-		    'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
-		    ';bid=' . $this->_alerts[$id]['extra']['status_id'] . ';cid=' . $this->_alerts[$id]['content_id'] . '#comment_id_' . $this->_alerts[$id]['content_id'],
-		    'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
-		    'status_poster' => $this->_usersData[$this->_alerts[$id]['extra']['status_owner']]['link'],
-		    'wall_owner' => $this->_usersData[$this->_alerts[$id]['extra']['wall_owner']]['link'],
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
+			';bid=' . $this->_alerts[$id]['extra']['status_id'] . ';cid=' . $this->_alerts[$id]['content_id'] . '#comment_id_' . $this->_alerts[$id]['content_id'],
+			'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
+			'status_poster' => $this->_usersData[$this->_alerts[$id]['extra']['status_owner']]['link'],
+			'wall_owner' => $this->_usersData[$this->_alerts[$id]['extra']['wall_owner']]['link'],
 		]);
 	}
 
 	protected function comment_profile_owner($id)
 	{
 		return $this->_app['tools']->parser($this->_app['tools']->text('alert_' . $this->_alerts[$id]['extra']['text']), [
-		    'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
-		    ';bid=' . $this->_alerts[$id]['extra']['status_id'] . ';cid=' . $this->_alerts[$id]['content_id'] . '#comment_id_' . $this->_alerts[$id]['content_id'],
-		    'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
-		    'status_poster' => $this->_usersData[$this->_alerts[$id]['extra']['status_owner']]['link'],
-		    'wall_owner' => $this->_usersData[$this->_alerts[$id]['extra']['wall_owner']]['link'],
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
+			';bid=' . $this->_alerts[$id]['extra']['status_id'] . ';cid=' . $this->_alerts[$id]['content_id'] . '#comment_id_' . $this->_alerts[$id]['content_id'],
+			'poster' => $this->_usersData[$this->_alerts[$id]['extra']['poster']]['link'],
+			'status_poster' => $this->_usersData[$this->_alerts[$id]['extra']['status_owner']]['link'],
+			'wall_owner' => $this->_usersData[$this->_alerts[$id]['extra']['wall_owner']]['link'],
 		]);
 	}
 
 	protected function like($id)
 	{
 		return $this->_app['tools']->parser($this->_app['tools']->text('alert_' . $this->_alerts[$id]['extra']['text']), [
-		    'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
-		    ';bid=' . $this->_alerts[$id]['extra']['status_id'] . (!empty($this->_alerts[$id]['extra']['comment_id']) ? (';cid=' . $this->_alerts[$id]['content_id'] . '#comment_id_' . $this->_alerts[$id]['content_id']) : ''),
-		    'poster' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link'],
-		    'type' => $this->_alerts[$id]['extra']['like_type'],
+			'href' => $this->_app['tools']->scriptUrl . '?action=wall;sa=single;u=' . $this->_alerts[$id]['extra']['wall_owner'] .
+			';bid=' . $this->_alerts[$id]['extra']['status_id'] . (!empty($this->_alerts[$id]['extra']['comment_id']) ? (';cid=' . $this->_alerts[$id]['content_id'] . '#comment_id_' . $this->_alerts[$id]['content_id']) : ''),
+			'poster' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link'],
+			'type' => $this->_alerts[$id]['extra']['like_type'],
 		]);
 	}
 
 	protected function mention($id)
 	{
 		$toParse = [
-		    'poster' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link'],
-		    'url' => $this->_app['tools']->scriptUrl . $this->_alerts[$id]['extra']['url'],
+			'poster' => $this->_usersData[$this->_alerts[$id]['sender_id']]['link'],
+			'url' => $this->_app['tools']->scriptUrl . $this->_alerts[$id]['extra']['url'],
 		];
 
 		// Is there a wall owner?
@@ -140,9 +140,9 @@ class BreezeAlerts
 
 		// Gotta do some magic.
 		return $this->_app['tools']->parser($this->_app['tools']->text('alert_buddy_' . $this->_alerts[$id]['extra']['text']), [
-		    'href' => $confirmLink,
-		    'sender' => $this->_usersData[$this->_alerts[$id]['extra']['sender']]['link'],
-		    'receiver' => $this->_usersData[$this->_alerts[$id]['extra']['receiver']]['link'],
+			'href' => $confirmLink,
+			'sender' => $this->_usersData[$this->_alerts[$id]['extra']['sender']]['link'],
+			'receiver' => $this->_usersData[$this->_alerts[$id]['extra']['receiver']]['link'],
 		]);
 	}
 }
