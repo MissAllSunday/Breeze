@@ -47,7 +47,7 @@ function template_breezeAdmin_general(): void
 							<br>
 							', $txt['Breeze_version'] , ':
 							<em>
-								', $context['Breeze']['general']['version'] , '
+								', $context['Breeze']['version'] , '
 							</em>';
 
 	// Some more stuff will be here... eventually
@@ -68,8 +68,8 @@ function template_breezeAdmin_general(): void
 					<p>', $txt['Breeze_page_credits_decs'] ,'</p>';
 
 	// Print the credits array
-	if (!empty($context['Breeze']['general']['credits']))
-		foreach ($context['Breeze']['general']['credits'] as $credit)
+	if (!empty($context['Breeze']['credits']))
+		foreach ($context['Breeze']['credits'] as $credit)
 		{
 			echo '
 					<dl>

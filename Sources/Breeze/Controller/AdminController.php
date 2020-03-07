@@ -37,8 +37,10 @@ class AdminController extends BaseController implements ControllerInterface
 	public function general(): void
 	{
 		$this->render(__FUNCTION__, [
-			'credits' => Breeze::credits(),
-			'version' => Breeze::VERSION,
+			Breeze::NAME => [
+				'credits' => Breeze::credits(),
+				'version' => Breeze::VERSION,
+			],
 		]);
 	}
 
@@ -48,7 +50,7 @@ class AdminController extends BaseController implements ControllerInterface
 
 		$this->render(__FUNCTION__, [
 			'post_url' => $scriptUrl . '?' . AdminService::POST_URL . __FUNCTION__ . ';save',
-		]);
+		], 'show_settings');
 
 		$this->service->configVars();
 
@@ -116,9 +118,9 @@ class AdminController extends BaseController implements ControllerInterface
 		}
 	}
 
-	public function render(string $subTemplate, array $params): void
+	public function render(string $subTemplate, array $params, string $smfTemplate = ''): void
 	{
-		$this->service->setSubActionContent($subTemplate, $params);
+		$this->service->setSubActionContent($subTemplate, $params, $smfTemplate);
 	}
 
 	public function getSubActions(): array

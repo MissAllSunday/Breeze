@@ -124,7 +124,7 @@ class AdminService extends BaseService implements ServiceInterface
 		saveDBSettings($this->configVars);
 	}
 
-	public function setSubActionContent(string $actionName, array $templateParams): void
+	public function setSubActionContent(string $actionName, array $templateParams, string $smfTemplate = ''): void
 	{
 		$context = $this->global('context');
 
@@ -134,10 +134,10 @@ class AdminService extends BaseService implements ServiceInterface
 		if (!isset($context[Breeze::NAME]))
 			$context[Breeze::NAME] = [];
 
-		$context[Breeze::NAME][$actionName] = $templateParams;
+		$context = array_merge($context, $templateParams);
 
 		$context['page_title'] = $this->getText('page_' . $actionName . '_title');
-		$context['sub_template'] = self::IDENTIFIER . '_' . $actionName;
+		$context['sub_template'] = !empty($smfTemplate) ? $smfTemplate : (self::IDENTIFIER . '_' . $actionName);
 		$context[$context['admin_menu_name']]['tab_data'] = [
 			'title' => $context['page_title'],
 			'description' => $this->getText('page_' . $actionName . '_description'),

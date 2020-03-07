@@ -199,7 +199,7 @@ class Breeze
 			'icon' => 'smiley',
 			'subsections' => [
 				'general' => [$this->getText('page_main')],
-				'settings' => [$this->getText('page_settings')],
+				'settings' => [$this->getText('page_settings_title')],
 				'permissions' => [$this->getText('page_permissions')],
 				'cover' => [$this->getText('page_cover')],
 				'donate' => [$this->getText('page_donate')],
