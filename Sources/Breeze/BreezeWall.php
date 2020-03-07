@@ -23,12 +23,12 @@ class BreezeWall
 
 	protected $_app;
 
-    /**
-     * BreezeAjax::__construct()
-     *
-     * Sets the needed properties, loads language and template files
-     * @param $app
-     */
+	/**
+	 * BreezeAjax::__construct()
+	 *
+	 * Sets the needed properties, loads language and template files
+	 * @param $app
+	 */
 	public function __construct(Breeze $app)
 	{
 		// Needed to show error strings
@@ -42,11 +42,11 @@ class BreezeWall
 		$this->_app = $app;
 	}
 
-    /**
-     * BreezeAjax::call()
-     *
-     * Master method, calls the appropriated methods depending on the specified subaction.
-     */
+	/**
+	 * BreezeAjax::call()
+	 *
+	 * Master method, calls the appropriated methods depending on the specified subaction.
+	 */
 	public function call(): void
 	{
 		global $context, $user_info, $modSettings;
@@ -127,11 +127,11 @@ class BreezeWall
 		unset($call);
 	}
 
-    /**
-     * BreezeAjax::generalWall()
-     *
-     * Shows the latest activity form your buddies.
-     */
+	/**
+	 * BreezeAjax::generalWall()
+	 *
+	 * Shows the latest activity form your buddies.
+	 */
 	public function generalWall(): void
 	{
 		global $context, $user_info;
@@ -217,11 +217,11 @@ class BreezeWall
 		}
 	}
 
-    /**
-     * BreezeAjax::singleStatus()
-     *
-     * Used for notifications mostly, shows a single status/comment and if appropriated, highlights a specific comment.
-     */
+	/**
+	 * BreezeAjax::singleStatus()
+	 *
+	 * Used for notifications mostly, shows a single status/comment and if appropriated, highlights a specific comment.
+	 */
 	function singleStatus(): void
 	{
 		global $context, $user_info;
@@ -257,12 +257,12 @@ class BreezeWall
 		document.getElementById(\'comment_id_' . $data->get('cid') . '\').className = "windowbg3";', true);
 	}
 
-    /**
-     * BreezeAjax::userDiv()
-     *
-     * Shows user information.
-     * @return bool
-     */
+	/**
+	 * BreezeAjax::userDiv()
+	 *
+	 * Shows user information.
+	 * @return bool
+	 */
 	function userDiv()
 	{
 		global $context, $memberContext, $db_show_debug, $user_info;

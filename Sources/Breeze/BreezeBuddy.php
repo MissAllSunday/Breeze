@@ -33,12 +33,12 @@ class BreezeBuddy
 
 	protected $_data = false;
 
-    /**
-     * BreezeBuddy::__construct()
-     *
-     * Sets all the needed vars, loads the language file.
-     * @param $app
-     */
+	/**
+	 * BreezeBuddy::__construct()
+	 *
+	 * Sets all the needed vars, loads the language file.
+	 * @param $app
+	 */
 	public function __construct(Breeze $app)
 	{
 		$this->_app = $app;

@@ -25,12 +25,12 @@ trait TextTrait
 		return !empty($txt[Breeze::PATTERN . $textKey]) ? $txt[Breeze::PATTERN . $textKey] : '';
 	}
 
-    public function getSmfText(string $textKey): string
-    {
-        $txt = $this->global('txt');
+	public function getSmfText(string $textKey): string
+	{
+		$txt = $this->global('txt');
 
-        return !empty($txt[$textKey]) ? $txt[$textKey] : '';
-    }
+		return !empty($txt[$textKey]) ? $txt[$textKey] : '';
+	}
 
 	public function parserText(string $text, array $replacements = []): string
 	{

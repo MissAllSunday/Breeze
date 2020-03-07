@@ -8,6 +8,7 @@ return PhpCsFixer\Config::create()
     ->setRules([
 		'@PHP71Migration:risky' => true,
 		'@PHPUnit60Migration:risky' => true,
+		'indentation_type' => true,
 		'array_indentation' => true,
 		'array_syntax' => ['syntax' => 'short'],
 		'blank_line_after_opening_tag' => true,

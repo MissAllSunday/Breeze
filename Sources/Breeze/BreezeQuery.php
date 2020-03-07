@@ -42,12 +42,12 @@ class BreezeQuery
 	 */
 	protected $_app;
 
-    /**
-     * BreezeQuery::__construct()
-     *
-     * Creates the needed properties.
-     * @param $app
-     */
+	/**
+	 * BreezeQuery::__construct()
+	 *
+	 * Creates the needed properties.
+	 * @param $app
+	 */
 	public function __construct(Breeze $app)
 	{
 		// Set everything
@@ -154,16 +154,16 @@ class BreezeQuery
 		return $dataResult;
 	}
 
-    /**
-     * BreezeQuery::killCache()
-     *
-     * Disclaimer: Killing in breeze world means replace the existing cache data with a null value so SMF generates a new cache...
-     * With the data provided, we need to clean the main cache entry, which is the per profile cache
-     * @param string $type the name of value(s) to be deleted
-     * @param $id
-     * @param bool $profile_owner
-     * @return bool
-     */
+	/**
+	 * BreezeQuery::killCache()
+	 *
+	 * Disclaimer: Killing in breeze world means replace the existing cache data with a null value so SMF generates a new cache...
+	 * With the data provided, we need to clean the main cache entry, which is the per profile cache
+	 * @param string $type the name of value(s) to be deleted
+	 * @param $id
+	 * @param bool $profile_owner
+	 * @return bool
+	 */
 	public function killCache($type, $id, $profile_owner = false)
 	{
 		global $smcFunc;
@@ -197,15 +197,15 @@ class BreezeQuery
 		// Clean any other cache too
 	}
 
-    /**
-     * BreezeQuery::getCount()
-     *
-     * Gets and return the number of rows from the data provided
-     * Only works for the status table.
-     * @param mixed $data either a single ID or an array of IDs to match the query against.
-     * @param string $column The column name to check the status from, needs to be a column that stores users IDs.
-     * @return int
-     */
+	/**
+	 * BreezeQuery::getCount()
+	 *
+	 * Gets and return the number of rows from the data provided
+	 * Only works for the status table.
+	 * @param mixed $data either a single ID or an array of IDs to match the query against.
+	 * @param string $column The column name to check the status from, needs to be a column that stores users IDs.
+	 * @return int
+	 */
 	protected function getCount($data, $column)
 	{
 		global $smcFunc;
@@ -274,16 +274,16 @@ class BreezeQuery
 		return !empty($return) ? $return : false;
 	}
 
-    /**
-     * BreezeQuery::getStatus()
-     *
-     * Get all status made by X users. no pagination, no other special code.
-     * @param bool $id the ID(s) of the user(s) to get the status from. If left empty the functon will load all available status.
-     * @param boolean $getComments Whether or not to include comments made on each status.
-     * @param int $limit How many status do you want to retrieve.
-     * @param string $sort Sorting for retrieving the data, by default is set to DESC (most recent)
-     * @return array An array containing all the status made by those users, two keys, data and users
-     */
+	/**
+	 * BreezeQuery::getStatus()
+	 *
+	 * Get all status made by X users. no pagination, no other special code.
+	 * @param bool $id the ID(s) of the user(s) to get the status from. If left empty the functon will load all available status.
+	 * @param boolean $getComments Whether or not to include comments made on each status.
+	 * @param int $limit How many status do you want to retrieve.
+	 * @param string $sort Sorting for retrieving the data, by default is set to DESC (most recent)
+	 * @return array An array containing all the status made by those users, two keys, data and users
+	 */
 	public function getStatus($id = false, $getComments = false, $limit = 5, $sort = 'status_id DESC')
 	{
 		global $smcFunc;
@@ -365,15 +365,15 @@ class BreezeQuery
 		return $return;
 	}
 
-    /**
-     * BreezeQuery::getStatusByProfile()
-     *
-     * Get all status made in X profile page. Uses a custom query per profile.
-     * @param int $id the ID of the user that owns the profile page, it does not matter who made that status as long as the status was made in X profile page.
-     * @param $maxIndex
-     * @param $start
-     * @return array An array containing all the status made in X profile page
-     */
+	/**
+	 * BreezeQuery::getStatusByProfile()
+	 *
+	 * Get all status made in X profile page. Uses a custom query per profile.
+	 * @param int $id the ID of the user that owns the profile page, it does not matter who made that status as long as the status was made in X profile page.
+	 * @param $maxIndex
+	 * @param $start
+	 * @return array An array containing all the status made in X profile page
+	 */
 	public function getStatusByProfile($id, $maxIndex, $start)
 	{
 		global $smcFunc;
@@ -550,15 +550,15 @@ class BreezeQuery
 		return $return;
 	}
 
-    /**
-     * BreezeQuery::getStatusByUser()
-     *
-     * Get all status made by X user, it does not matter on what profile page they were made.
-     * @param int|array $id the ID of the user(s) that you want to fetch the status from.
-     * @param int $maxIndex The maximum amount of status to fetch.
-     * @param $start
-     * @return array An array containing all the status made in X profile page
-     */
+	/**
+	 * BreezeQuery::getStatusByUser()
+	 *
+	 * Get all status made by X user, it does not matter on what profile page they were made.
+	 * @param int|array $id the ID of the user(s) that you want to fetch the status from.
+	 * @param int $maxIndex The maximum amount of status to fetch.
+	 * @param $start
+	 * @return array An array containing all the status made in X profile page
+	 */
 	public function getStatusByUser($id, $maxIndex, $start)
 	{
 		global $smcFunc;

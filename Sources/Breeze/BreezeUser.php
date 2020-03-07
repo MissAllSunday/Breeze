@@ -24,12 +24,12 @@ class BreezeUser extends Breeze
 		parent::__construct();
 	}
 
-    /**
-     * BreezeUser::wall()
-     *
-     * Main function, shows the wall, activity, buddies, visitors and any other possible info.
-     * @param $memID
-     */
+	/**
+	 * BreezeUser::wall()
+	 *
+	 * Main function, shows the wall, activity, buddies, visitors and any other possible info.
+	 * @param $memID
+	 */
 	function userWall($memID): void
 	{
 		global $txt, $context, $memberContext;
@@ -263,11 +263,11 @@ class BreezeUser extends Breeze
 			$tools->loadUserInfo(array_unique($usersToLoad));
 	}
 
-    /**
-     * BreezeUser::alerts()
-     *
-     * Creates alert settings and configuration pages.
-     */
+	/**
+	 * BreezeUser::alerts()
+	 *
+	 * Creates alert settings and configuration pages.
+	 */
 	function userAlerts(): void
 	{
 		global $context;
@@ -413,11 +413,11 @@ class BreezeUser extends Breeze
 		}
 	}
 
-    /**
-     * BreezeUser::settings()
-     *
-     * Creates a form for each user to configure their wall settings.
-     */
+	/**
+	 * BreezeUser::settings()
+	 *
+	 * Creates a form for each user to configure their wall settings.
+	 */
 	function userSettings(): void
 	{
 		global $context, $txt, $modSettings, $user_info;
@@ -580,11 +580,11 @@ class BreezeUser extends Breeze
 		$context['Breeze']['UserSettings']['Form'] = $form->display();
 	}
 
-    /**
-     * BreezeUser::coverSettings()
-     *
-     * Uploads an user image for their wall.
-     */
+	/**
+	 * BreezeUser::coverSettings()
+	 *
+	 * Uploads an user image for their wall.
+	 */
 	function userCoverSettings(): void
 	{
 		global $context, $memID, $txt, $user_info;
@@ -721,12 +721,12 @@ class BreezeUser extends Breeze
 	};', false);
 	}
 
-    /**
-     * BreezeUser::trackViews()
-     *
-     * Handles profile views, create or update views.
-     * @return bool
-     */
+	/**
+	 * BreezeUser::trackViews()
+	 *
+	 * Handles profile views, create or update views.
+	 * @return bool
+	 */
 	function trackViews()
 	{
 		global $user_info, $context;
@@ -801,11 +801,11 @@ class BreezeUser extends Breeze
 		return $views;
 	}
 
-    /**
-     * BreezeUser::checkPermissions
-     *
-     * Sets and checks different profile related permissions.
-     */
+	/**
+	 * BreezeUser::checkPermissions
+	 *
+	 * Sets and checks different profile related permissions.
+	 */
 	function checkPermissions(): void
 	{
 		global $context, $memberContext, $user_info;

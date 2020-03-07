@@ -9,14 +9,14 @@ class RequestService extends BaseService
 {
 	private $request;
 
-    public function __construct()
+	public function __construct()
 	{
 		$this->request = $_REQUEST;
-    }
+	}
 
 	public function get(string $variableName)
 	{
-	    return isset($this->request[$variableName]) ? $this->sanitize($this->request[$variableName]) : false;
+		return isset($this->request[$variableName]) ? $this->sanitize($this->request[$variableName]) : false;
 	}
 
 	public function sanitize($variable)

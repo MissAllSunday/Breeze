@@ -191,26 +191,26 @@ class Breeze
 		/** @var AdminController */
 		$adminController = $this->container->get(AdminController::class);
 
-        $this->setLanguage('BreezeAdmin');
+		$this->setLanguage('BreezeAdmin');
 
-        $adminMenu['config']['areas']['breezeAdmin'] = [
-        	'label' => $this->getText('page_main'),
-        	'function' => [$adminController, 'dispatch'],
-        	'icon' => 'smiley',
-        	'subsections' => [
-        		'general' => [$this->getText('page_main')],
-        		'settings' => [$this->getText('page_settings')],
-        		'permissions' => [$this->getText('page_permissions')],
-        		'cover' => [$this->getText('page_cover')],
-        		'donate' => [$this->getText('page_donate')],
-        	],
-        ];
+		$adminMenu['config']['areas']['breezeAdmin'] = [
+			'label' => $this->getText('page_main'),
+			'function' => [$adminController, 'dispatch'],
+			'icon' => 'smiley',
+			'subsections' => [
+				'general' => [$this->getText('page_main')],
+				'settings' => [$this->getText('page_settings')],
+				'permissions' => [$this->getText('page_permissions')],
+				'cover' => [$this->getText('page_cover')],
+				'donate' => [$this->getText('page_donate')],
+			],
+		];
 
-        if ($this->enable('mood'))
-        {
-            $admin_menu['config']['areas']['breezeAdmin']['subsections']['moodList'] = [$this->getText('page_mood')];
-            $admin_menu['config']['areas']['breezeAdmin']['subsections']['moodEdit'] = [$this->getText('page_mood_create')];
-        }
+		if ($this->enable('mood'))
+		{
+			$admin_menu['config']['areas']['breezeAdmin']['subsections']['moodList'] = [$this->getText('page_mood')];
+			$admin_menu['config']['areas']['breezeAdmin']['subsections']['moodEdit'] = [$this->getText('page_mood_create')];
+		}
 	}
 
 	public static function credits(): array
