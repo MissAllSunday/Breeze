@@ -22,11 +22,6 @@ class AdminController extends BaseController implements ControllerInterface
 		'moodEdit',
 	];
 
-	/**
-	 * @var AdminService
-	 */
-	protected $adminService;
-
 	public function dispatch(): void
 	{
 		$this->service->initSettingsPage($this->getSubActions());
@@ -52,13 +47,12 @@ class AdminController extends BaseController implements ControllerInterface
 			'post_url' => $scriptUrl . '?' . AdminService::POST_URL . __FUNCTION__ . ';save',
 		], 'show_settings');
 
-		$this->service->configVars();
+		$saving = $this->request->isSet('save');
 
-		if ($this->request->get('save'))
-		{
-			$this->service->saveConfigVars();
+		$this->service->configVars($saving);
+
+		if ($saving)
 			$this->service->redirect(AdminService::POST_URL . __FUNCTION__);
-		}
 	}
 
 	public function permissions(): void

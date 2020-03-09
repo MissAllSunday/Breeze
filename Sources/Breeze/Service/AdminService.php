@@ -11,7 +11,7 @@ use Breeze\Repository\RepositoryInterface;
 class AdminService extends BaseService implements ServiceInterface
 {
 	public const IDENTIFIER = 'BreezeAdmin';
-	public const POST_URL = 'action=admin;area=breezeadmin;sa=';
+	public const POST_URL = 'action=admin;area=breezeAdmin;sa=';
 
 	/**
 	 * @var array
@@ -69,19 +69,49 @@ class AdminService extends BaseService implements ServiceInterface
 		$this->setGlobal('context', $context);
 	}
 
-	public function configVars(): void
+	public function configVars(bool $save = false): void
 	{
 		$this->requireOnce('ManageServer');
 
 		$this->configVars = [
-			['title', Breeze::PATTERN . 'page_settings'],
-			['check', Breeze::PATTERN . 'master', 'subtext' => $this->getText('master_sub')],
-			['check', Breeze::PATTERN . 'force_enable', 'subtext' => $this->getText('force_enable_sub')],
-			['int', Breeze::PATTERN . 'allowed_max_num_users', 'size' => 3, 'subtext' => $this->getText('allowed_max_num_users_sub')],
-			['int', Breeze::PATTERN . 'allowed_maxlength_aboutMe', 'size' => 4, 'subtext' => $this->getText('allowed_maxlength_aboutMe_sub')],
-			['check', Breeze::PATTERN . 'mood', 'subtext' => $this->getText('mood_sub')],
-			['text', Breeze::PATTERN . 'mood_label', 'subtext' => $this->getText('mood_label_sub')],
-			['select', Breeze::PATTERN . 'mood_placement',
+			[
+				'title',
+				Breeze::PATTERN . 'page_settings_title'
+			],
+			[
+				'check',
+				Breeze::PATTERN . 'master',
+				'subtext' => $this->getText('master_sub')
+			],
+			[
+				'check', Breeze::PATTERN . 'force_enable',
+				'subtext' => $this->getText('force_enable_sub'),
+			],
+			[
+				'int',
+				Breeze::PATTERN . 'allowed_max_num_users',
+				'size' => 3,
+				'subtext' => $this->getText('allowed_max_num_users_sub'),
+			],
+			[
+				'int',
+				Breeze::PATTERN . 'allowed_maxlength_aboutMe',
+				'size' => 4,
+				'subtext' => $this->getText('allowed_maxlength_aboutMe_sub'),
+			],
+			[
+				'check',
+				Breeze::PATTERN . 'mood',
+				'subtext' => $this->getText('mood_sub'),
+			],
+			[
+				'text',
+				Breeze::PATTERN . 'mood_label',
+				'subtext' => $this->getText('mood_label_sub'),
+			],
+			[
+				'select',
+				Breeze::PATTERN . 'mood_placement',
 				[
 					$this->getSmfText('custom_profile_placement_standard'),
 					$this->getSmfText('custom_profile_placement_icons'),
@@ -94,9 +124,22 @@ class AdminService extends BaseService implements ServiceInterface
 				'subtext' => $this->getText('mood_placement_sub'),
 				'multiple' => false,
 			],
-			['int', Breeze::PATTERN . 'flood_messages', 'size' => 3, 'subtext' => $this->getText('flood_messages_sub')],
-			['int', Breeze::PATTERN . 'flood_minutes', 'size' => 3, 'subtext' => $this->getText('flood_minutes_sub')],
+			[
+				'int',
+				Breeze::PATTERN . 'flood_messages',
+				'size' => 3,
+				'subtext' => $this->getText('flood_messages_sub'),
+			],
+			[
+				'int',
+				Breeze::PATTERN . 'flood_minutes',
+				'size' => 3,
+				'subtext' => $this->getText('flood_minutes_sub')
+			],
 		];
+
+		if ($save)
+			$this->saveConfigVars();
 
 		prepareDBSettingContext($this->configVars);
 	}
@@ -126,10 +169,15 @@ class AdminService extends BaseService implements ServiceInterface
 
 	public function setSubActionContent(string $actionName, array $templateParams, string $smfTemplate = ''): void
 	{
-		$context = $this->global('context');
-
 		if (empty($actionName))
 			return;
+
+		$context = $this->global('context');
+		$scriptUrl = $this->global('scripturl');
+
+		$context['post_url'] =  $scriptUrl . '?' .
+			AdminService::POST_URL . $actionName . ';' .
+			$context['session_var'] . '=' . $context['session_id'] . ';save';
 
 		if (!isset($context[Breeze::NAME]))
 			$context[Breeze::NAME] = [];

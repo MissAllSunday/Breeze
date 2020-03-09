@@ -208,8 +208,12 @@ class Breeze
 
 		if ($this->enable('mood'))
 		{
-			$admin_menu['config']['areas']['breezeAdmin']['subsections']['moodList'] = [$this->getText('page_mood')];
-			$admin_menu['config']['areas']['breezeAdmin']['subsections']['moodEdit'] = [$this->getText('page_mood_create')];
+			$admin_menu['config']['areas']['breezeAdmin']['subsections']['moodList'] = [
+				$this->getText('page_mood')
+			];
+			$admin_menu['config']['areas']['breezeAdmin']['subsections']['moodEdit'] = [
+				$this->getText('page_mood_create')
+			];
 		}
 	}
 

@@ -19,6 +19,11 @@ class RequestService extends BaseService
 		return isset($this->request[$variableName]) ? $this->sanitize($this->request[$variableName]) : false;
 	}
 
+	public function isSet(string $variableName)
+	{
+		return isset($this->request[$variableName]);
+	}
+
 	public function sanitize($variable)
 	{
 		$smcFunc = $this->global('smcFunc');

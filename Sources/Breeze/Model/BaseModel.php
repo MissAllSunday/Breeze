@@ -13,7 +13,7 @@ abstract class BaseModel implements ModelInterface
 	 */
 	protected $dbClient;
 
-	public function __construct( $databaseClient)
+	public function __construct(ClientInterface $databaseClient)
 	{
 		$this->dbClient = $databaseClient;
 	}
