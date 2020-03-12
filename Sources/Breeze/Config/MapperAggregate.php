@@ -18,7 +18,9 @@ class MapperAggregate
 		foreach ($scannedMappers as $mapperFile)
 		{
 			$mapperFileInfo = pathinfo($mapperFile, PATHINFO_FILENAME);
-			$this->mappers[str_replace(self::MAPPER_KEY, '', $mapperFileInfo)] = include(self::MAPPERS_FOLDER . '/' . $mapperFile);
+			$mapperKey = str_replace(self::MAPPER_KEY, '', $mapperFileInfo);
+
+			$this->mappers[$mapperKey] = include(self::MAPPERS_FOLDER . '/' . $mapperFile);
 		}
 
 		return $this->mappers;

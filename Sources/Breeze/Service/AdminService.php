@@ -144,8 +144,10 @@ class AdminService extends BaseService implements ServiceInterface
 		prepareDBSettingContext($this->configVars);
 	}
 
-	public function permissionsConfigVars(): void
+	public function permissionsConfigVars(bool $save = false): void
 	{
+		$this->setLanguage(Breeze::NAME);
+
 		$this->configVars = [
 			['title', Breeze::PATTERN . 'page_permissions'],
 		];
@@ -157,6 +159,9 @@ class AdminService extends BaseService implements ServiceInterface
 				0,
 				$this->getText('permissionname_breeze_' . $permission)
 			];
+
+		if ($save)
+			$this->saveConfigVars();
 
 		prepareDBSettingContext($this->configVars);
 	}

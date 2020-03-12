@@ -41,11 +41,7 @@ class AdminController extends BaseController implements ControllerInterface
 
 	public function settings(): void
 	{
-		$scriptUrl = $this->service->global('scripturl');
-
-		$this->render(__FUNCTION__, [
-			'post_url' => $scriptUrl . '?' . AdminService::POST_URL . __FUNCTION__ . ';save',
-		], 'show_settings');
+		$this->render(__FUNCTION__, [], 'show_settings');
 
 		$saving = $this->request->isSet('save');
 
@@ -57,20 +53,15 @@ class AdminController extends BaseController implements ControllerInterface
 
 	public function permissions(): void
 	{
-		$scriptUrl = $this->service->global('scripturl');
 
-		$this->service->setSubActionContent(__FUNCTION__);
-		$this->render(__FUNCTION__, [
-			'post_url' => $scriptUrl . '?' . AdminService::POST_URL . __FUNCTION__ . ';save',
-		]);
+		$this->render(__FUNCTION__, [], 'show_settings');
 
-		$this->service->permissionsConfigVars();
+		$saving = $this->request->isSet('save');
 
-		if ($this->request->get('save'))
-		{
-			$this->service->saveConfigVars();
-			$this->service->redirect( AdminService::POST_URL . __FUNCTION__ );
-		}
+		$this->service->permissionsConfigVars($saving);
+
+		if ($saving)
+			$this->service->redirect(AdminService::POST_URL . __FUNCTION__);
 	}
 
 	public function moodList()
@@ -112,7 +103,7 @@ class AdminController extends BaseController implements ControllerInterface
 		}
 	}
 
-	public function render(string $subTemplate, array $params, string $smfTemplate = ''): void
+	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void
 	{
 		$this->service->setSubActionContent($subTemplate, $params, $smfTemplate);
 	}

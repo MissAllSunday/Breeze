@@ -3,31 +3,25 @@
 declare(strict_types=1);
 
 /**
- * Breeze.english
- *
- * @package Breeze mod
- * @version 1.1
- * @author Jessica Gonzalez <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2015, Jessica Gonzalez
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
 global $txt;
 
 // Public/General strings
-$txt['Breeze_general_wall'] = 'UserService';
+$txt['Breeze_general_wall'] = 'User';
 $txt['Breeze_general_wall_page'] = 'page';
 $txt['Breeze_general_summary'] = 'Summary';
 $txt['Breeze_load_more'] = 'Load more';
 $txt['Breeze_admin'] = 'Admin panel';
-$txt['Breeze_general_my_wall'] = 'My UserService';
-$txt['Breeze_general_my_wall_settings'] = 'My UserService General';
+$txt['Breeze_general_my_wall'] = 'My User';
+$txt['Breeze_general_my_wall_settings'] = 'My User General';
 $txt['Breeze_general_loading'] = 'Loading...';
 $txt['Breeze_general_like'] = 'Like';
 $txt['Breeze_general_delete'] = 'Delete';
 $txt['Breeze_general_upload'] = 'Upload';
 $txt['Breeze_general_cancel'] = 'Cancel';
-$txt['Breeze_general_posted_on'] = 'Posted on %s\'s UserService';
+$txt['Breeze_general_posted_on'] = 'Posted on %s\'s User';
 
 // Cover upload strings
 $txt['Breeze_cu_dictDefaultMessage'] = 'Drag and drop your files here';
@@ -40,9 +34,9 @@ $txt['Breeze_cu_max_width'] = 'Image exceeds maximum width, the max width value 
 $txt['Breeze_cu_max_height'] = 'Image exceeds maximum height, the max height value is {height}px';
 
 
-// UserService Individual General
-$txt['Breeze_profile'] = 'UserService General';
-$txt['Breeze_user_settings_name'] = 'UserService General';
+// User Individual General
+$txt['Breeze_profile'] = 'User General';
+$txt['Breeze_user_settings_name'] = 'User General';
 $txt['Breeze_user_settings_name_desc'] = 'Configure your wall and other general settings.';
 $txt['Breeze_user_buddysettings_name'] = 'Buddy Requests';
 $txt['Breeze_user_single_status'] = 'Single Status';
@@ -132,19 +126,24 @@ $txt['Breeze_time_month'] = 'month';
 $txt['Breeze_time_year'] = 'year';
 
 // Validate strings
-$txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to see this UserService.';
+$txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to see this use\'s wall.';
 $txt['permissiongroup_simple_breeze_per_simple'] = 'Breeze mod permissions';
 $txt['permissiongroup_breeze_per_classic'] = 'Breeze mod permissions';
-$txt['permissionname_breeze_canCover'] = 'Be able to upload an image as cover for their own wall <br /><span class="smalltext">  The master setting needs to be enable first.</span>';
-$txt['permissionname_breeze_canMood'] = 'Be able to set a mood<br /><span class="smalltext">  The master setting needs to be enable first.</span>';
-$txt['permissionname_breeze_deleteStatus'] = 'Delete all status on any wall<br /><span class="smalltext">  This overwrites any other delete permission the user might have. Deleting a status also deletes all comments associated with it.</span>';
-$txt['permissionname_breeze_deleteComments'] = 'Delete all comments on any wall<br /><span class="smalltext">  This overwrites ant other delete comment permission the user might have.</span>';
-$txt['permissionname_breeze_deleteOwnStatus'] = 'Delete their own status.<br /><span class="smalltext">  Regardless of where it has been posted. Deleting a status also deletes all comments associated with it.</span>';
-$txt['permissionname_breeze_deleteOwnComments'] = 'Delete their own comments.<br /><span class="smalltext">  Regardless of where it has been posted</span>';
-$txt['permissionname_breeze_deleteProfileStatus'] = 'Delete status made on their own profile.<br /><span class="smalltext">  Regardless of who posted them.</span>';
-$txt['permissionname_breeze_deleteProfileComments'] = 'Delete comments made on their own profile.<br /><span class="smalltext">  Regardless of who posted them.</span>';
-$txt['permissionname_breeze_postStatus'] = 'Post new Status on any wall<br /><span class="smalltext">  By default, the profile owner always has the ability to post on their own wall.</span>';
-$txt['permissionname_breeze_postComments'] = 'Post new Comments on any wall<br /><span class="smalltext">  By default, the profile owner always has the ability to post on their own wall.</span>';
+$txt['permissionname_breeze_canCover'] = 'Be able to upload an image as cover for their own wall <br />
+<span class="smalltext">  The master setting needs to be enable first.</span>';
+$txt['Breeze_permissionname_breeze_canMood'] = 'Be able to set a mood<br />
+<span class="smalltext">  The master setting needs to be enable first.</span>';
+$txt['Breeze_permissionname_breeze_deleteStatus'] = 'Delete all status on any wall<br />
+<span class="smalltext">  This overwrites any other delete permission the user might have. 
+Deleting a status also deletes all comments associated with it.</span>';
+$txt['Breeze_permissionname_breeze_deleteComments'] = 'Delete all comments on any wall<br />
+<span class="smalltext">  This overwrites ant other delete comment permission the user might have.</span>';
+$txt['Breeze_permissionname_breeze_deleteOwnStatus'] = 'Delete their own status.<br /><span class="smalltext">  Regardless of where it has been posted. Deleting a status also deletes all comments associated with it.</span>';
+$txt['Breeze_permissionname_breeze_deleteOwnComments'] = 'Delete their own comments.<br /><span class="smalltext">  Regardless of where it has been posted</span>';
+$txt['Breeze_permissionname_breeze_deleteProfileStatus'] = 'Delete status made on their own profile.<br /><span class="smalltext">  Regardless of who posted them.</span>';
+$txt['Breeze_permissionname_breeze_deleteProfileComments'] = 'Delete comments made on their own profile.<br /><span class="smalltext">  Regardless of who posted them.</span>';
+$txt['Breeze_permissionname_breeze_postStatus'] = 'Post new Status on any wall<br /><span class="smalltext">  By default, the profile owner always has the ability to post on their own wall.</span>';
+$txt['Breeze_permissionname_breeze_postComments'] = 'Post new Comments on any wall<br /><span class="smalltext">  By default, the profile owner always has the ability to post on their own wall.</span>';
 
 // Ajax strings
 $txt['Breeze_info_updated_settings'] = 'Your settings were updated successfully.';
@@ -193,7 +192,7 @@ $txt['Breeze_info_loadingAlerts_end'] = 'There are no more alerts to display';
 $txt['Breeze_page_no_status'] = 'There are no status to display';
 
 // Tabs
-$txt['Breeze_tabs_wall'] = 'UserService';
+$txt['Breeze_tabs_wall'] = 'User';
 $txt['Breeze_tabs_buddies'] = 'Buddies';
 $txt['Breeze_tabs_views'] = 'Profile Visitors';
 $txt['Breeze_tabs_pinfo'] = 'Profile Info';
