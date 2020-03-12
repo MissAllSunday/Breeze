@@ -17,6 +17,7 @@ use Breeze\Repository\Like\Comment as LikeCommentRepository;
 use Breeze\Repository\Like\Status as LikeStatusRepository;
 use Breeze\Service\MoodService;
 use Breeze\Service\Permissions;
+use Breeze\Service\PermissionsService;
 use Breeze\Service\UserService;
 use Breeze\Traits\TextTrait;
 use League\Container\Container as Container;
@@ -59,7 +60,7 @@ class Breeze
 
 	public function permissionsWrapper(&$permissionGroups, &$permissionList): void
 	{
-		$this->container->get(Permissions::class)->hookPermissions($permissionGroups, $permissionList);
+		$this->container->get(PermissionsService::class)->hookPermissions($permissionGroups, $permissionList);
 	}
 
 	public function profileMenuWrapper(&$profile_areas): void

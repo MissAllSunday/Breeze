@@ -10,27 +10,13 @@ use Breeze\Repository\RepositoryInterface;
 
 class AdminService extends BaseService implements ServiceInterface
 {
-	public const IDENTIFIER = 'BreezeAdmin';
-	public const PERMISSIONS_IDENTIFIER = 'BreezePermissions';
+	public const IDENTIFIER = 'Admin';
 	public const POST_URL = 'action=admin;area=breezeAdmin;sa=';
 
 	/**
 	 * @var array
 	 */
 	protected $configVars = [];
-
-	public const PERMISSIONS = [
-		'deleteComments',
-		'deleteOwnComments',
-		'deleteProfileComments',
-		'deleteStatus',
-		'deleteOwnStatus',
-		'deleteProfileStatus',
-		'postStatus',
-		'postComments',
-		'canCover',
-		'canMood'
-	];
 
 	/**
 	 * @var MoodService
@@ -51,8 +37,8 @@ class AdminService extends BaseService implements ServiceInterface
 		$this->requireOnce('ManageSettings');
 		$this->requireOnce('ManageServer');
 
-		$this->setLanguage(self::IDENTIFIER);
-		$this->setTemplate(self::IDENTIFIER);
+		$this->setLanguage(Breeze::NAME . self::IDENTIFIER);
+		$this->setTemplate(Breeze::NAME . self::IDENTIFIER);
 
 		loadGeneralSettingParameters(array_combine($subActions, $subActions), 'general');
 
@@ -147,13 +133,13 @@ class AdminService extends BaseService implements ServiceInterface
 
 	public function permissionsConfigVars(bool $save = false): void
 	{
-		$this->setLanguage(self::PERMISSIONS_IDENTIFIER);
+		$this->setLanguage(Breeze::NAME . PermissionsService::IDENTIFIER);
 
 		$this->configVars = [
 			['title', Breeze::PATTERN . 'page_permissions'],
 		];
 
-		foreach (self::PERMISSIONS as $permission)
+		foreach (PermissionsService::ALL_PERMISSIONS as $permission)
 			$this->configVars[] = [
 				'permissions',
 				'breeze_' . $permission,
@@ -173,7 +159,11 @@ class AdminService extends BaseService implements ServiceInterface
 		saveDBSettings($this->configVars);
 	}
 
-	public function setSubActionContent(string $actionName, array $templateParams, string $smfTemplate = ''): void
+	public function setSubActionContent(
+		string $actionName,
+		array $templateParams = [],
+		string $smfTemplate = ''
+	): void
 	{
 		if (empty($actionName))
 			return;
@@ -188,10 +178,12 @@ class AdminService extends BaseService implements ServiceInterface
 		if (!isset($context[Breeze::NAME]))
 			$context[Breeze::NAME] = [];
 
-		$context = array_merge($context, $templateParams);
+		if (!empty($templateParams))
+			$context = array_merge($context, $templateParams);
 
 		$context['page_title'] = $this->getText('page_' . $actionName . '_title');
-		$context['sub_template'] = !empty($smfTemplate) ? $smfTemplate : (self::IDENTIFIER . '_' . $actionName);
+		$context['sub_template'] = !empty($smfTemplate) ?
+			$smfTemplate : (Breeze::NAME . self::IDENTIFIER . '_' . $actionName);
 		$context[$context['admin_menu_name']]['tab_data'] = [
 			'title' => $context['page_title'],
 			'description' => $this->getText('page_' . $actionName . '_description'),

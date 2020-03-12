@@ -10,6 +10,7 @@ use Breeze\Repository\User\MoodRepository;
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\AdminService;
 use Breeze\Service\MoodService;
+use Breeze\Service\PermissionsService;
 use Breeze\Service\RequestService;
 use Breeze\Service\UserService;
 
@@ -28,5 +29,9 @@ return [
 	'service.user' => [
 		'class' => UserService::class,
 		'arguments'=> [UserRepository::class]
+	],
+	'service.permissions' => [
+		'class' => PermissionsService::class,
+		'arguments'=> [AdminRepository::class]
 	],
 ];
