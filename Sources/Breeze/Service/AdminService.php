@@ -11,6 +11,7 @@ use Breeze\Repository\RepositoryInterface;
 class AdminService extends BaseService implements ServiceInterface
 {
 	public const IDENTIFIER = 'BreezeAdmin';
+	public const PERMISSIONS_IDENTIFIER = 'BreezePermissions';
 	public const POST_URL = 'action=admin;area=breezeAdmin;sa=';
 
 	/**
@@ -146,7 +147,7 @@ class AdminService extends BaseService implements ServiceInterface
 
 	public function permissionsConfigVars(bool $save = false): void
 	{
-		$this->setLanguage(Breeze::NAME);
+		$this->setLanguage(self::PERMISSIONS_IDENTIFIER);
 
 		$this->configVars = [
 			['title', Breeze::PATTERN . 'page_permissions'],
@@ -157,7 +158,7 @@ class AdminService extends BaseService implements ServiceInterface
 				'permissions',
 				'breeze_' . $permission,
 				0,
-				$this->getText('permissionname_breeze_' . $permission)
+				$this->getSmfText('permissionname_breeze_' . $permission)
 			];
 
 		if ($save)
