@@ -8,14 +8,14 @@ use Breeze\Breeze;
 
 trait PersistenceTrait
 {
-	public function setMessage($message, $type): void
+	public function setMessage($message, $type = ''): void
 	{
 		if (empty($message) || empty($type))
 			return;
 
 		$_SESSION[Breeze::NAME] = [
 			'message' => $message,
-			'type' => $type,
+			'type' => $type ?? 'info',
 		];
 	}
 

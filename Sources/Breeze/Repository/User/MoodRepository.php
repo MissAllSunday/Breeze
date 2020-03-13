@@ -10,5 +10,8 @@ use Breeze\Repository\RepositoryInterface;
 
 class MoodRepository extends BaseRepository implements RepositoryInterface
 {
-
+	public function deleteByIds(array $toDeleteMoodIds): bool
+	{
+		return $this->model->delete($toDeleteMoodIds);
+	}
 }

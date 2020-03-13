@@ -5,8 +5,12 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Traits\PersistenceTrait;
+
 class MoodService extends BaseService implements ServiceInterface
 {
+	use PersistenceTrait;
+
 	public const FOLDER = 'breezeMoods';
 
 	public function getMoodList(array $listParams, $start = 0): array
@@ -167,5 +171,14 @@ class MoodService extends BaseService implements ServiceInterface
 			return;
 
 		$this->repository->getMoodProfile($memID, $area);
+	}
+
+	public function deleteMoods(array $toDeleteMoodIds)
+	{
+		$deleted = $this->repository->deleteByIds($toDeleteMoodIds);
+
+		$this->setMessage($this->getText('mood_success_delete'), ($deleted ? 'info' : 'error'));
+
+		return $deleted;
 	}
 }

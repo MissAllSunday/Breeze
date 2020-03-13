@@ -89,38 +89,20 @@ class AdminController extends BaseController implements ControllerInterface
 	{
 		$this->service->isEnableFeature('mood', __FUNCTION__ . 'general');
 
-		$this->service->setSubActionContent(__FUNCTION__);
 		$this->render(__FUNCTION__, [
 			'notice' => $this->getMessage(),
 		]);
 
-		$this->service->setSubActionContent(__FUNCTION__);
-
 		$start = $this->request->get('start');
-
 		$this->service->showMoodList( __FUNCTION__, $start);
 
+		$toDeleteMoodIds = $this->request->get('checked_icons', 'numeric');
 
-		// So, are we deleting?
-		if ($data->get('delete') && $data->get('checked_icons'))
+		if ($this->request->isSet('delete') &&
+			!empty($toDeleteMoodIds))
 		{
-			// Get the icons to delete.
-			$toDelete = $data->get('checked_icons');
-
-			// They all are IDs right?
-			$toDelete = array_map('intval', (array) $toDelete);
-
-			// Call BreezeQuery here.
-			$this->_app['query']->deleteMood($toDelete);
-
-			// set a nice session message.
-			$_SESSION['breeze'] = [
-				'message' => ['success_delete'],
-				'type' => 'info',
-			];
-
-			// Force a redirect.
-			return redirectexit('action=admin;area=breezeadmin;sa=moodList');
+			$this->service->deleteMoods($toDeleteMoodIds);
+			$this->service->redirect(AdminService::POST_URL . __FUNCTION__);
 		}
 	}
 
