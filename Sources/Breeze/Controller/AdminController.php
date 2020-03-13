@@ -53,12 +53,28 @@ class AdminController extends BaseController implements ControllerInterface
 
 	public function permissions(): void
 	{
-
 		$this->render(__FUNCTION__, [], 'show_settings');
 
 		$saving = $this->request->isSet('save');
 
 		$this->service->permissionsConfigVars($saving);
+
+		if ($saving)
+			$this->service->redirect(AdminService::POST_URL . __FUNCTION__);
+	}
+
+	public function cover(): void
+	{
+		$this->render(__FUNCTION__, [], 'show_settings');
+		$saving = $this->request->isSet('save');
+
+		$coverImageTypesName = Breeze::NAME . '_cover_image_types';
+		$coverImageTypesValue = $this->request->get($coverImageTypesName, 'alpha');
+
+		if ($saving && !empty($coverImageTypesValue))
+			$this->request->setPost($coverImageTypesName, $coverImageTypesValue);
+
+		$this->service->coverConfigVars($saving);
 
 		if ($saving)
 			$this->service->redirect(AdminService::POST_URL . __FUNCTION__);

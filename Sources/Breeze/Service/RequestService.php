@@ -14,9 +14,22 @@ class RequestService extends BaseService
 		$this->request = $_REQUEST;
 	}
 
-	public function get(string $variableName)
+	public function get(string $variableName, $format = '')
 	{
-		return isset($this->request[$variableName]) ? $this->sanitize($this->request[$variableName]) : false;
+		return isset($this->request[$variableName]) ?
+			$this->sanitize($format ?
+				$this->commaSeparated($this->request[$variableName], $format) :
+				$this->request[$variableName]) : false;
+	}
+
+	public function setPost(string $variableName, $variableValue): void
+	{
+		$_POST[$variableName] = $variableValue;
+	}
+
+	public function setGet(string $variableName, $variableValue): void
+	{
+		$_GET[$variableName] = $variableValue;
 	}
 
 	public function isSet(string $variableName)

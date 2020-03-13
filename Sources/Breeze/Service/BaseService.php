@@ -7,7 +7,7 @@ namespace Breeze\Service;
 use Breeze\Repository\RepositoryInterface;
 use Breeze\Traits\TextTrait;
 
-abstract class BaseService
+abstract class BaseService implements ServiceInterface
 {
 	use TextTrait;
 

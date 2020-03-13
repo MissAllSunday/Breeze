@@ -201,9 +201,9 @@ class Breeze
 			'subsections' => [
 				'general' => [$this->getText('page_main')],
 				'settings' => [$this->getText('page_settings_title')],
-				'permissions' => [$this->getText('page_permissions')],
-				'cover' => [$this->getText('page_cover')],
-				'donate' => [$this->getText('page_donate')],
+				'permissions' => [$this->getText('page_permissions_title')],
+				'cover' => [$this->getText('page_cover_title')],
+				'donate' => [$this->getText('page_donate_title')],
 			],
 		];
 
