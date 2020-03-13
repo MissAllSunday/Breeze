@@ -80,6 +80,11 @@ class AdminController extends BaseController implements ControllerInterface
 			$this->service->redirect(AdminService::POST_URL . __FUNCTION__);
 	}
 
+	public function donate()
+	{
+		$this->render(__FUNCTION__);
+	}
+
 	public function moodList()
 	{
 		$this->service->isEnableFeature('mood', __FUNCTION__ . 'general');

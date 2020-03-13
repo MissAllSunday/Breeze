@@ -141,16 +141,16 @@ function template_manage_mood_edit(): void
 }
 
 // Boring stuff you will never see...
-function template_admin_donate(): void
+function template_breezeAdmin_donate(): void
 {
-	global $context;
+	global $context, $txt;
 
 	echo '
 		<div class="cat_bar">
 			<h3 class="catbg">', $context['page_title'] ,'</h3>
 		</div>
 		<div class="information">
-			',$context['Breeze']['donate'],'
+			', $txt['Breeze_page_donate_exp'] ,'
 		</div>
 		<br />';
 }
