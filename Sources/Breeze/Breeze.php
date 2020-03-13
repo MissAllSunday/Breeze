@@ -203,19 +203,23 @@ class Breeze
 				'settings' => [$this->getText('page_settings_title')],
 				'permissions' => [$this->getText('page_permissions_title')],
 				'cover' => [$this->getText('page_cover_title')],
-				'donate' => [$this->getText('page_donate_title')],
 			],
 		];
 
 		if ($this->enable('mood'))
 		{
-			$admin_menu['config']['areas']['breezeAdmin']['subsections']['moodList'] = [
+			$adminMenu['config']['areas']['breezeAdmin']['subsections']['moodList'] = [
 				$this->getText('page_mood')
 			];
-			$admin_menu['config']['areas']['breezeAdmin']['subsections']['moodEdit'] = [
+			$adminMenu['config']['areas']['breezeAdmin']['subsections']['moodEdit'] = [
 				$this->getText('page_mood_create')
 			];
 		}
+
+		// Pay no attention to that woman behind the curtain!
+		$adminMenu['config']['areas']['breezeAdmin']['subsections']['donate'] = [
+			$this->getText('page_donate_title')
+		];
 	}
 
 	public static function credits(): array

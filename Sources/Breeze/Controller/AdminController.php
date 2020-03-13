@@ -93,7 +93,7 @@ class AdminController extends BaseController implements ControllerInterface
 			'notice' => $this->getMessage(),
 		]);
 
-		$start = $this->request->get('start');
+		$start = $this->request->get('start') ? : 0;
 		$this->service->showMoodList( __FUNCTION__, $start);
 
 		$toDeleteMoodIds = $this->request->get('checked_icons', 'numeric');

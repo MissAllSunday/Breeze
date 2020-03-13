@@ -14,4 +14,16 @@ class MoodRepository extends BaseRepository implements RepositoryInterface
 	{
 		return $this->model->delete($toDeleteMoodIds);
 	}
+
+	public function getChunk(int $start = 0, int $maxIndex = 0): array
+	{
+		// TODO implement cache at repository level
+		return $this->model->getChunk($start, $maxIndex);
+	}
+
+	public function getCount(): int
+	{
+		// TODO implement cache at repository level
+		return $this->model->getCount();
+	}
 }
