@@ -95,7 +95,7 @@ function template_breezeAdmin_general(): void
 	<br />';
 }
 
-function template_manage_mood(): void
+function template_breezeAdmin_moodList(): void
 {
 	global $context, $txt;
 

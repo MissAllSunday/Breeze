@@ -24,7 +24,7 @@ class DatabaseClient implements ClientInterface
 		);
 	}
 
-	public function fetchAssoc($result): array
+	public function fetchAssoc($result): ?array
 	{
 		return $this->db['db_fetch_assoc']($result);
 	}

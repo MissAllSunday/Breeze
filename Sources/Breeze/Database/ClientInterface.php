@@ -8,7 +8,7 @@ interface ClientInterface
 {
 	public function query(string $query, array $bindParams);
 
-	public function fetchAssoc($result): array;
+	public function fetchAssoc($result): ?array;
 
 	public function numRows($result): int;
 
