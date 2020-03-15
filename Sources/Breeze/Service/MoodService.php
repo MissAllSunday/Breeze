@@ -13,25 +13,31 @@ class MoodService extends BaseService implements ServiceInterface
 
 	public const FOLDER = 'breezeMoods';
 
-	public function getMoodList(array $listParams, $start = 0): array
+	public function getMoodList(array $listParams, int $start = 0): array
 	{
 		if (empty($listParams))
 			return [];
 
+		$this->setLanguage('ManageSmileys');
+		$numItemsPerPage = 10;
 		$scriptUrl = $this->global('scripturl');
 		$maxIndex = $this->repository->getCount();
-		$itemsPerPage = $this->repository->getChunk($start, $maxIndex);
+		$chunkedItems = $this->repository->getChunk($start, $numItemsPerPage);
 
 		return  array_merge([
 			'id' => '',
 			'title' => '',
 			'base_href' => '',
-			'items_per_page' => 10,
+			'items_per_page' => $numItemsPerPage,
 			'get_count' => [
-				'function' => $maxIndex,
+				'function' => function() use($maxIndex){
+					return $maxIndex;
+				},
 			],
 			'get_items' => [
-				'function' => $itemsPerPage,
+				'function' => function() use($chunkedItems){
+					return $chunkedItems;
+				},
 			],
 			'no_items_label' => $this->getSmfText('icons_no_entries'),
 			'columns' => [
@@ -46,7 +52,9 @@ class MoodService extends BaseService implements ServiceInterface
 							$filePath = $this->getMoodsPath() . $rowData['file'] . '.' . $rowData['ext'];
 
 							if (file_exists($filePath))
-								return '<img src="' . $fileUrl . '" />';
+								return '<img src="' . $fileUrl . '" 
+									alt="' . $rowData['file'] . '" 
+									title="' . $rowData['file'] . '" />';
 
 							return $this->getText('mood_noFile');
 						},
@@ -142,14 +150,14 @@ class MoodService extends BaseService implements ServiceInterface
 	{
 		$smfSettings = $this->global('settings');
 
-		return $smfSettings['default_theme_dir'] . '/images/' . self::FOLDER;
+		return $smfSettings['default_theme_dir'] . '/images/' . self::FOLDER . '/';
 	}
 
 	public function getMoodsUrl(): string
 	{
 		$smfSettings = $this->global('settings');
 
-		return $smfSettings['default_images_url'] . '/' . self::FOLDER;
+		return $smfSettings['default_images_url'] . '/' . self::FOLDER . '/';
 	}
 
 	public function getPlacementField(): int

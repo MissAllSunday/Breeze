@@ -100,7 +100,7 @@ function template_breezeAdmin_moodList(): void
 	global $context, $txt;
 
 	// Success YAY!
-	if (!empty($context['mood']['notice']))
+	if (!empty($context['Breeze']['notice']))
 	{
 		echo '
 		<div class="' . $context['mood']['notice']['type'] . 'box">';
@@ -112,7 +112,7 @@ function template_breezeAdmin_moodList(): void
 		</div><br />';
 	}
 
-	template_show_list('breeze_mood_list');
+	template_show_list($context['Breeze']['formId']);
 }
 
 function template_manage_mood_edit(): void

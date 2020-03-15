@@ -80,17 +80,20 @@ class AdminController extends BaseController implements ControllerInterface
 			$this->service->redirect(AdminService::POST_URL . __FUNCTION__);
 	}
 
-	public function donate()
+	public function donate(): void
 	{
 		$this->render(__FUNCTION__);
 	}
 
-	public function moodList()
+	public function moodList(): void
 	{
 		$this->service->isEnableFeature('mood', __FUNCTION__ . 'general');
 
 		$this->render(__FUNCTION__, [
-			'notice' => $this->getMessage(),
+			Breeze::NAME => [
+				'notice' => $this->getMessage(),
+				'formId' => __FUNCTION__,
+			],
 		]);
 
 		$start = $this->request->get('start') ? : 0;
