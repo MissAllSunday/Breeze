@@ -8,24 +8,29 @@ use Breeze\Breeze;
 
 trait PersistenceTrait
 {
-	public function setMessage($message, $type = ''): void
+	public function setMessage($message, $type = ''): array
 	{
 		if (empty($message) || empty($type))
-			return;
+			return [];
 
-		$_SESSION[Breeze::NAME] = [
+		if (!isset($_SESSION[Breeze::NAME]))
+			$_SESSION[Breeze::NAME] = [];
+
+		$_SESSION[Breeze::NAME]['notice'] = [
 			'message' => $message,
 			'type' => $type ?? 'info',
 		];
+
+		return $_SESSION[Breeze::NAME]['notice'];
 	}
 
 	public function getMessage(): array
 	{
-		if (empty($_SESSION[Breeze::NAME]))
+		if (empty($_SESSION[Breeze::NAME]['notice']))
 			return [];
 
-		$response = $_SESSION[Breeze::NAME];
-		unset($_SESSION[Breeze::NAME]);
+		$response = $_SESSION[Breeze::NAME]['notice'];
+		unset($_SESSION[Breeze::NAME]['notice']);
 
 		return $response;
 	}

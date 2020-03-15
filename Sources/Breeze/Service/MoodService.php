@@ -131,16 +131,19 @@ class MoodService extends BaseService implements ServiceInterface
 				],
 			],
 			'form' => [
-				'href' => $scriptUrl . '?action=admin;area=breezeadmin;sa=moodList;delete=1',
+				'href' => $scriptUrl . '?action=admin;area=breezeAdmin;sa='. $listParams['id'] .';delete',
 			],
 			'additional_rows' => [
 				[
 					'position' => 'below_table_data',
-					'value' => '<input type="submit" name="delete" value="' .
+					'value' => '
+						<input type="submit" name="delete" value="' .
 						$this->getSmfText('quickmod_delete_selected') .
-						'" class="button_submit"> <a class="button_link" href="' .
-						$scriptUrl . '?action=admin;area=breezeadmin;sa=moodEdit">' .
-						$this->getSmfText('icons_add_new') . '</a>',
+						'" class="button you_sure"> 
+						<a class="button" href="' .
+						$scriptUrl . '?action=admin;area=breezeAdmin;sa=moodEdit">' .
+						$this->getText('page_mood_create') . '</a>',
+					'class' => 'titlebg',
 				],
 			],
 		], $listParams);
@@ -181,12 +184,13 @@ class MoodService extends BaseService implements ServiceInterface
 		$this->repository->getMoodProfile($memID, $area);
 	}
 
-	public function deleteMoods(array $toDeleteMoodIds)
+	public function deleteMoods(array $toDeleteMoodIds): bool
 	{
-		$deleted = $this->repository->deleteByIds($toDeleteMoodIds);
+		$wasDeleted = $this->repository->deleteByIds($toDeleteMoodIds);
+		$messageKey = $wasDeleted ? 'info' : 'error';
 
-		$this->setMessage($this->getText('mood_success_delete'), ($deleted ? 'info' : 'error'));
+		$this->setMessage($this->getText('mood_'. $messageKey .'_delete'), $messageKey);
 
-		return $deleted;
+		return $wasDeleted;
 	}
 }

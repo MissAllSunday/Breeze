@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 
 // The admin panel where the news and other very useful stuff is displayed
+use Breeze\Breeze;
+
 function template_breezeAdmin_general(): void
 {
 	global $txt, $context;
@@ -47,7 +49,7 @@ function template_breezeAdmin_general(): void
 							<br>
 							', $txt['Breeze_version'] , ':
 							<em>
-								', $context['Breeze']['version'] , '
+								', $context[Breeze::NAME]['version'] , '
 							</em>';
 
 	// Some more stuff will be here... eventually
@@ -68,8 +70,8 @@ function template_breezeAdmin_general(): void
 					<p>', $txt['Breeze_page_credits_decs'] ,'</p>';
 
 	// Print the credits array
-	if (!empty($context['Breeze']['credits']))
-		foreach ($context['Breeze']['credits'] as $credit)
+	if (!empty($context[Breeze::NAME]['credits']))
+		foreach ($context[Breeze::NAME]['credits'] as $credit)
 		{
 			echo '
 					<dl>
@@ -97,22 +99,18 @@ function template_breezeAdmin_general(): void
 
 function template_breezeAdmin_moodList(): void
 {
-	global $context, $txt;
+	global $context;
 
 	// Success YAY!
-	if (!empty($context['Breeze']['notice']))
+	if (!empty($context[Breeze::NAME]['notice']))
 	{
 		echo '
-		<div class="' . $context['mood']['notice']['type'] . 'box">';
-
-		foreach ($context['mood']['notice']['message'] as $m)
-			echo '', $txt['Breeze_mood_' . $m] ,'';
-
-		echo '
+		<div class="' . $context[Breeze::NAME]['notice']['type'] . 'box">
+		', $context[Breeze::NAME]['notice']['message'] ,'
 		</div><br />';
 	}
 
-	template_show_list($context['Breeze']['formId']);
+	template_show_list($context[Breeze::NAME]['formId']);
 }
 
 function template_manage_mood_edit(): void

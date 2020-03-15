@@ -74,9 +74,10 @@ $txt['Breeze_flood_minutes'] = 'The time frame for the amount of messages an use
 $txt['Breeze_flood_minutes_sub'] = 'Defaults to 5 minutes. If you leave both options empty it will mean an user cannot make more than 10 messages in 5 minutes across all walls';
 
 // My mood feature.
-$txt['Breeze_mood_success_create'] = 'The mood has been created.';
-$txt['Breeze_mood_success_update'] = 'The mood has been updated.';
-$txt['Breeze_mood_success_delete'] = 'The moods have been deleted.';
+$txt['Breeze_mood_info_create'] = 'The mood has been created.';
+$txt['Breeze_mood_info_update'] = 'The mood has been updated.';
+$txt['Breeze_mood_info_delete'] = 'The moods have been deleted.';
+$txt['Breeze_mood_error_delete'] = 'The was a problem while trying to delete the moods.';
 $txt['Breeze_mood_errors'] = 'Some errors were identified while trying to save this mood. ';
 $txt['Breeze_mood_error_file'] = 'file doesn\'t exists';
 $txt['Breeze_mood_error_already'] = 'Theres already a mood associated with this filename. Please use another image.';
