@@ -27,7 +27,6 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 	<uninstall for="2.1 RC3, 2.1 - 2.1.99">
 		<code>remove.php</code>
 		<database>install.php</database>
-		<remove-dir name="$themedir/images/breezeMoods" />
 		<remove-dir name="$sourcedir/Breeze" />
 		<remove-dir name="$boarddir/breezeVendor" />
 		<remove-file name="$sourcedir/tasks/Breeze-Notify.php" />
