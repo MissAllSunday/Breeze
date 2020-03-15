@@ -131,7 +131,7 @@ class MoodService extends BaseService implements ServiceInterface
 				],
 			],
 			'form' => [
-				'href' => $scriptUrl . '?action=admin;area=breezeAdmin;sa='. $listParams['id'] .';delete',
+				'href' => $scriptUrl . '?action=admin;area=breezeAdmin;sa=' . $listParams['id'] . ';delete',
 			],
 			'additional_rows' => [
 				[
@@ -189,7 +189,7 @@ class MoodService extends BaseService implements ServiceInterface
 		$wasDeleted = $this->repository->deleteByIds($toDeleteMoodIds);
 		$messageKey = $wasDeleted ? 'info' : 'error';
 
-		$this->setMessage($this->getText('mood_'. $messageKey .'_delete'), $messageKey);
+		$this->setMessage($this->getText('mood_' . $messageKey . '_delete'), $messageKey);
 
 		return $wasDeleted;
 	}
