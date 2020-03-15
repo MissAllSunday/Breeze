@@ -3,12 +3,6 @@
 declare(strict_types=1);
 
 /**
- * install.php
- *
- * @package Breeze mod
- * @version 1.1
- * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2019, Jessica González
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
@@ -20,7 +14,6 @@ elseif (!defined('SMF'))
 
 global $smcFunc, $context;
 
-// Breeze needs php 7.2 or greater
 BreezeCheck();
 
 db_extend('packages');
@@ -244,19 +237,7 @@ if (empty($context['uninstalling']))
 				'auto' => true
 			],
 			[
-				'name' => 'name',
-				'type' => 'varchar',
-				'size' => 255,
-				'default' => '',
-			],
-			[
-				'name' => 'file',
-				'type' => 'varchar',
-				'size' => 255,
-				'default' => '',
-			],
-			[
-				'name' => 'ext',
+				'name' => 'emoji',
 				'type' => 'varchar',
 				'size' => 255,
 				'default' => '',
@@ -316,26 +297,23 @@ if (empty($context['uninstalling']))
 	);
 
 	// Lastly, insert the default moods and oh boy there are a lot!!!
-	$moods = ['angel', 'angry', 'bear', 'beer', 'blush', 'brokenheart', 'cash', 'clapping', 'cool', 'crying', 'doh', 'drunk', 'dull', 'envy', 'evil', 'evilgrin', 'giggle', 'happy', 'headbang', 'hi', 'inlove', 'itwasntme', 'kiss', 'lipssealed', 'makeup', 'middlefinger', 'mmm', 'mooning', 'muscle', 'nerd', 'party', 'pizza', 'puke', 'rock', 'sad', 'sleepy', 'smile', 'smoke', 'speechless', 'sunny', 'surprised', 'sweating', 'talking', 'thinking', 'tongueout', 'wait', 'wink', 'wondering', 'worried', 'yawn', ];
+	$emojis = explode(',', trim('😀,😁, 😂, 🤣, 😃, 😄, 😅, 😆, 😉, 😊, 😋, 😎, 😍, 😘, 🥰, 😗, 😙, 😚, ☺️, 🙂, 🤗, 🤩, 🤔, 🤨, 😐, 😑, 😶, 🙄, 😏, 😣, 😥, 😮, 🤐, 😯, 😪, 😫, 😴, 😌, 😛, 😜, 😝, 🤤, 😒, 😓, 😔, 😕, 🙃, 🤑, 😲, ☹️, 🙁, 😖, 😞, 😟, 😤, 😢, 😭, 😦, 😧, 😨, 😩, 🤯, 😬, 😰, 😱, 🥵, 🥶, 😳, 🤪, 😵, 😡, 😠, 🤬, 😷, 🤒, 🤕, 🤢, 🤮, 🤧, 😇, 🤠, 🤡, 🥳, 🥴, 🥺, 🤥, 🤫, 🤭, 🧐, 🤓, 😈, 👿, 👹, 👺💩'));
 
-	foreach ($moods as $m)
+
+	foreach ($emojis as $emoji)
 		$smcFunc['db_insert']('insert', '{db_prefix}breeze_moods', [
-			'name' => 'string',
-			'file' => 'string',
-			'ext' => 'string',
+			'emoji' => 'string',
 			'description' => 'string',
 			'enable' => 'int',
 		], [
-			$m,
-			$m,
-			'gif',
-			$m,
+			$emoji,
+			'',
 			1
-		], ['moods_id', ]);
+		], ['moods_id']);
 	}
 
 function BreezeCheck(): void
 {
-	if (version_compare(\PHP_VERSION, '7.2.0', '<'))
-		fatal_error('This mod needs PHP 7.2 or greater. You will not be able to install/use this mod, contact your host and ask for a php upgrade.');
+	if (version_compare(\PHP_VERSION, '7.3.0', '<'))
+		fatal_error('This mod needs PHP 7.3 or greater. You will not be able to install/use this mod, contact your host and ask for a php upgrade.');
 }

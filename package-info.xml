@@ -6,7 +6,7 @@
 	<version>2.0</version>
 	<type>modification</type>
 
-	<install for="2.1 RC2, 2.1 RC3, 2.1 - 2.1.99">
+	<install for="2.1 RC3, 2.1 - 2.1.99">
 		<readme parsebbc="true">README.txt</readme>
 		<license type="inline" parsebbc="false">
 This Source Code Form is subject to the terms of the Mozilla Public
@@ -24,12 +24,12 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 		<redirect url="$scripturl?action=admin;area=breezeadmin;sa=general" timeout="3000">redirect.txt</redirect>
 	</install>
 
-	<uninstall for="2.1 RC2, 2.1 RC3, 2.1 - 2.1.99">
+	<uninstall for="2.1 RC3, 2.1 - 2.1.99">
 		<code>remove.php</code>
 		<database>install.php</database>
 		<remove-dir name="$themedir/images/breezeMoods" />
 		<remove-dir name="$sourcedir/Breeze" />
-		<remove-dir name="$boarddir/vendor" />
+		<remove-dir name="$boarddir/breezeVendor" />
 		<remove-file name="$sourcedir/tasks/Breeze-Notify.php" />
 		<remove-file name="$themedir/Breeze.template.php" />
 		<remove-file name="$themedir/BreezeAdmin.template.php" />
@@ -39,6 +39,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 		<remove-dir name="$themedir/scripts/breeze" />
 		<remove-file name="$languagedir/Breeze.english.php" />
 		<remove-file name="$languagedir/BreezeAlerts.english.php" />
+		<remove-file name="$languagedir/BreezePermissions.english.php" />
 		<remove-file name="$languagedir/BreezeAdmin.english.php" />
 	</uninstall>
 </package-info>
