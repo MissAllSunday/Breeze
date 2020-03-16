@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Entity\MoodEntity;
 use Breeze\Traits\PersistenceTrait;
 
 class MoodService extends BaseService implements ServiceInterface
@@ -138,7 +139,7 @@ class MoodService extends BaseService implements ServiceInterface
 		if (!$this->getSetting('master') || !$this->getSetting('mood'))
 			return;
 
-		$data['custom_fields'][] =  $this->repository->getActive();
+		$data['custom_fields'][] =  $this->repository->getActiveMoods();
 	}
 
 	public function moodProfile(int $memID, array $area): void
@@ -163,6 +164,40 @@ class MoodService extends BaseService implements ServiceInterface
 	{
 		$moods = $this->repository->getModel()->getMoodByIDs($moodId);
 
-		return isset($moods[$moodId]) ? $moods[$moodId] : [];
+		return $moods[$moodId] ?? [];
+	}
+
+	public function saveMood(array $mood, int $moodId): bool
+	{
+		$errors = [];
+
+		if (!empty($moodId))
+		{
+			$activeMoods = $this->repository->getActiveMoods();
+
+			if (!isset($activeMoods[$moodId]))
+				$errors[] = $this->getText('mood_error_invalid');
+		}
+
+		if (!isset($mood[MoodEntity::COLUMN_EMOJI]) || empty($mood[MoodEntity::COLUMN_EMOJI]))
+			$errors[] = $this->getText('mood_error_empty_emoji');
+
+		if (!empty($errors))
+		{
+			$this->setMessage(sprintf(
+				$this->getText('mood_errors'),
+				implode(' ', $errors)
+			));
+
+			return false;
+		}
+
+		if (!empty($moodId))
+			$result = $this->repository->getModel()->update($mood, $moodId);
+
+		else
+			$result = $this->repository->getModel()->insert($mood);
+
+		return (bool) $result;
 	}
 }

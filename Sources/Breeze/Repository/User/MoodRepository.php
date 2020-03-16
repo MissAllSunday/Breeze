@@ -22,7 +22,7 @@ class MoodRepository extends BaseRepository implements RepositoryInterface
 		return $this->model->getChunk($start, $maxIndex);
 	}
 
-	public function getActive(): array
+	public function getActiveMoods(): array
 	{
 		return $this->model->getMoodsByStatus(MoodEntity::STATUS_ACTIVE);
 	}
@@ -31,5 +31,10 @@ class MoodRepository extends BaseRepository implements RepositoryInterface
 	{
 		// TODO implement cache at repository level
 		return $this->model->getCount();
+	}
+
+	public function saveMood($mood): bool
+	{
+
 	}
 }

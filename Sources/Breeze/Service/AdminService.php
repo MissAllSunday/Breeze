@@ -170,11 +170,6 @@ class AdminService extends BaseService implements ServiceInterface
 		saveDBSettings($this->configVars);
 	}
 
-	public function deleteMoods(array $toDeleteMoodIds)
-	{
-		return $this->moodService->deleteMoods($toDeleteMoodIds);
-	}
-
 	public function setSubActionContent(
 		string $actionName,
 		array $templateParams = [],
@@ -235,10 +230,5 @@ class AdminService extends BaseService implements ServiceInterface
 		$this->requireOnce('Subs-List');
 
 		createList($listOptions);
-	}
-
-	public function saveMood(): bool
-	{
-		return $this->moodService->saveMood();
 	}
 }

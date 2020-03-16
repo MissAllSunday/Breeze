@@ -6,6 +6,8 @@ namespace Breeze\Controller;
 
 use Breeze\Breeze;
 use Breeze\Service\AdminService;
+use Breeze\Service\RequestService;
+use Breeze\Service\ServiceInterface;
 use Breeze\Traits\PersistenceTrait;
 
 class AdminController extends BaseController implements ControllerInterface
@@ -21,6 +23,22 @@ class AdminController extends BaseController implements ControllerInterface
 		'moodList',
 		'moodEdit',
 	];
+
+	/**
+	 * @var ServiceInterface
+	 */
+	protected $moodService;
+
+	public function __construct(
+		RequestService $request,
+		ServiceInterface $service,
+		ServiceInterface $moodService
+	)
+	{
+		$this->moodService = $moodService;
+
+		parent::__construct($request, $service);
+	}
 
 	public function dispatch(): void
 	{
@@ -104,7 +122,7 @@ class AdminController extends BaseController implements ControllerInterface
 		if ($this->request->isSet('delete') &&
 			!empty($toDeleteMoodIds))
 		{
-			$this->service->deleteMoods($toDeleteMoodIds);
+			$this->moodService->deleteMoods($toDeleteMoodIds);
 			$this->service->redirect(AdminService::POST_URL . __FUNCTION__);
 		}
 	}
@@ -114,9 +132,13 @@ class AdminController extends BaseController implements ControllerInterface
 		$this->service->isEnableFeature('mood', __FUNCTION__ . 'general');
 
 		$mood = [];
+		$moodId = 0;
 
 		if ($this->request->isSet('moodId'))
-			$mood = $this->service->getMoodById($this->request->get('moodId'));
+		{
+			$moodId = $this->request->get('moodId');
+			$mood = $this->moodService->getMoodById($moodId);
+		}
 
 		$this->render(__FUNCTION__, [
 			Breeze::NAME => [
@@ -128,7 +150,7 @@ class AdminController extends BaseController implements ControllerInterface
 		if (!$this->request->isSet('save'))
 			return;
 
-		$this->service->saveMood($this->request->get('mood'));
+		$this->moodService->saveMood($this->request->get('mood'), $moodId);
 		$this->service->redirect(AdminService::POST_URL . __FUNCTION__);
 	}
 

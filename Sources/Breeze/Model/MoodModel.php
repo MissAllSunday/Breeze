@@ -75,7 +75,7 @@ class MoodModel extends BaseModel
 		);
 
 		while ($row = $this->dbClient['db_fetch_assoc']($request))
-			$moods[$row['moods_id']] = $row;
+			$moods[$row[MoodEntity::COLUMN_ID]] = $row;
 
 		$this->dbClient['db_free_result']($request);
 
@@ -97,7 +97,7 @@ class MoodModel extends BaseModel
 		);
 
 		while ($row = $this->dbClient['db_fetch_assoc']($request))
-			$moods[$row['moods_id']] = $row;
+			$moods[$row[MoodEntity::COLUMN_ID]] = $row;
 
 		$this->dbClient['db_free_result']($request);
 
