@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\User;
 
+use Breeze\Entity\MoodEntity;
 use Breeze\Repository\BaseRepository;
 use Breeze\Repository\RepositoryInterface;
 
@@ -19,6 +20,11 @@ class MoodRepository extends BaseRepository implements RepositoryInterface
 	{
 		// TODO implement cache at repository level
 		return $this->model->getChunk($start, $maxIndex);
+	}
+
+	public function getActive(): array
+	{
+		return $this->model->getMoodsByStatus(MoodEntity::STATUS_ACTIVE);
 	}
 
 	public function getCount(): int

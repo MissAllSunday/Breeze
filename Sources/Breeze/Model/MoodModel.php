@@ -14,11 +14,9 @@ class MoodModel extends BaseModel
 			return 0;
 
 		$this->dbClient->insert(MoodEntity::TABLE, [
-			MoodEntity::COLUMN_NAME => 'string',
-			MoodEntity::COLUMN_FILE => 'string',
-			MoodEntity::COLUMN_EXT => 'string',
+			MoodEntity::COLUMN_EMOJI => 'string',
 			MoodEntity::COLUMN_DESC => 'string',
-			MoodEntity::COLUMN_ENABLE => 'string'
+			MoodEntity::COLUMN_STATUS => 'string'
 		], $data, MoodEntity::COLUMN_ID);
 
 		return $this->getInsertedId();
@@ -32,11 +30,9 @@ class MoodModel extends BaseModel
 		$this->dbClient->update(
 			MoodEntity::TABLE,
 			'SET 
-				' . MoodEntity::COLUMN_NAME . ' = {string:name}, 
-				' . MoodEntity::COLUMN_FILE . ' = {string:file}, 
-				' . MoodEntity::COLUMN_EXT . ' = {string:ext}, 
+				' . MoodEntity::COLUMN_EMOJI . ' = {string:name}, 
 				' . MoodEntity::COLUMN_DESC . ' = {string:description}, 
-				' . MoodEntity::COLUMN_ENABLE . ' = {string:enable}
+				' . MoodEntity::COLUMN_STATUS . ' = {string:enable}
 				WHERE ' . MoodEntity::COLUMN_ID . ' = {int:moods_id}',
 			$data
 		);
@@ -76,6 +72,28 @@ class MoodModel extends BaseModel
 			'SELECT ' . implode(', ', $this->getColumns()) . '
 			FROM {db_prefix}' . $this->getTableName(),
 			[]
+		);
+
+		while ($row = $this->dbClient['db_fetch_assoc']($request))
+			$moods[$row['moods_id']] = $row;
+
+		$this->dbClient['db_free_result']($request);
+
+		return $moods;
+	}
+
+	public function getMoodsByStatus(int $status): array
+	{
+		$moods = [];
+
+		$request = $this->dbClient['db_query'](
+			'',
+			'SELECT ' . implode(', ', $this->getColumns()) . '
+			FROM {db_prefix}' . $this->getTableName() . '
+			WHERE ' . MoodEntity::COLUMN_STATUS . ' = {int:status}',
+			[
+				'status' => $status
+			]
 		);
 
 		while ($row = $this->dbClient['db_fetch_assoc']($request))
