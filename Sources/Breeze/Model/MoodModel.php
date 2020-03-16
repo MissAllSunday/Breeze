@@ -89,8 +89,8 @@ class MoodModel extends BaseModel
 		$request = $this->dbClient['db_query'](
 			'',
 			'SELECT ' . implode(', ', $this->getColumns()) . '
-			FROM {db_prefix}' . $this->getTableName() .'
-			WHERE '. MoodEntity::COLUMN_STATUS .' = {int:status}',
+			FROM {db_prefix}' . $this->getTableName() . '
+			WHERE ' . MoodEntity::COLUMN_STATUS . ' = {int:status}',
 			[
 				'status' => $status
 			]

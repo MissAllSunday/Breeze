@@ -83,7 +83,7 @@ class MoodService extends BaseService implements ServiceInterface
 					'data' => [
 						'sprintf' => [
 							'format' => '<a href="' . $scriptUrl .
-								'?action=admin;area='. AdminService::AREA .';sa=moodEdit;moodID=%1$s">' .
+								'?action=admin;area=' . AdminService::AREA . ';sa=moodEdit;moodID=%1$s">' .
 								$this->getSmfText('smileys_modify') . '</a>',
 							'params' => [
 								'moods_id' => true,
@@ -110,7 +110,7 @@ class MoodService extends BaseService implements ServiceInterface
 				],
 			],
 			'form' => [
-				'href' => $scriptUrl . '?action=admin;area='. AdminService::AREA .';sa=' . $listParams['id'] . ';delete',
+				'href' => $scriptUrl . '?action=admin;area=' . AdminService::AREA . ';sa=' . $listParams['id'] . ';delete',
 			],
 			'additional_rows' => [
 				[
@@ -120,7 +120,7 @@ class MoodService extends BaseService implements ServiceInterface
 						$this->getSmfText('quickmod_delete_selected') .
 						'" class="button you_sure"> 
 						<a class="button" href="' .
-						$scriptUrl . '?action=admin;area='. AdminService::AREA .';sa=moodEdit">' .
+						$scriptUrl . '?action=admin;area=' . AdminService::AREA . ';sa=moodEdit">' .
 						$this->getText('page_mood_create') . '</a>',
 					'class' => 'titlebg',
 				],
