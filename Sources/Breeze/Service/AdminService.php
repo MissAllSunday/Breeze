@@ -236,4 +236,9 @@ class AdminService extends BaseService implements ServiceInterface
 
 		createList($listOptions);
 	}
+
+	public function saveMood(): bool
+	{
+		return $this->moodService->saveMood();
+	}
 }

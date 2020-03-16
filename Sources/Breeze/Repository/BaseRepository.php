@@ -40,4 +40,9 @@ abstract class BaseRepository implements RepositoryInterface
 			self::LIKE_TYPE_COMMENT
 		];
 	}
+
+	public function getModel(): ModelInterface
+	{
+		return $this->model;
+	}
 }

@@ -109,6 +109,29 @@ class AdminController extends BaseController implements ControllerInterface
 		}
 	}
 
+	public function moodEdit(): void
+	{
+		$this->service->isEnableFeature('mood', __FUNCTION__ . 'general');
+
+		$mood = [];
+
+		if ($this->request->isSet('moodId'))
+			$mood = $this->service->getMoodById($this->request->get('moodId'));
+
+		$this->render(__FUNCTION__, [
+			Breeze::NAME => [
+				'notice' => $this->getMessage(),
+				'mood' => $mood,
+			],
+		]);
+
+		if (!$this->request->isSet('save'))
+			return;
+
+		$this->service->saveMood($this->request->get('mood'));
+		$this->service->redirect(AdminService::POST_URL . __FUNCTION__);
+	}
+
 	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void
 	{
 		$this->service->setSubActionContent($subTemplate, $params, $smfTemplate);

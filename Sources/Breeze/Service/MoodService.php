@@ -158,4 +158,11 @@ class MoodService extends BaseService implements ServiceInterface
 
 		return $wasDeleted;
 	}
+
+	public function getMoodById(int $moodId): array
+	{
+		$moods = $this->repository->getModel()->getMoodByIDs($moodId);
+
+		return isset($moods[$moodId]) ? $moods[$moodId] : [];
+	}
 }
