@@ -11,6 +11,7 @@ use Breeze\Repository\RepositoryInterface;
 class AdminService extends BaseService implements ServiceInterface
 {
 	public const IDENTIFIER = 'Admin';
+	public const AREA = 'breezeAdmin';
 	public const POST_URL = 'action=admin;area=breezeAdmin;sa=';
 
 	/**

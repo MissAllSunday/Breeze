@@ -11,8 +11,6 @@ class MoodService extends BaseService implements ServiceInterface
 {
 	use PersistenceTrait;
 
-	public const FOLDER = 'breezeMoods';
-
 	public function getMoodList(array $listParams, int $start = 0): array
 	{
 		if (empty($listParams))
@@ -48,15 +46,7 @@ class MoodService extends BaseService implements ServiceInterface
 					'data' => [
 						'function' => function ($rowData)
 						{
-							$fileUrl = $this->getMoodsUrl() . $rowData['file'] . '.' . $rowData['ext'];
-							$filePath = $this->getMoodsPath() . $rowData['file'] . '.' . $rowData['ext'];
-
-							if (file_exists($filePath))
-								return '<img src="' . $fileUrl . '" 
-									alt="' . $rowData['file'] . '" 
-									title="' . $rowData['file'] . '" />';
-
-							return $this->getText('mood_noFile');
+							return $rowData['emoji'];
 						},
 						'class' => 'centercol',
 					],
@@ -68,32 +58,21 @@ class MoodService extends BaseService implements ServiceInterface
 					'data' => [
 						'function' => function ($rowData)
 						{
-							$enable = !empty($rowData['enable']) ? 'enable' : 'disable';
-
-							return $this->getText('mood_' . $enable);
+							return $this->getText('mood_' . $rowData['status']);
 						},
 						'class' => 'centercol',
 					],
 				],
-				'filename' => [
+				'description' => [
 					'header' => [
-						'value' => $this->getSmfText('smileys_filename'),
+						'value' => $this->getText('mood_description'),
 					],
 					'data' => [
-						'sprintf' => [
-							'format' => '%1$s',
-							'params' => [
-								'file' => true,
-							],
-						],
-					],
-				],
-				'tooltip' => [
-					'header' => [
-						'value' => $this->getText('smileys_description'),
-					],
-					'data' => [
-						'db_htmlsafe' => 'description',
+						'function' => function ($rowData)
+						{
+							return $rowData['description'];
+						},
+						'class' => 'centercol',
 					],
 				],
 				'modify' => [
@@ -104,7 +83,7 @@ class MoodService extends BaseService implements ServiceInterface
 					'data' => [
 						'sprintf' => [
 							'format' => '<a href="' . $scriptUrl .
-								'?action=admin;area=breezeadmin;sa=moodEdit;moodID=%1$s">' .
+								'?action=admin;area='. AdminService::AREA .';sa=moodEdit;moodID=%1$s">' .
 								$this->getSmfText('smileys_modify') . '</a>',
 							'params' => [
 								'moods_id' => true,
@@ -131,7 +110,7 @@ class MoodService extends BaseService implements ServiceInterface
 				],
 			],
 			'form' => [
-				'href' => $scriptUrl . '?action=admin;area=breezeAdmin;sa=' . $listParams['id'] . ';delete',
+				'href' => $scriptUrl . '?action=admin;area='. AdminService::AREA .';sa=' . $listParams['id'] . ';delete',
 			],
 			'additional_rows' => [
 				[
@@ -141,26 +120,12 @@ class MoodService extends BaseService implements ServiceInterface
 						$this->getSmfText('quickmod_delete_selected') .
 						'" class="button you_sure"> 
 						<a class="button" href="' .
-						$scriptUrl . '?action=admin;area=breezeAdmin;sa=moodEdit">' .
+						$scriptUrl . '?action=admin;area='. AdminService::AREA .';sa=moodEdit">' .
 						$this->getText('page_mood_create') . '</a>',
 					'class' => 'titlebg',
 				],
 			],
 		], $listParams);
-	}
-
-	public function getMoodsPath(): string
-	{
-		$smfSettings = $this->global('settings');
-
-		return $smfSettings['default_theme_dir'] . '/images/' . self::FOLDER . '/';
-	}
-
-	public function getMoodsUrl(): string
-	{
-		$smfSettings = $this->global('settings');
-
-		return $smfSettings['default_images_url'] . '/' . self::FOLDER . '/';
 	}
 
 	public function getPlacementField(): int
@@ -173,7 +138,7 @@ class MoodService extends BaseService implements ServiceInterface
 		if (!$this->getSetting('master') || !$this->getSetting('mood'))
 			return;
 
-		$data['custom_fields'][] =  $this->repository->getMood($userId);
+		$data['custom_fields'][] =  $this->repository->getActive();
 	}
 
 	public function moodProfile(int $memID, array $area): void
