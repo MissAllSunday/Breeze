@@ -306,7 +306,7 @@ if (empty($context['uninstalling']))
 			'description' => 'string',
 			'enable' => 'int',
 		], [
-			$emoji,
+			$smcFunc['htmlspecialchars']($emoji),
 			'',
 			1
 		], ['moods_id']);
