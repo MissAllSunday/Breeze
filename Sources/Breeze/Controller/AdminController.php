@@ -28,14 +28,21 @@ class AdminController extends BaseController implements ControllerInterface
 	 * @var ServiceInterface
 	 */
 	protected $moodService;
+	
+	/**
+	 * @var ServiceInterface
+	 */
+	private $formService;
 
 	public function __construct(
 		RequestService $request,
 		ServiceInterface $service,
-		ServiceInterface $moodService
+		ServiceInterface $moodService,
+		ServiceInterface $formService
 	)
 	{
 		$this->moodService = $moodService;
+		$this->formService = $formService;
 
 		parent::__construct($request, $service);
 	}
@@ -115,7 +122,11 @@ class AdminController extends BaseController implements ControllerInterface
 		]);
 
 		$start = $this->request->get('start') ? : 0;
-		$this->service->showMoodList( __FUNCTION__, $start);
+		$this->moodService->createMoodList([
+			'id' => __FUNCTION__,
+			'base_href' => $this->service->global('scripturl') .
+				'?' . AdminService::POST_URL . __FUNCTION__,
+		], $start);
 
 		$toDeleteMoodIds = $this->request->get('checked_icons');
 
@@ -140,10 +151,43 @@ class AdminController extends BaseController implements ControllerInterface
 			$mood = $this->moodService->getMoodById($moodId);
 		}
 
+		$this->formService->setOptions([
+			'name' => 'mood',
+			'url' => $this->service->global('scripturl') .
+				'?action=admin;area=' . AdminService::AREA . ';sa=' . __FUNCTION__ . ';save' .
+				(!empty($moodId) ? (';moodId=' . $moodId) : ''),
+		]);
+
+		$this->formService->setTextPrefix('mood_');
+
+		$this->formService->addText([
+			'name' => 'emoji',
+			'value' => !empty($mood['emoji']) ? $mood['emoji'] : '',
+			'size' => 15,
+			'maxlength' => 15,
+		]);
+
+		$this->formService->addTextArea([
+			'name' => 'description',
+			'value' => !empty($mood['description']) ? $mood['description'] : '',
+			'size' => ['rows' => 10, 'cols' => 50, 'maxLength' => 1024]
+		]);
+
+		$this->formService->addCheckBox([
+			'name' => 'enable',
+			'value' => !empty($mood['enable']) ? true : false
+		]);
+
+		$this->formService->addSessionField();
+
+		$this->formService->addHr();
+		$this->formService->addButton(['name' => 'submit']);
+
 		$this->render(__FUNCTION__, [
 			Breeze::NAME => [
 				'notice' => $this->getMessage(),
 				'mood' => $mood,
+				'form' => $this->formService->display(),
 			],
 		]);
 

@@ -12,10 +12,10 @@ class MoodService extends BaseService implements ServiceInterface
 {
 	use PersistenceTrait;
 
-	public function getMoodList(array $listParams, int $start = 0): array
+	public function createMoodList(array $listParams, int $start = 0): void
 	{
 		if (empty($listParams))
-			return [];
+			return;
 
 		$this->setLanguage('ManageSmileys');
 		$numItemsPerPage = 10;
@@ -23,9 +23,9 @@ class MoodService extends BaseService implements ServiceInterface
 		$maxIndex = $this->repository->getCount();
 		$chunkedItems = $this->repository->getChunk($start, $numItemsPerPage);
 
-		return  array_merge([
+		$listParams =  array_merge([
 			'id' => '',
-			'title' => '',
+			'title' => $this->getText('page_' . $listParams['id'] . '_title'),
 			'base_href' => '',
 			'items_per_page' => $numItemsPerPage,
 			'get_count' => [
@@ -127,6 +127,10 @@ class MoodService extends BaseService implements ServiceInterface
 				],
 			],
 		], $listParams);
+
+		$this->requireOnce('Subs-List');
+
+		createList($listParams);
 	}
 
 	public function getPlacementField(): int

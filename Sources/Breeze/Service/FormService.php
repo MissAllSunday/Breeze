@@ -13,7 +13,7 @@ use Breeze\Breeze;
 if (!defined('SMF'))
 	die('No direct access...');
 
-class FormService extends BaseService
+class FormService extends BaseService implements ServiceInterface
 {
 	private $elements = [];
 
@@ -66,7 +66,7 @@ class FormService extends BaseService
 			$param['fullDesc'] : $this->setText($param['name'] . '_sub');
 	}
 
-	function addSelect(array $param = []): void 
+	public function addSelect(array $param = []): void
 	{
 		if (!$this->isEmptyParam($param))
 			return;
@@ -86,10 +86,10 @@ class FormService extends BaseService
 		$this->addElement($param);
 	}
 
-	function addCheckBox(array $param = []): void 
+	public function addCheckBox(array $param = []): self
 	{
 		if (!$this->isEmptyParam($param))
-			return;
+			return $this;
 
 		$this->setParamValues($param);
 		$param['type'] = 'checkbox';
@@ -100,12 +100,14 @@ class FormService extends BaseService
 			'" value="' . $param['value'] . '" ' . $param['checked'] . ' class="input_check" />';
 
 		$this->addElement($param);
+
+		return $this;
 	}
 
-	function addText(array $param = []): void
+	public function addText(array $param = []): self
 	{
 		if (!$this->isEmptyParam($param))
-			return;
+			return $this;
 
 		$this->setParamValues($param);
 		$param['type'] = 'text';
@@ -118,12 +120,14 @@ class FormService extends BaseService
 			' class="input_text" />';
 
 		$this->addElement($param);
+
+		return $this;
 	}
 
-	function addTextArea(array $param = []): void
+	public function addTextArea(array $param = []): self
 	{
 		if (!$this->isEmptyParam($param))
-			return;
+			return $this;
 
 		$this->setParamValues($param);
 		$param['type'] = 'textarea';
@@ -143,18 +147,29 @@ class FormService extends BaseService
 			$param['value'] . '</' . $param['type'] . '>';
 
 		$this->addElement($param);
+
+		return $this;
 	}
 
-	function addHiddenField(string $name, string $value): void
+	public function addHiddenField(string $name, string $value): self
 	{
 		$param['type'] = 'hidden';
 		$param['html'] = '
 		<input type="' . $param['type'] . '" name="' . $name . '" id="' . $name . '" value="' . $value . '" />';
 
 		$this->addElement($param);
+
+		return $this;
 	}
 
-	function addHr(): void
+	public function addSessionField(): self
+	{
+		$context = $this->global('context');
+
+		return $this->addHiddenField($context['session_var'], $context['session_id']);
+	}
+
+	public function addHr(): void
 	{
 		$param['type'] = 'hr';
 		$param['html'] = '<br /><hr /><br />';
@@ -162,7 +177,7 @@ class FormService extends BaseService
 		$this->addElement($param);
 	}
 
-	function addHTML(array $param = []): void
+	public function addHTML(array $param = []): void
 	{
 		if (!$this->isEmptyParam($param))
 			return;
@@ -173,7 +188,7 @@ class FormService extends BaseService
 		$this->addElement($param);
 	}
 
-	function addButton(array $param = []): void
+	public function addButton(array $param = []): void
 	{
 		if (!$this->isEmptyParam($param))
 			return;
@@ -184,7 +199,7 @@ class FormService extends BaseService
 		$this->addElement($param);
 	}
 
-	function addSection(array $param = []): void
+	public function addSection(array $param = []): void
 	{
 		if (!$this->isEmptyParam($param))
 			return;
@@ -195,11 +210,11 @@ class FormService extends BaseService
 		$this->addElement($param);
 	}
 
-	function display()
+	public function display()
 	{
 		global $context;
 
-		loadtemplate(Breeze::NAME . 'Form');
+		$this->setTemplate(Breeze::NAME . 'Form');
 
 		$context['form'] = [
 			'options' => $this->options,

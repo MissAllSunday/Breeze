@@ -19,18 +19,6 @@ class AdminService extends BaseService implements ServiceInterface
 	 */
 	protected $configVars = [];
 
-	/**
-	 * @var MoodService
-	 */
-	protected $moodService;
-
-	public function __construct(RepositoryInterface $repository, ServiceInterface $moodService)
-	{
-		$this->moodService = $moodService;
-
-		parent::__construct($repository);
-	}
-
 	public function initSettingsPage($subActions): void
 	{
 		$context = $this->global('context');
@@ -214,21 +202,5 @@ class AdminService extends BaseService implements ServiceInterface
 			$this->redirect($redirectUrl);
 
 		return (bool) $feature;
-	}
-
-	public function showMoodList($listId, int $start = 0): void
-	{
-		$scriptUrl = $this->global('scripturl');
-
-		$listOptions = $this->moodService->getMoodList([
-			'id' => $listId,
-			'title' => $this->getText('page_' . $listId . '_title'),
-			'base_href' => $scriptUrl . '?' . self::POST_URL . $listId,
-			'items_per_page' => 10,
-		], $start);
-
-		$this->requireOnce('Subs-List');
-
-		createList($listOptions);
 	}
 }

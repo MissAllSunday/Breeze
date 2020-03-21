@@ -101,7 +101,6 @@ function template_breezeAdmin_moodList(): void
 {
 	global $context;
 
-	// Success YAY!
 	if (!empty($context[Breeze::NAME]['notice']))
 	{
 		echo '
@@ -113,28 +112,22 @@ function template_breezeAdmin_moodList(): void
 	template_show_list($context[Breeze::NAME]['formId']);
 }
 
-function template_manage_mood_edit(): void
+function template_breezeAdmin_moodEdit(): void
 {
 	global $context, $txt, $scripturl;
 
-	// There were some errors.
-	if (!empty($context['mood']['notice']))
+	if (!empty($context[Breeze::NAME]['notice']))
 	{
 		echo '
-		<div class="errorbox">
-		<p>' . $txt['Breeze_mood_errors'] . '</p>';
-
-		foreach ($context['mood']['notice']['message'] as $e)
-			echo '<li>', $txt['Breeze_mood_' . $e] ,'</li>';
-
-		echo '
+		<div class="' . $context[Breeze::NAME]['notice']['type'] . 'box">
+		', $context[Breeze::NAME]['notice']['message'] ,'
 		</div><br />';
 	}
 
 	// Print the form.
 	echo
 	''
-	, $context['mood']['form'] ,
+	, $context[Breeze::NAME]['form'] ,
 	'';
 }
 
