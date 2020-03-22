@@ -107,7 +107,7 @@ class UserModel extends BaseModel implements ModelInterface
 			mem.' . (implode(', mem.', MemberEntity::getColumns())) . '
 			FROM {db_prefix}' . OptionsEntity::TABLE . ' AS op
 				LEFT JOIN {db_prefix}' . MemberEntity::TABLE . ' 
-				AS mem ON (mem.' . MemberEntity::COLUMN_ID . ' = {int:user})
+				AS mem ON (mem.' . MemberEntity::COLUMN_ID . ' = {int:userId})
 			WHERE ' . MemberEntity::COLUMN_ID . ' = {int:userId}',
 			[
 				'userId' => $userId,
