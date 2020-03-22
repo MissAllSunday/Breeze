@@ -7,7 +7,6 @@ namespace Breeze\Config\Mapper;
 
 use Breeze\Controller\AdminController;
 use Breeze\Service\AdminService;
-use Breeze\Service\FormService;
 use Breeze\Service\MoodService;
 use Breeze\Service\RequestService;
 
@@ -17,7 +16,7 @@ return [
 		'arguments'=> [
 			RequestService::class,
 			AdminService::class,
-			MoodService::class, FormService::class
+			MoodService::class,
 		]
 	]
 ];

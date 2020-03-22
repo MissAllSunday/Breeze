@@ -9,7 +9,6 @@ use Breeze\Repository\AdminRepository;
 use Breeze\Repository\User\MoodRepository;
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\AdminService;
-use Breeze\Service\FormService;
 use Breeze\Service\MoodService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\RequestService;
@@ -33,10 +32,6 @@ return [
 	],
 	'service.permissions' => [
 		'class' => PermissionsService::class,
-		'arguments'=> [AdminRepository::class]
-	],
-	'service.form' => [
-		'class' => FormService::class,
 		'arguments'=> [AdminRepository::class]
 	],
 ];

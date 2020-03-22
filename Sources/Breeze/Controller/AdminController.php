@@ -27,21 +27,14 @@ class AdminController extends BaseController implements ControllerInterface
 	 * @var ServiceInterface
 	 */
 	protected $moodService;
-	
-	/**
-	 * @var ServiceInterface
-	 */
-	private $formService;
 
 	public function __construct(
 		RequestService $request,
 		ServiceInterface $service,
-		ServiceInterface $moodService,
-		ServiceInterface $formService
+		ServiceInterface $moodService
 	)
 	{
 		$this->moodService = $moodService;
-		$this->formService = $formService;
 
 		parent::__construct($request, $service);
 	}
