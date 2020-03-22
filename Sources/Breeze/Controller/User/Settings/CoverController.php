@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
+
 namespace Breeze\Controller\User\Settings;
 
-class General
+class CoverController
 {
 
 }

@@ -7,7 +7,7 @@ declare(strict_types=1);
  */
 
 // Look for Generalphp....
-if (file_exists(dirname(__FILE__, 2) . '/General.php))
+if (file_exists(dirname(__FILE__, 2) . '/SettingsController.php))
 {
 	// Found it!
 	require(dirname(__FILE__, 2) . '/General.php);

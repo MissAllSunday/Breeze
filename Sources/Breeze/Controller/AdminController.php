@@ -46,7 +46,7 @@ class AdminController extends BaseController implements ControllerInterface
 		$this->subActionCall();
 	}
 
-	public function general(): void
+	public function main(): void
 	{
 		$this->render(__FUNCTION__, [
 			Breeze::NAME => [

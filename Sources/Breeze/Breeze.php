@@ -11,7 +11,10 @@ use Breeze\Controller\Comment;
 use Breeze\Controller\Cover;
 use Breeze\Controller\Mood;
 use Breeze\Controller\Status;
-use Breeze\Controller\User\Wall;
+use Breeze\Controller\User\Settings\AlertsController as AlertSettingsController;
+use Breeze\Controller\User\Settings\CoverController as CoverSettingsController;
+use Breeze\Controller\User\Settings\SettingsController as GeneralSettingsController;
+use Breeze\Controller\User\WallController;
 use Breeze\Repository\Like\Base as LikeRepository;
 use Breeze\Repository\Like\Comment as LikeCommentRepository;
 use Breeze\Repository\Like\Status as LikeStatusRepository;
@@ -58,19 +61,110 @@ class Breeze
 			}
 	}
 
-	public function permissionsWrapper(&$permissionGroups, &$permissionList): void
+	public function permissionsWrapper(array &$permissionGroups, array &$permissionList): void
 	{
 		$this->container->get(PermissionsService::class)->hookPermissions($permissionGroups, $permissionList);
 	}
 
-	public function profileMenuWrapper(&$profile_areas): void
+	public function profileMenuWrapper(array &$profileAreas): void
 	{
-		$this->container->get(UserService::class)->hookProfileMenu($profile_areas);
+		if (!$this->enable('master'))
+			return;
+
+		$context = $this->global('context');
+		$currentUserSettings = $this->container->get(UserService::class)->getCurrentUserSettings();
+
+		if ($this->enable('force_enable') || !empty($currentUserSettings['wall']))
+		{
+			/** @var WallController */
+			$wallController = $this->container->get(WallController::class);
+			
+			$profileAreas['info']['areas']['summary'] = [
+				'label' => $this->getText('general_wall'),
+				'icon' => 'smiley',
+				'file' => false,
+				'function' => [$wallController, 'dispatch'],
+				'permission' => [
+					'own' => 'is_not_guest',
+					'any' => 'profile_view',
+				],
+			];
+
+			$profileAreas['info']['areas'][UserService::LEGACY_AREA] = [
+				'label' => $this->getText('general_summary'),
+				'icon' => 'members',
+				'file' => 'Profile-View.php',
+				'function' => 'summary',
+				'permission' => [
+					'own' => 'is_not_guest',
+					'any' => 'profile_view',
+				],
+			];
+		}
+
+		/** @var SettingsController */
+		$settingsController = $this->container->get(SettingsController::class);
+
+		/** @var CoverController */
+		$coverController = $this->container->get(CoverController::class);
+
+		/** @var AlertsController */
+		$alertsController = $this->container->get(AlertsController::class);
+
+		$profileAreas['breeze_profile'] = [
+			'title' => $this->getText('general_my_wall_settings'),
+			'areas' => [],
+		];
+
+		$profileAreas['breeze_profile']['areas']['settings'] = [
+			'label' => $this->getT('user_settings_name'),
+			'icon' => 'maintain',
+			'file' => false,
+			'function' => GeneralSettingsController::class . '::do#',
+			'enabled' => $context['user']['is_owner'],
+			'permission' => [
+				'own' => 'is_not_guest',
+				'any' => 'profile_view',
+			],
+		];
+
+		$profileAreas['breeze_profile']['areas']['alerts'] = [
+			'label' => $this->text->get('user_settings_name_alerts'),
+			'file' => false,
+			'function' => AlertSettingsController::class . '::do#',
+			'enabled' => $context['user']['is_owner'],
+			'icon' => 'maintain',
+			'subsections' => [
+				'settings' => [
+					$this->text->get('user_settings_name_alerts_settings'),
+					['is_not_guest', 'profile_view']],
+				'edit' => [
+					$this->text->get('user_settings_name_alerts_edit'),
+					['is_not_guest', 'profile_view']],
+			],
+			'permission' => [
+				'own' => 'is_not_guest',
+				'any' => 'profile_view',
+			],
+		];
+
+		if ($this->enable('cover'))
+			$profileAreas['breeze_profile']['areas']['cover'] = [
+				'label' => $this->text->get('user_settings_name_cover'),
+				'icon' => 'administration',
+				'file' => false,
+				'function' => CoverSettingsController::class . '::do#',
+				'enabled' => $context['user']['is_owner'],
+				'permission' => [
+					'own' => 'is_not_guest',
+					'any' => 'profile_view',
+				],
+			];
 	}
 
 	public function menu(&$menu_buttons): void
 	{
-		//if (!$this->enable('master'))
+		if (!$this->enable('master'))
 			return;
 
 		$scriptUrl = $this->global('scripturl');
@@ -128,7 +222,7 @@ class Breeze
 
 		$actions['breezeStatus'] = [false,  Status::class . '::do#'];
 		$actions['breezeComment'] = [false, Comment::class . '::do#'];
-		$actions['breezeWall'] = [false, Wall::class . '::do#'];
+		$actions['breezeWall'] = [false, WallController::class . '::do#'];
 		$actions['breezeBuddy'] = [false, Buddy::class . '::do#'];
 		$actions['breezeMood'] = [false, Mood::class . '::do#'];
 		$actions['breezeCover'] = [false, Cover::class . '::do#'];

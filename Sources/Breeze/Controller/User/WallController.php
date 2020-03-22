@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Controller\User;
 
-class Wall extends Base implements BaseInterface
+class WallController extends Base implements BaseInterface
 {
 	public function do(): void
 	{

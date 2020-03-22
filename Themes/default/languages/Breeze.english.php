@@ -8,14 +8,14 @@ declare(strict_types=1);
 
 global $txt;
 
-// Public/General strings
+// Public/SettingsController strings
 $txt['Breeze_general_wall'] = 'User';
 $txt['Breeze_general_wall_page'] = 'page';
 $txt['Breeze_general_summary'] = 'Summary';
 $txt['Breeze_load_more'] = 'Load more';
 $txt['Breeze_admin'] = 'Admin panel';
 $txt['Breeze_general_my_wall'] = 'My User';
-$txt['Breeze_general_my_wall_settings'] = 'My User General';
+$txt['Breeze_general_my_wall_settings'] = 'My User SettingsController';
 $txt['Breeze_general_loading'] = 'Loading...';
 $txt['Breeze_general_like'] = 'Like';
 $txt['Breeze_general_delete'] = 'Delete';
@@ -23,7 +23,7 @@ $txt['Breeze_general_upload'] = 'Upload';
 $txt['Breeze_general_cancel'] = 'Cancel';
 $txt['Breeze_general_posted_on'] = 'Posted on %s\'s User';
 
-// Cover upload strings
+// CoverController upload strings
 $txt['Breeze_cu_dictDefaultMessage'] = 'Drag and drop your files here';
 $txt['Breeze_cu_add'] = 'Add files...';
 $txt['Breeze_cu_dictFallbackMessage'] = 'Your browser does not support Drag and drop file uploads';
@@ -34,20 +34,20 @@ $txt['Breeze_cu_max_width'] = 'Image exceeds maximum width, the max width value 
 $txt['Breeze_cu_max_height'] = 'Image exceeds maximum height, the max height value is {height}px';
 
 
-// User Individual General
-$txt['Breeze_profile'] = 'User General';
-$txt['Breeze_user_settings_name'] = 'User General';
+// User Individual SettingsController
+$txt['Breeze_profile'] = 'User SettingsController';
+$txt['Breeze_user_settings_name'] = 'User SettingsController';
 $txt['Breeze_user_settings_name_desc'] = 'Configure your wall and other general settings.';
 $txt['Breeze_user_buddysettings_name'] = 'Buddy Requests';
 $txt['Breeze_user_single_status'] = 'Single Status';
 $txt['Breeze_user_notisettings_name'] = 'My wall alerts';
 $txt['Breeze_user_notilogs_name'] = 'My Activity logs';
-$txt['Breeze_user_settings_name_cover'] = 'Cover image upload';
+$txt['Breeze_user_settings_name_cover'] = 'CoverController image upload';
 $txt['Breeze_user_settings_name_alerts'] = 'My wall alerts';
 $txt['Breeze_user_settings_name_alerts_desc'] = 'Enable/disable single alerts, delete single/all alerts.';
-$txt['Breeze_user_settings_name_alerts_settings'] = 'Alert General';
+$txt['Breeze_user_settings_name_alerts_settings'] = 'Alert SettingsController';
 $txt['Breeze_user_settings_name_alerts_settings_desc'] = 'From here you can control which alerts you want other people to see.';
-$txt['Breeze_user_settings_name_alerts_edit'] = 'My Alerts';
+$txt['Breeze_user_settings_name_alerts_edit'] = 'My AlertsController';
 $txt['Breeze_user_settings_name_alerts_edit_desc'] = 'Delete your own alerts, if an alerts gets deleted, your buddies/other users won\'t be able to see them.';
 $txt['Breeze_user_settings_alert_cover'] = 'Alert people when I change my cover image.';
 $txt['Breeze_user_settings_alert_cover_sub'] = '';
@@ -76,7 +76,7 @@ $txt['Breeze_user_settings_number_alert'] = 'How many alerts will be displayed';
 $txt['Breeze_user_settings_number_alert_sub'] = 'If you have more, a "Load more" button will appear. Default value is 5';
 $txt['Breeze_user_settings_general_wall'] = 'Enable the general wall';
 $txt['Breeze_user_settings_general_wall_sub'] = 'The general wall is a unique page where you can see the status and updates from your buddies. This setting allows you to enable/disable it.';
-$txt['Breeze_user_settings_cover_select'] = 'Cover image file';
+$txt['Breeze_user_settings_cover_select'] = 'CoverController image file';
 $txt['Breeze_user_settings_submit'] = 'Submit';
 $txt['Breeze_user_settings_cancel'] = 'Cancel';
 $txt['Breeze_user_settings_checkAll'] = 'select all options';
@@ -86,7 +86,7 @@ $txt['Breeze_error_cover_error_check'] = 'Your image didn\'t pass the security c
 $txt['Breeze_info_cover_deleted'] = 'Your cover was successfully deleted.';
 $txt['Breeze_error_no_cover_deleted'] = 'There isn\'t anything to delete.';
 $txt['Breeze_user_settings_cover_delete'] = 'Delete your current uploaded cover image';
-$txt['Breeze_user_settings_cover_height'] = 'Cover height';
+$txt['Breeze_user_settings_cover_height'] = 'CoverController height';
 $txt['Breeze_user_settings_cover_height_sub'] = 'The space used to show your cover, use this setting to adjust the height according to your uploaded image. Default value: 380';
 $txt['Breeze_user_settings_wall'] = 'Enable my wall';
 $txt['Breeze_user_settings_wall_sub'] = 'If you want to use your wall, you need to check this option, otherwise your profile will show the default page.';
@@ -208,7 +208,7 @@ $txt['Breeze_buddy_error'] = 'There was an error, please try again.';
 $txt['Breeze_buddy_message'] = 'Buddy message';
 $txt['Breeze_buddy_message_desc'] = 'You can send {receiver} a message along with your buddy invite. <br> no HTML or BBC is allowed. Leave the field empty if you do not want to send a message.';
 
-// Cover error messages.
+// CoverController error messages.
 $txt['Breeze_cover_errors'] = [
     1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
     2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',

@@ -293,7 +293,7 @@ class BreezeUser extends Breeze
 		$context['page_desc'] = $data->get('sa') && $tools->text('user_settings_name_alerts_' . $data->get('sa') . '_desc') ? $tools->text('user_settings_name_alerts_' . $data->get('sa') . '_desc') : $tools->text('user_settings_name_alerts_settings_desc');
 
 		// Call the right action.
-		$call = 'alert' . ($data->get('sa') ? ucfirst($data->get('sa')) : 'General');
+		$call = 'alert' . ($data->get('sa') ? ucfirst($data->get('sa')) : 'SettingsController');
 
 		// Call the right function.
 		$this->{$call}();
@@ -468,7 +468,7 @@ class BreezeUser extends Breeze
 			'checked' => !empty($userSettings['wall']),
 		]);
 
-		// General wall setting.
+		// SettingsController wall setting.
 		$form->addCheckBox([
 			'name' => 'general_wall',
 			'checked' => !empty($userSettings['general_wall']),
@@ -565,7 +565,7 @@ class BreezeUser extends Breeze
 			'size' => ['rows' => 10, 'cols' => 50, 'maxLength' => $tools->setting('allowed_maxlength_aboutMe') ? $tools->setting('allowed_maxlength_aboutMe') : 1024]
 		]);
 
-		// Cover height.
+		// CoverController height.
 		if ($tools->enable('cover'))
 			$form->addText([
 				'name' => 'cover_height',
@@ -642,7 +642,7 @@ class BreezeUser extends Breeze
 		// Add the dot to the allowed extensions.
 		$acceptedFiles = implode(',', array_map(function($val) { return '.' . $val;}, explode(',', $this['tools']->setting('cover_image_types') ? $this['tools']->setting('cover_image_types') : 'jpg,jpeg,png')));
 
-		// Cover upload option.
+		// CoverController upload option.
 		$form->addHTML([
 			'fullDesc' => $this['tools']->parser(
 				$this['tools']->text('user_settings_cover_select_sub'),

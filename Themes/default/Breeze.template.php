@@ -437,7 +437,7 @@ function template_general_wall(): void
 			</div>
 			<p class="clear" />';
 
-	// General wall
+	// SettingsController wall
 	echo '
 		<div id="tab-wall" class="content">';
 

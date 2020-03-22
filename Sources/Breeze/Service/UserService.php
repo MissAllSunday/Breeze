@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
-use Breeze\Controller\User\Settings\Alerts as AlertSettingsController;
-use Breeze\Controller\User\Settings\Cover as CoverSettingsController;
-use Breeze\Controller\User\Settings\General as GeneralSettingsController;
-use Breeze\Controller\User\Wall as WallController;
+use Breeze\Controller\AdminController;
+use Breeze\Controller\User\Settings\AlertsController as AlertSettingsController;
+use Breeze\Controller\User\Settings\CoverController as CoverSettingsController;
+use Breeze\Controller\User\Settings\SettingsController as GeneralSettingsController;
+use Breeze\Controller\User\WallController as WallController;
 use Breeze\Model\UserModel as UserModel;
 
 class UserService extends BaseService implements ServiceInterface
 {
+	public const AREA = 'breezeSettings';
+	public const LEGACY_AREA = 'legacy';
+
 	public function getCurrentUserSettings(): array
 	{
 		$currentUserInfo = $this->global('user_info');
@@ -30,100 +34,19 @@ class UserService extends BaseService implements ServiceInterface
 		$currentUserSettings = $this->getCurrentUserSettings();
 
 		if ($this->enable('force_enable') || !empty($currentUserSettings['wall']))
-			foreach ($profile_items as &$item)
-				if ('summary' == $item['area'])
-					$item['area'] = 'static';
+			foreach ($profile_items as &$profileItem)
+				if ('summary' === $profileItem['area'])
+				{
+					$profileItem['area'] = self::LEGACY_AREA;
+					break;
+				}
 
 		$profile_items[] = [
 			'menu' => 'breeze_profile',
 			'area' => 'alerts',
-			'url' => $scriptUrl . '?action=profile;area=breezesettings;u=' . $currentUserInfo['id'],
+			'url' => $scriptUrl . '?action=profile;area='. self::AREA .';u=' . $currentUserInfo['id'],
 			'title' => $this->getText('general_my_wall_settings'),
 		];
-	}
-
-	public function hookProfileMenu(&$profile_areas): void
-	{
-		if (!$this->enable('master'))
-			return;
-
-		$context = $this->global('context');
-		$currentUserSettings = $currentUserSettings = $this->getCurrentUserSettings();
-
-		if ($this->enable('force_enable') || !empty($currentUserSettings['wall']))
-		{
-			$profile_areas['info']['areas']['summary'] = [
-				'label' => $this->text->get('general_wall'),
-				'icon' => 'smiley',
-				'file' => false,
-				'function' => WallController::class . '::do#',
-				'permission' => [
-					'own' => 'is_not_guest',
-					'any' => 'profile_view',
-				],
-			];
-
-			$profile_areas['info']['areas']['static'] = [
-				'label' => $this->text->get('general_summary'),
-				'icon' => 'members',
-				'file' => 'Profile-View.php',
-				'function' => 'summary',
-				'permission' => [
-					'own' => 'is_not_guest',
-					'any' => 'profile_view',
-				],
-			];
-		}
-
-		$profile_areas['breeze_profile'] = [
-			'title' => $this->text->get('general_my_wall_settings'),
-			'areas' => [],
-		];
-
-		$profile_areas['breeze_profile']['areas']['settings'] = [
-			'label' => $this->text->get('user_settings_name'),
-			'icon' => 'maintain',
-			'file' => false,
-			'function' => GeneralSettingsController::class . '::do#',
-			'enabled' => $context['user']['is_owner'],
-			'permission' => [
-				'own' => 'is_not_guest',
-				'any' => 'profile_view',
-			],
-		];
-
-		$profile_areas['breeze_profile']['areas']['alerts'] = [
-			'label' => $this->text->get('user_settings_name_alerts'),
-			'file' => false,
-			'function' => AlertSettingsController::class . '::do#',
-			'enabled' => $context['user']['is_owner'],
-			'icon' => 'maintain',
-			'subsections' => [
-				'settings' => [
-					$this->text->get('user_settings_name_alerts_settings'),
-					['is_not_guest', 'profile_view']],
-				'edit' => [
-					$this->text->get('user_settings_name_alerts_edit'),
-					['is_not_guest', 'profile_view']],
-			],
-			'permission' => [
-				'own' => 'is_not_guest',
-				'any' => 'profile_view',
-			],
-		];
-
-		if ($this->enable('cover'))
-			$profile_areas['breeze_profile']['areas']['cover'] = [
-				'label' => $this->text->get('user_settings_name_cover'),
-				'icon' => 'administration',
-				'file' => false,
-				'function' => CoverSettingsController::class . '::do#',
-				'enabled' => $context['user']['is_owner'],
-				'permission' => [
-					'own' => 'is_not_guest',
-					'any' => 'profile_view',
-				],
-			];
 	}
 
 	public function hookAlertsPref(array $alertTypes): void

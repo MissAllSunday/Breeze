@@ -52,7 +52,7 @@ $txt['Breeze_alert_status_owner_buddy'] = '{poster} <a href="{href}" class="bbc_
 $txt['Breeze_alert_like'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> your {type}';
 $txt['Breeze_alert_like_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> {contentOwner}\'s {type}';
 
-// Cover
+// CoverController
 $txt['Breeze_alert_cover'] = '{poster} changed {gender_possessive} cover image<br>{image}';
 
 // MoodRepository change.
@@ -89,7 +89,7 @@ $txt['Breeze_log_Status_own_1'] = 'made a new status on his own wall';
 $txt['Breeze_log_Status_own_2'] = 'made a new status on her own wall';
 $txt['Breeze_log_Status_view'] = 'View status';
 
-// General.
+// SettingsController.
 $txt['alert_group_breeze'] = 'My wall alert settings';
 $txt['alert_Breeze_status_owner'] = 'When someone post a status on my wall';
 $txt['alert_Breeze_comment_status_owner'] = 'When someone comment on a status I made';

@@ -11,7 +11,7 @@ interface ControllerInterface
 
 	public function getSubActions(): array;
 
-	public function general(): void;
+	public function main(): void;
 
 	public function render(string $subTemplate, array $params): void;
 }
