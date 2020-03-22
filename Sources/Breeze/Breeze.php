@@ -172,7 +172,7 @@ class Breeze
 		if (!empty($menu_buttons['profile']['sub_buttons']['summary']))
 			$menu_buttons['profile']['sub_buttons']['summary'] = [
 				'title' => $this->getText('summary'),
-				'href' => $scriptUrl . '?action=profile;area=static',
+				'href' => $scriptUrl . '?action=profile;area='. UserService::LEGACY_AREA,
 				'show' => true,
 			];
 
@@ -227,12 +227,12 @@ class Breeze
 	}
 
 	public function profilePopUpWrapper(&$profile_items): void
-	{return;
+	{
 		$this->container->get(UserService::class)->hookProfilePopUp($profile_items);
 	}
 
 	public function alertsPrefWrapper( array &$alertTypes, &$groupOptions): void
-	{return;
+	{
 		$this->container->get(UserService::class)->hookAlertsPref($alertTypes);
 	}
 
@@ -262,7 +262,7 @@ class Breeze
 	}
 
 	public function displayMoodWrapper( array &$data, int $userId, $displayCustomFields): void
-	{return;
+	{
 		/** @var MoodService */
 		$moodService = $this->container->get(MoodService::class);
 
@@ -271,8 +271,7 @@ class Breeze
 
 	public function displayMoodProfileWrapper($memID, $area): void
 	{
-		// Don't do anything if the mod is off
-		//if (!$this->enable('master'))
+		if (!$this->enable('master'))
 			return;
 
 		// Let BreezeMood handle this...
@@ -280,7 +279,7 @@ class Breeze
 	}
 
 	public function adminMenuWrapper(array &$adminMenu): void
-	{return;
+	{
 		/** @var AdminController */
 		$adminController = $this->container->get(AdminController::class);
 
