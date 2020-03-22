@@ -119,10 +119,7 @@ class MoodService extends BaseService implements ServiceInterface
 					'value' => '
 						<input type="submit" name="delete" value="' .
 						$this->getSmfText('quickmod_delete_selected') .
-						'" class="button you_sure"> 
-						<a class="button" href="' .
-						$scriptUrl . '?action=admin;area=' . AdminService::AREA . ';sa=moodEdit">' .
-						$this->getText('page_mood_create') . '</a>',
+						'" class="button you_sure">',
 					'class' => 'titlebg',
 				],
 			],
