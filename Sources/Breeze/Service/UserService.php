@@ -44,7 +44,7 @@ class UserService extends BaseService implements ServiceInterface
 		$profile_items[] = [
 			'menu' => 'breeze_profile',
 			'area' => 'alerts',
-			'url' => $scriptUrl . '?action=profile;area='. self::AREA .';u=' . $currentUserInfo['id'],
+			'url' => $scriptUrl . '?action=profile;area=' . self::AREA . ';u=' . $currentUserInfo['id'],
 			'title' => $this->getText('general_my_wall_settings'),
 		];
 	}

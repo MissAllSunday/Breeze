@@ -11,15 +11,14 @@ use Breeze\Controller\Comment;
 use Breeze\Controller\Cover;
 use Breeze\Controller\Mood;
 use Breeze\Controller\Status;
-use Breeze\Controller\User\Settings\AlertsController as AlertSettingsController;
-use Breeze\Controller\User\Settings\CoverController as CoverSettingsController;
-use Breeze\Controller\User\Settings\SettingsController as GeneralSettingsController;
+use Breeze\Controller\User\Settings\AlertsController;
+use Breeze\Controller\User\Settings\CoverController;
+use Breeze\Controller\User\Settings\SettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Repository\Like\Base as LikeRepository;
 use Breeze\Repository\Like\Comment as LikeCommentRepository;
 use Breeze\Repository\Like\Status as LikeStatusRepository;
 use Breeze\Service\MoodService;
-use Breeze\Service\Permissions;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\UserService;
 use Breeze\Traits\TextTrait;
@@ -105,9 +104,6 @@ class Breeze
 		/** @var SettingsController */
 		$settingsController = $this->container->get(SettingsController::class);
 
-		/** @var CoverController */
-		$coverController = $this->container->get(CoverController::class);
-
 		/** @var AlertsController */
 		$alertsController = $this->container->get(AlertsController::class);
 
@@ -120,7 +116,7 @@ class Breeze
 			'label' => $this->getText('user_settings_name'),
 			'icon' => 'maintain',
 			'file' => false,
-			'function' => GeneralSettingsController::class . '::do#',
+			'function' => [$settingsController, 'dispatch'],
 			'enabled' => $context['user']['is_owner'],
 			'permission' => [
 				'own' => 'is_not_guest',
@@ -129,17 +125,17 @@ class Breeze
 		];
 
 		$profileAreas['breeze_profile']['areas']['alerts'] = [
-			'label' => $this->text->get('user_settings_name_alerts'),
+			'label' => $this->getText('user_settings_name_alerts'),
 			'file' => false,
-			'function' => AlertSettingsController::class . '::do#',
+			'function' => [$alertsController, 'dispatch'],
 			'enabled' => $context['user']['is_owner'],
 			'icon' => 'maintain',
 			'subsections' => [
 				'settings' => [
-					$this->text->get('user_settings_name_alerts_settings'),
+					$this->getText('user_settings_name_alerts_settings'),
 					['is_not_guest', 'profile_view']],
 				'edit' => [
-					$this->text->get('user_settings_name_alerts_edit'),
+					$this->getText('user_settings_name_alerts_edit'),
 					['is_not_guest', 'profile_view']],
 			],
 			'permission' => [
@@ -149,17 +145,22 @@ class Breeze
 		];
 
 		if ($this->enable('cover'))
+		{
+			/** @var CoverController */
+			$coverController = $this->container->get(CoverController::class);
+
 			$profileAreas['breeze_profile']['areas']['cover'] = [
-				'label' => $this->text->get('user_settings_name_cover'),
+				'label' => $this->getText('user_settings_name_cover'),
 				'icon' => 'administration',
 				'file' => false,
-				'function' => CoverSettingsController::class . '::do#',
+				'function' => [$coverController, 'dispatch'],
 				'enabled' => $context['user']['is_owner'],
 				'permission' => [
 					'own' => 'is_not_guest',
 					'any' => 'profile_view',
 				],
 			];
+		}
 	}
 
 	public function menu(&$menu_buttons): void

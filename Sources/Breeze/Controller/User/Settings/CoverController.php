@@ -10,13 +10,12 @@ use Breeze\Controller\ControllerInterface;
 
 class CoverController extends BaseController implements ControllerInterface
 {
-
 	public function getSubActions(): array
 	{
 		// TODO: Implement getSubActions() method.
 	}
 
-	public function dispatch()
+	public function dispatch(): void
 	{
 		// TODO: Implement dispatch() method.
 	}
