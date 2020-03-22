@@ -26,10 +26,9 @@ abstract class BaseRepository implements RepositoryInterface
 	 */
 	protected $entity;
 
-	public function __construct(EntityInterface $entity, ModelInterface $model)
+	public function __construct(ModelInterface $model)
 	{
 		$this->model = $model;
-		$this->entity = $entity;
 	}
 
 	public function handleLikes($type, $content): array

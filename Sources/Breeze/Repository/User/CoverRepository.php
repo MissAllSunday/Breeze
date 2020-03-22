@@ -5,22 +5,14 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\User;
 
-use Breeze\Service\Settings as Settings;
+use Breeze\Repository\BaseRepository;
+use Breeze\Repository\RepositoryInterface;
 
-class CoverRepository
+class CoverRepository extends BaseRepository implements RepositoryInterface
 {
 	const COVER_FOLDER = '/breezeFiles/';
 	const THUMB_FOLDER = '/thumbnail/';
 
-	/**
-	 * @var Settings
-	 */
-	protected $settings;
-
-	public function __construct(Settings $settings)
-	{
-		$this->settings = $settings;
-	}
 
 	public function deleteCover(string $fileName, int $userId): bool
 	{

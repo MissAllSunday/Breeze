@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-class Validate extends BaseService
+class Validate extends BaseService implements ServiceInterface
 {
 	public function permissions($type, int $profileOwner = 0, int $userPoster = 0)
 	{

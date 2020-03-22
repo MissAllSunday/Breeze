@@ -5,12 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
-use Breeze\Controller\AdminController;
-use Breeze\Controller\User\Settings\AlertsController as AlertSettingsController;
-use Breeze\Controller\User\Settings\CoverController as CoverSettingsController;
-use Breeze\Controller\User\Settings\SettingsController as GeneralSettingsController;
-use Breeze\Controller\User\WallController as WallController;
-use Breeze\Model\UserModel as UserModel;
+
 
 class UserService extends BaseService implements ServiceInterface
 {
@@ -49,7 +44,7 @@ class UserService extends BaseService implements ServiceInterface
 		];
 	}
 
-	public function hookAlertsPref(array $alertTypes): void
+	public function hookAlertsPref(array &$alertTypes): void
 	{
 		if (!$this->enable('master'))
 			return;

@@ -5,32 +5,12 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\Like;
 
-use Breeze\Model\LikeModel as LikeModel;
-use Breeze\Model\LogModel as LogModel;
-use Breeze\Model\NotificationModel as NotificationModel;
-use Breeze\Model\StatusModel as StatusModel;
-use Breeze\Model\UserModel as UserModel;
+use Breeze\Repository\BaseRepository;
+use Breeze\Repository\RepositoryInterface;
 
 
-class Status extends Base
+class Status extends BaseRepository implements RepositoryInterface
 {
-	/**
-	 * @var StatusModel
-	 */
-	protected $statusModel;
-
-	public function __construct(
-		LikeModel $likeModel,
-		UserModel $userModel,
-		NotificationModel $notificationModel,
-		StatusModel $statusModel,
-		LogModel $logModel
-	)
-	{
-		parent::__construct($likeModel, $userModel, $notificationModel, $logModel);
-
-		$this->statusModel = $statusModel;
-	}
 
 	public function update($smfLikesObject): void
 	{
