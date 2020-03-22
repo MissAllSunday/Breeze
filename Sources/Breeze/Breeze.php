@@ -8,16 +8,13 @@ use Breeze\Config\MapperAggregate;
 use Breeze\Controller\AdminController;
 use Breeze\Controller\Buddy;
 use Breeze\Controller\Comment;
-use Breeze\Controller\Cover;
 use Breeze\Controller\Mood;
 use Breeze\Controller\Status;
+use Breeze\Controller\User\CoverController;
 use Breeze\Controller\User\Settings\AlertsController;
-use Breeze\Controller\User\Settings\CoverController;
 use Breeze\Controller\User\Settings\SettingsController;
 use Breeze\Controller\User\WallController;
-use Breeze\Repository\Like\Base as LikeRepository;
-use Breeze\Repository\Like\Comment as LikeCommentRepository;
-use Breeze\Repository\Like\Status as LikeStatusRepository;
+use Breeze\Service\AdminService;
 use Breeze\Service\MoodService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\UserService;
@@ -204,7 +201,7 @@ class Breeze
 					],
 					'admin' => [
 						'title' => $this->getText('admin'),
-						'href' => $scriptUrl . '?action=admin;area=breezeadmin',
+						'href' => $scriptUrl . '?action=admin;area='. AdminService::AREA,
 						'show' => ($this->enable('master') && $currentUserInfo['is_admin']),
 						'sub_buttons' => [],
 					],

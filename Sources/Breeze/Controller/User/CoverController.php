@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Controller\User\Settings;
+namespace Breeze\Controller\User;
 
 use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
