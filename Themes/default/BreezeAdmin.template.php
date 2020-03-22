@@ -6,7 +6,7 @@ declare(strict_types=1);
 // The admin panel where the news and other very useful stuff is displayed
 use Breeze\Breeze;
 
-function template_breezeAdmin_general(): void
+function template_breezeAdmin_main(): void
 {
 	global $txt, $context;
 

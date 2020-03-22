@@ -139,11 +139,16 @@ class AdminService extends BaseService implements ServiceInterface
 	{
 		$this->configVars = [
 			['title', Breeze::PATTERN . 'page_permissions'],
-			['check', Breeze::PATTERN . 'cover', 'subtext' => $this->getText('cover_sub')],
-			['int', Breeze::PATTERN . 'cover_max_image_size', 'size' => 3, 'subtext' => $this->getText('cover_max_image_size_sub')],
-			['int', Breeze::PATTERN . 'cover_max_image_width', 'size' => 4, 'subtext' => $this->getText('cover_max_image_width_sub')],
-			['int', Breeze::PATTERN . 'cover_max_image_height', 'size' => 3, 'subtext' => $this->getText('cover_max_image_height_sub')],
-			['text', Breeze::PATTERN . 'cover_image_types', 'size' => 25, 'subtext' => $this->getText('cover_image_types_sub')],
+			['check', Breeze::PATTERN . 'cover', 'subtext' =>
+				$this->getText('cover_sub')],
+			['int', Breeze::PATTERN . 'cover_max_image_size', 'size' => 3, 'subtext' =>
+				$this->getText('cover_max_image_size_sub')],
+			['int', Breeze::PATTERN . 'cover_max_image_width', 'size' => 4, 'subtext' =>
+				$this->getText('cover_max_image_width_sub')],
+			['int', Breeze::PATTERN . 'cover_max_image_height', 'size' => 3, 'subtext' =>
+				$this->getText('cover_max_image_height_sub')],
+			['text', Breeze::PATTERN . 'cover_image_types', 'size' => 25, 'subtext' =>
+				$this->getText('cover_image_types_sub')],
 		];
 
 		if ($save)
@@ -182,7 +187,7 @@ class AdminService extends BaseService implements ServiceInterface
 
 		$context['page_title'] = $this->getText('page_' . $actionName . '_title');
 		$context['sub_template'] = !empty($smfTemplate) ?
-			$smfTemplate : (Breeze::NAME . self::IDENTIFIER . '_' . $actionName);
+			$smfTemplate : (self::AREA . '_' . $actionName);
 		$context[$context['admin_menu_name']]['tab_data'] = [
 			'title' => $context['page_title'],
 			'description' => $this->getText('page_' . $actionName . '_description'),
