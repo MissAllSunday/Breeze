@@ -117,7 +117,7 @@ class Breeze
 		];
 
 		$profileAreas['breeze_profile']['areas']['settings'] = [
-			'label' => $this->getT('user_settings_name'),
+			'label' => $this->getText('user_settings_name'),
 			'icon' => 'maintain',
 			'file' => false,
 			'function' => GeneralSettingsController::class . '::do#',
