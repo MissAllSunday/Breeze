@@ -21,7 +21,6 @@ class AdminController extends BaseController implements ControllerInterface
 		'cover',
 		'donate',
 		'moodList',
-		'moodEdit',
 	];
 
 	/**
@@ -136,66 +135,6 @@ class AdminController extends BaseController implements ControllerInterface
 			$this->moodService->deleteMoods($toDeleteMoodIds);
 			$this->service->redirect(AdminService::POST_URL . __FUNCTION__);
 		}
-	}
-
-	public function moodEdit(): void
-	{
-		$this->service->isEnableFeature('mood', __FUNCTION__ . 'general');
-
-		$mood = [];
-		$moodId = 0;
-
-		if ($this->request->isSet('moodId'))
-		{
-			$moodId = $this->request->get('moodId');
-			$mood = $this->moodService->getMoodById($moodId);
-		}
-
-		$this->formService->setOptions([
-			'name' => 'mood',
-			'url' => $this->service->global('scripturl') .
-				'?action=admin;area=' . AdminService::AREA . ';sa=' . __FUNCTION__ . ';save' .
-				(!empty($moodId) ? (';moodId=' . $moodId) : ''),
-		]);
-
-		$this->formService->setTextPrefix('mood_');
-
-		$this->formService->addText([
-			'name' => 'emoji',
-			'value' => !empty($mood['emoji']) ? $mood['emoji'] : '',
-			'size' => 15,
-			'maxlength' => 15,
-		]);
-
-		$this->formService->addTextArea([
-			'name' => 'description',
-			'value' => !empty($mood['description']) ? $mood['description'] : '',
-			'size' => ['rows' => 10, 'cols' => 50, 'maxLength' => 1024]
-		]);
-
-		$this->formService->addCheckBox([
-			'name' => 'enable',
-			'value' => !empty($mood['enable']) ? true : false
-		]);
-
-		$this->formService->addSessionField();
-
-		$this->formService->addHr();
-		$this->formService->addButton(['name' => 'submit']);
-
-		$this->render(__FUNCTION__, [
-			Breeze::NAME => [
-				'notice' => $this->getMessage(),
-				'mood' => $mood,
-				'form' => $this->formService->display(),
-			],
-		]);
-
-		if (!$this->request->isSet('save'))
-			return;
-
-		$this->moodService->saveMood($this->request->get('mood'), $moodId);
-		$this->service->redirect(AdminService::POST_URL . __FUNCTION__);
 	}
 
 	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void

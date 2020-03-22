@@ -112,25 +112,6 @@ function template_breezeAdmin_moodList(): void
 	template_show_list($context[Breeze::NAME]['formId']);
 }
 
-function template_breezeAdmin_moodEdit(): void
-{
-	global $context, $txt, $scripturl;
-
-	if (!empty($context[Breeze::NAME]['notice']))
-	{
-		echo '
-		<div class="' . $context[Breeze::NAME]['notice']['type'] . 'box">
-		', $context[Breeze::NAME]['notice']['message'] ,'
-		</div><br />';
-	}
-
-	// Print the form.
-	echo
-	''
-	, $context[Breeze::NAME]['form'] ,
-	'';
-}
-
 // Boring stuff you will never see...
 function template_breezeAdmin_donate(): void
 {

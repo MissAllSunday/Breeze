@@ -3,12 +3,6 @@
 declare(strict_types=1);
 
 /**
- * Breeze.template.php
- *
- * @package Breeze mod
- * @version 1.1
- * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2015, Jessica González
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
@@ -19,7 +13,9 @@ function template_breeze_form()
 	$return = '';
 
 	$return .= '
-<form action="' . $context['form']['options']['url'] . '" method="post" accept-charset="' . $context['form']['options']['character_set'] . '" name="' . $context['form']['options']['name'] . '" id="' . $context['form']['options']['name'] . '">';
+<form action="' . $context['form']['options']['url'] . '" method="post" accept-charset="' .
+		$context['character_set'] . '" name="' . $context['form']['options']['name'] .
+		'" id="' . $context['form']['options']['name'] . '">';
 
 		// Any title and/or description?
 		if (!empty($context['form']['options']['title']))
@@ -54,7 +50,9 @@ function template_breeze_form()
 					<br /><span class="smalltext">' . $el['desc'] . '</span>
 				</dt>
 				<dd>
-					<input type="hidden" name="' . (!empty($context['form']['options']['name']) ? $context['form']['options']['name'] . '[' . $el['name'] . ']' : $el['name']) . '" value="0" />' . $el['html'] . '
+					<input type="hidden" name="' . (!empty($context['form']['options']['name']) ?
+							$context['form']['options']['name'] . '[' . $el['name'] . ']' :
+							$el['name']) . '" value="0" />' . $el['html'] . '
 				</dd>';
 					break;
 				case 'select':
@@ -64,7 +62,9 @@ function template_breeze_form()
 					<br /><span class="smalltext">' . $el['desc'] . '</span>
 				</dt>
 				<dd>
-					<input type="hidden" name="' . (!empty($context['form']['options']['name']) ? $context['form']['options']['name'] . '[' . $el['name'] . ']' : $el['name']) . '" value="0" />' . $el['html_start'] . '';
+					<input type="hidden" name="' . (!empty($context['form']['options']['name']) ?
+							$context['form']['options']['name'] . '[' . $el['name'] . ']' : $el['name']) .
+						'" value="0" />' . $el['html_start'] . '';
 
 					foreach($el['values'] as $k => $v)
 						$return .= $v . '';
@@ -114,7 +114,8 @@ function template_breeze_form()
 		// Any buttons?
 		foreach($context['form']['elements'] as $el)
 			if ('button' == $el['type'])
-				$return .= '<input type="submit" name="' . $el['name'] . '" value="' . $el['text'] . '" class="button_submit"/>';
+				$return .= '<input type="submit" name="' . $el['name'] . '" value="' . $el['text'] .
+					'" class="button_submit"/>';
 
 		// Close it.
 		$return .= '
