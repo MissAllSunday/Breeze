@@ -4,7 +4,29 @@ declare(strict_types=1);
 
 namespace Breeze\Controller\User\Settings;
 
-class SettingsController
+use Breeze\Controller\BaseController;
+use Breeze\Controller\ControllerInterface;
+
+class SettingsController extends BaseController implements ControllerInterface
 {
 
+	public function getSubActions(): array
+	{
+		// TODO: Implement getSubActions() method.
+	}
+
+	public function dispatch()
+	{
+		// TODO: Implement dispatch() method.
+	}
+
+	public function main(): void
+	{
+		// TODO: Implement main() method.
+	}
+
+	public function render(string $subTemplate, array $params): void
+	{
+		// TODO: Implement render() method.
+	}
 }
