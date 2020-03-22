@@ -7,14 +7,14 @@ namespace Breeze\Model;
 use Breeze\Entity\MemberEntity as MemberEntity;
 use Breeze\Entity\OptionsEntity as OptionsEntity;
 
-class UserModel extends BaseModel
+class UserModel extends BaseModel implements ModelInterface
 {
 	const JSON_VALUES = ['cover', 'petitionList', 'moodHistory'];
 	const ARRAY_VALUES = ['blockListIDs'];
 
 	function insert(array $data, int $userId = 0): int
 	{
-		if (empty($data) || empty($userID))
+		if (empty($data) || empty($userId))
 			return 0;
 
 		$inserts = [];
@@ -28,7 +28,7 @@ class UserModel extends BaseModel
 		}
 
 		if (!empty($inserts))
-			$this->db->replace(
+			$this->dbClient->replace(
 				OptionsEntity::TABLE,
 				[
 					MemberEntity::COLUMN_ID => 'int',
@@ -55,7 +55,7 @@ class UserModel extends BaseModel
 		if (empty($userIds))
 			return $loadedUsers;
 
-		$request = $this->db->query(
+		$request = $this->dbClient->query(
 			'
 			SELECT ' . implode(', ', MemberEntity::getColumns()) . '
 			FROM {db_prefix}' . MemberEntity::TABLE . '
@@ -65,14 +65,14 @@ class UserModel extends BaseModel
 			]
 		);
 
-		while ($row = $this->db->fetchAssoc($request))
+		while ($row = $this->dbClient->fetchAssoc($request))
 			$loadedUsers[$row[MemberEntity::COLUMN_ID]] = [
 				'username' => $row[MemberEntity::COLUMN_MEMBER_NAME],
 				'name' => $row[MemberEntity::COLUMN_REAL_NAME],
 				'id' => $row[MemberEntity::COLUMN_ID],
 			];
 
-		$this->db->freeResult($request);
+		$this->dbClient->freeResult($request);
 
 		foreach ($userIds as $userId)
 			if (!isset($loadedUsers[$userId]))
@@ -86,7 +86,7 @@ class UserModel extends BaseModel
 		if (empty($data) || empty($userId))
 			return 0;
 
-		return $this->db->update(
+		return $this->dbClient->update(
 			MemberEntity::TABLE,
 			'
 			SET ' . MemberEntity::COLUMN_PROFILE_VIEWS . ' = {string:jsonData}
@@ -100,9 +100,9 @@ class UserModel extends BaseModel
 
 	public function getUserSettings(int $userId): array
 	{
-		$data = [];
+		$userData = [];
 
-		$result = $this->db->query(
+		$result = $this->dbClient->query(
 			'SELECT op.' . (implode(', op.', OptionsEntity::getColumns())) . ', 
 			mem.' . (implode(', mem.', MemberEntity::getColumns())) . '
 			FROM {db_prefix}' . OptionsEntity::TABLE . ' AS op
@@ -114,20 +114,20 @@ class UserModel extends BaseModel
 			]
 		);
 
-		while ($row = $this->db->fetchAssoc($result))
+		while ($row = $this->dbClient->fetchAssoc($result))
 		{
-			$data[$row[OptionsEntity::COLUMN_VARIABLE]] = is_numeric($row[OptionsEntity::COLUMN_VALUE]) ?
+			$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = is_numeric($row[OptionsEntity::COLUMN_VALUE]) ?
 				(int) $row[OptionsEntity::COLUMN_VALUE] : (string) $row[OptionsEntity::COLUMN_VALUE];
 
 			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::JSON_VALUES))
-				$data[$row[OptionsEntity::COLUMN_VARIABLE]] = !empty($row[OptionsEntity::COLUMN_VALUE]) ?
+				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = !empty($row[OptionsEntity::COLUMN_VALUE]) ?
 					json_decode($row[OptionsEntity::COLUMN_VALUE], true) : [];
 
 			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::ARRAY_VALUES))
-				$data[$row[OptionsEntity::COLUMN_VARIABLE]] = !empty($row[OptionsEntity::COLUMN_VALUE]) ?
+				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = !empty($row[OptionsEntity::COLUMN_VALUE]) ?
 					explode(',', $row[OptionsEntity::COLUMN_VALUE]) : [];
 
-			$data += [
+			$userData += [
 				'buddiesList' => !empty($row[MemberEntity::COLUMN_BUDDY_LIST]) ?
 					explode(',', $row[MemberEntity::COLUMN_BUDDY_LIST]) : [],
 				'ignoredList' => !empty($row[MemberEntity::COLUMN_IGNORE_LIST]) ?
@@ -136,9 +136,9 @@ class UserModel extends BaseModel
 			];
 		}
 
-		$this->db->freeResult($result);
+		$this->dbClient->freeResult($result);
 
-		return $data;
+		return $userData;
 	}
 
 	public function getViews($userId = 0): array
@@ -148,7 +148,7 @@ class UserModel extends BaseModel
 		if (empty($userId))
 			return $views;
 
-		$result = $this->db->query(
+		$result = $this->dbClient->query(
 			'
 			SELECT ' . MemberEntity::COLUMN_PROFILE_VIEWS . '
 			FROM {db_prefix}' . MemberEntity::TABLE . '
@@ -158,17 +158,17 @@ class UserModel extends BaseModel
 			]
 		);
 
-		$views = $this->db->fetchAssoc($result);
+		$views = $this->dbClient->fetchAssoc($result);
 		$views = !empty($views) ? json_decode($views[0], true) : [];
 
-		$this->db->freeResult($result);
+		$this->dbClient->freeResult($result);
 
 		return $views;
 	}
 
 	public function deleteViews($userId): void
 	{
-		$this->db->update(
+		$this->dbClient->update(
 			MemberEntity::TABLE,
 			'
 			SET ' . MemberEntity::COLUMN_PROFILE_VIEWS . ' = {string:empty}
@@ -184,7 +184,7 @@ class UserModel extends BaseModel
 	{
 		$boards = [];
 
-		$request = $this->db->query(
+		$request = $this->dbClient->query(
 			'
 			SELECT id_board
 			FROM {db_prefix}boards as b
@@ -192,10 +192,10 @@ class UserModel extends BaseModel
 			[]
 		);
 
-		while ($row = $this->db->fetchAssoc($request))
+		while ($row = $this->dbClient->fetchAssoc($request))
 			$boards[] = $row['id_board'];
 
-		$this->db->freeResult($request);
+		$this->dbClient->freeResult($request);
 
 		return $boards;
 	}

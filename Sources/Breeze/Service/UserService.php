@@ -17,7 +17,7 @@ class UserService extends BaseService implements ServiceInterface
 	{
 		$currentUserInfo = $this->global('user_info');
 
-		return $this->userModel->getUserSettings($currentUserInfo['id']);
+		return $this->repository->getUserSettings($currentUserInfo['id']);
 	}
 
 	public function hookProfilePopUp(&$profile_items): void
@@ -38,7 +38,7 @@ class UserService extends BaseService implements ServiceInterface
 			'menu' => 'breeze_profile',
 			'area' => 'alerts',
 			'url' => $scriptUrl . '?action=profile;area=breezesettings;u=' . $currentUserInfo['id'],
-			'title' => $this->text->get('general_my_wall_settings'),
+			'title' => $this->getText('general_my_wall_settings'),
 		];
 	}
 

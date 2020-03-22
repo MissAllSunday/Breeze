@@ -67,17 +67,16 @@ class MoodModel extends BaseModel
 	{
 		$moods = [];
 
-		$request = $this->dbClient['db_query'](
-			'',
+		$request = $this->dbClient->query(
 			'SELECT ' . implode(', ', $this->getColumns()) . '
 			FROM {db_prefix}' . $this->getTableName(),
 			[]
 		);
 
-		while ($row = $this->dbClient['db_fetch_assoc']($request))
+		while ($row = $this->dbClient->fetchAssoc($request))
 			$moods[$row[MoodEntity::COLUMN_ID]] = $row;
 
-		$this->dbClient['db_free_result']($request);
+		$this->dbClient->freeResult($request);
 
 		return $moods;
 	}
@@ -86,8 +85,7 @@ class MoodModel extends BaseModel
 	{
 		$moods = [];
 
-		$request = $this->dbClient['db_query'](
-			'',
+		$request = $this->dbClient->query(
 			'SELECT ' . implode(', ', $this->getColumns()) . '
 			FROM {db_prefix}' . $this->getTableName() . '
 			WHERE ' . MoodEntity::COLUMN_STATUS . ' = {int:status}',
@@ -96,10 +94,10 @@ class MoodModel extends BaseModel
 			]
 		);
 
-		while ($row = $this->dbClient['db_fetch_assoc']($request))
+		while ($row = $this->dbClient->fetchAssoc($request))
 			$moods[$row[MoodEntity::COLUMN_ID]] = $row;
 
-		$this->dbClient['db_free_result']($request);
+		$this->dbClient->freeResult($request);
 
 		return $moods;
 	}

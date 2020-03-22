@@ -7,9 +7,12 @@ namespace Breeze\Repository;
 
 use Breeze\Entity\EntityInterface;
 use Breeze\Model\ModelInterface;
+use Breeze\Traits\CacheTrait;
 
 abstract class BaseRepository implements RepositoryInterface
 {
+	use CacheTrait;
+
 	public const LIKE_TYPE_STATUS = 'breSta';
 	public const LIKE_TYPE_COMMENT = 'breCom';
 
