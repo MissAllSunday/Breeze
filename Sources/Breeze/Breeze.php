@@ -172,7 +172,7 @@ class Breeze
 		if (!empty($menu_buttons['profile']['sub_buttons']['summary']))
 			$menu_buttons['profile']['sub_buttons']['summary'] = [
 				'title' => $this->getText('summary'),
-				'href' => $scriptUrl . '?action=profile;area='. UserService::LEGACY_AREA,
+				'href' => $scriptUrl . '?action=profile;area=' . UserService::LEGACY_AREA,
 				'show' => true,
 			];
 
@@ -201,7 +201,7 @@ class Breeze
 					],
 					'admin' => [
 						'title' => $this->getText('admin'),
-						'href' => $scriptUrl . '?action=admin;area='. AdminService::AREA,
+						'href' => $scriptUrl . '?action=admin;area=' . AdminService::AREA,
 						'show' => ($this->enable('master') && $currentUserInfo['is_admin']),
 						'sub_buttons' => [],
 					],
@@ -290,7 +290,7 @@ class Breeze
 			'function' => [$adminController, 'dispatch'],
 			'icon' => 'smiley',
 			'subsections' => [
-				'general' => [$this->getText('page_main')],
+				'main' => [$this->getText('page_main')],
 				'settings' => [$this->getText('page_settings_title')],
 				'permissions' => [$this->getText('page_permissions_title')],
 				'cover' => [$this->getText('page_cover_title')],

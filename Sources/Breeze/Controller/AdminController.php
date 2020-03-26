@@ -15,7 +15,7 @@ class AdminController extends BaseController implements ControllerInterface
 	use PersistenceTrait;
 
 	public const SUB_ACTIONS = [
-		'general',
+		'main',
 		'settings',
 		'permissions',
 		'cover',

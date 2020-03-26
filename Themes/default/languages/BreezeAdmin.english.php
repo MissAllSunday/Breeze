@@ -9,8 +9,8 @@ declare(strict_types=1);
 global $txt;
 
 // Admin SettingsController
-$txt['Breeze_page_general_title'] = 'Breeze Admin Panel';
-$txt['Breeze_page_general_description'] = 'This is your &quot;Breeze Admin Panel&quot;.  From here, you can edit the settings for Breeze If you have any trouble, feel free to <a href="https://missallsunday.com" target="_blank" class="new_win">ask for support</a> on the author\'s site.';
+$txt['Breeze_page_main_title'] = 'Breeze Admin Panel';
+$txt['Breeze_page_main_description'] = 'This is your &quot;Breeze Admin Panel&quot;.  From here, you can edit the settings for Breeze If you have any trouble, feel free to <a href="https://missallsunday.com" target="_blank" class="new_win">ask for support</a> on the author\'s site.';
 $txt['Breeze_page_main'] = 'Breeze Admin Center';
 $txt['Breeze_page_permissions'] = 'Permissions';
 $txt['Breeze_page_permissions_title'] = 'Permissions';

@@ -13,7 +13,6 @@ class CoverRepository extends BaseRepository implements RepositoryInterface
 	const COVER_FOLDER = '/breezeFiles/';
 	const THUMB_FOLDER = '/thumbnail/';
 
-
 	public function deleteCover(string $fileName, int $userId): bool
 	{
 		if (empty($imageFileName) || empty($userId))

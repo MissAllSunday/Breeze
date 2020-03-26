@@ -11,7 +11,6 @@ use Breeze\Repository\RepositoryInterface;
 
 class Status extends BaseRepository implements RepositoryInterface
 {
-
 	public function update($smfLikesObject): void
 	{
 		$likedType = $smfLikesObject->get('type');
