@@ -78,7 +78,6 @@ class Breeze
 			$profileAreas['info']['areas']['summary'] = [
 				'label' => $this->getText('general_wall'),
 				'icon' => 'smiley',
-				'file' => false,
 				'function' => [$wallController, 'dispatch'],
 				'permission' => [
 					'own' => 'is_not_guest',
@@ -112,7 +111,6 @@ class Breeze
 		$profileAreas['breeze_profile']['areas']['settings'] = [
 			'label' => $this->getText('user_settings_name'),
 			'icon' => 'maintain',
-			'file' => false,
 			'function' => [$settingsController, 'dispatch'],
 			'enabled' => $context['user']['is_owner'],
 			'permission' => [
@@ -123,7 +121,6 @@ class Breeze
 
 		$profileAreas['breeze_profile']['areas']['alerts'] = [
 			'label' => $this->getText('user_settings_name_alerts'),
-			'file' => false,
 			'function' => [$alertsController, 'dispatch'],
 			'enabled' => $context['user']['is_owner'],
 			'icon' => 'maintain',

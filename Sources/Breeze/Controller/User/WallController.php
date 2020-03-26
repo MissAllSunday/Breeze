@@ -5,25 +5,32 @@ declare(strict_types=1);
 
 namespace Breeze\Controller\User;
 
-class WallController extends Base implements BaseInterface
+use Breeze\Controller\BaseController;
+use Breeze\Controller\ControllerInterface;
+
+class WallController extends BaseController implements ControllerInterface
 {
-	public function do(): void
+	public const SUB_ACTIONS = [
+		'main',
+	];
+
+	public function dispatch(): void
 	{
-		// TODO: Implement do() method.
+		$this->subActionCall();
 	}
 
-	public function create(): void
+	public function main(): void
 	{
-		// TODO: Implement create() method.
+		// TODO: Implement main() method.
 	}
 
-	public function update(): void
+	public function render(string $subTemplate, array $params): void
 	{
-		// TODO: Implement update() method.
+		// TODO: Implement render() method.
 	}
 
-	public function delete(): void
+	public function getSubActions(): array
 	{
-		// TODO: Implement delete() method.
+		return self::SUB_ACTIONS;
 	}
 }
