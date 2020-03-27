@@ -5,7 +5,9 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Breeze;
 use Breeze\Entity\MoodEntity;
+use Breeze\Repository\RepositoryInterface;
 use Breeze\Traits\PersistenceTrait;
 
 class MoodService extends BaseService implements ServiceInterface
@@ -13,6 +15,16 @@ class MoodService extends BaseService implements ServiceInterface
 	use PersistenceTrait;
 
 	public const DISPLAY_PROFILE_AREAS = ['summary', 'static'];
+
+	protected $userRepository;
+
+	public function __construct(RepositoryInterface $repository, RepositoryInterface $userRepository)
+	{
+		$this->repository = $repository;
+		$this->userRepository = $userRepository;
+
+		parent::__construct($repository);
+	}
 
 	public function createMoodList(array $listParams, int $start = 0): void
 	{
@@ -202,5 +214,28 @@ class MoodService extends BaseService implements ServiceInterface
 			$result = $this->repository->getModel()->insert($mood);
 
 		return (bool) $result;
+	}
+
+	public function showMoodOnCustomFields(int $userId): void
+	{
+		$context = $this->global('context');
+
+		$activeMoods = $this->repository->getActiveMoods();
+		$userSettings = $this->userRepository->getUserSettings($userId);
+		$placementField = $this->getSetting('mood_placement', 0);
+		$moodLabel = $this->getSetting('mood_label', $this->getText('moodLabel'));
+
+		$currentMood = !empty($userSettings['mood']) && !empty($activeMoods[$userSettings['mood']]) ?
+			$activeMoods[$userSettings['mood']] : '';
+
+		// Wild Mood Swings... a highly underrated album if you ask me ;)
+		$context['custom_fields'][] = [
+			'name' => $moodLabel,
+			'placement' => $placementField,
+			'output_html' => $currentMood,
+			'show_reg' => false,
+		];
+
+		$this->setGlobal('context', $context);
 	}
 }

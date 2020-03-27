@@ -5,12 +5,6 @@ declare(strict_types=1);
 use Breeze\Breeze;
 
 /**
- * BreezeFunctions.template.php
- *
- * @package Breeze mod
- * @version 1.1
- * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2015, Jessica González
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
@@ -485,27 +479,6 @@ function template_userDiv(): void
 	</body>
 </html>';
 }
-
-function template_mood_image($mood, $user)
-{
-	global $scripturl, $txt, $context, $user_info;
-
-	// This should be a good place to add some permissions...
-	$currentUser = ($user == $user_info['id']);
-
-	// First case, no mood and no link.
-	if (empty($mood) && $currentUser)
-		return '<a href="' . $scripturl . '?action=breezemood;user=' . $user . '" rel="breezeMood" data-name="' . $txt['Breeze_moodChange'] . '" data-user="' . $user . '">' . $txt['Breeze_moodChange'] . '</a>';
-
-	// Got a mood, show it!
-	if (!empty($mood) && $currentUser)
-		return '<a href="' . $scripturl . '?action=breezemood;user=' . $user . '" rel="breezeMood" data-name="' . $txt['Breeze_moodChange'] . '" data-user="' . $user . '">' . $mood['image_html'] . '</a>';
-
-	// Just show the image...
-	
-		return $mood['image_html'];
-}
-
 
 function template_mood_change(): void
 {

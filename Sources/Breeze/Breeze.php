@@ -276,7 +276,7 @@ class Breeze
 		/** @var MoodService */
 		$moodService = $this->container->get(MoodService::class);
 
-		$moodService->showProfile($userId, $profileArea);
+		$moodService->showMoodOnCustomFields($userId);
 	}
 
 	public function adminMenuWrapper(array &$adminMenu): void

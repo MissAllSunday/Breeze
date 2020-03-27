@@ -20,7 +20,7 @@ return [
 	],
 	'service.mood' => [
 		'class' => MoodService::class,
-		'arguments'=> [MoodRepository::class]
+		'arguments'=> [MoodRepository::class, UserRepository::class]
 	],
 	'service.admin' => [
 		'class' => AdminService::class,
