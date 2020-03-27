@@ -24,6 +24,8 @@ class UserService extends BaseService implements ServiceInterface
 		if (!$this->enable('master'))
 			return;
 
+		$this->setLanguage(Breeze::NAME);
+
 		$scriptUrl = $this->global('scripturl');
 		$currentUserInfo = $this->global('user_info');
 		$currentUserSettings = $this->getCurrentUserSettings();
