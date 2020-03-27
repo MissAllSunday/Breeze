@@ -34,7 +34,7 @@ class WallService extends BaseService implements ServiceInterface
 		$context['sub_template'] = !empty($smfTemplate) ?
 			$smfTemplate : (self::ACTION . '_' . $actionName);
 		$context['linktree'][] = [
-			'url' => $scriptUrl . '?action='. self::ACTION,
+			'url' => $scriptUrl . '?action=' . self::ACTION,
 			'name' => $context['page_title'],
 		];
 
