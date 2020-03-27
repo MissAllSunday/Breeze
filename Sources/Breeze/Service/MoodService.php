@@ -12,6 +12,8 @@ class MoodService extends BaseService implements ServiceInterface
 {
 	use PersistenceTrait;
 
+	public const DISPLAY_PROFILE_AREAS = ['summary', 'static'];
+
 	public function createMoodList(array $listParams, int $start = 0): void
 	{
 		if (empty($listParams))

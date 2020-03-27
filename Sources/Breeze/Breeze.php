@@ -266,13 +266,17 @@ class Breeze
 		$moodService->displayMood($data, $userId);
 	}
 
-	public function displayMoodProfileWrapper($memID, $area): void
+	public function displayMoodProfileWrapper(int $userId, string $profileArea): void
 	{
-		if (!$this->enable('master'))
+		if (!$this->enable('master') ||
+			!$this->enable('mood') ||
+			!in_array($profileArea, MoodService::DISPLAY_PROFILE_AREAS))
 			return;
 
-		// Let BreezeMood handle this...
-		$this['mood']->showProfile($memID, $area);
+		/** @var MoodService */
+		$moodService = $this->container->get(MoodService::class);
+
+		$moodService->showProfile($userId, $profileArea);
 	}
 
 	public function adminMenuWrapper(array &$adminMenu): void
