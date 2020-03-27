@@ -14,6 +14,7 @@ use Breeze\Service\AdminService;
 use Breeze\Service\MoodService;
 use Breeze\Service\RequestService;
 use Breeze\Service\UserService;
+use Breeze\WallService;
 
 return [
 	'controller.admin' => [
@@ -28,7 +29,7 @@ return [
 		'class' => WallController::class,
 		'arguments'=> [
 			RequestService::class,
-			UserService::class,
+			WallService::class,
 		]
 	],
 	'controller.alerts' => [

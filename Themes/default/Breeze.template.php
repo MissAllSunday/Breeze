@@ -3,12 +3,6 @@
 declare(strict_types=1);
 
 /**
- * Breeze.template.php
- *
- * @package Breeze mod
- * @version 1.1
- * @author Jessica González <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2015, Jessica González
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 

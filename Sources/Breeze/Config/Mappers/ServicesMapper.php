@@ -13,6 +13,7 @@ use Breeze\Service\MoodService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\RequestService;
 use Breeze\Service\UserService;
+use Breeze\WallService;
 
 return [
 	'service.request' => [
@@ -33,5 +34,9 @@ return [
 	'service.permissions' => [
 		'class' => PermissionsService::class,
 		'arguments'=> [AdminRepository::class]
+	],
+	'service.wall' => [
+		'class' => WallService::class,
+		'arguments'=> [UserRepository::class]
 	],
 ];

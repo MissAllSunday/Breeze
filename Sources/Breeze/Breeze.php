@@ -74,7 +74,7 @@ class Breeze
 		{
 			/** @var WallController */
 			$wallController = $this->container->get(WallController::class);
-			
+
 			$profileAreas['info']['areas']['summary'] = [
 				'label' => $this->getText('general_wall'),
 				'icon' => 'smiley',
