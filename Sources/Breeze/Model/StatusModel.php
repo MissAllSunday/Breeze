@@ -10,7 +10,7 @@ class StatusModel extends BaseModel
 {
 	public function insert(array $data, int $statusId = 0): int
 	{
-		$this->db->insert(StatusEntity::TABLE, [
+		$this->dbClient->insert(StatusEntity::TABLE, [
 			StatusEntity::COLUMN_OWNER_ID => 'int',
 			StatusEntity::COLUMN_POSTER_ID => 'int',
 			StatusEntity::COLUMN_TIME => 'int',
@@ -21,14 +21,14 @@ class StatusModel extends BaseModel
 		return $this->getInsertedId();
 	}
 
-	public function getById(array $statusIds): array
+	public function getBy(string $columnName, array $statusIds): array
 	{
 		$status = [];
 
-		if (empty($statusIds))
+		if (empty($statusIds) || empty($columnName) || !$this->isValidColumn($columnName))
 			return $status;
 
-		$request = $this->db->query(
+		$request = $this->dbClient->query(
 			'
 			SELECT ' . implode(', ', StatusEntity::getColumns()) . '
 			FROM {db_prefix}' . StatusEntity::TABLE . '
@@ -36,10 +36,10 @@ class StatusModel extends BaseModel
 			['statusIds' => array_map('intval', $statusIds)]
 		);
 
-		while ($row = $this->db->fetchAssoc($request))
+		while ($row = $this->dbClient->fetchAssoc($request))
 			$moods[$row[StatusEntity::COLUMN_ID]] = $row;
 
-		$this->db->freeResult($request);
+		$this->dbClient->freeResult($request);
 
 		return $status;
 	}

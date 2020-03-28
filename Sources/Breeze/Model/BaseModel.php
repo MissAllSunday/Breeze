@@ -102,4 +102,9 @@ abstract class BaseModel implements ModelInterface
 
 		return $rowCount;
 	}
+
+	public function isValidColumn(string $columnName): bool
+	{
+		return in_array($columnName, $this->getColumns());
+	}
 }
