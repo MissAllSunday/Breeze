@@ -38,6 +38,7 @@ class WallController extends BaseController implements ControllerInterface
 	public function render(string $subTemplate, array $params = []): void
 	{
 		$this->service->setSubActionContent($subTemplate);
+		$this->service->loadUsersInfo();
 	}
 
 	public function getSubActions(): array

@@ -11,6 +11,8 @@ class WallService extends BaseService implements ServiceInterface
 {
 	public const ACTION = 'breeze';
 
+	private $usersToLoad = [];
+
 	public function setSubActionContent(
 		string $actionName,
 		array $templateParams = [],
@@ -39,5 +41,48 @@ class WallService extends BaseService implements ServiceInterface
 		];
 
 		$this->setGlobal('context', $context);
+	}
+
+	public function loadUsersInfo(): void
+	{
+		$userIds = $this->getUsersToLoad();
+
+		if (empty($userIds))
+			return;
+
+		$context = $this->global('context');
+		$modSettings = $this->global('modSettings');
+
+		if (!isset($context[Breeze::NAME]))
+			$context[Breeze::NAME] = [];
+
+		$context[Breeze::NAME]['users'] = [];
+		$loadedIDs = loadMemberData($userIds);
+
+		// Set the context var.
+		foreach ($userIds as $userId)
+		{
+			if (!in_array($userId, $loadedIDs))
+			{
+				$context[Breeze::NAME]['users'][$userId] = [
+					'link' => $this->getSmfText('guest_title'),
+					'name' => $this->getSmfText('guest_title'),
+					'avatar' => ['href' => $modSettings['avatar_url'] . '/default.png']
+				];
+				continue;
+			}
+
+			$context[Breeze::NAME]['users'][$userId] = loadMemberContext($userId, true);
+		}
+	}
+
+	public function getUsersToLoad(): array
+	{
+		return array_filter(array_unique($this->usersToLoad));
+	}
+
+	public function setUsersToLoad(array $usersToLoad): void
+	{
+		$this->usersToLoad = array_merge($usersToLoad, $this->usersToLoad);
 	}
 }
