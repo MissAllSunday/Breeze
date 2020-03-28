@@ -13,7 +13,7 @@ use Breeze\Service\MoodService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\RequestService;
 use Breeze\Service\UserService;
-use Breeze\WallService;
+use Breeze\Service\WallService;
 
 return [
 	'service.request' => [

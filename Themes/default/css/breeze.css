@@ -1,289 +1,30 @@
-
-.header{
-	z-index: 1;
-	overflow: visible;
-	position: relative;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-    background: no-repeat top center;
-    background-attachment: inherit;
-    background-size: cover;
-	margin-bottom:50px;
-	min-height: 280px;
-	max-height: 580px;
-}
-.header div.container{
-	overflow: visible;
-	position: absolute;
-	bottom: -50px;
-	left:10%;
-	margin: 0 auto;
-	max-width: 700px;
-	width:600px;
-	height:auto;
-	padding:5px;
-}
-.header div.username{
-	float:left;
-}
-div.username h1, div.username h1 a{
-	text-align:left;
-	display:block;
-	position: relative;
-	font-size: 2.0em;
+#breeze_main_section{
+	min-height: 500px;
+	overflow: auto;
 }
 
-div.username div
-{
-	position: absolute;
-	bottom: 5px;
-	display:block;
-	min-width:70%;
-}
-
-.header div.avatar{
-	z-index: 3;
-	float:left;
-	margin-right:10px;
-}
-
-.blocks{
-	float:left;
-	width: 29%;
-	padding: 20px 0 0 5px;
-}
-
-.wallContent{
-	float:right;
-	width: 68%;
-	margin: 0px 5px 0px 5px;
-}
-
-#Breeze_tabs{
-	padding:20px 0px 30px 0px;
-}
-
-/* Replace the evil overflow: hidden! */
-.infoList {
-	width:100%;
-}
-.infoList h4 {
-	font-size: 1.4em;
-	font-weight: 100;
-	white-space: pre-wrap;
-	overflow: visible;
-}
-.infoList h4 span.position {
-	font-size: 0.8em;
-	font-weight: 100;
-	display: block;
-}
-
-.breeze_user_statusbox textarea{
-	box-sizing: border-box;
-	width: 75%;
-	height:150px;
-	margin-bottom: 5px;
-}
-
-.post_comment textarea{
-	box-sizing: border-box;
-	width: 100%;
-	min-height: 100px;
-	margin: 5px 0 5px 0;
-	float:right;
-}
-
-.user_avatar{
-	float:left;
-	width:60px;
-	max-width:60px;
-}
-.user_avatar img{
-	width:60px;
-	max-width:60px;
-}
-
-.status, .comment{
-	float:right;
-	width:85%;
-}
-
-.status div.body, .comment div.body{
-	min-height: 50px;
-	margin:5px;
-}
-
-.options{
-	padding:10px;
-}
-
-.loadMoar{
-	margin-bottom:5px;
-	text-align:center;
-	position:relative;
-}
-
-/* Activity/logs */
-ul.breezeActivity li{
-	margin:5px;
-}
-.activityIcon{
-	margin:5px 10px 5px 5px;
-}
-
-.user_list li {
-	display:inline;
-	float:left;
-	width:22%;
-	margin-left:0%;
-	margin-right:0%;
-	margin-top:5%;
-	text-align: center;
-}
-
-.user_list a {
-	display:block;
-	text-decoration:none;
-	text-align: center
-}
-
-.user_list li img{
-	max-width : 40px;
-}
-
-/* Breeze pop up user info. */
-.breezeInfo div#basicinfo{
+#breeze_blocks{
 	width: 30%;
 }
 
-.breezeInfo div#detailedinfo{
-	width: 69.5%;
+#breeze_wall{
+	width: 69%;
 }
 
-/* CoverController upload stuff */
-#coverUpload{
-	display:block;
-	min-height:50px;
-	width:auto;
-	text-align:center;
-	margin:auto;
-}
-.cu-fileInfo, .cu-fileUI{
-	display:inline-block;
-	width:48%;
-	vertical-align: middle;
-}
+#breeze_avatar {
 
-div.cu-fileInfo p.progressBar{
-	display:none;
-}
+	background-image: url('');
 
-div.username div div.popup_container, div.username div a.menu_icon{
-	display:none;
-}
+	/* make a square container */
+	width: 120px;
+	height: 120px;
 
-@media screen and (max-width: 720px) {
+	/* fill the container, preserving aspect ratio, and cropping to fit */
+	background-size: cover;
 
-	/* Hide the sidebar. */
-	.blocks{
-		display: none;
-	}
+	/* center the image vertically and horizontally */
+	background-position: top center;
 
-	/* And make the wall content wider. */
-	.wallContent {
-		max-width: 98%;
-		width: 98%;
-	}
-
-	/* Don't show the margin bottom. */
-	.header
-	{
-		margin-bottom: 0px;
-	}
-
-	/* Make the header stuff centralized. */
-	.header div.container{
-		margin: auto;
-		min-width: 90%;
-		width: 90%;
-		left:0;
-		top:0;
-	}
-
-	/* The username needs to behave like a block */
-	.header div.username{
-		text-align:left;
-		display:block;
-		margin:3px;
-		float:none;
-	}
-
-	div.username div
-	{
-		position: relative;
-		bottom: 0;
-		display:block;
-	}
-
-	div.username h1, div.username h1 a{
-		display:block;
-		min-width: 90%;
-		margin: 0 0 15px 0;
-	}
-
-	/* Remove the position absolute stuff */
-	.header div.avatar{
-		display:inline-table;
-		margin: 0 auto;
-		float:none;
-	}
-
-	/* Make the comment textarea wider. */
-	.post_comment textarea, .breeze_user_statusbox textarea{
-		box-sizing: border-box;
-		width: 100%;
-	}
-
-	/* Hide the avatar next to the comment textarea */
-	.post_comment div.user_avatar{
-		display:none;
-	}
-
-	/* Hide the avatar from all comments */
-	li.breezeComment div.user_avatar img, li.breezeStatus div.user_avatar img{
-		display:none;
-	}
-
-	li.breezeComment div.user_avatar, li.breezeStatus div.user_avatar{
-		display:inline-block;
-		float:none;
-		max-width:100%;
-		width:100%;
-	}
-
-	/* Made the body text to look cleaner */
-	.status, .comment{
-		float:none;
-		width:99%;
-	}
-
-	.status div.body, .comment div.body{
-		margin:0;
-	}
-
-	/* Activity/logs */
-	.activityIcon{
-		display:none;
-	}
-
-	.activityContent{
-		margin:5px;
-	}
-
-	.activityContent img, .status div.body img, .comment div.body img{
-		display:none;
-	}
+	/* round the edges to a circle with border radius 1/2 container size */
+	border-radius: 50%;
 }

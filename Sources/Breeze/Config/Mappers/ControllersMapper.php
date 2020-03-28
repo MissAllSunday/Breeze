@@ -14,7 +14,7 @@ use Breeze\Service\AdminService;
 use Breeze\Service\MoodService;
 use Breeze\Service\RequestService;
 use Breeze\Service\UserService;
-use Breeze\WallService;
+use Breeze\Service\WallService;
 
 return [
 	'controller.admin' => [

@@ -3,10 +3,9 @@
 declare(strict_types=1);
 
 
-namespace Breeze;
+namespace Breeze\Service;
 
-use Breeze\Service\BaseService;
-use Breeze\Service\ServiceInterface;
+use Breeze\Breeze;
 
 class WallService extends BaseService implements ServiceInterface
 {
@@ -21,6 +20,7 @@ class WallService extends BaseService implements ServiceInterface
 		if (empty($actionName))
 			return;
 
+		loadCSSFile('breeze.css', [], 'smf_breeze');
 		$context = $this->global('context');
 		$scriptUrl = $this->global('scripturl');
 
