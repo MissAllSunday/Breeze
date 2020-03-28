@@ -6,12 +6,36 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
+use Breeze\Entity\StatusEntity;
+use Breeze\Repository\RepositoryInterface;
 
 class WallService extends BaseService implements ServiceInterface
 {
 	public const ACTION = 'breeze';
 
 	private $usersToLoad = [];
+
+	/**
+	 * @var RepositoryInterface
+	 */
+	private $statusRepository;
+
+	/**
+	 * @var RepositoryInterface
+	 */
+	private $commentRepository;
+
+	public function __construct(
+		RepositoryInterface $repository,
+		RepositoryInterface $statusRepository,
+		RepositoryInterface $commentRepository
+	)
+	{
+		$this->statusRepository = $statusRepository;
+		$this->commentRepository = $commentRepository;
+
+		parent::__construct($repository);
+	}
 
 	public function setSubActionContent(
 		string $actionName,
@@ -74,6 +98,11 @@ class WallService extends BaseService implements ServiceInterface
 
 			$context[Breeze::NAME]['users'][$userId] = loadMemberContext($userId, true);
 		}
+	}
+
+	public function getStatus(int $userId): void
+	{
+		$status = $this->statusRepository->getStatusByProfile($userId);
 	}
 
 	public function getUsersToLoad(): array

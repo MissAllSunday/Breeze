@@ -6,6 +6,8 @@ declare(strict_types=1);
 namespace Breeze\Config\Mapper;
 
 use Breeze\Repository\AdminRepository;
+use Breeze\Repository\CommentRepository;
+use Breeze\Repository\StatusRepository;
 use Breeze\Repository\User\MoodRepository;
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\AdminService;
@@ -37,6 +39,6 @@ return [
 	],
 	'service.wall' => [
 		'class' => WallService::class,
-		'arguments'=> [UserRepository::class]
+		'arguments'=> [UserRepository::class, StatusRepository::class, CommentRepository::class]
 	],
 ];

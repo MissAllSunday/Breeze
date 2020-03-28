@@ -14,12 +14,10 @@ class RequestService extends BaseService implements ServiceInterface
 		$this->request = $_REQUEST;
 	}
 
-	public function get(string $variableName, $format = '')
+	public function get(string $variableName, $defaultValue = '')
 	{
 		return isset($this->request[$variableName]) ?
-			$this->sanitize($format ?
-				$this->commaSeparated($this->request[$variableName], $format) :
-				$this->request[$variableName]) : false;
+			$this->sanitize($this->request[$variableName]) : ($defaultValue ?? false);
 	}
 
 	public function setPost(string $variableName, $variableValue): void

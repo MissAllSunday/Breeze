@@ -17,6 +17,8 @@ class WallController extends BaseController implements ControllerInterface
 		'comment',
 	];
 
+	protected $profileOwnerId = 0;
+
 	public function dispatch(): void
 	{
 		if (!$this->service->enable('master'))
@@ -26,6 +28,9 @@ class WallController extends BaseController implements ControllerInterface
 
 		$this->service->setLanguage(Breeze::NAME);
 		$this->service->setTemplate(Breeze::NAME);
+
+		$this->profileOwnerId = $this->request->get('u', 0);
+		$this->service->setUsersToLoad([$this->profileOwnerId]);
 
 		$this->subActionCall();
 	}
