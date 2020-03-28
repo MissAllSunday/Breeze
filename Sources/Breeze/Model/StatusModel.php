@@ -32,8 +32,11 @@ class StatusModel extends BaseModel
 			'
 			SELECT ' . implode(', ', StatusEntity::getColumns()) . '
 			FROM {db_prefix}' . StatusEntity::TABLE . '
-			WHERE ' . StatusEntity::COLUMN_ID . ' IN ({array_int:statusIds})',
-			['statusIds' => array_map('intval', $statusIds)]
+			WHERE {string:columnName} IN ({array_int:statusIds})',
+			[
+				'statusIds' => array_map('intval', $statusIds),
+				'columnName' => $columnName,
+			]
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($request))
