@@ -6,7 +6,7 @@ namespace Breeze\Model;
 
 use Breeze\Entity\StatusEntity as StatusEntity;
 
-class StatusModel extends BaseModel
+class StatusModel extends BaseModel implements ModelInterface
 {
 	public function insert(array $data, int $statusId = 0): int
 	{
@@ -19,32 +19,6 @@ class StatusModel extends BaseModel
 		], $data, StatusEntity::COLUMN_ID);
 
 		return $this->getInsertedId();
-	}
-
-	public function getBy(string $columnName, array $statusIds): array
-	{
-		$status = [];
-
-		if (empty($statusIds) || empty($columnName) || !$this->isValidColumn($columnName))
-			return $status;
-
-		$request = $this->dbClient->query(
-			'
-			SELECT ' . implode(', ', StatusEntity::getColumns()) . '
-			FROM {db_prefix}' . StatusEntity::TABLE . '
-			WHERE {string:columnName} IN ({array_int:statusIds})',
-			[
-				'statusIds' => array_map('intval', $statusIds),
-				'columnName' => $columnName,
-			]
-		);
-
-		while ($row = $this->dbClient->fetchAssoc($request))
-			$moods[$row[StatusEntity::COLUMN_ID]] = $row;
-
-		$this->dbClient->freeResult($request);
-
-		return $status;
 	}
 
 	public function update(array $data, int $statusId = 0): array

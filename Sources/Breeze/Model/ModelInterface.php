@@ -22,4 +22,6 @@ interface ModelInterface
 	public function getCount(): int;
 
 	public function getChunk(int $start, int $maxIndex): array;
+
+	public function getBy(string $columnName, array $ids): array;
 }

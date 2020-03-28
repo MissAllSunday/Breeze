@@ -41,6 +41,34 @@ abstract class BaseModel implements ModelInterface
 		return $data;
 	}
 
+	public function getBy(string $columnName, array $ids): array
+	{
+		$data = [];
+
+		if (empty($statusIds) || empty($columnName) || !$this->isValidColumn($columnName))
+			return $data;
+
+		$request = $this->dbClient->query(
+			'
+			SELECT ' . implode(', ', $this->getColumns()) . '
+			FROM {db_prefix}' . $this->getTableName() . '
+			WHERE {string:columnName} IN ({array_int:statusIds})
+			ORDER BY {raw:sort}',
+			[
+				'ids' => array_map('intval', $ids),
+				'columnName' => $columnName,
+				'sort' => $this->getColumnId() . ' DESC'
+			]
+		);
+
+		while ($row = $this->dbClient->fetchAssoc($request))
+			$moods[$row[$this->getColumnId()]] = $row;
+
+		$this->dbClient->freeResult($request);
+
+		return $data;
+	}
+
 	function delete(array $ids): bool
 	{
 		$this->dbClient->delete(
