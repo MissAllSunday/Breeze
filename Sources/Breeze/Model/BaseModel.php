@@ -67,16 +67,16 @@ abstract class BaseModel implements ModelInterface
 		);
 	}
 
-	public function getChunk(int $start = 0, int $maxIndex = 0, array $whereData = []): array
+	public function getChunk(int $start = 0, int $maxIndex = 0, array $whereParams = []): array
 	{
 		$items = [];
-		$params = [
+		$queryParams = [
 			'start' => $start,
 			'maxIndex' => $maxIndex,
 		];
 
-		if (!empty($whereData))
-			$params = array_merge($params, $whereData);
+		if (!empty($whereParams))
+			$queryParams = array_merge($queryParams, $whereParams);
 
 		$request = $this->dbClient->query(
 			sprintf(
@@ -87,9 +87,9 @@ abstract class BaseModel implements ModelInterface
 			LIMIT {int:start}, {int:maxIndex}',
 				implode(', ', $this->getColumns()),
 				$this->getTableName(),
-				(!empty($whereData) ? 'WHERE {string:columnName} IN ({array_int:ids})' : '')
+				(!empty($whereParams) ? 'WHERE {string:columnName} IN ({array_int:ids})' : '')
 			),
-			$params
+			$queryParams
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($request))
