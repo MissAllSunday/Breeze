@@ -25,7 +25,7 @@ abstract class BaseModel implements ModelInterface
 
 	function getLastValue(): array
 	{
-		$data = [];
+		$items = [];
 
 		$result = $this->dbClient->query(
 			'
@@ -40,11 +40,11 @@ abstract class BaseModel implements ModelInterface
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($result))
-			$data = $row;
+			$items = $row;
 
 		$this->dbClient->freeResult($result);
 
-		return $data;
+		return $items;
 	}
 
 	function delete(array $ids): bool
@@ -91,7 +91,6 @@ abstract class BaseModel implements ModelInterface
 			$whereString = 'WHERE {string:columnName} IN ({array_int:ids})';
 			$queryParams = array_merge($queryParams, $whereParams);
 		}
-
 
 		$request = $this->dbClient->query(
 			'
