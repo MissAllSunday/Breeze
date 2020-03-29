@@ -27,11 +27,17 @@ abstract class BaseModel implements ModelInterface
 	{
 		$data = [];
 
-		$result = $this->dbClient->query('
-			SELECT ' . implode(', ', $this->getColumns()) . '
-			FROM {db_prefix}' . $this->getTableName() . '
-			ORDER BY {raw:sort}
-			LIMIT {int:limit}', ['sort' => $this->getColumnId() . ' DESC', 'limit' => 1]);
+		$result = $this->dbClient->query(
+			'
+			SELECT {string:columns}
+			FROM {db_prefix}{string:tableName}
+			ORDER BY {string:sort}
+			LIMIT {int:limit}',
+			array_merge($this->getDefaultQueryParams(), [
+				'sort' => $this->getColumnId() . ' DESC',
+				'limit' => 1
+			])
+		);
 
 		while ($row = $this->dbClient->fetchAssoc($result))
 			$data = $row;
@@ -46,8 +52,11 @@ abstract class BaseModel implements ModelInterface
 		$this->dbClient->delete(
 			$this->getTableName(),
 			'
-			WHERE ' . $this->getColumnId() . ' IN({array_int:ids})',
-			['ids' => array_map('intval', $ids), ]
+			WHERE {string:columnName} IN({array_int:ids})',
+			[
+				'columnName' => $this->getColumnId(),
+				'ids' => array_map('intval', $ids),
+			]
 		);
 
 		return true;
@@ -59,8 +68,9 @@ abstract class BaseModel implements ModelInterface
 			$this->getTableName(),
 			'
 			SET likes = {int:num_likes}
-			WHERE ' . $this->getColumnId() . ' = {int:id_content}',
+			WHERE {string:columnName} = {int:id_content}',
 			[
+				'columnName' => $this->getColumnId(),
 				'id_content' => $contentId,
 				'num_likes' => $numLikes,
 			]
@@ -70,25 +80,20 @@ abstract class BaseModel implements ModelInterface
 	public function getChunk(int $start = 0, int $maxIndex = 0, array $whereParams = []): array
 	{
 		$items = [];
-		$queryParams = [
+		$queryParams = array_merge($this->getDefaultQueryParams(), [
 			'start' => $start,
 			'maxIndex' => $maxIndex,
-		];
+		]);
 
 		if (!empty($whereParams))
 			$queryParams = array_merge($queryParams, $whereParams);
 
 		$request = $this->dbClient->query(
-			sprintf(
-				'
-			SELECT %1$s
-			FROM {db_prefix}%2$s
-			%3$s
+			'
+			SELECT {string:columns}
+			FROM {db_prefix}{string:tableName}
+			' . (!empty($whereParams) ? 'WHERE {string:columnName} IN ({array_int:ids})' : '') . '
 			LIMIT {int:start}, {int:maxIndex}',
-				implode(', ', $this->getColumns()),
-				$this->getTableName(),
-				(!empty($whereParams) ? 'WHERE {string:columnName} IN ({array_int:ids})' : '')
-			),
 			$queryParams
 		);
 
@@ -100,45 +105,30 @@ abstract class BaseModel implements ModelInterface
 		return $items;
 	}
 
-	public function getChunkBy(string $columnName, array $ids, int $start = 0, int $maxIndex = 0): array
-	{
-		$data = [];
-
-		if (empty($statusIds) || empty($columnName) || !$this->isValidColumn($columnName))
-			return $data;
-
-		$request = $this->dbClient->query(
-			'
-			SELECT ' . implode(', ', $this->getColumns()) . '
-			FROM {db_prefix}' . $this->getTableName() . '
-			WHERE {string:columnName} IN ({array_int:ids})
-			ORDER BY {raw:sort}',
-			[
-				'ids' => array_map('intval', $ids),
-				'columnName' => $columnName,
-				'sort' => $this->getColumnId() . ' DESC'
-			]
-		);
-
-		while ($row = $this->dbClient->fetchAssoc($request))
-			$moods[$row[$this->getColumnId()]] = $row;
-
-		$this->dbClient->freeResult($request);
-
-		return $data;
-	}
-
 	public function getCount(): int
 	{
-		$result = $this->dbClient->query('
-			SELECT ' . implode(', ', $this->getColumns()) . '
-			FROM {db_prefix}' . $this->getTableName(), []);
+		$result = $this->dbClient->query(
+			'
+			SELECT {string:columns}
+			FROM {db_prefix}{string:tableName}',
+			array_merge($this->getDefaultQueryParams(), [
+				'columns' => $this->getColumnId(),
+			])
+		);
 
 		$rowCount = $this->dbClient->numRows($result);
 
 		$this->dbClient->freeResult($result);
 
 		return $rowCount;
+	}
+
+	protected function getDefaultQueryParams(): array
+	{
+		return [
+			'columns' => implode(', ', $this->getColumns()),
+			'tableName' => $this->getTableName(),
+		];
 	}
 
 	public function isValidColumn(string $columnName): bool
