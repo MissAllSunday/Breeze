@@ -41,34 +41,6 @@ abstract class BaseModel implements ModelInterface
 		return $data;
 	}
 
-	public function getBy(string $columnName, array $ids): array
-	{
-		$data = [];
-
-		if (empty($statusIds) || empty($columnName) || !$this->isValidColumn($columnName))
-			return $data;
-
-		$request = $this->dbClient->query(
-			'
-			SELECT ' . implode(', ', $this->getColumns()) . '
-			FROM {db_prefix}' . $this->getTableName() . '
-			WHERE {string:columnName} IN ({array_int:statusIds})
-			ORDER BY {raw:sort}',
-			[
-				'ids' => array_map('intval', $ids),
-				'columnName' => $columnName,
-				'sort' => $this->getColumnId() . ' DESC'
-			]
-		);
-
-		while ($row = $this->dbClient->fetchAssoc($request))
-			$moods[$row[$this->getColumnId()]] = $row;
-
-		$this->dbClient->freeResult($request);
-
-		return $data;
-	}
-
 	function delete(array $ids): bool
 	{
 		$this->dbClient->delete(
@@ -95,19 +67,29 @@ abstract class BaseModel implements ModelInterface
 		);
 	}
 
-	public function getChunk(int $start = 0, int $maxIndex = 0): array
+	public function getChunk(int $start = 0, int $maxIndex = 0, array $whereData = []): array
 	{
 		$items = [];
+		$params = [
+			'start' => $start,
+			'maxIndex' => $maxIndex,
+		];
+
+		if (!empty($whereData))
+			$params = array_merge($params, $whereData);
 
 		$request = $this->dbClient->query(
-			'
-			SELECT ' . implode(', ', $this->getColumns()) . '
-			FROM {db_prefix}' . $this->getTableName() . '
+			sprintf(
+				'
+			SELECT %1$s
+			FROM {db_prefix}%2$s
+			%3$s
 			LIMIT {int:start}, {int:maxIndex}',
-			[
-				'start' => $start,
-				'maxIndex' => $maxIndex,
-			]
+				implode(', ', $this->getColumns()),
+				$this->getTableName(),
+				(!empty($whereData) ? 'WHERE {string:columnName} IN ({array_int:ids})' : '')
+			),
+			$params
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($request))
@@ -116,6 +98,34 @@ abstract class BaseModel implements ModelInterface
 		$this->dbClient->freeResult($request);
 
 		return $items;
+	}
+
+	public function getChunkBy(string $columnName, array $ids, int $start = 0, int $maxIndex = 0): array
+	{
+		$data = [];
+
+		if (empty($statusIds) || empty($columnName) || !$this->isValidColumn($columnName))
+			return $data;
+
+		$request = $this->dbClient->query(
+			'
+			SELECT ' . implode(', ', $this->getColumns()) . '
+			FROM {db_prefix}' . $this->getTableName() . '
+			WHERE {string:columnName} IN ({array_int:ids})
+			ORDER BY {raw:sort}',
+			[
+				'ids' => array_map('intval', $ids),
+				'columnName' => $columnName,
+				'sort' => $this->getColumnId() . ' DESC'
+			]
+		);
+
+		while ($row = $this->dbClient->fetchAssoc($request))
+			$moods[$row[$this->getColumnId()]] = $row;
+
+		$this->dbClient->freeResult($request);
+
+		return $data;
 	}
 
 	public function getCount(): int
