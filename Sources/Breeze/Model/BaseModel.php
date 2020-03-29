@@ -80,19 +80,24 @@ abstract class BaseModel implements ModelInterface
 	public function getChunk(int $start = 0, int $maxIndex = 0, array $whereParams = []): array
 	{
 		$items = [];
+		$whereString = '';
 		$queryParams = array_merge($this->getDefaultQueryParams(), [
 			'start' => $start,
 			'maxIndex' => $maxIndex,
 		]);
 
-		if (!empty($whereParams))
+		if (!empty($whereParams) && $this->isValidColumn($whereParams['columnName']))
+		{
+			$whereString = 'WHERE {string:columnName} IN ({array_int:ids})';
 			$queryParams = array_merge($queryParams, $whereParams);
+		}
+
 
 		$request = $this->dbClient->query(
 			'
 			SELECT {string:columns}
 			FROM {db_prefix}{string:tableName}
-			' . (!empty($whereParams) ? 'WHERE {string:columnName} IN ({array_int:ids})' : '') . '
+			' . $whereString . '
 			LIMIT {int:start}, {int:maxIndex}',
 			$queryParams
 		);
@@ -123,16 +128,16 @@ abstract class BaseModel implements ModelInterface
 		return $rowCount;
 	}
 
+	public function isValidColumn(string $columnName): bool
+	{
+		return in_array($columnName, $this->getColumns());
+	}
+
 	protected function getDefaultQueryParams(): array
 	{
 		return [
 			'columns' => implode(', ', $this->getColumns()),
 			'tableName' => $this->getTableName(),
 		];
-	}
-
-	public function isValidColumn(string $columnName): bool
-	{
-		return in_array($columnName, $this->getColumns());
 	}
 }
