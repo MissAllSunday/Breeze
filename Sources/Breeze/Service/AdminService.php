@@ -7,7 +7,6 @@ namespace Breeze\Service;
 
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
-use Breeze\Repository\RepositoryInterface;
 
 class AdminService extends BaseService implements ServiceInterface
 {
