@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class LikeEntity extends BaseEntity
+class LikeEntity extends BaseEntity implements EntityInterface
 {
 	const TABLE = 'user_likes';
 	const COLUMN_ID_MEMBER = 'id_member';
