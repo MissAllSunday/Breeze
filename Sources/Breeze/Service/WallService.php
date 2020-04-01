@@ -34,6 +34,8 @@ class WallService extends BaseService implements ServiceInterface
 	 */
 	private $userService;
 
+	private $profileOwnerSettings = [];
+
 	public function __construct(
 		RepositoryInterface $repository,
 		RepositoryInterface $statusRepository,
@@ -60,6 +62,7 @@ class WallService extends BaseService implements ServiceInterface
 
 		$this->currentUserInfo = $this->global('user_info');
 		$this->profileOwnerInfo = $this->global('context')['member'];
+		$this->profileOwnerSettings = $this->userService->getUserSettings($this->profileOwnerInfo['id']);
 
 		$this->setUsersToLoad([
 			$this->profileOwnerInfo['id'],
@@ -99,33 +102,31 @@ class WallService extends BaseService implements ServiceInterface
 		$this->userService->loadUsersInfo($this->getUsersToLoad());
 	}
 
-	public function isAllowedToSee(int $userId = 0, bool $redirect = false): bool
+	public function isAllowedToSeePage(bool $redirect = false): bool
 	{
-		$canSee = true;
-		$ownerId = $userId ? $userId : $this->profileOwnerInfo['id'];
-		$ownerSettings = $this->userService->getUserSettings($ownerId);
+		$canSeePage = true;
 
 		if (!$this->isCurrentUserOwner() && !$this->enable('force_enable'))
-			$canSee = false;
+			$canSeePage = false;
 
 		elseif (empty($ownerSettings['wall']))
-			$canSee = false;
+			$canSeePage = false;
 
 		if (!allowedTo('profile_view'))
-			$canSee = false;
+			$canSeePage = false;
 
-		if (!empty($ownerSettings['kick_ignored']) && !empty($ownerSettings['ignoredList']))
+		if (!empty($this->profileOwnerSettings['kick_ignored']) && !empty($this->profileOwnerSettings['ignoredList']))
 		{
-			$ownerIgnoredList = explode(',', $ownerSettings['ignoredList']);
+			$ownerIgnoredList = explode(',', $this->profileOwnerSettings['ignoredList']);
 
 			if (in_array($this->currentUserInfo['id'], $ownerIgnoredList))
-				$canSee = false;
+				$canSeePage = false;
 		}
 
-		if (!$canSee && $redirect)
-			redirectexit('action=profile;area=' . UserService::LEGACY_AREA . ';u=' . $ownerId);
+		if (!$canSeePage && $redirect)
+			redirectexit('action=profile;area=' . UserService::LEGACY_AREA . ';u=' . $this->profileOwnerInfo['id']);
 
-		return $canSee;
+		return $canSeePage;
 	}
 
 	public function getStatus(int $userId): void
