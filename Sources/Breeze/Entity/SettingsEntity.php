@@ -16,18 +16,23 @@ class SettingsEntity extends BaseEntity implements EntityInterface
 	public const MAX_FLOOD_NUM = 'maxFloodNum';
 	public const MAX_FLOOD_MINUTES= 'maxFloodMinutes';
 
+	public const TYPE_CHECK = 'check';
+	public const TYPE_INT = 'int';
+	public const TYPE_TEXT = 'text';
+	public const TYPE_SELECT = 'select';
+
 	public static function getColumns(): array
 	{
 		return [
-			self::MASTER,
-			self::FORCE_WALL,
-			self::MAX_BUDDIES_NUM,
-			self::ABOUT_ME_MAX_LENGTH,
-			self::ENABLE_MOOD,
-			self::MOOD_LABEL,
-			self::MOOD_PLACEMENT,
-			self::MAX_FLOOD_NUM,
-			self::MAX_FLOOD_MINUTES,
+			self::MASTER => self::TYPE_CHECK,
+			self::FORCE_WALL => self::TYPE_CHECK,
+			self::MAX_BUDDIES_NUM => self::TYPE_INT,
+			self::ABOUT_ME_MAX_LENGTH => self::TYPE_INT,
+			self::ENABLE_MOOD => self::TYPE_CHECK,
+			self::MOOD_LABEL => self::TYPE_TEXT,
+			self::MOOD_PLACEMENT => self::TYPE_SELECT,
+			self::MAX_FLOOD_NUM => self::TYPE_INT,
+			self::MAX_FLOOD_MINUTES => self::TYPE_INT,
 		];
 	}
 }

@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
+use Breeze\Entity\SettingsEntity;
 use Breeze\Repository\RepositoryInterface;
 
 class AdminService extends BaseService implements ServiceInterface
@@ -49,8 +50,8 @@ class AdminService extends BaseService implements ServiceInterface
 			],
 			[
 				'check',
-				Breeze::PATTERN . 'master',
-				'subtext' => $this->getText('master_sub')
+				Breeze::PATTERN . SettingsEntity::MASTER,
+				'subtext' => $this->getText(SettingsEntity::MASTER . '_sub')
 			],
 			[
 				'check', Breeze::PATTERN . 'force_enable',
