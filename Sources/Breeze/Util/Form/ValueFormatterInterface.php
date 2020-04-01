@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Breeze\Util\Form;
 
 interface ValueFormatterInterface
 {
-	public function getConfigVar(array $setting): array;
+	public function getConfigVar(string $settingName, string $settingType): array;
 }

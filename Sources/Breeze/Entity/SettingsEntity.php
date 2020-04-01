@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace Breeze\Entity;
-
 
 class SettingsEntity extends BaseEntity implements EntityInterface
 {
