@@ -18,9 +18,11 @@ class WallController extends BaseController implements ControllerInterface
 	];
 
 	protected $profileOwnerId = 0;
+	protected $currentUserInfo = [];
 
 	public function dispatch(): void
 	{
+		$this->currentUserInfo = $this->service->global('user_info');
 		if (!$this->service->enable('master'))
 			fatal_lang_error('Breeze_error_no_valid_action', false);
 
@@ -49,5 +51,13 @@ class WallController extends BaseController implements ControllerInterface
 	public function getSubActions(): array
 	{
 		return self::SUB_ACTIONS;
+	}
+
+	protected function isCurrentUserOwner(): bool
+	{
+		if (!isset($this->currentUserInfo['id']))
+			return false;
+
+		return $this->currentUserInfo['id'] === $this->profileOwnerId;
 	}
 }

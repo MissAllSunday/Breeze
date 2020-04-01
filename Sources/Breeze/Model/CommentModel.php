@@ -10,8 +10,11 @@ class CommentModel extends BaseModel
 {
 	function insert(array $data, int $commentID = 0): int
 	{
-		$this->db->insert(
-			$this->getTableName(),
+		if (empty($data))
+			return 0;
+
+		$this->dbClient->insert(
+			CommentEntity::TABLE,
 			[
 				CommentEntity::COLUMN_STATUS_ID => 'int',
 				CommentEntity::COLUMN_STATUS_OWNER_ID => 'int',
@@ -22,7 +25,7 @@ class CommentModel extends BaseModel
 				CommentEntity::COLUMN_LIKES => 'int',
 			],
 			$data,
-			$this->getColumnId()
+			CommentEntity::COLUMN_ID
 		);
 
 		return $this->getInsertedId();
@@ -30,7 +33,7 @@ class CommentModel extends BaseModel
 
 	public function deleteByStatusID(array $ids): bool
 	{
-		$this->db->delete(
+		$this->dbClient->delete(
 			CommentEntity::TABLE,
 			'WHERE ' . CommentEntity::COLUMN_STATUS_ID . ' IN({array_int:ids})',
 			['ids' => $ids]
