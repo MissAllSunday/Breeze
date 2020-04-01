@@ -25,16 +25,46 @@ class WallService extends BaseService implements ServiceInterface
 	 */
 	private $commentRepository;
 
+	protected $profileOwnerInfo = [];
+
+	protected $currentUserInfo = [];
+
+	/**
+	 * @var ServiceInterface
+	 */
+	private $userService;
+
 	public function __construct(
 		RepositoryInterface $repository,
 		RepositoryInterface $statusRepository,
-		RepositoryInterface $commentRepository
+		RepositoryInterface $commentRepository,
+		ServiceInterface $userService
 	)
 	{
 		$this->statusRepository = $statusRepository;
 		$this->commentRepository = $commentRepository;
+		$this->userService = $userService;
 
 		parent::__construct($repository);
+	}
+
+	public function initPage(): void
+	{
+		if (!$this->enable('master'))
+			fatal_lang_error('Breeze_error_no_valid_action', false);
+
+		is_not_guest($this->getText('error_no_access'));
+
+		$this->setLanguage(Breeze::NAME);
+		$this->setTemplate(Breeze::NAME);
+
+		$this->currentUserInfo = $this->global('user_info');
+		$this->profileOwnerInfo = $this->global('context')['member'];
+
+		$this->setUsersToLoad([
+			$this->profileOwnerInfo['id'],
+			$this->currentUserInfo['id'],
+		]);
 	}
 
 	public function setSubActionContent(
@@ -65,39 +95,37 @@ class WallService extends BaseService implements ServiceInterface
 		];
 
 		$this->setGlobal('context', $context);
+
+		$this->userService->loadUsersInfo($this->getUsersToLoad());
 	}
 
-	public function loadUsersInfo(): void
+	public function isAllowedToSee(int $userId = 0, bool $redirect = false): bool
 	{
-		$userIds = $this->getUsersToLoad();
+		$canSee = true;
+		$ownerId = $userId ? $userId : $this->profileOwnerInfo['id'];
+		$ownerSettings = $this->userService->getUserSettings($ownerId);
 
-		if (empty($userIds))
-			return;
+		if (!$this->isCurrentUserOwner() && !$this->enable('force_enable'))
+			$canSee = false;
 
-		$context = $this->global('context');
-		$modSettings = $this->global('modSettings');
+		elseif (empty($ownerSettings['wall']))
+			$canSee = false;
 
-		if (!isset($context[Breeze::NAME]))
-			$context[Breeze::NAME] = [];
+		if (!allowedTo('profile_view'))
+			$canSee = false;
 
-		$context[Breeze::NAME]['users'] = [];
-		$loadedIDs = loadMemberData($userIds);
-
-		// Set the context var.
-		foreach ($userIds as $userId)
+		if (!empty($ownerSettings['kick_ignored']) && !empty($ownerSettings['ignoredList']))
 		{
-			if (!in_array($userId, $loadedIDs))
-			{
-				$context[Breeze::NAME]['users'][$userId] = [
-					'link' => $this->getSmfText('guest_title'),
-					'name' => $this->getSmfText('guest_title'),
-					'avatar' => ['href' => $modSettings['avatar_url'] . '/default.png']
-				];
-				continue;
-			}
+			$ownerIgnoredList = explode(',', $ownerSettings['ignoredList']);
 
-			$context[Breeze::NAME]['users'][$userId] = loadMemberContext($userId, true);
+			if (in_array($this->currentUserInfo['id'], $ownerIgnoredList))
+				$canSee = false;
 		}
+
+		if (!$canSee && $redirect)
+			redirectexit('action=profile;area=' . UserService::LEGACY_AREA . ';u=' . $ownerId);
+
+		return $canSee;
 	}
 
 	public function getStatus(int $userId): void
@@ -105,12 +133,20 @@ class WallService extends BaseService implements ServiceInterface
 		$status = $this->statusRepository->getStatusByProfile($userId);
 	}
 
-	public function getUsersToLoad(): array
+	protected function isCurrentUserOwner(): bool
+	{
+		if (!isset($this->currentUserInfo['id']))
+			return false;
+
+		return $this->currentUserInfo['id'] === $this->profileOwnerInfo['id'];
+	}
+
+	protected function getUsersToLoad(): array
 	{
 		return array_filter(array_unique($this->usersToLoad));
 	}
 
-	public function setUsersToLoad(array $usersToLoad): void
+	protected function setUsersToLoad(array $usersToLoad): void
 	{
 		$this->usersToLoad = array_merge($usersToLoad, $this->usersToLoad);
 	}

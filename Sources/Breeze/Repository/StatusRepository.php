@@ -11,8 +11,8 @@ class StatusRepository extends BaseRepository implements RepositoryInterface
 {
 	 public function getStatusByProfile(int $profileOwnerId = 0): void
 	 {
-	 	$statusIds = [];
-	 	$statusUsersIds = [];
+		$statusIds = [];
+		$statusUsersIds = [];
 		$statusByProfile = $this->model->getChunk(0, 10, [
 			'columnName' => StatusEntity::COLUMN_OWNER_ID,
 			'ids' => [$profileOwnerId]

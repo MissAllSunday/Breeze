@@ -30,6 +30,7 @@ return [
 		'arguments'=> [
 			RequestService::class,
 			WallService::class,
+			UserService::class
 		]
 	],
 	'controller.alerts' => [

@@ -19,6 +19,11 @@ class UserService extends BaseService implements ServiceInterface
 		return $this->repository->getUserSettings($currentUserInfo['id']);
 	}
 
+	public function getUserSettings(int $userId): array
+	{
+		return $this->repository->getUserSettings($userId);
+	}
+
 	public function hookProfilePopUp(&$profile_items): void
 	{
 		if (!$this->enable('master'))
@@ -125,5 +130,34 @@ class UserService extends BaseService implements ServiceInterface
 			unset($_SESSION['Breeze_floodControl' . $userId]);
 
 		return true;
+	}
+
+	public function loadUsersInfo(array $ids = []): array
+	{
+		$userIds = $ids;
+		$loadedUsers = [];
+
+		if (empty($userIds))
+			return $loadedUsers;
+
+		$modSettings = $this->global('modSettings');
+		$loadedIDs = loadMemberData($userIds);
+
+		foreach ($userIds as $userId)
+		{
+			if (!in_array($userId, $loadedIDs))
+			{
+				$loadedUsers[$userId] = [
+					'link' => $this->getSmfText('guest_title'),
+					'name' => $this->getSmfText('guest_title'),
+					'avatar' => ['href' => $modSettings['avatar_url'] . '/default.png']
+				];
+				continue;
+			}
+
+			$loadedUsers[$userId] = loadMemberContext($userId, true);
+		}
+
+		return $loadedUsers;
 	}
 }
