@@ -27,4 +27,11 @@ class FormService extends BaseService implements ServiceInterface
 
 		return $configVars;
 	}
+
+	public function getCoverConfigVarsSettings(): array
+	{
+		$configVars = [];
+
+		return $configVars;
+	}
 }

@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
-use Breeze\Entity\SettingsEntity;
 use Breeze\Repository\RepositoryInterface;
 
 class AdminService extends BaseService implements ServiceInterface
@@ -83,28 +82,6 @@ class AdminService extends BaseService implements ServiceInterface
 				0,
 				$this->getSmfText('permissionname_breeze_' . $permission)
 			];
-
-		if ($save)
-			$this->saveConfigVars();
-
-		prepareDBSettingContext($this->configVars);
-	}
-
-	public function coverConfigVars(bool $save = false): void
-	{
-		$this->configVars = [
-			['title', Breeze::PATTERN . 'page_permissions'],
-			['check', Breeze::PATTERN . 'cover', 'subtext' =>
-				$this->getText('cover_sub')],
-			['int', Breeze::PATTERN . 'cover_max_image_size', 'size' => 3, 'subtext' =>
-				$this->getText('cover_max_image_size_sub')],
-			['int', Breeze::PATTERN . 'cover_max_image_width', 'size' => 4, 'subtext' =>
-				$this->getText('cover_max_image_width_sub')],
-			['int', Breeze::PATTERN . 'cover_max_image_height', 'size' => 3, 'subtext' =>
-				$this->getText('cover_max_image_height_sub')],
-			['text', Breeze::PATTERN . 'cover_image_types', 'size' => 25, 'subtext' =>
-				$this->getText('cover_image_types_sub')],
-		];
 
 		if ($save)
 			$this->saveConfigVars();

@@ -18,7 +18,6 @@ class AdminController extends BaseController implements ControllerInterface
 		'main',
 		'settings',
 		'permissions',
-		'cover',
 		'donate',
 		'moodList',
 	];

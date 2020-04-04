@@ -14,6 +14,7 @@ abstract class ValueFormatter implements ValueFormatterInterface
 
 	private const FORMATTER_SUFFIX = 'Formatter';
 	private const FORMATTERS_DIR = __DIR__ . '/Formatters';
+	private const FORMATTERS_NAMESPACE = 'Breeze\Util\Form\Formatters\\';
 
 	public static function getFormatters(): array
 	{
@@ -27,7 +28,7 @@ abstract class ValueFormatter implements ValueFormatterInterface
 				str_replace(self::FORMATTER_SUFFIX, '', $formatterFileInfo)
 			);
 
-			$formatterClass = 'Breeze\Util\Form\Formatters\\' . $formatterFileInfo;
+			$formatterClass = self::FORMATTERS_NAMESPACE . $formatterFileInfo;
 
 			$formatters[$formatterKey] = new $formatterClass();
 		}
