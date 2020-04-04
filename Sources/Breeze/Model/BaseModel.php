@@ -29,8 +29,8 @@ abstract class BaseModel implements ModelInterface
 
 		$result = $this->dbClient->query(
 			'
-			SELECT {string:columns}
-			FROM {db_prefix}{string:tableName}
+			SELECT {raw:columns}
+			FROM {db_prefix}{raw:tableName}
 			ORDER BY {string:sort}
 			LIMIT {int:limit}',
 			array_merge($this->getDefaultQueryParams(), [
@@ -94,8 +94,8 @@ abstract class BaseModel implements ModelInterface
 
 		$request = $this->dbClient->query(
 			'
-			SELECT {string:columns}
-			FROM {db_prefix}{string:tableName}
+			SELECT {raw:columns}
+			FROM {db_prefix}{raw:tableName}
 			' . $whereString . '
 			LIMIT {int:start}, {int:maxIndex}',
 			$queryParams
@@ -113,8 +113,8 @@ abstract class BaseModel implements ModelInterface
 	{
 		$result = $this->dbClient->query(
 			'
-			SELECT {string:columns}
-			FROM {db_prefix}{string:tableName}',
+			SELECT {raw:columns}
+			FROM {db_prefix}{raw:tableName}',
 			array_merge($this->getDefaultQueryParams(), [
 				'columns' => $this->getColumnId(),
 			])
