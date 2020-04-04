@@ -7,6 +7,7 @@ namespace Breeze\Service;
 
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
+use Breeze\Repository\RepositoryInterface;
 
 class AdminService extends BaseService implements ServiceInterface
 {
@@ -18,6 +19,18 @@ class AdminService extends BaseService implements ServiceInterface
 	 * @var array
 	 */
 	protected $configVars = [];
+
+	/**
+	 * @var ServiceInterface
+	 */
+	private $formService;
+
+	public function __construct(RepositoryInterface $repository, ServiceInterface $formService)
+	{
+		$this->formService = $formService;
+
+		parent::__construct($repository);
+	}
 
 	public function initSettingsPage($subActions): void
 	{
@@ -42,70 +55,12 @@ class AdminService extends BaseService implements ServiceInterface
 	{
 		$this->requireOnce('ManageServer');
 
-		$this->configVars = [
-			[
-				'title',
-				Breeze::PATTERN . 'page_settings_title'
-			],
-			[
-				'check',
-				Breeze::PATTERN . SettingsEntity::MASTER,
-				'subtext' => $this->getText(SettingsEntity::MASTER . '_sub')
-			],
-			[
-				'check', Breeze::PATTERN . 'force_enable',
-				'subtext' => $this->getText('force_enable_sub'),
-			],
-			[
-				'int',
-				Breeze::PATTERN . 'allowed_max_num_users',
-				'size' => 3,
-				'subtext' => $this->getText('allowed_max_num_users_sub'),
-			],
-			[
-				'int',
-				Breeze::PATTERN . 'allowed_maxlength_aboutMe',
-				'size' => 4,
-				'subtext' => $this->getText('allowed_maxlength_aboutMe_sub'),
-			],
-			[
-				'check',
-				Breeze::PATTERN . 'mood',
-				'subtext' => $this->getText('mood_sub'),
-			],
-			[
-				'text',
-				Breeze::PATTERN . 'mood_label',
-				'subtext' => $this->getText('mood_label_sub'),
-			],
-			[
-				'select',
-				Breeze::PATTERN . 'mood_placement',
-				[
-					$this->getSmfText('custom_profile_placement_standard'),
-					$this->getSmfText('custom_profile_placement_icons'),
-					$this->getSmfText('custom_profile_placement_above_signature'),
-					$this->getSmfText('custom_profile_placement_below_signature'),
-					$this->getSmfText('custom_profile_placement_below_avatar'),
-					$this->getSmfText('custom_profile_placement_above_member'),
-					$this->getSmfText('custom_profile_placement_bottom_poster'),
-				],
-				'subtext' => $this->getText('mood_placement_sub'),
-				'multiple' => false,
-			],
-			[
-				'int',
-				Breeze::PATTERN . 'flood_messages',
-				'size' => 3,
-				'subtext' => $this->getText('flood_messages_sub'),
-			],
-			[
-				'int',
-				Breeze::PATTERN . 'flood_minutes',
-				'size' => 3,
-				'subtext' => $this->getText('flood_minutes_sub')
-			],
-		];
+		$this->configVars = $this->formService->getConfigVarsSettings();
+
+		array_unshift($this->configVars, [
+			'title',
+			Breeze::PATTERN . 'page_settings_title'
+		]);
 
 		if ($save)
 			$this->saveConfigVars();
