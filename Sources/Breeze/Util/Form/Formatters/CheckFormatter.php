@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Form\Formatter;
+namespace Breeze\Util\Form\Formatters;
 
 use Breeze\Breeze;
 use Breeze\Util\Form\ValueFormatter;

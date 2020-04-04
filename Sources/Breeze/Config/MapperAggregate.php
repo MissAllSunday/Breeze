@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Config;
 
+use Breeze\Util\Folder;
+
 class MapperAggregate
 {
 	const MAPPERS_FOLDER =  __DIR__ . '/Mappers';
@@ -13,7 +15,7 @@ class MapperAggregate
 
 	public function getMappers(): array
 	{
-		$scannedMappers = $this->scanMappersFolder();
+		$scannedMappers = Folder::getFilesInFolder(self::MAPPERS_FOLDER);
 
 		foreach ($scannedMappers as $mapperFile)
 		{
@@ -24,10 +26,5 @@ class MapperAggregate
 		}
 
 		return $this->mappers;
-	}
-
-	protected function scanMappersFolder(): array
-	{
-		return array_diff(scandir(self::MAPPERS_FOLDER), ['..', '.']);
 	}
 }

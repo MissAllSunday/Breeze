@@ -5,10 +5,10 @@ declare(strict_types=1);
 
 namespace Breeze\Config\Mapper;
 
-use Breeze\Util\Form\Formatter\CheckFormatter;
-use Breeze\Util\Form\Formatter\IntFormatter;
-use Breeze\Util\Form\Formatter\SelectFormatter;
-use Breeze\Util\Form\Formatter\TextFormatter;
+use Breeze\Util\Form\Formatters\CheckFormatter;
+use Breeze\Util\Form\Formatters\IntFormatter;
+use Breeze\Util\Form\Formatters\SelectFormatter;
+use Breeze\Util\Form\Formatters\TextFormatter;
 
 return [
 	'formatter.check' => [
