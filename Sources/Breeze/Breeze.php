@@ -10,7 +10,6 @@ use Breeze\Controller\Buddy;
 use Breeze\Controller\Comment;
 use Breeze\Controller\Mood;
 use Breeze\Controller\Status;
-use Breeze\Controller\User\CoverController;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\SettingsController;
 use Breeze\Controller\User\WallController;
@@ -137,24 +136,6 @@ class Breeze
 				'any' => 'profile_view',
 			],
 		];
-
-		if ($this->enable('cover'))
-		{
-			/** @var CoverController */
-			$coverController = $this->container->get(CoverController::class);
-
-			$profileAreas['breeze_profile']['areas']['cover'] = [
-				'label' => $this->getText('user_settings_name_cover'),
-				'icon' => 'administration',
-				'file' => false,
-				'function' => [$coverController, 'dispatch'],
-				'enabled' => $context['user']['is_owner'],
-				'permission' => [
-					'own' => 'is_not_guest',
-					'any' => 'profile_view',
-				],
-			];
-		}
 	}
 
 	public function menu(&$menu_buttons): void
@@ -220,7 +201,6 @@ class Breeze
 		$actions['breezeWall'] = [false, WallController::class . '::do#'];
 		$actions['breezeBuddy'] = [false, Buddy::class . '::do#'];
 		$actions['breezeMood'] = [false, Mood::class . '::do#'];
-		$actions['breezeCover'] = [false, Cover::class . '::do#'];
 	}
 
 	public function profilePopUpWrapper(&$profile_items): void
@@ -294,7 +274,6 @@ class Breeze
 				'main' => [$this->getText('page_main')],
 				'settings' => [$this->getText('page_settings_title')],
 				'permissions' => [$this->getText('page_permissions_title')],
-				'cover' => [$this->getText('page_cover_title')],
 			],
 		];
 
