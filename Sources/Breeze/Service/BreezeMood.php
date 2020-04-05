@@ -177,7 +177,7 @@ class BreezeMood
 		$currentMood = !empty($userSettings['mood']) && !empty($moods[$userSettings['mood']]) ? $moods[$userSettings['mood']] : false;
 
 		return [
-			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
+			'title' => $this->_app['tools']->enable(SettingsEntity::MOOD_LABEL) ? $this->_app['tools']->setting(SettingsEntity::MOOD_LABEL) : $this->_app['tools']->text('moodLabel'),
 			'col_name' => $this->_app['tools']->text('moodLabel'),
 			'value' => template_mood_image($currentMood, $user),
 			'placement' => $this->placementField,
@@ -192,7 +192,7 @@ class BreezeMood
 		$profileAreas = ['summary', 'static'];
 
 		// Don't do anything if the feature is disable or we are in an area we don't care...
-		if (!$this->_app['tools']->enable('mood') || !in_array($area, $profileAreas))
+		if (!$this->_app['tools']->enable(SettingsEntity::ENABLE_MOOD) || !in_array($area, $profileAreas))
 			return;
 
 		// Wild MoodRepository Swings... a highly underrated album if you ask me ;)
@@ -209,7 +209,7 @@ class BreezeMood
 
 		// Gotta love globals...
 		$context['custom_fields'][] = [
-			'name' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
+			'name' => $this->_app['tools']->enable(SettingsEntity::MOOD_LABEL) ? $this->_app['tools']->setting(SettingsEntity::MOOD_LABEL) : $this->_app['tools']->text('moodLabel'),
 			'placement' => $this->placementField,
 			'output_html' => template_mood_image($currentMood, $user),
 			'show_reg' => false,
@@ -223,7 +223,7 @@ class BreezeMood
 
 		// Build the needed HTML.
 		return [
-			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
+			'title' => $this->_app['tools']->enable(SettingsEntity::MOOD_LABEL) ? $this->_app['tools']->setting(SettingsEntity::MOOD_LABEL) : $this->_app['tools']->text('moodLabel'),
 			'col_name' => $this->_app['tools']->text('moodLabel'),
 			'value' => template_mood_noImage(),
 			'placement' => $this->_app['tools']->enable(SettingsEntity::MOOD_PLACEMENT) ? $this->_app['tools']->setting(SettingsEntity::MOOD_PLACEMENT) : 0,

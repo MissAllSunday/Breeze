@@ -64,7 +64,7 @@ class Breeze
 
 	public function profileMenuWrapper(array &$profileAreas): void
 	{
-		if (!$this->enable('master'))
+		if (!$this->enable(SettingsEntity::MASTER))
 			return;
 
 		$context = $this->global('context');
@@ -141,7 +141,7 @@ class Breeze
 
 	public function menu(&$menu_buttons): void
 	{
-		if (!$this->enable('master'))
+		if (!$this->enable(SettingsEntity::MASTER))
 			return;
 
 		$scriptUrl = $this->global('scripturl');
@@ -168,20 +168,20 @@ class Breeze
 				'title' => $this->getText('general_wall'),
 				'icon' => 'smiley',
 				'href' => $scriptUrl . '?action=wall',
-				'show' => ($this->enable('master') &&
+				'show' => ($this->enable(SettingsEntity::MASTER) &&
 					!$currentUserInfo['is_guest'] &&
 					!empty($currentUserSettings['general_wall'])),
 				'sub_buttons' => [
 					'noti' => [
 						'title' => $this->getText('user_notisettings_name'),
 						'href' => $scriptUrl . '?action=profile;area=alerts;sa=edit;u=' . $currentUserInfo['id'],
-						'show' => ($this->enable('master') && !$currentUserInfo['is_guest']),
+						'show' => ($this->enable(SettingsEntity::MASTER) && !$currentUserInfo['is_guest']),
 						'sub_buttons' => [],
 					],
 					'admin' => [
 						'title' => $this->getText('admin'),
 						'href' => $scriptUrl . '?action=admin;area=' . AdminService::AREA,
-						'show' => ($this->enable('master') && $currentUserInfo['is_admin']),
+						'show' => ($this->enable(SettingsEntity::MASTER) && $currentUserInfo['is_admin']),
 						'sub_buttons' => [],
 					],
 				],
@@ -194,7 +194,7 @@ class Breeze
 	{
 		$actions['breezeFeed'] = [false, Feed::class . '::do#'];
 
-		//if (!$this->enable('master'))
+		//if (!$this->enable(SettingsEntity::MASTER))
 			return;
 
 		$actions['breezeStatus'] = [false,  Status::class . '::do#'];
@@ -216,7 +216,7 @@ class Breeze
 
 	public function updateLikesWrapper($type, $content, $sa, $js, $extra)
 	{
-		//if (!$this->enable('master') || !in_array($type, LikeRepository::getAllTypes()))
+		//if (!$this->enable(SettingsEntity::MASTER) || !in_array($type, LikeRepository::getAllTypes()))
 			return false;
 
 		switch ($type)
@@ -249,8 +249,8 @@ class Breeze
 
 	public function displayMoodProfileWrapper(int $userId, string $profileArea): void
 	{
-		if (!$this->enable('master') ||
-			!$this->enable('mood') ||
+		if (!$this->enable(SettingsEntity::MASTER) ||
+			!$this->enable(SettingsEntity::ENABLE_MOOD) ||
 			!in_array($profileArea, MoodService::DISPLAY_PROFILE_AREAS))
 			return;
 
@@ -278,7 +278,7 @@ class Breeze
 			],
 		];
 
-		if ($this->enable('mood'))
+		if ($this->enable(SettingsEntity::ENABLE_MOOD))
 			$adminMenu['config']['areas']['breezeAdmin']['subsections']['moodList'] = [
 				$this->getText('page_moodList_title')
 			];

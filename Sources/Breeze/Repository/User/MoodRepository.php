@@ -9,7 +9,7 @@ use Breeze\Entity\MoodEntity;
 use Breeze\Repository\BaseRepository;
 use Breeze\Repository\RepositoryInterface;
 
-class MoodRepository extends BaseRepository implements RepositoryInterface
+class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 {
 	public function deleteByIds(array $toDeleteMoodIds): bool
 	{

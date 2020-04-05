@@ -814,7 +814,7 @@ class BreezeUser extends Breeze
 		$query = $this['query'];
 
 		// Another page already checked the permissions and if the mod is enable, but better be safe...
-		if (!$tools->enable('master'))
+		if (!$tools->enable(SettingsEntity::MASTER))
 			redirectexit();
 
 		// If the owner doesn't have any settings don't show the wall, go straight to the static page unless the admin forced it.

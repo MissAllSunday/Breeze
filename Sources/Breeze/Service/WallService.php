@@ -51,7 +51,7 @@ class WallService extends BaseService implements WallServiceInterface
 
 	public function initPage(): void
 	{
-		if (!$this->enable('master'))
+		if (!$this->enable(SettingsEntity::MASTER))
 			Error::show('no_valid_action');
 
 		Permissions::isNotGuest($this->getText('error_no_access'));

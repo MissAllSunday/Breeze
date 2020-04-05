@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+
+namespace Breeze\Service;
+
+
+interface MoodServiceInterface
+{
+	public const DISPLAY_PROFILE_AREAS = ['summary', 'static'];
+
+
+	public function createMoodList(array $listParams, int $start = 0): void;
+
+	public function getPlacementField(): int;
+
+	public function displayMood(array &$data, int $userId): void;
+
+	public function moodProfile(int $memID, array $area): void;
+
+	public function deleteMoods(array $toDeleteMoodIds): bool;
+
+	public function getMoodById(int $moodId): array;
+
+	public function saveMood(array $mood, int $moodId): bool;
+
+	public function showMoodOnCustomFields(int $userId): void;
+}

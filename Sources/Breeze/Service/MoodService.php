@@ -11,11 +11,9 @@ use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Traits\PersistenceTrait;
 
-class MoodService extends BaseService implements ServiceInterface
+class MoodService extends BaseService implements MoodServiceInterface
 {
 	use PersistenceTrait;
-
-	public const DISPLAY_PROFILE_AREAS = ['summary', 'static'];
 
 	private $userRepository;
 	/**
@@ -154,7 +152,7 @@ class MoodService extends BaseService implements ServiceInterface
 
 	public function displayMood(array &$data, int $userId): void
 	{
-		if (!$this->getSetting('master') || !$this->getSetting('mood'))
+		if (!$this->getSetting(SettingsEntity::MASTER) || !$this->getSetting(SettingsEntity::ENABLE_MOOD))
 			return;
 
 		$data['custom_fields'][] =  $this->moodRepository->getActiveMoods();
@@ -162,7 +160,7 @@ class MoodService extends BaseService implements ServiceInterface
 
 	public function moodProfile(int $memID, array $area): void
 	{
-		if (!$this->getSetting('master'))
+		if (!$this->getSetting(SettingsEntity::MASTER))
 			return;
 
 		$this->moodRepository->getMoodProfile($memID, $area);
@@ -226,7 +224,10 @@ class MoodService extends BaseService implements ServiceInterface
 		$activeMoods = $this->moodRepository->getActiveMoods();
 		$userSettings = $this->userRepository->getUserSettings($userId);
 		$placementField = $this->getSetting(SettingsEntity::MOOD_PLACEMENT, 0);
-		$moodLabel = $this->getSetting('mood_label', $this->getText('moodLabel'));
+		$moodLabel = $this->getSetting(
+			SettingsEntity::MOOD_LABEL,
+			$this->getText(SettingsEntity::MOOD_LABEL)
+		);
 
 		$currentMood = !empty($userSettings['mood']) && !empty($activeMoods[$userSettings['mood']]) ?
 			$activeMoods[$userSettings['mood']] : '';

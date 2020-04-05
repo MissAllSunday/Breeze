@@ -20,7 +20,6 @@ return [
 	'controller.admin' => [
 		'class' => AdminController::class,
 		'arguments'=> [
-			Request::class,
 			AdminService::class,
 			MoodService::class,
 		]
@@ -28,7 +27,6 @@ return [
 	'controller.wall' => [
 		'class' => WallController::class,
 		'arguments'=> [
-			Request::class,
 			WallService::class,
 			UserService::class
 		]

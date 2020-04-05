@@ -4,31 +4,16 @@ declare(strict_types=1);
 
 namespace Breeze\Controller;
 
-use Breeze\Service\Request;
-use Breeze\Service\ServiceInterface;
+use Breeze\Traits\RequestTrait;
 
 abstract class BaseController implements ControllerInterface
 {
-	/**
-	 * @var Request
-	 */
-	protected $request;
-
-	/**
-	 * @var ServiceInterface
-	 */
-	protected $service;
-
-	public function __construct(Request $request, ServiceInterface $service)
-	{
-		$this->request = $request;
-		$this->service = $service;
-	}
+	use RequestTrait;
 
 	public function subActionCall(): void
 	{
 		$subActions = $this->getSubActions();
-		$subAction = $this->request->get('sa');
+		$subAction = $this->getRequest('sa');
 
 		if (in_array($subAction, $subActions))
 			$this->$subAction();

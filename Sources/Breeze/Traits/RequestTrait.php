@@ -9,13 +9,15 @@ trait RequestTrait
 {
 	private $request;
 
-	public function __construct()
+	public function init()
 	{
 		$this->request = $_REQUEST;
 	}
 
-	public function get(string $variableName, $defaultValue = '')
+	public function getRequest(string $variableName, $defaultValue = '')
 	{
+		$this->init();
+
 		return isset($this->request[$variableName]) ?
 			$this->sanitize($this->request[$variableName]) : ($defaultValue ?? false);
 	}
@@ -30,8 +32,10 @@ trait RequestTrait
 		$_GET[$variableName] = $variableValue;
 	}
 
-	public function isSet(string $variableName)
+	public function isRequestSet(string $variableName)
 	{
+		$this->init();
+
 		return isset($this->request[$variableName]);
 	}
 
@@ -56,11 +60,6 @@ trait RequestTrait
 			$var = false;
 
 		return $var;
-	}
-
-	public function __destruct()
-	{
-		$this->request = [];
 	}
 
 	private function getSmcFunc(): array

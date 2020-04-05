@@ -37,7 +37,7 @@ class UserService extends BaseService implements ServiceInterface
 
 	public function hookProfilePopUp(&$profile_items): void
 	{
-		if (!$this->enable('master'))
+		if (!$this->enable(SettingsEntity::MASTER))
 			return;
 
 		$this->setLanguage(Breeze::NAME);
@@ -64,7 +64,7 @@ class UserService extends BaseService implements ServiceInterface
 
 	public function hookAlertsPref(array &$alertTypes): void
 	{
-		if (!$this->enable('master'))
+		if (!$this->enable(SettingsEntity::MASTER))
 			return;
 
 		$this->text->setLanguage('alerts');
