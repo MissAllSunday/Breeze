@@ -9,27 +9,12 @@ use Breeze\Entity\EntityInterface;
 use Breeze\Model\ModelInterface;
 use Breeze\Traits\CacheTrait;
 
-abstract class BaseRepository implements RepositoryInterface
+abstract class BaseRepository
 {
 	use CacheTrait;
 
 	public const LIKE_TYPE_STATUS = 'breSta';
 	public const LIKE_TYPE_COMMENT = 'breCom';
-
-	/**
-	 * @var ModelInterface
-	 */
-	protected $model;
-
-	/**
-	 * @var EntityInterface
-	 */
-	protected $entity;
-
-	public function __construct(ModelInterface $model)
-	{
-		$this->model = $model;
-	}
 
 	public function handleLikes($type, $content): array
 	{
@@ -43,8 +28,5 @@ abstract class BaseRepository implements RepositoryInterface
 		];
 	}
 
-	public function getModel(): ModelInterface
-	{
-		return $this->model;
-	}
+	public abstract function getModel();
 }

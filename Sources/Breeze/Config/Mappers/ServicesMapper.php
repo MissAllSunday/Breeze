@@ -15,6 +15,7 @@ use Breeze\Service\FormService;
 use Breeze\Service\MoodService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\UserService;
+use Breeze\Service\ValidateService;
 use Breeze\Service\WallService;
 
 return [
@@ -39,5 +40,8 @@ return [
 	],
 	'service.form' => [
 		'class' => FormService::class,
+	],
+	'service.validate' => [
+		'class' => ValidateService::class,
 	],
 ];

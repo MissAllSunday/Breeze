@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
+use Breeze\Entity\SettingsEntity;
 use Breeze\Repository\User\UserRepositoryInterface;
 
 
@@ -67,7 +68,7 @@ class UserService extends BaseService implements ServiceInterface
 		if (!$this->enable(SettingsEntity::MASTER))
 			return;
 
-		$this->text->setLanguage('alerts');
+		$this->setLanguage('alerts');
 
 		$alertTypes['breeze'] = [
 			'' . Breeze::PATTERN . 'status_owner' => [
@@ -100,7 +101,7 @@ class UserService extends BaseService implements ServiceInterface
 		if (empty($userId))
 			return true;
 
-		$userStalkedSettings = $this->userModel->getUserSettings($userStalkedId);
+		$userStalkedSettings = $this->userRepository->getUserSettings($userStalkedId);
 
 		if (!empty($userStalkedSettings['kick_ignored']) && !empty($userStalkedSettings['ignoredList']))
 		{
@@ -117,8 +118,8 @@ class UserService extends BaseService implements ServiceInterface
 		if (empty($userId))
 			return false;
 
-		$seconds = 60 * ($this->get('flood_minutes', 5));
-		$messages = $this->get('flood_messages', 10);
+		$seconds = 60 * ($this->getSetting('flood_minutes', 5));
+		$messages = $this->getSetting('flood_messages', 10);
 
 		// Has it been defined yet?
 		if (!isset($_SESSION['Breeze_floodControl' . $userId]))

@@ -26,5 +26,7 @@ parameters:
     - '/Function updateMemberData not found./'
     - '/Function parse_bbc not found./'
     - '/Function un_htmlspecialchars not found./'
+    - '/Function loadMemberContext not found./'
+    - '/Function loadMemberData not found./'
   autoload_files:
     - %currentWorkingDirectory%/breezeVendor/autoload.php

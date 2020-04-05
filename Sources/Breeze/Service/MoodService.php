@@ -153,7 +153,8 @@ class MoodService extends BaseService implements MoodServiceInterface
 
 	public function displayMood(array &$data, int $userId): void
 	{
-		if (!$this->getSetting(SettingsEntity::MASTER) || !$this->getSetting(SettingsEntity::ENABLE_MOOD))
+		if (!$this->getSetting(SettingsEntity::MASTER) ||
+			!$this->getSetting(SettingsEntity::ENABLE_MOOD))
 			return;
 
 		$data['custom_fields'][] =  $this->moodRepository->getActiveMoods();
@@ -179,7 +180,7 @@ class MoodService extends BaseService implements MoodServiceInterface
 
 	public function getMoodById(int $moodId): array
 	{
-		$moods = $this->moodRepository->getModel()->getMoodByIDs($moodId);
+		$moods = $this->moodRepository->getModel()->getMoodByIDs([$moodId]);
 
 		return $moods[$moodId] ?? [];
 	}

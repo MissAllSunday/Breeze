@@ -5,10 +5,11 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-class Validate extends BaseService implements ServiceInterface
-{
+use Breeze\Util\Permissions;
 
-	public function permissions($type, int $profileOwner = 0, int $userPoster = 0)
+class ValidateService extends BaseService implements ServiceInterface
+{
+	public function permissions($type, int $profileOwner = 0, int $userPoster = 0): array
 	{
 		$user_info = $this->global('user_info');
 
@@ -38,23 +39,23 @@ class Validate extends BaseService implements ServiceInterface
 
 		else
 		{
-			$perm['post'] = allowedTo('breeze_post' . $type);
-			$perm['postComments'] = allowedTo('breeze_postComments');
+			$perm['post'] = Permissions::isAllowedTo('breeze_post' . $type);
+			$perm['postComments'] = Permissions::isAllowedTo('breeze_postComments');
 		}
 
 		// It all starts with an empty vessel...
 		$allowed = [];
 
 		// Your own data?
-		if ($isPosterOwner && allowedTo('breeze_deleteOwn' . $type))
+		if ($isPosterOwner && Permissions::isAllowedTo('breeze_deleteOwn' . $type))
 			$allowed[] = 1;
 
 		// Nope? then is this your own profile?
-		if ($isProfileOwner && allowedTo('breeze_deleteProfile' . $type))
+		if ($isProfileOwner && Permissions::isAllowedTo('breeze_deleteProfile' . $type))
 			$allowed[] = 1;
 
 		// No poster and no profile owner, must be an admin/mod or something.
-		if (allowedTo('breeze_delete' . $type))
+		if (Permissions::isAllowedTo('breeze_delete' . $type))
 			$allowed[] = 1;
 
 		$perm['delete'] = in_array(1, $allowed);

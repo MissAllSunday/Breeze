@@ -266,11 +266,6 @@ final class TextTest extends TestCase
 	public function timeElapsedProvider(): array
 	{
 		return [
-			'just now' =>
-			[
-				'timeInSeconds' => time(),
-				'expected' => 'just now'
-			],
 			'years ago' =>
 			[
 				'timeInSeconds' => time() - 60489000,

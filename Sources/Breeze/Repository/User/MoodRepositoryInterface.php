@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\User;
 
+use Breeze\Model\MoodModelInterface;
+
 interface MoodRepositoryInterface
 {
 	public function deleteByIds(array $toDeleteMoodIds): bool;
@@ -16,4 +18,8 @@ interface MoodRepositoryInterface
 	public function getActiveMoods(): array;
 
 	public function saveMood($mood): bool;
+
+	public function getMoodProfile(int $userId, array $area);
+
+	public function getModel(): MoodModelInterface;
 }

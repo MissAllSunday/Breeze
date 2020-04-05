@@ -7,7 +7,7 @@ namespace Breeze\Model;
 use Breeze\Entity\MemberEntity as MemberEntity;
 use Breeze\Entity\OptionsEntity as OptionsEntity;
 
-class UserModel extends BaseModel implements ModelInterface
+class UserModel extends BaseModel implements UserModelInterface, ModelInterface
 {
 	const JSON_VALUES = ['cover', 'petitionList', 'moodHistory'];
 	const ARRAY_VALUES = ['blockListIDs'];

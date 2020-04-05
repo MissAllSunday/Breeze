@@ -6,7 +6,7 @@ namespace Breeze\Model;
 
 use Breeze\Entity\MoodEntity as MoodEntity;
 
-class MoodModel extends BaseModel
+class MoodModel extends BaseModel implements MoodModelInterface, ModelInterface
 {
 	function insert(array $data, int $id = 0): int
 	{

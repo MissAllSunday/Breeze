@@ -14,6 +14,6 @@ class Permissions
 
 	public static function isAllowedTo(string $permissionName): bool
 	{
-		return true;
+		return allowedTo($permissionName);
 	}
 }

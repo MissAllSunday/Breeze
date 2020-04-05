@@ -4,21 +4,36 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\User;
 
+use Breeze\Model\UserModelInterface;
 use Breeze\Repository\BaseRepository;
-use Breeze\Repository\RepositoryInterface;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
+	/**
+	 * @var UserModelInterface
+	 */
+	private $userModel;
+
+	public function __construct(UserModelInterface $userModel)
+	{
+		$this->userModel = $userModel;
+	}
+
 	public function getUserSettings(int $userId): array
 	{
 		$userSettings = $this->getCache('user_settings_' . $userId);
 
 		if (null === $userSettings)
 		{
-			$userSettings = $this->model->getUserSettings($userId);
+			$userSettings = $this->userModel->getUserSettings($userId);
 			$this->setCache('user_settings_' . $userId, $userSettings);
 		}
 
 		return $userSettings;
+	}
+
+	public function getModel(): UserModelInterface
+	{
+		return $this->userModel;
 	}
 }
