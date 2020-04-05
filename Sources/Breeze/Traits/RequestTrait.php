@@ -9,7 +9,7 @@ trait RequestTrait
 {
 	private $request;
 
-	public function init()
+	public function init(): void
 	{
 		$this->request = $_REQUEST;
 	}

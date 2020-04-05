@@ -11,7 +11,7 @@ use Breeze\Controller\Comment;
 use Breeze\Controller\Mood;
 use Breeze\Controller\Status;
 use Breeze\Controller\User\Settings\AlertsController;
-use Breeze\Controller\User\Settings\SettingsController;
+use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Service\AdminService;
@@ -97,8 +97,8 @@ class Breeze
 			];
 		}
 
-		/** @var SettingsController */
-		$settingsController = $this->container->get(SettingsController::class);
+		/** @var UserSettingsController */
+		$settingsController = $this->container->get(UserSettingsController::class);
 
 		/** @var AlertsController */
 		$alertsController = $this->container->get(AlertsController::class);

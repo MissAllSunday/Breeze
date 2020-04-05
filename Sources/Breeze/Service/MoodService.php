@@ -16,6 +16,7 @@ class MoodService extends BaseService implements MoodServiceInterface
 	use PersistenceTrait;
 
 	private $userRepository;
+
 	/**
 	 * @var MoodRepositoryInterface
 	 */

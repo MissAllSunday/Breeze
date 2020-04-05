@@ -5,11 +5,9 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-
 interface MoodServiceInterface
 {
 	public const DISPLAY_PROFILE_AREAS = ['summary', 'static'];
-
 
 	public function createMoodList(array $listParams, int $start = 0): void;
 

@@ -17,10 +17,12 @@ class WallController extends BaseController implements ControllerInterface
 		'status',
 		'comment',
 	];
+
 	/**
 	 * @var WallServiceInterface
 	 */
 	private $wallService;
+
 	/**
 	 * @var UserServiceInterface
 	 */

@@ -293,7 +293,7 @@ class BreezeUser extends Breeze
 		$context['page_desc'] = $data->get('sa') && $tools->text('user_settings_name_alerts_' . $data->get('sa') . '_desc') ? $tools->text('user_settings_name_alerts_' . $data->get('sa') . '_desc') : $tools->text('user_settings_name_alerts_settings_desc');
 
 		// Call the right action.
-		$call = 'alert' . ($data->get('sa') ? ucfirst($data->get('sa')) : 'SettingsController');
+		$call = 'alert' . ($data->get('sa') ? ucfirst($data->get('sa')) : 'UserSettingsController');
 
 		// Call the right function.
 		$this->{$call}();
@@ -468,7 +468,7 @@ class BreezeUser extends Breeze
 			'checked' => !empty($userSettings['wall']),
 		]);
 
-		// SettingsController wall setting.
+		// UserSettingsController wall setting.
 		$form->addCheckBox([
 			'name' => 'general_wall',
 			'checked' => !empty($userSettings['general_wall']),

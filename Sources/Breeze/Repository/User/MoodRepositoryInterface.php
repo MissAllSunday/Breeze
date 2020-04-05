@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\User;
 
-
 interface MoodRepositoryInterface
 {
 	public function deleteByIds(array $toDeleteMoodIds): bool;

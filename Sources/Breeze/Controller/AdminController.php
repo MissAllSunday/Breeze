@@ -27,6 +27,7 @@ class AdminController extends BaseController implements ControllerInterface
 	 * @var ServiceInterface
 	 */
 	protected $moodService;
+
 	/**
 	 * @var AdminServiceInterface
 	 */

@@ -7,7 +7,7 @@ namespace Breeze\Controller\User\Settings;
 use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
 
-class SettingsController extends BaseController implements ControllerInterface
+class UserSettingsController extends BaseController implements ControllerInterface
 {
 	public function getSubActions(): array
 	{

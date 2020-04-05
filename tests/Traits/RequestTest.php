@@ -2,44 +2,52 @@
 
 declare(strict_types=1);
 
-use Breeze\Service\Request as RequestService;
+use \Breeze\Traits\RequestTrait;
 use PHPUnit\Framework\TestCase;
 
 final class RequestTest extends TestCase
 {
 	/**
-	 * @var Request
+	 * @var \PHPUnit\Framework\MockObject\MockObject|RequestTrait
 	 */
-	private $requestService;
+	private $requestTrait;
 
 	protected function setUp(): void
 	{
-		$this->requestService = new Request();
+		$this->requestTrait = $this->getMockForTrait(RequestTrait::class);
 	}
 
 	/**
-	 * @dataProvider getProvider
+	 * @dataProvider getRequestProvider
 	 */
-	public function testGet(string  $variableName, $expected): void
+	public function testGet(string  $variableName, $expected, ?string $defaultValue): void
 	{
-		$requestVariable = $this->requestService->get($variableName);
+		$requestVariable = $this->requestTrait->getRequest($variableName, $defaultValue);
 
 		$this->assertEquals($expected, $requestVariable);
 	}
 
-	public function getProvider(): array
+	public function getRequestProvider(): array
 	{
 		return [
 			'sanitized' =>
 			[
 				'variableName' => 'xss',
-				'expected' => '&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;'
+				'expected' => '&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;',
+				'defaultValue' => null,
 			],
 			'not found' =>
 			[
 				'variableName' => 'Cornholio',
-				'expected' => false
-			]
+				'expected' => false,
+				'defaultValue' => null,
+			],
+			'default value' =>
+				[
+					'variableName' => 'Cornholio',
+					'expected' => 'Luffy',
+					'defaultValue' => 'Luffy',
+				]
 		];
 	}
 
@@ -48,7 +56,7 @@ final class RequestTest extends TestCase
 	 */
 	public function testSanitize(string  $variableName, $expected): void
 	{
-		$requestVariable = $this->requestService->sanitize($variableName);
+		$requestVariable = $this->requestTrait->sanitize($variableName);
 
 		$this->assertEquals($expected, $requestVariable);
 	}
