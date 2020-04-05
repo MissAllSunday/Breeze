@@ -6,10 +6,11 @@ namespace Breeze;
 
 use Breeze\Config\MapperAggregate;
 use Breeze\Controller\AdminController;
-use Breeze\Controller\Buddy;
-use Breeze\Controller\Comment;
-use Breeze\Controller\Mood;
-use Breeze\Controller\Status;
+use Breeze\Controller\BuddyController;
+use Breeze\Controller\CommentController;
+use Breeze\Controller\FeedController;
+use Breeze\Controller\MoodController;
+use Breeze\Controller\StatusController;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
@@ -192,16 +193,12 @@ class Breeze
 
 	public function actions(&$actions): void
 	{
-		$actions['breezeFeed'] = [false, Feed::class . '::do#'];
-
-		//if (!$this->enable(SettingsEntity::MASTER))
-			return;
-
-		$actions['breezeStatus'] = [false,  Status::class . '::do#'];
-		$actions['breezeComment'] = [false, Comment::class . '::do#'];
-		$actions['breezeWall'] = [false, WallController::class . '::do#'];
-		$actions['breezeBuddy'] = [false, Buddy::class . '::do#'];
-		$actions['breezeMood'] = [false, Mood::class . '::do#'];
+		$actions['breezeFeed'] = [false, FeedController::class . '::dispatch#'];
+		$actions['breezeStatus'] = [false,  StatusController::class . '::dispatch#'];
+		$actions['breezeComment'] = [false, CommentController::class . '::dispatch#'];
+		$actions['breezeWall'] = [false, WallController::class . '::dispatch#'];
+		$actions['breezeBuddy'] = [false, BuddyController::class . '::dispatch#'];
+		$actions['breezeMood'] = [false, MoodController::class . '::dispatch#'];
 	}
 
 	public function profilePopUpWrapper(&$profile_items): void
@@ -216,26 +213,18 @@ class Breeze
 
 	public function updateLikesWrapper($type, $content, $sa, $js, $extra)
 	{
-		//if (!$this->enable(SettingsEntity::MASTER) || !in_array($type, LikeRepository::getAllTypes()))
+		if (!$this->enable(SettingsEntity::MASTER))
 			return false;
 
-		switch ($type)
-		{
-			case LikeStatusRepository::LIKE_TYPE_STATUS:
-				$likes = $this->container->get(LikeStatusRepository::class);
-
-			case LikeCommentRepository::LIKE_TYPE_COMMENT:
-				$likes = $this->container->get(LikeCommentRepository::class);
-		}
-
-		$permissions = $this->container->get(Permissions::class);
+		/** @var PermissionsService */
+		$permissions = $this->container->get(PermissionsService::class);
 
 		return [
 			'can_see' => $permissions->get('likes_view'),
 			'can_like' => $permissions->get('likes_like'),
 			'type' => $type,
 			'flush_cache' => true,
-			'callback' => $likes->update(),
+			'callback' => '',
 		];
 	}
 
