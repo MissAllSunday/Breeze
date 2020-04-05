@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use \Breeze\Entity\MemberEntity as MemberEntity;
-use Breeze\Entity\MentionEntity as MentionEntity;
+use \Breeze\Entity\MemberBaseEntity as MemberEntity;
+use Breeze\Entity\MentionBaseEntity as MentionEntity;
 
 class MentionModel extends BaseBaseModel implements MentionModelInterface
 {
@@ -29,16 +29,16 @@ class MentionModel extends BaseBaseModel implements MentionModelInterface
 
 	function getTableName(): string
 	{
-		return MentionEntity::TABLE;
+		return MentionBaseEntity::TABLE;
 	}
 
 	function getColumnId(): string
 	{
-		return MentionEntity::COLUMN_CONTENT_ID;
+		return MentionBaseEntity::COLUMN_CONTENT_ID;
 	}
 
 	function getColumns(): array
 	{
-		return MentionEntity::getColumns();
+		return MentionBaseEntity::getColumns();
 	}
 }

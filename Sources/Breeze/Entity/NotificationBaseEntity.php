@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class NotificationEntity extends BaseEntity implements EntityInterface
+class NotificationBaseEntity extends BaseEntity implements BaseEntityInterface
 {
 	const TABLE = 'background_tasks';
 	const COLUMN_ID = 'id_task';
@@ -24,5 +24,10 @@ class NotificationEntity extends BaseEntity implements EntityInterface
 			self::COLUMN_TASK_DATA,
 			self::COLUMN_CLAIMED_TIME,
 		];
+	}
+
+	public static function getTableName(): string
+	{
+		return self::TABLE;
 	}
 }

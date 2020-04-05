@@ -5,8 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-use Breeze\Entity\MoodEntity;
-use Breeze\Entity\SettingsEntity;
+use Breeze\Entity\MoodBaseEntity;
+use Breeze\Entity\SettingsBaseEntity;
 use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Traits\PersistenceTrait;
@@ -148,13 +148,13 @@ class MoodService extends BaseService implements MoodServiceInterface
 
 	public function getPlacementField(): int
 	{
-		return (int) $this->getSetting(SettingsEntity::MOOD_PLACEMENT, 0);
+		return (int) $this->getSetting(SettingsBaseEntity::MOOD_PLACEMENT, 0);
 	}
 
 	public function displayMood(array &$data, int $userId): void
 	{
-		if (!$this->getSetting(SettingsEntity::MASTER) ||
-			!$this->getSetting(SettingsEntity::ENABLE_MOOD))
+		if (!$this->getSetting(SettingsBaseEntity::MASTER) ||
+			!$this->getSetting(SettingsBaseEntity::ENABLE_MOOD))
 			return;
 
 		$data['custom_fields'][] =  $this->moodRepository->getActiveMoods();
@@ -162,7 +162,7 @@ class MoodService extends BaseService implements MoodServiceInterface
 
 	public function moodProfile(int $memID, array $area): void
 	{
-		if (!$this->getSetting(SettingsEntity::MASTER))
+		if (!$this->getSetting(SettingsBaseEntity::MASTER))
 			return;
 
 		$this->moodRepository->getMoodProfile($memID, $area);
@@ -197,7 +197,7 @@ class MoodService extends BaseService implements MoodServiceInterface
 				$errors[] = $this->getText('mood_error_invalid');
 		}
 
-		if (!isset($mood[MoodEntity::COLUMN_EMOJI]) || empty($mood[MoodEntity::COLUMN_EMOJI]))
+		if (!isset($mood[MoodBaseEntity::COLUMN_EMOJI]) || empty($mood[MoodBaseEntity::COLUMN_EMOJI]))
 			$errors[] = $this->getText('mood_error_empty_emoji');
 
 		if (!empty($errors))
@@ -225,10 +225,10 @@ class MoodService extends BaseService implements MoodServiceInterface
 
 		$activeMoods = $this->moodRepository->getActiveMoods();
 		$userSettings = $this->userRepository->getUserSettings($userId);
-		$placementField = $this->getSetting(SettingsEntity::MOOD_PLACEMENT, 0);
+		$placementField = $this->getSetting(SettingsBaseEntity::MOOD_PLACEMENT, 0);
 		$moodLabel = $this->getSetting(
-			SettingsEntity::MOOD_LABEL,
-			$this->getText(SettingsEntity::MOOD_LABEL)
+			SettingsBaseEntity::MOOD_LABEL,
+			$this->getText(SettingsBaseEntity::MOOD_LABEL)
 		);
 
 		$currentMood = !empty($userSettings['mood']) && !empty($activeMoods[$userSettings['mood']]) ?

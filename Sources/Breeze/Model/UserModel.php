@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use Breeze\Entity\MemberEntity as MemberEntity;
-use Breeze\Entity\OptionsEntity as OptionsEntity;
+use Breeze\Entity\MemberBaseEntity as MemberEntity;
+use Breeze\Entity\OptionsBaseEntity as OptionsEntity;
 
 class UserModel extends BaseBaseModel implements UserModelInterface
 {
@@ -26,14 +26,14 @@ class UserModel extends BaseBaseModel implements UserModelInterface
 
 		if (!empty($inserts))
 			$this->dbClient->replace(
-				OptionsEntity::TABLE,
+				OptionsBaseEntity::TABLE,
 				[
-					MemberEntity::COLUMN_ID => 'int',
-					OptionsEntity::COLUMN_VARIABLE => 'string',
-					OptionsEntity::COLUMN_VALUE => 'string'
+					MemberBaseEntity::COLUMN_ID => 'int',
+					OptionsBaseEntity::COLUMN_VARIABLE => 'string',
+					OptionsBaseEntity::COLUMN_VALUE => 'string'
 				],
 				$inserts,
-				MemberEntity::COLUMN_ID
+				MemberBaseEntity::COLUMN_ID
 			);
 
 		return 1;
@@ -54,19 +54,19 @@ class UserModel extends BaseBaseModel implements UserModelInterface
 
 		$request = $this->dbClient->query(
 			'
-			SELECT ' . implode(', ', MemberEntity::getColumns()) . '
-			FROM {db_prefix}' . MemberEntity::TABLE . '
-			WHERE ' . MemberEntity::COLUMN_ID . ' IN ({array_int:userIds})',
+			SELECT ' . implode(', ', MemberBaseEntity::getColumns()) . '
+			FROM {db_prefix}' . MemberBaseEntity::TABLE . '
+			WHERE ' . MemberBaseEntity::COLUMN_ID . ' IN ({array_int:userIds})',
 			[
 				'userIds' => array_map('intval', $userIds)
 			]
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($request))
-			$loadedUsers[$row[MemberEntity::COLUMN_ID]] = [
-				'username' => $row[MemberEntity::COLUMN_MEMBER_NAME],
-				'name' => $row[MemberEntity::COLUMN_REAL_NAME],
-				'id' => $row[MemberEntity::COLUMN_ID],
+			$loadedUsers[$row[MemberBaseEntity::COLUMN_ID]] = [
+				'username' => $row[MemberBaseEntity::COLUMN_MEMBER_NAME],
+				'name' => $row[MemberBaseEntity::COLUMN_REAL_NAME],
+				'id' => $row[MemberBaseEntity::COLUMN_ID],
 			];
 
 		$this->dbClient->freeResult($request);
@@ -84,10 +84,10 @@ class UserModel extends BaseBaseModel implements UserModelInterface
 			return 0;
 
 		return $this->dbClient->update(
-			MemberEntity::TABLE,
+			MemberBaseEntity::TABLE,
 			'
-			SET ' . MemberEntity::COLUMN_PROFILE_VIEWS . ' = {string:jsonData}
-			WHERE ' . MemberEntity::COLUMN_ID . ' = ({int:userId})',
+			SET ' . MemberBaseEntity::COLUMN_PROFILE_VIEWS . ' = {string:jsonData}
+			WHERE ' . MemberBaseEntity::COLUMN_ID . ' = ({int:userId})',
 			[
 				'userId' => (int) $userId,
 				'jsonData' => json_encode($data),
@@ -100,12 +100,12 @@ class UserModel extends BaseBaseModel implements UserModelInterface
 		$userData = [];
 
 		$result = $this->dbClient->query(
-			'SELECT op.' . (implode(', op.', OptionsEntity::getColumns())) . ', 
-			mem.' . (implode(', mem.', MemberEntity::getColumns())) . '
-			FROM {db_prefix}' . OptionsEntity::TABLE . ' AS op
-				LEFT JOIN {db_prefix}' . MemberEntity::TABLE . ' 
-				AS mem ON (mem.' . MemberEntity::COLUMN_ID . ' = {int:userId})
-			WHERE ' . MemberEntity::COLUMN_ID . ' = {int:userId}',
+			'SELECT op.' . (implode(', op.', OptionsBaseEntity::getColumns())) . ', 
+			mem.' . (implode(', mem.', MemberBaseEntity::getColumns())) . '
+			FROM {db_prefix}' . OptionsBaseEntity::TABLE . ' AS op
+				LEFT JOIN {db_prefix}' . MemberBaseEntity::TABLE . ' 
+				AS mem ON (mem.' . MemberBaseEntity::COLUMN_ID . ' = {int:userId})
+			WHERE ' . MemberBaseEntity::COLUMN_ID . ' = {int:userId}',
 			[
 				'userId' => $userId,
 			]
@@ -113,23 +113,23 @@ class UserModel extends BaseBaseModel implements UserModelInterface
 
 		while ($row = $this->dbClient->fetchAssoc($result))
 		{
-			$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = is_numeric($row[OptionsEntity::COLUMN_VALUE]) ?
-				(int) $row[OptionsEntity::COLUMN_VALUE] : (string) $row[OptionsEntity::COLUMN_VALUE];
+			$userData[$row[OptionsBaseEntity::COLUMN_VARIABLE]] = is_numeric($row[OptionsBaseEntity::COLUMN_VALUE]) ?
+				(int) $row[OptionsBaseEntity::COLUMN_VALUE] : (string) $row[OptionsBaseEntity::COLUMN_VALUE];
 
-			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::JSON_VALUES))
-				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = !empty($row[OptionsEntity::COLUMN_VALUE]) ?
-					json_decode($row[OptionsEntity::COLUMN_VALUE], true) : [];
+			if (in_array($row[OptionsBaseEntity::COLUMN_VARIABLE], self::JSON_VALUES))
+				$userData[$row[OptionsBaseEntity::COLUMN_VARIABLE]] = !empty($row[OptionsBaseEntity::COLUMN_VALUE]) ?
+					json_decode($row[OptionsBaseEntity::COLUMN_VALUE], true) : [];
 
-			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::ARRAY_VALUES))
-				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = !empty($row[OptionsEntity::COLUMN_VALUE]) ?
-					explode(',', $row[OptionsEntity::COLUMN_VALUE]) : [];
+			if (in_array($row[OptionsBaseEntity::COLUMN_VARIABLE], self::ARRAY_VALUES))
+				$userData[$row[OptionsBaseEntity::COLUMN_VARIABLE]] = !empty($row[OptionsBaseEntity::COLUMN_VALUE]) ?
+					explode(',', $row[OptionsBaseEntity::COLUMN_VALUE]) : [];
 
 			$userData += [
-				'buddiesList' => !empty($row[MemberEntity::COLUMN_BUDDY_LIST]) ?
-					explode(',', $row[MemberEntity::COLUMN_BUDDY_LIST]) : [],
-				'ignoredList' => !empty($row[MemberEntity::COLUMN_IGNORE_LIST]) ?
-					explode(',', $row[MemberEntity::COLUMN_IGNORE_LIST]) : [],
-				'profileViews' => $row[MemberEntity::COLUMN_PROFILE_VIEWS],
+				'buddiesList' => !empty($row[MemberBaseEntity::COLUMN_BUDDY_LIST]) ?
+					explode(',', $row[MemberBaseEntity::COLUMN_BUDDY_LIST]) : [],
+				'ignoredList' => !empty($row[MemberBaseEntity::COLUMN_IGNORE_LIST]) ?
+					explode(',', $row[MemberBaseEntity::COLUMN_IGNORE_LIST]) : [],
+				'profileViews' => $row[MemberBaseEntity::COLUMN_PROFILE_VIEWS],
 			];
 		}
 
@@ -147,9 +147,9 @@ class UserModel extends BaseBaseModel implements UserModelInterface
 
 		$result = $this->dbClient->query(
 			'
-			SELECT ' . MemberEntity::COLUMN_PROFILE_VIEWS . '
-			FROM {db_prefix}' . MemberEntity::TABLE . '
-			WHERE ' . MemberEntity::COLUMN_ID . ' = {int:userId}',
+			SELECT ' . MemberBaseEntity::COLUMN_PROFILE_VIEWS . '
+			FROM {db_prefix}' . MemberBaseEntity::TABLE . '
+			WHERE ' . MemberBaseEntity::COLUMN_ID . ' = {int:userId}',
 			[
 				'userId' => (int) $userId
 			]
@@ -166,10 +166,10 @@ class UserModel extends BaseBaseModel implements UserModelInterface
 	public function deleteViews($userId): void
 	{
 		$this->dbClient->update(
-			MemberEntity::TABLE,
+			MemberBaseEntity::TABLE,
 			'
-			SET ' . MemberEntity::COLUMN_PROFILE_VIEWS . ' = {string:empty}
-			WHERE ' . MemberEntity::COLUMN_ID . ' = {int:userId}',
+			SET ' . MemberBaseEntity::COLUMN_PROFILE_VIEWS . ' = {string:empty}
+			WHERE ' . MemberBaseEntity::COLUMN_ID . ' = {int:userId}',
 			[
 				'userId' => (int) $userId,
 				'empty' => ''
@@ -199,16 +199,16 @@ class UserModel extends BaseBaseModel implements UserModelInterface
 
 	function getTableName(): string
 	{
-		return MemberEntity::TABLE;
+		return MemberBaseEntity::TABLE;
 	}
 
 	function getColumnId(): string
 	{
-		return MemberEntity::COLUMN_ID;
+		return MemberBaseEntity::COLUMN_ID;
 	}
 
 	function getColumns(): array
 	{
-		return MemberEntity::getColumns();
+		return MemberBaseEntity::getColumns();
 	}
 }

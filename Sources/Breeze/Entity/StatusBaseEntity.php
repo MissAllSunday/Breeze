@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class StatusEntity extends BaseEntity implements EntityInterface
+class StatusBaseEntity extends BaseEntity implements BaseEntityInterface
 {
 	const TABLE = 'breeze_status';
 	const COLUMN_ID = 'id';
@@ -24,5 +24,10 @@ class StatusEntity extends BaseEntity implements EntityInterface
 			self::COLUMN_BODY,
 			self::COLUMN_LIKES,
 		];
+	}
+
+	public static function getTableName(): string
+	{
+		return self::TABLE;
 	}
 }

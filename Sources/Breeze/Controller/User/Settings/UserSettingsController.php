@@ -11,7 +11,7 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 {
 	public function getSubActions(): array
 	{
-		// TODO: Implement getSubActions() method.
+		return [];
 	}
 
 	public function dispatch(): void

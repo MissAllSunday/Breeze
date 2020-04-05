@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-use Breeze\Entity\SettingsEntity;
+use Breeze\Entity\SettingsBaseEntity;
 use Breeze\Util\Form\ValueFormatter;
 use Breeze\Util\Form\ValueFormatterInterface;
 
@@ -14,7 +14,7 @@ class FormService extends BaseService implements FormServiceInterface
 	public function getConfigVarsSettings(): array
 	{
 		$configVars = [];
-		$allSettings = SettingsEntity::getColumns();
+		$allSettings = SettingsBaseEntity::getColumns();
 		$formatters = ValueFormatter::getFormatters();
 
 		foreach ($allSettings as $settingName => $settingType)

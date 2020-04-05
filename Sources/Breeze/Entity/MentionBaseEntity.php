@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class MentionEntity extends BaseEntity implements EntityInterface
+class MentionBaseEntity extends BaseEntity implements BaseEntityInterface
 {
 	const TABLE = 'mentions';
 	const COLUMN_CONTENT_ID = 'id';
@@ -23,5 +23,10 @@ class MentionEntity extends BaseEntity implements EntityInterface
 			self::COLUMN_ID_MEMBER => 'time',
 			self::COLUMN_TIME => 'body',
 		];
+	}
+
+	public static function getTableName(): string
+	{
+		return self::TABLE;
 	}
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use Breeze\Entity\LikeEntity as LikeEntity;
+use Breeze\Entity\LikeBaseEntity as LikeEntity;
 
 class LikeModel extends BaseBaseModel implements LikeModelInterface
 {
@@ -16,9 +16,9 @@ class LikeModel extends BaseBaseModel implements LikeModelInterface
 	function update(array $data, int $idContent = 0): array
 	{
 		$this->dbClient->update(
-			LikeEntity::TABLE,
+			LikeBaseEntity::TABLE,
 			'SET likes = {int:num_likes}
-			WHERE ' . LikeEntity::COLUMN_CONTENT_ID . ' = {int:idContent}',
+			WHERE ' . LikeBaseEntity::COLUMN_CONTENT_ID . ' = {int:idContent}',
 			[
 				'idContent' => $idContent,
 			]
@@ -33,10 +33,10 @@ class LikeModel extends BaseBaseModel implements LikeModelInterface
 
 		$request = $this->dbClient->query(
 			'
-			SELECT ' . implode(', ', LikeEntity::getColumns()) . '
-			FROM {db_prefix}' . LikeEntity::TABLE . '
-			WHERE ' . LikeEntity::COLUMN_CONTENT_TYPE . ' = {string:type}
-				AND ' . LikeEntity::COLUMN_CONTENT_ID . ' = {int:contentId}',
+			SELECT ' . implode(', ', LikeBaseEntity::getColumns()) . '
+			FROM {db_prefix}' . LikeBaseEntity::TABLE . '
+			WHERE ' . LikeBaseEntity::COLUMN_CONTENT_TYPE . ' = {string:type}
+				AND ' . LikeBaseEntity::COLUMN_CONTENT_ID . ' = {int:contentId}',
 			[
 				'contentId' => $contentId,
 				'type' => $type,
@@ -57,10 +57,10 @@ class LikeModel extends BaseBaseModel implements LikeModelInterface
 
 		$request = $this->dbClient->query(
 			'
-			SELECT ' . LikeEntity::COLUMN_CONTENT_ID . '
-			FROM {db_prefix}' . LikeEntity::TABLE . '
-			WHERE ' . LikeEntity::COLUMN_ID_MEMBER . ' = {int:userId}
-				AND ' . LikeEntity::COLUMN_CONTENT_TYPE . ' = {string:type}',
+			SELECT ' . LikeBaseEntity::COLUMN_CONTENT_ID . '
+			FROM {db_prefix}' . LikeBaseEntity::TABLE . '
+			WHERE ' . LikeBaseEntity::COLUMN_ID_MEMBER . ' = {int:userId}
+				AND ' . LikeBaseEntity::COLUMN_CONTENT_TYPE . ' = {string:type}',
 			[
 				'userId' => $userId,
 				'type' => $type,
@@ -68,7 +68,7 @@ class LikeModel extends BaseBaseModel implements LikeModelInterface
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($request))
-			$likes[$userId][$type][] = (int) $row[LikeEntity::COLUMN_CONTENT_ID];
+			$likes[$userId][$type][] = (int) $row[LikeBaseEntity::COLUMN_CONTENT_ID];
 
 		$this->dbClient->freeResult($request);
 
@@ -77,16 +77,16 @@ class LikeModel extends BaseBaseModel implements LikeModelInterface
 
 	function getTableName(): string
 	{
-		return LikeEntity::TABLE;
+		return LikeBaseEntity::TABLE;
 	}
 
 	function getColumnId(): string
 	{
-		return LikeEntity::COLUMN_ID_MEMBER;
+		return LikeBaseEntity::COLUMN_ID_MEMBER;
 	}
 
 	function getColumns(): array
 	{
-		return LikeEntity::getColumns();
+		return LikeBaseEntity::getColumns();
 	}
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class LogEntity extends BaseEntity implements EntityInterface
+class LogBaseEntity extends BaseEntity implements BaseEntityInterface
 {
 	const TABLE = 'breeze_logs';
 	const COLUMN_ID = 'id_log';
@@ -25,5 +25,10 @@ class LogEntity extends BaseEntity implements EntityInterface
 			self::COLUMN_TIME,
 			self::COLUMN_EXTRA,
 		];
+	}
+
+	public static function getTableName(): string
+	{
+		return self::TABLE;
 	}
 }

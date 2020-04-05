@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class CommentEntity extends BaseEntity implements EntityInterface
+class CommentBaseEntity extends BaseEntity implements BaseEntityInterface
 {
 	const TABLE = 'breeze_comments';
 	const COLUMN_ID ='comments_id';
@@ -28,5 +28,10 @@ class CommentEntity extends BaseEntity implements EntityInterface
 			self::COLUMN_BODY,
 			self::COLUMN_LIKES,
 		];
+	}
+
+	public static function getTableName(): string
+	{
+		return self::TABLE;
 	}
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
-use Breeze\Entity\StatusEntity;
+use Breeze\Entity\StatusBaseEntity;
 use Breeze\Model\StatusModelInterface;
 
 class StatusRepository extends BaseRepository implements StatusRepositoryInterface
@@ -25,14 +25,14 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		$statusIds = [];
 		$statusUsersIds = [];
 		$statusByProfile = $this->statusModel->getChunk(0, 10, [
-			'columnName' => StatusEntity::COLUMN_OWNER_ID,
+			'columnName' => StatusBaseEntity::COLUMN_OWNER_ID,
 			'ids' => [$profileOwnerId]
 		]);
 
 		foreach ($statusByProfile as $status)
 		{
-			$statusUsersIds[] = $status[StatusEntity::COLUMN_OWNER_ID];
-			$statusUsersIds[] = $status[StatusEntity::COLUMN_POSTER_ID];
+			$statusUsersIds[] = $status[StatusBaseEntity::COLUMN_OWNER_ID];
+			$statusUsersIds[] = $status[StatusBaseEntity::COLUMN_POSTER_ID];
 
 		}
 

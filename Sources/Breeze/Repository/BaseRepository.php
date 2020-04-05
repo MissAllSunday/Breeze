@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
-use Breeze\Entity\EntityInterface;
+use Breeze\Entity\BaseEntityInterface;
 use Breeze\Model\BaseModelInterface;
 use Breeze\Traits\CacheTrait;
 

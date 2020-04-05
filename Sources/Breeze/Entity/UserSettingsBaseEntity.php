@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class UserSettingsEntity extends BaseEntity implements EntityInterface
+class UserSettingsBaseEntity extends BaseEntity implements BaseEntityInterface
 {
 	public const WALL =  'wall';
 	public const GENERAL_WALL = 'generalWall';
@@ -32,5 +32,10 @@ class UserSettingsEntity extends BaseEntity implements EntityInterface
 			self::BUDDIES,
 			self::ABOUT_ME,
 		];
+	}
+
+	public static function getTableName(): string
+	{
+		return '';
 	}
 }

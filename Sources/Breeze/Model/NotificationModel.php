@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use Breeze\Entity\NotificationEntity as NotificationEntity;
+use Breeze\Entity\NotificationBaseEntity as NotificationEntity;
 
 class NotificationModel extends BaseBaseModel implements NotificationModelInterface
 {
@@ -14,15 +14,15 @@ class NotificationModel extends BaseBaseModel implements NotificationModelInterf
 			return 0;
 
 		$this->dbClient->insert(
-			NotificationEntity::TABLE,
+			NotificationBaseEntity::TABLE,
 			[
-				NotificationEntity::COLUMN_TASK_FILE => 'string',
-				NotificationEntity::COLUMN_TASK_CLASS => 'string',
-				NotificationEntity::COLUMN_TASK_DATA => 'string',
-				NotificationEntity::COLUMN_CLAIMED_TIME => 'int'
+				NotificationBaseEntity::COLUMN_TASK_FILE => 'string',
+				NotificationBaseEntity::COLUMN_TASK_CLASS => 'string',
+				NotificationBaseEntity::COLUMN_TASK_DATA => 'string',
+				NotificationBaseEntity::COLUMN_CLAIMED_TIME => 'int'
 			],
 			$data,
-			NotificationEntity::COLUMN_ID
+			NotificationBaseEntity::COLUMN_ID
 		);
 
 		return $this->getInsertedId();
@@ -35,16 +35,16 @@ class NotificationModel extends BaseBaseModel implements NotificationModelInterf
 
 	function getTableName(): string
 	{
-		return NotificationEntity::TABLE;
+		return NotificationBaseEntity::TABLE;
 	}
 
 	function getColumnId(): string
 	{
-		return NotificationEntity::COLUMN_ID;
+		return NotificationBaseEntity::COLUMN_ID;
 	}
 
 	function getColumns(): array
 	{
-		return NotificationEntity::getColumns();
+		return NotificationBaseEntity::getColumns();
 	}
 }

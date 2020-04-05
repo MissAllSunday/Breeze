@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
-use Breeze\Entity\CommentEntity;
+use Breeze\Entity\CommentBaseEntity;
 use Breeze\Model\CommentModelInterface;
 
 class CommentRepository extends BaseRepository implements CommentRepositoryInterface
@@ -26,7 +26,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			0,
 			0,
 			[
-				'columnName' => CommentEntity::COLUMN_PROFILE_ID,
+				'columnName' => CommentBaseEntity::COLUMN_PROFILE_ID,
 				'ids' => [$profileOwnerId]]
 		);
 	}

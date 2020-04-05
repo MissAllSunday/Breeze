@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use Breeze\Entity\CommentEntity as CommentEntity;
+use Breeze\Entity\CommentBaseEntity as CommentEntity;
 
 class CommentBaseModel extends BaseBaseModel implements BaseModelInterface
 {
@@ -14,18 +14,18 @@ class CommentBaseModel extends BaseBaseModel implements BaseModelInterface
 			return 0;
 
 		$this->dbClient->insert(
-			CommentEntity::TABLE,
+			CommentBaseEntity::TABLE,
 			[
-				CommentEntity::COLUMN_STATUS_ID => 'int',
-				CommentEntity::COLUMN_STATUS_OWNER_ID => 'int',
-				CommentEntity::COLUMN_POSTER_ID => 'int',
-				CommentEntity::COLUMN_PROFILE_ID => 'int',
-				CommentEntity::COLUMN_TIME => 'int',
-				CommentEntity::COLUMN_BODY => 'string',
-				CommentEntity::COLUMN_LIKES => 'int',
+				CommentBaseEntity::COLUMN_STATUS_ID => 'int',
+				CommentBaseEntity::COLUMN_STATUS_OWNER_ID => 'int',
+				CommentBaseEntity::COLUMN_POSTER_ID => 'int',
+				CommentBaseEntity::COLUMN_PROFILE_ID => 'int',
+				CommentBaseEntity::COLUMN_TIME => 'int',
+				CommentBaseEntity::COLUMN_BODY => 'string',
+				CommentBaseEntity::COLUMN_LIKES => 'int',
 			],
 			$data,
-			CommentEntity::COLUMN_ID
+			CommentBaseEntity::COLUMN_ID
 		);
 
 		return $this->getInsertedId();
@@ -34,8 +34,8 @@ class CommentBaseModel extends BaseBaseModel implements BaseModelInterface
 	public function deleteByStatusID(array $ids): bool
 	{
 		$this->dbClient->delete(
-			CommentEntity::TABLE,
-			'WHERE ' . CommentEntity::COLUMN_STATUS_ID . ' IN({array_int:ids})',
+			CommentBaseEntity::TABLE,
+			'WHERE ' . CommentBaseEntity::COLUMN_STATUS_ID . ' IN({array_int:ids})',
 			['ids' => $ids]
 		);
 
@@ -49,16 +49,16 @@ class CommentBaseModel extends BaseBaseModel implements BaseModelInterface
 
 	function getTableName(): string
 	{
-		return CommentEntity::TABLE;
+		return CommentBaseEntity::TABLE;
 	}
 
 	function getColumnId(): string
 	{
-		return CommentEntity::COLUMN_ID;
+		return CommentBaseEntity::COLUMN_ID;
 	}
 
 	function getColumns(): array
 	{
-		return CommentEntity::getColumns();
+		return CommentBaseEntity::getColumns();
 	}
 }

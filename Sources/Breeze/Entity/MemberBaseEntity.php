@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class MemberEntity extends BaseEntity implements EntityInterface
+class MemberBaseEntity extends BaseEntity implements BaseEntityInterface
 {
 	const TABLE = 'members';
 	const COLUMN_ID = 'id_member';
@@ -25,6 +25,10 @@ class MemberEntity extends BaseEntity implements EntityInterface
 			self::COLUMN_IGNORE_LIST,
 			self::COLUMN_BUDDY_LIST
 		];
+	}
 
+	public static function getTableName(): string
+	{
+		return self::TABLE;
 	}
 }
