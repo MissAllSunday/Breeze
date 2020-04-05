@@ -6,7 +6,7 @@ namespace Breeze\Model;
 
 use Breeze\Entity\LogEntity as LogEntity;
 
-class LogModel extends BaseModel
+class LogModel extends BaseBaseModel implements LogModelInterface
 {
 	function insert(array $data, int $id = 0): int
 	{
@@ -15,7 +15,7 @@ class LogModel extends BaseModel
 
 		$data['extra'] = !empty($data['extra']) ? json_encode($data['extra']) : '';
 
-		$this->db->insert(
+		$this->dbClient->insert(
 			$this->getTableName(),
 			[
 				LogEntity::COLUMN_MEMBER => 'int',
@@ -36,28 +36,6 @@ class LogModel extends BaseModel
 		return [];
 	}
 
-	public function logCount(array $userIds): int
-	{
-		$count = 0;
-
-		if (empty($userIds))
-			return $count;
-
-		$request = $this->db->query(
-			'
-			SELECT id_log
-			FROM {db_prefix}' . LogEntity::TABLE . '
-			WHERE ' . LogEntity::COLUMN_MEMBER . ' IN ({array_int:userIds})',
-			['userIds' => $userIds]
-		);
-
-		$count =  $this->db->numRows($request);
-
-		$this->db->freeResult($request);
-
-		return $count;
-	}
-
 	public function getLog(array $userIds, int $maxIndex, int $start): array
 	{
 		$logs = [];
@@ -65,7 +43,7 @@ class LogModel extends BaseModel
 		if (empty($userIds) || empty($maxIndex))
 			return $logs;
 
-		$result = $this->db->query(
+		$result = $this->dbClient->query(
 			'
 			SELECT ' . implode(', ', $this->getColumns()) . '
 			FROM {db_prefix}' . $this->getTableName() . '
@@ -79,19 +57,19 @@ class LogModel extends BaseModel
 			]
 		);
 
-		while ($row = $this->db->fetchAssoc($result))
+		while ($row = $this->dbClient->fetchAssoc($result))
 			$logs[$row[LogEntity::COLUMN_ID]] = [
 				'id' => $row[LogEntity::COLUMN_ID],
 				'member' => $row[LogEntity::COLUMN_MEMBER],
 				'content_type' => $row[LogEntity::COLUMN_CONTENT_TYPE],
 				'content_id' => $row[LogEntity::COLUMN_CONTENT_ID],
-				'time' => timeformat($row[LogEntity::COLUMN_TIME]),
+				'time' => $row[LogEntity::COLUMN_TIME],
 				'time_raw' => $row[LogEntity::COLUMN_TIME],
 				'extra' => !empty($row[LogEntity::COLUMN_EXTRA]) ?
 					json_decode($row[LogEntity::COLUMN_EXTRA], true) : [],
 			];
 
-		$this->db->freeResult($result);
+		$this->dbClient->freeResult($result);
 
 		return $logs;
 	}

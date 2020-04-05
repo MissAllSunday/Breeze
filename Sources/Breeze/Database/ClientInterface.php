@@ -16,6 +16,8 @@ interface ClientInterface
 
 	public function insert(string $tableName, array $columns, array $data, string $columnIdName): void;
 
+	public function replace(string $tableName, array $columns, array $data, string $columnIdName): void;
+
 	public function getInsertedId(string $tableName, string $columnIdName): int;
 
 	public function update(string $tableName, string $queryString, array $bindParams): int;

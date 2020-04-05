@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Config\Mapper;
 
-use Breeze\Model\CommentModel;
+use Breeze\Model\CommentBaseModel;
 use Breeze\Model\MoodModel;
 use Breeze\Model\StatusModel;
 use Breeze\Model\UserModel;
@@ -29,6 +29,6 @@ return [
 	],
 	'repo.comment' => [
 		'class' => CommentRepository::class,
-		'arguments'=> [CommentModel::class]
+		'arguments'=> [CommentBaseModel::class]
 	],
 ];

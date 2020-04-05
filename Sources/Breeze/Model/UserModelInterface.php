@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-interface UserModelInterface
+interface UserModelInterface extends BaseModelInterface
 {
 	const JSON_VALUES = ['cover', 'petitionList', 'moodHistory'];
 	const ARRAY_VALUES = ['blockListIDs'];

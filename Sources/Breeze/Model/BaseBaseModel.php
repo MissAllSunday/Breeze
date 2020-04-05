@@ -6,7 +6,7 @@ namespace Breeze\Model;
 
 use Breeze\Database\ClientInterface;
 
-abstract class BaseModel implements ModelInterface
+abstract class BaseBaseModel implements BaseModelInterface
 {
 	/**
 	 * @var ClientInterface
@@ -47,7 +47,7 @@ abstract class BaseModel implements ModelInterface
 		return $items;
 	}
 
-	function delete(array $ids): bool
+	public function delete(array $ids = []): bool
 	{
 		$this->dbClient->delete(
 			$this->getTableName(),

@@ -8,7 +8,6 @@ parameters:
     - '/Function prepareDBSettingContext not found./'
     - '/Function loadGeneralSettingParameters not found./'
     - '/Function checkSession not found./'
-    - '/Function allowedTo not found./'
     - '/Function saveDBSettings not found./'
     - '/Function fatal_lang_error not found./'
     - '/Function addInlineJavascript not found./'
@@ -28,5 +27,6 @@ parameters:
     - '/Function un_htmlspecialchars not found./'
     - '/Function loadMemberContext not found./'
     - '/Function loadMemberData not found./'
+    - '/Function membersAllowedTo not found./'
   autoload_files:
     - %currentWorkingDirectory%/breezeVendor/autoload.php

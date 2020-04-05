@@ -45,7 +45,7 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 
 	public function saveMood($mood): bool
 	{
-
+		return true;
 	}
 
 	public function getMoodProfile(int $userId, array $area): void

@@ -6,7 +6,7 @@ namespace Breeze\Model;
 
 use Breeze\Entity\LikeEntity as LikeEntity;
 
-class LikeModel extends BaseModel
+class LikeModel extends BaseBaseModel implements LikeModelInterface
 {
 	function insert(array $data, int $id = 0): int
 	{
@@ -15,7 +15,7 @@ class LikeModel extends BaseModel
 
 	function update(array $data, int $idContent = 0): array
 	{
-		$this->db->update(
+		$this->dbClient->update(
 			LikeEntity::TABLE,
 			'SET likes = {int:num_likes}
 			WHERE ' . LikeEntity::COLUMN_CONTENT_ID . ' = {int:idContent}',
@@ -31,7 +31,7 @@ class LikeModel extends BaseModel
 	{
 		$likes = [];
 
-		$request = $this->db->query(
+		$request = $this->dbClient->query(
 			'
 			SELECT ' . implode(', ', LikeEntity::getColumns()) . '
 			FROM {db_prefix}' . LikeEntity::TABLE . '
@@ -43,10 +43,10 @@ class LikeModel extends BaseModel
 			]
 		);
 
-		while ($row = $this->db->fetchAssoc($request))
+		while ($row = $this->dbClient->fetchAssoc($request))
 			$likes[] = $row;
 
-		$this->db->freeResult($request);
+		$this->dbClient->freeResult($request);
 
 		return $likes;
 	}
@@ -55,7 +55,7 @@ class LikeModel extends BaseModel
 	{
 		$likes = [];
 
-		$request = $this->db->query(
+		$request = $this->dbClient->query(
 			'
 			SELECT ' . LikeEntity::COLUMN_CONTENT_ID . '
 			FROM {db_prefix}' . LikeEntity::TABLE . '
@@ -67,10 +67,10 @@ class LikeModel extends BaseModel
 			]
 		);
 
-		while ($row = $this->db->fetchAssoc($request))
+		while ($row = $this->dbClient->fetchAssoc($request))
 			$likes[$userId][$type][] = (int) $row[LikeEntity::COLUMN_CONTENT_ID];
 
-		$this->db->freeResult($request);
+		$this->dbClient->freeResult($request);
 
 		return $likes;
 	}

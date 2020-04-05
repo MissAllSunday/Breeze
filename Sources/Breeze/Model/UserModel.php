@@ -7,11 +7,8 @@ namespace Breeze\Model;
 use Breeze\Entity\MemberEntity as MemberEntity;
 use Breeze\Entity\OptionsEntity as OptionsEntity;
 
-class UserModel extends BaseModel implements UserModelInterface, ModelInterface
+class UserModel extends BaseBaseModel implements UserModelInterface
 {
-	const JSON_VALUES = ['cover', 'petitionList', 'moodHistory'];
-	const ARRAY_VALUES = ['blockListIDs'];
-
 	function insert(array $data, int $userId = 0): int
 	{
 		if (empty($data) || empty($userId))

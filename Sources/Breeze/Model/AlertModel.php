@@ -7,7 +7,7 @@ namespace Breeze\Model;
 use Breeze\Breeze as Breeze;
 use Breeze\Entity\AlertEntity as AlertEntity;
 
-class AlertModel extends BaseModel implements ModelInterface
+class AlertModel extends BaseBaseModel implements AlertModelInterface
 {
 	function insert(array $data, int $id = 0): int
 	{
@@ -17,7 +17,7 @@ class AlertModel extends BaseModel implements ModelInterface
 		if (false !== strpos($data['content_type'], Breeze::PATTERN))
 			$params['content_type'] = Breeze::PATTERN . $data['content_type'];
 
-		$this->db->insert(AlertEntity::TABLE, [
+		$this->dbClient->insert(AlertEntity::TABLE, [
 			AlertEntity::COLUMN_ALERT_TIME => 'int',
 			AlertEntity::COLUMN_ID_MEMBER => 'int',
 			AlertEntity::COLUMN_ID_MEMBER_STARTED => 'int',
@@ -44,7 +44,7 @@ class AlertModel extends BaseModel implements ModelInterface
 		foreach ($data as $column => $newValue)
 			$updateString .= $column . ' = ' . $newValue . ($column != $lastKey ? ', ' : '');
 
-		$this->db->update(
+		$this->dbClient->update(
 			AlertEntity::TABLE,
 			'SET ' . ($updateString) . '
 			WHERE ' . $this->getColumnId() . ' = {int:id}',
@@ -66,7 +66,7 @@ class AlertModel extends BaseModel implements ModelInterface
 		if (empty($userId) || empty($alertType))
 			return $alreadySent;
 
-		$request = $this->db->query(
+		$request = $this->dbClient->query(
 			'
 			SELECT ' . AlertEntity::COLUMN_ID . '
 			FROM {db_prefix}' . AlertEntity::TABLE . '
@@ -83,9 +83,9 @@ class AlertModel extends BaseModel implements ModelInterface
 			]
 		);
 
-		$result = $this->db->fetchAssoc($request);
+		$result = $this->dbClient->fetchAssoc($request);
 
-		$this->db->freeResult($request);
+		$this->dbClient->freeResult($request);
 
 		return (bool) $result;
 	}

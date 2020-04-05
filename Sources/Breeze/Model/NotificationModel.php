@@ -6,14 +6,14 @@ namespace Breeze\Model;
 
 use Breeze\Entity\NotificationEntity as NotificationEntity;
 
-class NotificationModel extends BaseModel
+class NotificationModel extends BaseBaseModel implements NotificationModelInterface
 {
 	function insert(array $data, int $id = 0): int
 	{
 		if (empty($data))
 			return 0;
 
-		$this->db->insert(
+		$this->dbClient->insert(
 			NotificationEntity::TABLE,
 			[
 				NotificationEntity::COLUMN_TASK_FILE => 'string',

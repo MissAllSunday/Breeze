@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Entity\EntityInterface;
-use Breeze\Model\ModelInterface;
+use Breeze\Model\BaseModelInterface;
 use Breeze\Traits\CacheTrait;
 
 abstract class BaseRepository
@@ -18,6 +18,7 @@ abstract class BaseRepository
 
 	public function handleLikes($type, $content): array
 	{
+		return [];
 	}
 
 	public static function getAllTypes(): array
