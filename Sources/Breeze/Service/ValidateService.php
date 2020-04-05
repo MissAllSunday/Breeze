@@ -7,6 +7,7 @@ namespace Breeze\Service;
 
 class Validate extends BaseService implements ServiceInterface
 {
+
 	public function permissions($type, int $profileOwner = 0, int $userPoster = 0)
 	{
 		$user_info = $this->global('user_info');

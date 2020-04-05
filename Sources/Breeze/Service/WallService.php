@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
+use Breeze\Entity\SettingsEntity;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Error;
@@ -13,9 +14,10 @@ use Breeze\Util\Permissions;
 
 class WallService extends BaseService implements WallServiceInterface
 {
-	public const ACTION = 'breeze';
-
-	private $usersToLoad = [];
+	/**
+	 * @var UserServiceInterface
+	 */
+	private $userService;
 
 	/**
 	 * @var StatusRepositoryInterface
@@ -27,14 +29,11 @@ class WallService extends BaseService implements WallServiceInterface
 	 */
 	private $commentRepository;
 
+	private $usersToLoad = [];
+
 	protected $profileOwnerInfo = [];
 
 	protected $currentUserInfo = [];
-
-	/**
-	 * @var ServiceInterface
-	 */
-	private $userService;
 
 	private $profileOwnerSettings = [];
 
@@ -128,12 +127,12 @@ class WallService extends BaseService implements WallServiceInterface
 		return $canSeePage;
 	}
 
-	public function getStatus(int $userId): void
+	public function getStatus(int $userId): array
 	{
-		$status = $this->statusRepository->getStatusByProfile($userId);
+		return $this->statusRepository->getStatusByProfile($userId);
 	}
 
-	protected function isCurrentUserOwner(): bool
+	public function isCurrentUserOwner(): bool
 	{
 		if (!isset($this->currentUserInfo['id']))
 			return false;
@@ -141,12 +140,12 @@ class WallService extends BaseService implements WallServiceInterface
 		return $this->currentUserInfo['id'] === $this->profileOwnerInfo['id'];
 	}
 
-	protected function getUsersToLoad(): array
+	public function getUsersToLoad(): array
 	{
 		return array_filter(array_unique($this->usersToLoad));
 	}
 
-	protected function setUsersToLoad(array $usersToLoad): void
+	public function setUsersToLoad(array $usersToLoad): void
 	{
 		$this->usersToLoad = array_merge($usersToLoad, $this->usersToLoad);
 	}

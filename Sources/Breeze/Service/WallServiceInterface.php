@@ -19,7 +19,7 @@ interface WallServiceInterface
 
 	public function isAllowedToSeePage(bool $redirect = false): bool;
 
-	public function getStatus(int $userId): void;
+	public function getStatus(int $userId): array;
 
 	function isCurrentUserOwner(): bool;
 

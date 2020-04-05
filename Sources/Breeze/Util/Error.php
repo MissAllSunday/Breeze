@@ -13,6 +13,6 @@ class Error
 
 	public static function show(string $errorTextKey): void
 	{
-		fatal_lang_error(self::ERROR_KEY . $textKey, false);
+		fatal_lang_error(self::ERROR_KEY . $errorTextKey, false);
 	}
 }
