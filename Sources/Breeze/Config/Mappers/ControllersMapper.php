@@ -12,7 +12,7 @@ use Breeze\Controller\User\Settings\SettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Service\AdminService;
 use Breeze\Service\MoodService;
-use Breeze\Service\RequestService;
+use Breeze\Service\Request;
 use Breeze\Service\UserService;
 use Breeze\Service\WallService;
 
@@ -20,7 +20,7 @@ return [
 	'controller.admin' => [
 		'class' => AdminController::class,
 		'arguments'=> [
-			RequestService::class,
+			Request::class,
 			AdminService::class,
 			MoodService::class,
 		]
@@ -28,7 +28,7 @@ return [
 	'controller.wall' => [
 		'class' => WallController::class,
 		'arguments'=> [
-			RequestService::class,
+			Request::class,
 			WallService::class,
 			UserService::class
 		]
@@ -36,21 +36,21 @@ return [
 	'controller.alerts' => [
 		'class' => AlertsController::class,
 		'arguments'=> [
-			RequestService::class,
+			Request::class,
 			UserService::class,
 		]
 	],
 	'controller.cover' => [
 		'class' => CoverController::class,
 		'arguments'=> [
-			RequestService::class,
+			Request::class,
 			UserService::class,
 		]
 	],
 	'controller.settings' => [
 		'class' => SettingsController::class,
 		'arguments'=> [
-			RequestService::class,
+			Request::class,
 			UserService::class,
 		]
 	],

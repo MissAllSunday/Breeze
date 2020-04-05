@@ -14,13 +14,13 @@ use Breeze\Service\AdminService;
 use Breeze\Service\FormService;
 use Breeze\Service\MoodService;
 use Breeze\Service\PermissionsService;
-use Breeze\Service\RequestService;
 use Breeze\Service\UserService;
 use Breeze\Service\WallService;
+use Breeze\Util\RequestTrait;
 
 return [
 	'service.request' => [
-		'class' => RequestService::class
+		'class' => RequestTrait::class
 	],
 	'service.mood' => [
 		'class' => MoodService::class,

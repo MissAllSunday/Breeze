@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Service;
+namespace Breeze\Traits;
 
-class RequestService extends BaseService implements ServiceInterface
+trait RequestTrait
 {
 	private $request;
 
@@ -37,7 +37,7 @@ class RequestService extends BaseService implements ServiceInterface
 
 	public function sanitize($variable)
 	{
-		$smcFunc = $this->global('smcFunc');
+		$smcFunc = $this->getSmcFunc();
 
 		if (is_array($variable))
 		{
@@ -61,5 +61,10 @@ class RequestService extends BaseService implements ServiceInterface
 	public function __destruct()
 	{
 		$this->request = [];
+	}
+
+	private function getSmcFunc(): array
+	{
+		return $GLOBALS['smcFunc'];
 	}
 }

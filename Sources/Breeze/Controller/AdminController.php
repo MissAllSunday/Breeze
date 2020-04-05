@@ -6,7 +6,7 @@ namespace Breeze\Controller;
 
 use Breeze\Breeze;
 use Breeze\Service\AdminService;
-use Breeze\Service\RequestService;
+use Breeze\Service\Request;
 use Breeze\Service\ServiceInterface;
 use Breeze\Traits\PersistenceTrait;
 
@@ -28,7 +28,7 @@ class AdminController extends BaseController implements ControllerInterface
 	protected $moodService;
 
 	public function __construct(
-		RequestService $request,
+		Request $request,
 		ServiceInterface $service,
 		ServiceInterface $moodService
 	)

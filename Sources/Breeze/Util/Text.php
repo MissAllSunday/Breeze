@@ -1,36 +1,43 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace Breeze\Util;
-
 
 use Breeze\Breeze;
 
 class Text implements TextInterface
 {
 	private const SESSION_TOKEN = 'href';
+	
+	/**
+	 * @var SettingsInterface
+	 */
+	private $settings;
 
-	public function __construct()
+	public function __construct(SettingsInterface $settings)
 	{
+		$this->settings = $settings;
 	}
 
 	public function getText(string $textKey): string
 	{
-		$txt = $this->global('txt');
+		$txt = $this->settings->global('txt');
 
 		return !empty($txt[Breeze::PATTERN . $textKey]) ? $txt[Breeze::PATTERN . $textKey] : '';
 	}
 
 	public function getSmfText(string $textKey): string
 	{
-		$txt = $this->global('txt');
+		$txt = $this->settings->global('txt');
 
 		return !empty($txt[$textKey]) ? $txt[$textKey] : '';
 	}
 
 	public function parserText(string $text, array $replacements = []): string
 	{
-		$context = $this->global('context');
+		$context = $this->settings->global('context');
 
 		if (empty($text))
 			return '';
@@ -123,7 +130,7 @@ class Text implements TextInterface
 
 	public function timeElapsed(int $timeInSeconds): string
 	{
-		$txt = $this->global('txt');
+		$txt = $this->settings->global('txt');
 		$sinceTime = time() - $timeInSeconds;
 		$timeElapsed = '';
 

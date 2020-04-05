@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-use Breeze\Service\RequestService as RequestService;
+use Breeze\Service\Request as RequestService;
 use PHPUnit\Framework\TestCase;
 
 final class RequestTest extends TestCase
 {
 	/**
-	 * @var RequestService
+	 * @var Request
 	 */
 	private $requestService;
 
 	protected function setUp(): void
 	{
-		$this->requestService = new RequestService();
+		$this->requestService = new Request();
 	}
 
 	/**

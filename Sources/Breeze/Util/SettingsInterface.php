@@ -1,10 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace Breeze\Util;
-
-
-use Breeze\Breeze;
 
 interface SettingsInterface
 {

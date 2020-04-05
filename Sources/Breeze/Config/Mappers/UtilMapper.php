@@ -9,18 +9,26 @@ use Breeze\Util\Form\Formatters\CheckFormatter;
 use Breeze\Util\Form\Formatters\IntFormatter;
 use Breeze\Util\Form\Formatters\SelectFormatter;
 use Breeze\Util\Form\Formatters\TextFormatter;
+use Breeze\Util\Settings;
+use Breeze\Util\Text;
 
 return [
-	'formatter.check' => [
+	'util.settings' => [
+		'class' => Settings::class
+	],
+	'util.text' => [
+		'class' => Text::class
+	],
+	'util.formatter.check' => [
 		'class' => CheckFormatter::class
 	],
-	'formatter.int' => [
+	'util.formatter.int' => [
 		'class' => IntFormatter::class
 	],
-	'formatter.select' => [
+	'util.formatter.select' => [
 		'class' => SelectFormatter::class
 	],
-	'formatter.text' => [
+	'util.formatter.text' => [
 		'class' => TextFormatter::class
 	],
 ];
