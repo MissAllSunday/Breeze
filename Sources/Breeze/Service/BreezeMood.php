@@ -39,7 +39,7 @@ class BreezeMood
 
 		$this->imagesPath = $this->_app['tools']->settings['default_theme_dir'] . '/images/' . $this->_moodFolder;
 		$this->imagesUrl = $this->_app['tools']->settings['default_images_url'] . '/' . $this->_moodFolder;
-		$this->placementField = $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->setting('mood_placement') : 0;
+		$this->placementField = $this->_app['tools']->enable(SettingsEntity::MOOD_PLACEMENT) ? $this->_app['tools']->setting(SettingsEntity::MOOD_PLACEMENT) : 0;
 	}
 
 	public function call(): void
@@ -226,7 +226,7 @@ class BreezeMood
 			'title' => $this->_app['tools']->enable('mood_label') ? $this->_app['tools']->setting('mood_label') : $this->_app['tools']->text('moodLabel'),
 			'col_name' => $this->_app['tools']->text('moodLabel'),
 			'value' => template_mood_noImage(),
-			'placement' => $this->_app['tools']->enable('mood_placement') ? $this->_app['tools']->setting('mood_placement') : 0,
+			'placement' => $this->_app['tools']->enable(SettingsEntity::MOOD_PLACEMENT) ? $this->_app['tools']->setting(SettingsEntity::MOOD_PLACEMENT) : 0,
 		];
 	}
 

@@ -39,6 +39,5 @@ return [
 	],
 	'service.form' => [
 		'class' => FormService::class,
-		'arguments'=> [AdminRepository::class]
 	],
 ];

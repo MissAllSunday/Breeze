@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
-use Breeze\Repository\RepositoryInterface;
 
 class AdminService extends BaseService implements ServiceInterface, AdminServiceInterface
 {

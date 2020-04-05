@@ -9,7 +9,7 @@ use Breeze\Breeze;
 
 trait SettingsTrait
 {
-	public function get(string $settingName, $fallBack = false)
+	public function getSetting(string $settingName, $fallBack = false)
 	{
 		$modSettings = $this->global('modSettings');
 

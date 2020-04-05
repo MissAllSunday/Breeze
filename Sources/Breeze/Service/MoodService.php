@@ -5,9 +5,10 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-use Breeze\Breeze;
 use Breeze\Entity\MoodEntity;
-use Breeze\Repository\RepositoryInterface;
+use Breeze\Entity\SettingsEntity;
+use Breeze\Repository\User\MoodRepositoryInterface;
+use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Traits\PersistenceTrait;
 
 class MoodService extends BaseService implements ServiceInterface
@@ -16,14 +17,16 @@ class MoodService extends BaseService implements ServiceInterface
 
 	public const DISPLAY_PROFILE_AREAS = ['summary', 'static'];
 
-	protected $userRepository;
+	private $userRepository;
+	/**
+	 * @var MoodRepositoryInterface
+	 */
+	private $moodRepository;
 
-	public function __construct(RepositoryInterface $repository, RepositoryInterface $userRepository)
+	public function __construct(MoodRepositoryInterface $moodRepository, UserRepositoryInterface $userRepository)
 	{
-		$this->repository = $repository;
+		$this->moodRepository = $moodRepository;
 		$this->userRepository = $userRepository;
-
-		parent::__construct($repository);
 	}
 
 	public function createMoodList(array $listParams, int $start = 0): void
@@ -34,8 +37,8 @@ class MoodService extends BaseService implements ServiceInterface
 		$this->setLanguage('ManageSmileys');
 		$numItemsPerPage = 10;
 		$scriptUrl = $this->global('scripturl');
-		$maxIndex = $this->repository->getCount();
-		$chunkedItems = $this->repository->getChunk($start, $numItemsPerPage);
+		$maxIndex = $this->moodRepository->getCount();
+		$chunkedItems = $this->moodRepository->getChunk($start, $numItemsPerPage);
 
 		$listParams =  array_merge([
 			'id' => '',
@@ -146,7 +149,7 @@ class MoodService extends BaseService implements ServiceInterface
 
 	public function getPlacementField(): int
 	{
-		return (int) $this->getSetting('mood_placement', 0);
+		return (int) $this->getSetting(SettingsEntity::MOOD_PLACEMENT, 0);
 	}
 
 	public function displayMood(array &$data, int $userId): void
@@ -154,7 +157,7 @@ class MoodService extends BaseService implements ServiceInterface
 		if (!$this->getSetting('master') || !$this->getSetting('mood'))
 			return;
 
-		$data['custom_fields'][] =  $this->repository->getActiveMoods();
+		$data['custom_fields'][] =  $this->moodRepository->getActiveMoods();
 	}
 
 	public function moodProfile(int $memID, array $area): void
@@ -162,12 +165,12 @@ class MoodService extends BaseService implements ServiceInterface
 		if (!$this->getSetting('master'))
 			return;
 
-		$this->repository->getMoodProfile($memID, $area);
+		$this->moodRepository->getMoodProfile($memID, $area);
 	}
 
 	public function deleteMoods(array $toDeleteMoodIds): bool
 	{
-		$wasDeleted = $this->repository->deleteByIds($toDeleteMoodIds);
+		$wasDeleted = $this->moodRepository->deleteByIds($toDeleteMoodIds);
 		$messageKey = $wasDeleted ? 'info' : 'error';
 
 		$this->setMessage($this->getText('mood_' . $messageKey . '_delete'), $messageKey);
@@ -177,7 +180,7 @@ class MoodService extends BaseService implements ServiceInterface
 
 	public function getMoodById(int $moodId): array
 	{
-		$moods = $this->repository->getModel()->getMoodByIDs($moodId);
+		$moods = $this->moodRepository->getModel()->getMoodByIDs($moodId);
 
 		return $moods[$moodId] ?? [];
 	}
@@ -188,7 +191,7 @@ class MoodService extends BaseService implements ServiceInterface
 
 		if (!empty($moodId))
 		{
-			$activeMoods = $this->repository->getActiveMoods();
+			$activeMoods = $this->moodRepository->getActiveMoods();
 
 			if (!isset($activeMoods[$moodId]))
 				$errors[] = $this->getText('mood_error_invalid');
@@ -208,10 +211,10 @@ class MoodService extends BaseService implements ServiceInterface
 		}
 
 		if (!empty($moodId))
-			$result = $this->repository->getModel()->update($mood, $moodId);
+			$result = $this->moodRepository->getModel()->update($mood, $moodId);
 
 		else
-			$result = $this->repository->getModel()->insert($mood);
+			$result = $this->moodRepository->getModel()->insert($mood);
 
 		return (bool) $result;
 	}
@@ -220,9 +223,9 @@ class MoodService extends BaseService implements ServiceInterface
 	{
 		$context = $this->global('context');
 
-		$activeMoods = $this->repository->getActiveMoods();
+		$activeMoods = $this->moodRepository->getActiveMoods();
 		$userSettings = $this->userRepository->getUserSettings($userId);
-		$placementField = $this->getSetting('mood_placement', 0);
+		$placementField = $this->getSetting(SettingsEntity::MOOD_PLACEMENT, 0);
 		$moodLabel = $this->getSetting('mood_label', $this->getText('moodLabel'));
 
 		$currentMood = !empty($userSettings['mood']) && !empty($activeMoods[$userSettings['mood']]) ?
