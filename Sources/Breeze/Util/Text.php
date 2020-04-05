@@ -1,21 +1,17 @@
 <?php
 
-declare(strict_types=1);
 
+namespace Breeze\Util;
 
-namespace Breeze\Traits;
 
 use Breeze\Breeze;
 
-trait TextTrait
+class Text implements TextInterface
 {
-	use SettingsTrait;
+	private const SESSION_TOKEN = 'href';
 
-	private static $session_parser = 'href';
-
-	public function setLanguage(string $languageName): void
+	public function __construct()
 	{
-		loadLanguage($languageName);
 	}
 
 	public function getText(string $textKey): string
@@ -50,7 +46,7 @@ trait TextTrait
 		foreach ($replacements as $find => $replace)
 		{
 			$toFind[] = '{' . $find . '}';
-			$replaceWith[] = $replace . ((false !== strpos($find, self::$session_parser)) ? $session_var : '');
+			$replaceWith[] = $replace . ((false !== strpos($find, self::SESSION_TOKEN)) ? $session_var : '');
 		}
 
 		return str_replace($toFind, $replaceWith, $text);
@@ -156,5 +152,10 @@ trait TextTrait
 		}
 
 		return $timeElapsed;
+	}
+
+	public function setLanguage(string $languageName): void
+	{
+		loadLanguage($languageName);
 	}
 }

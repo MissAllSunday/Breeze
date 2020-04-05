@@ -120,6 +120,7 @@ class AdminService extends BaseService implements ServiceInterface
 		$context['page_title'] = $this->getText('page_' . $actionName . '_title');
 		$context['sub_template'] = !empty($smfTemplate) ?
 			$smfTemplate : (self::AREA . '_' . $actionName);
+
 		$context[$context['admin_menu_name']]['tab_data'] = [
 			'title' => $context['page_title'],
 			'description' => $this->getText('page_' . $actionName . '_description'),

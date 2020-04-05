@@ -13,10 +13,12 @@ use Breeze\Controller\Status;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\SettingsController;
 use Breeze\Controller\User\WallController;
+use Breeze\Entity\SettingsEntity;
 use Breeze\Service\AdminService;
 use Breeze\Service\MoodService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\UserService;
+use Breeze\Traits\SettingsTrait;
 use Breeze\Traits\TextTrait;
 use League\Container\Container as Container;
 
@@ -25,6 +27,7 @@ if (!defined('SMF'))
 
 class Breeze
 {
+	use SettingsTrait;
 	use TextTrait;
 
 	public const NAME = 'Breeze';
@@ -69,7 +72,7 @@ class Breeze
 		$context = $this->global('context');
 		$currentUserSettings = $this->container->get(UserService::class)->getCurrentUserSettings();
 
-		if ($this->enable('force_enable') || !empty($currentUserSettings['wall']))
+		if ($this->enable(SettingsEntity::FORCE_WALL) || !empty($currentUserSettings['wall']))
 		{
 			/** @var WallController */
 			$wallController = $this->container->get(WallController::class);
