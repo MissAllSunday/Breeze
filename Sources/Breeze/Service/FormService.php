@@ -22,6 +22,7 @@ class FormService extends BaseService implements FormServiceInterface
 			{
 				/** @var ValueFormatterInterface $formatter */
 				$formatter = $formatters[$settingType];
+
 				$configVars[] = $formatter->getConfigVar($settingName, $settingType);
 			}
 

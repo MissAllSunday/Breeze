@@ -61,5 +61,11 @@ $_REQUEST = [
 	'foo' => 'baz',
 ];
 
+$_SESSION['Breeze'] = [];
+$_SESSION['Breeze']['notice'] = [
+	'message' => 'Kaizoku ou ni ore wa naru',
+	'type' => 'info',
+];
+
 // Composer-Autoloader
 require_once $_SERVER['DOCUMENT_ROOT'] . "./breezeVendor/autoload.php";

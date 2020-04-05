@@ -8,9 +8,9 @@ use Breeze\Breeze;
 
 trait PersistenceTrait
 {
-	public function setMessage($message, $type = ''): array
+	public function setMessage(string $message, string $type = 'info'): array
 	{
-		if (empty($message) || empty($type))
+		if (empty($message))
 			return [];
 
 		if (!isset($_SESSION[Breeze::NAME]))
@@ -18,7 +18,7 @@ trait PersistenceTrait
 
 		$_SESSION[Breeze::NAME]['notice'] = [
 			'message' => $message,
-			'type' => $type ?? 'info',
+			'type' => $type,
 		];
 
 		return $_SESSION[Breeze::NAME]['notice'];
