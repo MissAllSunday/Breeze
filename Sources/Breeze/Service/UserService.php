@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
+use Breeze\Repository\User\UserRepositoryInterface;
 
 
 class UserService extends BaseService implements ServiceInterface
@@ -12,16 +13,26 @@ class UserService extends BaseService implements ServiceInterface
 	public const AREA = 'breezeSettings';
 	public const LEGACY_AREA = 'legacy';
 
+	/**
+	 * @var UserRepositoryInterface
+	 */
+	private $userRepository;
+
+	public function __construct(UserRepositoryInterface $userRepository)
+	{
+		$this->userRepository = $userRepository;
+	}
+
 	public function getCurrentUserSettings(): array
 	{
 		$currentUserInfo = $this->global('user_info');
 
-		return $this->repository->getUserSettings($currentUserInfo['id']);
+		return $this->userRepository->getUserSettings($currentUserInfo['id']);
 	}
 
 	public function getUserSettings(int $userId): array
 	{
-		return $this->repository->getUserSettings($userId);
+		return $this->userRepository->getUserSettings($userId);
 	}
 
 	public function hookProfilePopUp(&$profile_items): void

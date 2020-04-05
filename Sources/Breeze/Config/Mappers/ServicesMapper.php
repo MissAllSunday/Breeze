@@ -16,19 +16,15 @@ use Breeze\Service\MoodService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\UserService;
 use Breeze\Service\WallService;
-use Breeze\Util\RequestTrait;
 
 return [
-	'service.request' => [
-		'class' => RequestTrait::class
-	],
 	'service.mood' => [
 		'class' => MoodService::class,
 		'arguments'=> [MoodRepository::class, UserRepository::class]
 	],
 	'service.admin' => [
 		'class' => AdminService::class,
-		'arguments'=> [AdminRepository::class, FormService::class]
+		'arguments'=> [FormService::class]
 	],
 	'service.user' => [
 		'class' => UserService::class,
@@ -36,11 +32,10 @@ return [
 	],
 	'service.permissions' => [
 		'class' => PermissionsService::class,
-		'arguments'=> [AdminRepository::class]
 	],
 	'service.wall' => [
 		'class' => WallService::class,
-		'arguments'=> [UserRepository::class, StatusRepository::class, CommentRepository::class, UserService::class]
+		'arguments'=> [UserService::class, StatusRepository::class, CommentRepository::class]
 	],
 	'service.form' => [
 		'class' => FormService::class,

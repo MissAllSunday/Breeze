@@ -36,7 +36,7 @@ $txt['Breeze_enable_general_wall_sub'] = 'If enable, a general wall will appear,
 $txt['Breeze_menu_position'] = 'Select the position for the general User button.';
 $txt['Breeze_menu_position_sub'] = 'By default is next to the home button.';
 
-// Settings
+// SettingsTrait
 $txt['Breeze_master'] = 'Enable Breeze mod';
 $txt['Breeze_master_sub'] = 'The master setting, this must be enable for the mod to work properly.';
 $txt['Breeze_forceWall'] = 'Check to force the enabling of walls.';

@@ -18,7 +18,6 @@ use Breeze\Service\AdminService;
 use Breeze\Service\MoodService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\UserService;
-use Breeze\Traits\SettingsTrait;
 use Breeze\Traits\TextTrait;
 use League\Container\Container as Container;
 
@@ -27,7 +26,6 @@ if (!defined('SMF'))
 
 class Breeze
 {
-	use SettingsTrait;
 	use TextTrait;
 
 	public const NAME = 'Breeze';

@@ -8,30 +8,24 @@ namespace Breeze\Service;
 use Breeze\Breeze;
 use Breeze\Repository\RepositoryInterface;
 
-class AdminService extends BaseService implements ServiceInterface
+class AdminService extends BaseService implements ServiceInterface, AdminServiceInterface
 {
-	public const IDENTIFIER = 'Admin';
-	public const AREA = 'breezeAdmin';
-	public const POST_URL = 'action=admin;area=breezeAdmin;sa=';
-
 	/**
 	 * @var array
 	 */
 	protected $configVars = [];
 
 	/**
-	 * @var ServiceInterface
+	 * @var FormServiceInterface
 	 */
 	private $formService;
 
-	public function __construct(RepositoryInterface $repository, ServiceInterface $formService)
+	public function __construct(FormServiceInterface $formService)
 	{
 		$this->formService = $formService;
-
-		parent::__construct($repository);
 	}
 
-	public function initSettingsPage($subActions): void
+	public function initSettingsPage(array $subActions): void
 	{
 		$context = $this->global('context');
 

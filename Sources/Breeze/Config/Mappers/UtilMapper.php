@@ -5,19 +5,15 @@ declare(strict_types=1);
 
 namespace Breeze\Config\Mapper;
 
+use Breeze\Util\Folder;
 use Breeze\Util\Form\Formatters\CheckFormatter;
 use Breeze\Util\Form\Formatters\IntFormatter;
 use Breeze\Util\Form\Formatters\SelectFormatter;
 use Breeze\Util\Form\Formatters\TextFormatter;
-use Breeze\Util\Settings;
-use Breeze\Util\Text;
 
 return [
-	'util.settings' => [
-		'class' => Settings::class
-	],
-	'util.text' => [
-		'class' => Text::class
+	'util.folder' => [
+		'class' => Folder::class
 	],
 	'util.formatter.check' => [
 		'class' => CheckFormatter::class

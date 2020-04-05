@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Util;
+namespace Breeze\Traits;
 
 use Breeze\Breeze;
 
-class Settings implements SettingsInterface
+trait SettingsTrait
 {
 	public function get(string $settingName, $fallBack = false)
 	{
@@ -36,6 +36,16 @@ class Settings implements SettingsInterface
 		return !empty($modSettings[$settingName]) ? $modSettings[$settingName] : $fallBack;
 	}
 
+	public function global(string $variableName)
+	{
+		return $GLOBALS[$variableName] ?? false;
+	}
+
+	public function setGlobal($globalName, $globalValue): void
+	{
+		$GLOBALS[$globalName] = $globalValue;
+	}
+
 	public function isJson(string $string): bool
 	{
 		json_decode($string);
@@ -48,9 +58,7 @@ class Settings implements SettingsInterface
 		if (empty($fileName))
 			return;
 
-		$sourceDir = !empty($dir) ? $dir : $this->global('sourcedir');
-
-		require_once($sourceDir . '/' . $fileName . '.php');
+		require_once($this->global('sourcedir') . '/' . $fileName . '.php');
 	}
 
 	public function setTemplate(string $templateName): void
@@ -64,13 +72,8 @@ class Settings implements SettingsInterface
 			redirectexit($urlName);
 	}
 
-	public function global(string $variableName)
+	public function loadCSS(): void
 	{
-		return $GLOBALS[$variableName] ?? false;
-	}
-
-	public function setGlobal($globalName, $globalValue): void
-	{
-		$GLOBALS[$globalName] = $globalValue;
+		loadCSSFile('breeze.css', [], 'smf_breeze');
 	}
 }

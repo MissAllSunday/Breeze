@@ -3,41 +3,33 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Util;
+namespace Breeze\Traits;
 
 use Breeze\Breeze;
 
-class Text implements TextInterface
+trait TextTrait
 {
-	private const SESSION_TOKEN = 'href';
+	use SettingsTrait;
 	
-	/**
-	 * @var SettingsInterface
-	 */
-	private $settings;
-
-	public function __construct(SettingsInterface $settings)
-	{
-		$this->settings = $settings;
-	}
+	private static $session_token = 'href';
 
 	public function getText(string $textKey): string
 	{
-		$txt = $this->settings->global('txt');
+		$txt = $this->global('txt');
 
 		return !empty($txt[Breeze::PATTERN . $textKey]) ? $txt[Breeze::PATTERN . $textKey] : '';
 	}
 
 	public function getSmfText(string $textKey): string
 	{
-		$txt = $this->settings->global('txt');
+		$txt = $this->global('txt');
 
 		return !empty($txt[$textKey]) ? $txt[$textKey] : '';
 	}
 
 	public function parserText(string $text, array $replacements = []): string
 	{
-		$context = $this->settings->global('context');
+		$context = $this->global('context');
 
 		if (empty($text))
 			return '';
@@ -53,7 +45,7 @@ class Text implements TextInterface
 		foreach ($replacements as $find => $replace)
 		{
 			$toFind[] = '{' . $find . '}';
-			$replaceWith[] = $replace . ((false !== strpos($find, self::SESSION_TOKEN)) ? $session_var : '');
+			$replaceWith[] = $replace . ((false !== strpos($find, self::$session_token)) ? $session_var : '');
 		}
 
 		return str_replace($toFind, $replaceWith, $text);
@@ -96,7 +88,11 @@ class Text implements TextInterface
 
 		$string = htmlentities($string, ENT_QUOTES);
 
-		$string = preg_replace('~&([a-z]{1,2})(amp|acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', $string);
+		$string = preg_replace(
+			'~&([a-z]{1,2})(amp|acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i',
+			'$1',
+			$string
+		);
 
 		return trim($string);
 	}
@@ -130,7 +126,7 @@ class Text implements TextInterface
 
 	public function timeElapsed(int $timeInSeconds): string
 	{
-		$txt = $this->settings->global('txt');
+		$txt = $this->global('txt');
 		$sinceTime = time() - $timeInSeconds;
 		$timeElapsed = '';
 

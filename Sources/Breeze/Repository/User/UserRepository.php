@@ -7,7 +7,7 @@ namespace Breeze\Repository\User;
 use Breeze\Repository\BaseRepository;
 use Breeze\Repository\RepositoryInterface;
 
-class UserRepository extends BaseRepository implements RepositoryInterface
+class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
 	public function getUserSettings(int $userId): array
 	{

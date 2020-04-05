@@ -6,22 +6,24 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
-use Breeze\Entity\StatusEntity;
-use Breeze\Repository\RepositoryInterface;
+use Breeze\Repository\CommentRepositoryInterface;
+use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Util\Error;
+use Breeze\Util\Permissions;
 
-class WallService extends BaseService implements ServiceInterface
+class WallService extends BaseService implements WallServiceInterface
 {
 	public const ACTION = 'breeze';
 
 	private $usersToLoad = [];
 
 	/**
-	 * @var RepositoryInterface
+	 * @var StatusRepositoryInterface
 	 */
 	private $statusRepository;
 
 	/**
-	 * @var RepositoryInterface
+	 * @var CommentRepositoryInterface
 	 */
 	private $commentRepository;
 
@@ -37,25 +39,22 @@ class WallService extends BaseService implements ServiceInterface
 	private $profileOwnerSettings = [];
 
 	public function __construct(
-		RepositoryInterface $repository,
-		RepositoryInterface $statusRepository,
-		RepositoryInterface $commentRepository,
-		ServiceInterface $userService
+		UserServiceInterface $userService,
+		StatusRepositoryInterface $statusRepository,
+		CommentRepositoryInterface $commentRepository
 	)
 	{
 		$this->statusRepository = $statusRepository;
 		$this->commentRepository = $commentRepository;
 		$this->userService = $userService;
-
-		parent::__construct($repository);
 	}
 
 	public function initPage(): void
 	{
 		if (!$this->enable('master'))
-			fatal_lang_error('Breeze_error_no_valid_action', false);
+			Error::show('no_valid_action');
 
-		is_not_guest($this->getText('error_no_access'));
+		Permissions::isNotGuest($this->getText('error_no_access'));
 
 		$this->setLanguage(Breeze::NAME);
 		$this->setTemplate(Breeze::NAME);
@@ -79,7 +78,7 @@ class WallService extends BaseService implements ServiceInterface
 		if (empty($actionName))
 			return;
 
-		loadCSSFile('breeze.css', [], 'smf_breeze');
+		$this->loadCSS();
 		$context = $this->global('context');
 		$scriptUrl = $this->global('scripturl');
 
