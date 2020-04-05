@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Model;
 
 use Breeze\Breeze as Breeze;
-use Breeze\Entity\AlertBaseEntity as AlertEntity;
+use Breeze\Entity\AlertEntity as AlertEntity;
 
 class AlertModel extends BaseBaseModel implements AlertModelInterface
 {
@@ -17,16 +17,16 @@ class AlertModel extends BaseBaseModel implements AlertModelInterface
 		if (false !== strpos($data['content_type'], Breeze::PATTERN))
 			$params['content_type'] = Breeze::PATTERN . $data['content_type'];
 
-		$this->dbClient->insert(AlertBaseEntity::TABLE, [
-			AlertBaseEntity::COLUMN_ALERT_TIME => 'int',
-			AlertBaseEntity::COLUMN_ID_MEMBER => 'int',
-			AlertBaseEntity::COLUMN_ID_MEMBER_STARTED => 'int',
-			AlertBaseEntity::COLUMN_MEMBER_NAME => 'string',
-			AlertBaseEntity::COLUMN_CONTENT_TYPE => 'string',
-			AlertBaseEntity::COLUMN_CONTENT_ID => 'int',
-			AlertBaseEntity::COLUMN_CONTENT_ACTION => 'string',
-			AlertBaseEntity::COLUMN_IS_READ => 'int',
-			AlertBaseEntity::COLUMN_EXTRA => 'string'
+		$this->dbClient->insert(AlertEntity::TABLE, [
+			AlertEntity::COLUMN_ALERT_TIME => 'int',
+			AlertEntity::COLUMN_ID_MEMBER => 'int',
+			AlertEntity::COLUMN_ID_MEMBER_STARTED => 'int',
+			AlertEntity::COLUMN_MEMBER_NAME => 'string',
+			AlertEntity::COLUMN_CONTENT_TYPE => 'string',
+			AlertEntity::COLUMN_CONTENT_ID => 'int',
+			AlertEntity::COLUMN_CONTENT_ACTION => 'string',
+			AlertEntity::COLUMN_IS_READ => 'int',
+			AlertEntity::COLUMN_EXTRA => 'string'
 		], $data, $this->getColumnId());
 
 		return $this->getInsertedId();
@@ -45,7 +45,7 @@ class AlertModel extends BaseBaseModel implements AlertModelInterface
 			$updateString .= $column . ' = ' . $newValue . ($column != $lastKey ? ', ' : '');
 
 		$this->dbClient->update(
-			AlertBaseEntity::TABLE,
+			AlertEntity::TABLE,
 			'SET ' . ($updateString) . '
 			WHERE ' . $this->getColumnId() . ' = {int:id}',
 			['id' => $alertId]
@@ -68,13 +68,13 @@ class AlertModel extends BaseBaseModel implements AlertModelInterface
 
 		$request = $this->dbClient->query(
 			'
-			SELECT ' . AlertBaseEntity::COLUMN_ID . '
-			FROM {db_prefix}' . AlertBaseEntity::TABLE . '
-			WHERE ' . AlertBaseEntity::COLUMN_ID_MEMBER . ' = {int:userId}
-				AND ' . AlertBaseEntity::COLUMN_IS_READ . ' = 0
-				AND ' . AlertBaseEntity::COLUMN_CONTENT_TYPE . ' = {string:alertType}
-				' . ($alertId ? 'AND ' . AlertBaseEntity::COLUMN_CONTENT_ID . ' = {int:alertId}' : '') . '
-				' . ($alertSender ? 'AND ' . AlertBaseEntity::COLUMN_ID_MEMBER_STARTED . ' = {int:alertSender}' : '') . '',
+			SELECT ' . AlertEntity::COLUMN_ID . '
+			FROM {db_prefix}' . AlertEntity::TABLE . '
+			WHERE ' . AlertEntity::COLUMN_ID_MEMBER . ' = {int:userId}
+				AND ' . AlertEntity::COLUMN_IS_READ . ' = 0
+				AND ' . AlertEntity::COLUMN_CONTENT_TYPE . ' = {string:alertType}
+				' . ($alertId ? 'AND ' . AlertEntity::COLUMN_CONTENT_ID . ' = {int:alertId}' : '') . '
+				' . ($alertSender ? 'AND ' . AlertEntity::COLUMN_ID_MEMBER_STARTED . ' = {int:alertSender}' : '') . '',
 			[
 				'userId' => $userId,
 				'alertType' => $alertType,
@@ -92,16 +92,16 @@ class AlertModel extends BaseBaseModel implements AlertModelInterface
 
 	function getTableName(): string
 	{
-		return AlertBaseEntity::TABLE;
+		return AlertEntity::TABLE;
 	}
 
 	function getColumnId(): string
 	{
-		return AlertBaseEntity::COLUMN_ID;
+		return AlertEntity::COLUMN_ID;
 	}
 
 	function getColumns(): array
 	{
-		return AlertBaseEntity::getColumns();
+		return AlertEntity::getColumns();
 	}
 }

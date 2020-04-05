@@ -5,25 +5,26 @@ declare(strict_types=1);
 
 namespace Breeze\Controller;
 
-class Comment extends BaseController implements ControllerInterface
+class CommentController extends BaseController implements ControllerInterface
 {
-	public function do(): void
-	{
 
+	public function getSubActions(): array
+	{
+		return [];
 	}
 
-	public function create(): void
+	public function dispatch()
 	{
-		// TODO: Implement create() method.
+		// TODO: Implement dispatch() method.
 	}
 
-	public function update(): void
+	public function main(): void
 	{
-		// TODO: Implement update() method.
+		// TODO: Implement main() method.
 	}
 
-	public function delete(): void
+	public function render(string $subTemplate, array $params): void
 	{
-		// TODO: Implement delete() method.
+		// TODO: Implement render() method.
 	}
 }

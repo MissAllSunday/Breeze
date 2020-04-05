@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class OptionsBaseEntity extends BaseEntity implements BaseEntityInterface
+class OptionsEntity extends BaseEntity implements BaseEntityInterface
 {
 	const TABLE = 'breeze_options';
 	const COLUMN_VARIABLE = 'variable';

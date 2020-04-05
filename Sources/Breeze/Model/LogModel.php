@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use Breeze\Entity\LogBaseEntity as LogEntity;
+use Breeze\Entity\LogEntity as LogEntity;
 
 class LogModel extends BaseBaseModel implements LogModelInterface
 {
@@ -18,14 +18,14 @@ class LogModel extends BaseBaseModel implements LogModelInterface
 		$this->dbClient->insert(
 			$this->getTableName(),
 			[
-				LogBaseEntity::COLUMN_MEMBER => 'int',
-				LogBaseEntity::COLUMN_CONTENT_TYPE => 'string',
-				LogBaseEntity::COLUMN_CONTENT_ID => 'int',
-				LogBaseEntity::COLUMN_TIME => 'int',
-				LogBaseEntity::COLUMN_EXTRA => 'string'
+				LogEntity::COLUMN_MEMBER => 'int',
+				LogEntity::COLUMN_CONTENT_TYPE => 'string',
+				LogEntity::COLUMN_CONTENT_ID => 'int',
+				LogEntity::COLUMN_TIME => 'int',
+				LogEntity::COLUMN_EXTRA => 'string'
 			],
 			$data,
-			LogBaseEntity::COLUMN_ID
+			LogEntity::COLUMN_ID
 		);
 
 		return $this->getInsertedId();
@@ -47,7 +47,7 @@ class LogModel extends BaseBaseModel implements LogModelInterface
 			'
 			SELECT ' . implode(', ', $this->getColumns()) . '
 			FROM {db_prefix}' . $this->getTableName() . '
-			WHERE ' . LogBaseEntity::COLUMN_MEMBER . ' IN ({array_int:userIds})
+			WHERE ' . LogEntity::COLUMN_MEMBER . ' IN ({array_int:userIds})
 			ORDER BY ' . $this->getColumnId() . ' DESC
 			LIMIT {int:start}, {int:maxIndex}',
 			[
@@ -58,15 +58,15 @@ class LogModel extends BaseBaseModel implements LogModelInterface
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($result))
-			$logs[$row[LogBaseEntity::COLUMN_ID]] = [
-				'id' => $row[LogBaseEntity::COLUMN_ID],
-				'member' => $row[LogBaseEntity::COLUMN_MEMBER],
-				'content_type' => $row[LogBaseEntity::COLUMN_CONTENT_TYPE],
-				'content_id' => $row[LogBaseEntity::COLUMN_CONTENT_ID],
-				'time' => $row[LogBaseEntity::COLUMN_TIME],
-				'time_raw' => $row[LogBaseEntity::COLUMN_TIME],
-				'extra' => !empty($row[LogBaseEntity::COLUMN_EXTRA]) ?
-					json_decode($row[LogBaseEntity::COLUMN_EXTRA], true) : [],
+			$logs[$row[LogEntity::COLUMN_ID]] = [
+				'id' => $row[LogEntity::COLUMN_ID],
+				'member' => $row[LogEntity::COLUMN_MEMBER],
+				'content_type' => $row[LogEntity::COLUMN_CONTENT_TYPE],
+				'content_id' => $row[LogEntity::COLUMN_CONTENT_ID],
+				'time' => $row[LogEntity::COLUMN_TIME],
+				'time_raw' => $row[LogEntity::COLUMN_TIME],
+				'extra' => !empty($row[LogEntity::COLUMN_EXTRA]) ?
+					json_decode($row[LogEntity::COLUMN_EXTRA], true) : [],
 			];
 
 		$this->dbClient->freeResult($result);
@@ -76,16 +76,16 @@ class LogModel extends BaseBaseModel implements LogModelInterface
 
 	function getTableName(): string
 	{
-		return LogBaseEntity::TABLE;
+		return LogEntity::TABLE;
 	}
 
 	function getColumnId(): string
 	{
-		return LogBaseEntity::COLUMN_ID;
+		return LogEntity::COLUMN_ID;
 	}
 
 	function getColumns(): array
 	{
-		return LogBaseEntity::getColumns();
+		return LogEntity::getColumns();
 	}
 }

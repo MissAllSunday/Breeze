@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
-use Breeze\Entity\SettingsBaseEntity;
+use Breeze\Entity\SettingsEntity;
 use Breeze\Repository\User\UserRepositoryInterface;
 
 
@@ -38,7 +38,7 @@ class UserService extends BaseService implements ServiceInterface
 
 	public function hookProfilePopUp(&$profile_items): void
 	{
-		if (!$this->enable(SettingsBaseEntity::MASTER))
+		if (!$this->enable(SettingsEntity::MASTER))
 			return;
 
 		$this->setLanguage(Breeze::NAME);
@@ -65,7 +65,7 @@ class UserService extends BaseService implements ServiceInterface
 
 	public function hookAlertsPref(array &$alertTypes): void
 	{
-		if (!$this->enable(SettingsBaseEntity::MASTER))
+		if (!$this->enable(SettingsEntity::MASTER))
 			return;
 
 		$this->setLanguage('alerts');

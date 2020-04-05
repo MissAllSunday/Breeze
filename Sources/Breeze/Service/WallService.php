@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
-use Breeze\Entity\SettingsBaseEntity;
+use Breeze\Entity\SettingsEntity;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Error;
@@ -50,7 +50,7 @@ class WallService extends BaseService implements WallServiceInterface
 
 	public function initPage(): void
 	{
-		if (!$this->enable(SettingsBaseEntity::MASTER))
+		if (!$this->enable(SettingsEntity::MASTER))
 			Error::show('no_valid_action');
 
 		Permissions::isNotGuest($this->getText('error_no_access'));

@@ -5,25 +5,21 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class LogBaseEntity extends BaseEntity implements BaseEntityInterface
+class LikeEntity extends BaseEntity implements BaseEntityInterface
 {
-	const TABLE = 'breeze_logs';
-	const COLUMN_ID = 'id_log';
-	const COLUMN_MEMBER = 'member';
+	const TABLE = 'user_likes';
+	const COLUMN_ID_MEMBER = 'id_member';
 	const COLUMN_CONTENT_TYPE = 'content_type';
 	const COLUMN_CONTENT_ID = 'content_id';
-	const COLUMN_TIME = 'time';
-	const COLUMN_EXTRA = 'extra';
+	const COLUMN_LIKE_TIME = 'like_time';
 
 	public static function getColumns(): array
 	{
 		return [
-			self::COLUMN_ID,
-			self::COLUMN_MEMBER,
+			self::COLUMN_ID_MEMBER,
 			self::COLUMN_CONTENT_TYPE,
 			self::COLUMN_CONTENT_ID,
-			self::COLUMN_TIME,
-			self::COLUMN_EXTRA,
+			self::COLUMN_LIKE_TIME,
 		];
 	}
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class AlertBaseEntity extends BaseEntity implements BaseEntityInterface
+class AlertEntity extends BaseEntity implements BaseEntityInterface
 {
 	const TABLE = 'user_alerts';
 	const COLUMN_ID = 'id_alert';

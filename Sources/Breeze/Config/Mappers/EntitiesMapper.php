@@ -4,42 +4,42 @@ declare(strict_types=1);
 
 namespace Breeze\Config\Mapper;
 
-use Breeze\Entity\AlertBaseEntity;
-use Breeze\Entity\CommentBaseEntity;
-use Breeze\Entity\LikeBaseEntity;
-use Breeze\Entity\LogBaseEntity;
-use Breeze\Entity\MemberBaseEntity;
-use Breeze\Entity\MoodBaseEntity;
-use Breeze\Entity\NotificationBaseEntity;
-use Breeze\Entity\OptionsBaseEntity;
-use Breeze\Entity\StatusBaseEntity;
+use Breeze\Entity\AlertEntity;
+use Breeze\Entity\CommentEntity;
+use Breeze\Entity\LikeEntity;
+use Breeze\Entity\LogEntity;
+use Breeze\Entity\MemberEntity;
+use Breeze\Entity\MoodEntity;
+use Breeze\Entity\NotificationEntity;
+use Breeze\Entity\OptionsEntity;
+use Breeze\Entity\StatusEntity;
 
 return [
 	'entity.alert' => [
-		'class' => AlertBaseEntity::class,
+		'class' => AlertEntity::class,
 	],
 	'entity.comment' => [
-		'class' => CommentBaseEntity::class,
+		'class' => CommentEntity::class,
 	],
 	'entity.like' => [
-		'class' => LikeBaseEntity::class,
+		'class' => LikeEntity::class,
 	],
 	'entity.log' => [
-		'class' => LogBaseEntity::class,
+		'class' => LogEntity::class,
 	],
 	'entity.member' => [
-		'class' => MemberBaseEntity::class,
+		'class' => MemberEntity::class,
 	],
 	'entity.mood' => [
-		'class' => MoodBaseEntity::class,
+		'class' => MoodEntity::class,
 	],
 	'entity.notification' => [
-		'class' => NotificationBaseEntity::class,
+		'class' => NotificationEntity::class,
 	],
 	'entity.options' => [
-		'class' => OptionsBaseEntity::class,
+		'class' => OptionsEntity::class,
 	],
 	'entity.status' => [
-		'class' => StatusBaseEntity::class,
+		'class' => StatusEntity::class,
 	],
 ];

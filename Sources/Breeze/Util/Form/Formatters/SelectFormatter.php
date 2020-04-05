@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Form\Formatters;
 
 use Breeze\Breeze;
-use Breeze\Entity\SettingsBaseEntity;
+use Breeze\Entity\SettingsEntity;
 use Breeze\Util\Form\ValueFormatter;
 use Breeze\Util\Form\ValueFormatterInterface;
 
@@ -25,7 +25,7 @@ class SelectFormatter extends ValueFormatter implements ValueFormatterInterface
 	private function getSettingOptions(string $settingName): array
 	{
 		$allSelectOptions = [
-			SettingsBaseEntity::MOOD_PLACEMENT => [
+			SettingsEntity::MOOD_PLACEMENT => [
 				$this->getSmfText('custom_profile_placement_standard'),
 				$this->getSmfText('custom_profile_placement_icons'),
 				$this->getSmfText('custom_profile_placement_above_signature'),

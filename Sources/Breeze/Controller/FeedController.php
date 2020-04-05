@@ -4,47 +4,30 @@ declare(strict_types=1);
 
 namespace Breeze\Controller\Admin;
 
-use Breeze\Breeze as Breeze;
-use Breeze\Controller\BaseController as BaseController;
-use Breeze\Repository\MoodRepository as MoodRepository;
-use Breeze\Service\Settings as SettingsService;
 
-class Feed extends BaseController
+use Breeze\Controller\BaseController;
+use Breeze\Controller\ControllerInterface;
+
+class FeedController extends BaseController implements ControllerInterface
 {
-	protected const STATUS_OK = 200;
 
-	/**
-	 * @var MoodRepository
-	 */
-	protected $moodRepository;
-
-	/**
-	 * @var SettingsService
-	 */
-	protected $settingsService;
-
-	public function __construct(MoodRepository $moodRepository, SettingsService $settingsService)
+	public function getSubActions(): array
 	{
-		$this->moodRepository = $moodRepository;
-		$this->settingsService = $settingsService;
+		return [];
 	}
 
-	public function do(): void
+	public function dispatch()
 	{
-		// TODO: Implement do() method.
+		// TODO: Implement dispatch() method.
 	}
 
-	public function showFeed(): void
+	public function main(): void
 	{
-		$this->settingsService->requireOnce('Class-CurlFetchWeb');
-		$feedData = '';
+		// TODO: Implement main() method.
+	}
 
-		$fetch = new \curl_fetch_web_data();
-		$fetch->get_url_data(Breeze::FEED);
-
-		if (self::STATUS_OK === $fetch->result('code') && !$fetch->result('error'))
-			$feedData = $fetch->result('body');
-
-		smf_serverResponse($feedData, 'Content-type: text/xml');
+	public function render(string $subTemplate, array $params): void
+	{
+		// TODO: Implement render() method.
 	}
 }

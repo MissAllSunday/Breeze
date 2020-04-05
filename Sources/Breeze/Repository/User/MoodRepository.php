@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\User;
 
-use Breeze\Entity\MoodBaseEntity;
+use Breeze\Entity\MoodEntity;
 use Breeze\Model\MoodModelInterface;
 use Breeze\Repository\BaseRepository;
 
@@ -34,7 +34,7 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 
 	public function getActiveMoods(): array
 	{
-		return $this->moodModel->getMoodsByStatus(MoodBaseEntity::STATUS_ACTIVE);
+		return $this->moodModel->getMoodsByStatus(MoodEntity::STATUS_ACTIVE);
 	}
 
 	public function getCount(): int

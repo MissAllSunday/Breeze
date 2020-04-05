@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class SettingsBaseEntity extends BaseEntity implements BaseEntityInterface
+class SettingsEntity
 {
 	public const MASTER = 'master';
 	public const FORCE_WALL = 'forceWall';
@@ -35,10 +35,5 @@ class SettingsBaseEntity extends BaseEntity implements BaseEntityInterface
 			self::MAX_FLOOD_NUM => self::TYPE_INT,
 			self::MAX_FLOOD_MINUTES => self::TYPE_INT,
 		];
-	}
-
-	public static function getTableName(): string
-	{
-		return self::TABLE;
 	}
 }

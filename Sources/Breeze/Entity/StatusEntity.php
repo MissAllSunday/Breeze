@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class StatusBaseEntity extends BaseEntity implements BaseEntityInterface
+class StatusEntity extends BaseEntity implements BaseEntityInterface
 {
 	const TABLE = 'breeze_status';
 	const COLUMN_ID = 'id';

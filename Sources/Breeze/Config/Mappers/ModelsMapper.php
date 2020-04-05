@@ -6,7 +6,7 @@ namespace Breeze\Config\Mapper;
 
 use Breeze\Database\DatabaseClient;
 use Breeze\Model\AlertModel;
-use Breeze\Model\CommentBaseModel;
+use Breeze\Model\CommentModel;
 use Breeze\Model\LikeModel;
 use Breeze\Model\LogModel;
 use Breeze\Model\MentionModel;
@@ -26,7 +26,7 @@ return [
 		'arguments'=> [DatabaseClient::class]
 	],
 	'model.comment' => [
-		'class' => CommentBaseModel::class,
+		'class' => CommentModel::class,
 		'arguments'=> [DatabaseClient::class]
 	],
 	'model.like' => [
