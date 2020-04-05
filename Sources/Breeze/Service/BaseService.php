@@ -9,4 +9,10 @@ use Breeze\Traits\TextTrait;
 abstract class BaseService
 {
 	use TextTrait;
+
+	public function redirect(string $urlName): void
+	{
+		if(!empty($urlName))
+			redirectexit($urlName);
+	}
 }

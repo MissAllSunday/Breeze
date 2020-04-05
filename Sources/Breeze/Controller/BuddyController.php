@@ -12,7 +12,7 @@ class BuddyController extends BaseController implements ControllerInterface
 		return [];
 	}
 
-	public function dispatch()
+	public function dispatch(): void
 	{
 		// TODO: Implement dispatch() method.
 	}

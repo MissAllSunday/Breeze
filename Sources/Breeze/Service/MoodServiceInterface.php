@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-interface MoodServiceInterface
+interface MoodServiceInterface extends BaseServiceInterface
 {
 	public const DISPLAY_PROFILE_AREAS = ['summary', 'static'];
 

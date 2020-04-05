@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-interface UserServiceInterface
+interface UserServiceInterface extends BaseServiceInterface
 {
 	public const AREA = 'breezeSettings';
 	public const LEGACY_AREA = 'legacy';

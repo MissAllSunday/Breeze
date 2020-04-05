@@ -2,21 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Controller\Admin;
-
-
-use Breeze\Controller\BaseController;
-use Breeze\Controller\ControllerInterface;
+namespace Breeze\Controller;
 
 class FeedController extends BaseController implements ControllerInterface
 {
-
 	public function getSubActions(): array
 	{
 		return [];
 	}
 
-	public function dispatch()
+	public function dispatch(): void
 	{
 		// TODO: Implement dispatch() method.
 	}

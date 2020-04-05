@@ -66,12 +66,6 @@ trait SettingsTrait
 		loadtemplate($templateName);
 	}
 
-	public function redirect(string $urlName): void
-	{
-		if(!empty($urlName))
-			redirectexit($urlName);
-	}
-
 	public function loadCSS(): void
 	{
 		loadCSSFile('breeze.css', [], 'smf_breeze');

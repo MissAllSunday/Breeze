@@ -9,7 +9,7 @@ use Breeze\Entity\SettingsEntity;
 use Breeze\Util\Form\ValueFormatter;
 use Breeze\Util\Form\ValueFormatterInterface;
 
-interface FormServiceInterface
+interface FormServiceInterface extends BaseServiceInterface
 {
 	public function getConfigVarsSettings(): array;
 

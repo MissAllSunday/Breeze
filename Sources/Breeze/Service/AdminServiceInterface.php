@@ -5,10 +5,9 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-use Breeze\Breeze;
-use Breeze\Repository\RepositoryInterface;
+use Breeze\Traits\TextTrait;
 
-interface AdminServiceInterface
+interface AdminServiceInterface extends BaseServiceInterface
 {
 	public const IDENTIFIER = 'Admin';
 	public const AREA = 'breezeAdmin';

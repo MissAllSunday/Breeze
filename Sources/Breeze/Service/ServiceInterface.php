@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-interface ServiceInterface
+interface ServiceInterface extends BaseServiceInterface
 {
 
 }

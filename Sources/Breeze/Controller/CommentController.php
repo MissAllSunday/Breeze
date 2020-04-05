@@ -7,13 +7,12 @@ namespace Breeze\Controller;
 
 class CommentController extends BaseController implements ControllerInterface
 {
-
 	public function getSubActions(): array
 	{
 		return [];
 	}
 
-	public function dispatch()
+	public function dispatch(): void
 	{
 		// TODO: Implement dispatch() method.
 	}
