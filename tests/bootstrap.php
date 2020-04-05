@@ -30,6 +30,17 @@ function smf_json_decode($s, $array = true)
 	return json_decode($s, $array);
 }
 
+function allowedTo($permissionName)
+{
+	$dummyPermissions = [
+		'nope' => false,
+		'yep' => true,
+	];
+
+	return $dummyPermissions[$permissionName];
+}
+
+
 $sourcedir = $scripturl = $boarddir = $boardurl = ROOT;
 
 // Mock some SMF arrays.
