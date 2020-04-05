@@ -21,3 +21,6 @@ jobs:
 
     - name: Run test suite
       run: composer phpunit
+
+    - name: Run static analysis suite
+      run: composer phpstan
