@@ -5,7 +5,6 @@ parameters:
     - Sources/Breeze
   inferPrivatePropertyTypeFromConstructor: true
   ignoreErrors:
-    - '/Function allowedTo not found./'
     - '/Function prepareDBSettingContext not found./'
     - '/Function loadGeneralSettingParameters not found./'
     - '/Function checkSession not found./'
