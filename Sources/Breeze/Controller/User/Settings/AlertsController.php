@@ -7,9 +7,20 @@ namespace Breeze\Controller\User\Settings;
 
 use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface as ControllerInterfaceAlias;
+use Breeze\Service\UserServiceInterface;
 
 class AlertsController extends BaseController implements ControllerInterfaceAlias
 {
+	/**
+	 * @var UserServiceInterface
+	 */
+	private $userService;
+
+	public function __construct(UserServiceInterface $userService)
+	{
+		$this->userService = $userService;
+	}
+
 	public function getSubActions(): array
 	{
 		return [];

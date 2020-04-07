@@ -12,6 +12,7 @@ use Breeze\Controller\User\WallController;
 use Breeze\Service\AdminService;
 use Breeze\Service\MoodService;
 use Breeze\Service\UserService;
+use Breeze\Service\UserSettingsService;
 use Breeze\Service\WallService;
 
 return [
@@ -38,6 +39,7 @@ return [
 	'controller.user.settings' => [
 		'class' => UserSettingsController::class,
 		'arguments'=> [
+			UserSettingsService::class,
 			UserService::class,
 		]
 	],

@@ -104,10 +104,10 @@ class WallService extends BaseService implements WallServiceInterface
 	{
 		$canSeePage = true;
 
-		if (!$this->isCurrentUserOwner() && !$this->enable('force_enable'))
+		if (!$this->isCurrentUserOwner() && !$this->enable(SettingsEntity::FORCE_WALL))
 			$canSeePage = false;
 
-		elseif (empty($ownerSettings['wall']))
+		elseif (empty($this->profileOwnerSettings['wall']))
 			$canSeePage = false;
 
 		if (!allowedTo('profile_view'))
@@ -124,7 +124,7 @@ class WallService extends BaseService implements WallServiceInterface
 		if (!$canSeePage && $redirect)
 			redirectexit('action=profile;area=' . UserService::LEGACY_AREA . ';u=' . $this->profileOwnerInfo['id']);
 
-		return $canSeePage;
+		return true;
 	}
 
 	public function getStatus(int $userId): array

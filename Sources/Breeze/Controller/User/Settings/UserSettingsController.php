@@ -6,26 +6,51 @@ namespace Breeze\Controller\User\Settings;
 
 use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
+use Breeze\Service\UserServiceInterface;
+use Breeze\Service\UserSettingsService;
+use Breeze\Service\UserSettingsServiceInterface;
 
 class UserSettingsController extends BaseController implements ControllerInterface
 {
-	public function getSubActions(): array
+	public const SUB_ACTIONS = [
+		'main',
+		'save',
+	];
+
+	/**
+	 * @var UserServiceInterface
+	 */
+	private $userService;
+
+	/**
+	 * @var UserSettingsService
+	 */
+	private $userSettingsService;
+
+	public function __construct(UserSettingsServiceInterface $userSettingsService, UserServiceInterface $userService)
 	{
-		return [];
+		$this->userService = $userService;
+		$this->userSettingsService = $userSettingsService;
 	}
 
 	public function dispatch(): void
 	{
-		// TODO: Implement dispatch() method.
+		$this->userSettingsService->init();
+		$this->subActionCall();
 	}
 
 	public function main(): void
 	{
-		// TODO: Implement main() method.
+
 	}
 
 	public function render(string $subTemplate, array $params): void
 	{
 		// TODO: Implement render() method.
+	}
+
+	public function getSubActions(): array
+	{
+		return self::SUB_ACTIONS;
 	}
 }

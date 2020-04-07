@@ -9,11 +9,8 @@ use Breeze\Entity\SettingsEntity;
 use Breeze\Repository\User\UserRepositoryInterface;
 
 
-class UserService extends BaseService implements ServiceInterface
+class UserService extends BaseService implements UserServiceInterface
 {
-	public const AREA = 'breezeSettings';
-	public const LEGACY_AREA = 'legacy';
-
 	/**
 	 * @var UserRepositoryInterface
 	 */
