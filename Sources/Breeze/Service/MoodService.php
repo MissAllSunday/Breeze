@@ -9,6 +9,7 @@ use Breeze\Entity\MoodEntity;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Repository\User\UserRepositoryInterface;
+use Breeze\Service\Actions\AdminService;
 use Breeze\Traits\PersistenceTrait;
 
 class MoodService extends BaseService implements MoodServiceInterface

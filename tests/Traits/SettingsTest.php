@@ -56,7 +56,7 @@ final class SettingsTest extends TestCase
 	 */
 	public function testEnable(string $settingName, bool $expected): void
 	{
-		$enable = $this->settingsTrait->enable($settingName);
+		$enable = $this->settingsTrait->isEnable($settingName);
 
 		$this->assertIsBool($expected);
 		$this->assertEquals($expected, $enable);

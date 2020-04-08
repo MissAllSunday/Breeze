@@ -117,6 +117,8 @@ function template_breezeAdmin_donate(): void
 {
 	global $context, $txt;
 
+	echo '<pre>'; print_r($context[$context['admin_menu_name']]['tab_data']);die;
+
 	echo '
 		<div class="cat_bar">
 			<h3 class="catbg">', $context['page_title'] ,'</h3>

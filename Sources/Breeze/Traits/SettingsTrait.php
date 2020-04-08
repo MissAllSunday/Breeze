@@ -16,10 +16,10 @@ trait SettingsTrait
 		if (empty($settingName))
 			return $fallBack;
 
-		return $this->enable($settingName) ? $modSettings[Breeze::PATTERN . $settingName] : $fallBack;
+		return $this->isEnable($settingName) ? $modSettings[Breeze::PATTERN . $settingName] : $fallBack;
 	}
 
-	public function enable(string $settingName): bool
+	public function isEnable(string $settingName): bool
 	{
 		$modSettings = $this->global('modSettings');
 

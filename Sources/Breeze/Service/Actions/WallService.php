@@ -51,7 +51,7 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 
 	public function init(array $usbActions): void
 	{
-		if (!$this->enable(SettingsEntity::MASTER))
+		if (!$this->isEnable(SettingsEntity::MASTER))
 			Error::show('no_valid_action');
 
 		Permissions::isNotGuest($this->getText('error_no_access'));
@@ -73,7 +73,7 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 	{
 		$canSeePage = true;
 
-		if (!$this->isCurrentUserOwner() && !$this->enable(SettingsEntity::FORCE_WALL))
+		if (!$this->isCurrentUserOwner() && !$this->isEnable(SettingsEntity::FORCE_WALL))
 			$canSeePage = false;
 
 		elseif (empty($this->profileOwnerSettings['wall']))

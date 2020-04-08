@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Breeze\Controller;
 
 use Breeze\Breeze;
+use Breeze\Entity\SettingsEntity;
+use Breeze\Service\Actions\AdminService;
 use Breeze\Service\Actions\AdminServiceInterface;
 use Breeze\Service\MoodServiceInterface;
 use Breeze\Traits\PersistenceTrait;
@@ -17,8 +19,8 @@ class AdminController extends BaseController implements ControllerInterface
 		'main',
 		'settings',
 		'permissions',
-		'donate',
 		'moodList',
+		'donate',
 	];
 
 	/**
@@ -88,7 +90,7 @@ class AdminController extends BaseController implements ControllerInterface
 
 	public function moodList(): void
 	{
-		$this->adminService->isEnableFeature('mood', __FUNCTION__ . 'general');
+		$this->adminService->isEnableFeature(SettingsEntity::ENABLE_MOOD, AdminService::POST_URL . 'main');
 
 		$this->render(__FUNCTION__, [
 			Breeze::NAME => [

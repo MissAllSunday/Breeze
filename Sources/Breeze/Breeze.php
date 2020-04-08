@@ -65,13 +65,13 @@ class Breeze
 
 	public function profileMenuWrapper(array &$profileAreas): void
 	{
-		if (!$this->enable(SettingsEntity::MASTER))
+		if (!$this->isEnable(SettingsEntity::MASTER))
 			return;
 
 		$context = $this->global('context');
 		$currentUserSettings = $this->container->get(UserService::class)->getCurrentUserSettings();
 
-		if ($this->enable(SettingsEntity::FORCE_WALL) || !empty($currentUserSettings['wall']))
+		if ($this->isEnable(SettingsEntity::FORCE_WALL) || !empty($currentUserSettings['wall']))
 		{
 			/** @var WallController */
 			$wallController = $this->container->get(WallController::class);
@@ -142,7 +142,7 @@ class Breeze
 
 	public function menu(&$menu_buttons): void
 	{
-		if (!$this->enable(SettingsEntity::MASTER))
+		if (!$this->isEnable(SettingsEntity::MASTER))
 			return;
 
 		$scriptUrl = $this->global('scripturl');
@@ -169,20 +169,20 @@ class Breeze
 				'title' => $this->getText('general_wall'),
 				'icon' => 'smiley',
 				'href' => $scriptUrl . '?action=wall',
-				'show' => ($this->enable(SettingsEntity::MASTER) &&
+				'show' => ($this->isEnable(SettingsEntity::MASTER) &&
 					!$currentUserInfo['is_guest'] &&
 					!empty($currentUserSettings['general_wall'])),
 				'sub_buttons' => [
 					'noti' => [
 						'title' => $this->getText('user_notisettings_name'),
 						'href' => $scriptUrl . '?action=profile;area=alerts;sa=edit;u=' . $currentUserInfo['id'],
-						'show' => ($this->enable(SettingsEntity::MASTER) && !$currentUserInfo['is_guest']),
+						'show' => ($this->isEnable(SettingsEntity::MASTER) && !$currentUserInfo['is_guest']),
 						'sub_buttons' => [],
 					],
 					'admin' => [
 						'title' => $this->getText('admin'),
 						'href' => $scriptUrl . '?action=admin;area=' . AdminService::AREA,
-						'show' => ($this->enable(SettingsEntity::MASTER) && $currentUserInfo['is_admin']),
+						'show' => ($this->isEnable(SettingsEntity::MASTER) && $currentUserInfo['is_admin']),
 						'sub_buttons' => [],
 					],
 				],
@@ -213,7 +213,7 @@ class Breeze
 
 	public function updateLikesWrapper($type, $content, $sa, $js, $extra)
 	{
-		if (!$this->enable(SettingsEntity::MASTER))
+		if (!$this->isEnable(SettingsEntity::MASTER))
 			return false;
 
 		/** @var PermissionsService */
@@ -238,8 +238,8 @@ class Breeze
 
 	public function displayMoodProfileWrapper(int $userId, string $profileArea): void
 	{
-		if (!$this->enable(SettingsEntity::MASTER) ||
-			!$this->enable(SettingsEntity::ENABLE_MOOD) ||
+		if (!$this->isEnable(SettingsEntity::MASTER) ||
+			!$this->isEnable(SettingsEntity::ENABLE_MOOD) ||
 			!in_array($profileArea, MoodService::DISPLAY_PROFILE_AREAS))
 			return;
 
@@ -256,25 +256,25 @@ class Breeze
 
 		$this->setLanguage('BreezeAdmin');
 
-		$adminMenu['config']['areas']['breezeAdmin'] = [
-			'label' => $this->getText('page_main'),
+		$adminMenu['config']['areas'][AdminService::AREA] = [
+			'label' => $this->getText(AdminService::AREA . '_main_title'),
 			'function' => [$adminController, 'dispatch'],
 			'icon' => 'smiley',
 			'subsections' => [
-				'main' => [$this->getText('page_main')],
-				'settings' => [$this->getText('page_settings_title')],
-				'permissions' => [$this->getText('page_permissions_title')],
+				'main' => [$this->getText(AdminService::AREA . '_main_title')],
+				'settings' => [$this->getText(AdminService::AREA . '_settings_title')],
+				'permissions' => [$this->getText(AdminService::AREA . '_permissions_title')],
 			],
 		];
 
-		if ($this->enable(SettingsEntity::ENABLE_MOOD))
-			$adminMenu['config']['areas']['breezeAdmin']['subsections']['moodList'] = [
-				$this->getText('page_moodList_title')
+		if ($this->isEnable(SettingsEntity::ENABLE_MOOD))
+			$adminMenu['config']['areas'][AdminService::AREA]['subsections']['moodList'] = [
+				$this->getText(AdminService::AREA . '_moodList_title')
 			];
 
 		// Pay no attention to that woman behind the curtain!
-		$adminMenu['config']['areas']['breezeAdmin']['subsections']['donate'] = [
-			$this->getText('page_donate_title')
+		$adminMenu['config']['areas'][AdminService::AREA]['subsections']['donate'] = [
+			$this->getText(AdminService::AREA . '_donate_title')
 		];
 	}
 

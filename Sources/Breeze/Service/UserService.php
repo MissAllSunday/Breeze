@@ -35,7 +35,7 @@ class UserService extends BaseService implements UserServiceInterface
 
 	public function hookProfilePopUp(&$profile_items): void
 	{
-		if (!$this->enable(SettingsEntity::MASTER))
+		if (!$this->isEnable(SettingsEntity::MASTER))
 			return;
 
 		$this->setLanguage(Breeze::NAME);
@@ -44,7 +44,7 @@ class UserService extends BaseService implements UserServiceInterface
 		$currentUserInfo = $this->global('user_info');
 		$currentUserSettings = $this->getCurrentUserSettings();
 
-		if ($this->enable(SettingsEntity::FORCE_WALL) || !empty($currentUserSettings['wall']))
+		if ($this->isEnable(SettingsEntity::FORCE_WALL) || !empty($currentUserSettings['wall']))
 			foreach ($profile_items as &$profileItem)
 				if ('summary' === $profileItem['area'])
 				{
@@ -62,7 +62,7 @@ class UserService extends BaseService implements UserServiceInterface
 
 	public function hookAlertsPref(array &$alertTypes): void
 	{
-		if (!$this->enable(SettingsEntity::MASTER))
+		if (!$this->isEnable(SettingsEntity::MASTER))
 			return;
 
 		$this->setLanguage('alerts');
