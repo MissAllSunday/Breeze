@@ -9,21 +9,19 @@ interface WallServiceInterface extends BaseServiceInterface
 {
 	public const ACTION = 'breeze';
 
-	public function initPage(): void;
+	public function init(array $subActions):void;
 
-	public function setSubActionContent(
-		string $actionName,
-		array $templateParams = [],
-		string $smfTemplate = ''
-	): void;
+	public function defaultSubActionContent(string $subTemplate, array $params, string $smfTemplate);
 
 	public function isAllowedToSeePage(bool $redirect = false): bool;
 
 	public function getStatus(int $userId): array;
 
-	function isCurrentUserOwner(): bool;
+	public function isCurrentUserOwner(): bool;
 
-	function getUsersToLoad(): array;
+	public function getUsersToLoad(): array;
 
-	function setUsersToLoad(array $usersToLoad): void;
+	public function setUsersToLoad(array $usersToLoad): void;
+
+	public function loadCSS(): void;
 }

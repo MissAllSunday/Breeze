@@ -47,9 +47,10 @@ class WallController extends BaseController implements ControllerInterface
 		$this->render(__FUNCTION__);
 	}
 
-	public function render(string $subTemplate, array $params = []): void
+	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void
 	{
-		$this->wallService->setSubActionContent($subTemplate);
+		$this->wallService->loadCSS();
+		$this->wallService->defaultSubActionContent($subTemplate, $params, $smfTemplate);
 	}
 
 	public function getSubActions(): array

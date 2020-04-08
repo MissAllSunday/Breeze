@@ -118,7 +118,7 @@ class AdminController extends BaseController implements ControllerInterface
 
 	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void
 	{
-		$this->adminService->setSubActionContent($subTemplate, $params, $smfTemplate);
+		$this->adminService->defaultSubActionContent($subTemplate, $params, $smfTemplate);
 	}
 
 	public function getSubActions(): array

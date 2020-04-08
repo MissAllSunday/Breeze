@@ -7,7 +7,7 @@ namespace Breeze\Service;
 use Breeze\Breeze;
 use Breeze\Traits\TextTrait;
 
-abstract class BaseService
+abstract class BaseService implements BaseServiceInterface
 {
 	use TextTrait;
 
@@ -48,5 +48,8 @@ abstract class BaseService
 			redirectexit($urlName);
 	}
 
-	protected abstract function getActionName(): string;
+	protected function getActionName(): string
+	{
+		return self::AREA;
+	}
 }

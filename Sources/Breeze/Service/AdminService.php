@@ -24,7 +24,7 @@ class AdminService extends BaseService implements ServiceInterface, AdminService
 		$this->formService = $formService;
 	}
 
-	public function initSettingsPage(array $subActions): void
+	public function init(array $subActions): void
 	{
 		$context = $this->global('context');
 
