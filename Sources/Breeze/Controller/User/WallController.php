@@ -36,7 +36,7 @@ class WallController extends BaseController implements ControllerInterface
 
 	public function dispatch(): void
 	{
-		$this->wallService->initPage();
+		$this->wallService->init($this->getSubActions());
 		$this->subActionCall();
 	}
 

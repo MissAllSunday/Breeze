@@ -9,6 +9,7 @@ use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Service\UserService;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Error;
 use Breeze\Util\Permissions;

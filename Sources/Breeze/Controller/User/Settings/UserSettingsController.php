@@ -34,7 +34,7 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 
 	public function dispatch(): void
 	{
-		$this->userSettingsService->init();
+		$this->userSettingsService->init($this->getSubActions());
 		$this->subActionCall();
 	}
 
