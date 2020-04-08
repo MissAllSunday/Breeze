@@ -89,7 +89,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 
 		array_unshift($this->configVars, [
 			'title',
-			Breeze::PATTERN . 'page_settings_title'
+			Breeze::PATTERN . self::AREA . '_settings_title'
 		]);
 
 		if ($save)
@@ -103,7 +103,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 		$this->setLanguage(Breeze::NAME . PermissionsService::IDENTIFIER);
 
 		$this->configVars = [
-			['title', Breeze::PATTERN . 'page_permissions'],
+			['title', Breeze::PATTERN . self::AREA . '_permissions_title'],
 		];
 
 		foreach (PermissionsService::ALL_PERMISSIONS as $permission)
