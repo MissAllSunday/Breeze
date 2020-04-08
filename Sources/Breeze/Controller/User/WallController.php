@@ -7,8 +7,8 @@ namespace Breeze\Controller\User;
 
 use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
+use Breeze\Service\Actions\WallServiceInterface;
 use Breeze\Service\UserServiceInterface;
-use Breeze\Service\WallServiceInterface;
 
 class WallController extends BaseController implements ControllerInterface
 {

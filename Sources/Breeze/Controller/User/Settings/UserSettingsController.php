@@ -6,8 +6,8 @@ namespace Breeze\Controller\User\Settings;
 
 use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
+use Breeze\Service\Actions\UserSettingsServiceInterface;
 use Breeze\Service\UserServiceInterface;
-use Breeze\Service\UserSettingsServiceInterface;
 
 class UserSettingsController extends BaseController implements ControllerInterface
 {

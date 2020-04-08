@@ -3,11 +3,13 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Service;
+namespace Breeze\Service\Actions;
 
 use Breeze\Breeze;
+use Breeze\Service\FormServiceInterface;
+use Breeze\Service\PermissionsService;
 
-class AdminService extends BaseService implements ServiceInterface, AdminServiceInterface
+class AdminService extends ActionsBaseService implements AdminServiceInterface
 {
 	/**
 	 * @var array
@@ -88,40 +90,6 @@ class AdminService extends BaseService implements ServiceInterface, AdminService
 		saveDBSettings($this->configVars);
 	}
 
-	public function setSubActionContent(
-		string $actionName,
-		array $templateParams = [],
-		string $smfTemplate = ''
-	): void
-	{
-		if (empty($actionName))
-			return;
-
-		$context = $this->global('context');
-		$scriptUrl = $this->global('scripturl');
-
-		$context['post_url'] =  $scriptUrl . '?' .
-			AdminService::POST_URL . $actionName . ';' .
-			$context['session_var'] . '=' . $context['session_id'] . ';save';
-
-		if (!isset($context[Breeze::NAME]))
-			$context[Breeze::NAME] = [];
-
-		if (!empty($templateParams))
-			$context = array_merge($context, $templateParams);
-
-		$context['page_title'] = $this->getText('page_' . $actionName . '_title');
-		$context['sub_template'] = !empty($smfTemplate) ?
-			$smfTemplate : (self::AREA . '_' . $actionName);
-
-		$context[$context['admin_menu_name']]['tab_data'] = [
-			'title' => $context['page_title'],
-			'description' => $this->getText('page_' . $actionName . '_description'),
-		];
-
-		$this->setGlobal('context', $context);
-	}
-
 	public function isEnableFeature(string $featureName = '', string $redirectUrl = ''): bool
 	{
 		if (empty($featureName))
@@ -133,5 +101,10 @@ class AdminService extends BaseService implements ServiceInterface, AdminService
 			$this->redirect($redirectUrl);
 
 		return (bool) $feature;
+	}
+
+	public function getActionName(): string
+	{
+		return self::AREA;
 	}
 }

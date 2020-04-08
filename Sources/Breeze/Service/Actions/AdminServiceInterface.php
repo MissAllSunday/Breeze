@@ -3,11 +3,9 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Service;
+namespace Breeze\Service\Actions;
 
-use Breeze\Traits\TextTrait;
-
-interface AdminServiceInterface extends BaseServiceInterface
+interface AdminServiceInterface extends ActionsServiceInterface
 {
 	public const IDENTIFIER = 'Admin';
 	public const AREA = 'breezeAdmin';
@@ -18,10 +16,6 @@ interface AdminServiceInterface extends BaseServiceInterface
 	public function permissionsConfigVars(bool $save = false): void;
 
 	public function saveConfigVars(): void;
-
-	public function init(array $subActions):void;
-
-	public function defaultSubActionContent(string $subTemplate, array $params, string $smfTemplate);
 
 	public function isEnableFeature(string $featureName = '', string $redirectUrl = ''): bool;
 }

@@ -5,18 +5,18 @@ declare(strict_types=1);
 
 namespace Breeze\Config\Mapper;
 
-use Breeze\Repository\AdminRepository;
 use Breeze\Repository\CommentRepository;
 use Breeze\Repository\StatusRepository;
 use Breeze\Repository\User\MoodRepository;
 use Breeze\Repository\User\UserRepository;
-use Breeze\Service\AdminService;
+use Breeze\Service\Actions\AdminService;
+use Breeze\Service\Actions\UserSettingsService;
+use Breeze\Service\Actions\WallService;
 use Breeze\Service\FormService;
 use Breeze\Service\MoodService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\UserService;
 use Breeze\Service\ValidateService;
-use Breeze\Service\WallService;
 
 return [
 	'service.mood' => [
@@ -29,6 +29,10 @@ return [
 	],
 	'service.user' => [
 		'class' => UserService::class,
+		'arguments'=> [UserRepository::class]
+	],
+	'service.user.settings' => [
+		'class' => UserSettingsService::class,
 		'arguments'=> [UserRepository::class]
 	],
 	'service.permissions' => [

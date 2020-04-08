@@ -44,7 +44,7 @@ class UserService extends BaseService implements UserServiceInterface
 		$currentUserInfo = $this->global('user_info');
 		$currentUserSettings = $this->getCurrentUserSettings();
 
-		if ($this->enable('force_enable') || !empty($currentUserSettings['wall']))
+		if ($this->enable(SettingsEntity::FORCE_WALL) || !empty($currentUserSettings['wall']))
 			foreach ($profile_items as &$profileItem)
 				if ('summary' === $profileItem['area'])
 				{

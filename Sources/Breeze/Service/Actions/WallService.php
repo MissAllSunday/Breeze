@@ -3,16 +3,17 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Service;
+namespace Breeze\Service\Actions;
 
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Error;
 use Breeze\Util\Permissions;
 
-class WallService extends BaseService implements WallServiceInterface
+class WallService extends ActionsBaseService implements WallServiceInterface
 {
 	/**
 	 * @var UserServiceInterface
@@ -48,7 +49,7 @@ class WallService extends BaseService implements WallServiceInterface
 		$this->userService = $userService;
 	}
 
-	public function initPage(): void
+	public function init(array $usbActions): void
 	{
 		if (!$this->enable(SettingsEntity::MASTER))
 			Error::show('no_valid_action');
@@ -116,5 +117,10 @@ class WallService extends BaseService implements WallServiceInterface
 	public function setUsersToLoad(array $usersToLoad): void
 	{
 		$this->usersToLoad = array_merge($usersToLoad, $this->usersToLoad);
+	}
+
+	public function getActionName(): string
+	{
+		return self::ACTION;
 	}
 }

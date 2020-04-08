@@ -9,11 +9,11 @@ use Breeze\Controller\AdminController;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
-use Breeze\Service\AdminService;
+use Breeze\Service\Actions\AdminService;
+use Breeze\Service\Actions\UserSettingsService;
+use Breeze\Service\Actions\WallService;
 use Breeze\Service\MoodService;
 use Breeze\Service\UserService;
-use Breeze\Service\UserSettingsService;
-use Breeze\Service\WallService;
 
 return [
 	'controller.admin' => [

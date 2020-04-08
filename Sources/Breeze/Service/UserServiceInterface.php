@@ -6,7 +6,7 @@ namespace Breeze\Service;
 
 interface UserServiceInterface extends BaseServiceInterface
 {
-	public const AREA = 'breezeSettings';
+	public const AREA = 'summary';
 	public const LEGACY_AREA = 'legacy';
 
 	public function getCurrentUserSettings(): array;

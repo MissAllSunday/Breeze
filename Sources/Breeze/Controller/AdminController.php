@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Breeze\Controller;
 
 use Breeze\Breeze;
-use Breeze\Service\AdminService;
-use Breeze\Service\AdminServiceInterface;
+use Breeze\Service\Actions\AdminServiceInterface;
 use Breeze\Service\MoodServiceInterface;
-use Breeze\Service\ServiceInterface;
 use Breeze\Traits\PersistenceTrait;
 
 class AdminController extends BaseController implements ControllerInterface
@@ -44,7 +42,7 @@ class AdminController extends BaseController implements ControllerInterface
 
 	public function dispatch(): void
 	{
-		$this->adminService->initSettingsPage($this->getSubActions());
+		$this->adminService->init($this->getSubActions());
 
 		$this->subActionCall();
 	}

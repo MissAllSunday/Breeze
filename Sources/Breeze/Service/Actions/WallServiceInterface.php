@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Service;
+namespace Breeze\Service\Actions;
 
-interface WallServiceInterface extends BaseServiceInterface
+interface WallServiceInterface extends ActionsServiceInterface
 {
 	public const ACTION = 'breeze';
 
