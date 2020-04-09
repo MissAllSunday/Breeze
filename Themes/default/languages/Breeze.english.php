@@ -9,7 +9,7 @@ declare(strict_types=1);
 global $txt;
 
 // Public/UserSettingsController strings
-$txt['Breeze_general_wall'] = 'User';
+$txt['Breeze_general_wall'] = 'My wall';
 $txt['Breeze_general_wall_page'] = 'page';
 $txt['Breeze_general_summary'] = 'Summary';
 $txt['Breeze_load_more'] = 'Load more';
@@ -34,9 +34,8 @@ $txt['Breeze_cu_max_width'] = 'Image exceeds maximum width, the max width value 
 $txt['Breeze_cu_max_height'] = 'Image exceeds maximum height, the max height value is {height}px';
 
 
-// User Individual UserSettingsController
-$txt['Breeze_profile'] = 'User UserSettingsController';
-$txt['Breeze_user_settings_name'] = 'User UserSettingsController';
+// User Individual user settings
+$txt['Breeze_breezeSettings_main_title'] = 'My wall settings';
 $txt['Breeze_user_settings_name_desc'] = 'Configure your wall and other general settings.';
 $txt['Breeze_user_buddysettings_name'] = 'Buddy Requests';
 $txt['Breeze_user_single_status'] = 'Single Status';
@@ -45,9 +44,9 @@ $txt['Breeze_user_notilogs_name'] = 'My Activity logs';
 $txt['Breeze_user_settings_name_cover'] = 'CoverController image upload';
 $txt['Breeze_user_settings_name_alerts'] = 'My wall alerts';
 $txt['Breeze_user_settings_name_alerts_desc'] = 'Enable/disable single alerts, delete single/all alerts.';
-$txt['Breeze_user_settings_name_alerts_settings'] = 'Alert UserSettingsController';
+$txt['Breeze_user_settings_name_alerts_settings'] = 'Alert settings';
 $txt['Breeze_user_settings_name_alerts_settings_desc'] = 'From here you can control which alerts you want other people to see.';
-$txt['Breeze_user_settings_name_alerts_edit'] = 'My AlertsController';
+$txt['Breeze_user_settings_name_alerts_edit'] = 'Alerts settings';
 $txt['Breeze_user_settings_name_alerts_edit_desc'] = 'Delete your own alerts, if an alerts gets deleted, your buddies/other users won\'t be able to see them.';
 $txt['Breeze_user_settings_alert_cover'] = 'Alert people when I change my cover image.';
 $txt['Breeze_user_settings_alert_cover_sub'] = '';

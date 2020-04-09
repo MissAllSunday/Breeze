@@ -73,6 +73,9 @@ trait SettingsTrait
 
 	public function loadVue(): void
 	{
-		loadCSSFile('https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js', ['external' => true], 'breeze_vue');
+		loadJavaScriptFile(Breeze::VUE_CDN, [
+			'external' => true,
+			'defer' => true,
+		], 'breeze_vue');
 	}
 }

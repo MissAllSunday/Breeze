@@ -42,8 +42,6 @@ class WallController extends BaseController implements ControllerInterface
 
 	public function main(): void
 	{
-		$this->wallService->isAllowedToSeePage(true);
-
 		$this->render(__FUNCTION__);
 	}
 

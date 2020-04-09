@@ -8,4 +8,7 @@ interface UserSettingsServiceInterface extends ActionsServiceInterface
 {
 	public const ACTION = 'profile';
 	public const AREA = 'breezeSettings';
+	public const TEMPLATE = 'UserSettings';
+
+	public function loadVue():void;
 }

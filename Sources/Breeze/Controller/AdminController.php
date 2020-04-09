@@ -90,7 +90,10 @@ class AdminController extends BaseController implements ControllerInterface
 
 	public function moodList(): void
 	{
-		$this->adminService->isEnableFeature(SettingsEntity::ENABLE_MOOD, AdminService::POST_URL . 'main');
+		$this->adminService->isEnableFeature(
+			SettingsEntity::ENABLE_MOOD,
+			AdminService::POST_URL . 'main'
+		);
 
 		$this->render(__FUNCTION__, [
 			Breeze::NAME => [
@@ -99,7 +102,7 @@ class AdminController extends BaseController implements ControllerInterface
 			],
 		]);
 
-		$start = $this->getRequest('start') ? : 0;
+		$start = $this->getRequest('start', 0);
 		$this->moodService->createMoodList([
 			'id' => __FUNCTION__,
 			'base_href' => $this->adminService->global('scripturl') .

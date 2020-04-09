@@ -16,6 +16,7 @@ use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Service\Actions\AdminService;
+use Breeze\Service\Actions\UserSettingsService;
 use Breeze\Service\MoodService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\UserService;
@@ -33,6 +34,8 @@ class Breeze
 	public const VERSION = '2.0';
 	public const PATTERN = self::NAME . '_';
 	public const FEED = '//github.com/MissAllSunday/Breeze/releases.atom';
+	public const VUE_VERSION = '2.5.16';
+	public const VUE_CDN = 'https://cdn.jsdelivr.net/npm/vue@' . self::VUE_VERSION . '/dist/vue.js';
 
 	/**
 	 * @var Container
@@ -68,6 +71,7 @@ class Breeze
 		if (!$this->isEnable(SettingsEntity::MASTER))
 			return;
 
+		$this->setLanguage(Breeze::NAME);
 		$context = $this->global('context');
 		$currentUserSettings = $this->container->get(UserService::class)->getCurrentUserSettings();
 
@@ -109,8 +113,8 @@ class Breeze
 			'areas' => [],
 		];
 
-		$profileAreas['breeze_profile']['areas']['settings'] = [
-			'label' => $this->getText('user_settings_name'),
+		$profileAreas['breeze_profile']['areas']['breezeSettings'] = [
+			'label' => $this->getText(UserSettingsService::AREA . '_main_title'),
 			'icon' => 'maintain',
 			'function' => [$settingsController, 'dispatch'],
 			'enabled' => $context['user']['is_owner'],
@@ -120,7 +124,7 @@ class Breeze
 			],
 		];
 
-		$profileAreas['breeze_profile']['areas']['alerts'] = [
+		$profileAreas['breeze_profile']['areas']['breezeAlerts'] = [
 			'label' => $this->getText('user_settings_name_alerts'),
 			'function' => [$alertsController, 'dispatch'],
 			'enabled' => $context['user']['is_owner'],
