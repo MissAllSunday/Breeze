@@ -19,5 +19,6 @@ parameters:
     - '/Function createList not found./'
     - '/Function loadMemberContext not found./'
     - '/Function loadMemberData not found./'
+    - '/Function loadJavaScriptFile not found./'
   autoload_files:
     - %currentWorkingDirectory%/breezeVendor/autoload.php
