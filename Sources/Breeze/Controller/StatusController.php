@@ -43,10 +43,8 @@ class StatusController extends BaseController implements ControllerInterface
 
 	public function byProfile(): void
 	{
-		$statusByProfile = $start = $this->getRequest('start', 0);
-
-		var_dump($statusByProfile);die;
-
+		$start = $this->getRequest('start', 0);
+		$statusByProfile = $this->statusService->getByProfile(1, $start);
 	}
 
 	public function render(string $subTemplate, array $params): void

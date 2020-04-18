@@ -15,6 +15,7 @@ use Breeze\Service\Actions\WallService;
 use Breeze\Service\FormService;
 use Breeze\Service\MoodService;
 use Breeze\Service\PermissionsService;
+use Breeze\Service\StatusService;
 use Breeze\Service\UserService;
 use Breeze\Service\ValidateService;
 
@@ -41,6 +42,10 @@ return [
 	'service.wall' => [
 		'class' => WallService::class,
 		'arguments'=> [UserService::class, StatusRepository::class, CommentRepository::class]
+	],
+	'service.status' => [
+		'class' => StatusService::class,
+		'arguments'=> [StatusRepository::class]
 	],
 	'service.form' => [
 		'class' => FormService::class,

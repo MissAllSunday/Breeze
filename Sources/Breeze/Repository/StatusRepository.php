@@ -20,7 +20,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		$this->statusModel = $statusModel;
 	}
 
-	public function getStatusByProfile(int $profileOwnerId = 0, $start = 0): array
+	public function getStatusByProfile(int $profileOwnerId = 0, int $start = 0): array
 	 {
 		$maxIndex = $this->statusModel->getCount();
 		$statusIds = [];
