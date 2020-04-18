@@ -7,23 +7,34 @@ namespace Breeze\Controller;
 
 class StatusController extends BaseController implements ControllerInterface
 {
+	public const ACTION_PROFILE = 'byProfile';
+	public const SUB_ACTIONS = [
+		self::ACTION_PROFILE
+	];
+
 	public function getSubActions(): array
 	{
-		return [];
+		return self::SUB_ACTIONS;
 	}
 
 	public function dispatch(): void
 	{
-		// TODO: Implement dispatch() method.
+		$this->subActionCall();
 	}
 
-	public function main(): void
+	public function byProfile(): void
 	{
-		// TODO: Implement main() method.
+		$statusByProfile = $start = $this->getRequest('start', 0);
+
 	}
 
 	public function render(string $subTemplate, array $params): void
 	{
 		// TODO: Implement render() method.
+	}
+
+	public function getMainAction(): string
+	{
+		return self::ACTION_PROFILE;
 	}
 }

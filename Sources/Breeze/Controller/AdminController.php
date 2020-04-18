@@ -15,12 +15,17 @@ class AdminController extends BaseController implements ControllerInterface
 {
 	use PersistenceTrait;
 
+	public const ACTION_MAIN = 'main';
+	public const ACTION_SETTINGS = 'settings';
+	public const ACTION_PERMISSIONS = 'permissions';
+	public const ACTION_MOOD_LIST = 'moodList';
+	public const ACTION_DONATE = 'donate';
 	public const SUB_ACTIONS = [
-		'main',
-		'settings',
-		'permissions',
-		'moodList',
-		'donate',
+		self::ACTION_MAIN,
+		self::ACTION_SETTINGS,
+		self::ACTION_PERMISSIONS,
+		self::ACTION_MOOD_LIST,
+		self::ACTION_DONATE,
 	];
 
 	/**
@@ -127,5 +132,10 @@ class AdminController extends BaseController implements ControllerInterface
 	public function getSubActions(): array
 	{
 		return self::SUB_ACTIONS;
+	}
+
+	public function getMainAction(): string
+	{
+		return self::ACTION_MAIN;
 	}
 }

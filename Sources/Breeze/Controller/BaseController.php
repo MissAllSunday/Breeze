@@ -19,8 +19,10 @@ abstract class BaseController implements ControllerInterface
 			$this->$subAction();
 
 		else
-			$this->main();
+			$this->{$this->getMainAction()}();
 	}
 
 	public abstract function getSubActions(): array;
+
+	public abstract function getMainAction(): string;
 }
