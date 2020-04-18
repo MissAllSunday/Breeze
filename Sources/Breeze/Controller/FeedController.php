@@ -25,4 +25,9 @@ class FeedController extends BaseController implements ControllerInterface
 	{
 		// TODO: Implement render() method.
 	}
+
+	public function getMainAction(): string
+	{
+		return '';
+	}
 }
