@@ -25,8 +25,9 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		$maxIndex = $this->statusModel->getCount();
 		$statusIds = [];
 		$statusUsersIds = [];
-		$statusByProfile = $this->statusModel->getChunk($start, $maxIndex, [
-			'columnName' => StatusEntity::COLUMN_OWNER_ID,
+		$statusByProfile = $this->statusModel->getStatusByProfile([
+			'start' => $start,
+			'maxIndex' => $maxIndex,
 			'ids' => [$profileOwnerId]
 		]);
 
