@@ -40,4 +40,9 @@ class AlertsController extends BaseController implements ControllerInterfaceAlia
 	{
 		// TODO: Implement render() method.
 	}
+
+	public function getMainAction(): string
+	{
+		return '';
+	}
 }

@@ -200,7 +200,7 @@ class Breeze
 		$statusController = $this->container->get(StatusController::class);
 
 		$actions['breezeFeed'] = [false, FeedController::class . '::dispatch#'];
-		$actions['breezeStatus'] = [$statusController, 'dispatch'];
+		$actions['breezeStatus'] = [false, [$statusController, 'dispatch']];
 		$actions['breezeComment'] = [false, CommentController::class . '::dispatch#'];
 		$actions['breezeWall'] = [false, WallController::class . '::dispatch#'];
 		$actions['breezeBuddy'] = [false, BuddyController::class . '::dispatch#'];

@@ -11,9 +11,11 @@ use Breeze\Service\UserServiceInterface;
 
 class UserSettingsController extends BaseController implements ControllerInterface
 {
+	public const ACTION_MAIN = 'main';
+	public const ACTION_SAVE = 'save';
 	public const SUB_ACTIONS = [
-		'main',
-		'save',
+		self::ACTION_MAIN,
+		self::ACTION_SAVE,
 	];
 
 	/**
@@ -52,5 +54,10 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	public function getSubActions(): array
 	{
 		return self::SUB_ACTIONS;
+	}
+
+	public function getMainAction(): string
+	{
+		return self::ACTION_MAIN;
 	}
 }

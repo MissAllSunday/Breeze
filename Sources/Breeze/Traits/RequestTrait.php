@@ -14,7 +14,7 @@ trait RequestTrait
 		$this->request = $_REQUEST;
 	}
 
-	public function getRequest(string $variableName, $defaultValue = '')
+	public function getRequest(string $variableName, $defaultValue = null)
 	{
 		$this->init();
 

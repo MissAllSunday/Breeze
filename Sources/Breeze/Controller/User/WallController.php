@@ -12,10 +12,13 @@ use Breeze\Service\UserServiceInterface;
 
 class WallController extends BaseController implements ControllerInterface
 {
+	public const ACTION_MAIN = 'main';
+	public const ACTION_STATUS = 'status';
+	public const ACTION_COMMENT = 'comment';
 	public const SUB_ACTIONS = [
-		'main',
-		'status',
-		'comment',
+		self::ACTION_MAIN,
+		self::ACTION_COMMENT,
+		self::ACTION_STATUS,
 	];
 
 	/**
@@ -54,5 +57,10 @@ class WallController extends BaseController implements ControllerInterface
 	public function getSubActions(): array
 	{
 		return self::SUB_ACTIONS;
+	}
+
+	public function getMainAction(): string
+	{
+		return self::ACTION_MAIN;
 	}
 }

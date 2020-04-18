@@ -12,4 +12,6 @@ interface ControllerInterface
 	public function getSubActions(): array;
 
 	public function render(string $subTemplate, array $params): void;
+
+	public function getMainAction(): string;
 }
