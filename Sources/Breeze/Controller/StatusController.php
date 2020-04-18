@@ -5,12 +5,31 @@ declare(strict_types=1);
 
 namespace Breeze\Controller;
 
+use Breeze\Service\StatusServiceInterface;
+use Breeze\Service\UserServiceInterface;
+
 class StatusController extends BaseController implements ControllerInterface
 {
 	public const ACTION_PROFILE = 'byProfile';
 	public const SUB_ACTIONS = [
 		self::ACTION_PROFILE
 	];
+
+	/**
+	 * @var StatusServiceInterface
+	 */
+	private $statusService;
+
+	/**
+	 * @var UserServiceInterface
+	 */
+	private $userService;
+
+	public function __construct(StatusServiceInterface $statusService, UserServiceInterface $userService)
+	{
+		$this->statusService = $statusService;
+		$this->userService = $userService;
+	}
 
 	public function getSubActions(): array
 	{
@@ -25,6 +44,8 @@ class StatusController extends BaseController implements ControllerInterface
 	public function byProfile(): void
 	{
 		$statusByProfile = $start = $this->getRequest('start', 0);
+
+		var_dump($statusByProfile);die;
 
 	}
 
