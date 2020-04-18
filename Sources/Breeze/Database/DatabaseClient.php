@@ -22,6 +22,15 @@ class DatabaseClient implements ClientInterface
 		);
 	}
 
+	public function queryQuote(string $query, array $bindParams)
+	{
+		return $this->db['db_quote'](
+			'',
+			$query,
+			$bindParams
+		);
+	}
+
 	public function fetchAssoc($result): ?array
 	{
 		return $this->db['db_fetch_assoc']($result);
