@@ -6,7 +6,7 @@ namespace Breeze\Model;
 
 use Breeze\Database\ClientInterface;
 
-abstract class BaseBaseModel implements BaseModelInterface
+abstract class BaseModel implements BaseModelInterface
 {
 	/**
 	 * @var ClientInterface
@@ -88,7 +88,7 @@ abstract class BaseBaseModel implements BaseModelInterface
 
 		if (!empty($whereParams) && $this->isValidColumn($whereParams['columnName']))
 		{
-			$whereString = 'WHERE {string:columnName} IN ({array_int:ids})';
+			$whereString = 'WHERE {raw:columnName} IN ({array_int:ids})';
 			$queryParams = array_merge($queryParams, $whereParams);
 		}
 

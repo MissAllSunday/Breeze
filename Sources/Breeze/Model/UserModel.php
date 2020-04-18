@@ -7,7 +7,7 @@ namespace Breeze\Model;
 use Breeze\Entity\MemberEntity;
 use Breeze\Entity\OptionsEntity;
 
-class UserModel extends BaseBaseModel implements UserModelInterface
+class UserModel extends BaseModel implements UserModelInterface
 {
 	function insert(array $data, int $userId = 0): int
 	{
