@@ -25,21 +25,15 @@ class StatusModel extends BaseModel implements StatusModelInterface
 	public function getStatusByProfile(array $params): array
 	{
 		$status = [];
-		$queryParams = array_merge([
-			'tableName' => StatusEntity::TABLE,
-			'columns' => 'bs.' . implode(', bs.', $this->getColumns()),
-			'commentColumns' =>	', bc.' . implode(', bc.', CommentEntity::getColumns()),
+		$usersIds = [];
+		$queryParams = array_merge(array_merge($this->getDefaultQueryParams(), [
 			'columnName' => StatusEntity::COLUMN_OWNER_ID,
-			'commentTable' => CommentEntity::TABLE,
-			'commentStatusId' => 'bc.' . CommentEntity::COLUMN_STATUS_ID,
-			'columnId' => ' bs.' . StatusEntity::COLUMN_ID,
-		], $params);
+		], $params));
 
 		$request = $this->dbClient->query(
 			'
-			SELECT {raw:columns}{raw:commentColumns}
-			FROM {db_prefix}{raw:tableName} bs
-			LEFT JOIN {db_prefix}{raw:commentTable} bc ON {raw:commentStatusId} = {raw:columnId}
+			SELECT {raw:columns}
+			FROM {db_prefix}{raw:tableName}
 			WHERE {raw:columnName} IN ({array_int:ids})
 			LIMIT {int:start}, {int:maxIndex}',
 			$queryParams
@@ -47,14 +41,17 @@ class StatusModel extends BaseModel implements StatusModelInterface
 
 		while ($row = $this->dbClient->fetchAssoc($request))
 		{
-			$status[$row[$this->getColumnId()]] = array_diff_key($row, array_flip(CommentEntity::getColumns()));
-			$status[$row[$this->getColumnId()]]['comments'][$row[CommentEntity::COLUMN_ID]] = array_diff_key($row, array_flip(StatusEntity::getColumns()));
+			$status[$row[$this->getColumnId()]] =$row;
+			$usersIds[] = $row[StatusEntity::COLUMN_OWNER_ID];
+			$usersIds[] = $row[StatusEntity::COLUMN_POSTER_ID];
 		}
-
 
 		$this->dbClient->freeResult($request);
 
-		return $status;
+		return [
+			'status' => $status,
+			'usersIds' => array_unique($usersIds),
+		];
 	}
 
 	public function update(array $data, int $statusId = 0): array

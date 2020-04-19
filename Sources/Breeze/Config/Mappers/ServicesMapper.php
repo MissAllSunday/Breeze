@@ -45,7 +45,7 @@ return [
 	],
 	'service.status' => [
 		'class' => StatusService::class,
-		'arguments'=> [StatusRepository::class]
+		'arguments'=> [UserService::class, StatusRepository::class, CommentRepository::class]
 	],
 	'service.form' => [
 		'class' => FormService::class,

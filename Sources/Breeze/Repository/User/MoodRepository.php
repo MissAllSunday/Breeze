@@ -29,7 +29,10 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 	public function getChunk(int $start = 0, int $maxIndex = 0): array
 	{
 		// TODO implement cache at repository level
-		return $this->moodModel->getChunk($start, $maxIndex);
+		return $this->moodModel->getChunk([
+			'start' => $start,
+			'maxIndex' => $maxIndex
+		]);
 	}
 
 	public function getActiveMoods(): array

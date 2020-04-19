@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Model;
 
 use Breeze\Entity\CommentEntity as CommentEntity;
+use Breeze\Entity\StatusEntity as StatusEntity;
 
 class CommentModel extends BaseModel implements CommentModelInterface
 {
@@ -40,6 +41,39 @@ class CommentModel extends BaseModel implements CommentModelInterface
 		);
 
 		return true;
+	}
+
+	public function getStatusByProfile(int $profileOwnerId): array
+	{
+		$comments = [];
+		$usersIds = [];
+		$queryParams = array_merge($this->getDefaultQueryParams(), [
+			'columnName' => CommentEntity::COLUMN_PROFILE_ID,
+			'profileId' => $profileOwnerId,
+		]);
+
+		$request = $this->dbClient->query(
+			'
+			SELECT {raw:columns}
+			FROM {db_prefix}{raw:tableName}
+			WHERE {raw:columnName} = {int:profileId}',
+			$queryParams
+		);
+
+		while ($row = $this->dbClient->fetchAssoc($request))
+		{
+			$comments[$row[$this->getColumnId()]] =$row;
+			$usersIds[] = $row[CommentEntity::COLUMN_POSTER_ID];
+			$usersIds[] = $row[CommentEntity::COLUMN_PROFILE_ID];
+			$usersIds[] = $row[CommentEntity::COLUMN_STATUS_OWNER_ID];
+		}
+
+		$this->dbClient->freeResult($request);
+
+		return [
+			'comments' => $comments,
+			'usersIds' => array_unique($usersIds),
+		];
 	}
 
 	function update(array $data, int $id = 0): array

@@ -77,20 +77,17 @@ abstract class BaseModel implements BaseModelInterface
 		);
 	}
 
-	public function getChunk(int $start = 0, int $maxIndex = 0, array $whereParams = []): array
+	public function getChunk(array $queryParams = []): array
 	{
 		$items = [];
 		$whereString = '';
-		$queryParams = array_merge($this->getDefaultQueryParams(), [
-			'start' => $start,
-			'maxIndex' => $maxIndex,
-		]);
+		$queryParams = array_merge(array_merge($this->getDefaultQueryParams(), [
+			'start' => 0,
+			'maxIndex' => 0,
+		]), $queryParams);
 
-		if (!empty($whereParams) && $this->isValidColumn($whereParams['columnName']))
-		{
+		if ($this->isValidColumn($queryParams['columnName']))
 			$whereString = 'WHERE {raw:columnName} IN ({array_int:ids})';
-			$queryParams = array_merge($queryParams, $whereParams);
-		}
 
 		$request = $this->dbClient->query(
 			'

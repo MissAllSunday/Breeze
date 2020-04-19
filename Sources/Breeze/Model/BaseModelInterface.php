@@ -23,5 +23,5 @@ interface BaseModelInterface
 
 	public function getCount(): int;
 
-	public function getChunk(int $start, int $maxIndex, array $whereParams = []): array;
+	public function getChunk(array $queryParams = []): array;
 }

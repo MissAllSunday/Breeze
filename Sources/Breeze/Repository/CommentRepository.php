@@ -20,19 +20,18 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		$this->commentModel = $commentModel;
 	}
 
-	public function getCommentsByProfile(int $profileOwnerId = 0): void
+	public function getStatusByProfile(int $profileOwnerId = 0): array
 	{
-		$status = $this->commentModel->getChunk(
-			0,
-			0,
-			[
-				'columnName' => CommentEntity::COLUMN_PROFILE_ID,
-				'ids' => [$profileOwnerId]]
-		);
+		$commentData = $this->commentModel->getStatusByProfile($profileOwnerId);
 	}
 
 	public function getModel(): CommentModelInterface
 	{
 		return $this->commentModel;
+	}
+
+	public function getCommentsByStatus(array $statusIds = []): void
+	{
+		// TODO: Implement getCommentsByStatus() method.
 	}
 }
