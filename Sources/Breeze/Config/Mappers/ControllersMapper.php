@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Config\Mapper;
 
 use Breeze\Controller\AdminController;
-use Breeze\Controller\StatusController;
+use Breeze\Controller\API\StatusController;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;

@@ -3,16 +3,16 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Controller;
+namespace Breeze\Controller\API;
 
 use Breeze\Service\StatusServiceInterface;
 use Breeze\Service\UserServiceInterface;
 
-class StatusController extends BaseController implements ControllerInterface
+class StatusController extends ApiBaseController implements ApiBaseInterface
 {
 	public const ACTION_PROFILE = 'byProfile';
 	public const SUB_ACTIONS = [
-		self::ACTION_PROFILE
+		self::ACTION_PROFILE,
 	];
 
 	/**
@@ -46,12 +46,11 @@ class StatusController extends BaseController implements ControllerInterface
 		$start = (int) $this->getRequest('start');
 
 		$statusByProfile = $this->statusService->getByProfile(1, $start);
+
+		$this->print($statusByProfile);
 	}
 
-	public function render(string $subTemplate, array $params): void
-	{
-		// TODO: Implement render() method.
-	}
+	public function render(string $subTemplate, array $params): void {}
 
 	public function getMainAction(): string
 	{
