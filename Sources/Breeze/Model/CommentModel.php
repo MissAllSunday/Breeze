@@ -62,7 +62,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 
 		while ($row = $this->dbClient->fetchAssoc($request))
 		{
-			$comments[$row[$this->getColumnId()]] =$row;
+			$comments[$row[CommentEntity::COLUMN_STATUS_ID]][$row[CommentEntity::COLUMN_ID]] =$row;
 			$usersIds[] = $row[CommentEntity::COLUMN_POSTER_ID];
 			$usersIds[] = $row[CommentEntity::COLUMN_PROFILE_ID];
 			$usersIds[] = $row[CommentEntity::COLUMN_STATUS_OWNER_ID];
@@ -71,7 +71,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 		$this->dbClient->freeResult($request);
 
 		return [
-			'comments' => $comments,
+			'data' => $comments,
 			'usersIds' => array_unique($usersIds),
 		];
 	}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Controller;
 
 use Breeze\Traits\RequestTrait;
+use Breeze\Traits\TextTrait;
 
 abstract class BaseController implements ControllerInterface
 {

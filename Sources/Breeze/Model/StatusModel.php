@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use Breeze\Entity\CommentEntity;
 use Breeze\Entity\StatusEntity as StatusEntity;
 
 class StatusModel extends BaseModel implements StatusModelInterface
@@ -49,7 +48,7 @@ class StatusModel extends BaseModel implements StatusModelInterface
 		$this->dbClient->freeResult($request);
 
 		return [
-			'status' => $status,
+			'data' => $status,
 			'usersIds' => array_unique($usersIds),
 		];
 	}

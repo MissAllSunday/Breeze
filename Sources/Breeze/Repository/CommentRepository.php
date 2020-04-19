@@ -22,7 +22,8 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 	public function getStatusByProfile(int $profileOwnerId = 0): array
 	{
-		$commentData = $this->commentModel->getStatusByProfile($profileOwnerId);
+		// TODO: add cache
+		return $this->commentModel->getStatusByProfile($profileOwnerId);
 	}
 
 	public function getModel(): CommentModelInterface

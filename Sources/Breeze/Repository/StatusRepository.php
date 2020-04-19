@@ -23,22 +23,13 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	public function getStatusByProfile(int $profileOwnerId = 0, int $start = 0): array
 	 {
 		$maxIndex = $this->statusModel->getCount();
-		$statusIds = [];
-		$statusUsersIds = [];
-		$statusByProfile = $this->statusModel->getStatusByProfile([
+
+		// TODO: add cache
+		return $this->statusModel->getStatusByProfile([
 			'start' => $start,
 			'maxIndex' => $maxIndex,
 			'ids' => [$profileOwnerId]
 		]);
-
-		foreach ($statusByProfile as $status)
-		{
-			$statusUsersIds[] = $status[StatusEntity::COLUMN_OWNER_ID];
-			$statusUsersIds[] = $status[StatusEntity::COLUMN_POSTER_ID];
-
-		}
-
-		return $statusByProfile;
 	 }
 
 	public function getModel(): StatusModelInterface
