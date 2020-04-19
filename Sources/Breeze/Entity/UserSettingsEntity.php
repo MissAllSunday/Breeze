@@ -17,6 +17,7 @@ class UserSettingsEntity
 	public const BLOCK_LIST = 'blockList';
 	public const BUDDIES = 'buddies';
 	public const ABOUT_ME = 'aboutMe';
+	public const MOOD = 'mood';
 
 	public static function getColumns(): array
 	{
@@ -31,6 +32,7 @@ class UserSettingsEntity
 			self::BLOCK_LIST,
 			self::BUDDIES,
 			self::ABOUT_ME,
+			self::MOOD,
 		];
 	}
 }

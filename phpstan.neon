@@ -20,5 +20,6 @@ parameters:
     - '/Function loadMemberContext not found./'
     - '/Function loadMemberData not found./'
     - '/Function loadJavaScriptFile not found./'
+    - '/Function smf_serverResponse not found./'
   autoload_files:
     - %currentWorkingDirectory%/breezeVendor/autoload.php

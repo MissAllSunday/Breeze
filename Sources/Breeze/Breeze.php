@@ -6,11 +6,11 @@ namespace Breeze;
 
 use Breeze\Config\MapperAggregate;
 use Breeze\Controller\AdminController;
+use Breeze\Controller\API\StatusController;
 use Breeze\Controller\BuddyController;
 use Breeze\Controller\CommentController;
 use Breeze\Controller\FeedController;
 use Breeze\Controller\MoodController;
-use Breeze\Controller\StatusController;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;

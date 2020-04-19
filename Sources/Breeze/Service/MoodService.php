@@ -7,6 +7,7 @@ namespace Breeze\Service;
 
 use Breeze\Entity\MoodEntity;
 use Breeze\Entity\SettingsEntity;
+use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Service\Actions\AdminService;
@@ -158,7 +159,16 @@ class MoodService extends BaseService implements MoodServiceInterface
 			!$this->getSetting(SettingsEntity::ENABLE_MOOD))
 			return;
 
-		$data['custom_fields'][] =  $this->moodRepository->getActiveMoods();
+		$activeMoods = $this->moodRepository->getActiveMoods();
+		$userSettings = $this->userRepository->getUserSettings($userId);
+
+		if (empty($userSettings[UserSettingsEntity::MOOD]) ||
+			empty($activeMoods[$userSettings[UserSettingsEntity::MOOD]]))
+			return;
+
+		$userMood = $userSettings[UserSettingsEntity::MOOD];
+
+		$data['custom_fields'][] =  $userMood;
 	}
 
 	public function moodProfile(int $memID, array $area): void
