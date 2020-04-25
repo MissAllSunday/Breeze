@@ -30,15 +30,14 @@ function template_breezeAdmin_main(): void
 					</h3>
 				</div>
 				<div id="smfAnnouncements" class="information">
-					', $txt['Breeze_feed_error_message'] , '
-					<ul>
-						<li v-for="release in releases">
-							<a :href="release.html_url" target="_blank" class="commit">
-							{{ release.name }}
-							</a>
-							<span class="date">{{ release.published_at | formatDate }}</span>
-						</li>
-				  </ul>
+					<span v-if="errored"></span>
+					<dl v-else>
+						<releases-feed
+						  v-for="release in releases"
+						  v-bind:release="release"
+						  v-bind:key="release.id"
+						></releases-feed>
+				  </dl>
 				</div>
 			</div>';
 
@@ -106,39 +105,8 @@ function template_breezeAdmin_main(): void
 
 	echo '	
 	<script>
-      var feedURL = "https://api.github.com/repos/MissAllSunday/Breeze/releases";
-
-	var admincenter = new Vue({
-	el: "#live_news",
-        data: {
-			releases: null,
-			loading: true,
-			errored: false
-        },
-        created: function() {
-		this.fetchData();
-		},
-		filters: {
-			formatDate: function(releaseDate) {
-	    	return moment(String(releaseDate)).format("YYYY/MM/DD")
-          },
-		},
-        methods: {
-		fetchData: function() {
-			axios
-			.get(feedURL)
-			.then(response => {
-				this.releases = response.data
-					console.log(response.data)
-		  })
-		  .catch(error => {
-				
-			this.errored = true
-		  })
-		  .finally(() => this.loading = false)
-		}
-	}
-      });
+      var feedURL = "'. Breeze::FEED .'";
+      var releasesNotFound = "'. $txt['Breeze_feed_error_message'] .'";
     </script>
 
 ';
