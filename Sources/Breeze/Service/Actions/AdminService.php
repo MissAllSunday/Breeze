@@ -29,6 +29,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 
 	public function init(array $subActions): void
 	{
+		$this->loadJS();
 		$context = $this->global('context');
 
 		$this->requireOnce('ManageSettings');

@@ -47,7 +47,6 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 
 	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void
 	{
-		$this->userSettingsService->loadVue();
 		$this->userSettingsService->defaultSubActionContent($subTemplate, $params, $smfTemplate);
 	}
 

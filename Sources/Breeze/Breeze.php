@@ -6,10 +6,10 @@ namespace Breeze;
 
 use Breeze\Config\MapperAggregate;
 use Breeze\Controller\AdminController;
+use Breeze\Controller\API\FeedController as FeedController;
 use Breeze\Controller\API\StatusController;
 use Breeze\Controller\BuddyController;
 use Breeze\Controller\CommentController;
-use Breeze\Controller\FeedController;
 use Breeze\Controller\MoodController;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
@@ -33,9 +33,10 @@ class Breeze
 	public const NAME = 'Breeze';
 	public const VERSION = '2.0';
 	public const PATTERN = self::NAME . '_';
-	public const FEED = '//github.com/MissAllSunday/Breeze/releases.atom';
+	public const FEED = 'https://github.com/MissAllSunday/Breeze/releases.atom';
 	public const VUE_VERSION = '2.5.16';
 	public const VUE_CDN = 'https://cdn.jsdelivr.net/npm/vue@' . self::VUE_VERSION . '/dist/vue.js';
+	public const AXIOS_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js';
 
 	/**
 	 * @var Container
@@ -199,7 +200,6 @@ class Breeze
 	{
 		$statusController = $this->container->get(StatusController::class);
 
-		$actions['breezeFeed'] = [false, FeedController::class . '::dispatch#'];
 		$actions['breezeStatus'] = [false, [$statusController, 'dispatch']];
 		$actions['breezeComment'] = [false, CommentController::class . '::dispatch#'];
 		$actions['breezeWall'] = [false, WallController::class . '::dispatch#'];
