@@ -25,6 +25,6 @@ trait CdnTrait
 			loadJavaScriptFile($dependency, [
 				'external' => true,
 				'defer' => true,
-			], Breeze::PATTERN . $dependency);
+			], strtolower(Breeze::PATTERN . $dependency));
 	}
 }
