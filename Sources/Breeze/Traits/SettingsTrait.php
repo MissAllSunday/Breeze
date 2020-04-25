@@ -70,22 +70,4 @@ trait SettingsTrait
 	{
 		loadCSSFile('breeze.css', [], 'smf_breeze');
 	}
-
-	public function loadJS(): void
-	{
-		loadJavaScriptFile(Breeze::VUE_CDN, [
-			'external' => true,
-			'defer' => false,
-		], 'breeze_vue');
-
-		loadJavaScriptFile(Breeze::AXIOS_CDN, [
-			'external' => true,
-			'defer' => false,
-		], 'breeze_axios');
-
-		loadJavaScriptFile('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js', [
-			'external' => true,
-			'defer' => false,
-		], 'breeze_moment');
-	}
 }
