@@ -12,7 +12,6 @@ trait ComponentsTrait
 	private static $componentsFolder = 'breezeComponents/';
 
 	private static $components = [
-
 		'feed',
 		'adminMain',
 	];

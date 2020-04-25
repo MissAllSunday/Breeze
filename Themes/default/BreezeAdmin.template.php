@@ -30,14 +30,13 @@ function template_breezeAdmin_main(): void
 					</h3>
 				</div>
 				<div id="smfAnnouncements" class="information">
-					<span v-if="errored"></span>
-					<dl v-else>
-						<releases-feed
-						  v-for="release in releases"
-						  v-bind:release="release"
-						  v-bind:key="release.id"
-						></releases-feed>
-				  </dl>
+					<span v-if="errored">{{releasesNotFound}}</span>
+					<releases-feed
+						v-else
+						v-for="release in releases"
+						v-bind:release="release"
+						v-bind:key="release.id"
+					></releases-feed>
 				</div>
 			</div>';
 
