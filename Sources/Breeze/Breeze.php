@@ -32,7 +32,7 @@ class Breeze
 	public const NAME = 'Breeze';
 	public const VERSION = '2.0';
 	public const PATTERN = self::NAME . '_';
-	public const FEED = 'https://github.com/MissAllSunday/Breeze/releases.atom';
+	public const FEED = 'https://api.github.com/repos/MissAllSunday/Breeze/releases';
 	public const VUE_VERSION = '2.5.16';
 	public const VUE_CDN = 'https://cdn.jsdelivr.net/npm/vue@' . self::VUE_VERSION . '/dist/vue.js';
 	public const AXIOS_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js';

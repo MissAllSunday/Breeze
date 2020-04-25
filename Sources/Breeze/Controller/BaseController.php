@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Breeze\Controller;
 
+use Breeze\Traits\CdnTrait;
+use Breeze\Traits\ComponentsTrait;
 use Breeze\Traits\RequestTrait;
-use Breeze\Util\CdnTrait;
 
 abstract class BaseController implements ControllerInterface
 {
 	use RequestTrait;
 	use CdnTrait;
+	use ComponentsTrait;
 
 	public function subActionCall(): void
 	{
