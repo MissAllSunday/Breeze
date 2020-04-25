@@ -1,4 +1,4 @@
-#breeze_main_section{
+.breeze_main_section{
 	min-height: 500px;
 	overflow: auto;
 }
@@ -7,24 +7,15 @@
 	width: 30%;
 }
 
-#breeze_wall{
+.breeze_wall{
 	width: 69%;
 }
 
-#breeze_avatar {
-
-	background-image: url('');
-
-	/* make a square container */
-	width: 120px;
-	height: 120px;
-
-	/* fill the container, preserving aspect ratio, and cropping to fit */
+.breeze_avatar {
+	width: 100px;
+	height: 100px;
 	background-size: cover;
-
-	/* center the image vertically and horizontally */
 	background-position: top center;
-
-	/* round the edges to a circle with border radius 1/2 container size */
 	border-radius: 50%;
+	margin-right: 3px;
 }

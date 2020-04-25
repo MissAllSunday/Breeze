@@ -14,6 +14,8 @@ trait ComponentsTrait
 	private static $components = [
 		'feed',
 		'adminMain',
+		'status',
+		'wallMain',
 	];
 
 	public function loadComponents(array $components = []): void

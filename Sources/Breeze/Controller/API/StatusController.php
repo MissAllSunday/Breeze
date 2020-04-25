@@ -25,6 +25,11 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 	 */
 	private $userService;
 
+	/**
+	 * @var int
+	 */
+	private $wallOwnerId;
+
 	public function __construct(StatusServiceInterface $statusService, UserServiceInterface $userService)
 	{
 		$this->statusService = $statusService;
@@ -38,6 +43,9 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 
 	public function dispatch(): void
 	{
+		// TODO: validate request
+		$this->setWallOwnerId();
+
 		$this->subActionCall();
 	}
 
@@ -45,7 +53,7 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 	{
 		$start = (int) $this->getRequest('start');
 
-		$statusByProfile = $this->statusService->getByProfile(1, $start);
+		$statusByProfile = $this->statusService->getByProfile($this->wallOwnerId, $start);
 
 		$this->print($statusByProfile);
 	}
@@ -55,5 +63,10 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 	public function getMainAction(): string
 	{
 		return self::ACTION_PROFILE;
+	}
+
+	private function setWallOwnerId(): int
+	{
+		return $this->wallOwnerId = $this->getRequest('u', 0);
 	}
 }
