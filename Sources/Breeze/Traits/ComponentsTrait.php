@@ -15,6 +15,7 @@ trait ComponentsTrait
 		'feed',
 		'adminMain',
 		'status',
+		'comment',
 		'wallMain',
 	];
 

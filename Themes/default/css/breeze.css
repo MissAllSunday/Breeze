@@ -12,10 +12,23 @@
 }
 
 .breeze_avatar {
-	width: 100px;
-	height: 100px;
+	width: 65px;
+	height: 65px;
 	background-size: cover;
 	background-position: top center;
 	border-radius: 50%;
 	margin-right: 3px;
+}
+
+.breeze_avatar.avatar_comment {
+	width: 35px;
+	height: 35px;
+}
+
+.comment_user_info {
+	display: flex;
+}
+
+.comment_content {
+	width:99%
 }

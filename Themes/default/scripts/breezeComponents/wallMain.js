@@ -27,6 +27,9 @@ new Vue({
         },
         getUserData: function (userId) {
             return this.users[userId];
+        },
+        getComments: function (status_id) {
+            return this.comments[status_id] || null;
         }
     }
 })
