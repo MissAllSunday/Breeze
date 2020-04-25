@@ -6,7 +6,6 @@ namespace Breeze;
 
 use Breeze\Config\MapperAggregate;
 use Breeze\Controller\AdminController;
-use Breeze\Controller\API\FeedController as FeedController;
 use Breeze\Controller\API\StatusController;
 use Breeze\Controller\BuddyController;
 use Breeze\Controller\CommentController;
@@ -37,6 +36,7 @@ class Breeze
 	public const VUE_VERSION = '2.5.16';
 	public const VUE_CDN = 'https://cdn.jsdelivr.net/npm/vue@' . self::VUE_VERSION . '/dist/vue.js';
 	public const AXIOS_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js';
+	public const MOMENT_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js';
 
 	/**
 	 * @var Container
