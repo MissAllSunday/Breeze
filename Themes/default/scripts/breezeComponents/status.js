@@ -31,7 +31,7 @@ Vue.component('status', {
             return { backgroundImage: 'url(' + posterImageHref + ')' }
         },
         getUserData: function (userId) {
-            return this.$parent.getUserData(userId);
+            return this.$root.getUserData(userId);
         },
     }
 })

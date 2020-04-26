@@ -16,6 +16,7 @@ trait ComponentsTrait
 		'adminMain',
 		'status',
 		'comment',
+		'tabs',
 		'wallMain',
 	];
 

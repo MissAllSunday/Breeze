@@ -125,7 +125,7 @@ $txt['Breeze_time_month'] = 'month';
 $txt['Breeze_time_year'] = 'year';
 
 // Validate strings
-$txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to see this use\'s wall.';
+$txt['cannot_view_general_wall'] = 'I\'m sorry, you are not allowed to see this user\'s wall.';
 
 // Ajax strings
 $txt['Breeze_info_updated_settings'] = 'Your settings were updated successfully.';
@@ -174,7 +174,10 @@ $txt['Breeze_info_loadingAlerts_end'] = 'There are no more alerts to display';
 $txt['Breeze_page_no_status'] = 'There are no status to display';
 
 // Tabs
-$txt['Breeze_tabs_wall'] = 'User';
+$txt['Breeze_tabs_wall'] = 'Wall';
+$txt['Breeze_tabs_post'] = 'Leave a message';
+$txt['Breeze_tabs_about'] = 'About me';
+$txt['Breeze_tabs_activity'] = 'Recent activity';
 $txt['Breeze_tabs_buddies'] = 'Buddies';
 $txt['Breeze_tabs_views'] = 'Profile Visitors';
 $txt['Breeze_tabs_pinfo'] = 'Profile Info';

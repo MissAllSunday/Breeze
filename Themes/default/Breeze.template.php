@@ -22,15 +22,26 @@ function template_breeze_main(): void
 		</div>
 	</div>
 	<div id="breeze_app" class="breeze_wall floatright">
-		<span v-if="loading">loading...</span>
-		<status
-		v-else
-		v-for="status_item in status"
-		v-bind:status_item="status_item"
-		v-bind:poster_data="getUserData(status_item.status_poster_id)"
-		v-bind:comments="getComments(status_item.status_id)"
-		v-bind:key="status_item.status_id"
-		></status>
+		<tabs>
+    		<tab name="Services" :selected="true">
+    			<span v-if="loading">loading...</span>
+				<status
+					v-else
+					v-for="status_item in status"
+					v-bind:status_item="status_item"
+					v-bind:poster_data="getUserData(status_item.status_poster_id)"
+					v-bind:comments="getComments(status_item.status_id)"
+					v-bind:key="status_item.status_id">			
+				</status>
+    		</tab>
+    		<tab name="Pricing">
+      			<h1>How much we do it for</h1>
+    		</tab>
+    		<tab name="About Us">
+      			<h1>Why we do it</h1>
+      			lol
+    		</tab>
+  		</tabs>
 	</div>
 <br />';
 
