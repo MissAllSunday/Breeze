@@ -14,7 +14,9 @@ Vue.component('tabs', {
         </div>
     `,
     data() {
-        return {tabs: [] };
+        return {
+            tabs: [],
+        };
     },
     created() {
 

@@ -23,7 +23,7 @@ function template_breeze_main(): void
 	</div>
 	<div id="breeze_app" class="breeze_wall floatright">
 		<tabs>
-    		<tab name="Services" :selected="true">
+    		<tab :name="tabs_name.wall" :selected="true">
     			<span v-if="loading">loading...</span>
 				<status
 					v-else
@@ -34,10 +34,14 @@ function template_breeze_main(): void
 					v-bind:key="status_item.status_id">			
 				</status>
     		</tab>
-    		<tab name="Pricing">
+    		<tab :name="tabs_name.post">
       			<h1>How much we do it for</h1>
     		</tab>
-    		<tab name="About Us">
+    		<tab :name="tabs_name.about">
+      			<h1>Why we do it</h1>
+      			lol
+    		</tab>
+			<tab :name="tabs_name.activity">
       			<h1>Why we do it</h1>
       			lol
     		</tab>
@@ -47,6 +51,13 @@ function template_breeze_main(): void
 
 	echo '	
 	<script>
-      var statusURL = smf_scripturl + "?action=breezeStatus;u=" + smf_member_id;
+		// TODO use the correct profile Id
+		var statusURL = smf_scripturl + "?action=breezeStatus;u=" + smf_member_id;
+		
+		// TODO move these to a service
+		var tabs_wall = "'. $txt['Breeze_tabs_wall'] .'";
+		var tabs_post = "'. $txt['Breeze_tabs_post'] .'";
+		var tabs_about = "'. $txt['Breeze_tabs_about'] .'";
+		var tabs_activity = "'. $txt['Breeze_tabs_activity'] .'";
     </script>';
 }

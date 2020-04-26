@@ -6,6 +6,12 @@ new Vue({
         comments: null,
         errored: false,
         loading: true,
+        tabs_name: {
+            wall: tabs_wall,
+            post: tabs_post,
+            about: tabs_about,
+            activity: tabs_activity,
+        }
     },
     created: function() {
         this.fetchStatus();
