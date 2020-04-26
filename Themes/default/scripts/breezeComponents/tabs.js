@@ -1,10 +1,10 @@
 Vue.component('tabs', {
     template: `
         <div>
-            <div class="tabs">
-              <ul>
+            <div class="generic_menu tabs">
+              <ul class="dropmenu">
                 <li v-for="tab in tabs" :class="{ 'is-active': tab.isActive }">
-                    <a :href="tab.href" @click="selectTab(tab)">{{ tab.name }}</a>
+                    <a :href="tab.href" @click="selectTab(tab)" :class="{ 'active': tab.isActive }">{{ tab.name }}</a>
                 </li>
               </ul>
             </div>

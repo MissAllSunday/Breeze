@@ -35,15 +35,13 @@ function template_breeze_main(): void
 				</status>
     		</tab>
     		<tab :name="tabs_name.post">
-      			<h1>How much we do it for</h1>
+      			post a new status
     		</tab>
     		<tab :name="tabs_name.about">
-      			<h1>Why we do it</h1>
-      			lol
+      			about me 
     		</tab>
 			<tab :name="tabs_name.activity">
-      			<h1>Why we do it</h1>
-      			lol
+      			profile owner recent activity
     		</tab>
   		</tabs>
 	</div>
