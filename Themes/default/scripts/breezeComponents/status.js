@@ -1,5 +1,10 @@
 Vue.component('status', {
     props: ['status_item', 'poster_data', 'comments'],
+    data: function() {
+        return {
+            comment_message: '',
+        }
+    },
     template: `<div>
     <div class='breeze_avatar floatleft' v-bind:style='avatarImage(poster_data.avatar.href)'></div>
         <div class='windowbg'>
@@ -19,6 +24,13 @@ Vue.component('status', {
                 v-bind:key='comment.comments_id' 
                 class='windowbg'>
             </comment>
+            <div class="comment_posting">
+                <div 
+                    class='breeze_avatar avatar_comment'
+                    v-bind:style='avatarImage(poster_data.avatar.href)'>           
+                </div>
+                <textarea v-model="comment_message" class="post_comment" placeholder="leave a comment"></textarea>
+            </div>
         </div>
     </div>`,
     filters: {
@@ -32,6 +44,9 @@ Vue.component('status', {
         },
         getUserData: function (userId) {
             return this.$root.getUserData(userId);
+        },
+        getCurrentUserData: function () {
+
         },
     }
 })

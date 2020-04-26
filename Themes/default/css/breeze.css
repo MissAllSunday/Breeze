@@ -25,10 +25,19 @@
 	height: 35px;
 }
 
-.comment_user_info {
+.comment_user_info, .comment_posting {
 	display: flex;
 }
 
 .comment_content {
 	width:99%
+}
+
+.post_comment {
+	min-height: 50px;
+	width: 100%;
+}
+
+.comment_posting {
+	margin-top: 10px;
 }
