@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Config\Mapper;
 
 use Breeze\Controller\AdminController;
+use Breeze\Controller\API\CommentController;
 use Breeze\Controller\API\StatusController;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
@@ -13,6 +14,7 @@ use Breeze\Controller\User\WallController;
 use Breeze\Service\Actions\AdminService;
 use Breeze\Service\Actions\UserSettingsService;
 use Breeze\Service\Actions\WallService;
+use Breeze\Service\CommentService;
 use Breeze\Service\MoodService;
 use Breeze\Service\StatusService;
 use Breeze\Service\UserService;
@@ -36,6 +38,13 @@ return [
 		'class' => StatusController::class,
 		'arguments'=> [
 			StatusService::class,
+			UserService::class
+		]
+	],
+	'controller.comment' => [
+		'class' => CommentController::class,
+		'arguments'=> [
+			CommentService::class,
 			UserService::class
 		]
 	],

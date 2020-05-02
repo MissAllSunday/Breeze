@@ -12,6 +12,7 @@ use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminService;
 use Breeze\Service\Actions\UserSettingsService;
 use Breeze\Service\Actions\WallService;
+use Breeze\Service\CommentService;
 use Breeze\Service\FormService;
 use Breeze\Service\MoodService;
 use Breeze\Service\PermissionsService;
@@ -45,6 +46,10 @@ return [
 	],
 	'service.status' => [
 		'class' => StatusService::class,
+		'arguments'=> [UserService::class, StatusRepository::class, CommentRepository::class]
+	],
+	'service.comment' => [
+		'class' => CommentService::class,
 		'arguments'=> [UserService::class, StatusRepository::class, CommentRepository::class]
 	],
 	'service.form' => [

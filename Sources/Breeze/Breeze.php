@@ -6,9 +6,9 @@ namespace Breeze;
 
 use Breeze\Config\MapperAggregate;
 use Breeze\Controller\AdminController;
+use Breeze\Controller\API\CommentController;
 use Breeze\Controller\API\StatusController;
 use Breeze\Controller\BuddyController;
-use Breeze\Controller\CommentController;
 use Breeze\Controller\MoodController;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
@@ -199,9 +199,10 @@ class Breeze
 	public function actions(&$actions): void
 	{
 		$statusController = $this->container->get(StatusController::class);
+		$commentController = $this->container->get(CommentController::class);
 
 		$actions['breezeStatus'] = [false, [$statusController, 'dispatch']];
-		$actions['breezeComment'] = [false, CommentController::class . '::dispatch#'];
+		$actions['breezeComment'] = [false, [$commentController, 'dispatch']];
 		$actions['breezeWall'] = [false, WallController::class . '::dispatch#'];
 		$actions['breezeBuddy'] = [false, BuddyController::class . '::dispatch#'];
 		$actions['breezeMood'] = [false, MoodController::class . '::dispatch#'];
