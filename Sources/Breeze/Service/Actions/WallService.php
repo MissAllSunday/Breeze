@@ -70,6 +70,16 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 		]);
 	}
 
+	public function loadUsers(): void
+	{
+		$usersToLoad = $this->getUsersToLoad();
+
+		$loadedUsers = $this->userService->loadUsersInfo($usersToLoad);
+
+		// We don't need all their info
+		$loadedUsers = array_intersect(self::$components, $components);
+	}
+
 	public function isAllowedToSeePage(bool $redirect = false): bool
 	{
 		$canSeePage = true;

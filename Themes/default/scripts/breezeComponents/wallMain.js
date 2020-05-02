@@ -1,3 +1,13 @@
+Vue.component('error-box', {
+    template: `
+    <div class="errorbox" id="errors">
+        <slot></slot>
+        <span class="main_icons remove_button floatright" @click="$emit('close')"></span>
+    </div>
+  `
+})
+
+
 new Vue({
     el: '#breeze_app',
     data: {

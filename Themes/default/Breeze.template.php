@@ -8,7 +8,8 @@ declare(strict_types=1);
 
 function template_breeze_main(): void
 {
-	global $txt, $context;
+	global $txt;
+
 	echo '
 <div id="breeze_main" class="breeze_main_section">
 	<div id="breeze_blocks" class="floatleft">

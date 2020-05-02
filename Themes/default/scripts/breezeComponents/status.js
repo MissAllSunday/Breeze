@@ -3,6 +3,7 @@ Vue.component('status', {
     data: function() {
         return {
             comment_message: '',
+            error: null,
         }
     },
     template: `<div>
@@ -24,12 +25,21 @@ Vue.component('status', {
                 v-bind:key='comment.comments_id' 
                 class='windowbg'>
             </comment>
+            <error-box v-if="error !== null" @close="closeErrorAlert()">
+                {{error}}
+            </error-box>
             <div class="comment_posting">
-                <div 
-                    class='breeze_avatar avatar_comment'
+                <div class='breeze_avatar avatar_comment'
                     v-bind:style='avatarImage(poster_data.avatar.href)'>           
                 </div>
-                <textarea v-model="comment_message" class="post_comment" placeholder="leave a comment"></textarea>
+                <textarea 
+                    v-model="comment_message" 
+                    class="post_comment" 
+                    placeholder="leave a comment" 
+                    @focus="closeErrorAlert()"></textarea>
+            </div>
+            <div class="post_button_container floatright">
+                <input type="submit" @click="postComment()" class="button">
             </div>
         </div>
     </div>`,
@@ -48,5 +58,14 @@ Vue.component('status', {
         getCurrentUserData: function () {
 
         },
+        postComment: function () {
+            this.closeErrorAlert();
+
+            if (this.comment_message === '' || typeof(this.comment_message) !== 'string' )
+                this.error = 'el body esta vacio';
+        },
+        closeErrorAlert: function () {
+            this.error = null;
+        }
     }
 })
