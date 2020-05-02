@@ -11,6 +11,12 @@ use Breeze\Repository\User\UserRepositoryInterface;
 
 class UserService extends BaseService implements UserServiceInterface
 {
+	public const MIN_INFO_KEYS = [
+		'link',
+		'name',
+		'avatar'
+	];
+
 	/**
 	 * @var UserRepositoryInterface
 	 */

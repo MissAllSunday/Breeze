@@ -77,7 +77,8 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 		$loadedUsers = $this->userService->loadUsersInfo($usersToLoad);
 
 		// We don't need all their info
-		$loadedUsers = array_intersect(self::$components, $components);
+		foreach ($loadedUsers as $userId => $userData)
+			$loadedUsers[$userId] = array_intersect($userData, UserService::MIN_INFO_KEYS);
 	}
 
 	public function isAllowedToSeePage(bool $redirect = false): bool

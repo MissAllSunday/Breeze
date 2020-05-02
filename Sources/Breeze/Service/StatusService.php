@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-use Breeze\Entity\StatusEntity;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
 
