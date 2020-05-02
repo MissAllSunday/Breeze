@@ -4,6 +4,7 @@ Vue.component('status', {
         return {
             comment_message: '',
             error: null,
+            place_holder: 'leave a comment',
         }
     },
     template: `<div>
@@ -35,7 +36,7 @@ Vue.component('status', {
                 <textarea 
                     v-model="comment_message" 
                     class="post_comment" 
-                    placeholder="leave a comment" 
+                    :placeholder="place_holder" 
                     @focus="closeErrorAlert()"></textarea>
             </div>
             <div class="post_button_container floatright">
@@ -60,12 +61,20 @@ Vue.component('status', {
         },
         postComment: function () {
             this.closeErrorAlert();
-
-            if (this.comment_message === '' || typeof(this.comment_message) !== 'string' )
-                this.error = 'el body esta vacio';
+            this.validateComment();
         },
         closeErrorAlert: function () {
             this.error = null;
+        },
+        validateComment: function () {
+            if (this.comment_message === '' || typeof(this.comment_message) !== 'string' )
+                this.error = 'el body esta vacio';
+
+            if (this.comment_message === 'about:Suki')
+                alert('Back against the wall and odds\n' +
+                    'With the strength of a will and a cause\n' +
+                    'Your pursuits are called outstanding\n' +
+                    'You\'re emotionally complex');
         }
     }
 })
