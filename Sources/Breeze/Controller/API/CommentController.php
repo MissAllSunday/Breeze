@@ -49,13 +49,19 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 
 	public function dispatch(): void
 	{
+		$this->validateData->setData();
+
 		$this->subActionCall();
 	}
 
 	public function postComment(): void
 	{
+		if (!$this->validateData->isValid())
+			$this->print($this->validateData->response());
 
-		$this->print([$this->validateData->getData()]);
+		else
+			$this->print($this->validateData->getData());
+
 	}
 
 	public function render(string $subTemplate, array $params): void {}

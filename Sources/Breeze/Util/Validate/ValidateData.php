@@ -4,16 +4,26 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate;
 
+use Breeze\Traits\TextTrait;
+use \Breeze\Traits\RequestTrait;
+
 abstract class ValidateData
 {
-	use \Breeze\Traits\RequestTrait;
+	use RequestTrait;
+	use TextTrait;
+
+	public const ERROR_TYPE = 'error';
+	public const NOTICE_TYPE = 'notice';
+	public const INFO_TYPE = 'info';
+
+	public const MESSAGE_TYPES = [
+		self::ERROR_TYPE,
+		self::NOTICE_TYPE,
+		self::INFO_TYPE,
+	];
 
 	public $data = [];
-
-	public function __construct()
-	{
-		$this->setData();
-	}
+	protected $errorKey = 'error_server';
 
 	public abstract function getSteps(): array;
 
@@ -46,9 +56,19 @@ abstract class ValidateData
 		return empty(array_diff_key($this->getParams(), $this->data));
 	}
 
+	public function response(): array
+	{
+		return [
+			'type' => self::ERROR_TYPE,
+			'message' => $this->errorKey,
+			'data' => [],
+		];
+	}
+
 	public function setData(): void
 	{
-		$this->data = array_filter(json_decode(file_get_contents('php://input'), true));
+		$rawData = json_decode(file_get_contents('php://input'), true) ?? [];
+		$this->data = array_filter($rawData);
 	}
 
 	public function getData(): array

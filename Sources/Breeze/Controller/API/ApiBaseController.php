@@ -12,10 +12,10 @@ abstract class ApiBaseController extends BaseController
 {
 	use TextTrait;
 
-	public function print(array $data): void
+	public function print(array $responseData): void
 	{
 		$smcFunc = $this->global('smcFunc');
 
-		smf_serverResponse($smcFunc['json_encode']($data));
+		smf_serverResponse($smcFunc['json_encode']($responseData));
 	}
 }

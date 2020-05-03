@@ -12,5 +12,9 @@ interface ValidateDataInterface
 
 	public function getParams(): array;
 
+	public function response(): array;
+
+	public function setData(): void;
+
 	public function getData(): array;
 }
