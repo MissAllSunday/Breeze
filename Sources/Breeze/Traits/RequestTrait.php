@@ -45,8 +45,8 @@ trait RequestTrait
 
 		if (is_array($variable))
 		{
-			foreach ($variable as $k => $v)
-				$variable[$k] = $this->sanitize($v);
+			foreach ($variable as $key => $variableValue)
+				$variable[$key] = $this->sanitize($variableValue);
 
 			return $variable;
 		}

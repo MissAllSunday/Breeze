@@ -5,6 +5,13 @@ Vue.component('status', {
             comment_message: '',
             error: null,
             place_holder: 'leave a comment',
+            post_comment: {
+                posterId: smf_member_id,
+                statusOwnerId: this.status_item.status_poster_id,
+                profileOwnerId: this.status_item.status_owner_id,
+                statusId: this.status_item.status_id,
+                body: '',
+            },
         }
     },
     template: `<div>
@@ -34,7 +41,7 @@ Vue.component('status', {
                     v-bind:style='avatarImage(poster_data.avatar.href)'>           
                 </div>
                 <textarea 
-                    v-model="comment_message" 
+                    v-model="post_comment.body" 
                     class="post_comment" 
                     :placeholder="place_holder" 
                     @focus="closeErrorAlert()"></textarea>
@@ -61,20 +68,39 @@ Vue.component('status', {
         },
         postComment: function () {
             this.closeErrorAlert();
-            this.validateComment();
+
+            if (!this.isValidComment())
+                return false;
+
+            axios.post(smf_scripturl + '?action=breezeComment;sa=postComment;'+ smf_session_var +'='+ smf_session_id,
+                this.post_comment).then(response => {
+                console.log(response)
+            });
         },
         closeErrorAlert: function () {
             this.error = null;
         },
-        validateComment: function () {
-            if (this.comment_message === '' || typeof(this.comment_message) !== 'string' )
+        isValidComment: function () {
+            let isValid = true;
+
+            if (this.post_comment.body === '' || typeof(this.post_comment.body) !== 'string' )
+            {
                 this.error = 'el body esta vacio';
 
-            if (this.comment_message === 'about:Suki')
+                isValid = false;
+            }
+
+            if (this.post_comment.body === 'about:Suki')
+            {
                 alert('Back against the wall and odds\n' +
                     'With the strength of a will and a cause\n' +
                     'Your pursuits are called outstanding\n' +
                     'You\'re emotionally complex');
+
+                isValid = false;
+            }
+
+            return isValid;
         }
     }
 })

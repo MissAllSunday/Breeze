@@ -7,6 +7,7 @@ namespace Breeze\Controller\API;
 
 use Breeze\Service\CommentServiceInterface;
 use Breeze\Service\UserServiceInterface;
+use Breeze\Util\Validate\ValidateDataInterface;
 
 class CommentController extends ApiBaseController implements ApiBaseInterface
 {
@@ -25,10 +26,20 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 	 */
 	private $commentService;
 
-	public function __construct(CommentServiceInterface $statusService, UserServiceInterface $userService)
+	/**
+	 * @var ValidateDataInterface
+	 */
+	private $validateData;
+
+	public function __construct(
+		CommentServiceInterface $statusService,
+		UserServiceInterface $userService,
+		ValidateDataInterface $validateData
+	)
 	{
 		$this->commentService = $statusService;
 		$this->userService = $userService;
+		$this->validateData = $validateData;
 	}
 
 	public function getSubActions(): array
@@ -43,9 +54,8 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 
 	public function postComment(): void
 	{
-		$start = (int) $this->getRequest('start');
 
-
+		$this->print([$this->validateData->getData()]);
 	}
 
 	public function render(string $subTemplate, array $params): void {}
