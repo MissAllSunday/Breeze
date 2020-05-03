@@ -49,7 +49,7 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 
 	public function dispatch(): void
 	{
-		$this->validateData->setData();
+		$this->validateData->getRawData();
 
 		$this->subActionCall();
 	}

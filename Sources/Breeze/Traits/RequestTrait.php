@@ -51,7 +51,7 @@ trait RequestTrait
 			return $variable;
 		}
 
-		$var = (string) $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($variable, ENT_QUOTES));
+		$var = $smcFunc['htmltrim']($smcFunc['htmlspecialchars']((string) $variable, ENT_QUOTES));
 
 		if (ctype_digit($var))
 			$var = (int) $var;

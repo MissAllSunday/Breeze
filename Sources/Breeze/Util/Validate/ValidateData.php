@@ -15,6 +15,7 @@ abstract class ValidateData
 	public const ERROR_TYPE = 'error';
 	public const NOTICE_TYPE = 'notice';
 	public const INFO_TYPE = 'info';
+	public const DEFAULT_ERROR_KEY = 'error_server';
 
 	public const MESSAGE_TYPES = [
 		self::ERROR_TYPE,
@@ -23,7 +24,6 @@ abstract class ValidateData
 	];
 
 	protected const STEPS = [
-		'compare',
 		'clean',
 		'isInt',
 		'isString',
@@ -31,9 +31,13 @@ abstract class ValidateData
 
 	public $data = [];
 
-	protected $errorKey = 'error_server';
+	protected $errorKey = '';
 
 	public abstract function getParams(): array;
+
+	public abstract function getInts(): array;
+
+	public abstract function getStrings(): array;
 
 	public function getSteps(): array
 	{
@@ -62,12 +66,7 @@ abstract class ValidateData
 		return $this->compare();
 	}
 
-	public function compare(): bool
-	{
-		return empty(array_diff_key($this->getParams(), $this->data));
-	}
-
-	public function isInt():bool
+	public function isInt(): bool
 	{
 		$isInt = true;
 
@@ -90,9 +89,9 @@ abstract class ValidateData
 	{
 		$isString = true;
 
-		foreach ($this->getInts() as $integerValueName)
+		foreach ($this->getStrings() as $stringValueName)
 		{
-			$isString = is_string($this->data[$integerValueName]);
+			$isString = is_string($this->data[$stringValueName]);
 
 			if (!$isString)
 			{
@@ -114,14 +113,36 @@ abstract class ValidateData
 		];
 	}
 
-	public function setData(): void
+	public function getRawData(): void
 	{
 		$rawData = json_decode(file_get_contents('php://input'), true) ?? [];
 		$this->data = array_filter($rawData);
 	}
 
+	public function setData(array $data): void
+	{
+		$this->data = $data;
+	}
+
 	public function getData(): array
 	{
 		return $this->data;
+	}
+
+	public function getErrorKey(): string
+	{
+		return $this->errorKey;
+	}
+
+	protected function compare(): bool
+	{
+		$isArraySizeEqual = true;
+
+		$isArraySizeEqual = empty(array_diff_key($this->getParams(), $this->data));
+
+		if (!$isArraySizeEqual)
+			$this->errorKey = 'incomplete_data';
+
+		return $isArraySizeEqual;
 	}
 }

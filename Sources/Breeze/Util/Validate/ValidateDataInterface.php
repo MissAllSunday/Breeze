@@ -14,9 +14,11 @@ interface ValidateDataInterface
 
 	public function response(): array;
 
-	public function setData(): void;
+	public function setData(array $data): void;
 
 	public function getData(): array;
+
+	public function getRawData(): void;
 
 	public function getInts(): array;
 
