@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate;
 
-use Breeze\Traits\TextTrait;
 use \Breeze\Traits\RequestTrait;
+use Breeze\Traits\TextTrait;
 
 abstract class ValidateData
 {
@@ -22,12 +22,23 @@ abstract class ValidateData
 		self::INFO_TYPE,
 	];
 
+	protected const STEPS = [
+		'compare',
+		'clean',
+		'isInt',
+		'isString',
+	];
+
 	public $data = [];
+
 	protected $errorKey = 'error_server';
 
-	public abstract function getSteps(): array;
-
 	public abstract function getParams(): array;
+
+	public function getSteps(): array
+	{
+		return self::STEPS;
+	}
 
 	public function isValid(): bool
 	{
@@ -54,6 +65,44 @@ abstract class ValidateData
 	public function compare(): bool
 	{
 		return empty(array_diff_key($this->getParams(), $this->data));
+	}
+
+	public function isInt():bool
+	{
+		$isInt = true;
+
+		foreach ($this->getInts() as $integerValueName)
+		{
+			$isInt = is_int($this->data[$integerValueName]);
+
+			if (!$isInt)
+			{
+				$this->errorKey = 'malformed_data';
+
+				break;
+			}
+		}
+
+		return $isInt;
+	}
+
+	public function isString():bool
+	{
+		$isString = true;
+
+		foreach ($this->getInts() as $integerValueName)
+		{
+			$isString = is_string($this->data[$integerValueName]);
+
+			if (!$isString)
+			{
+				$this->errorKey = 'malformed_data';
+
+					break;
+			}
+		}
+
+		return $isString;
 	}
 
 	public function response(): array

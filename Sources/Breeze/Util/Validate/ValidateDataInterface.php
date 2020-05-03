@@ -17,4 +17,8 @@ interface ValidateDataInterface
 	public function setData(): void;
 
 	public function getData(): array;
+
+	public function getInts(): array;
+
+	public function getStrings(): array;
 }
