@@ -59,8 +59,7 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 		if (!$this->validateData->isValid())
 			$this->print($this->validateData->response());
 
-		else
-			$this->print($this->validateData->getData());
+		$commentData = $this->validateData->getData();
 
 	}
 

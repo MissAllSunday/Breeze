@@ -23,4 +23,6 @@ interface ValidateDataInterface
 	public function getInts(): array;
 
 	public function getStrings(): array;
+
+	public function getUserIdsNames(): array;
 }

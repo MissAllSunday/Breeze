@@ -30,6 +30,15 @@ class ValidateComment extends ValidateData implements ValidateDataInterface
 		];
 	}
 
+	public function getUserIdsNames(): array
+	{
+		return [
+			self::PARAM_POSTER_ID,
+			self::PARAM_STATUS_OWNER_ID,
+			self::PARAM_PROFILE_OWNER_ID,
+		];
+	}
+
 	public function getStrings(): array
 	{
 		return [self::PARAM_BODY];

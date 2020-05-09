@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate;
 
 use \Breeze\Traits\RequestTrait;
+use Breeze\Service\UserServiceInterface;
 use Breeze\Traits\TextTrait;
 
 abstract class ValidateData
@@ -27,17 +28,30 @@ abstract class ValidateData
 		'clean',
 		'isInt',
 		'isString',
+		'areValidUsers'
 	];
 
 	public $data = [];
 
 	protected $errorKey = '';
 
+	/**
+	 * @var UserServiceInterface
+	 */
+	private $userService;
+
+	public function __construct(UserServiceInterface $userService)
+	{
+		$this->userService = $userService;
+	}
+
 	public abstract function getParams(): array;
 
 	public abstract function getInts(): array;
 
 	public abstract function getStrings(): array;
+
+	public abstract function getUserIdsNames(): array;
 
 	public function getSteps(): array
 	{
@@ -102,6 +116,24 @@ abstract class ValidateData
 		}
 
 		return $isString;
+	}
+
+	public function areValidUsers(): bool
+	{
+		$usersIds = array_map(
+			function ($intName){
+			return $this->data[$intName];
+		},
+			$this->getUserIdsNames()
+		);
+
+		$loadedUsers = $this->userService->loadUsersInfo($usersIds, true);
+		$invalidUsers = array_diff_key(array_values($usersIds), $loadedUsers);
+
+		if (!empty($invalidUsers))
+			$this->errorKey = 'invalid_users';
+
+		return empty($invalidUsers);
 	}
 
 	public function response(): array

@@ -147,7 +147,7 @@ class UserService extends BaseService implements UserServiceInterface
 		return true;
 	}
 
-	public function loadUsersInfo(array $userIds = []): array
+	public function loadUsersInfo(array $userIds = [], $noGuest = false): array
 	{
 		$loadedUsers = [];
 
@@ -169,9 +169,16 @@ class UserService extends BaseService implements UserServiceInterface
 				continue;
 			}
 
-			loadMemberContext($userId, true);
+			$loadedUsers[$userId] = loadMemberContext($userId, true);
 		}
 
-		return $this->global('memberContext');
+		return $loadedUsers;
+	}
+
+	public function areInvalidUsers(array $userIds): array
+	{
+		$usersInfo = $this->loadUsersInfo($userIds, true);
+
+		return empty(array_diff_key($userIds, $usersInfo));
 	}
 }

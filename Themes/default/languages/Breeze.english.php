@@ -139,6 +139,7 @@ $txt['Breeze_info_published_comment'] = 'Your comment was successfully published
 $txt['Breeze_error_empty'] = 'You need to type something!';
 $txt['Breeze_error_malformed_data'] = 'Malformed data.';
 $txt['Breeze_error_incomplete_data'] = 'Incomplete data.';
+$txt['Breeze_error_invalid_users'] = 'Invalid user Ids.';
 $txt['Breeze_info_delete_status'] = 'Your status has been deleted';
 $txt['Breeze_info_delete_comments'] = 'Your comment has been deleted';
 $txt['Breeze_confirm_delete'] = 'Do you really want to delete this?';

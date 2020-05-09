@@ -57,5 +57,6 @@ return [
 	],
 	'service.validate' => [
 		'class' => ValidateService::class,
+		'arguments'=> [UserService::class]
 	],
 ];
