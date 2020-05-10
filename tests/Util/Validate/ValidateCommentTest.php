@@ -167,8 +167,7 @@ class ValidateCommentTest extends TestCase
 		array $with,
 		bool $expectedResult,
 		array $loadUsersInfoWillReturn,
-		string
-$expectedErrorKey
+		string $expectedErrorKey
 	): void
 	{
 		$this->validateComment->setData($data);

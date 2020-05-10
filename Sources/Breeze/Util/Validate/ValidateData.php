@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate;
 
+use Breeze\Entity\SettingsEntity;
+use Breeze\Traits\PersistenceTrait;
 use \Breeze\Traits\RequestTrait;
 use Breeze\Service\UserServiceInterface;
+use Breeze\Traits\SettingsTrait;
 use Breeze\Traits\TextTrait;
 
 abstract class ValidateData
 {
 	use RequestTrait;
 	use TextTrait;
+	use PersistenceTrait;
 
 	public const ERROR_TYPE = 'error';
 	public const NOTICE_TYPE = 'notice';
@@ -134,6 +138,35 @@ abstract class ValidateData
 			$this->errorKey = 'invalid_users';
 
 		return empty($invalidUsers);
+	}
+
+	public function floodControl(): bool
+	{
+		$isFlood = false;
+		$posterId = $this->getPosterId();
+		$seconds = 60 * ($this->getSetting(SettingsEntity::MAX_FLOOD_MINUTES, 5));
+		$messages = $this->getSetting(SettingsEntity::MAX_FLOOD_NUM, 10);
+		$floodKeyName = 'flood_'. $posterId;
+
+		$floodData = $this->getPersistenceValue($floodKeyName);
+
+		if (empty($floodData))
+			$floodData = [
+				'time' => time() + $seconds,
+				'msg' => 0,
+			];
+
+		$floodData['msg']++;
+
+		// Chatty one huh?
+		if ($floodData['msg'] >= $messages && time() <= $floodData['time'])
+			$isFlood = true;
+
+		// Enough time has passed, give the user some rest.
+		if (time() >= $floodData['time'])
+			$this->unsetPersistenceValue($floodKeyName);
+
+		return $isFlood;
 	}
 
 	public function response(): array
