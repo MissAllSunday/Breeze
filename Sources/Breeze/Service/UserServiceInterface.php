@@ -22,6 +22,4 @@ interface UserServiceInterface extends BaseServiceInterface
 	public function floodControl(int $userId = 0): bool;
 
 	public function loadUsersInfo(array $ids = [], $noGuest = false): array;
-
-	public function areValidUsers(array $userIds): array;
 }

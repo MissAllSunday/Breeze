@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-
+use Breeze\Service\UserService;
 use Breeze\Util\Validate\ValidateComment as ValidateComment;
+use PHPUnit\Framework\MockObject\MockBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ValidateCommentTest extends TestCase
@@ -13,9 +15,16 @@ class ValidateCommentTest extends TestCase
 	 */
 	private $validateComment;
 
+	/**
+	 * @var MockBuilder|UserService
+	 */
+	private $userService;
+
 	public function setUp(): void
 	{
-		$this->validateComment = new ValidateComment();
+		$this->userService = $this->getMockInstance(UserService::class);
+
+		$this->validateComment = new ValidateComment($this->userService);
 	}
 
 	/**
@@ -148,5 +157,96 @@ class ValidateCommentTest extends TestCase
 				'expectedErrorKey' => 'malformed_data',
 			],
 		];
+	}
+
+	/**
+	 * @dataProvider areValidUsersProvider
+	 */
+	public function testAreValidUsers(
+		array $data,
+		array $with,
+		bool $expectedResult,
+		array $loadUsersInfoWillReturn,
+		string
+$expectedErrorKey
+	): void
+	{
+		$this->validateComment->setData($data);
+		$this->userService->expects($this->once())
+			->method('loadUsersInfo')
+			->with($with)
+			->willReturn($loadUsersInfoWillReturn);
+
+		$areValidUsers = $this->validateComment->areValidUsers();
+		$errorKey = $this->validateComment->getErrorKey();
+
+		$this->assertEquals($expectedResult, $areValidUsers);
+		$this->assertEquals($expectedErrorKey, $errorKey);
+	}
+
+	public function areValidUsersProvider(): array
+	{
+		return [
+			'happy happy joy joy' => [
+				'data' => [
+					'posterId' => 1,
+					'statusOwnerId' => 2,
+					'profileOwnerId' => 3,
+					'statusId' => 666,
+					'body' => 'Kaizoku ou ni ore wa naru',
+				],
+				'with' => [1,2,3],
+				'expectedResult' => true,
+				'loadUsersInfoWillReturn' => [
+					1 => [
+						'link' => 'Link',
+						'name' => 'Name',
+						'avatar' => ['href' => '/default.png']
+					],
+					2 => [
+						'link' => 'Link',
+						'name' => 'Name',
+						'avatar' => ['href' => '/default.png']
+					],
+					3 =>[
+						'link' => 'Link',
+						'name' => 'Name',
+						'avatar' => ['href' => '/default.png']
+					],
+				],
+				'expectedErrorKey' => '',
+			],
+			'invalid users' => [
+				'data' => [
+					'posterId' => 1,
+					'statusOwnerId' => 2,
+					'profileOwnerId' => 666,
+					'statusId' => 666,
+					'body' => '666',
+				],
+				'with' => [1,2,666],
+				'expectedResult' => false,
+				'loadUsersInfoWillReturn' => [
+					1 => [
+						'link' => 'Link',
+						'name' => 'Name',
+						'avatar' => ['href' => '/default.png']
+					],
+					2 => [
+						'link' => 'Link',
+						'name' => 'Name',
+						'avatar' => ['href' => '/default.png']
+					],
+				],
+				'expectedErrorKey' => 'invalid_users',
+			],
+		];
+	}
+
+	private function getMockInstance(string $class): MockObject
+	{
+		return $this->getMockBuilder($class)
+			->disableOriginalConstructor()
+			->getMock();
 	}
 }

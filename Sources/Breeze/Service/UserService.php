@@ -174,11 +174,4 @@ class UserService extends BaseService implements UserServiceInterface
 
 		return $loadedUsers;
 	}
-
-	public function areInvalidUsers(array $userIds): array
-	{
-		$usersInfo = $this->loadUsersInfo($userIds, true);
-
-		return empty(array_diff_key($userIds, $usersInfo));
-	}
 }

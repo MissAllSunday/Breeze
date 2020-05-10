@@ -128,7 +128,7 @@ abstract class ValidateData
 		);
 
 		$loadedUsers = $this->userService->loadUsersInfo($usersIds, true);
-		$invalidUsers = array_diff_key(array_values($usersIds), $loadedUsers);
+		$invalidUsers = array_diff_key(array_flip($usersIds), $loadedUsers);
 
 		if (!empty($invalidUsers))
 			$this->errorKey = 'invalid_users';
