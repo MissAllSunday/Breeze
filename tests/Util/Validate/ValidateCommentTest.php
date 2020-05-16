@@ -284,6 +284,7 @@ class ValidateCommentTest extends TestCase
 						'name' => 'Name',
 						'avatar' => ['href' => '/default.png']
 					],
+					666 => false,
 				],
 				'expectedErrorKey' => 'invalid_users',
 			],

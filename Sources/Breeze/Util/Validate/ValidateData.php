@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate;
 
 use \Breeze\Traits\RequestTrait;
+use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Traits\PersistenceTrait;
@@ -17,10 +18,11 @@ abstract class ValidateData
 	use TextTrait;
 	use PersistenceTrait;
 
+	private const ERROR_PREFIX = 'error_';
 	public const ERROR_TYPE = 'error';
 	public const NOTICE_TYPE = 'notice';
 	public const INFO_TYPE = 'info';
-	public const DEFAULT_ERROR_KEY = 'error_server';
+	public const DEFAULT_ERROR_KEY = self::ERROR_PREFIX . 'server';
 
 	public const MESSAGE_TYPES = [
 		self::ERROR_TYPE,
@@ -123,9 +125,8 @@ abstract class ValidateData
 		);
 
 		$loadedUsers = $this->userService->loadUsersInfo($usersIds, true);
-		$invalidUsers = array_diff_key(array_flip($usersIds), $loadedUsers);
 
-		if (!empty($invalidUsers))
+		if (in_array(false, $loadedUsers))
 			throw new ValidateDataException('invalid_users');
 	}
 
@@ -156,9 +157,11 @@ abstract class ValidateData
 
 	public function response(): array
 	{
+		$this->setLanguage(Breeze::NAME);
+
 		return [
 			'type' => self::ERROR_TYPE,
-			'message' => $this->getText($this->errorKey),
+			'message' => $this->getText(self::ERROR_PREFIX . $this->errorKey),
 			'data' => [],
 		];
 	}

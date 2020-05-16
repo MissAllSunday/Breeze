@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Config\Mapper;
 
+use Breeze\Service\UserService;
 use Breeze\Util\Folder;
 use Breeze\Util\Form\Formatters\CheckFormatter;
 use Breeze\Util\Form\Formatters\IntFormatter;
@@ -29,6 +30,7 @@ return [
 		'class' => TextFormatter::class
 	],
 	'util.validate.comment' => [
-		'class' => ValidateComment::class
+		'class' => ValidateComment::class,
+		'arguments'=> [UserService::class]
 	],
 ];

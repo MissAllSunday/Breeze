@@ -9,6 +9,7 @@ use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Service\FormServiceInterface;
 use Breeze\Service\PermissionsService;
+use Breeze\Util\Permissions;
 
 class AdminService extends ActionsBaseService implements AdminServiceInterface
 {
@@ -106,7 +107,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 			['title', Breeze::PATTERN . self::AREA . '_permissions_title'],
 		];
 
-		foreach (PermissionsService::ALL_PERMISSIONS as $permission)
+		foreach (Permissions::ALL_PERMISSIONS as $permission)
 			$this->configVars[] = [
 				'permissions',
 				'breeze_' . $permission,

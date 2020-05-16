@@ -159,7 +159,7 @@ class UserService extends BaseService implements UserServiceInterface
 
 		foreach ($userIds as $userId)
 		{
-			if (!in_array($userId, $loadedIDs))
+			if (!in_array($userId, $loadedIDs) && !$noGuest)
 			{
 				$loadedUsers[$userId] = [
 					'link' => $this->getSmfText('guest_title'),
