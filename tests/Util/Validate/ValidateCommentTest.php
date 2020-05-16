@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Breeze\Service\UserService;
 use Breeze\Util\Validate\ValidateComment as ValidateComment;
+use Breeze\Util\Validate\ValidateDataException;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -30,15 +31,28 @@ class ValidateCommentTest extends TestCase
 	/**
 	 * @dataProvider cleanProvider
 	 */
-	public function testClean(array $data, bool $expectedResult, string $expectedErrorKey): void
+	public function testClean(array $data, string $expectedErrorKey): void
 	{
 		$this->validateComment->setData($data);
 
-		$isClean = $this->validateComment->clean();
-		$errorKey = $this->validateComment->getErrorKey();
+		if (!empty($expectedErrorKey))
+		{
+			$this->expectException(InvalidArgumentException::class);
 
-		$this->assertEquals($expectedResult, $isClean);
-		$this->assertEquals($expectedErrorKey, $errorKey);
+			$this->validateComment->clean();
+			$errorKey = $this->validateComment->getErrorKey();
+
+			$this->expectExceptionMessage($errorKey);
+		}
+
+		else
+		{
+			$this->assertNull($this->validateComment->clean());
+
+			$errorKey = $this->validateComment->getErrorKey();
+
+			$this->assertEquals($expectedErrorKey, $errorKey);
+		}
 	}
 
 	public function cleanProvider(): array
@@ -52,14 +66,12 @@ class ValidateCommentTest extends TestCase
 					'statusId' => 666,
 					'body' => 'Happy Path',
 				],
-				'expectedResult' => true,
 				'expectedErrorKey' => '',
 			],
 			'incomplete data' => [
 				'data' => [
 					'posterId' => '1'
 				],
-				'expectedResult' => false,
 				'expectedErrorKey' => 'incomplete_data',
 			],
 			'empty values' => [
@@ -70,7 +82,6 @@ class ValidateCommentTest extends TestCase
 					'statusId' => '666',
 					'body' => 'LOL',
 				],
-				'expectedResult' => false,
 				'expectedErrorKey' => 'incomplete_data',
 			],
 		];
@@ -83,11 +94,24 @@ class ValidateCommentTest extends TestCase
 	{
 		$this->validateComment->setData($data);
 
-		$isInt = $this->validateComment->isInt();
-		$errorKey = $this->validateComment->getErrorKey();
+		if (!empty($expectedErrorKey))
+		{
+			$this->expectException(InvalidArgumentException::class);
 
-		$this->assertEquals($expectedResult, $isInt);
-		$this->assertEquals($expectedErrorKey, $errorKey);
+			$this->validateComment->isInt();
+			$errorKey = $this->validateComment->getErrorKey();
+
+			$this->expectExceptionMessage($errorKey);
+		}
+
+		else
+		{
+			$this->assertNull($this->validateComment->isInt());
+
+			$errorKey = $this->validateComment->getErrorKey();
+
+			$this->assertEquals($expectedErrorKey, $errorKey);
+		}
 	}
 
 	/**
@@ -96,11 +120,25 @@ class ValidateCommentTest extends TestCase
 	public function testIsValidString(array $data, bool $expectedResult, string $expectedErrorKey): void
 	{
 		$this->validateComment->setData($data);
-		$isString = $this->validateComment->isString();
-		$errorKey = $this->validateComment->getErrorKey();
 
-		$this->assertEquals($expectedResult, $isString);
-		$this->assertEquals($expectedErrorKey, $errorKey);
+		if (!empty($expectedErrorKey))
+		{
+			$this->expectException(InvalidArgumentException::class);
+
+			$this->validateComment->isString();
+			$errorKey = $this->validateComment->getErrorKey();
+
+			$this->expectExceptionMessage($errorKey);
+		}
+
+		else
+		{
+			$this->assertNull($this->validateComment->isString());
+
+			$errorKey = $this->validateComment->getErrorKey();
+
+			$this->assertEquals($expectedErrorKey, $errorKey);
+		}
 	}
 
 	public function IsValidIntProvider(): array
@@ -165,7 +203,6 @@ class ValidateCommentTest extends TestCase
 	public function testAreValidUsers(
 		array $data,
 		array $with,
-		bool $expectedResult,
 		array $loadUsersInfoWillReturn,
 		string $expectedErrorKey
 	): void
@@ -176,11 +213,24 @@ class ValidateCommentTest extends TestCase
 			->with($with)
 			->willReturn($loadUsersInfoWillReturn);
 
-		$areValidUsers = $this->validateComment->areValidUsers();
-		$errorKey = $this->validateComment->getErrorKey();
+		if (!empty($expectedErrorKey))
+		{
+			$this->expectException(ValidateDataException::class);
 
-		$this->assertEquals($expectedResult, $areValidUsers);
-		$this->assertEquals($expectedErrorKey, $errorKey);
+			$this->validateComment->areValidUsers();
+			$errorKey = $this->validateComment->getErrorKey();
+
+			$this->expectExceptionMessage($errorKey);
+		}
+
+		else
+		{
+			$this->assertNull($this->validateComment->areValidUsers());
+
+			$errorKey = $this->validateComment->getErrorKey();
+
+			$this->assertEquals($expectedErrorKey, $errorKey);
+		}
 	}
 
 	public function areValidUsersProvider(): array
@@ -195,7 +245,6 @@ class ValidateCommentTest extends TestCase
 					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'with' => [1,2,3],
-				'expectedResult' => true,
 				'loadUsersInfoWillReturn' => [
 					1 => [
 						'link' => 'Link',
@@ -224,7 +273,6 @@ class ValidateCommentTest extends TestCase
 					'body' => '666',
 				],
 				'with' => [1,2,666],
-				'expectedResult' => false,
 				'loadUsersInfoWillReturn' => [
 					1 => [
 						'link' => 'Link',

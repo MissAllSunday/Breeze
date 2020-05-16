@@ -103,22 +103,14 @@ abstract class ValidateData
 	{
 		foreach ($this->getInts() as $integerValueName)
 			if (!is_int($this->data[$integerValueName]))
-			{
 				throw new \InvalidArgumentException('malformed_data');
-
-				break;
-			}
 	}
 
 	public function isString(): void
 	{
 		foreach ($this->getStrings() as $stringValueName)
 			if (!is_string($this->data[$stringValueName]))
-			{
 				throw new \InvalidArgumentException('malformed_data');
-
-				break;
-			}
 	}
 
 	public function areValidUsers(): void
