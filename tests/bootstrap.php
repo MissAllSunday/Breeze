@@ -78,5 +78,25 @@ $_SESSION['Breeze']['notice'] = [
 	'type' => 'info',
 ];
 
+$_SESSION['Breeze']['flood_1'] = [
+	'time' => time() + 10,
+	'msgCount' => 0,
+];
+
+$_SESSION['Breeze']['flood_2'] = [
+	'time' => time() + 10,
+	'msgCount' => 666,
+];
+
+$_SESSION['Breeze']['flood_3'] = [
+	'time' => time() - 10,
+	'msgCount' => 666,
+];
+
+$_SESSION['Breeze']['flood_4'] = [
+	'time' => time() - 10,
+	'msgCount' => 3,
+];
+
 // Composer-Autoloader
 require_once $_SERVER['DOCUMENT_ROOT'] . "./breezeVendor/autoload.php";

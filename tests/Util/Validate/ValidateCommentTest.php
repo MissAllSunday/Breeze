@@ -290,6 +290,79 @@ class ValidateCommentTest extends TestCase
 		];
 	}
 
+	/**
+	 * @dataProvider floodControlProvider
+	 */
+	public function testFloodControl(array $data, string $expectedErrorKey): void
+	{
+		$this->validateComment->setData($data);
+
+		if (!empty($expectedErrorKey))
+		{
+			$this->expectException(ValidateDataException::class);
+
+			$this->validateComment->floodControl();
+			$errorKey = $this->validateComment->getErrorKey();
+
+			$this->expectExceptionMessage($errorKey);
+		}
+
+		else
+		{
+			$this->assertNull($this->validateComment->floodControl());
+
+			$errorKey = $this->validateComment->getErrorKey();
+
+			$this->assertEquals($expectedErrorKey, $errorKey);
+		}
+	}
+
+	public function floodControlProvider(): array
+	{
+		return [
+			'happy happy joy joy' => [
+				'data' => [
+					'posterId' => 1,
+					'statusOwnerId' => 2,
+					'profileOwnerId' => 3,
+					'statusId' => 666,
+					'body' => 'Kaizoku ou ni ore wa naru',
+				],
+				'expectedErrorKey' => '',
+			],
+			'time has not expired, too much messages' => [
+				'data' => [
+					'posterId' => 2,
+					'statusOwnerId' => 2,
+					'profileOwnerId' => 3,
+					'statusId' => 666,
+					'body' => 'Kaizoku ou ni ore wa naru',
+				],
+				'expectedErrorKey' => 'flood',
+			],
+			'time has expired, too much messages' => [
+				'data' => [
+					'posterId' => 3,
+					'statusOwnerId' => 2,
+					'profileOwnerId' => 3,
+					'statusId' => 666,
+					'body' => 'Kaizoku ou ni ore wa naru',
+				],
+				'expectedErrorKey' => '',
+			],
+			'time has not expired,  allowed messages' => [
+				'data' => [
+					'posterId' => 4,
+					'statusOwnerId' => 2,
+					'profileOwnerId' => 3,
+					'statusId' => 666,
+					'body' => 'Kaizoku ou ni ore wa naru',
+				],
+				'expectedErrorKey' => '',
+			],
+		];
+	}
+
 	private function getMockInstance(string $class): MockObject
 	{
 		return $this->getMockBuilder($class)

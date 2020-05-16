@@ -44,9 +44,9 @@ class ValidateComment extends ValidateData implements ValidateDataInterface
 		return [self::PARAM_BODY];
 	}
 
-	public function getPosterId(): string
+	public function getPosterId(): int
 	{
-		return self::PARAM_POSTER_ID;
+		return $this->data[self::PARAM_POSTER_ID] ?? 0;
 	}
 
 	public function getParams(): array

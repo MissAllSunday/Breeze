@@ -58,7 +58,7 @@ abstract class ValidateData
 
 	public abstract function getUserIdsNames(): array;
 
-	public abstract function getPosterId(): string;
+	public abstract function getPosterId(): int;
 
 	public function getSteps(): array
 	{
