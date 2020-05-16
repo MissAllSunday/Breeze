@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate;
 
-use Breeze\Entity\SettingsEntity;
-use Breeze\Traits\PersistenceTrait;
 use \Breeze\Traits\RequestTrait;
+use Breeze\Entity\SettingsEntity;
 use Breeze\Service\UserServiceInterface;
+use Breeze\Traits\PersistenceTrait;
 use Breeze\Traits\SettingsTrait;
 use Breeze\Traits\TextTrait;
 
@@ -32,7 +32,8 @@ abstract class ValidateData
 		'clean',
 		'isInt',
 		'isString',
-		'areValidUsers'
+		'areValidUsers',
+		'floodControl',
 	];
 
 	public $data = [];
@@ -56,6 +57,8 @@ abstract class ValidateData
 	public abstract function getStrings(): array;
 
 	public abstract function getUserIdsNames(): array;
+
+	public abstract function getPosterId(): string;
 
 	public function getSteps(): array
 	{
@@ -146,23 +149,25 @@ abstract class ValidateData
 		$posterId = $this->getPosterId();
 		$seconds = 60 * ($this->getSetting(SettingsEntity::MAX_FLOOD_MINUTES, 5));
 		$messages = $this->getSetting(SettingsEntity::MAX_FLOOD_NUM, 10);
-		$floodKeyName = 'flood_'. $posterId;
+		$floodKeyName = 'flood_' . $posterId;
 
 		$floodData = $this->getPersistenceValue($floodKeyName);
 
 		if (empty($floodData))
 			$floodData = [
 				'time' => time() + $seconds,
-				'msg' => 0,
+				'msgCount' => 0,
 			];
 
-		$floodData['msg']++;
+		$floodData['msgCount']++;
 
 		// Chatty one huh?
-		if ($floodData['msg'] >= $messages && time() <= $floodData['time'])
-			$isFlood = true;
+		if ($floodData['msgCount'] >= $messages && time() <= $floodData['time']) {
+			$this->errorKey = 'flood';
 
-		// Enough time has passed, give the user some rest.
+			$isFlood = true;
+		}
+
 		if (time() >= $floodData['time'])
 			$this->unsetPersistenceValue($floodKeyName);
 
