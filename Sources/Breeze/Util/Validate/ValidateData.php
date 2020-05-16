@@ -70,62 +70,58 @@ abstract class ValidateData
 		$isValid = true;
 
 		foreach ($this->getSteps() as $step)
-			if (!$this->{$step}())
-			{
+		{
+			if (!method_exists($this, $step))
+				continue;
+
+			try {
+				$this->{$step}();
+			} catch (ValidateDataException $e) {
+				$this->setErrorKey($e->getMessage());
+				$isValid = false;
+
+				break;
+			} catch (\InvalidArgumentException $e){
+				$this->setErrorKey($e->getMessage());
 				$isValid = false;
 
 				break;
 			}
+		}
 
 		return $isValid;
 	}
 
-	public function clean(): bool
+	public function clean(): void
 	{
 		$this->data = array_filter($this->sanitize($this->data));
 
-		return $this->compare();
+		$this->compare();
 	}
 
-	public function isInt(): bool
+	public function isInt(): void
 	{
-		$isInt = true;
-
 		foreach ($this->getInts() as $integerValueName)
-		{
-			$isInt = is_int($this->data[$integerValueName]);
-
-			if (!$isInt)
+			if (!is_int($this->data[$integerValueName]))
 			{
-				$this->errorKey = 'malformed_data';
+				throw new \InvalidArgumentException('malformed_data');
 
 				break;
 			}
-		}
-
-		return $isInt;
 	}
 
-	public function isString():bool
+	public function isString(): void
 	{
-		$isString = true;
-
 		foreach ($this->getStrings() as $stringValueName)
-		{
-			$isString = is_string($this->data[$stringValueName]);
-
-			if (!$isString)
+			if (!is_string($this->data[$stringValueName]))
 			{
-				$this->errorKey = 'malformed_data';
+				throw new \InvalidArgumentException('malformed_data');
 
-					break;
+				break;
 			}
-		}
-
-		return $isString;
 	}
 
-	public function areValidUsers(): bool
+	public function areValidUsers(): void
 	{
 		$usersIds = array_map(
 			function ($intName){
@@ -138,14 +134,11 @@ abstract class ValidateData
 		$invalidUsers = array_diff_key(array_flip($usersIds), $loadedUsers);
 
 		if (!empty($invalidUsers))
-			$this->errorKey = 'invalid_users';
-
-		return empty($invalidUsers);
+			throw new ValidateDataException('invalid_users');
 	}
 
-	public function floodControl(): bool
+	public function floodControl(): void
 	{
-		$isFlood = false;
 		$posterId = $this->getPosterId();
 		$seconds = 60 * ($this->getSetting(SettingsEntity::MAX_FLOOD_MINUTES, 5));
 		$messages = $this->getSetting(SettingsEntity::MAX_FLOOD_NUM, 10);
@@ -162,23 +155,18 @@ abstract class ValidateData
 		$floodData['msgCount']++;
 
 		// Chatty one huh?
-		if ($floodData['msgCount'] >= $messages && time() <= $floodData['time']) {
-			$this->errorKey = 'flood';
-
-			$isFlood = true;
-		}
+		if ($floodData['msgCount'] >= $messages && time() <= $floodData['time'])
+			throw new ValidateDataException('flood');
 
 		if (time() >= $floodData['time'])
 			$this->unsetPersistenceValue($floodKeyName);
-
-		return $isFlood;
 	}
 
 	public function response(): array
 	{
 		return [
 			'type' => self::ERROR_TYPE,
-			'message' => $this->errorKey,
+			'message' => $this->getText($this->errorKey),
 			'data' => [],
 		];
 	}
@@ -204,15 +192,14 @@ abstract class ValidateData
 		return $this->errorKey;
 	}
 
-	protected function compare(): bool
+	protected function setErrorKey(string $errorKey): void
 	{
-		$isArraySizeEqual = true;
+		$this->errorKey = $errorKey;
+	}
 
-		$isArraySizeEqual = empty(array_diff_key($this->getParams(), $this->data));
-
-		if (!$isArraySizeEqual)
-			$this->errorKey = 'incomplete_data';
-
-		return $isArraySizeEqual;
+	protected function compare(): void
+	{
+		if (!empty(array_diff_key($this->getParams(), $this->data)))
+			throw new \InvalidArgumentException('incomplete_data');
 	}
 }
