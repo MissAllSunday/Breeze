@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate;
 
+use Breeze\Util\Permissions;
+
 class ValidateComment extends ValidateData implements ValidateDataInterface
 {
 	protected const PARAM_POSTER_ID = 'posterId';
@@ -19,6 +21,20 @@ class ValidateComment extends ValidateData implements ValidateDataInterface
 		self::PARAM_STATUS_ID => 0,
 		self::PARAM_BODY => '',
 	];
+
+	public function getSteps(): array
+	{
+		$steps = self::STEPS;
+		$steps[] = 'permissions';
+
+		return $steps;
+	}
+
+	public function permissions(): void
+	{
+		if (!Permissions::isAllowedTo(Permissions::POST_COMMENTS))
+			throw new ValidateDataException('postComments');
+	}
 
 	public function getInts(): array
 	{

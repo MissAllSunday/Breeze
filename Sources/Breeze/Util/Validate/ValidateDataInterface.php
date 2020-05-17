@@ -27,4 +27,6 @@ interface ValidateDataInterface
 	public function getPosterId(): int;
 
 	public function getUserIdsNames(): array;
+
+	public function permissions(): void;
 }

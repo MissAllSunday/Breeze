@@ -364,6 +364,40 @@ class ValidateCommentTest extends TestCase
 		];
 	}
 
+	/**
+	 * @dataProvider permissionsProvider
+	 */
+	public function testPermissions(array $data, string $expectedErrorKey): void
+	{
+		$this->validateComment->setData($data);
+
+		if (!empty($expectedErrorKey))
+		{
+			$this->expectException(ValidateDataException::class);
+
+			$this->validateComment->permissions();
+			$errorKey = $this->validateComment->getErrorKey();
+
+			$this->expectExceptionMessage($errorKey);
+		}
+	}
+
+	public function permissionsProvider(): array
+	{
+		return [
+			'not allowed' => [
+				'data' => [
+					'posterId' => 1,
+					'statusOwnerId' => 2,
+					'profileOwnerId' => 3,
+					'statusId' => 666,
+					'body' => 'Kaizoku ou ni ore wa naru',
+				],
+				'expectedErrorKey' => 'postComments',
+			],
+		];
+	}
+
 	private function getMockInstance(string $class): MockObject
 	{
 		return $this->getMockBuilder($class)

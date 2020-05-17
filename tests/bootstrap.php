@@ -31,10 +31,14 @@ function smf_json_decode($s, $array = true)
 }
 
 function allowedTo($permissionName)
-{
+{if ('postComments' === $permissionName) {
+	var_dump($permissionName);
+	die;
+}
 	$dummyPermissions = [
 		'nope' => false,
 		'yep' => true,
+		'postComments' => false
 	];
 
 	return $dummyPermissions[$permissionName];
