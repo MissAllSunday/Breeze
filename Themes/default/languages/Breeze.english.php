@@ -165,8 +165,8 @@ $txt['Breeze_info_notiMulti_markasread_after'] = 'You have successfully marked a
 $txt['Breeze_info_notiMulti_unmarkasread_after'] = 'You have successfully marked as unread all notifications';
 
 // Errors
-$txt['cannot_breeze_postStatus'] = $txt['Breeze_cannot_postStatus'];
-$txt['cannot_breeze_postComments'] = $txt['Breeze_cannot_postComments'];
+$txt['cannot_breeze_postStatus'] = $txt['Breeze_error_postStatus'];
+$txt['cannot_breeze_postComments'] = $txt['Breeze_error_postComments'];
 $txt['cannot_breeze_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete Status/Comments.';
 $txt['Breeze_cannot_see_general_wall'] = 'You need to enable your general wall from your <a href="' . $scripturl . '?action=profile;area=breezesettings">wall settings page</a>.';
 

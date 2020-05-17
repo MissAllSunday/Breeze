@@ -69,7 +69,7 @@ abstract class ValidateData
 
 	public function isValid(): bool
 	{
-		$isValid = true;
+		$isValid = false;
 
 		foreach ($this->getSteps() as $step)
 		{
@@ -78,14 +78,13 @@ abstract class ValidateData
 
 			try {
 				$this->{$step}();
+				$isValid = true;
 			} catch (ValidateDataException $e) {
 				$this->setErrorKey($e->getMessage());
-				$isValid = false;
 
 				break;
 			} catch (\InvalidArgumentException $e){
 				$this->setErrorKey($e->getMessage());
-				$isValid = false;
 
 				break;
 			}
