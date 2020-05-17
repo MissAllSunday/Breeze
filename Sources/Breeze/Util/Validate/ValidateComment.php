@@ -8,11 +8,11 @@ use Breeze\Util\Permissions;
 
 class ValidateComment extends ValidateData implements ValidateDataInterface
 {
-	protected const PARAM_POSTER_ID = 'posterId';
-	protected const PARAM_STATUS_OWNER_ID = 'statusOwnerId';
-	protected const PARAM_PROFILE_OWNER_ID = 'profileOwnerId';
-	protected const PARAM_STATUS_ID = 'statusId';
-	protected const PARAM_BODY = 'body';
+	public const PARAM_POSTER_ID = 'posterId';
+	public const PARAM_STATUS_OWNER_ID = 'statusOwnerId';
+	public const PARAM_PROFILE_OWNER_ID = 'profileOwnerId';
+	public const PARAM_STATUS_ID = 'statusId';
+	public const PARAM_BODY = 'body';
 
 	protected const PARAMS = [
 		self::PARAM_POSTER_ID => 0,

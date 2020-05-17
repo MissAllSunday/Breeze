@@ -20,6 +20,11 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		$this->commentModel = $commentModel;
 	}
 
+	public function save(array $data): int
+	{
+		return $this->commentModel->insert($data);
+	}
+
 	public function getStatusByProfile(int $profileOwnerId = 0): array
 	{
 		// TODO: add cache
@@ -34,5 +39,10 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	public function getCommentsByStatus(array $statusIds = []): void
 	{
 		// TODO: Implement getCommentsByStatus() method.
+	}
+
+	public function getById(int $commentId): array
+	{
+		return $this->commentModel->getByIds([$commentId]);
 	}
 }

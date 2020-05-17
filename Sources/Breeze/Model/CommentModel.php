@@ -76,6 +76,31 @@ class CommentModel extends BaseModel implements CommentModelInterface
 		];
 	}
 
+	public function getByIds(array $commentIds = []): array
+	{
+		$items = [];
+
+		$request = $this->dbClient->query(
+			'
+			SELECT {raw:columns}
+			FROM {db_prefix}{raw:tableName}
+			WHERE {raw:columnName} IN ({array_int:ids})
+			LIMIT {int:start}',
+			array_merge($this->getDefaultQueryParams(), [
+				'limit' => 1,
+				'ids' => array_map('intval', $commentIds),
+				'columnName' => CommentEntity::COLUMN_ID,
+			])
+		);
+
+		while ($row = $this->dbClient->fetchAssoc($request))
+			$items[$row[CommentEntity::COLUMN_ID]] = $row;
+
+		$this->dbClient->freeResult($request);
+
+		return $items;
+	}
+
 	function update(array $data, int $id = 0): array
 	{
 		return [];
