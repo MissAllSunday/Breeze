@@ -66,6 +66,9 @@ Vue.component('status', {
         getCurrentUserData: function () {
 
         },
+        setComment: function(comment){
+          this.comment[comment.comments_id] = comment;
+        },
         postComment: function () {
             this.closeErrorAlert();
 

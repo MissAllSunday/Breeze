@@ -43,20 +43,20 @@ class CommentModel extends BaseModel implements CommentModelInterface
 		return true;
 	}
 
-	public function getStatusByProfile(int $profileOwnerId): array
+	public function getByProfiles(array $profileOwnerIds): array
 	{
 		$comments = [];
 		$usersIds = [];
 		$queryParams = array_merge($this->getDefaultQueryParams(), [
 			'columnName' => CommentEntity::COLUMN_PROFILE_ID,
-			'profileId' => $profileOwnerId,
+			'profileIds' => $profileOwnerIds,
 		]);
 
 		$request = $this->dbClient->query(
 			'
 			SELECT {raw:columns}
 			FROM {db_prefix}{raw:tableName}
-			WHERE {raw:columnName} = {int:profileId}',
+			WHERE {raw:columnName} IN({_array_int:profileId})',
 			$queryParams
 		);
 

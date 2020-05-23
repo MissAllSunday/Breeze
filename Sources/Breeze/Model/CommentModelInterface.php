@@ -8,7 +8,7 @@ interface CommentModelInterface extends BaseModelInterface
 {
 	public function deleteByStatusID(array $ids): bool;
 
-	public function getStatusByProfile(int $profileOwnerId): array;
+	public function getByProfiles(array $profileOwnerIds): array;
 
 	public function getByIds(array $commentIds = []): array;
 }

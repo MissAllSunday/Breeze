@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Breeze;
 use Breeze\Traits\CacheTrait;
 
 abstract class BaseRepository
@@ -13,6 +14,7 @@ abstract class BaseRepository
 
 	public const LIKE_TYPE_STATUS = 'breSta';
 	public const LIKE_TYPE_COMMENT = 'breCom';
+	protected const TTL = 360;
 
 	public function handleLikes($type, $content): array
 	{
@@ -28,4 +30,9 @@ abstract class BaseRepository
 	}
 
 	public abstract function getModel();
+
+	protected function cacheKey(string $methodName): string
+	{
+		return str_replace(':', '_', Breeze::PATTERN . $methodName);
+	}
 }

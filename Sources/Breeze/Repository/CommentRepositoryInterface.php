@@ -9,9 +9,9 @@ interface CommentRepositoryInterface
 {
 	public function save(array $data): int;
 
-	public function getStatusByProfile(int $profileOwnerId = 0): array;
+	public function getByProfile(int $profileOwnerId = 0): array;
 
-	public function getCommentsByStatus(array $statusIds = []): void;
+	public function getByStatus(array $statusIds = []): void;
 
 	public function getById(int $commentId): array;
 }

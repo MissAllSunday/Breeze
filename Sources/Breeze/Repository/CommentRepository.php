@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
-use Breeze\Entity\CommentEntity;
 use Breeze\Model\CommentModelInterface;
 
 class CommentRepository extends BaseRepository implements CommentRepositoryInterface
@@ -25,10 +24,14 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		return $this->commentModel->insert($data);
 	}
 
-	public function getStatusByProfile(int $profileOwnerId = 0): array
+	public function getByProfile(int $profileOwnerId = 0): array
 	{
-		// TODO: add cache
-		return $this->commentModel->getStatusByProfile($profileOwnerId);
+		$commentsByProfile = $this->getCache($this->cacheKey(__METHOD__));
+
+		if (null === $commentsByProfile)
+			$commentsByProfile = $this->commentModel->getByProfiles([$profileOwnerId]);
+
+		return $commentsByProfile;
 	}
 
 	public function getModel(): CommentModelInterface
@@ -36,7 +39,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		return $this->commentModel;
 	}
 
-	public function getCommentsByStatus(array $statusIds = []): void
+	public function getByStatus(array $statusIds = []): void
 	{
 		// TODO: Implement getCommentsByStatus() method.
 	}
