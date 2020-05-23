@@ -41,11 +41,14 @@ new Vue({
                     this.loading = false
                 })
         },
-        getUserData: function (userId) {
-            return this.users[userId];
+        getUserData: function (user_id) {
+            return this.users[user_id];
+        },
+        setUserData: function (user_id, user_data) {
+            this.users[user_id] = user_data;
         },
         getComments: function (status_id) {
             return this.comments[status_id] || null;
         }
     }
-})
+});

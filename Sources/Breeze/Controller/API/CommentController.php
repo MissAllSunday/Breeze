@@ -61,7 +61,8 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 
 		$commentData = $this->validateData->getData();
 
-		echo '<pre>';var_dump($commentData);die;
+		$newComment = $this->commentService->saveAndGet($commentData);
+
 	}
 
 	public function render(string $subTemplate, array $params): void {}

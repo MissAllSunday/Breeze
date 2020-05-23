@@ -85,7 +85,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 			SELECT {raw:columns}
 			FROM {db_prefix}{raw:tableName}
 			WHERE {raw:columnName} IN ({array_int:ids})
-			LIMIT {int:start}',
+			LIMIT {int:limit}',
 			array_merge($this->getDefaultQueryParams(), [
 				'limit' => 1,
 				'ids' => array_map('intval', $commentIds),
