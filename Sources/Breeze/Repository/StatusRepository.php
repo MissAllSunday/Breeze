@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
-use Breeze\Entity\StatusEntity;
 use Breeze\Model\StatusModelInterface;
 
 class StatusRepository extends BaseRepository implements StatusRepositoryInterface

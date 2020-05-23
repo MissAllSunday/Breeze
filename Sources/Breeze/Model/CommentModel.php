@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Breeze\Model;
 
 use Breeze\Entity\CommentEntity as CommentEntity;
-use Breeze\Entity\StatusEntity as StatusEntity;
 
 class CommentModel extends BaseModel implements CommentModelInterface
 {
