@@ -29,7 +29,11 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		$commentsByProfile = $this->getCache($this->cacheKey(__METHOD__));
 
 		if (null === $commentsByProfile)
+		{
 			$commentsByProfile = $this->commentModel->getByProfiles([$profileOwnerId]);
+
+			$this->setCache($this->cacheKey(__METHOD__), $commentsByProfile);
+		}
 
 		return $commentsByProfile;
 	}

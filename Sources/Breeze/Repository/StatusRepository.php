@@ -20,16 +20,22 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		$this->statusModel = $statusModel;
 	}
 
-	public function getStatusByProfile(int $profileOwnerId = 0, int $start = 0): array
+	public function getByProfile(int $profileOwnerId = 0, int $start = 0): array
 	 {
-		$maxIndex = $this->statusModel->getCount();
+		$statusByProfile = $this->getCache($this->cacheKey(__METHOD__));
 
-		// TODO: add cache
-		return $this->statusModel->getStatusByProfile([
-			'start' => $start,
-			'maxIndex' => $maxIndex,
-			'ids' => [$profileOwnerId]
-		]);
+		if (null === $statusByProfile)
+		{
+			$statusByProfile = $this->statusModel->getStatusByProfile([
+				'start' => $start,
+				'maxIndex' => $this->statusModel->getCount(),
+				'ids' => [$profileOwnerId]
+			]);
+
+			$this->setCache($this->cacheKey(__METHOD__), $statusByProfile);
+		}
+
+		return $statusByProfile;
 	 }
 
 	public function getModel(): StatusModelInterface

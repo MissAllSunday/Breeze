@@ -38,7 +38,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 
 	public function getByProfile(int $profileOwnerId = 0, int $start = 0): array
 	{
-		$profileStatus = $this->statusRepository->getStatusByProfile($profileOwnerId, $start);
+		$profileStatus = $this->statusRepository->getByProfile($profileOwnerId, $start);
 		$profileComments = $this->commentRepository->getByProfile($profileOwnerId);
 
 		$userIds = array_unique(array_merge($profileStatus['usersIds'], $profileComments['usersIds']));

@@ -33,6 +33,6 @@ abstract class BaseRepository
 
 	protected function cacheKey(string $methodName): string
 	{
-		return str_replace(':', '_', Breeze::PATTERN . $methodName);
+		return str_replace('::', '_', Breeze::PATTERN . $methodName);
 	}
 }

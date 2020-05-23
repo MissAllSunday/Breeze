@@ -110,7 +110,7 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 
 	public function getStatus(int $userId): array
 	{
-		return $this->statusRepository->getStatusByProfile($userId);
+		return $this->statusRepository->getByProfile($userId);
 	}
 
 	public function isCurrentUserOwner(): bool

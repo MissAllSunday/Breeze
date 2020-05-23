@@ -7,5 +7,5 @@ namespace Breeze\Repository;
 
 interface StatusRepositoryInterface
 {
-	 public function getStatusByProfile(int $profileOwnerId = 0, int $start = 0): array;
+	 public function getByProfile(int $profileOwnerId = 0, int $start = 0): array;
 }
