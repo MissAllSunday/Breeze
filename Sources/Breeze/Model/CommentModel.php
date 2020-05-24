@@ -53,11 +53,11 @@ class CommentModel extends BaseModel implements CommentModelInterface
 			'
 			SELECT {raw:columns}
 			FROM {db_prefix}{raw:tableName}
-			WHERE {raw:columnName} IN({_array_int:profileId})',
+			WHERE {raw:columnName} IN({array_int:profileIds})',
 			$queryParams
 		);
 
-		return $this->prepareData($request);
+		return $this->prepareData($request, true);
 	}
 
 	public function getByIds(array $commentIds = []): array
