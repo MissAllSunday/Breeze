@@ -63,9 +63,6 @@ Vue.component('status', {
         getUserData: function (userId) {
             return this.$root.getUserData(userId);
         },
-        getCurrentUserData: function () {
-
-        },
         setComment: function(comment){
           this.comment[comment.comments_id] = comment;
         },

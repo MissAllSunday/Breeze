@@ -122,7 +122,7 @@ abstract class ValidateData
 			$this->getUserIdsNames()
 		);
 
-		$loadedUsers = $this->userService->loadUsersInfo($usersIds, true);
+		$loadedUsers = $this->userService->getUsersToLoad($usersIds);
 
 		if (in_array(false, $loadedUsers))
 			throw new ValidateDataException('invalid_users');

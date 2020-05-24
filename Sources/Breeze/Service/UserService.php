@@ -147,25 +147,28 @@ class UserService extends BaseService implements UserServiceInterface
 		return true;
 	}
 
-	public function loadUsersInfo(array $userIds = [], $noGuest = false): array
+	public function getUsersToLoad($userIds = []): array
+	{
+		return loadMemberData($userIds);
+	}
+
+	public function loadUsersInfo(array $userIds = []): array
 	{
 		$loadedUsers = [];
 
-		if (empty($userIds))
-			return $loadedUsers;
-
 		$modSettings = $this->global('modSettings');
-		$loadedIDs = loadMemberData($userIds);
+		$loadedIDs = $this->getUsersToLoad($userIds);
 
 		foreach ($userIds as $userId)
 		{
-			if (!in_array($userId, $loadedIDs) && !$noGuest)
+			if (!in_array($userId, $loadedIDs))
 			{
 				$loadedUsers[$userId] = [
 					'link' => $this->getSmfText('guest_title'),
 					'name' => $this->getSmfText('guest_title'),
 					'avatar' => ['href' => $modSettings['avatar_url'] . '/default.png']
 				];
+
 				continue;
 			}
 

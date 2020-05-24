@@ -209,7 +209,7 @@ class ValidateCommentTest extends TestCase
 	{
 		$this->validateComment->setData($data);
 		$this->userService->expects($this->once())
-			->method('loadUsersInfo')
+			->method('getUsersToLoad')
 			->with($with)
 			->willReturn($loadUsersInfoWillReturn);
 
@@ -246,21 +246,9 @@ class ValidateCommentTest extends TestCase
 				],
 				'with' => [1,2,3],
 				'loadUsersInfoWillReturn' => [
-					1 => [
-						'link' => 'Link',
-						'name' => 'Name',
-						'avatar' => ['href' => '/default.png']
-					],
-					2 => [
-						'link' => 'Link',
-						'name' => 'Name',
-						'avatar' => ['href' => '/default.png']
-					],
-					3 =>[
-						'link' => 'Link',
-						'name' => 'Name',
-						'avatar' => ['href' => '/default.png']
-					],
+					1 => true,
+					2 => true,
+					3 =>true,
 				],
 				'expectedErrorKey' => '',
 			],
@@ -274,16 +262,8 @@ class ValidateCommentTest extends TestCase
 				],
 				'with' => [1,2,666],
 				'loadUsersInfoWillReturn' => [
-					1 => [
-						'link' => 'Link',
-						'name' => 'Name',
-						'avatar' => ['href' => '/default.png']
-					],
-					2 => [
-						'link' => 'Link',
-						'name' => 'Name',
-						'avatar' => ['href' => '/default.png']
-					],
+					1 => true,
+					2 => true,
 					666 => false,
 				],
 				'expectedErrorKey' => 'invalid_users',
