@@ -44,8 +44,6 @@ class CommentModel extends BaseModel implements CommentModelInterface
 
 	public function getByProfiles(array $profileOwnerIds): array
 	{
-		$comments = [];
-		$usersIds = [];
 		$queryParams = array_merge($this->getDefaultQueryParams(), [
 			'columnName' => CommentEntity::COLUMN_PROFILE_ID,
 			'profileIds' => $profileOwnerIds,
@@ -59,26 +57,11 @@ class CommentModel extends BaseModel implements CommentModelInterface
 			$queryParams
 		);
 
-		while ($row = $this->dbClient->fetchAssoc($request))
-		{
-			$comments[$row[CommentEntity::COLUMN_STATUS_ID]][$row[CommentEntity::COLUMN_ID]] =$row;
-			$usersIds[] = $row[CommentEntity::COLUMN_POSTER_ID];
-			$usersIds[] = $row[CommentEntity::COLUMN_PROFILE_ID];
-			$usersIds[] = $row[CommentEntity::COLUMN_STATUS_OWNER_ID];
-		}
-
-		$this->dbClient->freeResult($request);
-
-		return [
-			'data' => $comments,
-			'usersIds' => array_unique($usersIds),
-		];
+		return $this->prepareData($request);
 	}
 
 	public function getByIds(array $commentIds = []): array
 	{
-		$items = [];
-
 		$request = $this->dbClient->query(
 			'
 			SELECT {raw:columns}
@@ -92,31 +75,52 @@ class CommentModel extends BaseModel implements CommentModelInterface
 			])
 		);
 
-		while ($row = $this->dbClient->fetchAssoc($request))
-			$items[$row[CommentEntity::COLUMN_ID]] = $row;
-
-		$this->dbClient->freeResult($request);
-
-		return $items;
+		return $this->prepareData($request);
 	}
 
-	function update(array $data, int $id = 0): array
+	public function update(array $data, int $id = 0): array
 	{
 		return [];
 	}
 
-	function getTableName(): string
+	public function getTableName(): string
 	{
 		return CommentEntity::TABLE;
 	}
 
-	function getColumnId(): string
+	public function getColumnId(): string
 	{
 		return CommentEntity::COLUMN_ID;
 	}
 
-	function getColumns(): array
+	public function getColumns(): array
 	{
 		return CommentEntity::getColumns();
+	}
+
+	private function prepareData($request, bool $useStatusID = false): array
+	{
+		$comments = [];
+		$usersIds = [];
+
+		while ($row = $this->dbClient->fetchAssoc($request))
+		{
+			if ($useStatusID)
+				$comments[$row[CommentEntity::COLUMN_STATUS_ID]][$row[CommentEntity::COLUMN_ID]] = $row;
+
+			else
+				$comments[$row[CommentEntity::COLUMN_ID]] = $row;
+
+			$usersIds[] = $row[CommentEntity::COLUMN_POSTER_ID];
+			$usersIds[] = $row[CommentEntity::COLUMN_PROFILE_ID];
+			$usersIds[] = $row[CommentEntity::COLUMN_STATUS_OWNER_ID];
+		}
+
+		$this->dbClient->freeResult($request);
+
+		return [
+			'data' => $comments,
+			'usersIds' => array_unique($usersIds),
+		];
 	}
 }
