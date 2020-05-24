@@ -3,7 +3,7 @@ Vue.component('status', {
     data: function() {
         return {
             comment_message: '',
-            error: null,
+            notice: null,
             place_holder: 'leave a comment',
             post_comment: {
                 posterId: smf_member_id,
@@ -33,10 +33,13 @@ Vue.component('status', {
                 v-bind:key='comment.comments_id' 
                 class='windowbg'>
             </comment>
-            <error-box v-if="error !== null" @close="closeErrorAlert()">
-                {{error}}
-            </error-box>
-            <div class="comment_posting">
+            <message-box 
+                v-if="notice !== null"
+                 @close="clearNotice()"
+                 v-bind:type="notice.type">
+                {{notice.message}}
+            </message-box>
+            <div v-else="error === null"  class="comment_posting">
                 <div class='breeze_avatar avatar_comment'
                     v-bind:style='avatarImage(poster_data.avatar.href)'>           
                 </div>
@@ -44,9 +47,9 @@ Vue.component('status', {
                     v-model="post_comment.body" 
                     class="post_comment" 
                     :placeholder="place_holder" 
-                    @focus="closeErrorAlert()"></textarea>
+                    @focus="clearNotice()"></textarea>
             </div>
-            <div class="post_button_container floatright">
+            <div v-if="notice === null" class="post_button_container floatright">
                 <input type="submit" @click="postComment()" class="button">
             </div>
         </div>
@@ -67,7 +70,7 @@ Vue.component('status', {
           this.comment[comment.comments_id] = comment;
         },
         postComment: function () {
-            this.closeErrorAlert();
+            this.clearNotice();
 
             if (!this.isValidComment())
                 return false;
@@ -77,17 +80,12 @@ Vue.component('status', {
                 console.log(response)
             });
         },
-        closeErrorAlert: function () {
-            this.error = null;
-        },
         isValidComment: function () {
-            let isValid = true;
-
             if (this.post_comment.body === '' || typeof(this.post_comment.body) !== 'string' )
             {
-                this.error = 'el body esta vacio';
+                this.setNotice('el body esta vacio');
 
-                isValid = false;
+                return false;
             }
 
             if (this.post_comment.body === 'about:Suki')
@@ -97,10 +95,21 @@ Vue.component('status', {
                     'Your pursuits are called outstanding\n' +
                     'You\'re emotionally complex');
 
-                isValid = false;
+                return false;
             }
 
-            return isValid;
+            return true;
+        },
+        setNotice: function(message, type){
+            type = type || 'error';
+            
+            this.notice = {
+                'message': message,
+                'type': type + 'box',
+            };
+        },
+        clearNotice: function(){
+            this.notice = null;
         }
     }
 })

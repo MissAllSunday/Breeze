@@ -1,6 +1,7 @@
-Vue.component('error-box', {
+Vue.component('message-box', {
+    props: ['type'],
     template: `
-    <div class="errorbox" id="errors">
+    <div v-bind:class="type">
         <slot></slot>
         <span class="main_icons remove_button floatright" @click="$emit('close')"></span>
     </div>
