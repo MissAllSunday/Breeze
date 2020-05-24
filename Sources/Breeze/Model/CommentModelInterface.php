@@ -10,5 +10,5 @@ interface CommentModelInterface extends BaseModelInterface
 
 	public function getByProfiles(array $profileOwnerIds): array;
 
-	public function getByIds(array $commentIds = []): array;
+	public function getByIds(array $commentIds = []): ?array;
 }

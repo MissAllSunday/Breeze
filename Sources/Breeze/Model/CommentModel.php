@@ -60,7 +60,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 		return $this->prepareData($request, true);
 	}
 
-	public function getByIds(array $commentIds = []): array
+	public function getByIds(array $commentIds = []): ?array
 	{
 		$request = $this->dbClient->query(
 			'

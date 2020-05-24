@@ -50,6 +50,15 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 	public function getById(int $commentId): array
 	{
-		return $this->commentModel->getByIds([$commentId]);
+		$comment = $this->commentModel->getByIds([$commentId]);
+
+		if (null === $comment)
+		{
+			$comment = $this->commentModel->getByIds([$commentId]);
+
+			$this->setCache($this->cacheKey(__METHOD__), $comment);
+		}
+
+		return $comment;
 	}
 }

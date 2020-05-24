@@ -50,6 +50,11 @@ class CommentService  extends BaseService  implements CommentServiceInterface
 			CommentEntity::COLUMN_LIKES => 0,
 		]);
 
-		return $this->commentRepository->getById($commentId);
+		$comment = $this->commentRepository->getById($commentId);
+
+		return [
+			'users' => $this->userService->loadUsersInfo(array_unique($comment['usersIds'])),
+			'comments' => $comment['data'],
+		];
 	}
 }
