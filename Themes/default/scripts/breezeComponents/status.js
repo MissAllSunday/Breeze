@@ -60,14 +60,14 @@ Vue.component('status', {
         },
     },
     methods: {
+        appendComment: function(comment) {
+            Vue.set(this.comments, comment.comments_id, comment)
+        },
         avatarImage: function (posterImageHref) {
             return { backgroundImage: 'url(' + posterImageHref + ')' }
         },
         getUserData: function (userId) {
             return this.$root.getUserData(userId);
-        },
-        setComment: function(comment){
-          this.comment[comment.comments_id] = comment;
         },
         postComment: function () {
             this.clearNotice();
@@ -77,7 +77,12 @@ Vue.component('status', {
 
             axios.post(smf_scripturl + '?action=breezeComment;sa=postComment;'+ smf_session_var +'='+ smf_session_id,
                 this.post_comment).then(response => {
-                console.log(response)
+
+                    this.setNotice(response.data.message, response.data.type);
+
+                    if (response.data.content && response.data.content.length){
+                        this.appendComment(response.data.content)
+                    }
             });
         },
         isValidComment: function () {

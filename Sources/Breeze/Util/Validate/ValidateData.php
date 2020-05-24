@@ -68,8 +68,6 @@ abstract class ValidateData
 
 	public function isValid(): bool
 	{
-		$isValid = false;
-
 		foreach ($this->getSteps() as $step)
 		{
 			if (!method_exists($this, $step))
@@ -77,19 +75,18 @@ abstract class ValidateData
 
 			try {
 				$this->{$step}();
-				$isValid = true;
 			} catch (ValidateDataException $e) {
 				$this->setErrorKey($e->getMessage());
 
-				break;
+				return false;
 			} catch (\InvalidArgumentException $e){
 				$this->setErrorKey($e->getMessage());
 
-				break;
+				return false;
 			}
 		}
 
-		return $isValid;
+		return true;
 	}
 
 	public function clean(): void
@@ -124,7 +121,7 @@ abstract class ValidateData
 
 		$loadedUsers = $this->userService->getUsersToLoad($usersIds);
 
-		if (in_array(false, $loadedUsers))
+		if (array_diff($usersIds, $loadedUsers))
 			throw new ValidateDataException('invalid_users');
 	}
 
@@ -160,7 +157,7 @@ abstract class ValidateData
 		return [
 			'type' => self::ERROR_TYPE,
 			'message' => $this->getText(self::ERROR_PREFIX . $this->errorKey),
-			'data' => [],
+			'content' => [],
 		];
 	}
 
