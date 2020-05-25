@@ -116,37 +116,6 @@ class UserService extends BaseService implements UserServiceInterface
 		return false;
 	}
 
-	public function floodControl(int $userId = 0): bool
-	{
-		if (empty($userId))
-			return false;
-
-		$seconds = 60 * ($this->getSetting('flood_minutes', 5));
-		$messages = $this->getSetting('flood_messages', 10);
-
-		// Has it been defined yet?
-		if (!isset($_SESSION['Breeze_floodControl' . $userId]))
-			$_SESSION['Breeze_floodControl' . $userId] = [
-				'time' => time() + $seconds,
-				'messagesCount' => 0,
-			];
-
-		$_SESSION['Breeze_floodControl' . $userId]['messagesCount']++;
-
-		// Short name.
-		$flood = $_SESSION['Breeze_floodControl' . $userId];
-
-		// Chatty one huh?
-		if ($flood['messagesCount'] >= $messages && time() <= $flood['time'])
-			return false;
-
-		// Enough time has passed, give the user some rest.
-		if (time() >= $flood['time'])
-			unset($_SESSION['Breeze_floodControl' . $userId]);
-
-		return true;
-	}
-
 	public function getUsersToLoad($userIds = []): array
 	{
 		return loadMemberData($userIds);

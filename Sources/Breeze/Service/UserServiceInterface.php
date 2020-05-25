@@ -19,8 +19,6 @@ interface UserServiceInterface extends BaseServiceInterface
 
 	public function stalkingCheck(int $userStalkedId = 0): bool;
 
-	public function floodControl(int $userId = 0): bool;
-
 	public function getUsersToLoad($userIds = []): array;
 
 	public function loadUsersInfo(array $ids = []): array;
