@@ -45,8 +45,8 @@ new Vue({
         getUserData: function (user_id) {
             return this.users[user_id];
         },
-        setUserData: function (user_id, user_data) {
-            this.users[user_id] = user_data;
+        setUserData: function (user_data) {
+            this.users = Object.assign({}, this.users, user_data)
         },
         getComments: function (status_id) {
             return this.comments[status_id] || null;

@@ -41,7 +41,6 @@ abstract class ValidateData
 	protected $notice = [
 		'type' => self::ERROR_TYPE,
 		'message' => self::DEFAULT_ERROR_KEY,
-		'content' => [],
 	];
 
 	/**
@@ -96,7 +95,7 @@ abstract class ValidateData
 
 		$this->setNotice([
 			'type' => self::INFO_TYPE,
-			'message' => $this->successKeyString()
+			'message' => $this->getText($this->successKeyString())
 		]);
 
 		return true;

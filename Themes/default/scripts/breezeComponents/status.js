@@ -60,8 +60,8 @@ Vue.component('status', {
         },
     },
     methods: {
-        appendComment: function(comment) {
-            Vue.set(this.comments, comment.comments_id, comment)
+        appendComments: function(comments) {
+            this.comments = Object.assign({}, this.comments, comments)
         },
         avatarImage: function (posterImageHref) {
             return { backgroundImage: 'url(' + posterImageHref + ')' }
@@ -80,8 +80,11 @@ Vue.component('status', {
 
                     this.setNotice(response.data.message, response.data.type);
 
-                    if (response.data.content && response.data.content.length){
-                        console.log(response.data.content)
+                    if (response.data.content){
+
+                        this.$root.setUserData(response.data.content.users)
+                        this.appendComments(response.data.content.comments)
+                        this.clearNotice();
                     }
             });
         },
