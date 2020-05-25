@@ -22,6 +22,13 @@ class ValidateComment extends ValidateData implements ValidateDataInterface
 		self::PARAM_BODY => '',
 	];
 
+	protected const SUCCESS_KEY = 'published_comment';
+
+	public function successKeyString(): string
+	{
+		return self::INFO_TYPE . '_' . self::SUCCESS_KEY;
+	}
+
 	public function getSteps(): array
 	{
 		$steps = self::STEPS;

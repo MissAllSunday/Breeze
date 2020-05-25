@@ -81,7 +81,7 @@ Vue.component('status', {
                     this.setNotice(response.data.message, response.data.type);
 
                     if (response.data.content && response.data.content.length){
-                        this.appendComment(response.data.content)
+                        console.log(response.data.content)
                     }
             });
         },

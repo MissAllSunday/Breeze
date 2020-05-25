@@ -16,12 +16,11 @@ abstract class ValidateData
 	use RequestTrait;
 	use TextTrait;
 	use PersistenceTrait;
-
-	private const ERROR_PREFIX = 'error_';
+	
 	public const ERROR_TYPE = 'error';
 	public const NOTICE_TYPE = 'notice';
 	public const INFO_TYPE = 'info';
-	public const DEFAULT_ERROR_KEY = self::ERROR_PREFIX . 'server';
+	public const DEFAULT_ERROR_KEY = self::ERROR_TYPE . '_server';
 
 	public const MESSAGE_TYPES = [
 		self::ERROR_TYPE,
@@ -39,7 +38,11 @@ abstract class ValidateData
 
 	public $data = [];
 
-	protected $errorKey = '';
+	protected $notice = [
+		'type' => self::ERROR_TYPE,
+		'message' => self::DEFAULT_ERROR_KEY,
+		'content' => [],
+	];
 
 	/**
 	 * @var UserServiceInterface
@@ -48,6 +51,8 @@ abstract class ValidateData
 
 	public function __construct(UserServiceInterface $userService)
 	{
+		$this->setLanguage(Breeze::NAME);
+
 		$this->userService = $userService;
 	}
 
@@ -60,6 +65,8 @@ abstract class ValidateData
 	public abstract function getUserIdsNames(): array;
 
 	public abstract function getPosterId(): int;
+
+	public abstract function successKeyString(): string;
 
 	public function getSteps(): array
 	{
@@ -76,15 +83,19 @@ abstract class ValidateData
 			try {
 				$this->{$step}();
 			} catch (ValidateDataException $e) {
-				$this->setErrorKey($e->getMessage());
-
-				return false;
-			} catch (\InvalidArgumentException $e){
-				$this->setErrorKey($e->getMessage());
+				$this->setNotice([
+					'message' => sprintf($this->getText('error_server'),
+						$this->getText(self::ERROR_TYPE . '_' . $e->getMessage())),
+				]);
 
 				return false;
 			}
 		}
+
+		$this->setNotice([
+			'type' => self::INFO_TYPE,
+			'message' => $this->successKeyString()
+		]);
 
 		return true;
 	}
@@ -100,14 +111,14 @@ abstract class ValidateData
 	{
 		foreach ($this->getInts() as $integerValueName)
 			if (!is_int($this->data[$integerValueName]))
-				throw new \InvalidArgumentException('malformed_data');
+				throw new ValidateDataException('malformed_data');
 	}
 
 	public function isString(): void
 	{
 		foreach ($this->getStrings() as $stringValueName)
 			if (!is_string($this->data[$stringValueName]))
-				throw new \InvalidArgumentException('malformed_data');
+				throw new ValidateDataException('malformed_data');
 	}
 
 	public function areValidUsers(): void
@@ -152,13 +163,7 @@ abstract class ValidateData
 
 	public function response(): array
 	{
-		$this->setLanguage(Breeze::NAME);
-
-		return [
-			'type' => self::ERROR_TYPE,
-			'message' => $this->getText(self::ERROR_PREFIX . $this->errorKey),
-			'content' => [],
-		];
+		return $this->notice;
 	}
 
 	public function getRawData(): void
@@ -177,19 +182,19 @@ abstract class ValidateData
 		return $this->data;
 	}
 
-	public function getErrorKey(): string
+	public function getNotice(): array
 	{
-		return $this->errorKey;
+		return $this->notice;
 	}
 
-	protected function setErrorKey(string $errorKey): void
+	protected function setNotice(array $notice): void
 	{
-		$this->errorKey = $errorKey;
+		$this->notice = array_merge($this->notice, $notice);
 	}
 
 	protected function compare(): void
 	{
 		if (!empty(array_diff_key($this->getParams(), $this->data)))
-			throw new \InvalidArgumentException('incomplete_data');
+			throw new ValidateDataException('incomplete_data');
 	}
 }

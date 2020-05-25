@@ -8,7 +8,7 @@ use Breeze\Breeze;
 
 trait PersistenceTrait
 {
-	private static $notice = 'notice';
+	private static $persistenceKey = 'notice';
 	
 	public function setMessage(string $message, string $type = 'info'): array
 	{
@@ -18,21 +18,21 @@ trait PersistenceTrait
 		if (!isset($_SESSION[Breeze::NAME]))
 			$_SESSION[Breeze::NAME] = [];
 
-		$_SESSION[Breeze::NAME][self::$notice] = [
+		$_SESSION[Breeze::NAME][self::$persistenceKey] = [
 			'message' => $message,
 			'type' => $type,
 		];
 
-		return $_SESSION[Breeze::NAME][self::$notice];
+		return $_SESSION[Breeze::NAME][self::$persistenceKey];
 	}
 
 	public function getMessage(): array
 	{
-		if (empty($_SESSION[Breeze::NAME][self::$notice]))
+		if (empty($_SESSION[Breeze::NAME][self::$persistenceKey]))
 			return [];
 
-		$response = $_SESSION[Breeze::NAME][self::$notice];
-		unset($_SESSION[Breeze::NAME][self::$notice]);
+		$response = $_SESSION[Breeze::NAME][self::$persistenceKey];
+		unset($_SESSION[Breeze::NAME][self::$persistenceKey]);
 
 		return $response;
 	}

@@ -31,28 +31,20 @@ class ValidateCommentTest extends TestCase
 	/**
 	 * @dataProvider cleanProvider
 	 */
-	public function testClean(array $data, string $expectedErrorKey): void
+	public function testClean(array $data, bool $isExpectedException): void
 	{
 		$this->validateComment->setData($data);
 
-		if (!empty($expectedErrorKey))
+		if ($isExpectedException)
 		{
-			$this->expectException(InvalidArgumentException::class);
+			$this->expectException(ValidateDataException::class);
 
 			$this->validateComment->clean();
-			$errorKey = $this->validateComment->getErrorKey();
-
-			$this->expectExceptionMessage($errorKey);
 		}
 
 		else
-		{
 			$this->assertNull($this->validateComment->clean());
 
-			$errorKey = $this->validateComment->getErrorKey();
-
-			$this->assertEquals($expectedErrorKey, $errorKey);
-		}
 	}
 
 	public function cleanProvider(): array
@@ -66,13 +58,13 @@ class ValidateCommentTest extends TestCase
 					'statusId' => 666,
 					'body' => 'Happy Path',
 				],
-				'expectedErrorKey' => '',
+				'isExpectedException' => false,
 			],
 			'incomplete data' => [
 				'data' => [
 					'posterId' => '1'
 				],
-				'expectedErrorKey' => 'incomplete_data',
+				'isExpectedException' => true,
 			],
 			'empty values' => [
 				'data' => [
@@ -82,7 +74,7 @@ class ValidateCommentTest extends TestCase
 					'statusId' => '666',
 					'body' => 'LOL',
 				],
-				'expectedErrorKey' => 'incomplete_data',
+				'isExpectedException' => true,
 			],
 		];
 	}
@@ -90,55 +82,19 @@ class ValidateCommentTest extends TestCase
 	/**
 	 * @dataProvider IsValidIntProvider
 	 */
-	public function testIsValidInt(array $data, bool $expectedResult, string $expectedErrorKey): void
+	public function testIsValidInt(array $data, bool $isExpectedException): void
 	{
 		$this->validateComment->setData($data);
 
-		if (!empty($expectedErrorKey))
+		if ($isExpectedException)
 		{
-			$this->expectException(InvalidArgumentException::class);
+			$this->expectException(ValidateDataException::class);
 
 			$this->validateComment->isInt();
-			$errorKey = $this->validateComment->getErrorKey();
-
-			$this->expectExceptionMessage($errorKey);
 		}
 
 		else
-		{
 			$this->assertNull($this->validateComment->isInt());
-
-			$errorKey = $this->validateComment->getErrorKey();
-
-			$this->assertEquals($expectedErrorKey, $errorKey);
-		}
-	}
-
-	/**
-	 * @dataProvider IsValidStringProvider
-	 */
-	public function testIsValidString(array $data, bool $expectedResult, string $expectedErrorKey): void
-	{
-		$this->validateComment->setData($data);
-
-		if (!empty($expectedErrorKey))
-		{
-			$this->expectException(InvalidArgumentException::class);
-
-			$this->validateComment->isString();
-			$errorKey = $this->validateComment->getErrorKey();
-
-			$this->expectExceptionMessage($errorKey);
-		}
-
-		else
-		{
-			$this->assertNull($this->validateComment->isString());
-
-			$errorKey = $this->validateComment->getErrorKey();
-
-			$this->assertEquals($expectedErrorKey, $errorKey);
-		}
 	}
 
 	public function IsValidIntProvider(): array
@@ -152,8 +108,7 @@ class ValidateCommentTest extends TestCase
 					'statusId' => 666,
 					'body' => 'Kaizoku ou ni ore wa naru',
 				],
-				'expectedResult' => true,
-				'expectedErrorKey' => '',
+				'isExpectedException' => false,
 			],
 			'not ints' => [
 				'data' => [
@@ -163,10 +118,27 @@ class ValidateCommentTest extends TestCase
 					'statusId' => '666',
 					'body' => 'LOL',
 				],
-				'expectedResult' => false,
-				'expectedErrorKey' => 'malformed_data',
+				'isExpectedException' => true,
 			],
 		];
+	}
+
+	/**
+	 * @dataProvider IsValidStringProvider
+	 */
+	public function testIsValidString(array $data, bool $isExpectedException): void
+	{
+		$this->validateComment->setData($data);
+
+		if ($isExpectedException)
+		{
+			$this->expectException(ValidateDataException::class);
+
+			$this->validateComment->isString();
+		}
+
+		else
+			$this->assertNull($this->validateComment->isString());
 	}
 
 	public function IsValidStringProvider(): array
@@ -180,8 +152,7 @@ class ValidateCommentTest extends TestCase
 					'statusId' => 666,
 					'body' => 'Kaizoku ou ni ore wa naru',
 				],
-				'expectedResult' => true,
-				'expectedErrorKey' => '',
+				'isExpectedException' => false,
 			],
 			'not a string' => [
 				'data' => [
@@ -191,8 +162,7 @@ class ValidateCommentTest extends TestCase
 					'statusId' => 666,
 					'body' => 666,
 				],
-				'expectedResult' => false,
-				'expectedErrorKey' => 'malformed_data',
+				'isExpectedException' => true,
 			],
 		];
 	}
@@ -204,7 +174,7 @@ class ValidateCommentTest extends TestCase
 		array $data,
 		array $with,
 		array $loadUsersInfoWillReturn,
-		string $expectedErrorKey
+		bool $isExpectedException
 	): void
 	{
 		$this->validateComment->setData($data);
@@ -213,24 +183,15 @@ class ValidateCommentTest extends TestCase
 			->with($with)
 			->willReturn($loadUsersInfoWillReturn);
 
-		if (!empty($expectedErrorKey))
+		if ($isExpectedException)
 		{
 			$this->expectException(ValidateDataException::class);
 
 			$this->validateComment->areValidUsers();
-			$errorKey = $this->validateComment->getErrorKey();
-
-			$this->expectExceptionMessage($errorKey);
 		}
 
 		else
-		{
 			$this->assertNull($this->validateComment->areValidUsers());
-
-			$errorKey = $this->validateComment->getErrorKey();
-
-			$this->assertEquals($expectedErrorKey, $errorKey);
-		}
 	}
 
 	public function areValidUsersProvider(): array
@@ -254,7 +215,7 @@ class ValidateCommentTest extends TestCase
 					2,
 					3,
 				],
-				'expectedErrorKey' => '',
+				'isExpectedException' => false,
 			],
 			'invalid users' => [
 				'data' => [
@@ -273,7 +234,7 @@ class ValidateCommentTest extends TestCase
 					1,
 					2,
 				],
-				'expectedErrorKey' => 'invalid_users',
+				'isExpectedException' => true,
 			],
 		];
 	}
@@ -281,28 +242,19 @@ class ValidateCommentTest extends TestCase
 	/**
 	 * @dataProvider floodControlProvider
 	 */
-	public function testFloodControl(array $data, string $expectedErrorKey): void
+	public function testFloodControl(array $data, bool $isExpectedException): void
 	{
 		$this->validateComment->setData($data);
 
-		if (!empty($expectedErrorKey))
+		if ($isExpectedException)
 		{
 			$this->expectException(ValidateDataException::class);
 
 			$this->validateComment->floodControl();
-			$errorKey = $this->validateComment->getErrorKey();
-
-			$this->expectExceptionMessage($errorKey);
 		}
 
 		else
-		{
 			$this->assertNull($this->validateComment->floodControl());
-
-			$errorKey = $this->validateComment->getErrorKey();
-
-			$this->assertEquals($expectedErrorKey, $errorKey);
-		}
 	}
 
 	public function floodControlProvider(): array
@@ -316,7 +268,7 @@ class ValidateCommentTest extends TestCase
 					'statusId' => 666,
 					'body' => 'Kaizoku ou ni ore wa naru',
 				],
-				'expectedErrorKey' => '',
+				'isExpectedException' => false,
 			],
 			'time has not expired, too much messages' => [
 				'data' => [
@@ -326,7 +278,7 @@ class ValidateCommentTest extends TestCase
 					'statusId' => 666,
 					'body' => 'Kaizoku ou ni ore wa naru',
 				],
-				'expectedErrorKey' => 'flood',
+				'isExpectedException' => true,
 			],
 			'time has expired, too much messages' => [
 				'data' => [
@@ -336,7 +288,7 @@ class ValidateCommentTest extends TestCase
 					'statusId' => 666,
 					'body' => 'Kaizoku ou ni ore wa naru',
 				],
-				'expectedErrorKey' => '',
+				'isExpectedException' => false,
 			],
 			'time has not expired,  allowed messages' => [
 				'data' => [
@@ -346,7 +298,7 @@ class ValidateCommentTest extends TestCase
 					'statusId' => 666,
 					'body' => 'Kaizoku ou ni ore wa naru',
 				],
-				'expectedErrorKey' => '',
+				'isExpectedException' => false,
 			],
 		];
 	}
@@ -354,19 +306,12 @@ class ValidateCommentTest extends TestCase
 	/**
 	 * @dataProvider permissionsProvider
 	 */
-	public function testPermissions(array $data, string $expectedErrorKey): void
+	public function testPermissions(array $data): void
 	{
 		$this->validateComment->setData($data);
 
-		if (!empty($expectedErrorKey))
-		{
-			$this->expectException(ValidateDataException::class);
-
-			$this->validateComment->permissions();
-			$errorKey = $this->validateComment->getErrorKey();
-
-			$this->expectExceptionMessage($errorKey);
-		}
+		$this->expectException(ValidateDataException::class);
+		$this->validateComment->permissions();
 	}
 
 	public function permissionsProvider(): array
@@ -380,7 +325,6 @@ class ValidateCommentTest extends TestCase
 					'statusId' => 666,
 					'body' => 'Kaizoku ou ni ore wa naru',
 				],
-				'expectedErrorKey' => 'postComments',
 			],
 		];
 	}
