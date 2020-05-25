@@ -84,8 +84,10 @@ abstract class ValidateData
 				$this->{$step}();
 			} catch (ValidateDataException $e) {
 				$this->setNotice([
-					'message' => sprintf($this->getText('error_server'),
-						$this->getText(self::ERROR_TYPE . '_' . $e->getMessage())),
+					'message' => sprintf(
+						$this->getText(self::DEFAULT_ERROR_KEY),
+						$this->getText(self::ERROR_TYPE . '_' . $e->getMessage())
+					),
 				]);
 
 				return false;
