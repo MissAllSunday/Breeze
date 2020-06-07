@@ -1,5 +1,19 @@
 Vue.component('status', {
     props: ['status_item', 'poster_data', 'comments'],
+    model: {
+        prop: 'comments',
+        event: 'commentschange'
+    },
+    computed: {
+        commentLocal: {
+            get: function() {
+                return this.comments
+            },
+            set: function(value) {
+                this.$emit('commentschange', value)
+            }
+        }
+    },
     data: function() {
         return {
             comment_message: '',
