@@ -45,3 +45,7 @@
 .post_button_container{
 	margin-top: 5px;
 }
+
+.errorbox, .noticebox, .infobox {
+	margin-top:10px;
+}

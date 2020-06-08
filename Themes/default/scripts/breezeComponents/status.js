@@ -1,21 +1,8 @@
 Vue.component('status', {
-    props: ['status_item', 'poster_data', 'comments'],
-    model: {
-        prop: 'comments',
-        event: 'commentschange'
-    },
-    computed: {
-        commentLocal: {
-            get: function() {
-                return this.comments
-            },
-            set: function(value) {
-                this.$emit('commentschange', value)
-            }
-        }
-    },
+    props: ['status_item', 'poster_data', 'users'],
     data: function() {
         return {
+            localComments: Object.assign({}, this.status_item.comments),
             comment_message: '',
             notice: null,
             place_holder: 'leave a comment',
@@ -41,7 +28,7 @@ Vue.component('status', {
                 {{status_item.status_body}}
             </div>
             <comment 
-                v-for='comment in comments' 
+                v-for='comment in localComments' 
                 v-bind:comment='comment' 
                 v-bind:comment_poster_data='getUserData(comment.comments_poster_id)' 
                 v-bind:key='comment.comments_id' 
@@ -74,14 +61,17 @@ Vue.component('status', {
         },
     },
     methods: {
-        appendComments: function(comments) {
-            this.comments = Object.assign({}, this.comments, comments)
-        },
         avatarImage: function (posterImageHref) {
             return { backgroundImage: 'url(' + posterImageHref + ')' }
         },
         getUserData: function (userId) {
-            return this.$root.getUserData(userId);
+            return this.users[userId];
+        },
+        setLocalComment: function(comments){
+            this.localComments = Object.assign({}, this.localComments, comments)
+            this.post_comment.body = '';
+
+            setTimeout(this.clearNotice,5000)
         },
         postComment: function () {
             this.clearNotice();
@@ -95,10 +85,8 @@ Vue.component('status', {
                     this.setNotice(response.data.message, response.data.type);
 
                     if (response.data.content){
-
                         this.$root.setUserData(response.data.content.users)
-                        this.appendComments(response.data.content.comments)
-                        this.clearNotice();
+                        this.setLocalComment(response.data.content.comments);
                     }
             });
         },

@@ -44,10 +44,14 @@ class StatusService extends BaseService implements StatusServiceInterface
 		$userIds = array_unique(array_merge($profileStatus['usersIds'], $profileComments['usersIds']));
 		$usersData = $this->userService->loadUsersInfo($userIds);
 
+		foreach ($profileStatus['data'] as $statusId => &$status)
+		{
+			$status['comments'] = $profileComments['data'][$statusId];
+		}
+
 		return [
 			'users' => $usersData,
 			'status' => $profileStatus['data'],
-			'comments' => $profileComments['data'],
 		];
 	}
 }

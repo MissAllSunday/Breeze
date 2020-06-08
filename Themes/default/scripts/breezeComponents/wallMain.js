@@ -14,7 +14,6 @@ new Vue({
     data: {
         status: null,
         users: null,
-        comments: null,
         errored: false,
         loading: true,
         tabs_name: {
@@ -34,7 +33,6 @@ new Vue({
                 .then(response => {
                     this.status = response.data.status
                     this.users = response.data.users
-                    this.comments = response.data.comments
                     this.loading = false
                 })
                 .catch(error => {
@@ -48,8 +46,5 @@ new Vue({
         setUserData: function (user_data) {
             this.users = Object.assign({}, this.users, user_data)
         },
-        getComments: function (status_id) {
-            return this.comments[status_id] || null;
-        }
     }
 });
