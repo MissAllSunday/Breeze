@@ -69,6 +69,8 @@ Vue.component('status', {
         },
         setLocalComment: function(comments){
             this.localComments = Object.assign({}, this.localComments, comments)
+        },
+        clearPostComment: function(){
             this.post_comment.body = '';
 
             setTimeout(this.clearNotice,5000)
@@ -88,6 +90,8 @@ Vue.component('status', {
                         this.$root.setUserData(response.data.content.users)
                         this.setLocalComment(response.data.content.comments);
                     }
+
+                    this.clearPostComment();
             });
         },
         isValidComment: function () {
