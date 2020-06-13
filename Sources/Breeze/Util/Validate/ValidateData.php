@@ -6,15 +6,17 @@ namespace Breeze\Util\Validate;
 
 use \Breeze\Traits\RequestTrait;
 use Breeze\Entity\SettingsEntity;
+use Breeze\Service\UserServiceInterface;
 use Breeze\Traits\PersistenceTrait;
+use Breeze\Traits\TextTrait;
 
 abstract class ValidateData
 {
 	use RequestTrait;
+	use TextTrait;
 	use PersistenceTrait;
 
 	protected const ALL_STEPS = [
-		'clean',
 		'compare',
 		'isInt',
 		'isString',
@@ -25,6 +27,19 @@ abstract class ValidateData
 	protected $steps = [];
 
 	protected $params = [];
+
+	protected $data;
+
+	/**
+	 * @var UserServiceInterface
+	 */
+	private $userService;
+
+	public function __construct(UserServiceInterface $userService, array $data)
+	{
+		$this->data = $data;
+		$this->userService = $userService;
+	}
 
 	public abstract function getParams(): array;
 
@@ -38,16 +53,29 @@ abstract class ValidateData
 
 	public abstract function successKeyString(): string;
 
+	public function getData(): array
+	{
+		return $this->data;
+	}
+
 	public function getSteps(): array
 	{
 		return $this->steps ?? self::ALL_STEPS;
 	}
 
+	/**
+	 * @throws ValidateDataException
+	 */
 	public function clean(): void
 	{
 		$this->data = array_filter($this->sanitize($this->data));
+
+		$this->compare();
 	}
 
+	/**
+	 * @throws ValidateDataException
+	 */
 	public function isInt(): void
 	{
 		foreach ($this->getInts() as $integerValueName)
@@ -55,6 +83,9 @@ abstract class ValidateData
 				throw new ValidateDataException('malformed_data');
 	}
 
+	/**
+	 * @throws ValidateDataException
+	 */
 	public function isString(): void
 	{
 		foreach ($this->getStrings() as $stringValueName)
@@ -62,6 +93,9 @@ abstract class ValidateData
 				throw new ValidateDataException('malformed_data');
 	}
 
+	/**
+	 * @throws ValidateDataException
+	 */
 	public function areValidUsers(): void
 	{
 		$usersIds = array_map(
@@ -77,6 +111,9 @@ abstract class ValidateData
 			throw new ValidateDataException('invalid_users');
 	}
 
+	/**
+	 * @throws ValidateDataException
+	 */
 	public function floodControl(): void
 	{
 		$posterId = $this->getPosterId();
@@ -102,7 +139,10 @@ abstract class ValidateData
 			$this->unsetPersistenceValue($floodKeyName);
 	}
 
-	protected function compare(): void
+	/**
+	 * @throws ValidateDataException
+	 */
+	public function compare(): void
 	{
 		if (!empty(array_diff_key($this->getParams(), $this->data)))
 			throw new ValidateDataException('incomplete_data');

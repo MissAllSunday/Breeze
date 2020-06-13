@@ -18,7 +18,7 @@ use Breeze\Service\CommentService;
 use Breeze\Service\MoodService;
 use Breeze\Service\StatusService;
 use Breeze\Service\UserService;
-use Breeze\Util\Validate\PostComment;
+use Breeze\Util\Validate\ValidateGateway;
 
 return [
 	'controller.admin' => [
@@ -47,7 +47,7 @@ return [
 		'arguments'=> [
 			CommentService::class,
 			UserService::class,
-			PostComment::class
+			ValidateGateway::class
 		]
 	],
 	'controller.user.alerts' => [

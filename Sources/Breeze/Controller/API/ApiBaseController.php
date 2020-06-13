@@ -22,6 +22,7 @@ abstract class ApiBaseController extends BaseController
 
 	public function subActionCall(): void
 	{
+		$this->gateway->setData();
 		$subActions = $this->getSubActions();
 		$subAction = $this->getRequest('sa', $this->getMainAction());
 

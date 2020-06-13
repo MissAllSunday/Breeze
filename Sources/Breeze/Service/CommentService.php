@@ -8,7 +8,7 @@ namespace Breeze\Service;
 use Breeze\Entity\CommentEntity;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
-use Breeze\Util\Validate\PostComment;
+use Breeze\Util\Validate\Validations\PostComment;
 
 class CommentService  extends BaseService  implements CommentServiceInterface
 {

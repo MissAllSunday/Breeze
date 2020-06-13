@@ -11,7 +11,7 @@ use Breeze\Util\Form\Formatters\CheckFormatter;
 use Breeze\Util\Form\Formatters\IntFormatter;
 use Breeze\Util\Form\Formatters\SelectFormatter;
 use Breeze\Util\Form\Formatters\TextFormatter;
-use Breeze\Util\Validate\PostComment;
+use Breeze\Util\Validate\ValidateGateway;
 
 return [
 	'util.folder' => [
@@ -29,8 +29,8 @@ return [
 	'util.formatter.text' => [
 		'class' => TextFormatter::class
 	],
-	'util.validate.comment' => [
-		'class' => PostComment::class,
+	'util.validate.gateway' => [
+		'class' => ValidateGateway::class,
 		'arguments'=> [UserService::class]
 	],
 ];

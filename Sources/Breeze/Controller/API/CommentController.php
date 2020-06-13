@@ -46,8 +46,6 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 
 	public function dispatch(): void
 	{
-		$this->gateway->setData();
-
 		$this->subActionCall();
 	}
 

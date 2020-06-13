@@ -7,6 +7,8 @@ namespace Breeze\Util\Validate;
 
 interface ValidateGatewayInterface
 {
+	public function isValid(): bool;
+
 	public function setValidator(string $validatorName): bool;
 
 	public function setData(): void;

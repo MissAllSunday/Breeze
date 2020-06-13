@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Validate;
+namespace Breeze\Util\Validate\Validations;
 
 use Breeze\Util\Permissions;
+use Breeze\Util\Validate\ValidateData;
+use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\ValidateDataInterface;
 
 class PostComment extends ValidateData implements ValidateDataInterface
 {
@@ -26,15 +29,15 @@ class PostComment extends ValidateData implements ValidateDataInterface
 
 	public function successKeyString(): string
 	{
-		return self::INFO_TYPE . '_' . self::SUCCESS_KEY;
+		return self::SUCCESS_KEY;
 	}
 
 	public function getSteps(): array
 	{
-		$this->steps = self::STEPS;
-		$steps[] = 'permissions';
+		$this->steps = self::ALL_STEPS;
+		$this->steps[] = 'permissions';
 
-		return $steps;
+		return $this->steps;
 	}
 
 	public function setSteps(array $customSteps): void
@@ -42,6 +45,9 @@ class PostComment extends ValidateData implements ValidateDataInterface
 		$this->steps = $customSteps;
 	}
 
+	/**
+	 * @throws ValidateDataException
+	 */
 	public function permissions(): void
 	{
 		if (!Permissions::isAllowedTo(Permissions::POST_COMMENTS))

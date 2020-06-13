@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 use Breeze\Service\UserService;
 use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\Validations\PostComment;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class ValidateCommentTest extends TestCase
+class PostCommentTest extends TestCase
 {
-	/**
-	 * @var CreateComment
-	 */
-	private $validateComment;
-
 	/**
 	 * @var MockBuilder|UserService
 	 */
@@ -23,8 +19,6 @@ class ValidateCommentTest extends TestCase
 	public function setUp(): void
 	{
 		$this->userService = $this->getMockInstance(UserService::class);
-
-		$this->validateComment = new CreateComment($this->userService);
 	}
 
 	/**
@@ -32,23 +26,32 @@ class ValidateCommentTest extends TestCase
 	 */
 	public function testClean(array $data, bool $isExpectedException): void
 	{
-		$this->validateComment->setData($data);
+		$validateComment = new PostComment($this->userService, $data);
 
 		if ($isExpectedException)
 		{
 			$this->expectException(ValidateDataException::class);
 
-			$this->validateComment->clean();
+			$validateComment->clean();
 		}
 
 		else
-			$this->assertNull($this->validateComment->clean());
-
+			$this->assertNull($validateComment->clean());
 	}
 
 	public function cleanProvider(): array
 	{
 		return [
+			'empty values' => [
+				'data' => [
+					'posterId' => 0,
+					'statusOwnerId' => '0',
+					'profileOwnerId' => '',
+					'statusId' => '666',
+					'body' => 'LOL',
+				],
+				'isExpectedException' => true,
+			],
 			'happy path' => [
 				'data' => [
 					'posterId' => 1,
@@ -65,16 +68,6 @@ class ValidateCommentTest extends TestCase
 				],
 				'isExpectedException' => true,
 			],
-			'empty values' => [
-				'data' => [
-					'posterId' => 0,
-					'statusOwnerId' => '0',
-					'profileOwnerId' => '',
-					'statusId' => '666',
-					'body' => 'LOL',
-				],
-				'isExpectedException' => true,
-			],
 		];
 	}
 
@@ -83,17 +76,17 @@ class ValidateCommentTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, bool $isExpectedException): void
 	{
-		$this->validateComment->setData($data);
+		$validateComment = new PostComment($this->userService, $data);
 
 		if ($isExpectedException)
 		{
 			$this->expectException(ValidateDataException::class);
 
-			$this->validateComment->isInt();
+			$validateComment->isInt();
 		}
 
 		else
-			$this->assertNull($this->validateComment->isInt());
+			$this->assertNull($validateComment->isInt());
 	}
 
 	public function IsValidIntProvider(): array
@@ -127,17 +120,17 @@ class ValidateCommentTest extends TestCase
 	 */
 	public function testIsValidString(array $data, bool $isExpectedException): void
 	{
-		$this->validateComment->setData($data);
+		$validateComment = new PostComment($this->userService, $data);
 
 		if ($isExpectedException)
 		{
 			$this->expectException(ValidateDataException::class);
 
-			$this->validateComment->isString();
+			$validateComment->isString();
 		}
 
 		else
-			$this->assertNull($this->validateComment->isString());
+			$this->assertNull($validateComment->isString());
 	}
 
 	public function IsValidStringProvider(): array
@@ -176,7 +169,8 @@ class ValidateCommentTest extends TestCase
 		bool $isExpectedException
 	): void
 	{
-		$this->validateComment->setData($data);
+		$validateComment = new PostComment($this->userService, $data);
+
 		$this->userService->expects($this->once())
 			->method('getUsersToLoad')
 			->with($with)
@@ -186,11 +180,11 @@ class ValidateCommentTest extends TestCase
 		{
 			$this->expectException(ValidateDataException::class);
 
-			$this->validateComment->areValidUsers();
+			$validateComment->areValidUsers();
 		}
 
 		else
-			$this->assertNull($this->validateComment->areValidUsers());
+			$this->assertNull($validateComment->areValidUsers());
 	}
 
 	public function areValidUsersProvider(): array
@@ -243,17 +237,17 @@ class ValidateCommentTest extends TestCase
 	 */
 	public function testFloodControl(array $data, bool $isExpectedException): void
 	{
-		$this->validateComment->setData($data);
+		$validateComment = new PostComment($this->userService, $data);
 
 		if ($isExpectedException)
 		{
 			$this->expectException(ValidateDataException::class);
 
-			$this->validateComment->floodControl();
+			$validateComment->floodControl();
 		}
 
 		else
-			$this->assertNull($this->validateComment->floodControl());
+			$this->assertNull($validateComment->floodControl());
 	}
 
 	public function floodControlProvider(): array
@@ -307,10 +301,10 @@ class ValidateCommentTest extends TestCase
 	 */
 	public function testPermissions(array $data): void
 	{
-		$this->validateComment->setData($data);
+		$validateComment = new PostComment($this->userService, $data);
 
 		$this->expectException(ValidateDataException::class);
-		$this->validateComment->permissions();
+		$validateComment->permissions();
 	}
 
 	public function permissionsProvider(): array

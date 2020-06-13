@@ -57,6 +57,7 @@ class ValidateGateway implements ValidateGatewayInterface
 
 			try {
 				$this->{$step}();
+				$this->data = $this->validator->getData();
 			} catch (ValidateDataException $e) {
 				$this->setNotice([
 					'message' => sprintf(
@@ -71,12 +72,15 @@ class ValidateGateway implements ValidateGatewayInterface
 
 		$this->setNotice([
 			'type' => self::INFO_TYPE,
-			'message' => $this->getText($this->validator->successKeyString())
+			'message' => $this->getText(self::INFO_TYPE . '_' . $this->validator->successKeyString())
 		]);
 
 		return true;
 	}
 
+	/**
+	 * @throws ValidateDataException
+	 */
 	public function setValidator(string $validatorName): bool
 	{
 		$validatorName = ucfirst($validatorName);
@@ -84,7 +88,7 @@ class ValidateGateway implements ValidateGatewayInterface
 		if (!is_subclass_of($validatorName, ValidateDataInterface::class))
 			throw new ValidateDataException('error_no_validator');
 
-		$this->validator = new $validatorName();
+		$this->validator = new $validatorName($this->data);
 
 		return true;
 	}

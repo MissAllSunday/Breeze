@@ -6,29 +6,11 @@ namespace Breeze\Util\Validate;
 
 interface ValidateDataInterface
 {
-	public function isValid(): bool;
+	public function successKeyString(): string;
 
 	public function getSteps(): array;
 
 	public function setSteps(array $customSteps): void;
 
-	public function getParams(): array;
-
-	public function response(): array;
-
-	public function setData(array $data): void;
-
 	public function getData(): array;
-
-	public function getRawData(): void;
-
-	public function getInts(): array;
-
-	public function getStrings(): array;
-
-	public function getPosterId(): int;
-
-	public function getUserIdsNames(): array;
-
-	public function permissions(): void;
 }
