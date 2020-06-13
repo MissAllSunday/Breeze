@@ -82,7 +82,9 @@ class ValidateGateway implements ValidateGatewayInterface
 		$validatorName = ucfirst($validatorName);
 
 		if (!is_subclass_of($validatorName, ValidateDataInterface::class))
-			return false;
+		{
+			throw new ValidateDataException('error_no_validator');
+		}
 
 
 		$this->validator = new $validatorName();

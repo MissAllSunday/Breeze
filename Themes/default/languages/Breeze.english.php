@@ -149,6 +149,7 @@ $txt['Breeze_error_already_deleted_status'] = 'This status was already deleted. 
 $txt['Breeze_error_already_deleted_comment'] = 'This comment was already deleted. Try refreshing your browser.';
 $txt['Breeze_error_already_deleted_noti'] = 'This notification was already deleted. Try refreshing your browser.';
 $txt['Breeze_error_already_marked_noti'] = 'This notification was marked as read already. Try refreshing your browser.';
+$txt['Breeze_error_no_validator'] = 'There isn\'t a validator registered for this call';
 $txt['Breeze_error_postStatus'] = 'You aren\'t allowed to post new Status.';
 $txt['Breeze_error_postComments'] = 'You aren\'t allowed to post new Comments.';
 $txt['Breeze_error_no_valid_action'] = 'This is not a valid action.';
