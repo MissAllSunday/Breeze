@@ -8,6 +8,8 @@ namespace Breeze\Service;
 use Breeze\Entity\CommentEntity;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Util\Validate\ValidateGateway;
+use Breeze\Util\Validate\Validations\DeleteComment;
 use Breeze\Util\Validate\Validations\PostComment;
 
 class CommentService  extends BaseService  implements CommentServiceInterface
@@ -55,6 +57,30 @@ class CommentService  extends BaseService  implements CommentServiceInterface
 		return [
 			'users' => $this->userService->loadUsersInfo(array_unique($comment['usersIds'])),
 			'comments' => $comment['data'],
+		];
+	}
+
+	public function deleteById(array $commentData): array
+	{
+		$comment = $this->commentRepository->getById($commentData[DeleteComment::PARAM_COMMENT_ID]);
+
+		if (empty($comment))
+			return [
+				'type' => ValidateGateway::ERROR_TYPE,
+				'message' => $this->getText('error_already_deleted_comment')
+			];
+
+		if ($comment['comments_poster_id'] !== $commentData['posterId'])
+			return [
+				'type' => ValidateGateway::ERROR_TYPE,
+				'message' => $this->getText('error_deleteComments')
+			];
+
+		$this->commentRepository->deleteById($commentData[DeleteComment::PARAM_COMMENT_ID]);
+
+		return [
+			'type' => ValidateGateway::INFO_TYPE,
+			'message' => $this->getText('info_deleted_comment')
 		];
 	}
 }

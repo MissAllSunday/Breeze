@@ -8,6 +8,7 @@ Vue.component('comment', {
         </div>
         <div class='comment_date_info floatright smalltext'>
             {{comment.comments_time | formatDate}}
+            <span class="main_icons remove_button floatright" v-on:click="deleteComment()"></span>
         </div>
         <div class='clear comment_content'>
             <hr>
@@ -22,6 +23,19 @@ Vue.component('comment', {
     methods: {
         avatarImage: function (posterImageHref) {
             return { backgroundImage: 'url(' + posterImageHref + ')' }
+        },
+        deleteComment: function () {
+            if (!confirm(smf_you_sure))
+                return;
+
+            axios.post(smf_scripturl + '?action=breezeComment;sa=deleteComment;'+ smf_session_var +'='+ smf_session_id,
+                {
+                    commentId: this.comment.comments_id,
+                    posterId: this.comment_poster_data.id
+                }).then(response => {
+
+                console.log(response);
+            });
         }
     }
 })

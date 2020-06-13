@@ -14,4 +14,8 @@ interface CommentRepositoryInterface
 	public function getByStatus(array $statusIds = []): void;
 
 	public function getById(int $commentId): array;
+
+	public function deleteById(int $commentId): void;
+
+	public function cleanCache(string $cacheName): void;
 }

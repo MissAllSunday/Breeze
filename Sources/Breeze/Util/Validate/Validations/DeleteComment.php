@@ -15,7 +15,7 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	public const PARAM_POSTER_ID = 'posterId';
 
 	public $steps = [
-		'compare',
+		'clean',
 		'isInt',
 		'permissions'
 	];

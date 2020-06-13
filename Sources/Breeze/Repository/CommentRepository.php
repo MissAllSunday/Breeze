@@ -50,15 +50,25 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 	public function getById(int $commentId): array
 	{
-		$comment = $this->commentModel->getByIds([$commentId]);
+		$comment = $this->getCache(__METHOD__ . $commentId);
 
 		if (null === $comment)
 		{
 			$comment = $this->commentModel->getByIds([$commentId]);
 
-			$this->setCache($this->cacheKey(__METHOD__), $comment);
+			$this->setCache($this->cacheKey(__METHOD__ . $commentId), $comment);
 		}
 
 		return $comment;
+	}
+
+	public function deleteById(int $commentId): void
+	{
+		$this->commentModel->delete([$commentId]);
+	}
+
+	public function cleanCache(string $cacheName): void
+	{
+		$this->setCache($cacheName, null);
 	}
 }

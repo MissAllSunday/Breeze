@@ -8,4 +8,6 @@ namespace Breeze\Service;
 interface CommentServiceInterface extends BaseServiceInterface
 {
 	public function saveAndGet(array $data): array;
+
+	public function getById(int $commentId): array;
 }

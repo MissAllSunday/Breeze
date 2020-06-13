@@ -10,11 +10,12 @@ use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\ValidateGateway;
 use Breeze\Util\Validate\ValidateGatewayInterface;
+use Breeze\Util\Validate\Validations\DeleteComment;
 
 class CommentController extends ApiBaseController implements ApiBaseInterface
 {
 	public const ACTION_POST_COMMENT = 'postComment';
-	public const ACTION_DELETE = 'delete';
+	public const ACTION_DELETE = 'deleteComment';
 	public const SUB_ACTIONS = [
 		self::ACTION_POST_COMMENT,
 		self::ACTION_DELETE,
@@ -80,6 +81,8 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 	{
 		if (!$this->gateway->isValid())
 			$this->print($this->gateway->response());
+
+		$this->print($this->commentService->deleteById($this->gateway->getData()));
 	}
 
 	public function render(string $subTemplate, array $params): void {}
