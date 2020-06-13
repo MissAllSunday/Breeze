@@ -16,7 +16,7 @@ trait CacheTrait
 		);
 	}
 
-	public function setCache(string $key, array $data, int $timeToLive = 360): void
+	public function setCache(string $key, ?array $data, int $timeToLive = 360): void
 	{
 		cache_put_data(Breeze::PATTERN . $key, $data, $timeToLive);
 	}
