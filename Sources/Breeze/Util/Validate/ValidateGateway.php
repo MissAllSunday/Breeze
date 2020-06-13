@@ -56,7 +56,7 @@ class ValidateGateway implements ValidateGatewayInterface
 				continue;
 
 			try {
-				$this->{$step}();
+				$this->validator->{$step}();
 				$this->data = $this->validator->getData();
 			} catch (ValidateDataException $e) {
 				$this->setNotice([
@@ -83,12 +83,12 @@ class ValidateGateway implements ValidateGatewayInterface
 	 */
 	public function setValidator(string $validatorName): bool
 	{
-		$validatorName = ucfirst($validatorName);
+		$validatorName = 'Breeze\Util\Validate\Validations\\' . ucfirst($validatorName);
 
-		if (!is_subclass_of($validatorName, ValidateDataInterface::class))
+		$this->validator = new $validatorName($this->userService, $this->data);
+
+		if (!($this->validator instanceof ValidateDataInterface))
 			throw new ValidateDataException('error_no_validator');
-
-		$this->validator = new $validatorName($this->data);
 
 		return true;
 	}
