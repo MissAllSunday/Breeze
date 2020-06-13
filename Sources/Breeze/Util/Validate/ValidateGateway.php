@@ -82,14 +82,16 @@ class ValidateGateway implements ValidateGatewayInterface
 		$validatorName = ucfirst($validatorName);
 
 		if (!is_subclass_of($validatorName, ValidateDataInterface::class))
-		{
 			throw new ValidateDataException('error_no_validator');
-		}
-
 
 		$this->validator = new $validatorName();
 
 		return true;
+	}
+
+	public function response(): array
+	{
+		return $this->notice;
 	}
 
 	public function setData(): void
@@ -108,7 +110,7 @@ class ValidateGateway implements ValidateGatewayInterface
 		return $this->notice;
 	}
 
-	protected function setNotice(array $notice): void
+	public function setNotice(array $notice): void
 	{
 		$this->notice = array_merge($this->notice, $notice);
 	}

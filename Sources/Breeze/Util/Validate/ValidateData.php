@@ -102,11 +102,6 @@ abstract class ValidateData
 			$this->unsetPersistenceValue($floodKeyName);
 	}
 
-	public function response(): array
-	{
-		return $this->notice;
-	}
-
 	protected function compare(): void
 	{
 		if (!empty(array_diff_key($this->getParams(), $this->data)))

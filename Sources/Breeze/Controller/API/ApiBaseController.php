@@ -18,7 +18,7 @@ abstract class ApiBaseController extends BaseController
 	/**
 	 * @var ValidateGatewayInterface
 	 */
-	private $gateway;
+	protected $gateway;
 
 	public function subActionCall(): void
 	{

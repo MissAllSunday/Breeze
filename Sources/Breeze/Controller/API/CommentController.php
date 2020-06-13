@@ -53,26 +53,19 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 
 	public function postComment(): void
 	{
-		$this->validateData->setSteps([
-			'clean',
-			'is'
-		]);
-
-		if (!$this->validateData->isValid())
-			$this->print($this->validateData->response());
-
-		$commentData = $this->validateData->getData();
+		if (!$this->gateway->isValid())
+			$this->print($this->gateway->response());
 
 		$this->print(array_merge(
-			$this->validateData->response(),
-			['content' => $this->commentService->saveAndGet($commentData),]
+			$this->gateway->response(),
+			['content' => $this->commentService->saveAndGet($this->gateway->getData())]
 		));
 	}
 
 	public function delete(): void
 	{
-		if (!$this->validateData->isValid())
-			$this->print($this->validateData->response());
+		if (!$this->gateway->isValid())
+			$this->print($this->gateway->response());
 	}
 
 	public function render(string $subTemplate, array $params): void {}

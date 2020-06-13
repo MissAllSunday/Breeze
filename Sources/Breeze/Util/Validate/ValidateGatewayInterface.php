@@ -12,4 +12,10 @@ interface ValidateGatewayInterface
 	public function setData(): void;
 
 	public function getData(): array;
+
+	public function getNotice(): array;
+
+	public function setNotice(array $notice): void;
+
+	public function response(): array;
 }
