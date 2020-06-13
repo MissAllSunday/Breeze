@@ -20,30 +20,6 @@ abstract class ApiBaseController extends BaseController
 	 */
 	protected $gateway;
 
-	public function subActionCall(): void
-	{
-		$this->gateway->setData();
-		$subActions = $this->getSubActions();
-		$subAction = $this->getRequest('sa', $this->getMainAction());
-
-		try {
-			$this->gateway->setValidator((string) $subAction);
-		} catch (ValidateDataException $exception) {
-			$this->print([
-				'type' => ValidateGateway::ERROR_TYPE,
-				'message' => $this->getText($exception->getMessage())
-			]);
-
-			return;
-		}
-
-		if (in_array($subAction, $subActions))
-			$this->$subAction();
-
-		else
-			$this->{$this->getMainAction()}();
-	}
-
 	public function print(array $responseData): void
 	{
 		$smcFunc = $this->global('smcFunc');
