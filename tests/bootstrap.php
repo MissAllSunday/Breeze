@@ -7,7 +7,7 @@ define('SMF', true);
 
 // mock globals used by SMF
 global $sourcedir, $scripturl, $modSettings;
-global $boarddir, $boardurl, $context, $txt, $smcFunc;
+global $boarddir, $boardurl, $context, $txt, $smcFunc, $user_info;
 
 // Function DB
 $smcFunc['htmltrim'] = function($value)
@@ -35,7 +35,9 @@ function allowedTo($permissionName)
 	$dummyPermissions = [
 		'nope' => false,
 		'yep' => true,
-		'postComments' => false
+		'postComments' => false,
+		'deleteComments' => false,
+		'deleteOwnComments' => false,
 	];
 
 	return $dummyPermissions[$permissionName];
@@ -45,6 +47,10 @@ function allowedTo($permissionName)
 $sourcedir = $scripturl = $boarddir = $boardurl = ROOT;
 
 // Mock some SMF arrays.
+$user_info = [
+	'id' => 666
+];
+
 $context = [
 	'session_var' => 'foo',
 	'session_id' => 'baz',

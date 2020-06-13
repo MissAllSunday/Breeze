@@ -76,7 +76,7 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 		));
 	}
 
-	public function delete(): void
+	public function deleteComment(): void
 	{
 		if (!$this->gateway->isValid())
 			$this->print($this->gateway->response());

@@ -136,6 +136,7 @@ $txt['Breeze_error_wrong_values'] = 'Wrong values were sent, the request couldn\
 $txt['Breeze_error_flood'] = 'You have already reached the amount of messages you can post, please try again later.';
 $txt['Breeze_info_published'] = 'Your status was successfully published';
 $txt['Breeze_info_published_comment'] = 'Your comment was successfully published!';
+$txt['Breeze_info_deleted_comment'] = 'Your comment was successfully deleted!';
 $txt['Breeze_error_empty'] = 'You need to type something!';
 $txt['Breeze_error_malformed_data'] = 'Malformed data.';
 $txt['Breeze_error_incomplete_data'] = 'Incomplete data.';
@@ -152,6 +153,8 @@ $txt['Breeze_error_already_marked_noti'] = 'This notification was marked as read
 $txt['Breeze_error_no_validator'] = 'There isn\'t a validator registered for this call';
 $txt['Breeze_error_postStatus'] = 'You aren\'t allowed to post new Status.';
 $txt['Breeze_error_postComments'] = 'You aren\'t allowed to post new Comments.';
+$txt['Breeze_error_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete status.';
+$txt['Breeze_error_deleteComments'] = 'I\'m sorry,  you aren\'t allowed to delete comments.';
 $txt['Breeze_error_no_valid_action'] = 'This is not a valid action.';
 $txt['Breeze_error_no_property'] = '%s isn\'t a valid call';
 $txt['Breeze_error_no_access'] = 'I\'m sorry, you don\'t have access to this section.';
@@ -168,7 +171,8 @@ $txt['Breeze_info_notiMulti_unmarkasread_after'] = 'You have successfully marked
 // Errors
 $txt['cannot_breeze_postStatus'] = $txt['Breeze_error_postStatus'];
 $txt['cannot_breeze_postComments'] = $txt['Breeze_error_postComments'];
-$txt['cannot_breeze_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete Status/Comments.';
+$txt['cannot_breeze_deleteStatus'] = $txt['Breeze_error_deleteStatus'] ;
+$txt['cannot_breeze_deleteComments'] = $txt['Breeze_error_deleteComments'];
 $txt['Breeze_cannot_see_general_wall'] = 'You need to enable your general wall from your <a href="' . $scripturl . '?action=profile;area=breezesettings">wall settings page</a>.';
 
 // Loading text.

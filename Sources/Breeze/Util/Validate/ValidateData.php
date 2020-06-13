@@ -33,7 +33,7 @@ abstract class ValidateData
 	/**
 	 * @var UserServiceInterface
 	 */
-	private $userService;
+	protected $userService;
 
 	public function __construct(UserServiceInterface $userService, array $data)
 	{

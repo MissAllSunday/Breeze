@@ -27,6 +27,11 @@ class UserService extends BaseService implements UserServiceInterface
 		$this->userRepository = $userRepository;
 	}
 
+	public function getCurrentUserInfo(): array
+	{
+		return $this->global('user_info');
+	}
+
 	public function getCurrentUserSettings(): array
 	{
 		$currentUserInfo = $this->global('user_info');

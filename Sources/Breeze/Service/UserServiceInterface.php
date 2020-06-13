@@ -9,6 +9,8 @@ interface UserServiceInterface extends BaseServiceInterface
 	public const AREA = 'summary';
 	public const LEGACY_AREA = 'legacy';
 
+	public function getCurrentUserInfo(): array;
+
 	public function getCurrentUserSettings(): array;
 
 	public function getUserSettings(int $userId): array;

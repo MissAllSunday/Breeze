@@ -7,8 +7,6 @@ namespace Breeze\Controller\API;
 
 use Breeze\Controller\BaseController;
 use Breeze\Traits\TextTrait;
-use Breeze\Util\Validate\ValidateDataException;
-use Breeze\Util\Validate\ValidateGateway;
 use Breeze\Util\Validate\ValidateGatewayInterface;
 
 abstract class ApiBaseController extends BaseController
