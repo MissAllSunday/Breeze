@@ -7,10 +7,29 @@ namespace Breeze\Controller\API;
 
 use Breeze\Controller\BaseController;
 use Breeze\Traits\TextTrait;
+use Breeze\Util\Validate\ValidateGatewayInterface;
 
 abstract class ApiBaseController extends BaseController
 {
 	use TextTrait;
+
+	/**
+	 * @var ValidateGatewayInterface
+	 */
+	private $gateway;
+
+	public function subActionCall(): void
+	{
+		$subActions = $this->getSubActions();
+		$subAction = $this->getRequest('sa', $this->getMainAction());
+		$this->gateway->setValidator((string) $subAction);
+
+		if (in_array($subAction, $subActions))
+			$this->$subAction();
+
+		else
+			$this->{$this->getMainAction()}();
+	}
 
 	public function print(array $responseData): void
 	{

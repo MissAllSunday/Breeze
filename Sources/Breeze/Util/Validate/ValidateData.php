@@ -5,55 +5,26 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate;
 
 use \Breeze\Traits\RequestTrait;
-use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
-use Breeze\Service\UserServiceInterface;
 use Breeze\Traits\PersistenceTrait;
-use Breeze\Traits\TextTrait;
 
 abstract class ValidateData
 {
 	use RequestTrait;
-	use TextTrait;
 	use PersistenceTrait;
-	
-	public const ERROR_TYPE = 'error';
-	public const NOTICE_TYPE = 'notice';
-	public const INFO_TYPE = 'info';
-	public const DEFAULT_ERROR_KEY = self::ERROR_TYPE . '_server';
 
-	public const MESSAGE_TYPES = [
-		self::ERROR_TYPE,
-		self::NOTICE_TYPE,
-		self::INFO_TYPE,
-	];
-
-	protected const STEPS = [
+	protected const ALL_STEPS = [
 		'clean',
+		'compare',
 		'isInt',
 		'isString',
 		'areValidUsers',
 		'floodControl',
 	];
 
-	public $data = [];
+	protected $steps = [];
 
-	protected $notice = [
-		'type' => self::ERROR_TYPE,
-		'message' => self::DEFAULT_ERROR_KEY,
-	];
-
-	/**
-	 * @var UserServiceInterface
-	 */
-	private $userService;
-
-	public function __construct(UserServiceInterface $userService)
-	{
-		$this->setLanguage(Breeze::NAME);
-
-		$this->userService = $userService;
-	}
+	protected $params = [];
 
 	public abstract function getParams(): array;
 
@@ -69,43 +40,12 @@ abstract class ValidateData
 
 	public function getSteps(): array
 	{
-		return self::STEPS;
-	}
-
-	public function isValid(): bool
-	{
-		foreach ($this->getSteps() as $step)
-		{
-			if (!method_exists($this, $step))
-				continue;
-
-			try {
-				$this->{$step}();
-			} catch (ValidateDataException $e) {
-				$this->setNotice([
-					'message' => sprintf(
-						$this->getText(self::DEFAULT_ERROR_KEY),
-						$this->getText(self::ERROR_TYPE . '_' . $e->getMessage())
-					),
-				]);
-
-				return false;
-			}
-		}
-
-		$this->setNotice([
-			'type' => self::INFO_TYPE,
-			'message' => $this->getText($this->successKeyString())
-		]);
-
-		return true;
+		return $this->steps ?? self::ALL_STEPS;
 	}
 
 	public function clean(): void
 	{
 		$this->data = array_filter($this->sanitize($this->data));
-
-		$this->compare();
 	}
 
 	public function isInt(): void
@@ -165,32 +105,6 @@ abstract class ValidateData
 	public function response(): array
 	{
 		return $this->notice;
-	}
-
-	public function getRawData(): void
-	{
-		$rawData = json_decode(file_get_contents('php://input'), true) ?? [];
-		$this->data = array_filter($rawData);
-	}
-
-	public function setData(array $data): void
-	{
-		$this->data = $data;
-	}
-
-	public function getData(): array
-	{
-		return $this->data;
-	}
-
-	public function getNotice(): array
-	{
-		return $this->notice;
-	}
-
-	protected function setNotice(array $notice): void
-	{
-		$this->notice = array_merge($this->notice, $notice);
 	}
 
 	protected function compare(): void

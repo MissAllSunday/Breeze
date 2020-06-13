@@ -11,7 +11,7 @@ use Breeze\Util\Form\Formatters\CheckFormatter;
 use Breeze\Util\Form\Formatters\IntFormatter;
 use Breeze\Util\Form\Formatters\SelectFormatter;
 use Breeze\Util\Form\Formatters\TextFormatter;
-use Breeze\Util\Validate\ValidateComment;
+use Breeze\Util\Validate\PostComment;
 
 return [
 	'util.folder' => [
@@ -30,7 +30,7 @@ return [
 		'class' => TextFormatter::class
 	],
 	'util.validate.comment' => [
-		'class' => ValidateComment::class,
+		'class' => PostComment::class,
 		'arguments'=> [UserService::class]
 	],
 ];

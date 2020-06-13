@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Breeze\Service\UserService;
-use Breeze\Util\Validate\ValidateComment as ValidateComment;
 use Breeze\Util\Validate\ValidateDataException;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -12,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class ValidateCommentTest extends TestCase
 {
 	/**
-	 * @var ValidateComment
+	 * @var CreateComment
 	 */
 	private $validateComment;
 
@@ -25,7 +24,7 @@ class ValidateCommentTest extends TestCase
 	{
 		$this->userService = $this->getMockInstance(UserService::class);
 
-		$this->validateComment = new ValidateComment($this->userService);
+		$this->validateComment = new CreateComment($this->userService);
 	}
 
 	/**

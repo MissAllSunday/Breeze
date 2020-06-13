@@ -6,7 +6,7 @@ namespace Breeze\Util\Validate;
 
 use Breeze\Util\Permissions;
 
-class ValidateComment extends ValidateData implements ValidateDataInterface
+class PostComment extends ValidateData implements ValidateDataInterface
 {
 	public const PARAM_POSTER_ID = 'posterId';
 	public const PARAM_STATUS_OWNER_ID = 'statusOwnerId';
@@ -31,10 +31,15 @@ class ValidateComment extends ValidateData implements ValidateDataInterface
 
 	public function getSteps(): array
 	{
-		$steps = self::STEPS;
+		$this->steps = self::STEPS;
 		$steps[] = 'permissions';
 
 		return $steps;
+	}
+
+	public function setSteps(array $customSteps): void
+	{
+		$this->steps = $customSteps;
 	}
 
 	public function permissions(): void

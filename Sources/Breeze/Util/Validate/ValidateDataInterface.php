@@ -10,6 +10,8 @@ interface ValidateDataInterface
 
 	public function getSteps(): array;
 
+	public function setSteps(array $customSteps): void;
+
 	public function getParams(): array;
 
 	public function response(): array;
