@@ -155,6 +155,6 @@ abstract class ValidateData
 
 	public static function getNameSpace(): string
 	{
-		return __NAMESPACE__;
+		return __NAMESPACE__ . '\\';
 	}
 }

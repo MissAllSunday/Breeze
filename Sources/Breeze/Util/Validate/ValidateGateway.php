@@ -65,7 +65,7 @@ class ValidateGateway implements ValidateGatewayInterface
 				$this->setNotice([
 					'message' => sprintf(
 						$this->getText(self::DEFAULT_ERROR_KEY),
-						$this->getText(self::ERROR_TYPE . '_' . $e->getMessage())
+						$this->getText($e->getMessage())
 					),
 				]);
 
@@ -75,7 +75,7 @@ class ValidateGateway implements ValidateGatewayInterface
 				$this->setNotice([
 					'message' => sprintf(
 						$this->getText(self::DEFAULT_ERROR_KEY),
-						$this->getText($e->getMessage())
+						$this->getText(self::ERROR_TYPE . '_' . $e->getMessage())
 					),
 				]);
 

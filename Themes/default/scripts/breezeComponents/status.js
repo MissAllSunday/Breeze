@@ -11,7 +11,7 @@ Vue.component('status', {
                 comments_status_owner_id: this.status_item.status_poster_id,
                 comments_profile_id: this.status_item.status_owner_id,
                 comments_status_id: this.status_item.status_id,
-                body: '',
+                comments_body: '',
             },
         }
     },
