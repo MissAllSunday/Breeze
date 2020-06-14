@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Breeze\Service\CommentService as CommentService;
 use Breeze\Service\UserService;
 use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\PostComment;
@@ -16,9 +17,22 @@ class PostCommentTest extends TestCase
 	 */
 	private $userService;
 
+	/**
+	 * @var MockObject|CommentService
+	 */
+	private $commentService;
+
+	/**
+	 * @var PostComment
+	 */
+	private $postComment;
+
 	public function setUp(): void
 	{
 		$this->userService = $this->getMockInstance(UserService::class);
+		$this->commentService = $this->getMockInstance(CommentService::class);
+
+		$this->postComment = new PostComment($this->userService, $this->commentService);
 	}
 
 	/**
@@ -26,17 +40,17 @@ class PostCommentTest extends TestCase
 	 */
 	public function testClean(array $data, bool $isExpectedException): void
 	{
-		$validateComment = new PostComment($this->userService, $data);
+		$this->postComment->setData($data);
 
 		if ($isExpectedException)
 		{
 			$this->expectException(ValidateDataException::class);
 
-			$validateComment->clean();
+			$this->postComment->clean();
 		}
 
 		else
-			$this->assertNull($validateComment->clean());
+			$this->assertNull($this->postComment->clean());
 	}
 
 	public function cleanProvider(): array
@@ -76,17 +90,17 @@ class PostCommentTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, bool $isExpectedException): void
 	{
-		$validateComment = new PostComment($this->userService, $data);
+		$this->postComment->setData($data);
 
 		if ($isExpectedException)
 		{
 			$this->expectException(ValidateDataException::class);
 
-			$validateComment->isInt();
+			$this->postComment->isInt();
 		}
 
 		else
-			$this->assertNull($validateComment->isInt());
+			$this->assertNull($this->postComment->isInt());
 	}
 
 	public function IsValidIntProvider(): array
@@ -120,17 +134,17 @@ class PostCommentTest extends TestCase
 	 */
 	public function testIsValidString(array $data, bool $isExpectedException): void
 	{
-		$validateComment = new PostComment($this->userService, $data);
+		$this->postComment->setData($data);
 
 		if ($isExpectedException)
 		{
 			$this->expectException(ValidateDataException::class);
 
-			$validateComment->isString();
+			$this->postComment->isString();
 		}
 
 		else
-			$this->assertNull($validateComment->isString());
+			$this->assertNull($this->postComment->isString());
 	}
 
 	public function IsValidStringProvider(): array
@@ -169,7 +183,7 @@ class PostCommentTest extends TestCase
 		bool $isExpectedException
 	): void
 	{
-		$validateComment = new PostComment($this->userService, $data);
+		$this->postComment->setData($data);
 
 		$this->userService->expects($this->once())
 			->method('getUsersToLoad')
@@ -180,11 +194,11 @@ class PostCommentTest extends TestCase
 		{
 			$this->expectException(ValidateDataException::class);
 
-			$validateComment->areValidUsers();
+			$this->postComment->areValidUsers();
 		}
 
 		else
-			$this->assertNull($validateComment->areValidUsers());
+			$this->assertNull($this->postComment->areValidUsers());
 	}
 
 	public function areValidUsersProvider(): array
@@ -237,17 +251,17 @@ class PostCommentTest extends TestCase
 	 */
 	public function testFloodControl(array $data, bool $isExpectedException): void
 	{
-		$validateComment = new PostComment($this->userService, $data);
+		$this->postComment->setData($data);
 
 		if ($isExpectedException)
 		{
 			$this->expectException(ValidateDataException::class);
 
-			$validateComment->floodControl();
+			$this->postComment->floodControl();
 		}
 
 		else
-			$this->assertNull($validateComment->floodControl());
+			$this->assertNull($this->postComment->floodControl());
 	}
 
 	public function floodControlProvider(): array
@@ -301,10 +315,10 @@ class PostCommentTest extends TestCase
 	 */
 	public function testPermissions(array $data): void
 	{
-		$validateComment = new PostComment($this->userService, $data);
+		$this->postComment->setData($data);
 
 		$this->expectException(ValidateDataException::class);
-		$validateComment->permissions();
+		$this->postComment->permissions();
 	}
 
 	public function permissionsProvider(): array

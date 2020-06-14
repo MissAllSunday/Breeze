@@ -7,10 +7,11 @@ namespace Breeze\Controller\API;
 
 use Breeze\Service\CommentServiceInterface;
 use Breeze\Service\UserServiceInterface;
-use Breeze\Util\Validate\ValidateDataException;
-use Breeze\Util\Validate\ValidateGateway;
+use Breeze\Util\Validate\ValidateData;
+use Breeze\Util\Validate\ValidateDataInterface;
 use Breeze\Util\Validate\ValidateGatewayInterface;
 use Breeze\Util\Validate\Validations\DeleteComment;
+use Breeze\Util\Validate\Validations\PostComment;
 
 class CommentController extends ApiBaseController implements ApiBaseInterface
 {
@@ -52,16 +53,12 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 		$subAction = $this->getRequest('sa', $this->getMainAction());
 		$this->gateway->setData();
 
-		try {
-			$this->gateway->setValidator((string) $subAction);
-		} catch (ValidateDataException $exception) {
-			$this->print([
-				'type' => ValidateGateway::ERROR_TYPE,
-				'message' => $this->getText($exception->getMessage())
-			]);
+		$validatorName = ValidateData::getNameSpace() . ucfirst($subAction);
 
-			return;
-		}
+		/** @var ValidateDataInterface $validator */
+		$validator = new $validatorName($this->userService, $this->commentService);
+
+		$this->gateway->setValidator($validator);
 
 		$this->subActionCall();
 	}

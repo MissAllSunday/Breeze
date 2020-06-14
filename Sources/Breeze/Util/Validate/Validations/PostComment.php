@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations;
 
+use Breeze\Service\CommentServiceInterface;
+use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Permissions;
-use Breeze\Util\Validate\ValidateData;
 use Breeze\Util\Validate\ValidateDataException;
-use Breeze\Util\Validate\ValidateDataInterface;
 
 class PostComment extends ValidateData implements ValidateDataInterface
 {
@@ -26,6 +26,18 @@ class PostComment extends ValidateData implements ValidateDataInterface
 	];
 
 	protected const SUCCESS_KEY = 'published_comment';
+
+	/**
+	 * @var CommentServiceInterface
+	 */
+	private $commentService;
+
+	public function __construct(UserServiceInterface $userService, CommentServiceInterface $commentService)
+	{
+		$this->commentService = $commentService;
+
+		parent::__construct($userService);
+	}
 
 	public function successKeyString(): string
 	{

@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate;
 
 use Breeze\Breeze;
-use Breeze\Service\UserServiceInterface;
 use Breeze\Traits\TextTrait;
 
 class ValidateGateway implements ValidateGatewayInterface
@@ -32,20 +31,22 @@ class ValidateGateway implements ValidateGatewayInterface
 	protected $data = [];
 
 	/**
-	 * @var UserServiceInterface
-	 */
-	private $userService;
-
-	/**
 	 * @var ValidateDataInterface
 	 */
 	private $validator;
 
-	public function __construct(UserServiceInterface $userService)
+	public function __construct()
 	{
 		$this->setLanguage(Breeze::NAME);
+	}
 
-		$this->userService = $userService;
+	public function setValidator(ValidateDataInterface $validator): bool
+	{
+		$this->validator = $validator;
+
+		$this->validator->setData($this->data);
+
+		return true;
 	}
 
 	public function isValid(): bool
@@ -74,21 +75,6 @@ class ValidateGateway implements ValidateGatewayInterface
 			'type' => self::INFO_TYPE,
 			'message' => $this->getText(self::INFO_TYPE . '_' . $this->validator->successKeyString())
 		]);
-
-		return true;
-	}
-
-	/**
-	 * @throws ValidateDataException
-	 */
-	public function setValidator(string $validatorName): bool
-	{
-		$validatorName = 'Breeze\Util\Validate\Validations\\' . ucfirst($validatorName);
-
-		$this->validator = new $validatorName($this->userService, $this->data);
-
-		if (!($this->validator instanceof ValidateDataInterface))
-			throw new ValidateDataException('error_no_validator');
 
 		return true;
 	}

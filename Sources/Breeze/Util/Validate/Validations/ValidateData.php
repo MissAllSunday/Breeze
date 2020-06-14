@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Validate;
+namespace Breeze\Util\Validate\Validations;
 
 use \Breeze\Traits\RequestTrait;
 use Breeze\Entity\SettingsEntity;
@@ -35,9 +35,8 @@ abstract class ValidateData
 	 */
 	protected $userService;
 
-	public function __construct(UserServiceInterface $userService, array $data)
+	public function __construct(UserServiceInterface $userService)
 	{
-		$this->data = $data;
 		$this->userService = $userService;
 	}
 
@@ -56,6 +55,11 @@ abstract class ValidateData
 	public function getData(): array
 	{
 		return $this->data;
+	}
+
+	public function setData(array $data): void
+	{
+		$this->data = $data;
 	}
 
 	public function getSteps(): array
@@ -146,5 +150,10 @@ abstract class ValidateData
 	{
 		if (!empty(array_diff_key($this->getParams(), $this->data)))
 			throw new ValidateDataException('incomplete_data');
+	}
+
+	public static function getNameSpace(): string
+	{
+		return __NAMESPACE__;
 	}
 }

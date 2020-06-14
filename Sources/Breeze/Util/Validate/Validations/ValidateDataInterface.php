@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Validate;
+namespace Breeze\Util\Validate\Validations;
 
 interface ValidateDataInterface
 {
@@ -11,4 +11,6 @@ interface ValidateDataInterface
 	public function getSteps(): array;
 
 	public function getData(): array;
+
+	public function setData(array $data): void;
 }

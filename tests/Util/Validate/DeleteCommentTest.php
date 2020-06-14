@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Breeze\Service\CommentService;
 use Breeze\Service\UserService;
 use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\DeleteComment;
@@ -16,9 +17,22 @@ class DeleteCommentTest extends TestCase
 	 */
 	private $userService;
 
+	/**
+	 * @var MockObject|CommentService
+	 */
+	private $commentService;
+
+	/**
+	 * @var DeleteComment
+	 */
+	private $deleteComment;
+
 	public function setUp(): void
 	{
 		$this->userService = $this->getMockInstance(UserService::class);
+		$this->commentService = $this->getMockInstance(CommentService::class);
+
+		$this->deleteComment = new DeleteComment($this->userService, $this->commentService);
 	}
 
 	/**
@@ -26,17 +40,17 @@ class DeleteCommentTest extends TestCase
 	 */
 	public function testClean(array $data, bool $isExpectedException): void
 	{
-		$deleteComment = new DeleteComment($this->userService, $data);
+		$this->deleteComment->setData($data);
 
 		if ($isExpectedException)
 		{
 			$this->expectException(ValidateDataException::class);
 
-			$deleteComment->clean();
+			$this->deleteComment->clean();
 		}
 
 		else
-			$this->assertNull($deleteComment->clean());
+			$this->assertNull($this->deleteComment->clean());
 	}
 
 	public function cleanProvider(): array
@@ -70,17 +84,17 @@ class DeleteCommentTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, bool $isExpectedException): void
 	{
-		$deleteComment = new DeleteComment($this->userService, $data);
+		$this->deleteComment->setData($data);
 
 		if ($isExpectedException)
 		{
 			$this->expectException(ValidateDataException::class);
 
-			$deleteComment->isInt();
+			$this->deleteComment->isInt();
 		}
 
 		else
-			$this->assertNull($deleteComment->isInt());
+			$this->assertNull($this->deleteComment->isInt());
 	}
 
 	public function IsValidIntProvider(): array
@@ -113,7 +127,7 @@ class DeleteCommentTest extends TestCase
 		bool $isExpectedException
 	): void
 	{
-		$deleteComment = new DeleteComment($this->userService, $data);
+		$this->deleteComment->setData($data);
 
 		$this->userService->expects($this->once())
 			->method('getUsersToLoad')
@@ -124,11 +138,11 @@ class DeleteCommentTest extends TestCase
 		{
 			$this->expectException(ValidateDataException::class);
 
-			$deleteComment->areValidUsers();
+			$this->deleteComment->areValidUsers();
 		}
 
 		else
-			$this->assertNull($deleteComment->areValidUsers());
+			$this->assertNull($this->deleteComment->areValidUsers());
 	}
 
 	public function areValidUsersProvider(): array
@@ -172,10 +186,10 @@ class DeleteCommentTest extends TestCase
 			->method('getCurrentUserInfo')
 			->willReturn($userInfo);
 
-		$deleteComment = new DeleteComment($this->userService, $data);
+		$this->deleteComment->setData($data);
 
 		$this->expectException(ValidateDataException::class);
-		$deleteComment->permissions();
+		$this->deleteComment->permissions();
 	}
 
 	public function permissionsProvider(): array
