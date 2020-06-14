@@ -17,6 +17,7 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	public $steps = [
 		'clean',
 		'isInt',
+		'validUser',
 		'permissions'
 	];
 
@@ -26,6 +27,11 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	];
 
 	protected const SUCCESS_KEY = 'deleted_comment';
+
+	/**
+	 * @var array
+	 */
+	private $comment;
 
 	/**
 	 * @var CommentServiceInterface
@@ -62,6 +68,11 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 
 		if (!Permissions::isAllowedTo(Permissions::DELETE_COMMENTS))
 			throw new ValidateDataException('deleteComments');
+	}
+
+	public function validUser(): void
+	{
+		$this->comment = $this->commentService->getById()
 	}
 
 	public function getInts(): array

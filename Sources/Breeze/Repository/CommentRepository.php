@@ -19,9 +19,17 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		$this->commentModel = $commentModel;
 	}
 
+	/**
+	 * @throws InvalidCommentException
+	 */
 	public function save(array $data): int
 	{
-		return $this->commentModel->insert($data);
+		$wasSaved = $this->commentModel->insert($data);
+
+		if (!$wasSaved)
+			throw new InvalidCommentException('error_save_comment');
+
+		return $wasSaved;
 	}
 
 	public function getByProfile(int $profileOwnerId = 0): array
@@ -48,6 +56,9 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		// TODO: Implement getCommentsByStatus() method.
 	}
 
+	/**
+	 * @throws InvalidCommentException
+	 */
 	public function getById(int $commentId): array
 	{
 		$comment = $this->getCache(__METHOD__ . $commentId);
@@ -59,12 +70,25 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			$this->setCache($this->cacheKey(__METHOD__ . $commentId), $comment);
 		}
 
+		if (empty($comment))
+			throw new InvalidCommentException('error_no_comment');
+
 		return $comment;
 	}
 
-	public function deleteById(int $commentId): void
+	/**
+	 * @throws InvalidCommentException
+	 */
+	public function deleteById(int $commentId): bool
 	{
-		$this->commentModel->delete([$commentId]);
+		$wasDeleted = $this->commentModel->delete([$commentId]);
+
+		if (!$wasDeleted)
+			throw new InvalidCommentException('error_no_comment');
+
+		$this->setCache('byId' . $commentId);
+
+		return $wasDeleted;
 	}
 
 	public function cleanCache(string $cacheName): void

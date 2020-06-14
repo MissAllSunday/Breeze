@@ -7,9 +7,9 @@ namespace Breeze\Service;
 
 use Breeze\Entity\CommentEntity;
 use Breeze\Repository\CommentRepositoryInterface;
+use Breeze\Repository\InvalidCommentException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\ValidateGateway;
-use Breeze\Util\Validate\Validations\DeleteComment;
 use Breeze\Util\Validate\Validations\PostComment;
 
 class CommentService  extends BaseService  implements CommentServiceInterface
@@ -52,7 +52,14 @@ class CommentService  extends BaseService  implements CommentServiceInterface
 			CommentEntity::COLUMN_LIKES => 0,
 		]);
 
-		$comment = $this->commentRepository->getById($commentId);
+		try {
+			$comment = $this->commentRepository->getById($commentId);
+		} catch (InvalidCommentException $e) {
+			return [
+				'type' => ValidateGateway::ERROR_TYPE,
+				'message' => $e->getMessage(),
+			];
+		}
 
 		return [
 			'users' => $this->userService->loadUsersInfo(array_unique($comment['usersIds'])),
@@ -60,27 +67,19 @@ class CommentService  extends BaseService  implements CommentServiceInterface
 		];
 	}
 
-	public function deleteById(array $commentData): array
+	/**
+	 * @throws InvalidCommentException
+	 */
+	public function deleteById(int $commentId): bool
 	{
-		$comment = $this->commentRepository->getById($commentData[DeleteComment::PARAM_COMMENT_ID]);
+		return $this->commentRepository->deleteById($commentId);
+	}
 
-		if (empty($comment))
-			return [
-				'type' => ValidateGateway::ERROR_TYPE,
-				'message' => $this->getText('error_already_deleted_comment')
-			];
-
-		if ($comment['comments_poster_id'] !== $commentData['posterId'])
-			return [
-				'type' => ValidateGateway::ERROR_TYPE,
-				'message' => $this->getText('error_deleteComments')
-			];
-
-		$this->commentRepository->deleteById($commentData[DeleteComment::PARAM_COMMENT_ID]);
-
-		return [
-			'type' => ValidateGateway::INFO_TYPE,
-			'message' => $this->getText('info_deleted_comment')
-		];
+	/**
+	 * @throws InvalidCommentException
+	 */
+	public function getById(int $commentId): array
+	{
+		return $this->commentRepository->getById($commentId);
 	}
 }
