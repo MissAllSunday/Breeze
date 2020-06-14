@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Breeze\Service\CommentService;
+use Breeze\Service\StatusService;
 use Breeze\Service\UserService;
 use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\DeleteComment;
@@ -26,10 +27,13 @@ class DeleteCommentTest extends TestCase
 	{
 		$this->userService = $this->getMockInstance(UserService::class);
 
-		/** @var CommentService $commentService */
+		/**  @var MockObject|StatusService $statusService */
+		$statusService = $this->getMockInstance(StatusService::class);
+
+		/**  @var MockObject|CommentService $commentService */
 		$commentService = $this->getMockInstance(CommentService::class);
 
-		$this->deleteComment = new DeleteComment($this->userService, $commentService);
+		$this->deleteComment = new DeleteComment($this->userService, $statusService, $commentService);
 	}
 
 	/**
@@ -55,21 +59,21 @@ class DeleteCommentTest extends TestCase
 		return [
 			'empty values' => [
 				'data' => [
-					'posterId' => 0,
-					'commentId' => '0',
+					'comments_poster_id' => 0,
+					'comments_id' => '0',
 				],
 				'isExpectedException' => true,
 			],
 			'happy path' => [
 				'data' => [
-					'posterId' => 666,
-					'commentId' => 666,
+					'comments_poster_id' => 666,
+					'comments_id' => 666,
 				],
 				'isExpectedException' => false,
 			],
 			'incomplete data' => [
 				'data' => [
-					'posterId' => 1
+					'comments_poster_id' => 1
 				],
 				'isExpectedException' => true,
 			],
@@ -99,15 +103,15 @@ class DeleteCommentTest extends TestCase
 		return [
 			'happy path' => [
 				'data' => [
-					'posterId' => 666,
-					'commentId' => 666,
+					'comments_poster_id' => 666,
+					'comments_id' => 666,
 				],
 				'isExpectedException' => false,
 			],
 			'not ints' => [
 				'data' => [
-					'posterId' => '666',
-					'commentId' => 666,
+					'comments_poster_id' => '666',
+					'comments_id' => 666,
 				],
 				'isExpectedException' => true,
 			],
@@ -147,8 +151,8 @@ class DeleteCommentTest extends TestCase
 		return [
 			'happy happy joy joy' => [
 				'data' => [
-					'posterId' => 666,
-					'commentId' => 666,
+					'comments_poster_id' => 666,
+					'comments_id' => 666,
 				],
 				'with' => [
 					666,
@@ -160,8 +164,8 @@ class DeleteCommentTest extends TestCase
 			],
 			'invalid users' => [
 				'data' => [
-					'posterId' => 666,
-					'commentId' => 666,
+					'comments_poster_id' => 666,
+					'comments_id' => 666,
 				],
 				'with' => [
 					666,
@@ -194,8 +198,8 @@ class DeleteCommentTest extends TestCase
 		return [
 			'not allowed' => [
 				'data' => [
-					'posterId' => 666,
-					'commentId' => 666,
+					'comments_poster_id' => 666,
+					'comments_id' => 666,
 				],
 				'userInfo' => [
 					'id' => 666,

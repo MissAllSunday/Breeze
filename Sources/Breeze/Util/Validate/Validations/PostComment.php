@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations;
 
 use Breeze\Entity\CommentEntity;
-use Breeze\Entity\StatusEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Service\CommentServiceInterface;
 use Breeze\Service\StatusServiceInterface;
@@ -29,6 +28,7 @@ class PostComment extends ValidateData implements ValidateDataInterface
 	 * @var CommentServiceInterface
 	 */
 	private $commentService;
+
 	/**
 	 * @var StatusServiceInterface
 	 */
@@ -37,7 +37,8 @@ class PostComment extends ValidateData implements ValidateDataInterface
 	public function __construct(
 		UserServiceInterface $userService,
 		StatusServiceInterface $statusService,
-		CommentServiceInterface $commentService)
+		CommentServiceInterface $commentService
+	)
 	{
 		$this->commentService = $commentService;
 		$this->statusService = $statusService;

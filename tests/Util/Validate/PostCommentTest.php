@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Breeze\Service\CommentService as CommentService;
+use Breeze\Service\StatusService as StatusService;
 use Breeze\Service\UserService;
 use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\PostComment;
@@ -18,21 +19,24 @@ class PostCommentTest extends TestCase
 	private $userService;
 
 	/**
-	 * @var MockObject|CommentService
-	 */
-	private $commentService;
-
-	/**
 	 * @var PostComment
 	 */
 	private $postComment;
 
+	/**
+	 * @var MockObject|StatusService
+	 */
+	private $statusService;
+
 	public function setUp(): void
 	{
 		$this->userService = $this->getMockInstance(UserService::class);
-		$this->commentService = $this->getMockInstance(CommentService::class);
+		$this->statusService = $this->getMockInstance(StatusService::class);
 
-		$this->postComment = new PostComment($this->userService, $this->commentService);
+		/**  @var MockObject|CommentService $commentService */
+		$commentService = $this->getMockInstance(CommentService::class);
+
+		$this->postComment = new PostComment($this->userService, $this->statusService, $commentService);
 	}
 
 	/**
@@ -58,27 +62,27 @@ class PostCommentTest extends TestCase
 		return [
 			'empty values' => [
 				'data' => [
-					'posterId' => 0,
-					'statusOwnerId' => '0',
-					'profileOwnerId' => '',
-					'statusId' => '666',
-					'body' => 'LOL',
+					'comments_poster_id' => 0,
+					'comments_status_owner_id' => '0',
+					'comments_profile_id' => '',
+					'comments_status_id' => '666',
+					'comments_body' => 'LOL',
 				],
 				'isExpectedException' => true,
 			],
 			'happy path' => [
 				'data' => [
-					'posterId' => 1,
-					'statusOwnerId' => 2,
-					'profileOwnerId' => 3,
-					'statusId' => 666,
-					'body' => 'Happy Path',
+					'comments_poster_id' => 1,
+					'comments_status_owner_id' => 2,
+					'comments_profile_id' => 3,
+					'comments_status_id' => 666,
+					'comments_body' => 'Happy Path',
 				],
 				'isExpectedException' => false,
 			],
 			'incomplete data' => [
 				'data' => [
-					'posterId' => '1'
+					'comments_poster_id' => '1'
 				],
 				'isExpectedException' => true,
 			],
@@ -108,21 +112,21 @@ class PostCommentTest extends TestCase
 		return [
 			'happy path' => [
 				'data' => [
-					'posterId' => 1,
-					'statusOwnerId' => 2,
-					'profileOwnerId' => 3,
-					'statusId' => 666,
-					'body' => 'Kaizoku ou ni ore wa naru',
+					'comments_poster_id' => 1,
+					'comments_status_owner_id' => 2,
+					'comments_profile_id' => 3,
+					'comments_status_id' => 666,
+					'comments_body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
 			],
 			'not ints' => [
 				'data' => [
-					'posterId' => 'lol',
-					'statusOwnerId' => 'fail',
-					'profileOwnerId' => '',
-					'statusId' => '666',
-					'body' => 'LOL',
+					'comments_poster_id' => 'lol',
+					'comments_status_owner_id' => 'fail',
+					'comments_profile_id' => '',
+					'comments_status_id' => '666',
+					'comments_body' => 'LOL',
 				],
 				'isExpectedException' => true,
 			],
@@ -152,94 +156,21 @@ class PostCommentTest extends TestCase
 		return [
 			'happy path' => [
 				'data' => [
-					'posterId' => 1,
-					'statusOwnerId' => 2,
-					'profileOwnerId' => 3,
-					'statusId' => 666,
-					'body' => 'Kaizoku ou ni ore wa naru',
+					'comments_poster_id' => 1,
+					'comments_status_owner_id' => 2,
+					'comments_profile_id' => 3,
+					'comments_status_id' => 666,
+					'comments_body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
 			],
 			'not a string' => [
 				'data' => [
-					'posterId' => 1,
-					'statusOwnerId' => 2,
-					'profileOwnerId' => 3,
-					'statusId' => 666,
-					'body' => 666,
-				],
-				'isExpectedException' => true,
-			],
-		];
-	}
-
-	/**
-	 * @dataProvider areValidUsersProvider
-	 */
-	public function testAreValidUsers(
-		array $data,
-		array $with,
-		array $loadUsersInfoWillReturn,
-		bool $isExpectedException
-	): void
-	{
-		$this->postComment->setData($data);
-
-		$this->userService->expects($this->once())
-			->method('getUsersToLoad')
-			->with($with)
-			->willReturn($loadUsersInfoWillReturn);
-
-		if ($isExpectedException)
-		{
-			$this->expectException(ValidateDataException::class);
-
-			$this->postComment->areValidUsers();
-		}
-
-		else
-			$this->assertNull($this->postComment->areValidUsers());
-	}
-
-	public function areValidUsersProvider(): array
-	{
-		return [
-			'happy happy joy joy' => [
-				'data' => [
-					'posterId' => 1,
-					'statusOwnerId' => 2,
-					'profileOwnerId' => 3,
-					'statusId' => 666,
-					'body' => 'Kaizoku ou ni ore wa naru',
-				],
-				'with' => [
-					1,
-					2,
-					3,
-				],
-				'loadUsersInfoWillReturn' => [
-					1,
-					2,
-					3,
-				],
-				'isExpectedException' => false,
-			],
-			'invalid users' => [
-				'data' => [
-					'posterId' => 1,
-					'statusOwnerId' => 2,
-					'profileOwnerId' => 666,
-					'statusId' => 666,
-					'body' => '666',
-				],
-				'with' => [
-					1,
-					2,
-					666,
-				],
-				'loadUsersInfoWillReturn' => [
-					1,
-					2,
+					'comments_poster_id' => 1,
+					'comments_status_owner_id' => 2,
+					'comments_profile_id' => 3,
+					'comments_status_id' => 666,
+					'comments_body' => 666,
 				],
 				'isExpectedException' => true,
 			],
@@ -269,41 +200,41 @@ class PostCommentTest extends TestCase
 		return [
 			'happy happy joy joy' => [
 				'data' => [
-					'posterId' => 1,
-					'statusOwnerId' => 2,
-					'profileOwnerId' => 3,
-					'statusId' => 666,
-					'body' => 'Kaizoku ou ni ore wa naru',
+					'comments_poster_id' => 1,
+					'comments_status_owner_id' => 2,
+					'comments_profile_id' => 3,
+					'comments_status_id' => 666,
+					'comments_body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
 			],
 			'time has not expired, too much messages' => [
 				'data' => [
-					'posterId' => 2,
-					'statusOwnerId' => 2,
-					'profileOwnerId' => 3,
-					'statusId' => 666,
-					'body' => 'Kaizoku ou ni ore wa naru',
+					'comments_poster_id' => 2,
+					'comments_status_owner_id' => 2,
+					'comments_profile_id' => 3,
+					'comments_status_id' => 666,
+					'comments_body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => true,
 			],
 			'time has expired, too much messages' => [
 				'data' => [
-					'posterId' => 3,
-					'statusOwnerId' => 2,
-					'profileOwnerId' => 3,
-					'statusId' => 666,
-					'body' => 'Kaizoku ou ni ore wa naru',
+					'comments_poster_id' => 3,
+					'comments_status_owner_id' => 2,
+					'comments_profile_id' => 3,
+					'comments_status_id' => 666,
+					'comments_body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
 			],
 			'time has not expired,  allowed messages' => [
 				'data' => [
-					'posterId' => 4,
-					'statusOwnerId' => 2,
-					'profileOwnerId' => 3,
-					'statusId' => 666,
-					'body' => 'Kaizoku ou ni ore wa naru',
+					'comments_poster_id' => 4,
+					'comments_status_owner_id' => 2,
+					'comments_profile_id' => 3,
+					'comments_status_id' => 666,
+					'comments_body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
 			],
@@ -326,11 +257,11 @@ class PostCommentTest extends TestCase
 		return [
 			'not allowed' => [
 				'data' => [
-					'posterId' => 1,
-					'statusOwnerId' => 2,
-					'profileOwnerId' => 3,
-					'statusId' => 666,
-					'body' => 'Kaizoku ou ni ore wa naru',
+					'comments_poster_id' => 1,
+					'comments_status_owner_id' => 2,
+					'comments_profile_id' => 3,
+					'comments_status_id' => 666,
+					'comments_body' => 'Kaizoku ou ni ore wa naru',
 				],
 			],
 		];

@@ -39,12 +39,19 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	 */
 	private $commentService;
 
+	/**
+	 * @var StatusServiceInterface
+	 */
+	private $statusService;
+
 	public function __construct(
 		UserServiceInterface $userService,
 		StatusServiceInterface $statusService,
-		CommentServiceInterface $commentService)
+		CommentServiceInterface $commentService
+	)
 	{
 		$this->commentService = $commentService;
+		$this->statusService = $statusService;
 
 		parent::__construct($userService);
 	}

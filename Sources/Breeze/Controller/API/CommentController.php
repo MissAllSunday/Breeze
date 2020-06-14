@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Controller\API;
 
+use Breeze\Entity\CommentEntity;
 use Breeze\Repository\InvalidCommentException;
 use Breeze\Service\CommentServiceInterface;
 use Breeze\Service\StatusServiceInterface;
@@ -68,7 +69,8 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 		$validator = new $validatorName(
 			$this->userService,
 			$this->statusService,
-			$this->commentService);
+			$this->commentService
+		);
 
 		$this->gateway->setValidator($validator);
 
@@ -94,7 +96,7 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 		$data = $this->gateway->getData();
 
 		try {
-			$this->commentService->deleteById($data[DeleteComment::PARAM_COMMENT_ID]);
+			$this->commentService->deleteById($data[CommentEntity::COLUMN_ID]);
 
 			$this->print($this->gateway->response());
 		} catch (InvalidCommentException $e) {
