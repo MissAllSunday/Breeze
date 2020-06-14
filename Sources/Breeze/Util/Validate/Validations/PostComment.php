@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations;
 
+use Breeze\Entity\CommentEntity;
 use Breeze\Service\CommentServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Permissions;
@@ -11,18 +12,12 @@ use Breeze\Util\Validate\ValidateDataException;
 
 class PostComment extends ValidateData implements ValidateDataInterface
 {
-	public const PARAM_POSTER_ID = 'posterId';
-	public const PARAM_STATUS_OWNER_ID = 'statusOwnerId';
-	public const PARAM_PROFILE_OWNER_ID = 'profileOwnerId';
-	public const PARAM_STATUS_ID = 'statusId';
-	public const PARAM_BODY = 'body';
-
 	protected const PARAMS = [
-		self::PARAM_POSTER_ID => 0,
-		self::PARAM_STATUS_OWNER_ID => 0,
-		self::PARAM_PROFILE_OWNER_ID => 0,
-		self::PARAM_STATUS_ID => 0,
-		self::PARAM_BODY => '',
+		CommentEntity::COLUMN_STATUS_ID => 0,
+		CommentEntity::COLUMN_STATUS_OWNER_ID => 0,
+		CommentEntity::COLUMN_POSTER_ID => 0,
+		CommentEntity::COLUMN_PROFILE_ID => 0,
+		CommentEntity::COLUMN_BODY => '',
 	];
 
 	protected const SUCCESS_KEY = 'published_comment';
@@ -69,30 +64,30 @@ class PostComment extends ValidateData implements ValidateDataInterface
 	public function getInts(): array
 	{
 		return [
-			self::PARAM_POSTER_ID,
-			self::PARAM_STATUS_OWNER_ID,
-			self::PARAM_PROFILE_OWNER_ID,
-			self::PARAM_STATUS_ID,
+			CommentEntity::COLUMN_STATUS_ID,
+			CommentEntity::COLUMN_STATUS_OWNER_ID,
+			CommentEntity::COLUMN_POSTER_ID,
+			CommentEntity::COLUMN_PROFILE_ID,
 		];
 	}
 
 	public function getUserIdsNames(): array
 	{
 		return [
-			self::PARAM_POSTER_ID,
-			self::PARAM_STATUS_OWNER_ID,
-			self::PARAM_PROFILE_OWNER_ID,
+			CommentEntity::COLUMN_STATUS_OWNER_ID,
+			CommentEntity::COLUMN_POSTER_ID,
+			CommentEntity::COLUMN_PROFILE_ID,
 		];
 	}
 
 	public function getStrings(): array
 	{
-		return [self::PARAM_BODY];
+		return [CommentEntity::COLUMN_BODY];
 	}
 
 	public function getPosterId(): int
 	{
-		return $this->data[self::PARAM_POSTER_ID] ?? 0;
+		return $this->data[CommentEntity::COLUMN_POSTER_ID] ?? 0;
 	}
 
 	public function getParams(): array

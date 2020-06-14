@@ -18,11 +18,6 @@ class DeleteCommentTest extends TestCase
 	private $userService;
 
 	/**
-	 * @var MockObject|CommentService
-	 */
-	private $commentService;
-
-	/**
 	 * @var DeleteComment
 	 */
 	private $deleteComment;
@@ -30,9 +25,11 @@ class DeleteCommentTest extends TestCase
 	public function setUp(): void
 	{
 		$this->userService = $this->getMockInstance(UserService::class);
-		$this->commentService = $this->getMockInstance(CommentService::class);
 
-		$this->deleteComment = new DeleteComment($this->userService, $this->commentService);
+		/** @var CommentService $commentService */
+		$commentService = $this->getMockInstance(CommentService::class);
+
+		$this->deleteComment = new DeleteComment($this->userService, $commentService);
 	}
 
 	/**
