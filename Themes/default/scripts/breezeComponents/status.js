@@ -7,10 +7,10 @@ Vue.component('status', {
             notice: null,
             place_holder: 'leave a comment',
             post_comment: {
-                posterId: smf_member_id,
-                statusOwnerId: this.status_item.status_poster_id,
-                profileOwnerId: this.status_item.status_owner_id,
-                statusId: this.status_item.status_id,
+                comments_poster_id: smf_member_id,
+                comments_status_owner_id: this.status_item.status_poster_id,
+                comments_profile_id: this.status_item.status_owner_id,
+                comments_status_id: this.status_item.status_id,
                 body: '',
             },
         }
