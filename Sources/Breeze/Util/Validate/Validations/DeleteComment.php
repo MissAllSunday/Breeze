@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations;
 
+use Breeze\Entity\CommentEntity as CommentEntity;
+use Breeze\Repository\InvalidCommentException;
 use Breeze\Service\CommentServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Permissions;
@@ -17,6 +19,7 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	public $steps = [
 		'clean',
 		'isInt',
+		'validComment',
 		'validUser',
 		'permissions'
 	];
@@ -70,9 +73,25 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 			throw new ValidateDataException('deleteComments');
 	}
 
+	/**
+	 * @throws InvalidCommentException
+	 */
+	public function validComment(): void
+	{
+		$this->comment = $this->commentService->getById($this->data[self::PARAM_COMMENT_ID]);
+	}
+
+	/**
+	 * @throws InvalidCommentException
+	 * @throws ValidateDataException
+	 */
 	public function validUser(): void
 	{
-		$this->comment = $this->commentService->getById()
+		if (!$this->comment)
+			$this->comment = $this->commentService->getById($this->data[self::PARAM_COMMENT_ID]);
+
+		if ($this->comment[CommentEntity::COLUMN_POSTER_ID] !== $this->data[self::PARAM_POSTER_ID])
+			throw new ValidateDataException('wrong_values');
 	}
 
 	public function getInts(): array

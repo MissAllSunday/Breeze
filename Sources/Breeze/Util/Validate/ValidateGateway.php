@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate;
 
 use Breeze\Breeze;
+use Breeze\Repository\InvalidCommentException;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
@@ -60,11 +61,21 @@ class ValidateGateway implements ValidateGatewayInterface
 			try {
 				$this->validator->{$step}();
 				$this->data = $this->validator->getData();
-			} catch (ValidateDataException $e) {
+			} catch (InvalidCommentException $e) {
 				$this->setNotice([
 					'message' => sprintf(
 						$this->getText(self::DEFAULT_ERROR_KEY),
 						$this->getText(self::ERROR_TYPE . '_' . $e->getMessage())
+					),
+				]);
+
+				return false;
+			}
+			catch (ValidateDataException $e) {
+				$this->setNotice([
+					'message' => sprintf(
+						$this->getText(self::DEFAULT_ERROR_KEY),
+						$this->getText($e->getMessage())
 					),
 				]);
 
