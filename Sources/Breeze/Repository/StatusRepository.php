@@ -37,8 +37,16 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		return $statusByProfile;
 	 }
 
-	public function getModel(): StatusModelInterface
+	/**
+	 * @throws InvalidStatusException
+	 */
+	public function getById(int $statusId = 0): array
 	{
-		return$this->statusModel;
+		$status = $this->statusModel->getById($statusId);
+
+		if (!$status)
+			throw new InvalidStatusException('error_no_status');
+
+		return $status;
 	}
 }

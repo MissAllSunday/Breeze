@@ -7,6 +7,7 @@ namespace Breeze\Util\Validate\Validations;
 use Breeze\Entity\CommentEntity as CommentEntity;
 use Breeze\Repository\InvalidCommentException;
 use Breeze\Service\CommentServiceInterface;
+use Breeze\Service\StatusServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
@@ -38,7 +39,10 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	 */
 	private $commentService;
 
-	public function __construct(UserServiceInterface $userService, CommentServiceInterface $commentService)
+	public function __construct(
+		UserServiceInterface $userService,
+		StatusServiceInterface $statusService,
+		CommentServiceInterface $commentService)
 	{
 		$this->commentService = $commentService;
 

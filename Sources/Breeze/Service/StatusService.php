@@ -54,4 +54,9 @@ class StatusService extends BaseService implements StatusServiceInterface
 			'status' => $profileStatus['data'],
 		];
 	}
+
+	public function getById(int $statusId): array
+	{
+		return $this->statusRepository->getById($statusId);
+	}
 }

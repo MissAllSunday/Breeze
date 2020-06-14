@@ -46,6 +46,7 @@ return [
 		'class' => CommentController::class,
 		'arguments'=> [
 			CommentService::class,
+			StatusService::class,
 			UserService::class,
 			ValidateGateway::class
 		]

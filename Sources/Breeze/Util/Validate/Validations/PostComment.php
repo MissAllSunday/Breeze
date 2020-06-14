@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations;
 
 use Breeze\Entity\CommentEntity;
+use Breeze\Entity\StatusEntity;
+use Breeze\Repository\InvalidStatusException;
 use Breeze\Service\CommentServiceInterface;
+use Breeze\Service\StatusServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
@@ -26,10 +29,18 @@ class PostComment extends ValidateData implements ValidateDataInterface
 	 * @var CommentServiceInterface
 	 */
 	private $commentService;
+	/**
+	 * @var StatusServiceInterface
+	 */
+	private $statusService;
 
-	public function __construct(UserServiceInterface $userService, CommentServiceInterface $commentService)
+	public function __construct(
+		UserServiceInterface $userService,
+		StatusServiceInterface $statusService,
+		CommentServiceInterface $commentService)
 	{
 		$this->commentService = $commentService;
+		$this->statusService = $statusService;
 
 		parent::__construct($userService);
 	}
@@ -43,6 +54,7 @@ class PostComment extends ValidateData implements ValidateDataInterface
 	{
 		$this->steps = self::ALL_STEPS;
 		$this->steps[] = 'permissions';
+		$this->steps[] = 'validStatus';
 
 		return $this->steps;
 	}
@@ -59,6 +71,14 @@ class PostComment extends ValidateData implements ValidateDataInterface
 	{
 		if (!Permissions::isAllowedTo(Permissions::POST_COMMENTS))
 			throw new ValidateDataException('postComments');
+	}
+
+	/**
+	 * @throws InvalidStatusException
+	 */
+	public function validStatus(): void
+	{
+		$this->statusService->getById($this->data[CommentEntity::COLUMN_STATUS_ID]);
 	}
 
 	public function getInts(): array

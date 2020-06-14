@@ -7,6 +7,7 @@ namespace Breeze\Controller\API;
 
 use Breeze\Repository\InvalidCommentException;
 use Breeze\Service\CommentServiceInterface;
+use Breeze\Service\StatusServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Validate\ValidateGateway;
 use Breeze\Util\Validate\ValidateGatewayInterface;
@@ -33,15 +34,22 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 	 */
 	private $commentService;
 
+	/**
+	 * @var StatusServiceInterface
+	 */
+	private $statusService;
+
 	public function __construct(
-		CommentServiceInterface $statusService,
+		CommentServiceInterface $commentService,
+		StatusServiceInterface $statusService,
 		UserServiceInterface $userService,
 		ValidateGatewayInterface $gateway
 	)
 	{
-		$this->commentService = $statusService;
+		$this->commentService = $commentService;
 		$this->userService = $userService;
 		$this->gateway = $gateway;
+		$this->statusService = $statusService;
 	}
 
 	public function getSubActions(): array
@@ -57,7 +65,10 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 		$validatorName = ValidateData::getNameSpace() . ucfirst($subAction);
 
 		/** @var ValidateDataInterface $validator */
-		$validator = new $validatorName($this->userService, $this->commentService);
+		$validator = new $validatorName(
+			$this->userService,
+			$this->statusService,
+			$this->commentService);
 
 		$this->gateway->setValidator($validator);
 
