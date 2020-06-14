@@ -13,9 +13,6 @@ use Breeze\Util\Validate\ValidateDataException;
 
 class DeleteComment extends ValidateData implements ValidateDataInterface
 {
-	public const PARAM_COMMENT_ID = 'commentId';
-	public const PARAM_POSTER_ID = 'posterId';
-
 	public $steps = [
 		'clean',
 		'isInt',
@@ -25,8 +22,8 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	];
 
 	protected const PARAMS = [
-		self::PARAM_COMMENT_ID => 0,
-		self::PARAM_POSTER_ID => 0,
+		CommentEntity::COLUMN_ID => 0,
+		CommentEntity::COLUMN_POSTER_ID => 0,
 	];
 
 	protected const SUCCESS_KEY = 'deleted_comment';
@@ -65,7 +62,7 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	{
 		$currentUserInfo = $this->userService->getCurrentUserInfo();
 
-		if ($currentUserInfo['id'] === $this->data[self::PARAM_POSTER_ID] &&
+		if ($currentUserInfo['id'] === $this->data[CommentEntity::COLUMN_POSTER_ID] &&
 			!Permissions::isAllowedTo(Permissions::DELETE_OWN_COMMENTS))
 			throw new ValidateDataException('deleteComments');
 
@@ -78,7 +75,7 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	 */
 	public function validComment(): void
 	{
-		$this->comment = $this->commentService->getById($this->data[self::PARAM_COMMENT_ID]);
+		$this->comment = $this->commentService->getById($this->data[CommentEntity::COLUMN_ID]);
 	}
 
 	/**
@@ -88,24 +85,24 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	public function validUser(): void
 	{
 		if (!$this->comment)
-			$this->comment = $this->commentService->getById($this->data[self::PARAM_COMMENT_ID]);
+			$this->comment = $this->commentService->getById($this->data[CommentEntity::COLUMN_ID]);
 
-		if ($this->comment[CommentEntity::COLUMN_POSTER_ID] !== $this->data[self::PARAM_POSTER_ID])
+		if ($this->comment[CommentEntity::COLUMN_POSTER_ID] !== $this->data[CommentEntity::COLUMN_POSTER_ID])
 			throw new ValidateDataException('wrong_values');
 	}
 
 	public function getInts(): array
 	{
 		return [
-			self::PARAM_COMMENT_ID,
-			self::PARAM_POSTER_ID,
+			CommentEntity::COLUMN_ID,
+			CommentEntity::COLUMN_POSTER_ID,
 		];
 	}
 
 	public function getUserIdsNames(): array
 	{
 		return [
-			self::PARAM_POSTER_ID,
+			CommentEntity::COLUMN_POSTER_ID,
 		];
 	}
 
@@ -116,7 +113,7 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 
 	public function getPosterId(): int
 	{
-		return $this->data[self::PARAM_POSTER_ID] ?? 0;
+		return $this->data[CommentEntity::COLUMN_POSTER_ID] ?? 0;
 	}
 
 	public function getParams(): array
