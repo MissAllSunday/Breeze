@@ -7,6 +7,7 @@ namespace Breeze\Util\Validate;
 
 use Breeze\Breeze;
 use Breeze\Traits\TextTrait;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class ValidateGateway implements ValidateGatewayInterface
 {

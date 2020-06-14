@@ -9,6 +9,7 @@ use Breeze\Entity\SettingsEntity;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Traits\PersistenceTrait;
 use Breeze\Traits\TextTrait;
+use Breeze\Util\Validate\ValidateDataException;
 
 abstract class ValidateData
 {

@@ -7,11 +7,9 @@ namespace Breeze\Controller\API;
 
 use Breeze\Service\CommentServiceInterface;
 use Breeze\Service\UserServiceInterface;
-use Breeze\Util\Validate\ValidateData;
-use Breeze\Util\Validate\ValidateDataInterface;
 use Breeze\Util\Validate\ValidateGatewayInterface;
-use Breeze\Util\Validate\Validations\DeleteComment;
-use Breeze\Util\Validate\Validations\PostComment;
+use Breeze\Util\Validate\Validations\ValidateData;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class CommentController extends ApiBaseController implements ApiBaseInterface
 {

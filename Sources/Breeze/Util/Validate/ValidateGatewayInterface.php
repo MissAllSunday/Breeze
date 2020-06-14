@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate;
 
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
+
 interface ValidateGatewayInterface
 {
 	public function isValid(): bool;
