@@ -109,11 +109,13 @@ class CommentModel extends BaseModel implements CommentModelInterface
 				$comments[$row[CommentEntity::COLUMN_STATUS_ID]][$row[CommentEntity::COLUMN_ID]] = $row;
 
 			else
-				$comments[$row[CommentEntity::COLUMN_ID]] = $row;
+				$comments[$row[CommentEntity::COLUMN_ID]] = array_map(function ($column) {
+					return ctype_digit($column) ? ((int) $column) : $column;
+					}, $row);
 
-			$usersIds[] = $row[CommentEntity::COLUMN_POSTER_ID];
-			$usersIds[] = $row[CommentEntity::COLUMN_PROFILE_ID];
-			$usersIds[] = $row[CommentEntity::COLUMN_STATUS_OWNER_ID];
+			$usersIds[] = (int) $row[CommentEntity::COLUMN_POSTER_ID];
+			$usersIds[] = (int) $row[CommentEntity::COLUMN_PROFILE_ID];
+			$usersIds[] = (int) $row[CommentEntity::COLUMN_STATUS_OWNER_ID];
 		}
 
 		$this->dbClient->freeResult($request);

@@ -42,7 +42,7 @@ Vue.component('comment', {
             axios.post(smf_scripturl + '?action=breezeComment;sa=deleteComment;'+ smf_session_var +'='+ smf_session_id,
                 {
                     comments_id: this.comment.comments_id,
-                    comments_poster_id: this.comment_poster_data.id
+                    comments_poster_id: this.comment.comments_poster_id
                 }).then(response => {
 
                 this.setNotice(response.data.message, response.data.type);

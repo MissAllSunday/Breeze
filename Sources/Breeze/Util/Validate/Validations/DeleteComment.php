@@ -98,7 +98,10 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 		if (!$this->comment)
 			$this->comment = $this->commentService->getById($this->data[CommentEntity::COLUMN_ID]);
 
-		if ($this->comment[CommentEntity::COLUMN_POSTER_ID] !== $this->data[CommentEntity::COLUMN_POSTER_ID])
+		if (!isset($this->data[CommentEntity::COLUMN_POSTER_ID]) ||
+			($this->comment['data'][$this->data[CommentEntity::COLUMN_ID]][CommentEntity::COLUMN_POSTER_ID]
+			!==
+			$this->data[CommentEntity::COLUMN_POSTER_ID]))
 			throw new ValidateDataException('wrong_values');
 	}
 
