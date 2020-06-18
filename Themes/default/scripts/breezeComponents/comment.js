@@ -46,7 +46,8 @@ Vue.component('comment', {
                 }).then(response => {
 
                 this.setNotice(response.data.message, response.data.type);
-                console.log(response);
+
+                setTimeout(this.removeComment,3000)
             });
         },
         setNotice: function(message, type){
@@ -59,6 +60,10 @@ Vue.component('comment', {
         },
         clearNotice: function(){
             this.notice = null;
+        },
+        removeComment: function () {
+            this.clearNotice();
+            this.$root.$emit('removeComment', this.comment.comments_id);
         }
     }
 })
