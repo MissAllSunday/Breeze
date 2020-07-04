@@ -53,7 +53,7 @@ abstract class BaseModel implements BaseModelInterface
 			return false;
 
 		return $this->dbClient->delete(
-			$this->getTableName(),
+			'{db_prefix}' . $this->getTableName(),
 			'
 			WHERE {string:columnName} IN({array_int:ids})',
 			[
@@ -66,7 +66,7 @@ abstract class BaseModel implements BaseModelInterface
 	public function updateLikes(int $contentId, int $numLikes): void
 	{
 		$this->dbClient->update(
-			$this->getTableName(),
+			'{db_prefix}' . $this->getTableName(),
 			'
 			SET likes = {int:num_likes}
 			WHERE {string:columnName} = {int:id_content}',
@@ -134,7 +134,7 @@ abstract class BaseModel implements BaseModelInterface
 	{
 		return [
 			'columns' => implode(', ', $this->getColumns()),
-			'tableName' => $this->getTableName(),
+			'tableName' => '{db_prefix}' . $this->getTableName(),
 		];
 	}
 }
