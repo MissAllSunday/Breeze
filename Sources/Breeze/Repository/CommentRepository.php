@@ -86,7 +86,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		if (!$wasDeleted)
 			throw new InvalidCommentException('error_no_comment');
 
-		$this->cleanCache('byId' . $commentId);
+		$this->cleanCache('getById' . $commentId);
 
 		return $wasDeleted;
 	}

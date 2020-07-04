@@ -83,9 +83,9 @@ class DatabaseClient implements ClientInterface
 		);
 	}
 
-	public function delete(string $tableName, string $queryString, array $bindParams): void
+	public function delete(string $tableName, string $queryString, array $bindParams): bool
 	{
-		$this->db['db_query'](
+		return $this->db['db_query'](
 			'',
 			'DELETE 
 			FROM {db_prefix}' . $tableName . '

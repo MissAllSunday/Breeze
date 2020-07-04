@@ -52,7 +52,7 @@ abstract class BaseModel implements BaseModelInterface
 		if (empty($ids))
 			return false;
 
-		$this->dbClient->delete(
+		return $this->dbClient->delete(
 			$this->getTableName(),
 			'
 			WHERE {string:columnName} IN({array_int:ids})',
@@ -61,8 +61,6 @@ abstract class BaseModel implements BaseModelInterface
 				'ids' => array_map('intval', $ids),
 			]
 		);
-
-		return true;
 	}
 
 	public function updateLikes(int $contentId, int $numLikes): void

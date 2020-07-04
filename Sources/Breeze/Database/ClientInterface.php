@@ -22,5 +22,5 @@ interface ClientInterface
 
 	public function update(string $tableName, string $queryString, array $bindParams): int;
 
-	public function delete(string $tableName, string $queryString, array $bindParams): void;
+	public function delete(string $tableName, string $queryString, array $bindParams): bool;
 }
