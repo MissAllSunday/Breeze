@@ -49,6 +49,9 @@ abstract class BaseModel implements BaseModelInterface
 
 	public function delete(array $ids = []): bool
 	{
+		if (empty($ids))
+			return false;
+
 		$this->dbClient->delete(
 			$this->getTableName(),
 			'
