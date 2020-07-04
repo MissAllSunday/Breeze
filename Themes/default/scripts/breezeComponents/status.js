@@ -35,13 +35,7 @@ Vue.component('status', {
                 @removeComment="removeComment"
                 class='windowbg'>
             </comment>
-            <message-box 
-                v-if="notice !== null"
-                 @close="clearNotice()"
-                 v-bind:type="notice.type">
-                {{notice.message}}
-            </message-box>
-            <div v-else="error === null"  class="comment_posting">
+            <div v-if="notice === null"  class="comment_posting">
                 <div class='breeze_avatar avatar_comment'
                     v-bind:style='avatarImage(poster_data.avatar.href)'>           
                 </div>
@@ -118,10 +112,11 @@ Vue.component('status', {
         setNotice: function(message, type){
             type = type || 'error';
             
-            this.notice = {
-                'message': message,
-                'type': type + 'box',
-            };
+            this.notice = true;
+            Vue.$toast.open({
+                message: message,
+                type: type,
+            });
         },
         clearNotice: function(){
             this.notice = null;
