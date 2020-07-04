@@ -8,7 +8,10 @@ Vue.component('message-box', {
   `
 })
 
-
+Vue.use(VueToast, {
+    duration: 4000,
+    position: 'top'
+});
 new Vue({
     el: '#breeze_app',
     data: {

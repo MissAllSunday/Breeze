@@ -15,6 +15,7 @@ trait CdnTrait
 			'vue' => Breeze::VUE_CDN,
 			'axios' => Breeze::AXIOS_CDN,
 			'moment' => Breeze::MOMENT_CDN,
+			'noti' => Breeze::NOTI_CDN,
 		];
 	}
 

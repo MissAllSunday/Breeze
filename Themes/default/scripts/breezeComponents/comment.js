@@ -7,19 +7,13 @@ Vue.component('comment', {
     },
     template: `
     <div>
-        <message-box 
-            v-if="notice !== null"
-             @close="clearNotice()"
-             v-bind:type="notice.type">
-            {{notice.message}}
-        </message-box>
         <div class='floatleft comment_user_info'>
             <div class='breeze_avatar avatar_comment' v-bind:style='avatarImage(comment_poster_data.avatar.href)'></div>
             <h4 v-html='comment_poster_data.link_color'></h4>
         </div>
         <div class='comment_date_info floatright smalltext'>
             {{comment.comments_time | formatDate}}
-            <span class="main_icons remove_button floatright" v-on:click="deleteComment()"></span>
+            &nbsp;&nbsp<span class="main_icons remove_button floatright" v-on:click="deleteComment()"></span>
         </div>
         <div class='clear comment_content'>
             <hr>
@@ -45,25 +39,17 @@ Vue.component('comment', {
                     comments_poster_id: this.comment.comments_poster_id
                 }).then(response => {
 
-                this.setNotice(response.data.message, response.data.type);
+                    Vue.$toast.open({
+                        message: response.data.message,
+                        type: response.data.type,
+                    });
 
-                setTimeout(this.removeComment,3000)
+                    if (response.data.type !== 'error')
+                        this.removeComment();
             });
         },
-        setNotice: function(message, type){
-            type = type || 'error';
-
-            this.notice = {
-                'message': message,
-                'type': type + 'box',
-            };
-        },
-        clearNotice: function(){
-            this.notice = null;
-        },
         removeComment: function () {
-            this.clearNotice();
-            this.$root.$emit('removeComment', this.comment.comments_id);
+            this.$emit('removeComment', this.comment.comments_id);
         }
     }
 })

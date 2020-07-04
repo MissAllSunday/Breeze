@@ -32,7 +32,7 @@ Vue.component('status', {
                 v-bind:comment='comment' 
                 v-bind:comment_poster_data='getUserData(comment.comments_poster_id)' 
                 v-bind:key='comment.comments_id' 
-                @close="removeComment()"
+                @removeComment="removeComment"
                 class='windowbg'>
             </comment>
             <message-box 
@@ -127,7 +127,7 @@ Vue.component('status', {
             this.notice = null;
         },
         removeComment: function (commentId) {
-            delete this.localComments[commentId];
+            Vue.delete(this.localComments, commentId);
         }
     }
 })
