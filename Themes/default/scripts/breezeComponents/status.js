@@ -40,7 +40,7 @@ Vue.component('status', {
                     v-bind:style='avatarImage(poster_data.avatar.href)'>           
                 </div>
                 <textarea 
-                    v-model="post_comment.body" 
+                    v-model="post_comment.comments_body" 
                     class="post_comment" 
                     :placeholder="place_holder" 
                     @focus="clearNotice()"></textarea>
@@ -66,9 +66,7 @@ Vue.component('status', {
             this.localComments = Object.assign({}, this.localComments, comments)
         },
         clearPostComment: function(){
-            this.post_comment.body = '';
-
-            setTimeout(this.clearNotice,5000)
+            this.post_comment.comments_body = '';
         },
         postComment: function () {
             this.clearNotice();
@@ -90,14 +88,14 @@ Vue.component('status', {
             });
         },
         isValidComment: function () {
-            if (this.post_comment.body === '' || typeof(this.post_comment.body) !== 'string' )
+            if (this.post_comment.comments_body === '' || typeof(this.post_comment.comments_body) !== 'string' )
             {
                 this.setNotice('el body esta vacio');
 
                 return false;
             }
 
-            if (this.post_comment.body === 'about:Suki')
+            if (this.post_comment.comments_body === 'about:Suki')
             {
                 alert('Back against the wall and odds\n' +
                     'With the strength of a will and a cause\n' +
@@ -111,11 +109,15 @@ Vue.component('status', {
         },
         setNotice: function(message, type){
             type = type || 'error';
-            
+            let $this = this;
             this.notice = true;
+
             Vue.$toast.open({
                 message: message,
                 type: type,
+                onClose: function () {
+                    $this.notice = null;
+                }
             });
         },
         clearNotice: function(){
