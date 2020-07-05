@@ -12,7 +12,6 @@ use Breeze\Service\StatusServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Validate\ValidateGateway;
 use Breeze\Util\Validate\ValidateGatewayInterface;
-use Breeze\Util\Validate\Validations\DeleteComment;
 use Breeze\Util\Validate\Validations\ValidateData;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
@@ -57,31 +56,20 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 	{
 		return self::SUB_ACTIONS;
 	}
-
-	public function dispatch(): void
+	
+	public function setValidator(): ValidateDataInterface
 	{
-		$subAction = $this->getRequest('sa', $this->getMainAction());
-		$this->gateway->setData();
-
-		$validatorName = ValidateData::getNameSpace() . ucfirst($subAction);
-
-		/** @var ValidateDataInterface $validator */
-		$validator = new $validatorName(
+		$validatorName = ValidateData::getNameSpace() . ucfirst($this->subAction);
+		
+		return new $validatorName(
 			$this->userService,
 			$this->statusService,
 			$this->commentService
 		);
-
-		$this->gateway->setValidator($validator);
-
-		$this->subActionCall();
 	}
 
 	public function postComment(): void
 	{
-		if (!$this->gateway->isValid())
-			$this->print($this->gateway->response());
-
 		$this->print(array_merge(
 			$this->gateway->response(),
 			['content' => $this->commentService->saveAndGet($this->gateway->getData())]
@@ -90,9 +78,6 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 
 	public function deleteComment(): void
 	{
-		if (!$this->gateway->isValid())
-			$this->print($this->gateway->response());
-
 		$data = $this->gateway->getData();
 
 		try {

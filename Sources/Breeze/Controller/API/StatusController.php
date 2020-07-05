@@ -7,6 +7,8 @@ namespace Breeze\Controller\API;
 
 use Breeze\Service\StatusServiceInterface;
 use Breeze\Service\UserServiceInterface;
+use Breeze\Util\Validate\Validations\ValidateData;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class StatusController extends ApiBaseController implements ApiBaseInterface
 {
@@ -42,12 +44,14 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 		return self::SUB_ACTIONS;
 	}
 
-	public function dispatch(): void
+	public function setValidator(): ValidateDataInterface
 	{
-		// TODO: validate request
-		$this->setWallOwnerId();
+		$validatorName = ValidateData::getNameSpace() . ucfirst($this->subAction);
 
-		$this->subActionCall();
+		return new $validatorName(
+			$this->userService,
+			$this->statusService,
+		);
 	}
 
 	public function byProfile(): void
