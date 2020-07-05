@@ -1,3 +1,13 @@
+Vue.component('message-box', {
+    props: ['type'],
+    template: `
+    <div v-bind:class="type">
+        <slot></slot>
+        <span class="main_icons remove_button floatright" @click="$emit('close')"></span>
+    </div>
+  `
+})
+
 Vue.use(VueToast, {
     duration: 4000,
     position: 'top'
