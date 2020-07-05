@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Breeze\Entity\StatusEntity;
-
 /**
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
@@ -58,10 +56,9 @@ function template_breeze_main(): void
 
 	echo '	
 	<script>
-		var statusURL = smf_scripturl + 
-		"?action=breezeStatus;'. StatusEntity::COLUMN_OWNER_ID .'='. $context['user']['id'] .'";
-		
 		// TODO move these to a service
+		var statusURL = smf_scripturl + "?action=breezeStatus;";
+		var wall_owner_id = '. $context['user']['id'] .';
 		var tabs_wall = "'. $txt['Breeze_tabs_wall'] .'";
 		var tabs_post = "'. $txt['Breeze_tabs_post'] .'";
 		var tabs_about = "'. $txt['Breeze_tabs_about'] .'";

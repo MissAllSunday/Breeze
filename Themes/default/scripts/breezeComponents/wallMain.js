@@ -39,7 +39,10 @@ new Vue({
     methods: {
         fetchStatus: function() {
             axios
-                .get(statusURL)
+                .post(statusURL + smf_session_var +'='+ smf_session_id,
+                    {
+                        status_owner_id: wall_owner_id
+                    })
                 .then(response => {
                     if (response.data.type === 'error')
                     {
@@ -60,7 +63,7 @@ new Vue({
                     this.errored = true
                     this.loading = false
                     this.notice = {
-                        'message': error,
+                        'message': error.message,
                         'type': 'error',
                     };
                 })

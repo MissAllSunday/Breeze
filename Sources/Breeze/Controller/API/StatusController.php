@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Controller\API;
 
+use Breeze\Entity\StatusEntity;
 use Breeze\Service\StatusServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Validate\ValidateGatewayInterface;
@@ -64,8 +65,9 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 	public function statusByProfile(): void
 	{
 		$start = (int) $this->getRequest('start');
+		$data = $this->gateway->getData();
 
-		$statusByProfile = $this->statusService->getByProfile($this->wallOwnerId, $start);
+		$statusByProfile = $this->statusService->getByProfile($data[StatusEntity::COLUMN_OWNER_ID], $start);
 
 		$this->print($statusByProfile);
 	}
