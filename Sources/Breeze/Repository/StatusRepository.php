@@ -19,6 +19,9 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		$this->statusModel = $statusModel;
 	}
 
+	/**
+	 * @throws InvalidStatusException
+	 */
 	public function getByProfile(int $profileOwnerId = 0, int $start = 0): array
 	 {
 		$statusByProfile = $this->getCache($this->cacheKey(__METHOD__));
@@ -30,6 +33,9 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 				'maxIndex' => $this->statusModel->getCount(),
 				'ids' => [$profileOwnerId]
 			]);
+
+			if (empty(array_filter($statusByProfile)))
+				throw new InvalidStatusException('error_wall_none');
 
 			$this->setCache($this->cacheKey(__METHOD__), $statusByProfile);
 		}

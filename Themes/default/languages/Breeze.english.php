@@ -182,6 +182,7 @@ $txt['Breeze_page_no_status'] = 'There are no status to display';
 
 // Tabs
 $txt['Breeze_tabs_wall'] = 'Wall';
+$txt['Breeze_error_wall_none'] = 'This user doesn\'t have any status yet!';
 $txt['Breeze_tabs_post'] = 'Leave a message';
 $txt['Breeze_tabs_about'] = 'About me';
 $txt['Breeze_tabs_activity'] = 'Recent activity';

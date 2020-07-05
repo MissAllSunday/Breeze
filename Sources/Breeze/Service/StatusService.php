@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Repository\CommentRepositoryInterface;
+use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 
 class StatusService extends BaseService implements StatusServiceInterface
@@ -36,6 +37,9 @@ class StatusService extends BaseService implements StatusServiceInterface
 		$this->userService = $userService;
 	}
 
+	/**
+	 * @throws InvalidStatusException
+	 */
 	public function getByProfile(int $profileOwnerId = 0, int $start = 0): array
 	{
 		$profileStatus = $this->statusRepository->getByProfile($profileOwnerId, $start);
@@ -45,9 +49,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 		$usersData = $this->userService->loadUsersInfo($userIds);
 
 		foreach ($profileStatus['data'] as $statusId => &$status)
-		{
 			$status['comments'] = $profileComments['data'][$statusId];
-		}
 
 		return [
 			'users' => $usersData,

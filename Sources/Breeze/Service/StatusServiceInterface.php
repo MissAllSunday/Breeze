@@ -9,6 +9,9 @@ use Breeze\Repository\InvalidStatusException;
 
 interface StatusServiceInterface extends BaseServiceInterface
 {
+	/**
+	 * @throws InvalidStatusException
+	 */
 	public function getByProfile(int $profileOwnerId = 0, int $start = 0): array;
 
 	/**

@@ -45,7 +45,7 @@ function template_breeze_main(): void
       			post a new status
     		</tab>
     		<tab :name="tabs_name.about">
-      			about me 
+      			'. $context['member']['name'] .'
     		</tab>
 			<tab :name="tabs_name.activity">
       			profile owner recent activity
@@ -58,7 +58,7 @@ function template_breeze_main(): void
 	<script>
 		// TODO move these to a service
 		var statusURL = smf_scripturl + "?action=breezeStatus;";
-		var wall_owner_id = '. $context['user']['id'] .';
+		var wall_owner_id = '. $context['member']['id'] .';
 		var tabs_wall = "'. $txt['Breeze_tabs_wall'] .'";
 		var tabs_post = "'. $txt['Breeze_tabs_post'] .'";
 		var tabs_about = "'. $txt['Breeze_tabs_about'] .'";
