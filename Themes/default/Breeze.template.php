@@ -27,9 +27,14 @@ function template_breeze_main(): void
 	<div id="breeze_app" class="breeze_wall floatright">
 		<tabs>
     		<tab :name="tabs_name.wall" :selected="true">
-    			<span v-if="loading">loading...</span>
+				<message-box 
+					v-if="notice !== null"
+					@close="clearNotice()"
+					v-bind:type="notice.type">
+					{{notice.message}}
+				</message-box>
 				<status
-					v-else
+					v-if="errored !== null"
 					v-for="status_item in status"
 					v-bind:status_item="status_item"
 					v-bind:poster_data="getUserData(status_item.status_poster_id)"
@@ -53,7 +58,8 @@ function template_breeze_main(): void
 
 	echo '	
 	<script>
-		var statusURL = smf_scripturl + "?action=breezeStatus;'. StatusEntity::COLUMN_OWNER_ID .'='. $context['user']['id'] .';
+		var statusURL = smf_scripturl + 
+		"?action=breezeStatus;'. StatusEntity::COLUMN_OWNER_ID .'='. $context['user']['id'] .'";
 		
 		// TODO move these to a service
 		var tabs_wall = "'. $txt['Breeze_tabs_wall'] .'";

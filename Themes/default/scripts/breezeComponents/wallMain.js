@@ -1,7 +1,12 @@
 Vue.component('message-box', {
     props: ['type'],
+    data: function() {
+        return {
+            fullType: this.type + 'box',
+        }
+    },
     template: `
-    <div v-bind:class="type">
+    <div v-bind:class="fullType">
         <slot></slot>
         <span class="main_icons remove_button floatright" @click="$emit('close')"></span>
     </div>
@@ -19,6 +24,7 @@ new Vue({
         status: null,
         users: null,
         errored: false,
+        notice: null,
         loading: true,
         tabs_name: {
             wall: tabs_wall,
@@ -35,6 +41,17 @@ new Vue({
             axios
                 .get(statusURL)
                 .then(response => {
+                    if (response.data.type === 'error')
+                    {
+                        this.notice = {
+                            'message': response.data.message,
+                            'type': response.data.type,
+                        };
+                        this.errored = true;
+
+                        return;
+                    }
+
                     this.status = response.data.status
                     this.users = response.data.users
                     this.loading = false
@@ -42,6 +59,10 @@ new Vue({
                 .catch(error => {
                     this.errored = true
                     this.loading = false
+                    this.notice = {
+                        'message': error,
+                        'type': 'error',
+                    };
                 })
         },
         onRemoveStatus: function(statusId){
@@ -53,5 +74,8 @@ new Vue({
         setUserData: function (user_data) {
             this.users = Object.assign({}, this.users, user_data)
         },
+        clearNotice: function () {
+            this.notice = null;
+        }
     }
 });
