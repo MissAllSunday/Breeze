@@ -134,7 +134,7 @@ Vue.component('status', {
             axios.post(smf_scripturl + '?action=breezeStatus;sa=deleteStatus;'+ smf_session_var +'='+ smf_session_id,
                 {
                     status_id: this.status_item.status_id,
-                    comments_poster_id: this.status_item.this.status_item
+                    status_poster_id: this.status_item.status_poster_id
                 }).then(response => {
 
                 Vue.$toast.open({
