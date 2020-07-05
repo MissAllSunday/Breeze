@@ -32,11 +32,6 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 	 */
 	private $userService;
 
-	/**
-	 * @var int
-	 */
-	private $wallOwnerId;
-
 	public function __construct(
 		StatusServiceInterface $statusService,
 		UserServiceInterface $userService,

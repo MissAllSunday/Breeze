@@ -8,9 +8,9 @@ Vue.component('status', {
             place_holder: 'leave a comment',
             post_comment: {
                 comments_poster_id: smf_member_id,
-                comments_status_owner_id: this.status_item.status_poster_id,
-                comments_profile_id: this.status_item.status_owner_id,
-                comments_status_id: this.status_item.status_id,
+                comments_status_owner_id: parseInt(this.status_item.status_poster_id),
+                comments_profile_id: parseInt(this.status_item.status_owner_id),
+                comments_status_id: parseInt(this.status_item.status_id),
                 comments_body: '',
             },
         }

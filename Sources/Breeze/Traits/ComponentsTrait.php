@@ -17,6 +17,7 @@ trait ComponentsTrait
 		'status',
 		'comment',
 		'tabs',
+		'utils',
 		'wallMain',
 	];
 

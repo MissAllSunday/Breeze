@@ -1,6 +1,5 @@
 ajax_indicator(true);
 
-
 new Vue({
     el: '#breeze_app',
     data: {
