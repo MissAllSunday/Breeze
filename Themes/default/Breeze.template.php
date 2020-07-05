@@ -52,7 +52,7 @@ function template_breeze_main(): void
 	echo '	
 	<script>
 		// TODO use the correct profile Id
-		var statusURL = smf_scripturl + "?action=breezeStatus;u=" + smf_member_id;
+		var statusURL = smf_scripturl + "?action=breezeStatus;status_owner_id=" + smf_member_id;
 		
 		// TODO move these to a service
 		var tabs_wall = "'. $txt['Breeze_tabs_wall'] .'";

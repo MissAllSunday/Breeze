@@ -24,6 +24,11 @@ abstract class ApiBaseController extends BaseController
 	 */
 	protected $subAction;
 
+	public function __construct(ValidateGatewayInterface $gateway)
+	{
+		$this->gateway = $gateway;
+	}
+
 	public function dispatch(): void
 	{
 		$this->subAction = $this->getRequest('sa', $this->getMainAction());

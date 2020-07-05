@@ -39,7 +39,8 @@ return [
 		'class' => StatusController::class,
 		'arguments'=> [
 			StatusService::class,
-			UserService::class
+			UserService::class,
+			ValidateGateway::class
 		]
 	],
 	'controller.comment' => [

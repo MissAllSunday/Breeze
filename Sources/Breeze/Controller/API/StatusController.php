@@ -7,12 +7,13 @@ namespace Breeze\Controller\API;
 
 use Breeze\Service\StatusServiceInterface;
 use Breeze\Service\UserServiceInterface;
+use Breeze\Util\Validate\ValidateGatewayInterface;
 use Breeze\Util\Validate\Validations\ValidateData;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class StatusController extends ApiBaseController implements ApiBaseInterface
 {
-	public const ACTION_PROFILE = 'byProfile';
+	public const ACTION_PROFILE = 'statusByProfile';
 	public const ACTION_DELETE = 'deleteStatus';
 	public const SUB_ACTIONS = [
 		self::ACTION_PROFILE,
@@ -33,10 +34,16 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 	 */
 	private $wallOwnerId;
 
-	public function __construct(StatusServiceInterface $statusService, UserServiceInterface $userService)
+	public function __construct(
+		StatusServiceInterface $statusService,
+		UserServiceInterface $userService,
+		ValidateGatewayInterface $gateway
+	)
 	{
 		$this->statusService = $statusService;
 		$this->userService = $userService;
+
+		parent::__construct($gateway);
 	}
 
 	public function getSubActions(): array
@@ -54,7 +61,7 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 		);
 	}
 
-	public function byProfile(): void
+	public function statusByProfile(): void
 	{
 		$start = (int) $this->getRequest('start');
 

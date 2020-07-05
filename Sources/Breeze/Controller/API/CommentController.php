@@ -48,8 +48,9 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 	{
 		$this->commentService = $commentService;
 		$this->userService = $userService;
-		$this->gateway = $gateway;
 		$this->statusService = $statusService;
+
+		parent::__construct($gateway);
 	}
 
 	public function getSubActions(): array
