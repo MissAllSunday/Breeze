@@ -21,6 +21,7 @@ Vue.component('status', {
             <h4 class='floatleft' v-html='poster_data.link_color'></h4>
             <div class='floatright smalltext'>
                 {{status_item.status_time | formatDate}}
+                &nbsp;<span class="main_icons remove_button floatright" v-on:click="deleteStatus()"></span>
             </div>
             <br>
             <div class='content'>
@@ -125,6 +126,25 @@ Vue.component('status', {
         },
         removeComment: function (commentId) {
             Vue.delete(this.localComments, commentId);
+        },
+        deleteStatus: function () {
+            if (!confirm(smf_you_sure))
+                return;
+
+            axios.post(smf_scripturl + '?action=breezeStatus;sa=deleteStatus;'+ smf_session_var +'='+ smf_session_id,
+                {
+                    status_id: this.status_item.status_id,
+                    comments_poster_id: this.status_item.this.status_item
+                }).then(response => {
+
+                Vue.$toast.open({
+                    message: response.data.message,
+                    type: response.data.type,
+                });
+
+                if (response.data.type !== 'error')
+                    this.$emit('removeStatus', this.status_item.status_id);
+            });
         }
     }
 })

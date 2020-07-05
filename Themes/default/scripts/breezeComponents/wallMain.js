@@ -34,6 +34,9 @@ new Vue({
                     this.loading = false
                 })
         },
+        onRemoveStatus: function(statusId){
+            Vue.delete(this.status, statusId);
+        },
         getUserData: function (user_id) {
             return this.users[user_id];
         },

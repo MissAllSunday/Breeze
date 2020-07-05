@@ -13,7 +13,7 @@ Vue.component('comment', {
         </div>
         <div class='comment_date_info floatright smalltext'>
             {{comment.comments_time | formatDate}}
-            &nbsp;&nbsp<span class="main_icons remove_button floatright" v-on:click="deleteComment()"></span>
+            &nbsp;<span class="main_icons remove_button floatright" v-on:click="deleteComment()"></span>
         </div>
         <div class='clear comment_content'>
             <hr>

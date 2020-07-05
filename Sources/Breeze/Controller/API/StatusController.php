@@ -11,6 +11,7 @@ use Breeze\Service\UserServiceInterface;
 class StatusController extends ApiBaseController implements ApiBaseInterface
 {
 	public const ACTION_PROFILE = 'byProfile';
+	public const ACTION_DELETE = 'deleteStatus';
 	public const SUB_ACTIONS = [
 		self::ACTION_PROFILE,
 	];
@@ -56,6 +57,11 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 		$statusByProfile = $this->statusService->getByProfile($this->wallOwnerId, $start);
 
 		$this->print($statusByProfile);
+	}
+
+	public function deleteStatus(): void
+	{
+
 	}
 
 	public function render(string $subTemplate, array $params): void {}
