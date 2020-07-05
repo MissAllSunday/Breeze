@@ -1,22 +1,5 @@
-Vue.component('message-box', {
-    props: ['type'],
-    data: function() {
-        return {
-            fullType: this.type + 'box',
-        }
-    },
-    template: `
-    <div v-bind:class="fullType">
-        <slot></slot>
-        <span class="main_icons remove_button floatright" @click="$emit('close')"></span>
-    </div>
-  `
-})
+ajax_indicator(true);
 
-Vue.use(VueToast, {
-    duration: 4000,
-    position: 'top'
-});
 
 new Vue({
     el: '#breeze_app',
@@ -44,7 +27,7 @@ new Vue({
                         status_owner_id: wall_owner_id
                     })
                 .then(response => {
-                    if (response.data.type === 'error')
+                    if (response.data.type)
                     {
                         this.notice = {
                             'message': response.data.message,
@@ -57,16 +40,17 @@ new Vue({
 
                     this.status = response.data.status
                     this.users = response.data.users
-                    this.loading = false
                 })
                 .catch(error => {
                     this.errored = true
-                    this.loading = false
                     this.notice = {
                         'message': error.message,
                         'type': 'error',
                     };
-                })
+                }).then(() => {
+                this.loading = false
+                ajax_indicator(false);
+            })
         },
         onRemoveStatus: function(statusId){
             Vue.delete(this.status, statusId);

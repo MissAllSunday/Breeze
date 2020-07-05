@@ -23,7 +23,7 @@ function template_breeze_main(): void
 		</div>
 	</div>
 	<div id="breeze_app" class="breeze_wall floatright">
-		<tabs>
+		<tabs v-if="loading !== true">
     		<tab :name="tabs_name.wall" :selected="true">
 				<message-box 
 					v-if="notice !== null"
