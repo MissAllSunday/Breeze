@@ -88,9 +88,4 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 	{
 		return self::ACTION_PROFILE;
 	}
-
-	private function setWallOwnerId(): int
-	{
-		return $this->wallOwnerId = $this->getRequest('u', 0);
-	}
 }
