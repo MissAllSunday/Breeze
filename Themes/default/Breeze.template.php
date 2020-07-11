@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Breeze\Util\Editor as Editor;
+
 /**
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
@@ -23,6 +25,10 @@ function template_breeze_main(): void
 		</div>
 	</div>
 	<div id="breeze_app" class="breeze_wall floatright">
+	' . template_control_richedit(
+			Editor::BREEZE_EDITOR_ID,
+			"smileyBox_message",
+			"bbcBox_message") .'
 		<tabs v-if="loading !== true">
     		<tab :name="tabs_name.wall" :selected="true">
 				<message-box 
@@ -42,7 +48,7 @@ function template_breeze_main(): void
 				</status>
     		</tab>
     		<tab :name="tabs_name.post">
-      			post a new status
+      	
     		</tab>
     		<tab :name="tabs_name.about">
       			'. $context['member']['name'] .'

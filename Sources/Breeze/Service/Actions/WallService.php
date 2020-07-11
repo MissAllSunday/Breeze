@@ -11,6 +11,7 @@ use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\UserService;
 use Breeze\Service\UserServiceInterface;
+use Breeze\Util\Editor;
 use Breeze\Util\Error;
 use Breeze\Util\Permissions;
 
@@ -39,15 +40,22 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 
 	private $profileOwnerSettings = [];
 
+	/**
+	 * @var Editor
+	 */
+	private $editor;
+
 	public function __construct(
 		UserServiceInterface $userService,
 		StatusRepositoryInterface $statusRepository,
-		CommentRepositoryInterface $commentRepository
+		CommentRepositoryInterface $commentRepository,
+		Editor $editor
 	)
 	{
 		$this->statusRepository = $statusRepository;
 		$this->commentRepository = $commentRepository;
 		$this->userService = $userService;
+		$this->editor = $editor;
 	}
 
 	public function init(array $usbActions): void
@@ -129,6 +137,12 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 	public function setUsersToLoad(array $usersToLoad): void
 	{
 		$this->usersToLoad = array_merge($usersToLoad, $this->usersToLoad);
+	}
+
+	public function generateEditor(): void
+	{
+		// TODO: make per-user configurations
+		$this->editor->createEditor();
 	}
 
 	public function getActionName(): string
