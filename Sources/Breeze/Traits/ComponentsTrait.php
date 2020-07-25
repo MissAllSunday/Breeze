@@ -18,6 +18,7 @@ trait ComponentsTrait
 		'comment',
 		'tabs',
 		'utils',
+		'editor',
 		'wallMain',
 	];
 

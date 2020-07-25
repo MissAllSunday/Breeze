@@ -139,7 +139,7 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 		$this->usersToLoad = array_merge($usersToLoad, $this->usersToLoad);
 	}
 
-	public function generateEditor(): void
+	public function createEditor(): void
 	{
 		// TODO: make per-user configurations
 		$this->editor->createEditor();

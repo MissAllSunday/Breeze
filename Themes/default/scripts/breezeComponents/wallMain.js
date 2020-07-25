@@ -9,11 +9,12 @@ new Vue({
         notice: null,
         loading: true,
         tabs_name: {
-            wall: tabs_wall,
-            post: tabs_post,
-            about: tabs_about,
-            activity: tabs_activity,
-        }
+            wall: window.tabs_wall,
+            post: window.tabs_post,
+            about: window.tabs_about,
+            activity: window.tabs_activity,
+        },
+        oBreeze_editorOptions: window.oBreeze_editorOptions,
     },
     created: function() {
         this.fetchStatus();

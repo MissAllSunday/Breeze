@@ -25,5 +25,5 @@ interface WallServiceInterface extends ActionsServiceInterface
 
 	public function loadCSS(): void;
 
-	public function generateEditor(): void;
+	public function createEditor(): void;
 }

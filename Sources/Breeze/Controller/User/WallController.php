@@ -46,8 +46,8 @@ class WallController extends BaseController implements ControllerInterface
 	public function main(): void
 	{
 		$this->loadJsDependencies();
-		$this->loadComponents(['wallMain', 'utils', 'tabs', 'status', 'comment']);
-		$this->wallService->generateEditor();
+		$this->loadComponents(['wallMain', 'utils', 'tabs', 'status', 'comment', 'editor']);
+		$this->wallService->createEditor();
 
 		$this->render(__FUNCTION__);
 	}

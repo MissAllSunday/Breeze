@@ -21,11 +21,22 @@ class Editor
 			'id' => self::BREEZE_EDITOR_ID,
 			'value' => '',
 			'height' => '170px',
-			'width' => '90%',
+			'width' => '50%',
 		], $editorOptions);
 
 		$this->requireOnce('Subs-Editor');
 
 		create_control_richedit($editorOptions);
+
+		$context = $this->global('context');
+		$smcFunc = $this->global('smcFunc');
+
+		$editorOptions = array_merge(
+			$context['controls']['richedit'][$editorOptions['id']]['sce_options'],
+			$editorOptions
+		);
+
+		addInlineJavascript('
+	o' . Breeze::PATTERN . 'editorOptions = ' . $smcFunc['json_encode']($editorOptions, JSON_PRETTY_PRINT) . ';');
 	}
 }

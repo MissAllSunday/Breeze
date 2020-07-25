@@ -21,5 +21,7 @@ parameters:
     - '/Function loadMemberData not found./'
     - '/Function loadJavaScriptFile not found./'
     - '/Function smf_serverResponse not found./'
+    - '/Function create_control_richedit not found./'
+    - '/Function addInlineJavascript not found./'
   autoload_files:
     - %currentWorkingDirectory%/breezeVendor/autoload.php
