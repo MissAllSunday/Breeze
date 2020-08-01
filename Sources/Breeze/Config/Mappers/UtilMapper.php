@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Config\Mapper;
 
 use Breeze\Service\UserService;
+use Breeze\Util\Components;
 use Breeze\Util\Folder;
 use Breeze\Util\Form\Formatters\CheckFormatter;
 use Breeze\Util\Form\Formatters\IntFormatter;
@@ -16,6 +17,9 @@ use Breeze\Util\Validate\ValidateGateway;
 return [
 	'util.folder' => [
 		'class' => Folder::class
+	],
+	'util.components' => [
+		'class' => Components::class
 	],
 	'util.formatter.check' => [
 		'class' => CheckFormatter::class
