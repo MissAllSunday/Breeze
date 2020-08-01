@@ -18,7 +18,7 @@ trait RequestTrait
 	{
 		$this->init();
 
-		return isset($this->request[$variableName]) ?
+		return !empty($this->request[$variableName]) ?
 			$this->sanitize($this->request[$variableName]) : ($defaultValue ?? false);
 	}
 

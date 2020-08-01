@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Breeze\Util\Editor as Editor;
-
 /**
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
@@ -44,8 +42,7 @@ function template_breeze_main(): void
 				</status>
     		</tab>
     		<tab :name="tabs_name.post">
-      			<editor
-      			v-bind:editor_options="oBreeze_editorOptions">
+      			<editor>
 				</editor>
     		</tab>
     		<tab :name="tabs_name.about">

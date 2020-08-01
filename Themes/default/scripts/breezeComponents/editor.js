@@ -2,6 +2,7 @@ Vue.component('editor', {
     props: ['editor_options'],
     data: function() {
         return {
+            editor: null,
             notice: null,
             place_holder: 'say something!',
             post_status: {
@@ -13,27 +14,26 @@ Vue.component('editor', {
         }
     },
     template: `<div>
-        <textarea 
-            class="editor" 
-            v-bind:name="editor_options.id" 
-            id="Breeze_editor" 
-            cols="600" 
-            v-bind:style="editorInlineCss()"
-            required>          
-        </textarea>
-        <div id="Breeze_editor_resizer" class="richedit_resize"></div>
+        <textarea id="Breeze_editor">Hi</textarea>
     </div>`,
-    created: function() {
-        var textarea = document.getElementById('Breeze_editor');
-        sceditor.create(textarea, this.editor_options);
-        sceditor.instance(textarea).createPermanentDropDown();
+    mounted: function() {
+        this.editor = SUNEDITOR.create(document.getElementById('Breeze_editor'),{
+            width : 'auto',
+            maxWidth : '700px',
+            height : 'auto',
+            minHeight : '100px',
+            maxHeight: '250px',
+            fontSize : [
+                8, 10, 14, 18, 24
+            ],
+            buttonList : [
+                ['undo', 'redo', 'fontSize', 'formatBlock'],
+                ['bold', 'underline', 'italic', 'strike', 'removeFormat'],
+                ['fontColor', 'hiliteColor', 'align', 'horizontalRule'],
+            ]
+        });
     },
     methods: {
-        editorInlineCss: function () {
-            return 'width:' + this.editor_options.width + '; height: '+ this.editor_options.height + ''
-        },
-        editorResizerClass: function () {
-            return this.editor_options.id + '_resizer'
-        }
+
     }
 })

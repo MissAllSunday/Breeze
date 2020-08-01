@@ -87,7 +87,7 @@ abstract class BaseModel implements BaseModelInterface
 			'maxIndex' => 0,
 		]), $queryParams);
 
-		if ($this->isValidColumn($queryParams['columnName']))
+		if (isset($queryParams['columnName']) && $this->isValidColumn($queryParams['columnName']))
 			$whereString = 'WHERE {raw:columnName} IN ({array_int:ids})';
 
 		$request = $this->dbClient->query(
