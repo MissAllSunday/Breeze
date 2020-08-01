@@ -11,7 +11,7 @@ use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\UserService;
 use Breeze\Service\UserServiceInterface;
-use Breeze\Util\Editor;
+use Breeze\Util\Components;
 use Breeze\Util\Error;
 use Breeze\Util\Permissions;
 
@@ -32,6 +32,11 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 	 */
 	private $commentRepository;
 
+	/**
+	 * @var Components
+	 */
+	private $components;
+
 	private $usersToLoad = [];
 
 	protected $profileOwnerInfo = [];
@@ -40,22 +45,17 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 
 	private $profileOwnerSettings = [];
 
-	/**
-	 * @var Editor
-	 */
-	private $editor;
-
 	public function __construct(
 		UserServiceInterface $userService,
 		StatusRepositoryInterface $statusRepository,
 		CommentRepositoryInterface $commentRepository,
-		Editor $editor
+		Components $components
 	)
 	{
 		$this->statusRepository = $statusRepository;
 		$this->commentRepository = $commentRepository;
 		$this->userService = $userService;
-		$this->editor = $editor;
+		$this->components = $components;
 	}
 
 	public function init(array $usbActions): void
@@ -76,6 +76,8 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 			$this->profileOwnerInfo['id'],
 			$this->currentUserInfo['id'],
 		]);
+
+		$this->components->loadComponents(['wallMain', 'utils', 'tabs', 'status', 'comment', 'editor']);
 	}
 
 	public function loadUsers(): void
@@ -139,10 +141,9 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 		$this->usersToLoad = array_merge($usersToLoad, $this->usersToLoad);
 	}
 
-	public function createEditor(): void
+	public function createEditor(array $editorOptions = []): void
 	{
-		// TODO: make per-user configurations
-		$this->editor->createEditor();
+
 	}
 
 	public function getActionName(): string

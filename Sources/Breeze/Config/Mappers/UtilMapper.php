@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace Breeze\Config\Mapper;
 
 use Breeze\Service\UserService;
-use Breeze\Util\Editor;
 use Breeze\Util\Folder;
 use Breeze\Util\Form\Formatters\CheckFormatter;
 use Breeze\Util\Form\Formatters\IntFormatter;
@@ -33,8 +32,5 @@ return [
 	'util.validate.gateway' => [
 		'class' => ValidateGateway::class,
 		'arguments'=> [UserService::class]
-	],
-	'util.editor' => [
-		'class' => Editor::class
 	],
 ];

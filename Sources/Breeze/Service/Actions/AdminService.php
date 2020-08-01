@@ -9,6 +9,7 @@ use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Service\FormServiceInterface;
 use Breeze\Service\PermissionsService;
+use Breeze\Util\Components;
 use Breeze\Util\Permissions;
 
 class AdminService extends ActionsBaseService implements AdminServiceInterface
@@ -23,9 +24,15 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 	 */
 	private $formService;
 
-	public function __construct(FormServiceInterface $formService)
+	/**
+	 * @var Components
+	 */
+	private $components;
+
+	public function __construct(FormServiceInterface $formService, Components $components)
 	{
 		$this->formService = $formService;
+		$this->components = $components;
 	}
 
 	public function init(array $subActions): void
@@ -46,6 +53,8 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 		$context[$context['admin_menu_name']]['tab_data']['tabs'] = array_fill_keys($subActions, []);
 
 		$this->setGlobal('context', $context);
+
+		$this->components->loadComponents(['adminMain', 'feed']);
 	}
 
 	public function defaultSubActionContent(

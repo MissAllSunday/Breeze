@@ -9,6 +9,7 @@ use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
 use Breeze\Service\Actions\WallServiceInterface;
 use Breeze\Service\UserServiceInterface;
+use Breeze\Util\Components;
 
 class WallController extends BaseController implements ControllerInterface
 {
@@ -31,7 +32,15 @@ class WallController extends BaseController implements ControllerInterface
 	 */
 	private $userService;
 
-	public function __construct(WallServiceInterface $wallService, UserServiceInterface $userService)
+	/**
+	 * @var Components
+	 */
+	private $components;
+
+	public function __construct(
+		WallServiceInterface $wallService,
+		UserServiceInterface $userService
+	)
 	{
 		$this->wallService = $wallService;
 		$this->userService = $userService;
@@ -45,10 +54,6 @@ class WallController extends BaseController implements ControllerInterface
 
 	public function main(): void
 	{
-		$this->loadJsDependencies();
-		$this->loadComponents(['wallMain', 'utils', 'tabs', 'status', 'comment', 'editor']);
-		$this->wallService->createEditor();
-
 		$this->render(__FUNCTION__);
 	}
 

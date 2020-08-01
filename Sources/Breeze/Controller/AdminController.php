@@ -56,9 +56,6 @@ class AdminController extends BaseController implements ControllerInterface
 
 	public function main(): void
 	{
-		$this->loadJsDependencies();
-		$this->loadComponents(['adminMain', 'feed']);
-
 		$this->render(__FUNCTION__, [
 			Breeze::NAME => [
 				'credits' => Breeze::credits(),
