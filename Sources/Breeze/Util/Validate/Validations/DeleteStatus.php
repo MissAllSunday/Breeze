@@ -28,12 +28,8 @@ class DeleteStatus extends ValidateData implements ValidateDataInterface
 
 	protected const SUCCESS_KEY = 'deleted_status';
 
-	/**
-	 */
-	private StatusServiceInterface $statusService;
-	
-	/**
-	 */
+	private StatusServiceInterface $statusService;	
+
 	private array $status;
 
 	public function __construct(

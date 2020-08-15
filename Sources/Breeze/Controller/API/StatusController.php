@@ -23,12 +23,8 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 		self::ACTION_PROFILE,
 	];
 
-	/**
-	 */
 	private StatusServiceInterface $statusService;
 
-	/**
-	 */
 	private UserServiceInterface $userService;
 
 	public function __construct(

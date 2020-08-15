@@ -18,8 +18,6 @@ class PostCommentTest extends TestCase
 	 */
 	private $userService;
 
-	/**
-	 */
 	private PostComment $postComment;
 
 	/**

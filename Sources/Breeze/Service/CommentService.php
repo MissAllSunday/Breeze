@@ -13,16 +13,10 @@ use Breeze\Util\Validate\ValidateGateway;
 
 class CommentService  extends BaseService  implements CommentServiceInterface
 {
-	/**
-	 */
 	private StatusRepositoryInterface $statusRepository;
 
-	/**
-	 */
 	private CommentRepositoryInterface $commentRepository;
 
-	/**
-	 */
 	private UserServiceInterface $userService;
 
 	public function __construct(

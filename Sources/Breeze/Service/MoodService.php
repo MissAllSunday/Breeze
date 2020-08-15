@@ -19,8 +19,6 @@ class MoodService extends BaseService implements MoodServiceInterface
 
 	private UserRepositoryInterface $userRepository;
 
-	/**
-	 */
 	private MoodRepositoryInterface $moodRepository;
 
 	public function __construct(MoodRepositoryInterface $moodRepository, UserRepositoryInterface $userRepository)

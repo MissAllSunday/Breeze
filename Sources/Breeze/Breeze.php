@@ -35,8 +35,6 @@ class Breeze
 	public const FEED = 'https://api.github.com/repos/MissAllSunday/Breeze/releases';
 	public const VUE_VERSION = '2.5.16';
 
-	/**
-	 */
 	protected Container $container;
 
 	public function __construct()

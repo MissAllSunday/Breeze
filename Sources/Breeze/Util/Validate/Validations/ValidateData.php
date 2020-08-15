@@ -31,8 +31,6 @@ abstract class ValidateData
 
 	protected array $data;
 
-	/**
-	 */
 	protected UserServiceInterface $userService;
 
 	public function __construct(UserServiceInterface $userService)

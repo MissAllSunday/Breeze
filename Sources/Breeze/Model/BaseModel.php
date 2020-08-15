@@ -8,8 +8,6 @@ use Breeze\Database\ClientInterface;
 
 abstract class BaseModel implements BaseModelInterface
 {
-	/**
-	 */
 	protected ClientInterface $dbClient;
 
 	public function __construct(ClientInterface $databaseClient)

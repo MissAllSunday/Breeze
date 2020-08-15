@@ -28,12 +28,8 @@ class AdminController extends BaseController implements ControllerInterface
 		self::ACTION_DONATE,
 	];
 
-	/**
-	 */
 	protected MoodServiceInterface $moodService;
 
-	/**
-	 */
 	private AdminServiceInterface $adminService;
 
 	public function __construct(

@@ -9,8 +9,6 @@ use Breeze\Repository\BaseRepository;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
-	/**
-	 */
 	private UserModelInterface $userModel;
 
 	public function __construct(UserModelInterface $userModel)

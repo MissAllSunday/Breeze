@@ -11,8 +11,6 @@ use Breeze\Repository\BaseRepository;
 
 class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 {
-	/**
-	 */
 	private MoodModelInterface $moodModel;
 
 	public function __construct(MoodModelInterface $moodModel)

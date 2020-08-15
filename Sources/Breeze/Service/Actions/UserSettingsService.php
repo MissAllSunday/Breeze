@@ -10,8 +10,6 @@ use Breeze\Repository\User\UserRepositoryInterface;
 
 class UserSettingsService extends ActionsBaseService implements UserSettingsServiceInterface
 {
-	/**
-	 */
 	private UserRepositoryInterface $userRepository;
 
 	public function __construct(UserRepositoryInterface $userRepository)

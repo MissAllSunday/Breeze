@@ -17,20 +17,12 @@ use Breeze\Util\Permissions;
 
 class WallService extends ActionsBaseService implements WallServiceInterface
 {
-	/**
-	 */
 	private UserServiceInterface $userService;
 
-	/**
-	 */
 	private StatusRepositoryInterface $statusRepository;
 
-	/**
-	 */
 	private CommentRepositoryInterface $commentRepository;
 
-	/**
-	 */
 	private Components $components;
 
 	private array $usersToLoad = [];

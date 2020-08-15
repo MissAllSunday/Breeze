@@ -33,8 +33,6 @@ class ValidateGateway implements ValidateGatewayInterface
 
 	protected array $data = [];
 
-	/**
-	 */
 	private ValidateDataInterface $validator;
 
 	public function __construct()

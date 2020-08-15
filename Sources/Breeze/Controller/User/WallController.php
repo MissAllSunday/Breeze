@@ -22,16 +22,10 @@ class WallController extends BaseController implements ControllerInterface
 		self::ACTION_STATUS,
 	];
 
-	/**
-	 */
 	private WallServiceInterface $wallService;
 
-	/**
-	 */
 	private UserServiceInterface $userService;
 
-	/**
-	 */
 	private Components $components;
 
 	public function __construct(

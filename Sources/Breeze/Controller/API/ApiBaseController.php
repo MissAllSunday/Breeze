@@ -14,12 +14,8 @@ abstract class ApiBaseController extends BaseController
 {
 	use TextTrait;
 
-	/**
-	 */
 	protected ValidateGatewayInterface $gateway;
 
-	/**
-	 */
 	protected string $subAction;
 
 	public function __construct(ValidateGatewayInterface $gateway)

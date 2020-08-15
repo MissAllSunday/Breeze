@@ -18,8 +18,6 @@ class DeleteCommentTest extends TestCase
 	 */
 	private $userService;
 
-	/**
-	 */
 	private DeleteComment $deleteComment;
 
 	public function setUp(): void

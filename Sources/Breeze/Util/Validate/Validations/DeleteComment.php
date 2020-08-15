@@ -29,16 +29,10 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 
 	protected const SUCCESS_KEY = 'deleted_comment';
 
-	/**
-	 */
 	private array $comment;
 
-	/**
-	 */
 	private CommentServiceInterface $commentService;
 
-	/**
-	 */
 	private StatusServiceInterface $statusService;
 
 	public function __construct(

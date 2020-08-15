@@ -18,12 +18,8 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 		self::ACTION_SAVE,
 	];
 
-	/**
-	 */
 	private UserServiceInterface $userService;
 
-	/**
-	 */
 	private UserSettingsServiceInterface $userSettingsService;
 
 	public function __construct(UserSettingsServiceInterface $userSettingsService, UserServiceInterface $userService)

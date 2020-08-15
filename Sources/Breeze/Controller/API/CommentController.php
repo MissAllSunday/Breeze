@@ -24,16 +24,10 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 		self::ACTION_DELETE,
 	];
 
-	/**
-	 */
 	private UserServiceInterface $userService;
 
-	/**
-	 */
 	private CommentServiceInterface $commentService;
 
-	/**
-	 */
 	private StatusServiceInterface $statusService;
 
 	public function __construct(
