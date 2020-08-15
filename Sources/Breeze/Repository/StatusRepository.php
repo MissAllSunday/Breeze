@@ -11,6 +11,19 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 {
 	private StatusModelInterface $statusModel;
 
+	/**
+	 * @throws InvalidStatusException
+	 */
+	public function save(array $data): int
+	{
+		$newStatusId = $this->statusModel->insert($data);
+
+		if (!$newStatusId)
+			throw new InvalidStatusException('error_save_status');
+
+		return $newStatusId;
+	}
+
 	public function __construct(StatusModelInterface $statusModel)
 	{
 		$this->statusModel = $statusModel;

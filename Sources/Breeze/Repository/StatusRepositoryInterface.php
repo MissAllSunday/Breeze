@@ -10,6 +10,11 @@ interface StatusRepositoryInterface
 	/**
 	 * @throws InvalidStatusException
 	 */
+	public function save(array $data): int;
+
+	/**
+	 * @throws InvalidStatusException
+	 */
 	 public function getByProfile(int $profileOwnerId = 0, int $start = 0): array;
 
 	/**

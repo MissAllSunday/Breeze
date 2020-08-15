@@ -55,6 +55,9 @@ class StatusService extends BaseService implements StatusServiceInterface
 
 	public function saveAndGet(array $data): array
 	{
-		return [];
+		try {
+			$statusId = $this->statusRepository->save($data);
+		} catch (InvalidStatusException $e) {
+		}
 	}
 }
