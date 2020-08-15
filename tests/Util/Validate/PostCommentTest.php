@@ -19,9 +19,8 @@ class PostCommentTest extends TestCase
 	private $userService;
 
 	/**
-	 * @var PostComment
 	 */
-	private $postComment;
+	private PostComment $postComment;
 
 	/**
 	 * @var MockObject|StatusService

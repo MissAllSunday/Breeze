@@ -9,9 +9,8 @@ use Breeze\Database\ClientInterface;
 abstract class BaseModel implements BaseModelInterface
 {
 	/**
-	 * @var ClientInterface
 	 */
-	protected $dbClient;
+	protected ClientInterface $dbClient;
 
 	public function __construct(ClientInterface $databaseClient)
 	{

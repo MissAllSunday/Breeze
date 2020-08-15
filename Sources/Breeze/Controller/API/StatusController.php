@@ -24,14 +24,12 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 	];
 
 	/**
-	 * @var StatusServiceInterface
 	 */
-	private $statusService;
+	private StatusServiceInterface $statusService;
 
 	/**
-	 * @var UserServiceInterface
 	 */
-	private $userService;
+	private UserServiceInterface $userService;
 
 	public function __construct(
 		StatusServiceInterface $statusService,

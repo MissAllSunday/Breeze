@@ -10,8 +10,8 @@ use Breeze\Breeze;
 trait TextTrait
 {
 	use SettingsTrait;
-	
-	private static $session_token = 'href';
+
+	private static string $session_token = 'href';
 
 	public function getText(string $textKey): string
 	{

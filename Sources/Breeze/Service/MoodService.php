@@ -17,12 +17,11 @@ class MoodService extends BaseService implements MoodServiceInterface
 {
 	use PersistenceTrait;
 
-	private $userRepository;
+	private UserRepositoryInterface $userRepository;
 
 	/**
-	 * @var MoodRepositoryInterface
 	 */
-	private $moodRepository;
+	private MoodRepositoryInterface $moodRepository;
 
 	public function __construct(MoodRepositoryInterface $moodRepository, UserRepositoryInterface $userRepository)
 	{

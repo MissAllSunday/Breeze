@@ -10,9 +10,8 @@ use Breeze\Model\CommentModelInterface;
 class CommentRepository extends BaseRepository implements CommentRepositoryInterface
 {
 	/**
-	 * @var CommentModelInterface
 	 */
-	private $commentModel;
+	private CommentModelInterface $commentModel;
 
 	public function __construct(CommentModelInterface $commentModel)
 	{

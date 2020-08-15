@@ -13,7 +13,7 @@ use Breeze\Util\Validate\ValidateDataException;
 
 class DeleteStatus extends ValidateData implements ValidateDataInterface
 {
-	public $steps = [
+	public array $steps = [
 		'clean',
 		'isInt',
 		'validStatus',
@@ -29,14 +29,12 @@ class DeleteStatus extends ValidateData implements ValidateDataInterface
 	protected const SUCCESS_KEY = 'deleted_status';
 
 	/**
-	 * @var StatusServiceInterface
 	 */
-	private $statusService;
+	private StatusServiceInterface $statusService;
 	
 	/**
-	 * @var array
 	 */
-	private $status;
+	private array $status;
 
 	public function __construct(
 		UserServiceInterface $userService,

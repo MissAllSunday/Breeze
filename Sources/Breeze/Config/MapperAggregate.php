@@ -11,7 +11,7 @@ class MapperAggregate
 	const MAPPERS_FOLDER =  __DIR__ . '/Mappers';
 	const MAPPER_KEY = 'Mapper';
 
-	protected $mappers = [];
+	protected array $mappers = [];
 
 	public function getMappers(): array
 	{

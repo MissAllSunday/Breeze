@@ -25,14 +25,12 @@ class PostComment extends ValidateData implements ValidateDataInterface
 	protected const SUCCESS_KEY = 'published_comment';
 
 	/**
-	 * @var CommentServiceInterface
 	 */
-	private $commentService;
+	private CommentServiceInterface $commentService;
 
 	/**
-	 * @var StatusServiceInterface
 	 */
-	private $statusService;
+	private StatusServiceInterface $statusService;
 
 	public function __construct(
 		UserServiceInterface $userService,

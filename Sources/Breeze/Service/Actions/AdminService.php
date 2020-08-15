@@ -15,19 +15,16 @@ use Breeze\Util\Permissions;
 class AdminService extends ActionsBaseService implements AdminServiceInterface
 {
 	/**
-	 * @var array
 	 */
-	protected $configVars = [];
+	protected array $configVars = [];
 
 	/**
-	 * @var FormServiceInterface
 	 */
-	private $formService;
+	private FormServiceInterface $formService;
 
 	/**
-	 * @var Components
 	 */
-	private $components;
+	private Components $components;
 
 	public function __construct(FormServiceInterface $formService, Components $components)
 	{

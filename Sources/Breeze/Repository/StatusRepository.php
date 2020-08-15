@@ -10,9 +10,8 @@ use Breeze\Model\StatusModelInterface;
 class StatusRepository extends BaseRepository implements StatusRepositoryInterface
 {
 	/**
-	 * @var StatusModelInterface
 	 */
-	private $statusModel;
+	private StatusModelInterface $statusModel;
 
 	public function __construct(StatusModelInterface $statusModel)
 	{

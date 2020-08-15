@@ -29,14 +29,12 @@ class AdminController extends BaseController implements ControllerInterface
 	];
 
 	/**
-	 * @var MoodServiceInterface
 	 */
-	protected $moodService;
+	protected MoodServiceInterface $moodService;
 
 	/**
-	 * @var AdminServiceInterface
 	 */
-	private $adminService;
+	private AdminServiceInterface $adminService;
 
 	public function __construct(
 		AdminServiceInterface $adminService,

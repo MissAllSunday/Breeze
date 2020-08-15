@@ -17,10 +17,7 @@ class UserService extends BaseService implements UserServiceInterface
 		'avatar'
 	];
 
-	/**
-	 * @var UserRepositoryInterface
-	 */
-	private $userRepository;
+	private UserRepositoryInterface $userRepository;
 
 	public function __construct(UserRepositoryInterface $userRepository)
 	{

@@ -11,9 +11,8 @@ use Breeze\Repository\User\UserRepositoryInterface;
 class UserSettingsService extends ActionsBaseService implements UserSettingsServiceInterface
 {
 	/**
-	 * @var UserRepositoryInterface
 	 */
-	private $userRepository;
+	private UserRepositoryInterface $userRepository;
 
 	public function __construct(UserRepositoryInterface $userRepository)
 	{

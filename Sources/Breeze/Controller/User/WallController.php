@@ -23,19 +23,16 @@ class WallController extends BaseController implements ControllerInterface
 	];
 
 	/**
-	 * @var WallServiceInterface
 	 */
-	private $wallService;
+	private WallServiceInterface $wallService;
 
 	/**
-	 * @var UserServiceInterface
 	 */
-	private $userService;
+	private UserServiceInterface $userService;
 
 	/**
-	 * @var Components
 	 */
-	private $components;
+	private Components $components;
 
 	public function __construct(
 		WallServiceInterface $wallService,

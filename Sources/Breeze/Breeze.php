@@ -36,9 +36,8 @@ class Breeze
 	public const VUE_VERSION = '2.5.16';
 
 	/**
-	 * @var Container
 	 */
-	protected $container;
+	protected Container $container;
 
 	public function __construct()
 	{

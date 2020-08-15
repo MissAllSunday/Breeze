@@ -25,19 +25,16 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 	];
 
 	/**
-	 * @var UserServiceInterface
 	 */
-	private $userService;
+	private UserServiceInterface $userService;
 
 	/**
-	 * @var CommentServiceInterface
 	 */
-	private $commentService;
+	private CommentServiceInterface $commentService;
 
 	/**
-	 * @var StatusServiceInterface
 	 */
-	private $statusService;
+	private StatusServiceInterface $statusService;
 
 	public function __construct(
 		CommentServiceInterface $commentService,

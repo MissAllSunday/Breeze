@@ -26,17 +26,16 @@ class ValidateGateway implements ValidateGatewayInterface
 		self::SUCCESS_TYPE,
 	];
 
-	protected $notice = [
+	protected array $notice = [
 		'type' => self::ERROR_TYPE,
 		'message' => self::DEFAULT_ERROR_KEY,
 	];
 
-	protected $data = [];
+	protected array $data = [];
 
 	/**
-	 * @var ValidateDataInterface
 	 */
-	private $validator;
+	private ValidateDataInterface $validator;
 
 	public function __construct()
 	{

@@ -15,14 +15,12 @@ abstract class ApiBaseController extends BaseController
 	use TextTrait;
 
 	/**
-	 * @var ValidateGatewayInterface
 	 */
-	protected $gateway;
+	protected ValidateGatewayInterface $gateway;
 
 	/**
-	 * @var string
 	 */
-	protected $subAction;
+	protected string $subAction;
 
 	public function __construct(ValidateGatewayInterface $gateway)
 	{

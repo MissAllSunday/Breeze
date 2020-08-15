@@ -25,16 +25,15 @@ abstract class ValidateData
 		'floodControl',
 	];
 
-	protected $steps = [];
+	protected array $steps = [];
 
-	protected $params = [];
+	protected array $params = [];
 
-	protected $data;
+	protected array $data;
 
 	/**
-	 * @var UserServiceInterface
 	 */
-	protected $userService;
+	protected UserServiceInterface $userService;
 
 	public function __construct(UserServiceInterface $userService)
 	{

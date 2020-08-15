@@ -19,14 +19,12 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	];
 
 	/**
-	 * @var UserServiceInterface
 	 */
-	private $userService;
+	private UserServiceInterface $userService;
 
 	/**
-	 * @var UserSettingsServiceInterface
 	 */
-	private $userSettingsService;
+	private UserSettingsServiceInterface $userSettingsService;
 
 	public function __construct(UserSettingsServiceInterface $userSettingsService, UserServiceInterface $userService)
 	{

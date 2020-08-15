@@ -12,9 +12,8 @@ use Breeze\Service\UserServiceInterface;
 class AlertsController extends BaseController implements ControllerInterfaceAlias
 {
 	/**
-	 * @var UserServiceInterface
 	 */
-	private $userService;
+	private UserServiceInterface $userService;
 
 	public function __construct(UserServiceInterface $userService)
 	{

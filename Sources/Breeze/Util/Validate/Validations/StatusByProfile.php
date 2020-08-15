@@ -9,7 +9,7 @@ use Breeze\Entity\StatusEntity;
 
 class StatusByProfile extends ValidateData implements ValidateDataInterface
 {
-	public $steps = [
+	public array $steps = [
 		'clean',
 		'isInt',
 		'areValidUsers',

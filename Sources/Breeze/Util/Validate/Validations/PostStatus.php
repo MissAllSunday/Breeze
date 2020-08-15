@@ -21,9 +21,8 @@ class PostStatus extends ValidateData implements ValidateDataInterface
 	protected const SUCCESS_KEY = 'published_status';
 
 	/**
-	 * @var StatusServiceInterface
 	 */
-	private $statusService;
+	private StatusServiceInterface $statusService;
 
 	public function __construct(
 		UserServiceInterface $userService,

@@ -18,32 +18,28 @@ use Breeze\Util\Permissions;
 class WallService extends ActionsBaseService implements WallServiceInterface
 {
 	/**
-	 * @var UserServiceInterface
 	 */
-	private $userService;
+	private UserServiceInterface $userService;
 
 	/**
-	 * @var StatusRepositoryInterface
 	 */
-	private $statusRepository;
+	private StatusRepositoryInterface $statusRepository;
 
 	/**
-	 * @var CommentRepositoryInterface
 	 */
-	private $commentRepository;
+	private CommentRepositoryInterface $commentRepository;
 
 	/**
-	 * @var Components
 	 */
-	private $components;
+	private Components $components;
 
-	private $usersToLoad = [];
+	private array $usersToLoad = [];
 
-	protected $profileOwnerInfo = [];
+	protected array $profileOwnerInfo = [];
 
-	protected $currentUserInfo = [];
+	protected array $currentUserInfo = [];
 
-	private $profileOwnerSettings = [];
+	private array $profileOwnerSettings = [];
 
 	public function __construct(
 		UserServiceInterface $userService,

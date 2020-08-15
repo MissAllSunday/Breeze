@@ -14,7 +14,7 @@ use Breeze\Util\Validate\ValidateDataException;
 
 class DeleteComment extends ValidateData implements ValidateDataInterface
 {
-	public $steps = [
+	public array $steps = [
 		'clean',
 		'isInt',
 		'validComment',
@@ -30,19 +30,16 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	protected const SUCCESS_KEY = 'deleted_comment';
 
 	/**
-	 * @var array
 	 */
-	private $comment;
+	private array $comment;
 
 	/**
-	 * @var CommentServiceInterface
 	 */
-	private $commentService;
+	private CommentServiceInterface $commentService;
 
 	/**
-	 * @var StatusServiceInterface
 	 */
-	private $statusService;
+	private StatusServiceInterface $statusService;
 
 	public function __construct(
 		UserServiceInterface $userService,
