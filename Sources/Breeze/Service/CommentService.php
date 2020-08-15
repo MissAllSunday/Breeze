@@ -33,15 +33,10 @@ class CommentService  extends BaseService  implements CommentServiceInterface
 	public function saveAndGet(array $data): array
 	{
 		try {
-			$commentId = $this->commentRepository->save([
-				CommentEntity::COLUMN_STATUS_ID => $data[CommentEntity::COLUMN_STATUS_ID],
-				CommentEntity::COLUMN_STATUS_OWNER_ID => $data[CommentEntity::COLUMN_STATUS_OWNER_ID],
-				CommentEntity::COLUMN_POSTER_ID => $data[CommentEntity::COLUMN_POSTER_ID],
-				CommentEntity::COLUMN_PROFILE_ID => $data[CommentEntity::COLUMN_PROFILE_ID],
+			$commentId = $this->commentRepository->save(array_merge($data, [
 				CommentEntity::COLUMN_TIME => time(),
-				CommentEntity::COLUMN_BODY => $data[CommentEntity::COLUMN_BODY],
 				CommentEntity::COLUMN_LIKES => 0,
-			]);
+			]));
 
 			$comment = $this->commentRepository->getById($commentId);
 		} catch (InvalidCommentException $e) {
