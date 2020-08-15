@@ -35,7 +35,7 @@ class StatusModel extends BaseModel implements StatusModelInterface
 			SELECT {raw:columns}
 			FROM {db_prefix}{raw:tableName}
 			WHERE {raw:columnName} = ({int:id})
-			LIMIT {int:start}, {int:maxIndex}',
+			LIMIT 1',
 			$queryParams
 		);
 

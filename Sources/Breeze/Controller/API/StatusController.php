@@ -83,6 +83,14 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 
 	}
 
+	public function postStatus(): void
+	{
+		$this->print(array_merge(
+			$this->gateway->response(),
+			['content' => $this->statusService->saveAndGet($this->gateway->getData())]
+		));
+	}
+
 	public function render(string $subTemplate, array $params): void {}
 
 	public function getMainAction(): string

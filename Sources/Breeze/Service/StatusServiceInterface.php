@@ -18,4 +18,6 @@ interface StatusServiceInterface extends BaseServiceInterface
 	 * @throws InvalidStatusException
 	 */
 	public function getById(int $statusId): array;
+
+	public function saveAndGet(array $data): array;
 }

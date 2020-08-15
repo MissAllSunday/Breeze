@@ -14,7 +14,6 @@ new Vue({
             about: window.tabs_about,
             activity: window.tabs_activity,
         },
-        oBreeze_editorOptions: window.oBreeze_editorOptions,
     },
     created: function() {
         this.fetchStatus();
