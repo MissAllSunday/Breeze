@@ -23,8 +23,6 @@ class StatusModel extends BaseModel implements StatusModelInterface
 
 	public function getById(int $statusId): array
 	{
-		$status = [];
-		$usersIds = [];
 		$queryParams = array_merge($this->getDefaultQueryParams(), [
 			'columnName' => StatusEntity::COLUMN_ID,
 			'id' => $statusId
@@ -39,25 +37,11 @@ class StatusModel extends BaseModel implements StatusModelInterface
 			$queryParams
 		);
 
-		while ($row = $this->dbClient->fetchAssoc($request))
-		{
-			$status[$row[$this->getColumnId()]] =$row;
-			$usersIds[] = $row[StatusEntity::COLUMN_OWNER_ID];
-			$usersIds[] = $row[StatusEntity::COLUMN_POSTER_ID];
-		}
-
-		$this->dbClient->freeResult($request);
-
-		return [
-			'data' => $status,
-			'usersIds' => array_unique($usersIds),
-		];
+		return $this->prepareData($request);
 	}
 
 	public function getStatusByProfile(array $params): array
 	{
-		$status = [];
-		$usersIds = [];
 		$queryParams = array_merge(array_merge($this->getDefaultQueryParams(), [
 			'columnName' => StatusEntity::COLUMN_OWNER_ID,
 		], $params));
@@ -71,19 +55,7 @@ class StatusModel extends BaseModel implements StatusModelInterface
 			$queryParams
 		);
 
-		while ($row = $this->dbClient->fetchAssoc($request))
-		{
-			$status[$row[$this->getColumnId()]] =$row;
-			$usersIds[] = $row[StatusEntity::COLUMN_OWNER_ID];
-			$usersIds[] = $row[StatusEntity::COLUMN_POSTER_ID];
-		}
-
-		$this->dbClient->freeResult($request);
-
-		return [
-			'data' => $status,
-			'usersIds' => array_unique($usersIds),
-		];
+		return $this->prepareData($request);
 	}
 
 	public function update(array $data, int $statusId = 0): array
@@ -109,5 +81,25 @@ class StatusModel extends BaseModel implements StatusModelInterface
 	public function getColumns(): array
 	{
 		return StatusEntity::getColumns();
+	}
+
+	private function prepareData($request): array
+	{
+		$status = [];
+		$usersIds = [];
+
+		while ($row = $this->dbClient->fetchAssoc($request))
+		{
+			$status[$row[StatusEntity::COLUMN_ID]] =$row;
+			$usersIds[] = $row[StatusEntity::COLUMN_OWNER_ID];
+			$usersIds[] = $row[StatusEntity::COLUMN_POSTER_ID];
+		}
+
+		$this->dbClient->freeResult($request);
+
+		return [
+			'data' => $status,
+			'usersIds' => array_unique($usersIds),
+		];
 	}
 }

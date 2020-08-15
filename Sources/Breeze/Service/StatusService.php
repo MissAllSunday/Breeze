@@ -5,9 +5,11 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Entity\StatusEntity;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Util\Validate\ValidateGateway;
 
 class StatusService extends BaseService implements StatusServiceInterface
 {
@@ -56,8 +58,23 @@ class StatusService extends BaseService implements StatusServiceInterface
 	public function saveAndGet(array $data): array
 	{
 		try {
-			$statusId = $this->statusRepository->save($data);
+			$statusId = $this->statusRepository->save(array_merge($data, [
+				StatusEntity::COLUMN_TIME => time(),
+				StatusEntity::COLUMN_LIKES => 0,
+			]));
+
+			$newStatus = $this->statusRepository->getById($statusId);
+
 		} catch (InvalidStatusException $e) {
+			return [
+				'type' => ValidateGateway::ERROR_TYPE,
+				'message' => $e->getMessage(),
+			];
 		}
+
+		return [
+			'users' => $this->userService->loadUsersInfo(array_unique($newStatus['usersIds'])),
+			'comments' => $newStatus['data'],
+		];
 	}
 }
