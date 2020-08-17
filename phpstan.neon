@@ -1,6 +1,7 @@
 parameters:
   level: 5
-  bootstrap: tests/bootstrap.php
+  bootstrapFiles:
+    - tests/bootstrap.php
   paths:
     - Sources/Breeze
   inferPrivatePropertyTypeFromConstructor: true
@@ -21,5 +22,3 @@ parameters:
     - '/Function loadMemberData not found./'
     - '/Function loadJavaScriptFile not found./'
     - '/Function smf_serverResponse not found./'
-  autoload_files:
-    - %currentWorkingDirectory%/breezeVendor/autoload.php
