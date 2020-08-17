@@ -14,6 +14,12 @@ new Vue({
             about: window.tabs_about,
             activity: window.tabs_activity,
         },
+        post_data: {
+            status_owner_id: parseInt(wall_owner_id),
+            status_poster_id: parseInt(smf_member_id),
+            status_body: '',
+        },
+        action_url: 'breezeStatus;sa=postStatus',
     },
     created: function() {
         this.fetchStatus();

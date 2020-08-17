@@ -1,5 +1,5 @@
 Vue.component('editor', {
-    props: ['editor_options'],
+    props: ['action_url', 'post_data'],
     data: function() {
         return {
             previewed: null,
@@ -7,11 +7,7 @@ Vue.component('editor', {
             editor: null,
             notice: null,
             place_holder: 'say something!',
-            post_status: {
-                status_owner_id: parseInt(wall_owner_id),
-                status_poster_id: parseInt(smf_member_id),
-                status_body: '',
-            },
+            data: this.post_data,
         }
     },
     template: `
@@ -50,12 +46,12 @@ Vue.component('editor', {
         postStatus: function (){
             this.clearNotice()
 
-            this.post_status.status_body = this.editor.getContents(true)
+            this.setBody(this.editor.getContents(true));
 
             if (!this.isValidStatus())
                 return false;
 
-            axios.post(smf_scripturl + '?action=breezeStatus;sa=postStatus;'+ smf_session_var +'='+ smf_session_id,
+            axios.post(smf_scripturl + '?action='+ this.action_url +';'+ smf_session_var +'='+ smf_session_id,
                 this.post_status).then(response => {
 
                 this.setNotice(response.data.message, response.data.type);
@@ -71,10 +67,23 @@ Vue.component('editor', {
             this.previewed = this.previewed === null ? this.editor.getContents(true) : null
             this.preview_name = this.previewed === null ? 'Preview' : 'Clear'
         },
+        setBody: function (editorContent){
+            for (const prop in this.data) {
+                if (typeof this.data[prop] == 'string' && prop.indexOf('body') > -1)
+                    this.data[prop] = editorContent;
+            }
+        },
+        getBody: function (){
+            for (const prop in this.data) {
+                if (typeof this.data[prop] == 'string' && prop.indexOf('body') > -1)
+                    return this.data[prop];
+            }
+        },
         isValidStatus: function () {
-            if (this.post_status.status_body === '' ||
-                this.post_status.status_body === '<p><br></p>' ||
-                typeof(this.post_status.status_body) !== 'string' )
+            let body = this.getBody();
+            if (body === '' ||
+                body === '<p><br></p>' ||
+                typeof(body) !== 'string' )
             {
                 this.setNotice('el body esta vacio');
 
