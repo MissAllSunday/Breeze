@@ -43,7 +43,8 @@ function template_breeze_main(): void
     		</tab>
     		<tab :name="tabs_name.post">
       			<editor
-      			v-on:get-content="postStatus">
+      			v-bind:editor_id="editorId()"
+      			v-on:get-content="postStatus()">
 				</editor>
     		</tab>
     		<tab :name="tabs_name.about">

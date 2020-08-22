@@ -1,4 +1,5 @@
 Vue.component('editor', {
+    props: ['editor_id'],
     data: function() {
         return {
             previewed: null,
@@ -18,14 +19,14 @@ Vue.component('editor', {
         </div>
         <div v-if="previewed !== null" class="sun-editor-editable windowbg" v-html="previewed">
         </div>
-        <textarea id="Breeze_editor"></textarea>
+        <textarea v-bind:id="editor_id"></textarea>
         <div v-if="notice === null" class="post_button_container floatright">
                 <input type="button" @click="preview()" class="button" :value="preview_name">
                 <input type="submit" @click="postStatus()" class="button">
         </div>
     </div>`,
     mounted: function() {
-        this.editor = SUNEDITOR.create(document.getElementById('Breeze_editor'),{
+        this.editor = SUNEDITOR.create(document.getElementById(this.editor_id),{
             width : 'auto',
             maxWidth : '1200px',
             height : 'auto',
@@ -63,6 +64,16 @@ Vue.component('editor', {
                 typeof(this.body) !== 'string' )
             {
                 this.$root.setNotice('el body esta vacio');
+
+                return false;
+            }
+
+            if (this.body === 'about:Suki')
+            {
+                alert('Whatcha gonna do, where are you gonna go\n' +
+                'When the darkness closes on you\n' +
+                'Is there anybody out there looking for you?\n' +
+                 'Do they know what you\'ve been through?');
 
                 return false;
             }

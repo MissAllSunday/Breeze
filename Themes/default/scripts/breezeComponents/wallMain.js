@@ -25,6 +25,9 @@ new Vue({
         this.fetchStatus();
     },
     methods: {
+        editorId: function (){
+            return 'breeze_status';
+        },
         postStatus: function (editorContent){
             this.post_data.status_body = editorContent;
 
