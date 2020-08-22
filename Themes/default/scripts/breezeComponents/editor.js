@@ -43,31 +43,26 @@ Vue.component('editor', {
     },
     methods: {
         postStatus: function (){
-            this.clearNotice()
+            this.$root.clearNotice()
 
-            this.setBody(this.editor.getContents(true));
+            this.body = this.editor.getContents(true);
 
             if (!this.isValidStatus())
                 return false;
 
-            this.$emit('get-content', this.getBody());
+            this.$emit('get-content', this.body);
+            this.editor.setContents('');
         },
         preview: function (){
             this.previewed = this.previewed === null ? this.editor.getContents(true) : null
             this.preview_name = this.previewed === null ? 'Preview' : 'Clear'
-        },
-        setBody: function (stringContent){
-            this.body = stringContent;
-        },
-        getBody: function (){
-            return this.body;
         },
         isValidStatus: function () {
             if (this.body === '' ||
                 this.body === '<p><br></p>' ||
                 typeof(this.body) !== 'string' )
             {
-                this.setNotice('el body esta vacio');
+                this.$root.setNotice('el body esta vacio');
 
                 return false;
             }
