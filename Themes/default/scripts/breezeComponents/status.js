@@ -70,7 +70,7 @@ Vue.component('status', {
             this.post_comment.comments_body = '';
         },
         postComment: function () {
-            this.clearNotice();
+            this.$root.clearNotice();
 
             if (!this.isValidComment())
                 return false;
@@ -78,7 +78,7 @@ Vue.component('status', {
             axios.post(smf_scripturl + '?action=breezeComment;sa=postComment;'+ smf_session_var +'='+ smf_session_id,
                 this.post_comment).then(response => {
 
-                    this.setNotice(response.data.message, response.data.type);
+                    this.$root.setNotice(response.data.message, response.data.type);
 
                     if (response.data.content){
                         this.$root.setUserData(response.data.content.users)
@@ -91,7 +91,7 @@ Vue.component('status', {
         isValidComment: function () {
             if (this.post_comment.comments_body === '' || typeof(this.post_comment.comments_body) !== 'string' )
             {
-                this.setNotice('el body esta vacio');
+                this.$root.setNotice('el body esta vacio');
 
                 return false;
             }
@@ -107,22 +107,6 @@ Vue.component('status', {
             }
 
             return true;
-        },
-        setNotice: function(message, type){
-            type = type || 'error';
-            let $this = this;
-            this.notice = true;
-
-            Vue.$toast.open({
-                message: message,
-                type: type,
-                onClose: function () {
-                    $this.notice = null;
-                }
-            });
-        },
-        clearNotice: function(){
-            this.notice = null;
         },
         removeComment: function (commentId) {
             Vue.delete(this.localComments, commentId);
