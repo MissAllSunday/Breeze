@@ -52,7 +52,7 @@ Vue.component('editor', {
                 return false;
 
             axios.post(smf_scripturl + '?action='+ this.action_url +';'+ smf_session_var +'='+ smf_session_id,
-                this.post_status).then(response => {
+                this.data).then(response => {
 
                 this.setNotice(response.data.message, response.data.type);
 
@@ -60,7 +60,7 @@ Vue.component('editor', {
                     this.$root.setUserData(response.data.content.users)
                 }
 
-                this.clearPostComment();
+                this.setBody('');
             });
         },
         preview: function (){
