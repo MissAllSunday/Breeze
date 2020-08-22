@@ -42,7 +42,7 @@ Vue.component('status', {
                 </div>
                 <editor
                     v-bind:editor_id='editorId()'
-                    v-on:get-content='postComment()'>
+                    v-on:get-content='postComment'>
                 </editor>
             </div>
         </div>
@@ -70,7 +70,7 @@ Vue.component('status', {
         },
         postComment: function (editorContent) {
             this.$root.clearNotice();
-            this.comments_body.comments_body = editorContent;
+            this.post_comment.comments_body = editorContent;
 
             axios.post(smf_scripturl + '?action=breezeComment;sa=postComment;'+ smf_session_var +'='+ smf_session_id,
                 this.post_comment).then(response => {
@@ -83,6 +83,8 @@ Vue.component('status', {
                     }
 
                     this.clearPostComment();
+            }).catch(error => {
+                this.$root.setNotice(error.response.statusText);
             });
         },
         removeComment: function (commentId) {

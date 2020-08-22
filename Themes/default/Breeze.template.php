@@ -44,7 +44,7 @@ function template_breeze_main(): void
     		<tab :name="tabs_name.post">
       			<editor
       			v-bind:editor_id="editorId()"
-      			v-on:get-content="postStatus()">
+      			v-on:get-content="postStatus">
 				</editor>
     		</tab>
     		<tab :name="tabs_name.about">
@@ -66,5 +66,6 @@ function template_breeze_main(): void
 		var tabs_post = "'. $txt['Breeze_tabs_post'] .'";
 		var tabs_about = "'. $txt['Breeze_tabs_about'] .'";
 		var tabs_activity = "'. $txt['Breeze_tabs_activity'] .'";
+		var generic_error = "'. $txt['Breeze_error_wrong_values'] .'";
     </script>';
 }

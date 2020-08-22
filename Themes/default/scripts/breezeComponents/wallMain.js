@@ -42,6 +42,8 @@ new Vue({
                 }
 
                 this.setBody('');
+            }).catch(error => {
+                console.log(error.response)
             });
         },
         fetchStatus: function() {
