@@ -82,8 +82,21 @@ new Vue({
         setUserData: function (user_data) {
             this.users = Object.assign({}, this.users, user_data)
         },
-        clearNotice: function () {
+        setNotice: function(message, type){
+            type = type || 'error';
+            let $this = this;
+            this.notice = true;
+
+            Vue.$toast.open({
+                message: message,
+                type: type,
+                onClose: function () {
+                    $this.notice = null;
+                }
+            });
+        },
+        clearNotice: function(){
             this.notice = null;
-        }
+        },
     }
 });

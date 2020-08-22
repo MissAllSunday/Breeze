@@ -50,7 +50,7 @@ Vue.component('editor', {
             if (!this.isValidStatus())
                 return false;
 
-            this.$emit('get-content', this.body);
+            this.$emit('get-content', this.getBody());
         },
         preview: function (){
             this.previewed = this.previewed === null ? this.editor.getContents(true) : null
@@ -73,22 +73,6 @@ Vue.component('editor', {
             }
 
             return true;
-        },
-        setNotice: function(message, type){
-            type = type || 'error';
-            let $this = this;
-            this.notice = true;
-
-            Vue.$toast.open({
-                message: message,
-                type: type,
-                onClose: function () {
-                    $this.notice = null;
-                }
-            });
-        },
-        clearNotice: function(){
-            this.notice = null;
         },
     }
 })
