@@ -25,6 +25,22 @@ new Vue({
         this.fetchStatus();
     },
     methods: {
+        postStatus: function (editorContent){
+            this.post_data.status_body = editorContent;
+
+            axios.post(smf_scripturl + '?action='+ this.action_url +';'+ smf_session_var +'='+ smf_session_id,
+                this.post_data).then(response => {
+
+                this.setNotice(response.data.message, response.data.type);
+
+                if (response.data.content){
+                    this.$root.setUserData(response.data.content.users)
+                    this.$parent.selectTab(tabs_wall);
+                }
+
+                this.setBody('');
+            });
+        },
         fetchStatus: function() {
             axios
                 .post(statusURL + smf_session_var +'='+ smf_session_id,

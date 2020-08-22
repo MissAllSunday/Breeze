@@ -1,5 +1,4 @@
 Vue.component('editor', {
-    props: ['action_url', 'post_data'],
     data: function() {
         return {
             previewed: null,
@@ -7,7 +6,7 @@ Vue.component('editor', {
             editor: null,
             notice: null,
             place_holder: 'say something!',
-            data: this.post_data,
+            body: '',
         }
     },
     template: `
@@ -51,39 +50,22 @@ Vue.component('editor', {
             if (!this.isValidStatus())
                 return false;
 
-            axios.post(smf_scripturl + '?action='+ this.action_url +';'+ smf_session_var +'='+ smf_session_id,
-                this.data).then(response => {
-
-                this.setNotice(response.data.message, response.data.type);
-
-                if (response.data.content){
-                    this.$root.setUserData(response.data.content.users)
-                }
-
-                this.setBody('');
-            });
+            this.$emit('get-content', this.body);
         },
         preview: function (){
             this.previewed = this.previewed === null ? this.editor.getContents(true) : null
             this.preview_name = this.previewed === null ? 'Preview' : 'Clear'
         },
-        setBody: function (editorContent){
-            for (const prop in this.data) {
-                if (typeof this.data[prop] == 'string' && prop.indexOf('body') > -1)
-                    this.data[prop] = editorContent;
-            }
+        setBody: function (stringContent){
+            this.body = stringContent;
         },
         getBody: function (){
-            for (const prop in this.data) {
-                if (typeof this.data[prop] == 'string' && prop.indexOf('body') > -1)
-                    return this.data[prop];
-            }
+            return this.body;
         },
         isValidStatus: function () {
-            let body = this.getBody();
-            if (body === '' ||
-                body === '<p><br></p>' ||
-                typeof(body) !== 'string' )
+            if (this.body === '' ||
+                this.body === '<p><br></p>' ||
+                typeof(this.body) !== 'string' )
             {
                 this.setNotice('el body esta vacio');
 
