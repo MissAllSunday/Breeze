@@ -42,7 +42,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 		$usersData = $this->userService->loadUsersInfo($userIds);
 
 		foreach ($profileStatus['data'] as $statusId => &$status)
-			$status['comments'] = $profileComments['data'][$statusId];
+			$status['comments'] = $profileComments['data'][$statusId] ?? [];
 
 		return [
 			'users' => $usersData,
