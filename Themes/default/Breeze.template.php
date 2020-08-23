@@ -25,12 +25,11 @@ function template_breeze_main(): void
 	<div id="breeze_app" class="breeze_wall floatright">
 		<tabs v-if="loading !== true">
     		<tab :name="tabs_name.wall" :selected="true">
-				<message-box 
-					v-if="notice !== null"
-					@close="clearNotice()"
-					v-bind:type="notice.type">
-					{{notice.message}}
-				</message-box>
+				<editor
+      			v-bind:editor_id="editorId()"
+      			v-on:get-content="postStatus">
+				</editor>
+				<p></p>
 				<status
 					v-if="errored !== null"
 					v-for="status_item in status"
@@ -40,12 +39,6 @@ function template_breeze_main(): void
 					v-bind:users="users"
 					@removeStatus="onRemoveStatus">			
 				</status>
-    		</tab>
-    		<tab :name="tabs_name.post">
-      			<editor
-      			v-bind:editor_id="editorId()"
-      			v-on:get-content="postStatus">
-				</editor>
     		</tab>
     		<tab :name="tabs_name.about">
       			'. $context['member']['name'] .'
