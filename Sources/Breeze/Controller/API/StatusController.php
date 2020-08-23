@@ -21,6 +21,8 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 	public const ACTION_POST = 'postStatus';
 	public const SUB_ACTIONS = [
 		self::ACTION_PROFILE,
+		self::ACTION_POST,
+		self::ACTION_DELETE,
 	];
 
 	private StatusServiceInterface $statusService;
