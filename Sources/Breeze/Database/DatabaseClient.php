@@ -48,6 +48,9 @@ class DatabaseClient implements ClientInterface
 
 	public function insert(string $tableName, array $columns, array $data, string $columnIdName): void
 	{
+		ksort($columns);
+		ksort($data);
+
 		$this->db['db_insert'](
 			'insert',
 			'{db_prefix}' . $tableName . '',

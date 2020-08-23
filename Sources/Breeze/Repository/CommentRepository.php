@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Entity\CommentEntity;
 use Breeze\Model\CommentModelInterface;
 
 class CommentRepository extends BaseRepository implements CommentRepositoryInterface
@@ -21,7 +22,10 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	 */
 	public function save(array $data): int
 	{
-		$wasSaved = $this->commentModel->insert($data);
+		$wasSaved = $this->commentModel->insert(array_merge($data, [
+			CommentEntity::COLUMN_TIME => time(),
+			CommentEntity::COLUMN_LIKES => 0,
+		]));
 
 		if (!$wasSaved)
 			throw new InvalidCommentException('error_save_comment');

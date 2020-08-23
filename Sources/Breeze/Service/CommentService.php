@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-use Breeze\Entity\CommentEntity;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidCommentException;
 use Breeze\Repository\StatusRepositoryInterface;
@@ -33,10 +32,7 @@ class CommentService  extends BaseService  implements CommentServiceInterface
 	public function saveAndGet(array $data): array
 	{
 		try {
-			$commentId = $this->commentRepository->save(array_merge($data, [
-				CommentEntity::COLUMN_TIME => time(),
-				CommentEntity::COLUMN_LIKES => 0,
-			]));
+			$commentId = $this->commentRepository->save($data);
 
 			$comment = $this->commentRepository->getById($commentId);
 		} catch (InvalidCommentException $e) {
