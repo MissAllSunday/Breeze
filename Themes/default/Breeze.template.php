@@ -29,7 +29,7 @@ function template_breeze_main(): void
       			v-bind:editor_id="editorId()"
       			v-on:get-content="postStatus">
 				</editor>
-				<p></p>
+				<hr class="separator">
 				<status
 					v-if="errored !== null"
 					v-for="status_item in status"
