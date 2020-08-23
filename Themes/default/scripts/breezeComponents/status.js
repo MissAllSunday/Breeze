@@ -15,7 +15,7 @@ Vue.component('status', {
             },
         }
     },
-    template: `<div>
+    template: `<li>
     <div class='breeze_avatar floatleft' v-bind:style='avatarImage(poster_data.avatar.href)'></div>
         <div class='windowbg'>
             <h4 class='floatleft' v-html='poster_data.link_color'></h4>
@@ -46,7 +46,7 @@ Vue.component('status', {
                 </editor>
             </div>
         </div>
-    </div>`,
+    </li>`,
     filters: {
         formatDate: function(unixTime) {
             return moment.unix(unixTime).format('LLLL')

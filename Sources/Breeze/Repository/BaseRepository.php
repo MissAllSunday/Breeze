@@ -29,8 +29,8 @@ abstract class BaseRepository
 		];
 	}
 
-	protected function cacheKey(string $methodName): string
+	protected function cacheKey(string $keyName): string
 	{
-		return str_replace('::', '_', Breeze::PATTERN . $methodName);
+		return str_replace('::', '_', Breeze::PATTERN . $keyName);
 	}
 }
