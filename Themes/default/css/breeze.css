@@ -53,6 +53,5 @@
 .status {
 	display: flex;
 	flex-direction: column-reverse;
-	margin-top: 40px;
-	margin-bottom: 15px;
+	margin-top: 30px;
 }

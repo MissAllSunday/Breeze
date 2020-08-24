@@ -35,16 +35,18 @@ new Vue({
                 this.post_data).then(response => {
 
                 this.setNotice(response.data.message, response.data.type);
-
+console.log(response.data.content);
                 if (response.data.content){
-                    this.$root.setUserData(response.data.content.users)
-                    this.$parent.selectTab(tabs_wall);
+                    this.setUserData(response.data.content.users)
+                    this.setStatus(response.data.content.status);
                 }
 
-                this.setBody('');
             }).catch(error => {
-                console.log(error.response)
+                this.setNotice(error.response);
             });
+        },
+        setStatus: function(newStatus){
+            this.status = Object.assign({}, this.status, newStatus);
         },
         fetchStatus: function() {
             axios

@@ -74,7 +74,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 
 		return [
 			'users' => $this->userService->loadUsersInfo(array_unique($newStatus['usersIds'])),
-			'comments' => $newStatus['data'],
+			'status' => $newStatus['data'],
 		];
 	}
 }
