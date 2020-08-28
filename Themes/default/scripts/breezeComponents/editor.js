@@ -51,7 +51,7 @@ Vue.component('editor', {
             if (!this.isValidStatus())
                 return false;
 
-            this.$emit('get-content', this.body);
+            this.$emit('get-content', this.$root.$sanitize(this.body));
             this.editor.setContents('');
         },
         preview: function (){

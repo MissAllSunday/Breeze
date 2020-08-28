@@ -17,7 +17,7 @@ Vue.component('comment', {
         </div>
         <div class='clear comment_content'>
             <hr>
-            <div v-html="comment.comments_body"></div>
+            <div v-html="$sanitize(comment.comments_body)"></div>
         </div>
     </div>`,
     filters: {

@@ -25,6 +25,7 @@ class Components
 		'moment' => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
 		'noti' => 'https://cdn.jsdelivr.net/npm/vue-toast-notification',
 		'editor' => 'https://cdn.jsdelivr.net/npm/suneditor@latest/dist/suneditor.min.js',
+		'purify' => 'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.0.14/purify.min.js',
 	];
 
 	private const CDN_CSS = [

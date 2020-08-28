@@ -26,7 +26,7 @@ Vue.component('status', {
             <br>
             <div class='content'>
                 <hr>
-                <div v-html="status_item.status_body"></div>
+                <div v-html="$sanitize(status_item.status_body)"></div>
             </div>
             <comment 
                 v-for='comment in localComments' 

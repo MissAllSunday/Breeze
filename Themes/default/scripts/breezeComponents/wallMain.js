@@ -1,4 +1,5 @@
 ajax_indicator(true);
+Vue.prototype.$sanitize = DOMPurify.sanitize;
 
 new Vue({
     el: '#breeze_app',
@@ -35,7 +36,7 @@ new Vue({
                 this.post_data).then(response => {
 
                 this.setNotice(response.data.message, response.data.type);
-console.log(response.data.content);
+
                 if (response.data.content){
                     this.setUserData(response.data.content.users)
                     this.setStatus(response.data.content.status);
