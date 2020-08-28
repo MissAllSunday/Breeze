@@ -26,7 +26,7 @@ Vue.component('status', {
             <br>
             <div class='content'>
                 <hr>
-                {{status_item.status_body}}
+                <div v-html="status_item.status_body"></div>
             </div>
             <comment 
                 v-for='comment in localComments' 
