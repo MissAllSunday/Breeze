@@ -55,7 +55,7 @@ Vue.component('editor', {
             this.editor.setContents('');
         },
         preview: function (){
-            this.previewed = this.previewed === null ? this.editor.getContents(true) : null
+            this.previewed = this.previewed === null ? this.$root.$sanitize(this.editor.getContents(true)) : null
             this.preview_name = this.previewed === null ? 'Preview' : 'Clear'
         },
         isValidStatus: function () {
@@ -68,7 +68,7 @@ Vue.component('editor', {
                 return false;
             }
 
-            if (this.body === 'about:Suki')
+            if (this.body === 'about:Suki' || this.body === '<p>about:Suki<br></p>')
             {
                 alert('Whatcha gonna do, where are you gonna go\n' +
                 'When the darkness closes on you\n' +
