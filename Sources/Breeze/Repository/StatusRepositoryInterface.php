@@ -21,4 +21,9 @@ interface StatusRepositoryInterface
 	 * @throws InvalidStatusException
 	 */
 	 public function getById(int $statusId = 0): array;
+
+	/**
+	 * @throws InvalidStatusException
+	 */
+	public function deleteById(int $statusId): bool;
 }
