@@ -86,8 +86,7 @@ class DeleteStatus extends ValidateData implements ValidateDataInterface
 
 		if (!isset($this->data[StatusEntity::COLUMN_POSTER_ID]) ||
 			($this->status['data'][$this->data[StatusEntity::COLUMN_ID]][StatusEntity::COLUMN_POSTER_ID]
-			!==
-			$this->data[StatusEntity::COLUMN_POSTER_ID]))
+			!== $this->data[StatusEntity::COLUMN_POSTER_ID]))
 			throw new ValidateDataException('wrong_values');
 	}
 

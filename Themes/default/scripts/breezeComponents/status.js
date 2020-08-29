@@ -106,7 +106,7 @@ Vue.component('status', {
                 });
 
                 if (response.data.type !== 'error')
-                    this.$emit('removeStatus', this.status_item.status_id);
+                    this.$emit('remove_status', this.status_item.status_id);
             });
         }
     }

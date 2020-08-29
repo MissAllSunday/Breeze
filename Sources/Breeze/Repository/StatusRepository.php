@@ -11,6 +11,17 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 {
 	private StatusModelInterface $statusModel;
 
+	private CommentRepositoryInterface $commentRepository;
+
+	public function __construct(
+		StatusModelInterface $statusModel,
+		CommentRepositoryInterface $commentRepository
+	)
+	{
+		$this->statusModel = $statusModel;
+		$this->commentRepository = $commentRepository;
+	}
+
 	/**
 	 * @throws InvalidStatusException
 	 */
@@ -22,11 +33,6 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			throw new InvalidStatusException('error_save_status');
 
 		return $newStatusId;
-	}
-
-	public function __construct(StatusModelInterface $statusModel)
-	{
-		$this->statusModel = $statusModel;
 	}
 
 	/**
@@ -71,9 +77,11 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 */
 	public function deleteById(int $statusId): bool
 	{
+		$wereCommentsDeleted = $this->commentRepository->deleteByStatusId($statusId);
+
 		$wasDeleted = $this->statusModel->delete([$statusId]);
 
-		if (!$wasDeleted)
+		if (!$wasDeleted || !$wereCommentsDeleted)
 			throw new InvalidStatusException('error_no_comment');
 
 		$this->cleanCache('getById' . $statusId);

@@ -91,4 +91,17 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 		return $wasDeleted;
 	}
+
+	/**
+	 * @throws InvalidCommentException
+	 */
+	public function deleteByStatusId(int $statusId): bool
+	{
+		$wasDeleted = $this->commentModel->deleteByStatusId([$statusId]);
+
+		if (!$wasDeleted)
+			throw new InvalidCommentException('error_no_comment');
+
+		return $wasDeleted;
+	}
 }

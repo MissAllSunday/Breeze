@@ -90,7 +90,10 @@ class StatusModel extends BaseModel implements StatusModelInterface
 
 		while ($row = $this->dbClient->fetchAssoc($request))
 		{
-			$status[$row[StatusEntity::COLUMN_ID]] =$row;
+			$status[$row[StatusEntity::COLUMN_ID]] = array_map(function ($column) {
+				return ctype_digit($column) ? ((int) $column) : $column;
+			}, $row);
+
 			$usersIds[] = $row[StatusEntity::COLUMN_OWNER_ID];
 			$usersIds[] = $row[StatusEntity::COLUMN_POSTER_ID];
 		}

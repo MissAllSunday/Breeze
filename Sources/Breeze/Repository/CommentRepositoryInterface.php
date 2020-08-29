@@ -26,5 +26,8 @@ interface CommentRepositoryInterface
 	 */
 	public function deleteById(int $commentId): bool;
 
-	public function cleanCache(string $cacheName): void;
+	/**
+	 * @throws InvalidCommentException
+	 */
+	public function deleteByStatusId(int $statusId): bool;
 }

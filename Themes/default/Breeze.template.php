@@ -37,7 +37,7 @@ function template_breeze_main(): void
 						v-bind:poster_data="getUserData(status_item.status_poster_id)"
 						v-bind:key="status_item.status_id"
 						v-bind:users="users"
-						@removeStatus="onRemoveStatus">			
+						@remove_status="onRemoveStatus">			
 					</status>
 				</ul>
     		</tab>

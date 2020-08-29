@@ -31,15 +31,13 @@ class CommentModel extends BaseModel implements CommentModelInterface
 		return $this->getInsertedId();
 	}
 
-	public function deleteByStatusID(array $ids): bool
+	public function deleteByStatusId(array $ids): bool
 	{
-		$this->dbClient->delete(
+		return $this->dbClient->delete(
 			CommentEntity::TABLE,
 			'WHERE ' . CommentEntity::COLUMN_STATUS_ID . ' IN({array_int:ids})',
 			['ids' => $ids]
 		);
-
-		return true;
 	}
 
 	public function getByProfiles(array $profileOwnerIds): array

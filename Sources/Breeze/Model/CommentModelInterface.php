@@ -6,7 +6,7 @@ namespace Breeze\Model;
 
 interface CommentModelInterface extends BaseModelInterface
 {
-	public function deleteByStatusID(array $ids): bool;
+	public function deleteByStatusId(array $ids): bool;
 
 	public function getByProfiles(array $profileOwnerIds): array;
 
