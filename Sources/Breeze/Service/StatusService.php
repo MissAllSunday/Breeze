@@ -77,4 +77,12 @@ class StatusService extends BaseService implements StatusServiceInterface
 			'status' => $newStatus['data'],
 		];
 	}
+
+	/**
+	 * @throws InvalidStatusException
+	 */
+	public function deleteById(int $commentId): bool
+	{
+		return $this->statusRepository->deleteById($commentId);
+	}
 }

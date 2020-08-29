@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\StatusEntity;
+use Breeze\Repository\InvalidCommentException;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Service\StatusServiceInterface;
 use Breeze\Service\UserServiceInterface;
@@ -76,7 +77,18 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 
 	public function deleteStatus(): void
 	{
+		$data = $this->gateway->getData();
 
+		try {
+			$this->statusService->deleteById($data[StatusEntity::COLUMN_ID]);
+
+			$this->print($this->gateway->response());
+		} catch (InvalidStatusException $e) {
+			$this->print([
+				'type' => ValidateGateway::ERROR_TYPE,
+				'message' => $e->getMessage(),
+			]);
+		}
 	}
 
 	public function postStatus(): void

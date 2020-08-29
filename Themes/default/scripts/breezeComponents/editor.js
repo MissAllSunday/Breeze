@@ -61,6 +61,7 @@ Vue.component('editor', {
         isValidStatus: function () {
             if (this.body === '' ||
                 this.body === '<p><br></p>' ||
+                this.body === '<p></p>' ||
                 typeof(this.body) !== 'string' )
             {
                 this.$root.setNotice('el body esta vacio');

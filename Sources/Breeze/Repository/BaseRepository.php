@@ -33,4 +33,9 @@ abstract class BaseRepository
 	{
 		return str_replace('::', '_', Breeze::PATTERN . $keyName);
 	}
+
+	public function cleanCache(string $cacheName): void
+	{
+		$this->setCache($cacheName, null);
+	}
 }

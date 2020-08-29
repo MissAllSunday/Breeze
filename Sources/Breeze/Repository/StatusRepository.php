@@ -65,4 +65,19 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 
 		return $status;
 	}
+
+	/**
+	 * @throws InvalidStatusException
+	 */
+	public function deleteById(int $statusId): bool
+	{
+		$wasDeleted = $this->statusModel->delete([$statusId]);
+
+		if (!$wasDeleted)
+			throw new InvalidStatusException('error_no_comment');
+
+		$this->cleanCache('getById' . $statusId);
+
+		return $wasDeleted;
+	}
 }

@@ -91,9 +91,4 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 		return $wasDeleted;
 	}
-
-	public function cleanCache(string $cacheName): void
-	{
-		$this->setCache($cacheName, null);
-	}
 }

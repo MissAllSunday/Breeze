@@ -70,7 +70,7 @@ class DeleteStatus extends ValidateData implements ValidateDataInterface
 	/**
 	 * @throws InvalidStatusException
 	 */
-	public function validComment(): void
+	public function validStatus(): void
 	{
 		$this->status = $this->statusService->getById($this->data[StatusEntity::COLUMN_ID]);
 	}
@@ -82,7 +82,7 @@ class DeleteStatus extends ValidateData implements ValidateDataInterface
 	public function validUser(): void
 	{
 		if (!$this->status)
-			$this->status = $this->statusService->getById($this->data[StatusEntity::COLUMN_ID]);
+			$this->validStatus();
 
 		if (!isset($this->data[StatusEntity::COLUMN_POSTER_ID]) ||
 			($this->status['data'][$this->data[StatusEntity::COLUMN_ID]][StatusEntity::COLUMN_POSTER_ID]
