@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-use Breeze\Util\Permissions;
+namespace Breeze\Util;
+
 use PHPUnit\Framework\TestCase;
 
 class PermissionsTest extends TestCase

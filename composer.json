@@ -31,6 +31,11 @@
             "Breeze\\": "Sources/Breeze/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Breeze\\": "tests/"
+        }
+    },
     "scripts": {
         "lint": "php-cs-fixer fix --verbose --show-progress=estimating",
         "lint:check": [

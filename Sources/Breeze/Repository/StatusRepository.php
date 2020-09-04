@@ -29,7 +29,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	{
 		$newStatusId = $this->statusModel->insert($data);
 
-		if (!$newStatusId)
+		if (0 === $newStatusId)
 			throw new InvalidStatusException('error_save_status');
 
 		return $newStatusId;
