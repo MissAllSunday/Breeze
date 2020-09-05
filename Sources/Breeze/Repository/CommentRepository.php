@@ -22,15 +22,15 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	 */
 	public function save(array $data): int
 	{
-		$wasSaved = $this->commentModel->insert(array_merge($data, [
+		$newCommentId = $this->commentModel->insert(array_merge($data, [
 			CommentEntity::COLUMN_TIME => time(),
 			CommentEntity::COLUMN_LIKES => 0,
 		]));
 
-		if (!$wasSaved)
+		if (!$newCommentId)
 			throw new InvalidCommentException('error_save_comment');
 
-		return $wasSaved;
+		return $newCommentId;
 	}
 
 	public function getByProfile(int $profileOwnerId = 0): array
