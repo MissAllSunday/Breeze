@@ -82,9 +82,9 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		if (!$wasDeleted)
 			throw new InvalidCommentException('error_no_comment');
 
-		$this->cleanCache('getById' . $commentId);
+		$this->setCache(self::class . '::getById' . $commentId, null);
 
-		return $wasDeleted;
+		return true;
 	}
 
 	/**
@@ -92,11 +92,9 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	 */
 	public function deleteByStatusId(int $statusId): bool
 	{
-		$wasDeleted = $this->commentModel->deleteByStatusId([$statusId]);
-
-		if (!$wasDeleted)
+		if (!$this->commentModel->deleteByStatusId([$statusId]))
 			throw new InvalidCommentException('error_no_comment');
 
-		return $wasDeleted;
+		return true;
 	}
 }

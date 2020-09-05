@@ -78,7 +78,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		if (!$this->statusModel->delete([$statusId]))
 			throw new InvalidStatusException('error_no_comment');
 
-		$this->cleanCache(__METHOD__ . $statusId);
+		$this->setCache(self::class . '::getById' . $statusId, null);
 
 		return true;
 	}

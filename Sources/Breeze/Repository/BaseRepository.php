@@ -27,9 +27,4 @@ abstract class BaseRepository
 			self::LIKE_TYPE_COMMENT
 		];
 	}
-
-	public function cleanCache(string $cacheName): void
-	{
-		$this->setCache($cacheName, null);
-	}
 }
