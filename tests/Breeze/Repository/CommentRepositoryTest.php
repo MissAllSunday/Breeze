@@ -67,6 +67,47 @@ class CommentRepositoryTest extends TestCase
 		];
 	}
 
+	/**
+	 * @dataProvider getByProfileProvider
+	 */
+	public function testGetByProfile(int $profileOwnerId, array $commentsByProfileWillReturn): void
+	{
+		if (1 !== $profileOwnerId)
+		{
+			$this->commentModel
+				->expects($this->once())
+				->method('getByProfiles')
+				->with([$profileOwnerId])
+				->willReturn($commentsByProfileWillReturn);
+		}
+
+		$commentsByProfile = $this->commentRepository->getByProfile($profileOwnerId);
+
+		$this->assertEquals($commentsByProfileWillReturn, $commentsByProfile);
+	}
+
+	public function getByProfileProvider(): array
+	{
+		return [
+			'happy happy joy joy' => [
+				'profileOwnerId' => 1,
+				'commentsByProfileWillReturn' => [
+					'some data'
+				],
+			],
+			'no data' => [
+				'profileOwnerId' => 2,
+				'commentsByProfileWillReturn' => [],
+			],
+			'data from query' => [
+				'profileOwnerId' => 3,
+				'commentsByProfileWillReturn' => [
+					'some data'
+				],
+			],
+		];
+	}
+
 	protected function getMockInstance(string $class): MockObject
 	{
 		return $this->getMockBuilder($class)

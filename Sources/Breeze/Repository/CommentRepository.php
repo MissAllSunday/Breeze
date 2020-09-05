@@ -35,13 +35,13 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 	public function getByProfile(int $profileOwnerId = 0): array
 	{
-		$commentsByProfile = $this->getCache(__FUNCTION__);
+		$commentsByProfile = $this->getCache(__METHOD__ . $profileOwnerId);
 
 		if (null === $commentsByProfile)
 		{
 			$commentsByProfile = $this->commentModel->getByProfiles([$profileOwnerId]);
 
-			$this->setCache(__FUNCTION__ . $profileOwnerId, $commentsByProfile);
+			$this->setCache(__METHOD__ . $profileOwnerId, $commentsByProfile);
 		}
 
 		return $commentsByProfile;

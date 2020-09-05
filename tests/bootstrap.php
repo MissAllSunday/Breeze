@@ -48,6 +48,7 @@ function cache_get_data($key, $timeToLive = 360): ?array
 	switch($key)
 	{
 		case 'Breeze_StatusRepository_getByProfile1':
+		case 'Breeze_CommentRepository_getByProfile1':
 			$dataToReturn = [
 				'some data'
 			];
