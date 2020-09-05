@@ -43,6 +43,26 @@ function allowedTo($permissionName)
 	return $dummyPermissions[$permissionName];
 }
 
+function cache_get_data($key, $timeToLive = 360): ?array
+{
+	switch($key)
+	{
+		case 'Breeze_StatusRepository_getByProfile1':
+			$dataToReturn = [
+				'some data'
+			];
+			break;
+		default:
+			$dataToReturn = null;
+	}
+
+	return $dataToReturn;
+}
+
+function cache_put_data($key, $data, $timeToLive)
+{
+	return null;
+}
 
 $sourcedir = $scripturl = $boarddir = $boardurl = ROOT;
 

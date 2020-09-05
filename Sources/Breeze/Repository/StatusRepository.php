@@ -40,7 +40,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 */
 	public function getByProfile(int $profileOwnerId = 0, int $start = 0): array
 	 {
-		$statusByProfile = $this->getCache($this->cacheKey(__METHOD__ . $profileOwnerId));
+		$statusByProfile = $this->getCache(__METHOD__ . $profileOwnerId);
 
 		if (null === $statusByProfile)
 		{
@@ -53,7 +53,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			if (empty(array_filter($statusByProfile)))
 				throw new InvalidStatusException('error_wall_none');
 
-			$this->setCache($this->cacheKey(__METHOD__ . $profileOwnerId), $statusByProfile);
+			$this->setCache(__METHOD__ . $profileOwnerId, $statusByProfile);
 		}
 
 		return $statusByProfile;

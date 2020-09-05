@@ -71,6 +71,55 @@ class StatusRepositoryTest extends TestCase
 		];
 	}
 
+	/**
+	 * @dataProvider getByProfileProvider
+	 * @throws InvalidStatusException
+	 */
+	public function testGetByProfile(int $profileOwnerId, array $statusByProfileWillReturn): void
+	{
+		if (1 !== $profileOwnerId)
+		{
+			$this->statusModel
+				->expects($this->once())
+				->method('getStatusByProfile')
+				->with([
+					'start' => 0,
+					'maxIndex' => 0,
+					'ids' => [$profileOwnerId]
+				])
+				->willReturn($statusByProfileWillReturn);
+
+			if (empty($statusByProfileWillReturn))
+				$this->expectException(InvalidStatusException::class);
+		}
+
+		$statusByProfile = $this->statusRepository->getByProfile($profileOwnerId);
+
+		$this->assertEquals($statusByProfileWillReturn, $statusByProfile);
+	}
+
+	public function getByProfileProvider(): array
+	{
+		return [
+			'happy happy joy joy' => [
+				'profileOwnerId' => 1,
+				'statusByProfileWillReturn' => [
+					'some data'
+				],
+			],
+			'InvalidStatusException' => [
+				'profileOwnerId' => 2,
+				'statusByProfileWillReturn' => [],
+			],
+			'data from query' => [
+				'profileOwnerId' => 3,
+				'statusByProfileWillReturn' => [
+					'some data'
+				],
+			],
+		];
+	}
+
 	protected function getMockInstance(string $class): MockObject
 	{
 		return $this->getMockBuilder($class)

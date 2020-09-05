@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
-use Breeze\Breeze;
 use Breeze\Traits\CacheTrait;
 
 abstract class BaseRepository
@@ -27,11 +26,6 @@ abstract class BaseRepository
 			self::LIKE_TYPE_STATUS,
 			self::LIKE_TYPE_COMMENT
 		];
-	}
-
-	protected function cacheKey(string $keyName): string
-	{
-		return str_replace('::', '_', Breeze::PATTERN . $keyName);
 	}
 
 	public function cleanCache(string $cacheName): void

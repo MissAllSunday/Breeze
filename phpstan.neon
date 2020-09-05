@@ -14,8 +14,6 @@ parameters:
     - '/Function redirectexit not found./'
     - '/Function loadCSSFile not found./'
     - '/Function is_not_guest not found./'
-    - '/Function cache_put_data not found./'
-    - '/Function cache_get_data not found./'
     - '/Function loadtemplate not found./'
     - '/Function createList not found./'
     - '/Function loadMemberContext not found./'
