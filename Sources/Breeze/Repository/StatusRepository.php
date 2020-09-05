@@ -35,9 +35,6 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		return $newStatusId;
 	}
 
-	/**
-	 * @throws InvalidStatusException
-	 */
 	public function getByProfile(int $profileOwnerId = 0, int $start = 0): array
 	 {
 		$statusByProfile = $this->getCache(__METHOD__ . $profileOwnerId);
@@ -50,10 +47,8 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 				'ids' => [$profileOwnerId]
 			]);
 
-			if (empty(array_filter($statusByProfile)))
-				throw new InvalidStatusException('error_wall_none');
-
-			$this->setCache(__METHOD__ . $profileOwnerId, $statusByProfile);
+			if (!empty(array_filter($statusByProfile)))
+				$this->setCache(__METHOD__ . $profileOwnerId, $statusByProfile);
 		}
 
 		return $statusByProfile;

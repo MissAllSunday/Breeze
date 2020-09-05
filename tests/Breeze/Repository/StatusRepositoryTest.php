@@ -88,9 +88,6 @@ class StatusRepositoryTest extends TestCase
 					'ids' => [$profileOwnerId]
 				])
 				->willReturn($statusByProfileWillReturn);
-
-			if (empty($statusByProfileWillReturn))
-				$this->expectException(InvalidStatusException::class);
 		}
 
 		$statusByProfile = $this->statusRepository->getByProfile($profileOwnerId);
@@ -107,7 +104,7 @@ class StatusRepositoryTest extends TestCase
 					'some data'
 				],
 			],
-			'InvalidStatusException' => [
+			'no data' => [
 				'profileOwnerId' => 2,
 				'statusByProfileWillReturn' => [],
 			],
