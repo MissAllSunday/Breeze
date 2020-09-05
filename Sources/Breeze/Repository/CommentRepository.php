@@ -47,11 +47,6 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		return $commentsByProfile;
 	}
 
-	public function getModel(): CommentModelInterface
-	{
-		return $this->commentModel;
-	}
-
 	public function getByStatus(array $statusIds = []): void
 	{
 		// TODO: Implement getCommentsByStatus() method.
