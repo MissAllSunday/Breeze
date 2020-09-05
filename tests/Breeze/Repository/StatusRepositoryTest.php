@@ -120,6 +120,56 @@ class StatusRepositoryTest extends TestCase
 		];
 	}
 
+	/**
+	 * @dataProvider deleteByIdProvider
+	 * @throws InvalidStatusException
+	 */
+	public function testDeleteById(int $statusId, bool $deleteByStatusId, bool $commentDeleteByStatusId): void
+	{
+			$this->commentRepository
+				->expects($this->once())
+				->method('deleteByStatusId')
+				->with($statusId)
+				->willReturn($commentDeleteByStatusId);
+
+		if (1 !== $statusId && !$commentDeleteByStatusId)
+			$this->expectException(InvalidCommentException::class);
+
+		$this->statusModel->expects($this->once())
+			->method('delete')
+			->with([$statusId])
+			->willReturn($deleteByStatusId);
+
+			if (!$deleteByStatusId)
+				$this->expectException(InvalidStatusException::class);
+
+
+		$deleteById = $this->statusRepository->deleteById($statusId);
+
+		$this->assertEquals($deleteByStatusId, $deleteById);
+	}
+
+	public function deleteByIdProvider(): array
+	{
+		return [
+			'happy happy joy joy' => [
+				'statusId' => 1,
+				'deleteByStatusId' => true,
+				'commentDeleteByStatusId' => true,
+			],
+			'InvalidStatusException' => [
+				'statusId' => 2,
+				'deleteByStatusId' => false,
+				'commentDeleteByStatusId' => true,
+			],
+			'InvalidCommentException' => [
+				'statusId' => 3,
+				'deleteByStatusId' => false,
+				'commentDeleteByStatusId' => false,
+			],
+		];
+	}
+
 	protected function getMockInstance(string $class): MockObject
 	{
 		return $this->getMockBuilder($class)
