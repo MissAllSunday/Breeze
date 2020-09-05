@@ -121,6 +121,42 @@ class StatusRepositoryTest extends TestCase
 	}
 
 	/**
+	 * @dataProvider getByIdProvider
+	 * @throws InvalidStatusException
+	 */
+	public function testGetById(int $statusId, array $getByIdWillReturn): void
+	{
+		$this->statusModel
+			->expects($this->once())
+			->method('getById')
+			->with($statusId)
+			->willReturn($getByIdWillReturn);
+
+		if (empty($getByIdWillReturn))
+			$this->expectException(InvalidStatusException::class);
+
+		$statusById = $this->statusRepository->getById($statusId);
+
+		$this->assertEquals($getByIdWillReturn, $statusById);
+	}
+
+	public function getByIdProvider(): array
+	{
+		return [
+			'happy happy joy joy' => [
+				'statusId' => 1,
+				'getByIdWillReturn' => [
+					'some data'
+				],
+			],
+			'InvalidStatusException' => [
+				'statusId' => 2,
+				'getByIdWillReturn' => [],
+			],
+		];
+	}
+
+	/**
 	 * @dataProvider deleteByIdProvider
 	 * @throws InvalidStatusException
 	 */
