@@ -9,7 +9,7 @@ declare(strict_types=1);
 global $txt;
 
 // Public/UserSettingsController strings
-$txt['Breeze_general_wall'] = 'My wall';
+$txt['Breeze_breeze_main_title'] = 'My wall';
 $txt['Breeze_general_wall_page'] = 'page';
 $txt['Breeze_general_summary'] = 'Summary';
 $txt['Breeze_load_more'] = 'Load more';
