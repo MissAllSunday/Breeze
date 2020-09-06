@@ -16,7 +16,7 @@ Vue.component('status', {
         }
     },
     template: `<li>
-    <div class='breeze_avatar floatleft' v-bind:style='avatarImage(poster_data.avatar.href)'></div>
+    <div class='breeze_avatar avatar_status floatleft' v-bind:style='avatarImage(poster_data.avatar.href)'></div>
         <div class='windowbg'>
             <h4 class='floatleft' v-html='poster_data.link_color'></h4>
             <div class='floatright smalltext'>
@@ -37,9 +37,6 @@ Vue.component('status', {
                 class='windowbg'>
             </comment>
             <div v-if='notice === null'  class='comment_posting'>
-                <div class='breeze_avatar avatar_comment'
-                    v-bind:style='avatarImage(poster_data.avatar.href)'>           
-                </div>
                 <editor
                     v-bind:editor_id='editorId()'
                     v-on:get-content='postComment'>

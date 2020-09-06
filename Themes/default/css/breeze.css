@@ -3,26 +3,59 @@
 	overflow: auto;
 }
 
-#breeze_blocks{
-	width: 30%;
+#breeze_summary{
+	width: 20%;
 }
 
-.breeze_wall{
-	width: 69%;
+#breeze_app{
+	width: 79.5%;
+}
+
+.breeze_name {
+	font-size: 24px;
+	font-weight: 600;
+	text-align: center;
+}
+
+.breeze_title {
+	font-size: .75em;
+	font-weight: 300;
+	text-align: center;
+	padding-top: .5em;
+	padding-bottom: .7em;
+	letter-spacing: 1.5px;
+	text-transform: uppercase;
+}
+
+.breeze_description {
+	font-size: 14px;
+	font-weight: 300;
+	text-align: center;
+	margin-bottom: 1.3em;
 }
 
 .breeze_avatar {
-	width: 65px;
-	height: 65px;
+	width: 120px;
+	height: 120px;
 	background-size: cover;
 	background-position: top center;
 	border-radius: 50%;
-	margin-right: 3px;
+
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.breeze_avatar.avatar_status {
+	width: 60px;
+	height: 60px;
+	margin-right: 5px;
 }
 
 .breeze_avatar.avatar_comment {
 	width: 35px;
 	height: 35px;
+	margin-right: 5px;
+	margin-bottom: 5px;
 }
 
 .comment_user_info, .comment_posting {
@@ -54,4 +87,9 @@
 	display: flex;
 	flex-direction: column-reverse;
 	margin-top: 30px;
+}
+
+.breeze_editor {
+	margin-left: auto;
+	margin-right: auto;
 }

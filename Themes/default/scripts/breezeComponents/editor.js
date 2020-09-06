@@ -11,7 +11,7 @@ Vue.component('editor', {
         }
     },
     template: `
-    <div>
+    <div class="breeze_editor">
         <div v-if="previewed !== null" class="cat_bar">
             <h3 class="catbg">
                 Preview
@@ -28,10 +28,10 @@ Vue.component('editor', {
     mounted: function() {
         this.editor = SUNEDITOR.create(document.getElementById(this.editor_id),{
             width : 'auto',
-            maxWidth : '1200px',
+            maxWidth : '1500px',
             height : 'auto',
             minHeight : '100px',
-            maxHeight: '350px',
+            maxHeight: '550px',
             fontSize : [
                 8, 10, 14, 18, 24
             ],

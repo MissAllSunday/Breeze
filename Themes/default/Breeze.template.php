@@ -12,16 +12,25 @@ function template_breeze_main(): void
 
 	echo '
 <div id="breeze_main" class="breeze_main_section">
-	<div id="breeze_blocks" class="floatleft">
-		<div class="cat_bar">
-			<h3 class="catbg">
-				some block
-			</h3>
-		</div>
-		<div class="windowbg">
-			some content
+	<div id="breeze_summary" class="floatleft">
+		<div class="roundframe flow_auto">
+			<div class="breeze_avatar" 
+			style="background-image: url('. $context['member']['avatar']['url'] .')">		
+			</div>
+			<h3 class="breeze_name">'. $context['member']['name_color'] .'</h3>
+			<p class="breeze_title">
+				'. (!empty($context['member']['primary_group']) ? $context['member']['primary_group'] :
+			$context['member']['post_group']) .'
+			</p>
+			<p class="breeze_title">
+				'. $context['member']['group_icons'] .'
+			</p>
+			<p class="breeze_description">
+				'. $context['member']['blurb'] .'
+			</p>
 		</div>
 	</div>
+
 	<div id="breeze_app" class="breeze_wall floatright">
 		<tabs v-if="loading !== true">
     		<tab :name="tabs_name.wall" :selected="true">
