@@ -10,6 +10,16 @@ function template_breeze_main(): void
 {
 	global $txt, $context;
 
+	$memberOnline = sprintf('%1$s%2$s%3$s',
+		($context['can_send_pm'] ?
+			'<a href="' . $context['member']['online']['href'] . '" title="' .
+			$context['member']['online']['text'] . '" rel="nofollow">' : ''),
+		'<span class="' . ($context['member']['online']['is_online'] == 1 ? 'on' : 'off') .
+		'" title="' . $context['member']['online']['text'] . '"></span>',
+		($context['can_send_pm'] ?
+			'</a>' : '')
+	);
+
 	echo '
 <div id="breeze_main" class="breeze_main_section">
 	<div id="breeze_summary" class="floatleft">
@@ -17,7 +27,10 @@ function template_breeze_main(): void
 			<div class="breeze_avatar" 
 			style="background-image: url('. $context['member']['avatar']['url'] .')">		
 			</div>
-			<h3 class="breeze_name">'. $context['member']['name_color'] .'</h3>
+			<h3 class="breeze_name">
+				'. $memberOnline .'
+				'. $context['member']['name_color'] .'
+			</h3>
 			<p class="breeze_title">
 				'. (!empty($context['member']['primary_group']) ? $context['member']['primary_group'] :
 			$context['member']['post_group']) .'

@@ -36,6 +36,7 @@ abstract class ActionsBaseService extends BaseService implements ActionsServiceI
 			'url' => $scriptUrl . '?action=' . $this->getActionName(),
 			'name' => $context['page_title'],
 		];
+		$context['can_send_pm'] = allowedTo('pm_send');
 
 		$this->setGlobal('context', $context);
 	}

@@ -129,11 +129,6 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 		$this->usersToLoad = array_merge($usersToLoad, $this->usersToLoad);
 	}
 
-	public function createEditor(array $editorOptions = []): void
-	{
-
-	}
-
 	public function getActionName(): string
 	{
 		return self::ACTION;
