@@ -46,7 +46,7 @@ Vue.component('status', {
     </li>`,
     filters: {
         formatDate: function(unixTime) {
-            return moment.unix(unixTime).format('LLLL')
+            return moment.unix(unixTime).format('lll')
         },
     },
     methods: {

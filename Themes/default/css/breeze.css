@@ -93,3 +93,13 @@
 	margin-left: auto;
 	margin-right: auto;
 }
+
+@media (max-width: 480px) {
+	#breeze_summary{
+		display: none;
+	}
+
+	#breeze_app{
+		width: 99.5%;
+	}
+}

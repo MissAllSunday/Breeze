@@ -22,7 +22,7 @@ Vue.component('comment', {
     </div>`,
     filters: {
         formatDate: function(unixTime) {
-            return moment.unix(unixTime).format('LLLL')
+            return moment.unix(unixTime).format('lll')
         },
     },
     methods: {
