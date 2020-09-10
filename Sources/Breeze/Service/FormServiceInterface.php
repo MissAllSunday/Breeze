@@ -8,6 +8,4 @@ namespace Breeze\Service;
 interface FormServiceInterface extends BaseServiceInterface
 {
 	public function getConfigVarsSettings(): array;
-
-	public function getCoverConfigVarsSettings(): array;
 }
