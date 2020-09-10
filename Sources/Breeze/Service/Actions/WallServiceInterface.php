@@ -22,6 +22,4 @@ interface WallServiceInterface extends ActionsServiceInterface
 	public function getUsersToLoad(): array;
 
 	public function setUsersToLoad(array $usersToLoad): void;
-
-	public function loadCSS(): void;
 }

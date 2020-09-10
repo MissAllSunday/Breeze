@@ -52,6 +52,11 @@ class Components
 		loadJavaScriptFile($fileName, $params, $nameIdentifier);
 	}
 
+	public function loadCSSFile(string $fileName, array $params = [], $nameIdentifier = ''): void
+	{
+		loadCSSFile($fileName, $params, $nameIdentifier);
+	}
+
 	protected function loadJsDependencies(): void
 	{
 		foreach (self::CDN_JS as $jsDependency)
@@ -64,7 +69,7 @@ class Components
 	protected function loadCssDependencies(): void
 	{
 		foreach (self::CDN_CSS as $cssDependency)
-			loadCSSFile($cssDependency, [
+			$this->loadCSSFile($cssDependency, [
 				'external' => true,
 			], strtolower(Breeze::PATTERN . $cssDependency));
 	}

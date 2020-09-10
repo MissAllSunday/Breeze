@@ -65,9 +65,4 @@ trait SettingsTrait
 	{
 		loadtemplate($templateName);
 	}
-
-	public function loadCSS(): void
-	{
-		loadCSSFile('breeze.css', [], 'smf_breeze');
-	}
 }

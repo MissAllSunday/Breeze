@@ -9,7 +9,6 @@ use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
 use Breeze\Service\Actions\WallServiceInterface;
 use Breeze\Service\UserServiceInterface;
-use Breeze\Util\Components;
 
 class WallController extends BaseController implements ControllerInterface
 {
@@ -25,8 +24,6 @@ class WallController extends BaseController implements ControllerInterface
 	private WallServiceInterface $wallService;
 
 	private UserServiceInterface $userService;
-
-	private Components $components;
 
 	public function __construct(
 		WallServiceInterface $wallService,
@@ -50,7 +47,6 @@ class WallController extends BaseController implements ControllerInterface
 
 	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void
 	{
-		$this->wallService->loadCSS();
 		$this->wallService->defaultSubActionContent($subTemplate, $params, $smfTemplate);
 	}
 
