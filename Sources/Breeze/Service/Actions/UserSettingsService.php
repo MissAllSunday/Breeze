@@ -7,6 +7,7 @@ namespace Breeze\Service\Actions;
 use Breeze\Breeze;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Util\Components;
+use Breeze\Util\FormBuilder;
 
 
 class UserSettingsService extends ActionsBaseService implements UserSettingsServiceInterface
@@ -15,13 +16,17 @@ class UserSettingsService extends ActionsBaseService implements UserSettingsServ
 
 	private Components $components;
 
+	private FormBuilder $formBuilder;
+
 	public function __construct(
 		UserRepositoryInterface $userRepository,
-		Components $components
+		Components $components,
+		FormBuilder $formBuilder
 	)
 	{
 		$this->userRepository = $userRepository;
 		$this->components = $components;
+		$this->formBuilder = $formBuilder;
 	}
 
 	public function init(array $subActions):void

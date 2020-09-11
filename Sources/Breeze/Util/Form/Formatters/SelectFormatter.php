@@ -6,8 +6,6 @@ namespace Breeze\Util\Form\Formatters;
 
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
-use Breeze\Util\Form\ValueFormatter;
-use Breeze\Util\Form\ValueFormatterInterface;
 
 class SelectFormatter extends ValueFormatter implements ValueFormatterInterface
 {

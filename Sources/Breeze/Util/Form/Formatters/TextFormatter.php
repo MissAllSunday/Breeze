@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Breeze\Util\Form\Formatters;
 
 use Breeze\Breeze;
-use Breeze\Util\Form\ValueFormatter;
-use Breeze\Util\Form\ValueFormatterInterface;
 
 class TextFormatter extends ValueFormatter implements ValueFormatterInterface
 {

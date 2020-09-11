@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Util\Form;
+namespace Breeze\Util\Form\Formatters;
 
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Folder;
@@ -14,7 +14,6 @@ abstract class ValueFormatter implements ValueFormatterInterface
 
 	private const FORMATTER_SUFFIX = 'Formatter';
 	private const FORMATTERS_DIR = __DIR__ . '/Formatters';
-	private const FORMATTERS_NAMESPACE = 'Breeze\Util\Form\Formatters\\';
 
 	public static function getFormatters(): array
 	{
@@ -28,11 +27,16 @@ abstract class ValueFormatter implements ValueFormatterInterface
 				str_replace(self::FORMATTER_SUFFIX, '', $formatterFileInfo)
 			);
 
-			$formatterClass = self::FORMATTERS_NAMESPACE . $formatterFileInfo;
+			$formatterClass = self::getNameSpace() . $formatterFileInfo;
 
 			$formatters[$formatterKey] = new $formatterClass();
 		}
 
 		return $formatters;
+	}
+
+	public static function getNameSpace(): string
+	{
+		return __NAMESPACE__ . '\\';
 	}
 }

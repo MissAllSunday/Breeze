@@ -7,8 +7,8 @@ namespace Breeze\Util;
 
 use Breeze\Entity\SettingsEntity;
 use Breeze\Traits\TextTrait;
-use Breeze\Util\Form\ValueFormatter;
-use Breeze\Util\Form\ValueFormatterInterface;
+use Breeze\Util\Form\Formatters\ValueFormatter;
+use Breeze\Util\Form\Formatters\ValueFormatterInterface;
 
 class FormBuilder
 {
