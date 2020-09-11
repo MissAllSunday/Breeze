@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Util;
+namespace Breeze\Util\Form;
 
 use Breeze\Entity\SettingsEntity;
 use Breeze\Traits\TextTrait;

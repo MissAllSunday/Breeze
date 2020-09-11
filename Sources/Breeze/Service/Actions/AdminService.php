@@ -9,7 +9,7 @@ use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Service\PermissionsService;
 use Breeze\Util\Components;
-use Breeze\Util\FormBuilder;
+use Breeze\Util\Form\FormBuilder;
 use Breeze\Util\Permissions;
 
 class AdminService extends ActionsBaseService implements AdminServiceInterface

@@ -7,7 +7,7 @@ namespace Breeze\Service\Actions;
 use Breeze\Breeze;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Util\Components;
-use Breeze\Util\FormBuilder;
+use Breeze\Util\Form\FormBuilder;
 
 
 class UserSettingsService extends ActionsBaseService implements UserSettingsServiceInterface

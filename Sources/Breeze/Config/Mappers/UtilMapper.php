@@ -12,7 +12,7 @@ use Breeze\Util\Form\Formatters\CheckFormatter;
 use Breeze\Util\Form\Formatters\IntFormatter;
 use Breeze\Util\Form\Formatters\SelectFormatter;
 use Breeze\Util\Form\Formatters\TextFormatter;
-use Breeze\Util\FormBuilder;
+use Breeze\Util\Form\FormBuilder;
 use Breeze\Util\Validate\ValidateGateway;
 
 return [
