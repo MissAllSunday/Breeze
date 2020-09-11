@@ -17,7 +17,8 @@ class UserSettingsService extends ActionsBaseService implements UserSettingsServ
 
 	public function __construct(
 		UserRepositoryInterface $userRepository,
-		Components $components)
+		Components $components
+	)
 	{
 		$this->userRepository = $userRepository;
 		$this->components = $components;

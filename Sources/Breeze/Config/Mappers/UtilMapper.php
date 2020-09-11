@@ -12,6 +12,7 @@ use Breeze\Util\Form\Formatters\CheckFormatter;
 use Breeze\Util\Form\Formatters\IntFormatter;
 use Breeze\Util\Form\Formatters\SelectFormatter;
 use Breeze\Util\Form\Formatters\TextFormatter;
+use Breeze\Util\FormBuilder;
 use Breeze\Util\Validate\ValidateGateway;
 
 return [
@@ -20,6 +21,9 @@ return [
 	],
 	'util.components' => [
 		'class' => Components::class
+	],
+	'util.formBuilder' => [
+		'class' => FormBuilder::class
 	],
 	'util.formatter.check' => [
 		'class' => CheckFormatter::class

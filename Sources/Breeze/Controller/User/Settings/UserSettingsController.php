@@ -24,7 +24,8 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 
 	public function __construct(
 		UserSettingsServiceInterface $userSettingsService,
-		UserServiceInterface $userService)
+		UserServiceInterface $userService
+	)
 	{
 		$this->userService = $userService;
 		$this->userSettingsService = $userSettingsService;

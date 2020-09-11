@@ -13,13 +13,13 @@ use Breeze\Service\Actions\AdminService;
 use Breeze\Service\Actions\UserSettingsService;
 use Breeze\Service\Actions\WallService;
 use Breeze\Service\CommentService;
-use Breeze\Service\FormService;
 use Breeze\Service\MoodService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\StatusService;
 use Breeze\Service\UserService;
 use Breeze\Service\ValidateService;
 use Breeze\Util\Components;
+use Breeze\Util\FormBuilder;
 
 return [
 	'service.mood' => [
@@ -28,7 +28,7 @@ return [
 	],
 	'service.admin' => [
 		'class' => AdminService::class,
-		'arguments'=> [FormService::class, Components::class]
+		'arguments'=> [FormBuilder::class, Components::class]
 	],
 	'service.user' => [
 		'class' => UserService::class,
@@ -56,9 +56,6 @@ return [
 	'service.comment' => [
 		'class' => CommentService::class,
 		'arguments'=> [UserService::class, StatusRepository::class, CommentRepository::class]
-	],
-	'service.form' => [
-		'class' => FormService::class,
 	],
 	'service.validate' => [
 		'class' => ValidateService::class,
