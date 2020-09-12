@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Form\Formatters;
+namespace Breeze\Util\Form\Types;
 
 use Breeze\Breeze;
 
-class CheckFormatter extends ValueFormatter implements ValueFormatterInterface
+class TextType extends ValueFormatter implements ValueFormatterInterface
 {
 	public function getConfigVar(string $settingName, string $settingType): array
 	{
 		return [
 			$settingType,
 			Breeze::PATTERN . $settingName,
-			'subtext' => $this->getText($settingName . '_sub')
+			'subtext' => $this->getText($settingName . '_sub'),
 		];
 	}
 }

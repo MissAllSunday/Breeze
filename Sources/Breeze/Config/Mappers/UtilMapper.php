@@ -8,11 +8,11 @@ namespace Breeze\Config\Mapper;
 use Breeze\Service\UserService;
 use Breeze\Util\Components;
 use Breeze\Util\Folder;
-use Breeze\Util\Form\Formatters\CheckFormatter;
-use Breeze\Util\Form\Formatters\IntFormatter;
-use Breeze\Util\Form\Formatters\SelectFormatter;
-use Breeze\Util\Form\Formatters\TextFormatter;
 use Breeze\Util\Form\FormBuilder;
+use Breeze\Util\Form\Types\CheckType;
+use Breeze\Util\Form\Types\IntType;
+use Breeze\Util\Form\Types\SelectType;
+use Breeze\Util\Form\Types\TextType;
 use Breeze\Util\Validate\ValidateGateway;
 
 return [
@@ -26,16 +26,16 @@ return [
 		'class' => FormBuilder::class
 	],
 	'util.formatter.check' => [
-		'class' => CheckFormatter::class
+		'class' => CheckType::class
 	],
 	'util.formatter.int' => [
-		'class' => IntFormatter::class
+		'class' => IntType::class
 	],
 	'util.formatter.select' => [
-		'class' => SelectFormatter::class
+		'class' => SelectType::class
 	],
 	'util.formatter.text' => [
-		'class' => TextFormatter::class
+		'class' => TextType::class
 	],
 	'util.validate.gateway' => [
 		'class' => ValidateGateway::class,

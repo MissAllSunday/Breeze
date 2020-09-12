@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: Check lint
+    - name: CheckType lint
       run: composer lint:check
 
     - name: Run test suite

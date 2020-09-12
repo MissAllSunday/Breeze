@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Form\Formatters;
+namespace Breeze\Util\Form\Types;
 
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 
-class SelectFormatter extends ValueFormatter implements ValueFormatterInterface
+class SelectType extends ValueFormatter implements ValueFormatterInterface
 {
 	public function getConfigVar(string $settingName, string $settingType): array
 	{

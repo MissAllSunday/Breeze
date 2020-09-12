@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Form\Formatters;
+namespace Breeze\Util\Form\Types;
 
 use Breeze\Breeze;
 
-class IntFormatter extends ValueFormatter implements ValueFormatterInterface
+class IntType extends ValueFormatter implements ValueFormatterInterface
 {
 	public function getConfigVar(string $settingName, string $settingType): array
 	{

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Form\Formatters;
+namespace Breeze\Util\Form\Types;
 
 interface ValueFormatterInterface
 {
