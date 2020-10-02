@@ -8,5 +8,8 @@ declare(strict_types=1);
 
 function template_breezeForm_Check(array $options): string
 {
-	return '';
+	return '
+	<input type="checkbox" name="' . $options['formName'] . '[' . $options['name'] . ']' . '" id="' .
+		$options['name'] . '" value="1" ' . (empty($options['checked']) ? '' : 'checked="checked"') .
+		' class="input_check" />';
 }

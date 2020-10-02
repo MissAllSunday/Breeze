@@ -17,11 +17,11 @@ class CheckType extends ValueFormatter implements ValueFormatterInterface
 		];
 	}
 
-	function getCheckBox($params = []): array
+	function getCheckBox($params = []): string
 	{
 		// Kinda needs this...
-		if (empty($params) || empty($param['name']))
-			return;
+		if (empty($params) || empty($params['name']))
+			return '';
 
 		$this->setParamValues($param);
 		$param['type'] = 'checkbox';
@@ -29,6 +29,6 @@ class CheckType extends ValueFormatter implements ValueFormatterInterface
 		$param['checked'] = empty($param['checked']) ? '' : 'checked="checked"';
 		$param['html'] = '<input type="' . $param['type'] . '" name="' . (!empty($this->_options['name']) ? $this->_options['name'] . '[' . $param['name'] . ']' : $param['name']) . '" id="' . $param['name'] . '" value="' . $param['value'] . '" ' . $param['checked'] . ' class="input_check" />';
 
-		return $this->addElement($param);
+		return template_breezeForm_Check($params);
 	}
 }

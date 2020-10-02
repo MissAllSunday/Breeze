@@ -8,7 +8,7 @@ namespace Breeze\Config\Mapper;
 use Breeze\Service\UserService;
 use Breeze\Util\Components;
 use Breeze\Util\Folder;
-use Breeze\Util\Form\FormBuilder;
+use Breeze\Util\Form\SettingsBuilder;
 use Breeze\Util\Form\Types\CheckType;
 use Breeze\Util\Form\Types\IntType;
 use Breeze\Util\Form\Types\SelectType;
@@ -22,8 +22,8 @@ return [
 	'util.components' => [
 		'class' => Components::class
 	],
-	'util.formBuilder' => [
-		'class' => FormBuilder::class
+	'util.SettingsBuilder' => [
+		'class' => SettingsBuilder::class
 	],
 	'util.formatter.check' => [
 		'class' => CheckType::class

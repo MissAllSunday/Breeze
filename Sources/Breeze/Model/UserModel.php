@@ -6,6 +6,8 @@ namespace Breeze\Model;
 
 use Breeze\Entity\MemberEntity;
 use Breeze\Entity\OptionsEntity;
+use Breeze\Entity\UserSettingsEntity;
+use Couchbase\UserSettings;
 
 class UserModel extends BaseModel implements UserModelInterface
 {
@@ -125,11 +127,10 @@ class UserModel extends BaseModel implements UserModelInterface
 					explode(',', $row[OptionsEntity::COLUMN_VALUE]) : [];
 
 			$userData += [
-				'buddiesList' => !empty($row[MemberEntity::COLUMN_BUDDY_LIST]) ?
+				UserSettingsEntity::BUDDIES => !empty($row[MemberEntity::COLUMN_BUDDY_LIST]) ?
 					explode(',', $row[MemberEntity::COLUMN_BUDDY_LIST]) : [],
-				'ignoredList' => !empty($row[MemberEntity::COLUMN_IGNORE_LIST]) ?
+				UserSettingsEntity::BLOCK_LIST => !empty($row[MemberEntity::COLUMN_IGNORE_LIST]) ?
 					explode(',', $row[MemberEntity::COLUMN_IGNORE_LIST]) : [],
-				'profileViews' => $row[MemberEntity::COLUMN_PROFILE_VIEWS],
 			];
 		}
 

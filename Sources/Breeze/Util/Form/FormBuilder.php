@@ -6,6 +6,9 @@ declare(strict_types=1);
 namespace Breeze\Util\Form;
 
 use Breeze\Entity\SettingsEntity;
+use Breeze\Entity\UserSettingsEntity;
+use Breeze\Service\UserService;
+use Breeze\Service\UserServiceInterface;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Folder;
 use Breeze\Util\Form\Types\ValueFormatter;
@@ -15,47 +18,23 @@ class FormBuilder
 {
 	use TextTrait;
 
-	public function getFormatters(): array
+	private UserServiceInterface $userSettingsService;
+
+	private int $userId;
+
+	private array $userSettingsColumns;
+
+	public function __construct(UserServiceInterface $userSettingsService, int $userId)
 	{
-		$formatters = [];
-
-		foreach (Folder::getFilesInFolder(__DIR__ . DIRECTORY_SEPARATOR . ValueFormatter::FORMATTER_DIR) as $formatterFile)
-		{
-			$formatterFileInfo = pathinfo($formatterFile, PATHINFO_FILENAME);
-
-			$formatterKey = strtolower(str_replace(
-				ValueFormatter::FORMATTER_TYPE,
-				'',
-				$formatterFileInfo
-			));
-
-			$formatterClassName = ValueFormatter::getNameSpace() . $formatterFileInfo;
-
-			if (ValueFormatter::class === $formatterClassName ||
-				ValueFormatterInterface::class === $formatterClassName)
-				continue;
-
-			$formatters[$formatterKey] = new $formatterClassName();
-		}
-
-		return $formatters;
+		$this->userSettingsService = $userSettingsService;
+		$this->userId = $userId;
+		$this->userSettingsColumns = UserSettingsEntity::getColumns();
 	}
 
-	public function getConfigVarsSettings(): array
+	public function setForm(array $formOptions): void
 	{
-		$configVars = [];
-		$allSettings = SettingsEntity::getColumns();
-		$formatters = $this->getFormatters();
+		$userSettingValues = $this->userSettingsService->getUserSettings($this->userId);
 
-		foreach ($allSettings as $settingName => $settingType)
-			if (!empty($formatters[$settingType]))
-			{
-				/** @var ValueFormatterInterface $formatter */
-				$formatter = $formatters[$settingType];
 
-				$configVars[] = $formatter->getConfigVar($settingName, $settingType);
-			}
-
-		return $configVars;
 	}
 }
