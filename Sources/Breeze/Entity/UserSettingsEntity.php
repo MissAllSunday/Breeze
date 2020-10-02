@@ -22,17 +22,17 @@ class UserSettingsEntity
 	public static function getColumns(): array
 	{
 		return [
-			self::WALL,
-			self::GENERAL_WALL,
-			self::PAGINATION_NUM,
-			self::ALERT_NUM,
-			self::AUTO_LOADING,
-			self::ACTIVITY_LOG,
-			self::KICK_IGNORED,
-			self::BLOCK_LIST,
-			self::BUDDIES,
-			self::ABOUT_ME,
-			self::MOOD,
+			self::WALL => SettingsEntity::TYPE_CHECK,
+			self::GENERAL_WALL => SettingsEntity::TYPE_CHECK,
+			self::PAGINATION_NUM => SettingsEntity::TYPE_INT,
+			self::ALERT_NUM => SettingsEntity::TYPE_INT,
+			self::AUTO_LOADING => SettingsEntity::TYPE_CHECK,
+			self::ACTIVITY_LOG => SettingsEntity::TYPE_CHECK,
+			self::KICK_IGNORED => SettingsEntity::TYPE_CHECK,
+			self::BLOCK_LIST => SettingsEntity::TYPE_TEXT,
+			self::BUDDIES => SettingsEntity::TYPE_TEXT,
+			self::ABOUT_ME => SettingsEntity::TYPE_TEXT,
+			self::MOOD => SettingsEntity::TYPE_CHECK,
 		];
 	}
 }
