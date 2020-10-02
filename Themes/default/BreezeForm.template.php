@@ -13,3 +13,13 @@ function template_breezeForm_Check(array $checkOptions): string
 		$checkOptions['name'] . '" value="1" ' . (empty($checkOptions ['checked']) ? '' : 'checked="checked"') .
 		' class="input_check" />';
 }
+
+function template_breezeForm_TextArea(array $textAreaOptions): string
+{
+	return '
+	<textarea name="' . $textAreaOptions['formName'] . '[' . $textAreaOptions['name'] . ']' .
+		'" id="' . $textAreaOptions['name'] . '" rows="10" cols="40"  maxlength="1024">' .
+		$textAreaOptions['value'] .
+		'</textarea>';
+
+}
