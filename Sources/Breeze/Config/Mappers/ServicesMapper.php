@@ -19,7 +19,7 @@ use Breeze\Service\StatusService;
 use Breeze\Service\UserService;
 use Breeze\Service\ValidateService;
 use Breeze\Util\Components;
-use Breeze\Util\Form\SettingsBuilder;
+use Breeze\Util\Form\UserSettingsBuilder;
 
 return [
 	'service.mood' => [
@@ -28,7 +28,7 @@ return [
 	],
 	'service.admin' => [
 		'class' => AdminService::class,
-		'arguments'=> [SettingsBuilder::class, Components::class]
+		'arguments'=> [UserSettingsBuilder::class, Components::class]
 	],
 	'service.user' => [
 		'class' => UserService::class,
@@ -39,7 +39,7 @@ return [
 		'arguments'=> [
 			UserRepository::class,
 			Components::class,
-			SettingsBuilder::class]
+			UserSettingsBuilder::class]
 	],
 	'service.permissions' => [
 		'class' => PermissionsService::class,

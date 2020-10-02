@@ -7,7 +7,6 @@ namespace Breeze\Model;
 use Breeze\Entity\MemberEntity;
 use Breeze\Entity\OptionsEntity;
 use Breeze\Entity\UserSettingsEntity;
-use Couchbase\UserSettings;
 
 class UserModel extends BaseModel implements UserModelInterface
 {

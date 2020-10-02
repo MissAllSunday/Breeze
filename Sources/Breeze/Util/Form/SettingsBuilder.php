@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace Breeze\Util\Form;
 
 use Breeze\Entity\SettingsEntity;
-use Breeze\Service\UserService;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Folder;
 use Breeze\Util\Form\Types\ValueFormatter;
