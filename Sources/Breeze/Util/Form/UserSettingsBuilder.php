@@ -32,7 +32,7 @@ class UserSettingsBuilder
 	public function setForm(): void
 	{
 		foreach ($this->userSettingsColumns as $columnName => $columnType) {
-			$this->form .= array_map(function ($formValue) use($columnName, $columnType){
+			$this->form .= array_map(function ($formValue) use($columnName, $columnType): void{
 
 			}, $this->formValues);
 		}

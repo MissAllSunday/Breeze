@@ -11,7 +11,7 @@ use Breeze\Util\Folder;
 use Breeze\Util\Form\Types\ValueFormatter;
 use Breeze\Util\Form\Types\ValueFormatterInterface;
 
-class SettingsBuilder
+class SettingsBuilder implements SettingsBuilderInterface
 {
 	use TextTrait;
 

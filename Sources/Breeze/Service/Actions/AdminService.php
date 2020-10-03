@@ -9,20 +9,20 @@ use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Service\PermissionsService;
 use Breeze\Util\Components;
-use Breeze\Util\Form\SettingsBuilder;
+use Breeze\Util\Form\SettingsBuilderInterface;
 use Breeze\Util\Permissions;
 
 class AdminService extends ActionsBaseService implements AdminServiceInterface
 {
 	protected array $configVars = [];
 
-	private SettingsBuilder $SettingsBuilder;
+	private SettingsBuilderInterface $settingsBuilder;
 
 	private Components $components;
 
-	public function __construct(SettingsBuilder $SettingsBuilder, Components $components)
+	public function __construct(SettingsBuilderInterface $settingsBuilder, Components $components)
 	{
-		$this->SettingsBuilder = $SettingsBuilder;
+		$this->settingsBuilder = $settingsBuilder;
 		$this->components = $components;
 	}
 
@@ -86,7 +86,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 	{
 		$this->requireOnce('ManageServer');
 
-		$this->configVars = $this->SettingsBuilder->getConfigVarsSettings();
+		$this->configVars = $this->settingsBuilder->getConfigVarsSettings();
 
 		array_unshift($this->configVars, [
 			'title',
