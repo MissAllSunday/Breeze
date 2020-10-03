@@ -18,6 +18,7 @@ use Breeze\Service\CommentService;
 use Breeze\Service\MoodService;
 use Breeze\Service\StatusService;
 use Breeze\Service\UserService;
+use Breeze\Util\Form\UserSettingsBuilder;
 use Breeze\Util\Validate\ValidateGateway;
 
 return [
@@ -63,6 +64,7 @@ return [
 		'arguments'=> [
 			UserSettingsService::class,
 			UserService::class,
+			UserSettingsBuilder::class
 		]
 	],
 ];

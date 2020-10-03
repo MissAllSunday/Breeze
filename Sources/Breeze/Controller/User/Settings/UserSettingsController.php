@@ -8,6 +8,7 @@ use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
 use Breeze\Service\Actions\UserSettingsServiceInterface;
 use Breeze\Service\UserServiceInterface;
+use Breeze\Util\Form\UserSettingsBuilderInterface;
 
 class UserSettingsController extends BaseController implements ControllerInterface
 {
@@ -22,13 +23,17 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 
 	private UserSettingsServiceInterface $userSettingsService;
 
+	private UserSettingsBuilderInterface $userSettingsBuilder;
+
 	public function __construct(
 		UserSettingsServiceInterface $userSettingsService,
-		UserServiceInterface $userService
+		UserServiceInterface $userService,
+		UserSettingsBuilderInterface $userSettingsBuilder
 	)
 	{
 		$this->userService = $userService;
 		$this->userSettingsService = $userSettingsService;
+		$this->userSettingsBuilder = $userSettingsBuilder;
 	}
 
 	public function dispatch(): void

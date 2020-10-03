@@ -9,7 +9,7 @@ use Breeze\Breeze;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Traits\TextTrait;
 
-class UserSettingsBuilder
+class UserSettingsBuilder implements UserSettingsBuilderInterface
 {
 	use TextTrait;
 
