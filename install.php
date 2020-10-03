@@ -268,7 +268,13 @@ if (empty($context['uninstalling']))
 
 	// Installing
 	foreach ($tables as $table)
-		$smcFunc['db_create_table']($table['table_name'], $table['columns'], $table['indexes'], $table['parameters'], $table['if_exists'], $table['error']);
+		$smcFunc['db_create_table']($table['table_name'],
+			$table['columns'],
+			$table['indexes'],
+			$table['parameters'],
+			$table['if_exists'],
+			$table['error']
+		);
 
 	// Add the extra columns
 	$smcFunc['db_add_column'](
@@ -297,7 +303,7 @@ if (empty($context['uninstalling']))
 	);
 
 	// Lastly, insert the default moods and oh boy there are a lot!!!
-	$emojis = explode(',', trim('😀,😁, 😂, 🤣, 😃, 😄, 😅, 😆, 😉, 😊, 😋, 😎, 😍, 😘, 🥰, 😗, 😙, 😚, ☺️, 🙂, 🤗, 🤩, 🤔, 🤨, 😐, 😑, 😶, 🙄, 😏, 😣, 😥, 😮, 🤐, 😯, 😪, 😫, 😴, 😌, 😛, 😜, 😝, 🤤, 😒, 😓, 😔, 😕, 🙃, 🤑, 😲, ☹️, 🙁, 😖, 😞, 😟, 😤, 😢, 😭, 😦, 😧, 😨, 😩, 🤯, 😬, 😰, 😱, 🥵, 🥶, 😳, 🤪, 😵, 😡, 😠, 🤬, 😷, 🤒, 🤕, 🤢, 🤮, 🤧, 😇, 🤠, 🤡, 🥳, 🥴, 🥺, 🤥, 🤫, 🤭, 🧐, 🤓, 😈, 👿, 👹, 👺💩'));
+	$emojis = explode(',', trim('😀,😁, 😂, 🤣, 😃, 😄, 😅, 😆, 😉, 😊, 😋, 😎, 😍, 😘, 🥰, 😗, 😙, 😚, ☺️, 🙂, 🤗, 🤩, 🤔, 🤨, 😐, 😑, 😶, 🙄, 😏, 😣, 😥, 😮, 🤐, 😯, 😪, 😫, 😴, 😌, 😛, 😜, 😝, 🤤, 😒, 😓, 😔, 😕, 🙃, 🤑, 😲, ☹️, 🙁, 😖, 😞, 😟, 😤, 😢, 😭, 😦, 😧, 😨, 😩, 🤯, 😬, 😰, 😱, 🥵, 🥶, 😳, 🤪, 😵, 😡, 😠, 🤬, 😷, 🤒, 🤕, 🤢, 🤮, 🤧, 😇, 🤠, 🤡, 🥳, 🥴, 🥺, 🤥, 🤫, 🤭, 🧐, 🤓, 😈, 👿, 👹, 👺,💩'));
 
 
 	foreach ($emojis as $emoji)
@@ -314,6 +320,6 @@ if (empty($context['uninstalling']))
 
 function BreezeCheck(): void
 {
-	if (version_compare(PHP_VERSION, '7.3.0', '<'))
+	if (version_compare(PHP_VERSION, '7.4.0', '<'))
 		fatal_error('This mod needs PHP 7.3 or greater. You will not be able to install/use this mod, contact your host and ask for a php upgrade.');
 }
