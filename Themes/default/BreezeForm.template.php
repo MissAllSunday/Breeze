@@ -23,3 +23,28 @@ function template_breezeForm_TextArea(array $textAreaOptions): string
 		'</textarea>';
 
 }
+
+function template_breezeForm_Text(array $textOptions): string
+{
+	return '<input type="text" name="' . $textOptions['formName'] . '[' . $textOptions['name'] . ']' . '" id="' .
+		$textOptions['name'] . '" value="' . $textOptions['value'] . '" size="20" maxlength="20" class="input_text" />';
+}
+
+
+function template_breezeForm_Select(array $select): string
+{
+
+	if(empty($select['options']))
+		return '';
+	
+	$selectString = '<select name="' . $select['formName'] . '[' . $select['name'] . ']' . '">';
+
+	foreach($select['options'] as $optionKey => $optionValue)
+		$selectString .= '<option value="' . $optionKey . '" ' .
+			(isset($optionValue[1]) && $optionValue[1] === 'selected' ? 'selected="selected"' : '') . '>' .
+			$optionValue[0] . '</option>';
+
+	$selectString .= '</select>';
+
+	return $selectString;
+}
