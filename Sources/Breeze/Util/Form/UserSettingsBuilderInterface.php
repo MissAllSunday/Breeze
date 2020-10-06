@@ -13,7 +13,7 @@ interface UserSettingsBuilderInterface
 {
 	public const IDENTIFIER = 'Form';
 
-	public function setForm(): void;
+	public function setForm(array $formOptions, array $formValues): void;
 
 	public function display(): string;
 }

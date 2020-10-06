@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Form;
 
 use Breeze\Breeze;
+use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Traits\TextTrait;
 
@@ -13,28 +14,32 @@ class UserSettingsBuilder implements UserSettingsBuilderInterface
 {
 	use TextTrait;
 
-	public const IDENTIFIER = 'Form';
-
 	private array $userSettingsColumns;
-
-	private array $formValues;
 
 	private string $form = '';
 
-	public function __construct(array $formValues = [])
+	private array $defaultValues;
+
+	public function __construct()
 	{
 		$this->setTemplate(Breeze::NAME . self::IDENTIFIER);
 		$this->userSettingsColumns = UserSettingsEntity::getColumns();
-
-		$this->formValues = $formValues;
+		$this->defaultValues = SettingsEntity::defaultValues();
 	}
 
-	public function setForm(): void
+	public function setForm(array $formOptions, array $formValues = []): void
 	{
 		foreach ($this->userSettingsColumns as $columnName => $columnType) {
-			$this->form .= array_map(function ($formValue) use($columnName, $columnType): void{
-
-			}, $this->formValues);
+			$formOptions['elements'][] = array_map(function ($formValue) use($columnName, $columnType, $formOptions):
+			void{
+					if(empty($formValue))
+					{
+						$formValue = [
+							'value' => $this->defaultValues[$columnType],
+							'name' => $columnName,
+						];
+					}
+			}, $formValues);
 		}
 
 

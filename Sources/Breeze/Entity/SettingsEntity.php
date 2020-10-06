@@ -20,6 +20,7 @@ class SettingsEntity
 	public const TYPE_CHECK = 'check';
 	public const TYPE_INT = 'int';
 	public const TYPE_TEXT = 'text';
+	public const TYPE_TEXTAREA = 'textArea';
 	public const TYPE_SELECT = 'select';
 
 	public static function getColumns(): array
@@ -34,6 +35,17 @@ class SettingsEntity
 			self::MOOD_PLACEMENT => self::TYPE_SELECT,
 			self::MAX_FLOOD_NUM => self::TYPE_INT,
 			self::MAX_FLOOD_MINUTES => self::TYPE_INT,
+		];
+	}
+
+	public static function defaultValues(): array
+	{
+		return [
+			self::TYPE_CHECK => false,
+			self::TYPE_INT => 0,
+			self::TYPE_TEXT => '',
+			self::TYPE_TEXTAREA => '',
+			self::TYPE_SELECT => [],
 		];
 	}
 }
