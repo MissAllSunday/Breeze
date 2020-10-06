@@ -46,7 +46,7 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	{
 		$userSettings = $this->userService->getUserSettings($this->getRequest('u'));
 
-		$this->userSettingsBuilder->setForm($userSettings);
+		$this->userSettingsBuilder->setForm([], $userSettings);
 		$this->render(__FUNCTION__, []);
 	}
 

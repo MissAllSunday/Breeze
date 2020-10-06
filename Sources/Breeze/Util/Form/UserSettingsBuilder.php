@@ -16,9 +16,9 @@ class UserSettingsBuilder implements UserSettingsBuilderInterface
 
 	private array $userSettingsColumns;
 
-	private string $form = '';
-
 	private array $defaultValues;
+
+	private array $formOptions;
 
 	public function __construct()
 	{
@@ -29,31 +29,24 @@ class UserSettingsBuilder implements UserSettingsBuilderInterface
 
 	public function setForm(array $formOptions, array $formValues = []): void
 	{
+		$this->formOptions = $formOptions;
+
 		foreach ($this->userSettingsColumns as $columnName => $columnType) {
-			$formOptions['elements'][] = array_map(function ($formValue) use($columnName, $columnType, $formOptions):
-			void{
-					if(empty($formValue))
-					{
-						$formValue = [
-							'value' => $this->defaultValues[$columnType],
-							'name' => $columnName,
-						];
-					}
+			$formOptions['elements'][] = array_map(function ($formValue) use($columnName, $columnType)
+			{
+				return [
+					'text' => '',
+					'desc' => '',
+					'name' => $columnName,
+					'value' => !empty($formValue) ? $formValue : $this->defaultValues[$columnType],
+				];
+
 			}, $formValues);
 		}
-
-
-
-
 	}
 
 	public function display(): string
 	{
-
-	}
-
-	private function callTemplate(string $type): string
-	{
-
+		return template_breezeForm_Display($this->formOptions);
 	}
 }
