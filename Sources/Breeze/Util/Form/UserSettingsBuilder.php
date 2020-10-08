@@ -14,6 +14,9 @@ class UserSettingsBuilder implements UserSettingsBuilderInterface
 {
 	use TextTrait;
 
+	private const SETTING_TEXT = 'user_settings_%s';
+	private const SETTING_DESC = 'user_settings_%s_desc';
+
 	private array $userSettingsColumns;
 
 	private array $defaultValues;
@@ -32,11 +35,11 @@ class UserSettingsBuilder implements UserSettingsBuilderInterface
 		$this->formOptions = $formOptions;
 
 		foreach ($this->userSettingsColumns as $columnName => $columnType) {
-			$formOptions['elements'][] = array_map(function ($formValue) use($columnName, $columnType)
+			$this->formOptions['elements'][] = array_map(function ($formValue) use($columnName, $columnType)
 			{
 				return [
-					'text' => '',
-					'desc' => '',
+					'text' => $this->getText(sprintf(self::SETTING_TEXT, $columnName)),
+					'desc' => $this->getText(sprintf(self::SETTING_DESC, $columnName)),
 					'name' => $columnName,
 					'value' => !empty($formValue) ? $formValue : $this->defaultValues[$columnType],
 				];
