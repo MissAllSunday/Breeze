@@ -13,6 +13,7 @@ use Breeze\Util\Form\UserSettingsBuilderInterface;
 
 class UserSettingsController extends BaseController implements ControllerInterface
 {
+	public const URL = '?action=profile;area=breezeSettings';
 	public const ACTION_MAIN = 'main';
 	public const ACTION_SAVE = 'save';
 	public const SUB_ACTIONS = [
@@ -45,9 +46,13 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 
 	public function main(): void
 	{
+		$scriptUrl = $this->global('scripturl');
+		$userId = $this->getRequest('u', 0);
+
 		$this->userSettingsBuilder->setForm([
 			'name' => UserSettingsEntity::IDENTIFIER,
-		], $this->userService->getUserSettings($this->getRequest('u')));
+			'url' => $scriptUrl . self::URL . ';u=' . $userId . ';sa=' . self::ACTION_SAVE,
+		], $this->userService->getUserSettings($userId));
 
 		$this->render(__FUNCTION__, [
 			'form' => $this->userSettingsBuilder->display()

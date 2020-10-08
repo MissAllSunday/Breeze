@@ -35,16 +35,14 @@ class UserSettingsBuilder implements UserSettingsBuilderInterface
 		$this->formOptions = $formOptions;
 
 		foreach ($this->userSettingsColumns as $columnName => $columnType) {
-			$this->formOptions['elements'][] = array_map(function ($formValue) use($columnName, $columnType)
-			{
-				return [
-					'text' => $this->getText(sprintf(self::SETTING_TEXT, $columnName)),
-					'desc' => $this->getText(sprintf(self::SETTING_DESC, $columnName)),
-					'name' => $columnName,
-					'value' => !empty($formValue) ? $formValue : $this->defaultValues[$columnType],
-				];
-
-			}, $formValues);
+			$this->formOptions['elements'][] = [
+				'text' => $this->getText(sprintf(self::SETTING_TEXT, $columnName)),
+				'desc' => $this->getText(sprintf(self::SETTING_DESC, $columnName)),
+				'name' => $columnName,
+				'value' => !empty($formValues[$columnName]) ? $formValues[$columnName] :
+					$this->defaultValues[$columnType],
+				'type' => $columnType,
+			];
 		}
 	}
 

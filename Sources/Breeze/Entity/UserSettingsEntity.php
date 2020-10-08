@@ -22,9 +22,9 @@ class UserSettingsEntity
 		return [
 			self::WALL => SettingsEntity::TYPE_CHECK,
 			self::GENERAL_WALL => SettingsEntity::TYPE_CHECK,
-			self::PAGINATION_NUM => SettingsEntity::TYPE_INT,
+			self::PAGINATION_NUM => SettingsEntity::TYPE_TEXT,
 			self::KICK_IGNORED => SettingsEntity::TYPE_CHECK,
-			self::ABOUT_ME => SettingsEntity::TYPE_TEXT,
+			self::ABOUT_ME => SettingsEntity::TYPE_TEXTAREA,
 		];
 	}
 }
