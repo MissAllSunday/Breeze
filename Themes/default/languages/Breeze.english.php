@@ -22,16 +22,6 @@ $txt['Breeze_general_upload'] = 'Upload';
 $txt['Breeze_general_cancel'] = 'Cancel';
 $txt['Breeze_general_posted_on'] = 'Posted on %s\'s User';
 
-// CoverController upload strings
-$txt['Breeze_cu_dictDefaultMessage'] = 'Drag and drop your files here';
-$txt['Breeze_cu_add'] = 'Add files...';
-$txt['Breeze_cu_dictFallbackMessage'] = 'Your browser does not support Drag and drop file uploads';
-$txt['Breeze_cu_dictInvalidFileType'] = 'You can\'t upload files of this type.';
-$txt['Breeze_cu_dictFileTooBig'] = 'File is too big. Max file size is: {maxFilesize}Kb. Please chose a smaller one.';
-$txt['Breeze_cu_dictMaxFilesExceeded'] = 'You can not upload any more files.';
-$txt['Breeze_cu_max_width'] = 'Image exceeds maximum width, the max width value is {width}px';
-$txt['Breeze_cu_max_height'] = 'Image exceeds maximum height, the max height value is {height}px';
-
 // User Individual user settings
 $txt['Breeze_breezeSettings_main_title'] = 'My wall settings';
 $txt['Breeze_user_settings_main_desc'] = 'Configure your wall and other general settings.';
@@ -162,25 +152,3 @@ $txt['Breeze_buddy_already_sent'] = 'You already sent an invitation, please wait
 $txt['Breeze_buddy_error'] = 'There was an error, please try again.';
 $txt['Breeze_buddy_message'] = 'Buddy message';
 $txt['Breeze_buddy_message_desc'] = 'You can send {receiver} a message along with your buddy invite. <br> no HTML or BBC is allowed. Leave the field empty if you do not want to send a message.';
-
-// CoverController error messages.
-$txt['Breeze_cover_errors'] = [
-    1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
-    2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
-    3 => 'The uploaded file was only partially uploaded',
-    4 => 'No file was uploaded',
-    6 => 'Missing a temporary folder',
-    7 => 'Failed to write file to disk',
-    8 => 'A PHP extension stopped the file upload',
-    'post_max_size' => 'The uploaded file exceeds the post_max_size directive in php.ini',
-    'max_file_size' => 'File is too big, the max size value is {size}',
-    'min_file_size' => 'File is too small',
-    'accept_file_types' => 'Filetype not allowed',
-    'max_number_of_files' => 'Maximum number of files exceeded',
-    'max_width' => 'Image exceeds maximum width, the max width value is {width}px',
-    'min_width' => 'Image requires a minimum width',
-    'max_height' => 'Image exceeds maximum height, the max height value is {height}px',
-    'min_height' => 'Image requires a minimum height',
-    'abort' => 'File upload aborted',
-    'image_resize' => 'Failed to resize image'
-];
