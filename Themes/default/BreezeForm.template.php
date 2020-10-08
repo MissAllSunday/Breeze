@@ -72,6 +72,8 @@ function template_breezeForm_Desc(array $elementOptions): string
 
 function template_breezeForm_Display($formOptions): string
 {
+	global $txt;
+
 	$return = '';
 
 	$return .= '
@@ -116,7 +118,7 @@ function template_breezeForm_Display($formOptions): string
 			</dl>
 		</div>
 	</div>
-	<br />
+	<input type="submit" name="save" value="'. $txt['Breeze_user_settings_submit'] .'" class="button floatright">
 </form>';
 
 	return $return;

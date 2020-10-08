@@ -32,7 +32,6 @@ $txt['Breeze_cu_dictMaxFilesExceeded'] = 'You can not upload any more files.';
 $txt['Breeze_cu_max_width'] = 'Image exceeds maximum width, the max width value is {width}px';
 $txt['Breeze_cu_max_height'] = 'Image exceeds maximum height, the max height value is {height}px';
 
-
 // User Individual user settings
 $txt['Breeze_breezeSettings_main_title'] = 'My wall settings';
 $txt['Breeze_user_settings_main_desc'] = 'Configure your wall and other general settings.';
