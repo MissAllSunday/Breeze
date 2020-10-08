@@ -6,6 +6,7 @@ namespace Breeze\Controller\User\Settings;
 
 use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
+use Breeze\Entity\UserSettingsEntity;
 use Breeze\Service\Actions\UserSettingsServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Form\UserSettingsBuilderInterface;
@@ -44,10 +45,13 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 
 	public function main(): void
 	{
-		$userSettings = $this->userService->getUserSettings($this->getRequest('u'));
+		$this->userSettingsBuilder->setForm([
+			'name' => UserSettingsEntity::IDENTIFIER,
+		], $this->userService->getUserSettings($this->getRequest('u')));
 
-		$this->userSettingsBuilder->setForm([], $userSettings);
-		$this->render(__FUNCTION__, []);
+		$this->render(__FUNCTION__, [
+			'form' => $this->userSettingsBuilder->display()
+		]);
 	}
 
 	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void

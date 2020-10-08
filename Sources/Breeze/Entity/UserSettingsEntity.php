@@ -7,6 +7,7 @@ namespace Breeze\Entity;
 
 class UserSettingsEntity
 {
+	public const IDENTIFIER = 'user_settings';
 	public const WALL =  'wall';
 	public const GENERAL_WALL = 'generalWall';
 	public const PAGINATION_NUM = 'paginationNumber';

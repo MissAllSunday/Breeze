@@ -11,7 +11,7 @@ function template_breezeSettings_main(): void
 	global $txt, $context;
 	echo '
 <div id="breeze_main_section">
-	lol
+	', $context['form'] ,'	
 </div>
 <br />';
 }
