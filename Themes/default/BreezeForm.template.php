@@ -83,20 +83,6 @@ function template_breezeForm_Display($formOptions): string
 	name="'. $formOptions['name'] .'" 
 	id="'. $formOptions['name'] .'">';
 
-	if (!empty($formOptions['title']))
-		$return .= '
-	<div class="cat_bar">
-		<h3 class="catbg profile_hd">
-				'. $formOptions['title'] .'
-		</h3>
-	</div>';
-
-	if (!empty($formOptions['desc']))
-		$return .= '
-	<p class="information">
-		'. $formOptions['desc'] .'
-	</p>';
-
 	$return .= '
 	<div class="windowbg2">
 		<div class="content">
