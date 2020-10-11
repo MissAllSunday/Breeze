@@ -113,37 +113,6 @@ final class SettingsTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider isJsonProvider
-	 */
-	public function testIsJson($json, $expected): void
-	{
-		$isJson = $this->settingsTrait->isJson($json);
-
-		$this->assertEquals( $expected, $isJson);
-	}
-
-	public function isJsonProvider(): array
-	{
-		return [
-			'is json' =>
-			[
-				'json' => json_encode(['Ace', 'Luffy', 'Sabo']),
-				'expected' => true
-			],
-			'is not json' =>
-			[
-				'json' => 'Im Jason!',
-				'expected' => false
-			],
-			'empty json' =>
-			[
-				'json' => json_encode([]),
-				'expected' => true
-			],
-		];
-	}
-
-	/**
 	 * @dataProvider globalProvider
 	 */
 	public function testGlobal(string $globalName, $expected): void

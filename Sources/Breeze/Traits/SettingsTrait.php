@@ -46,13 +46,6 @@ trait SettingsTrait
 		$GLOBALS[$globalName] = $globalValue;
 	}
 
-	public function isJson(string $string): bool
-	{
-		json_decode($string);
-
-		return (JSON_ERROR_NONE === json_last_error());
-	}
-
 	public function requireOnce(string $fileName, string $dir = ''): void
 	{
 		if (empty($fileName))

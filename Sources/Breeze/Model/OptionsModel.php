@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace Breeze\Model;
-
 
 class OptionsModel extends BaseModel implements OptionsModelInterface
 {
@@ -56,5 +57,4 @@ class OptionsModel extends BaseModel implements OptionsModelInterface
 	{
 		return [];
 	}
-
 }

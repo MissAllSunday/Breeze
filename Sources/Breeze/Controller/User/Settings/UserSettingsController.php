@@ -62,7 +62,8 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	public function save(): void
 	{
 		$this->userSettingsService->save(
-			$this->getRequest(UserSettingsEntity::IDENTIFIER));
+			$this->getRequest(UserSettingsEntity::IDENTIFIER)
+		);
 	}
 
 	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void
