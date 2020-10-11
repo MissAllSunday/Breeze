@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Model;
 
 use Breeze\Entity\LogEntity as LogEntity;
+use Breeze\Util\Json;
 
 class LogModel extends BaseModel implements LogModelInterface
 {
@@ -13,7 +14,7 @@ class LogModel extends BaseModel implements LogModelInterface
 		if (empty($data))
 			return 0;
 
-		$data['extra'] = !empty($data['extra']) ? json_encode($data['extra']) : '';
+		$data['extra'] = !empty($data['extra']) ? Json::encode($data['extra']) : '';
 
 		$this->dbClient->insert(
 			$this->getTableName(),

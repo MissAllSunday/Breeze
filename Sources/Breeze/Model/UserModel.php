@@ -7,6 +7,7 @@ namespace Breeze\Model;
 use Breeze\Entity\MemberEntity;
 use Breeze\Entity\OptionsEntity;
 use Breeze\Entity\UserSettingsEntity;
+use Breeze\Util\Json;
 
 class UserModel extends BaseModel implements UserModelInterface
 {
@@ -66,7 +67,7 @@ class UserModel extends BaseModel implements UserModelInterface
 			WHERE ' . MemberEntity::COLUMN_ID . ' = ({int:userId})',
 			[
 				'userId' => (int) $userId,
-				'jsonData' => json_encode($data),
+				'jsonData' => Json::encode($data),
 			]
 		);
 	}

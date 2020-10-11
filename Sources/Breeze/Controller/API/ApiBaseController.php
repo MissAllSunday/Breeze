@@ -42,7 +42,7 @@ abstract class ApiBaseController extends BaseController
 	{
 		$smcFunc = $this->global('smcFunc');
 
-		smf_serverResponse($smcFunc['json_encode']($responseData));
+		smf_serverResponse($smcFunc['Json::encode']($responseData));
 	}
 
 	public abstract function setValidator(): ValidateDataInterface;

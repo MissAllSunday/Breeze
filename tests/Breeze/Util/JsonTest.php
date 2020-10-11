@@ -34,7 +34,7 @@ class JsonTest  extends TestCase
 				],
 			'empty json' =>
 				[
-					'json' => json_encode([]),
+					'json' => Json::encode([]),
 					'expected' => true
 				],
 		];
