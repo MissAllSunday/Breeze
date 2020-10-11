@@ -5,42 +5,46 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
+use Breeze\Entity\MemberEntity;
+use Breeze\Entity\OptionsEntity;
+use Breeze\Util\Json;
+
 class OptionsModel extends BaseModel implements OptionsModelInterface
 {
 	public const SAVED_AS_JSON = ['moodHistory'];
 
-	public function insert(array $data, int $id = 0): int
+	public function insert(array $data, int $userID = 0): int
 	{
 		if (empty($data) || empty($userId))
 			return 0;
 
 		$inserts = [];
 
-		foreach ($data as $settingVariable => $settingValue)
+		foreach ($data as $settingName => $settingValue)
 		{
-			// Does the value needs to be encoded?
-			if (in_array($var, $this->_needJSON))
-				$val = !empty($val) ? json_encode($val) : '';
+			if (in_array($settingName, self::SAVED_AS_JSON))
+				$settingValue = Json::encode($settingValue);
 
-			$inserts[] = [$userID, $var, $val];
+			$inserts[] = [$userID, $settingName, $settingValue];
 		}
 
-		if (!empty($inserts))
-			$smcFunc['db_insert'](
-				'replace',
-				'{db_prefix}' . ($this->_tables['options']['table']),
-				['member_id' => 'int', 'variable' => 'string-255', 'value' => 'string-65534'],
-				$inserts,
-				['member_id']
-			);
+		$this->dbClient->replace(
+			OptionsEntity::TABLE,
+			[
+				MemberEntity::COLUMN_ID => 'int',
+				OptionsEntity::COLUMN_VARIABLE => 'string',
+				OptionsEntity::COLUMN_VALUE => 'string'
+			],
+			$inserts,
+			MemberEntity::COLUMN_ID
+		);
 
-		// Force getting the new settings.
-		return $this->getUserSettings($userID);
+		return 1;
 	}
 
-	public function update(array $data, int $id = 0): array
+	public function update(array $data, int $userID = 0): array
 	{
-		return [];
+		return [$this->insert($data, $userID)];
 	}
 
 	public function getTableName(): string

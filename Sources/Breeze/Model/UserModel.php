@@ -12,31 +12,6 @@ class UserModel extends BaseModel implements UserModelInterface
 {
 	function insert(array $data, int $userId = 0): int
 	{
-		if (empty($data) || empty($userId))
-			return 0;
-
-		$inserts = [];
-
-		foreach ($data as $variable => $value)
-		{
-			if (in_array($variable, self::JSON_VALUES))
-				$value = !empty($value) ? json_encode($value) : '';
-
-			$inserts[] = [$userId, $variable, $value];
-		}
-
-		if (!empty($inserts))
-			$this->dbClient->replace(
-				OptionsEntity::TABLE,
-				[
-					MemberEntity::COLUMN_ID => 'int',
-					OptionsEntity::COLUMN_VARIABLE => 'string',
-					OptionsEntity::COLUMN_VALUE => 'string'
-				],
-				$inserts,
-				MemberEntity::COLUMN_ID
-			);
-
 		return 1;
 	}
 
