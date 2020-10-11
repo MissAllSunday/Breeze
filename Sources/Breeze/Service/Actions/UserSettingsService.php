@@ -35,6 +35,11 @@ class UserSettingsService extends ActionsBaseService implements UserSettingsServ
 		$this->setTemplate(Breeze::NAME . self::TEMPLATE);
 	}
 
+	public function save(array $userSettings, int $userId)
+	{
+
+	}
+
 	public function getActionName(): string
 	{
 		return self::AREA;
