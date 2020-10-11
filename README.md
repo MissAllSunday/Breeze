@@ -1,6 +1,6 @@
 **Breeze**, https://missallsunday.com
 
-The software is licensed under [MPL 2.0 license](https://www.mozilla.org/MPL/).
+The software is being license under [MPL 2.0 license](https://www.mozilla.org/MPL/).
 
 ###### What is Breeze:
 
@@ -9,6 +9,7 @@ Breeze is powerful social mod for your SMF forum, it allows your users to turn t
 ###### Requirements:
 
 - SMF 2.1.x
+- PHP 7.4.0
 
 ###### Features:
 
@@ -17,16 +18,15 @@ Breeze is powerful social mod for your SMF forum, it allows your users to turn t
 - Mentions for status and comments.
 - Notifications for several features.
 - General wall page for displaying your buddies latest activity.
-- Couple of blocks for showing your buddies, visitors, latest activity and about me block.
-- Works with or without JavaScript.
 
 The mod uses the following scripts:
 
-- [jQuery] (http://jquery.com/)
-- [needim noty jquery plugin] (http://needim.github.com/noty/)
-- [ichord Mentions autocomplete script] (http://ichord.github.com/At.js)
-- [Skype Component License](http://blogs.skype.com/2006/09/01/icons-and-strings)
+- [Vue] (https://vuejs.org/)
+- [Axios] (https://github.com/axios/axios)
+- [moment.js] (https://momentjs.com/)
+- [vue-toast-notification] (https://github.com/ankurk91/vue-toast-notification)
 - [DOMPurify] (https://github.com/cure53/DOMPurify)
+- [Sun editor] (http://suneditor.com/)
 
 ###### Notes:
 
