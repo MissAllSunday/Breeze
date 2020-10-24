@@ -20,7 +20,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 	{
 		$userSettings = $this->getCache('user_settings_' . $userId);
 
-		if (null === $userSettings)
+		if (empty($userSettings))
 		{
 			$userSettings = $this->userModel->getUserSettings($userId);
 			$this->setCache('user_settings_' . $userId, $userSettings);

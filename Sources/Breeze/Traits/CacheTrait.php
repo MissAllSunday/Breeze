@@ -8,9 +8,9 @@ use Breeze\Breeze as Breeze;
 
 trait CacheTrait
 {
-	public function getCache(string $key, int $timeToLive = 360): ?array
+	public function getCache(string $key, int $timeToLive = 360): array
 	{
-		return cache_get_data(
+		return (array) cache_get_data(
 			$this->buildKey($key),
 			$timeToLive
 		);

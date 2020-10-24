@@ -37,7 +37,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	{
 		$commentsByProfile = $this->getCache(__METHOD__ . $profileOwnerId);
 
-		if (null === $commentsByProfile)
+		if (empty($commentsByProfile))
 		{
 			$commentsByProfile = $this->commentModel->getByProfiles([$profileOwnerId]);
 
@@ -59,7 +59,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	{
 		$comment = $this->getCache(__FUNCTION__ . $commentId);
 
-		if (null === $comment)
+		if (empty($comment))
 		{
 			$comment = $this->commentModel->getByIds([$commentId]);
 

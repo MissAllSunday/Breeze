@@ -39,7 +39,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 {
 		$statusByProfile = $this->getCache(__METHOD__ . $profileOwnerId);
 
-		if (null === $statusByProfile)
+		if (empty($statusByProfile))
 		{
 			$statusByProfile = $this->statusModel->getStatusByProfile([
 				'start' => $start,

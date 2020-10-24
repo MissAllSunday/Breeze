@@ -53,6 +53,11 @@ function cache_get_data($key, $timeToLive = 360): ?array
 				'some data'
 			];
 			break;
+		case 'user_settings_666':
+			$dataToReturn = [
+				'generalWall' => 1
+			];
+			break;
 		default:
 			$dataToReturn = null;
 	}
