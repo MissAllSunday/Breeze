@@ -310,7 +310,7 @@ if (empty($context['uninstalling']))
 		$smcFunc['db_insert']('insert', '{db_prefix}breeze_moods', [
 			'emoji' => 'string',
 			'description' => 'string',
-			'status' => 'int',
+			'enable' => 'int',
 		], [
 			$smcFunc['htmlspecialchars']($emoji),
 			'',
@@ -321,5 +321,5 @@ if (empty($context['uninstalling']))
 function BreezeCheck(): void
 {
 	if (version_compare(PHP_VERSION, '7.4.0', '<'))
-		fatal_error('This mod needs PHP 7.3 or greater. You will not be able to install/use this mod, contact your host and ask for a php upgrade.');
+		fatal_error('This mod needs PHP 7.4 or greater. You will not be able to install/use this mod, contact your host and ask for a php upgrade.');
 }
