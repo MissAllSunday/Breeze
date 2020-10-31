@@ -28,6 +28,17 @@ The mod uses the following scripts:
 - [DOMPurify] (https://github.com/cure53/DOMPurify)
 - [Sun editor] (http://suneditor.com/)
 
+###### Tests
+```bash
+composer test
+```
+
+##### Generate an SMF package
+```bash
+composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --no-suggest --optimize-autoloader &&
+zip -r Breeze breezeVendor/ Sources/ Themes/ tasks/ hooks.php install.php License package-info.xml README.txt remove.php
+``` 
+
 ###### Notes:
 
 Feel free to fork this repository and make your desired changes.
