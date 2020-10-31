@@ -56,6 +56,11 @@ function template_breezeAdmin_main(): void
 							', $txt['Breeze_version'] , ':
 							<em>
 								', $context[Breeze::NAME]['version'] , '
+							</em>
+							<br>
+							', $txt['Breeze_vue_version'] , ':
+							<em>
+								', $context[Breeze::NAME]['vue'] , '
 							</em>';
 
 	// Some more stuff will be here... eventually
@@ -136,7 +141,8 @@ function template_breezeAdmin_donate(): void
 			<h3 class="catbg">', $context['page_title'] ,'</h3>
 		</div>
 		<div class="information">
-			', $txt['Breeze_page_donate_exp'] ,'
+			', $txt['Breeze_page_donate_exp'] ,' 
+			<a href="', Breeze::SUPPORT_URL ,'">', $txt['Breeze_page_donate_link'] ,'</a>.
 		</div>
 		<br />';
 }

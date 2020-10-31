@@ -54,6 +54,7 @@ class AdminController extends BaseController implements ControllerInterface
 			Breeze::NAME => [
 				'credits' => Breeze::credits(),
 				'version' => Breeze::VERSION,
+				'vue' => Breeze::VUE_VERSION,
 			],
 		]);
 	}

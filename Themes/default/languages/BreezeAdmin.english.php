@@ -26,7 +26,8 @@ $txt['Breeze_page_mood_edit_create_desc'] = 'Remember that you need to upload yo
 $txt['Breeze_page_mood_edit_update'] = 'Editing a mood';
 $txt['Breeze_page_mood_edit_update_desc'] = 'Remember that you need to upload your images to the correct folder <strong>before</strong> adding new moods';
 $txt['Breeze_page_mood__noList'] = 'There aren\'t any moods to display';
-$txt['Breeze_page_donate_exp'] = 'Breeze is a free SMF modification brought to you by a PHP enthusiast on her free time.<p />If you like this modification and would like to show your appreciation, please consider making a <a href="https://missallsunday.com/">donation</a>. Your donation will be used to cover server costs and/or to buy shoes, shoes keeps the developer happy and if she is happy then there will be more updates ;)<p />You can also show your appreciation by letting me know you are using Breeze on your forum, come by, say hi and show me your shiny profile pages powered by Breeze.';
+$txt['Breeze_page_donate_exp'] = 'Breeze is a free and Open Source SMF modification. If you like this modification and would like to show your appreciation, please consider making a';
+$txt['Breeze_page_donate_link'] = 'donation';
 $txt['Breeze_page_credits'] = 'Credits';
 $txt['Breeze_page_credits_decs'] = 'Breeze is brought to you by the following persons and/or scripts:';
 $txt['Breeze_enable_general_wall'] = 'Enable UserSettingsController User';
@@ -55,6 +56,7 @@ $txt['Breeze_maxFloodMinutes'] = 'The time frame for the amount of messages an u
 $txt['Breeze_maxFloodMinutes_sub'] = 'Defaults to 5 minutes. If you leave both options empty it will mean an user cannot make more than 10 messages in 5 minutes across all walls';
 
 $txt['Breeze_version'] = 'Breeze version';
+$txt['Breeze_vue_version'] = 'Vue version';
 $txt['Breeze_live'] = 'Live from the support forum...';
 $txt['Breeze_feed_error_message'] = 'Breeze couldn\'t connect with the support site';
 
