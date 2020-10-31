@@ -10,6 +10,16 @@ use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Override time() in the current namespace for testing.
+ *
+ * @return int
+ */
+function time()
+{
+	return 581299200;
+}
+
 class CommentRepositoryTest extends TestCase
 {
 	/**
@@ -52,14 +62,14 @@ class CommentRepositoryTest extends TestCase
 		return [
 			'happy happy joy joy' => [
 				'dataToInsert' => [
-					'comments_time' => time(),
+					'comments_time' => 581299200,
 					'likes' => 0,
 				],
 				'newId' => 666,
 			],
 			'InvalidCommentException' => [
 				'dataToInsert' => [
-					'comments_time' => time(),
+					'comments_time' => 581299200,
 					'likes' => 0,
 				],
 				'newId' => 0,

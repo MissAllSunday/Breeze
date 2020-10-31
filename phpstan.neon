@@ -16,8 +16,6 @@ parameters:
     - '/Function is_not_guest not found./'
     - '/Function loadtemplate not found./'
     - '/Function createList not found./'
-    - '/Function loadMemberContext not found./'
-    - '/Function loadMemberData not found./'
     - '/Function loadJavaScriptFile not found./'
     - '/Function smf_serverResponse not found./'
     - '/Function template_breezeForm_Display not found./'

@@ -30,12 +30,12 @@ function smf_json_decode($s, $array = true)
 	return json_decode($s, $array);
 }
 
-function loadMemberData(): array
+function loadMemberData(array $userIds): array
 {
-	return ['666'];
+	return $userIds;
 }
 
-function loadMemberContext(int $userId): array
+function loadMemberContext(int $userId, bool $dummy): array
 {
 	switch($userId)
 	{
@@ -47,6 +47,7 @@ function loadMemberContext(int $userId): array
 			];
 			break;
 		case 1:
+			$dummy = true;
 			$dataToReturn = [
 				'link' => 'Guest',
 				'name' => 'Guest',
@@ -56,6 +57,9 @@ function loadMemberContext(int $userId): array
 		default:
 			$dataToReturn = [];
 	}
+
+	if ($dummy)
+		$dummy = false;
 
 	return $dataToReturn;
 }
