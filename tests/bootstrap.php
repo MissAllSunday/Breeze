@@ -30,6 +30,36 @@ function smf_json_decode($s, $array = true)
 	return json_decode($s, $array);
 }
 
+function loadMemberData(): array
+{
+	return ['666'];
+}
+
+function loadMemberContext(int $userId): array
+{
+	switch($userId)
+	{
+		case 666:
+			$dataToReturn = [
+				'link' => '<a href="#">Astaroth</a>',
+				'name' => 'Astaroth',
+				'avatar' => ['href' => 'avatar_url/astaroth.png']
+			];
+			break;
+		case 1:
+			$dataToReturn = [
+				'link' => 'Guest',
+				'name' => 'Guest',
+				'avatar' => ['href' => 'avatar_url/default.png']
+			];
+			break;
+		default:
+			$dataToReturn = [];
+	}
+
+	return $dataToReturn;
+}
+
 function allowedTo($permissionName)
 {
 	$dummyPermissions = [
@@ -85,7 +115,8 @@ $modSettings = [
 	'CompressedOutput' => false,
 	'Breeze_someSetting' => 666,
 	'Breeze_master' => true,
-	'Breeze_time_machine' => false
+	'Breeze_time_machine' => false,
+	'avatar_url' => 'avatar_url'
 ];
 
 $txt = [
@@ -98,6 +129,7 @@ $txt = [
 	'time_ago' => 'ago',
 	'time_just_now' => 'just now',
 	'Breeze_lol' => 'lol',
+	'guest_title' => 'Guest',
 ];
 
 $_REQUEST = [

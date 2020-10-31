@@ -118,7 +118,7 @@ class UserService extends BaseService implements UserServiceInterface
 		return false;
 	}
 
-	public function getUsersToLoad($userIds = []): array
+	public function getUsersToLoad(array $userIds = []): array
 	{
 		return loadMemberData($userIds);
 	}

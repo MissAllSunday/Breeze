@@ -84,6 +84,37 @@ class UserServiceTest extends TestCase
 		];
 	}
 
+	/**
+	 * @dataProvider getLoadUsersInfo
+	 */
+	public function testLoadUsersInfo(array $userData, array $userIds): void
+	{
+		$loadUsersInfo = $this->userService->loadUsersInfo($userIds);
+
+		$this->assertEquals($userData, $loadUsersInfo);
+	}
+
+	public function getLoadUsersInfo(): array
+	{
+		return [
+			'happy happy joy joy' => [
+				'userData' => [
+					666 => [
+						'link' => '<a href="#">Astaroth</a>',
+						'name' => 'Astaroth',
+						'avatar' => ['href' => 'avatar_url/astaroth.png']
+					],
+					1 => [
+						'link' => 'Guest',
+						'name' => 'Guest',
+						'avatar' => ['href' => 'avatar_url/default.png']
+					],
+				],
+				'userIds' => [666, 1],
+			],
+		];
+	}
+
 	protected function getMockInstance(string $class): MockObject
 	{
 		return $this->getMockBuilder($class)
