@@ -22,42 +22,36 @@ class StatusByProfile extends ValidateData implements ValidateDataInterface
 
 	protected const SUCCESS_KEY = '';
 
-	public function getParams()
-	: array
+	public function getParams(): array
 	{
 		return self::PARAMS;
 	}
 
-	public function getInts()
-	: array
+	public function getInts(): array
 	{
 		return [
 			StatusEntity::COLUMN_OWNER_ID
 		];
 	}
 
-	public function getStrings()
-	: array
+	public function getStrings(): array
 	{
 		return [];
 	}
 
-	public function getUserIdsNames()
-	: array
+	public function getUserIdsNames(): array
 	{
 		return [
 			StatusEntity::COLUMN_OWNER_ID
 		];
 	}
 
-	public function getPosterId()
-	: int
+	public function getPosterId(): int
 	{
 		return $this->data[StatusEntity::COLUMN_OWNER_ID] ?? 0;
 	}
 
-	public function successKeyString()
-	: string
+	public function successKeyString(): string
 	{
 		return self::SUCCESS_KEY;
 	}

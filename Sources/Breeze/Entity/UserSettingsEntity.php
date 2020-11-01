@@ -27,4 +27,15 @@ class UserSettingsEntity
 			self::ABOUT_ME => SettingsEntity::TYPE_TEXTAREA,
 		];
 	}
+
+	public static function getDefaultValues(): array
+	{
+		return [
+			self::WALL => 0,
+			self::GENERAL_WALL => 0,
+			self::PAGINATION_NUM => 5,
+			self::KICK_IGNORED => 0,
+			self::ABOUT_ME => '',
+		];
+	}
 }

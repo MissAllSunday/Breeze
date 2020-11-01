@@ -63,7 +63,7 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	{
 		$userId = $this->getRequest('u', 0);
 		$userSettings = $this->getRequest(UserSettingsEntity::IDENTIFIER);
-
+var_dump($userSettings);
 		$this->userSettingsService->save(
 			$userSettings,
 			$userId

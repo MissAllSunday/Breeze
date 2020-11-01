@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Service\Actions;
 
 use Breeze\Breeze;
+use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Util\Components;
 use Breeze\Util\Form\UserSettingsBuilder;
@@ -37,7 +38,9 @@ class UserSettingsService extends ActionsBaseService implements UserSettingsServ
 
 	public function save(array $userSettings, int $userId): void
 	{
+		$userSettings = array_replace(UserSettingsEntity::getDefaultValues(), $userSettings);
 
+		var_dump($userSettings);die;
 	}
 
 	public function getActionName(): string

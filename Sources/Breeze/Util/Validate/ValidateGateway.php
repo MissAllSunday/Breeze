@@ -104,9 +104,10 @@ class ValidateGateway implements ValidateGatewayInterface
 		return $this->notice;
 	}
 
-	public function setData(): void
+	public function setData(array $rawData = []): void
 	{
-		$rawData = json_decode(file_get_contents('php://input'), true) ?? [];
+		$rawData = !empty($rawData) ?
+			$rawData : (json_decode(file_get_contents('php://input'), true) ?? []);
 		$this->data = array_filter($rawData);
 	}
 
