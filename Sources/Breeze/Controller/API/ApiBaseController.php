@@ -7,6 +7,7 @@ namespace Breeze\Controller\API;
 
 use Breeze\Controller\BaseController;
 use Breeze\Traits\TextTrait;
+use Breeze\Util\Json;
 use Breeze\Util\Validate\ValidateGatewayInterface;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
@@ -40,9 +41,7 @@ abstract class ApiBaseController extends BaseController
 
 	public function print(array $responseData): void
 	{
-		$smcFunc = $this->global('smcFunc');
-
-		smf_serverResponse($smcFunc['json_encode']($responseData));
+		smf_serverResponse(Json::encode($responseData));
 	}
 
 	public abstract function setValidator(): ValidateDataInterface;
