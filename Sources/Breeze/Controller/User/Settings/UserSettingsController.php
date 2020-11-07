@@ -11,6 +11,8 @@ use Breeze\Service\Actions\UserSettingsServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Form\UserSettingsBuilderInterface;
 use Breeze\Util\Validate\ValidateGatewayInterface;
+use Breeze\Util\Validate\Validations\ValidateData;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class UserSettingsController extends BaseController implements ControllerInterface
 {
@@ -20,6 +22,15 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	public const SUB_ACTIONS = [
 		self::ACTION_MAIN,
 		self::ACTION_SAVE,
+	];
+
+	protected string $subAction;
+
+	private array $validators = [
+		'save' => [
+			'validator' => 'UserSettings',
+			'dataName' => UserSettingsEntity::IDENTIFIER
+		],
 	];
 
 	private UserServiceInterface $userService;
@@ -45,6 +56,19 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 
 	public function dispatch(): void
 	{
+		$this->subAction = $this->getRequest('sa', $this->getMainAction());
+		$this->gateway->setData($this->getRequest($this->validators[$this->subAction]['dataName'], []));
+
+		$validator = $this->setValidator();
+
+		$this->gateway->setValidator($validator);
+
+		if (!$this->gateway->isValid())
+		{
+			// TODO show some generic error response
+			return;
+		}
+
 		$this->userSettingsService->init($this->getSubActions());
 		$this->subActionCall();
 	}
@@ -88,5 +112,12 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	public function getMainAction(): string
 	{
 		return self::ACTION_MAIN;
+	}
+
+	protected function setValidator(): ValidateDataInterface
+	{
+		$validatorName = ValidateData::getNameSpace() . ucfirst($this->subAction);
+
+		return new $validatorName();
 	}
 }

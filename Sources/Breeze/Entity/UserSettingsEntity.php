@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class UserSettingsEntity
+class UserSettingsEntity extends BaseEntity implements BaseEntityInterface
 {
 	public const IDENTIFIER = 'user_settings';
 	public const WALL =  'wall';
@@ -37,5 +37,24 @@ class UserSettingsEntity
 			self::KICK_IGNORED => 0,
 			self::ABOUT_ME => '',
 		];
+	}
+
+	public static function getInts(): array
+	{
+		return array_filter( self::getDefaultValues(), function(string $part){
+			return strlen($part);
+		});
+	}
+
+	public static function getStrings(): array
+	{
+		return array_filter(self::getDefaultValues(), function ($value){
+			return is_string($value);
+		});
+	}
+
+	public static function getTableName(): string
+	{
+		return '';
 	}
 }
