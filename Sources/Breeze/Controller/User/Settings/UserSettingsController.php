@@ -10,6 +10,7 @@ use Breeze\Entity\UserSettingsEntity;
 use Breeze\Service\Actions\UserSettingsServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Form\UserSettingsBuilderInterface;
+use Breeze\Util\Validate\ValidateGatewayInterface;
 
 class UserSettingsController extends BaseController implements ControllerInterface
 {
@@ -27,15 +28,19 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 
 	private UserSettingsBuilderInterface $userSettingsBuilder;
 
+	private ValidateGatewayInterface $gateway;
+
 	public function __construct(
 		UserSettingsServiceInterface $userSettingsService,
 		UserServiceInterface $userService,
-		UserSettingsBuilderInterface $userSettingsBuilder
+		UserSettingsBuilderInterface $userSettingsBuilder,
+		ValidateGatewayInterface $gateway
 	)
 	{
 		$this->userService = $userService;
 		$this->userSettingsService = $userSettingsService;
 		$this->userSettingsBuilder = $userSettingsBuilder;
+		$this->gateway = $gateway;
 	}
 
 	public function dispatch(): void
@@ -62,8 +67,8 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	public function save(): void
 	{
 		$userId = $this->getRequest('u', 0);
-		$userSettings = $this->getRequest(UserSettingsEntity::IDENTIFIER);
-var_dump($userSettings);
+		$userSettings = $this->getRequest(UserSettingsEntity::IDENTIFIER, []);
+
 		$this->userSettingsService->save(
 			$userSettings,
 			$userId
