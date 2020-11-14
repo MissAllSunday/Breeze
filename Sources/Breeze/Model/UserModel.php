@@ -11,8 +11,22 @@ use Breeze\Util\Json;
 
 class UserModel extends BaseModel implements UserModelInterface
 {
-	function insert(array $data, int $userId = 0): int
+	function insert(array $userSettings, int $userId = 0): int
 	{
+		if (empty($data))
+			return 0;
+
+		$this->dbClient->replace(
+			OptionsEntity::TABLE,
+			[
+				OptionsEntity::COLUMN_MEMBER_ID => 'int',
+				OptionsEntity::COLUMN_VARIABLE => 'string',
+				OptionsEntity::COLUMN_VALUE => 'string',
+			],
+			$userSettings,
+			OptionsEntity::COLUMN_MEMBER_ID
+		);
+
 		return 1;
 	}
 

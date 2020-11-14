@@ -10,5 +10,5 @@ interface UserSettingsServiceInterface extends ActionsServiceInterface
 	public const AREA = 'breezeSettings';
 	public const TEMPLATE = 'UserSettings';
 
-	public function save(array $userSettings, int $userId): void;
+	public function save(array $userSettings, int $userId): bool;
 }

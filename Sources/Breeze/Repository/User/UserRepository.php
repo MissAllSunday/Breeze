@@ -29,6 +29,11 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 		return $userSettings;
 	}
 
+	public function save(array $userSettings): int
+	{
+		return $this->userModel->insert($userSettings);
+	}
+
 	public function getModel(): UserModelInterface
 	{
 		return $this->userModel;

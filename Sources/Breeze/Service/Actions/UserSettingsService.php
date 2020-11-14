@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Breeze\Service\Actions;
 
 use Breeze\Breeze;
-use Breeze\Entity\UserSettingsEntity;
+use Breeze\Model\UserModel;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Util\Components;
 use Breeze\Util\Form\UserSettingsBuilder;
+use Breeze\Util\Json;
 
 
 class UserSettingsService extends ActionsBaseService implements UserSettingsServiceInterface
@@ -36,10 +37,24 @@ class UserSettingsService extends ActionsBaseService implements UserSettingsServ
 		$this->setTemplate(Breeze::NAME . self::TEMPLATE);
 	}
 
-	public function save(array $userSettings, int $userId): void
+	public function save(array $userSettings, int $userId): bool
 	{
-		$userSettings = array_replace(UserSettingsEntity::getDefaultValues(), $userSettings);
+		$toInsert = [];
 
+		foreach ($userSettings as $name => $value)
+		{
+			if (in_array($name, UserModel::JSON_VALUES))
+				$value = !empty($value) ? Json::encode($value) : '';
+
+			$toInsert[] = [$userId, $name, $value];
+		}
+
+		if (empty($toInsert))
+			return false;
+
+		$this->userRepository->save($toInsert);
+
+		return true;
 	}
 
 	public function getActionName(): string
