@@ -64,7 +64,8 @@ return [
 		'arguments'=> [
 			UserSettingsService::class,
 			UserService::class,
-			UserSettingsBuilder::class
+			UserSettingsBuilder::class,
+			ValidateGateway::class
 		]
 	],
 ];

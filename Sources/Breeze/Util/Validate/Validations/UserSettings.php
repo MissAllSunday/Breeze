@@ -22,17 +22,24 @@ class UserSettings extends ValidateData implements ValidateDataInterface
 
 	public function getParams(): array
 	{
-		return UserSettingsEntity::getDefaultValues();
+		$defaultValues = UserSettingsEntity::getDefaultValues();
+
+		return array_merge($defaultValues, $this->data);
+	}
+
+	public function getData(): array
+	{
+		return $this->getParams();
 	}
 
 	public function getInts(): array
 	{
-		return UserSettingsEntity::getInts();
+		return array_keys(UserSettingsEntity::getInts());
 	}
 
 	public function getStrings(): array
 	{
-		return UserSettingsEntity::getStrings();
+		return array_keys(UserSettingsEntity::getStrings());
 	}
 
 	public function getUserIdsNames(): array

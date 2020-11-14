@@ -57,16 +57,18 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	public function dispatch(): void
 	{
 		$this->subAction = $this->getRequest('sa', $this->getMainAction());
-		$this->gateway->setData($this->getRequest($this->validators[$this->subAction]['dataName'], []));
 
-		$validator = $this->setValidator();
-
-		$this->gateway->setValidator($validator);
-
-		if (!$this->gateway->isValid())
+		if (isset($this->validators[$this->subAction]['dataName']))
 		{
-			// TODO show some generic error response
-			return;
+			$this->gateway->setData($this->getRequest($this->validators[$this->subAction]['dataName']));
+
+			$this->gateway->setValidator($this->setValidator());
+
+			if (!$this->gateway->isValid())
+			{
+				// TODO show some generic error response
+				return;
+			}
 		}
 
 		$this->userSettingsService->init($this->getSubActions());
@@ -91,7 +93,7 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	public function save(): void
 	{
 		$userId = $this->getRequest('u', 0);
-		$userSettings = $this->getRequest(UserSettingsEntity::IDENTIFIER, []);
+		$userSettings = $this->gateway->getData();
 
 		$this->userSettingsService->save(
 			$userSettings,
@@ -116,8 +118,8 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 
 	protected function setValidator(): ValidateDataInterface
 	{
-		$validatorName = ValidateData::getNameSpace() . ucfirst($this->subAction);
+		$validatorName = ValidateData::getNameSpace() . ucfirst($this->validators[$this->subAction]['validator']);
 
-		return new $validatorName();
+		return new $validatorName($this->userService);
 	}
 }

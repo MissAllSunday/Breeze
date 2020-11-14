@@ -81,7 +81,7 @@ abstract class ValidateData
 	public function isInt(): void
 	{
 		foreach ($this->getInts() as $integerValueName)
-			if (!is_int($this->data[$integerValueName]))
+			if (!is_int($this->getData()[$integerValueName]))
 				throw new ValidateDataException('malformed_data');
 	}
 
@@ -91,7 +91,7 @@ abstract class ValidateData
 	public function isString(): void
 	{
 		foreach ($this->getStrings() as $stringValueName)
-			if (!is_string($this->data[$stringValueName]))
+			if (!is_string($this->getData()[$stringValueName]))
 				throw new ValidateDataException('malformed_data');
 	}
 
@@ -146,7 +146,7 @@ abstract class ValidateData
 	 */
 	public function compare(): void
 	{
-		if (!empty(array_diff_key($this->getParams(), $this->data)))
+		if (!empty(array_diff_key($this->getParams(), $this->getData())))
 			throw new ValidateDataException('incomplete_data');
 	}
 

@@ -40,7 +40,6 @@ class UserSettingsService extends ActionsBaseService implements UserSettingsServ
 	{
 		$userSettings = array_replace(UserSettingsEntity::getDefaultValues(), $userSettings);
 
-		var_dump($userSettings);die;
 	}
 
 	public function getActionName(): string
