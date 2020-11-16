@@ -8,6 +8,7 @@ interface UserServiceInterface extends BaseServiceInterface
 {
 	public const AREA = 'summary';
 	public const LEGACY_AREA = 'legacy';
+	public const LEGACY_URL = '?action=profile;area=' . self::LEGACY_AREA . ';u=%d';
 
 	public function getCurrentUserInfo(): array;
 

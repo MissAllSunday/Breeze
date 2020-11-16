@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Breeze\Entity\UserSettingsEntity;
 use Breeze\Util\Parser;
 
 /**
@@ -71,7 +72,7 @@ function template_breeze_main(): void
     		<tab :name="tabs_name.about">
       			<div class="windowbg">
       				<div class="content">
-      					'. Parser::parse($context['userSettings']['aboutMe']) .'
+      					'. Parser::parse($context['userSettings'][UserSettingsEntity::ABOUT_ME]) .'
       				</div>
 				</div>
     		</tab>';

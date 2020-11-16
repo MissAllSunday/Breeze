@@ -7,7 +7,10 @@ namespace Breeze\Controller\User;
 
 use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
+use Breeze\Entity\SettingsEntity;
+use Breeze\Entity\UserSettingsEntity;
 use Breeze\Service\Actions\WallServiceInterface;
+use Breeze\Service\UserService;
 use Breeze\Service\UserServiceInterface;
 
 class WallController extends BaseController implements ControllerInterface
@@ -45,8 +48,15 @@ class WallController extends BaseController implements ControllerInterface
 
 	public function main(): void
 	{
+		$scriptUrl = $this->global('scripturl');
+		$userSettings = $this->userService->getUserSettings($this->userId);
+		$forceWall = $this->getSetting(SettingsEntity::FORCE_WALL);
+
+		if (empty($userSettings[UserSettingsEntity::WALL]) && empty($forceWall))
+			$this->userService->redirect($scriptUrl . sprintf(UserService::LEGACY_URL, $this->userId));
+
 		$this->render(__FUNCTION__, [
-			'userSettings' => $this->userService->getUserSettings($this->userId)
+			'userSettings' => $userSettings,
 		]);
 	}
 
