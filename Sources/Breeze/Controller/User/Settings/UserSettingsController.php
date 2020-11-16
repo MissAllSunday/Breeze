@@ -86,12 +86,14 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 		], $this->userService->getUserSettings($userId));
 
 		$this->render(__FUNCTION__, [
-			'form' => $this->userSettingsBuilder->display()
+			'form' => $this->userSettingsBuilder->display(),
+			'msg' => $this->userSettingsService->getMessage()
 		]);
 	}
 
 	public function save(): void
 	{
+		$scriptUrl = $this->global('scripturl');
 		$userId = $this->getRequest('u', 0);
 		$userSettings = $this->gateway->getData();
 
@@ -99,6 +101,10 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 			$userSettings,
 			$userId
 		);
+
+		$this->userSettingsService->setMessage($this->getText('info_updated_settings'));
+		$this->userSettingsService->redirect($scriptUrl . self::URL . ';u=' .
+			$userId . ';sa=' . self::ACTION_MAIN);
 	}
 
 	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void

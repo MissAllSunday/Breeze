@@ -21,6 +21,15 @@ function template_breezeSettings_main(): void
 		', $txt['Breeze_user_settings_main_desc'] ,'
 	</p>';
 
+	if (!empty($context['msg']))
+	{
+		echo '
+	<div class="', $context['msg']['type'] ,'box">
+		', $context['msg']['message'] ,'
+	</div>
+		';
+	}
+
 	echo '
 	<div class="roundframe">
 		', $context['form'] ,'

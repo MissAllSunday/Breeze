@@ -7,6 +7,7 @@ namespace Breeze\Service\Actions;
 use Breeze\Breeze;
 use Breeze\Model\UserModel;
 use Breeze\Repository\User\UserRepositoryInterface;
+use Breeze\Traits\PersistenceTrait;
 use Breeze\Util\Components;
 use Breeze\Util\Form\UserSettingsBuilder;
 use Breeze\Util\Json;
@@ -14,6 +15,8 @@ use Breeze\Util\Json;
 
 class UserSettingsService extends ActionsBaseService implements UserSettingsServiceInterface
 {
+	use PersistenceTrait;
+
 	private UserRepositoryInterface $userRepository;
 
 	private Components $components;

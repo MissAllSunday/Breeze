@@ -13,7 +13,7 @@ class UserModel extends BaseModel implements UserModelInterface
 {
 	function insert(array $userSettings, int $userId = 0): int
 	{
-		if (empty($data))
+		if (empty($userSettings))
 			return 0;
 
 		$this->dbClient->replace(
