@@ -55,7 +55,7 @@ class UserSettingsService extends ActionsBaseService implements UserSettingsServ
 		if (empty($toInsert))
 			return false;
 
-		$this->userRepository->save($toInsert);
+		$this->userRepository->save($toInsert, $userId);
 
 		return true;
 	}

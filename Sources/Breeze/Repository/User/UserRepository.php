@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\User;
 
+use Breeze\Entity\OptionsEntity;
 use Breeze\Model\UserModelInterface;
 use Breeze\Repository\BaseRepository;
 
@@ -18,20 +19,23 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
 	public function getUserSettings(int $userId): array
 	{
-		$userSettings = $this->getCache('user_settings_' . $userId);
+		$userSettings = $this->getCache(sprintf(OptionsEntity::CACHE_NAME, $userId));
 
 		if (empty($userSettings))
 		{
 			$userSettings = $this->userModel->getUserSettings($userId);
-			$this->setCache('user_settings_' . $userId, $userSettings);
+			$this->setCache(sprintf(OptionsEntity::CACHE_NAME, $userId), $userSettings);
 		}
 
 		return $userSettings;
 	}
 
-	public function save(array $userSettings): int
+	public function save(array $userSettings, $userId): int
 	{
-		return $this->userModel->insert($userSettings);
+		if ($this->userModel->insert($userSettings))
+			$this->setCache(sprintf(OptionsEntity::CACHE_NAME, $userId), null);
+
+		return 1;
 	}
 
 	public function getModel(): UserModelInterface

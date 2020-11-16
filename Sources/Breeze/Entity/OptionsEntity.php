@@ -7,10 +7,11 @@ namespace Breeze\Entity;
 
 class OptionsEntity extends BaseEntity implements BaseEntityInterface
 {
-	const TABLE = 'breeze_options';
-	const COLUMN_MEMBER_ID = 'member_id';
-	const COLUMN_VARIABLE = 'variable';
-	const COLUMN_VALUE = 'value';
+	public const TABLE = 'breeze_options';
+	public const COLUMN_MEMBER_ID = 'member_id';
+	public const COLUMN_VARIABLE = 'variable';
+	public const COLUMN_VALUE = 'value';
+	public const CACHE_NAME = 'user_settings_%d';
 
  public static function getColumns(): array
 	{

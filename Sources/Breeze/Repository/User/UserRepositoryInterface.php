@@ -8,5 +8,5 @@ interface UserRepositoryInterface
 {
 	public function getUserSettings(int $userId): array;
 
-	public function save(array $userSettings): int;
+	public function save(array $userSettings, int $userId): int;
 }
