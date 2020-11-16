@@ -25,6 +25,8 @@ class WallController extends BaseController implements ControllerInterface
 
 	private UserServiceInterface $userService;
 
+	private int $userId;
+
 	public function __construct(
 		WallServiceInterface $wallService,
 		UserServiceInterface $userService
@@ -36,13 +38,16 @@ class WallController extends BaseController implements ControllerInterface
 
 	public function dispatch(): void
 	{
+		$this->userId = $this->getRequest('u');
 		$this->wallService->init($this->getSubActions());
 		$this->subActionCall();
 	}
 
 	public function main(): void
 	{
-		$this->render(__FUNCTION__);
+		$this->render(__FUNCTION__, [
+			'userSettings' => $this->userService->getUserSettings($this->userId)
+		]);
 	}
 
 	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void

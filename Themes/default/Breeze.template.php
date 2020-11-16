@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Breeze\Util\Parser;
+
 /**
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
@@ -62,10 +64,19 @@ function template_breeze_main(): void
 						@remove_status="onRemoveStatus">			
 					</status>
 				</ul>
-    		</tab>
+    		</tab>';
+
+	if (!empty($context['userSettings']['aboutMe']))
+		echo '
     		<tab :name="tabs_name.about">
-      			'. $context['member']['name'] .'
-    		</tab>
+      			<div class="windowbg">
+      				<div class="content">
+      					'. Parser::parse($context['userSettings']['aboutMe']) .'
+      				</div>
+				</div>
+    		</tab>';
+
+	echo '
 			<tab :name="tabs_name.activity">
       			profile owner recent activity
     		</tab>

@@ -30,6 +30,11 @@ function smf_json_decode($s, $array = true)
 	return json_decode($s, $array);
 }
 
+function parse_bbc(string $content): string
+{
+	return $content;
+}
+
 function loadMemberData(array $userIds): array
 {
 	return $userIds;
