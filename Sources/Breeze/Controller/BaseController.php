@@ -24,6 +24,13 @@ abstract class BaseController implements ControllerInterface
 			$this->{$this->getMainAction()}();
 	}
 
+	public function error(string $errorTextKey, string $templateName = ''): void
+	{
+		$this->render(!empty($templateName) ? $templateName : __FUNCTION__, [
+			'errorMessage' => $this->getText($errorTextKey)
+		]);
+	}
+
 	public abstract function getSubActions(): array;
 
 	public abstract function getMainAction(): string;
