@@ -26,8 +26,7 @@ function template_breezeSettings_main(): void
 		echo '
 	<div class="', $context['msg']['type'] ,'box">
 		', $context['msg']['message'] ,'
-	</div>
-		';
+	</div>';
 	}
 
 	echo '
@@ -36,4 +35,14 @@ function template_breezeSettings_main(): void
 	</div>	
 </div>
 <br />';
+}
+
+function template_breezeSettings_error(): void
+{
+	global $context;
+
+	echo '
+	<div class="errorbox">
+		', $context['errorMessage'] ,'
+	</div>';
 }

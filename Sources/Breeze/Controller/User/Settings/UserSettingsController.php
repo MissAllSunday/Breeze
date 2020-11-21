@@ -6,6 +6,7 @@ namespace Breeze\Controller\User\Settings;
 
 use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
+use Breeze\Entity\BaseEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Service\Actions\UserSettingsServiceInterface;
 use Breeze\Service\UserServiceInterface;
@@ -57,6 +58,7 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	public function dispatch(): void
 	{
 		$this->subAction = $this->getRequest('sa', $this->getMainAction());
+		$this->userSettingsService->init($this->getSubActions());
 
 		if (isset($this->validators[$this->subAction]['dataName']))
 		{
@@ -66,12 +68,12 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 
 			if (!$this->gateway->isValid())
 			{
-				// TODO show some generic error response
+				$this->error(BaseEntity::WRONG_VALUES);
+
 				return;
 			}
 		}
 
-		$this->userSettingsService->init($this->getSubActions());
 		$this->subActionCall();
 	}
 
