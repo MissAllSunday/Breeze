@@ -47,9 +47,9 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		return $commentsByProfile;
 	}
 
-	public function getByStatus(array $statusIds = []): void
+	public function getByStatus(array $statusIds = []): array
 	{
-		// TODO: Implement getCommentsByStatus() method.
+		return $this->commentModel->getByStatus($statusIds);
 	}
 
 	/**

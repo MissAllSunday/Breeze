@@ -14,7 +14,7 @@ interface CommentRepositoryInterface
 
 	public function getByProfile(int $profileOwnerId = 0): array;
 
-	public function getByStatus(array $statusIds = []): void;
+	public function getByStatus(array $statusIds = []): array;
 
 	/**
 	 * @throws InvalidCommentException

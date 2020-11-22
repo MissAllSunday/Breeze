@@ -118,6 +118,38 @@ class CommentRepositoryTest extends TestCase
 		];
 	}
 
+	/**
+	 * @dataProvider getByStatusProvider
+	 */
+	public function testGetByStatus(array $statusId, array $commentsBystatusWillReturn): void
+	{
+		$this->commentModel
+			->expects($this->once())
+			->method('getByStatus')
+			->with($statusId)
+			->willReturn($commentsBystatusWillReturn);
+
+		$commentsByStatus = $this->commentRepository->getByStatus($statusId);
+
+		$this->assertEquals($commentsBystatusWillReturn, $commentsByStatus);
+	}
+
+	public function getByStatusProvider(): array
+	{
+		return [
+			'happy happy joy joy' => [
+				'statusId' => [1],
+				'commentsByStatusWillReturn' => [
+					'some data'
+				],
+			],
+			'no data' => [
+				'statusId' => [],
+				'commentsByStatusWillReturn' => [],
+			],
+		];
+	}
+
 	protected function getMockInstance(string $class): MockObject
 	{
 		return $this->getMockBuilder($class)

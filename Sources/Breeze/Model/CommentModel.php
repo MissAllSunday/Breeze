@@ -31,12 +31,12 @@ class CommentModel extends BaseModel implements CommentModelInterface
 		return $this->getInsertedId();
 	}
 
-	public function deleteByStatusId(array $ids): bool
+	public function deleteByStatusId(array $statusIds): bool
 	{
 		return $this->dbClient->delete(
 			CommentEntity::TABLE,
-			'WHERE ' . CommentEntity::COLUMN_STATUS_ID . ' IN({array_int:ids})',
-			['ids' => $ids]
+			'WHERE ' . CommentEntity::COLUMN_STATUS_ID . ' IN({array_int:statusIds})',
+			['statusIds' => $statusIds]
 		);
 	}
 
@@ -52,6 +52,24 @@ class CommentModel extends BaseModel implements CommentModelInterface
 			SELECT {raw:columns}
 			FROM {db_prefix}{raw:tableName}
 			WHERE {raw:columnName} IN({array_int:profileIds})',
+			$queryParams
+		);
+
+		return $this->prepareData($request, true);
+	}
+
+	public function getByStatus(array $statusIds): array
+	{
+		$queryParams = array_merge($this->getDefaultQueryParams(), [
+			'columnName' => CommentEntity::COLUMN_STATUS_ID,
+			'statusIds' => $statusIds,
+		]);
+
+		$request = $this->dbClient->query(
+			'
+			SELECT {raw:columns}
+			FROM {db_prefix}{raw:tableName}
+			WHERE {raw:columnName} IN({array_int:statusIds})',
 			$queryParams
 		);
 
@@ -104,11 +122,14 @@ class CommentModel extends BaseModel implements CommentModelInterface
 		while ($row = $this->dbClient->fetchAssoc($request))
 		{
 			if ($useStatusID)
-				$comments[$row[CommentEntity::COLUMN_STATUS_ID]][$row[CommentEntity::COLUMN_ID]] = $row;
+				$comments[$row[CommentEntity::COLUMN_STATUS_ID]][$row[CommentEntity::COLUMN_ID]] =
+					array_map(function ($rowValue) {
+					return ctype_digit($rowValue) ? ((int) $rowValue) : $rowValue;
+				}, $row);
 
 			else
-				$comments[$row[CommentEntity::COLUMN_ID]] = array_map(function ($column) {
-					return ctype_digit($column) ? ((int) $column) : $column;
+				$comments[$row[CommentEntity::COLUMN_ID]] = array_map(function ($rowValue) {
+					return ctype_digit($rowValue) ? ((int) $rowValue) : $rowValue;
 					}, $row);
 
 			$usersIds[] = (int) $row[CommentEntity::COLUMN_POSTER_ID];
