@@ -131,6 +131,17 @@ final class SettingsTest extends TestCase
 				'expected' => [
 					'session_var' => 'foo',
 					'session_id' => 'baz',
+					'cust_profile_fields_placement' => [
+						'standard',
+						'icons',
+						'above_signature',
+						'below_signature',
+						'below_avatar',
+						'above_member',
+						'bottom_poster',
+						'before_member',
+						'after_member',
+					]
 				]
 			],
 			'global doesnt exists' =>
