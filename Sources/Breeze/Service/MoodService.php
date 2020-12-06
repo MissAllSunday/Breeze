@@ -39,7 +39,7 @@ class MoodService extends BaseService implements MoodServiceInterface
 		$chunkedItems = $this->moodRepository->getChunk($start, $numItemsPerPage);
 
 		$listParams =  array_merge([
-			'id' => '',
+			'id' => 'moodAdmin',
 			'title' => $this->getText('page_' . $listParams['id'] . '_title'),
 			'base_href' => '',
 			'items_per_page' => $numItemsPerPage,
