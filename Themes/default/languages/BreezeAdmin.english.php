@@ -38,7 +38,7 @@ $txt['Breeze_menu_position_sub'] = 'By default is next to the home button.';
 // SettingsTrait
 $txt['Breeze_master'] = 'Enable Breeze mod';
 $txt['Breeze_master_sub'] = 'The master setting, this must be enable for the mod to work properly.';
-$txt['Breeze_forceWall'] = 'CheckType to force the enabling of walls.';
+$txt['Breeze_forceWall'] = 'Check to force enable user\'s walls.';
 $txt['Breeze_forceWall_sub'] = 'By default the wall is disable and users needs to enable it manually, if you check this option their wall will be enable, keep in mind this option will enable everyone\'s wall including inactive members and bots.<br /> They can still manually disable their wall if they want it, this option only enables it but does not really forces the wall to be always enable.';
 $txt['Breeze_maxBuddiesNumber'] = 'How many buddies does an user can show on their buddies block?';
 $txt['Breeze_maxBuddiesNumber_sub'] = 'If the user has more users than the specified setting, their entire list will be converted to a more compact links list. Leave at 0 to disable this option.';
