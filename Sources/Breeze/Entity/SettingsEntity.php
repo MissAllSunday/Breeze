@@ -23,6 +23,30 @@ class SettingsEntity
 	public const TYPE_TEXTAREA = 'textArea';
 	public const TYPE_SELECT = 'select';
 
+	public const PF_TEXT_KEY = 'custom_profile_placement_';
+	public const PF_STANDARD = self::PF_TEXT_KEY . 'standard';
+	public const PF_ICONS = self::PF_TEXT_KEY . 'icons';
+	public const PF_ABOVE_SIGNATURE = self::PF_TEXT_KEY . 'above_signature';
+	public const PF_BELOW_AVATAR = self::PF_TEXT_KEY . 'below_avatar';
+	public const PF_BELOW_SIGNATURE = self::PF_TEXT_KEY . 'below_signature';
+	public const PF_ABOVE_MEMBER = self::PF_TEXT_KEY . 'above_member';
+	public const PF_BOTTOM_POSTER = self::PF_TEXT_KEY . 'bottom_poster';
+	public const PF_BEFORE_MEMBER = self::PF_TEXT_KEY . 'before_member';
+	public const PF_AFTER_MEMBER = self::PF_TEXT_KEY . 'after_member';
+
+	public static function getProfileFieldsOptions(): array
+	{
+		return [
+			self::PF_ABOVE_SIGNATURE,
+			self::PF_BELOW_AVATAR,
+			self::PF_BELOW_SIGNATURE,
+			self::PF_ABOVE_MEMBER,
+			self::PF_BOTTOM_POSTER,
+			self::PF_BEFORE_MEMBER,
+			self::PF_AFTER_MEMBER,
+		];
+	}
+
 	public static function getColumns(): array
 	{
 		return [
