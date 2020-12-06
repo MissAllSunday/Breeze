@@ -22,16 +22,12 @@ class SelectType extends ValueFormatter implements ValueFormatterInterface
 
 	private function getSettingOptions(string $settingName): array
 	{
+		$this->setLanguage('ManageSettings');
+
 		$allSelectOptions = [
-			SettingsEntity::MOOD_PLACEMENT => [
-				$this->getSmfText('custom_profile_placement_standard'),
-				$this->getSmfText('custom_profile_placement_icons'),
-				$this->getSmfText('custom_profile_placement_above_signature'),
-				$this->getSmfText('custom_profile_placement_below_signature'),
-				$this->getSmfText('custom_profile_placement_below_avatar'),
-				$this->getSmfText('custom_profile_placement_above_member'),
-				$this->getSmfText('custom_profile_placement_bottom_poster'),
-			]
+			SettingsEntity::MOOD_PLACEMENT => array_map(function ($txtKey){
+				return $this->getSmfText($txtKey);
+			}, SettingsEntity::getProfileFieldsOptions())
 		];
 
 		return $allSelectOptions[$settingName] ?? [];
