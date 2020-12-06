@@ -67,18 +67,6 @@ class MoodService extends BaseService implements MoodServiceInterface
 						'class' => 'centercol',
 					],
 				],
-				'enable' => [
-					'header' => [
-						'value' => $this->getText('mood_enable'),
-					],
-					'data' => [
-						'function' => function ($rowData)
-						{
-							return $this->getText('mood_' . $rowData['status']);
-						},
-						'class' => 'centercol',
-					],
-				],
 				'description' => [
 					'header' => [
 						'value' => $this->getText('mood_description'),

@@ -11,7 +11,7 @@ class MoodEntity extends BaseEntity implements BaseEntityInterface
 	public const COLUMN_ID = 'moods_id';
 	public const COLUMN_EMOJI = 'emoji';
 	public const COLUMN_DESC = 'description';
-	public const COLUMN_STATUS = 'status';
+	public const COLUMN_STATUS = 'enable';
 
 	public const STATUS_ACTIVE = 1;
 	public const STATUS_INACTIVE = 0;
