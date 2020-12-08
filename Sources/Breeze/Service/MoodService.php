@@ -12,6 +12,7 @@ use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Service\Actions\AdminService;
 use Breeze\Traits\PersistenceTrait;
+use Breeze\Util\Components;
 
 class MoodService extends BaseService implements MoodServiceInterface
 {
@@ -21,10 +22,17 @@ class MoodService extends BaseService implements MoodServiceInterface
 
 	private MoodRepositoryInterface $moodRepository;
 
-	public function __construct(MoodRepositoryInterface $moodRepository, UserRepositoryInterface $userRepository)
+	private Components $components;
+
+	public function __construct(
+		MoodRepositoryInterface $moodRepository,
+		UserRepositoryInterface $userRepository,
+		Components $components
+	)
 	{
 		$this->moodRepository = $moodRepository;
 		$this->userRepository = $userRepository;
+		$this->components = $components;
 	}
 
 	public function createMoodList(array $listParams, int $start = 0): void
@@ -129,6 +137,8 @@ class MoodService extends BaseService implements MoodServiceInterface
 		], $listParams);
 
 		$this->requireOnce('Subs-List');
+
+		$this->components->loadComponents(['moodMain', 'mood', 'moodDesc']);
 
 		createList($listParams);
 	}
