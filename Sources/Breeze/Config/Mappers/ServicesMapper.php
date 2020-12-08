@@ -25,7 +25,7 @@ use Breeze\Util\Form\UserSettingsBuilder;
 return [
 	'service.mood' => [
 		'class' => MoodService::class,
-		'arguments'=> [MoodRepository::class, UserRepository::class]
+		'arguments'=> [MoodRepository::class, UserRepository::class, Components::class]
 	],
 	'service.admin' => [
 		'class' => AdminService::class,
