@@ -17,23 +17,23 @@ Breeze is powerful social mod for your SMF forum, it allows your users to turn t
 - Users individual settings, each user defines her/his own settings.
 - Mentions for status and comments.
 - Notifications for several features.
-- General wall page for displaying your buddies latest activity.
+- General wall page for displaying your buddie's latest activity.
 
 The mod uses the following scripts:
 
-- [Vue] (https://vuejs.org/)
-- [Axios] (https://github.com/axios/axios)
-- [moment.js] (https://momentjs.com/)
-- [vue-toast-notification] (https://github.com/ankurk91/vue-toast-notification)
-- [DOMPurify] (https://github.com/cure53/DOMPurify)
-- [Sun editor] (http://suneditor.com/)
+- [Vue](https://vuejs.org/)
+- [Axios](https://github.com/axios/axios)
+- [moment.js](https://momentjs.com/)
+- [vue-toast-notification](https://github.com/ankurk91/vue-toast-notification)
+- [DOMPurify](https://github.com/cure53/DOMPurify)
+- [Sun editor](http://suneditor.com/)
 
 ##### Tests
 ```bash
 composer test
 ```
 
-##### Generate a SMF package
+##### Generate an optimized SMF package
 ```bash
 composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --no-suggest --optimize-autoloader &&
 zip -r Breeze breezeVendor/ Sources/ Themes/ tasks/ hooks.php install.php License package-info.xml README.txt remove.php
