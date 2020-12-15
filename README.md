@@ -37,7 +37,7 @@ composer test
 ```bash
 composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --no-suggest --optimize-autoloader &&
 zip -r Breeze breezeVendor/ Sources/ Themes/ tasks/ hooks.php install.php License package-info.xml README.txt remove.php
-``` 
+```
 
 ###### Notes:
 
