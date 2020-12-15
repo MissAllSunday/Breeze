@@ -29,7 +29,7 @@ jobs:
         run: |
           composer install --no-progress --prefer-dist --optimize-autoloader
       - name: Test with phpunit
-        run: composer phpunit --coverage-text
+        run: composer phpunit
 
   static-analysis:
     name: Static Analysis
@@ -55,4 +55,4 @@ jobs:
       - name: Install dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
       - name: Static Analysis using PHPStan
-        run: phpstan analyse --no-progress src/
+        run:  composer phpstan
