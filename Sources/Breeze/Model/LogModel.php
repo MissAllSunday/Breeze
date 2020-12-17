@@ -9,7 +9,7 @@ use Breeze\Util\Json;
 
 class LogModel extends BaseModel implements LogModelInterface
 {
-	function insert(array $data, int $id = 0): int
+	public function insert(array $data, int $id = 0): int
 	{
 		if (empty($data)) {
 			return 0;
@@ -33,7 +33,7 @@ class LogModel extends BaseModel implements LogModelInterface
 		return $this->getInsertedId();
 	}
 
-	function update(array $data, int $id = 0): array
+	public function update(array $data, int $id = 0): array
 	{
 		return [];
 	}
@@ -78,17 +78,17 @@ class LogModel extends BaseModel implements LogModelInterface
 		return $logs;
 	}
 
-	function getTableName(): string
+	public function getTableName(): string
 	{
 		return LogEntity::TABLE;
 	}
 
-	function getColumnId(): string
+	public function getColumnId(): string
 	{
 		return LogEntity::COLUMN_ID;
 	}
 
-	function getColumns(): array
+	public function getColumns(): array
 	{
 		return LogEntity::getColumns();
 	}

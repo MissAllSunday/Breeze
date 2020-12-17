@@ -8,7 +8,7 @@ use Breeze\Entity\NotificationEntity as NotificationEntity;
 
 class NotificationModel extends BaseModel implements NotificationModelInterface
 {
-	function insert(array $data, int $id = 0): int
+	public function insert(array $data, int $id = 0): int
 	{
 		if (empty($data)) {
 			return 0;
@@ -29,22 +29,22 @@ class NotificationModel extends BaseModel implements NotificationModelInterface
 		return $this->getInsertedId();
 	}
 
-	function update(array $data, int $id = 0): array
+	public function update(array $data, int $id = 0): array
 	{
 		return [];
 	}
 
-	function getTableName(): string
+	public function getTableName(): string
 	{
 		return NotificationEntity::TABLE;
 	}
 
-	function getColumnId(): string
+	public function getColumnId(): string
 	{
 		return NotificationEntity::COLUMN_ID;
 	}
 
-	function getColumns(): array
+	public function getColumns(): array
 	{
 		return NotificationEntity::getColumns();
 	}

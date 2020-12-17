@@ -120,7 +120,8 @@ class MoodService extends BaseService implements MoodServiceInterface
 				],
 			],
 			'form' => [
-				'href' => $scriptUrl . '?action=admin;area=' . AdminService::AREA . ';sa=' . $listParams['id'] . ';delete',
+				'href' => $scriptUrl .
+					'?action=admin;area=' . AdminService::AREA . ';sa=' . $listParams['id'] . ';delete',
 			],
 			'additional_rows' => [
 				[

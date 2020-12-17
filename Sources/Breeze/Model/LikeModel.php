@@ -8,19 +8,19 @@ use Breeze\Entity\LikeEntity as LikeEntity;
 
 class LikeModel extends BaseModel implements LikeModelInterface
 {
-	function insert(array $data, int $id = 0): int
+	public function insert(array $data, int $id = 0): int
 	{
 		return 1;
 	}
 
-	function update(array $data, int $idContent = 0): array
+	public function update(array $data, int $id = 0): array
 	{
 		$this->dbClient->update(
 			LikeEntity::TABLE,
 			'SET likes = {int:num_likes}
 			WHERE ' . LikeEntity::COLUMN_CONTENT_ID . ' = {int:idContent}',
 			[
-				'idContent' => $idContent,
+				'idContent' => $id,
 			]
 		);
 
@@ -77,17 +77,17 @@ class LikeModel extends BaseModel implements LikeModelInterface
 		return $likes;
 	}
 
-	function getTableName(): string
+	public function getTableName(): string
 	{
 		return LikeEntity::TABLE;
 	}
 
-	function getColumnId(): string
+	public function getColumnId(): string
 	{
 		return LikeEntity::COLUMN_ID_MEMBER;
 	}
 
-	function getColumns(): array
+	public function getColumns(): array
 	{
 		return LikeEntity::getColumns();
 	}

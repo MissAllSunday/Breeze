@@ -11,9 +11,9 @@ use Breeze\Util\Json;
 
 class UserModel extends BaseModel implements UserModelInterface
 {
-	function insert(array $userSettings, int $userId = 0): int
+	public function insert(array $data, int $id = 0): int
 	{
-		if (empty($userSettings)) {
+		if (empty($data)) {
 			return 0;
 		}
 
@@ -24,14 +24,14 @@ class UserModel extends BaseModel implements UserModelInterface
 				OptionsEntity::COLUMN_VARIABLE => 'string',
 				OptionsEntity::COLUMN_VALUE => 'string',
 			],
-			$userSettings,
+			$data,
 			OptionsEntity::COLUMN_MEMBER_ID
 		);
 
 		return 1;
 	}
 
-	function update(array $data, int $userId = 0): array
+	public function update(array $data, int $userId = 0): array
 	{
 		return [];
 	}
@@ -97,10 +97,10 @@ class UserModel extends BaseModel implements UserModelInterface
 		$userData = [];
 
 		$result = $this->dbClient->query(
-			'SELECT op.' . (implode(', op.', OptionsEntity::getColumns())) . ', 
+			'SELECT op.' . (implode(', op.', OptionsEntity::getColumns())) . ',
 			mem.' . (implode(', mem.', MemberEntity::getColumns())) . '
 			FROM {db_prefix}' . OptionsEntity::TABLE . ' AS op
-				LEFT JOIN {db_prefix}' . MemberEntity::TABLE . ' 
+				LEFT JOIN {db_prefix}' . MemberEntity::TABLE . '
 				AS mem ON (mem.' . MemberEntity::COLUMN_ID . ' = {int:userId})
 			WHERE ' . MemberEntity::COLUMN_ID . ' = {int:userId}',
 			[
@@ -196,17 +196,17 @@ class UserModel extends BaseModel implements UserModelInterface
 		return $boards;
 	}
 
-	function getTableName(): string
+	public function getTableName(): string
 	{
 		return MemberEntity::TABLE;
 	}
 
-	function getColumnId(): string
+	public function getColumnId(): string
 	{
 		return MemberEntity::COLUMN_ID;
 	}
 
-	function getColumns(): array
+	public function getColumns(): array
 	{
 		return MemberEntity::getColumns();
 	}

@@ -9,7 +9,7 @@ use Breeze\Entity\AlertEntity as AlertEntity;
 
 class AlertModel extends BaseModel implements AlertModelInterface
 {
-	function insert(array $data, int $id = 0): int
+	public function insert(array $data, int $id = 0): int
 	{
 		if (empty($data)) {
 			return 0;
@@ -34,7 +34,7 @@ class AlertModel extends BaseModel implements AlertModelInterface
 		return $this->getInsertedId();
 	}
 
-	function update(array $data, int $alertId = 0): array
+	public function update(array $data, int $alertId = 0): array
 	{
 		if (empty($data) || empty($alertId)) {
 			return [];
@@ -95,17 +95,17 @@ class AlertModel extends BaseModel implements AlertModelInterface
 		return (bool) $result;
 	}
 
-	function getTableName(): string
+	public function getTableName(): string
 	{
 		return AlertEntity::TABLE;
 	}
 
-	function getColumnId(): string
+	public function getColumnId(): string
 	{
 		return AlertEntity::COLUMN_ID;
 	}
 
-	function getColumns(): array
+	public function getColumns(): array
 	{
 		return AlertEntity::getColumns();
 	}

@@ -20,7 +20,7 @@ abstract class BaseModel implements BaseModelInterface
 		return $this->dbClient->getInsertedId($this->getTableName(), $this->getColumnId());
 	}
 
-	function getLastValue(): array
+	public function getLastValue(): array
 	{
 		$items = [];
 

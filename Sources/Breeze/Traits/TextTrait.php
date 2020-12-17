@@ -155,7 +155,8 @@ trait TextTrait
 			if (1 <= $timeCount) {
 				$timeCountRounded = round($timeCount);
 
-				$timeElapsed = $timeCountRounded . ' ' . $timeString . (1 < $timeCountRounded ? 's ' : ' ') . $txt['time_ago'];
+				$timeElapsed = $timeCountRounded . ' ' . $timeString .
+					(1 < $timeCountRounded ? 's ' : ' ') . $txt['time_ago'];
 				break;
 			}
 		}

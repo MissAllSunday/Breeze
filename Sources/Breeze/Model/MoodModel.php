@@ -8,7 +8,7 @@ use Breeze\Entity\MoodEntity as MoodEntity;
 
 class MoodModel extends BaseModel implements MoodModelInterface
 {
-	function insert(array $data, int $id = 0): int
+	public function insert(array $data, int $id = 0): int
 	{
 		if (empty($data)) {
 			return 0;
@@ -23,7 +23,7 @@ class MoodModel extends BaseModel implements MoodModelInterface
 		return $this->getInsertedId();
 	}
 
-	function update(array $data, int $id = 0): array
+	public function update(array $data, int $id = 0): array
 	{
 		if (empty($data)) {
 			return [];
@@ -31,9 +31,9 @@ class MoodModel extends BaseModel implements MoodModelInterface
 
 		$this->dbClient->update(
 			MoodEntity::TABLE,
-			'SET 
-				' . MoodEntity::COLUMN_EMOJI . ' = {string:name}, 
-				' . MoodEntity::COLUMN_DESC . ' = {string:description}, 
+			'SET
+				' . MoodEntity::COLUMN_EMOJI . ' = {string:name},
+				' . MoodEntity::COLUMN_DESC . ' = {string:description},
 				' . MoodEntity::COLUMN_STATUS . ' = {string:enable}
 				WHERE ' . MoodEntity::COLUMN_ID . ' = {int:moods_id}',
 			$data
@@ -108,17 +108,17 @@ class MoodModel extends BaseModel implements MoodModelInterface
 		return $moods;
 	}
 
-	function getTableName(): string
+	public function getTableName(): string
 	{
 		return MoodEntity::TABLE;
 	}
 
-	function getColumnId(): string
+	public function getColumnId(): string
 	{
 		return MoodEntity::COLUMN_ID;
 	}
 
-	function getColumns(): array
+	public function getColumns(): array
 	{
 		return MoodEntity::getColumns();
 	}

@@ -22,10 +22,6 @@ use Breeze\Service\UserService;
 use Breeze\Traits\TextTrait;
 use League\Container\Container as Container;
 
-if (!defined('SMF')) {
-	die('No direct access...');
-}
-
 class Breeze
 {
 	use TextTrait;

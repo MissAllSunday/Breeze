@@ -16,27 +16,27 @@ class MentionModel extends BaseModel implements MentionModelInterface
 		];
 	}
 
-	function insert(array $data, int $id = 0): int
+	public function insert(array $data, int $id = 0): int
 	{
 		return 1;
 	}
 
-	function update(array $data, int $id = 0): array
+	public function update(array $data, int $id = 0): array
 	{
 		return [];
 	}
 
-	function getTableName(): string
+	public function getTableName(): string
 	{
 		return MentionEntity::TABLE;
 	}
 
-	function getColumnId(): string
+	public function getColumnId(): string
 	{
 		return MentionEntity::COLUMN_CONTENT_ID;
 	}
 
-	function getColumns(): array
+	public function getColumns(): array
 	{
 		return MentionEntity::getColumns();
 	}

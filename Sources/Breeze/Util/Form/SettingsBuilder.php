@@ -18,8 +18,9 @@ class SettingsBuilder implements SettingsBuilderInterface
 	public function getFormatters(): array
 	{
 		$formatters = [];
+		$directoryPath = __DIR__ . DIRECTORY_SEPARATOR . ValueFormatter::FORMATTER_DIR;
 
-		foreach (Folder::getFilesInFolder(__DIR__ . DIRECTORY_SEPARATOR . ValueFormatter::FORMATTER_DIR) as $formatterFile) {
+		foreach (Folder::getFilesInFolder($directoryPath) as $formatterFile) {
 			$formatterFileInfo = pathinfo($formatterFile, PATHINFO_FILENAME);
 
 			$formatterKey = strtolower(str_replace(

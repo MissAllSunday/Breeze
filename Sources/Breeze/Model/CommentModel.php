@@ -8,7 +8,7 @@ use Breeze\Entity\CommentEntity as CommentEntity;
 
 class CommentModel extends BaseModel implements CommentModelInterface
 {
-	function insert(array $data, int $commentID = 0): int
+	public function insert(array $data, int $id = 0): int
 	{
 		if (empty($data)) {
 			return 0;
