@@ -104,12 +104,8 @@ trait TextTrait
 		return round($bytes, 4) . ($showUnits ? ' ' . $units[$pow] : '');
 	}
 
-	public function truncateText(string $string, int $limit = 30, string $break = ' ', string $pad = '...'): string
+	public function truncateText(string $string = '', int $limit = 30, string $break = ' ', string $pad = '...'): string
 	{
-		if (empty($string)) {
-			return '';
-		}
-
 		if (strlen($string) <= $limit) {
 			return $string;
 		}
