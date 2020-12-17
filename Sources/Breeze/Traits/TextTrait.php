@@ -81,10 +81,6 @@ trait TextTrait
 
 	public function normalizeString(string $string = ''): string
 	{
-		if (empty($string)) {
-			return '';
-		}
-
 		$string = htmlentities($string, ENT_QUOTES);
 
 		$string = preg_replace(
