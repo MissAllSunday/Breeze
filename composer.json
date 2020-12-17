@@ -38,7 +38,10 @@
         }
     },
     "scripts": {
-        "lint": "php-cs-fixer fix --verbose --show-progress=estimating",
+        "lint": [
+            "php-cs-fixer fix --verbose --show-progress=estimating",
+            "phpcbf -q --standard=./phpcs.xml --tab-width=4 ./Sources"
+        ],
         "lint:check": [
             "php-cs-fixer fix --dry-run --verbose --show-progress=estimating"
         ],
