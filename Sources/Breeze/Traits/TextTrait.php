@@ -52,12 +52,8 @@ trait TextTrait
 		return str_replace($toFind, $replaceWith, $text);
 	}
 
-	public function commaSeparated(string $dirtyString, string $type = 'alphanumeric'): string
+	public function commaSeparated(string $dirtyString = '', string $type = 'alphanumeric'): string
 	{
-		if (!is_string($dirtyString)) {
-			return '';
-		}
-
 		switch ($type) {
 			case 'numeric':
 				$t = '\d';
