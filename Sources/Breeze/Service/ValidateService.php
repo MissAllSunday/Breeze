@@ -21,8 +21,9 @@ class ValidateService extends BaseService implements ServiceInterface
 		];
 
 		// NO! you don't have permission to do nothing...
-		if ($user_info['is_guest'] || !$userPoster || !$profileOwner || empty($type))
+		if ($user_info['is_guest'] || !$userPoster || !$profileOwner || empty($type)) {
 			return $perm;
+		}
 
 		// Profile owner?
 		$isProfileOwner = $profileOwner == $user_info['id'];
@@ -31,14 +32,10 @@ class ValidateService extends BaseService implements ServiceInterface
 		$isPosterOwner = $userPoster == $user_info['id'];
 
 		// Lets check the posing bit first. Profile owner can always post.
-		if ($isProfileOwner)
-		{
+		if ($isProfileOwner) {
 			$perm['post'] = true;
 			$perm['postComments'] = true;
-		}
-
-		else
-		{
+		} else {
 			$perm['post'] = Permissions::isAllowedTo('breeze_post' . $type);
 			$perm['postComments'] = Permissions::isAllowedTo('breeze_postComments');
 		}
@@ -47,16 +44,19 @@ class ValidateService extends BaseService implements ServiceInterface
 		$allowed = [];
 
 		// Your own data?
-		if ($isPosterOwner && Permissions::isAllowedTo('breeze_deleteOwn' . $type))
+		if ($isPosterOwner && Permissions::isAllowedTo('breeze_deleteOwn' . $type)) {
 			$allowed[] = 1;
+		}
 
 		// Nope? then is this your own profile?
-		if ($isProfileOwner && Permissions::isAllowedTo('breeze_deleteProfile' . $type))
+		if ($isProfileOwner && Permissions::isAllowedTo('breeze_deleteProfile' . $type)) {
 			$allowed[] = 1;
+		}
 
 		// No poster and no profile owner, must be an admin/mod or something.
-		if (Permissions::isAllowedTo('breeze_delete' . $type))
+		if (Permissions::isAllowedTo('breeze_delete' . $type)) {
 			$allowed[] = 1;
+		}
 
 		$perm['delete'] = in_array(1, $allowed);
 

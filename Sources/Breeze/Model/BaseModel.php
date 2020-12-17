@@ -36,8 +36,9 @@ abstract class BaseModel implements BaseModelInterface
 			])
 		);
 
-		while ($row = $this->dbClient->fetchAssoc($result))
+		while ($row = $this->dbClient->fetchAssoc($result)) {
 			$items = $row;
+		}
 
 		$this->dbClient->freeResult($result);
 
@@ -46,8 +47,9 @@ abstract class BaseModel implements BaseModelInterface
 
 	public function delete(array $ids = []): bool
 	{
-		if (empty($ids))
+		if (empty($ids)) {
 			return false;
+		}
 
 		return $this->dbClient->delete(
 			$this->getTableName(),
@@ -84,8 +86,9 @@ abstract class BaseModel implements BaseModelInterface
 			'maxIndex' => 0,
 		]), $queryParams);
 
-		if (isset($queryParams['columnName']) && $this->isValidColumn($queryParams['columnName']))
+		if (isset($queryParams['columnName']) && $this->isValidColumn($queryParams['columnName'])) {
 			$whereString = 'WHERE {raw:columnName} IN ({array_int:ids})';
+		}
 
 		$request = $this->dbClient->query(
 			'
@@ -96,8 +99,9 @@ abstract class BaseModel implements BaseModelInterface
 			$queryParams
 		);
 
-		while ($row = $this->dbClient->fetchAssoc($request))
+		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$items[$row[$this->getColumnId()]] = $row;
+		}
 
 		$this->dbClient->freeResult($request);
 

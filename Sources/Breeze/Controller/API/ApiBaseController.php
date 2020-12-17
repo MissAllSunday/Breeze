@@ -33,8 +33,9 @@ abstract class ApiBaseController extends BaseController
 
 		$this->gateway->setValidator($validator);
 
-		if (!$this->gateway->isValid())
+		if (!$this->gateway->isValid()) {
 			$this->print($this->gateway->response());
+		}
 
 		$this->subActionCall();
 	}
@@ -44,5 +45,5 @@ abstract class ApiBaseController extends BaseController
 		smf_serverResponse(Json::encode($responseData));
 	}
 
-	public abstract function setValidator(): ValidateDataInterface;
+	abstract public function setValidator(): ValidateDataInterface;
 }

@@ -38,17 +38,17 @@ abstract class ValidateData
 		$this->userService = $userService;
 	}
 
-	public abstract function getParams(): array;
+	abstract public function getParams(): array;
 
-	public abstract function getInts(): array;
+	abstract public function getInts(): array;
 
-	public abstract function getStrings(): array;
+	abstract public function getStrings(): array;
 
-	public abstract function getUserIdsNames(): array;
+	abstract public function getUserIdsNames(): array;
 
-	public abstract function getPosterId(): int;
+	abstract public function getPosterId(): int;
 
-	public abstract function successKeyString(): string;
+	abstract public function successKeyString(): string;
 
 	public function getData(): array
 	{
@@ -80,9 +80,11 @@ abstract class ValidateData
 	 */
 	public function isInt(): void
 	{
-		foreach ($this->getInts() as $integerValueName)
-			if (!is_int($this->getData()[$integerValueName]))
+		foreach ($this->getInts() as $integerValueName) {
+			if (!is_int($this->getData()[$integerValueName])) {
 				throw new ValidateDataException('malformed_data');
+			}
+		}
 	}
 
 	/**
@@ -90,9 +92,11 @@ abstract class ValidateData
 	 */
 	public function isString(): void
 	{
-		foreach ($this->getStrings() as $stringValueName)
-			if (!is_string($this->getData()[$stringValueName]))
+		foreach ($this->getStrings() as $stringValueName) {
+			if (!is_string($this->getData()[$stringValueName])) {
 				throw new ValidateDataException('malformed_data');
+			}
+		}
 	}
 
 	/**
@@ -101,16 +105,17 @@ abstract class ValidateData
 	public function areValidUsers(): void
 	{
 		$usersIds = array_map(
-			function ($intName){
-			return $this->data[$intName];
-		},
+			function ($intName) {
+				return $this->data[$intName];
+			},
 			$this->getUserIdsNames()
 		);
 
 		$loadedUsers = $this->userService->getUsersToLoad($usersIds);
 
-		if (array_diff($usersIds, $loadedUsers))
+		if (array_diff($usersIds, $loadedUsers)) {
 			throw new ValidateDataException('invalid_users');
+		}
 	}
 
 	/**
@@ -125,20 +130,23 @@ abstract class ValidateData
 
 		$floodData = $this->getPersistenceValue($floodKeyName);
 
-		if (empty($floodData))
+		if (empty($floodData)) {
 			$floodData = [
 				'time' => time() + $seconds,
 				'msgCount' => 0,
 			];
+		}
 
 		$floodData['msgCount']++;
 
 		// Chatty one huh?
-		if ($floodData['msgCount'] >= $messages && time() <= $floodData['time'])
+		if ($floodData['msgCount'] >= $messages && time() <= $floodData['time']) {
 			throw new ValidateDataException('flood');
+		}
 
-		if (time() >= $floodData['time'])
+		if (time() >= $floodData['time']) {
 			$this->unsetPersistenceValue($floodKeyName);
+		}
 	}
 
 	/**
@@ -146,8 +154,9 @@ abstract class ValidateData
 	 */
 	public function compare(): void
 	{
-		if (!empty(array_diff_key($this->getParams(), $this->getData())))
+		if (!empty(array_diff_key($this->getParams(), $this->getData()))) {
 			throw new ValidateDataException('incomplete_data');
+		}
 	}
 
 	public static function getNameSpace(): string

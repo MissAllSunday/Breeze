@@ -33,8 +33,7 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 		StatusServiceInterface $statusService,
 		UserServiceInterface $userService,
 		ValidateGatewayInterface $gateway
-	)
-	{
+	) {
 		$this->statusService = $statusService;
 		$this->userService = $userService;
 
@@ -65,7 +64,6 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 			$statusByProfile = $this->statusService->getByProfile($data[StatusEntity::COLUMN_OWNER_ID], $start);
 
 			$this->print($statusByProfile);
-
 		} catch (InvalidStatusException $e) {
 			$this->print([
 				'type' => ValidateGateway::ERROR_TYPE,
@@ -98,7 +96,9 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 		));
 	}
 
-	public function render(string $subTemplate, array $params): void {}
+	public function render(string $subTemplate, array $params): void
+	{
+	}
 
 	public function getMainAction(): string
 	{

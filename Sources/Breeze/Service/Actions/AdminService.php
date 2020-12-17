@@ -36,8 +36,9 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 		$this->setLanguage(Breeze::NAME . self::IDENTIFIER);
 		$this->setTemplate(Breeze::NAME . self::IDENTIFIER);
 
-		if (!$this->isEnable(SettingsEntity::ENABLE_MOOD))
+		if (!$this->isEnable(SettingsEntity::ENABLE_MOOD)) {
 			$subActions = array_diff($subActions, ['moodList']);
+		}
 
 		loadGeneralSettingParameters(array_combine($subActions, $subActions), 'general');
 
@@ -52,10 +53,10 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 		string $subActionName,
 		array $templateParams = [],
 		string $smfTemplate = ''
-	): void
-	{
-		if (empty($subActionName))
+	): void {
+		if (empty($subActionName)) {
 			return;
+		}
 
 		$context = $this->global('context');
 		$scriptUrl = $this->global('scripturl');
@@ -64,11 +65,13 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 			AdminService::POST_URL . $subActionName . ';' .
 			$context['session_var'] . '=' . $context['session_id'] . ';save';
 
-		if (!isset($context[Breeze::NAME]))
+		if (!isset($context[Breeze::NAME])) {
 			$context[Breeze::NAME] = [];
+		}
 
-		if (!empty($templateParams))
+		if (!empty($templateParams)) {
 			$context = array_merge($context, $templateParams);
+		}
 
 		$context['page_title'] = $this->getText($this->getActionName() . '_' . $subActionName . '_title');
 		$context['sub_template'] = !empty($smfTemplate) ?
@@ -93,8 +96,9 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 			Breeze::PATTERN . self::AREA . '_settings_title'
 		]);
 
-		if ($save)
+		if ($save) {
 			$this->saveConfigVars();
+		}
 
 		prepareDBSettingContext($this->configVars);
 	}
@@ -107,16 +111,18 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 			['title', Breeze::PATTERN . self::AREA . '_permissions_title'],
 		];
 
-		foreach (Permissions::ALL_PERMISSIONS as $permission)
+		foreach (Permissions::ALL_PERMISSIONS as $permission) {
 			$this->configVars[] = [
 				'permissions',
 				'breeze_' . $permission,
 				0,
 				$this->getSmfText('permissionname_breeze_' . $permission)
 			];
+		}
 
-		if ($save)
+		if ($save) {
 			$this->saveConfigVars();
+		}
 
 		prepareDBSettingContext($this->configVars);
 	}
@@ -129,13 +135,15 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 
 	public function isEnableFeature(string $featureName = '', string $redirectUrl = ''): bool
 	{
-		if (empty($featureName))
+		if (empty($featureName)) {
 			return false;
+		}
 
 		$feature = $this->isEnable($featureName);
 
-		if (!$feature && !empty($redirectUrl))
+		if (!$feature && !empty($redirectUrl)) {
 			$this->redirect($redirectUrl);
+		}
 
 		return $feature;
 	}

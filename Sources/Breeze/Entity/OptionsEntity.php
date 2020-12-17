@@ -13,7 +13,7 @@ class OptionsEntity extends BaseEntity implements BaseEntityInterface
 	public const COLUMN_VALUE = 'value';
 	public const CACHE_NAME = 'user_settings_%d';
 
- public static function getColumns(): array
+	public static function getColumns(): array
 	{
 		return [
 			self::COLUMN_MEMBER_ID,

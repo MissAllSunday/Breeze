@@ -33,8 +33,7 @@ class WallController extends BaseController implements ControllerInterface
 	public function __construct(
 		WallServiceInterface $wallService,
 		UserServiceInterface $userService
-	)
-	{
+	) {
 		$this->wallService = $wallService;
 		$this->userService = $userService;
 	}
@@ -52,8 +51,9 @@ class WallController extends BaseController implements ControllerInterface
 		$userSettings = $this->userService->getUserSettings($this->userId);
 		$forceWall = $this->getSetting(SettingsEntity::FORCE_WALL);
 
-		if (empty($userSettings[UserSettingsEntity::WALL]) && empty($forceWall))
+		if (empty($userSettings[UserSettingsEntity::WALL]) && empty($forceWall)) {
 			$this->userService->redirect($scriptUrl . sprintf(UserService::LEGACY_URL, $this->userId));
+		}
 
 		$this->render(__FUNCTION__, [
 			'userSettings' => $userSettings,

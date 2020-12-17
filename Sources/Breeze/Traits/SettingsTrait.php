@@ -13,8 +13,9 @@ trait SettingsTrait
 	{
 		$modSettings = $this->global('modSettings');
 
-		if (empty($settingName))
+		if (empty($settingName)) {
 			return $fallBack;
+		}
 
 		return $this->isEnable($settingName) ? $modSettings[Breeze::PATTERN . $settingName] : $fallBack;
 	}
@@ -30,8 +31,9 @@ trait SettingsTrait
 	{
 		$modSettings = $this->global('modSettings');
 
-		if (empty($settingName))
+		if (empty($settingName)) {
 			return $fallBack;
+		}
 
 		return !empty($modSettings[$settingName]) ? $modSettings[$settingName] : $fallBack;
 	}
@@ -48,8 +50,9 @@ trait SettingsTrait
 
 	public function requireOnce(string $fileName, string $dir = ''): void
 	{
-		if (empty($fileName))
+		if (empty($fileName)) {
 			return;
+		}
 
 		require_once($this->global('sourcedir') . '/' . $fileName . '.php');
 	}

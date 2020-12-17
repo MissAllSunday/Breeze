@@ -13,19 +13,21 @@ abstract class ActionsBaseService extends BaseService implements ActionsServiceI
 		string $subActionName,
 		array $templateParams = [],
 		string $smfTemplate = ''
-	): void
-	{
-		if (empty($subActionName))
+	): void {
+		if (empty($subActionName)) {
 			return;
+		}
 
 		$context = $this->global('context');
 		$scriptUrl = $this->global('scripturl');
 
-		if (!isset($context[Breeze::NAME]))
+		if (!isset($context[Breeze::NAME])) {
 			$context[Breeze::NAME] = [];
+		}
 
-		if (!empty($templateParams))
+		if (!empty($templateParams)) {
 			$context = array_merge($context, $templateParams);
+		}
 
 		$context['page_title'] = $this->getText($this->getActionName() . '_' . $subActionName . '_title');
 
@@ -41,7 +43,7 @@ abstract class ActionsBaseService extends BaseService implements ActionsServiceI
 		$this->setGlobal('context', $context);
 	}
 
-	public abstract function init(array $subActions):void;
+	abstract public function init(array $subActions):void;
 
-	public abstract function getActionName(): string;
+	abstract public function getActionName(): string;
 }

@@ -35,8 +35,7 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 		StatusServiceInterface $statusService,
 		UserServiceInterface $userService,
 		ValidateGatewayInterface $gateway
-	)
-	{
+	) {
 		$this->commentService = $commentService;
 		$this->userService = $userService;
 		$this->statusService = $statusService;
@@ -84,7 +83,9 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 		}
 	}
 
-	public function render(string $subTemplate, array $params): void {}
+	public function render(string $subTemplate, array $params): void
+	{
+	}
 
 	public function getMainAction(): string
 	{

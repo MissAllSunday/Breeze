@@ -39,8 +39,7 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 		UserServiceInterface $userService,
 		StatusServiceInterface $statusService,
 		CommentServiceInterface $commentService
-	)
-	{
+	) {
 		$this->commentService = $commentService;
 		$this->statusService = $statusService;
 
@@ -65,11 +64,13 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 		$currentUserInfo = $this->userService->getCurrentUserInfo();
 
 		if ($currentUserInfo['id'] === $this->data[CommentEntity::COLUMN_POSTER_ID] &&
-			!Permissions::isAllowedTo(Permissions::DELETE_OWN_COMMENTS))
+			!Permissions::isAllowedTo(Permissions::DELETE_OWN_COMMENTS)) {
 			throw new ValidateDataException('deleteComments');
+		}
 
-		if (!Permissions::isAllowedTo(Permissions::DELETE_COMMENTS))
+		if (!Permissions::isAllowedTo(Permissions::DELETE_COMMENTS)) {
 			throw new ValidateDataException('deleteComments');
+		}
 	}
 
 	/**
@@ -86,14 +87,16 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	 */
 	public function validUser(): void
 	{
-		if (!$this->comment)
+		if (!$this->comment) {
 			$this->comment = $this->commentService->getById($this->data[CommentEntity::COLUMN_ID]);
+		}
 
 		if (!isset($this->data[CommentEntity::COLUMN_POSTER_ID]) ||
 			($this->comment['data'][$this->data[CommentEntity::COLUMN_ID]][CommentEntity::COLUMN_POSTER_ID]
 			!==
-			$this->data[CommentEntity::COLUMN_POSTER_ID]))
+			$this->data[CommentEntity::COLUMN_POSTER_ID])) {
 			throw new ValidateDataException('wrong_values');
+		}
 	}
 
 	public function getInts(): array

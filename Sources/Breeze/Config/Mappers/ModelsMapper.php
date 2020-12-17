@@ -15,7 +15,6 @@ use Breeze\Model\NotificationModel;
 use Breeze\Model\StatusModel;
 use Breeze\Model\UserModel;
 
-
 return [
 	'model.mood' => [
 		'class' => MoodModel::class,

@@ -32,8 +32,7 @@ class PostComment extends ValidateData implements ValidateDataInterface
 		UserServiceInterface $userService,
 		StatusServiceInterface $statusService,
 		CommentServiceInterface $commentService
-	)
-	{
+	) {
 		$this->commentService = $commentService;
 		$this->statusService = $statusService;
 
@@ -64,8 +63,9 @@ class PostComment extends ValidateData implements ValidateDataInterface
 	 */
 	public function permissions(): void
 	{
-		if (!Permissions::isAllowedTo(Permissions::POST_COMMENTS))
+		if (!Permissions::isAllowedTo(Permissions::POST_COMMENTS)) {
 			throw new ValidateDataException('postComments');
+		}
 	}
 
 	/**

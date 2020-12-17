@@ -10,7 +10,7 @@ use Breeze\Repository\InvalidCommentException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\ValidateGateway;
 
-class CommentService  extends BaseService  implements CommentServiceInterface
+class CommentService extends BaseService implements CommentServiceInterface
 {
 	private StatusRepositoryInterface $statusRepository;
 
@@ -22,8 +22,7 @@ class CommentService  extends BaseService  implements CommentServiceInterface
 		UserServiceInterface $userService,
 		StatusRepositoryInterface $statusRepository,
 		CommentRepositoryInterface $commentRepository
-	)
-	{
+	) {
 		$this->statusRepository = $statusRepository;
 		$this->commentRepository = $commentRepository;
 		$this->userService = $userService;

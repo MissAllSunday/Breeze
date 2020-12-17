@@ -17,11 +17,11 @@ abstract class BaseController implements ControllerInterface
 		$subActions = $this->getSubActions();
 		$subAction = $this->getRequest('sa', $this->getMainAction());
 
-		if (in_array($subAction, $subActions))
+		if (in_array($subAction, $subActions)) {
 			$this->$subAction();
-
-		else
+		} else {
 			$this->{$this->getMainAction()}();
+		}
 	}
 
 	public function error(string $errorTextKey, string $templateName = ''): void
@@ -31,7 +31,7 @@ abstract class BaseController implements ControllerInterface
 		]);
 	}
 
-	public abstract function getSubActions(): array;
+	abstract public function getSubActions(): array;
 
-	public abstract function getMainAction(): string;
+	abstract public function getMainAction(): string;
 }

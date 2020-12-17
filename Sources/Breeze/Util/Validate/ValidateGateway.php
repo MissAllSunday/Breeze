@@ -51,10 +51,10 @@ class ValidateGateway implements ValidateGatewayInterface
 
 	public function isValid(): bool
 	{
-		foreach ($this->validator->getSteps() as $step)
-		{
-			if (!method_exists($this->validator, $step))
+		foreach ($this->validator->getSteps() as $step) {
+			if (!method_exists($this->validator, $step)) {
 				continue;
+			}
 
 			try {
 				$this->validator->{$step}();
@@ -68,8 +68,7 @@ class ValidateGateway implements ValidateGatewayInterface
 				]);
 
 				return false;
-			}
-			catch (InvalidCommentException $e) {
+			} catch (InvalidCommentException $e) {
 				$this->setNotice([
 					'message' => sprintf(
 						$this->getText(self::DEFAULT_ERROR_KEY),
@@ -78,8 +77,7 @@ class ValidateGateway implements ValidateGatewayInterface
 				]);
 
 				return false;
-			}
-			catch (ValidateDataException $e) {
+			} catch (ValidateDataException $e) {
 				$this->setNotice([
 					'message' => sprintf(
 						$this->getText(self::DEFAULT_ERROR_KEY),

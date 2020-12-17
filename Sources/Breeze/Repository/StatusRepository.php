@@ -16,8 +16,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	public function __construct(
 		StatusModelInterface $statusModel,
 		CommentRepositoryInterface $commentRepository
-	)
-	{
+	) {
 		$this->statusModel = $statusModel;
 		$this->commentRepository = $commentRepository;
 	}
@@ -29,30 +28,31 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	{
 		$newStatusId = $this->statusModel->insert($data);
 
-		if (0 === $newStatusId)
+		if (0 === $newStatusId) {
 			throw new InvalidStatusException('error_save_status');
+		}
 
 		return $newStatusId;
 	}
 
 	public function getByProfile(int $profileOwnerId = 0, int $start = 0): array
-	 {
+	{
 		$statusByProfile = $this->getCache(__METHOD__ . $profileOwnerId);
 
-		if (empty($statusByProfile))
-		{
+		if (empty($statusByProfile)) {
 			$statusByProfile = $this->statusModel->getStatusByProfile([
 				'start' => $start,
 				'maxIndex' => $this->statusModel->getCount(),
 				'ids' => [$profileOwnerId]
 			]);
 
-			if (!empty(array_filter($statusByProfile)))
+			if (!empty(array_filter($statusByProfile))) {
 				$this->setCache(__METHOD__ . $profileOwnerId, $statusByProfile);
+			}
 		}
 
 		return $statusByProfile;
-	 }
+	}
 
 	/**
 	 * @throws InvalidStatusException
@@ -61,8 +61,9 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	{
 		$status = $this->statusModel->getById($statusId);
 
-		if (!$status)
+		if (!$status) {
 			throw new InvalidStatusException('error_no_status');
+		}
 
 		return $status;
 	}
@@ -75,8 +76,9 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	{
 		$this->commentRepository->deleteByStatusId($statusId);
 
-		if (!$this->statusModel->delete([$statusId]))
+		if (!$this->statusModel->delete([$statusId])) {
 			throw new InvalidStatusException('error_no_comment');
+		}
 
 		$this->setCache(self::class . '::getById' . $statusId, null);
 

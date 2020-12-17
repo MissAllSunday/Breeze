@@ -27,8 +27,9 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			CommentEntity::COLUMN_LIKES => 0,
 		]));
 
-		if (!$newCommentId)
+		if (!$newCommentId) {
 			throw new InvalidCommentException('error_save_comment');
+		}
 
 		return $newCommentId;
 	}
@@ -37,8 +38,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	{
 		$commentsByProfile = $this->getCache(__METHOD__ . $profileOwnerId);
 
-		if (empty($commentsByProfile))
-		{
+		if (empty($commentsByProfile)) {
 			$commentsByProfile = $this->commentModel->getByProfiles([$profileOwnerId]);
 
 			$this->setCache(__METHOD__ . $profileOwnerId, $commentsByProfile);
@@ -59,15 +59,15 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	{
 		$comment = $this->getCache(__FUNCTION__ . $commentId);
 
-		if (empty($comment))
-		{
+		if (empty($comment)) {
 			$comment = $this->commentModel->getByIds([$commentId]);
 
 			$this->setCache(__FUNCTION__ . $commentId, $comment);
 		}
 
-		if (empty($comment))
+		if (empty($comment)) {
 			throw new InvalidCommentException('error_no_comment');
+		}
 
 		return $comment;
 	}
@@ -79,8 +79,9 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	{
 		$wasDeleted = $this->commentModel->delete([$commentId]);
 
-		if (!$wasDeleted)
+		if (!$wasDeleted) {
 			throw new InvalidCommentException('error_no_comment');
+		}
 
 		$this->setCache(self::class . '::getById' . $commentId, null);
 
@@ -92,8 +93,9 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	 */
 	public function deleteByStatusId(int $statusId): bool
 	{
-		if (!$this->commentModel->deleteByStatusId([$statusId]))
+		if (!$this->commentModel->deleteByStatusId([$statusId])) {
 			throw new InvalidCommentException('error_no_comment');
+		}
 
 		return true;
 	}

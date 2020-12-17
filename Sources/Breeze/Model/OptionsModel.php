@@ -15,15 +15,16 @@ class OptionsModel extends BaseModel implements OptionsModelInterface
 
 	public function insert(array $data, int $userID = 0): int
 	{
-		if (empty($data) || empty($userId))
+		if (empty($data) || empty($userId)) {
 			return 0;
+		}
 
 		$inserts = [];
 
-		foreach ($data as $settingName => $settingValue)
-		{
-			if (in_array($settingName, self::SAVED_AS_JSON))
+		foreach ($data as $settingName => $settingValue) {
+			if (in_array($settingName, self::SAVED_AS_JSON)) {
 				$settingValue = Json::encode($settingValue);
+			}
 
 			$inserts[] = [$userID, $settingName, $settingValue];
 		}

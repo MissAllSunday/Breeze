@@ -28,8 +28,7 @@ class MoodService extends BaseService implements MoodServiceInterface
 		MoodRepositoryInterface $moodRepository,
 		UserRepositoryInterface $userRepository,
 		Components $components
-	)
-	{
+	) {
 		$this->moodRepository = $moodRepository;
 		$this->userRepository = $userRepository;
 		$this->components = $components;
@@ -37,8 +36,9 @@ class MoodService extends BaseService implements MoodServiceInterface
 
 	public function createMoodList(array $listParams, int $start = 0): void
 	{
-		if (empty($listParams))
+		if (empty($listParams)) {
 			return;
+		}
 
 		$this->setLanguage('ManageSmileys');
 		$numItemsPerPage = 10;
@@ -52,12 +52,12 @@ class MoodService extends BaseService implements MoodServiceInterface
 			'base_href' => '',
 			'items_per_page' => $numItemsPerPage,
 			'get_count' => [
-				'function' => function() use($maxIndex){
+				'function' => function () use ($maxIndex) {
 					return $maxIndex;
 				},
 			],
 			'get_items' => [
-				'function' => function() use($chunkedItems){
+				'function' => function () use ($chunkedItems) {
 					return $chunkedItems;
 				},
 			],
@@ -68,8 +68,7 @@ class MoodService extends BaseService implements MoodServiceInterface
 						'value' => $this->getText('mood_image'),
 					],
 					'data' => [
-						'function' => function ($rowData)
-						{
+						'function' => function ($rowData) {
 							return $rowData['emoji'];
 						},
 						'class' => 'centercol',
@@ -80,8 +79,7 @@ class MoodService extends BaseService implements MoodServiceInterface
 						'value' => $this->getText('mood_description'),
 					],
 					'data' => [
-						'function' => function ($rowData)
-						{
+						'function' => function ($rowData) {
 							return $rowData['description'];
 						},
 						'class' => 'centercol',
@@ -151,15 +149,17 @@ class MoodService extends BaseService implements MoodServiceInterface
 	public function displayMood(array &$data, int $userId): void
 	{
 		if (!$this->getSetting(SettingsEntity::MASTER) ||
-			!$this->getSetting(SettingsEntity::ENABLE_MOOD))
+			!$this->getSetting(SettingsEntity::ENABLE_MOOD)) {
 			return;
+		}
 
 		$activeMoods = $this->moodRepository->getActiveMoods();
 		$userSettings = $this->userRepository->getUserSettings($userId);
 
 		if (empty($userSettings[UserSettingsEntity::MOOD]) ||
-			empty($activeMoods[$userSettings[UserSettingsEntity::MOOD]]))
+			empty($activeMoods[$userSettings[UserSettingsEntity::MOOD]])) {
 			return;
+		}
 
 		$userMood = $userSettings[UserSettingsEntity::MOOD];
 
@@ -168,8 +168,9 @@ class MoodService extends BaseService implements MoodServiceInterface
 
 	public function moodProfile(int $memID, array $area): void
 	{
-		if (!$this->getSetting(SettingsEntity::MASTER))
+		if (!$this->getSetting(SettingsEntity::MASTER)) {
 			return;
+		}
 
 		$this->moodRepository->getMoodProfile($memID, $area);
 	}
@@ -195,19 +196,19 @@ class MoodService extends BaseService implements MoodServiceInterface
 	{
 		$errors = [];
 
-		if (!empty($moodId))
-		{
+		if (!empty($moodId)) {
 			$activeMoods = $this->moodRepository->getActiveMoods();
 
-			if (!isset($activeMoods[$moodId]))
+			if (!isset($activeMoods[$moodId])) {
 				$errors[] = $this->getText('mood_error_invalid');
+			}
 		}
 
-		if (!isset($mood[MoodEntity::COLUMN_EMOJI]) || empty($mood[MoodEntity::COLUMN_EMOJI]))
+		if (!isset($mood[MoodEntity::COLUMN_EMOJI]) || empty($mood[MoodEntity::COLUMN_EMOJI])) {
 			$errors[] = $this->getText('mood_error_empty_emoji');
+		}
 
-		if (!empty($errors))
-		{
+		if (!empty($errors)) {
 			$this->setMessage(sprintf(
 				$this->getText('mood_errors'),
 				implode(' ', $errors)
@@ -216,11 +217,11 @@ class MoodService extends BaseService implements MoodServiceInterface
 			return false;
 		}
 
-		if (!empty($moodId))
+		if (!empty($moodId)) {
 			$result = $this->moodRepository->getModel()->update($mood, $moodId);
-
-		else
+		} else {
 			$result = $this->moodRepository->getModel()->insert($mood);
+		}
 
 		return (bool) $result;
 	}

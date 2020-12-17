@@ -31,19 +31,20 @@ trait TextTrait
 	{
 		$context = $this->global('context');
 
-		if (empty($text))
+		if (empty($text)) {
 			return '';
+		}
 
-		if (empty($replacements) || !is_array($replacements))
+		if (empty($replacements) || !is_array($replacements)) {
 			return $text;
+		}
 
 		$session_var = ';' . $context['session_var'] . '=' . $context['session_id'];
 
 		$toFind = [];
 		$replaceWith = [];
 
-		foreach ($replacements as $find => $replace)
-		{
+		foreach ($replacements as $find => $replace) {
 			$toFind[] = '{' . $find . '}';
 			$replaceWith[] = $replace . ((false !== strpos($find, self::$session_token)) ? $session_var : '');
 		}
@@ -53,8 +54,9 @@ trait TextTrait
 
 	public function commaSeparated(string $dirtyString, string $type = 'alphanumeric'): string
 	{
-		if (!is_string($dirtyString))
+		if (!is_string($dirtyString)) {
 			return '';
+		}
 
 		switch ($type) {
 			case 'numeric':
@@ -83,8 +85,9 @@ trait TextTrait
 
 	public function normalizeString(string $string = ''): string
 	{
-		if (empty($string))
+		if (empty($string)) {
 			return '';
+		}
 
 		$string = htmlentities($string, ENT_QUOTES);
 
@@ -111,15 +114,19 @@ trait TextTrait
 
 	public function truncateText(string $string, int $limit = 30, string $break = ' ', string $pad = '...'): string
 	{
-		if(empty($string))
+		if (empty($string)) {
 			return '';
+		}
 
-		if(strlen($string) <= $limit)
+		if (strlen($string) <= $limit) {
 			return $string;
+		}
 
-		if(false !== ($breakpoint = strpos($string, $break, $limit)))
-			if($breakpoint < strlen($string) - 1)
+		if (false !== ($breakpoint = strpos($string, $break, $limit))) {
+			if ($breakpoint < strlen($string) - 1) {
 				$string = substr($string, 0, $breakpoint) . $pad;
+			}
+		}
 
 		return $string;
 	}
@@ -130,8 +137,9 @@ trait TextTrait
 		$sinceTime = time() - $timeInSeconds;
 		$timeElapsed = '';
 
-		if (1 > $sinceTime)
+		if (1 > $sinceTime) {
 			return $txt['time_just_now'];
+		}
 
 		$timePeriods = [
 			12 * 30 * 24 * 60 * 60	=> $txt['time_year'],
@@ -142,11 +150,9 @@ trait TextTrait
 			1						=> $txt['time_second']
 		];
 
-		foreach ($timePeriods as $seconds => $timeString)
-		{
+		foreach ($timePeriods as $seconds => $timeString) {
 			$timeCount = $sinceTime / $seconds;
-			if (1 <= $timeCount)
-			{
+			if (1 <= $timeCount) {
 				$timeCountRounded = round($timeCount);
 
 				$timeElapsed = $timeCountRounded . ' ' . $timeString . (1 < $timeCountRounded ? 's ' : ' ') . $txt['time_ago'];

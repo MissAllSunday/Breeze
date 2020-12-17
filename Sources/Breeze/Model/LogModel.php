@@ -11,8 +11,9 @@ class LogModel extends BaseModel implements LogModelInterface
 {
 	function insert(array $data, int $id = 0): int
 	{
-		if (empty($data))
+		if (empty($data)) {
 			return 0;
+		}
 
 		$data['extra'] = !empty($data['extra']) ? Json::encode($data['extra']) : '';
 
@@ -41,8 +42,9 @@ class LogModel extends BaseModel implements LogModelInterface
 	{
 		$logs = [];
 
-		if (empty($userIds) || empty($maxIndex))
+		if (empty($userIds) || empty($maxIndex)) {
 			return $logs;
+		}
 
 		$result = $this->dbClient->query(
 			'
@@ -58,7 +60,7 @@ class LogModel extends BaseModel implements LogModelInterface
 			]
 		);
 
-		while ($row = $this->dbClient->fetchAssoc($result))
+		while ($row = $this->dbClient->fetchAssoc($result)) {
 			$logs[$row[LogEntity::COLUMN_ID]] = [
 				'id' => $row[LogEntity::COLUMN_ID],
 				'member' => $row[LogEntity::COLUMN_MEMBER],
@@ -69,6 +71,7 @@ class LogModel extends BaseModel implements LogModelInterface
 				'extra' => !empty($row[LogEntity::COLUMN_EXTRA]) ?
 					json_decode($row[LogEntity::COLUMN_EXTRA], true) : [],
 			];
+		}
 
 		$this->dbClient->freeResult($result);
 

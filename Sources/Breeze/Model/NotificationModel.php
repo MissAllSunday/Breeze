@@ -10,8 +10,9 @@ class NotificationModel extends BaseModel implements NotificationModelInterface
 {
 	function insert(array $data, int $id = 0): int
 	{
-		if (empty($data))
+		if (empty($data)) {
 			return 0;
+		}
 
 		$this->dbClient->insert(
 			NotificationEntity::TABLE,

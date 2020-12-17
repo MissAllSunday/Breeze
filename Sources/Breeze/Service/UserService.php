@@ -8,7 +8,6 @@ use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Repository\User\UserRepositoryInterface;
 
-
 class UserService extends BaseService implements UserServiceInterface
 {
 	public const MIN_INFO_KEYS = [
@@ -43,8 +42,9 @@ class UserService extends BaseService implements UserServiceInterface
 
 	public function hookProfilePopUp(&$profile_items): void
 	{
-		if (!$this->isEnable(SettingsEntity::MASTER))
+		if (!$this->isEnable(SettingsEntity::MASTER)) {
 			return;
+		}
 
 		$this->setLanguage(Breeze::NAME);
 
@@ -52,13 +52,14 @@ class UserService extends BaseService implements UserServiceInterface
 		$currentUserInfo = $this->global('user_info');
 		$currentUserSettings = $this->getCurrentUserSettings();
 
-		if ($this->isEnable(SettingsEntity::FORCE_WALL) || !empty($currentUserSettings['wall']))
-			foreach ($profile_items as &$profileItem)
-				if ('summary' === $profileItem['area'])
-				{
+		if ($this->isEnable(SettingsEntity::FORCE_WALL) || !empty($currentUserSettings['wall'])) {
+			foreach ($profile_items as &$profileItem) {
+				if ('summary' === $profileItem['area']) {
 					$profileItem['area'] = self::LEGACY_AREA;
 					break;
 				}
+			}
+		}
 
 		$profile_items[] = [
 			'menu' => 'breeze_profile',
@@ -70,8 +71,9 @@ class UserService extends BaseService implements UserServiceInterface
 
 	public function hookAlertsPref(array &$alertTypes): void
 	{
-		if (!$this->isEnable(SettingsEntity::MASTER))
+		if (!$this->isEnable(SettingsEntity::MASTER)) {
 			return;
+		}
 
 		$this->setLanguage('alerts');
 
@@ -103,13 +105,13 @@ class UserService extends BaseService implements UserServiceInterface
 	{
 		$user_info = $this->global('user_info');
 
-		if (empty($userId))
+		if (empty($userId)) {
 			return true;
+		}
 
 		$userStalkedSettings = $this->userRepository->getUserSettings($userStalkedId);
 
-		if (!empty($userStalkedSettings['kick_ignored']) && !empty($userStalkedSettings['ignoredList']))
-		{
+		if (!empty($userStalkedSettings['kick_ignored']) && !empty($userStalkedSettings['ignoredList'])) {
 			$ignored = explode(',', $userStalkedSettings['ignoredList']);
 
 			return in_array($user_info['id'], $ignored);
@@ -130,10 +132,8 @@ class UserService extends BaseService implements UserServiceInterface
 		$modSettings = $this->global('modSettings');
 		$loadedIDs = $this->getUsersToLoad($userIds);
 
-		foreach ($userIds as $userId)
-		{
-			if (!in_array($userId, $loadedIDs))
-			{
+		foreach ($userIds as $userId) {
+			if (!in_array($userId, $loadedIDs)) {
 				$loadedUsers[$userId] = [
 					'link' => $this->getSmfText('guest_title'),
 					'name' => $this->getSmfText('guest_title'),

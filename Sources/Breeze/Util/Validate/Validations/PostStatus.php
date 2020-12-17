@@ -25,8 +25,7 @@ class PostStatus extends ValidateData implements ValidateDataInterface
 	public function __construct(
 		UserServiceInterface $userService,
 		StatusServiceInterface $statusService
-	)
-	{
+	) {
 		$this->statusService = $statusService;
 
 		parent::__construct($userService);
@@ -55,8 +54,9 @@ class PostStatus extends ValidateData implements ValidateDataInterface
 	 */
 	public function permissions(): void
 	{
-		if (!Permissions::isAllowedTo(Permissions::POST_STATUS))
+		if (!Permissions::isAllowedTo(Permissions::POST_STATUS)) {
 			throw new ValidateDataException('postStatus');
+		}
 	}
 
 	public function getInts(): array

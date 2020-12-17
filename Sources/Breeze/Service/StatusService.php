@@ -23,8 +23,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 		UserServiceInterface $userService,
 		StatusRepositoryInterface $statusRepository,
 		CommentRepositoryInterface $commentRepository
-	)
-	{
+	) {
 		$this->statusRepository = $statusRepository;
 		$this->commentRepository = $commentRepository;
 		$this->userService = $userService;
@@ -41,8 +40,9 @@ class StatusService extends BaseService implements StatusServiceInterface
 		$userIds = array_unique(array_merge($profileStatus['usersIds'], $profileComments['usersIds']));
 		$usersData = $this->userService->loadUsersInfo($userIds);
 
-		foreach ($profileStatus['data'] as $statusId => &$status)
+		foreach ($profileStatus['data'] as $statusId => &$status) {
 			$status['comments'] = $profileComments['data'][$statusId] ?? [];
+		}
 
 		return [
 			'users' => $usersData,
@@ -64,7 +64,6 @@ class StatusService extends BaseService implements StatusServiceInterface
 			]));
 
 			$newStatus = $this->statusRepository->getById($statusId);
-
 		} catch (InvalidStatusException $e) {
 			return [
 				'type' => ValidateGateway::ERROR_TYPE,

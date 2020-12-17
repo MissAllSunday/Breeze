@@ -17,8 +17,7 @@ class MapperAggregate
 	{
 		$scannedMappers = Folder::getFilesInFolder(self::MAPPERS_FOLDER);
 
-		foreach ($scannedMappers as $mapperFile)
-		{
+		foreach ($scannedMappers as $mapperFile) {
 			$mapperFileInfo = pathinfo($mapperFile, PATHINFO_FILENAME);
 			$mapperKey = str_replace(self::MAPPER_KEY, '', $mapperFileInfo);
 

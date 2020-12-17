@@ -22,8 +22,9 @@ use Breeze\Service\UserService;
 use Breeze\Traits\TextTrait;
 use League\Container\Container as Container;
 
-if (!defined('SMF'))
+if (!defined('SMF')) {
 	die('No direct access...');
+}
 
 class Breeze
 {
@@ -43,18 +44,19 @@ class Breeze
 		$this->container = new Container();
 		$mappers = (new MapperAggregate())->getMappers();
 
-		foreach ($mappers as $mapperFile)
-			foreach ($mapperFile as $mapperAlias => $mapperInfo)
-			{
-				if (empty($mapperInfo['class']))
+		foreach ($mappers as $mapperFile) {
+			foreach ($mapperFile as $mapperAlias => $mapperInfo) {
+				if (empty($mapperInfo['class'])) {
 					continue;
+				}
 
-				if (!empty($mapperInfo['arguments']))
+				if (!empty($mapperInfo['arguments'])) {
 					$this->container->add($mapperInfo['class'])->addArguments($mapperInfo['arguments']);
-
-				else
+				} else {
 					$this->container->add($mapperInfo['class']);
+				}
 			}
+		}
 	}
 
 	public function permissionsWrapper(array &$permissionGroups, array &$permissionList): void
@@ -64,15 +66,15 @@ class Breeze
 
 	public function profileMenuWrapper(array &$profileAreas): void
 	{
-		if (!$this->isEnable(SettingsEntity::MASTER))
+		if (!$this->isEnable(SettingsEntity::MASTER)) {
 			return;
+		}
 
 		$this->setLanguage(Breeze::NAME);
 		$context = $this->global('context');
 		$currentUserSettings = $this->container->get(UserService::class)->getCurrentUserSettings();
 
-		if ($this->isEnable(SettingsEntity::FORCE_WALL) || !empty($currentUserSettings['wall']))
-		{
+		if ($this->isEnable(SettingsEntity::FORCE_WALL) || !empty($currentUserSettings['wall'])) {
 			/** @var WallController */
 			$wallController = $this->container->get(WallController::class);
 
@@ -142,26 +144,30 @@ class Breeze
 
 	public function menu(&$menu_buttons): void
 	{
-		if (!$this->isEnable(SettingsEntity::MASTER))
+		if (!$this->isEnable(SettingsEntity::MASTER)) {
 			return;
+		}
 
 		$scriptUrl = $this->global('scripturl');
 		$currentUserInfo = $this->global('user_info');
 		$currentUserSettings = $this->container->get(UserService::class)->getCurrentUserSettings();
 
-		if (!empty($menu_buttons['profile']['sub_buttons']['summary']))
+		if (!empty($menu_buttons['profile']['sub_buttons']['summary'])) {
 			$menu_buttons['profile']['sub_buttons']['summary'] = [
 				'title' => $this->getText('summary'),
 				'href' => $scriptUrl . '?action=profile;area=' . UserService::LEGACY_AREA,
 				'show' => true,
 			];
+		}
 
 		$menuReference = 'home';
 		$counter = 0;
 
-		foreach ($menu_buttons as $area => $dummy)
-			if (++$counter && $area == $menuReference)
+		foreach ($menu_buttons as $area => $dummy) {
+			if (++$counter && $area == $menuReference) {
 				break;
+			}
+		}
 
 		$menu_buttons = array_merge(
 			array_slice($menu_buttons, 0, $counter),
@@ -208,15 +214,16 @@ class Breeze
 		$this->container->get(UserService::class)->hookProfilePopUp($profile_items);
 	}
 
-	public function alertsPrefWrapper( array &$alertTypes, &$groupOptions): void
+	public function alertsPrefWrapper(array &$alertTypes, &$groupOptions): void
 	{
 		$this->container->get(UserService::class)->hookAlertsPref($alertTypes);
 	}
 
 	public function updateLikesWrapper($type, $content, $sa, $js, $extra)
 	{
-		if (!$this->isEnable(SettingsEntity::MASTER))
+		if (!$this->isEnable(SettingsEntity::MASTER)) {
 			return false;
+		}
 
 		/** @var PermissionsService */
 		$permissions = $this->container->get(PermissionsService::class);
@@ -230,7 +237,7 @@ class Breeze
 		];
 	}
 
-	public function displayMoodWrapper( array &$data, int $userId, $displayCustomFields): void
+	public function displayMoodWrapper(array &$data, int $userId, $displayCustomFields): void
 	{
 		/** @var MoodService */
 		$moodService = $this->container->get(MoodService::class);
@@ -242,8 +249,9 @@ class Breeze
 	{
 		if (!$this->isEnable(SettingsEntity::MASTER) ||
 			!$this->isEnable(SettingsEntity::ENABLE_MOOD) ||
-			!in_array($profileArea, MoodService::DISPLAY_PROFILE_AREAS))
+			!in_array($profileArea, MoodService::DISPLAY_PROFILE_AREAS)) {
 			return;
+		}
 
 		/** @var MoodService */
 		$moodService = $this->container->get(MoodService::class);
@@ -269,10 +277,11 @@ class Breeze
 			],
 		];
 
-		if ($this->isEnable(SettingsEntity::ENABLE_MOOD))
+		if ($this->isEnable(SettingsEntity::ENABLE_MOOD)) {
 			$adminMenu['config']['areas'][AdminService::AREA]['subsections']['moodList'] = [
 				$this->getText(AdminService::AREA . '_moodList_title')
 			];
+		}
 
 		// Pay no attention to that woman behind the curtain!
 		$adminMenu['config']['areas'][AdminService::AREA]['subsections']['donate'] = [

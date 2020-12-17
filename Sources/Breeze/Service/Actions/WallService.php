@@ -38,8 +38,7 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 		StatusRepositoryInterface $statusRepository,
 		CommentRepositoryInterface $commentRepository,
 		Components $components
-	)
-	{
+	) {
 		$this->statusRepository = $statusRepository;
 		$this->commentRepository = $commentRepository;
 		$this->userService = $userService;
@@ -48,8 +47,9 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 
 	public function init(array $usbActions): void
 	{
-		if (!$this->isEnable(SettingsEntity::MASTER))
+		if (!$this->isEnable(SettingsEntity::MASTER)) {
 			Error::show('no_valid_action');
+		}
 
 		Permissions::isNotGuest($this->getText('error_no_access'));
 
@@ -76,33 +76,36 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 		$loadedUsers = $this->userService->loadUsersInfo($usersToLoad);
 
 		// We don't need all their info
-		foreach ($loadedUsers as $userId => $userData)
+		foreach ($loadedUsers as $userId => $userData) {
 			$loadedUsers[$userId] = array_intersect($userData, UserService::MIN_INFO_KEYS);
+		}
 	}
 
 	public function isAllowedToSeePage(bool $redirect = false): bool
 	{
 		$canSeePage = true;
 
-		if (!$this->isCurrentUserOwner() && !$this->isEnable(SettingsEntity::FORCE_WALL))
+		if (!$this->isCurrentUserOwner() && !$this->isEnable(SettingsEntity::FORCE_WALL)) {
 			$canSeePage = false;
-
-		elseif (empty($this->profileOwnerSettings['wall']))
+		} elseif (empty($this->profileOwnerSettings['wall'])) {
 			$canSeePage = false;
-
-		if (!allowedTo('profile_view'))
-			$canSeePage = false;
-
-		if (!empty($this->profileOwnerSettings['kick_ignored']) && !empty($this->profileOwnerSettings['ignoredList']))
-		{
-			$ownerIgnoredList = explode(',', $this->profileOwnerSettings['ignoredList']);
-
-			if (in_array($this->currentUserInfo['id'], $ownerIgnoredList))
-				$canSeePage = false;
 		}
 
-		if (!$canSeePage && $redirect)
+		if (!allowedTo('profile_view')) {
+			$canSeePage = false;
+		}
+
+		if (!empty($this->profileOwnerSettings['kick_ignored']) && !empty($this->profileOwnerSettings['ignoredList'])) {
+			$ownerIgnoredList = explode(',', $this->profileOwnerSettings['ignoredList']);
+
+			if (in_array($this->currentUserInfo['id'], $ownerIgnoredList)) {
+				$canSeePage = false;
+			}
+		}
+
+		if (!$canSeePage && $redirect) {
 			redirectexit('action=profile;area=' . UserService::LEGACY_AREA . ';u=' . $this->profileOwnerInfo['id']);
+		}
 
 		return true;
 	}
@@ -114,8 +117,9 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 
 	public function isCurrentUserOwner(): bool
 	{
-		if (!isset($this->currentUserInfo['id']))
+		if (!isset($this->currentUserInfo['id'])) {
 			return false;
+		}
 
 		return $this->currentUserInfo['id'] === $this->profileOwnerInfo['id'];
 	}

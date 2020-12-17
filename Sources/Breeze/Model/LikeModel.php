@@ -43,8 +43,9 @@ class LikeModel extends BaseModel implements LikeModelInterface
 			]
 		);
 
-		while ($row = $this->dbClient->fetchAssoc($request))
+		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$likes[] = $row;
+		}
 
 		$this->dbClient->freeResult($request);
 
@@ -67,8 +68,9 @@ class LikeModel extends BaseModel implements LikeModelInterface
 			]
 		);
 
-		while ($row = $this->dbClient->fetchAssoc($request))
+		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$likes[$userId][$type][] = (int) $row[LikeEntity::COLUMN_CONTENT_ID];
+		}
 
 		$this->dbClient->freeResult($request);
 

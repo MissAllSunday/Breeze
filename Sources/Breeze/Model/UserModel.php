@@ -13,8 +13,9 @@ class UserModel extends BaseModel implements UserModelInterface
 {
 	function insert(array $userSettings, int $userId = 0): int
 	{
-		if (empty($userSettings))
+		if (empty($userSettings)) {
 			return 0;
+		}
 
 		$this->dbClient->replace(
 			OptionsEntity::TABLE,
@@ -40,8 +41,9 @@ class UserModel extends BaseModel implements UserModelInterface
 		$userIds = array_unique($userIds);
 		$loadedUsers = [];
 
-		if (empty($userIds))
+		if (empty($userIds)) {
 			return $loadedUsers;
+		}
 
 		$request = $this->dbClient->query(
 			'
@@ -53,26 +55,30 @@ class UserModel extends BaseModel implements UserModelInterface
 			]
 		);
 
-		while ($row = $this->dbClient->fetchAssoc($request))
+		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$loadedUsers[$row[MemberEntity::COLUMN_ID]] = [
 				'username' => $row[MemberEntity::COLUMN_MEMBER_NAME],
 				'name' => $row[MemberEntity::COLUMN_REAL_NAME],
 				'id' => $row[MemberEntity::COLUMN_ID],
 			];
+		}
 
 		$this->dbClient->freeResult($request);
 
-		foreach ($userIds as $userId)
-			if (!isset($loadedUsers[$userId]))
+		foreach ($userIds as $userId) {
+			if (!isset($loadedUsers[$userId])) {
 				$loadedUsers[$userId] = [];
+			}
+		}
 
 		return $loadedUsers;
 	}
 
 	public function updateProfileViews(array $data, int $userId): int
 	{
-		if (empty($data) || empty($userId))
+		if (empty($data) || empty($userId)) {
 			return 0;
+		}
 
 		return $this->dbClient->update(
 			MemberEntity::TABLE,
@@ -102,18 +108,19 @@ class UserModel extends BaseModel implements UserModelInterface
 			]
 		);
 
-		while ($row = $this->dbClient->fetchAssoc($result))
-		{
+		while ($row = $this->dbClient->fetchAssoc($result)) {
 			$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = is_numeric($row[OptionsEntity::COLUMN_VALUE]) ?
 				(int) $row[OptionsEntity::COLUMN_VALUE] : (string) $row[OptionsEntity::COLUMN_VALUE];
 
-			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::JSON_VALUES))
+			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::JSON_VALUES)) {
 				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = !empty($row[OptionsEntity::COLUMN_VALUE]) ?
 					json_decode($row[OptionsEntity::COLUMN_VALUE], true) : [];
+			}
 
-			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::ARRAY_VALUES))
+			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::ARRAY_VALUES)) {
 				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = !empty($row[OptionsEntity::COLUMN_VALUE]) ?
 					explode(',', $row[OptionsEntity::COLUMN_VALUE]) : [];
+			}
 
 			$userData += [
 				UserSettingsEntity::BUDDIES => !empty($row[MemberEntity::COLUMN_BUDDY_LIST]) ?
@@ -132,8 +139,9 @@ class UserModel extends BaseModel implements UserModelInterface
 	{
 		$views = [];
 
-		if (empty($userId))
+		if (empty($userId)) {
 			return $views;
+		}
 
 		$result = $this->dbClient->query(
 			'
@@ -179,8 +187,9 @@ class UserModel extends BaseModel implements UserModelInterface
 			[]
 		);
 
-		while ($row = $this->dbClient->fetchAssoc($request))
+		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$boards[] = $row['id_board'];
+		}
 
 		$this->dbClient->freeResult($request);
 

@@ -10,8 +10,9 @@ class MoodModel extends BaseModel implements MoodModelInterface
 {
 	function insert(array $data, int $id = 0): int
 	{
-		if (empty($data))
+		if (empty($data)) {
 			return 0;
+		}
 
 		$this->dbClient->insert(MoodEntity::TABLE, [
 			MoodEntity::COLUMN_EMOJI => 'string',
@@ -24,8 +25,9 @@ class MoodModel extends BaseModel implements MoodModelInterface
 
 	function update(array $data, int $id = 0): array
 	{
-		if (empty($data))
+		if (empty($data)) {
 			return [];
+		}
 
 		$this->dbClient->update(
 			MoodEntity::TABLE,
@@ -44,8 +46,9 @@ class MoodModel extends BaseModel implements MoodModelInterface
 	{
 		$moods = [];
 
-		if (empty($moodIds))
+		if (empty($moodIds)) {
 			return $moods;
+		}
 
 		$request = $this->dbClient->query(
 			'
@@ -55,8 +58,9 @@ class MoodModel extends BaseModel implements MoodModelInterface
 			['moodIds' => array_map('intval', $moodIds)]
 		);
 
-		while ($row = $this->dbClient->fetchAssoc($request))
+		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$moods[$row[MoodEntity::COLUMN_ID]] = $row;
+		}
 
 		$this->dbClient->freeResult($request);
 
@@ -73,8 +77,9 @@ class MoodModel extends BaseModel implements MoodModelInterface
 			[]
 		);
 
-		while ($row = $this->dbClient->fetchAssoc($request))
+		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$moods[$row[MoodEntity::COLUMN_ID]] = $row;
+		}
 
 		$this->dbClient->freeResult($request);
 
@@ -94,8 +99,9 @@ class MoodModel extends BaseModel implements MoodModelInterface
 			]
 		);
 
-		while ($row = $this->dbClient->fetchAssoc($request))
+		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$moods[$row[MoodEntity::COLUMN_ID]] = $row;
+		}
 
 		$this->dbClient->freeResult($request);
 

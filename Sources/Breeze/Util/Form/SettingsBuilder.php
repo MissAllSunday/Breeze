@@ -19,9 +19,7 @@ class SettingsBuilder implements SettingsBuilderInterface
 	{
 		$formatters = [];
 
-		foreach (Folder::getFilesInFolder(__DIR__ . DIRECTORY_SEPARATOR . ValueFormatter::FORMATTER_DIR) as
-				 $formatterFile)
-		{
+		foreach (Folder::getFilesInFolder(__DIR__ . DIRECTORY_SEPARATOR . ValueFormatter::FORMATTER_DIR) as $formatterFile) {
 			$formatterFileInfo = pathinfo($formatterFile, PATHINFO_FILENAME);
 
 			$formatterKey = strtolower(str_replace(
@@ -33,8 +31,9 @@ class SettingsBuilder implements SettingsBuilderInterface
 			$formatterClassName = ValueFormatter::getNameSpace() . $formatterFileInfo;
 
 			if (ValueFormatter::class === $formatterClassName ||
-				ValueFormatterInterface::class === $formatterClassName)
+				ValueFormatterInterface::class === $formatterClassName) {
 				continue;
+			}
 
 			$formatters[$formatterKey] = new $formatterClassName();
 		}
@@ -48,14 +47,14 @@ class SettingsBuilder implements SettingsBuilderInterface
 		$allSettings = SettingsEntity::getColumns();
 		$formatters = $this->getFormatters();
 
-		foreach ($allSettings as $settingName => $settingType)
-			if (!empty($formatters[$settingType]))
-			{
+		foreach ($allSettings as $settingName => $settingType) {
+			if (!empty($formatters[$settingType])) {
 				/** @var ValueFormatterInterface $formatter */
 				$formatter = $formatters[$settingType];
 
 				$configVars[] = $formatter->getConfigVar($settingName, $settingType);
 			}
+		}
 
 		return $configVars;
 	}

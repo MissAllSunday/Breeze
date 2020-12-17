@@ -43,21 +43,23 @@ trait RequestTrait
 	{
 		$smcFunc = $this->getSmcFunc();
 
-		if (is_array($variable))
-		{
-			foreach ($variable as $key => $variableValue)
+		if (is_array($variable)) {
+			foreach ($variable as $key => $variableValue) {
 				$variable[$key] = $this->sanitize($variableValue);
+			}
 
 			return $variable;
 		}
 
 		$var = $smcFunc['htmltrim']($smcFunc['htmlspecialchars']((string) $variable, ENT_QUOTES));
 
-		if (ctype_digit($var))
+		if (ctype_digit($var)) {
 			$var = (int) $var;
+		}
 
-		if (empty($var))
+		if (empty($var)) {
 			$var = false;
+		}
 
 		return $var;
 	}

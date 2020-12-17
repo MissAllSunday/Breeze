@@ -47,8 +47,7 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 		UserServiceInterface $userService,
 		UserSettingsBuilderInterface $userSettingsBuilder,
 		ValidateGatewayInterface $gateway
-	)
-	{
+	) {
 		$this->userService = $userService;
 		$this->userSettingsService = $userSettingsService;
 		$this->userSettingsBuilder = $userSettingsBuilder;
@@ -60,14 +59,12 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 		$this->subAction = $this->getRequest('sa', $this->getMainAction());
 		$this->userSettingsService->init($this->getSubActions());
 
-		if (isset($this->validators[$this->subAction]['dataName']))
-		{
+		if (isset($this->validators[$this->subAction]['dataName'])) {
 			$this->gateway->setData($this->getRequest($this->validators[$this->subAction]['dataName']));
 
 			$this->gateway->setValidator($this->setValidator());
 
-			if (!$this->gateway->isValid())
-			{
+			if (!$this->gateway->isValid()) {
 				$this->error(BaseEntity::WRONG_VALUES);
 
 				return;

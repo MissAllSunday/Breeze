@@ -10,8 +10,9 @@ class CommentModel extends BaseModel implements CommentModelInterface
 {
 	function insert(array $data, int $commentID = 0): int
 	{
-		if (empty($data))
+		if (empty($data)) {
 			return 0;
+		}
 
 		$this->dbClient->insert(
 			CommentEntity::TABLE,
@@ -119,18 +120,17 @@ class CommentModel extends BaseModel implements CommentModelInterface
 		$comments = [];
 		$usersIds = [];
 
-		while ($row = $this->dbClient->fetchAssoc($request))
-		{
-			if ($useStatusID)
+		while ($row = $this->dbClient->fetchAssoc($request)) {
+			if ($useStatusID) {
 				$comments[$row[CommentEntity::COLUMN_STATUS_ID]][$row[CommentEntity::COLUMN_ID]] =
 					array_map(function ($rowValue) {
-					return ctype_digit($rowValue) ? ((int) $rowValue) : $rowValue;
-				}, $row);
-
-			else
+						return ctype_digit($rowValue) ? ((int) $rowValue) : $rowValue;
+					}, $row);
+			} else {
 				$comments[$row[CommentEntity::COLUMN_ID]] = array_map(function ($rowValue) {
 					return ctype_digit($rowValue) ? ((int) $rowValue) : $rowValue;
-					}, $row);
+				}, $row);
+			}
 
 			$usersIds[] = (int) $row[CommentEntity::COLUMN_POSTER_ID];
 			$usersIds[] = (int) $row[CommentEntity::COLUMN_PROFILE_ID];

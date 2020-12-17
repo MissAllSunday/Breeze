@@ -41,14 +41,14 @@ class UserSettingsEntity extends BaseEntity implements BaseEntityInterface
 
 	public static function getInts(): array
 	{
-		return array_filter( self::getDefaultValues(), function(string $part){
+		return array_filter(self::getDefaultValues(), function (string $part) {
 			return strlen($part);
 		});
 	}
 
 	public static function getStrings(): array
 	{
-		return array_filter(self::getDefaultValues(), function ($value){
+		return array_filter(self::getDefaultValues(), function ($value) {
 			return is_string($value);
 		});
 	}

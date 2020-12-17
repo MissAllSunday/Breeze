@@ -88,8 +88,7 @@ class StatusModel extends BaseModel implements StatusModelInterface
 		$status = [];
 		$usersIds = [];
 
-		while ($row = $this->dbClient->fetchAssoc($request))
-		{
+		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$status[$row[StatusEntity::COLUMN_ID]] = array_map(function ($column) {
 				return ctype_digit($column) ? ((int) $column) : $column;
 			}, $row);

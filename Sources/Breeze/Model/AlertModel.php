@@ -11,11 +11,13 @@ class AlertModel extends BaseModel implements AlertModelInterface
 {
 	function insert(array $data, int $id = 0): int
 	{
-		if (empty($data))
+		if (empty($data)) {
 			return 0;
+		}
 
-		if (false !== strpos($data['content_type'], Breeze::PATTERN))
+		if (false !== strpos($data['content_type'], Breeze::PATTERN)) {
 			$params['content_type'] = Breeze::PATTERN . $data['content_type'];
+		}
 
 		$this->dbClient->insert(AlertEntity::TABLE, [
 			AlertEntity::COLUMN_ALERT_TIME => 'int',
@@ -34,15 +36,17 @@ class AlertModel extends BaseModel implements AlertModelInterface
 
 	function update(array $data, int $alertId = 0): array
 	{
-		if (empty($data) || empty($alertId))
+		if (empty($data) || empty($alertId)) {
 			return [];
+		}
 
 		$updateString = '';
 		$paramKeys = array_keys($data);
 		$lastKey = key($paramKeys);
 
-		foreach ($data as $column => $newValue)
+		foreach ($data as $column => $newValue) {
 			$updateString .= $column . ' = ' . $newValue . ($column != $lastKey ? ', ' : '');
+		}
 
 		$this->dbClient->update(
 			AlertEntity::TABLE,
@@ -63,8 +67,9 @@ class AlertModel extends BaseModel implements AlertModelInterface
 	{
 		$alreadySent = false;
 
-		if (empty($userId) || empty($alertType))
+		if (empty($userId) || empty($alertType)) {
 			return $alreadySent;
+		}
 
 		$request = $this->dbClient->query(
 			'

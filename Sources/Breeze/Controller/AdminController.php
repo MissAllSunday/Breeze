@@ -35,8 +35,7 @@ class AdminController extends BaseController implements ControllerInterface
 	public function __construct(
 		AdminServiceInterface $adminService,
 		MoodServiceInterface $moodService
-	)
-	{
+	) {
 		$this->adminService = $adminService;
 		$this->moodService = $moodService;
 	}
@@ -67,8 +66,9 @@ class AdminController extends BaseController implements ControllerInterface
 
 		$this->adminService->configVars($saving);
 
-		if ($saving)
+		if ($saving) {
 			$this->adminService->redirect(AdminService::POST_URL . __FUNCTION__);
+		}
 	}
 
 	public function permissions(): void
@@ -79,8 +79,9 @@ class AdminController extends BaseController implements ControllerInterface
 
 		$this->adminService->permissionsConfigVars($saving);
 
-		if ($saving)
+		if ($saving) {
 			$this->adminService->redirect(AdminService::POST_URL . __FUNCTION__);
+		}
 	}
 
 	public function donate(): void
@@ -112,8 +113,7 @@ class AdminController extends BaseController implements ControllerInterface
 		$toDeleteMoodIds = $this->getRequest('checked_icons');
 
 		if ($this->isRequestSet('delete') &&
-			!empty($toDeleteMoodIds))
-		{
+			!empty($toDeleteMoodIds)) {
 			$this->moodService->deleteMoods($toDeleteMoodIds);
 			$this->adminService->redirect(AdminService::POST_URL . __FUNCTION__);
 		}

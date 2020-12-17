@@ -28,15 +28,14 @@ class DeleteStatus extends ValidateData implements ValidateDataInterface
 
 	protected const SUCCESS_KEY = 'deleted_status';
 
-	private StatusServiceInterface $statusService;	
+	private StatusServiceInterface $statusService;
 
 	private array $status;
 
 	public function __construct(
 		UserServiceInterface $userService,
 		StatusServiceInterface $statusService
-	)
-	{
+	) {
 		$this->statusService = $statusService;
 
 		parent::__construct($userService);
@@ -60,11 +59,13 @@ class DeleteStatus extends ValidateData implements ValidateDataInterface
 		$currentUserInfo = $this->userService->getCurrentUserInfo();
 
 		if ($currentUserInfo['id'] === $this->data[StatusEntity::COLUMN_POSTER_ID] &&
-			!Permissions::isAllowedTo(Permissions::DELETE_OWN_STATUS))
+			!Permissions::isAllowedTo(Permissions::DELETE_OWN_STATUS)) {
 			throw new ValidateDataException('deleteStatus');
+		}
 
-		if (!Permissions::isAllowedTo(Permissions::DELETE_STATUS))
+		if (!Permissions::isAllowedTo(Permissions::DELETE_STATUS)) {
 			throw new ValidateDataException('deleteStatus');
+		}
 	}
 
 	/**
@@ -81,13 +82,15 @@ class DeleteStatus extends ValidateData implements ValidateDataInterface
 	 */
 	public function validUser(): void
 	{
-		if (!$this->status)
+		if (!$this->status) {
 			$this->validStatus();
+		}
 
 		if (!isset($this->data[StatusEntity::COLUMN_POSTER_ID]) ||
 			($this->status['data'][$this->data[StatusEntity::COLUMN_ID]][StatusEntity::COLUMN_POSTER_ID]
-			!== $this->data[StatusEntity::COLUMN_POSTER_ID]))
+			!== $this->data[StatusEntity::COLUMN_POSTER_ID])) {
 			throw new ValidateDataException('wrong_values');
+		}
 	}
 
 	public function getInts(): array

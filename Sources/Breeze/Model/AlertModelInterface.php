@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-interface AlertModelInterface extends  BaseModelInterface
+interface AlertModelInterface extends BaseModelInterface
 {
 	public function getAlertById(int $alertId): array;
 

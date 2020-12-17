@@ -12,11 +12,13 @@ trait PersistenceTrait
 	
 	public function setMessage(string $message, string $type = 'info'): array
 	{
-		if (empty($message))
+		if (empty($message)) {
 			return [];
+		}
 
-		if (!isset($_SESSION[Breeze::NAME]))
+		if (!isset($_SESSION[Breeze::NAME])) {
 			$_SESSION[Breeze::NAME] = [];
+		}
 
 		$_SESSION[Breeze::NAME][self::$persistenceKey] = [
 			'message' => $message,
@@ -28,8 +30,9 @@ trait PersistenceTrait
 
 	public function getMessage(): array
 	{
-		if (empty($_SESSION[Breeze::NAME][self::$persistenceKey]))
+		if (empty($_SESSION[Breeze::NAME][self::$persistenceKey])) {
 			return [];
+		}
 
 		$response = $_SESSION[Breeze::NAME][self::$persistenceKey];
 		unset($_SESSION[Breeze::NAME][self::$persistenceKey]);

@@ -12,7 +12,8 @@ abstract class BaseService implements BaseServiceInterface
 
 	public function redirect(string $urlName): void
 	{
-		if(!empty($urlName))
+		if (!empty($urlName)) {
 			redirectexit($urlName);
+		}
 	}
 }

@@ -12,7 +12,6 @@ use Breeze\Util\Components;
 use Breeze\Util\Form\UserSettingsBuilder;
 use Breeze\Util\Json;
 
-
 class UserSettingsService extends ActionsBaseService implements UserSettingsServiceInterface
 {
 	use PersistenceTrait;
@@ -27,8 +26,7 @@ class UserSettingsService extends ActionsBaseService implements UserSettingsServ
 		UserRepositoryInterface $userRepository,
 		Components $components,
 		UserSettingsBuilder $SettingsBuilder
-	)
-	{
+	) {
 		$this->userRepository = $userRepository;
 		$this->components = $components;
 		$this->SettingsBuilder = $SettingsBuilder;
@@ -44,16 +42,17 @@ class UserSettingsService extends ActionsBaseService implements UserSettingsServ
 	{
 		$toInsert = [];
 
-		foreach ($userSettings as $name => $value)
-		{
-			if (in_array($name, UserModel::JSON_VALUES))
+		foreach ($userSettings as $name => $value) {
+			if (in_array($name, UserModel::JSON_VALUES)) {
 				$value = !empty($value) ? Json::encode($value) : '';
+			}
 
 			$toInsert[] = [$userId, $name, $value];
 		}
 
-		if (empty($toInsert))
+		if (empty($toInsert)) {
 			return false;
+		}
 
 		$this->userRepository->save($toInsert, $userId);
 

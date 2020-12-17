@@ -21,8 +21,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 	{
 		$userSettings = $this->getCache(sprintf(OptionsEntity::CACHE_NAME, $userId));
 
-		if (empty($userSettings))
-		{
+		if (empty($userSettings)) {
 			$userSettings = $this->userModel->getUserSettings($userId);
 			$this->setCache(sprintf(OptionsEntity::CACHE_NAME, $userId), $userSettings);
 		}
@@ -32,8 +31,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
 	public function save(array $userSettings, $userId): int
 	{
-		if ($this->userModel->insert($userSettings))
+		if ($this->userModel->insert($userSettings)) {
 			$this->setCache(sprintf(OptionsEntity::CACHE_NAME, $userId), null);
+		}
 
 		return 1;
 	}

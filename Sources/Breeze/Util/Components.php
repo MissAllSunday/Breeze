@@ -40,11 +40,12 @@ class Components
 		$this->loadJsDependencies();
 		$this->loadCssDependencies();
 
-		foreach ($componentsToLoad as $component)
+		foreach ($componentsToLoad as $component) {
 			$this->loadJavaScriptFile(self::FOLDER . $component . '.js', [
 				'defer' => true,
 				'default_theme' => true,
 			], strtolower(Breeze::PATTERN . $component));
+		}
 	}
 
 	public function loadJavaScriptFile(string $fileName, array $params = [], string $nameIdentifier = ''): void
@@ -59,18 +60,20 @@ class Components
 
 	protected function loadJsDependencies(): void
 	{
-		foreach (self::CDN_JS as $jsDependency)
+		foreach (self::CDN_JS as $jsDependency) {
 			$this->loadJavaScriptFile($jsDependency, [
 				'external' => true,
 				'defer' => true,
 			], strtolower(Breeze::PATTERN . $jsDependency));
+		}
 	}
 
 	protected function loadCssDependencies(): void
 	{
-		foreach (self::CDN_CSS as $cssDependency)
+		foreach (self::CDN_CSS as $cssDependency) {
 			$this->loadCSSFile($cssDependency, [
 				'external' => true,
 			], strtolower(Breeze::PATTERN . $cssDependency));
+		}
 	}
 }
