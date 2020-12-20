@@ -1,6 +1,6 @@
 new Vue({
-    el: '#moodAdmin',
-    data: {},
-    created: function() {},
-    methods: {}
+	el: '#moodAdmin',
+	data: {},
+	created: function () {},
+	methods: {}
 })

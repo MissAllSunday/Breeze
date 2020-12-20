@@ -18,13 +18,12 @@ $txt['Breeze_breezeAdmin_settings_description'] = 'This is the general settings 
 $txt['Breeze_breezeAdmin_donate_title'] = 'Donate';
 $txt['Breeze_breezeAdmin_donate_description'] = 'Boring stuff you were curious about it but you\'ll never gonna see it again :P';
 $txt['Breeze_breezeAdmin_moodList_title'] = 'Mood List';
-$txt['Breeze_breezeAdmin_moodList_description'] = 'A list showing all the current moods available, from here you can add/edit and delete moods.<br>Remember that you need to upload your images to the correct folder <strong>before</strong> adding new moods.';
+$txt['Breeze_breezeAdmin_moodList_description'] = 'A list showing all the current moods available, from here you can add/edit and delete moods.
+<br>A mod can be any text-based emoji that can be copy/pasted as text string. Some emojis aren\'t supported by all browsers.';
 $txt['Breeze_mood_noFile'] = 'Image mood was not found';
 $txt['Breeze_page_mood_create'] = 'Add a new mood';
 $txt['Breeze_page_mood_edit_create'] = 'Creating a new mood';
-$txt['Breeze_page_mood_edit_create_desc'] = 'Remember that you need to upload your images to the correct folder <strong>before</strong> adding new moods';
 $txt['Breeze_page_mood_edit_update'] = 'Editing a mood';
-$txt['Breeze_page_mood_edit_update_desc'] = 'Remember that you need to upload your images to the correct folder <strong>before</strong> adding new moods';
 $txt['Breeze_page_mood__noList'] = 'There aren\'t any moods to display';
 $txt['Breeze_page_donate_exp'] = 'Breeze is a free and Open Source SMF modification. If you like this modification and would like to show your appreciation, please consider making a';
 $txt['Breeze_page_donate_link'] = 'donation';
