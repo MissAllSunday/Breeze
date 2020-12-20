@@ -69,9 +69,11 @@ class MoodService extends BaseService implements MoodServiceInterface
 					],
 					'data' => [
 						'function' => function ($rowData) {
-							return $rowData['emoji'];
+							return $rowData['emoji'] . '<text-area
+								v-bind:content="'. $rowData['emoji'] .'"
+								></text-area>';
 						},
-						'class' => 'centercol',
+						'class' => 'centercol mood_emoji',
 					],
 				],
 				'description' => [
@@ -82,13 +84,13 @@ class MoodService extends BaseService implements MoodServiceInterface
 						'function' => function ($rowData) {
 							return $rowData['description'];
 						},
-						'class' => 'centercol',
+						'class' => 'centercol mood_desc',
 					],
 				],
 				'modify' => [
 					'header' => [
 						'value' => $this->getSmfText('smileys_modify'),
-						'class' => 'centercol',
+						'class' => 'centercol mood_modify',
 					],
 					'data' => [
 						'sprintf' => [
