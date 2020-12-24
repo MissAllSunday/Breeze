@@ -98,29 +98,7 @@ class AdminController extends BaseController implements ControllerInterface
 			AdminService::POST_URL . 'main'
 		);
 
-		$this->render(__FUNCTION__, [
-			Breeze::NAME => [
-				'notice' => $this->getMessage(),
-				'formId' => __FUNCTION__,
-			],
-		]);
-
-		$start = $this->getRequest('start', 0);
-		$this->moodService->createMoodList([
-			'id' => __FUNCTION__,
-			'base_href' => $this->adminService->global('scripturl') .
-				'?' . AdminService::POST_URL . __FUNCTION__,
-		], $start);
-
-		$toDeleteMoodIds = $this->getRequest('checked_icons');
-
-		if ($this->isRequestSet('delete') &&
-			!empty($toDeleteMoodIds)) {
-			$this->moodService->deleteMoods($toDeleteMoodIds);
-			$this->adminService->redirect(AdminService::POST_URL . __FUNCTION__);
-		}
-
-//		$this->adminService->loadComponents(['moodList', 'textArea']);
+		$this->render(__FUNCTION__);
 	}
 
 	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void

@@ -108,7 +108,7 @@ function template_breezeAdmin_main(): void
 	</div>
 	<br />';
 
-	echo '	
+	echo '
 	<script>
       var feedURL = "'. Breeze::FEED .'";
       var releasesNotFound = "'. $txt['Breeze_feed_error_message'] .'";
@@ -128,7 +128,14 @@ function template_breezeAdmin_moodList(): void
 		</div><br />';
 	}
 
-	template_show_list($context[Breeze::NAME]['formId']);
+	echo '
+		<div id="moodList">
+			<mood
+				v-for ="mood in localMoods"
+				v-bind:mood="mood"
+				@remove_mood="onRemoveMood"
+			></mood>
+		</div>';
 }
 
 // Boring stuff you will never see...
@@ -141,7 +148,7 @@ function template_breezeAdmin_donate(): void
 			<h3 class="catbg">', $context['page_title'] ,'</h3>
 		</div>
 		<div class="information">
-			', $txt['Breeze_page_donate_exp'] ,' 
+			', $txt['Breeze_page_donate_exp'] ,'
 			<a href="', Breeze::SUPPORT_URL ,'">', $txt['Breeze_page_donate_link'] ,'</a>.
 		</div>
 		<br />';

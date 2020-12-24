@@ -1,8 +1,8 @@
 Vue.component('mood', {
-    props: ['moodId'],
+    props: ['moodId', 'content'],
     template: `
     <div>
-        
+        mood
     </div>`,
     filters: {},
 })

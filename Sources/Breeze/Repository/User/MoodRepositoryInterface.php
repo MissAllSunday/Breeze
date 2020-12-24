@@ -15,6 +15,8 @@ interface MoodRepositoryInterface
 
 	public function getCount(): int;
 
+	public function getAllCount(): int;
+
 	public function getAllMoods(): array;
 
 	public function getActiveMoods(): array;

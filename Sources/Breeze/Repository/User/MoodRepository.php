@@ -39,12 +39,23 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 
 	public function getAllMoods(): array
 	{
-		return $this->moodModel->getAllMoods();
+		$allMoods = $this->getCache(__FUNCTION__);
+
+		if (empty($allMoods)) {
+			$allMoods = $this->moodModel->getAllMoods();
+			$this->setCache(__FUNCTION__, $allMoods);
+		}
+
+		return $allMoods;
+	}
+
+	public function getAllCount(): int
+	{
+		return count($this->getAllMoods());
 	}
 
 	public function getCount(): int
 	{
-		// TODO implement cache at repository level
 		return $this->moodModel->getCount();
 	}
 

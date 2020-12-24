@@ -1,5 +1,5 @@
 new Vue({
-	el: '#moodLists',
+	el: '#moodList',
 	data: {
 		editing: false,
 	},

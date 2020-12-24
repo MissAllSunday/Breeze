@@ -9,7 +9,7 @@ interface MoodServiceInterface extends BaseServiceInterface
 {
 	public const DISPLAY_PROFILE_AREAS = ['summary', 'static'];
 
-	public function createMoodList(array $listParams, int $start = 0): void;
+	public function createMoodList(): void;
 
 	public function getPlacementField(): int;
 
