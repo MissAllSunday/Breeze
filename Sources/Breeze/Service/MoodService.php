@@ -47,7 +47,7 @@ class MoodService extends BaseService implements MoodServiceInterface
 		$chunkedItems = $this->moodRepository->getChunk($start, $numItemsPerPage);
 
 		$listParams =  array_merge([
-			'id' => 'moodAdmin',
+			'id' => 'moodList',
 			'title' => $this->getText('page_' . $listParams['id'] . '_title'),
 			'base_href' => '',
 			'items_per_page' => $numItemsPerPage,
@@ -69,8 +69,8 @@ class MoodService extends BaseService implements MoodServiceInterface
 					],
 					'data' => [
 						'function' => function ($rowData) {
-							return $rowData['emoji'] . '<text-area
-								v-bind:content="'. $rowData['emoji'] .'"
+							return '<text-area
+								v-bind:content=""
 								></text-area>';
 						},
 						'class' => 'centercol mood_emoji',
@@ -82,7 +82,9 @@ class MoodService extends BaseService implements MoodServiceInterface
 					],
 					'data' => [
 						'function' => function ($rowData) {
-							return $rowData['description'];
+							return '<text-area
+								v-bind:content=""
+								></text-area>';
 						},
 						'class' => 'centercol mood_desc',
 					],
@@ -139,7 +141,7 @@ class MoodService extends BaseService implements MoodServiceInterface
 
 		$this->requireOnce('Subs-List');
 
-		$this->components->loadComponents(['moodMain', 'mood', 'moodDesc']);
+		$this->components->loadComponents(['moodMain', 'textArea']);
 
 		createList($listParams);
 	}

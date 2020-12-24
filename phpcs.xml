@@ -4,6 +4,7 @@
 	<arg name="tab-width" value="4"/>
 	<rule ref="PSR2">
 		<exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
+		<exclude-pattern>*.js</exclude-pattern>
 	</rule>
 	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
 	<rule ref="Generic.WhiteSpace.ScopeIndent">

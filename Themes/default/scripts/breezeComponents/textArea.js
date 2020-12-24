@@ -11,11 +11,11 @@ Vue.component('text-area', {
 	`,
 	props: {
 		content: {
-			type: String,
+			type: 'String',
 			default: ''
 		},
 		identifier: {
-			type: Int,
+			type: 'Int',
 			default: 0
 		}
 	},

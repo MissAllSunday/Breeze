@@ -45,8 +45,6 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 		$context[$context['admin_menu_name']]['tab_data']['tabs'] = array_fill_keys($subActions, []);
 
 		$this->setGlobal('context', $context);
-
-		$this->components->loadComponents(['adminMain', 'feed']);
 	}
 
 	public function defaultSubActionContent(
@@ -151,5 +149,10 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 	public function getActionName(): string
 	{
 		return self::AREA;
+	}
+
+	public function loadComponents(array $components = []): void
+	{
+		$this->components->loadComponents($components);
 	}
 }

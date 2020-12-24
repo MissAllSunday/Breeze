@@ -18,6 +18,8 @@ class Components
 		'utils',
 		'editor',
 		'wallMain',
+		'moodList',
+		'textArea',
 	];
 	private const CDN_JS = [
 		'vue' => 'https://cdn.jsdelivr.net/npm/vue@' . Breeze::VUE_VERSION . '/dist/vue.js',

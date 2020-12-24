@@ -18,4 +18,6 @@ interface AdminServiceInterface extends ActionsServiceInterface
 	public function saveConfigVars(): void;
 
 	public function isEnableFeature(string $featureName = '', string $redirectUrl = ''): bool;
+
+	public function loadComponents(array $components = []): void;
 }

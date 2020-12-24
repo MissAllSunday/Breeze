@@ -56,6 +56,8 @@ class AdminController extends BaseController implements ControllerInterface
 				'vue' => Breeze::VUE_VERSION,
 			],
 		]);
+
+		$this->adminService->loadComponents(['adminMain', 'feed']);
 	}
 
 	public function settings(): void
@@ -117,6 +119,8 @@ class AdminController extends BaseController implements ControllerInterface
 			$this->moodService->deleteMoods($toDeleteMoodIds);
 			$this->adminService->redirect(AdminService::POST_URL . __FUNCTION__);
 		}
+
+//		$this->adminService->loadComponents(['moodList', 'textArea']);
 	}
 
 	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void
