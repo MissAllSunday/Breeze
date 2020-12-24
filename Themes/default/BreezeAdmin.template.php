@@ -81,24 +81,25 @@ function template_breezeAdmin_main(): void
 					<p>', $txt['Breeze_page_credits_decs'] ,'</p>';
 
 	// Print the credits array
-	if (!empty($context[Breeze::NAME]['credits']))
-		foreach ($context[Breeze::NAME]['credits'] as $credit)
-		{
+	if (!empty($context[Breeze::NAME]['credits'])) {
+		foreach ($context[Breeze::NAME]['credits'] as $credit) {
 			echo '
 					<dl>
 						<dt>
 							<strong>', $credit['name'], ':</strong>
 						</dt>';
 
-			foreach ($credit['users'] as $user)
+			foreach ($credit['users'] as $user) {
 				echo '
 						<dd>
 							<a href="', $user['site'] ,'">', $user['name'] ,'</a>
 						</dd>';
+			}
 
 			echo '
 					</dl>';
 		}
+	}
 
 	echo '
 				</div>
@@ -120,8 +121,7 @@ function template_breezeAdmin_moodList(): void
 {
 	global $context;
 
-	if (!empty($context[Breeze::NAME]['notice']))
-	{
+	if (!empty($context[Breeze::NAME]['notice'])) {
 		echo '
 		<div class="' . $context[Breeze::NAME]['notice']['type'] . 'box">
 		', $context[Breeze::NAME]['notice']['message'] ,'
