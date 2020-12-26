@@ -3,10 +3,9 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Breeze\Service;
+namespace Breeze\Service;
 
 use Breeze\Repository\User\UserRepositoryInterface;
-use Breeze\Service\UserService;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

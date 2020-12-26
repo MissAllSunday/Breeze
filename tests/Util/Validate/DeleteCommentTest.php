@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Breeze;
+namespace Breeze\Util\Validate;
 
 use Breeze\Service\CommentService;
 use Breeze\Service\StatusService;
 use Breeze\Service\UserService;
-use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\DeleteComment;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
