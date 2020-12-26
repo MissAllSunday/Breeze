@@ -41,12 +41,7 @@ class CreateMood extends ValidateData implements ValidateDataInterface
 
 	public function getSteps(): array
 	{
-		return array_merge($this->steps, [
-			self::COMPARE,
-			self::INT,
-			self::STRING,
-			self::PERMISSIONS,
-		]);
+		return self::DEFAULT_STEPS;
 	}
 
 	/**

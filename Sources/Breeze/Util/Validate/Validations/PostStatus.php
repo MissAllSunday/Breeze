@@ -38,16 +38,10 @@ class PostStatus extends ValidateData implements ValidateDataInterface
 
 	public function getSteps(): array
 	{
-		$this->steps = self::DEFAULT_STEPS;
-
-		return array_merge($this->steps, [
-			self::VALID_STATUS,
+		return array_merge(self::DEFAULT_STEPS, [
+			self::VALID_USERS,
+			self::FLOOD_CONTROL,
 		]);
-	}
-
-	public function setSteps(array $customSteps): void
-	{
-		$this->steps = $customSteps;
 	}
 
 	/**

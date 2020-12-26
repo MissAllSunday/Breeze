@@ -34,8 +34,6 @@ abstract class ValidateData
 		self::COMPARE,
 		self::INT,
 		self::STRING,
-		self::VALID_USERS,
-		self::FLOOD_CONTROL,
 		self::PERMISSIONS,
 	];
 

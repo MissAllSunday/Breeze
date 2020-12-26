@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
+namespace Breeze;
+
 use Breeze\Service\CommentService;
 use Breeze\Service\StatusService;
 use Breeze\Service\UserService;
 use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\DeleteComment;
-use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class DeleteCommentTest extends TestCase
 {
 	/**
-	 * @var MockBuilder|UserService
+	 * @var UserService&MockObject
 	 */
 	private $userService;
 
@@ -22,12 +23,12 @@ class DeleteCommentTest extends TestCase
 
 	public function setUp(): void
 	{
-		$this->userService = $this->getMockInstance(UserService::class);
+		$this->userService = $this->createMock(UserService::class);
 
-		/**  @var MockObject|StatusService $statusService */
+		/**  @var MockObject&StatusService $statusService */
 		$statusService = $this->getMockInstance(StatusService::class);
 
-		/**  @var MockObject|CommentService $commentService */
+		/**  @var MockObject&CommentService $commentService */
 		$commentService = $this->getMockInstance(CommentService::class);
 
 		$this->deleteComment = new DeleteComment($this->userService, $statusService, $commentService);
@@ -40,15 +41,13 @@ class DeleteCommentTest extends TestCase
 	{
 		$this->deleteComment->setData($data);
 
-		if ($isExpectedException)
-		{
+		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
-
-			$this->deleteComment->clean();
+		} else {
+			$this->assertEquals($data, $this->deleteComment->getData());
 		}
 
-		else
-			$this->assertNull($this->deleteComment->clean());
+		$this->deleteComment->clean();
 	}
 
 	public function cleanProvider(): array
@@ -78,37 +77,35 @@ class DeleteCommentTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider IsValidIntProvider
+	 * @dataProvider isValidIntProvider
 	 */
 	public function testIsValidInt(array $data, bool $isExpectedException): void
 	{
 		$this->deleteComment->setData($data);
 
-		if ($isExpectedException)
-		{
+		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
-
-			$this->deleteComment->isInt();
+		} else {
+			$this->assertEquals(array_keys($data), $this->deleteComment->getInts());
 		}
 
-		else
-			$this->assertNull($this->deleteComment->isInt());
+		$this->deleteComment->isInt();
 	}
 
-	public function IsValidIntProvider(): array
+	public function isValidIntProvider(): array
 	{
 		return [
 			'happy path' => [
 				'data' => [
-					'comments_poster_id' => 666,
 					'comments_id' => 666,
+					'comments_poster_id' => 666,
 				],
 				'isExpectedException' => false,
 			],
 			'not ints' => [
 				'data' => [
-					'comments_poster_id' => '666',
 					'comments_id' => 666,
+					'comments_poster_id' => '666',
 				],
 				'isExpectedException' => true,
 			],
@@ -123,8 +120,7 @@ class DeleteCommentTest extends TestCase
 		array $with,
 		array $loadUsersInfoWillReturn,
 		bool $isExpectedException
-	): void
-	{
+	): void {
 		$this->deleteComment->setData($data);
 
 		$this->userService->expects($this->once())
@@ -132,15 +128,11 @@ class DeleteCommentTest extends TestCase
 			->with($with)
 			->willReturn($loadUsersInfoWillReturn);
 
-		if ($isExpectedException)
-		{
+		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
-
-			$this->deleteComment->areValidUsers();
 		}
 
-		else
-			$this->assertNull($this->deleteComment->areValidUsers());
+		$this->deleteComment->areValidUsers();
 	}
 
 	public function areValidUsersProvider(): array
@@ -202,6 +194,29 @@ class DeleteCommentTest extends TestCase
 					'id' => 666,
 				]
 			],
+		];
+	}
+
+	/**
+	 * @dataProvider getStepsProvider
+	 */
+	public function testGetSteps(array $steps): void
+	{
+		$this->assertEquals($steps, $this->deleteComment->getSteps());
+	}
+
+	public function getStepsProvider(): array
+	{
+		return [
+			'happy happy joy joy' => [
+				'steps' => [
+					'clean',
+					'isInt',
+					'validComment',
+					'validUser',
+					'permissions',
+				]
+			]
 		];
 	}
 
