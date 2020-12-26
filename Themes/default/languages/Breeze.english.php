@@ -107,6 +107,8 @@ $txt['cannot_breeze_postStatus'] = $txt['Breeze_error_postStatus'];
 $txt['cannot_breeze_postComments'] = $txt['Breeze_error_postComments'];
 $txt['cannot_breeze_deleteStatus'] = $txt['Breeze_error_deleteStatus'] ;
 $txt['cannot_breeze_deleteComments'] = $txt['Breeze_error_deleteComments'];
+
+// TODO: move $scripurl to back
 $txt['Breeze_cannot_see_general_wall'] = 'You need to enable your general wall from your <a href="' . $scripturl . '?action=profile;area=breezesettings">wall settings page</a>.';
 
 // Loading text.

@@ -13,9 +13,9 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class MoodController extends ApiBaseController implements ApiBaseInterface
 {
-	public const ACTION_POST = 'postComment';
-	public const ACTION_DELETE = 'deleteComment';
-	public const ACTION_PATCH = 'deleteComment';
+	public const ACTION_POST = 'createMood';
+	public const ACTION_DELETE = 'deleteMood';
+	public const ACTION_PATCH = 'editMood';
 	public const SUB_ACTIONS = [
 		self::ACTION_POST,
 		self::ACTION_DELETE,
