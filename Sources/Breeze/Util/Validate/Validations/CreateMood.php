@@ -43,21 +43,12 @@ class CreateMood extends ValidateData implements ValidateDataInterface
 
 	public function getSteps(): array
 	{
-		$this->steps = [
-			'compare',
-			'isInt',
-			'isString',
-			'areValidUsers',
-		];
-		$this->steps[] = 'permissions';
-		$this->steps[] = 'validStatus';
-
-		return $this->steps;
-	}
-
-	public function setSteps(array $customSteps): void
-	{
-		$this->steps = $customSteps;
+		return array_merge($this->steps, [
+			self::COMPARE,
+			self::INT,
+			self::STRING,
+			self::PERMISSIONS,
+		]);
 	}
 
 	/**
@@ -70,41 +61,30 @@ class CreateMood extends ValidateData implements ValidateDataInterface
 		}
 	}
 
-	/**
-	 * @throws InvalidStatusException
-	 */
-	public function validStatus(): void
-	{
-		$this->statusService->getById($this->data[CommentEntity::COLUMN_STATUS_ID]);
-	}
-
 	public function getInts(): array
 	{
 		return [
-			CommentEntity::COLUMN_STATUS_ID,
-			CommentEntity::COLUMN_STATUS_OWNER_ID,
-			CommentEntity::COLUMN_POSTER_ID,
-			CommentEntity::COLUMN_PROFILE_ID,
+			MoodEntity::COLUMN_ID,
+			MoodEntity::COLUMN_STATUS,
 		];
 	}
 
 	public function getUserIdsNames(): array
 	{
-		return [
-			CommentEntity::COLUMN_STATUS_OWNER_ID,
-			CommentEntity::COLUMN_POSTER_ID,
-			CommentEntity::COLUMN_PROFILE_ID,
-		];
+		return [];
 	}
 
 	public function getStrings(): array
 	{
-		return [CommentEntity::COLUMN_BODY];
+		return [
+			MoodEntity::COLUMN_EMOJI => '',
+			MoodEntity::COLUMN_DESC => '',
+		];
 	}
 
 	public function getPosterId(): int
 	{
-		return $this->data[CommentEntity::COLUMN_POSTER_ID] ?? 0;
+		return 0;
 	}
 
 	public function getParams(): array

@@ -17,11 +17,13 @@ abstract class ValidateData
 	use TextTrait;
 	use PersistenceTrait;
 
+	protected const  CLEAN = 'clean';
 	protected const  COMPARE = 'compare';
 	protected const  INT = 'isInt';
 	protected const  STRING = 'isString';
 	protected const  VALID_USERS = 'areValidUsers';
 	protected const  FLOOD_CONTROL = 'floodControl';
+	protected const PERMISSIONS = 'permissions';
 
 	protected const ALL_STEPS = [
 		self::COMPARE,
@@ -29,9 +31,12 @@ abstract class ValidateData
 		self::STRING,
 		self::VALID_USERS,
 		self::FLOOD_CONTROL,
+		self::PERMISSIONS,
 	];
 
-	protected array $steps = [];
+	protected array $steps = [
+		self::CLEAN
+	];
 
 	protected array $params = [];
 
@@ -69,6 +74,11 @@ abstract class ValidateData
 	public function getSteps(): array
 	{
 		return $this->steps ?? self::ALL_STEPS;
+	}
+
+	public function setSteps(array $customSteps): void
+	{
+		$this->steps = $customSteps;
 	}
 
 	/**
