@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate;
 
-use Breeze\Service\CommentService;
 use Breeze\Service\StatusService;
 use Breeze\Service\UserService;
-use Breeze\Util\Validate\Validations\DeleteComment;
 use Breeze\Util\Validate\Validations\DeleteStatus;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

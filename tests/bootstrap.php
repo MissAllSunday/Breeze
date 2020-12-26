@@ -84,6 +84,7 @@ function allowedTo($permissionName)
 		'deleteComments' => false,
 		'deleteOwnComments' => false,
 		'deleteOwnStatus' => false,
+		'postStatus' => false,
 	];
 
 	return $dummyPermissions[$permissionName];
