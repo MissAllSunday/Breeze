@@ -45,7 +45,8 @@
             "phpcbf -q --standard=./phpcs.xml --tab-width=4 ./Sources ./tests"
         ],
         "lint:check": [
-            "php-cs-fixer fix --dry-run --verbose --show-progress=estimating"
+          "php-cs-fixer fix ./Sources --dry-run --verbose --show-progress=estimating",
+          "php-cs-fixer fix ./tests --dry-run --verbose --show-progress=estimating"
         ],
         "phpunit": "phpunit -c phpunit.xml.dist --bootstrap ./tests/bootstrap.php --testsuite Breeze",
         "phpstan": "phpstan analyze -c phpstan.neon",

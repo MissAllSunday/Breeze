@@ -38,11 +38,11 @@ class PostCommentTest extends TestCase
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
-
-			$this->postComment->clean();
 		} else {
-			$this->assertNull($this->postComment->clean());
+			$this->assertEquals($data, $this->postComment->getData());
 		}
+
+		$this->postComment->clean();
 	}
 
 	public function cleanProvider(): array
@@ -86,11 +86,11 @@ class PostCommentTest extends TestCase
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
-
-			$this->postComment->isInt();
 		} else {
-			$this->assertNull($this->postComment->isInt());
+			$this->assertEquals(array_keys($data), $this->postComment->getInts());
 		}
+
+		$this->postComment->isInt();
 	}
 
 	public function isValidIntProvider(): array
@@ -98,21 +98,19 @@ class PostCommentTest extends TestCase
 		return [
 			'happy path' => [
 				'data' => [
-					'comments_poster_id' => 1,
-					'comments_status_owner_id' => 2,
-					'comments_profile_id' => 3,
 					'comments_status_id' => 666,
-					'comments_body' => 'Kaizoku ou ni ore wa naru',
+					'comments_status_owner_id' => 2,
+					'comments_poster_id' => 1,
+					'comments_profile_id' => 3,
 				],
 				'isExpectedException' => false,
 			],
 			'not ints' => [
 				'data' => [
-					'comments_poster_id' => 'lol',
-					'comments_status_owner_id' => 'fail',
-					'comments_profile_id' => '',
 					'comments_status_id' => '666',
-					'comments_body' => 'LOL',
+					'comments_status_owner_id' => 'fail',
+					'comments_poster_id' => 'lol',
+					'comments_profile_id' => '',
 				],
 				'isExpectedException' => true,
 			],
@@ -128,11 +126,11 @@ class PostCommentTest extends TestCase
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
-
-			$this->postComment->isString();
 		} else {
-			$this->assertNull($this->postComment->isString());
+			$this->assertEquals(array_keys($data), $this->postComment->getStrings());
 		}
+
+		$this->postComment->isString();
 	}
 
 	public function isValidStringProvider(): array
@@ -140,20 +138,12 @@ class PostCommentTest extends TestCase
 		return [
 			'happy path' => [
 				'data' => [
-					'comments_poster_id' => 1,
-					'comments_status_owner_id' => 2,
-					'comments_profile_id' => 3,
-					'comments_status_id' => 666,
 					'comments_body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
 			],
 			'not a string' => [
 				'data' => [
-					'comments_poster_id' => 1,
-					'comments_status_owner_id' => 2,
-					'comments_profile_id' => 3,
-					'comments_status_id' => 666,
 					'comments_body' => 666,
 				],
 				'isExpectedException' => true,
@@ -170,11 +160,13 @@ class PostCommentTest extends TestCase
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
-
-			$this->postComment->floodControl();
 		} else {
-			$this->assertNull($this->postComment->floodControl());
+			$this->assertArrayHasKey('msgCount', $this->postComment->getPersistenceValue(
+				'flood_' . $this->postComment->getPosterId()
+			));
 		}
+
+		$this->postComment->floodControl();
 	}
 
 	public function floodControlProvider(): array
@@ -247,6 +239,31 @@ class PostCommentTest extends TestCase
 				],
 			],
 		];
+	}
+
+	public function testGetSteps(): void
+	{
+		$this->assertEquals([
+			'clean',
+			'compare',
+			'isInt',
+			'isString',
+			'permissions',
+			'areValidUsers',
+			'floodControl',
+			'validStatus',
+		], $this->postComment->getSteps());
+	}
+
+	public function testGetParams(): void
+	{
+		$this->assertEquals([
+			'comments_status_id' => 0,
+			'comments_status_owner_id' => 0,
+			'comments_poster_id' => 0,
+			'comments_profile_id' => 0,
+			'comments_body' => '',
+		], $this->postComment->getParams());
 	}
 
 	private function getMockInstance(string $class): MockObject
