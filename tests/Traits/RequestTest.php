@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
-use \Breeze\Traits\RequestTrait;
+namespace Breeze\Traits;
+
+use Breeze\Traits\RequestTrait as RequestTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class RequestTest extends TestCase
 {
 	/**
-	 * @var \PHPUnit\Framework\MockObject\MockObject|RequestTrait
+	 * @var RequestTrait&MockObject
 	 */
 	private $requestTrait;
 

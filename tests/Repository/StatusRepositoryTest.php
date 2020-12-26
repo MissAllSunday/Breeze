@@ -6,19 +6,18 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Model\StatusModel;
-use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class StatusRepositoryTest extends TestCase
 {
 	/**
-	 * @var MockBuilder|StatusModel
+	 * @var StatusModel&MockObject
 	 */
-	private  $statusModel;
+	private $statusModel;
 
 	/**
-	 * @var MockBuilder|CommentRepository
+	 * @var CommentRepository&MockObject
 	 */
 	private $commentRepository;
 
@@ -26,8 +25,9 @@ class StatusRepositoryTest extends TestCase
 
 	public function setUp(): void
 	{
-		$this->statusModel = $this->getMockInstance(StatusModel::class);
-		$this->commentRepository = $this->getMockInstance(CommentRepository::class);
+		$this->statusModel =  $this->createMock(StatusModel::class);
+
+		$this->commentRepository = $this->createMock(CommentRepository::class);
 
 		$this->statusRepository = new StatusRepository($this->statusModel, $this->commentRepository);
 	}
@@ -44,13 +44,13 @@ class StatusRepositoryTest extends TestCase
 			->with($dataToInsert)
 			->willReturn($newId);
 
-		if (0 === $newId)
+		if (0 === $newId) {
 			$this->expectException(InvalidStatusException::class);
+		}
 
 		$newStatusId = $this->statusRepository->save($dataToInsert);
 
 		$this->assertEquals($newId, $newStatusId);
-
 	}
 
 	public function saveProvider(): array
@@ -77,8 +77,7 @@ class StatusRepositoryTest extends TestCase
 	 */
 	public function testGetByProfile(int $profileOwnerId, array $statusByProfileWillReturn): void
 	{
-		if (1 !== $profileOwnerId)
-		{
+		if (1 !== $profileOwnerId) {
 			$this->statusModel
 				->expects($this->once())
 				->method('getStatusByProfile')
@@ -129,8 +128,9 @@ class StatusRepositoryTest extends TestCase
 			->with($statusId)
 			->willReturn($getByIdWillReturn);
 
-		if (empty($getByIdWillReturn))
+		if (empty($getByIdWillReturn)) {
 			$this->expectException(InvalidStatusException::class);
+		}
 
 		$statusById = $this->statusRepository->getById($statusId);
 
@@ -165,16 +165,18 @@ class StatusRepositoryTest extends TestCase
 				->with($statusId)
 				->willReturn($commentDeleteByStatusId);
 
-		if (1 !== $statusId && !$commentDeleteByStatusId)
+		if (1 !== $statusId && !$commentDeleteByStatusId) {
 			$this->expectException(InvalidCommentException::class);
+		}
 
 		$this->statusModel->expects($this->once())
 			->method('delete')
 			->with([$statusId])
 			->willReturn($deleteByStatusId);
 
-			if (!$deleteByStatusId)
-				$this->expectException(InvalidStatusException::class);
+		if (!$deleteByStatusId) {
+			$this->expectException(InvalidStatusException::class);
+		}
 
 
 		$deleteById = $this->statusRepository->deleteById($statusId);

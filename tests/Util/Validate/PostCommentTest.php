@@ -2,38 +2,31 @@
 
 declare(strict_types=1);
 
+namespace Breeze\Util\Validate;
+
 use Breeze\Service\CommentService as CommentService;
 use Breeze\Service\StatusService as StatusService;
 use Breeze\Service\UserService;
-use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\PostComment;
-use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class PostCommentTest extends TestCase
 {
-	/**
-	 * @var MockBuilder|UserService
-	 */
-	private $userService;
-
 	private PostComment $postComment;
-
-	/**
-	 * @var MockObject|StatusService
-	 */
-	private $statusService;
 
 	public function setUp(): void
 	{
-		$this->userService = $this->getMockInstance(UserService::class);
-		$this->statusService = $this->getMockInstance(StatusService::class);
+		/**  @var UserService&MockObject $userService */
+		$userService = $this->createMock(UserService::class);
 
-		/**  @var MockObject|CommentService $commentService */
+		/**  @var StatusService&MockObject $statusService */
+		$statusService = $this->getMockInstance(StatusService::class);
+
+		/**  @var CommentService&MockObject $commentService */
 		$commentService = $this->getMockInstance(CommentService::class);
 
-		$this->postComment = new PostComment($this->userService, $this->statusService, $commentService);
+		$this->postComment = new PostComment($userService, $statusService, $commentService);
 	}
 
 	/**
@@ -43,15 +36,13 @@ class PostCommentTest extends TestCase
 	{
 		$this->postComment->setData($data);
 
-		if ($isExpectedException)
-		{
+		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 
 			$this->postComment->clean();
-		}
-
-		else
+		} else {
 			$this->assertNull($this->postComment->clean());
+		}
 	}
 
 	public function cleanProvider(): array
@@ -87,24 +78,22 @@ class PostCommentTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider IsValidIntProvider
+	 * @dataProvider isValidIntProvider
 	 */
 	public function testIsValidInt(array $data, bool $isExpectedException): void
 	{
 		$this->postComment->setData($data);
 
-		if ($isExpectedException)
-		{
+		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 
 			$this->postComment->isInt();
-		}
-
-		else
+		} else {
 			$this->assertNull($this->postComment->isInt());
+		}
 	}
 
-	public function IsValidIntProvider(): array
+	public function isValidIntProvider(): array
 	{
 		return [
 			'happy path' => [
@@ -131,24 +120,22 @@ class PostCommentTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider IsValidStringProvider
+	 * @dataProvider isValidStringProvider
 	 */
 	public function testIsValidString(array $data, bool $isExpectedException): void
 	{
 		$this->postComment->setData($data);
 
-		if ($isExpectedException)
-		{
+		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 
 			$this->postComment->isString();
-		}
-
-		else
+		} else {
 			$this->assertNull($this->postComment->isString());
+		}
 	}
 
-	public function IsValidStringProvider(): array
+	public function isValidStringProvider(): array
 	{
 		return [
 			'happy path' => [
@@ -181,15 +168,13 @@ class PostCommentTest extends TestCase
 	{
 		$this->postComment->setData($data);
 
-		if ($isExpectedException)
-		{
+		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 
 			$this->postComment->floodControl();
-		}
-
-		else
+		} else {
 			$this->assertNull($this->postComment->floodControl());
+		}
 	}
 
 	public function floodControlProvider(): array

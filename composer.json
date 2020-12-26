@@ -40,15 +40,16 @@
     },
     "scripts": {
         "lint": [
-            "php-cs-fixer fix --verbose --show-progress=estimating",
-            "phpcbf -q --standard=./phpcs.xml --tab-width=4 ./Sources"
+            "php-cs-fixer fix ./Sources --verbose --show-progress=estimating",
+            "php-cs-fixer fix ./tests --verbose --show-progress=estimating",
+            "phpcbf -q --standard=./phpcs.xml --tab-width=4 ./Sources ./tests"
         ],
         "lint:check": [
             "php-cs-fixer fix --dry-run --verbose --show-progress=estimating"
         ],
         "phpunit": "phpunit -c phpunit.xml.dist --bootstrap ./tests/bootstrap.php --testsuite Breeze",
-        "phpstan": "phpstan analyze",
-        "phpcs": "phpcs --standard=./phpcs.xml --tab-width=4 ./Sources",
+        "phpstan": "phpstan analyze -c phpstan.neon",
+        "phpcs": "phpcs --standard=./phpcs.xml --ignore=./tests/bootstrap.php --tab-width=4 ./Sources ./tests",
         "serve": "bin/server",
         "test": [
             "@lint:check",

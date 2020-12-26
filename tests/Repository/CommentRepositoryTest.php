@@ -6,16 +6,14 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Model\CommentModel;
-use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Override time() in the current namespace for testing.
  *
- * @return int
  */
-function time()
+function time(): int
 {
 	return 581299200;
 }
@@ -23,7 +21,7 @@ function time()
 class CommentRepositoryTest extends TestCase
 {
 	/**
-	 * @var MockBuilder|CommentModel
+	 * @var CommentModel&MockObject
 	 */
 	private $commentModel;
 
@@ -31,8 +29,8 @@ class CommentRepositoryTest extends TestCase
 
 	public function setUp(): void
 	{
-		$this->commentModel = $this->getMockInstance(CommentModel::class);
-		
+		$this->commentModel = $this->createMock(CommentModel::class);
+
 		$this->commentRepository = new CommentRepository($this->commentModel);
 	}
 
@@ -48,13 +46,13 @@ class CommentRepositoryTest extends TestCase
 			->with($dataToInsert)
 			->willReturn($newId);
 
-		if (0 === $newId)
+		if (0 === $newId) {
 			$this->expectException(InvalidCommentException::class);
+		}
 
 		$newCommentId = $this->commentRepository->save($dataToInsert);
 
 		$this->assertEquals($newId, $newCommentId);
-
 	}
 
 	public function saveProvider(): array
@@ -82,8 +80,7 @@ class CommentRepositoryTest extends TestCase
 	 */
 	public function testGetByProfile(int $profileOwnerId, array $commentsByProfileWillReturn): void
 	{
-		if (1 !== $profileOwnerId)
-		{
+		if (1 !== $profileOwnerId) {
 			$this->commentModel
 				->expects($this->once())
 				->method('getByProfiles')

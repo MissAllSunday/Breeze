@@ -3,7 +3,9 @@ parameters:
   bootstrapFiles:
     - tests/bootstrap.php
   paths:
-    - Sources/Breeze
+    - ./Sources
+  excludes_analyse:
+    - ./tests
   inferPrivatePropertyTypeFromConstructor: true
   ignoreErrors:
     - '/Function prepareDBSettingContext not found./'

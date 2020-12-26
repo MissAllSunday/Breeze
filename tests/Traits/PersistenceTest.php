@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-use Breeze\Traits\PersistenceTrait;
+namespace Breeze\Traits;
+
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class PersistenceTest extends TestCase
 {
 	/**
-	 * @var \PHPUnit\Framework\MockObject\MockObject|PersistenceTrait
+	 * @var MockObject|PersistenceTrait
 	 */
 	private $persistenceTrait;
 
@@ -33,11 +35,11 @@ final class PersistenceTest extends TestCase
 	 */
 	public function testSetMessage($message, $type, $expectedResult): void
 	{
-		if (null !== $type)
+		if (null !== $type) {
 			$setMessage = $this->persistenceTrait->setMessage($message, $type);
-
-		else
+		} else {
 			$setMessage = $this->persistenceTrait->setMessage($message);
+		}
 
 		$this->assertEquals($expectedResult, $setMessage);
 	}

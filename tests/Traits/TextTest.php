@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-use Breeze\Traits\TextTrait;
+namespace Breeze\Traits;
+
+use Breeze\Traits\TextTrait as TextTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -105,12 +107,14 @@ final class TextTest extends TestCase
 			],
 			'href text' =>
 			[
-				'textToParse' => '<a href="{href}">{zim}</a>',
+				'textToParse' => '
+				<a href="{href}">{zim}</a>',
 				'replacements' => [
 					'href' => 'https://www.youtube.com/watch?v=waEC-8GFTP4',
 					'zim' => 'Ain\'t Nobody Got Time For That'
 				],
-				'expected' => '<a href="https://www.youtube.com/watch?v=waEC-8GFTP4;foo=baz">Ain\'t Nobody Got Time For That</a>'
+				'expected' => '
+				<a href="https://www.youtube.com/watch?v=waEC-8GFTP4;foo=baz">Ain\'t Nobody Got Time For That</a>'
 			],
 		];
 	}
@@ -178,7 +182,6 @@ final class TextTest extends TestCase
 		$formattedBytes = $this->textTrait->formatBytes($bytes, $showUnit);
 
 		$this->assertEquals($expected, $formattedBytes);
-
 	}
 
 	public function formatBytesProvider(): array
@@ -208,8 +211,7 @@ final class TextTest extends TestCase
 		string $break,
 		string $pad,
 		string $expected
-	): void
-	{
+	): void {
 		$truncatedString = $this->textTrait->truncateText($stringToTruncate, $limit, $break, $pad);
 
 		$this->assertEquals($expected, $truncatedString);

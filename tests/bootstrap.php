@@ -10,21 +10,27 @@ global $sourcedir, $scripturl, $modSettings;
 global $boarddir, $boardurl, $context, $txt, $smcFunc, $user_info;
 
 // Function DB
-$smcFunc['htmltrim'] = function($value)
-{
+$smcFunc['htmltrim'] = function ($value) {
 	return trim($value);
 };
 
-$smcFunc['htmlspecialchars'] = function($value)
-{
+$smcFunc['htmlspecialchars'] = function ($value) {
 	return htmlspecialchars($value, ENT_QUOTES);
 };
 
 // Mock functions
-function loadLanguage($template_name): void{}
-function log_error($string): void{}
-function add_integration_function(): void{}
-function remove_integration_function(): void{}
+function loadLanguage($template_name): void
+{
+}
+function log_error($string): void
+{
+}
+function add_integration_function(): void
+{
+}
+function remove_integration_function(): void
+{
+}
 function smf_json_decode($s, $array = true)
 {
 	return json_decode($s, $array);
@@ -42,8 +48,7 @@ function loadMemberData(array $userIds): array
 
 function loadMemberContext(int $userId, bool $dummy): array
 {
-	switch($userId)
-	{
+	switch ($userId) {
 		case 666:
 			$dataToReturn = [
 				'link' => '<a href="#">Astaroth</a>',
@@ -63,8 +68,9 @@ function loadMemberContext(int $userId, bool $dummy): array
 			$dataToReturn = [];
 	}
 
-	if ($dummy)
+	if ($dummy) {
 		$dummy = false;
+	}
 
 	return $dataToReturn;
 }
@@ -84,8 +90,7 @@ function allowedTo($permissionName)
 
 function cache_get_data($key, $timeToLive = 360): ?array
 {
-	switch($key)
-	{
+	switch ($key) {
 		case 'Breeze_StatusRepository_getByProfile1':
 		case 'Breeze_CommentRepository_getByProfile1':
 			$dataToReturn = [

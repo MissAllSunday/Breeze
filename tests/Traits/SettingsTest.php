@@ -2,19 +2,30 @@
 
 declare(strict_types=1);
 
-use Breeze\Traits\SettingsTrait;
+namespace Breeze\Traits;
+
+use Breeze\Traits\SettingsTrait as SettingsTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class SettingsTest extends TestCase
 {
 	/**
-	 * @var SettingsTrait
+	 * @var MockObject&SettingsTrait
 	 */
 	private $settingsTrait;
 
 	protected function setUp(): void
 	{
-		$this->settingsTrait = $this->getMockForTrait(SettingsTrait::class);
+		$this->settingsTrait = $this->createSettingsTraitMock();
+	}
+
+	/**
+	 * @return  MockObject&SettingsTrait
+	 */
+	protected function createSettingsTraitMock()
+	{
+		return $this->getMockForTrait(SettingsTrait::class);
 	}
 
 	/**
