@@ -17,12 +17,18 @@ abstract class ValidateData
 	use TextTrait;
 	use PersistenceTrait;
 
+	protected const  COMPARE = 'compare';
+	protected const  INT = 'isInt';
+	protected const  STRING = 'isString';
+	protected const  VALID_USERS = 'areValidUsers';
+	protected const  FLOOD_CONTROL = 'floodControl';
+
 	protected const ALL_STEPS = [
-		'compare',
-		'isInt',
-		'isString',
-		'areValidUsers',
-		'floodControl',
+		self::COMPARE,
+		self::INT,
+		self::STRING,
+		self::VALID_USERS,
+		self::FLOOD_CONTROL,
 	];
 
 	protected array $steps = [];
