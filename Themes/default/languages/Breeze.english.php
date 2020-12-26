@@ -136,6 +136,7 @@ $txt['Breeze_goTop'] = 'Go to top';
 $txt['Breeze_moodLabel'] = 'mood';
 $txt['Breeze_moodChange'] = 'Change your mood';
 $txt['Breeze_info_moodChanged'] = 'Your mood has been changed';
+$txt['Breeze_info_mood_created'] = 'The new mood has been successfully created!';
 
 // Buddy request.
 $txt['Breeze_buddy_title'] = 'Buddy request';

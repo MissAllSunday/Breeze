@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations;
 
 use Breeze\Entity\CommentEntity;
+use Breeze\Entity\MoodEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Service\MoodServiceInterface;
 use Breeze\Service\UserServiceInterface;
@@ -14,14 +15,13 @@ use Breeze\Util\Validate\ValidateDataException;
 class CreateMood extends ValidateData implements ValidateDataInterface
 {
 	protected const PARAMS = [
-		CommentEntity::COLUMN_STATUS_ID => 0,
-		CommentEntity::COLUMN_STATUS_OWNER_ID => 0,
-		CommentEntity::COLUMN_POSTER_ID => 0,
-		CommentEntity::COLUMN_PROFILE_ID => 0,
-		CommentEntity::COLUMN_BODY => '',
+		MoodEntity::COLUMN_ID => 0,
+		MoodEntity::COLUMN_EMOJI => '',
+		MoodEntity::COLUMN_DESC => '',
+		MoodEntity::COLUMN_STATUS => 0,
 	];
 
-	protected const SUCCESS_KEY = 'published_comment';
+	protected const SUCCESS_KEY = 'mood_created';
 
 	protected UserServiceInterface $userService;
 
@@ -43,7 +43,12 @@ class CreateMood extends ValidateData implements ValidateDataInterface
 
 	public function getSteps(): array
 	{
-		$this->steps = self::ALL_STEPS;
+		$this->steps = [
+			'compare',
+			'isInt',
+			'isString',
+			'areValidUsers',
+		];
 		$this->steps[] = 'permissions';
 		$this->steps[] = 'validStatus';
 
