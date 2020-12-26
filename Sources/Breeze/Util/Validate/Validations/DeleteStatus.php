@@ -14,11 +14,11 @@ use Breeze\Util\Validate\ValidateDataException;
 class DeleteStatus extends ValidateData implements ValidateDataInterface
 {
 	public array $steps = [
-		'clean',
-		'isInt',
-		'validStatus',
-		'validUser',
-		'permissions'
+		self::CLEAN,
+		self::INT,
+		self::VALID_STATUS,
+		self::VALID_USER,
+		self::PERMISSIONS,
 	];
 
 	protected const PARAMS = [

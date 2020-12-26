@@ -46,11 +46,11 @@ class PostComment extends ValidateData implements ValidateDataInterface
 
 	public function getSteps(): array
 	{
-		$this->steps = self::ALL_STEPS;
-		$this->steps[] = 'permissions';
-		$this->steps[] = 'validStatus';
+		$this->steps = self::DEFAULT_STEPS;
 
-		return $this->steps;
+		return array_merge($this->steps, [
+			self::VALID_STATUS,
+		]);
 	}
 
 	public function setSteps(array $customSteps): void

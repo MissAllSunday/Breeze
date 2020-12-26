@@ -15,11 +15,11 @@ use Breeze\Util\Validate\ValidateDataException;
 class DeleteComment extends ValidateData implements ValidateDataInterface
 {
 	public array $steps = [
-		'clean',
-		'isInt',
-		'validComment',
-		'validUser',
-		'permissions'
+		self::CLEAN,
+		self::INT,
+		self::VALID_COMMENT,
+		self::VALID_USER,
+		self::PERMISSIONS,
 	];
 
 	protected const PARAMS = [

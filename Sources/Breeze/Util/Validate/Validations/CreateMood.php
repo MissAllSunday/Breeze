@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations;
 
-use Breeze\Entity\CommentEntity;
 use Breeze\Entity\MoodEntity;
-use Breeze\Repository\InvalidStatusException;
 use Breeze\Service\MoodServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Permissions;

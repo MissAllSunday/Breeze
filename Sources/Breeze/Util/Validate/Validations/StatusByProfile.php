@@ -10,10 +10,10 @@ use Breeze\Entity\StatusEntity;
 class StatusByProfile extends ValidateData implements ValidateDataInterface
 {
 	public array $steps = [
-		'clean',
-		'isInt',
-		'areValidUsers',
-		'ignoreList' // TODO add validation for current user on ignoreList
+		self::CLEAN,
+		self::INT,
+		self::VALID_USERS,
+		self::IGNORE_LIST, // TODO add validation for current user on ignoreList
 	];
 
 	protected const PARAMS = [
