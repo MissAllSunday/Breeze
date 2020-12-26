@@ -197,27 +197,23 @@ class DeleteCommentTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider getStepsProvider
-	 */
-	public function testGetSteps(array $steps): void
+	public function testGetSteps(): void
 	{
-		$this->assertEquals($steps, $this->deleteComment->getSteps());
+		$this->assertEquals([
+			'clean',
+			'isInt',
+			'validComment',
+			'validUser',
+			'permissions',
+		], $this->deleteComment->getSteps());
 	}
 
-	public function getStepsProvider(): array
+	public function testGetParams(): void
 	{
-		return [
-			'happy happy joy joy' => [
-				'steps' => [
-					'clean',
-					'isInt',
-					'validComment',
-					'validUser',
-					'permissions',
-				]
-			]
-		];
+		$this->assertEquals([
+			'comments_id' => 0,
+			'comments_poster_id' => 0
+		], $this->deleteComment->getParams());
 	}
 
 	private function getMockInstance(string $class): MockObject
