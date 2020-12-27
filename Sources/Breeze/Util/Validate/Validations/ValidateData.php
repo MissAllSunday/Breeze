@@ -31,7 +31,6 @@ abstract class ValidateData
 
 	protected const DEFAULT_STEPS = [
 		self::CLEAN,
-		self::COMPARE,
 		self::INT,
 		self::STRING,
 		self::PERMISSIONS,

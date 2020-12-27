@@ -231,7 +231,6 @@ class PostStatusTest extends TestCase
 	{
 		$this->assertEquals([
 			'clean',
-			'compare',
 			'isInt',
 			'isString',
 			'permissions',
