@@ -13,9 +13,12 @@ use Breeze\Util\Validate\ValidateDataException;
 class CreateMood extends ValidateData implements ValidateDataInterface
 {
 	protected const PARAMS = [
-		MoodEntity::COLUMN_ID => 0,
 		MoodEntity::COLUMN_EMOJI => '',
 		MoodEntity::COLUMN_DESC => '',
+		MoodEntity::COLUMN_STATUS => 0,
+	];
+
+	protected const DEFAULT_PARAMS = [
 		MoodEntity::COLUMN_STATUS => 0,
 	];
 
@@ -41,7 +44,10 @@ class CreateMood extends ValidateData implements ValidateDataInterface
 
 	public function getSteps(): array
 	{
-		return self::DEFAULT_STEPS;
+		return array_merge($this->steps, [
+			self::INT,
+			self::STRING,
+		]);
 	}
 
 	/**
@@ -49,7 +55,7 @@ class CreateMood extends ValidateData implements ValidateDataInterface
 	 */
 	public function permissions(): void
 	{
-		if (!Permissions::isAllowedTo(Permissions::POST_COMMENTS)) {
+		if (!Permissions::isAllowedTo(Permissions::ADMIN_FORUM)) {
 			throw new ValidateDataException('postComments');
 		}
 	}
@@ -57,7 +63,6 @@ class CreateMood extends ValidateData implements ValidateDataInterface
 	public function getInts(): array
 	{
 		return [
-			MoodEntity::COLUMN_ID,
 			MoodEntity::COLUMN_STATUS,
 		];
 	}
@@ -70,8 +75,8 @@ class CreateMood extends ValidateData implements ValidateDataInterface
 	public function getStrings(): array
 	{
 		return [
-			MoodEntity::COLUMN_EMOJI => '',
-			MoodEntity::COLUMN_DESC => '',
+			MoodEntity::COLUMN_EMOJI,
+			MoodEntity::COLUMN_DESC,
 		];
 	}
 
@@ -82,6 +87,11 @@ class CreateMood extends ValidateData implements ValidateDataInterface
 
 	public function getParams(): array
 	{
-		return self::PARAMS;
+		return array_merge(self::DEFAULT_PARAMS, $this->data);
+	}
+
+	public function getData(): array
+	{
+		return $this->getParams();
 	}
 }

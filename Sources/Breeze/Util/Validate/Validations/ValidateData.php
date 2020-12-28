@@ -98,8 +98,11 @@ abstract class ValidateData
 	 */
 	public function isInt(): void
 	{
-		foreach ($this->getInts() as $integerValueName) {
-			if (!is_int($this->getData()[$integerValueName])) {
+		$integerValues = $this->getInts();
+		$data = $this->getData();
+
+		foreach ($integerValues as $integerValueName) {
+			if (!is_int($data[$integerValueName])) {
 				throw new ValidateDataException('malformed_data');
 			}
 		}
@@ -110,8 +113,11 @@ abstract class ValidateData
 	 */
 	public function isString(): void
 	{
-		foreach ($this->getStrings() as $stringValueName) {
-			if (!is_string($this->getData()[$stringValueName])) {
+		$data = $this->getData();
+		$strings = $this->getStrings();
+
+		foreach ($strings as $stringValueName) {
+			if (!is_string($data[$stringValueName])) {
 				throw new ValidateDataException('malformed_data');
 			}
 		}

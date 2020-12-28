@@ -11,18 +11,14 @@ use PHPUnit\Framework\TestCase;
 
 class UserSettingsTest extends TestCase
 {
-	/**
-	 * @var UserService&MockObject
-	 */
-	private $userService;
-
 	private UserSettings $userSettings;
 
 	public function setUp(): void
 	{
-		$this->userService = $this->createMock(UserService::class);
+		/**  @var MockObject&UserService $userService */
+		$userService = $this->createMock(UserService::class);
 
-		$this->userSettings = new UserSettings($this->userService);
+		$this->userSettings = new UserSettings($userService);
 	}
 
 	/**
