@@ -22,7 +22,7 @@ class CreateMood extends ValidateData implements ValidateDataInterface
 		MoodEntity::COLUMN_STATUS => 0,
 	];
 
-	protected const SUCCESS_KEY = 'mood_created';
+	protected const SUCCESS_KEY = 'moodCreated';
 
 	protected UserServiceInterface $userService;
 
@@ -56,7 +56,7 @@ class CreateMood extends ValidateData implements ValidateDataInterface
 	public function permissions(): void
 	{
 		if (!Permissions::isAllowedTo(Permissions::ADMIN_FORUM)) {
-			throw new ValidateDataException('postComments');
+			throw new ValidateDataException('moodCreated');
 		}
 	}
 

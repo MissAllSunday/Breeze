@@ -135,14 +135,14 @@ class CreateMoodTest extends TestCase
 	/**
 	 * @dataProvider isValidStringProvider
 	 */
-	public function testIsValidString(array $data, bool $isExpectedException): void
+	public function testIsValidString(array $data, array $strings, bool $isExpectedException): void
 	{
 		$this->createMood->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 		} else {
-			$this->assertEquals($data, $this->createMood->getData());
+			$this->assertEquals($strings, $this->createMood->getStrings());
 		}
 
 		$this->createMood->isString();
@@ -157,6 +157,10 @@ class CreateMoodTest extends TestCase
 					'description' => 'desc',
 					'enable' => 1,
 				],
+				'strings' => [
+					'emoji',
+					'description',
+				],
 				'isExpectedException' => false,
 			],
 			'not a string' => [
@@ -164,6 +168,10 @@ class CreateMoodTest extends TestCase
 					'emoji' => 666,
 					'description' => [666, 667],
 					'enable' => 'lol',
+				],
+				'strings' => [
+					'emoji',
+					'description',
 				],
 				'isExpectedException' => true,
 			],

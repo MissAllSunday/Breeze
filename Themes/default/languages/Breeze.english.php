@@ -102,11 +102,6 @@ $txt['Breeze_info_notiMulti_delete_after'] = 'You have successfully deleted all 
 $txt['Breeze_info_notiMulti_markasread_after'] = 'You have successfully marked as read all notifications';
 $txt['Breeze_info_notiMulti_unmarkasread_after'] = 'You have successfully marked as unread all notifications';
 
-// Errors
-$txt['cannot_breeze_postStatus'] = $txt['Breeze_error_postStatus'];
-$txt['cannot_breeze_postComments'] = $txt['Breeze_error_postComments'];
-$txt['cannot_breeze_deleteStatus'] = $txt['Breeze_error_deleteStatus'] ;
-$txt['cannot_breeze_deleteComments'] = $txt['Breeze_error_deleteComments'];
 
 // TODO: move $scripurl to back
 $txt['Breeze_cannot_see_general_wall'] = 'You need to enable your general wall from your <a href="' . $scripturl . '?action=profile;area=breezesettings">wall settings page</a>.';
@@ -136,7 +131,8 @@ $txt['Breeze_goTop'] = 'Go to top';
 $txt['Breeze_moodLabel'] = 'mood';
 $txt['Breeze_moodChange'] = 'Change your mood';
 $txt['Breeze_info_moodChanged'] = 'Your mood has been changed';
-$txt['Breeze_info_mood_created'] = 'The new mood has been successfully created!';
+$txt['Breeze_info_moodCreated'] = 'The new mood has been successfully created!';
+$txt['Breeze_error_moodCreated'] = 'You aren\'t allowed to create moods.';
 
 // Buddy request.
 $txt['Breeze_buddy_title'] = 'Buddy request';
@@ -155,3 +151,10 @@ $txt['Breeze_buddy_already_sent'] = 'You already sent an invitation, please wait
 $txt['Breeze_buddy_error'] = 'There was an error, please try again.';
 $txt['Breeze_buddy_message'] = 'Buddy message';
 $txt['Breeze_buddy_message_desc'] = 'You can send {receiver} a message along with your buddy invite. <br> no HTML or BBC is allowed. Leave the field empty if you do not want to send a message.';
+
+// Errors
+$txt['cannot_breeze_postStatus'] = $txt['Breeze_error_postStatus'];
+$txt['cannot_breeze_postComments'] = $txt['Breeze_error_postComments'];
+$txt['cannot_breeze_deleteStatus'] = $txt['Breeze_error_deleteStatus'] ;
+$txt['cannot_breeze_deleteComments'] = $txt['Breeze_error_deleteComments'];
+$txt['cannot_breeze_moodCreated'] = $txt['Breeze_error_moodCreated'];
