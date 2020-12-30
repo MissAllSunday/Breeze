@@ -7,6 +7,7 @@ namespace Breeze\Config\Mapper;
 
 use Breeze\Controller\AdminController;
 use Breeze\Controller\API\CommentController;
+use Breeze\Controller\API\MoodController;
 use Breeze\Controller\API\StatusController;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
@@ -65,6 +66,14 @@ return [
 			UserSettingsService::class,
 			UserService::class,
 			UserSettingsBuilder::class,
+			ValidateGateway::class
+		]
+	],
+	'controller.mood' => [
+		'class' => MoodController::class,
+		'arguments'=> [
+			UserService::class,
+			MoodService::class,
 			ValidateGateway::class
 		]
 	],

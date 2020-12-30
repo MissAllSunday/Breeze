@@ -197,12 +197,13 @@ class Breeze
 	{
 		$statusController = $this->container->get(StatusController::class);
 		$commentController = $this->container->get(CommentController::class);
+		$moodController = $this->container->get(MoodController::class);
 
 		$actions['breezeStatus'] = [false, [$statusController, 'dispatch']];
 		$actions['breezeComment'] = [false, [$commentController, 'dispatch']];
 		$actions['breezeWall'] = [false, WallController::class . '::dispatch#'];
 		$actions['breezeBuddy'] = [false, BuddyController::class . '::dispatch#'];
-		$actions['breezeMood'] = [false, MoodController::class . '::dispatch#'];
+		$actions['breezeMood'] = [false, [$moodController, 'dispatch']];
 	}
 
 	public function profilePopUpWrapper(&$profile_items): void

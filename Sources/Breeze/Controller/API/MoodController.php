@@ -37,6 +37,12 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 		$this->gateway = $gateway;
 	}
 
+	public function createMood(): void
+	{
+		var_dump($this->gateway->getData());
+		die;
+	}
+
 	public function getSubActions(): array
 	{
 		return self::SUB_ACTIONS;
