@@ -33,17 +33,9 @@ class MoodService extends BaseService implements MoodServiceInterface
 		$this->components = $components;
 	}
 
-	public function createMoodList(): void
+	public function getAll(): array
 	{
-		$this->setLanguage('ManageSmileys');
-		$scriptUrl = $this->global('scripturl');
-		$context = $this->global('context');
-		$allMoods = $this->moodRepository->getAllMoods();
-		$context['allMoods'] = $allMoods;
-
-		$this->setGlobal('context', $context);
-
-		$this->components->loadComponents(['moodMain', 'textArea']);
+		return $this->moodRepository->getAllMoods();
 	}
 
 	public function getPlacementField(): int
