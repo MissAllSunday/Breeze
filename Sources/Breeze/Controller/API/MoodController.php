@@ -43,8 +43,6 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 
 	public function createMood(): void
 	{
-		var_dump($this->gateway->getData());
-		die;
 	}
 
 	public function getAllMoods(): void
@@ -56,6 +54,15 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 		$this->print($allMoods);
 	}
 
+	public function getActiveMoods(): void
+	{
+		$data = $this->gateway->getData();
+
+		$activeMoods = $this->moodService->getActiveMoods();
+
+		$this->print($activeMoods);
+	}
+
 	public function getSubActions(): array
 	{
 		return self::SUB_ACTIONS;
@@ -63,7 +70,7 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 
 	public function getMainAction(): string
 	{
-		return self::ACTION_POST;
+		return self::ACTION_ACTIVE;
 	}
 
 	public function setValidator(): ValidateDataInterface

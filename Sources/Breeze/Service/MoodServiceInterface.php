@@ -11,6 +11,8 @@ interface MoodServiceInterface extends BaseServiceInterface
 
 	public function getAll(): array;
 
+	public function getActiveMoods(): array;
+
 	public function getPlacementField(): int;
 
 	public function displayMood(array &$data, int $userId): void;

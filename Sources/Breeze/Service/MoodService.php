@@ -38,6 +38,11 @@ class MoodService extends BaseService implements MoodServiceInterface
 		return $this->moodRepository->getAllMoods();
 	}
 
+	public function getActiveMoods(): array
+	{
+		return $this->moodRepository->getActiveMoods();
+	}
+
 	public function getPlacementField(): int
 	{
 		return (int) $this->getSetting(SettingsEntity::MOOD_PLACEMENT, 0);
