@@ -19,6 +19,7 @@ class Components
 		'editor',
 		'wallMain',
 		'moodList',
+		'mood',
 		'textArea',
 	];
 	private const CDN_JS = [

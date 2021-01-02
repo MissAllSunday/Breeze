@@ -33,6 +33,15 @@ class MoodService extends BaseService implements MoodServiceInterface
 		$this->components = $components;
 	}
 
+	public function moodList(): array
+	{
+		$moods = $this->moodRepository->getAllMoods();
+
+		$this->components->loadComponents(['moodList', 'mood']);
+
+		return $moods;
+	}
+
 	public function getAll(): array
 	{
 		return $this->moodRepository->getAllMoods();

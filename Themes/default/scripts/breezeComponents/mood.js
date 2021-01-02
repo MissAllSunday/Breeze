@@ -1,8 +1,25 @@
 Vue.component('mood', {
-    props: ['moodId', 'content'],
-    template: `
-    <div>
-        mood
-    </div>`,
-    filters: {},
+	props: {
+		apiUrl: {
+			type: String,
+			required: false
+		},
+		mood:{
+			type: Object,
+			default: function () {
+				return {
+					id: 0,
+					emoji: '',
+					description: '',
+					enable: 0,
+				}
+			},
+			required: false
+		}
+	},
+	template: `
+	<div>
+		<span v-html='mood.emoji'></span>
+	</div>`,
+	filters: {},
 })

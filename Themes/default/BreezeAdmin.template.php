@@ -130,10 +130,10 @@ function template_breezeAdmin_moodList(): void
 
 	echo '
 		<div id="moodList">
+			<span v-if="errored">There was a problem getting the moods</span>
 			<mood
 				v-for ="mood in localMoods"
 				v-bind:mood="mood"
-				@remove_mood="onRemoveMood"
 			></mood>
 		</div>';
 }
