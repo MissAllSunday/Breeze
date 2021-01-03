@@ -129,12 +129,15 @@ function template_breezeAdmin_moodList(): void
 	}
 
 	echo '
-		<div id="moodList">
+		<div class="cat_bar">&nbsp;</div>
+		<div id="moodList" class="information">
 			<span v-if="errored">There was a problem getting the moods</span>
-			<mood
-				v-for ="mood in localMoods"
-				v-bind:mood="mood"
-			></mood>
+			<ul>
+				<mood
+					v-for ="mood in localMoods"
+					v-bind:mood="mood"
+				></mood>
+			</ul>
 		</div>';
 }
 

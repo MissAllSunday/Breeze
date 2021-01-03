@@ -98,6 +98,13 @@
 	margin-right: auto;
 }
 
+#moodList li {
+	display: inline;
+	list-style-type: none;
+	padding-right: 20px;
+	float: left;
+}
+
 @media (max-width: 480px) {
 	#breeze_summary{
 		display: none;

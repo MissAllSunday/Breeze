@@ -47,9 +47,7 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 
 	public function getAllMoods(): void
 	{
-		$allMoods = $this->moodService->moodList();
-
-		$this->print($allMoods);
+		$this->print($this->moodService->getAll());
 	}
 
 	public function getActiveMoods(): void

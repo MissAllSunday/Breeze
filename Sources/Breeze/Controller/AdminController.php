@@ -98,7 +98,7 @@ class AdminController extends BaseController implements ControllerInterface
 			AdminService::POST_URL . 'main'
 		);
 
-		$this->adminService->loadComponents(['moodList', 'mood']);
+		$this->moodService->moodList();
 
 		$this->render(__FUNCTION__);
 	}

@@ -18,8 +18,8 @@ Vue.component('mood', {
 		}
 	},
 	template: `
-	<div>
+	<li>
 		<span v-html='mood.emoji'></span>
-	</div>`,
+	</li>`,
 	filters: {},
 })
