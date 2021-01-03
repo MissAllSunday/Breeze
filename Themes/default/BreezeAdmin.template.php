@@ -119,7 +119,7 @@ function template_breezeAdmin_main(): void
 
 function template_breezeAdmin_moodList(): void
 {
-	global $context;
+	global $context, $txt;
 
 	if (!empty($context[Breeze::NAME]['notice'])) {
 		echo '
@@ -131,7 +131,7 @@ function template_breezeAdmin_moodList(): void
 	echo '
 		<div class="cat_bar">&nbsp;</div>
 		<div id="moodList" class="information">
-			<span v-if="errored">There was a problem getting the moods</span>
+			<span v-if="errored">' . $txt['Breeze_error_moodGet'] . '</span>
 			<ul>
 				<mood
 					v-for ="mood in localMoods"

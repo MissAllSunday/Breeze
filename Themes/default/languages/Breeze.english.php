@@ -133,6 +133,7 @@ $txt['Breeze_moodChange'] = 'Change your mood';
 $txt['Breeze_info_moodChanged'] = 'Your mood has been changed';
 $txt['Breeze_info_moodCreated'] = 'The new mood has been successfully created!';
 $txt['Breeze_error_moodCreated'] = 'You aren\'t allowed to create moods.';
+$txt['Breeze_error_moodGet'] = 'There was a problem getting the moods.';
 
 // Buddy request.
 $txt['Breeze_buddy_title'] = 'Buddy request';
