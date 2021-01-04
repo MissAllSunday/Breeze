@@ -103,6 +103,7 @@
 	list-style-type: none;
 	padding-right: 20px;
 	float: left;
+	max-width: 30%;
 }
 
 @media (max-width: 480px) {

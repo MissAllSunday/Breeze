@@ -1,7 +1,6 @@
 new Vue({
 	el: '#moodList',
 	data: {
-		editing: false,
 		errored: false
 	},
 	props: {
