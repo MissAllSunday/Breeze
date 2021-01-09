@@ -125,7 +125,7 @@
 
 .modal-container {
 	min-width: 300px;
-	max-width: 40%;
+	max-width: 35%;
 	margin: 0 auto;
 	transition: all .3s ease;
 }

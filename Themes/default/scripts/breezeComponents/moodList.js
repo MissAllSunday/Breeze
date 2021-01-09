@@ -21,26 +21,25 @@ new Vue({
 		this.fetchAllMoods();
 	},
 	methods: {
-		onEditingMood: function (moodId){
-
-		},
-		getEditingMood: function (moodId){
-			let tempObj = this.localMoods;
-			for (var i = 0; i < tempObj.length; i++) {
-				if (tempObj[i].moods_id === moodId) {
-					return tempObj[i];
-				}
-			}
-		},
 		fetchAllMoods: function () {
 			axios
 				.get(this.moodsURL)
 				.then(response => {
+					let moodCount = Object.keys(response.data).length
+					for (let i = 1; i <= moodCount; i++) {
+						response.data[i].emoji = this.decode(response.data[i].emoji)
+					}
+
 					this.localMoods = response.data
 				})
 				.catch(error => {
 					this.errored = true
 				})
-		}
+		},
+		decode: function (html) {
+			let decoder = document.createElement('div');
+			decoder.innerHTML = html;
+			return decoder.textContent;
+		},
 	}
 })

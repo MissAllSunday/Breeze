@@ -137,7 +137,6 @@ function template_breezeAdmin_moodList(): void
 					v-for ="mood in localMoods"
 					:key="mood.moods_id"
 					v-bind:mood="mood"
-					@clicked="onEditingMood"
 				></mood>
 			</ul>
 		</div>';

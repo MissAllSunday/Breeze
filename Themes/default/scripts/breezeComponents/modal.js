@@ -7,7 +7,9 @@ Vue.component('mood-edit-modal', {
 				<div class="modal-container" @click.stop>
 					<div class="modal-header cat_bar">
 						<h3 class="catbg">
-							<slot name="header"></slot>
+							<span class="floatleft">
+								<slot name="header"></slot>
+							</span>
 							<span class="main_icons remove_button floatright" @click="$emit('close')"></span>
 						</h3>
 					</div>
