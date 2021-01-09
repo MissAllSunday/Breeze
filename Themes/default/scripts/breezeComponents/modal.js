@@ -3,20 +3,16 @@ Vue.component('mood-edit-modal', {
 <div id="mood-edit-modal">
 	<transition name="modal">
 		<div class="modal-mask">
-			<div class="modal-wrapper">
-				<div class="modal-container">
-					<div class="modal-header">
-						<slot name="header"></slot>
+			<div class="modal-wrapper" @click="$emit('close')">
+				<div class="modal-container" @click.stop>
+					<div class="modal-header cat_bar">
+						<h3 class="catbg">
+							<slot name="header"></slot>
+							<span class="main_icons remove_button floatright" @click="$emit('close')"></span>
+						</h3>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body information">
 						<slot name="body"></slot>
-					</div>
-					<div class="modal-footer">
-						<slot name="footer">
-							<button class="modal-default-button" @click="close">
-								OK
-							</button>
-						</slot>
 					</div>
 				</div>
 			</div>
