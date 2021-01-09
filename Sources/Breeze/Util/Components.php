@@ -18,8 +18,8 @@ class Components
 		'utils',
 		'editor',
 		'wallMain',
-		'moodList',
 		'mood',
+		'moodList',
 		'textArea',
 	];
 	private const CDN_JS = [

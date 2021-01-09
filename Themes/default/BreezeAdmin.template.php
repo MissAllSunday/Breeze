@@ -130,6 +130,34 @@ function template_breezeAdmin_moodList(): void
 
 	echo '
 		<div class="cat_bar">&nbsp;</div>
+		<script type="text/x-template" id="mood-edit-modal">
+			<transition name="modal">
+				<div class="modal-mask">
+					<div class="modal-wrapper">
+						<div class="modal-container">
+							<div class="modal-header">
+								<slot name="header">
+								default header
+								</slot>
+							</div>
+							<div class="modal-body">
+								<slot name="body">
+									Emoji:
+								</slot>
+							</div>
+							<div class="modal-footer">
+								<slot name="footer">
+									default footer
+									<button class="modal-default-button" @click="close">
+										OK
+									</button>
+								</slot>
+							</div>
+						</div>
+					</div>
+				</div>
+			</transition>
+		</script>
 		<div id="moodList" class="information">
 			<span v-if="errored">' . $txt['Breeze_error_moodGet'] . '</span>
 			<ul>
@@ -137,6 +165,7 @@ function template_breezeAdmin_moodList(): void
 					v-for ="mood in localMoods"
 					:key="mood.moods_id"
 					v-bind:mood="mood"
+					@clicked="onEditingMood"
 				></mood>
 			</ul>
 		</div>';
