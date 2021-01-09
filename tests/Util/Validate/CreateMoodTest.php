@@ -49,7 +49,7 @@ class CreateMoodTest extends TestCase
 				'data' => [
 					'emoji' => 'lol',
 					'description' => 'desc',
-					'enable' => 0,
+					'isActive' => 0,
 				],
 				'isExpectedException' => false,
 			],
@@ -57,7 +57,7 @@ class CreateMoodTest extends TestCase
 				'data' => [
 					'emoji' => 'custom',
 					'description' => 'custom desc',
-					'enable' => 1,
+					'isActive' => 1,
 				],
 				'isExpectedException' => false,
 			],
@@ -82,7 +82,7 @@ class CreateMoodTest extends TestCase
 				'data' => [
 					'emoji' => 'lol',
 					'description' => 'desc',
-					'enable' => 0,
+					'isActive' => 0,
 				],
 			],
 		];
@@ -111,10 +111,10 @@ class CreateMoodTest extends TestCase
 				'data' => [
 					'emoji' => 'not empty',
 					'description' => 'desc',
-					'enable' => 1,
+					'isActive' => 1,
 				],
 				'integers' => [
-					'enable'
+					'isActive'
 				],
 				'isExpectedException' => false,
 			],
@@ -122,7 +122,7 @@ class CreateMoodTest extends TestCase
 				'data' => [
 					'emoji' => 111,
 					'description' => 222,
-					'enable' => 'not an int',
+					'isActive' => 'not an int',
 				],
 				'integers' => [
 					'enable'
@@ -155,7 +155,7 @@ class CreateMoodTest extends TestCase
 				'data' => [
 					'emoji' => 'not empty',
 					'description' => 'desc',
-					'enable' => 1,
+					'isActive' => 1,
 				],
 				'strings' => [
 					'emoji',
@@ -167,7 +167,7 @@ class CreateMoodTest extends TestCase
 				'data' => [
 					'emoji' => 666,
 					'description' => [666, 667],
-					'enable' => 'lol',
+					'isActive' => 'lol',
 				],
 				'strings' => [
 					'emoji',
@@ -204,14 +204,14 @@ class CreateMoodTest extends TestCase
 				'data' => [
 					'emoji' => 'lol',
 					'description' => 'desc',
-					'enable' => 0,
+					'isActive' => 0,
 				],
 			],
 			'custom params' => [
 				'data' => [
 					'emoji' => 'custom emoji',
 					'description' => 'some other description',
-					'enable' => 1,
+					'isActive' => 1,
 				],
 			],
 		];
