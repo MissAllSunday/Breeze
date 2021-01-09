@@ -38,7 +38,7 @@ class MoodService extends BaseService implements MoodServiceInterface
 		$moods = $this->moodRepository->getAllMoods();
 
 		$this->components->loadCSSFile('breeze.css', [], 'smf_breeze');
-		$this->components->loadComponents(['mood', 'moodList']);
+		$this->components->loadComponents(['modal', 'mood', 'moodList']);
 
 		return $moods;
 	}

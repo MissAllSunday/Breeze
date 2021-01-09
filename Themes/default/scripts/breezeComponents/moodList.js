@@ -1,7 +1,3 @@
-Vue.component('mood-edit-modal', {
-	template: '#mood-edit-modal',
-})
-
 new Vue({
 	el: '#moodList',
 	data: {
