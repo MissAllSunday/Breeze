@@ -28,8 +28,8 @@ new Vue({
 					let moodCount = Object.keys(response.data).length
 					for (let i = 1; i <= moodCount; i++) {
 						response.data[i].emoji = this.decode(response.data[i].emoji)
-						response.data[i].active = Boolean(Number(response.data[i].active))
-						response.data[i].moods_id = Number(response.data[i].moods_id)
+						response.data[i].isActive = Boolean(Number(response.data[i].isActive))
+						response.data[i].id = Number(response.data[i].id)
 					}
 
 					this.localMoods = response.data

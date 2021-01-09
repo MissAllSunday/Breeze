@@ -230,7 +230,7 @@ if (empty($context['uninstalling']))
 		'table_name' => '{db_prefix}breeze_moods',
 		'columns' => [
 			[
-				'name' => 'moods_id',
+				'name' => 'id',
 				'type' => 'int',
 				'size' => 5,
 				'null' => false,
@@ -249,7 +249,7 @@ if (empty($context['uninstalling']))
 				'default' => null,
 			],
 			[
-				'name' => 'enable',
+				'name' => 'isActive',
 				'type' => 'int',
 				'size' => 1,
 				'null' => false
@@ -258,7 +258,7 @@ if (empty($context['uninstalling']))
 		'indexes' => [
 			[
 				'type' => 'primary',
-				'columns' => ['moods_id']
+				'columns' => ['id']
 			],
 		],
 		'if_exists' => 'ignore',
@@ -315,7 +315,7 @@ if (empty($context['uninstalling']))
 			$smcFunc['htmlspecialchars']($emoji),
 			'',
 			1
-		], ['moods_id']);
+		], ['id']);
 	}
 
 function BreezeCheck(): void

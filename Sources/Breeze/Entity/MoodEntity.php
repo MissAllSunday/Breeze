@@ -8,10 +8,10 @@ namespace Breeze\Entity;
 class MoodEntity extends BaseEntity implements BaseEntityInterface
 {
 	public const TABLE = 'breeze_moods';
-	public const COLUMN_ID = 'moods_id';
+	public const COLUMN_ID = 'id';
 	public const COLUMN_EMOJI = 'emoji';
 	public const COLUMN_DESC = 'description';
-	public const COLUMN_STATUS = 'active';
+	public const COLUMN_STATUS = 'isActive';
 
 	public const STATUS_ACTIVE = 1;
 	public const STATUS_INACTIVE = 0;

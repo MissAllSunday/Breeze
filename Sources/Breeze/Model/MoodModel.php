@@ -34,8 +34,8 @@ class MoodModel extends BaseModel implements MoodModelInterface
 			'SET
 				' . MoodEntity::COLUMN_EMOJI . ' = {string:name},
 				' . MoodEntity::COLUMN_DESC . ' = {string:description},
-				' . MoodEntity::COLUMN_STATUS . ' = {string:enable}
-				WHERE ' . MoodEntity::COLUMN_ID . ' = {int:moods_id}',
+				' . MoodEntity::COLUMN_STATUS . ' = {string:isActive}
+				WHERE ' . MoodEntity::COLUMN_ID . ' = {int:id}',
 			$data
 		);
 
