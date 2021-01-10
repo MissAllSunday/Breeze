@@ -22,7 +22,7 @@ Vue.component('mood', {
 						</span>
 					</dt>
 					<dd>
-						<input type="ex" v-model="mood.emoji" @change="invalidEmoji = validator()">
+						<input type="text" v-model="mood.emoji" @change="invalidEmoji = validator()">
 					</dd>
 					<dt>
 						<span>
@@ -38,7 +38,7 @@ Vue.component('mood', {
 						</span>
 					</dt>
 					<dd>
-						<input type="checkbox" id="checkbox" v-model="mood.enable">
+						<input type="checkbox" id="checkbox" v-model="mood.isActive">
 					</dd>
 				</dl>
 				<input type="submit" value="Save" class="button">
