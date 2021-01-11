@@ -41,7 +41,8 @@ Vue.component('mood', {
 						<input type="checkbox" id="checkbox" v-model="mood.isActive">
 					</dd>
 				</dl>
-				<input type="submit" value="Save" class="button">
+				<input type="submit" value="Save" class="button" v-on:click="onSave()">
+				<input type="submit" value="Delete" class="button" v-on:click="onDelete()">
 			</div>
 		</mood-edit-modal>
 	</li>`,
@@ -52,6 +53,36 @@ Vue.component('mood', {
 		}
 	},
 	methods: {
+		onSave: function (){
+			if (!confirm(smf_you_sure)) {
+				return;
+			}
+
+			axios.post(
+				smf_scripturl + '?action=breezeMood;sa=editMood;'+ smf_session_var +'='+ smf_session_id,
+				this.mood
+			).then(response => {
+				Vue.$toast.open({
+					message: response.data.message,
+					type: response.data.type,
+				});
+			});
+		},
+		onDelete: function (){
+			if (!confirm(smf_you_sure)) {
+				return;
+			}
+
+			axios.post(
+				smf_scripturl + '?action=breezeMood;sa=deleteMood;'+ smf_session_var +'='+ smf_session_id,
+				{id: this.mood.id}
+			).then(response => {
+				Vue.$toast.open({
+					message: response.data.message,
+					type: response.data.type,
+				});
+			});
+		},
 		editing: function (event) {
 			this.showModal = true
 		},

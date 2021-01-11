@@ -41,15 +41,14 @@ Vue.component('comment', {
 							comments_poster_id: this.comment.comments_poster_id
 						}
 					).then(response => {
+						Vue.$toast.open({
+							message: response.data.message,
+							type: response.data.type,
+						});
 
-							Vue.$toast.open({
-								message: response.data.message,
-								type: response.data.type,
-								});
-
-					if (response.data.type !== 'error') {
-						this.removeComment();
-					}
+						if (response.data.type !== 'error') {
+							this.removeComment();
+						}
 					});
 				},
 				removeComment: function () {
