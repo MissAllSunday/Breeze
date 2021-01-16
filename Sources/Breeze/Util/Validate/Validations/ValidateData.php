@@ -28,6 +28,7 @@ abstract class ValidateData
 	protected const VALID_STATUS = 'validStatus';
 	protected const VALID_COMMENT = 'validComment';
 	protected const IGNORE_LIST = 'ignoreList';
+	protected const DATA_EXISTS = 'dataExists';
 
 	protected const DEFAULT_STEPS = [
 		self::CLEAN,
