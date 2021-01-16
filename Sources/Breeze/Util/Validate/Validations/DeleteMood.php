@@ -40,6 +40,7 @@ class DeleteMood extends ValidateData implements ValidateDataInterface
 	public function getSteps(): array
 	{
 		return array_merge($this->steps, [
+			self::PERMISSIONS,
 			self::DATA_EXISTS,
 		]);
 	}
