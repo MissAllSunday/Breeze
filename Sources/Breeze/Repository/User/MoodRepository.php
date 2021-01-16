@@ -21,7 +21,17 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 
 	public function deleteByIds(array $toDeleteMoodIds): bool
 	{
-		return $this->moodModel->delete($toDeleteMoodIds);
+		$wasDeleted = $this->moodModel->delete($toDeleteMoodIds);
+
+		if ($wasDeleted) {
+			$this->setCache('Breeze_MoodRepository_getAllMoods', null);
+
+			foreach ($toDeleteMoodIds as $moodId) {
+				$this->setCache('Breeze_MoodRepository_getById' . $moodId, null);
+			}
+		}
+
+		return $wasDeleted;
 	}
 
 	public function getChunk(int $start = 0, int $maxIndex = 0): array
@@ -40,11 +50,11 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 
 	public function getAllMoods(): array
 	{
-		$allMoods = $this->getCache(__FUNCTION__);
+		$allMoods = $this->getCache(__METHOD__);
 
 		if (empty($allMoods)) {
 			$allMoods = $this->moodModel->getAllMoods();
-			$this->setCache(__FUNCTION__, $allMoods);
+			$this->setCache(__METHOD__, $allMoods);
 		}
 
 		return $allMoods;

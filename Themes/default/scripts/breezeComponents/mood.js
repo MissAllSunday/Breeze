@@ -84,7 +84,14 @@ Vue.component('mood', {
 					message: response.data.message,
 					type: response.data.type,
 				});
+
+				if (response.data.type !== 'error') {
+					selfVue.removeComment();
+				}
 			});
+		},
+		removeComment: function () {
+			this.$emit('remove-mood', this.mood.id);
 		},
 		editing: function (event) {
 			this.showModal = true

@@ -43,5 +43,8 @@ new Vue({
 			decoder.innerHTML = html;
 			return decoder.textContent;
 		},
+		removeMood: function (moodId) {console.log(moodId)
+			Vue.delete(this.localMoods, moodId);
+		},
 	}
 })
