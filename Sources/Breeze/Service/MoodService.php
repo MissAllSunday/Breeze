@@ -88,17 +88,9 @@ class MoodService extends BaseService implements MoodServiceInterface
 		$this->moodRepository->getMoodProfile($memID, $area);
 	}
 
-	/**
-	 * @throws InvalidMoodException
-	 */
 	public function deleteMoods(array $toDeleteMoodIds): bool
 	{
-		$wasDeleted = $this->moodRepository->deleteByIds($toDeleteMoodIds);
-		$messageKey = $wasDeleted ? 'info' : 'error';
-
-		$this->setMessage($this->getText('mood_' . $messageKey . '_delete'), $messageKey);
-
-		return $wasDeleted;
+		return $this->moodRepository->deleteByIds($toDeleteMoodIds);
 	}
 
 	/**

@@ -22,20 +22,25 @@ new Vue({
 	},
 	methods: {
 		fetchAllMoods: function () {
+			let selfVue = this;
 			axios
-				.get(this.moodsURL)
-				.then(response => {
-					let moodCount = Object.keys(response.data).length
-					for (let i = 1; i <= moodCount; i++) {
-						response.data[i].emoji = this.decode(response.data[i].emoji)
-						response.data[i].isActive = Boolean(Number(response.data[i].isActive))
-						response.data[i].id = Number(response.data[i].id)
-					}
+				.get(selfVue.moodsURL)
+				.then(function(response) {
 
-					this.localMoods = response.data
+					Object.values(response.data).map(mood => {
+						mood.emoji = selfVue.decode(mood.emoji)
+						mood.isActive = Boolean(Number(mood.isActive))
+						mood.id = Number(mood.id)
+
+						return mood
+					})
+
+					selfVue.localMoods = response.data
 				})
-				.catch(error => {
-					this.errored = true
+				.catch(function(error) {
+					let selfVue = this;
+
+					selfVue.errored = true
 				})
 		},
 		decode: function (html) {
@@ -43,7 +48,7 @@ new Vue({
 			decoder.innerHTML = html;
 			return decoder.textContent;
 		},
-		removeMood: function (moodId) {console.log(moodId)
+		removeMood: function (moodId) {
 			Vue.delete(this.localMoods, moodId);
 		},
 	}

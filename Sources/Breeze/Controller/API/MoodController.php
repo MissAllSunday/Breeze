@@ -6,10 +6,8 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\MoodEntity;
-use Breeze\Repository\InvalidMoodException;
 use Breeze\Service\MoodServiceInterface;
 use Breeze\Service\UserServiceInterface;
-use Breeze\Util\Validate\ValidateGateway;
 use Breeze\Util\Validate\ValidateGatewayInterface;
 use Breeze\Util\Validate\Validations\ValidateData;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
@@ -48,23 +46,13 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 	{
 	}
 
-	//  🤡
 	public function deleteMood(): void
 	{
 		$data = $this->gateway->getData();
 
-		$this->print($this->gateway->response());
+		$this->moodService->deleteMoods([$data[MoodEntity::COLUMN_ID]]);
 
-//		try {
-//			$this->moodService->deleteMoods([$data[MoodEntity::COLUMN_ID]]);
-//
-//			$this->print($this->gateway->response());
-//		} catch (InvalidMoodException $e) {
-//			$this->print([
-//				'type' => ValidateGateway::ERROR_TYPE,
-//				'message' => $e->getMessage(),
-//			]);
-//		}
+		$this->print($this->gateway->response());
 	}
 
 	public function getAllMoods(): void

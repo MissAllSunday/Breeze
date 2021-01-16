@@ -14,6 +14,13 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 {
 	private MoodModelInterface $moodModel;
 
+	private const CACHE_ALL = '::getAllMoods';
+	private const CACHE_ID = '::getById';
+	private const CACHE_KEYS = [
+		self::CACHE_ALL,
+		self::CACHE_ID
+	];
+
 	public function __construct(MoodModelInterface $moodModel)
 	{
 		$this->moodModel = $moodModel;
@@ -24,10 +31,10 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 		$wasDeleted = $this->moodModel->delete($toDeleteMoodIds);
 
 		if ($wasDeleted) {
-			$this->setCache('Breeze_MoodRepository_getAllMoods', null);
+			$this->setCache(self::class . self::CACHE_ALL, null);
 
 			foreach ($toDeleteMoodIds as $moodId) {
-				$this->setCache('Breeze_MoodRepository_getById' . $moodId, null);
+				$this->setCache(self::class . self::CACHE_ID . $moodId, null);
 			}
 		}
 
