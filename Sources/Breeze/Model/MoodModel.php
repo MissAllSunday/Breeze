@@ -39,10 +39,10 @@ class MoodModel extends BaseModel implements MoodModelInterface
 			$data
 		);
 
-		return $this->getMoodByIDs([$id])[0];
+		return $this->getByIDs([$id])[0];
 	}
 
-	public function getMoodByIDs(array $moodIds): array
+	public function getByIDs(array $moodIds): array
 	{
 		$moods = [];
 

@@ -45,6 +45,14 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 	{
 	}
 
+	//  🤡
+	public function deleteMood(): void
+	{
+		$data = $this->gateway->getData();
+
+		$this->print($data);
+	}
+
 	public function getAllMoods(): void
 	{
 		$this->print($this->moodService->getAll());

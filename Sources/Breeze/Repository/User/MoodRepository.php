@@ -8,6 +8,7 @@ namespace Breeze\Repository\User;
 use Breeze\Entity\MoodEntity;
 use Breeze\Model\MoodModelInterface;
 use Breeze\Repository\BaseRepository;
+use Breeze\Repository\InvalidMoodException;
 
 class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 {
@@ -62,6 +63,26 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 	public function saveMood($mood): bool
 	{
 		return true;
+	}
+
+	/**
+	 * @throws InvalidMoodException
+	 */
+	public function getById(int $moodId): array
+	{
+		$mood = $this->getCache(__METHOD__ . $moodId);
+
+		if (empty($mood)) {
+			$mood = $this->moodModel->getByIds([$moodId]);
+
+			$this->setCache(__METHOD__ . $moodId, $mood);
+		}
+
+		if (empty($mood)) {
+			throw new InvalidMoodException('error_no_mood');
+		}
+
+		return $mood;
 	}
 
 	public function getMoodProfile(int $userId, array $area): void

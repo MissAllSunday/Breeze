@@ -6,7 +6,7 @@ namespace Breeze\Model;
 
 interface MoodModelInterface extends BaseModelInterface
 {
-	public function getMoodByIDs(array $moodIds): array;
+	public function getByIDs(array $moodIds): array;
 
 	public function getAllMoods(): array;
 

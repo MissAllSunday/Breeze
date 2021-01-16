@@ -99,7 +99,7 @@ class MoodService extends BaseService implements MoodServiceInterface
 
 	public function getMoodById(int $moodId): array
 	{
-		$moods = $this->moodRepository->getModel()->getMoodByIDs([$moodId]);
+		$moods = $this->moodRepository->getModel()->getByIDs([$moodId]);
 
 		return $moods[$moodId] ?? [];
 	}
