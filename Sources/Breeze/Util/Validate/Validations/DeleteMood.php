@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations;
 
 use Breeze\Entity\MoodEntity;
+use Breeze\Repository\InvalidMoodException;
 use Breeze\Service\MoodServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Permissions;
@@ -44,13 +45,11 @@ class DeleteMood extends ValidateData implements ValidateDataInterface
 	}
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws InvalidMoodException
 	 */
 	public function dataExists(): void
 	{
-		if (!Permissions::isAllowedTo(Permissions::ADMIN_FORUM)) {
-			throw new ValidateDataException('moodDelete');
-		}
+		$this->moodService->getMoodById($this->data[MoodEntity::COLUMN_ID]);
 	}
 
 	/**

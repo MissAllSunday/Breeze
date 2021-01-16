@@ -23,6 +23,8 @@ interface MoodRepositoryInterface
 
 	public function saveMood($mood): bool;
 
+	public function getById(int $moodId): array;
+
 	public function getMoodProfile(int $userId, array $area);
 
 	public function getModel(): MoodModelInterface;

@@ -8,6 +8,7 @@ namespace Breeze\Service;
 use Breeze\Entity\MoodEntity;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
+use Breeze\Repository\InvalidMoodException;
 use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Traits\PersistenceTrait;
@@ -38,7 +39,7 @@ class MoodService extends BaseService implements MoodServiceInterface
 		$moods = $this->moodRepository->getAllMoods();
 
 		$this->components->loadCSSFile('breeze.css', [], 'smf_breeze');
-		$this->components->loadComponents(['modal', 'mood', 'moodList']);
+		$this->components->loadComponents(['utils', 'modal', 'mood', 'moodList']);
 
 		return $moods;
 	}
@@ -97,11 +98,12 @@ class MoodService extends BaseService implements MoodServiceInterface
 		return $wasDeleted;
 	}
 
+	/**
+	 * @throws InvalidMoodException
+	 */
 	public function getMoodById(int $moodId): array
 	{
-		$moods = $this->moodRepository->getModel()->getByIDs([$moodId]);
-
-		return $moods[$moodId] ?? [];
+		return $this->moodRepository->getById($moodId);
 	}
 
 	public function saveMood(array $mood, int $moodId): bool

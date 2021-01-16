@@ -2,8 +2,8 @@ Vue.component('mood', {
 	props: ['mood'],
 	template: `
 	<li>
-		<span v-on:click="editing()">{{ mood.emoji }}</span>
-		<mood-edit-modal v-if="showModal" @close="showModal = false">
+		<span @click="editing()">{{ mood.emoji }}</span>
+		<mood-edit-modal v-if="showModal" @close="showModal = false" @click.stop>
 			<div slot="header">
 				Editing {{ mood.emoji }}
 			</div>
@@ -41,8 +41,8 @@ Vue.component('mood', {
 						<input type="checkbox" id="checkbox" v-model="mood.isActive">
 					</dd>
 				</dl>
-				<input type="submit" value="Save" class="button" v-on:click="onSave()">
-				<input type="submit" value="Delete" class="button" v-on:click="onDelete()">
+				<input type="submit" value="Save" class="button" @click="onSave()">
+				<input type="submit" value="Delete" class="button" @click="onDelete()">
 			</div>
 		</mood-edit-modal>
 	</li>`,
@@ -69,6 +69,8 @@ Vue.component('mood', {
 			});
 		},
 		onDelete: function (){
+			let selfVue = this;
+
 			if (!confirm(smf_you_sure)) {
 				return;
 			}
@@ -76,7 +78,8 @@ Vue.component('mood', {
 			axios.post(
 				smf_scripturl + '?action=breezeMood;sa=deleteMood;'+ smf_session_var +'='+ smf_session_id,
 				{id: this.mood.id}
-			).then(response => {
+			).then(function (response) {
+				selfVue.showModal = false;
 				Vue.$toast.open({
 					message: response.data.message,
 					type: response.data.type,
