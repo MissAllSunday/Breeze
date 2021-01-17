@@ -10,6 +10,7 @@ class Components
 {
 	private const FOLDER = 'breezeComponents/';
 	private const COMPONENTS = [
+		'moodForm',
 		'modal',
 		'feed',
 		'adminMain',

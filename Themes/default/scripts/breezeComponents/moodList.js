@@ -16,6 +16,7 @@ new Vue({
 			required: false,
 			default: smf_scripturl + '?action=breezeMood;sa=getAllMoods;'+ smf_session_var +'='+ smf_session_id
 		},
+		isCreatingNewMood: false
 	},
 	created: function () {
 		this.fetchAllMoods();
@@ -27,7 +28,7 @@ new Vue({
 				.get(selfVue.moodsURL)
 				.then(function(response) {
 
-					Object.values(response.data).map(mood => {
+					Object.values(response.data).map(function(mood) {
 						mood.emoji = selfVue.decode(mood.emoji)
 						mood.isActive = Boolean(Number(mood.isActive))
 						mood.id = Number(mood.id)
@@ -51,5 +52,8 @@ new Vue({
 		removeMood: function (moodId) {
 			Vue.delete(this.localMoods, moodId);
 		},
+		onCreate: function (){
+			this.isCreatingNewMood = true
+		}
 	}
 })

@@ -140,6 +140,14 @@ function template_breezeAdmin_moodList(): void
 					@remove-mood="removeMood"
 				></mood>
 			</ul>
+			<div>
+				<hr>
+				<input type="submit" value="Save" class="button" @click="onCreate()">
+				<mood-form
+					v-if="isCreatingNewMood"
+					v-bind:isCreatingNewMood="isCreatingNewMood"
+				></mood-form>
+			</div>
 		</div>';
 }
 
