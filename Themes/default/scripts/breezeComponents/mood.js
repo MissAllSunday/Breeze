@@ -5,7 +5,7 @@ Vue.component('mood', {
 		<span @click="editing()">{{ mood.emoji }}</span>
 		<mood-edit-modal v-if="showModal" @close="showModal = false" @click.stop>
 			<div slot="header">
-				Editing {{ mood.emoji }}
+				{{ this.$root.txt.editing }} {{ mood.emoji }}
 			</div>
 			<div slot="body">
 				<mood-form

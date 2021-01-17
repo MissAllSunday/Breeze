@@ -10,7 +10,7 @@ Vue.component('mood-form', {
 	<dl class="settings">
 		<dt>
 			<span>
-				<label>Mood:</label>
+				<label>{{ $root.txt.mood.emoji }}:</label>
 			</span>
 		</dt>
 		<dd>
@@ -18,7 +18,7 @@ Vue.component('mood-form', {
 		</dd>
 		<dt>
 			<span>
-				<label>Description:</label>
+				<label>{{ $root.txt.mood.description }}:</label>
 			</span>
 		</dt>
 		<dd>
@@ -26,15 +26,15 @@ Vue.component('mood-form', {
 		</dd>
 		<dt>
 			<span>
-				<label>Enable:</label>
+				<label>{{ $root.txt.mood.enable }}:</label>
 			</span>
 		</dt>
 		<dd>
 			<input type="checkbox" id="checkbox" v-model="mood.isActive">
 		</dd>
 	</dl>
-	<input type="submit" value="Save" class="button" @click="onSave()" :disabled='invalidEmoji'>
-	<input type="submit" value="Delete" class="button" @click="$emit('delete')" v-if="!newMood">
+	<input type="submit" v-bind:value="$root.txt.save" class="button" @click="onSave()" :disabled='invalidEmoji'>
+	<input type="submit" v-bind:value="$root.txt.delete" class="button" @click="$emit('delete')" v-if="!newMood">
 </div>`,
 	props: {
 		mood: {
@@ -59,7 +59,11 @@ Vue.component('mood-form', {
 	},
 	methods: {
 		onSave: function () {
-			this.$emit('save', this.mood);
+			this.invalidEmoji = this.validator()
+
+			if (!this.invalidEmoji) {
+				this.$emit('save', this.mood)
+			}
 		},
 		validator: function (){
 			let emojiRegex = /\p{Extended_Pictographic}/u
@@ -69,11 +73,11 @@ Vue.component('mood-form', {
 				0 === this.mood.emoji.length ||
 				!this.mood.emoji.trim()){
 
-				return  'Emoji field cannot be empty'
+				return  this.$root.txt.mood.emptyEmoji
 			}
 
 			if (!emojiRegex.test(this.mood.emoji)) {
-				return 'Please provide a valid emoji'
+				return this.$root.txt.mood.invalidEmoji
 			}
 		},
 		resetEmojiField: function (){

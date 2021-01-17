@@ -129,6 +129,22 @@ function template_breezeAdmin_moodList(): void
 	}
 
 	echo '
+<script>
+	let breezeTxt = {
+	    save: "' . $txt['Breeze_general_save'] . '",
+	    delete: "' . $txt['Breeze_general_delete'] . '",
+	    editing: "' . $txt['Breeze_general_editing'] . '",
+	    close: "' . $txt['Breeze_general_close'] . '",
+	    cancel: "' . $txt['Breeze_general_cancel'] . '",
+	    mood: {
+	        emoji: "' . $txt['Breeze_mood_emoji'] . '",
+			description: "' . $txt['Breeze_mood_description'] . '",
+			enable: "' . $txt['Breeze_mood_enable'] . '",
+			invalidEmoji: "' . $txt['Breeze_error_validEmoji'] . '",
+			emptyEmoji: "' . $txt['Breeze_error_emptyEmoji'] . '",
+	    }
+	}
+</script>
 <div id="moodList">
 	<div class="cat_bar">&nbsp;</div>
 	<div class="windowbg">
@@ -143,15 +159,19 @@ function template_breezeAdmin_moodList(): void
 		</ul>
 	</div>
 	<div class="additional_row">
-		<input type="submit" value="New mood" class="button" @click="creating()">
+		<input type="submit" value="' . $txt['Breeze_mood_newMood'] . '" class="button" @click="creating()">
 	</div>
 	<div v-if="isCreatingNewMood">
 		<div class="modal-header cat_bar">
 			<h3 class="catbg">
 				<span class="floatleft">
-					Create new mood
+					' . $txt['Breeze_mood_createNewMood'] . '
 				</span>
-				<span class="main_icons remove_button floatright" @click="isCreatingNewMood = false"></span>
+				<span
+					class="main_icons remove_button floatright"
+					@click="isCreatingNewMood = false"
+					title="' . $txt['Breeze_general_cancel'] . '"
+				></span>
 			</h3>
 		</div>
 		<div class="information">

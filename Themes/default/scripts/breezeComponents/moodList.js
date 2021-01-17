@@ -8,6 +8,12 @@ new Vue({
 			default: function () {
 				return {}
 			},
+		},
+		txt:  {
+			type: Object,
+			default: function () {
+				return {}
+			},
 		}
 	},
 	props: {
@@ -19,6 +25,7 @@ new Vue({
 	},
 	created: function () {
 		this.fetchAllMoods();
+		this.txt = window.breezeTxt
 	},
 	methods: {
 		fetchAllMoods: function () {
