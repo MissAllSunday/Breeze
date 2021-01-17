@@ -5,7 +5,7 @@ Vue.component('mood-form', {
 		v-if="invalidEmoji"
 		v-bind:type="'error'"
 		@close="resetEmojiField()">
-			Invalid emoji.
+			{{ invalidEmoji }}
 	</message-box>
 	<dl class="settings">
 		<dt>
@@ -63,8 +63,18 @@ Vue.component('mood-form', {
 		},
 		validator: function (){
 			let emojiRegex = /\p{Extended_Pictographic}/u
+			this.invalidEmoji = false
 
-			return !emojiRegex.test(this.mood.emoji)
+			if (!this.mood.emoji ||
+				0 === this.mood.emoji.length ||
+				!this.mood.emoji.trim()){
+
+				return  'Emoji field cannot be empty'
+			}
+
+			if (!emojiRegex.test(this.mood.emoji)) {
+				return 'Please provide a valid emoji'
+			}
 		},
 		resetEmojiField: function (){
 			this.mood.emoji = ''
