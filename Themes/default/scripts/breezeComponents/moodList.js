@@ -1,22 +1,21 @@
 new Vue({
 	el: '#moodList',
 	data: {
+		isCreatingNewMood: false,
 		errored: false,
 		localMoods:  {
 			type: Object,
 			default: function () {
 				return {}
 			},
-		},
-		editingMood: {}
+		}
 	},
 	props: {
 		moodsURL: {
 			type: String,
 			required: false,
 			default: smf_scripturl + '?action=breezeMood;sa=getAllMoods;'+ smf_session_var +'='+ smf_session_id
-		},
-		isCreatingNewMood: false
+		}
 	},
 	created: function () {
 		this.fetchAllMoods();
@@ -52,8 +51,11 @@ new Vue({
 		removeMood: function (moodId) {
 			Vue.delete(this.localMoods, moodId);
 		},
-		onCreate: function (){
+		creating: function (){
 			this.isCreatingNewMood = true
+		},
+		save: function (event){
+			console.log(event)
 		}
 	}
 })

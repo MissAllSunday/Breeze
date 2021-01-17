@@ -129,26 +129,29 @@ function template_breezeAdmin_moodList(): void
 	}
 
 	echo '
-		<div class="cat_bar">&nbsp;</div>
-		<div id="moodList" class="information">
-			<span v-if="errored">' . $txt['Breeze_error_moodGet'] . '</span>
-			<ul>
-				<mood
-					v-for ="mood in localMoods"
-					:key="mood.id"
-					v-bind:mood="mood"
-					@remove-mood="removeMood"
-				></mood>
-			</ul>
-			<div>
-				<hr>
-				<input type="submit" value="Save" class="button" @click="onCreate()">
-				<mood-form
-					v-if="isCreatingNewMood"
-					v-bind:isCreatingNewMood="isCreatingNewMood"
-				></mood-form>
-			</div>
-		</div>';
+<div id="moodList">
+	<div class="cat_bar">&nbsp;</div>
+	<div class="windowbg">
+		<span v-if="errored">' . $txt['Breeze_error_moodGet'] . '</span>
+		<ul>
+			<mood
+				v-for ="mood in localMoods"
+				:key="mood.id"
+				v-bind:mood="mood"
+				@remove-mood="removeMood"
+			></mood>
+		</ul>
+	</div>
+	<div class="additional_row">
+		<input type="submit" value="New mood" class="button" @click="creating()">
+		<mood-form
+			v-if="isCreatingNewMood"
+
+			new-mood
+			@save="save"
+		></mood-form>
+	</div>
+</div>';
 }
 
 // Boring stuff you will never see...

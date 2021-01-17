@@ -34,7 +34,7 @@ Vue.component('mood-form', {
 		</dd>
 	</dl>
 	<input type="submit" value="Save" class="button" @click="onSave()" :disabled='invalidEmoji'>
-	<input type="submit" value="Delete" class="button" @click="$emit('delete')" v-if="!isCreatingNewMood">
+	<input type="submit" value="Delete" class="button" @click="$emit('delete')" v-if="!newMood">
 </div>`,
 	props: {
 		mood: {
@@ -47,9 +47,9 @@ Vue.component('mood-form', {
 				}
 			}
 		},
-		isCreatingNewMood: {
+		newMood: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 	},
 	data: function (){
