@@ -28,9 +28,7 @@ abstract class ApiBaseController extends BaseController
 	{
 		$this->subAction = $this->getRequest('sa', $this->getMainAction());
 		$this->gateway->setData();
-
 		$validator = $this->setValidator();
-
 		$this->gateway->setValidator($validator);
 
 		if (!$this->gateway->isValid()) {

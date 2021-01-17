@@ -20,3 +20,4 @@ parameters:
     - '/Function loadJavaScriptFile not found./'
     - '/Function smf_serverResponse not found./'
     - '/Function template_breezeForm_Display not found./'
+    - '/Function addJavaScriptVar not found./'

@@ -10,6 +10,7 @@ use Breeze\Repository\InvalidCommentException;
 use Breeze\Repository\InvalidMoodException;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Traits\TextTrait;
+use Breeze\Util\Json;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class ValidateGateway implements ValidateGatewayInterface
@@ -97,7 +98,7 @@ class ValidateGateway implements ValidateGatewayInterface
 	public function setData(array $rawData = []): void
 	{
 		$rawData = !empty($rawData) ?
-			$rawData : (json_decode(file_get_contents('php://input'), true) ?? []);
+			$rawData : (Json::decode(file_get_contents('php://input')) ?? []);
 		$this->data = array_filter($rawData);
 	}
 

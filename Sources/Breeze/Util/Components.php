@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Breeze\Util;
 
 use Breeze\Breeze;
+use Breeze\Traits\TextTrait;
 
 class Components
 {
+	use TextTrait;
+
 	private const FOLDER = 'breezeComponents/';
 	private const COMPONENTS = [
 		'moodForm',
@@ -61,6 +64,55 @@ class Components
 	public function loadCSSFile(string $fileName, array $params = [], $nameIdentifier = ''): void
 	{
 		loadCSSFile($fileName, $params, $nameIdentifier);
+	}
+
+	public function addJavaScriptVar(string $variable, $value): void
+	{
+		addJavaScriptVar(
+			strtolower(Breeze::NAME) . ucfirst($variable),
+			Json::encode($value)
+		);
+	}
+
+	public function loadTxtVarsFor(array $components): void
+	{
+		$this->setLanguage(Breeze::NAME);
+
+		$components = array_merge(['general'], $components);
+
+		$componentVariables = [
+			'general' => [
+				'save' => $this->getText('general_save'),
+				'delete' => $this->getText('general_delete'),
+				'editing' => $this->getText('general_editing'),
+				'close' => $this->getText('general_close'),
+				'cancel' => $this->getText('general_cancel'),
+				'wrongValues' => $this->getText('error_wrong_values'),
+			],
+			'tabs' => [
+				'wall' => $this->getText('tabs_wall'),
+				'about' => $this->getText('tabs_about'),
+				'activity' => $this->getText('tabs_activity'),
+			],
+			'mood' => [
+				'emoji' => $this->getText('tabs_wall'),
+				'description' => $this->getText('tabs_about'),
+				'enable' => $this->getText('tabs_activity'),
+				'invalidEmoji' => $this->getText('tabs_about'),
+				'emptyEmoji' => $this->getText('tabs_activity'),
+			],
+		];
+
+		foreach ($components as $name) {
+			if (empty($componentVariables[$name])) {
+				continue;
+			}
+
+			$this->addJavaScriptVar(
+				'Txt' . ucfirst($name),
+				$componentVariables[$name]
+			);
+		}
 	}
 
 	protected function loadJsDependencies(): void
