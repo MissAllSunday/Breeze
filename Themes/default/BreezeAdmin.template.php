@@ -144,12 +144,22 @@ function template_breezeAdmin_moodList(): void
 	</div>
 	<div class="additional_row">
 		<input type="submit" value="New mood" class="button" @click="creating()">
-		<mood-form
-			v-if="isCreatingNewMood"
-
-			new-mood
-			@save="save"
-		></mood-form>
+	</div>
+	<div v-if="isCreatingNewMood">
+		<div class="modal-header cat_bar">
+			<h3 class="catbg">
+				<span class="floatleft">
+					Create new mood
+				</span>
+				<span class="main_icons remove_button floatright" @click="isCreatingNewMood = false"></span>
+			</h3>
+		</div>
+		<div class="information">
+			<mood-form
+				new-mood
+				@save="save"
+			></mood-form>
+		</div>
 	</div>
 </div>';
 }
