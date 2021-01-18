@@ -5,12 +5,24 @@ new Vue({
 	el: '#breeze_app',
 	props: {
 		baseUrl: '',
+		actions: {
+			type: Object,
+			default: function (){
+				return {
+					comment: 'breezeComment',
+					status: 'breezeStatus',
+				}
+			},
+		},
 		subActions: {
 			type: Object,
 			default: function (){
 				return {
-					postStatus: 'postStatus',
+					pStatus: 'postStatus',
 					statusByProfile: 'statusByProfile',
+					pComment: 'postComment',
+					dStatus: 'deleteStatus',
+					dComment: 'deleteComment',
 				}
 			},
 		},
@@ -46,7 +58,7 @@ new Vue({
 	},
 	beforeCreate: function () {
 		this.api = axios
-		this.baseUrl = smf_scripturl + '?action=breezeStatus;' + smf_session_var +'='+ smf_session_id + ';sa='
+		this.baseUrl = smf_scripturl + '?action={0};sa={1};' + smf_session_var +'='+ smf_session_id
 		this.txt = window.breezeTxtGeneral
 	},
 	created: function () {
@@ -62,7 +74,7 @@ new Vue({
 			let selfVue = this
 			this.postData.status_body = editorContent
 
-			this.api.post(this.baseUrl + this.subActions.postStatus,
+			this.api.post(this.format(this.baseUrl, [this.actions.status ,this.subActions.pStatus]),
 				this.postData
 			).then(function(response) {
 				selfVue.setNotice(response.data.message, response.data.type);
@@ -82,7 +94,7 @@ new Vue({
 		fetchStatus: function () {
 			let selfVue = this
 
-			axios.post(this.baseUrl + this.subActions.statusByProfile,
+			axios.post(this.format(this.baseUrl, [this.actions.status ,this.subActions.statusByProfile]),
 				this.postData
 			).then(function(response) {
 				if (response.data.type) {
@@ -106,6 +118,15 @@ new Vue({
 			}).then(function () {
 				ajax_indicator(false);
 			})
+		},
+		format: function (str, arrayArguments) {
+			let i = arrayArguments.length
+
+			while (i--) {
+				str = str.replace(new RegExp('\\{' + i + '\\}', 'gm'), arrayArguments[i]);
+			}
+
+			return str;
 		},
 		onRemoveStatus: function (statusId) {
 			Vue.delete(this.status, statusId);

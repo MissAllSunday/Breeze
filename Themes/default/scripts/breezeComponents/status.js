@@ -26,7 +26,7 @@ Vue.component('status', {
 			<br>
 			<div class='content'>
 				<hr>
-				<div v-html="$sanitize(status_item.status_body)"></div>
+				{{status_item.status_body | decodedContent}}
 			</div>
 			<comment
 				v-for ='comment in localComments'
@@ -48,69 +48,71 @@ Vue.component('status', {
 		formatDate: function (unixTime) {
 			return moment.unix(unixTime).format('lll')
 		},
-			},
-			methods: {
-				editorId: function () {
-					return 'breeze_status_' + this.status_item.status_id;
-				},
-					avatarImage: function (posterImageHref) {
-						return { backgroundImage: 'url(' + posterImageHref + ')' }
-					},
-					getUserData: function (userId) {
-						return this.users[userId];
-					},
-					setLocalComment: function (comments) {
-						this.localComments = Object.assign({}, this.localComments, comments)
-					},
-					clearPostComment: function () {
-						this.post_comment.comments_body = '';
-					},
-					postComment: function (editorContent) {
-						this.$root.clearNotice();
-						this.post_comment.comments_body = editorContent;
+	},
+	methods: {
+		editorId: function () {
+			return 'breeze_status_' + this.status_item.status_id;
+		},
+		avatarImage: function (posterImageHref) {
+			return { backgroundImage: 'url(' + posterImageHref + ')' }
+		},
+		getUserData: function (userId) {
+			return this.users[userId];
+		},
+		setLocalComment: function (comments) {
+			this.localComments = Object.assign({}, this.localComments, comments)
+		},
+		clearPostComment: function () {
+			this.post_comment.comments_body = '';
+		},
+		postComment: function (editorContent) {
+			let selfVue = this
+			this.$root.clearNotice();
+			this.post_comment.comments_body = editorContent;
 
-						axios.post(
-							smf_scripturl + '?action=breezeComment;sa=postComment;'+ smf_session_var +'='+ smf_session_id,
-							this.post_comment
-						).then(response => {
+			selfVue.$root.api.post(
+				this.format(this.$root.baseUrl, [this.$root.actions.comment ,this.$root.subActions.pComment]),
+				this.post_comment
+			).then(function (response) {
+				selfVue.$root.setNotice(response.data.message, response.data.type);
 
-								this.$root.setNotice(response.data.message, response.data.type);
+				if (response.data.content) {
+					selfVue.$root.setUserData(response.data.content.users)
+					selfVue.setLocalComment(response.data.content.comments);
+				}
 
-							if (response.data.content) {
-								this.$root.setUserData(response.data.content.users)
-								this.setLocalComment(response.data.content.comments);
-							}
+				selfVue.clearPostComment();
+			}).catch(function (error) {
+				selfVue.$root.setNotice(error.response.statusText);
+			});
+		},
+		removeComment: function (commentId) {
+			Vue.delete(this.localComments, commentId);
+		},
+		deleteStatus: function () {
+			let selfVue = this
 
-								this.clearPostComment();
-						}).catch(error => {
-							this.$root.setNotice(error.response.statusText);
-						});
-					},
-					removeComment: function (commentId) {
-						Vue.delete(this.localComments, commentId);
-					},
-					deleteStatus: function () {
-						if (!confirm(smf_you_sure)) {
-							return;
-						}
-
-						axios.post(
-							smf_scripturl + '?action=breezeStatus;sa=deleteStatus;'+ smf_session_var +'='+ smf_session_id,
-							{
-								status_id: this.status_item.status_id,
-								status_poster_id: this.status_item.status_poster_id
-							}
-						).then(response => {
-
-							Vue.$toast.open({
-								message: response.data.message,
-								type: response.data.type,
-									});
-
-						if (response.data.type !== 'error') {
-							this.$emit('remove_status', this.status_item.status_id);
-						}
-						});
-					}
+			if (!confirm(smf_you_sure)) {
+				return;
 			}
+
+			selfVue.$root.api.post(
+				selfVue.$root.format(selfVue.$root.baseUrl,
+				[
+					selfVue.$root.actions.status ,
+					selfVue.$root.subActions.dStatus]
+				),
+				selfVue.status_item
+			).then(function (response) {
+				Vue.$toast.open({
+					message: response.data.message,
+					type: response.data.type,
+				});
+
+				if (response.data.type !== 'error') {
+					selfVue.$emit('remove_status', selfVue.status_item.status_id);
+				}
+			});
+		}
+	}
 })

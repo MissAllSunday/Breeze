@@ -29,30 +29,32 @@ Vue.component('comment', {
 			avatarImage: function (posterImageHref) {
 				return { backgroundImage: 'url(' + posterImageHref + ')' }
 			},
-				deleteComment: function () {
-					if (!confirm(smf_you_sure)) {
-						return;
-					}
+			deleteComment: function () {
+				let selfVue = this
 
-					axios.post(
-						smf_scripturl + '?action=breezeComment;sa=deleteComment;'+ smf_session_var +'='+ smf_session_id,
-						{
-							comments_id: this.comment.comments_id,
-							comments_poster_id: this.comment.comments_poster_id
-						}
-					).then(response => {
-						Vue.$toast.open({
-							message: response.data.message,
-							type: response.data.type,
-						});
-
-						if (response.data.type !== 'error') {
-							this.removeComment();
-						}
-					});
-				},
-				removeComment: function () {
-					this.$emit('removeComment', this.comment.comments_id);
+				if (!confirm(smf_you_sure)) {
+					return;
 				}
+
+				selfVue.$root.api.post(selfVue.$root.format(selfVue.$root.baseUrl,
+					[
+						selfVue.$root.actions.comment,
+						selfVue.$root.subActions.dComment
+					]),
+					selfVue.comment
+				).then(function (response) {
+					Vue.$toast.open({
+						message: response.data.message,
+						type: response.data.type,
+					});
+
+					if (response.data.type !== 'error') {
+						selfVue.removeComment();
+					}
+				});
+			},
+			removeComment: function () {
+				this.$emit('removeComment', this.comment.comments_id);
 			}
+		}
 })
