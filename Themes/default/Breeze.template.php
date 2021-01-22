@@ -61,6 +61,7 @@ function template_breeze_main(): void
 						v-for="status_item in status"
 						v-bind:item="status_item"
 						v-bind:key="status_item.status_id"
+						:users="users"
 						@remove_status="onRemoveStatus">
 					</status>
 				</ul>

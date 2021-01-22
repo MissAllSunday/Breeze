@@ -18,6 +18,7 @@ new Vue({
 				}
 			},
 		},
+		users:  {},
 	},
 	created: function () {
 		this.fetchStatus()
@@ -27,7 +28,7 @@ new Vue({
 			let selfVue = this
 			this.postData.status_body = editorContent
 
-			this.api.post(this.format(this.baseUrl, [this.actions.status ,this.subActions.pStatus]),
+			this.api.post(this.sprintFormat(this.baseUrl, [this.actions.status ,this.subActions.pStatus]),
 				this.postData
 			).then(function(response) {
 				selfVue.setNotice(response.data.message, response.data.type);

@@ -1,6 +1,6 @@
 Vue.component('status', {
 	mixins: [breezeUtils],
-	props: ['item'],
+	props: ['item', 'users'],
 	data: function () {
 		return {
 			localComments: Object.assign({}, this.item.comments),
@@ -16,15 +16,15 @@ Vue.component('status', {
 	template: `<li>
 	<div class='breeze_avatar avatar_status floatleft' :style='getUserAvatar(item.status_owner_id)'></div>
 		<div class='windowbg'>
-			<h4 class='floatleft' v-html='getPosterLink()'></h4>
+			<h4 class='floatleft' v-html='getUserLink(this.item.status_owner_id)'></h4>
 			<div class='floatright smalltext'>
-				{{ formatDate(status.status_time) }}
+				{{ formatDate(item.status_time) }}
 				&nbsp;<span class="main_icons remove_button floatright" v-on:click="deleteStatus()"></span>
 			</div>
 			<br>
 			<div class='content'>
 				<hr>
-				{{ status.status_body }}
+				{{ item.status_body }}
 			</div>
 			<comment
 				v-for ='comment in localComments'
@@ -35,7 +35,7 @@ Vue.component('status', {
 			</comment>
 			<div v-if ='notice === null'  class='comment_posting'>
 				<editor
-					editor_id='editorId()'
+					:editor_id='getEditorId()'
 					v-on:get-content='postComment'>
 				</editor>
 			</div>
@@ -48,7 +48,7 @@ Vue.component('status', {
 		setUsers: function (users) {
 			this.users = users
 		},
-		editorId: function () {
+		getEditorId: function () {
 			return 'breeze_status_' + this.item.status_id;
 		},
 		setLocalComment: function (comments) {

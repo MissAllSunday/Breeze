@@ -42,7 +42,6 @@ let breezeUtils = {
 			},
 			loading: false,
 			notice: null,
-			users:  {},
 		}
 	},
 	methods: {
