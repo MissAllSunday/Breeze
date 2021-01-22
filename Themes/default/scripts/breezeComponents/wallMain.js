@@ -1,33 +1,8 @@
 ajax_indicator(true);
-Vue.prototype.$sanitize = DOMPurify.sanitize;
 
 new Vue({
 	el: '#breeze_app',
-	props: {
-		baseUrl: '',
-		actions: {
-			type: Object,
-			default: function (){
-				return {
-					comment: 'breezeComment',
-					status: 'breezeStatus',
-				}
-			},
-		},
-		subActions: {
-			type: Object,
-			default: function (){
-				return {
-					pStatus: 'postStatus',
-					statusByProfile: 'statusByProfile',
-					pComment: 'postComment',
-					dStatus: 'deleteStatus',
-					dComment: 'deleteComment',
-				}
-			},
-		},
-		api : null
-	},
+	mixins: [breezeUtils],
 	data: {
 		loading: false,
 		status: null,
@@ -43,33 +18,11 @@ new Vue({
 				}
 			},
 		},
-		txt:  {
-			type: Object,
-			default: function () {
-				return {}
-			},
-		},
-		users:  {
-			type: Object,
-			default: function () {
-				return {}
-			},
-		},
-	},
-	beforeCreate: function () {
-		this.api = axios
-		this.baseUrl = smf_scripturl + '?action={0};sa={1};' + smf_session_var +'='+ smf_session_id
-		this.txt = window.breezeTxtGeneral
 	},
 	created: function () {
-		this.$set(this.postData, 'status_owner_id', window.breezeUsers.wallOwner)
-		this.$set(this.postData, 'status_poster_id', window.breezeUsers.wallPoster)
 		this.fetchStatus()
 	},
 	methods: {
-		editorId: function () {
-			return 'breeze_status';
-		},
 		postStatus: function (editorContent) {
 			let selfVue = this
 			this.postData.status_body = editorContent
@@ -94,8 +47,8 @@ new Vue({
 		fetchStatus: function () {
 			let selfVue = this
 
-			axios.post(this.format(this.baseUrl, [this.actions.status ,this.subActions.statusByProfile]),
-				this.postData
+			selfVue.api.post(this.sprintFormat(this.baseUrl, [this.actions.status ,this.subActions.statusByProfile]),
+				{status_owner_id: selfVue.wallData.ownerId}
 			).then(function(response) {
 				if (response.data.type) {
 					selfVue.notice = {
@@ -108,7 +61,7 @@ new Vue({
 				}
 
 				selfVue.status = response.data.status
-				selfVue.users = response.data.users
+				selfVue.setUserData(response.data.users)
 			}).catch(function(error) {
 				selfVue.errored = true
 				selfVue.notice = {
@@ -117,41 +70,11 @@ new Vue({
 				};
 			}).then(function () {
 				ajax_indicator(false);
+				this.loading = false
 			})
-		},
-		format: function (str, arrayArguments) {
-			let i = arrayArguments.length
-
-			while (i--) {
-				str = str.replace(new RegExp('\\{' + i + '\\}', 'gm'), arrayArguments[i]);
-			}
-
-			return str;
 		},
 		onRemoveStatus: function (statusId) {
 			Vue.delete(this.status, statusId);
-		},
-		getUserData: function (user_id) {
-			return this.users[user_id];
-		},
-		setUserData: function (user_data) {
-			this.users = Object.assign({}, this.users, user_data)
-		},
-		setNotice: function (message, type) {
-			type = type || 'error';
-			let selfVue = this;
-			this.notice = true;
-
-			Vue.$toast.open({
-				message: message,
-				type: type,
-				onClose: function () {
-					selfVue.clearNotice();
-				}
-			});
-		},
-		clearNotice: function () {
-			this.notice = null;
 		},
 	}
 });

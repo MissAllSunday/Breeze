@@ -52,17 +52,15 @@ function template_breeze_main(): void
 		<tabs v-if="loading !== true">
     		<tab :name="\'' . $txt['Breeze_tabs_wall'] . '\'" :selected="true">
 				<editor
-      			v-bind:editor_id="editorId()"
-      			v-on:get-content="postStatus">
+      			editor_id="\'breeze_status\'"
+      			v-on:get-content="postStatus()">
 				</editor>
 				<ul class="status">
 					<status
 						v-if="errored !== null"
 						v-for="status_item in status"
-						v-bind:status_item="status_item"
-						v-bind:poster_data="getUserData(status_item.status_poster_id)"
+						v-bind:item="status_item"
 						v-bind:key="status_item.status_id"
-						v-bind:users="users"
 						@remove_status="onRemoveStatus">
 					</status>
 				</ul>

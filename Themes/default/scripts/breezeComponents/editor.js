@@ -1,4 +1,5 @@
 Vue.component('editor', {
+	mixins: [breezeUtils],
 	props: ['editor_id'],
 	data: function () {
 		return {
@@ -19,7 +20,7 @@ Vue.component('editor', {
 	</div>
 	<div v-if ="previewed !== null" class="sun-editor-editable windowbg" v-html="previewed">
 	</div>
-	<textarea v-bind:id="editor_id"></textarea>
+	<textarea :id="editor_id"></textarea>
 	<div v-if ="notice === null" class="post_button_container floatright">
 			<input type="button" @click="preview()" class="button" :value="preview_name">
 			<input type="submit" @click="postStatus()" class="button">
@@ -44,7 +45,7 @@ Vue.component('editor', {
 	},
 	methods: {
 		postStatus: function () {
-			this.$root.clearNotice()
+			this.clearNotice()
 
 			this.body = this.editor.getContents(true);
 
@@ -52,11 +53,11 @@ Vue.component('editor', {
 				return false;
 			}
 
-			this.$emit('get-content', this.$root.$sanitize(this.body));
+			this.$emit('get-content', this.body);
 			this.editor.setContents('');
 		},
 		preview: function () {
-			this.previewed = this.previewed === null ? this.$root.$sanitize(this.editor.getContents(true)) : null
+			this.previewed = this.previewed === null ? this.editor.getContents(true) : null
 			this.preview_name = this.previewed === null ? 'Preview' : 'Clear'
 		},
 		isValidStatus: function () {
@@ -64,7 +65,7 @@ Vue.component('editor', {
 				this.body === '<p><br></p>' ||
 				this.body === '<p></p>' ||
 				typeof(this.body) !== 'string' ) {
-				this.$root.setNotice('el body esta vacio');
+				this.setNotice('el body esta vacio');
 
 				return false;
 			}

@@ -13,6 +13,7 @@ class Components
 
 	private const FOLDER = 'breezeComponents/';
 	private const COMPONENTS = [
+		'utils',
 		'moodForm',
 		'modal',
 		'feed',
@@ -20,7 +21,6 @@ class Components
 		'status',
 		'comment',
 		'tabs',
-		'utils',
 		'editor',
 		'wallMain',
 		'mood',

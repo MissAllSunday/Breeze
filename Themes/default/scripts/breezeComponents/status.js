@@ -1,89 +1,86 @@
 Vue.component('status', {
-	props: ['status_item', 'poster_data', 'users'],
+	mixins: [breezeUtils],
+	props: ['item'],
 	data: function () {
 		return {
-			localComments: Object.assign({}, this.status_item.comments),
-			comment_message: '',
-			notice: null,
-			place_holder: 'leave a comment',
-			post_comment: {
-				comments_poster_id: smf_member_id,
-				comments_status_owner_id: parseInt(this.status_item.status_poster_id),
-				comments_profile_id: parseInt(this.status_item.status_owner_id),
-				comments_status_id: parseInt(this.status_item.status_id),
+			localComments: Object.assign({}, this.item.comments),
+			comment: {
+				comments_poster_id: 0,
+				comments_status_owner_id: parseInt(this.item.status_poster_id),
+				comments_profile_id: parseInt(this.item.status_owner_id),
+				comments_status_id: parseInt(this.item.status_id),
 				comments_body: '',
 			},
 		}
 	},
 	template: `<li>
-	<div class='breeze_avatar avatar_status floatleft' v-bind:style='avatarImage(poster_data.avatar.href)'></div>
+	<div class='breeze_avatar avatar_status floatleft' :style='getUserAvatar(item.status_owner_id)'></div>
 		<div class='windowbg'>
-			<h4 class='floatleft' v-html='poster_data.link_color'></h4>
+			<h4 class='floatleft' v-html='getPosterLink()'></h4>
 			<div class='floatright smalltext'>
-				{{status_item.status_time | formatDate}}
+				{{ formatDate(status.status_time) }}
 				&nbsp;<span class="main_icons remove_button floatright" v-on:click="deleteStatus()"></span>
 			</div>
 			<br>
 			<div class='content'>
 				<hr>
-				{{status_item.status_body | decodedContent}}
+				{{ status.status_body }}
 			</div>
 			<comment
 				v-for ='comment in localComments'
 				v-bind:comment='comment'
-				v-bind:comment_poster_data='getUserData(comment.comments_poster_id)'
 				v-bind:key='comment.comments_id'
 				@removeComment='removeComment'
 				class='windowbg'>
 			</comment>
 			<div v-if ='notice === null'  class='comment_posting'>
 				<editor
-					v-bind:editor_id='editorId()'
+					editor_id='editorId()'
 					v-on:get-content='postComment'>
 				</editor>
 			</div>
 		</div>
 	</li>`,
-	filters: {
-		formatDate: function (unixTime) {
-			return moment.unix(unixTime).format('lll')
-		},
+	created: function (){
+
 	},
 	methods: {
+		setUsers: function (users) {
+			this.users = users
+		},
 		editorId: function () {
-			return 'breeze_status_' + this.status_item.status_id;
-		},
-		avatarImage: function (posterImageHref) {
-			return { backgroundImage: 'url(' + posterImageHref + ')' }
-		},
-		getUserData: function (userId) {
-			return this.users[userId];
+			return 'breeze_status_' + this.item.status_id;
 		},
 		setLocalComment: function (comments) {
 			this.localComments = Object.assign({}, this.localComments, comments)
 		},
-		clearPostComment: function () {
-			this.post_comment.comments_body = '';
+		clearCommentBody: function () {
+			this.comment.comments_body = '';
+		},
+		setCommentBody: function (bodyString) {
+			this.comment.comments_body = bodyString;
 		},
 		postComment: function (editorContent) {
 			let selfVue = this
-			this.$root.clearNotice();
-			this.post_comment.comments_body = editorContent;
+			selfVue.clearNotice();
+			selfVue.setCommentBody(editorContent);
 
-			selfVue.$root.api.post(
-				this.format(this.$root.baseUrl, [this.$root.actions.comment ,this.$root.subActions.pComment]),
-				this.post_comment
+			selfVue.api.post(
+				selfVue.sprintFormat(selfVue.baseUrl, [
+					selfVue.actions.comment, selfVue.subActions.pComment
+				]),
+				selfVue.comment
 			).then(function (response) {
-				selfVue.$root.setNotice(response.data.message, response.data.type);
+				selfVue.setNotice(response.data.message, response.data.type);
 
 				if (response.data.content) {
-					selfVue.$root.setUserData(response.data.content.users)
+					selfVue.setUserData(response.data.content.users)
 					selfVue.setLocalComment(response.data.content.comments);
 				}
 
-				selfVue.clearPostComment();
+				selfVue.clearCommentBody();
 			}).catch(function (error) {
-				selfVue.$root.setNotice(error.response.statusText);
+				selfVue.setNotice(error.response.statusText);
 			});
 		},
 		removeComment: function (commentId) {
@@ -92,25 +89,25 @@ Vue.component('status', {
 		deleteStatus: function () {
 			let selfVue = this
 
-			if (!confirm(smf_you_sure)) {
+			if (!selfVue.ownConfirm()) {
 				return;
 			}
 
-			selfVue.$root.api.post(
-				selfVue.$root.format(selfVue.$root.baseUrl,
+			selfVue.api.post(
+				selfVue.sprintFormat(selfVue.baseUrl,
 				[
-					selfVue.$root.actions.status ,
-					selfVue.$root.subActions.dStatus]
+					selfVue.actions.status ,
+					selfVue.subActions.dStatus]
 				),
-				selfVue.status_item
+				selfVue.status
 			).then(function (response) {
-				Vue.$toast.open({
-					message: response.data.message,
-					type: response.data.type,
-				});
+				selfVue.setNotice(
+					response.data.message,
+					response.data.type
+				);
 
 				if (response.data.type !== 'error') {
-					selfVue.$emit('remove_status', selfVue.status_item.status_id);
+					selfVue.$emit('remove_status', selfVue.item.status_id);
 				}
 			});
 		}
