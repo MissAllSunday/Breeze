@@ -59,44 +59,32 @@ if (empty($context['uninstalling']))
 		'table_name' => '{db_prefix}breeze_comments',
 		'columns' => [
 			[
-				'name' => 'comments_id',
+				'name' => 'id',
 				'type' => 'int',
 				'size' => 5,
 				'null' => false,
 				'auto' => true
 			],
 			[
-				'name' => 'comments_status_id',
+				'name' => 'statusId',
 				'type' => 'int',
 				'size' => 5,
 				'null' => false
 			],
 			[
-				'name' => 'comments_status_owner_id',
+				'name' => 'userId',
 				'type' => 'int',
 				'size' => 5,
 				'null' => false
 			],
 			[
-				'name' => 'comments_poster_id',
-				'type' => 'int',
-				'size' => 5,
-				'null' => false
-			],
-			[
-				'name' => 'comments_profile_id',
-				'type' => 'int',
-				'size' => 5,
-				'null' => false
-			],
-			[
-				'name' => 'comments_time',
+				'name' => 'createdAt',
 				'type' => 'varchar',
 				'size' => 255,
 				'default' => '',
 			],
 			[
-				'name' => 'comments_body',
+				'name' => 'body',
 				'type' => 'text',
 				'size' => '',
 				'default' => null,
@@ -105,7 +93,7 @@ if (empty($context['uninstalling']))
 		'indexes' => [
 			[
 				'type' => 'primary',
-				'columns' => ['comments_id']
+				'columns' => ['id', 'statusId']
 			],
 		],
 		'if_exists' => 'ignore',
@@ -118,32 +106,32 @@ if (empty($context['uninstalling']))
 		'table_name' => '{db_prefix}breeze_status',
 		'columns' => [
 			[
-				'name' => 'status_id',
+				'name' => 'id',
 				'type' => 'int',
 				'size' => 5,
 				'null' => false,
 				'auto' => true
 			],
 			[
-				'name' => 'status_owner_id',
+				'name' => 'wallId',
 				'type' => 'int',
 				'size' => 5,
 				'null' => false
 			],
 			[
-				'name' => 'status_poster_id',
+				'name' => 'userId',
 				'type' => 'int',
 				'size' => 5,
 				'null' => false
 			],
 			[
-				'name' => 'status_time',
+				'name' => 'createdAt',
 				'type' => 'varchar',
 				'size' => 255,
 				'default' => '',
 			],
 			[
-				'name' => 'status_body',
+				'name' => 'body',
 				'type' => 'text',
 				'size' => '',
 				'default' => null,
@@ -152,7 +140,7 @@ if (empty($context['uninstalling']))
 		'indexes' => [
 			[
 				'type' => 'primary',
-				'columns' => ['status_id']
+				'columns' => ['id', 'wallId']
 			],
 		],
 		'if_exists' => 'ignore',
