@@ -20,18 +20,6 @@ db_extend('packages');
 
 if (empty($context['uninstalling']))
 {
-	// Profile views
-	$smcFunc['db_add_column'](
-		'{db_prefix}members',
-		[
-			'name' => 'breeze_profile_views',
-			'type' => 'int',
-			'size' => 5,
-			'null' => false,
-			'default' => 0
-		]
-	);
-
 	// Member options
 	$tables[] = [
 		'table_name' => '{db_prefix}breeze_options',
