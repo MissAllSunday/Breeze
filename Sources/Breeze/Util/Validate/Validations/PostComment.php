@@ -16,9 +16,7 @@ class PostComment extends ValidateData implements ValidateDataInterface
 {
 	protected const PARAMS = [
 		CommentEntity::STATUS_ID => 0,
-		CommentEntity::COLUMN_STATUS_OWNER_ID => 0,
 		CommentEntity::USER_ID => 0,
-		CommentEntity::COLUMN_PROFILE_ID => 0,
 		CommentEntity::BODY => '',
 	];
 
@@ -75,19 +73,13 @@ class PostComment extends ValidateData implements ValidateDataInterface
 	{
 		return [
 			CommentEntity::STATUS_ID,
-			CommentEntity::COLUMN_STATUS_OWNER_ID,
 			CommentEntity::USER_ID,
-			CommentEntity::COLUMN_PROFILE_ID,
 		];
 	}
 
 	public function getUserIdsNames(): array
 	{
-		return [
-			CommentEntity::COLUMN_STATUS_OWNER_ID,
-			CommentEntity::USER_ID,
-			CommentEntity::COLUMN_PROFILE_ID,
-		];
+		return [CommentEntity::USER_ID];
 	}
 
 	public function getStrings(): array

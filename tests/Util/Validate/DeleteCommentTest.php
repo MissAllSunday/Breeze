@@ -54,21 +54,21 @@ class DeleteCommentTest extends TestCase
 		return [
 			'empty values' => [
 				'data' => [
-					'comments_poster_id' => 0,
-					'comments_id' => '0',
+					'userId' => 0,
+					'id' => '0',
 				],
 				'isExpectedException' => true,
 			],
 			'happy path' => [
 				'data' => [
-					'comments_poster_id' => 666,
-					'comments_id' => 666,
+					'userId' => 666,
+					'id' => 666,
 				],
 				'isExpectedException' => false,
 			],
 			'incomplete data' => [
 				'data' => [
-					'comments_poster_id' => 1
+					'userId' => 1
 				],
 				'isExpectedException' => true,
 			],
@@ -96,15 +96,15 @@ class DeleteCommentTest extends TestCase
 		return [
 			'happy path' => [
 				'data' => [
-					'comments_id' => 666,
-					'comments_poster_id' => 666,
+					'id' => 666,
+					'userId' => 666,
 				],
 				'isExpectedException' => false,
 			],
 			'not ints' => [
 				'data' => [
-					'comments_id' => 666,
-					'comments_poster_id' => '666',
+					'id' => 666,
+					'userId' => '666',
 				],
 				'isExpectedException' => true,
 			],
@@ -139,8 +139,8 @@ class DeleteCommentTest extends TestCase
 		return [
 			'happy happy joy joy' => [
 				'data' => [
-					'comments_poster_id' => 666,
-					'comments_id' => 666,
+					'userId' => 666,
+					'id' => 666,
 				],
 				'with' => [
 					666,
@@ -152,8 +152,8 @@ class DeleteCommentTest extends TestCase
 			],
 			'invalid users' => [
 				'data' => [
-					'comments_poster_id' => 666,
-					'comments_id' => 666,
+					'userId' => 666,
+					'id' => 666,
 				],
 				'with' => [
 					666,
@@ -186,8 +186,8 @@ class DeleteCommentTest extends TestCase
 		return [
 			'not allowed' => [
 				'data' => [
-					'comments_poster_id' => 666,
-					'comments_id' => 666,
+					'id' => 666,
+					'userId' => 3,
 				],
 				'userInfo' => [
 					'id' => 666,
@@ -210,8 +210,8 @@ class DeleteCommentTest extends TestCase
 	public function testGetParams(): void
 	{
 		$this->assertEquals([
-			'comments_id' => 0,
-			'comments_poster_id' => 0
+			'id' => 0,
+			'userId' => 0
 		], $this->deleteComment->getParams());
 	}
 

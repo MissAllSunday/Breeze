@@ -50,21 +50,21 @@ class DeleteStatusTest extends TestCase
 		return [
 			'empty values' => [
 				'data' => [
-					'status_id' => 0,
-					'status_poster_id' => '0',
+					'id' => 0,
+					'userId' => '0',
 				],
 				'isExpectedException' => true,
 			],
 			'happy path' => [
 				'data' => [
-					'status_id' => 666,
-					'status_poster_id' => 666,
+					'id' => 666,
+					'userId' => 666,
 				],
 				'isExpectedException' => false,
 			],
 			'incomplete data' => [
 				'data' => [
-					'status_id' => 1
+					'id' => 1
 				],
 				'isExpectedException' => true,
 			],
@@ -92,15 +92,15 @@ class DeleteStatusTest extends TestCase
 		return [
 			'happy path' => [
 				'data' => [
-					'status_id' => 666,
-					'status_poster_id' => 666,
+					'id' => 666,
+					'userId' => 666,
 				],
 				'isExpectedException' => false,
 			],
 			'not ints' => [
 				'data' => [
-					'status_id' => 666,
-					'status_poster_id' => '666',
+					'id' => 666,
+					'userId' => '666',
 				],
 				'isExpectedException' => true,
 			],
@@ -135,7 +135,7 @@ class DeleteStatusTest extends TestCase
 		return [
 			'happy happy joy joy' => [
 				'data' => [
-					'status_poster_id' => 666,
+					'userId' => 666,
 				],
 				'with' => [
 					666,
@@ -147,7 +147,7 @@ class DeleteStatusTest extends TestCase
 			],
 			'invalid users' => [
 				'data' => [
-					'status_poster_id' => 666,
+					'userId' => 666,
 				],
 				'with' => [
 					666,
@@ -180,8 +180,8 @@ class DeleteStatusTest extends TestCase
 		return [
 			'not allowed' => [
 				'data' => [
-					'status_poster_id' => 666,
-					'status_id' => 666,
+					'userId' => 666,
+					'id' => 666,
 				],
 				'userInfo' => [
 					'id' => 666,
@@ -204,8 +204,8 @@ class DeleteStatusTest extends TestCase
 	public function testGetParams(): void
 	{
 		$this->assertEquals([
-			'status_id' => 0,
-			'status_poster_id' => 0
+			'id' => 0,
+			'userId' => 0
 		], $this->deleteStatus->getParams());
 	}
 

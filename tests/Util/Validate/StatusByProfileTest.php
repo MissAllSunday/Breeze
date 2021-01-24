@@ -42,13 +42,13 @@ class StatusByProfileTest extends TestCase
 		return [
 			'empty values' => [
 				'data' => [
-					'status_owner_id' => '0',
+					'wallId' => '0',
 				],
 				'isExpectedException' => true,
 			],
 			'happy path' => [
 				'data' => [
-					'status_owner_id' => 1,
+					'wallId' => 1,
 				],
 				'isExpectedException' => false,
 			],
@@ -80,13 +80,13 @@ class StatusByProfileTest extends TestCase
 		return [
 			'happy path' => [
 				'data' => [
-					'status_owner_id' => 2,
+					'wallId' => 2,
 				],
 				'isExpectedException' => false,
 			],
 			'not ints' => [
 				'data' => [
-					'status_owner_id' => 'fail',
+					'wallId' => 'fail',
 				],
 				'isExpectedException' => true,
 			],
@@ -106,7 +106,7 @@ class StatusByProfileTest extends TestCase
 	public function testGetParams(): void
 	{
 		$this->assertEquals([
-			'status_owner_id' => 0,
+			'wallId' => 0,
 		], $this->statusByProfile->getParams());
 	}
 }

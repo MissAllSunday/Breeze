@@ -46,23 +46,23 @@ class PostStatusTest extends TestCase
 		return [
 			'empty values' => [
 				'data' => [
-					'status_owner_id' => '0',
-					'status_poster_id' => 0,
-					'status_body' => '',
+					'wallId' => '0',
+					'userId' => 0,
+					'body' => '',
 				],
 				'isExpectedException' => true,
 			],
 			'happy path' => [
 				'data' => [
-					'status_owner_id' => 1,
-					'status_poster_id' => 2,
-					'status_body' => 'Happy Path',
+					'wallId' => 1,
+					'userId' => 2,
+					'body' => 'Happy Path',
 				],
 				'isExpectedException' => false,
 			],
 			'incomplete data' => [
 				'data' => [
-					'status_owner_id' => 1
+					'wallId' => 1
 				],
 				'isExpectedException' => true,
 			],
@@ -90,15 +90,15 @@ class PostStatusTest extends TestCase
 		return [
 			'happy path' => [
 				'data' => [
-					'status_owner_id' => 2,
-					'status_poster_id' => 1,
+					'wallId' => 2,
+					'userId' => 1,
 				],
 				'isExpectedException' => false,
 			],
 			'not ints' => [
 				'data' => [
-					'status_owner_id' => 'fail',
-					'status_poster_id' => 'lol',
+					'wallId' => 'fail',
+					'userId' => 'lol',
 				],
 				'isExpectedException' => true,
 			],
@@ -126,13 +126,13 @@ class PostStatusTest extends TestCase
 		return [
 			'happy path' => [
 				'data' => [
-					'status_body' => 'Kaizoku ou ni ore wa naru',
+					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
 			],
 			'not a string' => [
 				'data' => [
-					'status_body' => 666,
+					'body' => 666,
 				],
 				'isExpectedException' => true,
 			],
@@ -149,7 +149,7 @@ class PostStatusTest extends TestCase
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 		} else {
-			$this->assertEquals($data['status_poster_id'], $this->postStatus->getPosterId());
+			$this->assertEquals($data['userId'], $this->postStatus->getPosterId());
 		}
 
 		$this->postStatus->floodControl();
@@ -160,41 +160,41 @@ class PostStatusTest extends TestCase
 		return [
 			'happy happy joy joy' => [
 				'data' => [
-					'status_poster_id' => 1,
-					'status_owner_id' => 2,
+					'userId' => 1,
+					'wallId' => 2,
 					'comments_profile_id' => 3,
-					'status_id' => 666,
-					'comments_body' => 'Kaizoku ou ni ore wa naru',
+					'id' => 666,
+					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
 			],
 			'time has not expired, too much messages' => [
 				'data' => [
-					'status_poster_id' => 2,
-					'status_owner_id' => 2,
+					'userId' => 2,
+					'wallId' => 2,
 					'comments_profile_id' => 3,
-					'status_id' => 666,
-					'comments_body' => 'Kaizoku ou ni ore wa naru',
+					'id' => 666,
+					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => true,
 			],
 			'time has expired, too much messages' => [
 				'data' => [
-					'status_poster_id' => 3,
-					'status_owner_id' => 2,
+					'userId' => 3,
+					'wallId' => 2,
 					'comments_profile_id' => 3,
-					'status_id' => 666,
-					'comments_body' => 'Kaizoku ou ni ore wa naru',
+					'id' => 666,
+					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
 			],
 			'time has not expired,  allowed messages' => [
 				'data' => [
-					'status_poster_id' => 4,
-					'status_owner_id' => 2,
+					'userId' => 4,
+					'wallId' => 2,
 					'comments_profile_id' => 3,
-					'status_id' => 666,
-					'comments_body' => 'Kaizoku ou ni ore wa naru',
+					'id' => 666,
+					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
 			],
@@ -217,11 +217,11 @@ class PostStatusTest extends TestCase
 		return [
 			'not allowed' => [
 				'data' => [
-					'status_poster_id' => 1,
-					'status_owner_id' => 2,
+					'userId' => 1,
+					'wallId' => 2,
 					'comments_profile_id' => 3,
-					'status_id' => 666,
-					'comments_body' => 'Kaizoku ou ni ore wa naru',
+					'id' => 666,
+					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 			],
 		];
@@ -242,9 +242,9 @@ class PostStatusTest extends TestCase
 	public function testGetParams(): void
 	{
 		$this->assertEquals([
-			'status_owner_id' => 0,
-			'status_poster_id' => 0,
-			'status_body' => '',
+			'wallId' => 0,
+			'userId' => 0,
+			'body' => '',
 		], $this->postStatus->getParams());
 	}
 

@@ -50,27 +50,23 @@ class PostCommentTest extends TestCase
 		return [
 			'empty values' => [
 				'data' => [
-					'comments_poster_id' => 0,
-					'comments_status_owner_id' => '0',
-					'comments_profile_id' => '',
-					'comments_status_id' => '666',
-					'comments_body' => 'LOL',
+					'userId' => 0,
+					'statusId' => '666',
+					'body' => 'LOL',
 				],
 				'isExpectedException' => true,
 			],
 			'happy path' => [
 				'data' => [
-					'comments_poster_id' => 1,
-					'comments_status_owner_id' => 2,
-					'comments_profile_id' => 3,
-					'comments_status_id' => 666,
-					'comments_body' => 'Happy Path',
+					'userId' => 1,
+					'statusId' => 666,
+					'body' => 'Happy Path',
 				],
 				'isExpectedException' => false,
 			],
 			'incomplete data' => [
 				'data' => [
-					'comments_poster_id' => '1'
+					'userId' => '1'
 				],
 				'isExpectedException' => true,
 			],
@@ -98,19 +94,15 @@ class PostCommentTest extends TestCase
 		return [
 			'happy path' => [
 				'data' => [
-					'comments_status_id' => 666,
-					'comments_status_owner_id' => 2,
-					'comments_poster_id' => 1,
-					'comments_profile_id' => 3,
+					'statusId' => 666,
+					'userId' => 1,
 				],
 				'isExpectedException' => false,
 			],
 			'not ints' => [
 				'data' => [
-					'comments_status_id' => '666',
-					'comments_status_owner_id' => 'fail',
-					'comments_poster_id' => 'lol',
-					'comments_profile_id' => '',
+					'statusId' => '666',
+					'userId' => 'lol',
 				],
 				'isExpectedException' => true,
 			],
@@ -138,13 +130,13 @@ class PostCommentTest extends TestCase
 		return [
 			'happy path' => [
 				'data' => [
-					'comments_body' => 'Kaizoku ou ni ore wa naru',
+					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
 			],
 			'not a string' => [
 				'data' => [
-					'comments_body' => 666,
+					'body' => 666,
 				],
 				'isExpectedException' => true,
 			],
@@ -174,41 +166,33 @@ class PostCommentTest extends TestCase
 		return [
 			'happy happy joy joy' => [
 				'data' => [
-					'comments_poster_id' => 1,
-					'comments_status_owner_id' => 2,
-					'comments_profile_id' => 3,
-					'comments_status_id' => 666,
-					'comments_body' => 'Kaizoku ou ni ore wa naru',
+					'userId' => 1,
+					'statusId' => 666,
+					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
 			],
 			'time has not expired, too much messages' => [
 				'data' => [
-					'comments_poster_id' => 2,
-					'comments_status_owner_id' => 2,
-					'comments_profile_id' => 3,
-					'comments_status_id' => 666,
-					'comments_body' => 'Kaizoku ou ni ore wa naru',
+					'userId' => 2,
+					'statusId' => 666,
+					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => true,
 			],
 			'time has expired, too much messages' => [
 				'data' => [
-					'comments_poster_id' => 3,
-					'comments_status_owner_id' => 2,
-					'comments_profile_id' => 3,
-					'comments_status_id' => 666,
-					'comments_body' => 'Kaizoku ou ni ore wa naru',
+					'userId' => 3,
+					'statusId' => 666,
+					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
 			],
 			'time has not expired,  allowed messages' => [
 				'data' => [
-					'comments_poster_id' => 4,
-					'comments_status_owner_id' => 2,
-					'comments_profile_id' => 3,
-					'comments_status_id' => 666,
-					'comments_body' => 'Kaizoku ou ni ore wa naru',
+					'userId' => 4,
+					'statusId' => 666,
+					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
 			],
@@ -231,11 +215,9 @@ class PostCommentTest extends TestCase
 		return [
 			'not allowed' => [
 				'data' => [
-					'comments_poster_id' => 1,
-					'comments_status_owner_id' => 2,
-					'comments_profile_id' => 3,
-					'comments_status_id' => 666,
-					'comments_body' => 'Kaizoku ou ni ore wa naru',
+					'userId' => 1,
+					'statusId' => 666,
+					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 			],
 		];
@@ -257,11 +239,9 @@ class PostCommentTest extends TestCase
 	public function testGetParams(): void
 	{
 		$this->assertEquals([
-			'comments_status_id' => 0,
-			'comments_status_owner_id' => 0,
-			'comments_poster_id' => 0,
-			'comments_profile_id' => 0,
-			'comments_body' => '',
+			'statusId' => 0,
+			'userId' => 0,
+			'body' => '',
 		], $this->postComment->getParams());
 	}
 

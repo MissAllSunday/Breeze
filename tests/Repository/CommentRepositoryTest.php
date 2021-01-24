@@ -60,14 +60,14 @@ class CommentRepositoryTest extends TestCase
 		return [
 			'happy happy joy joy' => [
 				'dataToInsert' => [
-					'comments_time' => 581299200,
+					'createdAt' => 581299200,
 					'likes' => 0,
 				],
 				'newId' => 666,
 			],
 			'InvalidCommentException' => [
 				'dataToInsert' => [
-					'comments_time' => 581299200,
+					'createdAt' => 581299200,
 					'likes' => 0,
 				],
 				'newId' => 0,
