@@ -11,8 +11,6 @@ interface UserModelInterface extends BaseModelInterface
 
 	public function loadMinData(array $userIds): array;
 
-	public function updateProfileViews(array $data, int $userId): int;
-
 	public function getUserSettings(int $userId): array;
 
 	public function getViews($userId = 0): array;

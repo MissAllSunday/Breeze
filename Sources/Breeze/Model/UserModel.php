@@ -74,24 +74,6 @@ class UserModel extends BaseModel implements UserModelInterface
 		return $loadedUsers;
 	}
 
-	public function updateProfileViews(array $data, int $userId): int
-	{
-		if (empty($data) || empty($userId)) {
-			return 0;
-		}
-
-		return $this->dbClient->update(
-			MemberEntity::TABLE,
-			'
-			SET ' . MemberEntity::COLUMN_PROFILE_VIEWS . ' = {string:jsonData}
-			WHERE ' . MemberEntity::ID . ' = ({int:userId})',
-			[
-				'userId' => (int) $userId,
-				'jsonData' => Json::encode($data),
-			]
-		);
-	}
-
 	public function getUserSettings(int $userId): array
 	{
 		$userData = [];
