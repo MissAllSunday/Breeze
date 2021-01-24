@@ -177,6 +177,18 @@ if (empty($context['uninstalling']))
 				'size' => 1,
 				'null' => false
 			],
+			[
+				'name' => 'createdAt',
+				'type' => 'varchar',
+				'size' => 255,
+				'default' => '',
+			],
+			[
+				'name' => 'updatedAt',
+				'type' => 'varchar',
+				'size' => 255,
+				'default' => '',
+			],
 		],
 		'indexes' => [
 			[
