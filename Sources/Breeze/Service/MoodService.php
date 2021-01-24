@@ -113,7 +113,7 @@ class MoodService extends BaseService implements MoodServiceInterface
 			}
 		}
 
-		if (!isset($mood[MoodEntity::COLUMN_EMOJI]) || empty($mood[MoodEntity::COLUMN_EMOJI])) {
+		if (!isset($mood[MoodEntity::EMOJI]) || empty($mood[MoodEntity::EMOJI])) {
 			$errors[] = $this->getText('mood_error_empty_emoji');
 		}
 

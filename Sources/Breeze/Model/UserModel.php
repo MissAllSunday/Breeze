@@ -49,17 +49,17 @@ class UserModel extends BaseModel implements UserModelInterface
 			'
 			SELECT ' . implode(', ', MemberEntity::getColumns()) . '
 			FROM {db_prefix}' . MemberEntity::TABLE . '
-			WHERE ' . MemberEntity::COLUMN_ID . ' IN ({array_int:userIds})',
+			WHERE ' . MemberEntity::ID . ' IN ({array_int:userIds})',
 			[
 				'userIds' => array_map('intval', $userIds)
 			]
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
-			$loadedUsers[$row[MemberEntity::COLUMN_ID]] = [
-				'username' => $row[MemberEntity::COLUMN_MEMBER_NAME],
-				'name' => $row[MemberEntity::COLUMN_REAL_NAME],
-				'id' => $row[MemberEntity::COLUMN_ID],
+			$loadedUsers[$row[MemberEntity::ID]] = [
+				'username' => $row[MemberEntity::NAME],
+				'name' => $row[MemberEntity::REAL_NAME],
+				'id' => $row[MemberEntity::ID],
 			];
 		}
 
@@ -84,7 +84,7 @@ class UserModel extends BaseModel implements UserModelInterface
 			MemberEntity::TABLE,
 			'
 			SET ' . MemberEntity::COLUMN_PROFILE_VIEWS . ' = {string:jsonData}
-			WHERE ' . MemberEntity::COLUMN_ID . ' = ({int:userId})',
+			WHERE ' . MemberEntity::ID . ' = ({int:userId})',
 			[
 				'userId' => (int) $userId,
 				'jsonData' => Json::encode($data),
@@ -101,8 +101,8 @@ class UserModel extends BaseModel implements UserModelInterface
 			mem.' . (implode(', mem.', MemberEntity::getColumns())) . '
 			FROM {db_prefix}' . OptionsEntity::TABLE . ' AS op
 				LEFT JOIN {db_prefix}' . MemberEntity::TABLE . '
-				AS mem ON (mem.' . MemberEntity::COLUMN_ID . ' = {int:userId})
-			WHERE ' . MemberEntity::COLUMN_ID . ' = {int:userId}',
+				AS mem ON (mem.' . MemberEntity::ID . ' = {int:userId})
+			WHERE ' . MemberEntity::ID . ' = {int:userId}',
 			[
 				'userId' => $userId,
 			]
@@ -123,10 +123,10 @@ class UserModel extends BaseModel implements UserModelInterface
 			}
 
 			$userData += [
-				UserSettingsEntity::BUDDIES => !empty($row[MemberEntity::COLUMN_BUDDY_LIST]) ?
-					explode(',', $row[MemberEntity::COLUMN_BUDDY_LIST]) : [],
-				UserSettingsEntity::BLOCK_LIST => !empty($row[MemberEntity::COLUMN_IGNORE_LIST]) ?
-					explode(',', $row[MemberEntity::COLUMN_IGNORE_LIST]) : [],
+				UserSettingsEntity::BUDDIES => !empty($row[MemberEntity::BUDDY_LIST]) ?
+					explode(',', $row[MemberEntity::BUDDY_LIST]) : [],
+				UserSettingsEntity::BLOCK_LIST => !empty($row[MemberEntity::IGNORE_LIST]) ?
+					explode(',', $row[MemberEntity::IGNORE_LIST]) : [],
 			];
 		}
 
@@ -147,7 +147,7 @@ class UserModel extends BaseModel implements UserModelInterface
 			'
 			SELECT ' . MemberEntity::COLUMN_PROFILE_VIEWS . '
 			FROM {db_prefix}' . MemberEntity::TABLE . '
-			WHERE ' . MemberEntity::COLUMN_ID . ' = {int:userId}',
+			WHERE ' . MemberEntity::ID . ' = {int:userId}',
 			[
 				'userId' => (int) $userId
 			]
@@ -167,7 +167,7 @@ class UserModel extends BaseModel implements UserModelInterface
 			MemberEntity::TABLE,
 			'
 			SET ' . MemberEntity::COLUMN_PROFILE_VIEWS . ' = {string:empty}
-			WHERE ' . MemberEntity::COLUMN_ID . ' = {int:userId}',
+			WHERE ' . MemberEntity::ID . ' = {int:userId}',
 			[
 				'userId' => (int) $userId,
 				'empty' => ''
@@ -203,7 +203,7 @@ class UserModel extends BaseModel implements UserModelInterface
 
 	public function getColumnId(): string
 	{
-		return MemberEntity::COLUMN_ID;
+		return MemberEntity::ID;
 	}
 
 	public function getColumns(): array

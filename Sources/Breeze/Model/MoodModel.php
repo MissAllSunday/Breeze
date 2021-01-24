@@ -15,10 +15,10 @@ class MoodModel extends BaseModel implements MoodModelInterface
 		}
 
 		$this->dbClient->insert(MoodEntity::TABLE, [
-			MoodEntity::COLUMN_EMOJI => 'string',
-			MoodEntity::COLUMN_DESC => 'string',
-			MoodEntity::COLUMN_STATUS => 'string'
-		], $data, MoodEntity::COLUMN_ID);
+			MoodEntity::EMOJI => 'string',
+			MoodEntity::DESC => 'string',
+			MoodEntity::STATUS => 'string'
+		], $data, MoodEntity::ID);
 
 		return $this->getInsertedId();
 	}
@@ -32,10 +32,10 @@ class MoodModel extends BaseModel implements MoodModelInterface
 		$this->dbClient->update(
 			MoodEntity::TABLE,
 			'SET
-				' . MoodEntity::COLUMN_EMOJI . ' = {string:name},
-				' . MoodEntity::COLUMN_DESC . ' = {string:description},
-				' . MoodEntity::COLUMN_STATUS . ' = {string:isActive}
-				WHERE ' . MoodEntity::COLUMN_ID . ' = {int:id}',
+				' . MoodEntity::EMOJI . ' = {string:name},
+				' . MoodEntity::DESC . ' = {string:description},
+				' . MoodEntity::STATUS . ' = {string:isActive}
+				WHERE ' . MoodEntity::ID . ' = {int:id}',
 			$data
 		);
 
@@ -54,12 +54,12 @@ class MoodModel extends BaseModel implements MoodModelInterface
 			'
 			SELECT ' . implode(', ', MoodEntity::getColumns()) . '
 			FROM {db_prefix}' . MoodEntity::TABLE . '
-			WHERE ' . MoodEntity::COLUMN_ID . ' IN ({array_int:moodIds})',
+			WHERE ' . MoodEntity::ID . ' IN ({array_int:moodIds})',
 			['moodIds' => array_map('intval', $moodIds)]
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
-			$moods[$row[MoodEntity::COLUMN_ID]] = $row;
+			$moods[$row[MoodEntity::ID]] = $row;
 		}
 
 		$this->dbClient->freeResult($request);
@@ -78,7 +78,7 @@ class MoodModel extends BaseModel implements MoodModelInterface
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
-			$moods[$row[MoodEntity::COLUMN_ID]] = $row;
+			$moods[$row[MoodEntity::ID]] = $row;
 		}
 
 		$this->dbClient->freeResult($request);
@@ -93,14 +93,14 @@ class MoodModel extends BaseModel implements MoodModelInterface
 		$request = $this->dbClient->query(
 			'SELECT ' . implode(', ', $this->getColumns()) . '
 			FROM {db_prefix}' . $this->getTableName() . '
-			WHERE ' . MoodEntity::COLUMN_STATUS . ' = {int:status}',
+			WHERE ' . MoodEntity::STATUS . ' = {int:status}',
 			[
 				'status' => $status
 			]
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
-			$moods[$row[MoodEntity::COLUMN_ID]] = $row;
+			$moods[$row[MoodEntity::ID]] = $row;
 		}
 
 		$this->dbClient->freeResult($request);
@@ -115,7 +115,7 @@ class MoodModel extends BaseModel implements MoodModelInterface
 
 	public function getColumnId(): string
 	{
-		return MoodEntity::COLUMN_ID;
+		return MoodEntity::ID;
 	}
 
 	public function getColumns(): array

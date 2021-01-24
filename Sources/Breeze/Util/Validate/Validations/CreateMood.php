@@ -13,13 +13,13 @@ use Breeze\Util\Validate\ValidateDataException;
 class CreateMood extends ValidateData implements ValidateDataInterface
 {
 	protected const PARAMS = [
-		MoodEntity::COLUMN_EMOJI => '',
-		MoodEntity::COLUMN_DESC => '',
-		MoodEntity::COLUMN_STATUS => 0,
+		MoodEntity::EMOJI => '',
+		MoodEntity::DESC => '',
+		MoodEntity::STATUS => 0,
 	];
 
 	protected const DEFAULT_PARAMS = [
-		MoodEntity::COLUMN_STATUS => 0,
+		MoodEntity::STATUS => 0,
 	];
 
 	protected const SUCCESS_KEY = 'moodCreated';
@@ -63,7 +63,7 @@ class CreateMood extends ValidateData implements ValidateDataInterface
 	public function getInts(): array
 	{
 		return [
-			MoodEntity::COLUMN_STATUS,
+			MoodEntity::STATUS,
 		];
 	}
 
@@ -75,8 +75,8 @@ class CreateMood extends ValidateData implements ValidateDataInterface
 	public function getStrings(): array
 	{
 		return [
-			MoodEntity::COLUMN_EMOJI,
-			MoodEntity::COLUMN_DESC,
+			MoodEntity::EMOJI,
+			MoodEntity::DESC,
 		];
 	}
 

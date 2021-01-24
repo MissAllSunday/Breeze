@@ -8,10 +8,10 @@ namespace Breeze\Entity;
 class MoodEntity extends BaseEntity implements BaseEntityInterface
 {
 	public const TABLE = 'breeze_moods';
-	public const COLUMN_ID = 'id';
-	public const COLUMN_EMOJI = 'emoji';
-	public const COLUMN_DESC = 'description';
-	public const COLUMN_STATUS = 'isActive';
+	public const ID = 'id';
+	public const EMOJI = 'emoji';
+	public const DESC = 'description';
+	public const STATUS = 'isActive';
 
 	public const STATUS_ACTIVE = 1;
 	public const STATUS_INACTIVE = 0;
@@ -27,10 +27,10 @@ class MoodEntity extends BaseEntity implements BaseEntityInterface
 	public static function getColumns(): array
 	{
 		return [
-			self::COLUMN_ID,
-			self::COLUMN_EMOJI,
-			self::COLUMN_DESC,
-			self::COLUMN_STATUS,
+			self::ID,
+			self::EMOJI,
+			self::DESC,
+			self::STATUS,
 		];
 	}
 

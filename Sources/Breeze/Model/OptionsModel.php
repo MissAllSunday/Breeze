@@ -32,12 +32,12 @@ class OptionsModel extends BaseModel implements OptionsModelInterface
 		$this->dbClient->replace(
 			OptionsEntity::TABLE,
 			[
-				MemberEntity::COLUMN_ID => 'int',
+				MemberEntity::ID => 'int',
 				OptionsEntity::COLUMN_VARIABLE => 'string',
 				OptionsEntity::COLUMN_VALUE => 'string'
 			],
 			$inserts,
-			MemberEntity::COLUMN_ID
+			MemberEntity::ID
 		);
 
 		return 1;

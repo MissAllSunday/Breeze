@@ -14,7 +14,7 @@ use Breeze\Util\Validate\ValidateDataException;
 class DeleteMood extends ValidateData implements ValidateDataInterface
 {
 	protected const PARAMS = [
-		MoodEntity::COLUMN_ID => 0,
+		MoodEntity::ID => 0,
 	];
 
 	protected const SUCCESS_KEY = 'moodDeleted';
@@ -50,7 +50,7 @@ class DeleteMood extends ValidateData implements ValidateDataInterface
 	 */
 	public function dataExists(): void
 	{
-		$this->moodService->getMoodById($this->data[MoodEntity::COLUMN_ID]);
+		$this->moodService->getMoodById($this->data[MoodEntity::ID]);
 	}
 
 	/**
@@ -66,7 +66,7 @@ class DeleteMood extends ValidateData implements ValidateDataInterface
 	public function getInts(): array
 	{
 		return [
-			MoodEntity::COLUMN_ID,
+			MoodEntity::ID,
 		];
 	}
 

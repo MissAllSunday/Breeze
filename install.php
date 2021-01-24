@@ -237,11 +237,15 @@ if (empty($context['uninstalling'])) {
 		$smcFunc['db_insert']('insert', '{db_prefix}breeze_moods', [
 			'emoji' => 'string',
 			'description' => 'string',
-			'enable' => 'int',
+			'isActive' => 'int',
+			'createdAt' => 'string',
+			'updatedAt' => 'string',
 		], [
 			$smcFunc['htmlspecialchars']($emoji),
 			'',
-			1
+			1,
+			time(),
+			''
 		], ['id']);
 	}
 }

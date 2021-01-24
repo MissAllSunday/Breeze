@@ -50,7 +50,7 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 	{
 		$data = $this->gateway->getData();
 
-		$this->moodService->deleteMoods([$data[MoodEntity::COLUMN_ID]]);
+		$this->moodService->deleteMoods([$data[MoodEntity::ID]]);
 
 		$this->print($this->gateway->response());
 	}
