@@ -7,22 +7,22 @@ namespace Breeze\Entity;
 class StatusEntity extends BaseEntity implements BaseEntityInterface
 {
 	const TABLE = 'breeze_status';
-	const COLUMN_ID = 'status_id';
-	const COLUMN_OWNER_ID = 'status_owner_id';
-	const COLUMN_POSTER_ID = 'status_poster_id';
-	const COLUMN_TIME = 'status_time';
-	const COLUMN_BODY = 'status_body';
-	const COLUMN_LIKES = 'likes';
+	const ID = 'id';
+	const WALL_ID = 'wallId';
+	const USER_ID = 'userId';
+	const CREATED_AT = 'createdAt';
+	const BODY = 'body';
+	const LIKES = 'likes';
 
 	public static function getColumns(): array
 	{
 		return [
-			self::COLUMN_ID,
-			self::COLUMN_OWNER_ID,
-			self::COLUMN_POSTER_ID,
-			self::COLUMN_TIME,
-			self::COLUMN_BODY,
-			self::COLUMN_LIKES,
+			self::ID,
+			self::WALL_ID,
+			self::USER_ID,
+			self::CREATED_AT,
+			self::BODY,
+			self::LIKES,
 		];
 	}
 

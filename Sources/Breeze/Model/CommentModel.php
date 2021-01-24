@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Model;
 
 use Breeze\Entity\CommentEntity as CommentEntity;
+use Breeze\Entity\StatusEntity;
 
 class CommentModel extends BaseModel implements CommentModelInterface
 {
@@ -17,16 +18,14 @@ class CommentModel extends BaseModel implements CommentModelInterface
 		$this->dbClient->insert(
 			CommentEntity::TABLE,
 			[
-				CommentEntity::COLUMN_STATUS_ID => 'int',
-				CommentEntity::COLUMN_STATUS_OWNER_ID => 'int',
-				CommentEntity::COLUMN_POSTER_ID => 'int',
-				CommentEntity::COLUMN_PROFILE_ID => 'int',
-				CommentEntity::COLUMN_TIME => 'int',
-				CommentEntity::COLUMN_BODY => 'string',
-				CommentEntity::COLUMN_LIKES => 'int',
+				CommentEntity::STATUS_ID => 'int',
+				CommentEntity::USER_ID => 'int',
+				CommentEntity::CREATED_AT => 'int',
+				CommentEntity::BODY => 'string',
+				CommentEntity::LIKES => 'int',
 			],
 			$data,
-			CommentEntity::COLUMN_ID
+			CommentEntity::ID
 		);
 
 		return $this->getInsertedId();
@@ -36,7 +35,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 	{
 		return $this->dbClient->delete(
 			CommentEntity::TABLE,
-			'WHERE ' . CommentEntity::COLUMN_STATUS_ID . ' IN({array_int:statusIds})',
+			'WHERE ' . CommentEntity::STATUS_ID . ' IN({array_int:statusIds})',
 			['statusIds' => $statusIds]
 		);
 	}
@@ -44,14 +43,20 @@ class CommentModel extends BaseModel implements CommentModelInterface
 	public function getByProfiles(array $profileOwnerIds): array
 	{
 		$queryParams = array_merge($this->getDefaultQueryParams(), [
-			'columnName' => CommentEntity::COLUMN_PROFILE_ID,
+			'columnName' => StatusEntity::WALL_ID,
 			'profileIds' => $profileOwnerIds,
+			'statusTable' => StatusEntity::TABLE,
+			'compare' =>  StatusEntity::TABLE .
+				'.' . StatusEntity::ID . ' = ' . CommentEntity::ID . '.' . CommentEntity::STATUS_ID
 		]);
 
 		$request = $this->dbClient->query(
 			'
 			SELECT {raw:columns}
-			FROM {db_prefix}{raw:tableName}
+			FROM {db_prefix}{raw:tableName} {raw:tableName}
+				LEFT JOIN {db_prefix}{raw:statusTable}
+				AS {raw:statusTable}
+				ON ({raw:compare})
 			WHERE {raw:columnName} IN({array_int:profileIds})',
 			$queryParams
 		);
@@ -62,7 +67,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 	public function getByStatus(array $statusIds): array
 	{
 		$queryParams = array_merge($this->getDefaultQueryParams(), [
-			'columnName' => CommentEntity::COLUMN_STATUS_ID,
+			'columnName' => CommentEntity::STATUS_ID,
 			'statusIds' => $statusIds,
 		]);
 
@@ -88,7 +93,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 			array_merge($this->getDefaultQueryParams(), [
 				'limit' => 1,
 				'ids' => array_map('intval', $commentIds),
-				'columnName' => CommentEntity::COLUMN_ID,
+				'columnName' => CommentEntity::ID,
 			])
 		);
 
@@ -107,7 +112,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 
 	public function getColumnId(): string
 	{
-		return CommentEntity::COLUMN_ID;
+		return CommentEntity::ID;
 	}
 
 	public function getColumns(): array
@@ -122,19 +127,17 @@ class CommentModel extends BaseModel implements CommentModelInterface
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
 			if ($useStatusID) {
-				$comments[$row[CommentEntity::COLUMN_STATUS_ID]][$row[CommentEntity::COLUMN_ID]] =
+				$comments[$row[CommentEntity::STATUS_ID]][$row[CommentEntity::ID]] =
 					array_map(function ($rowValue) {
 						return ctype_digit($rowValue) ? ((int) $rowValue) : $rowValue;
 					}, $row);
 			} else {
-				$comments[$row[CommentEntity::COLUMN_ID]] = array_map(function ($rowValue) {
+				$comments[$row[CommentEntity::ID]] = array_map(function ($rowValue) {
 					return ctype_digit($rowValue) ? ((int) $rowValue) : $rowValue;
 				}, $row);
 			}
 
-			$usersIds[] = (int) $row[CommentEntity::COLUMN_POSTER_ID];
-			$usersIds[] = (int) $row[CommentEntity::COLUMN_PROFILE_ID];
-			$usersIds[] = (int) $row[CommentEntity::COLUMN_STATUS_OWNER_ID];
+			$usersIds[] = (int) $row[CommentEntity::USER_ID];
 		}
 
 		$this->dbClient->freeResult($request);

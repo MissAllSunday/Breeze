@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
+use Breeze\Entity\CommentEntity;
 use Breeze\Entity\StatusEntity as StatusEntity;
 
 class StatusModel extends BaseModel implements StatusModelInterface
 {
-	public function insert(array $data, int $statusId = 0): int
+	public function insert(array $data, int $id = 0): int
 	{
 		$this->dbClient->insert(StatusEntity::TABLE, [
-			StatusEntity::COLUMN_OWNER_ID => 'int',
-			StatusEntity::COLUMN_POSTER_ID => 'int',
-			StatusEntity::COLUMN_TIME => 'int',
-			StatusEntity::COLUMN_BODY => 'string',
-			StatusEntity::COLUMN_LIKES => 'int',
-		], $data, StatusEntity::COLUMN_ID);
+			StatusEntity::WALL_ID => 'int',
+			StatusEntity::USER_ID => 'int',
+			StatusEntity::CREATED_AT => 'int',
+			StatusEntity::BODY => 'string',
+			StatusEntity::LIKES => 'int',
+		], $data, StatusEntity::ID);
 
 		return $this->getInsertedId();
 	}
@@ -24,7 +25,7 @@ class StatusModel extends BaseModel implements StatusModelInterface
 	public function getById(int $statusId): array
 	{
 		$queryParams = array_merge($this->getDefaultQueryParams(), [
-			'columnName' => StatusEntity::COLUMN_ID,
+			'columnName' => StatusEntity::ID,
 			'id' => $statusId
 		]);
 
@@ -43,13 +44,19 @@ class StatusModel extends BaseModel implements StatusModelInterface
 	public function getStatusByProfile(array $params): array
 	{
 		$queryParams = array_merge(array_merge($this->getDefaultQueryParams(), [
-			'columnName' => StatusEntity::COLUMN_OWNER_ID,
+			'columnName' => StatusEntity::WALL_ID,
+			'commentTable' => CommentEntity::TABLE,
+			'compare' =>  CommentEntity::ID . '.' . CommentEntity::STATUS_ID . ' = ' . StatusEntity::TABLE .
+				'.' . StatusEntity::ID
 		], $params));
 
 		$request = $this->dbClient->query(
 			'
 			SELECT {raw:columns}
-			FROM {db_prefix}{raw:tableName}
+			FROM {db_prefix}{raw:tableName} {raw:tableName}
+				LEFT JOIN {db_prefix}{raw:commentTable}
+				AS {raw:commentTable}
+				ON ({raw:compare})
 			WHERE {raw:columnName} IN ({array_int:ids})
 			LIMIT {int:start}, {int:maxIndex}',
 			$queryParams
@@ -70,12 +77,12 @@ class StatusModel extends BaseModel implements StatusModelInterface
 
 	public function getColumnId(): string
 	{
-		return StatusEntity::COLUMN_ID;
+		return StatusEntity::ID;
 	}
 
 	public function getColumnPosterId(): string
 	{
-		return StatusEntity::COLUMN_POSTER_ID;
+		return StatusEntity::USER_ID;
 	}
 
 	public function getColumns(): array
@@ -89,12 +96,12 @@ class StatusModel extends BaseModel implements StatusModelInterface
 		$usersIds = [];
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
-			$status[$row[StatusEntity::COLUMN_ID]] = array_map(function ($column) {
+			$status[$row[StatusEntity::ID]] = array_map(function ($column) {
 				return ctype_digit($column) ? ((int) $column) : $column;
 			}, $row);
 
-			$usersIds[] = $row[StatusEntity::COLUMN_OWNER_ID];
-			$usersIds[] = $row[StatusEntity::COLUMN_POSTER_ID];
+			$usersIds[] = $row[StatusEntity::WALL_ID];
+			$usersIds[] = $row[StatusEntity::USER_ID];
 		}
 
 		$this->dbClient->freeResult($request);

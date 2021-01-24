@@ -15,11 +15,11 @@ use Breeze\Util\Validate\ValidateDataException;
 class PostComment extends ValidateData implements ValidateDataInterface
 {
 	protected const PARAMS = [
-		CommentEntity::COLUMN_STATUS_ID => 0,
+		CommentEntity::STATUS_ID => 0,
 		CommentEntity::COLUMN_STATUS_OWNER_ID => 0,
-		CommentEntity::COLUMN_POSTER_ID => 0,
+		CommentEntity::USER_ID => 0,
 		CommentEntity::COLUMN_PROFILE_ID => 0,
-		CommentEntity::COLUMN_BODY => '',
+		CommentEntity::BODY => '',
 	];
 
 	protected const SUCCESS_KEY = 'published_comment';
@@ -68,15 +68,15 @@ class PostComment extends ValidateData implements ValidateDataInterface
 	 */
 	public function validStatus(): void
 	{
-		$this->statusService->getById($this->data[CommentEntity::COLUMN_STATUS_ID]);
+		$this->statusService->getById($this->data[CommentEntity::STATUS_ID]);
 	}
 
 	public function getInts(): array
 	{
 		return [
-			CommentEntity::COLUMN_STATUS_ID,
+			CommentEntity::STATUS_ID,
 			CommentEntity::COLUMN_STATUS_OWNER_ID,
-			CommentEntity::COLUMN_POSTER_ID,
+			CommentEntity::USER_ID,
 			CommentEntity::COLUMN_PROFILE_ID,
 		];
 	}
@@ -85,19 +85,19 @@ class PostComment extends ValidateData implements ValidateDataInterface
 	{
 		return [
 			CommentEntity::COLUMN_STATUS_OWNER_ID,
-			CommentEntity::COLUMN_POSTER_ID,
+			CommentEntity::USER_ID,
 			CommentEntity::COLUMN_PROFILE_ID,
 		];
 	}
 
 	public function getStrings(): array
 	{
-		return [CommentEntity::COLUMN_BODY];
+		return [CommentEntity::BODY];
 	}
 
 	public function getPosterId(): int
 	{
-		return $this->data[CommentEntity::COLUMN_POSTER_ID] ?? 0;
+		return $this->data[CommentEntity::USER_ID] ?? 0;
 	}
 
 	public function getParams(): array

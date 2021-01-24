@@ -22,8 +22,8 @@ class DeleteStatus extends ValidateData implements ValidateDataInterface
 	];
 
 	protected const PARAMS = [
-		StatusEntity::COLUMN_ID => 0,
-		StatusEntity::COLUMN_POSTER_ID => 0,
+		StatusEntity::ID => 0,
+		StatusEntity::USER_ID => 0,
 	];
 
 	protected const SUCCESS_KEY = 'deleted_status';
@@ -58,7 +58,7 @@ class DeleteStatus extends ValidateData implements ValidateDataInterface
 	{
 		$currentUserInfo = $this->userService->getCurrentUserInfo();
 
-		if ($currentUserInfo['id'] === $this->data[StatusEntity::COLUMN_POSTER_ID] &&
+		if ($currentUserInfo['id'] === $this->data[StatusEntity::USER_ID] &&
 			!Permissions::isAllowedTo(Permissions::DELETE_OWN_STATUS)) {
 			throw new ValidateDataException('deleteStatus');
 		}
@@ -73,7 +73,7 @@ class DeleteStatus extends ValidateData implements ValidateDataInterface
 	 */
 	public function validStatus(): void
 	{
-		$this->status = $this->statusService->getById($this->data[StatusEntity::COLUMN_ID]);
+		$this->status = $this->statusService->getById($this->data[StatusEntity::ID]);
 	}
 
 	/**
@@ -86,9 +86,9 @@ class DeleteStatus extends ValidateData implements ValidateDataInterface
 			$this->validStatus();
 		}
 
-		if (!isset($this->data[StatusEntity::COLUMN_POSTER_ID]) ||
-			($this->status['data'][$this->data[StatusEntity::COLUMN_ID]][StatusEntity::COLUMN_POSTER_ID]
-			!== $this->data[StatusEntity::COLUMN_POSTER_ID])) {
+		if (!isset($this->data[StatusEntity::USER_ID]) ||
+			($this->status['data'][$this->data[StatusEntity::ID]][StatusEntity::USER_ID]
+			!== $this->data[StatusEntity::USER_ID])) {
 			throw new ValidateDataException('wrong_values');
 		}
 	}
@@ -96,15 +96,15 @@ class DeleteStatus extends ValidateData implements ValidateDataInterface
 	public function getInts(): array
 	{
 		return [
-			StatusEntity::COLUMN_ID,
-			StatusEntity::COLUMN_POSTER_ID,
+			StatusEntity::ID,
+			StatusEntity::USER_ID,
 		];
 	}
 
 	public function getUserIdsNames(): array
 	{
 		return [
-			StatusEntity::COLUMN_POSTER_ID,
+			StatusEntity::USER_ID,
 		];
 	}
 
@@ -115,7 +115,7 @@ class DeleteStatus extends ValidateData implements ValidateDataInterface
 
 	public function getPosterId(): int
 	{
-		return $this->data[StatusEntity::COLUMN_POSTER_ID] ?? 0;
+		return $this->data[StatusEntity::USER_ID] ?? 0;
 	}
 
 	public function getParams(): array

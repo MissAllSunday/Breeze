@@ -47,11 +47,11 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 	{
 		return self::SUB_ACTIONS;
 	}
-	
+
 	public function setValidator(): ValidateDataInterface
 	{
 		$validatorName = ValidateData::getNameSpace() . ucfirst($this->subAction);
-		
+
 		return new $validatorName(
 			$this->userService,
 			$this->statusService,
@@ -72,7 +72,7 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 		$data = $this->gateway->getData();
 
 		try {
-			$this->commentService->deleteById($data[CommentEntity::COLUMN_ID]);
+			$this->commentService->deleteById($data[CommentEntity::ID]);
 
 			$this->print($this->gateway->response());
 		} catch (InvalidCommentException $e) {

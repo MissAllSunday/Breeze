@@ -7,26 +7,22 @@ namespace Breeze\Entity;
 class CommentEntity extends BaseEntity implements BaseEntityInterface
 {
 	const TABLE = 'breeze_comments';
-	const COLUMN_ID ='comments_id';
-	const COLUMN_STATUS_ID = 'comments_status_id';
-	const COLUMN_STATUS_OWNER_ID = 'comments_status_owner_id';
-	const COLUMN_POSTER_ID = 'comments_poster_id';
-	const COLUMN_PROFILE_ID = 'comments_profile_id';
-	const COLUMN_TIME = 'comments_time';
-	const COLUMN_BODY = 'comments_body';
-	const COLUMN_LIKES = 'likes';
+	const ID ='id';
+	const STATUS_ID = 'statusId';
+	const USER_ID = 'userId';
+	const CREATED_AT = 'createdAt';
+	const BODY = 'body';
+	const LIKES = 'likes';
 
 	public static function getColumns(): array
 	{
 		return [
-			self::COLUMN_ID,
-			self::COLUMN_STATUS_ID,
-			self::COLUMN_STATUS_OWNER_ID,
-			self::COLUMN_POSTER_ID,
-			self::COLUMN_PROFILE_ID,
-			self::COLUMN_TIME,
-			self::COLUMN_BODY,
-			self::COLUMN_LIKES,
+			self::ID,
+			self::STATUS_ID,
+			self::USER_ID,
+			self::CREATED_AT,
+			self::BODY,
+			self::LIKES,
 		];
 	}
 

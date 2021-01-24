@@ -23,8 +23,8 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	];
 
 	protected const PARAMS = [
-		CommentEntity::COLUMN_ID => 0,
-		CommentEntity::COLUMN_POSTER_ID => 0,
+		CommentEntity::ID => 0,
+		CommentEntity::USER_ID => 0,
 	];
 
 	protected const SUCCESS_KEY = 'deleted_comment';
@@ -63,7 +63,7 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	{
 		$currentUserInfo = $this->userService->getCurrentUserInfo();
 
-		if ($currentUserInfo['id'] === $this->data[CommentEntity::COLUMN_POSTER_ID] &&
+		if ($currentUserInfo['id'] === $this->data[CommentEntity::USER_ID] &&
 			!Permissions::isAllowedTo(Permissions::DELETE_OWN_COMMENTS)) {
 			throw new ValidateDataException('deleteComments');
 		}
@@ -78,7 +78,7 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	 */
 	public function validComment(): void
 	{
-		$this->comment = $this->commentService->getById($this->data[CommentEntity::COLUMN_ID]);
+		$this->comment = $this->commentService->getById($this->data[CommentEntity::ID]);
 	}
 
 	/**
@@ -88,13 +88,13 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	public function validUser(): void
 	{
 		if (!$this->comment) {
-			$this->comment = $this->commentService->getById($this->data[CommentEntity::COLUMN_ID]);
+			$this->comment = $this->commentService->getById($this->data[CommentEntity::ID]);
 		}
 
-		if (!isset($this->data[CommentEntity::COLUMN_POSTER_ID]) ||
-			($this->comment['data'][$this->data[CommentEntity::COLUMN_ID]][CommentEntity::COLUMN_POSTER_ID]
+		if (!isset($this->data[CommentEntity::USER_ID]) ||
+			($this->comment['data'][$this->data[CommentEntity::ID]][CommentEntity::USER_ID]
 			!==
-			$this->data[CommentEntity::COLUMN_POSTER_ID])) {
+			$this->data[CommentEntity::USER_ID])) {
 			throw new ValidateDataException('wrong_values');
 		}
 	}
@@ -102,15 +102,15 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	public function getInts(): array
 	{
 		return [
-			CommentEntity::COLUMN_ID,
-			CommentEntity::COLUMN_POSTER_ID,
+			CommentEntity::ID,
+			CommentEntity::USER_ID,
 		];
 	}
 
 	public function getUserIdsNames(): array
 	{
 		return [
-			CommentEntity::COLUMN_POSTER_ID,
+			CommentEntity::USER_ID,
 		];
 	}
 
@@ -121,7 +121,7 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 
 	public function getPosterId(): int
 	{
-		return $this->data[CommentEntity::COLUMN_POSTER_ID] ?? 0;
+		return $this->data[CommentEntity::USER_ID] ?? 0;
 	}
 
 	public function getParams(): array

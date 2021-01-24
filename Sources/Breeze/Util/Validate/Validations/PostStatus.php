@@ -13,9 +13,9 @@ use Breeze\Util\Validate\ValidateDataException;
 class PostStatus extends ValidateData implements ValidateDataInterface
 {
 	protected const PARAMS = [
-		StatusEntity::COLUMN_OWNER_ID => 0,
-		StatusEntity::COLUMN_POSTER_ID => 0,
-		StatusEntity::COLUMN_BODY => '',
+		StatusEntity::WALL_ID => 0,
+		StatusEntity::USER_ID => 0,
+		StatusEntity::BODY => '',
 	];
 
 	protected const SUCCESS_KEY = 'published_status';
@@ -57,27 +57,27 @@ class PostStatus extends ValidateData implements ValidateDataInterface
 	public function getInts(): array
 	{
 		return [
-			StatusEntity::COLUMN_OWNER_ID,
-			StatusEntity::COLUMN_POSTER_ID,
+			StatusEntity::WALL_ID,
+			StatusEntity::USER_ID,
 		];
 	}
 
 	public function getUserIdsNames(): array
 	{
 		return [
-			StatusEntity::COLUMN_OWNER_ID,
-			StatusEntity::COLUMN_POSTER_ID,
+			StatusEntity::WALL_ID,
+			StatusEntity::USER_ID,
 		];
 	}
 
 	public function getStrings(): array
 	{
-		return [StatusEntity::COLUMN_BODY];
+		return [StatusEntity::BODY];
 	}
 
 	public function getPosterId(): int
 	{
-		return $this->data[StatusEntity::COLUMN_POSTER_ID] ?? 0;
+		return $this->data[StatusEntity::USER_ID] ?? 0;
 	}
 
 	public function getParams(): array

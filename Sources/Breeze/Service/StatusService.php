@@ -59,8 +59,8 @@ class StatusService extends BaseService implements StatusServiceInterface
 	{
 		try {
 			$statusId = $this->statusRepository->save(array_merge($data, [
-				StatusEntity::COLUMN_TIME => time(),
-				StatusEntity::COLUMN_LIKES => 0,
+				StatusEntity::CREATED_AT => time(),
+				StatusEntity::LIKES => 0,
 			]));
 
 			$newStatus = $this->statusRepository->getById($statusId);

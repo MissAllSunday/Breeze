@@ -23,8 +23,8 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	public function save(array $data): int
 	{
 		$newCommentId = $this->commentModel->insert(array_merge($data, [
-			CommentEntity::COLUMN_TIME => time(),
-			CommentEntity::COLUMN_LIKES => 0,
+			CommentEntity::CREATED_AT => time(),
+			CommentEntity::LIKES => 0,
 		]));
 
 		if (!$newCommentId) {

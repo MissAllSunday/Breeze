@@ -17,7 +17,7 @@ class StatusByProfile extends ValidateData implements ValidateDataInterface
 	];
 
 	protected const PARAMS = [
-		StatusEntity::COLUMN_OWNER_ID => 0,
+		StatusEntity::WALL_ID => 0,
 	];
 
 	protected const SUCCESS_KEY = '';
@@ -30,7 +30,7 @@ class StatusByProfile extends ValidateData implements ValidateDataInterface
 	public function getInts(): array
 	{
 		return [
-			StatusEntity::COLUMN_OWNER_ID
+			StatusEntity::WALL_ID
 		];
 	}
 
@@ -42,13 +42,13 @@ class StatusByProfile extends ValidateData implements ValidateDataInterface
 	public function getUserIdsNames(): array
 	{
 		return [
-			StatusEntity::COLUMN_OWNER_ID
+			StatusEntity::WALL_ID
 		];
 	}
 
 	public function getPosterId(): int
 	{
-		return $this->data[StatusEntity::COLUMN_OWNER_ID] ?? 0;
+		return $this->data[StatusEntity::WALL_ID] ?? 0;
 	}
 
 	public function successKeyString(): string

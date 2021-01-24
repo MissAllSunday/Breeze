@@ -61,7 +61,7 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 		$data = $this->gateway->getData();
 
 		try {
-			$statusByProfile = $this->statusService->getByProfile($data[StatusEntity::COLUMN_OWNER_ID], $start);
+			$statusByProfile = $this->statusService->getByProfile($data[StatusEntity::WALL_ID], $start);
 
 			$this->print($statusByProfile);
 		} catch (InvalidStatusException $e) {
@@ -77,7 +77,7 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 		$data = $this->gateway->getData();
 
 		try {
-			$this->statusService->deleteById($data[StatusEntity::COLUMN_ID]);
+			$this->statusService->deleteById($data[StatusEntity::ID]);
 
 			$this->print($this->gateway->response());
 		} catch (InvalidStatusException $e) {
