@@ -36,7 +36,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 		<remove-file name="$themedir/BreezeBlocks.template.php" />
 		<remove-file name="$themedir/BreezeFunctions.template.php" />
 		<remove-file name="$themedir/css/breeze.css" />
-		<remove-dir name="$themedir/scripts/breeze" />
+		<remove-dir name="$themedir/scripts/breezeComponents" />
 		<remove-file name="$languagedir/Breeze.english.php" />
 		<remove-file name="$languagedir/BreezeAlerts.english.php" />
 		<remove-file name="$languagedir/BreezePermissions.english.php" />
