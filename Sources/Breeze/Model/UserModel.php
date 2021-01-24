@@ -7,7 +7,6 @@ namespace Breeze\Model;
 use Breeze\Entity\MemberEntity;
 use Breeze\Entity\OptionsEntity;
 use Breeze\Entity\UserSettingsEntity;
-use Breeze\Util\Json;
 
 class UserModel extends BaseModel implements UserModelInterface
 {
@@ -115,46 +114,6 @@ class UserModel extends BaseModel implements UserModelInterface
 		$this->dbClient->freeResult($result);
 
 		return $userData;
-	}
-
-	public function getViews($userId = 0): array
-	{
-		$views = [];
-
-		if (empty($userId)) {
-			return $views;
-		}
-
-		$result = $this->dbClient->query(
-			'
-			SELECT ' . MemberEntity::COLUMN_PROFILE_VIEWS . '
-			FROM {db_prefix}' . MemberEntity::TABLE . '
-			WHERE ' . MemberEntity::ID . ' = {int:userId}',
-			[
-				'userId' => (int) $userId
-			]
-		);
-
-		$views = $this->dbClient->fetchAssoc($result);
-		$views = !empty($views) ? json_decode($views[0], true) : [];
-
-		$this->dbClient->freeResult($result);
-
-		return $views;
-	}
-
-	public function deleteViews($userId): void
-	{
-		$this->dbClient->update(
-			MemberEntity::TABLE,
-			'
-			SET ' . MemberEntity::COLUMN_PROFILE_VIEWS . ' = {string:empty}
-			WHERE ' . MemberEntity::ID . ' = {int:userId}',
-			[
-				'userId' => (int) $userId,
-				'empty' => ''
-			]
-		);
 	}
 
 	public function wannaSeeBoards(): array

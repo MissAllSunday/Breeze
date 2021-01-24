@@ -13,9 +13,5 @@ interface UserModelInterface extends BaseModelInterface
 
 	public function getUserSettings(int $userId): array;
 
-	public function getViews($userId = 0): array;
-
-	public function deleteViews($userId): void;
-
 	public function wannaSeeBoards(): array;
 }
