@@ -148,59 +148,6 @@ if (empty($context['uninstalling']))
 		'parameters' => [],
 	];
 
-	// Breeze own alert tables.
-	$tables[] = [
-		'table_name' => '{db_prefix}breeze_logs',
-		'columns' => [
-			[
-				'name' => 'id_log',
-				'type' => 'int',
-				'size' => 10,
-				'null' => false,
-				'auto' => true
-			],
-			[
-				'name' => 'member',
-				'type' => 'int',
-				'size' => 5,
-				'null' => false
-			],
-			[
-				'name' => 'content_type',
-				'type' => 'varchar',
-				'size' => 255,
-				'default' => '',
-			],
-			[
-				'name' => 'content_id',
-				'type' => 'int',
-				'size' => 10,
-				'null' => false,
-			],
-			[
-				'name' => 'time',
-				'type' => 'int',
-				'size' => 5,
-				'null' => false
-			],
-			[
-				'name' => 'extra',
-				'type' => 'text',
-				'size' => '',
-				'default' => null,
-			],
-		],
-		'indexes' => [
-			[
-				'type' => 'primary',
-				'columns' => ['id_log']
-			],
-		],
-		'if_exists' => 'ignore',
-		'error' => 'fatal',
-		'parameters' => [],
-	];
-
 	// My mood
 	$tables[] = [
 		'table_name' => '{db_prefix}breeze_moods',
