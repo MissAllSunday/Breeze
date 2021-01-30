@@ -5,18 +5,16 @@ Vue.component('status', {
 		return {
 			localComments: Object.assign({}, this.item.comments),
 			comment: {
-				comments_poster_id: 0,
-				comments_status_owner_id: parseInt(this.item.status_poster_id),
-				comments_profile_id: parseInt(this.item.status_owner_id),
-				comments_status_id: parseInt(this.item.status_id),
-				comments_body: '',
+				userId: 0,
+				statusId: parseInt(this.item.id),
+				body: '',
 			},
 		}
 	},
 	template: `<li>
-	<div class='breeze_avatar avatar_status floatleft' :style='getUserAvatar(item.status_owner_id)'></div>
+	<div class='breeze_avatar avatar_status floatleft' :style='getUserAvatar(item.wallId)'></div>
 		<div class='windowbg'>
-			<h4 class='floatleft' v-html='getUserLink(this.item.status_owner_id)'></h4>
+			<h4 class='floatleft' v-html='getUserLink(this.item.wallId)'></h4>
 			<div class='floatright smalltext'>
 				{{ formatDate(item.status_time) }}
 				&nbsp;<span class="main_icons remove_button floatright" v-on:click="deleteStatus()"></span>
@@ -29,7 +27,7 @@ Vue.component('status', {
 			<comment
 				v-for ='comment in localComments'
 				v-bind:comment='comment'
-				v-bind:key='comment.comments_id'
+				v-bind:key='comment.id'
 				@removeComment='removeComment'
 				class='windowbg'>
 			</comment>
@@ -49,16 +47,16 @@ Vue.component('status', {
 			this.users = users
 		},
 		getEditorId: function () {
-			return 'breeze_status_' + this.item.status_id;
+			return 'breeze_status_' + this.item.id;
 		},
 		setLocalComment: function (comments) {
 			this.localComments = Object.assign({}, this.localComments, comments)
 		},
 		clearCommentBody: function () {
-			this.comment.comments_body = '';
+			this.comment.body = '';
 		},
 		setCommentBody: function (bodyString) {
-			this.comment.comments_body = bodyString;
+			this.comment.body = bodyString;
 		},
 		postComment: function (editorContent) {
 			let selfVue = this
@@ -107,7 +105,7 @@ Vue.component('status', {
 				);
 
 				if (response.data.type !== 'error') {
-					selfVue.$emit('remove_status', selfVue.item.status_id);
+					selfVue.$emit('remove_status', selfVue.item.id);
 				}
 			});
 		}

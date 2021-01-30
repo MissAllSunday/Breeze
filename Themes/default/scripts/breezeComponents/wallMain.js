@@ -12,8 +12,8 @@ new Vue({
 			type: Object,
 			default: function () {
 				return {
-					status_owner_id: 0,
-					status_poster_id: 0,
+					wallId: 0,
+					userId: 0,
 					status_body: '',
 				}
 			},
@@ -49,7 +49,7 @@ new Vue({
 			let selfVue = this
 
 			selfVue.api.post(this.sprintFormat(this.baseUrl, [this.actions.status ,this.subActions.statusByProfile]),
-				{status_owner_id: selfVue.wallData.ownerId}
+				{wallId: selfVue.wallData.ownerId}
 			).then(function(response) {
 				if (response.data.type) {
 					selfVue.notice = {

@@ -18,7 +18,7 @@ Vue.component('comment', {
 		</div>
 		<div class='clear comment_content'>
 			<hr>
-			<div v-html="comment.comments_body"></div>
+			<div v-html="comment.body"></div>
 		</div>
 	</div>`,
 	methods: {
@@ -47,7 +47,7 @@ Vue.component('comment', {
 			});
 		},
 		removeComment: function () {
-			this.$emit('removeComment', this.comment.comments_id);
+			this.$emit('removeComment', this.comment.id);
 		}
 	}
 })
