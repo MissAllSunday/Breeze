@@ -4,25 +4,20 @@ Vue.component('status', {
 	data: function () {
 		return {
 			localComments: Object.assign({}, this.item.comments),
-			comment: {
-				userId: 0,
-				statusId: parseInt(this.item.id),
-				body: '',
-			},
 		}
 	},
 	template: `<li>
-	<div class='breeze_avatar avatar_status floatleft' :style='getUserAvatar(item.wallId)'></div>
+	<div class='breeze_avatar avatar_status floatleft' :style='getUserAvatar(item.userId)'></div>
 		<div class='windowbg'>
-			<h4 class='floatleft' v-html='getUserLink(this.item.wallId)'></h4>
+			<h4 class='floatleft' v-html='getUserLink(this.item.userId)'></h4>
 			<div class='floatright smalltext'>
-				{{ formatDate(item.status_time) }}
+				{{ formatDate(item.createdAt) }}
 				&nbsp;<span class="main_icons remove_button floatright" v-on:click="deleteStatus()"></span>
 			</div>
 			<br>
 			<div class='content'>
 				<hr>
-				{{ item.status_body }}
+				{{ item.body }}
 			</div>
 			<comment
 				v-for ='comment in localComments'
@@ -34,18 +29,12 @@ Vue.component('status', {
 			<div v-if ='notice === null'  class='comment_posting'>
 				<editor
 					:editor_id='getEditorId()'
-					v-on:get-content='postComment'>
+					@get-content='postComment($event)'>
 				</editor>
 			</div>
 		</div>
 	</li>`,
-	created: function (){
-
-	},
 	methods: {
-		setUsers: function (users) {
-			this.users = users
-		},
 		getEditorId: function () {
 			return 'breeze_status_' + this.item.id;
 		},
@@ -67,7 +56,11 @@ Vue.component('status', {
 				selfVue.sprintFormat(selfVue.baseUrl, [
 					selfVue.actions.comment, selfVue.subActions.pComment
 				]),
-				selfVue.comment
+				{
+					userId: this.wallData.posterId,
+					statusId: selfVue.item.id,
+					body: editorContent,
+				}
 			).then(function (response) {
 				selfVue.setNotice(response.data.message, response.data.type);
 
@@ -105,7 +98,7 @@ Vue.component('status', {
 				);
 
 				if (response.data.type !== 'error') {
-					selfVue.$emit('remove_status', selfVue.item.id);
+					selfVue.$emit('remove-status', selfVue.item.id);
 				}
 			});
 		}
