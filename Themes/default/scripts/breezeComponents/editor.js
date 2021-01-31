@@ -12,17 +12,14 @@ Vue.component('editor', {
 	},
 	template: `
 <div class="breeze_editor">
-	<div v-if ="previewBody !== null">
-		<div class="cat_bar">
-			<h3 class="catbg">
-				<span class="floatleft">
-
-				</span>
-				<span class="main_icons remove_button floatright" @click="clearPreview()"></span>
-			</h3>
+	<modal v-if ="previewBody !== null" @close="clearPreview()" @click.stop>
+		<div slot="header">
+			Previewing
 		</div>
-		<div class="sun-editor-editable windowbg" v-html="previewBody"></div>
-	</div>
+		<div slot="body">
+			<div class="sun-editor-editable" v-html="previewBody"></div>
+		</div>
+	</modal>
 	<textarea :id="editor_id"></textarea>
 	<div v-if ="notice === null" class="post_button_container floatright">
 			<input
@@ -48,7 +45,11 @@ Vue.component('editor', {
 				['undo', 'redo', 'fontSize', 'formatBlock'],
 				['bold', 'underline', 'italic', 'strike', 'removeFormat'],
 				['fontColor', 'hiliteColor', 'align', 'horizontalRule'],
-			]
+			],
+			defaultStyle: `
+				font-size: inherit;
+				color: inherit;
+				background-color: inherit;`
 		});
 	},
 	methods: {

@@ -148,6 +148,18 @@
 	transform: scale(1.1);
 }
 
+.sun-editor-editable {
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	line-height: inherit;
+	background-color: transparent;
+	word-break: inherit;
+	word-wrap: inherit;
+	padding: 10px;
+	margin: 0;
+}
+
 @media (max-width: 480px) {
 	#breeze_summary{
 		display: none;
