@@ -43,20 +43,19 @@ class CommentModel extends BaseModel implements CommentModelInterface
 	public function getByProfiles(array $profileOwnerIds): array
 	{
 		$queryParams = array_merge($this->getDefaultQueryParams(), [
+			'columns' => implode(', ', $this->getAliasedColumns()),
 			'columnName' => StatusEntity::WALL_ID,
 			'profileIds' => $profileOwnerIds,
 			'statusTable' => StatusEntity::TABLE,
 			'compare' =>  StatusEntity::TABLE .
-				'.' . StatusEntity::ID . ' = ' . CommentEntity::ID . '.' . CommentEntity::STATUS_ID
+				'.' . StatusEntity::ID . ' = ' . CommentEntity::TABLE . '.' . CommentEntity::STATUS_ID
 		]);
 
 		$request = $this->dbClient->query(
 			'
 			SELECT {raw:columns}
-			FROM {db_prefix}{raw:tableName} {raw:tableName}
-				LEFT JOIN {db_prefix}{raw:statusTable}
-				AS {raw:statusTable}
-				ON ({raw:compare})
+			FROM {db_prefix}{raw:tableName} AS {raw:tableName}
+			JOIN {db_prefix}{raw:statusTable} AS {raw:statusTable} ON {raw:compare}
 			WHERE {raw:columnName} IN({array_int:profileIds})',
 			$queryParams
 		);
@@ -118,6 +117,13 @@ class CommentModel extends BaseModel implements CommentModelInterface
 	public function getColumns(): array
 	{
 		return CommentEntity::getColumns();
+	}
+
+	public function getAliasedColumns(): array
+	{
+		return array_map(function ($columnName) {
+			return sprintf(CommentEntity::ALIAS_ID, CommentEntity::TABLE, $columnName);
+		}, CommentEntity::getColumns());
 	}
 
 	private function prepareData($request, bool $useStatusID = false): array

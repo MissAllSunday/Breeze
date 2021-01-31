@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use Breeze\Entity\CommentEntity;
 use Breeze\Entity\StatusEntity as StatusEntity;
 
 class StatusModel extends BaseModel implements StatusModelInterface
@@ -45,18 +44,12 @@ class StatusModel extends BaseModel implements StatusModelInterface
 	{
 		$queryParams = array_merge(array_merge($this->getDefaultQueryParams(), [
 			'columnName' => StatusEntity::WALL_ID,
-			'commentTable' => CommentEntity::TABLE,
-			'compare' =>  CommentEntity::ID . '.' . CommentEntity::STATUS_ID . ' = ' . StatusEntity::TABLE .
-				'.' . StatusEntity::ID
 		], $params));
 
 		$request = $this->dbClient->query(
 			'
 			SELECT {raw:columns}
-			FROM {db_prefix}{raw:tableName} {raw:tableName}
-				LEFT JOIN {db_prefix}{raw:commentTable}
-				AS {raw:commentTable}
-				ON ({raw:compare})
+			FROM {db_prefix}{raw:tableName}
 			WHERE {raw:columnName} IN ({array_int:ids})
 			LIMIT {int:start}, {int:maxIndex}',
 			$queryParams
