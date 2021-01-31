@@ -9,14 +9,9 @@ new Vue({
 		errored: false,
 		notice: null,
 		postData: {
-			type: Object,
-			default: function () {
-				return {
-					wallId: 0,
-					userId: 0,
-					status_body: '',
-				}
-			},
+			wallId: 0,
+			userId: 0,
+			body: '',
 		},
 		users:  {},
 	},
@@ -24,9 +19,9 @@ new Vue({
 		this.fetchStatus()
 	},
 	methods: {
-		postStatus: function (editorContent) {
+		postStatus: function (editorContent) {console.log(editorContent)
 			let selfVue = this
-			this.postData.status_body = editorContent
+			this.postData.body = editorContent
 
 			this.api.post(this.sprintFormat(this.baseUrl, [this.actions.status ,this.subActions.pStatus]),
 				this.postData

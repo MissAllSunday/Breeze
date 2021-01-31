@@ -1,6 +1,6 @@
-Vue.component('mood-edit-modal', {
+Vue.component('modal', {
 	template: `
-<div id="mood-edit-modal">
+<div id="breeze-modal">
 	<transition name="modal">
 		<div class="modal-mask">
 			<div class="modal-wrapper" @click="$emit('close')">

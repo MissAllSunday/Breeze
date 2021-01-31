@@ -3,27 +3,35 @@ Vue.component('editor', {
 	props: ['editor_id'],
 	data: function () {
 		return {
-			previewed: null,
-			preview_name: 'Preview',
+			previewButtonValue: 'Preview',
+			previewBody: null,
 			editor: null,
-			notice: null,
-			place_holder: 'say something!',
 			body: '',
+			notice: null
 		}
 	},
 	template: `
 <div class="breeze_editor">
-	<div v-if ="previewed !== null" class="cat_bar">
-		<h3 class="catbg">
-			Preview
-		</h3>
-	</div>
-	<div v-if ="previewed !== null" class="sun-editor-editable windowbg" v-html="previewed">
+	<div v-if ="previewBody !== null">
+		<div class="cat_bar">
+			<h3 class="catbg">
+				<span class="floatleft">
+
+				</span>
+				<span class="main_icons remove_button floatright" @click="clearPreview()"></span>
+			</h3>
+		</div>
+		<div class="sun-editor-editable windowbg" v-html="previewBody"></div>
 	</div>
 	<textarea :id="editor_id"></textarea>
 	<div v-if ="notice === null" class="post_button_container floatright">
-			<input type="button" @click="preview()" class="button" :value="preview_name">
-			<input type="submit" @click="postStatus()" class="button">
+			<input
+				v-if ="previewBody === null"
+				type="button"
+				@click="showPreview()"
+				class="button"
+				:value="previewButtonValue">
+			<input type="submit" @click="postData()" class="button">
 	</div>
 </div>`,
 	mounted: function () {
@@ -44,23 +52,27 @@ Vue.component('editor', {
 		});
 	},
 	methods: {
-		postStatus: function () {
+		postData: function () {
 			this.clearNotice()
 
 			this.body = this.editor.getContents(true);
 
-			if (!this.isValidStatus()) {
+			if (!this.isValidContent()) {
 				return false;
 			}
 
 			this.$emit('get-content', this.body);
 			this.editor.setContents('');
 		},
-		preview: function () {
-			this.previewed = this.previewed === null ? this.editor.getContents(true) : null
-			this.preview_name = this.previewed === null ? 'Preview' : 'Clear'
+		showPreview: function () {
+			this.previewBody = this.editor.getContents(true)
+			this.previewButtonValue = 'Clear'
 		},
-		isValidStatus: function () {
+		clearPreview: function (){
+			this.previewBody = null
+			this.previewButtonValue = 'Preview'
+		},
+		isValidContent: function () {
 			if (this.body === '' ||
 				this.body === '<p><br></p>' ||
 				this.body === '<p></p>' ||

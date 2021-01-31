@@ -3,7 +3,7 @@ Vue.component('mood', {
 	template: `
 	<li>
 		<span @click="editing()">{{ mood.emoji }}</span>
-		<mood-edit-modal v-if="showModal" @close="showModal = false" @click.stop>
+		<modal v-if="showModal" @close="showModal = false" @click.stop>
 			<div slot="header">
 				{{ this.$root.txt.editing }} {{ mood.emoji }}
 			</div>
@@ -14,7 +14,7 @@ Vue.component('mood', {
 					@save="onSave"
 				></mood-form>
 			</div>
-		</mood-edit-modal>
+		</modal>
 	</li>`,
 	data: function (){
 		return {
