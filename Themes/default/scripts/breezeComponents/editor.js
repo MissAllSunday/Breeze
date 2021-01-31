@@ -52,9 +52,7 @@ Vue.component('editor', {
 	},
 	methods: {
 		postData: function () {
-			this.clearNotice()
-
-			let body = this.editor.getContents(true);
+			let body = this.sanitize(this.editor.getContents(true))
 
 			if (!this.isValidContent(body)) {
 				return false;
@@ -64,7 +62,7 @@ Vue.component('editor', {
 			this.editor.setContents('');
 		},
 		showPreview: function () {
-			let body = this.editor.getContents(true);
+			let body = this.sanitize(this.editor.getContents(true))
 
 			if (!this.isValidContent(body))
 				return;

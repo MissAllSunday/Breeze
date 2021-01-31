@@ -8,11 +8,6 @@ new Vue({
 		status: null,
 		errored: false,
 		notice: null,
-		postData: {
-			wallId: 0,
-			userId: 0,
-			body: '',
-		},
 		users:  {},
 	},
 	created: function () {
@@ -21,10 +16,13 @@ new Vue({
 	methods: {
 		postStatus: function (editorContent) {
 			let selfVue = this
-			this.postData.body = editorContent
 
 			this.api.post(this.sprintFormat(this.baseUrl, [this.actions.status ,this.subActions.pStatus]),
-				this.postData
+				{
+					wallId: selfVue.wallData.ownerId,
+					userId: selfVue.wallData.posterId,
+					body: editorContent,
+				}
 			).then(function(response) {
 				selfVue.setNotice(response.data.message, response.data.type);
 

@@ -53,7 +53,7 @@ function template_breeze_main(): void
     		<tab :name="\'' . $txt['Breeze_tabs_wall'] . '\'" :selected="true">
 				<editor
       			editor_id="\'breeze_status\'"
-      			v-on:get-content="postStatus()">
+      			@get-content="postStatus($event)">
 				</editor>
 				<ul class="status">
 					<status
