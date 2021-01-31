@@ -87,7 +87,11 @@ class Components
 				'editing' => $this->getText('general_editing'),
 				'close' => $this->getText('general_close'),
 				'cancel' => $this->getText('general_cancel'),
+				'send' => $this->getText('general_send'),
+				'preview' => $this->getText('general_preview'),
+				'previewing' => $this->getText('general_previewing'),
 				'wrongValues' => $this->getText('error_wrong_values'),
+				'errorEmpty' => $this->getText('error_empty'),
 			],
 			'tabs' => [
 				'wall' => $this->getText('tabs_wall'),

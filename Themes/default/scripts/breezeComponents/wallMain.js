@@ -19,7 +19,7 @@ new Vue({
 		this.fetchStatus()
 	},
 	methods: {
-		postStatus: function (editorContent) {console.log(editorContent)
+		postStatus: function (editorContent) {
 			let selfVue = this
 			this.postData.body = editorContent
 
