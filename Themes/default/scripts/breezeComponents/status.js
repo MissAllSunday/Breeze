@@ -21,10 +21,10 @@ Vue.component('status', {
 			</div>
 			<comment
 				v-for ='comment in localComments'
-				v-bind:comment='comment'
+				v-bind:item='comment'
 				v-bind:key='comment.id'
-				@removeComment='removeComment'
-				class='windowbg'>
+				:users="users"
+				@remove-comment='removeComment($event)'>
 			</comment>
 			<div v-if ='notice === null'  class='comment_posting'>
 				<editor
@@ -41,16 +41,9 @@ Vue.component('status', {
 		setLocalComment: function (comments) {
 			this.localComments = Object.assign({}, this.localComments, comments)
 		},
-		clearCommentBody: function () {
-			this.comment.body = '';
-		},
-		setCommentBody: function (bodyString) {
-			this.comment.body = bodyString;
-		},
 		postComment: function (editorContent) {
 			let selfVue = this
 			selfVue.clearNotice();
-			selfVue.setCommentBody(editorContent);
 
 			selfVue.api.post(
 				selfVue.sprintFormat(selfVue.baseUrl, [
@@ -65,11 +58,9 @@ Vue.component('status', {
 				selfVue.setNotice(response.data.message, response.data.type);
 
 				if (response.data.content) {
-					selfVue.setUserData(response.data.content.users)
+					selfVue.$emit('set-new-users', response.data.content.users)
 					selfVue.setLocalComment(response.data.content.comments);
 				}
-
-				selfVue.clearCommentBody();
 			}).catch(function (error) {
 				selfVue.setNotice(error.response.statusText);
 			});
@@ -90,7 +81,7 @@ Vue.component('status', {
 					selfVue.actions.status ,
 					selfVue.subActions.dStatus]
 				),
-				selfVue.status
+				selfVue.item
 			).then(function (response) {
 				selfVue.setNotice(
 					response.data.message,

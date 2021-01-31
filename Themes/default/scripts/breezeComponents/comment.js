@@ -1,24 +1,19 @@
 Vue.component('comment', {
 	mixins: [breezeUtils],
-	props: ['comment'],
-	data: function () {
-		return {
-			notice: null,
-		}
-	},
+	props: ['item', 'users'],
 	template: `
-	<div>
+	<div class="windowbg">
 		<div class='floatleft comment_user_info'>
-			<div class='breeze_avatar avatar_comment' :style='getUserAvatar(comment_poster_data.avatar.href)'></div>
-			<h4 v-html='getUserLink()'></h4>
+			<div class='breeze_avatar avatar_comment' :style='getUserAvatar(item.userId)'></div>
+			<h4 v-html='getUserLink(this.item.userId)'></h4>
 		</div>
 		<div class='comment_date_info floatright smalltext'>
-			{{ formatDate(comment.comments_time) }}
+			{{ formatDate(item.createdAt) }}
 			&nbsp;<span class="main_icons remove_button floatright" v-on:click="deleteComment()"></span>
 		</div>
 		<div class='clear comment_content'>
 			<hr>
-			<div v-html="comment.body"></div>
+			<div v-html="item.body"></div>
 		</div>
 	</div>`,
 	methods: {
@@ -34,7 +29,7 @@ Vue.component('comment', {
 					selfVue.actions.comment,
 					selfVue.subActions.dComment
 				]),
-				selfVue.comment
+				this.item
 			).then(function (response) {
 				selfVue.setNotice(
 					response.data.message,
@@ -47,7 +42,7 @@ Vue.component('comment', {
 			});
 		},
 		removeComment: function () {
-			this.$emit('removeComment', this.comment.id);
+			this.$emit('remove-comment', this.item.id);
 		}
 	}
 })

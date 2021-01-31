@@ -70,5 +70,8 @@ new Vue({
 		onRemoveStatus: function (statusId) {
 			Vue.delete(this.status, statusId);
 		},
+		onSetNewUsers: function (newUsers){
+			this.setUserData(newUsers)
+		}
 	}
 });

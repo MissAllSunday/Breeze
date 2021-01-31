@@ -62,7 +62,8 @@ function template_breeze_main(): void
 						v-bind:item="status_item"
 						v-bind:key="status_item.status_id"
 						:users="users"
-						@remove-status="onRemoveStatus($event)">
+						@remove-status="onRemoveStatus($event)"
+						@set-new-users="onSetNewUsers($event)">
 					</status>
 				</ul>
     		</tab>';
