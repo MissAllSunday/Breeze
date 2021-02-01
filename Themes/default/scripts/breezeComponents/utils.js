@@ -40,8 +40,6 @@ let breezeUtils = {
 				ownerId: window.breezeUsers.wallOwner || 0,
 				posterId: window.breezeUsers.wallPoster || 0,
 			},
-			loading: false,
-			notice: null,
 		}
 	},
 	methods: {
@@ -76,25 +74,31 @@ let breezeUtils = {
 		getWallData: function (){
 			return this.wallData
 		},
-		setNotice: function (message, type) {
-			type = type || 'error';
+		setNotice: function (options, onCloseCallback) {
+			let type = options.type || 'error';
+			let message = options.message || '';
 			let selfVue = this;
-			selfVue.notice = true;
 
 			Vue.$toast.open({
 				message: message,
 				type: type,
 				onClose: function () {
-					selfVue.clearNotice();
+					onCloseCallback();
 				}
 			});
 		},
 		clearNotice: function () {
-			this.notice = null;
+			Vue.$toast.clear();
 		},
 		formatDate: function (unixTime) {
 			return moment.unix(unixTime).format('lll')
 		},
+		setLoading: function () {
+			ajax_indicator(true);
+		},
+		clearLoading: function () {
+			ajax_indicator(false);
+		}
 	},
 }
 

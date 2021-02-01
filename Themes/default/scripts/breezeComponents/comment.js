@@ -24,6 +24,7 @@ Vue.component('comment', {
 				return;
 			}
 
+			selfVue.setLoading()
 			selfVue.api.post(selfVue.format(selfVue.baseUrl,
 				[
 					selfVue.actions.comment,
@@ -31,6 +32,7 @@ Vue.component('comment', {
 				]),
 				this.item
 			).then(function (response) {
+				selfVue.clearLoading()
 				selfVue.setNotice(
 					response.data.message,
 					response.data.type

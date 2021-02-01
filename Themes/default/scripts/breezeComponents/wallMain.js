@@ -4,7 +4,6 @@ new Vue({
 	el: '#breeze_app',
 	mixins: [breezeUtils],
 	data: {
-		loading: false,
 		status: null,
 		errored: false,
 		notice: null,
@@ -24,7 +23,7 @@ new Vue({
 					body: editorContent,
 				}
 			).then(function(response) {
-				selfVue.setNotice(response.data.message, response.data.type);
+				selfVue.setNotice(response.data);
 
 				if (response.data.content) {
 					selfVue.setUserData(response.data.content.users)
@@ -32,7 +31,9 @@ new Vue({
 				}
 
 			}).catch(function(error) {
-				selfVue.setNotice(error.response);
+				selfVue.setNotice = {
+					'message': error.message,
+				};
 			});
 		},
 		setStatus: function (newStatus) {
@@ -45,10 +46,7 @@ new Vue({
 				{wallId: selfVue.wallData.ownerId}
 			).then(function(response) {
 				if (response.data.type) {
-					selfVue.notice = {
-						'message': response.data.message,
-						'type': response.data.type,
-					};
+					selfVue.setNotice(response.data);
 					selfVue.errored = true;
 
 					return;
@@ -58,13 +56,11 @@ new Vue({
 				selfVue.setUserData(response.data.users)
 			}).catch(function(error) {
 				selfVue.errored = true
-				selfVue.notice = {
+				selfVue.setNotice = {
 					'message': error.message,
-					'type': 'error',
 				};
 			}).then(function () {
-				ajax_indicator(false);
-				this.loading = false
+				selfVue.clearLoading()
 			})
 		},
 		onRemoveStatus: function (statusId) {

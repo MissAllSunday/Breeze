@@ -52,11 +52,6 @@ Vue.component('editor', {
 		}, this.options);
 
 		this.editor = SUNEDITOR.create(document.getElementById(this.editor_id), editorOptions);
-
-		this.editor.onload = function (core, reload) {
-			console.log('onload-core', core)
-			console.log('onload-reload', reload)
-		}
 	},
 	methods: {
 		postData: function () {
@@ -85,7 +80,9 @@ Vue.component('editor', {
 				body === '<p><br></p>' ||
 				body === '<p></p>' ||
 				typeof(body) !== 'string' ) {
-				this.setNotice(this.txt.errorEmpty);
+				this.setNotice({
+					message: this.txt.errorEmpty
+				});
 
 				return false;
 			}

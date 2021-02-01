@@ -44,7 +44,8 @@ Vue.component('status', {
 		},
 		postComment: function (editorContent) {
 			let selfVue = this
-			selfVue.clearNotice();
+			selfVue.clearNotice()
+			selfVue.setLoading()
 
 			selfVue.api.post(
 				selfVue.sprintFormat(selfVue.baseUrl, [
@@ -56,14 +57,17 @@ Vue.component('status', {
 					body: editorContent,
 				}
 			).then(function (response) {
-				selfVue.setNotice(response.data.message, response.data.type);
+				selfVue.setNotice(response.data);
+				selfVue.clearLoading()
 
 				if (response.data.content) {
 					selfVue.$emit('set-new-users', response.data.content.users)
 					selfVue.setLocalComment(response.data.content.comments);
 				}
 			}).catch(function (error) {
-				selfVue.setNotice(error.response.statusText);
+				selfVue.setNotice({
+					message: error.response.statusText
+				});
 			});
 		},
 		removeComment: function (commentId) {
@@ -76,6 +80,7 @@ Vue.component('status', {
 				return;
 			}
 
+			selfVue.setLoading()
 			selfVue.api.post(
 				selfVue.sprintFormat(selfVue.baseUrl,
 				[
@@ -84,10 +89,8 @@ Vue.component('status', {
 				),
 				selfVue.item
 			).then(function (response) {
-				selfVue.setNotice(
-					response.data.message,
-					response.data.type
-				);
+				selfVue.setNotice(response.data);
+				selfVue.clearLoading()
 
 				if (response.data.type !== 'error') {
 					selfVue.$emit('remove-status', selfVue.item.id);
