@@ -26,7 +26,7 @@ Vue.component('status', {
 				:users="users"
 				@remove-comment='removeComment($event)'>
 			</comment>
-			<div v-if ='notice === null'  class='comment_posting'>
+			<div class='comment_posting'>
 				<editor
 					:editor_id='getEditorId()'
 					:options='commentEditorOptions()'

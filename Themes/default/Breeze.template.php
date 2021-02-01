@@ -49,7 +49,7 @@ function template_breeze_main(): void
 	</div>
 
 	<div id="breeze_app" class="breeze_wall floatright">
-		<tabs v-if="loading !== true">
+		<tabs>
     		<tab :name="\'' . $txt['Breeze_tabs_wall'] . '\'" :selected="true">
 				<editor
       			editor_id="\'breeze_status\'"

@@ -25,7 +25,7 @@ Vue.component('comment', {
 			}
 
 			selfVue.setLoading()
-			selfVue.api.post(selfVue.format(selfVue.baseUrl,
+			selfVue.api.post(selfVue.sprintFormat(selfVue.baseUrl,
 				[
 					selfVue.actions.comment,
 					selfVue.subActions.dComment
@@ -33,10 +33,7 @@ Vue.component('comment', {
 				this.item
 			).then(function (response) {
 				selfVue.clearLoading()
-				selfVue.setNotice(
-					response.data.message,
-					response.data.type
-				);
+				selfVue.setNotice(response.data);
 
 				if (response.data.type !== 'error') {
 					selfVue.removeComment();
