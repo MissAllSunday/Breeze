@@ -29,6 +29,7 @@ Vue.component('status', {
 			<div v-if ='notice === null'  class='comment_posting'>
 				<editor
 					:editor_id='getEditorId()'
+					:options='commentEditorOptions()'
 					@get-content='postComment($event)'>
 				</editor>
 			</div>
@@ -92,6 +93,13 @@ Vue.component('status', {
 					selfVue.$emit('remove-status', selfVue.item.id);
 				}
 			});
+		},
+		commentEditorOptions: function (){
+			return {
+				mode: 'inline',
+				minHeight : '50px',
+				height : '50px',
+			}
 		}
 	}
 })

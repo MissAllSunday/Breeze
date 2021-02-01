@@ -1,6 +1,6 @@
 Vue.component('editor', {
 	mixins: [breezeUtils],
-	props: ['editor_id'],
+	props: ['editor_id', 'options', 'posterInfo'],
 	data: function () {
 		return {
 			previewBody: null,
@@ -30,7 +30,8 @@ Vue.component('editor', {
 	</div>
 </div>`,
 	mounted: function () {
-		this.editor = SUNEDITOR.create(document.getElementById(this.editor_id),{
+		let editorOptions = Object.assign({
+			resizingBar: true,
 			width : 'auto',
 			maxWidth : '1500px',
 			height : 'auto',
@@ -48,7 +49,14 @@ Vue.component('editor', {
 				font-size: inherit;
 				color: inherit;
 				background-color: inherit;`
-		});
+		}, this.options);
+
+		this.editor = SUNEDITOR.create(document.getElementById(this.editor_id), editorOptions);
+
+		this.editor.onload = function (core, reload) {
+			console.log('onload-core', core)
+			console.log('onload-reload', reload)
+		}
 	},
 	methods: {
 		postData: function () {
