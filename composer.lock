@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6ae42a5e291f5f2fc5f149eac85cf97",
+    "content-hash": "a9d6759aa3d423a93818a0ab7e04c998",
     "packages": [
         {
             "name": "league/container",
@@ -79,136 +79,6 @@
             "time": "2020-09-28T13:38:44+00:00"
         },
         {
-            "name": "league/uri-parser",
-            "version": "1.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/uri-parser.git",
-                "reference": "671548427e4c932352d9b9279fdfa345bf63fa00"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri-parser/zipball/671548427e4c932352d9b9279fdfa345bf63fa00",
-                "reference": "671548427e4c932352d9b9279fdfa345bf63fa00",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.0",
-                "phpstan/phpstan": "^0.9.2",
-                "phpstan/phpstan-phpunit": "^0.9.4",
-                "phpstan/phpstan-strict-rules": "^0.9.0",
-                "phpunit/phpunit": "^6.0"
-            },
-            "suggest": {
-                "ext-intl": "Allow parsing RFC3987 compliant hosts",
-                "league/uri-schemes": "Allow validating and normalizing URI parsing results"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\Uri\\": "src"
-                },
-                "files": [
-                    "src/functions_include.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ignace Nyamagana Butera",
-                    "email": "nyamsprod@gmail.com",
-                    "homepage": "https://nyamsprod.com"
-                }
-            ],
-            "description": "userland URI parser RFC 3986 compliant",
-            "homepage": "https://github.com/thephpleague/uri-parser",
-            "keywords": [
-                "parse_url",
-                "parser",
-                "rfc3986",
-                "rfc3987",
-                "uri",
-                "url"
-            ],
-            "time": "2018-11-22T07:55:51+00:00"
-        },
-        {
-            "name": "masterminds/html5",
-            "version": "2.7.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Masterminds/html5-php.git",
-                "reference": "9227822783c75406cfe400984b2f095cdf03d417"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/9227822783c75406cfe400984b2f095cdf03d417",
-                "reference": "9227822783c75406cfe400984b2f095cdf03d417",
-                "shasum": ""
-            },
-            "require": {
-                "ext-ctype": "*",
-                "ext-dom": "*",
-                "ext-libxml": "*",
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8.35"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.7-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Masterminds\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Matt Butcher",
-                    "email": "technosophos@gmail.com"
-                },
-                {
-                    "name": "Matt Farina",
-                    "email": "matt@mattfarina.com"
-                },
-                {
-                    "name": "Asmir Mustafic",
-                    "email": "goetas@gmail.com"
-                }
-            ],
-            "description": "An HTML5 parser and serializer.",
-            "homepage": "http://masterminds.github.io/html5-php",
-            "keywords": [
-                "HTML5",
-                "dom",
-                "html",
-                "parser",
-                "querypath",
-                "serializer",
-                "xml"
-            ],
-            "time": "2020-10-01T13:52:52+00:00"
-        },
-        {
             "name": "psr/container",
             "version": "1.0.0",
             "source": {
@@ -256,97 +126,6 @@
                 "psr"
             ],
             "time": "2017-02-14T16:28:37+00:00"
-        },
-        {
-            "name": "psr/log",
-            "version": "1.1.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/log.git",
-                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/0f73288fd15629204f9d42b7055f72dacbe811fc",
-                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\Log\\": "Psr/Log/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
-            "description": "Common interface for logging libraries",
-            "homepage": "https://github.com/php-fig/log",
-            "keywords": [
-                "log",
-                "psr",
-                "psr-3"
-            ],
-            "time": "2020-03-23T09:12:05+00:00"
-        },
-        {
-            "name": "tgalopin/html-sanitizer",
-            "version": "1.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tgalopin/html-sanitizer.git",
-                "reference": "56cca6b48de4e50d16a4f549e3e677ae0d561e91"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tgalopin/html-sanitizer/zipball/56cca6b48de4e50d16a4f549e3e677ae0d561e91",
-                "reference": "56cca6b48de4e50d16a4f549e3e677ae0d561e91",
-                "shasum": ""
-            },
-            "require": {
-                "ext-dom": "*",
-                "league/uri-parser": "^1.4.1",
-                "masterminds/html5": "^2.4",
-                "php": ">=7.1",
-                "psr/log": "^1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^7.4",
-                "symfony/var-dumper": "^4.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "HtmlSanitizer\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Titouan Galopin",
-                    "email": "galopintitouan@gmail.com"
-                }
-            ],
-            "description": "Sanitize untrustworthy HTML user input",
-            "time": "2020-02-03T16:51:08+00:00"
         }
     ],
     "packages-dev": [
@@ -698,16 +477,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v2.18.1",
+            "version": "v2.18.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "c68ff6231adb276857761e43b7ed082f164dce0b"
+                "reference": "18f8c9d184ba777380794a389fabc179896ba913"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/c68ff6231adb276857761e43b7ed082f164dce0b",
-                "reference": "c68ff6231adb276857761e43b7ed082f164dce0b",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/18f8c9d184ba777380794a389fabc179896ba913",
+                "reference": "18f8c9d184ba777380794a389fabc179896ba913",
                 "shasum": ""
             },
             "require": {
@@ -793,7 +572,267 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-01-21T18:50:42+00:00"
+            "time": "2021-01-26T00:22:21+00:00"
+        },
+        {
+            "name": "league/uri-parser",
+            "version": "1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/uri-parser.git",
+                "reference": "671548427e4c932352d9b9279fdfa345bf63fa00"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/uri-parser/zipball/671548427e4c932352d9b9279fdfa345bf63fa00",
+                "reference": "671548427e4c932352d9b9279fdfa345bf63fa00",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.0",
+                "phpstan/phpstan": "^0.9.2",
+                "phpstan/phpstan-phpunit": "^0.9.4",
+                "phpstan/phpstan-strict-rules": "^0.9.0",
+                "phpunit/phpunit": "^6.0"
+            },
+            "suggest": {
+                "ext-intl": "Allow parsing RFC3987 compliant hosts",
+                "league/uri-schemes": "Allow validating and normalizing URI parsing results"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Uri\\": "src"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ignace Nyamagana Butera",
+                    "email": "nyamsprod@gmail.com",
+                    "homepage": "https://nyamsprod.com"
+                }
+            ],
+            "description": "userland URI parser RFC 3986 compliant",
+            "homepage": "https://github.com/thephpleague/uri-parser",
+            "keywords": [
+                "parse_url",
+                "parser",
+                "rfc3986",
+                "rfc3987",
+                "uri",
+                "url"
+            ],
+            "time": "2018-11-22T07:55:51+00:00"
+        },
+        {
+            "name": "masterminds/html5",
+            "version": "2.7.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Masterminds/html5-php.git",
+                "reference": "9227822783c75406cfe400984b2f095cdf03d417"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/9227822783c75406cfe400984b2f095cdf03d417",
+                "reference": "9227822783c75406cfe400984b2f095cdf03d417",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Masterminds\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Butcher",
+                    "email": "technosophos@gmail.com"
+                },
+                {
+                    "name": "Matt Farina",
+                    "email": "matt@mattfarina.com"
+                },
+                {
+                    "name": "Asmir Mustafic",
+                    "email": "goetas@gmail.com"
+                }
+            ],
+            "description": "An HTML5 parser and serializer.",
+            "homepage": "http://masterminds.github.io/html5-php",
+            "keywords": [
+                "HTML5",
+                "dom",
+                "html",
+                "parser",
+                "querypath",
+                "serializer",
+                "xml"
+            ],
+            "time": "2020-10-01T13:52:52+00:00"
+        },
+        {
+            "name": "league/uri-parser",
+            "version": "1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/uri-parser.git",
+                "reference": "671548427e4c932352d9b9279fdfa345bf63fa00"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/uri-parser/zipball/671548427e4c932352d9b9279fdfa345bf63fa00",
+                "reference": "671548427e4c932352d9b9279fdfa345bf63fa00",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.0",
+                "phpstan/phpstan": "^0.9.2",
+                "phpstan/phpstan-phpunit": "^0.9.4",
+                "phpstan/phpstan-strict-rules": "^0.9.0",
+                "phpunit/phpunit": "^6.0"
+            },
+            "suggest": {
+                "ext-intl": "Allow parsing RFC3987 compliant hosts",
+                "league/uri-schemes": "Allow validating and normalizing URI parsing results"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Uri\\": "src"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ignace Nyamagana Butera",
+                    "email": "nyamsprod@gmail.com",
+                    "homepage": "https://nyamsprod.com"
+                }
+            ],
+            "description": "userland URI parser RFC 3986 compliant",
+            "homepage": "https://github.com/thephpleague/uri-parser",
+            "keywords": [
+                "parse_url",
+                "parser",
+                "rfc3986",
+                "rfc3987",
+                "uri",
+                "url"
+            ],
+            "time": "2018-11-22T07:55:51+00:00"
+        },
+        {
+            "name": "masterminds/html5",
+            "version": "2.7.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Masterminds/html5-php.git",
+                "reference": "9227822783c75406cfe400984b2f095cdf03d417"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/9227822783c75406cfe400984b2f095cdf03d417",
+                "reference": "9227822783c75406cfe400984b2f095cdf03d417",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Masterminds\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Butcher",
+                    "email": "technosophos@gmail.com"
+                },
+                {
+                    "name": "Matt Farina",
+                    "email": "matt@mattfarina.com"
+                },
+                {
+                    "name": "Asmir Mustafic",
+                    "email": "goetas@gmail.com"
+                }
+            ],
+            "description": "An HTML5 parser and serializer.",
+            "homepage": "http://masterminds.github.io/html5-php",
+            "keywords": [
+                "HTML5",
+                "dom",
+                "html",
+                "parser",
+                "querypath",
+                "serializer",
+                "xml"
+            ],
+            "time": "2020-10-01T13:52:52+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -1266,16 +1305,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.69",
+            "version": "0.12.70",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "8f436ea35241da33487fd0d38b4bc3e6dfe30ea8"
+                "reference": "07f0ef37f5f876e8cee44cc8ea0ec3fe80d499ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/8f436ea35241da33487fd0d38b4bc3e6dfe30ea8",
-                "reference": "8f436ea35241da33487fd0d38b4bc3e6dfe30ea8",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/07f0ef37f5f876e8cee44cc8ea0ec3fe80d499ee",
+                "reference": "07f0ef37f5f876e8cee44cc8ea0ec3fe80d499ee",
                 "shasum": ""
             },
             "require": {
@@ -1318,7 +1357,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-24T14:55:37+00:00"
+            "time": "2021-01-27T17:06:47+00:00"
         },
         {
             "name": "phpstan/phpstan-phpunit",
@@ -1813,6 +1852,53 @@
                 "psr-14"
             ],
             "time": "2019-01-08T18:20:26+00:00"
+        },
+        {
+            "name": "psr/log",
+            "version": "1.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/0f73288fd15629204f9d42b7055f72dacbe811fc",
+                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Log\\": "Psr/Log/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for logging libraries",
+            "homepage": "https://github.com/php-fig/log",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "time": "2020-03-23T09:12:05+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -2767,16 +2853,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v5.2.1",
+            "version": "v5.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "47c02526c532fb381374dab26df05e7313978976"
+                "reference": "d62ec79478b55036f65e2602e282822b8eaaff0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/47c02526c532fb381374dab26df05e7313978976",
-                "reference": "47c02526c532fb381374dab26df05e7313978976",
+                "url": "https://api.github.com/repos/symfony/console/zipball/d62ec79478b55036f65e2602e282822b8eaaff0a",
+                "reference": "d62ec79478b55036f65e2602e282822b8eaaff0a",
                 "shasum": ""
             },
             "require": {
@@ -2835,7 +2921,7 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony Console Component",
+            "description": "Eases the creation of beautiful and testable command line interfaces",
             "homepage": "https://symfony.com",
             "keywords": [
                 "cli",
@@ -2857,7 +2943,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-12-18T08:03:05+00:00"
+            "time": "2021-01-27T10:15:41+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -2925,16 +3011,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v5.2.1",
+            "version": "v5.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "1c93f7a1dff592c252574c79a8635a8a80856042"
+                "reference": "4f9760f8074978ad82e2ce854dff79a71fe45367"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/1c93f7a1dff592c252574c79a8635a8a80856042",
-                "reference": "1c93f7a1dff592c252574c79a8635a8a80856042",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/4f9760f8074978ad82e2ce854dff79a71fe45367",
+                "reference": "4f9760f8074978ad82e2ce854dff79a71fe45367",
                 "shasum": ""
             },
             "require": {
@@ -2987,7 +3073,7 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony EventDispatcher Component",
+            "description": "Provides tools that allow your application components to communicate with each other by dispatching events and listening to them",
             "homepage": "https://symfony.com",
             "funding": [
                 {
@@ -3003,7 +3089,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-12-18T08:03:05+00:00"
+            "time": "2021-01-27T10:36:42+00:00"
         },
         {
             "name": "symfony/event-dispatcher-contracts",
@@ -3083,16 +3169,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v5.2.1",
+            "version": "v5.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "fa8f8cab6b65e2d99a118e082935344c5ba8c60d"
+                "reference": "262d033b57c73e8b59cd6e68a45c528318b15038"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/fa8f8cab6b65e2d99a118e082935344c5ba8c60d",
-                "reference": "fa8f8cab6b65e2d99a118e082935344c5ba8c60d",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/262d033b57c73e8b59cd6e68a45c528318b15038",
+                "reference": "262d033b57c73e8b59cd6e68a45c528318b15038",
                 "shasum": ""
             },
             "require": {
@@ -3122,7 +3208,7 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony Filesystem Component",
+            "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "funding": [
                 {
@@ -3138,20 +3224,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-30T17:05:38+00:00"
+            "time": "2021-01-27T10:01:46+00:00"
         },
         {
             "name": "symfony/finder",
-            "version": "v5.2.1",
+            "version": "v5.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "0b9231a5922fd7287ba5b411893c0ecd2733e5ba"
+                "reference": "196f45723b5e618bf0e23b97e96d11652696ea9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/0b9231a5922fd7287ba5b411893c0ecd2733e5ba",
-                "reference": "0b9231a5922fd7287ba5b411893c0ecd2733e5ba",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/196f45723b5e618bf0e23b97e96d11652696ea9e",
+                "reference": "196f45723b5e618bf0e23b97e96d11652696ea9e",
                 "shasum": ""
             },
             "require": {
@@ -3180,7 +3266,7 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony Finder Component",
+            "description": "Finds files and directories via an intuitive fluent interface",
             "homepage": "https://symfony.com",
             "funding": [
                 {
@@ -3196,20 +3282,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-12-08T17:02:38+00:00"
+            "time": "2021-01-27T10:01:46+00:00"
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v5.2.1",
+            "version": "v5.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
-                "reference": "87a2a4a766244e796dd9cb9d6f58c123358cd986"
+                "reference": "5d0f633f9bbfcf7ec642a2b5037268e61b0a62ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/87a2a4a766244e796dd9cb9d6f58c123358cd986",
-                "reference": "87a2a4a766244e796dd9cb9d6f58c123358cd986",
+                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/5d0f633f9bbfcf7ec642a2b5037268e61b0a62ce",
+                "reference": "5d0f633f9bbfcf7ec642a2b5037268e61b0a62ce",
                 "shasum": ""
             },
             "require": {
@@ -3241,7 +3327,7 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony OptionsResolver Component",
+            "description": "Provides an improved replacement for the array_replace PHP function",
             "homepage": "https://symfony.com",
             "keywords": [
                 "config",
@@ -3262,7 +3348,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-24T12:08:07+00:00"
+            "time": "2021-01-27T12:56:27+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -3872,16 +3958,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v5.2.1",
+            "version": "v5.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "bd8815b8b6705298beaa384f04fabd459c10bedd"
+                "reference": "313a38f09c77fbcdc1d223e57d368cea76a2fd2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/bd8815b8b6705298beaa384f04fabd459c10bedd",
-                "reference": "bd8815b8b6705298beaa384f04fabd459c10bedd",
+                "url": "https://api.github.com/repos/symfony/process/zipball/313a38f09c77fbcdc1d223e57d368cea76a2fd2f",
+                "reference": "313a38f09c77fbcdc1d223e57d368cea76a2fd2f",
                 "shasum": ""
             },
             "require": {
@@ -3911,7 +3997,7 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony Process Component",
+            "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "funding": [
                 {
@@ -3927,7 +4013,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-12-08T17:03:37+00:00"
+            "time": "2021-01-27T10:15:41+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -4007,16 +4093,16 @@
         },
         {
             "name": "symfony/stopwatch",
-            "version": "v5.2.1",
+            "version": "v5.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stopwatch.git",
-                "reference": "2b105c0354f39a63038a1d8bf776ee92852813af"
+                "reference": "b12274acfab9d9850c52583d136a24398cdf1a0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/stopwatch/zipball/2b105c0354f39a63038a1d8bf776ee92852813af",
-                "reference": "2b105c0354f39a63038a1d8bf776ee92852813af",
+                "url": "https://api.github.com/repos/symfony/stopwatch/zipball/b12274acfab9d9850c52583d136a24398cdf1a0c",
+                "reference": "b12274acfab9d9850c52583d136a24398cdf1a0c",
                 "shasum": ""
             },
             "require": {
@@ -4046,7 +4132,7 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony Stopwatch Component",
+            "description": "Provides a way to profile code",
             "homepage": "https://symfony.com",
             "funding": [
                 {
@@ -4062,20 +4148,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-01T16:14:45+00:00"
+            "time": "2021-01-27T10:15:41+00:00"
         },
         {
             "name": "symfony/string",
-            "version": "v5.2.1",
+            "version": "v5.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "5bd67751d2e3f7d6f770c9154b8fbcb2aa05f7ed"
+                "reference": "c95468897f408dd0aca2ff582074423dd0455122"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/5bd67751d2e3f7d6f770c9154b8fbcb2aa05f7ed",
-                "reference": "5bd67751d2e3f7d6f770c9154b8fbcb2aa05f7ed",
+                "url": "https://api.github.com/repos/symfony/string/zipball/c95468897f408dd0aca2ff582074423dd0455122",
+                "reference": "c95468897f408dd0aca2ff582074423dd0455122",
                 "shasum": ""
             },
             "require": {
@@ -4118,7 +4204,7 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony String component",
+            "description": "Provides an object-oriented API to strings and deals with bytes, UTF-8 code points and grapheme clusters in a unified way",
             "homepage": "https://symfony.com",
             "keywords": [
                 "grapheme",
@@ -4142,7 +4228,95 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-12-05T07:33:16+00:00"
+            "time": "2021-01-25T15:14:59+00:00"
+        },
+        {
+            "name": "tgalopin/html-sanitizer",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tgalopin/html-sanitizer.git",
+                "reference": "56cca6b48de4e50d16a4f549e3e677ae0d561e91"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tgalopin/html-sanitizer/zipball/56cca6b48de4e50d16a4f549e3e677ae0d561e91",
+                "reference": "56cca6b48de4e50d16a4f549e3e677ae0d561e91",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "league/uri-parser": "^1.4.1",
+                "masterminds/html5": "^2.4",
+                "php": ">=7.1",
+                "psr/log": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.4",
+                "symfony/var-dumper": "^4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "HtmlSanitizer\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Titouan Galopin",
+                    "email": "galopintitouan@gmail.com"
+                }
+            ],
+            "description": "Sanitize untrustworthy HTML user input",
+            "time": "2020-02-03T16:51:08+00:00"
+        },
+        {
+            "name": "tgalopin/html-sanitizer",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tgalopin/html-sanitizer.git",
+                "reference": "56cca6b48de4e50d16a4f549e3e677ae0d561e91"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tgalopin/html-sanitizer/zipball/56cca6b48de4e50d16a4f549e3e677ae0d561e91",
+                "reference": "56cca6b48de4e50d16a4f549e3e677ae0d561e91",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "league/uri-parser": "^1.4.1",
+                "masterminds/html5": "^2.4",
+                "php": ">=7.1",
+                "psr/log": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.4",
+                "symfony/var-dumper": "^4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "HtmlSanitizer\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Titouan Galopin",
+                    "email": "galopintitouan@gmail.com"
+                }
+            ],
+            "description": "Sanitize untrustworthy HTML user input",
+            "time": "2020-02-03T16:51:08+00:00"
         },
         {
             "name": "theseer/tokenizer",
