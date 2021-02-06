@@ -138,7 +138,7 @@ function template_breezeAdmin_moodList(): void
 				v-for ="mood in localMoods"
 				:key="mood.id"
 				v-bind:mood="mood"
-				@remove-mood="removeMood"
+				@remove-mood="removeMood($event)"
 			></mood>
 		</ul>
 	</div>

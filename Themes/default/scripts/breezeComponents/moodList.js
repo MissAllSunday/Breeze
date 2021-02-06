@@ -6,19 +6,24 @@ new Vue({
 		errored: false,
 		localMoods:  {},
 		txt: window.breezeTxtGeneral,
-		moodAction: 'breezeMood',
-		moodSubAction: 'getAllMoods',
 	},
 	created: function () {
 		this.fetchAllMoods();
 		this.txt.mood = window.breezeTxtMood;
+		this.actions.mood = 'breezeMood';
+		Object.assign(this.subActions, {
+			allMoods: 'getAllMoods',
+			eMood: 'editMood',
+			dMood: 'deleteMood',
+			pMood: 'postMood'
+		});
 	},
 	methods: {
 		fetchAllMoods: function () {
 			let selfVue = this
 
 			selfVue.api
-				.get(selfVue.sprintFormat(selfVue.baseUrl, [this.moodAction ,this.moodSubAction]))
+				.get(selfVue.sprintFormat(selfVue.baseUrl, [this.actions.mood ,this.subActions.allMoods]))
 				.then(function(response) {
 					Object.values(response.data).map(function(mood) {
 						mood.emoji = selfVue.decode(mood.emoji)
@@ -44,11 +49,8 @@ new Vue({
 		removeMood: function (moodId) {
 			Vue.delete(this.localMoods, moodId);
 		},
-		creating: function (){
-			this.isCreatingNewMood = true
-		},
-		save: function (event){
-			console.log(event)
+		addMood(mood) {
+			this.localMoods = Object.assign({}, this.localMoods, mood);
 		}
 	}
 })

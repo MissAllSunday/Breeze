@@ -24,47 +24,47 @@ Vue.component('mood', {
 	},
 	methods: {
 		onSave: function (){
-			if (!confirm(smf_you_sure)) {
-				return;
-			}
-
-			this.api.post(
-				smf_scripturl + '?action=breezeMood;sa=editMood;'+ smf_session_var +'='+ smf_session_id,
-				this.mood
-			).then(response => {
-				Vue.$toast.open({
-					message: response.data.message,
-					type: response.data.type,
-				});
-			});
-		},
-		onDelete: function (){
-			let selfVue = this;
+			let selfVue = this
 
 			if (!selfVue.ownConfirm()) {
 				return;
 			}
 
-			this.api.post(
-				smf_scripturl + '?action=breezeMood;sa=deleteMood;'+ smf_session_var +'='+ smf_session_id,
-				{id: this.mood.id}
-			).then(function (response) {
-				selfVue.showModal = false;
-				Vue.$toast.open({
-					message: response.data.message,
-					type: response.data.type,
-				});
+			this.api.post(selfVue.sprintFormat(selfVue.baseUrl,
+				[this.actions.mood ,this.subActions.pMood]),
+				this.mood
+			).then(response => {
+				selfVue.setNotice(response.data)
 
 				if (response.data.type !== 'error') {
-					selfVue.removeComment();
+					selfVue.updateList();
 				}
 			});
 		},
-		removeComment: function () {
-			this.$emit('remove-mood', this.mood.id);
+		updateList: function () {
+			this.$emit('update-list', this.mood);
 		},
-		editing: function (event) {
-			this.showModal = true
+		onDelete: function (){
+			let selfVue = this;
+
+			if (!selfVue.$root.ownConfirm()) {
+				return;
+			}
+
+			this.api.post(selfVue.sprintFormat(selfVue.baseUrl,
+				[this.actions.mood ,this.subActions.dMood]),
+				this.mood
+			).then(function (response) {
+				selfVue.showModal = false;
+				selfVue.setNotice(response.data)
+
+				if (response.data.type !== 'error') {
+					selfVue.removeMood();
+				}
+			});
+		},
+		removeMood: function () {
+			this.$emit('remove-mood', this.mood.id);
 		},
 		validator: function (){
 			let emojiRegex = /\p{Extended_Pictographic}/u
