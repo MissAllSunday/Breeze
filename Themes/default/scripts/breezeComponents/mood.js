@@ -10,7 +10,7 @@ Vue.component('mood', {
 			<div slot="body">
 				<mood-form
 					v-bind:mood="mood"
-					@delete="onDelete"
+					@delete="onDelete()"
 					@save="onSave($event)"
 				></mood-form>
 			</div>
@@ -26,17 +26,17 @@ Vue.component('mood', {
 		onSave: function (mood){
 			let selfVue = this
 
-			if (!selfVue.ownConfirm()) {
+			if (!selfVue.$root.ownConfirm()) {
 				return;
 			}
 
 			selfVue.mood = mood
 
-			selfVue.api.post(selfVue.sprintFormat(selfVue.baseUrl,
-				[selfVue.actions.mood, selfVue.subActions.mood.post]),
+			selfVue.$root.api.post(selfVue.$root.sprintFormat(selfVue.$root.baseUrl,
+				[selfVue.$root.actions.mood, selfVue.$root.subActions.mood.post]),
 				selfVue.mood
 			).then(response => {
-				selfVue.setNotice(response.data)
+				selfVue.$root.setNotice(response.data)
 
 				if (response.data.type !== 'error') {
 					selfVue.updateList();
@@ -53,11 +53,11 @@ Vue.component('mood', {
 				return;
 			}
 
-			selfVue.api.post(selfVue.sprintFormat(selfVue.baseUrl,
-				[selfVue.actions.mood, selfVue.subActions.mood.delete]),
+			selfVue.$root.api.post(selfVue.$root.sprintFormat(selfVue.$root.baseUrl,
+				[selfVue.$root.actions.mood, selfVue.$root.subActions.mood.eliminate]),
 				selfVue.mood
 			).then(function (response) {
-				selfVue.setNotice(response.data)
+				selfVue.$root.setNotice(response.data)
 
 				if (response.data.type !== 'error') {
 					selfVue.removeMood();
@@ -66,6 +66,9 @@ Vue.component('mood', {
 		},
 		removeMood: function () {
 			this.$emit('remove-mood', this.mood.id);
+		},
+		editing: function () {
+			this.showModal = true
 		},
 		validator: function (){
 			let emojiRegex = /\p{Extended_Pictographic}/u

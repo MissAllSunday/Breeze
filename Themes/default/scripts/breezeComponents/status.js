@@ -49,7 +49,7 @@ Vue.component('status', {
 
 			selfVue.api.post(
 				selfVue.sprintFormat(selfVue.baseUrl, [
-					selfVue.actions.comment, selfVue.subActions.pComment
+					selfVue.actions.comment, selfVue.subActions.comment.post
 				]),
 				{
 					userId: this.$root.wallData.posterId,
@@ -85,7 +85,7 @@ Vue.component('status', {
 				selfVue.sprintFormat(selfVue.baseUrl,
 				[
 					selfVue.actions.status ,
-					selfVue.subActions.dStatus]
+					selfVue.subActions.status.eliminate]
 				),
 				selfVue.item
 			).then(function (response) {

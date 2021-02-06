@@ -33,15 +33,15 @@ let breezeUtils = {
 				status: {
 					post: 'postStatus',
 					byProfile: 'statusByProfile',
-					delete: 'deleteStatus',
+					eliminate: 'deleteStatus',
 				},
 				comment: {
 					post: 'postComment',
-					delete: 'deleteComment',
+					eliminate: 'deleteComment',
 				},
 				mood: {
 					all: 'getAllMoods',
-					delete: 'deleteMood',
+					eliminate: 'deleteMood',
 					post: 'postMood'
 				}
 			},

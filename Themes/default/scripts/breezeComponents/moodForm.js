@@ -5,7 +5,7 @@ Vue.component('mood-form', {
 		v-if="invalidEmoji"
 		v-bind:type="'error'"
 		@close="resetEmojiField()">
-			{{ this.$root.txt.mood.invalidEmoji }}
+			{{ this.invalidEmoji }}
 	</message-box>
 	<dl class="settings">
 		<dt>
@@ -34,7 +34,7 @@ Vue.component('mood-form', {
 		</dd>
 	</dl>
 	<input type="submit" v-bind:value="$root.txt.save" class="button" @click="onSave()" :disabled='invalidEmoji'>
-	<input type="submit" v-bind:value="$root.txt.delete" class="button" @click="$emit('delete')" v-if="!newMood">
+	<input type="submit" v-bind:value="$root.txt.delete" class="button" @click="$emit('delete')" v-if="mood.id != 0">
 </div>`,
 	props: {
 		mood: {

@@ -20,7 +20,7 @@ Vue.component('comment', {
 		deleteComment: function () {
 			let selfVue = this
 
-			if (!this.ownConfirm()) {
+			if (!selfVue.ownConfirm()) {
 				return;
 			}
 
@@ -28,9 +28,9 @@ Vue.component('comment', {
 			selfVue.api.post(selfVue.sprintFormat(selfVue.baseUrl,
 				[
 					selfVue.actions.comment,
-					selfVue.subActions.dComment
+					selfVue.subActions.comment.eliminate
 				]),
-				this.item
+				selfVue.item
 			).then(function (response) {
 				selfVue.clearLoading()
 				selfVue.setNotice(response.data);

@@ -99,11 +99,11 @@ class Components
 				'activity' => $this->getText('tabs_activity'),
 			],
 			'mood' => [
-				'emoji' => $this->getText('tabs_wall'),
-				'description' => $this->getText('tabs_about'),
-				'enable' => $this->getText('tabs_activity'),
-				'invalidEmoji' => $this->getText('tabs_about'),
-				'emptyEmoji' => $this->getText('tabs_activity'),
+				'emoji' => $this->getText('mood_emoji'),
+				'description' => $this->getText('mood_description'),
+				'enable' => $this->getText('mood_enable'),
+				'invalidEmoji' => $this->getText('error_invalidEmoji'),
+				'emptyEmoji' => $this->getText('error_emptyEmoji'),
 			],
 		];
 
