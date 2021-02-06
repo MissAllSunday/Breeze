@@ -10,20 +10,13 @@ new Vue({
 	created: function () {
 		this.fetchAllMoods();
 		this.txt.mood = window.breezeTxtMood;
-		this.actions.mood = 'breezeMood';
-		Object.assign(this.subActions, {
-			allMoods: 'getAllMoods',
-			eMood: 'editMood',
-			dMood: 'deleteMood',
-			pMood: 'postMood'
-		});
 	},
 	methods: {
 		fetchAllMoods: function () {
 			let selfVue = this
 
 			selfVue.api
-				.get(selfVue.sprintFormat(selfVue.baseUrl, [this.actions.mood ,this.subActions.allMoods]))
+				.get(selfVue.sprintFormat(selfVue.baseUrl, [this.actions.mood ,this.subActions.mood.all]))
 				.then(function(response) {
 					Object.values(response.data).map(function(mood) {
 						mood.emoji = selfVue.decode(mood.emoji)
@@ -49,7 +42,7 @@ new Vue({
 		removeMood: function (moodId) {
 			Vue.delete(this.localMoods, moodId);
 		},
-		addMood(mood) {
+		updateList(mood) {
 			this.localMoods = Object.assign({}, this.localMoods, mood);
 		}
 	}

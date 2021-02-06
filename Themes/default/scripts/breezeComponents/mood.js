@@ -11,7 +11,7 @@ Vue.component('mood', {
 				<mood-form
 					v-bind:mood="mood"
 					@delete="onDelete"
-					@save="onSave"
+					@save="onSave($event)"
 				></mood-form>
 			</div>
 		</modal>
@@ -23,16 +23,18 @@ Vue.component('mood', {
 		}
 	},
 	methods: {
-		onSave: function (){
+		onSave: function (mood){
 			let selfVue = this
 
 			if (!selfVue.ownConfirm()) {
 				return;
 			}
 
-			this.api.post(selfVue.sprintFormat(selfVue.baseUrl,
-				[this.actions.mood ,this.subActions.pMood]),
-				this.mood
+			selfVue.mood = mood
+
+			selfVue.api.post(selfVue.sprintFormat(selfVue.baseUrl,
+				[selfVue.actions.mood, selfVue.subActions.mood.post]),
+				selfVue.mood
 			).then(response => {
 				selfVue.setNotice(response.data)
 
@@ -51,11 +53,10 @@ Vue.component('mood', {
 				return;
 			}
 
-			this.api.post(selfVue.sprintFormat(selfVue.baseUrl,
-				[this.actions.mood ,this.subActions.dMood]),
-				this.mood
+			selfVue.api.post(selfVue.sprintFormat(selfVue.baseUrl,
+				[selfVue.actions.mood, selfVue.subActions.mood.delete]),
+				selfVue.mood
 			).then(function (response) {
-				selfVue.showModal = false;
 				selfVue.setNotice(response.data)
 
 				if (response.data.type !== 'error') {

@@ -27,13 +27,23 @@ let breezeUtils = {
 			actions: {
 				comment: 'breezeComment',
 				status: 'breezeStatus',
+				mood: 'breezeMood'
 			},
 			subActions: {
-				pStatus: 'postStatus',
-				statusByProfile: 'statusByProfile',
-				pComment: 'postComment',
-				dStatus: 'deleteStatus',
-				dComment: 'deleteComment',
+				status: {
+					post: 'postStatus',
+					byProfile: 'statusByProfile',
+					delete: 'deleteStatus',
+				},
+				comment: {
+					post: 'postComment',
+					delete: 'deleteComment',
+				},
+				mood: {
+					all: 'getAllMoods',
+					delete: 'deleteMood',
+					post: 'postMood'
+				}
 			},
 		}
 	},
