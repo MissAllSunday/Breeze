@@ -5,12 +5,12 @@ Vue.component('mood-form', {
 		v-if="invalidEmoji"
 		v-bind:type="'error'"
 		@close="resetEmojiField()">
-			{{ invalidEmoji }}
+			{{ this.$root.txt.mood.invalidEmoji }}
 	</message-box>
 	<dl class="settings">
 		<dt>
 			<span>
-				<label>{{ $root.txt.mood.emoji }}:</label>
+				<label>{{ this.$root.txt.mood.emoji }}:</label>
 			</span>
 		</dt>
 		<dd>
@@ -18,7 +18,7 @@ Vue.component('mood-form', {
 		</dd>
 		<dt>
 			<span>
-				<label>{{ $root.txt.mood.description }}:</label>
+				<label>{{ this.$root.txt.mood.description }}:</label>
 			</span>
 		</dt>
 		<dd>
@@ -26,7 +26,7 @@ Vue.component('mood-form', {
 		</dd>
 		<dt>
 			<span>
-				<label>{{ $root.txt.mood.enable }}:</label>
+				<label>{{ this.$root.txt.mood.enable }}:</label>
 			</span>
 		</dt>
 		<dd>

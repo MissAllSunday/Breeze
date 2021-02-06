@@ -23,7 +23,6 @@ let breezeUtils = {
 		return {
 			api : axios,
 			sanitize: DOMPurify.sanitize,
-			txt:  window.breezeTxtGeneral,
 			baseUrl: smf_scripturl + '?action={0};' + smf_session_var +'='+ smf_session_id + ';sa={1}',
 			actions: {
 				comment: 'breezeComment',

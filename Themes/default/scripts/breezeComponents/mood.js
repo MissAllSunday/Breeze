@@ -5,7 +5,7 @@ Vue.component('mood', {
 		<span @click="editing()">{{ mood.emoji }}</span>
 		<modal v-if="showModal" @close="showModal = false" @click.stop>
 			<div slot="header">
-				{{ this.$root.txt.editing }} {{ mood.emoji }}
+				{{ $root.txt.editing }} {{ mood.emoji }}
 			</div>
 			<div slot="body">
 				<mood-form
@@ -28,7 +28,7 @@ Vue.component('mood', {
 				return;
 			}
 
-			axios.post(
+			this.api.post(
 				smf_scripturl + '?action=breezeMood;sa=editMood;'+ smf_session_var +'='+ smf_session_id,
 				this.mood
 			).then(response => {
@@ -41,11 +41,11 @@ Vue.component('mood', {
 		onDelete: function (){
 			let selfVue = this;
 
-			if (!confirm(smf_you_sure)) {
+			if (!selfVue.ownConfirm()) {
 				return;
 			}
 
-			axios.post(
+			this.api.post(
 				smf_scripturl + '?action=breezeMood;sa=deleteMood;'+ smf_session_var +'='+ smf_session_id,
 				{id: this.mood.id}
 			).then(function (response) {

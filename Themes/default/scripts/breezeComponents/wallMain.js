@@ -4,6 +4,7 @@ new Vue({
 	el: '#breeze_app',
 	mixins: [breezeUtils],
 	data: {
+		txt:  window.breezeTxtGeneral,
 		status: null,
 		errored: false,
 		notice: null,

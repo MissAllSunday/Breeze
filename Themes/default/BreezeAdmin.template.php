@@ -129,26 +129,6 @@ function template_breezeAdmin_moodList(): void
 	}
 
 	echo '
-<script>
-	let breezeTxt = {
-	    save: "' . $txt['Breeze_general_save'] . '",
-	    delete: "' . $txt['Breeze_general_delete'] . '",
-	    editing: "' . $txt['Breeze_general_editing'] . '",
-	    close: "' . $txt['Breeze_general_close'] . '",
-	    cancel: "' . $txt['Breeze_general_cancel'] . '",
-	    mood: {
-	        emoji: "' . $txt['Breeze_mood_emoji'] . '",
-			description: "' . $txt['Breeze_mood_description'] . '",
-			enable: "' . $txt['Breeze_mood_enable'] . '",
-			invalidEmoji: "' . $txt['Breeze_error_validEmoji'] . '",
-			emptyEmoji: "' . $txt['Breeze_error_emptyEmoji'] . '",
-	    }
-	}
-	let breezeUsers = {
-	    wallOwner: 0,
-	    wallPoster: 0
-	}
-</script>
 <div id="moodList">
 	<div class="cat_bar">&nbsp;</div>
 	<div class="windowbg">

@@ -5,13 +5,13 @@ new Vue({
 		isCreatingNewMood: false,
 		errored: false,
 		localMoods:  {},
-		txt:  window.breezeTxt,
+		txt: window.breezeTxtGeneral,
 		moodAction: 'breezeMood',
 		moodSubAction: 'getAllMoods',
 	},
 	created: function () {
 		this.fetchAllMoods();
-		this.txt = window.breezeTxt
+		this.txt.mood = window.breezeTxtMood;
 	},
 	methods: {
 		fetchAllMoods: function () {
