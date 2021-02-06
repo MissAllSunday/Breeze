@@ -144,6 +144,10 @@ function template_breezeAdmin_moodList(): void
 			emptyEmoji: "' . $txt['Breeze_error_emptyEmoji'] . '",
 	    }
 	}
+	let breezeUsers = {
+	    wallOwner: 0,
+	    wallPoster: 0
+	}
 </script>
 <div id="moodList">
 	<div class="cat_bar">&nbsp;</div>

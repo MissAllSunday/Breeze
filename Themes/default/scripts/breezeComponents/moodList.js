@@ -1,27 +1,13 @@
 new Vue({
 	el: '#moodList',
+	mixins: [breezeUtils],
 	data: {
 		isCreatingNewMood: false,
 		errored: false,
-		localMoods:  {
-			type: Object,
-			default: function () {
-				return {}
-			},
-		},
-		txt:  {
-			type: Object,
-			default: function () {
-				return {}
-			},
-		}
-	},
-	props: {
-		moodsURL: {
-			type: String,
-			required: false,
-			default: smf_scripturl + '?action=breezeMood;sa=getAllMoods;'+ smf_session_var +'='+ smf_session_id
-		}
+		localMoods:  {},
+		txt:  window.breezeTxt,
+		moodAction: 'breezeMood',
+		moodSubAction: 'getAllMoods',
 	},
 	created: function () {
 		this.fetchAllMoods();
@@ -29,11 +15,11 @@ new Vue({
 	},
 	methods: {
 		fetchAllMoods: function () {
-			let selfVue = this;
-			axios
-				.get(selfVue.moodsURL)
-				.then(function(response) {
+			let selfVue = this
 
+			selfVue.api
+				.get(selfVue.sprintFormat(selfVue.baseUrl, [this.moodAction ,this.moodSubAction]))
+				.then(function(response) {
 					Object.values(response.data).map(function(mood) {
 						mood.emoji = selfVue.decode(mood.emoji)
 						mood.isActive = Boolean(Number(mood.isActive))

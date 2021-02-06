@@ -8,6 +8,10 @@ new Vue({
 		errored: false,
 		notice: null,
 		users:  {},
+		wallData: {
+			ownerId: window.breezeUsers.wallOwner || 0,
+			posterId: window.breezeUsers.wallPoster || 0,
+		},
 	},
 	created: function () {
 		this.fetchStatus()

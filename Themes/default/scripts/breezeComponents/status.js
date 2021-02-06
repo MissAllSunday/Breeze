@@ -52,7 +52,7 @@ Vue.component('status', {
 					selfVue.actions.comment, selfVue.subActions.pComment
 				]),
 				{
-					userId: this.wallData.posterId,
+					userId: this.$root.wallData.posterId,
 					statusId: selfVue.item.id,
 					body: editorContent,
 				}

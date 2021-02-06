@@ -36,10 +36,6 @@ let breezeUtils = {
 				dStatus: 'deleteStatus',
 				dComment: 'deleteComment',
 			},
-			wallData: {
-				ownerId: window.breezeUsers.wallOwner || 0,
-				posterId: window.breezeUsers.wallPoster || 0,
-			},
 		}
 	},
 	methods: {
