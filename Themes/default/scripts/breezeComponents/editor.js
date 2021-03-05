@@ -12,7 +12,7 @@ Vue.component('editor', {
 <div class="breeze_editor">
 	<modal v-if ="previewBody !== null" @close="clearPreview()" @click.stop>
 		<div slot="header">
-			{{ this.txt.previewing }}
+			{{ this.$root.txt.previewing }}
 		</div>
 		<div slot="body">
 			<div class="sun-editor-editable" v-html="previewBody"></div>
@@ -25,8 +25,8 @@ Vue.component('editor', {
 				type="button"
 				@click="showPreview()"
 				class="button"
-				:value="txt.preview">
-			<input type="submit" @click="postData()" class="button" :value="txt.send">
+				:value="$root.txt.preview">
+			<input type="submit" @click="postData()" class="button" :value="$root.txt.send">
 	</div>
 </div>`,
 	mounted: function () {
@@ -81,7 +81,7 @@ Vue.component('editor', {
 				body === '<p></p>' ||
 				typeof(body) !== 'string' ) {
 				this.setNotice({
-					message: this.txt.errorEmpty
+					message: this.$root.txt.errorEmpty
 				});
 
 				return false;
