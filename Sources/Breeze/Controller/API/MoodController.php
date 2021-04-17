@@ -6,6 +6,8 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\MoodEntity;
+use Breeze\Entity\UserSettingsEntity;
+use Breeze\Service\Actions\UserSettingsServiceInterface;
 use Breeze\Service\MoodServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Validate\ValidateGatewayInterface;
@@ -32,13 +34,17 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 	private UserServiceInterface $userService;
 
 	private MoodServiceInterface $moodService;
+	private UserSettingsServiceInterface $userSettingsService;
 
 	public function __construct(
 		UserServiceInterface $userService,
+		UserSettingsServiceInterface $userSettingsService,
 		MoodServiceInterface $moodService,
 		ValidateGatewayInterface $gateway
 	) {
 		parent::__construct($gateway);
+
+		$this->userSettingsService = $userSettingsService;
 		$this->userService = $userService;
 		$this->moodService = $moodService;
 		$this->gateway = $gateway;
@@ -70,6 +76,9 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 	public function setUserMood(): void
 	{
 		$data = $this->gateway->getData();
+		$userId = array_pop($data);
+
+		$this->userSettingsService->save($data, $userId);
 
 		$this->print($this->gateway->response());
 	}

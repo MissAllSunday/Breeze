@@ -15,13 +15,13 @@ use Breeze\Util\Validate\ValidateDataException;
 class SetUserMood extends ValidateData implements ValidateDataInterface
 {
 	protected const PARAMS = [
-		MoodEntity::ID => 0,
+		UserSettingsEntity::MOOD => 0,
 		UserSettingsEntity::USER_ID => 0,
 	];
 
 	protected const DEFAULT_PARAMS = [];
 
-	protected const SUCCESS_KEY = 'setUserMood';
+	protected const SUCCESS_KEY = 'moodChanged';
 
 	protected UserServiceInterface $userService;
 
@@ -55,7 +55,7 @@ class SetUserMood extends ValidateData implements ValidateDataInterface
 	 */
 	public function dataExists(): void
 	{
-		$this->moodService->getMoodById($this->data[MoodEntity::ID]);
+		$this->moodService->getMoodById($this->data[UserSettingsEntity::MOOD]);
 	}
 
 	/**
@@ -69,7 +69,8 @@ class SetUserMood extends ValidateData implements ValidateDataInterface
 	public function getInts(): array
 	{
 		return [
-			MoodEntity::ID,
+			UserSettingsEntity::MOOD,
+			UserSettingsEntity::USER_ID,
 		];
 	}
 

@@ -73,6 +73,7 @@ return [
 		'class' => MoodController::class,
 		'arguments'=> [
 			UserService::class,
+			UserSettingsService::class,
 			MoodService::class,
 			ValidateGateway::class
 		]

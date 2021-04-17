@@ -15,7 +15,7 @@ class UserSettingsEntity extends BaseEntity implements BaseEntityInterface
 	public const BLOCK_LIST = 'blockList';
 	public const BUDDIES = 'buddies';
 	public const ABOUT_ME = 'aboutMe';
-	public const MOOD = 'mood';
+	public const MOOD = 'moodId';
 	public const USER_ID = 'userId';
 
 	public static function getColumns(): array

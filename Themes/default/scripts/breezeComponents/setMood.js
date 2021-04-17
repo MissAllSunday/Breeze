@@ -33,21 +33,22 @@ Vue.component('set-mood', {
 		changeMood: function (selectedMood){
 			let selfVue = this
 
+			selfVue.showModal = false;
+
 			selfVue.api
 				.post(selfVue.sprintFormat(selfVue.baseUrl,
 					[this.actions.mood ,this.subActions.mood.setMood]),
 					{
+						moodId: selectedMood.id,
 						userId: 1,
-						id: selectedMood.id,
 					})
-				.then(function(response) {console.log(response)
+				.then(function(response) {
 					selfVue.$root.setNotice(response.data)
-					this.showModal = false;
 				})
-				.catch(function(error) {console.log(error)
+				.catch(function(error) {
 					selfVue.errored = true
 				}).then(function (){
-					this.showModal = false;
+
 			});
 		},
 		fetchActiveMoods: function () {
