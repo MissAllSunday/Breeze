@@ -23,8 +23,8 @@ class Components
 		'tabs',
 		'editor',
 		'wallMain',
-		'mood',
-		'moodList',
+		'moodAdmin',
+		'moodListAdmin',
 		'textArea',
 	];
 	private const CDN_JS = [

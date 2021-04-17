@@ -3,11 +3,11 @@
 	overflow: auto;
 }
 
-#breeze_summary{
+.breeze_summary{
 	width: 20%;
 }
 
-#breeze_app{
+.breeze_wall{
 	width: 79.5%;
 }
 

@@ -70,7 +70,9 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 			'wallPoster' => $this->currentUserInfo['id']
 		]);
 		$this->components->loadTxtVarsFor(['general']);
-		$this->components->loadComponents(['wallMain', 'utils', 'tabs', 'status', 'comment', 'editor', 'modal']);
+		$this->components->loadComponents(
+			['wallMain', 'utils', 'tabs', 'status', 'comment', 'editor', 'modal']
+		);
 		$this->components->loadCSSFile('breeze.css', [], 'smf_breeze');
 	}
 

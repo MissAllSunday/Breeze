@@ -25,8 +25,8 @@ function template_breeze_main(): void
 	);
 
 	echo '
-<div id="breeze_main" class="breeze_main_section">
-	<div id="breeze_summary" class="floatleft">
+<div id="breeze_app" class="breeze_main_section">
+	<div class="breeze_summary floatleft">
 		<div class="roundframe flow_auto">
 			<div class="breeze_avatar"
 				style="background-image: url(' . $context['member']['avatar']['url'] . ')">
@@ -45,10 +45,19 @@ function template_breeze_main(): void
 			<p class="breeze_description">
 				' . $context['member']['blurb'] . '
 			</p>
+			<p>
+				<mood
+				v-for ="mood in localMoods"
+				:key="mood.id"
+				v-bind:mood="mood"
+				@remove-mood="removeMood($event)"
+				@update-list="updateList($event)"
+			></mood>
+			</p>
 		</div>
 	</div>
 
-	<div id="breeze_app" class="breeze_wall floatright">
+	<div class="breeze_wall floatright">
 		<tabs>
     		<tab :name="\'' . $txt['Breeze_tabs_wall'] . '\'" :selected="true">
 				<editor
