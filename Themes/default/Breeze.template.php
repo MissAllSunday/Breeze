@@ -45,14 +45,8 @@ function template_breeze_main(): void
 			<p class="breeze_description">
 				' . $context['member']['blurb'] . '
 			</p>
-			<p>
-				<mood
-				v-for ="mood in localMoods"
-				:key="mood.id"
-				v-bind:mood="mood"
-				@remove-mood="removeMood($event)"
-				@update-list="updateList($event)"
-			></mood>
+			<p class="breeze_mood">
+				<set-mood></set-mood>
 			</p>
 		</div>
 	</div>

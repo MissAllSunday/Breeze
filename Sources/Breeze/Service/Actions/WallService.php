@@ -71,7 +71,7 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 		]);
 		$this->components->loadTxtVarsFor(['general']);
 		$this->components->loadComponents(
-			['wallMain', 'utils', 'tabs', 'status', 'comment', 'editor', 'modal']
+			['wallMain', 'utils', 'tabs', 'status', 'comment', 'editor', 'modal', 'setMood']
 		);
 		$this->components->loadCSSFile('breeze.css', [], 'smf_breeze');
 	}

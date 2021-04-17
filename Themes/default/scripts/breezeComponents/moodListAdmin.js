@@ -30,7 +30,6 @@ new Vue({
 				})
 				.catch(function(error) {
 					let selfVue = this;
-console.log(error)
 					selfVue.errored = true
 				})
 		},
