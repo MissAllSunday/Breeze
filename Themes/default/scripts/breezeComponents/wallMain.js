@@ -21,13 +21,14 @@ new Vue({
 		postStatus: function (editorContent) {
 			let selfVue = this
 
-			this.api.post(this.sprintFormat(this.baseUrl, [this.actions.status ,this.subActions.pStatus]),
+			this.api.post(this.sprintFormat(this.baseUrl,
+				[this.actions.status ,this.subActions.status.post]),
 				{
 					wallId: selfVue.wallData.ownerId,
 					userId: selfVue.wallData.posterId,
 					body: editorContent,
 				}
-			).then(function(response) {
+			).then(function(response) {console.log(response)
 				selfVue.setNotice(response.data);
 
 				if (response.data.content) {
@@ -47,7 +48,8 @@ new Vue({
 		fetchStatus: function () {
 			let selfVue = this
 
-			selfVue.api.post(this.sprintFormat(this.baseUrl, [this.actions.status ,this.subActions.statusByProfile]),
+			selfVue.api.post(this.sprintFormat(this.baseUrl,
+				[this.actions.status ,this.subActions.status.byProfile]),
 				{wallId: selfVue.wallData.ownerId}
 			).then(function(response) {
 				if (response.data.type) {
