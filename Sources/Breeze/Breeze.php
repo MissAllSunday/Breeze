@@ -138,7 +138,7 @@ class Breeze
 		];
 	}
 
-	public function menu(&$menu_buttons): void
+	public function menu(array &$menu_buttons): void
 	{
 		if (!$this->isEnable(SettingsEntity::MASTER)) {
 			return;
@@ -193,7 +193,7 @@ class Breeze
 		);
 	}
 
-	public function actions(&$actions): void
+	public function actions(array &$actions): void
 	{
 		$statusController = $this->container->get(StatusController::class);
 		$commentController = $this->container->get(CommentController::class);
@@ -341,12 +341,8 @@ class Breeze
 }
 
 /*
-* And so it is
-* Just like you said it would be
-* We'll both forget the breeze
-* Most of the time
-* And so it is
-* The shorter story
-* No love, no glory
-* No hero in her skies
+* Whatcha gonna do, where are you gonna go
+* When the darkness closes on you
+* Is there anybody out there looking for you?
+* Do they know what you've been through?
 */
