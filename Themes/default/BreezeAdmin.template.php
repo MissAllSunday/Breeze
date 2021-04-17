@@ -134,13 +134,13 @@ function template_breezeAdmin_moodList(): void
 	<div class="windowbg">
 		<span v-if="errored">' . $txt['Breeze_error_moodGet'] . '</span>
 		<ul>
-			<mood
+			<mood-admin
 				v-for ="mood in localMoods"
 				:key="mood.id"
 				v-bind:mood="mood"
 				@remove-mood="removeMood($event)"
 				@update-list="updateList($event)"
-			></mood>
+			></mood-admin>
 		</ul>
 	</div>
 	<div class="additional_row">

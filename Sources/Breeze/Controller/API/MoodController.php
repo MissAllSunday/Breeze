@@ -18,6 +18,7 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 	public const ACTION_DELETE = 'deleteMood';
 	public const ACTION_PATCH = 'editMood';
 	public const ACTION_ACTIVE = 'getActiveMoods';
+	public const ACTION_USER_SET = 'setUserMood';
 	public const ACTION_ALL = 'getAllMoods';
 	public const SUB_ACTIONS = [
 		self::ACTION_POST,
@@ -25,6 +26,7 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 		self::ACTION_PATCH,
 		self::ACTION_ACTIVE,
 		self::ACTION_ALL,
+		self::ACTION_USER_SET,
 	];
 
 	private UserServiceInterface $userService;
@@ -62,11 +64,14 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 
 	public function getActiveMoods(): void
 	{
+		$this->print($this->moodService->getActiveMoods());
+	}
+
+	public function setUserMood(): void
+	{
 		$data = $this->gateway->getData();
 
-		$activeMoods = $this->moodService->getActiveMoods();
-
-		$this->print($activeMoods);
+		$this->print($this->gateway->response());
 	}
 
 	public function getSubActions(): array

@@ -59,8 +59,8 @@ class ValidateGateway implements ValidateGatewayInterface
 			}
 
 			try {
-				$this->validator->{$step}();
 				$this->data = $this->validator->getData();
+				$this->validator->{$step}();
 			} catch (InvalidStatusException | InvalidCommentException | InvalidMoodException $e) {
 				$this->setNotice([
 					'message' => sprintf(

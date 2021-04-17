@@ -1,23 +1,21 @@
 Vue.component('mood-admin', {
 	props: ['mood'],
 	template: `
-	<ul>
 		<li>
-			<span @click="editing()">{{ mood.emoji }}</span>
-			<modal v-if="showModal" @close="showModal = false" @click.stop>
-				<div slot="header">
-					{{ $root.txt.editing }} {{ mood.emoji }}
-				</div>
-				<div slot="body">
-					<mood-form
-						v-bind:mood="mood"
-						@delete="onDelete()"
-						@save="onSave($event)"
-					></mood-form>
-				</div>
-			</modal>
-		</li>
-	</ul>`,
+		<span @click="editing()">{{ mood.emoji }}</span>
+		<modal v-if="showModal" @close="showModal = false" @click.stop>
+			<div slot="header">
+				{{ $root.txt.editing }} {{ mood.emoji }}
+			</div>
+			<div slot="body">
+				<mood-form
+					v-bind:mood="mood"
+					@delete="onDelete()"
+					@save="onSave($event)"
+				></mood-form>
+			</div>
+		</modal>
+	</li>`,
 	data: function (){
 		return {
 			showModal: false,

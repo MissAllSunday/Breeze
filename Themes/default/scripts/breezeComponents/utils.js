@@ -43,7 +43,8 @@ let breezeUtils = {
 					all: 'getAllMoods',
 					active: 'getActiveMoods',
 					eliminate: 'deleteMood',
-					post: 'postMood'
+					post: 'postMood',
+					setMood: 'setUserMood'
 				}
 			},
 		}
