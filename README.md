@@ -26,7 +26,7 @@ The mod uses the following scripts:
 - [moment.js](https://momentjs.com/)
 - [vue-toast-notification](https://github.com/ankurk91/vue-toast-notification)
 - [DOMPurify](https://github.com/cure53/DOMPurify)
-- [Sun editor](http://suneditor.com/)
+- [Sun editor](https://suneditor.com/)
 
 ##### Tests
 ```bash

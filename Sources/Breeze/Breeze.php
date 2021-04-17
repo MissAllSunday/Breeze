@@ -293,46 +293,37 @@ class Breeze
 				'name' => 'Developer(s)',
 				'users' => [
 					'suki' => [
-						'name' => 'Jessica "Suki" Gonz&aacute;lez',
-						'site' => '//missallsunday.com',
+						'name' => 'Michel Mendiola',
+						'site' => 'https://missallsunday.com',
 					],
 				],
 			],
 			'scripts' => [
 				'name' => 'Third Party Scripts',
 				'users' => [
-					'jQuery' => [
-						'name' => 'jQuery',
-						'site' => 'http://jquery.com/',
+					'Vue' => [
+						'name' => 'Vue',
+						'site' => 'https://vuejs.org/',
 					],
-					'noty' => [
-						'name' => 'noty jquery plugin',
-						'site' => 'http://needim.github.com/noty/',
+					'Axios' => [
+						'name' => 'Axios',
+						'site' => 'https://github.com/axios/axios',
 					],
 					'moment' => [
 						'name' => 'moment.js',
-						'site' => 'http://momentjs.com/',
+						'site' => 'https://momentjs.com/',
 					],
-					'livestamp' => [
-						'name' => 'Livestamp.js',
-						'site' => 'http://mattbradley.github.io/livestampjs/',
+					'vue-toast-notification' => [
+						'name' => 'Vue Toast Notification',
+						'site' => 'https://github.com/ankurk91/vue-toast-notification',
 					],
-					'fileUpload' => [
-						'name' => 'jQuery File Upload Plugin',
-						'site' => 'https://github.com/blueimp/jQuery-File-Upload',
+					'DOMPurify' => [
+						'name' => 'DOMPurify',
+						'site' => 'https://github.com/cure53/DOMPurify',
 					],
-				],
-			],
-			'images' => [
-				'name' => 'Icons',
-				'users' => [
-					'metro' => [
-						'name' => 'Font Awesome',
-						'site' => 'http://fortawesome.github.io/Font-Awesome/',
-					],
-					'skype' => [
-						'name' => 'skype icons',
-						'site' => 'http://blogs.skype.com/2006/09/01/icons-and-strings',
+					'Sun Editor' => [
+						'name' => 'Sun Editor',
+						'site' => 'https://suneditor.com/',
 					],
 				],
 			],
