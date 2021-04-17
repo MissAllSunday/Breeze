@@ -46,7 +46,11 @@ function template_breeze_main(): void
 				' . $context['member']['blurb'] . '
 			</p>
 			<p class="breeze_mood">
-				<set-mood></set-mood>
+				<set-mood
+					:current-mood-id="currentMoodId"
+					:user-id="wallData.ownerId"
+					:mood-label="txtMood.moodChange"
+				></set-mood>
 			</p>
 		</div>
 	</div>

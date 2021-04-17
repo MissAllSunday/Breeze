@@ -65,11 +65,16 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 			$this->currentUserInfo['id'],
 		]);
 
+		$this->components->addJavaScriptVar(
+			'profileOwnerSettings',
+			$this->profileOwnerSettings
+		);
+
 		$this->components->addJavaScriptVar('users', [
 			'wallOwner' => $this->profileOwnerInfo['id'],
 			'wallPoster' => $this->currentUserInfo['id']
 		]);
-		$this->components->loadTxtVarsFor(['general']);
+		$this->components->loadTxtVarsFor(['general', 'mood']);
 		$this->components->loadComponents(
 			['wallMain', 'utils', 'tabs', 'status', 'comment', 'editor', 'modal', 'setMood']
 		);

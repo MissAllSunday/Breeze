@@ -1,24 +1,27 @@
 Vue.component('set-mood', {
+	props: ['currentMoodId', 'moodId', 'moodLabel'],
 	mixins: [breezeUtils],
 	data: function() {
 		return {
 			activeMoods: [],
 			errored: false,
 			showModal: false,
+			currentMood: {}
 		}
 	},
 	template: `
 	<div id="moodList">
-		<span @click="showMoodList()">Set your mood</span>
+		<span @click="showMoodList()" title="moodLabel">{{ currentMood.emoji }}</span>
 		<modal v-if="showModal" @close="showModal = false" @click.stop>
 			<div slot="header">
-				Set your mood!
+				{{ moodLabel }}
 			</div>
 			<div slot="body">
 				<ul>
 					<li
-						v-for="mood in activeMoods" :key="mood.id"
-						alt="mood.description"
+						v-for="mood in activeMoods"
+						:key="mood.id"
+						title="mood.description"
 						@click="changeMood(mood)">
 						{{ mood.emoji }}
 					</li>
@@ -27,9 +30,13 @@ Vue.component('set-mood', {
 		</modal>
 	</div>`,
 	created: function () {
+		this.resolveCurrentMood();
 		this.fetchActiveMoods();
 	},
 	methods: {
+		resolveCurrentMood: function (){
+			this.currentMood.emoji = this.moodLabel;
+		},
 		changeMood: function (selectedMood){
 			let selfVue = this
 
@@ -40,7 +47,7 @@ Vue.component('set-mood', {
 					[this.actions.mood ,this.subActions.mood.setMood]),
 					{
 						moodId: selectedMood.id,
-						userId: 1,
+						userId: this.userId,
 					})
 				.then(function(response) {
 					selfVue.$root.setNotice(response.data)
@@ -62,6 +69,10 @@ Vue.component('set-mood', {
 						mood.emoji = selfVue.decode(mood.emoji)
 						mood.isActive = Boolean(Number(mood.isActive))
 						mood.id = Number(mood.id)
+
+						if (selfVue.currentMoodId > 0 && mood.id === selfVue.currentMoodId) {
+							selfVue.currentMood = Object.assign({}, selfVue.currentMood, mood);
+						}
 
 						return mood
 					})

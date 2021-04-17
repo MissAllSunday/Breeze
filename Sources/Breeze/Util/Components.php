@@ -105,6 +105,7 @@ class Components
 				'enable' => $this->getText('mood_enable'),
 				'invalidEmoji' => $this->getText('error_invalidEmoji'),
 				'emptyEmoji' => $this->getText('error_emptyEmoji'),
+				'moodChange' => $this->getText('moodChange'),
 			],
 		];
 

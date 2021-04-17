@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\MoodEntity;
-use Breeze\Entity\UserSettingsEntity;
 use Breeze\Service\Actions\UserSettingsServiceInterface;
 use Breeze\Service\MoodServiceInterface;
 use Breeze\Service\UserServiceInterface;
@@ -34,6 +33,7 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 	private UserServiceInterface $userService;
 
 	private MoodServiceInterface $moodService;
+
 	private UserSettingsServiceInterface $userSettingsService;
 
 	public function __construct(

@@ -5,6 +5,7 @@ new Vue({
 	mixins: [breezeUtils],
 	data: {
 		txt:  window.breezeTxtGeneral,
+		txtMood:  window.breezeTxtMood,
 		status: null,
 		errored: false,
 		notice: null,
@@ -13,6 +14,7 @@ new Vue({
 			ownerId: window.breezeUsers.wallOwner || 0,
 			posterId: window.breezeUsers.wallPoster || 0,
 		},
+		currentMoodId: window.breezeProfileOwnerSettings.moodId || 0,
 	},
 	created: function () {
 		this.fetchStatus()
