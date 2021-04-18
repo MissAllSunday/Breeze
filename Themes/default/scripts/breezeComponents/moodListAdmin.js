@@ -13,23 +13,17 @@ new Vue({
 	},
 	methods: {
 		fetchAllMoods: function () {
-			let selfVue = this
+			let selfVue = this;
+			let localMoods;
 
 			selfVue.api
 				.get(selfVue.sprintFormat(selfVue.baseUrl, [this.actions.mood ,this.subActions.mood.all]))
 				.then(function(response) {
-					Object.values(response.data).map(function(mood) {
-						mood.emoji = selfVue.decode(mood.emoji)
-						mood.isActive = Boolean(Number(mood.isActive))
-						mood.id = Number(mood.id)
+					localMoods = selfVue.parseMoods(response.data);
 
-						return mood
-					})
-
-					selfVue.localMoods = response.data
+					selfVue.localMoods = localMoods;
 				})
 				.catch(function(error) {
-					let selfVue = this;
 					selfVue.errored = true
 				})
 		},

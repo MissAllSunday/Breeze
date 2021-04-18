@@ -30,12 +30,15 @@ Vue.component('set-mood', {
 		</modal>
 	</div>`,
 	created: function () {
-		this.resolveCurrentMood();
 		this.fetchActiveMoods();
 	},
 	methods: {
 		resolveCurrentMood: function (){
 			this.currentMood.emoji = this.moodTxt.moodLabel;
+
+			if (this.activeMoods[this.currentMoodId]) {
+				this.currentMood = this.activeMoods[this.currentMoodId];
+			}
 		},
 		changeMood: function (selectedMood){
 			let selfVue = this
@@ -66,58 +69,34 @@ Vue.component('set-mood', {
 		},
 		fetchActiveMoods: function () {
 			let selfVue = this
+			let activeMoods;
 
-			if (selfVue.canUseLocalStorage() === true) {
-				let activeMoods = JSON.parse(localStorage.getItem('breeze_activeMoods'));
+			if ((activeMoods = selfVue.getLocalObject('breeze_activeMoods')) !== false) {
+				selfVue.activeMoods = Object.assign({}, selfVue.activeMoods, selfVue.parseMoods(activeMoods));
+				selfVue.resolveCurrentMood();
 
-				if (activeMoods !== null){
-					Object.values(activeMoods).map(function(mood) {
-						mood.emoji = selfVue.decode(mood.emoji)
-						mood.isActive = Boolean(Number(mood.isActive))
-						mood.id = Number(mood.id)
-
-						if (selfVue.currentMoodId > 0 && mood.id === selfVue.currentMoodId) {
-							selfVue.currentMood = Object.assign({}, selfVue.currentMood, mood);
-						}
-
-						return mood
-					});
-
-					selfVue.activeMoods = Object.assign({}, selfVue.activeMoods, activeMoods);
-
-					return;
-				}
+				return;
 			}
 
 			selfVue.api
 				.get(selfVue.sprintFormat(selfVue.baseUrl,
-					[this.actions.mood ,this.subActions.mood.active]))
+					[selfVue.actions.mood ,selfVue.subActions.mood.active]))
 				.then(function(response) {
-					Object.values(response.data).map(function(mood) {
-						mood.emoji = selfVue.decode(mood.emoji)
-						mood.isActive = Boolean(Number(mood.isActive))
-						mood.id = Number(mood.id)
+					activeMoods = selfVue.parseMoods(response.data);
 
-						if (selfVue.currentMoodId > 0 && mood.id === selfVue.currentMoodId) {
-							selfVue.currentMood = Object.assign({}, selfVue.currentMood, mood);
-						}
+					selfVue.setLocalObject('breeze_activeMoods', activeMoods);
+					selfVue.activeMoods = Object.assign({}, selfVue.activeMoods, activeMoods);
+					selfVue.resolveCurrentMood();
 
-						return mood
-					});
-
-					if (selfVue.canUseLocalStorage() === true) {
-						localStorage.setItem('breeze_activeMoods', JSON.stringify(response.data));
-					}
-
-					selfVue.activeMoods = Object.assign({}, selfVue.activeMoods, response.data);
 				})
 				.catch(function(error) {
 					selfVue.errored = true
-				})
+				});
 		},
 		showMoodList: function (){
 			let selfVue = this
-			this.showModal = true;
+
+			selfVue.showModal = true;
 		},
 	},
 })

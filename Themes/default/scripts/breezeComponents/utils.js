@@ -129,6 +129,41 @@ let breezeUtils = {
 			decoder.innerHTML = html;
 			return decoder.textContent;
 		},
+		parseMoods: function (moods){
+			let selfUtils = this;
+
+			Object.values(moods).map(function(mood) {
+				mood.emoji = selfUtils.decode(mood.emoji)
+				mood.isActive = Boolean(Number(mood.isActive))
+				mood.id = Number(mood.id)
+
+				return mood
+			});
+
+			return moods;
+		},
+		setLocalObject: function (keyName, objectToStore){
+			if (this.canUseLocalStorage() !== true) {
+				return false;
+			}
+
+			localStorage.setItem(keyName, JSON.stringify(objectToStore));
+
+			return true;
+		},
+		getLocalObject: function (keyName) {
+			if (this.canUseLocalStorage() !== true) {
+				return false;
+			}
+
+			let objectStored = JSON.parse(localStorage.getItem(keyName));
+
+			if (objectStored !== null){
+				return objectStored;
+			} else {
+				return false;
+			}
+		}
 	},
 }
 
