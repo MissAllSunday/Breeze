@@ -68,10 +68,24 @@ Vue.component('set-mood', {
 			let selfVue = this
 
 			if (selfVue.canUseLocalStorage() === true) {
-				let activeMoods = localStorage.getItem('breeze_activeMoods');
+				let activeMoods = JSON.parse(localStorage.getItem('breeze_activeMoods'));
 
 				if (activeMoods !== null){
-					return activeMoods;
+					Object.values(activeMoods).map(function(mood) {
+						mood.emoji = selfVue.decode(mood.emoji)
+						mood.isActive = Boolean(Number(mood.isActive))
+						mood.id = Number(mood.id)
+
+						if (selfVue.currentMoodId > 0 && mood.id === selfVue.currentMoodId) {
+							selfVue.currentMood = Object.assign({}, selfVue.currentMood, mood);
+						}
+
+						return mood
+					});
+
+					selfVue.activeMoods = Object.assign({}, selfVue.activeMoods, activeMoods);
+
+					return;
 				}
 			}
 
@@ -89,10 +103,10 @@ Vue.component('set-mood', {
 						}
 
 						return mood
-					})
+					});
 
 					if (selfVue.canUseLocalStorage() === true) {
-						localStorage.setItem('breeze_activeMoods', response.data);
+						localStorage.setItem('breeze_activeMoods', JSON.stringify(response.data));
 					}
 
 					selfVue.activeMoods = Object.assign({}, selfVue.activeMoods, response.data);
