@@ -33,11 +33,6 @@ new Vue({
 					selfVue.errored = true
 				})
 		},
-		decode: function (html) {
-			let decoder = document.createElement('div');
-			decoder.innerHTML = html;
-			return decoder.textContent;
-		},
 		removeMood: function (moodId) {
 			Vue.delete(this.localMoods, moodId);
 		},

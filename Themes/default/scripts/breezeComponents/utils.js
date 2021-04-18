@@ -123,8 +123,12 @@ let breezeUtils = {
 					e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
 					storage && storage.length !== 0;
 			}
-		}
-
+		},
+		decode: function (html) {
+			let decoder = document.createElement('div');
+			decoder.innerHTML = html;
+			return decoder.textContent;
+		},
 	},
 }
 

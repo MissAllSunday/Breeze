@@ -119,11 +119,6 @@ Vue.component('set-mood', {
 			let selfVue = this
 			this.showModal = true;
 		},
-		decode: function (html) {
-			let decoder = document.createElement('div');
-			decoder.innerHTML = html;
-			return decoder.textContent;
-		},
 	},
 })
 
