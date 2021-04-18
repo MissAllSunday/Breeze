@@ -43,7 +43,7 @@ Vue.component('set-mood', {
 			selfVue.showModal = false;
 
 			if (selectedMood.id === this.currentMoodId) {
-				selfVue.$root.setNotice({message: this.moodTxt.sameMood});
+				selfVue.setNotice({message: this.moodTxt.sameMood});
 
 				return;
 			}
@@ -56,7 +56,7 @@ Vue.component('set-mood', {
 						userId: this.userId,
 					})
 				.then(function(response) {
-					selfVue.$root.setNotice(response.data)
+					selfVue.setNotice(response.data)
 				})
 				.catch(function(error) {
 					selfVue.errored = true
@@ -66,6 +66,14 @@ Vue.component('set-mood', {
 		},
 		fetchActiveMoods: function () {
 			let selfVue = this
+
+			if (selfVue.canUseLocalStorage() === true) {
+				let activeMoods = localStorage.getItem('breeze_activeMoods');
+
+				if (activeMoods !== null){
+					return activeMoods;
+				}
+			}
 
 			selfVue.api
 				.get(selfVue.sprintFormat(selfVue.baseUrl,
@@ -82,6 +90,10 @@ Vue.component('set-mood', {
 
 						return mood
 					})
+
+					if (selfVue.canUseLocalStorage() === true) {
+						localStorage.setItem('breeze_activeMoods', response.data);
+					}
 
 					selfVue.activeMoods = Object.assign({}, selfVue.activeMoods, response.data);
 				})
