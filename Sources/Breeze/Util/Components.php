@@ -106,6 +106,7 @@ class Components
 				'invalidEmoji' => $this->getText('error_invalidEmoji'),
 				'emptyEmoji' => $this->getText('error_emptyEmoji'),
 				'moodChange' => $this->getText('moodChange'),
+				'sameMood' => $this->getText('error_sameMood'),
 			],
 		];
 

@@ -146,6 +146,7 @@ $txt['Breeze_info_moodDeleted'] = 'Your mood was successfully deleted!';
 $txt['Breeze_error_moodCreated'] = 'You aren\'t allowed to create moods';
 $txt['Breeze_error_moodGet'] = 'There was a problem getting the moods';
 $txt['Breeze_error_no_mood'] = 'The mood doesn\'t exists anymore';
+$txt['Breeze_error_sameMood'] = 'Same mood was selected';
 $txt['Breeze_error_invalidEmoji'] = 'Please use a valid emoji';
 $txt['Breeze_error_emptyEmoji'] = 'Emoji field cannot be empty';
 

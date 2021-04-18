@@ -49,7 +49,7 @@ function template_breeze_main(): void
 				<set-mood
 					:current-mood-id="currentMoodId"
 					:user-id="wallData.ownerId"
-					:mood-label="txtMood.moodChange"
+					:mood-txt="txtMood"
 				></set-mood>
 			</p>
 		</div>

@@ -1,5 +1,5 @@
 Vue.component('set-mood', {
-	props: ['currentMoodId', 'moodId', 'moodLabel'],
+	props: ['currentMoodId', 'moodId', 'moodTxt'],
 	mixins: [breezeUtils],
 	data: function() {
 		return {
@@ -14,7 +14,7 @@ Vue.component('set-mood', {
 		<span @click="showMoodList()" title="moodLabel">{{ currentMood.emoji }}</span>
 		<modal v-if="showModal" @close="showModal = false" @click.stop>
 			<div slot="header">
-				{{ moodLabel }}
+				{{ moodTxt.moodLabel }}
 			</div>
 			<div slot="body">
 				<ul>
@@ -35,12 +35,18 @@ Vue.component('set-mood', {
 	},
 	methods: {
 		resolveCurrentMood: function (){
-			this.currentMood.emoji = this.moodLabel;
+			this.currentMood.emoji = this.moodTxt.moodLabel;
 		},
 		changeMood: function (selectedMood){
 			let selfVue = this
 
 			selfVue.showModal = false;
+
+			if (selectedMood.id === this.currentMoodId) {
+				selfVue.$root.setNotice({message: this.moodTxt.sameMood});
+
+				return;
+			}
 
 			selfVue.api
 				.post(selfVue.sprintFormat(selfVue.baseUrl,
