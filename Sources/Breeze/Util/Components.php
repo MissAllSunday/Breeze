@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Util;
 
 use Breeze\Breeze;
+use Breeze\Entity\SettingsEntity;
 use Breeze\Traits\TextTrait;
 
 class Components
@@ -107,6 +108,10 @@ class Components
 				'emptyEmoji' => $this->getText('error_emptyEmoji'),
 				'moodChange' => $this->getText('moodChange'),
 				'sameMood' => $this->getText('error_sameMood'),
+				'defaultLabel' => $this->getSetting(
+					SettingsEntity::MOOD_LABEL,
+					$this->getText(SettingsEntity::MOOD_DEFAULT)
+				)
 			],
 		];
 

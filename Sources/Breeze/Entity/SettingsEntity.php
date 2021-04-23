@@ -13,6 +13,7 @@ class SettingsEntity
 	public const ABOUT_ME_MAX_LENGTH = 'aboutMeMaxLength';
 	public const ENABLE_MOOD = 'enableMood';
 	public const MOOD_LABEL = 'moodLabel';
+	public const MOOD_DEFAULT = 'moodDefault';
 	public const MOOD_PLACEMENT = 'moodPlacement';
 	public const MAX_FLOOD_NUM = 'maxFloodNum';
 	public const MAX_FLOOD_MINUTES= 'maxFloodMinutes';

@@ -145,7 +145,7 @@ class MoodService extends BaseService implements MoodServiceInterface
 		$placementField = $this->getSetting(SettingsEntity::MOOD_PLACEMENT, 0);
 		$moodLabel = $this->getSetting(
 			SettingsEntity::MOOD_LABEL,
-			$this->getText(SettingsEntity::MOOD_LABEL)
+			$this->getText(SettingsEntity::MOOD_DEFAULT)
 		);
 
 		$currentMood = !empty($userSettings['mood']) && !empty($activeMoods[$userSettings['mood']]) ?
