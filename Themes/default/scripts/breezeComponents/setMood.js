@@ -11,10 +11,10 @@ Vue.component('set-mood', {
 	},
 	template: `
 	<div id="moodList">
-		<span @click="showMoodList()" title="moodLabel">{{ currentMood.emoji }}</span>
+		<span @click="showMoodList()" title="moodLabel">{{ moodTxt.defaultLabel }} {{ currentMood.emoji }}</span>
 		<modal v-if="showModal" @close="showModal = false" @click.stop>
 			<div slot="header">
-				{{ moodTxt.moodLabel }}
+				{{ moodTxt.defaultLabel }}
 			</div>
 			<div slot="body">
 				<ul>
