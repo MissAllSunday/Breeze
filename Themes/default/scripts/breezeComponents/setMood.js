@@ -1,5 +1,5 @@
 Vue.component('set-mood', {
-	props: ['currentMoodId', 'moodId', 'moodTxt'],
+	props: ['currentMoodId', 'userId', 'moodTxt'],
 	mixins: [breezeUtils],
 	data: function() {
 		return {
@@ -60,6 +60,11 @@ Vue.component('set-mood', {
 					})
 				.then(function(response) {
 					selfVue.setNotice(response.data)
+
+					if (response.data.type !== 'error') {
+						selfVue.currentMoodId = selectedMood.id
+						selfVue.resolveCurrentMood()
+					}
 				})
 				.catch(function(error) {
 					selfVue.errored = true
