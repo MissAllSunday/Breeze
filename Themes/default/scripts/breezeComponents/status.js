@@ -11,13 +11,13 @@ Vue.component('status', {
 		<div class='windowbg'>
 			<h4 class='floatleft' v-html='getUserLink(this.item.userId)'></h4>
 			<div class='floatright smalltext'>
-				{{ formatDate(item.createdAt) }}
+				{{ item.formatedDate }}
 				&nbsp;<span class="main_icons remove_button floatright" v-on:click="deleteStatus()"></span>
 			</div>
 			<br>
 			<div class='content'>
 				<hr>
-				{{ item.body }}
+				<span v-html="item.body" ></span>
 			</div>
 			<comment
 				v-for ='comment in localComments'

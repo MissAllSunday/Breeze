@@ -45,7 +45,9 @@ new Vue({
 			});
 		},
 		setStatus: function (newStatus) {
-			this.status = Object.assign({}, this.status, newStatus);
+			let selfVue = this
+
+			selfVue.status = Object.assign({}, selfVue.status, selfVue.parseStatus(newStatus));
 		},
 		fetchStatus: function () {
 			let selfVue = this
@@ -61,7 +63,7 @@ new Vue({
 					return;
 				}
 
-				selfVue.status = response.data.status
+				selfVue.status = selfVue.parseStatus(response.data.status)
 				selfVue.setUserData(response.data.users)
 			}).catch(function(error) {
 				selfVue.errored = true
@@ -77,6 +79,18 @@ new Vue({
 		},
 		onSetNewUsers: function (newUsers){
 			this.setUserData(newUsers)
-		}
+		},
+		parseStatus: function (status){
+			let selfUtils = this;
+
+			Object.values(status).map(function(singleStatus) {
+				singleStatus.body = selfUtils.decode(singleStatus.body)
+				singleStatus.formatedDate = selfUtils.formatDate(singleStatus.createdAt)
+
+				return singleStatus
+			});
+
+			return status;
+		},
 	}
 });
