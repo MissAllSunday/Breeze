@@ -163,7 +163,15 @@ $txt = [
 
 $_REQUEST = [
 	'xss' => '<script>alert("XSS")</script>',
+	'div-image' => '<DIV »
+STYLE="background-image: »
+url(javascript:alert(\'XSS\')) »
+">',
 	'foo' => 'baz',
+	'url-encoding' => '<A »
+HREF="http://%77%77%77%2E%67 »
+%6F%6F%67%6C%65%2E%63%6F%6D" »
+>XSS</A>',
 ];
 
 $_SESSION['Breeze'] = [];

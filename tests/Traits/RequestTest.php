@@ -36,7 +36,17 @@ final class RequestTest extends TestCase
 			'sanitized' =>
 			[
 				'variableName' => 'xss',
-				'expected' => '&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;',
+				'expected' => false,
+				'defaultValue' => null,
+			],
+			'background-image 1' => [
+				'variableName' => 'div-image',
+				'expected' => '&lt;div&gt;&lt;/div&gt;',
+				'defaultValue' => null,
+			],
+			'url-encoding' => [
+				'variableName' => 'url-encoding',
+				'expected' => '&lt;a href=&quot;&quot;&gt;XSS&lt;/a&gt;',
 				'defaultValue' => null,
 			],
 			'not found' =>
@@ -70,7 +80,7 @@ final class RequestTest extends TestCase
 			'sanitized' =>
 			[
 				'dirty' => '<script>alert("XSS");</script>',
-				'expected' => '&lt;script&gt;alert(&quot;XSS&quot;);&lt;/script&gt;'
+				'expected' => false
 			],
 			'int' =>
 			[

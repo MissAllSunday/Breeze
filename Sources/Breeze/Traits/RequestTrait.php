@@ -5,13 +5,20 @@ declare(strict_types=1);
 
 namespace Breeze\Traits;
 
+use HTMLPurifier;
+use HTMLPurifier_Config;
+
 trait RequestTrait
 {
 	private $request;
 
+	private HTMLPurifier $purifier;
+
 	public function init(): void
 	{
 		$this->request = $_REQUEST;
+
+		$this->purifier = $this->getPurifier();
 	}
 
 	public function getRequest(string $variableName, $defaultValue = null)
@@ -32,7 +39,7 @@ trait RequestTrait
 		$_GET[$variableName] = $variableValue;
 	}
 
-	public function isRequestSet(string $variableName)
+	public function isRequestSet(string $variableName): bool
 	{
 		$this->init();
 
@@ -41,6 +48,8 @@ trait RequestTrait
 
 	public function sanitize($variable)
 	{
+		$this->init();
+
 		$smcFunc = $this->getSmcFunc();
 
 		if (is_array($variable)) {
@@ -51,7 +60,8 @@ trait RequestTrait
 			return $variable;
 		}
 
-		$var = $smcFunc['htmltrim']($smcFunc['htmlspecialchars']((string) $variable, ENT_QUOTES));
+		$var = $this->purifier->purify((string) $variable);
+		$var = $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var, ENT_QUOTES));
 
 		if (ctype_digit($var)) {
 			$var = (int) $var;
@@ -67,5 +77,12 @@ trait RequestTrait
 	private function getSmcFunc(): array
 	{
 		return $GLOBALS['smcFunc'];
+	}
+
+	private function getPurifier(): HTMLPurifier
+	{
+		$config = HTMLPurifier_Config::createDefault();
+
+		return HTMLPurifier::getInstance($config);
 	}
 }
