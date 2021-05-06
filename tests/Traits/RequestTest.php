@@ -60,7 +60,7 @@ final class RequestTest extends TestCase
 					'variableName' => 'Cornholio',
 					'expected' => 'Luffy',
 					'defaultValue' => 'Luffy',
-				]
+				],
 		];
 	}
 
@@ -80,17 +80,17 @@ final class RequestTest extends TestCase
 			'sanitized' =>
 			[
 				'dirty' => '<script>alert("XSS");</script>',
-				'expected' => false
+				'expected' => false,
 			],
 			'int' =>
 			[
 				'variable' => '666',
-				'expected' => 666
+				'expected' => 666,
 			],
 			'empty' =>
 			[
 				'variable' => '0',
-				'expected' => false
+				'expected' => false,
 			],
 		];
 	}

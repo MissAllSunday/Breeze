@@ -24,7 +24,7 @@ class LogModel extends BaseModel implements LogModelInterface
 				LogEntity::COLUMN_CONTENT_TYPE => 'string',
 				LogEntity::COLUMN_CONTENT_ID => 'int',
 				LogEntity::COLUMN_TIME => 'int',
-				LogEntity::COLUMN_EXTRA => 'string'
+				LogEntity::COLUMN_EXTRA => 'string',
 			],
 			$data,
 			LogEntity::COLUMN_ID
@@ -56,7 +56,7 @@ class LogModel extends BaseModel implements LogModelInterface
 			[
 				'start' => $start,
 				'maxIndex' => $maxIndex,
-				'userIds' => $userIds
+				'userIds' => $userIds,
 			]
 		);
 

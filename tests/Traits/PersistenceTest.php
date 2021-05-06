@@ -50,7 +50,7 @@ final class PersistenceTest extends TestCase
 			'empty params' => [
 				'message' => '',
 				'type' => '',
-				'expectedResult' => []
+				'expectedResult' => [],
 			],
 			'no type' => [
 				'message' => 'One Piece',
@@ -58,7 +58,7 @@ final class PersistenceTest extends TestCase
 				'expectedResult' => [
 					'message' => 'One Piece',
 					'type' => 'info',
-				]
+				],
 			],
 			'happy path' => [
 				'message' => 'One Piece',
@@ -66,7 +66,7 @@ final class PersistenceTest extends TestCase
 				'expectedResult' => [
 					'message' => 'One Piece',
 					'type' => 'error',
-				]
+				],
 			],
 		];
 	}

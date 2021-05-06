@@ -16,10 +16,15 @@ class AdminController extends BaseController implements ControllerInterface
 	use PersistenceTrait;
 
 	public const ACTION_MAIN = 'main';
+
 	public const ACTION_SETTINGS = 'settings';
+
 	public const ACTION_PERMISSIONS = 'permissions';
+
 	public const ACTION_MOOD_LIST = 'moodList';
+
 	public const ACTION_DONATE = 'donate';
+
 	public const SUB_ACTIONS = [
 		self::ACTION_MAIN,
 		self::ACTION_SETTINGS,

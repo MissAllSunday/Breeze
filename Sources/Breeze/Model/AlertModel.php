@@ -28,7 +28,7 @@ class AlertModel extends BaseModel implements AlertModelInterface
 			AlertEntity::COLUMN_CONTENT_ID => 'int',
 			AlertEntity::COLUMN_CONTENT_ACTION => 'string',
 			AlertEntity::COLUMN_IS_READ => 'int',
-			AlertEntity::COLUMN_EXTRA => 'string'
+			AlertEntity::COLUMN_EXTRA => 'string',
 		], $data, $this->getColumnId());
 
 		return $this->getInsertedId();

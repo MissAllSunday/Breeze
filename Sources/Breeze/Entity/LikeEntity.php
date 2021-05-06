@@ -7,11 +7,15 @@ namespace Breeze\Entity;
 
 class LikeEntity extends BaseEntity implements BaseEntityInterface
 {
-	const TABLE = 'user_likes';
-	const COLUMN_ID_MEMBER = 'id_member';
-	const COLUMN_CONTENT_TYPE = 'content_type';
-	const COLUMN_CONTENT_ID = 'content_id';
-	const COLUMN_LIKE_TIME = 'like_time';
+	public const TABLE = 'user_likes';
+
+	public const COLUMN_ID_MEMBER = 'id_member';
+
+	public const COLUMN_CONTENT_TYPE = 'content_type';
+
+	public const COLUMN_CONTENT_ID = 'content_id';
+
+	public const COLUMN_LIKE_TIME = 'like_time';
 
 	public static function getColumns(): array
 	{

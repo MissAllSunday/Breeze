@@ -18,8 +18,11 @@ class ValidateGateway implements ValidateGatewayInterface
 	use TextTrait;
 
 	public const ERROR_TYPE = 'error';
+
 	public const INFO_TYPE = 'info';
+
 	public const SUCCESS_TYPE = 'success';
+
 	public const DEFAULT_ERROR_KEY = self::ERROR_TYPE . '_server';
 
 	public const MESSAGE_TYPES = [
@@ -84,7 +87,7 @@ class ValidateGateway implements ValidateGatewayInterface
 
 		$this->setNotice([
 			'type' => self::SUCCESS_TYPE,
-			'message' => $this->getText(self::INFO_TYPE . '_' . $this->validator->successKeyString())
+			'message' => $this->getText(self::INFO_TYPE . '_' . $this->validator->successKeyString()),
 		]);
 
 		return true;

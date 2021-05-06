@@ -32,7 +32,7 @@ abstract class BaseModel implements BaseModelInterface
 			LIMIT {int:limit}',
 			array_merge($this->getDefaultQueryParams(), [
 				'sort' => $this->getColumnId() . ' DESC',
-				'limit' => 1
+				'limit' => 1,
 			])
 		);
 

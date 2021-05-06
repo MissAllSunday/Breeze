@@ -28,7 +28,7 @@ class PermissionsTest extends TestCase
 			'yep' => [
 				'permissionName' => 'yep',
 				'expectedResult' => true,
-			]
+			],
 		];
 	}
 }

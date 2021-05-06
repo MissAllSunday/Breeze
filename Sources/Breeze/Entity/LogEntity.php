@@ -7,13 +7,19 @@ namespace Breeze\Entity;
 
 class LogEntity extends BaseEntity implements BaseEntityInterface
 {
-	const TABLE = 'breeze_logs';
-	const COLUMN_ID = 'id_log';
-	const COLUMN_MEMBER = 'member';
-	const COLUMN_CONTENT_TYPE = 'content_type';
-	const COLUMN_CONTENT_ID = 'content_id';
-	const COLUMN_TIME = 'time';
-	const COLUMN_EXTRA = 'extra';
+	public const TABLE = 'breeze_logs';
+
+	public const COLUMN_ID = 'id_log';
+
+	public const COLUMN_MEMBER = 'member';
+
+	public const COLUMN_CONTENT_TYPE = 'content_type';
+
+	public const COLUMN_CONTENT_ID = 'content_id';
+
+	public const COLUMN_TIME = 'time';
+
+	public const COLUMN_EXTRA = 'extra';
 
 	public static function getColumns(): array
 	{

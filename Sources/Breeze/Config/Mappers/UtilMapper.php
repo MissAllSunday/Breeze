@@ -18,31 +18,31 @@ use Breeze\Util\Validate\ValidateGateway;
 
 return [
 	'util.folder' => [
-		'class' => Folder::class
+		'class' => Folder::class,
 	],
 	'util.components' => [
-		'class' => Components::class
+		'class' => Components::class,
 	],
 	'util.UserSettingsBuilder' => [
-		'class' => UserSettingsBuilder::class
+		'class' => UserSettingsBuilder::class,
 	],
 	'util.SettingsBuilder' => [
-		'class' => SettingsBuilder::class
+		'class' => SettingsBuilder::class,
 	],
 	'util.formatter.check' => [
-		'class' => CheckType::class
+		'class' => CheckType::class,
 	],
 	'util.formatter.int' => [
-		'class' => IntType::class
+		'class' => IntType::class,
 	],
 	'util.formatter.select' => [
-		'class' => SelectType::class
+		'class' => SelectType::class,
 	],
 	'util.formatter.text' => [
-		'class' => TextType::class
+		'class' => TextType::class,
 	],
 	'util.validate.gateway' => [
 		'class' => ValidateGateway::class,
-		'arguments'=> [UserService::class]
+		'arguments'=> [UserService::class],
 	],
 ];

@@ -41,13 +41,13 @@ class UserServiceTest extends TestCase
 			->method('getUserSettings')
 			->with(666)
 			->willReturn([
-				'generalWall' => 1
+				'generalWall' => 1,
 			]);
 
 		$currentUserSettings = $this->userService->getCurrentUserSettings();
 
 		$this->assertEquals([
-			'generalWall' => 1
+			'generalWall' => 1,
 		], $currentUserSettings);
 	}
 
@@ -72,7 +72,7 @@ class UserServiceTest extends TestCase
 		return [
 			'happy happy joy joy' => [
 				'userSettings' => [
-					'generalWall' => 1
+					'generalWall' => 1,
 				],
 				'userId' => 666,
 			],
@@ -101,12 +101,12 @@ class UserServiceTest extends TestCase
 					666 => [
 						'link' => '<a href="#">Astaroth</a>',
 						'name' => 'Astaroth',
-						'avatar' => ['href' => 'avatar_url/astaroth.png']
+						'avatar' => ['href' => 'avatar_url/astaroth.png'],
 					],
 					1 => [
 						'link' => 'Guest',
 						'name' => 'Guest',
-						'avatar' => ['href' => 'avatar_url/default.png']
+						'avatar' => ['href' => 'avatar_url/default.png'],
 					],
 				],
 				'userIds' => [666, 1],

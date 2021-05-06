@@ -13,7 +13,7 @@ class CheckType extends ValueFormatter implements ValueFormatterInterface
 		return [
 			$settingType,
 			Breeze::PATTERN . $settingName,
-			'subtext' => $this->getText($settingName . '_sub')
+			'subtext' => $this->getText($settingName . '_sub'),
 		];
 	}
 }

@@ -4,25 +4,27 @@ $finder = PhpCsFixer\Finder::create()
 	->in(__DIR__ . '/Sources/Breeze/')
 	->in(__DIR__ . '/tests/');
 
-return PhpCsFixer\Config::create()
+$config = new PhpCsFixer\Config();
+
+return $config
     ->setRules([
-		'@PHP71Migration:risky' => true,
+		'@PHP74Migration' => true,
 		'@PHPUnit60Migration:risky' => true,
 		'indentation_type' => true,
 		'array_indentation' => true,
 		'array_syntax' => ['syntax' => 'short'],
 		'blank_line_after_opening_tag' => true,
 		'concat_space' => ['spacing' => 'one'],
-		'class_attributes_separation' => ['elements' => ['method', 'property']],
+		'class_attributes_separation' => ['elements' => ['const' => 'one', 'method' => 'one', 'property' => 'one']],
 		'declare_strict_types' => true,
 		'increment_style' => ['style' => 'post'],
-		'is_null' => ['use_yoda_style' => false],
+		'is_null' => true,
 		'list_syntax' => ['syntax' => 'short'],
     	'blank_line_after_namespace' => true,
-        'blank_line_before_return' => true,
+        'blank_line_before_statement' => true,
 		'method_chaining_indentation' => true,
 		'modernize_types_casting' => true,
-		'no_multiline_whitespace_before_semicolons' => true,
+		'multiline_whitespace_before_semicolons' => false,
 		'no_superfluous_elseif' => true,
 		'no_superfluous_phpdoc_tags' => true,
 		'no_useless_else' => true,
@@ -43,9 +45,13 @@ return PhpCsFixer\Config::create()
         'encoding' => true,
         'line_ending' => true,
         'lowercase_cast' => true,
-        'lowercase_constants' => true,
-        'native_constant_invocation' => false,
-        'method_argument_space' => ['ensure_fully_multiline' => true],
+        'method_argument_space' => ['after_heredoc' => true],
+		'constant_case' => true,
+		'lowercase_keywords' => true,
+		'visibility_required' => true,
+		'native_constant_invocation' => true,
+		'no_unneeded_curly_braces' => true,
+		'function_declaration' => true,
     ])
     ->setIndent("\t")
     ->setLineEnding("\n")

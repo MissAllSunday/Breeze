@@ -15,7 +15,7 @@ $smcFunc['htmltrim'] = function ($value) {
 };
 
 $smcFunc['htmlspecialchars'] = function ($value) {
-	return htmlspecialchars($value, ENT_QUOTES);
+	return htmlspecialchars($value, \ENT_QUOTES);
 };
 
 // Mock functions
@@ -53,16 +53,18 @@ function loadMemberContext(int $userId, bool $dummy): array
 			$dataToReturn = [
 				'link' => '<a href="#">Astaroth</a>',
 				'name' => 'Astaroth',
-				'avatar' => ['href' => 'avatar_url/astaroth.png']
+				'avatar' => ['href' => 'avatar_url/astaroth.png'],
 			];
+
 			break;
 		case 1:
 			$dummy = true;
 			$dataToReturn = [
 				'link' => 'Guest',
 				'name' => 'Guest',
-				'avatar' => ['href' => 'avatar_url/default.png']
+				'avatar' => ['href' => 'avatar_url/default.png'],
 			];
+
 			break;
 		default:
 			$dataToReturn = [];
@@ -97,13 +99,15 @@ function cache_get_data($key, $timeToLive = 360): ?array
 		case 'Breeze_StatusRepository_getByProfile1':
 		case 'Breeze_CommentRepository_getByProfile1':
 			$dataToReturn = [
-				'some data'
+				'some data',
 			];
+
 			break;
 		case 'user_settings_666':
 			$dataToReturn = [
-				'generalWall' => 1
+				'generalWall' => 1,
 			];
+
 			break;
 		default:
 			$dataToReturn = null;
@@ -121,7 +125,7 @@ $sourcedir = $scripturl = $boarddir = $boardurl = ROOT;
 
 // Mock some SMF arrays.
 $user_info = [
-	'id' => 666
+	'id' => 666,
 ];
 
 $context = [
@@ -137,7 +141,7 @@ $context = [
 		'bottom_poster',
 		'before_member',
 		'after_member',
-	]
+	],
 ];
 
 $modSettings = [
@@ -145,7 +149,7 @@ $modSettings = [
 	'Breeze_someSetting' => 666,
 	'Breeze_master' => true,
 	'Breeze_time_machine' => false,
-	'avatar_url' => 'avatar_url'
+	'avatar_url' => 'avatar_url',
 ];
 
 $txt = [

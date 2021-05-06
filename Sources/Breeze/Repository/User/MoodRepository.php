@@ -15,10 +15,12 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 	private MoodModelInterface $moodModel;
 
 	private const CACHE_ALL = '::getAllMoods';
+
 	private const CACHE_ID = '::getById';
+
 	private const CACHE_KEYS = [
 		self::CACHE_ALL,
-		self::CACHE_ID
+		self::CACHE_ID,
 	];
 
 	public function __construct(MoodModelInterface $moodModel)
@@ -46,7 +48,7 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 		// TODO implement cache at repository level
 		return $this->moodModel->getChunk([
 			'start' => $start,
-			'maxIndex' => $maxIndex
+			'maxIndex' => $maxIndex,
 		]);
 	}
 

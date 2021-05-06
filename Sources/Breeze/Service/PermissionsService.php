@@ -23,7 +23,7 @@ class PermissionsService extends BaseService implements ServiceInterface
 			$permissionList['membergroup']['breeze_' . $permissionName] = [
 				false,
 				'breeze_per_classic',
-				'breeze_per_simple'];
+				'breeze_per_simple', ];
 		}
 	}
 

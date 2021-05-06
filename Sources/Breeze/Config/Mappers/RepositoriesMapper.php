@@ -17,18 +17,18 @@ use Breeze\Repository\User\UserRepository;
 return [
 	'repo.user.mood' => [
 		'class' => MoodRepository::class,
-		'arguments'=> [MoodModel::class]
+		'arguments'=> [MoodModel::class],
 	],
 	'repo.user' => [
 		'class' => UserRepository::class,
-		'arguments'=> [UserModel::class]
+		'arguments'=> [UserModel::class],
 	],
 	'repo.status' => [
 		'class' => StatusRepository::class,
-		'arguments'=> [StatusModel::class, CommentRepository::class]
+		'arguments'=> [StatusModel::class, CommentRepository::class],
 	],
 	'repo.comment' => [
 		'class' => CommentRepository::class,
-		'arguments'=> [CommentModel::class]
+		'arguments'=> [CommentModel::class],
 	],
 ];

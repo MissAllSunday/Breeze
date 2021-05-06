@@ -3,11 +3,12 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Util\Validate\Validations;
+namespace Breeze\Util\Validate\Validations\User;
 
 use Breeze\Entity\UserSettingsEntity;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class UserSettings extends ValidateData implements ValidateDataInterface
+class UserSettings extends ValidateUser implements ValidateDataInterface
 {
 	protected const SUCCESS_KEY = 'updated_settings';
 

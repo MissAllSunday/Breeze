@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Validate;
+namespace Breeze\Util\Validate\Status;
 
+use Breeze\Service\StatusService;
 use Breeze\Service\UserService;
-use Breeze\Util\Validate\Validations\StatusByProfile;
+use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\Validations\Status\StatusByProfile;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -18,7 +20,10 @@ class StatusByProfileTest extends TestCase
 		/**  @var UserService&MockObject $userService */
 		$userService = $this->createMock(UserService::class);
 
-		$this->statusByProfile = new StatusByProfile($userService);
+		/**  @var StatusService&MockObject $statusService */
+		$statusService = $this->createMock(StatusService::class);
+
+		$this->statusByProfile = new StatusByProfile($userService, $statusService);
 	}
 
 	/**

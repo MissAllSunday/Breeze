@@ -25,7 +25,7 @@ class StatusModel extends BaseModel implements StatusModelInterface
 	{
 		$queryParams = array_merge($this->getDefaultQueryParams(), [
 			'columnName' => StatusEntity::ID,
-			'id' => $statusId
+			'id' => $statusId,
 		]);
 
 		$request = $this->dbClient->query(

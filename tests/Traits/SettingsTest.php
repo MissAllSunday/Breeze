@@ -45,19 +45,19 @@ final class SettingsTest extends TestCase
 			[
 				'settingName' => 'someSetting',
 				'fallback' => false,
-				'expected' => 666
+				'expected' => 666,
 			],
 			'use fallback' =>
 			[
 				'settingName' => 'nope',
 				'fallback' => 'Luffy',
-				'expected' => 'Luffy'
+				'expected' => 'Luffy',
 			],
 			'empty setting name' =>
 			[
 				'settingName' => '',
 				'fallback' => 'Nami',
-				'expected' => 'Nami'
+				'expected' => 'Nami',
 			],
 		];
 	}
@@ -79,12 +79,12 @@ final class SettingsTest extends TestCase
 			'setting enable' =>
 			[
 				'settingName' => 'master',
-				'expected' => true
+				'expected' => true,
 			],
 			'setting disabled' =>
 			[
 				'settingName' => 'time_machine',
-				'expected' => false
+				'expected' => false,
 			],
 		];
 	}
@@ -106,19 +106,19 @@ final class SettingsTest extends TestCase
 			[
 				'settingName' => 'CompressedOutput',
 				'fallback' => false,
-				'expected' => false
+				'expected' => false,
 			],
 			'modSetting doesnt exists' =>
 			[
 				'settingName' => 'nope',
 				'fallback' => 'Luffy',
-				'expected' => 'Luffy'
+				'expected' => 'Luffy',
 			],
 			'empty modSetting' =>
 			[
 				'settingName' => '',
 				'fallback' => 'Nami',
-				'expected' => 'Nami'
+				'expected' => 'Nami',
 			],
 		];
 	}
@@ -152,14 +152,14 @@ final class SettingsTest extends TestCase
 						'bottom_poster',
 						'before_member',
 						'after_member',
-					]
-				]
+					],
+				],
 			],
 			'global doesnt exists' =>
 			[
 				'globalName' => 'Invader Zim',
-				'expected' => false
-			]
+				'expected' => false,
+			],
 		];
 	}
 }

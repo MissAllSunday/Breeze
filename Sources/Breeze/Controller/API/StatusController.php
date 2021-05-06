@@ -17,8 +17,11 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 class StatusController extends ApiBaseController implements ApiBaseInterface
 {
 	public const ACTION_PROFILE = 'statusByProfile';
+
 	public const ACTION_DELETE = 'deleteStatus';
+
 	public const ACTION_POST = 'postStatus';
+
 	public const SUB_ACTIONS = [
 		self::ACTION_PROFILE,
 		self::ACTION_POST,

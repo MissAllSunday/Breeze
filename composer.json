@@ -41,16 +41,16 @@
     },
     "scripts": {
         "lint": [
-            "php-cs-fixer fix ./Sources --verbose --show-progress=estimating",
-            "php-cs-fixer fix ./tests --verbose --show-progress=estimating",
+            "php-cs-fixer fix ./Sources --verbose --show-progress=dots",
+            "php-cs-fixer fix ./tests --verbose --show-progress=dots",
             "phpcbf -q --standard=./phpcs.xml --tab-width=4 ./Sources ./tests"
         ],
         "lint:check": [
-          "php-cs-fixer fix ./Sources --dry-run --verbose --show-progress=estimating",
-          "php-cs-fixer fix ./tests --dry-run --verbose --show-progress=estimating"
+          "php-cs-fixer fix ./Sources --dry-run --verbose --show-progress=dots",
+          "php-cs-fixer fix ./tests --dry-run --verbose --show-progress=dots"
         ],
         "phpunit": "phpunit -c phpunit.xml.dist --bootstrap ./tests/bootstrap.php --testsuite Breeze",
-        "phpstan": "phpstan analyze -c phpstan.neon",
+        "phpstan": "phpstan analyze --memory-limit=1G -c phpstan.neon",
         "phpcs": "phpcs --standard=./phpcs.xml --ignore=./tests/bootstrap.php --tab-width=4 ./Sources ./tests",
         "serve": "bin/server",
         "test": [

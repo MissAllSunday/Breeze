@@ -34,7 +34,7 @@ class OptionsModel extends BaseModel implements OptionsModelInterface
 			[
 				MemberEntity::ID => 'int',
 				OptionsEntity::COLUMN_VARIABLE => 'string',
-				OptionsEntity::COLUMN_VALUE => 'string'
+				OptionsEntity::COLUMN_VALUE => 'string',
 			],
 			$inserts,
 			MemberEntity::ID

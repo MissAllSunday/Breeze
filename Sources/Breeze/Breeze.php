@@ -27,10 +27,15 @@ class Breeze
 	use TextTrait;
 
 	public const NAME = 'Breeze';
+
 	public const VERSION = '2.0';
+
 	public const PATTERN = self::NAME . '_';
+
 	public const FEED = 'https://api.github.com/repos/MissAllSunday/Breeze/releases';
+
 	public const SUPPORT_URL = 'https://missallsunday.com';
+
 	public const VUE_VERSION = '2.5.16';
 
 	protected Container $container;
@@ -126,10 +131,10 @@ class Breeze
 			'subsections' => [
 				'settings' => [
 					$this->getText('user_settings_name_alerts_settings'),
-					['is_not_guest', 'profile_view']],
+					['is_not_guest', 'profile_view'], ],
 				'edit' => [
 					$this->getText('user_settings_name_alerts_edit'),
-					['is_not_guest', 'profile_view']],
+					['is_not_guest', 'profile_view'], ],
 			],
 			'permission' => [
 				'own' => 'is_not_guest',
@@ -276,13 +281,13 @@ class Breeze
 
 		if ($this->isEnable(SettingsEntity::ENABLE_MOOD)) {
 			$adminMenu['config']['areas'][AdminService::AREA]['subsections']['moodList'] = [
-				$this->getText(AdminService::AREA . '_moodList_title')
+				$this->getText(AdminService::AREA . '_moodList_title'),
 			];
 		}
 
 		// Pay no attention to that woman behind the curtain!
 		$adminMenu['config']['areas'][AdminService::AREA]['subsections']['donate'] = [
-			$this->getText(AdminService::AREA . '_donate_title')
+			$this->getText(AdminService::AREA . '_donate_title'),
 		];
 	}
 

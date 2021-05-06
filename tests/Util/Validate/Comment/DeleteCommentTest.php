@@ -2,22 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Validate;
+namespace Breeze\Util\Validate\Comment;
 
+use Breeze\Service\CommentService;
 use Breeze\Service\StatusService;
 use Breeze\Service\UserService;
-use Breeze\Util\Validate\Validations\DeleteStatus;
+use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\Validations\Comment\DeleteComment;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class DeleteStatusTest extends TestCase
+class DeleteCommentTest extends TestCase
 {
 	/**
 	 * @var UserService&MockObject
 	 */
 	private $userService;
 
-	private DeleteStatus $deleteStatus;
+	private DeleteComment $deleteComment;
 
 	public function setUp(): void
 	{
@@ -26,7 +28,10 @@ class DeleteStatusTest extends TestCase
 		/**  @var MockObject&StatusService $statusService */
 		$statusService = $this->getMockInstance(StatusService::class);
 
-		$this->deleteStatus = new DeleteStatus($this->userService, $statusService);
+		/**  @var MockObject&CommentService $commentService */
+		$commentService = $this->getMockInstance(CommentService::class);
+
+		$this->deleteComment = new DeleteComment($this->userService, $statusService, $commentService);
 	}
 
 	/**
@@ -34,15 +39,15 @@ class DeleteStatusTest extends TestCase
 	 */
 	public function testClean(array $data, bool $isExpectedException): void
 	{
-		$this->deleteStatus->setData($data);
+		$this->deleteComment->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 		} else {
-			$this->assertEquals($data, $this->deleteStatus->getData());
+			$this->assertEquals($data, $this->deleteComment->getData());
 		}
 
-		$this->deleteStatus->clean();
+		$this->deleteComment->clean();
 	}
 
 	public function cleanProvider(): array
@@ -50,21 +55,21 @@ class DeleteStatusTest extends TestCase
 		return [
 			'empty values' => [
 				'data' => [
-					'id' => 0,
-					'userId' => '0',
+					'userId' => 0,
+					'id' => '0',
 				],
 				'isExpectedException' => true,
 			],
 			'happy path' => [
 				'data' => [
-					'id' => 666,
 					'userId' => 666,
+					'id' => 666,
 				],
 				'isExpectedException' => false,
 			],
 			'incomplete data' => [
 				'data' => [
-					'id' => 1
+					'userId' => 1,
 				],
 				'isExpectedException' => true,
 			],
@@ -76,15 +81,15 @@ class DeleteStatusTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, bool $isExpectedException): void
 	{
-		$this->deleteStatus->setData($data);
+		$this->deleteComment->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 		} else {
-			$this->assertEquals(array_keys($data), $this->deleteStatus->getInts());
+			$this->assertEquals(array_keys($data), $this->deleteComment->getInts());
 		}
 
-		$this->deleteStatus->isInt();
+		$this->deleteComment->isInt();
 	}
 
 	public function isValidIntProvider(): array
@@ -116,7 +121,7 @@ class DeleteStatusTest extends TestCase
 		array $loadUsersInfoWillReturn,
 		bool $isExpectedException
 	): void {
-		$this->deleteStatus->setData($data);
+		$this->deleteComment->setData($data);
 
 		$this->userService->expects($this->once())
 			->method('getUsersToLoad')
@@ -127,7 +132,7 @@ class DeleteStatusTest extends TestCase
 			$this->expectException(ValidateDataException::class);
 		}
 
-		$this->deleteStatus->areValidUsers();
+		$this->deleteComment->areValidUsers();
 	}
 
 	public function areValidUsersProvider(): array
@@ -136,6 +141,7 @@ class DeleteStatusTest extends TestCase
 			'happy happy joy joy' => [
 				'data' => [
 					'userId' => 666,
+					'id' => 666,
 				],
 				'with' => [
 					666,
@@ -148,6 +154,7 @@ class DeleteStatusTest extends TestCase
 			'invalid users' => [
 				'data' => [
 					'userId' => 666,
+					'id' => 666,
 				],
 				'with' => [
 					666,
@@ -169,10 +176,10 @@ class DeleteStatusTest extends TestCase
 			->method('getCurrentUserInfo')
 			->willReturn($userInfo);
 
-		$this->deleteStatus->setData($data);
+		$this->deleteComment->setData($data);
 
 		$this->expectException(ValidateDataException::class);
-		$this->deleteStatus->permissions();
+		$this->deleteComment->permissions();
 	}
 
 	public function permissionsProvider(): array
@@ -180,12 +187,12 @@ class DeleteStatusTest extends TestCase
 		return [
 			'not allowed' => [
 				'data' => [
-					'userId' => 666,
 					'id' => 666,
+					'userId' => 3,
 				],
 				'userInfo' => [
 					'id' => 666,
-				]
+				],
 			],
 		];
 	}
@@ -195,18 +202,18 @@ class DeleteStatusTest extends TestCase
 		$this->assertEquals([
 			'clean',
 			'isInt',
-			'validStatus',
+			'validComment',
 			'validUser',
 			'permissions',
-		], $this->deleteStatus->getSteps());
+		], $this->deleteComment->getSteps());
 	}
 
 	public function testGetParams(): void
 	{
 		$this->assertEquals([
 			'id' => 0,
-			'userId' => 0
-		], $this->deleteStatus->getParams());
+			'userId' => 0,
+		], $this->deleteComment->getParams());
 	}
 
 	private function getMockInstance(string $class): MockObject

@@ -91,7 +91,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 
 		array_unshift($this->configVars, [
 			'title',
-			Breeze::PATTERN . self::AREA . '_settings_title'
+			Breeze::PATTERN . self::AREA . '_settings_title',
 		]);
 
 		if ($save) {
@@ -114,7 +114,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 				'permissions',
 				'breeze_' . $permission,
 				0,
-				$this->getSmfText('permissionname_breeze_' . $permission)
+				$this->getSmfText('permissionname_breeze_' . $permission),
 			];
 		}
 

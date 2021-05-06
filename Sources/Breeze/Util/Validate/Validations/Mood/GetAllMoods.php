@@ -2,33 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Validate\Validations;
+namespace Breeze\Util\Validate\Validations\Mood;
 
-use Breeze\Service\MoodServiceInterface;
-use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class GetAllMoods extends ValidateData implements ValidateDataInterface
+class GetAllMoods extends ValidateMood implements ValidateDataInterface
 {
 	protected const PARAMS = [];
 
 	protected const SUCCESS_KEY = 'moodCreated';
 
-	protected UserServiceInterface $userService;
-
-	private MoodServiceInterface $moodService;
-
 	protected array $steps = [self::PERMISSIONS,];
-
-	public function __construct(
-		UserServiceInterface $userService,
-		MoodServiceInterface $moodService
-	) {
-		$this->moodService = $moodService;
-
-		parent::__construct($userService);
-	}
 
 	public function successKeyString(): string
 	{

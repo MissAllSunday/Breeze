@@ -72,7 +72,7 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 
 		$this->components->addJavaScriptVar('users', [
 			'wallOwner' => $this->profileOwnerInfo['id'],
-			'wallPoster' => $this->currentUserInfo['id']
+			'wallPoster' => $this->currentUserInfo['id'],
 		]);
 		$this->components->loadTxtVarsFor(['general', 'mood']);
 		$this->components->loadComponents(

@@ -12,7 +12,7 @@ class MentionModel extends BaseModel implements MentionModelInterface
 	{
 		return $mention = [
 			'name' => '',
-			'id' => ''
+			'id' => '',
 		];
 	}
 

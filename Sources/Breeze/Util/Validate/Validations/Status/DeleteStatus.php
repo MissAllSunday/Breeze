@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Validate\Validations;
+namespace Breeze\Util\Validate\Validations\Status;
 
 use Breeze\Entity\StatusEntity;
 use Breeze\Repository\InvalidStatusException;
-use Breeze\Service\StatusServiceInterface;
-use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class DeleteStatus extends ValidateData implements ValidateDataInterface
+class DeleteStatus extends ValidateStatus implements ValidateDataInterface
 {
 	public array $steps = [
 		self::CLEAN,
@@ -28,18 +27,7 @@ class DeleteStatus extends ValidateData implements ValidateDataInterface
 
 	protected const SUCCESS_KEY = 'deleted_status';
 
-	private StatusServiceInterface $statusService;
-
 	private array $status;
-
-	public function __construct(
-		UserServiceInterface $userService,
-		StatusServiceInterface $statusService
-	) {
-		$this->statusService = $statusService;
-
-		parent::__construct($userService);
-	}
 
 	public function successKeyString(): string
 	{

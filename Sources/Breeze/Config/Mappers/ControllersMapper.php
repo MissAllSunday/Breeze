@@ -28,22 +28,22 @@ return [
 		'arguments'=> [
 			AdminService::class,
 			MoodService::class,
-		]
+		],
 	],
 	'controller.wall' => [
 		'class' => WallController::class,
 		'arguments'=> [
 			WallService::class,
-			UserService::class
-		]
+			UserService::class,
+		],
 	],
 	'controller.status' => [
 		'class' => StatusController::class,
 		'arguments'=> [
 			StatusService::class,
 			UserService::class,
-			ValidateGateway::class
-		]
+			ValidateGateway::class,
+		],
 	],
 	'controller.comment' => [
 		'class' => CommentController::class,
@@ -51,14 +51,14 @@ return [
 			CommentService::class,
 			StatusService::class,
 			UserService::class,
-			ValidateGateway::class
-		]
+			ValidateGateway::class,
+		],
 	],
 	'controller.user.alerts' => [
 		'class' => AlertsController::class,
 		'arguments'=> [
 			UserService::class,
-		]
+		],
 	],
 	'controller.user.settings' => [
 		'class' => UserSettingsController::class,
@@ -66,8 +66,8 @@ return [
 			UserSettingsService::class,
 			UserService::class,
 			UserSettingsBuilder::class,
-			ValidateGateway::class
-		]
+			ValidateGateway::class,
+		],
 	],
 	'controller.mood' => [
 		'class' => MoodController::class,
@@ -75,7 +75,7 @@ return [
 			UserService::class,
 			UserSettingsService::class,
 			MoodService::class,
-			ValidateGateway::class
-		]
+			ValidateGateway::class,
+		],
 	],
 ];

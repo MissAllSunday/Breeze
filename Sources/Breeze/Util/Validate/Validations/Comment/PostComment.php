@@ -2,17 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Validate\Validations;
+namespace Breeze\Util\Validate\Validations\Comment;
 
 use Breeze\Entity\CommentEntity;
 use Breeze\Repository\InvalidStatusException;
-use Breeze\Service\CommentServiceInterface;
-use Breeze\Service\StatusServiceInterface;
-use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class PostComment extends ValidateData implements ValidateDataInterface
+class PostComment extends ValidateComment implements ValidateDataInterface
 {
 	protected const PARAMS = [
 		CommentEntity::STATUS_ID => 0,
@@ -21,21 +19,6 @@ class PostComment extends ValidateData implements ValidateDataInterface
 	];
 
 	protected const SUCCESS_KEY = 'published_comment';
-
-	private CommentServiceInterface $commentService;
-
-	private StatusServiceInterface $statusService;
-
-	public function __construct(
-		UserServiceInterface $userService,
-		StatusServiceInterface $statusService,
-		CommentServiceInterface $commentService
-	) {
-		$this->commentService = $commentService;
-		$this->statusService = $statusService;
-
-		parent::__construct($userService);
-	}
 
 	public function successKeyString(): string
 	{

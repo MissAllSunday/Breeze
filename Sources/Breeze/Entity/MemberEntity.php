@@ -7,12 +7,17 @@ namespace Breeze\Entity;
 
 class MemberEntity extends BaseEntity implements BaseEntityInterface
 {
-	const TABLE = 'members';
-	const ID = 'id_member';
-	const NAME = 'member_name';
-	const REAL_NAME = 'real_name';
-	const IGNORE_LIST = 'pm_ignore_list';
-	const BUDDY_LIST = 'buddy_list';
+	public const TABLE = 'members';
+
+	public const ID = 'id_member';
+
+	public const NAME = 'member_name';
+
+	public const REAL_NAME = 'real_name';
+
+	public const IGNORE_LIST = 'pm_ignore_list';
+
+	public const BUDDY_LIST = 'buddy_list';
 
 	public static function getColumns(): array
 	{
@@ -21,7 +26,7 @@ class MemberEntity extends BaseEntity implements BaseEntityInterface
 			self::NAME,
 			self::REAL_NAME,
 			self::IGNORE_LIST,
-			self::BUDDY_LIST
+			self::BUDDY_LIST,
 		];
 	}
 

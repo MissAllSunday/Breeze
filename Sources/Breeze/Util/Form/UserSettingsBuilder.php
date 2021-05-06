@@ -15,6 +15,7 @@ class UserSettingsBuilder implements UserSettingsBuilderInterface
 	use TextTrait;
 
 	private const SETTING_TEXT = UserSettingsEntity::IDENTIFIER . '_%s';
+
 	private const SETTING_DESC = UserSettingsEntity::IDENTIFIER . '_%s_desc';
 
 	private array $userSettingsColumns;

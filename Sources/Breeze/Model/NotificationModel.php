@@ -20,7 +20,7 @@ class NotificationModel extends BaseModel implements NotificationModelInterface
 				NotificationEntity::COLUMN_TASK_FILE => 'string',
 				NotificationEntity::COLUMN_TASK_CLASS => 'string',
 				NotificationEntity::COLUMN_TASK_DATA => 'string',
-				NotificationEntity::COLUMN_CLAIMED_TIME => 'int'
+				NotificationEntity::COLUMN_CLAIMED_TIME => 'int',
 			],
 			$data,
 			NotificationEntity::COLUMN_ID

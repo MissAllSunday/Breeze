@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Validate;
+namespace Breeze\Util\Validate\User;
 
 use Breeze\Service\UserService;
-use Breeze\Util\Validate\Validations\UserSettings;
+use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\Validations\User\UserSettings;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

@@ -12,6 +12,7 @@ abstract class ValueFormatter
 	use TextTrait;
 
 	public const FORMATTER_DIR = 'Types';
+
 	public const FORMATTER_TYPE = 'Type';
 
 	public static function getNameSpace(): string

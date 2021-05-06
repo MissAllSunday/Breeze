@@ -115,7 +115,7 @@ class CreateMoodTest extends TestCase
 					'isActive' => 1,
 				],
 				'integers' => [
-					'isActive'
+					'isActive',
 				],
 				'isExpectedException' => false,
 			],
@@ -126,7 +126,7 @@ class CreateMoodTest extends TestCase
 					'isActive' => 'not an int',
 				],
 				'integers' => [
-					'enable'
+					'enable',
 				],
 				'isExpectedException' => true,
 			],

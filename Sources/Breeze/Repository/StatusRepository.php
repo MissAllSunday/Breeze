@@ -43,7 +43,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			$statusByProfile = $this->statusModel->getStatusByProfile([
 				'start' => $start,
 				'maxIndex' => $this->statusModel->getCount(),
-				'ids' => [$profileOwnerId]
+				'ids' => [$profileOwnerId],
 			]);
 
 			if (!empty(array_filter($statusByProfile))) {

@@ -18,16 +18,27 @@ abstract class ValidateData
 	use PersistenceTrait;
 
 	protected const CLEAN = 'clean';
+
 	protected const COMPARE = 'compare';
+
 	protected const INT = 'isInt';
+
 	protected const STRING = 'isString';
+
 	protected const VALID_USERS = 'areValidUsers';
+
 	protected const VALID_USER = 'validUser';
+
 	protected const FLOOD_CONTROL = 'floodControl';
+
 	protected const PERMISSIONS = 'permissions';
+
 	protected const VALID_STATUS = 'validStatus';
+
 	protected const VALID_COMMENT = 'validComment';
+
 	protected const IGNORE_LIST = 'ignoreList';
+
 	protected const DATA_EXISTS = 'dataExists';
 
 	protected const DEFAULT_STEPS = [
@@ -38,7 +49,7 @@ abstract class ValidateData
 	];
 
 	protected array $steps = [
-		self::CLEAN
+		self::CLEAN,
 	];
 
 	protected array $params = [];

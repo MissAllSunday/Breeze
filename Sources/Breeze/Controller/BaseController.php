@@ -27,7 +27,7 @@ abstract class BaseController implements ControllerInterface
 	public function error(string $errorTextKey, string $templateName = ''): void
 	{
 		$this->render(!empty($templateName) ? $templateName : __FUNCTION__, [
-			'errorMessage' => $this->getText($errorTextKey)
+			'errorMessage' => $this->getText($errorTextKey),
 		]);
 	}
 

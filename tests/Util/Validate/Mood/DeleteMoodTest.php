@@ -136,7 +136,7 @@ class DeleteMoodTest extends TestCase
 					'id' => 666,
 				],
 				'integers' => [
-					'id'
+					'id',
 				],
 				'isExpectedException' => false,
 			],
@@ -145,7 +145,7 @@ class DeleteMoodTest extends TestCase
 					'id' => 'custom',
 				],
 				'integers' => [
-					'id'
+					'id',
 				],
 				'isExpectedException' => true,
 			],

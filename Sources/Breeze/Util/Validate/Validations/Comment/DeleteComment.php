@@ -2,17 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Validate\Validations;
+namespace Breeze\Util\Validate\Validations\Comment;
 
 use Breeze\Entity\CommentEntity as CommentEntity;
 use Breeze\Repository\InvalidCommentException;
-use Breeze\Service\CommentServiceInterface;
-use Breeze\Service\StatusServiceInterface;
-use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class DeleteComment extends ValidateData implements ValidateDataInterface
+class DeleteComment extends ValidateComment implements ValidateDataInterface
 {
 	public array $steps = [
 		self::CLEAN,
@@ -30,21 +28,6 @@ class DeleteComment extends ValidateData implements ValidateDataInterface
 	protected const SUCCESS_KEY = 'deleted_comment';
 
 	private array $comment;
-
-	private CommentServiceInterface $commentService;
-
-	private StatusServiceInterface $statusService;
-
-	public function __construct(
-		UserServiceInterface $userService,
-		StatusServiceInterface $statusService,
-		CommentServiceInterface $commentService
-	) {
-		$this->commentService = $commentService;
-		$this->statusService = $statusService;
-
-		parent::__construct($userService);
-	}
 
 	public function successKeyString(): string
 	{

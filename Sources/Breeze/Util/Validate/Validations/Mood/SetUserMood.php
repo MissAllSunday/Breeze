@@ -62,7 +62,7 @@ class SetUserMood extends ValidateMood implements ValidateDataInterface
 	public function getUserIdsNames(): array
 	{
 		return [
-			UserSettingsEntity::USER_ID
+			UserSettingsEntity::USER_ID,
 		];
 	}
 

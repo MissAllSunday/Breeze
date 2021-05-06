@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Validate;
+namespace Breeze\Util\Validate\Status;
 
-use Breeze\Service\CommentService as CommentService;
 use Breeze\Service\StatusService as StatusService;
 use Breeze\Service\UserService;
-use Breeze\Util\Validate\Validations\PostComment;
+use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\Validations\Status\PostStatus;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class PostCommentTest extends TestCase
+class PostStatusTest extends TestCase
 {
-	private PostComment $postComment;
+	private PostStatus $postStatus;
 
 	public function setUp(): void
 	{
@@ -23,10 +23,7 @@ class PostCommentTest extends TestCase
 		/**  @var StatusService&MockObject $statusService */
 		$statusService = $this->getMockInstance(StatusService::class);
 
-		/**  @var CommentService&MockObject $commentService */
-		$commentService = $this->getMockInstance(CommentService::class);
-
-		$this->postComment = new PostComment($userService, $statusService, $commentService);
+		$this->postStatus = new PostStatus($userService, $statusService);
 	}
 
 	/**
@@ -34,15 +31,15 @@ class PostCommentTest extends TestCase
 	 */
 	public function testClean(array $data, bool $isExpectedException): void
 	{
-		$this->postComment->setData($data);
+		$this->postStatus->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 		} else {
-			$this->assertEquals($data, $this->postComment->getData());
+			$this->assertEquals($data, $this->postStatus->getData());
 		}
 
-		$this->postComment->clean();
+		$this->postStatus->clean();
 	}
 
 	public function cleanProvider(): array
@@ -50,23 +47,23 @@ class PostCommentTest extends TestCase
 		return [
 			'empty values' => [
 				'data' => [
+					'wallId' => '0',
 					'userId' => 0,
-					'statusId' => '666',
-					'body' => 'LOL',
+					'body' => '',
 				],
 				'isExpectedException' => true,
 			],
 			'happy path' => [
 				'data' => [
-					'userId' => 1,
-					'statusId' => 666,
+					'wallId' => 1,
+					'userId' => 2,
 					'body' => 'Happy Path',
 				],
 				'isExpectedException' => false,
 			],
 			'incomplete data' => [
 				'data' => [
-					'userId' => '1'
+					'wallId' => 1,
 				],
 				'isExpectedException' => true,
 			],
@@ -78,15 +75,15 @@ class PostCommentTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, bool $isExpectedException): void
 	{
-		$this->postComment->setData($data);
+		$this->postStatus->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 		} else {
-			$this->assertEquals(array_keys($data), $this->postComment->getInts());
+			$this->assertEquals(array_keys($data), $this->postStatus->getInts());
 		}
 
-		$this->postComment->isInt();
+		$this->postStatus->isInt();
 	}
 
 	public function isValidIntProvider(): array
@@ -94,14 +91,14 @@ class PostCommentTest extends TestCase
 		return [
 			'happy path' => [
 				'data' => [
-					'statusId' => 666,
+					'wallId' => 2,
 					'userId' => 1,
 				],
 				'isExpectedException' => false,
 			],
 			'not ints' => [
 				'data' => [
-					'statusId' => '666',
+					'wallId' => 'fail',
 					'userId' => 'lol',
 				],
 				'isExpectedException' => true,
@@ -114,15 +111,15 @@ class PostCommentTest extends TestCase
 	 */
 	public function testIsValidString(array $data, bool $isExpectedException): void
 	{
-		$this->postComment->setData($data);
+		$this->postStatus->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 		} else {
-			$this->assertEquals(array_keys($data), $this->postComment->getStrings());
+			$this->assertEquals(array_keys($data), $this->postStatus->getStrings());
 		}
 
-		$this->postComment->isString();
+		$this->postStatus->isString();
 	}
 
 	public function isValidStringProvider(): array
@@ -148,17 +145,15 @@ class PostCommentTest extends TestCase
 	 */
 	public function testFloodControl(array $data, bool $isExpectedException): void
 	{
-		$this->postComment->setData($data);
+		$this->postStatus->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 		} else {
-			$this->assertArrayHasKey('msgCount', $this->postComment->getPersistenceValue(
-				'flood_' . $this->postComment->getPosterId()
-			));
+			$this->assertEquals($data['userId'], $this->postStatus->getPosterId());
 		}
 
-		$this->postComment->floodControl();
+		$this->postStatus->floodControl();
 	}
 
 	public function floodControlProvider(): array
@@ -167,7 +162,9 @@ class PostCommentTest extends TestCase
 			'happy happy joy joy' => [
 				'data' => [
 					'userId' => 1,
-					'statusId' => 666,
+					'wallId' => 2,
+					'comments_profile_id' => 3,
+					'id' => 666,
 					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
@@ -175,7 +172,9 @@ class PostCommentTest extends TestCase
 			'time has not expired, too much messages' => [
 				'data' => [
 					'userId' => 2,
-					'statusId' => 666,
+					'wallId' => 2,
+					'comments_profile_id' => 3,
+					'id' => 666,
 					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => true,
@@ -183,7 +182,9 @@ class PostCommentTest extends TestCase
 			'time has expired, too much messages' => [
 				'data' => [
 					'userId' => 3,
-					'statusId' => 666,
+					'wallId' => 2,
+					'comments_profile_id' => 3,
+					'id' => 666,
 					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
@@ -191,7 +192,9 @@ class PostCommentTest extends TestCase
 			'time has not expired,  allowed messages' => [
 				'data' => [
 					'userId' => 4,
-					'statusId' => 666,
+					'wallId' => 2,
+					'comments_profile_id' => 3,
+					'id' => 666,
 					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 				'isExpectedException' => false,
@@ -204,10 +207,10 @@ class PostCommentTest extends TestCase
 	 */
 	public function testPermissions(array $data): void
 	{
-		$this->postComment->setData($data);
+		$this->postStatus->setData($data);
 
 		$this->expectException(ValidateDataException::class);
-		$this->postComment->permissions();
+		$this->postStatus->permissions();
 	}
 
 	public function permissionsProvider(): array
@@ -216,7 +219,9 @@ class PostCommentTest extends TestCase
 			'not allowed' => [
 				'data' => [
 					'userId' => 1,
-					'statusId' => 666,
+					'wallId' => 2,
+					'comments_profile_id' => 3,
+					'id' => 666,
 					'body' => 'Kaizoku ou ni ore wa naru',
 				],
 			],
@@ -232,17 +237,16 @@ class PostCommentTest extends TestCase
 			'permissions',
 			'areValidUsers',
 			'floodControl',
-			'validStatus',
-		], $this->postComment->getSteps());
+		], $this->postStatus->getSteps());
 	}
 
 	public function testGetParams(): void
 	{
 		$this->assertEquals([
-			'statusId' => 0,
+			'wallId' => 0,
 			'userId' => 0,
 			'body' => '',
-		], $this->postComment->getParams());
+		], $this->postStatus->getParams());
 	}
 
 	private function getMockInstance(string $class): MockObject

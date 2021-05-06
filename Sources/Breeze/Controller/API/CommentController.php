@@ -18,7 +18,9 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 class CommentController extends ApiBaseController implements ApiBaseInterface
 {
 	public const ACTION_POST_COMMENT = 'postComment';
+
 	public const ACTION_DELETE = 'deleteComment';
+
 	public const SUB_ACTIONS = [
 		self::ACTION_POST_COMMENT,
 		self::ACTION_DELETE,

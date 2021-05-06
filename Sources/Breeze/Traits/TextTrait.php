@@ -57,13 +57,16 @@ trait TextTrait
 		switch ($type) {
 			case 'numeric':
 				$t = '\d';
+
 				break;
 			case 'alpha':
 				$t = '[:alpha:]';
+
 				break;
 			case 'alphanumeric':
 			default:
 				$t = '[:alnum:]';
+
 				break;
 		}
 
@@ -72,7 +75,7 @@ trait TextTrait
 				'/[^' . $t . ',]/',
 				'/(?<=,),+/',
 				'/^,+/',
-				'/,+$/'
+				'/,+$/',
 			],
 			'',
 			$dirtyString
@@ -81,7 +84,7 @@ trait TextTrait
 
 	public function normalizeString(string $string = ''): string
 	{
-		$string = htmlentities($string, ENT_QUOTES);
+		$string = htmlentities($string, \ENT_QUOTES);
 
 		$string = preg_replace(
 			'~&([a-z]{1,2})(amp|acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i',
@@ -135,7 +138,7 @@ trait TextTrait
 			24 * 60 * 60			=> $txt['time_day'],
 			60 * 60					=> $txt['time_hour'],
 			60						=> $txt['time_minute'],
-			1						=> $txt['time_second']
+			1						=> $txt['time_second'],
 		];
 
 		foreach ($timePeriods as $seconds => $timeString) {
@@ -145,6 +148,7 @@ trait TextTrait
 
 				$timeElapsed = $timeCountRounded . ' ' . $timeString .
 					(1 < $timeCountRounded ? 's ' : ' ') . $txt['time_ago'];
+
 				break;
 			}
 		}

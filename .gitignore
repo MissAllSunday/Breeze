@@ -43,6 +43,7 @@ Thumbs.db
 # Dev stuff
 .php_cs.cache
 .php_cs
+.php-cs-fixer.dist.php
 phpunit.xml
 /vendor
 /breezeVendor

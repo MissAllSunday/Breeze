@@ -13,7 +13,7 @@ class UserService extends BaseService implements UserServiceInterface
 	public const MIN_INFO_KEYS = [
 		'link',
 		'name',
-		'avatar'
+		'avatar',
 	];
 
 	private UserRepositoryInterface $userRepository;
@@ -56,6 +56,7 @@ class UserService extends BaseService implements UserServiceInterface
 			foreach ($profile_items as &$profileItem) {
 				if ('summary' === $profileItem['area']) {
 					$profileItem['area'] = self::LEGACY_AREA;
+
 					break;
 				}
 			}
@@ -80,23 +81,23 @@ class UserService extends BaseService implements UserServiceInterface
 		$alertTypes['breeze'] = [
 			'' . Breeze::PATTERN . 'status_owner' => [
 				'alert' => 'yes',
-				'email' => 'never'
+				'email' => 'never',
 			],
 			'' . Breeze::PATTERN . 'comment_status_owner' => [
 				'alert' => 'yes',
-				'email' => 'never'
+				'email' => 'never',
 			],
 			'' . Breeze::PATTERN . 'comment_profile_owner' => [
 				'alert' => 'yes',
-				'email' => 'never'
+				'email' => 'never',
 			],
 			'' . Breeze::PATTERN . 'mention' => [
 				'alert' => 'yes',
-				'email' => 'never'
+				'email' => 'never',
 			],
 			'' . Breeze::PATTERN . 'like' => [
 				'alert' => 'yes',
-				'email' => 'never'
+				'email' => 'never',
 			],
 		];
 	}
@@ -137,7 +138,7 @@ class UserService extends BaseService implements UserServiceInterface
 				$loadedUsers[$userId] = [
 					'link' => $this->getSmfText('guest_title'),
 					'name' => $this->getSmfText('guest_title'),
-					'avatar' => ['href' => $modSettings['avatar_url'] . '/default.png']
+					'avatar' => ['href' => $modSettings['avatar_url'] . '/default.png'],
 				];
 
 				continue;

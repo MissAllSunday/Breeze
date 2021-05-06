@@ -25,17 +25,17 @@ class JsonTest  extends TestCase
 			'is json' =>
 				[
 					'json' => json_encode(['Ace', 'Luffy', 'Sabo']),
-					'expected' => true
+					'expected' => true,
 				],
 			'is not json' =>
 				[
 					'json' => 'Im Jason!',
-					'expected' => false
+					'expected' => false,
 				],
 			'empty json' =>
 				[
 					'json' => Json::encode([]),
-					'expected' => true
+					'expected' => true,
 				],
 		];
 	}

@@ -17,7 +17,7 @@ class MoodModel extends BaseModel implements MoodModelInterface
 		$this->dbClient->insert(MoodEntity::TABLE, [
 			MoodEntity::EMOJI => 'string',
 			MoodEntity::DESC => 'string',
-			MoodEntity::STATUS => 'string'
+			MoodEntity::STATUS => 'string',
 		], $data, MoodEntity::ID);
 
 		return $this->getInsertedId();
@@ -95,7 +95,7 @@ class MoodModel extends BaseModel implements MoodModelInterface
 			FROM {db_prefix}' . $this->getTableName() . '
 			WHERE ' . MoodEntity::STATUS . ' = {int:status}',
 			[
-				'status' => $status
+				'status' => $status,
 			]
 		);
 

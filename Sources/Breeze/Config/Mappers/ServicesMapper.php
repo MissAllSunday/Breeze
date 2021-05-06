@@ -25,22 +25,22 @@ use Breeze\Util\Form\UserSettingsBuilder;
 return [
 	'service.mood' => [
 		'class' => MoodService::class,
-		'arguments'=> [MoodRepository::class, UserRepository::class, Components::class]
+		'arguments'=> [MoodRepository::class, UserRepository::class, Components::class],
 	],
 	'service.admin' => [
 		'class' => AdminService::class,
-		'arguments'=> [SettingsBuilder::class, Components::class]
+		'arguments'=> [SettingsBuilder::class, Components::class],
 	],
 	'service.user' => [
 		'class' => UserService::class,
-		'arguments'=> [UserRepository::class]
+		'arguments'=> [UserRepository::class],
 	],
 	'service.user.settings' => [
 		'class' => UserSettingsService::class,
 		'arguments'=> [
 			UserRepository::class,
 			Components::class,
-			UserSettingsBuilder::class]
+			UserSettingsBuilder::class, ],
 	],
 	'service.permissions' => [
 		'class' => PermissionsService::class,
@@ -51,18 +51,18 @@ return [
 			UserService::class,
 			StatusRepository::class,
 			CommentRepository::class,
-			Components::class]
+			Components::class, ],
 	],
 	'service.status' => [
 		'class' => StatusService::class,
-		'arguments'=> [UserService::class, StatusRepository::class, CommentRepository::class]
+		'arguments'=> [UserService::class, StatusRepository::class, CommentRepository::class],
 	],
 	'service.comment' => [
 		'class' => CommentService::class,
-		'arguments'=> [UserService::class, StatusRepository::class, CommentRepository::class]
+		'arguments'=> [UserService::class, StatusRepository::class, CommentRepository::class],
 	],
 	'service.validate' => [
 		'class' => ValidateService::class,
-		'arguments'=> [UserService::class]
+		'arguments'=> [UserService::class],
 	],
 ];

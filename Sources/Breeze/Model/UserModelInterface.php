@@ -6,8 +6,9 @@ namespace Breeze\Model;
 
 interface UserModelInterface extends BaseModelInterface
 {
-	const JSON_VALUES = ['cover', 'petitionList', 'moodHistory'];
-	const ARRAY_VALUES = ['blockListIDs'];
+	public const JSON_VALUES = ['cover', 'petitionList', 'moodHistory'];
+
+	public const ARRAY_VALUES = ['blockListIDs'];
 
 	public function loadMinData(array $userIds): array;
 

@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Validate\Validations;
+namespace Breeze\Util\Validate\Validations\Status;
 
 use Breeze\Entity\StatusEntity;
-use Breeze\Service\StatusServiceInterface;
-use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class PostStatus extends ValidateData implements ValidateDataInterface
+class PostStatus extends ValidateStatus implements ValidateDataInterface
 {
 	protected const PARAMS = [
 		StatusEntity::WALL_ID => 0,
@@ -19,17 +18,6 @@ class PostStatus extends ValidateData implements ValidateDataInterface
 	];
 
 	protected const SUCCESS_KEY = 'published_status';
-
-	private StatusServiceInterface $statusService;
-
-	public function __construct(
-		UserServiceInterface $userService,
-		StatusServiceInterface $statusService
-	) {
-		$this->statusService = $statusService;
-
-		parent::__construct($userService);
-	}
 
 	public function successKeyString(): string
 	{

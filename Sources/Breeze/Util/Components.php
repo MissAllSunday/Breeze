@@ -13,6 +13,7 @@ class Components
 	use TextTrait;
 
 	private const FOLDER = 'breezeComponents/';
+
 	private const COMPONENTS = [
 		'utils',
 		'setMood',
@@ -29,6 +30,7 @@ class Components
 		'moodListAdmin',
 		'textArea',
 	];
+
 	private const CDN_JS = [
 		'vue' => 'https://cdn.jsdelivr.net/npm/vue@' . Breeze::VUE_VERSION . '/dist/vue.js',
 		'axios' => 'https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js',
@@ -111,7 +113,7 @@ class Components
 				'defaultLabel' => $this->getSetting(
 					SettingsEntity::MOOD_LABEL,
 					$this->getText(SettingsEntity::MOOD_DEFAULT)
-				)
+				),
 			],
 		];
 

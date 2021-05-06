@@ -10,5 +10,5 @@ use Breeze\Database\DatabaseClient;
 return [
 	'client.db' => [
 		'class' => DatabaseClient::class,
-	]
+	],
 ];

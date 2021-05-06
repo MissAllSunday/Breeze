@@ -99,7 +99,7 @@ class CommentRepositoryTest extends TestCase
 			'happy happy joy joy' => [
 				'profileOwnerId' => 1,
 				'commentsByProfileWillReturn' => [
-					'some data'
+					'some data',
 				],
 			],
 			'no data' => [
@@ -109,7 +109,7 @@ class CommentRepositoryTest extends TestCase
 			'data from query' => [
 				'profileOwnerId' => 3,
 				'commentsByProfileWillReturn' => [
-					'some data'
+					'some data',
 				],
 			],
 		];
@@ -137,7 +137,7 @@ class CommentRepositoryTest extends TestCase
 			'happy happy joy joy' => [
 				'statusId' => [1],
 				'commentsByStatusWillReturn' => [
-					'some data'
+					'some data',
 				],
 			],
 			'no data' => [

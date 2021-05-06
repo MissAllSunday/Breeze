@@ -3,11 +3,12 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Util\Validate\Validations;
+namespace Breeze\Util\Validate\Validations\Status;
 
 use Breeze\Entity\StatusEntity;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class StatusByProfile extends ValidateData implements ValidateDataInterface
+class StatusByProfile extends ValidateStatus implements ValidateDataInterface
 {
 	public array $steps = [
 		self::CLEAN,
@@ -30,7 +31,7 @@ class StatusByProfile extends ValidateData implements ValidateDataInterface
 	public function getInts(): array
 	{
 		return [
-			StatusEntity::WALL_ID
+			StatusEntity::WALL_ID,
 		];
 	}
 
@@ -42,7 +43,7 @@ class StatusByProfile extends ValidateData implements ValidateDataInterface
 	public function getUserIdsNames(): array
 	{
 		return [
-			StatusEntity::WALL_ID
+			StatusEntity::WALL_ID,
 		];
 	}
 

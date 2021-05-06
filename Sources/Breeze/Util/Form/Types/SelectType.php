@@ -28,7 +28,7 @@ class SelectType extends ValueFormatter implements ValueFormatterInterface
 		$allSelectOptions = [
 			SettingsEntity::MOOD_PLACEMENT => array_map(function ($txtKey) {
 				return $this->getSmfText(SettingsEntity::PF_TEXT_KEY . $txtKey);
-			}, $context['cust_profile_fields_placement'])
+			}, $context['cust_profile_fields_placement']),
 		];
 
 		return $allSelectOptions[$settingName] ?? [];

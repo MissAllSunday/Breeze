@@ -61,7 +61,7 @@ trait RequestTrait
 		}
 
 		$var = $this->purifier->purify((string) $variable);
-		$var = $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var, ENT_QUOTES));
+		$var = $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var, \ENT_QUOTES));
 
 		if (ctype_digit($var)) {
 			$var = (int) $var;

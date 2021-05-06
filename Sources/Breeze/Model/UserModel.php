@@ -50,7 +50,7 @@ class UserModel extends BaseModel implements UserModelInterface
 			FROM {db_prefix}' . MemberEntity::TABLE . '
 			WHERE ' . MemberEntity::ID . ' IN ({array_int:userIds})',
 			[
-				'userIds' => array_map('intval', $userIds)
+				'userIds' => array_map('intval', $userIds),
 			]
 		);
 

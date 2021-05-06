@@ -12,7 +12,9 @@ abstract class BaseRepository
 	use CacheTrait;
 
 	public const LIKE_TYPE_STATUS = 'breSta';
+
 	public const LIKE_TYPE_COMMENT = 'breCom';
+
 	protected const TTL = 360;
 
 	public function handleLikes($type, $content): array
@@ -24,7 +26,7 @@ abstract class BaseRepository
 	{
 		return [
 			self::LIKE_TYPE_STATUS,
-			self::LIKE_TYPE_COMMENT
+			self::LIKE_TYPE_COMMENT,
 		];
 	}
 }

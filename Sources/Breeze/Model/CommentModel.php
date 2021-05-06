@@ -48,7 +48,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 			'profileIds' => $profileOwnerIds,
 			'statusTable' => StatusEntity::TABLE,
 			'compare' =>  StatusEntity::TABLE .
-				'.' . StatusEntity::ID . ' = ' . CommentEntity::TABLE . '.' . CommentEntity::STATUS_ID
+				'.' . StatusEntity::ID . ' = ' . CommentEntity::TABLE . '.' . CommentEntity::STATUS_ID,
 		]);
 
 		$request = $this->dbClient->query(

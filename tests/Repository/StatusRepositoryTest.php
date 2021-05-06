@@ -58,13 +58,13 @@ class StatusRepositoryTest extends TestCase
 		return [
 			'happy happy joy joy' => [
 				'dataToInsert' => [
-					'some data'
+					'some data',
 				],
 				'newId' => 666,
 			],
 			'InvalidStatusException' => [
 				'dataToInsert' => [
-					'some data'
+					'some data',
 				],
 				'newId' => 0,
 			],
@@ -84,7 +84,7 @@ class StatusRepositoryTest extends TestCase
 				->with([
 					'start' => 0,
 					'maxIndex' => 0,
-					'ids' => [$profileOwnerId]
+					'ids' => [$profileOwnerId],
 				])
 				->willReturn($statusByProfileWillReturn);
 		}
@@ -100,7 +100,7 @@ class StatusRepositoryTest extends TestCase
 			'happy happy joy joy' => [
 				'profileOwnerId' => 1,
 				'statusByProfileWillReturn' => [
-					'some data'
+					'some data',
 				],
 			],
 			'no data' => [
@@ -110,7 +110,7 @@ class StatusRepositoryTest extends TestCase
 			'data from query' => [
 				'profileOwnerId' => 3,
 				'statusByProfileWillReturn' => [
-					'some data'
+					'some data',
 				],
 			],
 		];
@@ -143,7 +143,7 @@ class StatusRepositoryTest extends TestCase
 			'happy happy joy joy' => [
 				'statusId' => 1,
 				'getByIdWillReturn' => [
-					'some data'
+					'some data',
 				],
 			],
 			'InvalidStatusException' => [

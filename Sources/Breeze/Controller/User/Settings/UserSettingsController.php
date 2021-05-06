@@ -18,8 +18,11 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 class UserSettingsController extends BaseController implements ControllerInterface
 {
 	public const URL = '?action=profile;area=breezeSettings';
+
 	public const ACTION_MAIN = 'main';
+
 	public const ACTION_SAVE = 'save';
+
 	public const SUB_ACTIONS = [
 		self::ACTION_MAIN,
 		self::ACTION_SAVE,
@@ -30,7 +33,7 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	private array $validators = [
 		'save' => [
 			'validator' => 'UserSettings',
-			'dataName' => UserSettingsEntity::IDENTIFIER
+			'dataName' => UserSettingsEntity::IDENTIFIER,
 		],
 	];
 
@@ -86,7 +89,7 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 
 		$this->render(__FUNCTION__, [
 			'form' => $this->userSettingsBuilder->display(),
-			'msg' => $this->userSettingsService->getMessage()
+			'msg' => $this->userSettingsService->getMessage(),
 		]);
 	}
 
