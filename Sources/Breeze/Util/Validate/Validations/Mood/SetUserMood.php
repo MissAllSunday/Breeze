@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Validate\Validations;
+namespace Breeze\Util\Validate\Validations\Mood;
 
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\InvalidMoodException;
-use Breeze\Service\MoodServiceInterface;
-use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class SetUserMood extends ValidateData implements ValidateDataInterface
+class SetUserMood extends ValidateMood implements ValidateDataInterface
 {
 	protected const PARAMS = [
 		UserSettingsEntity::MOOD => 0,
@@ -21,19 +20,6 @@ class SetUserMood extends ValidateData implements ValidateDataInterface
 	protected const DEFAULT_PARAMS = [];
 
 	protected const SUCCESS_KEY = 'moodChanged';
-
-	protected UserServiceInterface $userService;
-
-	private MoodServiceInterface $moodService;
-
-	public function __construct(
-		UserServiceInterface $userService,
-		MoodServiceInterface $moodService
-	) {
-		$this->moodService = $moodService;
-
-		parent::__construct($userService);
-	}
 
 	public function successKeyString(): string
 	{

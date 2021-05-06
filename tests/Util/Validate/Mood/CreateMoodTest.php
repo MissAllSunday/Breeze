@@ -3,11 +3,12 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Util\Validate;
+namespace Breeze\Util\Validate\Mood;
 
 use Breeze\Service\MoodService;
 use Breeze\Service\UserService;
-use Breeze\Util\Validate\Validations\CreateMood;
+use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\Validations\Mood\CreateMood;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

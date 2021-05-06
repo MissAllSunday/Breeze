@@ -2,35 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util\Validate\Validations;
+namespace Breeze\Util\Validate\Validations\Mood;
 
 use Breeze\Entity\MoodEntity;
 use Breeze\Repository\InvalidMoodException;
-use Breeze\Service\MoodServiceInterface;
-use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class DeleteMood extends ValidateData implements ValidateDataInterface
+class DeleteMood extends ValidateMood implements ValidateDataInterface
 {
 	protected const PARAMS = [
 		MoodEntity::ID => 0,
 	];
 
 	protected const SUCCESS_KEY = 'moodDeleted';
-
-	protected UserServiceInterface $userService;
-
-	private MoodServiceInterface $moodService;
-
-	public function __construct(
-		UserServiceInterface $userService,
-		MoodServiceInterface $moodService
-	) {
-		$this->moodService = $moodService;
-
-		parent::__construct($userService);
-	}
 
 	public function successKeyString(): string
 	{

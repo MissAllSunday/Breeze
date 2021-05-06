@@ -3,12 +3,13 @@
 declare(strict_types=1);
 
 
-namespace Breeze\Util\Validate;
+namespace Breeze\Util\Validate\Mood;
 
 use Breeze\Repository\InvalidMoodException;
 use Breeze\Service\MoodService;
 use Breeze\Service\UserService;
-use Breeze\Util\Validate\Validations\DeleteMood;
+use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\Validations\Mood\DeleteMood;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
