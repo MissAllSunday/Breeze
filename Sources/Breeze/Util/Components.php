@@ -16,6 +16,7 @@ class Components
 
 	private const COMPONENTS = [
 		'utils',
+		'like',
 		'setMood',
 		'moodForm',
 		'modal',
@@ -114,6 +115,10 @@ class Components
 					SettingsEntity::MOOD_LABEL,
 					$this->getText(SettingsEntity::MOOD_DEFAULT)
 				),
+			],
+			'like' => [
+				'like' => $this->getSmfText('like'),
+				'unlike' => $this->getSmfText('unlike'),
 			],
 		];
 

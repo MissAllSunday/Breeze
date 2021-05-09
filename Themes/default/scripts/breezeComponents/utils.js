@@ -27,7 +27,8 @@ let breezeUtils = {
 			actions: {
 				comment: 'breezeComment',
 				status: 'breezeStatus',
-				mood: 'breezeMood'
+				mood: 'breezeMood',
+				like: 'breezeLike',
 			},
 			subActions: {
 				status: {
@@ -45,7 +46,11 @@ let breezeUtils = {
 					eliminate: 'deleteMood',
 					post: 'postMood',
 					setMood: 'setUserMood'
-				}
+				},
+				like: {
+					like: 'like',
+					unlike: 'unlike',
+				},
 			},
 		}
 	},

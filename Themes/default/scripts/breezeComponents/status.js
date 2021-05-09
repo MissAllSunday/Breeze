@@ -18,6 +18,11 @@ Vue.component('status', {
 			<div class='content'>
 				<hr>
 				<span v-html="item.body" ></span>
+				<like
+					:like-item="buildLikeItem()"
+					:likes-by-content="[]"
+					:current-user-id="$root.wallData.posterId"
+				></like>
 			</div>
 			<comment
 				v-for ='comment in localComments'
@@ -36,6 +41,14 @@ Vue.component('status', {
 		</div>
 	</li>`,
 	methods: {
+		buildLikeItem: function (){
+			let selfVue = this
+
+			return {
+				type: 'status',
+				id: selfVue.item.id
+			}
+		},
 		getEditorId: function () {
 			return 'breeze_status_' + this.item.id;
 		},
