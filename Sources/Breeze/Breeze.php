@@ -7,6 +7,7 @@ namespace Breeze;
 use Breeze\Config\MapperAggregate;
 use Breeze\Controller\AdminController;
 use Breeze\Controller\API\CommentController;
+use Breeze\Controller\API\LikesController;
 use Breeze\Controller\API\MoodController;
 use Breeze\Controller\API\StatusController;
 use Breeze\Controller\BuddyController;
@@ -203,12 +204,14 @@ class Breeze
 		$statusController = $this->container->get(StatusController::class);
 		$commentController = $this->container->get(CommentController::class);
 		$moodController = $this->container->get(MoodController::class);
+		$likeController = $this->container->get(LikesController::class);
 
 		$actions['breezeStatus'] = [false, [$statusController, 'dispatch']];
 		$actions['breezeComment'] = [false, [$commentController, 'dispatch']];
 		$actions['breezeWall'] = [false, WallController::class . '::dispatch#'];
 		$actions['breezeBuddy'] = [false, BuddyController::class . '::dispatch#'];
 		$actions['breezeMood'] = [false, [$moodController, 'dispatch']];
+		$actions['breezeLike'] = [false, [$likeController, 'dispatch']];
 	}
 
 	public function profilePopUpWrapper(&$profile_items): void
