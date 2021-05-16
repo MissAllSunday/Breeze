@@ -23,26 +23,24 @@ class LikesController extends ApiBaseController implements ApiBaseInterface
 		self::ACTION_LIKE,
 		self::ACTION_UNLIKE,
 	];
-
+	private LikesServiceInterface $likesService;
 	private UserServiceInterface $userService;
 
-	private LikesServiceInterface $likesService;
-
-
-	private UserSettingsServiceInterface $userSettingsService;
-
 	public function __construct(
-		UserServiceInterface $userService,
-		UserSettingsServiceInterface $userSettingsService,
 		LikesServiceInterface $likesService,
+		UserServiceInterface $userService,
 		ValidateGatewayInterface $gateway
 	) {
 		parent::__construct($gateway);
 
-		$this->userSettingsService = $userSettingsService;
 		$this->userService = $userService;
 		$this->likesService = $likesService;
 		$this->gateway = $gateway;
+	}
+
+	public function like(): void
+	{
+
 	}
 
 	public function getSubActions(): array

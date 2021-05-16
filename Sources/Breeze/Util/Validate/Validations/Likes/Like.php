@@ -1,0 +1,83 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Breeze\Util\Validate\Validations\Likes;
+
+use Breeze\Entity\MoodEntity;
+use Breeze\Util\Permissions;
+use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
+
+class Like extends ValidateLikes implements ValidateDataInterface
+{
+	protected const PARAMS = [
+		MoodEntity::EMOJI => '',
+		MoodEntity::DESC => '',
+		MoodEntity::STATUS => 0,
+	];
+
+	protected const DEFAULT_PARAMS = [
+		MoodEntity::STATUS => 0,
+	];
+
+	protected const SUCCESS_KEY = 'moodCreated';
+
+	public function successKeyString(): string
+	{
+		return self::SUCCESS_KEY;
+	}
+
+	public function getSteps(): array
+	{
+		return array_merge($this->steps, [
+			self::INT,
+			self::STRING,
+		]);
+	}
+
+	/**
+	 * @throws ValidateDataException
+	 */
+	public function permissions(): void
+	{
+		if (!Permissions::isAllowedTo(Permissions::ADMIN_FORUM)) {
+			throw new ValidateDataException('moodCreated');
+		}
+	}
+
+	public function getInts(): array
+	{
+		return [
+			MoodEntity::STATUS,
+		];
+	}
+
+	public function getUserIdsNames(): array
+	{
+		return [];
+	}
+
+	public function getStrings(): array
+	{
+		return [
+			MoodEntity::EMOJI,
+			MoodEntity::DESC,
+		];
+	}
+
+	public function getPosterId(): int
+	{
+		return 0;
+	}
+
+	public function getParams(): array
+	{
+		return array_merge(self::DEFAULT_PARAMS, $this->data);
+	}
+
+	public function getData(): array
+	{
+		return $this->getParams();
+	}
+}

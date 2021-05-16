@@ -7,6 +7,7 @@ namespace Breeze\Config\Mapper;
 
 use Breeze\Controller\AdminController;
 use Breeze\Controller\API\CommentController;
+use Breeze\Controller\API\LikesController;
 use Breeze\Controller\API\MoodController;
 use Breeze\Controller\API\StatusController;
 use Breeze\Controller\User\Settings\AlertsController;
@@ -16,6 +17,7 @@ use Breeze\Service\Actions\AdminService;
 use Breeze\Service\Actions\UserSettingsService;
 use Breeze\Service\Actions\WallService;
 use Breeze\Service\CommentService;
+use Breeze\Service\LikesService;
 use Breeze\Service\MoodService;
 use Breeze\Service\StatusService;
 use Breeze\Service\UserService;
@@ -75,6 +77,14 @@ return [
 			UserService::class,
 			UserSettingsService::class,
 			MoodService::class,
+			ValidateGateway::class,
+		],
+	],
+	'controller.likes' => [
+		'class' => LikesController::class,
+		'arguments'=> [
+			LikesService::class,
+			UserService::class,
 			ValidateGateway::class,
 		],
 	],

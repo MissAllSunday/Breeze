@@ -13,6 +13,7 @@ use Breeze\Service\Actions\AdminService;
 use Breeze\Service\Actions\UserSettingsService;
 use Breeze\Service\Actions\WallService;
 use Breeze\Service\CommentService;
+use Breeze\Service\LikesService;
 use Breeze\Service\MoodService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\StatusService;
@@ -64,5 +65,8 @@ return [
 	'service.validate' => [
 		'class' => ValidateService::class,
 		'arguments'=> [UserService::class],
+	],
+	'service.likes' => [
+		'class' => LikesService::class,
 	],
 ];

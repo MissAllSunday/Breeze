@@ -9,21 +9,21 @@ class LikeEntity extends BaseEntity implements BaseEntityInterface
 {
 	public const TABLE = 'user_likes';
 
-	public const COLUMN_ID_MEMBER = 'id_member';
+	public const ID_MEMBER = 'id_member';
 
-	public const COLUMN_CONTENT_TYPE = 'content_type';
+	public const TYPE = 'content_type';
 
-	public const COLUMN_CONTENT_ID = 'content_id';
+	public const ID = 'content_id';
 
-	public const COLUMN_LIKE_TIME = 'like_time';
+	public const TIME = 'like_time';
 
 	public static function getColumns(): array
 	{
 		return [
-			self::COLUMN_ID_MEMBER,
-			self::COLUMN_CONTENT_TYPE,
-			self::COLUMN_CONTENT_ID,
-			self::COLUMN_LIKE_TIME,
+			self::ID_MEMBER,
+			self::TYPE,
+			self::ID,
+			self::TIME,
 		];
 	}
 
