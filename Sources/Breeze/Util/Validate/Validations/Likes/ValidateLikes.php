@@ -15,6 +15,7 @@ abstract class ValidateLikes extends ValidateData
 	protected UserServiceInterface $userService;
 
 	protected MoodServiceInterface $moodService;
+
 	protected LikesServiceInterface $likesService;
 
 	public function __construct(

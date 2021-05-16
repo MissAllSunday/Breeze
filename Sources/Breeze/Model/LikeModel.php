@@ -18,7 +18,7 @@ class LikeModel extends BaseModel implements LikeModelInterface
 		$this->dbClient->update(
 			LikeEntity::TABLE,
 			'SET likes = {int:num_likes}
-			WHERE ' . LikeEntity::COLUMN_CONTENT_ID . ' = {int:idContent}',
+			WHERE ' . LikeEntity::ID . ' = {int:idContent}',
 			[
 				'idContent' => $id,
 			]
@@ -35,8 +35,8 @@ class LikeModel extends BaseModel implements LikeModelInterface
 			'
 			SELECT ' . implode(', ', LikeEntity::getColumns()) . '
 			FROM {db_prefix}' . LikeEntity::TABLE . '
-			WHERE ' . LikeEntity::COLUMN_CONTENT_TYPE . ' = {string:type}
-				AND ' . LikeEntity::COLUMN_CONTENT_ID . ' = {int:contentId}',
+			WHERE ' . LikeEntity::TYPE . ' = {string:type}
+				AND ' . LikeEntity::ID . ' = {int:contentId}',
 			[
 				'contentId' => $contentId,
 				'type' => $type,
@@ -58,10 +58,10 @@ class LikeModel extends BaseModel implements LikeModelInterface
 
 		$request = $this->dbClient->query(
 			'
-			SELECT ' . LikeEntity::COLUMN_CONTENT_ID . '
+			SELECT ' . LikeEntity::ID . '
 			FROM {db_prefix}' . LikeEntity::TABLE . '
-			WHERE ' . LikeEntity::COLUMN_ID_MEMBER . ' = {int:userId}
-				AND ' . LikeEntity::COLUMN_CONTENT_TYPE . ' = {string:type}',
+			WHERE ' . LikeEntity::ID_MEMBER . ' = {int:userId}
+				AND ' . LikeEntity::TYPE . ' = {string:type}',
 			[
 				'userId' => $userId,
 				'type' => $type,
@@ -69,7 +69,7 @@ class LikeModel extends BaseModel implements LikeModelInterface
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
-			$likes[$userId][$type][] = (int) $row[LikeEntity::COLUMN_CONTENT_ID];
+			$likes[$userId][$type][] = (int) $row[LikeEntity::ID];
 		}
 
 		$this->dbClient->freeResult($request);
@@ -84,7 +84,7 @@ class LikeModel extends BaseModel implements LikeModelInterface
 
 	public function getColumnId(): string
 	{
-		return LikeEntity::COLUMN_ID_MEMBER;
+		return LikeEntity::ID_MEMBER;
 	}
 
 	public function getColumns(): array
