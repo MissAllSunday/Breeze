@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations\Likes;
 
-use Breeze\Entity\MoodEntity;
+use Breeze\Entity\LikeEntity;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
@@ -12,13 +12,13 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 class Like extends ValidateLikes implements ValidateDataInterface
 {
 	protected const PARAMS = [
-		MoodEntity::EMOJI => '',
-		MoodEntity::DESC => '',
-		MoodEntity::STATUS => 0,
+		LikeEntity::PARAM_LIKE => 0,
+		LikeEntity::PARAM_SA => '',
 	];
 
 	protected const DEFAULT_PARAMS = [
-		MoodEntity::STATUS => 0,
+		LikeEntity::PARAM_LIKE => 0,
+		LikeEntity::PARAM_SA => '',
 	];
 
 	protected const SUCCESS_KEY = 'moodCreated';
@@ -49,20 +49,14 @@ class Like extends ValidateLikes implements ValidateDataInterface
 	public function getInts(): array
 	{
 		return [
-			MoodEntity::STATUS,
+			LikeEntity::PARAM_LIKE,
 		];
-	}
-
-	public function getUserIdsNames(): array
-	{
-		return [];
 	}
 
 	public function getStrings(): array
 	{
 		return [
-			MoodEntity::EMOJI,
-			MoodEntity::DESC,
+			LikeEntity::PARAM_SA,
 		];
 	}
 
@@ -73,11 +67,16 @@ class Like extends ValidateLikes implements ValidateDataInterface
 
 	public function getParams(): array
 	{
-		return array_merge(self::DEFAULT_PARAMS, $this->data);
+		return $this->data;
 	}
 
 	public function getData(): array
 	{
 		return $this->getParams();
+	}
+
+	public function getUserIdsNames(): array
+	{
+		return [];
 	}
 }

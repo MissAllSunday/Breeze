@@ -8,7 +8,7 @@ namespace Breeze\Controller\API;
 use Breeze\Service\LikesServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Validate\ValidateGatewayInterface;
-use Breeze\Util\Validate\Validations\ValidateData;
+use Breeze\Util\Validate\Validations\Likes\ValidateLikes;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class LikesController extends ApiBaseController implements ApiBaseInterface
@@ -35,11 +35,12 @@ class LikesController extends ApiBaseController implements ApiBaseInterface
 
 		$this->userService = $userService;
 		$this->likesService = $likesService;
-		$this->gateway = $gateway;
 	}
 
 	public function like(): void
 	{
+		var_dump($this->gateway->getData());
+		die;
 	}
 
 	public function getSubActions(): array
@@ -54,7 +55,7 @@ class LikesController extends ApiBaseController implements ApiBaseInterface
 
 	public function setValidator(): ValidateDataInterface
 	{
-		$validatorName = ValidateData::getNameSpace() . ucfirst($this->subAction);
+		$validatorName = ValidateLikes::getNameSpace() . ucfirst($this->subAction);
 
 		return new $validatorName(
 			$this->userService,

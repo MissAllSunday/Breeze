@@ -5,7 +5,6 @@ Vue.component('like', {
 		return {
 			fullId: 'breeze_' + this.likeItem.id + '_' + this.likeItem.type,
 			txt: window.breezeTxtLike,
-			likeUrl: '',
 			likeClass: 'main_icons ',
 			likeText: '',
 			additionalInfo: '',
@@ -13,7 +12,7 @@ Vue.component('like', {
 	},
 	template: `
 	<div class="smflikebutton" :id="fullId">
-		<a :href='likeUrl' class="msg_like">
+		<a v-on:click="handleLike()" class="msg_like">
 			<span :class='likeClass'></span>
 			{{likeText}}
 		</a>
@@ -22,11 +21,23 @@ Vue.component('like', {
 		</div>
 	</div>`,
 	created: function () {
-		this.buildLikeUrl()
 		this.buildLikeClass()
 		this.buildLikeText()
 	},
 	methods: {
+		handleLike: function (){
+			let selfVue = this;
+
+			selfVue.setLoading()
+			selfVue.api.get(selfVue.sprintFormat(selfVue.baseUrl, [
+				selfVue.actions.like,
+				selfVue.hasUserLikedTheItem() ? selfVue.subActions.like.unlike : selfVue.subActions.like.like
+			]) + ';like=' + selfVue.likeItem.id
+			).then(function (response) {
+				selfVue.clearLoading()
+				selfVue.setNotice(response.data);
+			});
+		},
 		hasUserLikedTheItem: function (){
 			let selfVue = this
 

@@ -26,4 +26,9 @@ abstract class ValidateLikes extends ValidateData
 
 		parent::__construct($userService);
 	}
+
+	public static function getNameSpace(): string
+	{
+		return __NAMESPACE__ . '\\';
+	}
 }

@@ -48,8 +48,8 @@ let breezeUtils = {
 					setMood: 'setUserMood'
 				},
 				like: {
-					like: 'breezeLike',
-					unlike: 'breezeUnlike',
+					like: 'like',
+					unlike: 'unlike',
 				},
 			},
 		}

@@ -17,6 +17,10 @@ class LikeEntity extends BaseEntity implements BaseEntityInterface
 
 	public const TIME = 'like_time';
 
+	public const PARAM_LIKE = 'like';
+
+	public const PARAM_SA = 'sa';
+
 	public static function getColumns(): array
 	{
 		return [
