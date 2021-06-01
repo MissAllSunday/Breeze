@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Controller\API;
 
-use Breeze\Service\LikesServiceInterface;
+use Breeze\Service\LikeServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Validate\ValidateGatewayInterface;
 use Breeze\Util\Validate\Validations\Likes\ValidateLikes;
@@ -22,12 +22,12 @@ class LikesController extends ApiBaseController implements ApiBaseInterface
 		self::ACTION_UNLIKE,
 	];
 
-	private LikesServiceInterface $likesService;
+	private LikeServiceInterface $likesService;
 
 	private UserServiceInterface $userService;
 
 	public function __construct(
-		LikesServiceInterface $likesService,
+		LikeServiceInterface $likesService,
 		UserServiceInterface $userService,
 		ValidateGatewayInterface $gateway
 	) {

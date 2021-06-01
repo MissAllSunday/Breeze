@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations\Likes;
 
-use Breeze\Service\LikesServiceInterface;
+use Breeze\Service\LikeServiceInterface;
 use Breeze\Service\MoodServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Validate\Validations\ValidateData;
@@ -16,13 +16,13 @@ abstract class ValidateLikes extends ValidateData
 
 	protected MoodServiceInterface $moodService;
 
-	protected LikesServiceInterface $likesService;
+	protected LikeServiceInterface $likeService;
 
 	public function __construct(
 		UserServiceInterface $userService,
-		LikesServiceInterface $moodService
+		LikeServiceInterface $likeService
 	) {
-		$this->likesService = $moodService;
+		$this->likeService = $likeService;
 
 		parent::__construct($userService);
 	}

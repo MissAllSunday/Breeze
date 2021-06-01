@@ -34,7 +34,7 @@ Vue.component('like', {
 				selfVue.hasUserLikedTheItem() ? selfVue.subActions.like.unlike : selfVue.subActions.like.like
 			]),
 				{
-					like: selfVue.likeItem.id,
+					content_id: selfVue.likeItem.id,
 					sa: (selfVue.hasUserLikedTheItem() ? selfVue.subActions.like.unlike : selfVue.subActions.like.like),
 					content_type: selfVue.likeItem.type
 				}

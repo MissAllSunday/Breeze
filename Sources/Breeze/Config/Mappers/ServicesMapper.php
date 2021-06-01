@@ -13,7 +13,7 @@ use Breeze\Service\Actions\AdminService;
 use Breeze\Service\Actions\UserSettingsService;
 use Breeze\Service\Actions\WallService;
 use Breeze\Service\CommentService;
-use Breeze\Service\LikesService;
+use Breeze\Service\LikeService;
 use Breeze\Service\MoodService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\StatusService;
@@ -67,6 +67,6 @@ return [
 		'arguments'=> [UserService::class],
 	],
 	'service.likes' => [
-		'class' => LikesService::class,
+		'class' => LikeService::class,
 	],
 ];

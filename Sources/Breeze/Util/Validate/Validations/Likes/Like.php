@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Likes;
 
 use Breeze\Entity\LikeEntity;
+use Breeze\Repository\InvalidLikeException;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
@@ -13,17 +14,21 @@ class Like extends ValidateLikes implements ValidateDataInterface
 {
 	protected const CHECK_TYPE = 'checkType';
 
+	protected const VALIDATE = 'validate';
+
 	protected const PARAMS = [
-		LikeEntity::PARAM_LIKE => 0,
+		LikeEntity::ID => 0,
+		LikeEntity::TYPE => '',
 		LikeEntity::PARAM_SA => '',
 	];
 
 	protected const DEFAULT_PARAMS = [
-		LikeEntity::PARAM_LIKE => 0,
+		LikeEntity::ID => 0,
+		LikeEntity::TYPE => '',
 		LikeEntity::PARAM_SA => '',
 	];
 
-	protected const SUCCESS_KEY = 'moodCreated';
+	protected const SUCCESS_KEY = 'likeSuccess';
 
 	public function successKeyString(): string
 	{
@@ -38,6 +43,7 @@ class Like extends ValidateLikes implements ValidateDataInterface
 			self::PERMISSIONS,
 			self::FEATURE_ENABLE,
 			self::CHECK_TYPE,
+			self::VALIDATE,
 		]);
 	}
 
@@ -73,10 +79,21 @@ class Like extends ValidateLikes implements ValidateDataInterface
 		}
 	}
 
+	/**
+	 * @throws InvalidLikeException
+	 */
+	public function validate(): void
+	{
+		$type =  $this->data[LikeEntity::TYPE];
+		$contentId =  $this->data[LikeEntity::ID];
+
+		$this->likeService->getByContent($type, $contentId);
+	}
+
 	public function getInts(): array
 	{
 		return [
-			LikeEntity::PARAM_LIKE,
+			LikeEntity::ID,
 		];
 	}
 
@@ -84,6 +101,7 @@ class Like extends ValidateLikes implements ValidateDataInterface
 	{
 		return [
 			LikeEntity::PARAM_SA,
+			LikeEntity::TYPE,
 		];
 	}
 
@@ -94,12 +112,12 @@ class Like extends ValidateLikes implements ValidateDataInterface
 
 	public function getParams(): array
 	{
-		return array_merge(self::DEFAULT_PARAMS, $this->data);
+		return self::DEFAULT_PARAMS;
 	}
 
 	public function getData(): array
 	{
-		return $this->getParams();
+		return $this->data;
 	}
 
 	public function getUserIdsNames(): array

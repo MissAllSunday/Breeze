@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Likes;
 
-use Breeze\Service\LikesService;
+use Breeze\Service\LikeService;
 use Breeze\Service\UserService;
 use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\Likes\Like;
@@ -21,10 +21,54 @@ class LikeTest extends TestCase
 		/**  @var MockObject&UserService $userService */
 		$userService = $this->createMock(UserService::class);
 
-		/**  @var MockObject&LikesService $likeService */
-		$likeService = $this->createMock(LikesService::class);
+		/**  @var MockObject&LikeService $likeService */
+		$likeService = $this->createMock(LikeService::class);
 
 		$this->like = new Like($userService, $likeService);
+	}
+
+	/**
+	 * @dataProvider cleanProvider
+	 */
+	public function testClean(array $data, bool $isExpectedException): void
+	{
+		$this->like->setData($data);
+
+		if ($isExpectedException) {
+			$this->expectException(ValidateDataException::class);
+		} else {
+			$this->assertEquals($data, $this->like->getData());
+		}
+
+		$this->like->clean();
+	}
+
+	public function cleanProvider(): array
+	{
+		return [
+			'empty values' => [
+				'data' => [
+					'content_id' => 0,
+					'sa' => '',
+					'content_type' => '',
+				],
+				'isExpectedException' => true,
+			],
+			'happy path' => [
+				'data' => [
+					'content_id' => 666,
+					'sa' => 'like',
+					'content_type' => 'br_sta',
+				],
+				'isExpectedException' => false,
+			],
+			'incomplete data' => [
+				'data' => [
+					'content_id' => 666,
+				],
+				'isExpectedException' => true,
+			],
+		];
 	}
 
 	/**
@@ -48,19 +92,19 @@ class LikeTest extends TestCase
 		return [
 			'happy path' => [
 				'data' => [
-					'like' => 666,
+					'content_id' => 666,
 				],
 				'integers' => [
-					'like',
+					'content_id',
 				],
 				'isExpectedException' => false,
 			],
 			'not an int' => [
 				'data' => [
-					'like' => 'custom',
+					'content_id' => 'custom',
 				],
 				'integers' => [
-					'like',
+					'content_id',
 				],
 				'isExpectedException' => true,
 			],
