@@ -11,6 +11,8 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class Like extends ValidateLikes implements ValidateDataInterface
 {
+	protected const CHECK_TYPE = 'checkType';
+
 	protected const PARAMS = [
 		LikeEntity::PARAM_LIKE => 0,
 		LikeEntity::PARAM_SA => '',
@@ -33,6 +35,9 @@ class Like extends ValidateLikes implements ValidateDataInterface
 		return array_merge($this->steps, [
 			self::INT,
 			self::STRING,
+			self::PERMISSIONS,
+			self::FEATURE_ENABLE,
+			self::CHECK_TYPE,
 		]);
 	}
 
@@ -41,8 +46,30 @@ class Like extends ValidateLikes implements ValidateDataInterface
 	 */
 	public function permissions(): void
 	{
-		if (!Permissions::isAllowedTo(Permissions::ADMIN_FORUM)) {
-			throw new ValidateDataException('moodCreated');
+		if (!Permissions::isAllowedTo(Permissions::LIKES_LIKE)) {
+			throw new ValidateDataException('likesLike');
+		}
+	}
+
+	/**
+	 * @throws ValidateDataException
+	 */
+	public function isFeatureEnable(): void
+	{
+		if (!$this->modSetting('enable_likes')) {
+			throw new ValidateDataException('likesNotEnabled');
+		}
+	}
+
+	/**
+	 * @throws ValidateDataException
+	 */
+	public function checkType(): void
+	{
+		$type =  $this->data[LikeEntity::TYPE];
+
+		if (!in_array($type, LikeEntity::getTypes())) {
+			throw new ValidateDataException('likesTypeInvalid');
 		}
 	}
 
@@ -67,7 +94,7 @@ class Like extends ValidateLikes implements ValidateDataInterface
 
 	public function getParams(): array
 	{
-		return $this->data;
+		return array_merge(self::DEFAULT_PARAMS, $this->data);
 	}
 
 	public function getData(): array

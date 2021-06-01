@@ -66,4 +66,60 @@ class LikeTest extends TestCase
 			],
 		];
 	}
+
+	/**
+	 * @dataProvider permissionsProvider
+	 */
+	public function testPermissions(array $data): void
+	{
+		$this->like->setData($data);
+
+		$this->expectException(ValidateDataException::class);
+		$this->like->permissions();
+	}
+
+	/**
+	 * @dataProvider permissionsProvider
+	 */
+	public function testIsFeatureEnable(array $data): void
+	{
+		$this->like->setData($data);
+
+		$this->expectException(ValidateDataException::class);
+		$this->like->isFeatureEnable();
+	}
+
+	public function permissionsProvider(): array
+	{
+		return [
+			'not allowed' => [
+				'data' => [
+					'like' => 666,
+				],
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider checkTypeProvider
+	 */
+	public function testCheckType(array $data): void
+	{
+		$this->like->setData($data);
+
+		$this->expectException(ValidateDataException::class);
+		$this->like->checkType();
+	}
+
+	public function checkTypeProvider(): array
+	{
+		return [
+			'invalid type' => [
+				'data' => [
+					'like' => 666,
+					'content_type' => 'not valid',
+				],
+			],
+		];
+	}
 }

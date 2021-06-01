@@ -21,6 +21,15 @@ class LikeEntity extends BaseEntity implements BaseEntityInterface
 
 	public const PARAM_SA = 'sa';
 
+	public const TYPE_STATUS = 'br_sta';
+
+	public static function getTypes(): array
+	{
+		return [
+			self::TYPE_STATUS,
+		];
+	}
+
 	public static function getColumns(): array
 	{
 		return [

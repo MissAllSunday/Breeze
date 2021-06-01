@@ -27,6 +27,8 @@ class Permissions
 
 	public const USE_MOOD = 'useMood';
 
+	public const LIKES_LIKE = 'likes_like';
+
 	public const ALL_PERMISSIONS = [
 		self::DELETE_COMMENTS,
 		self::DELETE_OWN_COMMENTS,

@@ -45,7 +45,7 @@ Vue.component('status', {
 			let selfVue = this
 
 			return {
-				type: 'status',
+				type: 'br_sta',
 				id: selfVue.item.id
 			}
 		},

@@ -56,6 +56,11 @@ $txt['Breeze_user_modules_visitors_none'] = 'There are no recent visitors';
 $txt['Breeze_user_modules_buddies_none'] = 'This user doesn\'t have any buddies';
 $txt['Breeze_noti_none'] = 'You don\'t have any alerts yet';
 
+// Likes
+$txt['Breeze_error_likesLike'] = 'You aren\'t allowed to use the like feature';
+$txt['Breeze_error_likesNotEnabled'] = 'Likes feature is not enable';
+$txt['Breeze_error_likesTypeInvalid'] = 'Likes feature is not enable';
+
 // Time
 $txt['Breeze_time_just_now'] = 'just now';
 $txt['Breeze_time_second'] = 'second';

@@ -29,10 +29,15 @@ Vue.component('like', {
 			let selfVue = this;
 
 			selfVue.setLoading()
-			selfVue.api.get(selfVue.sprintFormat(selfVue.baseUrl, [
+			selfVue.api.post(selfVue.sprintFormat(selfVue.baseUrl, [
 				selfVue.actions.like,
 				selfVue.hasUserLikedTheItem() ? selfVue.subActions.like.unlike : selfVue.subActions.like.like
-			]) + ';like=' + selfVue.likeItem.id
+			]),
+				{
+					like: selfVue.likeItem.id,
+					sa: (selfVue.hasUserLikedTheItem() ? selfVue.subActions.like.unlike : selfVue.subActions.like.like),
+					content_type: selfVue.likeItem.type
+				}
 			).then(function (response) {
 				selfVue.clearLoading()
 				selfVue.setNotice(response.data);

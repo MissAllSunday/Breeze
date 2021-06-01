@@ -39,8 +39,7 @@ class LikesController extends ApiBaseController implements ApiBaseInterface
 
 	public function like(): void
 	{
-		var_dump($this->gateway->getData());
-		die;
+		$data = $this->gateway->getData();
 	}
 
 	public function getSubActions(): array

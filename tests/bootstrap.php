@@ -88,6 +88,7 @@ function allowedTo($permissionName)
 		'deleteOwnStatus' => false,
 		'postStatus' => false,
 		'admin_forum' => false,
+		'likes_like' => false,
 	];
 
 	return $dummyPermissions[$permissionName];
@@ -150,6 +151,7 @@ $modSettings = [
 	'Breeze_master' => true,
 	'Breeze_time_machine' => false,
 	'avatar_url' => 'avatar_url',
+	'enable_likes' => false,
 ];
 
 $txt = [

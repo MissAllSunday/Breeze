@@ -41,6 +41,8 @@ abstract class ValidateData
 
 	protected const DATA_EXISTS = 'dataExists';
 
+	protected const FEATURE_ENABLE = 'isFeatureEnabled';
+
 	protected const DEFAULT_STEPS = [
 		self::CLEAN,
 		self::INT,
