@@ -36,7 +36,8 @@ Vue.component('like', {
 				{
 					content_id: selfVue.likeItem.id,
 					sa: (selfVue.hasUserLikedTheItem() ? selfVue.subActions.like.unlike : selfVue.subActions.like.like),
-					content_type: selfVue.likeItem.type
+					content_type: selfVue.likeItem.type,
+					id_member: selfVue.currentUserId
 				}
 			).then(function (response) {
 				selfVue.clearLoading()

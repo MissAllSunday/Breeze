@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Config\Mapper;
 
 use Breeze\Repository\CommentRepository;
+use Breeze\Repository\LikeRepository;
 use Breeze\Repository\StatusRepository;
 use Breeze\Repository\User\MoodRepository;
 use Breeze\Repository\User\UserRepository;
@@ -68,5 +69,6 @@ return [
 	],
 	'service.likes' => [
 		'class' => LikeService::class,
+		'arguments'=> [LikeRepository::class],
 	],
 ];

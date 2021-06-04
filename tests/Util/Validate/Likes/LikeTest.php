@@ -59,6 +59,7 @@ class LikeTest extends TestCase
 					'content_id' => 666,
 					'sa' => 'like',
 					'content_type' => 'br_sta',
+					'id_member' => 666,
 				],
 				'isExpectedException' => false,
 			],
@@ -93,9 +94,11 @@ class LikeTest extends TestCase
 			'happy path' => [
 				'data' => [
 					'content_id' => 666,
+					'id_member' => 666,
 				],
 				'integers' => [
 					'content_id',
+					'id_member',
 				],
 				'isExpectedException' => false,
 			],

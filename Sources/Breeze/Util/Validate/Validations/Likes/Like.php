@@ -20,12 +20,14 @@ class Like extends ValidateLikes implements ValidateDataInterface
 		LikeEntity::ID => 0,
 		LikeEntity::TYPE => '',
 		LikeEntity::PARAM_SA => '',
+		LikeEntity::ID_MEMBER => 0,
 	];
 
 	protected const DEFAULT_PARAMS = [
 		LikeEntity::ID => 0,
 		LikeEntity::TYPE => '',
 		LikeEntity::PARAM_SA => '',
+		LikeEntity::ID_MEMBER => 0,
 	];
 
 	protected const SUCCESS_KEY = 'likeSuccess';
@@ -38,8 +40,11 @@ class Like extends ValidateLikes implements ValidateDataInterface
 	public function getSteps(): array
 	{
 		return array_merge($this->steps, [
+			self::CLEAN,
 			self::INT,
 			self::STRING,
+			self::SAME_USER,
+			self::VALID_USERS,
 			self::PERMISSIONS,
 			self::FEATURE_ENABLE,
 			self::CHECK_TYPE,
@@ -86,14 +91,20 @@ class Like extends ValidateLikes implements ValidateDataInterface
 	{
 		$type =  $this->data[LikeEntity::TYPE];
 		$contentId =  $this->data[LikeEntity::ID];
+		$userId = $this->data[LikeEntity::ID_MEMBER];
 
-		$this->likeService->getByContent($type, $contentId);
+		$alreadyLiked = $this->likeService->isContentAlreadyLiked($type, $contentId, $userId);
+
+		if (!empty($alreadyLiked)) {
+			throw new InvalidLikeException('alreadyLiked');
+		}
 	}
 
 	public function getInts(): array
 	{
 		return [
 			LikeEntity::ID,
+			LikeEntity::ID_MEMBER,
 		];
 	}
 
@@ -107,7 +118,7 @@ class Like extends ValidateLikes implements ValidateDataInterface
 
 	public function getPosterId(): int
 	{
-		return 0;
+		return $this->data[LikeEntity::ID_MEMBER];
 	}
 
 	public function getParams(): array
@@ -122,6 +133,8 @@ class Like extends ValidateLikes implements ValidateDataInterface
 
 	public function getUserIdsNames(): array
 	{
-		return [];
+		return [
+			LikeEntity::ID_MEMBER,
+		];
 	}
 }

@@ -77,6 +77,29 @@ class LikeModel extends BaseModel implements LikeModelInterface
 		return $likes;
 	}
 
+	public function checkLike(string $type, int $contentId, int $userId): int
+	{
+		$request = $this->dbClient->query(
+			'
+			SELECT ' . LikeEntity::ID . '
+			FROM {db_prefix}' . LikeEntity::TABLE . '
+			WHERE ' . LikeEntity::ID_MEMBER . ' = {int:userId}
+				AND ' . LikeEntity::TYPE . ' = {string:type}
+				AND ' . LikeEntity::ID . ' = {int:contentId}',
+			[
+				'userId' => $userId,
+				'type' => $type,
+				'contentId' => $contentId,
+			]
+		);
+
+		$numRows = $this->dbClient->numRows($request);
+
+		$this->dbClient->freeResult($request);
+
+		return $numRows;
+	}
+
 	public function getTableName(): string
 	{
 		return LikeEntity::TABLE;

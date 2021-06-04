@@ -43,6 +43,8 @@ abstract class ValidateData
 
 	protected const FEATURE_ENABLE = 'isFeatureEnabled';
 
+	protected const SAME_USER = 'isSameUser';
+
 	protected const DEFAULT_STEPS = [
 		self::CLEAN,
 		self::INT,
@@ -152,6 +154,19 @@ abstract class ValidateData
 		$loadedUsers = $this->userService->getUsersToLoad($usersIds);
 
 		if (array_diff($usersIds, $loadedUsers)) {
+			throw new ValidateDataException('invalid_users');
+		}
+	}
+
+	/**
+	 * @throws ValidateDataException
+	 */
+	public function isSameUser(): void
+	{
+		$sessionUser = $this->global('user_info');
+		$posterUserId = $this->getPosterId();
+
+		if (empty($posterUserId) || $posterUserId !== (int) $sessionUser['id']) {
 			throw new ValidateDataException('invalid_users');
 		}
 	}

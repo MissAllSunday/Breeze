@@ -17,17 +17,13 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		$this->likeModel = $likeModel;
 	}
 
-	/**
-	 * @throws InvalidLikeException
-	 */
 	public function getByContent(string $type, int $contentId): array
 	{
-		$like = $this->likeModel->getByContent($type, $contentId);
+		return $this->likeModel->getByContent($type, $contentId);
+	}
 
-		if (!$like) {
-			throw new InvalidLikeException('error_no_like');
-		}
-
-		return $like;
+	public function isContentAlreadyLiked(string $type, int $contentId, int $userId): bool
+	{
+		return (bool) $this->likeModel->checkLike($type, $contentId, $userId);
 	}
 }
