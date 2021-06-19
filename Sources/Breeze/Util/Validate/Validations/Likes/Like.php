@@ -13,7 +13,6 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 class Like extends ValidateLikes implements ValidateDataInterface
 {
 	protected const CHECK_TYPE = 'checkType';
-
 	protected const VALIDATE = 'validate';
 
 	protected const PARAMS = [

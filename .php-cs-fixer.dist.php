@@ -15,7 +15,7 @@ return $config
 		'array_syntax' => ['syntax' => 'short'],
 		'blank_line_after_opening_tag' => true,
 		'concat_space' => ['spacing' => 'one'],
-		'class_attributes_separation' => ['elements' => ['const' => 'one', 'method' => 'one', 'property' => 'one']],
+		'class_attributes_separation' => ['elements' => ['method' => 'one', 'property' => 'one']],
 		'declare_strict_types' => true,
 		'increment_style' => ['style' => 'post'],
 		'is_null' => true,
