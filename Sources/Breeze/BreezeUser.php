@@ -644,17 +644,15 @@ function breezeBuddyMessage()
  * breezeTrackViews()
  *
  * Handles profile views, create or update views.
- * @return
+ * @return array
  */
 function breezeTrackViews()
 {
 	global $user_info, $context, $breezeController;
 
-	$data = array();
-
 	// Don't log guest views
 	if ($user_info['is_guest'] == true)
-		return false;
+		return array();
 
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
@@ -669,7 +667,7 @@ function breezeTrackViews()
 
 		// Don't track own views
 		if ($context['member']['id'] == $user_info['id'])
-			return !empty($views) ? json_decode($views, true) : false;
+			return !empty($views) ? json_decode($views, true) : array();
 
 		// Don't have any views yet?
 		if (empty($views))

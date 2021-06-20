@@ -283,15 +283,18 @@ function breeze_user_list($list, $type = 'buddy')
 	global $context, $user_info, $txt;
 
 	// You have too many buddies/visitors pal!
-	if ($context['Breeze']['compact'][$type])
+	if (!empty($context['Breeze']['compact'][$type]))
 	{
 
-		echo '<ol>';
+		echo '<ul class="reset">';
 
 		foreach ($list as $u)
 		{
 			// Trickery...
 			$user = $type == 'visitors' ? $u['user'] : $u;
+
+			if (empty($context['Breeze']['user_info'][$user]))
+				continue;
 
 			echo '<li>', $context['Breeze']['user_info'][$user]['link'] ,'</li>';
 		}
@@ -311,8 +314,12 @@ function breeze_user_list($list, $type = 'buddy')
 			// Trickery...
 			$user = $type == 'visitors' ? $u['user'] : $u;
 
+			if (empty($context['Breeze']['user_info'][$user]))
+				continue;
+
 			echo '
-				<li> ', $context['Breeze']['user_info'][$user]['facebox'] ,' <br /> ', $context['Breeze']['user_info'][$user]['link'];
+				<li> ', $context['Breeze']['user_info'][$user]['facebox'] ,' <br />
+ 				', $context['Breeze']['user_info'][$user]['link'];
 
 			// Are we showing the visitors? if so, show some more info!
 			if ($type == 'visitors')
