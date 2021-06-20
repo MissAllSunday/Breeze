@@ -64,6 +64,9 @@ Tested on PHP 5.3 and 5.4, Opera12, IE8 and whatever version Firefox was when I 
 [size=12pt][color=purple]Changelog[/color][/size]
 
 [code]
+1.0.15 June  20, 2021
+- Make sure breezeTrackViews() returns an array.
+
 1.0.14 August  26, 2018
 - Add support for PHP 7.
 

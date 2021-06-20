@@ -4,13 +4,13 @@
  * Breeze.english
  *
  * @package Breeze mod
- * @version 1.0.14
- * @author Jessica Gonzalez <suki@missallsunday.com>
+ * @version 1.0.15
+ * @author Michel Mendiola <suki@missallsunday.com>
  * @copyright Copyright (c) 2011 - 2018 Jessica Gonzalez
  * @license //www.mozilla.org/MPL/MPL-1.1.html
  */
 /**
- *  @türkçe çeviri snrj
+ *  @tï¿½rkï¿½e ï¿½eviri snrj
  *  @http://smf.konusal.com/
  */
 global $txt;
@@ -18,194 +18,194 @@ global $txt;
 // Public/General strings
 $txt['Breeze_general_wall'] = 'Duvar';
 $txt['Breeze_general_wall_page'] = 'sayfa';
-$txt['Breeze_general_summary'] = 'Özet';
-$txt['Breeze_load_more'] = 'Daha fazla yükle';
+$txt['Breeze_general_summary'] = 'ï¿½zet';
+$txt['Breeze_load_more'] = 'Daha fazla yï¿½kle';
 $txt['Breeze_admin'] = 'Admin panel';
-$txt['Breeze_general_my_wall'] = 'Benim Duvarým';
-$txt['Breeze_general_my_wall_settings'] = 'Duvar Ayarlarým';
-$txt['Breeze_general_loading'] = 'Yükleniyor...';
-$txt['Breeze_general_like'] = 'Beðen';
-$txt['Breeze_general_last_view'] = 'Son görüntü';
+$txt['Breeze_general_my_wall'] = 'Benim Duvarï¿½m';
+$txt['Breeze_general_my_wall_settings'] = 'Duvar Ayarlarï¿½m';
+$txt['Breeze_general_loading'] = 'Yï¿½kleniyor...';
+$txt['Breeze_general_like'] = 'Beï¿½en';
+$txt['Breeze_general_last_view'] = 'Son gï¿½rï¿½ntï¿½';
 $txt['Breeze_general_delete'] = 'Sil';
 $txt['Breeze_general_unlike'] = 'Unlike';
 $txt['Breeze_general_plural'] = '(s)';
-$txt['Breeze_general_activity'] = 'En son arkadaþ etkinliði';
-$txt['Breeze_general_latest_buddy_status'] = 'Arkadaþýnýzýn son durumu';
-$txt['Breeze_general_posted_on'] = 'Yayýnlanan %s\'s Profil';
+$txt['Breeze_general_activity'] = 'En son arkadaï¿½ etkinliï¿½i';
+$txt['Breeze_general_latest_buddy_status'] = 'Arkadaï¿½ï¿½nï¿½zï¿½n son durumu';
+$txt['Breeze_general_posted_on'] = 'Yayï¿½nlanan %s\'s Profil';
 
 // User Individual Settings
-$txt['Breeze_profile'] = 'Duvar Ayarlarý';
-$txt['Breeze_user_settings_name'] = 'Duvar Ayarlarý';
-$txt['Breeze_user_settings_name_desc'] = 'Duvarýnýzý ve diðer genel ayarlarýnýzý yapýlandýrýn.';
-$txt['Breeze_user_buddysettings_name'] = 'Arkadaþ Ýstekleri';
+$txt['Breeze_profile'] = 'Duvar Ayarlarï¿½';
+$txt['Breeze_user_settings_name'] = 'Duvar Ayarlarï¿½';
+$txt['Breeze_user_settings_name_desc'] = 'Duvarï¿½nï¿½zï¿½ ve diï¿½er genel ayarlarï¿½nï¿½zï¿½ yapï¿½landï¿½rï¿½n.';
+$txt['Breeze_user_buddysettings_name'] = 'Arkadaï¿½ ï¿½stekleri';
 $txt['Breeze_user_single_status'] = 'Tek Durum';
-$txt['Breeze_user_buddyrequestmessage_name'] = 'Arkadaþlýk mesajý isteði gönder';
+$txt['Breeze_user_buddyrequestmessage_name'] = 'Arkadaï¿½lï¿½k mesajï¿½ isteï¿½i gï¿½nder';
 $txt['Breeze_user_notisettings_name'] = 'Bildirimlerim';
-$txt['Breeze_user_notilogs_name'] = 'Etkinlik günlüklerim';
-$txt['Breeze_user_settings_name_settings'] = 'Bildirim Ayarlarý';
-$txt['Breeze_user_settings_name_settings_desc'] = 'Bildirimleriniz için bildirim almak istediðiniz eylemler veya arkadaþlarýnýza bildirimde bulunmak isteyen eylemler de dahil olmak üzere farklý seçenekler belirleyebilirsiniz.';
-$txt['Breeze_user_settings_kick_ignored'] = 'Engelli listemdeki kullanýcýlarýma duvarýmý gösterme';
-$txt['Breeze_user_settings_kick_ignored_sub'] = 'Bu etkinleþtirilirse,Engelli listenizdeki kullanýcýlar duvarýnýzý göremez veya üzerine yazý yazamaz';
-$txt['Breeze_user_settings_load_more'] = 'Daha fazlasýný yükle düðmesi ekle';
-$txt['Breeze_user_settings_load_more_sub'] = 'Bu ayar düðmesini týklayarak durumunun bir sonraki grubunu yüklemek için izin verecek.';
-$txt['Breeze_user_settings_pagination_number'] = 'Sayfa baþýna kaç tane durum gösterilecek?';
-$txt['Breeze_user_settings_pagination_number_sub'] = 'Duvarýnýza sayfa baþýna göstermek istediðiniz durum sayýsýný girin. Varsayýlan olarak 5';
-$txt['Breeze_user_settings_general_wall'] = 'Genel duvarý etkinleþtir';
-$txt['Breeze_user_settings_general_wall_sub'] = 'Genel duvar, arkadaþlarýnýzdan durumunu ve güncellemelerini görebileceðiniz benzersiz bir sayfadýr. Bu ayar, onu etkinleþtirmenizi veya devre dýþý býrakmanýzý saðlar.';
-$txt['Breeze_user_settings_wall'] = 'Duvarýmý etkinleþtir';
-$txt['Breeze_user_settings_wall_sub'] = 'Duvarýnýzý kullanmak istiyorsanýz, bu seçeneði iþaretlemeniz gerekir, aksi takdirde profiliniz varsayýlan sayfayý gösterecektir.';
-$txt['Breeze_user_settings_visitors'] = 'Ziyaretçi bloku etkinleþtirilsin mi?';
-$txt['Breeze_user_settings_visitors_sub'] = 'Bu blok, en son ziyaretçileri duvarda gösterecektir.';
-$txt['Breeze_user_settings_how_many_mentions'] = 'Bir kullanýcýdan bahsederken(mention) kullanýcýya kaç adet seçenek olarak gösterilecek';
-$txt['Breeze_user_settings_how_many_mentions_sub'] = 'Örneðin bunu 5 e ayarlarsanýz, bahsederken seçebileceðiniz 5 olasý seçenek göreceksiniz.';
-$txt['Breeze_user_settings_clean_visitors'] = 'Ziyaretçi günlüðünü temizle';
-$txt['Breeze_user_settings_clean_visitors_sub'] = 'Ziyaretçi blokunuzdaki tüm ziyaretçileri kaldýrýr.';
-$txt['Breeze_user_settings_clear_noti'] = 'Bildirimlerin otomatik olarak kapatýlmadan önce kaç saniye görüntülenmesini istersin';
-$txt['Breeze_user_settings_clear_noti_sub'] = 'Saniye olarak, bunu boþ býrakýrsanýz, bildirimler otomatik olarak kapanmaz ve "tüm bildirimleri kapat" düðmesini manuel olarak týklamanýz gerekir.';
-$txt['Breeze_user_settings_noti_on_status'] = 'Birisi duvara yeni bir durum gönderdiðinde bana bildir';
-$txt['Breeze_user_settings_noti_on_status_sub'] = 'Kendi duvarýnýza yeni durum gönderen her kullanýcý.';
-$txt['Breeze_user_settings_noti_on_comment'] = 'Birisi durumumu yorumladýðýnda bana bildir';
-$txt['Breeze_user_settings_noti_on_comment_sub'] = 'Benden herhangi bir duvarda duruma getirildiðinde.';
-$txt['Breeze_user_settings_noti_on_comment_owner'] = 'Birisi duvardaki durum hakkýnda yorum yaptýðýnda bana bildir';
-$txt['Breeze_user_settings_noti_on_comment_owner_sub'] = 'Bu, yalnýzca sizin duvarýnýzda baþkasý tarafýndan yapýlmýþsa, eðer  "Durumum hakkýnda birisi yorum yaptý" bildirimi alýrsýnýz.';
+$txt['Breeze_user_notilogs_name'] = 'Etkinlik gï¿½nlï¿½klerim';
+$txt['Breeze_user_settings_name_settings'] = 'Bildirim Ayarlarï¿½';
+$txt['Breeze_user_settings_name_settings_desc'] = 'Bildirimleriniz iï¿½in bildirim almak istediï¿½iniz eylemler veya arkadaï¿½larï¿½nï¿½za bildirimde bulunmak isteyen eylemler de dahil olmak ï¿½zere farklï¿½ seï¿½enekler belirleyebilirsiniz.';
+$txt['Breeze_user_settings_kick_ignored'] = 'Engelli listemdeki kullanï¿½cï¿½larï¿½ma duvarï¿½mï¿½ gï¿½sterme';
+$txt['Breeze_user_settings_kick_ignored_sub'] = 'Bu etkinleï¿½tirilirse,Engelli listenizdeki kullanï¿½cï¿½lar duvarï¿½nï¿½zï¿½ gï¿½remez veya ï¿½zerine yazï¿½ yazamaz';
+$txt['Breeze_user_settings_load_more'] = 'Daha fazlasï¿½nï¿½ yï¿½kle dï¿½ï¿½mesi ekle';
+$txt['Breeze_user_settings_load_more_sub'] = 'Bu ayar dï¿½ï¿½mesini tï¿½klayarak durumunun bir sonraki grubunu yï¿½klemek iï¿½in izin verecek.';
+$txt['Breeze_user_settings_pagination_number'] = 'Sayfa baï¿½ï¿½na kaï¿½ tane durum gï¿½sterilecek?';
+$txt['Breeze_user_settings_pagination_number_sub'] = 'Duvarï¿½nï¿½za sayfa baï¿½ï¿½na gï¿½stermek istediï¿½iniz durum sayï¿½sï¿½nï¿½ girin. Varsayï¿½lan olarak 5';
+$txt['Breeze_user_settings_general_wall'] = 'Genel duvarï¿½ etkinleï¿½tir';
+$txt['Breeze_user_settings_general_wall_sub'] = 'Genel duvar, arkadaï¿½larï¿½nï¿½zdan durumunu ve gï¿½ncellemelerini gï¿½rebileceï¿½iniz benzersiz bir sayfadï¿½r. Bu ayar, onu etkinleï¿½tirmenizi veya devre dï¿½ï¿½ï¿½ bï¿½rakmanï¿½zï¿½ saï¿½lar.';
+$txt['Breeze_user_settings_wall'] = 'Duvarï¿½mï¿½ etkinleï¿½tir';
+$txt['Breeze_user_settings_wall_sub'] = 'Duvarï¿½nï¿½zï¿½ kullanmak istiyorsanï¿½z, bu seï¿½eneï¿½i iï¿½aretlemeniz gerekir, aksi takdirde profiliniz varsayï¿½lan sayfayï¿½ gï¿½sterecektir.';
+$txt['Breeze_user_settings_visitors'] = 'Ziyaretï¿½i bloku etkinleï¿½tirilsin mi?';
+$txt['Breeze_user_settings_visitors_sub'] = 'Bu blok, en son ziyaretï¿½ileri duvarda gï¿½sterecektir.';
+$txt['Breeze_user_settings_how_many_mentions'] = 'Bir kullanï¿½cï¿½dan bahsederken(mention) kullanï¿½cï¿½ya kaï¿½ adet seï¿½enek olarak gï¿½sterilecek';
+$txt['Breeze_user_settings_how_many_mentions_sub'] = 'ï¿½rneï¿½in bunu 5 e ayarlarsanï¿½z, bahsederken seï¿½ebileceï¿½iniz 5 olasï¿½ seï¿½enek gï¿½receksiniz.';
+$txt['Breeze_user_settings_clean_visitors'] = 'Ziyaretï¿½i gï¿½nlï¿½ï¿½ï¿½nï¿½ temizle';
+$txt['Breeze_user_settings_clean_visitors_sub'] = 'Ziyaretï¿½i blokunuzdaki tï¿½m ziyaretï¿½ileri kaldï¿½rï¿½r.';
+$txt['Breeze_user_settings_clear_noti'] = 'Bildirimlerin otomatik olarak kapatï¿½lmadan ï¿½nce kaï¿½ saniye gï¿½rï¿½ntï¿½lenmesini istersin';
+$txt['Breeze_user_settings_clear_noti_sub'] = 'Saniye olarak, bunu boï¿½ bï¿½rakï¿½rsanï¿½z, bildirimler otomatik olarak kapanmaz ve "tï¿½m bildirimleri kapat" dï¿½ï¿½mesini manuel olarak tï¿½klamanï¿½z gerekir.';
+$txt['Breeze_user_settings_noti_on_status'] = 'Birisi duvara yeni bir durum gï¿½nderdiï¿½inde bana bildir';
+$txt['Breeze_user_settings_noti_on_status_sub'] = 'Kendi duvarï¿½nï¿½za yeni durum gï¿½nderen her kullanï¿½cï¿½.';
+$txt['Breeze_user_settings_noti_on_comment'] = 'Birisi durumumu yorumladï¿½ï¿½ï¿½nda bana bildir';
+$txt['Breeze_user_settings_noti_on_comment_sub'] = 'Benden herhangi bir duvarda duruma getirildiï¿½inde.';
+$txt['Breeze_user_settings_noti_on_comment_owner'] = 'Birisi duvardaki durum hakkï¿½nda yorum yaptï¿½ï¿½ï¿½nda bana bildir';
+$txt['Breeze_user_settings_noti_on_comment_owner_sub'] = 'Bu, yalnï¿½zca sizin duvarï¿½nï¿½zda baï¿½kasï¿½ tarafï¿½ndan yapï¿½lmï¿½ï¿½sa, eï¿½er  "Durumum hakkï¿½nda birisi yorum yaptï¿½" bildirimi alï¿½rsï¿½nï¿½z.';
 $txt['Breeze_user_settings_noti_on_mention'] = 'Birisi benden bahsedince bana haber ver.';
-$txt['Breeze_user_settings_noti_on_mention_sub'] = 'Bir kullanýcýnýn mention sistemini kullanabileceði her yerde.';
-$txt['Breeze_user_settings_aboutMe'] = 'Hakkýmda sekmesini etkinleþtir';
-$txt['Breeze_user_settings_aboutMe_sub'] = 'Devre dýþý býrakmak için boþ býrakýn. BBC yi kullanabilirsiniz.';
-$txt['Breeze_user_settings_activity'] = 'Etkinliðimi göster';
-$txt['Breeze_user_settings_activity_sub'] = 'Bu, tüm genel etkinliðinizin gösterileceði bir sekme ekleyecektir.';
-$txt['Breeze_user_settings_buddies'] = '"Arkadaþlar" bloku etkinleþtirilsin mi?.';
-$txt['Breeze_user_settings_buddies_sub'] = 'Bu, tüm arkadaþlarýnýzý ve onlarýn bilgilerini gösteren bir blok gösterecektir.';
-$txt['Breeze_user_settings_how_many_buddies'] = 'Kaç tane arkadaþýn gösterileceði';
-$txt['Breeze_user_settings_how_many_buddies_sub'] = 'Boþ ise, admin tarafýndan belirlenen varsayýlan deðeri gösterecektir.';
-$txt['Breeze_user_settings_activityLog'] = 'Etkinlik günlüðünü etkinleþtir.';
-$txt['Breeze_user_settings_activityLog_sub'] = 'Bu ayar forumunuz aracýlýðýyla bazý etkinliklerinizi kaydeder, bu, yorumlarý ve forum mesajlarýný göndermeyi içerir.';
-$txt['Breeze_user_settings_visitors'] = '"Son Ziyaretçiler" modülünü etkinleþtir.';
-$txt['Breeze_user_settings_visitors_sub'] = 'Bu duvarýnýza en yeni ziyaretçileri içeren bir blok görüntüleyecektir.';
-$txt['Breeze_user_settings_how_many_visitors'] = 'Kaç ziyaretçi gösterilecek';
-$txt['Breeze_user_settings_how_many_visitors_sub'] = 'Boþ ise, varsayýlan deðeri gösterecektir.';
-$txt['Breeze_user_settings_show_last_visit'] = 'Kullanýcýlarýn son kez duvarýný ziyaret saatlerini göster';
-$txt['Breeze_user_permissions_name'] = 'Ýzinler';
-$txt['Breeze_user_modules_name'] = 'Modüller';
+$txt['Breeze_user_settings_noti_on_mention_sub'] = 'Bir kullanï¿½cï¿½nï¿½n mention sistemini kullanabileceï¿½i her yerde.';
+$txt['Breeze_user_settings_aboutMe'] = 'Hakkï¿½mda sekmesini etkinleï¿½tir';
+$txt['Breeze_user_settings_aboutMe_sub'] = 'Devre dï¿½ï¿½ï¿½ bï¿½rakmak iï¿½in boï¿½ bï¿½rakï¿½n. BBC yi kullanabilirsiniz.';
+$txt['Breeze_user_settings_activity'] = 'Etkinliï¿½imi gï¿½ster';
+$txt['Breeze_user_settings_activity_sub'] = 'Bu, tï¿½m genel etkinliï¿½inizin gï¿½sterileceï¿½i bir sekme ekleyecektir.';
+$txt['Breeze_user_settings_buddies'] = '"Arkadaï¿½lar" bloku etkinleï¿½tirilsin mi?.';
+$txt['Breeze_user_settings_buddies_sub'] = 'Bu, tï¿½m arkadaï¿½larï¿½nï¿½zï¿½ ve onlarï¿½n bilgilerini gï¿½steren bir blok gï¿½sterecektir.';
+$txt['Breeze_user_settings_how_many_buddies'] = 'Kaï¿½ tane arkadaï¿½ï¿½n gï¿½sterileceï¿½i';
+$txt['Breeze_user_settings_how_many_buddies_sub'] = 'Boï¿½ ise, admin tarafï¿½ndan belirlenen varsayï¿½lan deï¿½eri gï¿½sterecektir.';
+$txt['Breeze_user_settings_activityLog'] = 'Etkinlik gï¿½nlï¿½ï¿½ï¿½nï¿½ etkinleï¿½tir.';
+$txt['Breeze_user_settings_activityLog_sub'] = 'Bu ayar forumunuz aracï¿½lï¿½ï¿½ï¿½yla bazï¿½ etkinliklerinizi kaydeder, bu, yorumlarï¿½ ve forum mesajlarï¿½nï¿½ gï¿½ndermeyi iï¿½erir.';
+$txt['Breeze_user_settings_visitors'] = '"Son Ziyaretï¿½iler" modï¿½lï¿½nï¿½ etkinleï¿½tir.';
+$txt['Breeze_user_settings_visitors_sub'] = 'Bu duvarï¿½nï¿½za en yeni ziyaretï¿½ileri iï¿½eren bir blok gï¿½rï¿½ntï¿½leyecektir.';
+$txt['Breeze_user_settings_how_many_visitors'] = 'Kaï¿½ ziyaretï¿½i gï¿½sterilecek';
+$txt['Breeze_user_settings_how_many_visitors_sub'] = 'Boï¿½ ise, varsayï¿½lan deï¿½eri gï¿½sterecektir.';
+$txt['Breeze_user_settings_show_last_visit'] = 'Kullanï¿½cï¿½larï¿½n son kez duvarï¿½nï¿½ ziyaret saatlerini gï¿½ster';
+$txt['Breeze_user_permissions_name'] = 'ï¿½zinler';
+$txt['Breeze_user_modules_name'] = 'Modï¿½ller';
 $txt['Breeze_user_modules_visitors'] = 'ziyaretler: ';
-$txt['Breeze_user_modules_visitors_none'] = 'Yeni ziyaretçi yok';
-$txt['Breeze_user_modules_buddies_none'] = 'Bu kullanýcýnýn hiç arkadaþý yok';
+$txt['Breeze_user_modules_visitors_none'] = 'Yeni ziyaretï¿½i yok';
+$txt['Breeze_user_modules_buddies_none'] = 'Bu kullanï¿½cï¿½nï¿½n hiï¿½ arkadaï¿½ï¿½ yok';
 $txt['Breeze_visitors_timeframe_hour'] = 'Saat';
-$txt['Breeze_visitors_timeframe_day'] = 'Gün';
+$txt['Breeze_visitors_timeframe_day'] = 'Gï¿½n';
 $txt['Breeze_visitors_timeframe_week'] = 'Hafta';
 $txt['Breeze_visitors_timeframe_month'] = 'Ay';
 
 // Time
-$txt['Breeze_time_just_now'] = 'Þu anda.';
+$txt['Breeze_time_just_now'] = 'ï¿½u anda.';
 $txt['Breeze_time_second'] = 'saniye';
-$txt['Breeze_time_ago'] = 'önce.';
+$txt['Breeze_time_ago'] = 'ï¿½nce.';
 $txt['Breeze_time_minute'] = 'dakika';
 $txt['Breeze_time_hour'] = 'saat';
-$txt['Breeze_time_day'] = 'gün';
+$txt['Breeze_time_day'] = 'gï¿½n';
 $txt['Breeze_time_week'] = 'hafta';
 $txt['Breeze_time_month'] = 'ay';
-$txt['Breeze_time_year'] = 'yýl';
+$txt['Breeze_time_year'] = 'yï¿½l';
 
 // Permissions strings
-$txt['cannot_view_general_wall'] = 'Üzgünüm, bu Duvarý görme izin verilmiyor.';
+$txt['cannot_view_general_wall'] = 'ï¿½zgï¿½nï¿½m, bu Duvarï¿½ gï¿½rme izin verilmiyor.';
 $txt['permissiongroup_simple_breeze_per_simple'] = 'Breeze mod izinleri';
 $txt['permissiongroup_breeze_per_classic'] = 'Breeze mod izinleri';
-$txt['permissionname_breeze_canMention'] = 'Bahsetme<br /><span class="smalltext"> Diðer insanlardan bahsetme seçeneði</span>';
-$txt['permissionname_breeze_beMentioned'] = 'Mention (Bahsetme) liste görme<br /><span class="smalltext"> Kullanýcýnýn izinleri varsa, diðer kullanýcýlar bu kullanýcýdan bahsedebilir.</span>';
-$txt['permissionname_breeze_deleteStatus'] = 'Herhangi bir duvardaki tüm durumu sil<br /><span class="smalltext">  Bu, kullanýcýnýn sahip olabileceði diðer silme izninin üzerine yazar. Bir durumu silmek, onunla iliþkili tüm yorumlarý siler.</span>';
-$txt['permissionname_breeze_deleteComments'] = 'Herhangi bir duvardaki tüm yorumlarý sil<br /><span class="smalltext">Bu, kullanýcýnýn sahip olabileceði diðer yorum silme izninin üzerine yazar.</span>';
-$txt['permissionname_breeze_deleteOwnStatus'] = 'Kendi durumlarýný sil.<br /><span class="smalltext">
-Nereye gönderildiðine bakýlmaksýzýn. Bir durumu silmek, onunla iliþkili tüm yorumlarý siler.</span>';
-$txt['permissionname_breeze_deleteOwnComments'] = 'Kendi yorumlarýný sil.<br /><span class="smalltext">  Nereye gönderildiðine bakýlmaksýzýn</span>';
-$txt['permissionname_breeze_deleteProfileStatus'] = 'Kendi profilinde yapýlan durumu sil.<br /><span class="smalltext">  Onlarý kimin gönderdiðine bakýlmaksýzýn.</span>';
-$txt['permissionname_breeze_deleteProfileComments'] = 'Kendi profilinde yapýlan yorumlarý sil.<br /><span class="smalltext">  Onlarý kimin gönderdiðine bakýlmaksýzýn.</span>';
-$txt['permissionname_breeze_postStatus'] = 'Herhangi bir duvara yeni Durum yayýnla<br /><span class="smalltext">  Varsayýlan olarak, profil sahibi her zaman kendi duvarýnda yayýn yapma olanaðýna sahiptir.</span>';
-$txt['permissionname_breeze_postComments'] = 'Herhangi bir duvara yeni yorumlar gönder
-<br /><span class="smalltext">  Varsayýlan olarak, profil sahibi her zaman kendi duvarýnda yayýn yapma olanaðýna sahiptir.</span>';
+$txt['permissionname_breeze_canMention'] = 'Bahsetme<br /><span class="smalltext"> Diï¿½er insanlardan bahsetme seï¿½eneï¿½i</span>';
+$txt['permissionname_breeze_beMentioned'] = 'Mention (Bahsetme) liste gï¿½rme<br /><span class="smalltext"> Kullanï¿½cï¿½nï¿½n izinleri varsa, diï¿½er kullanï¿½cï¿½lar bu kullanï¿½cï¿½dan bahsedebilir.</span>';
+$txt['permissionname_breeze_deleteStatus'] = 'Herhangi bir duvardaki tï¿½m durumu sil<br /><span class="smalltext">  Bu, kullanï¿½cï¿½nï¿½n sahip olabileceï¿½i diï¿½er silme izninin ï¿½zerine yazar. Bir durumu silmek, onunla iliï¿½kili tï¿½m yorumlarï¿½ siler.</span>';
+$txt['permissionname_breeze_deleteComments'] = 'Herhangi bir duvardaki tï¿½m yorumlarï¿½ sil<br /><span class="smalltext">Bu, kullanï¿½cï¿½nï¿½n sahip olabileceï¿½i diï¿½er yorum silme izninin ï¿½zerine yazar.</span>';
+$txt['permissionname_breeze_deleteOwnStatus'] = 'Kendi durumlarï¿½nï¿½ sil.<br /><span class="smalltext">
+Nereye gï¿½nderildiï¿½ine bakï¿½lmaksï¿½zï¿½n. Bir durumu silmek, onunla iliï¿½kili tï¿½m yorumlarï¿½ siler.</span>';
+$txt['permissionname_breeze_deleteOwnComments'] = 'Kendi yorumlarï¿½nï¿½ sil.<br /><span class="smalltext">  Nereye gï¿½nderildiï¿½ine bakï¿½lmaksï¿½zï¿½n</span>';
+$txt['permissionname_breeze_deleteProfileStatus'] = 'Kendi profilinde yapï¿½lan durumu sil.<br /><span class="smalltext">  Onlarï¿½ kimin gï¿½nderdiï¿½ine bakï¿½lmaksï¿½zï¿½n.</span>';
+$txt['permissionname_breeze_deleteProfileComments'] = 'Kendi profilinde yapï¿½lan yorumlarï¿½ sil.<br /><span class="smalltext">  Onlarï¿½ kimin gï¿½nderdiï¿½ine bakï¿½lmaksï¿½zï¿½n.</span>';
+$txt['permissionname_breeze_postStatus'] = 'Herhangi bir duvara yeni Durum yayï¿½nla<br /><span class="smalltext">  Varsayï¿½lan olarak, profil sahibi her zaman kendi duvarï¿½nda yayï¿½n yapma olanaï¿½ï¿½na sahiptir.</span>';
+$txt['permissionname_breeze_postComments'] = 'Herhangi bir duvara yeni yorumlar gï¿½nder
+<br /><span class="smalltext">  Varsayï¿½lan olarak, profil sahibi her zaman kendi duvarï¿½nda yayï¿½n yapma olanaï¿½ï¿½na sahiptir.</span>';
 
 // Ajax strings
-$txt['Breeze_success_updated_settings'] = 'Ayarlarýnýz baþarýyla güncellendi.';
-$txt['Breeze_error_deleteComments'] = 'Üzgünüm, yorumlarý silmek için izin yok.';
-$txt['Breeze_error_deleteStatus'] = 'Üzgünüm, durumu silmek için izin yok.';
-$txt['Breeze_error_server'] = 'Bir hata oluþtu, lütfen tekrar deneyin veya forum yöneticisine baþvurun.';
-$txt['Breeze_error_wrong_values'] = 'Yanlýþ deðer gönderildi, istek iþleme konulamadý.';
-$txt['Breeze_success_published'] = 'Durumunuz baþarýyla yayýnlandý';
-$txt['Breeze_success_published_comment'] = 'Yorumunuz baþarýyla yayýnlandý';
-$txt['Breeze_error_empty'] = 'Metin kutusuna bir þeyler yazmanýz gerekiyor.';
+$txt['Breeze_success_updated_settings'] = 'Ayarlarï¿½nï¿½z baï¿½arï¿½yla gï¿½ncellendi.';
+$txt['Breeze_error_deleteComments'] = 'ï¿½zgï¿½nï¿½m, yorumlarï¿½ silmek iï¿½in izin yok.';
+$txt['Breeze_error_deleteStatus'] = 'ï¿½zgï¿½nï¿½m, durumu silmek iï¿½in izin yok.';
+$txt['Breeze_error_server'] = 'Bir hata oluï¿½tu, lï¿½tfen tekrar deneyin veya forum yï¿½neticisine baï¿½vurun.';
+$txt['Breeze_error_wrong_values'] = 'Yanlï¿½ï¿½ deï¿½er gï¿½nderildi, istek iï¿½leme konulamadï¿½.';
+$txt['Breeze_success_published'] = 'Durumunuz baï¿½arï¿½yla yayï¿½nlandï¿½';
+$txt['Breeze_success_published_comment'] = 'Yorumunuz baï¿½arï¿½yla yayï¿½nlandï¿½';
+$txt['Breeze_error_empty'] = 'Metin kutusuna bir ï¿½eyler yazmanï¿½z gerekiyor.';
 $txt['Breeze_success_delete_status'] = 'Durumunuz silindi';
 $txt['Breeze_success_delete_comments'] = 'Yorumun silindi';
-$txt['Breeze_confirm_delete'] = 'Bunu gerçekten silmek istiyor musun?';
+$txt['Breeze_confirm_delete'] = 'Bunu gerï¿½ekten silmek istiyor musun?';
 $txt['Breeze_confirm_yes'] = 'Evwt';
-$txt['Breeze_confirm_cancel'] = 'Ýptal';
-$txt['Breeze_error_already_deleted_status'] = 'Bu durum zaten silindi. Tarayýcýnýzý yenilemeyi deneyin.';
-$txt['Breeze_error_already_deleted_comment'] = 'Bu yorum zaten silindi. Tarayýcýnýzý yenilemeyi deneyin.';
-$txt['Breeze_error_already_deleted_noti'] = 'Bu bildirim zaten silindi. Tarayýcýnýzý yenilemeyi deneyin.';
-$txt['Breeze_error_already_marked_noti'] = 'Bu bildirim zaten okundu olarak iþaretlendi. Tarayýcýnýzý yenilemeyi deneyin.';
-$txt['Breeze_cannot_postStatus'] = 'Üzgünüm, yeni Durum gönderemezsiniz.';
-$txt['Breeze_cannot_postComments'] = 'Üzgünüm, yeni Yorumlar gönderemezsiniz.';
-$txt['Breeze_error_no_valid_action'] = 'Bu geçerli bir iþlem deðil.';
-$txt['Breeze_error_no_property'] = '%s Geçerli bir çaðrý deðil';
-$txt['Breeze_error_no_access'] = 'Üzgünüm, bu bölüme eriþemiyorsun.';
-$txt['Breeze_success_noti_unmarkasread_after'] = 'Bu bildirimi okunmamýþ olarak iþaretlediniz.';
-$txt['Breeze_success_noti_markasread_after'] = 'Bu bildirimi okundu olarak baþarýyla iþaretlediniz.';
-$txt['Breeze_error_noti_markasreaddeleted_after'] = 'Bu bildirim zaten silindi veya geçerli bir girdi deðil.';
-$txt['Breeze_error_noti_markasreaddeleted'] = 'Bu bildirim zaten silindi veya geçerli bir girdi deðil.';
-$txt['Breeze_success_noti_delete_after'] = 'Bu bildirimi baþarýyla sildiniz.';
-$txt['Breeze_success_noti_visitors_clean'] = 'Ziyaretçi günlüðünü baþarýyla temizlediniz.';
-$txt['Breeze_success_notiMulti_delete_after'] = 'Tüm bildirimleri baþarýyla sildiniz';
-$txt['Breeze_success_notiMulti_markasread_after'] = 'Tüm bildirimleri okundu olarak baþarýyla iþaretlediniz.';
-$txt['Breeze_success_notiMulti_unmarkasread_after'] = 'Okunmamýþ olarak tüm bildirimleri baþarýyla iþaretlediniz.';
+$txt['Breeze_confirm_cancel'] = 'ï¿½ptal';
+$txt['Breeze_error_already_deleted_status'] = 'Bu durum zaten silindi. Tarayï¿½cï¿½nï¿½zï¿½ yenilemeyi deneyin.';
+$txt['Breeze_error_already_deleted_comment'] = 'Bu yorum zaten silindi. Tarayï¿½cï¿½nï¿½zï¿½ yenilemeyi deneyin.';
+$txt['Breeze_error_already_deleted_noti'] = 'Bu bildirim zaten silindi. Tarayï¿½cï¿½nï¿½zï¿½ yenilemeyi deneyin.';
+$txt['Breeze_error_already_marked_noti'] = 'Bu bildirim zaten okundu olarak iï¿½aretlendi. Tarayï¿½cï¿½nï¿½zï¿½ yenilemeyi deneyin.';
+$txt['Breeze_cannot_postStatus'] = 'ï¿½zgï¿½nï¿½m, yeni Durum gï¿½nderemezsiniz.';
+$txt['Breeze_cannot_postComments'] = 'ï¿½zgï¿½nï¿½m, yeni Yorumlar gï¿½nderemezsiniz.';
+$txt['Breeze_error_no_valid_action'] = 'Bu geï¿½erli bir iï¿½lem deï¿½il.';
+$txt['Breeze_error_no_property'] = '%s Geï¿½erli bir ï¿½aï¿½rï¿½ deï¿½il';
+$txt['Breeze_error_no_access'] = 'ï¿½zgï¿½nï¿½m, bu bï¿½lï¿½me eriï¿½emiyorsun.';
+$txt['Breeze_success_noti_unmarkasread_after'] = 'Bu bildirimi okunmamï¿½ï¿½ olarak iï¿½aretlediniz.';
+$txt['Breeze_success_noti_markasread_after'] = 'Bu bildirimi okundu olarak baï¿½arï¿½yla iï¿½aretlediniz.';
+$txt['Breeze_error_noti_markasreaddeleted_after'] = 'Bu bildirim zaten silindi veya geï¿½erli bir girdi deï¿½il.';
+$txt['Breeze_error_noti_markasreaddeleted'] = 'Bu bildirim zaten silindi veya geï¿½erli bir girdi deï¿½il.';
+$txt['Breeze_success_noti_delete_after'] = 'Bu bildirimi baï¿½arï¿½yla sildiniz.';
+$txt['Breeze_success_noti_visitors_clean'] = 'Ziyaretï¿½i gï¿½nlï¿½ï¿½ï¿½nï¿½ baï¿½arï¿½yla temizlediniz.';
+$txt['Breeze_success_notiMulti_delete_after'] = 'Tï¿½m bildirimleri baï¿½arï¿½yla sildiniz';
+$txt['Breeze_success_notiMulti_markasread_after'] = 'Tï¿½m bildirimleri okundu olarak baï¿½arï¿½yla iï¿½aretlediniz.';
+$txt['Breeze_success_notiMulti_unmarkasread_after'] = 'Okunmamï¿½ï¿½ olarak tï¿½m bildirimleri baï¿½arï¿½yla iï¿½aretlediniz.';
 
 // Errors
 $txt['cannot_breeze_postStatus'] = $txt['Breeze_cannot_postStatus'];
 $txt['cannot_breeze_postComments'] = $txt['Breeze_cannot_postComments'];
-$txt['cannot_breeze_deleteStatus'] = 'Üzgünüm, Durum / Yorumlarý silmen için izin yok.';
-$txt['Breeze_cannot_see_general_wall'] = 'Genel duvarýnýzý etkinleþtirmeniz gerekir.<a href="'. $scripturl .'?action=profile;area=breezesettings">Duvar ayarlarý sayfasý</a>.';
+$txt['cannot_breeze_deleteStatus'] = 'ï¿½zgï¿½nï¿½m, Durum / Yorumlarï¿½ silmen iï¿½in izin yok.';
+$txt['Breeze_cannot_see_general_wall'] = 'Genel duvarï¿½nï¿½zï¿½ etkinleï¿½tirmeniz gerekir.<a href="'. $scripturl .'?action=profile;area=breezesettings">Duvar ayarlarï¿½ sayfasï¿½</a>.';
 
 // Pagination
-$txt['Breeze_pag_previous'] = 'Önceki';
+$txt['Breeze_pag_previous'] = 'ï¿½nceki';
 $txt['Breeze_pag_next'] = 'Sonraki';
-$txt['Breeze_pag_first'] = 'Ýlk';
+$txt['Breeze_pag_first'] = 'ï¿½lk';
 $txt['Breeze_pag_last'] = 'Son';
 $txt['Breeze_pag_pages'] = 'Sayfalar :';
 $txt['Breeze_pag_page'] = '- sayfa ';
 $txt['Breeze_profile_of_username'] = 'Profili %1$s';
-$txt['Breeze_page_loading'] = 'Daha fazla durum yükleniyor...';
-$txt['Breeze_page_loading_end'] = 'Görüntülenecek baþka bir durum yok';
-$txt['Breeze_page_no_status'] = 'Görüntülenecek bir durum yok';
+$txt['Breeze_page_loading'] = 'Daha fazla durum yï¿½kleniyor...';
+$txt['Breeze_page_loading_end'] = 'Gï¿½rï¿½ntï¿½lenecek baï¿½ka bir durum yok';
+$txt['Breeze_page_no_status'] = 'Gï¿½rï¿½ntï¿½lenecek bir durum yok';
 
 // Tabs
 $txt['Breeze_tabs_wall'] = 'Duvar';
-$txt['Breeze_tabs_buddies'] = 'Arkadaþlar';
-$txt['Breeze_tabs_views'] = 'Profil Ziyaretçileri';
+$txt['Breeze_tabs_buddies'] = 'Arkadaï¿½lar';
+$txt['Breeze_tabs_views'] = 'Profil Ziyaretï¿½ileri';
 $txt['Breeze_tabs_pinfo'] = 'Profil Bilgileri';
 $txt['Breeze_tabs_activity'] = 'Son Etkinlik';
-$txt['Breeze_tabs_activity_none'] = 'Bu kullanýcýnýn kayýtlý herhangi bir etkinliði yok.';
-$txt['Breeze_tabs_activity_buddies_none'] = 'Arkadaþlarýnýzýn herhangi bir etkinlik kaydedilmedi.';
-$txt['Breeze_tabs_about'] = 'Hakkýmda';
-$txt['Breeze_goTop'] = 'Yukarý git';
+$txt['Breeze_tabs_activity_none'] = 'Bu kullanï¿½cï¿½nï¿½n kayï¿½tlï¿½ herhangi bir etkinliï¿½i yok.';
+$txt['Breeze_tabs_activity_buddies_none'] = 'Arkadaï¿½larï¿½nï¿½zï¿½n herhangi bir etkinlik kaydedilmedi.';
+$txt['Breeze_tabs_about'] = 'Hakkï¿½mda';
+$txt['Breeze_goTop'] = 'Yukarï¿½ git';
 
 // Notifications
 $txt['Breeze_noti_title'] = 'Bildirimler';
-$txt['Breeze_noti_title_settings'] = 'Bildirim ayarlarý';
-$txt['Breeze_noti_title_settings_desc'] = 'Bireysel bildirimleri etkinleþtirme / devre dýþý býrakma.';
+$txt['Breeze_noti_title_settings'] = 'Bildirim ayarlarï¿½';
+$txt['Breeze_noti_title_settings_desc'] = 'Bireysel bildirimleri etkinleï¿½tirme / devre dï¿½ï¿½ï¿½ bï¿½rakma.';
 $txt['Breeze_noti_message'] = 'Mesaj';
-$txt['Breeze_noti_buddy_title'] = 'Arkadaþ bildirimi';
-$txt['Breeze_noti_buddy_message'] = ' %s kullanýcýsý sizi arkadaþý olarak ekledi, lütfen bu isteði onaylayýn..';
-$txt['Breeze_noti_markasread'] = 'Okundu olarak iþaretle';
-$txt['Breeze_noti_markasunread'] = 'Okunmamýþ olarak iþaretle';
-$txt['Breeze_noti_markasread_title'] = 'Okundu olarak veya okunmadý olarak iþaretle';
-$txt['Breeze_noti_markasread_viewed'] = 'Zaten okundu olarak iþaretlendi';
+$txt['Breeze_noti_buddy_title'] = 'Arkadaï¿½ bildirimi';
+$txt['Breeze_noti_buddy_message'] = ' %s kullanï¿½cï¿½sï¿½ sizi arkadaï¿½ï¿½ olarak ekledi, lï¿½tfen bu isteï¿½i onaylayï¿½n..';
+$txt['Breeze_noti_markasread'] = 'Okundu olarak iï¿½aretle';
+$txt['Breeze_noti_markasunread'] = 'Okunmamï¿½ï¿½ olarak iï¿½aretle';
+$txt['Breeze_noti_markasread_title'] = 'Okundu olarak veya okunmadï¿½ olarak iï¿½aretle';
+$txt['Breeze_noti_markasread_viewed'] = 'Zaten okundu olarak iï¿½aretlendi';
 $txt['Breeze_noti_close'] = 'Kapat';
 $txt['Breeze_noti_delete'] = 'Sil';
-$txt['Breeze_noti_cancel'] = 'Ýptal Et';
-$txt['Breeze_noti_closeAll'] = 'Tüm bildirimleri kapat';
-$txt['Breeze_noti_novalid_after'] = 'Bu geçerli bir bildirim deðil.';
+$txt['Breeze_noti_cancel'] = 'ï¿½ptal Et';
+$txt['Breeze_noti_closeAll'] = 'Tï¿½m bildirimleri kapat';
+$txt['Breeze_noti_novalid_after'] = 'Bu geï¿½erli bir bildirim deï¿½il.';
 $txt['Breeze_noti_none'] = 'Herhangi bir bildirimde bulunmuyorsun';
 $txt['Breeze_noti_checkAll'] = 'Hepsini kontrol et';
 $txt['Breeze_noti_check'] = 'kontrol';
-$txt['Breeze_noti_selectedOptions'] = 'Seçilen seçenekleri: ';
-$txt['Breeze_noti_send'] = 'Gönder';
+$txt['Breeze_noti_selectedOptions'] = 'Seï¿½ilen seï¿½enekleri: ';
+$txt['Breeze_noti_send'] = 'Gï¿½nder';
 $txt['Breeze_noti_gender_his'] = 'onun';
 $txt['Breeze_noti_gender_her'] = 'ona';
 $txt['Breeze_noti_gender_his_default'] = 'onun/ona';
@@ -214,39 +214,39 @@ $txt['Breeze_noti_gender_she'] = 'o';
 $txt['Breeze_noti_gender_he_default'] = 'o/o';
 
 // Comment notification
-$txt['Breeze_noti_comment_message'] = '%1$s Tarafýndan %2$s ile %3$s duvarýnda yapýlan duruma yorum yaptý,<br/> <a href="" class="bbc_link" target="_blank">Yorumu gör</a>';
-$txt['Breeze_noti_comment_message_statusOwner'] = '%1$s duvarýndaki durumuna yorum yaptý %2$s';
-$txt['Breeze_noti_comment_message_wallOwner'] = '%1$s tarafýndan yapýlan durumu yorumladý %2$s Duvarýn üstünde';
+$txt['Breeze_noti_comment_message'] = '%1$s Tarafï¿½ndan %2$s ile %3$s duvarï¿½nda yapï¿½lan duruma yorum yaptï¿½,<br/> <a href="" class="bbc_link" target="_blank">Yorumu gï¿½r</a>';
+$txt['Breeze_noti_comment_message_statusOwner'] = '%1$s duvarï¿½ndaki durumuna yorum yaptï¿½ %2$s';
+$txt['Breeze_noti_comment_message_wallOwner'] = '%1$s tarafï¿½ndan yapï¿½lan durumu yorumladï¿½ %2$s Duvarï¿½n ï¿½stï¿½nde';
 
 // Someone posted a status on your wall.
-$txt['Breeze_noti_posted_wall'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">Duvarýnýza yeni bir mesaj gönderdi</a>';
+$txt['Breeze_noti_posted_wall'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">Duvarï¿½nï¿½za yeni bir mesaj gï¿½nderdi</a>';
 
 // Someone commented your status on your own wall
-$txt['Breeze_noti_posted_comment'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">Durumunuza yorum yaptý</a> on %3$s\'s wall';
-$txt['Breeze_noti_posted_comment_own_wall'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">Durumunuza yorum yaptý</a> Kendi duvarýnda';
+$txt['Breeze_noti_posted_comment'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">Durumunuza yorum yaptï¿½</a> on %3$s\'s wall';
+$txt['Breeze_noti_posted_comment_own_wall'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">Durumunuza yorum yaptï¿½</a> Kendi duvarï¿½nda';
 
 // Someone left a comment on your wall.
-$txt['Breeze_noti_posted_comment_owner'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">Durum hakkýnda yorum yaptý</a> Kendi duvarýnda.';
+$txt['Breeze_noti_posted_comment_owner'] = '%1$s <a href="%2$s" class="bbc_link" target="_blank">Durum hakkï¿½nda yorum yaptï¿½</a> Kendi duvarï¿½nda.';
 
 // Mentions
-$txt['Breeze_mention_message_status'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> Sizden bahsedildi</a> %1$s tarafýndan %2$s duvarýnda!';
-$txt['Breeze_mention_message_own_wall_status'] = '<a href="%1$s" class="bbc_link" target="_blank">Sizden bahsedildi</a> %2$s Kendi duvarýnda!';
-$txt['Breeze_mention_message_comment'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> Yorumda sizden bahsedildi</a>  %1$s tarafýndan %2$s duvarýnda!';
-$txt['Breeze_mention_message_own_wall_comment'] = '<a href="%1$s" class="bbc_link" target="_blank" id="noti_%3$s">Sizden bahsedildi</a> Tarafýndan sizin duvarýnýza bir yorum yaparak %2$s!';
+$txt['Breeze_mention_message_status'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> Sizden bahsedildi</a> %1$s tarafï¿½ndan %2$s duvarï¿½nda!';
+$txt['Breeze_mention_message_own_wall_status'] = '<a href="%1$s" class="bbc_link" target="_blank">Sizden bahsedildi</a> %2$s Kendi duvarï¿½nda!';
+$txt['Breeze_mention_message_comment'] = '<a href="%3$s" class="bbc_link" target="_blank" id="noti_%4$s"> Yorumda sizden bahsedildi</a>  %1$s tarafï¿½ndan %2$s duvarï¿½nda!';
+$txt['Breeze_mention_message_own_wall_comment'] = '<a href="%1$s" class="bbc_link" target="_blank" id="noti_%3$s">Sizden bahsedildi</a> Tarafï¿½ndan sizin duvarï¿½nï¿½za bir yorum yaparak %2$s!';
 
 // Single Status
 $txt['Breeze_singleStatus_pageTitle'] = 'Tek Durum';
 
 // Log
-$txt['Breeze_logTopic'] = 'Yeni bir konu oluþturdu:';
-$txt['Breeze_logRegister'] = 'Þimdi kaydoldu!';
-$txt['Breeze_logComment'] = '%s\'un duvarýnda yeni bir yorum yaptý';
-$txt['Breeze_logComment_own_0'] = 'Kendi duvarýnda yorum yaptý.';
-$txt['Breeze_logComment_own_1'] = 'Kendi duvarý hakkýnda yorum yaptý';
-$txt['Breeze_logComment_own_2'] = 'Kendi duvarýnda yorum yaptý';
-$txt['Breeze_logComment_view'] = 'Yorumu görüntüle';
-$txt['Breeze_logStatus'] = '%s\'un duvarýnda yeni bir durum girdi.';
-$txt['Breeze_logStatus_own_0'] = 'Kendi duvarý üzerinde yeni bir durum oluþturdu';
-$txt['Breeze_logStatus_own_1'] = 'Kendi duvarý üzerinde yeni bir durum oluþturdu';
-$txt['Breeze_logStatus_own_2'] = 'Kendi duvarý üzerinde yeni bir durum oluþturdu';
-$txt['Breeze_logStatus_view'] = 'durumu göster';
+$txt['Breeze_logTopic'] = 'Yeni bir konu oluï¿½turdu:';
+$txt['Breeze_logRegister'] = 'ï¿½imdi kaydoldu!';
+$txt['Breeze_logComment'] = '%s\'un duvarï¿½nda yeni bir yorum yaptï¿½';
+$txt['Breeze_logComment_own_0'] = 'Kendi duvarï¿½nda yorum yaptï¿½.';
+$txt['Breeze_logComment_own_1'] = 'Kendi duvarï¿½ hakkï¿½nda yorum yaptï¿½';
+$txt['Breeze_logComment_own_2'] = 'Kendi duvarï¿½nda yorum yaptï¿½';
+$txt['Breeze_logComment_view'] = 'Yorumu gï¿½rï¿½ntï¿½le';
+$txt['Breeze_logStatus'] = '%s\'un duvarï¿½nda yeni bir durum girdi.';
+$txt['Breeze_logStatus_own_0'] = 'Kendi duvarï¿½ ï¿½zerinde yeni bir durum oluï¿½turdu';
+$txt['Breeze_logStatus_own_1'] = 'Kendi duvarï¿½ ï¿½zerinde yeni bir durum oluï¿½turdu';
+$txt['Breeze_logStatus_own_2'] = 'Kendi duvarï¿½ ï¿½zerinde yeni bir durum oluï¿½turdu';
+$txt['Breeze_logStatus_view'] = 'durumu gï¿½ster';

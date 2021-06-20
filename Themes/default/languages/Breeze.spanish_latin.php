@@ -4,8 +4,8 @@
  * Breeze.spanish_latin
  *
  * @package Breeze mod
- * @version 1.0.14
- * @author Jessica Gonzalez <suki@missallsunday.com>
+ * @version 1.0.15
+ * @author Michel Mendiola <suki@missallsunday.com>
  * @copyright Copyright (c) 2011 - 2018 Jessica Gonzalez
  * @license //www.mozilla.org/MPL/MPL-1.1.html
  */
@@ -70,7 +70,7 @@ $txt['Breeze_user_settings_noti_on_mention_sub'] = 'En cualquier lugar en donde 
 $txt['Breeze_user_settings_aboutMe'] = 'Activa tu bloque "acerca de mi"';
 $txt['Breeze_user_settings_aboutMe_sub'] = 'D&eacute;jalo vacio para desactivarlo, puedes usar c&oacute;digo BBC.';
 $txt['Breeze_user_settings_activity'] = 'Mostrar mi actividad';
-$txt['Breeze_user_settings_activity_sub'] = 'Esa opci&oacute;n mostrar&aacute; una nueva pestaña en donde se mostrar&aacute;n tus ultimas actividades registradas.';
+$txt['Breeze_user_settings_activity_sub'] = 'Esa opci&oacute;n mostrar&aacute; una nueva pestaï¿½a en donde se mostrar&aacute;n tus ultimas actividades registradas.';
 $txt['Breeze_user_settings_buddies'] = 'Activar el  bloque de amigos.';
 $txt['Breeze_user_settings_buddies_sub'] = 'Mostrar&aacute; todos tus amigos y su informaci&oacute;n de usuario.';
 $txt['Breeze_user_settings_how_many_buddies'] = 'Cuantos amigos se van a mostrar';
@@ -101,7 +101,7 @@ $txt['Breeze_time_hour'] = 'hora';
 $txt['Breeze_time_day'] = 'd&iacute;a';
 $txt['Breeze_time_week'] = 'semana';
 $txt['Breeze_time_month'] = 'mes';
-$txt['Breeze_time_year'] = 'año';
+$txt['Breeze_time_year'] = 'aï¿½o';
 
 // Permissions strings
 $txt['cannot_view_general_wall'] = 'Lo siento, no est&aacute;s autorizado(a) para ver este muro.';
@@ -115,8 +115,8 @@ $txt['permissionname_breeze_deleteOwnStatus'] = 'Borrar sus propios status.<br /
 $txt['permissionname_breeze_deleteOwnComments'] = 'Borrar sus propios comentarios.<br /><span class="smalltext">  Sin importar en d&oacute;nde han sido escritos</span>';
 $txt['permissionname_breeze_deleteProfileStatus'] = 'Borrar mensajes hechos en sus propios muros.<br /><span class="smalltext">  Sin importar qui&eacute;n los escribi&oacute;. Esto tambi&eacute;n borrar&aacute; cualquier comentario asociado a ese status.</span>';
 $txt['permissionname_breeze_deleteProfileComments'] = 'Borrar comentarios hechos en su propio muro.<br /><span class="smalltext">  Sin importar qui&eacute;n los escribi&oacute;.</span>';
-$txt['permissionname_breeze_postStatus'] = 'Escribir nuevos mensajes en cualquier muro<br /><span class="smalltext">  Por defecto, el dueño de el muro siempre tiene la posibilidad de escribir en su propio muro.</span>';
-$txt['permissionname_breeze_postComments'] = 'Escribir nuevos comentarios en cualquier muro<br /><span class="smalltext">  Por defecto, el dueño del muro siempre tiene la capacidad de escribir comentarios en sus propios muros.</span>';
+$txt['permissionname_breeze_postStatus'] = 'Escribir nuevos mensajes en cualquier muro<br /><span class="smalltext">  Por defecto, el dueï¿½o de el muro siempre tiene la posibilidad de escribir en su propio muro.</span>';
+$txt['permissionname_breeze_postComments'] = 'Escribir nuevos comentarios en cualquier muro<br /><span class="smalltext">  Por defecto, el dueï¿½o del muro siempre tiene la capacidad de escribir comentarios en sus propios muros.</span>';
 
 // Ajax strings
 $txt['Breeze_success_updated_settings'] = 'Tu configuraci&oacute;n se guardo correctamente.';
