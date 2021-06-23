@@ -120,8 +120,8 @@ class LikeModel extends BaseModel implements LikeModelInterface
 		return $this->dbClient->delete(
 			LikeEntity::TABLE,
 			'WHERE ' . LikeEntity::ID . ' = {int:contentId}
-				AND ' . LikeEntity::TYPE . ' = {string:like_type}
-				AND ' . LikeEntity::ID_MEMBER . ' = {int:id_member}',
+				AND ' . LikeEntity::TYPE . ' = {string:type}
+				AND ' . LikeEntity::ID_MEMBER . ' = {int:userId}',
 			[
 				'contentId' => $contentId,
 				'type' => $type,
@@ -150,7 +150,7 @@ class LikeModel extends BaseModel implements LikeModelInterface
 		$result = $this->dbClient->query(
 			'
 			SELECT COUNT(*)
-			FROM ' . LikeEntity::TABLE . '
+			FROM {db_prefix}' . LikeEntity::TABLE . '
 				WHERE ' . LikeEntity::ID . ' = {int:contentId}
 				AND ' . LikeEntity::TYPE . ' = {string:type}',
 			[

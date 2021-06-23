@@ -47,7 +47,6 @@ class Like extends ValidateLikes implements ValidateDataInterface
 			self::PERMISSIONS,
 			self::FEATURE_ENABLE,
 			self::CHECK_TYPE,
-			self::VALIDATE,
 		]);
 	}
 
@@ -80,22 +79,6 @@ class Like extends ValidateLikes implements ValidateDataInterface
 
 		if (!in_array($type, LikeEntity::getTypes())) {
 			throw new ValidateDataException('likesTypeInvalid');
-		}
-	}
-
-	/**
-	 * @throws InvalidLikeException
-	 */
-	public function validate(): void
-	{
-		$type =  $this->data[LikeEntity::TYPE];
-		$contentId =  $this->data[LikeEntity::ID];
-		$userId = $this->data[LikeEntity::ID_MEMBER];
-
-		$alreadyLiked = $this->likeService->isContentAlreadyLiked($type, $contentId, $userId);
-
-		if (!empty($alreadyLiked)) {
-			throw new InvalidLikeException('alreadyLiked');
 		}
 	}
 

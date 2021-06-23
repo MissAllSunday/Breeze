@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Controller\API;
 
+use Breeze\Entity\LikeEntity;
 use Breeze\Service\LikeServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Validate\ValidateGatewayInterface;
@@ -14,7 +15,6 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 class LikesController extends ApiBaseController implements ApiBaseInterface
 {
 	public const ACTION_LIKE = 'like';
-
 	public const ACTION_UNLIKE = 'unlike';
 
 	public const SUB_ACTIONS = [
@@ -40,6 +40,15 @@ class LikesController extends ApiBaseController implements ApiBaseInterface
 	public function like(): void
 	{
 		$data = $this->gateway->getData();
+
+		$this->print(array_merge(
+			$this->gateway->response(),
+			['content' => $this->likesService->likeContent(
+				$data[LikeEntity::TYPE],
+				$data[LikeEntity::ID],
+				$data[LikeEntity::ID_MEMBER]
+			)]
+		));
 	}
 
 	public function getSubActions(): array
