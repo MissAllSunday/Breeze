@@ -14,7 +14,7 @@ interface ClientInterface
 
 	public function freeResult($result): void;
 
-	public function insert(string $tableName, array $columns, array $data, string $columnIdName): void;
+	public function insert(string $tableName, array $columns, array $data, $columnIdName): void;
 
 	public function replace(string $tableName, array $columns, array $data, string $columnIdName): void;
 

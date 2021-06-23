@@ -114,4 +114,55 @@ class LikeModel extends BaseModel implements LikeModelInterface
 	{
 		return LikeEntity::getColumns();
 	}
+
+	public function deleteContent(string $type, int $contentId, int $userId): bool
+	{
+		return $this->dbClient->delete(
+			LikeEntity::TABLE,
+			'WHERE ' . LikeEntity::ID . ' = {int:contentId}
+				AND ' . LikeEntity::TYPE . ' = {string:like_type}
+				AND ' . LikeEntity::ID_MEMBER . ' = {int:id_member}',
+			[
+				'contentId' => $contentId,
+				'type' => $type,
+				'userId' => $userId,
+			]
+		);
+	}
+
+	public function insertContent(string $type, int $contentId, int $userId): void
+	{
+		$this->dbClient->insert(LikeEntity::TABLE, [
+			LikeEntity::ID => 'int',
+			LikeEntity::TYPE => 'string',
+			LikeEntity::ID_MEMBER => 'int',
+			LikeEntity::TIME => 'string',
+		], [
+			$contentId,
+			$type,
+			$userId,
+			time(),
+		], [LikeEntity::ID, LikeEntity::TYPE, LikeEntity::ID_MEMBER]);
+	}
+
+	public function countContent(string $type, int $contentId): int
+	{
+		$result = $this->dbClient->query(
+			'
+			SELECT COUNT(*)
+			FROM ' . LikeEntity::TABLE . '
+				WHERE ' . LikeEntity::ID . ' = {int:contentId}
+				AND ' . LikeEntity::TYPE . ' = {string:type}',
+			[
+				'contentId' => $contentId,
+				'type' => $type,
+			]
+		);
+
+		$rowCount = $this->dbClient->numRows($result);
+
+		$this->dbClient->freeResult($result);
+
+		return $rowCount;
+	}
 }

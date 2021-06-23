@@ -26,4 +26,33 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	{
 		return (bool) $this->likeModel->checkLike($type, $contentId, $userId);
 	}
+
+	/**
+	 * @throws InvalidLikeException
+	 */
+	public function delete(string $type, int $contentId, int $userId): void
+	{
+		$wasDeleted = $this->likeModel->deleteContent($type, $contentId, $userId);
+
+		if (!$wasDeleted) {
+			throw new InvalidLikeException('error_no_like');
+		}
+	}
+
+	/**
+	 * @throws InvalidLikeException
+	 */
+	public function insert(string $type, int $contentId, int $userId): void
+	{
+		$this->likeModel->insertContent($type, $contentId, $userId);
+
+		if (!$this->isContentAlreadyLiked($type, $contentId, $userId)) {
+			throw new InvalidLikeException('error_save_like');
+		}
+	}
+
+	public function count(string $type, int $contentId): int
+	{
+		return $this->likeModel->countContent($type, $contentId);
+	}
 }

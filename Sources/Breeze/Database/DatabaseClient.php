@@ -46,7 +46,7 @@ class DatabaseClient implements ClientInterface
 		$this->db['db_free_result']($result);
 	}
 
-	public function insert(string $tableName, array $columns, array $data, string $columnIdName): void
+	public function insert(string $tableName, array $columns, array $data, $columnIdName): void
 	{
 		ksort($columns);
 		ksort($data);
@@ -56,7 +56,7 @@ class DatabaseClient implements ClientInterface
 			'{db_prefix}' . $tableName . '',
 			$columns,
 			$data,
-			[$columnIdName]
+			(array) $columnIdName
 		);
 	}
 
@@ -90,7 +90,7 @@ class DatabaseClient implements ClientInterface
 	{
 		return $this->db['db_query'](
 			'',
-			'DELETE 
+			'DELETE
 			FROM {db_prefix}' . $tableName . '
 			' . $queryString,
 			$bindParams
