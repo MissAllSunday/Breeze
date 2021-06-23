@@ -160,4 +160,9 @@ trait TextTrait
 	{
 		loadLanguage($languageName);
 	}
+
+	public function commaFormat(string $number): string
+	{
+		return comma_format($number);
+	}
 }

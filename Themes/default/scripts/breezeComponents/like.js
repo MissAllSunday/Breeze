@@ -5,7 +5,7 @@ Vue.component('like', {
 		return {
 			fullId: 'breeze_' + this.likeItem.id + '_' + this.likeItem.type,
 			txt: window.breezeTxtLike,
-			likeClass: 'main_icons ',
+			likeClass: '',
 			likeText: '',
 			additionalInfo: '',
 			likesIds: this.likesByContent,
@@ -17,14 +17,12 @@ Vue.component('like', {
 			<span :class='likeClass'></span>
 			{{likeText}}
 		</a>
-		<div class="like_count smalltext">
-			{{additionalInfo}}
+		<div class="like_count smalltext" v-html="additionalInfo">
 		</div>
 	</div>`,
 	created: function () {
 		this.buildLikeClass()
 		this.buildLikeText()
-		this.buildAdditionalInfo()
 	},
 	methods: {
 		handleLike: function (){
@@ -45,13 +43,25 @@ Vue.component('like', {
 				selfVue.clearLoading()
 				selfVue.setNotice(response.data);
 
-				if (response.type === 'success') {
-					selfVue.likesIds.push(selfVue.currentUserId)
+				if (response.data.type === 'success') {
+					selfVue.updateLikeIds()
 					selfVue.buildLikeText()
 					selfVue.buildLikeClass()
-					selfVue.buildAdditionalInfo()
+					selfVue.additionalInfo = response.data.content.additionalInfo
 				}
 			});
+		},
+		updateLikeIds: function (){
+			let selfVue = this
+
+			if (!selfVue.hasUserLikedTheItem())
+				selfVue.likesIds.push(selfVue.currentUserId)
+
+			else {
+				selfVue.likesIds = selfVue.likesIds.filter(function(likeId) {
+					return likeId !== selfVue.currentUserId;
+				});
+			}
 		},
 		hasUserLikedTheItem: function (){
 			let selfVue = this
@@ -66,18 +76,7 @@ Vue.component('like', {
 		buildLikeClass: function (){
 			let selfVue = this
 
-			selfVue.likeClass =  selfVue.likeClass + (selfVue.hasUserLikedTheItem() ? 'unlike' : 'like');
-		},
-		buildAdditionalInfo: function (){
-			let selfVue = this
-			let otherLikes = selfVue.hasUserLikedTheItem() ? (selfVue.likesIds.length - 1) : selfVue.likesIds.length
-
-			if (selfVue.likesIds.length === 0) {
-				return;
-			}
-
-			selfVue.additionalInfo = (selfVue.hasUserLikedTheItem() ? 'You and ' : '') +
-				(otherLikes) + ' other person'+ (otherLikes > 1 ? 's' : '') +' have liked this content'
+			selfVue.likeClass =  'main_icons ' + (selfVue.hasUserLikedTheItem() ? 'unlike' : 'like');
 		},
 		buildLikeUrl: function (){
 			let selfVue = this

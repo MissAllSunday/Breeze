@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Likes;
 
 use Breeze\Entity\LikeEntity;
-use Breeze\Repository\InvalidLikeException;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;

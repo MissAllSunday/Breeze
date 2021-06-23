@@ -21,3 +21,4 @@ parameters:
     - '/Function smf_serverResponse not found./'
     - '/Function template_breezeForm_Display not found./'
     - '/Function addJavaScriptVar not found./'
+    - '/Function comma_format not found./'
