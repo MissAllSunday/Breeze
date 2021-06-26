@@ -149,7 +149,7 @@ class LikeModel extends BaseModel implements LikeModelInterface
 	{
 		$result = $this->dbClient->query(
 			'
-			SELECT COUNT(*)
+			SELECT {int:contentId}
 			FROM {db_prefix}' . LikeEntity::TABLE . '
 				WHERE ' . LikeEntity::ID . ' = {int:contentId}
 				AND ' . LikeEntity::TYPE . ' = {string:type}',

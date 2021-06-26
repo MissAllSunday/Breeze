@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Model;
 
 use Breeze\Database\ClientInterface;
+use Breeze\Entity\LikeEntity;
 
 abstract class BaseModel implements BaseModelInterface
 {
@@ -136,6 +137,19 @@ abstract class BaseModel implements BaseModelInterface
 		return [
 			'columns' => implode(', ', $this->getColumns()),
 			'tableName' => $this->getTableName(),
+		];
+	}
+
+	protected function getDefaultQueryParamsWithLikes(): array
+	{
+		return [
+			'columns' => implode(', ', array_map(function ($parentColumn) {
+				return 'parent.' . $parentColumn;
+			}, $this->getColumns())) . ', ' .
+				implode(', ', array_map(function ($likeColumn) {
+					return 'likes.' . $likeColumn . ' AS ' . LikeEntity::IDENTIFIER . $likeColumn;
+				}, LikeEntity::getColumns())),
+			'from' => $this->getTableName() . ' AS parent',
 		];
 	}
 }

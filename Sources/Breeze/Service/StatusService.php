@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Entity\LikeEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidStatusException;
@@ -19,14 +20,18 @@ class StatusService extends BaseService implements StatusServiceInterface
 
 	private UserServiceInterface $userService;
 
+	private LikeServiceInterface $likeService;
+
 	public function __construct(
 		UserServiceInterface $userService,
 		StatusRepositoryInterface $statusRepository,
-		CommentRepositoryInterface $commentRepository
+		CommentRepositoryInterface $commentRepository,
+		LikeServiceInterface $likeService
 	) {
 		$this->statusRepository = $statusRepository;
 		$this->commentRepository = $commentRepository;
 		$this->userService = $userService;
+		$this->likeService = $likeService;
 	}
 
 	/**
@@ -42,6 +47,11 @@ class StatusService extends BaseService implements StatusServiceInterface
 
 		foreach ($profileStatus['data'] as $statusId => &$status) {
 			$status['comments'] = $profileComments['data'][$statusId] ?? [];
+			$status['likesInfo'] = $this->likeService->buildLikeData(
+				$status[LikeEntity::IDENTIFIER . LikeEntity::TYPE],
+				$status[LikeEntity::IDENTIFIER . LikeEntity::ID],
+				$status[LikeEntity::IDENTIFIER . LikeEntity::ID_MEMBER],
+			);
 		}
 
 		return [

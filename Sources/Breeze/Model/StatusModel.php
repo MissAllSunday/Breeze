@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
+use Breeze\Entity\LikeEntity;
 use Breeze\Entity\StatusEntity as StatusEntity;
 
 class StatusModel extends BaseModel implements StatusModelInterface
@@ -42,14 +43,21 @@ class StatusModel extends BaseModel implements StatusModelInterface
 
 	public function getStatusByProfile(array $params): array
 	{
-		$queryParams = array_merge(array_merge($this->getDefaultQueryParams(), [
-			'columnName' => StatusEntity::WALL_ID,
-		], $params));
+		$queryParams = array_merge(
+			$this->getDefaultQueryParamsWithLikes(),
+			[
+				'columnName' => StatusEntity::WALL_ID,
+				'likeJoin' => '' . LikeEntity::TABLE . ' AS likes
+			 	ON (likes.' . LikeEntity::ID . ' = parent.' . StatusEntity::ID . ')',
+			],
+			$params
+		);
 
 		$request = $this->dbClient->query(
 			'
 			SELECT {raw:columns}
-			FROM {db_prefix}{raw:tableName}
+			FROM {db_prefix}{raw:from}
+			LEFT JOIN {db_prefix}{raw:likeJoin}
 			WHERE {raw:columnName} IN ({array_int:ids})
 			LIMIT {int:start}, {int:maxIndex}',
 			$queryParams

@@ -12,4 +12,11 @@ interface LikeServiceInterface extends BaseServiceInterface
 	public function isContentAlreadyLiked(string $type, int $contentId, int $userId): bool;
 
 	public function likeContent(string $type, int $contentId, int $userId): array;
+
+	public function buildLikeData(
+		?string $type,
+		?int $contentId,
+		?int $userId,
+		?bool $isContentAlreadyLiked = null
+	): array;
 }

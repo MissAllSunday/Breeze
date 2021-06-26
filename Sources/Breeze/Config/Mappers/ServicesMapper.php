@@ -57,7 +57,7 @@ return [
 	],
 	'service.status' => [
 		'class' => StatusService::class,
-		'arguments'=> [UserService::class, StatusRepository::class, CommentRepository::class],
+		'arguments'=> [UserService::class, StatusRepository::class, CommentRepository::class, LikeService::class],
 	],
 	'service.comment' => [
 		'class' => CommentService::class,

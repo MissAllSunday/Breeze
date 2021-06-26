@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Entity\LikeEntity;
 use Breeze\Repository\InvalidLikeException;
 use Breeze\Repository\LikeRepositoryInterface;
 use Breeze\Util\Permissions;
@@ -46,35 +47,44 @@ class LikeService extends BaseService implements LikeServiceInterface
 			];
 		}
 
-		$likesCount = $this->likeRepository->count($type, $contentId);
-
-		return [
-			'contentId' => $contentId,
-			'count' => $likesCount,
-			'alreadyLiked' => $isContentAlreadyLiked,
-			'type' => $type,
-			'canLike' => Permissions::isAllowedTo(Permissions::LIKES_LIKE),
-			'additionalInfo' => $this->buildAdditionalInfo($contentId, $likesCount, $isContentAlreadyLiked),
-		];
+		return $this->buildLikeData($type, $contentId, $userId, $isContentAlreadyLiked);
 	}
 
-	public function buildAdditionalInfo(int $contentId, int $likesCount = 0, bool $alreadyLiked = false): string
-	{
-		$additionalInfo = '';
-		$base = 'likes_';
+	public function buildLikeData(
+		?string $type,
+		?int $contentId,
+		?int $userId,
+		?bool $isContentAlreadyLiked = null
+	): array {
+		$likeData = [
+			'contentId' => $contentId,
+			'count' => 0,
+			'alreadyLiked' => false,
+			'type' => $type,
+			'canLike' => Permissions::isAllowedTo(Permissions::LIKES_LIKE),
+			'additionalInfo' => '',
+		];
+		$base = LikeEntity::IDENTIFIER;
 
-		if (empty($likesCount)) {
-			return $additionalInfo;
+		if (empty($contentId) ||
+			!$this->modSetting('enable_likes')) {
+			return $likeData;
 		}
 
-		if (!empty($alreadyLiked)) {
+		if (null === $isContentAlreadyLiked) {
+			$isContentAlreadyLiked = $this->isContentAlreadyLiked($type, $contentId, $userId);
+		}
+
+		$likesCount = $likesTextCount = $this->likeRepository->count($type, $contentId);
+
+		if (!empty($isContentAlreadyLiked)) {
 			$base = 'you_' . $base;
-			$likesCount--;
+			$likesTextCount = $likesCount - 1;
 		}
 
-		$base .= ('' !== $this->getSmfText($base . $likesCount)) ? $likesCount : 'n';
+		$base .= ('' !== $this->getSmfText($base . $likesTextCount)) ? $likesTextCount : 'n';
 
-		return sprintf(
+		$additionalInfo =  sprintf(
 			$this->getSmfText($base),
 			$this->parserText(
 				'{scriptUrl}?action=likes;sa=view;ltype=msg;like={href}',
@@ -85,5 +95,11 @@ class LikeService extends BaseService implements LikeServiceInterface
 			),
 			$this->commaFormat((string) $likesCount)
 		);
+
+		return array_merge($likeData, [
+			'count' => $likesCount,
+			'additionalInfo' => $additionalInfo,
+			'alreadyLiked' => $isContentAlreadyLiked,
+		]);
 	}
 }

@@ -20,7 +20,6 @@ Vue.component('status', {
 				<span v-html="item.body" ></span>
 				<like
 					:like-item="buildLikeItem()"
-					:likes-by-content="[]"
 					:current-user-id="$root.wallData.posterId"
 				></like>
 			</div>
@@ -44,10 +43,7 @@ Vue.component('status', {
 		buildLikeItem: function (){
 			let selfVue = this
 
-			return {
-				type: 'br_sta',
-				id: selfVue.item.id
-			}
+			return selfVue.item.likesInfo
 		},
 		getEditorId: function () {
 			return 'breeze_status_' + this.item.id;

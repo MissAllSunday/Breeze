@@ -23,6 +23,8 @@ class LikeEntity extends BaseEntity implements BaseEntityInterface
 
 	public const TYPE_STATUS = 'br_sta';
 
+	public const IDENTIFIER = 'likes_';
+
 	public static function getTypes(): array
 	{
 		return [
