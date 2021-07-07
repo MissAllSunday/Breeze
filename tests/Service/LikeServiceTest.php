@@ -60,7 +60,7 @@ class LikeServiceTest extends TestCase
 		$youOtherPeople = 'You and {link} like this.';
 		$youOtherPeople = str_replace(
 			'{link}',
-			'<a href="localhost?action=likes;sa=view;ltype=msg;like=666;foo=baz">3 other people</a>',
+			'<a href="localhost?action=likes;sa=view;ltype=msg;like=666;foo=baz">2 other people</a>',
 			$youOtherPeople
 		);
 

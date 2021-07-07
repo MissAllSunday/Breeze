@@ -93,7 +93,7 @@ class LikeService extends BaseService implements LikeServiceInterface
 					'href' => $contentId,
 				]
 			),
-			$this->commaFormat((string) $likesCount)
+			$this->commaFormat((string) $likesTextCount)
 		);
 
 		return array_merge($likeData, [
