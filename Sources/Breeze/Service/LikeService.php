@@ -47,7 +47,7 @@ class LikeService extends BaseService implements LikeServiceInterface
 			];
 		}
 
-		return $this->buildLikeData($type, $contentId, $userId, $isContentAlreadyLiked);
+		return $this->buildLikeData($type, $contentId, $userId, !$isContentAlreadyLiked);
 	}
 
 	public function buildLikeData(
@@ -67,7 +67,7 @@ class LikeService extends BaseService implements LikeServiceInterface
 		$base = LikeEntity::IDENTIFIER;
 
 		if (empty($contentId) ||
-			!$this->modSetting('enable_likes')) {
+			empty($type)) {
 			return $likeData;
 		}
 
@@ -77,7 +77,7 @@ class LikeService extends BaseService implements LikeServiceInterface
 
 		$likesCount = $likesTextCount = $this->likeRepository->count($type, $contentId);
 
-		if (!empty($isContentAlreadyLiked)) {
+		if ($isContentAlreadyLiked) {
 			$base = 'you_' . $base;
 			$likesTextCount = $likesCount - 1;
 		}

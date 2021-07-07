@@ -6,14 +6,13 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Repository\User\UserRepositoryInterface;
-use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class UserServiceTest extends TestCase
 {
 	/**
-	 * @var MockBuilder|UserRepositoryInterface
+	 * @var MockObject|UserRepositoryInterface
 	 */
 	private $userRepository;
 

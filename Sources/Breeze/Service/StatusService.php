@@ -47,9 +47,10 @@ class StatusService extends BaseService implements StatusServiceInterface
 
 		foreach ($profileStatus['data'] as $statusId => &$status) {
 			$status['comments'] = $profileComments['data'][$statusId] ?? [];
+
 			$status['likesInfo'] = $this->likeService->buildLikeData(
 				$status[LikeEntity::IDENTIFIER . LikeEntity::TYPE],
-				$status[LikeEntity::IDENTIFIER . LikeEntity::ID],
+				$statusId,
 				$status[LikeEntity::IDENTIFIER . LikeEntity::ID_MEMBER],
 			);
 		}

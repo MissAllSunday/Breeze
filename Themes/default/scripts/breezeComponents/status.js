@@ -43,6 +43,8 @@ Vue.component('status', {
 		buildLikeItem: function (){
 			let selfVue = this
 
+			selfVue.item.likesInfo.type = 'br_sta'
+
 			return selfVue.item.likesInfo
 		},
 		getEditorId: function () {

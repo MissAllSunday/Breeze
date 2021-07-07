@@ -3,7 +3,7 @@ Vue.component('like', {
 	props: ['likeItem', 'currentUserId'],
 	data: function() {
 		return {
-			fullId: 'breeze_' + this.likeItem.id + '_' + this.likeItem.type,
+			fullId: 'breeze_' + this.likeItem.contentId + '_' + this.likeItem.type,
 			txt: window.breezeTxtLike,
 			likeClass: '',
 			likeText: '',
@@ -33,9 +33,9 @@ Vue.component('like', {
 				selfVue.subActions.like.like
 			]),
 				{
-					content_id: selfVue.thisLikeInfo.content_id,
+					content_id: selfVue.thisLikeInfo.contentId,
 					sa: selfVue.subActions.like.like,
-					content_type: selfVue.thisLikeInfo.content_type,
+					content_type: selfVue.thisLikeInfo.type,
 					id_member: selfVue.currentUserId
 				}
 			).then(function (response) {

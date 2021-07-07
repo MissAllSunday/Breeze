@@ -19,6 +19,26 @@ $smcFunc['htmlspecialchars'] = function ($value) {
 };
 
 // Mock functions
+function comma_format(string $number): string
+{
+	global $txt;
+	static $thousands_separator = null, $decimal_separator = null, $decimal_count = null;
+
+	$override_decimal_count = false;
+
+	if (null === $decimal_separator) {
+		if (empty($txt['number_format']) ||
+			1 != preg_match('~^1([^\d]*)?234([^\d]*)(0*?)$~', $txt['number_format'], $matches)) {
+			return $number;
+		}
+
+		$thousands_separator = $matches[1];
+		$decimal_separator = $matches[2];
+		$decimal_count = strlen($matches[3]);
+	}
+
+	return number_format((float) $number, 0, $decimal_separator, $thousands_separator);
+}
 function loadLanguage($template_name): void
 {
 }
@@ -122,7 +142,8 @@ function cache_put_data($key, $data, $timeToLive)
 	return null;
 }
 
-$sourcedir = $scripturl = $boarddir = $boardurl = ROOT;
+$sourcedir = $boarddir = $boardurl = ROOT;
+$scripturl = 'localhost';
 
 // Mock some SMF arrays.
 $user_info = [
@@ -165,6 +186,12 @@ $txt = [
 	'time_just_now' => 'just now',
 	'Breeze_lol' => 'lol',
 	'guest_title' => 'Guest',
+	'number_format' => '1,234.00',
+	'likes_1' => '<a href="%1$s">%2$s person</a> likes this.',
+	'likes_n' => '<a href="%1$s">%2$s people</a> like this.',
+	'you_likes_0' => 'You like this.',
+	'you_likes_1' => 'You and <a href="%1$s">%2$s other person</a> like this.',
+	'you_likes_n' => 'You and <a href="%1$s">%2$s other people</a> like this.',
 ];
 
 $_REQUEST = [
