@@ -7,7 +7,7 @@ Vue.component('like', {
 			txt: window.breezeTxtLike,
 			likeClass: '',
 			likeText: '',
-			thisLikeInfo: this.likeItem,
+			item: this.likeItem,
 		}
 	},
 	template: `
@@ -16,7 +16,7 @@ Vue.component('like', {
 			<span :class='likeClass'></span>
 			{{likeText}}
 		</a>
-		<div class="like_count smalltext" v-html="thisLikeInfo.additionalInfo">
+		<div class="like_count smalltext" v-html="item.additionalInfo">
 		</div>
 	</div>`,
 	created: function () {
@@ -33,9 +33,9 @@ Vue.component('like', {
 				selfVue.subActions.like.like
 			]),
 				{
-					content_id: selfVue.thisLikeInfo.contentId,
+					content_id: selfVue.item.contentId,
 					sa: selfVue.subActions.like.like,
-					content_type: selfVue.thisLikeInfo.type,
+					content_type: selfVue.item.type,
 					id_member: selfVue.currentUserId
 				}
 			).then(function (response) {
@@ -43,16 +43,14 @@ Vue.component('like', {
 				selfVue.setNotice(response.data);
 
 				if (response.data.type === 'success') {
+					selfVue.item = response.data.content
 					selfVue.buildLikeText()
 					selfVue.buildLikeClass()
-					selfVue.thisLikeInfo = response.data.content.likesInfo
 				}
 			});
 		},
 		hasUserLikedTheItem: function (){
-			let selfVue = this
-
-			return selfVue.thisLikeInfo.alreadyLiked
+			return this.item.alreadyLiked
 		},
 		buildLikeText: function (){
 			let selfVue = this
@@ -70,7 +68,7 @@ Vue.component('like', {
 			selfVue.likeUrl = selfVue.sprintFormat(selfVue.baseUrl, [
 				selfVue.actions.like,
 				selfVue.subActions.like.like
-			]) + ';like=' + selfVue.likeItem.content_id
+			]) + ';like=' + selfVue.item.contentId
 		},
 	}
 })

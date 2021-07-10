@@ -119,8 +119,7 @@ class LikeServiceTest extends TestCase
 					'alreadyLiked' => true,
 					'type' => 'bre_com',
 					'canLike' => false,
-					'additionalInfo' =>
-						$youOtherPeople,
+					'additionalInfo' => $youOtherPeople,
 				],
 			],
 		];
