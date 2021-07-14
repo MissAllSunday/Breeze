@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Model;
 
 use Breeze\Entity\CommentEntity as CommentEntity;
+use Breeze\Entity\LikeEntity;
 use Breeze\Entity\StatusEntity;
 
 class CommentModel extends BaseModel implements CommentModelInterface
@@ -42,20 +43,24 @@ class CommentModel extends BaseModel implements CommentModelInterface
 
 	public function getByProfiles(array $profileOwnerIds): array
 	{
-		$queryParams = array_merge($this->getDefaultQueryParams(), [
-			'columns' => implode(', ', $this->getAliasedColumns()),
+		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(), [
 			'columnName' => StatusEntity::WALL_ID,
 			'profileIds' => $profileOwnerIds,
 			'statusTable' => StatusEntity::TABLE,
 			'compare' =>  StatusEntity::TABLE .
-				'.' . StatusEntity::ID . ' = ' . CommentEntity::TABLE . '.' . CommentEntity::STATUS_ID,
+				'.' . StatusEntity::ID . ' = ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::STATUS_ID,
+			'likeJoin' => '' . LikeEntity::TABLE . ' AS likes
+			 	ON (' . self::LIKE_IDENTIFIER . '.' . LikeEntity::ID . ' =
+			 	 ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::ID . '
+			 	AND ' . self::LIKE_IDENTIFIER . '.' . LikeEntity::TYPE . ' = "' . LikeEntity::TYPE_COMMENT . '")',
 		]);
 
 		$request = $this->dbClient->query(
 			'
 			SELECT {raw:columns}
-			FROM {db_prefix}{raw:tableName} AS {raw:tableName}
-			JOIN {db_prefix}{raw:statusTable} AS {raw:statusTable} ON {raw:compare}
+			FROM {db_prefix}{raw:from}
+				JOIN {db_prefix}{raw:statusTable} AS {raw:statusTable} ON {raw:compare}
+				LEFT JOIN {db_prefix}{raw:likeJoin}
 			WHERE {raw:columnName} IN({array_int:profileIds})',
 			$queryParams
 		);
@@ -65,15 +70,19 @@ class CommentModel extends BaseModel implements CommentModelInterface
 
 	public function getByStatus(array $statusIds): array
 	{
-		$queryParams = array_merge($this->getDefaultQueryParams(), [
+		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(), [
 			'columnName' => CommentEntity::STATUS_ID,
 			'statusIds' => $statusIds,
+			'likeJoin' => '' . LikeEntity::TABLE . ' AS likes
+			 	ON (likes.' . LikeEntity::ID . ' = ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::ID . '
+			 	AND likes.' . LikeEntity::TYPE . ' = ' . LikeEntity::TYPE_COMMENT . ')',
 		]);
 
 		$request = $this->dbClient->query(
 			'
 			SELECT {raw:columns}
-			FROM {db_prefix}{raw:tableName}
+			FROM {db_prefix}{raw:from}
+			 JOIN {db_prefix}{raw:likeJoin}
 			WHERE {raw:columnName} IN({array_int:statusIds})',
 			$queryParams
 		);

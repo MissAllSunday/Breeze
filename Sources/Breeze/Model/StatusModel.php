@@ -48,7 +48,9 @@ class StatusModel extends BaseModel implements StatusModelInterface
 			[
 				'columnName' => StatusEntity::WALL_ID,
 				'likeJoin' => '' . LikeEntity::TABLE . ' AS likes
-			 	ON (likes.' . LikeEntity::ID . ' = parent.' . StatusEntity::ID . ')',
+			 	ON (' . self::LIKE_IDENTIFIER . '.' . LikeEntity::ID . ' =
+			 	 ' . self::PARENT_LIKE_IDENTIFIER . '.' . StatusEntity::ID . '
+			 	AND ' . self::LIKE_IDENTIFIER . '.' . LikeEntity::TYPE . ' = "' . LikeEntity::TYPE_STATUS . '")',
 			],
 			$params
 		);

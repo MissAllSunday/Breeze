@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Entity\CommentEntity;
+use Breeze\Entity\LikeEntity;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidCommentException;
 use Breeze\Repository\StatusRepositoryInterface;
@@ -18,14 +20,16 @@ class CommentService extends BaseService implements CommentServiceInterface
 
 	private UserServiceInterface $userService;
 
+	private LikeServiceInterface $likeService;
+
 	public function __construct(
 		UserServiceInterface $userService,
-		StatusRepositoryInterface $statusRepository,
-		CommentRepositoryInterface $commentRepository
+		CommentRepositoryInterface $commentRepository,
+		LikeServiceInterface $likeService
 	) {
-		$this->statusRepository = $statusRepository;
 		$this->commentRepository = $commentRepository;
 		$this->userService = $userService;
+		$this->likeService = $likeService;
 	}
 
 	public function saveAndGet(array $data): array
@@ -61,5 +65,24 @@ class CommentService extends BaseService implements CommentServiceInterface
 	public function getById(int $commentId): array
 	{
 		return $this->commentRepository->getById($commentId);
+	}
+
+	public function getByProfile($profileOwnerId): array
+	{
+		$comments =  $this->commentRepository->getByProfile($profileOwnerId);
+
+		foreach ($comments['data'] as $statusId => &$commentsById) {
+			$commentsById = array_map(function ($comment): array {
+				$comment['likesInfo'] = $this->likeService->buildLikeData(
+					$comment[LikeEntity::IDENTIFIER . LikeEntity::TYPE],
+					$comment[CommentEntity::ID],
+					$comment[LikeEntity::IDENTIFIER . LikeEntity::ID_MEMBER],
+				);
+
+				return $comment;
+			}, $commentsById);
+		}
+
+		return $comments;
 	}
 }

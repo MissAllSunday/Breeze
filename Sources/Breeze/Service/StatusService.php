@@ -7,7 +7,6 @@ namespace Breeze\Service;
 
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\StatusEntity;
-use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\ValidateGateway;
@@ -16,20 +15,20 @@ class StatusService extends BaseService implements StatusServiceInterface
 {
 	private StatusRepositoryInterface $statusRepository;
 
-	private CommentRepositoryInterface $commentRepository;
-
 	private UserServiceInterface $userService;
 
 	private LikeServiceInterface $likeService;
 
+	private CommentServiceInterface $commentService;
+
 	public function __construct(
 		UserServiceInterface $userService,
 		StatusRepositoryInterface $statusRepository,
-		CommentRepositoryInterface $commentRepository,
+		CommentServiceInterface $commentRepository,
 		LikeServiceInterface $likeService
 	) {
 		$this->statusRepository = $statusRepository;
-		$this->commentRepository = $commentRepository;
+		$this->commentService = $commentRepository;
 		$this->userService = $userService;
 		$this->likeService = $likeService;
 	}
@@ -40,7 +39,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 	public function getByProfile(int $profileOwnerId = 0, int $start = 0): array
 	{
 		$profileStatus = $this->statusRepository->getByProfile($profileOwnerId, $start);
-		$profileComments = $this->commentRepository->getByProfile($profileOwnerId);
+		$profileComments = $this->commentService->getByProfile($profileOwnerId);
 
 		$userIds = array_unique(array_merge($profileStatus['usersIds'], $profileComments['usersIds']));
 		$usersData = $this->userService->loadUsersInfo($userIds);
@@ -55,8 +54,10 @@ class StatusService extends BaseService implements StatusServiceInterface
 			);
 		}
 
+		$userIds = array_unique(array_merge($profileStatus['usersIds'], $profileComments['usersIds']));
+
 		return [
-			'users' => $usersData,
+			'users' => $this->userService->loadUsersInfo($userIds),
 			'status' => $profileStatus['data'],
 		];
 	}

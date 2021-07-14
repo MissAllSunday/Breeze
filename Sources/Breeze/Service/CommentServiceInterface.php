@@ -20,4 +20,6 @@ interface CommentServiceInterface extends BaseServiceInterface
 	 * @throws InvalidCommentException
 	 */
 	public function getById(int $commentId): array;
+
+	public function getByProfile($profileOwnerId): array;
 }

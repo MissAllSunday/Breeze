@@ -11,6 +11,9 @@ abstract class BaseModel implements BaseModelInterface
 {
 	protected ClientInterface $dbClient;
 
+	protected const PARENT_LIKE_IDENTIFIER = 'parent';
+	protected const LIKE_IDENTIFIER = 'likes';
+
 	public function __construct(ClientInterface $databaseClient)
 	{
 		$this->dbClient = $databaseClient;
@@ -144,12 +147,13 @@ abstract class BaseModel implements BaseModelInterface
 	{
 		return [
 			'columns' => implode(', ', array_map(function ($parentColumn) {
-				return 'parent.' . $parentColumn;
+				return self::PARENT_LIKE_IDENTIFIER . '.' . $parentColumn;
 			}, $this->getColumns())) . ', ' .
 				implode(', ', array_map(function ($likeColumn) {
 					return 'likes.' . $likeColumn . ' AS ' . LikeEntity::IDENTIFIER . $likeColumn;
 				}, LikeEntity::getColumns())),
-			'from' => $this->getTableName() . ' AS parent',
+			'tableName' => $this->getTableName(),
+			'from' => $this->getTableName() . ' AS ' . self::PARENT_LIKE_IDENTIFIER,
 		];
 	}
 }
