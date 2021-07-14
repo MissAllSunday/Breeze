@@ -59,7 +59,7 @@ $txt['Breeze_noti_none'] = 'You don\'t have any alerts yet';
 // Likes
 $txt['Breeze_error_likesLike'] = 'You aren\'t allowed to use the like feature';
 $txt['Breeze_error_likesNotEnabled'] = 'Likes feature is not enable';
-$txt['Breeze_error_likesTypeInvalid'] = 'Likes feature is not enable';
+$txt['Breeze_error_likesTypeInvalid'] = 'Invalid like type';
 $txt['Breeze_error_no_like'] = 'The content to be liked doesn\'t exists anymore';
 $txt['Breeze_error_alreadyLiked'] = 'Cannot like an already liked content';
 $txt['Breeze_info_likeSuccess'] = 'Your like has been given!';

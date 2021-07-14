@@ -13,10 +13,21 @@ Vue.component('comment', {
 		</div>
 		<div class='clear comment_content'>
 			<hr>
-			<div v-html="item.body"></div>
+				<span v-html="item.body"></span>
+				<like
+					:like-item="buildLikeItem()"
+					:current-user-id="$root.wallData.posterId"
+				></like>
 		</div>
 	</div>`,
 	methods: {
+		buildLikeItem: function (){
+			let selfVue = this
+
+			selfVue.item.likesInfo.type = 'br_com'
+
+			return selfVue.item.likesInfo
+		},
 		deleteComment: function () {
 			let selfVue = this
 

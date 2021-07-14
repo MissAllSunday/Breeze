@@ -22,6 +22,7 @@ class LikeEntity extends BaseEntity implements BaseEntityInterface
 	{
 		return [
 			self::TYPE_STATUS,
+			self::TYPE_COMMENT,
 		];
 	}
 
