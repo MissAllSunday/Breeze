@@ -49,7 +49,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 			'statusTable' => StatusEntity::TABLE,
 			'compare' =>  StatusEntity::TABLE .
 				'.' . StatusEntity::ID . ' = ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::STATUS_ID,
-			'likeJoin' => '' . LikeEntity::TABLE . ' AS likes
+			'likeJoin' => '' . LikeEntity::TABLE . ' AS ' . self::LIKE_IDENTIFIER . '
 			 	ON (' . self::LIKE_IDENTIFIER . '.' . LikeEntity::ID . ' =
 			 	 ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::ID . '
 			 	AND ' . self::LIKE_IDENTIFIER . '.' . LikeEntity::TYPE . ' = "' . LikeEntity::TYPE_COMMENT . '")',
@@ -73,16 +73,18 @@ class CommentModel extends BaseModel implements CommentModelInterface
 		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(), [
 			'columnName' => CommentEntity::STATUS_ID,
 			'statusIds' => $statusIds,
-			'likeJoin' => '' . LikeEntity::TABLE . ' AS likes
-			 	ON (likes.' . LikeEntity::ID . ' = ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::ID . '
-			 	AND likes.' . LikeEntity::TYPE . ' = ' . LikeEntity::TYPE_COMMENT . ')',
+			'likeJoin' => '' . LikeEntity::TABLE . ' AS ' . self::LIKE_IDENTIFIER . '
+			 	ON (' . self::LIKE_IDENTIFIER . '.' . LikeEntity::ID . ' =
+			 	 ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::ID . '
+			 	AND ' . self::LIKE_IDENTIFIER . '.' . LikeEntity::TYPE . ' =
+			 	 "' . LikeEntity::TYPE_COMMENT . '")',
 		]);
 
 		$request = $this->dbClient->query(
 			'
 			SELECT {raw:columns}
 			FROM {db_prefix}{raw:from}
-			 JOIN {db_prefix}{raw:likeJoin}
+				JOIN {db_prefix}{raw:likeJoin}
 			WHERE {raw:columnName} IN({array_int:statusIds})',
 			$queryParams
 		);
@@ -95,13 +97,18 @@ class CommentModel extends BaseModel implements CommentModelInterface
 		$request = $this->dbClient->query(
 			'
 			SELECT {raw:columns}
-			FROM {db_prefix}{raw:tableName}
+			FROM {db_prefix}{raw:from}
+				JOIN {db_prefix}{raw:likeJoin}
 			WHERE {raw:columnName} IN ({array_int:ids})
 			LIMIT {int:limit}',
-			array_merge($this->getDefaultQueryParams(), [
+			array_merge($this->getDefaultQueryParamsWithLikes(), [
 				'limit' => 1,
 				'ids' => array_map('intval', $commentIds),
 				'columnName' => CommentEntity::ID,
+				'likeJoin' => '' . LikeEntity::TABLE . ' AS ' . self::LIKE_IDENTIFIER . '
+			 	ON (' . self::LIKE_IDENTIFIER . '.' . LikeEntity::ID . ' =
+			 	 ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::ID . '
+			 	AND ' . self::LIKE_IDENTIFIER . '.' . LikeEntity::TYPE . ' = "' . LikeEntity::TYPE_COMMENT . '")',
 			])
 		);
 

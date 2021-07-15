@@ -64,7 +64,10 @@ class CommentService extends BaseService implements CommentServiceInterface
 	 */
 	public function getById(int $commentId): array
 	{
-		return $this->commentRepository->getById($commentId);
+		$comments = $this->commentRepository->getById($commentId);
+		$comments['data'] = $this->appendLikeData($comments['data']);
+
+		return $comments;
 	}
 
 	public function getByProfile($profileOwnerId): array
@@ -83,6 +86,25 @@ class CommentService extends BaseService implements CommentServiceInterface
 			}, $commentsById);
 		}
 
+		$comments['data'] = $this->appendLikeData($comments['data']);
+
 		return $comments;
+	}
+
+	protected function appendLikeData(array $commentsData) : array
+	{
+		foreach ($commentsData as $statusId => &$commentsById) {
+			$commentsById = array_map(function ($comment): array {
+				$comment['likesInfo'] = $this->likeService->buildLikeData(
+					$comment[LikeEntity::IDENTIFIER . LikeEntity::TYPE],
+					$comment[CommentEntity::ID],
+					$comment[LikeEntity::IDENTIFIER . LikeEntity::ID_MEMBER],
+				);
+
+				return $comment;
+			}, $commentsById);
+		}
+
+		return $commentsData;
 	}
 }
