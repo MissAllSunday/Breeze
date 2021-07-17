@@ -5,19 +5,16 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-use Breeze\Entity\LikeEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\ValidateGateway;
 
-class StatusService extends BaseService implements StatusServiceInterface
+class StatusService extends BaseLikesService implements StatusServiceInterface
 {
 	private StatusRepositoryInterface $statusRepository;
 
 	private UserServiceInterface $userService;
-
-	private LikeServiceInterface $likeService;
 
 	private CommentServiceInterface $commentService;
 
@@ -30,7 +27,8 @@ class StatusService extends BaseService implements StatusServiceInterface
 		$this->statusRepository = $statusRepository;
 		$this->commentService = $commentRepository;
 		$this->userService = $userService;
-		$this->likeService = $likeService;
+
+		parent::__construct($likeService);
 	}
 
 	/**
@@ -43,18 +41,11 @@ class StatusService extends BaseService implements StatusServiceInterface
 
 		$userIds = array_unique(array_merge($profileStatus['usersIds'], $profileComments['usersIds']));
 		$usersData = $this->userService->loadUsersInfo($userIds);
+		$profileStatus['data'] = $this->appendLikeData($profileStatus['data'], StatusEntity::ID);
 
 		foreach ($profileStatus['data'] as $statusId => &$status) {
 			$status['comments'] = $profileComments['data'][$statusId] ?? [];
-
-			$status['likesInfo'] = $this->likeService->buildLikeData(
-				$status[LikeEntity::IDENTIFIER . LikeEntity::TYPE],
-				$statusId,
-				$status[LikeEntity::IDENTIFIER . LikeEntity::ID_MEMBER],
-			);
 		}
-
-		$userIds = array_unique(array_merge($profileStatus['usersIds'], $profileComments['usersIds']));
 
 		return [
 			'users' => $this->userService->loadUsersInfo($userIds),
