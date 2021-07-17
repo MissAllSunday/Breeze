@@ -212,6 +212,59 @@ if (empty($context['uninstalling'])) {
 		'parameters' => [],
 	];
 
+	// Activity
+	$tables[] = [
+		'table_name' => '{db_prefix}breeze_activities',
+		'columns' => [
+			[
+				'name' => 'id',
+				'type' => 'int',
+				'size' => 5,
+				'null' => false,
+				'auto' => true
+			],
+			[
+				'name' => 'name',
+				'type' => 'varchar',
+				'size' => 255,
+				'default' => '',
+			],
+			[
+				'name' => 'userId',
+				'type' => 'int',
+				'size' => 5,
+				'null' => false
+			],
+			[
+				'name' => 'contentId',
+				'type' => 'int',
+				'size' => 5,
+				'null' => true
+			],
+			[
+				'name' => 'extra',
+				'type' => 'text',
+				'size' => '',
+				'default' => null,
+			],
+			[
+				'name' => 'createdAt',
+				'type' => 'varchar',
+				'size' => 255,
+				'default' => '',
+			],
+		],
+		'indexes' => [
+			[
+				'type' => 'primary',
+				'columns' => ['id', 'userId', 'contentId']
+			],
+		],
+		'if_exists' => 'ignore',
+		'error' => 'fatal',
+		'parameters' => [],
+	];
+
 	// Installing
 	foreach ($tables as $table) {
 		$smcFunc['db_create_table'](

@@ -12,7 +12,6 @@ abstract class BaseRepository
 	use CacheTrait;
 
 	public const LIKE_TYPE_STATUS = 'breSta';
-
 	public const LIKE_TYPE_COMMENT = 'breCom';
 
 	protected const TTL = 360;
