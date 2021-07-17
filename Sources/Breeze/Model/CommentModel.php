@@ -98,13 +98,13 @@ class CommentModel extends BaseModel implements CommentModelInterface
 			'
 			SELECT {raw:columns}
 			FROM {db_prefix}{raw:from}
-				JOIN {db_prefix}{raw:likeJoin}
+				LEFT JOIN {db_prefix}{raw:likeJoin}
 			WHERE {raw:columnName} IN ({array_int:ids})
 			LIMIT {int:limit}',
 			array_merge($this->getDefaultQueryParamsWithLikes(), [
 				'limit' => 1,
 				'ids' => array_map('intval', $commentIds),
-				'columnName' => CommentEntity::ID,
+				'columnName' => self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::ID,
 				'likeJoin' => '' . LikeEntity::TABLE . ' AS ' . self::LIKE_IDENTIFIER . '
 			 	ON (' . self::LIKE_IDENTIFIER . '.' . LikeEntity::ID . ' =
 			 	 ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::ID . '

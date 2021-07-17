@@ -6,21 +6,18 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Entity\CommentEntity;
-use Breeze\Entity\LikeEntity;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidCommentException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\ValidateGateway;
 
-class CommentService extends BaseService implements CommentServiceInterface
+class CommentService extends BaseLikesService implements CommentServiceInterface
 {
 	private StatusRepositoryInterface $statusRepository;
 
 	private CommentRepositoryInterface $commentRepository;
 
 	private UserServiceInterface $userService;
-
-	private LikeServiceInterface $likeService;
 
 	public function __construct(
 		UserServiceInterface $userService,
@@ -29,7 +26,8 @@ class CommentService extends BaseService implements CommentServiceInterface
 	) {
 		$this->commentRepository = $commentRepository;
 		$this->userService = $userService;
-		$this->likeService = $likeService;
+
+		parent::__construct($likeService);
 	}
 
 	public function saveAndGet(array $data): array
@@ -37,7 +35,7 @@ class CommentService extends BaseService implements CommentServiceInterface
 		try {
 			$commentId = $this->commentRepository->save($data);
 
-			$comment = $this->commentRepository->getById($commentId);
+			$comment = $this->getById($commentId);
 		} catch (InvalidCommentException $e) {
 			return [
 				'type' => ValidateGateway::ERROR_TYPE,
@@ -65,7 +63,7 @@ class CommentService extends BaseService implements CommentServiceInterface
 	public function getById(int $commentId): array
 	{
 		$comments = $this->commentRepository->getById($commentId);
-		$comments['data'] = $this->appendLikeData($comments['data']);
+		$comments['data'] = $this->appendLikeData($comments['data'], CommentEntity::ID);
 
 		return $comments;
 	}
@@ -74,37 +72,10 @@ class CommentService extends BaseService implements CommentServiceInterface
 	{
 		$comments =  $this->commentRepository->getByProfile($profileOwnerId);
 
-		foreach ($comments['data'] as $statusId => &$commentsById) {
-			$commentsById = array_map(function ($comment): array {
-				$comment['likesInfo'] = $this->likeService->buildLikeData(
-					$comment[LikeEntity::IDENTIFIER . LikeEntity::TYPE],
-					$comment[CommentEntity::ID],
-					$comment[LikeEntity::IDENTIFIER . LikeEntity::ID_MEMBER],
-				);
-
-				return $comment;
-			}, $commentsById);
+		foreach ($comments['data'] as $statusId => &$commentsByStatusId) {
+			$commentsByStatusId = $this->appendLikeData($commentsByStatusId, CommentEntity::ID);
 		}
-
-		$comments['data'] = $this->appendLikeData($comments['data']);
 
 		return $comments;
-	}
-
-	protected function appendLikeData(array $commentsData) : array
-	{
-		foreach ($commentsData as $statusId => &$commentsById) {
-			$commentsById = array_map(function ($comment): array {
-				$comment['likesInfo'] = $this->likeService->buildLikeData(
-					$comment[LikeEntity::IDENTIFIER . LikeEntity::TYPE],
-					$comment[CommentEntity::ID],
-					$comment[LikeEntity::IDENTIFIER . LikeEntity::ID_MEMBER],
-				);
-
-				return $comment;
-			}, $commentsById);
-		}
-
-		return $commentsData;
 	}
 }

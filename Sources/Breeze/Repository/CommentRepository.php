@@ -65,7 +65,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			$this->setCache(__FUNCTION__ . $commentId, $comment);
 		}
 
-		if (empty($comment)) {
+		if (empty($comment['data'])) {
 			throw new InvalidCommentException('error_no_comment');
 		}
 
