@@ -118,7 +118,8 @@ function breezeWall()
 	// Get the profile views
 	if (!$user_info['is_guest'] && !empty($context['Breeze']['settings']['owner']['visitors']))
 	{
-		$context['Breeze']['views'] = breezeTrackViews();
+		breezeTrackViews();
+		$context['Breeze']['views'] = breezeGetProfileViews();
 
 		// If there is a limit then lets count the total so we can know if we are gonna use the compact style.
 		if (!empty($context['Breeze']['max_users']) && count($context['Breeze']['views']) >= $context['Breeze']['max_users'])
@@ -651,8 +652,54 @@ function breezeTrackViews()
 	global $user_info, $context, $breezeController;
 
 	// Don't log guest views
-	if ($user_info['is_guest'] == true)
+	if ($user_info['is_guest'] == true || ((int) $context['member']['id'] === (int) $user_info['id']))
 		return array();
+
+	if (empty($breezeController))
+		$breezeController = new BreezeController();
+
+	$views = json_decode($breezeController->get('query')->getViews($context['member']['id'], true));
+
+	if (empty($views))
+		$views = array();
+
+	// Does this member has been here before?
+	if (!empty($views[$user_info['id']]))
+	{
+		// Update the data then
+		$views[$user_info['id']]['last_view'] = time();
+		$views[$user_info['id']]['views'] = $views[$user_info['id']]['views'] + 1;
+	}
+
+	// First time huh?
+	else
+	{
+		// Build the array
+		$views[$user_info['id']] = array(
+			'user' => $user_info['id'],
+			'last_view' => time(),
+			'views' => 1,
+		);
+	}
+
+	// Either way, update the table
+	updateMemberData($context['member']['id'], array('breeze_profile_views' => json_encode($views)));
+
+	// Don't forget to load the visitors data
+	$breezeController->get('tools')->loadUserInfo(array_keys($views));
+
+	return $views;
+}
+
+/**
+ * breezeGetProfileViews()
+ *
+ * Get profile views.
+ * @return array
+ */
+function breezeGetProfileViews()
+{
+	global $user_info, $context, $breezeController;
 
 	if (empty($breezeController))
 		$breezeController = new BreezeController();
@@ -661,65 +708,9 @@ function breezeTrackViews()
 	$views = cache_get_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], 60);
 
 	if (empty($views))
-	{
-		// Get the profile views
 		$views = $breezeController->get('query')->getViews($context['member']['id']);
 
-		// Don't track own views
-		if ($context['member']['id'] == $user_info['id'])
-			return !empty($views) ? json_decode($views, true) : array();
-
-		// Don't have any views yet?
-		if (empty($views))
-		{
-			// Build the array
-			$views[$user_info['id']] = array(
-				'user' => $user_info['id'],
-				'last_view' => time(),
-				'views' => 1,
-			);
-
-			// Insert the data
-			updateMemberData($context['member']['id'], array('breeze_profile_views' => json_encode($views)));
-
-			// Set the temp cache
-			cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], $views, 60);
-
-			// Load the visitors data
-			$breezeController->get('tools')->loadUserInfo(array_keys($views));
-
-			// Cut it off
-			return $views;
-		}
-
-		// Get the data
-		$views = json_decode($views, true);
-
-		// Does this member has been here before?
-		if (!empty($views[$user_info['id']]))
-		{
-			// Update the data then
-			$views[$user_info['id']]['last_view'] = time();
-			$views[$user_info['id']]['views'] = $views[$user_info['id']]['views'] + 1;
-		}
-
-		// First time huh?
-		else
-		{
-			// Build the array
-			$views[$user_info['id']] = array(
-				'user' => $user_info['id'],
-				'last_view' => time(),
-				'views' => 1,
-			);
-		}
-
-		// Either way, update the table
-		updateMemberData($context['member']['id'], array('breeze_profile_views' => json_encode($views)));
-
-		// ...and set the temp cache
-		cache_put_data(Breeze::$name .'-tempViews-'. $context['member']['id'].'-by-'. $user_info['id'], $views, 60);
-	}
+	$views = json_decode($views, true);
 
 	// Don't forget to load the visitors data
 	$breezeController->get('tools')->loadUserInfo(array_keys($views));

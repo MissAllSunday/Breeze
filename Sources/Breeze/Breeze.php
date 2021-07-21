@@ -562,7 +562,7 @@ class Breeze
 				'name' => 'Developer(s)',
 				'users' => array(
 					'suki' => array(
-						'name' => 'Jessica "Suki" Gonz&aacute;lez',
+						'name' => 'Michel Mendiola',
 						'site' => Breeze::$supportSite,
 					),
 				),
