@@ -32,7 +32,7 @@
 				'name' => 'breeze_profile_views',
 				'type' => 'text',
 				'size' => '',
-				'default' => null,
+				'default' => 0,
 			),
 			array(),
 			'update',
