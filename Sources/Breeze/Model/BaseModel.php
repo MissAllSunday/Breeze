@@ -150,7 +150,7 @@ abstract class BaseModel implements BaseModelInterface
 				return self::PARENT_LIKE_IDENTIFIER . '.' . $parentColumn;
 			}, $this->getColumns())) . ', ' .
 				implode(', ', array_map(function ($likeColumn) {
-					return 'likes.' . $likeColumn . ' AS ' . LikeEntity::IDENTIFIER . $likeColumn;
+					return self::LIKE_IDENTIFIER . '.' . $likeColumn . ' AS ' . LikeEntity::IDENTIFIER . $likeColumn;
 				}, LikeEntity::getColumns())),
 			'tableName' => $this->getTableName(),
 			'from' => $this->getTableName() . ' AS ' . self::PARENT_LIKE_IDENTIFIER,
