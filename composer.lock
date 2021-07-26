@@ -62,16 +62,16 @@
         },
         {
             "name": "league/container",
-            "version": "4.1.1",
+            "version": "4.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/container.git",
-                "reference": "642288e70302b1efe65bd2ee5d56ce3839258df6"
+                "reference": "82a57588c630663d2600f046753b23ab6dcda9b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/container/zipball/642288e70302b1efe65bd2ee5d56ce3839258df6",
-                "reference": "642288e70302b1efe65bd2ee5d56ce3839258df6",
+                "url": "https://api.github.com/repos/thephpleague/container/zipball/82a57588c630663d2600f046753b23ab6dcda9b5",
+                "reference": "82a57588c630663d2600f046753b23ab6dcda9b5",
                 "shasum": ""
             },
             "require": {
@@ -132,7 +132,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/container/issues",
-                "source": "https://github.com/thephpleague/container/tree/4.1.1"
+                "source": "https://github.com/thephpleague/container/tree/4.1.2"
             },
             "funding": [
                 {
@@ -140,7 +140,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-07-09T13:39:47+00:00"
+            "time": "2021-07-26T07:04:36+00:00"
         },
         {
             "name": "psr/container",
