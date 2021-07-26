@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Repository\InvalidMoodException;
+
 interface MoodServiceInterface extends BaseServiceInterface
 {
 	public const DISPLAY_PROFILE_AREAS = ['summary', 'static'];
@@ -23,6 +25,9 @@ interface MoodServiceInterface extends BaseServiceInterface
 
 	public function deleteMoods(array $toDeleteMoodIds): bool;
 
+	/**
+	 * @throws InvalidMoodException
+	 */
 	public function getMoodById(int $moodId): array;
 
 	public function saveMood(array $mood, int $moodId): bool;

@@ -32,6 +32,7 @@ class SetUserMood extends ValidateMood implements ValidateDataInterface
 			self::INT,
 			self::DATA_EXISTS,
 			self::VALID_USERS,
+			self::SAME_USER,
 		]);
 	}
 
@@ -48,7 +49,9 @@ class SetUserMood extends ValidateMood implements ValidateDataInterface
 	 */
 	public function permissions(): void
 	{
-		// @TODO Implement "use mood" permission
+		if (!Permissions::isAllowedTo(Permissions::USE_MOOD)) {
+			throw new ValidateDataException('moodChanged');
+		}
 	}
 
 	public function getInts(): array
