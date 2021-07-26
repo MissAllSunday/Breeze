@@ -10,7 +10,6 @@ use Breeze\Util\Json;
 
 class ActivityModel extends BaseModel implements ActivityModelInterface
 {
-
 	public function insert(array $data, int $id = 0): int
 	{
 		$this->dbClient->insert(ActivityEntity::TABLE, [
@@ -32,7 +31,7 @@ class ActivityModel extends BaseModel implements ActivityModelInterface
 			WHERE ' . ActivityEntity::ID . ' = {int:idActivity}',
 			[
 				'idActivity' => $id,
-				'extra' => Json::encode($data)
+				'extra' => Json::encode($data),
 			]
 		);
 
@@ -52,5 +51,31 @@ class ActivityModel extends BaseModel implements ActivityModelInterface
 	public function getColumns(): array
 	{
 		return ActivityEntity::getColumns();
+	}
+
+	public function getByIds(array $activityIds = []): array
+	{
+		$activities = [];
+		$queryParams = array_merge($this->getDefaultQueryParams(), [
+			'columnName' => ActivityEntity::ID,
+			'activityIds' => $activityIds,
+		]);
+
+		$request = $this->dbClient->query(
+			'
+			SELECT {raw:columns}
+			FROM {db_prefix}{raw:tableName}
+			WHERE {raw:columnName} ({array_int:activityIds})
+			LIMIT 1',
+			$queryParams
+		);
+
+		while ($row = $this->dbClient->fetchAssoc($request)) {
+			$activities[$row[ActivityEntity::ID]] = $row;
+		}
+
+		$this->dbClient->freeResult($request);
+
+		return $activities;
 	}
 }

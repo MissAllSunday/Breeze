@@ -8,6 +8,7 @@ namespace Breeze\Service\Actions;
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Repository\CommentRepositoryInterface;
+use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\UserService;
 use Breeze\Service\UserServiceInterface;
@@ -122,6 +123,9 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 		return true;
 	}
 
+	/**
+	 * @throws InvalidStatusException
+	 */
 	public function getStatus(int $userId): array
 	{
 		return $this->statusRepository->getByProfile($userId);

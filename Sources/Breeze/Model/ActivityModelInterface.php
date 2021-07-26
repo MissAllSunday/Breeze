@@ -7,5 +7,5 @@ namespace Breeze\Model;
 
 interface ActivityModelInterface
 {
-
+	public function getByIds(array $activityIds = []): array;
 }
