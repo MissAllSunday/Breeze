@@ -17,8 +17,6 @@ class SetUserMood extends ValidateMood implements ValidateDataInterface
 		UserSettingsEntity::USER_ID => 0,
 	];
 
-	protected const DEFAULT_PARAMS = [];
-
 	protected const SUCCESS_KEY = 'moodChanged';
 
 	public function successKeyString(): string
@@ -30,6 +28,7 @@ class SetUserMood extends ValidateMood implements ValidateDataInterface
 	{
 		return array_merge($this->steps, [
 			self::INT,
+			self::PERMISSIONS,
 			self::DATA_EXISTS,
 			self::VALID_USERS,
 			self::SAME_USER,
@@ -81,11 +80,6 @@ class SetUserMood extends ValidateMood implements ValidateDataInterface
 
 	public function getParams(): array
 	{
-		return array_merge(self::DEFAULT_PARAMS, $this->data);
-	}
-
-	public function getData(): array
-	{
-		return $this->getParams();
+		return self::PARAMS;
 	}
 }
