@@ -12,7 +12,7 @@ class Json
 		return smf_json_decode($jsonString, true);
 	}
 
-	public static function encode(array $data): string
+	public static function encode($data): string
 	{
 		return json_encode($data);
 	}

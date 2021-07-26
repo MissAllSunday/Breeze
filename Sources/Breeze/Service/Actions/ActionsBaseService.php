@@ -6,6 +6,7 @@ namespace Breeze\Service\Actions;
 
 use Breeze\Breeze;
 use Breeze\Service\BaseService;
+use Breeze\Util\Permissions;
 
 abstract class ActionsBaseService extends BaseService implements ActionsServiceInterface
 {
@@ -39,6 +40,7 @@ abstract class ActionsBaseService extends BaseService implements ActionsServiceI
 			'name' => $context['page_title'],
 		];
 		$context['can_send_pm'] = allowedTo('pm_send');
+		$context[Permissions::USE_MOOD] = Permissions::isAllowedTo(Permissions::USE_MOOD);
 
 		$this->setGlobal('context', $context);
 	}

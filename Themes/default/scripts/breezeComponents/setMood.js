@@ -1,5 +1,5 @@
 Vue.component('set-mood', {
-	props: ['currentMoodId', 'userId', 'moodTxt'],
+	props: ['currentMoodId', 'userId', 'moodTxt', 'isCurrentUserOwner'],
 	mixins: [breezeUtils],
 	data: function() {
 		return {
@@ -11,7 +11,10 @@ Vue.component('set-mood', {
 	},
 	template: `
 	<div id="moodList">
-		<span @click="showMoodList()" title="moodLabel">{{ moodTxt.defaultLabel }} {{ currentMood.emoji }}</span>
+		<span v-if="isCurrentUserOwner" @click="showMoodList()" title="moodLabel" class="pointer_cursor">
+			{{ moodTxt.defaultLabel }} {{ currentMood.emoji }}
+		</span>
+		<span v-else title="moodLabel">{{ moodTxt.defaultLabel }} {{ currentMood.emoji }}</span>
 		<modal v-if="showModal" @close="showModal = false" @click.stop>
 			<div slot="header">
 				{{ moodTxt.defaultLabel }}

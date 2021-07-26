@@ -169,6 +169,10 @@
 	margin: 0;
 }
 
+.pointer_cursor {
+	cursor: pointer;
+}
+
 @media (max-width: 480px) {
 	#breeze_summary{
 		display: none;

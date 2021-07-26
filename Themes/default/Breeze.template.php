@@ -50,6 +50,7 @@ function template_breeze_main(): void
 					:current-mood-id="currentMoodId"
 					:user-id="wallData.ownerId"
 					:mood-txt="txtMood"
+					:is-current-user-owner="isCurrentUserOwner"
 				></set-mood>
 			</p>
 		</div>

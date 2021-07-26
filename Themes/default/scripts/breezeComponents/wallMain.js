@@ -15,6 +15,7 @@ new Vue({
 			posterId: window.breezeUsers.wallPoster || 0,
 		},
 		currentMoodId: window.breezeProfileOwnerSettings.moodId || 0,
+		isCurrentUserOwner: window.breezeIsCurrentUserOwner,
 	},
 	created: function () {
 		this.fetchStatus()

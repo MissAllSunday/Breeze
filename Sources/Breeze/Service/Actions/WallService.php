@@ -70,6 +70,10 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 			'profileOwnerSettings',
 			$this->profileOwnerSettings
 		);
+		$this->components->addJavaScriptVar(
+			'isCurrentUserOwner',
+			$this->isCurrentUserOwner()
+		);
 
 		$this->components->addJavaScriptVar('users', [
 			'wallOwner' => $this->profileOwnerInfo['id'],
