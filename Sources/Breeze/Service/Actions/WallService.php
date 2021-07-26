@@ -75,6 +75,11 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 			$this->isCurrentUserOwner()
 		);
 
+		$this->components->addJavaScriptVar(
+			Permissions::USE_MOOD,
+			Permissions::isAllowedTo(Permissions::USE_MOOD)
+		);
+
 		$this->components->addJavaScriptVar('users', [
 			'wallOwner' => $this->profileOwnerInfo['id'],
 			'wallPoster' => $this->currentUserInfo['id'],

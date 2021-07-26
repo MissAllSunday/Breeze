@@ -16,6 +16,7 @@ new Vue({
 		},
 		currentMoodId: window.breezeProfileOwnerSettings.moodId || 0,
 		isCurrentUserOwner: window.breezeIsCurrentUserOwner,
+		useMood: window.breezeUseMood,
 	},
 	created: function () {
 		this.fetchStatus()
