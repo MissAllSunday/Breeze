@@ -22,4 +22,6 @@ interface CommentServiceInterface extends BaseServiceInterface
 	public function getById(int $commentId): array;
 
 	public function getByProfile($profileOwnerId): array;
+
+	public function getByStatusId(int $statusId): array;
 }

@@ -17,7 +17,7 @@ Vue.component('status', {
 			<br>
 			<div class='content'>
 				<hr>
-				<span v-html="item.body" ></span>
+				<span v-html="item.body"></span>
 				<like
 					:like-item="buildLikeItem()"
 					:current-user-id="$root.wallData.posterId"

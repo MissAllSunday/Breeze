@@ -55,7 +55,18 @@ class StatusService extends BaseLikesService implements StatusServiceInterface
 
 	public function getById(int $statusId): array
 	{
-		return $this->statusRepository->getById($statusId);
+		$status = $this->statusRepository->getById($statusId);
+		$comments = $this->commentService->getByStatusId($statusId);
+
+		$userIds = array_unique(array_merge($status['usersIds'], $comments['usersIds']));
+
+		$status['data'] = $this->appendLikeData($status['data'], StatusEntity::ID);
+		$status['data']['comments'] = $comments[$statusId] ?? [];
+
+		return [
+			'users' => $this->userService->loadUsersInfo(array_unique($userIds)),
+			'status' => $status['data'],
+		];
 	}
 
 	public function saveAndGet(array $data): array
@@ -66,18 +77,13 @@ class StatusService extends BaseLikesService implements StatusServiceInterface
 				StatusEntity::LIKES => 0,
 			]));
 
-			$newStatus = $this->statusRepository->getById($statusId);
+			return $this->getById($statusId);
 		} catch (InvalidStatusException $e) {
 			return [
 				'type' => ValidateGateway::ERROR_TYPE,
 				'message' => $e->getMessage(),
 			];
 		}
-
-		return [
-			'users' => $this->userService->loadUsersInfo(array_unique($newStatus['usersIds'])),
-			'status' => $newStatus['data'],
-		];
 	}
 
 	/**

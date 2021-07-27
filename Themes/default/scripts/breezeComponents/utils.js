@@ -147,6 +147,18 @@ let breezeUtils = {
 
 			return moods;
 		},
+		parseItem: function (items){
+			let selfUtils = this;
+
+			Object.values(items).map(function(item) {
+				item.body = selfUtils.decode(item.body)
+				item.formatedDate = selfUtils.formatDate(item.createdAt)
+
+				return item
+			});
+
+			return items;
+		},
 		setLocalObject: function (keyName, objectToStore){
 			if (this.canUseLocalStorage() !== true) {
 				return false;

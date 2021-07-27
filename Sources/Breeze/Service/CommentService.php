@@ -78,4 +78,15 @@ class CommentService extends BaseLikesService implements CommentServiceInterface
 
 		return $comments;
 	}
+
+	public function getByStatusId(int $statusId): array
+	{
+		$comments =  $this->commentRepository->getByStatus([$statusId]);
+
+		foreach ($comments['data'] as $statusId => &$commentsByStatusId) {
+			$commentsByStatusId = $this->appendLikeData($commentsByStatusId, CommentEntity::ID);
+		}
+
+		return $comments;
+	}
 }
