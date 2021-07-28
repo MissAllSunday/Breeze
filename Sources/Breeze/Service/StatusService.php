@@ -61,7 +61,7 @@ class StatusService extends BaseLikesService implements StatusServiceInterface
 		$userIds = array_unique(array_merge($status['usersIds'], $comments['usersIds']));
 
 		$status['data'] = $this->appendLikeData($status['data'], StatusEntity::ID);
-		$status['data']['comments'] = $comments[$statusId] ?? [];
+		$status['data'][$statusId]['comments'] = $comments[$statusId] ?? [];
 
 		return [
 			'users' => $this->userService->loadUsersInfo(array_unique($userIds)),
