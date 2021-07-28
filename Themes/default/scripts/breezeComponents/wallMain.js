@@ -32,7 +32,7 @@ new Vue({
 					userId: selfVue.wallData.posterId,
 					body: editorContent,
 				}
-			).then(function(response) {console.log(response)
+			).then(function(response) {
 				selfVue.setNotice(response.data);
 
 				if (response.data.content) {

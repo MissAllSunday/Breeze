@@ -3,7 +3,7 @@ Vue.component('status', {
 	props: ['item', 'users'],
 	data: function () {
 		return {
-			localComments: Object.assign({}, this.item.comments),
+			localComments: Object.assign({}, this.parseItem(this.item.comments)),
 		}
 	},
 	template: `<li>
@@ -51,7 +51,7 @@ Vue.component('status', {
 			return 'breeze_status_' + this.item.id;
 		},
 		setLocalComment: function (comments) {
-			this.localComments = Object.assign({}, this.localComments, comments)
+			this.localComments = Object.assign({}, this.localComments, this.parseItem(comments))
 		},
 		postComment: function (editorContent) {
 			let selfVue = this

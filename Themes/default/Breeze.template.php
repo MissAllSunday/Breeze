@@ -88,10 +88,13 @@ function template_breeze_main(): void
     		</tab>';
 	}
 
+//	Activity tab
+//	echo '
+//			<tab :name="\'' . $txt['Breeze_tabs_activity'] . '\'">
+//
+//    		</tab>';
+
 	echo '
-			<tab :name="\'' . $txt['Breeze_tabs_activity'] . '\'">
-      			profile owner recent activity
-    		</tab>
   		</tabs>
 	</div>
 <br />';
