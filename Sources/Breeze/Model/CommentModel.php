@@ -43,16 +43,12 @@ class CommentModel extends BaseModel implements CommentModelInterface
 
 	public function getByProfiles(array $profileOwnerIds): array
 	{
-		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(), [
+		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikeEntity::TYPE_COMMENT), [
 			'columnName' => StatusEntity::WALL_ID,
 			'profileIds' => $profileOwnerIds,
 			'statusTable' => StatusEntity::TABLE,
 			'compare' =>  StatusEntity::TABLE .
 				'.' . StatusEntity::ID . ' = ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::STATUS_ID,
-			'likeJoin' => '' . LikeEntity::TABLE . ' AS ' . self::LIKE_IDENTIFIER . '
-			 	ON (' . self::LIKE_IDENTIFIER . '.' . LikeEntity::ID . ' =
-			 	 ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::ID . '
-			 	AND ' . self::LIKE_IDENTIFIER . '.' . LikeEntity::TYPE . ' = "' . LikeEntity::TYPE_COMMENT . '")',
 		]);
 
 		$request = $this->dbClient->query(
@@ -70,14 +66,9 @@ class CommentModel extends BaseModel implements CommentModelInterface
 
 	public function getByStatus(array $statusIds): array
 	{
-		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(), [
+		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikeEntity::TYPE_COMMENT), [
 			'columnName' => CommentEntity::STATUS_ID,
 			'statusIds' => $statusIds,
-			'likeJoin' => '' . LikeEntity::TABLE . ' AS ' . self::LIKE_IDENTIFIER . '
-			 	ON (' . self::LIKE_IDENTIFIER . '.' . LikeEntity::ID . ' =
-			 	 ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::ID . '
-			 	AND ' . self::LIKE_IDENTIFIER . '.' . LikeEntity::TYPE . ' =
-			 	 "' . LikeEntity::TYPE_COMMENT . '")',
 		]);
 
 		$request = $this->dbClient->query(
@@ -101,14 +92,10 @@ class CommentModel extends BaseModel implements CommentModelInterface
 				LEFT JOIN {db_prefix}{raw:likeJoin}
 			WHERE {raw:columnName} IN ({array_int:ids})
 			LIMIT {int:limit}',
-			array_merge($this->getDefaultQueryParamsWithLikes(), [
+			array_merge($this->getDefaultQueryParamsWithLikes(LikeEntity::TYPE_COMMENT), [
 				'limit' => 1,
 				'ids' => array_map('intval', $commentIds),
 				'columnName' => self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::ID,
-				'likeJoin' => '' . LikeEntity::TABLE . ' AS ' . self::LIKE_IDENTIFIER . '
-			 	ON (' . self::LIKE_IDENTIFIER . '.' . LikeEntity::ID . ' =
-			 	 ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::ID . '
-			 	AND ' . self::LIKE_IDENTIFIER . '.' . LikeEntity::TYPE . ' = "' . LikeEntity::TYPE_COMMENT . '")',
 			])
 		);
 

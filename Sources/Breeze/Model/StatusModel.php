@@ -24,7 +24,7 @@ class StatusModel extends BaseModel implements StatusModelInterface
 
 	public function getById(int $statusId): array
 	{
-		$queryParams = array_merge($this->getDefaultQueryParams(), [
+		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikeEntity::TYPE_STATUS), [
 			'columnName' => StatusEntity::ID,
 			'id' => $statusId,
 		]);
@@ -32,7 +32,8 @@ class StatusModel extends BaseModel implements StatusModelInterface
 		$request = $this->dbClient->query(
 			'
 			SELECT {raw:columns}
-			FROM {db_prefix}{raw:tableName}
+			FROM {db_prefix}{raw:from}
+			LEFT JOIN {db_prefix}{raw:likeJoin}
 			WHERE {raw:columnName} = ({int:id})
 			LIMIT 1',
 			$queryParams
@@ -44,13 +45,9 @@ class StatusModel extends BaseModel implements StatusModelInterface
 	public function getStatusByProfile(array $params): array
 	{
 		$queryParams = array_merge(
-			$this->getDefaultQueryParamsWithLikes(),
+			$this->getDefaultQueryParamsWithLikes(LikeEntity::TYPE_STATUS),
 			[
 				'columnName' => StatusEntity::WALL_ID,
-				'likeJoin' => '' . LikeEntity::TABLE . ' AS likes
-			 	ON (' . self::LIKE_IDENTIFIER . '.' . LikeEntity::ID . ' =
-			 	 ' . self::PARENT_LIKE_IDENTIFIER . '.' . StatusEntity::ID . '
-			 	AND ' . self::LIKE_IDENTIFIER . '.' . LikeEntity::TYPE . ' = "' . LikeEntity::TYPE_STATUS . '")',
 			],
 			$params
 		);
