@@ -20,13 +20,15 @@ Vue.component('set-mood', {
 				{{ moodTxt.defaultLabel }}
 			</div>
 			<div slot="body">
-				<ul>
+				<ul class="set_mood">
 					<li
 						v-for="mood in activeMoods"
 						:key="mood.id"
 						title="mood.description"
 						@click="changeMood(mood)">
-						{{ mood.emoji }}
+						<span>
+							{{ mood.emoji }}
+						</span>
 					</li>
 				</ul>
 			</div>

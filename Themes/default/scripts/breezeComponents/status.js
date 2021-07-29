@@ -12,7 +12,7 @@ Vue.component('status', {
 			<h4 class='floatleft' v-html='getUserLink(this.item.userId)'></h4>
 			<div class='floatright smalltext'>
 				{{ item.formatedDate }}
-				&nbsp;<span class="main_icons remove_button floatright" v-on:click="deleteStatus()"></span>
+				&nbsp;<span class="main_icons remove_button floatright pointer_cursor" v-on:click="deleteStatus()"></span>
 			</div>
 			<br>
 			<div class='content'>

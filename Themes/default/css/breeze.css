@@ -110,9 +110,14 @@
 #moodList li {
 	display: inline;
 	list-style-type: none;
-	padding-right: 20px;
+	padding: 10px;
+	line-height: 2em;
 	max-width: 30%;
 	text-align: center;
+}
+
+#moodList li span {
+	cursor: pointer;
 }
 
 .modal-mask {

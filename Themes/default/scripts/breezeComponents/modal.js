@@ -10,7 +10,7 @@ Vue.component('modal', {
 							<span class="floatleft">
 								<slot name="header"></slot>
 							</span>
-							<span class="main_icons remove_button floatright" @click="$emit('close')"></span>
+							<span class="main_icons remove_button floatright pointer_cursor" @click="$emit('close')"></span>
 						</h3>
 					</div>
 					<div class="modal-body information">
