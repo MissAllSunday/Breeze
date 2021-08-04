@@ -3,7 +3,7 @@ Vue.component('status', {
 	props: ['item', 'users'],
 	data: function () {
 		return {
-			localComments: {},
+			localComments: this.parseItem(this.item.comments),
 		}
 	},
 	template: `<li>
@@ -39,10 +39,6 @@ Vue.component('status', {
 			</div>
 		</div>
 	</li>`,
-	created: function() {
-		if (typeof this.item.comments !== 'undefined' && this.item.comments.length > 0)
-			this.setLocalComment(this.item.comments)
-	},
 	methods: {
 		buildLikeItem: function (){
 			let selfVue = this

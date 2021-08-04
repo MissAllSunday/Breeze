@@ -151,6 +151,7 @@ $txt['Breeze_moodLabel'] = 'mood';
 $txt['Breeze_moodChange'] = 'Change your mood';
 $txt['Breeze_info_moodChanged'] = 'Your mood has been changed!';
 $txt['Breeze_info_moodCreated'] = 'The new mood has been successfully created!';
+$txt['Breeze_info_moodUpdated'] = 'The mood has been successfully updated!';
 $txt['Breeze_info_moodDeleted'] = 'Your mood was successfully deleted!';
 $txt['Breeze_error_moodCreated'] = 'You aren\'t allowed to create moods';
 $txt['Breeze_error_moodChanged'] = 'You aren\'t allowed to set moods';

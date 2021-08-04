@@ -9,13 +9,9 @@ use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class DeleteMood extends ValidateMood implements ValidateDataInterface
+class PostMood extends ValidateMood implements ValidateDataInterface
 {
-	protected const PARAMS = [
-		MoodEntity::ID => 0,
-	];
-
-	protected const SUCCESS_KEY = 'moodDeleted';
+	protected const SUCCESS_KEY = 'moodUpdated';
 
 	public function successKeyString(): string
 	{
@@ -25,6 +21,8 @@ class DeleteMood extends ValidateMood implements ValidateDataInterface
 	public function getSteps(): array
 	{
 		return array_merge($this->steps, [
+			self::INT,
+			self::STRING,
 			self::PERMISSIONS,
 			self::DATA_EXISTS,
 		]);
@@ -36,14 +34,14 @@ class DeleteMood extends ValidateMood implements ValidateDataInterface
 	public function permissions(): void
 	{
 		if (!Permissions::isAllowedTo(Permissions::ADMIN_FORUM)) {
-			throw new ValidateDataException('moodDelete');
+			throw new ValidateDataException('moodCreated');
 		}
 	}
 
 	public function getInts(): array
 	{
 		return [
-			MoodEntity::ID,
+			MoodEntity::STATUS,
 		];
 	}
 
@@ -54,7 +52,10 @@ class DeleteMood extends ValidateMood implements ValidateDataInterface
 
 	public function getStrings(): array
 	{
-		return [];
+		return [
+			MoodEntity::EMOJI,
+			MoodEntity::DESC,
+		];
 	}
 
 	public function getPosterId(): int
@@ -64,11 +65,6 @@ class DeleteMood extends ValidateMood implements ValidateDataInterface
 
 	public function getParams(): array
 	{
-		return [];
-	}
-
-	public function getData(): array
-	{
-		return $this->data;
+		return array_merge(self::DEFAULT_PARAMS, $this->data);
 	}
 }

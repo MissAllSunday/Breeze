@@ -8,35 +8,20 @@ namespace Breeze\Entity;
 class SettingsEntity
 {
 	public const MASTER = 'master';
-
 	public const FORCE_WALL = 'forceWall';
-
 	public const MAX_BUDDIES_NUM = 'maxBuddiesNumber';
-
 	public const ABOUT_ME_MAX_LENGTH = 'aboutMeMaxLength';
-
 	public const ENABLE_MOOD = 'enableMood';
-
 	public const MOOD_LABEL = 'moodLabel';
-
 	public const MOOD_DEFAULT = 'moodDefault';
-
 	public const MOOD_PLACEMENT = 'moodPlacement';
-
 	public const MAX_FLOOD_NUM = 'maxFloodNum';
-
 	public const MAX_FLOOD_MINUTES= 'maxFloodMinutes';
-
 	public const TYPE_CHECK = 'check';
-
 	public const TYPE_INT = 'int';
-
 	public const TYPE_TEXT = 'text';
-
 	public const TYPE_TEXTAREA = 'textArea';
-
 	public const TYPE_SELECT = 'select';
-
 	public const PF_TEXT_KEY = 'custom_profile_placement_';
 
 	public static function getColumns(): array
