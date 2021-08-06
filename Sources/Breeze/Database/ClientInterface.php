@@ -22,7 +22,7 @@ interface ClientInterface
 
 	public function getInsertedId(string $tableName, string $columnIdName): int;
 
-	public function update(string $tableName, string $queryString, array $bindParams): int;
+	public function update(string $tableName, string $queryString, array $bindParams): bool;
 
 	public function delete(string $tableName, string $queryString, array $bindParams): bool;
 }

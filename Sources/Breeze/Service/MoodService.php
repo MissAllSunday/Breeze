@@ -102,38 +102,17 @@ class MoodService extends BaseService implements MoodServiceInterface
 		return $this->moodRepository->getById($moodId);
 	}
 
-	public function saveMood(array $mood, int $moodId): bool
+	public function saveMood(array $mood): array
 	{
-		$errors = [];
+		$moodId = $mood[MoodEntity::ID] ?? 0;
 
 		if (!empty($moodId)) {
-			$activeMoods = $this->moodRepository->getActiveMoods();
-
-			if (!isset($activeMoods[$moodId])) {
-				$errors[] = $this->getText('mood_error_invalid');
-			}
-		}
-
-		if (!isset($mood[MoodEntity::EMOJI]) || empty($mood[MoodEntity::EMOJI])) {
-			$errors[] = $this->getText('mood_error_empty_emoji');
-		}
-
-		if (!empty($errors)) {
-			$this->setMessage(sprintf(
-				$this->getText('mood_errors'),
-				implode(' ', $errors)
-			));
-
-			return false;
-		}
-
-		if (!empty($moodId)) {
-			$result = $this->moodRepository->getModel()->update($mood, $moodId);
+			$result = $this->moodRepository->updateMood($mood, $moodId);
 		} else {
-			$result = $this->moodRepository->getModel()->insert($mood);
+			$result = $this->moodRepository->insertMood($mood);
 		}
 
-		return (bool) $result;
+		return $result;
 	}
 
 	public function showMoodOnCustomFields(int $userId): void

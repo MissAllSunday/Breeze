@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\User;
 
-use Breeze\Model\MoodModelInterface;
+use Breeze\Repository\InvalidMoodException;
 
 interface MoodRepositoryInterface
 {
@@ -21,11 +21,14 @@ interface MoodRepositoryInterface
 
 	public function getActiveMoods(): array;
 
-	public function saveMood($mood): bool;
-
+	/**
+	 * @throws InvalidMoodException
+	 */
 	public function getById(int $moodId): array;
 
 	public function getMoodProfile(int $userId, array $area);
 
-	public function getModel(): MoodModelInterface;
+	public function updateMood(array $mood, int $moodId): array;
+
+	public function insertMood(array $mood): array;
 }

@@ -76,7 +76,7 @@ class DatabaseClient implements ClientInterface
 		return $this->db['db_insert_id']('{db_prefix}' . $tableName, $columnIdName);
 	}
 
-	public function update(string $tableName, string $queryString, array $bindParams): int
+	public function update(string $tableName, string $queryString, array $bindParams): bool
 	{
 		return $this->db['db_query'](
 			'',

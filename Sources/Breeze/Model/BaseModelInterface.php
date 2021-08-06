@@ -9,7 +9,7 @@ interface BaseModelInterface
 {
 	public function getInsertedId(): int;
 
-	public function insert(array $data, int $id = 0): int;
+	public function insert(array $data): int;
 
 	public function update(array $data, int $id = 0): array;
 

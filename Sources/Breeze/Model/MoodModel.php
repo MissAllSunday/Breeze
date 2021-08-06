@@ -29,17 +29,17 @@ class MoodModel extends BaseModel implements MoodModelInterface
 			return [];
 		}
 
-		$this->dbClient->update(
+		$updated = $this->dbClient->update(
 			MoodEntity::TABLE,
 			'SET
-				' . MoodEntity::EMOJI . ' = {string:name},
+				' . MoodEntity::EMOJI . ' = {string:emoji},
 				' . MoodEntity::DESC . ' = {string:description},
 				' . MoodEntity::STATUS . ' = {string:isActive}
 				WHERE ' . MoodEntity::ID . ' = {int:id}',
 			$data
 		);
 
-		return $this->getByIDs([$id])[0];
+		return !$updated ? [] : $this->getByIDs([$id])[$id];
 	}
 
 	public function getByIDs(array $moodIds): array

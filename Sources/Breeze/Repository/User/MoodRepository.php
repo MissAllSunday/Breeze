@@ -79,9 +79,19 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 		return $this->moodModel->getCount();
 	}
 
-	public function saveMood($mood): bool
+	public function updateMood(array $mood, int $moodId): array
 	{
-		return true;
+		return $this->moodModel->update($mood, $moodId);
+	}
+
+	/**
+	 * @throws InvalidMoodException
+	 */
+	public function insertMood(array $mood): array
+	{
+		$moodId =  $this->moodModel->insert($mood);
+
+		return $this->getById($moodId);
 	}
 
 	/**
@@ -107,10 +117,5 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 	public function getMoodProfile(int $userId, array $area): void
 	{
 		// TODO: Implement getMoodProfile() method.
-	}
-
-	public function getModel(): MoodModelInterface
-	{
-		return $this->moodModel;
 	}
 }
