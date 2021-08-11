@@ -44,7 +44,9 @@ abstract class ValidateMood extends ValidateData
 	 */
 	public function dataExists(): void
 	{
-		$this->moodService->getMoodById($this->data[MoodEntity::ID]);
+		if (isset($this->data[MoodEntity::ID])) {
+			$this->moodService->getMoodById($this->data[MoodEntity::ID]);
+		}
 	}
 
 	public static function getNameSpace(): string

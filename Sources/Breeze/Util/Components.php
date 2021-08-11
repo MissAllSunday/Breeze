@@ -110,6 +110,7 @@ class Components
 				'invalidEmoji' => $this->getText('error_invalidEmoji'),
 				'emptyEmoji' => $this->getText('error_emptyEmoji'),
 				'moodChange' => $this->getText('moodChange'),
+				'newMood' => $this->getText('mood_createNewMood'),
 				'sameMood' => $this->getText('error_sameMood'),
 				'defaultLabel' => $this->getSetting(
 					SettingsEntity::MOOD_LABEL,

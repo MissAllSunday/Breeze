@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-
-// The admin panel where the news and other very useful stuff is displayed
 use Breeze\Breeze;
 
 function template_breezeAdmin_main(): void
@@ -145,26 +143,18 @@ function template_breezeAdmin_moodList(): void
 	</div>
 	<div class="additional_row">
 		<input type="submit" value="' . $txt['Breeze_mood_newMood'] . '" class="button" @click="creating()">
-	</div>
-	<div v-if="isCreatingNewMood">
-		<div class="modal-header cat_bar">
-			<h3 class="catbg">
-				<span class="floatleft">
-					' . $txt['Breeze_mood_createNewMood'] . '
-				</span>
-				<span
-					class="main_icons remove_button floatright"
-					@click="isCreatingNewMood = false"
-					title="' . $txt['Breeze_general_cancel'] . '"
-				></span>
-			</h3>
-		</div>
-		<div class="information">
-			<mood-form
-				new-mood
-				@save="save"
-			></mood-form>
-		</div>
+		<modal v-if="showModal" @close="showModal = false" @click.stop>
+			<div slot="header">
+				{{ $root.txt.mood.newMood }}
+			</div>
+			<div slot="body">
+				<mood-form
+					v-bind:mood="[]"
+					@delete="showModal = false"
+					@save="onSave($event)"
+				></mood-form>
+			</div>
+		</modal>
 	</div>
 </div>';
 }

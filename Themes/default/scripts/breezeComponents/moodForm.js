@@ -1,4 +1,5 @@
 Vue.component('mood-form', {
+	props: ['mood'],
 	template: `
 <div>
 	<message-box
@@ -14,7 +15,7 @@ Vue.component('mood-form', {
 			</span>
 		</dt>
 		<dd>
-			<input type="text" v-model="mood.emoji" @change="invalidEmoji = validator()">
+			<input type="text" v-model="localMood.emoji" @change="invalidEmoji = validator()">
 		</dd>
 		<dt>
 			<span>
@@ -22,7 +23,7 @@ Vue.component('mood-form', {
 			</span>
 		</dt>
 		<dd>
-			<textarea v-model="mood.description"></textarea>
+			<textarea v-model="localMood.description"></textarea>
 		</dd>
 		<dt>
 			<span>
@@ -30,31 +31,19 @@ Vue.component('mood-form', {
 			</span>
 		</dt>
 		<dd>
-			<input type="checkbox" id="checkbox" v-model="mood.isActive">
+			<input type="checkbox" id="checkbox" v-model="localMood.isActive">
 		</dd>
 	</dl>
 	<input type="submit" v-bind:value="$root.txt.save" class="button" @click="onSave()" :disabled='invalidEmoji'>
 	<input type="submit" v-bind:value="$root.txt.delete" class="button" @click="$emit('delete')" v-if="mood.id != 0">
 </div>`,
-	props: {
-		mood: {
-			default: function () {
-				return {
-					'emoji': '',
-					'description': '',
-					'isActive': true,
-					'id': 0
-				}
-			}
-		},
-		newMood: {
-			type: Boolean,
-			default: false,
-		},
-	},
 	data: function (){
 		return {
-			invalidEmoji: false
+			invalidEmoji: false,
+			localMood: Object.assign({'emoji': '',
+				'description': '',
+				'isActive': true,
+				'id': 0}, this.mood),
 		}
 	},
 	methods: {
@@ -62,26 +51,26 @@ Vue.component('mood-form', {
 			this.invalidEmoji = this.validator()
 
 			if (!this.invalidEmoji) {
-				this.$emit('save', this.mood)
+				this.$emit('save', this.localMood)
 			}
 		},
 		validator: function (){
 			let emojiRegex = /\p{Extended_Pictographic}/u
 			this.invalidEmoji = false
 
-			if (!this.mood.emoji ||
-				0 === this.mood.emoji.length ||
-				!this.mood.emoji.trim()){
+			if (!this.localMood.emoji ||
+				0 === this.localMood.emoji.length ||
+				!this.localMood.emoji.trim()){
 
 				return  this.$root.txt.mood.emptyEmoji
 			}
 
-			if (!emojiRegex.test(this.mood.emoji)) {
+			if (!emojiRegex.test(this.localMood.emoji)) {
 				return this.$root.txt.mood.invalidEmoji
 			}
 		},
 		resetEmojiField: function (){
-			this.mood.emoji = ''
+			this.localMood.emoji = ''
 			this.invalidEmoji = false
 		}
 	},
