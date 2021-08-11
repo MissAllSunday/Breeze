@@ -15,7 +15,6 @@ new Vue({
 	methods: {
 		fetchAllMoods: function () {
 			let selfVue = this;
-			let localMoods;
 
 			selfVue.api
 				.get(selfVue.sprintFormat(selfVue.baseUrl, [this.actions.mood ,this.subActions.mood.all]))
@@ -30,7 +29,10 @@ new Vue({
 			Vue.delete(this.localMoods, moodId);
 		},
 		updateList(mood) {
-			this.localMoods = Object.assign({}, this.localMoods, {mood});
+			let newMoodArray = [];
+			newMoodArray[mood.id] = mood;
+
+			this.localMoods = Object.assign({}, this.localMoods, newMoodArray);
 		},
 		creating: function () {
 			this.showModal = true
@@ -50,7 +52,7 @@ new Vue({
 
 				if (response.data.type !== 'error') {
 					selfVue.showModal = false
-					selfVue.updateList(mood);console.log(this.localMoods)
+					selfVue.updateList(mood);
 				}
 			});
 		},

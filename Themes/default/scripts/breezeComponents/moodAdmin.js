@@ -39,12 +39,14 @@ Vue.component('mood-admin', {
 				selfVue.$root.setNotice(response.data)
 
 				if (response.data.type !== 'error') {
-					selfVue.updateList();
+					selfVue.updateList(mood);
 				}
+
+			selfVue.showModal = false;
 			});
 		},
-		updateList: function () {
-			this.$emit('update-list', this.mood);
+		updateList: function (mood) {
+			this.$emit('update-list', mood);
 		},
 		onDelete: function (){
 			let selfVue = this;
