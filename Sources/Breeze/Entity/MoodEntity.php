@@ -7,6 +7,7 @@ namespace Breeze\Entity;
 
 class MoodEntity extends BaseEntity implements BaseEntityInterface
 {
+	public const IDENTIFIER = 'Mood';
 	public const TABLE = 'breeze_moods';
 	public const ID = 'id';
 	public const EMOJI = 'emoji';

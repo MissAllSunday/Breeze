@@ -15,11 +15,13 @@ use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Entity\SettingsEntity;
-use Breeze\Service\Actions\AdminService;
-use Breeze\Service\Actions\UserSettingsService;
+use Breeze\Service\Actions\AdminServiceInterface;
+use Breeze\Service\Actions\UserSettingsServiceInterface;
 use Breeze\Service\MoodService;
+use Breeze\Service\MoodServiceInterface;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\UserService;
+use Breeze\Service\UserServiceInterface;
 use Breeze\Traits\TextTrait;
 use League\Container\Container as Container;
 
@@ -85,7 +87,7 @@ class Breeze
 				],
 			];
 
-			$profileAreas['info']['areas'][UserService::LEGACY_AREA] = [
+			$profileAreas['info']['areas'][UserServiceInterface::LEGACY_AREA] = [
 				'label' => $this->getText('general_summary'),
 				'icon' => 'members',
 				'file' => 'Profile-View.php',
@@ -109,7 +111,7 @@ class Breeze
 		];
 
 		$profileAreas['breeze_profile']['areas']['breezeSettings'] = [
-			'label' => $this->getText(UserSettingsService::AREA . '_main_title'),
+			'label' => $this->getText(UserSettingsServiceInterface::AREA . '_main_title'),
 			'icon' => 'maintain',
 			'function' => [$settingsController, 'dispatch'],
 			'enabled' => $context['user']['is_owner'],
@@ -152,7 +154,7 @@ class Breeze
 		if (!empty($menu_buttons['profile']['sub_buttons']['summary'])) {
 			$menu_buttons['profile']['sub_buttons']['summary'] = [
 				'title' => $this->getText('summary'),
-				'href' => $scriptUrl . '?action=profile;area=' . UserService::LEGACY_AREA,
+				'href' => $scriptUrl . '?action=profile;area=' . UserServiceInterface::LEGACY_AREA,
 				'show' => true,
 			];
 		}
@@ -184,7 +186,7 @@ class Breeze
 					],
 					'admin' => [
 						'title' => $this->getText('admin'),
-						'href' => $scriptUrl . '?action=admin;area=' . AdminService::AREA,
+						'href' => $scriptUrl . '?action=admin;area=' . AdminServiceInterface::AREA,
 						'show' => ($this->isEnable(SettingsEntity::MASTER) && $currentUserInfo['is_admin']),
 						'sub_buttons' => [],
 					],
@@ -249,11 +251,11 @@ class Breeze
 	{
 		if (!$this->isEnable(SettingsEntity::MASTER) ||
 			!$this->isEnable(SettingsEntity::ENABLE_MOOD) ||
-			!in_array($profileArea, MoodService::DISPLAY_PROFILE_AREAS)) {
+			!in_array($profileArea, MoodServiceInterface::DISPLAY_PROFILE_AREAS)) {
 			return;
 		}
 
-		/** @var MoodService */
+		/** @var MoodServiceInterface */
 		$moodService = $this->container->get(MoodService::class);
 
 		$moodService->showMoodOnCustomFields($userId);
@@ -266,26 +268,25 @@ class Breeze
 
 		$this->setLanguage('BreezeAdmin');
 
-		$adminMenu['config']['areas'][AdminService::AREA] = [
-			'label' => $this->getText(AdminService::AREA . '_main_title'),
+		$adminMenu['config']['areas'][AdminServiceInterface::AREA] = [
+			'label' => $this->getText(AdminServiceInterface::AREA . '_main_title'),
 			'function' => [$adminController, 'dispatch'],
 			'icon' => 'smiley',
 			'subsections' => [
-				'main' => [$this->getText(AdminService::AREA . '_main_title')],
-				'settings' => [$this->getText(AdminService::AREA . '_settings_title')],
-				'permissions' => [$this->getText(AdminService::AREA . '_permissions_title')],
+				'main' => [$this->getText(AdminServiceInterface::AREA . '_main_title')],
+				'settings' => [$this->getText(AdminServiceInterface::AREA . '_settings_title')],
+				'permissions' => [$this->getText(AdminServiceInterface::AREA . '_permissions_title')],
 			],
 		];
 
 		if ($this->isEnable(SettingsEntity::ENABLE_MOOD)) {
-			$adminMenu['config']['areas'][AdminService::AREA]['subsections']['moodList'] = [
-				$this->getText(AdminService::AREA . '_moodList_title'),
+			$adminMenu['config']['areas'][AdminServiceInterface::AREA]['subsections']['moodList'] = [
+				$this->getText(AdminServiceInterface::AREA . '_moodList_title'),
 			];
 		}
 
-		// Pay no attention to that woman behind the curtain!
-		$adminMenu['config']['areas'][AdminService::AREA]['subsections']['donate'] = [
-			$this->getText(AdminService::AREA . '_donate_title'),
+		$adminMenu['config']['areas'][AdminServiceInterface::AREA]['subsections']['donate'] = [
+			$this->getText(AdminServiceInterface::AREA . '_donate_title'),
 		];
 	}
 

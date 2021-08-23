@@ -13,6 +13,7 @@ use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Traits\PersistenceTrait;
 use Breeze\Util\Components;
+use Breeze\Util\Permissions;
 
 class MoodService extends BaseService implements MoodServiceInterface
 {
@@ -127,17 +128,35 @@ class MoodService extends BaseService implements MoodServiceInterface
 			$this->getText(SettingsEntity::MOOD_DEFAULT)
 		);
 
-		$currentMood = !empty($userSettings['mood']) && !empty($activeMoods[$userSettings['mood']]) ?
-			$activeMoods[$userSettings['mood']] : '';
+		$currentMood = !empty($userSettings[UserSettingsEntity::MOOD]) &&
+			!empty($activeMoods[$userSettings[UserSettingsEntity::MOOD]]) ?
+			$activeMoods[$userSettings[UserSettingsEntity::MOOD]] : '';
 
 		// Wild Mood Swings... a highly underrated album if you ask me ;)
 		$context['custom_fields'][] = [
 			'name' => $moodLabel,
 			'placement' => $placementField,
-			'output_html' => $currentMood,
+			'output_html' => $this->setMoodComponent($userId, $currentMood),
 			'show_reg' => false,
 		];
 
 		$this->setGlobal('context', $context);
+	}
+
+	protected function setMoodComponent(int $userId, array $currentMood): string
+	{
+		$currentUserInfo = $this->global('user_info');
+
+		$this->components->loadComponents(
+			['setMood']
+		);
+
+		return '<set-mood
+		:current-mood-id="' . $currentMood[MoodEntity::ID] . '"
+		:user-id="' . $userId . '"
+		:mood-txt="Mood"
+		:is-current-user-owner="' . ($userId === (int) $currentUserInfo['id']) . '"
+		:use-mood="' . (Permissions::isAllowedTo(Permissions::USE_MOOD)) . '"
+	></set-mood>';
 	}
 }

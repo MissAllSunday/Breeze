@@ -26,5 +26,5 @@ interface UserServiceInterface extends BaseServiceInterface
 
 	public function getUsersToLoad(array $userIds = []): array;
 
-	public function loadUsersInfo(array $ids = []): array;
+	public function loadUsersInfo(array $userIds = []): array;
 }

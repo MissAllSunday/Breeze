@@ -27,7 +27,7 @@ Vue.component('set-mood', {
 						title="mood.description"
 						@click="changeMood(mood)">
 						<span>
-							{{ mood.emoji }}
+							{{ currentMood.emoji }}
 						</span>
 					</li>
 				</ul>

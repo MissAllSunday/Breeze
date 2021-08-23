@@ -10,17 +10,13 @@ use Breeze\Controller\ControllerInterface;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Service\Actions\WallServiceInterface;
-use Breeze\Service\UserService;
 use Breeze\Service\UserServiceInterface;
 
 class WallController extends BaseController implements ControllerInterface
 {
 	public const ACTION_MAIN = 'main';
-
 	public const ACTION_STATUS = 'status';
-
 	public const ACTION_COMMENT = 'comment';
-
 	public const SUB_ACTIONS = [
 		self::ACTION_MAIN,
 		self::ACTION_COMMENT,
@@ -55,7 +51,8 @@ class WallController extends BaseController implements ControllerInterface
 		$forceWall = $this->getSetting(SettingsEntity::FORCE_WALL);
 
 		if (empty($userSettings[UserSettingsEntity::WALL]) && empty($forceWall)) {
-			$this->userService->redirect($scriptUrl . sprintf(UserService::LEGACY_URL, $this->userId));
+			$this->userService->redirect($scriptUrl .
+				sprintf(UserServiceInterface::LEGACY_URL, $this->userId));
 		}
 
 		$this->render(__FUNCTION__, [
