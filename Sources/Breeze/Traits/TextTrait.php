@@ -165,4 +165,9 @@ trait TextTrait
 	{
 		return comma_format($number);
 	}
+
+	public function tokenTxtReplace(string $text = ''): string
+	{
+		return tokenTxtReplace($text);
+	}
 }

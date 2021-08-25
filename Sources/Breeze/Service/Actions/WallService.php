@@ -46,7 +46,7 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 		$this->components = $components;
 	}
 
-	public function init(array $usbActions): void
+	public function init(array $subActions): void
 	{
 		if (!$this->isEnable(SettingsEntity::MASTER)) {
 			Error::show('no_valid_action');
@@ -126,7 +126,8 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 		}
 
 		if (!$canSeePage && $redirect) {
-			redirectexit('action=profile;area=' . UserService::LEGACY_AREA . ';u=' . $this->profileOwnerInfo['id']);
+			$this->redirect('action=profile;area=' .
+				UserServiceInterface::LEGACY_AREA . ';u=' . $this->profileOwnerInfo['id']);
 		}
 
 		return true;

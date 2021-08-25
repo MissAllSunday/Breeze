@@ -15,6 +15,7 @@ class Components
 	private const FOLDER = 'breezeComponents/';
 
 	private const COMPONENTS = [
+		'contentSection',
 		'utils',
 		'like',
 		'setMood',
@@ -48,24 +49,16 @@ class Components
 
 	public function loadComponents(array $components = []): void
 	{
-		static $alreadyLoaded = [];
-
 		$componentsToLoad = array_intersect(self::COMPONENTS, $components);
 
 		$this->loadJsDependencies();
 		$this->loadCssDependencies();
 
 		foreach ($componentsToLoad as $component) {
-			if (isset($alreadyLoaded[$component]) && true === $alreadyLoaded[$component]) {
-				continue;
-			}
-
 			$this->loadJavaScriptFile(self::FOLDER . $component . '.js', [
 				'defer' => true,
 				'default_theme' => true,
 			], strtolower(Breeze::PATTERN . $component));
-
-			$alreadyLoaded[$component] = true;
 		}
 	}
 
@@ -145,18 +138,11 @@ class Components
 
 	protected function loadJsDependencies(): void
 	{
-		static $alreadyDone = false;
-
-		if (!$alreadyDone) {
-			foreach (self::CDN_JS as $jsDependency) {
-				var_dump($jsDependency);
-				$this->loadJavaScriptFile($jsDependency, [
-					'external' => true,
-					'defer' => true,
-				], strtolower(Breeze::PATTERN . $jsDependency));
-			}
-
-			$alreadyDone = true;
+		foreach (self::CDN_JS as $jsDependency) {
+			$this->loadJavaScriptFile($jsDependency, [
+				'external' => true,
+				'defer' => true,
+			], strtolower(Breeze::PATTERN . $jsDependency));
 		}
 	}
 

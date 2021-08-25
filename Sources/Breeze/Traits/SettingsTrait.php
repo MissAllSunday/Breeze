@@ -61,4 +61,9 @@ trait SettingsTrait
 	{
 		loadtemplate($templateName);
 	}
+
+	public function redirect(string $uri): void
+	{
+		redirectexit($uri);
+	}
 }

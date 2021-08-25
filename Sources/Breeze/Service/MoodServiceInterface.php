@@ -31,6 +31,4 @@ interface MoodServiceInterface extends BaseServiceInterface
 	public function getMoodById(int $moodId): array;
 
 	public function saveMood(array $mood): array;
-
-	public function showMoodOnCustomFields(int $userId): void;
 }

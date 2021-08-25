@@ -70,15 +70,24 @@ class MoodService extends BaseService implements MoodServiceInterface
 
 		$activeMoods = $this->moodRepository->getActiveMoods();
 		$userSettings = $this->userRepository->getUserSettings($userId);
+		$placementField = $this->getSetting(SettingsEntity::MOOD_PLACEMENT, 0);
+		$moodLabel = $this->getSetting(
+			SettingsEntity::MOOD_LABEL,
+			$this->getText(SettingsEntity::MOOD_DEFAULT)
+		);
 
-		if (empty($userSettings[UserSettingsEntity::MOOD]) ||
-			empty($activeMoods[$userSettings[UserSettingsEntity::MOOD]])) {
-			return;
-		}
+		$currentMood = !empty($userSettings[UserSettingsEntity::MOOD]) &&
+		!empty($activeMoods[$userSettings[UserSettingsEntity::MOOD]]) ?
+			$activeMoods[$userSettings[UserSettingsEntity::MOOD]] : '';
 
-		$userMood = $userSettings[UserSettingsEntity::MOOD];
-
-		$data['custom_fields'][] =  $userMood;
+		// Wild Mood Swings... a highly underrated album if you ask me ;)
+		$data['custom_fields'][] = [
+			'title' => $this->tokenTxtReplace($moodLabel),
+			'col_name' => $this->tokenTxtReplace($moodLabel),
+			'value' => $this->setMoodComponent($userId, $currentMood),
+			'raw' => $currentMood[MoodEntity::EMOJI],
+			'placement' => $placementField,
+		];
 	}
 
 	public function moodProfile(int $memID, array $area): void
@@ -116,45 +125,20 @@ class MoodService extends BaseService implements MoodServiceInterface
 		return $result;
 	}
 
-	public function showMoodOnCustomFields(int $userId): void
-	{
-		$context = $this->global('context');
-
-		$activeMoods = $this->moodRepository->getActiveMoods();
-		$userSettings = $this->userRepository->getUserSettings($userId);
-		$placementField = $this->getSetting(SettingsEntity::MOOD_PLACEMENT, 0);
-		$moodLabel = $this->getSetting(
-			SettingsEntity::MOOD_LABEL,
-			$this->getText(SettingsEntity::MOOD_DEFAULT)
-		);
-
-		$currentMood = !empty($userSettings[UserSettingsEntity::MOOD]) &&
-			!empty($activeMoods[$userSettings[UserSettingsEntity::MOOD]]) ?
-			$activeMoods[$userSettings[UserSettingsEntity::MOOD]] : '';
-
-		// Wild Mood Swings... a highly underrated album if you ask me ;)
-		$context['custom_fields'][] = [
-			'name' => $moodLabel,
-			'placement' => $placementField,
-			'output_html' => $this->setMoodComponent($userId, $currentMood),
-			'show_reg' => false,
-		];
-
-		$this->setGlobal('context', $context);
-	}
-
 	protected function setMoodComponent(int $userId, array $currentMood): string
 	{
 		$currentUserInfo = $this->global('user_info');
 
+		$this->components->loadTxtVarsFor(['general', 'mood']);
 		$this->components->loadComponents(
-			['setMood']
+			['contentSection', 'setMood']
 		);
 
-		return '<set-mood
+		return '
+		<set-mood
 		:current-mood-id="' . $currentMood[MoodEntity::ID] . '"
 		:user-id="' . $userId . '"
-		:mood-txt="Mood"
+		:mood-txt="window.breezeTxtMood"
 		:is-current-user-owner="' . ($userId === (int) $currentUserInfo['id']) . '"
 		:use-mood="' . (Permissions::isAllowedTo(Permissions::USE_MOOD)) . '"
 	></set-mood>';

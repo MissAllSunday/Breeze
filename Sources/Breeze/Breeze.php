@@ -239,9 +239,13 @@ class Breeze
 		];
 	}
 
-	public function displayMoodWrapper(array &$data, int $userId, $displayCustomFields): void
+	public function displayMoodWrapper(array &$data, int $userId, bool $displayCustomFields): void
 	{
-		/** @var MoodService */
+		if (!$displayCustomFields) {
+			return;
+		}
+
+		/** @var MoodServiceInterface */
 		$moodService = $this->container->get(MoodService::class);
 
 		$moodService->displayMood($data, $userId);
@@ -258,7 +262,7 @@ class Breeze
 		/** @var MoodServiceInterface */
 		$moodService = $this->container->get(MoodService::class);
 
-		$moodService->showMoodOnCustomFields($userId);
+//		$moodService->showMoodOnCustomFields($userId);
 	}
 
 	public function adminMenuWrapper(array &$adminMenu): void
