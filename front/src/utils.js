@@ -2,6 +2,12 @@ import DOMPurify from 'dompurify';
 import axios from 'axios';
 import moment from 'moment';
 
+let smf_scripturl
+let smf_session_var
+let smf_session_id
+let smf_you_sure
+let ajax_indicator
+
 export default {
 	data: function () {
 		return {
@@ -75,7 +81,7 @@ export default {
 			let message = options.message || '';
 			let selfVue = this;
 
-			Vue.$toast.open({
+			selfVue.$toast.open({
 				message: message,
 				type: type,
 				onClose: function () {
@@ -84,7 +90,7 @@ export default {
 			});
 		},
 		clearNotice: function () {
-			Vue.$toast.clear();
+			this.$toast.clear();
 		},
 		formatDate: function (unixTime) {
 			return moment.unix(unixTime).format('lll')
@@ -110,7 +116,7 @@ export default {
 						e.code === 1014 ||
 						e.name === 'QuotaExceededError' ||
 						e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-					storage && storage.length !== 0;
+					window.storage && window.storage.length !== 0;
 			}
 		},
 		decode: function (html) {

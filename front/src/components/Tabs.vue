@@ -1,7 +1,11 @@
 <template>
 	<div class="adm_submenus tabs">
 		<ul class="dropmenu">
-			<li v-for="tab in tabs" :class="{ 'is-active': tab.isActive }">
+			<li
+				v-for="tab in tabs"
+				:class="{ 'is-active': tab.isActive }"
+				v-bind:key="tab"
+			>
 				<a :href="tab.href" @click="selectTab(tab)" :class="{ 'active': tab.isActive }">{{ tab.name }}</a>
 			</li>
 		</ul>

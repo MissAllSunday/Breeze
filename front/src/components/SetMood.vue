@@ -4,10 +4,10 @@
 		</span>
 	<span v-else title="moodLabel">{{ moodTxt.defaultLabel }} {{ currentMood.emoji }}</span>
 	<modal v-if="showModal" @close="showModal = false" @click.stop>
-		<div slot="header">
+		<slot name="header">
 			{{ moodTxt.defaultLabel }}
-		</div>
-		<div slot="body">
+		</slot>
+		<slot name="body">
 			<ul class="set_mood">
 				<li
 					v-for="mood in activeMoods"
@@ -19,7 +19,7 @@
 						</span>
 				</li>
 			</ul>
-		</div>
+		</slot>
 	</modal>
 </template>
 
@@ -71,6 +71,7 @@ export default {
 					}
 				})
 				.catch(function(error) {
+					console.error(error)
 					selfVue.errored = true
 				}).then(function (){
 
@@ -99,6 +100,7 @@ export default {
 
 				})
 				.catch(function(error) {
+					console.error(error)
 					selfVue.errored = true
 				});
 		},

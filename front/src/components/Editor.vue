@@ -1,11 +1,11 @@
 <template>
 	<Modal v-if ="previewBody !== null" @close="clearPreview()" @click.stop>
-		<div slot="header">
+		<slot name="header">
 			{{ this.$root.txt.previewing }}
-		</div>
-		<div slot="body">
+		</slot>
+		<slot name="body">
 			<div class="sun-editor-editable" v-html="previewBody"></div>
-		</div>
+		</slot>
 	</Modal>
 	<textarea :id="editor_id"></textarea>
 	<div class="post_button_container floatright">
@@ -23,7 +23,6 @@
 import Modal from "@/components/Modal";
 import 'suneditor/dist/css/suneditor.min.css'
 import suneditor from 'suneditor'
-import plugins from 'suneditor/src/plugins'
 import utils from "@/utils";
 
 export default {
