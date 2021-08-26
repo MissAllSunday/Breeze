@@ -34,7 +34,7 @@ class Breeze
 	public const PATTERN = self::NAME . '_';
 	public const FEED = 'https://api.github.com/repos/MissAllSunday/Breeze/releases';
 	public const SUPPORT_URL = 'https://missallsunday.com';
-	public const VUE_VERSION = '2.5.16';
+	public const VUE_VERSION = '2.6.11';
 
 	protected Container $container;
 

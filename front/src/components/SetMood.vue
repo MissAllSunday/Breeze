@@ -1,26 +1,28 @@
 <template>
-	<span v-if="isCurrentUserOwner && useMood" @click="showMoodList()" title="moodLabel" class="pointer_cursor">
-			{{ moodTxt.defaultLabel }} {{ currentMood.emoji }}
-		</span>
-	<span v-else title="moodLabel">{{ moodTxt.defaultLabel }} {{ currentMood.emoji }}</span>
-	<modal v-if="showModal" @close="showModal = false" @click.stop>
-		<slot name="header">
-			{{ moodTxt.defaultLabel }}
-		</slot>
-		<slot name="body">
-			<ul class="set_mood">
-				<li
-					v-for="mood in activeMoods"
-					:key="mood.id"
-					title="mood.description"
-					@click="changeMood(mood)">
-						<span>
-							{{ currentMood.emoji }}
-						</span>
-				</li>
-			</ul>
-		</slot>
-	</modal>
+	<div>
+		<span v-if="isCurrentUserOwner && useMood" @click="showMoodList()" title="moodLabel" class="pointer_cursor">
+				{{ txtMood.defaultLabel }} {{ currentMood.emoji }}
+			</span>
+		<span v-else title="moodLabel">{{ txtMood.defaultLabel }} {{ currentMood.emoji }}</span>
+		<modal v-if="showModal" @close="showModal = false" @click.stop>
+			<slot name="header">
+				{{ txtMood.defaultLabel }}
+			</slot>
+			<slot name="body">
+				<ul class="set_mood">
+					<li
+						v-for="mood in activeMoods"
+						:key="mood.id"
+						title="mood.description"
+						@click="changeMood(mood)">
+							<span>
+								{{ currentMood.emoji }}
+							</span>
+					</li>
+				</ul>
+			</slot>
+		</modal>
+	</div>
 </template>
 
 <script>
@@ -30,15 +32,24 @@ import utils from "@/utils";
 export default {
 	name: "SetMood",
 	mixins: [utils],
+	props: ['currentMoodId', 'userId', 'isCurrentUserOwner', 'useMood'],
 	components: {
 		Modal
+	},
+	data: function() {
+		return {
+			activeMoods: [],
+			errored: false,
+			showModal: false,
+			currentMood: {}
+		}
 	},
 	created: function () {
 		this.fetchActiveMoods();
 	},
 	methods: {
 		resolveCurrentMood: function (){
-			this.currentMood.emoji = this.moodTxt.moodLabel;
+			this.currentMood.emoji = '';
 
 			if (this.activeMoods[this.currentMoodId]) {
 				this.currentMood = this.activeMoods[this.currentMoodId];
@@ -50,7 +61,7 @@ export default {
 			selfVue.showModal = false;
 
 			if (selectedMood.id === this.currentMoodId) {
-				selfVue.setNotice({message: this.moodTxt.sameMood});
+				selfVue.setNotice({message: this.txtMood.sameMood});
 
 				return;
 			}

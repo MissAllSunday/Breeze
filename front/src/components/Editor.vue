@@ -1,27 +1,28 @@
 <template>
-	<Modal v-if ="previewBody !== null" @close="clearPreview()" @click.stop>
-		<slot name="header">
-			{{ this.$root.txt.previewing }}
-		</slot>
-		<slot name="body">
-			<div class="sun-editor-editable" v-html="previewBody"></div>
-		</slot>
-	</Modal>
-	<textarea :id="editor_id"></textarea>
-	<div class="post_button_container floatright">
-		<input
-			v-if ="previewBody === null"
-			type="button"
-			@click="showPreview()"
-			class="button"
-			:value="$root.txt.preview">
-		<input type="submit" @click="postData()" class="button" :value="$root.txt.send">
+	<div>
+		<Modal v-if ="previewBody !== null" @close="clearPreview()" @click.stop>
+			<slot name="header">
+				{{ this.$data.txt.previewing }}
+			</slot>
+			<slot name="body">
+				<div class="sun-editor-editable" v-html="previewBody"></div>
+			</slot>
+		</Modal>
+		<textarea :id="editor_id"></textarea>
+		<div class="post_button_container floatright">
+			<input
+				v-if ="previewBody === null"
+				type="button"
+				@click="showPreview()"
+				class="button"
+				:value="$data.txt.preview">
+			<input type="submit" @click="postData()" class="button" :value="$data.txt.send">
+		</div>
 	</div>
 </template>
 
 <script>
 import Modal from "@/components/Modal";
-import 'suneditor/dist/css/suneditor.min.css'
 import suneditor from 'suneditor'
 import utils from "@/utils";
 
@@ -59,7 +60,7 @@ export default {
 				background-color: inherit;`
 		}, this.options);
 
-		this.editor = suneditor.create(document.getElementById(this.editor_id), editorOptions);
+		this.editor = suneditor.create(document.getElementById("breeze_status"), editorOptions);
 	},
 	methods: {
 		postData: function () {
@@ -89,7 +90,7 @@ export default {
 				body === '<p></p>' ||
 				typeof(body) !== 'string' ) {
 				this.setNotice({
-					message: this.$root.txt.errorEmpty
+					message: this.$data.txt.errorEmpty
 				});
 
 				return false;

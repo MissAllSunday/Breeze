@@ -36,6 +36,7 @@ pnpm-debug.log*
 *.o
 *.so
 *.bat
+*.bash
 *.session
 # Packages #
 ############

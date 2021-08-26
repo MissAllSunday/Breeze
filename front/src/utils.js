@@ -1,6 +1,4 @@
-import DOMPurify from 'dompurify';
-import axios from 'axios';
-import moment from 'moment';
+import axios from "axios";
 
 let smf_scripturl
 let smf_session_var
@@ -11,8 +9,10 @@ let ajax_indicator
 export default {
 	data: function () {
 		return {
+			txt: window.breezeTxtGeneral,
+			txtMood: window.breezeTxtMood,
 			api : axios,
-			sanitize: DOMPurify.sanitize,
+			sanitize: function(element){return element},
 			baseUrl: smf_scripturl + '?action={0};' + smf_session_var +'='+ smf_session_id + ';sa={1}',
 			actions: {
 				comment: 'breezeComment',
@@ -93,7 +93,7 @@ export default {
 			this.$toast.clear();
 		},
 		formatDate: function (unixTime) {
-			return moment.unix(unixTime).format('lll')
+			return unixTime
 		},
 		setLoading: function () {
 			ajax_indicator(true);

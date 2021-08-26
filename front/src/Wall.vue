@@ -1,70 +1,65 @@
 <template>
-    <div class="breeze_summary floatleft">
-        <div class="roundframe flow_auto">
-            <div class="breeze_avatar">
-<!--				 style="background-image: url('urlstring')"-->
+    <div>
+        <div class="breeze_summary floatleft">
+			<div class="roundframe flow_auto">
+				<div class="breeze_avatar">
+	<!--				 style="background-image: url('urlstring')"-->
 
-            </div>
-            <h3 class="breeze_name">
-                memberOnline
-                member name color
-            </h3>
-            <p class="breeze_title">
-                primary/post group
-            </p>
-            <p class="breeze_title">
-                group icons
-            </p>
-            <p class="breeze_description">
-                blurb
-            </p>
-            <p class="breeze_mood">
-                <SetMood
-                    :current-mood-id="currentMoodId"
-                    :user-id="wallData.ownerId"
-                    :mood-txt="txtMood"
-                    :is-current-user-owner="isCurrentUserOwner"
-                    :use-mood="useMood"
-                ></SetMood>
-            </p>
+				</div>
+				<h3 class="breeze_name">
+					memberOnline
+					member name color
+				</h3>
+				<p class="breeze_title">
+					primary/post group
+				</p>
+				<p class="breeze_title">
+					group icons
+				</p>
+				<p class="breeze_description">
+					blurb
+				</p>
+				<p class="breeze_mood">
+					<SetMood
+						:current-mood-id="currentMoodId"
+						:user-id="wallData.ownerId"
+						:is-current-user-owner="isCurrentUserOwner"
+						:use-mood="useMood"
+					></SetMood>
+				</p>
+			</div>
+		</div>
+
+        <div class="breeze_wall floatright">
+			<Editor
+				editor_id="breeze_status"
+				@get-content="postStatus($event)">
+			</Editor>
+			<ul class="status" v-if="errored !== null">
+				<Status
+					v-for="status_item in status"
+					v-bind:item="status_item"
+					v-bind:key="status_item.status_id"
+					:users="users"
+					@remove-status="onRemoveStatus($event)"
+					@set-new-users="onSetNewUsers($event)">
+				</Status>
+			</ul>
         </div>
-    </div>
-
-    <div class="breeze_wall floatright">
-        <Tabs>
-            <Tab :name="tabs_wall" :selected="true">
-                <Editor
-                    editor_id="\'breeze_status\'"
-                    @get-content="postStatus($event)">
-                </Editor>
-                <ul class="status" v-if="errored !== null">
-                    <Status
-                        v-for="status_item in status"
-                        v-bind:item="status_item"
-                        v-bind:key="status_item.status_id"
-                        :users="users"
-                        @remove-status="onRemoveStatus($event)"
-                        @set-new-users="onSetNewUsers($event)">
-                    </Status>
-                </ul>
-            </Tab>
-        </Tabs>
     </div>
 </template>
 
 <script>
 import utils from './utils.js'
 import SetMood from './components/SetMood.vue'
-import Editor from '@/components/Editor.vue'
-import Status from "@/components/Status";
-import Tabs from "@/components/Tabs";
-import Tab from "@/components/Tab";
+import Editor from './components/Editor.vue'
+import Status from "./components/Status";
+// import Tabs from "./components/Tabs";
+// import Tab from "./components/Tab";
 
 export default {
   name: 'Wall',
   components: {
-      Tab,
-      Tabs,
       Status,
       Editor,
     SetMood
@@ -72,8 +67,6 @@ export default {
     mixins: [utils],
     data() {
         return {
-            txt: window.breezeTxtGeneral,
-            txtMood: window.breezeTxtMood,
             status: null,
             errored: false,
             notice: null,
