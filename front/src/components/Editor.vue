@@ -8,7 +8,7 @@
 				<div class="sun-editor-editable" v-html="previewBody"></div>
 			</slot>
 		</Modal>
-		<textarea :id="editor_id"></textarea>
+		<textarea :id="editor_id" ref="editor_id"></textarea>
 		<div class="post_button_container floatright">
 			<input
 				v-if ="previewBody === null"
@@ -60,7 +60,7 @@ export default {
 				background-color: inherit;`
 		}, this.options);
 
-		this.editor = suneditor.create(document.getElementById("breeze_status"), editorOptions);
+		this.editor = suneditor.create(this.$refs["editor_id"], editorOptions);
 	},
 	methods: {
 		postData: function () {

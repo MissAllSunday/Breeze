@@ -2,18 +2,18 @@
 	<li>
 		<div class='breeze_avatar avatar_status floatleft' :style='getUserAvatar(item.userId)'></div>
 		<div class='windowbg'>
-			<h4 class='floatleft' v-html='getUserLink(this.item.userId)'></h4>
+			<h4 class='floatleft' v-html='getUserLink(this.localStatus.userId)'></h4>
 			<div class='floatright smalltext'>
-				{{ item.formatedDate }}
+				{{ localStatus.formatedDate }}
 				&nbsp;<span class="main_icons remove_button floatright pointer_cursor" v-on:click="deleteStatus()"></span>
 			</div>
 			<br>
 			<div class='content'>
 				<hr>
-				<span v-html="item.body"></span>
+				<span v-html="localStatus.body"></span>
 				<Like
 					:like-item="buildLikeItem()"
-					:current-user-id="$root.wallData.posterId"
+					:current-user-id="$parent.wallData.posterId"
 				></Like>
 			</div>
 			<Comment
@@ -48,18 +48,19 @@ export default {
 	data: function () {
 		return {
 			localComments: this.parseItem(this.item.comments),
+			localStatus: this.item
 		}
 	},
 	methods: {
 		buildLikeItem: function (){
 			let selfVue = this
 
-			selfVue.item.likesInfo.type = 'br_sta'
+			selfVue.localStatus.likesInfo.type = 'br_sta'
 
-			return selfVue.item.likesInfo
+			return selfVue.localStatus.likesInfo
 		},
 		getEditorId: function () {
-			return 'breeze_status_' + this.item.id;
+			return 'breeze_status_' + this.localStatus.id;
 		},
 		setLocalComment: function (comments) {
 			this.localComments = Object.assign({}, this.localComments, this.parseItem(comments))
@@ -74,7 +75,7 @@ export default {
 					selfVue.actions.comment, selfVue.subActions.comment.post
 				]),
 				{
-					userId: this.$root.wallData.posterId,
+					userId: this.$parent.wallData.posterId,
 					statusId: selfVue.item.id,
 					body: editorContent,
 				}

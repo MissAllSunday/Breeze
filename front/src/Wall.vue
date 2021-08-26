@@ -37,9 +37,9 @@
 			</Editor>
 			<ul class="status" v-if="errored !== null">
 				<Status
-					v-for="status_item in status"
-					v-bind:item="status_item"
-					v-bind:key="status_item.status_id"
+					v-for="item in status"
+					v-bind:item="item"
+					v-bind:key="item.status_id"
 					:users="users"
 					@remove-status="onRemoveStatus($event)"
 					@set-new-users="onSetNewUsers($event)">
