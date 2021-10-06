@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class Utils extends Component
+export default class Utils extends Component
 {
 	smfVars = {
 		session: {
@@ -47,6 +47,10 @@ class Utils extends Component
 				unlike: 'unlike',
 			},
 		},
+	}
+
+	getTxt(){
+		return this.txt
 	}
 
 	ownConfirm(){
@@ -151,5 +155,3 @@ class Utils extends Component
 		return unixTime
 	}
 }
-
-module.exports = Utils

@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 
-interface IMood {
+type mood = {
+	id: number
+	description: string
+	emoji: string
+};
+
+interface MoodProps {
 	userMoodId: number,
 	userId: number,
 	isCurrentUserOwner: boolean,
@@ -10,18 +16,17 @@ interface IMood {
 	}
 }
 
-interface IMoodState {
-	currentMood: object
+interface MoodState {
+	currentMood: mood,
+	showModal: boolean,
+	activeMoods: mood[]
 }
 
-export default class Mood extends Component<IMood, IMoodState> {
+export default class Mood extends Component<MoodProps, MoodState> {
 
-	private currentMood: object | undefined;
-
-	constructor(props: IMood | Readonly<IMood>) {
+	constructor(props: MoodProps) {
 		super(props);
 	}
-
 
 	handleMoodModification(){
 			if (this.props.isCurrentUserOwner && this.props.canUseMood)
@@ -29,40 +34,57 @@ export default class Mood extends Component<IMood, IMoodState> {
 				return <span onClick={this.showMoodList} title="moodLabel" className="pointer_cursor">
 					this.props.moodTxt.defaultLabel</span>
 			} else {
-				return this.currentMood.emoji
+				return this.state.currentMood.emoji
 			}
 	}
 
 	showMoodList(){
 
 	}
+	onChangeMood(mood: object){
+		console.log(mood)
+
+		return mood
+	}
+
+	modalBody() {
+		let listActiveMoods = this.state.activeMoods.map((mood: mood) =>
+			<li
+				key={mood.id}
+				title={mood.description}
+				onClick={() => this.onChangeMood(mood)}
+			/>
+		)
+
+		return <ul className="set_mood">
+			{listActiveMoods}
+		</ul>
+	}
+
+	handleShowModal(){
+		if (!this.state.showModal) {
+			return;
+		}
+
+		return ''
+		// <Modal
+		// 	close={this.closeModal()}
+		// 	header={this.props.moodTxt.defaultLabel}
+		// 	body={this.modalBody()}
+		// />
+
+	}
+
+	closeModal() {
+		this.setState({showModal: false})
+
+		return this.state.showModal
+	}
 
 	render() {
 		return <div id="moodList">
-			{this.props.isCurrentUserOwner && this.props.useMood === true
-			<span onClick={this.showMoodList} title="moodLabel" class="pointer_cursor">
-			{ moodTxt.defaultLabel } { currentMood.emoji }
-		</span>}
-
-		<span v-else title="moodLabel">{{ moodTxt.defaultLabel }} {{ currentMood.emoji }}</span>
-		<modal v-if="showModal" @close="showModal = false" @click.stop>
-	<div slot="header">
-			{{ moodTxt.defaultLabel }}
-	</div>
-		<div slot="body">
-			<ul class="set_mood">
-				<li
-					v-for="mood in activeMoods"
-				:key="mood.id"
-				title="mood.description"
-				@click="changeMood(mood)">
-				<span>
-							{{ currentMood.emoji }}
-						</span>
-			</li>
-		</ul>
-	</div>
-	</modal>
+			{this.handleMoodModification()}
+			{this.handleShowModal()}
 	</div>;
 	}
 }

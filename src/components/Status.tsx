@@ -1,8 +1,20 @@
 import * as React from "react";
 
-export default class Status extends React.Component
+interface StatusProps {
+	key: ''
+	status: {}
+	users: {}
+	removeStatus(status: object): void;
+	setNewUsers(user: object): void;
+}
+
+interface StatusState {
+
+}
+
+export default class Status extends React.Component<StatusProps, StatusState>
 {
-	constructor(props: {}) {
+	constructor(props: StatusProps) {
 		super(props);
 	}
 

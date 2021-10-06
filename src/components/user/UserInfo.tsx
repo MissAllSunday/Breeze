@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Avatar from "./Avatar";
-import Mood from "../Mood"
+import Mood from "../Mood";
+import Utils from "../Utils";
 
 
 export default class UserInfo extends React.Component
@@ -13,7 +14,8 @@ export default class UserInfo extends React.Component
 			userMoodId: 1,
 			userId: 1,
 			isCurrentUserOwner: false,
-			canUseMood: false
+			canUseMood: false,
+			moodTxt: {}
 		}
 		let avatarUrl = ''
 
