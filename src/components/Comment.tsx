@@ -1,30 +1,17 @@
-import React, {Component} from 'react';
-import axios from 'axios';
-import Utils from "./Utils";
+import {Component} from "react";
+import { comment } from 'breezeTypes';
 
-type mood = {
-	id: number
-	description: string
-	emoji: string
-};
+interface CommentProps {
 
-interface MoodProps {
-	userMoodId: number,
-	userId: number,
-	isCurrentUserOwner: boolean,
-	canUseMood: boolean,
-	moodTxt: Object
 }
 
-interface MoodState {
-	currentMood: mood,
-	showModal: boolean,
-	activeMoods: mood[]
+interface CommentState {
+	comment: comment
 }
 
-export default class Mood extends Component<MoodProps, MoodState> {
+export default class Comment extends Component<CommentProps, CommentState> {
 
-	constructor(props: MoodProps) {
+	constructor(props: CommentProps) {
 		super(props);
 	}
 

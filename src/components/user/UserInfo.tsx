@@ -15,7 +15,7 @@ export default class UserInfo extends React.Component
 			userId: 1,
 			isCurrentUserOwner: false,
 			canUseMood: false,
-			moodTxt: {}
+			moodTxt: Object
 		}
 		let avatarUrl = ''
 
