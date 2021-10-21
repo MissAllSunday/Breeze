@@ -4,7 +4,7 @@ declare module 'breezeTypes' {
 			var:string,
 			id:string
 		},
-		youSure: object,
+		youSure: string,
 		ajaxIndicator: boolean,
 		txt: object
 	};

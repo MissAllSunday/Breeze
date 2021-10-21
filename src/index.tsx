@@ -16,7 +16,9 @@ let smfVars = {
 	// @ts-ignore
 	ajaxIndicator: ajax_indicator || undefined,
 	// @ts-ignore
-	txt: window.breezeTxtGeneral || undefined
+	txt: window.breezeTxtGeneral || undefined,
+
+	scriptUrl: window.smf_scripturl
 }
 
 ReactDOM.render(

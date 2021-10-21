@@ -1,13 +1,6 @@
 import {Component} from "react";
-import { comment } from 'breezeTypes';
-
-interface CommentProps {
-
-}
-
-interface CommentState {
-	comment: comment
-}
+import { CommentProps } from 'breezeTypes';
+import { CommentState } from 'breezeTypes';
 
 export default class Comment extends Component<CommentProps, CommentState> {
 

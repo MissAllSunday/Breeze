@@ -3,8 +3,18 @@ declare module 'breezeTypes' {
 		id: number
 		body: string
 	};
+
+	interface CommentProps {
+
+	}
+
+	interface CommentState {
+		comment: comment
+	}
 }
 
 module.exports = {
 	comment,
+	CommentProps,
+	CommentState,
 };
