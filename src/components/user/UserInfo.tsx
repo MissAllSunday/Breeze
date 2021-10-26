@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Avatar from "./Avatar";
 import Mood from "../Mood";
-import Utils from "../Utils";
 
 
 export default class UserInfo extends React.Component

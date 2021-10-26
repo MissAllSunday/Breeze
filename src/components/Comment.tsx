@@ -8,13 +8,6 @@ export default class Comment extends Component<CommentProps, CommentState> {
 		super(props);
 	}
 
-	componentDidMount() {
-		axios.get(Utils)
-			.then(res => {
-				const persons = res.data;
-				this.setState({ persons });
-			})
-	}
 
 	handleMoodModification(){
 			if (this.props.isCurrentUserOwner && this.props.canUseMood)

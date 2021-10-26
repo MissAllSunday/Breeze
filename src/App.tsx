@@ -7,7 +7,7 @@ import { appProps } from 'breezeTypes';
 
 function App(props:appProps) {
 	let currentUserData: object = {}
-	let statusByUser: any[] = []
+	let statusByUser: Status[] = []
 	let users = {}
 	let listStatus = statusByUser.map((status: {status_id: ''}) =>
 		<Status

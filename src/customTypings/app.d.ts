@@ -6,7 +6,8 @@ declare module 'breezeTypes' {
 		},
 		youSure: string,
 		ajaxIndicator: boolean,
-		txt: object
+		txt: object,
+		scriptUrl: string,
 	};
 
 	interface appProps {

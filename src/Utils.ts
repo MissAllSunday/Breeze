@@ -1,14 +1,36 @@
-export default class Utils {
+import axios from "axios";
+import { UtilsProps } from "breezeTypes";
+import toast, { Toaster } from 'react-hot-toast';
+import { ToastCallback } from "breezeTypes";
+import { NoticeOptions } from "breezeTypes";
 
-	sprintFormat(stringBase:string, arrayArguments:Array<string>)
+export default class Utils {
+	static api = axios;
+	private static props: UtilsProps;
+
+	constructor(props: UtilsProps) {
+
+	}
+
+	static setNotice(options:NoticeOptions, onCloseCallback: ToastCallback) {
+		toast.custom("<div class='infobox'>Hello World</div>");
+	}
+
+	static clearNotice() {
+		toast.dismiss();
+	}
+
+	static sprintFormat(arrayArguments:Array<string>)
 	{
+		let baseUrl = this.props.smfVars.scriptUrl +
+			'?action={0};' + this.props.smfVars.session.var +'='+ this.props.smfVars.session.id + ';sa={1}';
 		let i = arrayArguments.length
 
 		while (i--) {
-            stringBase = stringBase.replace(new RegExp('\\{' + i + '\\}', 'gm'), arrayArguments[i]);
+			baseUrl = baseUrl.replace(new RegExp('\\{' + i + '\\}', 'gm'), arrayArguments[i]);
 		}
 
-		return stringBase;
+		return baseUrl;
 	}
 
     private static canUseLocalStorage()
