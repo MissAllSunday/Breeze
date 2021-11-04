@@ -4,20 +4,12 @@ import UserInfo from "./components/user/UserInfo";
 import Editor from "./components/Editor";
 import Status from "./components/Status";
 import { appProps } from 'breezeTypes';
+import statusByUser from "./DataSource/Status";
 
 function App(props:appProps) {
 	let currentUserData: object = {}
-	let statusByUser: Status[] = []
+	let statusByUserData:Status[] = statusByUser()
 	let users = {}
-	let listStatus = statusByUser.map((status: {status_id: ''}) =>
-		<Status
-			key={status.status_id}
-			status={status}
-			users={users}
-			removeStatus={onRemoveStatus}
-			setNewUsers={onSetNewUsers}
-		/>
-	)
 
 
   return (
@@ -26,7 +18,7 @@ function App(props:appProps) {
 		<div className="breeze_wall floatright">
 			<Editor />
 			<ul className="status">
-				{listStatus}
+				{statusByUserData}
 			</ul>
 		</div>
     </div>
