@@ -14,7 +14,7 @@ let subActions = {
 	setMood: 'setUserMood'
 }
 
-export default function  ActiveMoods(): Mood[] {
+export default function  ActiveMoods(): mood[] {
 	const [moodData, setMoodData] = useState([] as any);
 	const [fetching, setFetching] = useState(false);
 

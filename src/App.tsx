@@ -3,13 +3,14 @@ import './App.css';
 import UserInfo from "./components/user/UserInfo";
 import Editor from "./components/Editor";
 import Status from "./components/Status";
-import { appProps } from 'breezeTypes';
 import statusByUser from "./DataSource/StatusByUser";
+import Smf from './DataSource/SMF'
 
-function App(props:appProps) {
+function App() {
 	let currentUserData: object = {}
 	let statusByUserData:Status[] = statusByUser()
 	let users = {}
+	let smf = Smf
 
 
   return (

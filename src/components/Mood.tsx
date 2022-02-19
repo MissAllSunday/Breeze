@@ -1,36 +1,26 @@
 import React, {Component} from 'react';
-import axios from 'axios';
-import Utils from '../Utils';
 import ActiveMoods from "../DataSource/ActiveMoods";
-
-type mood = {
-	id: number
-	description: string
-	emoji: string
-};
-
-interface MoodProps {
-	userMoodId: number,
-	userId: number,
-	isCurrentUserOwner: boolean,
-	canUseMood: boolean,
-	moodTxt: Object
-}
-
-interface MoodState {
-	currentMood: mood,
-	showModal: boolean,
-	activeMoods: mood[]
-}
+import { moodType, MoodState, MoodProps } from 'breezeTypes';
 
 export default class Mood extends Component<MoodProps, MoodState> {
 
 	constructor(props: MoodProps) {
 		super(props);
+		this.state = {
+			currentMood: {
+				id: 0,
+				emoji: '',
+				body: '',
+				description: '',
+				isActive: false
+			},
+			showModal: false,
+			activeMoods: ActiveMoods()
+		}
 	}
 
 	componentDidMount() {
-		this.activeMoods = ActiveMoods()
+
 	}
 
 	handleMoodModification(){
@@ -39,7 +29,7 @@ export default class Mood extends Component<MoodProps, MoodState> {
 				return <span onClick={this.showMoodList} title="moodLabel" className="pointer_cursor">
 					this.props.moodTxt.defaultLabel</span>
 			} else {
-				return this.state.currentMood.emoji
+				// return this.state.currentMood.emoji
 			}
 	}
 

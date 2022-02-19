@@ -1,7 +1,7 @@
 import { smfVars } from 'breezeTypes';
 import {useState} from "react";
 
-export default function  SMF(): smfVars {
+export default function  Smf(): smfVars {
 	// @ts-ignore
 	const [sessionData, setSessionData] = useState(window.smf_session_var || '')
 	// @ts-ignore
@@ -13,7 +13,7 @@ export default function  SMF(): smfVars {
 	// @ts-ignore
 	const [txt, setTxt] = useState(window.breezeTxtGeneral || undefined)
 	// @ts-ignore
-	const [userId, setTxt] = useState(window.smf_member_id || 0)
+	const [userId, setUserId] = useState(window.smf_member_id || 0)
 
 	return {
 		session: sessionData,

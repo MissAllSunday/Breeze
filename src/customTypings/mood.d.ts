@@ -1,27 +1,29 @@
 declare module 'breezeTypes' {
-	type mood = {
+	type moodType = {
 		id: number,
-		emoji: number
+		emoji: string
 		body: string
 		description: string
 		isActive: boolean
 	};
 
 	interface MoodProps {
-		id: number,
-		emoji: number
-		body: string
-		description: string
-		isActive: boolean
+		userMoodId: number,
+		userId: number,
+		isCurrentUserOwner: boolean,
+		canUseMood: boolean,
+		moodTxt: Object
 	}
 
 	interface MoodState {
-
+		currentMood: moodType,
+		showModal: boolean,
+		activeMoods: moodType[]
 	}
 }
 
 module.exports = {
-	mood,
+	moodType,
 	MoodProps,
 	MoodState,
 };
