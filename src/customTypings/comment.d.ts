@@ -5,11 +5,17 @@ declare module 'breezeTypes' {
 	};
 
 	interface CommentProps {
-
+		id: number,
+		body: string,
+		isCurrentUserOwner: boolean,
+		canUseMood: boolean,
 	}
 
 	interface CommentState {
-		comment: comment
+		comment: comment,
+		currentMood: mood,
+		activeMoods: mood[],
+		showModal: boolean,
 	}
 }
 

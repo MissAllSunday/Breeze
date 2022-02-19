@@ -1,6 +1,7 @@
 import {Component} from "react";
 import { CommentProps } from 'breezeTypes';
 import { CommentState } from 'breezeTypes';
+import { mood } from 'breezeTypes';
 
 export default class Comment extends Component<CommentProps, CommentState> {
 
@@ -12,8 +13,10 @@ export default class Comment extends Component<CommentProps, CommentState> {
 	handleMoodModification(){
 			if (this.props.isCurrentUserOwner && this.props.canUseMood)
 			{
-				return <span onClick={this.showMoodList} title="moodLabel" className="pointer_cursor">
-					this.props.moodTxt.defaultLabel</span>
+				return
+					<span onClick={this.showMoodList} title="moodLabel" className="pointer_cursor">
+						this.props.moodTxt.defaultLabel
+					</span>
 			} else {
 				return this.state.currentMood.emoji
 			}

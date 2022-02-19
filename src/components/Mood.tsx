@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import Utils from "./Utils";
+import Utils from '../Utils';
+import ActiveMoods from "../DataSource/ActiveMoods";
 
 type mood = {
 	id: number
@@ -29,11 +30,7 @@ export default class Mood extends Component<MoodProps, MoodState> {
 	}
 
 	componentDidMount() {
-		axios.get(Utils)
-			.then(res => {
-				const persons = res.data;
-				this.setState({ persons });
-			})
+		this.activeMoods = ActiveMoods()
 	}
 
 	handleMoodModification(){

@@ -3,28 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import SMF from './DataSource/SMF'
 
-let smfVars = {
-	session: {
-		// @ts-ignore
-		var: window.smf_session_var || '',
-		// @ts-ignore
-		id: window.smf_session_id || ''
-	},
-	// @ts-ignore
-	youSure: smf_you_sure,
-	// @ts-ignore
-	ajaxIndicator: ajax_indicator || undefined,
-	// @ts-ignore
-	txt: window.breezeTxtGeneral || undefined,
-	// @ts-ignore
-	scriptUrl: window.smf_scripturl || '',
-}
+let smfVars = SMF
 
 ReactDOM.render(
   <React.StrictMode>
     <App
-	smfVars={smfVars}/>
+	smfVars={smfVars()}/>
   </React.StrictMode>,
   document.getElementById('root')
 );

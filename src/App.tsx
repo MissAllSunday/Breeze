@@ -4,7 +4,7 @@ import UserInfo from "./components/user/UserInfo";
 import Editor from "./components/Editor";
 import Status from "./components/Status";
 import { appProps } from 'breezeTypes';
-import statusByUser from "./DataSource/Status";
+import statusByUser from "./DataSource/StatusByUser";
 
 function App(props:appProps) {
 	let currentUserData: object = {}

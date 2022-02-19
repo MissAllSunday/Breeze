@@ -10,7 +10,7 @@ let subActions = {
 	eliminate: 'deleteStatus',
 }
 
-export default function  statusByUser(): Status[] {
+export default function  StatusByUser(): Status[] {
 	const [statusData, setStatusData] = useState([] as any);
 	const [usersData, setUsersData] = useState([] as any);
 	const [fetching, setFetching] = useState(false);
