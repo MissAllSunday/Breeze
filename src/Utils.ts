@@ -1,29 +1,25 @@
 import axios from 'axios';
-import { UtilsProps } from "breezeTypes";
-import toast, { Toaster } from 'react-hot-toast';
-import { ToastCallback } from 'breezeTypes';
-import { NoticeOptions } from 'breezeTypes';
 import Smf from './DataSource/SMF';
 import { smfVarsType } from 'breezeTypes';
 
-export default class Utils {
 
-	static api: typeof axios;
 
-	static setNotice(options:NoticeOptions, onCloseCallback: ToastCallback): void {
-		toast.custom("<div class='infobox'>Hello World</div>");
+const Utils = () => {}
+
+	let smfVars = Smf();
+
+
+	static api() {
+		return axios
 	}
 
-	static clearNotice(): void {
-		toast.dismiss();
-	}
+
+
 
 	static sprintFormat(arrayArguments:Array<string>): string
 	{
-		let smfVars = Smf()
-
-		let baseUrl:string = smfVars.scriptUrl +
-			'?action={0};' + smfVars.session.var +'='+ smfVars.session.id + ';sa={1}';
+		let baseUrl:string = this.smfVars.scriptUrl +
+			'?action={0};' + this.smfVars.session.var +'='+ this.smfVars.session.id + ';sa={1}';
 		let i = arrayArguments.length
 
 		while (i--) {
@@ -87,3 +83,5 @@ export default class Utils {
 		return decoder.textContent;
 	}
 }
+
+export default Utils()

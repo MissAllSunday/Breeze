@@ -18,7 +18,7 @@ export default function  StatusByUser(): Status[] {
 	useEffect(() => {
 		setFetching(true);
 
-		Utils.api.get(Utils.sprintFormat([action, subActions.byProfile]))
+		Utils.api().get(Utils.sprintFormat([action, subActions.byProfile]))
 			.then(function(response:AxiosResponse) {
 				setFetching(false);
 				// @ts-ignore

@@ -9,10 +9,8 @@ declare module 'breezeTypes' {
 
 	interface MoodProps {
 		userMoodId: number,
-		userId: number,
 		isCurrentUserOwner: boolean,
 		canUseMood: boolean,
-		moodTxt: Object
 	}
 
 	interface MoodState {
