@@ -3,15 +3,15 @@ import {useState} from "react";
 
 export default function  Smf(): smfVarsType {
 	// @ts-ignore
-	const [sessionData, setSessionData] = useState(window.smf_session_var || '')
+	const [sessionData, setSessionData] = useState(window.smf_session_var || [])
 	// @ts-ignore
-	const [youSure, setYouSure] = useState(smf_you_sure)
+	const [youSure, setYouSure] = useState(smf_you_sure || function(){ return true})
 	// @ts-ignore
-	const [ajaxIndicator, setAjaxIndicator] = useState(ajax_indicator || undefined,)
+	const [ajaxIndicator, setAjaxIndicator] = useState(ajax_indicator || false,)
 	// @ts-ignore
-	const [scriptUrl, setScriptUrl] = useState(window.smf_scripturl || 'http://smf.local:8080')
+	const [scriptUrl, setScriptUrl] = useState(window.smf_scripturl || process.env["REACT_APP_DEV_URL"])
 	// @ts-ignore
-	const [txt, setTxt] = useState(window.breezeTxtGeneral || undefined)
+	const [txt, setTxt] = useState(window.breezeTxtGeneral || [])
 	// @ts-ignore
 	const [userId, setUserId] = useState(window.smf_member_id || 0)
 
