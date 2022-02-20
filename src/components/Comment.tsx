@@ -31,7 +31,7 @@ export default class Comment extends Component<CommentProps, CommentState> {
 	}
 
 	modalBody() {
-		let listActiveMoods = this.state.activeMoods.map((mood: mood) =>
+		let listActiveMoods = this.state.activeMoods.map((mood: moodType) =>
 			<li
 				key={mood.id}
 				title={mood.description}

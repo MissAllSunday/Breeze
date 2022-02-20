@@ -1,29 +1,29 @@
-import axios from "axios";
+import axios from 'axios';
 import { UtilsProps } from "breezeTypes";
 import toast, { Toaster } from 'react-hot-toast';
-import { ToastCallback } from "breezeTypes";
-import { NoticeOptions } from "breezeTypes";
+import { ToastCallback } from 'breezeTypes';
+import { NoticeOptions } from 'breezeTypes';
+import Smf from './DataSource/SMF';
+import { smfVarsType } from 'breezeTypes';
 
 export default class Utils {
-	static api = axios;
-	private static props: UtilsProps;
 
-	constructor(props: UtilsProps) {
+	static api: typeof axios;
 
-	}
-
-	static setNotice(options:NoticeOptions, onCloseCallback: ToastCallback) {
+	static setNotice(options:NoticeOptions, onCloseCallback: ToastCallback): void {
 		toast.custom("<div class='infobox'>Hello World</div>");
 	}
 
-	static clearNotice() {
+	static clearNotice(): void {
 		toast.dismiss();
 	}
 
-	static sprintFormat(arrayArguments:Array<string>)
+	static sprintFormat(arrayArguments:Array<string>): string
 	{
-		let baseUrl = this.props.smfVars.scriptUrl +
-			'?action={0};' + this.props.smfVars.session.var +'='+ this.props.smfVars.session.id + ';sa={1}';
+		let smfVars = Smf()
+
+		let baseUrl:string = smfVars.scriptUrl +
+			'?action={0};' + smfVars.session.var +'='+ smfVars.session.id + ';sa={1}';
 		let i = arrayArguments.length
 
 		while (i--) {

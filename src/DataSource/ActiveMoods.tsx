@@ -2,7 +2,7 @@ import Mood from "../components/Mood";
 import axios, {AxiosRequestConfig, AxiosResponse, AxiosResponseHeaders} from "axios";
 import React, { useState, useEffect } from 'react';
 import Utils from "../Utils";
-import { mood } from 'breezeTypes';
+import { moodType } from 'breezeTypes';
 import SMF from "./SMF";
 
 let action = 'breezeMood'
@@ -14,7 +14,7 @@ let subActions = {
 	setMood: 'setUserMood'
 }
 
-export default function  ActiveMoods(): mood[] {
+export default function  ActiveMoods(): moodType[] {
 	const [moodData, setMoodData] = useState([] as any);
 	const [fetching, setFetching] = useState(false);
 
@@ -34,7 +34,7 @@ export default function  ActiveMoods(): mood[] {
 	});
 	let smfVars = SMF()
 
-	let listMoods = moodData.map((mood: mood) =>
+	let listMoods = moodData.map((mood: moodType) =>
 		<Mood
 			canUseMood={false}
 			isCurrentUserOwner={false}

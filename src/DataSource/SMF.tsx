@@ -1,7 +1,7 @@
-import { smfVars } from 'breezeTypes';
+import { smfVarsType } from 'breezeTypes';
 import {useState} from "react";
 
-export default function  Smf(): smfVars {
+export default function  Smf(): smfVarsType {
 	// @ts-ignore
 	const [sessionData, setSessionData] = useState(window.smf_session_var || '')
 	// @ts-ignore
@@ -9,7 +9,7 @@ export default function  Smf(): smfVars {
 	// @ts-ignore
 	const [ajaxIndicator, setAjaxIndicator] = useState(ajax_indicator || undefined,)
 	// @ts-ignore
-	const [scriptUrl, setScriptUrl] = useState(window.smf_scripturl || '')
+	const [scriptUrl, setScriptUrl] = useState(window.smf_scripturl || 'http://smf.local:8080')
 	// @ts-ignore
 	const [txt, setTxt] = useState(window.breezeTxtGeneral || undefined)
 	// @ts-ignore

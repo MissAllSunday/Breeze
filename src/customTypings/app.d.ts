@@ -1,5 +1,5 @@
 declare module 'breezeTypes' {
-	type smfVars = {
+	type smfVarsType = {
 		session: {
 			var:string,
 			id:string

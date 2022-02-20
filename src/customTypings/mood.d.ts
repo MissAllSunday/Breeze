@@ -18,7 +18,7 @@ declare module 'breezeTypes' {
 	interface MoodState {
 		currentMood: moodType,
 		showModal: boolean,
-		activeMoods: moodType[]
+		// activeMoods: moodType[]
 	}
 }
 

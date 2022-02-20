@@ -13,8 +13,8 @@ declare module 'breezeTypes' {
 
 	interface CommentState {
 		comment: comment,
-		currentMood: mood,
-		activeMoods: mood[],
+		currentMood: moodType,
+		activeMoods: moodType[],
 		showModal: boolean,
 	}
 }

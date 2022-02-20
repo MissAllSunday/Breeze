@@ -5,7 +5,10 @@ import { moodType, MoodState, MoodProps } from 'breezeTypes';
 export default class Mood extends Component<MoodProps, MoodState> {
 
 	constructor(props: MoodProps) {
+		// let activeMoods = ActiveMoods()
+
 		super(props);
+
 		this.state = {
 			currentMood: {
 				id: 0,
@@ -15,7 +18,7 @@ export default class Mood extends Component<MoodProps, MoodState> {
 				isActive: false
 			},
 			showModal: false,
-			activeMoods: ActiveMoods()
+			// activeMoods: ActiveMoods()
 		}
 	}
 
@@ -43,7 +46,7 @@ export default class Mood extends Component<MoodProps, MoodState> {
 	}
 
 	modalBody() {
-		let listActiveMoods = this.state.activeMoods.map((mood: mood) =>
+		let listActiveMoods = ActiveMoods().map((mood: moodType) =>
 			<li
 				key={mood.id}
 				title={mood.description}
