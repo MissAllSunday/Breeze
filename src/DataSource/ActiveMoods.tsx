@@ -1,5 +1,5 @@
 import Mood from "../components/Mood";
-import axios, {AxiosRequestConfig, AxiosResponse, AxiosResponseHeaders} from "axios";
+import {AxiosResponse} from "axios";
 import React, { useState, useEffect } from 'react';
 import utils from "../Utils";
 import { moodType } from 'breezeTypes';
@@ -15,13 +15,10 @@ let subActions = {
 
 export default function  ActiveMoods(): moodType[] {
 	const [moodData, setMoodData] = useState([] as any);
-	const [fetching, setFetching] = useState(false);
 
-
+	console.log(utils.sprintFormat([action, subActions.all]));
 
 	useEffect(() => {
-		setFetching(true);
-
 		utils.api().get(utils.sprintFormat([action, subActions.all]))
 			.then(function(response:AxiosResponse) {
 				// @ts-ignore
@@ -30,9 +27,8 @@ export default function  ActiveMoods(): moodType[] {
 			.catch(exception => {
 				console.log(exception);
 			}).then(() => {
-				setFetching(false)
 		})
-	});
+	}, []);
 
 	let listMoods = moodData.map((mood: moodType) =>
 		<Mood

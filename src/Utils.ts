@@ -7,15 +7,15 @@ const api = () => {
 
 const sprintFormat = (arrayArguments:Array<string>) =>
 {
-	let smfVars = Smf()
-	let baseUrl:string = smfVars.scriptUrl +
+	let smfVars = Smf
+	let baseUrl = smfVars.scriptUrl +
 		'?action={0};' + smfVars.session.var +'='+ smfVars.session.id + ';sa={1}';
 	let i = arrayArguments.length
 
 	while (i--) {
 		baseUrl = baseUrl.replace(new RegExp('\\{' + i + '\\}', 'gm'), arrayArguments[i]);
 	}
-
+	window.console.log(smfVars);
 	return baseUrl;
 }
 
@@ -57,7 +57,7 @@ const getLocalObject = (keyName:string) =>
 		return false;
 	}
 
-	let objectStored = JSON.parse(<string>localStorage.getItem(keyName));
+	let objectStored = JSON.parse(localStorage.getItem(keyName) as string);
 
 	if (objectStored !== null) {
 		return objectStored;

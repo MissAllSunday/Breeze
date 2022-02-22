@@ -8,8 +8,6 @@ import statusByUser from "./DataSource/StatusByUser";
 function App() {
 	let currentUserData: object = {}
 	let statusByUserData:Status[] = statusByUser()
-	let users = {}
-
 
   return (
     <div className="App breeze_main_section">
@@ -22,14 +20,6 @@ function App() {
 		</div>
     </div>
   );
-}
-
-function onRemoveStatus(status: object): void{
-	console.log(status)
-}
-
-function onSetNewUsers(user: object): void{
-	console.log(user)
 }
 
 export default App;
