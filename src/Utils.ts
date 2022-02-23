@@ -5,18 +5,14 @@ const api = () => {
 	return axios
 }
 
-const sprintFormat = (arrayArguments:Array<string>) =>
+const buildBaseUrlWithParams = () =>
 {
 	let smfVars = Smf
-	let baseUrl = smfVars.scriptUrl +
-		'?action={0};' + smfVars.session.var +'='+ smfVars.session.id + ';sa={1}';
-	let i = arrayArguments.length
+	let baseUrlWithParams = new URL(smfVars.scriptUrl)
 
-	while (i--) {
-		baseUrl = baseUrl.replace(new RegExp('\\{' + i + '\\}', 'gm'), arrayArguments[i]);
-	}
-	window.console.log(smfVars);
-	return baseUrl;
+	baseUrlWithParams.searchParams.append(smfVars.session.var, smfVars.session.id)
+
+	return baseUrlWithParams;
 }
 
 const canUseLocalStorage = () =>
@@ -79,6 +75,6 @@ export default {
 	getLocalObject,
 	setLocalObject,
 	canUseLocalStorage,
-	sprintFormat,
+	buildBaseUrlWithParams,
 	api
 }

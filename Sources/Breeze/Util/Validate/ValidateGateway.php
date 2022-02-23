@@ -66,9 +66,9 @@ class ValidateGateway implements ValidateGatewayInterface
 				$this->data = $this->validator->getData();
 				$this->validator->{$step}();
 			} catch (InvalidStatusException |
-				InvalidCommentException |
-				InvalidMoodException |
-				InvalidLikeException $e) {
+			InvalidCommentException |
+			InvalidMoodException |
+			InvalidLikeException $e) {
 				$this->setNotice([
 					'message' => sprintf(
 						$this->getText(self::DEFAULT_ERROR_KEY),
@@ -105,7 +105,8 @@ class ValidateGateway implements ValidateGatewayInterface
 	public function setData(array $rawData = []): void
 	{
 		$rawData = !empty($rawData) ?
-			$rawData : (Json::decode(file_get_contents('php://input')) ?? []);
+			$rawData : (!empty($_REQUEST) ? $_REQUEST : Json::decode(file_get_contents('php://input')));
+
 		$this->data = array_filter($rawData);
 	}
 
