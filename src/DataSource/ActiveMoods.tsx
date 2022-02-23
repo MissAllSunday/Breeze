@@ -3,7 +3,6 @@ import {AxiosResponse} from "axios";
 import React, { useState, useEffect } from 'react';
 import utils from "../Utils";
 import { moodType } from 'breezeTypes';
-import Smf from "./SMF";
 import Utils from "../Utils";
 
 let action = 'breezeMood'
@@ -18,7 +17,6 @@ let subActions = {
 export default function  ActiveMoods(): moodType[] {
 	const [moodData, setMoodData] = useState([] as any);
 
-	let smfVars = Smf
 	let baseUrl = Utils.buildBaseUrlWithParams()
 	baseUrl.searchParams.append('action', action)
 	baseUrl.searchParams.append('sa', subActions.active)
@@ -33,7 +31,7 @@ export default function  ActiveMoods(): moodType[] {
 				console.log(exception);
 			}).then(() => {
 		})
-	}, []);
+	}, [baseUrl.href]);
 
 	let listMoods = moodData.map((mood: moodType) =>
 		<Mood

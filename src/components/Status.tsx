@@ -1,10 +1,11 @@
 import * as React from "react";
+import { statusType } from 'breezeTypes';
 
 interface StatusProps {
-	key: ''
-	status: {}
+	key: number
+	status: statusType
 	users: {}
-	removeStatus(status: object): void;
+	removeStatus(status: statusType): void;
 	setNewUsers(user: object): void;
 }
 

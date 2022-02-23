@@ -27,7 +27,7 @@ if (empty($context['uninstalling'])) {
 				'name' => 'member_id',
 				'type' => 'int',
 				'size' => 5,
-				'null' => false
+				'null' => false,
 			],
 			[
 				'name' => 'variable',
@@ -45,7 +45,7 @@ if (empty($context['uninstalling'])) {
 		'indexes' => [
 			[
 				'type' => 'primary',
-				'columns' => ['member_id','variable']
+				'columns' => ['member_id','variable'],
 			],
 		],
 		'if_exists' => 'ignore',
@@ -62,25 +62,25 @@ if (empty($context['uninstalling'])) {
 				'type' => 'int',
 				'size' => 5,
 				'null' => false,
-				'auto' => true
+				'auto' => true,
 			],
 			[
 				'name' => 'statusId',
 				'type' => 'int',
 				'size' => 5,
-				'null' => false
+				'null' => false,
 			],
 			[
 				'name' => 'userId',
 				'type' => 'int',
 				'size' => 5,
-				'null' => false
+				'null' => false,
 			],
 			[
 				'name' => 'likes',
 				'type' => 'int',
 				'size' => 5,
-				'null' => false
+				'null' => false,
 			],
 			[
 				'name' => 'body',
@@ -98,7 +98,7 @@ if (empty($context['uninstalling'])) {
 		'indexes' => [
 			[
 				'type' => 'primary',
-				'columns' => ['id','statusId']
+				'columns' => ['id','statusId'],
 			],
 		],
 		'if_exists' => 'ignore',
@@ -115,25 +115,25 @@ if (empty($context['uninstalling'])) {
 				'type' => 'int',
 				'size' => 5,
 				'null' => false,
-				'auto' => true
+				'auto' => true,
 			],
 			[
 				'name' => 'wallId',
 				'type' => 'int',
 				'size' => 5,
-				'null' => false
+				'null' => false,
 			],
 			[
 				'name' => 'userId',
 				'type' => 'int',
 				'size' => 5,
-				'null' => false
+				'null' => false,
 			],
 			[
 				'name' => 'likes',
 				'type' => 'int',
 				'size' => 5,
-				'null' => false
+				'null' => false,
 			],
 			[
 				'name' => 'body',
@@ -151,7 +151,7 @@ if (empty($context['uninstalling'])) {
 		'indexes' => [
 			[
 				'type' => 'primary',
-				'columns' => ['id','wallId']
+				'columns' => ['id','wallId'],
 			],
 		],
 		'if_exists' => 'ignore',
@@ -168,7 +168,7 @@ if (empty($context['uninstalling'])) {
 				'type' => 'int',
 				'size' => 5,
 				'null' => false,
-				'auto' => true
+				'auto' => true,
 			],
 			[
 				'name' => 'emoji',
@@ -186,7 +186,7 @@ if (empty($context['uninstalling'])) {
 				'name' => 'isActive',
 				'type' => 'int',
 				'size' => 1,
-				'null' => false
+				'null' => false,
 			],
 			[
 				'name' => 'createdAt',
@@ -204,7 +204,7 @@ if (empty($context['uninstalling'])) {
 		'indexes' => [
 			[
 				'type' => 'primary',
-				'columns' => ['id']
+				'columns' => ['id'],
 			],
 		],
 		'if_exists' => 'ignore',
@@ -221,7 +221,7 @@ if (empty($context['uninstalling'])) {
 				'type' => 'int',
 				'size' => 5,
 				'null' => false,
-				'auto' => true
+				'auto' => true,
 			],
 			[
 				'name' => 'name',
@@ -233,13 +233,13 @@ if (empty($context['uninstalling'])) {
 				'name' => 'userId',
 				'type' => 'int',
 				'size' => 5,
-				'null' => false
+				'null' => false,
 			],
 			[
 				'name' => 'contentId',
 				'type' => 'int',
 				'size' => 5,
-				'null' => true
+				'null' => true,
 			],
 			[
 				'name' => 'extra',
@@ -257,7 +257,7 @@ if (empty($context['uninstalling'])) {
 		'indexes' => [
 			[
 				'type' => 'primary',
-				'columns' => ['id', 'userId', 'contentId']
+				'columns' => ['id', 'userId', 'contentId'],
 			],
 		],
 		'if_exists' => 'ignore',
@@ -298,14 +298,14 @@ if (empty($context['uninstalling'])) {
 			'',
 			1,
 			time(),
-			''
+			'',
 		], ['id']);
 	}
 }
 
 function BreezeCheck(): void
 {
-	if (version_compare(PHP_VERSION, '7.4.0', '<')) {
+	if (version_compare(\PHP_VERSION, '7.4.0', '<')) {
 		fatal_error('This mod needs PHP 7.4 or greater.
 		 You will not be able to install/use this mod,contact your host and ask for a php upgrade.');
 	}

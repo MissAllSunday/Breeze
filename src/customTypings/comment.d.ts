@@ -1,5 +1,5 @@
 declare module 'breezeTypes' {
-	type comment = {
+	type commentType = {
 		id: number
 		body: string
 	};
@@ -12,7 +12,7 @@ declare module 'breezeTypes' {
 	}
 
 	interface CommentState {
-		comment: comment,
+		comment: commentType,
 		currentMood: moodType,
 		activeMoods: moodType[],
 		showModal: boolean,
@@ -20,7 +20,7 @@ declare module 'breezeTypes' {
 }
 
 module.exports = {
-	comment,
+	commentType,
 	CommentProps,
 	CommentState,
 };

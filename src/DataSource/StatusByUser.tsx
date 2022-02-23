@@ -1,6 +1,7 @@
 import {AxiosResponse} from "axios";
 import React, { useState, useEffect } from 'react';
 import Status from "../components/Status";
+import { statusType } from 'breezeTypes';
 import Utils from "../Utils";
 import Smf from "./SMF";
 
@@ -11,9 +12,10 @@ let subActions = {
 	eliminate: 'deleteStatus',
 }
 
-export default function  StatusByUser(): Status[] {
+export default function  StatusByUser(): any {
 	const [statusData, setStatusData] = useState([] as any);
 	const [usersData, setUsersData] = useState([] as any);
+	const [isLoading, setIsLoading] = useState(true);
 
 	let smfVars = Smf
 	let baseUrl = Utils.buildBaseUrlWithParams()
@@ -25,27 +27,35 @@ export default function  StatusByUser(): Status[] {
 		Utils.api().get(baseUrl.href)
 			.then(function(response:AxiosResponse) {
 				// @ts-ignore
-				setStatusData(response.data.content.status)
-
+				setStatusData(Object.values(response.data.status))
 				// @ts-ignore
-				setUsersData(response.data.content.users)
+				setUsersData(Object.entries(response.data.users))
+
+				setIsLoading(false)
 			})
 			.catch(exception => {
 				console.log(exception);
 			});
-	}, []);
+	}, [baseUrl.href]);
 
-	let listStatus = statusData.map((status: {status_id: ''}) =>
-		<Status
-			key={status.status_id}
-			status={status}
-			users={usersData}
-			removeStatus={onRemoveStatus}
-			setNewUsers={onSetNewUsers}
-		/>
-	)
+	if (isLoading) {
+		return 'lol'
+	}
 
-	return (listStatus);
+	else {
+window.console.log(statusData)
+		let listStatus = statusData.map((status: statusType) =>
+			<Status
+				key={status.id}
+				status={status}
+				users={usersData}
+				removeStatus={onRemoveStatus}
+				setNewUsers={onSetNewUsers}
+			/>
+		)
+
+		return (listStatus);
+	}
 };
 
 function onRemoveStatus()

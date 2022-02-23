@@ -69,8 +69,7 @@ const decode = (html:string) =>
 	return decoder.textContent;
 }
 
-
-export default {
+const utils = {
 	decode,
 	getLocalObject,
 	setLocalObject,
@@ -78,3 +77,5 @@ export default {
 	buildBaseUrlWithParams,
 	api
 }
+
+export default utils
