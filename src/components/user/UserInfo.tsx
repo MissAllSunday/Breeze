@@ -5,9 +5,6 @@ import Mood from "../Mood";
 
 export default class UserInfo extends React.Component
 {
-	constructor(props: {userData:{}}) {
-		super(props);
-	}
 	render() {
 		let moodProps = {
 			userMoodId: 1,
@@ -35,10 +32,10 @@ export default class UserInfo extends React.Component
 				<p className="breeze_description">
 					blurb
 				</p>
-				<p className="breeze_mood">
+				<div className="breeze_mood">
 					<Mood {...moodProps} />
-			</p>
-		</div>
-	</div>;
+				</div>
+			</div>
+		</div>;
 	}
 }

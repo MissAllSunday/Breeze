@@ -7,8 +7,21 @@ declare module 'breezeTypes' {
 		body: string,
 		createdAt: string
 	}
+
+	interface StatusProps {
+		status: statusType
+		users: {}
+		removeStatus(status: statusType): void;
+		setNewUsers(user: object): void;
+	}
+
+	interface StatusState {
+
+	}
 }
 
 module.exports = {
 	statusType,
+	StatusProps,
+	StatusState,
 };
