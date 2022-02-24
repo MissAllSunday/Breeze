@@ -26,7 +26,9 @@ export default class Status extends React.Component<StatusProps, StatusState>
 				<div className='content'>
 					<hr />
 					{this.props.status.body}
-					<Like />
+					<Like
+						item={this.props.status.likesInfo}
+					/>
 				</div>
 				comment component here
 			<div className='comment_posting'>

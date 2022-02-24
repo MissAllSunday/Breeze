@@ -1,6 +1,7 @@
 import React from "react";
+import {LikeState, LikeProps } from 'breezeTypes';
 
-export default class Like extends React.Component {
+export default class Like extends React.Component<LikeProps, LikeState> {
 	handleLike() {
 
 	}
@@ -12,7 +13,7 @@ export default class Like extends React.Component {
 		handle like
 	</a>
 	<div className="like_count smalltext">
-		lol
+		{this.props.item.count}
 	</div>
 </div>
 	}

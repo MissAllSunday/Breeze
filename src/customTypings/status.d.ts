@@ -5,7 +5,8 @@ declare module 'breezeTypes' {
 		userId: number,
 		likes: number,
 		body: string,
-		createdAt: string
+		createdAt: string,
+		likesInfo: likeType
 	}
 
 	interface StatusProps {

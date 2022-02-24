@@ -1,18 +1,18 @@
 declare module 'breezeTypes' {
 	type likeType = {
-		item: number,
+		additionalInfo: string
+		alreadyLiked: boolean
+		canLike: boolean
+		contentId: number
+		count: number
+		type: string
 	};
 
-	interface MoodProps {
-		userMoodId: number,
-		isCurrentUserOwner: boolean,
-		canUseMood: boolean,
+	interface LikeProps {
+		item: likeType,
 	}
 
-	interface MoodState {
-		currentMood: moodType,
-		showModal: boolean,
-		// activeMoods: moodType[]
+	interface LikeState {
 	}
 }
 
