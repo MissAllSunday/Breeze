@@ -21,4 +21,9 @@ abstract class ValidateStatus extends ValidateData
 
 		parent::__construct($userService);
 	}
+
+	public function getParams(): array
+	{
+		return $this->getData();
+	}
 }

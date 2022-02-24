@@ -43,7 +43,7 @@ export default function  StatusByUser(): any {
 	}
 
 	else {
-window.console.log(statusData)
+
 		let listStatus = statusData.map((status: statusType) =>
 			<Status
 				key={status.id}

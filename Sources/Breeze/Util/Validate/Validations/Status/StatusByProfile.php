@@ -25,7 +25,7 @@ class StatusByProfile extends ValidateStatus implements ValidateDataInterface
 
 	public function getParams(): array
 	{
-		return array_merge(self::PARAMS, $this->data);
+		return self::PARAMS;
 	}
 
 	public function getInts(): array
