@@ -4,10 +4,13 @@ import UserInfo from "./components/user/UserInfo";
 import Editor from "./components/Editor";
 import Status from "./components/Status";
 import statusByUser from "./DataSource/StatusByUser";
+import ActiveMoods from "./DataSource/ActiveMoods";
+import { moodType } from 'breezeTypes';
 
 function App() {
 	let currentUserData: object = {}
 	let statusByUserData:Status[] = statusByUser()
+	let activeMoods:moodType[] = ActiveMoods()
 
   return (
     <div className="App breeze_main_section">

@@ -1,9 +1,8 @@
 import React from "react";
-import {LikeState, LikeProps, likeType } from 'breezeTypes';
-import likeAction from "../DataSource/LikeAction";
+import {likeType } from 'breezeTypes';
 import Utils from "../Utils";
 
-export default class Like extends React.Component<LikeProps, LikeState> {
+export default class Like extends React.Component<any> {
 	constructor(props: likeType) {
 		super(props);
 		this.state = this.props.item
@@ -14,22 +13,15 @@ export default class Like extends React.Component<LikeProps, LikeState> {
 		baseUrl.searchParams.append('action', 'like')
 		baseUrl.searchParams.append('sa','like')
 
-		try {
-			Utils.api().post(baseUrl.href, this.state).then(
-				let response
-			)
-		} catch (err) {
-
-			console.error(err);
-		}
-
-
-
+		Utils.api().post(baseUrl.href, this.state).then(data => {
+			// @ts-ignore
+			this.setState(data.content);
+		})
 	}
 
 	render() {
 		return <div className="smflikebutton">
-	<a onClick={this.handleLike} className="msg_like" href='/'>
+	<a onClick={this.handleLike} className="msg_like" href='#'>
 		<span className='likeClass' />
 		handle like
 	</a>
