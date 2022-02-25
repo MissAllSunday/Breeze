@@ -8,12 +8,11 @@ declare module 'breezeTypes' {
 		type: string
 	};
 
-	interface LikeProps {
+	interface LikeProps{
 		item: likeType,
 	}
 
-	interface LikeState {
-	}
+	interface LikeState {}
 }
 
 module.exports = {
