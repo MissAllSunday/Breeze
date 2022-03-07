@@ -2,6 +2,7 @@ import {AxiosResponse} from "axios";
 import React, { useState, useEffect } from 'react';
 import Status from "../components/Status";
 import { statusType } from 'breezeTypes';
+import { commentType } from 'breezeTypes';
 import Utils from "../Utils";
 import Smf from "./SMF";
 
@@ -27,7 +28,7 @@ export default function  StatusByUser(): any {
 		Utils.api().get(baseUrl.href)
 			.then(function(response:AxiosResponse) {
 				// @ts-ignore
-				setStatusData(Object.values(response.data.status))
+				setStatusData(this.buildComments(Object.values(response.data.status)))
 				// @ts-ignore
 				setUsersData(Object.entries(response.data.users))
 
@@ -57,6 +58,12 @@ export default function  StatusByUser(): any {
 		return (listStatus);
 	}
 };
+
+function buildComments(statusData: statusType[]): any[] {
+		return statusData.map((comment: object) => {
+			return Object.values(comment)
+		})
+}
 
 function onRemoveStatus()
 {

@@ -1,6 +1,8 @@
 import {Component} from "react";
 import { CommentProps, CommentState } from 'breezeTypes';
 import { moodType } from 'breezeTypes';
+import Utils from "../Utils";
+import SMF from "../DataSource/SMF";
 
 export default class Comment extends Component<CommentProps, CommentState> {
 
@@ -10,7 +12,8 @@ export default class Comment extends Component<CommentProps, CommentState> {
 
 
 	handleMoodModification(){
-			if (this.props.isCurrentUserOwner && this.props.canUseMood)
+		let smfVars = SMF
+			if (smfVars.isCurrentUserOwner && smfVars.useMood)
 			{
 				return
 					<span onClick={this.showMoodList} title="moodLabel" className="pointer_cursor">

@@ -2,24 +2,11 @@ import React, {Component} from 'react';
 import ActiveMoods from "../DataSource/ActiveMoods";
 import { moodType, MoodState, MoodProps } from 'breezeTypes';
 
-export default class Mood extends Component<MoodProps, MoodState> {
+export default class Modal extends Component {
 
 	constructor(props: MoodProps) {
-		// let activeMoods = ActiveMoods()
-
 		super(props);
 
-		this.state = {
-			currentMood: {
-				id: 0,
-				emoji: '',
-				body: '',
-				description: '',
-				isActive: false
-			},
-			showModal: false,
-			// activeMoods: ActiveMoods()
-		}
 	}
 
 	handleMoodModification(){

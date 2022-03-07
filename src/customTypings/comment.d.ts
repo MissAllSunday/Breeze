@@ -1,14 +1,15 @@
 declare module 'breezeTypes' {
 	type commentType = {
 		id: number
-		body: string
+		statusId: number,
+		userId: number,
+		likes: number,
+		body: string,
+		createdAt: string
 	};
 
 	interface CommentProps {
-		id: number,
-		body: string,
-		isCurrentUserOwner: boolean,
-		canUseMood: boolean,
+		comment: commentType,
 	}
 
 	interface CommentState {

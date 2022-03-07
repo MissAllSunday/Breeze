@@ -21,7 +21,7 @@ export default class Like extends React.Component<any> {
 
 	render() {
 		return <div className="smflikebutton">
-	<a onClick={this.handleLike} className="msg_like" href='#'>
+	<a onClick={this.handleLike} className="msg_like" href='/'>
 		<span className='likeClass' />
 		handle like
 	</a>
