@@ -2,7 +2,6 @@ import {AxiosResponse} from "axios";
 import React, { useState, useEffect } from 'react';
 import Status from "../components/Status";
 import { statusType } from 'breezeTypes';
-import { commentType } from 'breezeTypes';
 import Utils from "../Utils";
 import Smf from "./SMF";
 
@@ -18,26 +17,33 @@ export default function  StatusByUser(): any {
 	const [usersData, setUsersData] = useState([] as any);
 	const [isLoading, setIsLoading] = useState(true);
 
-	let smfVars = Smf
-	let baseUrl = Utils.buildBaseUrlWithParams()
-	baseUrl.searchParams.append('action', action)
-	baseUrl.searchParams.append('sa', subActions.byProfile)
-	baseUrl.searchParams.append('wallId', smfVars.wallId)
-
 	useEffect(() => {
+		let smfVars = Smf
+		let baseUrl = Utils.buildBaseUrlWithParams()
+		baseUrl.searchParams.append('action', action)
+		baseUrl.searchParams.append('sa', subActions.byProfile)
+		baseUrl.searchParams.append('wallId', smfVars.wallId)
+
 		Utils.api().get(baseUrl.href)
-			.then(function(response:AxiosResponse) {
+			.then((response:AxiosResponse) => {
 				// @ts-ignore
-				setStatusData(this.buildComments(Object.values(response.data.status)))
+				let status = response.data.status
 				// @ts-ignore
-				setUsersData(Object.entries(response.data.users))
+				let users = response.data.users
+
+				setStatusData(Object.keys(status).map((key) => {
+					return status[key];
+				}))
+				setUsersData(Object.keys(users).map((key) => {
+					return users[key];
+				}))
 
 				setIsLoading(false)
 			})
 			.catch(exception => {
 				console.log(exception);
 			});
-	}, [baseUrl.href]);
+	}, []);
 
 	if (isLoading) {
 		return 'lol'
@@ -59,11 +65,6 @@ export default function  StatusByUser(): any {
 	}
 };
 
-function buildComments(statusData: statusType[]): any[] {
-		return statusData.map((comment: object) => {
-			return Object.values(comment)
-		})
-}
 
 function onRemoveStatus()
 {
