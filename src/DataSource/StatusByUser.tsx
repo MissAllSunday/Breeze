@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import Status from "../components/Status";
 import { statusType } from 'breezeTypes';
 import Utils from "../Utils";
-import Smf from "./SMF";
 
 let action = 'breezeStatus'
 let subActions = {
@@ -18,11 +17,7 @@ export default function  StatusByUser(): any {
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		let smfVars = Smf
-		let baseUrl = Utils.buildBaseUrlWithParams()
-		baseUrl.searchParams.append('action', action)
-		baseUrl.searchParams.append('sa', subActions.byProfile)
-		baseUrl.searchParams.append('wallId', smfVars.wallId)
+		let baseUrl = Utils.buildBaseUrlWithParams(action, subActions.byProfile)
 
 		Utils.api().get(baseUrl.href)
 			.then((response:AxiosResponse) => {

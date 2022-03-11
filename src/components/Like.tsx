@@ -9,11 +9,9 @@ export default class Like extends React.Component<any> {
 	}
 
 	handleLike() {
-		let baseUrl = Utils.buildBaseUrlWithParams()
-		baseUrl.searchParams.append('action', 'like')
-		baseUrl.searchParams.append('sa','like')
+		let callUrl = Utils.buildBaseUrlWithParams('like', 'like')
 
-		Utils.api().post(baseUrl.href, this.state).then(data => {
+		Utils.api().post(callUrl.href, this.state).then(data => {
 			// @ts-ignore
 			this.setState(data.content);
 		})

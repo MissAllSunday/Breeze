@@ -1,9 +1,5 @@
-import Mood from "../components/Mood";
-import {AxiosResponse} from "axios";
-import React, {useEffect, useState} from 'react';
-import utils from "../Utils";
+import { moodType } from 'breezeTypes';
 import Utils from "../Utils";
-import {moodType} from 'breezeTypes';
 
 let action = 'breezeMood'
 let subActions = {
@@ -14,37 +10,14 @@ let subActions = {
 	setMood: 'setUserMood'
 }
 
-export default function  ActiveMoods(): moodType[] {
-	const [moodData, setMoodData] = useState([] as any);
-	const [isLoading, setIsLoading] = useState(true);
+export default async function ActiveMoods(): Promise<moodType[]> {
 
-	let baseUrl = Utils.buildBaseUrlWithParams()
-	baseUrl.searchParams.append('action', action)
-	baseUrl.searchParams.append('sa', subActions.active)
+	let callUrl = Utils.buildBaseUrlWithParams(action, subActions.active)
 
-	useEffect(() => {
-		utils.api().get(baseUrl.href)
-			.then(function(response:AxiosResponse) {
-				// @ts-ignore
-				let responseData = Object.values(response.data)
-
-				setMoodData(responseData)
-			})
-			.catch(exception => {
-				console.log(exception);
-			}).then(() => {
-			setIsLoading(false)
-		})
-	}, [baseUrl.href]);
-
-	if (!isLoading) {
-		return moodData.map((mood: moodType) =>
-			<Mood
-				canUseMood={false}
-				isCurrentUserOwner={false}
-				userMoodId={0}/>
-		)
+	try {
+		return await Utils.api().get(callUrl.href)
+	} catch (error: any) {
+		return error.message
 	}
 
-	return []
 };

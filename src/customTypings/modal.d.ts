@@ -4,7 +4,7 @@ declare module 'breezeTypes' {
 	interface modalProps {
 		isShowing:boolean,
 		header:string,
-		body: Component}
+		body: any}
 }
 
 module.exports = {

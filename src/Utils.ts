@@ -5,10 +5,13 @@ const api = () => {
 	return axios
 }
 
-const buildBaseUrlWithParams = () =>
+const buildBaseUrlWithParams = (action: string, subAction:string) =>
 {
 	let smfVars = Smf
 	let baseUrlWithParams = new URL(smfVars.scriptUrl)
+	baseUrlWithParams.searchParams.append('action', action)
+	baseUrlWithParams.searchParams.append('sa', subAction)
+	baseUrlWithParams.searchParams.append('wallId', smfVars.wallId)
 
 	baseUrlWithParams.searchParams.append(smfVars.session.var, smfVars.session.id)
 

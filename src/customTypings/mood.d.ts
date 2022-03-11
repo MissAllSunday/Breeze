@@ -8,15 +8,12 @@ declare module 'breezeTypes' {
 	};
 
 	interface MoodProps {
-		userMoodId: number,
-		isCurrentUserOwner: boolean,
-		canUseMood: boolean,
+		mood: moodType,
 	}
 
 	interface MoodState {
 		currentMood: moodType,
-		showModal: boolean,
-		// activeMoods: moodType[]
+		isShowing: boolean
 	}
 }
 

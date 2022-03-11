@@ -6,14 +6,14 @@ import Mood from "../Mood";
 export default class UserInfo extends React.Component
 {
 	render() {
-		let moodProps = {
-			userMoodId: 1,
-			userId: 1,
-			isCurrentUserOwner: false,
-			canUseMood: false,
-			moodTxt: Object
-		}
 		let avatarUrl = ''
+		let mood = {
+			id: 1,
+			emoji: '',
+			body: '',
+			description: '',
+			isActive: true
+		}
 
 		return <div className="breeze_summary floatleft">
 			<div className="roundframe flow_auto">
@@ -33,7 +33,7 @@ export default class UserInfo extends React.Component
 					blurb
 				</p>
 				<div className="breeze_mood">
-					<Mood {...moodProps} />
+					<Mood mood={mood} />
 				</div>
 			</div>
 		</div>;

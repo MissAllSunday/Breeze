@@ -1,88 +1,57 @@
 import React, {Component} from 'react';
-import ActiveMoods from "../DataSource/ActiveMoods";
 import { moodType, MoodState, MoodProps } from 'breezeTypes';
+import SMF from "../DataSource/SMF";
 
 export default class Mood extends Component<MoodProps, MoodState> {
 
 	constructor(props: MoodProps) {
-		// let activeMoods = ActiveMoods()
+
 
 		super(props);
 
 		this.state = {
-			currentMood: {
-				id: 0,
-				emoji: '',
-				body: '',
-				description: '',
-				isActive: false
-			},
-			showModal: false,
-			// activeMoods: ActiveMoods()
+			currentMood: this.props.mood,
+			isShowing: false
 		}
 	}
 
 	handleMoodModification(){
-			if (this.props.isCurrentUserOwner && this.props.canUseMood)
-			{
-				return <span onClick={this.showMoodList} title="moodLabel" className="pointer_cursor">
-					this.props.moodTxt.defaultLabel</span>
-			} else {
-				// return this.state.currentMood.emoji
-			}
+		let smfVars = SMF
+
+		if (smfVars.isCurrentUserOwner && smfVars.useMood)
+		{
+			return <span onClick={this.showMoodList} title="moodLabel" className="pointer_cursor">
+				this.props.moodTxt.defaultLabel</span>
+		} else {
+			return this.state.currentMood.emoji
+		}
 	}
 
 	showMoodList(){
-
+		this.setState(
+			(prevState) => {
+				return {
+					isShowing: true
+				};
+			},
+			() => console.log("isShowing", this.state.isShowing)
+		);
 	}
 	onChangeMood(mood: moodType){
-		console.log(mood)
-
-		return mood
-	}
-
-	modalBody() {
-		let listActiveMoods = ActiveMoods()
-
-		if (listActiveMoods !== undefined) {
-			listActiveMoods.map((mood: moodType) =>
-				<li
-					key={mood.id}
-					title={mood.description}
-					onClick={() => this.onChangeMood(mood)}
-				/>
-			)
-
-			return <ul className="set_mood">
-				{listActiveMoods}
-			</ul>
-		}
-	}
-
-	handleShowModal() {
-		if (!this.state.showModal) {
-			return;
-		}
-
-		return ''
-		// <Modal
-		// 	close={this.closeModal()}
-		// 	header={this.props.moodTxt.defaultLabel}
-		// 	body={this.modalBody()}
-		// />
-
-	}
-
-	closeModal() {
-		this.setState({showModal: false})
-
-		return this.state.showModal
+		this.setState(
+			(prevState) => {
+				return {
+					currentMood: mood
+				};
+			},
+			() => console.log("call the server to save the change", this.state.currentMood)
+		);
 	}
 
 	render() {
-		return <div id="moodList">
-			{this.handleMoodModification()}
-			{this.handleShowModal()}
+		return <div>
+
+			{this.state.currentMood.emoji }
 	</div>;
 	}
 }
