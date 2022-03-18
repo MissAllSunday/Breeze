@@ -17,9 +17,9 @@ const wallId = (typeof breezeUsers === 'undefined' || breezeUsers === null) ? pr
 // @ts-ignore
 const ownerSettings = window.breezeProfileOwnerSettings || atob(process.env['REACT_APP_DEV_OWNER_SETTINGS'])
 // @ts-ignore
-const isCurrentUserOwner = window.breezeIsCurrentUserOwner || process.env['REACT_APP_DEV_IS_CURRENT_USER_OWNER']
+const isCurrentUserOwner = Boolean(window.breezeIsCurrentUserOwner || process.env['REACT_APP_DEV_IS_CURRENT_USER_OWNER'])
 // @ts-ignore
-const useMood = window.breezeUseMood || process.env['REACT_APP_DEV_USE_MOOD']
+const useMood = Boolean(window.breezeUseMood || process.env['REACT_APP_DEV_USE_MOOD'])
 
 const smfVars = {
 	session: session,

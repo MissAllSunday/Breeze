@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import { moodType, MoodState, MoodProps } from 'breezeTypes';
 import SMF from "../DataSource/SMF";
+import smfTextVars from "../DataSource/Txt";
+import Modal from "./modal/Modal";
+import MoodList from "./MoodList.t";
 
 export default class Mood extends Component<MoodProps, MoodState> {
 
 	constructor(props: MoodProps) {
-
-
 		super(props);
 
 		this.state = {
@@ -15,28 +16,32 @@ export default class Mood extends Component<MoodProps, MoodState> {
 		}
 	}
 
+	displayMood() {
+		let moodTextVars = smfTextVars.mood
+
+		return this.props.mood ? this.props.mood.emoji : moodTextVars.moodChange
+	}
+
 	handleMoodModification(){
 		let smfVars = SMF
+		let moodText = this.displayMood()
 
 		if (smfVars.isCurrentUserOwner && smfVars.useMood)
 		{
-			return <span onClick={this.showMoodList} title="moodLabel" className="pointer_cursor">
-				this.props.moodTxt.defaultLabel</span>
+			return <span onClick={this.showMoodList} title="{this.props.moodTxt.defaultLabel}" className="pointer_cursor">
+				{moodText}</span>
 		} else {
-			return this.state.currentMood.emoji
+			return {moodText}
 		}
 	}
 
-	showMoodList(){
-		this.setState(
-			(prevState) => {
-				return {
-					isShowing: true
-				};
-			},
-			() => console.log("isShowing", this.state.isShowing)
-		);
+	showMoodList = () => {
+
+		this.setState({
+			isShowing : true
+		});
 	}
+
 	onChangeMood(mood: moodType){
 		this.setState(
 			(prevState) => {
@@ -50,8 +55,12 @@ export default class Mood extends Component<MoodProps, MoodState> {
 
 	render() {
 		return <div>
-
-			{this.state.currentMood.emoji }
+			<Modal
+				isShowing={this.state.isShowing}
+				body={<MoodList/>}
+				header='some header'
+			/>
+			{this.handleMoodModification() }
 	</div>;
 	}
 }

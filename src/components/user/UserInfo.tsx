@@ -9,7 +9,7 @@ export default class UserInfo extends React.Component
 		let avatarUrl = ''
 		let mood = {
 			id: 1,
-			emoji: '',
+			emoji: '🤡',
 			body: '',
 			description: '',
 			isActive: true

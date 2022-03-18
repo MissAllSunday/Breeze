@@ -1,17 +1,17 @@
 
 // @ts-ignore
-const general = window.breezeTxtGeneral || atob(process.env['REACT_APP_DEV_TEXT'])
+const general:generalTextType = window.breezeTxtGeneral || atob(process.env['REACT_APP_DEV_TEXT'])
 // @ts-ignore
-const mood = window.breezeTxtMood || atob(process.env['REACT_APP_DEV_TEXT_MOOD'])
+const mood:moodTextType = window.breezeTxtMood || atob(process.env['REACT_APP_DEV_TEXT_MOOD'])
 // @ts-ignore
-const like = window.breezeTxtLike || atob(process.env['REACT_APP_DEV_TEXT_LIKE'])
+const like:likeTextType = window.breezeTxtLike || atob(process.env['REACT_APP_DEV_TEXT_LIKE'])
 
 
-const smfVars = {
+const smfTextVars = {
 	general: general,
 	mood: mood,
 	like: like,
 }
 
-export default smfVars
+export default smfTextVars
 

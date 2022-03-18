@@ -1,47 +1,38 @@
 import React, {Component} from "react";
-import Modal from "./modal/Modal";
 import ActiveMoods from "../DataSource/ActiveMoods";
 import { moodType } from 'breezeTypes';
-import { MoodListState } from 'breezeTypes';
+import Mood from "./Mood";
 
-export default class Mood extends Component<MoodListState> {
+export default class MoodList extends Component {
 
-	constructor(props: MoodListState) {
-
-
-		super(props);
-
+	constructor(props: {}) {
+		super(props)
 		this.state = {
-			isShowing: false
-		}
+			list: []
+		};
 	}
 
 	handleList() {
 		const listActiveMoods = ActiveMoods()
 
-		let res = listActiveMoods.then((response: moodType[] | void) => {
-			window.console.log(response)
-			return response
+		listActiveMoods.then((response: any) => {
+			let moods: moodType[] = Object.values(response.data)
 
-			// map((mood: moodType) => {
-			// 	return <li><Mood mood={mood}/></li>
-			//
-			// }
+			moods.map((mood: moodType) => {
+				return <li><Mood mood={mood}/></li>
+			})
+
+			return moods
 
 		})
-
+window.console.log(listActiveMoods)
 		return <ul className="set_mood">
-			{res}
+			{listActiveMoods}
 		</ul>
 	}
 
 	render() {
 		return <div id="moodList">
-			<Modal
-				isShowing={false}
-				header='header'
-				body={this.handleList()}
-			/>
 			{this.handleList()}
 		</div>;
 	}
