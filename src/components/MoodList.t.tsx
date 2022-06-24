@@ -13,22 +13,32 @@ export default class MoodList extends Component {
 	}
 
 	handleList() {
-		const listActiveMoods = ActiveMoods()
+		const listActiveMoods: any = ActiveMoods()
 
 		listActiveMoods.then((response: any) => {
-			let moods: moodType[] = Object.values(response.data)
-
-			moods.map((mood: moodType) => {
-				return <li><Mood mood={mood}/></li>
-			})
-
-			return moods
-
+			window.console.log(response)
 		})
-window.console.log(listActiveMoods)
-		return <ul className="set_mood">
-			{listActiveMoods}
-		</ul>
+
+		return ''
+		// let moods:any = Object.values(listActiveMoods.data).map((mood: any) => {
+		// 	window.console.log(mood)
+		// 	return <li key={mood.id}><Mood mood={mood}/></li>
+		// })
+
+		// moods = listActiveMoods.then((response: any) => {
+		// 	let moods: moodType[] = Object.values(response.data)
+		//
+		// 	moods.map((mood: moodType) => {
+		// 		return <li><Mood mood={mood}/></li>
+		// 	})
+		// 	window.console.log(moods)
+		// 	return moods
+		//
+		// })
+
+		// return <ul className="set_mood">
+		// 	{moods}
+		// </ul>
 	}
 
 	render() {

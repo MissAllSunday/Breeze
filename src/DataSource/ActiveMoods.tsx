@@ -1,5 +1,6 @@
 import { moodType } from 'breezeTypes';
 import Utils from "../Utils";
+import {AxiosResponse} from "axios";
 
 let action = 'breezeMood'
 let subActions = {
@@ -10,12 +11,12 @@ let subActions = {
 	setMood: 'setUserMood'
 }
 
-export default async function ActiveMoods(): Promise<moodType[]> {
+export default function ActiveMoods(): Promise<AxiosResponse<Array<any>>> {
 
 	let callUrl = Utils.buildBaseUrlWithParams(action, subActions.active)
 
 	try {
-		return await Utils.api().get(callUrl.href)
+		return  Utils.api().get(callUrl.href)
 	} catch (error: any) {
 		return error.message
 	}
