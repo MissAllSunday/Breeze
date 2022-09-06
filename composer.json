@@ -7,7 +7,7 @@
     "license": "MPL-2.0",
     "authors": [
         {
-            "name": "Jessica González",
+            "name": "Michel Mendiola",
             "email": "suki@missallsunday.com",
             "homepage": "https://missallsunday.com",
             "role": "Developer"
@@ -17,7 +17,7 @@
         "vendor-dir": "breezeVendor"
     },
     "require": {
-        "php": ">=7.4.0",
+        "php": ">=8.1.0",
         "league/container": "^4.1",
         "ext-json": "*",
         "ezyang/htmlpurifier": "^4.13"

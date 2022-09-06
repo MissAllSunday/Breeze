@@ -1,49 +1,44 @@
 import React, {Component} from "react";
-import ActiveMoods from "../DataSource/ActiveMoods";
+import {MoodApi} from "../api/MoodApi";
 import { moodType } from 'breezeTypes';
 import Mood from "./Mood";
+import Emoji from "./Emoji";
 
-export default class MoodList extends Component {
+type Props = {}
+type State = {
+	list: JSX.Element[]
+}
+
+export default class MoodList extends Component<Props, State> {
 
 	constructor(props: {}) {
 		super(props)
 		this.state = {
 			list: []
-		};
+		}
 	}
 
-	handleList() {
-		const listActiveMoods: any = ActiveMoods()
+	saveMood(moodId: number) {
 
-		listActiveMoods.then((response: any) => {
-			window.console.log(response)
-		})
+	}
 
-		return ''
-		// let moods:any = Object.values(listActiveMoods.data).map((mood: any) => {
-		// 	window.console.log(mood)
-		// 	return <li key={mood.id}><Mood mood={mood}/></li>
-		// })
+	componentDidMount() {
+		let listActiveMoods: any = MoodApi.getActiveMoods()
+		let moods = []
 
-		// moods = listActiveMoods.then((response: any) => {
-		// 	let moods: moodType[] = Object.values(response.data)
-		//
-		// 	moods.map((mood: moodType) => {
-		// 		return <li><Mood mood={mood}/></li>
-		// 	})
-		// 	window.console.log(moods)
-		// 	return moods
-		//
-		// })
+		listActiveMoods.then( (result: any) => {
+			moods = Object.keys(result.data).map((value: string) => {
+				let mood: moodType = result.data[value]
 
-		// return <ul className="set_mood">
-		// 	{moods}
-		// </ul>
+				return <li><Emoji key={mood.id} label={mood.description} codePoint={mood.emoji} handleClick={this.saveMood}></ Emoji></li>
+			})
+			this.setState({list: moods});
+		});
 	}
 
 	render() {
 		return <div id="moodList">
-			{this.handleList()}
+			<ul>{this.state.list}</ul>
 		</div>;
 	}
 }

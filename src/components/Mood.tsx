@@ -36,7 +36,6 @@ export default class Mood extends Component<MoodProps, MoodState> {
 	}
 
 	showMoodList = () => {
-
 		this.setState({
 			isShowing : true
 		});

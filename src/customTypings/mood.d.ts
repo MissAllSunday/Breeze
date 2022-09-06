@@ -1,7 +1,7 @@
 declare module 'breezeTypes' {
 	type moodType = {
 		id: number,
-		emoji: string
+		emoji: number
 		body: string
 		description: string
 		isActive: boolean
