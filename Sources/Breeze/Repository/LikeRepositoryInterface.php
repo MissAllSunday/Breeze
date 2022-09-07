@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Exceptions\InvalidLikeException;
+
 interface LikeRepositoryInterface
 {
 	public function getByContent(string $type, int $contentId): array;

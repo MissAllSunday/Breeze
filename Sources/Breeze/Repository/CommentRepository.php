@@ -6,15 +6,13 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Entity\CommentEntity;
+use Breeze\Exceptions\InvalidCommentException;
 use Breeze\Model\CommentModelInterface;
 
 class CommentRepository extends BaseRepository implements CommentRepositoryInterface
 {
-	private CommentModelInterface $commentModel;
-
-	public function __construct(CommentModelInterface $commentModel)
+	public function __construct(private CommentModelInterface $commentModel)
 	{
-		$this->commentModel = $commentModel;
 	}
 
 	/**

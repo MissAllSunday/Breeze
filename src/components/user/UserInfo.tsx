@@ -1,18 +1,19 @@
 import * as React from 'react';
 import Avatar from "./Avatar";
 import Mood from "../Mood";
+import { moodType} from 'breezeTypes';
 
 
 export default class UserInfo extends React.Component
 {
 	render() {
 		let avatarUrl = ''
-		let mood = {
-			id: 1,
-			emoji: '🤡',
+		let mood:moodType = {
+			id: 0,
+			emoji: 0,
 			body: '',
 			description: '',
-			isActive: true
+			isActive: false
 		}
 
 		return <div className="breeze_summary floatleft">

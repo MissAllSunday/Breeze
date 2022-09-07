@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-use Breeze\Repository\InvalidCommentException;
+use Breeze\Exceptions\InvalidCommentException;
 
 interface CommentServiceInterface extends BaseServiceInterface
 {

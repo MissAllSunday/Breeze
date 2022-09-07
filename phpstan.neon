@@ -18,7 +18,7 @@ parameters:
     - '/Function is_not_guest not found./'
     - '/Function loadtemplate not found./'
     - '/Function loadJavaScriptFile not found./'
-    - '/Function smf_serverResponse not found./'
+    - '/Function obExit not found./'
     - '/Function template_breezeForm_Display not found./'
     - '/Function addJavaScriptVar not found./'
     - '/Function tokenTxtReplace not found./'

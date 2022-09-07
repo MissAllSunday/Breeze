@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\User;
 
-use Breeze\Repository\InvalidMoodException;
+use Breeze\Exceptions\InvalidMoodException;
 
 interface MoodRepositoryInterface
 {

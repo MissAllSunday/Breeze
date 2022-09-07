@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-use Breeze\Repository\InvalidStatusException;
+use Breeze\Exceptions\InvalidStatusException;
 
 interface StatusServiceInterface extends BaseServiceInterface
 {

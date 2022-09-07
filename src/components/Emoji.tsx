@@ -1,14 +1,15 @@
 import React from 'react';
+import { moodType} from 'breezeTypes';
 
-const Emoji = (props: {key: number; label: string; codePoint: number; handleClick: Function }) => (
+const Emoji = (props: {mood: moodType; handleClick: Function }) => (
 	<span
 		className="emoji"
 		role="img"
-		aria-label={props.label ? props.label : ""}
-		aria-hidden={props.label ? "false" : "true"}
-		onClick={props.handleClick(props.key)}
+		aria-label={props.mood.description ? props.mood.description : ""}
+		aria-hidden={props.mood.description ? "false" : "true"}
+		onClick={props.handleClick(props.mood)}
 	>
-	{ String.fromCodePoint(props.codePoint) }
+	{ String.fromCodePoint(props.mood.emoji) }
 	</span>
 );
 export default Emoji;

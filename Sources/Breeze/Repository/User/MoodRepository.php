@@ -6,14 +6,13 @@ declare(strict_types=1);
 namespace Breeze\Repository\User;
 
 use Breeze\Entity\MoodEntity;
+use Breeze\Exceptions\InvalidMoodException;
+use Breeze\Exceptions\NoMoodFoundException;
 use Breeze\Model\MoodModelInterface;
 use Breeze\Repository\BaseRepository;
-use Breeze\Repository\InvalidMoodException;
 
 class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 {
-	private MoodModelInterface $moodModel;
-
 	private const CACHE_ALL = '::getAllMoods';
 
 	private const CACHE_ID = '::getById';
@@ -23,9 +22,8 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 		self::CACHE_ID,
 	];
 
-	public function __construct(MoodModelInterface $moodModel)
+	public function __construct(private MoodModelInterface $moodModel)
 	{
-		$this->moodModel = $moodModel;
 	}
 
 	public function deleteByIds(array $toDeleteMoodIds): bool
@@ -85,7 +83,7 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 	}
 
 	/**
-	 * @throws InvalidMoodException
+	 * @throws NoMoodFoundException
 	 */
 	public function insertMood(array $mood): array
 	{
@@ -95,7 +93,7 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 	}
 
 	/**
-	 * @throws InvalidMoodException
+	 * @throws NoMoodFoundException
 	 */
 	public function getById(int $moodId): array
 	{
@@ -108,7 +106,7 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 		}
 
 		if (empty($mood)) {
-			throw new InvalidMoodException('error_no_mood');
+			throw new NoMoodFoundException('error_no_mood');
 		}
 
 		return $mood;

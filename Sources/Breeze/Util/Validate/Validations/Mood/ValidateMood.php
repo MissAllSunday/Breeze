@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Mood;
 
 use Breeze\Entity\MoodEntity;
-use Breeze\Repository\InvalidMoodException;
+use Breeze\Exceptions\InvalidMoodException;
 use Breeze\Service\MoodServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Validate\Validations\ValidateData;

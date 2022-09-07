@@ -31,24 +31,13 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 		self::ACTION_USER_SET,
 	];
 
-	private UserServiceInterface $userService;
-
-	private MoodServiceInterface $moodService;
-
-	private UserSettingsServiceInterface $userSettingsService;
-
 	public function __construct(
-		UserServiceInterface $userService,
-		UserSettingsServiceInterface $userSettingsService,
-		MoodServiceInterface $moodService,
-		ValidateGatewayInterface $gateway
+		private UserServiceInterface         $userService,
+		private UserSettingsServiceInterface $userSettingsService,
+		private MoodServiceInterface         $moodService,
+		protected ValidateGatewayInterface   $gateway
 	) {
 		parent::__construct($gateway);
-
-		$this->userSettingsService = $userSettingsService;
-		$this->userService = $userService;
-		$this->moodService = $moodService;
-		$this->gateway = $gateway;
 	}
 
 	public function postMood(): void
@@ -69,7 +58,7 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 
 		$this->moodService->deleteMoods([$data[MoodEntity::ID]]);
 
-		$this->print($this->gateway->response());
+		$this->print($this->gateway->response(), 204);
 	}
 
 	public function getAllMoods(): void
@@ -89,7 +78,7 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 
 		$this->userSettingsService->save($data, $userId);
 
-		$this->print($this->gateway->response());
+		$this->print($this->gateway->response(), 202);
 	}
 
 	public function getSubActions(): array
@@ -102,7 +91,7 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 		return self::ACTION_ACTIVE;
 	}
 
-	public function setValidator(): ValidateDataInterface
+	public function getValidator(): ValidateDataInterface
 	{
 		$validatorName = ValidateMood::getNameSpace() . ucfirst($this->subAction);
 

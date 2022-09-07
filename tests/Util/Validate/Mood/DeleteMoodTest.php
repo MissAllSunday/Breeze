@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Mood;
 
-use Breeze\Repository\InvalidMoodException;
+use Breeze\Exceptions\InvalidMoodException;
 use Breeze\Service\MoodService;
 use Breeze\Service\UserService;
 use Breeze\Util\Validate\ValidateDataException;

@@ -74,7 +74,7 @@ class Breeze
 		$currentUserSettings = $this->container->get(UserService::class)->getCurrentUserSettings();
 
 		if ($this->isEnable(SettingsEntity::FORCE_WALL) || !empty($currentUserSettings['wall'])) {
-			/** @var WallController */
+			/** @var WallController $wallController */
 			$wallController = $this->container->get(WallController::class);
 
 			$profileAreas['info']['areas']['summary'] = [
@@ -99,10 +99,10 @@ class Breeze
 			];
 		}
 
-		/** @var UserSettingsController */
+		/** @var UserSettingsController $settingsController */
 		$settingsController = $this->container->get(UserSettingsController::class);
 
-		/** @var AlertsController */
+		/** @var AlertsController $alertsController */
 		$alertsController = $this->container->get(AlertsController::class);
 
 		$profileAreas['breeze_profile'] = [
@@ -227,7 +227,7 @@ class Breeze
 			return false;
 		}
 
-		/** @var PermissionsService */
+		/** @var PermissionsService $permissions */
 		$permissions = $this->container->get(PermissionsService::class);
 
 		return [
@@ -245,7 +245,7 @@ class Breeze
 			return;
 		}
 
-		/** @var MoodServiceInterface */
+		/** @var MoodServiceInterface $moodService */
 		$moodService = $this->container->get(MoodService::class);
 
 		$moodService->displayMood($data, $userId);
@@ -259,7 +259,7 @@ class Breeze
 			return;
 		}
 
-		/** @var MoodServiceInterface */
+		/** @var MoodServiceInterface $moodService */
 		$moodService = $this->container->get(MoodService::class);
 
 //		$moodService->showMoodOnCustomFields($userId);
@@ -267,7 +267,7 @@ class Breeze
 
 	public function adminMenuWrapper(array &$adminMenu): void
 	{
-		/** @var AdminController */
+		/** @var AdminController $adminController */
 		$adminController = $this->container->get(AdminController::class);
 
 		$this->setLanguage('BreezeAdmin');

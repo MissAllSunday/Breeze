@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Exceptions\InvalidCommentException;
+
 interface CommentRepositoryInterface
 {
 	/**

@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Entity\StatusEntity;
-use Breeze\Repository\InvalidStatusException;
+use Breeze\Exceptions\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\ValidateGateway;
 

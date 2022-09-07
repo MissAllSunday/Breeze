@@ -10,38 +10,73 @@ use Breeze\Traits\TextTrait;
 use Breeze\Util\Json;
 use Breeze\Util\Validate\ValidateGatewayInterface;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use JetBrains\PhpStorm\NoReturn;
 
 abstract class ApiBaseController extends BaseController
 {
-	use TextTrait;
+	public const DEFAULT_CONTENT_TYPE = 'content-type: application/json';
 
-	protected ValidateGatewayInterface $gateway;
+	use TextTrait;
 
 	protected string $subAction;
 
-	public function __construct(ValidateGatewayInterface $gateway)
+	public function __construct(protected ValidateGatewayInterface $gateway)
 	{
-		$this->gateway = $gateway;
+		$this->subAction = $this->getRequest('sa', '');
+	}
+
+	public function subActionCall(): void
+	{
+		$subActions = $this->getSubActions();
+
+		if (!empty($this->subAction) && in_array($this->subAction, $subActions)) {
+			$this->{$this->subAction}();
+		} else {
+			$this->print([], 404);
+		}
+	}
+
+	public function subActionCheck(): bool
+	{
+		$subActions = $this->getSubActions();
+
+		return (!empty($this->subAction) && !in_array($this->subAction, $subActions));
 	}
 
 	public function dispatch(): void
 	{
-		$this->subAction = $this->getRequest('sa', $this->getMainAction());
+		if ($this->subActionCheck()) {
+			$this->print([], 404);
+		}
+
 		$this->gateway->setData();
-		$validator = $this->setValidator();
-		$this->gateway->setValidator($validator);
+		$this->gateway->setValidator($this->getValidator());
 
 		if (!$this->gateway->isValid()) {
-			$this->print($this->gateway->response());
+			$this->print($this->gateway->response(), $this->gateway->getStatusCode());
 		}
 
 		$this->subActionCall();
 	}
 
-	public function print(array $responseData): void
+	#[NoReturn] public function print(array $responseData, int $responseCode = 200, string $type = ''): void
 	{
-		smf_serverResponse(Json::encode($responseData));
+		$this->setGlobal('db_show_debug', false);
+		ob_end_clean();
+
+		if (!$this->global('enableCompressedOutput')) {
+			@ob_start('ob_gzhandler');
+		} else {
+			ob_start();
+		}
+
+		header($type ?? self::DEFAULT_CONTENT_TYPE);
+		http_response_code($responseCode);
+
+		echo Json::encode($responseData);
+
+		exit(obExit(false));
 	}
 
-	abstract public function setValidator(): ValidateDataInterface;
+	abstract public function getValidator(): ValidateDataInterface;
 }

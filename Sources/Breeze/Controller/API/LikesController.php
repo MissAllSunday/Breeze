@@ -61,7 +61,7 @@ class LikesController extends ApiBaseController implements ApiBaseInterface
 		return self::ACTION_LIKE;
 	}
 
-	public function setValidator(): ValidateDataInterface
+	public function getValidator(): ValidateDataInterface
 	{
 		$validatorName = ValidateLikes::getNameSpace() . ucfirst($this->subAction);
 

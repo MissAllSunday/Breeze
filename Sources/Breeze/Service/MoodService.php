@@ -8,7 +8,7 @@ namespace Breeze\Service;
 use Breeze\Entity\MoodEntity;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
-use Breeze\Repository\InvalidMoodException;
+use Breeze\Exceptions\InvalidMoodException;
 use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Traits\PersistenceTrait;

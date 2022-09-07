@@ -9,7 +9,7 @@ use Breeze\Breeze;
 
 trait SettingsTrait
 {
-	public function getSetting(string $settingName, $fallBack = false)
+	public function getSetting(string $settingName, $fallBack = false): mixed
 	{
 		$modSettings = $this->global('modSettings');
 
@@ -27,7 +27,7 @@ trait SettingsTrait
 		return !empty($modSettings[Breeze::PATTERN . $settingName]);
 	}
 
-	public function modSetting(string $settingName, $fallBack = false)
+	public function modSetting(string $settingName, $fallBack = false): mixed
 	{
 		$modSettings = $this->global('modSettings');
 
@@ -38,7 +38,7 @@ trait SettingsTrait
 		return !empty($modSettings[$settingName]) ? $modSettings[$settingName] : $fallBack;
 	}
 
-	public function global(string $variableName)
+	public function global(string $variableName): mixed
 	{
 		return $GLOBALS[$variableName] ?? false;
 	}

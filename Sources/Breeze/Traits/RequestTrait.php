@@ -10,15 +10,11 @@ use HTMLPurifier_Config;
 
 trait RequestTrait
 {
-	private $request;
-
-	private HTMLPurifier $purifier;
+	private mixed $request;
 
 	public function init(): void
 	{
 		$this->request = $_REQUEST;
-
-		$this->purifier = $this->getPurifier();
 	}
 
 	public function getRequest(string $variableName, $defaultValue = null)
@@ -46,7 +42,7 @@ trait RequestTrait
 		return isset($this->request[$variableName]);
 	}
 
-	public function sanitize($variable)
+	public function sanitize($variable): mixed
 	{
 		$this->init();
 
@@ -60,8 +56,7 @@ trait RequestTrait
 			return $variable;
 		}
 
-		$var = $this->purifier->purify((string) $variable);
-		$var = $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($var, \ENT_QUOTES));
+		$var = $smcFunc['htmltrim']($smcFunc['htmlspecialchars']($variable, \ENT_QUOTES));
 
 		if (ctype_digit($var)) {
 			$var = (int) $var;

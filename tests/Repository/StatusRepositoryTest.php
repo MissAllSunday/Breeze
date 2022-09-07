@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Exceptions\InvalidCommentException;
+use Breeze\Exceptions\InvalidStatusException;
 use Breeze\Model\StatusModel;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Exceptions\InvalidLikeException;
 use Breeze\Model\LikeModelInterface;
 
 class LikeRepository extends BaseRepository implements LikeRepositoryInterface

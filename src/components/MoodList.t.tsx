@@ -18,7 +18,7 @@ export default class MoodList extends Component<Props, State> {
 		}
 	}
 
-	saveMood(moodId: number) {
+	saveMood(mood: moodType) {
 
 	}
 
@@ -30,7 +30,7 @@ export default class MoodList extends Component<Props, State> {
 			moods = Object.keys(result.data).map((value: string) => {
 				let mood: moodType = result.data[value]
 
-				return <li><Emoji key={mood.id} label={mood.description} codePoint={mood.emoji} handleClick={this.saveMood}></ Emoji></li>
+				return <li><Emoji key={mood.id} mood={mood} handleClick={this.saveMood}></ Emoji></li>
 			})
 			this.setState({list: moods});
 		});

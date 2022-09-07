@@ -11,6 +11,8 @@ interface ValidateGatewayInterface
 {
 	public function isValid(): bool;
 
+	public function getStatusCode(): int;
+
 	public function setValidator(ValidateDataInterface $validator): bool;
 
 	public function setData(array $rawData = []): void;

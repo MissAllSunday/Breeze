@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Entity\LikeEntity;
-use Breeze\Repository\InvalidLikeException;
+use Breeze\Exceptions\InvalidLikeException;
 use Breeze\Repository\LikeRepositoryInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateGateway;

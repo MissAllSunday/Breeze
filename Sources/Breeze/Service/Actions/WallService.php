@@ -7,8 +7,8 @@ namespace Breeze\Service\Actions;
 
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
+use Breeze\Exceptions\InvalidStatusException;
 use Breeze\Repository\CommentRepositoryInterface;
-use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\UserService;
 use Breeze\Service\UserServiceInterface;

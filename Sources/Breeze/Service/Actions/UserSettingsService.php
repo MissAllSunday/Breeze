@@ -6,6 +6,7 @@ namespace Breeze\Service\Actions;
 
 use Breeze\Breeze;
 use Breeze\Model\UserModel;
+use Breeze\Model\UserModelInterface;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Traits\PersistenceTrait;
 use Breeze\Util\Components;
@@ -43,7 +44,7 @@ class UserSettingsService extends ActionsBaseService implements UserSettingsServ
 		$toInsert = [];
 
 		foreach ($userSettings as $name => $value) {
-			if (in_array($name, UserModel::JSON_VALUES)) {
+			if (in_array($name, UserModelInterface::JSON_VALUES)) {
 				$value = !empty($value) ? Json::encode($value) : '';
 			}
 

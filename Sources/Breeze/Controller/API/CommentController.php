@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\CommentEntity;
-use Breeze\Repository\InvalidCommentException;
+use Breeze\Exceptions\InvalidCommentException;
 use Breeze\Service\CommentServiceInterface;
 use Breeze\Service\StatusServiceInterface;
 use Breeze\Service\UserServiceInterface;
@@ -50,7 +50,7 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 		return self::SUB_ACTIONS;
 	}
 
-	public function setValidator(): ValidateDataInterface
+	public function getValidator(): ValidateDataInterface
 	{
 		$validatorName = ValidateData::getNameSpace() . ucfirst($this->subAction);
 
