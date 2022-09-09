@@ -10,12 +10,8 @@ use Breeze\Util\ActionLogs\ActionLogInterface;
 
 class ActivityService implements ActivityServiceInterface
 {
-	private ActivityRepositoryInterface $activityRepository;
-
-	public function __construct(ActivityRepositoryInterface $activityRepository)
+	public function __construct(private ActivityRepositoryInterface $activityRepository)
 	{
-
-		$this->activityRepository = $activityRepository;
 	}
 
 	public function setLog(string $actionName, array $actionData): bool

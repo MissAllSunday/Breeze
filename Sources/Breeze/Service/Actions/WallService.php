@@ -8,7 +8,6 @@ namespace Breeze\Service\Actions;
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Exceptions\InvalidStatusException;
-use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\UserService;
 use Breeze\Service\UserServiceInterface;
@@ -18,14 +17,6 @@ use Breeze\Util\Permissions;
 
 class WallService extends ActionsBaseService implements WallServiceInterface
 {
-	private UserServiceInterface $userService;
-
-	private StatusRepositoryInterface $statusRepository;
-
-	private CommentRepositoryInterface $commentRepository;
-
-	private Components $components;
-
 	private array $usersToLoad = [];
 
 	protected array $profileOwnerInfo = [];
@@ -35,15 +26,10 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 	private array $profileOwnerSettings = [];
 
 	public function __construct(
-		UserServiceInterface $userService,
-		StatusRepositoryInterface $statusRepository,
-		CommentRepositoryInterface $commentRepository,
-		Components $components
+		private UserServiceInterface $userService,
+		private StatusRepositoryInterface $statusRepository,
+		private Components $components
 	) {
-		$this->statusRepository = $statusRepository;
-		$this->commentRepository = $commentRepository;
-		$this->userService = $userService;
-		$this->components = $components;
 	}
 
 	public function init(array $subActions): void

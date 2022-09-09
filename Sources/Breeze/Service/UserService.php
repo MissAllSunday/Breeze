@@ -106,7 +106,7 @@ class UserService extends BaseService implements UserServiceInterface
 	{
 		$user_info = $this->global('user_info');
 
-		if (empty($userId)) {
+		if (empty($user_info['id'])) {
 			return true;
 		}
 

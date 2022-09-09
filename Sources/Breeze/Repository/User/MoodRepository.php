@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace Breeze\Repository\User;
 
 use Breeze\Entity\MoodEntity;
-use Breeze\Exceptions\InvalidMoodException;
 use Breeze\Exceptions\NoMoodFoundException;
 use Breeze\Model\MoodModelInterface;
 use Breeze\Repository\BaseRepository;
@@ -16,11 +15,6 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 	private const CACHE_ALL = '::getAllMoods';
 
 	private const CACHE_ID = '::getById';
-
-	private const CACHE_KEYS = [
-		self::CACHE_ALL,
-		self::CACHE_ID,
-	];
 
 	public function __construct(private MoodModelInterface $moodModel)
 	{

@@ -150,10 +150,6 @@ class Components
 
 	protected function loadCssDependencies(): void
 	{
-		if (empty(self::CDN_CSS)) {
-			return;
-		}
-
 		foreach (self::CDN_CSS as $cssDependency) {
 			$this->loadCSSFile($cssDependency, [
 				'external' => true,

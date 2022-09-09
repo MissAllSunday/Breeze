@@ -6,11 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate;
 
 use Breeze\Breeze;
-use Breeze\Exceptions\InvalidCommentException;
 use Breeze\Exceptions\InvalidException;
-use Breeze\Exceptions\InvalidLikeException;
-use Breeze\Exceptions\InvalidMoodException;
-use Breeze\Exceptions\InvalidStatusException;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Json;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
@@ -43,6 +39,7 @@ class ValidateGateway implements ValidateGatewayInterface
 	protected array $data = [];
 
 	private ValidateDataInterface $validator;
+
 	protected int $statusCode = 0;
 
 	public function __construct()

@@ -34,21 +34,11 @@ final class RequestTest extends TestCase
 	{
 		return [
 			'sanitized' =>
-			[
-				'variableName' => 'xss',
-				'expected' => false,
-				'defaultValue' => null,
-			],
-			'background-image 1' => [
-				'variableName' => 'div-image',
-				'expected' => '&lt;div&gt;&lt;/div&gt;',
-				'defaultValue' => null,
-			],
-			'url-encoding' => [
-				'variableName' => 'url-encoding',
-				'expected' => '&lt;a href=&quot;&quot;&gt;XSS&lt;/a&gt;',
-				'defaultValue' => null,
-			],
+				[
+					'variableName' => '<script>alert("XSS");</script>',
+					'expected' => 'Luffy',
+					'defaultValue' => 'Luffy',
+				],
 			'not found' =>
 			[
 				'variableName' => 'Cornholio',
@@ -79,8 +69,9 @@ final class RequestTest extends TestCase
 		return [
 			'sanitized' =>
 			[
-				'dirty' => '<script>alert("XSS");</script>',
-				'expected' => false,
+				'variableName' => '<script>alert("XSS");</script>',
+				'expected' => '&lt;script&gt;alert(&quot;XSS&quot;);&lt;/script&gt;',
+				'defaultValue' => 'Luffy',
 			],
 			'int' =>
 			[

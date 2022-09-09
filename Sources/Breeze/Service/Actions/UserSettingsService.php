@@ -5,32 +5,18 @@ declare(strict_types=1);
 namespace Breeze\Service\Actions;
 
 use Breeze\Breeze;
-use Breeze\Model\UserModel;
 use Breeze\Model\UserModelInterface;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Traits\PersistenceTrait;
-use Breeze\Util\Components;
-use Breeze\Util\Form\UserSettingsBuilder;
 use Breeze\Util\Json;
 
 class UserSettingsService extends ActionsBaseService implements UserSettingsServiceInterface
 {
 	use PersistenceTrait;
 
-	private UserRepositoryInterface $userRepository;
-
-	private Components $components;
-
-	private UserSettingsBuilder $SettingsBuilder;
-
 	public function __construct(
-		UserRepositoryInterface $userRepository,
-		Components $components,
-		UserSettingsBuilder $SettingsBuilder
+		private UserRepositoryInterface $userRepository,
 	) {
-		$this->userRepository = $userRepository;
-		$this->components = $components;
-		$this->SettingsBuilder = $SettingsBuilder;
 	}
 
 	public function init(array $subActions):void

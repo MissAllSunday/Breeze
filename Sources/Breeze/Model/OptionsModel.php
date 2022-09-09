@@ -13,7 +13,7 @@ class OptionsModel extends BaseModel implements OptionsModelInterface
 {
 	public const SAVED_AS_JSON = ['moodHistory'];
 
-	public function insert(array $data, int $userID = 0): int
+	public function insert(array $data = [], int $userId = 0): int
 	{
 		if (empty($data) || empty($userId)) {
 			return 0;
@@ -26,7 +26,7 @@ class OptionsModel extends BaseModel implements OptionsModelInterface
 				$settingValue = Json::encode($settingValue);
 			}
 
-			$inserts[] = [$userID, $settingName, $settingValue];
+			$inserts[] = [$userId, $settingName, $settingValue];
 		}
 
 		$this->dbClient->replace(
@@ -43,9 +43,9 @@ class OptionsModel extends BaseModel implements OptionsModelInterface
 		return 1;
 	}
 
-	public function update(array $data, int $userID = 0): array
+	public function update(array $data, int $userId = 0): array
 	{
-		return [$this->insert($data, $userID)];
+		return [$this->insert($data, $userId)];
 	}
 
 	public function getTableName(): string

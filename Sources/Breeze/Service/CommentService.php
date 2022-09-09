@@ -8,25 +8,15 @@ namespace Breeze\Service;
 use Breeze\Entity\CommentEntity;
 use Breeze\Exceptions\InvalidCommentException;
 use Breeze\Repository\CommentRepositoryInterface;
-use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\ValidateGateway;
 
 class CommentService extends BaseLikesService implements CommentServiceInterface
 {
-	private StatusRepositoryInterface $statusRepository;
-
-	private CommentRepositoryInterface $commentRepository;
-
-	private UserServiceInterface $userService;
-
 	public function __construct(
-		UserServiceInterface $userService,
-		CommentRepositoryInterface $commentRepository,
-		LikeServiceInterface $likeService
+		private UserServiceInterface $userService,
+		private CommentRepositoryInterface $commentRepository,
+		protected LikeServiceInterface $likeService
 	) {
-		$this->commentRepository = $commentRepository;
-		$this->userService = $userService;
-
 		parent::__construct($likeService);
 	}
 

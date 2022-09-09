@@ -10,7 +10,6 @@ use Breeze\Traits\TextTrait;
 use Breeze\Util\Json;
 use Breeze\Util\Validate\ValidateGatewayInterface;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
-use JetBrains\PhpStorm\NoReturn;
 
 abstract class ApiBaseController extends BaseController
 {
@@ -59,7 +58,7 @@ abstract class ApiBaseController extends BaseController
 		$this->subActionCall();
 	}
 
-	#[NoReturn] public function print(array $responseData, int $responseCode = 200, string $type = ''): void
+	public function print(array $responseData, int $responseCode = 200, string $type = ''): void
 	{
 		$this->setGlobal('db_show_debug', false);
 		ob_end_clean();
@@ -70,7 +69,7 @@ abstract class ApiBaseController extends BaseController
 			ob_start();
 		}
 
-		header($type ?? self::DEFAULT_CONTENT_TYPE);
+		header(!empty($type) ? $type : self::DEFAULT_CONTENT_TYPE);
 		http_response_code($responseCode);
 
 		echo Json::encode($responseData);
