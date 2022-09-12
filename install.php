@@ -172,15 +172,16 @@ if (empty($context['uninstalling'])) {
 			],
 			[
 				'name' => 'emoji',
-				'type' => 'varchar',
-				'size' => 255,
-				'default' => '',
+				'type' => 'int',
+				'size' => 6,
+				'default' => 0,
+				'null' => false,
 			],
 			[
 				'name' => 'description',
 				'type' => 'text',
 				'size' => '',
-				'default' => null,
+				'default' => '',
 			],
 			[
 				'name' => 'isActive',
@@ -278,23 +279,24 @@ if (empty($context['uninstalling'])) {
 	}
 
 	// Lastly, insert the default moods and oh boy there are a lot!!!
-	$emojis = explode(
-		',',
-		trim(
-			'😀,😁,😂,🤣,😃,😄,😅,😆,😉,😊,😋,😎,😍,😘,🥰,😗,😙,😚,☺️,🙂,🤗,🤩,🤔,🤨,😐,😑,😶,🙄,😏,😣,😥,😮,🤐,😯,😪,😫,😴,😌,😛,😜,😝,🤤,😒,😓,😔,😕,🙃,🤑,😲,☹️,🙁,😖,😞,😟,😤,😢,😭,😦,😧,😨,😩,🤯,😬,😰,😱,🥵,🥶,😳,🤪,😵,😡,😠,🤬,😷,🤒,🤕,🤢,🤮,🤧,😇,🤠,🤡,🥳,🥴,🥺,🤥,🤫,🤭,🧐,🤓,😈,👿,👹,👺,💩'
-		)
-	);
+	$emojis = [
+		128512,128513,128514,129315,128515,128516,128517128518,128521,128522,128523,128526,128525,128536,128535,128537,
+		128538,9786,128578,129303,129300,128528,128529,128566,128580,128527,128547,128549,128558,129296,128559,128554,
+		128555,128564,128524,129299,128539,128540,128541,129316,128530,128531,128532,128533,128579,129297,128562,128577,
+		128534,128542,128543,128548,128546,128557,128550,128551,128552,128553,128556,128560,128561,128563,128565,128545,
+		128544,128519,129312,129313,129317,128567,129298,129301,129314,129319,128520,128127,128128,129302,128169,128125,
+	];
 
 
-	foreach ($emojis as $emoji) {
+	foreach ($emojis as $emojiDecimal) {
 		$smcFunc['db_insert']('insert', '{db_prefix}breeze_moods', [
-			'emoji' => 'string',
+			'emoji' => 'int',
 			'description' => 'string',
 			'isActive' => 'int',
 			'createdAt' => 'string',
 			'updatedAt' => 'string',
 		], [
-			$smcFunc['htmlspecialchars']($emoji),
+			$emojiDecimal,
 			'',
 			1,
 			time(),
@@ -305,8 +307,8 @@ if (empty($context['uninstalling'])) {
 
 function BreezeCheck(): void
 {
-	if (version_compare(\PHP_VERSION, '7.4.0', '<')) {
-		fatal_error('This mod needs PHP 7.4 or greater.
-		 You will not be able to install/use this mod,contact your host and ask for a php upgrade.');
+	if (version_compare(\PHP_VERSION, '8.1.0', '<')) {
+		fatal_error('This mod needs PHP 8.1 or greater.
+		 You will not be able to install/use this mod,contact your host and ask for a PHP upgrade.');
 	}
 }
