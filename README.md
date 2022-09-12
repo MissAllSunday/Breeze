@@ -9,7 +9,7 @@ Breeze is powerful social mod for your SMF forum, it allows your users to turn t
 ###### Requirements:
 
 - SMF 2.1.x
-- PHP 7.4.0
+- PHP 8.1
 
 ###### Features:
 
@@ -21,12 +21,9 @@ Breeze is powerful social mod for your SMF forum, it allows your users to turn t
 
 The mod uses the following scripts:
 
-- [Vue](https://vuejs.org/)
+- [React](https://reactjs.org)
 - [Axios](https://github.com/axios/axios)
-- [moment.js](https://momentjs.com/)
-- [vue-toast-notification](https://github.com/ankurk91/vue-toast-notification)
 - [DOMPurify](https://github.com/cure53/DOMPurify)
-- [Sun editor](https://suneditor.com/)
 
 ##### Tests
 ```bash
