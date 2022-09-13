@@ -5,9 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Traits;
 
-use HTMLPurifier;
-use HTMLPurifier_Config;
-
 trait RequestTrait
 {
 	private mixed $request;
@@ -75,12 +72,5 @@ trait RequestTrait
 	private function getSmcFunc(): array
 	{
 		return $GLOBALS['smcFunc'];
-	}
-
-	private function getPurifier(): HTMLPurifier
-	{
-		$config = HTMLPurifier_Config::createDefault();
-
-		return HTMLPurifier::getInstance($config);
 	}
 }

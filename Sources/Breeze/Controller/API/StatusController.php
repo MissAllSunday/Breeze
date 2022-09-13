@@ -11,7 +11,7 @@ use Breeze\Service\StatusServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Validate\ValidateGateway;
 use Breeze\Util\Validate\ValidateGatewayInterface;
-use Breeze\Util\Validate\Validations\ValidateData;
+use Breeze\Util\Validate\Validations\Status\ValidateStatus;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class StatusController extends ApiBaseController implements ApiBaseInterface
@@ -41,7 +41,7 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 
 	public function getValidator(): ValidateDataInterface
 	{
-		$validatorName = ValidateData::getNameSpace() . ucfirst($this->subAction);
+		$validatorName = ValidateStatus::getNameSpace() . ucfirst($this->subAction);
 
 		return new $validatorName(
 			$this->userService,

@@ -11,19 +11,20 @@ use Breeze\Util\Validate\Validations\ValidateData;
 
 abstract class ValidateStatus extends ValidateData
 {
-	protected StatusServiceInterface $statusService;
-
 	public function __construct(
 		UserServiceInterface $userService,
-		StatusServiceInterface $statusService
+		protected StatusServiceInterface $statusService
 	) {
-		$this->statusService = $statusService;
-
 		parent::__construct($userService);
 	}
 
 	public function getParams(): array
 	{
 		return $this->getData();
+	}
+
+	public static function getNameSpace(): string
+	{
+		return __NAMESPACE__ . '\\';
 	}
 }

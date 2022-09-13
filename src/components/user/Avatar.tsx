@@ -1,3 +1,5 @@
+import React from "react";
+
 function Avatar(props: { url: string}) {
 	const divStyle = {
 		backgroundImage: 'url(' + props.url + ')',

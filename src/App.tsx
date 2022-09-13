@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import UserInfo from "./components/user/UserInfo";
 import Editor from "./components/Editor";
 import Status from "./components/Status";
