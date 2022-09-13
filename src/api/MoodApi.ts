@@ -1,15 +1,17 @@
-import {AxiosResponse} from "axios";
+import axios, {AxiosResponse} from "axios";
+import {baseParams, baseUrl} from "./Api";
 import { moodType } from 'breezeTypes';
-import Utils from "../Utils";
 
 const action = 'breezeMood'
-const responseBody = (response: AxiosResponse) => response.data;
 
-const moodRequests = {
-	get: (action: string, subAction: string) => Utils.api().get<moodType>(Utils.buildBaseUrlWithParams(action, subAction).href)
-};
+export interface ServerMoodResponse {
+	data: Array<moodType>
+}
 
-export const MoodApi =
+export const getActiveMoods = () =>
 {
-	getActiveMoods : () => moodRequests.get(action, 'getActiveMoods')
+	return axios.get<ServerMoodResponse>(
+		baseUrl(action, 'getActiveMoods'),
+		{ data: baseParams()},
+	)
 }

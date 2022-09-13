@@ -1,23 +1,3 @@
-import axios from 'axios';
-import Smf from './DataSource/SMF';
-
-const api = () => {
-	return axios
-}
-
-const buildBaseUrlWithParams = (action: string, subAction:string) =>
-{
-	let smfVars = Smf
-	let baseUrlWithParams = new URL(smfVars.scriptUrl)
-	baseUrlWithParams.searchParams.append('action', action)
-	baseUrlWithParams.searchParams.append('sa', subAction)
-	baseUrlWithParams.searchParams.append('wallId', smfVars.wallId)
-
-	baseUrlWithParams.searchParams.append(smfVars.session.var, smfVars.session.id)
-
-	return baseUrlWithParams;
-}
-
 const canUseLocalStorage = () =>
 {
 	let storage = window['localStorage']
@@ -77,8 +57,6 @@ const utils = {
 	getLocalObject,
 	setLocalObject,
 	canUseLocalStorage,
-	buildBaseUrlWithParams,
-	api
 }
 
 export default utils

@@ -1,6 +1,6 @@
 import React from "react";
+import {ServerLikeResponse, postLike} from "../api/LikeApi";
 import {likeType } from 'breezeTypes';
-import Utils from "../Utils";
 
 export default class Like extends React.Component<any> {
 	constructor(props: likeType) {
@@ -9,12 +9,9 @@ export default class Like extends React.Component<any> {
 	}
 
 	handleLike() {
-		let callUrl = Utils.buildBaseUrlWithParams('like', 'like')
-
-		Utils.api().post(callUrl.href, this.state).then(data => {
-			// @ts-ignore
-			this.setState(data.content);
-		})
+		postLike(this.state).then((response:ServerLikeResponse) => {
+			this.setState(response.data);
+		});
 	}
 
 	render() {

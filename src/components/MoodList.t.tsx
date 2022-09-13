@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {MoodApi} from "../api/MoodApi";
+import {getActiveMoods, ServerMoodResponse} from "../api/MoodApi";
 import { moodType } from 'breezeTypes';
 import Mood from "./Mood";
 import Emoji from "./Emoji";
@@ -23,16 +23,19 @@ export default class MoodList extends Component<Props, State> {
 	}
 
 	componentDidMount() {
-		let listActiveMoods: any = MoodApi.getActiveMoods()
-		let moods = []
+		let moods:Array<moodType> = []
 
-		listActiveMoods.then( (result: any) => {
-			moods = Object.keys(result.data).map((value: string) => {
-				let mood: moodType = result.data[value]
+		getActiveMoods().then( (result) => {
 
-				return <li><Emoji key={mood.id} mood={mood} handleClick={this.saveMood}></ Emoji></li>
-			})
-			this.setState({list: moods});
+			// result.data.forEach(function(mood:moodType) {
+			//
+			// })
+			// moods = Object.keys(result.data).map((value: string, index:number) => {
+			// 	let mood: moodType = result.data[index]
+			//
+			// 	return <li><Emoji key={mood.id} mood={mood} handleClick={this.saveMood}></ Emoji></li>
+			// })
+			// this.setState({list: moods});
 		});
 	}
 

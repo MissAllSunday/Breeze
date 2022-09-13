@@ -2,7 +2,7 @@ import React from 'react';
 import UserInfo from "./components/user/UserInfo";
 import Editor from "./components/Editor";
 import Status from "./components/Status";
-import statusByUser from "./DataSource/StatusByUser";
+import statusByUser from "./DataSource/StatusByProfile";
 
 function App() {
 	let currentUserData: object = {}
