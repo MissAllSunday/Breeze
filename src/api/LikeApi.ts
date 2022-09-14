@@ -1,5 +1,5 @@
 import axios from "axios";
-import { baseUrl, baseParams } from "./Api";
+import { baseUrl, baseConfig } from "./Api";
 import { likeType } from 'breezeTypes';
 
 export interface ServerLikeResponse {
@@ -16,7 +16,7 @@ export const postLike = (likeData:object) =>
 {
 	return axios.post<ServerLikeData>(
 		baseUrl(action, 'like'),
-		{ data: baseParams(likeData)},
+		baseConfig(likeData),
 	)
 }
 

@@ -1,4 +1,3 @@
-import axios, {AxiosResponse} from 'axios';
 import SmfVars from '../DataSource/SMF';
 
 export const baseUrl = (action: string, subAction:string) =>
@@ -13,10 +12,21 @@ export const baseUrl = (action: string, subAction:string) =>
 	return baseUrl.href;
 }
 
-export const baseParams = (params: object = {}) =>
+export const baseConfig = (params:object = {}) =>
 {
+	return { data: baseParams(params), headers: {
+			'X-SMF-AJAX': '1'
+		}}
+}
+
+const baseParams = (params: object) =>
+{
+	const defaultParams = {
+		wallId: SmfVars.wallId
+	};
+
 	return {
-		wallId: SmfVars.wallId,
+		...defaultParams,
 		...params
 	};
 }
