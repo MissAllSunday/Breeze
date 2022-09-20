@@ -11,7 +11,7 @@ use Breeze\Model\LikeModelInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateGateway;
 
-class LikeRepository extends BaseRepository implements LikeRepositoryInterface
+class LikeRepository extends BaseRepository
 {
 	private LikeModelInterface $likeModel;
 

@@ -6,6 +6,8 @@ namespace Breeze\Util\Validate\Validations\Comment;
 
 use Breeze\Entity\CommentEntity as CommentEntity;
 use Breeze\Exceptions\InvalidCommentException;
+use Breeze\Repository\CommentRepositoryInterface;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
@@ -29,6 +31,12 @@ class DeleteComment extends ValidateComment implements ValidateDataInterface
 
 	private array $comment;
 
+	public function __construct(
+		protected CommentRepositoryInterface $commentRepository,
+		protected StatusRepositoryInterface $statusRepository
+	) {
+	}
+
 	public function successKeyString(): string
 	{
 		return self::SUCCESS_KEY;
@@ -44,7 +52,7 @@ class DeleteComment extends ValidateComment implements ValidateDataInterface
 	 */
 	public function permissions(): void
 	{
-		$currentUserInfo = $this->userService->getCurrentUserInfo();
+		$currentUserInfo = $this->getCurrentUserInfo();
 
 		if ($currentUserInfo['id'] === $this->data[CommentEntity::USER_ID] &&
 			!Permissions::isAllowedTo(Permissions::DELETE_OWN_COMMENTS)) {

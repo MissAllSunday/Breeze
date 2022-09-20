@@ -13,13 +13,13 @@ use Breeze\Controller\API\StatusController;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
+use Breeze\Repository\CommentRepository;
+use Breeze\Repository\LikeRepository;
+use Breeze\Repository\StatusRepository;
 use Breeze\Service\Actions\AdminService;
 use Breeze\Service\Actions\UserSettingsService;
 use Breeze\Service\Actions\WallService;
-use Breeze\Service\CommentService;
-use Breeze\Service\LikeService;
 use Breeze\Service\MoodService;
-use Breeze\Service\StatusService;
 use Breeze\Service\UserService;
 use Breeze\Util\Form\UserSettingsBuilder;
 use Breeze\Util\Validate\ValidateGateway;
@@ -42,17 +42,15 @@ return [
 	'controller.status' => [
 		'class' => StatusController::class,
 		'arguments'=> [
-			StatusService::class,
-			UserService::class,
+			StatusRepository::class,
 			ValidateGateway::class,
 		],
 	],
 	'controller.comment' => [
 		'class' => CommentController::class,
 		'arguments'=> [
-			CommentService::class,
-			StatusService::class,
-			UserService::class,
+			CommentRepository::class,
+			StatusRepository::class,
 			ValidateGateway::class,
 		],
 	],
@@ -83,8 +81,7 @@ return [
 	'controller.likes' => [
 		'class' => LikesController::class,
 		'arguments'=> [
-			LikeService::class,
-			UserService::class,
+			LikeRepository::class,
 			ValidateGateway::class,
 		],
 	],

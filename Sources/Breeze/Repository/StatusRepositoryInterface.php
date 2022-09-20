@@ -7,7 +7,7 @@ namespace Breeze\Repository;
 
 use Breeze\Exceptions\InvalidStatusException;
 
-interface StatusRepositoryInterface
+interface StatusRepositoryInterface extends BaseRepositoryInterface
 {
 	/**
 	 * @throws InvalidStatusException

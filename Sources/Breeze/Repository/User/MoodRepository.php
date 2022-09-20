@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Repository\User;
 
 use Breeze\Entity\MoodEntity;
-use Breeze\Exceptions\NoMoodFoundException;
+use Breeze\Exceptions\InvalidMoodException;
 use Breeze\Model\MoodModelInterface;
 use Breeze\Repository\BaseRepository;
 
@@ -77,7 +77,7 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 	}
 
 	/**
-	 * @throws NoMoodFoundException
+	 * @throws InvalidMoodException
 	 */
 	public function insertMood(array $mood): array
 	{
@@ -87,7 +87,7 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 	}
 
 	/**
-	 * @throws NoMoodFoundException
+	 * @throws InvalidMoodException
 	 */
 	public function getById(int $moodId): array
 	{
@@ -100,7 +100,7 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 		}
 
 		if (empty($mood)) {
-			throw new NoMoodFoundException('error_no_mood');
+			throw new InvalidMoodException('error_no_mood');
 		}
 
 		return $mood;

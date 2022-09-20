@@ -6,6 +6,7 @@ namespace Breeze\Util\Validate\Validations\Mood;
 
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Exceptions\InvalidMoodException;
+use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
@@ -18,6 +19,10 @@ class SetUserMood extends ValidateMood implements ValidateDataInterface
 	];
 
 	protected const SUCCESS_KEY = 'moodChanged';
+
+	public function __construct(protected MoodRepositoryInterface $moodRepository)
+	{
+	}
 
 	public function successKeyString(): string
 	{
@@ -40,7 +45,7 @@ class SetUserMood extends ValidateMood implements ValidateDataInterface
 	 */
 	public function dataExists(): void
 	{
-		$this->moodService->getMoodById($this->data[UserSettingsEntity::MOOD]);
+		$this->moodRepository->getById($this->data[UserSettingsEntity::MOOD]);
 	}
 
 	/**

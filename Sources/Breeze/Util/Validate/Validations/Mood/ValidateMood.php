@@ -7,16 +7,11 @@ namespace Breeze\Util\Validate\Validations\Mood;
 
 use Breeze\Entity\MoodEntity;
 use Breeze\Exceptions\InvalidMoodException;
-use Breeze\Service\MoodServiceInterface;
-use Breeze\Service\UserServiceInterface;
+use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Util\Validate\Validations\ValidateData;
 
 abstract class ValidateMood extends ValidateData
 {
-	protected UserServiceInterface $userService;
-
-	protected MoodServiceInterface $moodService;
-
 	protected const PARAMS = [
 		MoodEntity::EMOJI => '',
 		MoodEntity::DESC => '',
@@ -30,14 +25,7 @@ abstract class ValidateMood extends ValidateData
 		MoodEntity::STATUS => 0,
 	];
 
-	public function __construct(
-		UserServiceInterface $userService,
-		MoodServiceInterface $moodService
-	) {
-		$this->moodService = $moodService;
-
-		parent::__construct($userService);
-	}
+	protected MoodRepositoryInterface $moodRepository;
 
 	/**
 	 * @throws InvalidMoodException
@@ -45,7 +33,7 @@ abstract class ValidateMood extends ValidateData
 	public function dataExists(): void
 	{
 		if (isset($this->data[MoodEntity::ID])) {
-			$this->moodService->getMoodById($this->data[MoodEntity::ID]);
+			$this->moodRepository->getById($this->data[MoodEntity::ID]);
 		}
 	}
 

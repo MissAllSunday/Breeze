@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations\Mood;
 
+use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
@@ -14,7 +15,11 @@ class GetAllMoods extends ValidateMood implements ValidateDataInterface
 
 	protected const SUCCESS_KEY = 'moodCreated';
 
-	protected array $steps = [self::PERMISSIONS,];
+	protected array $steps = [self::PERMISSIONS];
+
+	public function __construct(protected MoodRepositoryInterface $moodRepository)
+	{
+	}
 
 	public function successKeyString(): string
 	{

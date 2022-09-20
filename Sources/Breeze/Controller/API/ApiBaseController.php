@@ -77,6 +77,10 @@ abstract class ApiBaseController extends BaseController
 		exit(obExit(false));
 	}
 
+	public function render(string $subTemplate, array $params): void
+	{
+	}
+
 	abstract public function setValidator(): void;
 
 	abstract public function getValidator(): ValidateDataInterface;

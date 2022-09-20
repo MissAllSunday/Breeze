@@ -8,15 +8,10 @@ namespace Breeze\Repository;
 use Breeze\Traits\CacheTrait;
 use Breeze\Traits\TextTrait;
 
-abstract class BaseRepository
+abstract class BaseRepository implements BaseRepositoryInterface
 {
 	use CacheTrait;
 	use TextTrait;
-
-	public const LIKE_TYPE_STATUS = 'breSta';
-	public const LIKE_TYPE_COMMENT = 'breCom';
-
-	protected const TTL = 360;
 
 	public function handleLikes($type, $content): array
 	{

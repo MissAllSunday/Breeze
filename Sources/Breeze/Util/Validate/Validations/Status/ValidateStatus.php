@@ -5,17 +5,36 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations\Status;
 
-use Breeze\Service\StatusServiceInterface;
-use Breeze\Service\UserServiceInterface;
+use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\ValidateData;
 
 abstract class ValidateStatus extends ValidateData
 {
-	public function __construct(
-		UserServiceInterface $userService,
-		protected StatusServiceInterface $statusService
-	) {
-		parent::__construct($userService);
+	protected StatusRepositoryInterface $statusRepository;
+
+	/**
+	 * @throws ValidateDataException
+	 */
+	public function areValidUsers(): void
+	{
+		$usersIds = array_map(
+			function ($intName) {
+				return $this->data[$intName];
+			},
+			$this->getUserIdsNames()
+		);
+
+		$loadedUsers = $this->statusRepository->getUsersToLoad($usersIds);
+
+		if (array_diff($usersIds, $loadedUsers)) {
+			throw new ValidateDataException('invalid_users');
+		}
+	}
+
+	public function getCurrentUserInfo(): array
+	{
+		return $this->global('user_info');
 	}
 
 	public function getParams(): array

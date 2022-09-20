@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Status;
 
 use Breeze\Entity\StatusEntity;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class StatusByProfile extends ValidateStatus implements ValidateDataInterface
@@ -22,6 +23,10 @@ class StatusByProfile extends ValidateStatus implements ValidateDataInterface
 	];
 
 	protected const SUCCESS_KEY = '';
+
+	public function __construct(protected StatusRepositoryInterface $statusRepository)
+	{
+	}
 
 	public function setData(array $data = null): void
 	{

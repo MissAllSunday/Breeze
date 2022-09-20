@@ -6,11 +6,11 @@ namespace Breeze\Util\Validate\Validations\Status;
 
 use Breeze\Entity\StatusEntity;
 use Breeze\Exceptions\InvalidStatusException;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateDataException;
-use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class DeleteStatus extends ValidateStatus implements ValidateDataInterface
+class DeleteStatus extends ValidateStatus
 {
 	public array $steps = [
 		self::COMPARE,
@@ -29,6 +29,10 @@ class DeleteStatus extends ValidateStatus implements ValidateDataInterface
 
 	private array $status;
 
+	public function __construct(protected StatusRepositoryInterface $statusRepository)
+	{
+	}
+
 	public function successKeyString(): string
 	{
 		return self::SUCCESS_KEY;
@@ -44,7 +48,7 @@ class DeleteStatus extends ValidateStatus implements ValidateDataInterface
 	 */
 	public function permissions(): void
 	{
-		$currentUserInfo = $this->userService->getCurrentUserInfo();
+		$currentUserInfo = $this->getCurrentUserInfo();
 
 		if ($currentUserInfo['id'] === $this->data[StatusEntity::USER_ID] &&
 			!Permissions::isAllowedTo(Permissions::DELETE_OWN_STATUS)) {
@@ -61,7 +65,7 @@ class DeleteStatus extends ValidateStatus implements ValidateDataInterface
 	 */
 	public function validStatus(): void
 	{
-		$this->status = $this->statusService->getById($this->data[StatusEntity::ID]);
+		$this->status = $this->statusRepository->getById($this->data[StatusEntity::ID]);
 	}
 
 	/**

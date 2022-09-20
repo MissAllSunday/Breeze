@@ -7,7 +7,7 @@ namespace Breeze\Controller\API;
 
 use Breeze\Entity\StatusEntity;
 use Breeze\Exceptions\InvalidStatusException;
-use Breeze\Service\StatusServiceInterface;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Validate\ValidateGateway;
 use Breeze\Util\Validate\ValidateGatewayInterface;
@@ -29,7 +29,7 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 	protected ValidateDataInterface $validator;
 
 	public function __construct(
-		private StatusServiceInterface $statusService,
+		private StatusRepositoryInterface $statusRepository,
 		private UserServiceInterface $userService,
 		protected ValidateGatewayInterface $gateway
 	) {
@@ -47,7 +47,7 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 
 		$this->validator = new $validatorName(
 			$this->userService,
-			$this->statusService,
+			$this->statusRepository,
 		);
 	}
 
@@ -62,8 +62,7 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 		$data = $this->validator->getData();
 
 		try {
-			// @TODO: should be done by the repository
-			$statusByProfile = $this->statusService->getByProfile($data[StatusEntity::WALL_ID], $start);
+			$statusByProfile = $this->statusRepository->getByProfile($data[StatusEntity::WALL_ID], $start);
 
 			$this->print($statusByProfile);
 		} catch (InvalidStatusException $e) {
@@ -79,27 +78,32 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 		$data = $this->validator->getData();
 
 		try {
-			$this->statusService->deleteById($data[StatusEntity::ID]);
+			$this->statusRepository->deleteById($data[StatusEntity::ID]);
 
 			$this->print($this->gateway->response());
-		} catch (InvalidStatusException $e) {
+		} catch (InvalidStatusException $invalidStatusException) {
 			$this->print([
 				'type' => ValidateGateway::ERROR_TYPE,
-				'message' => $e->getMessage(),
+				'message' => $invalidStatusException->getMessage(),
 			]);
 		}
 	}
 
 	public function postStatus(): void
 	{
-		$this->print(array_merge(
-			$this->gateway->response(),
-			['content' => $this->statusService->saveAndGet($this->validator->getData())]
-		));
-	}
+		try {
+			$statusId = $this->statusRepository->save($this->validator->getData());
 
-	public function render(string $subTemplate, array $params): void
-	{
+			$this->print(array_merge(
+				$this->gateway->response(),
+				['content' => $this->statusRepository->getById($statusId)]
+			));
+		} catch (InvalidStatusException $invalidStatusException) {
+			$this->print([
+				'type' => ValidateGateway::ERROR_TYPE,
+				'message' => $invalidStatusException->getMessage(),
+			]);
+		}
 	}
 
 	public function getMainAction(): string

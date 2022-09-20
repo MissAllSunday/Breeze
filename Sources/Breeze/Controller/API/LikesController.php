@@ -6,8 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\LikeEntity;
-use Breeze\Service\LikeServiceInterface;
-use Breeze\Service\UserServiceInterface;
+use Breeze\Repository\LikeRepositoryInterface;
 use Breeze\Util\Validate\ValidateGatewayInterface;
 use Breeze\Util\Validate\Validations\Likes\ValidateLikes;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
@@ -25,8 +24,7 @@ class LikesController extends ApiBaseController implements ApiBaseInterface
 	protected ValidateDataInterface $validator;
 
 	public function __construct(
-		private LikeServiceInterface $likesService,
-		private UserServiceInterface $userService,
+		private LikeRepositoryInterface $likeRepository,
 		protected ValidateGatewayInterface $gateway
 	) {
 		parent::__construct($gateway);
@@ -38,7 +36,7 @@ class LikesController extends ApiBaseController implements ApiBaseInterface
 
 		$this->print(array_merge(
 			$this->gateway->response(),
-			['content' => $this->likesService->likeContent(
+			['content' => $this->likeRepository->likeContent(
 				$data[LikeEntity::TYPE],
 				$data[LikeEntity::ID],
 				$data[LikeEntity::ID_MEMBER]
@@ -60,10 +58,7 @@ class LikesController extends ApiBaseController implements ApiBaseInterface
 	{
 		$validatorName = ValidateLikes::getNameSpace() . ucfirst($this->subAction);
 
-		$this->validator = $validatorName(
-			$this->userService,
-			$this->likesService
-		);
+		$this->validator = $validatorName($this->likeRepository);
 	}
 
 	public function getValidator(): ValidateDataInterface

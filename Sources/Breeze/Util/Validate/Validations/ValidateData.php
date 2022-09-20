@@ -6,7 +6,6 @@ namespace Breeze\Util\Validate\Validations;
 
 use \Breeze\Traits\RequestTrait;
 use Breeze\Entity\SettingsEntity;
-use Breeze\Service\UserServiceInterface;
 use Breeze\Traits\PersistenceTrait;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Json;
@@ -46,13 +45,6 @@ abstract class ValidateData
 	protected array $params = [];
 
 	protected array $data;
-
-	protected UserServiceInterface $userService;
-
-	public function __construct(UserServiceInterface $userService)
-	{
-		$this->userService = $userService;
-	}
 
 	abstract public function getParams(): array;
 
@@ -114,25 +106,6 @@ abstract class ValidateData
 			if (!is_string($data[$stringValueName])) {
 				throw new ValidateDataException('malformed_data');
 			}
-		}
-	}
-
-	/**
-	 * @throws ValidateDataException
-	 */
-	public function areValidUsers(): void
-	{
-		$usersIds = array_map(
-			function ($intName) {
-				return $this->data[$intName];
-			},
-			$this->getUserIdsNames()
-		);
-
-		$loadedUsers = $this->userService->getUsersToLoad($usersIds);
-
-		if (array_diff($usersIds, $loadedUsers)) {
-			throw new ValidateDataException('invalid_users');
 		}
 	}
 

@@ -27,7 +27,7 @@ return [
 	],
 	'repo.status' => [
 		'class' => StatusRepository::class,
-		'arguments'=> [StatusModel::class, CommentRepository::class],
+		'arguments'=> [StatusModel::class, CommentRepository::class, LikeRepository::class],
 	],
 	'repo.comment' => [
 		'class' => CommentRepository::class,
