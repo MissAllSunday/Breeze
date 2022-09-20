@@ -25,7 +25,7 @@ class UserSettingsTest extends TestCase
 	/**
 	 * @dataProvider cleanProvider
 	 */
-	public function testClean(array $data, bool $isExpectedException): void
+	public function testCompare(array $data, bool $isExpectedException): void
 	{
 		$this->userSettings->setData($data);
 
@@ -35,7 +35,7 @@ class UserSettingsTest extends TestCase
 			$this->assertEquals($data, $this->userSettings->getData());
 		}
 
-		$this->userSettings->clean();
+		$this->userSettings->compare();
 	}
 
 	public function cleanProvider(): array
@@ -141,7 +141,7 @@ class UserSettingsTest extends TestCase
 	public function testGetSteps(): void
 	{
 		$this->assertEquals([
-			'clean',
+			'compare',
 			'isInt',
 			'isString',
 		], $this->userSettings->getSteps());

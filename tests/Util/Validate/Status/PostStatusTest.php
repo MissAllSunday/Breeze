@@ -29,7 +29,7 @@ class PostStatusTest extends TestCase
 	/**
 	 * @dataProvider cleanProvider
 	 */
-	public function testClean(array $data, bool $isExpectedException): void
+	public function testCompare(array $data, bool $isExpectedException): void
 	{
 		$this->postStatus->setData($data);
 
@@ -39,7 +39,7 @@ class PostStatusTest extends TestCase
 			$this->assertEquals($data, $this->postStatus->getData());
 		}
 
-		$this->postStatus->clean();
+		$this->postStatus->compare();
 	}
 
 	public function cleanProvider(): array
@@ -231,7 +231,7 @@ class PostStatusTest extends TestCase
 	public function testGetSteps(): void
 	{
 		$this->assertEquals([
-			'clean',
+			'compare',
 			'isInt',
 			'isString',
 			'permissions',

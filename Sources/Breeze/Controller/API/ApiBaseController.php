@@ -48,7 +48,7 @@ abstract class ApiBaseController extends BaseController
 			$this->print([], 404);
 		}
 
-		$this->gateway->setData();
+		$this->setValidator();
 		$this->gateway->setValidator($this->getValidator());
 
 		if (!$this->gateway->isValid()) {
@@ -76,6 +76,8 @@ abstract class ApiBaseController extends BaseController
 
 		exit(obExit(false));
 	}
+
+	abstract public function setValidator(): void;
 
 	abstract public function getValidator(): ValidateDataInterface;
 }

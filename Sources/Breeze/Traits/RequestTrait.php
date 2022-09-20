@@ -27,7 +27,7 @@ trait RequestTrait
 		$_POST[$variableName] = $variableValue;
 	}
 
-	public function setGet(string $variableName, $variableValue): void
+	public function setGet(string $variableName, mixed $variableValue): void
 	{
 		$_GET[$variableName] = $variableValue;
 	}
@@ -39,10 +39,8 @@ trait RequestTrait
 		return isset($this->request[$variableName]);
 	}
 
-	public function sanitize($variable): mixed
+	public function sanitize(mixed $variable): mixed
 	{
-		$this->init();
-
 		$smcFunc = $this->getSmcFunc();
 
 		if (is_array($variable)) {
@@ -50,7 +48,7 @@ trait RequestTrait
 				$variable[$key] = $this->sanitize($variableValue);
 			}
 
-			return $variable;
+			return array_filter($variable);
 		}
 
 		$var = $smcFunc['htmlspecialchars'](

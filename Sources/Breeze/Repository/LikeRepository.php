@@ -5,8 +5,11 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Entity\LikeEntity;
 use Breeze\Exceptions\InvalidLikeException;
 use Breeze\Model\LikeModelInterface;
+use Breeze\Util\Permissions;
+use Breeze\Util\Validate\ValidateGateway;
 
 class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 {
@@ -55,5 +58,89 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	public function count(string $type, int $contentId): int
 	{
 		return $this->likeModel->countContent($type, $contentId);
+	}
+
+	public function appendLikeData(array $items, string $itemIdName) : array
+	{
+		return array_map(function ($item) use ($itemIdName): array {
+			$item['likesInfo'] = $this->buildLikeData(
+				$item[LikeEntity::IDENTIFIER . LikeEntity::TYPE],
+				$item[$itemIdName],
+				$item[LikeEntity::IDENTIFIER . LikeEntity::ID_MEMBER],
+			);
+
+			return $item;
+		}, $items);
+	}
+
+	public function buildLikeData(
+		?string $type,
+		?int $contentId,
+		?int $userId,
+		?bool $isContentAlreadyLiked = null
+	): array {
+		$likeData = [
+			'contentId' => $contentId,
+			'count' => 0,
+			'alreadyLiked' => false,
+			'type' => $type,
+			'canLike' => Permissions::isAllowedTo(Permissions::LIKES_LIKE),
+			'additionalInfo' => '',
+		];
+		$base = LikeEntity::IDENTIFIER;
+
+		if (empty($contentId) ||
+			empty($type)) {
+			return $likeData;
+		}
+
+		if ($isContentAlreadyLiked === null) {
+			$isContentAlreadyLiked = $this->isContentAlreadyLiked($type, $contentId, $userId);
+		}
+
+		$likesCount = $likesTextCount = $this->count($type, $contentId);
+
+		if ($isContentAlreadyLiked) {
+			$base = 'you_' . $base;
+			$likesTextCount = $likesCount - 1;
+		}
+
+		$base .= ($this->getSmfText($base . $likesTextCount) !== '') ? $likesTextCount : 'n';
+
+		$additionalInfo =  sprintf(
+			$this->getSmfText($base),
+			$this->parserText(
+				'{scriptUrl}?action=likes;sa=view;ltype=msg;like={href}',
+				[
+					'scriptUrl' => $this->global('scripturl'),
+					'href' => $contentId,
+				]
+			),
+			$this->commaFormat((string) $likesTextCount)
+		);
+
+		return array_merge($likeData, [
+			'count' => $likesCount,
+			'additionalInfo' => $additionalInfo,
+			'alreadyLiked' => $isContentAlreadyLiked,
+		]);
+	}
+
+	public function likeContent(string $type, int $contentId, int $userId): array
+	{
+		$isContentAlreadyLiked = $this->isContentAlreadyLiked($type, $contentId, $userId);
+
+		try {
+			$isContentAlreadyLiked ?
+				$this->delete($type, $contentId, $userId) :
+				$this->insert($type, $contentId, $userId);
+		} catch (InvalidLikeException $invalidLikeException) {
+			return [
+				'type' => ValidateGateway::ERROR_TYPE,
+				'message' => $invalidLikeException->getMessage(),
+			];
+		}
+
+		return $this->buildLikeData($type, $contentId, $userId, !$isContentAlreadyLiked);
 	}
 }

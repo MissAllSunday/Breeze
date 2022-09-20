@@ -22,24 +22,19 @@ class LikesController extends ApiBaseController implements ApiBaseInterface
 		self::ACTION_UNLIKE,
 	];
 
-	private LikeServiceInterface $likesService;
-
-	private UserServiceInterface $userService;
+	protected ValidateDataInterface $validator;
 
 	public function __construct(
-		LikeServiceInterface $likesService,
-		UserServiceInterface $userService,
-		ValidateGatewayInterface $gateway
+		private LikeServiceInterface $likesService,
+		private UserServiceInterface $userService,
+		protected ValidateGatewayInterface $gateway
 	) {
 		parent::__construct($gateway);
-
-		$this->userService = $userService;
-		$this->likesService = $likesService;
 	}
 
 	public function like(): void
 	{
-		$data = $this->gateway->getData();
+		$data = $this->validator->getData();
 
 		$this->print(array_merge(
 			$this->gateway->response(),
@@ -61,14 +56,19 @@ class LikesController extends ApiBaseController implements ApiBaseInterface
 		return self::ACTION_LIKE;
 	}
 
-	public function getValidator(): ValidateDataInterface
+	public function setValidator(): void
 	{
 		$validatorName = ValidateLikes::getNameSpace() . ucfirst($this->subAction);
 
-		return new $validatorName(
+		$this->validator = $validatorName(
 			$this->userService,
 			$this->likesService
 		);
+	}
+
+	public function getValidator(): ValidateDataInterface
+	{
+		return $this->validator;
 	}
 
 	public function render(string $subTemplate, array $params): void

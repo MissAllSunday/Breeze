@@ -6,6 +6,7 @@ export const baseUrl = (action: string, subAction:string) =>
 
 	baseUrl.searchParams.append('action', action);
 	baseUrl.searchParams.append('sa', subAction);
+	baseUrl.searchParams.append('wallId', SmfVars.wallId);
 
 	baseUrl.searchParams.append(SmfVars.session.var, SmfVars.session.id);
 
@@ -14,7 +15,9 @@ export const baseUrl = (action: string, subAction:string) =>
 
 export const baseConfig = (params:object = {}) =>
 {
-	return { data: baseParams(params), headers: {
+	return {
+		data: baseParams(params),
+		headers: {
 			'X-SMF-AJAX': '1'
 		}}
 }

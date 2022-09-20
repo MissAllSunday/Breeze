@@ -6,21 +6,17 @@ namespace Breeze\Controller\User\Settings;
 
 use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
-use Breeze\Entity\BaseEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Service\Actions\UserSettingsServiceInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Form\UserSettingsBuilderInterface;
-use Breeze\Util\Validate\ValidateGatewayInterface;
 use Breeze\Util\Validate\Validations\ValidateData;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class UserSettingsController extends BaseController implements ControllerInterface
 {
 	public const URL = '?action=profile;area=breezeSettings';
-
 	public const ACTION_MAIN = 'main';
-
 	public const ACTION_SAVE = 'save';
 
 	public const SUB_ACTIONS = [
@@ -37,24 +33,11 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 		],
 	];
 
-	private UserServiceInterface $userService;
-
-	private UserSettingsServiceInterface $userSettingsService;
-
-	private UserSettingsBuilderInterface $userSettingsBuilder;
-
-	private ValidateGatewayInterface $gateway;
-
 	public function __construct(
-		UserSettingsServiceInterface $userSettingsService,
-		UserServiceInterface $userService,
-		UserSettingsBuilderInterface $userSettingsBuilder,
-		ValidateGatewayInterface $gateway
+		private UserSettingsServiceInterface $userSettingsService,
+		private UserServiceInterface $userService,
+		private UserSettingsBuilderInterface $userSettingsBuilder
 	) {
-		$this->userService = $userService;
-		$this->userSettingsService = $userSettingsService;
-		$this->userSettingsBuilder = $userSettingsBuilder;
-		$this->gateway = $gateway;
 	}
 
 	public function dispatch(): void
@@ -62,17 +45,8 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 		$this->subAction = $this->getRequest('sa', $this->getMainAction());
 		$this->userSettingsService->init($this->getSubActions());
 
-		if (isset($this->validators[$this->subAction]['dataName'])) {
-			$this->gateway->setData($this->getRequest($this->validators[$this->subAction]['dataName']));
+		// @TODO: validate if subaction exists and send an error page if it doesn't
 
-			$this->gateway->setValidator($this->setValidator());
-
-			if (!$this->gateway->isValid()) {
-				$this->error(BaseEntity::WRONG_VALUES);
-
-				return;
-			}
-		}
 
 		$this->subActionCall();
 	}
@@ -97,14 +71,16 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	{
 		$scriptUrl = $this->global('scripturl');
 		$userId = $this->getRequest('u', 0);
-		$userSettings = $this->gateway->getData();
 
-		$this->userSettingsService->save(
-			$userSettings,
-			$userId
-		);
+//		$this->userSettingsService->save(
+//			$userSettings,
+//			$userId
+//		);
 
+		// @TODO: service shouldn't handle setting messages
 		$this->userSettingsService->setMessage($this->getText('info_updated_settings'));
+
+		// @TODO: Service should not do the redirection
 		$this->userSettingsService->redirect($scriptUrl . self::URL . ';u=' .
 			$userId . ';sa=' . self::ACTION_MAIN);
 	}

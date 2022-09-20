@@ -24,4 +24,15 @@ interface LikeRepositoryInterface
 	public function insert(string $type, int $contentId, int $userId): void;
 
 	public function count(string $type, int $contentId): int;
+
+	public function appendLikeData(array $items, string $itemIdName) : array;
+
+	public function buildLikeData(
+		?string $type,
+		?int $contentId,
+		?int $userId,
+		?bool $isContentAlreadyLiked = null
+	): array;
+
+	public function likeContent(string $type, int $contentId, int $userId): array;
 }

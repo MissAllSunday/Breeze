@@ -8,7 +8,6 @@ namespace Breeze\Util\Validate;
 use Breeze\Breeze;
 use Breeze\Exceptions\InvalidException;
 use Breeze\Traits\TextTrait;
-use Breeze\Util\Json;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class ValidateGateway implements ValidateGatewayInterface
@@ -36,8 +35,6 @@ class ValidateGateway implements ValidateGatewayInterface
 		'message' => self::DEFAULT_ERROR_KEY,
 	];
 
-	protected array $data = [];
-
 	private ValidateDataInterface $validator;
 
 	protected int $statusCode = 0;
@@ -52,13 +49,9 @@ class ValidateGateway implements ValidateGatewayInterface
 		return $this->statusCode;
 	}
 
-	public function setValidator(ValidateDataInterface $validator): bool
+	public function setValidator(ValidateDataInterface $validator): void
 	{
 		$this->validator = $validator;
-
-		$this->validator->setData($this->data);
-
-		return true;
 	}
 
 	public function isValid(): bool
@@ -69,7 +62,6 @@ class ValidateGateway implements ValidateGatewayInterface
 			}
 
 			try {
-				$this->data = $this->validator->getData();
 				$this->validator->{$step}();
 			} catch (InvalidException $invalidException) {
 				$this->statusCode = self::NOT_FOUND;
@@ -105,19 +97,6 @@ class ValidateGateway implements ValidateGatewayInterface
 	public function response(): array
 	{
 		return $this->notice;
-	}
-
-	public function setData(array $rawData = []): void
-	{
-		$rawData = !empty($rawData) ?
-			$rawData : Json::decode(file_get_contents('php://input'));
-
-		$this->data = array_filter($rawData);
-	}
-
-	public function getData(): array
-	{
-		return $this->data;
 	}
 
 	public function getNotice(): array

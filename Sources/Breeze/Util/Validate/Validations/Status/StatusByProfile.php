@@ -11,7 +11,7 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 class StatusByProfile extends ValidateStatus implements ValidateDataInterface
 {
 	public array $steps = [
-		self::CLEAN,
+		self::COMPARE,
 		self::INT,
 		self::VALID_USERS,
 		self::IGNORE_LIST, // TODO add validation for current user on ignoreList
@@ -22,6 +22,13 @@ class StatusByProfile extends ValidateStatus implements ValidateDataInterface
 	];
 
 	protected const SUCCESS_KEY = '';
+
+	public function setData(array $data = null): void
+	{
+		$this->data = array_filter(!empty($data) ? $data : [
+			StatusEntity::WALL_ID => $this->getRequest(StatusEntity::WALL_ID),
+		]);
+	}
 
 	public function getParams(): array
 	{

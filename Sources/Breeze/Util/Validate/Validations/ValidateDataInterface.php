@@ -12,5 +12,5 @@ interface ValidateDataInterface
 
 	public function getData(): array;
 
-	public function setData(array $data): void;
+	public function setData(): void;
 }

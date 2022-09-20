@@ -13,11 +13,7 @@ interface ValidateGatewayInterface
 
 	public function getStatusCode(): int;
 
-	public function setValidator(ValidateDataInterface $validator): bool;
-
-	public function setData(array $rawData = []): void;
-
-	public function getData(): array;
+	public function setValidator(ValidateDataInterface $validator): void;
 
 	public function getNotice(): array;
 

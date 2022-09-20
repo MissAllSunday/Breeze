@@ -31,6 +31,8 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 		self::ACTION_USER_SET,
 	];
 
+	protected ValidateDataInterface $validator;
+
 	public function __construct(
 		private UserServiceInterface         $userService,
 		private UserSettingsServiceInterface $userSettingsService,
@@ -42,7 +44,7 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 
 	public function postMood(): void
 	{
-		$data = $this->gateway->getData();
+		$data = $this->validator->getData();
 
 		$mood = $this->moodService->saveMood($data);
 
@@ -54,7 +56,7 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 
 	public function deleteMood(): void
 	{
-		$data = $this->gateway->getData();
+		$data = $this->validator->getData();
 
 		$this->moodService->deleteMoods([$data[MoodEntity::ID]]);
 
@@ -73,7 +75,7 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 
 	public function setUserMood(): void
 	{
-		$data = $this->gateway->getData();
+		$data = $this->validator->getData();
 		$userId = array_pop($data);
 
 		$this->userSettingsService->save($data, $userId);
@@ -91,14 +93,19 @@ class MoodController extends ApiBaseController implements ApiBaseInterface
 		return self::ACTION_ACTIVE;
 	}
 
-	public function getValidator(): ValidateDataInterface
+	public function setValidator(): void
 	{
 		$validatorName = ValidateMood::getNameSpace() . ucfirst($this->subAction);
 
-		return new $validatorName(
+		$this->validator = new $validatorName(
 			$this->userService,
 			$this->moodService
 		);
+	}
+
+	public function getValidator(): ValidateDataInterface
+	{
+		return $this->validator;
 	}
 
 	public function render(string $subTemplate, array $params): void

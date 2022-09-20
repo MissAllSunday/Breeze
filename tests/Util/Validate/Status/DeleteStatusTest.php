@@ -33,7 +33,7 @@ class DeleteStatusTest extends TestCase
 	/**
 	 * @dataProvider cleanProvider
 	 */
-	public function testClean(array $data, bool $isExpectedException): void
+	public function testCompare(array $data, bool $isExpectedException): void
 	{
 		$this->deleteStatus->setData($data);
 
@@ -43,7 +43,7 @@ class DeleteStatusTest extends TestCase
 			$this->assertEquals($data, $this->deleteStatus->getData());
 		}
 
-		$this->deleteStatus->clean();
+		$this->deleteStatus->compare();
 	}
 
 	public function cleanProvider(): array
@@ -194,7 +194,7 @@ class DeleteStatusTest extends TestCase
 	public function testGetSteps(): void
 	{
 		$this->assertEquals([
-			'clean',
+			'compare',
 			'isInt',
 			'validStatus',
 			'validUser',

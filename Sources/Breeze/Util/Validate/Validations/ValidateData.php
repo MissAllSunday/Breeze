@@ -9,6 +9,7 @@ use Breeze\Entity\SettingsEntity;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Traits\PersistenceTrait;
 use Breeze\Traits\TextTrait;
+use Breeze\Util\Json;
 use Breeze\Util\Validate\ValidateDataException;
 
 abstract class ValidateData
@@ -17,7 +18,6 @@ abstract class ValidateData
 	use TextTrait;
 	use PersistenceTrait;
 
-	protected const CLEAN = 'clean';
 	protected const COMPARE = 'compare';
 	protected const INT = 'isInt';
 	protected const STRING = 'isString';
@@ -33,14 +33,14 @@ abstract class ValidateData
 	protected const SAME_USER = 'isSameUser';
 
 	protected const DEFAULT_STEPS = [
-		self::CLEAN,
+		self::COMPARE,
 		self::INT,
 		self::STRING,
 		self::PERMISSIONS,
 	];
 
 	protected array $steps = [
-		self::CLEAN,
+		self::COMPARE,
 	];
 
 	protected array $params = [];
@@ -71,9 +71,10 @@ abstract class ValidateData
 		return $this->data;
 	}
 
-	public function setData(array $data): void
+	public function setData(array $data = []): void
 	{
-		$this->data = $data;
+		$this->data = array_filter(!empty($data) ? $data :
+			$this->sanitize(Json::decode(file_get_contents('php://input'))));
 	}
 
 	public function getSteps(): array
@@ -84,16 +85,6 @@ abstract class ValidateData
 	public function setSteps(array $customSteps): void
 	{
 		$this->steps = $customSteps;
-	}
-
-	/**
-	 * @throws ValidateDataException
-	 */
-	public function clean(): void
-	{
-		$this->data = array_filter($this->sanitize($this->data));
-
-		$this->compare();
 	}
 
 	/**

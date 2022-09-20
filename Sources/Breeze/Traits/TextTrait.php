@@ -46,7 +46,7 @@ trait TextTrait
 
 		foreach ($replacements as $find => $replace) {
 			$toFind[] = '{' . $find . '}';
-			$replaceWith[] = $replace . ((false !== strpos($find, self::$session_token)) ? $session_var : '');
+			$replaceWith[] = $replace . ((strpos($find, self::$session_token) !== false) ? $session_var : '');
 		}
 
 		return str_replace($toFind, $replaceWith, $text);
@@ -128,7 +128,7 @@ trait TextTrait
 		$sinceTime = time() - $timeInSeconds;
 		$timeElapsed = '';
 
-		if (1 > $sinceTime) {
+		if ($sinceTime < 1) {
 			return $txt['time_just_now'];
 		}
 
@@ -143,11 +143,11 @@ trait TextTrait
 
 		foreach ($timePeriods as $seconds => $timeString) {
 			$timeCount = $sinceTime / $seconds;
-			if (1 <= $timeCount) {
+			if ($timeCount >= 1) {
 				$timeCountRounded = round($timeCount);
 
 				$timeElapsed = $timeCountRounded . ' ' . $timeString .
-					(1 < $timeCountRounded ? 's ' : ' ') . $txt['time_ago'];
+					($timeCountRounded > 1 ? 's ' : ' ') . $txt['time_ago'];
 
 				break;
 			}

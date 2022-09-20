@@ -13,7 +13,7 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 class DeleteComment extends ValidateComment implements ValidateDataInterface
 {
 	public array $steps = [
-		self::CLEAN,
+		self::COMPARE,
 		self::INT,
 		self::VALID_COMMENT,
 		self::VALID_USER,
@@ -75,9 +75,9 @@ class DeleteComment extends ValidateComment implements ValidateDataInterface
 		}
 
 		if (!isset($this->data[CommentEntity::USER_ID]) ||
-			($this->comment['data'][$this->data[CommentEntity::ID]][CommentEntity::USER_ID]
+			($this->data[CommentEntity::USER_ID]
 			!==
-			$this->data[CommentEntity::USER_ID])) {
+			$this->comment['data'][$this->data[CommentEntity::ID]][CommentEntity::USER_ID])) {
 			throw new ValidateDataException('wrong_values');
 		}
 	}

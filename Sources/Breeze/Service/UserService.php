@@ -54,7 +54,7 @@ class UserService extends BaseService implements UserServiceInterface
 
 		if ($this->isEnable(SettingsEntity::FORCE_WALL) || !empty($currentUserSettings['wall'])) {
 			foreach ($profile_items as &$profileItem) {
-				if ('summary' === $profileItem['area']) {
+				if ($profileItem['area'] === 'summary') {
 					$profileItem['area'] = self::LEGACY_AREA;
 
 					break;
@@ -119,34 +119,5 @@ class UserService extends BaseService implements UserServiceInterface
 		}
 
 		return false;
-	}
-
-	public function getUsersToLoad(array $userIds = []): array
-	{
-		return loadMemberData($userIds);
-	}
-
-	public function loadUsersInfo(array $userIds = []): array
-	{
-		$loadedUsers = [];
-
-		$modSettings = $this->global('modSettings');
-		$loadedIDs = $this->getUsersToLoad($userIds);
-
-		foreach ($userIds as $userId) {
-			if (!in_array($userId, $loadedIDs)) {
-				$loadedUsers[$userId] = [
-					'link' => $this->getSmfText('guest_title'),
-					'name' => $this->getSmfText('guest_title'),
-					'avatar' => ['href' => $modSettings['avatar_url'] . '/default.png'],
-				];
-
-				continue;
-			}
-
-			$loadedUsers[$userId] = loadMemberContext($userId, true);
-		}
-
-		return $loadedUsers;
 	}
 }

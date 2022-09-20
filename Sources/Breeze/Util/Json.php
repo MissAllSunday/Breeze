@@ -21,6 +21,6 @@ class Json
 	{
 		json_decode($string);
 
-		return (\JSON_ERROR_NONE === json_last_error());
+		return (json_last_error() === \JSON_ERROR_NONE);
 	}
 }

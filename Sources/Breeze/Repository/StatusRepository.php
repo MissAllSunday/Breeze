@@ -5,22 +5,18 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Entity\StatusEntity;
 use Breeze\Exceptions\InvalidCommentException;
 use Breeze\Exceptions\InvalidStatusException;
 use Breeze\Model\StatusModelInterface;
 
 class StatusRepository extends BaseRepository implements StatusRepositoryInterface
 {
-	private StatusModelInterface $statusModel;
-
-	private CommentRepositoryInterface $commentRepository;
-
 	public function __construct(
-		StatusModelInterface $statusModel,
-		CommentRepositoryInterface $commentRepository
+		private StatusModelInterface $statusModel,
+		private CommentRepositoryInterface $commentRepository,
+		private LikeRepositoryInterface $likeRepository
 	) {
-		$this->statusModel = $statusModel;
-		$this->commentRepository = $commentRepository;
 	}
 
 	/**
@@ -30,7 +26,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	{
 		$newStatusId = $this->statusModel->insert($data);
 
-		if (0 === $newStatusId) {
+		if ($newStatusId === 0) {
 			throw new InvalidStatusException('error_save_status');
 		}
 
@@ -39,21 +35,32 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 
 	public function getByProfile(int $profileOwnerId = 0, int $start = 0): array
 	{
-		$statusByProfile = $this->getCache(__METHOD__ . $profileOwnerId);
+		$status = $this->getCache(__METHOD__ . $profileOwnerId);
 
-		if (empty($statusByProfile)) {
-			$statusByProfile = $this->statusModel->getStatusByProfile([
+		if (empty($status)) {
+			$status = $this->statusModel->getStatusByProfile([
 				'start' => $start,
 				'maxIndex' => $this->statusModel->getCount(),
 				'ids' => [$profileOwnerId],
 			]);
 
-			if (!empty(array_filter($statusByProfile))) {
-				$this->setCache(__METHOD__ . $profileOwnerId, $statusByProfile);
+			if (!empty(array_filter($status))) {
+				$this->setCache(__METHOD__ . $profileOwnerId, $status);
 			}
 		}
 
-		return $statusByProfile;
+		$comments =  $this->commentRepository->getByProfile($profileOwnerId);
+		$userIds = array_unique(array_merge($status['usersIds'], $comments['usersIds']));
+		$status['data'] = $this->likeRepository->appendLikeData($status['data'], StatusEntity::ID);
+
+		foreach ($status['data'] as $statusId => &$singleStatus) {
+			$singleStatus['comments'] = $comments['data'][$statusId] ?? [];
+		}
+
+		return [
+			'users' => $this->loadUsersInfo($userIds),
+			'status' => $status['data'],
+		];
 	}
 
 	/**

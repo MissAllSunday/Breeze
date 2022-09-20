@@ -9,41 +9,37 @@ use Breeze\Service\StatusService as StatusService;
 use Breeze\Service\UserService;
 use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\Comment\PostComment;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class PostCommentTest extends TestCase
 {
-	private PostComment $postComment;
-
-	public function setUp(): void
-	{
-		/**  @var UserService&MockObject $userService */
-		$userService = $this->createMock(UserService::class);
-
-		/**  @var StatusService&MockObject $statusService */
-		$statusService = $this->getMockInstance(StatusService::class);
-
-		/**  @var CommentService&MockObject $commentService */
-		$commentService = $this->getMockInstance(CommentService::class);
-
-		$this->postComment = new PostComment($userService, $statusService, $commentService);
-	}
+	use ProphecyTrait;
 
 	/**
 	 * @dataProvider cleanProvider
 	 */
-	public function testClean(array $data, bool $isExpectedException): void
+	public function testCompare(array $data, bool $isExpectedException): void
 	{
-		$this->postComment->setData($data);
+		$userService = $this->prophesize(UserService::class);
+		$statusService = $this->prophesize(StatusService::class);
+		$commentService = $this->prophesize(CommentService::class);
+
+		$postComment = new PostComment(
+			$userService->reveal(),
+			$statusService->reveal(),
+			$commentService->reveal()
+		);
+
+		$postComment->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 		} else {
-			$this->assertEquals($data, $this->postComment->getData());
+			$this->assertEquals($data, $postComment->getData());
 		}
 
-		$this->postComment->clean();
+		$postComment->compare();
 	}
 
 	public function cleanProvider(): array
@@ -79,15 +75,25 @@ class PostCommentTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, bool $isExpectedException): void
 	{
-		$this->postComment->setData($data);
+		$userService = $this->prophesize(UserService::class);
+		$statusService = $this->prophesize(StatusService::class);
+		$commentService = $this->prophesize(CommentService::class);
+
+		$postComment = new PostComment(
+			$userService->reveal(),
+			$statusService->reveal(),
+			$commentService->reveal()
+		);
+
+		$postComment->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 		} else {
-			$this->assertEquals(array_keys($data), $this->postComment->getInts());
+			$this->assertEquals(array_keys($data), $postComment->getInts());
 		}
 
-		$this->postComment->isInt();
+		$postComment->isInt();
 	}
 
 	public function isValidIntProvider(): array
@@ -115,15 +121,25 @@ class PostCommentTest extends TestCase
 	 */
 	public function testIsValidString(array $data, bool $isExpectedException): void
 	{
-		$this->postComment->setData($data);
+		$userService = $this->prophesize(UserService::class);
+		$statusService = $this->prophesize(StatusService::class);
+		$commentService = $this->prophesize(CommentService::class);
+
+		$postComment = new PostComment(
+			$userService->reveal(),
+			$statusService->reveal(),
+			$commentService->reveal()
+		);
+
+		$postComment->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 		} else {
-			$this->assertEquals(array_keys($data), $this->postComment->getStrings());
+			$this->assertEquals(array_keys($data), $postComment->getStrings());
 		}
 
-		$this->postComment->isString();
+		$postComment->isString();
 	}
 
 	public function isValidStringProvider(): array
@@ -149,17 +165,27 @@ class PostCommentTest extends TestCase
 	 */
 	public function testFloodControl(array $data, bool $isExpectedException): void
 	{
-		$this->postComment->setData($data);
+		$userService = $this->prophesize(UserService::class);
+		$statusService = $this->prophesize(StatusService::class);
+		$commentService = $this->prophesize(CommentService::class);
+
+		$postComment = new PostComment(
+			$userService->reveal(),
+			$statusService->reveal(),
+			$commentService->reveal()
+		);
+
+		$postComment->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 		} else {
-			$this->assertArrayHasKey('msgCount', $this->postComment->getPersistenceValue(
-				'flood_' . $this->postComment->getPosterId()
+			$this->assertArrayHasKey('msgCount', $postComment->getPersistenceValue(
+				'flood_' . $postComment->getPosterId()
 			));
 		}
 
-		$this->postComment->floodControl();
+		$postComment->floodControl();
 	}
 
 	public function floodControlProvider(): array
@@ -205,10 +231,20 @@ class PostCommentTest extends TestCase
 	 */
 	public function testPermissions(array $data): void
 	{
-		$this->postComment->setData($data);
+		$userService = $this->prophesize(UserService::class);
+		$statusService = $this->prophesize(StatusService::class);
+		$commentService = $this->prophesize(CommentService::class);
+
+		$postComment = new PostComment(
+			$userService->reveal(),
+			$statusService->reveal(),
+			$commentService->reveal()
+		);
+
+		$postComment->setData($data);
 
 		$this->expectException(ValidateDataException::class);
-		$this->postComment->permissions();
+		$postComment->permissions();
 	}
 
 	public function permissionsProvider(): array
@@ -226,30 +262,43 @@ class PostCommentTest extends TestCase
 
 	public function testGetSteps(): void
 	{
+		$userService = $this->prophesize(UserService::class);
+		$statusService = $this->prophesize(StatusService::class);
+		$commentService = $this->prophesize(CommentService::class);
+
+		$postComment = new PostComment(
+			$userService->reveal(),
+			$statusService->reveal(),
+			$commentService->reveal()
+		);
+
 		$this->assertEquals([
-			'clean',
+			'compare',
 			'isInt',
 			'isString',
 			'permissions',
 			'areValidUsers',
 			'floodControl',
 			'validStatus',
-		], $this->postComment->getSteps());
+		], $postComment->getSteps());
 	}
 
 	public function testGetParams(): void
 	{
+		$userService = $this->prophesize(UserService::class);
+		$statusService = $this->prophesize(StatusService::class);
+		$commentService = $this->prophesize(CommentService::class);
+
+		$postComment = new PostComment(
+			$userService->reveal(),
+			$statusService->reveal(),
+			$commentService->reveal()
+		);
+
 		$this->assertEquals([
 			'statusId' => 0,
 			'userId' => 0,
 			'body' => '',
-		], $this->postComment->getParams());
-	}
-
-	private function getMockInstance(string $class): MockObject
-	{
-		return $this->getMockBuilder($class)
-			->disableOriginalConstructor()
-			->getMock();
+		], $postComment->getParams());
 	}
 }

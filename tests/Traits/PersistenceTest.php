@@ -35,7 +35,7 @@ final class PersistenceTest extends TestCase
 	 */
 	public function testSetMessage($message, $type, $expectedResult): void
 	{
-		if (null !== $type) {
+		if ($type !== null) {
 			$setMessage = $this->persistenceTrait->setMessage($message, $type);
 		} else {
 			$setMessage = $this->persistenceTrait->setMessage($message);

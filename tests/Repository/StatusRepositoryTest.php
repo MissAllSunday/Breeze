@@ -46,7 +46,7 @@ class StatusRepositoryTest extends TestCase
 			->with($dataToInsert)
 			->willReturn($newId);
 
-		if (0 === $newId) {
+		if ($newId === 0) {
 			$this->expectException(InvalidStatusException::class);
 		}
 
@@ -79,7 +79,7 @@ class StatusRepositoryTest extends TestCase
 	 */
 	public function testGetByProfile(int $profileOwnerId, array $statusByProfileWillReturn): void
 	{
-		if (1 !== $profileOwnerId) {
+		if ($profileOwnerId !== 1) {
 			$this->statusModel
 				->expects($this->once())
 				->method('getStatusByProfile')
@@ -167,7 +167,7 @@ class StatusRepositoryTest extends TestCase
 				->with($statusId)
 				->willReturn($commentDeleteByStatusId);
 
-		if (1 !== $statusId && !$commentDeleteByStatusId) {
+		if ($statusId !== 1 && !$commentDeleteByStatusId) {
 			$this->expectException(InvalidCommentException::class);
 		}
 

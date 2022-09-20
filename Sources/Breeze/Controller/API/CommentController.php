@@ -18,7 +18,6 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 class CommentController extends ApiBaseController implements ApiBaseInterface
 {
 	public const ACTION_POST_COMMENT = 'postComment';
-
 	public const ACTION_DELETE = 'deleteComment';
 
 	public const SUB_ACTIONS = [
@@ -26,22 +25,14 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 		self::ACTION_DELETE,
 	];
 
-	private UserServiceInterface $userService;
-
-	private CommentServiceInterface $commentService;
-
-	private StatusServiceInterface $statusService;
+	protected ValidateDataInterface $validator;
 
 	public function __construct(
-		CommentServiceInterface $commentService,
-		StatusServiceInterface $statusService,
-		UserServiceInterface $userService,
-		ValidateGatewayInterface $gateway
+		private CommentServiceInterface $commentService,
+		private StatusServiceInterface $statusService,
+		private UserServiceInterface $userService,
+		protected ValidateGatewayInterface $gateway
 	) {
-		$this->commentService = $commentService;
-		$this->userService = $userService;
-		$this->statusService = $statusService;
-
 		parent::__construct($gateway);
 	}
 
@@ -50,28 +41,33 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 		return self::SUB_ACTIONS;
 	}
 
-	public function getValidator(): ValidateDataInterface
+	public function setValidator(): void
 	{
 		$validatorName = ValidateData::getNameSpace() . ucfirst($this->subAction);
 
-		return new $validatorName(
+		$this->validator = $validatorName(
 			$this->userService,
 			$this->statusService,
 			$this->commentService
 		);
 	}
 
+	public function getValidator(): ValidateDataInterface
+	{
+		return $this->validator;
+	}
+
 	public function postComment(): void
 	{
 		$this->print(array_merge(
 			$this->gateway->response(),
-			['content' => $this->commentService->saveAndGet($this->gateway->getData())]
+			['content' => $this->commentService->saveAndGet($this->validator->getData())]
 		));
 	}
 
 	public function deleteComment(): void
 	{
-		$data = $this->gateway->getData();
+		$data = $this->validator->getData();
 
 		try {
 			$this->commentService->deleteById($data[CommentEntity::ID]);

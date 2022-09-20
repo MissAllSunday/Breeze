@@ -15,7 +15,7 @@ class AlertModel extends BaseModel implements AlertModelInterface
 			return 0;
 		}
 
-		if (false !== strpos($data['content_type'], Breeze::PATTERN)) {
+		if (strpos($data['content_type'], Breeze::PATTERN) !== false) {
 			$params['content_type'] = Breeze::PATTERN . $data['content_type'];
 		}
 

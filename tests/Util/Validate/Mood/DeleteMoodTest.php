@@ -59,7 +59,7 @@ class DeleteMoodTest extends TestCase
 	/**
 	 * @dataProvider cleanProvider
 	 */
-	public function testClean(array $data, bool $isExpectedException): void
+	public function testCompare(array $data, bool $isExpectedException): void
 	{
 		$this->deleteMood->setData($data);
 
@@ -69,7 +69,7 @@ class DeleteMoodTest extends TestCase
 			$this->assertEquals($data, $this->deleteMood->getData());
 		}
 
-		$this->deleteMood->clean();
+		$this->deleteMood->compare();
 	}
 
 	public function cleanProvider(): array
@@ -155,7 +155,7 @@ class DeleteMoodTest extends TestCase
 	public function testGetSteps(): void
 	{
 		$this->assertEquals([
-			'clean',
+			'compare',
 			'permissions',
 			'dataExists',
 		], $this->deleteMood->getSteps());

@@ -13,7 +13,7 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 class DeleteStatus extends ValidateStatus implements ValidateDataInterface
 {
 	public array $steps = [
-		self::CLEAN,
+		self::COMPARE,
 		self::INT,
 		self::VALID_STATUS,
 		self::VALID_USER,
@@ -75,8 +75,8 @@ class DeleteStatus extends ValidateStatus implements ValidateDataInterface
 		}
 
 		if (!isset($this->data[StatusEntity::USER_ID]) ||
-			($this->status['data'][$this->data[StatusEntity::ID]][StatusEntity::USER_ID]
-			!== $this->data[StatusEntity::USER_ID])) {
+			($this->data[StatusEntity::USER_ID]
+			!== $this->status['data'][$this->data[StatusEntity::ID]][StatusEntity::USER_ID])) {
 			throw new ValidateDataException('wrong_values');
 		}
 	}

@@ -30,7 +30,7 @@ class CreateMoodTest extends TestCase
 	/**
 	 * @dataProvider cleanProvider
 	 */
-	public function testClean(array $data, bool $isExpectedException): void
+	public function testCompare(array $data, bool $isExpectedException): void
 	{
 		$this->createMood->setData($data);
 
@@ -40,7 +40,7 @@ class CreateMoodTest extends TestCase
 			$this->assertEquals($data, $this->createMood->getData());
 		}
 
-		$this->createMood->clean();
+		$this->createMood->compare();
 	}
 
 	public function cleanProvider(): array
@@ -182,7 +182,7 @@ class CreateMoodTest extends TestCase
 	public function testGetSteps(): void
 	{
 		$this->assertEquals([
-			'clean',
+			'compare',
 			'isInt',
 			'isString',
 		], $this->createMood->getSteps());

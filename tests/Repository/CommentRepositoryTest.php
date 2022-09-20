@@ -47,7 +47,7 @@ class CommentRepositoryTest extends TestCase
 			->with($dataToInsert)
 			->willReturn($newId);
 
-		if (0 === $newId) {
+		if ($newId === 0) {
 			$this->expectException(InvalidCommentException::class);
 		}
 
@@ -81,7 +81,7 @@ class CommentRepositoryTest extends TestCase
 	 */
 	public function testGetByProfile(int $profileOwnerId, array $commentsByProfileWillReturn): void
 	{
-		if (1 !== $profileOwnerId) {
+		if ($profileOwnerId !== 1) {
 			$this->commentModel
 				->expects($this->once())
 				->method('getByProfiles')

@@ -30,7 +30,7 @@ class LikeTest extends TestCase
 	/**
 	 * @dataProvider cleanProvider
 	 */
-	public function testClean(array $data, bool $isExpectedException): void
+	public function testCompare(array $data, bool $isExpectedException): void
 	{
 		$this->like->setData($data);
 
@@ -40,7 +40,7 @@ class LikeTest extends TestCase
 			$this->assertEquals($data, $this->like->getData());
 		}
 
-		$this->like->clean();
+		$this->like->compare();
 	}
 
 	public function cleanProvider(): array

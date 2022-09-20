@@ -8,38 +8,32 @@ use Breeze\Service\StatusService;
 use Breeze\Service\UserService;
 use Breeze\Util\Validate\ValidateDataException;
 use Breeze\Util\Validate\Validations\Status\StatusByProfile;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class StatusByProfileTest extends TestCase
 {
-	private StatusByProfile $statusByProfile;
-
-	public function setUp(): void
-	{
-		/**  @var UserService&MockObject $userService */
-		$userService = $this->createMock(UserService::class);
-
-		/**  @var StatusService&MockObject $statusService */
-		$statusService = $this->createMock(StatusService::class);
-
-		$this->statusByProfile = new StatusByProfile($userService, $statusService);
-	}
+	use ProphecyTrait;
 
 	/**
 	 * @dataProvider cleanProvider
 	 */
-	public function testClean(array $data, bool $isExpectedException): void
+	public function testCompare(array $data, bool $isExpectedException): void
 	{
-		$this->statusByProfile->setData($data);
+		$data = array_filter($data);
+		$userService = $this->prophesize(UserService::class);
+		$statusService = $this->prophesize(StatusService::class);
+
+		$statusByProfile = new StatusByProfile($userService->reveal(), $statusService->reveal());
+		$statusByProfile->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 		} else {
-			$this->assertEquals($data, $this->statusByProfile->getData());
+			$this->assertEquals($data, $statusByProfile->getData());
 		}
 
-		$this->statusByProfile->clean();
+		$statusByProfile->compare();
 	}
 
 	public function cleanProvider(): array
@@ -53,7 +47,7 @@ class StatusByProfileTest extends TestCase
 			],
 			'happy path' => [
 				'data' => [
-					'wallId' => 1,
+					'wallId' => 666,
 				],
 				'isExpectedException' => false,
 			],
@@ -69,15 +63,19 @@ class StatusByProfileTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, bool $isExpectedException): void
 	{
-		$this->statusByProfile->setData($data);
+		$userService = $this->prophesize(UserService::class);
+		$statusService = $this->prophesize(StatusService::class);
+
+		$statusByProfile = new StatusByProfile($userService->reveal(), $statusService->reveal());
+		$statusByProfile->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(ValidateDataException::class);
 		} else {
-			$this->assertEquals(array_keys($data), $this->statusByProfile->getInts());
+			$this->assertEquals(array_keys($data), $statusByProfile->getInts());
 		}
 
-		$this->statusByProfile->isInt();
+		$statusByProfile->isInt();
 	}
 
 	public function isValidIntProvider(): array
@@ -100,18 +98,28 @@ class StatusByProfileTest extends TestCase
 
 	public function testGetSteps(): void
 	{
+		$userService = $this->prophesize(UserService::class);
+		$statusService = $this->prophesize(StatusService::class);
+
+		$statusByProfile = new StatusByProfile($userService->reveal(), $statusService->reveal());
+
 		$this->assertEquals([
-			'clean',
+			'compare',
 			'isInt',
 			'areValidUsers',
 			'ignoreList',
-		], $this->statusByProfile->getSteps());
+		], $statusByProfile->getSteps());
 	}
 
 	public function testGetParams(): void
 	{
+		$userService = $this->prophesize(UserService::class);
+		$statusService = $this->prophesize(StatusService::class);
+
+		$statusByProfile = new StatusByProfile($userService->reveal(), $statusService->reveal());
+
 		$this->assertEquals([
 			'wallId' => 0,
-		], $this->statusByProfile->getParams());
+		], $statusByProfile->getParams());
 	}
 }

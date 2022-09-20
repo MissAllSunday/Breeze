@@ -38,7 +38,7 @@ class Like extends ValidateLikes implements ValidateDataInterface
 	public function getSteps(): array
 	{
 		return array_merge($this->steps, [
-			self::CLEAN,
+			self::COMPARE,
 			self::INT,
 			self::STRING,
 			self::SAME_USER,

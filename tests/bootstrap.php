@@ -26,9 +26,9 @@ function comma_format(string $number): string
 
 	$override_decimal_count = false;
 
-	if (null === $decimal_separator) {
+	if ($decimal_separator === null) {
 		if (empty($txt['number_format']) ||
-			1 != preg_match('~^1([^\d]*)?234([^\d]*)(0*?)$~', $txt['number_format'], $matches)) {
+			preg_match('~^1([^\d]*)?234([^\d]*)(0*?)$~', $txt['number_format'], $matches) != 1) {
 			return $number;
 		}
 

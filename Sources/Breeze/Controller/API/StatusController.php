@@ -26,6 +26,8 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 		self::ACTION_DELETE,
 	];
 
+	protected ValidateDataInterface $validator;
+
 	public function __construct(
 		private StatusServiceInterface $statusService,
 		private UserServiceInterface $userService,
@@ -39,22 +41,28 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 		return self::SUB_ACTIONS;
 	}
 
-	public function getValidator(): ValidateDataInterface
+	public function setValidator(): void
 	{
 		$validatorName = ValidateStatus::getNameSpace() . ucfirst($this->subAction);
 
-		return new $validatorName(
+		$this->validator = new $validatorName(
 			$this->userService,
 			$this->statusService,
 		);
 	}
 
+	public function getValidator(): ValidateDataInterface
+	{
+		return $this->validator;
+	}
+
 	public function statusByProfile(): void
 	{
-		$start = (int) $this->getRequest('start');
-		$data = $this->gateway->getData();
+		$start = $this->getRequest('start');
+		$data = $this->validator->getData();
 
 		try {
+			// @TODO: should be done by the repository
 			$statusByProfile = $this->statusService->getByProfile($data[StatusEntity::WALL_ID], $start);
 
 			$this->print($statusByProfile);
@@ -68,7 +76,7 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 
 	public function deleteStatus(): void
 	{
-		$data = $this->gateway->getData();
+		$data = $this->validator->getData();
 
 		try {
 			$this->statusService->deleteById($data[StatusEntity::ID]);
@@ -86,7 +94,7 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 	{
 		$this->print(array_merge(
 			$this->gateway->response(),
-			['content' => $this->statusService->saveAndGet($this->gateway->getData())]
+			['content' => $this->statusService->saveAndGet($this->validator->getData())]
 		));
 	}
 
