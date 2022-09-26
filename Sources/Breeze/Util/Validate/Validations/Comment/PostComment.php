@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Comment;
 
 use Breeze\Entity\CommentEntity;
-use Breeze\Exceptions\InvalidStatusException;
 use Breeze\Repository\CommentRepositoryInterface;
+use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Permissions;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class PostComment extends ValidateComment implements ValidateDataInterface
@@ -43,12 +43,12 @@ class PostComment extends ValidateComment implements ValidateDataInterface
 	}
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 */
 	public function permissions(): void
 	{
 		if (!Permissions::isAllowedTo(Permissions::POST_COMMENTS)) {
-			throw new ValidateDataException('postComments');
+			throw new DataNotFoundException('postComments');
 		}
 	}
 

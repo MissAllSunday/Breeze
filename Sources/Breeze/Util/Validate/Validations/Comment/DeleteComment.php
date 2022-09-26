@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Comment;
 
 use Breeze\Entity\CommentEntity as CommentEntity;
-use Breeze\Exceptions\InvalidCommentException;
 use Breeze\Repository\CommentRepositoryInterface;
+use Breeze\Repository\InvalidCommentException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Permissions;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class DeleteComment extends ValidateComment implements ValidateDataInterface
@@ -29,8 +29,6 @@ class DeleteComment extends ValidateComment implements ValidateDataInterface
 
 	protected const SUCCESS_KEY = 'deleted_comment';
 
-	private array $comment;
-
 	public function __construct(
 		protected CommentRepositoryInterface $commentRepository,
 		protected StatusRepositoryInterface $statusRepository
@@ -48,7 +46,7 @@ class DeleteComment extends ValidateComment implements ValidateDataInterface
 	}
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 */
 	public function permissions(): void
 	{
@@ -56,11 +54,11 @@ class DeleteComment extends ValidateComment implements ValidateDataInterface
 
 		if ($currentUserInfo['id'] === $this->data[CommentEntity::USER_ID] &&
 			!Permissions::isAllowedTo(Permissions::DELETE_OWN_COMMENTS)) {
-			throw new ValidateDataException('deleteComments');
+			throw new DataNotFoundException('deleteComments');
 		}
 
 		if (!Permissions::isAllowedTo(Permissions::DELETE_COMMENTS)) {
-			throw new ValidateDataException('deleteComments');
+			throw new DataNotFoundException('deleteComments');
 		}
 	}
 
@@ -69,24 +67,22 @@ class DeleteComment extends ValidateComment implements ValidateDataInterface
 	 */
 	public function validComment(): void
 	{
-		$this->comment = $this->commentService->getById($this->data[CommentEntity::ID]);
+		$this->commentRepository->getById($this->data[CommentEntity::ID]);
 	}
 
 	/**
 	 * @throws InvalidCommentException
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 */
 	public function validUser(): void
 	{
-		if (!$this->comment) {
-			$this->comment = $this->commentService->getById($this->data[CommentEntity::ID]);
-		}
+		$comment = $this->commentRepository->getById($this->data[CommentEntity::ID]);
 
 		if (!isset($this->data[CommentEntity::USER_ID]) ||
 			($this->data[CommentEntity::USER_ID]
 			!==
-			$this->comment['data'][$this->data[CommentEntity::ID]][CommentEntity::USER_ID])) {
-			throw new ValidateDataException('wrong_values');
+			$comment['data'][$this->data[CommentEntity::ID]][CommentEntity::USER_ID])) {
+			throw new DataNotFoundException('wrong_values');
 		}
 	}
 

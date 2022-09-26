@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\StatusEntity;
-use Breeze\Exceptions\InvalidStatusException;
+use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Validate\ValidateGateway;
@@ -65,10 +65,10 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 			$statusByProfile = $this->statusRepository->getByProfile($data[StatusEntity::WALL_ID], $start);
 
 			$this->print($statusByProfile);
-		} catch (InvalidStatusException $e) {
+		} catch (InvalidStatusException $invalidStatusException) {
 			$this->print([
 				'type' => ValidateGateway::ERROR_TYPE,
-				'message' => $this->getText($e->getMessage()),
+				'message' => $this->getText($invalidStatusException->getMessage()),
 			]);
 		}
 	}

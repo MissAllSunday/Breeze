@@ -6,12 +6,11 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Entity\LikeEntity;
-use Breeze\Exceptions\InvalidLikeException;
 use Breeze\Model\LikeModelInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\ValidateGateway;
 
-class LikeRepository extends BaseRepository
+class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 {
 	private LikeModelInterface $likeModel;
 

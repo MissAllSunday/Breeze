@@ -6,9 +6,9 @@ declare(strict_types=1);
 namespace Breeze\Repository\User;
 
 use Breeze\Entity\MoodEntity;
-use Breeze\Exceptions\InvalidMoodException;
 use Breeze\Model\MoodModelInterface;
 use Breeze\Repository\BaseRepository;
+use Breeze\Repository\InvalidMoodException;
 
 class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 {

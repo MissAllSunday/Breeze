@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-use Breeze\Exceptions\InvalidMoodException;
+use Breeze\Repository\InvalidMoodException;
 
 interface MoodServiceInterface extends BaseServiceInterface
 {

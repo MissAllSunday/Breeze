@@ -5,43 +5,35 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Mood;
 
-use Breeze\Exceptions\InvalidMoodException;
-use Breeze\Service\MoodService;
-use Breeze\Service\UserService;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Repository\InvalidMoodException;
+use Breeze\Repository\User\MoodRepositoryInterface;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\Mood\DeleteMood;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class DeleteMoodTest extends TestCase
 {
-	private DeleteMood $deleteMood;
-
-	public function setUp(): void
-	{
-		/**  @var MockObject&UserService $userService */
-		$userService = $this->createMock(UserService::class);
-
-		/**  @var MockObject&MoodService $moodService */
-		$moodService = $this->createMock(MoodService::class);
-
-		$this->deleteMood = new DeleteMood($userService, $moodService);
-	}
+	use ProphecyTrait;
 
 	/**
 	 * @dataProvider dataExistsProvider
 	 */
-	public function testDataExists(array $data, bool $isExpectedException): void
+	public function testDataExists(array $data, array $getByIdReturn, bool $isExpectedException): void
 	{
-		$this->deleteMood->setData($data);
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$moodRepository->getById($data['id'])->willReturn($getByIdReturn);
+
+		$deleteMood = new DeleteMood($moodRepository->reveal());
+		$deleteMood->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(InvalidMoodException::class);
 		} else {
-			$this->assertEquals($data, $this->deleteMood->getData());
+			$this->assertEquals($data, $deleteMood->getData());
 		}
 
-		$this->deleteMood->dataExists();
+		$deleteMood->dataExists();
 	}
 
 	public function dataExistsProvider(): array
@@ -51,6 +43,7 @@ class DeleteMoodTest extends TestCase
 				'data' => [
 					'id' => 666,
 				],
+				'getByIdReturn' => [666],
 				'isExpectedException' => false,
 			],
 		];
@@ -61,15 +54,17 @@ class DeleteMoodTest extends TestCase
 	 */
 	public function testCompare(array $data, bool $isExpectedException): void
 	{
-		$this->deleteMood->setData($data);
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$deleteMood = new DeleteMood($moodRepository->reveal());
+		$deleteMood->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals($data, $this->deleteMood->getData());
+			$this->assertEquals($data, $deleteMood->getData());
 		}
 
-		$this->deleteMood->compare();
+		$deleteMood->compare();
 	}
 
 	public function cleanProvider(): array
@@ -95,10 +90,13 @@ class DeleteMoodTest extends TestCase
 	 */
 	public function testPermissions(array $data): void
 	{
-		$this->deleteMood->setData($data);
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$deleteMood = new DeleteMood($moodRepository->reveal());
+		$deleteMood->setData($data);
 
-		$this->expectException(ValidateDataException::class);
-		$this->deleteMood->permissions();
+		$this->expectException(DataNotFoundException::class);
+
+		$deleteMood->permissions();
 	}
 
 	public function permissionsProvider(): array
@@ -117,15 +115,17 @@ class DeleteMoodTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, array $integers, bool $isExpectedException): void
 	{
-		$this->deleteMood->setData($data);
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$deleteMood = new DeleteMood($moodRepository->reveal());
+		$deleteMood->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals($integers, $this->deleteMood->getInts());
+			$this->assertEquals($integers, $deleteMood->getInts());
 		}
 
-		$this->deleteMood->isInt();
+		$deleteMood->isInt();
 	}
 
 	public function isValidIntProvider(): array
@@ -154,10 +154,13 @@ class DeleteMoodTest extends TestCase
 
 	public function testGetSteps(): void
 	{
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$deleteMood = new DeleteMood($moodRepository->reveal());
+
 		$this->assertEquals([
 			'compare',
 			'permissions',
 			'dataExists',
-		], $this->deleteMood->getSteps());
+		], $deleteMood->getSteps());
 	}
 }

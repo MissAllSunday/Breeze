@@ -4,29 +4,20 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Mood;
 
-use Breeze\Service\MoodService;
-use Breeze\Service\UserService;
+use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Util\Validate\Validations\Mood\GetActiveMoods;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class GetActiveMoodsTest extends TestCase
 {
-	private GetActiveMoods $getActiveMoods;
-
-	public function setUp(): void
-	{
-		/**  @var MockObject&UserService $userService */
-		$userService = $this->createMock(UserService::class);
-
-		/**  @var MockObject&MoodService $moodService */
-		$moodService = $this->createMock(MoodService::class);
-
-		$this->getActiveMoods = new GetActiveMoods($userService, $moodService);
-	}
+	use ProphecyTrait;
 
 	public function testSuccessKeyString(): void
 	{
-		$this->assertEquals('moodCreated', $this->getActiveMoods->successKeyString());
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$getActiveMoods = new GetActiveMoods($moodRepository->reveal());
+
+		$this->assertEquals('moodCreated', $getActiveMoods->successKeyString());
 	}
 }

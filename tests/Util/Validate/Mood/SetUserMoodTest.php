@@ -5,42 +5,32 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Mood;
 
-use Breeze\Service\MoodService;
-use Breeze\Service\UserService;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Repository\User\MoodRepositoryInterface;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\Mood\SetUserMood;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class SetUserMoodTest extends TestCase
 {
-	private SetUserMood $setUserMood;
-
-	public function setUp(): void
-	{
-		/**  @var MockObject&UserService $userService */
-		$userService = $this->createMock(UserService::class);
-
-		/**  @var MockObject&MoodService $moodService */
-		$moodService = $this->createMock(MoodService::class);
-
-		$this->setUserMood = new SetUserMood($userService, $moodService);
-	}
+	use ProphecyTrait;
 
 	/**
 	 * @dataProvider cleanProvider
 	 */
 	public function testCompare(array $data, bool $isExpectedException): void
 	{
-		$this->setUserMood->setData($data);
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$setUserMood = new SetUserMood($moodRepository->reveal());
+		$setUserMood->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals($data, $this->setUserMood->getData());
+			$this->assertEquals($data, $setUserMood->getData());
 		}
 
-		$this->setUserMood->compare();
+		$setUserMood->compare();
 	}
 
 	public function cleanProvider(): array
@@ -75,10 +65,12 @@ class SetUserMoodTest extends TestCase
 	 */
 	public function testPermissions(array $data): void
 	{
-		$this->setUserMood->setData($data);
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$setUserMood = new SetUserMood($moodRepository->reveal());
+		$setUserMood->setData($data);
 
-		$this->expectException(ValidateDataException::class);
-		$this->setUserMood->permissions();
+		$this->expectException(DataNotFoundException::class);
+		$setUserMood->permissions();
 	}
 
 	public function permissionsProvider(): array
@@ -98,15 +90,17 @@ class SetUserMoodTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, array $integers, bool $isExpectedException): void
 	{
-		$this->setUserMood->setData($data);
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$setUserMood = new SetUserMood($moodRepository->reveal());
+		$setUserMood->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals($integers, $this->setUserMood->getInts());
+			$this->assertEquals($integers, $setUserMood->getInts());
 		}
 
-		$this->setUserMood->isInt();
+		$setUserMood->isInt();
 	}
 
 	public function isValidIntProvider(): array
@@ -139,6 +133,9 @@ class SetUserMoodTest extends TestCase
 
 	public function testGetSteps(): void
 	{
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$setUserMood = new SetUserMood($moodRepository->reveal());
+
 		$this->assertEquals([
 			'compare',
 			'isInt',
@@ -146,7 +143,7 @@ class SetUserMoodTest extends TestCase
 			'dataExists',
 			'areValidUsers',
 			'isSameUser',
-		], $this->setUserMood->getSteps());
+		], $setUserMood->getSteps());
 	}
 
 	/**
@@ -154,15 +151,17 @@ class SetUserMoodTest extends TestCase
 	 */
 	public function testIsSameUser(array $data, $isExpectedException): void
 	{
-		$this->setUserMood->setData($data);
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$setUserMood = new SetUserMood($moodRepository->reveal());
+		$setUserMood->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals($data, $this->setUserMood->getData());
+			$this->assertEquals($data, $setUserMood->getData());
 		}
 
-		$this->setUserMood->isSameUser();
+		$setUserMood->isSameUser();
 	}
 
 	public function isSameUserProvider(): array

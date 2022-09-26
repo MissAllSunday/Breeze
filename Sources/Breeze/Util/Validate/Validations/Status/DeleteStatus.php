@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Status;
 
 use Breeze\Entity\StatusEntity;
-use Breeze\Exceptions\InvalidStatusException;
+use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Permissions;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\DataNotFoundException;
 
 class DeleteStatus extends ValidateStatus
 {
@@ -44,7 +44,7 @@ class DeleteStatus extends ValidateStatus
 	}
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 */
 	public function permissions(): void
 	{
@@ -52,11 +52,11 @@ class DeleteStatus extends ValidateStatus
 
 		if ($currentUserInfo['id'] === $this->data[StatusEntity::USER_ID] &&
 			!Permissions::isAllowedTo(Permissions::DELETE_OWN_STATUS)) {
-			throw new ValidateDataException('deleteStatus');
+			throw new DataNotFoundException('deleteStatus');
 		}
 
 		if (!Permissions::isAllowedTo(Permissions::DELETE_STATUS)) {
-			throw new ValidateDataException('deleteStatus');
+			throw new DataNotFoundException('deleteStatus');
 		}
 	}
 
@@ -69,7 +69,7 @@ class DeleteStatus extends ValidateStatus
 	}
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 * @throws InvalidStatusException
 	 */
 	public function validUser(): void
@@ -81,7 +81,7 @@ class DeleteStatus extends ValidateStatus
 		if (!isset($this->data[StatusEntity::USER_ID]) ||
 			($this->data[StatusEntity::USER_ID]
 			!== $this->status['data'][$this->data[StatusEntity::ID]][StatusEntity::USER_ID])) {
-			throw new ValidateDataException('wrong_values');
+			throw new DataNotFoundException('wrong_values');
 		}
 	}
 

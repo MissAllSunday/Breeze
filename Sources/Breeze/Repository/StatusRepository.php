@@ -6,9 +6,8 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Entity\StatusEntity;
-use Breeze\Exceptions\InvalidCommentException;
-use Breeze\Exceptions\InvalidStatusException;
 use Breeze\Model\StatusModelInterface;
+use Breeze\Util\Validate\DataNotFoundException;
 
 class StatusRepository extends BaseRepository implements StatusRepositoryInterface
 {
@@ -33,6 +32,9 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		return $newStatusId;
 	}
 
+	/**
+	 * @throws DataNotFoundException
+	 */
 	public function getByProfile(int $profileOwnerId = 0, int $start = 0): array
 	{
 		$status = $this->getCache(__METHOD__ . $profileOwnerId);
@@ -44,21 +46,24 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 				'ids' => [$profileOwnerId],
 			]);
 
-			if (!empty(array_filter($status))) {
+			if (!empty(array_filter($status['data']))) {
 				$this->setCache(__METHOD__ . $profileOwnerId, $status);
 			}
 		}
 
+		if (empty($status['data'])) {
+			throw new DataNotFoundException('no_status');
+		}
+
 		$comments =  $this->commentRepository->getByProfile($profileOwnerId);
-		$userIds = array_unique(array_merge($status['usersIds'], $comments['usersIds']));
 		$status['data'] = $this->likeRepository->appendLikeData($status['data'], StatusEntity::ID);
 
-		foreach ($status['data'] as $statusId => &$singleStatus) {
-			$singleStatus['comments'] = $comments['data'][$statusId] ?? [];
+		foreach ($status['data'] as $statusId => $singleStatus) {
+			$status['data'][$statusId]['comments'] = $comments['data'][$statusId] ?? [];
 		}
 
 		return [
-			'users' => $this->loadUsersInfo($userIds),
+			'users' => $this->loadUsersInfo(array_unique(array_merge($status['usersIds'], $comments['usersIds']))),
 			'status' => $status['data'],
 		];
 	}

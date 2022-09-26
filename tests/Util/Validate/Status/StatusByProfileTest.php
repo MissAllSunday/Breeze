@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Status;
 
-use Breeze\Service\StatusService;
-use Breeze\Service\UserService;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Repository\StatusRepository;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\Status\StatusByProfile;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -21,14 +20,12 @@ class StatusByProfileTest extends TestCase
 	public function testCompare(array $data, bool $isExpectedException): void
 	{
 		$data = array_filter($data);
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-
-		$statusByProfile = new StatusByProfile($userService->reveal(), $statusService->reveal());
+		$statusRepository = $this->prophesize(StatusRepository::class);
+		$statusByProfile = new StatusByProfile($statusRepository->reveal());
 		$statusByProfile->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
 			$this->assertEquals($data, $statusByProfile->getData());
 		}
@@ -63,14 +60,12 @@ class StatusByProfileTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, bool $isExpectedException): void
 	{
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-
-		$statusByProfile = new StatusByProfile($userService->reveal(), $statusService->reveal());
+		$statusRepository = $this->prophesize(StatusRepository::class);
+		$statusByProfile = new StatusByProfile($statusRepository->reveal());
 		$statusByProfile->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
 			$this->assertEquals(array_keys($data), $statusByProfile->getInts());
 		}
@@ -98,10 +93,8 @@ class StatusByProfileTest extends TestCase
 
 	public function testGetSteps(): void
 	{
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-
-		$statusByProfile = new StatusByProfile($userService->reveal(), $statusService->reveal());
+		$statusRepository = $this->prophesize(StatusRepository::class);
+		$statusByProfile = new StatusByProfile($statusRepository->reveal());
 
 		$this->assertEquals([
 			'compare',
@@ -113,10 +106,8 @@ class StatusByProfileTest extends TestCase
 
 	public function testGetParams(): void
 	{
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-
-		$statusByProfile = new StatusByProfile($userService->reveal(), $statusService->reveal());
+		$statusRepository = $this->prophesize(StatusRepository::class);
+		$statusByProfile = new StatusByProfile($statusRepository->reveal());
 
 		$this->assertEquals([
 			'wallId' => 0,

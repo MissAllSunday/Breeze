@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Mood;
 
 use Breeze\Entity\UserSettingsEntity;
-use Breeze\Exceptions\InvalidMoodException;
+use Breeze\Repository\InvalidMoodException;
 use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Util\Permissions;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class SetUserMood extends ValidateMood implements ValidateDataInterface
@@ -49,12 +49,12 @@ class SetUserMood extends ValidateMood implements ValidateDataInterface
 	}
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 */
 	public function permissions(): void
 	{
 		if (!Permissions::isAllowedTo(Permissions::USE_MOOD)) {
-			throw new ValidateDataException('moodChanged');
+			throw new DataNotFoundException('moodChanged');
 		}
 	}
 

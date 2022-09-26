@@ -4,46 +4,33 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Status;
 
-use Breeze\Service\StatusService;
-use Breeze\Service\UserService;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Repository\StatusRepository;
+use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\Status\DeleteStatus;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class DeleteStatusTest extends TestCase
 {
-	/**
-	 * @var UserService&MockObject
-	 */
-	private $userService;
-
-	private DeleteStatus $deleteStatus;
-
-	public function setUp(): void
-	{
-		$this->userService = $this->createMock(UserService::class);
-
-		/**  @var MockObject&StatusService $statusService */
-		$statusService = $this->getMockInstance(StatusService::class);
-
-		$this->deleteStatus = new DeleteStatus($this->userService, $statusService);
-	}
+	use ProphecyTrait;
 
 	/**
 	 * @dataProvider cleanProvider
 	 */
 	public function testCompare(array $data, bool $isExpectedException): void
 	{
-		$this->deleteStatus->setData($data);
+		$statusRepository = $this->prophesize(StatusRepository::class);
+		$deleteStatus = new DeleteStatus($statusRepository->reveal());
+		$deleteStatus->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals($data, $this->deleteStatus->getData());
+			$this->assertEquals($data, $deleteStatus->getData());
 		}
 
-		$this->deleteStatus->compare();
+		$deleteStatus->compare();
 	}
 
 	public function cleanProvider(): array
@@ -77,15 +64,17 @@ class DeleteStatusTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, bool $isExpectedException): void
 	{
-		$this->deleteStatus->setData($data);
+		$statusRepository = $this->prophesize(StatusRepository::class);
+		$deleteStatus = new DeleteStatus($statusRepository->reveal());
+		$deleteStatus->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals(array_keys($data), $this->deleteStatus->getInts());
+			$this->assertEquals(array_keys($data), $deleteStatus->getInts());
 		}
 
-		$this->deleteStatus->isInt();
+		$deleteStatus->isInt();
 	}
 
 	public function isValidIntProvider(): array
@@ -117,18 +106,21 @@ class DeleteStatusTest extends TestCase
 		array $loadUsersInfoWillReturn,
 		bool $isExpectedException
 	): void {
-		$this->deleteStatus->setData($data);
-
-		$this->userService->expects($this->once())
-			->method('getUsersToLoad')
-			->with($with)
+		$statusRepository = $this->prophesize(StatusRepositoryInterface::class);
+		$statusRepository->getUsersToLoad($with)
 			->willReturn($loadUsersInfoWillReturn);
 
+		$deleteStatus = new DeleteStatus($statusRepository->reveal());
+		$deleteStatus->setData($data);
+
+
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
+		} else {
+			$this->assertEquals($data, $deleteStatus->getData());
 		}
 
-		$this->deleteStatus->areValidUsers();
+		$deleteStatus->areValidUsers();
 	}
 
 	public function areValidUsersProvider(): array
@@ -166,14 +158,12 @@ class DeleteStatusTest extends TestCase
 	 */
 	public function testPermissions(array $data, array $userInfo): void
 	{
-		$this->userService->expects($this->once())
-			->method('getCurrentUserInfo')
-			->willReturn($userInfo);
+		$statusRepository = $this->prophesize(StatusRepository::class);
+		$deleteStatus = new DeleteStatus($statusRepository->reveal());
+		$deleteStatus->setData($data);
 
-		$this->deleteStatus->setData($data);
-
-		$this->expectException(ValidateDataException::class);
-		$this->deleteStatus->permissions();
+		$this->expectException(DataNotFoundException::class);
+		$deleteStatus->permissions();
 	}
 
 	public function permissionsProvider(): array
@@ -193,27 +183,26 @@ class DeleteStatusTest extends TestCase
 
 	public function testGetSteps(): void
 	{
+		$statusRepository = $this->prophesize(StatusRepository::class);
+		$deleteStatus = new DeleteStatus($statusRepository->reveal());
+
 		$this->assertEquals([
 			'compare',
 			'isInt',
 			'validStatus',
 			'validUser',
 			'permissions',
-		], $this->deleteStatus->getSteps());
+		], $deleteStatus->getSteps());
 	}
 
 	public function testGetParams(): void
 	{
+		$statusRepository = $this->prophesize(StatusRepository::class);
+		$deleteStatus = new DeleteStatus($statusRepository->reveal());
+
 		$this->assertEquals([
 			'id' => 0,
 			'userId' => 0,
-		], $this->deleteStatus->getParams());
-	}
-
-	private function getMockInstance(string $class): MockObject
-	{
-		return $this->getMockBuilder($class)
-			->disableOriginalConstructor()
-			->getMock();
+		], $deleteStatus->getParams());
 	}
 }

@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Status;
 
 use Breeze\Repository\StatusRepositoryInterface;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\ValidateData;
 
 abstract class ValidateStatus extends ValidateData
@@ -14,7 +14,7 @@ abstract class ValidateStatus extends ValidateData
 	protected StatusRepositoryInterface $statusRepository;
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 */
 	public function areValidUsers(): void
 	{
@@ -28,7 +28,7 @@ abstract class ValidateStatus extends ValidateData
 		$loadedUsers = $this->statusRepository->getUsersToLoad($usersIds);
 
 		if (array_diff($usersIds, $loadedUsers)) {
-			throw new ValidateDataException('invalid_users');
+			throw new DataNotFoundException('invalid_users');
 		}
 	}
 

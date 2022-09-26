@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Comment;
 
-use Breeze\Service\CommentService as CommentService;
-use Breeze\Service\StatusService as StatusService;
-use Breeze\Service\UserService;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Repository\CommentRepositoryInterface;
+use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\Comment\PostComment;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -21,20 +20,18 @@ class PostCommentTest extends TestCase
 	 */
 	public function testCompare(array $data, bool $isExpectedException): void
 	{
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-		$commentService = $this->prophesize(CommentService::class);
+		$statusRepository = $this->prophesize(StatusRepositoryInterface::class);
+		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 
 		$postComment = new PostComment(
-			$userService->reveal(),
-			$statusService->reveal(),
-			$commentService->reveal()
+			$commentRepository->reveal(),
+			$statusRepository->reveal()
 		);
 
 		$postComment->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
 			$this->assertEquals($data, $postComment->getData());
 		}
@@ -75,20 +72,18 @@ class PostCommentTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, bool $isExpectedException): void
 	{
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-		$commentService = $this->prophesize(CommentService::class);
+		$statusRepository = $this->prophesize(StatusRepositoryInterface::class);
+		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 
 		$postComment = new PostComment(
-			$userService->reveal(),
-			$statusService->reveal(),
-			$commentService->reveal()
+			$commentRepository->reveal(),
+			$statusRepository->reveal()
 		);
 
 		$postComment->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
 			$this->assertEquals(array_keys($data), $postComment->getInts());
 		}
@@ -121,20 +116,18 @@ class PostCommentTest extends TestCase
 	 */
 	public function testIsValidString(array $data, bool $isExpectedException): void
 	{
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-		$commentService = $this->prophesize(CommentService::class);
+		$statusRepository = $this->prophesize(StatusRepositoryInterface::class);
+		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 
 		$postComment = new PostComment(
-			$userService->reveal(),
-			$statusService->reveal(),
-			$commentService->reveal()
+			$commentRepository->reveal(),
+			$statusRepository->reveal()
 		);
 
 		$postComment->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
 			$this->assertEquals(array_keys($data), $postComment->getStrings());
 		}
@@ -165,20 +158,18 @@ class PostCommentTest extends TestCase
 	 */
 	public function testFloodControl(array $data, bool $isExpectedException): void
 	{
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-		$commentService = $this->prophesize(CommentService::class);
+		$statusRepository = $this->prophesize(StatusRepositoryInterface::class);
+		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 
 		$postComment = new PostComment(
-			$userService->reveal(),
-			$statusService->reveal(),
-			$commentService->reveal()
+			$commentRepository->reveal(),
+			$statusRepository->reveal()
 		);
 
 		$postComment->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
 			$this->assertArrayHasKey('msgCount', $postComment->getPersistenceValue(
 				'flood_' . $postComment->getPosterId()
@@ -231,19 +222,17 @@ class PostCommentTest extends TestCase
 	 */
 	public function testPermissions(array $data): void
 	{
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-		$commentService = $this->prophesize(CommentService::class);
+		$statusRepository = $this->prophesize(StatusRepositoryInterface::class);
+		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 
 		$postComment = new PostComment(
-			$userService->reveal(),
-			$statusService->reveal(),
-			$commentService->reveal()
+			$commentRepository->reveal(),
+			$statusRepository->reveal()
 		);
 
 		$postComment->setData($data);
 
-		$this->expectException(ValidateDataException::class);
+		$this->expectException(DataNotFoundException::class);
 		$postComment->permissions();
 	}
 
@@ -262,14 +251,12 @@ class PostCommentTest extends TestCase
 
 	public function testGetSteps(): void
 	{
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-		$commentService = $this->prophesize(CommentService::class);
+		$statusRepository = $this->prophesize(StatusRepositoryInterface::class);
+		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 
 		$postComment = new PostComment(
-			$userService->reveal(),
-			$statusService->reveal(),
-			$commentService->reveal()
+			$commentRepository->reveal(),
+			$statusRepository->reveal()
 		);
 
 		$this->assertEquals([
@@ -285,14 +272,12 @@ class PostCommentTest extends TestCase
 
 	public function testGetParams(): void
 	{
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-		$commentService = $this->prophesize(CommentService::class);
+		$statusRepository = $this->prophesize(StatusRepositoryInterface::class);
+		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 
 		$postComment = new PostComment(
-			$userService->reveal(),
-			$statusService->reveal(),
-			$commentService->reveal()
+			$commentRepository->reveal(),
+			$statusRepository->reveal()
 		);
 
 		$this->assertEquals([

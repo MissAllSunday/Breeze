@@ -6,8 +6,8 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\CommentEntity;
-use Breeze\Exceptions\InvalidCommentException;
 use Breeze\Repository\CommentRepositoryInterface;
+use Breeze\Repository\InvalidCommentException;
 use Breeze\Util\Validate\ValidateGateway;
 use Breeze\Util\Validate\ValidateGatewayInterface;
 use Breeze\Util\Validate\Validations\ValidateData;

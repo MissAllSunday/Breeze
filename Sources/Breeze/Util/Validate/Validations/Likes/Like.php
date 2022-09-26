@@ -7,7 +7,7 @@ namespace Breeze\Util\Validate\Validations\Likes;
 use Breeze\Entity\LikeEntity;
 use Breeze\Repository\LikeRepositoryInterface;
 use Breeze\Util\Permissions;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class Like extends ValidateLikes implements ValidateDataInterface
@@ -55,34 +55,34 @@ class Like extends ValidateLikes implements ValidateDataInterface
 	}
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 */
 	public function permissions(): void
 	{
 		if (!Permissions::isAllowedTo(Permissions::LIKES_LIKE)) {
-			throw new ValidateDataException('likesLike');
+			throw new DataNotFoundException('likesLike');
 		}
 	}
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 */
 	public function isFeatureEnable(): void
 	{
 		if (!$this->modSetting('enable_likes')) {
-			throw new ValidateDataException('likesNotEnabled');
+			throw new DataNotFoundException('likesNotEnabled');
 		}
 	}
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 */
 	public function checkType(): void
 	{
 		$type =  $this->data[LikeEntity::TYPE];
 
 		if (!in_array($type, LikeEntity::getTypes())) {
-			throw new ValidateDataException('likesTypeInvalid');
+			throw new DataNotFoundException('likesTypeInvalid');
 		}
 	}
 

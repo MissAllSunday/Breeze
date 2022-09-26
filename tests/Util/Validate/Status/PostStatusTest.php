@@ -4,42 +4,32 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Status;
 
-use Breeze\Service\StatusService as StatusService;
-use Breeze\Service\UserService;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Repository\StatusRepository;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\Status\PostStatus;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class PostStatusTest extends TestCase
 {
-	private PostStatus $postStatus;
-
-	public function setUp(): void
-	{
-		/**  @var UserService&MockObject $userService */
-		$userService = $this->createMock(UserService::class);
-
-		/**  @var StatusService&MockObject $statusService */
-		$statusService = $this->getMockInstance(StatusService::class);
-
-		$this->postStatus = new PostStatus($userService, $statusService);
-	}
+	use ProphecyTrait;
 
 	/**
 	 * @dataProvider cleanProvider
 	 */
 	public function testCompare(array $data, bool $isExpectedException): void
 	{
-		$this->postStatus->setData($data);
+		$statusRepository = $this->prophesize(StatusRepository::class);
+		$postStatus = new PostStatus($statusRepository->reveal());
+		$postStatus->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals($data, $this->postStatus->getData());
+			$this->assertEquals($data, $postStatus->getData());
 		}
 
-		$this->postStatus->compare();
+		$postStatus->compare();
 	}
 
 	public function cleanProvider(): array
@@ -75,15 +65,17 @@ class PostStatusTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, bool $isExpectedException): void
 	{
-		$this->postStatus->setData($data);
+		$statusRepository = $this->prophesize(StatusRepository::class);
+		$postStatus = new PostStatus($statusRepository->reveal());
+		$postStatus->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals(array_keys($data), $this->postStatus->getInts());
+			$this->assertEquals(array_keys($data), $postStatus->getInts());
 		}
 
-		$this->postStatus->isInt();
+		$postStatus->isInt();
 	}
 
 	public function isValidIntProvider(): array
@@ -111,15 +103,17 @@ class PostStatusTest extends TestCase
 	 */
 	public function testIsValidString(array $data, bool $isExpectedException): void
 	{
-		$this->postStatus->setData($data);
+		$statusRepository = $this->prophesize(StatusRepository::class);
+		$postStatus = new PostStatus($statusRepository->reveal());
+		$postStatus->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals(array_keys($data), $this->postStatus->getStrings());
+			$this->assertEquals(array_keys($data), $postStatus->getStrings());
 		}
 
-		$this->postStatus->isString();
+		$postStatus->isString();
 	}
 
 	public function isValidStringProvider(): array
@@ -145,15 +139,17 @@ class PostStatusTest extends TestCase
 	 */
 	public function testFloodControl(array $data, bool $isExpectedException): void
 	{
-		$this->postStatus->setData($data);
+		$statusRepository = $this->prophesize(StatusRepository::class);
+		$postStatus = new PostStatus($statusRepository->reveal());
+		$postStatus->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals($data['userId'], $this->postStatus->getPosterId());
+			$this->assertEquals($data['userId'], $postStatus->getPosterId());
 		}
 
-		$this->postStatus->floodControl();
+		$postStatus->floodControl();
 	}
 
 	public function floodControlProvider(): array
@@ -207,10 +203,12 @@ class PostStatusTest extends TestCase
 	 */
 	public function testPermissions(array $data): void
 	{
-		$this->postStatus->setData($data);
+		$statusRepository = $this->prophesize(StatusRepository::class);
+		$postStatus = new PostStatus($statusRepository->reveal());
+		$postStatus->setData($data);
 
-		$this->expectException(ValidateDataException::class);
-		$this->postStatus->permissions();
+		$this->expectException(DataNotFoundException::class);
+		$postStatus->permissions();
 	}
 
 	public function permissionsProvider(): array
@@ -230,6 +228,9 @@ class PostStatusTest extends TestCase
 
 	public function testGetSteps(): void
 	{
+		$statusRepository = $this->prophesize(StatusRepository::class);
+		$postStatus = new PostStatus($statusRepository->reveal());
+
 		$this->assertEquals([
 			'compare',
 			'isInt',
@@ -237,22 +238,18 @@ class PostStatusTest extends TestCase
 			'permissions',
 			'areValidUsers',
 			'floodControl',
-		], $this->postStatus->getSteps());
+		], $postStatus->getSteps());
 	}
 
 	public function testGetParams(): void
 	{
+		$statusRepository = $this->prophesize(StatusRepository::class);
+		$postStatus = new PostStatus($statusRepository->reveal());
+
 		$this->assertEquals([
 			'wallId' => 0,
 			'userId' => 0,
 			'body' => '',
-		], $this->postStatus->getParams());
-	}
-
-	private function getMockInstance(string $class): MockObject
-	{
-		return $this->getMockBuilder($class)
-			->disableOriginalConstructor()
-			->getMock();
+		], $postStatus->getParams());
 	}
 }

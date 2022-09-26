@@ -117,25 +117,40 @@ function allowedTo($permissionName)
 
 function cache_get_data($key, $timeToLive = 360): ?array
 {
-	switch ($key) {
-		case 'Breeze_StatusRepository_getByProfile1':
-		case 'Breeze_CommentRepository_getByProfile1':
-			$dataToReturn = [
-				'some data',
-			];
-
-			break;
-		case 'user_settings_666':
-			$dataToReturn = [
-				'generalWall' => 1,
-			];
-
-			break;
-		default:
-			$dataToReturn = null;
-	}
-
-	return $dataToReturn;
+	return match ($key) {
+		'Breeze_StatusRepository_getByProfile1' => [
+			'usersIds' => [1],
+			'data' => [
+				1 => [
+					'id' => 666,
+					'wallId' => 666,
+					'userId' => 1,
+					'createdAt' => 581299200,
+					'body' => 'some body',
+					'likes' => [],
+				],],
+		],
+		'Breeze_StatusRepository_getByProfile2' => [
+			'usersIds' => [],
+			'data' => [],
+		],
+		'Breeze_CommentRepository_getByProfile1' => [
+			'usersIds' => [1],
+			'data' => [
+				666 => [
+					'id' => 666,
+					'statusId' => 666,
+					'userId' => 1,
+					'createdAt' => 581299200,
+					'body' => 'comment body',
+					'likes' => [],
+				],],
+		],
+		'user_settings_666' => [
+			'generalWall' => 1,
+		],
+		default => null,
+	};
 }
 
 function cache_put_data($key, $data, $timeToLive)

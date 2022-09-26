@@ -18,4 +18,6 @@ interface BaseRepositoryInterface
 	public function getUsersToLoad(array $userIds = []): array;
 
 	public function loadUsersInfo(array $userIds = []): array;
+
+	public function getCurrentUserInfo(): array;
 }

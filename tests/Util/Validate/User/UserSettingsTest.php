@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\User;
 
 use Breeze\Service\UserService;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\User\UserSettings;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +30,7 @@ class UserSettingsTest extends TestCase
 		$this->userSettings->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
 			$this->assertEquals($data, $this->userSettings->getData());
 		}
@@ -72,7 +72,7 @@ class UserSettingsTest extends TestCase
 		$this->userSettings->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
 			$this->assertEquals(array_keys($data), $this->userSettings->getInts());
 		}
@@ -112,7 +112,7 @@ class UserSettingsTest extends TestCase
 		$this->userSettings->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
 			$this->assertEquals(array_keys($data), $this->userSettings->getStrings());
 		}

@@ -6,7 +6,7 @@ namespace Breeze\Util\Validate\Validations\Mood;
 
 use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Util\Permissions;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class GetAllMoods extends ValidateMood implements ValidateDataInterface
@@ -27,12 +27,12 @@ class GetAllMoods extends ValidateMood implements ValidateDataInterface
 	}
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 */
 	public function permissions(): void
 	{
 		if (!Permissions::isAllowedTo(Permissions::ADMIN_FORUM)) {
-			throw new ValidateDataException('moodCreated');
+			throw new DataNotFoundException('moodCreated');
 		}
 	}
 

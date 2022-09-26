@@ -5,42 +5,32 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Likes;
 
-use Breeze\Service\LikeService;
-use Breeze\Service\UserService;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Repository\LikeRepositoryInterface;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\Likes\Like;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class LikeTest extends TestCase
 {
-	private Like $like;
-
-	public function setUp(): void
-	{
-		/**  @var MockObject&UserService $userService */
-		$userService = $this->createMock(UserService::class);
-
-		/**  @var MockObject&LikeService $likeService */
-		$likeService = $this->createMock(LikeService::class);
-
-		$this->like = new Like($userService, $likeService);
-	}
+	use ProphecyTrait;
 
 	/**
 	 * @dataProvider cleanProvider
 	 */
 	public function testCompare(array $data, bool $isExpectedException): void
 	{
-		$this->like->setData($data);
+		$likeRepository = $this->prophesize(LikeRepositoryInterface::class);
+		$like = new Like($likeRepository->reveal());
+		$like->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals($data, $this->like->getData());
+			$this->assertEquals($data, $like->getData());
 		}
 
-		$this->like->compare();
+		$like->compare();
 	}
 
 	public function cleanProvider(): array
@@ -77,15 +67,17 @@ class LikeTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, array $integers, bool $isExpectedException): void
 	{
-		$this->like->setData($data);
+		$likeRepository = $this->prophesize(LikeRepositoryInterface::class);
+		$like = new Like($likeRepository->reveal());
+		$like->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals($integers, $this->like->getInts());
+			$this->assertEquals($integers, $like->getInts());
 		}
 
-		$this->like->isInt();
+		$like->isInt();
 	}
 
 	public function isValidIntProvider(): array
@@ -119,10 +111,12 @@ class LikeTest extends TestCase
 	 */
 	public function testPermissions(array $data): void
 	{
-		$this->like->setData($data);
+		$likeRepository = $this->prophesize(LikeRepositoryInterface::class);
+		$like = new Like($likeRepository->reveal());
+		$like->setData($data);
 
-		$this->expectException(ValidateDataException::class);
-		$this->like->permissions();
+		$this->expectException(DataNotFoundException::class);
+		$like->permissions();
 	}
 
 	/**
@@ -130,10 +124,13 @@ class LikeTest extends TestCase
 	 */
 	public function testIsFeatureEnable(array $data): void
 	{
-		$this->like->setData($data);
+		$likeRepository = $this->prophesize(LikeRepositoryInterface::class);
+		$like = new Like($likeRepository->reveal());
+		$like->setData($data);
 
-		$this->expectException(ValidateDataException::class);
-		$this->like->isFeatureEnable();
+		$this->expectException(DataNotFoundException::class);
+
+		$like->isFeatureEnable();
 	}
 
 	public function permissionsProvider(): array
@@ -152,10 +149,13 @@ class LikeTest extends TestCase
 	 */
 	public function testCheckType(array $data): void
 	{
-		$this->like->setData($data);
+		$likeRepository = $this->prophesize(LikeRepositoryInterface::class);
+		$like = new Like($likeRepository->reveal());
+		$like->setData($data);
 
-		$this->expectException(ValidateDataException::class);
-		$this->like->checkType();
+		$this->expectException(DataNotFoundException::class);
+
+		$like->checkType();
 	}
 
 	public function checkTypeProvider(): array

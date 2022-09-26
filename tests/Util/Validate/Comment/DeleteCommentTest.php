@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Comment;
 
-use Breeze\Service\CommentService;
-use Breeze\Service\StatusService;
-use Breeze\Service\UserService;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Repository\CommentRepositoryInterface;
+use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\Comment\DeleteComment;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 class DeleteCommentTest extends TestCase
@@ -22,19 +20,17 @@ class DeleteCommentTest extends TestCase
 	 */
 	public function testCompare(array $data, bool $isExpectedException): void
 	{
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-		$commentService = $this->prophesize(CommentService::class);
+		$statusRepository = $this->prophesize(StatusRepositoryInterface::class);
+		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 
 		$deleteComment = new DeleteComment(
-			$userService->reveal(),
-			$statusService->reveal(),
-			$commentService->reveal()
+			$commentRepository->reveal(),
+			$statusRepository->reveal()
 		);
 		$deleteComment->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
 			$this->assertEquals($data, $deleteComment->getData());
 		}
@@ -73,19 +69,17 @@ class DeleteCommentTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, bool $isExpectedException): void
 	{
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-		$commentService = $this->prophesize(CommentService::class);
+		$statusRepository = $this->prophesize(StatusRepositoryInterface::class);
+		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 
 		$deleteComment = new DeleteComment(
-			$userService->reveal(),
-			$statusService->reveal(),
-			$commentService->reveal()
+			$commentRepository->reveal(),
+			$statusRepository->reveal()
 		);
 		$deleteComment->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
 			$this->assertEquals(array_keys($data), $deleteComment->getInts());
 		}
@@ -122,22 +116,20 @@ class DeleteCommentTest extends TestCase
 		array $loadedUsers,
 		bool $isExpectedException
 	): void {
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-		$commentService = $this->prophesize(CommentService::class);
+		$statusRepository = $this->prophesize(StatusRepositoryInterface::class);
+		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 
 		$deleteComment = new DeleteComment(
-			$userService->reveal(),
-			$statusService->reveal(),
-			$commentService->reveal()
+			$commentRepository->reveal(),
+			$statusRepository->reveal()
 		);
 		$deleteComment->setData($data);
 
-		$userService->getUsersToLoad(Argument::type('array'))
+		$commentRepository->getUsersToLoad($with)
 			->willReturn($loadedUsers);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
 			$this->assertIsArray($deleteComment->getData());
 		}
@@ -182,23 +174,21 @@ class DeleteCommentTest extends TestCase
 	 */
 	public function testPermissions(array $data, array $userInfo): void
 	{
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-		$commentService = $this->prophesize(CommentService::class);
+		$statusRepository = $this->prophesize(StatusRepositoryInterface::class);
+		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 
 		$deleteComment = new DeleteComment(
-			$userService->reveal(),
-			$statusService->reveal(),
-			$commentService->reveal()
+			$commentRepository->reveal(),
+			$statusRepository->reveal()
 		);
 		$deleteComment->setData($data);
 
-		$userService->getCurrentUserInfo()
+		$statusRepository->getCurrentUserInfo()
 			->willReturn($userInfo);
 
 		$deleteComment->setData($data);
 
-		$this->expectException(ValidateDataException::class);
+		$this->expectException(DataNotFoundException::class);
 		$deleteComment->permissions();
 	}
 
@@ -219,14 +209,12 @@ class DeleteCommentTest extends TestCase
 
 	public function testGetSteps(): void
 	{
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-		$commentService = $this->prophesize(CommentService::class);
+		$statusRepository = $this->prophesize(StatusRepositoryInterface::class);
+		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 
 		$deleteComment = new DeleteComment(
-			$userService->reveal(),
-			$statusService->reveal(),
-			$commentService->reveal()
+			$commentRepository->reveal(),
+			$statusRepository->reveal()
 		);
 
 		$this->assertEquals([
@@ -240,14 +228,12 @@ class DeleteCommentTest extends TestCase
 
 	public function testGetParams(): void
 	{
-		$userService = $this->prophesize(UserService::class);
-		$statusService = $this->prophesize(StatusService::class);
-		$commentService = $this->prophesize(CommentService::class);
+		$statusRepository = $this->prophesize(StatusRepositoryInterface::class);
+		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 
 		$deleteComment = new DeleteComment(
-			$userService->reveal(),
-			$statusService->reveal(),
-			$commentService->reveal()
+			$commentRepository->reveal(),
+			$statusRepository->reveal()
 		);
 
 		$this->assertEquals([

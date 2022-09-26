@@ -5,42 +5,32 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Mood;
 
-use Breeze\Service\MoodService;
-use Breeze\Service\UserService;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Repository\User\MoodRepositoryInterface;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\Mood\CreateMood;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class CreateMoodTest extends TestCase
 {
-	private CreateMood $createMood;
-
-	public function setUp(): void
-	{
-		/**  @var MockObject&UserService $userService */
-		$userService = $this->createMock(UserService::class);
-
-		/**  @var MockObject&MoodService $moodService */
-		$moodService = $this->createMock(MoodService::class);
-
-		$this->createMood = new CreateMood($userService, $moodService);
-	}
+	use ProphecyTrait;
 
 	/**
 	 * @dataProvider cleanProvider
 	 */
 	public function testCompare(array $data, bool $isExpectedException): void
 	{
-		$this->createMood->setData($data);
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$createMood = new CreateMood($moodRepository->reveal());
+		$createMood->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals($data, $this->createMood->getData());
+			$this->assertEquals($data, $createMood->getData());
 		}
 
-		$this->createMood->compare();
+		$createMood->compare();
 	}
 
 	public function cleanProvider(): array
@@ -70,10 +60,13 @@ class CreateMoodTest extends TestCase
 	 */
 	public function testPermissions(array $data): void
 	{
-		$this->createMood->setData($data);
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$createMood = new CreateMood($moodRepository->reveal());
+		$createMood->setData($data);
 
-		$this->expectException(ValidateDataException::class);
-		$this->createMood->permissions();
+		$this->expectException(DataNotFoundException::class);
+
+		$createMood->permissions();
 	}
 
 	public function permissionsProvider(): array
@@ -94,15 +87,17 @@ class CreateMoodTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, array $integers, bool $isExpectedException): void
 	{
-		$this->createMood->setData($data);
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$createMood = new CreateMood($moodRepository->reveal());
+		$createMood->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals($integers, $this->createMood->getInts());
+			$this->assertEquals($integers, $createMood->getInts());
 		}
 
-		$this->createMood->isInt();
+		$createMood->isInt();
 	}
 
 	public function isValidIntProvider(): array
@@ -138,15 +133,17 @@ class CreateMoodTest extends TestCase
 	 */
 	public function testIsValidString(array $data, array $strings, bool $isExpectedException): void
 	{
-		$this->createMood->setData($data);
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$createMood = new CreateMood($moodRepository->reveal());
+		$createMood->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(ValidateDataException::class);
+			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals($strings, $this->createMood->getStrings());
+			$this->assertEquals($strings, $createMood->getStrings());
 		}
 
-		$this->createMood->isString();
+		$createMood->isString();
 	}
 
 	public function isValidStringProvider(): array
@@ -181,11 +178,14 @@ class CreateMoodTest extends TestCase
 
 	public function testGetSteps(): void
 	{
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$createMood = new CreateMood($moodRepository->reveal());
+
 		$this->assertEquals([
 			'compare',
 			'isInt',
 			'isString',
-		], $this->createMood->getSteps());
+		], $createMood->getSteps());
 	}
 
 	/**
@@ -193,9 +193,11 @@ class CreateMoodTest extends TestCase
 	 */
 	public function testGetParams(array $data): void
 	{
-		$this->createMood->setData($data);
+		$moodRepository = $this->prophesize(MoodRepositoryInterface::class);
+		$createMood = new CreateMood($moodRepository->reveal());
+		$createMood->setData($data);
 
-		$this->assertEquals($data, $this->createMood->getParams());
+		$this->assertEquals($data, $createMood->getParams());
 	}
 
 	public function getParamsProvider(): array

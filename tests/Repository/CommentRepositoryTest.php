@@ -5,10 +5,9 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
-use Breeze\Exceptions\InvalidCommentException;
 use Breeze\Model\CommentModel;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Override time() in the current namespace for testing.
@@ -21,19 +20,7 @@ function time(): int
 
 class CommentRepositoryTest extends TestCase
 {
-	/**
-	 * @var CommentModel&MockObject
-	 */
-	private $commentModel;
-
-	private CommentRepository $commentRepository;
-
-	public function setUp(): void
-	{
-		$this->commentModel = $this->createMock(CommentModel::class);
-
-		$this->commentRepository = new CommentRepository($this->commentModel);
-	}
+	use ProphecyTrait;
 
 	/**
 	 * @dataProvider saveProvider
@@ -41,17 +28,18 @@ class CommentRepositoryTest extends TestCase
 	 */
 	public function testSave(array $dataToInsert, int $newId): void
 	{
-		$this->commentModel
-			->expects($this->once())
-			->method('insert')
-			->with($dataToInsert)
+		$commentModel = $this->prophesize(CommentModel::class);
+		$commentRepository = new CommentRepository($commentModel->reveal());
+
+		$commentModel
+			->insert($dataToInsert)
 			->willReturn($newId);
 
 		if ($newId === 0) {
 			$this->expectException(InvalidCommentException::class);
 		}
 
-		$newCommentId = $this->commentRepository->save($dataToInsert);
+		$newCommentId = $commentRepository->save($dataToInsert);
 
 		$this->assertEquals($newId, $newCommentId);
 	}
@@ -81,15 +69,14 @@ class CommentRepositoryTest extends TestCase
 	 */
 	public function testGetByProfile(int $profileOwnerId, array $commentsByProfileWillReturn): void
 	{
-		if ($profileOwnerId !== 1) {
-			$this->commentModel
-				->expects($this->once())
-				->method('getByProfiles')
-				->with([$profileOwnerId])
-				->willReturn($commentsByProfileWillReturn);
-		}
+		$commentModel = $this->prophesize(CommentModel::class);
+		$commentRepository = new CommentRepository($commentModel->reveal());
 
-		$commentsByProfile = $this->commentRepository->getByProfile($profileOwnerId);
+			$commentModel
+				->getByProfiles([$profileOwnerId])
+				->willReturn($commentsByProfileWillReturn);
+
+		$commentsByProfile = $commentRepository->getByProfile($profileOwnerId);
 
 		$this->assertEquals($commentsByProfileWillReturn, $commentsByProfile);
 	}
@@ -100,18 +87,21 @@ class CommentRepositoryTest extends TestCase
 			'happy happy joy joy' => [
 				'profileOwnerId' => 1,
 				'commentsByProfileWillReturn' => [
-					'some data',
+					'usersIds' => [1],
+					'data' => [
+						666 => [
+							'id' => 666,
+							'statusId' => 666,
+							'userId' => 1,
+							'createdAt' => time(),
+							'body' => 'comment body',
+							'likes' => [],
+						],],
 				],
 			],
 			'no data' => [
 				'profileOwnerId' => 2,
 				'commentsByProfileWillReturn' => [],
-			],
-			'data from query' => [
-				'profileOwnerId' => 3,
-				'commentsByProfileWillReturn' => [
-					'some data',
-				],
 			],
 		];
 	}
@@ -121,13 +111,14 @@ class CommentRepositoryTest extends TestCase
 	 */
 	public function testGetByStatus(array $statusId, array $commentsBystatusWillReturn): void
 	{
-		$this->commentModel
-			->expects($this->once())
-			->method('getByStatus')
-			->with($statusId)
+		$commentModel = $this->prophesize(CommentModel::class);
+		$commentRepository = new CommentRepository($commentModel->reveal());
+
+		$commentModel
+			->getByStatus($statusId)
 			->willReturn($commentsBystatusWillReturn);
 
-		$commentsByStatus = $this->commentRepository->getByStatus($statusId);
+		$commentsByStatus = $commentRepository->getByStatus($statusId);
 
 		$this->assertEquals($commentsBystatusWillReturn, $commentsByStatus);
 	}
@@ -146,12 +137,5 @@ class CommentRepositoryTest extends TestCase
 				'commentsByStatusWillReturn' => [],
 			],
 		];
-	}
-
-	protected function getMockInstance(string $class): MockObject
-	{
-		return $this->getMockBuilder($class)
-			->disableOriginalConstructor()
-			->getMock();
 	}
 }

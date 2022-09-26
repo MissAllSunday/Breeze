@@ -7,7 +7,7 @@ namespace Breeze\Util\Validate\Validations\Status;
 use Breeze\Entity\StatusEntity;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Permissions;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\DataNotFoundException;
 
 class PostStatus extends ValidateStatus
 {
@@ -37,12 +37,12 @@ class PostStatus extends ValidateStatus
 	}
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 */
 	public function permissions(): void
 	{
 		if (!Permissions::isAllowedTo(Permissions::POST_STATUS)) {
-			throw new ValidateDataException('postStatus');
+			throw new DataNotFoundException('postStatus');
 		}
 	}
 

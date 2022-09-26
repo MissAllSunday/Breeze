@@ -5,9 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
-use Breeze\Exceptions\InvalidCommentException;
-
-interface CommentRepositoryInterface
+interface CommentRepositoryInterface extends BaseRepositoryInterface
 {
 	/**
 	 * @throws InvalidCommentException

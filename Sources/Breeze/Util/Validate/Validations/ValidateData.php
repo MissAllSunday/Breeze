@@ -9,7 +9,7 @@ use Breeze\Entity\SettingsEntity;
 use Breeze\Traits\PersistenceTrait;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Json;
-use Breeze\Util\Validate\ValidateDataException;
+use Breeze\Util\Validate\DataNotFoundException;
 
 abstract class ValidateData
 {
@@ -80,7 +80,7 @@ abstract class ValidateData
 	}
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 */
 	public function isInt(): void
 	{
@@ -89,13 +89,13 @@ abstract class ValidateData
 
 		foreach ($integerValues as $integerValueName) {
 			if (!is_int($data[$integerValueName])) {
-				throw new ValidateDataException('malformed_data');
+				throw new DataNotFoundException('malformed_data');
 			}
 		}
 	}
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 */
 	public function isString(): void
 	{
@@ -104,13 +104,13 @@ abstract class ValidateData
 
 		foreach ($strings as $stringValueName) {
 			if (!is_string($data[$stringValueName])) {
-				throw new ValidateDataException('malformed_data');
+				throw new DataNotFoundException('malformed_data');
 			}
 		}
 	}
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 */
 	public function isSameUser(): void
 	{
@@ -118,12 +118,12 @@ abstract class ValidateData
 		$posterUserId = $this->getPosterId();
 
 		if (empty($posterUserId) || $posterUserId !== (int) $sessionUser['id']) {
-			throw new ValidateDataException('invalid_users');
+			throw new DataNotFoundException('invalid_users');
 		}
 	}
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 */
 	public function floodControl(): void
 	{
@@ -145,7 +145,7 @@ abstract class ValidateData
 
 		// Chatty one huh?
 		if ($floodData['msgCount'] >= $messages && time() <= $floodData['time']) {
-			throw new ValidateDataException('flood');
+			throw new DataNotFoundException('flood');
 		}
 
 		if (time() >= $floodData['time']) {
@@ -154,12 +154,12 @@ abstract class ValidateData
 	}
 
 	/**
-	 * @throws ValidateDataException
+	 * @throws DataNotFoundException
 	 */
 	public function compare(): void
 	{
 		if (!empty(array_diff_key($this->getParams(), $this->getData()))) {
-			throw new ValidateDataException('incomplete_data');
+			throw new DataNotFoundException('incomplete_data');
 		}
 	}
 

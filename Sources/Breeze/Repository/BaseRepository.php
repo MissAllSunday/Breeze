@@ -54,4 +54,9 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
 		return $loadedUsers;
 	}
+
+	public function getCurrentUserInfo(): array
+	{
+		return $this->global('user_info');
+	}
 }
