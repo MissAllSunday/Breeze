@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
+use Breeze\Entity\BaseEntity;
 use Breeze\Entity\CommentEntity as CommentEntity;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\StatusEntity;
@@ -125,7 +126,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 	public function getAliasedColumns(): array
 	{
 		return array_map(function ($columnName) {
-			return sprintf(CommentEntity::ALIAS_ID, CommentEntity::TABLE, $columnName);
+			return sprintf(BaseEntity::ALIAS_ID, CommentEntity::TABLE, $columnName);
 		}, CommentEntity::getColumns());
 	}
 

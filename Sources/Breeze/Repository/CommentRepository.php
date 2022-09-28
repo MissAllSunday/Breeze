@@ -10,8 +10,10 @@ use Breeze\Model\CommentModelInterface;
 
 class CommentRepository extends BaseRepository implements CommentRepositoryInterface
 {
-	public function __construct(private CommentModelInterface $commentModel)
-	{
+	public function __construct(
+		private CommentModelInterface $commentModel,
+		private LikeRepositoryInterface $likeRepository
+	) {
 	}
 
 	/**
@@ -33,15 +35,17 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 	public function getByProfile(int $profileOwnerId = 0): array
 	{
-		$commentsByProfile = $this->getCache(__METHOD__ . $profileOwnerId);
+		$comments = $this->getCache(__METHOD__ . $profileOwnerId);
 
-		if (empty($commentsByProfile)) {
-			$commentsByProfile = $this->commentModel->getByProfiles([$profileOwnerId]);
+		if (empty($comments)) {
+			$comments = $this->commentModel->getByProfiles([$profileOwnerId]);
 
-			$this->setCache(__METHOD__ . $profileOwnerId, $commentsByProfile);
+			$this->setCache(__METHOD__ . $profileOwnerId, $comments);
 		}
 
-		return $commentsByProfile;
+		$comments['data'] = $this->likeRepository->appendLikeData($comments['data'], CommentEntity::ID);
+
+		return $comments['data'];
 	}
 
 	public function getByStatus(array $statusIds = []): array

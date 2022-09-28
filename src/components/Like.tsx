@@ -1,15 +1,14 @@
 import React from "react";
 import {ServerLikeResponse, postLike} from "../api/LikeApi";
-import {likeType } from 'breezeTypes';
+import {likeType, LikeProps } from 'breezeTypes';
 
-export default class Like extends React.Component<any> {
-	constructor(props: likeType) {
+export default class Like extends React.Component<LikeProps> {
+	constructor(props: LikeProps) {
 		super(props);
-		this.state = this.props.item
 	}
 
 	handleLike() {
-		postLike(this.state).then((response:ServerLikeResponse) => {
+		postLike(this.props.item).then((response:ServerLikeResponse) => {
 			this.setState(response.data);
 		});
 	}

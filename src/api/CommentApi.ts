@@ -4,31 +4,32 @@ import { statusType } from 'breezeTypes';
 import smfVars from "../DataSource/SMF";
 
 export interface ServerStatusResponse {
-	data: ServerStatusData
+	data: ServerCommentData
 }
 
-interface ServerStatusData {
+interface ServerCommentData {
 	users: object
 	status: Array<statusType>
 }
 
-const action = 'breezeStatus';
+const action = 'breezeComment';
 
-export const getByProfile = () =>
+export const postComment = (commentParams:object) =>
 {
-	return axios.get<ServerStatusData>(
-		baseUrl(action, 'statusByProfile', [{
-			wallId: smfVars.wallId
+	return axios.post<ServerCommentData>(
+		baseUrl(action, 'postComment', [{
+			...commentParams,
+			userId: smfVars.userId,
 		}]),
 		baseConfig(),
 	)
 }
 
-export const deleteStatus = (statusId:number) =>
+export const deleteComment = (commentId:number) =>
 {
 	// SMF cannot handle custom methods without changing some settings, thus, we are going to use POST for delete calls
 	return axios.post(baseUrl(action, 'deleteStatus'), baseConfig({
-		id: statusId,
+		id: commentId,
 		userId: smfVars.userId
 	}));
 }

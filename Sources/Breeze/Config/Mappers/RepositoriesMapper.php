@@ -31,7 +31,7 @@ return [
 	],
 	'repo.comment' => [
 		'class' => CommentRepository::class,
-		'arguments'=> [CommentModel::class],
+		'arguments'=> [CommentModel::class, LikeRepository::class],
 	],
 	'repo.like' => [
 		'class' => LikeRepository::class,

@@ -11,9 +11,9 @@ const ajaxIndicator = window.ajax_indicator || false
 // @ts-ignore
 const scriptUrl = window.smf_scripturl || process.env['REACT_APP_DEV_URL']
 // @ts-ignore
-const userId = window.smf_member_id || process.env['REACT_APP_DEV_USER_ID']
+const userId = parseInt(window.smf_member_id || process.env['REACT_APP_DEV_USER_ID'])
 // @ts-ignore
-const wallId = (typeof breezeUsers === 'undefined' || breezeUsers === null) ? process.env['REACT_APP_DEV_WALL_ID'] : breezeUsers.wallOwner
+const wallId = parseInt((typeof breezeUsers === 'undefined' || breezeUsers === null) ? process.env['REACT_APP_DEV_WALL_ID'] : breezeUsers.wallOwner)
 // @ts-ignore
 const ownerSettings = window.breezeProfileOwnerSettings || atob(process.env['REACT_APP_DEV_OWNER_SETTINGS'])
 // @ts-ignore

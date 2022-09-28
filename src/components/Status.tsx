@@ -1,10 +1,18 @@
 import * as React from "react";
 import {StatusState, StatusProps } from 'breezeTypes';
 import Like from "./Like";
+import CommentList from "./CommentList";
 
 
 export default class Status extends React.Component<StatusProps, StatusState>
 {
+	constructor(props: any) {
+		super(props);
+		this.state = {
+			comments: []
+		};
+	}
+
 	render() {
 		return <li>
 	<div className='breeze_avatar avatar_status floatleft'>
@@ -25,7 +33,9 @@ export default class Status extends React.Component<StatusProps, StatusState>
 						item={this.props.status.likesInfo}
 					/>
 				</div>
-				comment component here
+				<CommentList
+					comments={this.props.status.comments}
+				/>
 			<div className='comment_posting'>
 				editor component here
 			</div>

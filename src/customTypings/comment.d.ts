@@ -5,22 +5,24 @@ declare module 'breezeTypes' {
 		userId: number,
 		likes: number,
 		body: string,
+		likesInfo: likeType
 		createdAt: string
 	};
 
+	type commentList = { [id: number]: commentType };
+
 	interface CommentProps {
 		comment: commentType,
+		removeComment:function
 	}
 
 	interface CommentState {
-		comment: commentType,
-		currentMood: moodType,
-		activeMoods: moodType[],
-		showModal: boolean,
+		comment: commentType
 	}
 }
 
 module.exports = {
+	commentList,
 	commentType,
 	CommentProps,
 	CommentState,
