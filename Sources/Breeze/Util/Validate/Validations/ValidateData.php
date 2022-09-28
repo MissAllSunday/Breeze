@@ -66,7 +66,7 @@ abstract class ValidateData
 	public function setData(array $data = []): void
 	{
 		$this->data = array_filter(!empty($data) ? $data :
-			$this->sanitize(Json::decode(file_get_contents('php://input'))));
+			$this->sanitize(Json::decode(file_get_contents('php://input'))['data']));
 	}
 
 	public function getSteps(): array

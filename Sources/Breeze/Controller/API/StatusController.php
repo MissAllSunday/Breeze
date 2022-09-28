@@ -74,7 +74,7 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 			$this->print([
 				'type' => ValidateGateway::ERROR_TYPE,
 				'message' => $invalidStatusException->getMessage(),
-			]);
+			], 404);
 		}
 	}
 

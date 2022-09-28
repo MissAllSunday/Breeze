@@ -75,7 +75,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	{
 		$status = $this->statusModel->getById($statusId);
 
-		if (!$status) {
+		if (empty($status['data'])) {
 			throw new InvalidStatusException('error_no_status');
 		}
 
@@ -88,10 +88,12 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 */
 	public function deleteById(int $statusId): bool
 	{
+		$this->getById($statusId);
+
 		$this->commentRepository->deleteByStatusId($statusId);
 
 		if (!$this->statusModel->delete([$statusId])) {
-			throw new InvalidStatusException('error_no_comment');
+			throw new InvalidStatusException('error_no_status');
 		}
 
 		$this->setCache(self::class . '::getById' . $statusId, null);

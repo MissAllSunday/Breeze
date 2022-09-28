@@ -15,7 +15,7 @@ export default class Status extends React.Component<StatusProps, StatusState>
 			<div className='floatright smalltext'>
 				{this.props.status.createdAt}
 				&nbsp;<span className="main_icons remove_button floatright pointer_cursor" onClick={() =>
-				this.props.removeStatus(this.props.status)}/>
+				this.props.removeStatus(this.props.status)}>delete</span>
 			</div>
 			<br />
 				<div className='content'>

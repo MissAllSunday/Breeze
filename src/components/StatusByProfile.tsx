@@ -50,6 +50,9 @@ export default class StatusByProfile extends React.Component<any, any>
 	onRemoveStatus(status:statusType)
 	{
 		deleteStatus(status.id).then((response) => {
+			console.log(response);
+			return;
+
 			if (response.status === 204) {
 				let tmpStatusList = this.state.list.data;
 

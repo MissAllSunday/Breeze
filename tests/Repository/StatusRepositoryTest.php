@@ -179,7 +179,16 @@ class StatusRepositoryTest extends TestCase
 			'happy happy joy joy' => [
 				'statusId' => 1,
 				'getByIdWillReturn' => [
-					'some data',
+					'usersIds' => [1],
+					'data' => [
+						1 => [
+							'id' => 1,
+							'wallId' => 666,
+							'userId' => 1,
+							'createdAt' => 581299200,
+							'body' => 'some body',
+							'likes' => [],
+						],],
 				],
 			],
 			'InvalidStatusException' => [
@@ -193,8 +202,12 @@ class StatusRepositoryTest extends TestCase
 	 * @dataProvider deleteByIdProvider
 	 * @throws InvalidStatusException
 	 */
-	public function testDeleteById(int $statusId, bool $deleteByStatusId, bool $commentDeleteByStatusId): void
-	{
+	public function testDeleteById(
+		int $statusId,
+		bool $deleteByStatusId,
+		bool $commentDeleteByStatusId,
+		array $statusData
+	): void {
 		$statusModel =  $this->prophesize(StatusModelInterface::class);
 		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 		$likeRepository = $this->prophesize(LikeRepositoryInterface::class);
@@ -205,9 +218,11 @@ class StatusRepositoryTest extends TestCase
 			$likeRepository->reveal()
 		);
 
-			$commentRepository
-				->deleteByStatusId($statusId)
-				->willReturn($commentDeleteByStatusId);
+		$statusModel->getById($statusId)->willReturn($statusData);
+
+		$commentRepository
+			->deleteByStatusId($statusId)
+			->willReturn($commentDeleteByStatusId);
 
 		if ($statusId !== 1 && !$commentDeleteByStatusId) {
 			$this->expectException(InvalidCommentException::class);
@@ -234,16 +249,36 @@ class StatusRepositoryTest extends TestCase
 				'statusId' => 1,
 				'deleteByStatusId' => true,
 				'commentDeleteByStatusId' => true,
+				'statusData' => [
+					'usersIds' => [1],
+					'data' => [
+						1 => [
+							'id' => 1,
+							'wallId' => 666,
+							'userId' => 1,
+							'createdAt' => 581299200,
+							'body' => 'some body',
+							'likes' => [],
+						],],
+				],
 			],
 			'InvalidStatusException' => [
 				'statusId' => 2,
 				'deleteByStatusId' => false,
 				'commentDeleteByStatusId' => true,
+				'statusData' => [
+					'data' => [],
+					'usersIds' => [],
+				],
 			],
 			'InvalidCommentException' => [
 				'statusId' => 3,
 				'deleteByStatusId' => false,
 				'commentDeleteByStatusId' => false,
+				'statusData' => [
+					'data' => ['some data'],
+					'usersIds' => [666],
+				],
 			],
 		];
 	}

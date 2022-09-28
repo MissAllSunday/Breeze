@@ -9,8 +9,9 @@ use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class DeleteStatus extends ValidateStatus
+class DeleteStatus extends ValidateStatus implements ValidateDataInterface
 {
 	public array $steps = [
 		self::COMPARE,
