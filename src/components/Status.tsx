@@ -5,12 +5,6 @@ import Like from "./Like";
 
 export default class Status extends React.Component<StatusProps, StatusState>
 {
-
-
-	removeStatus() {
-
-	}
-
 	render() {
 		return <li>
 	<div className='breeze_avatar avatar_status floatleft'>
@@ -20,7 +14,8 @@ export default class Status extends React.Component<StatusProps, StatusState>
 			</h4>
 			<div className='floatright smalltext'>
 				{this.props.status.createdAt}
-				&nbsp;<span className="main_icons remove_button floatright pointer_cursor" onClick={this.removeStatus}/>
+				&nbsp;<span className="main_icons remove_button floatright pointer_cursor" onClick={() =>
+				this.props.removeStatus(this.props.status)}/>
 			</div>
 			<br />
 				<div className='content'>

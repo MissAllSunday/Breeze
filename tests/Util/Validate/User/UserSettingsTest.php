@@ -4,38 +4,30 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\User;
 
-use Breeze\Service\UserService;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\User\UserSettings;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class UserSettingsTest extends TestCase
 {
-	private UserSettings $userSettings;
-
-	public function setUp(): void
-	{
-		/**  @var MockObject&UserService $userService */
-		$userService = $this->createMock(UserService::class);
-
-		$this->userSettings = new UserSettings($userService);
-	}
+	use ProphecyTrait;
 
 	/**
 	 * @dataProvider cleanProvider
 	 */
 	public function testCompare(array $data, bool $isExpectedException): void
 	{
-		$this->userSettings->setData($data);
+		$userSettings = new UserSettings();
+		$userSettings->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals($data, $this->userSettings->getData());
+			$this->assertEquals($data, $userSettings->getData());
 		}
 
-		$this->userSettings->compare();
+		$userSettings->compare();
 	}
 
 	public function cleanProvider(): array
@@ -69,15 +61,16 @@ class UserSettingsTest extends TestCase
 	 */
 	public function testIsValidInt(array $data, bool $isExpectedException): void
 	{
-		$this->userSettings->setData($data);
+		$userSettings = new UserSettings();
+		$userSettings->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals(array_keys($data), $this->userSettings->getInts());
+			$this->assertEquals(array_keys($data), $userSettings->getInts());
 		}
 
-		$this->userSettings->isInt();
+		$userSettings->isInt();
 	}
 
 	public function isValidIntProvider(): array
@@ -109,15 +102,16 @@ class UserSettingsTest extends TestCase
 	 */
 	public function testIsValidString(array $data, bool $isExpectedException): void
 	{
-		$this->userSettings->setData($data);
+		$userSettings = new UserSettings();
+		$userSettings->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(DataNotFoundException::class);
 		} else {
-			$this->assertEquals(array_keys($data), $this->userSettings->getStrings());
+			$this->assertEquals(array_keys($data), $userSettings->getStrings());
 		}
 
-		$this->userSettings->isString();
+		$userSettings->isString();
 	}
 
 	public function isValidStringProvider(): array
@@ -140,11 +134,13 @@ class UserSettingsTest extends TestCase
 
 	public function testGetSteps(): void
 	{
+		$userSettings = new UserSettings();
+
 		$this->assertEquals([
 			'compare',
 			'isInt',
 			'isString',
-		], $this->userSettings->getSteps());
+		], $userSettings->getSteps());
 	}
 
 	/**
@@ -152,9 +148,10 @@ class UserSettingsTest extends TestCase
 	 */
 	public function testGetParams(array $data): void
 	{
-		$this->userSettings->setData($data);
+		$userSettings = new UserSettings();
+		$userSettings->setData($data);
 
-		$this->assertEquals($data, $this->userSettings->getParams());
+		$this->assertEquals($data, $userSettings->getParams());
 	}
 
 	public function getParamsProvider(): array

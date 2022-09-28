@@ -1,6 +1,6 @@
 import SmfVars from '../DataSource/SMF';
 
-export const baseUrl = (action: string, subAction:string) =>
+export const baseUrl = (action: string, subAction:string, additionalParam:Object = []) =>
 {
 	let baseUrl = new URL(SmfVars.scriptUrl);
 
@@ -9,6 +9,10 @@ export const baseUrl = (action: string, subAction:string) =>
 	baseUrl.searchParams.append('wallId', SmfVars.wallId);
 
 	baseUrl.searchParams.append(SmfVars.session.var, SmfVars.session.id);
+
+	for (const [key, value] of Object.entries(additionalParam)) {
+		baseUrl.searchParams.append(key, value);
+	}
 
 	return baseUrl.href;
 }

@@ -8,11 +8,9 @@ namespace Breeze\Controller\API;
 use Breeze\Entity\StatusEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
-use Breeze\Service\UserServiceInterface;
 use Breeze\Util\Validate\ValidateGateway;
 use Breeze\Util\Validate\ValidateGatewayInterface;
 use Breeze\Util\Validate\Validations\Status\ValidateStatus;
-use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class StatusController extends ApiBaseController implements ApiBaseInterface
 {
@@ -26,11 +24,8 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 		self::ACTION_DELETE,
 	];
 
-	protected ValidateDataInterface $validator;
-
 	public function __construct(
 		private StatusRepositoryInterface $statusRepository,
-		private UserServiceInterface $userService,
 		protected ValidateGatewayInterface $gateway
 	) {
 		parent::__construct($gateway);
@@ -46,19 +41,13 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 		$validatorName = ValidateStatus::getNameSpace() . ucfirst($this->subAction);
 
 		$this->validator = new $validatorName(
-			$this->userService,
 			$this->statusRepository,
 		);
 	}
 
-	public function getValidator(): ValidateDataInterface
-	{
-		return $this->validator;
-	}
-
 	public function statusByProfile(): void
 	{
-		$start = $this->getRequest('start');
+		$start = $this->getRequest('start', 0);
 		$data = $this->validator->getData();
 
 		try {

@@ -50,7 +50,6 @@ return [
 		'class' => CommentController::class,
 		'arguments'=> [
 			CommentRepository::class,
-			StatusRepository::class,
 			ValidateGateway::class,
 		],
 	],

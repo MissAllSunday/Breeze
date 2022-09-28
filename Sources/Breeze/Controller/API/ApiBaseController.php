@@ -19,9 +19,16 @@ abstract class ApiBaseController extends BaseController
 
 	protected string $subAction;
 
+	protected ValidateDataInterface $validator;
+
 	public function __construct(protected ValidateGatewayInterface $gateway)
 	{
 		$this->subAction = $this->getRequest('sa', '');
+	}
+
+	public function getValidator(): ValidateDataInterface
+	{
+		return $this->validator;
 	}
 
 	public function subActionCall(): void
@@ -49,6 +56,8 @@ abstract class ApiBaseController extends BaseController
 		}
 
 		$this->setValidator();
+		$this->validator->setData();
+
 		$this->gateway->setValidator($this->getValidator());
 
 		if (!$this->gateway->isValid()) {
@@ -82,6 +91,4 @@ abstract class ApiBaseController extends BaseController
 	}
 
 	abstract public function setValidator(): void;
-
-	abstract public function getValidator(): ValidateDataInterface;
 }

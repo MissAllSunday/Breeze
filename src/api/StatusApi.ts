@@ -21,3 +21,8 @@ export const getByProfile = () =>
 	)
 }
 
+export const deleteStatus = (statusId:Number) =>
+{
+	return axios.delete(baseUrl(action, 'deleteStatus', {'id': statusId}))
+}
+
