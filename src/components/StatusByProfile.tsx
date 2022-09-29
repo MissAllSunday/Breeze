@@ -26,7 +26,7 @@ export default class StatusByProfile extends React.Component<any, any>
 
 		getByProfile()
 			.then((response:ServerStatusResponse) => {
-				for (let [key, status] of Object.entries(response.data.status)) {
+				for (let [key, status] of Object.entries(response.data)) {
 					tmpStatusList[status.id] = <Status
 						key={status.id}
 						status={status}

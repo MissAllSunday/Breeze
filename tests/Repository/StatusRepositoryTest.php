@@ -95,7 +95,7 @@ class StatusRepositoryTest extends TestCase
 		}
 
 		$commentRepository->getByProfile($profileOwnerId)->willReturn($commentsByProfileWillReturn);
-		$likeRepository->method('appendLikeData')->willReturn($getByProfileReturn['status']);
+		$likeRepository->method('appendLikeData')->willReturn($getByProfileReturn);
 		$statusByProfile = $statusRepository->getByProfile($profileOwnerId);
 
 		$this->assertEquals($getByProfileReturn, $statusByProfile);
@@ -115,31 +115,26 @@ class StatusRepositoryTest extends TestCase
 					'data' => [],
 				],
 				'getByProfileReturn' => [
-					'users' => [1 => [
-						'link' => 'Guest',
-						'name' => 'Guest',
-						'avatar' => ['href' => 'avatar_url/default.png'],
-					]],
-					'status' => [
-						1 => [
-							'id' => 666,
-							'wallId' => 666,
-							'userId' => 1,
-							'createdAt' => 581299200,
-							'body' => 'some body',
-							'likes' => [],
-							'comments' => [],
-						],],
-				],
+					1 => [
+						'id' => 666,
+						'wallId' => 666,
+						'userId' => 1,
+						'createdAt' => 581299200,
+						'body' => 'some body',
+						'likes' => [],
+						'comments' => [],
+						'userData' => [
+							'link' => 'Guest',
+							'name' => 'Guest',
+							'avatar' => ['href' => 'avatar_url/default.png'],
+						],
+					],],
 			],
 			'no data' => [
 				'profileOwnerId' => 2,
 				'statusModelWillReturn' => [],
 				'commentsByProfileWillReturn' => [],
-				'getByProfileReturn' => [
-					'users' => [],
-					'status' => [],
-				],
+				'getByProfileReturn' => [],
 			],
 		];
 	}

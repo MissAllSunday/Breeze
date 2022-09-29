@@ -135,16 +135,24 @@ function cache_get_data($key, $timeToLive = 360): ?array
 			'data' => [],
 		],
 		'Breeze_CommentRepository_getByProfile1' => [
-			'usersIds' => [1],
+			'usersIds' => [1,2,3],
 			'data' => [
-				666 => [
-					'id' => 666,
-					'statusId' => 666,
-					'userId' => 1,
-					'createdAt' => 581299200,
-					'body' => 'comment body',
-					'likes' => [],
-				],],
+				1 => [
+					1 => [
+						'id' => 1,
+						'statusId' => 1,
+						'userId' => 1,
+						'createdAt' => 581299200,
+						'body' => 'comment body',
+						'likes' => 0,
+						'likesInfo' => [],
+						'userData' => [
+							'link' => 'Guest',
+							'name' => 'Guest',
+							'avatar' => ['href' => 'avatar_url/default.png'],
+						],
+					],
+				], ],
 		],
 		'user_settings_666' => [
 			'generalWall' => 1,

@@ -1,22 +1,17 @@
 import axios from "axios";
 import { baseUrl, baseConfig } from "./Api";
-import { statusType } from 'breezeTypes';
+import { statusType, statusListType } from 'breezeTypes';
 import smfVars from "../DataSource/SMF";
 
 export interface ServerStatusResponse {
-	data: ServerStatusData
-}
-
-interface ServerStatusData {
-	users: object
-	status: Array<statusType>
+	data: statusListType
 }
 
 const action = 'breezeStatus';
 
 export const getByProfile = () =>
 {
-	return axios.get<ServerStatusData>(
+	return axios.get<statusListType>(
 		baseUrl(action, 'statusByProfile', [{
 			wallId: smfVars.wallId
 		}]),

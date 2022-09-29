@@ -29,7 +29,8 @@ class CommentRepositoryTest extends TestCase
 	public function testSave(array $dataToInsert, int $newId): void
 	{
 		$commentModel = $this->prophesize(CommentModel::class);
-		$commentRepository = new CommentRepository($commentModel->reveal());
+		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
+		$commentRepository = new CommentRepository($commentModel->reveal(), $likeRepository);
 
 		$commentModel
 			->insert($dataToInsert)
@@ -67,14 +68,23 @@ class CommentRepositoryTest extends TestCase
 	/**
 	 * @dataProvider getByProfileProvider
 	 */
-	public function testGetByProfile(int $profileOwnerId, array $commentsByProfileWillReturn): void
-	{
+	public function testGetByProfile(
+		int $profileOwnerId,
+		array $commentModelReturn,
+		array $commentsByProfileWillReturn,
+		array $appendLike
+	): void {
 		$commentModel = $this->prophesize(CommentModel::class);
-		$commentRepository = new CommentRepository($commentModel->reveal());
+		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
+		$commentRepository = new CommentRepository($commentModel->reveal(), $likeRepository);
 
 			$commentModel
 				->getByProfiles([$profileOwnerId])
 				->willReturn($commentsByProfileWillReturn);
+
+		$likeRepository
+			->method('appendLikeData')
+			->willReturn($appendLike);
 
 		$commentsByProfile = $commentRepository->getByProfile($profileOwnerId);
 
@@ -86,22 +96,57 @@ class CommentRepositoryTest extends TestCase
 		return [
 			'happy happy joy joy' => [
 				'profileOwnerId' => 1,
-				'commentsByProfileWillReturn' => [
-					'usersIds' => [1],
-					'data' => [
-						666 => [
-							'id' => 666,
-							'statusId' => 666,
-							'userId' => 1,
-							'createdAt' => time(),
-							'body' => 'comment body',
-							'likes' => [],
-						],],
+				'commentModelReturn' => [
+					'usersIds' => [1,2,3],
+					'data' => [1 => [ 1 => [
+						'id' => 1,
+						'statusId' => 1,
+						'userId' => 1,
+						'createdAt' => 581299200,
+						'body' => 'comment body',
+						'likes' => 0,
+					]]],
 				],
-			],
-			'no data' => [
-				'profileOwnerId' => 2,
-				'commentsByProfileWillReturn' => [],
+				'commentsByProfileWillReturn' => [
+					1 => [
+						1 => [
+							'id' => 1,
+							'statusId' => 1,
+							'userId' => 1,
+							'createdAt' => 581299200,
+							'body' => 'comment body',
+							'likes' => 0,
+							'likesInfo' => [
+								'contentId' => 1,
+								'count' => 0,
+								'alreadyLiked' => false,
+								'type' => 'type',
+								'canLike' => false,
+								'additionalInfo' => '',
+							],
+							'userData' => [
+								'link' => 'Guest',
+								'name' => 'Guest',
+								'avatar' => ['href' => 'avatar_url/default.png'],
+							],
+						],
+					],],
+				'appendLike' => [ 1 => [
+					'id' => 1,
+					'statusId' => 1,
+					'userId' => 1,
+					'createdAt' => 581299200,
+					'body' => 'comment body',
+					'likes' => 0,
+					'likesInfo' => [
+						'contentId' => 1,
+						'count' => 0,
+						'alreadyLiked' => false,
+						'type' => 'type',
+						'canLike' => false,
+						'additionalInfo' => '',
+					],
+				]],
 			],
 		];
 	}
@@ -112,7 +157,8 @@ class CommentRepositoryTest extends TestCase
 	public function testGetByStatus(array $statusId, array $commentsBystatusWillReturn): void
 	{
 		$commentModel = $this->prophesize(CommentModel::class);
-		$commentRepository = new CommentRepository($commentModel->reveal());
+		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
+		$commentRepository = new CommentRepository($commentModel->reveal(), $likeRepository);
 
 		$commentModel
 			->getByStatus($statusId)

@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Entity\UserDataEntity;
 use Breeze\Traits\CacheTrait;
 use Breeze\Traits\TextTrait;
 
@@ -49,7 +50,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
 				continue;
 			}
 
-			$loadedUsers[$userId] = loadMemberContext($userId, true);
+			$loadedUsers[$userId] = $this->trimUserData(loadMemberContext($userId, true));
 		}
 
 		return $loadedUsers;
@@ -58,5 +59,10 @@ abstract class BaseRepository implements BaseRepositoryInterface
 	public function getCurrentUserInfo(): array
 	{
 		return $this->global('user_info');
+	}
+
+	protected function trimUserData(array $loadedUsers): array
+	{
+		return array_intersect_key($loadedUsers, array_flip(UserDataEntity::getColumns()));
 	}
 }

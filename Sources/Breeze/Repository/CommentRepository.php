@@ -43,7 +43,16 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			$this->setCache(__METHOD__ . $profileOwnerId, $comments);
 		}
 
-		$comments['data'] = $this->likeRepository->appendLikeData($comments['data'], CommentEntity::ID);
+		$usersData = $this->loadUsersInfo(array_unique($comments['usersIds']));
+
+		foreach ($comments['data'] as $statusId => &$commentsByStatus) {
+			$commentsByStatus = $this->likeRepository->appendLikeData($commentsByStatus, CommentEntity::ID);
+			$commentsByStatus = array_map(function ($item) use ($usersData): array {
+				$item['userData'] = $usersData[$item[CommentEntity::USER_ID]];
+
+				return $item;
+			}, $commentsByStatus);
+		}
 
 		return $comments['data'];
 	}

@@ -8,23 +8,14 @@ namespace Breeze\Entity;
 class UserSettingsEntity extends BaseEntity implements BaseEntityInterface
 {
 	public const IDENTIFIER = 'user_settings';
-
 	public const WALL =  'wall';
-
 	public const GENERAL_WALL = 'generalWall';
-
 	public const PAGINATION_NUM = 'paginationNumber';
-
 	public const KICK_IGNORED = 'kickIgnored';
-
 	public const BLOCK_LIST = 'blockList';
-
 	public const BUDDIES = 'buddies';
-
 	public const ABOUT_ME = 'aboutMe';
-
 	public const MOOD = 'moodId';
-
 	public const USER_ID = 'userId';
 
 	public static function getColumns(): array

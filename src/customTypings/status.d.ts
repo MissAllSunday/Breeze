@@ -6,9 +6,12 @@ declare module 'breezeTypes' {
 		likes: number,
 		body: string,
 		createdAt: string,
-		likesInfo: likeType
-		comments: Array<commentType>
+		likesInfo: likeType,
+		comments: Array<commentType>,
+		userData: userDataType
 	}
+
+	type statusListType = { [id: number]: statusType };
 
 	interface StatusProps {
 		status: statusType
@@ -23,6 +26,7 @@ declare module 'breezeTypes' {
 }
 
 module.exports = {
+	statusListType,
 	statusType,
 	StatusProps,
 	StatusState,

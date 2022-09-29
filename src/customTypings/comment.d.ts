@@ -5,8 +5,9 @@ declare module 'breezeTypes' {
 		userId: number,
 		likes: number,
 		body: string,
-		likesInfo: likeType
-		createdAt: string
+		likesInfo: likeType,
+		createdAt: string,
+		userData: userDataType
 	};
 
 	type commentList = { [id: number]: commentType };

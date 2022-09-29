@@ -58,14 +58,14 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		$comments =  $this->commentRepository->getByProfile($profileOwnerId);
 		$status['data'] = $this->likeRepository->appendLikeData($status['data'], StatusEntity::ID);
 
+		$usersData = $this->loadUsersInfo(array_unique($status['usersIds']));
+
 		foreach ($status['data'] as $statusId => $singleStatus) {
-			$status['data'][$statusId]['comments'] = $comments['data'][$statusId] ?? [];
+			$status['data'][$statusId]['userData'] = $usersData[$singleStatus[StatusEntity::USER_ID]];
+			$status['data'][$statusId]['comments'] = $comments[$statusId] ?? [];
 		}
 
-		return [
-			'users' => $this->loadUsersInfo(array_unique(array_merge($status['usersIds'], $comments['usersIds']))),
-			'status' => $status['data'],
-		];
+		return $status['data'];
 	}
 
 	/**
