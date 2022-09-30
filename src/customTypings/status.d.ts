@@ -17,7 +17,6 @@ declare module 'breezeTypes' {
 		status: statusType
 		users: {}
 		removeStatus(status: statusType): void;
-		setNewUsers(user: object): void;
 	}
 
 	interface StatusState {

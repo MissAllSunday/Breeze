@@ -12,7 +12,6 @@ function App() {
     <div className="App breeze_main_section">
 		<UserInfo {...currentUserData}/>
 		<div className="breeze_wall floatright">
-			<Editor />
 			<ul className="status">
 				<StatusByProfile />
 			</ul>

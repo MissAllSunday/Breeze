@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Status from "./Status";
 import { statusType } from 'breezeTypes';
 import Loading from "./Loading";
+import Editor from "./Editor";
 
 export default class StatusByProfile extends React.Component<any, any>
 {
@@ -32,7 +33,6 @@ export default class StatusByProfile extends React.Component<any, any>
 						status={status}
 						users={this.state.usersData}
 						removeStatus={this.onRemoveStatus}
-						setNewUsers={this.onSetNewUsers}
 					/>;
 				}
 
@@ -74,7 +74,7 @@ export default class StatusByProfile extends React.Component<any, any>
 			});
 	}
 
-	onSetNewUsers(users:Object)
+	onNewStatus(content:string)
 	{
 
 	}
@@ -83,6 +83,7 @@ export default class StatusByProfile extends React.Component<any, any>
 		return (
 			this.state.isLoading ? <Loading /> : <ul className="status">
 				{this.state.list.data}
+				<Editor saveContent={this.onNewStatus} />
 			</ul>
 		)
 	}
