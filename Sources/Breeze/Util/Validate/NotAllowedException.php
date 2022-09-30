@@ -6,7 +6,7 @@ namespace Breeze\Util\Validate;
 
 use Breeze\Exceptions\ValidateException;
 
-class DataNotFoundException extends ValidateException
+class NotAllowedException extends ValidateException
 {
-	final public const STATUS_CODE = 404;
+	final public const STATUS_CODE = 403;
 }

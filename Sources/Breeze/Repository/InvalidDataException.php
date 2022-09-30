@@ -5,7 +5,9 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
-class InvalidDataException extends \Exception
-{
+use Breeze\Exceptions\ValidateException;
 
+class InvalidDataException extends ValidateException
+{
+	final public const STATUS_CODE = 400;
 }

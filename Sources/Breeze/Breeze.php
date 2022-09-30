@@ -24,6 +24,8 @@ use Breeze\Service\UserService;
 use Breeze\Service\UserServiceInterface;
 use Breeze\Traits\TextTrait;
 use League\Container\Container as Container;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class Breeze
 {
@@ -200,17 +202,21 @@ class Breeze
 
 	public function actions(array &$actions): void
 	{
-		$statusController = $this->container->get(StatusController::class);
-		$commentController = $this->container->get(CommentController::class);
-		$moodController = $this->container->get(MoodController::class);
-		$likesController = $this->container->get(LikesController::class);
+		try {
+			$statusController = $this->container->get(StatusController::class);
+			$commentController = $this->container->get(CommentController::class);
+			$moodController = $this->container->get(MoodController::class);
+			$likesController = $this->container->get(LikesController::class);
 
-		$actions['breezeStatus'] = [false, [$statusController, 'dispatch']];
-		$actions['breezeComment'] = [false, [$commentController, 'dispatch']];
-		$actions['breezeWall'] = [false, WallController::class . '::dispatch#'];
-		$actions['breezeBuddy'] = [false, BuddyController::class . '::dispatch#'];
-		$actions['breezeMood'] = [false, [$moodController, 'dispatch']];
-		$actions['breezeLike'] = [false, [$likesController, 'dispatch']];
+			$actions['breezeStatus'] = [false, [$statusController, 'dispatch']];
+			$actions['breezeComment'] = [false, [$commentController, 'dispatch']];
+			$actions['breezeWall'] = [false, WallController::class . '::dispatch#'];
+			$actions['breezeBuddy'] = [false, BuddyController::class . '::dispatch#'];
+			$actions['breezeMood'] = [false, [$moodController, 'dispatch']];
+			$actions['breezeLike'] = [false, [$likesController, 'dispatch']];
+		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
+			log_error($exception->getMessage());
+		}
 	}
 
 	public function profilePopUpWrapper(&$profile_items): void

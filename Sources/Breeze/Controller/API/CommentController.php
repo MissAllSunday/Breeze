@@ -10,7 +10,7 @@ use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidCommentException;
 use Breeze\Util\Validate\ValidateGateway;
 use Breeze\Util\Validate\ValidateGatewayInterface;
-use Breeze\Util\Validate\Validations\ValidateData;
+use Breeze\Util\Validate\Validations\Comment\ValidateComment;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class CommentController extends ApiBaseController implements ApiBaseInterface
@@ -39,9 +39,9 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 
 	public function setValidator(): void
 	{
-		$validatorName = ValidateData::getNameSpace() . ucfirst($this->subAction);
+		$validatorName = ValidateComment::getNameSpace() . ucfirst($this->subAction);
 
-		$this->validator = $validatorName($this->commentRepository);
+		$this->validator = new $validatorName($this->commentRepository);
 	}
 
 	public function getValidator(): ValidateDataInterface

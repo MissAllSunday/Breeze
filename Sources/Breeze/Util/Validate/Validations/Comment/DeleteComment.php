@@ -7,9 +7,9 @@ namespace Breeze\Util\Validate\Validations\Comment;
 use Breeze\Entity\CommentEntity as CommentEntity;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidCommentException;
-use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class DeleteComment extends ValidateComment implements ValidateDataInterface
@@ -30,8 +30,7 @@ class DeleteComment extends ValidateComment implements ValidateDataInterface
 	protected const SUCCESS_KEY = 'deleted_comment';
 
 	public function __construct(
-		protected CommentRepositoryInterface $commentRepository,
-		protected StatusRepositoryInterface $statusRepository
+		protected CommentRepositoryInterface $commentRepository
 	) {
 	}
 
@@ -46,7 +45,7 @@ class DeleteComment extends ValidateComment implements ValidateDataInterface
 	}
 
 	/**
-	 * @throws DataNotFoundException
+	 * @throws NotAllowedException
 	 */
 	public function permissions(): void
 	{
@@ -54,11 +53,11 @@ class DeleteComment extends ValidateComment implements ValidateDataInterface
 
 		if ($currentUserInfo['id'] === $this->data[CommentEntity::USER_ID] &&
 			!Permissions::isAllowedTo(Permissions::DELETE_OWN_COMMENTS)) {
-			throw new DataNotFoundException('deleteComments');
+			throw new NotAllowedException('deleteComments');
 		}
 
 		if (!Permissions::isAllowedTo(Permissions::DELETE_COMMENTS)) {
-			throw new DataNotFoundException('deleteComments');
+			throw new NotAllowedException('deleteComments');
 		}
 	}
 

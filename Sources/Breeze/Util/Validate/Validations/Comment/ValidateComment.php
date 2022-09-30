@@ -39,4 +39,9 @@ abstract class ValidateComment extends ValidateData
 	{
 		return $this->global('user_info');
 	}
+
+	public static function getNameSpace(): string
+	{
+		return __NAMESPACE__ . '\\';
+	}
 }

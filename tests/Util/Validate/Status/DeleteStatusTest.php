@@ -7,6 +7,7 @@ namespace Breeze\Util\Validate\Status;
 use Breeze\Repository\StatusRepository;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\Status\DeleteStatus;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -162,7 +163,7 @@ class DeleteStatusTest extends TestCase
 		$deleteStatus = new DeleteStatus($statusRepository->reveal());
 		$deleteStatus->setData($data);
 
-		$this->expectException(DataNotFoundException::class);
+		$this->expectException(NotAllowedException::class);
 		$deleteStatus->permissions();
 	}
 

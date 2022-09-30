@@ -9,6 +9,7 @@ use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class DeleteStatus extends ValidateStatus implements ValidateDataInterface
@@ -45,7 +46,7 @@ class DeleteStatus extends ValidateStatus implements ValidateDataInterface
 	}
 
 	/**
-	 * @throws DataNotFoundException
+	 * @throws NotAllowedException
 	 */
 	public function permissions(): void
 	{
@@ -53,11 +54,11 @@ class DeleteStatus extends ValidateStatus implements ValidateDataInterface
 
 		if ($currentUserInfo['id'] === $this->data[StatusEntity::USER_ID] &&
 			!Permissions::isAllowedTo(Permissions::DELETE_OWN_STATUS)) {
-			throw new DataNotFoundException('deleteStatus');
+			throw new NotAllowedException('deleteStatus');
 		}
 
 		if (!Permissions::isAllowedTo(Permissions::DELETE_STATUS)) {
-			throw new DataNotFoundException('deleteStatus');
+			throw new NotAllowedException('deleteStatus');
 		}
 	}
 

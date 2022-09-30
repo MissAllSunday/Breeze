@@ -7,6 +7,7 @@ namespace Breeze\Util\Validate\Comment;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\Comment\DeleteComment;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -188,7 +189,7 @@ class DeleteCommentTest extends TestCase
 
 		$deleteComment->setData($data);
 
-		$this->expectException(DataNotFoundException::class);
+		$this->expectException(NotAllowedException::class);
 		$deleteComment->permissions();
 	}
 

@@ -28,7 +28,7 @@ export const postComment = (commentParams:object) =>
 export const deleteComment = (commentId:number) =>
 {
 	// SMF cannot handle custom methods without changing some settings, thus, we are going to use POST for delete calls
-	return axios.post(baseUrl(action, 'deleteStatus'), baseConfig({
+	return axios.post(baseUrl(action, 'deleteComment'), baseConfig({
 		id: commentId,
 		userId: smfVars.userId
 	}));

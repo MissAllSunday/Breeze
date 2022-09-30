@@ -16,15 +16,10 @@ declare module 'breezeTypes' {
 		comment: commentType,
 		removeComment:function
 	}
-
-	interface CommentState {
-		comment: commentType
-	}
 }
 
 module.exports = {
 	commentList,
 	commentType,
 	CommentProps,
-	CommentState,
 };

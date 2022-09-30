@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate;
 
 use Breeze\Breeze;
-use Breeze\Repository\InvalidDataException;
+use Breeze\Exceptions\ValidateException;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
@@ -63,22 +63,12 @@ class ValidateGateway implements ValidateGatewayInterface
 
 			try {
 				$this->validator->{$step}();
-			} catch (InvalidDataException $invalidDataException) {
-				$this->statusCode = self::BAD_REQUEST;
+			} catch (ValidateException $validateException) {
+				$this->statusCode = $validateException->getResponseCode();
 				$this->setNotice([
 					'message' => sprintf(
 						$this->getText(self::DEFAULT_ERROR_KEY),
-						$this->getText($invalidDataException->getMessage())
-					),
-				]);
-
-				return false;
-			} catch (DataNotFoundException $dataNotFoundException) {
-				$this->statusCode = self::NOT_FOUND;
-				$this->setNotice([
-					'message' => sprintf(
-						$this->getText(self::DEFAULT_ERROR_KEY),
-						$this->getText(self::ERROR_TYPE . '_' . $dataNotFoundException->getMessage())
+						$this->getText(self::ERROR_TYPE . '_' . $validateException->getMessage())
 					),
 				]);
 
