@@ -1,4 +1,4 @@
-import {ServerStatusResponse, getByProfile, deleteStatus} from "../api/StatusApi";
+import {ServerStatusResponse, getByProfile, deleteStatus, postStatus} from "../api/StatusApi";
 import React, { useState, useEffect } from 'react';
 import Status from "./Status";
 import { statusType } from 'breezeTypes';
@@ -76,7 +76,22 @@ export default class StatusByProfile extends React.Component<any, any>
 
 	onNewStatus(content:string)
 	{
+		postStatus(content).then((response) => {
+			console.log(response);
 
+			if (response.status === 201) {
+
+			} else {
+				// show some error
+			}
+
+		}).catch(function (error) {
+			if (error.response) {
+				console.log(error.response.data);
+				console.log(error.response.status);
+				console.log(error.response.headers);
+			}
+		});
 	}
 
 	render(){

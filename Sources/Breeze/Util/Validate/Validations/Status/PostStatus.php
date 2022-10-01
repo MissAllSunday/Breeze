@@ -7,9 +7,10 @@ namespace Breeze\Util\Validate\Validations\Status;
 use Breeze\Entity\StatusEntity;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Permissions;
-use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\NotAllowedException;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class PostStatus extends ValidateStatus
+class PostStatus extends ValidateStatus implements ValidateDataInterface
 {
 	protected const PARAMS = [
 		StatusEntity::WALL_ID => 0,
@@ -37,12 +38,12 @@ class PostStatus extends ValidateStatus
 	}
 
 	/**
-	 * @throws DataNotFoundException
+	 * @throws NotAllowedException
 	 */
 	public function permissions(): void
 	{
 		if (!Permissions::isAllowedTo(Permissions::POST_STATUS)) {
-			throw new DataNotFoundException('postStatus');
+			throw new NotAllowedException('postStatus');
 		}
 	}
 

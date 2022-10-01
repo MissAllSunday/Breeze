@@ -23,7 +23,10 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 */
 	public function save(array $data): int
 	{
-		$newStatusId = $this->statusModel->insert($data);
+		$newStatusId = $this->statusModel->insert(array_merge($data, [
+			StatusEntity::CREATED_AT => time(),
+			StatusEntity::LIKES => 0,
+		]));
 
 		if ($newStatusId === 0) {
 			throw new InvalidStatusException('error_save_status');

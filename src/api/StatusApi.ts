@@ -28,3 +28,12 @@ export const deleteStatus = (statusId:number) =>
 	}));
 }
 
+export const postStatus = (content:string) =>
+{
+	return axios.post(baseUrl(action, 'postStatus'), baseConfig({
+		wallId: smfVars.wallId,
+		userId: smfVars.userId,
+		body: content
+	}));
+}
+

@@ -20,18 +20,19 @@ class StatusRepositoryTest extends TestCase
 	 */
 	public function testSave(array $dataToInsert, int $newId): void
 	{
-		$statusModel =  $this->prophesize(StatusModelInterface::class);
+		$statusModel =  $this->createMock(StatusModelInterface::class);
 		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 		$likeRepository = $this->prophesize(LikeRepositoryInterface::class);
 
 		$statusRepository = new StatusRepository(
-			$statusModel->reveal(),
+			$statusModel,
 			$commentRepository->reveal(),
 			$likeRepository->reveal()
 		);
 
 		$statusModel
-			->insert($dataToInsert)
+			->method('insert')
+			->with($dataToInsert)
 			->willReturn($newId);
 
 		if ($newId === 0) {
@@ -48,13 +49,21 @@ class StatusRepositoryTest extends TestCase
 		return [
 			'happy happy joy joy' => [
 				'dataToInsert' => [
-					'some data',
+					'wallId' => 1,
+					'userId' => 1,
+					'createdAt' => time(),
+					'body' => 'body',
+					'likes' => 0,
 				],
 				'newId' => 666,
 			],
 			'InvalidStatusException' => [
 				'dataToInsert' => [
-					'some data',
+					'wallId' => 1,
+					'userId' => 1,
+					'createdAt' => time(),
+					'body' => 'body',
+					'likes' => 0,
 				],
 				'newId' => 0,
 			],

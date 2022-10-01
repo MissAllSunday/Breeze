@@ -6,6 +6,7 @@ namespace Breeze\Util\Validate\Status;
 
 use Breeze\Repository\StatusRepository;
 use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\Status\PostStatus;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -207,7 +208,7 @@ class PostStatusTest extends TestCase
 		$postStatus = new PostStatus($statusRepository->reveal());
 		$postStatus->setData($data);
 
-		$this->expectException(DataNotFoundException::class);
+		$this->expectException(NotAllowedException::class);
 		$postStatus->permissions();
 	}
 

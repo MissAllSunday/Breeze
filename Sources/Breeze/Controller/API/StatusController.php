@@ -86,7 +86,7 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 			$this->print(array_merge(
 				$this->gateway->response(),
 				['content' => $this->statusRepository->getById($statusId)]
-			));
+			), 201);
 		} catch (InvalidStatusException $invalidStatusException) {
 			$this->print([
 				'type' => ValidateGateway::ERROR_TYPE,
