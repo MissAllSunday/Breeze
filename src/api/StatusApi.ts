@@ -7,6 +7,12 @@ export interface ServerStatusResponse {
 	data: statusListType
 }
 
+export interface ServerPostStatusResponse {
+	content: statusListType,
+	message: string,
+	type: string
+}
+
 const action = 'breezeStatus';
 
 export const getByProfile = () =>
@@ -30,7 +36,7 @@ export const deleteStatus = (statusId:number) =>
 
 export const postStatus = (content:string) =>
 {
-	return axios.post(baseUrl(action, 'postStatus'), baseConfig({
+	return axios.post<ServerPostStatusResponse>(baseUrl(action, 'postStatus'), baseConfig({
 		wallId: smfVars.wallId,
 		userId: smfVars.userId,
 		body: content

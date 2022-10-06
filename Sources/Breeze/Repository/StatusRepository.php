@@ -11,6 +11,8 @@ use Breeze\Util\Validate\DataNotFoundException;
 
 class StatusRepository extends BaseRepository implements StatusRepositoryInterface
 {
+	public const CACHE_BY_PROFILE = 'getByProfile';
+
 	public function __construct(
 		private StatusModelInterface $statusModel,
 		private CommentRepositoryInterface $commentRepository,
@@ -40,19 +42,17 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 */
 	public function getByProfile(int $profileOwnerId = 0, int $start = 0): array
 	{
-		$status = $this->getCache(__METHOD__ . $profileOwnerId);
+		$status = $this->getCache(self::CACHE_BY_PROFILE . $profileOwnerId);
 
-		if (empty($status)) {
-			$status = $this->statusModel->getStatusByProfile([
-				'start' => $start,
-				'maxIndex' => $this->statusModel->getCount(),
-				'ids' => [$profileOwnerId],
-			]);
-
-			if (!empty(array_filter($status['data']))) {
-				$this->setCache(__METHOD__ . $profileOwnerId, $status);
-			}
+		if (!empty($status)) {
+			return $status;
 		}
+
+		$status = $this->statusModel->getStatusByProfile([
+			'start' => $start,
+			'maxIndex' => $this->statusModel->getCount(),
+			'ids' => [$profileOwnerId],
+		]);
 
 		if (empty($status['data'])) {
 			throw new DataNotFoundException('no_status');
@@ -68,38 +68,49 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			$status['data'][$statusId]['comments'] = $comments[$statusId] ?? [];
 		}
 
+		$this->setCache(self::CACHE_BY_PROFILE . $profileOwnerId, $status['data']);
+
 		return $status['data'];
 	}
 
 	/**
-	 * @throws InvalidStatusException
+	 * @throws DataNotFoundException
 	 */
 	public function getById(int $statusId = 0): array
 	{
 		$status = $this->statusModel->getById($statusId);
 
 		if (empty($status['data'])) {
-			throw new InvalidStatusException('error_no_status');
+			throw new DataNotFoundException('no_status');
 		}
 
-		return $status;
+		$comments =  $this->commentRepository->getByStatus([$statusId]);
+		$usersData = $this->loadUsersInfo(array_unique($status['usersIds']));
+		$status['data'] = $this->likeRepository->appendLikeData($status['data'], StatusEntity::ID);
+
+		foreach ($status['data'] as $statusId => $singleStatus) {
+			$status['data'][$statusId]['userData'] = $usersData[$singleStatus[StatusEntity::USER_ID]] ?? [];
+
+			$status['data'][$statusId]['comments'] = $comments[$statusId] ?? [];
+		}
+
+		return $status['data'];
 	}
 
 	/**
-	 * @throws InvalidStatusException
-	 * @throws InvalidCommentException
+	 * @throws DataNotFoundException|InvalidCommentException
 	 */
 	public function deleteById(int $statusId): bool
 	{
-		$this->getById($statusId);
+		$status = $this->getById($statusId);
 
 		$this->commentRepository->deleteByStatusId($statusId);
 
 		if (!$this->statusModel->delete([$statusId])) {
-			throw new InvalidStatusException('error_no_status');
+			throw new DataNotFoundException('error_no_status');
 		}
 
-		$this->setCache(self::class . '::getById' . $statusId, null);
+		$this->setCache(self::CACHE_BY_PROFILE . $status[$statusId][StatusEntity::WALL_ID], null);
 
 		return true;
 	}

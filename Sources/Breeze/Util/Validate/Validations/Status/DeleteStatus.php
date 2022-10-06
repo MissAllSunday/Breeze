@@ -17,9 +17,9 @@ class DeleteStatus extends ValidateStatus implements ValidateDataInterface
 	public array $steps = [
 		self::COMPARE,
 		self::INT,
+		self::PERMISSIONS,
 		self::VALID_STATUS,
 		self::VALID_USER,
-		self::PERMISSIONS,
 	];
 
 	protected const PARAMS = [
@@ -82,7 +82,7 @@ class DeleteStatus extends ValidateStatus implements ValidateDataInterface
 
 		if (!isset($this->data[StatusEntity::USER_ID]) ||
 			($this->data[StatusEntity::USER_ID]
-			!== $this->status['data'][$this->data[StatusEntity::ID]][StatusEntity::USER_ID])) {
+			!== $this->status[$this->data[StatusEntity::ID]][StatusEntity::USER_ID])) {
 			throw new DataNotFoundException('wrong_values');
 		}
 	}

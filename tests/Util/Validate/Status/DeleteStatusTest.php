@@ -190,9 +190,9 @@ class DeleteStatusTest extends TestCase
 		$this->assertEquals([
 			'compare',
 			'isInt',
+			'permissions',
 			'validStatus',
 			'validUser',
-			'permissions',
 		], $deleteStatus->getSteps());
 	}
 

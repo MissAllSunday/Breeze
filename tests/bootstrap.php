@@ -106,6 +106,7 @@ function allowedTo($permissionName)
 		'deleteComments' => false,
 		'deleteOwnComments' => false,
 		'deleteOwnStatus' => false,
+		'deleteStatus' => false,
 		'postStatus' => false,
 		'admin_forum' => false,
 		'likes_like' => false,
@@ -118,26 +119,16 @@ function allowedTo($permissionName)
 function cache_get_data($key, $timeToLive = 360): ?array
 {
 	return match ($key) {
-		'Breeze_StatusRepository_getByProfile1' => [
-			'usersIds' => [1],
-			'data' => [
-				1 => [
-					'id' => 666,
-					'wallId' => 666,
-					'userId' => 1,
-					'createdAt' => 581299200,
-					'body' => 'some body',
-					'likes' => [],
-				],],
-		],
-		'Breeze_StatusRepository_getByProfile2' => [
-			'usersIds' => [],
-			'data' => [],
-		],
-		'Breeze_CommentRepository_getByProfile1' => [
-			'usersIds' => [1,2,3],
-			'data' => [
-				1 => [
+		'Breeze_getByProfile1' => [],
+		'Breeze_getByProfile2' => [
+			1 => [
+				'id' => 1,
+				'wallId' => 1,
+				'userId' => 1,
+				'createdAt' => 581299200,
+				'body' => 'status body',
+				'likes' => 0,
+				'comments' => [
 					1 => [
 						'id' => 1,
 						'statusId' => 1,
@@ -145,15 +136,58 @@ function cache_get_data($key, $timeToLive = 360): ?array
 						'createdAt' => 581299200,
 						'body' => 'comment body',
 						'likes' => 0,
-						'likesInfo' => [],
-						'userData' => [
-							'link' => 'Guest',
-							'name' => 'Guest',
-							'avatar' => ['href' => 'avatar_url/default.png'],
-						],
 					],
-				], ],
-		],
+				],
+				'likesInfo' => [
+					'contentId' => 1,
+					'count' => 0,
+					'alreadyLiked' => false,
+					'type' => 'type',
+					'canLike' => false,
+					'additionalInfo' => '',
+				],
+				'userData' => [
+					'link' => 'Guest',
+					'name' => 'Guest',
+					'avatar' => ['href' => 'avatar_url/default.png'],
+				],
+			],],
+//		'Breeze_StatusRepository_getByProfile1' => [
+//			'usersIds' => [1],
+//			'data' => [
+//				1 => [
+//					'id' => 666,
+//					'wallId' => 666,
+//					'userId' => 1,
+//					'createdAt' => 581299200,
+//					'body' => 'some body',
+//					'likes' => [],
+//				],],
+//		],
+//		'Breeze_StatusRepository_getByProfile2' => [
+//			'usersIds' => [],
+//			'data' => [],
+//		],
+//		'Breeze_CommentRepository_getByProfile1' => [
+//			'usersIds' => [1,2,3],
+//			'data' => [
+//				1 => [
+//					1 => [
+//						'id' => 1,
+//						'statusId' => 1,
+//						'userId' => 1,
+//						'createdAt' => 581299200,
+//						'body' => 'comment body',
+//						'likes' => 0,
+//						'likesInfo' => [],
+//						'userData' => [
+//							'link' => 'Guest',
+//							'name' => 'Guest',
+//							'avatar' => ['href' => 'avatar_url/default.png'],
+//						],
+//					],
+//				], ],
+//		],
 		'user_settings_666' => [
 			'generalWall' => 1,
 		],

@@ -14,25 +14,99 @@ class StatusRepositoryTest extends TestCase
 {
 	use ProphecyTrait;
 
+	private array $stack;
+
+	protected function setUp(): void
+	{
+		$this->stack = [
+			'commentModel' => [
+				'getByProfiles1' => [
+					'usersIds' => [1,2,3],
+					'data' => [
+						1 => [
+							1 => [
+								'id' => 1,
+								'statusId' => 1,
+								'userId' => 1,
+								'createdAt' => 581299200,
+								'body' => 'comment body',
+								'likes' => 0,
+								'likesInfo' => [],
+								'userData' => [
+									'link' => 'Guest',
+									'name' => 'Guest',
+									'avatar' => ['href' => 'avatar_url/default.png'],
+								],
+							],
+						], ],
+				],
+			],
+			'commentRepository' => [
+				'getByProfile1' =>
+					[
+						1 => [
+							1 => [
+								'id' => 1,
+								'statusId' => 1,
+								'userId' => 1,
+								'createdAt' => 581299200,
+								'body' => 'comment body',
+								'likes' => 0,
+							],
+						], ],
+			],
+			'statusModel' => [
+				'getStatusByProfile1' => [
+					'usersIds' => [1,2,3],
+					'data' => [
+						1 => [
+							1 => [
+								'id' => 1,
+								'statusId' => 1,
+								'userId' => 1,
+								'createdAt' => 581299200,
+								'body' => 'status body body',
+								'likes' => 0,
+							],
+						], ],
+				],
+				'getStatusByProfile2' => [
+					'usersIds' => [],
+					'data' => [],
+				],
+			],
+			'likeRepository' => [
+				'appendLikeData' => [
+					'likesInfo' => [
+						'contentId' => 1,
+						'count' => 0,
+						'alreadyLiked' => false,
+						'type' => 'type',
+						'canLike' => false,
+						'additionalInfo' => '',
+					],
+				],
+			], ];
+	}
+
 	/**
 	 * @dataProvider saveProvider
 	 * @throws InvalidStatusException
 	 */
 	public function testSave(array $dataToInsert, int $newId): void
 	{
-		$statusModel =  $this->createMock(StatusModelInterface::class);
+		$statusModel =  $this->prophesize(StatusModelInterface::class);
 		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 		$likeRepository = $this->prophesize(LikeRepositoryInterface::class);
 
 		$statusRepository = new StatusRepository(
-			$statusModel,
+			$statusModel->reveal(),
 			$commentRepository->reveal(),
 			$likeRepository->reveal()
 		);
 
 		$statusModel
-			->method('insert')
-			->with($dataToInsert)
+			->insert($dataToInsert)
 			->willReturn($newId);
 
 		if ($newId === 0) {
@@ -78,7 +152,8 @@ class StatusRepositoryTest extends TestCase
 		int $profileOwnerId,
 		array $statusModelWillReturn,
 		array $commentsByProfileWillReturn,
-		array $getByProfileReturn
+		array $likesInfo,
+		array $expectedResult,
 	): void {
 		$statusModel =  $this->prophesize(StatusModelInterface::class);
 		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
@@ -94,20 +169,28 @@ class StatusRepositoryTest extends TestCase
 		$statusModel
 			->getStatusByProfile([
 				'start' => 0,
-				'maxIndex' => 666,
+				'maxIndex' => 1,
 				'ids' => [$profileOwnerId],
 			])
 			->willReturn($statusModelWillReturn);
 
-		if ($profileOwnerId == 2) {
+
+		if (empty($statusModelWillReturn)) {
 			$this->expectException(DataNotFoundException::class);
 		}
 
 		$commentRepository->getByProfile($profileOwnerId)->willReturn($commentsByProfileWillReturn);
-		$likeRepository->method('appendLikeData')->willReturn($getByProfileReturn);
+
+		$statusWithLikes = array_map(function ($item) use ($likesInfo): array {
+			$item['likesInfo'] = $likesInfo;
+
+			return $item;
+		}, $statusModelWillReturn['data']);
+
+		$likeRepository->method('appendLikeData')->willReturn($statusWithLikes);
 		$statusByProfile = $statusRepository->getByProfile($profileOwnerId);
 
-		$this->assertEquals($getByProfileReturn, $statusByProfile);
+		$this->assertEquals($expectedResult, $statusByProfile);
 	}
 
 	public function getByProfileProvider(): array
@@ -116,22 +199,63 @@ class StatusRepositoryTest extends TestCase
 			'happy happy joy joy' => [
 				'profileOwnerId' => 1,
 				'statusModelWillReturn' => [
-					'usersIds' => [1],
-					'data' => [],
+					'usersIds' => [1,2,3],
+					'data' => [
+						1 => [
+							'id' => 1,
+							'wallId' => 1,
+							'userId' => 1,
+							'createdAt' => 581299200,
+							'body' => 'status body',
+							'likes' => 0,
+						],
+					],
 				],
-				'commentsByProfileWillReturn' => [
-					'usersIds' => [1],
-					'data' => [],
-				],
-				'getByProfileReturn' => [
+				'commentGetByProfile' => [
 					1 => [
-						'id' => 666,
-						'wallId' => 666,
+						1 => [
+							'id' => 1,
+							'statusId' => 1,
+							'userId' => 1,
+							'createdAt' => 581299200,
+							'body' => 'comment body',
+							'likes' => 0,
+						],
+					], ],
+				'likesInfo' => [
+					'contentId' => 1,
+					'count' => 0,
+					'alreadyLiked' => false,
+					'type' => 'type',
+					'canLike' => false,
+					'additionalInfo' => '',
+				],
+				'expectedResult' => [
+					1 => [
+						'id' => 1,
+						'wallId' => 1,
 						'userId' => 1,
 						'createdAt' => 581299200,
-						'body' => 'some body',
-						'likes' => [],
-						'comments' => [],
+						'body' => 'status body',
+						'likes' => 0,
+						'comments' => [
+							1 => [
+								'id' => 1,
+								'statusId' => 1,
+								'userId' => 1,
+								'createdAt' => 581299200,
+								'body' => 'comment body',
+								'likes' => 0,
+							],
+						],
+						'likesInfo' => [
+							'contentId' => 1,
+							'count' => 0,
+							'alreadyLiked' => false,
+							'type' => 'type',
+							'canLike' => false,
+							'additionalInfo' => '',
+						],
 						'userData' => [
 							'link' => 'Guest',
 							'name' => 'Guest',
@@ -141,40 +265,106 @@ class StatusRepositoryTest extends TestCase
 			],
 			'no data' => [
 				'profileOwnerId' => 2,
-				'statusModelWillReturn' => [],
-				'commentsByProfileWillReturn' => [],
-				'getByProfileReturn' => [],
+				'statusModelWillReturn' => [
+					'usersIds' => [],
+					'data' => [],
+				],
+				'commentGetByProfile' => [
+					2 => [
+						1 => [
+							'id' => 1,
+							'statusId' => 1,
+							'userId' => 1,
+							'createdAt' => 581299200,
+							'body' => 'comment body',
+							'likes' => 0,
+						],
+					], ],
+				'likesInfo' => [
+					'contentId' => 1,
+					'count' => 0,
+					'alreadyLiked' => false,
+					'type' => 'type',
+					'canLike' => false,
+					'additionalInfo' => '',
+				],
+				'expectedResult' => [
+					1 => [
+						'id' => 1,
+						'wallId' => 1,
+						'userId' => 1,
+						'createdAt' => 581299200,
+						'body' => 'status body',
+						'likes' => 0,
+						'comments' => [
+							1 => [
+								'id' => 1,
+								'statusId' => 1,
+								'userId' => 1,
+								'createdAt' => 581299200,
+								'body' => 'comment body',
+								'likes' => 0,
+							],
+						],
+						'likesInfo' => [
+							'contentId' => 1,
+							'count' => 0,
+							'alreadyLiked' => false,
+							'type' => 'type',
+							'canLike' => false,
+							'additionalInfo' => '',
+						],
+						'userData' => [
+							'link' => 'Guest',
+							'name' => 'Guest',
+							'avatar' => ['href' => 'avatar_url/default.png'],
+						],
+					],],
 			],
 		];
 	}
 
 	/**
 	 * @dataProvider getByIdProvider
-	 * @throws InvalidStatusException
+	 * @throws DataNotFoundException
 	 */
-	public function testGetById(int $statusId, array $getByIdWillReturn): void
-	{
+	public function testGetById(
+		int $statusId,
+		array $statusModelWillReturn,
+		array $commentsByProfileWillReturn,
+		array $likesInfo,
+		array $expectedResult
+	): void {
 		$statusModel =  $this->prophesize(StatusModelInterface::class);
 		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
-		$likeRepository = $this->prophesize(LikeRepositoryInterface::class);
+		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
 
 		$statusRepository = new StatusRepository(
 			$statusModel->reveal(),
 			$commentRepository->reveal(),
-			$likeRepository->reveal()
+			$likeRepository
 		);
 
 		$statusModel
 			->getById($statusId)
-			->willReturn($getByIdWillReturn);
+			->willReturn($statusModelWillReturn);
 
-		if (empty($getByIdWillReturn)) {
-			$this->expectException(InvalidStatusException::class);
+		if (empty($statusModelWillReturn)) {
+			$this->expectException(DataNotFoundException::class);
 		}
 
+		$commentRepository->getByStatus([$statusId])->willReturn($commentsByProfileWillReturn);
+
+		$statusWithLikes = array_map(function ($item) use ($likesInfo): array {
+			$item['likesInfo'] = $likesInfo;
+
+			return $item;
+		}, $statusModelWillReturn['data']);
+
+		$likeRepository->method('appendLikeData')->willReturn($statusWithLikes);
 		$statusById = $statusRepository->getById($statusId);
 
-		$this->assertEquals($getByIdWillReturn, $statusById);
+		$this->assertEquals($expectedResult, $statusById);
 	}
 
 	public function getByIdProvider(): array
@@ -182,68 +372,110 @@ class StatusRepositoryTest extends TestCase
 		return [
 			'happy happy joy joy' => [
 				'statusId' => 1,
-				'getByIdWillReturn' => [
-					'usersIds' => [1],
+				'statusModelWillReturn' => [
+					'usersIds' => [1,2,3],
 					'data' => [
 						1 => [
 							'id' => 1,
-							'wallId' => 666,
+							'wallId' => 1,
 							'userId' => 1,
 							'createdAt' => 581299200,
-							'body' => 'some body',
-							'likes' => [],
-						],],
+							'body' => 'status body',
+							'likes' => 0,
+						],
+					],
 				],
-			],
-			'InvalidStatusException' => [
-				'statusId' => 2,
-				'getByIdWillReturn' => [],
+				'commentGetByProfile' => [
+					1 => [
+						1 => [
+							'id' => 1,
+							'statusId' => 1,
+							'userId' => 1,
+							'createdAt' => 581299200,
+							'body' => 'comment body',
+							'likes' => 0,
+						],
+					], ],
+				'likesInfo' => [
+					'contentId' => 1,
+					'count' => 0,
+					'alreadyLiked' => false,
+					'type' => 'type',
+					'canLike' => false,
+					'additionalInfo' => '',
+				],
+				'expectedResult' => [
+					1 => [
+						'id' => 1,
+						'wallId' => 1,
+						'userId' => 1,
+						'createdAt' => 581299200,
+						'body' => 'status body',
+						'likes' => 0,
+						'comments' => [
+							1 => [
+								'id' => 1,
+								'statusId' => 1,
+								'userId' => 1,
+								'createdAt' => 581299200,
+								'body' => 'comment body',
+								'likes' => 0,
+							],
+						],
+						'likesInfo' => [
+							'contentId' => 1,
+							'count' => 0,
+							'alreadyLiked' => false,
+							'type' => 'type',
+							'canLike' => false,
+							'additionalInfo' => '',
+						],
+						'userData' => [
+							'link' => 'Guest',
+							'name' => 'Guest',
+							'avatar' => ['href' => 'avatar_url/default.png'],
+						],
+					],],
 			],
 		];
 	}
 
 	/**
 	 * @dataProvider deleteByIdProvider
-	 * @throws InvalidStatusException
+	 * @throws DataNotFoundException
 	 */
 	public function testDeleteById(
 		int $statusId,
-		bool $deleteByStatusId,
-		bool $commentDeleteByStatusId,
-		array $statusData
+		array $statusModelWillReturn,
+		bool $deleteByStatusIdWillReturn,
+		bool $expectedResult
 	): void {
-		$statusModel =  $this->prophesize(StatusModelInterface::class);
-		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
-		$likeRepository = $this->prophesize(LikeRepositoryInterface::class);
+		$statusModel = $this->prophesize(StatusModelInterface::class);
+		$commentRepository = $this->createMock(CommentRepositoryInterface::class);
+		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
+
+		$statusModel->getById($statusId)->willReturn($statusModelWillReturn);
+		$commentRepository->method('getByStatus')->willReturn([]);
+
+		$likeRepository->method('appendLikeData')->willReturn($statusModelWillReturn['data']);
+		$commentRepository->method('deleteByStatusId')
+			->willReturn(true);
+
+		$statusModel->delete([$statusId])->willReturn($expectedResult);
 
 		$statusRepository = new StatusRepository(
 			$statusModel->reveal(),
-			$commentRepository->reveal(),
-			$likeRepository->reveal()
+			$commentRepository,
+			$likeRepository
 		);
 
-		$statusModel->getById($statusId)->willReturn($statusData);
-
-		$commentRepository
-			->deleteByStatusId($statusId)
-			->willReturn($commentDeleteByStatusId);
-
-		if ($statusId !== 1 && !$commentDeleteByStatusId) {
-			$this->expectException(InvalidCommentException::class);
+		if (!$expectedResult) {
+			$this->expectException(DataNotFoundException::class);
 		}
-
-		$statusModel
-			->delete([$statusId])
-			->willReturn($deleteByStatusId);
-
-		if (!$deleteByStatusId) {
-			$this->expectException(InvalidStatusException::class);
-		}
-
 
 		$deleteById = $statusRepository->deleteById($statusId);
 
-		$this->assertEquals($deleteByStatusId, $deleteById);
+		$this->assertEquals($expectedResult, $deleteById);
 	}
 
 	public function deleteByIdProvider(): array
@@ -251,38 +483,49 @@ class StatusRepositoryTest extends TestCase
 		return [
 			'happy happy joy joy' => [
 				'statusId' => 1,
-				'deleteByStatusId' => true,
-				'commentDeleteByStatusId' => true,
-				'statusData' => [
+				'statusModelWillReturn' => [
 					'usersIds' => [1],
 					'data' => [
 						1 => [
 							'id' => 1,
-							'wallId' => 666,
+							'wallId' => 1,
 							'userId' => 1,
 							'createdAt' => 581299200,
-							'body' => 'some body',
-							'likes' => [],
-						],],
+							'body' => 'status body',
+							'likes' => 0,
+							'userData' => [
+								'link' => 'Guest',
+								'name' => 'Guest',
+								'avatar' => ['href' => 'avatar_url/default.png'],
+							],
+						],
+					],
 				],
+				'deleteByStatusIdWillReturn' => true,
+				'expectedResult' => true,
 			],
-			'InvalidStatusException' => [
-				'statusId' => 2,
-				'deleteByStatusId' => false,
-				'commentDeleteByStatusId' => true,
-				'statusData' => [
-					'data' => [],
-					'usersIds' => [],
+			'could not be deleted' => [
+				'statusId' => 1,
+				'statusModelWillReturn' => [
+					'usersIds' => [1],
+					'data' => [
+						1 => [
+							'id' => 1,
+							'wallId' => 1,
+							'userId' => 1,
+							'createdAt' => 581299200,
+							'body' => 'status body',
+							'likes' => 0,
+							'userData' => [
+								'link' => 'Guest',
+								'name' => 'Guest',
+								'avatar' => ['href' => 'avatar_url/default.png'],
+							],
+						],
+					],
 				],
-			],
-			'InvalidCommentException' => [
-				'statusId' => 3,
-				'deleteByStatusId' => false,
-				'commentDeleteByStatusId' => false,
-				'statusData' => [
-					'data' => ['some data'],
-					'usersIds' => [666],
-				],
+				'deleteByStatusIdWillReturn' => true,
+				'expectedResult' => false,
 			],
 		];
 	}

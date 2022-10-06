@@ -69,7 +69,7 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 		try {
 			$this->statusRepository->deleteById($data[StatusEntity::ID]);
 
-			$this->print($this->gateway->response());
+			$this->print($this->gateway->response(), 204);
 		} catch (InvalidStatusException $invalidStatusException) {
 			$this->print([
 				'type' => ValidateGateway::ERROR_TYPE,

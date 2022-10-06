@@ -71,8 +71,7 @@ class CommentRepositoryTest extends TestCase
 	public function testGetByProfile(
 		int $profileOwnerId,
 		array $commentModelReturn,
-		array $commentsByProfileWillReturn,
-		array $appendLike
+		array $commentsByProfileWillReturn
 	): void {
 		$commentModel = $this->prophesize(CommentModel::class);
 		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
@@ -80,11 +79,11 @@ class CommentRepositoryTest extends TestCase
 
 			$commentModel
 				->getByProfiles([$profileOwnerId])
-				->willReturn($commentsByProfileWillReturn);
+				->willReturn($commentModelReturn);
 
 		$likeRepository
 			->method('appendLikeData')
-			->willReturn($appendLike);
+			->willReturn($commentModelReturn['data'][1]);
 
 		$commentsByProfile = $commentRepository->getByProfile($profileOwnerId);
 
@@ -116,37 +115,8 @@ class CommentRepositoryTest extends TestCase
 							'createdAt' => 581299200,
 							'body' => 'comment body',
 							'likes' => 0,
-							'likesInfo' => [
-								'contentId' => 1,
-								'count' => 0,
-								'alreadyLiked' => false,
-								'type' => 'type',
-								'canLike' => false,
-								'additionalInfo' => '',
-							],
-							'userData' => [
-								'link' => 'Guest',
-								'name' => 'Guest',
-								'avatar' => ['href' => 'avatar_url/default.png'],
-							],
 						],
 					],],
-				'appendLike' => [ 1 => [
-					'id' => 1,
-					'statusId' => 1,
-					'userId' => 1,
-					'createdAt' => 581299200,
-					'body' => 'comment body',
-					'likes' => 0,
-					'likesInfo' => [
-						'contentId' => 1,
-						'count' => 0,
-						'alreadyLiked' => false,
-						'type' => 'type',
-						'canLike' => false,
-						'additionalInfo' => '',
-					],
-				]],
 			],
 		];
 	}
