@@ -1,49 +1,40 @@
 import {ServerStatusResponse, getByProfile, deleteStatus, postStatus, ServerPostStatusResponse} from "../api/StatusApi";
 import React, { useState, useEffect } from 'react';
 import Status from "./Status";
-import { statusType } from 'breezeTypes';
+import { statusType, statusListType } from 'breezeTypes';
 import Loading from "./Loading";
 import Editor from "./Editor";
 import {AxiosResponse} from "axios";
+import {StatusList} from "./StatusList";
 
 export default class StatusByProfile extends React.Component<any, any>
 {
 	constructor(props: any) {
 		super(props);
 		this.state = {
-			list: {
-				isLoading: true,
-				data: []
-			}
+			list: [],
+			isLoading: true,
 		};
+
+		this.onRemoveStatus = this.onRemoveStatus.bind(this);
+		this.onNewStatus = this.onNewStatus.bind(this);
 	}
 
-	updateState(newData:Object ) {
-		let list = {...this.state.list, ...newData};
+	updateState(newData:object) {
+		let newState = {...this.state, ...newData};
 
-		this.setState({list});
+		this.setState(newState, function () {
+console.log(newState)
+		});
 	}
 
 	componentDidMount(){
-		let tmpStatusList:Array<any> = []
-
 		getByProfile()
 			.then((response:ServerStatusResponse) => {
-				for (let [key, status] of Object.entries(response.data)) {
-					tmpStatusList[status.id] = <Status
-						key={status.id}
-						status={status}
-						users={this.state.usersData}
-						removeStatus={this.onRemoveStatus}
-					/>;
-				}
-
 				this.updateState({
-					data: tmpStatusList,
+					list: Object.values(response.data),
 					isLoading: false
 				});
-
-
 			})
 			.catch(exception => {
 			});
@@ -51,27 +42,23 @@ export default class StatusByProfile extends React.Component<any, any>
 
 	onRemoveStatus(status:statusType)
 	{
+		this.updateState({
+			isLoading: true
+		});
+
 		deleteStatus(status.id).then((response) => {
 
-			if (response.status === 204) {
-				let tmpStatusList = this.state.list.data;
-
-				delete tmpStatusList[status.id];
-
-				this.updateState({
-					data: tmpStatusList,
-				});
-			} else {
-				// show some error
+			if (response.status !== 204) {
+				return;
 			}
 
-		}).catch(function (error) {
-				if (error.response) {
-					console.log(error.response.data);
-					console.log(error.response.status);
-					console.log(error.response.headers);
-				}
+			this.updateState({
+				list: this.state.list.filter(function (statusListItem: statusType) {
+					return statusListItem.id !== status.id
+				}),
+				isLoading: false
 			});
+		});
 	}
 
 	onNewStatus(content:string)
@@ -80,26 +67,15 @@ export default class StatusByProfile extends React.Component<any, any>
 			isLoading: true
 		});
 
-		let tmpStatusList:Array<any> = []
-		const response = postStatus(content).then((response:AxiosResponse<ServerPostStatusResponse>) => {
-			for (let [key, status] of Object.entries(response.data.content)) {
-				tmpStatusList[status.id] = <Status
-					key={status.id}
-					status={status}
-					users={this.state.usersData}
-					removeStatus={this.onRemoveStatus}
-				/>;
+		postStatus(content).then((response:AxiosResponse<ServerPostStatusResponse>) => {
+			if (response.status !== 201) {
+				return;
 			}
 
 			this.updateState({
-				data: tmpStatusList,
+				list: [...this.state.list, ...Object.values(response.data.content)],
 				isLoading: false
 			});
-			if (response.status === 201) {
-				console.log(response.status)
-			} else {
-				// show some error
-			}
 
 		}).catch(function (error) {
 			if (error.response) {
@@ -116,11 +92,12 @@ export default class StatusByProfile extends React.Component<any, any>
 	}
 
 	render(){
-		return (
-			this.state.isLoading ? <Loading /> : <ul className="status">
-				{this.state.list.data}
-				<Editor saveContent={this.onNewStatus} />
-			</ul>
-		)
+		return (<div>
+			this.state.isLoading ? <Loading /> :
+			<StatusList
+				statusList={this.state.list}
+				onRemoveStatus={this.onRemoveStatus} />
+			<Editor saveContent={this.onNewStatus} />
+		</div>)
 	}
 }

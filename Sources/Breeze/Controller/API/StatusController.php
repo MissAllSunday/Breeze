@@ -64,6 +64,8 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 
 	public function deleteStatus(): void
 	{
+		$this->print([], 204);
+
 		$data = $this->validator->getData();
 
 		try {

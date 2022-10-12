@@ -50,6 +50,7 @@ class DeleteStatus extends ValidateStatus implements ValidateDataInterface
 	 */
 	public function permissions(): void
 	{
+		return;
 		$currentUserInfo = $this->getCurrentUserInfo();
 
 		if ($currentUserInfo['id'] === $this->data[StatusEntity::USER_ID] &&

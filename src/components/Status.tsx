@@ -1,20 +1,17 @@
 import * as React from "react";
-import {StatusState, StatusProps } from 'breezeTypes';
+import { StatusProps } from 'breezeTypes';
 import Like from "./Like";
 import CommentList from "./CommentList";
 
 
-export default class Status extends React.Component<StatusProps, StatusState>
+export default class Status extends React.Component<StatusProps>
 {
 	constructor(props: any) {
 		super(props);
-		this.state = {
-			comments: []
-		};
 	}
 
 	render() {
-		return <li>
+		return <li key={this.props.status.id}>
 	<div className='breeze_avatar avatar_status floatleft'>
 		<div className='windowbg'>
 			<h4 className='floatleft'>
@@ -22,8 +19,7 @@ export default class Status extends React.Component<StatusProps, StatusState>
 			</h4>
 			<div className='floatright smalltext'>
 				{this.props.status.createdAt}
-				&nbsp;<span className="main_icons remove_button floatright pointer_cursor" onClick={() =>
-				this.props.removeStatus(this.props.status)}>delete</span>
+				&nbsp;<span className="main_icons remove_button floatright pointer_cursor" onClick={() => this.props.removeStatus(this.props.status)}>delete</span>
 			</div>
 			<br />
 				<div className='content'>

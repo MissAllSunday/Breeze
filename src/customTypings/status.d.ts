@@ -11,16 +11,16 @@ declare module 'breezeTypes' {
 		userData: userDataType
 	}
 
-	type statusListType = { [id: number]: statusType };
+	type statusListType = Map<statusType>;
+
+	interface StatusListProps {
+		statusList: statusListType,
+		onRemoveStatus(status: statusType): void;
+	}
 
 	interface StatusProps {
 		status: statusType
-		users: {}
 		removeStatus(status: statusType): void;
-	}
-
-	interface StatusState {
-
 	}
 }
 

@@ -42,9 +42,9 @@ class PostStatus extends ValidateStatus implements ValidateDataInterface
 	 */
 	public function permissions(): void
 	{
-		if (!Permissions::isAllowedTo(Permissions::POST_STATUS)) {
-			throw new NotAllowedException('postStatus');
-		}
+//		if (!Permissions::isAllowedTo(Permissions::POST_STATUS)) {
+//			throw new NotAllowedException('postStatus');
+//		}
 	}
 
 	public function getInts(): array
