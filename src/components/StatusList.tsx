@@ -1,9 +1,8 @@
-import { statusType, StatusListProps } from 'breezeTypes';
-import Status from "./Status";
-import React from "react";
+import { statusType, StatusListProps } from 'breezeTypes'
+import Status from './Status'
+import React from 'react'
 
-
-export const StatusList = ({statusList, onRemoveStatus}:StatusListProps):React.ReactElement<Status> => (
+export const StatusList = ({ statusList, onRemoveStatus }: StatusListProps): React.ReactElement<Status> => (
 	<ul className="status">
 		{statusList.map((status: statusType) => (
 			<Status
@@ -13,4 +12,4 @@ export const StatusList = ({statusList, onRemoveStatus}:StatusListProps):React.R
 			/>
 		))}
 	</ul>
-);
+)

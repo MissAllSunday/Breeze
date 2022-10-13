@@ -1,22 +1,22 @@
 declare module 'breezeTypes' {
-	type likeType = {
-		additionalInfo: string
-		alreadyLiked: boolean
-		canLike: boolean
-		contentId: number
-		count: number
-		type: string
-	};
+  interface likeType {
+    additionalInfo: string
+    alreadyLiked: boolean
+    canLike: boolean
+    contentId: number
+    count: number
+    type: string
+  }
 
-	interface LikeProps{
-		item: likeType,
-	}
+  interface LikeProps {
+	  item: likeType
+  }
 
-	interface LikeState {}
+  interface LikeState {}
 }
 
 module.exports = {
-	moodType,
-	MoodProps,
-	MoodState,
-};
+  moodType,
+  MoodProps,
+  MoodState
+}

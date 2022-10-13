@@ -1,22 +1,20 @@
-import axios from "axios";
-import { baseUrl, baseConfig } from "./Api";
-import { likeType } from 'breezeTypes';
+import axios from 'axios'
+import { baseUrl, baseConfig } from './Api'
+import { likeType } from 'breezeTypes'
 
 export interface ServerLikeResponse {
-	data: ServerLikeData
+  data: ServerLikeData
 }
 
 export interface ServerLikeData {
-	content: Array<likeType>
+  content: likeType[]
 }
 
-const action = 'like';
+const action = 'like'
 
-export const postLike = (likeData:object) =>
-{
-	return axios.post<ServerLikeData>(
-		baseUrl(action, 'like'),
-		baseConfig(likeData),
-	)
+export const postLike = async (likeData: object) => {
+  return await axios.post<ServerLikeData>(
+    baseUrl(action, 'like'),
+    baseConfig(likeData)
+  )
 }
-

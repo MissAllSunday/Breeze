@@ -1,23 +1,19 @@
-import React, {useRef} from "react";
+import React, { useRef, useState } from 'react'
 
-import {useState} from 'react';
+const Editor = (props: { saveContent: (content: string) => void }) => {
+  const [content, setContent] = useState('')
 
-const Editor = (props: { saveContent: (content:string) => void; }) => {
+  const handleClick = () => {
+    props.saveContent(content)
+  }
 
-	const [content, setContent] = useState("")
-
-	const handleClick = () => {
-
-		props.saveContent(content)
-	};
-
-	return (
+  return (
 		<div>
 			<textarea id="content" name="content" onChange={e => setContent(e.target.value)} />
 
 			<button onClick={handleClick}>Save</button>
 		</div>
-	);
-};
+  )
+}
 
-export default Editor;
+export default Editor

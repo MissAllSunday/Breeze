@@ -15,7 +15,7 @@ class Components
 	private const FOLDER = 'breezeComponents/';
 
 	private const COMPONENTS = [
-		'breeze-wall',
+		//      'breeze-wall',
 		//		'contentSection',
 		//		'utils',
 		//		'like',
@@ -35,18 +35,14 @@ class Components
 	];
 
 	private const CDN_JS = [
-		//		'vue' => 'https://cdnjs.cloudflare.com/ajax/libs/vue/' . Breeze::VUE_VERSION . '/vue.cjs.prod.min.js',
-		'vue' => 'https://unpkg.com/vue@' . Breeze::VUE_VERSION,
-		//		'axios' => 'https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js',
-		//		'moment' => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js',
-		//		'noti' => 'https://cdn.jsdelivr.net/npm/vue-toast-notification',
-		//		'editor' => 'https://cdn.jsdelivr.net/npm/suneditor@latest/dist/suneditor.min.js',
-		//		'purify' => 'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.0.14/purify.min.js',
+		'react' =>  'https://unpkg.com/react@' . Breeze::REACT_VERSION . '/umd/react.production.min.js',
+		'reactDom' => 'https://unpkg.com/react-dom@' . Breeze::REACT_DOM_VERSION . '/umd/react-dom.production.min.js',
+		'axios' => 'https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js',
 	];
 
 	private const CDN_CSS = [
-		'editor' => 'https://cdn.jsdelivr.net/npm/suneditor@2.41.3/dist/css/suneditor.min.css',
-		'noti' => 'https://cdn.jsdelivr.net/npm/vue-toast-notification/dist/theme-default.css',
+		//		'editor' => 'https://cdn.jsdelivr.net/npm/suneditor@2.41.3/dist/css/suneditor.min.css',
+		//		'noti' => 'https://cdn.jsdelivr.net/npm/vue-toast-notification/dist/theme-default.css',
 	];
 
 	public function loadComponents(array $components = []): void

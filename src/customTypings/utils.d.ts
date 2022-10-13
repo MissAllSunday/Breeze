@@ -1,22 +1,20 @@
 declare module 'breezeTypes' {
 
-	interface UtilsProps {
-		smfVars: smfVars
-	}
+  interface UtilsProps {
+    smfVars: smfVars
+  }
 
-	interface ToastCallback {
-		(): void;
-	}
+  type ToastCallback = () => void
 
-	interface NoticeOptions {
-		message: string
-		appearance: string,
-		autoDismiss: boolean,
-	}
+  interface NoticeOptions {
+    message: string
+    appearance: string
+    autoDismiss: boolean
+  }
 }
 
 module.exports = {
-	UtilsProps,
-	ToastCallback,
-	NoticeOptions
-};
+  UtilsProps,
+  ToastCallback,
+  NoticeOptions
+}

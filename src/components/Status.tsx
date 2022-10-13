@@ -1,17 +1,15 @@
-import * as React from "react";
-import { StatusProps } from 'breezeTypes';
-import Like from "./Like";
-import CommentList from "./CommentList";
+import * as React from 'react'
+import { StatusProps } from 'breezeTypes'
+import Like from './Like'
+import CommentList from './CommentList'
 
+export default class Status extends React.Component<StatusProps> {
+  constructor (props: any) {
+    super(props)
+  }
 
-export default class Status extends React.Component<StatusProps>
-{
-	constructor(props: any) {
-		super(props);
-	}
-
-	render() {
-		return <li key={this.props.status.id}>
+  render () {
+    return <li key={this.props.status.id}>
 	<div className='breeze_avatar avatar_status floatleft'>
 		<div className='windowbg'>
 			<h4 className='floatleft'>
@@ -37,6 +35,6 @@ export default class Status extends React.Component<StatusProps>
 			</div>
 		</div>
 	</div>
-</li>;
-	}
+</li>
+  }
 }
