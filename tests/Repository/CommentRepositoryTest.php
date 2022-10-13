@@ -115,6 +115,11 @@ class CommentRepositoryTest extends TestCase
 							'createdAt' => 581299200,
 							'body' => 'comment body',
 							'likes' => 0,
+							'userData' => [
+								'link' => 'Guest',
+								'name' => 'Guest',
+								'avatar' => ['href' => 'avatar_url/default.png'],
+							],
 						],
 					],],
 			],
