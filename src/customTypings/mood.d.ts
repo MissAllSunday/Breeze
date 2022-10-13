@@ -8,12 +8,12 @@ declare module 'breezeTypes' {
   }
 
   interface MoodProps {
-	  mood: moodType
+    mood: moodType
   }
 
   interface MoodState {
-	  currentMood: moodType
-	  isShowing: boolean
+    currentMood: moodType
+    isShowing: boolean
   }
 }
 

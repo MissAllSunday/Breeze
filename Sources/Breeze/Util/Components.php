@@ -41,7 +41,7 @@ class Components
 	];
 
 	private const CDN_CSS = [
-		//		'editor' => 'https://cdn.jsdelivr.net/npm/suneditor@2.41.3/dist/css/suneditor.min.css',
+		'editor' => 'https://cdn.jsdelivr.net/npm/suneditor@2.41.3/dist/css/suneditor.min.css',
 		//		'noti' => 'https://cdn.jsdelivr.net/npm/vue-toast-notification/dist/theme-default.css',
 	];
 

@@ -9,14 +9,11 @@ declare module 'breezeTypes' {
   }
 
   interface LikeProps {
-	  item: likeType
+    item: likeType
   }
-
-  interface LikeState {}
 }
 
 module.exports = {
-  moodType,
-  MoodProps,
-  MoodState
+  likeType,
+  LikeProps
 }

@@ -1,7 +1,6 @@
 import { ServerStatusResponse, getByProfile, deleteStatus, postStatus, ServerPostStatusResponse } from '../api/StatusApi'
-import React, { useState, useEffect } from 'react'
-import Status from './Status'
-import { statusType, statusListType } from 'breezeTypes'
+import React from 'react'
+import { statusType } from 'breezeTypes'
 import Loading from './Loading'
 import Editor from './Editor'
 import { AxiosResponse } from 'axios'
@@ -19,7 +18,7 @@ export default class StatusByProfile extends React.Component<any, any> {
     this.onNewStatus = this.onNewStatus.bind(this)
   }
 
-  updateState (newData: object) {
+  updateState (newData: object): void {
     const newState = { ...this.state, ...newData }
 
     this.setState(newState, function () {
@@ -27,7 +26,7 @@ export default class StatusByProfile extends React.Component<any, any> {
     })
   }
 
-  componentDidMount () {
+  componentDidMount (): void {
     getByProfile()
       .then((response: ServerStatusResponse) => {
         this.updateState({
@@ -39,7 +38,7 @@ export default class StatusByProfile extends React.Component<any, any> {
       })
   }
 
-  onRemoveStatus (status: statusType) {
+  onRemoveStatus (status: statusType): void {
     this.updateState({
       isLoading: true
     })
@@ -55,10 +54,14 @@ export default class StatusByProfile extends React.Component<any, any> {
         }),
         isLoading: false
       })
+    }).catch(function (error) {
+      console.log(error.response.data)
+      console.log(error.response.status)
+      console.log(error.response.headers)
     })
   }
 
-  onNewStatus (content: string) {
+  onNewStatus (content: string): void {
     this.updateState({
       isLoading: true
     })
@@ -73,11 +76,9 @@ export default class StatusByProfile extends React.Component<any, any> {
         isLoading: false
       })
     }).catch(function (error) {
-      if (error.response) {
-        console.log(error.response.data)
-        console.log(error.response.status)
-        console.log(error.response.headers)
-      }
+      console.log(error.response.data)
+      console.log(error.response.status)
+      console.log(error.response.headers)
     }).finally(() => {
       this.updateState({
         isLoading: false
@@ -85,13 +86,13 @@ export default class StatusByProfile extends React.Component<any, any> {
     })
   }
 
-  render () {
+  render (): JSX.Element {
     return (<div>
-			this.state.isLoading ? <Loading /> :
-			<StatusList
-				statusList={this.state.list}
-				onRemoveStatus={this.onRemoveStatus} />
-			<Editor saveContent={this.onNewStatus} />
-		</div>)
+      this.state.isLoading ? <Loading /> :
+      <StatusList
+        statusList={this.state.list}
+        onRemoveStatus={this.onRemoveStatus} />
+      <Editor saveContent={this.onNewStatus} />
+    </div>)
   }
 }

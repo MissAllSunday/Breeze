@@ -14,7 +14,7 @@ declare module 'breezeTypes' {
   }
 
   interface appProps {
-	  smfVars: smfVars
+    smfVars: smfVars
   }
 }
 

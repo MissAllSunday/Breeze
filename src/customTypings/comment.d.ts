@@ -13,8 +13,8 @@ declare module 'breezeTypes' {
   interface commentList { [id: number]: commentType }
 
   interface CommentProps {
-	  comment: commentType
-	  removeComment: function
+    comment: commentType
+    removeComment: function
   }
 }
 

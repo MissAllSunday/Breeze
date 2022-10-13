@@ -15,31 +15,31 @@ export default class Mood extends Component<MoodProps, MoodState> {
     }
   }
 
-  displayMood () {
+  displayMood (): string {
     const moodTextVars = smfTextVars.mood
 
-    return this.props.mood ? this.props.mood.emoji : moodTextVars.moodChange
+    return this.props.mood.emoji !== 0 ? this.props.mood.emoji : moodTextVars.moodChange
   }
 
-  handleMoodModification () {
+  handleMoodModification (): JSX.Element | object {
     const smfVars = SMF
     const moodText = this.displayMood()
 
     if (smfVars.isCurrentUserOwner && smfVars.useMood) {
       return <span onClick={this.showMoodList} title="{this.props.moodTxt.defaultLabel}" className="pointer_cursor">
-				{moodText}</span>
+        {moodText}</span>
     } else {
       return { moodText }
     }
   }
 
-  showMoodList = () => {
+  showMoodList = (): void => {
     this.setState({
       isShowing: true
     })
   }
 
-  onChangeMood (mood: moodType) {
+  onChangeMood (mood: moodType): void {
     this.setState(
       (prevState) => {
         return {
@@ -50,14 +50,13 @@ export default class Mood extends Component<MoodProps, MoodState> {
     )
   }
 
-  render () {
+  render (): JSX.Element {
     return <div>
-			{/* <Modal */}
-			{/*	isShowing={this.state.isShowing} */}
-			{/*	body={<MoodList/>} */}
-			{/*	header='some header' */}
-			{/* /> */}
-			{/* {this.handleMoodModification() } */}
-	</div>
+       <Modal
+         isShowing={this.state.isShowing}
+         body={<MoodList/>}
+         header='some header'
+       />
+  </div>
   }
 }

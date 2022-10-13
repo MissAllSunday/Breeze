@@ -24,7 +24,7 @@ export const getByProfile = async () => {
   )
 }
 
-export const deleteStatus = async (statusId: number) => {
+export const deleteStatus = async (statusId: number): Promise<any> => {
   // SMF cannot handle custom methods without changing some settings, thus, we are going to use POST for delete calls
   return await axios.post(baseUrl(action, 'deleteStatus'), baseConfig({
     id: statusId,

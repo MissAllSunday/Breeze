@@ -7,12 +7,12 @@ function App () {
 
   return (
     <div className="App breeze_main_section">
-		<UserInfo {...currentUserData}/>
-		<div className="breeze_wall floatright">
-			<ul className="status">
-				<StatusByProfile />
-			</ul>
-		</div>
+      <UserInfo {...currentUserData}/>
+      <div className="breeze_wall floatright">
+        <ul className="status">
+          <StatusByProfile />
+        </ul>
+      </div>
     </div>
   )
 }

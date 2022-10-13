@@ -8,27 +8,28 @@ export default class CommentList extends React.Component<any, any> {
   constructor (props: { comments: commentList }) {
     super(props)
     this.state = {
-      list: {
-        isLoading: true,
-        data: []
-      }
+      list: [],
+      isLoading: true
     }
   }
 
-  updateState (newData: Object) {
-    const list = { ...this.state.list, ...newData }
-    this.setState({ list })
+  updateState (newData: object): void {
+    const newState = { ...this.state, ...newData }
+
+    this.setState(newState, function () {
+      console.log(newState)
+    })
   }
 
-  componentDidMount () {
+  componentDidMount (): void {
     const tmpCommentList: any[] = []
 
     Object.values<commentType>(this.props.comments).forEach((comment, index) => {
       tmpCommentList[comment.id] = <Comment
-				key={comment.id}
-				comment={comment}
-				removeComment={this.onRemoveComment}
-			/>
+        key={comment.id}
+        comment={comment}
+        removeComment={this.onRemoveComment}
+      />
     })
 
     this.updateState({
@@ -37,38 +38,32 @@ export default class CommentList extends React.Component<any, any> {
     })
   }
 
-  onRemoveComment (comment: commentType) {
+  onRemoveComment (comment: commentType): void {
     deleteComment(comment.id).then((response) => {
-      console.log(response)
-      return
-
-      if (response.status === 204) {
-        const tmpCommentList = this.state.list.data
-
-        delete tmpCommentList[comment.id]
-
-        this.updateState({
-          data: tmpCommentList
-        })
-      } else {
-        // show some error
+      if (response.status !== 204) {
+        return
       }
+
+      this.updateState({
+        list: this.state.list.filter(function (commentListItem: commentType) {
+          return commentListItem.id !== comment.id
+        }),
+        isLoading: false
+      })
     }).catch(function (error) {
-      if (error.response) {
-        console.log(error.response.data)
-        console.log(error.response.status)
-        console.log(error.response.headers)
-      }
+      console.log(error.response.data)
+      console.log(error.response.status)
+      console.log(error.response.headers)
     })
   }
 
-  render () {
+  render (): JSX.Element {
     return (
-      this.state.isLoading
+      this.state.isLoading === true
         ? <Loading />
         : <ul className="comments">
-				{this.state.list.data}
-			</ul>
+        {this.state.list.data}
+      </ul>
     )
   }
 }

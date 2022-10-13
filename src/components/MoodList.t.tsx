@@ -1,15 +1,8 @@
-import React, { Component } from 'react'
-import { getActiveMoods, ServerMoodResponse } from '../api/MoodApi'
+import React from 'react'
+import { getActiveMoods } from '../api/MoodApi'
 import { moodType } from 'breezeTypes'
-import Mood from './Mood'
-import Emoji from './Emoji'
 
-interface Props {}
-interface State {
-  list: JSX.Element[]
-}
-
-export default class MoodList extends Component<Props, State> {
+export default class MoodList extends React.Component<any, any> {
   constructor (props: {}) {
     super(props)
     this.state = {
@@ -17,30 +10,22 @@ export default class MoodList extends Component<Props, State> {
     }
   }
 
-  saveMood (mood: moodType) {
+  saveMood (mood: moodType): void {
 
   }
 
-  componentDidMount () {
-    const moods: moodType[] = []
+  componentDidMount (): void {
+    // const moods: moodType[] = []
 
     getActiveMoods().then((result) => {
 
-      // result.data.forEach(function(mood:moodType) {
-      //
-      // })
-      // moods = Object.keys(result.data).map((value: string, index:number) => {
-      // 	let mood: moodType = result.data[index]
-      //
-      // 	return <li><Emoji key={mood.id} mood={mood} handleClick={this.saveMood}></ Emoji></li>
-      // })
-      // this.setState({list: moods});
+    }).catch(exception => {
     })
   }
 
-  render () {
+  render (): JSX.Element {
     return <div id="moodList">
-			<ul>{this.state.list}</ul>
-		</div>
+      <ul>{this.state.list}</ul>
+    </div>
   }
 }

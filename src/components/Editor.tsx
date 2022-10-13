@@ -1,18 +1,18 @@
-import React, { useRef, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
-const Editor = (props: { saveContent: (content: string) => void }) => {
+const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: string) => void }) => {
   const [content, setContent] = useState('')
 
-  const handleClick = () => {
-    props.saveContent(content)
-  }
+  const handleClick = useCallback(() => props.saveContent(content), [props, content])
+
+  const handleContent = useCallback((event: any) => setContent(event.target.value), [])
 
   return (
-		<div>
-			<textarea id="content" name="content" onChange={e => setContent(e.target.value)} />
+    <div>
+      <textarea id="content" name="content" onChange={handleContent} />
 
-			<button onClick={handleClick}>Save</button>
-		</div>
+      <button type={'button'} onClick={handleClick}>Save</button>
+    </div>
   )
 }
 
