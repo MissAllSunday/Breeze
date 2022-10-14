@@ -1,6 +1,7 @@
 import React from 'react'
+import { EmojiProps } from 'breezeTypes'
 
-const Emoji: React.FunctionComponent<any> = (props: any) => {
+const Emoji: React.FunctionComponent<EmojiProps> = (props: EmojiProps) => {
   return <span
     className="emoji"
     role="img"
