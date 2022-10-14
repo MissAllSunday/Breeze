@@ -1,0 +1,52 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "standard-with-typescript"
+    ],
+    "overrides": [
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "project": ["tsconfig.json"]
+    },
+    "plugins": [
+        "react",
+        "eslint-plugin-react",
+        "eslint-plugin-react-hooks"
+    ],
+    "rules": {
+      "@typescript-eslint/explicit-function-return-type": [
+        "error",
+        {
+          "allowTypedFunctionExpressions": true,
+          "allowExpressions": true
+        }
+      ],
+      "@typescript-eslint/strict-boolean-expressions": [
+        "error",
+        {
+          "allowNullableObject": true
+        }
+      ],
+      "semi": "error",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "error",
+      "react/button-has-type": "error",
+      "react/prop-types": "error",
+      "react/require-default-props": "error",
+      "react/no-array-index-key": "error",
+      "react/react-in-jsx-scope": "error",
+      "react/jsx-uses-react": "error",
+      "react/display-name": "error",
+      "react/no-children-prop": "error",
+      "react/no-danger-with-children": "error",
+      "react/jsx-no-bind": "error",
+      "no-tabs": "error"
+    }
+}

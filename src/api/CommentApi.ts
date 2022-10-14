@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { baseUrl, baseConfig } from './Api'
 import { statusType } from 'breezeTypes'
 import smfVars from '../DataSource/SMF'
@@ -14,7 +14,7 @@ interface ServerCommentData {
 
 const action = 'breezeComment'
 
-export const postComment = async (commentParams: object) => {
+export const postComment = async (commentParams: object): Promise<AxiosResponse<ServerCommentData>> => {
   return await axios.post<ServerCommentData>(
     baseUrl(action, 'postComment', [{
       ...commentParams,
@@ -24,7 +24,7 @@ export const postComment = async (commentParams: object) => {
   )
 }
 
-export const deleteComment = async (commentId: number) => {
+export const deleteComment = async (commentId: number): Promise<AxiosResponse<any>> => {
   // SMF cannot handle custom methods without changing some settings, thus, we are going to use POST for delete calls
   return await axios.post(baseUrl(action, 'deleteComment'), baseConfig({
     id: commentId,

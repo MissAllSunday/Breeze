@@ -1,8 +1,8 @@
-const canUseLocalStorage = () => {
+const canUseLocalStorage = (): boolean => {
   const storage = window.localStorage
 
   try {
-    const	x = 'breeze_storage_test'
+    const x = 'breeze_storage_test'
     storage.setItem(x, x)
     storage.removeItem(x)
 
@@ -10,14 +10,14 @@ const canUseLocalStorage = () => {
   } catch (e) {
     return e instanceof DOMException && (
       e.code === 22 ||
-				e.code === 1014 ||
-				e.name === 'QuotaExceededError' ||
-				e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-			storage && storage.length !== 0
+        e.code === 1014 ||
+        e.name === 'QuotaExceededError' ||
+        e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+        storage.length !== 0
   }
 }
 
-const setLocalObject = (keyName: string, objectToStore: object) => {
+const setLocalObject = (keyName: string, objectToStore: object): boolean => {
   if (!canUseLocalStorage()) {
     return false
   }
@@ -27,7 +27,7 @@ const setLocalObject = (keyName: string, objectToStore: object) => {
   return true
 }
 
-const getLocalObject = (keyName: string) => {
+const getLocalObject = (keyName: string): boolean => {
   if (!canUseLocalStorage()) {
     return false
   }
@@ -41,7 +41,7 @@ const getLocalObject = (keyName: string) => {
   }
 }
 
-const decode = (html: string) => {
+const decode = (html: string): string | null => {
   const decoder = document.createElement('div')
   decoder.innerHTML = html
   return decoder.textContent

@@ -1,13 +1,10 @@
 import React from 'react'
-import UserInfo from './components/user/UserInfo'
 import StatusByProfile from './components/StatusByProfile'
 
-function App () {
-  const currentUserData: object = {}
-
+function App (): JSX.Element {
   return (
     <div className="App breeze_main_section">
-      <UserInfo {...currentUserData}/>
+      {/* user info component */}
       <div className="breeze_wall floatright">
         <ul className="status">
           <StatusByProfile />

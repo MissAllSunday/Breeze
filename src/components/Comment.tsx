@@ -3,8 +3,8 @@ import { CommentProps } from 'breezeTypes'
 import Like from './Like'
 
 export default class Comment extends Component<CommentProps> {
-  constructor (props: CommentProps) {
-    super(props)
+  removeComment (): void {
+    this.props.removeComment(this.props.comment)
   }
 
   render (): JSX.Element {
@@ -12,8 +12,7 @@ export default class Comment extends Component<CommentProps> {
       <div className="avatar">
         <img src={this.props.comment.userData.avatar.href} alt={this.props.comment.userData.username}/>
       </div>
-      <div onClick={() =>
-        this.props.removeComment(this.props.comment)}>remove comment</div>
+      <div onClick={ this.removeComment }>remove comment</div>
       {this.props.comment.body}
       <Like
         item={this.props.comment.likesInfo}

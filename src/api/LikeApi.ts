@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { baseUrl, baseConfig } from './Api'
 import { likeType } from 'breezeTypes'
 
@@ -12,7 +12,7 @@ export interface ServerLikeData {
 
 const action = 'like'
 
-export const postLike = async (likeData: object) => {
+export const postLike = async (likeData: object): Promise<AxiosResponse<ServerLikeData>> => {
   return await axios.post<ServerLikeData>(
     baseUrl(action, 'like'),
     baseConfig(likeData)

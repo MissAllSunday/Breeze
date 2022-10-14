@@ -1,6 +1,6 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { baseUrl, baseConfig } from './Api'
-import { statusType, statusListType } from 'breezeTypes'
+import { statusListType } from 'breezeTypes'
 import smfVars from '../DataSource/SMF'
 
 export interface ServerStatusResponse {
@@ -15,7 +15,7 @@ export interface ServerPostStatusResponse {
 
 const action = 'breezeStatus'
 
-export const getByProfile = async () => {
+export const getByProfile = async (): Promise<AxiosResponse<statusListType>> => {
   return await axios.get<statusListType>(
     baseUrl(action, 'statusByProfile', [{
       wallId: smfVars.wallId
@@ -32,7 +32,7 @@ export const deleteStatus = async (statusId: number): Promise<any> => {
   }))
 }
 
-export const postStatus = async (content: string) => {
+export const postStatus = async (content: string): Promise<AxiosResponse<ServerPostStatusResponse>> => {
   return await axios.post<ServerPostStatusResponse>(baseUrl(action, 'postStatus'), baseConfig({
     wallId: smfVars.wallId,
     userId: smfVars.userId,
