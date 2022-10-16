@@ -61,7 +61,7 @@ export default class StatusByProfile extends React.Component<any, any> {
     })
   }
 
-  onNewStatus (content: string): void {
+  onNewStatus = (content: string): void => {
     this.updateState({
       isLoading: true
     })
@@ -75,11 +75,10 @@ export default class StatusByProfile extends React.Component<any, any> {
         list: [...this.state.list, ...Object.values(response.data.content)],
         isLoading: false
       })
-    }).catch(function (error) {
+    }).catch((error) => {
       console.log(error.response.data)
       console.log(error.response.status)
       console.log(error.response.headers)
-    }).finally(() => {
       this.updateState({
         isLoading: false
       })
