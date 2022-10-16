@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer'
 
 // @ts-expect-error
 const session = window.smf_session_var ?? {
@@ -13,7 +14,7 @@ const scriptUrl = window.smf_scripturl ?? process.env.REACT_APP_DEV_URL
 // @ts-expect-error
 const userId = parseInt(window.smf_member_id ?? process.env.REACT_APP_DEV_USER_ID)
 // @ts-expect-error
-const wallId = parseInt((typeof breezeUsers === 'undefined' || breezeUsers === null) ? process.env.REACT_APP_DEV_WALL_ID : breezeUsers.wallOwner)
+const wallId = parseInt(process.env.REACT_APP_DEV_WALL_ID)
 // @ts-expect-error
 const ownerSettings = window.breezeProfileOwnerSettings ?? Buffer.from(process.env.REACT_APP_DEV_OWNER_SETTINGS, 'base64')
 // @ts-expect-error
