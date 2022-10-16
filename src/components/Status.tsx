@@ -1,11 +1,20 @@
 import * as React from 'react'
-import { StatusProps } from 'breezeTypes'
+import { StatusProps, commentType } from 'breezeTypes'
 import Like from './Like'
-import CommentList from './CommentList'
+import { CommentList } from './CommentList'
+import Editor from './Editor'
 
 export default class Status extends React.Component<StatusProps> {
   onRemove = (): void => {
     this.props.removeStatus(this.props.status)
+  }
+
+  onRemoveComment = (comment: commentType): void => {
+
+  }
+
+  onNewComment = (content: string): void => {
+
   }
 
   render (): JSX.Element {
@@ -28,10 +37,11 @@ export default class Status extends React.Component<StatusProps> {
           />
         </div>
         <CommentList
-          comments={this.props.status.comments}
+          commentList={this.props.status.comments}
+          removeComment={this.onRemoveComment}
         />
       <div className='comment_posting'>
-        editor component here
+        <Editor saveContent={this.onNewComment} />
       </div>
     </div>
   </div>

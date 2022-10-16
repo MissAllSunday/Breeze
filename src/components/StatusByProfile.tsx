@@ -1,6 +1,6 @@
 import { ServerStatusResponse, getByProfile, deleteStatus, postStatus, ServerPostStatusResponse } from '../api/StatusApi'
 import React from 'react'
-import { statusType } from 'breezeTypes'
+import { statusType, statusListType } from 'breezeTypes'
 import Loading from './Loading'
 import Editor from './Editor'
 import { AxiosResponse } from 'axios'
@@ -29,8 +29,15 @@ export default class StatusByProfile extends React.Component<any, any> {
   componentDidMount (): void {
     getByProfile()
       .then((response: ServerStatusResponse) => {
+        let newStatus: statusListType = Object.values(response.data)
+        newStatus = newStatus.map((status: statusType) => {
+          status.comments = Object.values(status.comments)
+
+          return status
+        })
+
         this.updateState({
-          list: Object.values(response.data),
+          list: newStatus,
           isLoading: false
         })
       })
