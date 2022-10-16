@@ -5,6 +5,13 @@ import { CommentList } from './CommentList'
 import Editor from './Editor'
 
 export default class Status extends React.Component<StatusProps> {
+  constructor (props: any) {
+    super(props)
+    this.state = {
+      isLoading: true
+    }
+  }
+
   onRemove = (): void => {
     this.props.removeStatus(this.props.status)
   }

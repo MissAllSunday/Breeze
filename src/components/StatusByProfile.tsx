@@ -1,10 +1,11 @@
 import { ServerStatusResponse, getByProfile, deleteStatus, postStatus, ServerPostStatusResponse } from '../api/StatusApi'
 import React from 'react'
-import { statusType, statusListType } from 'breezeTypes'
+import { statusType, statusListType, removeCommentProps, commentType } from 'breezeTypes'
 import Loading from './Loading'
 import Editor from './Editor'
 import { AxiosResponse } from 'axios'
 import { StatusList } from './StatusList'
+import { deleteComment } from '../api/CommentApi'
 
 export default class StatusByProfile extends React.Component<any, any> {
   constructor (props: any) {
@@ -13,9 +14,6 @@ export default class StatusByProfile extends React.Component<any, any> {
       list: [],
       isLoading: true
     }
-
-    // this.onRemoveStatus = this.onRemoveStatus.bind(this)
-    // this.onNewStatus = this.onNewStatus.bind(this)
   }
 
   updateState (newData: object): void {
@@ -60,6 +58,34 @@ export default class StatusByProfile extends React.Component<any, any> {
           return statusListItem.id !== status.id
         }),
         isLoading: false
+      })
+    }).catch(function (error) {
+      console.log(error.response.data)
+      console.log(error.response.status)
+      console.log(error.response.headers)
+    })
+  }
+
+  onRemoveComment = ({ status, comment }: removeCommentProps): void => {
+    this.setState({
+      isLoading: true
+    })
+
+    deleteComment(comment.id).then((response) => {
+      if (response.status !== 204) {
+        return
+      }
+
+      const newStatusList = this.state.list.map(function (statusListItem: statusType) {
+        statusListItem.comments = statusListItem.comments.filter(function (commentListItem: commentType) {
+          return commentListItem.id !== comment.id
+        })
+        return statusListItem
+      })
+
+      this.setState({
+        list: newStatusList,
+        isLoading: true
       })
     }).catch(function (error) {
       console.log(error.response.data)
