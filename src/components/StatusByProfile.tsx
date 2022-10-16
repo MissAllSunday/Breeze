@@ -1,11 +1,11 @@
 import { ServerStatusResponse, getByProfile, deleteStatus, postStatus, ServerPostStatusResponse } from '../api/StatusApi'
 import React from 'react'
-import { statusType, statusListType, removeCommentProps, commentType } from 'breezeTypes'
+import { statusType, statusListType, removeCommentProps, commentType, newCommentProps } from 'breezeTypes'
 import Loading from './Loading'
 import Editor from './Editor'
 import { AxiosResponse } from 'axios'
 import { StatusList } from './StatusList'
-import { deleteComment } from '../api/CommentApi'
+import { deleteComment, postComment } from '../api/CommentApi'
 
 export default class StatusByProfile extends React.Component<any, any> {
   constructor (props: any) {
@@ -118,12 +118,26 @@ export default class StatusByProfile extends React.Component<any, any> {
     })
   }
 
+  onNewComment = ({ content, status }: newCommentProps): void => {
+    postComment({
+      statusID: status.id,
+      body: content
+    }).then(() => {
+
+    }).catch(() => {
+
+    })
+  }
+
   render (): JSX.Element {
     return (<div>
       this.state.isLoading ? <Loading /> :
       <StatusList
         statusList={this.state.list}
-        onRemoveStatus={this.onRemoveStatus} />
+        onRemoveStatus={this.onRemoveStatus}
+        onRemoveComment={this.onRemoveComment}
+        onNewComment={this.onNewComment}
+      />
       <Editor saveContent={this.onNewStatus} />
     </div>)
   }

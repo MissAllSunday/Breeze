@@ -12,6 +12,11 @@ declare module 'breezeTypes' {
 
   type commentList = Map<statusType>
 
+  interface newCommentProps {
+    content: string
+    status: statusType
+  }
+
   interface removeCommentProps {
     status: statusType
     comment: commentType
