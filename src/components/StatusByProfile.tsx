@@ -14,15 +14,15 @@ export default class StatusByProfile extends React.Component<any, any> {
       isLoading: true
     }
 
-    this.onRemoveStatus = this.onRemoveStatus.bind(this)
-    this.onNewStatus = this.onNewStatus.bind(this)
+    // this.onRemoveStatus = this.onRemoveStatus.bind(this)
+    // this.onNewStatus = this.onNewStatus.bind(this)
   }
 
   updateState (newData: object): void {
     const newState = { ...this.state, ...newData }
 
     this.setState(newState, function () {
-      console.log(newState)
+      // console.log(newState)
     })
   }
 
@@ -38,7 +38,7 @@ export default class StatusByProfile extends React.Component<any, any> {
       })
   }
 
-  onRemoveStatus (status: statusType): void {
+  onRemoveStatus = (status: statusType): void => {
     this.updateState({
       isLoading: true
     })

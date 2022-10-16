@@ -12,7 +12,7 @@ const mood: moodType = {
   isActive: true
 }
 
-const handleClickCalled = () => {
+const handleClickCalled = (): void => {
 }
 
 describe('App', () => {

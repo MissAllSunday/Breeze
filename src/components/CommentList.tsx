@@ -17,7 +17,7 @@ export default class CommentList extends React.Component<any, any> {
     const newState = { ...this.state, ...newData }
 
     this.setState(newState, function () {
-      console.log(newState)
+      // console.log(newState)
     })
   }
 

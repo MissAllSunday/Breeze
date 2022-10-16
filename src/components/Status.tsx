@@ -4,7 +4,7 @@ import Like from './Like'
 import CommentList from './CommentList'
 
 export default class Status extends React.Component<StatusProps> {
-  onRemove (): void {
+  onRemove = (): void => {
     this.props.removeStatus(this.props.status)
   }
 
