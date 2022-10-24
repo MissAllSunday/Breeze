@@ -25,9 +25,9 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 	private array $profileOwnerSettings = [];
 
 	public function __construct(
-		private UserServiceInterface $userService,
+		private UserServiceInterface      $userService,
 		private StatusRepositoryInterface $statusRepository,
-		private Components $components
+		private Components                $components
 	) {
 	}
 

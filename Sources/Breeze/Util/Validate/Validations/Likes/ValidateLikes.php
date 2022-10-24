@@ -5,17 +5,12 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations\Likes;
 
-use Breeze\Repository\LikeRepositoryInterface;
 use Breeze\Util\Validate\Validations\ValidateData;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-abstract class ValidateLikes extends ValidateData
+abstract class ValidateLikes extends ValidateData implements ValidateDataInterface
 {
-	public function __construct(protected LikeRepositoryInterface $repository)
+	public function __construct(protected Like $like)
 	{
-	}
-
-	public static function getNameSpace(): string
-	{
-		return __NAMESPACE__ . '\\';
 	}
 }

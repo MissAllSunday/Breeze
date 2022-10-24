@@ -49,7 +49,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 
 	public function defaultSubActionContent(
 		string $subActionName,
-		array $templateParams = [],
+		array  $templateParams = [],
 		string $smfTemplate = ''
 	): void {
 		if (empty($subActionName)) {
@@ -59,7 +59,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 		$context = $this->global('context');
 		$scriptUrl = $this->global('scripturl');
 
-		$context['post_url'] =  $scriptUrl . '?' .
+		$context['post_url'] = $scriptUrl . '?' .
 			AdminService::POST_URL . $subActionName . ';' .
 			$context['session_var'] . '=' . $context['session_id'] . ';save';
 

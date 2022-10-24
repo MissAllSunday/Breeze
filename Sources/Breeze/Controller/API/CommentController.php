@@ -8,12 +8,10 @@ namespace Breeze\Controller\API;
 use Breeze\Entity\CommentEntity;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidCommentException;
-use Breeze\Util\Validate\ValidateGateway;
-use Breeze\Util\Validate\ValidateGatewayInterface;
-use Breeze\Util\Validate\Validations\Comment\ValidateComment;
+use Breeze\Util\Response;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class CommentController extends ApiBaseController implements ApiBaseInterface
+class CommentController extends ApiBaseController
 {
 	public const ACTION_POST_COMMENT = 'postComment';
 	public const ACTION_DELETE = 'deleteComment';
@@ -23,13 +21,12 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 		self::ACTION_DELETE,
 	];
 
-	protected ValidateDataInterface $validator;
-
 	public function __construct(
-		private CommentRepositoryInterface $commentRepository,
-		protected ValidateGatewayInterface $gateway
+		protected CommentRepositoryInterface $commentRepository,
+		protected ValidateDataInterface $validator,
+		protected Response $response
 	) {
-		parent::__construct($gateway);
+		parent::__construct($validator, $response);
 	}
 
 	public function getSubActions(): array
@@ -37,53 +34,29 @@ class CommentController extends ApiBaseController implements ApiBaseInterface
 		return self::SUB_ACTIONS;
 	}
 
-	public function setValidator(): void
-	{
-		$validatorName = ValidateComment::getNameSpace() . ucfirst($this->subAction);
-
-		$this->validator = new $validatorName($this->commentRepository);
-	}
-
-	public function getValidator(): ValidateDataInterface
-	{
-		return $this->validator;
-	}
-
 	public function postComment(): void
 	{
 		try {
-			$commentId = $this->commentRepository->save($this->validator->getData());
+			$commentId = $this->commentRepository->save($this->data);
 
-			$this->print(array_merge(
-				$this->gateway->response(),
-				['content' => $this->commentRepository->getById($commentId)]
-			));
+			$this->response->success(
+				$this->validator->successKeyString(),
+				$this->commentRepository->getById($commentId),
+				Response::CREATED
+			);
 		} catch (InvalidCommentException $invalidCommentException) {
-			$this->print([
-				'type' => ValidateGateway::ERROR_TYPE,
-				'message' => $invalidCommentException->getMessage(),
-			]);
+			$this->response->error($invalidCommentException->getMessage(), $invalidCommentException->getResponseCode());
 		}
 	}
 
 	public function deleteComment(): void
 	{
-		$data = $this->validator->getData();
-
 		try {
-			$this->commentRepository->deleteById($data[CommentEntity::ID]);
+			$this->commentRepository->deleteById($this->data[CommentEntity::ID]);
 
-			$this->print($this->gateway->response());
+			$this->response->success($this->validator->successKeyString(), [], Response::NO_CONTENT);
 		} catch (InvalidCommentException $invalidCommentException) {
-			$this->print([
-				'type' => ValidateGateway::ERROR_TYPE,
-				'message' => $invalidCommentException->getMessage(),
-			]);
+			$this->response->error($invalidCommentException->getMessage(), $invalidCommentException->getResponseCode());
 		}
-	}
-
-	public function getMainAction(): string
-	{
-		return self::ACTION_POST_COMMENT;
 	}
 }

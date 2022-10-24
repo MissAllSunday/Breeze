@@ -6,18 +6,24 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\User;
 
 use Breeze\Entity\UserSettingsEntity;
+use Breeze\Repository\BaseRepositoryInterface;
+use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\Validations\BaseActions;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Validate\Types\Allow;
+use Breeze\Validate\Types\Data;
+use Breeze\Validate\Types\User;
 
-class UserSettings extends ValidateUser implements ValidateDataInterface
+class UserSettings extends BaseActions implements ValidateDataInterface
 {
 	protected const SUCCESS_KEY = 'updated_settings';
 
-	public function getSteps(): array
-	{
-		return array_merge($this->steps, [
-			self::INT,
-			self::STRING,
-		]);
+	public function __construct(
+		protected Data $validateData,
+		protected Allow $validateAllow,
+		protected User $validateUser,
+		protected BaseRepositoryInterface $repository
+	) {
 	}
 
 	public function getParams(): array
@@ -27,33 +33,11 @@ class UserSettings extends ValidateUser implements ValidateDataInterface
 		return array_merge($defaultValues, $this->data);
 	}
 
-	public function getData(): array
+	/**
+	 * @throws DataNotFoundException
+	 */
+	public function isValid(): void
 	{
-		return $this->getParams();
-	}
-
-	public function getInts(): array
-	{
-		return array_keys(UserSettingsEntity::getInts());
-	}
-
-	public function getStrings(): array
-	{
-		return array_keys(UserSettingsEntity::getStrings());
-	}
-
-	public function getUserIdsNames(): array
-	{
-		return [];
-	}
-
-	public function getPosterId(): int
-	{
-		return 0;
-	}
-
-	public function successKeyString(): string
-	{
-		return self::SUCCESS_KEY;
+		$this->validateData->compare(UserSettingsEntity::getDefaultValues(), $this->getParams());
 	}
 }

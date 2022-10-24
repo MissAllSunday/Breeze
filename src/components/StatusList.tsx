@@ -5,8 +5,7 @@ import React from 'react'
 export const StatusList = ({
   statusList,
   onRemoveStatus,
-  onRemoveComment,
-  onNewComment
+  onRemoveComment
 }: StatusListProps): React.ReactElement<Status> => (
   <ul className="status">
     {statusList.map((status: statusType) => (
@@ -15,7 +14,6 @@ export const StatusList = ({
         status={status}
         removeStatus={onRemoveStatus}
         removeComment={onRemoveComment}
-        newComment={onNewComment}
       />
     ))}
   </ul>

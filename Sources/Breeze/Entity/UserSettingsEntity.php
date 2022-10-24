@@ -8,7 +8,7 @@ namespace Breeze\Entity;
 class UserSettingsEntity extends BaseEntity implements BaseEntityInterface
 {
 	public const IDENTIFIER = 'user_settings';
-	public const WALL =  'wall';
+	public const WALL = 'wall';
 	public const GENERAL_WALL = 'generalWall';
 	public const PAGINATION_NUM = 'paginationNumber';
 	public const KICK_IGNORED = 'kickIgnored';
@@ -43,7 +43,7 @@ class UserSettingsEntity extends BaseEntity implements BaseEntityInterface
 	public static function getInts(): array
 	{
 		return array_filter(self::getDefaultValues(), function (string $part): bool {
-			return (bool) strlen($part);
+			return (bool)strlen($part);
 		});
 	}
 

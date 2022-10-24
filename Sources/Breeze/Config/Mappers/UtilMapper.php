@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Config\Mapper;
 
-use Breeze\Service\UserService;
 use Breeze\Util\Components;
 use Breeze\Util\Folder;
 use Breeze\Util\Form\SettingsBuilder;
@@ -14,7 +13,6 @@ use Breeze\Util\Form\Types\IntType;
 use Breeze\Util\Form\Types\SelectType;
 use Breeze\Util\Form\Types\TextType;
 use Breeze\Util\Form\UserSettingsBuilder;
-use Breeze\Util\Validate\ValidateGateway;
 
 return [
 	'util.folder' => [
@@ -40,9 +38,5 @@ return [
 	],
 	'util.formatter.text' => [
 		'class' => TextType::class,
-	],
-	'util.validate.gateway' => [
-		'class' => ValidateGateway::class,
-		'arguments'=> [UserService::class],
 	],
 ];

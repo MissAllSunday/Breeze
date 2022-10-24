@@ -14,9 +14,9 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	public const CACHE_BY_PROFILE = 'getByProfile';
 
 	public function __construct(
-		private StatusModelInterface $statusModel,
+		private StatusModelInterface       $statusModel,
 		private CommentRepositoryInterface $commentRepository,
-		private LikeRepositoryInterface $likeRepository
+		private LikeRepositoryInterface    $likeRepository
 	) {
 	}
 
@@ -58,7 +58,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			throw new DataNotFoundException('no_status');
 		}
 
-		$comments =  $this->commentRepository->getByProfile($profileOwnerId);
+		$comments = $this->commentRepository->getByProfile($profileOwnerId);
 		$status['data'] = $this->likeRepository->appendLikeData($status['data'], StatusEntity::ID);
 
 		$usersData = $this->loadUsersInfo(array_unique($status['usersIds']));
@@ -84,7 +84,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			throw new DataNotFoundException('no_status');
 		}
 
-		$comments =  $this->commentRepository->getByStatus([$statusId]);
+		$comments = $this->commentRepository->getByStatus([$statusId]);
 		$usersData = $this->loadUsersInfo(array_unique($status['usersIds']));
 		$status['data'] = $this->likeRepository->appendLikeData($status['data'], StatusEntity::ID);
 

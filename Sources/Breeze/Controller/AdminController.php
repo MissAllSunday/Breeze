@@ -6,9 +6,8 @@ namespace Breeze\Controller;
 
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
-use Breeze\Service\Actions\AdminService;
+use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Service\Actions\AdminServiceInterface;
-use Breeze\Service\MoodServiceInterface;
 use Breeze\Traits\PersistenceTrait;
 
 class AdminController extends BaseController implements ControllerInterface
@@ -16,13 +15,9 @@ class AdminController extends BaseController implements ControllerInterface
 	use PersistenceTrait;
 
 	public const ACTION_MAIN = 'main';
-
 	public const ACTION_SETTINGS = 'settings';
-
 	public const ACTION_PERMISSIONS = 'permissions';
-
 	public const ACTION_MOOD_LIST = 'moodList';
-
 	public const ACTION_DONATE = 'donate';
 
 	public const SUB_ACTIONS = [
@@ -33,16 +28,10 @@ class AdminController extends BaseController implements ControllerInterface
 		self::ACTION_DONATE,
 	];
 
-	protected MoodServiceInterface $moodService;
-
-	private AdminServiceInterface $adminService;
-
 	public function __construct(
-		AdminServiceInterface $adminService,
-		MoodServiceInterface $moodService
+		protected AdminServiceInterface $adminService,
+		protected MoodRepositoryInterface  $moodRepository
 	) {
-		$this->adminService = $adminService;
-		$this->moodService = $moodService;
 	}
 
 	public function dispatch(): void
@@ -74,7 +63,7 @@ class AdminController extends BaseController implements ControllerInterface
 		$this->adminService->configVars($saving);
 
 		if ($saving) {
-			$this->adminService->redirect(AdminService::POST_URL . __FUNCTION__);
+			$this->adminService->redirect(AdminServiceInterface::POST_URL . __FUNCTION__);
 		}
 	}
 
@@ -87,7 +76,7 @@ class AdminController extends BaseController implements ControllerInterface
 		$this->adminService->permissionsConfigVars($saving);
 
 		if ($saving) {
-			$this->adminService->redirect(AdminService::POST_URL . __FUNCTION__);
+			$this->adminService->redirect(AdminServiceInterface::POST_URL . __FUNCTION__);
 		}
 	}
 
@@ -100,10 +89,10 @@ class AdminController extends BaseController implements ControllerInterface
 	{
 		$this->adminService->isEnableFeature(
 			SettingsEntity::ENABLE_MOOD,
-			AdminService::POST_URL . 'main'
+			AdminServiceInterface::POST_URL . 'main'
 		);
 
-		$this->moodService->moodList();
+		$this->moodRepository->getAllMoods();
 
 		$this->render(__FUNCTION__);
 	}

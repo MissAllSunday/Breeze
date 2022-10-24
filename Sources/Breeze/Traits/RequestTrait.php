@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Traits;
 
+use Breeze\Util\Json;
+
 trait RequestTrait
 {
 	private mixed $request;
@@ -12,6 +14,12 @@ trait RequestTrait
 	public function init(): void
 	{
 		$this->request = $_REQUEST;
+	}
+
+	public function getData(array $data = []): array
+	{
+		return array_filter(!empty($data) ? $data :
+			$this->sanitize(Json::decode(file_get_contents('php://input'))['data']));
 	}
 
 	public function getRequest(string $variableName, $defaultValue = null)
@@ -52,12 +60,12 @@ trait RequestTrait
 		}
 
 		$var = $smcFunc['htmlspecialchars'](
-			$smcFunc['htmltrim']((string) $variable),
+			$smcFunc['htmltrim']((string)$variable),
 			\ENT_QUOTES
 		);
 
 		if (ctype_digit($var)) {
-			$var = (int) $var;
+			$var = (int)$var;
 		}
 
 		if (empty($var)) {

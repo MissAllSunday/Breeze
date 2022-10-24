@@ -16,72 +16,79 @@ use Breeze\Controller\User\WallController;
 use Breeze\Repository\CommentRepository;
 use Breeze\Repository\LikeRepository;
 use Breeze\Repository\StatusRepository;
+use Breeze\Repository\User\MoodRepository;
+use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminService;
 use Breeze\Service\Actions\UserSettingsService;
 use Breeze\Service\Actions\WallService;
-use Breeze\Service\MoodService;
 use Breeze\Service\UserService;
 use Breeze\Util\Form\UserSettingsBuilder;
-use Breeze\Util\Validate\ValidateGateway;
+use Breeze\Util\Response;
+use Breeze\Util\Validate\Validations\Comment\ValidateComment;
+use Breeze\Util\Validate\Validations\Likes\ValidateLikes;
+use Breeze\Util\Validate\Validations\Mood\ValidateMood;
+use Breeze\Util\Validate\Validations\Status\ValidateStatus;
 
 return [
 	'controller.admin' => [
 		'class' => AdminController::class,
-		'arguments'=> [
+		'arguments' => [
 			AdminService::class,
-			MoodService::class,
+			MoodRepository::class,
 		],
 	],
 	'controller.wall' => [
 		'class' => WallController::class,
-		'arguments'=> [
+		'arguments' => [
 			WallService::class,
 			UserService::class,
 		],
 	],
 	'controller.status' => [
 		'class' => StatusController::class,
-		'arguments'=> [
+		'arguments' => [
 			StatusRepository::class,
-			ValidateGateway::class,
+			ValidateStatus::class,
+			Response::class,
 		],
 	],
 	'controller.comment' => [
 		'class' => CommentController::class,
-		'arguments'=> [
+		'arguments' => [
 			CommentRepository::class,
-			ValidateGateway::class,
+			ValidateComment::class,
+			Response::class,
 		],
 	],
 	'controller.user.alerts' => [
 		'class' => AlertsController::class,
-		'arguments'=> [
+		'arguments' => [
 			UserService::class,
 		],
 	],
 	'controller.user.settings' => [
 		'class' => UserSettingsController::class,
-		'arguments'=> [
+		'arguments' => [
 			UserSettingsService::class,
 			UserService::class,
 			UserSettingsBuilder::class,
-			ValidateGateway::class,
 		],
 	],
 	'controller.mood' => [
 		'class' => MoodController::class,
-		'arguments'=> [
-			UserService::class,
-			UserSettingsService::class,
-			MoodService::class,
-			ValidateGateway::class,
+		'arguments' => [
+			UserRepository::class,
+			MoodRepository::class,
+			ValidateMood::class,
+			Response::class,
 		],
 	],
 	'controller.likes' => [
 		'class' => LikesController::class,
-		'arguments'=> [
+		'arguments' => [
 			LikeRepository::class,
-			ValidateGateway::class,
+			ValidateLikes::class,
+			Response::class,
 		],
 	],
 ];

@@ -48,7 +48,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 			'columnName' => StatusEntity::WALL_ID,
 			'profileIds' => $profileOwnerIds,
 			'statusTable' => StatusEntity::TABLE,
-			'compare' =>  StatusEntity::TABLE .
+			'compare' => StatusEntity::TABLE .
 				'.' . StatusEntity::ID . ' = ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::STATUS_ID,
 		]);
 
@@ -139,15 +139,15 @@ class CommentModel extends BaseModel implements CommentModelInterface
 			if ($useStatusID) {
 				$comments[$row[CommentEntity::STATUS_ID]][$row[CommentEntity::ID]] =
 					array_map(function ($rowValue) {
-						return ctype_digit($rowValue) ? ((int) $rowValue) : $rowValue;
+						return ctype_digit($rowValue) ? ((int)$rowValue) : $rowValue;
 					}, $row);
 			} else {
 				$comments[$row[CommentEntity::ID]] = array_map(function ($rowValue) {
-					return ctype_digit($rowValue) ? ((int) $rowValue) : $rowValue;
+					return ctype_digit($rowValue) ? ((int)$rowValue) : $rowValue;
 				}, $row);
 			}
 
-			$usersIds[] = (int) $row[CommentEntity::USER_ID];
+			$usersIds[] = (int)$row[CommentEntity::USER_ID];
 		}
 
 		$this->dbClient->freeResult($request);

@@ -9,7 +9,7 @@ interface WallServiceInterface extends ActionsServiceInterface
 {
 	public const ACTION = 'breeze';
 
-	public function init(array $subActions):void;
+	public function init(array $subActions): void;
 
 	public function defaultSubActionContent(string $subTemplate, array $params, string $smfTemplate);
 

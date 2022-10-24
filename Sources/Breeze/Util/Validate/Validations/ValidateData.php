@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations;
 
 use \Breeze\Traits\RequestTrait;
-use Breeze\Entity\SettingsEntity;
 use Breeze\Traits\PersistenceTrait;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Json;
@@ -17,19 +16,34 @@ abstract class ValidateData
 	use TextTrait;
 	use PersistenceTrait;
 
+	public function set(string $action, $data): void
+	{
+		$this->{$action}->setData($data);
+		$this->{$action}->execute();
+	}
+
+	// User
+	protected const VALID_USERS = 'areValidUsers';
+	protected const VALID_USER = 'validUser';
+	protected const SAME_USER = 'isSameUser';
+	protected const IGNORE_LIST = 'ignoreList';
+
+	// Data
+	protected const DATA_EXISTS = 'dataExists';
 	protected const COMPARE = 'compare';
 	protected const INT = 'isInt';
 	protected const STRING = 'isString';
-	protected const VALID_USERS = 'areValidUsers';
-	protected const VALID_USER = 'validUser';
+
+
 	protected const FLOOD_CONTROL = 'floodControl';
 	protected const PERMISSIONS = 'permissions';
+	protected const FEATURE_ENABLE = 'isFeatureEnabled';
+
+
+	// replace with dataExists
 	protected const VALID_STATUS = 'validStatus';
 	protected const VALID_COMMENT = 'validComment';
-	protected const IGNORE_LIST = 'ignoreList';
-	protected const DATA_EXISTS = 'dataExists';
-	protected const FEATURE_ENABLE = 'isFeatureEnabled';
-	protected const SAME_USER = 'isSameUser';
+
 
 	protected const DEFAULT_STEPS = [
 		self::COMPARE,
@@ -117,49 +131,8 @@ abstract class ValidateData
 		$sessionUser = $this->global('user_info');
 		$posterUserId = $this->getPosterId();
 
-		if (empty($posterUserId) || $posterUserId !== (int) $sessionUser['id']) {
+		if (empty($posterUserId) || $posterUserId !== (int)$sessionUser['id']) {
 			throw new DataNotFoundException('invalid_users');
-		}
-	}
-
-	/**
-	 * @throws DataNotFoundException
-	 */
-	public function floodControl(): void
-	{
-		$posterId = $this->getPosterId();
-		$seconds = 60 * ($this->getSetting(SettingsEntity::MAX_FLOOD_MINUTES, 5));
-		$messages = $this->getSetting(SettingsEntity::MAX_FLOOD_NUM, 10);
-		$floodKeyName = 'flood_' . $posterId;
-
-		$floodData = $this->getPersistenceValue($floodKeyName);
-
-		if (empty($floodData)) {
-			$floodData = [
-				'time' => time() + $seconds,
-				'msgCount' => 0,
-			];
-		}
-
-		$floodData['msgCount']++;
-
-		// Chatty one huh?
-		if ($floodData['msgCount'] >= $messages && time() <= $floodData['time']) {
-			throw new DataNotFoundException('flood');
-		}
-
-		if (time() >= $floodData['time']) {
-			$this->unsetPersistenceValue($floodKeyName);
-		}
-	}
-
-	/**
-	 * @throws DataNotFoundException
-	 */
-	public function compare(): void
-	{
-		if (!empty(array_diff_key($this->getParams(), $this->getData()))) {
-			throw new DataNotFoundException('incomplete_data');
 		}
 	}
 

@@ -12,7 +12,7 @@ abstract class ActionsBaseService extends BaseService implements ActionsServiceI
 {
 	public function defaultSubActionContent(
 		string $subActionName,
-		array $templateParams = [],
+		array  $templateParams = [],
 		string $smfTemplate = ''
 	): void {
 		if (empty($subActionName)) {
@@ -45,7 +45,7 @@ abstract class ActionsBaseService extends BaseService implements ActionsServiceI
 		$this->setGlobal('context', $context);
 	}
 
-	abstract public function init(array $subActions):void;
+	abstract public function init(array $subActions): void;
 
 	abstract public function getActionName(): string;
 }

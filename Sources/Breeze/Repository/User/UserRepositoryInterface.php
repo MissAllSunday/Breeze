@@ -6,7 +6,7 @@ namespace Breeze\Repository\User;
 
 interface UserRepositoryInterface
 {
-	public function getUserSettings(int $userId): array;
+	public function getById(int $id): array;
 
-	public function save(array $userSettings, int $userId): int;
+	public function save(array $userSettings, int $userId): bool;
 }

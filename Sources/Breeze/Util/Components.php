@@ -35,7 +35,7 @@ class Components
 	];
 
 	private const CDN_JS = [
-		'react' =>  'https://unpkg.com/react@' . Breeze::REACT_VERSION . '/umd/react.production.min.js',
+		'react' => 'https://unpkg.com/react@' . Breeze::REACT_VERSION . '/umd/react.production.min.js',
 		'reactDom' => 'https://unpkg.com/react-dom@' . Breeze::REACT_DOM_VERSION . '/umd/react-dom.production.min.js',
 		'axios' => 'https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js',
 	];

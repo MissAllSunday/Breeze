@@ -10,7 +10,7 @@ trait CacheTrait
 {
 	public function getCache(string $key, int $timeToLive = 360): array
 	{
-		return (array) cache_get_data(
+		return (array)cache_get_data(
 			$this->buildKey($key),
 			$timeToLive
 		);

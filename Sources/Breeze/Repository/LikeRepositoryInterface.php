@@ -23,13 +23,13 @@ interface LikeRepositoryInterface extends BaseRepositoryInterface
 
 	public function count(string $type, int $contentId): int;
 
-	public function appendLikeData(array $items, string $itemIdName) : array;
+	public function appendLikeData(array $items, string $itemIdName): array;
 
 	public function buildLikeData(
 		?string $type,
-		?int $contentId,
-		?int $userId,
-		?bool $isContentAlreadyLiked = null
+		?int    $contentId,
+		?int    $userId,
+		?bool   $isContentAlreadyLiked = null
 	): array;
 
 	public function likeContent(string $type, int $contentId, int $userId): array;

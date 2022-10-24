@@ -5,23 +5,19 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Comment;
 
 use Breeze\Entity\CommentEntity as CommentEntity;
-use Breeze\Repository\CommentRepositoryInterface;
-use Breeze\Repository\InvalidCommentException;
+use Breeze\Repository\BaseRepositoryInterface;
+use Breeze\Repository\InvalidDataException;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
+use Breeze\Util\Validate\Validations\BaseActions;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Validate\Types\Allow;
+use Breeze\Validate\Types\Data;
+use Breeze\Validate\Types\User;
 
-class DeleteComment extends ValidateComment implements ValidateDataInterface
+class DeleteComment extends BaseActions implements ValidateDataInterface
 {
-	public array $steps = [
-		self::COMPARE,
-		self::INT,
-		self::VALID_COMMENT,
-		self::VALID_USER,
-		self::PERMISSIONS,
-	];
-
 	protected const PARAMS = [
 		CommentEntity::ID => 0,
 		CommentEntity::USER_ID => 0,
@@ -30,7 +26,10 @@ class DeleteComment extends ValidateComment implements ValidateDataInterface
 	protected const SUCCESS_KEY = 'deleted_comment';
 
 	public function __construct(
-		protected CommentRepositoryInterface $commentRepository
+		protected Data $validateData,
+		protected User $validateUser,
+		protected Allow $validateAllow,
+		protected BaseRepositoryInterface $repository
 	) {
 	}
 
@@ -39,79 +38,31 @@ class DeleteComment extends ValidateComment implements ValidateDataInterface
 		return self::SUCCESS_KEY;
 	}
 
-	public function getSteps(): array
-	{
-		return $this->steps;
-	}
-
 	/**
 	 * @throws NotAllowedException
 	 */
 	public function permissions(): void
 	{
-		$currentUserInfo = $this->getCurrentUserInfo();
+		$permissionName = $this->repository->getCurrentUserInfo()['id'] === $this->data[CommentEntity::USER_ID] ?
+			Permissions::DELETE_OWN_COMMENTS : Permissions::DELETE_COMMENTS;
 
-		if ($currentUserInfo['id'] === $this->data[CommentEntity::USER_ID] &&
-			!Permissions::isAllowedTo(Permissions::DELETE_OWN_COMMENTS)) {
-			throw new NotAllowedException('deleteComments');
-		}
-
-		if (!Permissions::isAllowedTo(Permissions::DELETE_COMMENTS)) {
-			throw new NotAllowedException('deleteComments');
-		}
+		$this->validateAllow->permissions($permissionName, 'deleteStatus');
 	}
 
 	/**
-	 * @throws InvalidCommentException
-	 */
-	public function validComment(): void
-	{
-		$this->commentRepository->getById($this->data[CommentEntity::ID]);
-	}
-
-	/**
-	 * @throws InvalidCommentException
+	 * @throws InvalidDataException
+	 * @throws NotAllowedException
 	 * @throws DataNotFoundException
 	 */
-	public function validUser(): void
+	public function isValid(): void
 	{
-		$comment = $this->commentRepository->getById($this->data[CommentEntity::ID]);
+		$this->validateData->compare(self::PARAMS, $this->data);
 
-		if (!isset($this->data[CommentEntity::USER_ID]) ||
-			($this->data[CommentEntity::USER_ID]
-			!==
-			$comment['data'][$this->data[CommentEntity::ID]][CommentEntity::USER_ID])) {
-			throw new DataNotFoundException('wrong_values');
-		}
-	}
+		$userId = $this->data[CommentEntity::USER_ID];
+		$commentId = $this->data[CommentEntity::ID];
 
-	public function getInts(): array
-	{
-		return [
-			CommentEntity::ID,
-			CommentEntity::USER_ID,
-		];
-	}
-
-	public function getUserIdsNames(): array
-	{
-		return [
-			CommentEntity::USER_ID,
-		];
-	}
-
-	public function getStrings(): array
-	{
-		return [];
-	}
-
-	public function getPosterId(): int
-	{
-		return $this->data[CommentEntity::USER_ID] ?? 0;
-	}
-
-	public function getParams(): array
-	{
-		return self::PARAMS;
+		$this->permissions();
+		$this->validateUser->areValidUsers([$userId]);
+		$this->validateData->dataExists($commentId, $this->repository);
 	}
 }

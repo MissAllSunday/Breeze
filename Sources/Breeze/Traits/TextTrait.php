@@ -133,12 +133,12 @@ trait TextTrait
 		}
 
 		$timePeriods = [
-			12 * 30 * 24 * 60 * 60	=> $txt['time_year'],
-			30 * 24 * 60 * 60		=> $txt['time_month'],
-			24 * 60 * 60			=> $txt['time_day'],
-			60 * 60					=> $txt['time_hour'],
-			60						=> $txt['time_minute'],
-			1						=> $txt['time_second'],
+			12 * 30 * 24 * 60 * 60 => $txt['time_year'],
+			30 * 24 * 60 * 60 => $txt['time_month'],
+			24 * 60 * 60 => $txt['time_day'],
+			60 * 60 => $txt['time_hour'],
+			60 => $txt['time_minute'],
+			1 => $txt['time_second'],
 		];
 
 		foreach ($timePeriods as $seconds => $timeString) {

@@ -8,7 +8,7 @@ use Breeze\Util\Folder;
 
 class MapperAggregate
 {
-	public const MAPPERS_FOLDER =  __DIR__ . '/Mappers';
+	public const MAPPERS_FOLDER = __DIR__ . '/Mappers';
 
 	public const MAPPER_KEY = 'Mapper';
 

@@ -11,7 +11,7 @@ use Breeze\Model\CommentModelInterface;
 class CommentRepository extends BaseRepository implements CommentRepositoryInterface
 {
 	public function __construct(
-		private CommentModelInterface $commentModel,
+		private CommentModelInterface   $commentModel,
 		private LikeRepositoryInterface $likeRepository
 	) {
 	}

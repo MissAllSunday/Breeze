@@ -2,11 +2,19 @@
 <ruleset name="Breeze cs">
 	<description>PSR2 with tabs instead of spaces.</description>
 	<arg name="tab-width" value="4"/>
+	<rule ref="PSR2.Files.ClosingTag"/>
+	<rule ref="PSR2.Files.EndFileNewline"/>
+	<rule ref="PSR2.Methods.FunctionCallSignature" />
+	<rule ref="PSR2.Methods.FunctionClosingBrace"/>
+	<rule ref="PSR2.Methods.MethodDeclaration"/>
+	<rule ref="PSR2.Namespaces.UseDeclaration"/>
 	<rule ref="PSR2">
 		<exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
 		<exclude-pattern>*.js</exclude-pattern>
 	</rule>
 	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
+	<rule ref="PSR1.Methods.CamelCapsMethodName"/>
+	<rule ref="PSR2.Classes.PropertyDeclaration"/>
 	<rule ref="Generic.WhiteSpace.ScopeIndent">
 		<properties>
 			<property name="indent" value="4"/>

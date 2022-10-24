@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations;
 
-interface ValidateDataInterface
+interface ActionsInterface
 {
 	public function setData(array $data): void;
 
-	public function isValid(): void;
-
-	public function successKeyString(): string;
+	public function execute(): void;
 }

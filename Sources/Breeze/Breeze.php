@@ -14,11 +14,13 @@ use Breeze\Controller\BuddyController;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
+use Breeze\Entity\MoodEntity;
 use Breeze\Entity\SettingsEntity;
+use Breeze\Entity\UserSettingsEntity;
+use Breeze\Repository\User\MoodRepository;
+use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminServiceInterface;
 use Breeze\Service\Actions\UserSettingsServiceInterface;
-use Breeze\Service\MoodService;
-use Breeze\Service\MoodServiceInterface;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\UserService;
 use Breeze\Service\UserServiceInterface;
@@ -61,6 +63,10 @@ class Breeze
 		}
 	}
 
+	/**
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
 	public function permissionsWrapper(array &$permissionGroups, array &$permissionList): void
 	{
 		$this->container->get(PermissionsService::class)->hookPermissions($permissionGroups, $permissionList);
@@ -132,10 +138,10 @@ class Breeze
 			'subsections' => [
 				'settings' => [
 					$this->getText('user_settings_name_alerts_settings'),
-					['is_not_guest', 'profile_view'], ],
+					['is_not_guest', 'profile_view'],],
 				'edit' => [
 					$this->getText('user_settings_name_alerts_edit'),
-					['is_not_guest', 'profile_view'], ],
+					['is_not_guest', 'profile_view'],],
 			],
 			'permission' => [
 				'own' => 'is_not_guest',
@@ -248,28 +254,51 @@ class Breeze
 		];
 	}
 
+	/**
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
 	public function displayMoodWrapper(array &$data, int $userId, bool $displayCustomFields): void
 	{
-		if (!$displayCustomFields) {
+		if (!$displayCustomFields ||
+			!$this->getSetting(SettingsEntity::MASTER) ||
+			!$this->getSetting(SettingsEntity::ENABLE_MOOD)) {
 			return;
 		}
 
-		/** @var MoodServiceInterface $moodService */
-		$moodService = $this->container->get(MoodService::class);
+		$moodRepository = $this->container->get(MoodRepository::class);
+		$userRepository = $this->container->get(UserRepository::class);
 
-		$moodService->displayMood($data, $userId);
+		$activeMoods = $moodRepository->getActiveMoods();
+		$userSettings = $userRepository->getUserSettings($userId);
+		$placementField = $this->getSetting(SettingsEntity::MOOD_PLACEMENT, 0);
+		$moodLabel = $this->getSetting(
+			SettingsEntity::MOOD_LABEL,
+			$this->getText(SettingsEntity::MOOD_DEFAULT)
+		);
+
+		$currentMood = !empty($userSettings[UserSettingsEntity::MOOD]) &&
+		!empty($activeMoods[$userSettings[UserSettingsEntity::MOOD]]) ?
+			$activeMoods[$userSettings[UserSettingsEntity::MOOD]] : '';
+
+		// Wild Mood Swings... a highly underrated album if you ask me ;)
+		$data['custom_fields'][] = [
+			'title' => $this->tokenTxtReplace($moodLabel),
+			'col_name' => $this->tokenTxtReplace($moodLabel),
+			'value' => '', // TODO: display current mood
+			'raw' => $currentMood[MoodEntity::EMOJI],
+			'placement' => $placementField,
+		];
 	}
 
 	public function displayMoodProfileWrapper(int $userId, string $profileArea): void
 	{
 		if (!$this->isEnable(SettingsEntity::MASTER) ||
 			!$this->isEnable(SettingsEntity::ENABLE_MOOD) ||
-			!in_array($profileArea, MoodServiceInterface::DISPLAY_PROFILE_AREAS)) {
+			!in_array($profileArea, ['summary', 'static'])) {
 			return;
 		}
 
-		/** @var MoodServiceInterface $moodService */
-		$moodService = $this->container->get(MoodService::class);
 
 //		$moodService->showMoodOnCustomFields($userId);
 	}

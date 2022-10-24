@@ -8,7 +8,6 @@ namespace Breeze\Repository;
 use Breeze\Entity\LikeEntity;
 use Breeze\Model\LikeModelInterface;
 use Breeze\Util\Permissions;
-use Breeze\Util\Validate\ValidateGateway;
 
 class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 {
@@ -27,7 +26,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 	public function isContentAlreadyLiked(string $type, int $contentId, int $userId): bool
 	{
-		return (bool) $this->likeModel->checkLike($type, $contentId, $userId);
+		return (bool)$this->likeModel->checkLike($type, $contentId, $userId);
 	}
 
 	/**
@@ -59,7 +58,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		return $this->likeModel->countContent($type, $contentId);
 	}
 
-	public function appendLikeData(array $items, string $itemIdName) : array
+	public function appendLikeData(array $items, string $itemIdName): array
 	{
 		return array_map(function ($item) use ($itemIdName): array {
 			$item['likesInfo'] = $this->buildLikeData(
@@ -74,9 +73,9 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 	public function buildLikeData(
 		?string $type,
-		?int $contentId,
-		?int $userId,
-		?bool $isContentAlreadyLiked = null
+		?int    $contentId,
+		?int    $userId,
+		?bool   $isContentAlreadyLiked = null
 	): array {
 		$likeData = [
 			'contentId' => $contentId,
@@ -106,7 +105,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 		$base .= ($this->getSmfText($base . $likesTextCount) !== '') ? $likesTextCount : 'n';
 
-		$additionalInfo =  sprintf(
+		$additionalInfo = sprintf(
 			$this->getSmfText($base),
 			$this->parserText(
 				'{scriptUrl}?action=likes;sa=view;ltype=msg;like={href}',
@@ -115,7 +114,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 					'href' => $contentId,
 				]
 			),
-			$this->commaFormat((string) $likesTextCount)
+			$this->commaFormat((string)$likesTextCount)
 		);
 
 		return array_merge($likeData, [
@@ -125,21 +124,20 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		]);
 	}
 
+	/**
+	 * @throws InvalidDataException
+	 */
 	public function likeContent(string $type, int $contentId, int $userId): array
 	{
 		$isContentAlreadyLiked = $this->isContentAlreadyLiked($type, $contentId, $userId);
-
-		try {
-			$isContentAlreadyLiked ?
-				$this->delete($type, $contentId, $userId) :
-				$this->insert($type, $contentId, $userId);
-		} catch (InvalidLikeException $invalidLikeException) {
-			return [
-				'type' => ValidateGateway::ERROR_TYPE,
-				'message' => $invalidLikeException->getMessage(),
-			];
-		}
+		$isContentAlreadyLiked ?
+			$this->delete($type, $contentId, $userId) :
+			$this->insert($type, $contentId, $userId);
 
 		return $this->buildLikeData($type, $contentId, $userId, !$isContentAlreadyLiked);
+	}
+
+	public function getById(int $id): void
+	{
 	}
 }

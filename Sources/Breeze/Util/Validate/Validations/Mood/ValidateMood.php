@@ -5,40 +5,19 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations\Mood;
 
-use Breeze\Entity\MoodEntity;
-use Breeze\Repository\InvalidMoodException;
 use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Util\Validate\Validations\ValidateData;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-abstract class ValidateMood extends ValidateData
+abstract class ValidateMood extends ValidateData implements ValidateDataInterface
 {
-	protected const PARAMS = [
-		MoodEntity::EMOJI => '',
-		MoodEntity::DESC => '',
-		MoodEntity::STATUS => 0,
-		MoodEntity::ID,
-	];
-
-	protected const DEFAULT_PARAMS = [
-		MoodEntity::EMOJI => '',
-		MoodEntity::DESC => '',
-		MoodEntity::STATUS => 0,
-	];
-
-	protected MoodRepositoryInterface $moodRepository;
-
-	/**
-	 * @throws InvalidMoodException
-	 */
-	public function dataExists(): void
-	{
-		if (isset($this->data[MoodEntity::ID])) {
-			$this->moodRepository->getById($this->data[MoodEntity::ID]);
-		}
-	}
-
-	public static function getNameSpace(): string
-	{
-		return __NAMESPACE__ . '\\';
+	public function __construct(
+		protected DeleteMood $deleteMood,
+		protected GetActiveMoods $getActiveMoods,
+		protected GetAllMoods $getAllMoods,
+		protected PostMood $postMood,
+		protected SetUserMood $setUserMood,
+		protected MoodRepositoryInterface $moodRepository
+	) {
 	}
 }

@@ -5,30 +5,29 @@ declare(strict_types=1);
 
 namespace Breeze\Controller\API;
 
-use Breeze\Controller\BaseController;
+use Breeze\Exceptions\ValidateException;
+use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
-use Breeze\Util\Json;
-use Breeze\Util\Validate\ValidateGatewayInterface;
+use Breeze\Util\Response;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-abstract class ApiBaseController extends BaseController
+abstract class ApiBaseController
 {
-	public const DEFAULT_CONTENT_TYPE = 'content-type: application/json';
-
+	use RequestTrait;
 	use TextTrait;
 
 	protected string $subAction;
 
-	protected ValidateDataInterface $validator;
+	protected array $data = [];
 
-	public function __construct(protected ValidateGatewayInterface $gateway)
-	{
+	public function __construct(
+		protected ValidateDataInterface $validator,
+		protected Response $response
+	) {
 		$this->subAction = $this->getRequest('sa', '');
-	}
+		$this->data = $this->getData();
 
-	public function getValidator(): ValidateDataInterface
-	{
-		return $this->validator;
+		$this->validator->setData($this->data);
 	}
 
 	public function subActionCall(): void
@@ -38,7 +37,7 @@ abstract class ApiBaseController extends BaseController
 		if (!empty($this->subAction) && in_array($this->subAction, $subActions)) {
 			$this->{$this->subAction}();
 		} else {
-			$this->print([], 404);
+			$this->response->print([], Response::NOT_FOUND);
 		}
 	}
 
@@ -52,43 +51,16 @@ abstract class ApiBaseController extends BaseController
 	public function dispatch(): void
 	{
 		if ($this->subActionCheck()) {
-			$this->print([], 404);
+			$this->response->print([], Response::NOT_FOUND);
 		}
 
-		$this->setValidator();
-		$this->validator->setData();
-
-		$this->gateway->setValidator($this->getValidator());
-
-		if (!$this->gateway->isValid()) {
-			$this->print($this->gateway->response(), $this->gateway->getStatusCode());
+		try {
+			$this->validator->isValid();
+			$this->subActionCall();
+		} catch (ValidateException $validateException) {
+			$this->response->error($validateException->getMessage(), $validateException->getResponseCode());
 		}
-
-		$this->subActionCall();
 	}
 
-	public function print(array $responseData, int $responseCode = 200, string $type = ''): void
-	{
-		$this->setGlobal('db_show_debug', false);
-		ob_end_clean();
-
-		if (!$this->global('enableCompressedOutput')) {
-			@ob_start('ob_gzhandler');
-		} else {
-			ob_start();
-		}
-
-		header(!empty($type) ? $type : self::DEFAULT_CONTENT_TYPE);
-		http_response_code($responseCode);
-
-		echo Json::encode($responseData);
-
-		exit(obExit(false));
-	}
-
-	public function render(string $subTemplate, array $params): void
-	{
-	}
-
-	abstract public function setValidator(): void;
+	abstract public function getSubActions(): array;
 }

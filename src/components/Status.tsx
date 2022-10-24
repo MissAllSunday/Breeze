@@ -3,6 +3,7 @@ import { StatusProps, commentType } from 'breezeTypes'
 import Like from './Like'
 import { CommentList } from './CommentList'
 import Editor from './Editor'
+import {postComment} from "../api/CommentApi";
 
 export default class Status extends React.Component<StatusProps> {
   constructor (props: any) {
@@ -16,12 +17,19 @@ export default class Status extends React.Component<StatusProps> {
     this.props.removeStatus(this.props.status)
   }
 
-  onRemoveComment = (comment: commentType): void => {
+  onNewComment = (content: string): void => {
+    postComment({
+      statusID: this.props.status.id,
+      body: content
+    }).then((response) => {
+console.log(response)
+    }).catch(() => {
 
+    })
   }
 
-  onNewComment = (content: string): void => {
-
+  onRemoveComment = (comment: commentType): void => {
+    this.props.removeComment(this.props.status, comment)
   }
 
   render (): JSX.Element {
@@ -33,7 +41,11 @@ export default class Status extends React.Component<StatusProps> {
       </h4>
       <div className='floatright smalltext'>
         {this.props.status.createdAt}
-        &nbsp;<span className="main_icons remove_button floatright pointer_cursor" onClick={this.onRemove}>delete</span>
+        <span
+          className="main_icons remove_button floatright pointer_cursor"
+          onClick={this.onRemove}>
+          delete
+        </span>
       </div>
       <br />
         <div className='content'>

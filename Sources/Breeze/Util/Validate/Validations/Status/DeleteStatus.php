@@ -5,22 +5,19 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Status;
 
 use Breeze\Entity\StatusEntity;
-use Breeze\Repository\InvalidStatusException;
-use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Repository\BaseRepositoryInterface;
+use Breeze\Repository\InvalidDataException;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
+use Breeze\Util\Validate\Validations\BaseActions;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Validate\Types\Allow;
+use Breeze\Validate\Types\Data;
+use Breeze\Validate\Types\User;
 
-class DeleteStatus extends ValidateStatus implements ValidateDataInterface
+class DeleteStatus extends BaseActions implements ValidateDataInterface
 {
-	public array $steps = [
-		self::COMPARE,
-		self::INT,
-		self::PERMISSIONS,
-		self::VALID_STATUS,
-		self::VALID_USER,
-	];
 
 	protected const PARAMS = [
 		StatusEntity::ID => 0,
@@ -29,20 +26,12 @@ class DeleteStatus extends ValidateStatus implements ValidateDataInterface
 
 	protected const SUCCESS_KEY = 'deleted_status';
 
-	private array $status;
-
-	public function __construct(protected StatusRepositoryInterface $statusRepository)
-	{
-	}
-
-	public function successKeyString(): string
-	{
-		return self::SUCCESS_KEY;
-	}
-
-	public function getSteps(): array
-	{
-		return $this->steps;
+	public function __construct(
+		protected Data $validateData,
+		protected User $validateUser,
+		protected Allow $validateAllow,
+		protected BaseRepositoryInterface $repository
+	) {
 	}
 
 	/**
@@ -50,70 +39,26 @@ class DeleteStatus extends ValidateStatus implements ValidateDataInterface
 	 */
 	public function permissions(): void
 	{
-		$currentUserInfo = $this->getCurrentUserInfo();
+		$permissionName = $this->repository->getCurrentUserInfo()['id'] === $this->data[StatusEntity::USER_ID] ?
+			Permissions::DELETE_OWN_STATUS : Permissions::DELETE_STATUS;
 
-		if ($currentUserInfo['id'] === $this->data[StatusEntity::USER_ID] &&
-			!Permissions::isAllowedTo(Permissions::DELETE_OWN_STATUS)) {
-			throw new NotAllowedException('deleteStatus');
-		}
-
-		if (!Permissions::isAllowedTo(Permissions::DELETE_STATUS)) {
-			throw new NotAllowedException('deleteStatus');
-		}
+		$this->validateAllow->permissions($permissionName, 'deleteStatus');
 	}
 
 	/**
-	 * @throws InvalidStatusException
-	 */
-	public function validStatus(): void
-	{
-		$this->status = $this->statusRepository->getById($this->data[StatusEntity::ID]);
-	}
-
-	/**
+	 * @throws NotAllowedException
 	 * @throws DataNotFoundException
-	 * @throws InvalidStatusException
+	 * @throws InvalidDataException
 	 */
-	public function validUser(): void
+	public function isValid(): void
 	{
-		if (!$this->status) {
-			$this->validStatus();
-		}
+		$this->validateData->compare(self::PARAMS, $this->data);
 
-		if (!isset($this->data[StatusEntity::USER_ID]) ||
-			($this->data[StatusEntity::USER_ID]
-			!== $this->status[$this->data[StatusEntity::ID]][StatusEntity::USER_ID])) {
-			throw new DataNotFoundException('wrong_values');
-		}
-	}
+		$userId = $this->data[StatusEntity::USER_ID];
+		$statusId = $this->data[StatusEntity::ID];
 
-	public function getInts(): array
-	{
-		return [
-			StatusEntity::ID,
-			StatusEntity::USER_ID,
-		];
-	}
-
-	public function getUserIdsNames(): array
-	{
-		return [
-			StatusEntity::USER_ID,
-		];
-	}
-
-	public function getStrings(): array
-	{
-		return [];
-	}
-
-	public function getPosterId(): int
-	{
-		return $this->data[StatusEntity::USER_ID] ?? 0;
-	}
-
-	public function getParams(): array
-	{
-		return self::PARAMS;
+		$this->permissions();
+		$this->validateUser->areValidUsers([$userId]);
+		$this->validateData->dataExists($statusId, $this->repository);
 	}
 }

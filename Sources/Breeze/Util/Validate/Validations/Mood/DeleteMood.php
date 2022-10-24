@@ -5,12 +5,18 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Mood;
 
 use Breeze\Entity\MoodEntity;
-use Breeze\Repository\User\MoodRepositoryInterface;
+use Breeze\Repository\BaseRepositoryInterface;
+use Breeze\Repository\InvalidDataException;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\NotAllowedException;
+use Breeze\Util\Validate\Validations\BaseActions;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Validate\Types\Allow;
+use Breeze\Validate\Types\Data;
+use Breeze\Validate\Types\User;
 
-class DeleteMood extends ValidateMood implements ValidateDataInterface
+class DeleteMood extends BaseActions implements ValidateDataInterface
 {
 	protected const PARAMS = [
 		MoodEntity::ID => 0,
@@ -18,21 +24,17 @@ class DeleteMood extends ValidateMood implements ValidateDataInterface
 
 	protected const SUCCESS_KEY = 'moodDeleted';
 
-	public function __construct(protected MoodRepositoryInterface $moodRepository)
-	{
+	public function __construct(
+		protected Data $validateData,
+		protected User $validateUser,
+		protected Allow $validateAllow,
+		protected BaseRepositoryInterface $repository
+	) {
 	}
 
 	public function successKeyString(): string
 	{
 		return self::SUCCESS_KEY;
-	}
-
-	public function getSteps(): array
-	{
-		return array_merge($this->steps, [
-			self::PERMISSIONS,
-			self::DATA_EXISTS,
-		]);
 	}
 
 	/**
@@ -45,35 +47,15 @@ class DeleteMood extends ValidateMood implements ValidateDataInterface
 		}
 	}
 
-	public function getInts(): array
+	/**
+	 * @throws DataNotFoundException
+	 * @throws NotAllowedException
+	 * @throws InvalidDataException
+	 */
+	public function isValid(): void
 	{
-		return [
-			MoodEntity::ID,
-		];
-	}
-
-	public function getUserIdsNames(): array
-	{
-		return [];
-	}
-
-	public function getStrings(): array
-	{
-		return [];
-	}
-
-	public function getPosterId(): int
-	{
-		return 0;
-	}
-
-	public function getParams(): array
-	{
-		return [];
-	}
-
-	public function getData(): array
-	{
-		return $this->data;
+		$this->validateData->compare(self::PARAMS, $this->data);
+		$this->validateAllow->permissions(Permissions::ADMIN_FORUM, 'moodDelete');
+		$this->validateData->dataExists($this->data[MoodEntity::ID], $this->repository);
 	}
 }

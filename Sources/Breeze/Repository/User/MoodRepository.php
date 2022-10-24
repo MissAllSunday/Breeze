@@ -81,7 +81,7 @@ class MoodRepository extends BaseRepository implements MoodRepositoryInterface
 	 */
 	public function insertMood(array $mood): array
 	{
-		$moodId =  $this->moodModel->insert($mood);
+		$moodId = $this->moodModel->insert($mood);
 
 		return $this->getById($moodId);
 	}

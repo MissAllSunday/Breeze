@@ -11,6 +11,11 @@ interface BaseRepositoryInterface
 	public const LIKE_TYPE_COMMENT = 'breCom';
 	public const TTL = 360;
 
+	/**
+	 * @throws InvalidDataException
+	 */
+	public function getById(int $id);
+
 	public function handleLikes($type, $content): array;
 
 	public static function getAllTypes(): array;

@@ -6,12 +6,12 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\LikeEntity;
+use Breeze\Repository\InvalidDataException;
 use Breeze\Repository\LikeRepositoryInterface;
-use Breeze\Util\Validate\ValidateGatewayInterface;
-use Breeze\Util\Validate\Validations\Likes\ValidateLikes;
+use Breeze\Util\Response;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class LikesController extends ApiBaseController implements ApiBaseInterface
+class LikesController extends ApiBaseController
 {
 	public const ACTION_LIKE = 'like';
 	public const ACTION_UNLIKE = 'unlike';
@@ -21,52 +21,32 @@ class LikesController extends ApiBaseController implements ApiBaseInterface
 		self::ACTION_UNLIKE,
 	];
 
-	protected ValidateDataInterface $validator;
-
 	public function __construct(
-		private LikeRepositoryInterface $likeRepository,
-		protected ValidateGatewayInterface $gateway
+		private LikeRepositoryInterface    $likeRepository,
+		protected ValidateDataInterface $validator,
+		protected Response $response
 	) {
-		parent::__construct($gateway);
+		parent::__construct($validator, $response);
 	}
 
 	public function like(): void
 	{
-		$data = $this->validator->getData();
-
-		$this->print(array_merge(
-			$this->gateway->response(),
-			['content' => $this->likeRepository->likeContent(
-				$data[LikeEntity::TYPE],
-				$data[LikeEntity::ID],
-				$data[LikeEntity::ID_MEMBER]
-			)]
-		));
+		try {
+			$this->response->success(
+				$this->validator->successKeyString(),
+				$this->likeRepository->likeContent(
+					$this->data[LikeEntity::TYPE],
+					$this->data[LikeEntity::ID],
+					$this->data[LikeEntity::ID_MEMBER]
+				)
+			);
+		} catch (InvalidDataException $invalidDataException) {
+			$this->response->error($invalidDataException->getMessage(), $invalidDataException->getResponseCode());
+		}
 	}
 
 	public function getSubActions(): array
 	{
 		return self::SUB_ACTIONS;
-	}
-
-	public function getMainAction(): string
-	{
-		return self::ACTION_LIKE;
-	}
-
-	public function setValidator(): void
-	{
-		$validatorName = ValidateLikes::getNameSpace() . ucfirst($this->subAction);
-
-		$this->validator = $validatorName($this->likeRepository);
-	}
-
-	public function getValidator(): ValidateDataInterface
-	{
-		return $this->validator;
-	}
-
-	public function render(string $subTemplate, array $params): void
-	{
 	}
 }

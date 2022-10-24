@@ -101,7 +101,7 @@ class MoodModel extends BaseModel implements MoodModelInterface
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$moods[$row[MoodEntity::ID]] = array_map(function ($item) {
-				return is_numeric($item) ? ((int) $item) : $item;
+				return is_numeric($item) ? ((int)$item) : $item;
 			}, $row);
 		}
 

@@ -5,43 +5,14 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations\Comment;
 
-use Breeze\Repository\CommentRepositoryInterface;
-use Breeze\Repository\StatusRepositoryInterface;
-use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\ValidateData;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-abstract class ValidateComment extends ValidateData
+abstract class ValidateComment extends ValidateData implements ValidateDataInterface
 {
-	protected StatusRepositoryInterface $statusRepository;
-
-	protected CommentRepositoryInterface $commentRepository;
-
-	/**
-	 * @throws DataNotFoundException
-	 */
-	public function areValidUsers(): void
-	{
-		$usersIds = array_map(
-			function ($intName) {
-				return $this->data[$intName];
-			},
-			$this->getUserIdsNames()
-		);
-
-		$loadedUsers = $this->commentRepository->getUsersToLoad($usersIds);
-
-		if (array_diff($usersIds, $loadedUsers)) {
-			throw new DataNotFoundException('invalid_users');
-		}
-	}
-
-	public function getCurrentUserInfo(): array
-	{
-		return $this->global('user_info');
-	}
-
-	public static function getNameSpace(): string
-	{
-		return __NAMESPACE__ . '\\';
+	public function __construct(
+		protected DeleteComment $deleteComment,
+		protected PostComment $postComment
+	) {
 	}
 }

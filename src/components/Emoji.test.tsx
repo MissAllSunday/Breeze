@@ -18,8 +18,6 @@ const handleClickCalled = (): void => {
 describe('App', () => {
   test('renders App component', () => {
     render(<Emoji mood={mood} handleClick={handleClickCalled} />)
-
-    screen.debug()
     expect(screen.getByText('😀')).toBeInTheDocument()
     expect(screen.getByRole('img')).toBeInTheDocument()
   })

@@ -32,12 +32,12 @@ class UserService extends BaseService implements UserServiceInterface
 	{
 		$currentUserInfo = $this->global('user_info');
 
-		return $this->userRepository->getUserSettings($currentUserInfo['id']);
+		return $this->userRepository->getById($currentUserInfo['id']);
 	}
 
 	public function getUserSettings(int $userId): array
 	{
-		return $this->userRepository->getUserSettings($userId);
+		return $this->userRepository->getById($userId);
 	}
 
 	public function hookProfilePopUp(&$profile_items): void
@@ -110,7 +110,7 @@ class UserService extends BaseService implements UserServiceInterface
 			return true;
 		}
 
-		$userStalkedSettings = $this->userRepository->getUserSettings($userStalkedId);
+		$userStalkedSettings = $this->userRepository->getById($userStalkedId);
 
 		if (!empty($userStalkedSettings['kick_ignored']) && !empty($userStalkedSettings['ignoredList'])) {
 			$ignored = explode(',', $userStalkedSettings['ignoredList']);

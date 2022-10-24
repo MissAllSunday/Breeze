@@ -56,7 +56,7 @@ class DatabaseClient implements ClientInterface
 			'{db_prefix}' . $tableName . '',
 			$columns,
 			$data,
-			(array) $columnIdName
+			(array)$columnIdName
 		);
 	}
 

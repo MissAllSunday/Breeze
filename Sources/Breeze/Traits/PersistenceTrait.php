@@ -9,7 +9,7 @@ use Breeze\Breeze;
 trait PersistenceTrait
 {
 	private static string $persistenceKey = 'notice';
-	
+
 	public function setMessage(string $message, string $type = 'info'): array
 	{
 		if (empty($message)) {

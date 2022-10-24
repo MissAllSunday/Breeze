@@ -18,38 +18,38 @@ use Breeze\Model\UserModel;
 return [
 	'model.mood' => [
 		'class' => MoodModel::class,
-		'arguments'=> [DatabaseClient::class],
+		'arguments' => [DatabaseClient::class],
 	],
 	'model.alert' => [
 		'class' => AlertModel::class,
-		'arguments'=> [DatabaseClient::class],
+		'arguments' => [DatabaseClient::class],
 	],
 	'model.comment' => [
 		'class' => CommentModel::class,
-		'arguments'=> [DatabaseClient::class],
+		'arguments' => [DatabaseClient::class],
 	],
 	'model.like' => [
 		'class' => LikeModel::class,
-		'arguments'=> [DatabaseClient::class],
+		'arguments' => [DatabaseClient::class],
 	],
 	'model.log' => [
 		'class' => LogModel::class,
-		'arguments'=> [DatabaseClient::class],
+		'arguments' => [DatabaseClient::class],
 	],
 	'model.mention' => [
 		'class' => MentionModel::class,
-		'arguments'=> [DatabaseClient::class],
+		'arguments' => [DatabaseClient::class],
 	],
 	'model.notification' => [
 		'class' => NotificationModel::class,
-		'arguments'=> [DatabaseClient::class],
+		'arguments' => [DatabaseClient::class],
 	],
 	'model.status' => [
 		'class' => StatusModel::class,
-		'arguments'=> [DatabaseClient::class],
+		'arguments' => [DatabaseClient::class],
 	],
 	'model.user' => [
 		'class' => UserModel::class,
-		'arguments'=> [DatabaseClient::class],
+		'arguments' => [DatabaseClient::class],
 	],
 ];

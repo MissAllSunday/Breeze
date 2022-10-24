@@ -8,11 +8,10 @@ namespace Breeze\Controller\API;
 use Breeze\Entity\StatusEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
-use Breeze\Util\Validate\ValidateGateway;
-use Breeze\Util\Validate\ValidateGatewayInterface;
-use Breeze\Util\Validate\Validations\Status\ValidateStatus;
+use Breeze\Util\Response;
+use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class StatusController extends ApiBaseController implements ApiBaseInterface
+class StatusController extends ApiBaseController
 {
 	public const ACTION_PROFILE = 'statusByProfile';
 	public const ACTION_DELETE = 'deleteStatus';
@@ -25,78 +24,55 @@ class StatusController extends ApiBaseController implements ApiBaseInterface
 	];
 
 	public function __construct(
-		private StatusRepositoryInterface $statusRepository,
-		protected ValidateGatewayInterface $gateway
+		protected StatusRepositoryInterface $statusRepository,
+		protected ValidateDataInterface $validator,
+		protected Response $response
 	) {
-		parent::__construct($gateway);
-	}
-
-	public function getSubActions(): array
-	{
-		return self::SUB_ACTIONS;
-	}
-
-	public function setValidator(): void
-	{
-		$validatorName = ValidateStatus::getNameSpace() . ucfirst($this->subAction);
-
-		$this->validator = new $validatorName(
-			$this->statusRepository,
-		);
+		parent::__construct($validator, $response);
 	}
 
 	public function statusByProfile(): void
 	{
-		$start = $this->getRequest('start', 0);
-		$data = $this->validator->getData();
-
 		try {
-			$statusByProfile = $this->statusRepository->getByProfile($data[StatusEntity::WALL_ID], $start);
+			$statusByProfile = $this->statusRepository->getByProfile(
+				$this->data[StatusEntity::WALL_ID],
+				$this->getRequest('start', 0)
+			);
 
-			$this->print($statusByProfile);
+			$this->response->success($this->validator->successKeyString(), $statusByProfile);
 		} catch (InvalidStatusException $invalidStatusException) {
-			$this->print([
-				'type' => ValidateGateway::ERROR_TYPE,
-				'message' => $this->getText($invalidStatusException->getMessage()),
-			]);
+			$this->response->error($invalidStatusException->getMessage());
 		}
 	}
 
 	public function deleteStatus(): void
 	{
-		$data = $this->validator->getData();
-
 		try {
-			$this->statusRepository->deleteById($data[StatusEntity::ID]);
+			$this->statusRepository->deleteById($this->data[StatusEntity::ID]);
 
-			$this->print($this->gateway->response(), 204);
+			$this->response->success($this->validator->successKeyString(), [], Response::NO_CONTENT);
 		} catch (InvalidStatusException $invalidStatusException) {
-			$this->print([
-				'type' => ValidateGateway::ERROR_TYPE,
-				'message' => $invalidStatusException->getMessage(),
-			], 404);
+			$this->response->error($invalidStatusException->getMessage());
 		}
 	}
 
 	public function postStatus(): void
 	{
 		try {
-			$statusId = $this->statusRepository->save($this->validator->getData());
+			$statusId = $this->statusRepository->save($this->data);
 
-			$this->print(array_merge(
-				$this->gateway->response(),
-				['content' => $this->statusRepository->getById($statusId)]
-			), 201);
+			$this->response->success(
+				$this->validator->successKeyString(),
+				$this->statusRepository->getById($statusId),
+				Response::CREATED
+			);
 		} catch (InvalidStatusException $invalidStatusException) {
-			$this->print([
-				'type' => ValidateGateway::ERROR_TYPE,
-				'message' => $invalidStatusException->getMessage(),
-			]);
+			$this->response->error($invalidStatusException->getMessage());
 		}
 	}
 
-	public function getMainAction(): string
+	public function getSubActions(): array
 	{
-		return self::ACTION_PROFILE;
+		return self::SUB_ACTIONS;
 	}
 }

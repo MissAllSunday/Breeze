@@ -5,17 +5,31 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Mood;
 
 use Breeze\Entity\MoodEntity;
-use Breeze\Repository\User\MoodRepositoryInterface;
+use Breeze\Repository\BaseRepositoryInterface;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\NotAllowedException;
+use Breeze\Util\Validate\Validations\BaseActions;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Validate\Types\Allow;
+use Breeze\Validate\Types\Data;
+use Breeze\Validate\Types\User;
 
-class PostMood extends ValidateMood implements ValidateDataInterface
+class PostMood extends BaseActions implements ValidateDataInterface
 {
+	protected const PARAMS = [
+		MoodEntity::EMOJI => '',
+		MoodEntity::DESC => '',
+		MoodEntity::STATUS => 0,
+	];
 	protected const SUCCESS_KEY = 'moodUpdated';
 
-	public function __construct(protected MoodRepositoryInterface $moodRepository)
-	{
+	public function __construct(
+		protected Data $validateData,
+		protected User $validateUser,
+		protected Allow $validateAllow,
+		protected BaseRepositoryInterface $repository
+	) {
 	}
 
 	public function successKeyString(): string
@@ -23,53 +37,13 @@ class PostMood extends ValidateMood implements ValidateDataInterface
 		return self::SUCCESS_KEY;
 	}
 
-	public function getSteps(): array
-	{
-		return array_merge($this->steps, [
-			self::INT,
-			self::STRING,
-			self::PERMISSIONS,
-			self::DATA_EXISTS,
-		]);
-	}
-
 	/**
+	 * @throws NotAllowedException
 	 * @throws DataNotFoundException
 	 */
-	public function permissions(): void
+	public function isValid(): void
 	{
-		if (!Permissions::isAllowedTo(Permissions::ADMIN_FORUM)) {
-			throw new DataNotFoundException('moodCreated');
-		}
-	}
-
-	public function getInts(): array
-	{
-		return [
-			MoodEntity::STATUS,
-		];
-	}
-
-	public function getUserIdsNames(): array
-	{
-		return [];
-	}
-
-	public function getStrings(): array
-	{
-		return [
-			MoodEntity::EMOJI,
-			MoodEntity::DESC,
-		];
-	}
-
-	public function getPosterId(): int
-	{
-		return 0;
-	}
-
-	public function getParams(): array
-	{
-		return array_merge(self::DEFAULT_PARAMS, $this->data);
+		$this->validateData->compare(self::PARAMS, $this->data);
+		$this->validateAllow->permissions(Permissions::ADMIN_FORUM, 'moodCreated');
 	}
 }

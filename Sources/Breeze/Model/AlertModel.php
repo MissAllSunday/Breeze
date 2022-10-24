@@ -92,7 +92,7 @@ class AlertModel extends BaseModel implements AlertModelInterface
 
 		$this->dbClient->freeResult($request);
 
-		return (bool) $result;
+		return (bool)$result;
 	}
 
 	public function getTableName(): string

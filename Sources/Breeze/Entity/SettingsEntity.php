@@ -16,7 +16,7 @@ class SettingsEntity
 	public const MOOD_DEFAULT = 'moodDefault';
 	public const MOOD_PLACEMENT = 'moodPlacement';
 	public const MAX_FLOOD_NUM = 'maxFloodNum';
-	public const MAX_FLOOD_MINUTES= 'maxFloodMinutes';
+	public const MAX_FLOOD_MINUTES = 'maxFloodMinutes';
 	public const TYPE_CHECK = 'check';
 	public const TYPE_INT = 'int';
 	public const TYPE_TEXT = 'text';

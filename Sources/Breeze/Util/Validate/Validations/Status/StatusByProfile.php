@@ -6,66 +6,30 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Status;
 
 use Breeze\Entity\StatusEntity;
-use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Repository\BaseRepositoryInterface;
+use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\Validations\BaseActions;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Validate\Types\Allow;
+use Breeze\Validate\Types\Data;
+use Breeze\Validate\Types\User;
 
-class StatusByProfile extends ValidateStatus implements ValidateDataInterface
+class StatusByProfile extends BaseActions implements ValidateDataInterface
 {
-	public array $steps = [
-		self::COMPARE,
-		self::INT,
-		self::VALID_USERS,
-		self::IGNORE_LIST, // TODO add validation for current user on ignoreList
-	];
-
-	protected const PARAMS = [
-		StatusEntity::WALL_ID => 0,
-	];
-
-	protected const SUCCESS_KEY = '';
-
-	public function __construct(protected StatusRepositoryInterface $statusRepository)
-	{
+	public function __construct(
+		protected Data $validateData,
+		protected User $validateUser,
+		protected Allow $validateAllow,
+		protected BaseRepositoryInterface $repository
+	) {
 	}
 
-	public function setData(array $data = null): void
+	/**
+	 * @throws DataNotFoundException
+	 */
+	public function isValid(): void
 	{
-		$this->data = array_filter(!empty($data) ? $data : [
-			StatusEntity::WALL_ID => $this->getRequest(StatusEntity::WALL_ID),
-		]);
-	}
-
-	public function getParams(): array
-	{
-		return self::PARAMS;
-	}
-
-	public function getInts(): array
-	{
-		return [
-			StatusEntity::WALL_ID,
-		];
-	}
-
-	public function getStrings(): array
-	{
-		return [];
-	}
-
-	public function getUserIdsNames(): array
-	{
-		return [
-			StatusEntity::WALL_ID,
-		];
-	}
-
-	public function getPosterId(): int
-	{
-		return $this->data[StatusEntity::WALL_ID] ?? 0;
-	}
-
-	public function successKeyString(): string
-	{
-		return self::SUCCESS_KEY;
+		$this->validateData->compare(self::PARAMS, $this->data);
+		$this->validateUser->areValidUsers([$this->data[StatusEntity::WALL_ID]]);
 	}
 }

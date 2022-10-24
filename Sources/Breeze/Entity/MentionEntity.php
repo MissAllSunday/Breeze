@@ -15,7 +15,7 @@ class MentionEntity extends BaseEntity implements BaseEntityInterface
 
 	public const COLUMN_ID_MENTIONED = 'poster_id';
 
-	public const COLUMN_ID_MEMBER= 'time';
+	public const COLUMN_ID_MEMBER = 'time';
 
 	public const COLUMN_TIME = 'body';
 

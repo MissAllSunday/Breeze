@@ -19,7 +19,7 @@ class UserSettingsService extends ActionsBaseService implements UserSettingsServ
 	) {
 	}
 
-	public function init(array $subActions):void
+	public function init(array $subActions): void
 	{
 		$this->setLanguage(Breeze::NAME);
 		$this->setTemplate(Breeze::NAME . self::TEMPLATE);
