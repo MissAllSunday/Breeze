@@ -63,7 +63,7 @@ function parse_bbc(string $content): string
 
 function loadMemberData(array $userIds): array
 {
-	return $userIds;
+	return in_array(2, $userIds) ? [] : $userIds;
 }
 
 function loadMemberContext(int $userId, bool $dummy): array

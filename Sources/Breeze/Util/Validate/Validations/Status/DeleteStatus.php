@@ -18,7 +18,6 @@ use Breeze\Validate\Types\User;
 
 class DeleteStatus extends BaseActions implements ValidateDataInterface
 {
-
 	protected const PARAMS = [
 		StatusEntity::ID => 0,
 		StatusEntity::USER_ID => 0,
@@ -37,7 +36,7 @@ class DeleteStatus extends BaseActions implements ValidateDataInterface
 	/**
 	 * @throws NotAllowedException
 	 */
-	public function permissions(): void
+	public function checkAllow(): void
 	{
 		$permissionName = $this->repository->getCurrentUserInfo()['id'] === $this->data[StatusEntity::USER_ID] ?
 			Permissions::DELETE_OWN_STATUS : Permissions::DELETE_STATUS;
@@ -46,19 +45,32 @@ class DeleteStatus extends BaseActions implements ValidateDataInterface
 	}
 
 	/**
-	 * @throws NotAllowedException
 	 * @throws DataNotFoundException
+	 */
+	public function checkUser(): void
+	{
+		$this->validateUser->areValidUsers([$this->data[StatusEntity::USER_ID]]);
+	}
+
+	/**
 	 * @throws InvalidDataException
+	 * @throws DataNotFoundException
+	 */
+	public function checkData(): void
+	{
+		$this->validateData->compare(self::PARAMS, $this->data);
+		$this->validateData->dataExists($this->data[StatusEntity::ID], $this->repository);
+	}
+
+	/**
+	 * @throws InvalidDataException
+	 * @throws DataNotFoundException
+	 * @throws NotAllowedException
 	 */
 	public function isValid(): void
 	{
-		$this->validateData->compare(self::PARAMS, $this->data);
-
-		$userId = $this->data[StatusEntity::USER_ID];
-		$statusId = $this->data[StatusEntity::ID];
-
-		$this->permissions();
-		$this->validateUser->areValidUsers([$userId]);
-		$this->validateData->dataExists($statusId, $this->repository);
+		$this->checkData();
+		$this->checkAllow();
+		$this->checkUser();
 	}
 }

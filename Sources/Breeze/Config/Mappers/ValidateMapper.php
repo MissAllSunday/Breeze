@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Config\Mapper;
 
+use Breeze\Repository\StatusRepository;
 use Breeze\Repository\User\MoodRepository;
 use Breeze\Util\Validate\Validations\Comment\DeleteComment;
 use Breeze\Util\Validate\Validations\Comment\PostComment;
@@ -56,28 +57,27 @@ return [
 			GetAllMoods::class,
 			PostMood::class,
 			SetUserMood::class,
-			MoodRepository::class,
 		],
 	],
 	'validations.mood.deleteMood' => [
 		'class' => DeleteMood::class,
-		'arguments' => [Data::class, User::class, Allow::class, ValidateMood::class],
+		'arguments' => [Data::class, User::class, Allow::class, MoodRepository::class],
 	],
 	'validations.mood.getActive' => [
 		'class' => GetActiveMoods::class,
-		'arguments' => [Data::class, User::class, Allow::class, ValidateMood::class],
+		'arguments' => [Data::class, User::class, Allow::class, MoodRepository::class],
 	],
 	'validations.mood.getAll' => [
 		'class' => GetAllMoods::class,
-		'arguments' => [Data::class, User::class, Allow::class, ValidateMood::class],
+		'arguments' => [Data::class, User::class, Allow::class, MoodRepository::class],
 	],
 	'validations.mood.postMood' => [
 		'class' => PostMood::class,
-		'arguments' => [Data::class, User::class, Allow::class, ValidateMood::class],
+		'arguments' => [Data::class, User::class, Allow::class, MoodRepository::class],
 	],
 	'validations.mood.setUp' => [
 		'class' => SetUserMood::class,
-		'arguments' => [Data::class, User::class, Allow::class, ValidateMood::class],
+		'arguments' => [Data::class, User::class, Allow::class, MoodRepository::class],
 	],
 	'validations.status.validate' => [
 		'class' => ValidateStatus::class,
@@ -85,15 +85,15 @@ return [
 	],
 	'validations.status.delete' => [
 		'class' => DeleteStatus::class,
-		'arguments' => [Data::class, User::class, Allow::class, ValidateStatus::class],
+		'arguments' => [Data::class, User::class, Allow::class, StatusRepository::class],
 	],
 	'validations.status.post' => [
 		'class' => PostStatus::class,
-		'arguments' => [Data::class, User::class, Allow::class, ValidateStatus::class],
+		'arguments' => [Data::class, User::class, Allow::class, StatusRepository::class],
 	],
 	'validations.status.byProfile' => [
 		'class' => StatusByProfile::class,
-		'arguments' => [Data::class, User::class, Allow::class, ValidateStatus::class],
+		'arguments' => [Data::class, User::class, Allow::class, StatusRepository::class],
 	],
 	'validations.user.validate' => [
 		'class' => ValidateUser::class,
@@ -101,6 +101,6 @@ return [
 	],
 	'validations.user.settings' => [
 		'class' => UserSettings::class,
-		'arguments' => [Data::class, User::class, Allow::class, ValidateUser::class],
+		'arguments' => [Data::class],
 	],
 ];

@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Status;
 
+use Breeze\Repository\BaseRepositoryInterface;
+use Breeze\Repository\InvalidDataException;
 use Breeze\Repository\StatusRepository;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\Status\DeleteStatus;
+use Breeze\Validate\Types\Allow;
+use Breeze\Validate\Types\Data;
+use Breeze\Validate\Types\User;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -17,193 +22,111 @@ class DeleteStatusTest extends TestCase
 	use ProphecyTrait;
 
 	/**
-	 * @dataProvider cleanProvider
+	 * @dataProvider checkAllowProvider
 	 */
-	public function testCompare(array $data, bool $isExpectedException): void
+	public function testCheckAllow(array $data, string $permissionName, bool $isExpectedException): void
 	{
-		$statusRepository = $this->prophesize(StatusRepository::class);
-		$deleteStatus = new DeleteStatus($statusRepository->reveal());
+		$validateData = $this->prophesize(Data::class);
+		$validateUser = $this->prophesize(User::class);
+		$validateAllow = $this->prophesize(Allow::class);
+		$userRepository = $this->prophesize(BaseRepositoryInterface::class);
+
+		$deleteStatus = new DeleteStatus(
+			$validateData->reveal(),
+			$validateUser->reveal(),
+			$validateAllow->reveal(),
+			$userRepository->reveal()
+		);
 		$deleteStatus->setData($data);
 
 		if ($isExpectedException) {
-			$this->expectException(DataNotFoundException::class);
-		} else {
-			$this->assertEquals($data, $deleteStatus->getData());
+			$this->expectException(NotAllowedException::class);
 		}
 
-		$deleteStatus->compare();
+		$userRepository->getCurrentUserInfo()->willReturn(['id' => 666]);
+
+		if ($isExpectedException) {
+			$validateAllow->permissions($permissionName, 'deleteStatus')->willThrow(new NotAllowedException());
+		}
+
+		$deleteStatus->checkAllow();
+
+		$this->assertEquals($deleteStatus->data, $data);
 	}
 
-	public function cleanProvider(): array
+	public function checkAllowProvider(): array
 	{
 		return [
-			'empty values' => [
+			'deleteOwn' => [
 				'data' => [
-					'id' => 0,
-					'userId' => '0',
-				],
-				'isExpectedException' => true,
-			],
-			'happy path' => [
-				'data' => [
-					'id' => 666,
 					'userId' => 666,
 				],
-				'isExpectedException' => false,
-			],
-			'incomplete data' => [
-				'data' => [
-					'id' => 1,
-				],
+				'permissionName' => 'deleteOwnStatus',
 				'isExpectedException' => true,
+			],
+			'deleteAny' => [
+				'data' => [
+					'userId' => 1,
+				],
+				'permissionName' => 'deleteStatus',
+				'isExpectedException' => true,
+			],
+			'pass' => [
+				'data' => [
+					'userId' => 1,
+				],
+				'permissionName' => 'yep',
+				'isExpectedException' => false,
 			],
 		];
 	}
 
 	/**
-	 * @dataProvider isValidIntProvider
+	 * @dataProvider checkUserProvider
 	 */
-	public function testIsValidInt(array $data, bool $isExpectedException): void
+	public function testCheckUser(array $data, array $validUsers, bool $isExpectedException): void
 	{
-		$statusRepository = $this->prophesize(StatusRepository::class);
-		$deleteStatus = new DeleteStatus($statusRepository->reveal());
+		$validateData = $this->prophesize(Data::class);
+		$validateUser = $this->prophesize(User::class);
+		$validateAllow = $this->prophesize(Allow::class);
+		$userRepository = $this->prophesize(BaseRepositoryInterface::class);
+
+		$deleteStatus = new DeleteStatus(
+			$validateData->reveal(),
+			$validateUser->reveal(),
+			$validateAllow->reveal(),
+			$userRepository->reveal()
+		);
 		$deleteStatus->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(DataNotFoundException::class);
-		} else {
-			$this->assertEquals(array_keys($data), $deleteStatus->getInts());
+			$validateUser->areValidUsers($validUsers)->willThrow(new DataNotFoundException());
 		}
 
-		$deleteStatus->isInt();
+		$deleteStatus->checkUser();
+
+		$this->assertEquals($deleteStatus->data, $data);
 	}
 
-	public function isValidIntProvider(): array
+	public function checkUserProvider(): array
 	{
 		return [
-			'happy path' => [
+			'validUsers' => [
 				'data' => [
-					'id' => 666,
 					'userId' => 666,
 				],
+				'validUsers' => [666],
 				'isExpectedException' => false,
 			],
-			'not ints' => [
+			'invalidUsers' => [
 				'data' => [
-					'id' => 666,
-					'userId' => '666',
+					'userId' => 2,
 				],
+				'validUsers' => [2],
 				'isExpectedException' => true,
 			],
 		];
 	}
 
-	/**
-	 * @dataProvider areValidUsersProvider
-	 */
-	public function testAreValidUsers(
-		array $data,
-		array $with,
-		array $loadUsersInfoWillReturn,
-		bool $isExpectedException
-	): void {
-		$statusRepository = $this->prophesize(StatusRepositoryInterface::class);
-		$statusRepository->getUsersToLoad($with)
-			->willReturn($loadUsersInfoWillReturn);
-
-		$deleteStatus = new DeleteStatus($statusRepository->reveal());
-		$deleteStatus->setData($data);
-
-
-		if ($isExpectedException) {
-			$this->expectException(DataNotFoundException::class);
-		} else {
-			$this->assertEquals($data, $deleteStatus->getData());
-		}
-
-		$deleteStatus->areValidUsers();
-	}
-
-	public function areValidUsersProvider(): array
-	{
-		return [
-			'happy happy joy joy' => [
-				'data' => [
-					'userId' => 666,
-				],
-				'with' => [
-					666,
-				],
-				'loadUsersInfoWillReturn' => [
-					666,
-				],
-				'isExpectedException' => false,
-			],
-			'invalid users' => [
-				'data' => [
-					'userId' => 666,
-				],
-				'with' => [
-					666,
-				],
-				'loadUsersInfoWillReturn' => [
-					1,
-				],
-				'isExpectedException' => true,
-			],
-		];
-	}
-
-	/**
-	 * @dataProvider permissionsProvider
-	 */
-	public function testPermissions(array $data, array $userInfo): void
-	{
-		$statusRepository = $this->prophesize(StatusRepository::class);
-		$deleteStatus = new DeleteStatus($statusRepository->reveal());
-		$deleteStatus->setData($data);
-
-		$this->expectException(NotAllowedException::class);
-		$deleteStatus->permissions();
-	}
-
-	public function permissionsProvider(): array
-	{
-		return [
-			'not allowed' => [
-				'data' => [
-					'userId' => 666,
-					'id' => 666,
-				],
-				'userInfo' => [
-					'id' => 666,
-				],
-			],
-		];
-	}
-
-	public function testGetSteps(): void
-	{
-		$statusRepository = $this->prophesize(StatusRepository::class);
-		$deleteStatus = new DeleteStatus($statusRepository->reveal());
-
-		$this->assertEquals([
-			'compare',
-			'isInt',
-			'permissions',
-			'validStatus',
-			'validUser',
-		], $deleteStatus->getSteps());
-	}
-
-	public function testGetParams(): void
-	{
-		$statusRepository = $this->prophesize(StatusRepository::class);
-		$deleteStatus = new DeleteStatus($statusRepository->reveal());
-
-		$this->assertEquals([
-			'id' => 0,
-			'userId' => 0,
-		], $deleteStatus->getParams());
-	}
 }

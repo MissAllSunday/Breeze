@@ -10,7 +10,7 @@ abstract class BaseActions
 
 	protected const SUCCESS_KEY = '';
 
-	protected array $data;
+	public array $data;
 
 	public function setData(array $data = []): void
 	{

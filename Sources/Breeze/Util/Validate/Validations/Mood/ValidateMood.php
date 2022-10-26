@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations\Mood;
 
-use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Util\Validate\Validations\ValidateData;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
@@ -16,8 +15,7 @@ abstract class ValidateMood extends ValidateData implements ValidateDataInterfac
 		protected GetActiveMoods $getActiveMoods,
 		protected GetAllMoods $getAllMoods,
 		protected PostMood $postMood,
-		protected SetUserMood $setUserMood,
-		protected MoodRepositoryInterface $moodRepository
+		protected SetUserMood $setUserMood
 	) {
 	}
 }
