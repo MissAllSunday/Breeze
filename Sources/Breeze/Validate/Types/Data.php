@@ -11,7 +11,7 @@ use Breeze\Util\Validate\DataNotFoundException;
 class Data
 {
 	/**
-	 * @throws InvalidDataException
+	 * @throws DataNotFoundException
 	 */
 	public function dataExists(int $id, BaseRepositoryInterface $repository): void
 	{
@@ -19,12 +19,12 @@ class Data
 	}
 
 	/**
-	 * @throws DataNotFoundException
+	 * @throws InvalidDataException
 	 */
 	public function compare(array $defaultParams, array $data): void
 	{
 		if (!empty(array_diff_key($defaultParams, $data))) {
-			throw new DataNotFoundException('incomplete_data');
+			throw new InvalidDataException('incomplete_data');
 		}
 	}
 

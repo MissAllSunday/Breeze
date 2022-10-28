@@ -16,6 +16,8 @@ use Breeze\Validate\Types\User;
 
 class StatusByProfile extends BaseActions implements ValidateDataInterface
 {
+	protected const PARAMS = [StatusEntity::WALL_ID => 0];
+
 	public function __construct(
 		protected Data $validateData,
 		protected User $validateUser,
@@ -27,9 +29,16 @@ class StatusByProfile extends BaseActions implements ValidateDataInterface
 	/**
 	 * @throws DataNotFoundException
 	 */
+	public function checkUser(): void
+	{
+		$this->validateUser->areValidUsers([$this->data[StatusEntity::WALL_ID]]);
+	}
+
+	/**
+	 * @throws DataNotFoundException
+	 */
 	public function isValid(): void
 	{
-		$this->validateData->compare(self::PARAMS, $this->data);
-		$this->validateUser->areValidUsers([$this->data[StatusEntity::WALL_ID]]);
+		$this->checkUser();
 	}
 }

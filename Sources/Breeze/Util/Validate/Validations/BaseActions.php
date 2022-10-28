@@ -19,7 +19,7 @@ abstract class BaseActions
 
 	public function getParams(): array
 	{
-		return self::PARAMS;
+		return static::PARAMS;
 	}
 
 	public function successKeyString(): string

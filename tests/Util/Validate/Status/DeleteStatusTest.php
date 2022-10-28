@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Status;
 
 use Breeze\Repository\BaseRepositoryInterface;
-use Breeze\Repository\InvalidDataException;
-use Breeze\Repository\StatusRepository;
-use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\Status\DeleteStatus;
@@ -128,5 +125,4 @@ class DeleteStatusTest extends TestCase
 			],
 		];
 	}
-
 }

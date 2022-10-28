@@ -41,12 +41,30 @@ class DeleteComment extends BaseActions implements ValidateDataInterface
 	/**
 	 * @throws NotAllowedException
 	 */
-	public function permissions(): void
+	public function checkAllow(): void
 	{
 		$permissionName = $this->repository->getCurrentUserInfo()['id'] === $this->data[CommentEntity::USER_ID] ?
 			Permissions::DELETE_OWN_COMMENTS : Permissions::DELETE_COMMENTS;
 
 		$this->validateAllow->permissions($permissionName, 'deleteStatus');
+	}
+
+	/**
+	 * @throws DataNotFoundException
+	 */
+	public function checkUser(): void
+	{
+		$this->validateUser->areValidUsers([$this->data[CommentEntity::USER_ID]]);
+	}
+
+	/**
+	 * @throws DataNotFoundException
+	 * @throws InvalidDataException
+	 */
+	public function checkData(): void
+	{
+		$this->validateData->compare(self::PARAMS, $this->data);
+		$this->validateData->dataExists($this->data[CommentEntity::ID], $this->repository);
 	}
 
 	/**
@@ -56,13 +74,8 @@ class DeleteComment extends BaseActions implements ValidateDataInterface
 	 */
 	public function isValid(): void
 	{
-		$this->validateData->compare(self::PARAMS, $this->data);
-
-		$userId = $this->data[CommentEntity::USER_ID];
-		$commentId = $this->data[CommentEntity::ID];
-
-		$this->permissions();
-		$this->validateUser->areValidUsers([$userId]);
-		$this->validateData->dataExists($commentId, $this->repository);
+		$this->checkData();
+		$this->checkAllow();
+		$this->checkUser();
 	}
 }

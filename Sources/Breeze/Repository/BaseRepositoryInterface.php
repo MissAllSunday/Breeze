@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Util\Validate\DataNotFoundException;
+
 interface BaseRepositoryInterface
 {
 	public const LIKE_TYPE_STATUS = 'breSta';
@@ -12,7 +14,7 @@ interface BaseRepositoryInterface
 	public const TTL = 360;
 
 	/**
-	 * @throws InvalidDataException
+	 * @throws DataNotFoundException
 	 */
 	public function getById(int $id);
 

@@ -21,8 +21,6 @@ class Allow
 	 */
 	public function permissions(string $permissionName, string $permissionMessageKey): void
 	{
-		var_dump(Permissions::isAllowedTo($permissionName));
-		die;
 		if (!Permissions::isAllowedTo($permissionName)) {
 			throw new NotAllowedException($permissionMessageKey);
 		}
