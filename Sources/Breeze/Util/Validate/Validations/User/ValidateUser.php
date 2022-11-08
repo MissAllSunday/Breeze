@@ -5,10 +5,9 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations\User;
 
-use Breeze\Util\Validate\Validations\ValidateData;
-use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Util\Validate\Validations\ValidateActions;
 
-abstract class ValidateUser extends ValidateData implements ValidateDataInterface
+class ValidateUser extends ValidateActions
 {
 	public function __construct(
 		protected UserSettings $userSettings

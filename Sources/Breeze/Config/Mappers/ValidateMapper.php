@@ -79,22 +79,6 @@ return [
 		'class' => SetUserMood::class,
 		'arguments' => [Data::class, User::class, Allow::class, MoodRepository::class],
 	],
-	'validations.status.validate' => [
-		'class' => ValidateStatus::class,
-		'arguments' => [DeleteStatus::class, PostStatus::class, StatusByProfile::class],
-	],
-	'validations.status.delete' => [
-		'class' => DeleteStatus::class,
-		'arguments' => [Data::class, User::class, Allow::class, StatusRepository::class],
-	],
-	'validations.status.post' => [
-		'class' => PostStatus::class,
-		'arguments' => [Data::class, User::class, Allow::class, StatusRepository::class],
-	],
-	'validations.status.byProfile' => [
-		'class' => StatusByProfile::class,
-		'arguments' => [Data::class, User::class, Allow::class, StatusRepository::class],
-	],
 	'validations.user.validate' => [
 		'class' => ValidateUser::class,
 		'arguments' => [UserSettings::class],
@@ -102,5 +86,21 @@ return [
 	'validations.user.settings' => [
 		'class' => UserSettings::class,
 		'arguments' => [Data::class],
+	],
+	'validations.status.validate' => [
+		'class' => ValidateStatus::class,
+		'arguments' => [DeleteStatus::class, PostStatus::class, StatusByProfile::class],
+	],
+	'validations.status.post' => [
+		'class' => PostStatus::class,
+		'arguments' => [DeleteStatus::class, PostStatus::class, StatusByProfile::class],
+	],
+	'validations.status.byProfile' => [
+		'class' => StatusByProfile::class,
+		'arguments' => [DeleteStatus::class, PostStatus::class, StatusByProfile::class],
+	],
+	'validations.status.delete' => [
+		'class' => DeleteStatus::class,
+		'arguments' => [Data::class, User::class, Allow::class, StatusRepository::class],
 	],
 ];

@@ -3,7 +3,7 @@ import { StatusProps, commentType } from 'breezeTypes'
 import Like from './Like'
 import { CommentList } from './CommentList'
 import Editor from './Editor'
-import {postComment} from "../api/CommentApi";
+import { postComment } from '../api/CommentApi'
 
 export default class Status extends React.Component<StatusProps> {
   constructor (props: any) {
@@ -22,7 +22,7 @@ export default class Status extends React.Component<StatusProps> {
       statusID: this.props.status.id,
       body: content
     }).then((response) => {
-console.log(response)
+      console.log(response)
     }).catch(() => {
 
     })

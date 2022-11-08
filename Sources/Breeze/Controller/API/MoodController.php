@@ -9,7 +9,7 @@ use Breeze\Entity\MoodEntity;
 use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Util\Response;
-use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
 class MoodController extends ApiBaseController
 {
@@ -30,10 +30,10 @@ class MoodController extends ApiBaseController
 	public function __construct(
 		protected UserRepositoryInterface $userRepository,
 		protected MoodRepositoryInterface $moodRepository,
-		protected ValidateDataInterface $validator,
+		protected ValidateActionsInterface $validateActions,
 		protected Response $response
 	) {
-		parent::__construct($validator, $response);
+		parent::__construct($validateActions, $response);
 	}
 
 	public function postMood(): void

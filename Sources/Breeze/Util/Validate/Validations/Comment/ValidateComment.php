@@ -5,10 +5,9 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations\Comment;
 
-use Breeze\Util\Validate\Validations\ValidateData;
-use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Util\Validate\Validations\ValidateActions;
 
-abstract class ValidateComment extends ValidateData implements ValidateDataInterface
+class ValidateComment extends ValidateActions
 {
 	public function __construct(
 		protected DeleteComment $deleteComment,

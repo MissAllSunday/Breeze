@@ -5,10 +5,9 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations\Likes;
 
-use Breeze\Util\Validate\Validations\ValidateData;
-use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Util\Validate\Validations\ValidateActions;
 
-abstract class ValidateLikes extends ValidateData implements ValidateDataInterface
+class ValidateLikes extends ValidateActions
 {
 	public function __construct(protected Like $like)
 	{

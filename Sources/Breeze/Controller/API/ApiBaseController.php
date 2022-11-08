@@ -9,6 +9,7 @@ use Breeze\Exceptions\ValidateException;
 use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Response;
+use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 abstract class ApiBaseController
@@ -20,14 +21,16 @@ abstract class ApiBaseController
 
 	protected array $data = [];
 
+	protected ValidateDataInterface $validator;
+
 	public function __construct(
-		protected ValidateDataInterface $validator,
+		protected ValidateActionsInterface $validateActions,
 		protected Response $response
 	) {
 		$this->subAction = $this->getRequest('sa', '');
 		$this->data = $this->getData();
 
-		$this->validator->setData($this->data);
+		$this->validateActions->setUp($this->data, $this->subAction);
 	}
 
 	public function subActionCall(): void
@@ -43,9 +46,7 @@ abstract class ApiBaseController
 
 	public function subActionCheck(): bool
 	{
-		$subActions = $this->getSubActions();
-
-		return (!empty($this->subAction) && !in_array($this->subAction, $subActions));
+		return (!empty($this->subAction) && !in_array($this->subAction, $this->getSubActions()));
 	}
 
 	public function dispatch(): void
@@ -55,7 +56,7 @@ abstract class ApiBaseController
 		}
 
 		try {
-			$this->validator->isValid();
+			$this->validateActions->isValid();
 			$this->subActionCall();
 		} catch (ValidateException $validateException) {
 			$this->response->error($validateException->getMessage(), $validateException->getResponseCode());

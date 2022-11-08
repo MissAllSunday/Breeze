@@ -9,7 +9,7 @@ use Breeze\Entity\StatusEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Response;
-use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
 class StatusController extends ApiBaseController
 {
@@ -25,10 +25,10 @@ class StatusController extends ApiBaseController
 
 	public function __construct(
 		protected StatusRepositoryInterface $statusRepository,
-		protected ValidateDataInterface $validator,
+		protected ValidateActionsInterface $validateActions,
 		protected Response $response
 	) {
-		parent::__construct($validator, $response);
+		parent::__construct($validateActions, $response);
 	}
 
 	public function statusByProfile(): void

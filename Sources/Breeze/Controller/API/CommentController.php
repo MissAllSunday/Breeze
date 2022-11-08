@@ -9,7 +9,7 @@ use Breeze\Entity\CommentEntity;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidCommentException;
 use Breeze\Util\Response;
-use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
 class CommentController extends ApiBaseController
 {
@@ -23,10 +23,10 @@ class CommentController extends ApiBaseController
 
 	public function __construct(
 		protected CommentRepositoryInterface $commentRepository,
-		protected ValidateDataInterface $validator,
+		protected ValidateActionsInterface $validateActions,
 		protected Response $response
 	) {
-		parent::__construct($validator, $response);
+		parent::__construct($validateActions, $response);
 	}
 
 	public function getSubActions(): array

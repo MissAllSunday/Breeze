@@ -5,10 +5,9 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations\Status;
 
-use Breeze\Util\Validate\Validations\ValidateData;
-use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Util\Validate\Validations\ValidateActions;
 
-abstract class ValidateStatus extends ValidateData implements ValidateDataInterface
+class ValidateStatus extends ValidateActions
 {
 	public function __construct(
 		protected DeleteStatus $deleteStatus,

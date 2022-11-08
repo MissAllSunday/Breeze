@@ -9,7 +9,7 @@ use Breeze\Entity\LikeEntity;
 use Breeze\Repository\InvalidDataException;
 use Breeze\Repository\LikeRepositoryInterface;
 use Breeze\Util\Response;
-use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
 class LikesController extends ApiBaseController
 {
@@ -23,10 +23,10 @@ class LikesController extends ApiBaseController
 
 	public function __construct(
 		private LikeRepositoryInterface    $likeRepository,
-		protected ValidateDataInterface $validator,
+		protected ValidateActionsInterface $validateActions,
 		protected Response $response
 	) {
-		parent::__construct($validator, $response);
+		parent::__construct($validateActions, $response);
 	}
 
 	public function like(): void
