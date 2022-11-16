@@ -27,7 +27,7 @@ export default class StatusByProfile extends React.Component<any, any> {
   componentDidMount (): void {
     getByProfile()
       .then((response: ServerStatusResponse) => {
-        let newStatus: statusListType = Object.values(response.data)
+        let newStatus: statusListType = Object.values(response.data.content)
         newStatus = newStatus.map((status: statusType) => {
           status.comments = Object.values(status.comments)
 
