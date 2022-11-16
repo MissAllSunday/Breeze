@@ -6,6 +6,7 @@ export const baseUrl = (action: string, subAction: string, additionalParams: Obj
   baseUrl.searchParams.append('action', action)
   baseUrl.searchParams.append('sa', subAction)
   baseUrl.searchParams.append(SmfVars.session.var, SmfVars.session.id)
+  baseUrl.searchParams.append('XDEBUG_SESSION_START', 'PHPSTORM')
 
   additionalParams.map((objectValue): null => {
     for (const [key, value] of Object.entries(objectValue)) {

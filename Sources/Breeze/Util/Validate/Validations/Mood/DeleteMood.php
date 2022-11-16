@@ -5,16 +5,12 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Mood;
 
 use Breeze\Entity\MoodEntity;
-use Breeze\Repository\BaseRepositoryInterface;
 use Breeze\Repository\InvalidDataException;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\BaseActions;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
-use Breeze\Validate\Types\Allow;
-use Breeze\Validate\Types\Data;
-use Breeze\Validate\Types\User;
 
 class DeleteMood extends BaseActions implements ValidateDataInterface
 {
@@ -23,14 +19,6 @@ class DeleteMood extends BaseActions implements ValidateDataInterface
 	];
 
 	protected const SUCCESS_KEY = 'moodDeleted';
-
-	public function __construct(
-		protected Data $validateData,
-		protected User $validateUser,
-		protected Allow $validateAllow,
-		protected BaseRepositoryInterface $repository
-	) {
-	}
 
 	public function successKeyString(): string
 	{

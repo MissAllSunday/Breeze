@@ -9,16 +9,10 @@ use Breeze\Entity\UserSettingsEntity;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\BaseActions;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
-use Breeze\Validate\Types\Data;
 
 class UserSettings extends BaseActions implements ValidateDataInterface
 {
 	protected const SUCCESS_KEY = 'updated_settings';
-
-	public function __construct(
-		protected Data $validateData
-	) {
-	}
 
 	public function getParams(): array
 	{

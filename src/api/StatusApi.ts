@@ -16,11 +16,11 @@ export interface ServerPostStatusResponse {
 const action = 'breezeStatus'
 
 export const getByProfile = async (): Promise<AxiosResponse<statusListType>> => {
-  return await axios.get<statusListType>(
-    baseUrl(action, 'statusByProfile', [{
+  return await axios.post<statusListType>(
+    baseUrl(action, 'statusByProfile'),
+    baseConfig({
       wallId: smfVars.wallId
-    }]),
-    baseConfig()
+    })
   )
 }
 

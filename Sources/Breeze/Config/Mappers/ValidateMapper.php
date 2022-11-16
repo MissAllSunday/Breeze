@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Config\Mapper;
 
+use Breeze\Repository\CommentRepository;
+use Breeze\Repository\LikeRepository;
 use Breeze\Repository\StatusRepository;
 use Breeze\Repository\User\MoodRepository;
 use Breeze\Util\Validate\Validations\Comment\DeleteComment;
@@ -31,11 +33,11 @@ use Breeze\Validate\Types\User;
 return [
 	'validations.comment.deleteComment' => [
 		'class' => DeleteComment::class,
-		'arguments' => [Data::class, User::class, Allow::class, ValidateComment::class],
+		'arguments' => [Data::class, User::class, Allow::class, CommentRepository::class],
 	],
 	'validations.comment.postComment' => [
 		'class' => PostComment::class,
-		'arguments' => [Data::class, User::class, Allow::class, ValidateComment::class],
+		'arguments' => [Data::class, User::class, Allow::class, CommentRepository::class],
 	],
 	'validations.comment.validateComment' => [
 		'class' => ValidateComment::class,
@@ -47,7 +49,7 @@ return [
 	],
 	'validations.likes.like' => [
 		'class' => Like::class,
-		'arguments' => [Data::class, User::class, Allow::class, ValidateLikes::class],
+		'arguments' => [Data::class, User::class, Allow::class, LikeRepository::class],
 	],
 	'validations.mood.validateMood' => [
 		'class' => ValidateMood::class,
@@ -93,11 +95,11 @@ return [
 	],
 	'validations.status.post' => [
 		'class' => PostStatus::class,
-		'arguments' => [DeleteStatus::class, PostStatus::class, StatusByProfile::class],
+		'arguments' => [Data::class, User::class, Allow::class, StatusRepository::class],
 	],
 	'validations.status.byProfile' => [
 		'class' => StatusByProfile::class,
-		'arguments' => [DeleteStatus::class, PostStatus::class, StatusByProfile::class],
+		'arguments' => [Data::class, User::class, Allow::class, StatusRepository::class],
 	],
 	'validations.status.delete' => [
 		'class' => DeleteStatus::class,

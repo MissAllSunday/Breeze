@@ -13,6 +13,7 @@ use Breeze\Util\Form\Types\IntType;
 use Breeze\Util\Form\Types\SelectType;
 use Breeze\Util\Form\Types\TextType;
 use Breeze\Util\Form\UserSettingsBuilder;
+use Breeze\Util\Response;
 
 return [
 	'util.folder' => [
@@ -38,5 +39,8 @@ return [
 	],
 	'util.formatter.text' => [
 		'class' => TextType::class,
+	],
+	'util.response' => [
+		'class' => Response::class,
 	],
 ];

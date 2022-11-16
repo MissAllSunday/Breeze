@@ -10,8 +10,6 @@ use Breeze\Util\Validate\NotAllowedException;
 
 interface ValidateActionsInterface
 {
-	public function getValidator(): ValidateDataInterface;
-
 	public function setUp(array $data, string $subAction): void;
 
 	/**

@@ -11,12 +11,13 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-modal": "^3.12.1",
     "axios": "^1.1.2",
+    "buffer": "^6.0.3",
+    "core-js": "^2.6.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.0",
     "react-scripts": "^5.0.1",
-    "web-vitals": "^3.0.3",
-    "buffer": "^6.0.3"
+    "web-vitals": "^3.0.3"
   },
   "scripts": {
     "start": "react-scripts start",

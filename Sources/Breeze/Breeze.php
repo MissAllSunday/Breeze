@@ -38,8 +38,8 @@ class Breeze
 	public const PATTERN = self::NAME . '_';
 	public const FEED = 'https://api.github.com/repos/MissAllSunday/Breeze/releases';
 	public const SUPPORT_URL = 'https://missallsunday.com';
-	public const REACT_DOM_VERSION = '18.0.6';
-	public const REACT_VERSION = '18.0.21';
+	public const REACT_DOM_VERSION = '18.2.0';
+	public const REACT_VERSION = '18.2.0';
 
 	protected Container $container;
 

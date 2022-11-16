@@ -6,18 +6,13 @@ namespace Breeze\Util\Validate\Validations;
 
 abstract class ValidateActions
 {
-	public ValidateDataInterface $validator;
+	public ValidateDataInterface | null $validator = null;
 
 	public array $data = [];
 
 	public function isValid(): void
 	{
-		$this->validator->isValid();
-	}
-
-	public function getValidator(): ValidateDataInterface
-	{
-		return $this->validator;
+		$this->validator?->isValid();
 	}
 
 	public function setUp(array $data, string $action): void
@@ -33,6 +28,10 @@ abstract class ValidateActions
 
 	public function setValidator(string $action): void
 	{
-		$this->validator = $this->{$action};
+		$properties = get_class_vars(static::class);
+
+		if (in_array($action, $properties)) {
+			$this->validator = $this->{$action};
+		}
 	}
 }

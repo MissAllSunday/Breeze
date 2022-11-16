@@ -39,7 +39,7 @@ class StatusController extends ApiBaseController
 				$this->getRequest('start', 0)
 			);
 
-			$this->response->success($this->validator->successKeyString(), $statusByProfile);
+			$this->response->success('', $statusByProfile);
 		} catch (InvalidStatusException $invalidStatusException) {
 			$this->response->error($invalidStatusException->getMessage());
 		}
@@ -50,7 +50,7 @@ class StatusController extends ApiBaseController
 		try {
 			$this->statusRepository->deleteById($this->data[StatusEntity::ID]);
 
-			$this->response->success($this->validator->successKeyString(), [], Response::NO_CONTENT);
+			$this->response->success('deleted_status', [], Response::NO_CONTENT);
 		} catch (InvalidStatusException $invalidStatusException) {
 			$this->response->error($invalidStatusException->getMessage());
 		}
@@ -62,7 +62,7 @@ class StatusController extends ApiBaseController
 			$statusId = $this->statusRepository->save($this->data);
 
 			$this->response->success(
-				$this->validator->successKeyString(),
+				'published_status',
 				$this->statusRepository->getById($statusId),
 				Response::CREATED
 			);
