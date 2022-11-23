@@ -1,6 +1,6 @@
 import { ServerStatusResponse, getByProfile, deleteStatus, postStatus, ServerPostStatusResponse } from '../api/StatusApi'
 import React from 'react'
-import { statusType, statusListType, removeCommentProps, commentType } from 'breezeTypes'
+import { statusType, statusListType, removeCommentProps, commentType, commentList } from 'breezeTypes'
 import Loading from './Loading'
 import Editor from './Editor'
 import { AxiosResponse } from 'axios'
@@ -94,6 +94,21 @@ export default class StatusByProfile extends React.Component<any, any> {
     })
   }
 
+  onCreateComment = (commentList: commentList, statusID: number): void => {
+    const newStatusList = this.state.list.map(function (statusListItem: statusType) {
+      if (statusListItem.id === statusID) {
+        statusListItem.comments = [...statusListItem.comments, commentList.pop()]
+      }
+
+      return statusListItem
+    })
+
+    this.updateState({
+      list: newStatusList,
+      isLoading: false
+    })
+  }
+
   onNewStatus = (content: string): void => {
     this.updateState({
       isLoading: true
@@ -125,6 +140,7 @@ export default class StatusByProfile extends React.Component<any, any> {
         statusList={this.state.list}
         onRemoveStatus={this.onRemoveStatus}
         onRemoveComment={this.onRemoveComment}
+        onCreateComment={this.onCreateComment}
       />
       <Editor saveContent={this.onNewStatus} />
     </div>)

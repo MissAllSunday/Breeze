@@ -40,7 +40,7 @@ class CommentController extends ApiBaseController
 			$commentId = $this->commentRepository->save($this->data);
 
 			$this->response->success(
-				$this->validator->successKeyString(),
+				'published_comment',
 				$this->commentRepository->getById($commentId),
 				Response::CREATED
 			);
@@ -54,7 +54,7 @@ class CommentController extends ApiBaseController
 		try {
 			$this->commentRepository->deleteById($this->data[CommentEntity::ID]);
 
-			$this->response->success($this->validator->successKeyString(), [], Response::NO_CONTENT);
+			$this->response->success('deleted_comment', [], Response::NO_CONTENT);
 		} catch (InvalidCommentException $invalidCommentException) {
 			$this->response->error($invalidCommentException->getMessage(), $invalidCommentException->getResponseCode());
 		}

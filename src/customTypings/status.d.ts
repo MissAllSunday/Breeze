@@ -17,12 +17,14 @@ declare module 'breezeTypes' {
     statusList: statusListType
     onRemoveStatus: (status: statusType) => void
     onRemoveComment: function
+    onCreateComment: function
   }
 
   interface StatusProps {
     status: statusType
     removeStatus: (status: statusType) => void
     removeComment: function
+    createComment: function
   }
 }
 

@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { baseUrl, baseConfig } from './Api'
-import { statusType } from 'breezeTypes'
+import { commentList } from 'breezeTypes'
 import smfVars from '../DataSource/SMF'
 
 export interface ServerStatusResponse {
@@ -8,19 +8,19 @@ export interface ServerStatusResponse {
 }
 
 interface ServerCommentData {
-  users: object
-  status: statusType[]
+  message: string
+  content: commentList
 }
 
 const action = 'breezeComment'
 
 export const postComment = async (commentParams: object): Promise<AxiosResponse<ServerCommentData>> => {
   return await axios.post<ServerCommentData>(
-    baseUrl(action, 'postComment', [{
+    baseUrl(action, 'postComment'),
+    baseConfig({
       ...commentParams,
       userId: smfVars.userId
-    }]),
-    baseConfig()
+    })
   )
 }
 

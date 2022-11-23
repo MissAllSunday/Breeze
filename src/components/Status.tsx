@@ -22,7 +22,7 @@ export default class Status extends React.Component<StatusProps> {
       statusID: this.props.status.id,
       body: content
     }).then((response) => {
-      console.log(response)
+      this.props.createComment(Object.values(response.data.content.data), this.props.status.id)
     }).catch(() => {
 
     })

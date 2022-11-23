@@ -10,7 +10,7 @@ declare module 'breezeTypes' {
     userData: userDataType
   }
 
-  type commentList = Map<statusType>
+  type commentList = Map<commentType>
 
   interface newCommentProps {
     content: string
