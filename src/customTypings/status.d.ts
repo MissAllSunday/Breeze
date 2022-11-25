@@ -16,7 +16,7 @@ declare module 'breezeTypes' {
   interface StatusListProps {
     statusList: statusListType
     onRemoveStatus: (status: statusType) => void
-    onRemoveComment: function
+    removeComment: function
     onCreateComment: function
   }
 

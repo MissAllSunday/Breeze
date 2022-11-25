@@ -28,7 +28,7 @@ export default class Status extends React.Component<StatusProps> {
     })
   }
 
-  onRemoveComment = (comment: commentType): void => {
+  removeComment = (comment: commentType): void => {
     this.props.removeComment(this.props.status, comment)
   }
 
@@ -57,7 +57,7 @@ export default class Status extends React.Component<StatusProps> {
         </div>
         <CommentList
           commentList={this.props.status.comments}
-          removeComment={this.onRemoveComment}
+          removeComment={this.removeComment}
         />
       <div className='comment_posting'>
         <Editor saveContent={this.onNewComment} />

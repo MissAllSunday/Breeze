@@ -11,8 +11,8 @@ use Breeze\Model\CommentModelInterface;
 class CommentRepository extends BaseRepository implements CommentRepositoryInterface
 {
 	public function __construct(
-		private CommentModelInterface   $commentModel,
-		private LikeRepositoryInterface $likeRepository
+		private readonly CommentModelInterface   $commentModel,
+		private readonly LikeRepositoryInterface $likeRepository
 	) {
 	}
 
@@ -58,21 +58,21 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	/**
 	 * @throws InvalidCommentException
 	 */
-	public function getById(int $commentId): array
+	public function getById(int $id): array
 	{
-		$comment = $this->getCache(__FUNCTION__ . $commentId);
-
-		if (empty($comment)) {
-			$comment = $this->commentModel->getByIds([$commentId]);
-
-			$this->setCache(__FUNCTION__ . $commentId, $comment);
-		}
+		$comment = $this->commentModel->getByIds([$id]);
 
 		if (empty($comment['data'])) {
 			throw new InvalidCommentException('error_no_comment');
 		}
 
-		return $comment;
+		$usersData = $this->loadUsersInfo(array_unique($comment['usersIds']));
+
+		return $this->likeRepository->appendLikeData(array_map(function ($item) use ($usersData): array {
+			$item['userData'] = $usersData[$item[CommentEntity::USER_ID]];
+
+			return $item;
+		}, $comment), CommentEntity::ID);
 	}
 
 	/**
@@ -101,5 +101,21 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		}
 
 		return true;
+	}
+
+	protected function appendLikes(array $data = []): array
+	{
+		return $this->likeRepository->appendLikeData($data, CommentEntity::ID);
+	}
+
+	protected function appendUserData(array $data, array $userIds = []): array
+	{
+		$usersData = $this->loadUsersInfo(array_unique($userIds));
+
+		return array_map(function ($item) use ($usersData): array {
+			$item['userData'] = $usersData[$item[CommentEntity::ID]];
+
+			return $item;
+		}, $data);
 	}
 }

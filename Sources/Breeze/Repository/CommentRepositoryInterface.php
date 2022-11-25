@@ -19,7 +19,7 @@ interface CommentRepositoryInterface extends BaseRepositoryInterface
 	/**
 	 * @throws InvalidCommentException
 	 */
-	public function getById(int $commentId): array;
+	public function getById(int $id): array;
 
 	/**
 	 * @throws InvalidCommentException
