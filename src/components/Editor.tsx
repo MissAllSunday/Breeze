@@ -5,6 +5,8 @@ const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: st
 
   const handleClick = useCallback(() => {
     props.saveContent(content)
+    const input = (document.getElementById('content') as HTMLInputElement)
+    input.value = ''
   }, [props, content])
 
   const handleContent = useCallback((event: any) => setContent(event.target.value), [])

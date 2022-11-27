@@ -8,6 +8,7 @@ export default class Comment extends Component<CommentProps> {
   }
 
   render (): JSX.Element {
+    console.log(this.props.comment)
     return <div className="comment">
       <div className="avatar">
         <img src={this.props.comment.userData.avatar.href} alt={this.props.comment.userData.username}/>

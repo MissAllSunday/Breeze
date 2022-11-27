@@ -17,12 +17,12 @@ export default class Status extends React.Component<StatusProps> {
     this.props.removeStatus(this.props.status)
   }
 
-  onNewComment = (content: string): void => {
+  newcomment = (content: string): void => {
     postComment({
       statusID: this.props.status.id,
       body: content
     }).then((response) => {
-      this.props.createComment(Object.values(response.data.content.data), this.props.status.id)
+      this.props.createComment(Object.values(response.data.content), this.props.status.id)
     }).catch(() => {
 
     })
@@ -60,7 +60,7 @@ export default class Status extends React.Component<StatusProps> {
           removeComment={this.removeComment}
         />
       <div className='comment_posting'>
-        <Editor saveContent={this.onNewComment} />
+        <Editor saveContent={this.newcomment} />
       </div>
     </div>
   </div>

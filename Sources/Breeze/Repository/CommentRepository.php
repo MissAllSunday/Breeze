@@ -36,15 +36,10 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	public function getByProfile(int $profileOwnerId = 0): array
 	{
 		$comments = $this->commentModel->getByProfiles([$profileOwnerId]);
-		$usersData = $this->loadUsersInfo(array_unique($comments['usersIds']));
 
 		foreach ($comments['data'] as $statusId => &$commentsByStatus) {
-			$commentsByStatus = $this->likeRepository->appendLikeData($commentsByStatus, CommentEntity::ID);
-			$commentsByStatus = array_map(function ($item) use ($usersData): array {
-				$item['userData'] = $usersData[$item[CommentEntity::USER_ID]];
-
-				return $item;
-			}, $commentsByStatus);
+			$commentsByStatus = $this->appendLikes($commentsByStatus);
+			$commentsByStatus = $this->appendUserData($commentsByStatus, $comments['usersIds']);
 		}
 
 		return $comments['data'];
@@ -60,19 +55,13 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	 */
 	public function getById(int $id): array
 	{
-		$comment = $this->commentModel->getByIds([$id]);
+		$comments = $this->commentModel->getByIds([$id]);
 
-		if (empty($comment['data'])) {
+		if (empty($comments['data'])) {
 			throw new InvalidCommentException('error_no_comment');
 		}
 
-		$usersData = $this->loadUsersInfo(array_unique($comment['usersIds']));
-
-		return $this->likeRepository->appendLikeData(array_map(function ($item) use ($usersData): array {
-			$item['userData'] = $usersData[$item[CommentEntity::USER_ID]];
-
-			return $item;
-		}, $comment), CommentEntity::ID);
+		return $this->prepareData($comments);
 	}
 
 	/**
@@ -113,9 +102,17 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		$usersData = $this->loadUsersInfo(array_unique($userIds));
 
 		return array_map(function ($item) use ($usersData): array {
-			$item['userData'] = $usersData[$item[CommentEntity::ID]];
+			$item['userData'] = $usersData[$item[CommentEntity::USER_ID]];
 
 			return $item;
 		}, $data);
+	}
+
+	protected function prepareData(array $comments = []): array
+	{
+		$comments['data'] = $this->appendUserData($comments['data'], array_unique($comments['usersIds']));
+		$comments['data'] = $this->appendLikes($comments['data']);
+
+		return $comments['data'];
 	}
 }
