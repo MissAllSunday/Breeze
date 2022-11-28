@@ -13,7 +13,7 @@ export default class Status extends React.Component<StatusProps> {
     }
   }
 
-  onRemove = (): void => {
+  removeStatus = (): void => {
     this.props.removeStatus(this.props.status)
   }
 
@@ -43,13 +43,12 @@ export default class Status extends React.Component<StatusProps> {
         {this.props.status.createdAt}
         <span
           className="main_icons remove_button floatright pointer_cursor"
-          onClick={this.onRemove}>
+          onClick={this.removeStatus}>
           delete
         </span>
       </div>
       <br />
         <div className='content'>
-          <hr />
           {this.props.status.body}
           <Like
             item={this.props.status.likesInfo}
@@ -64,6 +63,7 @@ export default class Status extends React.Component<StatusProps> {
       </div>
     </div>
   </div>
+  <hr />
 </li>
   }
 }

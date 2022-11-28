@@ -43,13 +43,15 @@ export default class StatusByProfile extends React.Component<any, any> {
       })
   }
 
-  onRemoveStatus = (status: statusType): void => {
+  removeStatus = (status: statusType): void => {
+    console.log(status)
     this.updateState({
       isLoading: true
     })
 
     deleteStatus(status.id).then((response) => {
       if (response.status !== 204) {
+        // Show some error message
         return
       }
 
@@ -139,7 +141,7 @@ export default class StatusByProfile extends React.Component<any, any> {
       this.state.isLoading ? <Loading /> :
       <StatusList
         statusList={this.state.list}
-        onRemoveStatus={this.onRemoveStatus}
+        removeStatus={this.removeStatus}
         removeComment={this.removeComment}
         onCreateComment={this.onCreateComment}
       />
