@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Controller\API;
 
+use Breeze\Breeze;
 use Breeze\Exceptions\ValidateException;
 use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
@@ -28,9 +29,6 @@ abstract class ApiBaseController
 		protected Response $response
 	) {
 		$this->subAction = $this->getRequest('sa', '');
-		$this->data = $this->getData();
-
-		$this->validateActions->setUp($this->data, $this->subAction);
 	}
 
 	public function subActionCall(): void
@@ -51,6 +49,14 @@ abstract class ApiBaseController
 
 	public function dispatch(): void
 	{
+		if (!in_array($this->subAction, Breeze::ACTIONS)) {
+			return;
+		}
+
+		$this->data = $this->getData();
+
+		$this->validateActions->setUp($this->data, $this->subAction);
+
 		if ($this->subActionCheck()) {
 			$this->response->print([], Response::NOT_FOUND);
 		}

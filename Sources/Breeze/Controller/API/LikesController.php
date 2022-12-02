@@ -22,7 +22,7 @@ class LikesController extends ApiBaseController
 	];
 
 	public function __construct(
-		private LikeRepositoryInterface    $likeRepository,
+		private readonly LikeRepositoryInterface $likeRepository,
 		protected ValidateActionsInterface $validateActions,
 		protected Response $response
 	) {
@@ -31,9 +31,12 @@ class LikesController extends ApiBaseController
 
 	public function like(): void
 	{
+		var_dump($this->data);
+		die;
+
 		try {
 			$this->response->success(
-				$this->validator->successKeyString(),
+				'likeSuccess',
 				$this->likeRepository->likeContent(
 					$this->data[LikeEntity::TYPE],
 					$this->data[LikeEntity::ID],

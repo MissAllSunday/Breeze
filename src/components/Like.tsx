@@ -3,8 +3,10 @@ import { ServerLikeResponse, postLike } from '../api/LikeApi'
 import { LikeProps } from 'breezeTypes'
 
 export default class Like extends React.Component<LikeProps> {
-  handleLike (): void {
+  handleLike = (): void => {
+    console.log(this)
     postLike(this.props.item).then((response: ServerLikeResponse) => {
+      console.log(response)
       this.setState(response.data)
     }).catch(exception => {
     })
@@ -12,10 +14,9 @@ export default class Like extends React.Component<LikeProps> {
 
   render (): JSX.Element {
     return <div className="smflikebutton">
-  <a onClick={this.handleLike} className="msg_like" href='/'>
-    <span className='likeClass' />
-    handle like
-  </a>
+    <span onClick={this.handleLike} className='likeClass' >
+    handle like lol
+    </span>
   <div className="like_count smalltext">
     {this.props.item.count}
   </div>
