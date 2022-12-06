@@ -20,6 +20,8 @@ abstract class ApiBaseController
 
 	protected string $subAction;
 
+	protected string $action;
+
 	protected array $data = [];
 
 	protected ValidateDataInterface $validator;
@@ -29,6 +31,7 @@ abstract class ApiBaseController
 		protected Response $response
 	) {
 		$this->subAction = $this->getRequest('sa', '');
+		$this->action = $this->getRequest('action', '');
 	}
 
 	public function subActionCall(): void
@@ -49,7 +52,7 @@ abstract class ApiBaseController
 
 	public function dispatch(): void
 	{
-		if (!in_array($this->subAction, Breeze::ACTIONS)) {
+		if (!in_array($this->action, Breeze::ACTIONS)) {
 			return;
 		}
 

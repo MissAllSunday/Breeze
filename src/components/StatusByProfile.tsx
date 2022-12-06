@@ -137,15 +137,15 @@ export default class StatusByProfile extends React.Component<any, any> {
   }
 
   render (): JSX.Element {
+    const isLoading = this.state.isLoading
     return (<div>
-      this.state.isLoading ? <Loading /> :
-      <StatusList
-        statusList={this.state.list}
-        removeStatus={this.removeStatus}
-        removeComment={this.removeComment}
-        onCreateComment={this.onCreateComment}
-      />
-      <Editor saveContent={this.onNewStatus} />
+      {isLoading === true
+        ? <Loading />
+        : <><StatusList
+          statusList={this.state.list}
+          removeStatus={this.removeStatus}
+          removeComment={this.removeComment}
+          onCreateComment={this.onCreateComment}/><Editor saveContent={this.onNewStatus}/></>}
     </div>)
   }
 }
