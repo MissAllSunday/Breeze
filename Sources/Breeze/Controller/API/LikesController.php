@@ -31,8 +31,6 @@ class LikesController extends ApiBaseController
 
 	public function like(): void
 	{
-		var_dump($this->data);
-		die;
 
 		try {
 			$this->response->success(
