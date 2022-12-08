@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Likes;
 
 use Breeze\Entity\LikeEntity;
+use Breeze\Repository\InvalidDataException;
 use Breeze\Util\Permissions;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
@@ -38,15 +39,41 @@ class Like extends BaseActions implements ValidateDataInterface
 	}
 
 	/**
+	 * @throws InvalidDataException
+	 */
+	public function checkData(): void
+	{
+		$this->validateData->compare(self::PARAMS, $this->data);
+	}
+
+	/**
 	 * @throws NotAllowedException
 	 * @throws DataNotFoundException
 	 */
-	public function isValid(): void
+	public function checkAllow(): void
 	{
 		$this->validateAllow->isFeatureEnable('enable_likes');
-		$this->validateData->compare(self::PARAMS, $this->data);
-		$this->checkType();
 		$this->validateAllow->permissions(Permissions::LIKES_LIKE, 'likesLike');
+	}
+
+	/**
+	 * @throws DataNotFoundException
+	 */
+	public function checkUser(): void
+	{
 		$this->validateUser->areValidUsers([$this->data[LikeEntity::ID_MEMBER]]);
+	}
+
+	/**
+	 * @throws DataNotFoundException
+	 * @throws NotAllowedException
+	 * @throws InvalidDataException
+	 */
+	public function isValid(): void
+	{
+		$this->checkData();
+		$this->checkAllow();
+		$this->checkType();
+		$this->checkUser();
 	}
 }

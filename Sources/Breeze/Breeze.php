@@ -24,6 +24,7 @@ use Breeze\Service\Actions\UserSettingsServiceInterface;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\UserService;
 use Breeze\Service\UserServiceInterface;
+use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
 use League\Container\Container as Container;
 use Psr\Container\ContainerExceptionInterface;
@@ -32,6 +33,7 @@ use Psr\Container\NotFoundExceptionInterface;
 class Breeze
 {
 	use TextTrait;
+	use RequestTrait;
 
 	public const NAME = 'Breeze';
 	public const VERSION = '2.0';
@@ -217,6 +219,12 @@ class Breeze
 
 	public function actions(array &$actions): void
 	{
+		$action = $this->getRequest('action', '');
+
+		if (empty($action) || ! in_array($action, self::ACTIONS)) {
+			return;
+		}
+
 		try {
 			$statusController = $this->container->get(StatusController::class);
 			$commentController = $this->container->get(CommentController::class);
