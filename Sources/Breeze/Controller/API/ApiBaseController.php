@@ -57,8 +57,6 @@ abstract class ApiBaseController
 		}
 
 		$this->data = $this->getData();
-		var_dump($this->data);
-		die;
 		$this->validateActions->setUp($this->data, $this->subAction);
 
 		if ($this->subActionCheck()) {
@@ -69,8 +67,6 @@ abstract class ApiBaseController
 			$this->validateActions->isValid();
 			$this->subActionCall();
 		} catch (ValidateException $validateException) {
-			var_dump($validateException);
-			die;
 			$this->response->error($validateException->getMessage(), $validateException->getResponseCode());
 		}
 	}
