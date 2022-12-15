@@ -10,7 +10,7 @@ export interface ServerLikeData {
   content: likeType[]
 }
 
-const action = 'like'
+const action = 'breezeLike'
 
 export const postLike = async (likeData: object): Promise<AxiosResponse<ServerLikeData>> => {
   return await axios.post<ServerLikeData>(

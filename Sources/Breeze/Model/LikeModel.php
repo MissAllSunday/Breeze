@@ -10,7 +10,20 @@ class LikeModel extends BaseModel implements LikeModelInterface
 {
 	public function insert(array $data, int $id = 0): int
 	{
-		return 1;
+		if (empty($data)) {
+			return 0;
+		}
+
+		$data[] = time();
+
+		$this->dbClient->insert(LikeEntity::TABLE, [
+			LikeEntity::ID => 'int',
+			LikeEntity::TYPE => 'string',
+			LikeEntity::ID_MEMBER => 'int',
+			LikeEntity::TIME => 'int',
+		], $data, [LikeEntity::ID, LikeEntity::TYPE, LikeEntity::ID_MEMBER]);
+
+		return $this->getInsertedId();
 	}
 
 	public function update(array $data, int $id = 0): array
@@ -136,7 +149,7 @@ class LikeModel extends BaseModel implements LikeModelInterface
 			LikeEntity::ID => 'int',
 			LikeEntity::TYPE => 'string',
 			LikeEntity::ID_MEMBER => 'int',
-			LikeEntity::TIME => 'string',
+			LikeEntity::TIME => 'int',
 		], [
 			$contentId,
 			$type,
