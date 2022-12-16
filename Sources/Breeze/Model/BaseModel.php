@@ -153,9 +153,11 @@ abstract class BaseModel implements BaseModelInterface
 
 					$columnName = self::LIKE_IDENTIFIER . '.' . $likeColumn;
 
-					return ($likeColumn === LikeEntity::TYPE ?
-						'IFNULL(' . $columnName . ', "' . $type . '")' :
-						$columnName ) . ' AS ' . LikeEntity::IDENTIFIER . $likeColumn;
+					return match ($likeColumn) {
+						LikeEntity::TYPE => 'COALESCE(' . $columnName . ', "' . $type . '")',
+						LikeEntity::ID_MEMBER => 'COALESCE(' . $columnName . ', 0)',
+						default => $columnName,
+					} . ' AS ' . LikeEntity::IDENTIFIER . $likeColumn;
 				}, LikeEntity::getColumns())),
 			'tableName' => $this->getTableName(),
 			'from' => $this->getTableName() . ' AS ' . self::PARENT_LIKE_IDENTIFIER,
