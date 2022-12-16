@@ -149,12 +149,17 @@ abstract class BaseModel implements BaseModelInterface
 			'columns' => implode(', ', array_map(function ($parentColumn) {
 					return self::PARENT_LIKE_IDENTIFIER . '.' . $parentColumn;
 			}, $this->getColumns())) . ', ' .
-				implode(', ', array_map(function ($likeColumn) {
-					return self::LIKE_IDENTIFIER . '.' . $likeColumn . ' AS ' . LikeEntity::IDENTIFIER . $likeColumn;
+				implode(', ', array_map(function ($likeColumn) use ($type) {
+
+					$columnName = self::LIKE_IDENTIFIER . '.' . $likeColumn;
+
+					return ($likeColumn === LikeEntity::TYPE ?
+						'IFNULL(' . $columnName . ', "' . $type . '")' :
+						$columnName ) . ' AS ' . LikeEntity::IDENTIFIER . $likeColumn;
 				}, LikeEntity::getColumns())),
 			'tableName' => $this->getTableName(),
 			'from' => $this->getTableName() . ' AS ' . self::PARENT_LIKE_IDENTIFIER,
-			'likeJoin' => '' . LikeEntity::TABLE . ' AS ' . self::LIKE_IDENTIFIER . '
+			'likeJoin' => LikeEntity::TABLE . ' AS ' . self::LIKE_IDENTIFIER . '
 			 	ON (' . self::LIKE_IDENTIFIER . '.' . LikeEntity::ID . ' =
 			 	 ' . self::PARENT_LIKE_IDENTIFIER . '.' . $parentIdentifier . '
 			 	AND ' . self::LIKE_IDENTIFIER . '.' . LikeEntity::TYPE . ' = "' . $type . '")',

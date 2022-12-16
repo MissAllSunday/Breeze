@@ -4,9 +4,7 @@ import { LikeProps } from 'breezeTypes'
 
 export default class Like extends React.Component<LikeProps> {
   handleLike = (): void => {
-    console.log(this)
     postLike(this.props.item).then((response: ServerLikeResponse) => {
-      console.log(response)
       this.setState(response.data)
     }).catch(exception => {
     })
