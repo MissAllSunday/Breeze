@@ -1,6 +1,9 @@
 declare module 'breezeTypes' {
   interface likeType {
-    additionalInfo: string
+    additionalInfo: {
+      text: string
+      href: string
+    }
     alreadyLiked: boolean
     canLike: boolean
     contentId: number

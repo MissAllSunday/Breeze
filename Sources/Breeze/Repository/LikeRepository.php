@@ -83,7 +83,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			'alreadyLiked' => false,
 			'type' => $type,
 			'canLike' => Permissions::isAllowedTo(Permissions::LIKES_LIKE),
-			'additionalInfo' => '',
+			'additionalInfo' => [],
 		];
 		$base = LikeEntity::IDENTIFIER;
 
@@ -103,23 +103,25 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			$likesTextCount = $likesCount - 1;
 		}
 
-		$base .= ($this->getSmfText($base . $likesTextCount) !== '') ? $likesTextCount : 'n';
-
-		$additionalInfo = sprintf(
-			$this->getSmfText($base),
-			$this->parserText(
-				'{scriptUrl}?action=likes;sa=view;ltype=msg;like={href}',
-				[
-					'scriptUrl' => $this->global('scripturl'),
-					'href' => $contentId,
-				]
-			),
-			$this->commaFormat((string)$likesTextCount)
-		);
+		$base .= ($this->getText($base . $likesTextCount) !== '') ? $likesTextCount : 'n';
 
 		return array_merge($likeData, [
 			'count' => $likesCount,
-			'additionalInfo' => $additionalInfo,
+			'additionalInfo' => [
+				//				'text' => $this->getText('noti_none'),
+				'text' => sprintf(
+					$this->getText($base),
+					$this->commaFormat((string) $likesTextCount)
+				),
+				'href' => $this->parserText(
+					'{scriptUrl}?action=likes;sa=view;ltype={ltype};like={likeId}',
+					[
+						'ltype' => $type,
+						'scriptUrl' => $this->global('scripturl'),
+						'likeId' => $contentId,
+					]
+				),
+			],
 			'alreadyLiked' => $isContentAlreadyLiked,
 		]);
 	}

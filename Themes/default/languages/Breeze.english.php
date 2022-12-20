@@ -64,6 +64,11 @@ $txt['Breeze_error_no_like'] = 'The content to be liked doesn\'t exists anymore'
 $txt['Breeze_error_alreadyLiked'] = 'Cannot like an already liked content';
 $txt['Breeze_info_likeSuccess'] = 'Your like has been given!';
 $txt['Breeze_error_save_like'] = 'The like couldn\'t be inserted';
+$txt['Breeze_likes_1'] = '%1$s person likes this.';
+$txt['Breeze_likes_n'] = '%1$s people like this.';
+$txt['Breeze_you_likes_0'] = 'You like this.';
+$txt['Breeze_you_likes_1'] = 'You and %1$s other person like this.';
+$txt['Breeze_you_likes_n'] = 'You and %1$s other people like this.';
 
 // Time
 $txt['Breeze_time_just_now'] = 'just now';

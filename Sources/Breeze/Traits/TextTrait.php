@@ -15,6 +15,8 @@ trait TextTrait
 
 	public function getText(string $textKey): string
 	{
+		$this->setLanguage(Breeze::NAME);
+
 		$txt = $this->global('txt');
 
 		return !empty($txt[Breeze::PATTERN . $textKey]) ? $txt[Breeze::PATTERN . $textKey] : '';

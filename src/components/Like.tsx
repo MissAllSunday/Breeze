@@ -13,7 +13,7 @@ export default class Like extends React.Component<LikeProps> {
   render (): JSX.Element {
     return <div className="smflikebutton">
     <span onClick={this.handleLike} className='likeClass' >
-    handle like lol
+      {this.props.item.additionalInfo.text}
     </span>
   <div className="like_count smalltext">
     {this.props.item.count}
