@@ -108,7 +108,6 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		return array_merge($likeData, [
 			'count' => $likesCount,
 			'additionalInfo' => [
-				//				'text' => $this->getText('noti_none'),
 				'text' => sprintf(
 					$this->getText($base),
 					$this->commaFormat((string) $likesTextCount)
