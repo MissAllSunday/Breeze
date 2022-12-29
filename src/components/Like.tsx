@@ -25,7 +25,7 @@ const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
       {String.fromCodePoint(like.alreadyLiked ? 128078 : 128077)}
     </span>
       <div className="like_count smalltext">
-        {}
+        {like.additionalInfo.text}
       </div>
     </div>
   )
