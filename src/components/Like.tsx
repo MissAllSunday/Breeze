@@ -1,24 +1,34 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { ServerLikeResponse, postLike } from '../api/LikeApi'
-import { LikeProps } from 'breezeTypes'
+import { LikeProps, likeType } from 'breezeTypes'
 
-export default class Like extends React.Component<LikeProps> {
-  handleLike = (): void => {
-    postLike(this.props.item).then((response: ServerLikeResponse) => {
-      this.setState(response.data)
-    }).catch(exception => {
-    })
-  }
+const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
+  const [like, setLike] = useState<likeType>(props.item)
 
-  render (): JSX.Element {
-    const like = this.props.item.alreadyLiked ? 128078 : 128077
-    return <div className="smflikebutton">
-    <span onClick={this.handleLike} className='likeClass' >
-      {String.fromCodePoint(like)}
+  const handleLike = useCallback(
+    () => {
+      function issueLike (): void {
+        postLike(like).then((response: ServerLikeResponse) => {
+          setLike(response.data.content)
+        }).catch(exception => {
+          console.log(exception)
+        })
+      }
+      issueLike()
+    },
+    [like]
+  )
+
+  return (
+    <div className="smflikebutton">
+    <span onClick={handleLike} className='likeClass' >
+      {String.fromCodePoint(like.alreadyLiked ? 128078 : 128077)}
     </span>
-  <div className="like_count smalltext">
-    {this.props.item.additionalInfo.text}
-  </div>
-</div>
-  }
+      <div className="like_count smalltext">
+        {}
+      </div>
+    </div>
+  )
 }
+
+export default Like

@@ -8,7 +8,7 @@ export interface ServerLikeResponse {
 }
 
 export interface ServerLikeData {
-  content: likeType[]
+  content: likeType
 }
 
 const action = 'breezeLike'
