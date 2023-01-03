@@ -9,7 +9,6 @@ declare(strict_types=1);
 function template_breeze_main(): void
 {
 	echo '
-	<div id="breeze_app" class="breeze_main_section">
-		<breeze-wall></breeze-wall>
+	<div id="root" class="breeze_main_section">
 	</div>';
 }

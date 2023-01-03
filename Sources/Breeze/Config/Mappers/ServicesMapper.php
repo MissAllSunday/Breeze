@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Config\Mapper;
 
-use Breeze\Repository\CommentRepository;
 use Breeze\Repository\StatusRepository;
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminService;
@@ -42,7 +41,6 @@ return [
 		'arguments' => [
 			UserService::class,
 			StatusRepository::class,
-			CommentRepository::class,
 			Components::class,],
 	],
 	'service.validate' => [

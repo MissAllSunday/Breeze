@@ -10,6 +10,10 @@ use Breeze\Controller\ControllerInterface as ControllerInterfaceAlias;
 
 class AlertsController extends BaseController implements ControllerInterfaceAlias
 {
+	public function __construct()
+	{
+	}
+
 	public function getSubActions(): array
 	{
 		return [];

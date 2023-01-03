@@ -19,9 +19,7 @@ export default class StatusByProfile extends React.Component<any, any> {
   updateState (newData: object): void {
     const newState = { ...this.state, ...newData }
 
-    this.setState(newState, function () {
-      // console.log(newState)
-    })
+    this.setState(newState)
   }
 
   componentDidMount (): void {

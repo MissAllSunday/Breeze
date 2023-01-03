@@ -25,9 +25,9 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 	private array $profileOwnerSettings = [];
 
 	public function __construct(
-		private UserServiceInterface      $userService,
+		private UserServiceInterface $userService,
 		private StatusRepositoryInterface $statusRepository,
-		private Components                $components
+		private Components $components
 	) {
 	}
 
@@ -73,6 +73,12 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 		$this->components->loadComponents(
 			['breeze-wall']
 		);
+
+		$this->components->loadJavaScriptFile('breeze/main.' . Breeze::REACT_HASH . '.js', [
+			'external' => false,
+			'defer' => true,
+		], strtolower(Breeze::PATTERN . Breeze::REACT_HASH));
+
 		$this->components->loadCSSFile('breeze.css', [], 'smf_breeze');
 	}
 

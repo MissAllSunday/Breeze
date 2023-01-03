@@ -42,6 +42,7 @@ class Breeze
 	public const SUPPORT_URL = 'https://missallsunday.com';
 	public const REACT_DOM_VERSION = '18.2.0';
 	public const REACT_VERSION = '18.2.0';
+	public const REACT_HASH = '3a8ffdf8';
 	public const ACTIONS = [
 		'breezeStatus',
 		'breezeComment',
@@ -118,48 +119,56 @@ class Breeze
 			];
 		}
 
-		/** @var UserSettingsController $settingsController */
-		$settingsController = $this->container->get(UserSettingsController::class);
+		try {
+			/** @var UserSettingsController $settingsController */
+			$settingsController = $this->container->get(UserSettingsController::class);
 
-		/** @var AlertsController $alertsController */
-		$alertsController = $this->container->get(AlertsController::class);
+			/** @var AlertsController $alertsController */
+			$alertsController = $this->container->get(AlertsController::class);
 
-		$profileAreas['breeze_profile'] = [
-			'title' => $this->getText('general_my_wall_settings'),
-			'areas' => [],
-		];
+			$profileAreas['breeze_profile'] = [
+				'title' => $this->getText('general_my_wall_settings'),
+				'areas' => [],
+			];
 
-		$profileAreas['breeze_profile']['areas']['breezeSettings'] = [
-			'label' => $this->getText(UserSettingsServiceInterface::AREA . '_main_title'),
-			'icon' => 'maintain',
-			'function' => [$settingsController, 'dispatch'],
-			'enabled' => $context['user']['is_owner'],
-			'permission' => [
-				'own' => 'is_not_guest',
-				'any' => 'profile_view',
-			],
-		];
+			$profileAreas['breeze_profile']['areas']['breezeSettings'] = [
+				'label' => $this->getText(UserSettingsServiceInterface::AREA . '_main_title'),
+				'icon' => 'maintain',
+				'function' => [$settingsController, 'dispatch'],
+				'enabled' => $context['user']['is_owner'],
+				'permission' => [
+					'own' => 'is_not_guest',
+					'any' => 'profile_view',
+				],
+			];
 
-		$profileAreas['breeze_profile']['areas']['breezeAlerts'] = [
-			'label' => $this->getText('user_settings_name_alerts'),
-			'function' => [$alertsController, 'dispatch'],
-			'enabled' => $context['user']['is_owner'],
-			'icon' => 'maintain',
-			'subsections' => [
-				'settings' => [
-					$this->getText('user_settings_name_alerts_settings'),
-					['is_not_guest', 'profile_view'],],
-				'edit' => [
-					$this->getText('user_settings_name_alerts_edit'),
-					['is_not_guest', 'profile_view'],],
-			],
-			'permission' => [
-				'own' => 'is_not_guest',
-				'any' => 'profile_view',
-			],
-		];
+			$profileAreas['breeze_profile']['areas']['breezeAlerts'] = [
+				'label' => $this->getText('user_settings_name_alerts'),
+				'function' => [$alertsController, 'dispatch'],
+				'enabled' => $context['user']['is_owner'],
+				'icon' => 'maintain',
+				'subsections' => [
+					'settings' => [
+						$this->getText('user_settings_name_alerts_settings'),
+						['is_not_guest', 'profile_view'],],
+					'edit' => [
+						$this->getText('user_settings_name_alerts_edit'),
+						['is_not_guest', 'profile_view'],],
+				],
+				'permission' => [
+					'own' => 'is_not_guest',
+					'any' => 'profile_view',
+				],
+			];
+		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
+			log_error($exception->getMessage());
+		}
 	}
 
+	/**
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
 	public function menu(array &$menu_buttons): void
 	{
 		if (!$this->isEnable(SettingsEntity::MASTER)) {
