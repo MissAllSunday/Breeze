@@ -57,23 +57,6 @@
 	margin-right: auto;
 }
 
-.breeze_avatar.avatar_status {
-	width: 60px;
-	height: 60px;
-	margin-right: 5px;
-}
-
-.breeze_avatar.avatar_comment {
-	width: 35px;
-	height: 35px;
-	margin-right: 5px;
-	margin-bottom: 5px;
-}
-
-.comment_user_info, .comment_posting {
-	display: flex;
-}
-
 .comment_content {
 	width:99%
 }
@@ -83,22 +66,14 @@
 	width: 100%;
 }
 
-.comment_posting {
-	margin-top: 10px;
-}
-
-.post_button_container{
-	margin-top: 5px;
-}
-
-.errorbox, .noticebox, .infobox {
-	margin-top:10px;
-}
-
 .status {
-	display: flex;
+	display: inline-block;
 	flex-direction: column-reverse;
-	margin-top: 30px;
+}
+
+.status li {
+	display: inline-block;
+	width: 99%;
 }
 
 .breeze_editor {

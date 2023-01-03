@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { CommentProps } from 'breezeTypes'
 import Like from './Like'
+import UserInfo from './user/UserInfo'
 
 export default class Comment extends Component<CommentProps> {
   onRemove = (): void => {
@@ -9,14 +10,17 @@ export default class Comment extends Component<CommentProps> {
 
   render (): JSX.Element {
     return <div className="comment">
-      <div className="avatar">
-        <img src={this.props.comment.userData.avatar.href} alt={this.props.comment.userData.username}/>
+      <div className="floatleft">
+        <UserInfo userData={this.props.comment.userData}/>
       </div>
-      <div onClick={ this.onRemove }>remove comment</div>
-      {this.props.comment.body}
-      <Like
-        item={this.props.comment.likesInfo}
-      />
+      <div className="floatright">
+        <div onClick={ this.onRemove }>remove comment</div>
+        {this.props.comment.body}
+        <Like
+          item={this.props.comment.likesInfo}
+        />
+      </div>
+
   </div>
   }
 }

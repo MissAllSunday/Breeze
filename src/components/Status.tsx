@@ -4,6 +4,7 @@ import Like from './Like'
 import { CommentList } from './CommentList'
 import Editor from './Editor'
 import { postComment } from '../api/CommentApi'
+import UserInfo from './user/UserInfo'
 
 export default class Status extends React.Component<StatusProps> {
   constructor (props: any) {
@@ -34,8 +35,11 @@ export default class Status extends React.Component<StatusProps> {
 
   render (): JSX.Element {
     return <li key={this.props.status.id}>
-  <div className='breeze_avatar avatar_status floatleft'>
-    <div className='windowbg'>
+    <div className="floatleft">
+      <UserInfo userData={this.props.status.userData}/>
+    </div>
+
+    <div className='windowbg floatright'>
       <h4 className='floatleft'>
         h4 heading
       </h4>
@@ -62,7 +66,6 @@ export default class Status extends React.Component<StatusProps> {
         <Editor saveContent={this.newcomment} />
       </div>
     </div>
-  </div>
   <hr />
 </li>
   }

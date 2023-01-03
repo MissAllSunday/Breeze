@@ -1,29 +1,28 @@
 import * as React from 'react'
 import Avatar from './Avatar'
-import { userDataType } from 'breezeTypes'
+import { userInfoProps } from 'breezeTypes'
 
-const UserInfo: React.FunctionComponent<userDataType> = (props: userDataType) => {
-  return <div className="breeze_summary floatleft">
-    <div className="roundframe flow_auto">
-      <Avatar
-        url={props.avatar.url} />
-      <h3 className="breeze_name">
-        memberOnline
-        member name color
-      </h3>
-      <p className="breeze_title">
-        primary/post group
-      </p>
-      <p className="breeze_title">
-        group icons
-      </p>
-      <p className="breeze_description">
-        blurb
-      </p>
-      <div className="breeze_mood">
-      </div>
-    </div>
-  </div>
+const UserInfo: React.FunctionComponent<userInfoProps> = (props: userInfoProps) => {
+  return (
+    <ul className="user_info flow_auto">
+      <li dangerouslySetInnerHTML={{ __html: props.userData.link_color }} />
+      <li className="avatar">
+        <Avatar
+          href={props.userData.avatar.url}
+          userName={props.userData.username}/>
+      </li>
+
+      <li className="postgroup">
+        {props.userData.group}
+      </li>
+      <li className="icons" dangerouslySetInnerHTML={{ __html: props.userData.group_icons }} />
+      <li className="breeze_description">
+        {props.userData.title}
+      </li>
+      <li className="breeze_mood">
+      </li>
+    </ul>
+  )
 }
 
 export default UserInfo

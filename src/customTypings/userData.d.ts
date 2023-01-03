@@ -21,8 +21,8 @@ declare module 'breezeTypes' {
     is_guest: boolean
     is_reverse_buddy: boolean
     last_login_timestamp: string
-    link: HTMLAnchorElement
-    link_color: HTMLAnchorElement
+    link: string
+    link_color: string
     name: string
     name_color: string
     online: {
@@ -40,7 +40,11 @@ declare module 'breezeTypes' {
   }
 
   interface avatarDataType {
-    url: string
+    href: string
+    userName: string
+  }
+  interface userInfoProps {
+    userData: userDataType
   }
 }
 

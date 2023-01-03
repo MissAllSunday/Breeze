@@ -3,14 +3,9 @@ import StatusByProfile from './components/StatusByProfile'
 
 function App (): JSX.Element {
   return (
-    <div className="App breeze_main_section">
-      {/* user info component */}
-      <div className="breeze_wall floatright">
-        <ul className="status">
+      <div className="breeze_wall">
           <StatusByProfile />
-        </ul>
       </div>
-    </div>
   )
 }
 
