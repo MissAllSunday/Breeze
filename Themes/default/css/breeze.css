@@ -3,72 +3,13 @@
 	overflow: auto;
 }
 
-.breeze_summary{
-	width: 20%;
-}
-
 .breeze_wall{
-	width: 79.5%;
+
 }
 
-.tabs {
-	margin-bottom: 5px;
-}
-
-.breeze_name {
-	font-size: 24px;
-	font-weight: 600;
-	text-align: center;
-}
-
-.breeze_title {
-	font-size: .75em;
-	font-weight: 300;
-	text-align: center;
-	padding-top: .5em;
-	padding-bottom: .7em;
-	letter-spacing: 1.5px;
-	text-transform: uppercase;
-}
-
-.breeze_description {
-	font-size: 14px;
-	font-weight: 300;
-	text-align: center;
-	margin-bottom: 1.3em;
-}
-
-/* need to group shared properties*/
-.breeze_mood {
-	font-size: 14px;
-	font-weight: 300;
-	text-align: center;
-	margin-bottom: 1.3em;
-}
-
-.breeze_avatar {
-	width: 120px;
-	height: 120px;
-	background-size: cover;
-	background-position: top center;
-	border-radius: 50%;
-
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.comment_content {
-	width:99%
-}
-
-.post_comment {
-	min-height: 50px;
-	width: 100%;
-}
-
-.status {
-	display: inline-block;
-	flex-direction: column-reverse;
+ul.status {
+	display: flex;
+	flex-direction: column;
 }
 
 .status li {
@@ -76,11 +17,17 @@
 	width: 99%;
 }
 
-.breeze_editor {
-	margin-left: auto;
-	margin-right: auto;
-	width: 90%;
+ul.status li.status div.floatleft {
+	width: 15%;
+	text-align: center;
 }
+
+ul.status li div.floatright {
+	width: 84%;
+}
+
+
+
 
 #moodList li {
 	display: inline;

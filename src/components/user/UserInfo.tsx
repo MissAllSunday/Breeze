@@ -3,8 +3,17 @@ import Avatar from './Avatar'
 import { userInfoProps } from 'breezeTypes'
 
 const UserInfo: React.FunctionComponent<userInfoProps> = (props: userInfoProps) => {
-  return (
-    <ul className="user_info flow_auto">
+  const content = props.compact
+    ? <>
+      <li className="avatar">
+        <Avatar
+          href={props.userData.avatar.url}
+          userName={props.userData.username}/>
+        <span dangerouslySetInnerHTML={{ __html: props.userData.link_color }}/>
+      </li>
+      <li dangerouslySetInnerHTML={{ __html: props.userData.link_color }} />
+    </>
+    : <>
       <li dangerouslySetInnerHTML={{ __html: props.userData.link_color }} />
       <li className="avatar">
         <Avatar
@@ -21,8 +30,12 @@ const UserInfo: React.FunctionComponent<userInfoProps> = (props: userInfoProps) 
       </li>
       <li className="breeze_mood">
       </li>
-    </ul>
-  )
+    </>
+
+  return (
+      <ul className="user_info flow_auto">
+        {content}
+      </ul>)
 }
 
 export default UserInfo

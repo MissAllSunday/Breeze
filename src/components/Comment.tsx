@@ -11,14 +11,25 @@ export default class Comment extends Component<CommentProps> {
   render (): JSX.Element {
     return <div className="comment">
       <div className="floatleft">
-        <UserInfo userData={this.props.comment.userData}/>
+        <UserInfo userData={this.props.comment.userData} compact={true}/>
       </div>
       <div className="floatright">
-        <div onClick={ this.onRemove }>remove comment</div>
-        {this.props.comment.body}
-        <Like
-          item={this.props.comment.likesInfo}
-        />
+        <div className="content floatnone clear">
+          {this.props.comment.body}
+        </div>
+        <div className="half_content smalltext">
+          <Like
+            item={this.props.comment.likesInfo}
+          />
+        </div>
+        <div className="half_content smalltext">
+          <span
+            className="main_icons remove_button floatright pointer_cursor"
+            onClick={this.onRemove}>
+          delete
+        </span>
+        </div>
+
       </div>
 
   </div>

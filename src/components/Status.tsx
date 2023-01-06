@@ -34,39 +34,38 @@ export default class Status extends React.Component<StatusProps> {
   }
 
   render (): JSX.Element {
-    return <li key={this.props.status.id}>
+    const timeStamp = new Date(this.props.status.createdAt)
+
+    return <li className="status" key={this.props.status.id}>
     <div className="floatleft">
-      <UserInfo userData={this.props.status.userData}/>
+      <UserInfo userData={this.props.status.userData} compact={false}/>
     </div>
 
     <div className='windowbg floatright'>
-      <h4 className='floatleft'>
-        h4 heading
-      </h4>
-      <div className='floatright smalltext'>
-        {this.props.status.createdAt}
+      <div className='content floatnone clear' title={timeStamp.toLocaleString()}>
+        {this.props.status.body}
+      </div>
+      <div className='half_content smalltext'>
+        <Like
+          item={this.props.status.likesInfo}
+        />
+      </div>
+      <div className='half_content smalltext'>
         <span
           className="main_icons remove_button floatright pointer_cursor"
           onClick={this.removeStatus}>
           delete
         </span>
       </div>
-      <br />
-        <div className='content'>
-          {this.props.status.body}
-          <Like
-            item={this.props.status.likesInfo}
-          />
-        </div>
-        <CommentList
-          commentList={this.props.status.comments}
-          removeComment={this.removeComment}
-        />
+      <hr />
+      <CommentList
+        commentList={this.props.status.comments}
+        removeComment={this.removeComment}
+      />
       <div className='comment_posting'>
         <Editor saveContent={this.newcomment} />
       </div>
     </div>
-  <hr />
 </li>
   }
 }

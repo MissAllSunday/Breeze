@@ -45,6 +45,7 @@ declare module 'breezeTypes' {
   }
   interface userInfoProps {
     userData: userDataType
+    compact: boolean
   }
 }
 
