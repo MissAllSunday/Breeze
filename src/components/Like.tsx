@@ -21,9 +21,9 @@ const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
 
   return (
     <div className="smflikebutton">
-    <span onClick={handleLike} className='likeClass' >
-      {String.fromCodePoint(like.alreadyLiked ? 128078 : 128077)}
-    </span>
+      <span onClick={handleLike} className='likeClass pointer_cursor' >
+        {String.fromCodePoint(like.alreadyLiked ? 128078 : 128077)}
+      </span>
       <div className="like_count smalltext">
         {like.additionalInfo.text}
       </div>

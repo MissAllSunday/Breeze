@@ -12,7 +12,7 @@ ul.status {
 	flex-direction: column;
 }
 
-.status li {
+.status li.status {
 	display: inline-block;
 	width: 99%;
 }
@@ -26,74 +26,27 @@ ul.status li div.floatright {
 	width: 84%;
 }
 
+div.avatar_compact {
 
-
-
-#moodList li {
-	display: inline;
-	list-style-type: none;
-	padding: 10px;
-	line-height: 2em;
-	max-width: 30%;
-	text-align: center;
 }
 
-#moodList li span {
-	cursor: pointer;
+div.link_compact{
+	display: inline-block;
 }
 
-.modal-mask {
-	position: fixed;
-	z-index: 9998;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, .5);
-	display: table;
-	transition: opacity .3s ease;
+div.avatar_compact img.avatar {
+	width: 30px;
+	height: 30px;
+	vertical-align:middle;
 }
 
-.modal-wrapper {
-	display: table-cell;
-	vertical-align: middle;
+div.comment {
+	margin-left: 9%;
+	width: 90%;
 }
 
-.modal-container {
-	min-width: 300px;
-	max-width: 35%;
-	margin: 0 auto;
-	transition: all .3s ease;
-}
-
-.modal-default-button {
-	float: right;
-}
-
-.modal-enter {
-	opacity: 0;
-}
-
-.modal-leave-active {
-	opacity: 0;
-}
-
-.modal-enter .modal-container,
-.modal-leave-active .modal-container {
-	-webkit-transform: scale(1.1);
-	transform: scale(1.1);
-}
-
-.sun-editor-editable {
-	font-family: inherit;
-	font-size: inherit;
-	color: inherit;
-	line-height: inherit;
-	background-color: transparent;
-	word-break: inherit;
-	word-wrap: inherit;
-	padding: 10px;
-	margin: 0;
+div.content {
+	padding: 5px;
 }
 
 .pointer_cursor {

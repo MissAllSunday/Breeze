@@ -13,9 +13,12 @@ const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: st
 
   return (
     <div>
-      <textarea id="content" name="content" onChange={handleContent} />
-
-      <button type={'button'} onClick={handleClick}>Save</button>
+      <textarea id="content" name="content" onChange={handleContent} className="editor" />
+      <span className="post_confirm_buttons">
+        <span className="post_button_container">
+        <button type={'button'} onClick={handleClick}>Save</button>
+      </span>
+      </span>
     </div>
   )
 }

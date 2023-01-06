@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { CommentProps } from 'breezeTypes'
 import Like from './Like'
-import UserInfo from './user/UserInfo'
+import Avatar from './user/Avatar'
 
 export default class Comment extends Component<CommentProps> {
   onRemove = (): void => {
@@ -9,20 +9,26 @@ export default class Comment extends Component<CommentProps> {
   }
 
   render (): JSX.Element {
+    const timeStamp = new Date(this.props.comment.createdAt)
+
     return <div className="comment">
-      <div className="floatleft">
-        <UserInfo userData={this.props.comment.userData} compact={true}/>
+      <div className="avatar_compact">
+        <Avatar
+          href={this.props.comment.userData.avatar.url}
+          userName={this.props.comment.userData.username}/>
+        <div dangerouslySetInnerHTML={{ __html: this.props.comment.userData.link_color }} className="link_compact" />
+        <span className="floatright smalltext">{timeStamp.toLocaleString()}</span>
       </div>
-      <div className="floatright">
-        <div className="content floatnone clear">
+      <div className="floatnone clear">
+        <div className="content">
           {this.props.comment.body}
         </div>
-        <div className="half_content smalltext">
+        <div className="half_content ">
           <Like
             item={this.props.comment.likesInfo}
           />
         </div>
-        <div className="half_content smalltext">
+        <div className="half_content">
           <span
             className="main_icons remove_button floatright pointer_cursor"
             onClick={this.onRemove}>
@@ -31,6 +37,7 @@ export default class Comment extends Component<CommentProps> {
         </div>
 
       </div>
+      <hr/>
 
   </div>
   }

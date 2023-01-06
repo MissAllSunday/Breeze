@@ -38,19 +38,19 @@ export default class Status extends React.Component<StatusProps> {
 
     return <li className="status" key={this.props.status.id}>
     <div className="floatleft">
-      <UserInfo userData={this.props.status.userData} compact={false}/>
+      <UserInfo userData={this.props.status.userData}/>
     </div>
 
     <div className='windowbg floatright'>
-      <div className='content floatnone clear' title={timeStamp.toLocaleString()}>
+      <div className='content' title={timeStamp.toLocaleString()}>
         {this.props.status.body}
       </div>
-      <div className='half_content smalltext'>
+      <div className='half_content'>
         <Like
           item={this.props.status.likesInfo}
         />
       </div>
-      <div className='half_content smalltext'>
+      <div className='half_content'>
         <span
           className="main_icons remove_button floatright pointer_cursor"
           onClick={this.removeStatus}>
