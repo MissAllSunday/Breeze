@@ -140,7 +140,7 @@ export default class StatusByProfile extends React.Component<any, any> {
         ? <Loading />
         : <>
           <div>
-            {this.state.isLoading
+            {isLoading === true
               ? <Loading />
               : <Editor saveContent={this.onNewStatus} />
             }
