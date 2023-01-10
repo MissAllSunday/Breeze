@@ -24,9 +24,9 @@ const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
       <span onClick={handleLike} className='likeClass pointer_cursor' >
         {String.fromCodePoint(like.alreadyLiked ? 128078 : 128077)}
       </span>
-      <div className="like_count smalltext">
-        {like.additionalInfo.text}
-      </div>
+      <span className="like_count smalltext">
+         | {like.additionalInfo.text}
+      </span>
     </div>
   )
 }

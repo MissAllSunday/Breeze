@@ -21,6 +21,8 @@ const ownerSettings = window.breezeProfileOwnerSettings ?? Buffer.from(process.e
 const isCurrentUserOwner = Boolean(window.breezeIsCurrentUserOwner ?? process.env.REACT_APP_DEV_IS_CURRENT_USER_OWNER)
 // @ts-expect-error
 const useMood = Boolean(window.breezeUseMood ?? process.env.REACT_APP_DEV_USE_MOOD)
+// @ts-expect-error
+const smfImagesUrl: string = window.smf_images_url ?? process.env.REACT_APP_DEV_THEME_URL
 
 const smfVars = {
   session,
@@ -31,7 +33,8 @@ const smfVars = {
   wallId,
   ownerSettings,
   isCurrentUserOwner,
-  useMood
+  useMood,
+  smfImagesUrl
 }
 
 export default smfVars

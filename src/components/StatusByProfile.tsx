@@ -42,7 +42,6 @@ export default class StatusByProfile extends React.Component<any, any> {
   }
 
   removeStatus = (status: statusType): void => {
-    console.log(status)
     this.updateState({
       isLoading: true
     })
@@ -139,11 +138,19 @@ export default class StatusByProfile extends React.Component<any, any> {
     return (<div>
       {isLoading === true
         ? <Loading />
-        : <><StatusList
+        : <>
+          <div>
+            {this.state.isLoading
+              ? <Loading />
+              : <Editor saveContent={this.onNewStatus} />
+            }
+          </div>
+          <StatusList
           statusList={this.state.list}
           removeStatus={this.removeStatus}
           removeComment={this.removeComment}
-          onCreateComment={this.onCreateComment}/><Editor saveContent={this.onNewStatus}/></>}
+          onCreateComment={this.onCreateComment}/>
+        </>}
     </div>)
   }
 }

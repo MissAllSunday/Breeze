@@ -12,9 +12,9 @@ const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: st
   const handleContent = useCallback((event: any) => setContent(event.target.value), [])
 
   return (
-    <div>
+    <div className="post_content">
       <textarea id="content" name="content" onChange={handleContent} className="editor" />
-      <span className="post_confirm_buttons">
+      <span id="post_confirm_buttons">
         <span className="post_button_container">
         <button type={'button'} onClick={handleClick}>Save</button>
       </span>

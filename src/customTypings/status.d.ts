@@ -26,6 +26,10 @@ declare module 'breezeTypes' {
     removeComment: function
     createComment: function
   }
+
+  interface StatusState {
+    isLoading: boolean
+  }
 }
 
 module.exports = {

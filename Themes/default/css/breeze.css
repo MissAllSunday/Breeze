@@ -22,7 +22,7 @@ ul.status li.status div.floatleft {
 	text-align: center;
 }
 
-ul.status li div.floatright {
+ul.status li.status div.floatright {
 	width: 84%;
 }
 
@@ -40,17 +40,29 @@ div.avatar_compact img.avatar {
 	vertical-align:middle;
 }
 
-div.comment {
-	margin-left: 9%;
-	width: 90%;
+.like_count {
+	margin-left: 5px;
 }
 
-div.content {
+.comment {
+	margin-left: 4%;
+	width: 95%;
+}
+
+.content {
 	padding: 5px;
+}
+
+.post_content {
+	min-width: 70%;
 }
 
 .pointer_cursor {
 	cursor: pointer;
+}
+
+.userinfo {
+	padding-top: 20px;
 }
 
 @media (max-width: 480px) {

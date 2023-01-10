@@ -1,16 +1,17 @@
 import * as React from 'react'
-import { StatusProps, commentType } from 'breezeTypes'
+import { StatusProps, commentType, StatusState } from 'breezeTypes'
 import Like from './Like'
 import { CommentList } from './CommentList'
 import Editor from './Editor'
 import { postComment } from '../api/CommentApi'
 import UserInfo from './user/UserInfo'
+import Loading from './Loading'
 
-export default class Status extends React.Component<StatusProps> {
+export default class Status extends React.Component<StatusProps, StatusState> {
   constructor (props: any) {
     super(props)
     this.state = {
-      isLoading: true
+      isLoading: false
     }
   }
 
@@ -19,11 +20,17 @@ export default class Status extends React.Component<StatusProps> {
   }
 
   newcomment = (content: string): void => {
+    this.setState({
+      isLoading: true
+    })
     postComment({
       statusID: this.props.status.id,
       body: content
     }).then((response) => {
       this.props.createComment(Object.values(response.data.content), this.props.status.id)
+      this.setState({
+        isLoading: false
+      })
     }).catch(() => {
 
     })
@@ -37,7 +44,7 @@ export default class Status extends React.Component<StatusProps> {
     const timeStamp = new Date(this.props.status.createdAt)
 
     return <li className="status" key={this.props.status.id}>
-    <div className="floatleft">
+    <div className="floatleft userinfo">
       <UserInfo userData={this.props.status.userData}/>
     </div>
 
@@ -63,7 +70,9 @@ export default class Status extends React.Component<StatusProps> {
         removeComment={this.removeComment}
       />
       <div className='comment_posting'>
-        <Editor saveContent={this.newcomment} />
+        {this.state.isLoading
+          ? <Loading />
+          : <Editor saveContent={this.newcomment} />}
       </div>
     </div>
 </li>
