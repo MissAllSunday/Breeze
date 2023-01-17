@@ -31,4 +31,9 @@ class BuddyController extends BaseController implements ControllerInterface
 	{
 		return '';
 	}
+
+	public function getActionName(): string
+	{
+		return '';
+	}
 }

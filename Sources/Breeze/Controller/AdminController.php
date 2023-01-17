@@ -111,4 +111,9 @@ class AdminController extends BaseController implements ControllerInterface
 	{
 		return self::ACTION_MAIN;
 	}
+
+	public function getActionName(): string
+	{
+		return self::ACTION_MAIN;
+	}
 }

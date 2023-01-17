@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace Breeze\Controller\User\Settings;
 
+use Breeze\Breeze;
 use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
 use Breeze\Entity\UserSettingsEntity;
-use Breeze\Service\Actions\UserSettingsServiceInterface;
-use Breeze\Service\UserServiceInterface;
+use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Util\Form\UserSettingsBuilderInterface;
+use Breeze\Util\Response;
 use Breeze\Util\Validate\Validations\ValidateData;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class UserSettingsController extends BaseController implements ControllerInterface
 {
+	public const ACTION = 'profile';
+	public const AREA = 'breezeSettings';
+	public const TEMPLATE = 'UserSettings';
 	public const URL = '?action=profile;area=breezeSettings';
 	public const ACTION_MAIN = 'main';
 	public const ACTION_SAVE = 'save';
@@ -34,8 +38,8 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	];
 
 	public function __construct(
-		private UserSettingsServiceInterface $userSettingsService,
-		private UserServiceInterface         $userService,
+		private UserRepositoryInterface $userRepository,
+		private Response $response,
 		private UserSettingsBuilderInterface $userSettingsBuilder
 	) {
 	}
@@ -43,7 +47,8 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	public function dispatch(): void
 	{
 		$this->subAction = $this->getRequest('sa', $this->getMainAction());
-		$this->userSettingsService->init($this->getSubActions());
+		$this->setLanguage(Breeze::NAME);
+		$this->setTemplate(Breeze::NAME . self::TEMPLATE);
 
 		// @TODO: validate if subaction exists and send an error page if it doesn't
 
@@ -59,11 +64,11 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 		$this->userSettingsBuilder->setForm([
 			'name' => UserSettingsEntity::IDENTIFIER,
 			'url' => $scriptUrl . self::URL . ';u=' . $userId . ';sa=' . self::ACTION_SAVE,
-		], $this->userService->getUserSettings($userId));
+		], $this->userRepository->getById($userId));
 
 		$this->render(__FUNCTION__, [
 			'form' => $this->userSettingsBuilder->display(),
-			'msg' => $this->userSettingsService->getMessage(),
+			'msg' => $this->getPersistenceMessage(),
 		]);
 	}
 
@@ -71,23 +76,21 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	{
 		$scriptUrl = $this->global('scripturl');
 		$userId = $this->getRequest('u', 0);
+		$userSettings = $this->getRequest('user_settings');
 
-//		$this->userSettingsService->save(
-//			$userSettings,
-//			$userId
-//		);
+		$this->userRepository->save(
+			$userSettings,
+			$userId
+		);
 
-		// @TODO: service shouldn't handle setting messages
-		$this->userSettingsService->setMessage($this->getText('info_updated_settings'));
-
-		// @TODO: Service should not do the redirection
-		$this->userSettingsService->redirect($scriptUrl . self::URL . ';u=' .
+		$this->setPersistenceMessage($this->getText('info_updated_settings'));
+		$this->response->redirect($scriptUrl . self::URL . ';u=' .
 			$userId . ';sa=' . self::ACTION_MAIN);
 	}
 
 	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void
 	{
-		$this->userSettingsService->defaultSubActionContent($subTemplate, $params, $smfTemplate);
+		$this->defaultSubActionContent($subTemplate, $params, $smfTemplate);
 	}
 
 	public function getSubActions(): array
@@ -104,6 +107,11 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 	{
 		$validatorName = ValidateData::getNameSpace() . ucfirst($this->validators[$this->subAction]['validator']);
 
-		return new $validatorName($this->userService);
+		return new $validatorName();
+	}
+
+	public function getActionName(): string
+	{
+		return self::ACTION_MAIN;
 	}
 }

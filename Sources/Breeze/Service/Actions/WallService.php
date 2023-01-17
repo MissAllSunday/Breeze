@@ -10,12 +10,17 @@ use Breeze\Entity\SettingsEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\UserServiceInterface;
+use Breeze\Traits\SettingsTrait;
+use Breeze\Traits\TextTrait;
 use Breeze\Util\Components;
 use Breeze\Util\Error;
 use Breeze\Util\Permissions;
 
-class WallService extends ActionsBaseService implements WallServiceInterface
+class WallService
 {
+	use TextTrait;
+	use SettingsTrait;
+
 	private array $usersToLoad = [];
 
 	protected array $profileOwnerInfo = [];
@@ -90,7 +95,7 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 
 		// We don't need all their info
 //		foreach ($loadedUsers as $userId => $userData) {
-//			$loadedUsers[$userId] = array_intersect($userData, UserService::MIN_INFO_KEYS);
+//			$loadedUsers[$userId] = array_intersect($userData, ProfileService::MIN_INFO_KEYS);
 //		}
 	}
 
@@ -116,10 +121,10 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 			}
 		}
 
-		if (!$canSeePage && $redirect) {
-			$this->redirect('action=profile;area=' .
-				UserServiceInterface::LEGACY_AREA . ';u=' . $this->profileOwnerInfo['id']);
-		}
+//		if (!$canSeePage && $redirect) {
+//			$this->redirect('action=profile;area=' .
+//				UserServiceInterface::LEGACY_AREA . ';u=' . $this->profileOwnerInfo['id']);
+//		}
 
 		return true;
 	}
@@ -153,6 +158,6 @@ class WallService extends ActionsBaseService implements WallServiceInterface
 
 	public function getActionName(): string
 	{
-		return self::ACTION;
+		return 'wall';
 	}
 }

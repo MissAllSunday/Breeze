@@ -10,7 +10,7 @@ trait PersistenceTrait
 {
 	private static string $persistenceKey = 'notice';
 
-	public function setMessage(string $message, string $type = 'info'): array
+	public function setPersistenceMessage(string $message, string $type = 'info'): array
 	{
 		if (empty($message)) {
 			return [];
@@ -28,7 +28,7 @@ trait PersistenceTrait
 		return $_SESSION[Breeze::NAME][self::$persistenceKey];
 	}
 
-	public function getMessage(): array
+	public function getPersistenceMessage(): array
 	{
 		if (empty($_SESSION[Breeze::NAME][self::$persistenceKey])) {
 			return [];

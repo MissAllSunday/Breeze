@@ -38,4 +38,9 @@ class AlertsController extends BaseController implements ControllerInterfaceAlia
 	{
 		return '';
 	}
+
+	public function getActionName(): string
+	{
+		return '';
+	}
 }

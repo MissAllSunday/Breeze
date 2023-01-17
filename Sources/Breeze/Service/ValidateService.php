@@ -5,10 +5,13 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Traits\SettingsTrait;
 use Breeze\Util\Permissions;
 
-class ValidateService extends BaseService implements ServiceInterface
+class ValidateService
 {
+	use SettingsTrait;
+
 	public function permissions($type, int $profileOwner = 0, int $userPoster = 0): array
 	{
 		$user_info = $this->global('user_info');

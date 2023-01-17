@@ -6,10 +6,13 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
+use Breeze\Traits\TextTrait;
 use Breeze\Util\Permissions;
 
-class PermissionsService extends BaseService implements ServiceInterface
+class PermissionsService
 {
+	use TextTrait;
+
 	public const IDENTIFIER = 'Permissions';
 
 	public function hookPermissions(&$permissionGroups, &$permissionList): void

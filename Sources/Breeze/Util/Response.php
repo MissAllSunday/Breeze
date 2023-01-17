@@ -74,4 +74,9 @@ class Response
 			),
 		]), $responseCode);
 	}
+
+	public function redirect(string $uri): void
+	{
+		redirectexit($uri);
+	}
 }

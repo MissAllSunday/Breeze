@@ -10,9 +10,8 @@ use PHPUnit\Framework\TestCase;
 final class PersistenceTest extends TestCase
 {
 	/**
-	 * @var MockObject|PersistenceTrait
 	 */
-	private $persistenceTrait;
+	private MockObject|PersistenceTrait $persistenceTrait;
 
 	protected function setUp(): void
 	{
@@ -21,7 +20,7 @@ final class PersistenceTest extends TestCase
 
 	public function testGetMessage(): void
 	{
-		$message = $this->persistenceTrait->getMessage();
+		$message = $this->persistenceTrait->getPersistenceMessage();
 
 		$this->assertIsArray($message);
 		$this->assertEquals([
@@ -36,9 +35,9 @@ final class PersistenceTest extends TestCase
 	public function testSetMessage($message, $type, $expectedResult): void
 	{
 		if ($type !== null) {
-			$setMessage = $this->persistenceTrait->setMessage($message, $type);
+			$setMessage = $this->persistenceTrait->setPersistenceMessage($message, $type);
 		} else {
-			$setMessage = $this->persistenceTrait->setMessage($message);
+			$setMessage = $this->persistenceTrait->setPersistenceMessage($message);
 		}
 
 		$this->assertEquals($expectedResult, $setMessage);

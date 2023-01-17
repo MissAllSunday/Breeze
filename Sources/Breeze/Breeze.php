@@ -20,10 +20,8 @@ use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\User\MoodRepository;
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminServiceInterface;
-use Breeze\Service\Actions\UserSettingsServiceInterface;
 use Breeze\Service\PermissionsService;
-use Breeze\Service\UserService;
-use Breeze\Service\UserServiceInterface;
+use Breeze\Service\ProfileService;
 use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
 use League\Container\Container as Container;
@@ -83,6 +81,10 @@ class Breeze
 		$this->container->get(PermissionsService::class)->hookPermissions($permissionGroups, $permissionList);
 	}
 
+	/**
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
 	public function profileMenuWrapper(array &$profileAreas): void
 	{
 		if (!$this->isEnable(SettingsEntity::MASTER)) {
@@ -91,7 +93,7 @@ class Breeze
 
 		$this->setLanguage(Breeze::NAME);
 		$context = $this->global('context');
-		$currentUserSettings = $this->container->get(UserService::class)->getCurrentUserSettings();
+		$currentUserSettings = $this->container->get(UserRepository::class)->getById();
 
 		if ($this->isEnable(SettingsEntity::FORCE_WALL) || !empty($currentUserSettings['wall'])) {
 			/** @var WallController $wallController */
@@ -107,7 +109,7 @@ class Breeze
 				],
 			];
 
-			$profileAreas['info']['areas'][UserServiceInterface::LEGACY_AREA] = [
+			$profileAreas['info']['areas'][ProfileService::LEGACY_AREA] = [
 				'label' => $this->getText('general_summary'),
 				'icon' => 'members',
 				'file' => 'Profile-View.php',
@@ -132,7 +134,7 @@ class Breeze
 			];
 
 			$profileAreas['breeze_profile']['areas']['breezeSettings'] = [
-				'label' => $this->getText(UserSettingsServiceInterface::AREA . '_main_title'),
+				'label' => $this->getText(ProfileService::AREA . '_main_title'),
 				'icon' => 'maintain',
 				'function' => [$settingsController, 'dispatch'],
 				'enabled' => $context['user']['is_owner'],
@@ -177,12 +179,12 @@ class Breeze
 
 		$scriptUrl = $this->global('scripturl');
 		$currentUserInfo = $this->global('user_info');
-		$currentUserSettings = $this->container->get(UserService::class)->getCurrentUserSettings();
+		$currentUserSettings = $this->container->get(UserRepository::class)->getById($currentUserInfo['id']);
 
 		if (!empty($menu_buttons['profile']['sub_buttons']['summary'])) {
 			$menu_buttons['profile']['sub_buttons']['summary'] = [
 				'title' => $this->getText('summary'),
-				'href' => $scriptUrl . '?action=profile;area=' . UserServiceInterface::LEGACY_AREA,
+				'href' => $scriptUrl . '?action=profile;area=' . ProfileService::LEGACY_AREA,
 				'show' => true,
 			];
 		}
@@ -253,12 +255,12 @@ class Breeze
 
 	public function profilePopUpWrapper(&$profile_items): void
 	{
-		$this->container->get(UserService::class)->hookProfilePopUp($profile_items);
+		$this->container->get(ProfileService::class)->hookProfilePopUp($profile_items);
 	}
 
 	public function alertsPrefWrapper(array &$alertTypes, &$groupOptions): void
 	{
-		$this->container->get(UserService::class)->hookAlertsPref($alertTypes);
+		$this->container->get(ProfileService::class)->hookAlertsPref($alertTypes);
 	}
 
 	public function updateLikesWrapper($type, $content, $sa, $js, $extra)

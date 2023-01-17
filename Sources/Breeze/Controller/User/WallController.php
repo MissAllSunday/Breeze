@@ -10,6 +10,7 @@ use Breeze\Controller\ControllerInterface;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Service\Actions\WallServiceInterface;
+use Breeze\Service\ProfileService;
 use Breeze\Service\UserServiceInterface;
 
 class WallController extends BaseController implements ControllerInterface
@@ -52,7 +53,7 @@ class WallController extends BaseController implements ControllerInterface
 
 		if (empty($userSettings[UserSettingsEntity::WALL]) && empty($forceWall)) {
 			$this->userService->redirect($scriptUrl .
-				sprintf(UserServiceInterface::LEGACY_URL, $this->userId));
+				sprintf(ProfileService::LEGACY_URL, $this->userId));
 		}
 
 		$this->render(__FUNCTION__, [
@@ -71,6 +72,11 @@ class WallController extends BaseController implements ControllerInterface
 	}
 
 	public function getMainAction(): string
+	{
+		return self::ACTION_MAIN;
+	}
+
+	public function getActionName(): string
 	{
 		return self::ACTION_MAIN;
 	}

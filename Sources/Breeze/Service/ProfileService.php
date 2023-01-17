@@ -7,9 +7,18 @@ namespace Breeze\Service;
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Repository\User\UserRepositoryInterface;
+use Breeze\Traits\SettingsTrait;
+use Breeze\Traits\TextTrait;
 
-class UserService extends BaseService implements UserServiceInterface
+class ProfileService
 {
+	use SettingsTrait;
+	use TextTrait;
+
+	public const AREA = 'summary';
+	public const LEGACY_AREA = 'legacy';
+	public const LEGACY_URL = '?action=profile;area=' . self::LEGACY_AREA . ';u=%d';
+
 	public const MIN_INFO_KEYS = [
 		'link',
 		'name',
