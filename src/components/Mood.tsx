@@ -25,6 +25,7 @@ export default class Mood extends Component<MoodProps, MoodState> {
     const smfVars = SMF
     const moodText = this.displayMood()
 
+    // @TODO: do not pass is current or wall owner, just pass if current user is able to do stuff
     if (smfVars.isCurrentUserOwner && smfVars.useMood) {
       return <span onClick={this.showMoodList} title="{this.props.moodTxt.defaultLabel}" className="pointer_cursor">
         {moodText}</span>

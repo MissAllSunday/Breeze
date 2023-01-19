@@ -22,11 +22,6 @@ class BuddyController extends BaseController implements ControllerInterface
 		// TODO: Implement main() method.
 	}
 
-	public function render(string $subTemplate, array $params): void
-	{
-		// TODO: Implement render() method.
-	}
-
 	public function getMainAction(): string
 	{
 		return '';

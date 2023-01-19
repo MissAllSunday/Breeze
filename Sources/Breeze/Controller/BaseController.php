@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Breeze\Controller;
 
 use Breeze\Breeze;
+use Breeze\Entity\SettingsEntity;
 use Breeze\Traits\PersistenceTrait;
 use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
+use Breeze\Util\Error;
 use Breeze\Util\Permissions;
 
 abstract class BaseController implements ControllerInterface
@@ -16,7 +18,21 @@ abstract class BaseController implements ControllerInterface
 	use TextTrait;
 	use PersistenceTrait;
 
-	public function defaultSubActionContent(
+	public function dispatch(): void
+	{
+		Permissions::isNotGuest($this->getText('error_no_access'));
+
+		if (!$this->isEnable(SettingsEntity::MASTER)) {
+			Error::show('no_valid_action');
+		}
+
+		$this->setLanguage(Breeze::NAME);
+		$this->setTemplate(Breeze::NAME);
+
+		$this->subActionCall();
+	}
+
+	public function render(
 		string $subActionName,
 		array  $templateParams = [],
 		string $smfTemplate = ''
@@ -36,17 +52,7 @@ abstract class BaseController implements ControllerInterface
 			$context = array_merge($context, $templateParams);
 		}
 
-		$context['page_title'] = $this->getText($this->getActionName() . '_' . $subActionName . '_title');
-
-		$context['sub_template'] = !empty($smfTemplate) ?
-			$smfTemplate : ($this->getActionName() . '_' . $subActionName);
-
-		$context['linktree'][] = [
-			'url' => $scriptUrl . '?action=' . $this->getActionName(),
-			'name' => $context['page_title'],
-		];
-		$context['can_send_pm'] = allowedTo('pm_send');
-		$context[Permissions::USE_MOOD] = Permissions::isAllowedTo(Permissions::USE_MOOD);
+		$context['sub_template'] = $subActionName;
 
 		$this->setGlobal('context', $context);
 	}
@@ -59,7 +65,7 @@ abstract class BaseController implements ControllerInterface
 		if (in_array($subAction, $subActions)) {
 			$this->$subAction();
 		} else {
-			$this->{$this->getMainAction()}();
+			Error::show('no_valid_action');
 		}
 	}
 

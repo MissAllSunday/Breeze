@@ -19,7 +19,6 @@ use Breeze\Repository\StatusRepository;
 use Breeze\Repository\User\MoodRepository;
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminService;
-use Breeze\Service\Actions\WallService;
 use Breeze\Service\ProfileService;
 use Breeze\Util\Form\UserSettingsBuilder;
 use Breeze\Util\Response;
@@ -39,7 +38,8 @@ return [
 	'controller.wall' => [
 		'class' => WallController::class,
 		'arguments' => [
-			WallService::class,
+			UserRepository::class,
+			Response::class,
 			ProfileService::class,
 		],
 	],

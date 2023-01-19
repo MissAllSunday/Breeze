@@ -88,11 +88,6 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 			$userId . ';sa=' . self::ACTION_MAIN);
 	}
 
-	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void
-	{
-		$this->defaultSubActionContent($subTemplate, $params, $smfTemplate);
-	}
-
 	public function getSubActions(): array
 	{
 		return self::SUB_ACTIONS;

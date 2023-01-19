@@ -5,10 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Config\Mapper;
 
-use Breeze\Repository\StatusRepository;
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminService;
-use Breeze\Service\Actions\WallService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\ProfileService;
 use Breeze\Service\ValidateService;
@@ -20,19 +18,12 @@ return [
 		'class' => AdminService::class,
 		'arguments' => [SettingsBuilder::class, Components::class],
 	],
-	'service.user' => [
+	'service.profile' => [
 		'class' => ProfileService::class,
-		'arguments' => [UserRepository::class],
+		'arguments' => [UserRepository::class, Components::class],
 	],
 	'service.permissions' => [
 		'class' => PermissionsService::class,
-	],
-	'service.wall' => [
-		'class' => WallService::class,
-		'arguments' => [
-			ProfileService::class,
-			StatusRepository::class,
-			Components::class,],
 	],
 	'service.validate' => [
 		'class' => ValidateService::class,

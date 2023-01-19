@@ -7,63 +7,44 @@ namespace Breeze\Controller\User;
 
 use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
-use Breeze\Entity\SettingsEntity;
-use Breeze\Entity\UserSettingsEntity;
-use Breeze\Service\Actions\WallServiceInterface;
+use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Service\ProfileService;
-use Breeze\Service\UserServiceInterface;
+use Breeze\Service\ProfileServiceInterface;
+use Breeze\Util\Response;
 
 class WallController extends BaseController implements ControllerInterface
 {
-	public const ACTION_MAIN = 'main';
+	public const ACTION_PROFILE = 'profile';
+	public const ACTION_GENERAL = 'general';
 	public const ACTION_STATUS = 'status';
 	public const ACTION_COMMENT = 'comment';
 	public const SUB_ACTIONS = [
-		self::ACTION_MAIN,
-		self::ACTION_COMMENT,
+		self::ACTION_PROFILE,
+		self::ACTION_GENERAL,
 		self::ACTION_STATUS,
 	];
 
-	private WallServiceInterface $wallService;
-
-	private UserServiceInterface $userService;
-
-	private int $userId;
-
 	public function __construct(
-		WallServiceInterface $wallService,
-		UserServiceInterface $userService
+		protected UserRepositoryInterface $userRepository,
+		protected Response $response,
+		protected ProfileServiceInterface $profileService
 	) {
-		$this->wallService = $wallService;
-		$this->userService = $userService;
 	}
 
-	public function dispatch(): void
+	public function profile(): void
 	{
-		$this->userId = $this->getRequest('u');
-		$this->wallService->init($this->getSubActions());
-		$this->subActionCall();
-	}
+		$profileId = $this->getRequest('u');
+		$profileSettings = $this->userRepository->getById($profileId);
+		$userInfo = $this->global('user_info');
 
-	public function main(): void
-	{
-		$scriptUrl = $this->global('scripturl');
-		$userSettings = $this->userService->getUserSettings($this->userId);
-		$forceWall = $this->getSetting(SettingsEntity::FORCE_WALL);
-
-		if (empty($userSettings[UserSettingsEntity::WALL]) && empty($forceWall)) {
-			$this->userService->redirect($scriptUrl .
-				sprintf(ProfileService::LEGACY_URL, $this->userId));
+		if (!$this->profileService->isAllowedToSeePage($profileSettings, (int) $profileId, (int) $userInfo['id'])) {
+			$this->response->redirect($this->global('scripturl') .
+			sprintf(ProfileService::LEGACY_URL, $profileId));
 		}
 
-		$this->render(__FUNCTION__, [
-			'userSettings' => $userSettings,
-		]);
-	}
+		$this->profileService->loadComponents($profileId);
 
-	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void
-	{
-		$this->wallService->defaultSubActionContent($subTemplate, $params, $smfTemplate);
+		$this->render(__FUNCTION__);
 	}
 
 	public function getSubActions(): array
@@ -73,11 +54,11 @@ class WallController extends BaseController implements ControllerInterface
 
 	public function getMainAction(): string
 	{
-		return self::ACTION_MAIN;
+		return self::ACTION_PROFILE;
 	}
 
 	public function getActionName(): string
 	{
-		return self::ACTION_MAIN;
+		return self::ACTION_PROFILE;
 	}
 }

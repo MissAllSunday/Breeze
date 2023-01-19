@@ -45,6 +45,16 @@ class Components
 		//		'noti' => 'https://cdn.jsdelivr.net/npm/vue-toast-notification/dist/theme-default.css',
 	];
 
+	public function loadUIVars(array $vars = []): void
+	{
+		foreach ($vars as $varName => $varValue) {
+			$this->addJavaScriptVar(
+				$varName,
+				$varValue
+			);
+		}
+	}
+
 	public function loadComponents(array $components = []): void
 	{
 		$componentsToLoad = array_intersect(self::COMPONENTS, $components);

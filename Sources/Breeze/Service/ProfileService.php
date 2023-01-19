@@ -6,11 +6,14 @@ namespace Breeze\Service;
 
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
+use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Traits\SettingsTrait;
 use Breeze\Traits\TextTrait;
+use Breeze\Util\Components;
+use Breeze\Util\Permissions;
 
-class ProfileService
+class ProfileService implements ProfileServiceInterface
 {
 	use SettingsTrait;
 	use TextTrait;
@@ -25,11 +28,24 @@ class ProfileService
 		'avatar',
 	];
 
-	private UserRepositoryInterface $userRepository;
+	public function __construct(
+		protected UserRepositoryInterface $userRepository,
+		protected Components $components
+	) {
+	}
 
-	public function __construct(UserRepositoryInterface $userRepository)
+	public function loadComponents(int $profileId = 0): void
 	{
-		$this->userRepository = $userRepository;
+		$this->components->loadUIVars([
+			'profileId' => $profileId,
+		]);
+		$this->components->loadTxtVarsFor(['general', 'mood', 'like']);
+		$this->components->loadJavaScriptFile('breeze/main.' . Breeze::REACT_HASH . '.js', [
+			'external' => false,
+			'defer' => true,
+		], strtolower(Breeze::PATTERN . Breeze::REACT_HASH));
+
+		$this->components->loadCSSFile('breeze.css', [], 'smf_breeze');
 	}
 
 	public function getCurrentUserInfo(): array
@@ -111,6 +127,37 @@ class ProfileService
 		];
 	}
 
+	public function isAllowedToSeePage(array $profileSettings, int $profileId = 0, int $userId = 0): bool
+	{
+		$forceWall = $this->getSetting(SettingsEntity::FORCE_WALL);
+		$isCurrentUserOwner = $userId === $profileId;
+
+		if (empty($profileSettings[UserSettingsEntity::WALL]) && empty($forceWall)) {
+			return false;
+		}
+
+		if ($isCurrentUserOwner && !$this->isEnable(SettingsEntity::FORCE_WALL)) {
+			return false;
+		}
+		if (empty($profileSettings['wall'])) {
+			return false;
+		}
+
+		if (Permissions::isAllowedTo('profile_view')) {
+			return false;
+		}
+
+		if (!empty($profileSettings['kick_ignored']) && !empty($profileSettings['ignoredList'])) {
+			$profileIgnoredList = explode(',', $profileSettings['ignoredList']);
+
+			if (in_array($userId, $profileIgnoredList)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	public function stalkingCheck(int $userStalkedId = 0): bool
 	{
 		$user_info = $this->global('user_info');
@@ -128,5 +175,10 @@ class ProfileService
 		}
 
 		return false;
+	}
+
+	public function redirect(string $urlName): void
+	{
+		// TODO: Implement redirect() method.
 	}
 }
