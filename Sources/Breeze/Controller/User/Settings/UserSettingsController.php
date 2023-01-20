@@ -7,9 +7,12 @@ namespace Breeze\Controller\User\Settings;
 use Breeze\Breeze;
 use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
+use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\User\UserRepositoryInterface;
+use Breeze\Util\Error;
 use Breeze\Util\Form\UserSettingsBuilderInterface;
+use Breeze\Util\Permissions;
 use Breeze\Util\Response;
 use Breeze\Util\Validate\Validations\ValidateData;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
@@ -46,12 +49,14 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 
 	public function dispatch(): void
 	{
-		$this->subAction = $this->getRequest('sa', $this->getMainAction());
+		Permissions::isNotGuest($this->getText('error_no_access'));
+
+		if (!$this->isEnable(SettingsEntity::MASTER)) {
+			Error::show('no_valid_action');
+		}
+
 		$this->setLanguage(Breeze::NAME);
 		$this->setTemplate(Breeze::NAME . self::TEMPLATE);
-
-		// @TODO: validate if subaction exists and send an error page if it doesn't
-
 
 		$this->subActionCall();
 	}

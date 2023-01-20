@@ -132,14 +132,11 @@ class ProfileService implements ProfileServiceInterface
 		$forceWall = $this->getSetting(SettingsEntity::FORCE_WALL);
 		$isCurrentUserOwner = $userId === $profileId;
 
-		if (empty($profileSettings[UserSettingsEntity::WALL]) && empty($forceWall)) {
-			return false;
+		if (empty($profileSettings[UserSettingsEntity::WALL]) && !empty($forceWall)) {
+			return true;
 		}
 
-		if ($isCurrentUserOwner && !$this->isEnable(SettingsEntity::FORCE_WALL)) {
-			return false;
-		}
-		if (empty($profileSettings['wall'])) {
+		if (empty($profileSettings[UserSettingsEntity::WALL])) {
 			return false;
 		}
 

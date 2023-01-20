@@ -8,15 +8,10 @@ namespace Breeze\Entity;
 class MemberEntity extends BaseEntity implements BaseEntityInterface
 {
 	public const TABLE = 'members';
-
 	public const ID = 'id_member';
-
 	public const NAME = 'member_name';
-
 	public const REAL_NAME = 'real_name';
-
 	public const IGNORE_LIST = 'pm_ignore_list';
-
 	public const BUDDY_LIST = 'buddy_list';
 
 	public static function getColumns(): array

@@ -46,7 +46,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 			return false;
 		}
 
-		if ($this->userModel->insert($userSettings)) {
+		if ($this->userModel->insert($toInsert)) {
 			$this->setCache(sprintf(OptionsEntity::CACHE_NAME, $userId), null);
 		}
 
