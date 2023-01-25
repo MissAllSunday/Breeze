@@ -157,7 +157,6 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 
 	public function loadComponents(array $components = []): void
 	{
-		$this->components->loadComponents($components);
 	}
 
 	public function redirect(string $urlName): void

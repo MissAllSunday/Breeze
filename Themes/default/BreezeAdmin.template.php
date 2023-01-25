@@ -103,19 +103,22 @@ function template_main(): void
 	echo '
 	<script>
       let feedURL = "'. Breeze::FEED .'";
+      let releasesNotFound = "'. $txt['Breeze_feed_error_message'] .'";
+      let app = document.querySelector("#smfAnnouncements");
+      app.append(releasesNotFound);
       
       fetch(feedURL).then(function (response) {
 		return response.json();
 	  }).then(function (data) {
-		addReleases(data)(data);
+		addReleases(data, app);
 	  });
     
-    function addReleases(releases)
+    function addReleases(releases, app)
     {
 	  let releasesNotFound = "'. $txt['Breeze_feed_error_message'] .'";
       let smfAnnouncements = releasesNotFound;
-      let app = document.querySelector("#smfAnnouncements");
 	  let dl = document.createElement("dl");
+	  app.innerHTML = ""
 	  
 	  for (const [key, release] of Object.entries(releases).slice(0, 5)) {
  			let dt = document.createElement("dt");	
