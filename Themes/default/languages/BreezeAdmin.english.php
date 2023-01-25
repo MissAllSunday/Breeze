@@ -72,6 +72,6 @@ $txt['Breeze_maxFloodMinutes_sub'] = 'Defaults to 5 minutes. If you leave both o
  an user cannot make more than 10 messages in 5 minutes across all walls';
 
 $txt['Breeze_version'] = 'Breeze version';
-$txt['Breeze_vue_version'] = 'Vue version';
+$txt['Breeze_react_version'] = 'React version';
 $txt['Breeze_live'] = 'Live from the support forum...';
 $txt['Breeze_feed_error_message'] = 'Breeze couldn\'t connect with the support site';

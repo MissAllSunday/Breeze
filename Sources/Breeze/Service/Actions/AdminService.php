@@ -29,6 +29,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 	public function init(array $subActions): void
 	{
 		$context = $this->global('context');
+		$scriptUrl = $this->global('scripturl');
 
 		$this->requireOnce('ManageSettings');
 		$this->requireOnce('ManageServer');
@@ -40,9 +41,19 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 			$subActions = array_diff($subActions, ['moodList']);
 		}
 
-		loadGeneralSettingParameters(array_combine($subActions, $subActions), 'general');
+		loadGeneralSettingParameters(array_combine($subActions, $subActions), 'main');
 
-		$context[$context['admin_menu_name']]['tab_data']['tabs'] = array_fill_keys($subActions, []);
+		$tabs = [];
+
+		foreach ($subActions as $subActionName) {
+			$tabs[$subActionName] = [
+				'url' => $scriptUrl . '?' . AdminServiceInterface::POST_URL . $subActionName,
+				'description' => $this->getText('breezeAdmin_' . $subActionName . '_description'),
+				'label' => $this->getText('breezeAdmin_' . $subActionName . '_title'),
+			];
+		}
+
+		$context[$context['admin_menu_name']]['tab_data']['tabs'] = $tabs;
 
 		$this->setGlobal('context', $context);
 	}
@@ -60,7 +71,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 		$scriptUrl = $this->global('scripturl');
 
 		$context['post_url'] = $scriptUrl . '?' .
-			AdminService::POST_URL . $subActionName . ';' .
+			AdminServiceInterface::POST_URL . $subActionName . ';' .
 			$context['session_var'] . '=' . $context['session_id'] . ';save';
 
 		if (!isset($context[Breeze::NAME])) {
@@ -73,7 +84,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 
 		$context['page_title'] = $this->getText($this->getActionName() . '_' . $subActionName . '_title');
 		$context['sub_template'] = !empty($smfTemplate) ?
-			$smfTemplate : (self::AREA . '_' . $subActionName);
+			$smfTemplate : ($subActionName);
 
 		$context[$context['admin_menu_name']]['tab_data'] += [
 			'title' => $context['page_title'],

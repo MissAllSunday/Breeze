@@ -47,7 +47,7 @@ class AdminController extends BaseController implements ControllerInterface
 			Breeze::NAME => [
 				'credits' => Breeze::credits(),
 				'version' => Breeze::VERSION,
-				'vue' => Breeze::REACT_VERSION,
+				'react' => Breeze::REACT_VERSION,
 			],
 		]);
 
@@ -97,9 +97,13 @@ class AdminController extends BaseController implements ControllerInterface
 		$this->render(__FUNCTION__);
 	}
 
-	public function render(string $subTemplate, array $params = [], string $smfTemplate = ''): void
+	public function render(string $subActionName, array $templateParams = [], string $smfTemplate = ''): void
 	{
-		$this->adminService->defaultSubActionContent($subTemplate, $params, $smfTemplate);
+		$this->adminService->defaultSubActionContent(
+			$subActionName,
+			$templateParams,
+			$smfTemplate
+		);
 	}
 
 	public function getSubActions(): array

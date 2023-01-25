@@ -42,7 +42,6 @@ abstract class BaseController implements ControllerInterface
 		}
 
 		$context = $this->global('context');
-		$scriptUrl = $this->global('scripturl');
 
 		if (!isset($context[Breeze::NAME])) {
 			$context[Breeze::NAME] = [];

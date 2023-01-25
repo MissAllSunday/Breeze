@@ -8,9 +8,7 @@ namespace Breeze\Service\Actions;
 interface AdminServiceInterface extends ActionsServiceInterface
 {
 	public const IDENTIFIER = 'Admin';
-
 	public const AREA = 'breezeAdmin';
-
 	public const POST_URL = 'action=admin;area=breezeAdmin;sa=';
 
 	public function configVars(bool $save = false): void;

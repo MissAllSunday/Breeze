@@ -10,7 +10,7 @@ interface ActionsServiceInterface extends BaseServiceInterface
 {
 	public function init(array $subActions): void;
 
-	public function defaultSubActionContent(string $subTemplate, array $params, string $smfTemplate);
+	public function defaultSubActionContent(string $subActionName, array $templateParams, string $smfTemplate);
 
 	public function getActionName(): string;
 }

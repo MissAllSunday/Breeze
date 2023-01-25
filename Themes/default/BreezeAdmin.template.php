@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Breeze\Breeze;
 
-function template_breezeAdmin_main(): void
+function template_main(): void
 {
 	global $txt, $context;
 
@@ -28,13 +28,7 @@ function template_breezeAdmin_main(): void
 					</h3>
 				</div>
 				<div id="smfAnnouncements" class="information">
-					<span v-if="errored">{{releasesNotFound}}</span>
-					<releases-feed
-						v-else
-						v-for="release in releases"
-						v-bind:release="release"
-						v-bind:key="release.id"
-					></releases-feed>
+					
 				</div>
 			</div>';
 
@@ -56,9 +50,9 @@ function template_breezeAdmin_main(): void
 								', $context[Breeze::NAME]['version'] , '
 							</em>
 							<br>
-							', $txt['Breeze_vue_version'] , ':
+							', $txt['Breeze_react_version'] , ':
 							<em>
-								', $context[Breeze::NAME]['vue'] , '
+								', $context[Breeze::NAME]['react'] , '
 							</em>';
 
 	// Some more stuff will be here... eventually
@@ -115,7 +109,7 @@ function template_breezeAdmin_main(): void
 ';
 }
 
-function template_breezeAdmin_moodList(): void
+function template_moodList(): void
 {
 	global $context, $txt;
 
@@ -160,7 +154,7 @@ function template_breezeAdmin_moodList(): void
 }
 
 // Boring stuff you will never see...
-function template_breezeAdmin_donate(): void
+function template_donate(): void
 {
 	global $context, $txt;
 

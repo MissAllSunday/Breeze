@@ -140,7 +140,7 @@ class ProfileService implements ProfileServiceInterface
 			return false;
 		}
 
-		if (Permissions::isAllowedTo('profile_view')) {
+		if (!Permissions::isAllowedTo('profile_view')) {
 			return false;
 		}
 
