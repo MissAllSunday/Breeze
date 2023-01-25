@@ -8,7 +8,6 @@ namespace Breeze\Service\Actions;
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Service\PermissionsService;
-use Breeze\Util\Components;
 use Breeze\Util\Form\SettingsBuilderInterface;
 use Breeze\Util\Permissions;
 
@@ -17,7 +16,8 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 	protected array $configVars = [];
 
 	public function __construct(protected SettingsBuilderInterface $settingsBuilder)
-	{}
+	{
+	}
 
 	public function init(array $subActions): void
 	{
