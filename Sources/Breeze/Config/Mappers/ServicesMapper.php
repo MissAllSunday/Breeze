@@ -16,7 +16,7 @@ use Breeze\Util\Form\SettingsBuilder;
 return [
 	'service.admin' => [
 		'class' => AdminService::class,
-		'arguments' => [SettingsBuilder::class, Components::class],
+		'arguments' => [SettingsBuilder::class],
 	],
 	'service.profile' => [
 		'class' => ProfileService::class,

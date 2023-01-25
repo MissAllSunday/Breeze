@@ -16,15 +16,8 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 {
 	protected array $configVars = [];
 
-	private SettingsBuilderInterface $settingsBuilder;
-
-	private Components $components;
-
-	public function __construct(SettingsBuilderInterface $settingsBuilder, Components $components)
-	{
-		$this->settingsBuilder = $settingsBuilder;
-		$this->components = $components;
-	}
+	public function __construct(protected SettingsBuilderInterface $settingsBuilder)
+	{}
 
 	public function init(array $subActions): void
 	{
