@@ -102,8 +102,38 @@ function template_main(): void
 
 	echo '
 	<script>
-      var feedURL = "'. Breeze::FEED .'";
-      var releasesNotFound = "'. $txt['Breeze_feed_error_message'] .'";
+      let feedURL = "'. Breeze::FEED .'";
+      
+      fetch(feedURL).then(function (response) {
+		return response.json();
+	  }).then(function (data) {
+		addReleases(data)(data);
+	  });
+    
+    function addReleases(releases)
+    {
+	  let releasesNotFound = "'. $txt['Breeze_feed_error_message'] .'";
+      let smfAnnouncements = releasesNotFound;
+      let app = document.querySelector("#smfAnnouncements");
+	  let dl = document.createElement("dl");
+	  
+	  for (const [key, release] of Object.entries(releases).slice(0, 5)) {
+ 			let dt = document.createElement("dt");	
+ 			let dd = document.createElement("dd");
+ 			let anchor = document.createElement("a");
+ 			let date = new Date(release.published_at)
+ 			
+ 			anchor.innerText = 	release.name;
+            anchor.href = release.html_url;
+            dt.append(anchor)
+            dt.append(" " + date.toLocaleString("en-US"))
+            dd.innerText = release.body;
+ 			dl.append(dt);
+ 			dl.append(dd);
+		}
+      
+      app.append(dl);
+    }
     </script>
 
 ';
