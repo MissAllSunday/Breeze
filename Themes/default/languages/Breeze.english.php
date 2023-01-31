@@ -146,26 +146,6 @@ $txt['Breeze_tabs_activity_buddies_none'] = 'Your buddies doesn\'t have any acti
 $txt['Breeze_tabs_about'] = 'About me';
 $txt['Breeze_goTop'] = 'Go to top';
 
-// Mood feature.
-$txt['Breeze_mood_emoji'] = 'Emoji';
-$txt['Breeze_mood_description'] = 'Description';
-$txt['Breeze_mood_enable'] = 'Enable';
-$txt['Breeze_mood_newMood'] = 'New mood';
-$txt['Breeze_mood_createNewMood'] = 'Create a new mood';
-$txt['Breeze_moodLabel'] = 'mood';
-$txt['Breeze_moodChange'] = 'Change your mood';
-$txt['Breeze_info_moodChanged'] = 'Your mood has been changed!';
-$txt['Breeze_info_moodCreated'] = 'The new mood has been successfully created!';
-$txt['Breeze_info_moodUpdated'] = 'The mood has been successfully updated!';
-$txt['Breeze_info_moodDeleted'] = 'Your mood was successfully deleted!';
-$txt['Breeze_error_moodCreated'] = 'You aren\'t allowed to create moods';
-$txt['Breeze_error_moodChanged'] = 'You aren\'t allowed to set moods';
-$txt['Breeze_error_moodGet'] = 'There was a problem getting the moods';
-$txt['Breeze_error_no_mood'] = 'The mood doesn\'t exists anymore';
-$txt['Breeze_error_sameMood'] = 'Same mood was selected';
-$txt['Breeze_error_invalidEmoji'] = 'Please use a valid emoji';
-$txt['Breeze_error_emptyEmoji'] = 'Emoji field cannot be empty';
-
 // Buddy request.
 $txt['Breeze_buddy_title'] = 'Buddy request';
 $txt['Breeze_buddy_confirm'] = 'The invitation has been sent, {receiver} will soon receive an alert';
@@ -193,4 +173,3 @@ $txt['cannot_breeze_postStatus'] = $txt['Breeze_error_postStatus'];
 $txt['cannot_breeze_postComments'] = $txt['Breeze_error_postComments'];
 $txt['cannot_breeze_deleteStatus'] = $txt['Breeze_error_deleteStatus'] ;
 $txt['cannot_breeze_deleteComments'] = $txt['Breeze_error_deleteComments'];
-$txt['cannot_breeze_moodCreated'] = $txt['Breeze_error_moodCreated'];

@@ -6,9 +6,7 @@ declare module 'breezeTypes' {
     }
     youSure: string
     ajaxIndicator: boolean
-    txt: {
-      moodTxt: object
-    }
+    txt: {}
     scriptUrl: string
     userId: number
   }

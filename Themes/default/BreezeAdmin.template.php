@@ -101,7 +101,7 @@ function template_main(): void
 	<br />';
 
 	echo '
-	<script>
+	<script defer="defer">
       let feedURL = "'. Breeze::FEED .'";
       let releasesNotFound = "'. $txt['Breeze_feed_error_message'] .'";
       let app = document.querySelector("#smfAnnouncements");
@@ -142,49 +142,6 @@ function template_main(): void
 ';
 }
 
-function template_moodList(): void
-{
-	global $context, $txt;
-
-	if (!empty($context[Breeze::NAME]['notice'])) {
-		echo '
-		<div class="' . $context[Breeze::NAME]['notice']['type'] . 'box">
-		', $context[Breeze::NAME]['notice']['message'] ,'
-		</div><br />';
-	}
-
-	echo '
-<div id="moodList">
-	<div class="cat_bar">&nbsp;</div>
-	<div class="windowbg">
-		<span v-if="errored">' . $txt['Breeze_error_moodGet'] . '</span>
-		<ul>
-			<mood-admin
-				v-for ="mood in localMoods"
-				:key="mood.id"
-				v-bind:mood="mood"
-				@remove-mood="removeMood($event)"
-				@update-list="updateList($event)"
-			></mood-admin>
-		</ul>
-	</div>
-	<div class="additional_row">
-		<input type="submit" value="' . $txt['Breeze_mood_newMood'] . '" class="button" @click="creating()">
-		<modal v-if="showModal" @close="showModal = false" @click.stop>
-			<div slot="header">
-				{{ $root.txt.mood.newMood }}
-			</div>
-			<div slot="body">
-				<mood-form
-					v-bind:mood="[]"
-					@delete="showModal = false"
-					@save="onSave($event)"
-				></mood-form>
-			</div>
-		</modal>
-	</div>
-</div>';
-}
 
 // Boring stuff you will never see...
 function template_donate(): void

@@ -21,16 +21,6 @@ from here you can enable/disable the mod as well as configuring general settings
 $txt['Breeze_breezeAdmin_donate_title'] = 'Donate';
 $txt['Breeze_breezeAdmin_donate_description'] = 'Boring stuff you were curious about it
  but you\'ll never gonna see it again :P';
-$txt['Breeze_breezeAdmin_moodList_title'] = 'Mood List';
-$txt['Breeze_breezeAdmin_moodList_description'] = 'A list showing all the current moods available,
-from here you can add/edit and delete moods.
-<br>A mod can be any text-based emoji that can be copy/pasted as text string.
-Some emojis aren\'t supported by all browsers.';
-$txt['Breeze_mood_noFile'] = 'Image mood was not found';
-$txt['Breeze_page_mood_create'] = 'Add a new mood';
-$txt['Breeze_page_mood_edit_create'] = 'Creating a new mood';
-$txt['Breeze_page_mood_edit_update'] = 'Editing a mood';
-$txt['Breeze_page_mood__noList'] = 'There aren\'t any moods to display';
 $txt['Breeze_page_donate_exp'] = 'Breeze is a free and Open Source SMF modification.
 If you like this modification and would like to show your appreciation, please consider making a';
 $txt['Breeze_page_donate_link'] = 'donation';
@@ -55,15 +45,6 @@ $txt['Breeze_maxBuddiesNumber_sub'] = 'If the user has more users than the speci
  their entire list will be converted to a more compact links list. Leave at 0 to disable this option.';
 $txt['Breeze_aboutMeMaxLength'] = 'The max length for the "about me" block ';
 $txt['Breeze_aboutMeMaxLength_sub'] = 'If left empty, the mod will use the default value: 1024';
-$txt['Breeze_enableMood'] = 'Enable the my mood feature';
-$txt['Breeze_enableMood_sub'] = 'The user must have JavaScript enable on their machines
- for this to work properly for them.';
-$txt['Breeze_moodLabel'] = 'A label used when showing the current user\'s mood';
-$txt['Breeze_moodDefault'] = 'mood: ';
-$txt['Breeze_moodLabel_sub'] = 'If left empty the mod will use the default value: "' . $txt['Breeze_moodDefault'] . '"';
-$txt['Breeze_moodPlacement'] = 'The place inside the display area where the moods will be showed';
-$txt['Breeze_moodPlacement_sub'] = 'The mod will display all possible locations but not all of them
- will be suitable for showing a mood.';
 $txt['Breeze_maxFloodNum'] = 'How many messages can an user make';
 $txt['Breeze_maxFloodNum_sub'] = 'The amount of total messages, including status and messages across all walls
  an user can make. Defaults to 10';

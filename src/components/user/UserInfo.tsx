@@ -18,8 +18,6 @@ const UserInfo: React.FunctionComponent<userInfoProps> = (props: userInfoProps) 
     <li className="breeze_description">
       {props.userData.title}
     </li>
-    <li className="breeze_mood">
-    </li>
   </ul>)
 }
 

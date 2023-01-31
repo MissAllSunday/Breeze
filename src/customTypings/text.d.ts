@@ -1,15 +1,4 @@
 declare module 'breezeTypes' {
-  interface moodTextType {
-    emoji: string
-    description: string
-    enable: string
-    invalidEmoji: string
-    emptyEmoji: string
-    moodChange: string
-    newMood: string
-    sameMood: string
-    defaultLabel: string
-  }
 
   interface generalTextType {
     save: string
@@ -31,7 +20,6 @@ declare module 'breezeTypes' {
 }
 
 module.exports = {
-  moodTextType,
   generalTextType,
   likeTextType
 }

@@ -14,10 +14,7 @@ use Breeze\Controller\BuddyController;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
-use Breeze\Entity\MoodEntity;
 use Breeze\Entity\SettingsEntity;
-use Breeze\Entity\UserSettingsEntity;
-use Breeze\Repository\User\MoodRepository;
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminServiceInterface;
 use Breeze\Service\PermissionsService;
@@ -192,7 +189,7 @@ class Breeze
 
 		$menuReference = 'home';
 		$counter = 0;
-		$isWallEnable = $this->modSetting(SettingsEntity::MASTER);
+		$isWallEnable = $this->modSetting(SettingsEntity::MASTER, false);
 
 		foreach ($menu_buttons as $area => $dummy) {
 			$counter++;
@@ -240,14 +237,12 @@ class Breeze
 		try {
 			$statusController = $this->container->get(StatusController::class);
 			$commentController = $this->container->get(CommentController::class);
-			$moodController = $this->container->get(MoodController::class);
 			$likesController = $this->container->get(LikesController::class);
 
 			$actions['breezeStatus'] = [false, [$statusController, 'dispatch']];
 			$actions['breezeComment'] = [false, [$commentController, 'dispatch']];
 			$actions['breezeWall'] = [false, WallController::class . '::dispatch#'];
 			$actions['breezeBuddy'] = [false, BuddyController::class . '::dispatch#'];
-			$actions['breezeMood'] = [false, [$moodController, 'dispatch']];
 			$actions['breezeLike'] = [false, [$likesController, 'dispatch']];
 		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
 			log_error($exception->getMessage());
@@ -256,79 +251,24 @@ class Breeze
 
 	public function profilePopUpWrapper(&$profile_items): void
 	{
-		$this->container->get(ProfileService::class)->hookProfilePopUp($profile_items);
-	}
-
-	public function alertsPrefWrapper(array &$alertTypes, &$groupOptions): void
-	{
-		$this->container->get(ProfileService::class)->hookAlertsPref($alertTypes);
-	}
-
-	public function updateLikesWrapper($type, $content, $sa, $js, $extra)
-	{
-		if (!$this->isEnable(SettingsEntity::MASTER)) {
-			return false;
+		try {
+			$this->container->get(ProfileService::class)->hookProfilePopUp($profile_items);
+		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
+			log_error($exception->getMessage());
 		}
-
-		/** @var PermissionsService $permissions */
-		$permissions = $this->container->get(PermissionsService::class);
-
-		return [
-			'can_see' => $permissions->get('likes_view'),
-			'can_like' => $permissions->get('likes_like'),
-			'type' => $type,
-			'flush_cache' => true,
-			'callback' => '',
-		];
 	}
 
 	/**
 	 * @throws ContainerExceptionInterface
 	 * @throws NotFoundExceptionInterface
 	 */
-	public function displayMoodWrapper(array &$data, int $userId, bool $displayCustomFields): void
+	public function alertsPrefWrapper(array &$alertTypes, &$groupOptions): void
 	{
-		if (!$displayCustomFields ||
-			!$this->getSetting(SettingsEntity::MASTER) ||
-			!$this->getSetting(SettingsEntity::ENABLE_MOOD)) {
-			return;
+		try {
+			$this->container->get(ProfileService::class)->hookAlertsPref($alertTypes);
+		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
+			log_error($exception->getMessage());
 		}
-
-		$moodRepository = $this->container->get(MoodRepository::class);
-		$userRepository = $this->container->get(UserRepository::class);
-
-		$activeMoods = $moodRepository->getActiveMoods();
-		$userSettings = $userRepository->getUserSettings($userId);
-		$placementField = $this->getSetting(SettingsEntity::MOOD_PLACEMENT, 0);
-		$moodLabel = $this->getSetting(
-			SettingsEntity::MOOD_LABEL,
-			$this->getText(SettingsEntity::MOOD_DEFAULT)
-		);
-
-		$currentMood = !empty($userSettings[UserSettingsEntity::MOOD]) &&
-		!empty($activeMoods[$userSettings[UserSettingsEntity::MOOD]]) ?
-			$activeMoods[$userSettings[UserSettingsEntity::MOOD]] : '';
-
-		// Wild Mood Swings... a highly underrated album if you ask me ;)
-		$data['custom_fields'][] = [
-			'title' => $this->tokenTxtReplace($moodLabel),
-			'col_name' => $this->tokenTxtReplace($moodLabel),
-			'value' => '', // TODO: display current mood
-			'raw' => $currentMood[MoodEntity::EMOJI],
-			'placement' => $placementField,
-		];
-	}
-
-	public function displayMoodProfileWrapper(int $userId, string $profileArea): void
-	{
-		if (!$this->isEnable(SettingsEntity::MASTER) ||
-			!$this->isEnable(SettingsEntity::ENABLE_MOOD) ||
-			!in_array($profileArea, ['summary', 'static'])) {
-			return;
-		}
-
-
-//		$moodService->showMoodOnCustomFields($userId);
 	}
 
 	public function adminMenuWrapper(array &$adminMenu): void
@@ -346,17 +286,8 @@ class Breeze
 				'main' => [$this->getText(AdminServiceInterface::AREA . '_main_title')],
 				'settings' => [$this->getText(AdminServiceInterface::AREA . '_settings_title')],
 				'permissions' => [$this->getText(AdminServiceInterface::AREA . '_permissions_title')],
+				'donate' => [$this->getText(AdminServiceInterface::AREA . '_donate_title'),],
 			],
-		];
-
-		if ($this->isEnable(SettingsEntity::ENABLE_MOOD)) {
-			$adminMenu['config']['areas'][AdminServiceInterface::AREA]['subsections']['moodList'] = [
-				$this->getText(AdminServiceInterface::AREA . '_moodList_title'),
-			];
-		}
-
-		$adminMenu['config']['areas'][AdminServiceInterface::AREA]['subsections']['donate'] = [
-			$this->getText(AdminServiceInterface::AREA . '_donate_title'),
 		];
 	}
 

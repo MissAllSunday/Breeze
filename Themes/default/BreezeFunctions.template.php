@@ -480,52 +480,6 @@ function template_userDiv(): void
 </html>';
 }
 
-function template_mood_change(): void
-{
-	global $context, $settings, $modSettings, $txt, $scripturl;
-
-	$count = 0;
-
-	echo '<!DOCTYPE html>
-<html', $context['right_to_left'] ? ' dir="rtl"' : '', '>
-	<head>
-		<meta charset="', $context['character_set'], '">
-		<meta name="robots" content="noindex">
-		<title>', $context['page_title'], '</title>
-		<link rel="stylesheet" type="text/css" href="', $settings['theme_url'], '/css/index', $context['theme_variant'], '.css', $modSettings['browser_cache'] ,'">
-		<script src="', $settings['default_theme_url'], '/scripts/script.js', $modSettings['browser_cache'] , '"></script>
-	</head>
-	<body; id="breeze_mood_popup">
-		<div; class="windowbg">
-			<table; class="bbc_table">
-				<tr>';
-
-		foreach ($context['moods'] as $m)
-		{
-			$count++;
-
-			if (1 == $count % 5)
-				echo '
-				</tr>
-				<tr>';
-
-			echo '
-					<td>
-						<a href="' . $scripturl . '?action=breezeajax;sa=moodchange;user=' . $context['moodUser'] . ';moodID=' . $m['id'] . ';' . $context['session_var'] . '=' . $context['session_id'] . '" rel="breezeMoodSave" data-id="' . $m['id'] . '">' . $m['image_html'] . '</a>
-						' . (!empty($m['name']) ? '<p>' . $m['name'] . '</p>' : '') . '
-					</td>';
-		}
-
-	echo '
-			</tr>
-			</table>
-			<br class="clear">
-			<a href="javascript:self.close();">', $txt['close_window'], '</a>
-		</div>
-	</body>
-</html>';
-}
-
 function template_top(): void
 {
 	global $context, $scripturl, $txt;

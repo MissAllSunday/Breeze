@@ -7,8 +7,8 @@ declare(strict_types=1);
  *
  * @package Breeze mod
  * @version 1.1
- * @author Jessica Gonzalez <suki@missallsunday.com>
- * @copyright Copyright (c) 2011, 2015, Jessica Gonzalez
+ * @author Michel Mendiola <suki@missallsunday.com>
+ * @copyright Copyright (c) 2011, 2015, Michel Mendiola
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
 
@@ -54,9 +54,6 @@ $txt['Breeze_alert_like_buddy'] = '{poster} <a href="{href}" class="bbc_link" ta
 
 // CoverController
 $txt['Breeze_alert_cover'] = '{poster} changed {gender_possessive} cover image<br>{image}';
-
-// MoodRepository change.
-$txt['Breeze_alert_mood'] = '{poster} changed {gender_possessive} mood<br>{image}';
 
 // New topic.
 $txt['Breeze_alert_topic'] = '{poster} created a new topic:<br><a href="{href}" class="bbc_link" target="_blank">{subject}</a>';

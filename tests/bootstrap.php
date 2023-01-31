@@ -110,7 +110,6 @@ function allowedTo($permissionName)
 		'postStatus' => false,
 		'admin_forum' => false,
 		'likes_like' => false,
-		'useMood' => false,
 	];
 
 	return $dummyPermissions[$permissionName];
