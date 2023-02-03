@@ -11,12 +11,12 @@ declare module 'breezeTypes' {
     userId: number
   }
 
-  interface appProps {
-    smfVars: smfVars
+  interface wallProps {
+    wallType: string
   }
 }
 
 module.exports = {
   smfVars,
-  appProps
+  wallProps
 }

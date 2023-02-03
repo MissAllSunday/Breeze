@@ -8,7 +8,6 @@ use Breeze\Config\MapperAggregate;
 use Breeze\Controller\AdminController;
 use Breeze\Controller\API\CommentController;
 use Breeze\Controller\API\LikesController;
-use Breeze\Controller\API\MoodController;
 use Breeze\Controller\API\StatusController;
 use Breeze\Controller\BuddyController;
 use Breeze\Controller\User\Settings\AlertsController;

@@ -1,14 +1,20 @@
-import { ServerStatusResponse, getByProfile, deleteStatus, postStatus, ServerPostStatusResponse } from '../api/StatusApi'
+import {
+  ServerStatusResponse,
+  status,
+  deleteStatus,
+  postStatus,
+  ServerPostStatusResponse
+} from './api/StatusApi'
 import React from 'react'
-import { statusType, statusListType, commentType, commentList } from 'breezeTypes'
-import Loading from './Loading'
-import Editor from './Editor'
+import { statusType, statusListType, commentType, commentList, wallProps } from 'breezeTypes'
+import Loading from './components/Loading'
+import Editor from './components/Editor'
 import { AxiosResponse } from 'axios'
-import { StatusList } from './StatusList'
-import { deleteComment } from '../api/CommentApi'
+import { StatusList } from './components/StatusList'
+import { deleteComment } from './api/CommentApi'
 
-export default class StatusByProfile extends React.Component<any, any> {
-  constructor (props: any) {
+export default class Wall extends React.Component<any, any> {
+  constructor (props: wallProps) {
     super(props)
     this.state = {
       list: [],
@@ -23,7 +29,7 @@ export default class StatusByProfile extends React.Component<any, any> {
   }
 
   componentDidMount (): void {
-    getByProfile()
+    status(this.props.wallType)
       .then((response: ServerStatusResponse) => {
         let newStatus: statusListType = Object.values(response.data.content)
         newStatus = newStatus.map((status: statusType) => {
