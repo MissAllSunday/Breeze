@@ -1,17 +1,24 @@
 import React, { Component } from 'react'
-import { CommentProps } from 'breezeTypes'
+import { CommentProps, CommentState } from 'breezeTypes'
 import Like from './Like'
 import Avatar from './user/Avatar'
 
-export default class Comment extends Component<CommentProps> {
+export default class Comment extends Component<CommentProps, CommentState> {
+  public readonly state: Readonly<CommentState> = {
+    visible: true
+  }
+
   onRemove = (): void => {
     this.props.removeComment(this.props.comment)
+    this.setState({
+      visible: false
+    })
   }
 
   render (): JSX.Element {
     const timeStamp = new Date(this.props.comment.createdAt)
 
-    return <div className="comment">
+    return <div className={(this.state.visible ? 'fadeIn' : 'fadeOut') + ' comment'}>
       <div className="avatar_compact">
         <Avatar
           href={this.props.comment.userData.avatar.url}

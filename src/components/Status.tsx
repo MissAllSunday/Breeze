@@ -11,12 +11,17 @@ export default class Status extends React.Component<StatusProps, StatusState> {
   constructor (props: any) {
     super(props)
     this.state = {
-      isLoading: false
+      isLoading: false,
+      visible: true
     }
   }
 
   removeStatus = (): void => {
     this.props.removeStatus(this.props.status)
+    this.setState({
+      isLoading: false,
+      visible: false
+    })
   }
 
   newcomment = (content: string): void => {
@@ -43,7 +48,7 @@ export default class Status extends React.Component<StatusProps, StatusState> {
   render (): JSX.Element {
     const timeStamp = new Date(this.props.status.createdAt)
 
-    return <li className="status" key={this.props.status.id}>
+    return <li className={(this.state.visible ? 'fadeIn' : 'fadeOut') + ' status'} key={this.props.status.id}>
     <div className="floatleft userinfo">
       <UserInfo userData={this.props.status.userData}/>
     </div>

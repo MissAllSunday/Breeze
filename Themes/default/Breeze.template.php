@@ -11,3 +11,10 @@ function template_profile(): void
 	<div id="root" class="breeze_main_section" wallType="profile">
 	</div>';
 }
+
+function template_general(): void
+{
+	echo '
+	<div id="root" class="breeze_main_section" wallType="general">
+	</div>';
+}

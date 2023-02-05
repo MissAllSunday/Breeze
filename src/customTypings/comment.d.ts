@@ -31,6 +31,9 @@ declare module 'breezeTypes' {
     comment: commentType
     removeComment: function
   }
+  interface CommentState {
+    visible: boolean
+  }
 }
 
 module.exports = {

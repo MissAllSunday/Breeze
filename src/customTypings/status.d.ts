@@ -29,6 +29,7 @@ declare module 'breezeTypes' {
 
   interface StatusState {
     isLoading: boolean
+    visible: boolean
   }
 }
 

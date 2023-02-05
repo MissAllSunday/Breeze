@@ -65,8 +65,46 @@ div.avatar_compact img.avatar {
 	padding-top: 20px;
 }
 
+.fadeOut{
+	transition: 0.8s linear;
+	-webkit-animation: fadeinout .3s linear forwards;
+	animation: fadeinout .3s linear forwards;
+}
+.fadeIn{
+	transition:0.8s linear;
+	-webkit-animation: display .5s linear forwards;
+	animation: display .5s linear forwards;
+}
+
+.hidden {
+	display: none;
+}
+
 @media (max-width: 480px) {
 	.breeze_summary{
 		display: none;
 	}
+}
+
+@-webkit-keyframes fadeinout {
+	0% { opacity: 0.6; }
+	50% { opacity: 0.2; }
+	100% { opacity: 0; }
+}
+
+@keyframes fadeinout {
+	0% { opacity: 0.6; }
+	50% { opacity: 0.2; }
+	100% { opacity: 0; }
+}
+@-webkit-keyframes display {
+	0% { opacity: 0.2; }
+	50% { opacity: 0.6; }
+	100% { opacity: 1; }
+}
+
+@keyframes display {
+	0% { opacity: 0.2; }
+	50% { opacity: 0.6; }
+	100% { opacity: 1; }
 }
