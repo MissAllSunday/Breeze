@@ -2,10 +2,12 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import Wall from './Wall'
 
-const root = createRoot(document.getElementById('root') as HTMLElement)
+const rootElement = (document.getElementById('root') ?? document.createElement('div'))
+const root = createRoot(rootElement)
+const wallType = rootElement.getAttribute('wallType')
 
 root.render(
   <React.StrictMode>
-    <Wall wallType="profile"/>
+    <Wall wallType={wallType}/>
   </React.StrictMode>
 )

@@ -13,7 +13,7 @@ use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
 class StatusController extends ApiBaseController
 {
-	public const ACTION_PROFILE = 'statusByProfile';
+	public const ACTION_PROFILE = 'profile';
 	public const ACTION_DELETE = 'deleteStatus';
 	public const ACTION_POST = 'postStatus';
 
@@ -31,7 +31,7 @@ class StatusController extends ApiBaseController
 		parent::__construct($validateActions, $response);
 	}
 
-	public function statusByProfile(): void
+	public function profile(): void
 	{
 		try {
 			$statusByProfile = $this->statusRepository->getByProfile(

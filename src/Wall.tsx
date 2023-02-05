@@ -1,6 +1,6 @@
 import {
   ServerStatusResponse,
-  status,
+  getStatus,
   deleteStatus,
   postStatus,
   ServerPostStatusResponse
@@ -29,7 +29,7 @@ export default class Wall extends React.Component<any, any> {
   }
 
   componentDidMount (): void {
-    status(this.props.wallType)
+    getStatus(this.props.wallType)
       .then((response: ServerStatusResponse) => {
         let newStatus: statusListType = Object.values(response.data.content)
         newStatus = newStatus.map((status: statusType) => {

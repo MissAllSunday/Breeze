@@ -15,7 +15,7 @@ export interface ServerPostStatusResponse {
 
 const action = 'breezeStatus'
 
-export const status = async (type: string): Promise<AxiosResponse<statusListType>> => {
+export const getStatus = async (type: string): Promise<AxiosResponse<statusListType>> => {
   return await axios.post<statusListType>(
     baseUrl(action, type),
     baseConfig({

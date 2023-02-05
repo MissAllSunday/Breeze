@@ -8,6 +8,6 @@ declare(strict_types=1);
 function template_profile(): void
 {
 	echo '
-	<div id="root" class="breeze_main_section">
+	<div id="root" class="breeze_main_section" wallType="profile">
 	</div>';
 }
