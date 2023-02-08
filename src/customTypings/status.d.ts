@@ -9,6 +9,7 @@ declare module 'breezeTypes' {
     likesInfo: likeType
     comments: commentType[]
     userData: userDataType
+    isNew: boolean
   }
 
   type statusListType = Map<statusType>
@@ -29,7 +30,7 @@ declare module 'breezeTypes' {
 
   interface StatusState {
     isLoading: boolean
-    visible: boolean
+    classType: string
   }
 }
 

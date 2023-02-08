@@ -14,9 +14,9 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	public const CACHE_BY_PROFILE = 'getByProfile';
 
 	public function __construct(
-		private StatusModelInterface       $statusModel,
+		private StatusModelInterface $statusModel,
 		private CommentRepositoryInterface $commentRepository,
-		private LikeRepositoryInterface    $likeRepository
+		private LikeRepositoryInterface $likeRepository
 	) {
 	}
 
