@@ -5,13 +5,15 @@ import Avatar from './user/Avatar'
 
 export default class Comment extends Component<CommentProps, CommentState> {
   public readonly state: Readonly<CommentState> = {
-    visible: true
+    visible: true,
+    classType: this.props.comment.isNew ? 'fadeIn' : ''
   }
 
   onRemove = (): void => {
     this.props.removeComment(this.props.comment)
     this.setState({
-      visible: false
+      visible: false,
+      classType: 'fadeOut'
     })
   }
 

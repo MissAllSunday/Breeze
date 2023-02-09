@@ -8,6 +8,7 @@ declare module 'breezeTypes' {
     likesInfo: likeType
     createdAt: string
     userData: userDataType
+    isNew: boolean
   }
 
   type commentList = Map<commentType>
@@ -33,6 +34,7 @@ declare module 'breezeTypes' {
   }
   interface CommentState {
     visible: boolean
+    classType: string
   }
 }
 

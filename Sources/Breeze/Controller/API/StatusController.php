@@ -61,7 +61,7 @@ class StatusController extends ApiBaseController
 		try {
 			$statusId = $this->statusRepository->save($this->data);
 			$status = $this->statusRepository->getById($statusId);
-			$status['isNew'] = true;
+			$status[$statusId]['isNew'] = true;
 
 			$this->response->success(
 				'published_status',

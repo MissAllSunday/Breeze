@@ -38,10 +38,12 @@ class CommentController extends ApiBaseController
 	{
 		try {
 			$commentId = $this->commentRepository->save($this->data);
+			$comment = $this->commentRepository->getById($commentId);
+			$comment[$commentId]['isNew'] = true;
 
 			$this->response->success(
 				'published_comment',
-				$this->commentRepository->getById($commentId),
+				$comment,
 				Response::CREATED
 			);
 		} catch (InvalidCommentException $invalidCommentException) {
