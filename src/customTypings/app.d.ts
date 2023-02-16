@@ -14,6 +14,10 @@ declare module 'breezeTypes' {
   interface wallProps {
     wallType: string
   }
+
+  interface wallProps {
+    wallType: string
+  }
 }
 
 module.exports = {

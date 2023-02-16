@@ -3,7 +3,7 @@ import { CommentProps, CommentState } from 'breezeTypes'
 import Like from './Like'
 import Avatar from './user/Avatar'
 
-export default class Comment extends Component<CommentProps, CommentState> {
+class Comment extends Component<CommentProps, CommentState> {
   public readonly state: Readonly<CommentState> = {
     visible: true,
     classType: this.props.comment.isNew ? 'fadeIn' : ''
@@ -51,3 +51,5 @@ export default class Comment extends Component<CommentProps, CommentState> {
   </div>
   }
 }
+
+export default React.memo(Comment)

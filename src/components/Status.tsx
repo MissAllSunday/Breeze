@@ -7,7 +7,7 @@ import { postComment } from '../api/CommentApi'
 import UserInfo from './user/UserInfo'
 import Loading from './Loading'
 
-export default class Status extends React.Component<StatusProps, StatusState> {
+class Status extends React.Component<StatusProps, StatusState> {
   constructor (props: any) {
     super(props)
     this.state = {
@@ -83,3 +83,5 @@ export default class Status extends React.Component<StatusProps, StatusState> {
 </li>
   }
 }
+
+export default React.memo(Status)

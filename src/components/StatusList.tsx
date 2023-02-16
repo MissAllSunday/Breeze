@@ -7,7 +7,7 @@ export const StatusList = ({
   removeStatus,
   removeComment,
   onCreateComment
-}: StatusListProps): React.ReactElement<Status> => (
+}: StatusListProps): React.ReactElement => (
   <ul className="status">
     {statusList.map((status: statusType) => (
       <Status

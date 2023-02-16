@@ -14,10 +14,10 @@ import { StatusList } from './components/StatusList'
 import { deleteComment } from './api/CommentApi'
 
 export default class Wall extends React.Component<any, any> {
+  list: statusType[] = []
   constructor (props: wallProps) {
     super(props)
     this.state = {
-      list: [],
       isLoading: true
     }
   }
@@ -31,15 +31,14 @@ export default class Wall extends React.Component<any, any> {
   componentDidMount (): void {
     getStatus(this.props.wallType)
       .then((response: ServerStatusResponse) => {
-        let newStatus: statusListType = Object.values(response.data.content)
-        newStatus = newStatus.map((status: statusType) => {
+        const newStatus: statusListType = Object.values(response.data.content)
+        this.list = newStatus.map((status: statusType) => {
           status.comments = Object.values(status.comments)
 
           return status
         })
 
         this.updateState({
-          list: newStatus,
           isLoading: false
         })
       })
@@ -59,10 +58,10 @@ export default class Wall extends React.Component<any, any> {
       }
 
       this.updateState({
-        list: this.state.list.filter(function (statusListItem: statusType) {
-          return statusListItem.id !== status.id
-        }),
         isLoading: false
+      })
+      this.list = this.list.filter(function (statusListItem: statusType) {
+        return statusListItem.id !== status.id
       })
     }).catch(function (error) {
       console.log(error.response.data)
@@ -81,7 +80,7 @@ export default class Wall extends React.Component<any, any> {
         return
       }
 
-      const newStatusList = this.state.list.map(function (statusListItem: statusType) {
+      this.list = this.list.map(function (statusListItem: statusType) {
         statusListItem.comments = statusListItem.comments.filter(function (commentListItem: commentType) {
           return commentListItem.id !== comment.id
         })
@@ -89,7 +88,6 @@ export default class Wall extends React.Component<any, any> {
       })
 
       this.setState({
-        list: newStatusList,
         isLoading: false
       })
     }).catch(function (error) {
@@ -101,7 +99,7 @@ export default class Wall extends React.Component<any, any> {
   }
 
   onCreateComment = (commentList: commentList, statusID: number): void => {
-    const newStatusList = this.state.list.map(function (statusListItem: statusType) {
+    this.list = this.list.map(function (statusListItem: statusType) {
       if (statusListItem.id === statusID) {
         statusListItem.comments = [...statusListItem.comments, commentList.pop()]
       }
@@ -110,7 +108,6 @@ export default class Wall extends React.Component<any, any> {
     })
 
     this.updateState({
-      list: newStatusList,
       isLoading: false
     })
   }
@@ -125,8 +122,9 @@ export default class Wall extends React.Component<any, any> {
         return
       }
 
+      // this.list = [...this.list, ...response.data.content]
+
       this.updateState({
-        list: [...this.state.list, ...Object.values(response.data.content)],
         isLoading: false
       })
     }).catch((error) => {
@@ -152,7 +150,7 @@ export default class Wall extends React.Component<any, any> {
             }
           </div>
           <StatusList
-          statusList={this.state.list}
+          statusList={this.list}
           removeStatus={this.removeStatus}
           removeComment={this.removeComment}
           onCreateComment={this.onCreateComment}/>
