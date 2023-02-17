@@ -2,7 +2,7 @@ import { statusType, StatusListProps } from 'breezeTypes'
 import Status from './Status'
 import React from 'react'
 
-export const StatusList = ({
+const StatusList = ({
   statusList,
   removeStatus,
   removeComment,
@@ -20,3 +20,5 @@ export const StatusList = ({
     ))}
   </ul>
 )
+
+export default React.memo(StatusList)

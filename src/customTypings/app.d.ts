@@ -11,8 +11,9 @@ declare module 'breezeTypes' {
     userId: number
   }
 
-  interface wallProps {
-    wallType: string
+  interface wallState {
+    list: statusType[]
+    isLoading: boolean
   }
 
   interface wallProps {
@@ -22,5 +23,6 @@ declare module 'breezeTypes' {
 
 module.exports = {
   smfVars,
-  wallProps
+  wallProps,
+  wallState
 }

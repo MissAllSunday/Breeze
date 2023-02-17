@@ -4,7 +4,7 @@ import Wall from './Wall'
 
 const rootElement = (document.getElementById('root') ?? document.createElement('div'))
 const root = createRoot(rootElement)
-const wallType = rootElement.getAttribute('wallType')
+const wallType = rootElement.getAttribute('wallType') ?? 'profile'
 
 root.render(
   <React.StrictMode>

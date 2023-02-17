@@ -5,156 +5,118 @@ import {
   postStatus,
   ServerPostStatusResponse
 } from './api/StatusApi'
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { statusType, statusListType, commentType, commentList, wallProps } from 'breezeTypes'
 import Loading from './components/Loading'
 import Editor from './components/Editor'
 import { AxiosResponse } from 'axios'
-import { StatusList } from './components/StatusList'
 import { deleteComment } from './api/CommentApi'
+import StatusList from './components/StatusList'
 
-export default class Wall extends React.Component<any, any> {
-  list: statusType[] = []
-  constructor (props: wallProps) {
-    super(props)
-    this.state = {
-      isLoading: true
-    }
-  }
+export default function Wall (props: wallProps): React.ReactElement {
+  const [list, setList] = useState<statusListType>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  updateState (newData: object): void {
-    const newState = { ...this.state, ...newData }
-
-    this.setState(newState)
-  }
-
-  componentDidMount (): void {
-    getStatus(this.props.wallType)
+  useEffect(() => {
+    setIsLoading(true)
+    getStatus(props.wallType)
       .then((response: ServerStatusResponse) => {
         const newStatus: statusListType = Object.values(response.data.content)
-        this.list = newStatus.map((status: statusType) => {
+        setList(newStatus.map((status: statusType) => {
           status.comments = Object.values(status.comments)
 
           return status
-        })
-
-        this.updateState({
-          isLoading: false
-        })
+        }))
       })
       .catch(exception => {
       })
-  }
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }, [props.wallType])
 
-  removeStatus = (status: statusType): void => {
-    this.updateState({
-      isLoading: true
-    })
-
+  const removeStatus = useCallback((status: statusType) => {
+    setIsLoading(true)
     deleteStatus(status.id).then((response) => {
       if (response.status !== 204) {
         // Show some error message
         return
       }
 
-      this.updateState({
-        isLoading: false
-      })
-      this.list = this.list.filter(function (statusListItem: statusType) {
+      setList((prevList: statusType[]) => prevList.map((statusListItem: statusType) => {
         return statusListItem.id !== status.id
+      }))
+    }).catch(exception => {
+    })
+      .finally(() => {
+        setIsLoading(false)
       })
-    }).catch(function (error) {
-      console.log(error.response.data)
-      console.log(error.response.status)
-      console.log(error.response.headers)
-    })
-  }
+  }, [])
 
-  removeComment = (status: statusType, comment: commentType): void => {
-    this.setState({
-      isLoading: true
-    })
+  const removeComment = useCallback((status: statusType, comment: commentType) => {
+    setIsLoading(true)
 
     deleteComment(comment.id).then((response) => {
       if (response.status !== 204) {
         return
       }
 
-      this.list = this.list.map(function (statusListItem: statusType) {
+      setList((prevList: statusType[]) => prevList.map((statusListItem: statusType) => {
         statusListItem.comments = statusListItem.comments.filter(function (commentListItem: commentType) {
           return commentListItem.id !== comment.id
         })
         return statusListItem
-      })
-
-      this.setState({
-        isLoading: false
-      })
-    }).catch(function (error) {
-      console.log(error.response.data)
-      console.log(error.response.status)
-      console.log(error.response.headers)
-      // show some error message
+      }))
+    }).catch(exception => {
     })
-  }
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }, [])
 
-  onCreateComment = (commentList: commentList, statusID: number): void => {
-    this.list = this.list.map(function (statusListItem: statusType) {
+  const onCreateComment = useCallback((commentList: commentList, statusID: number) => {
+    setIsLoading(true)
+    setList((prevList: statusType[]) => prevList.map((statusListItem: statusType) => {
       if (statusListItem.id === statusID) {
         statusListItem.comments = [...statusListItem.comments, commentList.pop()]
       }
 
       return statusListItem
-    })
+    }))
+    setIsLoading(false)
+  }, [])
 
-    this.updateState({
-      isLoading: false
-    })
-  }
-
-  onNewStatus = (content: string): void => {
-    this.updateState({
-      isLoading: true
-    })
-
+  const onCreateStatus = useCallback((content: string) => {
+    setIsLoading(true)
     postStatus(content).then((response: AxiosResponse<ServerPostStatusResponse>) => {
       if (response.status !== 201) {
         return
       }
 
-      // this.list = [...this.list, ...response.data.content]
-
-      this.updateState({
-        isLoading: false
+      setList((prevState: statusListType) => {
+        return [...prevState, ...Object.values(response.data.content)]
       })
-    }).catch((error) => {
-      console.log(error.response.data)
-      console.log(error.response.status)
-      console.log(error.response.headers)
-      this.updateState({
-        isLoading: false
-      })
+    }).catch(exception => {
+    }).finally(() => {
+      setIsLoading(false)
     })
-  }
+  }, [])
 
-  render (): JSX.Element {
-    const isLoading = this.state.isLoading
-    return (<div>
-      {isLoading === true
-        ? <Loading />
-        : <>
-          <div>
-            {isLoading === true
-              ? <Loading />
-              : <Editor saveContent={this.onNewStatus} />
-            }
-          </div>
-          <StatusList
-          statusList={this.list}
-          removeStatus={this.removeStatus}
-          removeComment={this.removeComment}
-          onCreateComment={this.onCreateComment}/>
-        </>}
-    </div>)
-  }
+  return (<div>
+    {isLoading
+      ? <Loading />
+      : <>
+        <div>
+          {isLoading
+            ? <Loading />
+            : <Editor saveContent={onCreateStatus} />
+          }
+        </div>
+        <StatusList
+          statusList={list}
+          removeStatus={removeStatus}
+          removeComment={removeComment}
+          onCreateComment={onCreateComment}/>
+      </>}
+  </div>)
 }
