@@ -9,16 +9,29 @@ function Status (props: StatusProps): React.ReactElement {
   const [classType, setClassType] = useState(props.status.isNew ? 'fadeIn' : '')
   const timeStamp = new Date(props.status.createdAt)
 
+  const ref = React.useRef<null | HTMLDivElement>(null)
+
+  React.useLayoutEffect(() => {
+    const node = ref.current
+    console.log(node)
+    if (node && props.status.isNew) {
+      node.scrollIntoView({ behavior: 'smooth' })
+    }
+  })
+
   const removeStatus = useCallback(() => {
     setClassType('fadeOut')
     props.removeStatus(props.status)
   }, [props])
 
-  return (<li className={classType + ' status'} key={props.status.id}>
+  return (<li
+    className={classType + ' status'}
+    key={props.status.id}
+    id={'status-' + (props.status.id.toString())}
+    ref={ref as React.LegacyRef<HTMLLIElement>}>
     <div className="floatleft userinfo">
       <UserInfo userData={props.status.userData}/>
     </div>
-
     <div className='windowbg floatright'>
       <div className='content' title={timeStamp.toLocaleString()}>
         {props.status.body}
