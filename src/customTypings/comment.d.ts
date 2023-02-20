@@ -25,7 +25,7 @@ declare module 'breezeTypes' {
 
   interface CommentListProps {
     commentList: commentList
-    removeComment: function
+    statusId: number
   }
 
   interface CommentProps {
