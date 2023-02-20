@@ -13,7 +13,7 @@ function Status (props: StatusProps): React.ReactElement {
 
   React.useLayoutEffect(() => {
     const node = ref.current
-    console.log(node)
+
     if (node && props.status.isNew) {
       node.scrollIntoView({ behavior: 'smooth' })
     }

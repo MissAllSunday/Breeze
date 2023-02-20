@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { ServerLikeResponse, postLike } from '../api/LikeApi'
+import { postLike, ServerLikeData } from '../api/LikeApi'
 import { LikeProps, likeType } from 'breezeTypes'
 
 const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
@@ -8,8 +8,8 @@ const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
   const handleLike = useCallback(
     () => {
       function issueLike (): void {
-        postLike(like).then((response: ServerLikeResponse) => {
-          setLike(response.data.content)
+        postLike(like).then((response: ServerLikeData) => {
+          setLike(response.content)
         }).catch(exception => {
           console.log(exception)
         })
