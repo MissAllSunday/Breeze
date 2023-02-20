@@ -1,5 +1,5 @@
-import React, {Component, useCallback, useState} from 'react';
-import { CommentProps, CommentState } from 'breezeTypes'
+import React, { useCallback, useState } from 'react'
+import { CommentProps } from 'breezeTypes'
 import Like from './Like'
 import Avatar from './user/Avatar'
 

@@ -80,6 +80,16 @@ div.avatar_compact img.avatar {
 	display: none;
 }
 
+@media screen and (max-width: 720px){
+	ul.status li.status div.floatleft {
+		width: 0%;
+		display: none;
+	}
+	ul.status li.status div.floatright {
+		width: 99%;
+	}
+}
+
 @media (max-width: 480px) {
 	.breeze_summary{
 		display: none;
