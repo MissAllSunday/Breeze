@@ -305,25 +305,13 @@ class Breeze
 			'scripts' => [
 				'name' => 'Third Party Scripts',
 				'users' => [
-					'Vue' => [
-						'name' => 'Vue',
-						'site' => 'https://vuejs.org/',
-					],
-					'moment' => [
-						'name' => 'moment.js',
-						'site' => 'https://momentjs.com/',
-					],
-					'vue-toast-notification' => [
-						'name' => 'Vue Toast Notification',
-						'site' => 'https://github.com/ankurk91/vue-toast-notification',
+					'React' => [
+						'name' => 'React',
+						'site' => 'https://reactjs.org',
 					],
 					'DOMPurify' => [
 						'name' => 'DOMPurify',
 						'site' => 'https://github.com/cure53/DOMPurify',
-					],
-					'Sun Editor' => [
-						'name' => 'Sun Editor',
-						'site' => 'https://suneditor.com/',
 					],
 				],
 			],
