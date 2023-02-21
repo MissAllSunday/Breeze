@@ -1,7 +1,8 @@
-// @ts-expect-error
-const session = window.smf_session_var ?? {
-  var: process.env.REACT_APP_DEV_SESSION_VAR,
-  id: process.env.REACT_APP_DEV_SESSION_ID
+const session = {
+  // @ts-expect-error
+  var: window.smf_session_var ?? process.env.REACT_APP_DEV_SESSION_VAR,
+  // @ts-expect-error
+  id: window.smf_session_id ?? process.env.REACT_APP_DEV_SESSION_ID
 }
 // @ts-expect-error
 const youSure = window.smf_you_sure ?? function () { return true }

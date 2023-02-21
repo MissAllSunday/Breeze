@@ -17,7 +17,7 @@ function CommentList (props: CommentListProps): React.ReactElement {
       body: content
     }).then((response) => {
       setList((prevList: commentType[]) => {
-        return [...prevList, ...Object.values(response.data.content)]
+        return [...prevList, ...Object.values(response.content)]
       })
     }).catch(() => {}).finally(() => {
       setIsLoading(false)
@@ -35,10 +35,9 @@ function CommentList (props: CommentListProps): React.ReactElement {
         return commentListItem.id !== comment.id
       }))
     }).catch(exception => {
+    }).finally(() => {
+      setIsLoading(false)
     })
-      .finally(() => {
-        setIsLoading(false)
-      })
   }, [])
 
   return (
