@@ -309,10 +309,6 @@ class Breeze
 						'name' => 'Vue',
 						'site' => 'https://vuejs.org/',
 					],
-					'Axios' => [
-						'name' => 'Axios',
-						'site' => 'https://github.com/axios/axios',
-					],
 					'moment' => [
 						'name' => 'moment.js',
 						'site' => 'https://momentjs.com/',

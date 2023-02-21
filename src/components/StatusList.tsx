@@ -4,7 +4,6 @@ import React, { useCallback, useState } from 'react'
 import { deleteStatus, postStatus, ServerPostStatusResponse } from '../api/StatusApi'
 import Loading from './Loading'
 import Editor from './Editor'
-import { AxiosResponse } from 'axios/index'
 
 function StatusList (props: StatusListProps): React.ReactElement {
   const [list, setList] = useState<statusListType>(props.statusList)
@@ -12,18 +11,16 @@ function StatusList (props: StatusListProps): React.ReactElement {
 
   const createStatus = useCallback((content: string) => {
     setIsLoading(true)
-    postStatus(content).then((response: AxiosResponse<ServerPostStatusResponse>) => {
-      if (response.status !== 201) {
-        return
-      }
-
-      setList((prevList: statusListType) => {
-        return [...prevList, ...Object.values(response.data.content)]
+    postStatus(content)
+      .then((response: ServerPostStatusResponse) => {
+        console.log(response)
+        setList((prevList: statusListType) => {
+          return [...prevList, ...Object.values(response.content)]
+        })
+      }).catch(exception => {
+      }).finally(() => {
+        setIsLoading(false)
       })
-    }).catch(exception => {
-    }).finally(() => {
-      setIsLoading(false)
-    })
   }, [])
 
   const removeStatus = useCallback((status: statusType) => {

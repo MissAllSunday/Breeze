@@ -1,5 +1,4 @@
 import {
-  ServerStatusResponse,
   getStatus
 } from './api/StatusApi'
 import React, { useEffect, useState } from 'react'
@@ -13,8 +12,9 @@ export default function Wall (props: wallProps): React.ReactElement {
 
   useEffect(() => {
     getStatus(props.wallType)
-      .then((response: ServerStatusResponse) => {
-        const newStatus: statusListType = Object.values(response.data.content)
+      .then((response) => response.json())
+      .then((statusList: statusListType) => {
+        const newStatus: statusListType = Object.values(statusList.content)
         setList(newStatus.map((status: statusType) => {
           status.comments = Object.values(status.comments)
 
