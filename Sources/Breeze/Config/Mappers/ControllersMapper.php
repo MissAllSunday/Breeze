@@ -8,7 +8,6 @@ namespace Breeze\Config\Mapper;
 use Breeze\Controller\AdminController;
 use Breeze\Controller\API\CommentController;
 use Breeze\Controller\API\LikesController;
-use Breeze\Controller\API\MoodController;
 use Breeze\Controller\API\StatusController;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
@@ -24,7 +23,6 @@ use Breeze\Util\Form\UserSettingsBuilder;
 use Breeze\Util\Response;
 use Breeze\Util\Validate\Validations\Comment\ValidateComment;
 use Breeze\Util\Validate\Validations\Likes\ValidateLikes;
-use Breeze\Util\Validate\Validations\Mood\ValidateMood;
 use Breeze\Util\Validate\Validations\Status\ValidateStatus;
 
 return [
@@ -71,15 +69,6 @@ return [
 			UserRepository::class,
 			Response::class,
 			UserSettingsBuilder::class,
-		],
-	],
-	'controller.mood' => [
-		'class' => MoodController::class,
-		'arguments' => [
-			UserRepository::class,
-			MoodRepository::class,
-			ValidateMood::class,
-			Response::class,
 		],
 	],
 	'controller.likes' => [

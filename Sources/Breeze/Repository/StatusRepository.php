@@ -40,25 +40,19 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	/**
 	 * @throws DataNotFoundException
 	 */
-	public function getByProfile(int $profileOwnerId = 0, int $start = 0): array
+	public function getByProfile(array $userProfiles = [], int $start = 0): array
 	{
-		$status = $this->getCache(self::CACHE_BY_PROFILE . $profileOwnerId);
-
-		if (!empty($status)) {
-			return $status;
-		}
-
 		$status = $this->statusModel->getStatusByProfile([
 			'start' => $start,
 			'maxIndex' => $this->statusModel->getCount(),
-			'ids' => [$profileOwnerId],
+			'ids' => $userProfiles,
 		]);
 
 		if (empty($status['data'])) {
 			throw new DataNotFoundException('no_status');
 		}
 
-		$comments = $this->commentRepository->getByProfile($profileOwnerId);
+		$comments = $this->commentRepository->getByProfile($userProfiles);
 		$status['data'] = $this->likeRepository->appendLikeData($status['data'], StatusEntity::ID);
 
 		$usersData = $this->loadUsersInfo(array_unique($status['usersIds']));
@@ -67,8 +61,6 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			$status['data'][$statusId]['userData'] = $usersData[$singleStatus[StatusEntity::USER_ID]];
 			$status['data'][$statusId]['comments'] = $comments[$statusId] ?? [];
 		}
-
-		$this->setCache(self::CACHE_BY_PROFILE . $profileOwnerId, $status['data']);
 
 		return $status['data'];
 	}

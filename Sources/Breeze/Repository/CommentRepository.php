@@ -33,9 +33,9 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		return $newCommentId;
 	}
 
-	public function getByProfile(int $profileOwnerId = 0): array
+	public function getByProfile(array $userProfiles = []): array
 	{
-		$comments = $this->commentModel->getByProfiles([$profileOwnerId]);
+		$comments = $this->commentModel->getByProfiles($userProfiles);
 
 		foreach ($comments['data'] as $statusId => &$commentsByStatus) {
 			$commentsByStatus = $this->appendLikes($commentsByStatus);

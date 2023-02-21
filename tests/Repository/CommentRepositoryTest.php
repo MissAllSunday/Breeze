@@ -69,7 +69,7 @@ class CommentRepositoryTest extends TestCase
 	 * @dataProvider getByProfileProvider
 	 */
 	public function testGetByProfile(
-		int $profileOwnerId,
+		array $userProfiles,
 		array $commentModelReturn,
 		array $commentsByProfileWillReturn
 	): void {
@@ -78,14 +78,14 @@ class CommentRepositoryTest extends TestCase
 		$commentRepository = new CommentRepository($commentModel->reveal(), $likeRepository);
 
 			$commentModel
-				->getByProfiles([$profileOwnerId])
+				->getByProfiles($userProfiles)
 				->willReturn($commentModelReturn);
 
 		$likeRepository
 			->method('appendLikeData')
 			->willReturn($commentModelReturn['data'][1]);
 
-		$commentsByProfile = $commentRepository->getByProfile($profileOwnerId);
+		$commentsByProfile = $commentRepository->getByProfile($userProfiles);
 
 		$this->assertEquals($commentsByProfileWillReturn, $commentsByProfile);
 	}
@@ -94,7 +94,7 @@ class CommentRepositoryTest extends TestCase
 	{
 		return [
 			'happy happy joy joy' => [
-				'profileOwnerId' => 1,
+				'userProfiles' => [1],
 				'commentModelReturn' => [
 					'usersIds' => [1,2,3],
 					'data' => [1 => [ 1 => [

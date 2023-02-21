@@ -14,6 +14,7 @@ use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 class StatusController extends ApiBaseController
 {
 	public const ACTION_PROFILE = 'profile';
+	public const ACTION_GENERAL = 'general';
 	public const ACTION_DELETE = 'deleteStatus';
 	public const ACTION_POST = 'postStatus';
 
@@ -21,6 +22,7 @@ class StatusController extends ApiBaseController
 		self::ACTION_PROFILE,
 		self::ACTION_POST,
 		self::ACTION_DELETE,
+		self::ACTION_GENERAL,
 	];
 
 	public function __construct(
@@ -35,7 +37,7 @@ class StatusController extends ApiBaseController
 	{
 		try {
 			$statusByProfile = $this->statusRepository->getByProfile(
-				$this->data[StatusEntity::WALL_ID],
+				[$this->data[StatusEntity::WALL_ID]],
 				$this->getRequest('start', 0)
 			);
 

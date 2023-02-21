@@ -149,7 +149,7 @@ class StatusRepositoryTest extends TestCase
 	 * @throws DataNotFoundException
 	 */
 	public function testGetByProfile(
-		int $profileOwnerId,
+		array $userProfiles,
 		array $statusModelWillReturn,
 		array $commentsByProfileWillReturn,
 		array $likesInfo,
@@ -170,7 +170,7 @@ class StatusRepositoryTest extends TestCase
 			->getStatusByProfile([
 				'start' => 0,
 				'maxIndex' => 1,
-				'ids' => [$profileOwnerId],
+				'ids' => $userProfiles,
 			])
 			->willReturn($statusModelWillReturn);
 
@@ -179,7 +179,7 @@ class StatusRepositoryTest extends TestCase
 			$this->expectException(DataNotFoundException::class);
 		}
 
-		$commentRepository->getByProfile($profileOwnerId)->willReturn($commentsByProfileWillReturn);
+		$commentRepository->getByProfile($userProfiles)->willReturn($commentsByProfileWillReturn);
 
 		$statusWithLikes = array_map(function ($item) use ($likesInfo): array {
 			$item['likesInfo'] = $likesInfo;
@@ -188,7 +188,7 @@ class StatusRepositoryTest extends TestCase
 		}, $statusModelWillReturn['data']);
 
 		$likeRepository->method('appendLikeData')->willReturn($statusWithLikes);
-		$statusByProfile = $statusRepository->getByProfile($profileOwnerId);
+		$statusByProfile = $statusRepository->getByProfile($userProfiles);
 
 		$this->assertEquals($expectedResult, $statusByProfile);
 	}
@@ -197,7 +197,7 @@ class StatusRepositoryTest extends TestCase
 	{
 		return [
 			'happy happy joy joy' => [
-				'profileOwnerId' => 1,
+				'userProfiles' => [1],
 				'statusModelWillReturn' => [
 					'usersIds' => [1,2,3],
 					'data' => [
@@ -213,64 +213,6 @@ class StatusRepositoryTest extends TestCase
 				],
 				'commentGetByProfile' => [
 					1 => [
-						1 => [
-							'id' => 1,
-							'statusId' => 1,
-							'userId' => 1,
-							'createdAt' => 581299200,
-							'body' => 'comment body',
-							'likes' => 0,
-						],
-					], ],
-				'likesInfo' => [
-					'contentId' => 1,
-					'count' => 0,
-					'alreadyLiked' => false,
-					'type' => 'type',
-					'canLike' => false,
-					'additionalInfo' => '',
-				],
-				'expectedResult' => [
-					1 => [
-						'id' => 1,
-						'wallId' => 1,
-						'userId' => 1,
-						'createdAt' => 581299200,
-						'body' => 'status body',
-						'likes' => 0,
-						'comments' => [
-							1 => [
-								'id' => 1,
-								'statusId' => 1,
-								'userId' => 1,
-								'createdAt' => 581299200,
-								'body' => 'comment body',
-								'likes' => 0,
-							],
-						],
-						'likesInfo' => [
-							'contentId' => 1,
-							'count' => 0,
-							'alreadyLiked' => false,
-							'type' => 'type',
-							'canLike' => false,
-							'additionalInfo' => '',
-						],
-						'userData' => [
-							'link' => 'Guest',
-							'name' => 'Guest',
-							'avatar' => ['href' => 'avatar_url/default.png'],
-						],
-					],],
-			],
-			'no data' => [
-				'profileOwnerId' => 2,
-				'statusModelWillReturn' => [
-					'usersIds' => [],
-					'data' => [],
-				],
-				'commentGetByProfile' => [
-					2 => [
 						1 => [
 							'id' => 1,
 							'statusId' => 1,

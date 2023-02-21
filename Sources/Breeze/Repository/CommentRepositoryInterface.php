@@ -12,7 +12,7 @@ interface CommentRepositoryInterface extends BaseRepositoryInterface
 	 */
 	public function save(array $data): int;
 
-	public function getByProfile(int $profileOwnerId = 0): array;
+	public function getByProfile(array $userProfiles = []): array;
 
 	public function getByStatus(array $statusIds = []): array;
 
