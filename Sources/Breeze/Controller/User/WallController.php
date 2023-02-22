@@ -8,20 +8,14 @@ namespace Breeze\Controller\User;
 use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
 use Breeze\Repository\User\UserRepositoryInterface;
-use Breeze\Service\ProfileService;
 use Breeze\Service\ProfileServiceInterface;
 use Breeze\Util\Response;
 
 class WallController extends BaseController implements ControllerInterface
 {
-	public const ACTION_PROFILE = 'profile';
 	public const ACTION_GENERAL = 'general';
-	public const ACTION_STATUS = 'status';
-	public const ACTION_COMMENT = 'comment';
 	public const SUB_ACTIONS = [
-		self::ACTION_PROFILE,
 		self::ACTION_GENERAL,
-		self::ACTION_STATUS,
 	];
 
 	public function __construct(
@@ -31,20 +25,13 @@ class WallController extends BaseController implements ControllerInterface
 	) {
 	}
 
-	public function profile(): void
+	public function general(): void
 	{
-		$profileId = $this->getRequest('u');
-		$profileSettings = $this->userRepository->getById($profileId);
-		$userInfo = $this->global('user_info');
-
-		if (!$this->profileService->isAllowedToSeePage($profileSettings, (int) $profileId, (int) $userInfo['id'])) {
-			$this->response->redirect($this->global('scripturl') .
-			sprintf(ProfileService::LEGACY_URL, $profileId));
-		}
-
-		$this->profileService->loadComponents($profileId);
+		$currentUserInfo = $this->global('user_info');
 
 		$this->render(__FUNCTION__);
+
+		$this->profileService->loadComponents($currentUserInfo['id']);
 	}
 
 	public function getSubActions(): array
@@ -54,11 +41,11 @@ class WallController extends BaseController implements ControllerInterface
 
 	public function getMainAction(): string
 	{
-		return self::ACTION_PROFILE;
+		return self::ACTION_GENERAL;
 	}
 
 	public function getActionName(): string
 	{
-		return self::ACTION_PROFILE;
+		return self::ACTION_GENERAL;
 	}
 }

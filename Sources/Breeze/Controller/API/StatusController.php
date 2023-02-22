@@ -6,8 +6,10 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\StatusEntity;
+use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Util\Response;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
@@ -27,6 +29,7 @@ class StatusController extends ApiBaseController
 
 	public function __construct(
 		protected StatusRepositoryInterface $statusRepository,
+		protected UserRepositoryInterface $userRepository,
 		protected ValidateActionsInterface $validateActions,
 		protected Response $response
 	) {
@@ -38,6 +41,28 @@ class StatusController extends ApiBaseController
 		try {
 			$statusByProfile = $this->statusRepository->getByProfile(
 				[$this->data[StatusEntity::WALL_ID]],
+				$this->getRequest('start', 0)
+			);
+
+			$this->response->success('', $statusByProfile);
+		} catch (InvalidStatusException $invalidStatusException) {
+			$this->response->error($invalidStatusException->getMessage());
+		}
+	}
+
+	public function general(): void
+	{
+		$currentUserInfo = $this->global('user_info');
+		$currentUserSettings = $this->userRepository->getById($currentUserInfo['id']);
+		$currentUserBuddies = $currentUserSettings[UserSettingsEntity::BUDDIES];
+
+		if (empty($currentUserBuddies)) {
+			$this->response->error('no status to show');
+		}
+
+		try {
+			$statusByProfile = $this->statusRepository->getByProfile(
+				$currentUserBuddies,
 				$this->getRequest('start', 0)
 			);
 

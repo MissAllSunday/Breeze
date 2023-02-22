@@ -45,6 +45,7 @@ return [
 		'class' => StatusController::class,
 		'arguments' => [
 			StatusRepository::class,
+			UserRepository::class,
 			ValidateStatus::class,
 			Response::class,
 		],

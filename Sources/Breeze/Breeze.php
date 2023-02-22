@@ -14,6 +14,7 @@ use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Entity\SettingsEntity;
+use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminServiceInterface;
 use Breeze\Service\PermissionsService;
@@ -36,11 +37,11 @@ class Breeze
 	public const SUPPORT_URL = 'https://missallsunday.com';
 	public const REACT_DOM_VERSION = '18.2.0';
 	public const REACT_VERSION = '18.2.0';
-	public const REACT_HASH = 'ec9d6e9f';
+	public const REACT_HASH = 'fefee5bf';
 	public const ACTIONS = [
 		'breezeStatus',
 		'breezeComment',
-		'breezeWall',
+		'wall',
 		'breezeBuddy',
 		'breezeMood',
 		'breezeLike',
@@ -188,7 +189,7 @@ class Breeze
 
 		$menuReference = 'home';
 		$counter = 0;
-		$isWallEnable = $this->modSetting(SettingsEntity::MASTER, false);
+		$isWallEnable = $this->isEnable(SettingsEntity::MASTER);
 
 		foreach ($menu_buttons as $area => $dummy) {
 			$counter++;
@@ -196,16 +197,15 @@ class Breeze
 				break;
 			}
 		}
-
 		$menu_buttons = array_merge(
 			array_slice($menu_buttons, 0, $counter),
 			['wall' => [
-				'title' => $this->getText('general_wall'),
+				'title' => $this->getText(UserSettingsEntity::GENERAL_WALL),
 				'icon' => 'smiley',
 				'href' => $scriptUrl . '?action=wall',
 				'show' => $isWallEnable &&
 					!$currentUserInfo['is_guest'] &&
-					!empty($currentUserSettings['general_wall']),
+					!empty($currentUserSettings[UserSettingsEntity::GENERAL_WALL]),
 				'sub_buttons' => [
 					'noti' => [
 						'title' => $this->getText('user_notisettings_name'),
@@ -237,10 +237,11 @@ class Breeze
 			$statusController = $this->container->get(StatusController::class);
 			$commentController = $this->container->get(CommentController::class);
 			$likesController = $this->container->get(LikesController::class);
+			$wallController = $this->container->get(WallController::class);
 
 			$actions['breezeStatus'] = [false, [$statusController, 'dispatch']];
 			$actions['breezeComment'] = [false, [$commentController, 'dispatch']];
-			$actions['breezeWall'] = [false, WallController::class . '::dispatch#'];
+			$actions['wall'] = [false, [$wallController, 'dispatch']];
 			$actions['breezeBuddy'] = [false, BuddyController::class . '::dispatch#'];
 			$actions['breezeLike'] = [false, [$likesController, 'dispatch']];
 		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {

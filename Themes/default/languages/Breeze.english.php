@@ -10,6 +10,7 @@ global $txt;
 
 // General strings
 $txt['Breeze_breeze_main_title'] = 'My wall';
+$txt['Breeze_generalWall'] = 'Wall';
 $txt['Breeze_general_wall_page'] = 'page';
 $txt['Breeze_general_summary'] = 'Summary';
 $txt['Breeze_load_more'] = 'Load more';
