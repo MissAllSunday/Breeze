@@ -11,6 +11,7 @@ export default function Wall (props: wallProps): React.ReactElement {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    console.log(props.wallType)
     getStatus(props.wallType)
       .then((response) => response.json())
       .then((statusList: statusListType) => {

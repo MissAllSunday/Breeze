@@ -12,7 +12,7 @@ function template_profile(): void
 	</div>';
 }
 
-function template_general(): void
+function template_wall(): void
 {
 	echo '
 	<div id="root" class="breeze_main_section" wallType="general">

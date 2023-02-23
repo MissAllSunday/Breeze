@@ -59,7 +59,7 @@ abstract class BaseController implements ControllerInterface
 	public function subActionCall(): void
 	{
 		$subActions = $this->getSubActions();
-		$subAction = $this->getRequest('sa', $this->getMainAction());
+		$subAction = $this->getRequest($this->getActionVarName(), $this->getMainAction());
 
 		if (in_array($subAction, $subActions)) {
 			$this->$subAction();
@@ -73,6 +73,11 @@ abstract class BaseController implements ControllerInterface
 		$this->render(!empty($templateName) ? $templateName : __FUNCTION__, [
 			'errorMessage' => $this->getText($errorTextKey),
 		]);
+	}
+
+	public function getActionVarName():string
+	{
+		return 'sa';
 	}
 
 	abstract public function getSubActions(): array;
