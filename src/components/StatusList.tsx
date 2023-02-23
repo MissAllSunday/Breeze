@@ -4,6 +4,8 @@ import React, { useCallback, useState } from 'react'
 import { deleteStatus, postStatus, ServerPostStatusResponse } from '../api/StatusApi'
 import Loading from './Loading'
 import Editor from './Editor'
+import Notice from './Notice'
+import smfTextVars from '../DataSource/Txt'
 
 function StatusList (props: StatusListProps): React.ReactElement {
   const [list, setList] = useState<statusListType>(props.statusList)
@@ -45,17 +47,22 @@ function StatusList (props: StatusListProps): React.ReactElement {
     <div>
       {isLoading
         ? <Loading />
-        : <Editor saveContent={createStatus} />
+        : <Editor saveContent={createStatus} />}
+      {
+        list.length === 0
+          ? <Notice
+            type={'desc'}
+            body={smfTextVars.general.noStatus} />
+          : <ul className="status">
+            {list.map((status: statusType) => (
+              <Status
+                key={status.id}
+                status={status}
+                removeStatus={removeStatus}
+              />
+            ))}
+          </ul>
       }
-    <ul className="status">
-      {list.map((status: statusType) => (
-        <Status
-          key={status.id}
-          status={status}
-          removeStatus={removeStatus}
-        />
-      ))}
-    </ul>
     </div>
   )
 }

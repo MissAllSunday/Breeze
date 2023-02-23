@@ -57,7 +57,7 @@ class StatusController extends ApiBaseController
 		$currentUserBuddies = $currentUserSettings[UserSettingsEntity::BUDDIES];
 
 		if (empty($currentUserBuddies)) {
-			$this->response->error('no status to show');
+			$this->response->success('', []);
 		}
 
 		try {

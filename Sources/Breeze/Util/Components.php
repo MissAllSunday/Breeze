@@ -105,6 +105,7 @@ class Components
 				'previewing' => $this->getText('general_previewing'),
 				'wrongValues' => $this->getText('error_wrong_values'),
 				'errorEmpty' => $this->getText('error_empty'),
+				'noStatus' => $this->getText('page_no_status'),
 			],
 			'tabs' => [
 				'wall' => $this->getText('tabs_wall'),
