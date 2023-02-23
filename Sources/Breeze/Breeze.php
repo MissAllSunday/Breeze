@@ -189,7 +189,6 @@ class Breeze
 
 		$menuReference = 'home';
 		$counter = 0;
-		$isWallEnable = $this->isEnable(SettingsEntity::MASTER);
 
 		foreach ($menu_buttons as $area => $dummy) {
 			$counter++;
@@ -203,20 +202,20 @@ class Breeze
 				'title' => $this->getText(UserSettingsEntity::GENERAL_WALL),
 				'icon' => 'smiley',
 				'href' => $scriptUrl . '?action=wall',
-				'show' => $isWallEnable &&
+				'show' =>
 					!$currentUserInfo['is_guest'] &&
 					!empty($currentUserSettings[UserSettingsEntity::GENERAL_WALL]),
 				'sub_buttons' => [
 					'noti' => [
 						'title' => $this->getText('user_notisettings_name'),
 						'href' => $scriptUrl . '?action=profile;area=alerts;sa=edit;u=' . $currentUserInfo['id'],
-						'show' => ($isWallEnable && !$currentUserInfo['is_guest']),
+						'show' => !$currentUserInfo['is_guest'],
 						'sub_buttons' => [],
 					],
 					'admin' => [
 						'title' => $this->getText('admin'),
 						'href' => $scriptUrl . '?action=admin;area=' . AdminServiceInterface::AREA,
-						'show' => ($isWallEnable && $currentUserInfo['is_admin']),
+						'show' => $currentUserInfo['is_admin'],
 						'sub_buttons' => [],
 					],
 				],
