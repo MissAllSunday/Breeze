@@ -1,11 +1,15 @@
 declare module 'breezeTypes' {
+
   interface noticeProps {
-    type: string
-    header: string
-    body: any
+    options: {
+      type: string
+      header: string
+      body: string
+    }
+    show: boolean
   }
 }
 
 module.exports = {
-  appProps
+  noticeProps
 }

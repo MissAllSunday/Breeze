@@ -36,7 +36,6 @@ return [
 	'controller.wall' => [
 		'class' => WallController::class,
 		'arguments' => [
-			UserRepository::class,
 			Response::class,
 			ProfileService::class,
 		],

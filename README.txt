@@ -38,12 +38,7 @@ Tested on PHP 5.3 and 5.4, Opera12, IE8 and whatever version Firefox was when I 
 
 [size=12pt][color=purple]This mod uses the following scripts[/color][/size]
 
-- [jQuery] (http://jquery.com/)
-- [needim noty jquery plugin] (http://needim.github.com/noty/)
-- [ichord Mentions autocomplete script] (http://ichord.github.com/At.js)
-- [Skype Component License](http://blogs.skype.com/2006/09/01/icons-and-strings)
-- [DOMPurify] (https://github.com/cure53/DOMPurify)
-
+- [React](https://reactjs.org)
 
 [size=12pt][color=purple]Changelog[/color][/size]
 

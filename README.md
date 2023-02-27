@@ -22,8 +22,6 @@ Breeze is powerful social mod for your SMF forum, it allows your users to turn t
 The mod uses the following scripts:
 
 - [React](https://reactjs.org)
-- [Axios](https://github.com/axios/axios)
-- [DOMPurify](https://github.com/cure53/DOMPurify)
 
 ##### Tests
 ```bash

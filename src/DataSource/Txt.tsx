@@ -1,8 +1,8 @@
 
 // @ts-expect-error
-const general: generalTextType = window.breezeTxtGeneral ?? Buffer.from(process.env.REACT_APP_DEV_TEXT, 'base64')
+const general: generalTextType = window.breezeTxtGeneral ?? process.env.REACT_APP_DEV_TEXT
 // @ts-expect-error
-const like: likeTextType = window.breezeTxtLike ?? Buffer.from(process.env.REACT_APP_DEV_TEXT_LIKE, 'base64')
+const like: likeTextType = window.breezeTxtLike ?? process.env.REACT_APP_DEV_TEXT_LIKE
 
 const smfTextVars = {
   general,

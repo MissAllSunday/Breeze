@@ -7,7 +7,6 @@ namespace Breeze\Controller\User;
 
 use Breeze\Controller\BaseController;
 use Breeze\Controller\ControllerInterface;
-use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Service\ProfileServiceInterface;
 use Breeze\Util\Error;
 use Breeze\Util\Response;
@@ -22,7 +21,6 @@ class WallController extends BaseController implements ControllerInterface
 	];
 
 	public function __construct(
-		protected UserRepositoryInterface $userRepository,
 		protected Response $response,
 		protected ProfileServiceInterface $profileService
 	) {
@@ -39,17 +37,22 @@ class WallController extends BaseController implements ControllerInterface
 
 	public function profile(): void
 	{
-		$userId = $this->getRequest('u', 0);
+		$profileId = $this->getRequest('u', 0);
 
-		if (empty($userId)) {
+		if (empty($profileId)) {
 			Error::show('no_valid_action');
 		}
 
-		$userSettings = $this->userRepository->getById($userId);
+		$profileSettings = $this->profileService->getUserSettings($profileId);
+		$currentUserInfo = $this->profileService->getCurrentUserInfo();
+
+		if (!$this->profileService->isAllowedToSeePage($profileSettings, $profileId, $currentUserInfo['id'])) {
+			Error::show('error_no_access');
+		}
 
 		$this->render(__FUNCTION__);
 
-		$this->profileService->loadComponents($userId);
+		$this->profileService->loadComponents($profileId);
 	}
 
 	public function getActionVarName():string

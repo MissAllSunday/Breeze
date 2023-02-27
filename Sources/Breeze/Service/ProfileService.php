@@ -173,9 +173,4 @@ class ProfileService implements ProfileServiceInterface
 
 		return false;
 	}
-
-	public function redirect(string $urlName): void
-	{
-		// TODO: Implement redirect() method.
-	}
 }
