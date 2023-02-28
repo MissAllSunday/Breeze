@@ -1,13 +1,31 @@
-import { statusType, StatusListProps, statusListType } from 'breezeTypes'
+import { statusType, StatusListProps, statusListType, noticeProps } from 'breezeTypes'
 import Status from './Status'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { deleteStatus, postStatus, ServerPostStatusResponse } from '../api/StatusApi'
 import Loading from './Loading'
 import Editor from './Editor'
+import smfTextVars from '../DataSource/Txt'
+import Notice from './Notice'
 
 function StatusList (props: StatusListProps): React.ReactElement {
   const [list, setList] = useState<statusListType>(props.statusList)
   const [isLoading, setIsLoading] = useState(false)
+  const [notice, setNotice] = useState<noticeProps>({
+    show: false,
+    options: {
+      type: 'noticebox',
+      header: '',
+      body: smfTextVars.general.noStatus
+    }
+  })
+
+  useEffect(() => {
+    if (props.statusList.length === 0) {
+      setNotice((prevNotice: noticeProps) => {
+        return { ...prevNotice, ...{ show: true } }
+      })
+    }
+  }, [props.statusList])
 
   const createStatus = useCallback((content: string) => {
     setIsLoading(true)
@@ -42,6 +60,9 @@ function StatusList (props: StatusListProps): React.ReactElement {
 
   return (
     <div>
+      {<Notice
+        options={notice.options}
+        show={notice.show}/>}
       {isLoading
         ? <Loading />
         : <Editor saveContent={createStatus} />}
