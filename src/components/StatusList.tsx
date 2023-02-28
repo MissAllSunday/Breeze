@@ -20,12 +20,10 @@ function StatusList (props: StatusListProps): React.ReactElement {
   })
 
   useEffect(() => {
-    if (props.statusList.length === 0) {
-      setNotice((prevNotice: noticeProps) => {
-        return { ...prevNotice, ...{ show: true } }
-      })
-    }
-  }, [props.statusList])
+    setNotice((prevNotice: noticeProps) => {
+      return { ...prevNotice, ...{ show: list.length === 0 } }
+    })
+  }, [list])
 
   const createStatus = useCallback((content: string) => {
     setIsLoading(true)
