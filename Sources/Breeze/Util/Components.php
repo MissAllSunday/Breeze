@@ -94,6 +94,11 @@ class Components
 		$components = array_merge(['general'], $components);
 
 		$componentVariables = [
+			'error' => [
+				'wrongValues' => $this->getText('error_wrong_values'),
+				'errorEmpty' => $this->getText('error_empty'),
+				'noStatus' => $this->getText('page_no_status'),
+			],
 			'general' => [
 				'save' => $this->getText('general_save'),
 				'delete' => $this->getText('general_delete'),
@@ -103,9 +108,6 @@ class Components
 				'send' => $this->getText('general_send'),
 				'preview' => $this->getText('general_preview'),
 				'previewing' => $this->getText('general_previewing'),
-				'wrongValues' => $this->getText('error_wrong_values'),
-				'errorEmpty' => $this->getText('error_empty'),
-				'noStatus' => $this->getText('page_no_status'),
 			],
 			'tabs' => [
 				'wall' => $this->getText('tabs_wall'),

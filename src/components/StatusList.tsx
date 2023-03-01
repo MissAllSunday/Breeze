@@ -1,38 +1,32 @@
-import { statusType, StatusListProps, statusListType, noticeProps } from 'breezeTypes'
+import { statusType, StatusListProps, statusListType } from 'breezeTypes'
 import Status from './Status'
 import React, { useCallback, useEffect, useState } from 'react'
 import { deleteStatus, postStatus, ServerPostStatusResponse } from '../api/StatusApi'
 import Loading from './Loading'
 import Editor from './Editor'
 import smfTextVars from '../DataSource/Txt'
-import Notice from './Notice'
+import toast from 'react-hot-toast'
 
 function StatusList (props: StatusListProps): React.ReactElement {
   const [list, setList] = useState<statusListType>(props.statusList)
   const [isLoading, setIsLoading] = useState(false)
-  const [notice, setNotice] = useState<noticeProps>({
-    show: false,
-    options: {
-      type: 'noticebox',
-      header: '',
-      body: smfTextVars.general.noStatus
-    }
-  })
 
   useEffect(() => {
-    setNotice((prevNotice: noticeProps) => {
-      return { ...prevNotice, ...{ show: list.length === 0 } }
-    })
+    if (list.length === 0) {
+      toast.error(smfTextVars.error.noStatus)
+    }
   }, [list])
 
   const createStatus = useCallback((content: string) => {
     setIsLoading(true)
     postStatus(content)
       .then((response: ServerPostStatusResponse) => {
+        toast.success(response.message)
         setList((prevList: statusListType) => {
           return [...prevList, ...Object.values(response.content)]
         })
       }).catch(exception => {
+        toast.error(exception.toString())
       }).finally(() => {
         setIsLoading(false)
       })
@@ -41,15 +35,13 @@ function StatusList (props: StatusListProps): React.ReactElement {
   const removeStatus = useCallback((status: statusType) => {
     setIsLoading(true)
     deleteStatus(status.id).then((response) => {
-      if (response.status !== 204) {
-        // Show some error message
-        return
-      }
-
-      setList((prevList: statusType[]) => prevList.filter((statusListItem: statusType) => {
-        return statusListItem.id !== status.id
-      }))
+      console.log(response)
+      toast.success(response.message)
+      // setList((prevList: statusType[]) => prevList.filter((statusListItem: statusType) => {
+      //   return statusListItem.id !== status.id
+      // }))
     }).catch(exception => {
+      toast.error(exception.toString())
     })
       .finally(() => {
         setIsLoading(false)
@@ -58,9 +50,6 @@ function StatusList (props: StatusListProps): React.ReactElement {
 
   return (
     <div>
-      {<Notice
-        options={notice.options}
-        show={notice.show}/>}
       {isLoading
         ? <Loading />
         : <Editor saveContent={createStatus} />}

@@ -39,7 +39,7 @@ class ProfileService implements ProfileServiceInterface
 		$this->components->loadUIVars([
 			'profileId' => $profileId,
 		]);
-		$this->components->loadTxtVarsFor(['general', 'mood', 'like']);
+		$this->components->loadTxtVarsFor(['general', 'error', 'like']);
 		$this->components->loadJavaScriptFile('breeze/main.' . Breeze::REACT_HASH . '.js', [
 			'external' => false,
 			'defer' => true,

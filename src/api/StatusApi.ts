@@ -2,8 +2,9 @@ import { baseUrl, baseConfig } from './Api'
 import { statusListType } from 'breezeTypes'
 import smfVars from '../DataSource/SMF'
 
-export interface ServerStatusResponse {
-  data: statusListType
+export interface ServerDeleteStatusResponse {
+  content: object
+  message: string
 }
 
 export interface ServerPostStatusResponse {
@@ -25,7 +26,7 @@ export const getStatus = async (type: string): Promise<statusListType> => {
   return getStatus
 }
 
-export const deleteStatus = async (statusId: number): Promise<Response> => {
+export const deleteStatus = async (statusId: number): Promise<ServerDeleteStatusResponse> => {
   const deleteStatus = await fetch(baseUrl(action, 'deleteStatus'), {
     method: 'POST',
     body: JSON.stringify(baseConfig({
@@ -34,7 +35,9 @@ export const deleteStatus = async (statusId: number): Promise<Response> => {
     }))
   })
 
-  return deleteStatus
+  return await deleteStatus.ok
+    ? await deleteStatus.json()
+    : await deleteStatus.json().then(errorResponse => { throw Error(errorResponse.message) })
 }
 
 export const postStatus = async (content: string): Promise<ServerPostStatusResponse> => {
@@ -47,5 +50,7 @@ export const postStatus = async (content: string): Promise<ServerPostStatusRespo
     }))
   })
 
-  return await postStatus.json()
+  return await postStatus.ok
+    ? await postStatus.json()
+    : await postStatus.json().then(errorResponse => { throw Error(errorResponse.message) })
 }

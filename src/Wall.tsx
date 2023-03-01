@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { statusType, statusListType, wallProps } from 'breezeTypes'
 import Loading from './components/Loading'
 import StatusList from './components/StatusList'
+import { Toaster } from 'react-hot-toast'
 
 export default function Wall (props: wallProps): React.ReactElement {
   const [list, setList] = useState<statusListType>([])
@@ -31,6 +32,7 @@ export default function Wall (props: wallProps): React.ReactElement {
   }, [props.wallType])
 
   return (<div>
+    <Toaster/>
     {isLoading
       ? <Loading/>
       : <StatusList
