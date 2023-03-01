@@ -4,6 +4,7 @@ import SmfVars from '../DataSource/SMF'
 
 export interface ServerLikeData {
   content: likeType
+  message: string
 }
 
 const action = 'breezeLike'
@@ -15,10 +16,12 @@ export const postLike = async (likeData: likeType): Promise<ServerLikeData> => {
     content_id: likeData.contentId
   }
 
-  const response = await fetch(baseUrl(action, 'like'), {
+  const like = await fetch(baseUrl(action, 'like'), {
     method: 'POST',
     body: JSON.stringify(baseConfig(params))
   })
 
-  return await response.json()
+  return await like.ok
+    ? await like.json()
+    : await like.json().then(errorResponse => { throw Error(errorResponse.message) })
 }

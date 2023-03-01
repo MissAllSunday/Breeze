@@ -41,6 +41,7 @@ function StatusList (props: StatusListProps): React.ReactElement {
       //   return statusListItem.id !== status.id
       // }))
     }).catch(exception => {
+      console.log(exception)
       toast.error(exception.toString())
     })
       .finally(() => {
