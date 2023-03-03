@@ -35,13 +35,11 @@ function StatusList (props: StatusListProps): React.ReactElement {
   const removeStatus = useCallback((status: statusType) => {
     setIsLoading(true)
     deleteStatus(status.id).then((response) => {
-      console.log(response)
       toast.success(response.message)
-      // setList((prevList: statusType[]) => prevList.filter((statusListItem: statusType) => {
-      //   return statusListItem.id !== status.id
-      // }))
+      setList((prevList: statusType[]) => prevList.filter((statusListItem: statusType) => {
+        return statusListItem.id !== status.id
+      }))
     }).catch(exception => {
-      console.log(exception)
       toast.error(exception.toString())
     })
       .finally(() => {

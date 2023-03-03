@@ -34,7 +34,7 @@ export const deleteStatus = async (statusId: number): Promise<ServerDeleteStatus
       userId: smfVars.userId
     }))
   })
-  console.log(deleteStatus)
+
   return await deleteStatus.ok
     ? await deleteStatus.json()
     : await deleteStatus.json().then(errorResponse => { throw Error(errorResponse) })

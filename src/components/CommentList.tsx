@@ -4,6 +4,7 @@ import { commentType, CommentListProps } from 'breezeTypes'
 import Loading from './Loading'
 import Editor from './Editor'
 import { deleteComment, postComment } from '../api/CommentApi'
+import toast from 'react-hot-toast'
 
 function CommentList (props: CommentListProps): React.ReactElement {
   const [isLoading, setIsLoading] = useState(false)
@@ -16,10 +17,13 @@ function CommentList (props: CommentListProps): React.ReactElement {
       statusID: props.statusId,
       body: content
     }).then((response) => {
+      toast.success(response.message)
       setList((prevList: commentType[]) => {
         return [...prevList, ...Object.values(response.content)]
       })
-    }).catch(() => {}).finally(() => {
+    }).catch(exception => {
+      toast.error(exception.toString())
+    }).finally(() => {
       setIsLoading(false)
     })
   }, [props.statusId])
@@ -27,14 +31,13 @@ function CommentList (props: CommentListProps): React.ReactElement {
   const removeComment = useCallback((comment: commentType) => {
     setIsLoading(true)
     deleteComment(comment.id).then((response) => {
-      if (response.status !== 204) {
-        return
-      }
+      toast.success(response.message)
 
       setList((prevList: commentType[]) => prevList.filter(function (commentListItem: commentType) {
         return commentListItem.id !== comment.id
       }))
     }).catch(exception => {
+      toast.error(exception.toString())
     }).finally(() => {
       setIsLoading(false)
     })

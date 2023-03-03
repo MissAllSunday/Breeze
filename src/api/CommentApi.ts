@@ -7,6 +7,11 @@ interface ServerCommentData {
   content: commentList
 }
 
+interface ServerDeleteComment {
+  message: string
+  content: object
+}
+
 const action = 'breezeComment'
 
 export const postComment = async (commentParams: object): Promise<ServerCommentData> => {
@@ -18,10 +23,12 @@ export const postComment = async (commentParams: object): Promise<ServerCommentD
     }))
   })
 
-  return await postComment.json()
+  return await postComment.ok
+    ? await postComment.json()
+    : await postComment.json().then(errorResponse => { throw Error(errorResponse.message) })
 }
 
-export const deleteComment = async (commentId: number): Promise<Response> => {
+export const deleteComment = async (commentId: number): Promise<ServerDeleteComment> => {
   const deleteComment = await fetch(baseUrl(action, 'deleteComment'), {
     method: 'POST',
     body: JSON.stringify(baseConfig({
@@ -30,5 +37,7 @@ export const deleteComment = async (commentId: number): Promise<Response> => {
     }))
   })
 
-  return deleteComment
+  return await deleteComment.ok
+    ? await deleteComment.json()
+    : await deleteComment.json().then(errorResponse => { throw Error(errorResponse) })
 }
