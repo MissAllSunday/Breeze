@@ -4,6 +4,7 @@ import Like from './Like'
 import UserInfo from './user/UserInfo'
 import { useState, useCallback } from 'react'
 import CommentList from './CommentList'
+import smfVars from '../DataSource/SMF'
 
 function Status (props: StatusProps): React.ReactElement {
   const [classType, setClassType] = useState(props.status.isNew ? 'fadeIn' : '')
@@ -20,6 +21,10 @@ function Status (props: StatusProps): React.ReactElement {
   })
 
   const removeStatus = useCallback(() => {
+    if (!confirm(smfVars.youSure)) {
+      return
+    }
+
     setClassType('fadeOut')
     props.removeStatus(props.status)
   }, [props])
