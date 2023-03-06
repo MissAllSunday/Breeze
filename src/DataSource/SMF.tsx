@@ -5,7 +5,7 @@ const session = {
   id: window.smf_session_id ?? process.env.REACT_APP_DEV_SESSION_ID
 }
 // @ts-expect-error
-const youSure = window.smf_you_sure ?? function () { return true }
+const youSure = window.smf_you_sure ?? ''
 // @ts-expect-error
 const ajaxIndicator = window.ajax_indicator ?? false
 // @ts-expect-error

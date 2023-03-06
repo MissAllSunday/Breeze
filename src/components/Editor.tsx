@@ -1,9 +1,14 @@
 import React, { useCallback, useState } from 'react'
+import smfVars from '../DataSource/SMF'
 
 const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: string) => void }) => {
   const [content, setContent] = useState('')
 
   const handleClick = useCallback(() => {
+    if (!confirm(smfVars.youSure)) {
+      return
+    }
+
     props.saveContent(content)
     const input = (document.getElementById('content') as HTMLInputElement)
     input.value = ''
