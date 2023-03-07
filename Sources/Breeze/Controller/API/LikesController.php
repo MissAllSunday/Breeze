@@ -14,11 +14,11 @@ use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 class LikesController extends ApiBaseController
 {
 	public const ACTION_LIKE = 'like';
-	public const ACTION_UNLIKE = 'unlike';
+	public const ACTION_INFO = 'info';
 
 	public const SUB_ACTIONS = [
 		self::ACTION_LIKE,
-		self::ACTION_UNLIKE,
+		self::ACTION_INFO,
 	];
 
 	public function __construct(
@@ -40,6 +40,18 @@ class LikesController extends ApiBaseController
 					$this->data[LikeEntity::ID_MEMBER]
 				)
 			);
+		} catch (InvalidDataException $invalidDataException) {
+			$this->response->error($invalidDataException->getMessage(), $invalidDataException->getResponseCode());
+		}
+	}
+
+	public function info(): void
+	{
+		try {
+			$this->response->success('', $this->likeRepository->getLikeInfo(
+				$this->data[LikeEntity::TYPE],
+				$this->data[LikeEntity::ID]
+			));
 		} catch (InvalidDataException $invalidDataException) {
 			$this->response->error($invalidDataException->getMessage(), $invalidDataException->getResponseCode());
 		}

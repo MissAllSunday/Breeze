@@ -19,9 +19,22 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		$this->likeModel = $likeModel;
 	}
 
-	public function getByContent(string $type, int $contentId): array
+	public function getLikeInfo(string $type, int $contentId): array
 	{
-		return $this->likeModel->getByContent($type, $contentId);
+		$likeInfo = [];
+		$likes = $this->likeModel->getByContent($type, $contentId);
+		$userIds = array_unique(array_filter($likes, function ($like) {
+			return $like[LikeEntity::ID_MEMBER];
+		}));
+
+		$usersInfo = $this->loadUsersInfo($userIds);
+
+		foreach ($likes as $key => $like) {
+			$likes[$key]['profile'] = $usersInfo[$like[LikeEntity::ID_MEMBER]];
+			$likes[$key]['timestamp'] = !empty($like[LikeEntity::TIME]) ? timeformat($like[LikeEntity::TIME]) : '';
+		}
+
+		return $likes;
 	}
 
 	public function isContentAlreadyLiked(string $type, int $contentId, int $userId): bool

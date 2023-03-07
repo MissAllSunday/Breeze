@@ -19,6 +19,11 @@ $smcFunc['htmlspecialchars'] = function ($value) {
 };
 
 // Mock functions
+function timeformat($string = ''): string
+{
+	return $string;
+}
+
 function comma_format(string $number): string
 {
 	global $txt;
