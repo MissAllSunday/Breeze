@@ -14,9 +14,19 @@ declare module 'breezeTypes' {
   interface LikeProps {
     item: likeType
   }
+  interface LikeInfoProps {
+    items: LikeInfoState[] | null
+  }
+
+  interface LikeInfoState {
+    profile: userDataType
+    timestamp: string
+  }
+
 }
 
 module.exports = {
   likeType,
-  LikeProps
+  LikeProps,
+  LikeInfoState
 }

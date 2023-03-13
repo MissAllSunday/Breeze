@@ -3,6 +3,13 @@
 	overflow: auto;
 }
 
+.hide {
+	display: none;
+}
+.show{
+	display: block;
+}
+
 .breeze_wall{
 
 }

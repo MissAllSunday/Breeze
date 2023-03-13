@@ -23,18 +23,14 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	{
 		$likeInfo = [];
 		$likes = $this->likeModel->getByContent($type, $contentId);
-		$userIds = array_unique(array_filter($likes, function ($like) {
-			return $like[LikeEntity::ID_MEMBER];
-		}));
-
-		$usersInfo = $this->loadUsersInfo($userIds);
+		$usersInfo = $this->loadUsersInfo(array_unique(array_column($likes, LikeEntity::ID_MEMBER)));
 
 		foreach ($likes as $key => $like) {
-			$likes[$key]['profile'] = $usersInfo[$like[LikeEntity::ID_MEMBER]];
-			$likes[$key]['timestamp'] = !empty($like[LikeEntity::TIME]) ? timeformat($like[LikeEntity::TIME]) : '';
+			$likeInfo[$key]['profile'] = $usersInfo[$like[LikeEntity::ID_MEMBER]];
+			$likeInfo[$key]['timestamp'] = !empty($like[LikeEntity::TIME]) ? timeformat($like[LikeEntity::TIME]) : '';
 		}
 
-		return $likes;
+		return $likeInfo;
 	}
 
 	public function isContentAlreadyLiked(string $type, int $contentId, int $userId): bool
