@@ -42,15 +42,18 @@ const LikeInfo: React.FunctionComponent<LikeInfoProps> = (props: LikeInfoProps) 
                  <span dangerouslySetInnerHTML={{ __html: likeInfo.profile.link_color }} />
                 <span className="description">{likeInfo.profile.group}</span>
               </span>
-            <span className="floatright like_time">{likeInfo.timestamp}</span>
+            <span className="floatright like_time" dangerouslySetInnerHTML={{ __html: likeInfo.timestamp }} />
           </li>
         ))}
       </ul>)
 
   const infoHeader = (String.fromCodePoint(128077) + ' ' + props.item.additionalInfo.text)
+  const infoText = props.item.count > 0
+    ? <span className="like_count smalltext pointer_cursor" onClick={handleInfo}>{props.item.additionalInfo.text}</span>
+    : props.item.additionalInfo.text
 
   return (<>
-      <span className="like_count smalltext pointer_cursor" onClick={handleInfo}>{props.item.additionalInfo.text}</span>
+    {infoText}
       <Modal
         onClose={onClose}
         show={showInfo}
