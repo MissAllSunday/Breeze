@@ -15,7 +15,7 @@ declare module 'breezeTypes' {
     item: likeType
   }
   interface LikeInfoProps {
-    items: LikeInfoState[] | null
+    item: likeType
   }
 
   interface LikeInfoState {

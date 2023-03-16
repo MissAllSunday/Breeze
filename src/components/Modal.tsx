@@ -1,26 +1,42 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { modalProps } from 'breezeTypes'
 import smfTextVars from '../DataSource/Txt'
 
-const Modal: React.FunctionComponent<modalProps> = ({ isShowing, header, body }: modalProps) => {
-  const [style, setStyle] = useState(isShowing ? 'hide' : 'show')
+const Modal: React.FunctionComponent<modalProps> = (props: modalProps) => {
+  const [style, setStyle] = useState(props.show ? 'show' : 'hide')
+
+  useEffect(() => {
+    setStyle(props.show ? 'show' : 'hide')
+  }, [props.show])
 
   const handleClose = useCallback(
     () => {
-      setStyle((prevStyle: string) => 'hide')
+      setStyle('hide')
+      props.onClose()
     },
-    []
+    [props]
+  )
+
+  const handleParentClick = useCallback(
+    (event: React.MouseEvent) => {
+      event.preventDefault()
+
+      if (event.target === event.currentTarget) {
+        handleClose()
+      }
+    },
+    [handleClose]
   )
 
   return (
-    <div id="smf_popup" className={'popup_container ' + style}>
+    <div id="smf_popup" className={'popup_container ' + style} onClick={handleParentClick}>
       <div className="popup_window description">
         <div className="catbg popup_heading">
-          {header}
-          <a onClick={handleClose} title={smfTextVars.general.close} >{String.fromCodePoint(10060)}</a>
+          {props.content.header}
+          <a className="main_icons hide_popup" onClick={handleClose} title={smfTextVars.general.close} />
         </div>
-        <div className="popup_content">
-          {body}
+        <div className="popup_content clear">
+          {props.content.body}
         </div>
       </div>
     </div>

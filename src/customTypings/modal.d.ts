@@ -1,8 +1,11 @@
 declare module 'breezeTypes' {
   interface modalProps {
-    isShowing: boolean
-    header: string
-    body: any
+    show: boolean
+    content: {
+      header: string | null
+      body: JSX | null
+    }
+    onClose: function
   }
 }
 
