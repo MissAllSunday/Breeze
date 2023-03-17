@@ -49,7 +49,9 @@ const LikeInfo: React.FunctionComponent<LikeInfoProps> = (props: LikeInfoProps) 
 
   const infoHeader = (String.fromCodePoint(128077) + ' ' + props.item.additionalInfo.text)
   const infoText = props.item.count > 0
-    ? <span className="like_count smalltext pointer_cursor" onClick={handleInfo}>{props.item.additionalInfo.text}</span>
+    ? <span className="like_count smalltext pointer_cursor" onClick={handleInfo}>
+        {props.item.additionalInfo.text}
+    </span>
     : props.item.additionalInfo.text
 
   return (<>
