@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Repository\User;
 
 use Breeze\Entity\OptionsEntity;
+use Breeze\Entity\UserSettingsEntity;
 use Breeze\Model\UserModelInterface;
 use Breeze\Repository\BaseRepository;
 use Breeze\Util\Json;
@@ -33,8 +34,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 	public function save(array $userSettings, $userId): bool
 	{
 		$toInsert = [];
+		$mergedValues = array_merge(UserSettingsEntity::getDefaultValues(), $userSettings);
 
-		foreach ($userSettings as $name => $value) {
+		foreach ($mergedValues as $name => $value) {
 			if (in_array($name, UserModelInterface::JSON_VALUES)) {
 				$value = !empty($value) ? Json::encode($value) : '';
 			}
