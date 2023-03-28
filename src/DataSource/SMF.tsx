@@ -18,6 +18,8 @@ const wallId = parseInt(window.breezeProfileId ?? process.env.REACT_APP_DEV_WALL
 const isCurrentUserOwner = Boolean(window.breezeIsCurrentUserOwner ?? process.env.REACT_APP_DEV_IS_CURRENT_USER_OWNER)
 // @ts-expect-error
 const smfImagesUrl: string = window.smf_images_url ?? process.env.REACT_APP_DEV_THEME_URL
+// @ts-expect-error
+const pagination: number = window.breezePagination ?? process.env.REACT_APP_DEV_THEME_URL
 
 const smfVars = {
   session,
@@ -27,7 +29,8 @@ const smfVars = {
   userId,
   wallId,
   isCurrentUserOwner,
-  smfImagesUrl
+  smfImagesUrl,
+  pagination
 }
 
 export default smfVars

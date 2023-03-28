@@ -18,6 +18,7 @@ declare module 'breezeTypes' {
 
   interface wallProps {
     wallType: string
+    pagination: number
   }
 }
 

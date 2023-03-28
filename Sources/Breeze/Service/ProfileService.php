@@ -36,8 +36,11 @@ class ProfileService implements ProfileServiceInterface
 
 	public function loadComponents(int $profileId = 0): void
 	{
+		$wallUserSettings = $this->userRepository->getById($profileId);
+
 		$this->components->loadUIVars([
 			'profileId' => $profileId,
+			'pagination' => $wallUserSettings[UserSettingsEntity::PAGINATION_NUM],
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like']);
 		$this->components->loadJavaScriptFile('breeze/main.' . Breeze::REACT_HASH . '.js', [

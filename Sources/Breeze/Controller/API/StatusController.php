@@ -19,12 +19,14 @@ class StatusController extends ApiBaseController
 	public const ACTION_GENERAL = 'general';
 	public const ACTION_DELETE = 'deleteStatus';
 	public const ACTION_POST = 'postStatus';
+	public const ACTION_TOTAL = 'total';
 
 	public const SUB_ACTIONS = [
 		self::ACTION_PROFILE,
 		self::ACTION_POST,
 		self::ACTION_DELETE,
 		self::ACTION_GENERAL,
+		self::ACTION_TOTAL,
 	];
 
 	public function __construct(
@@ -95,6 +97,20 @@ class StatusController extends ApiBaseController
 				$status,
 				Response::CREATED
 			);
+		} catch (InvalidStatusException $invalidStatusException) {
+			$this->response->error($invalidStatusException->getMessage());
+		}
+	}
+
+	public function total(): void
+	{
+		try {
+			$statusByProfile = $this->statusRepository->getByProfile(
+				[$this->data[StatusEntity::WALL_ID]],
+				$this->getRequest('start', 0)
+			);
+
+			$this->response->success('', $statusByProfile);
 		} catch (InvalidStatusException $invalidStatusException) {
 			$this->response->error($invalidStatusException->getMessage());
 		}
