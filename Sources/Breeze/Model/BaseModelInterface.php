@@ -21,7 +21,7 @@ interface BaseModelInterface
 
 	public function getColumns(): array;
 
-	public function getCount(): int;
+	public function getCount(array $queryParams = []): int;
 
 	public function getChunk(array $queryParams = []): array;
 }

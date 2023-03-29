@@ -48,6 +48,8 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			'ids' => $userProfiles,
 		]);
 
+		$status['total'] = $this->statusModel->getCount(['columName' => StatusEntity::ID, 'ids' => $userProfiles]);
+
 		if (empty($status['data'])) {
 			throw new DataNotFoundException('no_status');
 		}
@@ -62,7 +64,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			$status['data'][$statusId]['comments'] = $comments[$statusId] ?? [];
 		}
 
-		return $status['data'];
+		return $status;
 	}
 
 	/**
