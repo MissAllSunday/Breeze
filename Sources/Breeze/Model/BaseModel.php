@@ -112,12 +112,19 @@ abstract class BaseModel implements BaseModelInterface
 		return $items;
 	}
 
-	public function getCount(): int
+	public function getCount(array $queryParams = []): int
 	{
+		$whereString = '';
+
+		if (isset($queryParams['columnName']) && $this->isValidColumn($queryParams['columnName'])) {
+			$whereString = 'WHERE {raw:columnName} IN ({array_int:ids})';
+		}
+
 		$result = $this->dbClient->query(
 			'
 			SELECT {raw:columns}
-			FROM {db_prefix}{raw:tableName}',
+			FROM {db_prefix}{raw:tableName}
+			' . $whereString,
 			array_merge($this->getDefaultQueryParams(), [
 				'columns' => $this->getColumnId(),
 			])
