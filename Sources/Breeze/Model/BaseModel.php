@@ -115,7 +115,6 @@ abstract class BaseModel implements BaseModelInterface
 	public function getCount(array $queryParams = []): int
 	{
 		$whereString = '';
-
 		if (isset($queryParams['columnName']) && $this->isValidColumn($queryParams['columnName'])) {
 			$whereString = 'WHERE {raw:columnName} IN ({array_int:ids})';
 		}
@@ -127,7 +126,7 @@ abstract class BaseModel implements BaseModelInterface
 			' . $whereString,
 			array_merge($this->getDefaultQueryParams(), [
 				'columns' => $this->getColumnId(),
-			])
+			], $queryParams)
 		);
 
 		$rowCount = $this->dbClient->numRows($result);

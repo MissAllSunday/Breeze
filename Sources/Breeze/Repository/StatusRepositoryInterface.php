@@ -15,7 +15,7 @@ interface StatusRepositoryInterface extends BaseRepositoryInterface
 	/**
 	 * @throws InvalidStatusException
 	 */
-	public function getByProfile(array $userProfiles = [], int $start = 0): array;
+	public function getByProfile(array $userProfiles = [], int $start = 0, int $maxIndex = 0): array;
 
 	/**
 	 * @throws InvalidStatusException

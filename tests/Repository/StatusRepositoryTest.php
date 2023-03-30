@@ -155,23 +155,19 @@ class StatusRepositoryTest extends TestCase
 		array $likesInfo,
 		array $expectedResult,
 	): void {
-		$statusModel =  $this->prophesize(StatusModelInterface::class);
+		$statusModel =  $this->createMock(StatusModelInterface::class);
 		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
 		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
 
 		$statusRepository = new StatusRepository(
-			$statusModel->reveal(),
+			$statusModel,
 			$commentRepository->reveal(),
 			$likeRepository
 		);
 
-		$statusModel->getCount()->willReturn(1);
+		$statusModel->method('getCount')->willReturn(1);
 		$statusModel
-			->getStatusByProfile([
-				'start' => 0,
-				'maxIndex' => 1,
-				'ids' => $userProfiles,
-			])
+			->method('getStatusByProfile')
 			->willReturn($statusModelWillReturn);
 
 
@@ -199,6 +195,7 @@ class StatusRepositoryTest extends TestCase
 			'happy happy joy joy' => [
 				'userProfiles' => [1],
 				'statusModelWillReturn' => [
+					'total' => 1,
 					'usersIds' => [1,2,3],
 					'data' => [
 						1 => [
@@ -231,37 +228,41 @@ class StatusRepositoryTest extends TestCase
 					'additionalInfo' => '',
 				],
 				'expectedResult' => [
-					1 => [
-						'id' => 1,
-						'wallId' => 1,
-						'userId' => 1,
-						'createdAt' => 581299200,
-						'body' => 'status body',
-						'likes' => 0,
-						'comments' => [
-							1 => [
-								'id' => 1,
-								'statusId' => 1,
-								'userId' => 1,
-								'createdAt' => 581299200,
-								'body' => 'comment body',
-								'likes' => 0,
+					'total' => 1,
+					'usersIds' => [1,2,3],
+					'data' => [
+						1 => [
+							'id' => 1,
+							'wallId' => 1,
+							'userId' => 1,
+							'createdAt' => 581299200,
+							'body' => 'status body',
+							'likes' => 0,
+							'comments' => [
+								1 => [
+									'id' => 1,
+									'statusId' => 1,
+									'userId' => 1,
+									'createdAt' => 581299200,
+									'body' => 'comment body',
+									'likes' => 0,
+								],
 							],
-						],
-						'likesInfo' => [
-							'contentId' => 1,
-							'count' => 0,
-							'alreadyLiked' => false,
-							'type' => 'type',
-							'canLike' => false,
-							'additionalInfo' => '',
-						],
-						'userData' => [
-							'link' => 'Guest',
-							'name' => 'Guest',
-							'avatar' => ['href' => 'avatar_url/default.png'],
-						],
-					],],
+							'likesInfo' => [
+								'contentId' => 1,
+								'count' => 0,
+								'alreadyLiked' => false,
+								'type' => 'type',
+								'canLike' => false,
+								'additionalInfo' => '',
+							],
+							'userData' => [
+								'link' => 'Guest',
+								'name' => 'Guest',
+								'avatar' => ['href' => 'avatar_url/default.png'],
+							],
+						],],
+				],
 			],
 		];
 	}

@@ -40,15 +40,13 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	/**
 	 * @throws DataNotFoundException
 	 */
-	public function getByProfile(array $userProfiles = [], int $start = 0): array
+	public function getByProfile(array $userProfiles = [], int $start = 0, int $maxIndex = 0): array
 	{
 		$status = $this->statusModel->getStatusByProfile([
 			'start' => $start,
-			'maxIndex' => $this->statusModel->getCount(),
+			'maxIndex' => $maxIndex,
 			'ids' => $userProfiles,
 		]);
-
-		$status['total'] = $this->statusModel->getCount(['columName' => StatusEntity::ID, 'ids' => $userProfiles]);
 
 		if (empty($status['data'])) {
 			throw new DataNotFoundException('no_status');
@@ -58,6 +56,11 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		$status['data'] = $this->likeRepository->appendLikeData($status['data'], StatusEntity::ID);
 
 		$usersData = $this->loadUsersInfo(array_unique($status['usersIds']));
+		unset($status['usersIds']);
+
+		$status['total'] = $this->statusModel->getCount([
+			'columnName' => StatusEntity::WALL_ID,
+			'ids' => $userProfiles]);
 
 		foreach ($status['data'] as $statusId => $singleStatus) {
 			$status['data'][$statusId]['userData'] = $usersData[$singleStatus[StatusEntity::USER_ID]];
