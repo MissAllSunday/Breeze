@@ -42,12 +42,13 @@ class StatusController extends ApiBaseController
 	{
 		$wallUserSettings = $this->userRepository->getById($this->data[StatusEntity::WALL_ID]);
 		$wallUserPagination = $wallUserSettings[UserSettingsEntity::PAGINATION_NUM];
+		$start = $this->getRequest('start', 0);
 
 		try {
 			$statusByProfile = $this->statusRepository->getByProfile(
 				[$this->data[StatusEntity::WALL_ID]],
 				$this->getRequest('start', 0),
-				$wallUserPagination
+				!empty($start) ? ($wallUserPagination * $start) : $wallUserPagination
 			);
 
 			$this->response->success('', $statusByProfile);

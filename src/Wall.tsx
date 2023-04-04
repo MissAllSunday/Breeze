@@ -1,5 +1,5 @@
 import {
-  getStatus
+  getStatus, ServerGetStatusResponse
 } from './api/StatusApi'
 import React, { useEffect, useState } from 'react'
 import { statusType, statusListType, wallProps } from 'breezeTypes'
@@ -15,8 +15,8 @@ export default function Wall (props: wallProps): React.ReactElement {
     setIsLoading(true)
     getStatus(props.wallType)
       .then((response) => response.json())
-      .then((statusList: statusListType) => {
-        const newStatus: statusListType = Object.values(statusList.content)
+      .then((statusListResponse: ServerGetStatusResponse) => {
+        const newStatus: statusListType = Object.values(statusListResponse.content.data)
 
         setList(newStatus.map((status: statusType) => {
           status.comments = Object.values(status.comments)

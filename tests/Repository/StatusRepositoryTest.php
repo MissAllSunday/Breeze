@@ -229,7 +229,6 @@ class StatusRepositoryTest extends TestCase
 				],
 				'expectedResult' => [
 					'total' => 1,
-					'usersIds' => [1,2,3],
 					'data' => [
 						1 => [
 							'id' => 1,

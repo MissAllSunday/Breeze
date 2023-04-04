@@ -13,6 +13,11 @@ export interface ServerPostStatusResponse {
   type: string
 }
 
+export interface ServerGetStatusResponse {
+  content: { total: number, data: statusListType }
+  message: string
+}
+
 const action = 'breezeStatus'
 
 export const getStatus = async (type: string): Promise<statusListType> => {
