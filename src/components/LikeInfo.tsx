@@ -22,13 +22,19 @@ const LikeInfo: React.FunctionComponent<LikeInfoProps> = (props: LikeInfoProps) 
 
   const handleInfo = useCallback(
     () => {
+
+      if (info !== null) {
+        setShowInfo(true)
+        return
+      }
+
       getLikeInfo(props.item).then((response: ServerLikeInfoData) => {
         setInfo(response.content)
       }).catch(exception => {
         toast.error(exception.toString())
       })
     },
-    [props]
+    [props, info]
   )
 
   const infoBody = (
