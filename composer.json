@@ -14,7 +14,10 @@
         }
     ],
     "config": {
-        "vendor-dir": "breezeVendor"
+        "vendor-dir": "breezeVendor",
+        "allow-plugins": {
+            "php-http/discovery": false
+        }
     },
     "require": {
         "php": ">=8.1.0",
