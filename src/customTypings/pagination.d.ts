@@ -1,7 +1,7 @@
 declare module 'breezeTypes' {
   interface PaginationProps {
-    limit: number,
-    total: number,
+    limit: number
+    total: number
     onChange: function
   }
 }

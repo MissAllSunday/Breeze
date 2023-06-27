@@ -22,7 +22,6 @@ const LikeInfo: React.FunctionComponent<LikeInfoProps> = (props: LikeInfoProps) 
 
   const handleInfo = useCallback(
     () => {
-
       if (info !== null) {
         setShowInfo(true)
         return

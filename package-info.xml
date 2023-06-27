@@ -6,7 +6,7 @@
 	<version>2.0</version>
 	<type>modification</type>
 
-	<install for="2.1 RC3, 2.1 RC4, 2.1 - 2.1.99">
+	<install for="2.1 - 2.1.99">
 		<readme parsebbc="true">README.txt</readme>
 		<license type="inline" parsebbc="false">
 This Source Code Form is subject to the terms of the Mozilla Public
@@ -25,7 +25,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 		<redirect url="$scripturl?action=admin;area=breezeAdmin;sa=general" timeout="3000">redirect.txt</redirect>
 	</install>
 
-	<uninstall for="2.1 RC3, 2.1 RC4, 2.1 - 2.1.99">
+	<uninstall for="2.1 - 2.1.99">
 		<code>remove.php</code>
 		<database>install.php</database>
 		<remove-dir name="$sourcedir/Breeze" />
