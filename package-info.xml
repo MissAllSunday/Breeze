@@ -21,7 +21,13 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 		<require-dir name="breezeVendor" destination="$boarddir">Dependencies files</require-dir>
 		<require-dir name="Sources/Breeze" destination="$sourcedir">Source files</require-dir>
 		<require-dir name="tasks" destination="$sourcedir">Notification tasks</require-dir>
-		<code>hooks.php</code>
+		<hook hook="integrate_pre_include" file="$boarddir/breezeVendor/autoload.php"  />
+		<hook hook="integrate_menu_buttons" function="\Breeze\Breeze::menu#"  />
+		<hook hook="integrate_actions" function="\Breeze\Breeze::actions#"  />
+		<hook hook="integrate_load_permissions" function="\Breeze\Breeze::permissionsWrapper#"  />
+		<hook hook="integrate_admin_areas" function="\Breeze\Breeze::adminMenuWrapper#"  />
+		<hook hook="integrate_profile_popup" function="\Breeze\Breeze::profilePopUpWrapper#"  />
+		<hook hook="integrate_pre_profile_areas" function="\Breeze\Breeze::profileMenuWrapper#"  />
 		<redirect url="$scripturl?action=admin;area=breezeAdmin;sa=general" timeout="3000">redirect.txt</redirect>
 	</install>
 
