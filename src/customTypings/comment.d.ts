@@ -13,6 +13,11 @@ declare module 'breezeTypes' {
 
   type commentList = Map<commentType>
 
+  interface commentReducerData {
+    type: string
+    comment: commentType
+  }
+
   interface newCommentProps {
     content: string
     status: statusType

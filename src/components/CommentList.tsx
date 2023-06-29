@@ -1,14 +1,15 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useReducer, useState } from 'react'
 import Comment from './Comment'
 import { commentType, CommentListProps } from 'breezeTypes'
 import Loading from './Loading'
 import Editor from './Editor'
 import { deleteComment, postComment } from '../api/CommentApi'
 import toast from 'react-hot-toast'
+import commentsReducer from '../reducers/comments'
 
 function CommentList (props: CommentListProps): React.ReactElement {
   const [isLoading, setIsLoading] = useState(false)
-  const [list, setList] = useState(props.commentList)
+  const [commentListState, dispatch] = useReducer(commentsReducer, props.commentList)
 
   const createComment = useCallback((content: string) => {
     setIsLoading(true)
@@ -17,10 +18,12 @@ function CommentList (props: CommentListProps): React.ReactElement {
       statusID: props.statusId,
       body: content
     }).then((response) => {
-      toast.success(response.message)
-      setList((prevList: commentType[]) => {
-        return [...prevList, ...Object.values(response.content)]
+      const commentKeys = Object.keys(response.content)
+      commentKeys.map((value, index) => {
+        return dispatch({ type: 'create', comment: response.content[value] })
       })
+
+      toast.success(response.message)
     }).catch(exception => {
       toast.error(exception.toString())
     }).finally(() => {
@@ -33,9 +36,7 @@ function CommentList (props: CommentListProps): React.ReactElement {
     deleteComment(comment.id).then((response) => {
       toast.success(response.message)
 
-      setList((prevList: commentType[]) => prevList.filter(function (commentListItem: commentType) {
-        return commentListItem.id !== comment.id
-      }))
+      dispatch({ type: 'delete', comment })
     }).catch(exception => {
       toast.error(exception.toString())
     }).finally(() => {
@@ -51,7 +52,7 @@ function CommentList (props: CommentListProps): React.ReactElement {
         : <Editor saveContent={createComment} />}
     </div>
   <ul className="status">
-    {list.map((comment: commentType) => (
+    {commentListState.map((comment: commentType) => (
       <Comment
         key={comment.id}
         comment={comment}

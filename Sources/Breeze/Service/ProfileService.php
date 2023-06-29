@@ -43,7 +43,7 @@ class ProfileService implements ProfileServiceInterface
 			'pagination' => $wallUserSettings[UserSettingsEntity::PAGINATION_NUM],
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like']);
-		$this->components->loadJavaScriptFile('breeze/main.' . Breeze::REACT_HASH . '.js', [
+		$this->components->loadJavaScriptFile('breezeComponents/main.' . Breeze::REACT_HASH . '.js', [
 			'external' => false,
 			'defer' => true,
 		], strtolower(Breeze::PATTERN . Breeze::REACT_HASH));
