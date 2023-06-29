@@ -18,7 +18,7 @@ if (file_exists(dirname(__FILE__) . '/SSI.php') && !defined('SMF')) {
 		'integrate_admin_areas' => '\Breeze\Breeze::adminMenuWrapper#',
 		'integrate_pre_profile_areas' => '\Breeze\Breeze::profileMenuWrapper#',
 		// 'integrate_fetch_alerts' => '\Breeze\Breeze::alerts#',
-		'integrate_alert_types' => '\Breeze\Breeze::alertsPrefWrapper#',
+		// 'integrate_alert_types' => '\Breeze\Breeze::alertsPrefWrapper#',
 		'integrate_profile_popup' => '\Breeze\Breeze::profilePopUpWrapper#',
 	];
 

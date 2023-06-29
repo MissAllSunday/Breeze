@@ -27,20 +27,12 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 	<uninstall for="2.1 - 2.1.99">
 		<hook hook="integrate_pre_include" file="$boarddir/breezeVendor/autoload.php"  reverse="true" />
-		<hook hook="integrate_autoload" function="\Breeze\Breeze::autoLoad#"  reverse="true" />
 		<hook hook="integrate_menu_buttons" function="\Breeze\Breeze::menu#"  reverse="true" />
 		<hook hook="integrate_actions" function="\Breeze\Breeze::actions#"  reverse="true" />
-		<hook hook="integrate_load_permissions" function="\Breeze\Breeze::permissions#"  reverse="true" />
-		<hook hook="integrate_admin_areas" function="\Breeze\Breeze::admin#"  reverse="true" />
-		<hook hook="integrate_pre_profile_areas" function="\Breeze\Breeze::profile#"  reverse="true" />
-		<hook hook="integrate_valid_likes" function="\Breeze\Breeze::likes#"  reverse="true" />
-		<hook hook="integrate_find_like_author" function="\Breeze\Breeze::handleLikes#"  reverse="true" />
-		<hook hook="integrate_member_context" function="\Breeze\Breeze::mood#"  reverse="true" />
-		<hook hook="integrate_load_custom_profile_fields" function="\Breeze\Breeze::moodProfile#"  reverse="true" />
-		<hook hook="integrate_fetch_alerts" function="\Breeze\Breeze::alerts#"  reverse="true" />
-		<hook hook="integrate_alert_types" function="\Breeze\Breeze::alertsPref#"  reverse="true" />
-		<hook hook="integrate_pre_load" function="\Breeze\Breeze::trackHooks#"  reverse="true" />
-		<hook hook="integrate_profile_popup" function="\Breeze\Breeze::profilePopUp#"  reverse="true" />
+		<hook hook="integrate_load_permissions" function="\Breeze\Breeze::permissionsWrapper#"  reverse="true" />
+		<hook hook="integrate_admin_areas" function="\Breeze\Breeze::adminMenuWrapper#"  reverse="true" />
+		<hook hook="integrate_profile_popup" function="\Breeze\Breeze::profilePopUpWrapper#"  reverse="true" />
+		<hook hook="integrate_pre_profile_areas" function="\Breeze\Breeze::profileMenuWrapper#"  reverse="true" />
 		<database>install.php</database>
 		<remove-dir name="$sourcedir/Breeze" />
 		<remove-dir name="$boarddir/breezeVendor" />
