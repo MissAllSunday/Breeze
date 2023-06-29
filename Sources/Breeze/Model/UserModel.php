@@ -91,7 +91,7 @@ class UserModel extends BaseModel implements UserModelInterface
 
 		while ($row = $this->dbClient->fetchAssoc($result)) {
 			$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = is_numeric($row[OptionsEntity::COLUMN_VALUE]) ?
-				(int)$row[OptionsEntity::COLUMN_VALUE] : (string)$row[OptionsEntity::COLUMN_VALUE];
+				(int) $row[OptionsEntity::COLUMN_VALUE] : (string) $row[OptionsEntity::COLUMN_VALUE];
 
 			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::JSON_VALUES)) {
 				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = !empty($row[OptionsEntity::COLUMN_VALUE]) ?
@@ -113,7 +113,7 @@ class UserModel extends BaseModel implements UserModelInterface
 
 		$this->dbClient->freeResult($result);
 
-		return $userData;
+		return array_merge(UserSettingsEntity::getDefaultValues(), $userData);
 	}
 
 	public function wannaSeeBoards(): array
