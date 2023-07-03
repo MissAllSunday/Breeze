@@ -1,30 +1,32 @@
-import { statusType, StatusListProps, statusListType } from 'breezeTypes'
+import { statusType, StatusListProps } from 'breezeTypes'
 import Status from './Status'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useReducer, useState } from 'react'
 import { deleteStatus, postStatus, ServerPostStatusResponse } from '../api/StatusApi'
 import Loading from './Loading'
 import Editor from './Editor'
 import smfTextVars from '../DataSource/Txt'
 import toast from 'react-hot-toast'
+import statusReducer from '../reducers/status'
 
-function StatusList (props: StatusListProps): React.ReactElement {
-  const [list, setList] = useState<statusListType>(props.statusList)
+function StatusstatusListState (props: StatusListProps): React.ReactElement {
+  const [statusListState, dispatch] = useReducer(statusReducer, props.statusList)
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    if (list.length === 0) {
+    if (statusListState.length === 0) {
       toast.error(smfTextVars.error.noStatus)
     }
-  }, [list])
+  }, [statusListState])
 
   const createStatus = useCallback((content: string) => {
     setIsLoading(true)
     postStatus(content)
       .then((response: ServerPostStatusResponse) => {
-        toast.success(response.message)
-        setList((prevList: statusListType) => {
-          return [...prevList, ...Object.values(response.content)]
+        const statusKeys = Object.keys(response.content)
+        statusKeys.map((value, index) => {
+          return dispatch({ type: 'create', status: response.content[value] })
         })
+        toast.success(response.message)
       }).catch(exception => {
         toast.error(exception.toString())
       }).finally(() => {
@@ -35,10 +37,8 @@ function StatusList (props: StatusListProps): React.ReactElement {
   const removeStatus = useCallback((status: statusType) => {
     setIsLoading(true)
     deleteStatus(status.id).then((response) => {
+      dispatch({ type: 'delete', status })
       toast.success(response.message)
-      setList((prevList: statusType[]) => prevList.filter((statusListItem: statusType) => {
-        return statusListItem.id !== status.id
-      }))
     }).catch(exception => {
       toast.error(exception.toString())
     })
@@ -53,7 +53,7 @@ function StatusList (props: StatusListProps): React.ReactElement {
         ? <Loading />
         : <Editor saveContent={createStatus} />}
       <ul className="status">
-        {list.map((status: statusType) => (
+        {statusListState.map((status: statusType) => (
           <Status
             key={status.id}
             status={status}
@@ -65,4 +65,4 @@ function StatusList (props: StatusListProps): React.ReactElement {
   )
 }
 
-export default React.memo(StatusList)
+export default React.memo(StatusstatusListState)

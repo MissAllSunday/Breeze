@@ -12,6 +12,11 @@ declare module 'breezeTypes' {
     isNew: boolean
   }
 
+  interface statusReducerData {
+    type: string
+    status: statusType
+  }
+
   type statusListType = Map<statusType>
 
   interface StatusListProps {
