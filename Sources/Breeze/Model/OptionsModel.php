@@ -11,7 +11,7 @@ use Breeze\Util\Json;
 
 class OptionsModel extends BaseModel implements OptionsModelInterface
 {
-	public const SAVED_AS_JSON = ['moodHistory'];
+	public const SAVED_AS_JSON = [];
 
 	public function insert(array $data = [], int $userId = 0): int
 	{

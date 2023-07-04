@@ -8,18 +8,11 @@ namespace Breeze\Config\Mapper;
 use Breeze\Repository\CommentRepository;
 use Breeze\Repository\LikeRepository;
 use Breeze\Repository\StatusRepository;
-use Breeze\Repository\User\MoodRepository;
 use Breeze\Util\Validate\Validations\Comment\DeleteComment;
 use Breeze\Util\Validate\Validations\Comment\PostComment;
 use Breeze\Util\Validate\Validations\Comment\ValidateComment;
 use Breeze\Util\Validate\Validations\Likes\Like;
 use Breeze\Util\Validate\Validations\Likes\ValidateLikes;
-use Breeze\Util\Validate\Validations\Mood\DeleteMood;
-use Breeze\Util\Validate\Validations\Mood\GetActiveMoods;
-use Breeze\Util\Validate\Validations\Mood\GetAllMoods;
-use Breeze\Util\Validate\Validations\Mood\PostMood;
-use Breeze\Util\Validate\Validations\Mood\SetUserMood;
-use Breeze\Util\Validate\Validations\Mood\ValidateMood;
 use Breeze\Util\Validate\Validations\Status\DeleteStatus;
 use Breeze\Util\Validate\Validations\Status\PostStatus;
 use Breeze\Util\Validate\Validations\Status\StatusByProfile;
@@ -50,36 +43,6 @@ return [
 	'validations.likes.like' => [
 		'class' => Like::class,
 		'arguments' => [Data::class, User::class, Allow::class, LikeRepository::class],
-	],
-	'validations.mood.validateMood' => [
-		'class' => ValidateMood::class,
-		'arguments' => [
-			DeleteMood::class,
-			GetActiveMoods::class,
-			GetAllMoods::class,
-			PostMood::class,
-			SetUserMood::class,
-		],
-	],
-	'validations.mood.deleteMood' => [
-		'class' => DeleteMood::class,
-		'arguments' => [Data::class, User::class, Allow::class, MoodRepository::class],
-	],
-	'validations.mood.getActive' => [
-		'class' => GetActiveMoods::class,
-		'arguments' => [Data::class, User::class, Allow::class, MoodRepository::class],
-	],
-	'validations.mood.getAll' => [
-		'class' => GetAllMoods::class,
-		'arguments' => [Data::class, User::class, Allow::class, MoodRepository::class],
-	],
-	'validations.mood.postMood' => [
-		'class' => PostMood::class,
-		'arguments' => [Data::class, User::class, Allow::class, MoodRepository::class],
-	],
-	'validations.mood.setUp' => [
-		'class' => SetUserMood::class,
-		'arguments' => [Data::class, User::class, Allow::class, MoodRepository::class],
 	],
 	'validations.user.validate' => [
 		'class' => ValidateUser::class,

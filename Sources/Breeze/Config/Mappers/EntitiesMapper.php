@@ -9,7 +9,6 @@ use Breeze\Entity\CommentEntity;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LogEntity;
 use Breeze\Entity\MemberEntity;
-use Breeze\Entity\MoodEntity;
 use Breeze\Entity\NotificationEntity;
 use Breeze\Entity\OptionsEntity;
 use Breeze\Entity\StatusEntity;
@@ -29,9 +28,6 @@ return [
 	],
 	'entity.member' => [
 		'class' => MemberEntity::class,
-	],
-	'entity.mood' => [
-		'class' => MoodEntity::class,
 	],
 	'entity.notification' => [
 		'class' => NotificationEntity::class,

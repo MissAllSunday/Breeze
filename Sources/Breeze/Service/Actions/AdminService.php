@@ -30,10 +30,6 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 		$this->setLanguage(Breeze::NAME . self::IDENTIFIER);
 		$this->setTemplate(Breeze::NAME . self::IDENTIFIER);
 
-		if (!$this->isEnable(SettingsEntity::ENABLE_MOOD)) {
-			$subActions = array_diff($subActions, ['moodList']);
-		}
-
 		loadGeneralSettingParameters(array_combine($subActions, $subActions), 'main');
 
 		$tabs = [];

@@ -15,7 +15,6 @@ use Breeze\Controller\User\WallController;
 use Breeze\Repository\CommentRepository;
 use Breeze\Repository\LikeRepository;
 use Breeze\Repository\StatusRepository;
-use Breeze\Repository\User\MoodRepository;
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminService;
 use Breeze\Service\ProfileService;
@@ -30,7 +29,6 @@ return [
 		'class' => AdminController::class,
 		'arguments' => [
 			AdminService::class,
-			MoodRepository::class,
 		],
 	],
 	'controller.wall' => [

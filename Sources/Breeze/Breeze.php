@@ -43,7 +43,6 @@ class Breeze
 		'breezeComment',
 		'wall',
 		'breezeBuddy',
-		'breezeMood',
 		'breezeLike',
 	];
 

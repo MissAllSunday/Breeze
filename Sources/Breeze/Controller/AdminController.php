@@ -6,7 +6,6 @@ namespace Breeze\Controller;
 
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
-use Breeze\Repository\User\MoodRepositoryInterface;
 use Breeze\Service\Actions\AdminServiceInterface;
 use Breeze\Traits\PersistenceTrait;
 
@@ -17,20 +16,17 @@ class AdminController extends BaseController implements ControllerInterface
 	public const ACTION_MAIN = 'main';
 	public const ACTION_SETTINGS = 'settings';
 	public const ACTION_PERMISSIONS = 'permissions';
-	public const ACTION_MOOD_LIST = 'moodList';
 	public const ACTION_DONATE = 'donate';
 
 	public const SUB_ACTIONS = [
 		self::ACTION_MAIN,
 		self::ACTION_SETTINGS,
 		self::ACTION_PERMISSIONS,
-		self::ACTION_MOOD_LIST,
 		self::ACTION_DONATE,
 	];
 
 	public function __construct(
-		protected AdminServiceInterface $adminService,
-		protected MoodRepositoryInterface  $moodRepository
+		protected AdminServiceInterface $adminService
 	) {
 	}
 
@@ -82,18 +78,6 @@ class AdminController extends BaseController implements ControllerInterface
 
 	public function donate(): void
 	{
-		$this->render(__FUNCTION__);
-	}
-
-	public function moodList(): void
-	{
-		$this->adminService->isEnableFeature(
-			SettingsEntity::ENABLE_MOOD,
-			AdminServiceInterface::POST_URL . 'main'
-		);
-
-		$this->moodRepository->getAllMoods();
-
 		$this->render(__FUNCTION__);
 	}
 

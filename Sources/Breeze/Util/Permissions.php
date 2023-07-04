@@ -8,25 +8,14 @@ namespace Breeze\Util;
 class Permissions
 {
 	public const ADMIN_FORUM = 'admin_forum';
-
 	public const DELETE_COMMENTS = 'deleteComments';
-
 	public const DELETE_OWN_COMMENTS = 'deleteOwnComments';
-
 	public const DELETE_PROFILE_COMMENTS = 'deleteProfileComments';
-
 	public const DELETE_STATUS = 'deleteStatus';
-
 	public const DELETE_OWN_STATUS = 'deleteOwnStatus';
-
 	public const DELETE_PROFILE_STATUS = 'deleteProfileStatus';
-
 	public const POST_STATUS = 'postStatus';
-
 	public const POST_COMMENTS = 'postComments';
-
-	public const USE_MOOD = 'useMood';
-
 	public const LIKES_LIKE = 'likes_like';
 
 	public const ALL_PERMISSIONS = [
@@ -39,7 +28,6 @@ class Permissions
 		self::DELETE_PROFILE_STATUS,
 		self::POST_STATUS,
 		self::POST_COMMENTS,
-		self::USE_MOOD,
 	];
 
 	public static function isNotGuest(string $errorTextKey): void

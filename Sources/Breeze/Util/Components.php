@@ -14,25 +14,7 @@ class Components
 
 	private const FOLDER = 'breezeComponents/';
 
-	private const COMPONENTS = [
-		//      'breeze-wall',
-		//		'contentSection',
-		//		'utils',
-		//		'like',
-		//		'setMood',
-		//		'moodForm',
-		//		'modal',
-		//		'feed',
-		//		'adminMain',
-		//		'status',
-		//		'comment',
-		//		'tabs',
-		//		'editor',
-		//		'wallMain',
-		//		'moodAdmin',
-		//		'moodListAdmin',
-		//		'textArea',
-	];
+	private const COMPONENTS = [];
 
 	private const CDN_JS = [
 		'react' => 'https://unpkg.com/react@' . Breeze::REACT_VERSION . '/umd/react.production.min.js',
@@ -113,20 +95,6 @@ class Components
 				'wall' => $this->getText('tabs_wall'),
 				'about' => $this->getText('tabs_about'),
 				'activity' => $this->getText('tabs_activity'),
-			],
-			'mood' => [
-				'emoji' => $this->getText('mood_emoji'),
-				'description' => $this->getText('mood_description'),
-				'enable' => $this->getText('mood_enable'),
-				'invalidEmoji' => $this->getText('error_invalidEmoji'),
-				'emptyEmoji' => $this->getText('error_emptyEmoji'),
-				'moodChange' => $this->getText('moodChange'),
-				'newMood' => $this->getText('mood_createNewMood'),
-				'sameMood' => $this->getText('error_sameMood'),
-				'defaultLabel' => $this->getSetting(
-					SettingsEntity::MOOD_LABEL,
-					$this->getText(SettingsEntity::MOOD_DEFAULT)
-				),
 			],
 			'like' => [
 				'like' => $this->getSmfText('like'),

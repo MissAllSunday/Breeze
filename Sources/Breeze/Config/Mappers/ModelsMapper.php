@@ -10,16 +10,11 @@ use Breeze\Model\CommentModel;
 use Breeze\Model\LikeModel;
 use Breeze\Model\LogModel;
 use Breeze\Model\MentionModel;
-use Breeze\Model\MoodModel;
 use Breeze\Model\NotificationModel;
 use Breeze\Model\StatusModel;
 use Breeze\Model\UserModel;
 
 return [
-	'model.mood' => [
-		'class' => MoodModel::class,
-		'arguments' => [DatabaseClient::class],
-	],
 	'model.alert' => [
 		'class' => AlertModel::class,
 		'arguments' => [DatabaseClient::class],
