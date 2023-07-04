@@ -4,7 +4,8 @@ The software is being license under [MPL 2.0 license](https://www.mozilla.org/MP
 
 ###### What is Breeze:
 
-Breeze is powerful social mod for your SMF forum, it allows your users to turn their profile pages into a dynamic wall where they can publish new status and comment on other user's status.
+Breeze is a social mod for your users. It enables a dynamic wall where they can post status and comments.
+Comes with the following features:
 
 ###### Requirements:
 
@@ -30,7 +31,7 @@ composer test
 
 ##### Generate an optimized SMF package
 ```bash
-composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --no-suggest --optimize-autoloader &&
+composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader &&
 zip -r Breeze breezeVendor/ Sources/ Themes/ tasks/ hooks.php install.php License package-info.xml README.txt remove.php
 ```
 

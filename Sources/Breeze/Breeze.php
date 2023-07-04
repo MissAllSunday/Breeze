@@ -296,7 +296,7 @@ class Breeze
 				'name' => 'Developer(s)',
 				'users' => [
 					'suki' => [
-						'name' => 'Michel Mendiola',
+						'name' => 'Breeze © ' . date('Y') . ' Michel Mendiola',
 						'site' => 'https://missallsunday.com',
 					],
 				],
@@ -307,10 +307,6 @@ class Breeze
 					'React' => [
 						'name' => 'React',
 						'site' => 'https://reactjs.org',
-					],
-					'DOMPurify' => [
-						'name' => 'DOMPurify',
-						'site' => 'https://github.com/cure53/DOMPurify',
 					],
 				],
 			],

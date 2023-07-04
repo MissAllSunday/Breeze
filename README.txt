@@ -6,18 +6,16 @@ Created by [url=https://missallsunday.com]Suki[/url]
 
 [size=12pt][color=purple]Introduction[/color][/size]
 
-Breeze is a social mod for your users to turn their dull profile into a dynamic wall where they can post status and comments. Comes with the following features:
+Breeze is a social mod for your users. It enables a dynamic wall where they can post status and comments.
+ Comes with the following features:
 
 - No file edits, works with all themes.
 - Users individual settings, each user defines her/his own settings.
 - Mentions for status and comments.
 - Notifications for several features.
 - Alerts for status and mentions.
-- My mood feature.
-- Cover upload to their wall.
 - General wall page for displaying your buddies latest activity.
 - Couple of blocks for showing your buddies, visitors, latest activity and about me block.
-- Works with or without JavaScript.
 
 
 [size=12pt][color=purple]Supported Languages[/color][/size]
