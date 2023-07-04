@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Breeze\Util;
 
 use Breeze\Breeze;
-use Breeze\Entity\SettingsEntity;
 use Breeze\Traits\TextTrait;
 
 class Components

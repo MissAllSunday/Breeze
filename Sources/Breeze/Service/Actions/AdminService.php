@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace Breeze\Service\Actions;
 
 use Breeze\Breeze;
-use Breeze\Entity\SettingsEntity;
 use Breeze\Service\PermissionsService;
 use Breeze\Util\Form\SettingsBuilderInterface;
 use Breeze\Util\Permissions;

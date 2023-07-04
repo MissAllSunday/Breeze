@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Breeze\Controller;
 
 use Breeze\Breeze;
-use Breeze\Entity\SettingsEntity;
 use Breeze\Service\Actions\AdminServiceInterface;
 use Breeze\Traits\PersistenceTrait;
 
