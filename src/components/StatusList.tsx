@@ -22,10 +22,7 @@ function StatusstatusListState (props: StatusListProps): React.ReactElement {
     setIsLoading(true)
     postStatus(content)
       .then((response: ServerPostStatusResponse) => {
-        const statusKeys = Object.keys(response.content)
-        statusKeys.map((value, index) => {
-          return dispatch({ type: 'create', status: response.content[value] })
-        })
+        dispatch({ type: 'create', status: response.content })
         toast.success(response.message)
       }).catch(exception => {
         toast.error(exception.toString())

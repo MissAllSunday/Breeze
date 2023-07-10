@@ -14,7 +14,7 @@ declare module 'breezeTypes' {
 
   interface statusReducerData {
     type: string
-    status: statusType
+    status: statusListType
   }
 
   type statusListType = Map<statusType>

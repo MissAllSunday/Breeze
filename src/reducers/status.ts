@@ -5,7 +5,7 @@ export default function statusReducer (statusListState: statusListType, action: 
 
   switch (action.type) {
     case 'create': {
-      newState = [...statusListState, action.status]
+      newState = new Map([...statusListState, ...action.status])
       break
     }
     case 'delete': {

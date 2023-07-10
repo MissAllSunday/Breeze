@@ -1,14 +1,15 @@
 import {
   getStatus, ServerGetStatusResponse
 } from './api/StatusApi'
-import React, { useEffect, useState } from 'react'
-import { statusType, statusListType, wallProps } from 'breezeTypes'
+import React, { useEffect, useReducer, useState } from 'react'
+import { wallProps } from 'breezeTypes'
 import Loading from './components/Loading'
 import StatusList from './components/StatusList'
 import { Toaster } from 'react-hot-toast'
+import statusReducer from './reducers/status'
 
 export default function Wall (props: wallProps): React.ReactElement {
-  const [list, setList] = useState<statusListType>([])
+  const [statusListState, dispatch] = useReducer(statusReducer, [])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -16,13 +17,7 @@ export default function Wall (props: wallProps): React.ReactElement {
     getStatus(props.wallType)
       .then((response) => response.json())
       .then((statusListResponse: ServerGetStatusResponse) => {
-        const newStatus: statusListType = Object.values(statusListResponse.content.data)
-
-        setList(newStatus.map((status: statusType) => {
-          status.comments = Object.values(status.comments)
-
-          return status
-        }))
+        dispatch({ type: 'create', status: statusListResponse.content.data })
       })
       .catch(exception => {
       })
@@ -36,6 +31,6 @@ export default function Wall (props: wallProps): React.ReactElement {
     {isLoading
       ? <Loading/>
       : <StatusList
-        statusList={list} />}
+        statusList={statusListState} />}
   </div>)
 }
