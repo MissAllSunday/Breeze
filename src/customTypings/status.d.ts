@@ -21,6 +21,8 @@ declare module 'breezeTypes' {
 
   interface StatusListProps {
     statusList: statusListType
+    onDelete: (status: statusType) => void
+    onCreate: (content: string) => void
   }
 
   interface StatusProps {

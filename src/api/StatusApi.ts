@@ -20,7 +20,7 @@ export interface ServerGetStatusResponse {
 
 const action = 'breezeStatus'
 
-export const getStatus = async (type: string): Promise<statusListType> => {
+export const getStatus = async (type: string): Promise<Response> => {
   const getStatus = await fetch(baseUrl(action, type), {
     method: 'POST',
     body: JSON.stringify(baseConfig({

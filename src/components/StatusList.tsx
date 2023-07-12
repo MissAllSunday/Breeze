@@ -1,59 +1,25 @@
-import { statusType, StatusListProps } from 'breezeTypes'
+import { StatusListProps, statusType } from 'breezeTypes'
 import Status from './Status'
-import React, { useCallback, useEffect, useReducer, useState } from 'react'
-import { deleteStatus, postStatus, ServerPostStatusResponse } from '../api/StatusApi'
-import Loading from './Loading'
+import React, { useCallback } from 'react'
 import Editor from './Editor'
-import smfTextVars from '../DataSource/Txt'
-import toast from 'react-hot-toast'
-import statusReducer from '../reducers/status'
 
-function StatusstatusListState (props: StatusListProps): React.ReactElement {
-  const [statusListState, dispatch] = useReducer(statusReducer, props.statusList)
-  const [isLoading, setIsLoading] = useState(false)
-
-  useEffect(() => {
-    if (statusListState.length === 0) {
-      toast.error(smfTextVars.error.noStatus)
-    }
-  }, [statusListState])
-
+function StatusList (props: StatusListProps): React.ReactElement {
   const createStatus = useCallback((content: string) => {
-    setIsLoading(true)
-    postStatus(content)
-      .then((response: ServerPostStatusResponse) => {
-        dispatch({ type: 'create', status: response.content })
-        toast.success(response.message)
-      }).catch(exception => {
-        toast.error(exception.toString())
-      }).finally(() => {
-        setIsLoading(false)
-      })
-  }, [])
+    props.onCreate(content)
+  }, [props])
 
   const removeStatus = useCallback((status: statusType) => {
-    setIsLoading(true)
-    deleteStatus(status.id).then((response) => {
-      dispatch({ type: 'delete', status })
-      toast.success(response.message)
-    }).catch(exception => {
-      toast.error(exception.toString())
-    })
-      .finally(() => {
-        setIsLoading(false)
-      })
-  }, [])
+    props.onDelete(status)
+  }, [props])
 
   return (
     <div>
-      {isLoading
-        ? <Loading />
-        : <Editor saveContent={createStatus} />}
+      <Editor saveContent={createStatus} />
       <ul className="status">
-        {statusListState.map((status: statusType) => (
+        {Object.keys(props.statusList).map((keyName, i) => (
           <Status
-            key={status.id}
-            status={status}
+            key={props.statusList[i].id}
+            status={props.statusList[i]}
             removeStatus={removeStatus}
           />
         ))}
@@ -62,4 +28,4 @@ function StatusstatusListState (props: StatusListProps): React.ReactElement {
   )
 }
 
-export default React.memo(StatusstatusListState)
+export default React.memo(StatusList)
