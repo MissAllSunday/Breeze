@@ -28,7 +28,7 @@ export const getStatus = async (type: string): Promise<statusListType> => {
     }))
   })
 
-  return getStatus
+  return await getStatus.json()
 }
 
 export const deleteStatus = async (statusId: number): Promise<ServerDeleteStatusResponse> => {

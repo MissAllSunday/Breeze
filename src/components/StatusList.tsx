@@ -1,19 +1,22 @@
 import { statusType, StatusListProps } from 'breezeTypes'
 import Status from './Status'
-import React, { useCallback, useEffect, useReducer, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { deleteStatus, postStatus, ServerPostStatusResponse } from '../api/StatusApi'
 import Loading from './Loading'
 import Editor from './Editor'
 import smfTextVars from '../DataSource/Txt'
 import toast from 'react-hot-toast'
-import statusReducer from '../reducers/status'
+import { StatusContext, StatusDispatchContext } from '../context/statusContext'
 
 function StatusstatusListState (props: StatusListProps): React.ReactElement {
-  const [statusListState, dispatch] = useReducer(statusReducer, props.statusList)
+  // const [statusListState, dispatch] = useReducer(statusReducer, props.statusList)
   const [isLoading, setIsLoading] = useState(false)
 
+  const statusListState = useContext(StatusContext)
+  const dispatch = useContext(StatusDispatchContext)
+
   useEffect(() => {
-    if (statusListState.length === 0) {
+    if (Object.keys(statusListState).length === 0) {
       toast.error(smfTextVars.error.noStatus)
     }
   }, [statusListState])
@@ -32,7 +35,7 @@ function StatusstatusListState (props: StatusListProps): React.ReactElement {
       }).finally(() => {
         setIsLoading(false)
       })
-  }, [])
+  }, [dispatch])
 
   const removeStatus = useCallback((status: statusType) => {
     setIsLoading(true)
@@ -45,7 +48,10 @@ function StatusstatusListState (props: StatusListProps): React.ReactElement {
       .finally(() => {
         setIsLoading(false)
       })
-  }, [])
+  }, [dispatch])
+  const keys = Object(statusListState).entries()
+
+  console.log(keys)
 
   return (
     <div>
@@ -53,7 +59,7 @@ function StatusstatusListState (props: StatusListProps): React.ReactElement {
         ? <Loading />
         : <Editor saveContent={createStatus} />}
       <ul className="status">
-        {statusListState.map((status: statusType) => (
+        {keys.map((status: statusType) => (
           <Status
             key={status.id}
             status={status}

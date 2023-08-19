@@ -12,6 +12,8 @@ declare module 'breezeTypes' {
     isNew: boolean
   }
 
+  type statusDispatchContextType = function
+
   interface statusReducerData {
     type: string
     status: statusType
