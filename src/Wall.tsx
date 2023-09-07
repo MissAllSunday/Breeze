@@ -2,22 +2,22 @@ import {
   getStatus, ServerGetStatusResponse
 } from './api/StatusApi'
 import React, { useEffect, useReducer, useState } from 'react'
-import { wallProps } from 'breezeTypes'
+import { statusListType, wallProps } from 'breezeTypes'
 import Loading from './components/Loading'
 import { Toaster } from 'react-hot-toast'
-import statusReducer from './reducers/status'
-import StatusList from './components/StatusList'
+import statusReducer from './reducers/statusReducer'
 import { StatusContext, StatusDispatchContext } from './context/statusContext'
-
+import StatusList from './components/StatusList'
 export default function Wall (props: wallProps): React.ReactElement {
-  const [statusListState, dispatch] = useReducer(statusReducer, {})
+  const [statusListState, dispatch] = useReducer(statusReducer, [])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     setIsLoading(true)
     getStatus(props.wallType)
       .then((statusListResponse: ServerGetStatusResponse) => {
-        dispatch({ type: 'create', status: statusListResponse.content.data })
+        const fetchedStatusList: statusListType = Object.values(statusListResponse.content.data)
+        dispatch({ type: 'create', status: fetchedStatusList })
       })
       .catch(exception => {
       })
@@ -30,11 +30,12 @@ export default function Wall (props: wallProps): React.ReactElement {
     <Toaster/>
     {isLoading
       ? <Loading/>
-      : <StatusContext.Provider value={statusListState}>
-        <StatusDispatchContext.Provider value={dispatch}>
-          <StatusList statusList={statusListState} />
-        </StatusDispatchContext.Provider>
-      </StatusContext.Provider>
+      : <><StatusContext.Provider value={statusListState}>
+          <StatusDispatchContext.Provider value={dispatch}>
+            <StatusList statusList={statusListState} />
+          </StatusDispatchContext.Provider>
+        </StatusContext.Provider>
+      </>
       }
   </div>)
 }

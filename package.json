@@ -23,6 +23,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "eject": "react-scripts eject",
     "lint:fix": "eslint --fix --c .eslintrc.json ./src"
   },
@@ -53,6 +54,8 @@
     "eslint-plugin-n": "^15.3.0",
     "eslint-plugin-promise": "^6.1.0",
     "eslint-plugin-react": "^7.31.10",
+    "jest": "^27.5.1",
+    "react-test-renderer": "^18.2.0",
     "typescript": "^4.8.4"
   }
 }

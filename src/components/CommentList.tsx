@@ -5,7 +5,7 @@ import Loading from './Loading'
 import Editor from './Editor'
 import { deleteComment, postComment } from '../api/CommentApi'
 import toast from 'react-hot-toast'
-import commentsReducer from '../reducers/comments'
+import commentsReducer from '../reducers/commentsReducer'
 
 function CommentList (props: CommentListProps): React.ReactElement {
   const [isLoading, setIsLoading] = useState(false)
