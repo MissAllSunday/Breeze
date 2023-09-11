@@ -37,9 +37,9 @@ const LikeInfo: React.FunctionComponent<LikeInfoProps> = (props: LikeInfoProps) 
   )
 
   const infoBody = (
-      <ul id="likes">
+      <ul id="likes" data-testid="likes">
         {info?.map((likeInfo: LikeInfoState) => (
-          <li key={likeInfo.timestamp}>
+          <li key={likeInfo.timestamp} data-testid={likeInfo.timestamp}>
             <Avatar
               href={likeInfo.profile.avatar.url}
               userName={likeInfo.profile.username}/>
@@ -54,7 +54,7 @@ const LikeInfo: React.FunctionComponent<LikeInfoProps> = (props: LikeInfoProps) 
 
   const infoHeader = (String.fromCodePoint(128077) + ' ' + props.item.additionalInfo.text)
   const infoText = props.item.count > 0
-    ? <span className="like_count smalltext pointer_cursor" onClick={handleInfo}>
+    ? <span className="like_count smalltext pointer_cursor" onClick={handleInfo} data-testid="likesInfo">
         {props.item.additionalInfo.text}
     </span>
     : props.item.additionalInfo.text
