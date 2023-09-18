@@ -5,7 +5,7 @@ import Wall from './Wall'
 const rootElement = (document.getElementById('root') ?? document.createElement('div'))
 const root = createRoot(rootElement)
 const wallType = rootElement.getAttribute('wallType') ?? 'profile'
-// @ts-expect-error
+// @ts-expect-error Backend variable or default value
 const pagination: number = window.breezePagination ?? 5
 
 root.render(

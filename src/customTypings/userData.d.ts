@@ -6,8 +6,8 @@ declare module 'breezeTypes' {
       name: string
       url: string
     }
-    buddies: any[]
-    custom_fields: any[]
+    buddies: string[]
+    custom_fields: string[]
     email: string
     group: string
     group_color: string
