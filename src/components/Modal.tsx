@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react'
 import { modalProps } from 'breezeTypes'
+import React, { useCallback, useEffect, useState } from 'react'
+
 import smfTextVars from '../DataSource/Txt'
 
 const Modal: React.FunctionComponent<modalProps> = (props: modalProps) => {
@@ -33,7 +34,7 @@ const Modal: React.FunctionComponent<modalProps> = (props: modalProps) => {
       <div className="popup_window description">
         <div className="catbg popup_heading">
           {props.content.header}
-          <a className="main_icons hide_popup" onClick={handleClose} title={smfTextVars.general.close} />
+          <a className="main_icons hide_popup" onClick={handleClose} title={smfTextVars.general.close} href="/#"> </ a>
         </div>
         <div className="popup_content clear">
           {props.content.body}

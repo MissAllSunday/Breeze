@@ -1,5 +1,5 @@
-import React from 'react'
 import { avatarDataType } from 'breezeTypes'
+import React from 'react'
 
 const Avatar: React.FunctionComponent<avatarDataType> = (props: avatarDataType) => {
   return <img

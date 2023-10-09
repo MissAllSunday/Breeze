@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react'
 import { LikeInfoProps, LikeInfoState } from 'breezeTypes'
-import Avatar from './user/Avatar'
-import Modal from './Modal'
-import { getLikeInfo, ServerLikeInfoData } from '../api/LikeApi'
+import React, { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+
+import { getLikeInfo, ServerLikeInfoData } from '../api/LikeApi'
+import Modal from './Modal'
+import Avatar from './user/Avatar'
 
 const LikeInfo: React.FunctionComponent<LikeInfoProps> = (props: LikeInfoProps) => {
   const [info, setInfo] = useState<LikeInfoState[] | null>(null)

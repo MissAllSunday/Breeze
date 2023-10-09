@@ -25,6 +25,7 @@
     "test": "react-scripts test",
     "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "eject": "react-scripts eject",
+    "lint": "eslint . --ext .ts",
     "lint:fix": "eslint --fix --c .eslintrc.json ./src"
   },
   "eslintConfig": {
@@ -51,14 +52,17 @@
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.25.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-config-standard-with-typescript": "^23.0.0",
     "eslint-import-resolver-typescript": "^3.6.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.3.0",
     "eslint-plugin-promise": "^6.1.0",
     "eslint-plugin-react": "^7.31.10",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-typescript": "^0.14.0",
     "jest": "^27.5.1",
+    "prettier": "3.0.3",
     "react-test-renderer": "^18.2.0",
     "typescript": "^4.8.4"
   }

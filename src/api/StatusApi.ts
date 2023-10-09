@@ -1,6 +1,7 @@
-import { baseUrl, baseConfig } from './Api'
 import { statusListType } from 'breezeTypes'
+
 import smfVars from '../DataSource/SMF'
+import { baseConfig,baseUrl } from './Api'
 
 export interface ServerDeleteStatusResponse {
   content: object

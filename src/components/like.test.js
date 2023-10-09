@@ -1,8 +1,11 @@
+import '@testing-library/jest-dom'
+
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import '@testing-library/jest-dom'
-import Like from './Like'
+import React  from 'react';
+
 import * as LikeApi from '../api/LikeApi'
+import Like from './Like'
 
 describe('Like', () => {
   it('has already been liked', async () => {

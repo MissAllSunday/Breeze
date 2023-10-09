@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react'
+
 import smfVars from '../DataSource/SMF'
 
 const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: string) => void }) => {
   const [content, setContent] = useState('')
 
   const handleClick = useCallback(() => {
-    if (!confirm(smfVars.youSure)) {
+    if (!window.confirm(smfVars.youSure)) {
       return
     }
 

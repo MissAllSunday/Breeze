@@ -1,6 +1,7 @@
-import * as React from 'react'
-import Avatar from './Avatar'
 import { userInfoProps } from 'breezeTypes'
+import * as React from 'react'
+
+import Avatar from './Avatar'
 
 const UserInfo: React.FunctionComponent<userInfoProps> = (props: userInfoProps) => {
   return (<ul className="user_info flow_auto">

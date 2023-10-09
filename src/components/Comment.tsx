@@ -1,15 +1,16 @@
-import React, { useCallback, useState } from 'react'
 import { CommentProps } from 'breezeTypes'
+import React, { useCallback, useState } from 'react'
+
+import smfVars from '../DataSource/SMF'
 import Like from './Like'
 import Avatar from './user/Avatar'
-import smfVars from '../DataSource/SMF'
 
 function Comment (props: CommentProps): React.ReactElement {
   const [classType, setClassType] = useState(props.comment.isNew ? 'fadeIn' : '')
   const timeStamp = new Date(props.comment.createdAt)
 
   const removeComment = useCallback(() => {
-    if (!confirm(smfVars.youSure)) {
+    if (!window.confirm(smfVars.youSure)) {
       return
     }
 

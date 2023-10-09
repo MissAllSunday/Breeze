@@ -1,9 +1,12 @@
+import '@testing-library/jest-dom'
+
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import '@testing-library/jest-dom'
-import LikeInfo from './LikeInfo'
+import React  from 'react';
+
 import * as LikeApi from '../api/LikeApi'
 import { getLikeInfo } from '../api/LikeApi'
+import LikeInfo from './LikeInfo'
 
 describe('LikeInfo', () => {
   it('renders default info', () => {

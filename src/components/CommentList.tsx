@@ -1,11 +1,12 @@
+import { CommentListProps,commentType } from 'breezeTypes'
 import React, { useCallback, useReducer, useState } from 'react'
-import Comment from './Comment'
-import { commentType, CommentListProps } from 'breezeTypes'
-import Loading from './Loading'
-import Editor from './Editor'
-import { deleteComment, postComment } from '../api/CommentApi'
 import toast from 'react-hot-toast'
+
+import { deleteComment, postComment } from '../api/CommentApi'
 import commentsReducer from '../reducers/commentsReducer'
+import Comment from './Comment'
+import Editor from './Editor'
+import Loading from './Loading'
 
 function CommentList (props: CommentListProps): React.ReactElement {
   const [isLoading, setIsLoading] = useState(false)

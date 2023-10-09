@@ -1,12 +1,12 @@
 import { StatusListProps, statusListType, statusType } from 'breezeTypes'
-
 import React, { useCallback, useContext, useState } from 'react'
-import { deleteStatus, postStatus, ServerPostStatusResponse } from '../api/StatusApi'
-import Loading from './Loading'
-import Editor from './Editor'
-import smfTextVars from '../DataSource/Txt'
 import toast from 'react-hot-toast'
+
+import { deleteStatus, postStatus, ServerPostStatusResponse } from '../api/StatusApi'
 import { StatusContext, StatusDispatchContext } from '../context/statusContext'
+import smfTextVars from '../DataSource/Txt'
+import Editor from './Editor'
+import Loading from './Loading'
 import Status from './Status'
 
 function StatusstatusListState (props: StatusListProps): React.ReactElement {

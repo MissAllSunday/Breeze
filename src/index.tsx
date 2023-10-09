@@ -1,5 +1,6 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
+
 import Wall from './Wall'
 
 const rootElement = (document.getElementById('root') ?? document.createElement('div'))

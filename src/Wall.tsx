@@ -1,13 +1,14 @@
+import { statusListType, wallProps } from 'breezeTypes'
+import React, { useEffect, useReducer, useState } from 'react'
+import toast, { Toaster } from 'react-hot-toast'
+
 import {
   getStatus, ServerGetStatusResponse
 } from './api/StatusApi'
-import React, { useEffect, useReducer, useState } from 'react'
-import { statusListType, wallProps } from 'breezeTypes'
 import Loading from './components/Loading'
-import { Toaster } from 'react-hot-toast'
-import statusReducer from './reducers/statusReducer'
-import { StatusContext, StatusDispatchContext } from './context/statusContext'
 import StatusList from './components/StatusList'
+import { StatusContext, StatusDispatchContext } from './context/statusContext'
+import statusReducer from './reducers/statusReducer'
 export default function Wall (props: wallProps): React.ReactElement {
   const [statusListState, dispatch] = useReducer(statusReducer, [])
   const [isLoading, setIsLoading] = useState(true)
@@ -20,6 +21,7 @@ export default function Wall (props: wallProps): React.ReactElement {
         dispatch({ type: 'create', status: fetchedStatusList })
       })
       .catch(exception => {
+        toast.error(exception.toString())
       })
       .finally(() => {
         setIsLoading(false)

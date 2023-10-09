@@ -1,7 +1,8 @@
-import React, { useCallback, useState } from 'react'
-import { postLike, ServerLikeData } from '../api/LikeApi'
 import { LikeProps, likeType } from 'breezeTypes'
+import React, { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
+
+import { postLike, ServerLikeData } from '../api/LikeApi'
 import smfVars from '../DataSource/SMF'
 import LikeInfo from './LikeInfo'
 
@@ -11,7 +12,7 @@ const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
   const handleLike = useCallback(
     () => {
       function issueLike (): void {
-        if (!confirm(smfVars.youSure)) {
+        if (!window.confirm(smfVars.youSure)) {
           return
         }
 

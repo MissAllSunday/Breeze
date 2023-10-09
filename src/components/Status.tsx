@@ -1,10 +1,11 @@
-import * as React from 'react'
 import { StatusProps } from 'breezeTypes'
+import * as React from 'react'
+import { useCallback,useState } from 'react'
+
+import smfVars from '../DataSource/SMF'
+import CommentList from './CommentList'
 import Like from './Like'
 import UserInfo from './user/UserInfo'
-import { useState, useCallback } from 'react'
-import CommentList from './CommentList'
-import smfVars from '../DataSource/SMF'
 
 function Status (props: StatusProps): React.ReactElement {
   const [classType, setClassType] = useState(props.status.isNew ? 'fadeIn' : '')
@@ -21,7 +22,7 @@ function Status (props: StatusProps): React.ReactElement {
   })
 
   const removeStatus = useCallback(() => {
-    if (!confirm(smfVars.youSure)) {
+    if (!window.confirm(smfVars.youSure)) {
       return
     }
 

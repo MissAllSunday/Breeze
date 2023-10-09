@@ -1,6 +1,6 @@
 import SmfVars from '../DataSource/SMF'
 
-export const baseUrl = (action: string, subAction: string, additionalParams: Object[] = []): string => {
+export const baseUrl = (action: string, subAction: string, additionalParams: object[] = []): string => {
   const baseUrl = new URL(SmfVars.scriptUrl)
 
   baseUrl.searchParams.append('action', action)
