@@ -7,8 +7,7 @@ import {
 } from './api/StatusApi'
 import Loading from './components/Loading'
 import StatusList from './components/StatusList'
-import { StatusContext, StatusDispatchContext } from './context/statusContext'
-import statusReducer from './reducers/statusReducer'
+import {StatusProvider, statusReducer} from './context/statusContext';
 export default function Wall (props: wallProps): React.ReactElement {
   const [statusListState, dispatch] = useReducer(statusReducer, [])
   const [isLoading, setIsLoading] = useState(true)
@@ -18,7 +17,7 @@ export default function Wall (props: wallProps): React.ReactElement {
     getStatus(props.wallType)
       .then((statusListResponse: ServerGetStatusResponse) => {
         const fetchedStatusList: statusListType = Object.values(statusListResponse.content.data)
-        dispatch({ type: 'create', status: fetchedStatusList })
+        dispatch({ type: 'create', statusListState: fetchedStatusList })
       })
       .catch(exception => {
         toast.error(exception.toString())
@@ -32,12 +31,7 @@ export default function Wall (props: wallProps): React.ReactElement {
     <Toaster/>
     {isLoading
       ? <Loading/>
-      : <><StatusContext.Provider value={statusListState}>
-          <StatusDispatchContext.Provider value={dispatch}>
-            <StatusList statusList={statusListState} />
-          </StatusDispatchContext.Provider>
-        </StatusContext.Provider>
-      </>
+      : < StatusProvider />
       }
   </div>)
 }

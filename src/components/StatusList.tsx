@@ -9,7 +9,7 @@ import Editor from './Editor'
 import Loading from './Loading'
 import Status from './Status'
 
-function StatusstatusListState (props: StatusListProps): React.ReactElement {
+function StatusstatusListState (): React.ReactElement {
   const [isLoading, setIsLoading] = useState(false)
   const statusListState: statusListType = useContext(StatusContext)
   const statusDispatch = useContext(StatusDispatchContext)
@@ -44,7 +44,6 @@ function StatusstatusListState (props: StatusListProps): React.ReactElement {
       })
   }, [statusDispatch])
 
-  console.log(statusListState)
 
   return (
     <div>
@@ -65,4 +64,4 @@ function StatusstatusListState (props: StatusListProps): React.ReactElement {
   )
 }
 
-export default React.memo(StatusstatusListState)
+export default StatusstatusListState
