@@ -4,7 +4,7 @@ declare module 'breezeTypes' {
     smfVars: smfVars
   }
 
-  type ToastCallback = () => void
+  type ToastCallback = () => void;
 
   interface NoticeOptions {
     message: string
@@ -16,5 +16,5 @@ declare module 'breezeTypes' {
 module.exports = {
   UtilsProps,
   ToastCallback,
-  NoticeOptions
-}
+  NoticeOptions,
+};

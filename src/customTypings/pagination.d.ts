@@ -7,5 +7,5 @@ declare module 'breezeTypes' {
 }
 
 module.exports = {
-  PaginationProps
-}
+  PaginationProps,
+};

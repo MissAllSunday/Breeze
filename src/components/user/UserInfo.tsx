@@ -1,15 +1,16 @@
-import { userInfoProps } from 'breezeTypes'
-import * as React from 'react'
+import { UserInfoProps } from 'breezeTypes';
+import * as React from 'react';
 
-import Avatar from './Avatar'
+import Avatar from './Avatar';
 
-const UserInfo: React.FunctionComponent<userInfoProps> = (props: userInfoProps) => {
-  return (<ul className="user_info flow_auto">
+const UserInfo: React.FunctionComponent<UserInfoProps> = (props: UserInfoProps) => (
+  <ul className="user_info flow_auto">
     <li dangerouslySetInnerHTML={{ __html: props.userData.link_color }} />
     <li className="avatar">
       <Avatar
         href={props.userData.avatar.url}
-        userName={props.userData.username}/>
+        userName={props.userData.username}
+      />
     </li>
 
     <li className="postgroup">
@@ -19,7 +20,7 @@ const UserInfo: React.FunctionComponent<userInfoProps> = (props: userInfoProps) 
     <li className="breeze_description">
       {props.userData.title}
     </li>
-  </ul>)
-}
+  </ul>
+);
 
-export default UserInfo
+export default UserInfo;

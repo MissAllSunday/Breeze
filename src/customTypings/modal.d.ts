@@ -1,5 +1,5 @@
 declare module 'breezeTypes' {
-  interface modalProps {
+  interface ModalProps {
     show: boolean
     content: {
       header: string | null
@@ -10,5 +10,5 @@ declare module 'breezeTypes' {
 }
 
 module.exports = {
-  appProps
-}
+  appProps,
+};

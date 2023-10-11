@@ -1,5 +1,5 @@
 declare module 'breezeTypes' {
-  interface likeType {
+  interface LikeType {
     additionalInfo: {
       text: string
       href: string
@@ -12,21 +12,21 @@ declare module 'breezeTypes' {
   }
 
   interface LikeProps {
-    item: likeType
+    item: LikeType
   }
   interface LikeInfoProps {
-    item: likeType
+    item: LikeType
   }
 
   interface LikeInfoState {
-    profile: userDataType
+    profile: UserDataType
     timestamp: string
   }
 
 }
 
 module.exports = {
-  likeType,
+  LikeType,
   LikeProps,
-  LikeInfoState
-}
+  LikeInfoState,
+};

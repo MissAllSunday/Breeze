@@ -1,7 +1,7 @@
-import { statusListType } from 'breezeTypes'
+import { StatusListType } from 'breezeTypes';
 
-import smfVars from '../DataSource/SMF'
-import { baseConfig,baseUrl } from './Api'
+import smfVars from '../DataSource/SMF';
+import { baseConfig, baseUrl } from './Api';
 
 export interface ServerDeleteStatusResponse {
   content: object
@@ -9,54 +9,54 @@ export interface ServerDeleteStatusResponse {
 }
 
 export interface ServerPostStatusResponse {
-  content: statusListType
+  content: StatusListType
   message: string
   type: string
 }
 
 export interface ServerGetStatusResponse {
-  content: { total: number, data: statusListType }
+  content: { total: number, data: StatusListType }
   message: string
 }
 
-const action = 'breezeStatus'
+const action = 'breezeStatus';
 
-export const getStatus = async (type: string): Promise<statusListType> => {
-  const getStatus = await fetch(baseUrl(action, type), {
+export const getStatus = async (type: string): Promise<StatusListType> => {
+  const statusResults = await fetch(baseUrl(action, type), {
     method: 'POST',
     body: JSON.stringify(baseConfig({
-      wallId: smfVars.wallId
-    }))
-  })
+      wallId: smfVars.wallId,
+    })),
+  });
 
-  return await getStatus.json()
-}
+  return statusResults.json();
+};
 
 export const deleteStatus = async (statusId: number): Promise<ServerDeleteStatusResponse> => {
-  const deleteStatus = await fetch(baseUrl(action, 'deleteStatus'), {
+  const deleteStatusResults = await fetch(baseUrl(action, 'deleteStatus'), {
     method: 'POST',
     body: JSON.stringify(baseConfig({
       id: statusId,
-      userId: smfVars.userId
-    }))
-  })
+      userId: smfVars.userId,
+    })),
+  });
 
-  return await deleteStatus.ok
-    ? await deleteStatus.json()
-    : await deleteStatus.json().then(errorResponse => { throw Error(errorResponse) })
-}
+  return await deleteStatusResults.ok
+    ? deleteStatusResults.json()
+    : deleteStatusResults.json().then((errorResponse) => { throw Error(errorResponse); });
+};
 
 export const postStatus = async (content: string): Promise<ServerPostStatusResponse> => {
-  const postStatus = await fetch(baseUrl(action, 'postStatus'), {
+  const postStatusResults = await fetch(baseUrl(action, 'postStatus'), {
     method: 'POST',
     body: JSON.stringify(baseConfig({
       wallId: smfVars.wallId,
       userId: smfVars.userId,
-      body: content
-    }))
-  })
+      body: content,
+    })),
+  });
 
-  return await postStatus.ok
-    ? await postStatus.json()
-    : await postStatus.json().then(errorResponse => { throw Error(errorResponse.message) })
-}
+  return await postStatusResults.ok
+    ? postStatusResults.json()
+    : postStatusResults.json().then((errorResponse) => { throw Error(errorResponse.message); });
+};

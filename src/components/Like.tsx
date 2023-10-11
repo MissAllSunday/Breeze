@@ -1,42 +1,43 @@
-import { LikeProps, likeType } from 'breezeTypes'
-import React, { useCallback, useState } from 'react'
-import toast from 'react-hot-toast'
+import { LikeProps, LikeType } from 'breezeTypes';
+import React, { useCallback, useState } from 'react';
+import toast from 'react-hot-toast';
 
-import { postLike, ServerLikeData } from '../api/LikeApi'
-import smfVars from '../DataSource/SMF'
-import LikeInfo from './LikeInfo'
+import { postLike, ServerLikeData } from '../api/LikeApi';
+import smfVars from '../DataSource/SMF';
+import LikeInfo from './LikeInfo';
 
 const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
-  const [like, setLike] = useState<likeType>(props.item)
+  const [like, setLike] = useState<LikeType>(props.item);
 
   const handleLike = useCallback(
     () => {
-      function issueLike (): void {
+      function issueLike(): void {
         if (!window.confirm(smfVars.youSure)) {
-          return
+          return;
         }
 
         postLike(like).then((response: ServerLikeData) => {
-          toast.success(response.message)
-          setLike(response.content)
-        }).catch(exception => {
-          toast.error(exception.toString())
-        })
+          toast.success(response.message);
+          setLike(response.content);
+        }).catch((exception) => {
+          toast.error(exception.toString());
+        });
       }
-      issueLike()
+      issueLike();
     },
-    [like]
-  )
+    [like],
+  );
 
   return (
-    <>
-      <div className="smflikebutton">
-      <span onClick={handleLike} className='likeClass pointer_cursor' title={like.type}>
+    <div className="smflikebutton">
+      <span onClick={handleLike} className="likeClass pointer_cursor" title={like.type}>
         {String.fromCodePoint(like.alreadyLiked ? 128078 : 128077)}
-      </span> | <LikeInfo item={like}></LikeInfo>
-      </div>
-    </>
-  )
-}
+      </span>
+      {' '}
+      |
+      <LikeInfo item={like} />
+    </div>
+  );
+};
 
-export default Like
+export default Like;

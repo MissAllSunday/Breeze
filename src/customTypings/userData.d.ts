@@ -1,5 +1,5 @@
 declare module 'breezeTypes' {
-  interface userDataType {
+  interface UserDataType {
     avatar: {
       href: string
       image: HTMLImageElement
@@ -39,15 +39,15 @@ declare module 'breezeTypes' {
     username_color: HTMLSpanElement
   }
 
-  interface avatarDataType {
+  interface AvatarDataType {
     href: string
     userName: string
   }
-  interface userInfoProps {
-    userData: userDataType
+  interface UserInfoProps {
+    userData: UserDataType
   }
 }
 
 module.exports = {
-  userDataType
-}
+  UserDataType,
+};

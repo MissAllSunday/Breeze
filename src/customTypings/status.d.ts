@@ -1,33 +1,33 @@
 declare module 'breezeTypes' {
-  interface statusType {
+  interface StatusType {
     id: number
     wallId: number
     userId: number
     likes: number
     body: string
     createdAt: string
-    likesInfo: likeType
-    comments: commentType[]
-    userData: userDataType
+    likesInfo: LikeType
+    comments: CommentType[]
+    userData: UserDataType
     isNew: boolean
   }
 
-  type statusDispatchContextType = function
+  type StatusDispatchContextType = function;
 
-  interface statusReducerData {
+  interface StatusReducerData {
     type: string
-    statusListState: statusType
+    statusListState: StatusType
   }
 
-  type statusListType = Map<statusType>
+  type StatusListType = Map<StatusType>;
 
   interface StatusListProps {
-    statusList: statusListType
+    statusList: StatusListType
   }
 
   interface StatusProps {
-    status: statusType
-    removeStatus: (status: statusType) => void
+    status: StatusType
+    removeStatus: (status: StatusType) => void
   }
 
   interface StatusState {
@@ -37,8 +37,8 @@ declare module 'breezeTypes' {
 }
 
 module.exports = {
-  statusListType,
-  statusType,
+  StatusListType,
+  StatusType,
   StatusProps,
-  StatusState
-}
+  StatusState,
+};

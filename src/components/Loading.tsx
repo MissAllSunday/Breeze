@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
-export default function Loading (): JSX.Element {
+export default function Loading(): JSX.Element {
   return (
     <div className="loading">&#8230;</div>
-  )
+  );
 }

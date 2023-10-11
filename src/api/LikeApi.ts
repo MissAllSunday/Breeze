@@ -1,10 +1,10 @@
-import { LikeInfoState, likeType } from 'breezeTypes'
+import { LikeInfoState, LikeType } from 'breezeTypes';
 
-import SmfVars from '../DataSource/SMF'
-import { baseConfig,baseUrl } from './Api'
+import SmfVars from '../DataSource/SMF';
+import { baseConfig, baseUrl } from './Api';
 
 export interface ServerLikeData {
-  content: likeType
+  content: LikeType
   message: string
 }
 
@@ -13,37 +13,37 @@ export interface ServerLikeInfoData {
   content: LikeInfoState[]
 }
 
-const action = 'breezeLike'
+const action = 'breezeLike';
 
-export const postLike = async (likeData: likeType): Promise<ServerLikeData> => {
+export const postLike = async (likeData: LikeType): Promise<ServerLikeData> => {
   const params = {
     id_member: SmfVars.userId,
     content_type: likeData.type,
-    content_id: likeData.contentId
-  }
+    content_id: likeData.contentId,
+  };
 
   const like = await fetch(baseUrl(action, 'like'), {
     method: 'POST',
-    body: JSON.stringify(baseConfig(params))
-  })
+    body: JSON.stringify(baseConfig(params)),
+  });
 
   return await like.ok
-    ? await like.json()
-    : await like.json().then(errorResponse => { throw Error(errorResponse.message) })
-}
+    ? like.json()
+    : like.json().then((errorResponse) => { throw Error(errorResponse.message); });
+};
 
-export const getLikeInfo = async (like: likeType): Promise<ServerLikeInfoData> => {
+export const getLikeInfo = async (like: LikeType): Promise<ServerLikeInfoData> => {
   const params = {
     content_type: like.type,
-    content_id: like.contentId
-  }
+    content_id: like.contentId,
+  };
 
   const likeInfo = await fetch(baseUrl(action, 'info'), {
     method: 'POST',
-    body: JSON.stringify(baseConfig(params))
-  })
+    body: JSON.stringify(baseConfig(params)),
+  });
 
   return await likeInfo.ok
-    ? await likeInfo.json()
-    : await likeInfo.json().then(errorResponse => { throw Error(errorResponse.message) })
-}
+    ? likeInfo.json()
+    : likeInfo.json().then((errorResponse) => { throw Error(errorResponse.message); });
+};

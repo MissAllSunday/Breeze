@@ -1,40 +1,40 @@
 declare module 'breezeTypes' {
-  interface commentType {
+  interface CommentType {
     id: number
     statusId: number
     userId: number
     likes: number
     body: string
-    likesInfo: likeType
+    likesInfo: LikeType
     createdAt: string
-    userData: userDataType
+    userData: UserDataType
     isNew: boolean
   }
 
-  type commentList = Map<commentType>
+  type CommentList = Map<CommentType>;
 
-  interface commentReducerData {
+  interface CommentReducerData {
     type: string
-    comment: commentType
+    comment: CommentType
   }
 
-  interface newCommentProps {
+  interface NewCommentProps {
     content: string
-    status: statusType
+    status: StatusType
   }
 
-  interface removeCommentProps {
-    status: statusType
-    comment: commentType
+  interface RemoveCommentProps {
+    status: StatusType
+    comment: CommentType
   }
 
   interface CommentListProps {
-    commentList: commentList
+    CommentList: CommentList
     statusId: number
   }
 
   interface CommentProps {
-    comment: commentType
+    comment: CommentType
     removeComment: function
   }
   interface CommentState {
@@ -44,7 +44,7 @@ declare module 'breezeTypes' {
 }
 
 module.exports = {
-  commentList,
-  commentType,
-  CommentProps
-}
+  CommentList,
+  CommentType,
+  CommentProps,
+};

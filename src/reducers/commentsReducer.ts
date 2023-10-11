@@ -1,22 +1,20 @@
-import { commentList, commentReducerData, commentType } from 'breezeTypes'
+import { CommentList, CommentReducerData, CommentType } from 'breezeTypes';
 
-export default function commentsReducer (commentListState: commentList, action: commentReducerData): commentList {
-  let newState: commentList
+export default function commentsReducer(CommentListState: CommentList, action: CommentReducerData): CommentList {
+  let newState: CommentList;
 
   switch (action.type) {
     case 'create': {
-      newState = [...commentListState, action.comment]
-      break
+      newState = [...CommentListState, action.comment];
+      break;
     }
     case 'delete': {
-      newState = commentListState.filter(function (commentListItem: commentType) {
-        return commentListItem.id !== action.comment.id
-      })
-      break
+      newState = CommentListState.filter((CommentListItem: CommentType) => CommentListItem.id !== action.comment.id);
+      break;
     }
     default:
-      newState = commentListState
+      newState = CommentListState;
   }
 
-  return newState
+  return newState;
 }

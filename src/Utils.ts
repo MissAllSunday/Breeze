@@ -1,57 +1,56 @@
 const canUseLocalStorage = (): boolean => {
-  const storage = window.localStorage
+  const storage = window.localStorage;
 
   try {
-    const x = 'breeze_storage_test'
-    storage.setItem(x, x)
-    storage.removeItem(x)
+    const x = 'breeze_storage_test';
+    storage.setItem(x, x);
+    storage.removeItem(x);
 
-    return true
+    return true;
   } catch (e) {
     return e instanceof DOMException && (
-      e.code === 22 ||
-        e.code === 1014 ||
-        e.name === 'QuotaExceededError' ||
-        e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-        storage.length !== 0
+      e.code === 22
+        || e.code === 1014
+        || e.name === 'QuotaExceededError'
+        || e.name === 'NS_ERROR_DOM_QUOTA_REACHED')
+        && storage.length !== 0;
   }
-}
+};
 
 const setLocalObject = (keyName: string, objectToStore: object): boolean => {
   if (!canUseLocalStorage()) {
-    return false
+    return false;
   }
 
-  localStorage.setItem(keyName, JSON.stringify(objectToStore))
+  localStorage.setItem(keyName, JSON.stringify(objectToStore));
 
-  return true
-}
+  return true;
+};
 
 const getLocalObject = (keyName: string): boolean => {
   if (!canUseLocalStorage()) {
-    return false
+    return false;
   }
 
-  const objectStored = JSON.parse(localStorage.getItem(keyName) as string)
+  const objectStored = JSON.parse(localStorage.getItem(keyName) as string);
 
   if (objectStored !== null) {
-    return objectStored
-  } else {
-    return false
+    return objectStored;
   }
-}
+  return false;
+};
 
 const decode = (html: string): string | null => {
-  const decoder = document.createElement('div')
-  decoder.innerHTML = html
-  return decoder.textContent
-}
+  const decoder = document.createElement('div');
+  decoder.innerHTML = html;
+  return decoder.textContent;
+};
 
 const utils = {
   decode,
   getLocalObject,
   setLocalObject,
-  canUseLocalStorage
-}
+  canUseLocalStorage,
+};
 
-export default utils
+export default utils;

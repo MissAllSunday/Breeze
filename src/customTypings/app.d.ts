@@ -1,5 +1,5 @@
 declare module 'breezeTypes' {
-  interface smfVarsType {
+  interface SmfVarsType {
     session: {
       var: string
       id: string
@@ -11,12 +11,12 @@ declare module 'breezeTypes' {
     userId: number
   }
 
-  interface wallState {
-    list: statusType[]
+  interface WallState {
+    list: StatusType[]
     isLoading: boolean
   }
 
-  interface wallProps {
+  interface WallProps {
     wallType: string
     pagination: number
   }
@@ -24,6 +24,6 @@ declare module 'breezeTypes' {
 
 module.exports = {
   smfVars,
-  wallProps,
-  wallState
-}
+  WallProps,
+  WallState,
+};

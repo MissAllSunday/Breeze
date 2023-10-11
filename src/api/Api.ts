@@ -1,28 +1,26 @@
-import SmfVars from '../DataSource/SMF'
+import SmfVars from '../DataSource/SMF';
 
 export const baseUrl = (action: string, subAction: string, additionalParams: object[] = []): string => {
-  const baseUrl = new URL(SmfVars.scriptUrl)
+  const url = new URL(SmfVars.scriptUrl);
 
-  baseUrl.searchParams.append('action', action)
-  baseUrl.searchParams.append('sa', subAction)
-  baseUrl.searchParams.append(SmfVars.session.var, SmfVars.session.id)
+  url.searchParams.append('action', action);
+  url.searchParams.append('sa', subAction);
+  url.searchParams.append(SmfVars.session.var, SmfVars.session.id);
 
   additionalParams.map((objectValue): null => {
     for (const [key, value] of Object.entries(objectValue)) {
-      baseUrl.searchParams.append(key, value)
+      url.searchParams.append(key, value);
     }
 
-    return null
-  })
+    return null;
+  });
 
-  return baseUrl.href
-}
+  return url.href;
+};
 
-export const baseConfig = (params: object = {}): object => {
-  return {
-    data: params,
-    headers: {
-      'X-SMF-AJAX': '1'
-    }
-  }
-}
+export const baseConfig = (params: object = {}): object => ({
+  data: params,
+  headers: {
+    'X-SMF-AJAX': '1',
+  },
+});

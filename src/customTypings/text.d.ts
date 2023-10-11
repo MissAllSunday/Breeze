@@ -1,6 +1,6 @@
 declare module 'breezeTypes' {
 
-  interface generalTextType {
+  interface GeneralTextType {
     save: string
     delete: string
     editing: string
@@ -13,13 +13,13 @@ declare module 'breezeTypes' {
     errorEmpty: string
   }
 
-  interface likeTextType {
+  interface LikeTextType {
     unlike: string
     like: string
   }
 }
 
 module.exports = {
-  generalTextType,
-  likeTextType
-}
+  GeneralTextType,
+  LikeTextType,
+};

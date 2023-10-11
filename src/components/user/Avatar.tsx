@@ -1,11 +1,12 @@
-import { avatarDataType } from 'breezeTypes'
-import React from 'react'
+import { AvatarDataType } from 'breezeTypes';
+import React from 'react';
 
-const Avatar: React.FunctionComponent<avatarDataType> = (props: avatarDataType) => {
-  return <img
+const Avatar: React.FunctionComponent<AvatarDataType> = (props: AvatarDataType) => (
+  <img
     src={props.href}
     alt={props.userName}
-    className="avatar"/>
-}
+    className="avatar"
+  />
+);
 
-export default Avatar
+export default Avatar;

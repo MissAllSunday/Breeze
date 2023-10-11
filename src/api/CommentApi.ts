@@ -1,11 +1,11 @@
-import { commentList } from 'breezeTypes'
+import { CommentList } from 'breezeTypes';
 
-import smfVars from '../DataSource/SMF'
-import { baseConfig,baseUrl } from './Api'
+import smfVars from '../DataSource/SMF';
+import { baseConfig, baseUrl } from './Api';
 
 interface ServerCommentData {
   message: string
-  content: commentList
+  content: CommentList
 }
 
 interface ServerDeleteComment {
@@ -13,32 +13,32 @@ interface ServerDeleteComment {
   content: object
 }
 
-const action = 'breezeComment'
+const action = 'breezeComment';
 
 export const postComment = async (commentParams: object): Promise<ServerCommentData> => {
-  const postComment = await fetch(baseUrl(action, 'postComment'), {
+  const postCommentResults = await fetch(baseUrl(action, 'postComment'), {
     method: 'POST',
     body: JSON.stringify(baseConfig({
       ...commentParams,
-      userId: smfVars.userId
-    }))
-  })
+      userId: smfVars.userId,
+    })),
+  });
 
-  return await postComment.ok
-    ? await postComment.json()
-    : await postComment.json().then(errorResponse => { throw Error(errorResponse.message) })
-}
+  return await postCommentResults.ok
+    ? postCommentResults.json()
+    : postCommentResults.json().then((errorResponse) => { throw Error(errorResponse.message); });
+};
 
 export const deleteComment = async (commentId: number): Promise<ServerDeleteComment> => {
-  const deleteComment = await fetch(baseUrl(action, 'deleteComment'), {
+  const deleteCommentResults = await fetch(baseUrl(action, 'deleteComment'), {
     method: 'POST',
     body: JSON.stringify(baseConfig({
       id: commentId,
-      userId: smfVars.userId
-    }))
-  })
+      userId: smfVars.userId,
+    })),
+  });
 
-  return await deleteComment.ok
-    ? await deleteComment.json()
-    : await deleteComment.json().then(errorResponse => { throw Error(errorResponse) })
-}
+  return await deleteCommentResults.ok
+    ? deleteCommentResults.json()
+    : deleteCommentResults.json().then((errorResponse) => { throw Error(errorResponse); });
+};
