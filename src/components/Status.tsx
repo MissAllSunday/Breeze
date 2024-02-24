@@ -67,4 +67,4 @@ function Status(props: StatusProps): React.ReactElement {
   );
 }
 
-export default React.memo(Status);
+export default Status;

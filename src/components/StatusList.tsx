@@ -1,69 +1,62 @@
 import { StatusListProps, StatusListType, StatusType } from 'breezeTypes';
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { deleteStatus, postStatus, ServerPostStatusResponse } from '../api/StatusApi';
-import { StatusContext, StatusDispatchContext } from '../context/statusContext';
+import { deleteStatus, getStatus, postStatus, ServerGetStatusResponse, ServerPostStatusResponse } from '../api/StatusApi';
 import smfTextVars from '../DataSource/Txt';
 import Editor from './Editor';
 import Loading from './Loading';
 import Status from './Status';
 
-function StatusstatusListState(): React.ReactElement {
-  const [isLoading, setIsLoading] = useState(false);
-  const statusListState: StatusListType = useContext(StatusContext);
-  const statusDispatch = useContext(StatusDispatchContext);
+function StatusList(statusList: StatusListType): React.ReactElement {
 
-  if (statusListState.length === 0) {
+  if (statusList.statusList.length === 0) {
     toast.error(smfTextVars.error.noStatus);
   }
 
   const createStatus = useCallback((content: string) => {
-    setIsLoading(true);
+    // setIsLoading(true);
     postStatus(content)
       .then((response: ServerPostStatusResponse) => {
-        statusDispatch({ type: 'create', statusListState: Object.values(response.content) });
+        const newStatus = Object.values(response.content);
+        for (const key in newStatus) {
+          // setStatus([...statusListState, newStatus[key]]);
+        }
         toast.success(response.message);
       }).catch((exception) => {
         toast.error(exception.toString());
       }).finally(() => {
-        setIsLoading(false);
+        // setIsLoading(false);
       });
-  }, [statusDispatch]);
+  }, []);
 
-  const removeStatus = useCallback((status: StatusType) => {
-    setIsLoading(true);
-    deleteStatus(status.id).then((response) => {
-      statusDispatch({ type: 'delete', statusListState: [status] });
+  const removeStatus = useCallback((currentStatus: StatusType) => {
+    // setIsLoading(true);
+    deleteStatus(currentStatus.id).then((response) => {
+      // setStatus(statusListState.filter((status: StatusType) => statusListState.includes(status) === false));
       toast.success(response.message);
     }).catch((exception) => {
       toast.error(exception.toString());
     })
       .finally(() => {
-        setIsLoading(false);
+        // setIsLoading(false);
       });
-  }, [statusDispatch]);
+  }, []);
 
   return (
     <div>
-      {isLoading
-        ? <Loading />
-        : (
-          <>
-            <Editor saveContent={createStatus} />
-            <ul className="status">
-              {statusListState.forEach((status: StatusType) => (
-                <Status
-                  key={status.id}
-                  status={status}
-                  removeStatus={removeStatus}
-                />
-              ))}
-            </ul>
-          </>
-        ) }
+      <Editor saveContent={createStatus} />
+      <ul className="status">
+        {/*{statusListState.length === 0 ? <Loading /> : statusListState.forEach((status: StatusType) => (*/}
+        {/*  <Status*/}
+        {/*    key={status.id}*/}
+        {/*    status={status}*/}
+        {/*    removeStatus={removeStatus}*/}
+        {/*  />*/}
+        {/*))}*/}
+      </ul>
     </div>
   );
 }
 
-export default StatusstatusListState;
+export default StatusList;

@@ -10,7 +10,7 @@ import Loading from './Loading';
 
 function CommentList(props: CommentListProps): React.ReactElement {
   const [isLoading, setIsLoading] = useState(false);
-  const [CommentListState, dispatch] = useReducer(commentsReducer, props.CommentList);
+  const [CommentListState, dispatch] = useReducer(commentsReducer, Object.values(props.CommentList));
 
   const createComment = useCallback((content: string) => {
     setIsLoading(true);
@@ -63,4 +63,4 @@ function CommentList(props: CommentListProps): React.ReactElement {
   );
 }
 
-export default React.memo(CommentList);
+export default CommentList;

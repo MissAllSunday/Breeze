@@ -1,39 +1,60 @@
-import { StatusListType, WallProps } from 'breezeTypes';
-import React, { useEffect, useReducer, useState } from 'react';
+import { StatusListType, StatusType, WallProps } from 'breezeTypes';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 import {
-  getStatus, ServerGetStatusResponse,
+  deleteStatus,
+  getStatus, postStatus, ServerGetStatusResponse, ServerPostStatusResponse,
 } from './api/StatusApi';
+import Editor from './components/Editor';
 import Loading from './components/Loading';
-import StatusList from './components/StatusList';
-import { StatusProvider, statusReducer } from './context/statusContext';
+import Status from './components/Status';
 
 export default function Wall(props: WallProps): React.ReactElement {
-  const [statusListState, dispatch] = useReducer(statusReducer, []);
-  const [isLoading, setIsLoading] = useState(true);
+  const [statusList, setStatusList] = useState(props.statusList);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    setIsLoading(true);
-    getStatus(props.wallType)
-      .then((statusListResponse: ServerGetStatusResponse) => {
-        const fetchedStatusList: StatusListType = Object.values(statusListResponse.content.data);
-        dispatch({ type: 'create', statusListState: fetchedStatusList });
-      })
-      .catch((exception) => {
+  const createStatus = useCallback((content: string) => {
+    // setIsLoading(true);
+    postStatus(content)
+      .then((response: ServerPostStatusResponse) => {
+        const newStatus = Object.values(response.content);
+        for (const key in newStatus) {
+          // setStatus([...statusListState, newStatus[key]]);
+        }
+        toast.success(response.message);
+      }).catch((exception) => {
         toast.error(exception.toString());
-      })
-      .finally(() => {
-        setIsLoading(false);
+      }).finally(() => {
+      // setIsLoading(false);
       });
-  }, [props.wallType]);
+  }, []);
+
+  const removeStatus = useCallback((currentStatus: StatusType) => {
+    // setIsLoading(true);
+    deleteStatus(currentStatus.id).then((response) => {
+      // setStatus(statusListState.filter((status: StatusType) => statusListState.includes(status) === false));
+      toast.success(response.message);
+    }).catch((exception) => {
+      toast.error(exception.toString());
+    })
+      .finally(() => {
+        // setIsLoading(false);
+      });
+  }, []);
 
   return (
     <div>
-      <Toaster />
-      {isLoading
-        ? <Loading />
-        : <StatusProvider />}
+      <Editor saveContent={createStatus} />
+      <ul className="status">
+        {statusList.map((singleStatus: StatusType) => (
+          <Status
+            key={singleStatus.id}
+            status={singleStatus}
+            removeStatus={removeStatus}
+          />
+        ))}
+      </ul>
     </div>
   );
 }

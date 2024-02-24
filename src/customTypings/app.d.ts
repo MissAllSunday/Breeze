@@ -17,8 +17,7 @@ declare module 'breezeTypes' {
   }
 
   interface WallProps {
-    wallType: string
-    pagination: number
+    statusList: StatusType[]
   }
 }
 
