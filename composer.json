@@ -29,7 +29,6 @@
         "phpspec/prophecy": "^1.15",
         "friendsofphp/php-cs-fixer": "^3.19",
         "phpstan/phpstan": "^1.8.9",
-        "squizlabs/php_codesniffer": "^3.7.1",
         "phpstan/phpstan-phpunit": "^1.1.1",
         "phpspec/prophecy-phpunit": "^2.0.1"
     },
@@ -45,24 +44,19 @@
     },
     "scripts": {
         "lint": [
-            "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix ./Sources --verbose --show-progress=dots",
-            "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix ./tests --verbose --show-progress=dots",
-            "phpcbf -q --standard=./phpcs.xml --tab-width=4 ./Sources ./tests"
+            "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix --verbose --show-progress=dots"
         ],
         "lint:check": [
-          "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix ./Sources --dry-run --verbose --show-progress=dots",
-          "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix ./tests --dry-run --verbose --show-progress=dots"
+          "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix --dry-run --verbose --show-progress=dots"
         ],
         "coverage": "XDEBUG_MODE=coverage phpunit -c phpunit.xml.dist --coverage-html=tests/log/coverage/",
         "phpunit": "phpunit -c phpunit.xml.dist",
         "phpstan": "phpstan analyze --memory-limit=1G -c phpstan.neon",
-        "phpcs": "phpcs --standard=./phpcs.xml --ignore=./tests/bootstrap.php --tab-width=4 ./Sources ./tests",
         "serve": "bin/server",
         "test": [
             "@lint:check",
             "@phpunit",
-            "@phpstan",
-            "@phpcs"
+            "@phpstan"
         ]
     }
 }

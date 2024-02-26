@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 $finder = PhpCsFixer\Finder::create()
 	->in(__DIR__ . '/Sources/Breeze/')
-	->in(__DIR__ . '/tests/');
+	->in(__DIR__ . '/tests/')
+	->exclude(__DIR__ . '/tests/log/');
 
 $config = new PhpCsFixer\Config();
 
@@ -52,7 +53,7 @@ return $config
 		'lowercase_keywords' => true,
 		'visibility_required' => true,
 		'native_constant_invocation' => true,
-		'no_unneeded_curly_braces' => true,
+		'no_unneeded_braces' => true,
 		'function_declaration' => true,
 	])
 	->setIndent("\t")

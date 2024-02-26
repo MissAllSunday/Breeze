@@ -5,27 +5,18 @@ declare(strict_types=1);
 namespace Breeze\Traits;
 
 use Breeze\Traits\RequestTrait as RequestTrait;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class RequestTest extends TestCase
 {
-	/**
-	 * @var RequestTrait&MockObject
-	 */
-	private $requestTrait;
-
-	protected function setUp(): void
-	{
-		$this->requestTrait = $this->getMockForTrait(RequestTrait::class);
-	}
+	use RequestTrait;
 
 	/**
 	 * @dataProvider getRequestProvider
 	 */
 	public function testGet(string  $variableName, $expected, ?string $defaultValue): void
 	{
-		$requestVariable = $this->requestTrait->getRequest($variableName, $defaultValue);
+		$requestVariable = $this->getRequest($variableName, $defaultValue);
 
 		$this->assertEquals($expected, $requestVariable);
 	}
@@ -59,7 +50,7 @@ final class RequestTest extends TestCase
 	 */
 	public function testSanitize(string  $variableName, $expected): void
 	{
-		$requestVariable = $this->requestTrait->sanitize($variableName);
+		$requestVariable = $this->sanitize($variableName);
 
 		$this->assertEquals($expected, $requestVariable);
 	}

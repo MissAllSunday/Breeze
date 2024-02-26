@@ -4,23 +4,15 @@ declare(strict_types=1);
 
 namespace Breeze\Traits;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class PersistenceTest extends TestCase
 {
-	/**
-	 */
-	private MockObject|PersistenceTrait $persistenceTrait;
-
-	protected function setUp(): void
-	{
-		$this->persistenceTrait = $this->getMockForTrait(PersistenceTrait::class);
-	}
+	use PersistenceTrait;
 
 	public function testGetMessage(): void
 	{
-		$message = $this->persistenceTrait->getPersistenceMessage();
+		$message = $this->getPersistenceMessage();
 
 		$this->assertIsArray($message);
 		$this->assertEquals([
@@ -35,9 +27,9 @@ final class PersistenceTest extends TestCase
 	public function testSetMessage($message, $type, $expectedResult): void
 	{
 		if ($type !== null) {
-			$setMessage = $this->persistenceTrait->setPersistenceMessage($message, $type);
+			$setMessage = $this->setPersistenceMessage($message, $type);
 		} else {
-			$setMessage = $this->persistenceTrait->setPersistenceMessage($message);
+			$setMessage = $this->setPersistenceMessage($message);
 		}
 
 		$this->assertEquals($expectedResult, $setMessage);

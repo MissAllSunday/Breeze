@@ -5,35 +5,18 @@ declare(strict_types=1);
 namespace Breeze\Traits;
 
 use Breeze\Traits\SettingsTrait as SettingsTrait;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class SettingsTest extends TestCase
 {
-	/**
-	 * @var MockObject&SettingsTrait
-	 */
-	private $settingsTrait;
-
-	protected function setUp(): void
-	{
-		$this->settingsTrait = $this->createSettingsTraitMock();
-	}
-
-	/**
-	 * @return  MockObject&SettingsTrait
-	 */
-	protected function createSettingsTraitMock()
-	{
-		return $this->getMockForTrait(SettingsTrait::class);
-	}
+	use SettingsTrait;
 
 	/**
 	 * @dataProvider getSettingProvider
 	 */
 	public function testGetSetting(string $settingName, $fallBack, $expected): void
 	{
-		$setting = $this->settingsTrait->getSetting($settingName, $fallBack);
+		$setting = $this->getSetting($settingName, $fallBack);
 
 		$this->assertEquals($expected, $setting);
 	}
@@ -67,7 +50,7 @@ final class SettingsTest extends TestCase
 	 */
 	public function testEnable(string $settingName, bool $expected): void
 	{
-		$enable = $this->settingsTrait->isEnable($settingName);
+		$enable = $this->isEnable($settingName);
 
 		$this->assertIsBool($expected);
 		$this->assertEquals($expected, $enable);
@@ -94,7 +77,7 @@ final class SettingsTest extends TestCase
 	 */
 	public function testModSetting(string $settingName, $fallBack, $expected): void
 	{
-		$modSetting = $this->settingsTrait->modSetting($settingName, $fallBack);
+		$modSetting = $this->modSetting($settingName, $fallBack);
 
 		$this->assertEquals($expected, $modSetting);
 	}
@@ -128,7 +111,7 @@ final class SettingsTest extends TestCase
 	 */
 	public function testGlobal(string $globalName, $expected): void
 	{
-		$global = $this->settingsTrait->global($globalName);
+		$global = $this->global($globalName);
 
 		$this->assertSame($expected, $global);
 	}

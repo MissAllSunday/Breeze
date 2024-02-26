@@ -7,27 +7,16 @@ namespace Breeze\Traits;
 use Breeze\Traits\TextTrait as TextTrait;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers TextService
- */
 final class TextTest extends TestCase
 {
-	/**
-	 * @var TextTrait
-	 */
-	private $textTrait;
-
-	protected function setUp(): void
-	{
-		$this->textTrait = $this->getMockForTrait(TextTrait::class);
-	}
+	use TextTrait;
 
 	/**
 	 * @dataProvider getSmfProvider
 	 */
 	public function testGetSmf(string $textKeyName, string $expected): void
 	{
-		$text = $this->textTrait->getSmfText($textKeyName);
+		$text = $this->getSmfText($textKeyName);
 
 		$this->assertEquals($expected, $text);
 	}
@@ -53,7 +42,7 @@ final class TextTest extends TestCase
 	 */
 	public function testGetText(string $textKeyName, string $expected): void
 	{
-		$text = $this->textTrait->getText($textKeyName);
+		$text = $this->getText($textKeyName);
 
 		$this->assertEquals($expected, $text);
 	}
@@ -79,7 +68,7 @@ final class TextTest extends TestCase
 	 */
 	public function testParserText(string $textToParse, array $replacements, string  $expected): void
 	{
-		$parsedText = $this->textTrait->parserText($textToParse, $replacements);
+		$parsedText = $this->parserText($textToParse, $replacements);
 
 		$this->assertEquals($expected, $parsedText);
 	}
@@ -124,7 +113,7 @@ final class TextTest extends TestCase
 	 */
 	public function testCommaSeparated(string  $string, string  $type, string  $expected): void
 	{
-		$commaSeparatedString = $this->textTrait->commaSeparated($string, $type);
+		$commaSeparatedString = $this->commaSeparated($string, $type);
 
 		$this->assertEquals($expected, $commaSeparatedString);
 	}
@@ -169,7 +158,7 @@ final class TextTest extends TestCase
 
 	public function testNormalizeString(): void
 	{
-		$normal = $this->textTrait->normalizeString("\xC3\x85 á é í ó ú");
+		$normal = $this->normalizeString("\xC3\x85 á é í ó ú");
 
 		$this->assertEquals('A a e i o u', $normal);
 	}
@@ -179,7 +168,7 @@ final class TextTest extends TestCase
 	 */
 	public function testFormatBytes(int $bytes, bool $showUnit, string  $expected): void
 	{
-		$formattedBytes = $this->textTrait->formatBytes($bytes, $showUnit);
+		$formattedBytes = $this->formatBytes($bytes, $showUnit);
 
 		$this->assertEquals($expected, $formattedBytes);
 	}
@@ -212,7 +201,7 @@ final class TextTest extends TestCase
 		string $pad,
 		string $expected
 	): void {
-		$truncatedString = $this->textTrait->truncateText($stringToTruncate, $limit, $break, $pad);
+		$truncatedString = $this->truncateText($stringToTruncate, $limit, $break, $pad);
 
 		$this->assertEquals($expected, $truncatedString);
 	}
@@ -260,7 +249,7 @@ final class TextTest extends TestCase
 	 */
 	public function testTimeElapsed(int $timeInSeconds, string $expected): void
 	{
-		$timeAgo = $this->textTrait->timeElapsed($timeInSeconds);
+		$timeAgo = $this->timeElapsed($timeInSeconds);
 
 		$this->assertEquals($expected, $timeAgo);
 	}
