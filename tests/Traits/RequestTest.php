@@ -30,7 +30,7 @@ final class RequestTest extends TestCase
 		$this->assertEquals($expected, $requestVariable);
 	}
 
-	public function getRequestProvider(): array
+	public static function getRequestProvider(): array
 	{
 		return [
 			'sanitized' =>
@@ -64,7 +64,7 @@ final class RequestTest extends TestCase
 		$this->assertEquals($expected, $requestVariable);
 	}
 
-	public function sanitizeProvider(): array
+	public static function sanitizeProvider(): array
 	{
 		return [
 			'sanitized' =>

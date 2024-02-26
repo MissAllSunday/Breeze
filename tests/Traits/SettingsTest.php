@@ -38,7 +38,7 @@ final class SettingsTest extends TestCase
 		$this->assertEquals($expected, $setting);
 	}
 
-	public function getSettingProvider(): array
+	public static function getSettingProvider(): array
 	{
 		return [
 			'string exists' =>
@@ -73,7 +73,7 @@ final class SettingsTest extends TestCase
 		$this->assertEquals($expected, $enable);
 	}
 
-	public function enableProvider(): array
+	public static function enableProvider(): array
 	{
 		return [
 			'setting enable' =>
@@ -99,7 +99,7 @@ final class SettingsTest extends TestCase
 		$this->assertEquals($expected, $modSetting);
 	}
 
-	public function modSettingProvider(): array
+	public static function modSettingProvider(): array
 	{
 		return [
 			'modSetting exists' =>
@@ -133,7 +133,7 @@ final class SettingsTest extends TestCase
 		$this->assertSame($expected, $global);
 	}
 
-	public function globalProvider(): array
+	public static function globalProvider(): array
 	{
 		return [
 			'global exists' =>

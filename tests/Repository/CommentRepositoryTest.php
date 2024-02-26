@@ -45,7 +45,7 @@ class CommentRepositoryTest extends TestCase
 		$this->assertEquals($newId, $newCommentId);
 	}
 
-	public function saveProvider(): array
+	public static function saveProvider(): array
 	{
 		return [
 			'happy happy joy joy' => [
@@ -90,7 +90,7 @@ class CommentRepositoryTest extends TestCase
 		$this->assertEquals($commentsByProfileWillReturn, $commentsByProfile);
 	}
 
-	public function getByProfileProvider(): array
+	public static function getByProfileProvider(): array
 	{
 		return [
 			'happy happy joy joy' => [
@@ -144,7 +144,7 @@ class CommentRepositoryTest extends TestCase
 		$this->assertEquals($commentsBystatusWillReturn, $commentsByStatus);
 	}
 
-	public function getByStatusProvider(): array
+	public static function getByStatusProvider(): array
 	{
 		return [
 			'happy happy joy joy' => [

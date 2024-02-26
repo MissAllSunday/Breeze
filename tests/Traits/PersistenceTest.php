@@ -43,7 +43,7 @@ final class PersistenceTest extends TestCase
 		$this->assertEquals($expectedResult, $setMessage);
 	}
 
-	public function setMessageProvider(): array
+	public static function setMessageProvider(): array
 	{
 		return [
 			'empty params' => [

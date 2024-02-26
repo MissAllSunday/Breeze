@@ -19,7 +19,7 @@ class JsonTest  extends TestCase
 		$this->assertEquals( $expected, $isJson);
 	}
 
-	public function isJsonProvider(): array
+	public static function isJsonProvider(): array
 	{
 		return [
 			'is json' =>

@@ -118,7 +118,7 @@ class StatusRepositoryTest extends TestCase
 		$this->assertEquals($newId, $newStatusId);
 	}
 
-	public function saveProvider(): array
+	public static function saveProvider(): array
 	{
 		return [
 			'happy happy joy joy' => [
@@ -189,7 +189,7 @@ class StatusRepositoryTest extends TestCase
 		$this->assertEquals($expectedResult, $statusByProfile);
 	}
 
-	public function getByProfileProvider(): array
+	public static function getByProfileProvider(): array
 	{
 		return [
 			'happy happy joy joy' => [
@@ -309,7 +309,7 @@ class StatusRepositoryTest extends TestCase
 		$this->assertEquals($expectedResult, $statusById);
 	}
 
-	public function getByIdProvider(): array
+	public static function getByIdProvider(): array
 	{
 		return [
 			'happy happy joy joy' => [
@@ -420,7 +420,7 @@ class StatusRepositoryTest extends TestCase
 		$this->assertEquals($expectedResult, $deleteById);
 	}
 
-	public function deleteByIdProvider(): array
+	public static function deleteByIdProvider(): array
 	{
 		return [
 			'happy happy joy joy' => [

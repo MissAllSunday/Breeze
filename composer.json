@@ -53,7 +53,8 @@
           "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix ./Sources --dry-run --verbose --show-progress=dots",
           "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix ./tests --dry-run --verbose --show-progress=dots"
         ],
-        "phpunit": "phpunit -c phpunit.xml.dist --bootstrap ./tests/bootstrap.php --testsuite Breeze",
+        "coverage": "XDEBUG_MODE=coverage phpunit -c phpunit.xml.dist --coverage-html=tests/log/coverage/",
+        "phpunit": "phpunit -c phpunit.xml.dist",
         "phpstan": "phpstan analyze --memory-limit=1G -c phpstan.neon",
         "phpcs": "phpcs --standard=./phpcs.xml --ignore=./tests/bootstrap.php --tab-width=4 ./Sources ./tests",
         "serve": "bin/server",

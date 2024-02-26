@@ -18,7 +18,7 @@ class PermissionsTest extends TestCase
 		$this->assertEquals($expectedResult, $isAllowedTo);
 	}
 
-	public function isAllowedToProvider(): array
+	public static function isAllowedToProvider(): array
 	{
 		return [
 			'nope' => [

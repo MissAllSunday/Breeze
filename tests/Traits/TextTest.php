@@ -32,7 +32,7 @@ final class TextTest extends TestCase
 		$this->assertEquals($expected, $text);
 	}
 
-	public function getSmfProvider(): array
+	public static function getSmfProvider(): array
 	{
 		return [
 			'text exists' =>
@@ -58,7 +58,7 @@ final class TextTest extends TestCase
 		$this->assertEquals($expected, $text);
 	}
 
-	public function getTextProvider(): array
+	public static function getTextProvider(): array
 	{
 		return [
 			'text exists' =>
@@ -84,7 +84,7 @@ final class TextTest extends TestCase
 		$this->assertEquals($expected, $parsedText);
 	}
 
-	public function parserTextProvider(): array
+	public static function parserTextProvider(): array
 	{
 		return [
 			'empty text' =>
@@ -129,7 +129,7 @@ final class TextTest extends TestCase
 		$this->assertEquals($expected, $commaSeparatedString);
 	}
 
-	public function commaSeparatedProvider(): array
+	public static function commaSeparatedProvider(): array
 	{
 		$dirtyString = 'QWE,"#$5,#$%V,B$%B&3,666';
 
@@ -184,7 +184,7 @@ final class TextTest extends TestCase
 		$this->assertEquals($expected, $formattedBytes);
 	}
 
-	public function formatBytesProvider(): array
+	public static function formatBytesProvider(): array
 	{
 		return [
 			'happy path' =>
@@ -217,7 +217,7 @@ final class TextTest extends TestCase
 		$this->assertEquals($expected, $truncatedString);
 	}
 
-	public function truncateTextProvider(): array
+	public static function truncateTextProvider(): array
 	{
 		return [
 			'happy path' =>
@@ -265,7 +265,7 @@ final class TextTest extends TestCase
 		$this->assertEquals($expected, $timeAgo);
 	}
 
-	public function timeElapsedProvider(): array
+	public static function timeElapsedProvider(): array
 	{
 		return [
 			'years ago' =>

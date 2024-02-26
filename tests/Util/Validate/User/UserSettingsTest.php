@@ -45,7 +45,7 @@ class UserSettingsTest extends TestCase
 		$this->assertEquals($userSettings->data, $data);
 	}
 
-	public function isValidProvider(): array
+	public static function isValidProvider(): array
 	{
 		return [
 			'default values' => [

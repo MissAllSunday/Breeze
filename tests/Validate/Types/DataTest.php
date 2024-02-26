@@ -28,7 +28,7 @@ class DataTest extends TestCase
 		$validateData->compare($defaultParams, $data);
 	}
 
-	public function commentProvider(): array
+	public static function commentProvider(): array
 	{
 		return [
 			'deleteCommentValid' => [
@@ -95,7 +95,7 @@ class DataTest extends TestCase
 		$validateData->compare($defaultParams, $data);
 	}
 
-	public function likesProvider(): array
+	public static function likesProvider(): array
 	{
 		return [
 			'likeValid' => [

@@ -51,7 +51,7 @@ class DeleteStatusTest extends TestCase
 		$this->assertEquals($deleteStatus->data, $data);
 	}
 
-	public function checkAllowProvider(): array
+	public static function checkAllowProvider(): array
 	{
 		return [
 			'deleteOwn' => [
@@ -106,7 +106,7 @@ class DeleteStatusTest extends TestCase
 		$this->assertEquals($deleteStatus->data, $data);
 	}
 
-	public function checkUserProvider(): array
+	public static function checkUserProvider(): array
 	{
 		return [
 			'validUsers' => [
