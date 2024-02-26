@@ -80,4 +80,4 @@ jobs:
       - name: Install dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
       - name: Test with php-cs-fixer
-        run: composer lint
+        run: composer lint:check
