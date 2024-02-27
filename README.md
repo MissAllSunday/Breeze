@@ -10,7 +10,7 @@ Comes with the following features:
 ###### Requirements:
 
 - SMF 2.1.x
-- PHP 8.1
+- PHP 8.2
 
 ###### Features:
 
@@ -18,7 +18,7 @@ Comes with the following features:
 - Users individual settings, each user defines her/his own settings.
 - Mentions for status and comments.
 - Notifications for several features.
-- General wall page for displaying your buddie's latest activity.
+- General wall page for displaying your buddies latest activity.
 
 The mod uses the following scripts:
 
@@ -29,10 +29,12 @@ The mod uses the following scripts:
 composer test
 ```
 
+
+
 ##### Generate an optimized SMF package
 ```bash
 composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader &&
-zip -r Breeze breezeVendor/ Sources/ Themes/ tasks/ hooks.php install.php License package-info.xml README.txt remove.php
+zip -r Breeze breezeVendor/ Sources/ Themes/ tasks/ install.php installCheck.php License package-info.xml README.md
 ```
 
 ###### Notes:

@@ -7,7 +7,7 @@
 	<type>modification</type>
 
 	<install for="2.1 - 2.1.99">
-		<readme parsebbc="true">README.txt</readme>
+		<readme>README.md</readme>
 		<license type="inline" parsebbc="false">
 This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -16,6 +16,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 		<credits url="https://missallsunday.com" license="MPL 2.0" copyright="Michel Mendiola" licenseurl="https://www.mozilla.org/MPL/2.0/">
 			Breeze mod
 		</credits>
+        <code>installCheck.php</code>
 		<database>install.php</database>
 		<require-dir name="Themes" destination="$boarddir">Theme files</require-dir>
 		<require-dir name="breezeVendor" destination="$boarddir">Dependencies files</require-dir>
