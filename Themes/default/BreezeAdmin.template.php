@@ -28,7 +28,7 @@ function template_main(): void
 					</h3>
 				</div>
 				<div id="smfAnnouncements" class="information">
-					
+
 				</div>
 			</div>';
 
@@ -106,26 +106,24 @@ function template_main(): void
       let releasesNotFound = "'. $txt['Breeze_feed_error_message'] .'";
       let app = document.querySelector("#smfAnnouncements");
       app.append(releasesNotFound);
-      
+
       fetch(feedURL).then(function (response) {
 		return response.json();
 	  }).then(function (data) {
 		addReleases(data, app);
 	  });
-    
+
     function addReleases(releases, app)
     {
-	  let releasesNotFound = "'. $txt['Breeze_feed_error_message'] .'";
-      let smfAnnouncements = releasesNotFound;
 	  let dl = document.createElement("dl");
 	  app.innerHTML = ""
-	  
+
 	  for (const [key, release] of Object.entries(releases).slice(0, 5)) {
- 			let dt = document.createElement("dt");	
+ 			let dt = document.createElement("dt");
  			let dd = document.createElement("dd");
  			let anchor = document.createElement("a");
  			let date = new Date(release.published_at)
- 			
+
  			anchor.innerText = 	release.name;
             anchor.href = release.html_url;
             dt.append(anchor)
@@ -134,12 +132,10 @@ function template_main(): void
  			dl.append(dt);
  			dl.append(dd);
 		}
-      
+
       app.append(dl);
     }
-    </script>
-
-';
+    </script>';
 }
 
 
