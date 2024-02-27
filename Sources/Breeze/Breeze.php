@@ -99,7 +99,7 @@ class Breeze
 			$profileAreas['info']['areas']['summary'] = [
 				'label' => $this->getText('general_wall'),
 				'icon' => 'smiley',
-				'function' => [$wallController, 'dispatch'],
+				'function' => fn ($wallController) => $wallController->dispatch(),
 				'permission' => [
 					'own' => 'is_not_guest',
 					'any' => 'profile_view',
@@ -133,7 +133,7 @@ class Breeze
 			$profileAreas['breeze_profile']['areas']['breezeSettings'] = [
 				'label' => $this->getText(ProfileService::AREA . '_main_title'),
 				'icon' => 'maintain',
-				'function' => [$settingsController, 'dispatch'],
+				'function' => fn ($settingsController) => $settingsController->dispatch(),
 				'enabled' => $context['user']['is_owner'],
 				'permission' => [
 					'own' => 'is_not_guest',
@@ -143,7 +143,7 @@ class Breeze
 
 			$profileAreas['breeze_profile']['areas']['breezeAlerts'] = [
 				'label' => $this->getText('user_settings_name_alerts'),
-				'function' => [$alertsController, 'dispatch'],
+				'function' => fn ($alertsController) => $alertsController->dispatch(),
 				'enabled' => $context['user']['is_owner'],
 				'icon' => 'maintain',
 				'subsections' => [
