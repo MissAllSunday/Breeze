@@ -38,6 +38,7 @@ class Breeze
 	public const REACT_DOM_VERSION = '18.2.0';
 	public const REACT_VERSION = '18.2.0';
 	public const REACT_HASH = '20142cbb';
+	public const EDITOR_VERSION = '2.45.1';
 	public const ACTIONS = [
 		'breezeStatus',
 		'breezeComment',
@@ -237,8 +238,8 @@ class Breeze
 			$likesController = $this->container->get(LikesController::class);
 			$wallController = $this->container->get(WallController::class);
 
-			$actions['breezeStatus'] = [false, [$statusController, 'dispatch']];
-			$actions['breezeComment'] = [false, [$commentController, 'dispatch']];
+			$actions['breezeStatus'] = [false, fn () => $statusController->dispatch()];
+			$actions['breezeComment'] = [false, fn () => $commentController->dispatch()];
 			$actions['wall'] = [false, [$wallController, 'dispatch']];
 			$actions['breezeBuddy'] = [false, BuddyController::class . '::dispatch#'];
 			$actions['breezeLike'] = [false, [$likesController, 'dispatch']];
