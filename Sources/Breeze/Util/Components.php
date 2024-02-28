@@ -12,17 +12,15 @@ class Components
 	use TextTrait;
 
 	private const FOLDER = 'breezeComponents/';
-
 	private const COMPONENTS = [];
-
 	private const CDN_JS = [
 		'react' => 'https://unpkg.com/react@' . Breeze::REACT_VERSION . '/umd/react.production.min.js',
 		'reactDom' => 'https://unpkg.com/react-dom@' . Breeze::REACT_DOM_VERSION . '/umd/react-dom.production.min.js',
+		'editor' => 'https://cdn.jsdelivr.net/npm/suneditor@'. Breeze::EDITOR_VERSION .'/dist/suneditor.min.js',
 	];
 
 	private const CDN_CSS = [
-		'editor' => 'https://cdn.jsdelivr.net/npm/suneditor@2.41.3/dist/css/suneditor.min.css',
-		//		'noti' => 'https://cdn.jsdelivr.net/npm/vue-toast-notification/dist/theme-default.css',
+		'editor' => 'https://cdn.jsdelivr.net/npm/suneditor@'. Breeze::EDITOR_VERSION .'/dist/css/suneditor.min.css',
 	];
 
 	public function loadUIVars(array $vars = []): void
