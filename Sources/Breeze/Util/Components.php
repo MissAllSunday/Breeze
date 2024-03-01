@@ -16,11 +16,11 @@ class Components
 	private const CDN_JS = [
 		'react' => 'https://unpkg.com/react@' . Breeze::REACT_VERSION . '/umd/react.production.min.js',
 		'reactDom' => 'https://unpkg.com/react-dom@' . Breeze::REACT_DOM_VERSION . '/umd/react-dom.production.min.js',
-		'editor' => 'https://cdn.jsdelivr.net/npm/suneditor@'. Breeze::EDITOR_VERSION .'/dist/suneditor.min.js',
+		'editor' => 'https://cdn.jsdelivr.net/npm/suneditor@' . Breeze::EDITOR_VERSION . '/dist/suneditor.min.js',
 	];
 
 	private const CDN_CSS = [
-		'editor' => 'https://cdn.jsdelivr.net/npm/suneditor@'. Breeze::EDITOR_VERSION .'/dist/css/suneditor.min.css',
+		'editor' => 'https://cdn.jsdelivr.net/npm/suneditor@' . Breeze::EDITOR_VERSION . '/dist/css/suneditor.min.css',
 	];
 
 	public function loadUIVars(array $vars = []): void
