@@ -45,7 +45,7 @@ export default function Wall(props: WallProps): React.ReactElement {
 
   return (
     <div>
-      <Editor saveContent={createStatus} />
+      <Editor saveContent={createStatus} isFull={true} />
       <ul className="status">
         {statusList.map((singleStatus: StatusType) => (
           <Status

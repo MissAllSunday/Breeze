@@ -1,9 +1,16 @@
 import React, { useCallback, useState } from 'react';
 
+import { getEditor } from '../api/Editor';
 import smfVars from '../DataSource/SMF';
 
-const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: string) => void }) => {
+const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: string) => void, isFull: boolean }) => {
   const [content, setContent] = useState('');
+
+  if (props.isFull) {
+    const fullEditor = getEditor().then((editorResponse: any) => {
+      console.log(editorResponse);
+    });
+  }
 
   const handleClick = useCallback(() => {
     if (!window.confirm(smfVars.youSure)) {
@@ -11,7 +18,7 @@ const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: st
     }
 
     props.saveContent(content);
-    const input = (document.getElementById('content') as HTMLInputElement);
+    const input = (document.getElementById('Breeze') as HTMLInputElement);
     input.value = '';
   }, [props, content]);
 

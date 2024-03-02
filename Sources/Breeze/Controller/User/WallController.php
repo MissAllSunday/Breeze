@@ -15,9 +15,11 @@ class WallController extends BaseController implements ControllerInterface
 {
 	public const ACTION_GENERAL = 'wall';
 	public const ACTION_PROFILE = 'profile';
+	public const ACTION_EDITOR = 'editor';
 	public const SUB_ACTIONS = [
 		self::ACTION_GENERAL,
 		self::ACTION_PROFILE,
+		self::ACTION_EDITOR,
 	];
 
 	public function __construct(
@@ -53,6 +55,12 @@ class WallController extends BaseController implements ControllerInterface
 		$this->render(__FUNCTION__);
 
 		$this->profileService->loadComponents($profileId);
+	}
+
+	public function editor(): void
+	{
+		$this->profileService->setEditor();
+		$this->render(__FUNCTION__);
 	}
 
 	public function getActionVarName():string
