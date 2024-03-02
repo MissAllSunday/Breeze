@@ -37,8 +37,7 @@ class Breeze
 	public const SUPPORT_URL = 'https://missallsunday.com';
 	public const REACT_DOM_VERSION = '18.2.0';
 	public const REACT_VERSION = '18.2.0';
-	public const REACT_HASH = '3e5b490d';
-	public const EDITOR_VERSION = '2.45.1';
+	public const REACT_HASH = '6e08e84d';
 	public const ACTIONS = [
 		'breezeStatus',
 		'breezeComment',
@@ -270,6 +269,10 @@ class Breeze
 		}
 	}
 
+	/**
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
 	public function adminMenuWrapper(array &$adminMenu): void
 	{
 		/** @var AdminController $adminController */

@@ -20,5 +20,7 @@ interface ProfileServiceInterface
 
 	public function loadComponents(int $profileId = 0): void;
 
+	public function setEditor(): void;
+
 	public function stalkingCheck(int $userStalkedId = 0): bool;
 }
