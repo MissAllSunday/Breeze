@@ -22,3 +22,4 @@ parameters:
     - '/Function template_breezeForm_Display not found./'
     - '/Function addJavaScriptVar not found./'
     - '/Function tokenTxtReplace not found./'
+    - '/Function create_control_richedit not found./'
