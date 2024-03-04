@@ -33,8 +33,7 @@ composer test
 
 ##### Generate an optimized SMF package
 ```bash
-composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader &&
-zip -r Breeze breezeVendor/ Sources/ Themes/ tasks/ install.php installCheck.php License package-info.xml README.md
+chmod +x generate_zip.sh && ./generate_zip.sh
 ```
 
 ###### Notes:
