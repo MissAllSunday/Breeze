@@ -1,5 +1,5 @@
 import { StatusListType, StatusType, WallProps } from 'breezeTypes';
-import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 import {
@@ -11,16 +11,29 @@ import Loading from './components/Loading';
 import Status from './components/Status';
 
 export default function Wall(props: WallProps): React.ReactElement {
-  const [statusList, setStatusList] = useState(props.statusList);
-  // const [isLoading, setIsLoading] = useState(true);
+  const [statusList, setStatusList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    getStatus(props.wallType)
+      .then((statusListResponse: ServerGetStatusResponse) => {
+        const fetchedStatusList: StatusListType = Object.values(statusListResponse.content.data);
+        setStatusList(fetchedStatusList);
+      })
+      .catch(exception => {
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [props.wallType]);
 
   const createStatus = useCallback((content: string) => {
-    // setIsLoading(true);
+    setIsLoading(true);
     postStatus(content)
       .then((response: ServerPostStatusResponse) => {
         const newStatus = Object.values(response.content);
         for (const key in newStatus) {
-          // setStatus([...statusListState, newStatus[key]]);
+          // setStatusList([...statusList, newStatus[key]]);
         }
         toast.success(response.message);
       }).catch((exception) => {
@@ -47,12 +60,12 @@ export default function Wall(props: WallProps): React.ReactElement {
     <div>
       <Editor saveContent={createStatus} isFull={true} />
       <ul className="status">
-        {statusList.map((singleStatus: StatusType) => (
-          <Status
-            key={singleStatus.id}
-            status={singleStatus}
-            removeStatus={removeStatus}
-          />
+        {isLoading ? <Loading /> : statusList.map((singleStatus: StatusType) => (
+            <Status
+                key={singleStatus.id}
+                status={singleStatus}
+                removeStatus={removeStatus}
+            />
         ))}
       </ul>
     </div>
