@@ -4,7 +4,7 @@ const action = 'breeze';
 
 export const getEditor = async (): Promise<HTMLCollection> => {
   const editorResults = await fetch(baseUrl(action, 'editor'), {
-    method: 'GET',
+    method: 'POST',
   });
 
   return editorResults.json();
