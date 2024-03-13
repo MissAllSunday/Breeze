@@ -23,6 +23,52 @@ function template_wall(): void
 
 function template_showEditor(): void
 {
+	global $context;
+
+	$template = function ($name, $type) use ($context) {
+		$fileKey = 'smf_' . $name . '_' . $type;
+		$type = $type === 'js' ? 'javascript' : $type;
+		$fileUrl = $context[$type . '_files'][$fileKey]['fileUrl'];
+		$seed =  $context[$type . '_files'][$fileKey]['options']['seed'] ?? '';
+		$format = $type === 'css' ?
+			"<link rel='stylesheet' href='%s'>" :
+			"<script src='%s'></script>";
+
+		return sprintf($format, $fileUrl . $seed);
+	};
+
+	$jsFiles = implode(\PHP_EOL, array_map(function ($name) use ($template) {
+		return $template($name, 'js');
+	}, [
+		'jquery',
+		'script',
+		'theme',
+		'editor',
+		'sceditor_bbcode',
+		'sceditor_smf',
+	]));
+
+	$cssFiles = implode(\PHP_EOL, array_map(function ($name) use ($template) {
+		return $template($name, 'css');
+	}, [
+		'index',
+		'responsive',
+		'jquery_sceditor',
+	]));
+
+	echo '
+<html>
+	<head>
+			' . $jsFiles . '
+			' . $cssFiles . '
+	</head>
+	<body>
+	';
+
 	echo  template_control_richedit(Breeze::NAME, 'smileyBox_message', 'bbcBox_message');
 	echo template_javascript(true);
+
+	echo '
+	</body>
+</html>';
 }

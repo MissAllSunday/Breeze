@@ -16,6 +16,9 @@ class EditorService implements EditorServiceInterface
 	public function setEditor(): void
 	{
 		$this->requireOnce('Subs-Editor');
+		$context = $this->global('context');
+		$context['template_layers'] = [];
+		$this->setGlobal('context', $context);
 
 		create_control_richedit([
 			'id' => Breeze::NAME,
