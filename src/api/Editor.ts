@@ -1,9 +1,10 @@
-import { baseConfig, baseUrl } from './Api';
+import { baseUrl } from './Api';
 
-const action = 'breeze';
+const action = 'breezeEditor';
+const subAction = 'showEditor';
 
 export const getEditor = async (): Promise<HTMLCollection> => {
-  const editorResults = await fetch(baseUrl(action, 'editor'), {
+  const editorResults = await fetch(baseUrl(action, subAction), {
     method: 'POST',
   });
 

@@ -4,83 +4,27 @@ declare(strict_types=1);
 
 namespace Breeze\Controller;
 
-use Breeze\Breeze;
-use Breeze\Service\Actions\AdminServiceInterface;
-use Breeze\Traits\PersistenceTrait;
+use Breeze\Service\EditorServiceInterface;
 
 class EditorController extends BaseController implements ControllerInterface
 {
-	use PersistenceTrait;
 
-	public const ACTION_MAIN = 'get';
+	public const ACTION_MAIN = 'showEditor';
 
 	public const SUB_ACTIONS = [
 		self::ACTION_MAIN,
 	];
 
 	public function __construct(
-		protected AdminServiceInterface $adminService
+		protected EditorServiceInterface $editorService
 	) {
 	}
 
-	public function dispatch(): void
+	public function showEditor(): void
 	{
-		$this->adminService->init($this->getSubActions());
+		$this->editorService->setEditor();
 
-		$this->subActionCall();
-	}
-
-	public function main(): void
-	{
-		$this->render(__FUNCTION__, [
-			Breeze::NAME => [
-				'credits' => Breeze::credits(),
-				'version' => Breeze::VERSION,
-				'react' => Breeze::REACT_VERSION,
-			],
-		]);
-
-		$this->adminService->loadComponents(['adminMain', 'feed']);
-	}
-
-	public function settings(): void
-	{
-		$this->render(__FUNCTION__, [], 'show_settings');
-
-		$saving = $this->isRequestSet('save');
-
-		$this->adminService->configVars($saving);
-
-		if ($saving) {
-			$this->adminService->redirect(AdminServiceInterface::POST_URL . __FUNCTION__);
-		}
-	}
-
-	public function permissions(): void
-	{
-		$this->render(__FUNCTION__, [], 'show_settings');
-
-		$saving = $this->isRequestSet('save');
-
-		$this->adminService->permissionsConfigVars($saving);
-
-		if ($saving) {
-			$this->adminService->redirect(AdminServiceInterface::POST_URL . __FUNCTION__);
-		}
-	}
-
-	public function donate(): void
-	{
 		$this->render(__FUNCTION__);
-	}
-
-	public function render(string $subActionName, array $templateParams = [], string $smfTemplate = ''): void
-	{
-		$this->adminService->defaultSubActionContent(
-			$subActionName,
-			$templateParams,
-			$smfTemplate
-		);
 	}
 
 	public function getSubActions(): array
