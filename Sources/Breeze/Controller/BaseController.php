@@ -61,10 +61,6 @@ abstract class BaseController implements ControllerInterface
 		$subActions = $this->getSubActions();
 		$subAction = $this->getRequest($this->getActionVarName(), $this->getMainAction());
 
-		if ($subAction === 'editor') {
-			var_dump($subAction);var_dump($subActions);die;
-		}
-
 		if (in_array($subAction, $subActions)) {
 			$this->{$subAction}();
 		} else {
