@@ -21,7 +21,8 @@ function template_wall(): void
 	</div>';
 }
 
-function template_editor(): void
+function template_showEditor(): void
 {
 	echo  template_control_richedit(Breeze::NAME, 'smileyBox_message', 'bbcBox_message');
+	echo template_javascript(true);
 }

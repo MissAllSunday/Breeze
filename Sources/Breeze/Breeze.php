@@ -10,6 +10,7 @@ use Breeze\Controller\API\CommentController;
 use Breeze\Controller\API\LikesController;
 use Breeze\Controller\API\StatusController;
 use Breeze\Controller\BuddyController;
+use Breeze\Controller\EditorController;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
@@ -37,13 +38,14 @@ class Breeze
 	public const SUPPORT_URL = 'https://missallsunday.com';
 	public const REACT_DOM_VERSION = '18.2.0';
 	public const REACT_VERSION = '18.2.0';
-	public const REACT_HASH = '3770a4ba';
+	public const REACT_HASH = '77dbe6a8';
 	public const ACTIONS = [
 		'breezeStatus',
 		'breezeComment',
 		'wall',
 		'breezeBuddy',
 		'breezeLike',
+		'breezeEditor',
 	];
 
 	protected Container $container;
@@ -236,14 +238,14 @@ class Breeze
 			$commentController = $this->container->get(CommentController::class);
 			$likesController = $this->container->get(LikesController::class);
 			$wallController = $this->container->get(WallController::class);
-			$editorController = $this->container->get()
+			$editorController = $this->container->get(EditorController::class);
 
 			$actions['breezeStatus'] = [false, fn () => $statusController->dispatch()];
 			$actions['breezeComment'] = [false, fn () => $commentController->dispatch()];
 			$actions['wall'] = [false, [$wallController, 'dispatch']];
 			$actions['breezeBuddy'] = [false, BuddyController::class . '::dispatch#'];
 			$actions['breezeLike'] = [false, [$likesController, 'dispatch']];
-			$actions['breezeEditor'] = [false, fn () => $statusController->dispatch()];
+			$actions['breezeEditor'] = [false, fn () => $editorController->dispatch()];
 		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
 			log_error($exception->getMessage());
 		}

@@ -16,13 +16,16 @@ for eachfile in $JS_FILE
 do
 basename "$eachfile"
 f="$(basename -s .js -- "$eachfile")"
+
 delimiter="."
 hash="${f#*${delimiter}}"
 hash="${hash%${delimiter}*}"
 
 done
 
-fileLine=$(sed "40q;d" "Sources/Breeze/Breeze.php")
+mainBreezeFilePath="Sources/Breeze/Breeze.php"
+lineNum="$(grep -n "REACT_HASH" ${mainBreezeFilePath} | head -n 1 | cut -d: -f1)"
+fileLine=$(sed "${lineNum}q;d" ${mainBreezeFilePath})
 delimiter="'"
 old_hash="${fileLine#*${delimiter}}"
 old_hash="${old_hash%${delimiter}*}"
