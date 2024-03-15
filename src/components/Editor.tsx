@@ -1,14 +1,17 @@
-import React, { useCallback, useState } from 'react';
+import React, { createElement, useCallback, useState } from 'react';
 
 import { getEditor } from '../api/Editor';
 import smfVars from '../DataSource/SMF';
+import Modal from './Modal';
 
 const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: string) => void, isFull: boolean }) => {
   const [content, setContent] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [modalContent, setModalContent] = useState(HTMLDivElement);
 
   if (props.isFull) {
-    const fullEditor = getEditor().then((editorResponse: any) => {
-      console.log(editorResponse);
+    const fullEditor = getEditor().then((editorResponse: string) => {
+      // setModalContent(document.getElementById('editor_container'));
     });
   }
 
@@ -24,7 +27,26 @@ const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: st
 
   const handleContent = useCallback((event: any) => setContent(event.target.value), []);
 
-  return (
+  const onCloseModal = useCallback(
+    () => {
+      setShowModal(false);
+    },
+    [],
+  );
+
+  return (props.isFull ? (
+      <div>
+          <Modal
+              onClose={onCloseModal}
+              show={showModal}
+              content={{
+                header: 'some header here',
+                body: modalContent,
+              }}
+          />
+          <button onClick={() => setShowModal(true)}>click to open modal</button>
+      </div>
+  ) :
     <div className="post_content">
       <textarea id="content" name="content" onChange={handleContent} className="editor" />
       <span id="post_confirm_buttons">
