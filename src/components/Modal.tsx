@@ -36,8 +36,7 @@ const Modal: React.FunctionComponent<ModalProps> = (props: ModalProps) => {
           {props.content.header}
           <a className="main_icons hide_popup" onClick={handleClose} title={smfTextVars.general.close} href="/#"> </a>
         </div>
-        <div className="popup_content clear">
-          {props.content.body}
+        <div className="popup_content clear" dangerouslySetInnerHTML={{ __html: props.content.body }}>
         </div>
       </div>
     </div>

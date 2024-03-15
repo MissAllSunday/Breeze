@@ -51,6 +51,11 @@ class ProfileService implements ProfileServiceInterface
 		$this->components->loadCSSFile('breeze.css', [], 'smf_breeze');
 	}
 
+	public function setEditor(): void
+	{
+
+	}
+
 	public function getCurrentUserInfo(): array
 	{
 		return $this->global('user_info');
@@ -175,20 +180,5 @@ class ProfileService implements ProfileServiceInterface
 		}
 
 		return false;
-	}
-
-	public function setEditor(): void
-	{
-		$this->requireOnce('Subs-Editor');
-
-		create_control_richedit([
-			'id' => Breeze::NAME,
-			'value' => '',
-			'labels' => [
-				'post_button' => $this->getText('general_send'),
-			],
-			'preview_type' => 2,
-			'required' => true,
-		]);
 	}
 }
