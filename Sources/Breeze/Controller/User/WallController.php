@@ -15,6 +15,7 @@ class WallController extends BaseController implements ControllerInterface
 {
 	public const ACTION_GENERAL = 'wall';
 	public const ACTION_PROFILE = 'profile';
+
 	public const SUB_ACTIONS = [
 		self::ACTION_GENERAL,
 		self::ACTION_PROFILE,

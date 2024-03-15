@@ -51,6 +51,11 @@ class ProfileService implements ProfileServiceInterface
 		$this->components->loadCSSFile('breeze.css', [], 'smf_breeze');
 	}
 
+	public function setEditor(): void
+	{
+
+	}
+
 	public function getCurrentUserInfo(): array
 	{
 		return $this->global('user_info');

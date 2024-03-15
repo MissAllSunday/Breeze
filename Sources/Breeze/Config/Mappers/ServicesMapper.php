@@ -7,6 +7,7 @@ namespace Breeze\Config\Mapper;
 
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminService;
+use Breeze\Service\EditorService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\ProfileService;
 use Breeze\Service\ValidateService;
@@ -24,6 +25,9 @@ return [
 	],
 	'service.permissions' => [
 		'class' => PermissionsService::class,
+	],
+	'service.editor' => [
+		'class' => EditorService::class,
 	],
 	'service.validate' => [
 		'class' => ValidateService::class,

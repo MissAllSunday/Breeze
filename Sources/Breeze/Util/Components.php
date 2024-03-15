@@ -12,17 +12,10 @@ class Components
 	use TextTrait;
 
 	private const FOLDER = 'breezeComponents/';
-
 	private const COMPONENTS = [];
-
 	private const CDN_JS = [
 		'react' => 'https://unpkg.com/react@' . Breeze::REACT_VERSION . '/umd/react.production.min.js',
 		'reactDom' => 'https://unpkg.com/react-dom@' . Breeze::REACT_DOM_VERSION . '/umd/react-dom.production.min.js',
-	];
-
-	private const CDN_CSS = [
-		'editor' => 'https://cdn.jsdelivr.net/npm/suneditor@2.41.3/dist/css/suneditor.min.css',
-		//		'noti' => 'https://cdn.jsdelivr.net/npm/vue-toast-notification/dist/theme-default.css',
 	];
 
 	public function loadUIVars(array $vars = []): void
@@ -40,7 +33,6 @@ class Components
 		$componentsToLoad = array_intersect(self::COMPONENTS, $components);
 
 		$this->loadJsDependencies();
-		$this->loadCssDependencies();
 
 		foreach ($componentsToLoad as $component) {
 			$this->loadJavaScriptFile(self::FOLDER . $component . '.js', [
@@ -120,15 +112,6 @@ class Components
 				'external' => true,
 				'defer' => false,
 			], strtolower(Breeze::PATTERN . $jsDependency));
-		}
-	}
-
-	protected function loadCssDependencies(): void
-	{
-		foreach (self::CDN_CSS as $cssDependency) {
-			$this->loadCSSFile($cssDependency, [
-				'external' => true,
-			], strtolower(Breeze::PATTERN . $cssDependency));
 		}
 	}
 }
