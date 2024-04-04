@@ -17,7 +17,7 @@ function template_profile(): void
 	echo sprintf('
 		<span id="post_confirm_buttons">
 			<input type="submit" value="%s" name="post" tabindex="2" id="smfEditor" accesskey="s" class="button">
-		</span>', $txt['Breeze_general_save']);
+		</span>', $txt['Breeze_general_send']);
 
 	echo '</div>';
 	echo '
