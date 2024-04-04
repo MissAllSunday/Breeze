@@ -9,9 +9,19 @@ use Breeze\Breeze;
  */
 function template_profile(): void
 {
+	echo '<div id="editor_container">';
+	echo  template_control_richedit(Breeze::NAME, 'smileyBox_message', 'bbcBox_message');
+
+	echo '
+			<span id="post_confirm_buttons">
+				', template_control_richedit_buttons(Breeze::NAME), '
+			</span>';
+
+	echo '</div>';
 	echo '
 	<div id="root" class="breeze_main_section" wallType="profile">
 	</div>';
+	echo template_javascript(true);
 }
 
 function template_wall(): void
@@ -23,7 +33,6 @@ function template_wall(): void
 	echo '
 	<div id="root" class="breeze_main_section" wallType="general">
 	</div>';
-	echo template_javascript(true);
 }
 
 function template_showEditor(): void

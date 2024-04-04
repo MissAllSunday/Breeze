@@ -53,7 +53,19 @@ class ProfileService implements ProfileServiceInterface
 
 	public function setEditor(): void
 	{
+		$this->requireOnce('Subs-Editor');
 
+		create_control_richedit([
+			'id' => Breeze::NAME,
+			'value' => '',
+			'labels' => [
+				'post_button' => $this->getText('general_save'),
+			],
+			'height' => '150px',
+			'width' => '100%',
+			'preview_type' => 0,
+			'required' => true,
+		]);
 	}
 
 	public function getCurrentUserInfo(): array
