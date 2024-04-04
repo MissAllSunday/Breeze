@@ -2,20 +2,17 @@
 
 declare(strict_types=1);
 
-
 namespace Breeze\Controller\User;
 
 use Breeze\Controller\BaseController;
-use Breeze\Controller\ControllerInterface;
 use Breeze\Service\ProfileServiceInterface;
 use Breeze\Util\Error;
 use Breeze\Util\Response;
 
-class WallController extends BaseController implements ControllerInterface
+class WallController extends BaseController
 {
 	public const ACTION_GENERAL = 'wall';
 	public const ACTION_PROFILE = 'profile';
-
 	public const SUB_ACTIONS = [
 		self::ACTION_GENERAL,
 		self::ACTION_PROFILE,
@@ -50,6 +47,8 @@ class WallController extends BaseController implements ControllerInterface
 		if (!$this->profileService->isAllowedToSeePage($profileSettings, $profileId, $currentUserInfo['id'])) {
 			Error::show('error_no_access');
 		}
+
+		$this->profileService->setEditor();
 
 		$this->render(__FUNCTION__);
 

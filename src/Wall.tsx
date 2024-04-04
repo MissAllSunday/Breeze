@@ -6,9 +6,9 @@ import {
   deleteStatus,
   getStatus, postStatus, ServerGetStatusResponse, ServerPostStatusResponse,
 } from './api/StatusApi';
-import Editor from './components/Editor';
 import Loading from './components/Loading';
 import Status from './components/Status';
+import smfTextVars from './DataSource/Txt';
 
 export default function Wall(props: WallProps): React.ReactElement {
   const [statusList, setStatusList] = useState([]);
@@ -20,8 +20,7 @@ export default function Wall(props: WallProps): React.ReactElement {
         const fetchedStatusList: StatusListType = Object.values(statusListResponse.content.data);
         setStatusList(fetchedStatusList);
       })
-      .catch(exception => {
-      })
+      .catch(exception => {})
       .finally(() => {
         setIsLoading(false);
       });
@@ -39,7 +38,7 @@ export default function Wall(props: WallProps): React.ReactElement {
       }).catch((exception) => {
         toast.error(exception.toString());
       }).finally(() => {
-      // setIsLoading(false);
+        setIsLoading(false);
       });
   }, []);
 
@@ -58,7 +57,7 @@ export default function Wall(props: WallProps): React.ReactElement {
 
   return (
     <div>
-      <Editor saveContent={createStatus} isFull={true} />
+        {statusList.length === 0 && !isLoading ? <div className={'noticebox'}> {smfTextVars.error.noStatus} </div> : ''}
       <ul className="status">
         {isLoading ? <Loading /> : statusList.map((singleStatus: StatusType) => (
             <Status

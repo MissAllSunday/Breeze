@@ -2,6 +2,7 @@ import { StatusListType } from 'breezeTypes';
 import { useCallback } from 'react';
 
 import smfVars from '../DataSource/SMF';
+import smfTextVars from '../DataSource/Txt';
 import { baseConfig, baseUrl } from './Api';
 
 export interface ServerDeleteStatusResponse {
@@ -23,14 +24,18 @@ export interface ServerGetStatusResponse {
 const action = 'breezeStatus';
 
 export const getStatus = async (type: string): Promise<StatusListType> => {
-  const statusResults = await fetch(baseUrl(action, type), {
+  const response = await fetch(baseUrl(action, type), {
     method: 'POST',
     body: JSON.stringify(baseConfig({
       wallId: smfVars.wallId,
     })),
   });
 
-  return statusResults.json();
+  if (response.ok) {
+    return response.json();
+  }
+
+  throw new Error(smfTextVars.error.noStatus);
 };
 
 export const deleteStatus = async (statusId: number): Promise<ServerDeleteStatusResponse> => {
