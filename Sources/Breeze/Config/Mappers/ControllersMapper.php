@@ -9,7 +9,6 @@ use Breeze\Controller\AdminController;
 use Breeze\Controller\API\CommentController;
 use Breeze\Controller\API\LikesController;
 use Breeze\Controller\API\StatusController;
-use Breeze\Controller\EditorController;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
@@ -18,7 +17,6 @@ use Breeze\Repository\LikeRepository;
 use Breeze\Repository\StatusRepository;
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminService;
-use Breeze\Service\EditorService;
 use Breeze\Service\ProfileService;
 use Breeze\Util\Form\UserSettingsBuilder;
 use Breeze\Util\Response;
@@ -77,12 +75,6 @@ return [
 			LikeRepository::class,
 			ValidateLikes::class,
 			Response::class,
-		],
-	],
-	'controller.editor' => [
-		'class' => EditorController::class,
-		'arguments' => [
-			EditorService::class,
 		],
 	],
 ];

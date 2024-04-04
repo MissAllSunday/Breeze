@@ -10,7 +10,6 @@ use Breeze\Controller\API\CommentController;
 use Breeze\Controller\API\LikesController;
 use Breeze\Controller\API\StatusController;
 use Breeze\Controller\BuddyController;
-use Breeze\Controller\EditorController;
 use Breeze\Controller\User\Settings\AlertsController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
@@ -45,7 +44,6 @@ class Breeze
 		'wall',
 		'breezeBuddy',
 		'breezeLike',
-		'breezeEditor',
 	];
 
 	protected Container $container;
@@ -238,14 +236,12 @@ class Breeze
 			$commentController = $this->container->get(CommentController::class);
 			$likesController = $this->container->get(LikesController::class);
 			$wallController = $this->container->get(WallController::class);
-			$editorController = $this->container->get(EditorController::class);
 
 			$actions['breezeStatus'] = [false, fn () => $statusController->dispatch()];
 			$actions['breezeComment'] = [false, fn () => $commentController->dispatch()];
 			$actions['wall'] = [false, [$wallController, 'dispatch']];
 			$actions['breezeBuddy'] = [false, BuddyController::class . '::dispatch#'];
 			$actions['breezeLike'] = [false, [$likesController, 'dispatch']];
-			$actions['breezeEditor'] = [false, fn () => $editorController->dispatch()];
 		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
 			log_error($exception->getMessage());
 		}
