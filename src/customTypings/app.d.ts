@@ -18,7 +18,10 @@ declare module 'breezeTypes' {
 
   interface WallProps {
     wallType: string,
-    pagination: number
+    pagination: number,
+    smfEditor: {
+      instance: function
+    }
   }
 }
 

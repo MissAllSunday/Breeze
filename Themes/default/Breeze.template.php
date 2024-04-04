@@ -9,13 +9,15 @@ use Breeze\Breeze;
  */
 function template_profile(): void
 {
+	global $txt;
+
 	echo '<div id="editor_container">';
 	echo  template_control_richedit(Breeze::NAME, 'smileyBox_message', 'bbcBox_message');
 
-	echo '
-			<span id="post_confirm_buttons">
-				', template_control_richedit_buttons(Breeze::NAME), '
-			</span>';
+	echo sprintf('
+		<span id="post_confirm_buttons">
+			<input type="submit" value="%s" name="post" tabindex="2" id="smfEditor" accesskey="s" class="button">
+		</span>', $txt['Breeze_general_save']);
 
 	echo '</div>';
 	echo '
