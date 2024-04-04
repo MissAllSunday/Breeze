@@ -20,6 +20,8 @@ const isCurrentUserOwner = Boolean(window.breezeIsCurrentUserOwner ?? process.en
 const smfImagesUrl: string = window.smf_images_url ?? process.env.REACT_APP_DEV_THEME_URL;
 // @ts-expect-error Backend variable
 const pagination: number = window.breezePagination ?? process.env.REACT_APP_DEV_THEME_URL;
+// @ts-expect-error Backend variable
+const editorId: string = window.breezeEditorId ?? 'Breeze';
 
 const smfVars = {
   session,
@@ -31,6 +33,7 @@ const smfVars = {
   isCurrentUserOwner,
   smfImagesUrl,
   pagination,
+  editorId,
 };
 
 export default smfVars;
