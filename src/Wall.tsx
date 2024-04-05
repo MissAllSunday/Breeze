@@ -56,21 +56,21 @@ export default function Wall(props: WallProps): React.ReactElement {
   }, [statusList, editorElement]);
 
   const removeStatus = useCallback((currentStatus: StatusType) => {
-    // setIsLoading(true);
+    setIsLoading(true);
     deleteStatus(currentStatus.id).then((response) => {
-      // setStatus(statusListState.filter((status: StatusType) => statusListState.includes(status) === false));
+      setStatusList(statusList.filter((status: StatusType) => statusList.includes(status) === false));
       toast.success(response.message);
     }).catch((exception) => {
       toast.error(exception.toString());
-    })
-      .finally(() => {
-        // setIsLoading(false);
-      });
-  }, []);
+    }).finally(() => {
+      setIsLoading(false);
+    });
+  }, [statusList]);
 
   return (
     <div ref={editorRef}>
-        {statusList.length === 0 && !isLoading ? <div className={'noticebox'}> {smfTextVars.error.noStatus} </div> : ''}
+      <Toaster></Toaster>
+      {statusList.length === 0 && !isLoading ? <div className={'noticebox'}> {smfTextVars.error.noStatus} </div> : ''}
       <ul className="status">
         {isLoading ? <Loading /> : statusList.map((singleStatus: StatusType) => (
             <Status
