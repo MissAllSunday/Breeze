@@ -203,7 +203,7 @@ class StatusRepositoryTest extends TestCase
 						],
 					],
 				],
-				'commentGetByProfile' => [
+				'commentsByProfileWillReturn' => [
 					1 => [
 						1 => [
 							'id' => 1,
@@ -319,7 +319,7 @@ class StatusRepositoryTest extends TestCase
 						],
 					],
 				],
-				'commentGetByProfile' => [
+				'commentsByProfileWillReturn' => [
 					1 => [
 						1 => [
 							'id' => 1,

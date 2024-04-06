@@ -59,16 +59,15 @@ final class RequestTest extends TestCase
 			[
 				'variableName' => '<script>alert("XSS");</script>',
 				'expected' => '&lt;script&gt;alert(&quot;XSS&quot;);&lt;/script&gt;',
-				'defaultValue' => 'Luffy',
 			],
 			'int' =>
 			[
-				'variable' => '666',
+				'variableName' => '666',
 				'expected' => 666,
 			],
 			'empty' =>
 			[
-				'variable' => '0',
+				'variableName' => '0',
 				'expected' => false,
 			],
 		];

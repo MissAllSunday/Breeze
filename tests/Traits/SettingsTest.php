@@ -26,19 +26,19 @@ final class SettingsTest extends TestCase
 			'string exists' =>
 			[
 				'settingName' => 'someSetting',
-				'fallback' => false,
+				'fallBack' => false,
 				'expected' => 666,
 			],
-			'use fallback' =>
+			'use fallBack' =>
 			[
 				'settingName' => 'nope',
-				'fallback' => 'Luffy',
+				'fallBack' => 'Luffy',
 				'expected' => 'Luffy',
 			],
 			'empty setting name' =>
 			[
 				'settingName' => '',
-				'fallback' => 'Nami',
+				'fallBack' => 'Nami',
 				'expected' => 'Nami',
 			],
 		];
@@ -83,19 +83,19 @@ final class SettingsTest extends TestCase
 			'modSetting exists' =>
 			[
 				'settingName' => 'CompressedOutput',
-				'fallback' => false,
+				'fallBack' => false,
 				'expected' => false,
 			],
 			'modSetting doesnt exists' =>
 			[
 				'settingName' => 'nope',
-				'fallback' => 'Luffy',
+				'fallBack' => 'Luffy',
 				'expected' => 'Luffy',
 			],
 			'empty modSetting' =>
 			[
 				'settingName' => '',
-				'fallback' => 'Nami',
+				'fallBack' => 'Nami',
 				'expected' => 'Nami',
 			],
 		];

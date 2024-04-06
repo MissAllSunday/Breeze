@@ -176,7 +176,7 @@ final class TextTest extends TestCase
 			'no unit' =>
 			[
 				'bytes' => 666666666666,
-				'showUnits' => false,
+				'showUnit' => false,
 				'expected' =>'620.8817',
 			],
 		];

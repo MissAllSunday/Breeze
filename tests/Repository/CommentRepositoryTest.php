@@ -123,7 +123,7 @@ class CommentRepositoryTest extends TestCase
 	}
 
 	#[DataProvider('getByStatusProvider')]
-	public function testGetByStatus(array $statusId, array $commentsBystatusWillReturn): void
+	public function testGetByStatus(array $statusId, array $commentsByStatusWillReturn): void
 	{
 		$commentModel = $this->prophesize(CommentModel::class);
 		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
@@ -131,11 +131,11 @@ class CommentRepositoryTest extends TestCase
 
 		$commentModel
 			->getByStatus($statusId)
-			->willReturn($commentsBystatusWillReturn);
+			->willReturn($commentsByStatusWillReturn);
 
 		$commentsByStatus = $commentRepository->getByStatus($statusId);
 
-		$this->assertEquals($commentsBystatusWillReturn, $commentsByStatus);
+		$this->assertEquals($commentsByStatusWillReturn, $commentsByStatus);
 	}
 
 	public static function getByStatusProvider(): array
