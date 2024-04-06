@@ -17,9 +17,7 @@ class UserSettingsTest extends TestCase
 {
 	use ProphecyTrait;
 
-	/**
-	 * @dataProvider isValidProvider
-	 */
+	#[DataProvider('isValidProvider')]
 	public function testIsValid(array $data, bool $isExpectedException): void
 	{
 		$validateData = $this->prophesize(Data::class);

@@ -11,9 +11,7 @@ final class SettingsTest extends TestCase
 {
 	use SettingsTrait;
 
-	/**
-	 * @dataProvider getSettingProvider
-	 */
+	#[DataProvider('getSettingProvider')]
 	public function testGetSetting(string $settingName, $fallBack, $expected): void
 	{
 		$setting = $this->getSetting($settingName, $fallBack);
@@ -45,9 +43,7 @@ final class SettingsTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider enableProvider
-	 */
+	#[DataProvider('enableProvider')]
 	public function testEnable(string $settingName, bool $expected): void
 	{
 		$enable = $this->isEnable($settingName);
@@ -72,9 +68,7 @@ final class SettingsTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider modSettingProvider
-	 */
+	#[DataProvider('modSettingProvider')]
 	public function testModSetting(string $settingName, $fallBack, $expected): void
 	{
 		$modSetting = $this->modSetting($settingName, $fallBack);
@@ -106,9 +100,7 @@ final class SettingsTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider globalProvider
-	 */
+	#[DataProvider('globalProvider')]
 	public function testGlobal(string $globalName, $expected): void
 	{
 		$global = $this->global($globalName);

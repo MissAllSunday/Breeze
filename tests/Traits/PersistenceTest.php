@@ -21,9 +21,7 @@ final class PersistenceTest extends TestCase
 		], $message);
 	}
 
-	/**
-	 * @dataProvider setMessageProvider
-	 */
+	#[DataProvider('setMessageProvider')]
 	public function testSetMessage($message, $type, $expectedResult): void
 	{
 		if ($type !== null) {

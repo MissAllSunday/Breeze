@@ -14,7 +14,7 @@ class StatusRepositoryTest extends TestCase
 {
 	use ProphecyTrait;
 
-	private array $stack;
+	protected array $stack;
 
 	protected function setUp(): void
 	{
@@ -89,10 +89,7 @@ class StatusRepositoryTest extends TestCase
 			], ];
 	}
 
-	/**
-	 * @dataProvider saveProvider
-	 * @throws InvalidStatusException
-	 */
+	#[DataProvider('saveProvider')]
 	public function testSave(array $dataToInsert, int $newId): void
 	{
 		$statusModel =  $this->prophesize(StatusModelInterface::class);
@@ -144,10 +141,7 @@ class StatusRepositoryTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider getByProfileProvider
-	 * @throws DataNotFoundException
-	 */
+	#[DataProvider('getByProfileProvider')]
 	public function testGetByProfile(
 		array $userProfiles,
 		array $statusModelWillReturn,
@@ -266,10 +260,7 @@ class StatusRepositoryTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider getByIdProvider
-	 * @throws DataNotFoundException
-	 */
+	#[DataProvider('getByIdProvider')]
 	public function testGetById(
 		int $statusId,
 		array $statusModelWillReturn,
@@ -382,10 +373,7 @@ class StatusRepositoryTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider deleteByIdProvider
-	 * @throws DataNotFoundException
-	 */
+	#[DataProvider('deleteByIdProvider')]
 	public function testDeleteById(
 		int $statusId,
 		array $statusModelWillReturn,

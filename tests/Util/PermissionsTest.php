@@ -8,9 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class PermissionsTest extends TestCase
 {
-	/**
-	 * @dataProvider isAllowedToProvider
-	 */
+	#[DataProvider('isAllowedToProvider')]
 	public function testIsAllowedTo(string $permissionName, bool $expectedResult): void
 	{
 		$isAllowedTo = Permissions::isAllowedTo($permissionName);

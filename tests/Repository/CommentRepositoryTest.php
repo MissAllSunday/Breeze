@@ -22,10 +22,7 @@ class CommentRepositoryTest extends TestCase
 {
 	use ProphecyTrait;
 
-	/**
-	 * @dataProvider saveProvider
-	 * @throws InvalidCommentException
-	 */
+	#[DataProvider('saveProvider')]
 	public function testSave(array $dataToInsert, int $newId): void
 	{
 		$commentModel = $this->prophesize(CommentModel::class);
@@ -65,9 +62,7 @@ class CommentRepositoryTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider getByProfileProvider
-	 */
+	#[DataProvider('getByProfileProvider')]
 	public function testGetByProfile(
 		array $userProfiles,
 		array $commentModelReturn,
@@ -126,9 +121,7 @@ class CommentRepositoryTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider getByStatusProvider
-	 */
+	#[DataProvider('getByStatusProvider')]
 	public function testGetByStatus(array $statusId, array $commentsBystatusWillReturn): void
 	{
 		$commentModel = $this->prophesize(CommentModel::class);

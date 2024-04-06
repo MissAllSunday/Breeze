@@ -12,9 +12,7 @@ class DataTest extends TestCase
 {
 	use ProphecyTrait;
 
-	/**
-	 * @dataProvider commentProvider
-	 */
+	#[DataProvider('commentProvider')]
 	public function testComment(array $defaultParams, array $data, bool $isExpectedException): void
 	{
 		$validateData = new Data();
@@ -79,9 +77,7 @@ class DataTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider likesProvider
-	 */
+	#[DataProvider('likesProvider')]
 	public function testLikes(array $defaultParams, array $data, bool $isExpectedException): void
 	{
 		$validateData = new Data();

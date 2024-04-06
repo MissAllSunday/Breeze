@@ -9,9 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class JsonTest  extends TestCase
 {
-	/**
-	 * @dataProvider isJsonProvider
-	 */
+	#[DataProvider('isJsonProvider')]
 	public function testIsJson($json, $expected): void
 	{
 		$isJson = Json::isJson($json);

@@ -18,9 +18,7 @@ class DeleteStatusTest extends TestCase
 {
 	use ProphecyTrait;
 
-	/**
-	 * @dataProvider checkAllowProvider
-	 */
+	#[DataProvider('checkAllowProvider')]
 	public function testCheckAllow(array $data, string $permissionName, bool $isExpectedException): void
 	{
 		$validateData = $this->prophesize(Data::class);
@@ -78,9 +76,7 @@ class DeleteStatusTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider checkUserProvider
-	 */
+	#[DataProvider('checkUserProvider')]
 	public function testCheckUser(array $data, array $validUsers, bool $isExpectedException): void
 	{
 		$validateData = $this->prophesize(Data::class);

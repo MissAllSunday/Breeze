@@ -11,9 +11,7 @@ final class TextTest extends TestCase
 {
 	use TextTrait;
 
-	/**
-	 * @dataProvider getSmfProvider
-	 */
+	#[DataProvider('getSmfProvider')]
 	public function testGetSmf(string $textKeyName, string $expected): void
 	{
 		$text = $this->getSmfText($textKeyName);
@@ -37,9 +35,7 @@ final class TextTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider getTextProvider
-	 */
+	#[DataProvider('getTextProvider')]
 	public function testGetText(string $textKeyName, string $expected): void
 	{
 		$text = $this->getText($textKeyName);
@@ -63,9 +59,7 @@ final class TextTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider parserTextProvider
-	 */
+	#[DataProvider('parserTextProvider')]
 	public function testParserText(string $textToParse, array $replacements, string  $expected): void
 	{
 		$parsedText = $this->parserText($textToParse, $replacements);
@@ -108,9 +102,7 @@ final class TextTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider commaSeparatedProvider
-	 */
+	#[DataProvider('commaSeparatedProvider')]
 	public function testCommaSeparated(string  $string, string  $type, string  $expected): void
 	{
 		$commaSeparatedString = $this->commaSeparated($string, $type);
@@ -163,9 +155,7 @@ final class TextTest extends TestCase
 		$this->assertEquals('A a e i o u', $normal);
 	}
 
-	/**
-	 * @dataProvider formatBytesProvider
-	 */
+	#[DataProvider('formatBytesProvider')]
 	public function testFormatBytes(int $bytes, bool $showUnit, string  $expected): void
 	{
 		$formattedBytes = $this->formatBytes($bytes, $showUnit);
@@ -191,9 +181,7 @@ final class TextTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider truncateTextProvider
-	 */
+	#[DataProvider('truncateTextProvider')]
 	public function testTruncateText(
 		string $stringToTruncate,
 		int $limit,
@@ -244,9 +232,7 @@ final class TextTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider timeElapsedProvider
-	 */
+	#[DataProvider('timeElapsedProvider')]
 	public function testTimeElapsed(int $timeInSeconds, string $expected): void
 	{
 		$timeAgo = $this->timeElapsed($timeInSeconds);

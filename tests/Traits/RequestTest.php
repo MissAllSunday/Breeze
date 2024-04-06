@@ -11,9 +11,7 @@ final class RequestTest extends TestCase
 {
 	use RequestTrait;
 
-	/**
-	 * @dataProvider getRequestProvider
-	 */
+	#[DataProvider('getRequestProvider')]
 	public function testGet(string  $variableName, $expected, ?string $defaultValue): void
 	{
 		$requestVariable = $this->getRequest($variableName, $defaultValue);
@@ -45,9 +43,7 @@ final class RequestTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider sanitizeProvider
-	 */
+	#[DataProvider('sanitizeProvider')]
 	public function testSanitize(string  $variableName, $expected): void
 	{
 		$requestVariable = $this->sanitize($variableName);
