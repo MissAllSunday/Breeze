@@ -6,6 +6,7 @@ namespace Breeze\Traits;
 
 use Breeze\Traits\SettingsTrait as SettingsTrait;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class SettingsTest extends TestCase
 {

@@ -6,6 +6,7 @@ namespace Breeze\Traits;
 
 use Breeze\Traits\TextTrait as TextTrait;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class TextTest extends TestCase
 {

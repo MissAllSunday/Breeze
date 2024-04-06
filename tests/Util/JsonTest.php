@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Util;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class JsonTest  extends TestCase
 {

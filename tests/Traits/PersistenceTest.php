@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Traits;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class PersistenceTest extends TestCase
 {
