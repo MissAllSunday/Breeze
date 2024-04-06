@@ -58,9 +58,10 @@ export default function Wall(props: WallProps): React.ReactElement {
   const removeStatus = useCallback((currentStatus: StatusType) => {
     setIsLoading(true);
     deleteStatus(currentStatus.id).then((response) => {
-      setStatusList(statusList.filter((status: StatusType) => statusList.includes(status) === false));
+      setStatusList(statusList.filter((status: StatusType) => currentStatus.id !== status.id));
       toast.success(response.message);
     }).catch((exception) => {
+      console.log(exception);
       toast.error(exception.toString());
     }).finally(() => {
       setIsLoading(false);
