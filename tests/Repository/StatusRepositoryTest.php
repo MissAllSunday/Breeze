@@ -7,8 +7,8 @@ namespace Breeze\Repository;
 
 use Breeze\Model\StatusModelInterface;
 use Breeze\Util\Validate\DataNotFoundException;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 class StatusRepositoryTest extends TestCase

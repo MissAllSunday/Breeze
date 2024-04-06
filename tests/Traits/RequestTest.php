@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Breeze\Traits;
 
 use Breeze\Traits\RequestTrait as RequestTrait;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 final class RequestTest extends TestCase
 {

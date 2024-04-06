@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Breeze\Validate\Types;
 
 use Breeze\Repository\InvalidDataException;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 class DataTest extends TestCase

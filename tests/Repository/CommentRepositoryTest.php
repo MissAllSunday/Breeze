@@ -6,8 +6,8 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Model\CommentModel;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
