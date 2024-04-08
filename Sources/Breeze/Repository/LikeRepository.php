@@ -11,12 +11,11 @@ use Breeze\Util\Permissions;
 
 class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 {
-	private LikeModelInterface $likeModel;
 
 	public function __construct(
-		LikeModelInterface $likeModel
+		private readonly LikeModelInterface $likeModel,
+		private readonly Permissions        $permissions
 	) {
-		$this->likeModel = $likeModel;
 	}
 
 	public function getLikeInfo(string $type, int $contentId): array
@@ -91,7 +90,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			'count' => 0,
 			'alreadyLiked' => false,
 			'type' => $type,
-			'canLike' => Permissions::isAllowedTo(Permissions::LIKES_LIKE),
+			'canLike' => $this->permissions->isAllowedTo(Permissions::LIKES_LIKE),
 			'additionalInfo' => [],
 		];
 		$base = LikeEntity::IDENTIFIER;

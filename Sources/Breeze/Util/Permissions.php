@@ -30,12 +30,12 @@ class Permissions
 		self::POST_COMMENTS,
 	];
 
-	public static function isNotGuest(string $errorTextKey): void
+	public function isNotGuest(string $errorTextKey): void
 	{
 		is_not_guest($errorTextKey);
 	}
 
-	public static function isAllowedTo(string $permissionName): bool
+	public function isAllowedTo(string $permissionName): bool
 	{
 		return allowedTo($permissionName);
 	}

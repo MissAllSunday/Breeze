@@ -30,7 +30,8 @@ class ProfileService implements ProfileServiceInterface
 
 	public function __construct(
 		protected UserRepositoryInterface $userRepository,
-		protected Components $components
+		protected Components $components,
+		protected Permissions $permissions
 	) {
 	}
 
@@ -161,7 +162,7 @@ class ProfileService implements ProfileServiceInterface
 			return false;
 		}
 
-		if (!Permissions::isAllowedTo('profile_view')) {
+		if (!$this->permissions->isAllowedTo('profile_view')) {
 			return false;
 		}
 

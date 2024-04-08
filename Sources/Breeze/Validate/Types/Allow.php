@@ -16,12 +16,17 @@ class Allow
 	use SettingsTrait;
 	use PersistenceTrait;
 
+	public function __construct(protected Permissions $permissions)
+	{
+
+	}
+
 	/**
 	 * @throws NotAllowedException
 	 */
 	public function permissions(string $permissionName, string $permissionMessageKey): void
 	{
-		if (!Permissions::isAllowedTo($permissionName)) {
+		if (!$this->permissions->isAllowedTo($permissionName)) {
 			throw new NotAllowedException($permissionMessageKey);
 		}
 	}

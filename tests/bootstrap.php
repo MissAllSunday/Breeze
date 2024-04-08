@@ -210,6 +210,7 @@ $scripturl = 'localhost';
 // Mock some SMF arrays.
 $user_info = [
 	'id' => 666,
+	'is_guest' => false,
 ];
 
 $context = [

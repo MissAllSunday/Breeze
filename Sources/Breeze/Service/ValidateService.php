@@ -12,13 +12,18 @@ class ValidateService
 {
 	use SettingsTrait;
 
-	public function permissions($type, int $profileOwner = 0, int $userPoster = 0): array
+	public function __construct(protected Permissions $permissions)
+	{
+
+	}
+
+	public function permissions(string $type, int $profileOwner = 0, int $userPoster = 0): array
 	{
 		$user_info = $this->global('user_info');
 
 		$perm = [
 			'edit' => false,
-			'delete' => '',
+			'delete' => false,
 			'post' => false,
 			'postComments' => false,
 		];
@@ -29,39 +34,39 @@ class ValidateService
 		}
 
 		// Profile owner?
-		$isProfileOwner = $profileOwner == $user_info['id'];
+		$isProfileOwner = $profileOwner === (int) $user_info['id'];
 
 		// Status owner?
-		$isPosterOwner = $userPoster == $user_info['id'];
+		$isPosterOwner = $userPoster === (int) $user_info['id'];
 
 		// Lets check the posing bit first. Profile owner can always post.
 		if ($isProfileOwner) {
 			$perm['post'] = true;
 			$perm['postComments'] = true;
 		} else {
-			$perm['post'] = Permissions::isAllowedTo('breeze_post' . $type);
-			$perm['postComments'] = Permissions::isAllowedTo('breeze_postComments');
+			$perm['post'] = $this->permissions->isAllowedTo('breeze_post' . $type);
+			$perm['postComments'] = $this->permissions->isAllowedTo('breeze_postComments');
 		}
 
 		// It all starts with an empty vessel...
 		$allowed = [];
 
 		// Your own data?
-		if ($isPosterOwner && Permissions::isAllowedTo('breeze_deleteOwn' . $type)) {
+		if ($isPosterOwner && $this->permissions->isAllowedTo('breeze_deleteOwn' . $type)) {
 			$allowed[] = 1;
 		}
 
 		// Nope? then is this your own profile?
-		if ($isProfileOwner && Permissions::isAllowedTo('breeze_deleteProfile' . $type)) {
+		if ($isProfileOwner && $this->permissions->isAllowedTo('breeze_deleteProfile' . $type)) {
 			$allowed[] = 1;
 		}
 
 		// No poster and no profile owner, must be an admin/mod or something.
-		if (Permissions::isAllowedTo('breeze_delete' . $type)) {
+		if ($this->permissions->isAllowedTo('breeze_delete' . $type)) {
 			$allowed[] = 1;
 		}
 
-		$perm['delete'] = in_array(1, $allowed);
+		$perm['delete'] = in_array(1, $allowed, true);
 
 		return $perm;
 	}

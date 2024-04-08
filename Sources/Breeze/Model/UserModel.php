@@ -93,12 +93,12 @@ class UserModel extends BaseModel implements UserModelInterface
 			$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = is_numeric($row[OptionsEntity::COLUMN_VALUE]) ?
 				(int) $row[OptionsEntity::COLUMN_VALUE] : (string) $row[OptionsEntity::COLUMN_VALUE];
 
-			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::JSON_VALUES)) {
+			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::JSON_VALUES, true)) {
 				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = !empty($row[OptionsEntity::COLUMN_VALUE]) ?
 					json_decode($row[OptionsEntity::COLUMN_VALUE], true) : [];
 			}
 
-			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::ARRAY_VALUES)) {
+			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::ARRAY_VALUES, true)) {
 				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = !empty($row[OptionsEntity::COLUMN_VALUE]) ?
 					explode(',', $row[OptionsEntity::COLUMN_VALUE]) : [];
 			}
