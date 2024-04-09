@@ -21,6 +21,7 @@ use Breeze\Service\PermissionsService;
 use Breeze\Service\ProfileService;
 use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
+use Breeze\Util\Validate\DataNotFoundException;
 use League\Container\Container as Container;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -37,7 +38,7 @@ class Breeze
 	public const SUPPORT_URL = 'https://missallsunday.com';
 	public const REACT_DOM_VERSION = '18.2.0';
 	public const REACT_VERSION = '18.2.0';
-	public const REACT_HASH = '742d2f30';
+	public const REACT_HASH = 'a6edaf09';
 	public const ACTIONS = [
 		'breezeStatus',
 		'breezeComment',
@@ -68,18 +69,13 @@ class Breeze
 		}
 	}
 
-	/**
-	 * @throws ContainerExceptionInterface
-	 * @throws NotFoundExceptionInterface
-	 */
 	public function permissionsWrapper(array &$permissionGroups, array &$permissionList): void
 	{
 		$this->container->get(PermissionsService::class)->hookPermissions($permissionGroups, $permissionList);
 	}
 
 	/**
-	 * @throws ContainerExceptionInterface
-	 * @throws NotFoundExceptionInterface
+	 * @throws DataNotFoundException
 	 */
 	public function profileMenuWrapper(array &$profileAreas): void
 	{
@@ -87,12 +83,12 @@ class Breeze
 			return;
 		}
 
-		$this->setLanguage(Breeze::NAME);
+		$this->setLanguage(self::NAME);
 		$context = $this->global('context');
 		$userInfo = $this->global('user_info');
 		$currentUserSettings = $this->container->get(UserRepository::class)->getById($userInfo['id']);
 
-		if ($this->isEnable(SettingsEntity::FORCE_WALL) || !empty($currentUserSettings['wall'])) {
+		if (!empty($currentUserSettings['wall']) || $this->isEnable(SettingsEntity::FORCE_WALL)) {
 			/** @var WallController $wallController */
 			$wallController = $this->container->get(WallController::class);
 
@@ -165,8 +161,7 @@ class Breeze
 	}
 
 	/**
-	 * @throws ContainerExceptionInterface
-	 * @throws NotFoundExceptionInterface
+	 * @throws DataNotFoundException
 	 */
 	public function menu(array &$menu_buttons): void
 	{
@@ -227,7 +222,7 @@ class Breeze
 	{
 		$action = $this->getRequest('action', '');
 
-		if (empty($action) || !in_array($action, self::ACTIONS)) {
+		if (empty($action) || !in_array($action, self::ACTIONS, true)) {
 			return;
 		}
 
@@ -241,7 +236,7 @@ class Breeze
 			$actions['breezeComment'] = [false, fn () => $commentController->dispatch()];
 			$actions['wall'] = [false, [$wallController, 'dispatch']];
 			$actions['breezeBuddy'] = [false, BuddyController::class . '::dispatch#'];
-			$actions['breezeLike'] = [false, [$likesController, 'dispatch']];
+			$actions['breezeLike'] = [false, fn () => $likesController->dispatch()];
 		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
 			log_error($exception->getMessage());
 		}
@@ -256,10 +251,6 @@ class Breeze
 		}
 	}
 
-	/**
-	 * @throws ContainerExceptionInterface
-	 * @throws NotFoundExceptionInterface
-	 */
 	public function alertsPrefWrapper(array &$alertTypes, &$groupOptions): void
 	{
 		try {
@@ -269,10 +260,6 @@ class Breeze
 		}
 	}
 
-	/**
-	 * @throws ContainerExceptionInterface
-	 * @throws NotFoundExceptionInterface
-	 */
 	public function adminMenuWrapper(array &$adminMenu): void
 	{
 		/** @var AdminController $adminController */

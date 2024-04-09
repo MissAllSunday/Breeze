@@ -47,13 +47,14 @@ export default function Wall(props: WallProps): React.ReactElement {
           setStatusList([...statusList, newStatus[key]]);
         }
         toast.success(response.message);
+        props.smfEditor.instance(editorElement).val('');
       }).catch((exception) => {
         toast.error(exception.toString());
       }).finally(() => {
         setIsLoading(false);
         editorElement.removeAttribute('disabled');
       });
-  }, [statusList, editorElement]);
+  }, [statusList, editorElement, props.smfEditor]);
 
   const removeStatus = useCallback((currentStatus: StatusType) => {
     setIsLoading(true);
