@@ -10,9 +10,9 @@ use Breeze\Service\Actions\AdminService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\ProfileService;
 use Breeze\Service\ValidateService;
+use Breeze\Traits\PermissionsTrait;
 use Breeze\Util\Components;
 use Breeze\Util\Form\SettingsBuilder;
-use Breeze\Util\Permissions;
 
 return [
 	'service.admin' => [
@@ -28,6 +28,5 @@ return [
 	],
 	'service.validate' => [
 		'class' => ValidateService::class,
-		'arguments' => [Permissions::class],
 	],
 ];

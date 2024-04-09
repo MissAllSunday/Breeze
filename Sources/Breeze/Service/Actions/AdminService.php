@@ -7,8 +7,8 @@ namespace Breeze\Service\Actions;
 
 use Breeze\Breeze;
 use Breeze\Service\PermissionsService;
+use Breeze\Traits\PermissionsTrait;
 use Breeze\Util\Form\SettingsBuilderInterface;
-use Breeze\Util\Permissions;
 
 class AdminService extends ActionsBaseService implements AdminServiceInterface
 {
@@ -108,7 +108,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 			['title', Breeze::PATTERN . self::AREA . '_permissions_title'],
 		];
 
-		foreach (Permissions::ALL_PERMISSIONS as $permission) {
+		foreach (PermissionsTrait::ALL_PERMISSIONS as $permission) {
 			$this->configVars[] = [
 				'permissions',
 				'breeze_' . $permission,

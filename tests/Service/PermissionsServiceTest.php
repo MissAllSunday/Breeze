@@ -2,25 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Breeze\Util;
+namespace Breeze\Service;
 
-use Breeze\Service\ValidateService;
+use Breeze\Traits\PermissionsTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class PermissionsTest extends TestCase
+class PermissionsServiceTest extends TestCase
 {
-	private Permissions $permissions;
+
+	private PermissionsService $permissionsService;
 
 	public function setUp(): void
 	{
-		$this->permissions = new Permissions();
+		$this->permissionsService = new PermissionsService();
 	}
 
 	#[DataProvider('isAllowedToProvider')]
 	public function testIsAllowedTo(string $permissionName, bool $expectedResult): void
 	{
-		$isAllowedTo = $this->permissions->isAllowedTo($permissionName);
+		$isAllowedTo = $this->permissionsService->isAllowedTo($permissionName);
 
 		$this->assertEquals($expectedResult, $isAllowedTo);
 	}

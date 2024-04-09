@@ -6,21 +6,22 @@ namespace Breeze\Controller;
 
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
+use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\PersistenceTrait;
 use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Error;
-use Breeze\Util\Permissions;
 
 abstract class BaseController implements ControllerInterface
 {
 	use RequestTrait;
 	use TextTrait;
 	use PersistenceTrait;
+	use PermissionsTrait;
 
 	public function dispatch(): void
 	{
-		Permissions::isNotGuest($this->getText('error_no_access'));
+		$this->isNotGuest($this->getText('error_no_access'));
 
 		if (!$this->isEnable(SettingsEntity::MASTER)) {
 			Error::show('no_valid_action');

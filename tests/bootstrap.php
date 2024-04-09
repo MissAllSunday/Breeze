@@ -105,8 +105,8 @@ function loadMemberContext(int $userId, bool $dummy): array
 function allowedTo($permissionName)
 {
 	$dummyPermissions = [
-		'nope' => false,
-		'yep' => true,
+		'breeze_nope' => false,
+		'breeze_yep' => true,
 		'postComments' => false,
 		'deleteComments' => false,
 		'deleteOwnComments' => false,
@@ -115,9 +115,10 @@ function allowedTo($permissionName)
 		'postStatus' => false,
 		'admin_forum' => false,
 		'likes_like' => false,
+		'breeze_deleteProfileStatus' => true,
 	];
 
-	return $dummyPermissions[$permissionName];
+	return $dummyPermissions[$permissionName] ?? false;
 }
 
 function cache_get_data($key, $timeToLive = 360): ?array

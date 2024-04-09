@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Likes;
 
 use Breeze\Entity\LikeEntity;
+use Breeze\PermissionsEnum;
 use Breeze\Repository\InvalidDataException;
-use Breeze\Util\Permissions;
+use Breeze\Traits\PermissionsTrait;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\BaseActions;
@@ -33,7 +34,7 @@ class Like extends BaseActions implements ValidateDataInterface
 	{
 		$type = $this->data[LikeEntity::TYPE];
 
-		if (!in_array($type, LikeEntity::getTypes())) {
+		if (!in_array($type, LikeEntity::getTypes(), true)) {
 			throw new DataNotFoundException('likesTypeInvalid');
 		}
 	}
@@ -53,7 +54,7 @@ class Like extends BaseActions implements ValidateDataInterface
 	public function checkAllow(): void
 	{
 		$this->validateAllow->isFeatureEnable('enable_likes');
-		$this->validateAllow->permissions(Permissions::LIKES_LIKE, 'likesLike');
+		$this->validateAllow->permissions(PermissionsEnum::LIKES_LIKE, 'likesLike');
 	}
 
 	/**

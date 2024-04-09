@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Status;
 
 use Breeze\Entity\StatusEntity;
+use Breeze\PermissionsEnum;
 use Breeze\Repository\InvalidDataException;
-use Breeze\Util\Permissions;
+use Breeze\Traits\PermissionsTrait;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\BaseActions;
@@ -38,7 +39,7 @@ class PostStatus extends BaseActions implements ValidateDataInterface
 	 */
 	public function checkAllow(): void
 	{
-		$this->validateAllow->permissions(Permissions::POST_STATUS, 'postStatus');
+		$this->validateAllow->permissions(PermissionsEnum::POST_STATUS, PermissionsEnum::POST_STATUS);
 		$this->validateAllow->floodControl($this->data[StatusEntity::WALL_ID]);
 	}
 

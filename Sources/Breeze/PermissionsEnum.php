@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
+namespace Breeze;
 
-namespace Breeze\Util;
-
-class Permissions
+enum PermissionsEnum
 {
 	public const ADMIN_FORUM = 'admin_forum';
 	public const DELETE_COMMENTS = 'deleteComments';
@@ -17,6 +16,11 @@ class Permissions
 	public const POST_STATUS = 'postStatus';
 	public const POST_COMMENTS = 'postComments';
 	public const LIKES_LIKE = 'likes_like';
+	public const PROFILE_VIEW = 'profile_view';
+
+	private const DELETE_TEMPLATE = 'delete%s%s';
+	public const OWN = 'own';
+	public const PROFILE = 'profile';
 
 	public const ALL_PERMISSIONS = [
 		self::DELETE_COMMENTS,
@@ -30,13 +34,16 @@ class Permissions
 		self::POST_COMMENTS,
 	];
 
-	public function isNotGuest(string $errorTextKey): void
+	public static function isSMFPermission(string $permissionName): bool
 	{
-		is_not_guest($errorTextKey);
+		return match ($permissionName) {
+			self::LIKES_LIKE, self::ADMIN_FORUM, self::PROFILE_VIEW => true,
+			default => false,
+		};
 	}
 
-	public function isAllowedTo(string $permissionName): bool
+	public static function getDeletePermission(string $type, string $subType = ''): string
 	{
-		return allowedTo($permissionName);
+		return sprintf(self::DELETE_TEMPLATE, ucfirst($subType), ucfirst($type));
 	}
 }

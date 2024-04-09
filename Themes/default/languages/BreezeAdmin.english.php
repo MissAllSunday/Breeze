@@ -13,7 +13,7 @@ $txt['Breeze_breezeAdmin_main_title'] = 'Breeze Admin Panel';
 $txt['Breeze_breezeAdmin_main_description'] = 'This is your &quot;Breeze Admin Panel&quot;.
 From here, you can edit the settings for Breeze If you have any trouble, feel free to
 <a href="https://missallsunday.com" target="_blank" class="new_win">ask for support</a> on the author\'s site.';
-$txt['Breeze_breezeAdmin_permissions_title'] = 'Permissions';
+$txt['Breeze_breezeAdmin_permissions_title'] = 'PermissionsTrait';
 $txt['Breeze_breezeAdmin_permissions_description'] = 'From here you can add/remove specific Breeze permissions.';
 $txt['Breeze_breezeAdmin_settings_title'] = 'General settings';
 $txt['Breeze_breezeAdmin_settings_description'] = 'This is the general settings page,

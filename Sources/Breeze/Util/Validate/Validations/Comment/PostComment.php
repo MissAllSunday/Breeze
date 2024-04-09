@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Comment;
 
 use Breeze\Entity\CommentEntity;
+use Breeze\PermissionsEnum;
 use Breeze\Repository\InvalidDataException;
-use Breeze\Util\Permissions;
+use Breeze\Traits\PermissionsTrait;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\BaseActions;
@@ -38,7 +39,7 @@ class PostComment extends BaseActions implements ValidateDataInterface
 	 */
 	public function checkAllow(): void
 	{
-		$this->validateAllow->permissions(Permissions::POST_COMMENTS, 'postComments');
+		$this->validateAllow->permissions(PermissionsEnum::POST_COMMENTS, PermissionsEnum::POST_COMMENTS);
 		$this->validateAllow->floodControl($this->data[CommentEntity::USER_ID]);
 	}
 

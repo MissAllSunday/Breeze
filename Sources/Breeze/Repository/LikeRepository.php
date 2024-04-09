@@ -7,14 +7,15 @@ namespace Breeze\Repository;
 
 use Breeze\Entity\LikeEntity;
 use Breeze\Model\LikeModelInterface;
-use Breeze\Util\Permissions;
+use Breeze\PermissionsEnum;
+use Breeze\Traits\PermissionsTrait;
 
 class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 {
+ use PermissionsTrait;
 
 	public function __construct(
-		private readonly LikeModelInterface $likeModel,
-		private readonly Permissions        $permissions
+		private readonly LikeModelInterface $likeModel
 	) {
 	}
 
@@ -90,12 +91,12 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			'count' => 0,
 			'alreadyLiked' => false,
 			'type' => $type,
-			'canLike' => $this->permissions->isAllowedTo(Permissions::LIKES_LIKE),
+			'canLike' => $this->isAllowedTo(PermissionsEnum::LIKES_LIKE),
 			'additionalInfo' => [],
 		];
 		$base = LikeEntity::IDENTIFIER;
 
-		if (empty($contentId) ||
+		if ($contentId === null ||
 			empty($type)) {
 			return $likeData;
 		}

@@ -10,15 +10,17 @@ use Breeze\Controller\ControllerInterface;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\User\UserRepositoryInterface;
+use Breeze\Traits\PermissionsTrait;
 use Breeze\Util\Error;
 use Breeze\Util\Form\UserSettingsBuilderInterface;
-use Breeze\Util\Permissions;
 use Breeze\Util\Response;
 use Breeze\Util\Validate\Validations\ValidateData;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
-class UserSettingsController extends BaseController implements ControllerInterface
+class UserSettingsController extends BaseController
 {
+	use PermissionsTrait;
+
 	public const ACTION = 'profile';
 	public const AREA = 'breezeSettings';
 	public const TEMPLATE = 'UserSettings';
@@ -49,7 +51,7 @@ class UserSettingsController extends BaseController implements ControllerInterfa
 
 	public function dispatch(): void
 	{
-		Permissions::isNotGuest($this->getText('error_no_access'));
+		$this->isNotGuest($this->getText('error_no_access'));
 
 		if (!$this->isEnable(SettingsEntity::MASTER)) {
 			Error::show('no_valid_action');

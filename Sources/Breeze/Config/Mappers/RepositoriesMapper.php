@@ -13,7 +13,6 @@ use Breeze\Repository\CommentRepository;
 use Breeze\Repository\LikeRepository;
 use Breeze\Repository\StatusRepository;
 use Breeze\Repository\User\UserRepository;
-use Breeze\Util\Permissions;
 
 return [
 	'repo.user' => [
@@ -30,6 +29,6 @@ return [
 	],
 	'repo.like' => [
 		'class' => LikeRepository::class,
-		'arguments' => [LikeModel::class, Permissions::class],
+		'arguments' => [LikeModel::class],
 	],
 ];

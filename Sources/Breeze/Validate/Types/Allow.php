@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Breeze\Validate\Types;
 
 use Breeze\Entity\SettingsEntity;
+use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\PersistenceTrait;
 use Breeze\Traits\SettingsTrait;
-use Breeze\Util\Permissions;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 
@@ -15,18 +15,14 @@ class Allow
 {
 	use SettingsTrait;
 	use PersistenceTrait;
-
-	public function __construct(protected Permissions $permissions)
-	{
-
-	}
+	use PermissionsTrait;
 
 	/**
 	 * @throws NotAllowedException
 	 */
 	public function permissions(string $permissionName, string $permissionMessageKey): void
 	{
-		if (!$this->permissions->isAllowedTo($permissionName)) {
+		if (!$this->isAllowedTo($permissionName)) {
 			throw new NotAllowedException($permissionMessageKey);
 		}
 	}

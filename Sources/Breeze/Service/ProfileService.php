@@ -7,16 +7,18 @@ namespace Breeze\Service;
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
+use Breeze\PermissionsEnum;
 use Breeze\Repository\User\UserRepositoryInterface;
+use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\SettingsTrait;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Components;
-use Breeze\Util\Permissions;
 
 class ProfileService implements ProfileServiceInterface
 {
 	use SettingsTrait;
 	use TextTrait;
+	use PermissionsTrait;
 
 	public const AREA = 'summary';
 	public const LEGACY_AREA = 'legacy';
@@ -30,8 +32,7 @@ class ProfileService implements ProfileServiceInterface
 
 	public function __construct(
 		protected UserRepositoryInterface $userRepository,
-		protected Components $components,
-		protected Permissions $permissions
+		protected Components $components
 	) {
 	}
 
@@ -99,7 +100,7 @@ class ProfileService implements ProfileServiceInterface
 		$currentUserInfo = $this->global('user_info');
 		$currentUserSettings = $this->getCurrentUserSettings();
 
-		if ($this->isEnable(SettingsEntity::FORCE_WALL) || !empty($currentUserSettings['wall'])) {
+		if (!empty($currentUserSettings['wall']) || $this->isEnable(SettingsEntity::FORCE_WALL)) {
 			foreach ($profile_items as &$profileItem) {
 				if ($profileItem['area'] === 'summary') {
 					$profileItem['area'] = self::LEGACY_AREA;
@@ -126,23 +127,23 @@ class ProfileService implements ProfileServiceInterface
 		$this->setLanguage('alerts');
 
 		$alertTypes['breeze'] = [
-			'' . Breeze::PATTERN . 'status_owner' => [
+			Breeze::PATTERN . 'status_owner' => [
 				'alert' => 'yes',
 				'email' => 'never',
 			],
-			'' . Breeze::PATTERN . 'comment_status_owner' => [
+			Breeze::PATTERN . 'comment_status_owner' => [
 				'alert' => 'yes',
 				'email' => 'never',
 			],
-			'' . Breeze::PATTERN . 'comment_profile_owner' => [
+			Breeze::PATTERN . 'comment_profile_owner' => [
 				'alert' => 'yes',
 				'email' => 'never',
 			],
-			'' . Breeze::PATTERN . 'mention' => [
+			Breeze::PATTERN . 'mention' => [
 				'alert' => 'yes',
 				'email' => 'never',
 			],
-			'' . Breeze::PATTERN . 'like' => [
+			Breeze::PATTERN . 'like' => [
 				'alert' => 'yes',
 				'email' => 'never',
 			],
@@ -162,7 +163,7 @@ class ProfileService implements ProfileServiceInterface
 			return false;
 		}
 
-		if (!$this->permissions->isAllowedTo('profile_view')) {
+		if (!$this->isAllowedTo(PermissionsEnum::PROFILE_VIEW)) {
 			return false;
 		}
 
