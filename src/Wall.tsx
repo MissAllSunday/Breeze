@@ -29,7 +29,9 @@ export default function Wall(props: WallProps): React.ReactElement {
         const fetchedStatusList: StatusListType = Object.values(statusListResponse.content.data);
         setStatusList(fetchedStatusList);
       })
-      .catch(exception => {})
+      .catch(exception => {
+        toast.error(exception.toString());
+      })
       .finally(() => {
         setIsLoading(false);
       });

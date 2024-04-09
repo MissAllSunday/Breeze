@@ -9,6 +9,10 @@ export const SMFEditorEvent = (callback: () => void) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node) && (event.target as HTMLElement).id === 'smfEditor') {
+        if (!window.confirm(smfVars.youSure)) {
+          return;
+        }
+
         if (isAlreadyClicked) {
           event.preventDefault();
 
@@ -25,7 +29,7 @@ export const SMFEditorEvent = (callback: () => void) => {
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
-  }, [callback]);
+  }, [callback, isAlreadyClicked]);
 
   return ref;
 };
