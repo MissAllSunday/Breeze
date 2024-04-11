@@ -15,6 +15,9 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
+          ini-values: pcov.directory=Sources
+          coverage: pcov
+          tools: php-cs-fixer, phpunit, phpstan
           extensions: mbstring, curl
       - name: Get composer cache directory
         id: composer-cache
