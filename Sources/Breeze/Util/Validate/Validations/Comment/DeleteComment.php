@@ -7,7 +7,6 @@ namespace Breeze\Util\Validate\Validations\Comment;
 use Breeze\Entity\CommentEntity as CommentEntity;
 use Breeze\PermissionsEnum;
 use Breeze\Repository\InvalidDataException;
-use Breeze\Traits\PermissionsTrait;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\BaseActions;

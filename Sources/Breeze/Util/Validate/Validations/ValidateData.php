@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations;
 
-use \Breeze\Traits\RequestTrait;
 use Breeze\Traits\PersistenceTrait;
+use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Json;
 use Breeze\Util\Validate\DataNotFoundException;

@@ -46,6 +46,7 @@ class Breeze
 		'breezeBuddy',
 		'breezeLike',
 	];
+	public const SCRIPT_URL ='scripturl';
 
 	protected Container $container;
 
@@ -169,7 +170,7 @@ class Breeze
 			return;
 		}
 
-		$scriptUrl = $this->global('scripturl');
+		$scriptUrl = $this->global(self::SCRIPT_URL);
 		$currentUserInfo = $this->global('user_info');
 		$currentUserSettings = $this->container->get(UserRepository::class)->getById($currentUserInfo['id']);
 

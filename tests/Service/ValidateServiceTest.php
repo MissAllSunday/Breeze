@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-use Breeze\Traits\PermissionsTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\MockObject\Exception;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ValidateServiceTest extends TestCase

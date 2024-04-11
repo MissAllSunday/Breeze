@@ -6,7 +6,6 @@ namespace Breeze\Traits;
 
 use Breeze\Breeze;
 use Breeze\PermissionsEnum;
-use Breeze\Service\PermissionsService;
 
 trait PermissionsTrait
 {

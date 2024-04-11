@@ -6,7 +6,6 @@ namespace Breeze\Controller\User\Settings;
 
 use Breeze\Breeze;
 use Breeze\Controller\BaseController;
-use Breeze\Controller\ControllerInterface;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\User\UserRepositoryInterface;
