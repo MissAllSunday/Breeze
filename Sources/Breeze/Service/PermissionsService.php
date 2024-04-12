@@ -15,7 +15,7 @@ class PermissionsService
 	use TextTrait;
 	use PermissionsTrait;
 
-	public const IDENTIFIER = 'PermissionsTrait';
+	public const IDENTIFIER = 'Permissions';
 
 	public function hookPermissions(&$permissionGroups, &$permissionList): void
 	{

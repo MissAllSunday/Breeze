@@ -8,7 +8,7 @@ use Breeze\Breeze;
 use Breeze\Service\Actions\AdminServiceInterface;
 use Breeze\Traits\PersistenceTrait;
 
-class AdminController extends BaseController implements ControllerInterface
+class AdminController extends BaseController
 {
 	use PersistenceTrait;
 

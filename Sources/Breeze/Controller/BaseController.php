@@ -62,7 +62,7 @@ abstract class BaseController implements ControllerInterface
 		$subActions = $this->getSubActions();
 		$subAction = $this->getRequest($this->getActionVarName(), $this->getMainAction());
 
-		if (in_array($subAction, $subActions)) {
+		if (in_array($subAction, $subActions, true)) {
 			$this->{$subAction}();
 		} else {
 			Error::show('no_valid_action');
