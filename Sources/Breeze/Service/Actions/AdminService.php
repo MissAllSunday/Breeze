@@ -21,7 +21,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 	public function init(array $subActions): void
 	{
 		$context = $this->global('context');
-		$scriptUrl = $this->global('scripturl');
+		$scriptUrl = $this->global(Breeze::SCRIPT_URL);
 
 		$this->requireOnce('ManageSettings');
 		$this->requireOnce('ManageServer');
@@ -56,7 +56,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 		}
 
 		$context = $this->global('context');
-		$scriptUrl = $this->global('scripturl');
+		$scriptUrl = $this->global(Breeze::SCRIPT_URL);
 
 		$context['post_url'] = $scriptUrl . '?' .
 			AdminServiceInterface::POST_URL . $subActionName . ';' .

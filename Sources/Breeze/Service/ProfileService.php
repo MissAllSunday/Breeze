@@ -96,7 +96,7 @@ class ProfileService implements ProfileServiceInterface
 
 		$this->setLanguage(Breeze::NAME);
 
-		$scriptUrl = $this->global('scripturl');
+		$scriptUrl = $this->global(Breeze::SCRIPT_URL);
 		$currentUserInfo = $this->global('user_info');
 		$currentUserSettings = $this->getCurrentUserSettings();
 

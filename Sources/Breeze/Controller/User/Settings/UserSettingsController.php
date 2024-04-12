@@ -64,7 +64,7 @@ class UserSettingsController extends BaseController
 
 	public function main(): void
 	{
-		$scriptUrl = $this->global('scripturl');
+		$scriptUrl = $this->global(Breeze::SCRIPT_URL);
 		$userId = $this->getRequest('u', 0);
 
 		$this->userSettingsBuilder->setForm([
@@ -80,7 +80,7 @@ class UserSettingsController extends BaseController
 
 	public function save(): void
 	{
-		$scriptUrl = $this->global('scripturl');
+		$scriptUrl = $this->global(Breeze::SCRIPT_URL);
 		$userId = $this->getRequest('u', 0);
 		$userSettings = $this->getRequest('user_settings');
 

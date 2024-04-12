@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Breeze;
 use Breeze\Entity\LikeEntity;
 use Breeze\Model\LikeModelInterface;
 use Breeze\PermissionsEnum;
@@ -35,7 +36,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 	public function isContentAlreadyLiked(string $type, int $contentId, int $userId): bool
 	{
-		return (bool)$this->likeModel->checkLike($type, $contentId, $userId);
+		return (bool) $this->likeModel->checkLike($type, $contentId, $userId);
 	}
 
 	/**
@@ -125,7 +126,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 					'{scriptUrl}?action=likes;sa=view;ltype={ltype};like={likeId}',
 					[
 						'ltype' => $type,
-						'scriptUrl' => $this->global('scripturl'),
+						'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
 						'likeId' => $contentId,
 					]
 				),
