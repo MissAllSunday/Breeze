@@ -3,6 +3,7 @@ import * as React from 'react';
 import { useCallback, useState } from 'react';
 
 import smfVars from '../DataSource/SMF';
+import smfTextVars from '../DataSource/Txt';
 import CommentList from './CommentList';
 import Like from './Like';
 import UserInfo from './user/UserInfo';
@@ -52,9 +53,10 @@ function Status(props: StatusProps): React.ReactElement {
         <div className="half_content">
           <span
             className="main_icons remove_button floatright pointer_cursor"
+            title={smfTextVars.general.delete}
             onClick={removeStatus}
           >
-            delete
+            smfTextVars.general.delete
           </span>
         </div>
         <hr />

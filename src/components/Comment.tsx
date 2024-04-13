@@ -2,6 +2,7 @@ import { CommentProps } from 'breezeTypes';
 import React, { useCallback, useState } from 'react';
 
 import smfVars from '../DataSource/SMF';
+import smfTextVars from '../DataSource/Txt';
 import Like from './Like';
 import Avatar from './user/Avatar';
 
@@ -40,9 +41,10 @@ function Comment(props: CommentProps): React.ReactElement {
         <div className="half_content">
           <span
             className="main_icons remove_button floatright pointer_cursor"
+            title={smfTextVars.general.delete}
             onClick={removeComment}
           >
-            delete
+            smfTextVars.general.delete
           </span>
         </div>
       </div>
