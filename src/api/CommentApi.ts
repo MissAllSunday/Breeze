@@ -1,11 +1,11 @@
-import { CommentList } from 'breezeTypes';
+import { CommentListType } from 'breezeTypes';
 
 import smfVars from '../DataSource/SMF';
 import { baseConfig, baseUrl } from './Api';
 
 interface ServerCommentData {
   message: string
-  content: CommentList
+  content: CommentListType
 }
 
 interface ServerDeleteComment {
@@ -24,7 +24,7 @@ export const postComment = async (commentParams: object): Promise<ServerCommentD
     })),
   });
 
-  return await postCommentResults.ok
+  return postCommentResults.ok
     ? postCommentResults.json()
     : postCommentResults.json().then((errorResponse) => { throw Error(errorResponse.message); });
 };
@@ -38,7 +38,7 @@ export const deleteComment = async (commentId: number): Promise<ServerDeleteComm
     })),
   });
 
-  return await deleteCommentResults.ok
+  return deleteCommentResults.ok
     ? deleteCommentResults.json()
     : deleteCommentResults.json().then((errorResponse) => { throw Error(errorResponse); });
 };
