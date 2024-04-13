@@ -30,8 +30,9 @@ abstract class ValidateActions
 	{
 		$properties = get_class_vars(static::class);
 
-		if (in_array($action, $properties)) {
+		if (array_key_exists($action, $properties)) {
 			$this->validator = $this->{$action};
+			$this->validator->setData($this->data);
 		}
 	}
 }
