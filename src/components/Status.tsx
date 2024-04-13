@@ -15,7 +15,7 @@ import UserInfo from './user/UserInfo';
 function Status(props: StatusProps): React.ReactElement {
   const [classType, setClassType] = useState(props.status.isNew ? 'fadeIn' : '');
   const timeStamp = new Date(props.status.createdAt);
-  const [commentsList, setCommentsList] = useState<CommentListType>(props.status.comments);
+  const [commentsList, setCommentsList] = useState<CommentListType>(Object.values(props.status.comments));
   const [isLoading, setIsLoading] = useState(false);
 
   const ref = React.useRef<null | HTMLDivElement>(null);
@@ -94,7 +94,7 @@ function Status(props: StatusProps): React.ReactElement {
             title={smfTextVars.general.delete}
             onClick={removeStatus}
           >
-            smfTextVars.general.delete
+            {smfTextVars.general.delete}
           </span>
         </div>
         <hr/>

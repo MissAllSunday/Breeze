@@ -44,7 +44,7 @@ function Comment(props: CommentProps): React.ReactElement {
             title={smfTextVars.general.delete}
             onClick={removeComment}
           >
-            smfTextVars.general.delete
+            {smfTextVars.general.delete}
           </span>
         </div>
       </div>
