@@ -4,7 +4,7 @@ import { getEditor } from '../api/Editor';
 import smfVars from '../DataSource/SMF';
 import Modal from './Modal';
 
-const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: string) => void }) => {
+const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: string) => boolean }) => {
   const [content, setContent] = useState('');
 
   const handleClick = useCallback(() => {
@@ -12,9 +12,10 @@ const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: st
       return;
     }
 
-    props.saveContent(content);
-    const input = (document.getElementById('Breeze') as HTMLInputElement);
-    input.value = '';
+    if (props.saveContent(content)) {
+      const input = (document.getElementById('content') as HTMLTextAreaElement);
+      input.value = '';
+    }
   }, [props, content]);
 
   const handleContent = useCallback((event: any) => setContent(event.target.value), []);

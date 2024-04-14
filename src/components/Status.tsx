@@ -39,7 +39,6 @@ function Status(props: StatusProps): React.ReactElement {
 
   const createComment = useCallback((content: string) => {
     setIsLoading(true);
-
     postComment({
       statusID: props.status.id,
       body: content,
@@ -50,6 +49,8 @@ function Status(props: StatusProps): React.ReactElement {
         setCommentsList([...commentsList, newComments[key]]);
       }
       toast.success(response.message);
+
+      return true;
     }).catch((exception) => {
       toast.error(exception.toString());
     }).finally(() => {
@@ -63,7 +64,7 @@ function Status(props: StatusProps): React.ReactElement {
       setCommentsList(commentsList.filter((currentComment: CommentType) => currentComment.id !== comment.id));
       toast.success(response.message);
     }).catch((exception) => {
-      toast.error(exception.toString());
+      toast.error(exception);
     }).finally(() => {
       setIsLoading(false);
     });

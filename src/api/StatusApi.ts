@@ -47,9 +47,9 @@ export const deleteStatus = async (statusId: number): Promise<ServerDeleteStatus
     })),
   });
 
-  return await deleteStatusResults.ok
+  return deleteStatusResults.ok
     ? deleteStatusResults.json()
-    : deleteStatusResults.json().then((errorResponse) => { throw Error(errorResponse); });
+    : deleteStatusResults.json().then((errorResponse) => { throw Error(errorResponse.message); });
 };
 
 export const postStatus = async (content: string): Promise<ServerPostStatusResponse> => {
@@ -62,7 +62,7 @@ export const postStatus = async (content: string): Promise<ServerPostStatusRespo
     })),
   });
 
-  return await postStatusResults.ok
+  return postStatusResults.ok
     ? postStatusResults.json()
     : postStatusResults.json().then((errorResponse) => { throw Error(errorResponse.message); });
 };
