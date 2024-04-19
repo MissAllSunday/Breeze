@@ -9,9 +9,9 @@ import {
 import Loading from './components/Loading';
 import { SMFEditorEvent } from './components/SMFEditorEvent';
 import Status from './components/Status';
-import ToolTip from './components/ToolTip';
 import smfVars from './DataSource/SMF';
 import smfTextVars from './DataSource/Txt';
+import { showError, showInfo } from './utils/tooltip';
 
 export default function Wall(props: WallProps): React.ReactElement {
   const [statusList, setStatusList] = useState<StatusListType>([]);
@@ -39,17 +39,16 @@ export default function Wall(props: WallProps): React.ReactElement {
     setIsLoading(true);
 
     editorElement.setAttribute('disabled', '');
-    toast.promise(postStatus(content), {
-      loading: <Loading />,
-      success: (data) => data.message,
-      error: (err) => err,
-    }).then((response: ServerPostStatusResponse) => {
+    postStatus(content).then((response: ServerPostStatusResponse) => {
       const newStatus:StatusListType = Object.values(response.content);
 
       for (const key in newStatus) {
         setStatusList([...statusList, newStatus[key]]);
       }
       props.smfEditor.instance(editorElement).val('');
+      showInfo(response.message);
+    }).catch((exception) => {
+      showError(exception.toString());
     }).finally(() => {
       setIsLoading(false);
       editorElement.removeAttribute('disabled');
@@ -58,21 +57,20 @@ export default function Wall(props: WallProps): React.ReactElement {
 
   const removeStatus = useCallback((currentStatus: StatusType) => {
     setIsLoading(true);
-    toast.promise(deleteStatus(currentStatus.id), {
-      loading: <Loading />,
-      success: (data) => data.message,
-      error: (err) => err,
-    }).then((response) => {
+
+    deleteStatus(currentStatus.id).then((response) => {
       setStatusList(statusList.filter((status: StatusType) => currentStatus.id !== status.id));
+      showInfo(response.message);
     }).finally(() => {
       setIsLoading(false);
-      toast.dismiss();
     });
   }, [statusList]);
 
   return (
     <div ref={editorRef}>
-      <Toaster />
+      <Toaster toastOptions={{
+        duration: 4000,
+      }} />
       {statusList.length === 0 && !isLoading ? <div className={'noticebox'}> {smfTextVars.error.noStatus} </div> : ''}
       <ul className="status">
         {isLoading ? <Loading /> : statusList.map((singleStatus: StatusType) => (

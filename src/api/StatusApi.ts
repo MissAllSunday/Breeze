@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
+import { showError } from '../utils/tooltip';
 import { baseConfig, baseUrl } from './Api';
 
 export interface ServerDeleteStatusResponse {
@@ -47,9 +48,7 @@ export const deleteStatus = async (statusId: number): Promise<ServerDeleteStatus
     })),
   });
 
-  return deleteStatusResults.ok
-    ? deleteStatusResults.json()
-    : deleteStatusResults.json().then((errorResponse) => { throw Error(errorResponse.message); });
+  return deleteStatusResults.ok ? deleteStatusResults.json() : showError(deleteStatusResults);
 };
 
 export const postStatus = async (content: string): Promise<ServerPostStatusResponse> => {
@@ -62,7 +61,5 @@ export const postStatus = async (content: string): Promise<ServerPostStatusRespo
     })),
   });
 
-  return postStatusResults.ok
-    ? postStatusResults.json()
-    : postStatusResults.json().then((errorResponse) => { throw Error(errorResponse.message); });
+  return postStatusResults.ok ? postStatusResults.json() : showError(postStatusResults);
 };
