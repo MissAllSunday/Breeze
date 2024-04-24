@@ -19,7 +19,7 @@ class StatusService
 	public function __construct(
 		protected StatusRepositoryInterface $statusRepository,
 		protected UserRepositoryInterface $userRepository,
-		protected PermissionsService $permissionsService
+		protected PermissionsServiceInterface $permissionsService
 	)
 	{
 
