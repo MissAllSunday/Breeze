@@ -1,5 +1,4 @@
-import { StatusListType } from 'breezeTypes';
-import { useCallback } from 'react';
+import { PermissionsContextType, StatusListType } from 'breezeTypes';
 
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
@@ -18,7 +17,7 @@ export interface ServerPostStatusResponse {
 }
 
 export interface ServerGetStatusResponse {
-  content: { total: number, data: StatusListType }
+  content: { total: number, data: StatusListType, permissions: PermissionsContextType }
   message: string
 }
 

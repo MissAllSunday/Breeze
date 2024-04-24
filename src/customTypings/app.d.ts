@@ -23,9 +23,17 @@ declare module 'breezeTypes' {
       instance: function
     }
   }
+
+  type PermissionsContextType = {
+    edit: boolean,
+    delete: boolean,
+    post: boolean,
+    postComments: boolean
+  } | null;
 }
 
 module.exports = {
+  PermissionsContextType,
   smfVars,
   WallProps,
   WallState,
