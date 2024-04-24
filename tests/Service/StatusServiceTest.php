@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\UserRepositoryInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -13,10 +14,12 @@ use PHPUnit\Framework\TestCase;
 
 class StatusServiceTest extends TestCase
 {
-
 	private StatusRepositoryInterface | MockObject $statusRepository;
+
 	private UserRepositoryInterface | MockObject $userRepository;
+
 	private PermissionsServiceInterface | MockObject $permissionsService;
+
 	private StatusService $statusService;
 
 	/**
@@ -58,6 +61,7 @@ class StatusServiceTest extends TestCase
 			],
 		];
 	}
+
 	#[DataProvider('getByProfileProvider')]
 	public function testGetByProfile(int $wallId, int $start, array $expected): void
 	{
@@ -69,7 +73,7 @@ class StatusServiceTest extends TestCase
 			'postComments' => true,
 		]);
 		$this->statusRepository->method('getByProfile')->willReturn([
-			'data' => [], 'total' => 1
+			'data' => [], 'total' => 1,
 		]);
 
 		$result = $this->statusService->getByProfile($wallId, $start);
@@ -90,7 +94,41 @@ class StatusServiceTest extends TestCase
 						'edit' => false,
 						'post' => true,
 						'postComments' => true,
-					]
+					],
+				],
+			],
+		];
+	}
+
+	/**
+	 * @throws InvalidStatusException
+	 */
+	#[DataProvider('saveProvider')]
+	public function testSave(int $statusId, array $status, array $expected): void
+	{
+		$this->statusRepository->method('save')->willReturn($statusId);
+		$this->statusRepository->method('getById')->willReturn($status);
+
+		$result = $this->statusService->save([]);
+
+		$this->assertEquals($expected, $result);
+	}
+
+	public static function saveProvider(): array
+	{
+		return [
+			'happy happy joy joy' => [
+				'statusId' => 1,
+				'status' => [
+					1 => [
+						'someData' => 'lol',
+					],
+				],
+				'expected' => [
+					1 => [
+						'someData' => 'lol',
+						'isNew' => true,
+					],
 				],
 			],
 		];
