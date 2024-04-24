@@ -108,6 +108,7 @@ class ProfileService implements ProfileServiceInterface
 					break;
 				}
 			}
+			unset($profileItem);
 		}
 
 		$profile_items[] = [
@@ -168,9 +169,9 @@ class ProfileService implements ProfileServiceInterface
 		}
 
 		if (!empty($profileSettings['kick_ignored']) && !empty($profileSettings['ignoredList'])) {
-			$profileIgnoredList = explode(',', $profileSettings['ignoredList']);
+			$profileIgnoredList = array_map('intval', explode(',', $profileSettings['ignoredList']));
 
-			if (in_array($userId, $profileIgnoredList)) {
+			if (in_array($userId, $profileIgnoredList, true)) {
 				return false;
 			}
 		}
@@ -189,9 +190,9 @@ class ProfileService implements ProfileServiceInterface
 		$userStalkedSettings = $this->userRepository->getById($userStalkedId);
 
 		if (!empty($userStalkedSettings['kick_ignored']) && !empty($userStalkedSettings['ignoredList'])) {
-			$ignored = explode(',', $userStalkedSettings['ignoredList']);
+			$ignored = array_map('intval', explode(',', $userStalkedSettings['ignoredList']));
 
-			return in_array($user_info['id'], $ignored);
+			return in_array($user_info['id'], $ignored, true);
 		}
 
 		return false;

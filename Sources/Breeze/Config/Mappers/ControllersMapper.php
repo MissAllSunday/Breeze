@@ -14,10 +14,10 @@ use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Repository\CommentRepository;
 use Breeze\Repository\LikeRepository;
-use Breeze\Repository\StatusRepository;
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminService;
 use Breeze\Service\ProfileService;
+use Breeze\Service\StatusService;
 use Breeze\Util\Form\UserSettingsBuilder;
 use Breeze\Util\Response;
 use Breeze\Util\Validate\Validations\Comment\ValidateComment;
@@ -41,8 +41,7 @@ return [
 	'controller.status' => [
 		'class' => StatusController::class,
 		'arguments' => [
-			StatusRepository::class,
-			UserRepository::class,
+			StatusService::class,
 			ValidateStatus::class,
 			Response::class,
 		],

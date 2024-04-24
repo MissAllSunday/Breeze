@@ -6,10 +6,8 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\StatusEntity;
-use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\InvalidStatusException;
-use Breeze\Repository\StatusRepositoryInterface;
-use Breeze\Repository\User\UserRepositoryInterface;
+use Breeze\Service\StatusService;
 use Breeze\Util\Response;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
@@ -30,8 +28,7 @@ class StatusController extends ApiBaseController
 	];
 
 	public function __construct(
-		protected StatusRepositoryInterface $statusRepository,
-		protected UserRepositoryInterface $userRepository,
+		protected StatusService $statusService,
 		protected ValidateActionsInterface $validateActions,
 		protected Response $response
 	) {
@@ -41,14 +38,9 @@ class StatusController extends ApiBaseController
 	public function profile(): void
 	{
 		try {
-			$wallUserSettings = $this->userRepository->getById($this->data[StatusEntity::WALL_ID]);
-			$wallUserPagination = $wallUserSettings[UserSettingsEntity::PAGINATION_NUM];
-			$start = $this->getRequest('start', 0);
-
-			$statusByProfile = $this->statusRepository->getByProfile(
-				[$this->data[StatusEntity::WALL_ID]],
-				$start,
-				!empty($start) ? ($wallUserPagination * $start) : $wallUserPagination
+			$statusByProfile = $this->statusService->getByProfile(
+				$this->data[StatusEntity::WALL_ID],
+				$this->getRequest('start', 0)
 			);
 
 			$this->response->success('', $statusByProfile);
@@ -59,21 +51,14 @@ class StatusController extends ApiBaseController
 
 	public function general(): void
 	{
-		$currentUserInfo = $this->global('user_info');
-		$currentUserSettings = $this->userRepository->getById($currentUserInfo['id']);
-		$currentUserBuddies = $currentUserSettings[UserSettingsEntity::BUDDIES];
-
-		if (empty($currentUserBuddies)) {
-			$this->response->success('', []);
-		}
-
 		try {
-			$statusByProfile = $this->statusRepository->getByProfile(
-				$currentUserBuddies,
-				$this->getRequest('start', 0)
-			);
+			$buddiesStatus = $this->statusService->getByBuddies($this->getRequest('start', 0));
 
-			$this->response->success('', $statusByProfile);
+			if (empty($buddiesStatus)) {
+				$this->response->success('', []);
+			}
+
+			$this->response->success('', $buddiesStatus);
 		} catch (InvalidStatusException $invalidStatusException) {
 			$this->response->error($invalidStatusException->getMessage());
 		}
@@ -82,7 +67,7 @@ class StatusController extends ApiBaseController
 	public function deleteStatus(): void
 	{
 		try {
-			$this->statusRepository->deleteById($this->data[StatusEntity::ID]);
+			$this->statusService->deleteById($this->data[StatusEntity::ID]);
 
 			$this->response->success('deleted_status');
 		} catch (InvalidStatusException $invalidStatusException) {
@@ -93,9 +78,7 @@ class StatusController extends ApiBaseController
 	public function postStatus(): void
 	{
 		try {
-			$statusId = $this->statusRepository->save($this->data);
-			$status = $this->statusRepository->getById($statusId);
-			$status[$statusId]['isNew'] = true;
+			$status = $this->statusService->save($this->data);
 
 			$this->response->success(
 				'published_status',
@@ -110,8 +93,8 @@ class StatusController extends ApiBaseController
 	public function total(): void
 	{
 		try {
-			$statusByProfile = $this->statusRepository->getByProfile(
-				[$this->data[StatusEntity::WALL_ID]],
+			$statusByProfile = $this->statusService->getByProfile(
+				$this->data[StatusEntity::WALL_ID],
 				$this->getRequest('start', 0)
 			);
 
