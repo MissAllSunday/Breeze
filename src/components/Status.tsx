@@ -1,11 +1,11 @@
 import { CommentListType, CommentType, StatusProps } from 'breezeTypes';
 import * as React from 'react';
 import { useCallback, useState } from 'react';
-import toast from 'react-hot-toast';
 
-import { deleteComment, postComment } from '../api/CommentApi';
+import { deleteComment, postComment, ServerCommentData } from '../api/CommentApi';
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
+import { showError, showInfo } from '../utils/tooltip';
 import Comment from './Comment';
 import Editor from './Editor';
 import Like from './Like';
@@ -39,20 +39,19 @@ function Status(props: StatusProps): React.ReactElement {
 
   const createComment = useCallback((content: string) => {
     setIsLoading(true);
+
     postComment({
-      statusID: props.status.id,
+      statusId: props.status.id,
       body: content,
-    }).then((response) => {
+    }).then((response: ServerCommentData) => {
       const newComments:CommentListType = Object.values(response.content);
 
       for (const key in newComments) {
         setCommentsList([...commentsList, newComments[key]]);
       }
-      toast.success(response.message);
+      showInfo(response.message);
 
       return true;
-    }).catch((exception) => {
-      toast.error(exception.toString());
     }).finally(() => {
       setIsLoading(false);
     });
@@ -62,9 +61,9 @@ function Status(props: StatusProps): React.ReactElement {
     setIsLoading(true);
     deleteComment(comment.id).then((response) => {
       setCommentsList(commentsList.filter((currentComment: CommentType) => currentComment.id !== comment.id));
-      toast.success(response.message);
+      showInfo(response.message);
     }).catch((exception) => {
-      toast.error(exception);
+      showError(exception.toString());
     }).finally(() => {
       setIsLoading(false);
     });

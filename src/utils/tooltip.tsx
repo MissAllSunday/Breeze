@@ -7,6 +7,7 @@ export interface ServerResponse {
 }
 
 export const showError = (response: Response): void => {
+  console.log(response);
   response.json().then((serverResponse: ServerResponse) => {
     toast.custom(<div className={'errorbox'}>
     {serverResponse.message}
