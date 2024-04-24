@@ -1,9 +1,10 @@
 import { CommentListType } from 'breezeTypes';
 
 import smfVars from '../DataSource/SMF';
+import { showError } from '../utils/tooltip';
 import { baseConfig, baseUrl } from './Api';
 
-interface ServerCommentData {
+export interface ServerCommentData {
   message: string
   content: CommentListType
 }
@@ -24,9 +25,7 @@ export const postComment = async (commentParams: object): Promise<ServerCommentD
     })),
   });
 
-  return postCommentResults.ok
-    ? postCommentResults.json()
-    : postCommentResults.json().then((errorResponse) => { throw Error(errorResponse.message); });
+  return postCommentResults.ok ? postCommentResults.json() : showError(postCommentResults);
 };
 
 export const deleteComment = async (commentId: number): Promise<ServerDeleteComment> => {
@@ -38,7 +37,5 @@ export const deleteComment = async (commentId: number): Promise<ServerDeleteComm
     })),
   });
 
-  return deleteCommentResults.ok
-    ? deleteCommentResults.json()
-    : deleteCommentResults.json().then((errorResponse) => { throw Error(errorResponse); });
+  return deleteCommentResults.ok ? deleteCommentResults.json() : showError(deleteCommentResults);
 };
