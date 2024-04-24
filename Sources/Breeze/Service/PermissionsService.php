@@ -10,12 +10,10 @@ use Breeze\PermissionsEnum;
 use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\TextTrait;
 
-class PermissionsService
+class PermissionsService implements PermissionsServiceInterface
 {
 	use TextTrait;
 	use PermissionsTrait;
-
-	public const IDENTIFIER = 'Permissions';
 
 	public function hookPermissions(&$permissionGroups, &$permissionList): void
 	{
