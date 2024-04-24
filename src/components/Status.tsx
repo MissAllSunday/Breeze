@@ -1,8 +1,9 @@
 import { CommentListType, CommentType, StatusProps } from 'breezeTypes';
 import * as React from 'react';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 
 import { deleteComment, postComment, ServerCommentData } from '../api/CommentApi';
+import { PermissionsContext } from '../context/PermissionsContext';
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
 import { showError, showInfo } from '../utils/tooltip';
@@ -17,6 +18,7 @@ function Status(props: StatusProps): React.ReactElement {
   const timeStamp = new Date(props.status.createdAt);
   const [commentsList, setCommentsList] = useState<CommentListType>(Object.values(props.status.comments));
   const [isLoading, setIsLoading] = useState(false);
+  const permissions = useContext(PermissionsContext);
 
   const ref = React.useRef<null | HTMLDivElement>(null);
 

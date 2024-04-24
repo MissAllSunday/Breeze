@@ -1,6 +1,6 @@
-import { StatusListType, StatusType, WallProps } from 'breezeTypes';
+import { PermissionsContextType, StatusListType, StatusType, WallProps } from 'breezeTypes';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 import {
   deleteStatus,
@@ -9,11 +9,13 @@ import {
 import Loading from './components/Loading';
 import { SMFEditorEvent } from './components/SMFEditorEvent';
 import Status from './components/Status';
+import { PermissionsContext } from './context/PermissionsContext';
 import smfVars from './DataSource/SMF';
 import smfTextVars from './DataSource/Txt';
 import { showError, showInfo } from './utils/tooltip';
 
 export default function Wall(props: WallProps): React.ReactElement {
+  const [permissions, setPermissions] = useState<PermissionsContextType>(null);
   const [statusList, setStatusList] = useState<StatusListType>([]);
   const [isLoading, setIsLoading] = useState(true);
   const editorElement = useMemo(() => { return document.getElementById(smfVars.editorId) || new HTMLElement();}, []);
@@ -29,6 +31,7 @@ export default function Wall(props: WallProps): React.ReactElement {
       .then((statusListResponse: ServerGetStatusResponse) => {
         const fetchedStatusList: StatusListType = Object.values(statusListResponse.content.data);
         setStatusList(fetchedStatusList);
+        setPermissions(statusListResponse.content.permissions);
       })
       .finally(() => {
         setIsLoading(false);
@@ -72,15 +75,17 @@ export default function Wall(props: WallProps): React.ReactElement {
         duration: 4000,
       }} />
       {statusList.length === 0 && !isLoading ? <div className={'noticebox'}> {smfTextVars.error.noStatus} </div> : ''}
-      <ul className="status">
-        {isLoading ? <Loading /> : statusList.map((singleStatus: StatusType) => (
-            <Status
-                key={singleStatus.id}
-                status={singleStatus}
-                removeStatus={removeStatus}
-            />
-        ))}
-      </ul>
+      <PermissionsContext.Provider value={permissions}>
+        <ul className="status">
+          {isLoading ? <Loading /> : statusList.map((singleStatus: StatusType) => (
+              <Status
+                  key={singleStatus.id}
+                  status={singleStatus}
+                  removeStatus={removeStatus}
+              />
+          ))}
+        </ul>
+      </PermissionsContext.Provider>
     </div>
   );
 }
