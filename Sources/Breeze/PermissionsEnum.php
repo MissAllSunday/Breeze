@@ -6,6 +6,7 @@ namespace Breeze;
 
 enum PermissionsEnum
 {
+	public const NAME = 'permissions';
 	public const ADMIN_FORUM = 'admin_forum';
 	public const DELETE_COMMENTS = 'deleteComments';
 	public const DELETE_OWN_COMMENTS = 'deleteOwnComments';
