@@ -25,6 +25,18 @@ export default function Wall(props: WallProps): React.ReactElement {
 
     createStatus(editorContent);
   });
+  const [permissions, setPermissions] = useState<PermissionsContextType>({
+    Status: {
+      edit: false,
+      delete: false,
+      post: false,
+    },
+    Comments: {
+      edit: false,
+      delete: false,
+      post: false,
+    },
+  });
 
   useEffect(() => {
     getStatus(props.wallType)

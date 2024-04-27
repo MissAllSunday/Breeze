@@ -30,19 +30,25 @@ class PermissionsService implements PermissionsServiceInterface
 		}
 	}
 
-	public function permissions(string $type, int $profileOwner = 0, int $userPoster = 0): array
+	public function permissions(int $profileOwner = 0, int $userPoster = 0): array
 	{
 		$user_info = $this->global('user_info');
 
 		$perm = [
-			'edit' => false,
-			'delete' => false,
-			'post' => false,
-			'postComments' => false,
+			PermissionsEnum::TYPE_STATUS =>  [
+				'edit' => false,
+				'delete' => false,
+				'post' => false,
+			],
+			PermissionsEnum::TYPE_COMMENTS =>  [
+				'edit' => false,
+				'delete' => false,
+				'post' => false,
+			],
 		];
 
 		// NO! you don't have permission to do nothing...
-		if ($user_info['is_guest'] || !$userPoster || !$profileOwner || empty($type)) {
+		if ($user_info['is_guest'] || !$userPoster || !$profileOwner) {
 			return $perm;
 		}
 
@@ -54,13 +60,21 @@ class PermissionsService implements PermissionsServiceInterface
 
 		// Lets check the posing bit first. Profile owner can always post.
 		if ($isProfileOwner) {
-			$perm['post'] = true;
-			$perm['postComments'] = true;
+			$perm[PermissionsEnum::TYPE_STATUS]['post'] = true;
+			$perm[PermissionsEnum::TYPE_COMMENTS]['post'] = true;
 		} else {
-			$perm['post'] = $this->isAllowedTo(PermissionsEnum::POST_STATUS);
-			$perm['postComments'] = $this->isAllowedTo(PermissionsEnum::POST_COMMENTS);
+			$perm[PermissionsEnum::TYPE_STATUS]['post'] = $this->isAllowedTo(PermissionsEnum::POST_STATUS);
+			$perm[PermissionsEnum::TYPE_COMMENTS]['post'] =  $this->isAllowedTo(PermissionsEnum::POST_COMMENTS);
 		}
 
+		$perm[PermissionsEnum::TYPE_STATUS]['delete'] = $this->handleDelete(PermissionsEnum::TYPE_STATUS, $isPosterOwner, $isProfileOwner);
+		$perm[PermissionsEnum::TYPE_COMMENTS]['delete'] =  $this->handleDelete(PermissionsEnum::TYPE_STATUS, $isPosterOwner, $isProfileOwner);
+
+		return $perm;
+	}
+
+	protected function handleDelete(string $type, bool $isPosterOwner, $isProfileOwner) : bool
+	{
 		// It all starts with an empty vessel...
 		$allowed = [];
 
@@ -79,8 +93,6 @@ class PermissionsService implements PermissionsServiceInterface
 			$allowed[] = 1;
 		}
 
-		$perm['delete'] = in_array(1, $allowed, true);
-
-		return $perm;
+		return in_array(1, $allowed, true);
 	}
 }
