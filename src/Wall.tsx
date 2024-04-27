@@ -15,6 +15,7 @@ import smfTextVars from './DataSource/Txt';
 import { showError, showInfo } from './utils/tooltip';
 
 export default function Wall(props: WallProps): React.ReactElement {
+  const [permissions, setPermissions] = useState<PermissionsContextType>(null);
   const [statusList, setStatusList] = useState<StatusListType>([]);
   const [isLoading, setIsLoading] = useState(true);
   const editorElement = useMemo(() => { return document.getElementById(smfVars.editorId) || new HTMLElement();}, []);
