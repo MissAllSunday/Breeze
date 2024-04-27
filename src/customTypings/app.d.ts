@@ -24,12 +24,16 @@ declare module 'breezeTypes' {
     }
   }
 
-  type PermissionsContextType = {
+  type PermissionsType = {
     edit: boolean,
     delete: boolean,
     post: boolean,
-    postComments: boolean
-  } | null;
+  };
+
+  type PermissionsContextType = {
+    Status: PermissionsType,
+    Comments: PermissionsType,
+  };
 }
 
 module.exports = {

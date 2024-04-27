@@ -21,7 +21,7 @@ return [
 	],
 	'service.profile' => [
 		'class' => ProfileService::class,
-		'arguments' => [UserRepository::class, Components::class],
+		'arguments' => [UserRepository::class, Components::class, PermissionsService::class],
 	],
 	'service.permissions' => [
 		'class' => PermissionsService::class,

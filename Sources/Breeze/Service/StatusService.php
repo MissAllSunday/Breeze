@@ -45,7 +45,7 @@ class StatusService
 			$start,
 			!empty($start) ? ($wallUserPagination * $start) : $wallUserPagination
 		);
-		$statusByProfile[PermissionsEnum::NAME] = $this->permissionsService->permissions('any', $wallId, $currentUserInfo['id']);
+		$statusByProfile[PermissionsEnum::NAME] = $this->permissionsService->permissions($wallId, $currentUserInfo['id']);
 
 		return $statusByProfile;
 	}

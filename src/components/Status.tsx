@@ -40,6 +40,10 @@ function Status(props: StatusProps): React.ReactElement {
   }, [props]);
 
   const createComment = useCallback((content: string) => {
+    if (!permissions.Comments.post) {
+      return;
+    }
+
     setIsLoading(true);
 
     postComment({
@@ -60,6 +64,10 @@ function Status(props: StatusProps): React.ReactElement {
   }, [props.status.id, commentsList]);
 
   const removeComment = useCallback((comment: CommentType) => {
+    if (!permissions.Comments.delete) {
+      return;
+    }
+
     setIsLoading(true);
     deleteComment(comment.id).then((response) => {
       setCommentsList(commentsList.filter((currentComment: CommentType) => currentComment.id !== comment.id));
@@ -69,7 +77,9 @@ function Status(props: StatusProps): React.ReactElement {
     }).finally(() => {
       setIsLoading(false);
     });
-  }, [commentsList]);
+  }, [commentsList, permissions]);
+
+  const showEditor = permissions.Comments.post ? <Editor saveContent={createComment}/> : '';
 
   return (
     <li
@@ -91,28 +101,30 @@ function Status(props: StatusProps): React.ReactElement {
           />
         </div>
         <div className="half_content">
-          <span
-            className="main_icons remove_button floatright pointer_cursor"
-            title={smfTextVars.general.delete}
-            onClick={removeStatus}
-          >
+          {permissions.Status.delete &&
+            <span
+              className="main_icons remove_button floatright pointer_cursor"
+              title={smfTextVars.general.delete}
+              onClick={removeStatus}
+            >
             {smfTextVars.general.delete}
           </span>
+          }
         </div>
         <hr/>
         <div className="comment_posting">
           {isLoading
             ? <Loading/>
-            : <Editor saveContent={createComment}/>}
+            : showEditor}
         </div>
         <ul className="status">
-          {commentsList.map((comment: CommentType) => (
+        {commentsList.map((comment: CommentType) => (
             <Comment
               key={comment.id}
               comment={comment}
               removeComment={removeComment}
             />
-          ))}
+        ))}
         </ul>
       </div>
     </li>

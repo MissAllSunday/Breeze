@@ -22,12 +22,13 @@ enum PermissionsEnum
 	private const DELETE_TEMPLATE = 'delete%s%s';
 	public const OWN = 'own';
 	public const PROFILE = 'profile';
+	public const TYPE_STATUS = 'Status';
+	public const TYPE_COMMENTS = 'Comments';
 
 	public const ALL_PERMISSIONS = [
 		self::DELETE_COMMENTS,
 		self::DELETE_OWN_COMMENTS,
 		self::DELETE_PROFILE_COMMENTS,
-		self::DELETE_STATUS,
 		self::DELETE_STATUS,
 		self::DELETE_OWN_STATUS,
 		self::DELETE_PROFILE_STATUS,

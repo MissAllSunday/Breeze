@@ -32,7 +32,8 @@ class ProfileService implements ProfileServiceInterface
 
 	public function __construct(
 		protected UserRepositoryInterface $userRepository,
-		protected Components $components
+		protected Components $components,
+		protected PermissionsService $permissionsService
 	) {
 	}
 
