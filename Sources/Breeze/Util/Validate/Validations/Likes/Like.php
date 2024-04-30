@@ -20,7 +20,6 @@ class Like extends BaseActions implements ValidateDataInterface
 	protected const PARAMS = [
 		LikeEntity::ID => 0,
 		LikeEntity::TYPE => '',
-		LikeEntity::PARAM_SA => '',
 		LikeEntity::ID_MEMBER => 0,
 	];
 
