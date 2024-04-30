@@ -1,4 +1,4 @@
-import { ModalProps } from 'breezeTypes';
+import { ModalProps } from 'breezeTypesModal';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import smfTextVars from '../DataSource/Txt';

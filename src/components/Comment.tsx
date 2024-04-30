@@ -1,4 +1,4 @@
-import { CommentProps } from 'breezeTypes';
+import { CommentProps } from 'breezeTypesComments';
 import React, { useCallback, useContext, useState } from 'react';
 
 import { PermissionsContext } from '../context/PermissionsContext';

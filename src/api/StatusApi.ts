@@ -1,4 +1,5 @@
-import { PermissionsContextType, StatusListType } from 'breezeTypes';
+import { PermissionsContextType } from 'breezeTypesPermissions';
+import { StatusListType } from 'breezeTypesStatus';
 
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';

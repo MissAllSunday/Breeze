@@ -1,4 +1,4 @@
-import { LikeProps, LikeType } from 'breezeTypes';
+import { LikeProps, LikeType } from 'breezeTypesLikes';
 import React, { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
 

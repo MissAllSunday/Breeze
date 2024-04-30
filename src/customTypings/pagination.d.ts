@@ -1,4 +1,4 @@
-declare module 'breezeTypes' {
+declare module 'breezeTypesPagination' {
   interface PaginationProps {
     limit: number
     total: number

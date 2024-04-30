@@ -1,4 +1,4 @@
-declare module 'breezeTypes' {
+declare module 'breezeTypesLikes' {
   interface LikeType {
     additionalInfo: {
       text: string

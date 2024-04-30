@@ -1,4 +1,4 @@
-import { LikeInfoState, LikeType } from 'breezeTypes';
+import { LikeInfoState, LikeType } from 'breezeTypesLikes';
 
 import SmfVars from '../DataSource/SMF';
 import { baseConfig, baseUrl } from './Api';

@@ -1,4 +1,4 @@
-declare module 'breezeTypes' {
+declare module 'breezeTypesText' {
 
   interface GeneralTextType {
     save: string

@@ -1,4 +1,5 @@
-import { CommentListType, CommentType, StatusProps } from 'breezeTypes';
+import { CommentListType, CommentType } from 'breezeTypesComments';
+import { StatusProps } from 'breezeTypesStatus';
 import * as React from 'react';
 import { useCallback, useContext, useState } from 'react';
 
@@ -61,7 +62,7 @@ function Status(props: StatusProps): React.ReactElement {
     }).finally(() => {
       setIsLoading(false);
     });
-  }, [props.status.id, commentsList]);
+  }, [props.status.id, commentsList, permissions.Comments.post]);
 
   const removeComment = useCallback((comment: CommentType) => {
     if (!permissions.Comments.delete) {
@@ -77,7 +78,7 @@ function Status(props: StatusProps): React.ReactElement {
     }).finally(() => {
       setIsLoading(false);
     });
-  }, [commentsList, permissions]);
+  }, [commentsList, permissions.Comments.delete]);
 
   const showEditor = permissions.Comments.post ? <Editor saveContent={createComment}/> : '';
 

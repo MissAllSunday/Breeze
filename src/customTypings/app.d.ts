@@ -23,21 +23,9 @@ declare module 'breezeTypes' {
       instance: function
     }
   }
-
-  type PermissionsType = {
-    edit: boolean,
-    delete: boolean,
-    post: boolean,
-  };
-
-  type PermissionsContextType = {
-    Status: PermissionsType,
-    Comments: PermissionsType,
-  };
 }
 
 module.exports = {
-  PermissionsContextType,
   smfVars,
   WallProps,
   WallState,

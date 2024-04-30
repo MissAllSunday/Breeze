@@ -1,4 +1,4 @@
-import { UserInfoProps } from 'breezeTypes';
+import { UserInfoProps } from 'breezeTypesUser';
 import * as React from 'react';
 
 import Avatar from './Avatar';

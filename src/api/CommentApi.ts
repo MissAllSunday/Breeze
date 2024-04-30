@@ -1,4 +1,4 @@
-import { CommentListType } from 'breezeTypes';
+import { CommentListType } from 'breezeTypesComments';
 
 import smfVars from '../DataSource/SMF';
 import { showError } from '../utils/tooltip';

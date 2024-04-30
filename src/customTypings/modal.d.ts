@@ -1,4 +1,4 @@
-declare module 'breezeTypes' {
+declare module 'breezeTypesModal' {
   interface ModalProps {
     show: boolean
     content: {

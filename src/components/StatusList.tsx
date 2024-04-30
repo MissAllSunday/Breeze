@@ -1,12 +1,10 @@
-import { StatusListProps, StatusListType, StatusType } from 'breezeTypes';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { StatusListType, StatusType } from 'breezeTypesStatus';
+import React, { useCallback } from 'react';
 import toast from 'react-hot-toast';
 
 import { deleteStatus, getStatus, postStatus, ServerGetStatusResponse, ServerPostStatusResponse } from '../api/StatusApi';
 import smfTextVars from '../DataSource/Txt';
 import Editor from './Editor';
-import Loading from './Loading';
-import Status from './Status';
 
 function StatusList(statusList: StatusListType): React.ReactElement {
 

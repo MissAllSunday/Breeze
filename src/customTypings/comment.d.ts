@@ -1,4 +1,4 @@
-declare module 'breezeTypes' {
+declare module 'breezeTypesComments' {
   interface CommentType {
     id: number
     statusId: number

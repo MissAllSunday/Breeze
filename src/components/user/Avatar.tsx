@@ -1,4 +1,4 @@
-import { AvatarDataType } from 'breezeTypes';
+import { AvatarDataType } from 'breezeTypesUser';
 import React from 'react';
 
 const Avatar: React.FunctionComponent<AvatarDataType> = (props: AvatarDataType) => (

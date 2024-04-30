@@ -1,4 +1,4 @@
-declare module 'breezeTypes' {
+declare module 'breezeTypesUser' {
   interface UserDataType {
     avatar: {
       href: string

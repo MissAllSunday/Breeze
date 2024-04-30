@@ -1,4 +1,4 @@
-declare module 'breezeTypes' {
+declare module 'breezeTypesStatus' {
   interface StatusType {
     id: number
     wallId: number

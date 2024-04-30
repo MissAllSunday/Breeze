@@ -1,4 +1,4 @@
-declare module 'breezeTypes' {
+declare module 'breezeTypesUtils' {
 
   interface UtilsProps {
     smfVars: smfVars

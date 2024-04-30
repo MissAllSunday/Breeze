@@ -1,8 +1,6 @@
 import React, { createElement, useCallback, useState } from 'react';
 
-import { getEditor } from '../api/Editor';
 import smfVars from '../DataSource/SMF';
-import Modal from './Modal';
 
 const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: string) => boolean }) => {
   const [content, setContent] = useState('');
