@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 
 import { postLike, ServerLikeData } from '../api/LikeApi';
 import smfVars from '../DataSource/SMF';
+import { showError, showErrorMessage, showInfo } from '../utils/tooltip';
 import LikeInfo from './LikeInfo';
 
 const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
@@ -17,10 +18,16 @@ const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
         }
 
         postLike(like).then((response: ServerLikeData) => {
-          toast.success(response.message);
-          setLike(response.content);
+
+          if (Object.keys(response.content).length !== 0) {
+            setLike(response.content);
+            showInfo(response.message);
+            return;
+          }
+
+          showErrorMessage(response.message);
         }).catch((exception) => {
-          toast.error(exception.toString());
+          showError(exception.toString());
         });
       }
       issueLike();
@@ -30,7 +37,7 @@ const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
 
   return (
     <div className="smflikebutton">
-      <span onClick={handleLike} className="likeClass pointer_cursor" title={like.type}>
+      <span onClick={handleLike} className="likeClass pointer_cursor" title={like.additionalInfo.text}>
         {String.fromCodePoint(like.alreadyLiked ? 128078 : 128077)}
       </span>
       {' '}

@@ -1,6 +1,7 @@
 import { LikeInfoState, LikeType } from 'breezeTypesLikes';
 
 import SmfVars from '../DataSource/SMF';
+import { showError } from '../utils/tooltip';
 import { baseConfig, baseUrl } from './Api';
 
 export interface ServerLikeData {
@@ -22,14 +23,12 @@ export const postLike = async (likeData: LikeType): Promise<ServerLikeData> => {
     content_id: likeData.contentId,
   };
 
-  const like = await fetch(baseUrl(action, 'like'), {
+  const likeResults = await fetch(baseUrl(action, 'like'), {
     method: 'POST',
     body: JSON.stringify(baseConfig(params)),
   });
 
-  return await like.ok
-    ? like.json()
-    : like.json().then((errorResponse) => { throw Error(errorResponse.message); });
+  return likeResults.json();
 };
 
 export const getLikeInfo = async (like: LikeType): Promise<ServerLikeInfoData> => {
@@ -38,12 +37,10 @@ export const getLikeInfo = async (like: LikeType): Promise<ServerLikeInfoData> =
     content_id: like.contentId,
   };
 
-  const likeInfo = await fetch(baseUrl(action, 'info'), {
+  const likeInfoResults = await fetch(baseUrl(action, 'info'), {
     method: 'POST',
     body: JSON.stringify(baseConfig(params)),
   });
 
-  return await likeInfo.ok
-    ? likeInfo.json()
-    : likeInfo.json().then((errorResponse) => { throw Error(errorResponse.message); });
+  return likeInfoResults.ok ? likeInfoResults.json() : showError(likeInfoResults);
 };

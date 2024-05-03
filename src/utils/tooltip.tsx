@@ -20,3 +20,9 @@ export const showInfo = (message: string): void => {
     {message}
   </div>);
 };
+
+export const showErrorMessage = (message: string): void => {
+  toast.custom(<div className={'errorbox'}>
+    {message}
+  </div>);
+};
