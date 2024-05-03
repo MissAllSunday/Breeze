@@ -7,6 +7,7 @@ namespace Breeze;
 enum PermissionsEnum
 {
 	public const NAME = 'permissions';
+	public const FORUM = 'Forum';
 
 	public const IS_ENABLE = 'isEnable';
 	public const ADMIN_FORUM = 'admin_forum';
@@ -31,6 +32,10 @@ enum PermissionsEnum
 
 	public const ALL_FEATS = [
 		self::FEAT_LIKES
+	];
+
+	public const ALL_FORUM = [
+		self::LIKES_LIKE, self::ADMIN_FORUM, self::PROFILE_VIEW
 	];
 
 	public const ALL_PERMISSIONS = [

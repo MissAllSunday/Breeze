@@ -48,6 +48,7 @@ class PermissionsService implements PermissionsServiceInterface
 				'post' => false,
 			],
 			PermissionsEnum::IS_ENABLE => $this->isEnable(),
+			PermissionsEnum::FORUM => $this->forumPermissions(),
 		];
 
 		// NO! you don't have permission to do nothing...
@@ -82,6 +83,17 @@ class PermissionsService implements PermissionsServiceInterface
 
 		foreach (PermissionsEnum::ALL_FEATS as $featureName) {
 			$isEnable[$this->snakeToCamel($featureName)] = $this->modSetting($featureName);
+		}
+
+		return $isEnable;
+	}
+
+	public function forumPermissions(): array
+	{
+		$isEnable = [];
+
+		foreach (PermissionsEnum::ALL_FORUM as $forumPermission) {
+			$isEnable[$this->snakeToCamel($forumPermission)] = $this->modSetting($forumPermission);
 		}
 
 		return $isEnable;

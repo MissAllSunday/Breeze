@@ -5,6 +5,12 @@ declare module 'breezeTypesPermissions' {
     post: boolean,
   };
 
+  type ForumPermissionsType = {
+    likesLike : boolean,
+    adminForum: boolean,
+    profileView: boolean,
+  };
+
   type IsEnableType = {
     enableLikes: boolean,
   };
@@ -12,7 +18,8 @@ declare module 'breezeTypesPermissions' {
   type PermissionsContextType = {
     Status: PermissionsType,
     Comments: PermissionsType,
-    isEnable: IsEnableType
+    isEnable: IsEnableType,
+    Forum: ForumPermissionsType,
   };
 
 }

@@ -11,6 +11,11 @@ const PermissionsDefault:PermissionsContextType = {
     delete: false,
     post: false,
   },
+  Forum: {
+    likesLike : false,
+    adminForum: false,
+    profileView: false,
+  },
   isEnable: {
     enableLikes: false,
   },
