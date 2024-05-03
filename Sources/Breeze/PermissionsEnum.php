@@ -31,11 +31,11 @@ enum PermissionsEnum
 	public const FEAT_LIKES = 'enable_likes';
 
 	public const ALL_FEATS = [
-		self::FEAT_LIKES
+		self::FEAT_LIKES,
 	];
 
 	public const ALL_FORUM = [
-		self::LIKES_LIKE, self::ADMIN_FORUM, self::PROFILE_VIEW
+		self::LIKES_LIKE, self::ADMIN_FORUM, self::PROFILE_VIEW,
 	];
 
 	public const ALL_PERMISSIONS = [

@@ -47,7 +47,7 @@ class PermissionsService implements PermissionsServiceInterface
 				'delete' => false,
 				'post' => false,
 			],
-			PermissionsEnum::IS_ENABLE => $this->isEnable(),
+			PermissionsEnum::IS_ENABLE => $this->isFeatureEnable(),
 			PermissionsEnum::FORUM => $this->forumPermissions(),
 		];
 
@@ -77,7 +77,7 @@ class PermissionsService implements PermissionsServiceInterface
 		return $perm;
 	}
 
-	public function isEnable(): array
+	public function isFeatureEnable(): array
 	{
 		$isEnable = [];
 
