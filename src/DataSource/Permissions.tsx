@@ -11,7 +11,7 @@ const PermissionsDefault:PermissionsContextType = {
     delete: false,
     post: false,
   },
-  IsEnable: {
+  isEnable: {
     enableLikes: false,
   },
 };

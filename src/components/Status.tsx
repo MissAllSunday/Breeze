@@ -97,7 +97,7 @@ function Status(props: StatusProps): React.ReactElement {
           {props.status.body}
         </div>
         <div className="half_content">
-          { permissions.IsEnable.enableLikes && <Like
+          { permissions.isEnable.enableLikes && <Like
             item={props.status.likesInfo}
           />}
         </div>

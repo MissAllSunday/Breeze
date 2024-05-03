@@ -12,7 +12,7 @@ declare module 'breezeTypesPermissions' {
   type PermissionsContextType = {
     Status: PermissionsType,
     Comments: PermissionsType,
-    IsEnable: IsEnableType
+    isEnable: IsEnableType
   };
 
 }
