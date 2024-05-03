@@ -8,12 +8,14 @@ namespace Breeze\Service;
 use Breeze\Breeze;
 use Breeze\PermissionsEnum;
 use Breeze\Traits\PermissionsTrait;
+use Breeze\Traits\SettingsTrait;
 use Breeze\Traits\TextTrait;
 
 class PermissionsService implements PermissionsServiceInterface
 {
 	use TextTrait;
 	use PermissionsTrait;
+	use SettingsTrait;
 
 	public function hookPermissions(&$permissionGroups, &$permissionList): void
 	{
@@ -45,6 +47,7 @@ class PermissionsService implements PermissionsServiceInterface
 				'delete' => false,
 				'post' => false,
 			],
+			PermissionsEnum::IS_ENABLE => $this->isEnable(),
 		];
 
 		// NO! you don't have permission to do nothing...
@@ -71,6 +74,17 @@ class PermissionsService implements PermissionsServiceInterface
 		$perm[PermissionsEnum::TYPE_COMMENTS]['delete'] =  $this->handleDelete(PermissionsEnum::TYPE_STATUS, $isPosterOwner, $isProfileOwner);
 
 		return $perm;
+	}
+
+	public function isEnable(): array
+	{
+		$isEnable = [];
+
+		foreach (PermissionsEnum::ALL_FEATS as $featureName) {
+			$isEnable[$this->snakeToCamel($featureName)] = $this->modSetting($featureName);
+		}
+
+		return $isEnable;
 	}
 
 	protected function handleDelete(string $type, bool $isPosterOwner, $isProfileOwner) : bool

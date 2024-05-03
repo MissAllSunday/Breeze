@@ -7,6 +7,8 @@ namespace Breeze;
 enum PermissionsEnum
 {
 	public const NAME = 'permissions';
+
+	public const IS_ENABLE = 'isEnable';
 	public const ADMIN_FORUM = 'admin_forum';
 	public const DELETE_COMMENTS = 'deleteComments';
 	public const DELETE_OWN_COMMENTS = 'deleteOwnComments';
@@ -24,6 +26,12 @@ enum PermissionsEnum
 	public const PROFILE = 'profile';
 	public const TYPE_STATUS = 'Status';
 	public const TYPE_COMMENTS = 'Comments';
+
+	public const FEAT_LIKES = 'enable_likes';
+
+	public const ALL_FEATS = [
+		self::FEAT_LIKES
+	];
 
 	public const ALL_PERMISSIONS = [
 		self::DELETE_COMMENTS,

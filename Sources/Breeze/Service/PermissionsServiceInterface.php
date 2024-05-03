@@ -12,4 +12,6 @@ interface PermissionsServiceInterface
 	public function hookPermissions(&$permissionGroups, &$permissionList): void;
 
 	public function permissions(int $profileOwner = 0, int $userPoster = 0): array;
+
+	public function isEnable(): array;
 }

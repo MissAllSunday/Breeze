@@ -37,9 +37,9 @@ function Comment(props: CommentProps): React.ReactElement {
           {props.comment.body}
         </div>
         <div className="half_content ">
-          <Like
+          { permissions.IsEnable.enableLikes && <Like
             item={props.comment.likesInfo}
-          />
+          />}
         </div>
         <div className="half_content">
           { permissions.Comments.delete && <span

@@ -172,4 +172,9 @@ trait TextTrait
 	{
 		return tokenTxtReplace($text);
 	}
+
+	public function snakeToCamel($input): string
+	{
+		return lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $input))));
+	}
 }

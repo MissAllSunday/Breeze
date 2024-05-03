@@ -5,14 +5,18 @@ declare module 'breezeTypesPermissions' {
     post: boolean,
   };
 
+  type IsEnableType = {
+    enableLikes: boolean,
+  };
+
   type PermissionsContextType = {
     Status: PermissionsType,
     Comments: PermissionsType,
+    IsEnable: IsEnableType
   };
 
 }
 
 module.exports = {
   PermissionsContextType,
-  PermissionsDefault,
 };
