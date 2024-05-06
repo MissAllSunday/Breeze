@@ -24,6 +24,8 @@ class ProfileService implements ProfileServiceInterface
 	public const LEGACY_AREA = 'legacy';
 	public const LEGACY_URL = '?action=profile;area=' . self::LEGACY_AREA . ';u=%d';
 
+	public const URL = '%s?action=profile;area=' . self::AREA . ';u=%d';
+
 	public const MIN_INFO_KEYS = [
 		'link',
 		'name',
@@ -101,7 +103,8 @@ class ProfileService implements ProfileServiceInterface
 		$currentUserInfo = $this->global('user_info');
 		$currentUserSettings = $this->getCurrentUserSettings();
 
-		if (!empty($currentUserSettings['wall']) || $this->isEnable(SettingsEntity::FORCE_WALL)) {
+		if (!empty($currentUserSettings[UserSettingsEntity::WALL]) ||
+			$this->isEnable(SettingsEntity::FORCE_WALL)) {
 			foreach ($profile_items as &$profileItem) {
 				if ($profileItem['area'] === 'summary') {
 					$profileItem['area'] = self::LEGACY_AREA;
@@ -115,7 +118,7 @@ class ProfileService implements ProfileServiceInterface
 		$profile_items[] = [
 			'menu' => 'breeze_profile',
 			'area' => 'alerts',
-			'url' => $scriptUrl . '?action=profile;area=' . self::AREA . ';u=' . $currentUserInfo['id'],
+			'url' => sprintf(self::URL, $scriptUrl, $currentUserInfo['id']),
 			'title' => $this->getText('general_my_wall_settings'),
 		];
 	}
