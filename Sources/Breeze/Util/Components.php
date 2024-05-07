@@ -81,6 +81,7 @@ class Components
 				'send' => $this->getText('general_send'),
 				'preview' => $this->getText('general_preview'),
 				'previewing' => $this->getText('general_previewing'),
+				'end' => $this->getText('info_loading_end'),
 			],
 			'tabs' => [
 				'wall' => $this->getText('tabs_wall'),

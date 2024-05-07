@@ -24,8 +24,8 @@ export interface ServerGetStatusResponse {
 
 const action = 'breezeStatus';
 
-export const getStatus = async (type: string): Promise<StatusListType> => {
-  const response = await fetch(baseUrl(action, type), {
+export const getStatus = async (type: string, start: number): Promise<StatusListType> => {
+  const response = await fetch(baseUrl(action, type, [ { start: start } ]), {
     method: 'POST',
     body: JSON.stringify(baseConfig({
       wallId: smfVars.wallId,

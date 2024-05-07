@@ -3,6 +3,7 @@ import { PermissionsContextType } from 'breezeTypesPermissions';
 import { StatusListType, StatusType } from 'breezeTypesStatus';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import {
   deleteStatus,
@@ -15,9 +16,9 @@ import { PermissionsContext } from './context/PermissionsContext';
 import PermissionsDefault from './DataSource/Permissions';
 import smfVars from './DataSource/SMF';
 import smfTextVars from './DataSource/Txt';
-import { showError, showInfo } from './utils/tooltip';
+import { displayMessage, showError, showInfo } from './utils/tooltip';
 
-export default function Wall(props: WallProps): React.ReactElement {
+export default function Wall(props: WallProps): React.JSX.Element {
   const [statusList, setStatusList] = useState<StatusListType>([]);
   const [isLoading, setIsLoading] = useState(true);
   const editorElement = useMemo(() => { return document.getElementById(smfVars.editorId) || new HTMLElement();}, []);
@@ -28,18 +29,36 @@ export default function Wall(props: WallProps): React.ReactElement {
     createStatus(editorContent);
   });
   const [permissions, setPermissions] = useState<PermissionsContextType>(PermissionsDefault);
+  const [paginationTotal, setPaginationTotal] = useState<number>(0);
 
   useEffect(() => {
-    getStatus(props.wallType)
+    getStatus(props.wallType, 0)
       .then((statusListResponse: ServerGetStatusResponse) => {
         const fetchedStatusList: StatusListType = Object.values(statusListResponse.content.data);
         setStatusList(fetchedStatusList);
         setPermissions(statusListResponse.content.permissions);
+        setPaginationTotal(statusListResponse.content.total);
       })
       .finally(() => {
         setIsLoading(false);
       });
   }, [props.wallType]);
+
+  const fetchNextStatus = useCallback(() => {
+    if (statusList.length >= paginationTotal) {
+      showInfo(smfTextVars.general.end);
+      return;
+    }
+
+    setIsLoading(true);
+
+    getStatus(props.wallType, statusList.length)
+      .then((statusListResponse: ServerGetStatusResponse) => {
+        setStatusList(statusList.concat(Object.values(statusListResponse.content.data)));
+      }).finally(() => {
+        setIsLoading(false);
+      });
+  }, [props, statusList, paginationTotal]);
 
   const createStatus = useCallback((content: string) => {
     setIsLoading(true);
@@ -74,21 +93,31 @@ export default function Wall(props: WallProps): React.ReactElement {
 
   return (
     <div ref={editorRef}>
-      <Toaster toastOptions={{
-        duration: 4000,
-      }} />
-      {statusList.length === 0 && !isLoading ? <div className={'noticebox'}> {smfTextVars.error.noStatus} </div> : ''}
-      <PermissionsContext.Provider value={permissions}>
-        <ul className="status">
-          {isLoading ? <Loading /> : statusList.map((singleStatus: StatusType) => (
-              <Status
+      <>
+        <Toaster toastOptions={{
+          duration: 4000,
+        }} />
+        {statusList.length === 0 && !isLoading ? showInfo(smfTextVars.error.noStatus) : ''}
+        <InfiniteScroll
+          dataLength={statusList.length}
+          next={fetchNextStatus}
+          hasMore={true}
+          loader={null}
+          endMessage={null}
+        >
+          <PermissionsContext.Provider value={permissions}>
+            <ul className="status">
+              {isLoading ? <Loading /> : statusList.map((singleStatus: StatusType) => (
+                <Status
                   key={singleStatus.id}
                   status={singleStatus}
                   removeStatus={removeStatus}
-              />
-          ))}
-        </ul>
-      </PermissionsContext.Provider>
+                />
+              ))}
+            </ul>
+          </PermissionsContext.Provider>
+        </InfiniteScroll>
+      </>
     </div>
   );
 }
