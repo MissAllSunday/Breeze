@@ -49,12 +49,16 @@ class ProfileService implements ProfileServiceInterface
 			'editorId' => Breeze::NAME,
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like']);
-		$this->components->loadJavaScriptFile('breezeComponents/main.' . Breeze::REACT_HASH . '.js', [
+		$this->components->loadJavaScriptFile(Components::FOLDER . 'main.' . Breeze::REACT_HASH . '.js', [
+			'external' => false,
+			'defer' => true,
+		], strtolower(Breeze::PATTERN . Breeze::REACT_HASH));
+		$this->components->loadJavaScriptFile(Components::FOLDER . Components::TABS_FILE, [
 			'external' => false,
 			'defer' => true,
 		], strtolower(Breeze::PATTERN . Breeze::REACT_HASH));
 
-		$this->components->loadCSSFile('breeze.css', [], 'smf_breeze');
+		$this->components->loadCSSFile(Components::CSS_FILE, [], 'smf_breeze');
 	}
 
 	public function setEditor(): void
@@ -131,7 +135,7 @@ class ProfileService implements ProfileServiceInterface
 
 		$this->setLanguage('alerts');
 
-		$alertTypes['breeze'] = [
+		$alertTypes['breezeComponents'] = [
 			Breeze::PATTERN . 'status_owner' => [
 				'alert' => 'yes',
 				'email' => 'never',

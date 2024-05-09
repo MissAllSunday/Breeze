@@ -95,7 +95,7 @@ class UserModel extends BaseModel implements UserModelInterface
 
 			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::JSON_VALUES, true)) {
 				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = !empty($row[OptionsEntity::COLUMN_VALUE]) ?
-					json_decode($row[OptionsEntity::COLUMN_VALUE], true) : [];
+					json_decode($row[OptionsEntity::COLUMN_VALUE], true, 512, \JSON_THROW_ON_ERROR) : [];
 			}
 
 			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::ARRAY_VALUES, true)) {

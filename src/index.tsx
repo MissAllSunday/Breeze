@@ -11,7 +11,7 @@ const pagination: number = window.breezePagination ?? 5;
 
 // @ts-expect-error editor gets defined serverside
 const smfEditor = window.sceditor ?? null;
-
+console.log(root);
 root.render(
     <React.StrictMode>
         <Wall wallType={wallType} pagination={pagination} smfEditor={smfEditor}/>

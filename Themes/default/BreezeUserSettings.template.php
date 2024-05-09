@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Breeze\Breeze;
+
 /**
  * @license http://www.mozilla.org/MPL/ MPL 2.0
  */
@@ -21,17 +23,17 @@ function template_main(): void
 		', $txt['Breeze_user_settings_main_desc'] ,'
 	</p>';
 
-	if (!empty($context['msg'])) {
+	if (!empty($context[Breeze::NAME]['msg'])) {
 		echo '
-	<div class="', $context['msg']['type'] ,'box">
-		', $context['msg']['message'] ,'
+	<div class="', $context[Breeze::NAME]['msg']['type'] ,'box">
+		', $context[Breeze::NAME]['msg']['message'] ,'
 	</div>';
 	}
 
 	echo '
 	<div class="roundframe">
-		', $context['form'] ,'
-	</div>	
+		', $context[Breeze::NAME]['form'] ,'
+	</div>
 </div>
 <br />';
 }

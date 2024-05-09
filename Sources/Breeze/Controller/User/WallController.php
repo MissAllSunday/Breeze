@@ -50,7 +50,9 @@ class WallController extends BaseController
 
 		$this->profileService->setEditor();
 
-		$this->render(__FUNCTION__);
+		$this->render(__FUNCTION__, [
+			'profileSettings' => $profileSettings,
+		]);
 
 		$this->profileService->loadComponents($profileId);
 	}

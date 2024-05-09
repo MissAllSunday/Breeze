@@ -49,7 +49,7 @@ abstract class BaseController implements ControllerInterface
 		}
 
 		if (!empty($templateParams)) {
-			$context = array_merge($context, $templateParams);
+			$context[Breeze::NAME] = array_merge($context[Breeze::NAME], $templateParams);
 		}
 
 		$context['sub_template'] = $subActionName;

@@ -11,7 +11,9 @@ class Components
 {
 	use TextTrait;
 
-	private const FOLDER = 'breezeComponents/';
+	public const TABS_FILE = 'tabs.js';
+	public const CSS_FILE = 'breeze.css';
+	public const FOLDER = 'breezeComponents/';
 	private const COMPONENTS = [];
 	private const CDN_JS = [
 		'react' => 'https://unpkg.com/react@' . Breeze::REACT_VERSION . '/umd/react.production.min.js',

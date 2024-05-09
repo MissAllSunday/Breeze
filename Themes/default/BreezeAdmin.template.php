@@ -8,11 +8,9 @@ function template_main(): void
 {
 	global $txt, $context;
 
-	// Welcome message for the admin.
 	echo '
 	<div id="admincenter">';
 
-	// Is there an update available?
 	echo '
 		<div id="update_section"></div>';
 
@@ -102,8 +100,8 @@ function template_main(): void
 
 	echo '
 	<script defer="defer">
-      let feedURL = "'. Breeze::FEED .'";
-      let releasesNotFound = "'. $txt['Breeze_feed_error_message'] .'";
+      let feedURL = "' . Breeze::FEED . '";
+      let releasesNotFound = "' . $txt['Breeze_feed_error_message'] . '";
       let app = document.querySelector("#smfAnnouncements");
       app.append(releasesNotFound);
 
