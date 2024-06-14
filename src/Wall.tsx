@@ -11,7 +11,6 @@ import {
 } from './api/StatusApi';
 import Editor from './components/Editor';
 import Loading from './components/Loading';
-import { SMFEditorEvent } from './components/SMFEditorEvent';
 import Status from './components/Status';
 import { PermissionsContext } from './context/PermissionsContext';
 import PermissionsDefault from './DataSource/Permissions';
@@ -22,13 +21,6 @@ import { showError, showInfo } from './utils/tooltip';
 export default function Wall(props: WallProps): React.JSX.Element {
   const [statusList, setStatusList] = useState<StatusListType>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  // const editorRef = SMFEditorEvent(() => {
-  //
-  //   const editorContent: string = props.smfEditor.instance(editorElement).val();
-  //
-  //   createStatus(editorContent);
-  // });
   const [permissions, setPermissions] = useState<PermissionsContextType>(PermissionsDefault);
   const [paginationTotal, setPaginationTotal] = useState<number>(0);
 
