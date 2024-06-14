@@ -48,15 +48,15 @@ class ProfileService implements ProfileServiceInterface
 			'pagination' => $wallUserSettings[UserSettingsEntity::PAGINATION_NUM],
 			'editorId' => Breeze::NAME,
 		]);
-		$this->components->loadTxtVarsFor(['general', 'error', 'like']);
+		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
 		$this->components->loadJavaScriptFile(Components::FOLDER . 'main.' . Breeze::REACT_HASH . '.js', [
 			'external' => false,
 			'defer' => true,
 		], strtolower(Breeze::PATTERN . Breeze::REACT_HASH));
-		$this->components->loadJavaScriptFile(Components::FOLDER . Components::TABS_FILE, [
-			'external' => false,
-			'defer' => true,
-		], strtolower(Breeze::PATTERN . Breeze::REACT_HASH));
+//		$this->components->loadJavaScriptFile(Components::FOLDER . Components::TABS_FILE, [
+//			'external' => false,
+//			'defer' => true,
+//		], strtolower(Breeze::PATTERN . Breeze::REACT_HASH));
 
 		$this->components->loadCSSFile(Components::CSS_FILE, [], 'smf_breeze');
 	}

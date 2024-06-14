@@ -4,10 +4,12 @@
 }
 
 .hide {
-	display: none;
+    opacity: 0;
+    display: none;
 }
 .show{
-	display: block;
+    transition: opacity 400ms;
+    display: block;
 }
 
 .breeze_wall{

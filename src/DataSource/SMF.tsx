@@ -15,13 +15,26 @@ const userId = parseInt(window.smf_member_id ?? process.env.REACT_APP_DEV_USER_I
 // @ts-expect-error Backend variable
 const wallId = parseInt(window.breezeProfileId ?? process.env.REACT_APP_DEV_WALL_ID);
 // @ts-expect-error Backend variable
-const isCurrentUserOwner = Boolean(window.breezeIsCurrentUserOwner ?? process.env.REACT_APP_DEV_IS_CURRENT_USER_OWNER);
+const isCurrentUserOwner = Boolean(window.breezeIsCurrentUserOwner ??
+  process.env.REACT_APP_DEV_IS_CURRENT_USER_OWNER);
 // @ts-expect-error SMF variable
 const smfImagesUrl: string = window.smf_images_url ?? process.env.REACT_APP_DEV_THEME_URL;
 // @ts-expect-error Backend variable
 const pagination: number = window.breezePagination ?? process.env.REACT_APP_DEV_THEME_URL;
-// @ts-expect-error Backend variable
-const editorId: string = window.breezeEditorId ?? 'Breeze';
+
+// @ts-expect-error editor gets defined serverside
+const smfEditorHandler = window.sceditor ?? null;
+
+const aboutMe = (document.getElementById('tab-about') ??
+  document.createElement('tab-about'));
+const aboutMeContent = aboutMe.innerHTML;
+aboutMe.innerHTML = '';
+
+const editorId = 'Breeze';
+const editorElement = (document.getElementById('editor_container') ??
+  document.createElement('editor_container'));
+const editorContent = editorElement.innerHTML;
+editorElement.innerHTML = '';
 
 const smfVars = {
   session,
@@ -33,7 +46,10 @@ const smfVars = {
   isCurrentUserOwner,
   smfImagesUrl,
   pagination,
+  editorContent,
   editorId,
+  aboutMeContent,
+  smfEditorHandler,
 };
 
 export default smfVars;

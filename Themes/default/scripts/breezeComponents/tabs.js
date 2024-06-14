@@ -1,8 +1,4 @@
-const tabs = {
-  wall: {
-    href: '#tab-wall',
-  },
-};
+const tabs = {};
 const getCurrentActiveTab = () => {
 
   let currentTab = null, key;
@@ -23,38 +19,37 @@ const tabChange = function (newTab) {
   let currentActiveTab = getCurrentActiveTab();
 
   currentActiveTab.active = false;
-  currentActiveTab.contentElement.fadeOut('slow', function () {
-    currentActiveTab.tabElement.find('a').removeClass('active');
-    newTab.tabElement.find('a').addClass('active');
+  currentActiveTab.contentElement.classList.replace('show', 'hide');
+  currentActiveTab.tabElement.querySelectorAll(':scope a')[0].classList.remove('active');
+  newTab.tabElement.querySelectorAll(':scope a')[0].classList.add('active');
 
-    newTab.contentElement.fadeIn('slow');
-    newTab.active = true;
-  });
-
+  newTab.contentElement.classList.replace('hide', 'show');
+  newTab.active = true;
 };
-$('ul.breezeTabs li.subsections').each((key, liElement) => {
 
-  const $element = $(liElement);
-  const elementName = $element.attr('id');
-  const contentElement = $($element.find('a').attr('href'));
+document.querySelectorAll('ul.breezeTabs li.subsections').forEach((element, i) => {
+  const elementName = element.getAttribute('id');
+  const contentElementId = element.querySelectorAll(':scope a')[0].getAttribute('href').replace('#', '');
+  const contentElement =  document.getElementById(contentElementId);
+
 
   tabs[elementName] = {
-    href : $element.find('a').attr('href'),
-    name : $element.attr('id'),
+    href : element.querySelectorAll(':scope a')[0].getAttribute('href'),
+    name : element.getAttribute('id'),
     active : (elementName === 'wall'),
-    tabElement: $element,
+    tabElement: element,
     contentElement: contentElement,
   };
 
-  $element.on('click', false, (e) => {
+  element.addEventListener('click', (event) => {
 
-    if (tabs[elementName].active === true) {
-      return false;
-    } else {
+    if (!tabs[elementName].active) {
       tabChange(tabs[elementName]);
     }
 
-    e.preventDefault();
+    event.preventDefault();
     return false;
+
   });
+
 });

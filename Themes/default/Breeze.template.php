@@ -14,45 +14,15 @@ function template_profile(): void
 
 	echo '<hr />';
 
-	// Tabs
 	echo '
-		<div id="Breeze_tabs" class="generic_menu">
-			<ul class="dropmenu breezeTabs">
-				<li class="subsections" id="wall">
-					<a href="#tab-wall" class="active">', $txt['Breeze_tabs_wall'] ,'</a>
-				</li>';
-
-	// The "About me" tab.
-	if (!empty($context[Breeze::NAME]['profileSettings'][UserSettingsEntity::ABOUT_ME])) {
-		echo '
-				<li class="subsections" id="about">
-					<a href="#tab-about">', $txt['Breeze_tabs_about'], '</a>
-				</li>';
-	}
-
-	// Does recent activity is enable?
-//	if (!empty($context['Breeze']['settings']['owner']['activityLog']))
-		echo '
-				<li class="subsections" id="activity">
-					<a href="#tab-activity">', $txt['Breeze_tabs_activity'] ,'</a>
-				</li>';
-
-	echo '
-			</ul>
-		</div>
 		<p class="clear" />';
 
 	echo '<div id="tab-wall" class="content">';
 
 		echo '<div id="editor_container">';
 		echo  template_control_richedit(Breeze::NAME, 'smileyBox_message', 'bbcBox_message');
-
-	echo sprintf('
-		<span id="post_confirm_buttons">
-			<input type="submit" value="%s" name="post" tabindex="2" id="smfEditor" accesskey="s" class="button">
-		</span>', $txt['Breeze_general_send']);
-
 	echo '</div>';
+
 	echo '
 	<div id="root" class="breeze_main_section" wallType="profile">
 	</div>';

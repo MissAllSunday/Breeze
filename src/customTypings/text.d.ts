@@ -17,9 +17,16 @@ declare module 'breezeTypesText' {
     unlike: string
     like: string
   }
+
+  interface TabsTextType {
+    wall: string,
+    about: string,
+    activity; string,
+  }
 }
 
 module.exports = {
+  TabsTextType,
   GeneralTextType,
   LikeTextType,
 };
