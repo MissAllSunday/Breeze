@@ -1,8 +1,8 @@
-import React, {Children, JSXElementConstructor, ReactNode, useCallback, useEffect, useState} from 'react';
+import React, { Children, JSXElementConstructor, ReactNode, useCallback, useEffect, useState } from 'react';
 
+import { getStatus, ServerGetStatusResponse } from '../api/StatusApi';
 import smfTextVars from '../DataSource/Txt';
-import {showInfo} from "../utils/tooltip";
-import {getStatus, ServerGetStatusResponse} from "../api/StatusApi";
+import { showInfo } from '../utils/tooltip';
 
 interface TabType {
   index: number;
@@ -47,15 +47,15 @@ function Tabs(props: { children: ReactNode; }): any {
     </li>
   ));
 
+  const mappedContent = tabs.map((tab: TabType) => (
+    <li key={tab.index} id={'#tab-' + tab.index} className={tab.active ? 'show' : 'hide'}>{tab.contentElement}</li>
+  ));
+
+
   const changeTab = useCallback((currentTab: TabType) => {
 
   }, []);
 
-  const mappedContent = Children.map(props.children, child =>
-    <li className="Row">
-    {child}
-    </li>,
-  );
 
   return <>
 
