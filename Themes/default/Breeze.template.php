@@ -20,7 +20,7 @@ function template_profile(): void
 	echo '<div id="tab-wall" class="content">';
 
 		echo '<div id="editor_container">';
-		echo  template_control_richedit(Breeze::NAME, 'smileyBox_message', 'bbcBox_message');
+		controlEditorVars(Breeze::NAME);
 	echo '</div>';
 
 	echo '
@@ -55,7 +55,15 @@ function template_wall(): void
 	</div>';
 }
 
-function template_showEditor(): void
+function controlEditorVars(string $editorId = ''): void
 {
-	echo '';
+	global $context, $settings, $modSettings, $smcFunc;
+
+	$editor_context = &$context['controls']['richedit'][$editorId];
+
+	echo '
+		', !empty($context['bbcodes_handlers']) ? $context['bbcodes_handlers'] : '', '
+	';
+
+	echo 'let scOptions = ' . $smcFunc['json_encode']($editor_context['sce_options'], \JSON_PRETTY_PRINT);
 }

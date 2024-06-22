@@ -1,8 +1,6 @@
-import React, { Children, JSXElementConstructor, ReactNode, useCallback, useEffect, useState } from 'react';
+import React, { Children, ReactNode, useCallback, useEffect, useState } from 'react';
 
-import { getStatus, ServerGetStatusResponse } from '../api/StatusApi';
 import smfTextVars from '../DataSource/Txt';
-import { showInfo } from '../utils/tooltip';
 
 interface TabType {
   index: number;
@@ -16,19 +14,16 @@ type TabsType = TabType[];
 
 
 function Tabs(props: { children: ReactNode; }): any {
-
   const [tabs, setTabs] = useState<TabsType>([]);
 
-
   useEffect(() => {
-    const tabsNames = [
+    const tabsNames: string[] = [
       smfTextVars.tabs.wall,
       smfTextVars.tabs.about,
       smfTextVars.tabs.activity,
     ];
     const initialTabs:TabsType = [];
     Children.forEach(props.children, (child:any, index) => {
-
       initialTabs.push({
         index,
         href: '#tab-' + index,
@@ -41,31 +36,34 @@ function Tabs(props: { children: ReactNode; }): any {
     setTabs(initialTabs);
   }, [props.children]);
 
-  const mappedTabs = tabs.map((tab: TabType) => (
-    <li className="subsections" key={tab.href}>
-      <a href={tab.href} className={tab.active ? 'active' : ''} onClick={() => changeTab(tab)}>{ tab.name }</a>
-    </li>
-  ));
+  const changeTab = useCallback((clickedTab: TabType) => {
+    if (clickedTab.active) {
+      return;
+    }
+    const currentActiveTab: TabType[] = tabs.filter(tab => tab.active);
+    currentActiveTab.forEach((tab: TabType) => {
+      tab.active = false;
+    });
+    clickedTab.active = true;
+    currentActiveTab.push(clickedTab);
+    currentActiveTab.sort((a, b) => a.index > b.index ? 1 : -1);
 
-  const mappedContent = tabs.map((tab: TabType) => (
-    <li key={tab.index} id={'#tab-' + tab.index} className={tab.active ? 'show' : 'hide'}>{tab.contentElement}</li>
-  ));
-
-
-  const changeTab = useCallback((currentTab: TabType) => {
-
-  }, []);
-
+    setTabs(currentActiveTab);
+  }, [tabs]);
 
   return <>
-
     <div id="Breeze_tabs" className="generic_menu">
       <ul className="dropmenu breezeTabs">
-        {mappedTabs}
+        {tabs.map((tab: TabType) => (
+          <li className="subsections" key={tab.href}>
+            <a href={tab.href} className={tab.active ? 'active' : ''} onClick={() => changeTab(tab)}>{ tab.name }</a>
+          </li>
+        ))}
       </ul>
     </div>
-    <ul>{ mappedContent }</ul>
-
+    <ul>{ tabs.map((tab: TabType) => (
+      <li key={tab.index} id={'#tab-' + tab.index} className={tab.active ? 'show' : 'hide'}>{tab.contentElement}</li>
+    )) }</ul>
   </>;
 }
 

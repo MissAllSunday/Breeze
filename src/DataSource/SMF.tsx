@@ -31,10 +31,11 @@ const aboutMeContent = aboutMe.innerHTML;
 aboutMe.innerHTML = '';
 
 const editorId = 'Breeze';
-const editorElement = (document.getElementById('editor_container') ??
+const rawEditorElement = (document.getElementById('editor_container') ??
   document.createElement('editor_container'));
-const editorContent = editorElement.innerHTML;
-editorElement.innerHTML = '';
+const editorElement = rawEditorElement.cloneNode( true ) as HTMLElement;
+console.log(editorElement);
+rawEditorElement.innerHTML = '';
 
 const smfVars = {
   session,
@@ -46,10 +47,12 @@ const smfVars = {
   isCurrentUserOwner,
   smfImagesUrl,
   pagination,
-  editorContent,
   editorId,
   aboutMeContent,
   smfEditorHandler,
+  editorElement,
 };
 
 export default smfVars;
+
+// rawEditorElement.innerHTML = '';

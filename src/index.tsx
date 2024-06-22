@@ -11,9 +11,6 @@ const wallType = rootElement.getAttribute('wallType') ?? 'profile';
 // @ts-expect-error settings are loaded server side
 const pagination: number = window.breezePagination ?? 5;
 
-
-
-
 root.render(
     <React.StrictMode>
       <Tabs>

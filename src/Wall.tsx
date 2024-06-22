@@ -14,7 +14,6 @@ import Loading from './components/Loading';
 import Status from './components/Status';
 import { PermissionsContext } from './context/PermissionsContext';
 import PermissionsDefault from './DataSource/Permissions';
-import smfVars from './DataSource/SMF';
 import smfTextVars from './DataSource/Txt';
 import { showError, showInfo } from './utils/tooltip';
 
@@ -23,6 +22,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const [permissions, setPermissions] = useState<PermissionsContextType>(PermissionsDefault);
   const [paginationTotal, setPaginationTotal] = useState<number>(0);
+  const [doScroll, setDoScroll] = useState<boolean>(true);
 
   useEffect(() => {
     getStatus(props.wallType, 0)
@@ -61,6 +61,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
 
       for (const key in newStatus) {
         setStatusList([...statusList, newStatus[key]]);
+        setDoScroll(false);
       }
 
       showInfo(response.message);
