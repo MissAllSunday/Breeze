@@ -23,7 +23,6 @@ class ProfileService implements ProfileServiceInterface
 	public const AREA = 'summary';
 	public const LEGACY_AREA = 'legacy';
 	public const LEGACY_URL = '?action=profile;area=' . self::LEGACY_AREA . ';u=%d';
-
 	public const URL = '%s?action=profile;area=' . self::AREA . ';u=%d';
 
 	public const MIN_INFO_KEYS = [
@@ -41,22 +40,21 @@ class ProfileService implements ProfileServiceInterface
 
 	public function loadComponents(int $profileId = 0): void
 	{
+		$context = $this->global('context');
 		$wallUserSettings = $this->userRepository->getById($profileId);
+		$editorContext = &$context['controls']['richedit'][Breeze::NAME];
 
 		$this->components->loadUIVars([
 			'profileId' => $profileId,
 			'pagination' => $wallUserSettings[UserSettingsEntity::PAGINATION_NUM],
 			'editorId' => Breeze::NAME,
+			'editorOptions' => $editorContext['sce_options'],
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
 		$this->components->loadJavaScriptFile(Components::FOLDER . 'main.' . Breeze::REACT_HASH . '.js', [
 			'external' => false,
 			'defer' => true,
 		], strtolower(Breeze::PATTERN . Breeze::REACT_HASH));
-//		$this->components->loadJavaScriptFile(Components::FOLDER . Components::TABS_FILE, [
-//			'external' => false,
-//			'defer' => true,
-//		], strtolower(Breeze::PATTERN . Breeze::REACT_HASH));
 
 		$this->components->loadCSSFile(Components::CSS_FILE, [], 'smf_breeze');
 	}

@@ -10,29 +10,19 @@ use Breeze\Entity\UserSettingsEntity;
  */
 function template_profile(): void
 {
-	global $txt, $context;
-
-	echo '<hr />';
+	global $context;
 
 	echo '
-		<p class="clear" />';
-
-	echo '<div id="tab-wall" class="content">';
-
-		echo '<div id="editor_container">';
-		controlEditorVars(Breeze::NAME);
-	echo '</div>';
-
-	echo '
-	<div id="root" class="breeze_main_section" wallType="profile">
+	<hr />
+	<p class="clear" />
+	<div id="tab-wall" class="content">
+	<div id="editor_container">
+		 <script>
+		', (!empty($context['bbcodes_handlers']) ? $context['bbcodes_handlers'] : '') ,
+		'</script>
+		<div id="root" class="breeze_main_section" wallType="profile">
+		</div>
 	</div>';
-
-	echo '</div>';
-
-	echo '
-		<div id="tab-activity" class="content" style="display: none;">
-			activity tab
-		</div>';
 
 	if (!empty($context[Breeze::NAME]['profileSettings'][UserSettingsEntity::ABOUT_ME])) {
 		echo '
@@ -55,15 +45,3 @@ function template_wall(): void
 	</div>';
 }
 
-function controlEditorVars(string $editorId = ''): void
-{
-	global $context, $settings, $modSettings, $smcFunc;
-
-	$editor_context = &$context['controls']['richedit'][$editorId];
-
-	echo '
-		', !empty($context['bbcodes_handlers']) ? $context['bbcodes_handlers'] : '', '
-	';
-
-	echo 'let scOptions = ' . $smcFunc['json_encode']($editor_context['sce_options'], \JSON_PRETTY_PRINT);
-}

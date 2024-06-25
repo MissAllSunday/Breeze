@@ -30,12 +30,8 @@ const aboutMe = (document.getElementById('tab-about') ??
 const aboutMeContent = aboutMe.innerHTML;
 aboutMe.innerHTML = '';
 
-const editorId = 'Breeze';
-const rawEditorElement = (document.getElementById('editor_container') ??
-  document.createElement('editor_container'));
-const editorElement = rawEditorElement.cloneNode( true ) as HTMLElement;
-console.log(editorElement);
-rawEditorElement.innerHTML = '';
+// @ts-expect-error editor gets defined serverside
+const editorOptions = window.breezeEditorOptions || [];
 
 const smfVars = {
   session,
@@ -47,10 +43,9 @@ const smfVars = {
   isCurrentUserOwner,
   smfImagesUrl,
   pagination,
-  editorId,
   aboutMeContent,
   smfEditorHandler,
-  editorElement,
+  editorOptions,
 };
 
 export default smfVars;

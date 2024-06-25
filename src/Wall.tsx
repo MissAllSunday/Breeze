@@ -1,7 +1,7 @@
 import { WallProps } from 'breezeTypes';
 import { PermissionsContextType } from 'breezeTypesPermissions';
 import { StatusListType, StatusType } from 'breezeTypesStatus';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -70,6 +70,8 @@ export default function Wall(props: WallProps): React.JSX.Element {
     }).finally(() => {
       setIsLoading(false);
     });
+
+    return true;
   }, [statusList]);
 
   const removeStatus = useCallback((currentStatus: StatusType) => {
@@ -93,7 +95,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
         <InfiniteScroll
           dataLength={statusList.length}
           next={fetchNextStatus}
-          hasMore={true}
+          hasMore={false}
           loader={null}
           endMessage={null}
         >
