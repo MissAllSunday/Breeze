@@ -32,6 +32,8 @@ aboutMe.innerHTML = '';
 
 // @ts-expect-error editor gets defined serverside
 const editorOptions = window.breezeEditorOptions || [];
+// @ts-expect-error editor gets defined serverside
+const editorIsRich = window.breezeEditorIsRich || false;
 
 const smfVars = {
   session,
@@ -46,6 +48,7 @@ const smfVars = {
   aboutMeContent,
   smfEditorHandler,
   editorOptions,
+  editorIsRich,
 };
 
 export default smfVars;

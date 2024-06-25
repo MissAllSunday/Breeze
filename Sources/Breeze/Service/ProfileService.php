@@ -49,6 +49,7 @@ class ProfileService implements ProfileServiceInterface
 			'pagination' => $wallUserSettings[UserSettingsEntity::PAGINATION_NUM],
 			'editorId' => Breeze::NAME,
 			'editorOptions' => $editorContext['sce_options'],
+			'editorIsRich' => $editorContext['rich_active'],
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
 		$this->components->loadJavaScriptFile(Components::FOLDER . 'main.' . Breeze::REACT_HASH . '.js', [

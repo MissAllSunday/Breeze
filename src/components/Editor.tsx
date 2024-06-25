@@ -20,9 +20,9 @@ const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: st
       smfVars.smfEditorHandler.instance(textArea.current).createPermanentDropDown();
     }
 
-    // @TODO get the isRich value from the backend
-    smfVars.smfEditorHandler.instance(textArea.current).toggleSourceMode();
-
+    if (smfVars.editorIsRich) {
+      smfVars.smfEditorHandler.instance(textArea.current).toggleSourceMode();
+    }
   }, [props.isFull, textArea]);
 
   const handleClick = useCallback(() => {
