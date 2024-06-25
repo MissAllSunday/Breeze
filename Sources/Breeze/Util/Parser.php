@@ -7,7 +7,7 @@ namespace Breeze\Util;
 
 class Parser
 {
-	public static function parse(string $content): string
+	public static function bbc(string $content): string
 	{
 		return parse_bbc($content);
 	}

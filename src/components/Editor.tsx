@@ -20,7 +20,7 @@ const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: st
       smfVars.smfEditorHandler.instance(textArea.current).createPermanentDropDown();
     }
 
-    if (smfVars.editorIsRich) {
+    if (!smfVars.editorIsRich) {
       smfVars.smfEditorHandler.instance(textArea.current).toggleSourceMode();
     }
   }, [props.isFull, textArea]);

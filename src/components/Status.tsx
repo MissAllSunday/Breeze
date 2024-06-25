@@ -93,9 +93,7 @@ function Status(props: StatusProps): React.ReactElement {
         <UserInfo userData={props.status.userData} />
       </div>
       <div className="windowbg floatright">
-        <div className="content" title={timeStamp.toLocaleString()}>
-          {props.status.body}
-        </div>
+        <div className="content" title={timeStamp.toLocaleString()} dangerouslySetInnerHTML={{ __html: props.status.body }} />
         <div className="half_content">
           { permissions.isEnable.enableLikes && permissions.Forum.likesLike && <Like
             item={props.status.likesInfo}

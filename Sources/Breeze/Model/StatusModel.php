@@ -6,6 +6,7 @@ namespace Breeze\Model;
 
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\StatusEntity as StatusEntity;
+use Breeze\Util\Parser;
 
 class StatusModel extends BaseModel implements StatusModelInterface
 {
@@ -99,6 +100,7 @@ class StatusModel extends BaseModel implements StatusModelInterface
 			$status[$row[StatusEntity::ID]] = array_map(function ($column) {
 				return ctype_digit($column) ? ( (int) $column) : $column;
 			}, $row);
+			$status[$row[StatusEntity::ID]][StatusEntity::BODY] = Parser::bbc($row[StatusEntity::BODY]);
 
 			$usersIds[] = $row[StatusEntity::WALL_ID];
 			$usersIds[] = $row[StatusEntity::USER_ID];
