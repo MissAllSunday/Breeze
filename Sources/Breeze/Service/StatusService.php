@@ -20,10 +20,7 @@ class StatusService
 		protected StatusRepositoryInterface $statusRepository,
 		protected UserRepositoryInterface $userRepository,
 		protected PermissionsServiceInterface $permissionsService
-	)
-	{
-
-	}
+	) {}
 
 	public function getWallUserSettings(int $wallId, string $valueName = ''): mixed
 	{
@@ -43,7 +40,7 @@ class StatusService
 		$statusByProfile = $this->statusRepository->getByProfile(
 			[$wallId],
 			$start,
-			!empty($start) ? ($wallUserPagination * $start) : $wallUserPagination
+			$wallUserPagination
 		);
 		$statusByProfile[PermissionsEnum::NAME] = $this->permissionsService->permissions($wallId, $currentUserInfo['id']);
 

@@ -21,6 +21,10 @@ export default function Wall(props: WallProps): React.JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const [permissions, setPermissions] = useState<PermissionsContextType>(PermissionsDefault);
   const [paginationTotal, setPaginationTotal] = useState<number>(0);
+  const [loadedMore, setLoadedMore] = useState(0);
+  const ref = React.useRef<null | HTMLInputElement>(null);
+
+  useEffect(()=> ref.current?.scrollIntoView({ behavior: 'smooth', block:'end' }), [loadedMore]);
 
   useEffect(() => {
     getStatus(props.wallType, 0)
@@ -48,6 +52,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
         setStatusList(statusList.concat(Object.values(statusListResponse.content.data)));
       }).finally(() => {
         setIsLoading(false);
+        setLoadedMore(statusList.length);
       });
   }, [props, statusList, paginationTotal]);
 
@@ -91,7 +96,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
         {statusList.length === 0 && !isLoading ? showInfo(smfTextVars.error.noStatus) : ''}
         <PermissionsContext.Provider value={permissions}>
           <ul className="status">
-            {isLoading ? <Loading/> : statusList.map((singleStatus: StatusType) => (
+            {statusList.map((singleStatus: StatusType) => (
               <Status
                 key={singleStatus.id}
                 status={singleStatus}
@@ -100,10 +105,15 @@ export default function Wall(props: WallProps): React.JSX.Element {
             ))}
           </ul>
           <div id="post_confirm_buttons">
-            <input type="submit" value={smfTextVars.general.loadMore} name={smfTextVars.general.loadMore} className="button"
-                   onClick={fetchNextStatus}/>
+            <input type="submit"
+              value={smfTextVars.general.loadMore}
+              name={smfTextVars.general.loadMore}
+              className="button"
+              onClick={fetchNextStatus}
+              ref={ref as React.LegacyRef<HTMLInputElement>} />
           </div>
         </PermissionsContext.Provider>
+        {isLoading ? <Loading/> : ''}
       </>
   );
 }
