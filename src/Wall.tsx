@@ -3,7 +3,6 @@ import { PermissionsContextType } from 'breezeTypesPermissions';
 import { StatusListType, StatusType } from 'breezeTypesStatus';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 import {
   deleteStatus,
@@ -22,7 +21,6 @@ export default function Wall(props: WallProps): React.JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const [permissions, setPermissions] = useState<PermissionsContextType>(PermissionsDefault);
   const [paginationTotal, setPaginationTotal] = useState<number>(0);
-  const [doScroll, setDoScroll] = useState<boolean>(true);
 
   useEffect(() => {
     getStatus(props.wallType, 0)
@@ -61,7 +59,6 @@ export default function Wall(props: WallProps): React.JSX.Element {
 
       for (const key in newStatus) {
         setStatusList([...statusList, newStatus[key]]);
-        setDoScroll(false);
       }
 
       showInfo(response.message);
@@ -92,25 +89,21 @@ export default function Wall(props: WallProps): React.JSX.Element {
           duration: 4000,
         }}/>
         {statusList.length === 0 && !isLoading ? showInfo(smfTextVars.error.noStatus) : ''}
-        <InfiniteScroll
-          dataLength={statusList.length}
-          next={fetchNextStatus}
-          hasMore={false}
-          loader={null}
-          endMessage={null}
-        >
-          <PermissionsContext.Provider value={permissions}>
-            <ul className="status">
-              {isLoading ? <Loading/> : statusList.map((singleStatus: StatusType) => (
-                <Status
-                  key={singleStatus.id}
-                  status={singleStatus}
-                  removeStatus={removeStatus}
-                />
-              ))}
-            </ul>
-          </PermissionsContext.Provider>
-        </InfiniteScroll>
+        <PermissionsContext.Provider value={permissions}>
+          <ul className="status">
+            {isLoading ? <Loading/> : statusList.map((singleStatus: StatusType) => (
+              <Status
+                key={singleStatus.id}
+                status={singleStatus}
+                removeStatus={removeStatus}
+              />
+            ))}
+          </ul>
+          <div id="post_confirm_buttons">
+            <input type="submit" value={smfTextVars.general.loadMore} name={smfTextVars.general.loadMore} className="button"
+                   onClick={fetchNextStatus}/>
+          </div>
+        </PermissionsContext.Provider>
       </>
   );
 }

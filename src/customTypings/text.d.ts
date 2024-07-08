@@ -9,8 +9,9 @@ declare module 'breezeTypesText' {
     send: string
     preview: string
     previewing: string
-    wrongValues: string
     errorEmpty: string
+    end: string
+    loadMore: string
   }
 
   interface LikeTextType {
