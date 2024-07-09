@@ -85,6 +85,7 @@ class Components
 				'previewing' => $this->getText('general_previewing'),
 				'end' => $this->getText('info_loading_end'),
 				'loadMore' => $this->getText('load_more'),
+				'goUp' => $this->getSmfText('go_up'),
 			],
 			'tabs' => [
 				'wall' => $this->getText('tabs_wall'),

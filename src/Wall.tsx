@@ -87,6 +87,10 @@ export default function Wall(props: WallProps): React.JSX.Element {
     });
   }, [statusList]);
 
+  const goUp = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
       <>
         <Editor saveContent={createStatus} isFull={true}/>
@@ -106,11 +110,16 @@ export default function Wall(props: WallProps): React.JSX.Element {
           </ul>
           <div id="post_confirm_buttons">
             <input type="submit"
-              value={smfTextVars.general.loadMore}
-              name={smfTextVars.general.loadMore}
-              className="button"
-              onClick={fetchNextStatus}
-              ref={ref as React.LegacyRef<HTMLInputElement>} />
+               value={smfTextVars.general.loadMore}
+               name={smfTextVars.general.loadMore}
+               className="button"
+               onClick={fetchNextStatus}
+               ref={ref as React.LegacyRef<HTMLInputElement>}/>
+            <input type="submit"
+               value={smfTextVars.general.goUp}
+               name={smfTextVars.general.goUp}
+               className="button"
+               onClick={goUp} />
           </div>
         </PermissionsContext.Provider>
         {isLoading ? <Loading/> : ''}
