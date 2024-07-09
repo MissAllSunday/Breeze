@@ -21,9 +21,11 @@ class ProfileService implements ProfileServiceInterface
 	use PermissionsTrait;
 
 	public const AREA = 'summary';
+	public const SETTINGS_AREA = 'breezeSettings';
 	public const LEGACY_AREA = 'legacy';
 	public const LEGACY_URL = '?action=profile;area=' . self::LEGACY_AREA . ';u=%d';
 	public const URL = '%s?action=profile;area=' . self::AREA . ';u=%d';
+	public const SETTINGS_URL = '%s?action=profile;area=' . self::SETTINGS_AREA . ';u=%d';
 
 	public const MIN_INFO_KEYS = [
 		'link',
@@ -120,8 +122,8 @@ class ProfileService implements ProfileServiceInterface
 
 		$profile_items[] = [
 			'menu' => 'breeze_profile',
-			'area' => 'alerts',
-			'url' => sprintf(self::URL, $scriptUrl, $currentUserInfo['id']),
+			'area' => 'breezeSettings',
+			'url' => sprintf(self::SETTINGS_URL, $scriptUrl, $currentUserInfo['id']),
 			'title' => $this->getText('general_my_wall_settings'),
 		];
 	}
