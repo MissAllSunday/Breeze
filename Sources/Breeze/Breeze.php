@@ -115,50 +115,24 @@ class Breeze
 			];
 		}
 
-		try {
-			/** @var UserSettingsController $settingsController */
-			$settingsController = $this->container->get(UserSettingsController::class);
+		/** @var UserSettingsController $settingsController */
+		$settingsController = $this->container->get(UserSettingsController::class);
 
-			/** @var AlertsController $alertsController */
-			$alertsController = $this->container->get(AlertsController::class);
-
-			$profileAreas['breeze_profile'] = [
-				'title' => $this->getText('general_my_wall_settings'),
-				'areas' => [],
-			];
-
-			$profileAreas['breeze_profile']['areas']['breezeSettings'] = [
-				'label' => $this->getText(ProfileService::AREA . '_main_title'),
-				'icon' => 'maintain',
-				'function' => fn () => $settingsController->dispatch(),
-				'enabled' => $context['user']['is_owner'],
-				'permission' => [
-					'own' => 'is_not_guest',
-					'any' => 'profile_view',
+		$profileAreas['breeze_profile'] = [
+			'title' => $this->getText('general_my_wall_settings'),
+			'areas' => [
+				ProfileService::SETTINGS_AREA => [
+					'label' => $this->getText(ProfileService::AREA . '_main_title'),
+					'icon' => 'maintain',
+					'function' => fn () => $settingsController->dispatch(),
+					'enabled' => $context['user']['is_owner'],
+					'permission' => [
+						'own' => 'is_not_guest',
+						'any' => 'profile_view',
+					],
 				],
-			];
-
-			$profileAreas['breeze_profile']['areas']['breezeAlerts'] = [
-				'label' => $this->getText('user_settings_name_alerts'),
-				'function' => fn () => $alertsController->dispatch(),
-				'enabled' => $context['user']['is_owner'],
-				'icon' => 'maintain',
-				'subsections' => [
-					'settings' => [
-						$this->getText('user_settings_name_alerts_settings'),
-						['is_not_guest', 'profile_view'],],
-					'edit' => [
-						$this->getText('user_settings_name_alerts_edit'),
-						['is_not_guest', 'profile_view'],],
-				],
-				'permission' => [
-					'own' => 'is_not_guest',
-					'any' => 'profile_view',
-				],
-			];
-		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
-			log_error($exception->getMessage());
-		}
+			],
+		];
 	}
 
 	/**
@@ -254,11 +228,7 @@ class Breeze
 
 	public function alertsPrefWrapper(array &$alertTypes, &$groupOptions): void
 	{
-		try {
-			$this->container->get(ProfileService::class)->hookAlertsPref($alertTypes);
-		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
-			log_error($exception->getMessage());
-		}
+		$this->container->get(ProfileService::class)->hookAlertsPref($alertTypes);
 	}
 
 	public function adminMenuWrapper(array &$adminMenu): void

@@ -122,7 +122,7 @@ class ProfileService implements ProfileServiceInterface
 
 		$profile_items[] = [
 			'menu' => 'breeze_profile',
-			'area' => 'breezeSettings',
+			'area' => self::SETTINGS_AREA,
 			'url' => sprintf(self::SETTINGS_URL, $scriptUrl, $currentUserInfo['id']),
 			'title' => $this->getText('general_my_wall_settings'),
 		];
@@ -134,7 +134,7 @@ class ProfileService implements ProfileServiceInterface
 			return;
 		}
 
-		$this->setLanguage('alerts');
+		$this->setLanguage('BreezeAlerts');
 
 		$alertTypes['breezeComponents'] = [
 			Breeze::PATTERN . 'status_owner' => [

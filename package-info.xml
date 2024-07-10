@@ -28,6 +28,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 		<hook hook="integrate_load_permissions" function="\Breeze\Breeze::permissionsWrapper#"  />
 		<hook hook="integrate_admin_areas" function="\Breeze\Breeze::adminMenuWrapper#"  />
 		<hook hook="integrate_profile_popup" function="\Breeze\Breeze::profilePopUpWrapper#"  />
+        <hook hook="integrate_alert_types" function="\Breeze\Breeze::alertsPrefWrapper#"  />
 		<hook hook="integrate_pre_profile_areas" function="\Breeze\Breeze::profileMenuWrapper#"  />
 		<redirect url="$scripturl?action=admin;area=breezeAdmin;sa=general" timeout="3000">redirect.txt</redirect>
 	</install>
@@ -39,6 +40,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 		<hook hook="integrate_load_permissions" function="\Breeze\Breeze::permissionsWrapper#"  reverse="true" />
 		<hook hook="integrate_admin_areas" function="\Breeze\Breeze::adminMenuWrapper#"  reverse="true" />
 		<hook hook="integrate_profile_popup" function="\Breeze\Breeze::profilePopUpWrapper#"  reverse="true" />
+        <hook hook="integrate_alert_types" function="\Breeze\Breeze::alertsPrefWrapper#"  reverse="true" />
 		<hook hook="integrate_pre_profile_areas" function="\Breeze\Breeze::profileMenuWrapper#"  reverse="true" />
 		<database>install.php</database>
 		<remove-dir name="$sourcedir/Breeze" />
