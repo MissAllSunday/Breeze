@@ -13,4 +13,22 @@ abstract class BaseEntity
 	abstract public static function getTableName(): string;
 
 	abstract public static function getColumns(): array;
+
+	public function __construct(array $entry = [])
+	{
+		$this->setEntry($entry);
+	}
+
+	public function setEntry(array $entry): void
+	{
+		foreach ($entry as $key => $value) {
+			$setCall = 'set' . $this->snakeToCamel($key);
+			$this->{$setCall}($value);
+		}
+	}
+
+	private function snakeToCamel($input): string
+	{
+		return \lcfirst(\str_replace('_', '', \ucwords($input, '_')));
+	}
 }

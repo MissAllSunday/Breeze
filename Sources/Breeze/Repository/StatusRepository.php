@@ -17,8 +17,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		private readonly StatusModelInterface       $statusModel,
 		private readonly CommentRepositoryInterface $commentRepository,
 		private readonly LikeRepositoryInterface $likeRepository
-	) {
-	}
+	) {}
 
 	/**
 	 * @throws InvalidStatusException
