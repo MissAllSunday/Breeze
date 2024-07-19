@@ -29,6 +29,28 @@ class NotificationModel extends BaseModel implements NotificationModelInterface
 		return $this->getInsertedId();
 	}
 
+	/**
+	 * @return NotificationEntity[]
+	 */
+	public function getById(int $statusId): array
+	{
+		$queryParams = array_merge($this->getDefaultQueryParams(), [
+			'columnName' => NotificationEntity::COLUMN_ID,
+			'id' => $statusId,
+		]);
+
+		$request = $this->dbClient->query(
+			'
+			SELECT {raw:columns}
+			FROM {db_prefix}{raw:tableName}
+			WHERE {raw:columnName} = ({int:id})
+			LIMIT 1',
+			$queryParams
+		);
+
+		return $this->prepareData($request);
+	}
+
 	public function update(array $data, int $id = 0): array
 	{
 		return [];
@@ -47,5 +69,17 @@ class NotificationModel extends BaseModel implements NotificationModelInterface
 	public function getColumns(): array
 	{
 		return NotificationEntity::getColumns();
+	}
+
+	private function prepareData(object $request): array
+	{
+		$notifications = [];
+		while ($row = $this->dbClient->fetchAssoc($request)) {
+			$notifications[$row[NotificationEntity::COLUMN_ID]] = new NotificationEntity($row);
+		}
+
+		$this->dbClient->freeResult($request);
+
+		return $notifications;
 	}
 }

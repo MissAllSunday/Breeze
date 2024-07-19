@@ -15,6 +15,6 @@ class NotificationService implements NotificationServiceInterface
 
 	public function create(array $data): void
 	{
-
+		$this->notificationRepository->save($data);
 	}
 }

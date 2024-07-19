@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Entity\BaseEntity;
 use Breeze\Util\Validate\DataNotFoundException;
 
 interface BaseRepositoryInterface
@@ -16,7 +17,7 @@ interface BaseRepositoryInterface
 	/**
 	 * @throws DataNotFoundException
 	 */
-	public function getById(int $id);
+	public function getById(int $id): BaseEntity;
 
 	public function handleLikes($type, $content): array;
 

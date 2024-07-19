@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Entity\NotificationEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\Model\NotificationModel;
 
@@ -31,8 +32,8 @@ class NotificationRepository extends BaseRepository implements NotificationRepos
 		return $newNotificationId;
 	}
 
-	public function getById(int $notificationId): ?ActionLogInterface
+	public function getById(int $id): NotificationEntity
 	{
-		return null;
+		// TODO: Implement getById() method.
 	}
 }
