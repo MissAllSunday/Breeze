@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
-
+use Breeze\Entity\StatusEntity;
 use Breeze\Model\NotificationModel;
 
 class NotificationRepository extends BaseRepository implements NotificationRepositoryInterface
@@ -14,6 +14,9 @@ class NotificationRepository extends BaseRepository implements NotificationRepos
 		private readonly NotificationModel $notificationModel
 	) {}
 
+	/**
+	 * @throws InvalidStatusException
+	 */
 	public function save(array $data): int
 	{
 		$newNotificationId = $this->notificationModel->insert(array_merge($data, [

@@ -15,9 +15,13 @@ class NotificationEntity extends BaseEntity implements BaseEntityInterface
 	public const COLUMN_CLAIMED_TIME = 'claimed_time';
 
 	protected int $id = 0;
+
 	protected string $file = '';
+
 	protected string $class = '';
+
 	protected array $data = [];
+
 	protected string $claimedTime = '';
 
 	public static function getColumns(): array
