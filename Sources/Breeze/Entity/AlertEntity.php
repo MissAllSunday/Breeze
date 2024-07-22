@@ -43,14 +43,23 @@ class AlertEntity extends NormalizeEntity
 	];
 
 	protected int $id = 0;
+
 	protected string $time = '';
+
 	protected int $idMember = 0;
+
 	protected int $idMemberStarted = 0;
+
 	protected string $memberName = '';
+
 	protected string $type = '';
+
 	protected int $contentId = 0;
+
 	protected string $action = '';
+
 	protected bool $isRead = false;
+
 	protected string $extra = '';
 
 	public function getId(): int

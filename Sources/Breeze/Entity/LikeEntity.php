@@ -6,6 +6,8 @@ declare(strict_types=1);
 namespace Breeze\Entity;
 
 use Breeze\LikesEnum;
+use DateTimeImmutable;
+use Exception;
 
 class LikeEntity extends NormalizeEntity implements BaseEntityInterface
 {
@@ -31,18 +33,21 @@ class LikeEntity extends NormalizeEntity implements BaseEntityInterface
 	];
 
 	protected int $idMember = 0;
+
 	protected string|LikesEnum $type = '';
+
 	protected int $id = 0;
-	protected string $time = '';
+
+	protected string|DateTimeImmutable $time = '';
 
 	public function getIdMember(): int
 	{
 		return $this->idMember;
 	}
 
-	public function setIdMember(int $idMember): void
+	public function setIdMember(string|int $idMember): void
 	{
-		$this->idMember = $idMember;
+		$this->idMember = (int) $idMember;
 	}
 
 	public function getType(): string|LikesEnum
@@ -60,9 +65,9 @@ class LikeEntity extends NormalizeEntity implements BaseEntityInterface
 		return $this->id;
 	}
 
-	public function setId(int $id): void
+	public function setId(string|int $id): void
 	{
-		$this->id = $id;
+		$this->id = (int) $id;
 	}
 
 	public function getTime(): string
@@ -70,17 +75,17 @@ class LikeEntity extends NormalizeEntity implements BaseEntityInterface
 		return $this->time;
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	public function setTime(string $time): void
 	{
-		$this->time = $time;
+		$this->time = new DateTimeImmutable($time);
 	}
 
 	public static function getTypes(): array
 	{
-		return [
-			self::TYPE_STATUS,
-			self::TYPE_COMMENT,
-		];
+		return LikesEnum::cases();
 	}
 
 	public static function getColumns(): array

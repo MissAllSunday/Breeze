@@ -12,11 +12,11 @@ class MentionEntityTest extends TestCase
 	public function testGetColumns(): void
 	{
 		$this->assertEquals([
-			'id' => 'id',
-			'owner_id' => 'owner_id',
-			'poster_id' => 'poster_id',
-			'time' => 'time',
-			'body' => 'body',
+			'content_id',
+			'content_type',
+			'id_mentioned',
+			'id_member',
+			'time',
 		], MentionEntity::getColumns());
 	}
 

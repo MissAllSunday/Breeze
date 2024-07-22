@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Likes;
 
 use Breeze\Entity\LikeEntity;
+use Breeze\LikesEnum;
 use Breeze\PermissionsEnum;
 use Breeze\Repository\InvalidDataException;
 use Breeze\Util\Validate\DataNotFoundException;
@@ -18,9 +19,9 @@ class Like extends BaseActions implements ValidateDataInterface
 	protected const VALIDATE = 'validate';
 
 	protected const PARAMS = [
-		LikeEntity::ID => 0,
-		LikeEntity::TYPE => '',
-		LikeEntity::ID_MEMBER => 0,
+		LikeEntity::COLUMN_ID => 0,
+		LikeEntity::COLUMN_TYPE => '',
+		LikeEntity::COLUMN_ID_MEMBER => 0,
 	];
 
 	protected const SUCCESS_KEY = 'likeSuccess';
@@ -30,9 +31,9 @@ class Like extends BaseActions implements ValidateDataInterface
 	 */
 	public function checkType(): void
 	{
-		$type = $this->data[LikeEntity::TYPE];
+		$type = $this->data[LikeEntity::COLUMN_TYPE];
 
-		if (!in_array($type, LikeEntity::getTypes(), true)) {
+		if (!LikesEnum::isValid($type)) {
 			throw new DataNotFoundException('likesTypeInvalid');
 		}
 	}
@@ -60,7 +61,7 @@ class Like extends BaseActions implements ValidateDataInterface
 	 */
 	public function checkUser(): void
 	{
-		$this->validateUser->areValidUsers([$this->data[LikeEntity::ID_MEMBER]]);
+		$this->validateUser->areValidUsers([$this->data[LikeEntity::COLUMN_ID_MEMBER]]);
 	}
 
 	/**

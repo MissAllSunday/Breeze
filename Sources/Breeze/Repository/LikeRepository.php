@@ -24,11 +24,11 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	{
 		$likeInfo = [];
 		$likes = $this->likeModel->getByContent($type, $contentId);
-		$usersInfo = $this->loadUsersInfo(array_unique(array_column($likes, LikeEntity::ID_MEMBER)));
+		$usersInfo = $this->loadUsersInfo(array_unique(array_column($likes, LikeEntity::COLUMN_ID_MEMBER)));
 
 		foreach ($likes as $key => $like) {
-			$likeInfo[$key]['profile'] = $usersInfo[$like[LikeEntity::ID_MEMBER]];
-			$likeInfo[$key]['timestamp'] = !empty($like[LikeEntity::TIME]) ? timeformat($like[LikeEntity::TIME]) : '';
+			$likeInfo[$key]['profile'] = $usersInfo[$like[LikeEntity::COLUMN_ID_MEMBER]];
+			$likeInfo[$key]['timestamp'] = !empty($like[LikeEntity::COLUMN_TIME]) ? timeformat($like[LikeEntity::COLUMN_TIME]) : '';
 		}
 
 		return $likeInfo;
@@ -72,9 +72,9 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	{
 		return array_map(function ($item) use ($itemIdName): array {
 			$item['likesInfo'] = $this->buildLikeData(
-				$item[LikeEntity::IDENTIFIER . LikeEntity::TYPE],
+				$item[LikeEntity::IDENTIFIER . LikeEntity::COLUMN_TYPE],
 				$item[$itemIdName],
-				$item[LikeEntity::IDENTIFIER . LikeEntity::ID_MEMBER],
+				$item[LikeEntity::IDENTIFIER . LikeEntity::COLUMN_ID_MEMBER],
 			);
 
 			return $item;
@@ -148,7 +148,8 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		return $this->buildLikeData($type, $contentId, $userId, !$isContentAlreadyLiked);
 	}
 
-	public function getById(int $id): void
+	public function getById(int $id): array
 	{
+		return [];
 	}
 }

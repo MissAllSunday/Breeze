@@ -160,17 +160,17 @@ abstract class BaseModel implements BaseModelInterface
 					$columnName = self::LIKE_IDENTIFIER . '.' . $likeColumn;
 
 					return match ($likeColumn) {
-						LikeEntity::TYPE => 'COALESCE(' . $columnName . ', "' . $type . '")',
-						LikeEntity::ID_MEMBER => 'COALESCE(' . $columnName . ', 0)',
+						LikeEntity::COLUMN_TYPE => 'COALESCE(' . $columnName . ', "' . $type . '")',
+						LikeEntity::COLUMN_ID_MEMBER => 'COALESCE(' . $columnName . ', 0)',
 						default => $columnName,
 					} . ' AS ' . LikeEntity::IDENTIFIER . $likeColumn;
 				}, LikeEntity::getColumns())),
 			'tableName' => $this->getTableName(),
 			'from' => $this->getTableName() . ' AS ' . self::PARENT_LIKE_IDENTIFIER,
 			'likeJoin' => LikeEntity::TABLE . ' AS ' . self::LIKE_IDENTIFIER . '
-			 	ON (' . self::LIKE_IDENTIFIER . '.' . LikeEntity::ID . ' =
+			 	ON (' . self::LIKE_IDENTIFIER . '.' . LikeEntity::COLUMN_ID . ' =
 			 	 ' . self::PARENT_LIKE_IDENTIFIER . '.' . $parentIdentifier . '
-			 	AND ' . self::LIKE_IDENTIFIER . '.' . LikeEntity::TYPE . ' = "' . $type . '")',
+			 	AND ' . self::LIKE_IDENTIFIER . '.' . LikeEntity::COLUMN_TYPE . ' = "' . $type . '")',
 		];
 	}
 }

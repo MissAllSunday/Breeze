@@ -15,7 +15,7 @@ class AlertModel extends BaseModel implements AlertModelInterface
 			return 0;
 		}
 
-		if (strpos($data['content_type'], Breeze::PATTERN) !== false) {
+		if (str_contains($data['content_type'], Breeze::PATTERN)) {
 			$params['content_type'] = Breeze::PATTERN . $data['content_type'];
 		}
 
@@ -34,9 +34,9 @@ class AlertModel extends BaseModel implements AlertModelInterface
 		return $this->getInsertedId();
 	}
 
-	public function update(array $data, int $alertId = 0): array
+	public function update(array $data, int $id = 0): array
 	{
-		if (empty($data) || empty($alertId)) {
+		if (empty($data) || empty($id)) {
 			return [];
 		}
 
@@ -52,10 +52,10 @@ class AlertModel extends BaseModel implements AlertModelInterface
 			AlertEntity::TABLE,
 			'SET ' . ($updateString) . '
 			WHERE ' . $this->getColumnId() . ' = {int:id}',
-			['id' => $alertId]
+			['id' => $id]
 		);
 
-		return $this->getAlertById($alertId);
+		return $this->getAlertById($id);
 	}
 
 	public function getAlertById(int $alertId): array
@@ -65,10 +65,8 @@ class AlertModel extends BaseModel implements AlertModelInterface
 
 	public function checkAlert(int $userId, string $alertType, int $alertId = 0, string $alertSender = ''): bool
 	{
-		$alreadySent = false;
-
 		if (empty($userId) || empty($alertType)) {
-			return $alreadySent;
+			return false;
 		}
 
 		$request = $this->dbClient->query(
@@ -79,7 +77,7 @@ class AlertModel extends BaseModel implements AlertModelInterface
 				AND ' . AlertEntity::COLUMN_IS_READ . ' = 0
 				AND ' . AlertEntity::COLUMN_CONTENT_TYPE . ' = {string:alertType}
 				' . ($alertId ? 'AND ' . AlertEntity::COLUMN_CONTENT_ID . ' = {int:alertId}' : '') . '
-				' . ($alertSender ? 'AND ' . AlertEntity::COLUMN_ID_MEMBER_STARTED . ' = {int:alertSender}' : '') . '',
+				' . ($alertSender ? 'AND ' . AlertEntity::COLUMN_ID_MEMBER_STARTED . ' = {int:alertSender}' : ''),
 			[
 				'userId' => $userId,
 				'alertType' => $alertType,
@@ -92,7 +90,7 @@ class AlertModel extends BaseModel implements AlertModelInterface
 
 		$this->dbClient->freeResult($request);
 
-		return (bool)$result;
+		return (bool) $result;
 	}
 
 	public function getTableName(): string

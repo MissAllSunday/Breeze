@@ -21,7 +21,7 @@ abstract class BaseEntity
 
 	public function setEntry(array $entry): void
 	{
-		foreach ($this->getColumns($entry) as $key => $value) {
+		foreach ($this->getColumns() as $key => $value) {
 			$setCall = 'set' . $this->snakeToCamel($key);
 			$this->{$setCall}($value);
 		}

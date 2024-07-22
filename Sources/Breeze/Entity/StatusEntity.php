@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
+use DateTimeImmutable;
+use Exception;
+
 class StatusEntity extends BaseEntity implements BaseEntityInterface
 {
 	public const TABLE = 'breeze_status';
@@ -27,10 +30,15 @@ class StatusEntity extends BaseEntity implements BaseEntityInterface
 	}
 
 	protected int $id = 0;
+
 	protected int $wallId = 0;
+
 	protected int $userId = 0;
-	protected string $createdAt = '';
+
+	protected string|DateTimeImmutable $createdAt = '';
+
 	protected string $body = '';
+
 	protected array $likes = [];
 
 	public function getId(): int
@@ -38,9 +46,9 @@ class StatusEntity extends BaseEntity implements BaseEntityInterface
 		return $this->id;
 	}
 
-	public function setId(int $id): void
+	public function setId(int|string $id): void
 	{
-		$this->id = $id;
+		$this->id = (int) $id;
 	}
 
 	public function getWallId(): int
@@ -48,9 +56,9 @@ class StatusEntity extends BaseEntity implements BaseEntityInterface
 		return $this->wallId;
 	}
 
-	public function setWallId(int $wallId): void
+	public function setWallId(int|string $wallId): void
 	{
-		$this->wallId = $wallId;
+		$this->wallId = (int) $wallId;
 	}
 
 	public function getUserId(): int
@@ -58,19 +66,22 @@ class StatusEntity extends BaseEntity implements BaseEntityInterface
 		return $this->userId;
 	}
 
-	public function setUserId(int $userId): void
+	public function setUserId(int|string $userId): void
 	{
-		$this->userId = $userId;
+		$this->userId = (int) $userId;
 	}
 
-	public function getCreatedAt(): string
+	public function getCreatedAt(): DateTimeImmutable|string
 	{
 		return $this->createdAt;
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	public function setCreatedAt(string $createdAt): void
 	{
-		$this->createdAt = $createdAt;
+		$this->createdAt = new DateTimeImmutable($createdAt);
 	}
 
 	public function getBody(): string
@@ -83,6 +94,9 @@ class StatusEntity extends BaseEntity implements BaseEntityInterface
 		$this->body = $body;
 	}
 
+	/**
+	 * @return  LikeEntity[]
+	 */
 	public function getLikes(): array
 	{
 		return $this->likes;

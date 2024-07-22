@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Model;
 
 use Breeze\Entity\LikeEntity as LikeEntity;
+use Breeze\LikesEnum;
 
 class LikeModel extends BaseModel implements LikeModelInterface
 {
@@ -17,11 +18,11 @@ class LikeModel extends BaseModel implements LikeModelInterface
 		$data[] = time();
 
 		$this->dbClient->insert(LikeEntity::TABLE, [
-			LikeEntity::ID => 'int',
-			LikeEntity::TYPE => 'string',
-			LikeEntity::ID_MEMBER => 'int',
-			LikeEntity::TIME => 'int',
-		], $data, [LikeEntity::ID, LikeEntity::TYPE, LikeEntity::ID_MEMBER]);
+			LikeEntity::COLUMN_ID => 'int',
+			LikeEntity::COLUMN_TYPE => 'string',
+			LikeEntity::COLUMN_ID_MEMBER => 'int',
+			LikeEntity::COLUMN_TIME => 'int',
+		], $data, [LikeEntity::COLUMN_ID, LikeEntity::COLUMN_TYPE, LikeEntity::COLUMN_ID_MEMBER]);
 
 		return $this->getInsertedId();
 	}
@@ -31,7 +32,7 @@ class LikeModel extends BaseModel implements LikeModelInterface
 		$this->dbClient->update(
 			LikeEntity::TABLE,
 			'SET likes = {int:num_likes}
-			WHERE ' . LikeEntity::ID . ' = {int:idContent}',
+			WHERE ' . LikeEntity::COLUMN_ID . ' = {int:idContent}',
 			[
 				'idContent' => $id,
 			]
@@ -40,7 +41,7 @@ class LikeModel extends BaseModel implements LikeModelInterface
 		return [];
 	}
 
-	public function getByContent(string $type, int $contentId): array
+	public function getByContent(string|LikesEnum $type, int $contentId): array
 	{
 		$likes = [];
 
@@ -48,8 +49,8 @@ class LikeModel extends BaseModel implements LikeModelInterface
 			'
 			SELECT ' . implode(', ', LikeEntity::getColumns()) . '
 			FROM {db_prefix}' . LikeEntity::TABLE . '
-			WHERE ' . LikeEntity::TYPE . ' = {string:type}
-				AND ' . LikeEntity::ID . ' = {int:contentId}',
+			WHERE ' . LikeEntity::COLUMN_TYPE . ' = {string:type}
+				AND ' . LikeEntity::COLUMN_ID . ' = {int:contentId}',
 			[
 				'contentId' => $contentId,
 				'type' => $type,
@@ -65,16 +66,16 @@ class LikeModel extends BaseModel implements LikeModelInterface
 		return $likes;
 	}
 
-	public function userLikes(string $type, int $userId = 0): array
+	public function userLikes(string|LikesEnum $type, int $userId = 0): array
 	{
 		$likes = [];
 
 		$request = $this->dbClient->query(
 			'
-			SELECT ' . LikeEntity::ID . '
+			SELECT ' . LikeEntity::COLUMN_ID . '
 			FROM {db_prefix}' . LikeEntity::TABLE . '
-			WHERE ' . LikeEntity::ID_MEMBER . ' = {int:userId}
-				AND ' . LikeEntity::TYPE . ' = {string:type}',
+			WHERE ' . LikeEntity::COLUMN_ID_MEMBER . ' = {int:userId}
+				AND ' . LikeEntity::COLUMN_TYPE . ' = {string:type}',
 			[
 				'userId' => $userId,
 				'type' => $type,
@@ -82,7 +83,7 @@ class LikeModel extends BaseModel implements LikeModelInterface
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
-			$likes[$userId][$type][] = (int)$row[LikeEntity::ID];
+			$likes[$userId][$type][] = (int)$row[LikeEntity::COLUMN_ID];
 		}
 
 		$this->dbClient->freeResult($request);
@@ -90,15 +91,15 @@ class LikeModel extends BaseModel implements LikeModelInterface
 		return $likes;
 	}
 
-	public function checkLike(string $type, int $contentId, int $userId): int
+	public function checkLike(string|LikesEnum $type, int $contentId, int $userId): int
 	{
 		$request = $this->dbClient->query(
 			'
-			SELECT ' . LikeEntity::ID . '
+			SELECT ' . LikeEntity::COLUMN_ID . '
 			FROM {db_prefix}' . LikeEntity::TABLE . '
-			WHERE ' . LikeEntity::ID_MEMBER . ' = {int:userId}
-				AND ' . LikeEntity::TYPE . ' = {string:type}
-				AND ' . LikeEntity::ID . ' = {int:contentId}',
+			WHERE ' . LikeEntity::COLUMN_ID_MEMBER . ' = {int:userId}
+				AND ' . LikeEntity::COLUMN_TYPE . ' = {string:type}
+				AND ' . LikeEntity::COLUMN_ID . ' = {int:contentId}',
 			[
 				'userId' => $userId,
 				'type' => $type,
@@ -120,7 +121,7 @@ class LikeModel extends BaseModel implements LikeModelInterface
 
 	public function getColumnId(): string
 	{
-		return LikeEntity::ID_MEMBER;
+		return LikeEntity::COLUMN_ID_MEMBER;
 	}
 
 	public function getColumns(): array
@@ -128,13 +129,13 @@ class LikeModel extends BaseModel implements LikeModelInterface
 		return LikeEntity::getColumns();
 	}
 
-	public function deleteContent(string $type, int $contentId, int $userId): bool
+	public function deleteContent(string|LikesEnum $type, int $contentId, int $userId): bool
 	{
 		return $this->dbClient->delete(
 			LikeEntity::TABLE,
-			'WHERE ' . LikeEntity::ID . ' = {int:contentId}
-				AND ' . LikeEntity::TYPE . ' = {string:type}
-				AND ' . LikeEntity::ID_MEMBER . ' = {int:userId}',
+			'WHERE ' . LikeEntity::COLUMN_ID . ' = {int:contentId}
+				AND ' . LikeEntity::COLUMN_TYPE . ' = {string:type}
+				AND ' . LikeEntity::COLUMN_ID_MEMBER . ' = {int:userId}',
 			[
 				'contentId' => $contentId,
 				'type' => $type,
@@ -143,29 +144,29 @@ class LikeModel extends BaseModel implements LikeModelInterface
 		);
 	}
 
-	public function insertContent(string $type, int $contentId, int $userId): void
+	public function insertContent(string|LikesEnum $type, int $contentId, int $userId): void
 	{
 		$this->dbClient->insert(LikeEntity::TABLE, [
-			LikeEntity::ID => 'int',
-			LikeEntity::TYPE => 'string',
-			LikeEntity::ID_MEMBER => 'int',
-			LikeEntity::TIME => 'int',
+			LikeEntity::COLUMN_ID => 'int',
+			LikeEntity::COLUMN_TYPE => 'string',
+			LikeEntity::COLUMN_ID_MEMBER => 'int',
+			LikeEntity::COLUMN_TIME => 'int',
 		], [
 			$contentId,
 			$type,
 			$userId,
 			time(),
-		], [LikeEntity::ID, LikeEntity::TYPE, LikeEntity::ID_MEMBER]);
+		], [LikeEntity::COLUMN_ID, LikeEntity::COLUMN_TYPE, LikeEntity::COLUMN_ID_MEMBER]);
 	}
 
-	public function countContent(string $type, int $contentId): int
+	public function countContent(string|LikesEnum $type, int $contentId): int
 	{
 		$result = $this->dbClient->query(
 			'
 			SELECT {int:contentId}
 			FROM {db_prefix}' . LikeEntity::TABLE . '
-				WHERE ' . LikeEntity::ID . ' = {int:contentId}
-				AND ' . LikeEntity::TYPE . ' = {string:type}',
+				WHERE ' . LikeEntity::COLUMN_ID . ' = {int:contentId}
+				AND ' . LikeEntity::COLUMN_TYPE . ' = {string:type}',
 			[
 				'contentId' => $contentId,
 				'type' => $type,

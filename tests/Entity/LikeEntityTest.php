@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
+use Breeze\LikesEnum;
 use PHPUnit\Framework\TestCase;
 
 class LikeEntityTest extends TestCase
@@ -12,8 +13,8 @@ class LikeEntityTest extends TestCase
 	public function testGetTypes(): void
 	{
 		$this->assertEquals([
-			'br_sta',
-			'br_com',
+			LikesEnum::Status,
+			LikesEnum::Comments,
 		], LikeEntity::getTypes());
 	}
 

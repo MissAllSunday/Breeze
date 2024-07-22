@@ -29,7 +29,7 @@ class NotificationModel extends BaseModel implements NotificationModelInterface
 		return $this->getInsertedId();
 	}
 
-	public function getById(int $statusId): NotificationEntity
+	public function getById(int $statusId): array
 	{
 		$queryParams = array_merge($this->getDefaultQueryParams(), [
 			'columnName' => NotificationEntity::COLUMN_ID,
@@ -72,7 +72,7 @@ class NotificationModel extends BaseModel implements NotificationModelInterface
 	{
 		$notifications = [];
 		while ($row = $this->dbClient->fetchAssoc($request)) {
-			$notifications[$row[NotificationEntity::COLUMN_ID]] = new NotificationEntity($row);
+			$notifications[$row[NotificationEntity::COLUMN_ID]] = $row;
 		}
 
 		$this->dbClient->freeResult($request);
