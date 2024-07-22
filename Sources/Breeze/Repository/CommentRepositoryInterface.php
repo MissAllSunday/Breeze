@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Entity\BaseEntityInterface;
+
 interface CommentRepositoryInterface extends BaseRepositoryInterface
 {
 	/**
@@ -19,7 +21,7 @@ interface CommentRepositoryInterface extends BaseRepositoryInterface
 	/**
 	 * @throws InvalidCommentException
 	 */
-	public function getById(int $id): array;
+	public function getById(int $id): BaseEntityInterface;
 
 	/**
 	 * @throws InvalidCommentException

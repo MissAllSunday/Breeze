@@ -7,7 +7,8 @@ namespace Breeze\Entity;
 
 abstract class NormalizeEntity extends BaseEntity implements BaseEntityInterface
 {
-	public abstract function getColumnMap(): array;
+	abstract public function getColumnMap(): array;
+
 	public function setEntry(array $entry): void
 	{
 		foreach ($this->normalizeKeys($entry) as $key => $value) {

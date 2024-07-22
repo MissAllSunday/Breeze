@@ -26,6 +26,7 @@ abstract class BaseEntity
 			$this->{$setCall}($value);
 		}
 	}
+
 	protected function snakeToCamel($input): string
 	{
 		return \lcfirst(\str_replace('_', '', \ucwords($input, '_')));

@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
+use Breeze\LikesEnum;
+
 class LikeEntity extends NormalizeEntity implements BaseEntityInterface
 {
 	public const TABLE = 'user_likes';
@@ -21,12 +23,57 @@ class LikeEntity extends NormalizeEntity implements BaseEntityInterface
 	public const TYPE_STATUS = 'br_sta';
 	public const TYPE_COMMENT = 'br_com';
 	public const IDENTIFIER = 'likes_';
-	const KEY_MAP = [
+	public const KEY_MAP = [
 		self::COLUMN_ID_MEMBER => self::PROPERTY_ID_MEMBER,
 		self::COLUMN_TYPE => self::PROPERTY_TYPE,
 		self::COLUMN_ID => self::PROPERTY_ID,
 		self::COLUMN_TIME => self::PROPERTY_TIME,
 	];
+
+	protected int $idMember = 0;
+	protected string|LikesEnum $type = '';
+	protected int $id = 0;
+	protected string $time = '';
+
+	public function getIdMember(): int
+	{
+		return $this->idMember;
+	}
+
+	public function setIdMember(int $idMember): void
+	{
+		$this->idMember = $idMember;
+	}
+
+	public function getType(): string|LikesEnum
+	{
+		return $this->type;
+	}
+
+	public function setType(string|LikesEnum $type): void
+	{
+		$this->type = $type;
+	}
+
+	public function getId(): int
+	{
+		return $this->id;
+	}
+
+	public function setId(int $id): void
+	{
+		$this->id = $id;
+	}
+
+	public function getTime(): string
+	{
+		return $this->time;
+	}
+
+	public function setTime(string $time): void
+	{
+		$this->time = $time;
+	}
 
 	public static function getTypes(): array
 	{

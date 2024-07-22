@@ -26,6 +26,73 @@ class StatusEntity extends BaseEntity implements BaseEntityInterface
 		];
 	}
 
+	protected int $id = 0;
+	protected int $wallId = 0;
+	protected int $userId = 0;
+	protected string $createdAt = '';
+	protected string $body = '';
+	protected array $likes = [];
+
+	public function getId(): int
+	{
+		return $this->id;
+	}
+
+	public function setId(int $id): void
+	{
+		$this->id = $id;
+	}
+
+	public function getWallId(): int
+	{
+		return $this->wallId;
+	}
+
+	public function setWallId(int $wallId): void
+	{
+		$this->wallId = $wallId;
+	}
+
+	public function getUserId(): int
+	{
+		return $this->userId;
+	}
+
+	public function setUserId(int $userId): void
+	{
+		$this->userId = $userId;
+	}
+
+	public function getCreatedAt(): string
+	{
+		return $this->createdAt;
+	}
+
+	public function setCreatedAt(string $createdAt): void
+	{
+		$this->createdAt = $createdAt;
+	}
+
+	public function getBody(): string
+	{
+		return $this->body;
+	}
+
+	public function setBody(string $body): void
+	{
+		$this->body = $body;
+	}
+
+	public function getLikes(): array
+	{
+		return $this->likes;
+	}
+
+	public function setLikes(array $likes): void
+	{
+		$this->likes = $likes;
+	}
+
 	public static function getTableName(): string
 	{
 		return self::TABLE;
