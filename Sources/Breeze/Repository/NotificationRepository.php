@@ -7,12 +7,12 @@ namespace Breeze\Repository;
 
 use Breeze\Entity\NotificationEntity;
 use Breeze\Entity\StatusEntity;
-use Breeze\Model\NotificationModel;
+use Breeze\Model\NotificationModelInterface;
 
 class NotificationRepository extends BaseRepository implements NotificationRepositoryInterface
 {
 	public function __construct(
-		private readonly NotificationModel $notificationModel
+		private readonly NotificationModelInterface $notificationModel
 	) {}
 
 	/**
@@ -34,6 +34,6 @@ class NotificationRepository extends BaseRepository implements NotificationRepos
 
 	public function getById(int $id): NotificationEntity
 	{
-		// TODO: Implement getById() method.
+		return $this->notificationModel->getById($id);
 	}
 }

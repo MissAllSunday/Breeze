@@ -29,10 +29,7 @@ class NotificationModel extends BaseModel implements NotificationModelInterface
 		return $this->getInsertedId();
 	}
 
-	/**
-	 * @return NotificationEntity[]
-	 */
-	public function getById(int $statusId): array
+	public function getById(int $statusId): NotificationEntity
 	{
 		$queryParams = array_merge($this->getDefaultQueryParams(), [
 			'columnName' => NotificationEntity::COLUMN_ID,
@@ -48,7 +45,7 @@ class NotificationModel extends BaseModel implements NotificationModelInterface
 			$queryParams
 		);
 
-		return $this->prepareData($request);
+		return $this->prepareData($request)[0];
 	}
 
 	public function update(array $data, int $id = 0): array

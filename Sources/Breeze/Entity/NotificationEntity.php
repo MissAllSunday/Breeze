@@ -38,6 +38,56 @@ class NotificationEntity extends BaseEntity implements BaseEntityInterface
 
 	protected string $claimedTime = '';
 
+	public function getId(): int
+	{
+		return $this->id;
+	}
+
+	public function setId(int $id): void
+	{
+		$this->id = $id;
+	}
+
+	public function getFile(): string
+	{
+		return $this->file;
+	}
+
+	public function setFile(string $file): void
+	{
+		$this->file = $file;
+	}
+
+	public function getClass(): string
+	{
+		return $this->class;
+	}
+
+	public function setClass(string $class): void
+	{
+		$this->class = $class;
+	}
+
+	public function getData(): array
+	{
+		return $this->data;
+	}
+
+	public function setData(array $data): void
+	{
+		$this->data = $data;
+	}
+
+	public function getClaimedTime(): string
+	{
+		return $this->claimedTime;
+	}
+
+	public function setClaimedTime(string $claimedTime): void
+	{
+		$this->claimedTime = $claimedTime;
+	}
+
 	public static function getColumns(): array
 	{
 		return [
