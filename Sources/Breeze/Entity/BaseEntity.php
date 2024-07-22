@@ -14,8 +14,6 @@ abstract class BaseEntity
 
 	abstract public static function getColumns(): array;
 
-	abstract public function getColumnMap(): array;
-
 	public function __construct(array $entry = [])
 	{
 		$this->setEntry($entry);
@@ -23,22 +21,12 @@ abstract class BaseEntity
 
 	public function setEntry(array $entry): void
 	{
-		foreach ($this->normalizeKeys($entry) as $key => $value) {
+		foreach ($this->getColumns($entry) as $key => $value) {
 			$setCall = 'set' . $this->snakeToCamel($key);
 			$this->{$setCall}($value);
 		}
 	}
-
-	public function normalizeKeys(array $rawRowKeys = []): array {
-		$columnMap = $this->getColumnMap();
-		array_walk($rawRowKeys, function ($value, &$key) use ($columnMap): void {
-			$key = $columnMap[$key];
-		});
-
-		return $rawRowKeys;
-	}
-
-	private function snakeToCamel($input): string
+	protected function snakeToCamel($input): string
 	{
 		return \lcfirst(\str_replace('_', '', \ucwords($input, '_')));
 	}
