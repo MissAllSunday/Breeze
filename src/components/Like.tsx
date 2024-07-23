@@ -1,13 +1,12 @@
 import { LikeProps, LikeType } from 'breezeTypesLikes';
 import React, { useCallback, useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { postLike, ServerLikeData } from '../api/LikeApi';
 import smfVars from '../DataSource/SMF';
 import { showError, showErrorMessage, showInfo } from '../utils/tooltip';
-import LikeInfo from './LikeInfo';
+import { LikeInfo } from './LikeInfo';
 
-const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
+export const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
   const [like, setLike] = useState<LikeType>(props.item);
 
   const handleLike = useCallback(
@@ -39,12 +38,7 @@ const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
     <div className="smflikebutton">
       <span onClick={handleLike} className="likeClass pointer_cursor" title={like.additionalInfo.text}>
         {String.fromCodePoint(like.alreadyLiked ? 128078 : 128077)}
-      </span>
-      {' '}
-      |
-      <LikeInfo item={like} />
+      </span> | <LikeInfo item={like} />
     </div>
   );
 };
-
-export default Like;

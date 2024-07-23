@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import * as LikeApi from '../api/LikeApi';
-import LikeInfo from './LikeInfo';
+import {LikeInfo } from './LikeInfo';
 
 describe('LikeInfo', () => {
   it('renders default info', () => {
@@ -22,7 +22,7 @@ describe('LikeInfo', () => {
     };
 
     const likeInfoComponent = render(<LikeInfo item={likeItem} />);
-    const ulElement = likeInfoComponent.getByTestId('likes');
+    const ulElement = screen.getByTestId('likes');
 
     expect(ulElement).toBeEmptyDOMElement();
     expect(likeInfoComponent.getByText(`${String.fromCodePoint(128077)} lol`)).toBeInTheDocument();

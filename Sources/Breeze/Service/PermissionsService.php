@@ -93,7 +93,7 @@ class PermissionsService implements PermissionsServiceInterface
 		$isEnable = [];
 
 		foreach (PermissionsEnum::ALL_FORUM as $forumPermission) {
-			$isEnable[$this->snakeToCamel($forumPermission)] = $this->modSetting($forumPermission);
+			$isEnable[$this->snakeToCamel($forumPermission)] = $this->isAllowedTo($forumPermission);
 		}
 
 		return $isEnable;

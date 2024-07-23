@@ -4,7 +4,7 @@ import React, { useCallback, useContext, useState } from 'react';
 import { PermissionsContext } from '../context/PermissionsContext';
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
-import Like from './Like';
+import { Like } from './Like';
 import Avatar from './user/Avatar';
 
 

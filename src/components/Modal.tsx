@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import smfTextVars from '../DataSource/Txt';
 
-const Modal: React.FunctionComponent<ModalProps> = (props: ModalProps) => {
+export const Modal: React.FunctionComponent<ModalProps> = (props: ModalProps) => {
   const [style, setStyle] = useState(props.show ? 'show' : 'hide');
 
   useEffect(() => {
@@ -36,11 +36,10 @@ const Modal: React.FunctionComponent<ModalProps> = (props: ModalProps) => {
           {props.content.header}
           <a className="main_icons hide_popup" onClick={handleClose} title={smfTextVars.general.close} href="/#"> </a>
         </div>
-        <div className="popup_content clear" dangerouslySetInnerHTML={{ __html: props.content.body }}>
+        <div className="popup_content clear">
+          {props.content.body}
         </div>
       </div>
     </div>
   );
 };
-
-export default Modal;

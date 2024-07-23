@@ -10,7 +10,7 @@ import smfTextVars from '../DataSource/Txt';
 import { showError, showInfo } from '../utils/tooltip';
 import Comment from './Comment';
 import Editor from './Editor';
-import Like from './Like';
+import { Like } from './Like';
 import Loading from './Loading';
 import UserInfo from './user/UserInfo';
 

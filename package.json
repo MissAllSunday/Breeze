@@ -3,7 +3,6 @@
   "version": "2.0",
   "private": true,
   "dependencies": {
-    "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^29.1.2",
     "@types/node": "^18.8.5",
@@ -48,6 +47,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-react": "^7.22.15",
     "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^16.0.0",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.25.0",
