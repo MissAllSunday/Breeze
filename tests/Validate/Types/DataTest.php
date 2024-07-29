@@ -55,7 +55,7 @@ class DataTest extends TestCase
 				'defaultParams' => [
 					'statusId' => 0,
 					'userId' => 0,
-					'body' => '',
+					'body' => '123456',
 				],
 				'data' => [
 					'statusId' => 0,
@@ -127,11 +127,3 @@ class DataTest extends TestCase
 		];
 	}
 }
-
-
-//'Invalid' => [
-//	'defaultParams' => [
-//	],
-//	'data' => [],
-//	'isExpectedException' => false,
-//],
