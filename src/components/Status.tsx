@@ -95,9 +95,9 @@ function Status(props: StatusProps): React.ReactElement {
       <div className="windowbg floatright">
         <div className="content" title={timeStamp.toLocaleString()} dangerouslySetInnerHTML={{ __html: props.status.body }} />
         <div className="half_content">
-          { permissions.isEnable.enableLikes && permissions.Forum.likesLike && <Like
+          <Like
             item={props.status.likesInfo}
-          />}
+          />
         </div>
         <div className="half_content">
           {permissions.Status.delete &&

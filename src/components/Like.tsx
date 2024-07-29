@@ -1,13 +1,15 @@
 import { LikeProps, LikeType } from 'breezeTypesLikes';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 
 import { postLike, ServerLikeData } from '../api/LikeApi';
+import { PermissionsContext } from '../context/PermissionsContext';
 import smfVars from '../DataSource/SMF';
 import { showError, showErrorMessage, showInfo } from '../utils/tooltip';
 import { LikeInfo } from './LikeInfo';
 
 export const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
   const [like, setLike] = useState<LikeType>(props.item);
+  const permissions = useContext(PermissionsContext);
 
   const handleLike = useCallback(
     () => {
@@ -35,10 +37,10 @@ export const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
   );
 
   return (
-    <div className="smflikebutton">
+    permissions.isEnable.enableLikes && permissions.Forum.likesLike ? <div className="smflikebutton">
       <span onClick={handleLike} className="likeClass pointer_cursor" title={like.additionalInfo.text}>
         {String.fromCodePoint(like.alreadyLiked ? 128078 : 128077)}
-      </span> | <LikeInfo item={like} />
-    </div>
+      </span> | <LikeInfo item={like}/>
+      </div> : null
   );
 };

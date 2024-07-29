@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import * as LikeApi from '../api/LikeApi';
-import {LikeInfo } from './LikeInfo';
+import { LikeInfo } from './LikeInfo';
 
 describe('LikeInfo', () => {
   it('renders default info', () => {
