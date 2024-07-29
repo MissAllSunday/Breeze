@@ -45,8 +45,15 @@ class Data
 	 */
 	public function isString(array $shouldBeString, array $data): void
 	{
-		foreach ($shouldBeString as $stringValueName) {
-			if (!is_string($data[$stringValueName])) {
+		foreach ($shouldBeString as $stringName) {
+			$stringValue = $data[$stringName];
+
+			// Does the string has only numbers?
+			if (ctype_digit($stringValue)) {
+				$stringValue = (string) $stringValue;
+			}
+
+			if (!is_string($stringValue)) {
 				throw new DataNotFoundException('malformed_data');
 			}
 		}

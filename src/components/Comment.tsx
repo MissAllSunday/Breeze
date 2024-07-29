@@ -7,7 +7,6 @@ import smfTextVars from '../DataSource/Txt';
 import { Like } from './Like';
 import Avatar from './user/Avatar';
 
-
 function Comment(props: CommentProps): React.ReactElement {
   const [classType, setClassType] = useState(props.comment.isNew ? 'fadeIn' : '');
   const timeStamp = new Date(props.comment.createdAt);
