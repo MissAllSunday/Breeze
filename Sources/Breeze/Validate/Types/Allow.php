@@ -60,10 +60,10 @@ class Allow
 	/**
 	 * @throws DataNotFoundException
 	 */
-	public function isFeatureEnable(string $featureName = ''): void
+	public function isFeatureEnable(string $featureName = '', string $featureNotEnabledMessageKey = ''): void
 	{
 		if (!$this->modSetting($featureName)) {
-			throw new DataNotFoundException('likesNotEnabled');
+			throw new DataNotFoundException($featureNotEnabledMessageKey);
 		}
 	}
 }

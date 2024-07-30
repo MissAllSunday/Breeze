@@ -49,7 +49,7 @@ class Data
 			$stringValue = $data[$stringName];
 
 			// Does the string has only numbers?
-			if (ctype_digit($stringValue)) {
+			if (ctype_digit((string) $stringValue)) {
 				$stringValue = (string) $stringValue;
 			}
 

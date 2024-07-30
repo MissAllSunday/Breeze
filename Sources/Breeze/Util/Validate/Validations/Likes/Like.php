@@ -52,7 +52,7 @@ class Like extends BaseActions implements ValidateDataInterface
 	 */
 	public function checkAllow(): void
 	{
-		$this->validateAllow->isFeatureEnable('enable_likes');
+		$this->validateAllow->isFeatureEnable('enable_likes', 'likesNotEnabled');
 		$this->validateAllow->permissions(PermissionsEnum::LIKES_LIKE, 'likesLike');
 	}
 

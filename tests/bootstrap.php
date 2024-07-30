@@ -296,6 +296,7 @@ $_SESSION['Breeze']['flood_4'] = [
 	'time' => time() - 10,
 	'msgCount' => 3,
 ];
+$_SESSION['Breeze']['flood_5'] = [];
 
 // Composer-Autoloader
 require_once $_SERVER['DOCUMENT_ROOT'] . "./breezeVendor/autoload.php";
