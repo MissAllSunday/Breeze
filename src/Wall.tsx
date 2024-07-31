@@ -97,7 +97,6 @@ export default function Wall(props: WallProps): React.JSX.Element {
         <Toaster toastOptions={{
           duration: 4000,
         }}/>
-        {statusList.length === 0 && !isLoading ? showInfo(smfTextVars.error.noStatus) : ''}
         <PermissionsContext.Provider value={permissions}>
           <ul className="status">
             {statusList.map((singleStatus: StatusType) => (
@@ -109,12 +108,12 @@ export default function Wall(props: WallProps): React.JSX.Element {
             ))}
           </ul>
           <div id="post_confirm_buttons">
-            <input type="submit"
-               value={smfTextVars.general.loadMore}
-               name={smfTextVars.general.loadMore}
-               className="button"
-               onClick={fetchNextStatus}
-               ref={ref as React.LegacyRef<HTMLInputElement>}/>
+            {statusList.length < paginationTotal ? <input type="submit"
+                    value={smfTextVars.general.loadMore}
+                    name={smfTextVars.general.loadMore}
+                    className="button"
+                    onClick={fetchNextStatus}
+                    ref={ref as React.LegacyRef<HTMLInputElement>}/> : ''}
             <input type="submit"
                value={smfTextVars.general.goUp}
                name={smfTextVars.general.goUp}
