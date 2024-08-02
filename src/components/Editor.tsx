@@ -2,6 +2,7 @@ import React, { createElement, ReactElement, useCallback, useEffect, useState } 
 
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
+import { showErrorMessage } from '../utils/tooltip';
 
 const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: string) => boolean, isFull: boolean }) => {
   const [content, setContent] = useState('');
@@ -31,6 +32,13 @@ const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: st
     }
 
     const toSave = props.isFull ? smfVars.smfEditorHandler.instance(textArea.current).val() : content;
+
+    if (toSave.length === 0) {
+      showErrorMessage(smfTextVars.error.errorEmpty);
+
+      return;
+    }
+
     const saved = props.saveContent(toSave);
 
     if (saved) {
