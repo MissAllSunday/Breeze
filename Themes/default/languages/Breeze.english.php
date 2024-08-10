@@ -90,6 +90,7 @@ $txt['Breeze_info_updated_settings'] = 'Your settings were updated successfully'
 $txt['Breeze_error_deleteComments'] = 'I\'m sorry,  you aren\'t allowed to delete comments';
 $txt['Breeze_error_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete status';
 $txt['Breeze_error_server'] = 'There was an error: %s';
+$txt['Breeze_error_generic'] = 'There was an error, please try again or contact your forum administrator';
 $txt['Breeze_error_wrong_values'] = 'Wrong values were sent, the request couldn\'t be handled';
 $txt['Breeze_error_flood'] = 'You have already reached the amount of messages you can post, please try again later';
 $txt['Breeze_success_published_status'] = 'Your status was successfully published';

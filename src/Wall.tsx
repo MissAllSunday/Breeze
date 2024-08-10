@@ -29,10 +29,11 @@ export default function Wall(props: WallProps): React.JSX.Element {
   useEffect(() => {
     getStatus(props.wallType, 0)
       .then((statusListResponse: ServerGetStatusResponse) => {
-        const fetchedStatusList: StatusListType = Object.values(statusListResponse.content.data);
-        setStatusList(fetchedStatusList);
-        setPermissions(statusListResponse.content.permissions);
-        setPaginationTotal(statusListResponse.content.total);
+
+        // const fetchedStatusList: StatusListType = Object.values(statusListResponse.content.data);
+        // setStatusList(fetchedStatusList);
+        // setPermissions(statusListResponse.content.permissions);
+        // setPaginationTotal(statusListResponse.content.total);
       })
       .finally(() => {
         setIsLoading(false);

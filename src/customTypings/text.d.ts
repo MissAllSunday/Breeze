@@ -25,10 +25,18 @@ declare module 'breezeTypesText' {
     about: string,
     activity; string,
   }
+
+  interface ErrorTextType {
+    wrongValues: string,
+    errorEmpty: string,
+    noStatus: string,
+    generic: string,
+  }
 }
 
 module.exports = {
   TabsTextType,
   GeneralTextType,
   LikeTextType,
+  ErrorTextType,
 };

@@ -3,7 +3,7 @@ import { StatusListType } from 'breezeTypesStatus';
 
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
-import { showError } from '../utils/tooltip';
+import { showError, showErrorMessage } from '../utils/tooltip';
 import { baseConfig, baseUrl } from './Api';
 
 export interface ServerDeleteStatusResponse {
@@ -25,18 +25,25 @@ export interface ServerGetStatusResponse {
 const action = 'breezeStatus';
 
 export const getStatus = async (type: string, start: number): Promise<StatusListType> => {
-  const response = await fetch(baseUrl(action, type, [ { start: start } ]), {
-    method: 'POST',
-    body: JSON.stringify(baseConfig({
-      wallId: smfVars.wallId,
-    })),
-  });
+  try {
+    const response =  await fetch(baseUrl(action, type, [ { start: start } ]), {
+      method: 'POST',
+      body: JSON.stringify(baseConfig({
+        wallId: smfVars.wallId,
+      })),
+    });
 
-  if (response.ok) {
-    return response.json();
+    const { content, message } = await response.json();
+
+    if (response.ok && response.status === 200) {
+      return content;
+    } else {
+      showErrorMessage(message);
+    }
+
+  } catch (error:unknown) {
+    showErrorMessage(smfTextVars.error.generic);
   }
-
-  throw new Error(smfTextVars.error.noStatus);
 };
 
 export const deleteStatus = async (statusId: number): Promise<ServerDeleteStatusResponse> => {

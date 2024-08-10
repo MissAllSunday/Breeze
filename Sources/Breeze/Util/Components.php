@@ -73,6 +73,7 @@ class Components
 				'wrongValues' => $this->getText('error_wrong_values'),
 				'errorEmpty' => $this->getText('error_empty'),
 				'noStatus' => $this->getText('page_no_status'),
+				'generic' => $this->getText('error_generic'),
 			],
 			'general' => [
 				'save' => $this->getText('general_save'),
