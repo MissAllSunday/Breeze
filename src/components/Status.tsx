@@ -32,12 +32,12 @@ function Status(props: StatusProps): React.ReactElement {
   });
 
   const removeStatus = useCallback(() => {
-    if (!window.confirm(smfVars.youSure)) {
+    if (!window.confirm(smfVars.youSure) || !permissions.Status.delete) {
       return;
     }
 
     props.removeStatus(props.status);
-  }, [props]);
+  }, [permissions.Status.delete, props]);
 
   const createComment = useCallback((content: string) => {
     if (!permissions.Comments.post) {
@@ -64,20 +64,15 @@ function Status(props: StatusProps): React.ReactElement {
   }, [props.status.id, commentsList, permissions.Comments.post]);
 
   const removeComment = useCallback((comment: CommentType) => {
-    if (!permissions.Comments.delete) {
-      return;
-    }
-
     setIsLoading(true);
     deleteComment(comment.id).then((response) => {
-      setCommentsList(commentsList.filter((currentComment: CommentType) => currentComment.id !== comment.id));
-      showInfo(response.message);
-    }).catch((exception) => {
-      showError(exception.toString());
+      if (response) {
+        setCommentsList(commentsList.filter((currentComment: CommentType) => currentComment.id !== comment.id));
+      }
     }).finally(() => {
       setIsLoading(false);
     });
-  }, [commentsList, permissions.Comments.delete]);
+  }, [permissions.Comments.delete]);
 
   const showEditor = permissions.Comments.post ? <Editor saveContent={createComment}/> : '';
 

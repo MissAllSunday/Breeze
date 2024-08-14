@@ -45,3 +45,16 @@ export const safeFetch = async (response: Response):Promise<IServerFetchResponse
   }
 };
 
+export const safeDelete = async (response: Response, successMessage: string):Promise<boolean> => {
+
+  const deleted: boolean = response.ok && response.status === 204;
+
+  if (!deleted) {
+    const { message } = await response.json();
+    showErrorMessage(message);
+  } else {
+    showInfo(successMessage);
+  }
+
+  return deleted;
+};

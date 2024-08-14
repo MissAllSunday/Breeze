@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast';
 import { IServerFetchResponse } from './api/Api';
 import {
   deleteStatus,
-  getStatus, postStatus, ServerGetStatusResponse, ServerPostStatusResponse,
+  getStatus, postStatus, ServerPostStatusResponse,
 } from './api/StatusApi';
 import Editor from './components/Editor';
 import Loading from './components/Loading';
@@ -49,8 +49,8 @@ export default function Wall(props: WallProps): React.JSX.Element {
     setIsLoading(true);
 
     getStatus(props.wallType, statusList.length)
-      .then((statusListResponse: ServerGetStatusResponse) => {
-        setStatusList(statusList.concat(Object.values(statusListResponse.content.data)));
+      .then((statusListResponse: IServerFetchResponse) => {
+        setStatusList(statusList.concat(Object.values(statusListResponse.data)));
       }).finally(() => {
         setIsLoading(false);
         setLoadedMore(statusList.length);
@@ -77,7 +77,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
     return true;
   }, [statusList]);
 
-  const removeStatus = useCallback((currentStatus: StatusType): any => {
+  const removeStatus = useCallback((currentStatus: StatusType) => {
     setIsLoading(true);
 
     deleteStatus(currentStatus.id).then((deleted: boolean) => {
@@ -85,7 +85,6 @@ export default function Wall(props: WallProps): React.JSX.Element {
       if (deleted) {
         setStatusList(statusList.filter((status: StatusType) => currentStatus.id !== status.id));
       }
-
     }).finally(() => {
       setIsLoading(false);
     });

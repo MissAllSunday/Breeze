@@ -1,5 +1,6 @@
 import { LikeInfoState, LikeType } from 'breezeTypesLikes';
 
+import { IServerActions } from '../customTypings/actions';
 import SmfVars from '../DataSource/SMF';
 import { showError } from '../utils/tooltip';
 import { baseConfig, baseUrl } from './Api';
@@ -14,7 +15,7 @@ export interface ServerLikeInfoData {
   content: LikeInfoState[]
 }
 
-const action = 'breezeLike';
+const action:IServerActions = 'breezeLike';
 
 export const postLike = async (likeData: LikeType): Promise<ServerLikeData> => {
   const params = {

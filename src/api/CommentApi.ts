@@ -1,8 +1,10 @@
 import { CommentListType } from 'breezeTypesComments';
 
+import { IServerActions } from '../customTypings/actions';
 import smfVars from '../DataSource/SMF';
-import { showError } from '../utils/tooltip';
-import { baseConfig, baseUrl } from './Api';
+import smfTextVars from '../DataSource/Txt';
+import { showError, showErrorMessage, showInfo } from '../utils/tooltip';
+import { baseConfig, baseUrl, safeDelete } from './Api';
 
 export interface ServerCommentData {
   message: string
@@ -14,7 +16,7 @@ interface ServerDeleteComment {
   content: object
 }
 
-const action = 'breezeComment';
+const action:IServerActions = 'breezeComment';
 
 export const postComment = async (commentParams: object): Promise<ServerCommentData> => {
   const postCommentResults = await fetch(baseUrl(action, 'postComment'), {
@@ -28,7 +30,7 @@ export const postComment = async (commentParams: object): Promise<ServerCommentD
   return postCommentResults.ok ? postCommentResults.json() : showError(postCommentResults);
 };
 
-export const deleteComment = async (commentId: number): Promise<ServerDeleteComment> => {
+export const deleteComment = async (commentId: number): Promise<boolean> => {
   const deleteCommentResults = await fetch(baseUrl(action, 'deleteComment'), {
     method: 'POST',
     body: JSON.stringify(baseConfig({
@@ -37,5 +39,5 @@ export const deleteComment = async (commentId: number): Promise<ServerDeleteComm
     })),
   });
 
-  return deleteCommentResults.ok ? deleteCommentResults.json() : showError(deleteCommentResults);
+  return safeDelete(deleteCommentResults, smfTextVars.general.deletedComment);
 };

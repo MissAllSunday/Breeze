@@ -1,10 +1,11 @@
 import { PermissionsContextType } from 'breezeTypesPermissions';
 import { StatusListType } from 'breezeTypesStatus';
 
+import { IServerActions } from '../customTypings/actions';
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
 import { showError, showErrorMessage, showInfo } from '../utils/tooltip';
-import { baseConfig, baseUrl, safeFetch } from './Api';
+import { baseConfig, baseUrl, safeDelete, safeFetch } from './Api';
 
 export interface ServerDeleteStatusResponse {
   content: object
@@ -22,7 +23,7 @@ export interface ServerGetStatusResponse {
   message: string
 }
 
-const action = 'breezeStatus';
+const action:IServerActions = 'breezeStatus';
 
 export const getStatus = async (type: string, start: number): Promise<StatusListType> => {
   try {
@@ -49,16 +50,7 @@ export const deleteStatus = async (statusId: number): Promise<boolean> => {
     })),
   });
 
-  const deleted = deleteStatusResults.ok && deleteStatusResults.status === 204;
-
-  if (!deleted) {
-    const { message } = await deleteStatusResults.json();
-    showErrorMessage(message);
-  } else {
-    showInfo(smfTextVars.general.deletedStatus);
-  }
-
-  return deleted;
+  return safeDelete(deleteStatusResults, smfTextVars.general.deletedStatus);
 };
 
 export const postStatus = async (content: string): Promise<ServerPostStatusResponse> => {

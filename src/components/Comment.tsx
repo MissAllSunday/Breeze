@@ -16,8 +16,6 @@ function Comment(props: CommentProps): React.ReactElement {
     if (!window.confirm(smfVars.youSure) || !permissions.Comments.delete) {
       return;
     }
-
-    setClassType('fadeOut');
     props.removeComment(props.comment);
   }, [props, permissions]);
 
