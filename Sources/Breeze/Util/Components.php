@@ -76,6 +76,8 @@ class Components
 				'generic' => $this->getText('error_generic'),
 			],
 			'general' => [
+				'deletedStatus' => $this->getText('success_deleted_status'),
+				'deletedComment' => $this->getText('success_deleted_comment'),
 				'save' => $this->getText('general_save'),
 				'delete' => $this->getText('general_delete'),
 				'editing' => $this->getText('general_editing'),

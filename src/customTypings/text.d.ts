@@ -1,6 +1,8 @@
 declare module 'breezeTypesText' {
 
   interface GeneralTextType {
+    deletedStatus: string,
+    deletedComment: string,
     save: string
     delete: string
     editing: string

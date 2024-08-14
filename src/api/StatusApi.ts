@@ -3,8 +3,8 @@ import { StatusListType } from 'breezeTypesStatus';
 
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
-import { showError, showErrorMessage } from '../utils/tooltip';
-import { baseConfig, baseUrl } from './Api';
+import { showError, showErrorMessage, showInfo } from '../utils/tooltip';
+import { baseConfig, baseUrl, safeFetch } from './Api';
 
 export interface ServerDeleteStatusResponse {
   content: object
@@ -33,20 +33,14 @@ export const getStatus = async (type: string, start: number): Promise<StatusList
       })),
     });
 
-    const { content, message } = await response.json();
-
-    if (response.ok && response.status === 200) {
-      return content;
-    } else {
-      showErrorMessage(message);
-    }
+    return await safeFetch(response);
 
   } catch (error:unknown) {
     showErrorMessage(smfTextVars.error.generic);
   }
 };
 
-export const deleteStatus = async (statusId: number): Promise<ServerDeleteStatusResponse> => {
+export const deleteStatus = async (statusId: number): Promise<boolean> => {
   const deleteStatusResults = await fetch(baseUrl(action, 'deleteStatus'), {
     method: 'POST',
     body: JSON.stringify(baseConfig({
@@ -55,7 +49,16 @@ export const deleteStatus = async (statusId: number): Promise<ServerDeleteStatus
     })),
   });
 
-  return deleteStatusResults.ok ? deleteStatusResults.json() : showError(deleteStatusResults);
+  const deleted = deleteStatusResults.ok && deleteStatusResults.status === 204;
+
+  if (!deleted) {
+    const { message } = await deleteStatusResults.json();
+    showErrorMessage(message);
+  } else {
+    showInfo(smfTextVars.general.deletedStatus);
+  }
+
+  return deleted;
 };
 
 export const postStatus = async (content: string): Promise<ServerPostStatusResponse> => {

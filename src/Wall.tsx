@@ -4,6 +4,7 @@ import { StatusListType, StatusType } from 'breezeTypesStatus';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 
+import { IServerFetchResponse } from './api/Api';
 import {
   deleteStatus,
   getStatus, postStatus, ServerGetStatusResponse, ServerPostStatusResponse,
@@ -28,12 +29,11 @@ export default function Wall(props: WallProps): React.JSX.Element {
 
   useEffect(() => {
     getStatus(props.wallType, 0)
-      .then((statusListResponse: ServerGetStatusResponse) => {
-
-        // const fetchedStatusList: StatusListType = Object.values(statusListResponse.content.data);
-        // setStatusList(fetchedStatusList);
-        // setPermissions(statusListResponse.content.permissions);
-        // setPaginationTotal(statusListResponse.content.total);
+      .then((statusListResponse: IServerFetchResponse) => {
+        const fetchedStatusList: StatusListType = Object.values(statusListResponse.data);
+        setStatusList(fetchedStatusList);
+        setPermissions(statusListResponse.permissions);
+        setPaginationTotal(statusListResponse.total);
       })
       .finally(() => {
         setIsLoading(false);
@@ -77,12 +77,15 @@ export default function Wall(props: WallProps): React.JSX.Element {
     return true;
   }, [statusList]);
 
-  const removeStatus = useCallback((currentStatus: StatusType) => {
+  const removeStatus = useCallback((currentStatus: StatusType): any => {
     setIsLoading(true);
 
-    deleteStatus(currentStatus.id).then((response) => {
-      setStatusList(statusList.filter((status: StatusType) => currentStatus.id !== status.id));
-      showInfo(response.message);
+    deleteStatus(currentStatus.id).then((deleted: boolean) => {
+
+      if (deleted) {
+        setStatusList(statusList.filter((status: StatusType) => currentStatus.id !== status.id));
+      }
+
     }).finally(() => {
       setIsLoading(false);
     });

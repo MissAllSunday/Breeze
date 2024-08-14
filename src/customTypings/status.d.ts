@@ -27,7 +27,7 @@ declare module 'breezeTypesStatus' {
 
   interface StatusProps {
     status: StatusType
-    removeStatus: (status: StatusType) => void
+    removeStatus: (status: StatusType) => boolean
   }
 
   interface StatusState {

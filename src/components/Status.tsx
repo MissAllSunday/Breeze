@@ -36,7 +36,6 @@ function Status(props: StatusProps): React.ReactElement {
       return;
     }
 
-    setClassType('fadeOut');
     props.removeStatus(props.status);
   }, [props]);
 
