@@ -18,8 +18,11 @@ trait RequestTrait
 
 	public function getData(array $data = []): array
 	{
+		$request = $_SERVER['REQUEST_METHOD'] === 'GET' ?
+			$_GET : Json::decode(file_get_contents('php://input'))['data'];
+
 		return array_filter(!empty($data) ? $data :
-			$this->sanitize(Json::decode(file_get_contents('php://input'))['data']));
+			$this->sanitize($request));
 	}
 
 	public function getDataFromGet(): array

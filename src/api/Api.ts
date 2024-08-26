@@ -1,7 +1,6 @@
 import { PermissionsContextType } from 'breezeTypesPermissions';
 
 import SmfVars from '../DataSource/SMF';
-import smfTextVars from '../DataSource/Txt';
 import { showErrorMessage, showInfo } from '../utils/tooltip';
 
 export const baseUrl = (action: string, subAction: string, additionalParams: object[] = []): string => {

@@ -56,7 +56,7 @@ abstract class ApiBaseController
 			return;
 		}
 
-		$this->data = $this->isGetCall() ? $this->getDataFromGet() : $this->getData();
+		$this->data = $this->getData();
 		$this->validateActions->setUp($this->data, $this->subAction);
 
 		if ($this->subActionCheck()) {
@@ -72,9 +72,4 @@ abstract class ApiBaseController
 	}
 
 	abstract public function getSubActions(): array;
-
-	protected function isGetCall(): bool
-	{
-		return in_array($this->subAction, [StatusController::ACTION_PROFILE, StatusController::ACTION_GENERAL]);
-	}
 }
