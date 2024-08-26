@@ -68,10 +68,10 @@ class Response
 	public function error(string $message = '', int $responseCode = self::NOT_FOUND): void
 	{
 		$this->print(array_merge($this->response, [
-			'message' => sprintf(
+			'message' => !empty($message) ? sprintf(
 				$this->getText(self::DEFAULT_ERROR_KEY),
 				$this->getText(self::ERROR_TYPE . '_' . $message)
-			),
+			) : $message,
 		]), $responseCode);
 	}
 

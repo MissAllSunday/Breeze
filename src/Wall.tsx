@@ -30,6 +30,10 @@ export default function Wall(props: WallProps): React.JSX.Element {
   useEffect(() => {
     getStatus(props.wallType, 0)
       .then((statusListResponse: IServerFetchResponse) => {
+        if (typeof statusListResponse === 'undefined') {
+          return;
+        }
+
         const fetchedStatusList: StatusListType = Object.values(statusListResponse.data);
         setStatusList(fetchedStatusList);
         setPermissions(statusListResponse.permissions);

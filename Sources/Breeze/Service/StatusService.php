@@ -11,6 +11,7 @@ use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Traits\SettingsTrait;
+use Breeze\Util\Validate\EmptyDataException;
 
 class StatusService
 {
@@ -30,7 +31,7 @@ class StatusService
 	}
 
 	/**
-	 * @throws InvalidStatusException
+	 * @throws EmptyDataException
 	 */
 	public function getByProfile(int $wallId, int $start): array
 	{

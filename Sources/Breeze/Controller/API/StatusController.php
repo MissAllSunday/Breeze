@@ -9,6 +9,7 @@ use Breeze\Entity\StatusEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Service\StatusService;
 use Breeze\Util\Response;
+use Breeze\Util\Validate\EmptyDataException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
 class StatusController extends ApiBaseController
@@ -44,8 +45,8 @@ class StatusController extends ApiBaseController
 			);
 
 			$this->response->success('', $statusByProfile);
-		} catch (InvalidStatusException $invalidStatusException) {
-			$this->response->error($invalidStatusException->getMessage());
+		} catch (EmptyDataException $emptyDataException) {
+			$this->response->error($emptyDataException->getMessage());
 		}
 	}
 

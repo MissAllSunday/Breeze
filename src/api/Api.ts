@@ -40,7 +40,9 @@ export const safeFetch = async (response: Response):Promise<IServerFetchResponse
 
   if (response.ok && response.status === 200) {
     return content;
-  } else {
+  }
+
+  if (message.length) {
     showErrorMessage(message);
   }
 };

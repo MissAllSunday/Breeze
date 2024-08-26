@@ -22,6 +22,11 @@ trait RequestTrait
 			$this->sanitize(Json::decode(file_get_contents('php://input'))['data']));
 	}
 
+	public function getDataFromGet(): array
+	{
+		return $this->sanitize($_GET);
+	}
+
 	public function getRequest(string $variableName, $defaultValue = null)
 	{
 		$this->init();

@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Util\Validate\EmptyDataException;
+
 interface StatusRepositoryInterface extends BaseRepositoryInterface
 {
 	/**
@@ -13,7 +15,7 @@ interface StatusRepositoryInterface extends BaseRepositoryInterface
 	public function save(array $data): int;
 
 	/**
-	 * @throws InvalidStatusException
+	 * @throws EmptyDataException
 	 */
 	public function getByProfile(array $userProfiles = [], int $start = 0, int $maxIndex = 0): array;
 

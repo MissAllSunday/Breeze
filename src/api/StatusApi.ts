@@ -27,11 +27,11 @@ const action:IServerActions = 'breezeStatus';
 
 export const getStatus = async (type: string, start: number): Promise<StatusListType> => {
   try {
-    const response =  await fetch(baseUrl(action, type, [ { start: start } ]), {
-      method: 'POST',
-      body: JSON.stringify(baseConfig({
-        wallId: smfVars.wallId,
-      })),
+    const response =  await fetch(baseUrl(action, type, [ { start: start, wallId: smfVars.wallId } ]), {
+      method: 'GET',
+      headers: {
+        'X-SMF-AJAX': '1',
+      },
     });
 
     return await safeFetch(response);

@@ -8,6 +8,7 @@ namespace Breeze\Repository;
 use Breeze\Entity\StatusEntity;
 use Breeze\Model\StatusModelInterface;
 use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\EmptyDataException;
 
 class StatusRepository extends BaseRepository implements StatusRepositoryInterface
 {
@@ -37,7 +38,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	}
 
 	/**
-	 * @throws DataNotFoundException
+	 * @throws EmptyDataException
 	 */
 	public function getByProfile(array $userProfiles = [], int $start = 0, int $maxIndex = 0): array
 	{
@@ -48,7 +49,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		]);
 
 		if (empty($status['data'])) {
-			throw new DataNotFoundException('no_status');
+			throw new EmptyDataException('');
 		}
 
 		$comments = $this->commentRepository->getByProfile($userProfiles);

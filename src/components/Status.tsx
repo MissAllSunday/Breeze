@@ -72,7 +72,7 @@ function Status(props: StatusProps): React.ReactElement {
     }).finally(() => {
       setIsLoading(false);
     });
-  }, [permissions.Comments.delete]);
+  }, [commentsList]);
 
   const showEditor = permissions.Comments.post ? <Editor saveContent={createComment}/> : '';
 
