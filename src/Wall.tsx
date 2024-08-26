@@ -4,10 +4,10 @@ import { StatusListType, StatusType } from 'breezeTypesStatus';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 
-import { IServerFetchResponse } from './api/Api';
+import { IPostStatusResponse, IServerFetchResponse } from './api/Api';
 import {
   deleteStatus,
-  getStatus, postStatus, ServerPostStatusResponse,
+  getStatus, postStatus,
 } from './api/StatusApi';
 import Editor from './components/Editor';
 import Loading from './components/Loading';
@@ -64,16 +64,10 @@ export default function Wall(props: WallProps): React.JSX.Element {
   const createStatus = useCallback((content: string) => {
     setIsLoading(true);
 
-    postStatus(content).then((response: ServerPostStatusResponse) => {
-      const newStatus:StatusListType = Object.values(response.content);
-
+    postStatus(content).then((newStatus: StatusListType) => {
       for (const key in newStatus) {
         setStatusList([...statusList, newStatus[key]]);
       }
-
-      showInfo(response.message);
-    }).catch((exception) => {
-      showError(exception.toString());
     }).finally(() => {
       setIsLoading(false);
     });

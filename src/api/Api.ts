@@ -1,4 +1,5 @@
 import { PermissionsContextType } from 'breezeTypesPermissions';
+import { StatusListType } from 'breezeTypesStatus';
 
 import SmfVars from '../DataSource/SMF';
 import { showErrorMessage, showInfo } from '../utils/tooltip';
@@ -29,12 +30,17 @@ export const baseConfig = (params: object = {}): object => ({
 });
 
 export interface IServerFetchResponse {
-  data: object,
+  data: StatusListType,
   permissions: PermissionsContextType,
   total: number
 }
+export interface IPostStatusResponse {
+  content: StatusListType
+  message: string
+  type: string
+}
 
-export const safeFetch = async (response: Response):Promise<IServerFetchResponse | void> => {
+export const safeFetch = async (response: Response):Promise<IServerFetchResponse | IPostStatusResponse | void> => {
   const { content, message } = await response.json();
 
   if (response.ok && response.status === 200) {
@@ -58,4 +64,14 @@ export const safeDelete = async (response: Response, successMessage: string):Pro
   }
 
   return deleted;
+};
+
+export const safePost = async (response: Response):Promise<IPostStatusResponse | void> => {
+  const { content, message } = await response.json();
+
+  if (response.ok && response.status === 201) {
+    showInfo(message);
+
+    return content;
+  }
 };

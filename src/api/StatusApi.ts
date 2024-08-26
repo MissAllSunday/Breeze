@@ -1,27 +1,10 @@
-import { PermissionsContextType } from 'breezeTypesPermissions';
 import { StatusListType } from 'breezeTypesStatus';
 
 import { IServerActions } from '../customTypings/actions';
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
 import { showError, showErrorMessage, showInfo } from '../utils/tooltip';
-import { baseConfig, baseUrl, safeDelete, safeFetch } from './Api';
-
-export interface ServerDeleteStatusResponse {
-  content: object
-  message: string
-}
-
-export interface ServerPostStatusResponse {
-  content: StatusListType
-  message: string
-  type: string
-}
-
-export interface ServerGetStatusResponse {
-  content: { total: number, data: StatusListType, permissions: PermissionsContextType }
-  message: string
-}
+import { baseConfig, baseUrl, safeDelete, safeFetch, safePost } from './Api';
 
 const action:IServerActions = 'breezeStatus';
 
@@ -53,15 +36,19 @@ export const deleteStatus = async (statusId: number): Promise<boolean> => {
   return safeDelete(deleteStatusResults, smfTextVars.general.deletedStatus);
 };
 
-export const postStatus = async (content: string): Promise<ServerPostStatusResponse> => {
-  const postStatusResults = await fetch(baseUrl(action, 'postStatus'), {
-    method: 'POST',
-    body: JSON.stringify(baseConfig({
-      wallId: smfVars.wallId,
-      userId: smfVars.userId,
-      body: content,
-    })),
-  });
+export const postStatus = async (content: string): Promise<StatusListType> => {
+  try {
+    const response = await fetch(baseUrl(action, 'postStatus'), {
+      method: 'POST',
+      body: JSON.stringify(baseConfig({
+        wallId: smfVars.wallId,
+        userId: smfVars.userId,
+        body: content,
+      })),
+    });
 
-  return postStatusResults.ok ? postStatusResults.json() : showError(postStatusResults);
+    return await safePost(response);
+  } catch (error:unknown) {
+    showErrorMessage(smfTextVars.error.generic);
+  }
 };
