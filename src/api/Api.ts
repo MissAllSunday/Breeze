@@ -1,4 +1,5 @@
 import { CommentListType } from 'breezeTypesComments';
+import { LikeInfoState, LikeType } from 'breezeTypesLikes';
 import { PermissionsContextType } from 'breezeTypesPermissions';
 import { StatusListType } from 'breezeTypesStatus';
 
@@ -35,11 +36,6 @@ export interface IServerFetchResponse {
   permissions: PermissionsContextType,
   total: number
 }
-export interface IServerPostResponse {
-  content: StatusListType | CommentListType
-  message: string
-  type: string
-}
 
 export const safeFetch = async (response: Response):Promise<IServerFetchResponse | void> => {
   const { content, message } = await response.json();
@@ -67,7 +63,7 @@ export const safeDelete = async (response: Response, successMessage: string):Pro
   return deleted;
 };
 
-export const safePost = async (response: Response):Promise<IServerPostResponse | void> => {
+export const safePost = async (response: Response):Promise<StatusListType | CommentListType | LikeType | LikeInfoState[] | void> => {
   const { content, message } = await response.json();
 
   if (response.ok && response.status === 201) {
