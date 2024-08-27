@@ -3,11 +3,10 @@ import { StatusProps } from 'breezeTypesStatus';
 import * as React from 'react';
 import { useCallback, useContext, useState } from 'react';
 
-import { deleteComment, postComment, ServerCommentData } from '../api/CommentApi';
+import { deleteComment, postComment } from '../api/CommentApi';
 import { PermissionsContext } from '../context/PermissionsContext';
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
-import { showError, showInfo } from '../utils/tooltip';
 import Comment from './Comment';
 import Editor from './Editor';
 import { Like } from './Like';
@@ -49,13 +48,10 @@ function Status(props: StatusProps): React.ReactElement {
     postComment({
       statusId: props.status.id,
       body: content,
-    }).then((response: ServerCommentData) => {
-      const newComments:CommentListType = Object.values(response.content);
-
+    }).then((newComments: CommentListType) => {
       for (const key in newComments) {
         setCommentsList([...commentsList, newComments[key]]);
       }
-      showInfo(response.message);
 
       return true;
     }).finally(() => {
@@ -65,8 +61,8 @@ function Status(props: StatusProps): React.ReactElement {
 
   const removeComment = useCallback((comment: CommentType) => {
     setIsLoading(true);
-    deleteComment(comment.id).then((response) => {
-      if (response) {
+    deleteComment(comment.id).then((deleted) => {
+      if (deleted) {
         setCommentsList(commentsList.filter((currentComment: CommentType) => currentComment.id !== comment.id));
       }
     }).finally(() => {

@@ -15,7 +15,7 @@ import Status from './components/Status';
 import { PermissionsContext } from './context/PermissionsContext';
 import PermissionsDefault from './DataSource/Permissions';
 import smfTextVars from './DataSource/Txt';
-import { showError, showInfo } from './utils/tooltip';
+import { showInfo } from './utils/tooltip';
 
 export default function Wall(props: WallProps): React.JSX.Element {
   const [statusList, setStatusList] = useState<StatusListType>([]);

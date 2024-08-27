@@ -1,3 +1,4 @@
+import { CommentListType } from 'breezeTypesComments';
 import { PermissionsContextType } from 'breezeTypesPermissions';
 import { StatusListType } from 'breezeTypesStatus';
 
@@ -35,7 +36,7 @@ export interface IServerFetchResponse {
   total: number
 }
 export interface IServerPostResponse {
-  content: StatusListType
+  content: StatusListType | CommentListType
   message: string
   type: string
 }

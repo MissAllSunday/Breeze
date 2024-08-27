@@ -3,7 +3,7 @@ import { StatusListType } from 'breezeTypesStatus';
 import { IServerActions } from '../customTypings/actions';
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
-import { showError, showErrorMessage, showInfo } from '../utils/tooltip';
+import { showErrorMessage } from '../utils/tooltip';
 import { baseConfig, baseUrl, safeDelete, safeFetch, safePost } from './Api';
 
 const action:IServerActions = 'breezeStatus';
