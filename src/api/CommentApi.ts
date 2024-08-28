@@ -3,7 +3,7 @@ import { CommentListType } from 'breezeTypesComments';
 import { IServerActions } from '../customTypings/actions';
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
-import { showErrorMessage } from '../utils/tooltip';
+import { showError } from '../utils/tooltip';
 import { baseConfig, baseUrl, safeDelete, safePost } from './Api';
 
 const action:IServerActions = 'breezeComment';
@@ -20,7 +20,7 @@ export const postComment = async (commentParams: object): Promise<CommentListTyp
 
     return await safePost(postCommentResults);
   } catch (error:unknown) {
-    showErrorMessage(smfTextVars.error.generic);
+    showError(smfTextVars.error.generic);
   }
 };
 

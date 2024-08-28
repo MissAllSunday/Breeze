@@ -3,7 +3,7 @@ import { LikeInfoState, LikeType } from 'breezeTypesLikes';
 import { IServerActions } from '../customTypings/actions';
 import SmfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
-import { showErrorMessage } from '../utils/tooltip';
+import { showError } from '../utils/tooltip';
 import { baseConfig, baseUrl, safeFetch, safePost } from './Api';
 
 export interface ServerLikeData {
@@ -39,7 +39,7 @@ export const postLike = async (likeData: LikeType): Promise<any> => {
 
     return await safePost(likeResults);
   } catch (error:unknown) {
-    showErrorMessage(smfTextVars.error.generic);
+    showError(smfTextVars.error.generic);
   }
 };
 
@@ -58,6 +58,6 @@ export const getLikeInfo = async (like: LikeType):Promise<any> => {
 
     return await safeFetch(response);
   } catch (error:unknown) {
-    showErrorMessage(smfTextVars.error.generic);
+    showError(smfTextVars.error.generic);
   }
 };

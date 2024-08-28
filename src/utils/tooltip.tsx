@@ -6,17 +6,11 @@ export interface ServerResponse {
   message: string
 }
 
-export const showError = (response: Response): void => {
-  response.json().then((serverResponse: ServerResponse) => {
-    toast.custom(displayMessage(serverResponse.message, 'error'));
-  });
-};
-
 export const showInfo = (message: string): void => {
   toast.custom(displayMessage(message));
 };
 
-export const showErrorMessage = (message: string): void => {
+export const showError = (message: string): void => {
   toast.custom(displayMessage(message, 'error'));
 };
 

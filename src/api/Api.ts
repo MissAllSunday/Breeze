@@ -4,7 +4,7 @@ import { PermissionsContextType } from 'breezeTypesPermissions';
 import { StatusListType } from 'breezeTypesStatus';
 
 import SmfVars from '../DataSource/SMF';
-import { showErrorMessage, showInfo } from '../utils/tooltip';
+import { showError, showInfo } from '../utils/tooltip';
 
 export const baseUrl = (action: string, subAction: string, additionalParams: object[] = []): string => {
   const url = new URL(SmfVars.scriptUrl);
@@ -42,7 +42,7 @@ export const safeFetch = async (response: Response):Promise<IFetchStatus | Array
   const { content, message } = await response.json();
 
   if (message.length) {
-    showErrorMessage(message);
+    showError(message);
   }
 
   if (response.ok && response.status === 200) {
@@ -56,7 +56,7 @@ export const safeDelete = async (response: Response, successMessage: string):Pro
 
   if (!deleted) {
     const { message } = await response.json();
-    showErrorMessage(message);
+    showError(message);
   } else {
     showInfo(successMessage);
   }
