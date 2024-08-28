@@ -1,8 +1,7 @@
 import { LikeInfoProps, LikeInfoState } from 'breezeTypesLikes';
 import React, { useCallback, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 
-import { getLikeInfo, ServerLikeInfoData } from '../api/LikeApi';
+import { getLikeInfo } from '../api/LikeApi';
 import { Modal } from './Modal';
 import Avatar from './user/Avatar';
 
@@ -27,11 +26,8 @@ export const LikeInfo: React.FunctionComponent<LikeInfoProps> = (props: LikeInfo
         setShowInfo(true);
         return;
       }
-
-      getLikeInfo(props.item).then((response: ServerLikeInfoData) => {
-        setInfo(response.content);
-      }).catch((exception) => {
-        toast.error(exception.toString());
+      getLikeInfo(props.item).then((likeInfo: Array<LikeInfoState>) => {
+        setInfo(likeInfo);
       });
     },
     [props, info],
@@ -46,10 +42,10 @@ export const LikeInfo: React.FunctionComponent<LikeInfoProps> = (props: LikeInfo
             userName={likeInfo.profile.username}
           />
           <span className="like_profile">
-            <span dangerouslySetInnerHTML={{ __html: likeInfo.profile.link_color }} />
+            <span dangerouslySetInnerHTML={{ __html: likeInfo.profile.link_color }}/>
             <span className="description">{likeInfo.profile.group}</span>
           </span>
-          <span className="floatright like_time" dangerouslySetInnerHTML={{ __html: likeInfo.timestamp }} />
+          <span className="floatright like_time" dangerouslySetInnerHTML={{ __html: likeInfo.timestamp }}/>
         </li>
       ))}
     </ul>

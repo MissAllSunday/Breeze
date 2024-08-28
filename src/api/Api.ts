@@ -31,21 +31,22 @@ export const baseConfig = (params: object = {}): object => ({
   },
 });
 
-export interface IServerFetchResponse {
+
+export interface IFetchStatus {
   data: StatusListType,
   permissions: PermissionsContextType,
   total: number
 }
 
-export const safeFetch = async (response: Response):Promise<IServerFetchResponse | void> => {
+export const safeFetch = async (response: Response):Promise<IFetchStatus | Array<LikeInfoState> | void> => {
   const { content, message } = await response.json();
-
-  if (response.ok && response.status === 200) {
-    return content;
-  }
 
   if (message.length) {
     showErrorMessage(message);
+  }
+
+  if (response.ok && response.status === 200) {
+    return content;
   }
 };
 
@@ -63,7 +64,7 @@ export const safeDelete = async (response: Response, successMessage: string):Pro
   return deleted;
 };
 
-export const safePost = async (response: Response):Promise<StatusListType | CommentListType | LikeType | LikeInfoState[] | void> => {
+export const safePost = async (response: Response):Promise<StatusListType | CommentListType | LikeType | void> => {
   const { content, message } = await response.json();
 
   if (response.ok && response.status === 201) {
