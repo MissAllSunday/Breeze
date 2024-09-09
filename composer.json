@@ -28,7 +28,8 @@
       "roave/security-advisories": "dev-latest",
       "friendsofphp/php-cs-fixer": "^3.50",
       "phpstan/phpstan": "^1.10.0",
-      "phpunit/phpunit": "^11.1"
+      "phpunit/phpunit": "^11.1",
+      "rector/rector": "^1.2"
     },
     "autoload": {
         "psr-4": {
