@@ -11,6 +11,7 @@ import Comment from './Comment';
 import Editor from './Editor';
 import { Like } from './Like';
 import Loading from './Loading';
+import Avatar from './user/Avatar';
 import UserInfo from './user/UserInfo';
 
 function Status(props: StatusProps): React.ReactElement {
@@ -70,8 +71,6 @@ function Status(props: StatusProps): React.ReactElement {
     });
   }, [commentsList]);
 
-  const showEditor = permissions.Comments.post ? <Editor saveContent={createComment}/> : '';
-
   return (
     <li
       className={`${classType} status`}
@@ -79,11 +78,15 @@ function Status(props: StatusProps): React.ReactElement {
       id={`status-${props.status.id.toString()}`}
       ref={ref as React.LegacyRef<HTMLLIElement>}
     >
+      {isLoading
+        ? <Loading/>
+        : '' }
       <div className="floatleft userinfo">
         <UserInfo userData={props.status.userData} />
       </div>
       <div className="windowbg floatright">
-        <div className="content" title={timeStamp.toLocaleString()} dangerouslySetInnerHTML={{ __html: props.status.body }} />
+        <div className="content" title={timeStamp.toLocaleString()}
+             dangerouslySetInnerHTML={{ __html: props.status.body }}/>
         <div className="half_content">
           <Like
             item={props.status.likesInfo}
@@ -101,20 +104,19 @@ function Status(props: StatusProps): React.ReactElement {
           }
         </div>
         <hr/>
-        <div className="comment_posting">
-          {isLoading
-            ? <Loading/>
-            : showEditor}
-        </div>
         <ul className="status">
-        {commentsList.map((comment: CommentType) => (
+          {commentsList.map((comment: CommentType) => (
             <Comment
               key={comment.id}
               comment={comment}
               removeComment={removeComment}
             />
-        ))}
+          ))}
         </ul>
+        <div className="comment_posting">
+          <Avatar href={''} userName={''}/>
+          {permissions.Comments.post ? <Editor saveContent={createComment}/> : ''}
+        </div>
       </div>
     </li>
   );
