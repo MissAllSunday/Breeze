@@ -57,7 +57,7 @@ class Response
 			ob_start();
 		}
 
-		header(!empty($type) ? $type : self::CONTENT_TYPE);
+		header($type === '' || $type === '0' ? self::CONTENT_TYPE : $type);
 		http_response_code($responseCode);
 
 		echo Json::encode($responseData);
@@ -68,10 +68,10 @@ class Response
 	public function error(string $message = '', int $responseCode = self::NOT_FOUND): void
 	{
 		$this->print(array_merge($this->response, [
-			'message' => !empty($message) ? sprintf(
+			'message' => $message === '' || $message === '0' ? $message : sprintf(
 				$this->getText(self::DEFAULT_ERROR_KEY),
 				$this->getText(self::ERROR_TYPE . '_' . $message)
-			) : $message,
+			),
 		]), $responseCode);
 	}
 

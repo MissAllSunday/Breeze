@@ -10,7 +10,7 @@ class NotificationModel extends BaseModel implements NotificationModelInterface
 {
 	public function insert(array $data, int $id = 0): int
 	{
-		if (empty($data)) {
+		if ($data === []) {
 			return 0;
 		}
 

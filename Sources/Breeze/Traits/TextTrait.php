@@ -19,25 +19,25 @@ trait TextTrait
 
 		$txt = $this->global('txt');
 
-		return !empty($txt[Breeze::PATTERN . $textKey]) ? $txt[Breeze::PATTERN . $textKey] : '';
+		return empty($txt[Breeze::PATTERN . $textKey]) ? '' : $txt[Breeze::PATTERN . $textKey];
 	}
 
 	public function getSmfText(string $textKey): string
 	{
 		$txt = $this->global('txt');
 
-		return !empty($txt[$textKey]) ? $txt[$textKey] : '';
+		return empty($txt[$textKey]) ? '' : $txt[$textKey];
 	}
 
 	public function parserText(string $text, array $replacements = []): string
 	{
 		$context = $this->global('context');
 
-		if (empty($text)) {
+		if ($text === '' || $text === '0') {
 			return '';
 		}
 
-		if (empty($replacements) || !is_array($replacements)) {
+		if ($replacements === [] || !is_array($replacements)) {
 			return $text;
 		}
 
@@ -72,7 +72,7 @@ trait TextTrait
 				break;
 		}
 
-		return empty($dirtyString) ? '' : implode(',', array_filter(explode(',', preg_replace(
+		return $dirtyString === '' || $dirtyString === '0' ? '' : implode(',', array_filter(explode(',', preg_replace(
 			[
 				'/[^' . $t . ',]/',
 				'/(?<=,),+/',
@@ -115,11 +115,9 @@ trait TextTrait
 			return $string;
 		}
 
-		if (false !== ($breakpoint = strpos($string, $break, $limit))) {
-			if ($breakpoint < strlen($string) - 1) {
-				$string = substr($string, 0, $breakpoint) . $pad;
-			}
-		}
+		if (false !== ($breakpoint = strpos($string, $break, $limit)) && $breakpoint < strlen($string) - 1) {
+      return substr($string, 0, $breakpoint) . $pad;
+  }
 
 		return $string;
 	}

@@ -55,7 +55,7 @@ class StatusController extends ApiBaseController
 		try {
 			$buddiesStatus = $this->statusService->getByBuddies($this->getRequest('start', 0));
 
-			if (empty($buddiesStatus)) {
+			if ($buddiesStatus === []) {
 				$this->response->success('', []);
 			}
 

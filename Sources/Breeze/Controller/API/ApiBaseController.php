@@ -38,7 +38,7 @@ abstract class ApiBaseController
 	{
 		$subActions = $this->getSubActions();
 
-		if (!empty($this->subAction) && in_array($this->subAction, $subActions, true)) {
+		if ($this->subAction !== '' && $this->subAction !== '0' && in_array($this->subAction, $subActions, true)) {
 			$this->{$this->subAction}();
 		} else {
 			$this->response->print([], Response::NOT_FOUND);
@@ -47,7 +47,7 @@ abstract class ApiBaseController
 
 	public function subActionCheck(): bool
 	{
-		return (!empty($this->subAction) && !in_array($this->subAction, $this->getSubActions(), true));
+		return ($this->subAction !== '' && $this->subAction !== '0' && !in_array($this->subAction, $this->getSubActions(), true));
 	}
 
 	public function dispatch(): void

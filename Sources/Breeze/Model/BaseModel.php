@@ -51,7 +51,7 @@ abstract class BaseModel implements BaseModelInterface
 
 	public function delete(array $ids = []): bool
 	{
-		if (empty($ids)) {
+		if ($ids === []) {
 			return false;
 		}
 
@@ -152,10 +152,10 @@ abstract class BaseModel implements BaseModelInterface
 	protected function getDefaultQueryParamsWithLikes(string $type, string $parentIdentifier = 'id'): array
 	{
 		return [
-			'columns' => implode(', ', array_map(function ($parentColumn) {
+			'columns' => implode(', ', array_map(function (string $parentColumn): string {
 					return self::PARENT_LIKE_IDENTIFIER . '.' . $parentColumn;
 			}, $this->getColumns())) . ', ' .
-				implode(', ', array_map(function ($likeColumn) use ($type) {
+				implode(', ', array_map(function (string $likeColumn) use ($type): string {
 
 					$columnName = self::LIKE_IDENTIFIER . '.' . $likeColumn;
 

@@ -28,7 +28,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 		foreach ($likes as $key => $like) {
 			$likeInfo[$key]['profile'] = $usersInfo[$like[LikeEntity::COLUMN_ID_MEMBER]];
-			$likeInfo[$key]['timestamp'] = !empty($like[LikeEntity::COLUMN_TIME]) ? timeformat($like[LikeEntity::COLUMN_TIME]) : '';
+			$likeInfo[$key]['timestamp'] = empty($like[LikeEntity::COLUMN_TIME]) ? '' : timeformat($like[LikeEntity::COLUMN_TIME]);
 		}
 
 		return $likeInfo;
@@ -70,7 +70,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 	public function appendLikeData(array $items, string $itemIdName): array
 	{
-		return array_map(function ($item) use ($itemIdName): array {
+		return array_map(function (array $item) use ($itemIdName): array {
 			$item['likesInfo'] = $this->buildLikeData(
 				$item[LikeEntity::IDENTIFIER . LikeEntity::COLUMN_TYPE],
 				$item[$itemIdName],
@@ -98,7 +98,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		$base = LikeEntity::IDENTIFIER;
 
 		if ($contentId === null ||
-			empty($type)) {
+			($type === null || $type === '' || $type === '0')) {
 			return $likeData;
 		}
 

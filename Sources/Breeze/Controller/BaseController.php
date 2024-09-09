@@ -38,7 +38,7 @@ abstract class BaseController implements ControllerInterface
 		array  $templateParams = [],
 		string $smfTemplate = ''
 	): void {
-		if (empty($subActionName)) {
+		if ($subActionName === '' || $subActionName === '0') {
 			return;
 		}
 
@@ -48,7 +48,7 @@ abstract class BaseController implements ControllerInterface
 			$context[Breeze::NAME] = [];
 		}
 
-		if (!empty($templateParams)) {
+		if ($templateParams !== []) {
 			$context[Breeze::NAME] = array_merge($context[Breeze::NAME], $templateParams);
 		}
 
@@ -71,7 +71,7 @@ abstract class BaseController implements ControllerInterface
 
 	public function error(string $errorTextKey, string $templateName = ''): void
 	{
-		$this->render(!empty($templateName) ? $templateName : __FUNCTION__, [
+		$this->render($templateName === '' || $templateName === '0' ? __FUNCTION__ : $templateName, [
 			'errorMessage' => $this->getText($errorTextKey),
 		]);
 	}

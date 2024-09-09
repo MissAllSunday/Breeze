@@ -21,8 +21,8 @@ trait RequestTrait
 		$request = $_SERVER['REQUEST_METHOD'] === 'GET' ?
 			$_GET : Json::decode(file_get_contents('php://input'))['data'];
 
-		return array_filter(!empty($data) ? $data :
-			$this->sanitize($request));
+		return array_filter($data === [] ? $this->sanitize($request) :
+			$data);
 	}
 
 	public function getDataFromGet(): array
@@ -34,8 +34,8 @@ trait RequestTrait
 	{
 		$this->init();
 
-		return !empty($this->request[$variableName]) ?
-			$this->sanitize($this->request[$variableName]) : ($defaultValue ?? false);
+		return empty($this->request[$variableName]) ?
+			$defaultValue ?? false : ($this->sanitize($this->request[$variableName]));
 	}
 
 	public function setPost(string $variableName, $variableValue): void
@@ -77,8 +77,8 @@ trait RequestTrait
 		}
 
 		if (empty($var)) {
-			$var = false;
-		}
+      return false;
+  }
 
 		return $var;
 	}

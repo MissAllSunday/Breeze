@@ -163,7 +163,6 @@ class ProfileService implements ProfileServiceInterface
 	public function isAllowedToSeePage(array $profileSettings, int $profileId = 0, int $userId = 0): bool
 	{
 		$forceWall = $this->getSetting(SettingsEntity::FORCE_WALL);
-		$isCurrentUserOwner = $userId === $profileId;
 
 		if (empty($profileSettings[UserSettingsEntity::WALL]) && !empty($forceWall)) {
 			return true;

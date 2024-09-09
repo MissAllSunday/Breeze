@@ -51,6 +51,7 @@
         "coverage": "XDEBUG_MODE=coverage phpunit -c phpunit.xml.dist --coverage-html=tests/log/coverage/",
         "phpunit": "phpunit -c phpunit.xml.dist",
         "phpstan": "phpstan analyze --memory-limit=1G -c phpstan.neon",
+        "rector": "breezeVendor/bin/rector process Sources",
         "serve": "bin/server",
         "test": [
             "@lint:check",
