@@ -77,7 +77,7 @@ trait RequestTrait
 		}
 
 		if (empty($var)) {
-      return false;
+	  return false;
   }
 
 		return $var;

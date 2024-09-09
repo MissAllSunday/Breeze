@@ -21,6 +21,6 @@ class SelectType extends ValueFormatter implements ValueFormatterInterface
 
 	private function getSettingOptions(): array
  {
-     return [];
+	 return [];
  }
 }

@@ -116,7 +116,7 @@ trait TextTrait
 		}
 
 		if (false !== ($breakpoint = strpos($string, $break, $limit)) && $breakpoint < strlen($string) - 1) {
-      return substr($string, 0, $breakpoint) . $pad;
+	  return substr($string, 0, $breakpoint) . $pad;
   }
 
 		return $string;
