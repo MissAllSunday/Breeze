@@ -10,24 +10,21 @@ use Breeze\Validate\Types\Allow;
 use Breeze\Validate\Types\Data;
 use Breeze\Validate\Types\User;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 class PostStatusTest extends TestCase
 {
-	use ProphecyTrait;
-
 	public function testGetParams(): void
 	{
-		$repository = $this->prophesize(StatusRepositoryInterface::class);
-		$validateAllow = $this->prophesize(Allow::class);
-		$validateUser = $this->prophesize(User::class);
-		$validateData = $this->prophesize(Data::class);
+		$repository = $this->createMock(StatusRepositoryInterface::class);
+		$validateAllow = $this->createMock(Allow::class);
+		$validateUser = $this->createMock(User::class);
+		$validateData = $this->createMock(Data::class);
 
 		$postStatus = new PostStatus(
-			$validateData->reveal(),
-			$validateUser->reveal(),
-			$validateAllow->reveal(),
-			$repository->reveal()
+			$validateData,
+			$validateUser,
+			$validateAllow,
+			$repository
 		);
 
 		$this->assertEquals([

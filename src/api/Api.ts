@@ -1,8 +1,10 @@
+import { CommentListType } from 'breezeTypesComments';
+import { LikeInfoState, LikeType } from 'breezeTypesLikes';
 import { PermissionsContextType } from 'breezeTypesPermissions';
 import { StatusListType } from 'breezeTypesStatus';
 
 import SmfVars from '../DataSource/SMF';
-import { showErrorMessage, showInfo } from '../utils/tooltip';
+import { showError, showInfo } from '../utils/tooltip';
 
 export const baseUrl = (action: string, subAction: string, additionalParams: object[] = []): string => {
   const url = new URL(SmfVars.scriptUrl);
@@ -29,26 +31,22 @@ export const baseConfig = (params: object = {}): object => ({
   },
 });
 
-export interface IServerFetchResponse {
+
+export interface IFetchStatus {
   data: StatusListType,
   permissions: PermissionsContextType,
   total: number
 }
-export interface IServerPostResponse {
-  content: StatusListType
-  message: string
-  type: string
-}
 
-export const safeFetch = async (response: Response):Promise<IServerFetchResponse | void> => {
+export const safeFetch = async (response: Response):Promise<IFetchStatus | Array<LikeInfoState> | void> => {
   const { content, message } = await response.json();
+
+  if (message.length) {
+    showError(message);
+  }
 
   if (response.ok && response.status === 200) {
     return content;
-  }
-
-  if (message.length) {
-    showErrorMessage(message);
   }
 };
 
@@ -58,7 +56,7 @@ export const safeDelete = async (response: Response, successMessage: string):Pro
 
   if (!deleted) {
     const { message } = await response.json();
-    showErrorMessage(message);
+    showError(message);
   } else {
     showInfo(successMessage);
   }
@@ -66,7 +64,7 @@ export const safeDelete = async (response: Response, successMessage: string):Pro
   return deleted;
 };
 
-export const safePost = async (response: Response):Promise<IServerPostResponse | void> => {
+export const safePost = async (response: Response):Promise<StatusListType | CommentListType | LikeType | void> => {
   const { content, message } = await response.json();
 
   if (response.ok && response.status === 201) {

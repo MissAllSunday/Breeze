@@ -43,7 +43,7 @@ div.link_compact{
 	display: inline-block;
 }
 
-div.avatar_compact img.avatar {
+div.avatar_compact img {
 	width: 30px;
 	height: 30px;
 	vertical-align:middle;
@@ -64,6 +64,23 @@ div.avatar_compact img.avatar {
 
 .post_content {
 	min-width: 70%;
+    padding-bottom: 5px;
+}
+
+.post_content textarea {
+    outline: none;
+    min-height: 45px;
+    width: calc(100% - 45px);
+    resize: none;
+}
+
+.comment_posting img {
+    min-height: 35px;
+    max-height: 45px;
+    float: left;
+    max-width: 40px;
+    margin-right: 5px;
+    vertical-align: middle;
 }
 
 .pointer_cursor {

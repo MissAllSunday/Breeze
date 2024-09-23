@@ -8,7 +8,6 @@ namespace Breeze\Repository;
 use Breeze\Model\CommentModel;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Override time() in the current namespace for testing.
@@ -21,17 +20,15 @@ function time(): int
 
 class CommentRepositoryTest extends TestCase
 {
-	use ProphecyTrait;
-
 	#[DataProvider('saveProvider')]
 	public function testSave(array $dataToInsert, int $newId): void
 	{
-		$commentModel = $this->prophesize(CommentModel::class);
+		$commentModel = $this->createMock(CommentModel::class);
 		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
-		$commentRepository = new CommentRepository($commentModel->reveal(), $likeRepository);
+		$commentRepository = new CommentRepository($commentModel, $likeRepository);
 
 		$commentModel
-			->insert($dataToInsert)
+			->method('insert')
 			->willReturn($newId);
 
 		if ($newId === 0) {
@@ -69,12 +66,12 @@ class CommentRepositoryTest extends TestCase
 		array $commentModelReturn,
 		array $commentsByProfileWillReturn
 	): void {
-		$commentModel = $this->prophesize(CommentModel::class);
+		$commentModel = $this->createMock(CommentModel::class);
 		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
-		$commentRepository = new CommentRepository($commentModel->reveal(), $likeRepository);
+		$commentRepository = new CommentRepository($commentModel, $likeRepository);
 
 			$commentModel
-				->getByProfiles($userProfiles)
+				->method('getByProfiles')
 				->willReturn($commentModelReturn);
 
 		$likeRepository
@@ -125,12 +122,12 @@ class CommentRepositoryTest extends TestCase
 	#[DataProvider('getByStatusProvider')]
 	public function testGetByStatus(array $statusId, array $commentsByStatusWillReturn): void
 	{
-		$commentModel = $this->prophesize(CommentModel::class);
+		$commentModel = $this->createMock(CommentModel::class);
 		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
-		$commentRepository = new CommentRepository($commentModel->reveal(), $likeRepository);
+		$commentRepository = new CommentRepository($commentModel, $likeRepository);
 
 		$commentModel
-			->getByStatus($statusId)
+			->method('getByStatus')
 			->willReturn($commentsByStatusWillReturn);
 
 		$commentsByStatus = $commentRepository->getByStatus($statusId);

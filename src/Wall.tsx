@@ -4,7 +4,7 @@ import { StatusListType, StatusType } from 'breezeTypesStatus';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 
-import { IServerFetchResponse } from './api/Api';
+import { IFetchStatus } from './api/Api';
 import {
   deleteStatus,
   getStatus, postStatus,
@@ -15,7 +15,7 @@ import Status from './components/Status';
 import { PermissionsContext } from './context/PermissionsContext';
 import PermissionsDefault from './DataSource/Permissions';
 import smfTextVars from './DataSource/Txt';
-import { showError, showInfo } from './utils/tooltip';
+import { showInfo } from './utils/tooltip';
 
 export default function Wall(props: WallProps): React.JSX.Element {
   const [statusList, setStatusList] = useState<StatusListType>([]);
@@ -29,11 +29,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
 
   useEffect(() => {
     getStatus(props.wallType, 0)
-      .then((statusListResponse: IServerFetchResponse) => {
-        if (typeof statusListResponse === 'undefined') {
-          return;
-        }
-
+      .then((statusListResponse: IFetchStatus) => {
         const fetchedStatusList: StatusListType = Object.values(statusListResponse.data);
         setStatusList(fetchedStatusList);
         setPermissions(statusListResponse.permissions);
@@ -53,7 +49,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
     setIsLoading(true);
 
     getStatus(props.wallType, statusList.length)
-      .then((statusListResponse: IServerFetchResponse) => {
+      .then((statusListResponse: IFetchStatus) => {
         setStatusList(statusList.concat(Object.values(statusListResponse.data)));
       }).finally(() => {
         setIsLoading(false);

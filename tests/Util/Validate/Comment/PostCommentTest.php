@@ -10,24 +10,21 @@ use Breeze\Validate\Types\Allow;
 use Breeze\Validate\Types\Data;
 use Breeze\Validate\Types\User;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 class PostCommentTest extends TestCase
 {
-	use ProphecyTrait;
-
 	public function testGetParams(): void
 	{
-		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
-		$validateAllow = $this->prophesize(Allow::class);
-		$validateUser = $this->prophesize(User::class);
-		$validateData = $this->prophesize(Data::class);
+		$commentRepository = $this->createMock(CommentRepositoryInterface::class);
+		$validateAllow = $this->createMock(Allow::class);
+		$validateUser = $this->createMock(User::class);
+		$validateData = $this->createMock(Data::class);
 
 		$postComment = new PostComment(
-			$validateData->reveal(),
-			$validateUser->reveal(),
-			$validateAllow->reveal(),
-			$commentRepository->reveal()
+			$validateData,
+			$validateUser,
+			$validateAllow,
+			$commentRepository
 		);
 
 		$this->assertEquals([

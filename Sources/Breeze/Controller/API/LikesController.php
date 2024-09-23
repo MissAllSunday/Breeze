@@ -38,7 +38,8 @@ class LikesController extends ApiBaseController
 					$this->data[LikeEntity::COLUMN_TYPE],
 					$this->data[LikeEntity::COLUMN_ID],
 					$this->data[LikeEntity::COLUMN_ID_MEMBER]
-				)
+				),
+				Response::CREATED
 			);
 		} catch (InvalidDataException $invalidDataException) {
 			$this->response->error($invalidDataException->getMessage(), $invalidDataException->getResponseCode());

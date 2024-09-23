@@ -3,12 +3,12 @@ import { StatusListType } from 'breezeTypesStatus';
 import { IServerActions } from '../customTypings/actions';
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
-import { showError, showErrorMessage, showInfo } from '../utils/tooltip';
+import { showError } from '../utils/tooltip';
 import { baseConfig, baseUrl, safeDelete, safeFetch, safePost } from './Api';
 
 const action:IServerActions = 'breezeStatus';
 
-export const getStatus = async (type: string, start: number): Promise<StatusListType> => {
+export const getStatus = async (type: string, start: number): Promise<any | void> => {
   try {
     const response =  await fetch(baseUrl(action, type, [ { start: start, wallId: smfVars.wallId } ]), {
       method: 'GET',
@@ -18,9 +18,8 @@ export const getStatus = async (type: string, start: number): Promise<StatusList
     });
 
     return await safeFetch(response);
-
   } catch (error:unknown) {
-    showErrorMessage(smfTextVars.error.generic);
+    showError(smfTextVars.error.generic);
   }
 };
 
@@ -49,6 +48,6 @@ export const postStatus = async (content: string): Promise<StatusListType> => {
 
     return await safePost(response);
   } catch (error:unknown) {
-    showErrorMessage(smfTextVars.error.generic);
+    showError(smfTextVars.error.generic);
   }
 };

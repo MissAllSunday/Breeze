@@ -12,25 +12,22 @@ use Breeze\Validate\Types\Data;
 use Breeze\Validate\Types\User;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 class UserSettingsTest extends TestCase
 {
-	use ProphecyTrait;
-
 	#[DataProvider('isValidProvider')]
 	public function testIsValid(array $data, bool $isExpectedException): void
 	{
-		$validateData = $this->prophesize(Data::class);
-		$validateUser = $this->prophesize(User::class);
-		$validateAllow = $this->prophesize(Allow::class);
-		$repository = $this->prophesize(BaseRepositoryInterface::class);
+		$validateData = $this->createMock(Data::class);
+		$validateUser = $this->createMock(User::class);
+		$validateAllow = $this->createMock(Allow::class);
+		$repository = $this->createMock(BaseRepositoryInterface::class);
 
 		$userSettings = new UserSettings(
-			$validateData->reveal(),
-			$validateUser->reveal(),
-			$validateAllow->reveal(),
-			$repository->reveal()
+			$validateData,
+			$validateUser,
+			$validateAllow,
+			$repository
 		);
 
 		$userSettings->setData($data);
