@@ -40,8 +40,8 @@ class UserSettingsBuilder implements UserSettingsBuilderInterface
 				'text' => $this->getText(sprintf(self::SETTING_TEXT, $columnName)),
 				'desc' => $this->getText(sprintf(self::SETTING_DESC, $columnName)),
 				'name' => $columnName,
-				'value' => !empty($formValues[$columnName]) ? $formValues[$columnName] :
-					$this->defaultValues[$columnType],
+				'value' => empty($formValues[$columnName]) ? $this->defaultValues[$columnType] :
+					$formValues[$columnName],
 				'type' => $columnType,
 			];
 		}

@@ -13,7 +13,7 @@ trait SettingsTrait
 	{
 		$modSettings = $this->global('modSettings');
 
-		if (empty($settingName)) {
+		if ($settingName === '' || $settingName === '0') {
 			return $fallBack;
 		}
 
@@ -31,11 +31,11 @@ trait SettingsTrait
 	{
 		$modSettings = $this->global('modSettings');
 
-		if (empty($settingName)) {
+		if ($settingName === '' || $settingName === '0') {
 			return $fallBack;
 		}
 
-		return !empty($modSettings[$settingName]) ? $modSettings[$settingName] : $fallBack;
+		return empty($modSettings[$settingName]) ? $fallBack : $modSettings[$settingName];
 	}
 
 	public function global(string $variableName): mixed
@@ -50,7 +50,7 @@ trait SettingsTrait
 
 	public function requireOnce(string $fileName, string $dir = ''): void
 	{
-		if (empty($fileName)) {
+		if ($fileName === '' || $fileName === '0') {
 			return;
 		}
 

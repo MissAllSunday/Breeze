@@ -35,7 +35,7 @@ class User
 	{
 		$sessionUser = $this->global('user_info');
 
-		if (empty($posterUserId) || $posterUserId !== (int)$sessionUser['id']) {
+		if ($posterUserId === 0 || $posterUserId !== (int)$sessionUser['id']) {
 			throw new DataNotFoundException('invalid_users');
 		}
 	}

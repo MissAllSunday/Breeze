@@ -11,7 +11,7 @@ class AlertModel extends BaseModel implements AlertModelInterface
 {
 	public function insert(array $data, int $id = 0): int
 	{
-		if (empty($data)) {
+		if ($data === []) {
 			return 0;
 		}
 
@@ -36,7 +36,7 @@ class AlertModel extends BaseModel implements AlertModelInterface
 
 	public function update(array $data, int $id = 0): array
 	{
-		if (empty($data) || empty($id)) {
+		if ($data === [] || $id === 0) {
 			return [];
 		}
 
@@ -65,7 +65,7 @@ class AlertModel extends BaseModel implements AlertModelInterface
 
 	public function checkAlert(int $userId, string $alertType, int $alertId = 0, string $alertSender = ''): bool
 	{
-		if (empty($userId) || empty($alertType)) {
+		if ($userId === 0 || ($alertType === '' || $alertType === '0')) {
 			return false;
 		}
 
@@ -76,8 +76,8 @@ class AlertModel extends BaseModel implements AlertModelInterface
 			WHERE ' . AlertEntity::COLUMN_ID_MEMBER . ' = {int:userId}
 				AND ' . AlertEntity::COLUMN_IS_READ . ' = 0
 				AND ' . AlertEntity::COLUMN_CONTENT_TYPE . ' = {string:alertType}
-				' . ($alertId ? 'AND ' . AlertEntity::COLUMN_CONTENT_ID . ' = {int:alertId}' : '') . '
-				' . ($alertSender ? 'AND ' . AlertEntity::COLUMN_ID_MEMBER_STARTED . ' = {int:alertSender}' : ''),
+				' . ($alertId !== 0 ? 'AND ' . AlertEntity::COLUMN_CONTENT_ID . ' = {int:alertId}' : '') . '
+				' . ($alertSender !== '' && $alertSender !== '0' ? 'AND ' . AlertEntity::COLUMN_ID_MEMBER_STARTED . ' = {int:alertSender}' : ''),
 			[
 				'userId' => $userId,
 				'alertType' => $alertType,

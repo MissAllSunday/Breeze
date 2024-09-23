@@ -79,8 +79,8 @@ abstract class ValidateData
 
 	public function setData(array $data = []): void
 	{
-		$this->data = array_filter(!empty($data) ? $data :
-			$this->sanitize(Json::decode(file_get_contents('php://input'))['data']));
+		$this->data = array_filter($data === [] ? $this->sanitize(Json::decode(file_get_contents('php://input'))['data']) :
+			$data);
 	}
 
 	public function getSteps(): array
@@ -131,7 +131,7 @@ abstract class ValidateData
 		$sessionUser = $this->global('user_info');
 		$posterUserId = $this->getPosterId();
 
-		if (empty($posterUserId) || $posterUserId !== (int)$sessionUser['id']) {
+		if ($posterUserId === 0 || $posterUserId !== (int)$sessionUser['id']) {
 			throw new DataNotFoundException('invalid_users');
 		}
 	}

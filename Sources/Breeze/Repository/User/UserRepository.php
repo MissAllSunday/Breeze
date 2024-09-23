@@ -23,7 +23,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 	{
 		$userSettings = $this->getCache(sprintf(OptionsEntity::CACHE_NAME, $id));
 
-		if (empty($userSettings)) {
+		if ($userSettings === []) {
 			$userSettings = $this->userModel->getUserSettings($id);
 			$this->setCache(sprintf(OptionsEntity::CACHE_NAME, $id), $userSettings);
 		}
@@ -38,17 +38,17 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
 		foreach ($mergedValues as $name => $value) {
 			if (in_array($name, UserModelInterface::JSON_VALUES)) {
-				$value = !empty($value) ? Json::encode($value) : '';
+				$value = empty($value) ? '' : Json::encode($value);
 			}
 
 			$toInsert[] = [$userId, $name, $value];
 		}
 
-		if (empty($toInsert)) {
+		if ($toInsert === []) {
 			return false;
 		}
 
-		if ($this->userModel->insert($toInsert)) {
+		if ($this->userModel->insert($toInsert) !== 0) {
 			$this->setCache(sprintf(OptionsEntity::CACHE_NAME, $userId), null);
 		}
 

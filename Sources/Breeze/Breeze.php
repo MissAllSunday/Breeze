@@ -55,7 +55,7 @@ class Breeze
 		$mappers = (new MapperAggregate())->getMappers();
 
 		foreach ($mappers as $mapperFile) {
-			foreach ($mapperFile as $mapperAlias => $mapperInfo) {
+			foreach ($mapperFile as $mapperInfo) {
 				if (empty($mapperInfo['class'])) {
 					continue;
 				}
@@ -158,7 +158,7 @@ class Breeze
 		$menuReference = 'home';
 		$counter = 0;
 
-		foreach ($menu_buttons as $area => $dummy) {
+		foreach (array_keys($menu_buttons) as $area) {
 			$counter++;
 			if ($area === $menuReference) {
 				break;

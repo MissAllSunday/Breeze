@@ -51,7 +51,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 		array  $templateParams = [],
 		string $smfTemplate = ''
 	): void {
-		if (empty($subActionName)) {
+		if ($subActionName === '' || $subActionName === '0') {
 			return;
 		}
 
@@ -66,13 +66,13 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 			$context[Breeze::NAME] = [];
 		}
 
-		if (!empty($templateParams)) {
+		if ($templateParams !== []) {
 			$context = array_merge($context, $templateParams);
 		}
 
 		$context['page_title'] = $this->getText($this->getActionName() . '_' . $subActionName . '_title');
-		$context['sub_template'] = !empty($smfTemplate) ?
-			$smfTemplate : ($subActionName);
+		$context['sub_template'] = $smfTemplate === '' || $smfTemplate === '0' ?
+			$subActionName : ($smfTemplate);
 
 		$context[$context['admin_menu_name']]['tab_data'] += [
 			'title' => $context['page_title'],
@@ -132,13 +132,13 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 
 	public function isEnableFeature(string $featureName = '', string $redirectUrl = ''): bool
 	{
-		if (empty($featureName)) {
+		if ($featureName === '' || $featureName === '0') {
 			return false;
 		}
 
 		$feature = $this->isEnable($featureName);
 
-		if (!$feature && !empty($redirectUrl)) {
+		if (!$feature && ($redirectUrl !== '' && $redirectUrl !== '0')) {
 			$this->redirect($redirectUrl);
 		}
 

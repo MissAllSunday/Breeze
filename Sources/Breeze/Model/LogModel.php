@@ -11,11 +11,11 @@ class LogModel extends BaseModel implements LogModelInterface
 {
 	public function insert(array $data, int $id = 0): int
 	{
-		if (empty($data)) {
+		if ($data === []) {
 			return 0;
 		}
 
-		$data['extra'] = !empty($data['extra']) ? Json::encode($data['extra']) : '';
+		$data['extra'] = empty($data['extra']) ? '' : Json::encode($data['extra']);
 
 		$this->dbClient->insert(
 			$this->getTableName(),
@@ -42,7 +42,7 @@ class LogModel extends BaseModel implements LogModelInterface
 	{
 		$logs = [];
 
-		if (empty($userIds) || empty($maxIndex)) {
+		if ($userIds === [] || $maxIndex === 0) {
 			return $logs;
 		}
 
@@ -68,8 +68,8 @@ class LogModel extends BaseModel implements LogModelInterface
 				'content_id' => $row[LogEntity::COLUMN_CONTENT_ID],
 				'time' => $row[LogEntity::COLUMN_TIME],
 				'time_raw' => $row[LogEntity::COLUMN_TIME],
-				'extra' => !empty($row[LogEntity::COLUMN_EXTRA]) ?
-					json_decode($row[LogEntity::COLUMN_EXTRA], true) : [],
+				'extra' => empty($row[LogEntity::COLUMN_EXTRA]) ?
+					[] : json_decode($row[LogEntity::COLUMN_EXTRA], true),
 			];
 		}
 

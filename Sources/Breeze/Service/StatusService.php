@@ -27,7 +27,7 @@ class StatusService
 	{
 		$wallUserSettings = $this->userRepository->getById($wallId);
 
-		return !empty($valueName) ? $wallUserSettings[$valueName] : $wallUserSettings;
+		return $valueName === '' || $valueName === '0' ? $wallUserSettings : $wallUserSettings[$valueName];
 	}
 
 	/**

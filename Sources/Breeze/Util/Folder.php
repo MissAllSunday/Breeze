@@ -8,6 +8,6 @@ class Folder
 {
 	public static function getFilesInFolder(string $directoryPath): array
 	{
-		return !is_dir($directoryPath) ? [] : array_diff(scandir($directoryPath), ['..', '.']);
+		return is_dir($directoryPath) ? array_diff(scandir($directoryPath), ['..', '.']) : [];
 	}
 }

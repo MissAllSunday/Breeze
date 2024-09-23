@@ -13,14 +13,14 @@ class SelectType extends ValueFormatter implements ValueFormatterInterface
 		return [
 			$settingType,
 			Breeze::PATTERN . $settingName,
-			$this->getSettingOptions($settingName),
+			$this->getSettingOptions(),
 			'subtext' => $this->getText($settingName . '_sub'),
 			'multiple' => false,
 		];
 	}
 
-	private function getSettingOptions(string $settingName): array
-	{
-		return [];
-	}
+	private function getSettingOptions(): array
+ {
+	 return [];
+ }
 }

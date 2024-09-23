@@ -15,7 +15,7 @@ class OptionsModel extends BaseModel implements OptionsModelInterface
 
 	public function insert(array $data = [], int $userId = 0): int
 	{
-		if (empty($data) || empty($userId)) {
+		if ($data === [] || $userId === 0) {
 			return 0;
 		}
 

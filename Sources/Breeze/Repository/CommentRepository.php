@@ -26,7 +26,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			CommentEntity::LIKES => 0,
 		]));
 
-		if (!$newCommentId) {
+		if ($newCommentId === 0) {
 			throw new InvalidCommentException('error_save_comment');
 		}
 
@@ -37,7 +37,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	{
 		$comments = $this->commentModel->getByProfiles($userProfiles);
 
-		foreach ($comments['data'] as $statusId => &$commentsByStatus) {
+		foreach ($comments['data'] as &$commentsByStatus) {
 			$commentsByStatus = $this->appendLikes($commentsByStatus);
 			$commentsByStatus = $this->appendUserData($commentsByStatus, $comments['usersIds']);
 		}
@@ -101,7 +101,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	{
 		$usersData = $this->loadUsersInfo(array_unique($userIds));
 
-		return array_map(function ($item) use ($usersData): array {
+		return array_map(function (array $item) use ($usersData): array {
 			$item['userData'] = $usersData[$item[CommentEntity::USER_ID]];
 
 			return $item;

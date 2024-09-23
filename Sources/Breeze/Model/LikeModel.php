@@ -11,7 +11,7 @@ class LikeModel extends BaseModel implements LikeModelInterface
 {
 	public function insert(array $data, int $id = 0): int
 	{
-		if (empty($data)) {
+		if ($data === []) {
 			return 0;
 		}
 

@@ -12,7 +12,7 @@ class UserModel extends BaseModel implements UserModelInterface
 {
 	public function insert(array $data, int $id = 0): int
 	{
-		if (empty($data)) {
+		if ($data === []) {
 			return 0;
 		}
 
@@ -40,7 +40,7 @@ class UserModel extends BaseModel implements UserModelInterface
 		$userIds = array_unique($userIds);
 		$loadedUsers = [];
 
-		if (empty($userIds)) {
+		if ($userIds === []) {
 			return $loadedUsers;
 		}
 
@@ -94,20 +94,20 @@ class UserModel extends BaseModel implements UserModelInterface
 				(int) $row[OptionsEntity::COLUMN_VALUE] : (string) $row[OptionsEntity::COLUMN_VALUE];
 
 			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::JSON_VALUES, true)) {
-				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = !empty($row[OptionsEntity::COLUMN_VALUE]) ?
-					json_decode($row[OptionsEntity::COLUMN_VALUE], true, 512, \JSON_THROW_ON_ERROR) : [];
+				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = empty($row[OptionsEntity::COLUMN_VALUE]) ?
+					[] : json_decode($row[OptionsEntity::COLUMN_VALUE], true, 512, \JSON_THROW_ON_ERROR);
 			}
 
 			if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::ARRAY_VALUES, true)) {
-				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = !empty($row[OptionsEntity::COLUMN_VALUE]) ?
-					explode(',', $row[OptionsEntity::COLUMN_VALUE]) : [];
+				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = empty($row[OptionsEntity::COLUMN_VALUE]) ?
+					[] : explode(',', $row[OptionsEntity::COLUMN_VALUE]);
 			}
 
 			$userData += [
-				UserSettingsEntity::BUDDIES => !empty($row[MemberEntity::BUDDY_LIST]) ?
-					explode(',', $row[MemberEntity::BUDDY_LIST]) : [],
-				UserSettingsEntity::BLOCK_LIST => !empty($row[MemberEntity::IGNORE_LIST]) ?
-					explode(',', $row[MemberEntity::IGNORE_LIST]) : [],
+				UserSettingsEntity::BUDDIES => empty($row[MemberEntity::BUDDY_LIST]) ?
+					[] : explode(',', $row[MemberEntity::BUDDY_LIST]),
+				UserSettingsEntity::BLOCK_LIST => empty($row[MemberEntity::IGNORE_LIST]) ?
+					[] : explode(',', $row[MemberEntity::IGNORE_LIST]),
 			];
 		}
 

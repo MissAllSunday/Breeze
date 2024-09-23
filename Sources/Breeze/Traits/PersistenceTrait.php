@@ -12,7 +12,7 @@ trait PersistenceTrait
 
 	public function setPersistenceMessage(string $message, string $type = 'info'): array
 	{
-		if (empty($message)) {
+		if ($message === '' || $message === '0') {
 			return [];
 		}
 

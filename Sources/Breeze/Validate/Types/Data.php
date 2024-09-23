@@ -23,7 +23,7 @@ class Data
 	 */
 	public function compare(array $defaultParams, array $data): void
 	{
-		if (!empty(array_diff_key($defaultParams, $data))) {
+		if (array_diff_key($defaultParams, $data) !== []) {
 			throw new InvalidDataException('incomplete_data');
 		}
 	}

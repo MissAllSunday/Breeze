@@ -13,7 +13,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 {
 	public function insert(array $data, int $id = 0): int
 	{
-		if (empty($data)) {
+		if ($data === []) {
 			return 0;
 		}
 
@@ -125,7 +125,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 
 	public function getAliasedColumns(): array
 	{
-		return array_map(function ($columnName) {
+		return array_map(function ($columnName): string {
 			return sprintf(BaseEntity::ALIAS_ID, CommentEntity::TABLE, $columnName);
 		}, CommentEntity::getColumns());
 	}
