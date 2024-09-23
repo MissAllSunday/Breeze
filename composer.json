@@ -27,10 +27,9 @@
     },
     "require-dev": {
       "roave/security-advisories": "dev-latest",
-        "phpspec/prophecy": "^1.18",
-        "friendsofphp/php-cs-fixer": "^3.50",
-        "phpstan/phpstan": "^1.10.0",
-        "pestphp/pest": "^3.0"
+      "friendsofphp/php-cs-fixer": "^3.50",
+      "phpstan/phpstan": "^1.10.0",
+      "phpunit/phpunit": "^11.1"
     },
     "autoload": {
         "psr-4": {
