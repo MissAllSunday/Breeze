@@ -13,25 +13,22 @@ use Breeze\Validate\Types\Data;
 use Breeze\Validate\Types\User;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 class DeleteStatusTest extends TestCase
 {
-	use ProphecyTrait;
-
 	#[DataProvider('checkAllowProvider')]
 	public function testCheckAllow(array $data, string $permissionName, bool $isExpectedException): void
 	{
-		$validateData = $this->prophesize(Data::class);
-		$validateUser = $this->prophesize(User::class);
-		$validateAllow = $this->prophesize(Allow::class);
-		$userRepository = $this->prophesize(BaseRepositoryInterface::class);
+		$validateData = $this->createMock(Data::class);
+		$validateUser = $this->createMock(User::class);
+		$validateAllow = $this->createMock(Allow::class);
+		$userRepository = $this->createMock(BaseRepositoryInterface::class);
 
 		$deleteStatus = new DeleteStatus(
-			$validateData->reveal(),
-			$validateUser->reveal(),
-			$validateAllow->reveal(),
-			$userRepository->reveal()
+			$validateData,
+			$validateUser,
+			$validateAllow,
+			$userRepository
 		);
 		$deleteStatus->setData($data);
 
@@ -39,10 +36,10 @@ class DeleteStatusTest extends TestCase
 			$this->expectException(NotAllowedException::class);
 		}
 
-		$userRepository->getCurrentUserInfo()->willReturn(['id' => 666]);
+		$userRepository->method('getCurrentUserInfo')->willReturn(['id' => 666]);
 
 		if ($isExpectedException) {
-			$validateAllow->permissions($permissionName, 'deleteStatus')->willThrow(new NotAllowedException());
+			$validateAllow->method('permissions')->willThrowException(new NotAllowedException());
 		}
 
 		$deleteStatus->checkAllow();
@@ -80,22 +77,22 @@ class DeleteStatusTest extends TestCase
 	#[DataProvider('checkUserProvider')]
 	public function testCheckUser(array $data, array $validUsers, bool $isExpectedException): void
 	{
-		$validateData = $this->prophesize(Data::class);
-		$validateUser = $this->prophesize(User::class);
-		$validateAllow = $this->prophesize(Allow::class);
-		$userRepository = $this->prophesize(BaseRepositoryInterface::class);
+		$validateData = $this->createMock(Data::class);
+		$validateUser = $this->createMock(User::class);
+		$validateAllow = $this->createMock(Allow::class);
+		$userRepository = $this->createMock(BaseRepositoryInterface::class);
 
 		$deleteStatus = new DeleteStatus(
-			$validateData->reveal(),
-			$validateUser->reveal(),
-			$validateAllow->reveal(),
-			$userRepository->reveal()
+			$validateData,
+			$validateUser,
+			$validateAllow,
+			$userRepository
 		);
 		$deleteStatus->setData($data);
 
 		if ($isExpectedException) {
 			$this->expectException(DataNotFoundException::class);
-			$validateUser->areValidUsers($validUsers)->willThrow(new DataNotFoundException());
+			$validateUser->method('areValidUsers')->willThrowException(new DataNotFoundException());
 		}
 
 		$deleteStatus->checkUser();

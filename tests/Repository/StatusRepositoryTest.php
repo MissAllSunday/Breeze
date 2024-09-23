@@ -9,12 +9,9 @@ use Breeze\Model\StatusModelInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 class StatusRepositoryTest extends TestCase
 {
-	use ProphecyTrait;
-
 	protected array $stack;
 
 	protected function setUp(): void
@@ -93,18 +90,18 @@ class StatusRepositoryTest extends TestCase
 	#[DataProvider('saveProvider')]
 	public function testSave(array $dataToInsert, int $newId): void
 	{
-		$statusModel =  $this->prophesize(StatusModelInterface::class);
-		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
-		$likeRepository = $this->prophesize(LikeRepositoryInterface::class);
+		$statusModel =  $this->createMock(StatusModelInterface::class);
+		$commentRepository = $this->createMock(CommentRepositoryInterface::class);
+		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
 
 		$statusRepository = new StatusRepository(
-			$statusModel->reveal(),
-			$commentRepository->reveal(),
-			$likeRepository->reveal()
+			$statusModel,
+			$commentRepository,
+			$likeRepository
 		);
 
 		$statusModel
-			->insert($dataToInsert)
+			->method('insert')
 			->willReturn($newId);
 
 		if ($newId === 0) {
@@ -151,12 +148,12 @@ class StatusRepositoryTest extends TestCase
 		array $expectedResult,
 	): void {
 		$statusModel =  $this->createMock(StatusModelInterface::class);
-		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
+		$commentRepository = $this->createMock(CommentRepositoryInterface::class);
 		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
 
 		$statusRepository = new StatusRepository(
 			$statusModel,
-			$commentRepository->reveal(),
+			$commentRepository,
 			$likeRepository
 		);
 
@@ -170,7 +167,7 @@ class StatusRepositoryTest extends TestCase
 			$this->expectException(DataNotFoundException::class);
 		}
 
-		$commentRepository->getByProfile($userProfiles)->willReturn($commentsByProfileWillReturn);
+		$commentRepository->method('getByProfile')->willReturn($commentsByProfileWillReturn);
 
 		$statusWithLikes = array_map(function ($item) use ($likesInfo): array {
 			$item['likesInfo'] = $likesInfo;
@@ -269,25 +266,25 @@ class StatusRepositoryTest extends TestCase
 		array $likesInfo,
 		array $expectedResult
 	): void {
-		$statusModel =  $this->prophesize(StatusModelInterface::class);
-		$commentRepository = $this->prophesize(CommentRepositoryInterface::class);
+		$statusModel =  $this->createMock(StatusModelInterface::class);
+		$commentRepository = $this->createMock(CommentRepositoryInterface::class);
 		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
 
 		$statusRepository = new StatusRepository(
-			$statusModel->reveal(),
-			$commentRepository->reveal(),
+			$statusModel,
+			$commentRepository,
 			$likeRepository
 		);
 
 		$statusModel
-			->getById($statusId)
+			->method('getById')
 			->willReturn($statusModelWillReturn);
 
 		if (empty($statusModelWillReturn)) {
 			$this->expectException(DataNotFoundException::class);
 		}
 
-		$commentRepository->getByStatus([$statusId])->willReturn($commentsByProfileWillReturn);
+		$commentRepository->method('getByStatus')->willReturn($commentsByProfileWillReturn);
 
 		$statusWithLikes = array_map(function ($item) use ($likesInfo): array {
 			$item['likesInfo'] = $likesInfo;
@@ -381,21 +378,21 @@ class StatusRepositoryTest extends TestCase
 		bool $deleteByStatusIdWillReturn,
 		bool $expectedResult
 	): void {
-		$statusModel = $this->prophesize(StatusModelInterface::class);
+		$statusModel = $this->createMock(StatusModelInterface::class);
 		$commentRepository = $this->createMock(CommentRepositoryInterface::class);
 		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
 
-		$statusModel->getById($statusId)->willReturn($statusModelWillReturn);
+		$statusModel->method('getById')->willReturn($statusModelWillReturn);
 		$commentRepository->method('getByStatus')->willReturn([]);
 
 		$likeRepository->method('appendLikeData')->willReturn($statusModelWillReturn['data']);
 		$commentRepository->method('deleteByStatusId')
 			->willReturn(true);
 
-		$statusModel->delete([$statusId])->willReturn($expectedResult);
+		$statusModel->method('delete')->willReturn($expectedResult);
 
 		$statusRepository = new StatusRepository(
-			$statusModel->reveal(),
+			$statusModel,
 			$commentRepository,
 			$likeRepository
 		);
