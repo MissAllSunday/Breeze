@@ -94,7 +94,7 @@ function Status(props: StatusProps): React.ReactElement {
           />
         </div>
         <div className="half_content">
-          <div className={'righttext'}>
+          <div className={'info_bar'}>
             <span dangerouslySetInnerHTML={{ __html: timeStamp }} className={'time_stamp'}/>
             {permissions.Status.delete &&
                <span

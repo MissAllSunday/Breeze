@@ -36,7 +36,20 @@ ul.status li.status div.floatright {
 }
 
 div.avatar_compact {
+    float: left;
+    max-width: 40px;
+    vertical-align:middle;
+    margin-right: 5px;
+}
 
+div.comment_compact {
+    overflow: hidden;
+    min-height: 60px;
+}
+
+div.avatar_compact span {
+    display: block;
+    text-align: center;
 }
 
 div.link_compact{
@@ -45,8 +58,7 @@ div.link_compact{
 }
 
 div.avatar_compact img {
-	width: 30px;
-	height: 30px;
+	width: 40px;
 	vertical-align:middle;
 }
 
@@ -78,6 +90,14 @@ img.comment_avatar {
     max-width: 45px;
     vertical-align: middle;
     margin-right: 5px;
+}
+
+.info_bar {
+    text-align: right;
+    margin: 4px 0 4px 0;
+}
+.info_bar > .main_icons::before {
+    margin-left: 5px;
 }
 
 .pointer_cursor {
@@ -120,8 +140,8 @@ img.comment_avatar {
     img.comment_avatar {
         display: none;
     }
-    .time_stamp {
-        display: none;
+    .info_bar {
+        text-align: left;
     }
 }
 

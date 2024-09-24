@@ -9,7 +9,7 @@ import Avatar from './user/Avatar';
 
 function Comment(props: CommentProps): React.ReactElement {
   const [classType, setClassType] = useState(props.comment.isNew ? 'fadeIn' : '');
-  const timeStamp = new Date(props.comment.createdAt);
+  const timeStamp = props.comment.createdAt;
   const permissions = useContext(PermissionsContext);
 
   const removeComment = useCallback(() => {
@@ -26,20 +26,20 @@ function Comment(props: CommentProps): React.ReactElement {
           href={props.comment.userData.avatar.url}
           userName={props.comment.userData.username}
         />
-        <div dangerouslySetInnerHTML={{ __html: props.comment.userData.link_color }} className="link_compact" />
-        <span className="floatright smalltext">{timeStamp.toLocaleString()}</span>
+        <span dangerouslySetInnerHTML={{ __html: props.comment.userData.link_color }}/>
       </div>
-      <div className="floatnone clear">
-        <div className="content">
-          {props.comment.body}
-        </div>
-        <div className="half_content ">
-          <Like
-            item={props.comment.likesInfo}
-          />
-        </div>
-        <div className="half_content">
-          { permissions.Comments.delete && <span
+      <div className="comment_compact content">
+        {props.comment.body}
+      </div>
+      <div className="half_content">
+        <Like
+          item={props.comment.likesInfo}
+        />
+      </div>
+      <div className="half_content">
+        <div className={'info_bar'}>
+          <span dangerouslySetInnerHTML={{ __html: timeStamp }} className={'time_stamp'}/>
+          {permissions.Comments.delete && <span
             className="main_icons remove_button floatright pointer_cursor"
             title={smfTextVars.general.delete}
             onClick={removeComment}
@@ -48,7 +48,7 @@ function Comment(props: CommentProps): React.ReactElement {
           </span>}
         </div>
       </div>
-      <hr />
+      <hr/>
     </div>
   );
 }
