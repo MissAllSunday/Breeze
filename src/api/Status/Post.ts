@@ -3,7 +3,9 @@ import { StatusListType } from 'breezeTypesStatus';
 import smfVars from '../../DataSource/SMF';
 import smfTextVars from '../../DataSource/Txt';
 import { showError } from '../../utils/tooltip';
-import { baseConfig, baseUrl, resolvePost } from '../BaseConfig';
+import {baseUrl} from "../BaseUrl";
+import {baseConfig} from "../BaseConfig";
+import {resolvePost} from "../Resolvers/Post";
 
 export const postStatus = async (content: string): Promise<StatusListType> => {
   try {

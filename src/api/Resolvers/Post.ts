@@ -1,5 +1,5 @@
 import { CommentListType } from 'breezeTypesComments';
-import { LikeInfoState, LikeType } from 'breezeTypesLikes';
+import { LikeType } from 'breezeTypesLikes';
 import { StatusListType } from 'breezeTypesStatus';
 
 import { showInfo } from '../../utils/tooltip';
