@@ -38,7 +38,7 @@ export interface IFetchStatus {
   total: number
 }
 
-export const safeFetch = async (response: Response):Promise<IFetchStatus | Array<LikeInfoState> | void> => {
+export const resolveFetch = async (response: Response):Promise<IFetchStatus | Array<LikeInfoState> | void> => {
   const { content, message } = await response.json();
 
   if (message.length) {
@@ -50,7 +50,7 @@ export const safeFetch = async (response: Response):Promise<IFetchStatus | Array
   }
 };
 
-export const safeDelete = async (response: Response, successMessage: string):Promise<boolean> => {
+export const resolveDelete = async (response: Response, successMessage: string):Promise<boolean> => {
 
   const deleted: boolean = response.ok && response.status === 204;
 
@@ -64,7 +64,7 @@ export const safeDelete = async (response: Response, successMessage: string):Pro
   return deleted;
 };
 
-export const safePost = async (response: Response):Promise<StatusListType | CommentListType | LikeType | void> => {
+export const resolvePost = async (response: Response):Promise<StatusListType | CommentListType | LikeType | void> => {
   const { content, message } = await response.json();
 
   if (response.ok && response.status === 201) {
