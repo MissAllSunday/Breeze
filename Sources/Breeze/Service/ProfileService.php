@@ -53,7 +53,7 @@ class ProfileService implements ProfileServiceInterface
 			'editorId' => Breeze::NAME,
 			'editorOptions' => $editorContext['sce_options'],
 			'editorIsRich' => $editorContext['rich_active'],
-			'currentUserAvatar' => $userInfo['avatar']['url']
+			'currentUserAvatar' => $userInfo['avatar']['url'],
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
 		$this->components->loadJavaScriptFile(Components::FOLDER . 'main.' . Breeze::REACT_HASH . '.js', [
