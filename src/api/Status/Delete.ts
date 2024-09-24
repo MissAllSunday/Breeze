@@ -1,6 +1,6 @@
 import smfVars from '../../DataSource/SMF';
 import smfTextVars from '../../DataSource/Txt';
-import { baseConfig, baseUrl, resolveDelete } from '../Api';
+import { baseConfig, baseUrl, resolveDelete } from '../BaseConfig';
 
 export const deleteStatus = async (statusId: number): Promise<boolean> => {
   const deleteStatusResults = await fetch(baseUrl('breezeStatus', 'deleteStatus'), {

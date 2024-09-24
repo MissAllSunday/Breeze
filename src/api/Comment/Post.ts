@@ -3,7 +3,7 @@ import { CommentListType } from 'breezeTypesComments';
 import smfVars from '../../DataSource/SMF';
 import smfTextVars from '../../DataSource/Txt';
 import { showError } from '../../utils/tooltip';
-import { baseConfig, baseUrl, resolvePost } from '../Api';
+import { baseConfig, baseUrl, resolvePost } from '../BaseConfig';
 
 export const postComment = async (commentParams: object): Promise<CommentListType> => {
   try {

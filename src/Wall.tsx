@@ -4,7 +4,7 @@ import { StatusListType, StatusType } from 'breezeTypesStatus';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 
-import { IFetchStatus } from './api/Api';
+import { IFetchStatus } from './api/BaseConfig';
 import {
   deleteStatus,
   getStatus, postStatus,

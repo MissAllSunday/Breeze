@@ -1,7 +1,7 @@
 import smfVars from '../../DataSource/SMF';
 import smfTextVars from '../../DataSource/Txt';
 import { showError } from '../../utils/tooltip';
-import { baseUrl, resolveGet } from '../Api';
+import { baseUrl, resolveGet } from '../BaseConfig';
 
 export const getStatus = async (type: string, start: number): Promise<any | void> => {
   try {
