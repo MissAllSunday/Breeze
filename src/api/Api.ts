@@ -38,7 +38,7 @@ export interface IFetchStatus {
   total: number
 }
 
-export const resolveFetch = async (response: Response):Promise<IFetchStatus | Array<LikeInfoState> | void> => {
+export const resolveGet = async (response: Response):Promise<IFetchStatus | Array<LikeInfoState> | void> => {
   const { content, message } = await response.json();
 
   if (message.length) {

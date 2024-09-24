@@ -1,7 +1,7 @@
 import smfVars from '../../DataSource/SMF';
 import smfTextVars from '../../DataSource/Txt';
 import { showError } from '../../utils/tooltip';
-import { baseUrl, resolveFetch } from '../Api';
+import { baseUrl, resolveGet } from '../Api';
 
 export const getStatus = async (type: string, start: number): Promise<any | void> => {
   try {
@@ -13,7 +13,7 @@ export const getStatus = async (type: string, start: number): Promise<any | void
       },
     });
 
-    return await resolveFetch(response);
+    return await resolveGet(response);
   } catch (error:unknown) {
     showError(smfTextVars.error.generic);
   }
