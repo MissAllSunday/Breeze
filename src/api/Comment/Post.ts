@@ -4,8 +4,8 @@ import smfVars from '../../DataSource/SMF';
 import smfTextVars from '../../DataSource/Txt';
 import { showError } from '../../utils/tooltip';
 import { baseConfig  } from '../BaseConfig';
-import { baseUrl } from "../BaseUrl";
-import {resolvePost} from "../Resolvers/Post";
+import { baseUrl } from '../BaseUrl';
+import { resolvePost } from '../Resolvers/Post';
 
 export const postComment = async (commentParams: object): Promise<CommentListType> => {
   try {

@@ -2,8 +2,8 @@ import { LikeInfoState, LikeType } from 'breezeTypesLikes';
 
 import smfTextVars from '../../DataSource/Txt';
 import { showError } from '../../utils/tooltip';
-import {baseUrl} from "../BaseUrl";
-import {resolveGet} from "../Resolvers/Get";
+import { baseUrl } from '../BaseUrl';
+import { resolveGet } from '../Resolvers/Get';
 
 export const getLikeInfo = async (like: LikeType):Promise<any> => {
   try {
