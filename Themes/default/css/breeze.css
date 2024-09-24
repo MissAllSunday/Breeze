@@ -41,6 +41,7 @@ div.avatar_compact {
 
 div.link_compact{
 	display: inline-block;
+    margin-left: 5px;
 }
 
 div.avatar_compact img {
@@ -117,6 +118,9 @@ img.comment_avatar {
 		display: none;
 	}
     img.comment_avatar {
+        display: none;
+    }
+    .time_stamp {
         display: none;
     }
 }

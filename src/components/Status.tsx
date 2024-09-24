@@ -17,7 +17,7 @@ import UserInfo from './user/UserInfo';
 
 function Status(props: StatusProps): React.ReactElement {
   const [classType, setClassType] = useState(props.status.isNew ? 'fadeIn' : '');
-  const timeStamp = new Date(props.status.createdAt);
+  const timeStamp = props.status.createdAt;
   const [commentsList, setCommentsList] = useState<CommentListType>(Object.values(props.status.comments));
   const [isLoading, setIsLoading] = useState(false);
   const permissions = useContext(PermissionsContext);
@@ -86,7 +86,7 @@ function Status(props: StatusProps): React.ReactElement {
         <UserInfo userData={props.status.userData} />
       </div>
       <div className="windowbg floatright">
-        <div className="content" title={timeStamp.toLocaleString()}
+        <div className="content"
              dangerouslySetInnerHTML={{ __html: props.status.body }}/>
         <div className="half_content">
           <Like
@@ -94,15 +94,18 @@ function Status(props: StatusProps): React.ReactElement {
           />
         </div>
         <div className="half_content">
-          {permissions.Status.delete &&
-            <span
-              className="main_icons remove_button floatright pointer_cursor"
-              title={smfTextVars.general.delete}
-              onClick={removeStatus}
-            >
+          <div className={'righttext'}>
+            <span dangerouslySetInnerHTML={{ __html: timeStamp }} className={'time_stamp'}/>
+            {permissions.Status.delete &&
+               <span
+                className="main_icons remove_button pointer_cursor"
+                title={smfTextVars.general.delete}
+                onClick={removeStatus}
+              >
             {smfTextVars.general.delete}
           </span>
-          }
+            }
+          </div>
         </div>
         <hr/>
         <ul className="status">
@@ -117,7 +120,7 @@ function Status(props: StatusProps): React.ReactElement {
         <div className="comment_posting">
           {permissions.Comments.post ?
             <>
-              <Avatar href={'http://localhost:8000/avatars/default.png'} userName={''} customClassName={'comment_avatar'}/>
+              <Avatar href={smfVars.currentUserAvatar} userName={''} customClassName={'comment_avatar'}/>
               <Editor saveContent={createComment}/>
             </> : ''}
         </div>

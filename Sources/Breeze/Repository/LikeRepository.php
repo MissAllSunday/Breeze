@@ -10,10 +10,12 @@ use Breeze\Entity\LikeEntity;
 use Breeze\Model\LikeModelInterface;
 use Breeze\PermissionsEnum;
 use Breeze\Traits\PermissionsTrait;
+use Breeze\Traits\TimeTrait;
 
 class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 {
  use PermissionsTrait;
+ use TimeTrait;
 
 	public function __construct(
 		private readonly LikeModelInterface $likeModel
@@ -28,7 +30,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 		foreach ($likes as $key => $like) {
 			$likeInfo[$key]['profile'] = $usersInfo[$like[LikeEntity::COLUMN_ID_MEMBER]];
-			$likeInfo[$key]['timestamp'] = empty($like[LikeEntity::COLUMN_TIME]) ? '' : timeformat($like[LikeEntity::COLUMN_TIME]);
+			$likeInfo[$key]['timestamp'] = empty($like[LikeEntity::COLUMN_TIME]) ? '' : timeFormat($like[LikeEntity::COLUMN_TIME]);
 		}
 
 		return $likeInfo;

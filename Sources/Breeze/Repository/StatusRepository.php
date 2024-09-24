@@ -7,11 +7,14 @@ namespace Breeze\Repository;
 
 use Breeze\Entity\StatusEntity;
 use Breeze\Model\StatusModelInterface;
+use Breeze\Traits\TimeTrait;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\EmptyDataException;
 
 class StatusRepository extends BaseRepository implements StatusRepositoryInterface
 {
+	use TimeTrait;
+
 	public const CACHE_BY_PROFILE = 'getByProfile';
 
 	public function __construct(
@@ -65,6 +68,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		foreach ($status['data'] as $statusId => $singleStatus) {
 			$status['data'][$statusId]['userData'] = $usersData[$singleStatus[StatusEntity::USER_ID]];
 			$status['data'][$statusId]['comments'] = $comments[$statusId] ?? [];
+			$status['data'][$statusId][StatusEntity::CREATED_AT] = timeFormat($singleStatus[StatusEntity::CREATED_AT]);
 		}
 
 		return $status;

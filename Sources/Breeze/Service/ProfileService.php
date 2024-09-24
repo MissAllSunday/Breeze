@@ -43,6 +43,7 @@ class ProfileService implements ProfileServiceInterface
 	public function loadComponents(int $profileId = 0): void
 	{
 		$context = $this->global('context');
+		$userInfo = $this->getCurrentUserInfo();
 		$wallUserSettings = $this->userRepository->getById($profileId);
 		$editorContext = &$context['controls']['richedit'][Breeze::NAME];
 
@@ -52,6 +53,7 @@ class ProfileService implements ProfileServiceInterface
 			'editorId' => Breeze::NAME,
 			'editorOptions' => $editorContext['sce_options'],
 			'editorIsRich' => $editorContext['rich_active'],
+			'currentUserAvatar' => $userInfo['avatar']['url']
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
 		$this->components->loadJavaScriptFile(Components::FOLDER . 'main.' . Breeze::REACT_HASH . '.js', [
