@@ -62,25 +62,21 @@ div.avatar_compact img {
 	padding: 5px;
 }
 
-.post_content {
-	min-width: 70%;
-    padding-bottom: 5px;
+.comment_posting > .post_content {
+    overflow: hidden;
+    padding-left: 5px;
 }
 
-.post_content textarea {
-    outline: none;
+.comment_posting > .post_content textarea {
     min-height: 45px;
-    width: calc(100% - 45px);
-    resize: none;
+    width: 100%;
 }
 
-.comment_posting img {
-    min-height: 35px;
-    max-height: 45px;
+img.comment_avatar {
     float: left;
-    max-width: 40px;
-    margin-right: 5px;
+    max-width: 45px;
     vertical-align: middle;
+    margin-right: 5px;
 }
 
 .pointer_cursor {
@@ -108,7 +104,7 @@ div.avatar_compact img {
 
 @media screen and (max-width: 720px){
 	ul.status li.status div.floatleft {
-		width: 0%;
+		width: 0;
 		display: none;
 	}
 	ul.status li.status div.floatright {
@@ -120,6 +116,9 @@ div.avatar_compact img {
 	.breeze_summary{
 		display: none;
 	}
+    img.comment_avatar {
+        display: none;
+    }
 }
 
 @-webkit-keyframes fadeinout {

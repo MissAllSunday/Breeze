@@ -1,4 +1,4 @@
-import { LikeInfoState, LikeType } from 'breezeTypesLikes';
+import { LikeType } from 'breezeTypesLikes';
 
 import smfTextVars from '../../DataSource/Txt';
 import { showError } from '../../utils/tooltip';

@@ -5,7 +5,7 @@ const Avatar: React.FunctionComponent<AvatarDataType> = (props: AvatarDataType) 
   <img
     src={props.href}
     alt={props.userName}
-    className="avatar"
+    className={typeof props.customClassName !== 'undefined' ? props.customClassName : 'avatar'}
   />
 );
 

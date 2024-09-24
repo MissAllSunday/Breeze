@@ -42,6 +42,7 @@ declare module 'breezeTypesUser' {
   interface AvatarDataType {
     href: string
     userName: string
+    customClassName?: string
   }
   interface UserInfoProps {
     userData: UserDataType

@@ -115,8 +115,11 @@ function Status(props: StatusProps): React.ReactElement {
           ))}
         </ul>
         <div className="comment_posting">
-          <Avatar href={''} userName={''}/>
-          {permissions.Comments.post ? <Editor saveContent={createComment}/> : ''}
+          {permissions.Comments.post ?
+            <>
+              <Avatar href={'http://localhost:8000/avatars/default.png'} userName={''} customClassName={'comment_avatar'}/>
+              <Editor saveContent={createComment}/>
+            </> : ''}
         </div>
       </div>
     </li>
