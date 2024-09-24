@@ -3,7 +3,8 @@ import { StatusProps } from 'breezeTypesStatus';
 import * as React from 'react';
 import { useCallback, useContext, useState } from 'react';
 
-import { deleteComment, postComment } from '../api/CommentApi';
+import { deleteComment } from '../api/Comment/Delete';
+import { postComment } from '../api/Comment/Post';
 import { PermissionsContext } from '../context/PermissionsContext';
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';

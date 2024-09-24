@@ -12,11 +12,10 @@ declare module 'breezeTypesStatus' {
     isNew: boolean
   }
 
-  type StatusDispatchContextType = function;
-
-  interface StatusReducerData {
-    type: string
-    statusListState: StatusType
+  interface IFetchStatus {
+    data: StatusListType,
+    permissions: PermissionsContextType,
+    total: number
   }
 
   type StatusListType = Map<StatusType>;

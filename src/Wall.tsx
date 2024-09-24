@@ -1,14 +1,12 @@
 import { WallProps } from 'breezeTypes';
 import { PermissionsContextType } from 'breezeTypesPermissions';
-import { StatusListType, StatusType } from 'breezeTypesStatus';
+import { IFetchStatus, StatusListType, StatusType } from 'breezeTypesStatus';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 
-import { IFetchStatus } from './api/BaseConfig';
-import {
-  deleteStatus,
-  getStatus, postStatus,
-} from './api/StatusApi';
+import { deleteStatus } from './api/Status/Delete';
+import { getStatus } from './api/Status/Get';
+import { postStatus } from './api/Status/Post';
 import Editor from './components/Editor';
 import Loading from './components/Loading';
 import Status from './components/Status';

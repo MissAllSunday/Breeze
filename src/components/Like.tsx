@@ -1,7 +1,7 @@
 import { LikeProps, LikeType } from 'breezeTypesLikes';
 import React, { useCallback, useContext, useState } from 'react';
 
-import { postLike } from '../api/LikeApi';
+import { postLike } from '../api/Like/Post';
 import { PermissionsContext } from '../context/PermissionsContext';
 import smfVars from '../DataSource/SMF';
 import { LikeInfo } from './LikeInfo';

@@ -1,7 +1,7 @@
 import { LikeInfoProps, LikeInfoState } from 'breezeTypesLikes';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { getLikeInfo } from '../api/LikeApi';
+import { getLikeInfo } from '../api/Like/Get';
 import { Modal } from './Modal';
 import Avatar from './user/Avatar';
 
