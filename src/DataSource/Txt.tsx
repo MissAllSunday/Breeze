@@ -1,13 +1,13 @@
 import * as breezeTypesText from 'breezeTypesText';
 
 // @ts-expect-error Backend text variable
-const general: GeneralTextType = window.breezeTxtGeneral ?? process.env.REACT_APP_DEV_TEXT;
+const general: GeneralTextType = window.breezeTxtGeneral ?? JSON.parse(process.env.REACT_APP_DEV_TEXT);
 // @ts-expect-error Backend text variable
-const like: LikeTextType = window.breezeTxtLike ?? process.env.REACT_APP_DEV_TEXT_LIKE;
+const like: LikeTextType = window.breezeTxtLike ?? JSON.parse(process.env.REACT_APP_DEV_TEXT_LIKE);
 // @ts-expect-error Backend text variable
-const error: ErrorTextType = window.breezeTxtError ?? process.env.REACT_APP_DEV_TEXT_LIKE;
+const error: ErrorTextType = window.breezeTxtError ?? JSON.parse(process.env.REACT_APP_DEV_TEXT_ERROR);
 // @ts-expect-error Backend text variable
-const tabs: TabsTextType = window.breezeTxtTabs ?? process.env.REACT_APP_DEV_TEXT_TABS;
+const tabs: TabsTextType = window.breezeTxtTabs ?? JSON.parse(process.env.REACT_APP_DEV_TEXT_TABS);
 
 interface ISmfTextVars {
   general: breezeTypesText.GeneralTextType;

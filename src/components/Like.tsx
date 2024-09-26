@@ -24,11 +24,12 @@ export const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
   }, [like]);
 
   return (
-    permissions.isEnable.enableLikes && permissions.Forum.likesLike ? <div className="smflikebutton">
-      {isLoading ? <Loading/> : ''}
-      <span onClick={handleLike} className="likeClass pointer_cursor" title={like.additionalInfo.text}>
-        {String.fromCodePoint(like.alreadyLiked ? 128078 : 128077)}
-      </span> | <LikeInfo item={like}/>
+    permissions.isEnable.enableLikes && permissions.Forum.likesLike ?
+      <div className="smflikebutton">
+        {isLoading ? <Loading/> : ''}
+        <span onClick={handleLike} className="likeClass pointer_cursor" title={like.additionalInfo.text}>
+          {String.fromCodePoint(like.alreadyLiked ? 128078 : 128077)}
+        </span> | <LikeInfo item={like}/>
       </div> : null
   );
 };

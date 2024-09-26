@@ -68,11 +68,8 @@ div.avatar_compact img {
 
 .comment {
 	margin-left: 4%;
+    margin-bottom: 1%;
 	width: 95%;
-}
-
-.content {
-	padding: 5px;
 }
 
 .comment_posting > .post_content {
@@ -134,7 +131,7 @@ img.comment_avatar {
 }
 
 @media (max-width: 480px) {
-	.breeze_summary{
+	.breeze_summary {
 		display: none;
 	}
     img.comment_avatar {

@@ -40,7 +40,7 @@ function Comment(props: CommentProps): React.ReactElement {
         <div className={'info_bar'}>
           <span dangerouslySetInnerHTML={{ __html: timeStamp }} className={'time_stamp'}/>
           {permissions.Comments.delete && <span
-            className="main_icons remove_button floatright pointer_cursor"
+            className="main_icons remove_button pointer_cursor"
             title={smfTextVars.general.delete}
             onClick={removeComment}
           >
