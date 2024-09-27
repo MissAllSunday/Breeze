@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom';
 
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen } from '@testing-library/react';
 import { CommentType } from 'breezeTypesComments';
 import { PermissionsContextType } from 'breezeTypesPermissions';
 import React from 'react';
