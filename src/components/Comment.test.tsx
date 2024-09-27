@@ -3,24 +3,24 @@ import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CommentType } from 'breezeTypesComments';
+import { PermissionsContextType } from 'breezeTypesPermissions';
+import React from 'react';
 
 import { comments } from '../__fixtures__/comments';
-import {PermissionsContext} from "../context/PermissionsContext";
 import permissions from '../__fixtures__/permissions';
-import Comment  from "./Comment";
-import React from "react";
-import smfTextVars from "../DataSource/Txt";
-import { PermissionsContextType } from 'breezeTypesPermissions';
+import { PermissionsContext } from '../context/PermissionsContext';
+import smfTextVars from '../DataSource/Txt';
+import Comment  from './Comment';
 
 function act(
   overwritePermissions?:Partial<PermissionsContextType>,
   custom?:Partial<CommentType>,
-  onRemoved: boolean = true) {
+  onRemoved = true) {
 
   const actOnRemoved = () => onRemoved;
-  let customComment = { ...comments.basic, ...custom };
+  const customComment = { ...comments.basic, ...custom };
 
-  return render(<PermissionsContext.Provider value={overwritePermissions ? permissions.custom(overwritePermissions) :permissions.basic}>
+  return render(<PermissionsContext.Provider value={overwritePermissions ? permissions.custom(overwritePermissions) : permissions.basic}>
     <Comment comment={customComment} removeComment={actOnRemoved} />
   </PermissionsContext.Provider>);
 }
@@ -49,7 +49,7 @@ describe('Deleting a comment', () => {
     expect(spanElement).not.toBeInTheDocument();
   });
   it('show delete button when user does have permissions', () => {
-    act({Comments:{delete:true, edit:true,post:true}});
+    act({ Comments:{ delete:true, edit:true, post:true } });
     const spanElement = screen.queryByTitle(smfTextVars.general.delete);
     expect(spanElement).toBeInTheDocument();
   });
