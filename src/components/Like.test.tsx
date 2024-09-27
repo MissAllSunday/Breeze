@@ -6,21 +6,13 @@ import { LikeType } from 'breezeTypesLikes';
 import { PermissionsContextType } from 'breezeTypesPermissions';
 import React from 'react';
 
+import likes from '../__fixtures__/likes';
+import permissions from '../__fixtures__/permissions';
 import { PermissionsContext } from '../context/PermissionsContext';
-import PermissionsDefault from '../DataSource/Permissions';
 import { Like } from './Like';
 
-const MOCK_LIKE_ITEM = {
-  additionalInfo: {
-    text: 'lol',
-    href: 'lol',
-  },
-  alreadyLiked: false,
-  canLike: true,
-  contentId: 1,
-  count: 0,
-  type: 'lol',
-};
+const MOCK_LIKE_ITEM = likes.basic;
+
 jest.mock('./LikeInfo', () => ({ LikeInfo: () => 'mocked like info' }));
 jest.mock('../api/Like/Post', ()=> jest.fn());
 
@@ -34,10 +26,10 @@ function act(setPermissionsTo: boolean, overwriteLikeItem?: Partial<LikeType>) {
       profileView: false,
     },
   };
-  const permissions:PermissionsContextType = { ...PermissionsDefault, ...permissionsPartial };
+  const customPermissions:PermissionsContextType = { ...permissions.basic, ...permissionsPartial };
   const likeItem:LikeType = { ...MOCK_LIKE_ITEM, ...overwriteLikeItem };
 
-  return render(<PermissionsContext.Provider value={permissions}>
+  return render(<PermissionsContext.Provider value={customPermissions}>
     <Like item={likeItem} />
   </PermissionsContext.Provider>);
 }
