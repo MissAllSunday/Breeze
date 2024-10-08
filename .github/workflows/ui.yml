@@ -1,9 +1,5 @@
 name: Build and Test Breeze UI components
-on:
-  push:
-    branches: [ develop ]
-  pull_request:
-    branches: [ develop ]
+on: [push, pull_request]
 jobs:
   build_test:
     runs-on: ubuntu-latest
