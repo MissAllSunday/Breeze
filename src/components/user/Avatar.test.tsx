@@ -1,8 +1,9 @@
 import '@testing-library/jest-dom';
 
-import {render, screen} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { AvatarDataType } from 'breezeTypesUser';
 import React from 'react';
+
 import Avatar from './Avatar';
 
 const MOCK_AVATAR_PROPS:AvatarDataType = {
