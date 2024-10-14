@@ -1,7 +1,7 @@
 import { CommentType } from 'breezeTypesComments';
 
 import likes from './likes';
-import {userData} from "./userData";
+import { userData } from './userData';
 
 
 const basic:CommentType = {

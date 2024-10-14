@@ -3,8 +3,8 @@ import { LikeType } from 'breezeTypesLikes';
 import SmfVars from '../../DataSource/SMF';
 import smfTextVars from '../../DataSource/Txt';
 import { showError } from '../../utils/tooltip';
-import { baseConfig } from '../BaseConfig';
-import { baseUrl } from '../BaseUrl';
+import { baseConfig } from '../Base';
+import { baseUrl } from '../Base';
 import { resolvePost } from '../Resolvers/Post';
 
 export interface IPostLikeParams {
