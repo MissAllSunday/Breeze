@@ -7,13 +7,7 @@ import { showError } from '../../utils/tooltip';
 import { resolveGet } from '../Resolvers/Get';
 
 const MOCK_LIKE_ITEM = likes.basic;
-const MOCK_RESPONSE = { data: {  } };
 
-// global.fetch = jest.fn(() =>
-//   Promise.resolve({
-//     json: () => Promise.resolve({ rates: { CAD: 1.42 } }),
-//   })
-// );
 jest.mock('../Base', () => ({
   baseUrl: jest.fn(() => 'some url'),
 }));
@@ -28,6 +22,7 @@ jest.mock('../Resolvers/Get', () => ({
 
 describe('get like info', () => {
   it('calls base url', async () => {
+    jest.spyOn(global, 'fetch').mockResolvedValueOnce(Promise.resolve(new Response()));
     const result = getLikeInfo(MOCK_LIKE_ITEM);
 
     expect(baseUrl as jest.Mock).toHaveBeenCalled();
