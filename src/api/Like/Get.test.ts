@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom';
 
 import likes from '../../__fixtures__/likes';
-import { baseUrl } from '../Base';
-import { getLikeInfo } from './Get';
 import { showError } from '../../utils/tooltip';
+import { baseUrl } from '../Base';
 import { resolveGet } from '../Resolvers/Get';
+import { getLikeInfo } from './Get';
 
 const MOCK_LIKE_ITEM = likes.basic;
 

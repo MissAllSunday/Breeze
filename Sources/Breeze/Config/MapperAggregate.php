@@ -9,22 +9,30 @@ use Breeze\Util\Folder;
 class MapperAggregate
 {
 	public const MAPPERS_FOLDER = __DIR__ . '/Mappers';
-
 	public const MAPPER_KEY = 'Mapper';
 
-	protected array $mappers = [];
+	protected static array $mappers = [];
 
-	public function getMappers(): array
+	public function buildMappers(): void
 	{
+		if (!empty(self::$mappers)) {
+			return;
+		}
+
 		$scannedMappers = Folder::getFilesInFolder(self::MAPPERS_FOLDER);
 
 		foreach ($scannedMappers as $mapperFile) {
 			$mapperFileInfo = pathinfo($mapperFile, \PATHINFO_FILENAME);
 			$mapperKey = str_replace(self::MAPPER_KEY, '', $mapperFileInfo);
 
-			$this->mappers[$mapperKey] = include(self::MAPPERS_FOLDER . '/' . $mapperFile);
+			self::$mappers[$mapperKey] = $mapperFile;
 		}
+	}
 
-		return $this->mappers;
+	public function getMappers(): array
+	{
+		$this->buildMappers();
+
+		return self::$mappers;
 	}
 }

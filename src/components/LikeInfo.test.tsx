@@ -1,9 +1,10 @@
 import '@testing-library/jest-dom';
-import {render, screen} from '@testing-library/react';
+
+import { render, screen } from '@testing-library/react';
+import { LikeType } from 'breezeTypesLikes';
 import React from 'react';
 
 import { LikeInfo } from './LikeInfo';
-import { LikeType } from 'breezeTypesLikes';
 
 const MOCK_LIKE_ITEM = {
   additionalInfo: {
