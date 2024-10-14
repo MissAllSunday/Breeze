@@ -1,20 +1,20 @@
 import '@testing-library/jest-dom';
 
+import { responses } from '../../__fixtures__/responses';
 import { showError, showInfo } from '../../utils/tooltip';
 import { resolveDelete } from './Delete';
 
-const BASE_BAD_RESPONSE: Response = new Response();
-const MOCK_BAD_RESPONSE = { ...BASE_BAD_RESPONSE, ...{
+const MOCK_BAD_RESPONSE = responses.custom({
   ok: false,
   status: 400,
   json: () => Promise.resolve({ message: 'some server error' }),
-} };
+});
 
-const MOCK_GOOD_RESPONSE = { ...BASE_BAD_RESPONSE, ...{
+const MOCK_GOOD_RESPONSE = responses.custom({
   ok: true,
   status: 204,
   json: () => Promise.resolve({ message: 'some server error' }),
-} };
+});
 
 jest.mock('../../utils/tooltip', () => ({
   showError: jest.fn(() => 'some error string'),
