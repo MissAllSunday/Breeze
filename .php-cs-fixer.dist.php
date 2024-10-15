@@ -5,13 +5,15 @@ declare(strict_types=1);
 $finder = PhpCsFixer\Finder::create()
 	->in(__DIR__ . '/Sources/Breeze/')
 	->in(__DIR__ . '/tests/')
-	->exclude(__DIR__ . '/tests/log/');
+	->exclude(__DIR__ . '/tests/log/')
+	->exclude(__DIR__ . '/src/');
 
 $config = new PhpCsFixer\Config();
 
 return $config
 	->setRules([
 		'@PHP74Migration' => true,
+		'@PHP82Migration' => true,
 		'@PHPUnit60Migration:risky' => true,
 		'indentation_type' => true,
 		'array_indentation' => true,
