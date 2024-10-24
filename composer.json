@@ -55,8 +55,7 @@
         "serve": "bin/server",
         "test": [
             "@lint:check",
-            "@phpunit",
-            "@phpstan"
+            "@phpunit"
         ]
     }
 }

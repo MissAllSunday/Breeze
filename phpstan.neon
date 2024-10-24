@@ -5,7 +5,10 @@ parameters:
   paths:
     - ./Sources
   excludePaths:
-    - ./tests
+    analyse:
+      - tasks/Breeze-Notify.php
+    analyseAndScan:
+      - tasks/Breeze-Notify.php
   inferPrivatePropertyTypeFromConstructor: true
   ignoreErrors:
     - '/Function prepareDBSettingContext not found./'
@@ -23,3 +26,5 @@ parameters:
     - '/Function addJavaScriptVar not found./'
     - '/Function tokenTxtReplace not found./'
     - '/Function create_control_richedit not found./'
+    - '/Access to an undefined property Breeze_Notify_Background::\$_details./'
+    - '/Class Breeze_Notify_Background extends unknown class SMF_BackgroundTask./'

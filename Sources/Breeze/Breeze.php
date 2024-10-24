@@ -69,6 +69,11 @@ class Breeze
 		}
 	}
 
+	public function getContainer(): Container
+	{
+		return $this->container;
+	}
+
 	public function permissionsWrapper(array &$permissionGroups, array &$permissionList): void
 	{
 		$this->container->get(PermissionsService::class)->hookPermissions($permissionGroups, $permissionList);

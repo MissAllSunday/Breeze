@@ -15,7 +15,7 @@ class MapperAggregate
 
 	public function buildMappers(): void
 	{
-		if (!empty(self::$mappers)) {
+		if (self::$mappers !== []) {
 			return;
 		}
 
@@ -25,7 +25,7 @@ class MapperAggregate
 			$mapperFileInfo = pathinfo($mapperFile, \PATHINFO_FILENAME);
 			$mapperKey = str_replace(self::MAPPER_KEY, '', $mapperFileInfo);
 
-			self::$mappers[$mapperKey] = $mapperFile;
+			self::$mappers[$mapperKey] = include(self::MAPPERS_FOLDER . '/' . $mapperFile);
 		}
 	}
 

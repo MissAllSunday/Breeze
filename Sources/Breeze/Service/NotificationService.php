@@ -7,7 +7,7 @@ namespace Breeze\Service;
 
 use Breeze\Repository\NotificationRepositoryInterface;
 
-class NotificationService implements NotificationServiceInterface
+readonly class NotificationService implements NotificationServiceInterface
 {
 	public function __construct(private NotificationRepositoryInterface $notificationRepository)
 	{

@@ -49,7 +49,7 @@ class StatusService
 	}
 
 	/**
-	 * @throws InvalidStatusException
+	 * @throws InvalidStatusException|EmptyDataException
 	 */
 	public function getByBuddies(int $start): array
 	{

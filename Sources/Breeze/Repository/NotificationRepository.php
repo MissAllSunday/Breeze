@@ -5,8 +5,9 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
-use Breeze\Entity\StatusEntity;
+use Breeze\Entity\NotificationEntity;
 use Breeze\Model\NotificationModelInterface;
+use Breeze\Util\Json;
 
 class NotificationRepository extends BaseRepository implements NotificationRepositoryInterface
 {
@@ -15,17 +16,25 @@ class NotificationRepository extends BaseRepository implements NotificationRepos
 	) {}
 
 	/**
-	 * @throws InvalidStatusException
+	 * @throws InvalidNotificationException
 	 */
 	public function save(array $data): int
 	{
-		$newNotificationId = $this->notificationModel->insert(array_merge($data, [
-			StatusEntity::CREATED_AT => time(),
-			StatusEntity::LIKES => 0,
-		]));
+		$newNotificationId = 0;
+
+		if ($data === []) {
+			return $newNotificationId;
+		}
+
+		$newNotificationId = $this->notificationModel->insert([
+			NotificationEntity::TASK_BACKGROUND_FILE,
+			NotificationEntity::TASK_BACKGROUND_CLASS,
+			Json::encode($data),
+			NotificationEntity::TASK_BACKGROUND_DEFAULT_CLAIMED_TIME,
+		]);
 
 		if ($newNotificationId === 0) {
-			throw new InvalidStatusException('error_save_status');
+			throw new InvalidNotificationException('error_save_notification');
 		}
 
 		return $newNotificationId;
