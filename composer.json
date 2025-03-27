@@ -21,7 +21,7 @@
     },
     "require": {
         "php": ">=8.2.0",
-        "league/container": "^4.2",
+        "league/container": "^5.0",
         "ext-json": "*"
     },
     "require-dev": {
