@@ -43,6 +43,7 @@ function Comment(props: CommentProps): React.ReactElement {
             className="main_icons remove_button pointer_cursor"
             title={smfTextVars.general.delete}
             onClick={removeComment}
+            data-testid="deleteComment"
           >
             {smfTextVars.general.delete}
           </span>}

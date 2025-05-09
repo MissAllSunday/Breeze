@@ -3,8 +3,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
 import { showError } from '../utils/tooltip';
-
-const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: string) => boolean, isFull: boolean }) => {
+import { EditorProps } from 'breezeTypesEditor';
+const Editor: React.FunctionComponent<any> = (props: EditorProps) => {
   const [content, setContent] = useState('');
 
   const handleContent = useCallback((event: any) => setContent(event.target.value), []);
@@ -51,11 +51,23 @@ const Editor: React.FunctionComponent<any> = (props: { saveContent: (content: st
 
   return (
     <div className="post_content">
-      <textarea id="content" name="content" value={content} onChange={handleContent} ref={textArea} className="editor"/>
+      <textarea
+        id="content"
+        name="content"
+        value={content}
+        onChange={handleContent}
+        ref={textArea}
+        className="editor"
+        data-testid="content"/>
       <div id="content_resizer" className="richedit_resize"></div>
       <input type="hidden" name="content_mode" id="content'_mode" value="0"/>
       <div id="post_confirm_buttons">
-        <input type="submit" value={smfTextVars.general.send} name="post" className="button"
+        <input
+          type="submit"
+          value={smfTextVars.general.send}
+          name="post"
+          className="button"
+          data-testid="send"
                onClick={handleClick}/>
       </div>
     </div>

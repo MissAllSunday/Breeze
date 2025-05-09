@@ -80,7 +80,7 @@ function Status(props: StatusProps): React.ReactElement {
       ref={ref as React.LegacyRef<HTMLLIElement>}
     >
       {isLoading
-        ? <Loading/>
+        ? <Loading />
         : '' }
       <div className="floatleft userinfo">
         <UserInfo userData={props.status.userData} />
@@ -101,6 +101,7 @@ function Status(props: StatusProps): React.ReactElement {
                 className="main_icons remove_button pointer_cursor"
                 title={smfTextVars.general.delete}
                 onClick={removeStatus}
+                data-testid="deleteStatus"
               >
             {smfTextVars.general.delete}
           </span>
