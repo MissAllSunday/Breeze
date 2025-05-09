@@ -1,22 +1,20 @@
 import '@testing-library/jest-dom';
 
-import { comments } from '../__fixtures__/comments';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent, { UserEvent } from '@testing-library/user-event';
-
 import { PermissionsContextType } from 'breezeTypesPermissions';
 import React from 'react';
+
+import { comments } from '../__fixtures__/comments';
+import permissions from '../__fixtures__/permissions';
 import { status } from '../__fixtures__/status';
 import { deleteComment } from '../api/Comment/Delete';
 import { postComment } from '../api/Comment/Post';
-import permissions from '../__fixtures__/permissions';
 import { PermissionsContext } from '../context/PermissionsContext';
-
 import smfVars from '../DataSource/SMF';
 import Status from './Status';
 
 const mockRemoveStatus = jest.fn(() => true);
-const mockRemoveComment = jest.fn(() => true);
 
 // Mock the API calls
 jest.mock('../api/Comment/Post');
