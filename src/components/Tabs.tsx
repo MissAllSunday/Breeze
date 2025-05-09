@@ -12,7 +12,6 @@ interface TabType {
 
 type TabsType = TabType[];
 
-
 function Tabs(props: { children: ReactNode; }): any {
   const [tabs, setTabs] = useState<TabsType>([]);
 
