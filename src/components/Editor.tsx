@@ -1,9 +1,9 @@
+import { EditorProps } from 'breezeTypesEditor';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
 import { showError } from '../utils/tooltip';
-import { EditorProps } from 'breezeTypesEditor';
 const Editor: React.FunctionComponent<any> = (props: EditorProps) => {
   const [content, setContent] = useState('');
 

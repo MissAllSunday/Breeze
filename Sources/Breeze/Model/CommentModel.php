@@ -139,11 +139,11 @@ class CommentModel extends BaseModel implements CommentModelInterface
 			if ($useStatusID) {
 				$comments[$row[CommentEntity::STATUS_ID]][$row[CommentEntity::ID]] =
 					array_map(function ($rowValue) {
-						return ctype_digit($rowValue) ? ((int)$rowValue) : $rowValue;
+						return ctype_digit((string) $rowValue) ? ((int) $rowValue) : $rowValue;
 					}, $row);
 			} else {
 				$comments[$row[CommentEntity::ID]] = array_map(function ($rowValue) {
-					return ctype_digit($rowValue) ? ((int)$rowValue) : $rowValue;
+					return ctype_digit((string) $rowValue) ? ((int)$rowValue) : $rowValue;
 				}, $row);
 			}
 
