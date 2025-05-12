@@ -36,13 +36,10 @@ $txt['Breeze_menu_position_sub'] = 'By default is next to the home button.';
 $txt['Breeze_master'] = 'Enable Breeze mod';
 $txt['Breeze_master_sub'] = 'The master setting, this must be enable for the mod to work properly.';
 $txt['Breeze_forceWall'] = 'Check to force enable user\'s walls.';
-$txt['Breeze_forceWall_sub'] = 'By default the wall is disable and users needs to enable it manually,
- if you check this option their wall will be enable, keep in mind this option will enable everyone\'s wall
+$txt['Breeze_forceWall_sub'] = 'By default, the wall is disabled and users needs to enable it manually,
+ if you check this option their wall will be enabled, keep in mind this option will enable everyone\'s wall
   including inactive members and bots.<br /> They can still manually disable their wall if they want it,
-   this option only enables it but does not really forces the wall to be always enable.';
-$txt['Breeze_maxBuddiesNumber'] = 'How many buddies does an user can show on their buddies tab?';
-$txt['Breeze_maxBuddiesNumber_sub'] = 'If the user has more users than the specified setting,
- their entire list will be converted to a more compact links list. Leave at 0 to disable this option.';
+   this option only enables it but does not really force the wall to be always enable.';
 $txt['Breeze_aboutMeMaxLength'] = 'The max length for the "about me" block ';
 $txt['Breeze_aboutMeMaxLength_sub'] = 'If left empty, the mod will use the default value: 1024';
 $txt['Breeze_maxFloodNum'] = 'How many messages can an user make';

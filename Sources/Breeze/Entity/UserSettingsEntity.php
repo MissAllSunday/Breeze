@@ -13,6 +13,7 @@ class UserSettingsEntity extends BaseEntity implements BaseEntityInterface
 	public const PAGINATION_NUM = 'paginationNumber';
 	public const KICK_IGNORED = 'kickIgnored';
 	public const BLOCK_LIST = 'blockList';
+	public const ENABLE_BUDDIES_TAB = 'enableBuddiesTab';
 	public const BUDDIES = 'buddies';
 	public const ABOUT_ME = 'aboutMe';
 	public const USER_ID = 'userId';
@@ -24,6 +25,7 @@ class UserSettingsEntity extends BaseEntity implements BaseEntityInterface
 			self::GENERAL_WALL => SettingsEntity::TYPE_CHECK,
 			self::PAGINATION_NUM => SettingsEntity::TYPE_TEXT,
 			self::KICK_IGNORED => SettingsEntity::TYPE_CHECK,
+			self::ENABLE_BUDDIES_TAB => SettingsEntity::TYPE_CHECK,
 			self::ABOUT_ME => SettingsEntity::TYPE_TEXTAREA,
 		];
 	}
@@ -35,6 +37,7 @@ class UserSettingsEntity extends BaseEntity implements BaseEntityInterface
 			self::GENERAL_WALL => 0,
 			self::PAGINATION_NUM => 5,
 			self::KICK_IGNORED => 0,
+			self::ENABLE_BUDDIES_TAB => 0,
 			self::ABOUT_ME => '',
 		];
 	}

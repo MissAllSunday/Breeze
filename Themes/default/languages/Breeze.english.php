@@ -47,8 +47,8 @@ $txt['Breeze_user_settings_wall_desc'] = 'If you want to use your wall, you need
 otherwise your profile will show the default page';
 $txt['Breeze_user_settings_aboutMe'] = 'Enable the About me tab';
 $txt['Breeze_user_settings_aboutMe_desc'] = 'Leave empty to disable it. You can use BBC';
-$txt['Breeze_user_settings_buddies'] = 'Enable the "Buddies" block';
-$txt['Breeze_user_settings_buddies_desc'] = 'This will show a block div showing all your buddies and their info';
+$txt['Breeze_user_settings_enableBuddiesTab'] = 'Enable the "Buddies" tab';
+$txt['Breeze_user_settings_enableBuddiesTab_desc'] = 'This will show a tab showing all your buddies';
 $txt['Breeze_user_settings_kickIgnored'] = 'Do not show my wall to users in my ignore list';
 $txt['Breeze_user_settings_kickIgnored_desc'] = 'If this is enable, users on your ignore list will not be able to
  see your wall or to post on it';

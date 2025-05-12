@@ -54,6 +54,7 @@ class ProfileService implements ProfileServiceInterface
 			'editorOptions' => $editorContext['sce_options'],
 			'editorIsRich' => $editorContext['rich_active'],
 			'currentUserAvatar' => $userInfo['avatar']['url'],
+			UserSettingsEntity::ENABLE_BUDDIES_TAB => $wallUserSettings[UserSettingsEntity::ENABLE_BUDDIES_TAB],
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
 		$this->components->loadJavaScriptFile(Components::FOLDER . 'main.' . Breeze::REACT_HASH . '.js', [
