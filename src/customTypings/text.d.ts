@@ -25,7 +25,8 @@ declare module 'breezeTypesText' {
   interface TabsTextType {
     wall: string,
     about: string,
-    activity; string,
+    activity: string,
+    buddies: string,
   }
 
   interface ErrorTextType {

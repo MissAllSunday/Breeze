@@ -1,4 +1,4 @@
-import React, { Children, ReactNode, useCallback, useEffect, useState } from 'react';
+import React, { Children, ReactElement, ReactNode, useCallback, useEffect, useState } from 'react';
 
 import smfTextVars from '../DataSource/Txt';
 
@@ -12,21 +12,16 @@ interface TabType {
 
 type TabsType = TabType[];
 
-function Tabs(props: { children: ReactNode; }): any {
+function Tabs(props: { children: ReactNode; }): React.JSX.Element {
   const [tabs, setTabs] = useState<TabsType>([]);
 
   useEffect(() => {
-    const tabsNames: string[] = [
-      smfTextVars.tabs.wall,
-      smfTextVars.tabs.about,
-      smfTextVars.tabs.activity,
-    ];
     const initialTabs:TabsType = [];
     Children.forEach(props.children, (child:any, index) => {
       initialTabs.push({
         index,
         href: '#tab-' + index,
-        name: tabsNames[index],
+        name: child.props.name,
         active: index === 0,
         contentElement: child,
       });
@@ -39,15 +34,12 @@ function Tabs(props: { children: ReactNode; }): any {
     if (clickedTab.active) {
       return;
     }
-    const currentActiveTab: TabType[] = tabs.filter(tab => tab.active);
-    currentActiveTab.forEach((tab: TabType) => {
-      tab.active = false;
-    });
-    clickedTab.active = true;
-    currentActiveTab.push(clickedTab);
-    currentActiveTab.sort((a, b) => a.index > b.index ? 1 : -1);
 
-    setTabs(currentActiveTab);
+    setTabs(tabs.map((tab: TabType) => {
+      tab.active = tab.index === clickedTab.index;
+      return tab;
+    }));
+
   }, [tabs]);
 
   return <>

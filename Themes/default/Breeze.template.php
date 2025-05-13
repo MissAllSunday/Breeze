@@ -31,6 +31,13 @@ function template_profile(): void
 		</div>';
 	}
 
+	if (!empty($context[Breeze::NAME]['profileSettings'][UserSettingsEntity::ENABLE_BUDDIES_TAB])) {
+		echo '
+		<div id="tab-buddies" class="windowbg" style="display: none;">
+			some template call to show buddies in a compact way
+		</div>';
+	}
+
 	echo template_javascript(true);
 }
 
