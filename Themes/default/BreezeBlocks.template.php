@@ -136,44 +136,6 @@ function template_breeze_info(): void
 	</div>';
 }
 
-function template_breeze_buddies(): void
-{
-	global $context, $txt;
-
-	echo '
-		<div class="cat_bar">
-			<h3 class="catbg">
-				' . $txt['Breeze_tabs_buddies'] . '
-			</h3>
-		</div>';
-
-	echo '
-		<div class="information">
-			<div class="BreezeList">';
-
-	if (!empty($context['member']['buddies']))
-	{
-			echo '
-				<ul class="reset user_list">';
-
-			foreach ($context['member']['buddies'] as $id)
-				if (!empty($context['Breeze']['user_info'][$id]['breezeFacebox']))
-					echo '
-					<li>', $context['Breeze']['user_info'][$id]['breezeFacebox'] ,'</li>';
-
-			echo '
-				</ul>';
-	}
-
-	// No buddies :(
-	else
-		echo $txt['Breeze_user_modules_buddies_none'];
-
-		echo '
-			</div>
-		</div>';
-}
-
 function template_breeze_visitors(): void
 {
 	global $context, $txt;

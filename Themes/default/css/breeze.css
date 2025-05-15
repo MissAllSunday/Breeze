@@ -120,6 +120,21 @@ img.comment_avatar {
 	display: none;
 }
 
+ul.buddyList {
+    display: block;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    list-style-type: none;
+}
+
+.buddyList ul {
+    display: inline-block;
+    width: 12%;
+    text-align: center;
+}
+
+
 @media screen and (max-width: 720px){
 	ul.status li.status div.floatleft {
 		width: 0;
@@ -128,6 +143,10 @@ img.comment_avatar {
 	ul.status li.status div.floatright {
 		width: 99%;
 	}
+
+    .buddyList ul {
+        width: 24%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -139,6 +158,10 @@ img.comment_avatar {
     }
     .info_bar {
         text-align: left;
+    }
+
+    .buddyList ul {
+        width: 48%;
     }
 }
 

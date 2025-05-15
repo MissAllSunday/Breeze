@@ -65,6 +65,11 @@ class ProfileService implements ProfileServiceInterface
 		$this->components->loadCSSFile(Components::CSS_FILE, [], 'smf_breeze');
 	}
 
+	public function loadUsersInfo(array $userIds = []): array
+	{
+		return $this->userRepository->loadUsersInfo($userIds);
+	}
+
 	public function setEditor(): void
 	{
 		$this->requireOnce('Subs-Editor');

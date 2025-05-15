@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Controller\User;
 
 use Breeze\Controller\BaseController;
+use Breeze\Entity\UserSettingsEntity;
 use Breeze\Service\ProfileServiceInterface;
 use Breeze\Util\Error;
 use Breeze\Util\Response;
@@ -36,6 +37,7 @@ class WallController extends BaseController
 	public function profile(): void
 	{
 		$profileId = $this->getRequest('u', 0);
+		$buddiesData = [];
 
 		if (empty($profileId)) {
 			Error::show('no_valid_action');
@@ -48,10 +50,15 @@ class WallController extends BaseController
 			Error::show('error_no_access');
 		}
 
+		if (!empty($profileSettings[UserSettingsEntity::ENABLE_BUDDIES_TAB])) {
+			$buddiesData = $this->profileService->loadUsersInfo($profileSettings[UserSettingsEntity::BUDDIES]);
+		}
+
 		$this->profileService->setEditor();
 
 		$this->render(__FUNCTION__, [
 			'profileSettings' => $profileSettings,
+			'buddiesData' => $buddiesData,
 		]);
 
 		$this->profileService->loadComponents($profileId);
