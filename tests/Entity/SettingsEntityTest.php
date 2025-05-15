@@ -14,8 +14,6 @@ class SettingsEntityTest extends TestCase
 		$this->assertEquals([
 			'master' => 'check',
 			'forceWall' => 'check',
-			'maxBuddiesNumber' => 'int',
-			'aboutMeMaxLength' => 'int',
 			'maxFloodNum' => 'int',
 			'maxFloodMinutes' => 'int',
 		], SettingsEntity::getColumns());

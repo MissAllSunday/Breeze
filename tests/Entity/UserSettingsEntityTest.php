@@ -17,6 +17,7 @@ class UserSettingsEntityTest extends TestCase
 			'paginationNumber' => 'text',
 			'kickIgnored' => 'check',
 			'aboutMe' => 'textArea',
+			'enableBuddiesTab' => 'check',
 		], UserSettingsEntity::getColumns());
 	}
 
@@ -28,6 +29,7 @@ class UserSettingsEntityTest extends TestCase
 			'paginationNumber' => 5,
 			'kickIgnored' => 0,
 			'aboutMe' => '',
+			'enableBuddiesTab' => 0,
 		], UserSettingsEntity::getDefaultValues());
 	}
 
@@ -38,6 +40,7 @@ class UserSettingsEntityTest extends TestCase
 			'generalWall' => 0,
 			'paginationNumber' => 5,
 			'kickIgnored' => 0,
+			'enableBuddiesTab' => 0,
 		], UserSettingsEntity::getInts());
 	}
 
