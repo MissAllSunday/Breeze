@@ -18,6 +18,10 @@ function Tabs(props: { children: ReactNode; }): React.JSX.Element {
   useEffect(() => {
     const initialTabs:TabsType = [];
     Children.forEach(props.children, (child:any, index) => {
+      if (child === null) {
+        return;
+      }
+
       initialTabs.push({
         index,
         href: '#tab-' + index,
