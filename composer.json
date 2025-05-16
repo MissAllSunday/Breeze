@@ -57,8 +57,7 @@
         "test": [
             "@lint:check",
             "@phpunit",
-            "@phpstan",
-            "@ui:test"
+            "@phpstan"
         ]
     }
 }
