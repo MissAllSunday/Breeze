@@ -29,8 +29,6 @@ The mod uses the following scripts:
 composer test
 ```
 
-
-
 ##### Generate an optimized SMF package
 ```bash
 chmod +x generate_zip.sh && ./generate_zip.sh

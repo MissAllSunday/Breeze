@@ -37,7 +37,7 @@ class Breeze
 	public const SUPPORT_URL = 'https://missallsunday.com';
 	public const REACT_DOM_VERSION = '18.2.0';
 	public const REACT_VERSION = '18.2.0';
-	public const REACT_HASH = 'bb5a0ebe';
+	public const REACT_HASH = '1f1b817c';
 	public const ACTIONS = [
 		'breezeStatus',
 		'breezeComment',
@@ -205,11 +205,12 @@ class Breeze
 			$commentController = $this->container->get(CommentController::class);
 			$likesController = $this->container->get(LikesController::class);
 			$wallController = $this->container->get(WallController::class);
+			// $buddyController = $this->container->get(BuddyController::class);
 
 			$actions['breezeStatus'] = [false, fn () => $statusController->dispatch()];
 			$actions['breezeComment'] = [false, fn () => $commentController->dispatch()];
 			$actions['wall'] = [false, [$wallController, 'dispatch']];
-			$actions['breezeBuddy'] = [false, BuddyController::class . '::dispatch#'];
+			// $actions['buddy'] = [false, fn () => $buddyController->dispatch()];
 			$actions['breezeLike'] = [false, fn () => $likesController->dispatch()];
 		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
 			log_error($exception->getMessage());

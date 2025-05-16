@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Breeze\Service\Notifications\SMF_BackgroundTask;
+
 /**
  * Breeze-Notify.php
  *

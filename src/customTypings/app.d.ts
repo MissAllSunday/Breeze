@@ -11,6 +11,11 @@ declare module 'breezeTypes' {
     userId: number
   }
 
+  interface TabContentProps {
+    content: string,
+    name: string
+  }
+
   interface WallState {
     list: StatusType[]
     isLoading: boolean
@@ -19,11 +24,12 @@ declare module 'breezeTypes' {
   interface WallProps {
     wallType: string,
     pagination: number,
+    name: string,
   }
 }
 
 module.exports = {
-  AboutMeProps,
+  TabContentProps,
   smfVars,
   WallProps,
   WallState,

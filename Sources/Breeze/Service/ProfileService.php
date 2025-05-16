@@ -54,6 +54,8 @@ class ProfileService implements ProfileServiceInterface
 			'editorOptions' => $editorContext['sce_options'],
 			'editorIsRich' => $editorContext['rich_active'],
 			'currentUserAvatar' => $userInfo['avatar']['url'],
+			UserSettingsEntity::ENABLE_BUDDIES_TAB => $wallUserSettings[UserSettingsEntity::ENABLE_BUDDIES_TAB],
+			UserSettingsEntity::ABOUT_ME => !empty($wallUserSettings[UserSettingsEntity::ABOUT_ME]),
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
 		$this->components->loadJavaScriptFile(Components::FOLDER . 'main.' . Breeze::REACT_HASH . '.js', [
@@ -62,6 +64,16 @@ class ProfileService implements ProfileServiceInterface
 		], strtolower(Breeze::PATTERN . Breeze::REACT_HASH));
 
 		$this->components->loadCSSFile(Components::CSS_FILE, [], 'smf_breeze');
+	}
+
+	public function loadUsersInfo(array $userIds = []): array
+	{
+		return $this->userRepository->loadUsersInfo($userIds);
+	}
+
+	public function updateMemberData(int $userId, array $updatedData): void
+	{
+		updateMemberData($userId, $updatedData);
 	}
 
 	public function setEditor(): void

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\User;
 
-interface UserRepositoryInterface
+use Breeze\Repository\BaseRepositoryInterface;
+
+interface UserRepositoryInterface extends BaseRepositoryInterface
 {
 	public function getById(int $id): array;
 

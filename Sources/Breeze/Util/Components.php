@@ -94,6 +94,7 @@ class Components
 				'wall' => $this->getText('tabs_wall'),
 				'about' => $this->getText('tabs_about'),
 				'activity' => $this->getText('tabs_activity'),
+				'buddies' => $this->getText('tabs_buddies'),
 			],
 			'like' => [
 				'like' => $this->getSmfText('like'),

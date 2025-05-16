@@ -88,7 +88,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
 
   return (
       <>
-        <Editor saveContent={createStatus} isFull={true}/>
+        {permissions.Status.post ? <Editor saveContent={createStatus} isFull={true}/> : ''}
         <Toaster toastOptions={{
           duration: 4000,
         }}/>

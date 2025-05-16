@@ -29,6 +29,10 @@ const aboutMe = (document.getElementById('tab-about') ??
   document.createElement('tab-about'));
 const aboutMeContent = aboutMe.innerHTML;
 aboutMe.innerHTML = '';
+const buddiesTab = (document.getElementById('tab-buddies') ??
+  document.createElement('tab-buddies'));
+const buddiesTabContent = buddiesTab.innerHTML;
+buddiesTab.innerHTML = '';
 
 // @ts-expect-error editor gets defined serverside
 const editorOptions = window.breezeEditorOptions || [];
@@ -48,6 +52,7 @@ const smfVars = {
   smfImagesUrl,
   pagination,
   aboutMeContent,
+  buddiesTabContent,
   smfEditorHandler,
   editorOptions,
   editorIsRich,
