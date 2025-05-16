@@ -22,6 +22,8 @@ interface ProfileServiceInterface
 
 	public function loadUsersInfo(array $userIds = []): array;
 
+	public function updateMemberData(int $userId, array $updatedData): void;
+
 	public function setEditor(): void;
 
 	public function stalkingCheck(int $userStalkedId = 0): bool;

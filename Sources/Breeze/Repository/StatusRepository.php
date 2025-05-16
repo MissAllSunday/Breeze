@@ -40,9 +40,6 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		return $newStatusId;
 	}
 
-	/**
-	 * @throws EmptyDataException
-	 */
 	public function getByProfile(array $userProfiles = [], int $start = 0, int $maxIndex = 0): array
 	{
 		$status = $this->statusModel->getStatusByProfile([
@@ -50,10 +47,6 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			'maxIndex' => $maxIndex,
 			'ids' => $userProfiles,
 		]);
-
-		if (empty($status['data'])) {
-			throw new EmptyDataException('');
-		}
 
 		$comments = $this->commentRepository->getByProfile($userProfiles);
 		$status['data'] = $this->likeRepository->appendLikeData($status['data'], StatusEntity::ID);

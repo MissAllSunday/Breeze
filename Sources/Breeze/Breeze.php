@@ -205,11 +205,12 @@ class Breeze
 			$commentController = $this->container->get(CommentController::class);
 			$likesController = $this->container->get(LikesController::class);
 			$wallController = $this->container->get(WallController::class);
+			$buddyController = $this->container->get(BuddyController::class);
 
 			$actions['breezeStatus'] = [false, fn () => $statusController->dispatch()];
 			$actions['breezeComment'] = [false, fn () => $commentController->dispatch()];
 			$actions['wall'] = [false, [$wallController, 'dispatch']];
-			$actions['breezeBuddy'] = [false, BuddyController::class . '::dispatch#'];
+			$actions['buddy'] = [false, fn () => $buddyController->dispatch()];
 			$actions['breezeLike'] = [false, fn () => $likesController->dispatch()];
 		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
 			log_error($exception->getMessage());

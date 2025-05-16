@@ -71,6 +71,11 @@ class ProfileService implements ProfileServiceInterface
 		return $this->userRepository->loadUsersInfo($userIds);
 	}
 
+	public function updateMemberData(int $userId, array $updatedData): void
+	{
+		updateMemberData($userId, $updatedData);
+	}
+
 	public function setEditor(): void
 	{
 		$this->requireOnce('Subs-Editor');
