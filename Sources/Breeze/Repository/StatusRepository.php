@@ -9,7 +9,6 @@ use Breeze\Entity\StatusEntity;
 use Breeze\Model\StatusModelInterface;
 use Breeze\Traits\TimeTrait;
 use Breeze\Util\Validate\DataNotFoundException;
-use Breeze\Util\Validate\EmptyDataException;
 
 class StatusRepository extends BaseRepository implements StatusRepositoryInterface
 {

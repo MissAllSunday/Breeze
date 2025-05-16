@@ -10,7 +10,7 @@ use Breeze\Entity\UserSettingsEntity;
  */
 function template_profile(): void
 {
-	global $context, $txt;
+	global $context, $txt, $scripturl;
 
 	echo '
 	<hr />
@@ -42,9 +42,10 @@ function template_profile(): void
 				<ul class="reset buddyList">';
 
 			foreach ($context[Breeze::NAME]['buddiesData'] as $buddy) {
+				$buddyIcon = $buddy['is_buddy'] ? 'delete' : 'plus';
+				$buddyText = $buddy['is_buddy'] ? 'remove' : 'add';
 				echo '
 				<ul class="flow_auto">
-    				<li>', $buddy['link_color'] ,'</li>
     				<li class="avatar">
     					<a href="', $buddy['href'], '">
 			  				<img
@@ -53,6 +54,11 @@ function template_profile(): void
 								class="avatar" />
 						</a>
     				</li>
+    				<li>
+    					', $buddy['link_color'] ,'
+    					<a href="', $scripturl , '?action=buddy;u=', $buddy['id'], ';', $context['session_var'], '=', $context['session_id'], '">
+    						<span class="main_icons ', $buddyIcon , '" title="', $txt['buddy_'. $buddyText] ,'" /></a>
+					</li>
   				</ul>';
 			}
 			echo '
