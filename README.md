@@ -26,7 +26,7 @@ The mod uses the following scripts:
 
 ##### Tests
 ```bash
-composer test
+composer test && npm test -- --verbose=true
 ```
 
 ##### Generate an optimized SMF package
