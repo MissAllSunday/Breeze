@@ -6,7 +6,7 @@ namespace Breeze\Database;
 
 class DatabaseClient implements ClientInterface
 {
-	protected $db = false;
+	protected mixed $db = false;
 
 	public function __construct()
 	{

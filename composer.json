@@ -22,7 +22,8 @@
     "require": {
         "php": ">=8.2.0",
         "league/container": "^5.0",
-        "ext-json": "*"
+        "ext-json": "*",
+        "league/event": "^3.0"
     },
     "require-dev": {
       "roave/security-advisories": "dev-latest",

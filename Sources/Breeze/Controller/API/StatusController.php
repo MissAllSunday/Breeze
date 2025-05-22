@@ -6,6 +6,9 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\StatusEntity;
+use Breeze\Event\EventServiceProvider;
+use Breeze\Event\Status\StatusCreatedEvent;
+use Breeze\Event\Status\StatusDeletedEvent;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Service\StatusService;
 use Breeze\Util\Response;
@@ -31,7 +34,8 @@ class StatusController extends ApiBaseController
 	public function __construct(
 		protected StatusService $statusService,
 		protected ValidateActionsInterface $validateActions,
-		protected Response $response
+		protected Response $response,
+		protected EventServiceProvider $eventServiceProvider
 	) {
 		parent::__construct($validateActions, $response);
 	}
@@ -68,7 +72,11 @@ class StatusController extends ApiBaseController
 	public function deleteStatus(): void
 	{
 		try {
-			$this->statusService->deleteById($this->data[StatusEntity::ID]);
+			$statusId = (int) $this->data[StatusEntity::ID];
+			$this->statusService->deleteById($statusId);
+
+			// Dispatch the status deleted event
+			$this->eventServiceProvider->getDispatcher()->dispatch(new StatusDeletedEvent($statusId));
 
 			$this->response->success('deleted_status', [], Response::NO_CONTENT);
 		} catch (InvalidStatusException $invalidStatusException) {
@@ -80,6 +88,9 @@ class StatusController extends ApiBaseController
 	{
 		try {
 			$status = $this->statusService->save($this->data);
+
+			// Dispatch the status created event
+			$this->eventServiceProvider->getDispatcher()->dispatch(new StatusCreatedEvent($status));
 
 			$this->response->success(
 				'published_status',

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze;
 
-use Breeze\Config\MapperAggregate;
+use Breeze\Config\ConfigServiceProvider;
 use Breeze\Controller\AdminController;
 use Breeze\Controller\API\CommentController;
 use Breeze\Controller\API\LikesController;
@@ -14,6 +14,7 @@ use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
+use Breeze\Event\EventServiceProvider;
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminServiceInterface;
 use Breeze\Service\PermissionsService;
@@ -51,21 +52,14 @@ class Breeze
 
 	public function __construct()
 	{
-		$this->container = new Container();
-		$mappers = (new MapperAggregate())->getMappers();
+		try {
+			$this->container = new Container();
+			$this->container->addServiceProvider(new ConfigServiceProvider());
 
-		foreach ($mappers as $mapperFile) {
-			foreach ($mapperFile as $mapperInfo) {
-				if (empty($mapperInfo['class'])) {
-					continue;
-				}
-
-				if (!empty($mapperInfo['arguments'])) {
-					$this->container->add($mapperInfo['class'])->addArguments($mapperInfo['arguments']);
-				} else {
-					$this->container->add($mapperInfo['class']);
-				}
-			}
+			// Initialize the event service provider
+			// $this->container->get(EventServiceProvider::class);
+		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
+			log_error($exception->getMessage());
 		}
 	}
 
