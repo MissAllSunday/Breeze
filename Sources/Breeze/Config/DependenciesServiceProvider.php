@@ -46,21 +46,43 @@ use Breeze\Util\Components;
 use Breeze\Util\Form\SettingsBuilder;
 use Breeze\Util\Form\UserSettingsBuilder;
 use Breeze\Util\Response;
+use Breeze\Util\Validate\Validations\BaseActions;
+use Breeze\Util\Validate\Validations\Comment\DeleteComment;
+use Breeze\Util\Validate\Validations\Comment\PostComment;
 use Breeze\Util\Validate\Validations\Comment\ValidateComment;
+use Breeze\Util\Validate\Validations\Likes\Like;
 use Breeze\Util\Validate\Validations\Likes\ValidateLikes;
+use Breeze\Util\Validate\Validations\Status\DeleteStatus;
+use Breeze\Util\Validate\Validations\Status\PostStatus;
+use Breeze\Util\Validate\Validations\Status\StatusByProfile;
 use Breeze\Util\Validate\Validations\Status\ValidateStatus;
+use Breeze\Validate\Types\Allow;
+use Breeze\Validate\Types\Data;
+use Breeze\Validate\Types\User;
 use League\Container\Container;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Event\EventDispatcher;
 
-class ConfigServiceProvider extends AbstractServiceProvider
+class DependenciesServiceProvider extends AbstractServiceProvider
 {
-	protected const SERVICES = [
+	protected const DEPENDENCIES = [
 		DatabaseClient::class => [],
 		SettingsBuilder::class => [],
 		UserSettingsBuilder::class => [],
 		Response::class => [],
 		Components::class => [],
+		Data::class => [],
+		User::class => [UserRepository::class],
+		Allow::class => [],
+		DeleteStatus::class => [Data::class, User::class, Allow::class, StatusRepository::class],
+		PostStatus::class => [Data::class, User::class, Allow::class, StatusRepository::class],
+		StatusByProfile::class => [Data::class, User::class, Allow::class, StatusRepository::class],
+		DeleteComment::class => [Data::class, User::class, Allow::class, CommentRepository::class],
+		PostComment::class => [Data::class, User::class, Allow::class, CommentRepository::class],
+		Like::class => [Data::class, User::class, Allow::class, LikeRepository::class],
+		ValidateStatus::class => [DeleteStatus::class, PostStatus::class, StatusByProfile::class],
+		ValidateComment::class => [DeleteComment::class, PostComment::class],
+		ValidateLikes::class => [Like::class],
 		AdminController::class => [AdminService::class],
 		WallController::class => [Response::class, ProfileService::class],
 		StatusController::class => [StatusService::class, ValidateStatus::class, Response::class, EventServiceProvider::class],
@@ -79,6 +101,8 @@ class ConfigServiceProvider extends AbstractServiceProvider
 		SettingsEntity::class => [],
 		StatusEntity::class => [],
 		UserSettingsEntity::class => [],
+		StatusEventListener::class => [],
+		EventDispatcher::class => [],
 		EventServiceProvider::class => [EventDispatcher::class, StatusEventListener::class],
 		AlertModel::class => [],
 		CommentModel::class => [DatabaseClient::class],
@@ -101,7 +125,7 @@ class ConfigServiceProvider extends AbstractServiceProvider
 
 	public function provides(string $id): bool
 	{
-		return in_array($id, array_keys(self::SERVICES));
+		return in_array($id, array_keys(self::DEPENDENCIES));
 	}
 
 	public function register(): void
@@ -109,7 +133,7 @@ class ConfigServiceProvider extends AbstractServiceProvider
 		/** @var Container $container */
 		$container = $this->getContainer();
 
-		foreach (self::SERVICES as $service => $arguments) {
+		foreach (self::DEPENDENCIES as $service => $arguments) {
 			if (!empty($arguments)) {
 				$container->add($service)->addArguments($arguments);
 			} else {

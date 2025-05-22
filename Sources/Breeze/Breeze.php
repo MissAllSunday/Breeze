@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace Breeze;
 
-use Breeze\Config\ConfigServiceProvider;
+use Breeze\Config\DependenciesServiceProvider;
 use Breeze\Controller\AdminController;
 use Breeze\Controller\API\CommentController;
 use Breeze\Controller\API\LikesController;
 use Breeze\Controller\API\StatusController;
-use Breeze\Controller\BuddyController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
-use Breeze\Event\EventServiceProvider;
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminServiceInterface;
 use Breeze\Service\PermissionsService;
@@ -54,10 +52,7 @@ class Breeze
 	{
 		try {
 			$this->container = new Container();
-			$this->container->addServiceProvider(new ConfigServiceProvider());
-
-			// Initialize the event service provider
-			// $this->container->get(EventServiceProvider::class);
+			$this->container->addServiceProvider(new DependenciesServiceProvider());
 		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
 			log_error($exception->getMessage());
 		}
@@ -69,7 +64,9 @@ class Breeze
 	}
 
 	/**
-	 * @throws DataNotFoundException
+	 * @param array $profileAreas
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
 	 */
 	public function profileMenuWrapper(array &$profileAreas): void
 	{
