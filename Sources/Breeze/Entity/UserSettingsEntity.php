@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class UserSettingsEntity extends BaseEntity implements BaseEntityInterface
+class UserSettingsEntity extends Entity implements EntityInterface
 {
 	public const IDENTIFIER = 'user_settings';
 	public const WALL = 'wall';

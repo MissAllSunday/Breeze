@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Entity\EntityInterface;
 use Breeze\Entity\UserDataEntity;
 use Breeze\Traits\CacheTrait;
 use Breeze\Traits\TextTrait;
@@ -13,6 +14,17 @@ abstract class BaseRepository implements BaseRepositoryInterface
 {
 	use CacheTrait;
 	use TextTrait;
+
+	protected function buildSetUpdate(EntityInterface $entity): string
+	{
+		$set = 'SET ';
+		$columns = $entity->getColumns();
+		foreach ($entity->toArray() as $name => $type) {
+			$set .= ' ' . $name . ' = {' . $columns[$name] . ':' . $name . '},';
+		}
+
+		return rtrim($set, ',');
+	}
 
 	public function handleLikes($type, $content): array
 	{

@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class OptionsEntity extends NormalizeEntity implements BaseEntityInterface
+class OptionsEntity extends NormalizedEntity implements EntityInterface
 {
 	public const TABLE = 'breeze_options';
 	public const COLUMN_MEMBER_ID = 'member_id';

@@ -64,7 +64,6 @@ class Breeze
 	}
 
 	/**
-	 * @param array $profileAreas
 	 * @throws ContainerExceptionInterface
 	 * @throws NotFoundExceptionInterface
 	 */

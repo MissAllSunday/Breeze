@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use Breeze\Entity\LogEntity as LogEntity;
+use Breeze\Entity\LogEntity;
 use Breeze\Util\Json;
 
 class LogModel extends BaseModel implements LogModelInterface

@@ -5,16 +5,18 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-abstract class NormalizeEntity extends BaseEntity implements BaseEntityInterface
+abstract class NormalizedEntity extends Entity implements EntityInterface
 {
 	abstract public function getColumnMap(): array;
 
-	public function setEntry(array $entry): void
+	public function setEntity(array $entry): Entity
 	{
-		foreach ($this->normalizeKeys($entry) as $key => $value) {
-			$setCall = 'set' . $this->snakeToCamel($key);
+		foreach ($this->castValues($this->normalizeKeys($entry)) as $key => $value) {
+			$setCall = 'set' . ucfirst($this->snakeToCamel($key));
 			$this->{$setCall}($value);
 		}
+
+		return $this;
 	}
 
 	public function normalizeKeys(array $rawRowKeys = []): array {

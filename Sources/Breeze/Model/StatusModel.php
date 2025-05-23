@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Model;
 
 use Breeze\Entity\LikeEntity;
-use Breeze\Entity\StatusEntity as StatusEntity;
+use Breeze\Entity\StatusEntity;
 use Breeze\Util\Parser;
 
 class StatusModel extends BaseModel implements StatusModelInterface

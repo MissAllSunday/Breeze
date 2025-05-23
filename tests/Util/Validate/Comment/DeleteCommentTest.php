@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Comment;
 
-use Breeze\Entity\CommentEntity as CommentEntity;
+use Breeze\Entity\CommentEntity;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
@@ -24,8 +24,6 @@ class DeleteCommentTest extends TestCase
 
 	private User | MockObject $validateUser;
 
-	private Data | MockObject $validateData;
-
 	private DeleteComment $deleteComment;
 
 	/**
@@ -36,10 +34,10 @@ class DeleteCommentTest extends TestCase
 		$this->commentRepository = $this->createMock(CommentRepositoryInterface::class);
 		$this->validateAllow = $this->createMock(Allow::class);
 		$this->validateUser = $this->createMock(User::class);
-		$this->validateData = $this->createMock(Data::class);
+		$validateData = $this->createMock(Data::class);
 
 		$this->deleteComment = new DeleteComment(
-			$this->validateData,
+			$validateData,
 			$this->validateUser,
 			$this->validateAllow,
 			$this->commentRepository

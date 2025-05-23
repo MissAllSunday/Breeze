@@ -25,7 +25,6 @@ use Breeze\Entity\StatusEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Event\EventServiceProvider;
 use Breeze\Event\Status\StatusEventListener;
-use Breeze\Model\AlertModel;
 use Breeze\Model\CommentModel;
 use Breeze\Model\LikeModel;
 use Breeze\Model\LogModel;
@@ -33,12 +32,14 @@ use Breeze\Model\MentionModel;
 use Breeze\Model\NotificationModel;
 use Breeze\Model\StatusModel;
 use Breeze\Model\UserModel;
+use Breeze\Repository\AlertRepository;
 use Breeze\Repository\CommentRepository;
 use Breeze\Repository\LikeRepository;
 use Breeze\Repository\NotificationRepository;
 use Breeze\Repository\StatusRepository;
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminService;
+use Breeze\Service\AlertService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\ProfileService;
 use Breeze\Service\StatusService;
@@ -46,7 +47,6 @@ use Breeze\Util\Components;
 use Breeze\Util\Form\SettingsBuilder;
 use Breeze\Util\Form\UserSettingsBuilder;
 use Breeze\Util\Response;
-use Breeze\Util\Validate\Validations\BaseActions;
 use Breeze\Util\Validate\Validations\Comment\DeleteComment;
 use Breeze\Util\Validate\Validations\Comment\PostComment;
 use Breeze\Util\Validate\Validations\Comment\ValidateComment;
@@ -104,7 +104,6 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		StatusEventListener::class => [],
 		EventDispatcher::class => [],
 		EventServiceProvider::class => [EventDispatcher::class, StatusEventListener::class],
-		AlertModel::class => [],
 		CommentModel::class => [DatabaseClient::class],
 		LikeModel::class => [DatabaseClient::class],
 		LogModel::class => [DatabaseClient::class],
@@ -113,6 +112,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		StatusModel::class => [DatabaseClient::class],
 		UserModel::class => [DatabaseClient::class],
 		UserRepository::class => [UserModel::class],
+		AlertRepository::class => [DatabaseClient::class],
 		CommentRepository::class => [CommentModel::class, LikeRepository::class],
 		LikeRepository::class => [LikeModel::class],
 		NotificationRepository::class => [NotificationModel::class],
@@ -121,6 +121,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		ProfileService::class => [UserRepository::class, Components::class, PermissionsService::class],
 		PermissionsService::class => [],
 		StatusService::class => [StatusRepository::class, UserRepository::class, PermissionsService::class],
+		AlertService::class => [AlertRepository::class],
 	];
 
 	public function provides(string $id): bool
@@ -134,11 +135,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		$container = $this->getContainer();
 
 		foreach (self::DEPENDENCIES as $service => $arguments) {
-			if (!empty($arguments)) {
-				$container->add($service)->addArguments($arguments);
-			} else {
-				$container->add($service);
-			}
+			$container->add($service)->addArguments($arguments);
 		}
 	}
 }

@@ -7,7 +7,7 @@ namespace Breeze\Entity;
 use DateTimeImmutable;
 use Exception;
 
-class StatusEntity extends BaseEntity implements BaseEntityInterface
+class StatusEntity extends Entity implements EntityInterface
 {
 	public const TABLE = 'breeze_status';
 	public const ID = 'id';

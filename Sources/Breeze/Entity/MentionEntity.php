@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class MentionEntity extends NormalizeEntity implements BaseEntityInterface
+class MentionEntity extends NormalizedEntity implements EntityInterface
 {
 	public const TABLE = 'mentions';
 	public const COLUMN_CONTENT_ID = 'content_id';

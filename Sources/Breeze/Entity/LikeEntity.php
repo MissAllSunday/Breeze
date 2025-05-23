@@ -9,7 +9,7 @@ use Breeze\LikesEnum;
 use DateTimeImmutable;
 use Exception;
 
-class LikeEntity extends NormalizeEntity implements BaseEntityInterface
+class LikeEntity extends NormalizedEntity implements EntityInterface
 {
 	public const TABLE = 'user_likes';
 	public const COLUMN_ID_MEMBER = 'id_member';
