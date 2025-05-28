@@ -6,7 +6,7 @@ namespace Breeze\Repository;
 
 use Breeze\Entity\AlertEntity as AlertEntity;
 
-interface AlertRepositoryInterface
+interface AlertRepositoryInterface extends BaseRepositoryInterface
 {
 	public function insert(AlertEntity $alertEntity): int;
 
@@ -15,6 +15,4 @@ interface AlertRepositoryInterface
 	public function checkAlert(int $userId, string $alertType, int $alertId = 0, string $alertSender = ''): bool;
 
 	public function delete(array $alertIds): bool;
-
-	public function getById(int $id): array;
 }

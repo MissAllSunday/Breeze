@@ -48,7 +48,7 @@ trait TextTrait
 
 		foreach ($replacements as $find => $replace) {
 			$toFind[] = '{' . $find . '}';
-			$replaceWith[] = $replace . ((strpos($find, self::$session_token) !== false) ? $session_var : '');
+			$replaceWith[] = $replace . ((str_contains($find, self::$session_token)) ? $session_var : '');
 		}
 
 		return str_replace($toFind, $replaceWith, $text);
@@ -56,21 +56,11 @@ trait TextTrait
 
 	public function commaSeparated(string $dirtyString = '', string $type = 'alphanumeric'): string
 	{
-		switch ($type) {
-			case 'numeric':
-				$t = '\d';
-
-				break;
-			case 'alpha':
-				$t = '[:alpha:]';
-
-				break;
-			case 'alphanumeric':
-			default:
-				$t = '[:alnum:]';
-
-				break;
-		}
+		$t = match ($type) {
+			'numeric' => '\d',
+			'alpha' => '[:alpha:]',
+			default => '[:alnum:]',
+		};
 
 		return $dirtyString === '' || $dirtyString === '0' ? '' : implode(',', array_filter(explode(',', preg_replace(
 			[

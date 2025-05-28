@@ -8,9 +8,13 @@ use Breeze\Entity\AlertEntity;
 
 interface AlertServiceInterface
 {
-	public function create(AlertEntity $alertEntity): int;
+	public function send(AlertEntity $alertEntity): void;
 
 	public function getById(int $alertId): array;
 
 	public function delete(int $alertId): bool;
+
+	public function loadUsersInfo(array $userIds = []): array;
+
+	public function handle(array &$alerts, array &$formats): void;
 }

@@ -59,6 +59,10 @@
             "@lint:check",
             "@phpunit",
             "@phpstan"
+        ],
+        "ltest": [
+          "@lint",
+          "@test"
         ]
     }
 }
