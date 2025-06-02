@@ -16,5 +16,5 @@ interface AlertServiceInterface
 
 	public function loadUsersInfo(array $userIds = []): array;
 
-	public function handle(array &$alerts, array &$formats): void;
+	public function handle(array &$alerts): void;
 }

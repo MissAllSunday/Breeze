@@ -25,13 +25,13 @@ class AlertService extends BaseService implements AlertServiceInterface
 		updateMemberData($alertEntity->getIdMember(), ['alerts' => '+']);
 	}
 
-	public function handle(array &$alerts, array &$formats): void
+	public function handle(array &$alerts): void
 	{
 		$breezeAlerts = [];
 		$refId = 0;
 
 		foreach ($alerts as $id => $alert) {
-			if (str_contains($alert['type'], Breeze::PATTERN)) {
+			if (str_contains($alert['content_type'], Breeze::PATTERN)) {
 				$alert['text'] = $this->buildAlertText($alert);
 				$alert['target_href'] = $this->buildTargetHref($alert);
 			}

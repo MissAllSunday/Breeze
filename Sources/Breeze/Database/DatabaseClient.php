@@ -53,10 +53,10 @@ class DatabaseClient implements ClientInterface
 
 		$this->db['db_insert'](
 			'insert',
-			'{db_prefix}' . $tableName . '',
+			'{db_prefix}' . $tableName,
 			$columns,
 			$data,
-			(array)$columnIdName
+			(array) $columnIdName
 		);
 	}
 

@@ -16,6 +16,10 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 
 	public function insert(AlertEntity $alertEntity): int
 	{
+		// Don't need the ID (Yet!)
+		$alertEntity->unsetIdAlert();
+		$alertEntity->setAlertTime(time());
+
 		$this->dbClient->insert(AlertEntity::TABLE, [
 			AlertEntity::COLUMN_ALERT_TIME => 'int',
 			AlertEntity::COLUMN_ID_MEMBER => 'int',

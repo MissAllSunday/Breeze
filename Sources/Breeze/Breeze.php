@@ -15,6 +15,7 @@ use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\User\UserRepository;
 use Breeze\Service\Actions\AdminServiceInterface;
+use Breeze\Service\AlertService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\ProfileService;
 use Breeze\Traits\RequestTrait;
@@ -216,9 +217,14 @@ class Breeze
 		}
 	}
 
-	public function alertsPrefWrapper(array &$alertTypes, &$groupOptions): void
+	/**
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
+	public function alertsWrapper(array &$alerts, array &$formats): void
 	{
-		$this->container->get(ProfileService::class)->hookAlertsPref($alertTypes);
+		$alertService = $this->container->get(AlertService::class);
+		$alertService->handle($alerts, $formats);
 	}
 
 	public function adminMenuWrapper(array &$adminMenu): void

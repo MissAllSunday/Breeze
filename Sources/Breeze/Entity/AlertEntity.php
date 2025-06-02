@@ -5,7 +5,9 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class AlertEntity extends NormalizedEntity
+use DateTimeImmutable;
+
+class AlertEntity extends Entity
 {
 	public const TABLE = 'user_alerts';
 	public const COLUMN_ID = 'id_alert';
@@ -19,137 +21,122 @@ class AlertEntity extends NormalizedEntity
 	public const COLUMN_IS_READ = 'is_read';
 	public const COLUMN_EXTRA = 'extra';
 
-	public const PROPERTY_ID = 'id';
-	public const PROPERTY_TIME = 'time';
-	public const PROPERTY_ID_MEMBER = 'idMember';
-	public const PROPERTY_ID_MEMBER_STARTED = 'idMemberStarted';
-	public const PROPERTY_MEMBER_NAME = 'memberName';
-	public const PROPERTY_TYPE = 'type';
-	public const PROPERTY_CONTENT_ID = 'contentId';
-	public const PROPERTY_ACTION = 'action';
-	public const PROPERTY_IS_READ = 'isRead';
-	public const PROPERTY_EXTRA = 'extra';
-	public const KEY_MAP = [
-		self::COLUMN_ID => self::PROPERTY_ID,
-		self::COLUMN_ALERT_TIME => self::PROPERTY_TIME,
-		self::COLUMN_ID_MEMBER => self::PROPERTY_ID_MEMBER,
-		self::COLUMN_ID_MEMBER_STARTED => self::PROPERTY_ID_MEMBER_STARTED,
-		self::COLUMN_MEMBER_NAME => self::PROPERTY_MEMBER_NAME,
-		self::COLUMN_CONTENT_TYPE => self::PROPERTY_TYPE,
-		self::COLUMN_CONTENT_ID => self::PROPERTY_CONTENT_ID,
-		self::COLUMN_CONTENT_ACTION => self::PROPERTY_ACTION,
-		self::COLUMN_IS_READ => self::PROPERTY_IS_READ,
-		self::COLUMN_EXTRA => self::PROPERTY_EXTRA,
-	];
+	protected int $id_alert = 0;
 
-	protected int $id = 0;
+	protected int | DateTimeImmutable $alert_time = 0;
 
-	protected string $time = '';
+	protected int $id_member = 0;
 
-	protected int $idMember = 0;
+	protected int $id_member_started = 0;
 
-	protected int $idMemberStarted = 0;
+	protected string $member_name = '';
 
-	protected string $memberName = '';
+	protected string $content_type = '';
 
-	protected string $type = '';
+	protected int $content_id = 0;
 
-	protected int $contentId = 0;
+	protected string $content_action = '';
 
-	protected string $action = '';
-
-	protected bool $isRead = false;
+	protected int $is_read = 0;
 
 	protected string $extra = '';
 
-	public function getId(): int
+	public function getIdAlert(): int
 	{
-		return $this->id;
+		return $this->id_alert;
 	}
 
-	public function setId(int $id): void
+	public function setIdAlert(int $id): void
 	{
-		$this->id = $id;
+		$this->id_alert = $id;
 	}
 
-	public function getTime(): string
+	public function unsetIdAlert():void
 	{
-		return $this->time;
+		unset($this->id_alert);
 	}
 
-	public function setTime(string $time): void
+	/**
+	 * @throws \DateMalformedStringException
+	 */
+	public function getAlertTime(): DateTimeImmutable
 	{
-		$this->time = $time;
+		return is_int($this->alert_time) ? new DateTimeImmutable('@' . $this->alert_time) : $this->alert_time;
+	}
+
+	public function setAlertTime(int | DateTimeImmutable $time): void
+	{
+		$this->alert_time = $time;
 	}
 
 	public function getIdMember(): int
 	{
-		return $this->idMember;
+		return $this->id_member;
 	}
 
 	public function setIdMember(int $idMember): void
 	{
-		$this->idMember = $idMember;
+		$this->id_member = $idMember;
 	}
 
 	public function getIdMemberStarted(): int
 	{
-		return $this->idMemberStarted;
+		return $this->id_member_started;
 	}
 
 	public function setIdMemberStarted(int $idMemberStarted): void
 	{
-		$this->idMemberStarted = $idMemberStarted;
+		$this->id_member_started = $idMemberStarted;
 	}
 
 	public function getMemberName(): string
 	{
-		return $this->memberName;
+		return $this->member_name;
 	}
 
 	public function setMemberName(string $memberName): void
 	{
-		$this->memberName = $memberName;
+		$this->member_name = $memberName;
 	}
 
-	public function getType(): string
+	public function getContentType(): string
 	{
-		return $this->type;
+		return $this->content_type;
 	}
 
-	public function setType(string $type): void
+	public function setContentType(string $type): void
 	{
-		$this->type = $type;
+		$this->content_type = $type;
 	}
 
 	public function getContentId(): int
 	{
-		return $this->contentId;
+		return $this->content_id;
 	}
 
 	public function setContentId(int $contentId): void
 	{
-		$this->contentId = $contentId;
+		$this->content_id = $contentId;
 	}
 
-	public function getAction(): string
+	public function getContentAction(): string
 	{
-		return $this->action;
+		return $this->content_action;
 	}
 
-	public function setAction(string $action): void
+	public function setContentAction(string $action): void
 	{
-		$this->action = $action;
+		$this->content_action = $action;
 	}
 
 	public function isRead(): bool
 	{
-		return $this->isRead;
+		return (bool) $this->is_read;
 	}
 
 	public function setIsRead(bool|int $isRead): void
 	{
-		$this->isRead = (bool) $isRead;
+		$this->is_read = (int) $isRead;
 	}
 
 	public function getExtra(): string
@@ -181,10 +168,5 @@ class AlertEntity extends NormalizedEntity
 	public static function getTableName(): string
 	{
 		return self::TABLE;
-	}
-
-	public function getColumnMap(): array
-	{
-		return self::KEY_MAP;
 	}
 }

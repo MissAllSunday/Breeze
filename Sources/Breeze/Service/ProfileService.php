@@ -46,7 +46,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		$context = $this->global('context');
 		$userInfo = $this->getCurrentUserInfo();
 		$wallUserSettings = $this->userRepository->getById($profileId);
-		$editorContext = &$context['controls']['richedit'][Breeze::NAME];
+		$editorContext = $context['controls']['richedit'][Breeze::NAME];
 
 		$this->components->loadUIVars([
 			'profileId' => $profileId,

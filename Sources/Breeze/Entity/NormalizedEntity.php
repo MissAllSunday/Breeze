@@ -12,7 +12,7 @@ abstract class NormalizedEntity extends Entity implements EntityInterface
 	public function setEntity(array $entry): Entity
 	{
 		foreach ($this->castValues($this->normalizeKeys($entry)) as $key => $value) {
-			$setCall = 'set' . ucfirst($this->snakeToCamel($key));
+			$setCall = 'set' . ucfirst($key);
 			$this->{$setCall}($value);
 		}
 
@@ -21,10 +21,11 @@ abstract class NormalizedEntity extends Entity implements EntityInterface
 
 	public function normalizeKeys(array $rawRowKeys = []): array {
 		$columnMap = $this->getColumnMap();
-		array_walk($rawRowKeys, function ($value, &$key) use ($columnMap): void {
-			$key = $columnMap[$key];
+		$normalized = [];
+		array_walk($rawRowKeys, function ($value, $key) use ($columnMap, &$normalized): void {
+			$normalized[$columnMap[$key]] = $value;
 		});
 
-		return $rawRowKeys;
+		return $normalized;
 	}
 }
