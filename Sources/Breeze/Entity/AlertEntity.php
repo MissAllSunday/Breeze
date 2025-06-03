@@ -5,21 +5,22 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
+use Breeze\Util\Json;
 use DateTimeImmutable;
 
 class AlertEntity extends Entity
 {
-	public const TABLE = 'user_alerts';
-	public const COLUMN_ID = 'id_alert';
-	public const COLUMN_ALERT_TIME = 'alert_time';
-	public const COLUMN_ID_MEMBER = 'id_member';
-	public const COLUMN_ID_MEMBER_STARTED = 'id_member_started';
-	public const COLUMN_MEMBER_NAME = 'member_name';
-	public const COLUMN_CONTENT_TYPE = 'content_type';
-	public const COLUMN_CONTENT_ID = 'content_id';
-	public const COLUMN_CONTENT_ACTION = 'content_action';
-	public const COLUMN_IS_READ = 'is_read';
-	public const COLUMN_EXTRA = 'extra';
+	public const string TABLE = 'user_alerts';
+	public const string COLUMN_ID = 'id_alert';
+	public const string COLUMN_ALERT_TIME = 'alert_time';
+	public const string COLUMN_ID_MEMBER = 'id_member';
+	public const string COLUMN_ID_MEMBER_STARTED = 'id_member_started';
+	public const string COLUMN_MEMBER_NAME = 'member_name';
+	public const string COLUMN_CONTENT_TYPE = 'content_type';
+	public const string COLUMN_CONTENT_ID = 'content_id';
+	public const string COLUMN_CONTENT_ACTION = 'content_action';
+	public const string COLUMN_IS_READ = 'is_read';
+	public const string COLUMN_EXTRA = 'extra';
 
 	protected int $id_alert = 0;
 
@@ -39,7 +40,7 @@ class AlertEntity extends Entity
 
 	protected int $is_read = 0;
 
-	protected string $extra = '';
+	protected string | array $extra = '';
 
 	public function getIdAlert(): int
 	{
@@ -139,14 +140,14 @@ class AlertEntity extends Entity
 		$this->is_read = (int) $isRead;
 	}
 
-	public function getExtra(): string
+	public function getExtra(): array
 	{
-		return $this->extra;
+		return is_array($this->extra) ? $this->extra : Json::decode($this->extra);
 	}
 
-	public function setExtra(string $extra): void
+	public function setExtra(string | array $extra): void
 	{
-		$this->extra = $extra;
+		$this->extra = is_array($extra) ? Json::encode($extra) : $extra;
 	}
 
 	public static function getColumns(): array

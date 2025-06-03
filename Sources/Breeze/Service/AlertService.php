@@ -6,11 +6,15 @@ namespace Breeze\Service;
 
 use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
+use Breeze\Entity\AlertHandledEntity;
+use Breeze\Event\EventHandlerInterface;
 use Breeze\Repository\AlertRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 
 class AlertService extends BaseService implements AlertServiceInterface
 {
+	protected const HANDLER_SUFFIX = 'Handler';
+
 	public function __construct(
 		protected AlertRepositoryInterface $alertRepository
 	) {
@@ -27,13 +31,11 @@ class AlertService extends BaseService implements AlertServiceInterface
 
 	public function handle(array &$alerts): void
 	{
-		$breezeAlerts = [];
-		$refId = 0;
-
-		foreach ($alerts as $id => $alert) {
+		foreach ($alerts as $id => &$alert) {
 			if (str_contains($alert['content_type'], Breeze::PATTERN)) {
-				$alert['text'] = $this->buildAlertText($alert);
-				$alert['target_href'] = $this->buildTargetHref($alert);
+				$alertEntity = new AlertHandledEntity($alert);
+				$handler = $this->getHandler($alertEntity);
+				$alert = $handler->resolve($alertEntity);
 			}
 		}
 	}
@@ -51,17 +53,12 @@ class AlertService extends BaseService implements AlertServiceInterface
 		return $this->alertRepository->delete([$alertId]);
 	}
 
-	protected function buildAlertText($alert): string
+	protected function getHandler(AlertEntity $alertEntity): EventHandlerInterface
 	{
-		return $this->parserText($this->getText('alert_status_owner'), [
-			'poster' => $alert['member_name'],
-		]);
-	}
+		$handlerName = str_replace(Breeze::PATTERN, '', $alertEntity->getContentType() .
+			$alertEntity->getContentAction());
+		$handler = ucfirst($handlerName) . self::HANDLER_SUFFIX;
 
-	protected function buildTargetHref($alert): string
-	{
-		return $this->parserText('{scriptUrl}?action=breeze;sa=status;bid=' . $alert['content_id'], [
-			'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
-		]);
+		return new $handler($alertEntity);
 	}
 }

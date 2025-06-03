@@ -42,7 +42,7 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 	{
 		$updateString = '';
 		$updateString = $this->buildSetUpdate($alertEntity);
-		$id = $alertEntity->getId();
+		$id = $alertEntity->getIdAlert();
 
 		$this->dbClient->update(
 			AlertEntity::TABLE,

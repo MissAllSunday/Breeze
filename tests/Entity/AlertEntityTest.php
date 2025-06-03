@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class AlertEntityTest extends TestCase
@@ -30,48 +31,31 @@ class AlertEntityTest extends TestCase
 		$this->assertEquals('user_alerts', AlertEntity::getTableName());
 	}
 
-	public function testGetColumnMap(): void
-	{
-		$entity = new AlertEntity();
-		$this->assertEquals(AlertEntity::KEY_MAP, $entity->getColumnMap());
-	}
-
+	/**
+	 * @throws \DateMalformedStringException
+	 */
 	public function testSettersAndGetters(): void
 	{
 		$entity = new AlertEntity();
-
-		$entity->setId(123);
-		$this->assertEquals(123, $entity->getId());
-
-		$entity->setTime('2023-01-01');
-		$this->assertEquals('2023-01-01', $entity->getTime());
-
-		$entity->setIdMember(456);
-		$this->assertEquals(456, $entity->getIdMember());
-
-		$entity->setIdMemberStarted(789);
-		$this->assertEquals(789, $entity->getIdMemberStarted());
-
-		$entity->setMemberName('TestUser');
-		$this->assertEquals('TestUser', $entity->getMemberName());
-
-		$entity->setType('notification');
-		$this->assertEquals('notification', $entity->getType());
-
-		$entity->setContentId(101);
-		$this->assertEquals(101, $entity->getContentId());
-
-		$entity->setAction('post');
-		$this->assertEquals('post', $entity->getAction());
-
+		$entity->setIdAlert(1);
+		$this->assertEquals(1, $entity->getIdAlert());
+		$entity->setAlertTime(time());
+		$this->assertInstanceOf(DateTimeImmutable::class, $entity->getAlertTime());
+		$entity->setIdMember(1);
+		$this->assertEquals(1, $entity->getIdMember());
+		$entity->setIdMemberStarted(2);
+		$this->assertEquals(2, $entity->getIdMemberStarted());
+		$entity->setMemberName('test');
+		$this->assertEquals('test', $entity->getMemberName());
+		$entity->setContentType('test');
+		$this->assertEquals('test', $entity->getContentType());
+		$entity->setContentId(1);
+		$this->assertEquals(1, $entity->getContentId());
+		$entity->setContentAction('test');
+		$this->assertEquals('test', $entity->getContentAction());
 		$entity->setIsRead(true);
 		$this->assertTrue($entity->isRead());
-
-		// Test boolean conversion for setIsRead
-		$entity->setIsRead(1);
-		$this->assertTrue($entity->isRead());
-
-		$entity->setExtra('{"key":"value"}');
-		$this->assertEquals('{"key":"value"}', $entity->getExtra());
+		$entity->setExtra(['test' => 'test']);
+		$this->assertEquals(['test' => 'test'], $entity->getExtra());
 	}
 }

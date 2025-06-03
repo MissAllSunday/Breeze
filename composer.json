@@ -20,7 +20,7 @@
         }
     },
     "require": {
-        "php": ">=8.2.0",
+        "php": ">=8.3",
         "league/container": "^5.0",
         "ext-json": "*",
         "league/event": "^3.0"

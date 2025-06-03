@@ -17,13 +17,15 @@ use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
 class StatusController extends ApiBaseController
 {
-	public const ACTION_PROFILE = 'profile';
-	public const ACTION_GENERAL = 'general';
-	public const ACTION_DELETE = 'deleteStatus';
-	public const ACTION_POST = 'postStatus';
-	public const ACTION_TOTAL = 'total';
+	public const string ACTION_PROFILE = 'profile';
+	public const string ACTION_GENERAL = 'general';
+	public const string ACTION_DELETE = 'deleteStatus';
+	public const string ACTION_POST = 'postStatus';
+	public const string ACTION_TOTAL = 'total';
 
-	public const SUB_ACTIONS = [
+	public const string ACTION_SINGLE = 'single';
+
+	public const array SUB_ACTIONS = [
 		self::ACTION_PROFILE,
 		self::ACTION_POST,
 		self::ACTION_DELETE,

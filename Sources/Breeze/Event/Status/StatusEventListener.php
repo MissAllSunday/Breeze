@@ -30,9 +30,9 @@ class StatusEventListener
 		$wallId = $event->getWallId();
 
 		// Don't do anything if the user is posting on their own wall
-//		if ($userId === $wallId) {
-//			return;
-//		}
+		if ($userId === $wallId) {
+			return;
+		}
 
 		$this->alertService->send(new AlertEntity([
 			AlertEntity::COLUMN_ID_MEMBER => $wallId,
