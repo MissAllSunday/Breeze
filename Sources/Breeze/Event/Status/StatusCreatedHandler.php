@@ -13,7 +13,7 @@ class StatusCreatedHandler
 {
 	use TextTrait;
 
-	protected const TARGET_HREF = '{scriptUrl}?action={action};sa={subAction};id={statusId}';
+	protected const string TARGET_HREF = '{scriptUrl}?action={action};sa={subAction};id={statusId}';
 
 	public function __construct(
 		protected AlertHandledEntity $alertHandledEntity
