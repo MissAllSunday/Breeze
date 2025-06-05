@@ -24,6 +24,7 @@ class StatusCreatedHandler implements EventHandlerInterface
 	{
 		$this->buildAlertText();
 		$this->buildTargetHref();
+		$this->alertHandledEntity->setIcon('<span class="alert_icon main_icons people"></span>');
 
 		return $this->alertHandledEntity->toArray();
 	}
@@ -31,7 +32,7 @@ class StatusCreatedHandler implements EventHandlerInterface
 	protected function buildAlertText(): void
 	{
 		$this->alertHandledEntity->setText($this->parserText($this->getText('alert_status_owner'), [
-			'poster' => $this->alertHandledEntity->getMemberName(),
+			'poster' => $this->alertHandledEntity->getSenderName(),
 		]));
 	}
 

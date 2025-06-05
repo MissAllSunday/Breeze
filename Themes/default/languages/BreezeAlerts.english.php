@@ -45,7 +45,7 @@ $txt['Breeze_alert_comment_status_owner_own_wall'] = '{poster} <a href="{href}" 
 $txt['Breeze_alert_comment_poster_own_wall'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on {gender_possessive} status on {gender_possessive} own wall';
 
 // Someone posted a status on your wall.
-$txt['Breeze_alert_status_owner'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">posted a new status on your wall</a>';
+$txt['Breeze_alert_status_owner'] = '{poster} posted a new status on your wall';
 $txt['Breeze_alert_status_owner_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">posted a new status</a> on {wall_owner}\'s wall';
 
 // Likes

@@ -147,7 +147,7 @@ class AlertEntity extends Entity
 
 	public function setExtra(string | array $extra): void
 	{
-		$this->extra = is_array($extra) ? Json::encode($extra) : $extra;
+		$this->extra = $extra;
 	}
 
 	public static function getColumns(): array
