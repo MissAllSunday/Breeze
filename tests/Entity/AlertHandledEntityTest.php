@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class AlertHandledEntityTest extends TestCase
@@ -51,14 +50,8 @@ class AlertHandledEntityTest extends TestCase
 		$entity->setSenderFilename(null);
 		$this->assertNull($entity->getSenderFilename());
 
-		$timestamp = time();
-		$entity->setTime($timestamp);
-		$this->assertInstanceOf(DateTimeImmutable::class, $entity->getTime());
-		$this->assertEquals($timestamp, $entity->getTime()->getTimestamp());
-
-		$dateTime = new DateTimeImmutable();
-		$entity->setTime($dateTime);
-		$this->assertSame($dateTime, $entity->getTime());
+		$entity->setTime('some formated time string');
+		$this->assertEquals('some formated time string', $entity->getTime());
 
 		$entity->setVisible(true);
 		$this->assertTrue($entity->isVisible());

@@ -7,14 +7,12 @@ namespace Breeze\Service;
 use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
 use Breeze\Entity\AlertHandledEntity;
-use Breeze\Event\EventHandlerInterface;
+use Breeze\Event\HandlerServiceProvider;
 use Breeze\Repository\AlertRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 
 class AlertService extends BaseService implements AlertServiceInterface
 {
-	protected const HANDLER_SUFFIX = 'Handler';
-
 	public function __construct(
 		protected AlertRepositoryInterface $alertRepository
 	) {
@@ -29,13 +27,16 @@ class AlertService extends BaseService implements AlertServiceInterface
 		updateMemberData($alertEntity->getIdMember(), ['alerts' => '+']);
 	}
 
+	/**
+	 * @throws DataNotFoundException
+	 */
 	public function handle(array &$alerts): void
 	{
+		$handlerServiceProvider = new HandlerServiceProvider();
 		foreach ($alerts as $id => &$alert) {
 			if (str_contains($alert['content_type'], Breeze::PATTERN)) {
-				$alertEntity = new AlertHandledEntity($alert);
-				$handler = $this->getHandler($alertEntity);
-				$alert = $handler->resolve($alertEntity);
+				$handler = $handlerServiceProvider->getHandler(new AlertHandledEntity($alert));
+				$alert = $handler->resolve();
 			}
 		}
 	}
@@ -51,14 +52,5 @@ class AlertService extends BaseService implements AlertServiceInterface
 	public function delete(int $alertId): bool
 	{
 		return $this->alertRepository->delete([$alertId]);
-	}
-
-	protected function getHandler(AlertEntity $alertEntity): EventHandlerInterface
-	{
-		$handlerName = str_replace(Breeze::PATTERN, '', $alertEntity->getContentType() .
-			$alertEntity->getContentAction());
-		$handler = ucfirst($handlerName) . self::HANDLER_SUFFIX;
-
-		return new $handler($alertEntity);
 	}
 }

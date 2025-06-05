@@ -7,9 +7,10 @@ namespace Breeze\Event\Status;
 use Breeze\Breeze;
 use Breeze\Controller\API\StatusController;
 use Breeze\Entity\AlertHandledEntity;
+use Breeze\Event\EventHandlerInterface;
 use Breeze\Traits\TextTrait;
 
-class StatusCreatedHandler
+class StatusCreatedHandler implements EventHandlerInterface
 {
 	use TextTrait;
 

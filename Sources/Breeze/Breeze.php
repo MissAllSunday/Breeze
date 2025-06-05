@@ -30,14 +30,14 @@ class Breeze
 	use TextTrait;
 	use RequestTrait;
 
-	public const NAME = 'Breeze';
-	public const VERSION = '2.0';
-	public const PATTERN = self::NAME . '_';
-	public const FEED = 'https://api.github.com/repos/MissAllSunday/Breeze/releases';
-	public const SUPPORT_URL = 'https://missallsunday.com';
-	public const REACT_DOM_VERSION = '18.2.0';
-	public const REACT_VERSION = '18.2.0';
-	public const REACT_HASH = '1f1b817c';
+	public const string NAME = 'Breeze';
+	public const string VERSION = '2.0';
+	public const string PATTERN = self::NAME . '_';
+	public const string FEED = 'https://api.github.com/repos/MissAllSunday/Breeze/releases';
+	public const string SUPPORT_URL = 'https://missallsunday.com';
+	public const string REACT_DOM_VERSION = '18.2.0';
+	public const string REACT_VERSION = '18.2.0';
+	public const string REACT_HASH = '1f1b817c';
 
 	public const string ACTION_STATUS = 'breezeStatus';
 	public const string ACTION_COMMENT = 'breezeComment';
@@ -49,7 +49,7 @@ class Breeze
 		self::ACTION_LIKE,
 		self::ACTION_WALL,
 	];
-	public const SCRIPT_URL ='scripturl';
+	public const string SCRIPT_URL ='scripturl';
 
 	protected Container $container;
 
@@ -63,6 +63,10 @@ class Breeze
 		}
 	}
 
+	/**
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
 	public function permissionsWrapper(array &$permissionGroups, array &$permissionList): void
 	{
 		$this->container->get(PermissionsService::class)->hookPermissions($permissionGroups, $permissionList);

@@ -5,9 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-use DateMalformedStringException;
-use DateTimeImmutable;
-
 class AlertHandledEntity extends AlertEntity
 {
 	public const string SENDER_ID = 'sender_id';
@@ -32,7 +29,8 @@ class AlertHandledEntity extends AlertEntity
 
 	protected string | null $sender_filename = null;
 
-	protected int | DateTimeImmutable $time = 0;
+	// SMF's already formated time as string
+	protected string $time = '';
 
 	protected bool $visible = false;
 
@@ -44,17 +42,14 @@ class AlertHandledEntity extends AlertEntity
 
 	protected string $text = '';
 
-	/**
-	 * @throws DateMalformedStringException
-	 */
-	public function getTime(): DateTimeImmutable
+	public function getTime(): string
 	{
-		return is_int($this->alert_time) ? new DateTimeImmutable('@' . $this->alert_time) : $this->alert_time;
+		return $this->time;
 	}
 
-	public function setTime(int | DateTimeImmutable $time): void
+	public function setTime(string $time): void
 	{
-		$this->alert_time = $time;
+		$this->time = $time;
 	}
 
 	public static function getColumns(): array

@@ -13,6 +13,7 @@ use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Database\DatabaseClient;
 use Breeze\Entity\AlertEntity;
+use Breeze\Entity\AlertHandledEntity;
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LogEntity;
@@ -24,6 +25,7 @@ use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Event\EventServiceProvider;
+use Breeze\Event\Status\StatusCreatedHandler;
 use Breeze\Event\Status\StatusEventListener;
 use Breeze\Model\CommentModel;
 use Breeze\Model\LikeModel;
@@ -65,7 +67,7 @@ use League\Event\EventDispatcher;
 
 class DependenciesServiceProvider extends AbstractServiceProvider
 {
-	protected const DEPENDENCIES = [
+	protected const array DEPENDENCIES = [
 		DatabaseClient::class => [],
 		SettingsBuilder::class => [],
 		UserSettingsBuilder::class => [],
@@ -104,6 +106,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		StatusEventListener::class => [AlertService::class],
 		EventDispatcher::class => [],
 		EventServiceProvider::class => [EventDispatcher::class, StatusEventListener::class],
+		StatusCreatedHandler::class => [AlertHandledEntity::class],
 		CommentModel::class => [DatabaseClient::class],
 		LikeModel::class => [DatabaseClient::class],
 		LogModel::class => [DatabaseClient::class],
