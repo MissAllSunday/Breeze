@@ -13,9 +13,9 @@ class StatusEventListener
 {
 	use TextTrait;
 
-	protected const CONTENT_TYPE = Breeze::NAME . '_status';
-	protected const CONTENT_ACTION_CREATED = Breeze::PATTERN . 'created';
-	protected const CONTENT_ACTION_DELETED = Breeze::PATTERN . 'deleted';
+	protected const string CONTENT_TYPE = Breeze::NAME . '_status';
+	protected const string CONTENT_ACTION_CREATED = Breeze::PATTERN . 'created';
+	protected const string CONTENT_ACTION_DELETED = Breeze::PATTERN . 'deleted';
 
 	public function __construct(
 		protected readonly AlertServiceInterface $alertService

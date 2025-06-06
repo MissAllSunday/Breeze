@@ -6,33 +6,43 @@ namespace Breeze\Event\Like;
 
 use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
+use Breeze\Entity\CommentEntity;
+use Breeze\Entity\LikeHandledEntity;
+use Breeze\Entity\StatusEntity;
+use Breeze\LikesEnum;
+use Breeze\Repository\BaseRepositoryInterface;
+use Breeze\Repository\CommentRepositoryInterface;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\AlertServiceInterface;
 use Breeze\Traits\TextTrait;
+use Breeze\Util\Validate\DataNotFoundException;
 
 class LikeEventListener
 {
 	use TextTrait;
 
-	protected const string CONTENT_TYPE = Breeze::NAME . '_like';
+	protected const string CONTENT_TYPE = Breeze::PATTERN . 'like';
 	protected const string CONTENT_ACTION_CREATED = Breeze::PATTERN . 'created';
 
 	public function __construct(
-		protected readonly AlertServiceInterface $alertService
+		protected readonly AlertServiceInterface $alertService,
+		protected readonly StatusRepositoryInterface $statusRepository,
+		protected readonly CommentRepositoryInterface $commentRepository
 	) {
 	}
 
+	/**
+	 * @throws DataNotFoundException
+	 */
 	public function onLikeCreated(LikeCreatedEvent $event): void
 	{
-		$likeId = $event->getLikeId();
-		$userId = $event->getUserId();
-		$contentOwnerId = $event->getContentOwnerId();
-		$contentType = $event->getContentType();
-		$contentId = $event->getContentId();
+		$handledLike = $event->getLikeHandledEntity();
+		$contentId = $handledLike->getContentId();
+		$contentType = $handledLike->getContentType();
+		$userId = $handledLike->getIdMember();
 
-		// Don't send alert if user is liking their own content
-		if ($userId === $contentOwnerId) {
-			return;
-		}
+		$content = $this->getContent($handledLike);
+
 
 		$this->alertService->send(new AlertEntity([
 			AlertEntity::COLUMN_ID_MEMBER => $contentOwnerId,
@@ -46,5 +56,19 @@ class LikeEventListener
 				'content_type' => $contentType,
 			],
 		]));
+	}
+
+	/**
+	 * @throws DataNotFoundException
+	 */
+	protected function getContent(LikeHandledEntity $handledLike): StatusEntity | CommentEntity
+	{
+		/** @var BaseRepositoryInterface $repository */
+		$repository = match ($handledLike->getContentType()) {
+			LikesEnum::Status => $this->statusRepository,
+			LikesEnum::Comments => $this->commentRepository,
+		};
+
+		return $repository->getById($handledLike->getContentId());
 	}
 }

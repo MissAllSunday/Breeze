@@ -126,7 +126,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		StatusService::class => [StatusRepository::class, UserRepository::class, PermissionsService::class],
 		AlertService::class => [AlertRepository::class],
 		CommentEventListener::class => [AlertService::class],
-		LikeEventListener::class => [AlertService::class],
+		LikeEventListener::class => [AlertService::class, StatusRepository::class, CommentRepository::class],
 	];
 
 	public function provides(string $id): bool
