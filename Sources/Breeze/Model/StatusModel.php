@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Model;
 
-use Breeze\Entity\LikeEntity;
 use Breeze\Entity\StatusEntity;
+use Breeze\LikesEnum;
 use Breeze\Util\Parser;
 
 class StatusModel extends BaseModel implements StatusModelInterface
@@ -25,7 +25,7 @@ class StatusModel extends BaseModel implements StatusModelInterface
 
 	public function getById(int $statusId): array
 	{
-		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikeEntity::TYPE_STATUS), [
+		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikesEnum::Status), [
 			'columnName' => StatusEntity::ID,
 			'id' => $statusId,
 		]);
@@ -46,7 +46,7 @@ class StatusModel extends BaseModel implements StatusModelInterface
 	public function getStatusByProfile(array $params): array
 	{
 		$queryParams = array_merge(
-			$this->getDefaultQueryParamsWithLikes(LikeEntity::TYPE_STATUS),
+			$this->getDefaultQueryParamsWithLikes(LikesEnum::Status),
 			[
 				'columnName' => StatusEntity::WALL_ID,
 			],

@@ -153,11 +153,11 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	public function appendLikeData(array $items, string $itemIdName): array
 	{
 		return array_map(function (array $item) use ($itemIdName): array {
-			$item['likesInfo'] = $this->buildLikeData(
-				$item[LikeEntity::IDENTIFIER . LikeEntity::COLUMN_TYPE],
-				$item[$itemIdName],
-				$item[LikeEntity::IDENTIFIER . LikeEntity::COLUMN_ID_MEMBER],
-			);
+			$item['likesInfo'] = $this->buildLikeData([
+				LikeEntity::COLUMN_TYPE => $item[LikeEntity::IDENTIFIER . LikeEntity::COLUMN_TYPE],
+				LikeEntity::COLUMN_ID => $item[$itemIdName],
+				LikeEntity::COLUMN_ID_MEMBER => $item[LikeEntity::IDENTIFIER . LikeEntity::COLUMN_ID_MEMBER],
+			]);
 
 			return $item;
 		}, $items);

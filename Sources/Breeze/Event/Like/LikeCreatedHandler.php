@@ -48,15 +48,14 @@ class LikeCreatedHandler implements EventHandlerInterface
 
 	protected function buildTargetHref(): void
 	{
-		$extra = json_decode($this->alertHandledEntity->getExtra(), true);
+		$extra = $this->alertHandledEntity->getExtra();
 		$contentId = $extra['content_id'] ?? 0;
 		$contentType = $extra['content_type'] ?? '';
 
 		// Determine the appropriate action and subaction based on content type
 		$action = Breeze::ACTION_WALL;
 		$subAction = match ($contentType) {
-			Breeze::NAME . '_status' => StatusController::ACTION_SINGLE,
-			Breeze::NAME . '_comment' => StatusController::ACTION_SINGLE, // Comments link to their parent status
+			Breeze::NAME . '_status', Breeze::NAME . '_comment' => StatusController::ACTION_SINGLE, // Comments link to their parent status
 			default => '',
 		};
 

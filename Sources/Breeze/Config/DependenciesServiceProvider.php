@@ -30,7 +30,6 @@ use Breeze\Event\Like\LikeEventListener;
 use Breeze\Event\Status\StatusCreatedHandler;
 use Breeze\Event\Status\StatusEventListener;
 use Breeze\Model\CommentModel;
-use Breeze\Model\LikeModel;
 use Breeze\Model\LogModel;
 use Breeze\Model\MentionModel;
 use Breeze\Model\NotificationModel;
@@ -91,7 +90,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		WallController::class => [Response::class, ProfileService::class],
 		StatusController::class => [StatusService::class, ValidateStatus::class, Response::class, EventServiceProvider::class],
 		CommentController::class => [CommentRepository::class, ValidateComment::class, Response::class],
-		LikesController::class => [LikeRepository::class, ValidateLikes::class, Response::class],
+		LikesController::class => [LikeRepository::class, ValidateLikes::class, Response::class, EventServiceProvider::class],
 		UserSettingsController::class => [UserRepository::class, Response::class, UserSettingsBuilder::class],
 		BuddyController::class => [Response::class, ProfileService::class],
 		AlertEntity::class => [],
@@ -110,7 +109,6 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		EventServiceProvider::class => [EventDispatcher::class, StatusEventListener::class],
 		StatusCreatedHandler::class => [AlertHandledEntity::class],
 		CommentModel::class => [DatabaseClient::class],
-		LikeModel::class => [DatabaseClient::class],
 		LogModel::class => [DatabaseClient::class],
 		MentionModel::class => [DatabaseClient::class],
 		NotificationModel::class => [DatabaseClient::class],

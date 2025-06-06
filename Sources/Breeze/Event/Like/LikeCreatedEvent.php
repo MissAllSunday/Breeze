@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Breeze\Event\Like;
 
-use League\Event\HasEventName;
+use Breeze\Event\EventAbstract;
 
-class LikeCreatedEvent implements HasEventName
+class LikeCreatedEvent extends EventAbstract
 {
 	public function __construct(
 		protected int $likeId,

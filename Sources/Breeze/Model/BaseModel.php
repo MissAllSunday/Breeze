@@ -6,6 +6,7 @@ namespace Breeze\Model;
 
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\LikeEntity;
+use Breeze\LikesEnum;
 
 abstract class BaseModel implements BaseModelInterface
 {
@@ -17,6 +18,11 @@ abstract class BaseModel implements BaseModelInterface
 	public function __construct(ClientInterface $databaseClient)
 	{
 		$this->dbClient = $databaseClient;
+	}
+
+	public function getInsertedId(): int
+	{
+		return $this->dbClient->getInsertedId($this->getTableName(), $this->getColumnId());
 	}
 
 	public function getLastValue(): array
@@ -144,7 +150,7 @@ abstract class BaseModel implements BaseModelInterface
 		];
 	}
 
-	protected function getDefaultQueryParamsWithLikes(string $type, string $parentIdentifier = 'id'): array
+	protected function getDefaultQueryParamsWithLikes(LikesEnum $type, string $parentIdentifier = 'id'): array
 	{
 		return [
 			'columns' => implode(', ', array_map(function (string $parentColumn): string {
@@ -155,7 +161,7 @@ abstract class BaseModel implements BaseModelInterface
 					$columnName = self::LIKE_IDENTIFIER . '.' . $likeColumn;
 
 					return match ($likeColumn) {
-						LikeEntity::COLUMN_TYPE => 'COALESCE(' . $columnName . ', "' . $type . '")',
+						LikeEntity::COLUMN_TYPE => 'COALESCE(' . $columnName . ', "' . $type->value . '")',
 						LikeEntity::COLUMN_ID_MEMBER => 'COALESCE(' . $columnName . ', 0)',
 						default => $columnName,
 					} . ' AS ' . LikeEntity::IDENTIFIER . $likeColumn;
@@ -165,7 +171,7 @@ abstract class BaseModel implements BaseModelInterface
 			'likeJoin' => LikeEntity::TABLE . ' AS ' . self::LIKE_IDENTIFIER . '
 			 	ON (' . self::LIKE_IDENTIFIER . '.' . LikeEntity::COLUMN_ID . ' =
 			 	 ' . self::PARENT_LIKE_IDENTIFIER . '.' . $parentIdentifier . '
-			 	AND ' . self::LIKE_IDENTIFIER . '.' . LikeEntity::COLUMN_TYPE . ' = "' . $type . '")',
+			 	AND ' . self::LIKE_IDENTIFIER . '.' . LikeEntity::COLUMN_TYPE . ' = "' . $type->value . '")',
 		];
 	}
 }

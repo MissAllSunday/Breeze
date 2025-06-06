@@ -6,8 +6,8 @@ namespace Breeze\Model;
 
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\Entity;
-use Breeze\Entity\LikeEntity;
 use Breeze\Entity\StatusEntity;
+use Breeze\LikesEnum;
 
 class CommentModel extends BaseModel implements CommentModelInterface
 {
@@ -44,7 +44,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 
 	public function getByProfiles(array $profileOwnerIds): array
 	{
-		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikeEntity::TYPE_COMMENT), [
+		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikesEnum::Comments), [
 			'columnName' => StatusEntity::WALL_ID,
 			'profileIds' => $profileOwnerIds,
 			'statusTable' => StatusEntity::TABLE,
@@ -67,7 +67,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 
 	public function getByStatus(array $statusIds): array
 	{
-		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikeEntity::TYPE_COMMENT), [
+		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikesEnum::Comments), [
 			'columnName' => CommentEntity::STATUS_ID,
 			'statusIds' => $statusIds,
 		]);
@@ -93,7 +93,7 @@ class CommentModel extends BaseModel implements CommentModelInterface
 				LEFT JOIN {db_prefix}{raw:likeJoin}
 			WHERE {raw:columnName} IN ({array_int:ids})
 			LIMIT {int:limit}',
-			array_merge($this->getDefaultQueryParamsWithLikes(LikeEntity::TYPE_COMMENT), [
+			array_merge($this->getDefaultQueryParamsWithLikes(LikesEnum::Comments), [
 				'limit' => 1,
 				'ids' => array_map('intval', $commentIds),
 				'columnName' => self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::ID,

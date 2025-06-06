@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Breeze\Event\Comment;
 
-use League\Event\HasEventName;
+use Breeze\Event\EventAbstract;
 
-class CommentCreatedEvent implements HasEventName
+class CommentCreatedEvent extends EventAbstract
 {
 	public function __construct(
 		protected int $commentId,

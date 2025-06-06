@@ -77,9 +77,4 @@ abstract class BaseRepository implements BaseRepositoryInterface
 	{
 		return array_intersect_key($loadedUsers, array_flip(UserDataEntity::getColumns()));
 	}
-
-	public function getInsertedId(string $tableName, string $columnIdName): int
-	{
-		return $this->dbClient->getInsertedId($tableName, $columnIdName);
-	}
 }

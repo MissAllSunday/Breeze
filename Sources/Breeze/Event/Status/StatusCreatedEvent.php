@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Breeze\Event\Status;
 
 use Breeze\Entity\StatusEntity;
-use Psr\EventDispatcher\StoppableEventInterface;
+use Breeze\Event\EventAbstract;
 
-class StatusCreatedEvent implements StoppableEventInterface
+class StatusCreatedEvent extends EventAbstract
 {
 	private bool $propagationStopped = false;
 

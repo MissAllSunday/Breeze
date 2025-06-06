@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\LikeEntity;
+use Breeze\Event\EventServiceProvider;
 use Breeze\Event\Like\LikeCreatedEvent;
 use Breeze\Repository\InvalidDataException;
 use Breeze\Repository\LikeRepositoryInterface;
@@ -26,27 +27,28 @@ class LikesController extends ApiBaseController
 	public function __construct(
 		protected readonly LikeRepositoryInterface $likeRepository,
 		protected ValidateActionsInterface $validateActions,
-		protected Response $response
+		protected Response $response,
+		protected EventServiceProvider $eventServiceProvider
 	) {
-		parent::__construct($validateActions, $response);
+		parent::__construct($validateActions, $response, $eventServiceProvider);
 	}
 
 	public function like(): void
 	{
 		try {
+			$handledLike = $this->likeRepository->likeContent(
+				$this->data[LikeEntity::COLUMN_TYPE],
+				$this->data[LikeEntity::COLUMN_ID],
+				$this->data[LikeEntity::COLUMN_ID_MEMBER]
+			);
+
 			$this->response->success(
 				'likeSuccess',
-				$this->likeRepository->likeContent(
-					$this->data[LikeEntity::COLUMN_TYPE],
-					$this->data[LikeEntity::COLUMN_ID],
-					$this->data[LikeEntity::COLUMN_ID_MEMBER]
-				),
+				$handledLike->toArray(),
 				Response::CREATED
 			);
 
-			$this->eventDispatch(LikeCreatedEvent::class, [
-
-			]);
+			$this->eventDispatch(LikeCreatedEvent::class, $handledLike);
 		} catch (InvalidDataException $invalidDataException) {
 			$this->response->error($invalidDataException->getMessage(), $invalidDataException->getResponseCode());
 		}
