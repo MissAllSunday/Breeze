@@ -24,7 +24,7 @@ class AlertEntity extends Entity
 
 	protected int $id_alert = 0;
 
-	protected int | DateTimeImmutable $alert_time = 0;
+	protected int $alert_time = 0;
 
 	protected int $id_member = 0;
 
@@ -40,7 +40,7 @@ class AlertEntity extends Entity
 
 	protected int $is_read = 0;
 
-	protected string | array $extra = '';
+	protected string $extra = '';
 
 	public function getIdAlert(): int
 	{
@@ -62,12 +62,12 @@ class AlertEntity extends Entity
 	 */
 	public function getAlertTime(): DateTimeImmutable
 	{
-		return is_int($this->alert_time) ? new DateTimeImmutable('@' . $this->alert_time) : $this->alert_time;
+		return new DateTimeImmutable('@' . $this->alert_time);
 	}
 
 	public function setAlertTime(int | DateTimeImmutable $time): void
 	{
-		$this->alert_time = $time;
+		$this->alert_time = is_int($time) ? $time : $time->getTimestamp();
 	}
 
 	public function getIdMember(): int
@@ -142,12 +142,12 @@ class AlertEntity extends Entity
 
 	public function getExtra(): array
 	{
-		return is_array($this->extra) ? $this->extra : Json::decode($this->extra);
+		return Json::decode($this->extra);
 	}
 
 	public function setExtra(string | array $extra): void
 	{
-		$this->extra = $extra;
+		$this->extra = is_array($extra) ? Json::encode($extra) : $extra;
 	}
 
 	public static function getColumns(): array

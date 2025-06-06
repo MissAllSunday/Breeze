@@ -6,11 +6,14 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Breeze;
+use Breeze\Database\ClientInterface;
 use Breeze\Entity\LikeEntity;
-use Breeze\Model\LikeModelInterface;
+use Breeze\Entity\LikeHandledEntity;
+use Breeze\LikesEnum;
 use Breeze\PermissionsEnum;
 use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\TimeTrait;
+use DateMalformedStringException;
 
 class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 {
@@ -18,56 +21,133 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
  use TimeTrait;
 
 	public function __construct(
-		private readonly LikeModelInterface $likeModel
+		protected ClientInterface $dbClient
 	) {
 	}
 
+	/**
+	 * @return LikeHandledEntity[]
+	 */
+	public function getByContent(string|LikesEnum $type, int $contentId): array
+	{
+		$likes = [];
+
+		$request = $this->dbClient->query(
+			'
+			SELECT ' . implode(', ', LikeEntity::getColumns()) . '
+			FROM {db_prefix}' . LikeEntity::TABLE . '
+			WHERE ' . LikeEntity::COLUMN_TYPE . ' = {string:type}
+				AND ' . LikeEntity::COLUMN_ID . ' = {int:contentId}',
+			[
+				'contentId' => $contentId,
+				'type' => $type,
+			]
+		);
+
+		while ($row = $this->dbClient->fetchAssoc($request)) {
+			$likes[] = $this->buildLikeData($row);
+		}
+
+		$this->dbClient->freeResult($request);
+
+		return $likes;
+	}
+
+	/**
+	 * @throws DateMalformedStringException
+	 */
 	public function getLikeInfo(string $type, int $contentId): array
 	{
 		$likeInfo = [];
-		$likes = $this->likeModel->getByContent($type, $contentId);
+		$likes = $this->getByContent($type, $contentId);
 		$usersInfo = $this->loadUsersInfo(array_unique(array_column($likes, LikeEntity::COLUMN_ID_MEMBER)));
 
 		foreach ($likes as $key => $like) {
 			$likeInfo[$key]['profile'] = $usersInfo[$like[LikeEntity::COLUMN_ID_MEMBER]];
-			$likeInfo[$key]['timestamp'] = empty($like[LikeEntity::COLUMN_TIME]) ? '' : timeFormat($like[LikeEntity::COLUMN_TIME]);
+			$likeInfo[$key]['timestamp'] = timeFormat($like->getLikeTime()->getTimestamp());
 		}
 
 		return $likeInfo;
 	}
 
-	public function isContentAlreadyLiked(string $type, int $contentId, int $userId): bool
+	public function isContentAlreadyLiked(LikeEntity $likeEntity): bool
 	{
-		return (bool) $this->likeModel->checkLike($type, $contentId, $userId);
+		$request = $this->dbClient->query(
+			'
+			SELECT ' . LikeEntity::COLUMN_ID . '
+			FROM {db_prefix}' . LikeEntity::TABLE . '
+			WHERE ' . LikeEntity::COLUMN_ID_MEMBER . ' = {int:userId}
+				AND ' . LikeEntity::COLUMN_TYPE . ' = {string:type}
+				AND ' . LikeEntity::COLUMN_ID . ' = {int:contentId}',
+			[
+				'userId' => $likeEntity->getIdMember(),
+				'type' => $likeEntity->getContentType(),
+				'contentId' => $likeEntity->getContentId(),
+			]
+		);
+
+		$numRows = $this->dbClient->numRows($request);
+
+		$this->dbClient->freeResult($request);
+
+		return $numRows > 0;
 	}
 
 	/**
 	 * @throws InvalidLikeException
 	 */
-	public function delete(string $type, int $contentId, int $userId): void
+	public function delete(LikeEntity $likeEntity): void
 	{
-		$wasDeleted = $this->likeModel->deleteContent($type, $contentId, $userId);
+		$wasDeleted = $this->dbClient->delete(
+			LikeEntity::TABLE,
+			'WHERE ' . LikeEntity::COLUMN_ID . ' = {int:contentId}
+				AND ' . LikeEntity::COLUMN_TYPE . ' = {string:type}
+				AND ' . LikeEntity::COLUMN_ID_MEMBER . ' = {int:userId}',
+			[
+				'contentId' => $likeEntity->getContentId(),
+				'type' => $likeEntity->getContentType(),
+				'userId' => $likeEntity->getIdMember(),
+			]
+		);
 
 		if (!$wasDeleted) {
 			throw new InvalidLikeException('error_no_like');
 		}
 	}
 
-	/**
-	 * @throws InvalidLikeException
-	 */
-	public function insert(string $type, int $contentId, int $userId): void
+	public function insert(LikeEntity $likeEntity): LikeHandledEntity
 	{
-		$this->likeModel->insertContent($type, $contentId, $userId);
+		$likeEntity->setTime(time());
 
-		if (!$this->isContentAlreadyLiked($type, $contentId, $userId)) {
-			throw new InvalidLikeException('error_save_like');
-		}
+		$this->dbClient->insert(LikeEntity::TABLE, [
+			LikeEntity::COLUMN_ID => 'int',
+			LikeEntity::COLUMN_TYPE => 'string',
+			LikeEntity::COLUMN_ID_MEMBER => 'int',
+			LikeEntity::COLUMN_TIME => 'int',
+		], $likeEntity->toArray(), [LikeEntity::COLUMN_ID, LikeEntity::COLUMN_TYPE, LikeEntity::COLUMN_ID_MEMBER]);
+
+		return $this->buildLikeData($likeEntity);
 	}
 
-	public function count(string $type, int $contentId): int
+	public function count(LikeEntity $likeEntity): int
 	{
-		return $this->likeModel->countContent($type, $contentId);
+		$result = $this->dbClient->query(
+			'
+			SELECT {int:contentId}
+			FROM {db_prefix}' . LikeEntity::TABLE . '
+				WHERE ' . LikeEntity::COLUMN_ID . ' = {int:contentId}
+				AND ' . LikeEntity::COLUMN_TYPE . ' = {string:type}',
+			[
+				'contentId' => $likeEntity->getContentId(),
+				'type' => $likeEntity->getContentType(),
+			]
+		);
+
+		$rowCount = $this->dbClient->numRows($result);
+
+		$this->dbClient->freeResult($result);
+
+		return $rowCount;
 	}
 
 	public function appendLikeData(array $items, string $itemIdName): array
@@ -83,71 +163,63 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		}, $items);
 	}
 
-	public function buildLikeData(
-		?string $type,
-		?int    $contentId,
-		?int    $userId,
-		?bool   $isContentAlreadyLiked = null
-	): array {
-		$likeData = [
-			'contentId' => $contentId,
-			'count' => 0,
-			'alreadyLiked' => false,
-			'type' => $type,
-			'canLike' => $this->isAllowedTo(PermissionsEnum::LIKES_LIKE),
-			'additionalInfo' => [],
-		];
+	public function buildLikeData(LikeEntity | LikeHandledEntity | array $likeHandledEntity): LikeHandledEntity {
 		$base = LikeEntity::IDENTIFIER;
 
-		if ($contentId === null ||
-			($type === null || $type === '' || $type === '0')) {
-			return $likeData;
+		if (is_array($likeHandledEntity)) {
+			$likeHandledEntity = new LikeHandledEntity($likeHandledEntity);
+		} elseif ($likeHandledEntity instanceof LikeEntity) {
+			$likeHandledEntity = new LikeHandledEntity($likeHandledEntity->toArray());
 		}
 
-		if ($isContentAlreadyLiked === null) {
-			$isContentAlreadyLiked = $this->isContentAlreadyLiked($type, $contentId, $userId);
-		}
+		$likeHandledEntity->setCanLike($this->isAllowedTo(PermissionsEnum::LIKES_LIKE));
+		$likeHandledEntity->setAlreadyLiked($this->isContentAlreadyLiked($likeHandledEntity));
 
-		$likesCount = $likesTextCount = $this->count($type, $contentId);
 
-		if ($isContentAlreadyLiked) {
+		$likesCount = $likesTextCount = $this->count($likeHandledEntity);
+
+		if ($likeHandledEntity->isAlreadyLiked()) {
 			$base = 'you_' . $base;
 			$likesTextCount = $likesCount - 1;
 		}
 
 		$base .= ($this->getText($base . $likesTextCount) !== '') ? $likesTextCount : 'n';
 
-		return array_merge($likeData, [
-			'count' => $likesCount,
-			'additionalInfo' => [
-				'text' => sprintf(
-					$this->getText($base),
-					$this->commaFormat((string) $likesTextCount)
-				),
-				'href' => $this->parserText(
-					'{scriptUrl}?action=likes;sa=view;ltype={ltype};like={likeId}',
-					[
-						'ltype' => $type,
-						'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
-						'likeId' => $contentId,
-					]
-				),
-			],
-			'alreadyLiked' => $isContentAlreadyLiked,
+		$likeHandledEntity->setCount($likesCount);
+		$likeHandledEntity->setAdditionalInfo([
+			'text' => sprintf(
+				$this->getText($base),
+				$this->commaFormat((string) $likesTextCount)
+			),
+			'href' => $this->parserText(
+				'{scriptUrl}?action=likes;sa=view;ltype={ltype};like={likeId}',
+				[
+					'ltype' => $likeHandledEntity->getContentType(),
+					'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
+					'likeId' => $likeHandledEntity->getContentId(),
+				]
+			),
 		]);
+
+		return $likeHandledEntity;
 	}
 
 	/**
 	 * @throws InvalidDataException
 	 */
-	public function likeContent(string $type, int $contentId, int $userId): array
+	public function likeContent(LikesEnum | string $type, int $contentId, int $userId): LikeHandledEntity
 	{
-		$isContentAlreadyLiked = $this->isContentAlreadyLiked($type, $contentId, $userId);
-		$isContentAlreadyLiked ?
-			$this->delete($type, $contentId, $userId) :
-			$this->insert($type, $contentId, $userId);
+		$likeEntity = new LikeEntity();
+		$likeEntity->setContentType($type);
+		$likeEntity->setContentId($contentId);
+		$likeEntity->setIdMember($userId);
 
-		return $this->buildLikeData($type, $contentId, $userId, !$isContentAlreadyLiked);
+		$isContentAlreadyLiked = $this->isContentAlreadyLiked($likeEntity);
+		$isContentAlreadyLiked ?
+			$this->delete($likeEntity) :
+			$this->insert($likeEntity);
+
+		return $this->buildLikeData($likeEntity);
 	}
 
 	public function getById(int $id): array

@@ -24,7 +24,9 @@ use Breeze\Entity\OptionsEntity;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\Entity\UserSettingsEntity;
+use Breeze\Event\Comment\CommentEventListener;
 use Breeze\Event\EventServiceProvider;
+use Breeze\Event\Like\LikeEventListener;
 use Breeze\Event\Status\StatusCreatedHandler;
 use Breeze\Event\Status\StatusEventListener;
 use Breeze\Model\CommentModel;
@@ -117,7 +119,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		UserRepository::class => [UserModel::class],
 		AlertRepository::class => [DatabaseClient::class],
 		CommentRepository::class => [CommentModel::class, LikeRepository::class],
-		LikeRepository::class => [LikeModel::class],
+		LikeRepository::class => [DatabaseClient::class],
 		NotificationRepository::class => [NotificationModel::class],
 		StatusRepository::class => [StatusModel::class, CommentRepository::class, LikeRepository::class],
 		AdminService::class => [SettingsBuilder::class],
@@ -125,6 +127,8 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		PermissionsService::class => [],
 		StatusService::class => [StatusRepository::class, UserRepository::class, PermissionsService::class],
 		AlertService::class => [AlertRepository::class],
+		CommentEventListener::class => [AlertService::class],
+		LikeEventListener::class => [AlertService::class],
 	];
 
 	public function provides(string $id): bool

@@ -37,7 +37,6 @@ class StatusEventListener
 		$this->alertService->send(new AlertEntity([
 			AlertEntity::COLUMN_ID_MEMBER => $wallId,
 			AlertEntity::COLUMN_ID_MEMBER_STARTED => $userId,
-			AlertEntity::COLUMN_MEMBER_NAME => '', // To be filled by "handle" property
 			AlertEntity::COLUMN_CONTENT_TYPE => self::CONTENT_TYPE,
 			AlertEntity::COLUMN_CONTENT_ID => $statusId,
 			AlertEntity::COLUMN_CONTENT_ACTION => self::CONTENT_ACTION_CREATED,

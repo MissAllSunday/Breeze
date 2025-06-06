@@ -7,80 +7,65 @@ namespace Breeze\Entity;
 
 use Breeze\LikesEnum;
 use DateTimeImmutable;
-use Exception;
 
-class LikeEntity extends NormalizedEntity implements EntityInterface
+class LikeEntity extends Entity
 {
-	public const TABLE = 'user_likes';
-	public const COLUMN_ID_MEMBER = 'id_member';
-	public const COLUMN_TYPE = 'content_type';
-	public const COLUMN_ID = 'content_id';
-	public const COLUMN_TIME = 'like_time';
-	public const PROPERTY_ID_MEMBER = 'idMember';
-	public const PROPERTY_TYPE = 'type';
-	public const PROPERTY_ID = 'id';
-	public const PROPERTY_TIME = 'time';
-	public const PARAM_LIKE = 'like';
-	public const PARAM_SA = 'sa';
-	public const TYPE_STATUS = 'br_sta';
-	public const TYPE_COMMENT = 'br_com';
-	public const IDENTIFIER = 'likes_';
-	public const KEY_MAP = [
-		self::COLUMN_ID_MEMBER => self::PROPERTY_ID_MEMBER,
-		self::COLUMN_TYPE => self::PROPERTY_TYPE,
-		self::COLUMN_ID => self::PROPERTY_ID,
-		self::COLUMN_TIME => self::PROPERTY_TIME,
-	];
+	public const string TABLE = 'user_likes';
+	public const string COLUMN_ID_MEMBER = 'id_member';
+	public const string COLUMN_TYPE = 'content_type';
+	public const string COLUMN_ID = 'content_id';
+	public const string COLUMN_TIME = 'like_time';
+	public const string IDENTIFIER = 'likes_';
 
-	protected int $idMember = 0;
+	protected int $id_member = 0;
 
-	protected string|LikesEnum $type = '';
+	protected string|LikesEnum $content_type = '';
 
-	protected int $id = 0;
+	protected int $content_id = 0;
 
-	protected string|DateTimeImmutable $time = '';
+	protected int $like_time = 0;
 
 	public function getIdMember(): int
 	{
-		return $this->idMember;
+		return $this->id_member;
 	}
 
 	public function setIdMember(string|int $idMember): void
 	{
-		$this->idMember = (int) $idMember;
+		$this->id_member = (int) $idMember;
 	}
 
-	public function getType(): string|LikesEnum
+	public function getContentType(): LikesEnum
 	{
-		return $this->type;
+		return $this->content_type;
 	}
 
-	public function setType(string|LikesEnum $type): void
+	public function setContentType(string|LikesEnum $type): void
 	{
-		$this->type = $type;
+		$this->content_type = LikesEnum::isValid($type) ? $type : '';
 	}
 
-	public function getId(): int
+	public function getContentId(): int
 	{
-		return $this->id;
+		return $this->content_id;
 	}
 
-	public function setId(string|int $id): void
+	public function setContentId(string|int $id): void
 	{
-		$this->id = (int) $id;
-	}
-
-	public function getTime(): string
-	{
-		return $this->time;
+		$this->content_id = (int) $id;
 	}
 
 	/**
-	 * @throws Exception
+	 * @throws \DateMalformedStringException
 	 */
-	public function setTime(string $time): void
+	public function getLikeTime(): DateTimeImmutable
 	{
-		$this->time = new DateTimeImmutable($time);
+		return new DateTimeImmutable('@' . $this->like_time);
+	}
+
+	public function setTime(int | DateTimeImmutable $time): void
+	{
+		$this->like_time = is_int($time) ? $time : $time->getTimestamp();;
 	}
 
 	public static function getTypes(): array
@@ -101,10 +86,5 @@ class LikeEntity extends NormalizedEntity implements EntityInterface
 	public static function getTableName(): string
 	{
 		return self::TABLE;
-	}
-
-	public function getColumnMap(): array
-	{
-		return self::KEY_MAP;
 	}
 }

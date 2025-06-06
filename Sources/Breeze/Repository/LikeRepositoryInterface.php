@@ -5,32 +5,31 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Entity\LikeEntity;
+use Breeze\Entity\LikeHandledEntity;
+use Breeze\LikesEnum;
+
 interface LikeRepositoryInterface extends BaseRepositoryInterface
 {
 	public function getLikeInfo(string $type, int $contentId): array;
 
-	public function isContentAlreadyLiked(string $type, int $contentId, int $userId): bool;
+	public function isContentAlreadyLiked(LikeEntity $likeEntity): bool;
 
 	/**
 	 * @throws InvalidLikeException
 	 */
-	public function delete(string $type, int $contentId, int $userId): void;
+	public function delete(LikeEntity $likeEntity): void;
 
 	/**
 	 * @throws InvalidLikeException
 	 */
-	public function insert(string $type, int $contentId, int $userId): void;
+	public function insert(LikeEntity $likeEntity): LikeHandledEntity;
 
-	public function count(string $type, int $contentId): int;
+	public function count(LikeEntity $likeEntity): int;
 
 	public function appendLikeData(array $items, string $itemIdName): array;
 
-	public function buildLikeData(
-		?string $type,
-		?int    $contentId,
-		?int    $userId,
-		?bool   $isContentAlreadyLiked = null
-	): array;
+	public function buildLikeData(LikeEntity | LikeHandledEntity | array $likeHandledEntity): LikeHandledEntity;
 
-	public function likeContent(string $type, int $contentId, int $userId): array;
+	public function likeContent(string | LikesEnum $type, int $contentId, int $userId): LikeHandledEntity;
 }
