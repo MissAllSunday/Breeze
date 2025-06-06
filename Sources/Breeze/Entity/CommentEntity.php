@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
+use DateMalformedStringException;
 use DateTimeImmutable;
 use Exception;
 
 class CommentEntity extends Entity implements EntityInterface
 {
-	public const TABLE = 'breeze_comments';
-	public const ID = 'id';
-	public const STATUS_ID = 'statusId';
-	public const USER_ID = 'userId';
-	public const CREATED_AT = 'createdAt';
-	public const BODY = 'body';
-	public const LIKES = 'likes';
+	public const string TABLE = 'breeze_comments';
+	public const string ID = 'id';
+	public const string STATUS_ID = 'statusId';
+	public const string USER_ID = 'userId';
+	public const string CREATED_AT = 'createdAt';
+	public const string BODY = 'body';
+	public const string LIKES = 'likes';
 
 	protected int $id = 0;
 
@@ -23,20 +24,25 @@ class CommentEntity extends Entity implements EntityInterface
 
 	protected int $userId = 0;
 
-	protected string|DateTimeImmutable $createdAt = '';
+	protected int $createdAt = 0;
 
 	protected string $body = '';
 
-	protected array $likes = [];
+	protected int $likes = 0;
 
 	public function getId(): int
 	{
 		return $this->id;
 	}
 
-	public function setId(int|string $id): void
+	public function setId(int $id): void
 	{
-		$this->id = (int) $id;
+		$this->id = $id;
+	}
+
+	public function unsetId(): void
+	{
+		unset($this->id);
 	}
 
 	public function getStatusId(): int
@@ -44,9 +50,9 @@ class CommentEntity extends Entity implements EntityInterface
 		return $this->statusId;
 	}
 
-	public function setStatusId(int|string $statusId): void
+	public function setStatusId(int $statusId): void
 	{
-		$this->statusId = (int) $statusId;
+		$this->statusId = $statusId;
 	}
 
 	public function getUserId(): int
@@ -54,22 +60,22 @@ class CommentEntity extends Entity implements EntityInterface
 		return $this->userId;
 	}
 
-	public function setUserId(int|string $userId): void
+	public function setUserId(int $userId): void
 	{
-		$this->userId = (int) $userId;
-	}
-
-	public function getCreatedAt(): DateTimeImmutable|string
-	{
-		return $this->createdAt;
+		$this->userId = $userId;
 	}
 
 	/**
-	 * @throws Exception
+	 * @throws DateMalformedStringException
 	 */
-	public function setCreatedAt(string $createdAt): void
+	public function getCreatedAt(): DateTimeImmutable
 	{
-		$this->createdAt = new DateTimeImmutable($createdAt);
+		return new DateTimeImmutable('@' . $this->createdAt);
+	}
+
+	public function setCreatedAt(int | DateTimeImmutable $createdAt): void
+	{
+		$this->createdAt = is_int($createdAt) ? $createdAt : $createdAt->getTimestamp();
 	}
 
 	public function getBody(): string
@@ -83,14 +89,17 @@ class CommentEntity extends Entity implements EntityInterface
 	}
 
 	/**
-	 * @return  LikeEntity[]
+	 * @deprecated use LikeRepository instead
 	 */
-	public function getLikes(): array
+	public function getLikes(): int
 	{
 		return $this->likes;
 	}
 
-	public function setLikes(array $likes): void
+	/**
+	 * @deprecated use LikeRepository instead
+	 */
+	public function setLikes(int $likes): void
 	{
 		$this->likes = $likes;
 	}

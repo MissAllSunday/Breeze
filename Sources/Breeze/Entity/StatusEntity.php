@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
+use DateMalformedStringException;
 use DateTimeImmutable;
 use Exception;
 
-class StatusEntity extends Entity implements EntityInterface
+class StatusEntity extends Entity
 {
-	public const TABLE = 'breeze_status';
-	public const ID = 'id';
-	public const WALL_ID = 'wallId';
-	public const USER_ID = 'userId';
-	public const CREATED_AT = 'createdAt';
-	public const BODY = 'body';
-	public const LIKES = 'likes';
+	public const string TABLE = 'breeze_status';
+	public const string ID = 'id';
+	public const string WALL_ID = 'wallId';
+	public const string USER_ID = 'userId';
+	public const string CREATED_AT = 'createdAt';
+	public const string BODY = 'body';
+	public const string LIKES = 'likes';
 
 	public static function getColumns(): array
 	{
@@ -35,20 +36,25 @@ class StatusEntity extends Entity implements EntityInterface
 
 	protected int $userId = 0;
 
-	protected string|DateTimeImmutable $createdAt = '';
+	protected int $createdAt = 0;
 
 	protected string $body = '';
 
-	protected array $likes = [];
+	protected int $likes = 0;
 
 	public function getId(): int
 	{
 		return $this->id;
 	}
 
-	public function setId(int|string $id): void
+	public function setId(int $id): void
 	{
 		$this->id = (int) $id;
+	}
+
+	public function unsetId(): void
+	{
+		unset($this->id);
 	}
 
 	public function getWallId(): int
@@ -56,9 +62,9 @@ class StatusEntity extends Entity implements EntityInterface
 		return $this->wallId;
 	}
 
-	public function setWallId(int|string $wallId): void
+	public function setWallId(int $wallId): void
 	{
-		$this->wallId = (int) $wallId;
+		$this->wallId = $wallId;
 	}
 
 	public function getUserId(): int
@@ -71,17 +77,17 @@ class StatusEntity extends Entity implements EntityInterface
 		$this->userId = (int) $userId;
 	}
 
-	public function getCreatedAt(): DateTimeImmutable|string
+	/**
+	 * @throws DateMalformedStringException
+	 */
+	public function getCreatedAt(): DateTimeImmutable
 	{
-		return $this->createdAt;
+		return new DateTimeImmutable('@' . $this->createdAt);
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public function setCreatedAt(string $createdAt): void
+	public function setCreatedAt(int | DateTimeImmutable $createdAt): void
 	{
-		$this->createdAt = new DateTimeImmutable($createdAt);
+		$this->createdAt = is_int($createdAt) ? $createdAt : $createdAt->getTimestamp();
 	}
 
 	public function getBody(): string
@@ -95,14 +101,17 @@ class StatusEntity extends Entity implements EntityInterface
 	}
 
 	/**
-	 * @return  LikeEntity[]
+	 * @deprecated use LikeRepository instead
 	 */
-	public function getLikes(): array
+	public function getLikes(): int
 	{
 		return $this->likes;
 	}
 
-	public function setLikes(array $likes): void
+	/**
+	 * @deprecated use LikeRepository instead
+	 */
+	public function setLikes(int $likes): void
 	{
 		$this->likes = $likes;
 	}
