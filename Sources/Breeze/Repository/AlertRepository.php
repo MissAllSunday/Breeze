@@ -6,13 +6,36 @@ namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\AlertEntity as AlertEntity;
+use Breeze\Entity\StatusEntity;
 use Breeze\Util\Validate\DataNotFoundException;
 
 class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 {
 	public function __construct(
-		protected ClientInterface $dbClient
-	) {}
+		ClientInterface $dbClient
+	) {
+		parent::__construct($dbClient);
+	}
+
+	public function getTableName(): string
+	{
+		return AlertEntity::TABLE;
+	}
+
+	public function getColumnId(): string
+	{
+		return AlertEntity::COLUMN_ID;
+	}
+
+	public function getColumnPosterId(): string
+	{
+		return AlertEntity::COLUMN_ID_MEMBER_STARTED;
+	}
+
+	public function getColumns(): array
+	{
+		return AlertEntity::getColumns();
+	}
 
 	public function insert(AlertEntity $alertEntity): int
 	{
@@ -86,7 +109,8 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 				AND ' . AlertEntity::COLUMN_IS_READ . ' = 0
 				AND ' . AlertEntity::COLUMN_CONTENT_TYPE . ' = {string:alertType}
 				' . ($alertId !== 0 ? 'AND ' . AlertEntity::COLUMN_CONTENT_ID . ' = {int:alertId}' : '') . '
-				' . ($alertSender !== '' && $alertSender !== '0' ? 'AND ' . AlertEntity::COLUMN_ID_MEMBER_STARTED . ' = {int:alertSender}' : ''),
+				' . ($alertSender !== '' && $alertSender !== '0' ?
+				'AND ' . AlertEntity::COLUMN_ID_MEMBER_STARTED . ' = {int:alertSender}' : ''),
 			[
 				'userId' => $userId,
 				'alertType' => $alertType,

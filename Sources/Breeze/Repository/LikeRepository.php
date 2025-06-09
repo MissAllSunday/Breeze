@@ -21,8 +21,29 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
  use TimeTrait;
 
 	public function __construct(
-		protected ClientInterface $dbClient
+		ClientInterface $dbClient
 	) {
+		parent::__construct($dbClient);
+	}
+
+	public function getTableName(): string
+	{
+		return LikeEntity::TABLE;
+	}
+
+	public function getColumnId(): string
+	{
+		return LikeEntity::COLUMN_ID;
+	}
+
+	public function getColumnPosterId(): string
+	{
+		return LikeEntity::COLUMN_ID_MEMBER;
+	}
+
+	public function getColumns(): array
+	{
+		return LikeEntity::getColumns();
 	}
 
 	/**
@@ -150,14 +171,20 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		return $rowCount;
 	}
 
+	/**
+	 * @param array[HandledEntityInterface] $items
+	 * @param string $itemIdName
+	 *
+	 * @return array[HandledEntityInterface]
+	 */
 	public function appendLikeData(array $items, string $itemIdName): array
 	{
 		return array_map(function (array $item) use ($itemIdName): array {
-			$item['likesInfo'] = $this->buildLikeData([
+			$item->setLikesInfo($this->buildLikeData(new LikeHandledEntity([
 				LikeEntity::COLUMN_TYPE => $item[LikeEntity::IDENTIFIER . LikeEntity::COLUMN_TYPE],
 				LikeEntity::COLUMN_ID => $item[$itemIdName],
 				LikeEntity::COLUMN_ID_MEMBER => $item[LikeEntity::IDENTIFIER . LikeEntity::COLUMN_ID_MEMBER],
-			]);
+			])));
 
 			return $item;
 		}, $items);

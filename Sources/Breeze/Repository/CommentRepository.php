@@ -5,15 +5,38 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Database\ClientInterface;
 use Breeze\Entity\CommentEntity;
 use Breeze\Model\CommentModelInterface;
 
 class CommentRepository extends BaseRepository implements CommentRepositoryInterface
 {
 	public function __construct(
-		private readonly CommentModelInterface   $commentModel,
-		private readonly LikeRepositoryInterface $likeRepository
+		ClientInterface $dbClient,
+		protected readonly CommentModelInterface   $commentModel,
+		protected readonly LikeRepositoryInterface $likeRepository
 	) {
+		parent::__construct($dbClient);
+	}
+
+	public function getTableName(): string
+	{
+		return CommentEntity::TABLE;
+	}
+
+	public function getColumnId(): string
+	{
+		return CommentEntity::ID;
+	}
+
+	public function getColumnPosterId(): string
+	{
+		return CommentEntity::USER_ID;
+	}
+
+	public function getColumns(): array
+	{
+		return CommentEntity::getColumns();
 	}
 
 	/**
