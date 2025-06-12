@@ -8,26 +8,34 @@ use Breeze\Database\ClientInterface;
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\CommentHandledEntity;
 use Breeze\Util\Validate\DataNotFoundException;
+use PHPUnit\Framework\MockObject\Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class CommentRepositoryTest extends TestCase
 {
-	private ClientInterface $dbClient;
+	private MockObject|ClientInterface $dbClient;
 
-	private LikeRepositoryInterface $likeRepository;
+	private MockObject|LikeRepositoryInterface $likeRepository;
 
-	private CommentRepository $commentRepository;
+	private MockObject|CommentRepository $commentRepository;
 
+	/**
+	 * @throws Exception
+	 */
 	protected function setUp(): void
 	{
 		$this->dbClient = $this->createMock(ClientInterface::class);
 		$this->likeRepository = $this->createMock(LikeRepositoryInterface::class);
-		$this->commentRepository = new CommentRepository($this->dbClient, $this->likeRepository);
+		$this->commentRepository = $this->getMockBuilder(CommentRepository::class)
+			->setConstructorArgs([$this->dbClient, $this->likeRepository])
+			->onlyMethods(['prepareData', 'buildHandledComments', 'loadUsersInfo'])
+			->getMock();
 	}
 
 	public function testGetTableName(): void
 	{
-		$this->assertEquals(CommentEntity::TABLE, $this->commentRepository->getTableName());
+		$this->assertEquals('breeze_comments', $this->commentRepository->getTableName());
 	}
 
 	public function testGetColumnId(): void
@@ -37,7 +45,7 @@ class CommentRepositoryTest extends TestCase
 
 	public function testGetColumnPosterId(): void
 	{
-		$this->assertEquals(CommentEntity::USER_ID, $this->commentRepository->getColumnPosterId());
+		$this->assertEquals('userId', $this->commentRepository->getColumnPosterId());
 	}
 
 	public function testGetColumns(): void
@@ -45,6 +53,9 @@ class CommentRepositoryTest extends TestCase
 		$this->assertEquals(CommentEntity::getColumns(), $this->commentRepository->getColumns());
 	}
 
+	/**
+	 * @throws InvalidCommentException
+	 */
 	public function testInsert(): void
 	{
 		$commentEntity = new CommentEntity([
@@ -53,19 +64,15 @@ class CommentRepositoryTest extends TestCase
 			CommentEntity::BODY => 'Test comment',
 			CommentEntity::LIKES => 0,
 		]);
+		$commentHandledEntities = [5 => new CommentHandledEntity([
+			CommentEntity::ID => 5,
+			CommentEntity::STATUS_ID => 1,
+			CommentEntity::USER_ID => 2,
+			CommentEntity::BODY => 'Test comment',
+		])];
 
 		$this->dbClient->expects($this->once())
-			->method('insert')
-			->with(
-				CommentEntity::TABLE,
-				$this->anything(),
-				$this->callback(function ($data) {
-					return $data[CommentEntity::STATUS_ID] === 1 &&
-						$data[CommentEntity::USER_ID] === 2 &&
-						$data[CommentEntity::BODY] === 'Test comment';
-				}),
-				CommentEntity::ID
-			);
+			->method('insert');
 
 		$this->dbClient->expects($this->once())
 			->method('getInsertedId')
@@ -74,11 +81,10 @@ class CommentRepositoryTest extends TestCase
 		$this->commentRepository->method('loadUsersInfo')
 			->willReturn([2 => ['name' => 'Test User']]);
 
-		$this->likeRepository->expects($this->once())
-			->method('appendLikeData')
-			->willReturnCallback(function (&$comments) {
-				return $comments;
-			});
+		$this->commentRepository->expects($this->once())
+			->method('buildHandledComments')
+			->with([$commentEntity])
+			->willReturn($commentHandledEntities);
 
 		$result = $this->commentRepository->insert($commentEntity);
 

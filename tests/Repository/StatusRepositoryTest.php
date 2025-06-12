@@ -61,7 +61,14 @@ class StatusRepositoryTest extends TestCase
 
 	public function testGetColumns(): void
 	{
-		$this->assertEquals(StatusEntity::getColumns(), $this->statusRepository->getColumns());
+		$this->assertEquals([
+			'id',
+			'wallId',
+			'userId',
+			'createdAt',
+			'body',
+			'likes',
+		], $this->statusRepository->getColumns());
 	}
 
 	/**
@@ -91,15 +98,9 @@ class StatusRepositoryTest extends TestCase
 		$this->statusRepository->method('loadUsersInfo')
 			->willReturn([2 => ['name' => 'Test User']]);
 
-		$this->likeRepository->expects($this->once())
-			->method('appendLikeData')
-			->willReturnCallback(function (&$status) {
-				return $status;
-			});
-
 		$this->statusRepository->expects($this->once())
 			->method('buildHandledStatus')
-			->with($statusEntity)
+			->with([$statusEntity])
 			->willReturn($statusHandledEntities);
 
 		$result = $this->statusRepository->insert($statusEntity);
