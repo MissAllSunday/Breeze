@@ -6,7 +6,6 @@ namespace Breeze\Entity;
 
 use DateMalformedStringException;
 use DateTimeImmutable;
-use Exception;
 
 class CommentEntity extends Entity implements EntityInterface
 {

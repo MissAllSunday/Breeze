@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Entity\StatusHandledEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\UserRepositoryInterface;
+use Breeze\Util\Validate\EmptyDataException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -62,6 +64,9 @@ class StatusServiceTest extends TestCase
 		];
 	}
 
+	/**
+	 * @throws EmptyDataException
+	 */
 	#[DataProvider('getByProfileProvider')]
 	public function testGetByProfile(int $wallId, int $start, array $expected): void
 	{
@@ -104,32 +109,32 @@ class StatusServiceTest extends TestCase
 	 * @throws InvalidStatusException
 	 */
 	#[DataProvider('saveProvider')]
-	public function testSave(int $statusId, array $status, array $expected): void
+	public function testSave(array $inputData, StatusHandledEntity $expectedResult): void
 	{
-		$this->statusRepository->method('save')->willReturn($statusId);
-		$this->statusRepository->method('getById')->willReturn($status);
+		$this->statusRepository->method('insert')->willReturn($expectedResult);
 
-		$result = $this->statusService->save([]);
+		$result = $this->statusService->save($inputData);
 
-		$this->assertEquals($expected, $result);
+		$this->assertInstanceOf(StatusHandledEntity::class, $result);
+		$this->assertEquals($expectedResult, $result);
 	}
 
 	public static function saveProvider(): array
 	{
 		return [
 			'happy happy joy joy' => [
-				'statusId' => 1,
-				'status' => [
-					1 => [
-						'someData' => 'lol',
-					],
+				'inputData' => [
+					'wallId' => 1,
+					'userId' => 1,
+					'body' => 'test status',
 				],
-				'expected' => [
-					1 => [
-						'someData' => 'lol',
-						'isNew' => true,
-					],
-				],
+				'expectedResult' => new StatusHandledEntity([
+					'isNew' => true,
+					'id' => 1,
+					'wallId' => 1,
+					'userId' => 1,
+					'body' => 'test status',
+				]),
 			],
 		];
 	}

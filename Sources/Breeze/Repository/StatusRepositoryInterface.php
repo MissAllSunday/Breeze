@@ -14,7 +14,7 @@ interface StatusRepositoryInterface extends BaseRepositoryInterface
 	/**
 	 * @throws InvalidStatusException
 	 */
-	public function insert(StatusEntity $statusEntity): StatusEntity;
+	public function insert(StatusEntity $statusEntity): StatusHandledEntity;
 
 	/**
 	 * @throws EmptyDataException

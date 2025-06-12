@@ -33,7 +33,6 @@ use Breeze\Model\CommentModel;
 use Breeze\Model\LogModel;
 use Breeze\Model\MentionModel;
 use Breeze\Model\NotificationModel;
-use Breeze\Model\StatusModel;
 use Breeze\Model\UserModel;
 use Breeze\Repository\AlertRepository;
 use Breeze\Repository\CommentRepository;
@@ -112,14 +111,13 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		LogModel::class => [DatabaseClient::class],
 		MentionModel::class => [DatabaseClient::class],
 		NotificationModel::class => [DatabaseClient::class],
-		StatusModel::class => [DatabaseClient::class],
 		UserModel::class => [DatabaseClient::class],
 		UserRepository::class => [UserModel::class],
 		AlertRepository::class => [DatabaseClient::class],
-		CommentRepository::class => [CommentModel::class, LikeRepository::class],
+		CommentRepository::class => [DatabaseClient::class, LikeRepository::class],
 		LikeRepository::class => [DatabaseClient::class],
 		NotificationRepository::class => [NotificationModel::class],
-		StatusRepository::class => [StatusModel::class, CommentRepository::class, LikeRepository::class],
+		StatusRepository::class => [DatabaseClient::class, CommentRepository::class, LikeRepository::class],
 		AdminService::class => [SettingsBuilder::class],
 		ProfileService::class => [UserRepository::class, Components::class, PermissionsService::class],
 		PermissionsService::class => [],

@@ -6,7 +6,6 @@ namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\AlertEntity as AlertEntity;
-use Breeze\Entity\StatusEntity;
 use Breeze\Util\Validate\DataNotFoundException;
 
 class AlertRepository extends BaseRepository implements AlertRepositoryInterface

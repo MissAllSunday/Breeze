@@ -2,459 +2,242 @@
 
 declare(strict_types=1);
 
-
 namespace Breeze\Repository;
 
-use Breeze\Model\StatusModelInterface;
+use Breeze\Database\ClientInterface;
+use Breeze\Entity\StatusEntity;
+use Breeze\Entity\StatusHandledEntity;
 use Breeze\Util\Validate\DataNotFoundException;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class StatusRepositoryTest extends TestCase
 {
-	protected array $stack;
+	private MockObject|ClientInterface $dbClient;
 
+	private MockObject|LikeRepositoryInterface $likeRepository;
+
+	private MockObject|CommentRepositoryInterface $commentRepository;
+
+	private MockObject|StatusRepository $statusRepository;
+
+	private stdClass $queryObject;
+
+	/**
+	 * @throws Exception
+	 */
 	protected function setUp(): void
 	{
-		$this->stack = [
-			'commentModel' => [
-				'getByProfiles1' => [
-					'usersIds' => [1,2,3],
-					'data' => [
-						1 => [
-							1 => [
-								'id' => 1,
-								'statusId' => 1,
-								'userId' => 1,
-								'createdAt' => 'Today',
-								'body' => 'comment body',
-								'likes' => 0,
-								'likesInfo' => [],
-								'userData' => [
-									'link' => 'Guest',
-									'name' => 'Guest',
-									'avatar' => ['href' => 'avatar_url/default.png'],
-								],
-							],
-						], ],
-				],
-			],
-			'commentRepository' => [
-				'getByProfile1' =>
-					[
-						1 => [
-							1 => [
-								'id' => 1,
-								'statusId' => 1,
-								'userId' => 1,
-								'createdAt' => 'Today',
-								'body' => 'comment body',
-								'likes' => 0,
-							],
-						], ],
-			],
-			'statusModel' => [
-				'getStatusByProfile1' => [
-					'usersIds' => [1,2,3],
-					'data' => [
-						1 => [
-							1 => [
-								'id' => 1,
-								'statusId' => 1,
-								'userId' => 1,
-								'createdAt' => 'Today',
-								'body' => 'status body body',
-								'likes' => 0,
-							],
-						], ],
-				],
-				'getStatusByProfile2' => [
-					'usersIds' => [],
-					'data' => [],
-				],
-			],
-			'likeRepository' => [
-				'appendLikeData' => [
-					'likesInfo' => [
-						'contentId' => 1,
-						'count' => 0,
-						'alreadyLiked' => false,
-						'type' => 'type',
-						'canLike' => false,
-						'additionalInfo' => '',
-					],
-				],
-			], ];
+		$this->dbClient = $this->createMock(ClientInterface::class);
+		$this->likeRepository = $this->createMock(LikeRepositoryInterface::class);
+		$this->commentRepository = $this->createMock(CommentRepositoryInterface::class);
+		$this->statusRepository = $this->getMockBuilder(StatusRepository::class)
+			->setConstructorArgs([$this->dbClient, $this->commentRepository, $this->likeRepository])
+			->onlyMethods(['prepareData', 'buildHandledStatus', 'loadUsersInfo'])
+			->getMock();
+
+		$this->statusRepository->method('loadUsersInfo')
+			->willReturn([1 => ['name' => 'Test User']]);
+		$this->queryObject = new stdClass();
 	}
 
-	#[DataProvider('saveProvider')]
-	public function testSave(array $dataToInsert, int $newId): void
+	public function testGetTableName(): void
 	{
-		$statusModel =  $this->createMock(StatusModelInterface::class);
-		$commentRepository = $this->createMock(CommentRepositoryInterface::class);
-		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
-
-		$statusRepository = new StatusRepository(
-			$statusModel,
-			$commentRepository,
-			$likeRepository
-		);
-
-		$statusModel
-			->method('insert')
-			->willReturn($newId);
-
-		if ($newId === 0) {
-			$this->expectException(InvalidStatusException::class);
-		}
-
-		$newStatusId = $statusRepository->save($dataToInsert);
-
-		$this->assertEquals($newId, $newStatusId);
+		$this->assertEquals('breeze_status', $this->statusRepository->getTableName());
 	}
 
-	public static function saveProvider(): array
+	public function testGetColumnId(): void
 	{
-		return [
-			'happy happy joy joy' => [
-				'dataToInsert' => [
-					'wallId' => 1,
-					'userId' => 1,
-					'createdAt' => time(),
-					'body' => 'body',
-					'likes' => 0,
-				],
-				'newId' => 666,
-			],
-			'InvalidStatusException' => [
-				'dataToInsert' => [
-					'wallId' => 1,
-					'userId' => 1,
-					'createdAt' => time(),
-					'body' => 'body',
-					'likes' => 0,
-				],
-				'newId' => 0,
-			],
-		];
+		$this->assertEquals('id', $this->statusRepository->getColumnId());
 	}
 
-	#[DataProvider('getByProfileProvider')]
-	public function testGetByProfile(
-		array $userProfiles,
-		array $statusModelWillReturn,
-		array $commentsByProfileWillReturn,
-		array $likesInfo,
-		array $expectedResult,
-	): void {
-		$statusModel =  $this->createMock(StatusModelInterface::class);
-		$commentRepository = $this->createMock(CommentRepositoryInterface::class);
-		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
-
-		$statusRepository = new StatusRepository(
-			$statusModel,
-			$commentRepository,
-			$likeRepository
-		);
-
-		$statusModel->method('getCount')->willReturn(1);
-		$statusModel
-			->method('getStatusByProfile')
-			->willReturn($statusModelWillReturn);
-
-
-		if (empty($statusModelWillReturn)) {
-			$this->expectException(DataNotFoundException::class);
-		}
-
-		$commentRepository->method('getByProfile')->willReturn($commentsByProfileWillReturn);
-
-		$statusWithLikes = array_map(function ($item) use ($likesInfo): array {
-			$item['likesInfo'] = $likesInfo;
-
-			return $item;
-		}, $statusModelWillReturn['data']);
-
-		$likeRepository->method('appendLikeData')->willReturn($statusWithLikes);
-		$statusByProfile = $statusRepository->getByProfile($userProfiles);
-
-		$this->assertEquals($expectedResult, $statusByProfile);
-	}
-
-	public static function getByProfileProvider(): array
+	public function testGetColumnPosterId(): void
 	{
-		return [
-			'happy happy joy joy' => [
-				'userProfiles' => [1],
-				'statusModelWillReturn' => [
-					'total' => 1,
-					'usersIds' => [1,2,3],
-					'data' => [
-						1 => [
-							'id' => 1,
-							'wallId' => 1,
-							'userId' => 1,
-							'createdAt' => 'Today',
-							'body' => 'status body',
-							'likes' => 0,
-						],
-					],
-				],
-				'commentsByProfileWillReturn' => [
-					1 => [
-						1 => [
-							'id' => 1,
-							'statusId' => 1,
-							'userId' => 1,
-							'createdAt' => 'Today',
-							'body' => 'comment body',
-							'likes' => 0,
-						],
-					], ],
-				'likesInfo' => [
-					'contentId' => 1,
-					'count' => 0,
-					'alreadyLiked' => false,
-					'type' => 'type',
-					'canLike' => false,
-					'additionalInfo' => '',
-				],
-				'expectedResult' => [
-					'total' => 1,
-					'data' => [
-						1 => [
-							'id' => 1,
-							'wallId' => 1,
-							'userId' => 1,
-							'createdAt' => 'Today',
-							'body' => 'status body',
-							'likes' => 0,
-							'comments' => [
-								1 => [
-									'id' => 1,
-									'statusId' => 1,
-									'userId' => 1,
-									'createdAt' => 'Today',
-									'body' => 'comment body',
-									'likes' => 0,
-								],
-							],
-							'likesInfo' => [
-								'contentId' => 1,
-								'count' => 0,
-								'alreadyLiked' => false,
-								'type' => 'type',
-								'canLike' => false,
-								'additionalInfo' => '',
-							],
-							'userData' => [
-								'link' => 'Guest',
-								'name' => 'Guest',
-								'avatar' => ['href' => 'avatar_url/default.png'],
-							],
-						],],
-				],
-			],
-		];
+		$this->assertEquals('userId', $this->statusRepository->getColumnPosterId());
 	}
 
-	#[DataProvider('getByIdProvider')]
-	public function testGetById(
-		int $statusId,
-		array $statusModelWillReturn,
-		array $commentsByProfileWillReturn,
-		array $likesInfo,
-		array $expectedResult
-	): void {
-		$statusModel =  $this->createMock(StatusModelInterface::class);
-		$commentRepository = $this->createMock(CommentRepositoryInterface::class);
-		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
-
-		$statusRepository = new StatusRepository(
-			$statusModel,
-			$commentRepository,
-			$likeRepository
-		);
-
-		$statusModel
-			->method('getById')
-			->willReturn($statusModelWillReturn);
-
-		if (empty($statusModelWillReturn)) {
-			$this->expectException(DataNotFoundException::class);
-		}
-
-		$commentRepository->method('getByStatus')->willReturn($commentsByProfileWillReturn);
-
-		$statusWithLikes = array_map(function ($item) use ($likesInfo): array {
-			$item['likesInfo'] = $likesInfo;
-
-			return $item;
-		}, $statusModelWillReturn['data']);
-
-		$likeRepository->method('appendLikeData')->willReturn($statusWithLikes);
-		$statusById = $statusRepository->getById($statusId);
-
-		$this->assertEquals($expectedResult, $statusById);
-	}
-
-	public static function getByIdProvider(): array
+	public function testGetColumns(): void
 	{
-		return [
-			'happy happy joy joy' => [
-				'statusId' => 1,
-				'statusModelWillReturn' => [
-					'usersIds' => [1,2,3],
-					'data' => [
-						1 => [
-							'id' => 1,
-							'wallId' => 1,
-							'userId' => 1,
-							'createdAt' => 'Today',
-							'body' => 'status body',
-							'likes' => 0,
-						],
-					],
-				],
-				'commentsByProfileWillReturn' => [
-					1 => [
-						1 => [
-							'id' => 1,
-							'statusId' => 1,
-							'userId' => 1,
-							'createdAt' => 'Today',
-							'body' => 'comment body',
-							'likes' => 0,
-						],
-					], ],
-				'likesInfo' => [
-					'contentId' => 1,
-					'count' => 0,
-					'alreadyLiked' => false,
-					'type' => 'type',
-					'canLike' => false,
-					'additionalInfo' => '',
-				],
-				'expectedResult' => [
-					1 => [
-						'id' => 1,
-						'wallId' => 1,
-						'userId' => 1,
-						'createdAt' => 'Today',
-						'body' => 'status body',
-						'likes' => 0,
-						'comments' => [
-							1 => [
-								'id' => 1,
-								'statusId' => 1,
-								'userId' => 1,
-								'createdAt' => 'Today',
-								'body' => 'comment body',
-								'likes' => 0,
-							],
-						],
-						'likesInfo' => [
-							'contentId' => 1,
-							'count' => 0,
-							'alreadyLiked' => false,
-							'type' => 'type',
-							'canLike' => false,
-							'additionalInfo' => '',
-						],
-						'userData' => [
-							'link' => 'Guest',
-							'name' => 'Guest',
-							'avatar' => ['href' => 'avatar_url/default.png'],
-						],
-					],],
-			],
-		];
+		$this->assertEquals(StatusEntity::getColumns(), $this->statusRepository->getColumns());
 	}
 
+	/**
+	 * @throws InvalidStatusException
+	 */
+	public function testInsert(): void
+	{
+		$statusEntity = new StatusEntity([
+			StatusEntity::WALL_ID => 1,
+			StatusEntity::USER_ID => 2,
+			StatusEntity::BODY => 'Test status',
+		]);
+		$statusHandledEntities = [5 => new StatusHandledEntity([
+			StatusEntity::ID => 5,
+			StatusEntity::WALL_ID => 1,
+			StatusEntity::USER_ID => 2,
+			StatusEntity::BODY => 'Test status',
+		])];
+
+		$this->dbClient->expects($this->once())
+			->method('insert');
+
+		$this->dbClient->expects($this->once())
+			->method('getInsertedId')
+			->willReturn(5);
+
+		$this->statusRepository->method('loadUsersInfo')
+			->willReturn([2 => ['name' => 'Test User']]);
+
+		$this->likeRepository->expects($this->once())
+			->method('appendLikeData')
+			->willReturnCallback(function (&$status) {
+				return $status;
+			});
+
+		$this->statusRepository->expects($this->once())
+			->method('buildHandledStatus')
+			->with($statusEntity)
+			->willReturn($statusHandledEntities);
+
+		$result = $this->statusRepository->insert($statusEntity);
+
+		$this->assertInstanceOf(StatusHandledEntity::class, $result);
+		$this->assertEquals(5, $result->getId());
+		$this->assertTrue($result->isNew());
+	}
+
+	public function testInsertThrowsExceptionWhenIdIsZero(): void
+	{
+		$statusEntity = new StatusEntity([
+			StatusEntity::WALL_ID => 1,
+			StatusEntity::USER_ID => 2,
+			StatusEntity::BODY => 'Test status',
+			StatusEntity::LIKES => 0,
+		]);
+
+		$this->dbClient->method('getInsertedId')->willReturn(0);
+
+		$this->expectException(InvalidStatusException::class);
+		$this->expectExceptionMessage('error_save_status');
+
+		$this->statusRepository->insert($statusEntity);
+	}
+
+	public function testGetById(): void
+	{
+		$mockData = [5 => new StatusHandledEntity([
+			StatusEntity::ID => 5,
+			StatusEntity::WALL_ID => 1,
+			StatusEntity::USER_ID => 2,
+			StatusEntity::BODY => 'Test status',
+		])];
+
+		$this->dbClient->expects($this->once())
+			->method('query')
+			->willReturn($this->queryObject);
+
+		$this->statusRepository->method('loadUsersInfo')
+			->willReturn([2 => ['name' => 'Test User']]);
+
+		$this->statusRepository->expects($this->once())
+			->method('prepareData')
+			->with($this->queryObject)
+			->willReturn($mockData);
+
+		$this->statusRepository->expects($this->once())
+			->method('buildHandledStatus')
+			->with($mockData)
+			->willReturn($mockData);
+
+		$result = $this->statusRepository->getById(5);
+
+		$this->assertEquals($mockData, $result);
+	}
+
+	/**
+	 * @throws DataNotFoundException
+	 */
 	#[DataProvider('deleteByIdProvider')]
-	public function testDeleteById(
-		int $statusId,
-		array $statusModelWillReturn,
-		bool $deleteByStatusIdWillReturn,
-		bool $expectedResult
-	): void {
-		$statusModel = $this->createMock(StatusModelInterface::class);
-		$commentRepository = $this->createMock(CommentRepositoryInterface::class);
-		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
+	public function testDeleteById(int $statusId, bool $isExpectedException): void
+	{
+		$this->statusRepository = $this->getMockBuilder(StatusRepository::class)
+			->setConstructorArgs([$this->dbClient, $this->commentRepository, $this->likeRepository])
+			->onlyMethods(['delete'])
+			->getMock();
 
-		$statusModel->method('getById')->willReturn($statusModelWillReturn);
-		$commentRepository->method('getByStatus')->willReturn([]);
-
-		$likeRepository->method('appendLikeData')->willReturn($statusModelWillReturn['data']);
-		$commentRepository->method('deleteByStatusId')
+		$this->commentRepository->expects($this->once())
+			->method('deleteByStatusId')
+			->with($statusId)
 			->willReturn(true);
 
-		$statusModel->method('delete')->willReturn($expectedResult);
+		$this->statusRepository->expects($this->once())
+			->method('delete')
+			->with([$statusId])
+			->willReturn(!$isExpectedException);
 
-		$statusRepository = new StatusRepository(
-			$statusModel,
-			$commentRepository,
-			$likeRepository
-		);
-
-		if (!$expectedResult) {
+		if ($isExpectedException) {
 			$this->expectException(DataNotFoundException::class);
+			$this->expectExceptionMessage('error_no_status');
 		}
 
-		$deleteById = $statusRepository->deleteById($statusId);
+		$result = $this->statusRepository->deleteById($statusId);
 
-		$this->assertEquals($expectedResult, $deleteById);
+		$this->assertTrue($result);
 	}
 
 	public static function deleteByIdProvider(): array
 	{
 		return [
-			'happy happy joy joy' => [
-				'statusId' => 1,
-				'statusModelWillReturn' => [
-					'usersIds' => [1],
-					'data' => [
-						1 => [
-							'id' => 1,
-							'wallId' => 1,
-							'userId' => 1,
-							'createdAt' => 'Today',
-							'body' => 'status body',
-							'likes' => 0,
-							'userData' => [
-								'link' => 'Guest',
-								'name' => 'Guest',
-								'avatar' => ['href' => 'avatar_url/default.png'],
-							],
-						],
-					],
-				],
-				'deleteByStatusIdWillReturn' => true,
-				'expectedResult' => true,
+			'deleteStatusValid' => [
+				'statusId' => 5,
+				'isExpectedException' => false,
 			],
-			'could not be deleted' => [
-				'statusId' => 1,
-				'statusModelWillReturn' => [
-					'usersIds' => [1],
-					'data' => [
-						1 => [
-							'id' => 1,
-							'wallId' => 1,
-							'userId' => 1,
-							'createdAt' => 'Today',
-							'body' => 'status body',
-							'likes' => 0,
-							'userData' => [
-								'link' => 'Guest',
-								'name' => 'Guest',
-								'avatar' => ['href' => 'avatar_url/default.png'],
-							],
-						],
-					],
-				],
-				'deleteByStatusIdWillReturn' => true,
-				'expectedResult' => false,
+			'deleteStatusInvalid' => [
+				'statusId' => 0,
+				'isExpectedException' => true,
 			],
 		];
+	}
+
+	public function testGetByProfile(): void
+	{
+		$mockQueryObject = new stdClass();
+		$mockData = [
+			1 => new StatusHandledEntity([
+				StatusEntity::ID => 1,
+				StatusEntity::WALL_ID => 10,
+				StatusEntity::USER_ID => 2,
+				StatusEntity::BODY => 'Test status',
+			]),
+		];
+
+		$this->dbClient->expects($this->once())
+			->method('query')
+			->willReturn($mockQueryObject);
+
+		$this->commentRepository->expects($this->once())
+			->method('getByProfile')
+			->with([10])
+			->willReturn([]);
+
+		$this->statusRepository->method('loadUsersInfo')
+			->willReturn([2 => ['name' => 'Test User']]);
+
+		$this->statusRepository->expects($this->once())
+			->method('prepareData')
+			->with($mockQueryObject)
+			->willReturn($mockData);
+
+		$this->statusRepository->expects($this->once())
+			->method('buildHandledStatus')
+			->with($mockData)
+			->willReturn(['data' => $mockData, 'total' => 1]);
+
+		$result = $this->statusRepository->getByProfile([10]);
+
+		$this->assertEquals(['data' => $mockData, 'total' => 1], $result);
 	}
 }

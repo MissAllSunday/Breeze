@@ -173,7 +173,6 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 	/**
 	 * @param array[HandledEntityInterface] $items
-	 * @param string $itemIdName
 	 *
 	 * @return array[HandledEntityInterface]
 	 */

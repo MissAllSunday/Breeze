@@ -9,7 +9,6 @@ use Breeze\Database\ClientInterface;
 use Breeze\Entity\StatusEntity;
 use Breeze\Entity\StatusHandledEntity;
 use Breeze\LikesEnum;
-use Breeze\Traits\TimeTrait;
 use Breeze\Util\Parser;
 use Breeze\Util\Validate\DataNotFoundException;
 
@@ -48,7 +47,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	/**
 	 * @throws InvalidStatusException
 	 */
-	public function insert(StatusEntity $statusEntity): StatusEntity
+	public function insert(StatusEntity $statusEntity): StatusHandledEntity
 	{
 		$statusEntity->unsetId();
 		$statusEntity->setCreatedAt(time());
@@ -67,9 +66,15 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			throw new InvalidStatusException('error_save_status');
 		}
 
+		$this->loadedUsers = $this->loadUsersInfo([$statusEntity->getUserId()]);
+		$statusEntity->setBody(Parser::bbc($statusEntity->getBody()));
+
 		$statusEntity->setId($newStatusId);
 
-		return $statusEntity;
+		$statusHandledEntity = $this->buildHandledStatus([$statusEntity])[$newStatusId];
+		$statusHandledEntity->setIsNew(true);
+
+		return $statusHandledEntity;
 	}
 
 	/**
@@ -130,19 +135,17 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	}
 
 	/**
-	 * @throws DataNotFoundException|InvalidCommentException
+	 * @throws DataNotFoundException
 	 */
 	public function deleteById(int $statusId): bool
 	{
-		$status = $this->getById($statusId);
-
 		$this->commentRepository->deleteByStatusId($statusId);
 
 		if (!$this->delete([$statusId])) {
 			throw new DataNotFoundException('error_no_status');
 		}
 
-		$this->setCache(self::CACHE_BY_PROFILE . $status[$statusId][StatusEntity::WALL_ID], null);
+		// @todo handle cache clen up via event
 
 		return true;
 	}
@@ -152,7 +155,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 * @param array $comments [CommentHandledEntity]
 	 * @return array [StatusHandledEntity]
 	 */
-	protected function buildHandledStatus(array $status, array $comments): array
+	protected function buildHandledStatus(array $status, array $comments = []): array
 	{
 		/** @var StatusHandledEntity[] $status */
 		array_walk($status, function ($singleStatus, $statusId) use ($comments): void {
@@ -170,7 +173,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	}
 
 	/**
-	 * @return array[StatusHandledEntity]
+	 * @return array [StatusHandledEntity]
 	 */
 	protected function prepareData(object $request): array
 	{

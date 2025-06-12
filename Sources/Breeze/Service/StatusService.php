@@ -5,12 +5,15 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Entity\StatusEntity;
+use Breeze\Entity\StatusHandledEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\PermissionsEnum;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\UserRepositoryInterface;
 use Breeze\Traits\SettingsTrait;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\EmptyDataException;
 
 class StatusService
@@ -49,7 +52,8 @@ class StatusService
 	}
 
 	/**
-	 * @throws InvalidStatusException
+	 * @throws EmptyDataException
+	 * @throws DataNotFoundException
 	 */
 	public function getByBuddies(int $start): array
 	{
@@ -78,13 +82,9 @@ class StatusService
 	/**
 	 * @throws InvalidStatusException
 	 */
-	public function save(array $data): array
+	public function save(array $data): StatusHandledEntity
 	{
-		$statusId = $this->statusRepository->save($data);
-		$status = $this->statusRepository->getById($statusId);
-		$status[$statusId]['isNew'] = true;
-
-		return $status;
+		return $this->statusRepository->insert(new StatusEntity($data));
 	}
 
 	protected function currentUserInfo(): array

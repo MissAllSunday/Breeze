@@ -2,152 +2,192 @@
 
 declare(strict_types=1);
 
-
 namespace Breeze\Repository;
 
-use Breeze\Model\CommentModel;
-use PHPUnit\Framework\Attributes\DataProvider;
+use Breeze\Database\ClientInterface;
+use Breeze\Entity\CommentEntity;
+use Breeze\Entity\CommentHandledEntity;
+use Breeze\Util\Validate\DataNotFoundException;
 use PHPUnit\Framework\TestCase;
-
-/**
- * Override time() in the current namespace for testing.
- *
- */
-function time(): int
-{
-	return 581299200;
-}
 
 class CommentRepositoryTest extends TestCase
 {
-	#[DataProvider('saveProvider')]
-	public function testSave(array $dataToInsert, int $newId): void
-	{
-		$commentModel = $this->createMock(CommentModel::class);
-		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
-		$commentRepository = new CommentRepository($commentModel, $likeRepository);
+	private ClientInterface $dbClient;
 
-		$commentModel
+	private LikeRepositoryInterface $likeRepository;
+
+	private CommentRepository $commentRepository;
+
+	protected function setUp(): void
+	{
+		$this->dbClient = $this->createMock(ClientInterface::class);
+		$this->likeRepository = $this->createMock(LikeRepositoryInterface::class);
+		$this->commentRepository = new CommentRepository($this->dbClient, $this->likeRepository);
+	}
+
+	public function testGetTableName(): void
+	{
+		$this->assertEquals(CommentEntity::TABLE, $this->commentRepository->getTableName());
+	}
+
+	public function testGetColumnId(): void
+	{
+		$this->assertEquals(CommentEntity::ID, $this->commentRepository->getColumnId());
+	}
+
+	public function testGetColumnPosterId(): void
+	{
+		$this->assertEquals(CommentEntity::USER_ID, $this->commentRepository->getColumnPosterId());
+	}
+
+	public function testGetColumns(): void
+	{
+		$this->assertEquals(CommentEntity::getColumns(), $this->commentRepository->getColumns());
+	}
+
+	public function testInsert(): void
+	{
+		$commentEntity = new CommentEntity([
+			CommentEntity::STATUS_ID => 1,
+			CommentEntity::USER_ID => 2,
+			CommentEntity::BODY => 'Test comment',
+			CommentEntity::LIKES => 0,
+		]);
+
+		$this->dbClient->expects($this->once())
 			->method('insert')
-			->willReturn($newId);
+			->with(
+				CommentEntity::TABLE,
+				$this->anything(),
+				$this->callback(function ($data) {
+					return $data[CommentEntity::STATUS_ID] === 1 &&
+						$data[CommentEntity::USER_ID] === 2 &&
+						$data[CommentEntity::BODY] === 'Test comment';
+				}),
+				CommentEntity::ID
+			);
 
-		if ($newId === 0) {
-			$this->expectException(InvalidCommentException::class);
-		}
+		$this->dbClient->expects($this->once())
+			->method('getInsertedId')
+			->willReturn(5);
 
-		$newCommentId = $commentRepository->save($dataToInsert);
+		$this->commentRepository->method('loadUsersInfo')
+			->willReturn([2 => ['name' => 'Test User']]);
 
-		$this->assertEquals($newId, $newCommentId);
-	}
-
-	public static function saveProvider(): array
-	{
-		return [
-			'happy happy joy joy' => [
-				'dataToInsert' => [
-					'createdAt' => 581299200,
-					'likes' => 0,
-				],
-				'newId' => 666,
-			],
-			'InvalidCommentException' => [
-				'dataToInsert' => [
-					'createdAt' => 581299200,
-					'likes' => 0,
-				],
-				'newId' => 0,
-			],
-		];
-	}
-
-	#[DataProvider('getByProfileProvider')]
-	public function testGetByProfile(
-		array $userProfiles,
-		array $commentModelReturn,
-		array $commentsByProfileWillReturn
-	): void {
-		$commentModel = $this->createMock(CommentModel::class);
-		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
-		$commentRepository = new CommentRepository($commentModel, $likeRepository);
-
-			$commentModel
-				->method('getByProfiles')
-				->willReturn($commentModelReturn);
-
-		$likeRepository
+		$this->likeRepository->expects($this->once())
 			->method('appendLikeData')
-			->willReturn($commentModelReturn['data'][1]);
+			->willReturnCallback(function (&$comments) {
+				return $comments;
+			});
 
-		$commentsByProfile = $commentRepository->getByProfile($userProfiles);
+		$result = $this->commentRepository->insert($commentEntity);
 
-		$this->assertEquals($commentsByProfileWillReturn, $commentsByProfile);
+		$this->assertInstanceOf(CommentHandledEntity::class, $result);
+		$this->assertEquals(5, $result->getId());
 	}
 
-	public static function getByProfileProvider(): array
+	public function testInsertThrowsExceptionWhenIdIsZero(): void
 	{
-		return [
-			'happy happy joy joy' => [
-				'userProfiles' => [1],
-				'commentModelReturn' => [
-					'usersIds' => [1,2,3],
-					'data' => [1 => [ 1 => [
-						'id' => 1,
-						'statusId' => 1,
-						'userId' => 1,
-						'createdAt' => 581299200,
-						'body' => 'comment body',
-						'likes' => 0,
-					]]],
-				],
-				'commentsByProfileWillReturn' => [
-					1 => [
-						1 => [
-							'id' => 1,
-							'statusId' => 1,
-							'userId' => 1,
-							'createdAt' => 581299200,
-							'body' => 'comment body',
-							'likes' => 0,
-							'userData' => [
-								'link' => 'Guest',
-								'name' => 'Guest',
-								'avatar' => ['href' => 'avatar_url/default.png'],
-							],
-						],
-					],],
-			],
-		];
+		$commentEntity = new CommentEntity([
+			CommentEntity::STATUS_ID => 1,
+			CommentEntity::USER_ID => 2,
+			CommentEntity::BODY => 'Test comment',
+			CommentEntity::LIKES => 0,
+		]);
+
+		$this->dbClient->method('getInsertedId')->willReturn(0);
+
+		$this->expectException(InvalidCommentException::class);
+		$this->expectExceptionMessage('error_save_comment');
+
+		$this->commentRepository->insert($commentEntity);
 	}
 
-	#[DataProvider('getByStatusProvider')]
-	public function testGetByStatus(array $statusId, array $commentsByStatusWillReturn): void
+	public function testGetById(): void
 	{
-		$commentModel = $this->createMock(CommentModel::class);
-		$likeRepository = $this->createMock(LikeRepositoryInterface::class);
-		$commentRepository = new CommentRepository($commentModel, $likeRepository);
+		$mockResult = 'mock_result';
+		$mockData = [5 => new CommentHandledEntity([
+			CommentEntity::ID => 5,
+			CommentEntity::STATUS_ID => 1,
+			CommentEntity::USER_ID => 2,
+			CommentEntity::BODY => 'Test comment',
+		])];
 
-		$commentModel
-			->method('getByStatus')
-			->willReturn($commentsByStatusWillReturn);
+		$this->dbClient->expects($this->once())
+			->method('query')
+			->willReturn($mockResult);
 
-		$commentsByStatus = $commentRepository->getByStatus($statusId);
+		$this->commentRepository = $this->getMockBuilder(CommentRepository::class)
+			->setConstructorArgs([$this->dbClient, $this->likeRepository])
+			->onlyMethods(['prepareData', 'buildHandledComments'])
+			->getMock();
 
-		$this->assertEquals($commentsByStatusWillReturn, $commentsByStatus);
+		$this->commentRepository->expects($this->once())
+			->method('prepareData')
+			->with($mockResult)
+			->willReturn($mockData);
+
+		$this->commentRepository->expects($this->once())
+			->method('buildHandledComments')
+			->with($mockData)
+			->willReturn($mockData);
+
+		$result = $this->commentRepository->getById(5);
+
+		$this->assertEquals($mockData, $result);
 	}
 
-	public static function getByStatusProvider(): array
+	public function testDeleteById(): void
 	{
-		return [
-			'happy happy joy joy' => [
-				'statusId' => [1],
-				'commentsByStatusWillReturn' => [
-					'some data',
-				],
-			],
-			'no data' => [
-				'statusId' => [],
-				'commentsByStatusWillReturn' => [],
-			],
-		];
+		$this->commentRepository = $this->getMockBuilder(CommentRepository::class)
+			->setConstructorArgs([$this->dbClient, $this->likeRepository])
+			->onlyMethods(['delete', 'setCache'])
+			->getMock();
+
+		$this->commentRepository->expects($this->once())
+			->method('delete')
+			->with([5])
+			->willReturn(true);
+
+		$this->commentRepository->expects($this->once())
+			->method('setCache')
+			->with(CommentRepository::class . '::getById5', null);
+
+		$result = $this->commentRepository->deleteById(5);
+
+		$this->assertTrue($result);
+	}
+
+	public function testDeleteByIdThrowsExceptionWhenDeleteFails(): void
+	{
+		$this->commentRepository = $this->getMockBuilder(CommentRepository::class)
+			->setConstructorArgs([$this->dbClient, $this->likeRepository])
+			->onlyMethods(['delete'])
+			->getMock();
+
+		$this->commentRepository->expects($this->once())
+			->method('delete')
+			->willReturn(false);
+
+		$this->expectException(DataNotFoundException::class);
+		$this->expectExceptionMessage('error_no_comment');
+
+		$this->commentRepository->deleteById(5);
+	}
+
+	public function testDeleteByStatusId(): void
+	{
+		$this->dbClient->expects($this->once())
+			->method('delete')
+			->with(
+				CommentEntity::TABLE,
+				'WHERE ' . CommentEntity::STATUS_ID . ' ={int:statusId}',
+				['statusId' => 10]
+			)
+			->willReturn(true);
+
+		$result = $this->commentRepository->deleteByStatusId(10);
+
+		$this->assertTrue($result);
 	}
 }

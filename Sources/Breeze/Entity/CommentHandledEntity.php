@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class StatusHandledEntity extends StatusEntity implements HandledEntityInterface
+class CommentHandledEntity extends CommentEntity implements HandledEntityInterface
 {
 	protected array $usersInfo = [];
 
 	protected array $likesInfo = [];
-
-	protected array $comments = [];
-
-	protected bool $isNew = false;
 
 	public function getUsersInfo(): array
 	{
@@ -32,25 +28,5 @@ class StatusHandledEntity extends StatusEntity implements HandledEntityInterface
 	public function setLikesInfo(array $likesInfo): void
 	{
 		$this->likesInfo = $likesInfo;
-	}
-
-	public function getComments(): array
-	{
-		return $this->comments;
-	}
-
-	public function setComments(array $comments): void
-	{
-		$this->comments = $comments;
-	}
-
-	public function isNew(): bool
-	{
-		return $this->isNew;
-	}
-
-	public function setIsNew(bool $isNew): void
-	{
-		$this->isNew = $isNew;
 	}
 }

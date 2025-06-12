@@ -7,13 +7,16 @@ namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\CommentEntity;
-use Breeze\Model\CommentModelInterface;
+use Breeze\Entity\CommentHandledEntity;
+use Breeze\Entity\StatusEntity;
+use Breeze\LikesEnum;
+use Breeze\Util\Parser;
+use Breeze\Util\Validate\DataNotFoundException;
 
 class CommentRepository extends BaseRepository implements CommentRepositoryInterface
 {
 	public function __construct(
 		ClientInterface $dbClient,
-		protected readonly CommentModelInterface   $commentModel,
 		protected readonly LikeRepositoryInterface $likeRepository
 	) {
 		parent::__construct($dbClient);
@@ -42,60 +45,109 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	/**
 	 * @throws InvalidCommentException
 	 */
-	public function save(array $data): int
+	public function insert(CommentEntity $commentEntity): CommentHandledEntity
 	{
-		$newCommentId = $this->commentModel->insert(array_merge($data, [
-			CommentEntity::CREATED_AT => time(),
-			CommentEntity::LIKES => 0,
-		]));
+		$commentEntity->unsetId();
+		$commentEntity->setCreatedAt(time());
+
+		$this->dbClient->insert(
+			CommentEntity::TABLE,
+			[
+				CommentEntity::STATUS_ID => 'int',
+				CommentEntity::USER_ID => 'int',
+				CommentEntity::CREATED_AT => 'int',
+				CommentEntity::BODY => 'string',
+				CommentEntity::LIKES => 'int',
+			],
+			$commentEntity->toArray(),
+			CommentEntity::ID
+		);
+
+		$newCommentId = $this->dbClient->getInsertedId(CommentEntity::TABLE, CommentEntity::ID);
 
 		if ($newCommentId === 0) {
 			throw new InvalidCommentException('error_save_comment');
 		}
 
-		return $newCommentId;
+		$this->loadedUsers = $this->loadUsersInfo([$commentEntity->getUserId()]);
+		$commentEntity->setBody(Parser::bbc($commentEntity->getBody()));
+
+		$commentEntity->setId($newCommentId);
+
+		return $this->buildHandledComments([$commentEntity])[$newCommentId];
 	}
 
 	public function getByProfile(array $userProfiles = []): array
 	{
-		$comments = $this->commentModel->getByProfiles($userProfiles);
+		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikesEnum::Comments), [
+			'columnName' => StatusEntity::WALL_ID,
+			'profileIds' => $userProfiles,
+			'statusTable' => StatusEntity::TABLE,
+			'compare' => StatusEntity::TABLE .
+				'.' . StatusEntity::ID . ' = ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::STATUS_ID,
+		]);
 
-		foreach ($comments['data'] as &$commentsByStatus) {
-			$commentsByStatus = $this->appendLikes($commentsByStatus);
-			$commentsByStatus = $this->appendUserData($commentsByStatus, $comments['usersIds']);
-		}
+		$request = $this->dbClient->query(
+			'
+			SELECT {raw:columns}
+			FROM {db_prefix}{raw:from}
+				JOIN {db_prefix}{raw:statusTable} AS {raw:statusTable} ON {raw:compare}
+				LEFT JOIN {db_prefix}{raw:likeJoin}
+			WHERE {raw:columnName} IN({array_int:profileIds})',
+			$queryParams
+		);
 
-		return $comments['data'];
+		return $this->buildHandledComments($this->prepareData($request, true));
 	}
 
 	public function getByStatus(array $statusIds = []): array
 	{
-		return $this->commentModel->getByStatus($statusIds);
+		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikesEnum::Comments), [
+			'columnName' => CommentEntity::STATUS_ID,
+			'statusIds' => $statusIds,
+		]);
+
+		$request = $this->dbClient->query(
+			'
+			SELECT {raw:columns}
+			FROM {db_prefix}{raw:from}
+				JOIN {db_prefix}{raw:likeJoin}
+			WHERE {raw:columnName} IN({array_int:statusIds})',
+			$queryParams
+		);
+
+		return $this->buildHandledComments($this->prepareData($request, true));
 	}
 
 	/**
-	 * @throws InvalidCommentException
+	 * @return array [CommentHandledEntity]
 	 */
 	public function getById(int $id): array
 	{
-		$comments = $this->commentModel->getByIds([$id]);
+		$request = $this->dbClient->query(
+			'
+			SELECT {raw:columns}
+			FROM {db_prefix}{raw:from}
+				LEFT JOIN {db_prefix}{raw:likeJoin}
+			WHERE {raw:columnName} = ({int:id})
+			LIMIT {int:limit}',
+			array_merge($this->getDefaultQueryParamsWithLikes(LikesEnum::Comments), [
+				'limit' => 1,
+				'id' => $id,
+				'columnName' => self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::ID,
+			])
+		);
 
-		if (empty($comments['data'])) {
-			throw new InvalidCommentException('error_no_comment');
-		}
-
-		return $this->prepareData($comments);
+		return $this->buildHandledComments($this->prepareData($request));
 	}
 
 	/**
-	 * @throws InvalidCommentException
+	 * @throws DataNotFoundException
 	 */
 	public function deleteById(int $commentId): bool
 	{
-		$wasDeleted = $this->commentModel->delete([$commentId]);
-
-		if (!$wasDeleted) {
-			throw new InvalidCommentException('error_no_comment');
+		if (!$this->delete([$commentId])) {
+			throw new DataNotFoundException('error_no_comment');
 		}
 
 		$this->setCache(self::class . '::getById' . $commentId, null);
@@ -103,39 +155,62 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		return true;
 	}
 
-	/**
-	 * @throws InvalidCommentException
-	 */
 	public function deleteByStatusId(int $statusId): bool
 	{
-		if (!$this->commentModel->deleteByStatusId([$statusId])) {
-			throw new InvalidCommentException('error_no_comment');
+		return $this->dbClient->delete(
+			CommentEntity::TABLE,
+			'WHERE ' . CommentEntity::STATUS_ID . ' ={int:statusId}',
+			['statusId' => $statusId]
+		);
+	}
+
+	private function prepareData($request, bool $useStatusID = false): array
+	{
+		$comments = [];
+		$usersIds = [];
+
+		while ($row = $this->dbClient->fetchAssoc($request)) {
+			if ($useStatusID) {
+				$comments[$row[CommentEntity::STATUS_ID]][$row[CommentEntity::ID]] =
+					new CommentHandledEntity(array_map(function ($rowValue) {
+						return ctype_digit((string) $rowValue) ? ((int) $rowValue) : $rowValue;
+					}, $row));
+				$comments[$row[CommentEntity::STATUS_ID]][$row[CommentEntity::ID]]->setBody(Parser::bbc($row[CommentEntity::BODY]));
+			} else {
+				$comments[$row[CommentEntity::ID]] = new CommentHandledEntity(array_map(function ($rowValue) {
+					return ctype_digit((string) $rowValue) ? ((int)$rowValue) : $rowValue;
+				}, $row));
+				$comments[$row[CommentEntity::ID]]->setBody(Parser::bbc($row[CommentEntity::BODY]));
+			}
+
+			$usersIds[] = (int)$row[CommentEntity::USER_ID];
 		}
 
-		return true;
+		$this->loadedUsers = $this->loadUsersInfo(array_unique($usersIds));
+
+		$this->dbClient->freeResult($request);
+
+		return $comments;
 	}
 
-	protected function appendLikes(array $data = []): array
+	/**
+	 * @param array $comments [CommentHandledEntity]
+	 * @return array [CommentHandledEntity]
+	 */
+	protected function buildHandledComments(array $comments): array
 	{
-		return $this->likeRepository->appendLikeData($data, CommentEntity::ID);
-	}
+		/** @var CommentHandledEntity[] $comments */
+		array_walk($comments, function ($comment, $id): void {
 
-	protected function appendUserData(array $data, array $userIds = []): array
-	{
-		$usersData = $this->loadUsersInfo(array_unique($userIds));
+			$commentsLoadedUsers = [$comment->getUserId()];
 
-		return array_map(function (array $item) use ($usersData): array {
-			$item['userData'] = $usersData[$item[CommentEntity::USER_ID]];
+			if (!empty($this->loadedUsers)) {
+				$comment->setUsersInfo(array_intersect_key($this->loadedUsers, array_flip($commentsLoadedUsers)));
+			}
+		});
 
-			return $item;
-		}, $data);
-	}
+		$this->likeRepository->appendLikeData($comments, CommentEntity::ID);
 
-	protected function prepareData(array $comments = []): array
-	{
-		$comments['data'] = $this->appendUserData($comments['data'], array_unique($comments['usersIds']));
-		$comments['data'] = $this->appendLikes($comments['data']);
-
-		return $comments['data'];
+		return $comments;
 	}
 }

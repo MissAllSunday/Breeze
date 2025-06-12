@@ -29,7 +29,6 @@ interface LikeRepositoryInterface extends BaseRepositoryInterface
 
 	/**
 	 * @param array $items [HandledEntityInterface] $items
-	 * @param string $itemIdName
 	 *
 	 * @return array[HandledEntityInterface]
 	 */
