@@ -60,14 +60,15 @@ class DatabaseClient implements ClientInterface
 		);
 	}
 
-	public function replace(string $tableName, array $columns, array $data, string $columnIdName): void
+	public function replace(string $tableName, array $columns, array $data, string $columnIdName): int
 	{
-		$this->db['db_insert'](
+		return $this->db['db_insert'](
 			'replace',
-			'{db_prefix}' . $tableName . '',
+			'{db_prefix}' . $tableName,
 			$columns,
 			$data,
-			[$columnIdName]
+			[$columnIdName],
+			1
 		);
 	}
 

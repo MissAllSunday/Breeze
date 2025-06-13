@@ -6,16 +6,13 @@ namespace Breeze\Event\Like;
 
 use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
-use Breeze\Entity\CommentEntity;
+use Breeze\Entity\HandledEntityInterface;
 use Breeze\Entity\LikeHandledEntity;
-use Breeze\Entity\StatusEntity;
 use Breeze\LikesEnum;
-use Breeze\Repository\BaseRepositoryInterface;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\AlertServiceInterface;
 use Breeze\Traits\TextTrait;
-use Breeze\Util\Validate\DataNotFoundException;
 
 class LikeEventListener
 {
@@ -31,9 +28,6 @@ class LikeEventListener
 	) {
 	}
 
-	/**
-	 * @throws DataNotFoundException
-	 */
 	public function onLikeCreated(LikeCreatedEvent $event): void
 	{
 		$handledLike = $event->getLikeHandledEntity();
@@ -43,12 +37,11 @@ class LikeEventListener
 
 		$content = $this->getContent($handledLike);
 
-
 		$this->alertService->send(new AlertEntity([
-			AlertEntity::COLUMN_ID_MEMBER => $contentOwnerId,
+			AlertEntity::COLUMN_ID_MEMBER => $content->getUserId(),
 			AlertEntity::COLUMN_ID_MEMBER_STARTED => $userId,
 			AlertEntity::COLUMN_CONTENT_TYPE => self::CONTENT_TYPE,
-			AlertEntity::COLUMN_CONTENT_ID => $likeId,
+			AlertEntity::COLUMN_CONTENT_ID => $content->getId(),
 			AlertEntity::COLUMN_CONTENT_ACTION => self::CONTENT_ACTION_CREATED,
 			AlertEntity::COLUMN_IS_READ => 0,
 			AlertEntity::COLUMN_EXTRA => [
@@ -58,12 +51,9 @@ class LikeEventListener
 		]));
 	}
 
-	/**
-	 * @throws DataNotFoundException
-	 */
-	protected function getContent(LikeHandledEntity $handledLike): StatusEntity | CommentEntity
+	protected function getContent(LikeHandledEntity $handledLike): HandledEntityInterface
 	{
-		/** @var BaseRepositoryInterface $repository */
+		/** @var StatusRepositoryInterface|CommentRepositoryInterface $repository */
 		$repository = match ($handledLike->getContentType()) {
 			LikesEnum::Status => $this->statusRepository,
 			LikesEnum::Comments => $this->commentRepository,

@@ -18,7 +18,7 @@ interface LikeRepositoryInterface extends BaseRepositoryInterface
 	/**
 	 * @throws InvalidLikeException
 	 */
-	public function delete(LikeEntity $likeEntity): void;
+	public function deleteByContent(LikeEntity $likeEntity): void;
 
 	/**
 	 * @throws InvalidLikeException
@@ -30,7 +30,7 @@ interface LikeRepositoryInterface extends BaseRepositoryInterface
 	/**
 	 * @param array $items [HandledEntityInterface] $items
 	 *
-	 * @return array[HandledEntityInterface]
+	 * @return array [HandledEntityInterface]
 	 */
 	public function appendLikeData(array $items, string $itemIdName): array;
 

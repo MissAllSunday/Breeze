@@ -7,16 +7,16 @@ namespace Breeze\Entity;
 
 class UserSettingsEntity extends Entity implements EntityInterface
 {
-	public const IDENTIFIER = 'user_settings';
-	public const WALL = 'wall';
-	public const GENERAL_WALL = 'generalWall';
-	public const PAGINATION_NUM = 'paginationNumber';
-	public const KICK_IGNORED = 'kickIgnored';
-	public const BLOCK_LIST = 'blockList';
-	public const ENABLE_BUDDIES_TAB = 'enableBuddiesTab';
-	public const BUDDIES = 'buddies';
-	public const ABOUT_ME = 'aboutMe';
-	public const USER_ID = 'userId';
+	public const string IDENTIFIER = 'user_settings';
+	public const string WALL = 'wall';
+	public const string GENERAL_WALL = 'generalWall';
+	public const string PAGINATION_NUM = 'paginationNumber';
+	public const string KICK_IGNORED = 'kickIgnored';
+	public const string BLOCK_LIST = 'blockList';
+	public const string ENABLE_BUDDIES_TAB = 'enableBuddiesTab';
+	public const string BUDDIES = 'buddies';
+	public const string ABOUT_ME = 'aboutMe';
+	public const string USER_ID = 'userId';
 
 	public static function getColumns(): array
 	{

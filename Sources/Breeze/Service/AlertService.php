@@ -41,10 +41,7 @@ class AlertService extends BaseService implements AlertServiceInterface
 		}
 	}
 
-	/**
-	 * @throws DataNotFoundException
-	 */
-	public function getById(int $alertId): array
+	public function getById(int $alertId): AlertEntity
 	{
 		return $this->alertRepository->getById($alertId);
 	}

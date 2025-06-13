@@ -6,7 +6,6 @@ namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\AlertEntity as AlertEntity;
-use Breeze\Util\Validate\DataNotFoundException;
 
 class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 {
@@ -57,12 +56,8 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 		return $this->dbClient->getInsertedId(AlertEntity::TABLE, AlertEntity::COLUMN_ID);
 	}
 
-	/**
-	 * @throws DataNotFoundException
-	 */
-	public function update(AlertEntity $alertEntity): array
+	public function update(AlertEntity $alertEntity): AlertEntity
 	{
-		$updateString = '';
 		$updateString = $this->buildSetUpdate($alertEntity);
 		$id = $alertEntity->getIdAlert();
 
@@ -76,7 +71,7 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 		return $this->getById($id);
 	}
 
-	public function getById(int $id): array
+	public function getById(int $id): AlertEntity
 	{
 		$request = $this->dbClient->query(
 			'
@@ -91,7 +86,7 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 
 		$this->dbClient->freeResult($request);
 
-		return $result;
+		return new AlertEntity($result);
 	}
 
 	public function checkAlert(int $userId, string $alertType, int $alertId = 0, string $alertSender = ''): bool
@@ -123,22 +118,5 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 		$this->dbClient->freeResult($request);
 
 		return (bool) $result;
-	}
-
-	public function delete(array $alertIds): bool
-	{
-		if (empty($alertIds)) {
-			return false;
-		}
-
-		$this->dbClient->delete(
-			AlertEntity::TABLE,
-			AlertEntity::COLUMN_ID . ' IN ({array_int:alertIds})',
-			[
-				'alertIds' => $alertIds,
-			]
-		);
-
-		return true;
 	}
 }

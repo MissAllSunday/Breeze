@@ -9,10 +9,14 @@ use Breeze\Util\Validate\Validations\Status\PostStatus;
 use Breeze\Validate\Types\Allow;
 use Breeze\Validate\Types\Data;
 use Breeze\Validate\Types\User;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 
 class PostStatusTest extends TestCase
 {
+	/**
+	 * @throws Exception
+	 */
 	public function testGetParams(): void
 	{
 		$repository = $this->createMock(StatusRepositoryInterface::class);

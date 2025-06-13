@@ -12,7 +12,7 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class UserSettings extends BaseActions implements ValidateDataInterface
 {
-	protected const SUCCESS_KEY = 'updated_settings';
+	protected const string SUCCESS_KEY = 'updated_settings';
 
 	public function successKeyString(): string
 	{

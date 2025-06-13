@@ -127,6 +127,9 @@ class StatusRepositoryTest extends TestCase
 		$this->statusRepository->insert($statusEntity);
 	}
 
+	/**
+	 * @throws DataNotFoundException
+	 */
 	public function testGetById(): void
 	{
 		$mockData = [5 => new StatusHandledEntity([
@@ -155,7 +158,20 @@ class StatusRepositoryTest extends TestCase
 
 		$result = $this->statusRepository->getById(5);
 
-		$this->assertEquals($mockData, $result);
+		$this->assertEquals($mockData[5], $result);
+	}
+
+	/**
+	 * @throws DataNotFoundException
+	 */
+	public function testGetIdThrowsExceptionWhenNotFound(): void
+	{
+		$this->dbClient->method('query')->willReturn(false);
+
+		$this->expectException(DataNotFoundException::class);
+		$this->expectExceptionMessage('error_no_status');
+
+		$this->statusRepository->getById(5);
 	}
 
 	/**

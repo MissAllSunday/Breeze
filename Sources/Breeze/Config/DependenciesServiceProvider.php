@@ -29,17 +29,11 @@ use Breeze\Event\EventServiceProvider;
 use Breeze\Event\Like\LikeEventListener;
 use Breeze\Event\Status\StatusCreatedHandler;
 use Breeze\Event\Status\StatusEventListener;
-use Breeze\Model\CommentModel;
-use Breeze\Model\LogModel;
-use Breeze\Model\MentionModel;
-use Breeze\Model\NotificationModel;
-use Breeze\Model\UserModel;
 use Breeze\Repository\AlertRepository;
 use Breeze\Repository\CommentRepository;
 use Breeze\Repository\LikeRepository;
-use Breeze\Repository\NotificationRepository;
 use Breeze\Repository\StatusRepository;
-use Breeze\Repository\User\UserRepository;
+use Breeze\Repository\User\UserSettingsRepository;
 use Breeze\Service\Actions\AdminService;
 use Breeze\Service\AlertService;
 use Breeze\Service\PermissionsService;
@@ -74,7 +68,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		Response::class => [],
 		Components::class => [],
 		Data::class => [],
-		User::class => [UserRepository::class],
+		User::class => [UserSettingsRepository::class],
 		Allow::class => [],
 		DeleteStatus::class => [Data::class, User::class, Allow::class, StatusRepository::class],
 		PostStatus::class => [Data::class, User::class, Allow::class, StatusRepository::class],
@@ -90,7 +84,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		StatusController::class => [StatusService::class, ValidateStatus::class, Response::class, EventServiceProvider::class],
 		CommentController::class => [CommentRepository::class, ValidateComment::class, Response::class],
 		LikesController::class => [LikeRepository::class, ValidateLikes::class, Response::class, EventServiceProvider::class],
-		UserSettingsController::class => [UserRepository::class, Response::class, UserSettingsBuilder::class],
+		UserSettingsController::class => [UserSettingsRepository::class, Response::class, UserSettingsBuilder::class],
 		BuddyController::class => [Response::class, ProfileService::class],
 		AlertEntity::class => [],
 		CommentEntity::class => [],
@@ -107,21 +101,15 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		EventDispatcher::class => [],
 		EventServiceProvider::class => [EventDispatcher::class, StatusEventListener::class],
 		StatusCreatedHandler::class => [AlertHandledEntity::class],
-		CommentModel::class => [DatabaseClient::class],
-		LogModel::class => [DatabaseClient::class],
-		MentionModel::class => [DatabaseClient::class],
-		NotificationModel::class => [DatabaseClient::class],
-		UserModel::class => [DatabaseClient::class],
-		UserRepository::class => [UserModel::class],
+		UserSettingsRepository::class => [DatabaseClient::class],
 		AlertRepository::class => [DatabaseClient::class],
 		CommentRepository::class => [DatabaseClient::class, LikeRepository::class],
 		LikeRepository::class => [DatabaseClient::class],
-		NotificationRepository::class => [NotificationModel::class],
 		StatusRepository::class => [DatabaseClient::class, CommentRepository::class, LikeRepository::class],
 		AdminService::class => [SettingsBuilder::class],
-		ProfileService::class => [UserRepository::class, Components::class, PermissionsService::class],
+		ProfileService::class => [UserSettingsRepository::class, Components::class, PermissionsService::class],
 		PermissionsService::class => [],
-		StatusService::class => [StatusRepository::class, UserRepository::class, PermissionsService::class],
+		StatusService::class => [StatusRepository::class, UserSettingsRepository::class, PermissionsService::class],
 		AlertService::class => [AlertRepository::class],
 		CommentEventListener::class => [AlertService::class],
 		LikeEventListener::class => [AlertService::class, StatusRepository::class, CommentRepository::class],

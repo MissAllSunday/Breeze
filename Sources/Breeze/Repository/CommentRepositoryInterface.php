@@ -19,7 +19,7 @@ interface CommentRepositoryInterface extends BaseRepositoryInterface
 
 	public function getByStatus(array $statusIds = []): array;
 
-	public function getById(int $id): array;
+	public function getById(int $id): CommentHandledEntity;
 
 	public function deleteById(int $commentId): bool;
 

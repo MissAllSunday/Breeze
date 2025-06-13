@@ -20,6 +20,8 @@ class CommentRepositoryTest extends TestCase
 
 	private MockObject|CommentRepository $commentRepository;
 
+	private \stdClass $queryObject;
+
 	/**
 	 * @throws Exception
 	 */
@@ -31,6 +33,7 @@ class CommentRepositoryTest extends TestCase
 			->setConstructorArgs([$this->dbClient, $this->likeRepository])
 			->onlyMethods(['prepareData', 'buildHandledComments', 'loadUsersInfo'])
 			->getMock();
+		$this->queryObject = new \stdClass();
 	}
 
 	public function testGetTableName(): void
@@ -109,10 +112,12 @@ class CommentRepositoryTest extends TestCase
 		$this->commentRepository->insert($commentEntity);
 	}
 
+	/**
+	 * @throws DataNotFoundException
+	 */
 	public function testGetById(): void
 	{
-		$mockResult = 'mock_result';
-		$mockData = [5 => new CommentHandledEntity([
+		$commentHandledEntities = [5 => new CommentHandledEntity([
 			CommentEntity::ID => 5,
 			CommentEntity::STATUS_ID => 1,
 			CommentEntity::USER_ID => 2,
@@ -121,26 +126,31 @@ class CommentRepositoryTest extends TestCase
 
 		$this->dbClient->expects($this->once())
 			->method('query')
-			->willReturn($mockResult);
-
-		$this->commentRepository = $this->getMockBuilder(CommentRepository::class)
-			->setConstructorArgs([$this->dbClient, $this->likeRepository])
-			->onlyMethods(['prepareData', 'buildHandledComments'])
-			->getMock();
+			->willReturn($this->queryObject);
 
 		$this->commentRepository->expects($this->once())
 			->method('prepareData')
-			->with($mockResult)
-			->willReturn($mockData);
+			->with($this->queryObject)
+			->willReturn($commentHandledEntities);
 
 		$this->commentRepository->expects($this->once())
 			->method('buildHandledComments')
-			->with($mockData)
-			->willReturn($mockData);
+			->with($commentHandledEntities)
+			->willReturn($commentHandledEntities);
 
 		$result = $this->commentRepository->getById(5);
 
-		$this->assertEquals($mockData, $result);
+		$this->assertEquals($commentHandledEntities[5], $result);
+	}
+
+	public function testGetIdThrowsExceptionWhenNotFound(): void
+	{
+		$this->dbClient->method('query')->willReturn(false);
+
+		$this->expectException(DataNotFoundException::class);
+		$this->expectExceptionMessage('error_no_comment');
+
+		$this->commentRepository->getById(5);
 	}
 
 	public function testDeleteById(): void

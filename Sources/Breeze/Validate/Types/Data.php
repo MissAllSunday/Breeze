@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace Breeze\Validate\Types;
 
-use Breeze\Repository\BaseRepositoryInterface;
+use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidDataException;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 
 class Data
 {
-	/**
-	 * @throws DataNotFoundException
-	 */
-	public function dataExists(int $id, BaseRepositoryInterface $repository): void
+	public function dataExists(int $id, StatusRepositoryInterface | CommentRepositoryInterface $repository): void
 	{
 		$repository->getById($id);
 	}

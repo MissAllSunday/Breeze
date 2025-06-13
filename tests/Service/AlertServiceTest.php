@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Entity\AlertEntity;
 use Breeze\Repository\AlertRepositoryInterface;
-use Breeze\Util\Validate\DataNotFoundException;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -25,13 +25,10 @@ class AlertServiceTest extends TestCase
 		$this->alertService = new AlertService($this->alertRepository);
 	}
 
-	/**
-	 * @throws DataNotFoundException
-	 */
 	public function testGetById(): void
 	{
 		$alertId = 123;
-		$expectedAlert = ['id' => 123, 'content_type' => 'notification'];
+		$expectedAlert = new AlertEntity(['id_alert' => 123, 'content_type' => 'notification']);
 
 		$this->alertRepository
 			->expects($this->once())

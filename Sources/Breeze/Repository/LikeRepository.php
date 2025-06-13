@@ -7,6 +7,7 @@ namespace Breeze\Repository;
 
 use Breeze\Breeze;
 use Breeze\Database\ClientInterface;
+use Breeze\Entity\HandledEntityInterface;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeHandledEntity;
 use Breeze\LikesEnum;
@@ -117,7 +118,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	/**
 	 * @throws InvalidLikeException
 	 */
-	public function delete(LikeEntity $likeEntity): void
+	public function deleteByContent(LikeEntity $likeEntity): void
 	{
 		$wasDeleted = $this->dbClient->delete(
 			LikeEntity::TABLE,
@@ -172,13 +173,13 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	}
 
 	/**
-	 * @param array[HandledEntityInterface] $items
+	 * @param array $items [HandledEntityInterface]
 	 *
-	 * @return array[HandledEntityInterface]
+	 * @return array [HandledEntityInterface]
 	 */
 	public function appendLikeData(array $items, string $itemIdName): array
 	{
-		return array_map(function (array $item) use ($itemIdName): array {
+		return array_map(function ($item) use ($itemIdName): HandledEntityInterface {
 			$item->setLikesInfo($this->buildLikeData(new LikeHandledEntity([
 				LikeEntity::COLUMN_TYPE => $item[LikeEntity::IDENTIFIER . LikeEntity::COLUMN_TYPE],
 				LikeEntity::COLUMN_ID => $item[$itemIdName],
@@ -242,7 +243,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 		$isContentAlreadyLiked = $this->isContentAlreadyLiked($likeEntity);
 		$isContentAlreadyLiked ?
-			$this->delete($likeEntity) :
+			$this->deleteByContent($likeEntity) :
 			$this->insert($likeEntity);
 
 		return $this->buildLikeData($likeEntity);

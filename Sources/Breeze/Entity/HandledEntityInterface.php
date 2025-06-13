@@ -19,4 +19,8 @@ interface HandledEntityInterface
 	 * @return array [LikeHandledEntity]
 	 */
 	public function getLikesInfo(): array;
+
+	public function getUserId(): int;
+
+	public function getId(): int;
 }

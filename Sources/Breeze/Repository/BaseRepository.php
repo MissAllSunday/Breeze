@@ -8,7 +8,7 @@ namespace Breeze\Repository;
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\EntityInterface;
 use Breeze\Entity\LikeEntity;
-use Breeze\Entity\UserDataEntity;
+use Breeze\Entity\MemberEntity;
 use Breeze\LikesEnum;
 use Breeze\Traits\CacheTrait;
 use Breeze\Traits\TextTrait;
@@ -41,14 +41,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
 	public function handleLikes($type, $content): array
 	{
 		return [];
-	}
-
-	public static function getAllTypes(): array
-	{
-		return [
-			self::LIKE_TYPE_STATUS,
-			self::LIKE_TYPE_COMMENT,
-		];
 	}
 
 	public function getUsersToLoad(array $userIds = []): array
@@ -175,6 +167,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
 	protected function trimUserData(array $loadedUsers): array
 	{
-		return array_intersect_key($loadedUsers, array_flip(UserDataEntity::getColumns()));
+		return array_intersect_key($loadedUsers, array_flip(MemberEntity::getUserDataColumns()));
 	}
 }

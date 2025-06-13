@@ -10,6 +10,7 @@ use Breeze\Event\EventServiceProvider;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidCommentException;
 use Breeze\Util\Response;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
 class CommentController extends ApiBaseController
@@ -40,17 +41,16 @@ class CommentController extends ApiBaseController
 	public function postComment(): void
 	{
 		try {
-			$commentId = $this->commentRepository->save($this->data);
-			$comment = $this->commentRepository->getById($commentId);
-			$comment[$commentId]['isNew'] = true;
+			$commentEntity = $this->commentRepository->insert(new CommentEntity($this->data));
 
 			$this->response->success(
 				'published_comment',
-				$comment,
+				$commentEntity->toArray(),
 				Response::CREATED
 			);
 		} catch (InvalidCommentException $invalidCommentException) {
 			$this->response->error($invalidCommentException->getMessage(), $invalidCommentException->getResponseCode());
+		} catch (DataNotFoundException $e) {
 		}
 	}
 

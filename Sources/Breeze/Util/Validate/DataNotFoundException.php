@@ -8,5 +8,5 @@ use Breeze\Exceptions\ValidateException;
 
 class DataNotFoundException extends ValidateException
 {
-	final public const STATUS_CODE = 404;
+	final public const int STATUS_CODE = 404;
 }

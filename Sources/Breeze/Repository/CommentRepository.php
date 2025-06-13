@@ -120,9 +120,9 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	}
 
 	/**
-	 * @return array [CommentHandledEntity]
+	 * @throws DataNotFoundException
 	 */
-	public function getById(int $id): array
+	public function getById(int $id): CommentHandledEntity
 	{
 		$request = $this->dbClient->query(
 			'
@@ -138,7 +138,11 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			])
 		);
 
-		return $this->buildHandledComments($this->prepareData($request));
+		if (!$request) {
+			throw new DataNotFoundException('error_no_comment');
+		}
+
+		return $this->buildHandledComments($this->prepareData($request))[$id];
 	}
 
 	/**
@@ -164,7 +168,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		);
 	}
 
-	private function prepareData($request, bool $useStatusID = false): array
+	protected function prepareData($request, bool $useStatusID = false): array
 	{
 		$comments = [];
 		$usersIds = [];

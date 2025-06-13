@@ -10,7 +10,7 @@ interface AlertServiceInterface
 {
 	public function send(AlertEntity $alertEntity): void;
 
-	public function getById(int $alertId): array;
+	public function getById(int $alertId): AlertEntity;
 
 	public function delete(int $alertId): bool;
 

@@ -13,7 +13,7 @@ use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
-use Breeze\Repository\User\UserRepository;
+use Breeze\Repository\User\UserSettingsRepository;
 use Breeze\Service\Actions\AdminServiceInterface;
 use Breeze\Service\AlertService;
 use Breeze\Service\PermissionsService;
@@ -85,7 +85,7 @@ class Breeze
 		$this->setLanguage(self::NAME);
 		$context = $this->global('context');
 		$userInfo = $this->global('user_info');
-		$currentUserSettings = $this->container->get(UserRepository::class)->getById($userInfo['id']);
+		$currentUserSettings = $this->container->get(UserSettingsRepository::class)->getById($userInfo['id']);
 
 		if (!empty($currentUserSettings['wall']) || $this->isEnable(SettingsEntity::FORCE_WALL)) {
 			/** @var WallController $wallController */
@@ -144,7 +144,7 @@ class Breeze
 
 		$scriptUrl = $this->global(self::SCRIPT_URL);
 		$currentUserInfo = $this->global('user_info');
-		$currentUserSettings = $this->container->get(UserRepository::class)->getById($currentUserInfo['id']);
+		$currentUserSettings = $this->container->get(UserSettingsRepository::class)->getById($currentUserInfo['id']);
 
 		if (!empty($menu_buttons['profile']['sub_buttons']['summary'])) {
 			$menu_buttons['profile']['sub_buttons']['summary'] = [

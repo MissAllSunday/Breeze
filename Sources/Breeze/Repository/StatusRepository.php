@@ -110,9 +110,9 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	}
 
 	/**
-	 * @return array [StatusHandledEntity]
+	 * @throws DataNotFoundException
 	 */
-	public function getById(int $id = 0): array
+	public function getById(int $id = 0): StatusHandledEntity
 	{
 		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikesEnum::Status), [
 			'columnName' => StatusEntity::ID,
@@ -129,9 +129,14 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			$queryParams
 		);
 
+		if (!$request) {
+			throw new DataNotFoundException('error_no_status');
+		}
+
+		// @TODO why are we getting by profile id instead of by status id?
 		$comments = $this->commentRepository->getByProfile([$id]);
 
-		return $this->buildHandledStatus($this->prepareData($request), $comments);
+		return $this->buildHandledStatus($this->prepareData($request), $comments)[$id];
 	}
 
 	/**

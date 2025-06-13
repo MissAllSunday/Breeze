@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations;
 
-use Breeze\Repository\BaseRepositoryInterface;
+use Breeze\Repository\CommentRepositoryInterface;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Validate\Types\Allow;
 use Breeze\Validate\Types\Data;
 use Breeze\Validate\Types\User;
@@ -21,7 +22,7 @@ abstract class BaseActions
 		protected Data $validateData,
 		protected User $validateUser,
 		protected Allow $validateAllow,
-		protected BaseRepositoryInterface $repository
+		protected StatusRepositoryInterface | CommentRepositoryInterface $repository
 	) {
 	}
 
