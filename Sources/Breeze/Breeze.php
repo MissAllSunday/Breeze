@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Breeze;
 
-use Breeze\Config\MapperAggregate;
+use Breeze\Config\DependenciesServiceProvider;
 use Breeze\Controller\AdminController;
 use Breeze\Controller\API\CommentController;
 use Breeze\Controller\API\LikesController;
 use Breeze\Controller\API\StatusController;
-use Breeze\Controller\BuddyController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
-use Breeze\Repository\User\UserRepository;
+use Breeze\Repository\User\UserSettingsRepository;
 use Breeze\Service\Actions\AdminServiceInterface;
+use Breeze\Service\AlertService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\ProfileService;
 use Breeze\Traits\RequestTrait;
@@ -30,52 +30,51 @@ class Breeze
 	use TextTrait;
 	use RequestTrait;
 
-	public const NAME = 'Breeze';
-	public const VERSION = '2.0';
-	public const PATTERN = self::NAME . '_';
-	public const FEED = 'https://api.github.com/repos/MissAllSunday/Breeze/releases';
-	public const SUPPORT_URL = 'https://missallsunday.com';
-	public const REACT_DOM_VERSION = '18.2.0';
-	public const REACT_VERSION = '18.2.0';
-	public const REACT_HASH = '1f1b817c';
-	public const ACTIONS = [
-		'breezeStatus',
-		'breezeComment',
-		'wall',
-		'breezeBuddy',
-		'breezeLike',
+	public const string NAME = 'Breeze';
+	public const string VERSION = '2.0';
+	public const string PATTERN = self::NAME . '_';
+	public const string FEED = 'https://api.github.com/repos/MissAllSunday/Breeze/releases';
+	public const string SUPPORT_URL = 'https://missallsunday.com';
+	public const string REACT_DOM_VERSION = '18.2.0';
+	public const string REACT_VERSION = '18.2.0';
+	public const string REACT_HASH = '1f1b817c';
+
+	public const string ACTION_STATUS = 'breezeStatus';
+	public const string ACTION_COMMENT = 'breezeComment';
+	public const string ACTION_LIKE = 'breezeLike';
+	public const string ACTION_WALL = 'wall';
+	public const array ACTIONS = [
+		self::ACTION_STATUS,
+		self::ACTION_COMMENT,
+		self::ACTION_LIKE,
+		self::ACTION_WALL,
 	];
-	public const SCRIPT_URL ='scripturl';
+	public const string SCRIPT_URL ='scripturl';
 
 	protected Container $container;
 
 	public function __construct()
 	{
-		$this->container = new Container();
-		$mappers = (new MapperAggregate())->getMappers();
-
-		foreach ($mappers as $mapperFile) {
-			foreach ($mapperFile as $mapperInfo) {
-				if (empty($mapperInfo['class'])) {
-					continue;
-				}
-
-				if (!empty($mapperInfo['arguments'])) {
-					$this->container->add($mapperInfo['class'])->addArguments($mapperInfo['arguments']);
-				} else {
-					$this->container->add($mapperInfo['class']);
-				}
-			}
+		try {
+			$this->container = new Container();
+			$this->container->addServiceProvider(new DependenciesServiceProvider());
+		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
+			log_error($exception->getMessage());
 		}
 	}
 
+	/**
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
 	public function permissionsWrapper(array &$permissionGroups, array &$permissionList): void
 	{
 		$this->container->get(PermissionsService::class)->hookPermissions($permissionGroups, $permissionList);
 	}
 
 	/**
-	 * @throws DataNotFoundException
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
 	 */
 	public function profileMenuWrapper(array &$profileAreas): void
 	{
@@ -86,7 +85,7 @@ class Breeze
 		$this->setLanguage(self::NAME);
 		$context = $this->global('context');
 		$userInfo = $this->global('user_info');
-		$currentUserSettings = $this->container->get(UserRepository::class)->getById($userInfo['id']);
+		$currentUserSettings = $this->container->get(UserSettingsRepository::class)->getById($userInfo['id']);
 
 		if (!empty($currentUserSettings['wall']) || $this->isEnable(SettingsEntity::FORCE_WALL)) {
 			/** @var WallController $wallController */
@@ -145,7 +144,7 @@ class Breeze
 
 		$scriptUrl = $this->global(self::SCRIPT_URL);
 		$currentUserInfo = $this->global('user_info');
-		$currentUserSettings = $this->container->get(UserRepository::class)->getById($currentUserInfo['id']);
+		$currentUserSettings = $this->container->get(UserSettingsRepository::class)->getById($currentUserInfo['id']);
 
 		if (!empty($menu_buttons['profile']['sub_buttons']['summary'])) {
 			$menu_buttons['profile']['sub_buttons']['summary'] = [
@@ -166,10 +165,10 @@ class Breeze
 		}
 		$menu_buttons = array_merge(
 			array_slice($menu_buttons, 0, $counter),
-			['wall' => [
+			[self::ACTION_WALL => [
 				'title' => $this->getText(UserSettingsEntity::GENERAL_WALL),
 				'icon' => 'smiley',
-				'href' => $scriptUrl . '?action=wall',
+				'href' => $scriptUrl . '?action=' . self::ACTION_WALL,
 				'show' =>
 					!$currentUserInfo['is_guest'] &&
 					!empty($currentUserSettings[UserSettingsEntity::GENERAL_WALL]),
@@ -207,11 +206,11 @@ class Breeze
 			$wallController = $this->container->get(WallController::class);
 			// $buddyController = $this->container->get(BuddyController::class);
 
-			$actions['breezeStatus'] = [false, fn () => $statusController->dispatch()];
-			$actions['breezeComment'] = [false, fn () => $commentController->dispatch()];
-			$actions['wall'] = [false, [$wallController, 'dispatch']];
+			$actions[self::ACTION_STATUS] = [false, fn () => $statusController->dispatch()];
+			$actions[self::ACTION_COMMENT] = [false, fn () => $commentController->dispatch()];
+			$actions[self::ACTION_WALL] = [false, [$wallController, 'dispatch']];
 			// $actions['buddy'] = [false, fn () => $buddyController->dispatch()];
-			$actions['breezeLike'] = [false, fn () => $likesController->dispatch()];
+			$actions[self::ACTION_LIKE] = [false, fn () => $likesController->dispatch()];
 		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
 			log_error($exception->getMessage());
 		}
@@ -226,9 +225,14 @@ class Breeze
 		}
 	}
 
-	public function alertsPrefWrapper(array &$alertTypes, &$groupOptions): void
+	/**
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
+	public function alertsWrapper(array &$alerts, array &$formats): void
 	{
-		$this->container->get(ProfileService::class)->hookAlertsPref($alertTypes);
+		$alertService = $this->container->get(AlertService::class);
+		$alertService->handle($alerts, $formats);
 	}
 
 	public function adminMenuWrapper(array &$adminMenu): void

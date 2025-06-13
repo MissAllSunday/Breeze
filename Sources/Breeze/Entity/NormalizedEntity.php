@@ -1,0 +1,31 @@
+<?php
+
+declare(strict_types=1);
+
+
+namespace Breeze\Entity;
+
+abstract class NormalizedEntity extends Entity implements EntityInterface
+{
+	abstract public function getColumnMap(): array;
+
+	public function setEntity(array $entry): Entity
+	{
+		foreach ($this->castValues($this->normalizeKeys($entry)) as $key => $value) {
+			$setCall = 'set' . ucfirst($key);
+			$this->{$setCall}($value);
+		}
+
+		return $this;
+	}
+
+	public function normalizeKeys(array $rawRowKeys = []): array {
+		$columnMap = $this->getColumnMap();
+		$normalized = [];
+		array_walk($rawRowKeys, function ($value, $key) use ($columnMap, &$normalized): void {
+			$normalized[$columnMap[$key]] = $value;
+		});
+
+		return $normalized;
+	}
+}

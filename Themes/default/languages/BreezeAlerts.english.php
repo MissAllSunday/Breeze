@@ -14,19 +14,6 @@ declare(strict_types=1);
 
 global $txt;
 
-// Notifications
-$txt['Breeze_noti_markasread'] = 'Mark as read';
-$txt['Breeze_noti_markasunread'] = 'Mark as unread';
-$txt['Breeze_noti_markasread_title'] = 'Mark as read/unread';
-$txt['Breeze_noti_markasread_viewed'] = 'Already marked as read';
-$txt['Breeze_noti_close'] = 'Close';
-$txt['Breeze_noti_delete'] = 'Delete';
-$txt['Breeze_noti_cancel'] = 'Cancel';
-$txt['Breeze_noti_checkAll'] = 'CheckType all';
-$txt['Breeze_noti_closeAll'] = 'Close all';
-$txt['Breeze_noti_check'] = 'check';
-$txt['Breeze_noti_selectedOptions'] = 'With the selected options do: ';
-$txt['Breeze_noti_send'] = 'Send';
 
 // Gender related stuff.
 $txt['Breeze_alert_gender_possessive_Female'] = 'her';
@@ -45,12 +32,12 @@ $txt['Breeze_alert_comment_status_owner_own_wall'] = '{poster} <a href="{href}" 
 $txt['Breeze_alert_comment_poster_own_wall'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on {gender_possessive} status on {gender_possessive} own wall';
 
 // Someone posted a status on your wall.
-$txt['Breeze_alert_status_owner'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">posted a new status on your wall</a>';
-$txt['Breeze_alert_status_owner_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">posted a new status</a> on {wall_owner}\'s wall';
+$txt['Breeze_alert_status_owner'] = '{poster} posted a new status on your wall';
+$txt['Breeze_alert_status_owner_buddy'] = '{poster} posted a new status on {wall_owner}\'s wall';
 
 // Likes
-$txt['Breeze_alert_like'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> your {type}';
-$txt['Breeze_alert_like_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">liked</a> {contentOwner}\'s {type}';
+$txt['Breeze_alert_like'] = '{poster} liked your {type}';
+$txt['Breeze_alert_like_buddy'] = '{poster} liked {contentOwner}\'s {type}';
 
 // CoverController
 $txt['Breeze_alert_cover'] = '{poster} changed {gender_possessive} cover image<br>{image}';

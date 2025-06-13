@@ -117,20 +117,10 @@ $txt['Breeze_error_deleteComments'] = 'I\'m sorry,  you aren\'t allowed to delet
 $txt['Breeze_error_no_valid_action'] = 'This is not a valid action';
 $txt['Breeze_error_no_property'] = '%s isn\'t a valid call';
 $txt['Breeze_error_no_access'] = 'I\'m sorry, you don\'t have access to this section';
-$txt['Breeze_success_noti_unmarkasread_after'] = 'You have successfully marked this notification as unread';
-$txt['Breeze_success_noti_markasread_after'] = 'You have successfully marked this notification as read';
-$txt['Breeze_error_noti_markasreaddeleted_after'] = 'This notification was already deleted or is not a valid entry';
-$txt['Breeze_error_noti_markasreaddeleted'] = 'This notification was already deleted or is not a valid entry';
-$txt['Breeze_success_noti_delete_after'] = 'You have successfully deleted this notification';
-$txt['Breeze_success_noti_visitors_clean'] = 'You have successfully cleaned your visitors log';
-$txt['Breeze_success_notiMulti_delete_after'] = 'You have successfully deleted all notifications';
-$txt['Breeze_success_notiMulti_markasread_after'] = 'You have successfully marked as read all notifications';
-$txt['Breeze_success_notiMulti_unmarkasread_after'] = 'You have successfully marked as unread all notifications';
 
 // Loading text.
 $txt['Breeze_profile_of_username'] = 'Profile of {name}';
 $txt['Breeze_info_loading_end'] = 'There are no more status to display';
-$txt['Breeze_info_loadingAlerts_end'] = 'There are no more alerts to display';
 $txt['Breeze_page_no_status'] = 'There are no status to display';
 
 // Tabs

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service\Actions;
 
-use Breeze\Service\BaseServiceInterface;
-
-interface ActionsServiceInterface extends BaseServiceInterface
+interface ActionsServiceInterface
 {
 	public function init(array $subActions): void;
 

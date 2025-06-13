@@ -14,12 +14,12 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class DeleteStatus extends BaseActions implements ValidateDataInterface
 {
-	protected const PARAMS = [
+	protected const array PARAMS = [
 		StatusEntity::ID => 0,
 		StatusEntity::USER_ID => 0,
 	];
 
-	protected const SUCCESS_KEY = 'deleted_status';
+	protected const string SUCCESS_KEY = 'deleted_status';
 
 	/**
 	 * @throws NotAllowedException

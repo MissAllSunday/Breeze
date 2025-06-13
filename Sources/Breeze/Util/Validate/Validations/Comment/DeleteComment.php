@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Validations\Comment;
 
-use Breeze\Entity\CommentEntity as CommentEntity;
+use Breeze\Entity\CommentEntity;
 use Breeze\PermissionsEnum;
 use Breeze\Repository\InvalidDataException;
 use Breeze\Util\Validate\DataNotFoundException;

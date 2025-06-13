@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\Status;
 
-use Breeze\Repository\BaseRepositoryInterface;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\Status\DeleteStatus;
@@ -12,23 +12,27 @@ use Breeze\Validate\Types\Allow;
 use Breeze\Validate\Types\Data;
 use Breeze\Validate\Types\User;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 
 class DeleteStatusTest extends TestCase
 {
+	/**
+	 * @throws Exception
+	 */
 	#[DataProvider('checkAllowProvider')]
 	public function testCheckAllow(array $data, string $permissionName, bool $isExpectedException): void
 	{
 		$validateData = $this->createMock(Data::class);
 		$validateUser = $this->createMock(User::class);
 		$validateAllow = $this->createMock(Allow::class);
-		$userRepository = $this->createMock(BaseRepositoryInterface::class);
+		$statusRepository = $this->createMock(StatusRepositoryInterface::class);
 
 		$deleteStatus = new DeleteStatus(
 			$validateData,
 			$validateUser,
 			$validateAllow,
-			$userRepository
+			$statusRepository
 		);
 		$deleteStatus->setData($data);
 
@@ -36,7 +40,7 @@ class DeleteStatusTest extends TestCase
 			$this->expectException(NotAllowedException::class);
 		}
 
-		$userRepository->method('getCurrentUserInfo')->willReturn(['id' => 666]);
+		$statusRepository->method('getCurrentUserInfo')->willReturn(['id' => 666]);
 
 		if ($isExpectedException) {
 			$validateAllow->method('permissions')->willThrowException(new NotAllowedException());
@@ -74,19 +78,22 @@ class DeleteStatusTest extends TestCase
 		];
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	#[DataProvider('checkUserProvider')]
 	public function testCheckUser(array $data, array $validUsers, bool $isExpectedException): void
 	{
 		$validateData = $this->createMock(Data::class);
 		$validateUser = $this->createMock(User::class);
 		$validateAllow = $this->createMock(Allow::class);
-		$userRepository = $this->createMock(BaseRepositoryInterface::class);
+		$statusRepository = $this->createMock(StatusRepositoryInterface::class);
 
 		$deleteStatus = new DeleteStatus(
 			$validateData,
 			$validateUser,
 			$validateAllow,
-			$userRepository
+			$statusRepository
 		);
 		$deleteStatus->setData($data);
 

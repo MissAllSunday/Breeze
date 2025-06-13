@@ -7,6 +7,7 @@ namespace Breeze\Controller;
 use Breeze\Breeze;
 use Breeze\Service\Actions\AdminServiceInterface;
 use Breeze\Traits\PersistenceTrait;
+use Breeze\Util\Response;
 
 class AdminController extends BaseController
 {
@@ -25,7 +26,8 @@ class AdminController extends BaseController
 	];
 
 	public function __construct(
-		protected AdminServiceInterface $adminService
+		protected AdminServiceInterface $adminService,
+		protected Response $response
 	) {
 	}
 
@@ -58,7 +60,7 @@ class AdminController extends BaseController
 		$this->adminService->configVars($saving);
 
 		if ($saving) {
-			$this->adminService->redirect(AdminServiceInterface::POST_URL . __FUNCTION__);
+			$this->response->redirect(AdminServiceInterface::POST_URL . __FUNCTION__);
 		}
 	}
 
@@ -71,7 +73,7 @@ class AdminController extends BaseController
 		$this->adminService->permissionsConfigVars($saving);
 
 		if ($saving) {
-			$this->adminService->redirect(AdminServiceInterface::POST_URL . __FUNCTION__);
+			$this->response->redirect(AdminServiceInterface::POST_URL . __FUNCTION__);
 		}
 	}
 

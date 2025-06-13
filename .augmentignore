@@ -1,0 +1,78 @@
+# Dependencies
+/node_modules/
+/breezeVendor/
+/.pnp
+.pnp.js
+
+# Build outputs
+/build/
+
+# Testing
+/.phpunit.cache/
+/tests/log/
+/coverage/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Compiled source
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.bat
+*.bash
+*.session
+
+# Packages
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Databases
+*.sql
+*.sqlite
+*.session
+
+# OS generated files
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+*.lnk
+
+# Dev stuff
+.php_cs.cache
+.php_cs
+phpunit.xml
+brp.sh
+
+# Cache files
+.phpstan.result.cache
+.php-cs-fixer.cache

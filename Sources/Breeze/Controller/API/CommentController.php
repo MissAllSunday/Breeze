@@ -6,16 +6,20 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\CommentEntity;
+use Breeze\Event\EventServiceProvider;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidCommentException;
 use Breeze\Util\Response;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
 class CommentController extends ApiBaseController
 {
-	public const ACTION_POST_COMMENT = 'postComment';
-	public const ACTION_DELETE = 'deleteComment';
-	public const SUB_ACTIONS = [
+	public const string ACTION_POST_COMMENT = 'postComment';
+	public const string ACTION_DELETE = 'deleteComment';
+
+	/** @var string[] */
+	public const array SUB_ACTIONS = [
 		self::ACTION_POST_COMMENT,
 		self::ACTION_DELETE,
 	];
@@ -23,9 +27,10 @@ class CommentController extends ApiBaseController
 	public function __construct(
 		protected CommentRepositoryInterface $commentRepository,
 		protected ValidateActionsInterface $validateActions,
-		protected Response $response
+		protected Response $response,
+		protected EventServiceProvider $eventServiceProvider
 	) {
-		parent::__construct($validateActions, $response);
+		parent::__construct($validateActions, $response, $eventServiceProvider);
 	}
 
 	public function getSubActions(): array
@@ -36,17 +41,16 @@ class CommentController extends ApiBaseController
 	public function postComment(): void
 	{
 		try {
-			$commentId = $this->commentRepository->save($this->data);
-			$comment = $this->commentRepository->getById($commentId);
-			$comment[$commentId]['isNew'] = true;
+			$commentEntity = $this->commentRepository->insert(new CommentEntity($this->data));
 
 			$this->response->success(
 				'published_comment',
-				$comment,
+				$commentEntity->toArray(),
 				Response::CREATED
 			);
 		} catch (InvalidCommentException $invalidCommentException) {
 			$this->response->error($invalidCommentException->getMessage(), $invalidCommentException->getResponseCode());
+		} catch (DataNotFoundException $e) {
 		}
 	}
 

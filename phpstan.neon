@@ -23,4 +23,3 @@ parameters:
     - '/Function addJavaScriptVar not found./'
     - '/Function tokenTxtReplace not found./'
     - '/Function create_control_richedit not found./'
-    - '/Function updateMemberData not found./'

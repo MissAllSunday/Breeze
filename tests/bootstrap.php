@@ -71,6 +71,10 @@ function loadMemberData(array $userIds): array
 	return in_array(2, $userIds) ? [] : $userIds;
 }
 
+function updateMemberData(int $userId, array $updatedData): void
+{
+}
+
 function loadMemberContext(int $userId, bool $dummy): array
 {
 	switch ($userId) {

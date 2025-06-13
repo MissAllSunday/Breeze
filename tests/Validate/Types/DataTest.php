@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Validate\Types;
 
-use Breeze\Repository\BaseRepositoryInterface;
 use Breeze\Repository\InvalidDataException;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;
@@ -16,14 +16,14 @@ class DataTest extends TestCase
 {
 	private Data $data;
 
-	private BaseRepositoryInterface | MockObject $baseRepository;
+	private StatusRepositoryInterface | MockObject $statusRepository;
 
 	/**
 	 * @throws Exception
 	 */
 	public function setUp(): void
 	{
-		$this->baseRepository = $this->createMock(BaseRepositoryInterface::class);
+		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
 		$this->data = new Data();
 	}
 
@@ -31,7 +31,7 @@ class DataTest extends TestCase
 	public function testDataExists(int $id, bool $isExpectedException): void
 	{
 		if ($isExpectedException) {
-			$this->baseRepository->expects($this->once())
+			$this->statusRepository->expects($this->once())
 				->method('getById')
 				->willThrowException(new DataNotFoundException);
 
@@ -40,7 +40,7 @@ class DataTest extends TestCase
 			$this->expectNotToPerformAssertions();
 		}
 
-		$this->data->dataExists($id, $this->baseRepository);
+		$this->data->dataExists($id, $this->statusRepository);
 	}
 
 	public static function dataExistsProvider(): array

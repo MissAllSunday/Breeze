@@ -6,7 +6,7 @@ namespace Breeze\Database;
 
 class DatabaseClient implements ClientInterface
 {
-	protected $db = false;
+	protected mixed $db = false;
 
 	public function __construct()
 	{
@@ -53,21 +53,22 @@ class DatabaseClient implements ClientInterface
 
 		$this->db['db_insert'](
 			'insert',
-			'{db_prefix}' . $tableName . '',
+			'{db_prefix}' . $tableName,
 			$columns,
 			$data,
-			(array)$columnIdName
+			(array) $columnIdName
 		);
 	}
 
-	public function replace(string $tableName, array $columns, array $data, string $columnIdName): void
+	public function replace(string $tableName, array $columns, array $data, string $columnIdName): int
 	{
-		$this->db['db_insert'](
+		return $this->db['db_insert'](
 			'replace',
-			'{db_prefix}' . $tableName . '',
+			'{db_prefix}' . $tableName,
 			$columns,
 			$data,
-			[$columnIdName]
+			[$columnIdName],
+			1
 		);
 	}
 
