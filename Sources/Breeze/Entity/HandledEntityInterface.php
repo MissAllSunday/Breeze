@@ -11,9 +11,9 @@ interface HandledEntityInterface
 	public function setUsersInfo(array $usersInfo): void;
 
 	/**
-	 * @param $likesInfo array [LikeHandledEntity]
+	 * @param $likesInfo LikeHandledEntity
 	 */
-	public function setLikesInfo(array $likesInfo): void;
+	public function setLikesInfo(LikeHandledEntity $likesInfo): void;
 
 	/**
 	 * @return array [LikeHandledEntity]

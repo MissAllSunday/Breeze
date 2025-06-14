@@ -8,6 +8,7 @@ namespace Breeze\Repository;
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\CommentHandledEntity;
+use Breeze\Entity\LikeEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\LikesEnum;
 use Breeze\Util\Parser;
@@ -174,17 +175,29 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		$usersIds = [];
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
+			// Set apart the like info
+			$likeInfo = [];
+			$row = array_filter($row, function ($key) use (&$likeInfo, $row) {
+				if (str_starts_with($key, LikeEntity::IDENTIFIER)) {
+					$likeInfo[$key] = $row[$key];
+				}
+
+				return !str_starts_with($key, LikeEntity::IDENTIFIER);
+			}, \ARRAY_FILTER_USE_KEY);
+
 			if ($useStatusID) {
 				$comments[$row[CommentEntity::STATUS_ID]][$row[CommentEntity::ID]] =
 					new CommentHandledEntity(array_map(function ($rowValue) {
 						return ctype_digit((string) $rowValue) ? ((int) $rowValue) : $rowValue;
 					}, $row));
 				$comments[$row[CommentEntity::STATUS_ID]][$row[CommentEntity::ID]]->setBody(Parser::bbc($row[CommentEntity::BODY]));
+				$comments[$row[CommentEntity::STATUS_ID]][$row[CommentEntity::ID]]->setLikesInfo($this->likeRepository->buildLikeData($likeInfo));
 			} else {
 				$comments[$row[CommentEntity::ID]] = new CommentHandledEntity(array_map(function ($rowValue) {
 					return ctype_digit((string) $rowValue) ? ((int)$rowValue) : $rowValue;
 				}, $row));
 				$comments[$row[CommentEntity::ID]]->setBody(Parser::bbc($row[CommentEntity::BODY]));
+				$comments[$row[CommentEntity::ID]]->setLikesInfo($likeInfo);
 			}
 
 			$usersIds[] = (int)$row[CommentEntity::USER_ID];
@@ -212,8 +225,6 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 				$comment->setUsersInfo(array_intersect_key($this->loadedUsers, array_flip($commentsLoadedUsers)));
 			}
 		});
-
-		$this->likeRepository->appendLikeData($comments, CommentEntity::ID);
 
 		return $comments;
 	}

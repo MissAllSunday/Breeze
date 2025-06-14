@@ -7,13 +7,11 @@ namespace Breeze\Service;
 
 use Breeze\Entity\StatusEntity;
 use Breeze\Entity\StatusHandledEntity;
-use Breeze\Entity\UserSettingsEntity;
 use Breeze\PermissionsEnum;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Traits\SettingsTrait;
-use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\EmptyDataException;
 
 class StatusService
@@ -26,19 +24,13 @@ class StatusService
 		protected PermissionsServiceInterface $permissionsService
 	) {}
 
-	public function getWallUserSettings(int $wallId, string $valueName = ''): mixed
-	{
-		$wallUserSettings = $this->userRepository->getById($wallId);
-
-		return $valueName === '' || $valueName === '0' ? $wallUserSettings : $wallUserSettings[$valueName];
-	}
-
 	/**
 	 * @throws EmptyDataException
 	 */
 	public function getByProfile(int $wallId, int $start): array
 	{
-		$wallUserPagination = $this->getWallUserSettings($wallId, UserSettingsEntity::PAGINATION_NUM);
+		$wallUserSettings = $this->userRepository->getById($wallId);
+		$wallUserPagination = $wallUserSettings->getPaginationNumber();
 		$currentUserInfo = $this->currentUserInfo();
 
 		$statusByProfile = $this->statusRepository->getByProfile(
@@ -53,13 +45,12 @@ class StatusService
 
 	/**
 	 * @throws EmptyDataException
-	 * @throws DataNotFoundException
 	 */
 	public function getByBuddies(int $start): array
 	{
 		$currentUserInfo = $this->currentUserInfo();
 		$currentUserSettings = $this->userRepository->getById($currentUserInfo['id']);
-		$currentUserBuddies = $currentUserSettings[UserSettingsEntity::BUDDIES];
+		$currentUserBuddies = $currentUserSettings->getBuddies();
 
 		if (empty($currentUserBuddies)) {
 			return [];

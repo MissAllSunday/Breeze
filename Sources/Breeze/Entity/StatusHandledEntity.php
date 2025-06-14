@@ -29,7 +29,7 @@ class StatusHandledEntity extends StatusEntity implements HandledEntityInterface
 		return $this->likesInfo;
 	}
 
-	public function setLikesInfo(array $likesInfo): void
+	public function setLikesInfo(LikeHandledEntity $likesInfo): void
 	{
 		$this->likesInfo = $likesInfo;
 	}

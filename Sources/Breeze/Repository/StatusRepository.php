@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
+use Breeze\Entity\LikeEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\Entity\StatusHandledEntity;
 use Breeze\LikesEnum;
@@ -186,10 +187,21 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		$usersIds = [];
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
+			// Set apart the like info
+			$likeInfo = [];
+			$row = array_filter($row, function ($key) use (&$likeInfo, $row) {
+				if (str_starts_with($key, LikeEntity::IDENTIFIER)) {
+					$likeInfo[$key] = $row[$key];
+				}
+
+				return !str_starts_with($key, LikeEntity::IDENTIFIER);
+			}, \ARRAY_FILTER_USE_KEY);
+
 			$status[$row[StatusEntity::ID]] = new StatusHandledEntity(array_map(function ($column) {
 				return ctype_digit((string) $column) ? ( (int) $column) : $column;
 			}, $row));
 			$status[$row[StatusEntity::ID]]->setBody(Parser::bbc($row[StatusEntity::BODY]));
+			$status[$row[StatusEntity::ID]]->setLikesInfo($this->likeRepository->buildLikeData($likeInfo));
 
 			$usersIds[] = $row[StatusEntity::WALL_ID];
 			$usersIds[] = $row[StatusEntity::USER_ID];

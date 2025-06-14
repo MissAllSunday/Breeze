@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Breeze\Breeze;
-use Breeze\Entity\UserSettingsEntity;
 
 /**
  * @license http://www.mozilla.org/MPL/ MPL 2.0
@@ -11,6 +10,9 @@ use Breeze\Entity\UserSettingsEntity;
 function template_profile(): void
 {
 	global $context, $txt, $scripturl;
+
+	$aboutMe = $context[Breeze::NAME]['profileSettings']->getAboutMe();
+	$enableBuddiesTab = $context[Breeze::NAME]['profileSettings']->getEnableBuddiesTab();
 
 	echo '
 	<hr />
@@ -25,14 +27,14 @@ function template_profile(): void
 		</div>
 	</div>';
 
-	if (!empty($context[Breeze::NAME]['profileSettings'][UserSettingsEntity::ABOUT_ME])) {
+	if (!empty($aboutMe)) {
 		echo '
 		<div id="tab-about" class="content" style="display: none;">
-			' . parse_bbc($context[Breeze::NAME]['profileSettings'][UserSettingsEntity::ABOUT_ME]) . '
+			' . parse_bbc($aboutMe) . '
 		</div>';
 	}
 
-	if (!empty($context[Breeze::NAME]['profileSettings'][UserSettingsEntity::ENABLE_BUDDIES_TAB])) {
+	if (!empty($enableBuddiesTab)) {
 		echo '
 		<div id="tab-buddies" class="windowbg" style="display: none;">';
 
@@ -57,7 +59,7 @@ function template_profile(): void
     				<li>
     					', $buddy['link_color'] ,'
     					<a href="', $scripturl , '?action=buddy;u=', $buddy['id'], ';', $context['session_var'], '=', $context['session_id'], '">
-    						<span class="main_icons ', $buddyIcon , '" title="', $txt['buddy_'. $buddyText] ,'" /></a>
+    						<span class="main_icons ', $buddyIcon , '" title="', $txt['buddy_' . $buddyText] ,'" /></a>
 					</li>
   				</ul>';
 			}

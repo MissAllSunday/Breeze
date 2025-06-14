@@ -51,13 +51,13 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 
 		$this->components->loadUIVars([
 			'profileId' => $profileId,
-			'pagination' => $wallUserSettings[UserSettingsEntity::PAGINATION_NUM],
+			'pagination' => $wallUserSettings->getPaginationNumber(),
 			'editorId' => Breeze::NAME,
 			'editorOptions' => $editorContext['sce_options'],
 			'editorIsRich' => $editorContext['rich_active'],
 			'currentUserAvatar' => $userInfo['avatar']['url'],
-			UserSettingsEntity::ENABLE_BUDDIES_TAB => $wallUserSettings[UserSettingsEntity::ENABLE_BUDDIES_TAB],
-			UserSettingsEntity::ABOUT_ME => !empty($wallUserSettings[UserSettingsEntity::ABOUT_ME]),
+			UserSettingsEntity::ENABLE_BUDDIES_TAB => $wallUserSettings->getEnableBuddiesTab(),
+			UserSettingsEntity::ABOUT_ME => !empty($wallUserSettings->getAboutMe()),
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
 		$this->components->loadJavaScriptFile(Components::FOLDER . 'main.' . Breeze::REACT_HASH . '.js', [
@@ -119,7 +119,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		$currentUserInfo = $this->global('user_info');
 		$currentUserSettings = $this->getCurrentUserSettings();
 
-		if (!empty($currentUserSettings[UserSettingsEntity::WALL]) ||
+		if (!empty($currentUserSettings->getWall()) ||
 			$this->isEnable(SettingsEntity::FORCE_WALL)) {
 			foreach ($profile_items as &$profileItem) {
 				if ($profileItem['area'] === 'summary') {

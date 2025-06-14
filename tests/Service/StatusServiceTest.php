@@ -36,16 +36,6 @@ class StatusServiceTest extends TestCase
 		$this->statusService = new StatusService($this->statusRepository, $this->userRepository, $this->permissionsService);
 	}
 
-	#[DataProvider('getWallUserSettingsProvider')]
-	public function testGetWallUserSettings(int $wallId, string $valueName, array $userSettings, mixed $expected): void
-	{
-		$this->userRepository->method('getById')->willReturn($userSettings);
-
-		$result =$this->statusService->getWallUserSettings($wallId, $valueName);
-
-		$this->assertEquals($expected, $result);
-	}
-
 	public static function getWallUserSettingsProvider(): array
 	{
 		return [
