@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Traits;
 
 use Breeze\Breeze as Breeze;
+use Breeze\Entity\EntityInterface;
 
 trait CacheTrait
 {
@@ -16,7 +17,7 @@ trait CacheTrait
 		);
 	}
 
-	public function setCache(string $key, ?array $data, int $timeToLive = 360): void
+	public function setCache(string $key, array | EntityInterface| null $data, int $timeToLive = 360): void
 	{
 		cache_put_data($this->buildKey($key), $data, $timeToLive);
 	}

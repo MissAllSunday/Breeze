@@ -7,7 +7,7 @@ namespace Breeze\Service;
 use Breeze\Entity\StatusHandledEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
-use Breeze\Repository\User\UserRepositoryInterface;
+use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Util\Validate\EmptyDataException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;
@@ -18,7 +18,7 @@ class StatusServiceTest extends TestCase
 {
 	private StatusRepositoryInterface | MockObject $statusRepository;
 
-	private UserRepositoryInterface | MockObject $userRepository;
+	private SettingsRepositoryInterface | MockObject $userRepository;
 
 	private PermissionsServiceInterface | MockObject $permissionsService;
 
@@ -30,7 +30,7 @@ class StatusServiceTest extends TestCase
 	public function setUp(): void
 	{
 		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
-		$this->userRepository = $this->createMock(UserRepositoryInterface::class);
+		$this->userRepository = $this->createMock(SettingsRepositoryInterface::class);
 		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
 
 		$this->statusService = new StatusService($this->statusRepository, $this->userRepository, $this->permissionsService);

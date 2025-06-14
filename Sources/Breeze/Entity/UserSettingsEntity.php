@@ -18,6 +18,18 @@ class UserSettingsEntity extends Entity implements EntityInterface
 	public const string ABOUT_ME = 'aboutMe';
 	public const string USER_ID = 'userId';
 
+	protected int $wall = 0;
+
+	protected int $generalWall = 0;
+
+	protected int $paginationNumber = 5;
+
+	protected int $kickIgnored = 0;
+
+	protected int $enableBuddiesTab = 0;
+
+	protected string $aboutMe = '';
+
 	public static function getColumns(): array
 	{
 		return [
@@ -59,5 +71,65 @@ class UserSettingsEntity extends Entity implements EntityInterface
 	public static function getTableName(): string
 	{
 		return '';
+	}
+
+	public function getWall(): int
+	{
+		return $this->wall;
+	}
+
+	public function setWall(int $wall): void
+	{
+		$this->wall = $wall;
+	}
+
+	public function getGeneralWall(): int
+	{
+		return $this->generalWall;
+	}
+
+	public function setGeneralWall(int $generalWall): void
+	{
+		$this->generalWall = $generalWall;
+	}
+
+	public function getKickIgnored(): int
+	{
+		return $this->kickIgnored;
+	}
+
+	public function setKickIgnored(int $kickIgnored): void
+	{
+		$this->kickIgnored = $kickIgnored;
+	}
+
+	public function getEnableBuddiesTab(): int
+	{
+		return $this->enableBuddiesTab;
+	}
+
+	public function setEnableBuddiesTab(int $enableBuddiesTab): void
+	{
+		$this->enableBuddiesTab = $enableBuddiesTab;
+	}
+
+	public function getAboutMe(): string
+	{
+		return $this->aboutMe;
+	}
+
+	public function setAboutMe(string $aboutMe): void
+	{
+		$this->aboutMe = $aboutMe;
+	}
+
+	public function getPaginationNumber(): int
+	{
+		return $this->paginationNumber;
+	}
+
+	public function setPaginationNumber(int $paginationNumber): void
+	{
+		$this->paginationNumber = $paginationNumber;
 	}
 }

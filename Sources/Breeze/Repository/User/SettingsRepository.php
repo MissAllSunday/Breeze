@@ -7,21 +7,25 @@ namespace Breeze\Repository\User;
 use Breeze\Entity\MemberEntity;
 use Breeze\Entity\OptionsEntity;
 use Breeze\Entity\UserSettingsEntity;
+use Breeze\Entity\UserSettingsHandledEntity;
 use Breeze\Repository\BaseRepository;
 use Breeze\Util\Json;
+use Breeze\Util\Validate\DataNotFoundException;
 
-class UserSettingsRepository extends BaseRepository
+class SettingsRepository extends BaseRepository implements SettingsRepositoryInterface
 {
 	public const array JSON_VALUES = ['cover', 'petitionList'];
 
 	public const array ARRAY_VALUES = ['blockListIDs'];
 
-	public function getById(int $id): array
+	/**
+	 * @throws DataNotFoundException
+	 */
+	public function getById(int $id): UserSettingsHandledEntity
 	{
 		$userSettings = $this->getCache(sprintf(OptionsEntity::CACHE_NAME, $id));
 
 		if ($userSettings === []) {
-
 			$result = $this->dbClient->query(
 				'SELECT op.' . (implode(', op.', OptionsEntity::getColumns())) . ',
 			mem.' . (implode(', mem.', MemberEntity::getColumns())) . '
@@ -33,8 +37,12 @@ class UserSettingsRepository extends BaseRepository
 					'userId' => $id,
 				]
 			);
-			$userData = UserSettingsEntity::getDefaultValues();
 
+			if ($result === false) {
+				throw new DataNotFoundException('error_no_user_settings');
+			}
+
+			$userData = [];
 			while ($row = $this->dbClient->fetchAssoc($result)) {
 				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = is_numeric($row[OptionsEntity::COLUMN_VALUE]) ?
 					(int) $row[OptionsEntity::COLUMN_VALUE] : (string) $row[OptionsEntity::COLUMN_VALUE];
@@ -58,8 +66,7 @@ class UserSettingsRepository extends BaseRepository
 			}
 
 			$this->dbClient->freeResult($result);
-
-
+			$userSettings = new UserSettingsHandledEntity($userData);
 			$this->setCache(sprintf(OptionsEntity::CACHE_NAME, $id), $userSettings);
 		}
 

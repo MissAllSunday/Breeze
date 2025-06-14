@@ -33,7 +33,7 @@ use Breeze\Repository\AlertRepository;
 use Breeze\Repository\CommentRepository;
 use Breeze\Repository\LikeRepository;
 use Breeze\Repository\StatusRepository;
-use Breeze\Repository\User\UserSettingsRepository;
+use Breeze\Repository\User\SettingsRepository as UserSettingsRepository;
 use Breeze\Service\Actions\AdminService;
 use Breeze\Service\AlertService;
 use Breeze\Service\PermissionsService;

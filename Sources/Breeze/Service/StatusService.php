@@ -11,7 +11,7 @@ use Breeze\Entity\UserSettingsEntity;
 use Breeze\PermissionsEnum;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
-use Breeze\Repository\User\UserRepositoryInterface;
+use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Traits\SettingsTrait;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\EmptyDataException;
@@ -21,8 +21,8 @@ class StatusService
 	use SettingsTrait;
 
 	public function __construct(
-		protected StatusRepositoryInterface $statusRepository,
-		protected UserRepositoryInterface $userRepository,
+		protected StatusRepositoryInterface   $statusRepository,
+		protected SettingsRepositoryInterface $userRepository,
 		protected PermissionsServiceInterface $permissionsService
 	) {}
 

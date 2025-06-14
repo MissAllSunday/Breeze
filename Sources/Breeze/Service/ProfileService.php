@@ -7,8 +7,9 @@ namespace Breeze\Service;
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
+use Breeze\Entity\UserSettingsHandledEntity;
 use Breeze\PermissionsEnum;
-use Breeze\Repository\User\UserRepositoryInterface;
+use Breeze\Repository\User\SettingsRepositoryInterface as UserSettingsRepository;
 use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\SettingsTrait;
 use Breeze\Traits\TextTrait;
@@ -20,32 +21,32 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 	use TextTrait;
 	use PermissionsTrait;
 
-	public const AREA = 'summary';
-	public const SETTINGS_AREA = 'breezeSettings';
-	public const LEGACY_AREA = 'legacy';
-	public const LEGACY_URL = '?action=profile;area=' . self::LEGACY_AREA . ';u=%d';
-	public const URL = '%s?action=profile;area=' . self::AREA . ';u=%d';
-	public const SETTINGS_URL = '%s?action=profile;area=' . self::SETTINGS_AREA . ';u=%d';
+	public const string AREA = 'summary';
+	public const string SETTINGS_AREA = 'breezeSettings';
+	public const string LEGACY_AREA = 'legacy';
+	public const string LEGACY_URL = '?action=profile;area=' . self::LEGACY_AREA . ';u=%d';
+	public const string URL = '%s?action=profile;area=' . self::AREA . ';u=%d';
+	public const string SETTINGS_URL = '%s?action=profile;area=' . self::SETTINGS_AREA . ';u=%d';
 
-	public const MIN_INFO_KEYS = [
+	public const array MIN_INFO_KEYS = [
 		'link',
 		'name',
 		'avatar',
 	];
 
 	public function __construct(
-		protected UserRepositoryInterface $userRepository,
+		protected UserSettingsRepository $userSettingsRepository,
 		protected Components $components,
 		protected PermissionsService $permissionsService
 	) {
-		parent::__construct($userRepository);
+		parent::__construct($userSettingsRepository);
 	}
 
 	public function loadComponents(int $profileId = 0): void
 	{
 		$context = $this->global('context');
 		$userInfo = $this->getCurrentUserInfo();
-		$wallUserSettings = $this->userRepository->getById($profileId);
+		$wallUserSettings = $this->userSettingsRepository->getById($profileId);
 		$editorContext = $context['controls']['richedit'][Breeze::NAME];
 
 		$this->components->loadUIVars([
@@ -94,16 +95,16 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		return $this->global('user_info');
 	}
 
-	public function getCurrentUserSettings(): array
+	public function getCurrentUserSettings(): UserSettingsHandledEntity
 	{
 		$currentUserInfo = $this->global('user_info');
 
-		return $this->userRepository->getById($currentUserInfo['id']);
+		return $this->userSettingsRepository->getById($currentUserInfo['id']);
 	}
 
-	public function getUserSettings(int $userId): array
+	public function getUserSettings(int $userId): UserSettingsHandledEntity
 	{
-		return $this->userRepository->getById($userId);
+		return $this->userSettingsRepository->getById($userId);
 	}
 
 	public function hookProfilePopUp(&$profile_items): void
@@ -170,15 +171,17 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		];
 	}
 
-	public function isAllowedToSeePage(array $profileSettings, int $profileId = 0, int $userId = 0): bool
+	public function isAllowedToSeePage(UserSettingsHandledEntity $profileSettings, int $profileId = 0, int $userId = 0): bool
 	{
 		$forceWall = $this->getSetting(SettingsEntity::FORCE_WALL);
+		$isWallEnable = !empty($profileSettings->getWall());
+		$blockList = $profileSettings->getBlockList();
 
-		if (empty($profileSettings[UserSettingsEntity::WALL]) && !empty($forceWall)) {
+		if (!$isWallEnable && !empty($forceWall)) {
 			return true;
 		}
 
-		if (empty($profileSettings[UserSettingsEntity::WALL])) {
+		if (!$isWallEnable) {
 			return false;
 		}
 
@@ -186,12 +189,10 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			return false;
 		}
 
-		if (!empty($profileSettings['kick_ignored']) && !empty($profileSettings['ignoredList'])) {
-			$profileIgnoredList = array_map('intval', explode(',', $profileSettings['ignoredList']));
-
-			if (in_array($userId, $profileIgnoredList, true)) {
-				return false;
-			}
+		if (!empty($profileSettings->getKickIgnored()) &&
+			!empty($blockList) &&
+			in_array($userId, $blockList, true)) {
+			return false;
 		}
 
 		return true;
@@ -205,12 +206,11 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			return true;
 		}
 
-		$userStalkedSettings = $this->userRepository->getById($userStalkedId);
+		$userStalkedSettings = $this->userSettingsRepository->getById($userStalkedId);
+		$blockedList = $userStalkedSettings->getBlockList();
 
-		if (!empty($userStalkedSettings['kick_ignored']) && !empty($userStalkedSettings['ignoredList'])) {
-			$ignored = array_map('intval', explode(',', $userStalkedSettings['ignoredList']));
-
-			return in_array($user_info['id'], $ignored, true);
+		if (!empty($userStalkedSettings['kick_ignored']) && !empty($blockedList)) {
+			return in_array((int) $user_info['id'], $blockedList, true);
 		}
 
 		return false;

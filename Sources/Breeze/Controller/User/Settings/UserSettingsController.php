@@ -8,7 +8,7 @@ use Breeze\Breeze;
 use Breeze\Controller\BaseController;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
-use Breeze\Repository\User\UserRepositoryInterface;
+use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Traits\PermissionsTrait;
 use Breeze\Util\Error;
 use Breeze\Util\Form\UserSettingsBuilderInterface;
@@ -42,8 +42,8 @@ class UserSettingsController extends BaseController
 	];
 
 	public function __construct(
-		private UserRepositoryInterface $userRepository,
-		private Response $response,
+		private SettingsRepositoryInterface  $userRepository,
+		private Response                     $response,
 		private UserSettingsBuilderInterface $userSettingsBuilder
 	) {
 	}

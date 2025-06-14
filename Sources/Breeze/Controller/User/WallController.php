@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace Breeze\Controller\User;
 
 use Breeze\Controller\BaseController;
-use Breeze\Entity\UserSettingsEntity;
 use Breeze\Service\ProfileServiceInterface;
 use Breeze\Util\Error;
 use Breeze\Util\Response;
 
 class WallController extends BaseController
 {
-	public const ACTION_GENERAL = 'wall';
-	public const ACTION_PROFILE = 'profile';
-	public const SUB_ACTIONS = [
+	public const string ACTION_GENERAL = 'wall';
+	public const string ACTION_PROFILE = 'profile';
+	public const array SUB_ACTIONS = [
 		self::ACTION_GENERAL,
 		self::ACTION_PROFILE,
 	];
@@ -50,8 +49,8 @@ class WallController extends BaseController
 			Error::show('error_no_access');
 		}
 
-		if (!empty($profileSettings[UserSettingsEntity::ENABLE_BUDDIES_TAB])) {
-			$buddiesData = $this->profileService->loadUsersInfo($profileSettings[UserSettingsEntity::BUDDIES]);
+		if (!empty($profileSettings->getEnableBuddiesTab())) {
+			$buddiesData = $this->profileService->loadUsersInfo($profileSettings->getBuddies());
 		}
 
 		$this->profileService->setEditor();

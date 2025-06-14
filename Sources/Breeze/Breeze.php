@@ -13,7 +13,7 @@ use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
-use Breeze\Repository\User\UserSettingsRepository;
+use Breeze\Repository\User\SettingsRepository as UserSettingsRepository;
 use Breeze\Service\Actions\AdminServiceInterface;
 use Breeze\Service\AlertService;
 use Breeze\Service\PermissionsService;
@@ -37,7 +37,7 @@ class Breeze
 	public const string SUPPORT_URL = 'https://missallsunday.com';
 	public const string REACT_DOM_VERSION = '18.2.0';
 	public const string REACT_VERSION = '18.2.0';
-	public const string REACT_HASH = '1f1b817c';
+	public const string REACT_HASH = '2ff62c3d';
 
 	public const string ACTION_STATUS = 'breezeStatus';
 	public const string ACTION_COMMENT = 'breezeComment';
@@ -87,7 +87,7 @@ class Breeze
 		$userInfo = $this->global('user_info');
 		$currentUserSettings = $this->container->get(UserSettingsRepository::class)->getById($userInfo['id']);
 
-		if (!empty($currentUserSettings['wall']) || $this->isEnable(SettingsEntity::FORCE_WALL)) {
+		if (!empty($currentUserSettings->getWall()) || $this->isEnable(SettingsEntity::FORCE_WALL)) {
 			/** @var WallController $wallController */
 			$wallController = $this->container->get(WallController::class);
 
@@ -144,51 +144,55 @@ class Breeze
 
 		$scriptUrl = $this->global(self::SCRIPT_URL);
 		$currentUserInfo = $this->global('user_info');
-		$currentUserSettings = $this->container->get(UserSettingsRepository::class)->getById($currentUserInfo['id']);
 
-		if (!empty($menu_buttons['profile']['sub_buttons']['summary'])) {
-			$menu_buttons['profile']['sub_buttons']['summary'] = [
-				'title' => $this->getText('summary'),
-				'href' => $scriptUrl . '?action=profile;area=' . ProfileService::LEGACY_AREA,
-				'show' => true,
-			];
-		}
-
-		$menuReference = 'home';
-		$counter = 0;
-
-		foreach (array_keys($menu_buttons) as $area) {
-			$counter++;
-			if ($area === $menuReference) {
-				break;
+		try {
+			$currentUserSettings = $this->container->get(UserSettingsRepository::class)->getById($currentUserInfo['id']);
+			if (!empty($menu_buttons['profile']['sub_buttons']['summary'])) {
+				$menu_buttons['profile']['sub_buttons']['summary'] = [
+					'title' => $this->getText('summary'),
+					'href' => $scriptUrl . '?action=profile;area=' . ProfileService::LEGACY_AREA,
+					'show' => true,
+				];
 			}
+
+			$menuReference = 'home';
+			$counter = 0;
+
+			foreach (array_keys($menu_buttons) as $area) {
+				$counter++;
+				if ($area === $menuReference) {
+					break;
+				}
+			}
+			$menu_buttons = array_merge(
+				array_slice($menu_buttons, 0, $counter),
+				[self::ACTION_WALL => [
+					'title' => $this->getText(UserSettingsEntity::GENERAL_WALL),
+					'icon' => 'smiley',
+					'href' => $scriptUrl . '?action=' . self::ACTION_WALL,
+					'show' =>
+						!$currentUserInfo['is_guest'] &&
+						!empty($currentUserSettings->getGeneralWall()),
+					'sub_buttons' => [
+						'noti' => [
+							'title' => $this->getText('user_notisettings_name'),
+							'href' => $scriptUrl . '?action=profile;area=alerts;sa=edit;u=' . $currentUserInfo['id'],
+							'show' => !$currentUserInfo['is_guest'],
+							'sub_buttons' => [],
+						],
+						'admin' => [
+							'title' => $this->getText('admin'),
+							'href' => $scriptUrl . '?action=admin;area=' . AdminServiceInterface::AREA,
+							'show' => $currentUserInfo['is_admin'],
+							'sub_buttons' => [],
+						],
+					],
+				]],
+				array_slice($menu_buttons, $counter)
+			);
+		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+			log_error($e->getMessage());
 		}
-		$menu_buttons = array_merge(
-			array_slice($menu_buttons, 0, $counter),
-			[self::ACTION_WALL => [
-				'title' => $this->getText(UserSettingsEntity::GENERAL_WALL),
-				'icon' => 'smiley',
-				'href' => $scriptUrl . '?action=' . self::ACTION_WALL,
-				'show' =>
-					!$currentUserInfo['is_guest'] &&
-					!empty($currentUserSettings[UserSettingsEntity::GENERAL_WALL]),
-				'sub_buttons' => [
-					'noti' => [
-						'title' => $this->getText('user_notisettings_name'),
-						'href' => $scriptUrl . '?action=profile;area=alerts;sa=edit;u=' . $currentUserInfo['id'],
-						'show' => !$currentUserInfo['is_guest'],
-						'sub_buttons' => [],
-					],
-					'admin' => [
-						'title' => $this->getText('admin'),
-						'href' => $scriptUrl . '?action=admin;area=' . AdminServiceInterface::AREA,
-						'show' => $currentUserInfo['is_admin'],
-						'sub_buttons' => [],
-					],
-				],
-			]],
-			array_slice($menu_buttons, $counter)
-		);
 	}
 
 	public function actions(array &$actions): void
