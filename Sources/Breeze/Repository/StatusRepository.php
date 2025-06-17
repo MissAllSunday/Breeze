@@ -208,7 +208,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			$usersIds[] = $row[StatusEntity::USER_ID];
 		}
 
-		$this->loadedUsers = $this->loadUsersInfo(array_unique($usersIds));
+		$this->loadedUsers = $this->loadUsersInfo($usersIds);
 
 		$this->dbClient->freeResult($request);
 

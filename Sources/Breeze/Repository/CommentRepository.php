@@ -194,7 +194,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			$usersIds[] = (int)$row[CommentEntity::USER_ID];
 		}
 
-		$this->loadedUsers = $this->loadUsersInfo(array_unique($usersIds));
+		$this->loadedUsers = $this->loadUsersInfo($usersIds);
 
 		$this->dbClient->freeResult($request);
 

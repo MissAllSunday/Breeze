@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-interface HandledEntityInterface
+interface HandledEntityInterface extends \JsonSerializable
 {
 	public function getUsersInfo(): array;
 

@@ -82,7 +82,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	{
 		$likeInfo = [];
 		$likes = $this->getByContent($type, $contentId);
-		$usersInfo = $this->loadUsersInfo(array_unique(array_column($likes, LikeEntity::COLUMN_ID_MEMBER)));
+		$usersInfo = $this->loadUsersInfo(array_column($likes, LikeEntity::COLUMN_ID_MEMBER));
 
 		foreach ($likes as $key => $like) {
 			$likeInfo[$key]['profile'] = $usersInfo[$like[LikeEntity::COLUMN_ID_MEMBER]];

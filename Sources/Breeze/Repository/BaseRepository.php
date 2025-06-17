@@ -50,6 +50,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
 	public function loadUsersInfo(array $userIds = []): array
 	{
+		$userIds = array_unique($userIds);
 		$loadedUsers = [];
 
 		$modSettings = $this->global('modSettings');

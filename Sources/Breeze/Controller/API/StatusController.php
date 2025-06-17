@@ -65,8 +65,8 @@ class StatusController extends ApiBaseController
 			}
 
 			$this->response->success('', $buddiesStatus);
-		} catch (InvalidStatusException $invalidStatusException) {
-			$this->response->error($invalidStatusException->getMessage());
+		} catch (InvalidStatusException | EmptyDataException $exception) {
+			$this->response->error($exception->getMessage());
 		}
 	}
 

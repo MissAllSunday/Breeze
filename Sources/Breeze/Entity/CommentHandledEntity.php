@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
+use DateTimeInterface;
+
 class CommentHandledEntity extends CommentEntity implements HandledEntityInterface
 {
 	protected array $usersInfo = [];
@@ -33,5 +35,22 @@ class CommentHandledEntity extends CommentEntity implements HandledEntityInterfa
 	public function getWallId(): int
 	{
 		return 0;
+	}
+
+	/**
+	 * @throws \DateMalformedStringException
+	 */
+	public function jsonSerialize(): array
+	{
+		return [
+			'id' => $this->getId(),
+			'statusId' => $this->getStatusId(),
+			'userId' => $this->getUserId(),
+			'createdAt' => $this->getCreatedAt()->format(DateTimeInterface::ATOM),
+			'body' => $this->getBody(),
+			'likes' => $this->getLikesInfo()->getCount(),
+			'likesInfo' => $this->getLikesInfo(),
+			'userData' => $this->getUsersInfo(),
+		];
 	}
 }
