@@ -8,7 +8,7 @@ class CommentHandledEntity extends CommentEntity implements HandledEntityInterfa
 {
 	protected array $usersInfo = [];
 
-	protected array $likesInfo = [];
+	protected LikeHandledEntity $likesInfo;
 
 	public function getUsersInfo(): array
 	{
@@ -20,7 +20,7 @@ class CommentHandledEntity extends CommentEntity implements HandledEntityInterfa
 		$this->usersInfo = $usersInfo;
 	}
 
-	public function getLikesInfo(): array
+	public function getLikesInfo(): LikeHandledEntity
 	{
 		return $this->likesInfo;
 	}
@@ -28,5 +28,10 @@ class CommentHandledEntity extends CommentEntity implements HandledEntityInterfa
 	public function setLikesInfo(LikeHandledEntity $likesInfo): void
 	{
 		$this->likesInfo = $likesInfo;
+	}
+
+	public function getWallId(): int
+	{
+		return 0;
 	}
 }

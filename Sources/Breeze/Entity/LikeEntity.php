@@ -23,7 +23,7 @@ class LikeEntity extends Entity
 
 	protected int $content_id = 0;
 
-	protected int $like_time = 0;
+	protected ?int $like_time = null;
 
 	public function getIdMember(): int
 	{
@@ -35,14 +35,14 @@ class LikeEntity extends Entity
 		$this->id_member = (int) $idMember;
 	}
 
-	public function getContentType(): LikesEnum
+	public function getContentType(): string
 	{
 		return $this->content_type;
 	}
 
 	public function setContentType(string|LikesEnum $type): void
 	{
-		$this->content_type = LikesEnum::isValid($type) ? $type : '';
+		$this->content_type = LikesEnum::isValid($type) ? LikesEnum::from($type)->value : '';
 	}
 
 	public function getContentId(): int
@@ -58,14 +58,14 @@ class LikeEntity extends Entity
 	/**
 	 * @throws \DateMalformedStringException
 	 */
-	public function getLikeTime(): DateTimeImmutable
+	public function getLikeTime(): DateTimeImmutable | null
 	{
-		return new DateTimeImmutable('@' . $this->like_time);
+		return $this->like_time === null ? null : new DateTimeImmutable('@' . $this->like_time);
 	}
 
-	public function setTime(int | DateTimeImmutable $time): void
+	public function setLikeTime(null | int | DateTimeImmutable $time): void
 	{
-		$this->like_time = is_int($time) ? $time : $time->getTimestamp();;
+		$this->like_time = (is_int($time) || $time === null) ? $time : $time->getTimestamp();;
 	}
 
 	public static function getTypes(): array

@@ -8,8 +8,9 @@ class StatusHandledEntity extends StatusEntity implements HandledEntityInterface
 {
 	protected array $usersInfo = [];
 
-	protected array $likesInfo = [];
+	protected LikeHandledEntity $likesInfo;
 
+	/** @var CommentHandledEntity[] */
 	protected array $comments = [];
 
 	protected bool $isNew = false;
@@ -24,7 +25,7 @@ class StatusHandledEntity extends StatusEntity implements HandledEntityInterface
 		$this->usersInfo = $usersInfo;
 	}
 
-	public function getLikesInfo(): array
+	public function getLikesInfo(): LikeHandledEntity
 	{
 		return $this->likesInfo;
 	}

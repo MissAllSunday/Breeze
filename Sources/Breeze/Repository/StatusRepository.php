@@ -165,15 +165,16 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	{
 		/** @var StatusHandledEntity[] $status */
 		array_walk($status, function ($singleStatus, $statusId) use ($comments): void {
-			$singleStatus->setComments($comments[$statusId] ?? []);
+			$singleStatus->setComments(array_filter($comments, function ($comment) use ($statusId) {
+				return $comment->getStatusId() === $statusId;
+			}));
 			$statusLoadedUsers = [$singleStatus->getUserId(), $singleStatus->getWallId()];
 
 			if (!empty($this->loadedUsers)) {
 				$singleStatus->setUsersInfo(array_intersect_key($this->loadedUsers, array_flip($statusLoadedUsers)));
 			}
+			$singleStatus->setBody(Parser::bbc($singleStatus->getBody()));
 		});
-
-		$this->likeRepository->appendLikeData($status, StatusEntity::ID);
 
 		return $status;
 	}
@@ -191,16 +192,16 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			$likeInfo = [];
 			$row = array_filter($row, function ($key) use (&$likeInfo, $row) {
 				if (str_starts_with($key, LikeEntity::IDENTIFIER)) {
-					$likeInfo[$key] = $row[$key];
+					$likeInfo[str_replace(LikeEntity::IDENTIFIER, '', $key)] = $row[$key];
 				}
 
 				return !str_starts_with($key, LikeEntity::IDENTIFIER);
 			}, \ARRAY_FILTER_USE_KEY);
+			$likeInfo[LikeEntity::COLUMN_ID] = $row[StatusEntity::ID];
 
 			$status[$row[StatusEntity::ID]] = new StatusHandledEntity(array_map(function ($column) {
 				return ctype_digit((string) $column) ? ( (int) $column) : $column;
 			}, $row));
-			$status[$row[StatusEntity::ID]]->setBody(Parser::bbc($row[StatusEntity::BODY]));
 			$status[$row[StatusEntity::ID]]->setLikesInfo($this->likeRepository->buildLikeData($likeInfo));
 
 			$usersIds[] = $row[StatusEntity::WALL_ID];

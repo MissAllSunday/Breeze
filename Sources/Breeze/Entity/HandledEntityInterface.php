@@ -10,17 +10,17 @@ interface HandledEntityInterface
 
 	public function setUsersInfo(array $usersInfo): void;
 
-	/**
-	 * @param $likesInfo LikeHandledEntity
-	 */
 	public function setLikesInfo(LikeHandledEntity $likesInfo): void;
 
-	/**
-	 * @return array [LikeHandledEntity]
-	 */
-	public function getLikesInfo(): array;
+	public function getLikesInfo(): LikeHandledEntity;
 
 	public function getUserId(): int;
 
 	public function getId(): int;
+
+	public function getWallId(): int;
+
+	public function setBody(string $body): void;
+
+	public function getBody(): string;
 }

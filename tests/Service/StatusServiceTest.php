@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Entity\StatusHandledEntity;
+use Breeze\Entity\UserSettingsHandledEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface;
@@ -60,7 +61,7 @@ class StatusServiceTest extends TestCase
 	#[DataProvider('getByProfileProvider')]
 	public function testGetByProfile(int $wallId, int $start, array $expected): void
 	{
-		$this->userRepository->method('getById')->willReturn(['paginationNumber' => 5]);
+		$this->userRepository->method('getById')->willReturn(new UserSettingsHandledEntity(['paginationNumber' => 5]));
 		$this->permissionsService->method('permissions')->willReturn([
 			'delete' => true,
 			'edit' => false,

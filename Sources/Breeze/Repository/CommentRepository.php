@@ -98,7 +98,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			$queryParams
 		);
 
-		return $this->buildHandledComments($this->prepareData($request, true));
+		return $this->buildHandledComments($this->prepareData($request));
 	}
 
 	public function getByStatus(array $statusIds = []): array
@@ -117,7 +117,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			$queryParams
 		);
 
-		return $this->buildHandledComments($this->prepareData($request, true));
+		return $this->buildHandledComments($this->prepareData($request));
 	}
 
 	/**
@@ -169,7 +169,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		);
 	}
 
-	protected function prepareData($request, bool $useStatusID = false): array
+	protected function prepareData($request): array
 	{
 		$comments = [];
 		$usersIds = [];
@@ -179,26 +179,17 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			$likeInfo = [];
 			$row = array_filter($row, function ($key) use (&$likeInfo, $row) {
 				if (str_starts_with($key, LikeEntity::IDENTIFIER)) {
-					$likeInfo[$key] = $row[$key];
+					$likeInfo[str_replace(LikeEntity::IDENTIFIER, '', $key)] = $row[$key];
 				}
 
 				return !str_starts_with($key, LikeEntity::IDENTIFIER);
 			}, \ARRAY_FILTER_USE_KEY);
+			$likeInfo[LikeEntity::COLUMN_ID] = $row[CommentEntity::ID];
 
-			if ($useStatusID) {
-				$comments[$row[CommentEntity::STATUS_ID]][$row[CommentEntity::ID]] =
-					new CommentHandledEntity(array_map(function ($rowValue) {
-						return ctype_digit((string) $rowValue) ? ((int) $rowValue) : $rowValue;
-					}, $row));
-				$comments[$row[CommentEntity::STATUS_ID]][$row[CommentEntity::ID]]->setBody(Parser::bbc($row[CommentEntity::BODY]));
-				$comments[$row[CommentEntity::STATUS_ID]][$row[CommentEntity::ID]]->setLikesInfo($this->likeRepository->buildLikeData($likeInfo));
-			} else {
-				$comments[$row[CommentEntity::ID]] = new CommentHandledEntity(array_map(function ($rowValue) {
-					return ctype_digit((string) $rowValue) ? ((int)$rowValue) : $rowValue;
-				}, $row));
-				$comments[$row[CommentEntity::ID]]->setBody(Parser::bbc($row[CommentEntity::BODY]));
-				$comments[$row[CommentEntity::ID]]->setLikesInfo($likeInfo);
-			}
+			$comments[$row[CommentEntity::ID]] = new CommentHandledEntity(array_map(function ($rowValue) {
+				return ctype_digit((string) $rowValue) ? ((int)$rowValue) : $rowValue;
+			}, $row));
+			$comments[$row[CommentEntity::ID]]->setLikesInfo($this->likeRepository->buildLikeData($likeInfo));
 
 			$usersIds[] = (int)$row[CommentEntity::USER_ID];
 		}

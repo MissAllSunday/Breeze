@@ -190,7 +190,9 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		}, $items);
 	}
 
-	public function buildLikeData(LikeEntity | LikeHandledEntity | array $likeHandledEntity): LikeHandledEntity {
+	public function buildLikeData(
+		LikeEntity | LikeHandledEntity | array $likeHandledEntity
+	): LikeHandledEntity {
 		$base = LikeEntity::IDENTIFIER;
 
 		if (is_array($likeHandledEntity)) {
@@ -198,7 +200,6 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		} elseif ($likeHandledEntity instanceof LikeEntity) {
 			$likeHandledEntity = new LikeHandledEntity($likeHandledEntity->toArray());
 		}
-
 		$likeHandledEntity->setCanLike($this->isAllowedTo(PermissionsEnum::LIKES_LIKE));
 		$likeHandledEntity->setAlreadyLiked($this->isContentAlreadyLiked($likeHandledEntity));
 
