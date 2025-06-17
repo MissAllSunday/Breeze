@@ -71,7 +71,7 @@ class StatusHandledEntity extends StatusEntity implements HandledEntityInterface
 			'createdAt' => $this->getCreatedAt()->format(DateTimeInterface::ATOM),
 			'likesInfo' => $this->getLikesInfo(),
 			'comments' => $this->getComments(),
-			'userData' => $this->getUsersInfo()[$this->getUserId()] ?? [],
+			'userInfo' => $this->getUsersInfo()[$this->getUserId()] ?? [],
 			'isNew' => $this->isNew(),
 		];
 	}
