@@ -139,7 +139,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 	public function insert(LikeEntity $likeEntity): LikeHandledEntity
 	{
-		$likeEntity->setTime(time());
+		$likeEntity->setLikeTime(time());
 
 		$this->dbClient->insert(LikeEntity::TABLE, [
 			LikeEntity::COLUMN_ID => 'int',

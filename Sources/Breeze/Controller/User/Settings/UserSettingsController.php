@@ -20,14 +20,14 @@ class UserSettingsController extends BaseController
 {
 	use PermissionsTrait;
 
-	public const ACTION = 'profile';
-	public const AREA = 'breezeSettings';
-	public const TEMPLATE = 'UserSettings';
-	public const URL = '?action=profile;area=breezeSettings';
-	public const ACTION_MAIN = 'main';
-	public const ACTION_SAVE = 'save';
+	public const string ACTION = 'profile';
+	public const string AREA = 'breezeSettings';
+	public const string TEMPLATE = 'UserSettings';
+	public const string URL = '?action=profile;area=breezeSettings';
+	public const string ACTION_MAIN = 'main';
+	public const string ACTION_SAVE = 'save';
 
-	public const SUB_ACTIONS = [
+	public const array SUB_ACTIONS = [
 		self::ACTION_MAIN,
 		self::ACTION_SAVE,
 	];
@@ -42,9 +42,9 @@ class UserSettingsController extends BaseController
 	];
 
 	public function __construct(
-		private SettingsRepositoryInterface  $userRepository,
-		private Response                     $response,
-		private UserSettingsBuilderInterface $userSettingsBuilder
+		protected SettingsRepositoryInterface  $userRepository,
+		protected Response                     $response,
+		protected UserSettingsBuilderInterface $userSettingsBuilder
 	) {
 	}
 
@@ -70,7 +70,7 @@ class UserSettingsController extends BaseController
 		$this->userSettingsBuilder->setForm([
 			'name' => UserSettingsEntity::IDENTIFIER,
 			'url' => $scriptUrl . self::URL . ';u=' . $userId . ';sa=' . self::ACTION_SAVE,
-		], $this->userRepository->getById($userId));
+		], $this->userRepository->getById($userId)->toArray());
 
 		$this->render(__FUNCTION__, [
 			'form' => $this->userSettingsBuilder->display(),
@@ -84,7 +84,7 @@ class UserSettingsController extends BaseController
 		$userId = $this->getRequest('u', 0);
 		$userSettings = $this->getRequest('user_settings');
 
-		$this->userRepository->save(
+		$this->userRepository->insert(
 			$userSettings,
 			$userId
 		);
