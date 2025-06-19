@@ -9,7 +9,7 @@ use Breeze\Entity\StatusEntity;
 use Breeze\Event\EventServiceProvider;
 use Breeze\Event\Status\StatusCreatedEvent;
 use Breeze\Repository\InvalidStatusException;
-use Breeze\Service\StatusService;
+use Breeze\Service\StatusServiceInterface;
 use Breeze\Util\Response;
 use Breeze\Util\Validate\EmptyDataException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
@@ -33,7 +33,7 @@ class StatusController extends ApiBaseController
 	];
 
 	public function __construct(
-		protected StatusService $statusService,
+		protected StatusServiceInterface $statusService,
 		protected ValidateActionsInterface $validateActions,
 		protected Response $response,
 		protected EventServiceProvider $eventServiceProvider

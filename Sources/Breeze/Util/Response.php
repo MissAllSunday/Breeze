@@ -12,22 +12,22 @@ class Response
 	use RequestTrait;
 	use TextTrait;
 
-	public const CONTENT_TYPE = 'content-type: application/json';
-	public const ERROR_TYPE = 'error';
-	public const INFO_TYPE = 'info';
-	public const SUCCESS_TYPE = 'success';
-	public const DEFAULT_ERROR_KEY = self::ERROR_TYPE . '_server';
-	public const OK = 200;
-	public const CREATED = 201;
-	public const ACCEPTED = 202;
-	public const NO_CONTENT = 204;
-	public const NOT_FOUND = 404;
-	public const BAD_REQUEST = 400;
-	public const UNAUTHORIZED = 401;
-	public const METHOD_NOT_ALLOWED = 405;
-	public const NOT_ACCEPTABLE = 406;
+	public const string CONTENT_TYPE = 'content-type: application/json';
+	public const string ERROR_TYPE = 'error';
+	public const string INFO_TYPE = 'info';
+	public const string SUCCESS_TYPE = 'success';
+	public const string DEFAULT_ERROR_KEY = self::ERROR_TYPE . '_server';
+	public const int OK = 200;
+	public const int CREATED = 201;
+	public const int ACCEPTED = 202;
+	public const int NO_CONTENT = 204;
+	public const int NOT_FOUND = 404;
+	public const int BAD_REQUEST = 400;
+	public const int UNAUTHORIZED = 401;
+	public const int METHOD_NOT_ALLOWED = 405;
+	public const int NOT_ACCEPTABLE = 406;
 
-	public const MESSAGE_TYPES = [
+	public const array MESSAGE_TYPES = [
 		self::ERROR_TYPE,
 		self::INFO_TYPE,
 		self::SUCCESS_TYPE,

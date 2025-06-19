@@ -7,14 +7,13 @@ namespace Breeze\Service;
 
 use Breeze\Entity\StatusEntity;
 use Breeze\Entity\StatusHandledEntity;
-use Breeze\PermissionsEnum;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Traits\SettingsTrait;
 use Breeze\Util\Validate\EmptyDataException;
 
-class StatusService
+class StatusService extends BaseService implements StatusServiceInterface
 {
 	use SettingsTrait;
 
@@ -22,7 +21,9 @@ class StatusService
 		protected StatusRepositoryInterface   $statusRepository,
 		protected SettingsRepositoryInterface $userRepository,
 		protected PermissionsServiceInterface $permissionsService
-	) {}
+	) {
+		parent::__construct($statusRepository);
+	}
 
 	/**
 	 * @throws EmptyDataException
@@ -38,9 +39,20 @@ class StatusService
 			$start,
 			$wallUserPagination
 		);
-		$statusByProfile[PermissionsEnum::NAME] = $this->permissionsService->permissions($wallId, $currentUserInfo['id']);
 
-		return $statusByProfile;
+		return [
+			'data' => $statusByProfile,
+			'permissions' => $this->permissionsService->permissions($wallId, $currentUserInfo['id']),
+			'total' => $this->getCount(StatusEntity::WALL_ID, [$wallId]),
+		];
+	}
+
+	public function getCount(string $columnName, array $ids = []): int
+	{
+		return $this->statusRepository->getCount([
+			'columnName' => $columnName,
+			'ids' => $ids,
+		]);
 	}
 
 	/**
@@ -78,7 +90,7 @@ class StatusService
 		return $this->statusRepository->insert(new StatusEntity($data));
 	}
 
-	protected function currentUserInfo(): array
+	public function currentUserInfo(): array
 	{
 		return  $this->global('user_info');
 	}

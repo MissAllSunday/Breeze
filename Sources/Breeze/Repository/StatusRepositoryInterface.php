@@ -27,4 +27,6 @@ interface StatusRepositoryInterface extends BaseRepositoryInterface
 	 * @throws InvalidStatusException
 	 */
 	public function deleteById(int $statusId): bool;
+
+	public function getCount(array $queryParams = []): int;
 }
