@@ -10,9 +10,15 @@ interface HandledEntityInterface extends \JsonSerializable
 
 	public function setUsersInfo(array $usersInfo): void;
 
-	public function setLikesInfo(LikeHandledEntity $likesInfo): void;
+	/**
+	 * @param array $likesInfo [LikeHandledEntity]
+	 */
+	public function setLikesInfo(array $likesInfo): void;
 
-	public function getLikesInfo(): LikeHandledEntity;
+	/**
+	 * @return array [LikeHandledEntity]
+	 */
+	public function getLikesInfo(): array;
 
 	public function getUserId(): int;
 

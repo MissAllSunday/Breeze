@@ -189,11 +189,11 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			$comments[$row[CommentEntity::ID]] = new CommentHandledEntity(array_map(function ($rowValue) {
 				return ctype_digit((string) $rowValue) ? ((int)$rowValue) : $rowValue;
 			}, $row));
-			$comments[$row[CommentEntity::ID]]->setLikesInfo($this->likeRepository->buildLikeData($likeInfo));
+			$comments[$row[CommentEntity::ID]]->setLikesInfo($this->likeRepository->buildLikeDataFromRequest($likeInfo));
 
 			$usersIds[] = (int)$row[CommentEntity::USER_ID];
 		}
-
+		die;
 		$this->loadedUsers = $this->loadUsersInfo($usersIds);
 
 		$this->dbClient->freeResult($request);

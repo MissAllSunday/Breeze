@@ -69,7 +69,6 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$likes[] = $this->buildLikeData($row);
 		}
-
 		$this->dbClient->freeResult($request);
 
 		return $likes;
@@ -230,6 +229,23 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		]);
 
 		return $likeHandledEntity;
+	}
+
+	// @return array [LikeHandledEntity] with id_member as key
+	public function buildLikeDataFromRequest(array $rows): array
+	{
+		$likesHandled = [];
+
+		foreach ($rows as $row) {
+			// Left join often fills up with null values, so we need to skip them, probably should add a where clause in the query itself...
+			if (!isset($row[LikeEntity::COLUMN_ID_MEMBER])) {
+				continue;
+			}
+
+			$likesHandled[$row[LikeEntity::COLUMN_ID_MEMBER]] = $this->buildLikeData($row);
+		}
+
+		return $likesHandled;
 	}
 
 	/**

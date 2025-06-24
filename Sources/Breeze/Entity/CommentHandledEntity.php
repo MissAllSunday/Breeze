@@ -10,7 +10,8 @@ class CommentHandledEntity extends CommentEntity implements HandledEntityInterfa
 {
 	protected array $usersInfo = [];
 
-	protected LikeHandledEntity $likesInfo;
+	/** @var LikeHandledEntity[] */
+	protected array $likesInfo;
 
 	public function getUsersInfo(): array
 	{
@@ -22,12 +23,18 @@ class CommentHandledEntity extends CommentEntity implements HandledEntityInterfa
 		$this->usersInfo = $usersInfo;
 	}
 
-	public function getLikesInfo(): LikeHandledEntity
+	/**
+	 * @return array [LikeHandledEntity]
+	 */
+	public function getLikesInfo(): array
 	{
 		return $this->likesInfo;
 	}
 
-	public function setLikesInfo(LikeHandledEntity $likesInfo): void
+	/**
+	 * @param array $likesInfo [LikeHandledEntity]
+	 */
+	public function setLikesInfo(array $likesInfo): void
 	{
 		$this->likesInfo = $likesInfo;
 	}

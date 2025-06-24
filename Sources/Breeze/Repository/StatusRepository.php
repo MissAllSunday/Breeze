@@ -202,7 +202,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			$status[$row[StatusEntity::ID]] = new StatusHandledEntity(array_map(function ($column) {
 				return ctype_digit((string) $column) ? ( (int) $column) : $column;
 			}, $row));
-			$status[$row[StatusEntity::ID]]->setLikesInfo($this->likeRepository->buildLikeData($likeInfo));
+			$status[$row[StatusEntity::ID]]->setLikesInfo($this->likeRepository->buildLikeDataFromRequest($likeInfo));
 
 			$usersIds[] = $row[StatusEntity::WALL_ID];
 			$usersIds[] = $row[StatusEntity::USER_ID];
