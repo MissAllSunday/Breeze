@@ -1,4 +1,5 @@
 import { CommentProps } from 'breezeTypesComments';
+import { LikeType } from 'breezeTypesLikes';
 import React, { useCallback, useContext, useState } from 'react';
 
 import { PermissionsContext } from '../context/PermissionsContext';
@@ -18,7 +19,7 @@ function Comment(props: CommentProps): React.ReactElement {
     }
     props.removeComment(props.comment);
   }, [props, permissions]);
-
+  console.log(props.comment.userData);
   return (
     <div className={`${classType} comment`}>
       <div className="avatar_compact">
@@ -32,9 +33,12 @@ function Comment(props: CommentProps): React.ReactElement {
         {props.comment.body}
       </div>
       <div className="half_content">
-        <Like
-          item={props.comment.likesInfo}
-        />
+        { Object.values(props.comment.likesInfo).map((like: any) => (
+          <Like
+            key={like.contentId}
+            item={like}
+          />
+        )) }
       </div>
       <div className="half_content">
         <div className={'info_bar'}>

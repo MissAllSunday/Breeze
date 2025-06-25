@@ -1,4 +1,5 @@
 import { CommentListType, CommentType } from 'breezeTypesComments';
+import { LikeType } from 'breezeTypesLikes';
 import { StatusProps } from 'breezeTypesStatus';
 import * as React from 'react';
 import { useCallback, useContext, useState } from 'react';
@@ -89,9 +90,12 @@ function Status(props: StatusProps): React.ReactElement {
         <div className="content"
              dangerouslySetInnerHTML={{ __html: props.status.body }}/>
         <div className="half_content">
-          <Like
-            item={props.status.likesInfo}
-          />
+          { Object.values(props.status.likesInfo).map((like: any) => (
+            <Like
+              key={like.contentId}
+              item={like}
+            />
+          )) }
         </div>
         <div className="half_content">
           <div className={'info_bar'}>

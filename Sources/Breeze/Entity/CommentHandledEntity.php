@@ -57,7 +57,7 @@ class CommentHandledEntity extends CommentEntity implements HandledEntityInterfa
 			'body' => $this->getBody(),
 			'likes' => 0,  // @deprecated use likesInfo.count instead
 			'likesInfo' => $this->getLikesInfo(),
-			'userData' => $this->getUsersInfo(),
+			'userData' => $this->getUsersInfo()[$this->getUserId()] ?? [],
 		];
 	}
 }
