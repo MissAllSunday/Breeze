@@ -8,7 +8,6 @@ namespace Breeze\Repository;
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\CommentHandledEntity;
-use Breeze\Entity\LikeEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\LikesEnum;
 use Breeze\Util\Parser;
@@ -80,10 +79,11 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 	public function getByProfile(array $userProfiles = []): array
 	{
-		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikesEnum::Comments), [
+		$queryParams = array_merge($this->getDefaultQueryParams(), [
 			'columnName' => StatusEntity::WALL_ID,
 			'profileIds' => $userProfiles,
 			'statusTable' => StatusEntity::TABLE,
+			'commentTable' => CommentEntity::TABLE,
 			'compare' => StatusEntity::TABLE .
 				'.' . StatusEntity::ID . ' = ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::STATUS_ID,
 		]);
@@ -93,7 +93,6 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			SELECT {raw:columns}
 			FROM {db_prefix}{raw:from}
 				JOIN {db_prefix}{raw:statusTable} AS {raw:statusTable} ON {raw:compare}
-				LEFT JOIN {db_prefix}{raw:likeJoin}
 			WHERE {raw:columnName} IN({array_int:profileIds})',
 			$queryParams
 		);
@@ -173,28 +172,23 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	{
 		$comments = [];
 		$usersIds = [];
+		$commentsIds = [];
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
-			// Set apart the like info
-			$likeInfo = [];
-			$row = array_filter($row, function ($key) use (&$likeInfo, $row) {
-				if (str_starts_with($key, LikeEntity::IDENTIFIER)) {
-					$likeInfo[str_replace(LikeEntity::IDENTIFIER, '', $key)] = $row[$key];
-				}
-
-				return !str_starts_with($key, LikeEntity::IDENTIFIER);
-			}, \ARRAY_FILTER_USE_KEY);
-			$likeInfo[LikeEntity::COLUMN_ID] = $row[CommentEntity::ID];
-
+			$commentsIds[] = $row[CommentEntity::ID];
 			$comments[$row[CommentEntity::ID]] = new CommentHandledEntity(array_map(function ($rowValue) {
 				return ctype_digit((string) $rowValue) ? ((int)$rowValue) : $rowValue;
 			}, $row));
-			$comments[$row[CommentEntity::ID]]->setLikesInfo($this->likeRepository->buildLikeDataFromRequest($likeInfo));
 
 			$usersIds[] = (int)$row[CommentEntity::USER_ID];
 		}
-		die;
+
 		$this->loadedUsers = $this->loadUsersInfo($usersIds);
+		$likesByContent = $this->likeRepository->getByContent(LikesEnum::Comments, $commentsIds);
+
+		array_walk($comments, function ($comment, $id) use ($likesByContent): void {
+			$comment->setLikesInfo($likesByContent[$id] ?? []);
+		});
 
 		$this->dbClient->freeResult($request);
 

@@ -13,6 +13,12 @@ interface LikeRepositoryInterface extends BaseRepositoryInterface
 {
 	public function getLikeInfo(string $type, int $contentId): array;
 
+	/**
+	 * @param array $contentIds [int]
+	 * @return array [LikeHandledEntity]
+	 */
+	public function getByContent(LikesEnum $type, array $contentIds): array;
+
 	public function isContentAlreadyLiked(LikeEntity $likeEntity): bool;
 
 	/**
@@ -34,7 +40,9 @@ interface LikeRepositoryInterface extends BaseRepositoryInterface
 	 */
 	public function appendLikeData(array $items, string $itemIdName): array;
 
-	public function buildLikeData(LikeEntity | LikeHandledEntity | array $likeHandledEntity): LikeHandledEntity;
+	public function buildLikeData(array $likeData): LikeHandledEntity;
+
+	public function buildLikeDataFromRequest(array $rows): array;
 
 	public function likeContent(string | LikesEnum $type, int $contentId, int $userId): LikeHandledEntity;
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class LikeHandledEntity extends LikeEntity
+class LikeHandledEntity extends LikeEntity implements \JsonSerializable
 {
 	protected int $count = 0;
 
@@ -53,5 +53,17 @@ class LikeHandledEntity extends LikeEntity
 	public function setAdditionalInfo(array $additional_info): void
 	{
 		$this->additional_info = $additional_info;
+	}
+
+	public function jsonSerialize(): array
+	{
+		return [
+			'contentId' => $this->getContentId(),
+			'count' => $this->getCount(),
+			'alreadyLiked' => $this->isAlreadyLiked(),
+			'canLike' => $this->canLike(),
+			'type' => $this->getContentType(),
+			'additionalInfo' => $this->getAdditionalInfo(),
+		];
 	}
 }

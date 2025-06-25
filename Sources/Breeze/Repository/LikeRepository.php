@@ -48,9 +48,9 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	}
 
 	/**
-	 * @return LikeHandledEntity[]
+	 * @return array [LikeHandledEntity]
 	 */
-	public function getByContent(string|LikesEnum $type, int $contentId): array
+	public function getByContent(LikesEnum $type, array $contentIds): array
 	{
 		$likes = [];
 
@@ -59,19 +59,21 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			SELECT ' . implode(', ', LikeEntity::getColumns()) . '
 			FROM {db_prefix}' . LikeEntity::TABLE . '
 			WHERE ' . LikeEntity::COLUMN_TYPE . ' = {string:type}
-				AND ' . LikeEntity::COLUMN_ID . ' = {int:contentId}',
+				AND ' . LikeEntity::COLUMN_ID . ' IN({array_int:contentIds})',
 			[
-				'contentId' => $contentId,
-				'type' => $type,
+				'contentIds' => array_map('intval', $contentIds),
+				'type' => $type->value,
 			]
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
-			$likes[] = $this->buildLikeData($row);
+			$likes[$row[LikeEntity::COLUMN_ID]][$row[LikeEntity::COLUMN_ID_MEMBER]] = $this->buildLikeData($row);
 		}
 		$this->dbClient->freeResult($request);
 
-		return $likes;
+		return array_map(function ($likeData) {
+			return $this->postBuildLikeData($likeData, count($likeData));
+		}, $likes);
 	}
 
 	/**
@@ -190,45 +192,51 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	}
 
 	public function buildLikeData(
-		LikeEntity | LikeHandledEntity | array $likeHandledEntity
+		array $likeData
 	): LikeHandledEntity {
-		$base = LikeEntity::IDENTIFIER;
 
-		if (is_array($likeHandledEntity)) {
-			$likeHandledEntity = new LikeHandledEntity($likeHandledEntity);
-		} elseif ($likeHandledEntity instanceof LikeEntity) {
-			$likeHandledEntity = new LikeHandledEntity($likeHandledEntity->toArray());
-		}
+		$likeHandledEntity = new LikeHandledEntity($likeData);
 		$likeHandledEntity->setCanLike($this->isAllowedTo(PermissionsEnum::LIKES_LIKE));
-		$likeHandledEntity->setAlreadyLiked($this->isContentAlreadyLiked($likeHandledEntity));
-
-
-		$likesCount = $likesTextCount = $this->count($likeHandledEntity);
-
-		if ($likeHandledEntity->isAlreadyLiked()) {
-			$base = 'you_' . $base;
-			$likesTextCount = $likesCount - 1;
-		}
-
-		$base .= ($this->getText($base . $likesTextCount) !== '') ? $likesTextCount : 'n';
-
-		$likeHandledEntity->setCount($likesCount);
-		$likeHandledEntity->setAdditionalInfo([
-			'text' => sprintf(
-				$this->getText($base),
-				$this->commaFormat((string) $likesTextCount)
-			),
-			'href' => $this->parserText(
-				'{scriptUrl}?action=likes;sa=view;ltype={ltype};like={likeId}',
-				[
-					'ltype' => $likeHandledEntity->getContentType(),
-					'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
-					'likeId' => $likeHandledEntity->getContentId(),
-				]
-			),
-		]);
 
 		return $likeHandledEntity;
+	}
+
+	/**
+	 * @param array $likeData [LikeHandledEntity]
+	 * @return array [LikeHandledEntity]
+	 */
+	public function postBuildLikeData(array $likeData, int $likesCount): array
+	{
+		$alreadyLiked = $likesCount > 0;
+		$likesTextCount = $likesCount;
+
+		array_map(function (LikeHandledEntity $likeHandledEntity) use ($likesCount, $alreadyLiked, $likesTextCount): void {
+			$base = LikeEntity::IDENTIFIER;
+			if ($alreadyLiked) {
+				$base = 'you_' . $base;
+				$likesTextCount = $likesCount - 1;
+			}
+
+			$base .= ($this->getText($base . $likesTextCount) !== '') ? $likesTextCount : 'n';
+
+			$likeHandledEntity->setCount($likesCount);
+			$likeHandledEntity->setAdditionalInfo([
+				'text' => sprintf(
+					$this->getText($base),
+					$this->commaFormat((string) $likesTextCount)
+				),
+				'href' => $this->parserText(
+					'{scriptUrl}?action=likes;sa=view;ltype={ltype};like={likeId}',
+					[
+						'ltype' => $likeHandledEntity->getContentType(),
+						'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
+						'likeId' => $likeHandledEntity->getContentId(),
+					]
+				),
+			]);
+		}, $likeData);
+
+		return $likeData;
 	}
 
 	// @return array [LikeHandledEntity] with id_member as key

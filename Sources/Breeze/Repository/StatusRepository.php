@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
-use Breeze\Entity\LikeEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\Entity\StatusHandledEntity;
 use Breeze\LikesEnum;
@@ -84,7 +83,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	public function getByProfile(array $userProfiles = [], int $start = 0, int $maxIndex = 0): array
 	{
 		$queryParams = array_merge(
-			$this->getDefaultQueryParamsWithLikes(LikesEnum::Status),
+			$this->getDefaultQueryParams(),
 			[
 				'columnName' => StatusEntity::WALL_ID,
 			],
@@ -99,7 +98,6 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			'
 			SELECT {raw:columns}
 			FROM {db_prefix}{raw:from}
-			LEFT JOIN {db_prefix}{raw:likeJoin}
 			WHERE {raw:columnName} IN ({array_int:ids})
 			LIMIT {int:start}, {int:maxIndex}',
 			$queryParams
@@ -186,29 +184,24 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	{
 		$status = [];
 		$usersIds = [];
+		$statusIds = [];
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
-			// Set apart the like info
-			$likeInfo = [];
-			$row = array_filter($row, function ($key) use (&$likeInfo, $row) {
-				if (str_starts_with($key, LikeEntity::IDENTIFIER)) {
-					$likeInfo[str_replace(LikeEntity::IDENTIFIER, '', $key)] = $row[$key];
-				}
-
-				return !str_starts_with($key, LikeEntity::IDENTIFIER);
-			}, \ARRAY_FILTER_USE_KEY);
-			$likeInfo[LikeEntity::COLUMN_ID] = $row[StatusEntity::ID];
+			$statusIds[] = $row[StatusEntity::ID];
 
 			$status[$row[StatusEntity::ID]] = new StatusHandledEntity(array_map(function ($column) {
 				return ctype_digit((string) $column) ? ( (int) $column) : $column;
 			}, $row));
-			$status[$row[StatusEntity::ID]]->setLikesInfo($this->likeRepository->buildLikeDataFromRequest($likeInfo));
-
 			$usersIds[] = $row[StatusEntity::WALL_ID];
 			$usersIds[] = $row[StatusEntity::USER_ID];
 		}
 
 		$this->loadedUsers = $this->loadUsersInfo($usersIds);
+		$likesByContent = $this->likeRepository->getByContent(LikesEnum::Status, $statusIds);
+
+		array_walk($status, function ($statusEntity, $id) use ($likesByContent): void {
+			$statusEntity->setLikesInfo($likesByContent[$id] ?? []);
+		});
 
 		$this->dbClient->freeResult($request);
 

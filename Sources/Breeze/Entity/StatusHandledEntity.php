@@ -73,7 +73,7 @@ class StatusHandledEntity extends StatusEntity implements HandledEntityInterface
 			'id' => $this->getId(),
 			'wallId' => $this->getWallId(),
 			'userId' => $this->getUserId(),
-			'likes' => $this->getLikesInfo()->getCount(),
+			'likes' => 0,  // @deprecated use likesInfo.count instead
 			'body' => $this->getBody(),
 			'createdAt' => $this->getCreatedAt()->format(DateTimeInterface::ATOM),
 			'likesInfo' => $this->getLikesInfo(),

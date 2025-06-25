@@ -131,7 +131,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
 		$result = $this->dbClient->query(
 			'
 			SELECT {raw:columns}
-			FROM {db_prefix}{raw:tableName}
+			FROM {db_prefix}{raw:from}
 			' . $whereString,
 			array_merge($this->getDefaultQueryParams(), [
 				'columns' => $this->getColumnId(),
@@ -160,8 +160,13 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
 	protected function getDefaultQueryParams(): array
 	{
+		$tableName = $this->getTableName();
+
 		return [
-			'columns' => implode(', ', $this->getColumns()),
+			'from' => $this->getTableName() . ' AS ' . self::PARENT_LIKE_IDENTIFIER,
+			'columns' => implode(', ', array_map(function (string $column): string {
+				return self::PARENT_LIKE_IDENTIFIER . '.' . $column;
+			}, $this->getColumns())),
 			'tableName' => $this->getTableName(),
 		];
 	}
