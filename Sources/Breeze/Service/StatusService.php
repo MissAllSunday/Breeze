@@ -83,9 +83,10 @@ class StatusService extends BaseService implements StatusServiceInterface
 	}
 
 	/**
+	 * @return array [StatusEntity]
 	 * @throws InvalidStatusException
 	 */
-	public function save(array $data): StatusHandledEntity
+	public function save(array $data): array
 	{
 		return $this->statusRepository->insert(new StatusEntity($data));
 	}

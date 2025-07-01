@@ -84,9 +84,9 @@ class StatusEntity extends Entity
 		return new DateTimeImmutable('@' . $this->createdAt);
 	}
 
-	public function setCreatedAt(int | DateTimeImmutable $createdAt): void
+	public function setCreatedAt(string | int | DateTimeImmutable $createdAt): void
 	{
-		$this->createdAt = is_int($createdAt) ? $createdAt : $createdAt->getTimestamp();
+		$this->createdAt = $createdAt instanceof DateTimeImmutable ? $createdAt->getTimestamp() : (int) $createdAt;
 	}
 
 	public function getBody(): string

@@ -31,9 +31,10 @@ interface StatusServiceInterface
 	public function deleteById(int $statusId): void;
 
 	/**
+	 * @return array [StatusHandledEntity]
 	 * @throws InvalidStatusException
 	 */
-	public function save(array $data): StatusHandledEntity;
+	public function save(array $data): array;
 
 	public function currentUserInfo(): array;
 

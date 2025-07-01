@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Traits;
 
+use Breeze\Entity\CommentEntity;
+use Breeze\Entity\StatusEntity;
 use Breeze\Util\Json;
 
 trait RequestTrait
@@ -55,13 +57,13 @@ trait RequestTrait
 		return isset($this->request[$variableName]);
 	}
 
-	public function sanitize(mixed $variable): mixed
+	public function sanitize(mixed $variable, string $name = ''): mixed
 	{
 		$smcFunc = $this->getSmcFunc();
 
 		if (is_array($variable)) {
 			foreach ($variable as $key => $variableValue) {
-				$variable[$key] = $this->sanitize($variableValue);
+				$variable[$key] = $this->sanitize($variableValue, $key);
 			}
 
 			return array_filter($variable);
@@ -72,13 +74,16 @@ trait RequestTrait
 			\ENT_QUOTES
 		);
 
-		if (ctype_digit($var)) {
-			$var = (int)$var;
+		if (is_numeric($var)) {
+			// Should the param is required to be a string?
+			$stringRequired = in_array($name, [StatusEntity::BODY, CommentEntity::BODY], true);
+
+			$var = $stringRequired ? (string) $var : (int) $var;
 		}
 
 		if (empty($var)) {
-	  return false;
-  }
+			return false;
+		}
 
 		return $var;
 	}

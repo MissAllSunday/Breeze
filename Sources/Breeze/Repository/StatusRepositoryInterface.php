@@ -12,9 +12,10 @@ use Breeze\Util\Validate\EmptyDataException;
 interface StatusRepositoryInterface extends BaseRepositoryInterface
 {
 	/**
+	 * @return array [StatusHandledEntity]
 	 * @throws InvalidStatusException
 	 */
-	public function insert(StatusEntity $statusEntity): StatusHandledEntity;
+	public function insert(StatusEntity $statusEntity): array;
 
 	/**
 	 * @throws EmptyDataException

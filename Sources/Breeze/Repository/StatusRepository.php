@@ -45,9 +45,10 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	}
 
 	/**
+	 * @return array [StatusHandledEntity]
 	 * @throws InvalidStatusException
 	 */
-	public function insert(StatusEntity $statusEntity): StatusHandledEntity
+	public function insert(StatusEntity $statusEntity): array
 	{
 		$statusEntity->unsetId();
 		$statusEntity->setCreatedAt(time());
@@ -70,11 +71,13 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		$statusEntity->setBody(Parser::bbc($statusEntity->getBody()));
 
 		$statusEntity->setId($newStatusId);
+		$statusHandledEntity = new StatusHandledEntity($statusEntity->toArray());
+		$statusHandledEntity = $this->buildHandledStatus([$statusHandledEntity]);
+		array_walk($statusHandledEntity, function ($handledStatus): void {
+			$handledStatus->setIsNew(true);
+		});
 
-		$statusHandledEntity = $this->buildHandledStatus([$statusEntity])[$newStatusId];
-		$statusHandledEntity->setIsNew(true);
-
-		return $statusHandledEntity;
+		return $this->setUsersAndLikes($statusHandledEntity, [$statusEntity->getUserId()], [$newStatusId]);
 	}
 
 	/**
@@ -161,8 +164,8 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 */
 	protected function buildHandledStatus(array $status, array $comments = []): array
 	{
-		/** @var StatusHandledEntity[] $status */
 		array_walk($status, function ($singleStatus, $statusId) use ($comments): void {
+
 			$singleStatus->setComments(array_filter($comments, function ($comment) use ($statusId) {
 				return $comment->getStatusId() === $statusId;
 			}));
@@ -196,14 +199,20 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			$usersIds[] = $row[StatusEntity::USER_ID];
 		}
 
+
+		$this->dbClient->freeResult($request);
+
+		return $this->setUsersAndLikes($status, $usersIds, $statusIds);
+	}
+
+	protected function setUsersAndLikes(array $status, array $usersIds, array $statusIds): array
+	{
 		$this->loadedUsers = $this->loadUsersInfo($usersIds);
 		$likesByContent = $this->likeRepository->getByContent(LikesEnum::Status, $statusIds);
 
 		array_walk($status, function ($statusEntity, $id) use ($likesByContent): void {
 			$statusEntity->setLikesInfo($likesByContent[$id] ?? []);
 		});
-
-		$this->dbClient->freeResult($request);
 
 		return $status;
 	}

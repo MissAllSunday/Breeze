@@ -19,7 +19,7 @@ function Comment(props: CommentProps): React.ReactElement {
     }
     props.removeComment(props.comment);
   }, [props, permissions]);
-  console.log(props.comment.userData);
+
   return (
     <div className={`${classType} comment`}>
       <div className="avatar_compact">

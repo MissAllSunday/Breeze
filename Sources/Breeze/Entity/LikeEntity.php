@@ -63,9 +63,9 @@ class LikeEntity extends Entity
 		return $this->like_time === null ? null : new DateTimeImmutable('@' . $this->like_time);
 	}
 
-	public function setLikeTime(null | int | DateTimeImmutable $time): void
+	public function setLikeTime(null | int | string | DateTimeImmutable $time): void
 	{
-		$this->like_time = (is_int($time) || $time === null) ? $time : $time->getTimestamp();;
+		$this->like_time = $time instanceof DateTimeImmutable ? $time->getTimestamp() : (int) $time;
 	}
 
 	public static function getTypes(): array

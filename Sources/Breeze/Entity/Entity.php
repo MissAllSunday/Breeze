@@ -21,7 +21,7 @@ abstract class Entity implements EntityInterface
 
 	public function setEntity(array $entry): Entity
 	{
-		foreach ($this->castValues($entry) as $key => $value) {
+		foreach ($entry as $key => $value) {
 			$setCall = 'set' . ucfirst($this->snakeToCamel($key));
 			$this->{$setCall}($value);
 		}

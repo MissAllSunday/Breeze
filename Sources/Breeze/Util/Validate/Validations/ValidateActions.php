@@ -21,7 +21,7 @@ abstract class ValidateActions
 		$this->setValidator($action);
 	}
 
-	public function setData(array $data): void
+	public function setData(array &$data): void
 	{
 		$this->data = $data;
 	}
