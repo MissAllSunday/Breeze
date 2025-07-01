@@ -45,8 +45,8 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	}
 
 	/**
-	 * @return array [StatusHandledEntity]
 	 * @throws InvalidStatusException
+	 * @return array [StatusHandledEntity]
 	 */
 	public function insert(StatusEntity $statusEntity): array
 	{

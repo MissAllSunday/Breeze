@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Breeze\Event\Status;
 
-use Breeze\Entity\StatusEntity;
-use Breeze\Entity\StatusHandledEntity;
 use Breeze\Event\EventAbstract;
 
 class StatusCreatedEvent extends EventAbstract
@@ -13,28 +11,28 @@ class StatusCreatedEvent extends EventAbstract
 	private bool $propagationStopped = false;
 
 	public function __construct(
-		private readonly StatusHandledEntity $status
+		private readonly array $status
 	) {
 	}
 
-	public function getStatus(): StatusHandledEntity
+	public function getStatus(): array
 	{
 		return $this->status;
 	}
 
 	public function getStatusId(): int
 	{
-		return  $this->status->getId();
+		return  $this->status[0]->getId();
 	}
 
 	public function getWallId(): int
 	{
-		return $this->status->getWallId();
+		return $this->status[0]->getWallId();
 	}
 
 	public function getUserId(): int
 	{
-		return $this->status->getUserId();
+		return (int) $this->status[0]->getUserId();
 	}
 
 	public function isPropagationStopped(): bool

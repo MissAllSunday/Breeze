@@ -86,14 +86,13 @@ class StatusController extends ApiBaseController
 	{
 		try {
 			$statusHandledEntities = $this->statusService->save($this->data);
-			$statusHandledEntity = $statusHandledEntities[0];
 
 			// Dispatch the status created event
-			$this->eventDispatch(StatusCreatedEvent::class, $statusHandledEntity);
+			$this->eventDispatch(StatusCreatedEvent::class, $statusHandledEntities);
 
 			$this->response->success(
 				'published_status',
-				$statusHandledEntity->toArray(),
+				$statusHandledEntities,
 				Response::CREATED
 			);
 		} catch (InvalidStatusException $invalidStatusException) {

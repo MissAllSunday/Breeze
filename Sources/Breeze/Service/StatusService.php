@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Entity\StatusEntity;
-use Breeze\Entity\StatusHandledEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface;
@@ -83,8 +82,8 @@ class StatusService extends BaseService implements StatusServiceInterface
 	}
 
 	/**
-	 * @return array [StatusEntity]
 	 * @throws InvalidStatusException
+	 * @return array [StatusEntity]
 	 */
 	public function save(array $data): array
 	{

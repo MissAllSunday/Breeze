@@ -19,6 +19,7 @@ import UserInfo from './user/UserInfo';
 function Status(props: StatusProps): React.ReactElement {
   const [classType, setClassType] = useState(props.status.isNew ? 'fadeIn' : '');
   const timeStamp = props.status.createdAt;
+
   const [commentsList, setCommentsList] = useState<CommentListType>(Object.values(props.status.comments));
   const [isLoading, setIsLoading] = useState(false);
   const permissions = useContext(PermissionsContext);
