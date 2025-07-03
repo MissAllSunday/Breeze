@@ -133,7 +133,7 @@ class UserSettingsEntity extends Entity implements EntityInterface
 		$this->paginationNumber = $paginationNumber;
 	}
 
-	public function castValue(string $columnName, mixed $value): int|string
+	public function castValue(string $columnName, mixed $value): int|string|array
 	{
 		return match ($columnName) {
 			self::WALL,
@@ -142,8 +142,7 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			self::ENABLE_BUDDIES_TAB,
 			self::PAGINATION_NUM,
 			MemberEntity::ID => (int) $value,
-			MemberEntity::IGNORE_LIST,
-			MemberEntity::BUDDY_LIST => explode(',', $value),
+			self::BLOCK_LIST, self::BUDDIES => explode(',', $value),
 			default => (string) $value,
 		};
 	}

@@ -44,24 +44,13 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 
 			$userData = [];
 			while ($row = $this->dbClient->fetchAssoc($result)) {
-				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = is_numeric($row[OptionsEntity::COLUMN_VALUE]) ?
-					(int) $row[OptionsEntity::COLUMN_VALUE] : (string) $row[OptionsEntity::COLUMN_VALUE];
-
-				if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::JSON_VALUES, true)) {
-					$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = empty($row[OptionsEntity::COLUMN_VALUE]) ?
-						[] : Json::decode($row[OptionsEntity::COLUMN_VALUE]);
-				}
-
-				if (in_array($row[OptionsEntity::COLUMN_VARIABLE], self::ARRAY_VALUES, true)) {
-					$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = empty($row[OptionsEntity::COLUMN_VALUE]) ?
-						[] : explode(',', $row[OptionsEntity::COLUMN_VALUE]);
-				}
+				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = $row[OptionsEntity::COLUMN_VALUE];
 
 				$userData += [
 					UserSettingsEntity::BUDDIES => empty($row[MemberEntity::BUDDY_LIST]) ?
-						[] : explode(',', $row[MemberEntity::BUDDY_LIST]),
+						'' : $row[MemberEntity::BUDDY_LIST],
 					UserSettingsEntity::BLOCK_LIST => empty($row[MemberEntity::IGNORE_LIST]) ?
-						[] : explode(',', $row[MemberEntity::IGNORE_LIST]),
+						'' : $row[MemberEntity::IGNORE_LIST],
 				];
 			}
 
