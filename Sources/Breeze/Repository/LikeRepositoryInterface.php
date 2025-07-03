@@ -11,7 +11,7 @@ use Breeze\LikesEnum;
 
 interface LikeRepositoryInterface extends BaseRepositoryInterface
 {
-	public function getLikeInfo(string $type, int $contentId): array;
+	public function getLikeInfo(LikesEnum $type, int $contentId): array;
 
 	/**
 	 * @param array $contentIds [int]

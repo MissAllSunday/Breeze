@@ -8,6 +8,7 @@ namespace Breeze\Controller\API;
 use Breeze\Entity\LikeEntity;
 use Breeze\Event\EventServiceProvider;
 use Breeze\Event\Like\LikeCreatedEvent;
+use Breeze\LikesEnum;
 use Breeze\Repository\InvalidDataException;
 use Breeze\Repository\LikeRepositoryInterface;
 use Breeze\Util\Response;
@@ -58,7 +59,7 @@ class LikesController extends ApiBaseController
 	{
 		try {
 			$this->response->success('', $this->likeRepository->getLikeInfo(
-				$this->data[LikeEntity::COLUMN_TYPE],
+				LikesEnum::tryFrom($this->data[LikeEntity::COLUMN_TYPE]),
 				$this->data[LikeEntity::COLUMN_ID]
 			));
 		} catch (InvalidDataException $invalidDataException) {

@@ -139,7 +139,11 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			self::WALL,
 			self::GENERAL_WALL,
 			self::KICK_IGNORED,
-			self::ENABLE_BUDDIES_TAB, self::PAGINATION_NUM => (int) $value,
+			self::ENABLE_BUDDIES_TAB,
+			self::PAGINATION_NUM,
+			MemberEntity::ID => (int) $value,
+			MemberEntity::IGNORE_LIST,
+			MemberEntity::BUDDY_LIST => explode(',', $value),
 			default => (string) $value,
 		};
 	}

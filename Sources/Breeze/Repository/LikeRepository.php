@@ -73,10 +73,10 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	/**
 	 * @throws DateMalformedStringException
 	 */
-	public function getLikeInfo(string $type, int $contentId): array
+	public function getLikeInfo(LikesEnum $type, int $contentId): array
 	{
 		$likeInfo = [];
-		$likes = $this->getByContent($type, $contentId);
+		$likes = $this->getByContent($type, [$contentId]);
 		$usersInfo = $this->loadUsersInfo(array_column($likes, LikeEntity::COLUMN_ID_MEMBER));
 
 		foreach ($likes as $key => $like) {
@@ -143,7 +143,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			LikeEntity::COLUMN_TIME => 'int',
 		], $likeEntity->toArray(), [LikeEntity::COLUMN_ID, LikeEntity::COLUMN_TYPE, LikeEntity::COLUMN_ID_MEMBER]);
 
-		return $this->buildLikeData($likeEntity);
+		return $this->buildLikeData($likeEntity->toArray());
 	}
 
 	public function count(LikeEntity $likeEntity): int
