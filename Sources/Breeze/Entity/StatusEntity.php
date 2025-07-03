@@ -119,4 +119,16 @@ class StatusEntity extends Entity
 	{
 		return self::TABLE;
 	}
+
+	/**
+	 * @throws DateMalformedStringException
+	 */
+	public function castValue(string $columnName, mixed $value): string|int|DateTimeImmutable
+	{
+		return match ($columnName) {
+			self::ID, self::WALL_ID, self::USER_ID, self::LIKES => (int) $value,
+			self::CREATED_AT => new DateTimeImmutable('@' . $value),
+			default => (string) $value,
+		};
+	}
 }

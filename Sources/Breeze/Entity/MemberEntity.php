@@ -30,6 +30,14 @@ class MemberEntity extends Entity implements EntityInterface
 		return self::TABLE;
 	}
 
+	public function castValue(string $columnName, mixed $value): string|int
+	{
+		return match ($columnName) {
+			self::ID => (int) $value,
+			default => (string) $value,
+		};
+	}
+
 	public static function getUserDataColumns(): array
 	{
 		return [

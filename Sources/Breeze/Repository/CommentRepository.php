@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
-use Breeze\Database\ClientInterface;
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\CommentHandledEntity;
 use Breeze\Entity\StatusEntity;
@@ -15,13 +14,6 @@ use Breeze\Util\Validate\DataNotFoundException;
 
 class CommentRepository extends BaseRepository implements CommentRepositoryInterface
 {
-	public function __construct(
-		ClientInterface $dbClient,
-		protected readonly LikeRepositoryInterface $likeRepository
-	) {
-		parent::__construct($dbClient);
-	}
-
 	public function getTableName(): string
 	{
 		return CommentEntity::TABLE;
@@ -44,8 +36,9 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 	/**
 	 * @throws InvalidCommentException
+	 * @return array [CommentHandledEntity]
 	 */
-	public function insert(CommentEntity $commentEntity): CommentHandledEntity
+	public function insert(CommentEntity $commentEntity): array
 	{
 		$commentEntity->unsetId();
 		$commentEntity->setCreatedAt(time());
@@ -71,10 +64,17 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 		$this->loadedUsers = $this->loadUsersInfo([$commentEntity->getUserId()]);
 		$commentEntity->setBody(Parser::bbc($commentEntity->getBody()));
-
 		$commentEntity->setId($newCommentId);
+		$commentHandledEntity = new CommentHandledEntity($commentEntity->toArray());
 
-		return $this->buildHandledComments([$commentEntity])[$newCommentId];
+		$commentHandledEntities = $this->buildHandledComments([$commentHandledEntity])[$newCommentId];
+
+		return $this->setUsersAndLikes(
+			$commentHandledEntities,
+			[$commentEntity->getUserId()],
+			[$newCommentId],
+			LikesEnum::Comments
+		);
 	}
 
 	public function getByProfile(array $userProfiles = []): array
@@ -176,23 +176,13 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$commentsIds[] = $row[CommentEntity::ID];
-			$comments[$row[CommentEntity::ID]] = new CommentHandledEntity(array_map(function ($rowValue) {
-				return ctype_digit((string) $rowValue) ? ((int)$rowValue) : $rowValue;
-			}, $row));
-
+			$comments[$row[CommentEntity::ID]] = new CommentHandledEntity($row);
 			$usersIds[] = (int)$row[CommentEntity::USER_ID];
 		}
 
-		$this->loadedUsers = $this->loadUsersInfo($usersIds);
-		$likesByContent = $this->likeRepository->getByContent(LikesEnum::Comments, $commentsIds);
-
-		array_walk($comments, function ($comment, $id) use ($likesByContent): void {
-			$comment->setLikesInfo($likesByContent[$id] ?? []);
-		});
-
 		$this->dbClient->freeResult($request);
 
-		return $comments;
+		return $this->setUsersAndLikes($comments, $usersIds, $commentsIds, LikesEnum::Comments);
 	}
 
 	/**

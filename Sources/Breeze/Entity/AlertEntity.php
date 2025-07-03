@@ -170,4 +170,21 @@ class AlertEntity extends Entity
 	{
 		return self::TABLE;
 	}
+
+	/**
+	 * @throws \DateMalformedStringException
+	 */
+	public function castValue(string $columnName, mixed $value): string|int|DateTimeImmutable
+	{
+		return match ($columnName) {
+			self::COLUMN_ID,
+			self::COLUMN_ID_MEMBER,
+			self::COLUMN_ID_MEMBER_STARTED,
+			self::COLUMN_CONTENT_ID,
+			self::COLUMN_IS_READ => (int) $value,
+			self::COLUMN_ALERT_TIME => new DateTimeImmutable('@' . $value),
+			self::COLUMN_EXTRA => Json::decode($value),
+			default => (string) $value,
+		};
+	}
 }

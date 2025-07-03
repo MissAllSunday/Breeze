@@ -19,9 +19,9 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	public function __construct(
 		ClientInterface $dbClient,
 		protected readonly CommentRepositoryInterface $commentRepository,
-		protected readonly LikeRepositoryInterface $likeRepository
+		LikeRepositoryInterface $likeRepository
 	) {
-		parent::__construct($dbClient);
+		parent::__construct($dbClient, $likeRepository);
 	}
 
 	public function getTableName(): string
@@ -72,12 +72,12 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 
 		$statusEntity->setId($newStatusId);
 		$statusHandledEntity = new StatusHandledEntity($statusEntity->toArray());
-		$statusHandledEntity = $this->buildHandledStatus([$statusHandledEntity]);
-		array_walk($statusHandledEntity, function ($handledStatus): void {
+		$statusHandledEntities = $this->buildHandledStatus([$statusHandledEntity]);
+		array_walk($statusHandledEntities, function ($handledStatus): void {
 			$handledStatus->setIsNew(true);
 		});
 
-		return $this->setUsersAndLikes($statusHandledEntity, [$statusEntity->getUserId()], [$newStatusId]);
+		return $this->setUsersAndLikes($statusHandledEntities, [$statusEntity->getUserId()], [$newStatusId], LikesEnum::Status);
 	}
 
 	/**
@@ -191,10 +191,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$statusIds[] = $row[StatusEntity::ID];
-
-			$status[$row[StatusEntity::ID]] = new StatusHandledEntity(array_map(function ($column) {
-				return ctype_digit((string) $column) ? ( (int) $column) : $column;
-			}, $row));
+			$status[$row[StatusEntity::ID]] = new StatusHandledEntity($row);
 			$usersIds[] = $row[StatusEntity::WALL_ID];
 			$usersIds[] = $row[StatusEntity::USER_ID];
 		}
@@ -202,18 +199,6 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 
 		$this->dbClient->freeResult($request);
 
-		return $this->setUsersAndLikes($status, $usersIds, $statusIds);
-	}
-
-	protected function setUsersAndLikes(array $status, array $usersIds, array $statusIds): array
-	{
-		$this->loadedUsers = $this->loadUsersInfo($usersIds);
-		$likesByContent = $this->likeRepository->getByContent(LikesEnum::Status, $statusIds);
-
-		array_walk($status, function ($statusEntity, $id) use ($likesByContent): void {
-			$statusEntity->setLikesInfo($likesByContent[$id] ?? []);
-		});
-
-		return $status;
+		return $this->setUsersAndLikes($status, $usersIds, $statusIds, LikesEnum::Status);
 	}
 }

@@ -87,4 +87,17 @@ class LikeEntity extends Entity
 	{
 		return self::TABLE;
 	}
+
+	/**
+	 * @throws \DateMalformedStringException
+	 */
+	public function castValue(string $columnName, mixed $value): string|int|DateTimeImmutable
+	{
+		return match ($columnName) {
+			self::COLUMN_ID_MEMBER,
+			self::COLUMN_ID => (int) $value,
+			self::COLUMN_TYPE => (string) $value,
+			self::COLUMN_TIME => new DateTimeImmutable('@' . $value),
+		};
+	}
 }

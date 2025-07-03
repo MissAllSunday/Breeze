@@ -21,12 +21,6 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
  use PermissionsTrait;
  use TimeTrait;
 
-	public function __construct(
-		ClientInterface $dbClient
-	) {
-		parent::__construct($dbClient);
-	}
-
 	public function getTableName(): string
 	{
 		return LikeEntity::TABLE;

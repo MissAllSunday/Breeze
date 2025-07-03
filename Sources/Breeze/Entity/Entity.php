@@ -23,7 +23,7 @@ abstract class Entity implements EntityInterface
 	{
 		foreach ($entry as $key => $value) {
 			$setCall = 'set' . ucfirst($this->snakeToCamel($key));
-			$this->{$setCall}($value);
+			$this->{$setCall}($this->castValue($key, $value));
 		}
 
 		return $this;

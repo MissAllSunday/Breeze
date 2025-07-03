@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-class OptionsEntity extends NormalizedEntity implements EntityInterface
+class OptionsEntity extends Entity implements EntityInterface
 {
 	public const string TABLE = 'breeze_options';
 	public const string COLUMN_MEMBER_ID = 'member_id';
@@ -39,5 +39,13 @@ class OptionsEntity extends NormalizedEntity implements EntityInterface
 	public function getColumnMap(): array
 	{
 		return self::KEY_MAP;
+	}
+
+	public function castValue(string $columnName, mixed $value): string|int
+	{
+		return match ($columnName) {
+			self::COLUMN_MEMBER_ID => (int) $value,
+			default => (string) $value,
+		};
 	}
 }

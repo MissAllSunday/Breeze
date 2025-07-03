@@ -119,4 +119,19 @@ class CommentEntity extends Entity implements EntityInterface
 	{
 		return self::TABLE;
 	}
+
+	/**
+	 * @throws DateMalformedStringException
+	 */
+	public function castValue(string $columnName, mixed $value): string|int|DateTimeImmutable
+	{
+		return match ($columnName) {
+			self::ID,
+			self::STATUS_ID,
+			self::USER_ID,
+			self::LIKES => (int) $value,
+			self::CREATED_AT => new DateTimeImmutable('@' . $value),
+			default => (string) $value,
+		};
+	}
 }

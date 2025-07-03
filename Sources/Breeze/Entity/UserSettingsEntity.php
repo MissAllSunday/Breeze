@@ -132,4 +132,15 @@ class UserSettingsEntity extends Entity implements EntityInterface
 	{
 		$this->paginationNumber = $paginationNumber;
 	}
+
+	public function castValue(string $columnName, mixed $value): int|string
+	{
+		return match ($columnName) {
+			self::WALL,
+			self::GENERAL_WALL,
+			self::KICK_IGNORED,
+			self::ENABLE_BUDDIES_TAB, self::PAGINATION_NUM => (int) $value,
+			default => (string) $value,
+		};
+	}
 }

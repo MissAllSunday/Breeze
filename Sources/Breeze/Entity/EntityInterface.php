@@ -12,4 +12,6 @@ interface EntityInterface
 	public static function getColumns(): array;
 
 	public function toArray(): array;
+
+	public function castValue(string $columnName, mixed $value): mixed;
 }

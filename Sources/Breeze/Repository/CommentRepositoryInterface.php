@@ -12,8 +12,9 @@ interface CommentRepositoryInterface extends BaseRepositoryInterface
 {
 	/**
 	 * @throws InvalidCommentException
+	 * @return array [CommentHandledEntity]
 	 */
-	public function insert(CommentEntity $commentEntity): CommentHandledEntity;
+	public function insert(CommentEntity $commentEntity): array;
 
 	public function getByProfile(array $userProfiles = []): array;
 

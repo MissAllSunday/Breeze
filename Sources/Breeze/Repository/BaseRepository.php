@@ -25,6 +25,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
 	public function __construct(
 		protected readonly ClientInterface $dbClient,
+		protected readonly LikeRepositoryInterface | null $likeRepository = null
 	) {}
 
 	protected function buildSetUpdate(EntityInterface $entity): string
@@ -157,6 +158,18 @@ abstract class BaseRepository implements BaseRepositoryInterface
 	abstract public function getColumns(): array;
 
 	abstract public function getColumnPosterId(): string;
+
+	protected function setUsersAndLikes(array $handledEntities, array $usersIds, array $statusIds, LikesEnum $type): array
+	{
+		$this->loadedUsers = $this->loadUsersInfo($usersIds);
+		$likesByContent = $this->likeRepository->getByContent($type, $statusIds);
+
+		array_walk($handledEntities, function ($handledEntity, $id) use ($likesByContent): void {
+			$handledEntity->setLikesInfo($likesByContent[$id] ?? []);
+		});
+
+		return $handledEntities;
+	}
 
 	protected function getDefaultQueryParams(): array
 	{
