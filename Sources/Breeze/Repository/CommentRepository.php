@@ -67,7 +67,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		$commentEntity->setId($newCommentId);
 		$commentHandledEntity = new CommentHandledEntity($commentEntity->toArray());
 
-		$commentHandledEntities = $this->buildHandledComments([$commentHandledEntity])[$newCommentId];
+		$commentHandledEntities = $this->buildHandledComments([$commentHandledEntity]);
 
 		return $this->setUsersAndLikes(
 			$commentHandledEntities,

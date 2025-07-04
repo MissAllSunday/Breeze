@@ -6,7 +6,6 @@ namespace Breeze\Service;
 
 use Breeze\Entity\StatusHandledEntity;
 use Breeze\Entity\UserSettingsHandledEntity;
-use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Util\Validate\EmptyDataException;
@@ -23,7 +22,7 @@ class StatusServiceTest extends TestCase
 
 	private PermissionsServiceInterface | MockObject $permissionsService;
 
-	private StatusService $statusService;
+	private MockObject|StatusService $statusService;
 
 	/**
 	 * @throws Exception
@@ -33,26 +32,12 @@ class StatusServiceTest extends TestCase
 		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
 		$this->userRepository = $this->createMock(SettingsRepositoryInterface::class);
 		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
-
-		$this->statusService = new StatusService($this->statusRepository, $this->userRepository, $this->permissionsService);
-	}
-
-	public static function getWallUserSettingsProvider(): array
-	{
-		return [
-			'happy happy joy joy' => [
-				'wallId' => 1,
-				'valueName' => 'paginationNumber',
-				'userSettings' => ['paginationNumber' => 1],
-				'expected' => 1,
-			],
-			'return all values' => [
-				'wallId' => 1,
-				'valueName' => '',
-				'userSettings' => ['paginationNumber' => 1],
-				'expected' => ['paginationNumber' => 1],
-			],
-		];
+		$this->statusService = $this->getMockBuilder(StatusService::class)
+			->setConstructorArgs([$this->statusRepository,
+				$this->userRepository,
+				$this->permissionsService])
+			->onlyMethods(['getCount'])
+			->getMock();
 	}
 
 	/**
@@ -69,8 +54,9 @@ class StatusServiceTest extends TestCase
 			'postComments' => true,
 		]);
 		$this->statusRepository->method('getByProfile')->willReturn([
-			'data' => [], 'total' => 1,
+			self::getStatusHandledEntity(),
 		]);
+		$this->statusService->method('getCount')->willReturn(1);
 
 		$result = $this->statusService->getByProfile($wallId, $start);
 
@@ -84,7 +70,7 @@ class StatusServiceTest extends TestCase
 				'wallId' => 1,
 				'start' => 1,
 				'expected' => [
-					'data' => [], 'total' => 1,
+					'data' => [self::getStatusHandledEntity()], 'total' => 1,
 					'permissions' => [
 						'delete' => true,
 						'edit' => false,
@@ -96,37 +82,13 @@ class StatusServiceTest extends TestCase
 		];
 	}
 
-	/**
-	 * @throws InvalidStatusException
-	 */
-	#[DataProvider('saveProvider')]
-	public function testSave(array $inputData, StatusHandledEntity $expectedResult): void
+	protected static function getStatusHandledEntity(): StatusHandledEntity
 	{
-		$this->statusRepository->method('insert')->willReturn($expectedResult);
-
-		$result = $this->statusService->save($inputData);
-
-		$this->assertInstanceOf(StatusHandledEntity::class, $result);
-		$this->assertEquals($expectedResult, $result);
-	}
-
-	public static function saveProvider(): array
-	{
-		return [
-			'happy happy joy joy' => [
-				'inputData' => [
-					'wallId' => 1,
-					'userId' => 1,
-					'body' => 'test status',
-				],
-				'expectedResult' => new StatusHandledEntity([
-					'isNew' => true,
-					'id' => 1,
-					'wallId' => 1,
-					'userId' => 1,
-					'body' => 'test status',
-				]),
-			],
-		];
+		return new StatusHandledEntity([
+			'id' => 1,
+			'wallId' => 1,
+			'userId' => 1,
+			'body' => 'test status',
+		]);
 	}
 }

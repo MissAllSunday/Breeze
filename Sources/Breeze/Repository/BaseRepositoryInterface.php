@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Entity\EntityInterface;
+
 interface BaseRepositoryInterface
 {
 	public const int TTL = 360;
@@ -16,4 +18,6 @@ interface BaseRepositoryInterface
 	public function loadUsersInfo(array $userIds = []): array;
 
 	public function getCurrentUserInfo(): array;
+
+	public function getById(int $id): ?EntityInterface;
 }

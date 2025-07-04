@@ -8,7 +8,7 @@ namespace Breeze\Entity;
 use Breeze\Util\Json;
 use DateTimeImmutable;
 
-class AlertEntity extends Entity
+class AlertEntity extends Entity implements EntityInterface
 {
 	public const string TABLE = 'user_alerts';
 	public const string COLUMN_ID = 'id_alert';

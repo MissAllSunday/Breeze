@@ -264,11 +264,11 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			$this->deleteByContent($likeEntity) :
 			$this->insert($likeEntity);
 
-		return $this->buildLikeData($likeEntity);
+		return $this->buildLikeData($likeEntity->toArray());
 	}
 
-	public function getById(int $id): array
+	public function getById(int $id): null
 	{
-		return [];
+		return null;
 	}
 }

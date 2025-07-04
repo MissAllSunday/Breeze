@@ -7,6 +7,7 @@ namespace Breeze\Service;
 use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
 use Breeze\Entity\AlertHandledEntity;
+use Breeze\Entity\EntityInterface;
 use Breeze\Event\HandlerServiceProvider;
 use Breeze\Repository\AlertRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
@@ -41,7 +42,7 @@ class AlertService extends BaseService implements AlertServiceInterface
 		}
 	}
 
-	public function getById(int $alertId): AlertEntity
+	public function getById(int $alertId): AlertEntity|EntityInterface
 	{
 		return $this->alertRepository->getById($alertId);
 	}

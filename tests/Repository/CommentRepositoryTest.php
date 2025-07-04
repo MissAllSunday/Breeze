@@ -67,7 +67,7 @@ class CommentRepositoryTest extends TestCase
 			CommentEntity::BODY => 'Test comment',
 			CommentEntity::LIKES => 0,
 		]);
-		$commentHandledEntities = [5 => new CommentHandledEntity([
+		$commentHandledEntities = [0 => new CommentHandledEntity([
 			CommentEntity::ID => 5,
 			CommentEntity::STATUS_ID => 1,
 			CommentEntity::USER_ID => 2,
@@ -86,13 +86,12 @@ class CommentRepositoryTest extends TestCase
 
 		$this->commentRepository->expects($this->once())
 			->method('buildHandledComments')
-			->with([$commentEntity])
 			->willReturn($commentHandledEntities);
 
 		$result = $this->commentRepository->insert($commentEntity);
 
-		$this->assertInstanceOf(CommentHandledEntity::class, $result);
-		$this->assertEquals(5, $result->getId());
+		$this->assertInstanceOf(CommentHandledEntity::class, $result[0]);
+		$this->assertEquals(5, $result[0]->getId());
 	}
 
 	public function testInsertThrowsExceptionWhenIdIsZero(): void

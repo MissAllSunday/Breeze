@@ -15,6 +15,4 @@ interface AlertRepositoryInterface extends BaseRepositoryInterface
 	public function checkAlert(int $userId, string $alertType, int $alertId = 0, string $alertSender = ''): bool;
 
 	public function delete(array $alertIds): bool;
-
-	public function getById(int $id): AlertEntity;
 }

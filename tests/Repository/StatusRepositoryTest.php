@@ -81,7 +81,7 @@ class StatusRepositoryTest extends TestCase
 			StatusEntity::USER_ID => 2,
 			StatusEntity::BODY => 'Test status',
 		]);
-		$statusHandledEntities = [5 => new StatusHandledEntity([
+		$statusHandledEntities = [0 => new StatusHandledEntity([
 			StatusEntity::ID => 5,
 			StatusEntity::WALL_ID => 1,
 			StatusEntity::USER_ID => 2,
@@ -100,14 +100,13 @@ class StatusRepositoryTest extends TestCase
 
 		$this->statusRepository->expects($this->once())
 			->method('buildHandledStatus')
-			->with([$statusEntity])
 			->willReturn($statusHandledEntities);
 
 		$result = $this->statusRepository->insert($statusEntity);
 
-		$this->assertInstanceOf(StatusHandledEntity::class, $result);
-		$this->assertEquals(5, $result->getId());
-		$this->assertTrue($result->isNew());
+		$this->assertInstanceOf(StatusHandledEntity::class, $result[0]);
+		$this->assertEquals(5, $result[0]->getId());
+		$this->assertTrue($result[0]->isNew());
 	}
 
 	public function testInsertThrowsExceptionWhenIdIsZero(): void

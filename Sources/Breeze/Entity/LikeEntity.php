@@ -96,8 +96,8 @@ class LikeEntity extends Entity
 		return match ($columnName) {
 			self::COLUMN_ID_MEMBER,
 			self::COLUMN_ID => (int) $value,
-			self::COLUMN_TYPE => (string) $value,
 			self::COLUMN_TIME => new DateTimeImmutable('@' . $value),
+			default => (string) $value,
 		};
 	}
 }

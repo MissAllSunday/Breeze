@@ -14,12 +14,12 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class DeleteComment extends BaseActions implements ValidateDataInterface
 {
-	protected const PARAMS = [
+	protected const array PARAMS = [
 		CommentEntity::ID => 0,
 		CommentEntity::USER_ID => 0,
 	];
 
-	protected const SUCCESS_KEY = 'deleted_comment';
+	protected const string SUCCESS_KEY = 'deleted_comment';
 
 	public function successKeyString(): string
 	{
@@ -46,7 +46,6 @@ class DeleteComment extends BaseActions implements ValidateDataInterface
 	}
 
 	/**
-	 * @throws DataNotFoundException
 	 * @throws InvalidDataException
 	 */
 	public function checkData(): void

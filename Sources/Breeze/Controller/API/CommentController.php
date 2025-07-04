@@ -41,11 +41,11 @@ class CommentController extends ApiBaseController
 	public function postComment(): void
 	{
 		try {
-			$commentEntity = $this->commentRepository->insert(new CommentEntity($this->data));
+			$commentEntities = $this->commentRepository->insert(new CommentEntity($this->data));
 
 			$this->response->success(
 				'published_comment',
-				$commentEntity->toArray(),
+				$commentEntities[0]->toArray(),
 				Response::CREATED
 			);
 		} catch (InvalidCommentException $invalidCommentException) {
