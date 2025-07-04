@@ -163,9 +163,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
 	{
 		$this->loadedUsers = $this->loadUsersInfo($usersIds);
 		$likesByContent = $this->likeRepository->getByContent($type, $statusIds);
-
 		array_walk($handledEntities, function ($handledEntity, $id) use ($likesByContent): void {
-			$handledEntity->setLikesInfo($likesByContent[$id] ?? []);
+			$handledEntity->setLikesInfo($likesByContent[$id] ?? null);
 		});
 
 		return $handledEntities;

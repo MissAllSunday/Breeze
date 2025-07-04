@@ -45,7 +45,7 @@ class CommentController extends ApiBaseController
 
 			$this->response->success(
 				'published_comment',
-				$commentEntities[0]->toArray(),
+				$commentEntities,
 				Response::CREATED
 			);
 		} catch (InvalidCommentException $invalidCommentException) {

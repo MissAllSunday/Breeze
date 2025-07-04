@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
+use DateMalformedStringException;
 use DateTimeInterface;
 
 class CommentHandledEntity extends CommentEntity implements HandledEntityInterface
 {
 	protected array $usersInfo = [];
 
-	/** @var LikeHandledEntity[] */
-	protected array $likesInfo;
+	protected ?LikeHandledEntity $likesInfo;
 
 	public function getUsersInfo(): array
 	{
@@ -23,18 +23,12 @@ class CommentHandledEntity extends CommentEntity implements HandledEntityInterfa
 		$this->usersInfo = $usersInfo;
 	}
 
-	/**
-	 * @return array [LikeHandledEntity]
-	 */
-	public function getLikesInfo(): array
+	public function getLikesInfo(): ?LikeHandledEntity
 	{
 		return $this->likesInfo;
 	}
 
-	/**
-	 * @param array $likesInfo [LikeHandledEntity]
-	 */
-	public function setLikesInfo(array $likesInfo): void
+	public function setLikesInfo(?LikeHandledEntity $likesInfo): void
 	{
 		$this->likesInfo = $likesInfo;
 	}
@@ -45,7 +39,7 @@ class CommentHandledEntity extends CommentEntity implements HandledEntityInterfa
 	}
 
 	/**
-	 * @throws \DateMalformedStringException
+	 * @throws DateMalformedStringException
 	 */
 	public function jsonSerialize(): array
 	{

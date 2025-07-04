@@ -33,12 +33,11 @@ function Comment(props: CommentProps): React.ReactElement {
         {props.comment.body}
       </div>
       <div className="half_content">
-        { Object.values(props.comment.likesInfo).map((like: any) => (
+        { props.comment.likesInfo &&
           <Like
-            key={like.contentId}
-            item={like}
-          />
-        )) }
+            key={props.comment.likesInfo.contentId}
+            item={props.comment.likesInfo}
+          /> }
       </div>
       <div className="half_content">
         <div className={'info_bar'}>

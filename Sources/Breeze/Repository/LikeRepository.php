@@ -196,40 +196,38 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 	/**
 	 * @param array $likeData [LikeHandledEntity]
-	 * @return array [LikeHandledEntity]
 	 */
-	public function postBuildLikeData(array $likeData, int $likesCount): array
+	public function postBuildLikeData(array $likeData, int $likesCount): LikeHandledEntity
 	{
 		$alreadyLiked = $likesCount > 0;
 		$likesTextCount = $likesCount;
+		$likeHandledEntity = array_shift($likeData);
 
-		array_map(function (LikeHandledEntity $likeHandledEntity) use ($likesCount, $alreadyLiked, $likesTextCount): void {
-			$base = LikeEntity::IDENTIFIER;
-			if ($alreadyLiked) {
-				$base = 'you_' . $base;
-				$likesTextCount = $likesCount - 1;
-			}
+		$base = LikeEntity::IDENTIFIER;
+		if ($alreadyLiked) {
+			$base = 'you_' . $base;
+			$likesTextCount = $likesCount - 1;
+		}
 
-			$base .= ($this->getText($base . $likesTextCount) !== '') ? $likesTextCount : 'n';
+		$base .= ($this->getText($base . $likesTextCount) !== '') ? $likesTextCount : 'n';
 
-			$likeHandledEntity->setCount($likesCount);
-			$likeHandledEntity->setAdditionalInfo([
-				'text' => sprintf(
-					$this->getText($base),
-					$this->commaFormat((string) $likesTextCount)
-				),
-				'href' => $this->parserText(
-					'{scriptUrl}?action=likes;sa=view;ltype={ltype};like={likeId}',
-					[
-						'ltype' => $likeHandledEntity->getContentType(),
-						'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
-						'likeId' => $likeHandledEntity->getContentId(),
-					]
-				),
-			]);
-		}, $likeData);
+		$likeHandledEntity->setCount($likesCount);
+		$likeHandledEntity->setAdditionalInfo([
+			'text' => sprintf(
+				$this->getText($base),
+				$this->commaFormat((string) $likesTextCount)
+			),
+			'href' => $this->parserText(
+				'{scriptUrl}?action=likes;sa=view;ltype={ltype};like={likeId}',
+				[
+					'ltype' => $likeHandledEntity->getContentType(),
+					'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
+					'likeId' => $likeHandledEntity->getContentId(),
+				]
+			),
+		]);
 
-		return $likeData;
+		return $likeHandledEntity;
 	}
 
 	// @return array [LikeHandledEntity] with id_member as key

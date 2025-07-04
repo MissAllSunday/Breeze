@@ -27,7 +27,7 @@ function Status(props: StatusProps): React.ReactElement {
   const ref = React.useRef<null | HTMLDivElement>(null);
 
   React.useLayoutEffect(() => {
-    const node = ref.current;
+    const node: HTMLDivElement | null = ref.current;
 
     if (node && props.status.isNew) {
       node.scrollIntoView({ behavior: 'smooth' });
@@ -91,12 +91,10 @@ function Status(props: StatusProps): React.ReactElement {
         <div className="content"
              dangerouslySetInnerHTML={{ __html: props.status.body }}/>
         <div className="half_content">
-          { Object.values(props.status.likesInfo).map((like: any) => (
-            <Like
-              key={like.contentId}
-              item={like}
-            />
-          )) }
+          { props.status.likesInfo && <Like
+              key={props.status.likesInfo.contentId}
+              item={props.status.likesInfo}
+            />}
         </div>
         <div className="half_content">
           <div className={'info_bar'}>
