@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Breeze;
-use Breeze\Database\ClientInterface;
 use Breeze\Entity\HandledEntityInterface;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeHandledEntity;

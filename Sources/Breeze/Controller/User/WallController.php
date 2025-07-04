@@ -44,13 +44,14 @@ class WallController extends BaseController
 
 		$profileSettings = $this->profileService->getUserSettings($profileId);
 		$currentUserInfo = $this->profileService->getCurrentUserInfo();
+		$profileBuddies = $profileSettings->getBuddies();
 
 		if (!$this->profileService->isAllowedToSeePage($profileSettings, $profileId, $currentUserInfo['id'])) {
 			Error::show('error_no_access');
 		}
 
-		if (!empty($profileSettings->getEnableBuddiesTab())) {
-			$buddiesData = $this->profileService->loadUsersInfo($profileSettings->getBuddies());
+		if (!empty($profileSettings->getEnableBuddiesTab()) && !empty($profileBuddies)) {
+			$buddiesData = $this->profileService->loadUsersInfo($profileBuddies);
 		}
 
 		$this->profileService->setEditor();

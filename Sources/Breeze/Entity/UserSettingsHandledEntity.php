@@ -16,7 +16,7 @@ class UserSettingsHandledEntity extends UserSettingsEntity
 	 */
 	public function getBuddies(): array
 	{
-		return $this->buddies;
+		return array_filter($this->buddies);
 	}
 
 	public function setBuddies(array | string $buddies): void
