@@ -8,13 +8,17 @@ namespace Breeze\Repository;
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\EntityInterface;
 use Breeze\Entity\LikeEntity;
+use Breeze\Entity\LikeHandledEntity;
 use Breeze\Entity\MemberEntity;
 use Breeze\LikesEnum;
+use Breeze\PermissionsEnum;
 use Breeze\Traits\CacheTrait;
+use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\TextTrait;
 
 abstract class BaseRepository implements BaseRepositoryInterface
 {
+	use PermissionsTrait;
 	use CacheTrait;
 	use TextTrait;
 
@@ -163,8 +167,17 @@ abstract class BaseRepository implements BaseRepositoryInterface
 	{
 		$this->loadedUsers = $this->loadUsersInfo($usersIds);
 		$likesByContent = $this->likeRepository->getByContent($type, $statusIds);
-		array_walk($handledEntities, function ($handledEntity, $id) use ($likesByContent): void {
-			$handledEntity->setLikesInfo($likesByContent[$id] ?? null);
+		$canLike = $this->isAllowedTo(PermissionsEnum::LIKES_LIKE);
+
+		array_walk($handledEntities, function ($handledEntity, $id) use ($likesByContent, $type, $canLike): void {
+			$likeHandled = $likesByContent[$id] ?? new LikeHandledEntity([
+				LikeEntity::COLUMN_TYPE => $type,
+				LikeEntity::COLUMN_ID => $id,
+				LikeEntity::COLUMN_ID_MEMBER => $handledEntity->getUserId(),
+				LikeHandledEntity::CAN_LIKE => $canLike,
+			]);
+
+			$handledEntity->setLikesInfo($likeHandled);
 		});
 
 		return $handledEntities;

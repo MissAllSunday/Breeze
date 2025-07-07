@@ -6,18 +6,15 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Breeze;
-use Breeze\Entity\HandledEntityInterface;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeHandledEntity;
 use Breeze\LikesEnum;
 use Breeze\PermissionsEnum;
-use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\TimeTrait;
 use DateMalformedStringException;
 
 class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 {
- use PermissionsTrait;
  use TimeTrait;
 
 	public function getTableName(): string
@@ -60,12 +57,12 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		);
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
-			$likes[$row[LikeEntity::COLUMN_ID]][$row[LikeEntity::COLUMN_ID_MEMBER]] = $this->buildLikeData($row);
+			$likes[$row[LikeEntity::COLUMN_ID]][$row[LikeEntity::COLUMN_ID_MEMBER]] = new LikeHandledEntity($row);
 		}
 		$this->dbClient->freeResult($request);
 
 		return array_map(function ($likeData) {
-			return $this->postBuildLikeData($likeData, count($likeData));
+			return $this->buildLikeData($likeData, count($likeData));
 		}, $likes);
 	}
 
@@ -142,7 +139,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			LikeEntity::COLUMN_TIME => 'int',
 		], $likeEntity->toArray(), [LikeEntity::COLUMN_ID, LikeEntity::COLUMN_TYPE, LikeEntity::COLUMN_ID_MEMBER]);
 
-		return $this->buildLikeData($likeEntity->toArray());
+		return $this->buildLikeData([$likeEntity], $this->count($likeEntity));
 	}
 
 	public function count(LikeEntity $likeEntity): int
@@ -167,37 +164,9 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	}
 
 	/**
-	 * @param array $items [HandledEntityInterface]
-	 *
-	 * @return array [HandledEntityInterface]
-	 */
-	public function appendLikeData(array $items, string $itemIdName): array
-	{
-		return array_map(function ($item) use ($itemIdName): HandledEntityInterface {
-			$item->setLikesInfo($this->buildLikeData([
-				LikeEntity::COLUMN_TYPE => $item[LikeEntity::IDENTIFIER . LikeEntity::COLUMN_TYPE],
-				LikeEntity::COLUMN_ID => $item[$itemIdName],
-				LikeEntity::COLUMN_ID_MEMBER => $item[LikeEntity::IDENTIFIER . LikeEntity::COLUMN_ID_MEMBER],
-			]));
-
-			return $item;
-		}, $items);
-	}
-
-	public function buildLikeData(
-		array $likeData
-	): LikeHandledEntity {
-
-		$likeHandledEntity = new LikeHandledEntity($likeData);
-		$likeHandledEntity->setCanLike($this->isAllowedTo(PermissionsEnum::LIKES_LIKE));
-
-		return $likeHandledEntity;
-	}
-
-	/**
 	 * @param array $likeData [LikeHandledEntity]
 	 */
-	public function postBuildLikeData(array $likeData, int $likesCount): LikeHandledEntity
+	public function buildLikeData(array $likeData, int $likesCount): LikeHandledEntity
 	{
 		$alreadyLiked = $likesCount > 0;
 		$likesTextCount = $likesCount;
@@ -211,6 +180,8 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 		$base .= ($this->getText($base . $likesTextCount) !== '') ? $likesTextCount : 'n';
 
+		$likeHandledEntity->setCanLike($this->isAllowedTo(PermissionsEnum::LIKES_LIKE));
+		$likeHandledEntity->setAlreadyLiked($alreadyLiked);
 		$likeHandledEntity->setCount($likesCount);
 		$likeHandledEntity->setAdditionalInfo([
 			'text' => sprintf(
@@ -220,7 +191,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			'href' => $this->parserText(
 				'{scriptUrl}?action=likes;sa=view;ltype={ltype};like={likeId}',
 				[
-					'ltype' => $likeHandledEntity->getContentType(),
+					'ltype' => $likeHandledEntity->getContentType()->value,
 					'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
 					'likeId' => $likeHandledEntity->getContentId(),
 				]
@@ -230,27 +201,10 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		return $likeHandledEntity;
 	}
 
-	// @return array [LikeHandledEntity] with id_member as key
-	public function buildLikeDataFromRequest(array $rows): array
-	{
-		$likesHandled = [];
-
-		foreach ($rows as $row) {
-			// Left join often fills up with null values, so we need to skip them, probably should add a where clause in the query itself...
-			if (!isset($row[LikeEntity::COLUMN_ID_MEMBER])) {
-				continue;
-			}
-
-			$likesHandled[$row[LikeEntity::COLUMN_ID_MEMBER]] = $this->buildLikeData($row);
-		}
-
-		return $likesHandled;
-	}
-
 	/**
 	 * @throws InvalidDataException
 	 */
-	public function likeContent(LikesEnum | string $type, int $contentId, int $userId): LikeHandledEntity
+	public function likeContent(LikesEnum $type, int $contentId, int $userId): LikeHandledEntity
 	{
 		$likeEntity = new LikeEntity();
 		$likeEntity->setContentType($type);
@@ -258,11 +212,17 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		$likeEntity->setIdMember($userId);
 
 		$isContentAlreadyLiked = $this->isContentAlreadyLiked($likeEntity);
-		$isContentAlreadyLiked ?
-			$this->deleteByContent($likeEntity) :
-			$this->insert($likeEntity);
 
-		return $this->buildLikeData($likeEntity->toArray());
+		if ($isContentAlreadyLiked) {
+			$this->deleteByContent($likeEntity);
+
+			$handledEntity = new LikeHandledEntity($likeEntity->toArray());
+			$count = $this->count($likeEntity);
+
+			return $this->buildLikeData([$handledEntity], $count);
+		}
+
+			return $this->insert($likeEntity);
 	}
 
 	public function getById(int $id): null

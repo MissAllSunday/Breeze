@@ -1,5 +1,4 @@
 import { CommentListType, CommentType } from 'breezeTypesComments';
-import { LikeType } from 'breezeTypesLikes';
 import { StatusProps } from 'breezeTypesStatus';
 import * as React from 'react';
 import { useCallback, useContext, useState } from 'react';
@@ -17,7 +16,7 @@ import Avatar from './user/Avatar';
 import UserInfo from './user/UserInfo';
 
 function Status(props: StatusProps): React.ReactElement {
-  const [classType, setClassType] = useState(props.status.isNew ? 'fadeIn' : '');
+  const [classType] = useState(props.status.isNew ? 'fadeIn' : '');
   const timeStamp = props.status.createdAt;
 
   const [commentsList, setCommentsList] = useState<CommentListType>(Object.values(props.status.comments));

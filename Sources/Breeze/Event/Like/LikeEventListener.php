@@ -55,9 +55,8 @@ class LikeEventListener
 	{
 		/** @var StatusRepositoryInterface|CommentRepositoryInterface $repository */
 		$repository = match ($handledLike->getContentType()) {
-			LikesEnum::Status->value => $this->statusRepository,
-			LikesEnum::Comments->value => $this->commentRepository,
-			default => throw new \InvalidArgumentException('Invalid content type'),
+			LikesEnum::Status => $this->statusRepository,
+			LikesEnum::Comments => $this->commentRepository,
 		};
 
 		return $repository->getById($handledLike->getContentId());

@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Entity;
 
 use Breeze\LikesEnum;
+use DateMalformedStringException;
 use DateTimeImmutable;
 
 class LikeEntity extends Entity
@@ -19,11 +20,11 @@ class LikeEntity extends Entity
 
 	protected int $id_member = 0;
 
-	protected string|LikesEnum $content_type = '';
+	protected LikesEnum $content_type;
 
 	protected int $content_id = 0;
 
-	protected ?int $like_time = null;
+	protected DateTimeImmutable | int $like_time = 0;
 
 	public function getIdMember(): int
 	{
@@ -35,14 +36,14 @@ class LikeEntity extends Entity
 		$this->id_member = (int) $idMember;
 	}
 
-	public function getContentType(): string
+	public function getContentType(): LikesEnum
 	{
 		return $this->content_type;
 	}
 
-	public function setContentType(string|LikesEnum $type): void
+	public function setContentType(LikesEnum $type): void
 	{
-		$this->content_type = LikesEnum::isValid($type) ? LikesEnum::from($type)->value : '';
+		$this->content_type = $type;
 	}
 
 	public function getContentId(): int
@@ -56,16 +57,16 @@ class LikeEntity extends Entity
 	}
 
 	/**
-	 * @throws \DateMalformedStringException
+	 * @throws DateMalformedStringException
 	 */
-	public function getLikeTime(): DateTimeImmutable | null
+	public function getLikeTime(): int | DateTimeImmutable
 	{
-		return $this->like_time === null ? null : new DateTimeImmutable('@' . $this->like_time);
+		return is_int($this->like_time) ? new DateTimeImmutable('@' . $this->like_time) : $this->like_time;
 	}
 
-	public function setLikeTime(null | int | string | DateTimeImmutable $time): void
+	public function setLikeTime(DateTimeImmutable | int $time): void
 	{
-		$this->like_time = $time instanceof DateTimeImmutable ? $time->getTimestamp() : (int) $time;
+		$this->like_time = $time;
 	}
 
 	public static function getTypes(): array
@@ -89,14 +90,16 @@ class LikeEntity extends Entity
 	}
 
 	/**
-	 * @throws \DateMalformedStringException
+	 * @throws DateMalformedStringException
 	 */
-	public function castValue(string $columnName, mixed $value): string|int|DateTimeImmutable
+	public function castValue(string $columnName, mixed $value): mixed
 	{
 		return match ($columnName) {
 			self::COLUMN_ID_MEMBER,
-			self::COLUMN_ID => (int) $value,
-			self::COLUMN_TIME => new DateTimeImmutable('@' . $value),
+			self::COLUMN_ID, LikeHandledEntity::COUNT => (int) $value,
+			self::COLUMN_TIME => $value === null ? null : new DateTimeImmutable('@' . $value),
+			LikeHandledEntity::CAN_LIKE => (bool) $value,
+			self::COLUMN_TYPE => is_string($value) ? LikesEnum::from($value) : $value,
 			default => (string) $value,
 		};
 	}

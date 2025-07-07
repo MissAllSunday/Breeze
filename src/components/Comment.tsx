@@ -1,5 +1,4 @@
 import { CommentProps } from 'breezeTypesComments';
-import { LikeType } from 'breezeTypesLikes';
 import React, { useCallback, useContext, useState } from 'react';
 
 import { PermissionsContext } from '../context/PermissionsContext';
@@ -9,7 +8,7 @@ import { Like } from './Like';
 import Avatar from './user/Avatar';
 
 function Comment(props: CommentProps): React.ReactElement {
-  const [classType, setClassType] = useState(props.comment.isNew ? 'fadeIn' : '');
+  const [classType] = useState(props.comment.isNew ? 'fadeIn' : '');
   const timeStamp = props.comment.createdAt;
   const permissions = useContext(PermissionsContext);
 

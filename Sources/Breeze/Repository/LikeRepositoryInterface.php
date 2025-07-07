@@ -34,15 +34,14 @@ interface LikeRepositoryInterface extends BaseRepositoryInterface
 	public function count(LikeEntity $likeEntity): int;
 
 	/**
-	 * @param array $items [HandledEntityInterface] $items
 	 *
 	 * @return array [HandledEntityInterface]
 	 */
-	public function appendLikeData(array $items, string $itemIdName): array;
 
-	public function buildLikeData(array $likeData): LikeHandledEntity;
+	/**
+	 * @param array $likeData [LikeHandledEntity]
+	 */
+	public function buildLikeData(array $likeData, int $likesCount): LikeHandledEntity;
 
-	public function buildLikeDataFromRequest(array $rows): array;
-
-	public function likeContent(string | LikesEnum $type, int $contentId, int $userId): LikeHandledEntity;
+	public function likeContent(LikesEnum $type, int $contentId, int $userId): LikeHandledEntity;
 }

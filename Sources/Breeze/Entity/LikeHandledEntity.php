@@ -5,8 +5,13 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
+use DateTimeInterface;
+
 class LikeHandledEntity extends LikeEntity implements \JsonSerializable
 {
+	public const string CAN_LIKE = 'can_like';
+	public const string COUNT = 'count';
+
 	protected int $count = 0;
 
 	protected bool $already_liked = false;
@@ -55,6 +60,9 @@ class LikeHandledEntity extends LikeEntity implements \JsonSerializable
 		$this->additional_info = $additional_info;
 	}
 
+	/**
+	 * @throws \DateMalformedStringException
+	 */
 	public function jsonSerialize(): array
 	{
 		return [
@@ -62,8 +70,9 @@ class LikeHandledEntity extends LikeEntity implements \JsonSerializable
 			'count' => $this->getCount(),
 			'alreadyLiked' => $this->isAlreadyLiked(),
 			'canLike' => $this->canLike(),
-			'type' => $this->getContentType(),
+			'type' => $this->getContentType()->value,
 			'additionalInfo' => $this->getAdditionalInfo(),
+			'likeTime' => $this->getLikeTime()->format(DateTimeInterface::ATOM),
 		];
 	}
 }
