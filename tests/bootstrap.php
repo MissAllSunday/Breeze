@@ -19,9 +19,9 @@ $smcFunc['htmlspecialchars'] = function ($value) {
 };
 
 // Mock functions
-function timeformat($string = ''): string
+function timeformat(int | DateTimeImmutable $date): string
 {
-	return $string;
+	return 'time formatted';
 }
 
 function comma_format(string $number): string

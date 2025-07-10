@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-use DateTimeInterface;
+use Breeze\Util\Time;
 
 class StatusHandledEntity extends StatusEntity implements HandledEntityInterface
 {
@@ -68,7 +68,7 @@ class StatusHandledEntity extends StatusEntity implements HandledEntityInterface
 			'userId' => $this->getUserId(),
 			'likes' => 0,  // @deprecated use likesInfo.count instead
 			'body' => $this->getBody(),
-			'createdAt' => $this->getCreatedAt()->format(DateTimeInterface::ATOM),
+			'createdAt' => Time::from($this->getCreatedAt()),
 			'likesInfo' => $this->getLikesInfo(),
 			'comments' => $this->getComments(),
 			'userData' => $this->getUsersInfo()[$this->getUserId()] ?? [],

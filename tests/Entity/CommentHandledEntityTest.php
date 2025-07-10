@@ -50,7 +50,7 @@ class CommentHandledEntityTest extends TestCase
 	public function testGetWallId(): void
 	{
 		$entity = new CommentHandledEntity();
-		
+
 		// CommentHandledEntity always returns 0 for wallId
 		$this->assertEquals(0, $entity->getWallId());
 	}
@@ -62,7 +62,7 @@ class CommentHandledEntityTest extends TestCase
 		$entity->setStatusId(456);
 		$entity->setUserId(789);
 		$entity->setBody('Test comment');
-		$entity->setCreatedAt(1640995200); // 2022-01-01 00:00:00 UTC
+		$entity->setCreatedAt(666);
 
 		// Set users info
 		$usersInfo = [789 => ['name' => 'TestUser', 'avatar' => 'avatar.jpg']];
@@ -80,7 +80,7 @@ class CommentHandledEntityTest extends TestCase
 		$this->assertEquals(456, $result['statusId']);
 		$this->assertEquals(789, $result['userId']);
 		$this->assertEquals('Test comment', $result['body']);
-		$this->assertEquals('2022-01-01T00:00:00+00:00', $result['createdAt']);
+		$this->assertEquals('time formatted', $result['createdAt']);
 		$this->assertEquals(0, $result['likes']); // deprecated field
 		$this->assertSame($likesInfo, $result['likesInfo']);
 		$this->assertEquals(['name' => 'TestUser', 'avatar' => 'avatar.jpg'], $result['userData']);
@@ -168,10 +168,10 @@ class CommentHandledEntityTest extends TestCase
 	public function testUsersInfoHandling(): void
 	{
 		$entity = new CommentHandledEntity();
-		
+
 		// Test empty users info
 		$this->assertEquals([], $entity->getUsersInfo());
-		
+
 		// Test setting complex users info
 		$usersInfo = [
 			123 => [
@@ -187,14 +187,14 @@ class CommentHandledEntityTest extends TestCase
 				'online' => false,
 			],
 		];
-		
+
 		$entity->setUsersInfo($usersInfo);
 		$this->assertEquals($usersInfo, $entity->getUsersInfo());
-		
+
 		// Test that the specific user data is correctly retrieved in jsonSerialize
 		$entity->setUserId(123);
 		$entity->setCreatedAt(time());
-		
+
 		$result = $entity->jsonSerialize();
 		$this->assertEquals($usersInfo[123], $result['userData']);
 	}

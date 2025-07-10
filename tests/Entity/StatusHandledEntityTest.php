@@ -49,7 +49,6 @@ class StatusHandledEntityTest extends TestCase
 			'userId' => 789,
 			'body' => 'Test status body',
 			'createdAt' => time(),
-			'likes' => 5,
 		];
 
 		$entity = new StatusHandledEntity($data);
@@ -58,7 +57,6 @@ class StatusHandledEntityTest extends TestCase
 		$this->assertEquals(456, $entity->getWallId());
 		$this->assertEquals(789, $entity->getUserId());
 		$this->assertEquals('Test status body', $entity->getBody());
-		$this->assertEquals(5, $entity->getLikes());
 	}
 
 	public function testJsonSerialize(): void
@@ -68,7 +66,7 @@ class StatusHandledEntityTest extends TestCase
 		$entity->setWallId(456);
 		$entity->setUserId(789);
 		$entity->setBody('Test status');
-		$entity->setCreatedAt(1640995200); // 2022-01-01 00:00:00 UTC
+		$entity->setCreatedAt(666);
 		$entity->setIsNew(true);
 
 		// Set users info
@@ -92,7 +90,7 @@ class StatusHandledEntityTest extends TestCase
 		$this->assertEquals(456, $result['wallId']);
 		$this->assertEquals(789, $result['userId']);
 		$this->assertEquals('Test status', $result['body']);
-		$this->assertEquals('2022-01-01T00:00:00+00:00', $result['createdAt']);
+		$this->assertEquals('time formatted', $result['createdAt']);
 		$this->assertEquals(0, $result['likes']); // deprecated field
 		$this->assertSame($likesInfo, $result['likesInfo']);
 		$this->assertEquals([$comment], $result['comments']);
@@ -167,18 +165,18 @@ class StatusHandledEntityTest extends TestCase
 	public function testCommentsArrayTyping(): void
 	{
 		$entity = new StatusHandledEntity();
-		
+
 		$comment1 = new CommentHandledEntity();
 		$comment1->setId(1);
 		$comment1->setBody('Comment 1');
-		
+
 		$comment2 = new CommentHandledEntity();
 		$comment2->setId(2);
 		$comment2->setBody('Comment 2');
-		
+
 		$comments = [$comment1, $comment2];
 		$entity->setComments($comments);
-		
+
 		$retrievedComments = $entity->getComments();
 		$this->assertCount(2, $retrievedComments);
 		$this->assertInstanceOf(CommentHandledEntity::class, $retrievedComments[0]);

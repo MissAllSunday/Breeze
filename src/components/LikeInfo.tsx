@@ -15,6 +15,8 @@ export const LikeInfo: React.FunctionComponent<LikeInfoProps> = (props: LikeInfo
     [],
   );
 
+  console.log(props.item.additionalInfo.usersData);
+
   const infoBody = (
     <ul id="likes" data-testid="likes">
       {props.item.additionalInfo.usersData?.map((userData: UserDataType) => (
@@ -35,7 +37,7 @@ export const LikeInfo: React.FunctionComponent<LikeInfoProps> = (props: LikeInfo
   const infoHeader = (`${String.fromCodePoint(128077)} ${props.item.additionalInfo.text}`);
   const infoText = props.item.count > 0
     ? (
-      <span className="like_count smalltext pointer_cursor" data-testid="likesInfo">
+      <span className="like_count smalltext pointer_cursor" onClick={() => setShowInfo(true)} data-testid="likesInfo">
         {props.item.additionalInfo.text}
       </span>
     )

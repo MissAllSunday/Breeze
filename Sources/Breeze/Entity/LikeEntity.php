@@ -19,7 +19,7 @@ class LikeEntity extends Entity
 	public const string COLUMN_TIME = 'like_time';
 	public const string IDENTIFIER = 'likes_';
 
-	protected int $id_member = 0;
+	public int $id_member = 0;
 
 	protected LikesEnum $content_type;
 

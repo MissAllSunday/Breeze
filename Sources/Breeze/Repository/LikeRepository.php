@@ -10,12 +10,10 @@ use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeHandledEntity;
 use Breeze\LikesEnum;
 use Breeze\PermissionsEnum;
-use Breeze\Traits\TimeTrait;
+use Breeze\Util\Time;
 
 class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 {
- use TimeTrait;
-
 	public function getTableName(): string
 	{
 		return LikeEntity::TABLE;
@@ -160,8 +158,15 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		$alreadyLiked = $likesCount > 0;
 		$likesTextCount = $likesCount;
 		$likeHandledEntity = array_shift($likeData);
-		$usersToLoad = array_column($likeData, LikeEntity::COLUMN_ID_MEMBER);
-		$usersData = [];
+		$this->loadedUsers = $this->loadUsersInfo(array_column($likeData, LikeEntity::COLUMN_ID_MEMBER));
+		$usersLikeInfo = [];
+		array_walk($likeData, function ($like) use (&$usersLikeInfo): void {
+			$userId = $like->getIdMember();
+			$usersLikeInfo[$userId] = [
+				'userData' => $this->loadedUsers[$userId] ?? [],
+				'likeTime' => Time::from($like->getLikeTime()),
+			];
+		});
 
 		$base = LikeEntity::IDENTIFIER;
 		if ($alreadyLiked) {
@@ -170,10 +175,6 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		}
 
 		$base .= ($this->getText($base . $likesTextCount) !== '') ? $likesTextCount : 'n';
-
-		if (!empty($this->loadedUsers)) {
-			$usersData = array_intersect_key($this->loadedUsers, array_flip($usersToLoad));
-		}
 
 		$likeHandledEntity->setCanLike($this->isAllowedTo(PermissionsEnum::LIKES_LIKE));
 		$likeHandledEntity->setAlreadyLiked($alreadyLiked);
@@ -191,7 +192,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 					'likeId' => $likeHandledEntity->getContentId(),
 				]
 			),
-			'usersData' => $usersData,
+			'usersLikeInfo' => $usersLikeInfo,
 		]);
 
 		return $likeHandledEntity;

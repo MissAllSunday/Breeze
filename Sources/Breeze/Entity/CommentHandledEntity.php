@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
+use Breeze\Util\Time;
 use DateMalformedStringException;
-use DateTimeInterface;
 
 class CommentHandledEntity extends CommentEntity implements HandledEntityInterface
 {
@@ -47,7 +47,7 @@ class CommentHandledEntity extends CommentEntity implements HandledEntityInterfa
 			'id' => $this->getId(),
 			'statusId' => $this->getStatusId(),
 			'userId' => $this->getUserId(),
-			'createdAt' => $this->getCreatedAt()->format(DateTimeInterface::ATOM),
+			'createdAt' => Time::from($this->getCreatedAt()),
 			'body' => $this->getBody(),
 			'likes' => 0,  // @deprecated use likesInfo.count instead
 			'likesInfo' => $this->getLikesInfo(),
