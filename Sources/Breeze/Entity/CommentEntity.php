@@ -17,7 +17,7 @@ class CommentEntity extends Entity implements EntityInterface
 	public const string BODY = 'body';
 	public const string LIKES = 'likes';
 
-	protected int $id = 0;
+	public int $id = 0;
 
 	protected int $statusId = 0;
 

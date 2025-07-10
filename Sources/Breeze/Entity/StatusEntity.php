@@ -29,7 +29,7 @@ class StatusEntity extends Entity
 		];
 	}
 
-	protected int $id = 0;
+	public int $id = 0;
 
 	protected int $wallId = 0;
 
