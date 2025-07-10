@@ -55,18 +55,6 @@ class LikesController extends ApiBaseController
 		}
 	}
 
-	public function info(): void
-	{
-		try {
-			$this->response->success('', $this->likeRepository->getLikeInfo(
-				LikesEnum::tryFrom($this->data[LikeEntity::COLUMN_TYPE]),
-				$this->data[LikeEntity::COLUMN_ID]
-			));
-		} catch (InvalidDataException $invalidDataException) {
-			$this->response->error($invalidDataException->getMessage(), $invalidDataException->getResponseCode());
-		}
-	}
-
 	public function getSubActions(): array
 	{
 		return self::SUB_ACTIONS;

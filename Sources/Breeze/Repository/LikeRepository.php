@@ -44,6 +44,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	public function getByContent(LikesEnum $type, array $contentIds): array
 	{
 		$likes = [];
+		$usersIds = [];
 
 		$request = $this->dbClient->query(
 			'
@@ -59,30 +60,15 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$likes[$row[LikeEntity::COLUMN_ID]][$row[LikeEntity::COLUMN_ID_MEMBER]] = new LikeHandledEntity($row);
+			$usersIds[] = $row[LikeEntity::COLUMN_ID_MEMBER];
 		}
 		$this->dbClient->freeResult($request);
+
+		$this->loadedUsers = $this->loadUsersInfo($usersIds);
 
 		return array_map(function ($likeData) {
 			return $this->buildLikeData($likeData, count($likeData));
 		}, $likes);
-	}
-
-	/**
-	 * @throws DateMalformedStringException
-	 */
-	public function getLikeInfo(LikesEnum $type, int $contentId): array
-	{
-		$likeInfo = [];
-		$like = $this->getByContent($type, [$contentId])[$contentId];
-		$this->loadedUsers = $this->loadUsersInfo([$like->getIdMember()]);
-
-		if (!empty($this->loadedUsers)) {
-			$likeInfo[$contentId]['profile'] = array_intersect_key($this->loadedUsers, array_flip([$like->getIdMember()]));
-		}
-
-		$likeInfo[$contentId]['timestamp'] = timeFormat($like->getLikeTime()->getTimestamp());
-
-		return $likeInfo;
 	}
 
 	public function isContentAlreadyLiked(LikeEntity $likeEntity): bool
@@ -141,6 +127,8 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			LikeEntity::COLUMN_TIME => 'int',
 		], $likeEntity->toArray(), [LikeEntity::COLUMN_ID, LikeEntity::COLUMN_TYPE, LikeEntity::COLUMN_ID_MEMBER]);
 
+		$this->loadedUsers = $this->loadUsersInfo([$likeEntity->getIdMember()]);
+
 		return $this->buildLikeData([$likeEntity], $this->count($likeEntity));
 	}
 
@@ -173,6 +161,8 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		$alreadyLiked = $likesCount > 0;
 		$likesTextCount = $likesCount;
 		$likeHandledEntity = array_shift($likeData);
+		$usersToLoad = array_column($likeData, LikeEntity::COLUMN_ID_MEMBER);
+		$usersData = [];
 
 		$base = LikeEntity::IDENTIFIER;
 		if ($alreadyLiked) {
@@ -181,6 +171,10 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		}
 
 		$base .= ($this->getText($base . $likesTextCount) !== '') ? $likesTextCount : 'n';
+
+		if (!empty($this->loadedUsers)) {
+			$usersData = array_intersect_key($this->loadedUsers, array_flip($usersToLoad));
+		}
 
 		$likeHandledEntity->setCanLike($this->isAllowedTo(PermissionsEnum::LIKES_LIKE));
 		$likeHandledEntity->setAlreadyLiked($alreadyLiked);
@@ -198,6 +192,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 					'likeId' => $likeHandledEntity->getContentId(),
 				]
 			),
+			'usersData' => $usersData,
 		]);
 
 		return $likeHandledEntity;
@@ -214,6 +209,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		$likeHandledEntity->setIdMember($userId);
 
 		$isContentAlreadyLiked = $this->isContentAlreadyLiked($likeHandledEntity);
+		$this->loadedUsers = $this->loadUsersInfo([$userId]);
 
 		if ($isContentAlreadyLiked) {
 			$this->deleteByContent($likeHandledEntity);

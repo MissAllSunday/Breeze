@@ -173,7 +173,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$comments[$row[CommentEntity::ID]] = new CommentHandledEntity($row);
-			$usersIds[] = (int)$row[CommentEntity::USER_ID];
+			$usersIds[] = (int) $row[CommentEntity::USER_ID];
 		}
 
 		$this->dbClient->freeResult($request);
