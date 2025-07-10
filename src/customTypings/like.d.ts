@@ -3,6 +3,7 @@ declare module 'breezeTypesLikes' {
     additionalInfo: {
       text: string
       href: string
+      usersData: UserDataType[]
     }
     alreadyLiked: boolean
     canLike: boolean
@@ -17,12 +18,6 @@ declare module 'breezeTypesLikes' {
   interface LikeInfoProps {
     item: LikeType
   }
-
-  interface LikeInfoState {
-    profile: UserDataType
-    timestamp: string
-  }
-
 }
 
 module.exports = {

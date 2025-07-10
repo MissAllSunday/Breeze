@@ -1,9 +1,12 @@
 import { LikeType } from 'breezeTypesLikes';
 
+import { userData } from './userData';
+
 const basic:LikeType = {
   additionalInfo: {
     text: 'some text',
     href: 'https://missallsunday.com',
+    usersData: [userData.basic],
   },
   alreadyLiked: false,
   canLike: true,

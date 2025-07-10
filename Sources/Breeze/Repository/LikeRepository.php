@@ -11,7 +11,6 @@ use Breeze\Entity\LikeHandledEntity;
 use Breeze\LikesEnum;
 use Breeze\PermissionsEnum;
 use Breeze\Traits\TimeTrait;
-use DateMalformedStringException;
 
 class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 {

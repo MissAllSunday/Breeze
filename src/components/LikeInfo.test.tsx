@@ -10,6 +10,7 @@ const MOCK_LIKE_ITEM = {
   additionalInfo: {
     text: 'lol',
     href: 'lol',
+    usersData: [],
   },
   alreadyLiked: false,
   canLike: true,
