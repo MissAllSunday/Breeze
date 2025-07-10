@@ -69,10 +69,8 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 		$commentHandledEntities = $this->buildHandledComments([$commentHandledEntity]);
 
-		return $this->setUsersAndLikes(
+		return $this->setLikes(
 			$commentHandledEntities,
-			[$commentEntity->getUserId()],
-			[$newCommentId],
 			LikesEnum::Comments
 		);
 	}
@@ -172,17 +170,16 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	{
 		$comments = [];
 		$usersIds = [];
-		$commentsIds = [];
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
-			$commentsIds[] = $row[CommentEntity::ID];
 			$comments[$row[CommentEntity::ID]] = new CommentHandledEntity($row);
 			$usersIds[] = (int)$row[CommentEntity::USER_ID];
 		}
 
 		$this->dbClient->freeResult($request);
+		$this->loadedUsers = $this->loadUsersInfo($usersIds);
 
-		return $this->setUsersAndLikes($comments, $usersIds, $commentsIds, LikesEnum::Comments);
+		return $this->setLikes($comments, LikesEnum::Comments);
 	}
 
 	/**

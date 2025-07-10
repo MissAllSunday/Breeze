@@ -11,7 +11,7 @@ class CommentHandledEntity extends CommentEntity implements HandledEntityInterfa
 {
 	protected array $usersInfo = [];
 
-	protected ?LikeHandledEntity $likesInfo;
+	protected ?LikeHandledEntity $likesInfo = null;
 
 	public function getUsersInfo(): array
 	{

@@ -7,6 +7,7 @@ namespace Breeze\Entity;
 
 abstract class Entity implements EntityInterface
 {
+	public const string ID = 'id';
 	public const string ALIAS_ID = '%1$s.%2$s AS %2$s';
 	public const string WRONG_VALUES = 'error_wrong_values';
 

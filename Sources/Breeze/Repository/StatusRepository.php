@@ -77,7 +77,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			$handledStatus->setIsNew(true);
 		});
 
-		return $this->setUsersAndLikes($statusHandledEntities, [$statusEntity->getUserId()], [$newStatusId], LikesEnum::Status);
+		return $this->setLikes($statusHandledEntities, LikesEnum::Status);
 	}
 
 	/**
@@ -187,18 +187,16 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	{
 		$status = [];
 		$usersIds = [];
-		$statusIds = [];
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
-			$statusIds[] = $row[StatusEntity::ID];
 			$status[$row[StatusEntity::ID]] = new StatusHandledEntity($row);
 			$usersIds[] = $row[StatusEntity::WALL_ID];
 			$usersIds[] = $row[StatusEntity::USER_ID];
 		}
 
-
+		$this->loadedUsers = $this->loadUsersInfo($usersIds);
 		$this->dbClient->freeResult($request);
 
-		return $this->setUsersAndLikes($status, $usersIds, $statusIds, LikesEnum::Status);
+		return $this->setLikes($status, LikesEnum::Status);
 	}
 }

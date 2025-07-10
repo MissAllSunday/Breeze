@@ -11,6 +11,8 @@ class LikeHandledEntity extends LikeEntity implements \JsonSerializable
 {
 	public const string CAN_LIKE = 'can_like';
 	public const string COUNT = 'count';
+	public const string ALREADY_LIKED = 'already_liked';
+	public const string ADDITIONAL_INFO = 'additional_info';
 
 	protected int $count = 0;
 

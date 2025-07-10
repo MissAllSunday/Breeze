@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Entity;
 
 use Breeze\LikesEnum;
+use Breeze\Util\Json;
 use DateMalformedStringException;
 use DateTimeImmutable;
 
@@ -98,8 +99,9 @@ class LikeEntity extends Entity
 			self::COLUMN_ID_MEMBER,
 			self::COLUMN_ID, LikeHandledEntity::COUNT => (int) $value,
 			self::COLUMN_TIME => $value === null ? null : new DateTimeImmutable('@' . $value),
-			LikeHandledEntity::CAN_LIKE => (bool) $value,
+			LikeHandledEntity::CAN_LIKE, LikeHandledEntity::ALREADY_LIKED => (bool) $value,
 			self::COLUMN_TYPE => is_string($value) ? LikesEnum::from($value) : $value,
+			LikeHandledEntity::ADDITIONAL_INFO => is_string($value) ? Json::decode($value) : $value,
 			default => (string) $value,
 		};
 	}

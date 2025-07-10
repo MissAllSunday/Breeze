@@ -10,7 +10,7 @@ class StatusHandledEntity extends StatusEntity implements HandledEntityInterface
 {
 	protected array $usersInfo = [];
 
-	protected ?LikeHandledEntity $likesInfo;
+	protected ?LikeHandledEntity $likesInfo = null;
 
 	/** @var CommentHandledEntity[] */
 	protected array $comments = [];

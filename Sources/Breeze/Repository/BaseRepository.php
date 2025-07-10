@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
+use Breeze\Entity\Entity;
 use Breeze\Entity\EntityInterface;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeHandledEntity;
@@ -163,13 +164,16 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
 	abstract public function getColumnPosterId(): string;
 
-	protected function setUsersAndLikes(array $handledEntities, array $usersIds, array $statusIds, LikesEnum $type): array
+	protected function setLikes(array $handledEntities, LikesEnum $type): array
 	{
-		$this->loadedUsers = $this->loadUsersInfo($usersIds);
-		$likesByContent = $this->likeRepository->getByContent($type, $statusIds);
+		$likesByContent = $this->likeRepository->getByContent(
+			$type,
+			array_column($handledEntities, Entity::ID)
+		);
 		$canLike = $this->isAllowedTo(PermissionsEnum::LIKES_LIKE);
 
-		array_walk($handledEntities, function ($handledEntity, $id) use ($likesByContent, $type, $canLike): void {
+		array_walk($handledEntities, function ($handledEntity) use ($likesByContent, $type, $canLike): void {
+			$id = $handledEntity->getId();
 			$likeHandled = $likesByContent[$id] ?? new LikeHandledEntity([
 				LikeEntity::COLUMN_TYPE => $type,
 				LikeEntity::COLUMN_ID => $id,

@@ -38,6 +38,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	}
 
 	/**
+	 * @param array $contentIds [int]
 	 * @return array [LikeHandledEntity]
 	 */
 	public function getByContent(LikesEnum $type, array $contentIds): array
@@ -72,13 +73,14 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	public function getLikeInfo(LikesEnum $type, int $contentId): array
 	{
 		$likeInfo = [];
-		$likes = $this->getByContent($type, [$contentId]);
-		$usersInfo = $this->loadUsersInfo(array_column($likes, LikeEntity::COLUMN_ID_MEMBER));
+		$like = $this->getByContent($type, [$contentId])[$contentId];
+		$this->loadedUsers = $this->loadUsersInfo([$like->getIdMember()]);
 
-		foreach ($likes as $key => $like) {
-			$likeInfo[$key]['profile'] = $usersInfo[$like[LikeEntity::COLUMN_ID_MEMBER]];
-			$likeInfo[$key]['timestamp'] = timeFormat($like->getLikeTime()->getTimestamp());
+		if (!empty($this->loadedUsers)) {
+			$likeInfo[$contentId]['profile'] = array_intersect_key($this->loadedUsers, array_flip([$like->getIdMember()]));
 		}
+
+		$likeInfo[$contentId]['timestamp'] = timeFormat($like->getLikeTime()->getTimestamp());
 
 		return $likeInfo;
 	}
@@ -206,23 +208,22 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	 */
 	public function likeContent(LikesEnum $type, int $contentId, int $userId): LikeHandledEntity
 	{
-		$likeEntity = new LikeEntity();
-		$likeEntity->setContentType($type);
-		$likeEntity->setContentId($contentId);
-		$likeEntity->setIdMember($userId);
+		$likeHandledEntity = new LikeHandledEntity();
+		$likeHandledEntity->setContentType($type);
+		$likeHandledEntity->setContentId($contentId);
+		$likeHandledEntity->setIdMember($userId);
 
-		$isContentAlreadyLiked = $this->isContentAlreadyLiked($likeEntity);
+		$isContentAlreadyLiked = $this->isContentAlreadyLiked($likeHandledEntity);
 
 		if ($isContentAlreadyLiked) {
-			$this->deleteByContent($likeEntity);
+			$this->deleteByContent($likeHandledEntity);
 
-			$handledEntity = new LikeHandledEntity($likeEntity->toArray());
-			$count = $this->count($likeEntity);
+			$count = $this->count($likeHandledEntity);
 
-			return $this->buildLikeData([$handledEntity], $count);
+			return $this->buildLikeData([$likeHandledEntity], $count);
 		}
 
-			return $this->insert($likeEntity);
+			return $this->insert($likeHandledEntity);
 	}
 
 	public function getById(int $id): null
