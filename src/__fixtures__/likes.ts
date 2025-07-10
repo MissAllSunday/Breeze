@@ -6,7 +6,12 @@ const basic:LikeType = {
   additionalInfo: {
     text: 'some text',
     href: 'https://missallsunday.com',
-    usersData: [userData.basic],
+    usersLikeInfo: [
+      {
+        userData: userData.basic,
+        likeTime: 'some date',
+      },
+    ],
   },
   alreadyLiked: false,
   canLike: true,

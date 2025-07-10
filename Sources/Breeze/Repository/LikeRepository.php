@@ -157,8 +157,8 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	{
 		$alreadyLiked = $likesCount > 0;
 		$likesTextCount = $likesCount;
-		$likeHandledEntity = array_shift($likeData);
-		$this->loadedUsers = $this->loadUsersInfo(array_column($likeData, LikeEntity::COLUMN_ID_MEMBER));
+
+		$this->loadedUsers = $this->loadUsersInfo(array_keys($likeData));
 		$usersLikeInfo = [];
 		array_walk($likeData, function ($like) use (&$usersLikeInfo): void {
 			$userId = $like->getIdMember();
@@ -176,6 +176,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 		$base .= ($this->getText($base . $likesTextCount) !== '') ? $likesTextCount : 'n';
 
+		$likeHandledEntity = array_shift($likeData);
 		$likeHandledEntity->setCanLike($this->isAllowedTo(PermissionsEnum::LIKES_LIKE));
 		$likeHandledEntity->setAlreadyLiked($alreadyLiked);
 		$likeHandledEntity->setCount($likesCount);
