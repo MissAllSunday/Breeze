@@ -6,11 +6,10 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
-use Breeze\Entity\Entity;
 use Breeze\Entity\EntityInterface;
 use Breeze\Entity\LikeEntity;
-use Breeze\Entity\LikeHandledEntity;
 use Breeze\Entity\MemberEntity;
+use Breeze\Entity\SharedEntity;
 use Breeze\LikesEnum;
 use Breeze\PermissionsEnum;
 use Breeze\Traits\CacheTrait;
@@ -112,17 +111,17 @@ abstract class BaseRepository implements BaseRepositoryInterface
 					$columnName = self::LIKE_IDENTIFIER . '.' . $likeColumn;
 
 					return match ($likeColumn) {
-							LikeEntity::COLUMN_TYPE => 'COALESCE(' . $columnName . ', "' . $type->value . '")',
-							LikeEntity::COLUMN_ID_MEMBER => 'COALESCE(' . $columnName . ', 0)',
+							LikeEntity::TYPE => 'COALESCE(' . $columnName . ', "' . $type->value . '")',
+							LikeEntity::ID_MEMBER => 'COALESCE(' . $columnName . ', 0)',
 							default => $columnName,
 						} . ' AS ' . LikeEntity::IDENTIFIER . $likeColumn;
 				}, LikeEntity::getColumns())),
 			'tableName' => $this->getTableName(),
 			'from' => $this->getTableName() . ' AS ' . self::PARENT_LIKE_IDENTIFIER,
 			'likeJoin' => LikeEntity::TABLE . ' AS ' . self::LIKE_IDENTIFIER . '
-			 	ON (' . self::LIKE_IDENTIFIER . '.' . LikeEntity::COLUMN_ID . ' =
+			 	ON (' . self::LIKE_IDENTIFIER . '.' . LikeEntity::ID . ' =
 			 	 ' . self::PARENT_LIKE_IDENTIFIER . '.' . $parentIdentifier . '
-			 	AND ' . self::LIKE_IDENTIFIER . '.' . LikeEntity::COLUMN_TYPE . ' = "' . $type->value . '")',
+			 	AND ' . self::LIKE_IDENTIFIER . '.' . LikeEntity::TYPE . ' = "' . $type->value . '")',
 		];
 	}
 
@@ -164,21 +163,25 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
 	abstract public function getColumnPosterId(): string;
 
+	/**
+	 * @param array $handledEntities [EntityInterface]
+	 * @return array [EntityInterface]
+	 */
 	protected function setLikes(array $handledEntities, LikesEnum $type): array
 	{
 		$likesByContent = $this->likeRepository->getByContent(
 			$type,
-			array_column($handledEntities, Entity::ID)
+			array_column($handledEntities, SharedEntity::ID)
 		);
 		$canLike = $this->isAllowedTo(PermissionsEnum::LIKES_LIKE);
 
 		array_walk($handledEntities, function ($handledEntity) use ($likesByContent, $type, $canLike): void {
 			$id = $handledEntity->getId();
-			$likeHandled = $likesByContent[$id] ?? new LikeHandledEntity([
-				LikeEntity::COLUMN_TYPE => $type,
-				LikeEntity::COLUMN_ID => $id,
-				LikeEntity::COLUMN_ID_MEMBER => $handledEntity->getUserId(),
-				LikeHandledEntity::CAN_LIKE => $canLike,
+			$likeHandled = $likesByContent[$id] ?? LikeEntity::from([
+				LikeEntity::TYPE => $type,
+				LikeEntity::ID => $id,
+				LikeEntity::ID_MEMBER => $handledEntity->getUserId(),
+				LikeEntity::CAN_LIKE => $canLike,
 			]);
 
 			$handledEntity->setLikesInfo($likeHandled);

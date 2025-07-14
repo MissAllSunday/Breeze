@@ -22,12 +22,12 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 
 	public function getColumnId(): string
 	{
-		return AlertEntity::COLUMN_ID;
+		return AlertEntity::ID;
 	}
 
 	public function getColumnPosterId(): string
 	{
-		return AlertEntity::COLUMN_ID_MEMBER_STARTED;
+		return AlertEntity::ID_MEMBER_STARTED;
 	}
 
 	public function getColumns(): array
@@ -37,23 +37,19 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 
 	public function insert(AlertEntity $alertEntity): int
 	{
-		// Don't need the ID (Yet!)
-		$alertEntity->unsetIdAlert();
-		$alertEntity->setAlertTime(time());
-
 		$this->dbClient->insert(AlertEntity::TABLE, [
-			AlertEntity::COLUMN_ALERT_TIME => 'int',
-			AlertEntity::COLUMN_ID_MEMBER => 'int',
-			AlertEntity::COLUMN_ID_MEMBER_STARTED => 'int',
-			AlertEntity::COLUMN_MEMBER_NAME => 'string',
-			AlertEntity::COLUMN_CONTENT_TYPE => 'string',
-			AlertEntity::COLUMN_CONTENT_ID => 'int',
-			AlertEntity::COLUMN_CONTENT_ACTION => 'string',
-			AlertEntity::COLUMN_IS_READ => 'int',
-			AlertEntity::COLUMN_EXTRA => 'string',
-		], $alertEntity->toArray(), AlertEntity::COLUMN_ID);
+			AlertEntity::ALERT_TIME => 'int',
+			AlertEntity::ID_MEMBER => 'int',
+			AlertEntity::ID_MEMBER_STARTED => 'int',
+			AlertEntity::MEMBER_NAME => 'string',
+			AlertEntity::CONTENT_TYPE => 'string',
+			AlertEntity::CONTENT_ID => 'int',
+			AlertEntity::CONTENT_ACTION => 'string',
+			AlertEntity::IS_READ => 'int',
+			AlertEntity::EXTRA => 'string',
+		], $alertEntity->toInsert(), AlertEntity::ID);
 
-		return $this->dbClient->getInsertedId(AlertEntity::TABLE, AlertEntity::COLUMN_ID);
+		return $this->dbClient->getInsertedId(AlertEntity::TABLE, AlertEntity::ID);
 	}
 
 	public function update(AlertEntity $alertEntity): AlertEntity
@@ -64,7 +60,7 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 		$this->dbClient->update(
 			AlertEntity::TABLE,
 			'SET ' . ($updateString) . '
-			WHERE ' . AlertEntity::COLUMN_ID . ' = {int:id}',
+			WHERE ' . AlertEntity::ID . ' = {int:id}',
 			['id' => $id]
 		);
 
@@ -77,7 +73,7 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 			'
 			SELECT ' . implode(', ', AlertEntity::getColumns()) . '
 			FROM {db_prefix}' . AlertEntity::TABLE . '
-			WHERE ' . AlertEntity::COLUMN_ID . ' = {int:alertId}',
+			WHERE ' . AlertEntity::ID . ' = {int:alertId}',
 			[
 				'alertId' => $id,
 			]
@@ -86,7 +82,7 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 
 		$this->dbClient->freeResult($request);
 
-		return new AlertEntity($result);
+		return AlertEntity::from($result);
 	}
 
 	public function checkAlert(int $userId, string $alertType, int $alertId = 0, string $alertSender = ''): bool
@@ -97,14 +93,14 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 
 		$request = $this->dbClient->query(
 			'
-			SELECT ' . AlertEntity::COLUMN_ID . '
+			SELECT ' . AlertEntity::ID . '
 			FROM {db_prefix}' . AlertEntity::TABLE . '
-			WHERE ' . AlertEntity::COLUMN_ID_MEMBER . ' = {int:userId}
-				AND ' . AlertEntity::COLUMN_IS_READ . ' = 0
-				AND ' . AlertEntity::COLUMN_CONTENT_TYPE . ' = {string:alertType}
-				' . ($alertId !== 0 ? 'AND ' . AlertEntity::COLUMN_CONTENT_ID . ' = {int:alertId}' : '') . '
+			WHERE ' . AlertEntity::ID_MEMBER . ' = {int:userId}
+				AND ' . AlertEntity::IS_READ . ' = 0
+				AND ' . AlertEntity::CONTENT_TYPE . ' = {string:alertType}
+				' . ($alertId !== 0 ? 'AND ' . AlertEntity::CONTENT_ID . ' = {int:alertId}' : '') . '
 				' . ($alertSender !== '' && $alertSender !== '0' ?
-				'AND ' . AlertEntity::COLUMN_ID_MEMBER_STARTED . ' = {int:alertSender}' : ''),
+				'AND ' . AlertEntity::ID_MEMBER_STARTED . ' = {int:alertSender}' : ''),
 			[
 				'userId' => $userId,
 				'alertType' => $alertType,

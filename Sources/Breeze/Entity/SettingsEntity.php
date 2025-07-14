@@ -7,17 +7,24 @@ namespace Breeze\Entity;
 
 class SettingsEntity
 {
-	public const MASTER = 'master';
-	public const FORCE_WALL = 'forceWall';
-	public const ABOUT_ME_MAX_LENGTH = 'aboutMeMaxLength';
-	public const MAX_FLOOD_NUM = 'maxFloodNum';
-	public const MAX_FLOOD_MINUTES = 'maxFloodMinutes';
-	public const TYPE_CHECK = 'check';
-	public const TYPE_INT = 'int';
-	public const TYPE_TEXT = 'text';
-	public const TYPE_TEXTAREA = 'textArea';
-	public const TYPE_SELECT = 'select';
-	public const PF_TEXT_KEY = 'custom_profile_placement_';
+	public const string MASTER = 'master';
+	public const string FORCE_WALL = 'forceWall';
+	public const string ABOUT_ME_MAX_LENGTH = 'aboutMeMaxLength';
+	public const string MAX_FLOOD_NUM = 'maxFloodNum';
+	public const string MAX_FLOOD_MINUTES = 'maxFloodMinutes';
+	public const string TYPE_CHECK = 'check';
+	public const string TYPE_INT = 'int';
+	public const string TYPE_TEXT = 'text';
+	public const string TYPE_TEXTAREA = 'textArea';
+	public const string TYPE_SELECT = 'select';
+	public const string PF_TEXT_KEY = 'custom_profile_placement_';
+
+	public static function from(array $data = []): self
+	{
+		$class = self::class;
+
+		return new $class();
+	}
 
 	public static function getColumns(): array
 	{

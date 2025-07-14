@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Event;
 
 use Breeze\Breeze;
-use Breeze\Entity\AlertHandledEntity;
+use Breeze\Entity\AlertEntity;
 use Breeze\Event\Comment\CommentCreatedHandler;
 use Breeze\Event\Like\LikeCreatedHandler;
 use Breeze\Event\Status\StatusCreatedHandler;
@@ -19,25 +19,25 @@ class HandlerServiceProvider
 	/**
 	 * @throws DataNotFoundException
 	 */
-	public function getHandler(AlertHandledEntity $alertHandledEntity): EventHandlerInterface
+	public function getHandler(AlertEntity $alertEntity): EventHandlerInterface
 	{
-		$handlerClass = $this->getHandlerClass($alertHandledEntity);
+		$handlerClass = $this->getHandlerClass($alertEntity);
 
-		return new $handlerClass($alertHandledEntity);
+		return new $handlerClass($alertEntity);
 	}
 
-	protected function buildHandlerName(AlertHandledEntity $alertHandledEntity): string
+	protected function buildHandlerName(AlertEntity $alertEntity): string
 	{
-		return ucfirst(str_replace(Breeze::PATTERN, '', $alertHandledEntity->getContentType())) .
-			ucfirst(str_replace(Breeze::PATTERN, '', $alertHandledEntity->getContentAction()));
+		return ucfirst(str_replace(Breeze::PATTERN, '', $alertEntity->getContentType())) .
+			ucfirst(str_replace(Breeze::PATTERN, '', $alertEntity->getContentAction()));
 	}
 
 	/**
 	 * @throws DataNotFoundException
 	 */
-	protected function getHandlerClass(AlertHandledEntity $alertHandledEntity): string
+	protected function getHandlerClass(AlertEntity $alertEntity): string
 	{
-		return match ($this->buildHandlerName($alertHandledEntity)) {
+		return match ($this->buildHandlerName($alertEntity)) {
 			'StatusCreated' => StatusCreatedHandler::class,
 			'CommentCreated' => CommentCreatedHandler::class,
 			'LikeCreated' => LikeCreatedHandler::class,

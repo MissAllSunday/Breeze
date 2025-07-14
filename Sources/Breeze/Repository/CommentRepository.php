@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Entity\CommentEntity;
-use Breeze\Entity\CommentHandledEntity;
+use Breeze\Entity\SharedEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\LikesEnum;
 use Breeze\Util\Parser;
@@ -40,37 +40,33 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	 */
 	public function insert(CommentEntity $commentEntity): array
 	{
-		$commentEntity->unsetId();
-		$commentEntity->setCreatedAt(time());
-
 		$this->dbClient->insert(
 			CommentEntity::TABLE,
 			[
 				CommentEntity::STATUS_ID => 'int',
 				CommentEntity::USER_ID => 'int',
-				CommentEntity::CREATED_AT => 'int',
+				SharedEntity::CREATED_AT => 'int',
 				CommentEntity::BODY => 'string',
 				CommentEntity::LIKES => 'int',
 			],
-			$commentEntity->toArray(),
+			$commentEntity->toInsert(),
 			CommentEntity::ID
 		);
 
-		$newCommentId = $this->dbClient->getInsertedId(CommentEntity::TABLE, CommentEntity::ID);
+		$newCommentId = $this->dbClient->getInsertedId(
+			CommentEntity::TABLE,
+			CommentEntity::ID
+		);
 
 		if ($newCommentId === 0) {
 			throw new InvalidCommentException('error_save_comment');
 		}
 
-		$this->loadedUsers = $this->loadUsersInfo([$commentEntity->getUserId()]);
 		$commentEntity->setBody(Parser::bbc($commentEntity->getBody()));
 		$commentEntity->setId($newCommentId);
-		$commentHandledEntity = new CommentHandledEntity($commentEntity->toArray());
-
-		$commentHandledEntities = $this->buildHandledComments([$commentHandledEntity]);
 
 		return $this->setLikes(
-			$commentHandledEntities,
+			$this->setUsers([$commentEntity], [$commentEntity->getUserId()]),
 			LikesEnum::Comments
 		);
 	}
@@ -95,7 +91,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			$queryParams
 		);
 
-		return $this->buildHandledComments($this->prepareData($request));
+		return $this->prepareData($request);
 	}
 
 	public function getByStatus(array $statusIds = []): array
@@ -114,13 +110,13 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			$queryParams
 		);
 
-		return $this->buildHandledComments($this->prepareData($request));
+		return $this->prepareData($request);
 	}
 
 	/**
 	 * @throws DataNotFoundException
 	 */
-	public function getById(int $id): CommentHandledEntity
+	public function getById(int $id = 0): CommentEntity
 	{
 		$request = $this->dbClient->query(
 			'
@@ -140,7 +136,9 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			throw new DataNotFoundException('error_no_comment');
 		}
 
-		return $this->buildHandledComments($this->prepareData($request))[$id];
+		$comments = $this->prepareData($request);
+
+		return array_shift($comments);
 	}
 
 	/**
@@ -152,6 +150,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			throw new DataNotFoundException('error_no_comment');
 		}
 
+		// @todo handle cache clen up via event
 		$this->setCache(self::class . '::getById' . $commentId, null);
 
 		return true;
@@ -172,29 +171,31 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		$usersIds = [];
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
-			$comments[$row[CommentEntity::ID]] = new CommentHandledEntity($row);
+			$comments[$row[CommentEntity::ID]] = CommentEntity::from($row);
 			$usersIds[] = (int) $row[CommentEntity::USER_ID];
 		}
 
 		$this->dbClient->freeResult($request);
 		$this->loadedUsers = $this->loadUsersInfo($usersIds);
 
-		return $this->setLikes($comments, LikesEnum::Comments);
+		return $this->setLikes($this->setUsers($comments, $usersIds), LikesEnum::Comments);
 	}
 
 	/**
-	 * @param array $comments [CommentHandledEntity]
-	 * @return array [CommentHandledEntity]
+	 * @param array $comments [CommentEntity]
+	 * @param array $usersIds [int]
+	 * @return array [CommentEntity]
 	 */
-	protected function buildHandledComments(array $comments): array
+	protected function setUsers(array $comments, array $usersIds): array
 	{
-		/** @var CommentHandledEntity[] $comments */
-		array_walk($comments, function ($comment, $id): void {
+		$loadedUsers = $this->loadUsersInfo($usersIds);
 
+		/** @var CommentEntity[] $comments */
+		array_walk($comments, function ($comment, $id) use ($loadedUsers): void {
 			$commentsLoadedUsers = [$comment->getUserId()];
 
 			if (!empty($this->loadedUsers)) {
-				$comment->setUsersInfo(array_intersect_key($this->loadedUsers, array_flip($commentsLoadedUsers)));
+				$comment->setUsersInfo(array_intersect_key($loadedUsers, array_flip($commentsLoadedUsers)));
 			}
 		});
 

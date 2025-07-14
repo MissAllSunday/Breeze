@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
+use DateTimeImmutable;
+
 class UserSettingsEntity extends Entity implements EntityInterface
 {
 	public const string IDENTIFIER = 'user_settings';
@@ -29,6 +31,17 @@ class UserSettingsEntity extends Entity implements EntityInterface
 	protected int $enableBuddiesTab = 0;
 
 	protected string $aboutMe = '';
+
+	protected array $buddies = [];
+
+	protected array $blockList = [];
+
+	public static function from(array $data = []): self
+	{
+		$class = self::class;
+
+		return new $class($data);
+	}
 
 	public static function getColumns(): array
 	{
@@ -57,7 +70,7 @@ class UserSettingsEntity extends Entity implements EntityInterface
 	public static function getInts(): array
 	{
 		return array_filter(self::getDefaultValues(), function (string $part): bool {
-			return (bool)strlen($part);
+			return (bool) strlen($part);
 		});
 	}
 
@@ -133,7 +146,33 @@ class UserSettingsEntity extends Entity implements EntityInterface
 		$this->paginationNumber = $paginationNumber;
 	}
 
-	public function castValue(string $columnName, mixed $value): int|string|array
+	/**
+	 * @return array [int]
+	 */
+	public function getBuddies(): array
+	{
+		return $this->buddies;
+	}
+
+	public function setBuddies(array $buddies): void
+	{
+		$this->buddies = array_map('intval', array_filter($buddies));
+	}
+
+	/**
+	 * @return array [int]
+	 */
+	public function getBlockList(): array
+	{
+		return $this->blockList;
+	}
+
+	public function setBlockList(array $blockList): void
+	{
+		$this->blockList = array_map('intval', array_filter($blockList));
+	}
+
+	public function castValue(string $columnName, mixed $value): int|string|array|DateTimeImmutable
 	{
 		return match ($columnName) {
 			self::WALL,

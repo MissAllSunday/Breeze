@@ -6,7 +6,6 @@ namespace Breeze\Service;
 
 use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
-use Breeze\Entity\AlertHandledEntity;
 use Breeze\Entity\EntityInterface;
 use Breeze\Event\HandlerServiceProvider;
 use Breeze\Repository\AlertRepositoryInterface;
@@ -36,7 +35,7 @@ class AlertService extends BaseService implements AlertServiceInterface
 		$handlerServiceProvider = new HandlerServiceProvider();
 		foreach ($alerts as $id => &$alert) {
 			if (str_contains($alert['content_type'], Breeze::PATTERN)) {
-				$handler = $handlerServiceProvider->getHandler(new AlertHandledEntity($alert));
+				$handler = $handlerServiceProvider->getHandler($alert);
 				$alert = $handler->resolve();
 			}
 		}

@@ -6,8 +6,8 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
+use Breeze\Entity\SharedEntity;
 use Breeze\Entity\StatusEntity;
-use Breeze\Entity\StatusHandledEntity;
 use Breeze\LikesEnum;
 use Breeze\Util\Parser;
 use Breeze\Util\Validate\DataNotFoundException;
@@ -46,42 +46,33 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 
 	/**
 	 * @throws InvalidStatusException
-	 * @return array [StatusHandledEntity]
+	 * @return array [StatusEntity]
 	 */
 	public function insert(StatusEntity $statusEntity): array
 	{
-		$statusEntity->unsetId();
-		$statusEntity->setCreatedAt(time());
-
 		$this->dbClient->insert(StatusEntity::TABLE, [
 			StatusEntity::WALL_ID => 'int',
 			StatusEntity::USER_ID => 'int',
-			StatusEntity::CREATED_AT => 'int',
+			SharedEntity::CREATED_AT => 'int',
 			StatusEntity::BODY => 'string',
 			StatusEntity::LIKES => 'int',
-		], $statusEntity->toArray(), StatusEntity::ID);
+		], $statusEntity->toInsert(), StatusEntity::ID);
 
 		$newStatusId = $this->dbClient->getInsertedId(StatusEntity::TABLE, StatusEntity::ID);
 
 		if ($newStatusId === 0) {
 			throw new InvalidStatusException('error_save_status');
 		}
-
-		$this->loadedUsers = $this->loadUsersInfo([$statusEntity->getUserId()]);
+		$this->loadUsersInfo([$statusEntity->getUserId()]);
 		$statusEntity->setBody(Parser::bbc($statusEntity->getBody()));
-
 		$statusEntity->setId($newStatusId);
-		$statusHandledEntity = new StatusHandledEntity($statusEntity->toArray());
-		$statusHandledEntities = $this->buildHandledStatus([$statusHandledEntity]);
-		array_walk($statusHandledEntities, function ($handledStatus): void {
-			$handledStatus->setIsNew(true);
-		});
+		$statusEntity->setIsNew(true);
 
-		return $this->setLikes($statusHandledEntities, LikesEnum::Status);
+		return $this->setLikes($this->setUsers([$statusEntity], [$statusEntity->getUserId()]), LikesEnum::Status);
 	}
 
 	/**
-	 * @return array [StatusHandledEntity]
+	 * @return array [StatusEntity]
 	 */
 	public function getByProfile(array $userProfiles = [], int $start = 0, int $maxIndex = 0): array
 	{
@@ -108,13 +99,13 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 
 		$comments = $this->commentRepository->getByProfile($userProfiles);
 
-		return $this->buildHandledStatus($this->prepareData($request), $comments);
+		return $this->prepareData($request, $comments);
 	}
 
 	/**
 	 * @throws DataNotFoundException
 	 */
-	public function getById(int $id = 0): StatusHandledEntity
+	public function getById(int $id = 0): StatusEntity
 	{
 		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikesEnum::Status), [
 			'columnName' => StatusEntity::ID,
@@ -135,10 +126,9 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			throw new DataNotFoundException('error_no_status');
 		}
 
-		// @TODO why are we getting by profile id instead of by status id?
-		$comments = $this->commentRepository->getByProfile([$id]);
+		$comments = $this->commentRepository->getByStatus([$id]);
 
-		return $this->buildHandledStatus($this->prepareData($request), $comments)[$id];
+		return $this->prepareData($request, $comments)[$id];
 	}
 
 	/**
@@ -158,38 +148,47 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	}
 
 	/**
-	 * @param array $status [StatusHandledEntity]
-	 * @param array $comments [CommentHandledEntity]
-	 * @return array [StatusHandledEntity]
+	 * @param array $status [StatusEntity]
+	 * @param array $usersIds [int]
+	 * @return array [StatusEntity]
 	 */
-	protected function buildHandledStatus(array $status, array $comments = []): array
+	protected function setUsers(array $status, array $usersIds = []): array
+	{
+		$loadedUsers = $this->loadUsersInfo($usersIds);
+
+		array_walk($status, function ($entity) use ($loadedUsers): void {
+			$commentsLoadedUsers = [$entity->getUserId()];
+
+			if (!empty($this->loadedUsers)) {
+				$entity->setUsersInfo(array_intersect_key($loadedUsers, array_flip($commentsLoadedUsers)));
+			}
+		});
+
+		return $status;
+	}
+
+	protected function setComments(array $status, array $comments): array
 	{
 		array_walk($status, function ($singleStatus, $statusId) use ($comments): void {
-
 			$singleStatus->setComments(array_filter($comments, function ($comment) use ($statusId) {
 				return $comment->getStatusId() === $statusId;
 			}));
-			$statusLoadedUsers = [$singleStatus->getUserId(), $singleStatus->getWallId()];
-
-			if (!empty($this->loadedUsers)) {
-				$singleStatus->setUsersInfo(array_intersect_key($this->loadedUsers, array_flip($statusLoadedUsers)));
-			}
-			$singleStatus->setBody(Parser::bbc($singleStatus->getBody()));
 		});
 
 		return $status;
 	}
 
 	/**
-	 * @return array [StatusHandledEntity]
+	 * @param array $comments [CommentEntity]
+	 * @return array [StatusEntity]
 	 */
-	protected function prepareData(object $request): array
+	protected function prepareData(object $request, array $comments = []): array
 	{
 		$status = [];
 		$usersIds = [];
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
-			$status[$row[StatusEntity::ID]] = new StatusHandledEntity($row);
+			$status[$row[StatusEntity::ID]] = StatusEntity::from($row);
 			$usersIds[] = $row[StatusEntity::WALL_ID];
 			$usersIds[] = $row[StatusEntity::USER_ID];
 		}
@@ -197,6 +196,12 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		$this->loadedUsers = $this->loadUsersInfo($usersIds);
 		$this->dbClient->freeResult($request);
 
-		return $this->setLikes($status, LikesEnum::Status);
+		return $this->setComments(
+			$this->setLikes(
+				$this->setUsers($status, $usersIds),
+				LikesEnum::Status
+			),
+			$comments
+		);
 	}
 }

@@ -6,14 +6,13 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Entity\StatusEntity;
-use Breeze\Entity\StatusHandledEntity;
 use Breeze\Util\Validate\EmptyDataException;
 
 interface StatusRepositoryInterface extends BaseRepositoryInterface
 {
 	/**
 	 * @throws InvalidStatusException
-	 * @return array [StatusHandledEntity]
+	 * @return array [StatusEntity]
 	 */
 	public function insert(StatusEntity $statusEntity): array;
 
@@ -22,7 +21,7 @@ interface StatusRepositoryInterface extends BaseRepositoryInterface
 	 */
 	public function getByProfile(array $userProfiles = [], int $start = 0, int $maxIndex = 0): array;
 
-	public function getById(int $id = 0): StatusHandledEntity;
+	public function getById(int $id = 0): StatusEntity;
 
 	/**
 	 * @throws InvalidStatusException

@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-use Breeze\Entity\StatusHandledEntity;
+use Breeze\Entity\StatusEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Util\Validate\EmptyDataException;
 
@@ -13,14 +13,14 @@ interface StatusServiceInterface
 {
 	/**
 	 * @throws EmptyDataException
-	 * @return array [StatusHandledEntity]
+	 * @return array [StatusEntity]
 	 *
 	 */
 	public function getByProfile(int $wallId, int $start): array;
 
 	/**
 	 * @throws EmptyDataException
-	 * @return array [StatusHandledEntity]
+	 * @return array [StatusEntity]
 	 *
 	 */
 	public function getByBuddies(int $start): array;
@@ -32,7 +32,7 @@ interface StatusServiceInterface
 
 	/**
 	 * @throws InvalidStatusException
-	 * @return array [StatusHandledEntity]
+	 * @return array [StatusEntity]
 	 */
 	public function save(array $data): array;
 

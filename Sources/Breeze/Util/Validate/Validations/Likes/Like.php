@@ -19,9 +19,9 @@ class Like extends BaseActions implements ValidateDataInterface
 	protected const VALIDATE = 'validate';
 
 	protected const PARAMS = [
-		LikeEntity::COLUMN_ID => 0,
-		LikeEntity::COLUMN_TYPE => '',
-		LikeEntity::COLUMN_ID_MEMBER => 0,
+		LikeEntity::ID => 0,
+		LikeEntity::TYPE => '',
+		LikeEntity::ID_MEMBER => 0,
 	];
 
 	protected const SUCCESS_KEY = 'likeSuccess';
@@ -31,7 +31,7 @@ class Like extends BaseActions implements ValidateDataInterface
 	 */
 	public function checkType(): void
 	{
-		$type = $this->data[LikeEntity::COLUMN_TYPE];
+		$type = $this->data[LikeEntity::TYPE];
 
 		if (!LikesEnum::isValid($type)) {
 			throw new DataNotFoundException('likesTypeInvalid');
@@ -61,7 +61,7 @@ class Like extends BaseActions implements ValidateDataInterface
 	 */
 	public function checkUser(): void
 	{
-		$this->validateUser->areValidUsers([$this->data[LikeEntity::COLUMN_ID_MEMBER]]);
+		$this->validateUser->areValidUsers([$this->data[LikeEntity::ID_MEMBER]]);
 	}
 
 	/**

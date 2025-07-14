@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
+use Breeze\Entity\SharedEntity;
 use Breeze\Entity\StatusEntity;
-use Breeze\Entity\StatusHandledEntity;
 use Breeze\Util\Validate\DataNotFoundException;
+use DateMalformedStringException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -36,7 +37,7 @@ class StatusRepositoryTest extends TestCase
 		$this->commentRepository = $this->createMock(CommentRepositoryInterface::class);
 		$this->statusRepository = $this->getMockBuilder(StatusRepository::class)
 			->setConstructorArgs([$this->dbClient, $this->commentRepository, $this->likeRepository])
-			->onlyMethods(['prepareData', 'buildHandledStatus', 'loadUsersInfo'])
+			->onlyMethods(['prepareData', 'loadUsersInfo'])
 			->getMock();
 
 		$this->statusRepository->method('loadUsersInfo')
@@ -72,21 +73,17 @@ class StatusRepositoryTest extends TestCase
 	}
 
 	/**
-	 * @throws InvalidStatusException
+	 * @throws InvalidStatusException|DateMalformedStringException
 	 */
 	public function testInsert(): void
 	{
-		$statusEntity = new StatusEntity([
-			StatusEntity::WALL_ID => 1,
-			StatusEntity::USER_ID => 2,
-			StatusEntity::BODY => 'Test status',
-		]);
-		$statusHandledEntities = [0 => new StatusHandledEntity([
+		$statusEntity = StatusEntity::from([
 			StatusEntity::ID => 5,
 			StatusEntity::WALL_ID => 1,
 			StatusEntity::USER_ID => 2,
 			StatusEntity::BODY => 'Test status',
-		])];
+			SharedEntity::CREATED_AT => time(),
+		]);
 
 		$this->dbClient->expects($this->once())
 			->method('insert');
@@ -98,24 +95,21 @@ class StatusRepositoryTest extends TestCase
 		$this->statusRepository->method('loadUsersInfo')
 			->willReturn([2 => ['name' => 'Test User']]);
 
-		$this->statusRepository->expects($this->once())
-			->method('buildHandledStatus')
-			->willReturn($statusHandledEntities);
-
 		$result = $this->statusRepository->insert($statusEntity);
 
-		$this->assertInstanceOf(StatusHandledEntity::class, $result[0]);
+		$this->assertInstanceOf(StatusEntity::class, $result[0]);
 		$this->assertEquals(5, $result[0]->getId());
 		$this->assertTrue($result[0]->isNew());
 	}
 
 	public function testInsertThrowsExceptionWhenIdIsZero(): void
 	{
-		$statusEntity = new StatusEntity([
+		$statusEntity = StatusEntity::from([
 			StatusEntity::WALL_ID => 1,
 			StatusEntity::USER_ID => 2,
 			StatusEntity::BODY => 'Test status',
 			StatusEntity::LIKES => 0,
+			SharedEntity::CREATED_AT => time(),
 		]);
 
 		$this->dbClient->method('getInsertedId')->willReturn(0);
@@ -131,7 +125,7 @@ class StatusRepositoryTest extends TestCase
 	 */
 	public function testGetById(): void
 	{
-		$mockData = [5 => new StatusHandledEntity([
+		$mockData = [5 => StatusEntity::from([
 			StatusEntity::ID => 5,
 			StatusEntity::WALL_ID => 1,
 			StatusEntity::USER_ID => 2,
@@ -148,11 +142,6 @@ class StatusRepositoryTest extends TestCase
 		$this->statusRepository->expects($this->once())
 			->method('prepareData')
 			->with($this->queryObject)
-			->willReturn($mockData);
-
-		$this->statusRepository->expects($this->once())
-			->method('buildHandledStatus')
-			->with($mockData)
 			->willReturn($mockData);
 
 		$result = $this->statusRepository->getById(5);
@@ -222,7 +211,7 @@ class StatusRepositoryTest extends TestCase
 	{
 		$mockQueryObject = new stdClass();
 		$mockData = [
-			1 => new StatusHandledEntity([
+			1 => StatusEntity::from([
 				StatusEntity::ID => 1,
 				StatusEntity::WALL_ID => 10,
 				StatusEntity::USER_ID => 2,
@@ -247,13 +236,8 @@ class StatusRepositoryTest extends TestCase
 			->with($mockQueryObject)
 			->willReturn($mockData);
 
-		$this->statusRepository->expects($this->once())
-			->method('buildHandledStatus')
-			->with($mockData)
-			->willReturn(['data' => $mockData, 'total' => 1]);
-
 		$result = $this->statusRepository->getByProfile([10]);
 
-		$this->assertEquals(['data' => $mockData, 'total' => 1], $result);
+		$this->assertEquals($mockData, $result);
 	}
 }

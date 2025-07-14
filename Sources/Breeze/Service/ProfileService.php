@@ -7,7 +7,6 @@ namespace Breeze\Service;
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
-use Breeze\Entity\UserSettingsHandledEntity;
 use Breeze\PermissionsEnum;
 use Breeze\Repository\User\SettingsRepositoryInterface as UserSettingsRepository;
 use Breeze\Traits\PermissionsTrait;
@@ -95,14 +94,14 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		return $this->global('user_info');
 	}
 
-	public function getCurrentUserSettings(): UserSettingsHandledEntity
+	public function getCurrentUserSettings(): UserSettingsEntity
 	{
 		$currentUserInfo = $this->global('user_info');
 
 		return $this->userSettingsRepository->getById($currentUserInfo['id']);
 	}
 
-	public function getUserSettings(int $userId): UserSettingsHandledEntity
+	public function getUserSettings(int $userId): UserSettingsEntity
 	{
 		return $this->userSettingsRepository->getById($userId);
 	}
@@ -171,7 +170,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		];
 	}
 
-	public function isAllowedToSeePage(UserSettingsHandledEntity $profileSettings, int $profileId = 0, int $userId = 0): bool
+	public function isAllowedToSeePage(UserSettingsEntity $profileSettings, int $profileId = 0, int $userId = 0): bool
 	{
 		$forceWall = $this->getSetting(SettingsEntity::FORCE_WALL);
 		$isWallEnable = !empty($profileSettings->getWall());

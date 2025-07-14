@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-use Breeze\Entity\StatusHandledEntity;
-use Breeze\Entity\UserSettingsHandledEntity;
+use Breeze\Entity\StatusEntity;
+use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Util\Validate\EmptyDataException;
@@ -46,7 +46,7 @@ class StatusServiceTest extends TestCase
 	#[DataProvider('getByProfileProvider')]
 	public function testGetByProfile(int $wallId, int $start, array $expected): void
 	{
-		$this->userRepository->method('getById')->willReturn(new UserSettingsHandledEntity(['paginationNumber' => 5]));
+		$this->userRepository->method('getById')->willReturn(UserSettingsEntity::from(['paginationNumber' => 5]));
 		$this->permissionsService->method('permissions')->willReturn([
 			'delete' => true,
 			'edit' => false,
@@ -54,7 +54,7 @@ class StatusServiceTest extends TestCase
 			'postComments' => true,
 		]);
 		$this->statusRepository->method('getByProfile')->willReturn([
-			self::getStatusHandledEntity(),
+			self::getStatusEntity(),
 		]);
 		$this->statusService->method('getCount')->willReturn(1);
 
@@ -70,7 +70,7 @@ class StatusServiceTest extends TestCase
 				'wallId' => 1,
 				'start' => 1,
 				'expected' => [
-					'data' => [self::getStatusHandledEntity()], 'total' => 1,
+					'data' => [self::getStatusEntity()], 'total' => 1,
 					'permissions' => [
 						'delete' => true,
 						'edit' => false,
@@ -82,9 +82,9 @@ class StatusServiceTest extends TestCase
 		];
 	}
 
-	protected static function getStatusHandledEntity(): StatusHandledEntity
+	protected static function getStatusEntity(): StatusEntity
 	{
-		return new StatusHandledEntity([
+		return StatusEntity::from([
 			'id' => 1,
 			'wallId' => 1,
 			'userId' => 1,

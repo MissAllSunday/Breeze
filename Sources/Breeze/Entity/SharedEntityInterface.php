@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
+
 namespace Breeze\Entity;
 
-interface HandledEntityInterface extends \JsonSerializable
+interface SharedEntityInterface extends EntityInterface
 {
 	public function getUsersInfo(): array;
 
 	public function setUsersInfo(array $usersInfo): void;
 
-	public function setLikesInfo(?LikeHandledEntity $likesInfo): void;
+	public function setLikesInfo(?LikeEntity $likesInfo): void;
 
-	public function getLikesInfo(): ?LikeHandledEntity;
+	public function getLikesInfo(): ?LikeEntity;
 
 	public function getUserId(): int;
 

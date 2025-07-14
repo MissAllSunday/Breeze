@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Breeze\Event\Like;
 
-use Breeze\Entity\LikeHandledEntity;
+use Breeze\Entity\LikeEntity;
 use Breeze\Event\EventAbstract;
 
 class LikeCreatedEvent extends EventAbstract
 {
-	public function __construct(protected LikeHandledEntity $likeHandledEntity) {
+	public function __construct(protected LikeEntity $LikeEntity) {
 	}
 
-	public function getLikeHandledEntity(): LikeHandledEntity
+	public function getLikeEntity(): LikeEntity
 	{
-		return $this->likeHandledEntity;
+		return $this->LikeEntity;
 	}
 }

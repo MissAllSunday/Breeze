@@ -87,7 +87,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 	 */
 	public function save(array $data): array
 	{
-		return $this->statusRepository->insert(new StatusEntity($data));
+		return $this->statusRepository->insert(StatusEntity::from($data));
 	}
 
 	public function currentUserInfo(): array

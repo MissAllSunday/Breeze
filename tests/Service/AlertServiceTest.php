@@ -28,7 +28,7 @@ class AlertServiceTest extends TestCase
 	public function testGetById(): void
 	{
 		$alertId = 123;
-		$expectedAlert = new AlertEntity(['id_alert' => 123, 'content_type' => 'notification']);
+		$expectedAlert = AlertEntity::from(['id_alert' => 123, 'content_type' => 'notification']);
 
 		$this->alertRepository
 			->expects($this->once())

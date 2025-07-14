@@ -6,8 +6,8 @@ namespace Breeze\Event\Like;
 
 use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
-use Breeze\Entity\HandledEntityInterface;
-use Breeze\Entity\LikeHandledEntity;
+use Breeze\Entity\LikeEntity;
+use Breeze\Entity\SharedEntityInterface;
 use Breeze\LikesEnum;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
@@ -30,35 +30,35 @@ class LikeEventListener
 
 	public function onLikeCreated(LikeCreatedEvent $event): void
 	{
-		$handledLike = $event->getLikeHandledEntity();
-		$contentId = $handledLike->getContentId();
-		$contentType = $handledLike->getContentType();
-		$userId = $handledLike->getIdMember();
+		$likeEntity = $event->getLikeEntity();
+		$contentId = $likeEntity->getContentId();
+		$contentType = $likeEntity->getContentType();
+		$userId = $likeEntity->getIdMember();
 
-		$content = $this->getContent($handledLike);
+		$content = $this->getContent($likeEntity);
 
-		$this->alertService->send(new AlertEntity([
-			AlertEntity::COLUMN_ID_MEMBER => $content->getUserId(),
-			AlertEntity::COLUMN_ID_MEMBER_STARTED => $userId,
-			AlertEntity::COLUMN_CONTENT_TYPE => self::CONTENT_TYPE,
-			AlertEntity::COLUMN_CONTENT_ID => $content->getId(),
-			AlertEntity::COLUMN_CONTENT_ACTION => self::CONTENT_ACTION_CREATED,
-			AlertEntity::COLUMN_IS_READ => 0,
-			AlertEntity::COLUMN_EXTRA => [
+		$this->alertService->send(AlertEntity::from([
+			AlertEntity::ID_MEMBER => $content->getUserId(),
+			AlertEntity::ID_MEMBER_STARTED => $userId,
+			AlertEntity::CONTENT_TYPE => self::CONTENT_TYPE,
+			AlertEntity::CONTENT_ID => $content->getId(),
+			AlertEntity::CONTENT_ACTION => self::CONTENT_ACTION_CREATED,
+			AlertEntity::IS_READ => 0,
+			AlertEntity::EXTRA => [
 				'content_id' => $contentId,
 				'content_type' => $contentType,
 			],
 		]));
 	}
 
-	protected function getContent(LikeHandledEntity $handledLike): HandledEntityInterface
+	protected function getContent(LikeEntity $likeEntity): SharedEntityInterface
 	{
 		/** @var StatusRepositoryInterface|CommentRepositoryInterface $repository */
-		$repository = match ($handledLike->getContentType()) {
+		$repository = match ($likeEntity->getContentType()) {
 			LikesEnum::Status => $this->statusRepository,
 			LikesEnum::Comments => $this->commentRepository,
 		};
 
-		return $repository->getById($handledLike->getContentId());
+		return $repository->getById($likeEntity->getContentId());
 	}
 }

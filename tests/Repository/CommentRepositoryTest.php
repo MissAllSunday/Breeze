@@ -6,7 +6,7 @@ namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\CommentEntity;
-use Breeze\Entity\CommentHandledEntity;
+use Breeze\Entity\SharedEntity;
 use Breeze\Util\Validate\DataNotFoundException;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -31,7 +31,7 @@ class CommentRepositoryTest extends TestCase
 		$this->likeRepository = $this->createMock(LikeRepositoryInterface::class);
 		$this->commentRepository = $this->getMockBuilder(CommentRepository::class)
 			->setConstructorArgs([$this->dbClient, $this->likeRepository])
-			->onlyMethods(['prepareData', 'buildHandledComments', 'loadUsersInfo'])
+			->onlyMethods(['prepareData', 'loadUsersInfo'])
 			->getMock();
 		$this->queryObject = new \stdClass();
 	}
@@ -61,18 +61,13 @@ class CommentRepositoryTest extends TestCase
 	 */
 	public function testInsert(): void
 	{
-		$commentEntity = new CommentEntity([
+		$commentEntity = CommentEntity::from([
 			CommentEntity::STATUS_ID => 1,
 			CommentEntity::USER_ID => 2,
 			CommentEntity::BODY => 'Test comment',
 			CommentEntity::LIKES => 0,
+			SharedEntity::CREATED_AT => time(),
 		]);
-		$commentHandledEntities = [0 => new CommentHandledEntity([
-			CommentEntity::ID => 5,
-			CommentEntity::STATUS_ID => 1,
-			CommentEntity::USER_ID => 2,
-			CommentEntity::BODY => 'Test comment',
-		])];
 
 		$this->dbClient->expects($this->once())
 			->method('insert');
@@ -84,23 +79,21 @@ class CommentRepositoryTest extends TestCase
 		$this->commentRepository->method('loadUsersInfo')
 			->willReturn([2 => ['name' => 'Test User']]);
 
-		$this->commentRepository->expects($this->once())
-			->method('buildHandledComments')
-			->willReturn($commentHandledEntities);
 
 		$result = $this->commentRepository->insert($commentEntity);
 
-		$this->assertInstanceOf(CommentHandledEntity::class, $result[0]);
+		$this->assertInstanceOf(CommentEntity::class, $result[0]);
 		$this->assertEquals(5, $result[0]->getId());
 	}
 
 	public function testInsertThrowsExceptionWhenIdIsZero(): void
 	{
-		$commentEntity = new CommentEntity([
+		$commentEntity = CommentEntity::From([
 			CommentEntity::STATUS_ID => 1,
 			CommentEntity::USER_ID => 2,
 			CommentEntity::BODY => 'Test comment',
 			CommentEntity::LIKES => 0,
+			SharedEntity::CREATED_AT => time(),
 		]);
 
 		$this->dbClient->method('getInsertedId')->willReturn(0);
@@ -116,7 +109,7 @@ class CommentRepositoryTest extends TestCase
 	 */
 	public function testGetById(): void
 	{
-		$commentHandledEntities = [5 => new CommentHandledEntity([
+		$commentHandledEntities = [5 => CommentEntity::from([
 			CommentEntity::ID => 5,
 			CommentEntity::STATUS_ID => 1,
 			CommentEntity::USER_ID => 2,
@@ -130,11 +123,6 @@ class CommentRepositoryTest extends TestCase
 		$this->commentRepository->expects($this->once())
 			->method('prepareData')
 			->with($this->queryObject)
-			->willReturn($commentHandledEntities);
-
-		$this->commentRepository->expects($this->once())
-			->method('buildHandledComments')
-			->with($commentHandledEntities)
 			->willReturn($commentHandledEntities);
 
 		$result = $this->commentRepository->getById(5);
@@ -152,6 +140,9 @@ class CommentRepositoryTest extends TestCase
 		$this->commentRepository->getById(5);
 	}
 
+	/**
+	 * @throws DataNotFoundException
+	 */
 	public function testDeleteById(): void
 	{
 		$this->commentRepository = $this->getMockBuilder(CommentRepository::class)

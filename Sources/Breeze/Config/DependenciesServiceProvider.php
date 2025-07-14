@@ -8,12 +8,10 @@ use Breeze\Controller\AdminController;
 use Breeze\Controller\API\CommentController;
 use Breeze\Controller\API\LikesController;
 use Breeze\Controller\API\StatusController;
-use Breeze\Controller\BuddyController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Database\DatabaseClient;
 use Breeze\Entity\AlertEntity;
-use Breeze\Entity\AlertHandledEntity;
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\MemberEntity;
@@ -98,7 +96,6 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 			EventServiceProvider::class,
 		],
 		UserSettingsController::class => [UserSettingsRepository::class, Response::class, UserSettingsBuilder::class],
-		BuddyController::class => [Response::class, ProfileService::class],
 		AlertEntity::class => [],
 		CommentEntity::class => [],
 		LikeEntity::class => [],
@@ -111,7 +108,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		StatusEventListener::class => [AlertService::class],
 		EventDispatcher::class => [],
 		EventServiceProvider::class => [EventDispatcher::class, StatusEventListener::class, CommentEventListener::class, LikeEventListener::class],
-		StatusCreatedHandler::class => [AlertHandledEntity::class],
+		StatusCreatedHandler::class => [AlertEntity::class],
 		UserSettingsRepository::class => [DatabaseClient::class, null],
 		AlertRepository::class => [DatabaseClient::class],
 		CommentRepository::class => [DatabaseClient::class, LikeRepository::class],

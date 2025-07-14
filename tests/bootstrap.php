@@ -19,9 +19,14 @@ $smcFunc['htmlspecialchars'] = function ($value) {
 };
 
 // Mock functions
+/**
+ * @throws DateMalformedStringException
+ */
 function timeformat(int | DateTimeImmutable $date): string
 {
-	return 'time formatted';
+	$date = is_int($date) ? new DateTimeImmutable('@' . $date) : $date;
+
+	return $date->format(DateTimeInterface::ATOM);
 }
 
 function comma_format(string $number): string

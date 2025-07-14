@@ -14,6 +14,13 @@ class MemberEntity extends Entity implements EntityInterface
 	public const string IGNORE_LIST = 'pm_ignore_list';
 	public const string BUDDY_LIST = 'buddy_list';
 
+	public static function from(array $data = []): self
+	{
+		$class = self::class;
+
+		return new $class($data);
+	}
+
 	public static function getColumns(): array
 	{
 		return [

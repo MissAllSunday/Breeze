@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Util;
 
+use Breeze\Entity\EntityInterface;
 use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
 
@@ -38,7 +39,7 @@ class Response
 		'content' => [],
 	];
 
-	public function success(string $message = '', array $content = [], int $responseCode = self::OK): void
+	public function success(string $message = '', EntityInterface | array $content = [], int $responseCode = self::OK): void
 	{
 		$this->print(array_merge($this->response, [
 			'message' => $this->getText(self::SUCCESS_TYPE . '_' . $message),

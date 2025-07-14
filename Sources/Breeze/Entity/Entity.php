@@ -7,7 +7,6 @@ namespace Breeze\Entity;
 
 abstract class Entity implements EntityInterface
 {
-	public const string ID = 'id';
 	public const string ALIAS_ID = '%1$s.%2$s AS %2$s';
 	public const string WRONG_VALUES = 'error_wrong_values';
 
@@ -15,7 +14,13 @@ abstract class Entity implements EntityInterface
 
 	abstract public static function getColumns(): array;
 
-	public function __construct(array $entry = [])
+	abstract public function castValue(string $columnName, mixed $value): mixed;
+
+	abstract public static function from(array $data = []): EntityInterface;
+
+	protected function __clone() { }
+
+	protected function __construct(array $entry = [])
 	{
 		$this->setEntity($entry);
 	}
@@ -35,11 +40,9 @@ abstract class Entity implements EntityInterface
 		return \lcfirst(\str_replace('_', '', \ucwords($input, '_')));
 	}
 
-	protected function castValues(array $data) : array
+	public function toInsert(): array
 	{
-		return array_map(function ($column) {
-			return is_numeric($column) ? ((int) $column) : $column;
-		}, $data);
+		return array_intersect_key($this->toArray(), array_flip(static::getColumns()));
 	}
 
 	public function toArray(): array

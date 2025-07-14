@@ -6,7 +6,7 @@ namespace Breeze\Event\Like;
 
 use Breeze\Breeze;
 use Breeze\Controller\API\StatusController;
-use Breeze\Entity\AlertHandledEntity;
+use Breeze\Entity\AlertEntity;
 use Breeze\Event\EventHandlerInterface;
 use Breeze\Traits\TextTrait;
 
@@ -17,7 +17,7 @@ class LikeCreatedHandler implements EventHandlerInterface
 	protected const string TARGET_HREF = '{scriptUrl}?action={action};sa={subAction};id={contentId}';
 
 	public function __construct(
-		protected AlertHandledEntity $alertHandledEntity
+		protected AlertEntity $alertEntity
 	) {}
 
 	public function resolve(): array
@@ -25,12 +25,12 @@ class LikeCreatedHandler implements EventHandlerInterface
 		$this->buildAlertText();
 		$this->buildTargetHref();
 
-		return $this->alertHandledEntity->toArray();
+		return $this->alertEntity->toArray();
 	}
 
 	protected function buildAlertText(): void
 	{
-		$extra = $this->alertHandledEntity->getExtra();
+		$extra = $this->alertEntity->getExtra();
 		$contentType = $extra['content_type'] ?? '';
 
 		// Determine the content type for the alert text
@@ -40,15 +40,15 @@ class LikeCreatedHandler implements EventHandlerInterface
 			default => $this->getText('general.content'),
 		};
 
-		$this->alertHandledEntity->setText($this->parserText($this->getText('alert_like'), [
-			'poster' => $this->alertHandledEntity->getSenderName(),
+		$this->alertEntity->setText($this->parserText($this->getText('alert_like'), [
+			'poster' => $this->alertEntity->getSenderName(),
 			'type' => $type,
 		]));
 	}
 
 	protected function buildTargetHref(): void
 	{
-		$extra = $this->alertHandledEntity->getExtra();
+		$extra = $this->alertEntity->getExtra();
 		$contentId = $extra['content_id'] ?? 0;
 		$contentType = $extra['content_type'] ?? '';
 
@@ -59,7 +59,7 @@ class LikeCreatedHandler implements EventHandlerInterface
 			default => '',
 		};
 
-		$this->alertHandledEntity->setTargetHref($this->parserText(self::TARGET_HREF, [
+		$this->alertEntity->setTargetHref($this->parserText(self::TARGET_HREF, [
 			'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
 			'action' => $action,
 			'subAction' => $subAction,

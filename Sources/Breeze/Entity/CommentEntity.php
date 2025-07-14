@@ -4,44 +4,36 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
+use Breeze\Util\Time;
 use DateMalformedStringException;
 use DateTimeImmutable;
 
-class CommentEntity extends Entity implements EntityInterface
+class CommentEntity extends SharedEntity implements SharedEntityInterface
 {
 	public const string TABLE = 'breeze_comments';
 	public const string ID = 'id';
 	public const string STATUS_ID = 'statusId';
 	public const string USER_ID = 'userId';
-	public const string CREATED_AT = 'createdAt';
 	public const string BODY = 'body';
 	public const string LIKES = 'likes';
-
-	public int $id = 0;
 
 	protected int $statusId = 0;
 
 	protected int $userId = 0;
 
-	protected int $createdAt = 0;
-
 	protected string $body = '';
 
 	protected int $likes = 0;
 
-	public function getId(): int
-	{
-		return $this->id;
-	}
+	protected array $usersInfo = [];
 
-	public function setId(int $id): void
-	{
-		$this->id = $id;
-	}
+	protected ?LikeEntity $likesInfo = null;
 
-	public function unsetId(): void
+	public static function from(array $data = []): self
 	{
-		unset($this->id);
+		$class = self::class;
+
+		return new $class($data);
 	}
 
 	public function getStatusId(): int
@@ -54,6 +46,14 @@ class CommentEntity extends Entity implements EntityInterface
 		$this->statusId = $statusId;
 	}
 
+	/**
+	 * @return int 0 as wallId is not used in comments
+	 */
+	public function getWallId(): int
+	{
+		return 0;
+	}
+
 	public function getUserId(): int
 	{
 		return $this->userId;
@@ -64,19 +64,6 @@ class CommentEntity extends Entity implements EntityInterface
 		$this->userId = $userId;
 	}
 
-	/**
-	 * @throws DateMalformedStringException
-	 */
-	public function getCreatedAt(): DateTimeImmutable
-	{
-		return new DateTimeImmutable('@' . $this->createdAt);
-	}
-
-	public function setCreatedAt(string | int | DateTimeImmutable $createdAt): void
-	{
-		$this->createdAt = $createdAt instanceof DateTimeImmutable ? $createdAt->getTimestamp() : (int) $createdAt;
-	}
-
 	public function getBody(): string
 	{
 		return $this->body;
@@ -85,22 +72,6 @@ class CommentEntity extends Entity implements EntityInterface
 	public function setBody(string $body): void
 	{
 		$this->body = $body;
-	}
-
-	/**
-	 * @deprecated use LikeRepository instead
-	 */
-	public function getLikes(): int
-	{
-		return $this->likes;
-	}
-
-	/**
-	 * @deprecated use LikeRepository instead
-	 */
-	public function setLikes(int $likes): void
-	{
-		$this->likes = $likes;
 	}
 
 	public static function getColumns(): array
@@ -133,5 +104,19 @@ class CommentEntity extends Entity implements EntityInterface
 			self::CREATED_AT => new DateTimeImmutable('@' . $value),
 			default => (string) $value,
 		};
+	}
+
+	public function jsonSerialize(): array
+	{
+		return [
+			'id' => $this->getId(),
+			'statusId' => $this->getStatusId(),
+			'userId' => $this->getUserId(),
+			'createdAt' => Time::from($this->getCreatedAt()),
+			'body' => $this->getBody(),
+			'likes' => 0,  // @deprecated use likesInfo.count instead
+			'likesInfo' => $this->getLikesInfo(),
+			'userData' => $this->getUsersInfo()[$this->getUserId()] ?? [],
+		];
 	}
 }

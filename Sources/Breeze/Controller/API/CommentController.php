@@ -41,7 +41,7 @@ class CommentController extends ApiBaseController
 	public function postComment(): void
 	{
 		try {
-			$commentEntities = $this->commentRepository->insert(new CommentEntity($this->data));
+			$commentEntities = $this->commentRepository->insert(CommentEntity::from($this->data));
 
 			$this->response->success(
 				'published_comment',
@@ -60,8 +60,8 @@ class CommentController extends ApiBaseController
 			$this->commentRepository->deleteById($this->data[CommentEntity::ID]);
 
 			$this->response->success('deleted_comment', [], Response::NO_CONTENT);
-		} catch (InvalidCommentException $invalidCommentException) {
-			$this->response->error($invalidCommentException->getMessage(), $invalidCommentException->getResponseCode());
+		} catch (DataNotFoundException $dataNotFoundException) {
+			$this->response->error($dataNotFoundException->getMessage());
 		}
 	}
 }

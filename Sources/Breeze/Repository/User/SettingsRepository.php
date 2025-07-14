@@ -7,7 +7,6 @@ namespace Breeze\Repository\User;
 use Breeze\Entity\MemberEntity;
 use Breeze\Entity\OptionsEntity;
 use Breeze\Entity\UserSettingsEntity;
-use Breeze\Entity\UserSettingsHandledEntity;
 use Breeze\Repository\BaseRepository;
 use Breeze\Util\Json;
 use Breeze\Util\Validate\DataNotFoundException;
@@ -21,7 +20,7 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 	/**
 	 * @throws DataNotFoundException
 	 */
-	public function getById(int $id): UserSettingsHandledEntity
+	public function getById(int $id): UserSettingsEntity
 	{
 		$userSettings = $this->getCache(sprintf(OptionsEntity::CACHE_NAME, $id));
 
@@ -44,7 +43,7 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 
 			$userData = [];
 			while ($row = $this->dbClient->fetchAssoc($result)) {
-				$userData[$row[OptionsEntity::COLUMN_VARIABLE]] = $row[OptionsEntity::COLUMN_VALUE];
+				$userData[$row[OptionsEntity::VARIABLE]] = $row[OptionsEntity::VALUE];
 
 				$userData += [
 					UserSettingsEntity::BUDDIES => empty($row[MemberEntity::BUDDY_LIST]) ?
@@ -55,7 +54,7 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 			}
 
 			$this->dbClient->freeResult($result);
-			$userSettings = new UserSettingsHandledEntity($userData);
+			$userSettings = UserSettingsEntity::from($userData);
 			$this->setCache(sprintf(OptionsEntity::CACHE_NAME, $id), $userSettings);
 		}
 
@@ -82,12 +81,12 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 		$result = $this->dbClient->replace(
 			OptionsEntity::TABLE,
 			[
-				OptionsEntity::COLUMN_MEMBER_ID => 'int',
-				OptionsEntity::COLUMN_VARIABLE => 'string',
-				OptionsEntity::COLUMN_VALUE => 'string',
+				OptionsEntity::MEMBER_ID => 'int',
+				OptionsEntity::VARIABLE => 'string',
+				OptionsEntity::VALUE => 'string',
 			],
 			$toInsert,
-			OptionsEntity::COLUMN_MEMBER_ID
+			OptionsEntity::MEMBER_ID
 		);
 
 		if ($result !== 0) {

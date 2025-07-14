@@ -38,14 +38,14 @@ class LikesController extends ApiBaseController
 	{
 		try {
 			$handledLike = $this->likeRepository->likeContent(
-				LikesEnum::tryFrom($this->data[LikeEntity::COLUMN_TYPE]),
-				$this->data[LikeEntity::COLUMN_ID],
-				$this->data[LikeEntity::COLUMN_ID_MEMBER]
+				LikesEnum::tryFrom($this->data[LikeEntity::TYPE]),
+				$this->data[LikeEntity::ID],
+				$this->data[LikeEntity::ID_MEMBER]
 			);
 
 			$this->response->success(
 				'likeSuccess',
-				$handledLike->toArray(),
+				$handledLike,
 				Response::CREATED
 			);
 
