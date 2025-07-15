@@ -56,14 +56,14 @@ describe('When like setting is enable and permissions are granted', () => {
   it('shows span tag', async () => {
     const { container } = act(true);
 
-    const spanElement = screen.queryByTitle(MOCK_LIKE_ITEM.additionalInfo.text);
+    const spanElement = screen.queryByTitle('Like');
     expect(spanElement).toBeInTheDocument();
   });
 
   describe('When the user likes something', () => {
     it('text changes to liked', async () => {
       act(true);
-      const spanElement = screen.getByTitle(MOCK_LIKE_ITEM.additionalInfo.text);
+      const spanElement = screen.getByTitle('Like');
 
       await waitFor(() => {
         userEvent.click(spanElement);
