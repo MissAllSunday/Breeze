@@ -47,7 +47,7 @@ class Response
 		]), $responseCode);
 	}
 
-	public function print(array $responseData, int $responseCode = 200, string $type = ''): void
+	 public function print(array $responseData, int $responseCode = 200, string $type = ''): void
 	{
 		$this->setGlobal('db_show_debug', false);
 		ob_end_clean();

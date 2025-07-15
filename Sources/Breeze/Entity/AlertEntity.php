@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Entity;
 
 use Breeze\Util\Json;
+use Breeze\Util\Time;
 use DateMalformedStringException;
 use DateTimeImmutable;
 
@@ -316,7 +317,7 @@ class AlertEntity extends Entity implements EntityInterface
 		$toInsert = $this->toArray();
 		$toInsert[self::IS_READ] = (int) $this->is_read;
 		$toInsert[self::EXTRA] = Json::encode($this->extra);
-		$toInsert[self::ALERT_TIME] = $this->getAlertTime()->getTimestamp();
+		$toInsert[self::ALERT_TIME] = time();
 
 		return array_intersect_key($toInsert, array_flip(AlertEntity::getColumns()));
 	}
@@ -336,5 +337,32 @@ class AlertEntity extends Entity implements EntityInterface
 			self::EXTRA => Json::decode($value),
 			default => (string) $value,
 		};
+	}
+
+	public function jsonSerialize(): array
+	{
+		return [
+			'idAlert' => $this->getIdAlert(),
+			'alertTime' => $this->getAlertTime()->getTimestamp(),
+			'idMember' => $this->getIdMember(),
+			'idMemberStarted' => $this->getIdMemberStarted(),
+			'memberName' => $this->getMemberName(),
+			'contentType' => $this->getContentType(),
+			'contentId' => $this->getContentId(),
+			'contentAction' => $this->getContentAction(),
+			'isRead' => $this->isRead(),
+			'extra' => $this->getExtra(),
+			'senderId' => $this->getSenderId(),
+			'senderName' => $this->getSenderName(),
+			'senderEmail' => $this->getSenderEmail(),
+			'senderAvatar' => $this->getSenderAvatar(),
+			'senderFilename' => $this->getSenderFilename(),
+			'time' => Time::from($this->getAlertTime()),
+			'visible' => $this->isVisible(),
+			'showLinks' => $this->isShowLinks(),
+			'icon' => $this->getIcon(),
+			'targetHref' => $this->getTargetHref(),
+			'text' => $this->getText(),
+		];
 	}
 }

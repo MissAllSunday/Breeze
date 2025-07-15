@@ -68,4 +68,9 @@ class MentionEntity extends Entity implements EntityInterface
 			default => (string) $value,
 		};
 	}
+
+	public function jsonSerialize(): array
+	{
+		return [];
+	}
 }

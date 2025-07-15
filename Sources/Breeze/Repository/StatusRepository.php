@@ -159,7 +159,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		array_walk($status, function ($entity) use ($loadedUsers): void {
 			$commentsLoadedUsers = [$entity->getUserId()];
 
-			if (!empty($this->loadedUsers)) {
+			if (!empty($loadedUsers)) {
 				$entity->setUsersInfo(array_intersect_key($loadedUsers, array_flip($commentsLoadedUsers)));
 			}
 		});
@@ -188,12 +188,12 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		$usersIds = [];
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
+			$row[StatusEntity::BODY] = Parser::bbc($row[StatusEntity::BODY]);
 			$status[$row[StatusEntity::ID]] = StatusEntity::from($row);
 			$usersIds[] = $row[StatusEntity::WALL_ID];
 			$usersIds[] = $row[StatusEntity::USER_ID];
 		}
 
-		$this->loadedUsers = $this->loadUsersInfo($usersIds);
 		$this->dbClient->freeResult($request);
 
 		return $this->setComments(

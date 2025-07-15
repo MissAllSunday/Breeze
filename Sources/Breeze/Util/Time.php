@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Util;
 
+use DateTimeImmutable;
+
 class Time
 {
 	public static function timeFormat(int $timeStamp): string
@@ -11,8 +13,8 @@ class Time
 		return timeformat($timeStamp);
 	}
 
-	public static function from(\DateTimeImmutable $dateTime): string
+	public static function from(?DateTimeImmutable $dateTime): string
 	{
-		return timeformat($dateTime->getTimestamp());
+		return timeformat($dateTime ? $dateTime->getTimestamp() : '');
 	}
 }

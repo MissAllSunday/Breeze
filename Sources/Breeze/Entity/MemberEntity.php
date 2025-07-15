@@ -75,4 +75,9 @@ class MemberEntity extends Entity implements EntityInterface
 			'username_color',
 		];
 	}
+
+	public function jsonSerialize(): array
+	{
+		return [];
+	}
 }

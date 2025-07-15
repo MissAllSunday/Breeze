@@ -171,6 +171,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		$usersIds = [];
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
+			$row[CommentEntity::BODY] = Parser::bbc($row[CommentEntity::BODY]);
 			$comments[$row[CommentEntity::ID]] = CommentEntity::from($row);
 			$usersIds[] = (int) $row[CommentEntity::USER_ID];
 		}
@@ -194,7 +195,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		array_walk($comments, function ($comment, $id) use ($loadedUsers): void {
 			$commentsLoadedUsers = [$comment->getUserId()];
 
-			if (!empty($this->loadedUsers)) {
+			if (!empty($loadedUsers)) {
 				$comment->setUsersInfo(array_intersect_key($loadedUsers, array_flip($commentsLoadedUsers)));
 			}
 		});

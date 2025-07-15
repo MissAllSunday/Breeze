@@ -185,4 +185,16 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			default => (string) $value,
 		};
 	}
+
+	public function jsonSerialize(): array
+	{
+		return [
+			'wall' => $this->getWall(),
+			'generalWall' => $this->getGeneralWall(),
+			'paginationNumber' => $this->getPaginationNumber(),
+			'kickIgnored' => $this->getKickIgnored(),
+			'aboutMe' => $this->getAboutMe(),
+			'enableBuddiesTab' => $this->getEnableBuddiesTab(),
+		];
+	}
 }

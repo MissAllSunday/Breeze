@@ -30,7 +30,7 @@ class LikeEntity extends Entity implements EntityInterface
 
 	protected int $content_id = 0;
 
-	protected DateTimeImmutable $like_time;
+	protected ?DateTimeImmutable $like_time = null;
 
 	protected int $count = 0;
 
@@ -77,12 +77,12 @@ class LikeEntity extends Entity implements EntityInterface
 		$this->content_id = (int) $id;
 	}
 
-	public function getLikeTime(): DateTimeImmutable
+	public function getLikeTime(): ?DateTimeImmutable
 	{
 		return $this->like_time;
 	}
 
-	public function setLikeTime(DateTimeImmutable $time): void
+	public function setLikeTime(?DateTimeImmutable $time): void
 	{
 		$this->like_time = $time;
 	}

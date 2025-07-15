@@ -21,7 +21,7 @@ abstract class SharedEntity extends Entity implements SharedEntityInterface
 
 	protected string $body = '';
 
-	protected DateTimeImmutable $createdAt;
+	protected ?DateTimeImmutable $createdAt = null;
 
 	protected int $likes = 0;
 
@@ -44,12 +44,12 @@ abstract class SharedEntity extends Entity implements SharedEntityInterface
 		return $this->id;
 	}
 
-	public function getCreatedAt(): DateTimeImmutable
+	public function getCreatedAt(): ?DateTimeImmutable
 	{
 		return $this->createdAt;
 	}
 
-	public function setCreatedAt(DateTimeImmutable $createdAt): void
+	public function setCreatedAt(?DateTimeImmutable $createdAt): void
 	{
 		$this->createdAt = $createdAt;
 	}
@@ -124,7 +124,7 @@ abstract class SharedEntity extends Entity implements SharedEntityInterface
 	{
 		$this->unsetId();
 		$toInsert = $this->toArray();
-		$toInsert[self::CREATED_AT] = $this->getCreatedAt()->getTimestamp();
+		$toInsert[self::CREATED_AT] = time();
 
 		return array_intersect_key($toInsert, array_flip(static::getColumns()));
 	}

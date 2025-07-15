@@ -5,7 +5,9 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-interface EntityInterface
+use JsonSerializable;
+
+interface EntityInterface extends JsonSerializable
 {
 	public static function from(array $data = []): self;
 
