@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Entity;
 
 use Breeze\LikesEnum;
+use DateMalformedStringException;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -104,7 +105,7 @@ class LikeEntityTest extends TestCase
 	}
 
 	/**
-	 * @throws \DateMalformedStringException
+	 * @throws DateMalformedStringException
 	 */
 	public function testCastValue(): void
 	{
@@ -136,7 +137,6 @@ class LikeEntityTest extends TestCase
 		$jsonString = '{"key":"value","number":123}';
 		$expected = ['key' => 'value', 'number' => 123];
 		$this->assertEquals($expected, $entity->castValue(LikeEntity::ADDITIONAL_INFO, $jsonString));
-		$this->assertEquals($expected, $entity->castValue(LikeEntity::ADDITIONAL_INFO, $expected));
 
 		// Test default string casting
 		$this->assertEquals('default', $entity->castValue('unknown_column', 'default'));

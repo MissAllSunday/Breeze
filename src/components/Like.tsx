@@ -4,6 +4,7 @@ import React, { useCallback, useContext, useState } from 'react';
 import { postLike } from '../api/Like/Post';
 import { PermissionsContext } from '../context/PermissionsContext';
 import smfVars from '../DataSource/SMF';
+import smfTextVars from '../DataSource/Txt';
 import { LikeInfo } from './LikeInfo';
 import Loading from './Loading';
 
@@ -18,8 +19,8 @@ export const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
     }
     setIsLoading(true);
 
-    postLike(like).then((newLike: LikeType) => {
-      setLike(newLike);
+    postLike(like).then((newLikes: LikeType[]) => {
+      setLike(newLikes[0]);
     }).finally(() => setIsLoading(false));
   }, [like]);
 
@@ -27,9 +28,9 @@ export const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
     permissions.isEnable.enableLikes && permissions.Forum.likesLike ?
       <div className="smflikebutton">
         {isLoading ? <Loading/> : ''}
-        <span onClick={handleLike} className="likeClass pointer_cursor" title={like.additionalInfo.text}>
-          {String.fromCodePoint(like.alreadyLiked ? 128078 : 128077)}
-        </span> {like.additionalInfo && <LikeInfo item={like} />}
+        <span onClick={handleLike} className="likeClass pointer_cursor" title={ like && like.alreadyLiked ? smfTextVars.like.unlike : smfTextVars.like.like }>
+          {String.fromCodePoint(like && like.alreadyLiked ? 128078 : 128077)}
+        </span> { like && like.additionalInfo && <LikeInfo item={like} />}
       </div> : null
   );
 };

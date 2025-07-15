@@ -37,7 +37,7 @@ class LikesController extends ApiBaseController
 	public function like(): void
 	{
 		try {
-			$handledLike = $this->likeRepository->likeContent(
+			$handledLikes = $this->likeRepository->likeContent(
 				LikesEnum::tryFrom($this->data[LikeEntity::TYPE]),
 				$this->data[LikeEntity::ID],
 				$this->data[LikeEntity::ID_MEMBER]
@@ -45,11 +45,11 @@ class LikesController extends ApiBaseController
 
 			$this->response->success(
 				'likeSuccess',
-				$handledLike,
+				$handledLikes,
 				Response::CREATED
 			);
 
-			$this->eventDispatch(LikeCreatedEvent::class, $handledLike);
+			$this->eventDispatch(LikeCreatedEvent::class, $handledLikes);
 		} catch (InvalidDataException $invalidDataException) {
 			$this->response->error($invalidDataException->getMessage(), $invalidDataException->getResponseCode());
 		}

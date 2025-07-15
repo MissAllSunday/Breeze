@@ -16,7 +16,9 @@ use Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictConstructorRec
 use Rector\Visibility\Rector\ClassMethod\ExplicitPublicClassMethodRector;
 
 return RectorConfig::configure()
-	// here we can define, what prepared sets of rules will be applied
+	->withPaths([
+		__DIR__ . '/Sources/Breeze',
+	])
 	->withPreparedSets(
 		deadCode: true,
 		codeQuality: true,

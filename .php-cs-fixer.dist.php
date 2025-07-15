@@ -62,4 +62,5 @@ return $config
 	->setLineEnding("\n")
 	->setFinder($finder)
 	->setUsingCache(true)
-	->setRiskyAllowed(true);
+	->setRiskyAllowed(true)
+	->setParallelConfig(PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect());

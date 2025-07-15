@@ -119,7 +119,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			LikeEntity::TIME => 'int',
 		], $likeEntity->toInsert(), [LikeEntity::ID, LikeEntity::TYPE, LikeEntity::ID_MEMBER]);
 
-		return $this->buildLikeData([$likeEntity], $this->count($likeEntity));
+		return $this->buildLikeData([$likeEntity->getIdMember() => $likeEntity], $this->count($likeEntity));
 	}
 
 	public function count(LikeEntity $likeEntity): int
@@ -193,9 +193,11 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	}
 
 	/**
+	 * @throws InvalidLikeException
 	 * @throws InvalidDataException
+	 * @return array [LikeEntity]
 	 */
-	public function likeContent(LikesEnum $type, int $contentId, int $userId): LikeEntity
+	public function likeContent(LikesEnum $type, int $contentId, int $userId): array
 	{
 		$LikeEntity = LikeEntity::from();
 		$LikeEntity->setContentType($type);
@@ -207,12 +209,10 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		if ($isContentAlreadyLiked) {
 			$this->deleteByContent($LikeEntity);
 
-			$count = $this->count($LikeEntity);
-
-			return $this->getByContent($type, [$contentId])[$contentId];
+			return $this->getByContent($type, [$contentId]);
 		}
 
-			return $this->insert($LikeEntity);
+			return [$this->insert($LikeEntity)];
 	}
 
 	public function getById(int $id): null

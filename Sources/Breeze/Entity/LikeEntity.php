@@ -151,7 +151,7 @@ class LikeEntity extends Entity implements EntityInterface
 	{
 		$arrayToInsert = $this->toArray();
 		$arrayToInsert[LikeEntity::TYPE] = $arrayToInsert[LikeEntity::TYPE]->value;
-		$arrayToInsert[LikeEntity::TIME] = $arrayToInsert[LikeEntity::TIME]->getTimestamp();
+		$arrayToInsert[LikeEntity::TIME] = time();
 
 		return array_intersect_key($arrayToInsert, array_flip(LikeEntity::getColumns()));
 	}
@@ -167,7 +167,7 @@ class LikeEntity extends Entity implements EntityInterface
 			self::TIME => $value === null ? null : new DateTimeImmutable('@' . $value),
 			LikeEntity::CAN_LIKE, LikeEntity::ALREADY_LIKED => (bool) $value,
 			self::TYPE => is_string($value) ? LikesEnum::from($value) : $value,
-			LikeEntity::ADDITIONAL_INFO => is_string($value) ? Json::decode($value) : $value,
+			LikeEntity::ADDITIONAL_INFO => Json::decode($value),
 			default => (string) $value,
 		};
 	}

@@ -40,5 +40,10 @@ interface LikeRepositoryInterface extends BaseRepositoryInterface
 	 */
 	public function buildLikeData(array $likeData, int $likesCount): LikeEntity;
 
-	public function likeContent(LikesEnum $type, int $contentId, int $userId): LikeEntity;
+	/**
+	 * @throws InvalidLikeException
+	 * @throws InvalidDataException
+	 * @return array [LikeEntity]
+	 */
+	public function likeContent(LikesEnum $type, int $contentId, int $userId): array;
 }
