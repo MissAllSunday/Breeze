@@ -177,7 +177,6 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		}
 
 		$this->dbClient->freeResult($request);
-		$this->loadedUsers = $this->loadUsersInfo($usersIds);
 
 		return $this->setLikes($this->setUsers($comments, $usersIds), LikesEnum::Comments);
 	}

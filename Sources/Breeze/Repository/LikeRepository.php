@@ -60,8 +60,6 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		}
 		$this->dbClient->freeResult($request);
 
-		$this->loadedUsers = $this->loadUsersInfo($usersIds);
-
 		return array_map(function ($likeData) {
 			return $this->buildLikeData($likeData, count($likeData));
 		}, $likes);
@@ -121,8 +119,6 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			LikeEntity::TIME => 'int',
 		], $likeEntity->toInsert(), [LikeEntity::ID, LikeEntity::TYPE, LikeEntity::ID_MEMBER]);
 
-		$this->loadedUsers = $this->loadUsersInfo([$likeEntity->getIdMember()]);
-
 		return $this->buildLikeData([$likeEntity], $this->count($likeEntity));
 	}
 
@@ -155,12 +151,12 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		$alreadyLiked = $likesCount > 0;
 		$likesTextCount = $likesCount;
 
-		$this->loadedUsers = $this->loadUsersInfo(array_keys($likeData));
+		$loadedUsers = $this->loadUsersInfo(array_keys($likeData));
 		$usersLikeInfo = [];
-		array_walk($likeData, function ($like) use (&$usersLikeInfo): void {
+		array_walk($likeData, function ($like) use (&$usersLikeInfo, $loadedUsers): void {
 			$userId = $like->getIdMember();
 			$usersLikeInfo[$userId] = [
-				'userData' => $this->loadedUsers[$userId] ?? [],
+				'userData' => $loadedUsers[$userId] ?? [],
 				'likeTime' => Time::from($like->getLikeTime()),
 			];
 		});
@@ -207,7 +203,6 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		$LikeEntity->setIdMember($userId);
 
 		$isContentAlreadyLiked = $this->isContentAlreadyLiked($LikeEntity);
-		$this->loadedUsers = $this->loadUsersInfo([$userId]);
 
 		if ($isContentAlreadyLiked) {
 			$this->deleteByContent($LikeEntity);

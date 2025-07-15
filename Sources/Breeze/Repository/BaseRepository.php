@@ -25,8 +25,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
 	protected const string PARENT_LIKE_IDENTIFIER = 'parent';
 	protected const string LIKE_IDENTIFIER = 'likes';
 
-	protected array $loadedUsers = [];
-
 	public function __construct(
 		protected readonly ClientInterface $dbClient,
 		protected readonly LikeRepositoryInterface | null $likeRepository = null
