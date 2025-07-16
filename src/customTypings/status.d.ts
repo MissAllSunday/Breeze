@@ -6,7 +6,7 @@ declare module 'breezeTypesStatus' {
     likes: number
     body: string
     createdAt: string
-    likesInfo: LikeType
+    likesInfo: LikeInfoType
     comments: CommentType[]
     userData: UserDataType
     isNew: boolean

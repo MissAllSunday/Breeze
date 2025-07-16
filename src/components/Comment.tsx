@@ -35,7 +35,7 @@ function Comment(props: CommentProps): React.ReactElement {
         { props.comment.likesInfo &&
           <Like
             key={props.comment.likesInfo.contentId}
-            item={props.comment.likesInfo}
+            likeInfo={props.comment.likesInfo}
           /> }
       </div>
       <div className="half_content">

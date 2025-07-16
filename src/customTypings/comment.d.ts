@@ -5,7 +5,7 @@ declare module 'breezeTypesComments' {
     userId: number
     likes: number
     body: string
-    likesInfo: LikeType
+    likesInfo: LikeInfoType
     createdAt: string
     userData: UserDataType
     isNew: boolean

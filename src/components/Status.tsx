@@ -92,7 +92,7 @@ function Status(props: StatusProps): React.ReactElement {
         <div className="half_content">
           { props.status.likesInfo && <Like
               key={props.status.likesInfo.contentId}
-              item={props.status.likesInfo}
+              likeInfo={props.status.likesInfo}
             />}
         </div>
         <div className="half_content">

@@ -23,7 +23,7 @@
     "coverage": "react-scripts test --watchAll=false --coverage",
     "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "eject": "react-scripts eject",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint --fix --c .eslintrc.json ./src"
   },
   "eslintConfig": {

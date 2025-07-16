@@ -6,10 +6,10 @@ import { LikeInfoType } from 'breezeTypesLikes';
 import { PermissionsContextType } from 'breezeTypesPermissions';
 import React from 'react';
 
+import { likesInfo } from '../__fixtures__/likesInfo';
 import permissions from '../__fixtures__/permissions';
 import { PermissionsContext } from '../context/PermissionsContext';
 import { Like } from './Like';
-import { likesInfo } from '../__fixtures__/likesInfo';
 
 const MOCK_LIKE_INFO_ITEM = likesInfo.basic;
 
