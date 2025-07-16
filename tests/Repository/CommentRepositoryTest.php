@@ -6,7 +6,10 @@ namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\CommentEntity;
+use Breeze\Entity\LikeEntity;
+use Breeze\Entity\LikeInfoEntity;
 use Breeze\Entity\SharedEntity;
+use Breeze\LikesEnum;
 use Breeze\Util\Validate\DataNotFoundException;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -79,6 +82,15 @@ class CommentRepositoryTest extends TestCase
 		$this->commentRepository->method('loadUsersInfo')
 			->willReturn([2 => ['name' => 'Test User']]);
 
+		$this->likeRepository->expects($this->once())
+			->method('getByContent')
+			->with(LikesEnum::Comments, [5])
+			->willReturn([
+				5 => LikeInfoEntity::from([
+					LikeEntity::ID => 5,
+					LikeInfoEntity::LIKES => [],
+				]),
+			]);
 
 		$result = $this->commentRepository->insert($commentEntity);
 

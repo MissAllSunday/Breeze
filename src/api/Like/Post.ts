@@ -1,4 +1,4 @@
-import { LikeType } from 'breezeTypesLikes';
+import { LikeInfoType } from 'breezeTypesLikes';
 
 import SmfVars from '../../DataSource/SMF';
 import smfTextVars from '../../DataSource/Txt';
@@ -13,12 +13,12 @@ export interface IPostLikeParams {
   content_id: number;
 }
 
-export const postLike = async (likeData: LikeType): Promise<any> => {
+export const postLike = async (likeInfo: LikeInfoType): Promise<any> => {
   try {
     const params:IPostLikeParams = {
       id_member: SmfVars.userId,
-      content_type: likeData.type,
-      content_id: likeData.contentId,
+      content_type: likeInfo.type,
+      content_id: likeInfo.contentId,
     };
 
     const likeResults = await fetch(baseUrl('breezeLike', 'like'), {

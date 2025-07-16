@@ -1,32 +1,32 @@
 declare module 'breezeTypesLikes' {
 
-  type UsersLikeInfoType = {
-    userData: UserDataType
-    likeTime: string
-  };
-  type AdditionalInfoType = {
+  type LikeInfoType = {
     text: string
     href: string
-    usersLikeInfo: UsersLikeInfoType[],
+    likes: LikeType[],
+    count: number,
+    contentId: number,
+    alreadyLiked: boolean
+    canLike: boolean
+    type: string
   };
 
   interface LikeType {
-    additionalInfo: AdditionalInfoType
-    alreadyLiked: boolean
-    canLike: boolean
+    userData: UserDataType
     contentId: number
     count: number
     type: string
+    likeTime: string
   }
 
   interface LikeProps {
-    item: LikeType
+    likeInfo: LikeInfoType
   }
 }
 
 module.exports = {
-  AdditionalInfoType,
   UsersLikeInfoType,
   LikeType,
   LikeProps,
+  LikeInfoType,
 };

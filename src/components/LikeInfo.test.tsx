@@ -1,29 +1,27 @@
 import '@testing-library/jest-dom';
 
 import { render, screen } from '@testing-library/react';
-import { LikeType } from 'breezeTypesLikes';
+import { LikeInfoType } from 'breezeTypesLikes';
 import React from 'react';
 
 import { LikeInfo } from './LikeInfo';
 
-const MOCK_LIKE_ITEM = {
-  additionalInfo: {
-    text: 'lol',
-    href: 'lol',
-    usersLikeInfo: [],
-  },
+const MOCK_LIKE_INFO_ITEM: LikeInfoType = {
+  count: 0,
+  contentId: 1,
   alreadyLiked: false,
   canLike: true,
-  contentId: 1,
-  count: 0,
   type: 'lol',
+  text: 'some text',
+  href: 'https://missallsunday.com',
+  likes: [],
 };
 
-function act(overwriteLikeItemTo?: Partial<LikeType>) {
+function act(overwriteLikeItemTo?: Partial<LikeInfoType>) {
 
-  const likeItem:LikeType = { ...MOCK_LIKE_ITEM, ...overwriteLikeItemTo };
+  const likeInfoItem:LikeInfoType = { ...MOCK_LIKE_INFO_ITEM, ...overwriteLikeItemTo };
 
-  return render(<LikeInfo item={likeItem} />);
+  return render(<LikeInfo likeInfo={likeInfoItem} />);
 }
 
 describe('When there are no likes', () => {

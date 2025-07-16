@@ -7,9 +7,9 @@ namespace Breeze\Repository;
 
 use Breeze\Breeze;
 use Breeze\Entity\LikeEntity;
+use Breeze\Entity\LikeInfoEntity;
 use Breeze\LikesEnum;
 use Breeze\PermissionsEnum;
-use Breeze\Util\Time;
 
 class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 {
@@ -35,7 +35,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 	/**
 	 * @param array $contentIds [int]
-	 * @return array [LikeEntity]
+	 * @return array [LikeInfoEntity]
 	 */
 	public function getByContent(LikesEnum $type, array $contentIds): array
 	{
@@ -56,12 +56,11 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$likes[$row[LikeEntity::ID]][$row[LikeEntity::ID_MEMBER]] = LikeEntity::from($row);
-			$usersIds[] = $row[LikeEntity::ID_MEMBER];
 		}
 		$this->dbClient->freeResult($request);
 
-		return array_map(function ($likeData) {
-			return $this->buildLikeData($likeData, count($likeData));
+		return array_map(function ($likeData) use ($type): LikeInfoEntity {
+			return $this->buildLikeInfo($likeData, $type);
 		}, $likes);
 	}
 
@@ -110,7 +109,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		}
 	}
 
-	public function insert(LikeEntity $likeEntity): LikeEntity
+	public function insert(LikeEntity $likeEntity): LikeInfoEntity
 	{
 		$this->dbClient->insert(LikeEntity::TABLE, [
 			LikeEntity::ID => 'int',
@@ -119,7 +118,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			LikeEntity::TIME => 'int',
 		], $likeEntity->toInsert(), [LikeEntity::ID, LikeEntity::TYPE, LikeEntity::ID_MEMBER]);
 
-		return $this->buildLikeData([$likeEntity->getIdMember() => $likeEntity], $this->count($likeEntity));
+		return $this->buildLikeInfo([$likeEntity], $likeEntity->getContentType());
 	}
 
 	public function count(LikeEntity $likeEntity): int
@@ -143,23 +142,25 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		return $rowCount;
 	}
 
-	/**
-	 * @param array $likeData [LikeEntity]
-	 */
-	public function buildLikeData(array $likeData, int $likesCount): LikeEntity
+	public function buildLikeInfo(array $likeEntities, LikesEnum $type): LikeInfoEntity
 	{
-		$alreadyLiked = $likesCount > 0;
+		$likesCount = count($likeEntities);
 		$likesTextCount = $likesCount;
+		$contentId = array_column($likeEntities, LikeEntity::ID)[0];
+		$usersIds = $idCats = array_column($likeEntities, LikeEntity::ID_MEMBER);
+		$alreadyLiked = in_array($this->global('user_info')['id'], $usersIds);
+		$usersData = $this->loadUsersInfo($usersIds);
 
-		$loadedUsers = $this->loadUsersInfo(array_keys($likeData));
-		$usersLikeInfo = [];
-		array_walk($likeData, function ($like) use (&$usersLikeInfo, $loadedUsers): void {
-			$userId = $like->getIdMember();
-			$usersLikeInfo[$userId] = [
-				'userData' => $loadedUsers[$userId] ?? [],
-				'likeTime' => Time::from($like->getLikeTime()),
-			];
+		$likeInfo = LikeInfoEntity::from();
+
+		array_walk($likeEntities, function ($like) use ($usersData): void {
+			$like->setUserData($usersData[$like->getIdMember()] ?? []);
 		});
+
+		$likeInfo->setLikes($likeEntities);
+		$likeInfo->setContentId($contentId);
+		$likeInfo->setCanLike($this->isAllowedTo(PermissionsEnum::LIKES_LIKE));
+		$likeInfo->setAlreadyLiked($alreadyLiked);
 
 		$base = LikeEntity::IDENTIFIER;
 		if ($alreadyLiked) {
@@ -169,35 +170,27 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 		$base .= ($this->getText($base . $likesTextCount) !== '') ? $likesTextCount : 'n';
 
-		$LikeEntity = array_shift($likeData);
-		$LikeEntity->setCanLike($this->isAllowedTo(PermissionsEnum::LIKES_LIKE));
-		$LikeEntity->setAlreadyLiked($alreadyLiked);
-		$LikeEntity->setCount($likesCount);
-		$LikeEntity->setAdditionalInfo([
-			'text' => sprintf(
-				$this->getText($base),
-				$this->commaFormat((string) $likesTextCount)
-			),
-			'href' => $this->parserText(
-				'{scriptUrl}?action=likes;sa=view;ltype={ltype};like={likeId}',
-				[
-					'ltype' => $LikeEntity->getContentType()->value,
-					'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
-					'likeId' => $LikeEntity->getContentId(),
-				]
-			),
-			'usersLikeInfo' => $usersLikeInfo,
-		]);
+		$likeInfo->setText(sprintf(
+			$this->getText($base),
+			$this->commaFormat((string) $likesTextCount)
+		));
+		$likeInfo->setHref($this->parserText(
+			'{scriptUrl}?action=likes;sa=view;ltype={ltype};like={likeId}',
+			[
+				'ltype' => $type->value,
+				'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
+				'likeId' => $contentId,
+			]
+		));
 
-		return $LikeEntity;
+		return $likeInfo;
 	}
 
 	/**
+	 *@throws InvalidDataException
 	 * @throws InvalidLikeException
-	 * @throws InvalidDataException
-	 * @return array [LikeEntity]
 	 */
-	public function likeContent(LikesEnum $type, int $contentId, int $userId): array
+	public function likeContent(LikesEnum $type, int $contentId, int $userId): LikeInfoEntity
 	{
 		$LikeEntity = LikeEntity::from();
 		$LikeEntity->setContentType($type);
@@ -209,10 +202,10 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		if ($isContentAlreadyLiked) {
 			$this->deleteByContent($LikeEntity);
 
-			return $this->getByContent($type, [$contentId]);
+			return $this->getByContent($type, [$contentId])[$contentId];
 		}
 
-			return [$this->insert($LikeEntity)];
+			return $this->insert($LikeEntity);
 	}
 
 	public function getById(int $id): null

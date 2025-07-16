@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
+use Breeze\Entity\LikeEntity;
+use Breeze\Entity\LikeInfoEntity;
 use Breeze\Entity\SharedEntity;
 use Breeze\Entity\StatusEntity;
+use Breeze\LikesEnum;
 use Breeze\Util\Validate\DataNotFoundException;
 use DateMalformedStringException;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -94,6 +97,16 @@ class StatusRepositoryTest extends TestCase
 
 		$this->statusRepository->method('loadUsersInfo')
 			->willReturn([2 => ['name' => 'Test User']]);
+
+		$this->likeRepository->expects($this->once())
+			->method('getByContent')
+			->with(LikesEnum::Status, [5])
+			->willReturn([
+				5 => LikeInfoEntity::from([
+					LikeEntity::ID => 5,
+					LikeInfoEntity::LIKES => [],
+				]),
+			]);
 
 		$result = $this->statusRepository->insert($statusEntity);
 

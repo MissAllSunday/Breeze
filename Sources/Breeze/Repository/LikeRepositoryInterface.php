@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Entity\LikeEntity;
+use Breeze\Entity\LikeInfoEntity;
 use Breeze\LikesEnum;
 
 interface LikeRepositoryInterface extends BaseRepositoryInterface
@@ -26,7 +27,7 @@ interface LikeRepositoryInterface extends BaseRepositoryInterface
 	/**
 	 * @throws InvalidLikeException
 	 */
-	public function insert(LikeEntity $likeEntity): LikeEntity;
+	public function insert(LikeEntity $likeEntity): LikeInfoEntity;
 
 	public function count(LikeEntity $likeEntity): int;
 
@@ -36,14 +37,13 @@ interface LikeRepositoryInterface extends BaseRepositoryInterface
 	 */
 
 	/**
-	 * @param array $likeData [LikeEntity]
+	 * @param array $likeEntities [LikeEntity]
 	 */
-	public function buildLikeData(array $likeData, int $likesCount): LikeEntity;
+	public function buildLikeInfo(array $likeEntities, LikesEnum $type): LikeInfoEntity;
 
 	/**
 	 * @throws InvalidLikeException
 	 * @throws InvalidDataException
-	 * @return array [LikeEntity]
 	 */
-	public function likeContent(LikesEnum $type, int $contentId, int $userId): array;
+	public function likeContent(LikesEnum $type, int $contentId, int $userId): LikeInfoEntity;
 }

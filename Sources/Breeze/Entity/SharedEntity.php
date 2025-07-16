@@ -27,7 +27,7 @@ abstract class SharedEntity extends Entity implements SharedEntityInterface
 
 	protected array $usersInfo = [];
 
-	protected ?LikeEntity $likesInfo = null;
+	protected ?LikeInfoEntity $likesInfo = null;
 
 	public function setId(int $id): void
 	{
@@ -94,12 +94,12 @@ abstract class SharedEntity extends Entity implements SharedEntityInterface
 		return $this->usersInfo;
 	}
 
-	public function setLikesInfo(?LikeEntity $likesInfo): void
+	public function setLikesInfo(?LikeInfoEntity $likesInfo): void
 	{
 		$this->likesInfo = $likesInfo;
 	}
 
-	public function getLikesInfo(): ?LikeEntity
+	public function getLikesInfo(): ?LikeInfoEntity
 	{
 		return $this->likesInfo;
 	}

@@ -11,9 +11,9 @@ interface SharedEntityInterface extends EntityInterface
 
 	public function setUsersInfo(array $usersInfo): void;
 
-	public function setLikesInfo(?LikeEntity $likesInfo): void;
+	public function setLikesInfo(?LikeInfoEntity $likesInfo): void;
 
-	public function getLikesInfo(): ?LikeEntity;
+	public function getLikesInfo(): ?LikeInfoEntity;
 
 	public function getUserId(): int;
 

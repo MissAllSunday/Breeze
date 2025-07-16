@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace Breeze\Entity;
 
 use Breeze\LikesEnum;
-use Breeze\Util\Json;
 use Breeze\Util\Time;
 use DateMalformedStringException;
 use DateTimeImmutable;
@@ -28,17 +27,11 @@ class LikeEntity extends Entity implements EntityInterface
 
 	protected LikesEnum $content_type;
 
-	protected int $content_id = 0;
+	public int $content_id = 0;
 
 	protected ?DateTimeImmutable $like_time = null;
 
-	protected int $count = 0;
-
-	protected bool $already_liked = false;
-
-	protected bool $can_like = false;
-
-	protected array $additional_info = [];
+	protected array $userData = [];
 
 	public static function from(array $data = []): self
 	{
@@ -87,44 +80,14 @@ class LikeEntity extends Entity implements EntityInterface
 		$this->like_time = $time;
 	}
 
-	public function getCount(): int
+	public function setUserData(array $userData): void
 	{
-		return $this->count;
+		$this->userData = $userData;
 	}
 
-	public function setCount(int $count): void
+	public function getUserData(): array
 	{
-		$this->count = $count;
-	}
-
-	public function isAlreadyLiked(): bool
-	{
-		return $this->already_liked;
-	}
-
-	public function setAlreadyLiked(bool $already_liked): void
-	{
-		$this->already_liked = $already_liked;
-	}
-
-	public function canLike(): bool
-	{
-		return $this->can_like;
-	}
-
-	public function setCanLike(bool $can_like): void
-	{
-		$this->can_like = $can_like;
-	}
-
-	public function getAdditionalInfo(): array
-	{
-		return $this->additional_info;
-	}
-
-	public function setAdditionalInfo(array $additional_info): void
-	{
-		$this->additional_info = $additional_info;
+		return $this->userData;
 	}
 
 	public static function getTypes(): array
@@ -159,15 +122,13 @@ class LikeEntity extends Entity implements EntityInterface
 	/**
 	 * @throws DateMalformedStringException
 	 */
-	public function castValue(string $columnName, mixed $value): mixed
+	public function castValue(string $columnName, mixed $value): string|int|LikesEnum|DateTimeImmutable
 	{
 		return match ($columnName) {
 			self::ID_MEMBER,
-			self::ID, LikeEntity::COUNT => (int) $value,
-			self::TIME => $value === null ? null : new DateTimeImmutable('@' . $value),
-			LikeEntity::CAN_LIKE, LikeEntity::ALREADY_LIKED => (bool) $value,
-			self::TYPE => is_string($value) ? LikesEnum::from($value) : $value,
-			LikeEntity::ADDITIONAL_INFO => Json::decode($value),
+			self::ID => (int) $value,
+			self::TIME => new DateTimeImmutable('@' . $value),
+			self::TYPE => LikesEnum::from($value),
 			default => (string) $value,
 		};
 	}
@@ -176,12 +137,10 @@ class LikeEntity extends Entity implements EntityInterface
 	{
 		return [
 			'contentId' => $this->getContentId(),
-			'count' => $this->getCount(),
-			'alreadyLiked' => $this->isAlreadyLiked(),
-			'canLike' => $this->canLike(),
 			'type' => $this->getContentType()->value,
-			'additionalInfo' => $this->getAdditionalInfo(),
 			'likeTime' => Time::from($this->getLikeTime()),
+			'idMember' => $this->getIdMember(),
+			'userData' => $this->getUserData(),
 		];
 	}
 }

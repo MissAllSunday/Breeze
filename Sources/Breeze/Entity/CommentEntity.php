@@ -25,10 +25,6 @@ class CommentEntity extends SharedEntity implements SharedEntityInterface
 
 	protected int $likes = 0;
 
-	protected array $usersInfo = [];
-
-	protected ?LikeEntity $likesInfo = null;
-
 	public static function from(array $data = []): self
 	{
 		$class = self::class;

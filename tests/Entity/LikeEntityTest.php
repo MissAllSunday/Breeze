@@ -122,21 +122,9 @@ class LikeEntityTest extends TestCase
 		$this->assertInstanceOf(\DateTimeImmutable::class, $result);
 		$this->assertEquals($timestamp, $result->getTimestamp());
 
-		// Test boolean casting
-		$this->assertTrue($entity->castValue(LikeEntity::CAN_LIKE, '1'));
-		$this->assertFalse($entity->castValue(LikeEntity::CAN_LIKE, '0'));
-		$this->assertTrue($entity->castValue(LikeEntity::ALREADY_LIKED, true));
-		$this->assertFalse($entity->castValue(LikeEntity::ALREADY_LIKED, false));
-
 		// Test enum casting
 		$this->assertEquals(LikesEnum::Status, $entity->castValue(LikeEntity::TYPE, 'br_sta'));
 		$this->assertEquals(LikesEnum::Comments, $entity->castValue(LikeEntity::TYPE, 'br_com'));
-		$this->assertEquals(LikesEnum::Status, $entity->castValue(LikeEntity::TYPE, LikesEnum::Status));
-
-		// Test JSON decoding for additional info
-		$jsonString = '{"key":"value","number":123}';
-		$expected = ['key' => 'value', 'number' => 123];
-		$this->assertEquals($expected, $entity->castValue(LikeEntity::ADDITIONAL_INFO, $jsonString));
 
 		// Test default string casting
 		$this->assertEquals('default', $entity->castValue('unknown_column', 'default'));

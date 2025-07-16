@@ -2,21 +2,21 @@ import '@testing-library/jest-dom';
 
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { LikeType } from 'breezeTypesLikes';
+import { LikeInfoType } from 'breezeTypesLikes';
 import { PermissionsContextType } from 'breezeTypesPermissions';
 import React from 'react';
 
-import likes from '../__fixtures__/likes';
 import permissions from '../__fixtures__/permissions';
 import { PermissionsContext } from '../context/PermissionsContext';
 import { Like } from './Like';
+import { likesInfo } from '../__fixtures__/likesInfo';
 
-const MOCK_LIKE_ITEM = likes.basic;
+const MOCK_LIKE_INFO_ITEM = likesInfo.basic;
 
 jest.mock('./LikeInfo', () => ({ LikeInfo: () => 'mocked like info' }));
 jest.mock('../api/Like/Post', ()=> jest.fn());
 
-function act(setPermissionsTo: boolean, overwriteLikeItem?: Partial<LikeType>) {
+function act(setPermissionsTo: boolean, overwriteLikeItem?: Partial<LikeInfoType>) {
 
   const permissionsPartial:Partial<PermissionsContextType> = {
     isEnable: { enableLikes: setPermissionsTo },
@@ -27,10 +27,10 @@ function act(setPermissionsTo: boolean, overwriteLikeItem?: Partial<LikeType>) {
     },
   };
   const customPermissions:PermissionsContextType = { ...permissions.basic, ...permissionsPartial };
-  const likeItem:LikeType = { ...MOCK_LIKE_ITEM, ...overwriteLikeItem };
+  const likeInfo:LikeInfoType = { ...MOCK_LIKE_INFO_ITEM, ...overwriteLikeItem };
 
   return render(<PermissionsContext.Provider value={customPermissions}>
-    <Like item={likeItem} />
+    <Like likeInfo={likeInfo} />
   </PermissionsContext.Provider>);
 }
 
@@ -41,7 +41,7 @@ beforeAll(()=> {
 describe('When like setting is disable and permissions are not granted', () => {
   it('does not render the Like component', async () => {
     act(false);
-    const spanElement = screen.queryByTitle(MOCK_LIKE_ITEM.additionalInfo.text);
+    const spanElement = screen.queryByTitle(MOCK_LIKE_INFO_ITEM.text);
     expect(spanElement).not.toBeInTheDocument();
   });
 });

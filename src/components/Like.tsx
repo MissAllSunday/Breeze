@@ -1,4 +1,4 @@
-import { LikeProps, LikeType } from 'breezeTypesLikes';
+import { LikeInfoType, LikeProps } from 'breezeTypesLikes';
 import React, { useCallback, useContext, useState } from 'react';
 
 import { postLike } from '../api/Like/Post';
@@ -9,7 +9,7 @@ import { LikeInfo } from './LikeInfo';
 import Loading from './Loading';
 
 export const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
-  const [like, setLike] = useState<LikeType>(props.item);
+  const [likeInfo, setLikeInfo] = useState<LikeInfoType>(props.likeInfo);
   const permissions = useContext(PermissionsContext);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -19,18 +19,21 @@ export const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
     }
     setIsLoading(true);
 
-    postLike(like).then((newLikes: LikeType[]) => {
-      setLike(newLikes[0]);
+    postLike(likeInfo).then((newLikeInfo: LikeInfoType) => {
+      setLikeInfo(newLikeInfo);
     }).finally(() => setIsLoading(false));
-  }, [like]);
+  }, [likeInfo]);
+
+  const title = likeInfo && likeInfo.alreadyLiked ? smfTextVars.like.unlike : smfTextVars.like.like;
+  const emoji = likeInfo && likeInfo.alreadyLiked ? String.fromCodePoint(128078) : String.fromCodePoint(128077);
 
   return (
     permissions.isEnable.enableLikes && permissions.Forum.likesLike ?
       <div className="smflikebutton">
         {isLoading ? <Loading/> : ''}
-        <span onClick={handleLike} className="likeClass pointer_cursor" title={ like && like.alreadyLiked ? smfTextVars.like.unlike : smfTextVars.like.like }>
-          {String.fromCodePoint(like && like.alreadyLiked ? 128078 : 128077)}
-        </span> { like && like.additionalInfo && <LikeInfo item={like} />}
+        <span onClick={handleLike} className="likeClass pointer_cursor" title={ title }>
+          { emoji }
+        </span> { likeInfo && <LikeInfo likeInfo={likeInfo} />}
       </div> : null
   );
 };

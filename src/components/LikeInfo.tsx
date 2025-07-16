@@ -1,4 +1,4 @@
-import { LikeProps, UsersLikeInfoType } from 'breezeTypesLikes';
+import { LikeProps, LikeType } from 'breezeTypesLikes';
 import React, { useCallback, useState } from 'react';
 
 import { Modal } from './Modal';
@@ -14,32 +14,32 @@ export const LikeInfo: React.FunctionComponent<LikeProps> = (props: LikeProps) =
     [],
   );
 
-  const infoBody = props.item.additionalInfo.usersLikeInfo && (
+  const infoBody = props.likeInfo.likes && (
     <ul id="likes" data-testid="likes">
-      {Object.values(props.item.additionalInfo.usersLikeInfo).map((userLikeInfo: UsersLikeInfoType) => (
-        <li key={userLikeInfo.userData.id}>
+      {Object.values(props.likeInfo.likes).map((like: LikeType) => (
+        <li key={like.userData.id}>
           <Avatar
-            href={userLikeInfo.userData.avatar.url}
-            userName={userLikeInfo.userData.username}
+            href={like.userData.avatar.url}
+            userName={like.userData.username}
           />
           <span className="like_profile">
-            <span dangerouslySetInnerHTML={{ __html: userLikeInfo.userData.link_color }}/>
-            <span className="description">{userLikeInfo.userData.group}</span>
+            <span dangerouslySetInnerHTML={{ __html: like.userData.link_color }}/>
+            <span className="description">{like.userData.group}</span>
           </span>
-          <span className="like_time">{userLikeInfo.likeTime}</span>
+          <span className="like_time">{like.likeTime}</span>
         </li>
       ))}
     </ul>
   );
 
-  const infoHeader = (`${String.fromCodePoint(128077)} ${props.item.additionalInfo?.text}`);
-  const infoText = props.item.count > 0
+  const infoHeader = (`${String.fromCodePoint(128077)} ${props.likeInfo.text}`);
+  const infoText = props.likeInfo.count > 0
     ? (
       <span className="like_count smalltext pointer_cursor" onClick={() => setShowInfo(true)} data-testid="likesInfo">
-        {props.item.additionalInfo?.text}
+        {props.likeInfo.text}
       </span>
     )
-    : props.item.additionalInfo?.text;
+    : props.likeInfo.text;
 
   return (
     <>

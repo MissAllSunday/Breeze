@@ -11,7 +11,6 @@ use Breeze\Entity\LikeEntity;
 use Breeze\Entity\MemberEntity;
 use Breeze\Entity\SharedEntity;
 use Breeze\LikesEnum;
-use Breeze\PermissionsEnum;
 use Breeze\Traits\CacheTrait;
 use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\TextTrait;
@@ -167,22 +166,14 @@ abstract class BaseRepository implements BaseRepositoryInterface
 	 */
 	protected function setLikes(array $handledEntities, LikesEnum $type): array
 	{
-		$likesByContent = $this->likeRepository->getByContent(
+		$likesInfo = $this->likeRepository->getByContent(
 			$type,
 			array_column($handledEntities, SharedEntity::ID)
 		);
-		$canLike = $this->isAllowedTo(PermissionsEnum::LIKES_LIKE);
 
-		array_walk($handledEntities, function ($handledEntity) use ($likesByContent, $type, $canLike): void {
+		array_walk($handledEntities, function ($handledEntity) use ($likesInfo): void {
 			$id = $handledEntity->getId();
-			$likeHandled = $likesByContent[$id] ?? LikeEntity::from([
-				LikeEntity::TYPE => $type,
-				LikeEntity::ID => $id,
-				LikeEntity::ID_MEMBER => $handledEntity->getUserId(),
-				LikeEntity::CAN_LIKE => $canLike,
-			]);
-
-			$handledEntity->setLikesInfo($likeHandled);
+			$handledEntity->setLikesInfo($likesInfo[$id]);
 		});
 
 		return $handledEntities;
