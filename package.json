@@ -3,34 +3,23 @@
   "version": "2.0",
   "private": true,
   "dependencies": {
-    "@testing-library/user-event": "^14.4.3",
-    "@types/jest": "^29.1.2",
-    "@types/node": "^18.8.5",
-    "@types/react": "^18.0.21",
-    "@types/react-dom": "^18.0.6",
-    "@types/react-modal": "^3.12.1",
-    "core-js": "^2.6.12",
-    "eslint-config-airbnb-typescript": "^17.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-hot-toast": "^2.4.0",
-    "react-scripts": "^5.0.1"
+    "@types/jest": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/react-modal": "latest",
+    "core-js": "latest",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-hot-toast": "latest"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --watchAll=false",
-    "coverage": "react-scripts test --watchAll=false --coverage",
-    "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "lint": "eslint . --ext .ts,.tsx",
-    "lint:fix": "eslint --fix --c .eslintrc.json ./src"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "lint:fix": "eslint --fix --c .eslintrc.json ./src",
+    "dev": "vite"
   },
   "browserslist": {
     "production": [
@@ -48,22 +37,11 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-react": "^7.22.15",
     "@biomejs/biome": "2.1.2",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^16.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.40.0",
-    "babel-eslint": "^10.1.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-config-standard-with-typescript": "^23.0.0",
-    "eslint-import-resolver-typescript": "^3.6.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-n": "^15.3.0",
-    "eslint-plugin-promise": "^6.1.0",
-    "eslint-plugin-react": "^7.31.10",
-    "eslint-plugin-simple-import-sort": "^10.0.0",
-    "eslint-plugin-typescript": "^0.14.0",
-    "jest": "^27.5.1",
+    "@types/node": "^22.16.4",
+    "@vitejs/plugin-react": "^4.6.0",
     "prettier": "3.0.3",
-    "react-test-renderer": "^18.2.0",
-    "typescript": "^4.8.4"
+    "typescript": "^5.8.3",
+    "vite": "^7.0.5",
+    "vite-tsconfig-paths": "^4.3.2"
   }
 }
