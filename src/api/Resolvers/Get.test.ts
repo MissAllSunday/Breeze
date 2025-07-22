@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { responses } from '../../__fixtures__/responses';
 import { status } from '../../__fixtures__/status';
 import { showError } from '../../utils/tooltip';
@@ -14,8 +15,8 @@ const MOCK_GOOD_RESPONSE = responses.custom({
   }),
 });
 
-jest.mock('../../utils/tooltip', () => ({
-  showError: jest.fn(() => 'some error string'),
+vi.mock('../../utils/tooltip', () => ({
+  showError: vi.fn(() => 'some error string'),
 }));
 
 describe('resolves Get call', () => {

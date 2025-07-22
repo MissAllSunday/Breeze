@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { responses } from '../../__fixtures__/responses';
 import { showError, showInfo } from '../../utils/tooltip';
 import { resolveDelete } from './Delete';
@@ -16,9 +17,9 @@ const MOCK_GOOD_RESPONSE = responses.custom({
   json: () => Promise.resolve({ message: 'some server error' }),
 });
 
-jest.mock('../../utils/tooltip', () => ({
-  showError: jest.fn(() => 'some error string'),
-  showInfo: jest.fn(() => 'some success string'),
+vi.mock('../../utils/tooltip', () => ({
+  showError: vi.fn(() => 'some error string'),
+  showInfo: vi.fn(() => 'some success string'),
 }));
 
 describe('resolves Deleting call', () => {

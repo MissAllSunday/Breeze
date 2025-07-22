@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 
 import { render, screen } from '@testing-library/react';
 import { CommentType } from 'breezeTypesComments';
@@ -25,7 +26,7 @@ function act(
 }
 
 beforeAll(()=> {
-  window.confirm = jest.fn(() => true);
+  window.confirm = vi.fn(() => true);
 });
 
 describe('Rendering Comment component', () => {

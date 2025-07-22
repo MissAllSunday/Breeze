@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { responses } from '../../__fixtures__/responses';
 import { status } from '../../__fixtures__/status';
 import { showInfo } from '../../utils/tooltip';
@@ -19,15 +20,18 @@ const MOCK_BAD_RESPONSE = responses.custom({
   status: 400,
   json: () => Promise.resolve({
     message: 'some server error',
-    content: status.basic,
+    content: [],
   }),
 });
 
-jest.mock('../../utils/tooltip', () => ({
-  showInfo: jest.fn(() => 'some error string'),
+vi.mock('../../utils/tooltip', () => ({
+  showInfo: vi.fn(() => 'some error string'),
 }));
 
 describe('resolves Post call', () => {
+  afterEach(() => {
+    vi.clearAllMocks(); // Clear mock calls
+  });
   describe('and resource was created', () => {
     it('shows success message', async () => {
       await resolvePost(MOCK_GOOD_RESPONSE);
@@ -41,7 +45,6 @@ describe('resolves Post call', () => {
     });
   });
   describe('and resource was not created', () => {
-
     it('does not show success message', async () => {
       await resolvePost(MOCK_BAD_RESPONSE);
 
