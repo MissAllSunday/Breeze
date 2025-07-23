@@ -53,7 +53,7 @@
         "phpunit": "phpunit -c phpunit.xml.dist",
         "phpstan": "phpstan analyze --memory-limit=1G -c phpstan.neon",
         "rector": "breezeVendor/bin/rector process Sources",
-        "ui:test": "npm run test",
+        "ui:test": "npm run test:run",
         "serve": "bin/server",
         "test": [
             "@lint:check",

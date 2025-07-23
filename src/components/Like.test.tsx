@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { LikeInfoType } from 'breezeTypesLikes';
@@ -13,8 +13,8 @@ import { Like } from './Like';
 
 const MOCK_LIKE_INFO_ITEM = likesInfo.basic;
 
-jest.mock('./LikeInfo', () => ({ LikeInfo: () => 'mocked like info' }));
-jest.mock('../api/Like/Post', ()=> jest.fn());
+vi.mock('./LikeInfo', () => ({ LikeInfo: () => 'mocked like info' }));
+vi.mock('../api/Like/Post', ()=> (likesInfo.custom({ count: 1, alreadyLiked: true })));
 
 function act(setPermissionsTo: boolean, overwriteLikeItem?: Partial<LikeInfoType>) {
 
@@ -35,7 +35,9 @@ function act(setPermissionsTo: boolean, overwriteLikeItem?: Partial<LikeInfoType
 }
 
 beforeAll(()=> {
-  window.confirm = jest.fn();
+  window.confirm = vi.fn();
+  vi.resetAllMocks();
+  vi.clearAllMocks();
 });
 
 describe('When like setting is disable and permissions are not granted', () => {

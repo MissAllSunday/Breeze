@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent, { UserEvent } from '@testing-library/user-event';
 import { PermissionsContextType } from 'breezeTypesPermissions';
@@ -14,23 +14,23 @@ import { PermissionsContext } from '../context/PermissionsContext';
 import smfVars from '../DataSource/SMF';
 import Status from './Status';
 
-const mockRemoveStatus = jest.fn(() => true);
+const mockRemoveStatus = vi.fn(() => true);
 
 // Mock the API calls
-jest.mock('../api/Comment/Post');
-jest.mock('../api/Comment/Delete');
+vi.mock('../api/Comment/Post');
+vi.mock('../api/Comment/Delete');
 
 
 const originalConfirm = window.confirm; // Store original function
 
 beforeEach(() => {
-  window.confirm = jest.fn(() => true);
-  Element.prototype.scrollIntoView = jest.fn();
+  window.confirm = vi.fn(() => true);
+  Element.prototype.scrollIntoView = vi.fn();
 });
 
 afterEach(() => {
   window.confirm = originalConfirm; // Restore original function
-  jest.clearAllMocks(); // Clear mock calls
+  vi.clearAllMocks(); // Clear mock calls
 });
 
 function act(
@@ -47,6 +47,10 @@ function act(
 }
 
 describe('Status component', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+    vi.resetAllMocks();
+  });
 
   it('renders the status content', () => {
     const { container } = act();
@@ -59,7 +63,7 @@ describe('Status component', () => {
 
 
   it('shows delete button when user has permission', () => {
-    act({ Status:{ delete:true, edit:true, post:true } });
+    act({ Status:{ delete:true, edit:true, post:false } });
 
     const deleteButton = screen.getByTestId('deleteStatus');
     expect(deleteButton).toBeInTheDocument();
@@ -87,7 +91,7 @@ describe('Status component', () => {
   });
 
   it('does not call removeStatus when delete is canceled', async () => {
-    window.confirm = jest.fn().mockImplementation(() => false);
+    window.confirm = vi.fn().mockImplementation(() => false);
     act({ Status:{ delete:true, edit:true, post:true } });
 
     const deleteButton = screen.getByTestId('deleteStatus');

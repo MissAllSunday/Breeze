@@ -8,29 +8,29 @@ import { postLike } from './Post';
 
 const MOCK_LIKE_INFO_ITEM = likesInfo.basic;
 
-jest.mock('../Base', () => ({
-  baseUrl: jest.fn(() => 'some url'),
-  baseConfig: jest.fn(() => 'some config'),
+vi.mock('../Base', () => ({
+  baseUrl: vi.fn(() => 'some url'),
+  baseConfig: vi.fn(() => 'some config'),
 }));
 
-jest.mock('../../utils/tooltip', () => ({
-  showError: jest.fn(() => 'some error'),
+vi.mock('../../utils/tooltip', () => ({
+  showError: vi.fn(() => 'some error'),
 }));
 
-jest.mock('../Resolvers/Post', () => ({
-  resolvePost: jest.fn(),
+vi.mock('../Resolvers/Post', () => ({
+  resolvePost: vi.fn(),
 }));
 
 describe('posting a like', () => {
   it('calls base url', async () => {
-    jest.spyOn(global, 'fetch').mockResolvedValueOnce(Promise.resolve(new Response()));
+    vi.spyOn(global, 'fetch').mockResolvedValueOnce(Promise.resolve(new Response()));
     await postLike(MOCK_LIKE_INFO_ITEM);
 
     expect(baseUrl as jest.Mock).toHaveBeenCalled();
   });
 
   it('calls base config', async () => {
-    jest.spyOn(global, 'fetch').mockResolvedValueOnce(Promise.resolve(new Response()));
+    vi.spyOn(global, 'fetch').mockResolvedValueOnce(Promise.resolve(new Response()));
     await postLike(MOCK_LIKE_INFO_ITEM);
 
     expect(baseConfig as jest.Mock).toHaveBeenCalled();
@@ -39,7 +39,7 @@ describe('posting a like', () => {
   describe('and sent correct params', () => {
 
     it('calls resolver', async () => {
-      jest.spyOn(global, 'fetch').mockResolvedValueOnce(Promise.resolve(new Response()));
+      vi.spyOn(global, 'fetch').mockResolvedValueOnce(Promise.resolve(new Response()));
       await postLike(MOCK_LIKE_INFO_ITEM);
 
       expect(resolvePost as jest.Mock).toHaveBeenCalled();
@@ -48,7 +48,7 @@ describe('posting a like', () => {
   describe('and sent wrong params', () => {
 
     it('shows error message', async () => {
-      jest.spyOn(global, 'fetch').mockResolvedValueOnce(Promise.reject(new Error('something')));
+      vi.spyOn(global, 'fetch').mockResolvedValueOnce(Promise.reject(new Error('something')));
       await postLike(MOCK_LIKE_INFO_ITEM);
       expect(showError as jest.Mock).toHaveBeenCalled();
     });

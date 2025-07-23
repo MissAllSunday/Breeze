@@ -11,11 +11,12 @@ class Components
 {
 	use TextTrait;
 
-	public const TABS_FILE = 'tabs.js';
-	public const CSS_FILE = 'breeze.css';
-	public const FOLDER = 'breezeComponents/';
-	private const COMPONENTS = [];
-	private const CDN_JS = [
+	public const string CSS_FILE = 'breeze.css';
+	public const string FOLDER = 'breezeComponents/';
+
+	public const string MAIN_JS_FILE = Components::FOLDER . Breeze::REACT_HASH . '.js';
+	private const array COMPONENTS = [];
+	private const array CDN_JS = [
 		'react' => 'https://unpkg.com/react@' . Breeze::REACT_VERSION . '/umd/react.production.min.js',
 		'reactDom' => 'https://unpkg.com/react-dom@' . Breeze::REACT_DOM_VERSION . '/umd/react-dom.production.min.js',
 	];
