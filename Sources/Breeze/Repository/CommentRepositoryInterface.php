@@ -6,13 +6,12 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Entity\CommentEntity;
-use Breeze\Entity\CommentHandledEntity;
 
 interface CommentRepositoryInterface extends BaseRepositoryInterface
 {
 	/**
 	 * @throws InvalidCommentException
-	 * @return array [CommentHandledEntity]
+	 * @return array [CommentEntity]
 	 */
 	public function insert(CommentEntity $commentEntity): array;
 

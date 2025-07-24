@@ -161,22 +161,22 @@ abstract class BaseRepository implements BaseRepositoryInterface
 	abstract public function getColumnPosterId(): string;
 
 	/**
-	 * @param array $handledEntities [EntityInterface]
+	 * @param array $entities [EntityInterface]
 	 * @return array [EntityInterface]
 	 */
-	protected function setLikes(array $handledEntities, LikesEnum $type): array
+	protected function setLikes(array $entities, LikesEnum $type): array
 	{
 		$likesInfo = $this->likeRepository->getByContent(
 			$type,
-			array_column($handledEntities, SharedEntity::ID)
+			array_column($entities, SharedEntity::ID)
 		);
 
-		array_walk($handledEntities, function ($handledEntity) use ($likesInfo): void {
-			$id = $handledEntity->getId();
-			$handledEntity->setLikesInfo($likesInfo[$id]);
+		array_walk($entities, function ($entity) use ($likesInfo): void {
+			$id = $entity->getId();
+			$entity->setLikesInfo($likesInfo[$id] ?? null);
 		});
 
-		return $handledEntities;
+		return $entities;
 	}
 
 	protected function getDefaultQueryParams(): array

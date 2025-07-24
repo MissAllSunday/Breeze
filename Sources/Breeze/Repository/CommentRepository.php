@@ -36,7 +36,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 	/**
 	 * @throws InvalidCommentException
-	 * @return array [CommentHandledEntity]
+	 * @return array [CommentEntity]
 	 */
 	public function insert(CommentEntity $commentEntity): array
 	{
