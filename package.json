@@ -23,7 +23,7 @@
     "test:run": "vitest run",
     "format": "npx @biomejs/biome format --write ./src",
     "lint": "npx @biomejs/biome lint --write ./src",
-    "lint:fix": "eslint --fix --c .eslintrc.json ./src",
+    "check": "npx @biomejs/biome check --write ./src",
     "dev": "vite"
   },
   "browserslist": {
