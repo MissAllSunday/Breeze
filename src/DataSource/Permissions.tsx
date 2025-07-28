@@ -1,4 +1,4 @@
-import { PermissionsContextType } from 'breezeTypesPermissions';
+import type { PermissionsContextType } from 'breezeTypesPermissions';
 
 const PermissionsDefault:PermissionsContextType = {
   Status: {

@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { responses } from '../../__fixtures__/responses';
 import { status } from '../../__fixtures__/status';
 import { showInfo } from '../../utils/tooltip';

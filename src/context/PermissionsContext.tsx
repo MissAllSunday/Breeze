@@ -1,4 +1,4 @@
-import { PermissionsContextType } from 'breezeTypesPermissions';
+import type { PermissionsContextType } from 'breezeTypesPermissions';
 import { createContext } from 'react';
 
 import PermissionsDefault from '../DataSource/Permissions';

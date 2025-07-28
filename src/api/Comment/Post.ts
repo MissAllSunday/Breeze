@@ -1,4 +1,4 @@
-import { CommentListType } from 'breezeTypesComments';
+import type { CommentListType } from 'breezeTypesComments';
 
 import smfVars from '../../DataSource/SMF';
 import smfTextVars from '../../DataSource/Txt';
@@ -18,7 +18,7 @@ export const postComment = async (commentParams: object): Promise<CommentListTyp
     });
 
     return await resolvePost(postCommentResults);
-  } catch (error:unknown) {
+  } catch (_error:unknown) {
     showError(smfTextVars.error.generic);
   }
 };

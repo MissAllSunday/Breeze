@@ -1,4 +1,4 @@
-import { CommentProps } from 'breezeTypesComments';
+import type { CommentProps } from 'breezeTypesComments';
 import React, { useCallback, useContext, useState } from 'react';
 
 import { PermissionsContext } from '../context/PermissionsContext';
@@ -41,14 +41,15 @@ function Comment(props: CommentProps): React.ReactElement {
       <div className="half_content">
         <div className={'info_bar'}>
           <span dangerouslySetInnerHTML={{ __html: timeStamp }} className={'time_stamp'}/>
-          {permissions.Comments.delete && <span
+          {permissions.Comments.delete && <button
+            type="button"
             className="main_icons remove_button pointer_cursor"
             title={smfTextVars.general.delete}
             onClick={removeComment}
             data-testid="deleteComment"
           >
             {smfTextVars.general.delete}
-          </span>}
+          </button>}
         </div>
       </div>
       <hr/>

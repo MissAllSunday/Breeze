@@ -1,7 +1,5 @@
-import { TabContentProps } from 'breezeTypes';
-import React from 'react';
-
-import smfVars from '../DataSource/SMF';
+import type { TabContentProps } from 'breezeTypes';
+import type React from 'react';
 
 export default function Tab(props: TabContentProps): React.JSX.Element {
 

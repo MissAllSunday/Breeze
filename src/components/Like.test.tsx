@@ -1,10 +1,9 @@
 import '@testing-library/jest-dom';
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import type { LikeInfoType } from 'breezeTypesLikes';
+import type { PermissionsContextType } from 'breezeTypesPermissions';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { LikeInfoType } from 'breezeTypesLikes';
-import { PermissionsContextType } from 'breezeTypesPermissions';
-import React from 'react';
+import { describe, expect, it, vi } from 'vitest'
 
 import { likesInfo } from '../__fixtures__/likesInfo';
 import permissions from '../__fixtures__/permissions';
@@ -56,7 +55,7 @@ describe('When like setting is enable and permissions are granted', () => {
   });
 
   it('shows span tag', async () => {
-    const { container } = act(true);
+    act(true);
 
     const spanElement = screen.queryByTitle('Like');
     expect(spanElement).toBeInTheDocument();

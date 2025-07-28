@@ -1,6 +1,6 @@
-import { WallProps } from 'breezeTypes';
-import { PermissionsContextType } from 'breezeTypesPermissions';
-import { IFetchStatus, StatusListType, StatusType } from 'breezeTypesStatus';
+import type { WallProps } from 'breezeTypes';
+import type { PermissionsContextType } from 'breezeTypesPermissions';
+import type { IFetchStatus, StatusListType, StatusType } from 'breezeTypesStatus';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 
@@ -20,10 +20,9 @@ export default function Wall(props: WallProps): React.JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const [permissions, setPermissions] = useState<PermissionsContextType>(PermissionsDefault);
   const [paginationTotal, setPaginationTotal] = useState<number>(0);
-  const [loadedMore, setLoadedMore] = useState(0);
   const ref = React.useRef<null | HTMLInputElement>(null);
 
-  useEffect(()=> ref.current?.scrollIntoView({ behavior: 'smooth', block:'end' }), [loadedMore]);
+  useEffect(()=> ref.current?.scrollIntoView({ behavior: 'smooth', block:'end' }), []);
 
   useEffect(() => {
     getStatus(props.wallType, 0)

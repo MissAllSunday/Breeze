@@ -1,4 +1,3 @@
-import React, { ReactElement } from 'react';
 import toast from 'react-hot-toast';
 
 export interface ServerResponse {
@@ -15,7 +14,7 @@ export const showError = (message: string): void => {
 };
 
 export const displayMessage = (message: string, type = 'info'): ReactElement => {
-  return (<div className={type + 'box'}>
+  return (<div className={`${type}box`}>
     {message}
   </div>);
 };

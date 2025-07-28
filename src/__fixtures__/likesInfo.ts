@@ -1,4 +1,4 @@
-import { LikeInfoType } from 'breezeTypesLikes';
+import type { LikeInfoType } from 'breezeTypesLikes';
 
 import { userData } from './userData';
 

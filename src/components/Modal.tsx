@@ -1,5 +1,6 @@
-import { ModalProps } from 'breezeTypesModal';
-import React, { useCallback, useEffect, useState } from 'react';
+import type { ModalProps } from 'breezeTypesModal';
+import type React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import smfTextVars from '../DataSource/Txt';
 
@@ -30,11 +31,11 @@ export const Modal: React.FunctionComponent<ModalProps> = (props: ModalProps) =>
   );
 
   return (
-    <div id="smf_popup" className={`popup_container ${style}`} onClick={handleParentClick}>
+    <div id="smf_popup" className={`popup_container ${style}`} onClick={handleParentClick} role="dialog">
       <div className="popup_window description">
         <div className="catbg popup_heading">
           {props.content.header}
-          <a className="main_icons hide_popup" onClick={handleClose} title={smfTextVars.general.close} href="/#"> </a>
+          <button className="main_icons hide_popup" onClick={handleClose} title={smfTextVars.general.close} type="button" />
         </div>
         <div className="popup_content clear">
           {props.content.body}

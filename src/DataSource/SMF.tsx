@@ -39,7 +39,7 @@ const editorOptions = window.breezeEditorOptions || [];
 // @ts-expect-error editor gets defined serverside
 const editorIsRich = window.breezeEditorIsRich || false;
 // @ts-expect-error editor gets defined serverside
-const currentUserAvatar = window.breezeCurrentUserAvatar || window.smf_avatars_url + '/default.png';
+const currentUserAvatar = window.breezeCurrentUserAvatar || `${window.smf_avatars_url}/default.png`;
 
 const smfVars = {
   session,

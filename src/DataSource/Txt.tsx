@@ -1,4 +1,4 @@
-import * as breezeTypesText from 'breezeTypesText';
+import type * as breezeTypesText from 'breezeTypesText';
 
 // @ts-expect-error Backend text variable
 const general: GeneralTextType = window.breezeTxtGeneral ?? JSON.parse(import.meta.env.VITE_APP_DEV_TEXT);

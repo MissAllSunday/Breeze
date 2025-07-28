@@ -1,8 +1,7 @@
 import '@testing-library/jest-dom';
 
+import type { AvatarDataType } from 'breezeTypesUser';
 import { render, screen } from '@testing-library/react';
-import { AvatarDataType } from 'breezeTypesUser';
-import React from 'react';
 
 import Avatar from './Avatar';
 

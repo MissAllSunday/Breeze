@@ -1,4 +1,4 @@
-import { StatusListType } from 'breezeTypesStatus';
+import type { StatusListType } from 'breezeTypesStatus';
 
 import smfVars from '../../DataSource/SMF';
 import smfTextVars from '../../DataSource/Txt';
@@ -19,7 +19,7 @@ export const postStatus = async (content: string): Promise<StatusListType> => {
     });
 
     return await resolvePost(response);
-  } catch (error:unknown) {
+  } catch (_error:unknown) {
     showError(smfTextVars.error.generic);
   }
 };

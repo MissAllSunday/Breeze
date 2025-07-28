@@ -1,5 +1,6 @@
-import { LikeProps, LikeType } from 'breezeTypesLikes';
-import React, { useCallback, useState } from 'react';
+import type { LikeProps, LikeType } from 'breezeTypesLikes';
+import type React from 'react';
+import { useCallback, useState } from 'react';
 
 import { Modal } from './Modal';
 import Avatar from './user/Avatar';
@@ -35,9 +36,13 @@ export const LikeInfo: React.FunctionComponent<LikeProps> = (props: LikeProps) =
   const infoHeader = (`${String.fromCodePoint(128077)} ${props.likeInfo.text}`);
   const infoText = props.likeInfo.count > 0
     ? (
-      <span className="like_count smalltext pointer_cursor" onClick={() => setShowInfo(true)} data-testid="likesInfo">
+      <button
+        type="button"
+        className="like_count smalltext pointer_cursor"
+        onClick={() => setShowInfo(true)}
+        data-testid="likesInfo">
         {props.likeInfo.text}
-      </span>
+      </button>
     )
     : props.likeInfo.text;
 

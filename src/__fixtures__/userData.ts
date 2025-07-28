@@ -1,4 +1,4 @@
-import { UserDataType } from 'breezeTypesUser';
+import type { UserDataType } from 'breezeTypesUser';
 
 
 

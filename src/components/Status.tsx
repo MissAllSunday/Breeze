@@ -1,5 +1,5 @@
-import { CommentListType, CommentType } from 'breezeTypesComments';
-import { StatusProps } from 'breezeTypesStatus';
+import type { CommentListType, CommentType } from 'breezeTypesComments';
+import type { StatusProps } from 'breezeTypesStatus';
 import * as React from 'react';
 import { useCallback, useContext, useState } from 'react';
 
@@ -41,9 +41,9 @@ function Status(props: StatusProps): React.ReactElement {
     props.removeStatus(props.status);
   }, [permissions.Status.delete, props]);
 
-  const createComment = useCallback((content: string) => {
+  const createComment = useCallback((content: string): boolean => {
     if (!permissions.Comments.post) {
-      return;
+      return false;
     }
 
     setIsLoading(true);
@@ -55,11 +55,11 @@ function Status(props: StatusProps): React.ReactElement {
       for (const key in newComments) {
         setCommentsList([...commentsList, newComments[key]]);
       }
-
-      return true;
     }).finally(() => {
       setIsLoading(false);
     });
+
+    return true;
   }, [props.status.id, commentsList, permissions.Comments.post]);
 
   const removeComment = useCallback((comment: CommentType) => {
@@ -99,14 +99,15 @@ function Status(props: StatusProps): React.ReactElement {
           <div className={'info_bar'}>
             <span dangerouslySetInnerHTML={{ __html: timeStamp }} className={'time_stamp'}/>
             {permissions.Status.delete &&
-               <span
-                className="main_icons remove_button pointer_cursor"
-                title={smfTextVars.general.delete}
-                onClick={removeStatus}
-                data-testid="deleteStatus"
-              >
-            {smfTextVars.general.delete}
-          </span>
+               <button
+                  type="button"
+                  className="main_icons remove_button pointer_cursor"
+                  title={smfTextVars.general.delete}
+                  onClick={removeStatus}
+                  data-testid="deleteStatus"
+                >
+                  {smfTextVars.general.delete}
+                </button>
             }
           </div>
         </div>
@@ -124,7 +125,7 @@ function Status(props: StatusProps): React.ReactElement {
           {permissions.Comments.post ?
             <>
               <Avatar href={smfVars.currentUserAvatar} userName={''} customClassName={'comment_avatar'}/>
-              <Editor saveContent={createComment}/>
+              <Editor saveContent={createComment} isFull={false}/>
             </> : ''}
         </div>
       </div>

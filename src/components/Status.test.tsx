@@ -1,9 +1,8 @@
 import '@testing-library/jest-dom';
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import type { PermissionsContextType } from 'breezeTypesPermissions';
 import { render, screen, waitFor } from '@testing-library/react';
-import userEvent, { UserEvent } from '@testing-library/user-event';
-import { PermissionsContextType } from 'breezeTypesPermissions';
-import React from 'react';
+import userEvent, { type UserEvent } from '@testing-library/user-event';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { comments } from '../__fixtures__/comments';
 import permissions from '../__fixtures__/permissions';

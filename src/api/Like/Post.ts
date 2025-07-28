@@ -1,4 +1,4 @@
-import { LikeInfoType } from 'breezeTypesLikes';
+import type { LikeInfoType } from 'breezeTypesLikes';
 
 import SmfVars from '../../DataSource/SMF';
 import smfTextVars from '../../DataSource/Txt';
@@ -13,7 +13,7 @@ export interface IPostLikeParams {
   content_id: number;
 }
 
-export const postLike = async (likeInfo: LikeInfoType): Promise<any> => {
+export const postLike = async (likeInfo: LikeInfoType): Promise<LikeInfoType> => {
   try {
     const params:IPostLikeParams = {
       id_member: SmfVars.userId,
@@ -27,7 +27,7 @@ export const postLike = async (likeInfo: LikeInfoType): Promise<any> => {
     });
 
     return await resolvePost(likeResults);
-  } catch (error:unknown) {
+  } catch (_error: unknown) {
     showError(smfTextVars.error.generic);
   }
 };

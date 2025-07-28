@@ -1,4 +1,4 @@
-import { CommentType } from 'breezeTypesComments';
+import type { CommentType } from 'breezeTypesComments';
 
 import likes from './likes';
 import { userData } from './userData';

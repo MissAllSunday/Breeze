@@ -1,8 +1,7 @@
 import '@testing-library/jest-dom';
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import type { LikeInfoType } from 'breezeTypesLikes';
 import { render, screen } from '@testing-library/react';
-import { LikeInfoType } from 'breezeTypesLikes';
-import React from 'react';
+import { describe, expect, it } from 'vitest'
 
 import { LikeInfo } from './LikeInfo';
 

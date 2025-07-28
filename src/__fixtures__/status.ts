@@ -1,4 +1,4 @@
-import { StatusType } from 'breezeTypesStatus';
+import type { StatusType } from 'breezeTypesStatus';
 
 import { comments } from './comments';
 import likes from './likes';

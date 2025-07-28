@@ -1,35 +1,37 @@
-import React, { Children, ReactElement, ReactNode, useCallback, useEffect, useState } from 'react';
-
-import smfTextVars from '../DataSource/Txt';
+import type React from 'react';
+import type { ReactElement } from 'react';
+import { Children, useCallback, useEffect, useState } from 'react';
 
 interface TabType {
-  index: number;
-  href: string;
-  name: string;
   active: boolean;
   contentElement: React.ReactElement;
+  href: string;
+  index: number;
+  name: string;
 }
 
 type TabsType = TabType[];
 
-function Tabs(props: { children: ReactNode; }): React.JSX.Element {
+function Tabs(props: { children: Array<ReactElement>; }): React.JSX.Element {
   const [tabs, setTabs] = useState<TabsType>([]);
 
   useEffect(() => {
     const initialTabs:TabsType = [];
-    Children.forEach(props.children, (child:any, index) => {
-      if (child === null) {
-        return;
-      }
 
-      initialTabs.push({
-        index,
-        href: '#tab-' + index,
-        name: child.props.name,
-        active: index === 0,
-        contentElement: child,
+    Children.forEach(props.children,
+      (child: ReactElement<unknown>, index: number) => {
+        if (child === null) {
+          return;
+        }
+
+        initialTabs.push({
+          index,
+          href: `#tab-${index}`,
+          name: child.props.name,
+          active: index === 0,
+          contentElement: child,
+        });
       });
-    });
 
     setTabs(initialTabs);
   }, [props.children]);
@@ -57,7 +59,7 @@ function Tabs(props: { children: ReactNode; }): React.JSX.Element {
       </ul>
     </div>
     <ul>{ tabs.map((tab: TabType) => (
-      <li key={tab.index} id={'#tab-' + tab.index} className={tab.active ? 'show' : 'hide'}>{tab.contentElement}</li>
+      <li key={tab.index} id={`#tab-${tab.index}`} className={tab.active ? 'show' : 'hide'}>{tab.contentElement}</li>
     )) }</ul>
   </>;
 }

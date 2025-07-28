@@ -1,10 +1,8 @@
 import '@testing-library/jest-dom';
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-
+import type { CommentType } from 'breezeTypesComments';
+import type { PermissionsContextType } from 'breezeTypesPermissions';
 import { render, screen } from '@testing-library/react';
-import { CommentType } from 'breezeTypesComments';
-import { PermissionsContextType } from 'breezeTypesPermissions';
-import React from 'react';
+import { describe, expect, it, vi } from 'vitest'
 
 import { comments } from '../__fixtures__/comments';
 import permissions from '../__fixtures__/permissions';

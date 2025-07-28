@@ -1,13 +1,13 @@
-import { EditorProps } from 'breezeTypesEditor';
 import React, { useCallback, useEffect, useState } from 'react';
+import type { EditorProps } from 'breezeTypesEditor';
 
 import smfVars from '../DataSource/SMF';
 import smfTextVars from '../DataSource/Txt';
 import { showError } from '../utils/tooltip';
-const Editor: React.FunctionComponent<any> = (props: EditorProps) => {
+const Editor: React.FunctionComponent<EditorProps> = (props: EditorProps) => {
   const [content, setContent] = useState('');
 
-  const handleContent = useCallback((event: any) => setContent(event.target.value), []);
+  const handleContent = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => setContent(event.target.value), []);
   const textArea = React.useRef(null);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const Editor: React.FunctionComponent<any> = (props: EditorProps) => {
     if (!smfVars.editorIsRich) {
       smfVars.smfEditorHandler.instance(textArea.current).toggleSourceMode();
     }
-  }, [props.isFull, textArea]);
+  }, [props.isFull]);
 
   const handleClick = useCallback(() => {
     if (!window.confirm(smfVars.youSure)) {
