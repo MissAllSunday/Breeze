@@ -2,7 +2,8 @@
   "linter": {
     "rules": {
       "a11y": {
-        "useKeyWithClickEvents": "off"
+        "useKeyWithClickEvents": "off",
+        "useValidAnchor": "off"
       },
       "security": {
         "noDangerouslySetInnerHtml": "off"

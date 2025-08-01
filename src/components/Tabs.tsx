@@ -1,6 +1,7 @@
 import type React from 'react';
 import type { ReactElement } from 'react';
 import { Children, useCallback, useEffect, useState } from 'react';
+import type Tab from './Tab';
 
 interface TabType {
   active: boolean;
@@ -12,14 +13,14 @@ interface TabType {
 
 type TabsType = TabType[];
 
-function Tabs(props: { children: Array<ReactElement>; }): React.JSX.Element {
+function Tabs(props: { children: Array<ReactElement<typeof Tab>>; }): ReactElement {
   const [tabs, setTabs] = useState<TabsType>([]);
 
   useEffect(() => {
     const initialTabs:TabsType = [];
 
     Children.forEach(props.children,
-      (child: ReactElement<unknown>, index: number) => {
+      (child: ReactElement<typeof Tab>, index: number) => {
         if (child === null) {
           return;
         }

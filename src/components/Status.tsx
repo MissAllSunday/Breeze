@@ -99,15 +99,14 @@ function Status(props: StatusProps): React.ReactElement {
           <div className={'info_bar'}>
             <span dangerouslySetInnerHTML={{ __html: timeStamp }} className={'time_stamp'}/>
             {permissions.Status.delete &&
-               <button
-                  type="button"
+               <span
+                 role="button"
+                 tabIndex={0}
                   className="main_icons remove_button pointer_cursor"
                   title={smfTextVars.general.delete}
                   onClick={removeStatus}
                   data-testid="deleteStatus"
-                >
-                  {smfTextVars.general.delete}
-                </button>
+                />
             }
           </div>
         </div>

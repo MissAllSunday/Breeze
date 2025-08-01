@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import toast from 'react-hot-toast';
 
 export interface ServerResponse {

@@ -27,7 +27,7 @@ export const LikeInfo: React.FunctionComponent<LikeProps> = (props: LikeProps) =
             <span dangerouslySetInnerHTML={{ __html: like.userData.link_color }}/>
             <span className="description">{like.userData.group}</span>
           </span>
-          <span className="like_time">{like.likeTime}</span>
+          <span className="like_time" dangerouslySetInnerHTML={{ __html: like.likeTime }} />
         </li>
       ))}
     </ul>
@@ -36,13 +36,15 @@ export const LikeInfo: React.FunctionComponent<LikeProps> = (props: LikeProps) =
   const infoHeader = (`${String.fromCodePoint(128077)} ${props.likeInfo.text}`);
   const infoText = props.likeInfo.count > 0
     ? (
-      <button
+      <a
+        href="#"
+        tabIndex={props.likeInfo?.contentId ?? 0}
         type="button"
         className="like_count smalltext pointer_cursor"
         onClick={() => setShowInfo(true)}
         data-testid="likesInfo">
         {props.likeInfo.text}
-      </button>
+      </a>
     )
     : props.likeInfo.text;
 

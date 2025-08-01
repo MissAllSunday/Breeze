@@ -35,7 +35,12 @@ export const Modal: React.FunctionComponent<ModalProps> = (props: ModalProps) =>
       <div className="popup_window description">
         <div className="catbg popup_heading">
           {props.content.header}
-          <button className="main_icons hide_popup" onClick={handleClose} title={smfTextVars.general.close} type="button" />
+          <span
+            role="button"
+            tabIndex={0}
+            className="main_icons hide_popup"
+            onClick={handleClose}
+            title={smfTextVars.general.close} />
         </div>
         <div className="popup_content clear">
           {props.content.body}

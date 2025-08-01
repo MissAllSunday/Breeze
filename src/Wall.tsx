@@ -26,7 +26,11 @@ export default function Wall(props: WallProps): React.JSX.Element {
 
   useEffect(() => {
     getStatus(props.wallType, 0)
-      .then((statusListResponse: IFetchStatus) => {
+      .then((statusListResponse: IFetchStatus | undefined) => {
+        if (!statusListResponse) {
+          return;
+        }
+
         const fetchedStatusList: StatusListType = Object.values(statusListResponse.data);
         setStatusList(fetchedStatusList);
         setPermissions(statusListResponse.permissions);
@@ -46,11 +50,14 @@ export default function Wall(props: WallProps): React.JSX.Element {
     setIsLoading(true);
 
     getStatus(props.wallType, statusList.length)
-      .then((statusListResponse: IFetchStatus) => {
+      .then((statusListResponse: IFetchStatus | undefined) => {
+        if (!statusListResponse) {
+          return;
+        }
+
         setStatusList(statusList.concat(Object.values(statusListResponse.data)));
       }).finally(() => {
         setIsLoading(false);
-        setLoadedMore(statusList.length);
       });
   }, [props, statusList, paginationTotal]);
 

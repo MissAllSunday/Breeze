@@ -32,9 +32,14 @@ export const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
     permissions.isEnable.enableLikes && permissions.Forum.likesLike ?
       <div className="smflikebutton">
         {isLoading ? <Loading/> : ''}
-        <button type="button" onClick={handleLike} className="likeClass pointer_cursor" title={ title }>
+        <a
+          href="#"
+          tabIndex={likeInfo?.contentId ?? 0}
+          onClick={handleLike}
+          className="breeze_anchor pointer_cursor"
+          title={ title }>
           { emoji }
-        </button> { likeInfo && <LikeInfo likeInfo={likeInfo} />}
+        </a> { likeInfo && <LikeInfo likeInfo={likeInfo} />}
       </div> : null
   );
 };
