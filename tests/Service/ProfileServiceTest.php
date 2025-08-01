@@ -30,7 +30,7 @@ class ProfileServiceTest extends TestCase
 		$this->userSettingsRepository = $this->createMock(SettingsRepositoryInterface::class);
 		$this->components = $this->createMock(Components::class);
 		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
-		
+
 		$this->profileService = new ProfileService(
 			$this->userSettingsRepository,
 			$this->components,
@@ -41,7 +41,7 @@ class ProfileServiceTest extends TestCase
 	public function testGetUserSettings(): void
 	{
 		$userId = 123;
-		$expectedSettings = UserSettingsEntity::from(['id' => $userId]);
+		$expectedSettings = UserSettingsEntity::from(['wall' => $userId]);
 
 		$this->userSettingsRepository
 			->expects($this->once())
@@ -128,16 +128,15 @@ class ProfileServiceTest extends TestCase
 			'user is blocked' => [
 				'userInfo' => ['id' => 123],
 				'stalkedSettings' => UserSettingsEntity::from([
-					'kick_ignored' => true,
-					'blockList' => [123, 789],
-				]),
+					UserSettingsEntity::KICK_IGNORED => true,
+					UserSettingsEntity::BLOCK_LIST => '123']),
 				'expected' => true,
 			],
 			'user is not blocked' => [
 				'userInfo' => ['id' => 123],
 				'stalkedSettings' => UserSettingsEntity::from([
-					'kick_ignored' => true,
-					'blockList' => [456, 789],
+					UserSettingsEntity::KICK_IGNORED => true,
+					UserSettingsEntity::BLOCK_LIST => '456, 789',
 				]),
 				'expected' => false,
 			],

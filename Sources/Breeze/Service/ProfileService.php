@@ -36,7 +36,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 	public function __construct(
 		protected UserSettingsRepository $userSettingsRepository,
 		protected Components $components,
-		protected PermissionsService $permissionsService
+		protected PermissionsServiceInterface $permissionsService
 	) {
 		parent::__construct($userSettingsRepository);
 	}
@@ -207,8 +207,9 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 
 		$userStalkedSettings = $this->userSettingsRepository->getById($userStalkedId);
 		$blockedList = $userStalkedSettings->getBlockList();
+		$kickIgnored = $userStalkedSettings->getKickIgnored();
 
-		if (!empty($userStalkedSettings['kick_ignored']) && !empty($blockedList)) {
+		if (!empty($kickIgnored) && !empty($blockedList)) {
 			return in_array((int) $user_info['id'], $blockedList, true);
 		}
 
