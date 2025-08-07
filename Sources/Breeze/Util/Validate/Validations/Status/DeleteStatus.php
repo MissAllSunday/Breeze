@@ -42,7 +42,6 @@ class DeleteStatus extends BaseActions implements ValidateDataInterface
 
 	/**
 	 * @throws InvalidDataException
-	 * @throws DataNotFoundException
 	 */
 	public function checkData(): void
 	{
