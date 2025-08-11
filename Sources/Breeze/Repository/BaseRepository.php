@@ -40,6 +40,11 @@ abstract class BaseRepository implements BaseRepositoryInterface
 		return rtrim($set, ',');
 	}
 
+	public function doesContentExists(int $id): bool
+	{
+		return $this->getCount([$this->getColumnId() => $id]) > 0;
+	}
+
 	public function handleLikes($type, $content): array
 	{
 		return [];

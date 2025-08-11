@@ -20,4 +20,6 @@ interface BaseRepositoryInterface
 	public function getCurrentUserInfo(): array;
 
 	public function getById(int $id): ?EntityInterface;
+
+	public function doesContentExists(int $id): bool;
 }

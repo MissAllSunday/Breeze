@@ -10,9 +10,14 @@ use Breeze\Util\Validate\DataNotFoundException;
 
 class Data
 {
+	/**
+	 * @throws DataNotFoundException
+	 */
 	public function dataExists(int $id, BaseRepositoryInterface $repository): void
 	{
-		$repository->getById($id);
+		if (!$repository->doesContentExists($id)) {
+			throw new DataNotFoundException('error_no_data');
+		}
 	}
 
 	/**

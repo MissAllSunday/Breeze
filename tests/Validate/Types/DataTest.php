@@ -30,14 +30,13 @@ class DataTest extends TestCase
 	#[DataProvider('dataExistsProvider')]
 	public function testDataExists(int $id, bool $isExpectedException): void
 	{
-		if ($isExpectedException) {
-			$this->statusRepository->expects($this->once())
-				->method('getById')
-				->willThrowException(new DataNotFoundException);
+		$this->statusRepository->expects($this->once())
+			->method('doesContentExists')
+			->with($id)
+			->willReturn(!$isExpectedException);
 
+		if ($isExpectedException) {
 			$this->expectException(DataNotFoundException::class);
-		} else {
-			$this->expectNotToPerformAssertions();
 		}
 
 		$this->data->dataExists($id, $this->statusRepository);
@@ -47,11 +46,11 @@ class DataTest extends TestCase
 	{
 		return [
 			'does not exists' => [
-				'id' => 1,
+				'id' => 0,
 				'isExpectedException' => true,
 			],
 			'exists' => [
-				'id' => 0,
+				'id' => 1,
 				'isExpectedException' => false,
 			],
 		];
