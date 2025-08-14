@@ -10,7 +10,7 @@ Comes with the following features:
 ###### Requirements:
 
 - SMF 2.1.x
-- PHP 8.2
+- PHP 8.3
 
 ###### Features:
 
@@ -23,10 +23,11 @@ Comes with the following features:
 The mod uses the following scripts:
 
 - [React](https://reactjs.org)
+- [React Hot Toast](https://react-hot-toast.com)
 
 ##### Tests
 ```bash
-composer test && npm test -- --verbose=true
+composer test && npm run test:run
 ```
 
 ##### Generate an optimized SMF package
@@ -42,5 +43,4 @@ Please see the [Developer's Certificate of Origin](https://github.com/MissAllSun
 by signing off your contributions, you acknowledge that you can and do license your submissions under the license of the project.
 
 ###### Branches organization:
-* ***master*** - is the main branch, only used to merge in a "final release"
-* ***development*** - is the branch where the development of the "next" version/s happens
+* ***develop*** - Main branch, releases are tagged from here
