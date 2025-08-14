@@ -1,7 +1,6 @@
-
-declare module 'breezeTypesEditor' {
-  interface EditorProps {
-    saveContent: (content: string) => boolean
-    isFull: boolean
-  }
+declare module "breezeTypesEditor" {
+	interface EditorProps {
+		saveContent: (content: string) => boolean;
+		isFull: boolean;
+	}
 }

@@ -1,7 +1,7 @@
 const basic = new Response();
 
 const custom = (replace: Partial<Response>) => {
-  return { ...basic, ...replace };
+	return { ...basic, ...replace };
 };
 
 export const responses = { basic, custom };

@@ -1,43 +1,43 @@
-declare module 'breezeTypesStatus' {
-  interface StatusType {
-    id: number
-    wallId: number
-    userId: number
-    likes: number
-    body: string
-    createdAt: string
-    likesInfo: LikeInfoType
-    comments: CommentType[]
-    userData: UserDataType
-    isNew: boolean
-  }
+declare module "breezeTypesStatus" {
+	interface StatusType {
+		id: number;
+		wallId: number;
+		userId: number;
+		likes: number;
+		body: string;
+		createdAt: string;
+		likesInfo: LikeInfoType;
+		comments: CommentType[];
+		userData: UserDataType;
+		isNew: boolean;
+	}
 
-  interface IFetchStatus {
-    data: StatusListType,
-    permissions: PermissionsContextType,
-    total: number
-  }
+	interface IFetchStatus {
+		data: StatusListType;
+		permissions: PermissionsContextType;
+		total: number;
+	}
 
-  type StatusListType = Map<StatusType>;
+	type StatusListType = Map<StatusType>;
 
-  interface StatusListProps {
-    statusList: StatusListType
-  }
+	interface StatusListProps {
+		statusList: StatusListType;
+	}
 
-  interface StatusProps {
-    status: StatusType
-    removeStatus: function
-  }
+	interface StatusProps {
+		status: StatusType;
+		removeStatus: function;
+	}
 
-  interface StatusState {
-    isLoading: boolean
-    classType: string
-  }
+	interface StatusState {
+		isLoading: boolean;
+		classType: string;
+	}
 }
 
 module.exports = {
-  StatusListType,
-  StatusType,
-  StatusProps,
-  StatusState,
+	StatusListType,
+	StatusType,
+	StatusProps,
+	StatusState,
 };

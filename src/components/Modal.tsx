@@ -1,51 +1,54 @@
-import type { ModalProps } from 'breezeTypesModal';
-import type React from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import type { ModalProps } from "breezeTypesModal";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import smfTextVars from '../DataSource/Txt';
+import smfTextVars from "../DataSource/Txt";
 
-export const Modal: React.FunctionComponent<ModalProps> = (props: ModalProps) => {
-  const [style, setStyle] = useState(props.show ? 'show' : 'hide');
+export const Modal: React.FunctionComponent<ModalProps> = (
+	props: ModalProps,
+) => {
+	const [style, setStyle] = useState(props.show ? "show" : "hide");
 
-  useEffect(() => {
-    setStyle(props.show ? 'show' : 'hide');
-  }, [props.show]);
+	useEffect(() => {
+		setStyle(props.show ? "show" : "hide");
+	}, [props.show]);
 
-  const handleClose = useCallback(
-    () => {
-      setStyle('hide');
-      props.onClose();
-    },
-    [props],
-  );
+	const handleClose = useCallback(() => {
+		setStyle("hide");
+		props.onClose();
+	}, [props]);
 
-  const handleParentClick = useCallback(
-    (event: React.MouseEvent) => {
-      event.preventDefault();
+	const handleParentClick = useCallback(
+		(event: React.MouseEvent) => {
+			event.preventDefault();
 
-      if (event.target === event.currentTarget) {
-        handleClose();
-      }
-    },
-    [handleClose],
-  );
+			if (event.target === event.currentTarget) {
+				handleClose();
+			}
+		},
+		[handleClose],
+	);
 
-  return (
-    <div id="smf_popup" className={`popup_container ${style}`} onClick={handleParentClick} role="dialog">
-      <div className="popup_window description">
-        <div className="catbg popup_heading">
-          {props.content.header}
-          <span
-            role="button"
-            tabIndex={0}
-            className="main_icons hide_popup"
-            onClick={handleClose}
-            title={smfTextVars.general.close} />
-        </div>
-        <div className="popup_content clear">
-          {props.content.body}
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<div
+			id="smf_popup"
+			className={`popup_container ${style}`}
+			onClick={handleParentClick}
+			role="dialog"
+		>
+			<div className="popup_window description">
+				<div className="catbg popup_heading">
+					{props.content.header}
+					<span
+						role="button"
+						tabIndex={0}
+						className="main_icons hide_popup"
+						onClick={handleClose}
+						title={smfTextVars.general.close}
+					/>
+				</div>
+				<div className="popup_content clear">{props.content.body}</div>
+			</div>
+		</div>
+	);
 };

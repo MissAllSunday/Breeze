@@ -1,6 +1,7 @@
-import type { PermissionsContextType } from 'breezeTypesPermissions';
-import { createContext } from 'react';
+import type { PermissionsContextType } from "breezeTypesPermissions";
+import { createContext } from "react";
 
-import PermissionsDefault from '../DataSource/Permissions';
+import PermissionsDefault from "../DataSource/Permissions";
 
-export const PermissionsContext = createContext<PermissionsContextType>(PermissionsDefault);
+export const PermissionsContext =
+	createContext<PermissionsContextType>(PermissionsDefault);

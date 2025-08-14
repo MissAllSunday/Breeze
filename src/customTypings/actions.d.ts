@@ -1,1 +1,1 @@
-export type IServerActions = 'breezeStatus' | 'breezeLike' | 'breezeComment';
+export type IServerActions = "breezeStatus" | "breezeLike" | "breezeComment";

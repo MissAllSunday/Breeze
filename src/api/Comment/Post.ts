@@ -1,24 +1,31 @@
-import type { CommentListType } from 'breezeTypesComments';
+import type { CommentListType } from "breezeTypesComments";
 
-import smfVars from '../../DataSource/SMF';
-import smfTextVars from '../../DataSource/Txt';
-import { showError } from '../../utils/tooltip';
-import { baseConfig  } from '../Base';
-import { baseUrl } from '../Base';
-import { resolvePost } from '../Resolvers/Post';
+import smfVars from "../../DataSource/SMF";
+import smfTextVars from "../../DataSource/Txt";
+import { showError } from "../../utils/tooltip";
+import { baseConfig } from "../Base";
+import { baseUrl } from "../Base";
+import { resolvePost } from "../Resolvers/Post";
 
-export const postComment = async (commentParams: object): Promise<CommentListType> => {
-  try {
-    const postCommentResults = await fetch(baseUrl('breezeComment', 'postComment'), {
-      method: 'POST',
-      body: JSON.stringify(baseConfig({
-        ...commentParams,
-        userId: smfVars.userId,
-      })),
-    });
+export const postComment = async (
+	commentParams: object,
+): Promise<CommentListType> => {
+	try {
+		const postCommentResults = await fetch(
+			baseUrl("breezeComment", "postComment"),
+			{
+				method: "POST",
+				body: JSON.stringify(
+					baseConfig({
+						...commentParams,
+						userId: smfVars.userId,
+					}),
+				),
+			},
+		);
 
-    return await resolvePost(postCommentResults);
-  } catch (_error:unknown) {
-    showError(smfTextVars.error.generic);
-  }
+		return await resolvePost(postCommentResults);
+	} catch (_error: unknown) {
+		showError(smfTextVars.error.generic);
+	}
 };

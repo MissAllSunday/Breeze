@@ -1,33 +1,35 @@
-import type { LikeInfoType } from 'breezeTypesLikes';
+import type { LikeInfoType } from "breezeTypesLikes";
 
-import SmfVars from '../../DataSource/SMF';
-import smfTextVars from '../../DataSource/Txt';
-import { showError } from '../../utils/tooltip';
-import { baseConfig } from '../Base';
-import { baseUrl } from '../Base';
-import { resolvePost } from '../Resolvers/Post';
+import SmfVars from "../../DataSource/SMF";
+import smfTextVars from "../../DataSource/Txt";
+import { showError } from "../../utils/tooltip";
+import { baseConfig } from "../Base";
+import { baseUrl } from "../Base";
+import { resolvePost } from "../Resolvers/Post";
 
 export interface IPostLikeParams {
-  id_member: number;
-  content_type: string;
-  content_id: number;
+	id_member: number;
+	content_type: string;
+	content_id: number;
 }
 
-export const postLike = async (likeInfo: LikeInfoType): Promise<LikeInfoType> => {
-  try {
-    const params:IPostLikeParams = {
-      id_member: SmfVars.userId,
-      content_type: likeInfo.type,
-      content_id: likeInfo.contentId,
-    };
+export const postLike = async (
+	likeInfo: LikeInfoType,
+): Promise<LikeInfoType> => {
+	try {
+		const params: IPostLikeParams = {
+			id_member: SmfVars.userId,
+			content_type: likeInfo.type,
+			content_id: likeInfo.contentId,
+		};
 
-    const likeResults = await fetch(baseUrl('breezeLike', 'like'), {
-      method: 'POST',
-      body: JSON.stringify(baseConfig(params)),
-    });
+		const likeResults = await fetch(baseUrl("breezeLike", "like"), {
+			method: "POST",
+			body: JSON.stringify(baseConfig(params)),
+		});
 
-    return await resolvePost(likeResults);
-  } catch (_error: unknown) {
-    showError(smfTextVars.error.generic);
-  }
+		return await resolvePost(likeResults);
+	} catch (_error: unknown) {
+		showError(smfTextVars.error.generic);
+	}
 };

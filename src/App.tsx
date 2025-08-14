@@ -1,10 +1,7 @@
-import type {JSX} from "react";
-
+import type { JSX } from "react";
 
 function App(): JSX.Element {
-  return (
-    <div className="breeze_wall" />
-  );
+	return <div className="breeze_wall" />;
 }
 
 export default App;

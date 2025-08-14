@@ -2,7 +2,7 @@
 
 PATH_TO_BUILD="build/static/js"
 
-npm run lint:fix &&
+npm run lint &&
 npm run build &&
 composer lint &&
 rm -rf -f /Themes/default/scripts/breezeComponents/*;
