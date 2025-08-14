@@ -36,7 +36,7 @@ echo "replaced $old_hash with $hash";
 
 composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader &&
   rm -f "Breeze.zip" &&
-  zip -r Breeze breezeVendor/ Sources/ Themes/ tasks/ install.php installCheck.php License package-info.xml README.md &&
+  zip -r Breeze breezeVendor/ Sources/ Themes/ install.php installCheck.php License package-info.xml README.md &&
 echo "Created zip file";
 
 composer update &&
