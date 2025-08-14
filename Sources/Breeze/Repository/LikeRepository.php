@@ -202,11 +202,11 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 		if ($isContentAlreadyLiked) {
 			$this->deleteByContent($LikeEntity);
-
-			return $this->getByContent($type, [$contentId])[$contentId];
+		} else {
+			$this->insert($LikeEntity);
 		}
 
-			return $this->insert($LikeEntity);
+		return $this->getByContent($type, [$contentId])[$contentId];
 	}
 
 	public function getById(int $id): null
