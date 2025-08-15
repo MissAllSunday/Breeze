@@ -110,6 +110,16 @@ class AlertEntity extends Entity implements EntityInterface
 		$this->alert_time = $time;
 	}
 
+	public function getTime(): string
+	{
+		return $this->time;
+	}
+
+	public function setTime(string $time): void
+	{
+		$this->time = $time;
+	}
+
 	public function getIdMember(): int
 	{
 		return $this->id_member;
@@ -325,16 +335,18 @@ class AlertEntity extends Entity implements EntityInterface
 	/**
 	 * @throws DateMalformedStringException
 	 */
-	public function castValue(string $columnName, mixed $value): string|int|DateTimeImmutable
+	public function castValue(string $columnName, mixed $value): string|int|DateTimeImmutable|bool|array
 	{
 		return match ($columnName) {
 			self::ID,
 			self::ID_MEMBER,
 			self::ID_MEMBER_STARTED,
-			self::CONTENT_ID,
-			self::IS_READ => (int) $value,
+			self::SENDER_ID,
+			self::CONTENT_ID => (int) $value,
+			self::IS_READ, self::VISIBLE, self::SHOW_LINKS => filter_var($value, \FILTER_VALIDATE_BOOLEAN),
 			self::ALERT_TIME => new DateTimeImmutable('@' . $value),
-			self::EXTRA => Json::decode($value),
+			self::TIME => $value,
+			self::EXTRA => is_array($value) ? $value : Json::decode($value),
 			default => (string) $value,
 		};
 	}

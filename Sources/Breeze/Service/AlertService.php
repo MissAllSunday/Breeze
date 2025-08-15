@@ -14,7 +14,8 @@ use Breeze\Util\Validate\DataNotFoundException;
 class AlertService extends BaseService implements AlertServiceInterface
 {
 	public function __construct(
-		protected AlertRepositoryInterface $alertRepository
+		protected AlertRepositoryInterface $alertRepository,
+		protected HandlerServiceProvider $handlerServiceProvider
 	) {
 		$this->setLanguage(Breeze::NAME . 'Alerts');
 		parent::__construct($alertRepository);
@@ -32,16 +33,18 @@ class AlertService extends BaseService implements AlertServiceInterface
 	 */
 	public function handle(array &$alerts): void
 	{
-		$handlerServiceProvider = new HandlerServiceProvider();
 		foreach ($alerts as $id => &$alert) {
-			if (str_contains($alert['content_type'], Breeze::PATTERN)) {
-				$handler = $handlerServiceProvider->getHandler($alert);
-				$alert = $handler->resolve();
+			if (!str_contains($alert['content_type'], Breeze::PATTERN)) {
+				continue;
 			}
+
+			$alertEntity = AlertEntity::from($alert);
+			$handler = $this->handlerServiceProvider->getHandler($alertEntity);
+			$alert = $handler->resolve();
 		}
 	}
 
-	public function getById(int $alertId): AlertEntity|EntityInterface
+	public function getById(int $alertId): EntityInterface
 	{
 		return $this->alertRepository->getById($alertId);
 	}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Entity\AlertEntity;
+use Breeze\Event\HandlerServiceProvider;
 use Breeze\Repository\AlertRepositoryInterface;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -22,7 +23,8 @@ class AlertServiceTest extends TestCase
 	protected function setUp(): void
 	{
 		$this->alertRepository = $this->createMock(AlertRepositoryInterface::class);
-		$this->alertService = new AlertService($this->alertRepository);
+		$handlerServiceProvider = $this->createMock(HandlerServiceProvider::class);
+		$this->alertService = new AlertService($this->alertRepository, $handlerServiceProvider);
 	}
 
 	public function testGetById(): void
