@@ -173,10 +173,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
 	{
 		$contentIds = array_column($entities, SharedEntity::ID);
 
-		if (empty($contentIds)) {
-			return $entities;
-		}
-
 		$likesInfo = $this->likeRepository->getByContent(
 			$type,
 			$contentIds

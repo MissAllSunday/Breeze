@@ -108,7 +108,12 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		UserSettingsEntity::class => [],
 		StatusEventListener::class => [AlertService::class],
 		EventDispatcher::class => [],
-		EventServiceProvider::class => [EventDispatcher::class, StatusEventListener::class, CommentEventListener::class, LikeEventListener::class],
+		EventServiceProvider::class => [
+			EventDispatcher::class,
+			StatusEventListener::class,
+			CommentEventListener::class,
+			LikeEventListener::class,
+		],
 		StatusCreatedHandler::class => [AlertEntity::class],
 		UserSettingsRepository::class => [DatabaseClient::class, null],
 		AlertRepository::class => [DatabaseClient::class],

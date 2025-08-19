@@ -191,7 +191,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	 *@throws InvalidDataException
 	 * @throws InvalidLikeException
 	 */
-	public function likeContent(LikesEnum $type, int $contentId, int $userId): LikeInfoEntity
+	public function likeContent(LikesEnum $type, int $contentId, int $userId): ?LikeInfoEntity
 	{
 		$LikeEntity = LikeEntity::from();
 		$LikeEntity->setContentType($type);

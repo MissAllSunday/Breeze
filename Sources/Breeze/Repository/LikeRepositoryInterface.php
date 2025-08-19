@@ -13,7 +13,7 @@ interface LikeRepositoryInterface extends BaseRepositoryInterface
 {
 	/**
 	 * @param array $contentIds [int]
-	 * @return array [LikeEntity]
+	 * @return array [LikeInfoEntity]
 	 */
 	public function getByContent(LikesEnum $type, array $contentIds): array;
 
@@ -45,5 +45,5 @@ interface LikeRepositoryInterface extends BaseRepositoryInterface
 	 * @throws InvalidLikeException
 	 * @throws InvalidDataException
 	 */
-	public function likeContent(LikesEnum $type, int $contentId, int $userId): LikeInfoEntity;
+	public function likeContent(LikesEnum $type, int $contentId, int $userId): ?LikeInfoEntity;
 }
