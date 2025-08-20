@@ -39,7 +39,7 @@ interface LikeRepositoryInterface extends BaseRepositoryInterface
 	/**
 	 * @param array $likeEntities [LikeEntity]
 	 */
-	public function buildLikeInfo(array $likeEntities, LikesEnum $type): LikeInfoEntity;
+	public function buildLikeInfo(array $likeEntities, LikesEnum $type, int $contentId): LikeInfoEntity;
 
 	/**
 	 * @throws InvalidLikeException

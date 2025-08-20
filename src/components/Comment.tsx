@@ -34,12 +34,9 @@ function Comment(props: CommentProps): React.ReactElement {
 			</div>
 			<div className="comment_compact content">{props.comment.body}</div>
 			<div className="half_content">
-				{props.comment.likesInfo && (
-					<Like
-						key={props.comment.likesInfo.contentId}
-						likeInfo={props.comment.likesInfo}
-					/>
-				)}
+          <Like
+            likeInfo={props.comment.likesInfo}
+          />
 			</div>
 			<div className="half_content">
 				<div className={"info_bar"}>

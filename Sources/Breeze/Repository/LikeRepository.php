@@ -54,14 +54,20 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			]
 		);
 
+		foreach ($contentIds as $contentId) {
+			$likes[$contentId] = [];
+		}
+
 		while ($row = $this->dbClient->fetchAssoc($request)) {
 			$likes[$row[LikeEntity::ID]][$row[LikeEntity::ID_MEMBER]] = LikeEntity::from($row);
 		}
 		$this->dbClient->freeResult($request);
 
-		return array_map(function ($likeData) use ($type): LikeInfoEntity {
-			return $this->buildLikeInfo($likeData, $type);
-		}, $likes);
+		array_walk($likes, function (&$likeData, $contentId) use ($type): void {
+			$likeData = $this->buildLikeInfo($likeData, $type, $contentId);
+		});
+
+		return $likes;
 	}
 
 	public function isContentAlreadyLiked(LikeEntity $likeEntity): bool
@@ -142,23 +148,31 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		return $rowCount;
 	}
 
-	public function buildLikeInfo(array $likeEntities, LikesEnum $type): LikeInfoEntity
+	/**
+	 * @param array $likeEntities [LikeEntity]
+	 */
+	public function buildLikeInfo(array $likeEntities, LikesEnum $type, int $contentId): LikeInfoEntity
 	{
-		$likesCount = count($likeEntities);
+		// Only count data with actual likes
+		$likeFilledEntities = array_filter($likeEntities, function ($like) {
+			return !empty($like);
+		});
+
+		$likesCount = count($likeFilledEntities);
 		$likesTextCount = $likesCount;
-		$contentId = array_column($likeEntities, LikeEntity::ID)[0];
-		$usersIds = array_column($likeEntities, LikeEntity::ID_MEMBER);
+
+		$usersIds = array_column($likeFilledEntities, LikeEntity::ID_MEMBER);
 		$alreadyLiked = in_array($this->global('user_info')['id'], $usersIds);
 		$usersData = $this->loadUsersInfo($usersIds);
 
 		$likeInfo = LikeInfoEntity::from();
 
-		array_walk($likeEntities, function ($like) use ($usersData): void {
+		array_walk($likeFilledEntities, function ($like) use ($usersData): void {
 			$like->setUserData($usersData[$like->getIdMember()] ?? []);
 		});
 
 		$likeInfo->setContentType($type);
-		$likeInfo->setLikes($likeEntities);
+		$likeInfo->setLikes($likeFilledEntities);
 		$likeInfo->setContentId($contentId);
 		$likeInfo->setCanLike($this->isAllowedTo(PermissionsEnum::LIKES_LIKE));
 		$likeInfo->setAlreadyLiked($alreadyLiked);

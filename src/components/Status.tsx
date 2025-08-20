@@ -107,12 +107,9 @@ function Status(props: StatusProps): React.ReactElement {
 					dangerouslySetInnerHTML={{ __html: props.status.body }}
 				/>
 				<div className="half_content">
-					{props.status.likesInfo && (
-						<Like
-							key={props.status.likesInfo.contentId}
-							likeInfo={props.status.likesInfo}
-						/>
-					)}
+          <Like
+            likeInfo={props.status.likesInfo}
+          />
 				</div>
 				<div className="half_content">
 					<div className={"info_bar"}>
