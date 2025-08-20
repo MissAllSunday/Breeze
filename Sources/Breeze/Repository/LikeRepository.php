@@ -124,7 +124,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			LikeEntity::TIME => 'int',
 		], $likeEntity->toInsert(), [LikeEntity::ID, LikeEntity::TYPE, LikeEntity::ID_MEMBER]);
 
-		return $this->buildLikeInfo([$likeEntity], $likeEntity->getContentType());
+		return $this->buildLikeInfo([$likeEntity], $likeEntity->getContentType(), $likeEntity->getContentId());
 	}
 
 	public function count(LikeEntity $likeEntity): int

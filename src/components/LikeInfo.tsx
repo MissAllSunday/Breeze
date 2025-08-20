@@ -51,7 +51,7 @@ export const LikeInfo: React.FunctionComponent<LikeProps> = (
 				{props.likeInfo.text}
 			</a>
 		) : (
-			props.likeInfo.text
+			""
 		);
 
 	return (
