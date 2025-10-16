@@ -72,6 +72,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	}
 
 	/**
+	 * @param array $userProfiles [int]
 	 * @return array [StatusEntity]
 	 */
 	public function getByProfile(array $userProfiles = [], int $start = 0, int $maxIndex = 0): array

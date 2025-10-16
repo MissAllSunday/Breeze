@@ -11,10 +11,10 @@ use Breeze\Util\Response;
 
 class WallController extends BaseController
 {
-	public const string ACTION_GENERAL = 'wall';
+	public const string ACTION_WALL = 'wall';
 	public const string ACTION_PROFILE = 'profile';
 	public const array SUB_ACTIONS = [
-		self::ACTION_GENERAL,
+		self::ACTION_WALL,
 		self::ACTION_PROFILE,
 	];
 
@@ -27,9 +27,8 @@ class WallController extends BaseController
 	public function wall(): void
 	{
 		$currentUserInfo = $this->global('user_info');
-
+		$this->profileService->setEditor();
 		$this->render(__FUNCTION__);
-
 		$this->profileService->loadComponents($currentUserInfo['id']);
 	}
 
@@ -76,11 +75,11 @@ class WallController extends BaseController
 
 	public function getMainAction(): string
 	{
-		return self::ACTION_GENERAL;
+		return self::ACTION_WALL;
 	}
 
 	public function getActionName(): string
 	{
-		return self::ACTION_GENERAL;
+		return self::ACTION_WALL;
 	}
 }

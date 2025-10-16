@@ -171,6 +171,11 @@ abstract class BaseRepository implements BaseRepositoryInterface
 	 */
 	protected function setLikes(array $entities, LikesEnum $type): array
 	{
+		// Return early if there is no data to work with
+		if (empty($entities)) {
+			return [];
+		}
+
 		$contentIds = array_column($entities, SharedEntity::ID);
 
 		$likesInfo = $this->likeRepository->getByContent(

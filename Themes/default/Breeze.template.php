@@ -81,11 +81,6 @@ function template_profile(): void
 
 function template_wall(): void
 {
-	echo '<div id="editor_container">';
-	echo  template_control_richedit(Breeze::NAME, 'smileyBox_message', 'bbcBox_message');
-	echo '</div>';
-
 	echo '
-	<div id="root" class="breeze_main_section" wallType="general">
-	</div>';
+	<div id="root" class="breeze_main_section" wallType="', Breeze::ACTION_WALL ,'" />';
 }
