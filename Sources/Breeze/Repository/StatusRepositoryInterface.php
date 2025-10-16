@@ -21,6 +21,8 @@ interface StatusRepositoryInterface extends BaseRepositoryInterface
 	 */
 	public function getByProfile(array $userProfiles = [], int $start = 0, int $maxIndex = 0): array;
 
+	public function getBy(string $columnName, array $data = [], int $start = 0, int $maxIndex = 0): array;
+
 	public function getById(int $id = 0): StatusEntity;
 
 	/**

@@ -54,22 +54,22 @@ class StatusService extends BaseService implements StatusServiceInterface
 		]);
 	}
 
-	/**
-	 * @throws EmptyDataException
-	 */
 	public function getByBuddies(int $start): array
 	{
 		$currentUserInfo = $this->currentUserInfo();
 		$currentUserSettings = $this->userRepository->getById($currentUserInfo['id']);
 		$currentUserBuddies = $currentUserSettings->getBuddies();
+		$currentUserPagination = $currentUserSettings->getPaginationNumber();
 
 		if (empty($currentUserBuddies)) {
 			return [];
 		}
 
-		return $this->statusRepository->getByProfile(
+		return $this->statusRepository->getBy(
+			StatusEntity::USER_ID,
 			$currentUserBuddies,
-			$start
+			$start,
+			$currentUserPagination
 		);
 	}
 

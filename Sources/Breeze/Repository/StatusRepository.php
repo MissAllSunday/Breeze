@@ -77,15 +77,24 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 */
 	public function getByProfile(array $userProfiles = [], int $start = 0, int $maxIndex = 0): array
 	{
+		return $this->getBy(StatusEntity::WALL_ID, $userProfiles, $start, $maxIndex);
+	}
+
+	public function getBy(string $columnName, array $data = [], int $start = 0, int $maxIndex = 0): array
+	{
+		if (!in_array($columnName, $this->getColumns())) {
+			return [];
+		}
+
 		$queryParams = array_merge(
 			$this->getDefaultQueryParams(),
 			[
-				'columnName' => StatusEntity::WALL_ID,
+				'columnName' => $columnName,
 			],
 			[
 				'start' => $start,
 				'maxIndex' => $maxIndex,
-				'ids' => $userProfiles,
+				'ids' => $data,
 			]
 		);
 
@@ -98,7 +107,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			$queryParams
 		);
 
-		$comments = $this->commentRepository->getByProfile($userProfiles);
+		$comments = $this->commentRepository->getByProfile($data);
 
 		return $this->prepareData($request, $comments);
 	}

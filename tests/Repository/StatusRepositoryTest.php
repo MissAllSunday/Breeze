@@ -253,4 +253,91 @@ class StatusRepositoryTest extends TestCase
 
 		$this->assertEquals($mockData, $result);
 	}
+
+	#[DataProvider('getByProvider')]
+	public function testGetBy(string $columnName, array $data, int $start, int $maxIndex, array $expected): void
+	{
+		$this->dbClient->expects($this->once())
+			->method('query')
+			->willReturn($this->queryObject);
+
+		$this->commentRepository->expects($this->once())
+			->method('getByProfile')
+			->with($data)
+			->willReturn([]);
+
+		$this->statusRepository->expects($this->once())
+			->method('prepareData')
+			->with($this->queryObject, [])
+			->willReturn($expected);
+
+		$result = $this->statusRepository->getBy($columnName, $data, $start, $maxIndex);
+
+		$this->assertEquals($expected, $result);
+	}
+
+	public static function getByProvider(): array
+	{
+		return [
+			'valid column with data' => [
+				'columnName' => StatusEntity::WALL_ID,
+				'data' => [1, 2, 3],
+				'start' => 0,
+				'maxIndex' => 10,
+				'expected' => [
+					1 => StatusEntity::from([
+						StatusEntity::ID => 1,
+						StatusEntity::WALL_ID => 1,
+						StatusEntity::USER_ID => 2,
+						StatusEntity::BODY => 'Test status',
+					]),
+				],
+			],
+			'empty data array' => [
+				'columnName' => StatusEntity::USER_ID,
+				'data' => [],
+				'start' => 5,
+				'maxIndex' => 15,
+				'expected' => [],
+			],
+		];
+	}
+
+	public function testGetByWithInvalidColumn(): void
+	{
+		$result = $this->statusRepository->getBy('invalid_column', [1, 2], 0, 10);
+
+		$this->assertEquals([], $result);
+	}
+
+	public function testGetByCallsCorrectQueryParams(): void
+	{
+		$columnName = StatusEntity::WALL_ID;
+		$data = [1, 2, 3];
+		$start = 5;
+		$maxIndex = 20;
+
+		$expectedParams = [
+			'columns' => 'parent.id, parent.wallId, parent.userId, parent.createdAt, parent.body, parent.likes',
+			'from' => 'breeze_status AS parent',
+			'columnName' => $columnName,
+			'start' => $start,
+			'maxIndex' => $maxIndex,
+			'ids' => $data,
+			'tableName' => 'breeze_status',
+		];
+
+		$this->dbClient->expects($this->once())
+			->method('query')
+			->with(
+				$this->stringContains('SELECT {raw:columns}'),
+				$expectedParams
+			)
+			->willReturn($this->queryObject);
+
+		$this->commentRepository->method('getByProfile')->willReturn([]);
+		$this->statusRepository->method('prepareData')->willReturn([]);
+
+		$this->statusRepository->getBy($columnName, $data, $start, $maxIndex);
+	}
 }
