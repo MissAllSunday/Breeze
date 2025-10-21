@@ -65,12 +65,18 @@ class StatusService extends BaseService implements StatusServiceInterface
 			return [];
 		}
 
-		return $this->statusRepository->getBy(
+		$statusByBuddies = $this->statusRepository->getBy(
 			StatusEntity::USER_ID,
 			$currentUserBuddies,
 			$start,
 			$currentUserPagination
 		);
+
+		return [
+			'data' => $statusByBuddies,
+			'permissions' => $this->permissionsService->permissions(0, $currentUserInfo['id']),
+			'total' => $this->getCount(StatusEntity::USER_ID, $currentUserBuddies),
+		];
 	}
 
 	/**

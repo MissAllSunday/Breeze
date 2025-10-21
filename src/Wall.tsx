@@ -38,7 +38,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
 				if (!statusListResponse) {
 					return;
 				}
-
+console.log(statusListResponse);
 				const fetchedStatusList: StatusListType = Object.values(
 					statusListResponse.data,
 				);
