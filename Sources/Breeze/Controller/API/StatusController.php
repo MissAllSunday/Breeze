@@ -61,11 +61,11 @@ class StatusController extends ApiBaseController
 			$buddiesStatus = $this->statusService->getByBuddies($this->getRequest('start', 0));
 
 			if ($buddiesStatus === []) {
-				$this->response->success('', []);
+				$this->response->success('empty_data', [], 204);
 			}
 
 			$this->response->success('', $buddiesStatus);
-		} catch (InvalidStatusException | EmptyDataException $exception) {
+		} catch (EmptyDataException $exception) {
 			$this->response->error($exception->getMessage());
 		}
 	}
