@@ -1,7 +1,7 @@
 import type { CommentListType, CommentType } from "breezeTypesComments";
 import type { StatusProps } from "breezeTypesStatus";
 import * as React from "react";
-import { useCallback, useContext, useState } from "react";
+import {Ref, useCallback, useContext, useState} from "react";
 
 import { deleteComment } from "../api/Comment/Delete";
 import { postComment } from "../api/Comment/Post";
@@ -95,7 +95,7 @@ function Status(props: StatusProps): React.ReactElement {
 			className={`${classType} status`}
 			key={props.status.id}
 			id={`status-${props.status.id.toString()}`}
-			ref={ref as React.LegacyRef<HTMLLIElement>}
+			ref={ref as Ref<HTMLLIElement>}
 		>
 			{isLoading ? <Loading /> : ""}
 			<div className="floatleft userinfo">
@@ -107,9 +107,7 @@ function Status(props: StatusProps): React.ReactElement {
 					dangerouslySetInnerHTML={{ __html: props.status.body }}
 				/>
 				<div className="half_content">
-          <Like
-            likeInfo={props.status.likesInfo}
-          />
+					<Like likeInfo={props.status.likesInfo} />
 				</div>
 				<div className="half_content">
 					<div className={"info_bar"}>

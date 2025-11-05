@@ -46,7 +46,7 @@ export const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
 			>
 				{emoji}
 			</a>{" "}
-      <LikeInfo likeInfo={likeInfo} />
+			<LikeInfo likeInfo={likeInfo} />
 		</div>
 	) : null;
 };

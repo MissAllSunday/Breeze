@@ -17,7 +17,7 @@ import Status from "./components/Status";
 import { PermissionsContext } from "./context/PermissionsContext";
 import PermissionsDefault from "./DataSource/Permissions";
 import smfTextVars from "./DataSource/Txt";
-import { showInfo } from "./utils/tooltip";
+import {displayMessage, showInfo} from "./utils/tooltip";
 
 export default function Wall(props: WallProps): React.JSX.Element {
 	const [statusList, setStatusList] = useState<StatusListType>([]);
@@ -38,7 +38,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
 				if (!statusListResponse) {
 					return;
 				}
-console.log(statusListResponse);
+
 				const fetchedStatusList: StatusListType = Object.values(
 					statusListResponse.data,
 				);
@@ -132,13 +132,13 @@ console.log(statusListResponse);
 			/>
 			<PermissionsContext.Provider value={permissions}>
 				<ul className="status">
-					{statusList.map((singleStatus: StatusType) => (
+					{statusList.length > 0 ? statusList.map((singleStatus: StatusType) => (
 						<Status
 							key={singleStatus.id}
 							status={singleStatus}
 							removeStatus={removeStatus}
 						/>
-					))}
+					)) : displayMessage(smfTextVars.general.emptyData)}
 				</ul>
 				<div id="post_confirm_buttons">
 					{statusList.length < paginationTotal ? (

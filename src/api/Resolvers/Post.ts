@@ -1,7 +1,6 @@
 import type { CommentListType } from "breezeTypesComments";
 import type { LikeType } from "breezeTypesLikes";
 import type { StatusListType } from "breezeTypesStatus";
-
 import { showInfo } from "../../utils/tooltip";
 
 export const resolvePost = async (

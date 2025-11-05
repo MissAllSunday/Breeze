@@ -15,42 +15,40 @@ const wallType = rootElement.getAttribute("wallType") ?? "profile";
 const pagination: number = window.breezePagination ?? 5;
 
 // @ts-expect-error settings are loaded server side
-const enableBuddiesTab: boolean = Boolean(window.breezeEnableBuddiesTab) ?? false;
+const enableBuddiesTab: boolean =
+	Boolean(window.breezeEnableBuddiesTab) ?? false;
 // @ts-expect-error settings are loaded server side
 const enableAboutMeTab: boolean = Boolean(window.breezeAboutMe) ?? false;
 
-
 if (wallType === "wall") {
-  root.render(
+	root.render(
 		<React.StrictMode>
-      <Wall
-        wallType={wallType}
-        pagination={pagination}
-        name={smfTextVars.tabs.wall}
-      />
+			<Wall
+				wallType={wallType}
+				pagination={pagination}
+				name={smfTextVars.tabs.wall}
+			/>
 		</React.StrictMode>,
 	);
 } else {
-  root.render(
-    <React.StrictMode>
-      <Tabs>
-        <Wall
-          wallType={wallType}
-          pagination={pagination}
-          name={smfTextVars.tabs.wall}
-        />
-        {enableAboutMeTab && (
-          <Tab content={smfVars.aboutMeContent} name={smfTextVars.tabs.about} />
-        )}
-        {enableBuddiesTab && (
-          <Tab
-            content={smfVars.buddiesTabContent}
-            name={smfTextVars.tabs.buddies}
-          />
-        )}
-      </Tabs>
-    </React.StrictMode>,
-  );
+	root.render(
+		<React.StrictMode>
+			<Tabs>
+				<Wall
+					wallType={wallType}
+					pagination={pagination}
+					name={smfTextVars.tabs.wall}
+				/>
+				{enableAboutMeTab && (
+					<Tab content={smfVars.aboutMeContent} name={smfTextVars.tabs.about} />
+				)}
+				{enableBuddiesTab && (
+					<Tab
+						content={smfVars.buddiesTabContent}
+						name={smfTextVars.tabs.buddies}
+					/>
+				)}
+			</Tabs>
+		</React.StrictMode>,
+	);
 }
-
-
