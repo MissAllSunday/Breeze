@@ -22,6 +22,7 @@ import {displayMessage, showInfo} from "./utils/tooltip";
 export default function Wall(props: WallProps): React.JSX.Element {
 	const [statusList, setStatusList] = useState<StatusListType>([]);
 	const [isLoading, setIsLoading] = useState(true);
+  const [emptyData, setEmptyData] = useState(false);
 	const [permissions, setPermissions] =
 		useState<PermissionsContextType>(PermissionsDefault);
 	const [paginationTotal, setPaginationTotal] = useState<number>(0);
@@ -42,6 +43,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
 				const fetchedStatusList: StatusListType = Object.values(
 					statusListResponse.data,
 				);
+        setEmptyData(statusListResponse.data.length === 0);
 				setStatusList(fetchedStatusList);
 				setPermissions(statusListResponse.permissions);
 				setPaginationTotal(statusListResponse.total);
@@ -132,7 +134,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
 			/>
 			<PermissionsContext.Provider value={permissions}>
 				<ul className="status">
-					{statusList.length > 0 ? statusList.map((singleStatus: StatusType) => (
+					{!emptyData ? statusList.map((singleStatus: StatusType) => (
 						<Status
 							key={singleStatus.id}
 							status={singleStatus}

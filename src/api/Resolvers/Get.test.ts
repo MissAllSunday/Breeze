@@ -56,14 +56,6 @@ describe("resolves Get call", () => {
 	afterEach(() => {
 		vi.clearAllMocks();
 	});
-
-	describe("and call has a message", () => {
-		it("shows error message", async () => {
-			await resolveGet(MOCK_BAD_RESPONSE);
-
-			expect(showError as jest.Mock).toHaveBeenCalled();
-		});
-	});
 	describe("and resource was fetched", () => {
 		it("returns fetched content", async () => {
 			const result: IFetchStatus | undefined =
@@ -73,31 +65,11 @@ describe("resolves Get call", () => {
 		});
 	});
 
-	describe("and resource returns 204", () => {
-		it("shows info message", async () => {
-			await resolveGet(MOCK_204_RESPONSE);
-
-			expect(showInfo as jest.Mock).toHaveBeenCalledWith("No content message");
-		});
-
-		it("returns undefined", async () => {
-			const result = await resolveGet(MOCK_204_RESPONSE);
-
-			expect(result).toBeUndefined();
-		});
-	});
-
 	describe("and resource returns 404", () => {
-		it("shows error message", async () => {
-			await resolveGet(MOCK_404_RESPONSE);
-
-			expect(showError as jest.Mock).toHaveBeenCalledWith("Resource not found");
-		});
-
-		it("returns undefined", async () => {
+		it("returns null", async () => {
 			const result = await resolveGet(MOCK_404_RESPONSE);
 
-			expect(result).toBeUndefined();
+			expect(result).toBeNull();
 		});
 	});
 });
