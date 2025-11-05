@@ -4,7 +4,6 @@ import type { IFetchStatus } from "breezeTypesStatus";
 import { describe, expect, it, vi } from "vitest";
 import { responses } from "../../__fixtures__/responses";
 import { status } from "../../__fixtures__/status";
-import { showError, showInfo } from "../../utils/tooltip";
 import { resolveGet } from "./Get";
 
 const MOCK_GOOD_RESPONSE = responses.custom({
@@ -14,26 +13,6 @@ const MOCK_GOOD_RESPONSE = responses.custom({
 		Promise.resolve({
 			message: "",
 			content: status.basic,
-		}),
-});
-
-const MOCK_BAD_RESPONSE = responses.custom({
-	ok: false,
-	status: 400,
-	json: () =>
-		Promise.resolve({
-			message: "some server error",
-			content: [],
-		}),
-});
-
-const MOCK_204_RESPONSE = responses.custom({
-	ok: true,
-	status: 204,
-	json: () =>
-		Promise.resolve({
-			message: "No content message",
-			content: null,
 		}),
 });
 

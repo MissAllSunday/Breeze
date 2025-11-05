@@ -1,7 +1,7 @@
 import type { CommentListType, CommentType } from "breezeTypesComments";
 import type { StatusProps } from "breezeTypesStatus";
 import * as React from "react";
-import {Ref, useCallback, useContext, useState} from "react";
+import {type Ref, useCallback, useContext, useState} from "react";
 
 import { deleteComment } from "../api/Comment/Delete";
 import { postComment } from "../api/Comment/Post";
