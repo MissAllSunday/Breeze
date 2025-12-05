@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\CommentEntity;
+use Breeze\Event\Comment\CommentCreatedEvent;
 use Breeze\Event\EventServiceProvider;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidCommentException;
@@ -48,6 +49,11 @@ class CommentController extends ApiBaseController
 				$commentEntities,
 				Response::CREATED
 			);
+
+
+			foreach ($commentEntities as $commentEntity) {
+				$this->eventDispatch(CommentCreatedEvent::class, $commentEntity, );
+			}
 		} catch (InvalidCommentException $invalidCommentException) {
 			$this->response->error($invalidCommentException->getMessage(), $invalidCommentException->getResponseCode());
 		} catch (DataNotFoundException $e) {

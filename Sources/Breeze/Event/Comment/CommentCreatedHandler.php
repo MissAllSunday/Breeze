@@ -7,6 +7,7 @@ namespace Breeze\Event\Comment;
 use Breeze\Breeze;
 use Breeze\Controller\API\StatusController;
 use Breeze\Entity\AlertEntity;
+use Breeze\Event\EventAbstract;
 use Breeze\Event\EventHandlerInterface;
 use Breeze\Traits\TextTrait;
 
@@ -30,29 +31,13 @@ class CommentCreatedHandler implements EventHandlerInterface
 
 	protected function buildAlertText(): void
 	{
-		$extra = $this->alertEntity->getExtra();
-		$statusId = $extra['status_id'] ?? 0;
-		$wallId = $extra['wall_id'] ?? 0;
+		$contentAction = $this->alertEntity->getContentAction();
 
-		// Get the action type to determine which text to use
-		$action = $this->alertEntity->getContentAction();
-
-		if ($action === Breeze::PATTERN . 'profile_owner') {
-			$statusOwnerId = $extra['status_owner_id'] ?? 0;
-
-			// If it's the wall owner's alert about a comment on someone else's status
-			$this->alertEntity->setText($this->parserText($this->getText('alert_comment_different_owner'), [
-				'poster' => $this->alertEntity->getSenderName(),
-				'status_poster' => 'status_poster_name', // @todo change this to the actual status poster name
-				'wall_owner' => 'wall_owner_name',
-			]));
-		} else {
-			// If it's the status owner's alert about a comment on their status
-			$this->alertEntity->setText($this->parserText($this->getText('alert_comment_status_owner'), [
-				'poster' => $this->alertEntity->getSenderName(),
-				'wall_owner' => 'wall_owner_name',
-			]));
-		}
+		match ($contentAction) {
+			EventAbstract::CONTENT_ACTION_CREATED . EventAbstract::WALL_OWNER => $this->buildProfileOwnerText(),
+			EventAbstract::CONTENT_ACTION_CREATED . EventAbstract::STATUS_OWNER => $this->buildStatusOwnerText(),
+			default => '',
+		};
 	}
 
 	protected function buildTargetHref(): void
@@ -65,6 +50,23 @@ class CommentCreatedHandler implements EventHandlerInterface
 			'action' => Breeze::ACTION_WALL,
 			'subAction' => StatusController::ACTION_SINGLE,
 			'statusId' => $statusId,
+		]));
+	}
+
+	protected function buildProfileOwnerText(): void
+	{
+		$this->alertEntity->setText($this->parserText($this->getText('alert_comment_different_owner'), [
+			'poster' => $this->alertEntity->getSenderName(),
+			'status_poster' => 'status_poster_name', // @todo change this to the actual status poster name
+			'wall_owner' => 'wall_owner_name',
+		]));
+	}
+
+	protected function buildStatusOwnerText(): void
+	{
+		$this->alertEntity->setText($this->parserText($this->getText('alert_comment_status_owner'), [
+			'poster' => $this->alertEntity->getSenderName(),
+			'wall_owner' => 'wall_owner_name',
 		]));
 	}
 }

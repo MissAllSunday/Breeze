@@ -14,13 +14,13 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class PostComment extends BaseActions implements ValidateDataInterface
 {
-	protected const PARAMS = [
+	protected const array PARAMS = [
 		CommentEntity::STATUS_ID => 0,
 		CommentEntity::USER_ID => 0,
 		CommentEntity::BODY => '',
 	];
 
-	protected const SUCCESS_KEY = 'published_comment';
+	protected const string SUCCESS_KEY = 'published_comment';
 
 	/**
 	 * @throws InvalidDataException

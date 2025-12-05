@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Breeze\Event\Comment;
 
-use Breeze\Entity\CommentEntity;
 use League\Event\HasEventName;
 
 class CommentDeletedEvent implements HasEventName
@@ -47,6 +46,4 @@ class CommentDeletedEvent implements HasEventName
 	{
 		return $this->wallId;
 	}
-
-
 }

@@ -17,6 +17,7 @@ class CommentEventListener
 	use TextTrait;
 
 	protected const string CONTENT_TYPE = Breeze::NAME . '_comment';
+
 	public function __construct(
 		protected readonly AlertServiceInterface $alertService,
 		protected readonly StatusRepositoryInterface $statusRepository
@@ -25,8 +26,10 @@ class CommentEventListener
 
 	public function onCommentCreated(CommentCreatedEvent $event): void
 	{
-		$commentId = $event->getCommentId();
-		$userId = $event->getUserId();
+		$commentEntity = $event->getCommentEntity();
+		$statusId = $commentEntity->getStatusId();
+		$commentId = $commentEntity->getId();
+		$userId = $commentEntity->getUserId();
 		$statusOwnerId = $event->getStatusOwnerId();
 		$wallId = $event->getWallId();
 		$isWallOwner = $wallId === $userId;
@@ -42,7 +45,7 @@ class CommentEventListener
 				AlertEntity::CONTENT_ID => $commentId,
 				AlertEntity::CONTENT_ACTION => EventAbstract::CONTENT_ACTION_CREATED . EventAbstract::STATUS_OWNER,
 				AlertEntity::EXTRA => Json::encode([
-					'status_id' => $event->getStatusId(),
+					'status_id' => $event->getCommentEntity()->getStatusId(),
 					'wall_id' => $wallId,
 					'comment_id' => $commentId,
 					'comment_owner_id' => $userId,
@@ -60,7 +63,10 @@ class CommentEventListener
 				AlertEntity::CONTENT_ID => $commentId,
 				AlertEntity::CONTENT_ACTION => EventAbstract::CONTENT_ACTION_CREATED . EventAbstract::WALL_OWNER,
 				AlertEntity::EXTRA => Json::encode([
-					'status_id' => $event->getStatusId(),
+					'status_id' => $statusId,
+					'wall_id' => $wallId,
+					'comment_id' => $commentId,
+					'comment_owner_id' => $userId,
 					'status_owner_id' => $statusOwnerId,
 				]),
 			]));
