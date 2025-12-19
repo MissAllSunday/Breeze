@@ -12,9 +12,9 @@ $config = new PhpCsFixer\Config();
 
 return $config
 	->setRules([
-		'@PHP74Migration' => true,
-		'@PHP82Migration' => true,
-		'@PHPUnit60Migration:risky' => true,
+		'@PHP7x4Migration' => true,
+		'@PHP8x2Migration' => true,
+		'@PHPUnit6x0Migration:risky' => true,
 		'indentation_type' => true,
 		'array_indentation' => true,
 		'array_syntax' => ['syntax' => 'short'],
@@ -53,7 +53,7 @@ return $config
 		'method_argument_space' => ['after_heredoc' => true],
 		'constant_case' => true,
 		'lowercase_keywords' => true,
-		'visibility_required' => true,
+		'modifier_keywords' => true,
 		'native_constant_invocation' => true,
 		'no_unneeded_braces' => true,
 		'function_declaration' => true,

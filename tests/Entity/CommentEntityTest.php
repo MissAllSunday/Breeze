@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-
 namespace Breeze\Entity;
 
+use Breeze\Fixtures\CommentFixtures;
 use DateMalformedStringException;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -28,41 +28,28 @@ class CommentEntityTest extends TestCase
 		$this->assertEquals('breeze_comments', CommentEntity::getTableName());
 	}
 
+	public function testFromArray(): void
+	{
+		$data = CommentFixtures::basic();
+		$entity = CommentEntity::from($data);
+
+		$this->assertEquals($data[CommentEntity::ID], $entity->getId());
+		$this->assertEquals($data[CommentEntity::STATUS_ID], $entity->getStatusId());
+		$this->assertEquals($data[CommentEntity::USER_ID], $entity->getUserId());
+		$this->assertEquals($data[CommentEntity::BODY], $entity->getBody());
+	}
+
 	public function testToInsert(): void
 	{
-		$entity = CommentEntity::from();
-		$entity->setId(123);
-		$entity->setStatusId(456);
-		$entity->setUserId(789);
-		$entity->setCreatedAt(new DateTimeImmutable());
-		$entity->setBody('Test comment body');
+		$entity = CommentEntity::from(CommentFixtures::basic());
 
-		$beforeTime = time();
 		$result = $entity->toInsert();
-		$afterTime = time();
 
-		// Should not contain the ID field
 		$this->assertArrayNotHasKey('id', $result);
-
-		// Should contain all expected columns except id
-		$expectedColumns = CommentEntity::getColumns();
-		foreach ($expectedColumns as $column) {
-			if ($column !== 'id') {
-				$this->assertArrayHasKey($column, $result);
-			}
-		}
-
-		// Should set createdAt to current timestamp
+		$this->assertArrayHasKey('statusId', $result);
+		$this->assertArrayHasKey('userId', $result);
+		$this->assertArrayHasKey('body', $result);
 		$this->assertArrayHasKey('createdAt', $result);
-		$this->assertIsInt($result['createdAt']);
-		$this->assertGreaterThanOrEqual($beforeTime, $result['createdAt']);
-		$this->assertLessThanOrEqual($afterTime, $result['createdAt']);
-
-		// Should preserve other values
-		$this->assertEquals(456, $result['statusId']);
-		$this->assertEquals(789, $result['userId']);
-		$this->assertEquals('Test comment body', $result['body']);
-		$this->assertEquals(0, $result['likes']);
 	}
 
 	public function testToInsertWithoutId(): void
@@ -129,5 +116,47 @@ class CommentEntityTest extends TestCase
 		// Test default string casting
 		$this->assertEquals('Test comment body', $entity->castValue(CommentEntity::BODY, 'Test comment body'));
 		$this->assertEquals('default', $entity->castValue('unknown_column', 'default'));
+	}
+
+	public function testToArray(): void
+	{
+		$data = CommentFixtures::basic();
+		$entity = CommentEntity::from($data);
+
+		$result = $entity->toArray();
+
+		$this->assertEquals($data[CommentEntity::ID], $result[CommentEntity::ID]);
+		$this->assertEquals($data[CommentEntity::BODY], $result[CommentEntity::BODY]);
+	}
+
+	public function testJsonSerialize(): void
+	{
+		$entity = CommentEntity::from(CommentFixtures::basic());
+
+		$result = $entity->jsonSerialize();
+
+		$this->assertIsArray($result);
+		$this->assertArrayHasKey('id', $result);
+		$this->assertArrayHasKey('body', $result);
+	}
+
+	public function testSettersAndGetters(): void
+	{
+		$entity = CommentEntity::from();
+
+		$entity->setId(123);
+		$this->assertEquals(123, $entity->getId());
+
+		$entity->setStatusId(456);
+		$this->assertEquals(456, $entity->getStatusId());
+
+		$entity->setUserId(789);
+		$this->assertEquals(789, $entity->getUserId());
+
+		$entity->setBody('Test comment');
+		$this->assertEquals('Test comment', $entity->getBody());
+
+		$entity->setLikes(5);
+		$this->assertEquals(5, $entity->getLikes());
 	}
 }

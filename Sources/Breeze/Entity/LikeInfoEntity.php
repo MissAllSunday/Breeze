@@ -11,6 +11,8 @@ use JsonSerializable;
 class LikeInfoEntity extends Entity implements JsonSerializable
 {
 	public const string LIKES = 'likes';
+	public const string TEXT = 'text';
+	public const string HREF = 'href';
 
 	/** @var LikeInfoEntity[] */
 	public array $likes = [];

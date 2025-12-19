@@ -6,9 +6,9 @@ namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\CommentEntity;
-use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeInfoEntity;
-use Breeze\Entity\SharedEntity;
+use Breeze\Fixtures\CommentFixtures;
+use Breeze\Fixtures\LikeInfoFixtures;
 use Breeze\LikesEnum;
 use Breeze\Util\Validate\DataNotFoundException;
 use PHPUnit\Framework\MockObject\Exception;
@@ -64,13 +64,7 @@ class CommentRepositoryTest extends TestCase
 	 */
 	public function testInsert(): void
 	{
-		$commentEntity = CommentEntity::from([
-			CommentEntity::STATUS_ID => 1,
-			CommentEntity::USER_ID => 2,
-			CommentEntity::BODY => 'Test comment',
-			CommentEntity::LIKES => 0,
-			SharedEntity::CREATED_AT => time(),
-		]);
+		$commentEntity = CommentEntity::from(CommentFixtures::forInsertion());
 
 		$this->dbClient->expects($this->once())
 			->method('insert');
@@ -86,10 +80,7 @@ class CommentRepositoryTest extends TestCase
 			->method('getByContent')
 			->with(LikesEnum::Comments, [5])
 			->willReturn([
-				5 => LikeInfoEntity::from([
-					LikeEntity::ID => 5,
-					LikeInfoEntity::LIKES => [],
-				]),
+				5 => LikeInfoEntity::from(LikeInfoFixtures::basic()),
 			]);
 
 		$result = $this->commentRepository->insert($commentEntity);
@@ -100,13 +91,7 @@ class CommentRepositoryTest extends TestCase
 
 	public function testInsertThrowsExceptionWhenIdIsZero(): void
 	{
-		$commentEntity = CommentEntity::From([
-			CommentEntity::STATUS_ID => 1,
-			CommentEntity::USER_ID => 2,
-			CommentEntity::BODY => 'Test comment',
-			CommentEntity::LIKES => 0,
-			SharedEntity::CREATED_AT => time(),
-		]);
+		$commentEntity = CommentEntity::from(CommentFixtures::forInsertion());
 
 		$this->dbClient->method('getInsertedId')->willReturn(0);
 
@@ -121,12 +106,8 @@ class CommentRepositoryTest extends TestCase
 	 */
 	public function testGetById(): void
 	{
-		$commentHandledEntities = [5 => CommentEntity::from([
-			CommentEntity::ID => 5,
-			CommentEntity::STATUS_ID => 1,
-			CommentEntity::USER_ID => 2,
-			CommentEntity::BODY => 'Test comment',
-		])];
+		$commentData = CommentFixtures::withCustomData([CommentEntity::ID => 5]);
+		$commentHandledEntities = [5 => CommentEntity::from($commentData)];
 
 		$this->dbClient->expects($this->once())
 			->method('query')
@@ -207,5 +188,28 @@ class CommentRepositoryTest extends TestCase
 		$result = $this->commentRepository->deleteByStatusId(10);
 
 		$this->assertTrue($result);
+	}
+
+	public function testGetByStatusId(): void
+	{
+		$comments = CommentFixtures::multipleComments();
+		$commentEntities = [];
+		foreach ($comments as $comment) {
+			$commentEntities[] = CommentEntity::from($comment);
+		}
+
+		$this->dbClient->expects($this->once())
+			->method('query')
+			->willReturn($this->queryObject);
+
+		$this->commentRepository->expects($this->once())
+			->method('prepareData')
+			->with($this->queryObject)
+			->willReturn($commentEntities);
+
+		$result = $this->commentRepository->getByStatus([1]);
+
+		$this->assertIsArray($result);
+		$this->assertCount(3, $result);
 	}
 }
