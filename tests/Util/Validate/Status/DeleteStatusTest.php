@@ -23,10 +23,10 @@ class DeleteStatusTest extends TestCase
 	#[DataProvider('checkAllowProvider')]
 	public function testCheckAllow(array $data, string $permissionName, bool $isExpectedException): void
 	{
-		$validateData = $this->createMock(Data::class);
-		$validateUser = $this->createMock(User::class);
-		$validateAllow = $this->createMock(Allow::class);
-		$statusRepository = $this->createMock(StatusRepositoryInterface::class);
+		$validateData = $this->createStub(Data::class);
+		$validateUser = $this->createStub(User::class);
+		$validateAllow = $this->createStub(Allow::class);
+		$statusRepository = $this->createStub(StatusRepositoryInterface::class);
 
 		$deleteStatus = new DeleteStatus(
 			$validateData,
@@ -84,10 +84,10 @@ class DeleteStatusTest extends TestCase
 	#[DataProvider('checkUserProvider')]
 	public function testCheckUser(array $data, array $validUsers, bool $isExpectedException): void
 	{
-		$validateData = $this->createMock(Data::class);
-		$validateUser = $this->createMock(User::class);
-		$validateAllow = $this->createMock(Allow::class);
-		$statusRepository = $this->createMock(StatusRepositoryInterface::class);
+		$validateData = $this->createStub(Data::class);
+		$validateUser = $this->createStub(User::class);
+		$validateAllow = $this->createStub(Allow::class);
+		$statusRepository = $this->createStub(StatusRepositoryInterface::class);
 
 		$deleteStatus = new DeleteStatus(
 			$validateData,

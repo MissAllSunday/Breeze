@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Breeze\Service\Actions;
 
 use Breeze\Util\Form\SettingsBuilderInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 class AdminServiceTest extends TestCase
 {
 	private AdminServiceInterface|MockObject $adminService;
@@ -19,7 +21,7 @@ class AdminServiceTest extends TestCase
 	 */
 	protected function setUp(): void
 	{
-		$settingsBuilder = $this->createMock(SettingsBuilderInterface::class);
+		$settingsBuilder = $this->createStub(SettingsBuilderInterface::class);
 		$this->adminService = $this->getMockBuilder(AdminService::class)
 			->onlyMethods([
 				'global',

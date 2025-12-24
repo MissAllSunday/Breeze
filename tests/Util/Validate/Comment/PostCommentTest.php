@@ -15,10 +15,10 @@ class PostCommentTest extends TestCase
 {
 	public function testGetParams(): void
 	{
-		$commentRepository = $this->createMock(CommentRepositoryInterface::class);
-		$validateAllow = $this->createMock(Allow::class);
-		$validateUser = $this->createMock(User::class);
-		$validateData = $this->createMock(Data::class);
+		$commentRepository = $this->createStub(CommentRepositoryInterface::class);
+		$validateAllow = $this->createStub(Allow::class);
+		$validateUser = $this->createStub(User::class);
+		$validateData = $this->createStub(Data::class);
 
 		$postComment = new PostComment(
 			$validateData,

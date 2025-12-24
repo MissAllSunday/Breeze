@@ -9,11 +9,13 @@ use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Util\Validate\EmptyDataException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 class StatusServiceTest extends TestCase
 {
 	private StatusRepositoryInterface | MockObject $statusRepository;
@@ -29,9 +31,9 @@ class StatusServiceTest extends TestCase
 	 */
 	public function setUp(): void
 	{
-		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
-		$this->userRepository = $this->createMock(SettingsRepositoryInterface::class);
-		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
+		$this->statusRepository = $this->createStub(StatusRepositoryInterface::class);
+		$this->userRepository = $this->createStub(SettingsRepositoryInterface::class);
+		$this->permissionsService = $this->createStub(PermissionsServiceInterface::class);
 		$this->statusService = $this->getMockBuilder(StatusService::class)
 			->setConstructorArgs([$this->statusRepository,
 				$this->userRepository,

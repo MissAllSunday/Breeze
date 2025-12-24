@@ -7,11 +7,13 @@
   xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
   cacheDirectory=".phpunit.cache"
   testdox="false"
+  displayDetailsOnAllIssues="true"
   displayDetailsOnTestsThatTriggerDeprecations="true"
   displayDetailsOnTestsThatTriggerErrors="true"
   displayDetailsOnTestsThatTriggerNotices="true"
   displayDetailsOnTestsThatTriggerWarnings="true"
-  displayDetailsOnPhpunitDeprecations="true">
+  displayDetailsOnPhpunitDeprecations="true"
+  failOnNotice="true">
   <testsuites>
     <testsuite name="Breeze">
       <directory>./tests/</directory>
@@ -22,4 +24,9 @@
       <directory suffix=".php">./Sources</directory>
     </include>
   </source>
+  <php>
+    <ini name="display_errors" value="On" />
+    <ini name="display_startup_errors" value="On" />
+    <ini name="error_reporting" value="-1" />
+  </php>
 </phpunit>

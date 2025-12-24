@@ -31,13 +31,17 @@ class CommentEventListener
 		$commentId = $commentEntity->getId();
 		$userId = $commentEntity->getUserId();
 		$statusOwnerId = $event->getStatusOwnerId();
-		$wallId = $event->getWallId();
-		$isWallOwner = $wallId === $userId;
-		$isStatusOwner = $statusOwnerId === $userId;
-		$isCommentOwner = $commentId === $userId;
+		$wallOwnerId = $event->getWallId();
+		$isSameUser = $userId === $statusOwnerId && $userId === $wallOwnerId;
+		$shouldSendAlertToStatusOwner = $statusOwnerId !== $userId;
+		$shouldSendAlertToWallOwner = $wallOwnerId !== $userId;
+
+		if ($isSameUser) {
+			return;
+		}
 
 		// Alert for status owner
-		if ($isStatusOwner && !$isWallOwner && !$isCommentOwner) {
+		if ($shouldSendAlertToStatusOwner) {
 			$this->alertService->send(AlertEntity::from([
 				AlertEntity::ID_MEMBER => $statusOwnerId,
 				AlertEntity::ID_MEMBER_STARTED => $userId,
@@ -46,7 +50,7 @@ class CommentEventListener
 				AlertEntity::CONTENT_ACTION => EventAbstract::CONTENT_ACTION_CREATED . EventAbstract::STATUS_OWNER,
 				AlertEntity::EXTRA => Json::encode([
 					'status_id' => $event->getCommentEntity()->getStatusId(),
-					'wall_id' => $wallId,
+					'wall_id' => $wallOwnerId,
 					'comment_id' => $commentId,
 					'comment_owner_id' => $userId,
 					'status_owner_id' => $statusOwnerId,
@@ -55,16 +59,16 @@ class CommentEventListener
 		}
 
 		// If the comment is on someone else's wall, also notify the wall owner
-		if ($wallId !== $statusOwnerId && $wallId !== $userId) {
+		if ($shouldSendAlertToWallOwner) {
 			$this->alertService->send(AlertEntity::from([
-				AlertEntity::ID_MEMBER => $wallId,
+				AlertEntity::ID_MEMBER => $wallOwnerId,
 				AlertEntity::ID_MEMBER_STARTED => $userId,
 				AlertEntity::CONTENT_TYPE => self::CONTENT_TYPE,
 				AlertEntity::CONTENT_ID => $commentId,
 				AlertEntity::CONTENT_ACTION => EventAbstract::CONTENT_ACTION_CREATED . EventAbstract::WALL_OWNER,
 				AlertEntity::EXTRA => Json::encode([
 					'status_id' => $statusId,
-					'wall_id' => $wallId,
+					'wall_id' => $wallOwnerId,
 					'comment_id' => $commentId,
 					'comment_owner_id' => $userId,
 					'status_owner_id' => $statusOwnerId,
@@ -75,12 +79,18 @@ class CommentEventListener
 
 	public function onCommentDeleted(CommentDeletedEvent $event): void
 	{
-		$isWallOwner = $event->getWallId() === $event->getUserId();
-		$isStatusOwner = $event->getStatusOwnerId() === $event->getUserId();
-		$isCommentOwner = $event->getCommentId() === $event->getUserId();
+		$userId = $event->getUserId();
+		$shouldSendAlertToWallOwner = $event->getWallId() !== $userId;
+		$shouldSendAlertToStatusOwner = $event->getStatusOwnerId() !== $userId;
+
+		$isSameUser = $userId === $event->getWallId() && $userId === $event->getStatusOwnerId();
+
+		if ($isSameUser) {
+			return;
+		}
 
 		// Send alert to wall owner
-		if ($isWallOwner && !$isStatusOwner && !$isCommentOwner) {
+		if ($shouldSendAlertToWallOwner) {
 			$this->alertService->send(AlertEntity::from([
 				AlertEntity::ID_MEMBER => $event->getUserId(),
 				AlertEntity::CONTENT_TYPE => self::CONTENT_TYPE,
@@ -95,7 +105,7 @@ class CommentEventListener
 		}
 
 		// Send alert to status owner
-		if ($isStatusOwner && !$isWallOwner && !$isCommentOwner) {
+		if ($shouldSendAlertToStatusOwner) {
 			$this->alertService->send(AlertEntity::from([
 				AlertEntity::ID_MEMBER => $event->getStatusOwnerId(),
 				AlertEntity::CONTENT_TYPE => self::CONTENT_TYPE,

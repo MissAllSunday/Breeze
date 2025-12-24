@@ -216,7 +216,7 @@ function cache_put_data($key, $data, $timeToLive)
 
 function prepareDBSettingContext(array $array): void {}
 
-function loadGeneralSettingParameters(): void {}
+function loadGeneralSettingParameters(array $array, string $area): void {}
 
 $sourcedir = $boarddir = $boardurl = ROOT;
 $scripturl = 'localhost';

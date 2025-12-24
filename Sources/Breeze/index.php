@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-// Try to handle it with the upper level index.php. (it should know what to do.)
+/**
+ * @codeCoverageIgnore
+ */
 if (file_exists(dirname(__FILE__, 2) . '/index.php')) {
 	include(dirname(__FILE__, 2) . '/index.php');
 } else {

@@ -12,12 +12,14 @@ use Breeze\Entity\StatusEntity;
 use Breeze\LikesEnum;
 use Breeze\Util\Validate\DataNotFoundException;
 use DateMalformedStringException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
+#[AllowMockObjectsWithoutExpectations]
 class StatusRepositoryTest extends TestCase
 {
 	private MockObject|ClientInterface $dbClient;

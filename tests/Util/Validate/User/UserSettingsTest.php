@@ -11,11 +11,13 @@ use Breeze\Util\Validate\Validations\User\UserSettings;
 use Breeze\Validate\Types\Allow;
 use Breeze\Validate\Types\Data;
 use Breeze\Validate\Types\User;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 class UserSettingsTest extends TestCase
 {
 	public StatusRepositoryInterface | MockObject $repository;
@@ -25,7 +27,7 @@ class UserSettingsTest extends TestCase
 	 */
 	public function setUp(): void
 	{
-		$this->repository = $this->createMock(StatusRepositoryInterface::class);
+		$this->repository = $this->createStub(StatusRepositoryInterface::class);
 	}
 
 	/**
@@ -35,9 +37,9 @@ class UserSettingsTest extends TestCase
 	#[DataProvider('isValidProvider')]
 	public function testIsValid(array $data, bool $isExpectedException): void
 	{
-		$validateData = $this->createMock(Data::class);
-		$validateUser = $this->createMock(User::class);
-		$validateAllow = $this->createMock(Allow::class);
+		$validateData = $this->createStub(Data::class);
+		$validateUser = $this->createStub(User::class);
+		$validateAllow = $this->createStub(Allow::class);
 
 		$userSettings = new UserSettings(
 			$validateData,

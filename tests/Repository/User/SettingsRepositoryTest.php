@@ -7,11 +7,13 @@ namespace Breeze\Repository\User;
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Util\Validate\DataNotFoundException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 class SettingsRepositoryTest extends TestCase
 {
 	private MockObject|ClientInterface $dbClient;

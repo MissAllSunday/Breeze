@@ -6,11 +6,13 @@ namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\AlertEntity;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 class AlertRepositoryTest extends TestCase
 {
 	private MockObject|ClientInterface $dbClient;

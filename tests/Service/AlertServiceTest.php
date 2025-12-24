@@ -23,7 +23,7 @@ class AlertServiceTest extends TestCase
 	protected function setUp(): void
 	{
 		$this->alertRepository = $this->createMock(AlertRepositoryInterface::class);
-		$handlerServiceProvider = $this->createMock(HandlerServiceProvider::class);
+		$handlerServiceProvider = $this->createStub(HandlerServiceProvider::class);
 		$this->alertService = new AlertService($this->alertRepository, $handlerServiceProvider);
 	}
 

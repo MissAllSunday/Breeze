@@ -7,11 +7,13 @@ namespace Breeze\Service;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Util\Components;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 class ProfileServiceTest extends TestCase
 {
 	private SettingsRepositoryInterface|MockObject $userSettingsRepository;
@@ -28,8 +30,8 @@ class ProfileServiceTest extends TestCase
 	protected function setUp(): void
 	{
 		$this->userSettingsRepository = $this->createMock(SettingsRepositoryInterface::class);
-		$this->components = $this->createMock(Components::class);
-		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
+		$this->components = $this->createStub(Components::class);
+		$this->permissionsService = $this->createStub(PermissionsServiceInterface::class);
 
 		$this->profileService = new ProfileService(
 			$this->userSettingsRepository,

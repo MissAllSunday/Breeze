@@ -11,10 +11,12 @@ use Breeze\Fixtures\CommentFixtures;
 use Breeze\Fixtures\LikeInfoFixtures;
 use Breeze\LikesEnum;
 use Breeze\Util\Validate\DataNotFoundException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 class CommentRepositoryTest extends TestCase
 {
 	private MockObject|ClientInterface $dbClient;

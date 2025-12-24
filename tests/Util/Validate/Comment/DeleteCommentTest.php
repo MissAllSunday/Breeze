@@ -12,10 +12,12 @@ use Breeze\Util\Validate\Validations\Comment\DeleteComment;
 use Breeze\Validate\Types\Allow;
 use Breeze\Validate\Types\Data;
 use Breeze\Validate\Types\User;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 class DeleteCommentTest extends TestCase
 {
 	private CommentRepositoryInterface | MockObject $commentRepository;
@@ -34,7 +36,7 @@ class DeleteCommentTest extends TestCase
 		$this->commentRepository = $this->createMock(CommentRepositoryInterface::class);
 		$this->validateAllow = $this->createMock(Allow::class);
 		$this->validateUser = $this->createMock(User::class);
-		$validateData = $this->createMock(Data::class);
+		$validateData = $this->createStub(Data::class);
 
 		$this->deleteComment = new DeleteComment(
 			$validateData,

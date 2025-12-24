@@ -9,16 +9,20 @@ use Breeze\Util\Validate\Validations\Status\StatusByProfile;
 use Breeze\Validate\Types\Allow;
 use Breeze\Validate\Types\Data;
 use Breeze\Validate\Types\User;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 
 class StatusByProfileTest extends TestCase
 {
+	/**
+	 * @throws Exception
+	 */
 	public function testGetParams(): void
 	{
-		$repository = $this->createMock(StatusRepositoryInterface::class);
-		$validateAllow = $this->createMock(Allow::class);
-		$validateUser = $this->createMock(User::class);
-		$validateData = $this->createMock(Data::class);
+		$repository = $this->createStub(StatusRepositoryInterface::class);
+		$validateAllow = $this->createStub(Allow::class);
+		$validateUser = $this->createStub(User::class);
+		$validateData = $this->createStub(Data::class);
 
 		$statusByProfile = new StatusByProfile(
 			$validateData,

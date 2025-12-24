@@ -7,6 +7,9 @@ namespace Breeze\Event;
 use Breeze\Breeze;
 use Psr\EventDispatcher\StoppableEventInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 abstract class EventAbstract implements StoppableEventInterface
 {
 	public const string CONTENT_ACTION_CREATED = Breeze::PATTERN . 'created';

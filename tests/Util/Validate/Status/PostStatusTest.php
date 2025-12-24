@@ -19,10 +19,10 @@ class PostStatusTest extends TestCase
 	 */
 	public function testGetParams(): void
 	{
-		$repository = $this->createMock(StatusRepositoryInterface::class);
-		$validateAllow = $this->createMock(Allow::class);
-		$validateUser = $this->createMock(User::class);
-		$validateData = $this->createMock(Data::class);
+		$repository = $this->createStub(StatusRepositoryInterface::class);
+		$validateAllow = $this->createStub(Allow::class);
+		$validateUser = $this->createStub(User::class);
+		$validateData = $this->createStub(Data::class);
 
 		$postStatus = new PostStatus(
 			$validateData,

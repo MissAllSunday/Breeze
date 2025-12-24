@@ -6,11 +6,13 @@ namespace Breeze\Validate\Types;
 
 use Breeze\Repository\BaseRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 class UserTest extends TestCase
 {
 	private MockObject|BaseRepositoryInterface $baseRepository;
