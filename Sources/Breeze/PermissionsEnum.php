@@ -30,7 +30,7 @@ enum PermissionsEnum
 
 	public const FEAT_LIKES = 'enable_likes';
 
-	public const ALL_FEATS = [
+	public const array ALL_FEATS = [
 		self::FEAT_LIKES,
 	];
 

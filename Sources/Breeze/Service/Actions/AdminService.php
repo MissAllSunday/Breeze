@@ -7,11 +7,14 @@ namespace Breeze\Service\Actions;
 
 use Breeze\Breeze;
 use Breeze\PermissionsEnum;
-use Breeze\Service\PermissionsService;
+use Breeze\Service\PermissionsServiceInterface;
+use Breeze\Traits\TextTrait;
 use Breeze\Util\Form\SettingsBuilderInterface;
 
-class AdminService extends ActionsBaseService implements AdminServiceInterface
+class AdminService implements AdminServiceInterface
 {
+	use TextTrait;
+
 	protected array $configVars = [];
 
 	public function __construct(protected SettingsBuilderInterface $settingsBuilder)
@@ -102,7 +105,7 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 
 	public function permissionsConfigVars(bool $save = false): void
 	{
-		$this->setLanguage(Breeze::NAME . PermissionsService::IDENTIFIER);
+		$this->setLanguage(Breeze::NAME . PermissionsServiceInterface::IDENTIFIER);
 
 		$this->configVars = [
 			['title', Breeze::PATTERN . self::AREA . '_permissions_title'],
@@ -124,25 +127,10 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 		prepareDBSettingContext($this->configVars);
 	}
 
-	public function saveConfigVars(): void
+	protected function saveConfigVars(): void
 	{
 		checkSession();
 		saveDBSettings($this->configVars);
-	}
-
-	public function isEnableFeature(string $featureName = '', string $redirectUrl = ''): bool
-	{
-		if ($featureName === '' || $featureName === '0') {
-			return false;
-		}
-
-		$feature = $this->isEnable($featureName);
-
-		if (!$feature && ($redirectUrl !== '' && $redirectUrl !== '0')) {
-			$this->redirect($redirectUrl);
-		}
-
-		return $feature;
 	}
 
 	public function getActionName(): string
@@ -152,10 +140,5 @@ class AdminService extends ActionsBaseService implements AdminServiceInterface
 
 	public function loadComponents(array $components = []): void
 	{
-	}
-
-	public function redirect(string $urlName): void
-	{
-		// TODO: Implement redirect() method.
 	}
 }

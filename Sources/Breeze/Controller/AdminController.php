@@ -13,12 +13,12 @@ class AdminController extends BaseController
 {
 	use PersistenceTrait;
 
-	public const ACTION_MAIN = 'main';
-	public const ACTION_SETTINGS = 'settings';
-	public const ACTION_PERMISSIONS = 'permissions';
-	public const ACTION_DONATE = 'donate';
+	public const string ACTION_MAIN = 'main';
+	public const string ACTION_SETTINGS = 'settings';
+	public const string ACTION_PERMISSIONS = 'permissions';
+	public const string ACTION_DONATE = 'donate';
 
-	public const SUB_ACTIONS = [
+	public const array SUB_ACTIONS = [
 		self::ACTION_MAIN,
 		self::ACTION_SETTINGS,
 		self::ACTION_PERMISSIONS,

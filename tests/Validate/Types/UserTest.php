@@ -58,8 +58,11 @@ class UserTest extends TestCase
 	}
 
 	#[DataProvider('isSameUserProvider')]
-	public function testIsSameUser(int $posterUserId, bool $isExpectedException): void
+	public function testIsSameUser(array $user_info, int $posterUserId, bool $isExpectedException): void
 	{
+		// Manually set user_info global
+		$GLOBALS['user_info'] = $user_info;
+
 		if ($isExpectedException) {
 			$this->expectException(DataNotFoundException::class);
 		} else {
@@ -73,10 +76,12 @@ class UserTest extends TestCase
 	{
 		return [
 			'user is same' => [
+				'user_info' => ['id' => 666],
 				'posterUserId' => 666,
 				'isExpectedException' => false,
 			],
 			'user is different' => [
+				'user_info' => ['id' => 666],
 				'posterUserId' => 1,
 				'isExpectedException' => true,
 			],
