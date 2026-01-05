@@ -6,6 +6,8 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Entity\StatusEntity;
+use Breeze\Event\EventServiceProvider;
+use Breeze\Event\Status\StatusCreatedEvent;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface;
@@ -19,9 +21,15 @@ class StatusService extends BaseService implements StatusServiceInterface
 	public function __construct(
 		protected StatusRepositoryInterface   $statusRepository,
 		protected SettingsRepositoryInterface $userRepository,
-		protected PermissionsServiceInterface $permissionsService
+		protected PermissionsServiceInterface $permissionsService,
+		protected ?EventServiceProvider $eventServiceProvider = null
 	) {
 		parent::__construct($statusRepository);
+	}
+
+	public function getRepository(): StatusRepositoryInterface
+	{
+		return $this->statusRepository;
 	}
 
 	/**
@@ -93,7 +101,14 @@ class StatusService extends BaseService implements StatusServiceInterface
 	 */
 	public function save(array $data): array
 	{
-		return $this->statusRepository->insert(StatusEntity::from($data));
+		$statusEntities = $this->statusRepository->insert(StatusEntity::from($data));
+
+		// Dispatch the status created event
+		if (isset($this->eventServiceProvider)) {
+			$this->eventServiceProvider->getDispatcher()->dispatch(new StatusCreatedEvent($statusEntities));
+		}
+
+		return $statusEntities;
 	}
 
 	public function currentUserInfo(): array

@@ -6,8 +6,6 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\StatusEntity;
-use Breeze\Event\EventServiceProvider;
-use Breeze\Event\Status\StatusCreatedEvent;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Service\StatusServiceInterface;
 use Breeze\Util\Response;
@@ -35,10 +33,9 @@ class StatusController extends ApiBaseController
 	public function __construct(
 		protected StatusServiceInterface $statusService,
 		protected ValidateActionsInterface $validateActions,
-		protected Response $response,
-		protected EventServiceProvider $eventServiceProvider
+		protected Response $response
 	) {
-		parent::__construct($validateActions, $response, $eventServiceProvider);
+		parent::__construct($validateActions, $response);
 	}
 
 	public function profile(): void
@@ -82,9 +79,6 @@ class StatusController extends ApiBaseController
 	{
 		try {
 			$statusEntities = $this->statusService->save($this->data);
-
-			// Dispatch the status created event
-			$this->eventDispatch(StatusCreatedEvent::class, $statusEntities);
 
 			$this->response->success(
 				'published_status',

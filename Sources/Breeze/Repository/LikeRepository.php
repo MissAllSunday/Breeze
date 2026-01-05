@@ -8,11 +8,21 @@ namespace Breeze\Repository;
 use Breeze\Breeze;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeInfoEntity;
+use Breeze\Event\EventServiceProvider;
+use Breeze\Event\Like\LikeCreatedEvent;
 use Breeze\LikesEnum;
 use Breeze\PermissionsEnum;
 
 class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 {
+	public function __construct(
+		$dbClient,
+		$likeRepository,
+		protected ?EventServiceProvider $eventServiceProvider = null
+	) {
+		parent::__construct($dbClient, $likeRepository);
+	}
+
 	public function getTableName(): string
 	{
 		return LikeEntity::TABLE;
@@ -220,7 +230,14 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			$this->insert($LikeEntity);
 		}
 
-		return $this->getByContent($type, [$contentId])[$contentId];
+		$likeInfo = $this->getByContent($type, [$contentId])[$contentId];
+
+		// Dispatch the like created event only when a new like is created (not when unliking)
+		if (!$isContentAlreadyLiked && isset($this->eventServiceProvider)) {
+			$this->eventServiceProvider->getDispatcher()->dispatch(new LikeCreatedEvent($LikeEntity));
+		}
+
+		return $likeInfo;
 	}
 
 	public function getById(int $id): null

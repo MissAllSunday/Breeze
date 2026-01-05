@@ -33,6 +33,7 @@ use Breeze\Repository\StatusRepository;
 use Breeze\Repository\User\SettingsRepository as UserSettingsRepository;
 use Breeze\Service\Actions\AdminService;
 use Breeze\Service\AlertService;
+use Breeze\Service\CommentService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\ProfileService;
 use Breeze\Service\StatusService;
@@ -85,19 +86,16 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 			StatusService::class,
 			ValidateStatus::class,
 			Response::class,
-			EventServiceProvider::class,
 		],
 		CommentController::class => [
-			CommentRepository::class,
+			CommentService::class,
 			ValidateComment::class,
 			Response::class,
-			EventServiceProvider::class,
 		],
 		LikesController::class => [
 			LikeRepository::class,
 			ValidateLikes::class,
 			Response::class,
-			EventServiceProvider::class,
 		],
 		UserSettingsController::class => [UserSettingsRepository::class, Response::class, UserSettingsBuilder::class],
 		AlertEntity::class => [],
@@ -121,14 +119,15 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		UserSettingsRepository::class => [DatabaseClient::class, null],
 		AlertRepository::class => [DatabaseClient::class],
 		CommentRepository::class => [DatabaseClient::class, LikeRepository::class],
-		LikeRepository::class => [DatabaseClient::class, null],
+		LikeRepository::class => [DatabaseClient::class, null, EventServiceProvider::class],
 		StatusRepository::class => [DatabaseClient::class, CommentRepository::class, LikeRepository::class],
 		AdminService::class => [SettingsBuilder::class],
 		ProfileService::class => [UserSettingsRepository::class, Components::class, PermissionsService::class],
 		PermissionsService::class => [],
-		StatusService::class => [StatusRepository::class, UserSettingsRepository::class, PermissionsService::class],
+		CommentService::class => [CommentRepository::class, StatusRepository::class, EventServiceProvider::class],
+		StatusService::class => [StatusRepository::class, UserSettingsRepository::class, PermissionsService::class, EventServiceProvider::class],
 		AlertService::class => [AlertRepository::class, HandlerServiceProvider::class],
-		CommentEventListener::class => [AlertService::class],
+		CommentEventListener::class => [AlertService::class, StatusRepository::class],
 		LikeEventListener::class => [AlertService::class, StatusRepository::class, CommentRepository::class],
 		HandlerServiceProvider::class => [],
 	];

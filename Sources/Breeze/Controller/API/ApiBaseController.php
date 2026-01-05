@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace Breeze\Controller\API;
 
 use Breeze\Breeze;
-use Breeze\Event\EventServiceProvider;
 use Breeze\Exceptions\ValidateException;
 use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
@@ -29,8 +28,7 @@ abstract class ApiBaseController
 
 	public function __construct(
 		protected ValidateActionsInterface $validateActions,
-		protected Response $response,
-		protected EventServiceProvider $eventServiceProvider
+		protected Response $response
 	) {
 		$this->subAction = $this->getRequest('sa', '');
 		$this->action = $this->getRequest('action', '');
@@ -71,11 +69,6 @@ abstract class ApiBaseController
 		} catch (ValidateException $validateException) {
 			$this->response->error($validateException->getMessage(), $validateException->getResponseCode());
 		}
-	}
-
-	public function eventDispatch(string $eventClass, mixed $eventData): void
-	{
-		$this->eventServiceProvider->getDispatcher()->dispatch(new $eventClass($eventData));
 	}
 
 	abstract public function getSubActions(): array;

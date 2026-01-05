@@ -7,6 +7,7 @@ namespace Breeze\Service;
 
 use Breeze\Entity\StatusEntity;
 use Breeze\Repository\InvalidStatusException;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\EmptyDataException;
 
 interface StatusServiceInterface
@@ -17,6 +18,8 @@ interface StatusServiceInterface
 	 *
 	 */
 	public function getByProfile(int $wallId, int $start): array;
+
+	public function getRepository(): StatusRepositoryInterface;
 
 	/**
 	 * @throws EmptyDataException

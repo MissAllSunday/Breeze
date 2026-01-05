@@ -37,7 +37,8 @@ class StatusServiceTest extends TestCase
 		$this->statusService = $this->getMockBuilder(StatusService::class)
 			->setConstructorArgs([$this->statusRepository,
 				$this->userRepository,
-				$this->permissionsService])
+				$this->permissionsService,
+				null])
 			->onlyMethods(['getCount'])
 			->getMock();
 	}
