@@ -56,6 +56,9 @@ use League\Container\Container;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Event\EventDispatcher;
 
+/**
+ * @codeCoverageIgnore
+ */
 class DependenciesServiceProvider extends AbstractServiceProvider
 {
 	protected const array DEPENDENCIES = [
