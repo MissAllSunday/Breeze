@@ -38,7 +38,7 @@ class CommentServiceTest extends TestCase
 		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
 		$this->eventServiceProvider = $this->createMock(EventServiceProvider::class);
 		$this->eventDispatcher = $this->createMock(EventDispatcher::class);
-		
+
 		$this->commentService = new CommentService(
 			$this->commentRepository,
 			$this->statusRepository,
@@ -54,13 +54,19 @@ class CommentServiceTest extends TestCase
 	{
 		$commentData = CommentFixtures::forInsertion();
 		$commentEntity = CommentEntity::from($commentData);
-		$commentEntities = [$commentEntity];
-		
+		$savedCommentEntity = CommentEntity::from(array_merge($commentData, [CommentEntity::ID => 123]));
+		$commentEntities = [$savedCommentEntity];
+
 		$statusData = StatusFixtures::basic();
 		$statusEntity = StatusEntity::from($statusData);
 
 		$this->commentRepository->expects($this->once())
 			->method('insert')
+			->with($this->callback(function ($entity) use ($commentEntity) {
+				return $entity->getStatusId() === $commentEntity->getStatusId() &&
+					   $entity->getUserId() === $commentEntity->getUserId() &&
+					   $entity->getBody() === $commentEntity->getBody();
+			}))
 			->willReturn($commentEntities);
 
 		$this->statusRepository->expects($this->once())
@@ -74,7 +80,11 @@ class CommentServiceTest extends TestCase
 
 		$this->eventDispatcher->expects($this->once())
 			->method('dispatch')
-			->with($this->isInstanceOf(CommentCreatedEvent::class));
+			->with($this->callback(function ($event) use ($savedCommentEntity, $statusEntity) {
+				return $event instanceof CommentCreatedEvent &&
+					   $event->getCommentEntity() === $savedCommentEntity &&
+					   $event->getStatusEntity() === $statusEntity;
+			}));
 
 		$result = $this->commentService->save($commentData);
 

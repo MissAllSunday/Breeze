@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Breeze\Event\Comment;
 
 use Breeze\Entity\CommentEntity;
+use Breeze\Entity\StatusEntity;
 use Breeze\Event\EventAbstract;
 
 class CommentCreatedEvent extends EventAbstract
 {
 	public function __construct(
 		protected CommentEntity $commentEntity,
-		protected int $statusOwnerId,
-		protected int $wallId
+		protected StatusEntity $statusEntity
 	) {
 	}
 
@@ -28,11 +28,16 @@ class CommentCreatedEvent extends EventAbstract
 
 	public function getStatusOwnerId(): int
 	{
-		return $this->statusOwnerId;
+		return $this->statusEntity->getUserId();
 	}
 
 	public function getWallId(): int
 	{
-		return $this->wallId;
+		return $this->statusEntity->getWallId();
+	}
+
+	public function getStatusEntity(): StatusEntity
+	{
+		return $this->statusEntity;
 	}
 }

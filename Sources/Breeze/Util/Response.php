@@ -7,6 +7,7 @@ namespace Breeze\Util;
 use Breeze\Entity\EntityInterface;
 use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
+use JetBrains\PhpStorm\NoReturn;
 
 class Response
 {
@@ -39,7 +40,11 @@ class Response
 		'content' => [],
 	];
 
-	public function success(string $message = '', EntityInterface | array $content = [], int $responseCode = self::OK): void
+	public function success(
+		string $message = '',
+		EntityInterface | array $content = [],
+		int $responseCode = self::OK
+	): void
 	{
 		$this->print(array_merge($this->response, [
 			'message' => $this->getText(self::SUCCESS_TYPE . '_' . $message),
@@ -47,7 +52,7 @@ class Response
 		]), $responseCode);
 	}
 
-	 public function print(array $responseData, int $responseCode = 200, string $type = ''): void
+ public function print(array $responseData, int $responseCode = 200, string $type = ''): void
 	{
 		$this->setGlobal('db_show_debug', false);
 		ob_end_clean();

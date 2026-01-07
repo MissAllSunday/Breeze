@@ -6,6 +6,7 @@ namespace Breeze\Event\Comment;
 
 use Breeze\Entity\AlertEntity;
 use Breeze\Entity\CommentEntity;
+use Breeze\Entity\StatusEntity;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\AlertServiceInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -40,7 +41,11 @@ class CommentEventListenerTest extends TestCase
 		$commentEntity->method('getId')->willReturn(10);
 		$commentEntity->method('getUserId')->willReturn(5);
 
-		$event = new CommentCreatedEvent($commentEntity, 5, 5);
+		$statusEntity = $this->createStub(StatusEntity::class);
+		$statusEntity->method('getUserId')->willReturn(5);
+		$statusEntity->method('getWallId')->willReturn(5);
+
+		$event = new CommentCreatedEvent($commentEntity, $statusEntity);
 
 		// Should not send any alerts when user posts on their own wall
 		$this->alertService->expects($this->never())
@@ -59,7 +64,11 @@ class CommentEventListenerTest extends TestCase
 		$commentEntity->method('getId')->willReturn(10);
 		$commentEntity->method('getUserId')->willReturn(2);
 
-		$event = new CommentCreatedEvent($commentEntity, 3, 2);
+		$statusEntity = $this->createStub(StatusEntity::class);
+		$statusEntity->method('getUserId')->willReturn(3);
+		$statusEntity->method('getWallId')->willReturn(2);
+
+		$event = new CommentCreatedEvent($commentEntity, $statusEntity);
 
 		$this->alertService->expects($this->once())
 			->method('send')
@@ -81,7 +90,11 @@ class CommentEventListenerTest extends TestCase
 		$commentEntity->method('getId')->willReturn(10);
 		$commentEntity->method('getUserId')->willReturn(2);
 
-		$event = new CommentCreatedEvent($commentEntity, 2, 5);
+		$statusEntity = $this->createStub(StatusEntity::class);
+		$statusEntity->method('getUserId')->willReturn(2);
+		$statusEntity->method('getWallId')->willReturn(5);
+
+		$event = new CommentCreatedEvent($commentEntity, $statusEntity);
 
 		$this->alertService->expects($this->once())
 			->method('send')
@@ -103,7 +116,11 @@ class CommentEventListenerTest extends TestCase
 		$commentEntity->method('getId')->willReturn(10);
 		$commentEntity->method('getUserId')->willReturn(2);
 
-		$event = new CommentCreatedEvent($commentEntity, 3, 4);
+		$statusEntity = $this->createStub(StatusEntity::class);
+		$statusEntity->method('getUserId')->willReturn(3);
+		$statusEntity->method('getWallId')->willReturn(4);
+
+		$event = new CommentCreatedEvent($commentEntity, $statusEntity);
 
 		$this->alertService->expects($this->exactly(2))
 			->method('send');
@@ -159,7 +176,11 @@ class CommentEventListenerTest extends TestCase
 		$commentEntity->method('getId')->willReturn(200);
 		$commentEntity->method('getUserId')->willReturn(2);
 
-		$event = new CommentCreatedEvent($commentEntity, 4, 3);
+		$statusEntity = $this->createStub(StatusEntity::class);
+		$statusEntity->method('getUserId')->willReturn(4);
+		$statusEntity->method('getWallId')->willReturn(3);
+
+		$event = new CommentCreatedEvent($commentEntity, $statusEntity);
 
 		$this->alertService->expects($this->exactly(2))
 			->method('send');

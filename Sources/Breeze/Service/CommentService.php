@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Breeze\Service;
 
 use Breeze\Entity\CommentEntity;
@@ -18,14 +17,13 @@ class CommentService extends BaseService implements CommentServiceInterface
 	public function __construct(
 		protected CommentRepositoryInterface $commentRepository,
 		protected StatusRepositoryInterface $statusRepository,
-		protected ?EventServiceProvider $eventServiceProvider = null
+		protected EventServiceProvider $eventServiceProvider
 	) {
 		parent::__construct($commentRepository);
 	}
 
 	/**
 	 * @throws InvalidCommentException
-	 * @throws DataNotFoundException
 	 * @return array [CommentEntity]
 	 */
 	public function save(array $data): array
@@ -33,18 +31,15 @@ class CommentService extends BaseService implements CommentServiceInterface
 		$commentEntity = CommentEntity::from($data);
 		$commentEntities = $this->commentRepository->insert($commentEntity);
 
-		// Fetch the status entity to get owner and wall information for event
-		if (isset($this->eventServiceProvider) && !empty($commentEntities)) {
+		if (!empty($commentEntities)) {
 			try {
 				$statusEntity = $this->statusRepository->getById($commentEntity->getStatusId());
-				
-				// Dispatch the comment created event for each comment
+
 				foreach ($commentEntities as $entity) {
 					$this->eventServiceProvider->getDispatcher()->dispatch(
 						new CommentCreatedEvent(
 							$entity,
-							$statusEntity->getUserId(),  // statusOwnerId
-							$statusEntity->getWallId()   // wallId
+							$statusEntity
 						)
 					);
 				}
@@ -57,9 +52,6 @@ class CommentService extends BaseService implements CommentServiceInterface
 		return $commentEntities;
 	}
 
-	/**
-	 * @throws DataNotFoundException
-	 */
 	public function deleteById(int $commentId): bool
 	{
 		return $this->commentRepository->deleteById($commentId);

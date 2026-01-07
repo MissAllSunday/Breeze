@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\CommentEntity;

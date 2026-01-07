@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Repository\InvalidCommentException;
+use Breeze\Util\Validate\DataNotFoundException;
 
 interface CommentServiceInterface
 {
@@ -16,7 +17,7 @@ interface CommentServiceInterface
 	public function save(array $data): array;
 
 	/**
-	 * @throws \Breeze\Util\Validate\DataNotFoundException
+	 * @throws DataNotFoundException
 	 */
 	public function deleteById(int $commentId): bool;
 }
