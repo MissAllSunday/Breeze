@@ -218,6 +218,30 @@ function prepareDBSettingContext(array $array): void {}
 
 function loadGeneralSettingParameters(array $array, string $area): void {}
 
+function loadJavaScriptFile(string $fileName, array $params = [], string $nameIdentifier = ''): void {}
+
+function loadCSSFile(string $fileName, array $params = [], string $nameIdentifier = ''): void {}
+
+function addJavaScriptVar(string $variable, $value): void {}
+
+function loadTemplate(string $templateName): void {}
+
+function template_breezeForm_Display(array $formOptions): string
+{
+	return 'form_html';
+}
+
+function redirectexit(string $uri): void {}
+
+function obExit(bool $header = true): string {
+	return '';
+}
+
+function fatal_lang_error(string $error, bool $log = true): void
+{
+	throw new \Error($error);
+}
+
 $sourcedir = $boarddir = $boardurl = ROOT;
 $scripturl = 'localhost';
 

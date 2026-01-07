@@ -12,6 +12,19 @@ final class RequestTest extends TestCase
 {
 	use RequestTrait;
 
+	protected function setUp(): void
+	{
+		// Ensure $smcFunc is initialized
+		$GLOBALS['smcFunc'] = [
+			'htmltrim' => function ($value) {
+				return trim($value);
+			},
+			'htmlspecialchars' => function ($value) {
+				return htmlspecialchars($value, \ENT_QUOTES);
+			},
+		];
+	}
+
 	#[DataProvider('getRequestProvider')]
 	public function testGet(string  $variableName, $expected, ?string $defaultValue): void
 	{

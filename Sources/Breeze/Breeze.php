@@ -25,6 +25,9 @@ use League\Container\Container as Container;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Breeze
 {
 	use TextTrait;
