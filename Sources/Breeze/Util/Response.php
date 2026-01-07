@@ -7,7 +7,6 @@ namespace Breeze\Util;
 use Breeze\Entity\EntityInterface;
 use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
-use JetBrains\PhpStorm\NoReturn;
 
 class Response
 {

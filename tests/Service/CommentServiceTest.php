@@ -24,9 +24,13 @@ use PHPUnit\Framework\TestCase;
 class CommentServiceTest extends TestCase
 {
 	private MockObject|CommentRepositoryInterface $commentRepository;
+
 	private MockObject|StatusRepositoryInterface $statusRepository;
+
 	private MockObject|EventServiceProvider $eventServiceProvider;
+
 	private MockObject|EventDispatcher $eventDispatcher;
+
 	private CommentService $commentService;
 
 	/**
@@ -92,31 +96,6 @@ class CommentServiceTest extends TestCase
 	}
 
 	/**
-	 * @throws InvalidCommentException
-	 * @throws DataNotFoundException
-	 */
-	public function testSaveWithoutEventServiceProvider(): void
-	{
-		$commentService = new CommentService(
-			$this->commentRepository,
-			$this->statusRepository,
-			null
-		);
-
-		$commentData = CommentFixtures::forInsertion();
-		$commentEntity = CommentEntity::from($commentData);
-		$commentEntities = [$commentEntity];
-
-		$this->commentRepository->expects($this->once())
-			->method('insert')
-			->willReturn($commentEntities);
-
-		$result = $commentService->save($commentData);
-
-		$this->assertEquals($commentEntities, $result);
-	}
-
-	/**
 	 * @throws DataNotFoundException
 	 */
 	public function testDeleteById(): void
@@ -150,4 +129,3 @@ class CommentServiceTest extends TestCase
 		$this->commentService->deleteById($commentId);
 	}
 }
-

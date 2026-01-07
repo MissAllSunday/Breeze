@@ -47,7 +47,6 @@ class CommentController extends ApiBaseController
 			);
 		} catch (InvalidCommentException $invalidCommentException) {
 			$this->response->error($invalidCommentException->getMessage(), $invalidCommentException->getResponseCode());
-		} catch (DataNotFoundException $e) {
 		}
 	}
 

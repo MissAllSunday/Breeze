@@ -21,4 +21,3 @@ interface CommentServiceInterface
 	 */
 	public function deleteById(int $commentId): bool;
 }
-

@@ -14,7 +14,6 @@ use Breeze\Util\Validate\DataNotFoundException;
 
 class CommentRepository extends BaseRepository implements CommentRepositoryInterface
 {
-
 	public function getTableName(): string
 	{
 		return CommentEntity::TABLE;

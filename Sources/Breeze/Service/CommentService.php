@@ -57,4 +57,3 @@ class CommentService extends BaseService implements CommentServiceInterface
 		return $this->commentRepository->deleteById($commentId);
 	}
 }
-
