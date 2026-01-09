@@ -53,7 +53,7 @@ class CommentRepositoryTest extends TestCase
 
 	public function testGetColumnPosterId(): void
 	{
-		$this->assertEquals('userId', $this->commentRepository->getColumnPosterId());
+		$this->assertEquals('user_id', $this->commentRepository->getColumnPosterId());
 	}
 
 	public function testGetColumns(): void

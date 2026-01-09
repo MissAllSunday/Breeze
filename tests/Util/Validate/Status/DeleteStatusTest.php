@@ -56,21 +56,21 @@ class DeleteStatusTest extends TestCase
 		return [
 			'deleteOwn' => [
 				'data' => [
-					'userId' => 666,
+					'user_id' => 666,
 				],
 				'permissionName' => 'deleteOwnStatus',
 				'isExpectedException' => true,
 			],
 			'deleteAny' => [
 				'data' => [
-					'userId' => 1,
+					'user_id' => 1,
 				],
 				'permissionName' => 'deleteStatus',
 				'isExpectedException' => true,
 			],
 			'pass' => [
 				'data' => [
-					'userId' => 1,
+					'user_id' => 1,
 				],
 				'permissionName' => 'yep',
 				'isExpectedException' => false,
@@ -112,14 +112,14 @@ class DeleteStatusTest extends TestCase
 		return [
 			'validUsers' => [
 				'data' => [
-					'userId' => 666,
+					'user_id' => 666,
 				],
 				'validUsers' => [666],
 				'isExpectedException' => false,
 			],
 			'invalidUsers' => [
 				'data' => [
-					'userId' => 2,
+					'user_id' => 2,
 				],
 				'validUsers' => [2],
 				'isExpectedException' => true,

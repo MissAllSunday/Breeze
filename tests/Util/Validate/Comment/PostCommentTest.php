@@ -28,9 +28,9 @@ class PostCommentTest extends TestCase
 		);
 
 		$this->assertEquals([
-			'statusId' => 0,
-			'userId' => 0,
 			'body' => '',
+			'status_id' => 0,
+			'user_id' => 0,
 		], $postComment->getParams());
 	}
 }

@@ -9,7 +9,7 @@ import Avatar from "./user/Avatar";
 
 function Comment(props: CommentProps): React.ReactElement {
 	const [classType] = useState(props.comment.isNew ? "fadeIn" : "");
-	const timeStamp = props.comment.createdAt;
+	const timeStamp = props.comment.created_at;
 	const permissions = useContext(PermissionsContext);
 
 	const removeComment = useCallback(() => {

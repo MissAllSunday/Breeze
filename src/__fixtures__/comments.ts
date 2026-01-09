@@ -5,12 +5,12 @@ import { userData } from "./userData";
 
 const basic: CommentType = {
 	id: 666,
-	statusId: 666,
-	userId: 0,
+	status_id: 666,
+	user_id: 0,
 	likes: 0,
 	body: "this is a basic comment",
 	likesInfo: likes.basic,
-	createdAt: "some date",
+	created_at: "some date",
 	userData: userData.basic,
 	isNew: true,
 };

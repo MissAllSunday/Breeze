@@ -11,7 +11,7 @@ abstract class SharedEntity extends Entity implements SharedEntityInterface
 {
 	public const string ID = 'id';
 
-	public const string CREATED_AT = 'createdAt';
+	public const string CREATED_AT = 'created_at';
 
 	public int $id = 0;
 
@@ -126,7 +126,15 @@ abstract class SharedEntity extends Entity implements SharedEntityInterface
 		$toInsert = $this->toArray();
 		$toInsert[self::CREATED_AT] = time();
 
-		return array_intersect_key($toInsert, array_flip(static::getColumns()));
+		// Map camelCase property names to snake_case column names
+		$mapped = [];
+		foreach ($toInsert as $key => $value) {
+			// Convert camelCase to snake_case
+			$snakeKey = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
+			$mapped[$snakeKey] = $value;
+		}
+
+		return array_intersect_key($mapped, array_flip(static::getColumns()));
 	}
 
 	public function toArray(): array

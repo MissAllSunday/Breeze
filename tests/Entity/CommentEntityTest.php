@@ -15,9 +15,9 @@ class CommentEntityTest extends TestCase
 	{
 		$this->assertEquals([
 			'id',
-			'statusId',
-			'userId',
-			'createdAt',
+			'status_id',
+			'user_id',
+			'created_at',
 			'body',
 			'likes',
 		], CommentEntity::getColumns());
@@ -46,10 +46,10 @@ class CommentEntityTest extends TestCase
 		$result = $entity->toInsert();
 
 		$this->assertArrayNotHasKey('id', $result);
-		$this->assertArrayHasKey('statusId', $result);
-		$this->assertArrayHasKey('userId', $result);
+		$this->assertArrayHasKey('status_id', $result);
+		$this->assertArrayHasKey('user_id', $result);
 		$this->assertArrayHasKey('body', $result);
-		$this->assertArrayHasKey('createdAt', $result);
+		$this->assertArrayHasKey('created_at', $result);
 	}
 
 	public function testToInsertWithoutId(): void
@@ -65,13 +65,13 @@ class CommentEntityTest extends TestCase
 		// Should not contain ID field even if it wasn't set
 		$this->assertArrayNotHasKey('id', $result);
 
-		// Should still set createdAt
-		$this->assertArrayHasKey('createdAt', $result);
-		$this->assertIsInt($result['createdAt']);
+		// Should still set created_at
+		$this->assertArrayHasKey('created_at', $result);
+		$this->assertIsInt($result['created_at']);
 
 		// Should preserve other values
-		$this->assertEquals(456, $result['statusId']);
-		$this->assertEquals(789, $result['userId']);
+		$this->assertEquals(456, $result['status_id']);
+		$this->assertEquals(789, $result['user_id']);
 		$this->assertEquals('Test comment', $result['body']);
 	}
 

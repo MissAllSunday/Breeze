@@ -17,7 +17,7 @@ import UserInfo from "./user/UserInfo";
 
 function Status(props: StatusProps): React.ReactElement {
 	const [classType] = useState(props.status.isNew ? "fadeIn" : "");
-	const timeStamp = props.status.createdAt;
+	const timeStamp = props.status.created_at;
 
 	const [commentsList, setCommentsList] = useState<CommentListType>(
 		Object.values(props.status.comments),
@@ -52,7 +52,7 @@ function Status(props: StatusProps): React.ReactElement {
 			setIsLoading(true);
 
 			postComment({
-				statusId: props.status.id,
+				status_id: props.status.id,
 				body: content,
 			})
 				.then((newComments: CommentListType) => {

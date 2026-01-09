@@ -27,10 +27,10 @@ class StatusEntityTest extends TestCase
 		$result = $entity->toInsert();
 
 		$this->assertArrayNotHasKey('id', $result);
-		$this->assertArrayHasKey('wallId', $result);
-		$this->assertArrayHasKey('userId', $result);
+		$this->assertArrayHasKey('wall_id', $result);
+		$this->assertArrayHasKey('user_id', $result);
 		$this->assertArrayHasKey('body', $result);
-		$this->assertArrayHasKey('createdAt', $result);
+		$this->assertArrayHasKey('created_at', $result);
 	}
 
 	public function testSettersAndGetters(): void

@@ -12,8 +12,8 @@ class CommentEntity extends SharedEntity implements SharedEntityInterface
 {
 	public const string TABLE = 'breeze_comments';
 	public const string ID = 'id';
-	public const string STATUS_ID = 'statusId';
-	public const string USER_ID = 'userId';
+	public const string STATUS_ID = 'status_id';
+	public const string USER_ID = 'user_id';
 	public const string BODY = 'body';
 	public const string LIKES = 'likes';
 
@@ -106,9 +106,9 @@ class CommentEntity extends SharedEntity implements SharedEntityInterface
 	{
 		return [
 			'id' => $this->getId(),
-			'statusId' => $this->getStatusId(),
-			'userId' => $this->getUserId(),
-			'createdAt' => Time::from($this->getCreatedAt()),
+			'status_id' => $this->getStatusId(),
+			'user_id' => $this->getUserId(),
+			'created_at' => Time::from($this->getCreatedAt()),
 			'body' => $this->getBody(),
 			'likes' => 0,  // @deprecated use likesInfo.count instead
 			'likesInfo' => $this->getLikesInfo(),

@@ -12,7 +12,7 @@ export const deleteComment = async (commentId: number): Promise<boolean> => {
 			body: JSON.stringify(
 				baseConfig({
 					id: commentId,
-					userId: smfVars.userId,
+					user_id: smfVars.userId,
 				}),
 			),
 		},

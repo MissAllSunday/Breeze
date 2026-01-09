@@ -1,11 +1,11 @@
 declare module "breezeTypesStatus" {
 	interface StatusType {
 		id: number;
-		wallId: number;
-		userId: number;
+		wall_id: number;
+		user_id: number;
 		likes: number;
 		body: string;
-		createdAt: string;
+		created_at: string;
 		likesInfo: LikeInfoType;
 		comments: CommentType[];
 		userData: UserDataType;

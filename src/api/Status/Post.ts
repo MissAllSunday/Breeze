@@ -13,8 +13,8 @@ export const postStatus = async (content: string): Promise<StatusListType> => {
 			method: "POST",
 			body: JSON.stringify(
 				baseConfig({
-					wallId: smfVars.wallId,
-					userId: smfVars.userId,
+					wall_id: smfVars.wallId,
+					user_id: smfVars.userId,
 					body: content,
 				}),
 			),

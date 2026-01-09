@@ -89,8 +89,8 @@ class StatusServiceTest extends TestCase
 	{
 		return StatusEntity::from([
 			'id' => 1,
-			'wallId' => 1,
-			'userId' => 1,
+			'wall_id' => 1,
+			'user_id' => 1,
 			'body' => 'test status',
 		]);
 	}

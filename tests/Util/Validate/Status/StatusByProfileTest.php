@@ -32,7 +32,7 @@ class StatusByProfileTest extends TestCase
 		);
 
 		$this->assertEquals([
-			'wallId' => 0,
+			'wall_id' => 0,
 		], $statusByProfile->getParams());
 	}
 }

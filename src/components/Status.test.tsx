@@ -130,7 +130,7 @@ describe("Status component", () => {
 
 		await waitFor(() => {
 			expect(postComment).toHaveBeenCalledWith({
-				statusId: status.basic.id,
+				status_id: status.basic.id,
 				body: "New comment",
 			});
 		});

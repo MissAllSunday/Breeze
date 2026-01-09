@@ -50,7 +50,7 @@ class DeleteCommentTest extends TestCase
 	{
 		$this->assertEquals([
 			'id' => 0,
-			'userId' => 0,
+			'user_id' => 0,
 		], $this->deleteComment->getParams());
 	}
 

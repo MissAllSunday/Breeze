@@ -12,8 +12,8 @@ class StatusEntity extends SharedEntity implements SharedEntityInterface
 {
 	public const string TABLE = 'breeze_status';
 	public const string ID = 'id';
-	public const string WALL_ID = 'wallId';
-	public const string USER_ID = 'userId';
+	public const string WALL_ID = 'wall_id';
+	public const string USER_ID = 'user_id';
 	public const string BODY = 'body';
 	public const string LIKES = 'likes';
 
@@ -86,11 +86,11 @@ class StatusEntity extends SharedEntity implements SharedEntityInterface
 	{
 		return [
 			'id' => $this->getId(),
-			'wallId' => $this->getWallId(),
-			'userId' => $this->getUserId(),
+			'wall_id' => $this->getWallId(),
+			'user_id' => $this->getUserId(),
 			'likes' => 0,  // @deprecated use likesInfo.count instead
 			'body' => $this->getBody(),
-			'createdAt' => Time::from($this->getCreatedAt()),
+			'created_at' => Time::from($this->getCreatedAt()),
 			'likesInfo' => $this->getLikesInfo(),
 			'comments' => $this->getComments(),
 			'userData' => $this->getUsersInfo()[$this->getUserId()] ?? [],

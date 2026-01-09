@@ -62,16 +62,16 @@ class StatusRepositoryTest extends TestCase
 
 	public function testGetColumnPosterId(): void
 	{
-		$this->assertEquals('userId', $this->statusRepository->getColumnPosterId());
+		$this->assertEquals('user_id', $this->statusRepository->getColumnPosterId());
 	}
 
 	public function testGetColumns(): void
 	{
 		$this->assertEquals([
 			'id',
-			'wallId',
-			'userId',
-			'createdAt',
+			'wall_id',
+			'user_id',
+			'created_at',
 			'body',
 			'likes',
 		], $this->statusRepository->getColumns());
@@ -320,7 +320,7 @@ class StatusRepositoryTest extends TestCase
 		$maxIndex = 20;
 
 		$expectedParams = [
-			'columns' => 'parent.id, parent.wallId, parent.userId, parent.createdAt, parent.body, parent.likes',
+			'columns' => 'parent.id, parent.wall_id, parent.user_id, parent.created_at, parent.body, parent.likes',
 			'from' => 'breeze_status AS parent',
 			'columnName' => $columnName,
 			'start' => $start,

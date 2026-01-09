@@ -6,11 +6,11 @@ import { userData } from "./userData";
 
 const basic: StatusType = {
 	id: 666,
-	wallId: 1,
-	userId: 666,
+	wall_id: 1,
+	user_id: 666,
 	likes: 0,
 	body: "this is a status body content",
-	createdAt: "some date",
+	created_at: "some date",
 	likesInfo: likes.basic,
 	comments: [comments.basic],
 	userData: userData.basic,

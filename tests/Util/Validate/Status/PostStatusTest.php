@@ -32,8 +32,8 @@ class PostStatusTest extends TestCase
 		);
 
 		$this->assertEquals([
-			'wallId' => 0,
-			'userId' => 0,
+			'wall_id' => 0,
+			'user_id' => 0,
 			'body' => '',
 		], $postStatus->getParams());
 	}

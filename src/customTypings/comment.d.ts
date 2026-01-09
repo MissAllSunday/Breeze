@@ -1,12 +1,12 @@
 declare module "breezeTypesComments" {
 	interface CommentType {
 		id: number;
-		statusId: number;
-		userId: number;
+		status_id: number;
+		user_id: number;
 		likes: number;
 		body: string;
 		likesInfo: LikeInfoType;
-		createdAt: string;
+		created_at: string;
 		userData: UserDataType;
 		isNew: boolean;
 	}

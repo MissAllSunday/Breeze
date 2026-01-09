@@ -65,13 +65,13 @@ if (empty($context['uninstalling'])) {
 				'auto' => true,
 			],
 			[
-				'name' => 'statusId',
+				'name' => 'status_id',
 				'type' => 'int',
 				'size' => 4,
 				'null' => false,
 			],
 			[
-				'name' => 'userId',
+				'name' => 'user_id',
 				'type' => 'int',
 				'size' => 4,
 				'null' => false,
@@ -89,7 +89,7 @@ if (empty($context['uninstalling'])) {
 				'default' => null,
 			],
 			[
-				'name' => 'createdAt',
+				'name' => 'created_at',
 				'type' => 'varchar',
 				'size' => 255,
 				'default' => '',
@@ -98,17 +98,17 @@ if (empty($context['uninstalling'])) {
 		'indexes' => [
 			[
 				'type' => 'primary',
-				'columns' => ['id','statusId'],
+				'columns' => ['id','status_id'],
 			],
 			[
 				'name' => 'status_id',
 				'type' => 'index',
-				'columns' => ['statusId'],
+				'columns' => ['status_id'],
 			],
 			[
 				'name' => 'user_id',
 				'type' => 'index',
-				'columns' => ['userId'],
+				'columns' => ['user_id'],
 			],
 		],
 		'if_exists' => 'ignore',
@@ -128,13 +128,13 @@ if (empty($context['uninstalling'])) {
 				'auto' => true,
 			],
 			[
-				'name' => 'wallId',
+				'name' => 'wall_id',
 				'type' => 'int',
 				'size' => 4,
 				'null' => false,
 			],
 			[
-				'name' => 'userId',
+				'name' => 'user_id',
 				'type' => 'int',
 				'size' => 4,
 				'null' => false,
@@ -152,7 +152,7 @@ if (empty($context['uninstalling'])) {
 				'default' => null,
 			],
 			[
-				'name' => 'createdAt',
+				'name' => 'created_at',
 				'type' => 'varchar',
 				'size' => 255,
 				'default' => '',
@@ -161,17 +161,17 @@ if (empty($context['uninstalling'])) {
 		'indexes' => [
 			[
 				'type' => 'primary',
-				'columns' => ['id','wallId'],
+				'columns' => ['id','wall_id'],
 			],
 			[
 				'name' => 'user_id',
 				'type' => 'index',
-				'columns' => ['userId'],
+				'columns' => ['user_id'],
 			],
 			[
 				'name' => 'wall_id',
 				'type' => 'index',
-				'columns' => ['wallId'],
+				'columns' => ['wall_id'],
 			],
 		],
 		'if_exists' => 'ignore',
