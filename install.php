@@ -100,6 +100,16 @@ if (empty($context['uninstalling'])) {
 				'type' => 'primary',
 				'columns' => ['id','statusId'],
 			],
+			[
+				'name' => 'status_id',
+				'type' => 'index',
+				'columns' => ['statusId'],
+			],
+			[
+				'name' => 'user_id',
+				'type' => 'index',
+				'columns' => ['userId'],
+			],
 		],
 		'if_exists' => 'ignore',
 		'error' => 'fatal',
@@ -152,6 +162,16 @@ if (empty($context['uninstalling'])) {
 			[
 				'type' => 'primary',
 				'columns' => ['id','wallId'],
+			],
+			[
+				'name' => 'user_id',
+				'type' => 'index',
+				'columns' => ['userId'],
+			],
+			[
+				'name' => 'wall_id',
+				'type' => 'index',
+				'columns' => ['wallId'],
 			],
 		],
 		'if_exists' => 'ignore',
