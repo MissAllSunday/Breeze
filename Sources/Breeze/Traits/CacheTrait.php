@@ -9,12 +9,14 @@ use Breeze\Entity\EntityInterface;
 
 trait CacheTrait
 {
-	public function getCache(string $key, int $timeToLive = 360): array
+	public function getCache(string $key, int $timeToLive = 360): mixed
 	{
-		return (array)cache_get_data(
+		$data = cache_get_data(
 			$this->buildKey($key),
 			$timeToLive
 		);
+
+		return $data ?? [];
 	}
 
 	public function setCache(string $key, array | EntityInterface| null $data, int $timeToLive = 360): void

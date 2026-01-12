@@ -14,6 +14,10 @@ use Breeze\Util\Validate\DataNotFoundException;
 
 class CommentRepository extends BaseRepository implements CommentRepositoryInterface
 {
+	public const string CACHE_BY_PROFILE = 'getByProfile';
+	public const string CACHE_BY_STATUS = 'getByStatus';
+	public const string CACHE_BY_ID = 'getById';
+
 	public function getTableName(): string
 	{
 		return CommentEntity::TABLE;
@@ -65,6 +69,9 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		$commentEntity->setBody(Parser::bbc($commentEntity->getBody()));
 		$commentEntity->setId($newCommentId);
 
+		// Invalidate cache for the status
+		$this->invalidateStatusCache($commentEntity->getStatusId());
+
 		return $this->setLikes(
 			$this->setUsers([$commentEntity], [$commentEntity->getUserId()]),
 			LikesEnum::Comments
@@ -73,6 +80,14 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 	public function getByProfile(array $userProfiles = []): array
 	{
+		$cacheKey = sprintf('%s_%s', self::CACHE_BY_PROFILE, implode('_', $userProfiles));
+
+		$cached = $this->getCache($cacheKey);
+
+		if ($cached !== []) {
+			return $cached;
+		}
+
 		$queryParams = array_merge($this->getDefaultQueryParams(), [
 			'columnName' => StatusEntity::WALL_ID,
 			'profileIds' => $userProfiles,
@@ -91,11 +106,21 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			$queryParams
 		);
 
-		return $this->prepareData($request);
+		$result = $this->prepareData($request);
+		$this->setCache($cacheKey, $result);
+
+		return $result;
 	}
 
 	public function getByStatus(array $statusIds = []): array
 	{
+		$cacheKey = sprintf('%s_%s', self::CACHE_BY_STATUS, implode('_', $statusIds));
+
+		$cached = $this->getCache($cacheKey);
+		if ($cached !== []) {
+			return $cached;
+		}
+
 		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikesEnum::Comments), [
 			'columnName' => CommentEntity::STATUS_ID,
 			'statusIds' => $statusIds,
@@ -110,7 +135,10 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			$queryParams
 		);
 
-		return $this->prepareData($request);
+		$result = $this->prepareData($request);
+		$this->setCache($cacheKey, $result);
+
+		return $result;
 	}
 
 	/**
@@ -118,6 +146,13 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	 */
 	public function getById(int $id = 0): CommentEntity
 	{
+		$cacheKey = sprintf('%s_%d', self::CACHE_BY_ID, $id);
+
+		$cached = $this->getCache($cacheKey);
+		if (!empty($cached) && $cached instanceof CommentEntity) {
+			return $cached;
+		}
+
 		$request = $this->dbClient->query(
 			'
 			SELECT {raw:columns}
@@ -138,7 +173,10 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 		$comments = $this->prepareData($request);
 
-		return array_shift($comments);
+		$result = array_shift($comments);
+		$this->setCache($cacheKey, $result);
+
+		return $result;
 	}
 
 	/**
@@ -146,18 +184,32 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	 */
 	public function deleteById(int $commentId): bool
 	{
+		// Get comment before deletion to invalidate status cache
+		try {
+			$comment = $this->getById($commentId);
+			$statusId = $comment->getStatusId();
+		} catch (DataNotFoundException $e) {
+			$statusId = null;
+		}
+
 		if (!$this->delete([$commentId])) {
 			throw new DataNotFoundException('error_no_comment');
 		}
 
-		// @todo handle cache clen up via event
-		$this->setCache(self::class . '::getById' . $commentId, null);
+		// Invalidate caches
+		$this->setCache(sprintf('%s_%d', self::CACHE_BY_ID, $commentId), null);
+		if ($statusId !== null) {
+			$this->invalidateStatusCache($statusId);
+		}
 
 		return true;
 	}
 
 	public function deleteByStatusId(int $statusId): bool
 	{
+		// Invalidate cache for this status
+		$this->invalidateStatusCache($statusId);
+
 		return $this->dbClient->delete(
 			CommentEntity::TABLE,
 			'WHERE ' . CommentEntity::STATUS_ID . ' ={int:statusId}',
@@ -205,5 +257,14 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		});
 
 		return $comments;
+	}
+
+	/**
+	 * Invalidate all cache entries for a specific status
+	 */
+	protected function invalidateStatusCache(int $statusId): void
+	{
+		// Invalidate cache for this specific status
+		$this->setCache(sprintf('%s_%d', self::CACHE_BY_STATUS, $statusId), null);
 	}
 }

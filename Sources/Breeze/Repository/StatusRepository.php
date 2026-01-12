@@ -15,6 +15,7 @@ use Breeze\Util\Validate\DataNotFoundException;
 class StatusRepository extends BaseRepository implements StatusRepositoryInterface
 {
 	public const string CACHE_BY_PROFILE = 'getByProfile';
+	public const string CACHE_BY_ID = 'getById';
 
 	public function __construct(
 		ClientInterface $dbClient,
@@ -68,6 +69,9 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		$statusEntity->setId($newStatusId);
 		$statusEntity->setIsNew(true);
 
+		// Invalidate cache for the wall profile
+		$this->invalidateProfileCache($statusEntity->getWallId());
+
 		return $this->setLikes($this->setUsers([$statusEntity], [$statusEntity->getUserId()]), LikesEnum::Status);
 	}
 
@@ -77,7 +81,23 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 */
 	public function getByProfile(array $userProfiles = [], int $start = 0, int $maxIndex = 0): array
 	{
-		return $this->getBy(StatusEntity::WALL_ID, $userProfiles, $start, $maxIndex);
+		$cacheKey = sprintf(
+			'%s_%s_%d_%d',
+			self::CACHE_BY_PROFILE,
+			implode('_', $userProfiles),
+			$start,
+			$maxIndex
+		);
+
+		$cached = $this->getCache($cacheKey);
+		if ($cached !== []) {
+			return $cached;
+		}
+
+		$result = $this->getBy(StatusEntity::WALL_ID, $userProfiles, $start, $maxIndex);
+		$this->setCache($cacheKey, $result);
+
+		return $result;
 	}
 
 	public function getBy(string $columnName, array $data = [], int $start = 0, int $maxIndex = 0): array
@@ -117,6 +137,13 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 */
 	public function getById(int $id = 0): StatusEntity
 	{
+		$cacheKey = sprintf('%s_%d', self::CACHE_BY_ID, $id);
+
+		$cached = $this->getCache($cacheKey);
+		if (!empty($cached) && $cached instanceof StatusEntity) {
+			return $cached;
+		}
+
 		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikesEnum::Status), [
 			'columnName' => StatusEntity::ID,
 			'id' => $id,
@@ -138,7 +165,10 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 
 		$comments = $this->commentRepository->getByStatus([$id]);
 
-		return $this->prepareData($request, $comments)[$id];
+		$result = $this->prepareData($request, $comments)[$id];
+		$this->setCache($cacheKey, $result);
+
+		return $result;
 	}
 
 	/**
@@ -146,13 +176,25 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 */
 	public function deleteById(int $statusId): bool
 	{
+		// Get status before deletion to invalidate wall cache
+		try {
+			$status = $this->getById($statusId);
+			$wallId = $status->getWallId();
+		} catch (DataNotFoundException $e) {
+			$wallId = null;
+		}
+
 		$this->commentRepository->deleteByStatusId($statusId);
 
 		if (!$this->delete([$statusId])) {
 			throw new DataNotFoundException('error_no_status');
 		}
 
-		// @todo handle cache clen up via event
+		// Invalidate caches
+		$this->setCache(sprintf('%s_%d', self::CACHE_BY_ID, $statusId), null);
+		if ($wallId !== null) {
+			$this->invalidateProfileCache($wallId);
+		}
 
 		return true;
 	}
@@ -213,5 +255,25 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			),
 			$comments
 		);
+	}
+
+	/**
+	 * Invalidate all cache entries for a specific wall profile
+	 */
+	protected function invalidateProfileCache(int $wallId): void
+	{
+		// Invalidate all possible pagination combinations for this profile
+		// This is a simple approach - could be optimized with a cache tag system
+		$this->setCache(sprintf('%s_%d_0_0', self::CACHE_BY_PROFILE, $wallId), null);
+
+		// Invalidate common pagination patterns
+		for ($start = 0; $start <= 100; $start += 10) {
+			for ($maxIndex = 10; $maxIndex <= 50; $maxIndex += 10) {
+				$this->setCache(
+					sprintf('%s_%d_%d_%d', self::CACHE_BY_PROFILE, $wallId, $start, $maxIndex),
+					null
+				);
+			}
+		}
 	}
 }

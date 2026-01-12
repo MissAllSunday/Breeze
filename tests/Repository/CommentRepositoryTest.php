@@ -140,10 +140,18 @@ class CommentRepositoryTest extends TestCase
 	 */
 	public function testDeleteById(): void
 	{
+		$mockComment = $this->createMock(CommentEntity::class);
+		$mockComment->method('getStatusId')->willReturn(10);
+
 		$this->commentRepository = $this->getMockBuilder(CommentRepository::class)
 			->setConstructorArgs([$this->dbClient, $this->likeRepository])
-			->onlyMethods(['delete', 'setCache'])
+			->onlyMethods(['delete', 'setCache', 'getById', 'invalidateStatusCache'])
 			->getMock();
+
+		$this->commentRepository->expects($this->once())
+			->method('getById')
+			->with(5)
+			->willReturn($mockComment);
 
 		$this->commentRepository->expects($this->once())
 			->method('delete')
@@ -152,7 +160,11 @@ class CommentRepositoryTest extends TestCase
 
 		$this->commentRepository->expects($this->once())
 			->method('setCache')
-			->with(CommentRepository::class . '::getById5', null);
+			->with('getById_5', null);
+
+		$this->commentRepository->expects($this->once())
+			->method('invalidateStatusCache')
+			->with(10);
 
 		$result = $this->commentRepository->deleteById(5);
 

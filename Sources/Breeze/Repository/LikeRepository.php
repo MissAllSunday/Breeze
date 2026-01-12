@@ -15,6 +15,8 @@ use Breeze\PermissionsEnum;
 
 class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 {
+	public const string CACHE_BY_CONTENT = 'getByContent';
+
 	public function __construct(
 		$dbClient,
 		$likeRepository,
@@ -49,6 +51,18 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	 */
 	public function getByContent(LikesEnum $type, array $contentIds): array
 	{
+		$cacheKey = sprintf(
+			'%s_%s_%s',
+			self::CACHE_BY_CONTENT,
+			$type->value,
+			implode('_', $contentIds)
+		);
+
+		$cached = $this->getCache($cacheKey);
+		if ($cached !== []) {
+			return $cached;
+		}
+
 		$likes = [];
 		$usersIds = [];
 
@@ -76,6 +90,8 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		array_walk($likes, function (&$likeData, $contentId) use ($type): void {
 			$likeData = $this->buildLikeInfo($likeData, $type, $contentId);
 		});
+
+		$this->setCache($cacheKey, $likes);
 
 		return $likes;
 	}
@@ -123,6 +139,9 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		if (!$wasDeleted) {
 			throw new InvalidLikeException('error_no_like');
 		}
+
+		// Invalidate cache for this content
+		$this->invalidateContentCache($likeEntity->getContentType(), $likeEntity->getContentId());
 	}
 
 	public function insert(LikeEntity $likeEntity): LikeInfoEntity
@@ -133,6 +152,9 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 			LikeEntity::ID_MEMBER => 'int',
 			LikeEntity::TIME => 'int',
 		], $likeEntity->toInsert(), [LikeEntity::ID, LikeEntity::TYPE, LikeEntity::ID_MEMBER]);
+
+		// Invalidate cache for this content
+		$this->invalidateContentCache($likeEntity->getContentType(), $likeEntity->getContentId());
 
 		return $this->buildLikeInfo([$likeEntity], $likeEntity->getContentType(), $likeEntity->getContentId());
 	}
@@ -243,5 +265,17 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	public function getById(int $id): null
 	{
 		return null;
+	}
+
+	/**
+	 * Invalidate cache for a specific content
+	 */
+	protected function invalidateContentCache(LikesEnum $type, int $contentId): void
+	{
+		// Invalidate cache for this specific content
+		$this->setCache(
+			sprintf('%s_%s_%d', self::CACHE_BY_CONTENT, $type->value, $contentId),
+			null
+		);
 	}
 }
