@@ -56,6 +56,7 @@ use Breeze\Validate\Types\User;
 use League\Container\Container;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Event\EventDispatcher;
+use Psr\Container\ContainerInterface;
 
 /**
  * @codeCoverageIgnore
@@ -127,8 +128,8 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		CommentService::class => [CommentRepository::class, StatusRepository::class, EventServiceProvider::class],
 		StatusService::class => [StatusRepository::class, UserSettingsRepository::class, PermissionsService::class, EventServiceProvider::class],
 		AlertService::class => [AlertRepository::class, HandlerServiceProvider::class],
-		CommentEventListener::class => [AlertService::class, StatusRepository::class],
-		LikeEventListener::class => [AlertService::class, StatusRepository::class, CommentRepository::class],
+		CommentEventListener::class => [AlertService::class],
+		LikeEventListener::class => [AlertService::class, ContainerInterface::class],
 		HandlerServiceProvider::class => [],
 	];
 
@@ -141,6 +142,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 	{
 		/** @var Container $container */
 		$container = $this->getContainer();
+		$container->add(ContainerInterface::class, $container);
 
 		foreach (self::DEPENDENCIES as $service => $arguments) {
 			$container->add($service)->addArguments($arguments);

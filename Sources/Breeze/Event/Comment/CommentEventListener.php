@@ -7,7 +7,6 @@ namespace Breeze\Event\Comment;
 use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
 use Breeze\Event\EventAbstract;
-use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\AlertServiceInterface;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Json;
@@ -19,8 +18,7 @@ class CommentEventListener
 	protected const string CONTENT_TYPE = Breeze::NAME . '_comment';
 
 	public function __construct(
-		protected readonly AlertServiceInterface $alertService,
-		protected readonly StatusRepositoryInterface $statusRepository
+		protected readonly AlertServiceInterface $alertService
 	) {
 	}
 

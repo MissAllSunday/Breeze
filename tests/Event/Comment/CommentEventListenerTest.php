@@ -7,7 +7,6 @@ namespace Breeze\Event\Comment;
 use Breeze\Entity\AlertEntity;
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\StatusEntity;
-use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\AlertServiceInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
@@ -27,8 +26,7 @@ class CommentEventListenerTest extends TestCase
 	protected function setUp(): void
 	{
 		$this->alertService = $this->createMock(AlertServiceInterface::class);
-		$statusRepository = $this->createMock(StatusRepositoryInterface::class);
-		$this->listener = new CommentEventListener($this->alertService, $statusRepository);
+		$this->listener = new CommentEventListener($this->alertService);
 	}
 
 	/**

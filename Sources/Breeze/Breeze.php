@@ -40,17 +40,17 @@ class Breeze
 	public const string SUPPORT_URL = 'https://missallsunday.com';
 	public const string REACT_DOM_VERSION = '19.1.0';
 	public const string REACT_VERSION = '19.1.0';
-	public const string REACT_HASH = 'index-C8aALTn5';
+	public const string REACT_HASH = 'index-BLu5uDKB';
 
 	public const string ACTION_STATUS = 'breezeStatus';
 	public const string ACTION_COMMENT = 'breezeComment';
 	public const string ACTION_LIKE = 'breezeLike';
 	public const string ACTION_WALL = 'wall';
 	public const array ACTIONS = [
-		self::ACTION_STATUS,
-		self::ACTION_COMMENT,
-		self::ACTION_LIKE,
-		self::ACTION_WALL,
+		self::ACTION_STATUS => StatusController::class,
+		self::ACTION_COMMENT => CommentController::class,
+		self::ACTION_LIKE => LikesController::class,
+		self::ACTION_WALL => WallController::class,
 	];
 	public const string SCRIPT_URL ='scripturl';
 
@@ -200,24 +200,16 @@ class Breeze
 
 	public function actions(array &$actions): void
 	{
+		//@todo replace SMF's buddy action with Breeze's
 		$action = $this->getRequest('action', '');
 
-		if (empty($action) || !in_array($action, self::ACTIONS, true)) {
+		if (empty($action) || !array_key_exists($action, self::ACTIONS)) {
 			return;
 		}
 
 		try {
-			$statusController = $this->container->get(StatusController::class);
-			$commentController = $this->container->get(CommentController::class);
-			$likesController = $this->container->get(LikesController::class);
-			$wallController = $this->container->get(WallController::class);
-			// $buddyController = $this->container->get(BuddyController::class);
-
-			$actions[self::ACTION_STATUS] = [false, fn () => $statusController->dispatch()];
-			$actions[self::ACTION_COMMENT] = [false, fn () => $commentController->dispatch()];
-			$actions[self::ACTION_WALL] = [false, [$wallController, 'dispatch']];
-			// $actions['buddy'] = [false, fn () => $buddyController->dispatch()];
-			$actions[self::ACTION_LIKE] = [false, fn () => $likesController->dispatch()];
+			$controller = $this->container->get(self::ACTIONS[$action]);
+			$actions[$action] = [false, fn () => $controller->dispatch()];
 		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
 			log_error($exception->getMessage());
 		}

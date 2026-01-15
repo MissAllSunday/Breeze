@@ -52,7 +52,7 @@ abstract class ApiBaseController
 
 	public function dispatch(): void
 	{
-		if (!in_array($this->action, Breeze::ACTIONS)) {
+		if (!array_key_exists($this->action, Breeze::ACTIONS)) {
 			return;
 		}
 

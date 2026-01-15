@@ -8,13 +8,16 @@ use Breeze\Entity\CommentEntity;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\LikesEnum;
+use Breeze\Repository\CommentRepository;
 use Breeze\Repository\CommentRepositoryInterface;
+use Breeze\Repository\StatusRepository;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\AlertServiceInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 #[AllowMockObjectsWithoutExpectations]
 class LikeEventListenerTest extends TestCase
@@ -24,6 +27,8 @@ class LikeEventListenerTest extends TestCase
 	private StatusRepositoryInterface|MockObject $statusRepository;
 
 	private CommentRepositoryInterface|MockObject $commentRepository;
+
+	private ContainerInterface|MockObject $container;
 
 	private LikeEventListener $listener;
 
@@ -35,11 +40,11 @@ class LikeEventListenerTest extends TestCase
 		$this->alertService = $this->createMock(AlertServiceInterface::class);
 		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
 		$this->commentRepository = $this->createMock(CommentRepositoryInterface::class);
+		$this->container = $this->createMock(ContainerInterface::class);
 
 		$this->listener = new LikeEventListener(
 			$this->alertService,
-			$this->statusRepository,
-			$this->commentRepository
+			$this->container
 		);
 	}
 
@@ -53,6 +58,11 @@ class LikeEventListenerTest extends TestCase
 		$statusEntity = $this->createMock(StatusEntity::class);
 		$statusEntity->method('getUserId')->willReturn(10);
 		$statusEntity->method('getId')->willReturn(123);
+
+		$this->container->expects($this->once())
+			->method('get')
+			->with(StatusRepository::class)
+			->willReturn($this->statusRepository);
 
 		$this->statusRepository->expects($this->once())
 			->method('getById')
@@ -77,6 +87,11 @@ class LikeEventListenerTest extends TestCase
 		$commentEntity->method('getUserId')->willReturn(15);
 		$commentEntity->method('getId')->willReturn(456);
 
+		$this->container->expects($this->once())
+			->method('get')
+			->with(CommentRepository::class)
+			->willReturn($this->commentRepository);
+
 		$this->commentRepository->expects($this->once())
 			->method('getById')
 			->with(456)
@@ -100,6 +115,10 @@ class LikeEventListenerTest extends TestCase
 		$statusEntity->method('getUserId')->willReturn(20);
 		$statusEntity->method('getId')->willReturn(100);
 
+		$this->container->method('get')
+			->with(StatusRepository::class)
+			->willReturn($this->statusRepository);
+
 		$this->statusRepository->method('getById')->willReturn($statusEntity);
 
 		$this->alertService->expects($this->once())
@@ -119,6 +138,11 @@ class LikeEventListenerTest extends TestCase
 		$likeEntity->method('getContentType')->willReturn(LikesEnum::Status);
 
 		$statusEntity = $this->createMock(StatusEntity::class);
+
+		$this->container->expects($this->once())
+			->method('get')
+			->with(StatusRepository::class)
+			->willReturn($this->statusRepository);
 
 		$this->statusRepository->expects($this->once())
 			->method('getById')
@@ -141,6 +165,11 @@ class LikeEventListenerTest extends TestCase
 		$likeEntity->method('getContentType')->willReturn(LikesEnum::Comments);
 
 		$commentEntity = $this->createMock(CommentEntity::class);
+
+		$this->container->expects($this->once())
+			->method('get')
+			->with(CommentRepository::class)
+			->willReturn($this->commentRepository);
 
 		$this->commentRepository->expects($this->once())
 			->method('getById')

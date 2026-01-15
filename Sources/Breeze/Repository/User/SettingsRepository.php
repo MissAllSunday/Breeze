@@ -56,6 +56,8 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 			$this->dbClient->freeResult($result);
 			$userSettings = UserSettingsEntity::from($userData);
 			$this->setCache(sprintf(OptionsEntity::CACHE_NAME, $id), $userSettings);
+		} else {
+			$userSettings = UserSettingsEntity::from($userSettings);
 		}
 
 		return $userSettings;

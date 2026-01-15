@@ -9,10 +9,13 @@ use Breeze\Entity\AlertEntity;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\SharedEntityInterface;
 use Breeze\LikesEnum;
+use Breeze\Repository\CommentRepository;
 use Breeze\Repository\CommentRepositoryInterface;
+use Breeze\Repository\StatusRepository;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\AlertServiceInterface;
 use Breeze\Traits\TextTrait;
+use Psr\Container\ContainerInterface;
 
 class LikeEventListener
 {
@@ -23,8 +26,7 @@ class LikeEventListener
 
 	public function __construct(
 		protected readonly AlertServiceInterface $alertService,
-		protected readonly StatusRepositoryInterface $statusRepository,
-		protected readonly CommentRepositoryInterface $commentRepository
+		protected readonly ContainerInterface $container
 	) {
 	}
 
@@ -55,8 +57,8 @@ class LikeEventListener
 	{
 		/** @var StatusRepositoryInterface|CommentRepositoryInterface $repository */
 		$repository = match ($likeEntity->getContentType()) {
-			LikesEnum::Status => $this->statusRepository,
-			LikesEnum::Comments => $this->commentRepository,
+			LikesEnum::Status => $this->container->get(StatusRepository::class),
+			LikesEnum::Comments => $this->container->get(CommentRepository::class),
 		};
 
 		return $repository->getById($likeEntity->getContentId());
