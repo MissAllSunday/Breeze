@@ -15,7 +15,7 @@ const userId = parseInt(
 	window.smf_member_id ?? process.env.VITE_APP_DEV_USER_ID,
 );
 // @ts-expect-error Backend variable
-const wallId = parseInt(
+const wall_id = parseInt(
 	window.breezeProfileId ?? process.env.VITE_APP_DEV_WALL_ID,
 );
 // @ts-expect-error Backend variable
@@ -57,7 +57,7 @@ const smfVars = {
 	ajaxIndicator,
 	scriptUrl,
 	userId,
-	wallId,
+	wall_id,
 	isCurrentUserOwner,
 	smfImagesUrl,
 	pagination,

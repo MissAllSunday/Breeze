@@ -11,7 +11,7 @@ export const getStatus = async (
 ): Promise<IFetchStatus | undefined> => {
 	try {
 		const response = await fetch(
-			baseUrl("breezeStatus", type, [{ start: start, wallId: smfVars.wallId }]),
+			baseUrl("breezeStatus", type, [{ start: start, wall_id: smfVars.wall_id }]),
 			{
 				method: "GET",
 				headers: {
