@@ -55,7 +55,7 @@ describe("posting a like", () => {
 			vi.spyOn(global, "fetch").mockResolvedValueOnce(
 				Promise.reject(new Error("something")),
 			);
-			await postLike(MOCK_LIKE_INFO_ITEM);
+			await expect(postLike(MOCK_LIKE_INFO_ITEM)).rejects.toThrow("something");
 			expect(showError as jest.Mock).toHaveBeenCalled();
 		});
 	});
