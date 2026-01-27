@@ -18,7 +18,7 @@ export const postComment = async (
 				body: JSON.stringify(
 					baseConfig({
 						...commentParams,
-						user_id: smfVars.userId,
+						user_id: smfVars.user_id,
 					}),
 				),
 			},

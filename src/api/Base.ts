@@ -12,7 +12,7 @@ export const baseUrl = (
 	subAction: string,
 	additionalParams: object[] = [],
 ): string => {
-	const url = new URL(SmfVars.scriptUrl);
+	const url = new URL(SmfVars.script_url);
 
 	url.searchParams.append("action", action);
 	url.searchParams.append("sa", subAction);

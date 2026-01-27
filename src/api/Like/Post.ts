@@ -18,7 +18,7 @@ export const postLike = async (
 ): Promise<LikeInfoType> => {
 	try {
 		const params: IPostLikeParams = {
-			id_member: SmfVars.userId,
+			id_member: SmfVars.user_id,
 			content_type: likeInfo.type,
 			content_id: likeInfo.contentId,
 		};
@@ -31,5 +31,6 @@ export const postLike = async (
 		return await resolvePost(likeResults);
 	} catch (_error: unknown) {
 		showError(smfTextVars.error.generic);
+		throw _error;
 	}
 };

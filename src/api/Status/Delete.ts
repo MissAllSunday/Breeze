@@ -12,7 +12,7 @@ export const deleteStatus = async (statusId: number): Promise<boolean> => {
 			body: JSON.stringify(
 				baseConfig({
 					id: statusId,
-					user_id: smfVars.userId,
+					user_id: smfVars.user_id,
 				}),
 			),
 		},

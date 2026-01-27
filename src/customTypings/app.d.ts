@@ -8,7 +8,7 @@ declare module "breezeTypes" {
 		ajaxIndicator: boolean;
 		txt: string[];
 		scriptUrl: string;
-		userId: number;
+		user_id: number;
 	}
 
 	interface TabContentProps {

@@ -1,3 +1,5 @@
+// @ts-ignore
+
 const session = {
 	// @ts-expect-error SMF external variable
 	var: window.smf_session_var ?? process.env.VITE_APP_DEV_SESSION_VAR,
@@ -9,9 +11,9 @@ const youSure = window.smf_you_sure ?? "";
 // @ts-expect-error SMF external variable
 const ajaxIndicator = window.ajax_indicator ?? false;
 // @ts-expect-error SMF external variable
-const scriptUrl = window.smf_scripturl ?? process.env.VITE_APP_DEV_URL;
+const script_url = window.smf_scripturl ?? process.env.VITE_APP_DEV_URL;
 // @ts-expect-error SMF external variable
-const userId = parseInt(
+const user_id = parseInt(
 	window.smf_member_id ?? process.env.VITE_APP_DEV_USER_ID,
 );
 // @ts-expect-error Backend variable
@@ -24,14 +26,14 @@ const isCurrentUserOwner = Boolean(
 		process.env.VITE_APP_DEV_IS_CURRENT_USER_OWNER,
 );
 // @ts-expect-error SMF variable
-const smfImagesUrl: string =
+const smf_images_url: string =
 	window.smf_images_url ?? process.env.VITE_APP_DEV_THEME_URL;
 // @ts-expect-error Backend variable
 const pagination: number =
 	window.breezePagination ?? process.env.VITE_APP_DEV_THEME_URL;
 
 // @ts-expect-error editor gets defined serverside
-const smfEditorHandler = window.sceditor ?? null;
+const editor_handler = window.sceditor ?? null;
 
 const aboutMe =
 	document.getElementById("tab-about") ?? document.createElement("tab-about");
@@ -55,15 +57,15 @@ const smfVars = {
 	session,
 	youSure,
 	ajaxIndicator,
-	scriptUrl,
-	userId,
+	script_url,
+	user_id,
 	wall_id,
 	isCurrentUserOwner,
-	smfImagesUrl,
+	smf_images_url,
 	pagination,
 	aboutMeContent,
 	buddiesTabContent,
-	smfEditorHandler,
+  editor_handler,
 	editorOptions,
 	editorIsRich,
 	currentUserAvatar,
