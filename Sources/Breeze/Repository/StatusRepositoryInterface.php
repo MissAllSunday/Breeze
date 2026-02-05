@@ -31,4 +31,6 @@ interface StatusRepositoryInterface extends BaseRepositoryInterface
 	public function deleteById(int $statusId): bool;
 
 	public function getCount(array $queryParams = []): int;
+
+	public function getBasicInfoById(int $id): StatusEntity;
 }

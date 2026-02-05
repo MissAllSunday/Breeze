@@ -16,10 +16,6 @@ class Components
 
 	public const string MAIN_JS_FILE = Components::FOLDER . Breeze::REACT_HASH . '.js';
 	private const array COMPONENTS = [];
-	private const array CDN_JS = [
-		'react' => 'https://unpkg.com/react@' . Breeze::REACT_VERSION . '/umd/react.production.min.js',
-		'reactDom' => 'https://unpkg.com/react-dom@' . Breeze::REACT_DOM_VERSION . '/umd/react-dom.production.min.js',
-	];
 
 	public function loadUIVars(array $vars = []): void
 	{
@@ -33,15 +29,22 @@ class Components
 
 	public function loadComponents(array $components = []): void
 	{
+		// React and ReactDOM are bundled in the main JS file by Vite, no need to load from CDN
+		$this->loadJavaScriptFile(Components::MAIN_JS_FILE, [
+			'external' => false,
+			'defer' => true,
+		], strtolower(Breeze::PATTERN . Breeze::REACT_HASH));
+
+		$this->loadCSSFile(Components::CSS_FILE, [], 'smf_breeze');
 		$componentsToLoad = array_intersect(self::COMPONENTS, $components);
 
-		$this->loadJsDependencies();
-
-		foreach ($componentsToLoad as $component) {
-			$this->loadJavaScriptFile(self::FOLDER . $component . '.js', [
-				'defer' => false,
-				'default_theme' => true,
-			], strtolower(Breeze::PATTERN . $component));
+		if (!empty($componentsToLoad)) {
+			foreach ($componentsToLoad as $component) {
+				$this->loadJavaScriptFile(self::FOLDER . $component . '.js', [
+					'defer' => false,
+					'default_theme' => true,
+				], strtolower(Breeze::PATTERN . $component));
+			}
 		}
 	}
 
@@ -113,16 +116,6 @@ class Components
 				'Txt' . ucfirst($name),
 				$componentVariables[$name]
 			);
-		}
-	}
-
-	protected function loadJsDependencies(): void
-	{
-		foreach (self::CDN_JS as $jsDependency) {
-			$this->loadJavaScriptFile($jsDependency, [
-				'external' => true,
-				'defer' => false,
-			], strtolower(Breeze::PATTERN . $jsDependency));
 		}
 	}
 }

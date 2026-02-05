@@ -144,7 +144,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			return $cached;
 		}
 
-		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikesEnum::Status), [
+		$queryParams = array_merge($this->getDefaultQueryParams(), [
 			'columnName' => StatusEntity::ID,
 			'id' => $id,
 		]);
@@ -153,7 +153,6 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			'
 			SELECT {raw:columns}
 			FROM {db_prefix}{raw:from}
-			LEFT JOIN {db_prefix}{raw:likeJoin}
 			WHERE {raw:columnName} = ({int:id})
 			LIMIT 1',
 			$queryParams
@@ -165,10 +164,46 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 
 		$comments = $this->commentRepository->getByStatus([$id]);
 
-		$result = $this->prepareData($request, $comments)[$id];
+		$preparedData = $this->prepareData($request, $comments);
+
+		if (!isset($preparedData[$id])) {
+			throw new DataNotFoundException('error_no_status');
+		}
+
+		$result = $preparedData[$id];
 		$this->setCache($cacheKey, $result);
 
 		return $result;
+	}
+
+	/**
+	 * @throws DataNotFoundException
+	 */
+	public function getBasicInfoById(int $id): StatusEntity
+	{
+		$request = $this->dbClient->query(
+			'
+			SELECT {raw:id}, {raw:wall_id}, {raw:user_id}
+			FROM {db_prefix}{raw:table}
+			WHERE {raw:id} = {int:status_id}
+			LIMIT 1',
+			[
+				'id' => StatusEntity::ID,
+				'wall_id' => StatusEntity::WALL_ID,
+				'user_id' => StatusEntity::USER_ID,
+				'table' => StatusEntity::TABLE,
+				'status_id' => $id,
+			]
+		);
+
+		if ($this->dbClient->numRows($request) === 0) {
+			throw new DataNotFoundException('error_no_status');
+		}
+
+		$row = $this->dbClient->fetchAssoc($request);
+		$this->dbClient->freeResult($request);
+
+		return StatusEntity::from($row);
 	}
 
 	/**

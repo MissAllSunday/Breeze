@@ -38,9 +38,9 @@ class Breeze
 	public const string PATTERN = self::NAME . '_';
 	public const string FEED = 'https://api.github.com/repos/MissAllSunday/Breeze/releases';
 	public const string SUPPORT_URL = 'https://missallsunday.com';
-	public const string REACT_DOM_VERSION = '19.1.0';
-	public const string REACT_VERSION = '19.1.0';
-	public const string REACT_HASH = 'index-O2HogETb';
+	public const string REACT_DOM_VERSION = '19.1.2';
+	public const string REACT_VERSION = '19.1.2';
+	public const string REACT_HASH = 'index-BuBOizOc';
 
 	public const string ACTION_STATUS = 'breezeStatus';
 	public const string ACTION_COMMENT = 'breezeComment';

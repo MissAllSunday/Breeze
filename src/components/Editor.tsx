@@ -84,4 +84,4 @@ const Editor: React.FunctionComponent<EditorProps> = (props: EditorProps) => {
 	);
 };
 
-export default Editor;
+export default React.memo(Editor);

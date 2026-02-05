@@ -9,6 +9,7 @@ use Breeze\Entity\StatusEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Service\StatusServiceInterface;
 use Breeze\Util\Response;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\EmptyDataException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
@@ -70,8 +71,8 @@ class StatusController extends ApiBaseController
 			$this->statusService->deleteById($statusId);
 
 			$this->response->success('deleted_status', [], Response::NO_CONTENT);
-		} catch (InvalidStatusException $invalidStatusException) {
-			$this->response->error($invalidStatusException->getMessage());
+		} catch (InvalidStatusException|DataNotFoundException $exception) {
+			$this->response->error($exception->getMessage());
 		}
 	}
 

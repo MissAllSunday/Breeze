@@ -56,9 +56,7 @@ function Status(props: StatusProps): React.ReactElement {
 				body: content,
 			})
 				.then((newComments: CommentListType) => {
-					for (const key in newComments) {
-						setCommentsList([...commentsList, newComments[key]]);
-					}
+					setCommentsList((prevCommentsList) => [...prevCommentsList, ...Object.values(newComments)]);
 				})
 				.finally(() => {
 					setIsLoading(false);
@@ -66,7 +64,7 @@ function Status(props: StatusProps): React.ReactElement {
 
 			return true;
 		},
-		[props.status.id, commentsList, permissions.Comments.post],
+		[props.status.id, permissions.Comments.post],
 	);
 
 	const removeComment = useCallback(
@@ -75,8 +73,8 @@ function Status(props: StatusProps): React.ReactElement {
 			deleteComment(comment.id)
 				.then((deleted) => {
 					if (deleted) {
-						setCommentsList(
-							commentsList.filter(
+						setCommentsList((prevCommentsList) =>
+							prevCommentsList.filter(
 								(currentComment: CommentType) =>
 									currentComment.id !== comment.id,
 							),
@@ -87,7 +85,7 @@ function Status(props: StatusProps): React.ReactElement {
 					setIsLoading(false);
 				});
 		},
-		[commentsList],
+		[],
 	);
 
 	return (
@@ -156,4 +154,4 @@ function Status(props: StatusProps): React.ReactElement {
 	);
 }
 
-export default Status;
+export default React.memo(Status);

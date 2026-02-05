@@ -59,12 +59,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			UserSettingsEntity::ABOUT_ME => !empty($wallUserSettings->getAboutMe()),
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
-		$this->components->loadJavaScriptFile(Components::MAIN_JS_FILE, [
-			'external' => false,
-			'defer' => true,
-		], strtolower(Breeze::PATTERN . Breeze::REACT_HASH));
-
-		$this->components->loadCSSFile(Components::CSS_FILE, [], 'smf_breeze');
+		$this->components->loadComponents();
 	}
 
 	public function updateMemberData(int $userId, array $updatedData): void

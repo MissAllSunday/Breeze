@@ -121,7 +121,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			return $cached;
 		}
 
-		$queryParams = array_merge($this->getDefaultQueryParamsWithLikes(LikesEnum::Comments), [
+		$queryParams = array_merge($this->getDefaultQueryParams(), [
 			'columnName' => CommentEntity::STATUS_ID,
 			'statusIds' => $statusIds,
 		]);
@@ -130,7 +130,6 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			'
 			SELECT {raw:columns}
 			FROM {db_prefix}{raw:from}
-				JOIN {db_prefix}{raw:likeJoin}
 			WHERE {raw:columnName} IN({array_int:statusIds})',
 			$queryParams
 		);
@@ -157,10 +156,9 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			'
 			SELECT {raw:columns}
 			FROM {db_prefix}{raw:from}
-				LEFT JOIN {db_prefix}{raw:likeJoin}
 			WHERE {raw:columnName} = ({int:id})
 			LIMIT {int:limit}',
-			array_merge($this->getDefaultQueryParamsWithLikes(LikesEnum::Comments), [
+			array_merge($this->getDefaultQueryParams(), [
 				'limit' => 1,
 				'id' => $id,
 				'columnName' => self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::ID,

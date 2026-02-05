@@ -29,7 +29,11 @@ export default function Wall(props: WallProps): React.JSX.Element {
 	const ref = React.useRef<null | HTMLInputElement>(null);
 
 	useEffect(
-		() => ref.current?.scrollIntoView({ behavior: "smooth", block: "end" }),
+		() => {
+			if (ref.current) {
+				ref.current.scrollIntoView({ behavior: "smooth", block: "end" });
+			}
+		},
 		[],
 	);
 
@@ -67,14 +71,14 @@ export default function Wall(props: WallProps): React.JSX.Element {
 					return;
 				}
 
-				setStatusList(
-					statusList.concat(Object.values(statusListResponse.data)),
+				setStatusList((prevStatusList) =>
+					prevStatusList.concat(Object.values(statusListResponse.data)),
 				);
 			})
 			.finally(() => {
 				setIsLoading(false);
 			});
-	}, [props, statusList, paginationTotal]);
+	}, [props.wallType, statusList.length, paginationTotal]);
 
 	const createStatus = useCallback(
 		(content: string) => {
@@ -82,9 +86,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
 
 			postStatus(content)
 				.then((newStatus: StatusListType) => {
-					for (const key in newStatus) {
-						setStatusList([...statusList, newStatus[key]]);
-					}
+					setStatusList((prevStatusList) => [...prevStatusList, ...Object.values(newStatus)]);
 				})
 				.finally(() => {
 					setIsLoading(false);
@@ -92,7 +94,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
 
 			return true;
 		},
-		[statusList],
+		[],
 	);
 
 	const removeStatus = useCallback(
@@ -102,8 +104,8 @@ export default function Wall(props: WallProps): React.JSX.Element {
 			deleteStatus(currentStatus.id)
 				.then((deleted: boolean) => {
 					if (deleted) {
-						setStatusList(
-							statusList.filter(
+						setStatusList((prevStatusList) =>
+							prevStatusList.filter(
 								(status: StatusType) => currentStatus.id !== status.id,
 							),
 						);
@@ -113,7 +115,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
 					setIsLoading(false);
 				});
 		},
-		[statusList],
+		[],
 	);
 
 	const goUp = () => {

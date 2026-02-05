@@ -74,7 +74,7 @@ class CommentServiceTest extends TestCase
 			->willReturn($commentEntities);
 
 		$this->statusRepository->expects($this->once())
-			->method('getById')
+			->method('getBasicInfoById')
 			->with($commentData[CommentEntity::STATUS_ID])
 			->willReturn($statusEntity);
 

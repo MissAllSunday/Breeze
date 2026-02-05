@@ -33,7 +33,7 @@ class CommentService extends BaseService implements CommentServiceInterface
 
 		if (!empty($commentEntities)) {
 			try {
-				$statusEntity = $this->statusRepository->getById($commentEntity->getStatusId());
+				$statusEntity = $this->statusRepository->getBasicInfoById($commentEntity->getStatusId());
 
 				foreach ($commentEntities as $entity) {
 					$this->eventServiceProvider->getDispatcher()->dispatch(

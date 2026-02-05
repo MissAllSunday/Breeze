@@ -12,15 +12,14 @@ const youSure = window.smf_you_sure ?? "";
 const ajaxIndicator = window.ajax_indicator ?? false;
 // @ts-expect-error SMF external variable
 const script_url = window.smf_scripturl ?? process.env.VITE_APP_DEV_URL;
-// @ts-expect-error SMF external variable
+
 const user_id = parseInt(
 	window.smf_member_id ?? process.env.VITE_APP_DEV_USER_ID,
 );
-// @ts-expect-error Backend variable
+
 const wall_id = parseInt(
 	window.breezeProfileId ?? process.env.VITE_APP_DEV_WALL_ID,
 );
-// @ts-expect-error Backend variable
 const isCurrentUserOwner = Boolean(
 	window.breezeIsCurrentUserOwner ??
 		process.env.VITE_APP_DEV_IS_CURRENT_USER_OWNER,
@@ -33,7 +32,7 @@ const pagination: number =
 	window.breezePagination ?? process.env.VITE_APP_DEV_THEME_URL;
 
 // @ts-expect-error editor gets defined serverside
-const editor_handler = window.sceditor ?? null;
+const smfEditorHandler = window.sceditor ?? null;
 
 const aboutMe =
 	document.getElementById("tab-about") ?? document.createElement("tab-about");
@@ -65,7 +64,7 @@ const smfVars = {
 	pagination,
 	aboutMeContent,
 	buddiesTabContent,
-  editor_handler,
+  smfEditorHandler,
 	editorOptions,
 	editorIsRich,
 	currentUserAvatar,
