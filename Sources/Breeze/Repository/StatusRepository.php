@@ -6,6 +6,8 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
+use Breeze\Entity\CommentEntity;
+use Breeze\Entity\LikeEntity;
 use Breeze\Entity\SharedEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\LikesEnum;
@@ -232,6 +234,36 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		}
 
 		return true;
+	}
+
+	public function recountComments(): void
+	{
+		$this->dbClient->query(
+			'
+			UPDATE {db_prefix}' . StatusEntity::TABLE . ' AS s
+			SET comments = (
+				SELECT COUNT(*)
+				FROM {db_prefix}' . CommentEntity::TABLE . ' AS c
+				WHERE c.status_id = s.id
+			)',
+			[]
+		);
+	}
+
+	public function recountLikes(): void
+	{
+		$this->dbClient->query(
+			'
+			UPDATE {db_prefix}' . StatusEntity::TABLE . ' AS s
+			SET likes = (
+				SELECT COUNT(*)
+				FROM {db_prefix}' . LikeEntity::TABLE . ' AS l
+				WHERE l.content_id = s.id AND l.content_type = {string:status_type}
+			)',
+			[
+				'status_type' => LikesEnum::Status->value,
+			]
+		);
 	}
 
 	/**

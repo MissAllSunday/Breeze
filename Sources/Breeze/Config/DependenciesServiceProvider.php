@@ -34,6 +34,7 @@ use Breeze\Repository\User\SettingsRepository as UserSettingsRepository;
 use Breeze\Service\Actions\AdminService;
 use Breeze\Service\AlertService;
 use Breeze\Service\CommentService;
+use Breeze\Service\LikeService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\ProfileService;
 use Breeze\Service\StatusService;
@@ -122,11 +123,12 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		CommentRepository::class => [DatabaseClient::class, LikeRepository::class],
 		LikeRepository::class => [DatabaseClient::class, null, EventServiceProvider::class],
 		StatusRepository::class => [DatabaseClient::class, CommentRepository::class, LikeRepository::class],
-		AdminService::class => [SettingsBuilder::class],
+		AdminService::class => [SettingsBuilder::class, StatusService::class, CommentService::class, LikeService::class],
 		ProfileService::class => [UserSettingsRepository::class, Components::class, PermissionsService::class],
 		PermissionsService::class => [],
 		CommentService::class => [CommentRepository::class, StatusRepository::class, EventServiceProvider::class],
 		StatusService::class => [StatusRepository::class, UserSettingsRepository::class, PermissionsService::class, EventServiceProvider::class],
+		LikeService::class => [LikeRepository::class],
 		AlertService::class => [AlertRepository::class, HandlerServiceProvider::class],
 		CommentEventListener::class => [AlertService::class],
 		LikeEventListener::class => [AlertService::class, ContainerInterface::class],

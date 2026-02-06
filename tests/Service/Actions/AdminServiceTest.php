@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Breeze\Service\Actions;
 
+use Breeze\Service\CommentServiceInterface;
+use Breeze\Service\LikeServiceInterface;
+use Breeze\Service\StatusServiceInterface;
 use Breeze\Util\Form\SettingsBuilderInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -16,12 +19,22 @@ class AdminServiceTest extends TestCase
 {
 	private AdminServiceInterface|MockObject $adminService;
 
+	private MockObject|StatusServiceInterface $statusService;
+
+	private MockObject|CommentServiceInterface $commentService;
+
+	private MockObject|LikeServiceInterface $likeService;
+
 	/**
 	 * @throws Exception
 	 */
 	protected function setUp(): void
 	{
 		$settingsBuilder = $this->createStub(SettingsBuilderInterface::class);
+		$this->statusService = $this->createMock(StatusServiceInterface::class);
+		$this->commentService = $this->createMock(CommentServiceInterface::class);
+		$this->likeService = $this->createMock(LikeServiceInterface::class);
+
 		$this->adminService = $this->getMockBuilder(AdminService::class)
 			->onlyMethods([
 				'global',
@@ -33,8 +46,14 @@ class AdminServiceTest extends TestCase
 				'getSmfText',
 				'isEnable',
 				'saveConfigVars',
+				'getRequest',
 			])
-			->setConstructorArgs([$settingsBuilder])
+			->setConstructorArgs([
+				$settingsBuilder,
+				$this->statusService,
+				$this->commentService,
+				$this->likeService,
+			])
 			->getMock();
 	}
 
@@ -202,5 +221,63 @@ class AdminServiceTest extends TestCase
 		// Method is empty, just test it doesn't throw
 		$this->adminService->loadComponents(['component1', 'component2']);
 		$this->expectNotToPerformAssertions();
+	}
+
+	#[DataProvider('maintenanceProvider')]
+	public function testMaintenance(bool $fix, string $type, bool $expectCommentsFix, bool $expectLikesFix): void
+	{
+		$context = ['session_var' => 'sesc', 'session_id' => 'abc123'];
+		$scriptUrl = 'http://example.com/index.php';
+
+		$this->adminService->expects($this->exactly(2))
+			->method('global')
+			->willReturnMap([
+				['context', $context],
+				['script_url', $scriptUrl],
+			]);
+
+		if ($fix) {
+			$this->adminService->expects($this->once())
+				->method('getRequest')
+				->with('type', 'all')
+				->willReturn($type);
+
+			if ($expectCommentsFix) {
+				$this->commentService->expects($this->once())->method('deleteOrphans');
+				$this->statusService->expects($this->once())->method('recountComments');
+			} else {
+				$this->commentService->expects($this->never())->method('deleteOrphans');
+				$this->statusService->expects($this->never())->method('recountComments');
+			}
+
+			if ($expectLikesFix) {
+				$this->likeService->expects($this->once())->method('deleteOrphans');
+				$this->statusService->expects($this->once())->method('recountLikes');
+				$this->commentService->expects($this->once())->method('recountLikes');
+			} else {
+				$this->likeService->expects($this->never())->method('deleteOrphans');
+				$this->statusService->expects($this->never())->method('recountLikes');
+				$this->commentService->expects($this->never())->method('recountLikes');
+			}
+		} else {
+			$this->adminService->expects($this->never())->method('getRequest');
+		}
+
+		$this->commentService->expects($this->once())->method('countOrphans')->willReturn(5);
+		$this->likeService->expects($this->once())->method('countOrphans')->willReturn(10);
+
+		$this->adminService->expects($this->once())->method('setGlobal');
+
+		$this->adminService->maintenance($fix);
+	}
+
+	public static function maintenanceProvider(): array
+	{
+		return [
+			'no fix' => [false, '', false, false],
+			'fix all' => [true, 'all', true, true],
+			'fix comments' => [true, 'comments', true, false],
+			'fix likes' => [true, 'likes', false, true],
+		];
 	}
 }

@@ -94,4 +94,36 @@ class StatusServiceTest extends TestCase
 			'body' => 'test status',
 		]);
 	}
+
+	public function testRecountComments(): void
+	{
+		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
+		$this->statusService = new StatusService(
+			$this->statusRepository,
+			$this->userRepository,
+			$this->permissionsService,
+			null
+		);
+
+		$this->statusRepository->expects($this->once())
+			->method('recountComments');
+
+		$this->statusService->recountComments();
+	}
+
+	public function testRecountLikes(): void
+	{
+		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
+		$this->statusService = new StatusService(
+			$this->statusRepository,
+			$this->userRepository,
+			$this->permissionsService,
+			null
+		);
+
+		$this->statusRepository->expects($this->once())
+			->method('recountLikes');
+
+		$this->statusService->recountLikes();
+	}
 }

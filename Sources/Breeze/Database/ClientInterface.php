@@ -12,6 +12,8 @@ interface ClientInterface
 
 	public function fetchAssoc($result): ?array;
 
+	public function fetchRow($result): ?array;
+
 	public function numRows($result): int;
 
 	public function freeResult($result): void;

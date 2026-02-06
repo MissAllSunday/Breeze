@@ -33,4 +33,8 @@ interface StatusRepositoryInterface extends BaseRepositoryInterface
 	public function getCount(array $queryParams = []): int;
 
 	public function getBasicInfoById(int $id): StatusEntity;
+
+	public function recountComments(): void;
+
+	public function recountLikes(): void;
 }

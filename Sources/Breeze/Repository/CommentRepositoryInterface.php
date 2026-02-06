@@ -24,4 +24,10 @@ interface CommentRepositoryInterface extends BaseRepositoryInterface
 	public function deleteByStatusId(int $statusId): bool;
 
 	public function getById(int $id = 0): CommentEntity;
+
+	public function countOrphans(): int;
+
+	public function deleteOrphans(): void;
+
+	public function recountLikes(): void;
 }

@@ -7,18 +7,27 @@ namespace Breeze\Service\Actions;
 
 use Breeze\Breeze;
 use Breeze\PermissionsEnum;
+use Breeze\Service\CommentServiceInterface;
+use Breeze\Service\LikeServiceInterface;
 use Breeze\Service\PermissionsServiceInterface;
+use Breeze\Service\StatusServiceInterface;
+use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Form\SettingsBuilderInterface;
 
 class AdminService implements AdminServiceInterface
 {
 	use TextTrait;
+	use RequestTrait;
 
 	protected array $configVars = [];
 
-	public function __construct(protected SettingsBuilderInterface $settingsBuilder)
-	{
+	public function __construct(
+		protected SettingsBuilderInterface $settingsBuilder,
+		protected StatusServiceInterface $statusService,
+		protected CommentServiceInterface $commentService,
+		protected LikeServiceInterface $likeService
+	) {
 	}
 
 	public function init(array $subActions): void
@@ -125,6 +134,43 @@ class AdminService implements AdminServiceInterface
 		}
 
 		prepareDBSettingContext($this->configVars);
+	}
+
+	public function maintenance(bool $fix = false): void
+	{
+		$context = $this->global('context');
+		$scriptUrl = $this->global(Breeze::SCRIPT_URL);
+
+		$context['post_url'] = $scriptUrl . '?' .
+			AdminServiceInterface::POST_URL . 'maintenance;' .
+			$context['session_var'] . '=' . $context['session_id'] . ';fix';
+
+		if ($fix) {
+			checkSession();
+
+			$fixType = $this->getRequest('type', 'all');
+
+			if ($fixType === 'comments' || $fixType === 'all') {
+				$this->commentService->deleteOrphans();
+				$this->statusService->recountComments();
+			}
+
+			if ($fixType === 'likes' || $fixType === 'all') {
+				$this->likeService->deleteOrphans();
+				$this->statusService->recountLikes();
+				$this->commentService->recountLikes();
+			}
+		}
+
+		$orphanComments = $this->commentService->countOrphans();
+		$orphanLikes = $this->likeService->countOrphans();
+
+		$context[Breeze::NAME]['maintenance_stats'] = [
+			'orphan_comments' => $orphanComments,
+			'orphan_likes' => $orphanLikes,
+		];
+
+		$this->setGlobal('context', $context);
 	}
 
 	protected function saveConfigVars(): void

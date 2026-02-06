@@ -17,12 +17,14 @@ class AdminController extends BaseController
 	public const string ACTION_SETTINGS = 'settings';
 	public const string ACTION_PERMISSIONS = 'permissions';
 	public const string ACTION_DONATE = 'donate';
+	public const string ACTION_MAINTENANCE = 'maintenance';
 
 	public const array SUB_ACTIONS = [
 		self::ACTION_MAIN,
 		self::ACTION_SETTINGS,
 		self::ACTION_PERMISSIONS,
 		self::ACTION_DONATE,
+		self::ACTION_MAINTENANCE,
 	];
 
 	public function __construct(
@@ -73,6 +75,19 @@ class AdminController extends BaseController
 		$this->adminService->permissionsConfigVars($saving);
 
 		if ($saving) {
+			$this->response->redirect(AdminServiceInterface::POST_URL . __FUNCTION__);
+		}
+	}
+
+	public function maintenance(): void
+	{
+		$this->render(__FUNCTION__);
+
+		$fixing = $this->isRequestSet('fix');
+
+		$this->adminService->maintenance($fixing);
+
+		if ($fixing) {
 			$this->response->redirect(AdminServiceInterface::POST_URL . __FUNCTION__);
 		}
 	}

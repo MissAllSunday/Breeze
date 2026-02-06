@@ -15,5 +15,7 @@ interface AdminServiceInterface extends ActionsServiceInterface
 
 	public function permissionsConfigVars(bool $save = false): void;
 
+	public function maintenance(bool $fix = false): void;
+
 	public function loadComponents(array $components = []): void;
 }

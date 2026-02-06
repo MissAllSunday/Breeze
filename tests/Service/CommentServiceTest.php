@@ -128,4 +128,33 @@ class CommentServiceTest extends TestCase
 
 		$this->commentService->deleteById($commentId);
 	}
+
+	public function testCountOrphans(): void
+	{
+		$expectedCount = 5;
+
+		$this->commentRepository->expects($this->once())
+			->method('countOrphans')
+			->willReturn($expectedCount);
+
+		$result = $this->commentService->countOrphans();
+
+		$this->assertEquals($expectedCount, $result);
+	}
+
+	public function testDeleteOrphans(): void
+	{
+		$this->commentRepository->expects($this->once())
+			->method('deleteOrphans');
+
+		$this->commentService->deleteOrphans();
+	}
+
+	public function testRecountLikes(): void
+	{
+		$this->commentRepository->expects($this->once())
+			->method('recountLikes');
+
+		$this->commentService->recountLikes();
+	}
 }

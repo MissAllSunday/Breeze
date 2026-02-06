@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Entity\CommentEntity;
+use Breeze\Entity\LikeEntity;
 use Breeze\Entity\SharedEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\LikesEnum;
@@ -212,6 +213,51 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			CommentEntity::TABLE,
 			'WHERE ' . CommentEntity::STATUS_ID . ' ={int:statusId}',
 			['statusId' => $statusId]
+		);
+	}
+
+	public function countOrphans(): int
+	{
+		$request = $this->dbClient->query(
+			'
+			SELECT COUNT(*)
+			FROM {db_prefix}' . CommentEntity::TABLE . ' AS c
+			LEFT JOIN {db_prefix}' . StatusEntity::TABLE . ' AS s ON (s.id = c.status_id)
+			WHERE s.id IS NULL',
+			[]
+		);
+
+		[$count] = $this->dbClient->fetchRow($request);
+		$this->dbClient->freeResult($request);
+
+		return (int) $count;
+	}
+
+	public function deleteOrphans(): void
+	{
+		$this->dbClient->query(
+			'
+			DELETE c
+			FROM {db_prefix}' . CommentEntity::TABLE . ' AS c
+			LEFT JOIN {db_prefix}' . StatusEntity::TABLE . ' AS s ON (s.id = c.status_id)
+			WHERE s.id IS NULL',
+			[]
+		);
+	}
+
+	public function recountLikes(): void
+	{
+		$this->dbClient->query(
+			'
+			UPDATE {db_prefix}' . CommentEntity::TABLE . ' AS c
+			SET likes = (
+				SELECT COUNT(*)
+				FROM {db_prefix}' . LikeEntity::TABLE . ' AS l
+				WHERE l.content_id = c.id AND l.content_type = {string:comment_type}
+			)',
+			[
+				'comment_type' => LikesEnum::Comments->value,
+			]
 		);
 	}
 

@@ -249,6 +249,7 @@ class Breeze
 				'main' => [$this->getText(AdminServiceInterface::AREA . '_main_title')],
 				'settings' => [$this->getText(AdminServiceInterface::AREA . '_settings_title')],
 				'permissions' => [$this->getText(AdminServiceInterface::AREA . '_permissions_title')],
+				'maintenance' => [$this->getText(AdminServiceInterface::AREA . '_maintenance_title')],
 				'donate' => [$this->getText(AdminServiceInterface::AREA . '_donate_title'),],
 			],
 		];

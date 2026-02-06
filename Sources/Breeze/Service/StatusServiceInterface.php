@@ -42,4 +42,8 @@ interface StatusServiceInterface
 	public function currentUserInfo(): array;
 
 	public function getCount(string $columnName, array $ids = []): int;
+
+	public function recountComments(): void;
+
+	public function recountLikes(): void;
 }

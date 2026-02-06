@@ -136,6 +136,57 @@ function template_main(): void
     </script>';
 }
 
+function template_maintenance(): void
+{
+	global $context, $txt;
+
+	echo '
+		<div class="cat_bar">
+			<h3 class="catbg">', $context['page_title'] ,'</h3>
+		</div>
+		<div class="information">
+			<div class="content">
+				<dl class="settings">
+					<dt>', $txt['Breeze_maintenance_orphan_comments'] ,'</dt>
+					<dd>
+						', $context[Breeze::NAME]['maintenance_stats']['orphan_comments'] ,'
+						', $context[Breeze::NAME]['maintenance_stats']['orphan_comments'] > 0 ? '
+						<form action="' . $context['post_url'] . ';type=comments" method="post" style="display:inline;">
+							<input type="submit" value="' . $txt['Breeze_maintenance_fix_comments'] . '" class="button_submit" />
+							<input type="hidden" name="' . $context['session_var'] . '" value="' . $context['session_id'] . '" />
+						</form>' : '', '
+					</dd>
+					<dt>', $txt['Breeze_maintenance_orphan_likes'] ,'</dt>
+					<dd>
+						', $context[Breeze::NAME]['maintenance_stats']['orphan_likes'] ,'
+						', $context[Breeze::NAME]['maintenance_stats']['orphan_likes'] > 0 ? '
+						<form action="' . $context['post_url'] . ';type=likes" method="post" style="display:inline;">
+							<input type="submit" value="' . $txt['Breeze_maintenance_fix_likes'] . '" class="button_submit" />
+							<input type="hidden" name="' . $context['session_var'] . '" value="' . $context['session_id'] . '" />
+						</form>' : '', '
+					</dd>
+				</dl>';
+
+	if ($context[Breeze::NAME]['maintenance_stats']['orphan_comments'] > 0 || $context[Breeze::NAME]['maintenance_stats']['orphan_likes'] > 0) {
+		echo '
+				<div class="righttext">
+					<form action="', $context['post_url'] ,';type=all" method="post">
+						<input type="submit" value="', $txt['Breeze_maintenance_fix_all'] ,'" class="button_submit" />
+						<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" />
+					</form>
+				</div>';
+	} else {
+		echo '
+				<div class="righttext">
+					', $txt['Breeze_maintenance_no_issues'] ,'
+				</div>';
+	}
+
+	echo '
+			</div>
+		</div>
+		<br />';
+}
 
 // Boring stuff you will never see...
 function template_donate(): void

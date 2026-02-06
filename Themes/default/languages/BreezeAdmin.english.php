@@ -18,6 +18,8 @@ $txt['Breeze_breezeAdmin_permissions_description'] = 'From here you can add/remo
 $txt['Breeze_breezeAdmin_settings_title'] = 'General settings';
 $txt['Breeze_breezeAdmin_settings_description'] = 'This is the general settings page,
 from here you can enable/disable the mod as well as configuring general settings.';
+$txt['Breeze_breezeAdmin_maintenance_title'] = 'Maintenance';
+$txt['Breeze_breezeAdmin_maintenance_description'] = 'From here you can check and fix any discrepancies in the database.';
 $txt['Breeze_breezeAdmin_donate_title'] = 'Donate';
 $txt['Breeze_breezeAdmin_donate_description'] = 'Boring stuff you were curious about it
  but you\'ll never gonna see it again :P';
@@ -53,3 +55,11 @@ $txt['Breeze_version'] = 'Breeze version';
 $txt['Breeze_react_version'] = 'React version';
 $txt['Breeze_live'] = 'Live from the support forum...';
 $txt['Breeze_feed_error_message'] = 'Breeze couldn\'t connect with the support site';
+
+// Maintenance
+$txt['Breeze_maintenance_orphan_comments'] = 'Orphan comments';
+$txt['Breeze_maintenance_orphan_likes'] = 'Orphan likes';
+$txt['Breeze_maintenance_fix_comments'] = 'Fix comments';
+$txt['Breeze_maintenance_fix_likes'] = 'Fix likes';
+$txt['Breeze_maintenance_fix_all'] = 'Fix all discrepancies';
+$txt['Breeze_maintenance_no_issues'] = 'No issues found';

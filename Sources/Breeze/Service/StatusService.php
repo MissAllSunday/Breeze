@@ -115,4 +115,14 @@ class StatusService extends BaseService implements StatusServiceInterface
 	{
 		return  $this->global('user_info');
 	}
+
+	public function recountComments(): void
+	{
+		$this->statusRepository->recountComments();
+	}
+
+	public function recountLikes(): void
+	{
+		$this->statusRepository->recountLikes();
+	}
 }

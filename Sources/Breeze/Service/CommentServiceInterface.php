@@ -20,4 +20,10 @@ interface CommentServiceInterface
 	 * @throws DataNotFoundException
 	 */
 	public function deleteById(int $commentId): bool;
+
+	public function countOrphans(): int;
+
+	public function deleteOrphans(): void;
+
+	public function recountLikes(): void;
 }

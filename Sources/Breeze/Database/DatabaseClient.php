@@ -36,6 +36,11 @@ class DatabaseClient implements ClientInterface
 		return $this->db['db_fetch_assoc']($result);
 	}
 
+	public function fetchRow($result): ?array
+	{
+		return $this->db['db_fetch_row']($result);
+	}
+
 	public function numRows($result): int
 	{
 		return $this->db['db_num_rows']($result);

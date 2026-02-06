@@ -6,8 +6,10 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Breeze;
+use Breeze\Entity\CommentEntity;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeInfoEntity;
+use Breeze\Entity\StatusEntity;
 use Breeze\Event\EventServiceProvider;
 use Breeze\Event\Like\LikeCreatedEvent;
 use Breeze\LikesEnum;
@@ -265,6 +267,62 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	public function getById(int $id): null
 	{
 		return null;
+	}
+
+	public function countOrphans(): int
+	{
+		$request = $this->dbClient->query(
+			'
+			SELECT COUNT(*)
+			FROM {db_prefix}' . LikeEntity::TABLE . ' AS l
+			LEFT JOIN {db_prefix}' . StatusEntity::TABLE . ' AS s ON (s.id = l.content_id AND l.content_type = {string:status_type})
+			WHERE s.id IS NULL AND l.content_type = {string:status_type}',
+			[
+				'status_type' => LikesEnum::Status->value,
+			]
+		);
+		[$orphanStatusLikes] = $this->dbClient->fetchRow($request);
+		$this->dbClient->freeResult($request);
+
+		$request = $this->dbClient->query(
+			'
+			SELECT COUNT(*)
+			FROM {db_prefix}' . LikeEntity::TABLE . ' AS l
+			LEFT JOIN {db_prefix}' . CommentEntity::TABLE . ' AS c ON (c.id = l.content_id AND l.content_type = {string:comment_type})
+			WHERE c.id IS NULL AND l.content_type = {string:comment_type}',
+			[
+				'comment_type' => LikesEnum::Comments->value,
+			]
+		);
+		[$orphanCommentLikes] = $this->dbClient->fetchRow($request);
+		$this->dbClient->freeResult($request);
+
+		return (int) $orphanStatusLikes + (int) $orphanCommentLikes;
+	}
+
+	public function deleteOrphans(): void
+	{
+		$this->dbClient->query(
+			'
+			DELETE l
+			FROM {db_prefix}' . LikeEntity::TABLE . ' AS l
+			LEFT JOIN {db_prefix}' . StatusEntity::TABLE . ' AS s ON (s.id = l.content_id AND l.content_type = {string:status_type})
+			WHERE s.id IS NULL AND l.content_type = {string:status_type}',
+			[
+				'status_type' => LikesEnum::Status->value,
+			]
+		);
+
+		$this->dbClient->query(
+			'
+			DELETE l
+			FROM {db_prefix}' . LikeEntity::TABLE . ' AS l
+			LEFT JOIN {db_prefix}' . CommentEntity::TABLE . ' AS c ON (c.id = l.content_id AND l.content_type = {string:comment_type})
+			WHERE c.id IS NULL AND l.content_type = {string:comment_type}',
+			[
+				'comment_type' => LikesEnum::Comments->value,
+			]
+		);
 	}
 
 	/**
