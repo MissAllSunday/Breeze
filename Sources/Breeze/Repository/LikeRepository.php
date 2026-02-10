@@ -62,7 +62,9 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 		$cached = $this->getCache($cacheKey);
 		if ($cached !== []) {
-			return $cached;
+			return array_map(function ($item) {
+				return is_array($item) ? LikeInfoEntity::from($item) : $item;
+			}, $cached);
 		}
 
 		$likes = [];
