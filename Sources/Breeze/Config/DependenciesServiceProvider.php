@@ -65,74 +65,95 @@ use Psr\Container\ContainerInterface;
 class DependenciesServiceProvider extends AbstractServiceProvider
 {
 	protected const array DEPENDENCIES = [
-		DatabaseClient::class => [],
-		SettingsBuilder::class => [],
-		UserSettingsBuilder::class => [],
-		Response::class => [],
-		Components::class => [],
-		Data::class => [],
-		User::class => [UserSettingsRepository::class],
-		Allow::class => [],
-		DeleteStatus::class => [Data::class, User::class, Allow::class, StatusRepository::class],
-		PostStatus::class => [Data::class, User::class, Allow::class, StatusRepository::class],
-		StatusByProfile::class => [Data::class, User::class, Allow::class, StatusRepository::class],
-		DeleteComment::class => [Data::class, User::class, Allow::class, CommentRepository::class],
-		PostComment::class => [Data::class, User::class, Allow::class, CommentRepository::class],
-		Like::class => [Data::class, User::class, Allow::class, LikeRepository::class],
-		ValidateStatus::class => [DeleteStatus::class, PostStatus::class, StatusByProfile::class],
-		ValidateComment::class => [DeleteComment::class, PostComment::class],
-		ValidateLikes::class => [Like::class],
-		AdminController::class => [AdminService::class, Response::class],
-		WallController::class => [Response::class, ProfileService::class],
-		StatusController::class => [
+		// Infrastructure - Shared (Singleton)
+		DatabaseClient::class => ['arguments' => [], 'shared' => true],
+		EventDispatcher::class => ['arguments' => [], 'shared' => true],
+
+		// Utilities - Shared
+		SettingsBuilder::class => ['arguments' => [], 'shared' => true],
+		UserSettingsBuilder::class => ['arguments' => [], 'shared' => true],
+		Response::class => ['arguments' => [], 'shared' => true],
+		Components::class => ['arguments' => [], 'shared' => true],
+
+		// Validation Types - Shared (Stateless validators)
+		Data::class => ['arguments' => [], 'shared' => true],
+		User::class => ['arguments' => [UserSettingsRepository::class], 'shared' => true],
+		Allow::class => ['arguments' => [], 'shared' => true],
+
+		// Validation Actions - New instances (Hold request-specific data)
+		DeleteStatus::class => ['arguments' => [Data::class, User::class, Allow::class, StatusRepository::class]],
+		PostStatus::class => ['arguments' => [Data::class, User::class, Allow::class, StatusRepository::class]],
+		StatusByProfile::class => ['arguments' => [Data::class, User::class, Allow::class, StatusRepository::class]],
+		DeleteComment::class => ['arguments' => [Data::class, User::class, Allow::class, CommentRepository::class]],
+		PostComment::class => ['arguments' => [Data::class, User::class, Allow::class, CommentRepository::class]],
+		Like::class => ['arguments' => [Data::class, User::class, Allow::class, LikeRepository::class]],
+
+		// Composite Validators - New instances (Hold request state)
+		ValidateStatus::class => ['arguments' => [DeleteStatus::class, PostStatus::class, StatusByProfile::class]],
+		ValidateComment::class => ['arguments' => [DeleteComment::class, PostComment::class]],
+		ValidateLikes::class => ['arguments' => [Like::class]],
+
+		// Controllers - New instances (Handle per-request state)
+		AdminController::class => ['arguments' => [AdminService::class, Response::class]],
+		WallController::class => ['arguments' => [Response::class, ProfileService::class]],
+		StatusController::class => ['arguments' => [
 			StatusService::class,
 			ValidateStatus::class,
 			Response::class,
-		],
-		CommentController::class => [
+		]],
+		CommentController::class => ['arguments' => [
 			CommentService::class,
 			ValidateComment::class,
 			Response::class,
-		],
-		LikesController::class => [
+		]],
+		LikesController::class => ['arguments' => [
 			LikeRepository::class,
 			ValidateLikes::class,
 			Response::class,
-		],
-		UserSettingsController::class => [UserSettingsRepository::class, Response::class, UserSettingsBuilder::class],
-		AlertEntity::class => [],
-		CommentEntity::class => [],
-		LikeEntity::class => [],
-		MemberEntity::class => [],
-		MentionEntity::class => [],
-		OptionsEntity::class => [],
-		SettingsEntity::class => [],
-		StatusEntity::class => [],
-		UserSettingsEntity::class => [],
-		StatusEventListener::class => [AlertService::class],
-		EventDispatcher::class => [],
-		EventServiceProvider::class => [
+		]],
+		UserSettingsController::class => ['arguments' => [UserSettingsRepository::class, Response::class, UserSettingsBuilder::class]],
+
+		// Entities - New instances (Data transfer objects)
+		AlertEntity::class => ['arguments' => []],
+		CommentEntity::class => ['arguments' => []],
+		LikeEntity::class => ['arguments' => []],
+		MemberEntity::class => ['arguments' => []],
+		MentionEntity::class => ['arguments' => []],
+		OptionsEntity::class => ['arguments' => []],
+		SettingsEntity::class => ['arguments' => []],
+		StatusEntity::class => ['arguments' => []],
+		UserSettingsEntity::class => ['arguments' => []],
+
+		// Event System - Shared
+		EventServiceProvider::class => ['arguments' => [
 			EventDispatcher::class,
 			StatusEventListener::class,
 			CommentEventListener::class,
 			LikeEventListener::class,
-		],
-		StatusCreatedHandler::class => [AlertEntity::class],
-		UserSettingsRepository::class => [DatabaseClient::class, null],
-		AlertRepository::class => [DatabaseClient::class],
-		CommentRepository::class => [DatabaseClient::class, LikeRepository::class],
-		LikeRepository::class => [DatabaseClient::class, null, EventServiceProvider::class],
-		StatusRepository::class => [DatabaseClient::class, CommentRepository::class, LikeRepository::class],
-		AdminService::class => [SettingsBuilder::class, StatusService::class, CommentService::class, LikeService::class],
-		ProfileService::class => [UserSettingsRepository::class, Components::class, PermissionsService::class],
-		PermissionsService::class => [],
-		CommentService::class => [CommentRepository::class, StatusRepository::class, EventServiceProvider::class],
-		StatusService::class => [StatusRepository::class, UserSettingsRepository::class, PermissionsService::class, EventServiceProvider::class],
-		LikeService::class => [LikeRepository::class],
-		AlertService::class => [AlertRepository::class, HandlerServiceProvider::class],
-		CommentEventListener::class => [AlertService::class],
-		LikeEventListener::class => [AlertService::class, ContainerInterface::class],
-		HandlerServiceProvider::class => [],
+		], 'shared' => true],
+		StatusEventListener::class => ['arguments' => [AlertService::class], 'shared' => true],
+		CommentEventListener::class => ['arguments' => [AlertService::class], 'shared' => true],
+		LikeEventListener::class => ['arguments' => [AlertService::class, ContainerInterface::class], 'shared' => true],
+		HandlerServiceProvider::class => ['arguments' => [], 'shared' => true],
+
+		// Event Handlers - New instances (Created per event)
+		StatusCreatedHandler::class => ['arguments' => [AlertEntity::class]],
+
+		// Repositories - Shared (Stateless data access)
+		UserSettingsRepository::class => ['arguments' => [DatabaseClient::class, null], 'shared' => true],
+		AlertRepository::class => ['arguments' => [DatabaseClient::class], 'shared' => true],
+		CommentRepository::class => ['arguments' => [DatabaseClient::class, LikeRepository::class], 'shared' => true],
+		LikeRepository::class => ['arguments' => [DatabaseClient::class, null, EventServiceProvider::class], 'shared' => true],
+		StatusRepository::class => ['arguments' => [DatabaseClient::class, CommentRepository::class, LikeRepository::class], 'shared' => true],
+
+		// Services - Shared (Stateless business logic)
+		AdminService::class => ['arguments' => [SettingsBuilder::class, StatusService::class, CommentService::class, LikeService::class], 'shared' => true],
+		ProfileService::class => ['arguments' => [UserSettingsRepository::class, Components::class, PermissionsService::class], 'shared' => true],
+		PermissionsService::class => ['arguments' => [], 'shared' => true],
+		CommentService::class => ['arguments' => [CommentRepository::class, StatusRepository::class, EventServiceProvider::class], 'shared' => true],
+		StatusService::class => ['arguments' => [StatusRepository::class, UserSettingsRepository::class, PermissionsService::class, EventServiceProvider::class], 'shared' => true],
+		LikeService::class => ['arguments' => [LikeRepository::class], 'shared' => true],
+		AlertService::class => ['arguments' => [AlertRepository::class, HandlerServiceProvider::class], 'shared' => true],
 	];
 
 	public function provides(string $id): bool
@@ -146,8 +167,13 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		$container = $this->getContainer();
 		$container->add(ContainerInterface::class, $container);
 
-		foreach (self::DEPENDENCIES as $service => $arguments) {
-			$container->add($service)->addArguments($arguments);
+		foreach (self::DEPENDENCIES as $service => $config) {
+			// Determine if service should be shared (singleton) or new instance
+			$isShared = isset($config['shared']) && $config['shared'] === true;
+			$method = $isShared ? 'addShared' : 'add';
+
+			$container->$method($service)
+				->addArguments($config['arguments']);
 		}
 	}
 }

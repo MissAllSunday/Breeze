@@ -61,6 +61,9 @@ function add_integration_function(): void
 function remove_integration_function(): void
 {
 }
+function checkSession(): void
+{
+}
 function smf_json_decode($s, $array = true)
 {
 	return json_decode($s, $array);

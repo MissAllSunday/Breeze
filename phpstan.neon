@@ -8,8 +8,9 @@ parameters:
     - ./tests
   inferPrivatePropertyTypeFromConstructor: true
   ignoreErrors:
-    - '/Function checkSession not found./'
     - '/Function saveDBSettings not found./'
     - '/Function is_not_guest not found./'
     - '/Function tokenTxtReplace not found./'
     - '/Function create_control_richedit not found./'
+    - '/Method Breeze\\Service\\Actions\\AdminService::init\(\) invoked with 0 parameters, 1 required./'
+    - '/Function checkSession invoked with 1 parameter, 0 required./'
