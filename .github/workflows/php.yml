@@ -5,8 +5,8 @@ jobs:
   tests:
     strategy:
       matrix:
-        operating-system: [ubuntu-latest, macos-latest]
-        php-versions: ['8.3']
+        operating-system: [ ubuntu-latest, macos-latest ]
+        php-versions: [ '8.3' ]
     runs-on: ${{ matrix.operating-system }}
 
     services:
@@ -32,6 +32,8 @@ jobs:
       DB_PREFIX: smf_
 
     steps:
+      - name: Set up Docker
+        run: sudo apt-get update && sudo apt-get install -y docker.io
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup PHP
